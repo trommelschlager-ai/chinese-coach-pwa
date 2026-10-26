@@ -152,6 +152,110 @@ body{background:linear-gradient(145deg,#f7f9fc,#f0f4f8);overflow-x:hidden}
 .voice-help{margin:12px 0;padding:12px 14px;border-radius:13px;border:1px solid #b9d6ed;background:#f4f9ff;color:#234361;font-size:13px;line-height:1.55}
 .voice-help summary{cursor:pointer;font-weight:850;list-style-position:inside}
 .voice-help p{color:#4e6277;line-height:1.6;margin:10px 0 0}
+
+/* Focus learning v1.2: short screens, real lesson steps, approved navy/gold neon */
+#course .focus-toolbar{display:flex;align-items:center;justify-content:space-between;gap:9px;margin:0 0 14px;padding:0 3px}
+#course .focus-back,#course .focus-change{border:1px solid #dbdfeb;background:#fff;color:#364b62;border-radius:12px;padding:10px 12px;min-height:42px;font-weight:800;font-size:13px}
+#course .focus-change{background:linear-gradient(#fff8e9,#fff0d4);border-color:#f0cd85;color:#79511d;box-shadow:0 0 7px #efd9aa81}
+#course .focus-label{font-size:12px;color:#8290a0;font-weight:750}
+#course .course-sidebar[hidden]{display:none!important}
+#course .course-sidebar{position:static;margin:0 0 14px;padding:13px;border-color:#e7e8ef}
+#course .course-sidebar #course-menu{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;overflow:visible}
+#course .lesson-picker{min-width:0;flex:unset;font-size:12px;padding:10px 5px;flex-direction:column;text-align:center;justify-content:center;gap:5px}
+#course .lesson-picker .picker-sub{font-size:10px;line-height:1.35}
+#course .course-layout{display:block}
+#course .course-content{padding:22px 23px;min-height:0}
+#course .course-metrics.sr-metrics{display:none}
+#course .course-tech{margin:12px 0;padding:10px 13px;background:#f8fafe;color:#5c6e82;border:1px solid #e3eaf1;border-radius:12px;font-size:12px}
+#course .course-tech summary{font-weight:800;color:#55708d;cursor:pointer}
+#course .course-tech p{line-height:1.6;margin:9px 0 2px}
+#course .focus-head{display:flex;align-items:center;gap:11px;margin:0 0 15px;min-width:0}
+#course .focus-head-back{display:grid;place-items:center;width:35px;height:38px;border:1px solid #dce5ee;border-radius:12px;background:#f4f8fd;color:#223b59;font-size:28px;flex:0 0 auto}
+#course .focus-head>div{min-width:0;flex:1}
+#course .focus-kicker{font-size:10px;letter-spacing:1px;font-weight:850;color:#bc873d}
+#course .focus-head h1{font-size:clamp(17px,2.4vw,24px);line-height:1.2;letter-spacing:-.4px;margin:1px 0 0;color:#152640}
+#course .step-counter{white-space:nowrap;flex:0 0 auto;padding:7px 10px;font-size:11px}
+#course .focus-stepnav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-bottom:15px}
+#course .focus-step{padding:8px 0 6px;min-width:0;background:transparent;border:0;border-top:3px solid #dfe4ed;display:flex;align-items:center;flex-direction:column;gap:3px;border-radius:5px;color:#718093}
+#course .focus-step>span{width:29px;height:29px;border-radius:100%;background:#eef1f5;color:#63718a;display:grid;place-items:center;font-size:13px;font-weight:800}
+#course .focus-step small{font-size:11px;line-height:1.3}
+#course .focus-step.selected{color:#a36e18;border-color:#e9ad39;background:#fff7eb}
+#course .focus-step.selected>span{background:linear-gradient(150deg,#f0c267,#bd852d);box-shadow:0 0 14px #f7cb7ca8;color:#fff}
+#course .focus-panel{min-height:180px}
+#course .focus-banner{min-height:140px;padding:22px 25px;margin:0 0 13px;background-position:center 46%}
+#course .focus-banner h2{font-size:clamp(26px,3.3vw,38px);line-height:1.1;margin:0 0 8px;color:#ffe4ac;text-shadow:0 2px 12px #10203b66}
+#course .focus-banner p{margin:0;font-size:14px;color:#e7edf5}
+#course .focus-tones{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:12px 0}
+#course .focus-tone{background:linear-gradient(#fff,#fffdfa);border:1px solid #f1e7d5;border-radius:17px;box-shadow:0 5px 18px #1e344414;min-width:0;min-height:165px;padding:12px 5px;display:flex;align-items:center;flex-direction:column;gap:2px;justify-content:space-between;color:#14273e;text-align:center}
+#course .focus-tone>span:first-child{padding:5px 7px;min-width:65%;background:#fff1d5;border-radius:22px;font-weight:850;font-size:11px;white-space:nowrap}
+#course .focus-tone .contour{font-size:28px;line-height:1;min-height:31px;color:#b98022;transform:scaleX(1.15)}
+#course .focus-tone>strong{font-size:22px;line-height:1.2}
+#course .focus-tone>em{font-style:normal;font:35px/1.1 Georgia,"Songti SC",serif}
+#course .focus-tone>small{font-size:11px;color:#697488;line-height:1.2;min-height:19px}
+#course .tone-speaker{width:80%;padding:6px;border-radius:10px;background:#fff1d2;box-shadow:0 0 9px #f7d88a88}
+#course .focus-saycard{padding:18px 22px;background:linear-gradient(120deg,#fff,#fffdf8);border:1px solid #e8e9ed;border-radius:19px;box-shadow:0 5px 20px #1930460f}
+#course .focus-wordcard,#course .focus-dialog-card{padding:25px 22px}
+#course .focus-card-title{font-size:16px;font-weight:850;color:#172a46;margin-bottom:13px}
+#course .focus-phrase{background:linear-gradient(92deg,#fffdf9dd,#f7f9faf4 56%,#eaf1f4bd),url("./assets/china-landscape.svg");background-size:cover;border-radius:16px;padding:12px 19px;min-height:117px;display:flex;flex-direction:column;justify-content:center;gap:2px}
+#course .focus-hanzi{font:56px/1.13 Georgia,"Noto Serif CJK SC","Songti SC",serif;color:#122c51;word-wrap:break-word}
+#course .focus-pinyin{font-size:23px;font-weight:750;color:#355c82}
+#course .focus-russian{font-size:15px;color:#62738a}
+#course .focus-practice-actions{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:14px 0 3px}
+#course .focus-practice-actions .btn{min-height:49px;font-size:14px}
+#course .focus-feedback{font-size:12px;color:#47719b;line-height:1.4;margin-top:10px;min-height:0}
+#course .focus-details{margin:13px 0;padding:12px 15px;border:1px solid #f1dfba;border-radius:14px;background:#fff9ed;font-size:13px;color:#5f5460}
+#course .focus-details summary{font-weight:800;color:#946d2f;cursor:pointer}
+#course .focus-details p{line-height:1.65}
+#course .focus-mini{padding:8px 0;border-top:1px solid #eedfca;margin:10px 0 0;line-height:1.6}
+#course .focus-count{font-size:12px;font-weight:800;color:#99702d;letter-spacing:.4px;margin-bottom:12px}
+#course .focus-direction{font-size:13px;color:#768396;margin:11px 0}
+#course .focus-learned{background:#fff9ed;color:#79551e;border:1px solid #ecd6a7;border-radius:12px;padding:11px 15px;margin-top:11px;display:block;width:100%;font-weight:800}
+#course .focus-learned.is-known{background:#e8f8ee;color:#186947;border-color:#b7e2ca}
+#course .course-footnav{position:sticky;bottom:11px;display:grid;grid-template-columns:1fr 1.4fr;gap:10px;border-top:1px solid #e8ecf3;background:#fffffff7;padding:12px 0 7px;margin-top:11px;z-index:7}
+#course .course-footnav .btn{width:100%;min-height:52px}
+#course .course-footnav .btn.primary{background:linear-gradient(#ffe6a9,#deaa56);border:2px solid #fff0c5;box-shadow:0 0 11px #efc271ab}
+#course .course-footnav.quiz-mode{display:none}
+#course .course-options button{min-height:57px;font-size:14px}
+#course .course-score{background:linear-gradient(140deg,#f2fbf6,#fffef8)}
+@media(max-width:810px){#course .course-content{padding:18px 15px}#course .course-sidebar #course-menu{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){
+ .offlinebar{padding:7px 10px;font-size:11px;margin:0 0 12px;border-radius:12px;gap:6px}
+ .offlineactions{width:auto;gap:4px;margin-left:auto}
+ .offlineactions .mini-install,.offlineactions .mini-help{font-size:10px;padding:6px 7px}
+ @media(display-mode:standalone){.offlinebar,.installhelp{display:none!important}}
+ #course .focus-toolbar{margin-bottom:10px}
+ #course .focus-back,#course .focus-change{padding:7px 8px;font-size:11px;min-height:37px}
+ #course .focus-label{font-size:10px}
+ #course .course-content{padding:13px 11px 19px}
+ #course .focus-head{gap:7px;margin-bottom:12px}
+ #course .focus-head-back{height:32px;width:29px;font-size:22px}
+ #course .focus-head h1{font-size:17px}
+ #course .step-counter{font-size:10px;padding:6px}
+ #course .focus-stepnav{gap:2px;margin-bottom:10px}
+ #course .focus-step small{font-size:10px}
+ #course .focus-step>span{height:25px;width:25px}
+ #course .focus-banner{padding:17px 19px;min-height:126px;margin-bottom:9px}
+ #course .focus-banner h2{font-size:27px}
+ #course .focus-banner p{font-size:12px;max-width:250px}
+ #course .focus-tones{gap:5px;margin:8px 0}
+ #course .focus-tone{padding:9px 3px;min-height:151px;border-radius:12px}
+ #course .focus-tone>span:first-child{font-size:10px;padding:4px 2px}
+ #course .focus-tone .contour{font-size:23px;min-height:23px}
+ #course .focus-tone>strong{font-size:20px}
+ #course .focus-tone>em{font-size:30px}
+ #course .focus-tone>small{font-size:9px}
+ #course .tone-speaker{padding:4px;font-size:12px}
+ #course .focus-saycard{padding:13px 12px}
+ #course .focus-card-title{margin-bottom:7px;font-size:15px}
+ #course .focus-phrase{padding:11px 15px;min-height:108px}
+ #course .focus-hanzi{font-size:49px}
+ #course .focus-pinyin{font-size:20px}
+ #course .focus-practice-actions{gap:8px;margin-top:10px}
+ #course .focus-practice-actions .btn{min-height:47px;font-size:13px;padding:8px 9px}
+ #course .course-footnav{position:sticky;bottom:68px;padding:8px 0 4px}
+ #course .course-footnav .btn{min-height:47px}
+ #course .course-sidebar #course-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 </style>
 </head>
 <body>
@@ -579,9 +683,12 @@ function renderLessonQuiz(){const l=COURSE.find(x=>x.id===selectedLesson),panel=
 
 
 // Beginner-friendly navigation; course data and completion thresholds unchanged.
-function rememberLesson(){try{localStorage.setItem('chinese-coach-resume-v1',JSON.stringify({id:selectedLesson,step:selectedStep}))}catch(e){}}
+function rememberLesson(){try{localStorage.setItem('chinese-coach-resume-v1',JSON.stringify({id:selectedLesson,step:selectedStep,part:selectedStep===1?vocabIndex:selectedStep===2?dialogueIndex:0}))}catch(e){}}
 function startLearning(){const next=COURSE.find(l=>!courseState.completed.includes(l.id));openCourseLesson(next?next.id:1,0)}
-function continueLearning(){let loc=null;try{loc=JSON.parse(localStorage.getItem('chinese-coach-resume-v1')||'null')}catch(e){}if(loc&&Number.isInteger(loc.id)&&loc.id>=1&&loc.id<=COURSE.length&&Number.isInteger(loc.step)&&loc.step>=0&&loc.step<=3)openCourseLesson(loc.id,loc.step);else startLearning()}
+function continueLearning(){let loc=null;try{loc=JSON.parse(localStorage.getItem('chinese-coach-resume-v1')||'null')}catch(e){}if(loc&&Number.isInteger(loc.id)&&loc.id>=1&&loc.id<=COURSE.length&&Number.isInteger(loc.step)&&loc.step>=0&&loc.step<=3)openCourseLesson(loc.id,loc.step,Number.isInteger(loc.part)?loc.part:0);else startLearning()}
+document.getElementById('course-choose').addEventListener('click',()=>{
+ const el=document.getElementById('course-menu-wrap');el.hidden=!el.hidden;document.getElementById('course-choose').setAttribute('aria-expanded',String(!el.hidden));
+});
 document.getElementById('startlearning').addEventListener('click',startLearning);
 document.getElementById('continuelearning').addEventListener('click',continueLearning);
 document.getElementById('how-learning').addEventListener('click',()=>{const el=document.getElementById('learning-guide');el.classList.toggle('hidden');document.getElementById('how-learning').textContent=el.classList.contains('hidden')?'Подробнее ›':'Свернуть ↑'});
