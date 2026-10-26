@@ -296,6 +296,113 @@ body.focus-mode .shell{padding-bottom:48px}
 #tones .tone-version{display:flex;justify-content:center;align-items:center;gap:11px;flex-wrap:wrap;font-size:11px;color:#78899a;padding:7px 3px}
 #tones .tone-version button{font-size:11px;border:1px solid #c5dcef;border-radius:9px;background:#f1f7fd;color:#305e86;padding:6px 10px;font-weight:800}
 #tones .tone-version button:disabled{opacity:.6}
+
+/* APPROVED HIGH-CONTRAST NEON BUTTONS · 2026-10-26
+   Stable CSS glow, no animation required. Make it visible on bright Android screens. */
+:root{
+  --neon-gold-core:#ffdf84;
+  --neon-gold-edge:#ffbe32;
+  --neon-blue-core:#122f54;
+  --neon-blue-edge:#28bfff;
+}
+.btn.primary,
+.btn.primary.neon-gold,
+#course .course-footnav .btn.primary,
+#course .course-footnav .btn.primary.neon-gold,
+#course .focus-check,
+#course .focus-tone-check .btn,
+#tones .tone-main-check{
+  background:linear-gradient(165deg,#fff2c6 0%,#ffe294 17%,#ffc653 54%,#d9942e 100%) !important;
+  color:#172238 !important;
+  border:2px solid #fff3b7 !important;
+  outline:1px solid var(--neon-gold-edge);
+  outline-offset:1px;
+  box-shadow:
+    inset 0 2px 1px #fffdf0,
+    inset 0 -3px 9px #b6742366,
+    0 0 0 2px #fbbc4280,
+    0 0 9px 2px #ffca55e6,
+    0 0 24px 4px #ffb7339c,
+    0 7px 17px #aa621e57 !important;
+  text-shadow:0 1px 0 #fff7df;
+  font-weight:850;
+}
+.btn.dark,
+.btn.dark.neon-blue,
+#course .focus-practice-actions .btn.dark,
+#course .focus-practice-actions .btn.dark.neon-blue{
+  background:linear-gradient(165deg,#21507a 0%,#103258 38%,#06152c 100%) !important;
+  color:#fafdff !important;
+  border:2px solid #9de9ff !important;
+  outline:1px solid var(--neon-blue-edge);
+  outline-offset:1px;
+  box-shadow:
+    inset 0 2px 3px #b7f2ff5e,
+    inset 0 -6px 9px #00152a99,
+    0 0 0 2px #1aafff72,
+    0 0 11px 3px #29bbffee,
+    0 0 24px 4px #179fff9e,
+    0 8px 17px #08284955 !important;
+  text-shadow:0 1px 2px #04162a;
+  font-weight:850;
+}
+.btn.soft,
+#course .course-footnav .btn.soft{
+  background:linear-gradient(160deg,#fff,#e7f4ff) !important;
+  color:#224a70 !important;
+  border:2px solid #b4e7ff !important;
+  box-shadow:0 0 0 1px #6ccdf9a6,0 0 12px #4ab7f97d !important;
+}
+#course .focus-tone .tone-speaker{
+  background:linear-gradient(160deg,#fff4d5,#fbd17b);
+  border:1px solid #ffecad;
+  box-shadow:inset 0 1px 0 #fff,0 0 0 1px #ffd472,0 0 12px 2px #ffbf55ba;
+}
+#course .focus-tone.active-tone{
+  border:2px solid #f8be3f !important;
+  box-shadow:0 0 0 2px #ffdf95,0 0 14px 3px #f4bd48c0,0 7px 20px #7d624022 !important;
+}
+#course .focus-learned{
+  background:linear-gradient(145deg,#fff9ec,#ffe1a1);
+  border:1px solid #f2bd5f;
+  box-shadow:0 0 8px 1px #fbd2879c;
+}
+#course .focus-learned.is-known{
+  background:linear-gradient(#f2fff8,#d5f6e3);
+  border-color:#95dcb7;
+  box-shadow:0 0 9px #87d6a28a;
+}
+#tones #contourSound{
+  border:2px solid #b8e6fc;
+  background:linear-gradient(145deg,#fff,#e8f5ff);
+  box-shadow:0 0 0 1px #78cbf9,0 0 13px #7cccf6b3;
+}
+.btn:not(:disabled):active{
+  transform:translateY(1px) scale(.99);
+  filter:brightness(1.02);
+}
+.btn:focus-visible,#course .focus-tone:focus-visible{
+  outline:3px solid #275a96 !important;
+  outline-offset:4px;
+}
+.btn:disabled{
+  opacity:.56;
+  filter:grayscale(.2);
+  box-shadow:none !important;
+  outline:none;
+}
+@media(max-width:600px){
+ .btn.primary,.btn.dark,.btn.soft{
+   border-radius:13px;
+   letter-spacing:.05px;
+ }
+ #course .focus-practice-actions{gap:13px}
+ #course .focus-tone-check{margin-top:14px}
+}
+@media(prefers-reduced-motion:reduce){
+ .btn{transition:none !important}
+}
+
 </style>
 </head>
 <body>
