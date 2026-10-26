@@ -291,6 +291,11 @@ body.focus-mode .shell{padding-bottom:48px}
 #tones .check-result.check-ok{background:#effaf4;border-color:#a6d9bc;color:#216e44}
 #tones .check-result.check-retry{background:#fff8ee;border-color:#f0d19a;color:#805d2b}
 #tones .check-result p{margin:6px 0}#tones .check-result small{color:#708196;font-size:11px}
+
+/* Tone checker version / update control visible to users during testing */
+#tones .tone-version{display:flex;justify-content:center;align-items:center;gap:11px;flex-wrap:wrap;font-size:11px;color:#78899a;padding:7px 3px}
+#tones .tone-version button{font-size:11px;border:1px solid #c5dcef;border-radius:9px;background:#f1f7fd;color:#305e86;padding:6px 10px;font-weight:800}
+#tones .tone-version button:disabled{opacity:.6}
 </style>
 </head>
 <body>
@@ -328,7 +333,7 @@ body.focus-mode .shell{padding-bottom:48px}
   <div class="columnhead"><div><div class="eyebrow">ТРЕНИРОВКА · ПРОИЗНОШЕНИЕ</div><h1>Четыре тона китайского</h1><p>Выбери тон, послушай образец и сравни свою интонацию с ориентиром.</p></div><span class="flag">🎙️</span></div>
   <div class="tone-intro scenic"><span class="lesson-tag">Урок 1</span><h2>Как работают<br>4 тона</h2><p>Один и тот же слог с разным тоном может иметь совершенно разные значения.</p></div>
   <div class="tonegrid" id="tonegrid"></div>
-  <div class="practice"><div class="panel"><h3>Практика произношения</h3><p>Китайское слово и ожидаемая мелодика тона.</p><div class="pronounce" id="practicehanzi">妈</div><div style="color:#ad6f38;font-size:21px;font-weight:800" id="practicepinyin">mā</div><div id="practicetranslation" class="kicker">мама</div><div class="tbuttons"><button class="btn dark" id="listen">🔊 Послушать слово</button><button class="btn soft" id="contourSound">♪ Мелодия тона</button><button class="btn primary" id="record">🎙️ Посмотреть график</button></div><button type="button" class="btn primary neon-gold tone-main-check" id="tone-check">🎯 Проверить выбранный тон</button><div class="focus-feedback" id="tone-check-feedback" aria-live="polite"></div><details class="voice-help" id="voicehelp"><summary>🔊 Не слышно китайскую речь? Как настроить голос</summary><p>На Redmi: Настройки → Расширенные настройки → Язык и ввод → Синтез речи. Выбери движок Google → Установить голосовые данные → Китайский (Китай), Mandarin (zh-CN). После установки закрой и снова открой приложение. Для работы без интернета скачай именно офлайн-голос.</p><p>Если голоса нет в списке, установи или обнови «Speech Recognition &amp; Synthesis from Google» через Google Play. Кнопка «Мелодия тона» воспроизводит только мелодический сигнал, а не китайскую речь.</p></details><div id="micmessage" class="msg" aria-live="polite">Микрофон записывает около 3 секунд и показывает высоту голоса — работает и без сети при разрешённом доступе.</div><div class="notice"><strong>Важно:</strong> график — учебная подсказка, а не экзаменатор. Оценка тона приблизительная и основана на высоте голоса; она не заменяет проверку преподавателем. Для 你好 применяется изменение третьего тона (ní hǎo).</div></div><div class="panel"><h3>Твоя интонация</h3><p>Светлая линия — примерная целевая форма; тёмная — найденная высота голоса. Сравни общую форму, не абсолютную высоту.</p><div class="chartwrap"><svg id="pitchchart" viewBox="0 0 400 150" role="img" aria-label="График высоты голоса"><g stroke="#e1e6ee" stroke-width="1"><path d="M0 30 H400 M0 75 H400 M0 120 H400"/></g><path id="targetPath" d="" stroke="#d2b482" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="8 6"/><path id="voicePath" d="" stroke="#2a6083" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg></div><div class="microcopy">Нет микрофона? Можешь слушать и повторять без записи. На телефоне используй HTTPS и разреши доступ к микрофону.</div><div class="divider"></div><div class="tiny"><span style="color:#d2b482">━ ━</span> образец интонации &nbsp;&nbsp; <span style="color:#2a6083">━━</span> твой голос</div></div></div>
+  <div class="practice"><div class="panel"><h3>Практика произношения</h3><p>Китайское слово и ожидаемая мелодика тона.</p><div class="pronounce" id="practicehanzi">妈</div><div style="color:#ad6f38;font-size:21px;font-weight:800" id="practicepinyin">mā</div><div id="practicetranslation" class="kicker">мама</div><div class="tbuttons"><button class="btn dark" id="listen">🔊 Послушать слово</button><button class="btn soft" id="contourSound">♪ Мелодия тона</button><button class="btn primary" id="record">🎙️ Посмотреть график</button></div><button type="button" class="btn primary neon-gold tone-main-check" id="tone-check">🎯 Проверить выбранный тон</button><div class="tone-version">Проверка голоса 1.5 · сборка 11 <button type="button" id="tone-refresh" aria-label="Обновить приложение до последней версии">↻ Обновить</button></div><div class="focus-feedback" id="tone-check-feedback" aria-live="polite"></div><details class="voice-help" id="voicehelp"><summary>🔊 Не слышно китайскую речь? Как настроить голос</summary><p>На Redmi: Настройки → Расширенные настройки → Язык и ввод → Синтез речи. Выбери движок Google → Установить голосовые данные → Китайский (Китай), Mandarin (zh-CN). После установки закрой и снова открой приложение. Для работы без интернета скачай именно офлайн-голос.</p><p>Если голоса нет в списке, установи или обнови «Speech Recognition &amp; Synthesis from Google» через Google Play. Кнопка «Мелодия тона» воспроизводит только мелодический сигнал, а не китайскую речь.</p></details><div id="micmessage" class="msg" aria-live="polite">Микрофон записывает около 3 секунд и показывает высоту голоса — работает и без сети при разрешённом доступе.</div><div class="notice"><strong>Важно:</strong> график — учебная подсказка, а не экзаменатор. Оценка тона приблизительная и основана на высоте голоса; она не заменяет проверку преподавателем. Для 你好 применяется изменение третьего тона (ní hǎo).</div></div><div class="panel"><h3>Твоя интонация</h3><p>Светлая линия — примерная целевая форма; тёмная — найденная высота голоса. Сравни общую форму, не абсолютную высоту.</p><div class="chartwrap"><svg id="pitchchart" viewBox="0 0 400 150" role="img" aria-label="График высоты голоса"><g stroke="#e1e6ee" stroke-width="1"><path d="M0 30 H400 M0 75 H400 M0 120 H400"/></g><path id="targetPath" d="" stroke="#d2b482" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="8 6"/><path id="voicePath" d="" stroke="#2a6083" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg></div><div class="microcopy">Нет микрофона? Можешь слушать и повторять без записи. На телефоне используй HTTPS и разреши доступ к микрофону.</div><div class="divider"></div><div class="tiny"><span style="color:#d2b482">━ ━</span> образец интонации &nbsp;&nbsp; <span style="color:#2a6083">━━</span> твой голос</div></div></div>
 </section>
 <section id="words" class="page"><div class="columnhead"><div><div class="eyebrow">Урок 02 · Лексика</div><h1>Мои первые слова</h1><p>Отмечай знакомые слова. Озвучка работает офлайн только с установленным китайским голосом на устройстве.</p></div><span class="flag">📚</span></div><div class="vocabcontrols"><button class="chip active" data-filter="all">Все слова</button><button class="chip" data-filter="new">Повторить</button><button class="chip" data-filter="learned">Знаю</button></div><div class="notice">🔊 <strong>Озвучка:</strong> браузер использует системный голос путунхуа. Для работы без сети предварительно установи на телефон <strong>офлайн-голос китайского (zh-CN)</strong>. Аудиофайлы носителей в эту версию пока не встроены.</div><div id="wordmessage" class="msg" aria-live="polite"></div><div class="words" id="wordlist"></div></section>
 <section id="quiz" class="page"><div class="columnhead"><div><div class="eyebrow">Урок 03 · Проверка</div><h1>Мини-тест HSK 1–2</h1><p>Подбери русский перевод китайского слова. Никаких штрафов — только практика.</p></div><span class="flag">📝</span></div><div class="panel quizpanel"><div class="pill" id="quizcount">Вопрос 1 из 10</div><div id="quizbody"><div class="quizword" id="quizhanzi">你好</div><h3>Что означает это слово?</h3><p class="muted" id="quizpinyin">nǐ hǎo</p><div class="quizopts" id="quizopts"></div><div class="msg" id="quizfeedback" aria-live="polite"></div><button class="btn dark hidden" id="nextq">Следующий вопрос →</button></div><div id="quizend" class="hidden"><h2>Готово! 🎉</h2><p id="quizresult"></p><button class="btn primary" id="resetquiz">Пройти ещё раз</button></div></div></section>
@@ -843,7 +848,7 @@ function tonePitchFrame(buf,sr){
  mean/=n;
  for(let i=0;i<n;i++){const x=buf[i]-mean;power+=x*x}
  const level=Math.sqrt(power/n);
- if(level<.0028)return {pitch:null,signal:level>.001,level,confidence:0};
+ if(level<.0015)return {pitch:null,signal:level>.0008,level,confidence:0};
  const minLag=Math.max(48,Math.floor(sr/480)),maxLag=Math.min(Math.floor(sr/80),Math.floor(n/2)-1);
  const windowSize=Math.floor(n/2),hop=6;
  let best=0,lagBest=0;
@@ -858,7 +863,7 @@ function tonePitchFrame(buf,sr){
   candidates.push({lag,corr});
   if(corr>best){best=corr;lagBest=lag}
  }
- if(best<.52)return {pitch:null,signal:true,level,confidence:best};
+ if(best<(level<.005?.65:.52))return {pitch:null,signal:true,level,confidence:best};
  // Avoid octave errors: choose the earliest strong autocorrelation peak,
  // rather than the later peak that might be an exact octave subharmonic.
  const threshold=Math.max(.52,best*.91);
@@ -883,7 +888,7 @@ async function checkToneLocally(expected,onReady){
   const source=ctx.createMediaStreamSource(stream);source.connect(analyser);
   const data=new Float32Array(analyser.fftSize),pitches=[];
   let soundFrames=0,voicedFrames=0,peakLevel=0;
-  if(typeof onReady==='function')onReady('🎙️ Микрофон готов. Произнеси один слог обычным голосом. Подсказка: не шепчи.');
+  if(typeof onReady==='function')onReady('🟢 Микрофон готов! Сейчас произнеси слог один раз обычным голосом. Не шепчи.');
   await new Promise(resolve=>{
    let first=performance.now(),last=-100,lastVoiced=0,lastSound=0,done=false;
    function finish(){if(done)return;done=true;resolve()}
@@ -907,11 +912,11 @@ async function checkToneLocally(expected,onReady){
   });
   const report=inspectSingleTone(pitches,expected);
   if(report.type==='unknown'){
-   if(soundFrames<3)return {type:'unknown',reason:'silence',
-    text:'Микрофон почти не получил звук. Проверь доступ к микрофону, говори обычным голосом; если подключена Bluetooth-гарнитура, попробуй отключить её.'};
-   if(voicedFrames<4)return {type:'unknown',reason:'no_pitch',
-    text:'Микрофон слышит звук, но пока не может уверенно определить высоту голоса ('+voicedFrames+' устойчивых измерений). Произнеси один слог без шёпота. Если подключён Bluetooth-микрофон — проверь его.'};
-   return {...report,text:report.text+' Устойчивых измерений: '+voicedFrames+'.'};
+   if(soundFrames<3)return {type:'unknown',reason:'silence',voicedFrames,peakLevel,
+    text:'Микрофон почти не получил звук. Начни говорить, когда появится надпись «Микрофон готов». Если включена Bluetooth-гарнитура, временно отключи её.'};
+   if(voicedFrames<4)return {type:'unknown',reason:'no_pitch',voicedFrames,peakLevel,
+    text:'Звук поступает, но измерить изменение высоты голоса не удалось. Говори обычным, не шёпотом, примерно полсекунды. Попробуй временно отключить Bluetooth-гарнитуру.'};
+   return {...report,voicedFrames,peakLevel,text:report.text};
   }
   return report;
  }catch(e){
@@ -982,6 +987,20 @@ async function checkChinesePractice(hz,py,button,targetId){
 
 
 document.getElementById('tone-check').addEventListener('click',()=>checkChinesePractice(tones[activeTone].hz,tones[activeTone].py,document.getElementById('tone-check'),'tone-check-feedback'));
+document.getElementById('tone-refresh').addEventListener('click',async ()=>{
+ const button=document.getElementById('tone-refresh');
+ button.disabled=true;button.textContent='Обновляю…';
+ try{
+  if(!navigator.onLine){toast('Для обновления подключи интернет.');button.disabled=false;button.textContent='↻ Обновить';return;}
+  if('serviceWorker' in navigator){
+    const reg=await navigator.serviceWorker.getRegistration();
+    if(reg)await reg.update();
+  }
+  const next=new URL(window.location.href);
+  next.searchParams.set('update','11');
+  window.location.replace(next.toString());
+ }catch(e){button.disabled=false;button.textContent='↻ Обновить';toast('Не удалось обновить автоматически. Открой сайт в Chrome и обнови страницу.');}
+});
 </script>
 </body>
 </html>
