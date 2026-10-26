@@ -495,6 +495,185 @@ body.launch-active{background:#10132a;overflow:hidden}body.launch-active .shell{
  #launch-entry.launch-sakura #launch-menu,
  #launch-petals .sakura-petal{animation:none!important}
 }
+
+/* Chinese watercolor lesson design approved from reference screenshots (v19).
+   Purely visual overrides: learning state, controls, HTML and TTS remain intact. */
+body.focus-mode{
+ background-color:#f8f3fc;
+ background-image:url("./assets/chinese-pastel-wallpaper.svg");
+ background-position:center top;
+ background-repeat:no-repeat;
+ background-size:100% auto;
+ background-attachment:fixed;
+}
+body.focus-mode .topbar{
+ background:#fffdfdf0;
+ border:1px solid #ede1f0;
+ box-shadow:0 7px 25px #69558c13;
+ backdrop-filter:blur(8px);
+}
+body.focus-mode #course .focus-toolbar{background:#fffdfdbc;border-radius:18px;padding:9px 11px;margin-bottom:12px;box-shadow:0 5px 22px #7d72aa12}
+body.focus-mode #course .focus-back{border:1px solid #dedcec;background:#ffffffec;color:#283452}
+body.focus-mode #course .focus-change{border:1px solid #dfc3f7;background:linear-gradient(145deg,#fff9ff,#ebd9ff);color:#7543a5;box-shadow:0 3px 14px #caa7ef40}
+body.focus-mode #course .focus-label{color:#766f93}
+body.focus-mode #course .course-content{
+ background:linear-gradient(180deg,#fffefdF7 0%,#fffafaf8 100%);
+ border:1.5px solid #f2cda9;
+ border-radius:29px;
+ box-shadow:0 18px 42px #8773ab1a,0 0 0 5px #ffffff80;
+ backdrop-filter:blur(4px);
+}
+#course .focus-head-back{background:#faf8ff;border-color:#dbdcf1;color:#202e56}
+#course .focus-kicker{color:#9a56d1}
+#course .focus-head h1{color:#162750}
+#course .step-counter{background:linear-gradient(135deg,#faf1ff,#eed8ff);color:#7740b5;border:1px solid #eedcff;box-shadow:0 3px 14px #dbc4ff6b}
+#course .focus-step{border-top-color:#e5e6f2;color:#66738d;border-radius:11px;padding-top:10px}
+#course .focus-step>span{background:#e9edf6;color:#475779}
+#course .focus-step.selected{background:linear-gradient(160deg,#fff7ff,#f3e8fc);color:#9251c6;border-top-color:#ba6eea}
+#course .focus-step.selected>span{background:linear-gradient(145deg,#cba0fc,#9952df);color:white;box-shadow:0 2px 13px #bf85ec88}
+/* Step 1: waterfall painting instead of repeated generic banners. */
+#course .focus-banner.scenic{
+ background-image:linear-gradient(95deg,#fffaf8f5 0%,#fffaf6b8 45%,#fff9f41a 80%),url("./assets/chinese-waterfall-banner.svg")!important;
+ background-size:cover!important;background-position:center 54%!important;
+ min-height:170px;border-radius:22px;border:1px solid #f2d1b8;
+ box-shadow:0 5px 18px #9f829e20;
+}
+#course .focus-banner h2{color:#17264b!important;text-shadow:none!important;font-family:Georgia,"Songti SC",serif}
+#course .focus-banner p{color:#597094!important;text-shadow:none!important;max-width:320px;font-weight:650}
+/* Soft translucent tone tiles: 4 warm, readable hues. */
+#course .focus-tone{
+ background:linear-gradient(145deg,#fffefb,#fff4ed);
+ border:1px solid #f3d7c6;
+ box-shadow:0 5px 16px #b593a920;
+ color:#18294b;
+}
+#course .focus-tone:nth-child(2){background:linear-gradient(155deg,#fffafa,#fff0f6);border-color:#f1d7e3}
+#course .focus-tone:nth-child(3){background:linear-gradient(155deg,#fffdfd,#f4edff);border-color:#e5d1f7}
+#course .focus-tone:nth-child(4){background:linear-gradient(145deg,#fffdf9,#fff4e8);border-color:#f1d5bc}
+#course .focus-tone>span:first-child{background:#f1e5fb;color:#7640ab}
+#course .focus-tone .contour{color:#9f64d8}
+#course .tone-speaker{background:linear-gradient(145deg,#fffaff,#ead9ff);color:#6b3bb0;border:1px solid #d9b6f3;box-shadow:0 3px 12px #dbc1f28a}
+#course .focus-tone.active-tone{border:2px solid #c585eb;box-shadow:0 0 0 2px #f0daff,0 6px 15px #bf81e250}
+#course .focus-tone-check{background:linear-gradient(130deg,#f9f5ff,#ffeef8);border:1px solid #e8d6f2;border-radius:21px}
+#course .focus-saycard{
+ border:1px solid #efd7bf;
+ background:linear-gradient(145deg,#fffdfaef,#fff9f9f6);
+ border-radius:25px;
+ box-shadow:0 10px 26px #aa88a41c;
+}
+#course .focus-card-title{color:#192e52}
+#course .focus-phrase{
+ background-image:linear-gradient(90deg,#fffdfceE 0%,#fffdfccc 32%,#fffdfc28 76%),url("./assets/chinese-lake-vocab.svg")!important;
+ background-size:cover!important;background-position:center center!important;
+ min-height:185px;border:1px solid #f2e1e0;
+ border-radius:22px;
+ padding:20px 25px;
+}
+#course .focus-dialog-card .focus-phrase{
+ background-image:linear-gradient(90deg,#fffdfcD9 0%,#fffdfc9b 30%,#fffdfc0c 72%),url("./assets/chinese-pavilion-dialogue.svg")!important;
+ background-position:center center!important;
+ min-height:205px;
+}
+#course .focus-hanzi{font-size:clamp(50px,11vw,77px);color:#102c5a}
+#course .focus-pinyin{color:#316cb1;font-size:clamp(20px,5vw,28px)}
+#course .focus-russian{color:#536788;font-size:clamp(15px,4vw,21px)}
+/* The approved pale peach Listen and pale lilac Repeat pair, pink speech checker. */
+#course .focus-practice-actions .btn[data-play-focus]{
+ background:linear-gradient(155deg,#fffaf2,#ffead2)!important;
+ color:#994a26!important;
+ border:2px solid #ffdbb6!important;
+ outline:1px solid #fff5e8!important;
+ box-shadow:0 4px 14px #edb88152,inset 0 1px #fff!important;
+ text-shadow:none!important;
+}
+#course .focus-practice-actions #focus-repeat{
+ background:linear-gradient(150deg,#fffaff,#ebdbff)!important;
+ color:#753ac0!important;
+ border:2px solid #d8b8f8!important;
+ outline:1px solid #faf2ff!important;
+ box-shadow:0 4px 14px #bd96f15e,inset 0 1px #fff!important;
+ text-shadow:none!important;
+}
+#course .focus-learned{background:linear-gradient(155deg,#fffaff,#f0e2ff)!important;border-color:#ddc4fa!important;box-shadow:0 4px 15px #d5bcf14a!important}
+#course .focus-learned.is-known{background:#ebfff3!important;border-color:#abd8bc!important;color:#23754b!important}
+#course .focus-count{color:#ae7f3d}
+#course .focus-direction{color:#7b849d}
+#course .focus-details{background:#fffafaed;border-color:#e9d9f2}
+#course .course-footnav{
+ background:#fffafaf0;
+ border-top:1px solid #f1e7f5;
+ border-radius:16px;
+ padding:10px 2px 8px;
+ backdrop-filter:blur(7px);
+}
+#course .course-footnav .btn.primary{
+ background:linear-gradient(155deg,#f5e9ff,#d8b4f8 75%,#c597f0)!important;
+ color:#362258!important;
+ border:2px solid #ead5ff!important;
+ box-shadow:0 4px 15px #c79ce175!important;
+}
+#course .course-footnav .btn.soft{
+ background:linear-gradient(155deg,#fffefd,#f6f0ff)!important;
+ color:#874fbb!important;
+ border:2px solid #e8cffa!important;
+ box-shadow:0 3px 12px #e7d4ef79!important;
+}
+/* Step 4: illustrated question sky and pastel answer alternatives.
+   Real buttons, event listeners and correct/wrong feedback stay untouched. */
+#course .course-quiz-question{
+ background-image:linear-gradient(90deg,#fffdf9ef 0%,#fffdf9a4 46%,#fffdf916 100%),url("./assets/chinese-pavilion-dialogue.svg");
+ background-size:cover;background-position:center;
+ border:1px solid #f4e3d6;border-radius:22px;
+ min-height:186px;padding:24px 19px;
+ display:flex;align-items:flex-start;justify-content:flex-start;
+ color:#14254d;font-size:clamp(19px,5vw,26px);
+ line-height:1.4;
+}
+#course .course-options{gap:10px}
+#course .course-options button{
+ border-radius:18px;padding:17px 18px;
+ background:linear-gradient(145deg,#fffefa,#fff2e4);
+ border:1.5px solid #f1d6bc;color:#192c4c;
+ box-shadow:0 3px 11px #c2a1a022;
+}
+#course .course-options button:nth-child(2){background:linear-gradient(145deg,#fffcfd,#fff0f7);border-color:#f0cbdc}
+#course .course-options button:nth-child(3){background:linear-gradient(145deg,#fffdfd,#f4edff);border-color:#decaf5}
+#course .course-options button:nth-child(4){background:linear-gradient(145deg,#fffdf8,#fff0e2);border-color:#f1d8c0}
+#course .course-options button.correct{background:#e4faec!important;border-color:#66be95!important;box-shadow:0 0 0 2px #b0ecd0!important}
+#course .course-options button.incorrect{background:#ffe0e2!important;border-color:#e18c99!important}
+#course .course-progress{background:#eee8f8}
+#course .course-progress i{background:linear-gradient(90deg,#dca7f9,#a665e0)}
+#course .pill{background:#f4ebff;color:#8447b4;border-color:#e7d7fb}
+body.focus-mode #course .course-tech{display:none!important}
+body.focus-mode .foot{display:none!important}
+/* Keep mobile cards readable and leave decorative painting behind the content. */
+@media(max-width:600px){
+ body.focus-mode{background-size:auto 100dvh;background-position:center top;background-attachment:fixed}
+ body.focus-mode #course .course-content{padding:14px 12px 22px;border-radius:24px}
+ #course .focus-banner.scenic{min-height:160px}
+ #course .focus-phrase{min-height:165px;padding:18px 17px}
+ #course .focus-dialog-card .focus-phrase{min-height:190px}
+ #course .course-quiz-question{min-height:162px;padding:20px 15px}
+ #course .course-options button{min-height:65px;padding:14px 13px}
+ #course .focus-step small{font-size:10px}
+}
+/* Longer and more cinematic sakura intro, with no changes to approved images. */
+#launch-entry.launch-sakura #launch-cover{
+ animation-duration:3.1s;
+}
+#launch-entry.launch-sakura #launch-menu{
+ animation-duration:3.1s;
+}
+#launch-petals .sakura-petal{
+ animation-duration:2.7s;
+ filter:drop-shadow(0 2px 4px #e87ac383);
+}
+#launch-entry.launch-sakura::after{
+ content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+ background:radial-gradient(ellipse at 50% 48%,#fff3fa40,transparent 67%);
+ opacity:0;animation:sakura-soft-glow 3.1s ease both;
+}
+@keyframes sakura-soft-glow{0%,100%{opacity:0}44%{opacity:.65}74%{opacity:.3}}
 </style>
 </head>
 <body><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><img src="./assets/approved-final-home.svg" alt="Китайский — это легко! Девушка в розовом платье и одна кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></section><section id="launch-menu" class="launch-screen" hidden><img src="./assets/approved-lessons.png" alt="Выбери звуки, слова, диалоги, практику или тест"><button class="hit-choice" data-choice="0" aria-label="Звуки и тоны">Звуки и тоны</button><button class="hit-choice" data-choice="1" aria-label="Базовые слова">Базовые слова</button><button class="hit-choice" data-choice="2" aria-label="Диалоги">Диалоги</button><button class="hit-choice" data-choice="3" aria-label="Практика">Практика</button><button class="hit-choice" data-choice="4" aria-label="Тест">Тест</button><button class="hit-back" id="launch-back" aria-label="Главная">Главная</button><button class="hit-all" id="launch-all" aria-label="Все уроки">Уроки</button></section></div>
@@ -1265,7 +1444,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
    menu.inert=false;
    const firstLesson=menu.querySelector('[data-choice="0"]');
    if(firstLesson)firstLesson.focus({preventScroll:true});
-  },1800);
+  },3100);
  }
  function exit(){
   cancelTransition();
