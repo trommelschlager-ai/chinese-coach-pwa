@@ -178,11 +178,12 @@ body{background:linear-gradient(145deg,#f7f9fc,#f0f4f8);overflow-x:hidden}
 </div></section>
 <div class="backup-panel"><div><strong>💾 Мои данные</strong><div class="tiny">Прогресс хранится на телефоне. Перед очисткой данных сохрани резервную копию.</div></div><div class="backup-actions"><button id="exportprogress" class="btn sm soft" type="button">Сохранить прогресс</button><label class="btn sm soft" for="importprogress" tabindex="0">Восстановить</label><input class="hidden" id="importprogress" type="file" accept="application/json,.json"><span class="tiny" id="backupmessage" aria-live="polite"></span></div></div>
 </section>
-<section id="course" class="page">
- <div class="columnhead"><div><div class="eyebrow">МОЙ КУРС · НАЧАЛЬНЫЙ КИТАЙСКИЙ</div><h1>Пять полноценных уроков</h1><p>Иди по порядку. В каждом уроке: правила, карточки, живой диалог и экзамен с результатом.</p></div><span class="flag">📖</span></div>
- <div class="course-metrics"><div class="metric"><span>Пройдено уроков</span><strong id="course-done">0 / 5</strong></div><div class="metric"><span>Выучено карточек</span><strong id="course-known">0</strong></div><div class="metric"><span>Точность последнего теста</span><strong id="course-last">—</strong></div></div>
- <div class="course-layout"><aside class="course-sidebar"><div class="course-sideheading">Программа</div><div id="course-menu"></div></aside><article class="course-content" id="course-content"></article></div>
- <div class="notice" style="margin-top:18px"><strong>Об аудио:</strong> уроки доступны офлайн, но произношение через кнопку 🔊 зависит от наличия установленного китайского офлайн-голоса в телефоне. Предзаписанного голоса носителя пока нет. График тонов — подсказка, а не автоматическая оценка.</div>
+<section id="course" class="page lesson-focus">
+ <div class="focus-toolbar"><button type="button" class="focus-back" data-go="home">← Главная</button><span class="focus-label">Мой китайский · Практика</span><button id="course-choose" class="focus-change" type="button" aria-expanded="false" aria-controls="course-menu-wrap">Все уроки ▾</button></div>
+ <div id="course-menu-wrap" class="course-sidebar" hidden><div class="course-sideheading">Выбери урок</div><div id="course-menu"></div></div>
+ <div class="course-metrics sr-metrics" aria-hidden="true"><strong id="course-done">0 / 5</strong><strong id="course-known">0</strong><strong id="course-last">—</strong></div>
+ <article class="course-content" id="course-content"></article>
+ <details class="course-tech"><summary>ℹ️ Об аудио и произношении</summary><p>Уроки доступны офлайн после сохранения, но кнопка 🔊 зависит от китайского системного голоса. Предзаписанного голоса носителя пока нет. Запись своего голоса — самопроверка, не автоматическая оценка тонов.</p></details>
 </section>
 <section id="tones" class="page">
   <div class="columnhead"><div><div class="eyebrow">ТРЕНИРОВКА · ПРОИЗНОШЕНИЕ</div><h1>Четыре тона китайского</h1><p>Выбери тон, послушай образец и сравни свою интонацию с ориентиром.</p></div><span class="flag">🎙️</span></div>
@@ -437,28 +438,132 @@ try{const cs=JSON.parse(localStorage.getItem(courseStoreKey)||'null');if(cs && t
 function saveCourse(){try{localStorage.setItem(courseStoreKey,JSON.stringify(courseState))}catch(err){toast('Не удалось сохранить прогресс. Проверь настройки браузера.')}updateCourseMetrics()}
 function updateCourseMetrics(){const allWords=COURSE.reduce((n,l)=>n+l.vocab.length,0), known=courseState.known.length;document.getElementById('course-done').textContent=courseState.completed.length+' / '+COURSE.length;document.getElementById('course-known').textContent=known;document.getElementById('course-last').textContent=courseState.last?courseState.last.score+'/'+courseState.last.total:'—';if(document.getElementById('home-last-test'))document.getElementById('home-last-test').textContent=courseState.last?courseState.last.score+'/'+courseState.last.total:'—';if(document.getElementById('home-lessons-bar'))document.getElementById('home-lessons-bar').style.width=100*courseState.completed.length/COURSE.length+'%';document.getElementById('statwords').textContent=known+' / '+allWords;document.getElementById('statquiz').textContent=courseState.completed.length+' / '+COURSE.length;document.getElementById('statpercent').textContent=Math.round(100*known/allWords)+'%';document.getElementById('progressbar').style.width=(100*known/allWords)+'%';renderCourseMenu();}
 const safe=x=>String(x).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
-let selectedLesson=1, selectedStep=0, questionNumber=0, questionScore=0, locked=false;
+let selectedLesson=1, selectedStep=0, vocabIndex=0, dialogueIndex=0, questionNumber=0, questionScore=0, locked=false;
 const STEPS=['Объяснение','Слова','Диалог','Проверка'];
-function renderCourseMenu(){const parent=document.getElementById('course-menu');parent.innerHTML=COURSE.map(l=>`<button class="lesson-picker ${l.id===selectedLesson?'chosen':''}" data-picklesson="${l.id}"><span class="lesson-index">${safe(l.icon)}</span><span>Урок ${l.id}<span class="picker-sub">${safe(l.title)}</span></span>${courseState.completed.includes(l.id)?'<span class="picker-done" title="Пройден">✓</span>':''}</button>`).join('')}
-function openCourseLesson(id,step=0){selectedLesson=id;selectedStep=step;rememberLesson();questionNumber=0;questionScore=0;locked=false;renderCourseMenu();renderCourseBody();go('course');}
-function renderCourseBody(){const l=COURSE.find(x=>x.id===selectedLesson), area=document.getElementById('course-content');
- area.innerHTML=`<div class="course-overline"><span>Урок ${l.id} · ${safe(l.subtitle)}</span><span class="step-counter">Шаг ${selectedStep+1} из 4</span></div><div class="lesson-banner scenic"><span class="lesson-tag">Урок ${l.id}</span><h2>${safe(l.title)}</h2><p>${safe(l.goal)}</p></div><div class="stepnav">${STEPS.map((s,i)=>`<button data-step="${i}" class="${i===selectedStep?'selected':''}"><span class="stepnum">${i+1}</span>${s}</button>`).join('')}</div><div id="lesson-panel"></div><div class="course-footnav"><button class="btn soft" id="course-prev">← Назад</button><button class="btn primary" id="course-next">Далее →</button></div>`;
- const prev=document.getElementById('course-prev'),next=document.getElementById('course-next');prev.disabled=(selectedLesson===1&&selectedStep===0);next.textContent=(selectedStep===3?'Следующий урок →':'Далее →');next.disabled=(selectedLesson===COURSE.length&&selectedStep===3);
- document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>chooseCourseStep(Number(b.dataset.step))));
- prev.onclick=()=>selectedStep>0?chooseCourseStep(selectedStep-1):openCourseLesson(selectedLesson-1,3);
- next.onclick=()=>selectedStep<3?chooseCourseStep(selectedStep+1):openCourseLesson(selectedLesson+1,0);
- renderCoursePanel();}
-function chooseCourseStep(step){selectedStep=step;rememberLesson();questionNumber=0;questionScore=0;locked=false;renderCourseBody();}
-function renderCoursePanel(){const l=COURSE.find(x=>x.id===selectedLesson), panel=document.getElementById('lesson-panel');
- if(selectedStep===0){panel.innerHTML=`<p class="course-lead">Прочитай материал и проговори примеры вслух. В каждом уроке используются стандартные формы путунхуа.</p>${l.notes.map(n=>`<div class="lesson-note"><h3>${safe(n.title)}</h3><p>${safe(n.text)}</p><div class="example"><strong>${safe(n.hz)}</strong><div class="py">${safe(n.py)}</div><div class="ru">${safe(n.ru)}</div></div></div>`).join('')}<div class="teacher-tip">💡 ${safe(l.tip)}</div>`;return}
- if(selectedStep===1){panel.innerHTML=`<p class="course-lead">Нажми 🔊, произнеси слово и отметь «Знаю», если вспоминаешь перевод без подсказки. Кнопка 0.7× запускает замедленную речь, если голос установлен.</p><div class="course-word-grid">${l.vocab.map((w,i)=>{const key=l.id+'-'+i,known=courseState.known.includes(key);return `<div class="course-vocab ${known?'known':''}"><div class="hz">${safe(w[0])}</div><div class="py">${safe(w[1])}</div><div class="ru">${safe(w[2])}</div><div class="vocabbtns"><button data-sayindex="${i}" aria-label="Слушать ${safe(w[0])}">🔊 1×</button><button data-slowindex="${i}" aria-label="Слушать медленно ${safe(w[0])}">🐢 0.7×</button><button class="${known?'knownbtn':''}" data-markindex="${i}">${known?'✓ Знаю':'☆ Запомнил'}</button></div></div>`}).join('')}</div>`;
-  panel.querySelectorAll('[data-sayindex]').forEach(b=>b.addEventListener('click',()=>sayAtRate(l.vocab[Number(b.dataset.sayindex)][0],.92)));
-  panel.querySelectorAll('[data-slowindex]').forEach(b=>b.addEventListener('click',()=>sayAtRate(l.vocab[Number(b.dataset.slowindex)][0],.65)));
-  panel.querySelectorAll('[data-markindex]').forEach(b=>b.addEventListener('click',()=>{const key=l.id+'-'+b.dataset.markindex;courseState.known=courseState.known.includes(key)?courseState.known.filter(k=>k!==key):[...courseState.known,key];saveCourse();renderCoursePanel()}));return}
- if(selectedStep===2){panel.innerHTML=`<p class="course-lead">Прочитай диалог, прослушай фразы и повтори вслух. Можно играть обе роли.</p>${l.dialogue.map(d=>`<div class="course-dialog"><div class="who">СОБЕСЕДНИК ${safe(d[0])}</div><div class="han">${safe(d[1])}</div><div class="py">${safe(d[2])}</div><div class="ru">${safe(d[3])}</div><div style="margin-top:8px"><button class="btn sm soft" data-sayphrase="${safe(d[1])}">🔊 Слушать</button></div></div>`).join('')}<div class="teacher-tip">🎯 Задание: сначала повтори каждую реплику трижды, затем попробуй пройти диалог без русского перевода.</div>`;
-  panel.querySelectorAll('[data-sayphrase]').forEach(b=>b.addEventListener('click',()=>sayAtRate(b.dataset.sayphrase,.85)));return}
+
+function renderCourseMenu(){
+ const parent=document.getElementById('course-menu');
+ parent.innerHTML=COURSE.map(l=>`<button class="lesson-picker ${l.id===selectedLesson?'chosen':''}" data-picklesson="${l.id}"><span class="lesson-index">${safe(l.icon)}</span><span>Урок ${l.id}<span class="picker-sub">${safe(l.title)}</span></span>${courseState.completed.includes(l.id)?'<span class="picker-done">✓</span>':''}</button>`).join('');
+}
+function closeLessonPicker(){
+ const list=document.getElementById('course-menu-wrap');
+ list.hidden=true;
+ document.getElementById('course-choose').setAttribute('aria-expanded','false');
+}
+function openCourseLesson(id,step=0,part=0){
+ if(!COURSE.some(x=>x.id===id))return;
+ selectedLesson=id;selectedStep=step;
+ vocabIndex=step===1?Math.max(0,Math.min(part,COURSE[id-1].vocab.length-1)):0;
+ dialogueIndex=step===2?Math.max(0,Math.min(part,COURSE[id-1].dialogue.length-1)):0;
+ questionNumber=0;questionScore=0;locked=false;
+ rememberLesson();closeLessonPicker();
+ renderCourseMenu();renderCourseBody();go('course');
+}
+function focusedCard(hz,py,ru){
+ return `<div class="focus-phrase"><strong class="focus-hanzi">${safe(hz)}</strong><span class="focus-pinyin">${safe(py)}</span><span class="focus-russian">${safe(ru)}</span></div>`;
+}
+function practiceButtons(hz,rate){
+ return `<div class="focus-practice-actions"><button type="button" class="btn dark neon-blue" data-play-focus="${safe(hz)}">🔊 Слушать</button><button type="button" class="btn dark neon-blue" id="focus-repeat">🎤 Повторить</button></div><div class="focus-feedback" id="focus-feedback" aria-live="polite"></div>`;
+}
+function connectPractice(panel,rate=.84){
+ panel.querySelectorAll('[data-play-focus]').forEach(b=>b.addEventListener('click',()=>sayAtRate(b.dataset.playFocus,rate)));
+ panel.querySelectorAll('[data-say-tone]').forEach(b=>b.addEventListener('click',()=>sayAtRate(b.dataset.sayTone,.85)));
+ const repeat=panel.querySelector('#focus-repeat');if(repeat)repeat.addEventListener('click',recordFocusRepeat);
+}
+async function recordFocusRepeat(){
+ const message=document.getElementById('focus-feedback');
+ if(!message)return;
+ if(!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){
+   message.textContent='Микрофон недоступен в этом браузере. Повтори фразу вслух самостоятельно.';return;
+ }
+ let stream;
+ try{
+   stream=await navigator.mediaDevices.getUserMedia({audio:true});
+   const rec=new MediaRecorder(stream),chunks=[];
+   rec.ondataavailable=e=>{if(e.data?.size)chunks.push(e.data)};
+   rec.onstop=()=>{
+     stream.getTracks().forEach(t=>t.stop());
+     if(!chunks.length){message.textContent='Запись не получилась. Повтори ещё раз.';return;}
+     const url=URL.createObjectURL(new Blob(chunks,{type:rec.mimeType||'audio/webm'}));
+     const audio=new Audio(url);
+     message.textContent='▶ Слушай свою запись. Это самопроверка, автоматической оценки тонов пока нет.';
+     audio.onended=()=>URL.revokeObjectURL(url);
+     audio.onerror=()=>{URL.revokeObjectURL(url);message.textContent='Не удалось воспроизвести запись.'};
+     audio.play().catch(()=>{message.textContent='Запись готова, но браузер заблокировал воспроизведение. Нажми «Повторить» ещё раз.';URL.revokeObjectURL(url)});
+   };
+   rec.onerror=()=>{message.textContent='Не удалось записать голос.';stream.getTracks().forEach(t=>t.stop())};
+   rec.start();
+   message.textContent='🔴 Говори сейчас… запись 3 секунды.';
+   setTimeout(()=>{if(rec.state==='recording')rec.stop()},3000);
+ }catch(e){stream?.getTracks().forEach(t=>t.stop());message.textContent='Разреши доступ к микрофону в настройках браузера или повтори вслух без записи.';}
+}
+function renderCourseBody(){
+ const l=COURSE.find(x=>x.id===selectedLesson),area=document.getElementById('course-content');
+ area.innerHTML=`<div class="focus-head"><button type="button" class="focus-head-back" data-focus-back aria-label="Вернуться на главную">‹</button><div><div class="focus-kicker">УРОК ${l.id} ИЗ 5</div><h1>Урок ${l.id} · ${safe(l.title)}</h1></div><span class="step-counter">Шаг ${selectedStep+1} из 4</span></div>
+ <div class="focus-stepnav" role="group" aria-label="Этапы урока">${STEPS.map((label,i)=>`<button type="button" class="focus-step ${i===selectedStep?'selected':''}" data-step="${i}" aria-current="${i===selectedStep?'step':'false'}"><span>${i+1}</span><small>${label}</small></button>`).join('')}</div>
+ <div id="lesson-panel" class="focus-panel"></div>
+ <div class="course-footnav"><button type="button" class="btn soft" id="course-prev">← Назад</button><button type="button" class="btn primary neon-gold" id="course-next">Далее →</button></div>`;
+ area.querySelector('[data-focus-back]').onclick=()=>go('home');
+ area.querySelectorAll('[data-step]').forEach(b=>b.onclick=()=>chooseCourseStep(Number(b.dataset.step)));
+ const prev=area.querySelector('#course-prev'),next=area.querySelector('#course-next');
+ prev.disabled=(selectedLesson===1&&selectedStep===0);
+ prev.onclick=()=>{
+   if(selectedStep===1&&vocabIndex>0){vocabIndex--;rememberLesson();renderCoursePanel();return}
+   if(selectedStep===2&&dialogueIndex>0){dialogueIndex--;rememberLesson();renderCoursePanel();return}
+   if(selectedStep>0)chooseCourseStep(selectedStep-1);else if(selectedLesson>1)openCourseLesson(selectedLesson-1,0);
+ };
+ next.onclick=()=>{
+   if(selectedStep===1&&vocabIndex<l.vocab.length-1){vocabIndex++;rememberLesson();renderCoursePanel();return}
+   if(selectedStep===2&&dialogueIndex<l.dialogue.length-1){dialogueIndex++;rememberLesson();renderCoursePanel();return}
+   if(selectedStep<3){chooseCourseStep(selectedStep+1);return}
+   if(selectedLesson<COURSE.length)openCourseLesson(selectedLesson+1,0);
+ };
+ renderCoursePanel();
+}
+function chooseCourseStep(step){
+ if(step<0||step>3)return;
+ selectedStep=step;vocabIndex=0;dialogueIndex=0;questionNumber=0;questionScore=0;locked=false;
+ rememberLesson();renderCourseBody();
+}
+function renderCoursePanel(){
+ const l=COURSE.find(x=>x.id===selectedLesson),panel=document.getElementById('lesson-panel');
+ const prev=document.getElementById('course-prev'),next=document.getElementById('course-next'),foot=next.closest('.course-footnav');
+ foot.classList.toggle('quiz-mode',selectedStep===3);
+ if(selectedStep===0){
+   if(l.id===1){
+     const sample=[['mā','妈','мама','—'],['má','麻','конопля','↗'],['mǎ','马','лошадь','⌄'],['mà','骂','ругать','↘']];
+     panel.innerHTML=`<div class="lesson-banner scenic focus-banner"><h2>Как работают 4 тона</h2><p>Один слог — четыре разных значения.</p></div>
+     <div class="focus-tones">${sample.map((t,i)=>`<button type="button" class="focus-tone" data-say-tone="${t[1]}"><span>${i+1} тон</span><b class="contour">${t[3]}</b><strong>${t[0]}</strong><em>${t[1]}</em><small>${t[2]}</small><span class="tone-speaker">🔊</span></button>`).join('')}</div>
+     <div class="focus-saycard"><div class="focus-card-title">Практикуй фразу</div>${focusedCard('你好','nǐ hǎo','Привет')}${practiceButtons('你好')}</div>
+     <details class="focus-details"><summary>💡 Совет учителя и правило третьего тона</summary><p>Сначала слушай, потом повторяй вслух три раза. В записи 你好 — nǐ hǎo, но в речи первый слог звучит ní (изменение третьего тона).</p>${l.notes.map(n=>`<div class="focus-mini"><strong>${safe(n.title)}</strong><p>${safe(n.text)}</p></div>`).join('')}</details>`;
+   }else{
+     const n=l.notes[0],others=l.notes.slice(1);
+     panel.innerHTML=`<div class="lesson-banner scenic focus-banner"><h2>${safe(n.title)}</h2><p>${safe(l.goal)}</p></div><p class="focus-short">${safe(n.text.length>125?n.text.slice(0,125).trim()+'…':n.text)}</p><div class="focus-saycard"><div class="focus-card-title">Послушай и повтори</div>${focusedCard(n.hz,n.py,n.ru)}${practiceButtons(n.hz)}</div><details class="focus-details"><summary>📖 Подробнее о правиле</summary><p>${safe(n.text)}</p>${others.map(x=>`<div class="focus-mini"><strong>${safe(x.title)}</strong><p>${safe(x.text)}</p><div>${safe(x.hz)} · ${safe(x.py)}</div></div>`).join('')}</details>`;
+   }
+   next.textContent='К словам →';connectPractice(panel);return;
+ }
+ if(selectedStep===1){
+   const w=l.vocab[vocabIndex],key=l.id+'-'+vocabIndex,known=courseState.known.includes(key);
+   panel.innerHTML=`<div class="focus-count">🔤 Слово ${vocabIndex+1} из ${l.vocab.length}</div><div class="focus-saycard focus-wordcard"><div class="focus-card-title">Слушай и повторяй</div>${focusedCard(w[0],w[1],w[2])}${practiceButtons(w[0])}<button type="button" class="focus-learned ${known?'is-known':''}" id="focus-known">${known?'✓ Уже знаю':'☆ Запомнил слово'}</button></div><div class="focus-direction">Произнеси вслух и переходи к следующему слову.</div>`;
+   next.textContent=vocabIndex===l.vocab.length-1?'К диалогу →':'Следующее слово →';
+   prev.disabled=false;connectPractice(panel,.87);
+   panel.querySelector('#focus-known').onclick=()=>{
+     if(!courseState.known.includes(key))courseState.known.push(key);
+     saveCourse();
+     if(vocabIndex<l.vocab.length-1)vocabIndex++;
+     rememberLesson();renderCoursePanel();
+   };
+   return;
+ }
+ if(selectedStep===2){
+   const d=l.dialogue[dialogueIndex];
+   panel.innerHTML=`<div class="focus-count">💬 Реплика ${dialogueIndex+1} из ${l.dialogue.length}</div><div class="focus-saycard focus-dialog-card"><div class="focus-card-title">Собеседник ${safe(d[0])} говорит</div>${focusedCard(d[1],d[2],d[3])}${practiceButtons(d[1])}</div><div class="focus-direction">Послушай, повтори и нажми «Далее».</div>`;
+   next.textContent=dialogueIndex===l.dialogue.length-1?'К проверке →':'Следующая реплика →';
+   prev.disabled=false;connectPractice(panel,.83);return;
+ }
  renderLessonQuiz();
 }
+
 function sayAtRate(hanzi,rate){speakChinese(hanzi,rate)}
 function renderLessonQuiz(){const l=COURSE.find(x=>x.id===selectedLesson),panel=document.getElementById('lesson-panel');if(questionNumber>=l.quiz.length){const pct=Math.round(100*questionScore/l.quiz.length),passed=pct>=75;courseState.last={lesson:l.id,score:questionScore,total:l.quiz.length};if(passed&&!courseState.completed.includes(l.id))courseState.completed.push(l.id);saveCourse();panel.innerHTML=`<div class="course-score"><div class="course-kicker">Результат урока ${l.id}</div><strong>${questionScore} / ${l.quiz.length}</strong><p>${passed?'✅ Урок пройден!':'Для зачёта нужно минимум 75% правильных ответов.'}<br>Точность: ${pct}%</p><button class="btn dark" id="course-again">Пройти тест снова</button>${passed&&l.id<COURSE.length?'<button class="btn primary" id="course-open-next" style="margin:8px">Перейти к следующему уроку →</button>':''}</div>`;document.getElementById('course-again').onclick=()=>{questionNumber=0;questionScore=0;renderLessonQuiz()};if(passed&&l.id<COURSE.length)document.getElementById('course-open-next').onclick=()=>openCourseLesson(l.id+1,0);return}
  const q=l.quiz[questionNumber];locked=false;panel.innerHTML=`<div class="pill">Вопрос ${questionNumber+1} из ${l.quiz.length}</div><div class="course-progress"><i style="width:${Math.round(100*questionNumber/l.quiz.length)}%"></i></div><div class="course-quiz-question">${safe(q[0])}</div><div class="course-options">${q[1].map((o,i)=>`<button data-answer="${i}">${safe(o)}</button>`).join('')}</div><div id="course-feedback" class="msg" aria-live="polite" style="margin-top:15px"></div><button id="course-answer-next" class="btn primary hidden">${questionNumber===l.quiz.length-1?'Узнать результат →':'Следующий вопрос →'}</button>`;
