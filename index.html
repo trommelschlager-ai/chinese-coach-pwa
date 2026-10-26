@@ -413,7 +413,7 @@ let actx;function playToneMelody(){const C=window.AudioContext||window.webkitAud
 document.getElementById('contourSound').addEventListener('click',playToneMelody);
 let recording=false;
 function detectPitch(buf,sr){ // Lightweight autocorrelation for a visual pitch hint, not a tone grade.
- const n=buf.length;let rms=0;for(let i=0;i<n;i++)rms+=buf[i]*buf[i];rms=Math.sqrt(rms/n);if(rms<.016)return null;
+ const n=buf.length;let rms=0;for(let i=0;i<n;i++)rms+=buf[i]*buf[i];rms=Math.sqrt(rms/n);if(rms<.005)return null;
  const minLag=Math.floor(sr/500),maxLag=Math.min(Math.floor(sr/85),Math.floor(n/2));let bestLag=0,bestCorr=0;
  for(let lag=minLag;lag<=maxLag;lag++){let c=0,e1=0,e2=0;for(let i=0;i<n-lag;i+=2){const a=buf[i],b=buf[i+lag];c+=a*b;e1+=a*a;e2+=b*b}let corr=c/Math.sqrt(e1*e2+.00001);if(corr>bestCorr){bestCorr=corr;bestLag=lag}}
  if(bestCorr<.65||!bestLag)return null;return sr/bestLag;
@@ -764,57 +764,93 @@ function median(numbers){
  return sorted[Math.floor(sorted.length/2)];
 }
 function inspectSingleTone(pitches,expected){
- const clean=pitches.filter(p=>Number.isFinite(p)&&p>=85&&p<=500);
- if(clean.length<9)return {type:'unknown',text:'Не удалось уверенно измерить высоту голоса. Говори один короткий слог в тихой комнате.'};
- // Trim fricative onset and final tail; suppress isolated octave tracking jumps.
- const base=median(clean),filter=clean.filter(v=>Math.abs(12*Math.log2(v/base))<7);
- if(filter.length<9)return {type:'unknown',text:'Тон не определился: запись слишком неровная. Попробуй повторить слог.'};
- const trimmed=filter.slice(1,-1);
- const values=trimmed.map(v=>12*Math.log2(v/base));
+ // A naturally spoken Mandarin syllable often lasts 200–700 ms.
+ // Group valid pitch samples into one voiced segment rather than counting silent frames.
+ const groups=[];let current=[],missing=0;
+ for(const pitch of pitches){
+  if(Number.isFinite(pitch)&&pitch>=85&&pitch<=500){
+    current.push(pitch);missing=0;
+  }else if(current.length){
+    missing++;
+    if(missing>2){groups.push(current);current=[];missing=0;}
+  }
+ }
+ if(current.length)groups.push(current);
+ groups.sort((a,b)=>b.length-a.length);
+ const best=groups[0]||[];
+ if(best.length<5)return {type:'unknown',reason:'no_pitch',text:'Микрофон не уловил достаточно звука. После нажатия скажи слог один раз обычным голосом. Не нужно тянуть его две секунды.'};
+ const baseline=median(best);
+ // Suppress accidental octave and outlier jumps in pitch tracking.
+ const inRange=best.filter(v=>Math.abs(12*Math.log2(v/baseline))<=7.5);
+ if(inRange.length<5)return {type:'unknown',reason:'unstable',text:'Голос был слышен, но определить мелодию не удалось. Повтори слог в более тихом месте.'};
+ let normalized=inRange;
+ if(normalized.length>11)normalized=normalized.slice(1,-1);
+ const fundamental=median(normalized);
+ const values=normalized.map(v=>12*Math.log2(v/fundamental));
+ // A small median filter removes single-frame octave/voicing glitches.
  const smooth=values.map((_,i)=>median(values.slice(Math.max(0,i-1),Math.min(values.length,i+2))));
  const n=smooth.length;
- const head=median(smooth.slice(0,Math.max(2,Math.floor(n*.3))));
- const tail=median(smooth.slice(-Math.max(2,Math.floor(n*.3))));
+ const edge=Math.max(2,Math.ceil(n*.25));
+ const head=median(smooth.slice(0,edge)),tail=median(smooth.slice(-edge));
  const center=median(smooth.slice(Math.floor(n*.35),Math.ceil(n*.65)));
  const slope=tail-head;
  const range=Math.max(...smooth)-Math.min(...smooth);
  const dip=Math.min(head,tail)-center;
  let guessed=0;
- if(dip>1.25&&head-center>1.25&&tail-center>1.0)guessed=3;
- else if(slope>1.9&&range>=2)guessed=2;
- else if(slope< -1.9&&range>=2)guessed=4;
- else if(Math.abs(slope)<1.2&&range<2.2)guessed=1;
+ if(n>=8&&dip>1.1&&head-center>1.15&&tail-center>.9)guessed=3;
+ else if(slope>1.6&&range>=1.85)guessed=2;
+ else if(slope< -1.6&&range>=1.85)guessed=4;
+ else if(Math.abs(slope)<1.15&&range<2.15)guessed=1;
  const names=['','ровный (1-й)','восходящий (2-й)','нисходяще-восходящий (3-й)','нисходящий (4-й)'];
- if(!guessed)return {type:'unknown',text:'Мелодика получилась неоднозначной. Послушай образец и повтори слог ещё раз.'};
- return {type:guessed===expected?'ok':'retry',guessed,
-   text:guessed===expected?
-   'Мелодика похожа на '+names[expected]+'. Это предварительная подсказка, а не подтверждение правильного тона.':
-   'Похоже на '+names[guessed]+', а нужен '+names[expected]+'. Попробуй ещё раз — это приблизительный анализ.'
+ if(!guessed)return {type:'unknown',reason:'ambiguous',sampleCount:n,text:'Голос услышан, но мелодика неоднозначная. Послушай образец и попробуй ещё раз.'};
+ return {type:guessed===expected?'ok':'retry',guessed,sampleCount:n,
+ text:guessed===expected?
+  'Звучание по высоте похоже на '+names[expected]+'. Это предварительная оценка мелодики, не проверка всех звуков.':
+  'По высоте больше похоже на '+names[guessed]+', а выбран '+names[expected]+'. Сравни с образцом и повтори. Возможна ошибка алгоритма.'
  };
 }
-async function checkToneLocally(expected){
+async function checkToneLocally(expected,onReady){
  const devices=navigator.mediaDevices,AC=window.AudioContext||window.webkitAudioContext;
- if(!devices?.getUserMedia||!AC)return {type:'unsupported',text:'Проверка тонов недоступна в этом браузере. Можно слушать и повторять самостоятельно.'};
+ if(!devices?.getUserMedia||!AC)return {type:'unsupported',text:'Проверка высоты голоса недоступна в этом браузере.'};
  let stream,ctx;
  try{
-   stream=await devices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
-   ctx=new AC();
-   if(ctx.state==='suspended')await ctx.resume();
-   const analyser=ctx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.1;
-   const source=ctx.createMediaStreamSource(stream);source.connect(analyser);
-   const buf=new Float32Array(analyser.fftSize),frames=[];
-   await new Promise(resolve=>{
-     let start=performance.now(),last=-999;
-     function tick(now){
-       if(now-start>=2200){resolve();return}
-       if(now-last>=95){last=now;analyser.getFloatTimeDomainData(buf);frames.push(detectPitch(buf,ctx.sampleRate))}
-       requestAnimationFrame(tick);
-     }
-     requestAnimationFrame(tick);
-   });
-   return inspectSingleTone(frames,expected);
- }catch(e){return {type:'unsupported',text:'Нет доступа к микрофону. Разреши его в настройках телефона и попробуй снова.'}}
- finally{try{stream?.getTracks().forEach(t=>t.stop())}catch(e){};try{await ctx?.close()}catch(e){}}
+  // Audio processing and sample storage are on the device. No upload is performed.
+  stream=await devices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+  ctx=new AC();
+  if(ctx.state==='suspended')await ctx.resume();
+  const analyser=ctx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.08;
+  const source=ctx.createMediaStreamSource(stream);source.connect(analyser);
+  const data=new Float32Array(analyser.fftSize),samples=[];
+  if(typeof onReady==='function')onReady('🎙️ Микрофон включён. Произнеси один короткий слог один раз. Не растягивай его.');
+  await new Promise(resolve=>{
+   let first=performance.now(),last=-100,speechFrames=0,lastVoiced=0,done=false;
+   const maxWindow=3900; // Permission handling happens before this recording window.
+   function finish(){if(done)return;done=true;resolve()}
+   function tick(now){
+    if(done)return;
+    if(now-first>=maxWindow){finish();return}
+    if(now-last>=32){
+      last=now;
+      analyser.getFloatTimeDomainData(data);
+      const pitch=detectPitch(data,ctx.sampleRate);
+      samples.push(pitch);
+      if(Number.isFinite(pitch)){speechFrames++;lastVoiced=now}
+    }
+    // Finish after a short utterance followed by silence. Supports a 0.2-second syllable.
+    if(speechFrames>=5&&lastVoiced&&now-lastVoiced>=350){finish();return}
+    requestAnimationFrame(tick);
+   }
+   requestAnimationFrame(tick);
+  });
+  return inspectSingleTone(samples,expected);
+ }catch(e){
+  return {type:'unsupported',text:e?.name==='NotAllowedError'?
+   'Доступ к микрофону запрещён. Разреши его в настройках браузера.':
+   'Не получилось записать голос. Проверь разрешение микрофона и попробуй ещё раз.'};
+ }finally{
+  try{stream?.getTracks().forEach(t=>t.stop())}catch(e){}
+  try{await ctx?.close()}catch(e){}
+ }
 }
 function recognizeChineseText(){
  return new Promise(resolve=>{
@@ -847,14 +883,14 @@ async function checkChinesePractice(hz,py,button,targetId){
  const tone=isSingleToneSyllable(py,hz);
  checkBusy=true;
  const original=button.textContent;button.disabled=true;
- button.textContent='🎙️ Говори…';
- target.textContent=tone?'Произнеси один слог обычным голосом (примерно 2 секунды).':
+ button.textContent='🎙️ Слушаю…';
+ target.textContent=tone?'Разреши микрофон, затем произнеси один короткий слог.':
  'Говори по-китайски после разрешения микрофона. Проверяем, что распознал браузер.';
  try{
   if(tone){
-   const result=await checkToneLocally(tone);
+   const result=await checkToneLocally(tone,message=>{if(target.isConnected)target.textContent=message});
    target.innerHTML='<div class="check-result '+(result.type==='ok'?'check-ok':result.type==='retry'?'check-retry':'')+'"><strong>'+
-     (result.type==='ok'?'✓ Похоже на нужный тон':result.type==='retry'?'↻ Попробуй ещё раз':'△ Недостаточно данных')+'</strong><p>'+
+     (result.type==='ok'?'✓ Похоже на нужный тон':result.type==='retry'?'↻ Сравни с образцом':result.type==='unsupported'?'△ Нет доступа к микрофону':'△ Не удалось оценить тон')+'</strong><p>'+
      safe(result.text)+'</p><small>Тон оценивается по изменению высоты голоса на устройстве. Это не профессиональная проверка.</small></div>';
   }else{
    const result=await recognizeChineseText();
