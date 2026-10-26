@@ -657,6 +657,22 @@ body.focus-mode .foot{display:none!important}
  #course .course-options button{min-height:65px;padding:14px 13px}
  #course .focus-step small{font-size:10px}
 }
+
+/* Numbered, pastel answer tiles as in approved fourth reference. */
+#course .course-options button{display:flex;align-items:center;gap:14px;text-align:left}
+#course .course-options button::before{
+ content:"";flex:0 0 38px;width:38px;height:38px;
+ display:grid;place-items:center;border-radius:50%;
+ background:#ffe6cf;color:#9d5427;
+ font-weight:900;font-size:18px;
+}
+#course .course-options button:nth-child(1)::before{content:"1"}
+#course .course-options button:nth-child(2)::before{content:"2";background:#fddce9;color:#953d69}
+#course .course-options button:nth-child(3)::before{content:"3";background:#e5d5ff;color:#7346a7}
+#course .course-options button:nth-child(4)::before{content:"4";background:#ffdfc3;color:#9e5425}
+#course .course-options button.correct::before{background:#bdebd0;color:#19613b}
+#course .course-options button.incorrect::before{background:#ffd0d5;color:#963441}
+
 /* Longer and more cinematic sakura intro, with no changes to approved images. */
 #launch-entry.launch-sakura #launch-cover{
  animation-duration:3.1s;
