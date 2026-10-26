@@ -446,7 +446,56 @@ body.focus-mode .shell{padding-bottom:48px}
 }
 @media(prefers-reduced-motion:reduce){.btn{transition:none!important}}
 
-body.launch-active{background:#10132a;overflow:hidden}body.launch-active .shell{display:none!important}#launch-entry{position:fixed;inset:0;display:none;z-index:90;align-items:center;justify-content:center;background:#10132a}body.launch-active #launch-entry{display:flex}#launch-entry::before{content:"";position:absolute;inset:-25px;background:url("./assets/approved-final-home.svg") center/cover no-repeat;filter:blur(22px) brightness(.65);opacity:.85;pointer-events:none}#launch-entry .launch-screen{z-index:1}#launch-entry[hidden],#launch-entry .launch-screen[hidden]{display:none!important}#launch-entry .launch-screen{position:relative;height:min(100dvh,177.68vw);width:min(100vw,56.28dvh);overflow:hidden;background:#17103d}#launch-entry img{width:100%;height:100%;display:block;pointer-events:none;user-select:none}#launch-entry button{position:absolute;background:none;border:0;color:transparent;font-size:0;cursor:pointer;touch-action:manipulation;border-radius:20px}#launch-entry button:focus-visible{outline:3px solid #fff;outline-offset:-3px}#launch-entry button:active{background:#fff2}.hit-start{left:13%;top:79%;width:74%;height:12.1%}.hit-choice{left:12%;width:76%;height:10%}.hit-choice[data-choice="0"]{top:25%}.hit-choice[data-choice="1"]{top:36.5%}.hit-choice[data-choice="2"]{top:48%}.hit-choice[data-choice="3"]{top:59.5%}.hit-choice[data-choice="4"]{top:71%}.hit-back{left:7%;width:43%;top:86.6%;height:9%}.hit-all{left:52%;width:41%;top:86.6%;height:9%}</style>
+body.launch-active{background:#10132a;overflow:hidden}body.launch-active .shell{display:none!important}#launch-entry{position:fixed;inset:0;display:none;z-index:90;align-items:center;justify-content:center;background:#10132a}body.launch-active #launch-entry{display:flex}#launch-entry::before{content:"";position:absolute;inset:-25px;background:url("./assets/approved-final-home.svg") center/cover no-repeat;filter:blur(22px) brightness(.65);opacity:.85;pointer-events:none}#launch-entry .launch-screen{z-index:1}#launch-entry[hidden],#launch-entry .launch-screen[hidden]{display:none!important}#launch-entry .launch-screen{position:relative;height:min(100dvh,177.68vw);width:min(100vw,56.28dvh);overflow:hidden;background:#17103d}#launch-entry img{width:100%;height:100%;display:block;pointer-events:none;user-select:none}#launch-entry button{position:absolute;background:none;border:0;color:transparent;font-size:0;cursor:pointer;touch-action:manipulation;border-radius:20px}#launch-entry button:focus-visible{outline:3px solid #fff;outline-offset:-3px}#launch-entry button:active{background:#fff2}.hit-start{left:13%;top:79%;width:74%;height:12.1%}.hit-choice{left:12%;width:76%;height:10%}.hit-choice[data-choice="0"]{top:25%}.hit-choice[data-choice="1"]{top:36.5%}.hit-choice[data-choice="2"]{top:48%}.hit-choice[data-choice="3"]{top:59.5%}.hit-choice[data-choice="4"]{top:71%}.hit-back{left:7%;width:43%;top:86.6%;height:9%}.hit-all{left:52%;width:41%;top:86.6%;height:9%}
+/* Gentle Sakura transition between the unchanged, approved cover and lesson menu. */
+#launch-entry.launch-sakura .launch-screen{
+ position:absolute;inset:0;margin:auto;transform-origin:center;
+}
+#launch-entry.launch-sakura #launch-cover{
+ z-index:2;pointer-events:none;
+ animation:sakura-cover-out 1.8s cubic-bezier(.22,.65,.35,1) both;
+}
+#launch-entry.launch-sakura #launch-menu{
+ z-index:1;pointer-events:none;
+ animation:sakura-menu-in 1.8s cubic-bezier(.22,.65,.35,1) both;
+}
+#launch-petals{
+ display:none;position:absolute;inset:0;z-index:4;
+ overflow:hidden;pointer-events:none;
+}
+#launch-entry.launch-sakura #launch-petals{display:block}
+#launch-petals .sakura-petal{
+ position:absolute;top:-8%;left:var(--x);
+ width:var(--size);height:calc(var(--size)*.78);
+ border-radius:85% 0 85% 15%;
+ background:radial-gradient(ellipse at 25% 25%,#fff8fd 0%,#ffd5ed 30%,#f7a5d0 66%,#df78b7 100%);
+ box-shadow:0 0 10px 2px #ffd6ed55;
+ opacity:0;
+ animation:sakura-petal-fall 1.35s ease-in-out var(--delay) both;
+ will-change:transform,opacity;
+}
+@keyframes sakura-cover-out{
+ 0%,10%{opacity:1;transform:scale(1);filter:blur(0)}
+ 60%{opacity:.32;transform:scale(1.025);filter:blur(2px)}
+ 86%,100%{opacity:0;transform:scale(1.045);filter:blur(6px)}
+}
+@keyframes sakura-menu-in{
+ 0%,22%{opacity:0;transform:scale(1.035);filter:blur(7px)}
+ 65%{opacity:.7;filter:blur(2px)}
+ 100%{opacity:1;transform:scale(1);filter:blur(0)}
+}
+@keyframes sakura-petal-fall{
+ 0%{opacity:0;transform:translate3d(0,-3vh,0) rotate(-25deg) scale(.8)}
+ 15%{opacity:.96}
+ 80%{opacity:.9}
+ 100%{opacity:0;transform:translate3d(var(--dx),111vh,0) rotate(var(--spin)) scale(1.12)}
+}
+@media(prefers-reduced-motion:reduce){
+ #launch-entry.launch-sakura #launch-cover,
+ #launch-entry.launch-sakura #launch-menu,
+ #launch-petals .sakura-petal{animation:none!important}
+}
+</style>
 </head>
 <body><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><img src="./assets/approved-final-home.svg" alt="Китайский — это легко! Девушка в розовом платье и одна кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></section><section id="launch-menu" class="launch-screen" hidden><img src="./assets/approved-lessons.png" alt="Выбери звуки, слова, диалоги, практику или тест"><button class="hit-choice" data-choice="0" aria-label="Звуки и тоны">Звуки и тоны</button><button class="hit-choice" data-choice="1" aria-label="Базовые слова">Базовые слова</button><button class="hit-choice" data-choice="2" aria-label="Диалоги">Диалоги</button><button class="hit-choice" data-choice="3" aria-label="Практика">Практика</button><button class="hit-choice" data-choice="4" aria-label="Тест">Тест</button><button class="hit-back" id="launch-back" aria-label="Главная">Главная</button><button class="hit-all" id="launch-all" aria-label="Все уроки">Уроки</button></section></div>
 <div class="shell">
@@ -1152,5 +1201,101 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
  }catch(e){button.disabled=false;button.textContent='↻ Обновить';toast('Не удалось обновить автоматически. Открой сайт в Chrome и обнови страницу.');}
 });
 </script>
-<script>(function(){const root=document.getElementById('launch-entry'),cover=document.getElementById('launch-cover'),menu=document.getElementById('launch-menu');function show(what){root.hidden=false;document.body.classList.remove('focus-mode');document.body.classList.add('launch-active');cover.hidden=what!=='cover';menu.hidden=what!=='menu';window.scrollTo(0,0)}function exit(){root.hidden=true;document.body.classList.remove('launch-active')}document.getElementById('launch-start').onclick=()=>show('menu');document.getElementById('launch-back').onclick=()=>show('cover');document.getElementById('launch-all').onclick=()=>{exit();openCourseLesson(1,0);document.getElementById('course-menu-wrap').hidden=false;document.getElementById('course-choose').setAttribute('aria-expanded','true')};document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{const n=Number(b.dataset.choice);exit();if(n===0)openCourseLesson(1,0);else if(n===1)openCourseLesson(2,1);else if(n===2)openCourseLesson(4,2);else if(n===3)go('dialog');else go('quiz')});const oldGo=go;go=function(name){if(name==='home'){show(document.getElementById('course').classList.contains('active')?'menu':'cover');return}exit();oldGo(name)};show('cover')})();</script></body>
+<script>
+(function(){
+ const root=document.getElementById('launch-entry');
+ const cover=document.getElementById('launch-cover');
+ const menu=document.getElementById('launch-menu');
+ const petalLayer=document.createElement('div');
+ petalLayer.id='launch-petals';
+ petalLayer.setAttribute('aria-hidden','true');
+ // Lightweight CSS petals; no animation files or internet access required.
+ const petals=[
+  [5,-48,380,20,0],[13,36,-420,13,185],[23,-28,560,16,80],
+  [32,45,-530,14,290],[42,-58,620,19,150],[53,32,-475,12,30],
+  [63,-34,540,20,345],[75,44,-650,15,100],[86,-46,510,18,225],
+  [96,-37,-480,13,45],[9,40,690,14,340],[29,-25,-590,18,230],
+  [49,50,610,12,390],[69,-55,-410,17,20],[91,-30,670,14,310],
+  [57,24,400,11,210],[18,-40,-680,15,120],[80,31,480,11,360]
+ ];
+ for(const [x,dx,spin,size,delay] of petals){
+  const el=document.createElement('span');
+  el.className='sakura-petal';
+  el.style.setProperty('--x',x+'%');
+  el.style.setProperty('--dx',dx+'px');
+  el.style.setProperty('--spin',spin+'deg');
+  el.style.setProperty('--size',size+'px');
+  el.style.setProperty('--delay',delay+'ms');
+  petalLayer.appendChild(el);
+ }
+ root.appendChild(petalLayer);
+ let transitionTimer=0,transitioning=false;
+ function cancelTransition(){
+  if(transitionTimer){clearTimeout(transitionTimer);transitionTimer=0}
+  transitioning=false;root.classList.remove('launch-sakura');
+  cover.inert=false;menu.inert=false;
+ }
+ function show(what){
+  cancelTransition();
+  root.hidden=false;
+  document.body.classList.remove('focus-mode');
+  document.body.classList.add('launch-active');
+  cover.hidden=what!=='cover';
+  menu.hidden=what!=='menu';
+  window.scrollTo(0,0);
+ }
+ function startWithSakura(){
+  if(transitioning||cover.hidden)return;
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+   show('menu');return;
+  }
+  transitioning=true;
+  menu.hidden=false;
+  cover.hidden=false;
+  cover.inert=true;
+  menu.inert=true;
+  root.classList.add('launch-sakura');
+  transitionTimer=setTimeout(()=>{
+   transitionTimer=0;
+   transitioning=false;
+   root.classList.remove('launch-sakura');
+   cover.hidden=true;
+   menu.hidden=false;
+   cover.inert=false;
+   menu.inert=false;
+   const firstLesson=menu.querySelector('[data-choice="0"]');
+   if(firstLesson)firstLesson.focus({preventScroll:true});
+  },1800);
+ }
+ function exit(){
+  cancelTransition();
+  root.hidden=true;
+  document.body.classList.remove('launch-active');
+ }
+ document.getElementById('launch-start').onclick=startWithSakura;
+ document.getElementById('launch-back').onclick=()=>show('cover');
+ document.getElementById('launch-all').onclick=()=>{
+  exit();openCourseLesson(1,0);
+  document.getElementById('course-menu-wrap').hidden=false;
+  document.getElementById('course-choose').setAttribute('aria-expanded','true');
+ };
+ document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{
+  const n=Number(b.dataset.choice);exit();
+  if(n===0)openCourseLesson(1,0);
+  else if(n===1)openCourseLesson(2,1);
+  else if(n===2)openCourseLesson(4,2);
+  else if(n===3)go('dialog');
+  else go('quiz');
+ });
+ const oldGo=go;
+ go=function(name){
+  if(name==='home'){
+   show(document.getElementById('course').classList.contains('active')?'menu':'cover');
+   return;
+  }
+  exit();oldGo(name);
+ };
+ show('cover');
+})();
+</script></body>
 </html>
