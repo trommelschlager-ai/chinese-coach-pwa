@@ -244,7 +244,7 @@ function speakChinese(hanzi,rate){
  }
  const engine=window.speechSynthesis;
  const voice=chineseVoice();
- if(!navigator.onLine&&(!voice||voice.localService===false)){
+ if(!navigator.onLine&&voice&&voice.localService===false){
    toast('Без интернета нужен установленный локальный голос Mandarin (zh-CN).');
    showChineseVoiceHelp();return;
  }
