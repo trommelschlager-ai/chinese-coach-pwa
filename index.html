@@ -803,11 +803,11 @@ function inspectSingleTone(pitches,expected){
  if(current.length)groups.push(current);
  groups.sort((a,b)=>b.length-a.length);
  const best=groups[0]||[];
- if(best.length<5)return {type:'unknown',reason:'no_pitch',text:'Микрофон не уловил достаточно звука. После нажатия скажи слог один раз обычным голосом. Не нужно тянуть его две секунды.'};
+ if(best.length<4)return {type:'unknown',reason:'no_pitch',text:'Микрофон не уловил достаточно звука. После нажатия скажи слог один раз обычным голосом. Не нужно тянуть его две секунды.'};
  const baseline=median(best);
  // Suppress accidental octave and outlier jumps in pitch tracking.
  const inRange=best.filter(v=>Math.abs(12*Math.log2(v/baseline))<=7.5);
- if(inRange.length<5)return {type:'unknown',reason:'unstable',text:'Голос был слышен, но определить мелодию не удалось. Повтори слог в более тихом месте.'};
+ if(inRange.length<4)return {type:'unknown',reason:'unstable',text:'Голос был слышен, но определить мелодию не удалось. Повтори слог в более тихом месте.'};
  let normalized=inRange;
  if(normalized.length>11)normalized=normalized.slice(1,-1);
  const fundamental=median(normalized);
@@ -834,44 +834,90 @@ function inspectSingleTone(pitches,expected){
   'По высоте больше похоже на '+names[guessed]+', а выбран '+names[expected]+'. Сравни с образцом и повтори. Возможна ошибка алгоритма.'
  };
 }
+// Better local pitch extraction for short Mandarin syllables on mobile.
+// This operates on PCM from the microphone; audio is never uploaded.
+function tonePitchFrame(buf,sr){
+ const n=buf.length;
+ let mean=0,power=0;
+ for(let i=0;i<n;i++)mean+=buf[i];
+ mean/=n;
+ for(let i=0;i<n;i++){const x=buf[i]-mean;power+=x*x}
+ const level=Math.sqrt(power/n);
+ if(level<.0028)return {pitch:null,signal:level>.001,level,confidence:0};
+ const minLag=Math.max(48,Math.floor(sr/480)),maxLag=Math.min(Math.floor(sr/80),Math.floor(n/2)-1);
+ const windowSize=Math.floor(n/2),hop=6;
+ let best=0,lagBest=0;
+ const candidates=[];
+ for(let lag=minLag;lag<=maxLag;lag+=2){
+  let cross=0,left=0,right=0;
+  for(let j=0;j<windowSize;j+=hop){
+   const a=buf[j]-mean,b=buf[j+lag]-mean;
+   cross+=a*b;left+=a*a;right+=b*b;
+  }
+  const corr=cross/Math.sqrt(left*right+1e-9);
+  candidates.push({lag,corr});
+  if(corr>best){best=corr;lagBest=lag}
+ }
+ if(best<.52)return {pitch:null,signal:true,level,confidence:best};
+ // Avoid octave errors: choose the earliest strong autocorrelation peak,
+ // rather than the later peak that might be an exact octave subharmonic.
+ const threshold=Math.max(.52,best*.91);
+ for(let i=1;i<candidates.length-1;i++){
+  const v=candidates[i];
+  if(v.corr>=threshold&&v.corr>=candidates[i-1].corr&&v.corr>=candidates[i+1].corr){lagBest=v.lag;break}
+ }
+ const pitch=sr/lagBest;
+ return {pitch:pitch>=80&&pitch<=480?pitch:null,signal:true,level,confidence:best};
+}
 async function checkToneLocally(expected,onReady){
  const devices=navigator.mediaDevices,AC=window.AudioContext||window.webkitAudioContext;
  if(!devices?.getUserMedia||!AC)return {type:'unsupported',text:'Проверка высоты голоса недоступна в этом браузере.'};
  let stream,ctx;
  try{
-  // Audio processing and sample storage are on the device. No upload is performed.
   stream=await devices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
   ctx=new AC();
   if(ctx.state==='suspended')await ctx.resume();
-  const analyser=ctx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.08;
+  const analyser=ctx.createAnalyser();
+  // 4096 samples allow reliable tracking of lower-pitched voices (including many male voices).
+  analyser.fftSize=4096;analyser.smoothingTimeConstant=.08;
   const source=ctx.createMediaStreamSource(stream);source.connect(analyser);
-  const data=new Float32Array(analyser.fftSize),samples=[];
-  if(typeof onReady==='function')onReady('🎙️ Микрофон включён. Произнеси один короткий слог один раз. Не растягивай его.');
+  const data=new Float32Array(analyser.fftSize),pitches=[];
+  let soundFrames=0,voicedFrames=0,peakLevel=0;
+  if(typeof onReady==='function')onReady('🎙️ Микрофон готов. Произнеси один слог обычным голосом. Подсказка: не шепчи.');
   await new Promise(resolve=>{
-   let first=performance.now(),last=-100,speechFrames=0,lastVoiced=0,done=false;
-   const maxWindow=3900; // Permission handling happens before this recording window.
+   let first=performance.now(),last=-100,lastVoiced=0,lastSound=0,done=false;
    function finish(){if(done)return;done=true;resolve()}
    function tick(now){
     if(done)return;
-    if(now-first>=maxWindow){finish();return}
-    if(now-last>=32){
-      last=now;
-      analyser.getFloatTimeDomainData(data);
-      const pitch=detectPitch(data,ctx.sampleRate);
-      samples.push(pitch);
-      if(Number.isFinite(pitch)){speechFrames++;lastVoiced=now}
+    if(now-first>=3900){finish();return}
+    if(now-last>=38){
+     last=now;
+     analyser.getFloatTimeDomainData(data);
+     const reading=tonePitchFrame(data,ctx.sampleRate);
+     pitches.push(reading.pitch);
+     peakLevel=Math.max(peakLevel,reading.level);
+     if(reading.signal){soundFrames++;lastSound=now}
+     if(Number.isFinite(reading.pitch)){voicedFrames++;lastVoiced=now}
     }
-    // Finish after a short utterance followed by silence. Supports a 0.2-second syllable.
-    if(speechFrames>=5&&lastVoiced&&now-lastVoiced>=350){finish();return}
+    if(voicedFrames>=4&&lastVoiced&&now-lastVoiced>=390){finish();return}
+    if(soundFrames>=7&&voicedFrames<4&&lastSound&&now-lastSound>=500){finish();return}
     requestAnimationFrame(tick);
    }
    requestAnimationFrame(tick);
   });
-  return inspectSingleTone(samples,expected);
+  const report=inspectSingleTone(pitches,expected);
+  if(report.type==='unknown'){
+   if(soundFrames<3)return {type:'unknown',reason:'silence',
+    text:'Микрофон почти не получил звук. Проверь доступ к микрофону, говори обычным голосом; если подключена Bluetooth-гарнитура, попробуй отключить её.'};
+   if(voicedFrames<4)return {type:'unknown',reason:'no_pitch',
+    text:'Микрофон слышит звук, но пока не может уверенно определить высоту голоса ('+voicedFrames+' устойчивых измерений). Произнеси один слог без шёпота. Если подключён Bluetooth-микрофон — проверь его.'};
+   return {...report,text:report.text+' Устойчивых измерений: '+voicedFrames+'.'};
+  }
+  return report;
  }catch(e){
   return {type:'unsupported',text:e?.name==='NotAllowedError'?
    'Доступ к микрофону запрещён. Разреши его в настройках браузера.':
-   'Не получилось записать голос. Проверь разрешение микрофона и попробуй ещё раз.'};
+   'Не получилось получить звук с микрофона. Проверь подключённую гарнитуру и разрешения.'};
  }finally{
   try{stream?.getTracks().forEach(t=>t.stop())}catch(e){}
   try{await ctx?.close()}catch(e){}
