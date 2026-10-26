@@ -85,6 +85,55 @@ body{background:linear-gradient(145deg,#f7f9fc,#f0f4f8);overflow-x:hidden}
 .progress-section .stats{gap:6px}.progress-section .stat{padding:9px 7px}.progress-section .label{font-size:10px}.progress-section .big{font-size:19px}.stat-icon{width:29px;height:29px;font-size:16px}
 .extra-grid{gap:6px}.extra-card{padding:11px 8px;min-height:144px;border-radius:13px}.extra-card strong{font-size:12px}.extra-card small{font-size:10px}.extra-icon{width:36px;height:36px;font-size:20px}.extra-chevron{top:25px;right:5px;font-size:18px}
 }
+
+/* Neon styling for lessons and AI practice. */
+.lesson-banner{padding:25px 27px;border-radius:20px;min-height:195px;margin-bottom:18px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.lesson-banner h2{font:800 clamp(27px,3.5vw,39px)/1.14 Georgia,serif;color:white;margin:11px 0 10px}
+.lesson-banner p{font-size:14px;color:#e5edf5;max-width:390px;line-height:1.6;margin:0}
+.lesson-tag{display:inline-flex;border-radius:10px;padding:5px 12px;background:linear-gradient(#ffe9ad,#dfad57);border:1px solid #fff1b8;color:#243046;font-size:12px;font-weight:900;box-shadow:0 0 14px #ffca6ba9}
+.course-overline{display:flex;justify-content:space-between;align-items:center;gap:11px;margin-bottom:11px;font-size:12px;color:#64758a;font-weight:850}
+.step-counter{padding:7px 13px;border-radius:40px;background:#fbecd0;color:#684d26;white-space:nowrap;box-shadow:0 0 10px #ffd27975}
+.stepnav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;border-bottom:0;padding-bottom:7px}
+.stepnav button{display:flex;flex-direction:column;align-items:center;gap:5px;background:#fff;border:0;border-top:3px solid #dfe4ea;border-radius:6px;padding:9px 2px;font-size:12px}
+.stepnav button.selected{background:#fff6e5;border-color:#d69a31;color:#9a671d}
+.stepnum{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;background:#edf1f5;color:#6b7b8b;font-size:13px;font-weight:900}
+.stepnav button.selected .stepnum{background:linear-gradient(#ecc270,#ba802d);color:white;box-shadow:0 0 13px #f5c36b}
+.course-footnav{position:sticky;bottom:6px;background:#fffcf9f2;border-top:1px solid #e6eaf0;padding:12px 0;z-index:5}
+.course-footnav .btn.primary{background:linear-gradient(#ffe5a3,#dfa547);border:2px solid #fff0bc;box-shadow:0 0 13px #e8b86088}
+.course-footnav .btn.soft{border:1px solid #c0def5;box-shadow:0 0 8px #abd9ff80}
+.course-vocab .vocabbtns button{transition:box-shadow .2s}.course-vocab .vocabbtns button:focus-visible{box-shadow:0 0 11px #68b9ef}
+.lesson-note{background:#fff;box-shadow:0 4px 14px #122b4610}
+.teacher-tip{border-color:#efd5a1;background:linear-gradient(120deg,#fff5e0,#ffebc3);box-shadow:0 0 0 1px #fff9df,0 0 13px #ecc56f61}
+.tone-intro{border-radius:22px;padding:27px 30px;margin:0 0 16px}
+.tone-intro h2{font:800 clamp(27px,4vw,40px)/1.14 Georgia,serif;color:white;margin:10px 0}
+.tone-intro p{color:#e5eaf2;font-size:14px;max-width:390px}
+.tone{background:#fff;box-shadow:0 6px 18px #142c4814}.tone[aria-pressed="true"]{border-color:#e6ae53;box-shadow:0 0 0 2px #f3ce7d,0 0 14px #ffc76b96}
+.tone .tone-title{background:#fff3df;border-radius:25px;padding:4px 5px;color:#87602f}
+.ai-heading{display:flex;gap:13px;align-items:center;margin-bottom:16px}.ai-heading h1{font-size:29px;line-height:1.2;margin:0}.ai-heading p{color:#78869a;margin:4px 0}
+.ai-avatar{display:grid;place-items:center;background:linear-gradient(140deg,#213b60,#0a1c33);color:#f2c374;font-size:27px;width:59px;height:59px;border-radius:16px;box-shadow:0 0 16px #b9853763}
+.ai-hero{padding:30px;border-radius:23px;margin-bottom:18px;min-height:245px;display:flex;flex-direction:column;justify-content:center}
+.ai-hero h2{font:800 clamp(29px,4vw,44px)/1.13 Georgia,serif;color:#f5d38f;margin:0 0 14px;max-width:430px}
+.ai-hero p{font-size:14px;color:#e2ecf1;max-width:370px}
+.ai-scenes{margin-top:0}.ai-scenes .twoCol{gap:12px}.ai-scenes .dialogcard{min-width:0;padding:14px;border-radius:16px}
+.scene-photo{display:grid;place-items:center;min-height:120px;border-radius:12px;margin-bottom:12px;font-size:45px;background:linear-gradient(50deg,#16304f6b,#e7b18d40),url("./assets/china-landscape.svg");background-size:cover;background-position:right}
+.scene-cafe .scene-photo{background:linear-gradient(145deg,#77503d,#eac288 50%,#416370);text-shadow:0 4px 9px #36251d}
+.ai-scenes .dialogcard h3{font-size:17px;margin:6px 0 12px}.ai-scenes .dialogcard .btn{width:100%}
+.journey-three{grid-template-columns:1fr 16px 1fr 16px 1fr}
+.prompt-title{font-size:17px;margin:24px 0 6px}.copybox{background:#f4f7fb;border-radius:15px}
+.ai-actions .btn{flex:1;min-width:170px}.ai-online-note{padding:13px 16px;border-radius:13px;background:#e9f3ff;color:#285280;font-size:13px;margin-top:14px}
+@media(max-width:600px){
+ .course-content{padding:14px}.lesson-banner{padding:18px;min-height:168px}
+ .lesson-banner h2{font-size:27px}.lesson-banner p{font-size:12px;max-width:265px}
+ .course-overline{font-size:10px}.stepnav{gap:2px}.stepnav button{font-size:10px;padding:8px 0}.stepnum{width:26px;height:26px}
+ .course-footnav{bottom:69px}
+ .tone-intro{padding:20px}.tone-intro h2{font-size:29px}
+ .ai-heading h1{font-size:24px}.ai-hero{padding:24px;min-height:232px}.ai-hero h2{font-size:31px;max-width:255px}.ai-hero p{font-size:12px;max-width:255px}
+ .ai-scenes .twoCol{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.ai-scenes .dialogcard{padding:10px}
+ .scene-photo{min-height:85px;font-size:30px}.ai-scenes .dialogcard h3{font-size:12px;line-height:1.3}
+ .ai-scenes .dialogline{padding:8px 6px;font-size:13px}.ai-scenes .dialogcard .hint{font-size:11px}
+ .ai-scenes .dialogcard .btn{min-height:40px;font-size:12px;padding:8px 5px}
+ .ai-actions{display:grid;grid-template-columns:1fr;gap:8px}.ai-actions .btn{min-width:0}
+}
 </style>
 </head>
 <body>
@@ -118,13 +167,27 @@ body{background:linear-gradient(145deg,#f7f9fc,#f0f4f8);overflow-x:hidden}
  <div class="notice" style="margin-top:18px"><strong>Об аудио:</strong> уроки доступны офлайн, но произношение через кнопку 🔊 зависит от наличия установленного китайского офлайн-голоса в телефоне. Предзаписанного голоса носителя пока нет. График тонов — подсказка, а не автоматическая оценка.</div>
 </section>
 <section id="tones" class="page">
-  <div class="columnhead"><div><div class="eyebrow">Урок 01 · Произношение</div><h1>Четыре тона китайского</h1><p>Выбери тон, послушай образец и сравни свой голос с ориентиром.</p></div><span class="flag">🎙️</span></div>
+  <div class="columnhead"><div><div class="eyebrow">ТРЕНИРОВКА · ПРОИЗНОШЕНИЕ</div><h1>Четыре тона китайского</h1><p>Выбери тон, послушай образец и сравни свою интонацию с ориентиром.</p></div><span class="flag">🎙️</span></div>
+  <div class="tone-intro scenic"><span class="lesson-tag">Урок 1</span><h2>Как работают<br>4 тона</h2><p>Один и тот же слог с разным тоном может иметь совершенно разные значения.</p></div>
   <div class="tonegrid" id="tonegrid"></div>
   <div class="practice"><div class="panel"><h3>Практика произношения</h3><p>Китайское слово и ожидаемая мелодика тона.</p><div class="pronounce" id="practicehanzi">妈</div><div style="color:#ad6f38;font-size:21px;font-weight:800" id="practicepinyin">mā</div><div id="practicetranslation" class="kicker">мама</div><div class="tbuttons"><button class="btn dark" id="listen">🔊 Послушать слово</button><button class="btn soft" id="contourSound">♪ Мелодия тона</button><button class="btn primary" id="record">🎙️ Произнести</button></div><div id="micmessage" class="msg" aria-live="polite">Микрофон записывает около 3 секунд и показывает высоту голоса — работает и без сети при разрешённом доступе.</div><div class="notice"><strong>Важно:</strong> график — учебная подсказка, а не экзаменатор. Программа пока не умеет достоверно оценивать правильность каждого китайского тона. Для 你好 применяется изменение третьего тона (ní hǎo).</div></div><div class="panel"><h3>Твоя интонация</h3><p>Светлая линия — примерная целевая форма; тёмная — найденная высота голоса. Сравни общую форму, не абсолютную высоту.</p><div class="chartwrap"><svg id="pitchchart" viewBox="0 0 400 150" role="img" aria-label="График высоты голоса"><g stroke="#e1e6ee" stroke-width="1"><path d="M0 30 H400 M0 75 H400 M0 120 H400"/></g><path id="targetPath" d="" stroke="#d2b482" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="8 6"/><path id="voicePath" d="" stroke="#2a6083" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg></div><div class="microcopy">Нет микрофона? Можешь слушать и повторять без записи. На телефоне используй HTTPS и разреши доступ к микрофону.</div><div class="divider"></div><div class="tiny"><span style="color:#d2b482">━ ━</span> образец интонации &nbsp;&nbsp; <span style="color:#2a6083">━━</span> твой голос</div></div></div>
 </section>
 <section id="words" class="page"><div class="columnhead"><div><div class="eyebrow">Урок 02 · Лексика</div><h1>Мои первые слова</h1><p>Отмечай знакомые слова. Озвучка работает офлайн только с установленным китайским голосом на устройстве.</p></div><span class="flag">📚</span></div><div class="vocabcontrols"><button class="chip active" data-filter="all">Все слова</button><button class="chip" data-filter="new">Повторить</button><button class="chip" data-filter="learned">Знаю</button></div><div class="notice">🔊 <strong>Озвучка:</strong> браузер использует системный голос путунхуа. Для работы без сети предварительно установи на телефон <strong>офлайн-голос китайского (zh-CN)</strong>. Аудиофайлы носителей в эту версию пока не встроены.</div><div id="wordmessage" class="msg" aria-live="polite"></div><div class="words" id="wordlist"></div></section>
 <section id="quiz" class="page"><div class="columnhead"><div><div class="eyebrow">Урок 03 · Проверка</div><h1>Мини-тест HSK 1–2</h1><p>Подбери русский перевод китайского слова. Никаких штрафов — только практика.</p></div><span class="flag">📝</span></div><div class="panel quizpanel"><div class="pill" id="quizcount">Вопрос 1 из 10</div><div id="quizbody"><div class="quizword" id="quizhanzi">你好</div><h3>Что означает это слово?</h3><p class="muted" id="quizpinyin">nǐ hǎo</p><div class="quizopts" id="quizopts"></div><div class="msg" id="quizfeedback" aria-live="polite"></div><button class="btn dark hidden" id="nextq">Следующий вопрос →</button></div><div id="quizend" class="hidden"><h2>Готово! 🎉</h2><p id="quizresult"></p><button class="btn primary" id="resetquiz">Пройти ещё раз</button></div></div></section>
-<section id="dialog" class="page"><div class="notice"><strong>🌐 Требуется интернет:</strong> сценарии можно читать и копировать офлайн, но голосовой разговор с ChatGPT работает только при подключении к сети.</div><div class="columnhead"><div><div class="eyebrow">Урок 04 · Говори свободнее</div><h1>Разговор с AI-преподавателем</h1><p>Выбери диалог, скопируй задание и открой голосовой ChatGPT.</p></div><span class="flag">💬</span></div><div class="twoCol"><div class="dialogcard"><div class="stage">СИТУАЦИЯ 01</div><h3>Знакомство · 认识朋友</h3><div class="dialogline">你好！你叫什么名字？<small>Nǐ hǎo! Nǐ jiào shénme míngzi?</small></div><div class="dialogline">我叫安东。我来自俄罗斯。<small>Wǒ jiào Āndōng. Wǒ láizì Éluósī.</small></div><p class="hint">Разговор о знакомстве, возрасте, увлечениях и планах.</p><button class="btn dark" data-scene="intro">Выбрать диалог →</button></div><div class="dialogcard"><div class="stage">СИТУАЦИЯ 02</div><h3>В кафе · 在咖啡馆</h3><div class="dialogline">你好！你想喝什么？<small>Nǐ hǎo! Nǐ xiǎng hē shénme?</small></div><div class="dialogline">我想喝一杯茶。<small>Wǒ xiǎng hē yì bēi chá.</small></div><p class="hint">Заказ напитков, цены, простые просьбы и вопросы.</p><button class="btn dark" data-scene="cafe">Выбрать диалог →</button></div></div><div class="section-head"><div><h2>Как начать разговор</h2><p>ChatGPT Plus и сайт не связаны напрямую: это безопасный и бесплатный по дополнительным платежам старт.</p></div></div><div class="panel"><div class="pill">Шаг 1: выбери сценарий · Шаг 2: скопируй · Шаг 3: открой ChatGPT</div><textarea id="dialogprompt" class="copybox" readonly aria-label="Задание для AI-репетитора"></textarea><div class="tbuttons"><button class="btn primary" id="copyprompt">Скопировать задание</button><a class="btn dark" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">Открыть ChatGPT ↗</a></div><div class="microcopy" id="copymsg" aria-live="polite">Вставь текст в ChatGPT, затем включи голосовой режим. Это отдельное приложение, не встроенный звонок в тренажёре.</div></div></section>
+<section id="dialog" class="page">
+<div class="ai-heading"><span class="ai-avatar">中</span><div><h1>Практика с AI</h1><p>Используй после урока</p></div></div>
+<div class="ai-hero scenic"><h2>Практикуй китайский<br>в реальных<br>ситуациях</h2><p>Общайся с AI, получай исправления и становись увереннее!</p></div>
+<section class="home-section ai-scenes"><div class="home-section-head"><h2>Выбери сценарий</h2><span class="tiny">Доступно 2 ситуации</span></div>
+<div class="twoCol"><div class="dialogcard scene-intro"><div class="scene-photo">🏮</div><div class="stage">СИТУАЦИЯ 01</div><h3>Знакомство · 自我介绍</h3><div class="dialogline">你好！我叫安东。<small>Nǐ hǎo! Wǒ jiào Āndōng.</small></div><p class="hint">Познакомься и расскажи о себе.</p><button class="btn primary neon-gold" type="button" data-scene="intro">Выбрать ›</button></div>
+<div class="dialogcard scene-cafe"><div class="scene-photo">🍵</div><div class="stage">СИТУАЦИЯ 02</div><h3>В кафе · 在咖啡馆</h3><div class="dialogline">我想喝一杯茶。<small>Wǒ xiǎng hē yì bēi chá.</small></div><p class="hint">Закажи напиток и уточни цену.</p><button class="btn primary neon-gold" type="button" data-scene="cafe">Выбрать ›</button></div></div></section>
+<section class="home-section ai-how"><div class="home-section-head"><h2>Как начать разговор</h2></div>
+<div class="journey journey-three"><div class="journey-item"><span class="journey-no">1</span><span class="journey-icon">📖</span><strong>Выбери<br>сценарий</strong></div><span class="journey-arrow">›</span><div class="journey-item"><span class="journey-no">2</span><span class="journey-icon">☷</span><strong>Скопируй<br>задание</strong></div><span class="journey-arrow">›</span><div class="journey-item"><span class="journey-no">3</span><span class="journey-icon">✦</span><strong>Открой<br>ChatGPT</strong></div></div>
+<h3 class="prompt-title">Задание для AI-преподавателя</h3>
+<textarea id="dialogprompt" class="copybox" readonly aria-label="Задание для AI-репетитора"></textarea>
+<div class="tbuttons ai-actions"><button class="btn primary neon-gold" type="button" id="copyprompt">▤ Скопировать задание</button><a class="btn dark neon-blue" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">✦ Открыть ChatGPT ↗</a></div>
+<div class="microcopy" id="copymsg" aria-live="polite">Выбери сценарий и скопируй задание. Открой ChatGPT и включи голосовой режим.</div>
+<div class="ai-online-note">ℹ️ AI-разговор работает только онлайн. Основные уроки и словарь доступны офлайн, если они сохранены на устройстве. ChatGPT открывается отдельно.</div></section>
+</section>
 </main><nav class="bottom-nav" aria-label="Навигация на телефоне"><button type="button" data-page="home" class="active"><span>⌂</span>Главная</button><button type="button" data-page="course"><span>▣</span>Уроки</button><button type="button" data-page="tones"><span>🎙</span>Тоны</button><button type="button" data-page="dialog"><span>✦</span>AI-практика</button></nav><div class="feedback-toast hidden" id="feedbacktoast" role="status" aria-live="polite"></div><footer class="foot">Офлайн PWA · Без платных API · Прогресс хранится на этом устройстве · Не удаляй данные сайта, если хочешь сохранить историю</footer></div>
 <script>
 'use strict';
@@ -323,11 +386,11 @@ function saveCourse(){try{localStorage.setItem(courseStoreKey,JSON.stringify(cou
 function updateCourseMetrics(){const allWords=COURSE.reduce((n,l)=>n+l.vocab.length,0), known=courseState.known.length;document.getElementById('course-done').textContent=courseState.completed.length+' / '+COURSE.length;document.getElementById('course-known').textContent=known;document.getElementById('course-last').textContent=courseState.last?courseState.last.score+'/'+courseState.last.total:'—';if(document.getElementById('home-last-test'))document.getElementById('home-last-test').textContent=courseState.last?courseState.last.score+'/'+courseState.last.total:'—';if(document.getElementById('home-lessons-bar'))document.getElementById('home-lessons-bar').style.width=100*courseState.completed.length/COURSE.length+'%';document.getElementById('statwords').textContent=known+' / '+allWords;document.getElementById('statquiz').textContent=courseState.completed.length+' / '+COURSE.length;document.getElementById('statpercent').textContent=Math.round(100*known/allWords)+'%';document.getElementById('progressbar').style.width=(100*known/allWords)+'%';renderCourseMenu();}
 const safe=x=>String(x).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
 let selectedLesson=1, selectedStep=0, questionNumber=0, questionScore=0, locked=false;
-const STEPS=['📚 Объяснение','🔤 Слова','💬 Диалог','📝 Проверка'];
+const STEPS=['Объяснение','Слова','Диалог','Проверка'];
 function renderCourseMenu(){const parent=document.getElementById('course-menu');parent.innerHTML=COURSE.map(l=>`<button class="lesson-picker ${l.id===selectedLesson?'chosen':''}" data-picklesson="${l.id}"><span class="lesson-index">${safe(l.icon)}</span><span>Урок ${l.id}<span class="picker-sub">${safe(l.title)}</span></span>${courseState.completed.includes(l.id)?'<span class="picker-done" title="Пройден">✓</span>':''}</button>`).join('')}
 function openCourseLesson(id,step=0){selectedLesson=id;selectedStep=step;rememberLesson();questionNumber=0;questionScore=0;locked=false;renderCourseMenu();renderCourseBody();go('course');}
 function renderCourseBody(){const l=COURSE.find(x=>x.id===selectedLesson), area=document.getElementById('course-content');
- area.innerHTML=`<div class="course-kicker">Урок ${l.id} из ${COURSE.length} · ${safe(l.subtitle)}</div><h2>${safe(l.title)}</h2><div class="course-lessongoal">🎯 ${safe(l.goal)}</div><div class="stepnav">${STEPS.map((s,i)=>`<button data-step="${i}" class="${i===selectedStep?'selected':''}">${s}</button>`).join('')}</div><div id="lesson-panel"></div><div class="course-footnav"><button class="btn soft" id="course-prev">← Назад</button><button class="btn primary" id="course-next">Далее →</button></div>`;
+ area.innerHTML=`<div class="course-overline"><span>Урок ${l.id} · ${safe(l.subtitle)}</span><span class="step-counter">Шаг ${selectedStep+1} из 4</span></div><div class="lesson-banner scenic"><span class="lesson-tag">Урок ${l.id}</span><h2>${safe(l.title)}</h2><p>${safe(l.goal)}</p></div><div class="stepnav">${STEPS.map((s,i)=>`<button data-step="${i}" class="${i===selectedStep?'selected':''}"><span class="stepnum">${i+1}</span>${s}</button>`).join('')}</div><div id="lesson-panel"></div><div class="course-footnav"><button class="btn soft" id="course-prev">← Назад</button><button class="btn primary" id="course-next">Далее →</button></div>`;
  const prev=document.getElementById('course-prev'),next=document.getElementById('course-next');prev.disabled=(selectedLesson===1&&selectedStep===0);next.textContent=(selectedStep===3?'Следующий урок →':'Далее →');next.disabled=(selectedLesson===COURSE.length&&selectedStep===3);
  document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>chooseCourseStep(Number(b.dataset.step))));
  prev.onclick=()=>selectedStep>0?chooseCourseStep(selectedStep-1):openCourseLesson(selectedLesson-1,3);
