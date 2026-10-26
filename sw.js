@@ -1,5 +1,5 @@
-const CACHE='chinese-coach-pwa-v18';
-const STATIC=['./','./index.html','./manifest.webmanifest','./assets/china-landscape.svg','./assets/approved-final-home.svg','./assets/approved-lessons.png','./icons/icon-192.png','./icons/icon-512.png','./icons/maskable-512.png'];
+const CACHE='chinese-coach-pwa-v19';
+const STATIC=['./','./index.html','./manifest.webmanifest','./assets/china-landscape.svg','./assets/approved-final-home.svg','./assets/approved-lessons.png','./assets/chinese-pastel-wallpaper.svg','./assets/chinese-waterfall-banner.svg','./assets/chinese-lake-vocab.svg','./assets/chinese-pavilion-dialogue.svg','./icons/icon-192.png','./icons/icon-512.png','./icons/maskable-512.png'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(STATIC)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('chinese-coach-pwa-')&&key!==CACHE).map(key=>caches.delete(key)))),self.clients.claim()]))});
 self.addEventListener('fetch',event=>{
