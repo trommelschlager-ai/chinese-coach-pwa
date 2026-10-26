@@ -256,6 +256,13 @@ body{background:linear-gradient(145deg,#f7f9fc,#f0f4f8);overflow-x:hidden}
  #course .course-footnav .btn{min-height:47px}
  #course .course-sidebar #course-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* Dedicated lesson screen: no competing bottom navigation when studying. */
+body.focus-mode .bottom-nav{display:none!important}
+body.focus-mode #course .course-footnav{bottom:calc(4px + env(safe-area-inset-bottom))}
+body.focus-mode .shell{padding-bottom:48px}
+@media(display-mode:standalone){.offlinebar,.installhelp{display:none!important}}
+@media(max-width:600px){body.focus-mode .shell{padding-bottom:40px};body.focus-mode #course .course-footnav{bottom:calc(6px + env(safe-area-inset-bottom))}}
 </style>
 </head>
 <body>
@@ -324,7 +331,7 @@ const tones=[{hz:'妈',py:'mā',ru:'мама',label:'1-й · ровный',color
 const cacheKey='chinese-coach-personal-v1';let state={learned:[],correct:0};try{const parsed=JSON.parse(localStorage.getItem(cacheKey)||'null');if(parsed){state.learned=Array.isArray(parsed.learned)?parsed.learned.filter(x=>typeof x==='string'):[];state.correct=Number.isFinite(parsed.correct)?Math.max(0,parsed.correct):0;}}catch(e){}
 function save(){try{localStorage.setItem(cacheKey,JSON.stringify(state));}catch(e){}updateStats()}
 function updateStats(){const n=words.filter(w=>state.learned.includes(w.hz)).length;document.getElementById('statwords').textContent=`${n} / ${words.length}`;document.getElementById('statquiz').textContent=state.correct;document.getElementById('statpercent').textContent=Math.round(100*n/words.length)+'%';document.getElementById('progressbar').style.width=(100*n/words.length)+'%'}
-function go(name){if(name==='home'){updateStats();if(typeof updateCourseMetrics==='function')updateCourseMetrics();}document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id===name));document.querySelectorAll('.nav button, .bottom-nav button').forEach(el=>el.classList.toggle('active',el.dataset.page===name));window.scrollTo({top:0,behavior:'smooth'});}
+function go(name){document.body.classList.toggle('focus-mode',name==='course');if(name==='home'){updateStats();if(typeof updateCourseMetrics==='function')updateCourseMetrics();}document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id===name));document.querySelectorAll('.nav button, .bottom-nav button').forEach(el=>el.classList.toggle('active',el.dataset.page===name));window.scrollTo({top:0,behavior:'smooth'});}
 document.querySelectorAll('[data-go],[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go||b.dataset.page)));
 function toast(text){const el=document.getElementById('feedbacktoast');el.textContent=text;el.classList.remove('hidden');clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>el.classList.add('hidden'),5500)}
 // Some Android browsers populate getVoices() late. Don't block speech when it is empty:
@@ -549,6 +556,7 @@ function renderCourseMenu(){
  const parent=document.getElementById('course-menu');
  parent.innerHTML=COURSE.map(l=>`<button class="lesson-picker ${l.id===selectedLesson?'chosen':''}" data-picklesson="${l.id}"><span class="lesson-index">${safe(l.icon)}</span><span>Урок ${l.id}<span class="picker-sub">${safe(l.title)}</span></span>${courseState.completed.includes(l.id)?'<span class="picker-done">✓</span>':''}</button>`).join('');
 }
+function focusScroll(){const el=document.getElementById('course-content');if(el&&document.getElementById('course').classList.contains('active'))el.scrollIntoView({behavior:'smooth',block:'start'})}
 function closeLessonPicker(){
  const list=document.getElementById('course-menu-wrap');
  list.hidden=true;
@@ -612,13 +620,13 @@ function renderCourseBody(){
  const prev=area.querySelector('#course-prev'),next=area.querySelector('#course-next');
  prev.disabled=(selectedLesson===1&&selectedStep===0);
  prev.onclick=()=>{
-   if(selectedStep===1&&vocabIndex>0){vocabIndex--;rememberLesson();renderCoursePanel();return}
-   if(selectedStep===2&&dialogueIndex>0){dialogueIndex--;rememberLesson();renderCoursePanel();return}
+   if(selectedStep===1&&vocabIndex>0){vocabIndex--;rememberLesson();renderCoursePanel();focusScroll();return}
+   if(selectedStep===2&&dialogueIndex>0){dialogueIndex--;rememberLesson();renderCoursePanel();focusScroll();return}
    if(selectedStep>0)chooseCourseStep(selectedStep-1);else if(selectedLesson>1)openCourseLesson(selectedLesson-1,0);
  };
  next.onclick=()=>{
-   if(selectedStep===1&&vocabIndex<l.vocab.length-1){vocabIndex++;rememberLesson();renderCoursePanel();return}
-   if(selectedStep===2&&dialogueIndex<l.dialogue.length-1){dialogueIndex++;rememberLesson();renderCoursePanel();return}
+   if(selectedStep===1&&vocabIndex<l.vocab.length-1){vocabIndex++;rememberLesson();renderCoursePanel();focusScroll();return}
+   if(selectedStep===2&&dialogueIndex<l.dialogue.length-1){dialogueIndex++;rememberLesson();renderCoursePanel();focusScroll();return}
    if(selectedStep<3){chooseCourseStep(selectedStep+1);return}
    if(selectedLesson<COURSE.length)openCourseLesson(selectedLesson+1,0);
  };
@@ -627,7 +635,7 @@ function renderCourseBody(){
 function chooseCourseStep(step){
  if(step<0||step>3)return;
  selectedStep=step;vocabIndex=0;dialogueIndex=0;questionNumber=0;questionScore=0;locked=false;
- rememberLesson();renderCourseBody();
+ rememberLesson();renderCourseBody();focusScroll();
 }
 function renderCoursePanel(){
  const l=COURSE.find(x=>x.id===selectedLesson),panel=document.getElementById('lesson-panel');
@@ -655,7 +663,7 @@ function renderCoursePanel(){
      if(!courseState.known.includes(key))courseState.known.push(key);
      saveCourse();
      if(vocabIndex<l.vocab.length-1)vocabIndex++;
-     rememberLesson();renderCoursePanel();
+     rememberLesson();renderCoursePanel();focusScroll();
    };
    return;
  }
