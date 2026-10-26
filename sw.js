@@ -1,4 +1,4 @@
-const CACHE='chinese-coach-pwa-v10';
+const CACHE='chinese-coach-pwa-v11';
 const STATIC=['./','./index.html','./manifest.webmanifest','./assets/china-landscape.svg','./icons/icon-192.png','./icons/icon-512.png','./icons/maskable-512.png'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(STATIC)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('chinese-coach-pwa-')&&key!==CACHE).map(key=>caches.delete(key)))),self.clients.claim()]))});
