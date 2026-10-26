@@ -147,6 +147,11 @@ body{background:linear-gradient(145deg,#f7f9fc,#f0f4f8);overflow-x:hidden}
 .practice .btn.soft,.course-vocab .vocabbtns button.knownbtn{border:1.5px solid #a7cfe9;box-shadow:0 0 9px #b3d9ed80}
 @media(prefers-reduced-motion:reduce){.btn,.extra-card{transition:none!important}}
 
+
+/* Helpful, unobtrusive voice setup panel */
+.voice-help{margin:12px 0;padding:12px 14px;border-radius:13px;border:1px solid #b9d6ed;background:#f4f9ff;color:#234361;font-size:13px;line-height:1.55}
+.voice-help summary{cursor:pointer;font-weight:850;list-style-position:inside}
+.voice-help p{color:#4e6277;line-height:1.6;margin:10px 0 0}
 </style>
 </head>
 <body>
@@ -183,7 +188,7 @@ body{background:linear-gradient(145deg,#f7f9fc,#f0f4f8);overflow-x:hidden}
   <div class="columnhead"><div><div class="eyebrow">ТРЕНИРОВКА · ПРОИЗНОШЕНИЕ</div><h1>Четыре тона китайского</h1><p>Выбери тон, послушай образец и сравни свою интонацию с ориентиром.</p></div><span class="flag">🎙️</span></div>
   <div class="tone-intro scenic"><span class="lesson-tag">Урок 1</span><h2>Как работают<br>4 тона</h2><p>Один и тот же слог с разным тоном может иметь совершенно разные значения.</p></div>
   <div class="tonegrid" id="tonegrid"></div>
-  <div class="practice"><div class="panel"><h3>Практика произношения</h3><p>Китайское слово и ожидаемая мелодика тона.</p><div class="pronounce" id="practicehanzi">妈</div><div style="color:#ad6f38;font-size:21px;font-weight:800" id="practicepinyin">mā</div><div id="practicetranslation" class="kicker">мама</div><div class="tbuttons"><button class="btn dark" id="listen">🔊 Послушать слово</button><button class="btn soft" id="contourSound">♪ Мелодия тона</button><button class="btn primary" id="record">🎙️ Произнести</button></div><div id="micmessage" class="msg" aria-live="polite">Микрофон записывает около 3 секунд и показывает высоту голоса — работает и без сети при разрешённом доступе.</div><div class="notice"><strong>Важно:</strong> график — учебная подсказка, а не экзаменатор. Программа пока не умеет достоверно оценивать правильность каждого китайского тона. Для 你好 применяется изменение третьего тона (ní hǎo).</div></div><div class="panel"><h3>Твоя интонация</h3><p>Светлая линия — примерная целевая форма; тёмная — найденная высота голоса. Сравни общую форму, не абсолютную высоту.</p><div class="chartwrap"><svg id="pitchchart" viewBox="0 0 400 150" role="img" aria-label="График высоты голоса"><g stroke="#e1e6ee" stroke-width="1"><path d="M0 30 H400 M0 75 H400 M0 120 H400"/></g><path id="targetPath" d="" stroke="#d2b482" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="8 6"/><path id="voicePath" d="" stroke="#2a6083" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg></div><div class="microcopy">Нет микрофона? Можешь слушать и повторять без записи. На телефоне используй HTTPS и разреши доступ к микрофону.</div><div class="divider"></div><div class="tiny"><span style="color:#d2b482">━ ━</span> образец интонации &nbsp;&nbsp; <span style="color:#2a6083">━━</span> твой голос</div></div></div>
+  <div class="practice"><div class="panel"><h3>Практика произношения</h3><p>Китайское слово и ожидаемая мелодика тона.</p><div class="pronounce" id="practicehanzi">妈</div><div style="color:#ad6f38;font-size:21px;font-weight:800" id="practicepinyin">mā</div><div id="practicetranslation" class="kicker">мама</div><div class="tbuttons"><button class="btn dark" id="listen">🔊 Послушать слово</button><button class="btn soft" id="contourSound">♪ Мелодия тона</button><button class="btn primary" id="record">🎙️ Произнести</button></div><details class="voice-help" id="voicehelp"><summary>🔊 Не слышно китайскую речь? Как настроить голос</summary><p>На Redmi: Настройки → Расширенные настройки → Язык и ввод → Синтез речи. Выбери движок Google → Установить голосовые данные → Китайский (Китай), Mandarin (zh-CN). После установки закрой и снова открой приложение. Для работы без интернета скачай именно офлайн-голос.</p><p>Если голоса нет в списке, установи или обнови «Speech Recognition &amp; Synthesis from Google» через Google Play. Кнопка «Мелодия тона» воспроизводит только мелодический сигнал, а не китайскую речь.</p></details><div id="micmessage" class="msg" aria-live="polite">Микрофон записывает около 3 секунд и показывает высоту голоса — работает и без сети при разрешённом доступе.</div><div class="notice"><strong>Важно:</strong> график — учебная подсказка, а не экзаменатор. Программа пока не умеет достоверно оценивать правильность каждого китайского тона. Для 你好 применяется изменение третьего тона (ní hǎo).</div></div><div class="panel"><h3>Твоя интонация</h3><p>Светлая линия — примерная целевая форма; тёмная — найденная высота голоса. Сравни общую форму, не абсолютную высоту.</p><div class="chartwrap"><svg id="pitchchart" viewBox="0 0 400 150" role="img" aria-label="График высоты голоса"><g stroke="#e1e6ee" stroke-width="1"><path d="M0 30 H400 M0 75 H400 M0 120 H400"/></g><path id="targetPath" d="" stroke="#d2b482" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="8 6"/><path id="voicePath" d="" stroke="#2a6083" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg></div><div class="microcopy">Нет микрофона? Можешь слушать и повторять без записи. На телефоне используй HTTPS и разреши доступ к микрофону.</div><div class="divider"></div><div class="tiny"><span style="color:#d2b482">━ ━</span> образец интонации &nbsp;&nbsp; <span style="color:#2a6083">━━</span> твой голос</div></div></div>
 </section>
 <section id="words" class="page"><div class="columnhead"><div><div class="eyebrow">Урок 02 · Лексика</div><h1>Мои первые слова</h1><p>Отмечай знакомые слова. Озвучка работает офлайн только с установленным китайским голосом на устройстве.</p></div><span class="flag">📚</span></div><div class="vocabcontrols"><button class="chip active" data-filter="all">Все слова</button><button class="chip" data-filter="new">Повторить</button><button class="chip" data-filter="learned">Знаю</button></div><div class="notice">🔊 <strong>Озвучка:</strong> браузер использует системный голос путунхуа. Для работы без сети предварительно установи на телефон <strong>офлайн-голос китайского (zh-CN)</strong>. Аудиофайлы носителей в эту версию пока не встроены.</div><div id="wordmessage" class="msg" aria-live="polite"></div><div class="words" id="wordlist"></div></section>
 <section id="quiz" class="page"><div class="columnhead"><div><div class="eyebrow">Урок 03 · Проверка</div><h1>Мини-тест HSK 1–2</h1><p>Подбери русский перевод китайского слова. Никаких штрафов — только практика.</p></div><span class="flag">📝</span></div><div class="panel quizpanel"><div class="pill" id="quizcount">Вопрос 1 из 10</div><div id="quizbody"><div class="quizword" id="quizhanzi">你好</div><h3>Что означает это слово?</h3><p class="muted" id="quizpinyin">nǐ hǎo</p><div class="quizopts" id="quizopts"></div><div class="msg" id="quizfeedback" aria-live="polite"></div><button class="btn dark hidden" id="nextq">Следующий вопрос →</button></div><div id="quizend" class="hidden"><h2>Готово! 🎉</h2><p id="quizresult"></p><button class="btn primary" id="resetquiz">Пройти ещё раз</button></div></div></section>
@@ -217,12 +222,46 @@ function updateStats(){const n=words.filter(w=>state.learned.includes(w.hz)).len
 function go(name){if(name==='home'){updateStats();if(typeof updateCourseMetrics==='function')updateCourseMetrics();}document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id===name));document.querySelectorAll('.nav button, .bottom-nav button').forEach(el=>el.classList.toggle('active',el.dataset.page===name));window.scrollTo({top:0,behavior:'smooth'});}
 document.querySelectorAll('[data-go],[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go||b.dataset.page)));
 function toast(text){const el=document.getElementById('feedbacktoast');el.textContent=text;el.classList.remove('hidden');clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>el.classList.add('hidden'),5500)}
-function chineseVoice(){if(!('speechSynthesis' in window))return null;const vv=window.speechSynthesis.getVoices();return vv.find(v=>/^zh[-_]CN/i.test(v.lang) && v.localService)||vv.find(v=>/^zh[-_]CN/i.test(v.lang))||vv.find(v=>/^zh/i.test(v.lang))||null}
-function say(hanzi){if(!('speechSynthesis' in window)){toast('Нет синтеза речи. Установи китайский голос в настройках устройства.');return}
- let voice=chineseVoice();if(!voice){const msg='Китайский голос не найден. Установи офлайн-голос Mandarin (zh-CN) в настройках телефона.';toast(msg);if(document.getElementById('wordmessage'))document.getElementById('wordmessage').textContent=msg;return}
- if(!navigator.onLine && voice.localService===false){toast('Системный голос может требовать интернет. Установи офлайн-голос китайского языка.');return}
- speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(hanzi);u.lang='zh-CN';u.voice=voice;u.rate=.82;u.pitch=1;u.onerror=()=>toast('Не удалось произнести слово. Проверь установку китайского офлайн-голоса.');speechSynthesis.speak(u)
+// Some Android browsers populate getVoices() late. Don't block speech when it is empty:
+// let the installed TTS engine resolve the Mandarin locale from utterance.lang.
+function chineseVoice(){
+ if(!('speechSynthesis' in window))return null;
+ const voices=window.speechSynthesis.getVoices();
+ return voices.find(v=>/^zh[-_]CN/i.test(v.lang)&&v.localService)
+   ||voices.find(v=>/^zh[-_]CN/i.test(v.lang))
+   ||voices.find(v=>/^zh[-_]/i.test(v.lang)&&v.localService)
+   ||voices.find(v=>/^zh[-_]/i.test(v.lang))
+   ||null;
 }
+function showChineseVoiceHelp(){
+ const help=document.getElementById('voicehelp');
+ if(help){help.open=true;help.scrollIntoView({block:'nearest',behavior:'smooth'});}
+}
+function speakChinese(hanzi,rate){
+ if(!('speechSynthesis' in window)){
+   toast('Этот браузер не поддерживает озвучку. Нужен Chrome и системный китайский голос.');
+   showChineseVoiceHelp();return;
+ }
+ const engine=window.speechSynthesis;
+ const voice=chineseVoice();
+ if(!navigator.onLine&&(!voice||voice.localService===false)){
+   toast('Без интернета нужен установленный локальный голос Mandarin (zh-CN).');
+   showChineseVoiceHelp();return;
+ }
+ engine.cancel();
+ const u=new SpeechSynthesisUtterance(hanzi);
+ u.lang='zh-CN';
+ // When the list is still empty, a valid OS engine may still speak via lang.
+ if(voice)u.voice=voice;
+ u.rate=rate;
+ u.pitch=1;
+ u.onerror=()=>{
+   toast('Китайский голос не сработал. Открой инструкцию по настройке озвучки.');
+   showChineseVoiceHelp();
+ };
+ engine.speak(u);
+}
+function say(hanzi){speakChinese(hanzi,.82)}
 const tonegrid=document.getElementById('tonegrid');let activeTone=0;
 function tonePattern(i){const paths=['M8 14 H72','M8 31 L72 5','M8 12 Q36 42 49 30 T72 15','M8 5 L72 32'];return paths[i]}
 tones.forEach((t,i)=>{let b=document.createElement('button');b.className='tone';b.type='button';b.setAttribute('aria-pressed',i===0?'true':'false');b.innerHTML=`<div class="char">${t.hz}</div><div class="pinyin">${t.py}</div><svg viewBox="0 0 80 40" aria-hidden="true"><path d="${tonePattern(i)}" stroke="${t.color}" stroke-width="4.5" fill="none" stroke-linecap="round" /></svg><div class="tone-title">${t.label}</div>`;b.addEventListener('click',()=>selectTone(i));tonegrid.appendChild(b)});
@@ -420,8 +459,7 @@ function renderCoursePanel(){const l=COURSE.find(x=>x.id===selectedLesson), pane
   panel.querySelectorAll('[data-sayphrase]').forEach(b=>b.addEventListener('click',()=>sayAtRate(b.dataset.sayphrase,.85)));return}
  renderLessonQuiz();
 }
-function sayAtRate(hanzi,rate){if(!('speechSynthesis' in window)){toast('Синтез речи недоступен в этом браузере.');return}const v=chineseVoice();if(!v){toast('Офлайн-голос китайского (zh-CN) не найден. Установи голос Mandarin в системных настройках телефона.');return}if(!navigator.onLine&&v.localService===false){toast('Выбранный голос может требовать интернет. Нужен локальный китайский голос.');return}
- window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(hanzi);u.lang='zh-CN';u.voice=v;u.rate=rate;u.pitch=1;u.onerror=()=>toast('Не удалось воспроизвести. Проверь китайский голос в настройках.');window.speechSynthesis.speak(u)}
+function sayAtRate(hanzi,rate){speakChinese(hanzi,rate)}
 function renderLessonQuiz(){const l=COURSE.find(x=>x.id===selectedLesson),panel=document.getElementById('lesson-panel');if(questionNumber>=l.quiz.length){const pct=Math.round(100*questionScore/l.quiz.length),passed=pct>=75;courseState.last={lesson:l.id,score:questionScore,total:l.quiz.length};if(passed&&!courseState.completed.includes(l.id))courseState.completed.push(l.id);saveCourse();panel.innerHTML=`<div class="course-score"><div class="course-kicker">Результат урока ${l.id}</div><strong>${questionScore} / ${l.quiz.length}</strong><p>${passed?'✅ Урок пройден!':'Для зачёта нужно минимум 75% правильных ответов.'}<br>Точность: ${pct}%</p><button class="btn dark" id="course-again">Пройти тест снова</button>${passed&&l.id<COURSE.length?'<button class="btn primary" id="course-open-next" style="margin:8px">Перейти к следующему уроку →</button>':''}</div>`;document.getElementById('course-again').onclick=()=>{questionNumber=0;questionScore=0;renderLessonQuiz()};if(passed&&l.id<COURSE.length)document.getElementById('course-open-next').onclick=()=>openCourseLesson(l.id+1,0);return}
  const q=l.quiz[questionNumber];locked=false;panel.innerHTML=`<div class="pill">Вопрос ${questionNumber+1} из ${l.quiz.length}</div><div class="course-progress"><i style="width:${Math.round(100*questionNumber/l.quiz.length)}%"></i></div><div class="course-quiz-question">${safe(q[0])}</div><div class="course-options">${q[1].map((o,i)=>`<button data-answer="${i}">${safe(o)}</button>`).join('')}</div><div id="course-feedback" class="msg" aria-live="polite" style="margin-top:15px"></div><button id="course-answer-next" class="btn primary hidden">${questionNumber===l.quiz.length-1?'Узнать результат →':'Следующий вопрос →'}</button>`;
  panel.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{if(locked)return;locked=true;const pick=Number(b.dataset.answer),ok=pick===q[2];if(ok)questionScore++;panel.querySelectorAll('[data-answer]').forEach(x=>{x.disabled=true;if(Number(x.dataset.answer)===q[2])x.classList.add('correct');else if(x===b)x.classList.add('incorrect')});document.getElementById('course-feedback').textContent=(ok?'✓ Верно! ':'✗ Неверно. ')+q[3];document.getElementById('course-answer-next').classList.remove('hidden') }));
