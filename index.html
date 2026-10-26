@@ -268,6 +268,23 @@ body.focus-mode .shell{padding-bottom:48px}
 .brandmark svg,.ai-avatar svg{width:90%;height:90%;filter:drop-shadow(0 1px 2px #172b39a0)}
 .brandmark-badge{position:absolute;bottom:1px;right:0;background:#c93337;color:#fff;border-radius:6px;font-family:"Noto Sans SC",sans-serif;font-size:9px;font-weight:900;padding:1px 3px;line-height:1.3;box-shadow:0 0 6px #ff5c5a}
 @media(max-width:600px){body.focus-mode .shell{padding-bottom:40px}body.focus-mode #course .course-footnav{bottom:calc(6px + env(safe-area-inset-bottom))}}
+
+/* Actionable speech and isolated-tone learning checks */
+#course .focus-check{display:block;width:100%;min-height:47px;font-size:14px;margin-top:10px}
+#course .focus-practice-actions{margin-bottom:7px}
+#course .focus-tone-check{padding:12px;margin:9px 0 12px;border:1px solid #dbe6f4;border-radius:14px;background:#f3f8ff;display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px}
+#course .focus-tone-check>span{font-size:13px;color:#304f70;font-weight:750}
+#course .focus-tone-check .btn{min-height:42px;font-size:12px}
+#course .focus-tone-check .focus-feedback{grid-column:1 / -1}
+#course .focus-tone.active-tone{border-color:#e9b862;box-shadow:0 0 0 2px #ffeac7,0 0 14px #eac465a3}
+#course .focus-tone{cursor:pointer}
+#course .check-result{background:#f5f8fc;border:1px solid #cfddec;border-radius:13px;padding:13px 14px;margin-top:10px;color:#2e4861;font-size:13px}
+#course .check-result strong{font-size:14px}
+#course .check-result p{margin:7px 0;line-height:1.5}
+#course .check-result small{display:block;font-size:11px;color:#566d85;line-height:1.5}
+#course .check-result.check-ok{background:#effaf4;border-color:#a6d9bc;color:#216e44}
+#course .check-result.check-retry{background:#fff8ee;border-color:#f0d19a;color:#805d2b}
+@media(max-width:600px){#course .focus-tone-check{grid-template-columns:1fr auto;padding:9px}#course .focus-tone-check>span{font-size:11px}#course .focus-tone-check .btn{font-size:11px;padding:7px 9px}#course .focus-check{min-height:45px}}
 </style>
 </head>
 <body>
@@ -579,13 +596,27 @@ function openCourseLesson(id,step=0,part=0){
 function focusedCard(hz,py,ru){
  return `<div class="focus-phrase"><strong class="focus-hanzi">${safe(hz)}</strong><span class="focus-pinyin">${safe(py)}</span><span class="focus-russian">${safe(ru)}</span></div>`;
 }
-function practiceButtons(hz,rate){
- return `<div class="focus-practice-actions"><button type="button" class="btn dark neon-blue" data-play-focus="${safe(hz)}">🔊 Слушать</button><button type="button" class="btn dark neon-blue" id="focus-repeat">🎤 Повторить</button></div><div class="focus-feedback" id="focus-feedback" aria-live="polite"></div>`;
+function practiceButtons(hz,py){
+ const tone=isSingleToneSyllable(py);
+ const label=tone?'Проверить тон':'Проверить речь';
+ return `<div class="focus-practice-actions"><button type="button" class="btn dark neon-blue" data-play-focus="${safe(hz)}">🔊 Слушать</button><button type="button" class="btn dark neon-blue" id="focus-repeat">🎤 Повторить</button></div><button type="button" id="focus-check" class="btn primary neon-gold focus-check" data-check-hz="${safe(hz)}" data-check-py="${safe(py)}">🎯 ${label}</button><div class="focus-feedback" id="focus-feedback" aria-live="polite"></div>`;
 }
 function connectPractice(panel,rate=.84){
  panel.querySelectorAll('[data-play-focus]').forEach(b=>b.addEventListener('click',()=>sayAtRate(b.dataset.playFocus,rate)));
  panel.querySelectorAll('[data-say-tone]').forEach(b=>b.addEventListener('click',()=>sayAtRate(b.dataset.sayTone,.85)));
  const repeat=panel.querySelector('#focus-repeat');if(repeat)repeat.addEventListener('click',recordFocusRepeat);
+ const check=panel.querySelector('#focus-check');
+ if(check)check.addEventListener('click',()=>checkChinesePractice(check.dataset.checkHz,check.dataset.checkPy,check,'focus-feedback'));
+ const toneCheck=panel.querySelector('#focus-check-tone');
+ if(toneCheck)toneCheck.addEventListener('click',()=>checkChinesePractice(toneCheck.dataset.hz,toneCheck.dataset.py,toneCheck,'focus-tone-feedback'));
+ panel.querySelectorAll('.focus-tone[data-say-tone]').forEach(tile=>tile.addEventListener('click',()=>{
+   panel.querySelectorAll('.focus-tone[data-say-tone]').forEach(b=>b.classList.remove('active-tone'));
+   tile.classList.add('active-tone');
+   if(toneCheck){toneCheck.dataset.hz=tile.dataset.sayTone;toneCheck.dataset.py=tile.dataset.py;}
+   const label=panel.querySelector('#focus-tone-choice');
+   if(label)label.textContent='Выбран: '+tile.dataset.py+' · '+tile.dataset.sayTone;
+   const feedback=panel.querySelector('#focus-tone-feedback');if(feedback)feedback.textContent='';
+ }));
 }
 async function recordFocusRepeat(){
  const message=document.getElementById('focus-feedback');
@@ -650,18 +681,18 @@ function renderCoursePanel(){
    if(l.id===1){
      const sample=[['mā','妈','мама','—'],['má','麻','конопля','↗'],['mǎ','马','лошадь','⌄'],['mà','骂','ругать','↘']];
      panel.innerHTML=`<div class="lesson-banner scenic focus-banner"><h2>Как работают 4 тона</h2><p>Один слог — четыре разных значения.</p></div>
-     <div class="focus-tones">${sample.map((t,i)=>`<button type="button" class="focus-tone" data-say-tone="${t[1]}"><span>${i+1} тон</span><b class="contour">${t[3]}</b><strong>${t[0]}</strong><em>${t[1]}</em><small>${t[2]}</small><span class="tone-speaker">🔊</span></button>`).join('')}</div>
-     <div class="focus-saycard"><div class="focus-card-title">Практикуй фразу</div>${focusedCard('你好','nǐ hǎo','Привет')}${practiceButtons('你好')}</div>
+     <div class="focus-tones">${sample.map((t,i)=>`<button type="button" class="focus-tone ${i===0?'active-tone':''}" data-say-tone="${t[1]}" data-py="${t[0]}"><span>${i+1} тон</span><b class="contour">${t[3]}</b><strong>${t[0]}</strong><em>${t[1]}</em><small>${t[2]}</small><span class="tone-speaker">🔊</span></button>`).join('')}</div><div class="focus-tone-check"><span id="focus-tone-choice">Выбран: mā · 妈</span><button type="button" id="focus-check-tone" class="btn primary neon-gold" data-hz="妈" data-py="mā">🎯 Проверить тон</button><div id="focus-tone-feedback" class="focus-feedback" aria-live="polite"></div></div>
+     <div class="focus-saycard"><div class="focus-card-title">Практикуй фразу</div>${focusedCard('你好','nǐ hǎo','Привет')}${practiceButtons('你好','nǐ hǎo')}</div>
      <details class="focus-details"><summary>💡 Совет учителя и правило третьего тона</summary><p>Сначала слушай, потом повторяй вслух три раза. В записи 你好 — nǐ hǎo, но в речи первый слог звучит ní (изменение третьего тона).</p>${l.notes.map(n=>`<div class="focus-mini"><strong>${safe(n.title)}</strong><p>${safe(n.text)}</p></div>`).join('')}</details>`;
    }else{
      const n=l.notes[0],others=l.notes.slice(1);
-     panel.innerHTML=`<div class="lesson-banner scenic focus-banner"><h2>${safe(n.title)}</h2><p>${safe(l.goal)}</p></div><p class="focus-short">${safe(n.text.length>125?n.text.slice(0,125).trim()+'…':n.text)}</p><div class="focus-saycard"><div class="focus-card-title">Послушай и повтори</div>${focusedCard(n.hz,n.py,n.ru)}${practiceButtons(n.hz)}</div><details class="focus-details"><summary>📖 Подробнее о правиле</summary><p>${safe(n.text)}</p>${others.map(x=>`<div class="focus-mini"><strong>${safe(x.title)}</strong><p>${safe(x.text)}</p><div>${safe(x.hz)} · ${safe(x.py)}</div></div>`).join('')}</details>`;
+     panel.innerHTML=`<div class="lesson-banner scenic focus-banner"><h2>${safe(n.title)}</h2><p>${safe(l.goal)}</p></div><p class="focus-short">${safe(n.text.length>125?n.text.slice(0,125).trim()+'…':n.text)}</p><div class="focus-saycard"><div class="focus-card-title">Послушай и повтори</div>${focusedCard(n.hz,n.py,n.ru)}${practiceButtons(n.hz,n.py)}</div><details class="focus-details"><summary>📖 Подробнее о правиле</summary><p>${safe(n.text)}</p>${others.map(x=>`<div class="focus-mini"><strong>${safe(x.title)}</strong><p>${safe(x.text)}</p><div>${safe(x.hz)} · ${safe(x.py)}</div></div>`).join('')}</details>`;
    }
    next.textContent='К словам →';connectPractice(panel);return;
  }
  if(selectedStep===1){
    const w=l.vocab[vocabIndex],key=l.id+'-'+vocabIndex,known=courseState.known.includes(key);
-   panel.innerHTML=`<div class="focus-count">🔤 Слово ${vocabIndex+1} из ${l.vocab.length}</div><div class="focus-saycard focus-wordcard"><div class="focus-card-title">Слушай и повторяй</div>${focusedCard(w[0],w[1],w[2])}${practiceButtons(w[0])}<button type="button" class="focus-learned ${known?'is-known':''}" id="focus-known">${known?'✓ Уже знаю':'☆ Запомнил слово'}</button></div><div class="focus-direction">Произнеси вслух и переходи к следующему слову.</div>`;
+   panel.innerHTML=`<div class="focus-count">🔤 Слово ${vocabIndex+1} из ${l.vocab.length}</div><div class="focus-saycard focus-wordcard"><div class="focus-card-title">Слушай и повторяй</div>${focusedCard(w[0],w[1],w[2])}${practiceButtons(w[0],w[1])}<button type="button" class="focus-learned ${known?'is-known':''}" id="focus-known">${known?'✓ Уже знаю':'☆ Запомнил слово'}</button></div><div class="focus-direction">Произнеси вслух и переходи к следующему слову.</div>`;
    next.textContent=vocabIndex===l.vocab.length-1?'К диалогу →':'Следующее слово →';
    prev.disabled=false;connectPractice(panel,.87);
    panel.querySelector('#focus-known').onclick=()=>{
@@ -674,7 +705,7 @@ function renderCoursePanel(){
  }
  if(selectedStep===2){
    const d=l.dialogue[dialogueIndex];
-   panel.innerHTML=`<div class="focus-count">💬 Реплика ${dialogueIndex+1} из ${l.dialogue.length}</div><div class="focus-saycard focus-dialog-card"><div class="focus-card-title">Собеседник ${safe(d[0])} говорит</div>${focusedCard(d[1],d[2],d[3])}${practiceButtons(d[1])}</div><div class="focus-direction">Послушай, повтори и нажми «Далее».</div>`;
+   panel.innerHTML=`<div class="focus-count">💬 Реплика ${dialogueIndex+1} из ${l.dialogue.length}</div><div class="focus-saycard focus-dialog-card"><div class="focus-card-title">Собеседник ${safe(d[0])} говорит</div>${focusedCard(d[1],d[2],d[3])}${practiceButtons(d[1],d[2])}</div><div class="focus-direction">Послушай, повтори и нажми «Далее».</div>`;
    next.textContent=dialogueIndex===l.dialogue.length-1?'К проверке →':'Следующая реплика →';
    prev.disabled=false;connectPractice(panel,.83);return;
  }
@@ -705,6 +736,134 @@ document.getElementById('course-choose').addEventListener('click',()=>{
 document.getElementById('startlearning').addEventListener('click',startLearning);
 document.getElementById('continuelearning').addEventListener('click',continueLearning);
 document.getElementById('how-learning').addEventListener('click',()=>{const el=document.getElementById('learning-guide');el.classList.toggle('hidden');document.getElementById('how-learning').textContent=el.classList.contains('hidden')?'Подробнее ›':'Свернуть ↑'});
+
+/* Two distinct checks. Isolated syllables: local, approximate tone contour.
+   Other phrases: browser Chinese speech recognition (online in most browsers).
+   Neither constitutes a certified linguistic assessment. */
+function isSingleToneSyllable(py){
+ const part=String(py||'').trim().toLowerCase();
+ if(!/^[a-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüḿńň]+$/i.test(part))return 0;
+ if(/[āēīōūǖ]/.test(part))return 1;
+ if(/[áéíóúǘḿń]/.test(part))return 2;
+ if(/[ǎěǐǒǔǚň]/.test(part))return 3;
+ if(/[àèìòùǜ]/.test(part))return 4;
+ return 0;
+}
+function median(numbers){
+ if(!numbers.length)return 0;
+ const sorted=[...numbers].sort((a,b)=>a-b);
+ return sorted[Math.floor(sorted.length/2)];
+}
+function inspectSingleTone(pitches,expected){
+ const clean=pitches.filter(p=>Number.isFinite(p)&&p>=85&&p<=500);
+ if(clean.length<9)return {type:'unknown',text:'Не удалось уверенно измерить высоту голоса. Говори один короткий слог в тихой комнате.'};
+ // Trim fricative onset and final tail; suppress isolated octave tracking jumps.
+ const base=median(clean),filter=clean.filter(v=>Math.abs(12*Math.log2(v/base))<7);
+ if(filter.length<9)return {type:'unknown',text:'Тон не определился: запись слишком неровная. Попробуй повторить слог.'};
+ const trimmed=filter.slice(1,-1);
+ const values=trimmed.map(v=>12*Math.log2(v/base));
+ const smooth=values.map((_,i)=>median(values.slice(Math.max(0,i-1),Math.min(values.length,i+2))));
+ const n=smooth.length;
+ const head=median(smooth.slice(0,Math.max(2,Math.floor(n*.3))));
+ const tail=median(smooth.slice(-Math.max(2,Math.floor(n*.3))));
+ const center=median(smooth.slice(Math.floor(n*.35),Math.ceil(n*.65)));
+ const slope=tail-head;
+ const range=Math.max(...smooth)-Math.min(...smooth);
+ const dip=Math.min(head,tail)-center;
+ let guessed=0;
+ if(dip>1.25&&head-center>1.25&&tail-center>1.0)guessed=3;
+ else if(slope>1.9&&range>=2)guessed=2;
+ else if(slope< -1.9&&range>=2)guessed=4;
+ else if(Math.abs(slope)<1.2&&range<2.2)guessed=1;
+ const names=['','ровный (1-й)','восходящий (2-й)','нисходяще-восходящий (3-й)','нисходящий (4-й)'];
+ if(!guessed)return {type:'unknown',text:'Мелодика получилась неоднозначной. Послушай образец и повтори слог ещё раз.'};
+ return {type:guessed===expected?'ok':'retry',guessed,
+   text:guessed===expected?
+   'Мелодика похожа на '+names[expected]+'. Это предварительная подсказка, а не подтверждение правильного тона.':
+   'Похоже на '+names[guessed]+', а нужен '+names[expected]+'. Попробуй ещё раз — это приблизительный анализ.'
+ };
+}
+async function checkToneLocally(expected){
+ const devices=navigator.mediaDevices,AC=window.AudioContext||window.webkitAudioContext;
+ if(!devices?.getUserMedia||!AC)return {type:'unsupported',text:'Проверка тонов недоступна в этом браузере. Можно слушать и повторять самостоятельно.'};
+ let stream,ctx;
+ try{
+   stream=await devices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+   ctx=new AC();
+   if(ctx.state==='suspended')await ctx.resume();
+   const analyser=ctx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.1;
+   const source=ctx.createMediaStreamSource(stream);source.connect(analyser);
+   const buf=new Float32Array(analyser.fftSize),frames=[];
+   await new Promise(resolve=>{
+     let start=performance.now(),last=-999;
+     function tick(now){
+       if(now-start>=2200){resolve();return}
+       if(now-last>=95){last=now;analyser.getFloatTimeDomainData(buf);frames.push(detectPitch(buf,ctx.sampleRate))}
+       requestAnimationFrame(tick);
+     }
+     requestAnimationFrame(tick);
+   });
+   return inspectSingleTone(frames,expected);
+ }catch(e){return {type:'unsupported',text:'Нет доступа к микрофону. Разреши его в настройках телефона и попробуй снова.'}}
+ finally{try{stream?.getTracks().forEach(t=>t.stop())}catch(e){};try{await ctx?.close()}catch(e){}}
+}
+function recognizeChineseText(){
+ return new Promise(resolve=>{
+   const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
+   if(!Speech){resolve({error:'Браузер не поддерживает распознавание китайской речи.'});return}
+   if(!navigator.onLine){resolve({error:'Для проверки слов через распознавание речи сейчас нужен интернет.'});return}
+   let rec,done=false,clock;
+   function finish(data){if(done)return;done=true;clearTimeout(clock);try{rec?.abort()}catch(e){}resolve(data)}
+   try{
+     rec=new Speech();rec.lang='zh-CN';rec.interimResults=false;rec.continuous=false;rec.maxAlternatives=1;
+     rec.onresult=e=>{const spoken=e.results?.[0]?.[0]?.transcript||'';finish({spoken})};
+     rec.onerror=e=>{let message=e.error==='not-allowed'?'Не разрешён доступ к микрофону.':
+       e.error==='no-speech'?'Не расслышал речь. Попробуй ближе к микрофону.':
+       e.error==='network'?'Сервис распознавания недоступен. Проверь интернет.':
+       'Не удалось распознать речь ('+(e.error||'ошибка')+').';
+       finish({error:message});};
+     rec.onend=()=>finish({error:'Речь не распознана. Повтори слово ещё раз.'});
+     clock=setTimeout(()=>finish({error:'Превышено время ожидания распознавания. Попробуй ещё раз.'}),8000);
+     rec.start();
+   }catch(e){finish({error:'Распознавание китайской речи не удалось запустить в этом браузере.'})}
+ });
+}
+function hanziOnly(value){
+ return String(value||'').normalize('NFKC').replace(/[^\u3400-\u9fff]/g,'');
+}
+let checkBusy=false;
+async function checkChinesePractice(hz,py,button,targetId){
+ const target=document.getElementById(targetId);
+ if(!target||checkBusy)return;
+ const tone=isSingleToneSyllable(py);
+ checkBusy=true;
+ const original=button.textContent;button.disabled=true;
+ button.textContent='🎙️ Говори…';
+ target.textContent=tone?'Произнеси один слог обычным голосом (примерно 2 секунды).':
+ 'Говори по-китайски после разрешения микрофона. Проверяем, что распознал браузер.';
+ try{
+  if(tone){
+   const result=await checkToneLocally(tone);
+   target.innerHTML='<div class="check-result '+(result.type==='ok'?'check-ok':result.type==='retry'?'check-retry':'')+'"><strong>'+
+     (result.type==='ok'?'✓ Похоже на нужный тон':result.type==='retry'?'↻ Попробуй ещё раз':'△ Недостаточно данных')+'</strong><p>'+
+     safe(result.text)+'</p><small>Тон оценивается по изменению высоты голоса на устройстве. Это не профессиональная проверка.</small></div>';
+  }else{
+   const result=await recognizeChineseText();
+   if(result.error){
+     target.innerHTML='<div class="check-result"><strong>△ Проверить речь не удалось</strong><p>'+safe(result.error)+'</p><small>В Chrome распознавание обычно требует интернет и может отправлять голос на сервер службы распознавания.</small></div>';
+   }else{
+     const expected=hanziOnly(hz),spoken=hanziOnly(result.spoken),matched=!!expected&&expected===spoken;
+     target.innerHTML='<div class="check-result '+(matched?'check-ok':'check-retry')+'"><strong>'+
+        (matched?'✓ Браузер распознал нужные слова':'↻ Попробуй ещё раз')+'</strong>'+
+        '<p>Ты произнёс (по версии распознавания): <b>'+safe(result.spoken)+'</b></p>'+
+        '<p>Ожидалось: <b>'+safe(hz)+'</b></p>'+
+        '<small>Совпадение текста не означает, что все китайские тоны произнесены правильно. Для точной оценки нужен отдельный речевой анализ.</small></div>';
+   }
+  }
+ }catch(e){target.textContent='Проверка прервалась. Разреши микрофон и попробуй ещё раз.'}
+ finally{checkBusy=false;if(button.isConnected){button.disabled=false;button.textContent=original}}
+}
+
 </script>
 </body>
 </html>
