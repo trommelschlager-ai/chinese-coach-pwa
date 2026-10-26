@@ -603,7 +603,7 @@ function focusedCard(hz,py,ru){
  return `<div class="focus-phrase"><strong class="focus-hanzi">${safe(hz)}</strong><span class="focus-pinyin">${safe(py)}</span><span class="focus-russian">${safe(ru)}</span></div>`;
 }
 function practiceButtons(hz,py){
- const tone=isSingleToneSyllable(py);
+ const tone=isSingleToneSyllable(py,hz);
  const label=tone?'Проверить тон':'Проверить речь';
  return `<div class="focus-practice-actions"><button type="button" class="btn dark neon-blue" data-play-focus="${safe(hz)}">🔊 Слушать</button><button type="button" class="btn dark neon-blue" id="focus-repeat">🎤 Повторить</button></div><button type="button" id="focus-check" class="btn primary neon-gold focus-check" data-check-hz="${safe(hz)}" data-check-py="${safe(py)}">🎯 ${label}</button><div class="focus-feedback" id="focus-feedback" aria-live="polite"></div>`;
 }
@@ -746,7 +746,10 @@ document.getElementById('how-learning').addEventListener('click',()=>{const el=d
 /* Two distinct checks. Isolated syllables: local, approximate tone contour.
    Other phrases: browser Chinese speech recognition (online in most browsers).
    Neither constitutes a certified linguistic assessment. */
-function isSingleToneSyllable(py){
+function isSingleToneSyllable(py,hz){
+ // Accent-bearing pinyin can still be a two-character word such as 谢谢 xièxie.
+ // Only compare a pitch contour with a tone target for one written syllable.
+ if(hz!==undefined&&hanziOnly(hz).length!==1)return 0;
  const part=String(py||'').trim().toLowerCase();
  if(!/^[a-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüḿńň]+$/i.test(part))return 0;
  if(/[āēīōūǖ]/.test(part))return 1;
@@ -841,7 +844,7 @@ let checkBusy=false;
 async function checkChinesePractice(hz,py,button,targetId){
  const target=document.getElementById(targetId);
  if(!target||checkBusy)return;
- const tone=isSingleToneSyllable(py);
+ const tone=isSingleToneSyllable(py,hz);
  checkBusy=true;
  const original=button.textContent;button.disabled=true;
  button.textContent='🎙️ Говори…';
