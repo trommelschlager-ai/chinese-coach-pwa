@@ -412,11 +412,36 @@ document.getElementById('listen').addEventListener('click',()=>say(tones[activeT
 let actx;function playToneMelody(){const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const ctx=new C();const osc=ctx.createOscillator(),amp=ctx.createGain();osc.type='sine';osc.connect(amp);amp.connect(ctx.destination);const t=ctx.currentTime+.04,d=.8;osc.frequency.setValueAtTime(160, t);for(let j=0;j<=25;j++){let x=j/25;let norm=(120-targetY(x))/100;osc.frequency.setValueAtTime(135+norm*95,t+x*d)}amp.gain.setValueAtTime(.0001,t);amp.gain.exponentialRampToValueAtTime(.13,t+.035);amp.gain.setValueAtTime(.13,t+d-.05);amp.gain.exponentialRampToValueAtTime(.0001,t+d);osc.start(t);osc.stop(t+d+.01);osc.onended=()=>ctx.close()}
 document.getElementById('contourSound').addEventListener('click',playToneMelody);
 let recording=false;
-function detectPitch(buf,sr){ // Lightweight autocorrelation for a visual pitch hint, not a tone grade.
- const n=buf.length;let rms=0;for(let i=0;i<n;i++)rms+=buf[i]*buf[i];rms=Math.sqrt(rms/n);if(rms<.005)return null;
- const minLag=Math.floor(sr/500),maxLag=Math.min(Math.floor(sr/85),Math.floor(n/2));let bestLag=0,bestCorr=0;
- for(let lag=minLag;lag<=maxLag;lag++){let c=0,e1=0,e2=0;for(let i=0;i<n-lag;i+=2){const a=buf[i],b=buf[i+lag];c+=a*b;e1+=a*a;e2+=b*b}let corr=c/Math.sqrt(e1*e2+.00001);if(corr>bestCorr){bestCorr=corr;bestLag=lag}}
- if(bestCorr<.65||!bestLag)return null;return sr/bestLag;
+function detectPitch(buf,sr){
+ // Fast normalized autocorrelation at 1/2 sample rate. Faster on Android phones.
+ // Prefer the earliest strong correlation peak to reduce false octave halving.
+ const n=buf.length>>1,rate=sr*.5;
+ let rms=0;
+ for(let i=0;i<n;i++){const v=buf[i*2];rms+=v*v}
+ if(Math.sqrt(rms/n)<.005)return null;
+ const minLag=Math.max(1,Math.floor(rate/500));
+ const maxLag=Math.min(Math.floor(rate/85),Math.floor(n*.65));
+ let bestLag=0,bestCorr=0;
+ const corrs=new Float32Array(maxLag+2);
+ for(let lag=minLag;lag<=maxLag;lag++){
+  let dot=0,aEnergy=0,bEnergy=0;
+  for(let i=0;i<n-lag;i+=2){
+   const a=buf[i*2],b=buf[(i+lag)*2];
+   dot+=a*b;aEnergy+=a*a;bEnergy+=b*b;
+  }
+  const corr=dot/Math.sqrt(aEnergy*bEnergy+.000001);
+  corrs[lag]=corr;
+  if(corr>bestCorr){bestCorr=corr;bestLag=lag}
+ }
+ if(bestCorr<.65||!bestLag)return null;
+ let selected=bestLag;
+ for(let lag=minLag+1;lag<maxLag;lag++){
+  const value=corrs[lag];
+  if(value>=bestCorr*.94&&value>=corrs[lag-1]&&value>=corrs[lag+1]){
+   selected=lag;break;
+  }
+ }
+ return rate/selected;
 }
 async function record(){if(recording)return;const message=document.getElementById('micmessage'),btn=document.getElementById('record');if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){message.textContent='Микрофон недоступен: открой тренажёр по HTTPS в современном браузере.';return}let stream,ctx;
  try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});ctx=new (window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')await ctx.resume();}catch(e){message.textContent='Нет доступа к микрофону. Разреши микрофон в настройках браузера и убедись, что страница открыта по HTTPS.';if(stream)stream.getTracks().forEach(t=>t.stop());return}
