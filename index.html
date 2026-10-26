@@ -297,111 +297,154 @@ body.focus-mode .shell{padding-bottom:48px}
 #tones .tone-version button{font-size:11px;border:1px solid #c5dcef;border-radius:9px;background:#f1f7fd;color:#305e86;padding:6px 10px;font-weight:800}
 #tones .tone-version button:disabled{opacity:.6}
 
-/* APPROVED HIGH-CONTRAST NEON BUTTONS · 2026-10-26
-   Stable CSS glow, no animation required. Make it visible on bright Android screens. */
+
+/* APPROVED LAVENDER + BLUSH NEON THEME · visual changes only
+   Lavender = general lesson controls and tone selectors.
+   Blush pink = pronunciation checking buttons only. */
 :root{
-  --neon-gold-core:#ffdf84;
-  --neon-gold-edge:#ffbe32;
-  --neon-blue-core:#122f54;
-  --neon-blue-edge:#28bfff;
+ --lavender-ink:#6640ab;
+ --lavender-edge:#be94fa;
+ --lavender-glow:#c89aff9c;
+ --blush-ink:#6d2458;
+ --blush-edge:#ff9bd6;
 }
-.btn.primary,
-.btn.primary.neon-gold,
+/* General primary buttons: airy lilac, soft rather than fluorescent. */
+.btn.primary,.btn.primary.neon-gold,
 #course .course-footnav .btn.primary,
-#course .course-footnav .btn.primary.neon-gold,
-#course .focus-check,
-#course .focus-tone-check .btn,
-#tones .tone-main-check{
-  background:linear-gradient(165deg,#fff2c6 0%,#ffe294 17%,#ffc653 54%,#d9942e 100%) !important;
-  color:#172238 !important;
-  border:2px solid #fff3b7 !important;
-  outline:1px solid var(--neon-gold-edge);
-  outline-offset:1px;
-  box-shadow:
-    inset 0 2px 1px #fffdf0,
-    inset 0 -3px 9px #b6742366,
-    0 0 0 2px #fbbc4280,
-    0 0 9px 2px #ffca55e6,
-    0 0 24px 4px #ffb7339c,
-    0 7px 17px #aa621e57 !important;
-  text-shadow:0 1px 0 #fff7df;
-  font-weight:850;
+#course .course-footnav .btn.primary.neon-gold{
+ background:linear-gradient(156deg,#faf5ff 0%,#e6d3ff 37%,#c8a5f5 82%,#b78deb 100%) !important;
+ color:#26183f !important;
+ border:2px solid #f9eeff !important;
+ outline:1px solid #cba6ff;
+ outline-offset:1px;
+ box-shadow:inset 0 2px 1px #ffffff, inset 0 -3px 7px #9c75d145,
+    0 0 0 1px #ba8ff3a6,0 0 11px 2px #c598f4a0,
+    0 0 22px 4px #d3aafe80,0 6px 13px #5c468633 !important;
+ text-shadow:0 1px 0 #fff;
+ font-weight:850;
 }
-.btn.dark,
-.btn.dark.neon-blue,
+.btn.dark,.btn.dark.neon-blue,
 #course .focus-practice-actions .btn.dark,
 #course .focus-practice-actions .btn.dark.neon-blue{
-  background:linear-gradient(165deg,#21507a 0%,#103258 38%,#06152c 100%) !important;
-  color:#fafdff !important;
-  border:2px solid #9de9ff !important;
-  outline:1px solid var(--neon-blue-edge);
-  outline-offset:1px;
-  box-shadow:
-    inset 0 2px 3px #b7f2ff5e,
-    inset 0 -6px 9px #00152a99,
-    0 0 0 2px #1aafff72,
-    0 0 11px 3px #29bbffee,
-    0 0 24px 4px #179fff9e,
-    0 8px 17px #08284955 !important;
-  text-shadow:0 1px 2px #04162a;
-  font-weight:850;
+ background:linear-gradient(150deg,#b28fe9 0%,#8c65d7 45%,#754ec3 100%) !important;
+ color:#fff !important;
+ border:2px solid #f1ddff !important;
+ outline:1px solid #c49af5;
+ outline-offset:1px;
+ box-shadow:inset 0 2px 1px #ffffff7a,0 0 0 1px #ad7cea8a,
+   0 0 12px 2px #c39df6a8,0 0 23px 3px #c59dff78,
+   0 7px 14px #51427e33 !important;
+ text-shadow:0 1px 2px #4c3173;
+ font-weight:850;
 }
-.btn.soft,
-#course .course-footnav .btn.soft{
-  background:linear-gradient(160deg,#fff,#e7f4ff) !important;
-  color:#224a70 !important;
-  border:2px solid #b4e7ff !important;
-  box-shadow:0 0 0 1px #6ccdf9a6,0 0 12px #4ab7f97d !important;
+.btn.soft,#course .course-footnav .btn.soft{
+ background:linear-gradient(160deg,#fff,#f5edff) !important;
+ color:#7853b5 !important;
+ border:2px solid #ebd8ff !important;
+ box-shadow:0 0 0 1px #d0b2fa83,0 0 12px #d4b3f879 !important;
 }
+.btn:not(:disabled):active{transform:translateY(1px) scale(.99)}
+.btn:focus-visible,#course .focus-tone:focus-visible{
+ outline:3px solid #6748b2 !important;outline-offset:4px;
+}
+.btn:disabled{opacity:.55;box-shadow:none !important;outline:none}
+
+/* Selected learning step and short progress metadata. */
+.statuspill{background:#f2eaff !important;border-color:#d8b8fc !important;color:#6536ad !important}
+#course .focus-kicker{color:#8e59d1}
+#course .step-counter,.step-counter{
+ background:#f0e5ff;color:#7547b8;box-shadow:0 0 11px #dac3fc8c;
+}
+#course .focus-step.selected{
+ color:#925ade;border-top-color:#bb89f1;background:#faf4ff;
+}
+#course .focus-step.selected>span{
+ background:linear-gradient(145deg,#c99df9,#995de3);
+ box-shadow:0 0 14px 2px #b68bf4a6;color:#fff;
+}
+#course .focus-change{
+ background:linear-gradient(#faf4ff,#efe0ff);
+ border-color:#d2adf9;color:#7143ad;
+ box-shadow:0 0 10px #d4b6f49e;
+}
+#course .focus-change:focus-visible,#course .focus-back:focus-visible{outline:3px solid #9462ce;outline-offset:3px}
+#course .lesson-picker.chosen{background:#f5ecff;border-color:#d3b1f8}
+#course .lesson-picker.chosen .lesson-index{background:#8a59d2;color:#fff}
+
+/* Four tone cards: pastel lavender headers, contours, selected outline & audio controls. */
+#course .focus-tone>span:first-child{
+ background:linear-gradient(145deg,#f8efff,#edddff);
+ color:#61359b;
+}
+#course .focus-tone .contour{color:#965fdb}
 #course .focus-tone .tone-speaker{
-  background:linear-gradient(160deg,#fff4d5,#fbd17b);
-  border:1px solid #ffecad;
-  box-shadow:inset 0 1px 0 #fff,0 0 0 1px #ffd472,0 0 12px 2px #ffbf55ba;
+ background:linear-gradient(160deg,#f9f0ff,#e1c6ff);
+ border:1px solid #f7e9ff;
+ color:#6542a8;
+ box-shadow:inset 0 1px 0 #fff,0 0 0 1px #d2aafb,
+    0 0 10px 2px #cfa7f0a8;
 }
 #course .focus-tone.active-tone{
-  border:2px solid #f8be3f !important;
-  box-shadow:0 0 0 2px #ffdf95,0 0 14px 3px #f4bd48c0,0 7px 20px #7d624022 !important;
+ border:2px solid #c897fa !important;
+ box-shadow:0 0 0 2px #e4d0ff,0 0 13px 3px #c998fbc2,
+    0 7px 19px #69518e20 !important;
 }
+#course .focus-tone:active .tone-speaker{filter:brightness(1.05)}
+
+/* Everything around the tone check stays lavender, except check button itself. */
+#course .focus-tone-check{border-color:#e3d4f3;background:#f7f4ff}
+#course .focus-tone-check>span{color:#644c81}
 #course .focus-learned{
-  background:linear-gradient(145deg,#fff9ec,#ffe1a1);
-  border:1px solid #f2bd5f;
-  box-shadow:0 0 8px 1px #fbd2879c;
+ background:linear-gradient(145deg,#fffaff,#e7d3ff);
+ border:1px solid #cda5f4;color:#623aa4;
+ box-shadow:0 0 10px #cfb3f49c;
 }
 #course .focus-learned.is-known{
-  background:linear-gradient(#f2fff8,#d5f6e3);
-  border-color:#95dcb7;
-  box-shadow:0 0 9px #87d6a28a;
+ background:linear-gradient(#f2fff8,#d5f6e3);color:#186947;
+ border-color:#95dcb7;box-shadow:0 0 9px #87d6a28a;
 }
+
+/* Special button: the user approved a delicate pink neon specifically for checking. */
+#course .focus-tone-check .btn,
+#course .focus-check,
+#tones .tone-main-check{
+ background:linear-gradient(160deg,#fff1fa 0%,#ffd8ee 33%,#f9b5dd 73%,#f6a7d5 100%) !important;
+ color:#562344 !important;
+ border:2px solid #fff1fa !important;
+ outline:1px solid #ff9fd8 !important;
+ outline-offset:1px;
+ box-shadow:inset 0 2px 1px #fff,
+   inset 0 -3px 7px #e87bb547,
+   0 0 0 1px #f8a3d9bb,
+   0 0 10px 2px #ffb6e1c7,
+   0 0 20px 3px #ff9fda89,
+   0 6px 13px #9c4e8130 !important;
+ text-shadow:0 1px 0 #fff9fd;
+ font-weight:850;
+}
+/* Dedicated tones page: matching selected tone and audio controls. */
+#tones .tone[aria-pressed="true"]{
+ border-color:#bb8bee;box-shadow:0 0 0 3px #e9d5ff,0 0 13px #d9b1f7ab;
+}
+#tones .tonegrid .tone svg path{stroke:#9162cf !important}
 #tones #contourSound{
-  border:2px solid #b8e6fc;
-  background:linear-gradient(145deg,#fff,#e8f5ff);
-  box-shadow:0 0 0 1px #78cbf9,0 0 13px #7cccf6b3;
+ background:linear-gradient(145deg,#fff,#f0e3ff);
+ border:2px solid #e3caff;
+ box-shadow:0 0 0 1px #d0aaf4,0 0 11px #d1a6f4ad;
 }
-.btn:not(:disabled):active{
-  transform:translateY(1px) scale(.99);
-  filter:brightness(1.02);
-}
-.btn:focus-visible,#course .focus-tone:focus-visible{
-  outline:3px solid #275a96 !important;
-  outline-offset:4px;
-}
-.btn:disabled{
-  opacity:.56;
-  filter:grayscale(.2);
-  box-shadow:none !important;
-  outline:none;
-}
+#tones .tone-version button{background:#f5edff;color:#7852ab;border-color:#dcbdfb}
+
+/* Supporting elements shown in the approved mockup. */
+.journey-no{background:#eedcff;color:#7243ab}
+.journey-icon{background:#f3eaff;box-shadow:0 0 0 1px #dec4ff,0 0 11px #c8a1ee7a}
+#course .focus-details{border-color:#e5d2f5;background:#fcf9ff}
+#course .focus-details summary{color:#8254c1}
 @media(max-width:600px){
- .btn.primary,.btn.dark,.btn.soft{
-   border-radius:13px;
-   letter-spacing:.05px;
- }
- #course .focus-practice-actions{gap:13px}
+ .btn.primary,.btn.dark,.btn.soft{border-radius:13px}
+ #course .focus-practice-actions{gap:12px}
  #course .focus-tone-check{margin-top:14px}
 }
-@media(prefers-reduced-motion:reduce){
- .btn{transition:none !important}
-}
+@media(prefers-reduced-motion:reduce){.btn{transition:none!important}}
 
 </style>
 </head>
