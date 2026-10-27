@@ -1241,7 +1241,7 @@ body.focus-mode #course .course-content[data-lesson="5"] #focus-check{
 
 /* v26 ten user-selected landscapes: matching brightness across lessons and answer cards.
    10 offline WebP files; no changes to lesson content, interactive handlers, voice or storage. */
-body[data-current-page] .statuspill::after{content:" · v30"!important}
+body[data-current-page] .statuspill::after{content:" · v31"!important}
 
 body.focus-mode #course .course-content[data-lesson="1"] .focus-banner.scenic{
  background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-01.webp")!important;
@@ -1510,7 +1510,7 @@ body.focus-mode #course .course-content[data-lesson="5"] .course-options button:
 #dialog .ai-hero.scenic{background-image:linear-gradient(90deg,rgba(255,253,249,.49),rgba(255,250,247,0) 85%),url("./assets/course-scene-03.webp")!important}
 
 </style>
-<link rel="stylesheet" href="./assets/final-design.css?v=30">
+<link rel="stylesheet" href="./assets/final-design.css?v=31">
 <script src="./assets/semantic-art.js?v=29"></script>
 </head>
 <body><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><img src="./assets/approved-final-home.svg" alt="Китайский — это легко! Девушка в розовом платье и одна кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></section><section id="launch-menu" class="launch-screen" hidden><img src="./assets/approved-lessons.png" alt="Выбери звуки, слова, диалоги, практику или тест"><button class="hit-choice" data-choice="0" aria-label="Звуки и тоны">Звуки и тоны</button><button class="hit-choice" data-choice="1" aria-label="Базовые слова">Базовые слова</button><button class="hit-choice" data-choice="2" aria-label="Диалоги">Диалоги</button><button class="hit-choice" data-choice="3" aria-label="Практика">Практика</button><button class="hit-choice" data-choice="4" aria-label="Тест">Тест</button><button class="hit-back" id="launch-back" aria-label="Главная">Главная</button><button class="hit-all" id="launch-all" aria-label="Все уроки">Уроки</button></section></div>
@@ -2255,22 +2255,13 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
  petalLayer.id='launch-petals';
  petalLayer.setAttribute('aria-hidden','true');
  // Lightweight CSS petals; no animation files or internet access required.
- const petals=[
-  [5,-48,380,20,0],[13,36,-420,13,185],[23,-28,560,16,80],
-  [32,45,-530,14,290],[42,-58,620,19,150],[53,32,-475,12,30],
-  [63,-34,540,20,345],[75,44,-650,15,100],[86,-46,510,18,225],
-  [96,-37,-480,13,45],[9,40,690,14,340],[29,-25,-590,18,230],
-  [49,50,610,12,390],[69,-55,-410,17,20],[91,-30,670,14,310],
-  [57,24,400,11,210],[18,-40,-680,15,120],[80,31,480,11,360],
-  [2,65,505,16,130],[7,-75,710,24,70],[14,49,-580,12,290],
-  [20,-67,770,19,400],[26,55,420,13,230],[34,70,-590,23,90],
-  [40,-45,750,16,320],[47,60,-620,25,50],[55,-55,660,15,250],
-  [61,43,560,27,110],[67,-71,-810,15,380],[73,58,680,22,60],
-  [79,-64,870,17,260],[84,69,-700,24,310],[89,-50,710,14,180],
-  [95,49,-850,27,420],[99,-43,820,18,290],[11,62,-690,25,390],
-  [30,-71,550,12,230],[38,56,850,22,440],[59,-57,750,15,140],
-  [69,65,-620,25,220],[89,-54,510,20,310],[50,37,690,16,400]
- ];
+ const petals=Array.from({length:96},(_,i)=>[
+  1+(i*37)%98,
+  ((i*53)%151)-75,
+  (i%2?-1:1)*(280+(i*47)%640),
+  11+(i*7)%18,
+  i<24?-(350+i*47):(i*73)%900
+ ]);
  for(const [x,dx,spin,size,delay] of petals){
   const el=document.createElement('span');
   el.className='sakura-petal';
@@ -2279,11 +2270,23 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   el.style.setProperty('--spin',spin+'deg');
   el.style.setProperty('--size',size+'px');
   el.style.setProperty('--delay',delay+'ms');
+  el.style.setProperty('--duration',(2700+(petalLayer.childElementCount%5)*100)+'ms');
   petalLayer.appendChild(el);
  }
  root.appendChild(petalLayer);
- let transitionTimer=0,transitioning=false;
+ let transitionTimer=0,transitioning=false,petalTimer=0;
+ function stopPetals(){
+  clearTimeout(petalTimer);petalTimer=0;root.classList.remove('petals-falling');
+ }
+ function startPetals(){
+  stopPetals();
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  void root.offsetWidth;
+  root.classList.add('petals-falling');
+  petalTimer=setTimeout(stopPetals,4000);
+ }
  function cancelTransition(){
+  stopPetals();
   if(transitionTimer){clearTimeout(transitionTimer);transitionTimer=0}
   transitioning=false;root.classList.remove('launch-sakura');
   cover.inert=false;menu.inert=false;
@@ -2295,6 +2298,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   document.body.classList.add('launch-active');
   cover.hidden=what!=='cover';
   menu.hidden=what!=='menu';
+  if(what==='cover')startPetals();
   window.scrollTo(0,0);
  }
  function startWithSakura(){
@@ -2308,6 +2312,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   cover.inert=true;
   menu.inert=true;
   root.classList.add('launch-sakura');
+  startPetals();
   transitionTimer=setTimeout(()=>{
    transitionTimer=0;
    transitioning=false;
@@ -2318,7 +2323,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
    menu.inert=false;
    const firstLesson=menu.querySelector('[data-choice="0"]');
    if(firstLesson)firstLesson.focus({preventScroll:true});
-  },3100);
+  },4000);
  }
  function exit(){
   cancelTransition();
