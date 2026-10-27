@@ -1530,6 +1530,14 @@ body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .foc
 body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .focus-phrase{
  gap:8px!important;
 }
+
+/* v32: richer four-second welcome petals; approved artwork untouched. */
+#launch-entry #launch-petals .sakura-petal:nth-child(7n+1){background:radial-gradient(ellipse at 22% 24%,#ffffff 0%,#fff 36%,#e9f0ff 76%,#c9d8f4 100%)!important;filter:drop-shadow(0 1px 5px #ffffffaa)}
+#launch-entry #launch-petals .sakura-petal:nth-child(7n+2){background:radial-gradient(ellipse at 22% 24%,#f5fbff 0%,#a9d5ff 39%,#648fe7 76%,#466ac7 100%)!important;filter:drop-shadow(0 1px 5px #79b5ff88)}
+#launch-entry #launch-petals .sakura-petal:nth-child(7n+3){background:radial-gradient(ellipse at 22% 24%,#fff4ff 0%,#dab9ff 36%,#a27be5 74%,#8052c8 100%)!important;filter:drop-shadow(0 1px 5px #c3a3ff88)}
+#launch-entry.petals-falling #launch-petals{display:block;pointer-events:none}
+#launch-entry.petals-falling #launch-petals .sakura-petal{animation-duration:var(--duration,3200ms)!important;animation-fill-mode:both}
+@media(prefers-reduced-motion:reduce){#launch-entry.petals-falling #launch-petals{display:none}}
 </style>
 <link rel="stylesheet" href="./assets/final-design.css?v=31">
 <script src="./assets/semantic-art.js?v=29"></script>
@@ -2276,7 +2284,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
  petalLayer.id='launch-petals';
  petalLayer.setAttribute('aria-hidden','true');
  // Lightweight CSS petals; no animation files or internet access required.
- const petals=Array.from({length:96},(_,i)=>[
+ const petals=Array.from({length:156},(_,i)=>[
   1+(i*37)%98,
   ((i*53)%151)-75,
   (i%2?-1:1)*(280+(i*47)%640),
