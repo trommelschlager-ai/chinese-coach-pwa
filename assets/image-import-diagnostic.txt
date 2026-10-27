@@ -1,5 +1,0 @@
-Tested user photo delivery
-HTTP 403, bytes 17
-/tmp/scenery.jpg: ASCII text, with no line terminators
-17 /tmp/scenery.jpg
-image_error: ModuleNotFoundError("No module named 'PIL'")
