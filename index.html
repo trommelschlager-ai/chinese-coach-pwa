@@ -771,6 +771,124 @@ body.focus-mode #wow-fact{font-weight:650;color:#675e87;max-width:390px;line-hei
 body.focus-mode{background-image:linear-gradient(135deg,#fff4fa9c,#ebddf86e),url("./assets/chinese-painting-numbers.webp")!important;background-size:cover!important;background-position:center center!important;background-attachment:fixed!important}
 body.focus-mode #course .course-content{border-color:#e7a85f!important;box-shadow:0 0 0 4px #fff9ebc9,0 18px 42px #86598936!important}
 @media (max-width:600px){#course .focus-banner.scenic{background-position:center center!important}}
+
+/* v23 — approved softer watercolor controls and illustrated lesson cards. 
+   Purely visual: preserve all controls, voice callbacks, lesson data and progress. */
+body.focus-mode #course .focus-practice-actions .btn[data-play-focus]{
+  background:linear-gradient(112deg,#fffefdF2 0%,#faf1ffE8 52%,#f3ebffCB 100%),url("./assets/chinese-painting-numbers.webp") center/cover no-repeat!important;
+  color:#6628ad!important;
+  border:2px solid #bd80ef!important;
+  outline:1px solid #fff8ff!important;
+  border-radius:20px!important;
+  box-shadow:0 3px 10px #986dc32A,inset 0 1px 0 #fff!important;
+  text-shadow:none!important;
+  font-weight:800!important;
+}
+body.focus-mode #course .focus-practice-actions .btn#focus-repeat{
+  background:linear-gradient(112deg,#fffefdF2 0%,#fbf7ffE9 49%,#f1e9ffC9 100%),url("./assets/chinese-painting-numbers.webp") center/cover no-repeat!important;
+  color:#6c35b8!important;
+  border:2px solid #d9b3f5!important;
+  outline:1px solid #fff!important;
+  border-radius:20px!important;
+  box-shadow:0 3px 9px #a989bf24,inset 0 1px #fff!important;
+  text-shadow:none!important;
+  font-weight:800!important;
+}
+body.focus-mode #course #focus-check{
+  background:linear-gradient(105deg,#fff7faEF 0%,#ffeaf4DB 55%,#ffdaeec8 100%),url("./assets/chinese-painting-greetings.webp") center/cover no-repeat!important;
+  color:#982653!important;
+  border:2px solid #f6a9d5!important;
+  outline:1px solid #fff7fd!important;
+  border-radius:19px!important;
+  box-shadow:0 4px 12px #b9649f35,inset 0 1px #fff!important;
+  text-shadow:none!important;font-weight:800!important;
+}
+body.focus-mode #course .focus-practice-actions .btn[data-play-focus]:active,
+body.focus-mode #course .focus-practice-actions .btn#focus-repeat:active,
+body.focus-mode #course #focus-check:active{transform:translateY(1px);filter:brightness(.98)}
+body.focus-mode #course .focus-practice-actions .btn:focus-visible,
+body.focus-mode #course #focus-check:focus-visible{outline:3px solid #9d57f0!important;outline-offset:3px!important}
+body.focus-mode #course .focus-dialog-card,
+body.focus-mode #course .focus-wordcard{
+ border:2px solid #edcba0!important;border-radius:26px!important;
+ box-shadow:0 7px 22px #94678518!important;
+ background:#fffefbeA!important;
+}
+body.focus-mode #course .focus-phrase{
+ border:2px solid #efc498!important;
+ box-shadow:0 2px 8px #b08c8b1f!important;
+}
+body.focus-mode #course .focus-tones .focus-tone{
+ background:linear-gradient(148deg,#ffffffF8 3%,#fffaf3E7 59%,#fff0edC4 100%),url("./assets/chinese-painting-tones.webp") center/cover no-repeat!important;
+ border:2px solid #efd7c7!important;
+ box-shadow:0 5px 13px #b39db224!important;
+}
+body.focus-mode #course .focus-tones .focus-tone:nth-child(2){
+ background:linear-gradient(148deg,#ffffffF6,#fff5faE7 70%,#ffe5efC5),url("./assets/chinese-painting-greetings.webp") center/cover no-repeat!important;
+ border-color:#edc2d5!important;
+}
+body.focus-mode #course .focus-tones .focus-tone:nth-child(3){
+ background:linear-gradient(148deg,#ffffffF6,#f7f4ffE9 68%,#e3edffC5),url("./assets/chinese-painting-pronouns.webp") center/cover no-repeat!important;
+ border-color:#d5c6f1!important;
+}
+body.focus-mode #course .focus-tones .focus-tone:nth-child(4){
+ background:linear-gradient(148deg,#ffffffF6,#fffaf4E8 68%,#ffe8d5C6),url("./assets/chinese-painting-numbers.webp") center/cover no-repeat!important;
+ border-color:#eecfb6!important;
+}
+body.focus-mode #course .focus-tones .focus-tone.active-tone{
+ border-color:#aa59ee!important;box-shadow:0 0 0 2px #e1b2ff,0 6px 18px #b879ef3d!important;
+}
+body.focus-mode #course .focus-tones .focus-tone .tone-speaker{
+ background:linear-gradient(140deg,#fffefeef,#f0e2ffea)!important;
+ border:1px solid #e2c5fa!important;
+ color:#6b3aab!important;
+ box-shadow:0 3px 9px #ab92bf34!important;
+}
+body.focus-mode #course .course-quiz-question{
+ background-image:linear-gradient(92deg,#fffaf4e7 0%,#fffaf4bc 46%,#fffaf445 100%),url("./assets/chinese-painting-tones.webp")!important;
+ background-position:center!important;
+ background-size:cover!important;
+ border:2px solid #ecc397!important;
+ box-shadow:0 5px 16px #ba93a132!important;
+}
+body.focus-mode #course .course-options button:not(.correct):not(.incorrect){
+ background-image:linear-gradient(90deg,#fffdfaf5 0%,#fffaf9f0 60%,#fff4f5c5 100%),url("./assets/chinese-painting-greetings.webp")!important;
+ background-position:center!important;background-size:cover!important;
+ border-width:2px!important;
+}
+body.focus-mode #course .course-options button:not(.correct):not(.incorrect):nth-child(1){border-color:#e7b5f2!important}
+body.focus-mode #course .course-options button:not(.correct):not(.incorrect):nth-child(2){border-color:#f1d0a7!important}
+body.focus-mode #course .course-options button:not(.correct):not(.incorrect):nth-child(3){border-color:#b7cbed!important}
+body.focus-mode #course .course-options button:not(.correct):not(.incorrect):nth-child(4){border-color:#edc4d8!important}
+body.focus-mode #course .course-footnav .btn.primary{
+ background:linear-gradient(100deg,#fffefeEE 0%,#f8ebffD7 50%,#eed7ffB9 100%),url("./assets/chinese-painting-greetings.webp") center/cover no-repeat!important;
+ border:2px solid #da9cf6!important;
+ color:#5b238f!important;
+ box-shadow:0 4px 14px #b889d143!important;
+}
+body.focus-mode #course .course-footnav .btn.soft{
+ background:linear-gradient(100deg,#fffefdEF,#faf2ffDF 66%,#f2e7ffcA),url("./assets/chinese-painting-tones.webp") center/cover no-repeat!important;
+ border:2px solid #e5c4fa!important;
+ color:#7544a0!important;
+ box-shadow:0 4px 12px #a58cbb2d!important;
+}
+/* Original scenic art is kept visible, but lightened to match the confirmed mockup. */
+body.focus-mode #course .focus-banner.scenic,
+body.focus-mode #course .focus-phrase{
+ background-blend-mode:normal!important;
+}
+body.focus-mode #course .focus-phrase .focus-hanzi,
+body.focus-mode #course .focus-phrase .focus-pinyin,
+body.focus-mode #course .focus-phrase .focus-russian{
+ text-shadow:0 1px 0 #fff9!important;
+}
+@media(max-width:600px){
+ body.focus-mode #course .focus-practice-actions .btn{min-height:51px!important}
+ body.focus-mode #course .focus-practice-actions .btn[data-play-focus],
+ body.focus-mode #course .focus-practice-actions .btn#focus-repeat{font-size:13px!important;padding:8px 5px!important}
+ body.focus-mode #course #focus-check{min-height:48px!important}
+ body.focus-mode #course .course-options button{min-height:67px!important}
+}
 </style>
 </head>
 <body><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><img src="./assets/approved-final-home.svg" alt="Китайский — это легко! Девушка в розовом платье и одна кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></section><section id="launch-menu" class="launch-screen" hidden><img src="./assets/approved-lessons.png" alt="Выбери звуки, слова, диалоги, практику или тест"><button class="hit-choice" data-choice="0" aria-label="Звуки и тоны">Звуки и тоны</button><button class="hit-choice" data-choice="1" aria-label="Базовые слова">Базовые слова</button><button class="hit-choice" data-choice="2" aria-label="Диалоги">Диалоги</button><button class="hit-choice" data-choice="3" aria-label="Практика">Практика</button><button class="hit-choice" data-choice="4" aria-label="Тест">Тест</button><button class="hit-back" id="launch-back" aria-label="Главная">Главная</button><button class="hit-all" id="launch-all" aria-label="Все уроки">Уроки</button></section></div>
