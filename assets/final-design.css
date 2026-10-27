@@ -62,8 +62,8 @@ body.focus-mode #course .course-content #focus-check-tone{font-size:15px!importa
 #launch-entry #launch-petals .sakura-petal:nth-child(7n+5){background:radial-gradient(ellipse at 22% 24%,#fffefa,#ffe6f2 45%,#f5bbd5)!important}
 #launch-entry #launch-petals .sakura-petal:nth-child(7n+6){background:radial-gradient(ellipse at 22% 24%,#fdf8ff,#c6b3ff 45%,#926fda)!important}
 #launch-entry #launch-petals .sakura-petal:nth-child(7n){background:radial-gradient(ellipse at 22% 24%,#fff7fa,#f5b2cb 45%,#dc82b1)!important}
-#launch-entry.launch-sakura #launch-cover{animation:welcome-petal-cover-out 4s ease both!important}
-#launch-entry.launch-sakura #launch-menu{animation:welcome-petal-menu-in 4s ease both!important}
+#launch-entry.launch-sakura #launch-cover{animation:welcome-petal-cover-out 3s ease both!important}
+#launch-entry.launch-sakura #launch-menu{animation:welcome-petal-menu-in 3s ease both!important}
 @keyframes welcome-petal-cover-out{0%,73%{opacity:1;transform:scale(1);filter:none}100%{opacity:0;transform:scale(1.025);filter:blur(3px)}}
 @keyframes welcome-petal-menu-in{0%,73%{opacity:0;transform:scale(1.02);filter:blur(3px)}100%{opacity:1;transform:scale(1);filter:none}}
 @media(prefers-reduced-motion:reduce){#launch-entry.petals-falling #launch-petals{display:none!important}#launch-entry.launch-sakura #launch-cover,#launch-entry.launch-sakura #launch-menu{animation:none!important}}
