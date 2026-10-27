@@ -46,8 +46,8 @@ body.focus-mode #course .course-content[data-lesson="1"] .focus-tone.active-tone
 }
 body.focus-mode #course .course-content[data-lesson="1"] .focus-tone>strong{font-size:23px!important}
 body.focus-mode #course .course-content[data-lesson="1"] .focus-tone>em{font-size:35px!important}
-body.focus-mode #course .course-content[data-lesson="1"] .focus-tone>small{font-size:11px!important;color:#43536a!important}
-body.focus-mode #course .course-content[data-lesson="1"] .focus-tone>span:first-child{font-size:11px!important}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-tone>small{font-size:clamp(13px,3.6vw,16px)!important;line-height:1.25;font-weight:650;letter-spacing:-.2px;color:#43536a!important}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-tone>span:first-child{font-size:clamp(14px,3.7vw,16px)!important;line-height:1.3}
 body.focus-mode #course .course-content[data-lesson="1"] .focus-tone .contour{font-size:27px!important}
 body.focus-mode #course .course-content #focus-tone-choice{font-size:14.5px!important;line-height:1.4}
 body.focus-mode #course .course-content #focus-check-tone{font-size:15px!important;line-height:1.3;padding:11px 12px!important;min-height:46px}
@@ -67,3 +67,6 @@ body.focus-mode #course .course-content #focus-check-tone{font-size:15px!importa
 @keyframes welcome-petal-cover-out{0%,73%{opacity:1;transform:scale(1);filter:none}100%{opacity:0;transform:scale(1.025);filter:blur(3px)}}
 @keyframes welcome-petal-menu-in{0%,73%{opacity:0;transform:scale(1.02);filter:blur(3px)}100%{opacity:1;transform:scale(1);filter:none}}
 @media(prefers-reduced-motion:reduce){#launch-entry.petals-falling #launch-petals{display:none!important}#launch-entry.launch-sakura #launch-cover,#launch-entry.launch-sakura #launch-menu{animation:none!important}}
+
+/* v38: readable Russian introduction for the first tone lesson. */
+body.focus-mode #course .course-content[data-lesson="1"] .focus-banner p{font-size:clamp(16px,4.1vw,19px)!important;line-height:1.4;max-width:none}
