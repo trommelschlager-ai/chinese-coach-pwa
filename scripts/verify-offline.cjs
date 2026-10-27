@@ -1,0 +1,11 @@
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
+const code=fs.readFileSync('sw.js','utf8'),events={},stores=new Map(),origin='https://test.local',base=origin+'/chinese-coach-pwa/';let online=true;
+const normalize=x=>new URL(typeof x==='string'?x:x.url,base).href;
+const network=async req=>{if(!online)throw Error('Offline');const url=new URL(normalize(req));let path=decodeURIComponent(url.pathname.replace('/chinese-coach-pwa/',''))||'index.html';return new Response(fs.readFileSync(path))};
+const cacheAPI={open:async name=>{if(!stores.has(name))stores.set(name,new Map());const store=stores.get(name);return {addAll:async paths=>{await Promise.all(paths.map(async path=>store.set(normalize(path),await network(path))))},put:async (r,v)=>store.set(normalize(r),v),match:async r=>store.get(normalize(r))?.clone()}},keys:async()=>[...stores.keys()],delete:async name=>stores.delete(name),match:async r=>{for(const s of stores.values()){const v=s.get(normalize(r));if(v)return v.clone()}}};
+const ctx={URL,Promise,fetch:network,caches:cacheAPI,self:{location:{origin},registration:{scope:base},clients:{claim:async()=>{}},skipWaiting:async()=>{},addEventListener:(n,f)=>events[n]=f}};
+vm.runInNewContext(code,ctx);
+(async()=>{let pending;events.install({waitUntil:p=>pending=p});await pending;const keys=await cacheAPI.keys();assert.deepEqual(keys,['chinese-coach-pwa-v29']);const count=stores.get(keys[0]).size;assert(count>60);stores.set('chinese-coach-pwa-v28',new Map());events.activate({waitUntil:p=>pending=p});await pending;assert(!stores.has('chinese-coach-pwa-v28'));
+online=false;const request=async(url,mode)=>{let p;events.fetch({request:{url:normalize(url),method:'GET',mode},respondWith:r=>p=r});return await p};assert((await (await request('./','navigate')).text()).includes('semantic-art.js?v=29'));for(const p of ['assets/final-design.css?v=29-final','assets/semantic-art.js?v=29',...fs.readdirSync('assets').filter(f=>f.startsWith('meaning-')).map(f=>'assets/'+f)])assert((await (await request(p,'cors')).arrayBuffer()).byteLength>0);
+console.log(`Offline install/upgrade/navigation/assets passed: ${count} cached URLs`)
+})().catch(e=>{console.error(e);process.exitCode=1});
