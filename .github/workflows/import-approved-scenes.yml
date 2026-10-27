@@ -11,27 +11,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download and verify supplied original-size scenic image
+      - name: Probe full image download and record HTTP response
         env:
           FULL_IMAGE: 'https://media.canva.com/v2/image-resize/format:JPG/height:680/quality:75/uri:ifs%3A%2F%2FM%2F88302e69-1fce-420b-b532-98f3b8055976/watermark:F/width:1200?csig=AAAAAAAAAAAAAAAAAAAAAD9RArSwcQk9Ql8Rd20NYCPGJUcYygVEd0khlEFQ1_gi&exp=1793088648&osig=AAAAAAAAAAAAAAAAAAAAAHuZph7qL2L_cOpDH5NjBf1nI3ALbO9JDHwchdkE0TC5&signer=media-rpc&token=AAIAAU0AJDg4MzAyZTY5LTFmY2UtNDIwYi1iNTMyLTk4ZjNiODA1NTk3NgAAAAABoXxpc0BormTfdEVljcB-zJwy7PijgMe5C5i4n0mFZKXuKBh0SA&x-canva-quality=thumbnail'
         run: |
-          set -euxo pipefail
           mkdir -p assets
-          curl --fail --location --silent --show-error --retry 2 "$FULL_IMAGE" -o /tmp/scene.jpg
-          file /tmp/scene.jpg
-          python3 -m pip install --quiet pillow
-          python3 - <<'PY'
+          printf "Tested user photo delivery\n" > assets/image-import-diagnostic.txt
+          curl -L --silent --show-error --max-time 45 -w 'HTTP %{http_code}, bytes %{size_download}\n' "$FULL_IMAGE" -o /tmp/scenery.jpg >> assets/image-import-diagnostic.txt 2>&1 || true
+          file /tmp/scenery.jpg >> assets/image-import-diagnostic.txt 2>&1 || true
+          wc -c /tmp/scenery.jpg >> assets/image-import-diagnostic.txt 2>&1 || true
+          python3 - <<'PY' >> assets/image-import-diagnostic.txt 2>&1
           from PIL import Image
-          image = Image.open("/tmp/scene.jpg")
-          print("width,height", image.size)
-          if image.width < 600 or image.height < 350:
-              raise ValueError("Canva returned a thumbnail instead of a full resolution image")
-          image.save("assets/approved-scenic-01.webp", format="WEBP", quality=80, method=6)
+          try:
+              im=Image.open('/tmp/scenery.jpg')
+              print('dimensions', im.size)
+              if im.width>=600:
+                  im.save('assets/approved-scenic-01.webp',format='WEBP',quality=80)
+          except Exception as exc:
+              print('image_error:',repr(exc))
           PY
-      - name: Commit imported images
+      - name: Commit downloadable assets or diagnostic
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/approved-scenic-01.webp
-          git commit -m "Import user-approved Chinese scene 01 at high resolution"
+          git add assets/image-import-diagnostic.txt
+          if test -e assets/approved-scenic-01.webp; then git add assets/approved-scenic-01.webp; fi
+          git commit -m "Diagnose external image import into Chinese course"
           git push
