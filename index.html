@@ -1238,6 +1238,233 @@ body.focus-mode #course .course-content[data-lesson="5"] #focus-check{
  body.focus-mode #course .course-content .course-quiz-question{min-height:220px!important;font-size:clamp(22px,5.4vw,28px)!important;padding:21px 16px!important}
  body.focus-mode #course .course-content .course-options button:not(.correct):not(.incorrect){min-height:69px!important}
 }
+
+/* v26 ten user-selected landscapes: matching brightness across lessons and answer cards.
+   10 offline WebP files; no changes to lesson content, interactive handlers, voice or storage. */
+body[data-current-page] .statuspill::after{content:" · v26"!important}
+
+body.focus-mode #course .course-content[data-lesson="1"] .focus-banner.scenic{
+ background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-01.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-phrase{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-02.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-dialog-card .focus-phrase{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-02.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="1"] .course-quiz-question{
+ background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-01.webp")!important;
+ background-position:center!important;background-size:cover!important;
+ font-size:clamp(23px,5.4vw,32px)!important;line-height:1.28!important;
+ font-weight:850!important;
+}
+body.focus-mode #course .course-content[data-lesson="1"] .course-options button:not(.correct):not(.incorrect){
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-02.webp")!important;
+ background-size:cover!important;background-position:right center!important;
+}
+body.focus-mode #course .course-content[data-lesson="1"] .course-options button:not(.correct):not(.incorrect):nth-child(odd){
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-01.webp")!important;
+}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-practice-actions .btn[data-play-focus],
+body.focus-mode #course .course-content[data-lesson="1"] .focus-practice-actions #focus-repeat,
+body.focus-mode #course .course-content[data-lesson="1"] #focus-check{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-02.webp")!important;
+ background-position:right center!important;background-size:cover!important;
+}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-tones .focus-tone{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-01.webp")!important;
+ background-size:cover!important;
+}
+
+body.focus-mode #course .course-content[data-lesson="2"] .focus-banner.scenic{
+ background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-03.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="2"] .focus-phrase{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-04.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .focus-phrase{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-04.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="2"] .course-quiz-question{
+ background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-03.webp")!important;
+ background-position:center!important;background-size:cover!important;
+ font-size:clamp(23px,5.4vw,32px)!important;line-height:1.28!important;
+ font-weight:850!important;
+}
+body.focus-mode #course .course-content[data-lesson="2"] .course-options button:not(.correct):not(.incorrect){
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-04.webp")!important;
+ background-size:cover!important;background-position:right center!important;
+}
+body.focus-mode #course .course-content[data-lesson="2"] .course-options button:not(.correct):not(.incorrect):nth-child(odd){
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-03.webp")!important;
+}
+body.focus-mode #course .course-content[data-lesson="2"] .focus-practice-actions .btn[data-play-focus],
+body.focus-mode #course .course-content[data-lesson="2"] .focus-practice-actions #focus-repeat,
+body.focus-mode #course .course-content[data-lesson="2"] #focus-check{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-04.webp")!important;
+ background-position:right center!important;background-size:cover!important;
+}
+body.focus-mode #course .course-content[data-lesson="2"] .focus-tones .focus-tone{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-03.webp")!important;
+ background-size:cover!important;
+}
+
+body.focus-mode #course .course-content[data-lesson="3"] .focus-banner.scenic{
+ background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-05.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="3"] .focus-phrase{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-06.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="3"] .focus-dialog-card .focus-phrase{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-06.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="3"] .course-quiz-question{
+ background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-05.webp")!important;
+ background-position:center!important;background-size:cover!important;
+ font-size:clamp(23px,5.4vw,32px)!important;line-height:1.28!important;
+ font-weight:850!important;
+}
+body.focus-mode #course .course-content[data-lesson="3"] .course-options button:not(.correct):not(.incorrect){
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-06.webp")!important;
+ background-size:cover!important;background-position:right center!important;
+}
+body.focus-mode #course .course-content[data-lesson="3"] .course-options button:not(.correct):not(.incorrect):nth-child(odd){
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-05.webp")!important;
+}
+body.focus-mode #course .course-content[data-lesson="3"] .focus-practice-actions .btn[data-play-focus],
+body.focus-mode #course .course-content[data-lesson="3"] .focus-practice-actions #focus-repeat,
+body.focus-mode #course .course-content[data-lesson="3"] #focus-check{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-06.webp")!important;
+ background-position:right center!important;background-size:cover!important;
+}
+body.focus-mode #course .course-content[data-lesson="3"] .focus-tones .focus-tone{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-05.webp")!important;
+ background-size:cover!important;
+}
+
+body.focus-mode #course .course-content[data-lesson="4"] .focus-banner.scenic{
+ background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-07.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="4"] .focus-phrase{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-08.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="4"] .focus-dialog-card .focus-phrase{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-08.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="4"] .course-quiz-question{
+ background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-07.webp")!important;
+ background-position:center!important;background-size:cover!important;
+ font-size:clamp(23px,5.4vw,32px)!important;line-height:1.28!important;
+ font-weight:850!important;
+}
+body.focus-mode #course .course-content[data-lesson="4"] .course-options button:not(.correct):not(.incorrect){
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-08.webp")!important;
+ background-size:cover!important;background-position:right center!important;
+}
+body.focus-mode #course .course-content[data-lesson="4"] .course-options button:not(.correct):not(.incorrect):nth-child(odd){
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-07.webp")!important;
+}
+body.focus-mode #course .course-content[data-lesson="4"] .focus-practice-actions .btn[data-play-focus],
+body.focus-mode #course .course-content[data-lesson="4"] .focus-practice-actions #focus-repeat,
+body.focus-mode #course .course-content[data-lesson="4"] #focus-check{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-08.webp")!important;
+ background-position:right center!important;background-size:cover!important;
+}
+body.focus-mode #course .course-content[data-lesson="4"] .focus-tones .focus-tone{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-07.webp")!important;
+ background-size:cover!important;
+}
+
+body.focus-mode #course .course-content[data-lesson="5"] .focus-banner.scenic{
+ background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-09.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="5"] .focus-phrase{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-10.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="5"] .focus-dialog-card .focus-phrase{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-10.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body.focus-mode #course .course-content[data-lesson="5"] .course-quiz-question{
+ background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-09.webp")!important;
+ background-position:center!important;background-size:cover!important;
+ font-size:clamp(23px,5.4vw,32px)!important;line-height:1.28!important;
+ font-weight:850!important;
+}
+body.focus-mode #course .course-content[data-lesson="5"] .course-options button:not(.correct):not(.incorrect){
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-10.webp")!important;
+ background-size:cover!important;background-position:right center!important;
+}
+body.focus-mode #course .course-content[data-lesson="5"] .course-options button:not(.correct):not(.incorrect):nth-child(odd){
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-09.webp")!important;
+}
+body.focus-mode #course .course-content[data-lesson="5"] .focus-practice-actions .btn[data-play-focus],
+body.focus-mode #course .course-content[data-lesson="5"] .focus-practice-actions #focus-repeat,
+body.focus-mode #course .course-content[data-lesson="5"] #focus-check{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-10.webp")!important;
+ background-position:right center!important;background-size:cover!important;
+}
+body.focus-mode #course .course-content[data-lesson="5"] .focus-tones .focus-tone{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-09.webp")!important;
+ background-size:cover!important;
+}
+
+/* Independent pages use the supplied photographs too, but with the same restrained color level. */
+body[data-current-page="tones"] #tones .tone-intro.scenic{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-01.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body[data-current-page="tones"] #tones .tonegrid .tone{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-02.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body[data-current-page="tones"] #tones .tonegrid .tone:nth-child(2){background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-04.webp")!important}
+body[data-current-page="tones"] #tones .tonegrid .tone:nth-child(3){background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-06.webp")!important}
+body[data-current-page="tones"] #tones .tonegrid .tone:nth-child(4){background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-08.webp")!important}
+body[data-current-page="words"] #words .wordcard{
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-03.webp")!important;
+ background-size:cover!important;background-position:center!important;
+ border:2px solid #e9c99f!important;border-radius:21px!important;
+}
+body[data-current-page="words"] #words .wordcard:nth-child(2n){background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-10.webp")!important}
+body[data-current-page="words"] #words .wordcard:nth-child(3n){background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-06.webp")!important}
+body[data-current-page="quiz"] #quiz #quizbody{
+ background-image:linear-gradient(90deg,rgba(255,253,250,.94) 0%,rgba(255,251,249,.79) 43%,rgba(255,247,243,.27) 100%),url("./assets/course-scene-05.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body[data-current-page="quiz"] #quiz #quizopts button:not(.right):not(.wrong){
+ background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-06.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body[data-current-page="quiz"] #quiz #quizopts button:nth-child(2):not(.right):not(.wrong){background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-08.webp")!important}
+body[data-current-page="quiz"] #quiz #quizopts button:nth-child(3):not(.right):not(.wrong){background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-09.webp")!important}
+body[data-current-page="quiz"] #quiz #quizopts button:nth-child(4):not(.right):not(.wrong){background-image:linear-gradient(95deg,rgba(255,253,251,.98) 0%,rgba(255,252,251,.96) 38%,rgba(255,248,251,.76) 66%,rgba(255,250,255,.59) 100%),url("./assets/course-scene-10.webp")!important}
+body[data-current-page="dialog"] #dialog .ai-hero.scenic{
+ background-image:linear-gradient(90deg,rgba(255,252,246,.94) 0%,rgba(255,250,247,.78) 38%,rgba(255,247,242,.26) 100%),url("./assets/course-scene-09.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body[data-current-page="dialog"] #dialog .scene-intro .scene-photo{
+ background-image:linear-gradient(90deg,rgba(255,255,255,.10),rgba(255,250,247,.05)),url("./assets/course-scene-03.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
+body[data-current-page="dialog"] #dialog .scene-cafe .scene-photo{
+ background-image:linear-gradient(90deg,rgba(255,255,255,.1),rgba(255,250,247,.05)),url("./assets/course-scene-07.webp")!important;
+ background-size:cover!important;background-position:center!important;
+}
 </style>
 </head>
 <body><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><img src="./assets/approved-final-home.svg" alt="Китайский — это легко! Девушка в розовом платье и одна кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></section><section id="launch-menu" class="launch-screen" hidden><img src="./assets/approved-lessons.png" alt="Выбери звуки, слова, диалоги, практику или тест"><button class="hit-choice" data-choice="0" aria-label="Звуки и тоны">Звуки и тоны</button><button class="hit-choice" data-choice="1" aria-label="Базовые слова">Базовые слова</button><button class="hit-choice" data-choice="2" aria-label="Диалоги">Диалоги</button><button class="hit-choice" data-choice="3" aria-label="Практика">Практика</button><button class="hit-choice" data-choice="4" aria-label="Тест">Тест</button><button class="hit-back" id="launch-back" aria-label="Главная">Главная</button><button class="hit-all" id="launch-all" aria-label="Все уроки">Уроки</button></section></div>
