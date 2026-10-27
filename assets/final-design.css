@@ -36,3 +36,18 @@ body #dialog .ai-scenes .dialogcard h3{overflow-wrap:anywhere}
 body.focus-mode #course .course-content .course-options button:not(.correct):not(.incorrect){padding:12px 16px!important;min-height:72px!important}
 
 body #quiz #quizopts button{text-align:left!important;justify-content:flex-start!important}body #quiz #quizpinyin{font-size:18px!important}
+
+/* v30: lighten only the four lesson tone photographs, below their text. */
+body.focus-mode #course .course-content[data-lesson="1"] .focus-tone{
+ box-shadow:inset 0 0 0 1000px rgba(255,255,255,.66),0 5px 16px #b593a920!important;
+}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-tone.active-tone{
+ box-shadow:inset 0 0 0 1000px rgba(255,255,255,.66),0 0 0 2px #f0daff,0 6px 15px #bf81e250!important;
+}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-tone>strong{font-size:23px!important}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-tone>em{font-size:35px!important}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-tone>small{font-size:11px!important;color:#43536a!important}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-tone>span:first-child{font-size:11px!important}
+body.focus-mode #course .course-content[data-lesson="1"] .focus-tone .contour{font-size:27px!important}
+body.focus-mode #course .course-content #focus-tone-choice{font-size:14.5px!important;line-height:1.4}
+body.focus-mode #course .course-content #focus-check-tone{font-size:15px!important;line-height:1.3;padding:11px 12px!important;min-height:46px}
