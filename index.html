@@ -889,6 +889,199 @@ body.focus-mode #course .focus-phrase .focus-russian{
  body.focus-mode #course #focus-check{min-height:48px!important}
  body.focus-mode #course .course-options button{min-height:67px!important}
 }
+
+/* v24 • Scenery-first approved design across all independent screens. */
+body[data-current-page="tones"],
+body[data-current-page="quiz"],
+body[data-current-page="dialog"],
+body[data-current-page="words"]{
+ background-image:linear-gradient(180deg,#fffaf966,#f8effb42),
+ url("./assets/chinese-painting-numbers.webp")!important;
+ background-size:cover!important;background-position:center center!important;
+ background-attachment:fixed!important;
+}
+body.focus-mode{
+ background-image:linear-gradient(175deg,#fff8fb4d,#f4e3ff29),
+ url("./assets/chinese-painting-numbers.webp")!important;
+ background-position:center!important;background-size:cover!important;
+ background-attachment:fixed!important;
+}
+#quiz .columnhead,#tones .columnhead,#words .columnhead{
+ background:linear-gradient(94deg,#fffefdF6 0%,#fffcf4DC 53%,#ffffff69 100%),
+ url("./assets/chinese-painting-tones.webp") center/cover no-repeat!important;
+ border:3px solid #eac394!important;border-radius:28px!important;
+ box-shadow:0 3px 0 #fffaf2,0 9px 23px #816b922e!important;
+ padding:23px 24px!important;
+}
+#quiz .columnhead h1,#tones .columnhead h1,#words .columnhead h1{color:#182644!important;font-weight:850}
+#quiz .columnhead p,#tones .columnhead p,#words .columnhead p{color:#56647e!important;line-height:1.5}
+#quiz .columnhead .eyebrow,#tones .columnhead .eyebrow,#words .columnhead .eyebrow{color:#bf842e!important}
+#quiz .quizpanel{
+ border:3px solid #dfab71!important;
+ border-radius:31px!important;
+ padding:23px 21px 27px!important;
+ background:linear-gradient(173deg,#ffffffed 0%,#fffbfcE9 100%)!important;
+ box-shadow:0 0 0 4px #fffdf8,0 11px 27px #987e9d29!important;
+}
+#quiz .quizpanel .pill,#quiz #quizcount{
+ background:linear-gradient(120deg,#f9eaff,#f7ebff)!important;
+ color:#773eb0!important;border:1px solid #eed4fc!important;
+ padding:9px 16px!important;border-radius:30px!important;
+}
+#quiz #quizbody{
+ background-image:linear-gradient(110deg,#fffefdeB 0%,#fffefdB8 45%,#fffefd39 100%),
+ url("./assets/chinese-painting-tones.webp")!important;
+ background-position:center!important;background-size:cover!important;
+ border:2px solid #edc59e!important;
+ border-radius:24px!important;
+ padding:12px 12px 19px!important;
+ margin-top:13px!important;
+}
+#quiz .quizword{
+ font-size:clamp(68px,17vw,110px)!important;
+ color:#122849!important;
+ padding:19px 5px 2px!important;
+ text-shadow:0 2px 0 #fffcffcf!important;
+}
+#quiz #quizbody h3{color:#192b4c!important;font-size:clamp(17px,4.2vw,23px)!important}
+#quiz #quizpinyin{color:#5e658d!important;margin-bottom:21px}
+#quiz #quizopts{gap:11px!important}
+#quiz #quizopts button{
+ border:2px solid #e2c2ef!important;border-radius:20px!important;
+ min-height:73px!important;padding:13px 9px!important;
+ color:#252b46!important;
+ background-image:linear-gradient(95deg,#fffefdf7 0%,#fff7fbdf 63%,#ffffff82),
+ url("./assets/chinese-painting-greetings.webp")!important;
+ background-size:cover!important;background-position:center!important;
+ box-shadow:0 4px 13px #9674a621!important;
+ font-size:clamp(14px,3.8vw,18px)!important;
+}
+#quiz #quizopts button:nth-child(2){border-color:#e8ce9e!important;background-image:linear-gradient(95deg,#fffdfbf8,#fffbf1d8 60%,#fff6e398),url("./assets/chinese-painting-numbers.webp")!important}
+#quiz #quizopts button:nth-child(3){border-color:#aebfed!important;background-image:linear-gradient(95deg,#ffffffef,#f0f7ffce 60%,#f3f9ffa6),url("./assets/chinese-painting-pronouns.webp")!important}
+#quiz #quizopts button:nth-child(4){border-color:#eeb4d2!important;background-image:linear-gradient(95deg,#fffdfdf4,#fff1f5db 60%,#ffe1f0a6),url("./assets/chinese-painting-daily.webp")!important}
+#quiz #quizopts button.right{border-color:#61bc8c!important;background:#e7faef!important}
+#quiz #quizopts button.wrong{border-color:#e29399!important;background:#ffe7eb!important}
+#quiz #quizopts button:focus-visible{outline:3px solid #b060eb;outline-offset:3px}
+#tones .tone-intro.scenic{
+ background-image:linear-gradient(98deg,#fffaf6f0 0%,#fff9f9bf 48%,#fffefa22 95%),
+ url("./assets/chinese-painting-tones.webp")!important;
+ background-size:cover!important;background-position:center!important;
+ border:3px solid #ebbd83!important;border-radius:27px!important;
+ box-shadow:0 10px 23px #9572a62b!important;
+ min-height:225px!important;
+}
+#tones .tone-intro h2{
+ color:#14264c!important;
+ text-shadow:0 1px 1px #ffffff94!important;
+ font-size:clamp(30px,7vw,44px)!important;
+}
+#tones .tone-intro p{color:#51607c!important;font-size:clamp(13px,3.2vw,16px)!important}
+#tones .tone-intro .lesson-tag{background:#f9d9a3!important;color:#68472a!important}
+#tones .tonegrid{gap:9px!important}
+#tones .tonegrid .tone{
+ background:linear-gradient(155deg,#fffafbf1 0%,#fffafbc9 62%,#f9e5f7b4),
+ url("./assets/chinese-painting-greetings.webp") center/cover no-repeat!important;
+ border:2px solid #d8aaf2!important;
+ border-radius:21px!important;
+ padding:17px 6px!important;
+ box-shadow:0 5px 16px #b186ae22!important;
+}
+#tones .tonegrid .tone:nth-child(2){border-color:#e3b3a1!important;background-image:linear-gradient(155deg,#fffdf9f6,#fff6e8df 70%,#ffefe0b0),url("./assets/chinese-painting-numbers.webp")!important}
+#tones .tonegrid .tone:nth-child(3){border-color:#b1c7f0!important;background-image:linear-gradient(155deg,#ffffffF6,#edf5ffDC 70%,#e9f1ffd0),url("./assets/chinese-painting-pronouns.webp")!important}
+#tones .tonegrid .tone:nth-child(4){border-color:#e9bfd1!important;background-image:linear-gradient(155deg,#ffffffF6,#fff2f7DC 70%,#ffe8f0d0),url("./assets/chinese-painting-daily.webp")!important}
+#tones .tonegrid .tone[aria-pressed="true"]{border-color:#a660e6!important;box-shadow:0 0 0 3px #f0d1ff,0 4px 14px #ae78e446!important}
+#tones .tonegrid .tone .tone-title{background:#f7eaffea!important;color:#70339e!important}
+#tones .tonegrid .tone .char{color:#0f2347!important}
+#tones .tonegrid .tone .pinyin{color:#28355b!important}
+#tones .practice .panel{background:#fffefbf2!important;border:2px solid #e9c49a!important;border-radius:25px!important;box-shadow:0 8px 18px #947e9c20!important}
+#tones #listen,#tones #contourSound,#tones #record,#tones #tone-check{
+ border-radius:18px!important;
+ border:2px solid #d8b1f3!important;
+ background:linear-gradient(100deg,#fffefdF5,#f5e9ffdA 70%,#ffeaf9B5),
+ url("./assets/chinese-painting-tones.webp") center/cover no-repeat!important;
+ color:#6833a5!important;box-shadow:0 5px 13px #a581bf27!important;
+}
+#tones #tone-check{border-color:#efa7cb!important;background:linear-gradient(100deg,#fffefdF0,#ffedf7e1),url("./assets/chinese-painting-greetings.webp") center/cover no-repeat!important;color:#94294f!important}
+#dialog .ai-heading,#dialog .ai-scenes,#dialog .ai-how{
+ padding:18px 20px!important;
+ background:#fffefdED!important;
+ border:3px solid #eac493!important;
+ border-radius:26px!important;
+ box-shadow:0 5px 19px #9d819c26!important;
+}
+#dialog .ai-heading h1{color:#13234c!important;font-family:Georgia,serif}
+#dialog .ai-hero.scenic{
+ background-image:linear-gradient(95deg,#fffaf8eA 0%,#fff5f7b4 47%,#fffdf722 92%),
+ url("./assets/chinese-painting-greetings.webp")!important;
+ background-size:cover!important;background-position:center!important;
+ border:3px solid #ecbc7e!important;
+ border-radius:27px!important;
+ min-height:276px!important;
+ box-shadow:0 7px 20px #97749536!important;
+}
+#dialog .ai-hero h2{color:#16264a!important;text-shadow:0 1px 0 #fff!important}
+#dialog .ai-hero p{color:#435573!important;font-weight:650!important}
+#dialog .ai-scenes .dialogcard{
+ background:#fffefaf4!important;
+ border:2px solid #efcca0!important;
+ border-radius:23px!important;
+ box-shadow:0 5px 16px #aa87a228!important;
+}
+#dialog .ai-scenes .scene-photo{
+ background-image:linear-gradient(90deg,#fff8fa22,#fff6fb0d),
+ url("./assets/chinese-painting-tones.webp")!important;
+ background-size:cover!important;background-position:center!important;
+ height:155px!important;border:2px solid #f0c797!important;
+ border-radius:20px!important;
+ font-size:0!important;color:transparent!important;text-shadow:none!important;
+}
+#dialog .ai-scenes .scene-cafe .scene-photo{
+ background-image:linear-gradient(90deg,#fffaf422,#fff7ed0d),
+ url("./assets/chinese-painting-daily.webp")!important;
+}
+#dialog .ai-scenes .dialogcard .stage{color:#a87030!important}
+#dialog .ai-scenes .dialogcard h3{color:#182a48!important}
+#dialog .ai-scenes .dialogcard .btn,
+#dialog #copyprompt,#dialog .ai-actions a{
+ color:#682d98!important;
+ background:linear-gradient(105deg,#fffdfbf5,#f6e8ffdc 64%,#ffdef1B5),
+ url("./assets/chinese-painting-greetings.webp") center/cover no-repeat!important;
+ border:2px solid #d9a9ef!important;border-radius:18px!important;
+ box-shadow:0 4px 13px #a57dbd2d!important;
+}
+#dialog .scene-cafe .btn{background-image:linear-gradient(105deg,#fffdfbf5,#ffeff4e5 65%,#ffdfedB5),url("./assets/chinese-painting-daily.webp")!important;border-color:#f1b4da!important}
+#dialog .ai-scenes .dialogcard .dialogline{background:#f8f6ffed!important;border-radius:16px!important}
+#dialog .ai-how textarea{background:linear-gradient(110deg,#ffffffea,#fff8fcf5),url("./assets/chinese-painting-greetings.webp") center/cover no-repeat!important}
+#course .course-content .course-quiz-question{
+ border:2px solid #e8b98c!important;
+ background-image:linear-gradient(100deg,#fffefaEc,#fffaf6B4 48%,#fff9f844),url("./assets/chinese-painting-tones.webp")!important;
+ background-size:cover!important;background-position:center!important;
+ box-shadow:0 5px 14px #9e84a52A!important;
+}
+#course .course-content .course-options button:not(.correct):not(.incorrect){
+ min-height:71px!important;
+ background-image:linear-gradient(115deg,#fffdfafa,#fff4f6de 60%,#ffffffad),url("./assets/chinese-painting-numbers.webp")!important;
+ background-size:cover!important;background-position:center!important;
+ border-width:2px!important;
+}
+#course .course-content .course-options button:nth-child(1){border-color:#e7b7f3!important}
+#course .course-content .course-options button:nth-child(2){border-color:#f3c2ba!important}
+#course .course-content .course-options button:nth-child(3){border-color:#b8c9f5!important}
+#course .course-content .course-options button:nth-child(4){border-color:#f1cf9d!important}
+body[data-current-page] .statuspill::after{content:"  · v24";font-weight:650;color:#7841a2}
+@media(max-width:600px){
+ #dialog .ai-heading,#dialog .ai-scenes,#dialog .ai-how{padding:13px 12px!important}
+ #dialog .ai-hero.scenic{min-height:258px!important;padding:20px 22px!important}
+ #dialog .ai-scenes .scene-photo{height:115px!important;min-height:115px!important}
+ #tones .tonegrid{gap:6px!important}
+ #tones .tonegrid .tone{padding:11px 3px!important;border-radius:17px!important;min-width:0}
+ #tones .tonegrid .tone .char{font-size:clamp(34px,8vw,60px)!important}
+ #tones .tonegrid .tone .pinyin{font-size:clamp(14px,4vw,21px)!important}
+ #quiz .quizpanel{padding:12px 9px 20px!important}
+ #quiz #quizbody{padding:10px 10px 15px!important}
+ #quiz .quizword{font-size:clamp(58px,15vw,85px)!important}
+}
+
 </style>
 </head>
 <body><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><img src="./assets/approved-final-home.svg" alt="Китайский — это легко! Девушка в розовом платье и одна кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></section><section id="launch-menu" class="launch-screen" hidden><img src="./assets/approved-lessons.png" alt="Выбери звуки, слова, диалоги, практику или тест"><button class="hit-choice" data-choice="0" aria-label="Звуки и тоны">Звуки и тоны</button><button class="hit-choice" data-choice="1" aria-label="Базовые слова">Базовые слова</button><button class="hit-choice" data-choice="2" aria-label="Диалоги">Диалоги</button><button class="hit-choice" data-choice="3" aria-label="Практика">Практика</button><button class="hit-choice" data-choice="4" aria-label="Тест">Тест</button><button class="hit-back" id="launch-back" aria-label="Главная">Главная</button><button class="hit-all" id="launch-all" aria-label="Все уроки">Уроки</button></section></div>
@@ -957,7 +1150,18 @@ const tones=[{hz:'妈',py:'mā',ru:'мама',label:'1-й · ровный',color
 const cacheKey='chinese-coach-personal-v1';let state={learned:[],correct:0};try{const parsed=JSON.parse(localStorage.getItem(cacheKey)||'null');if(parsed){state.learned=Array.isArray(parsed.learned)?parsed.learned.filter(x=>typeof x==='string'):[];state.correct=Number.isFinite(parsed.correct)?Math.max(0,parsed.correct):0;}}catch(e){}
 function save(){try{localStorage.setItem(cacheKey,JSON.stringify(state));}catch(e){}updateStats()}
 function updateStats(){const n=words.filter(w=>state.learned.includes(w.hz)).length;document.getElementById('statwords').textContent=`${n} / ${words.length}`;document.getElementById('statquiz').textContent=state.correct;document.getElementById('statpercent').textContent=Math.round(100*n/words.length)+'%';document.getElementById('progressbar').style.width=(100*n/words.length)+'%'}
-function go(name){document.body.classList.toggle('focus-mode',name==='course');if(name==='home'){updateStats();if(typeof updateCourseMetrics==='function')updateCourseMetrics();}document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id===name));document.querySelectorAll('.nav button, .bottom-nav button').forEach(el=>el.classList.toggle('active',el.dataset.page===name));window.scrollTo({top:0,behavior:'smooth'});}
+function updateGlobalWowFact(page){
+ const facts={
+  home:'💡 Вау: 666 (liù liù liù) — в китайском интернете «круто!»',
+  tones:'💡 Вау: один слог с разным тоном может менять значение!',
+  words:'💡 Вау: 熊猫 (xióngmāo) — буквально «медведь-кошка»',
+  quiz:'💡 Вау: 加油 (jiāyóu) — «Давай, у тебя получится!»',
+  dialog:'💡 Вау: 慢慢来 (màn man lái) — «Не спеши, всё получится!»'
+ };
+ const element=document.getElementById('wow-fact');
+ if(element)element.textContent=facts[page]||facts.home;
+}
+function go(name){document.body.dataset.currentPage=name;document.body.classList.toggle('focus-mode',name==='course');if(name!=='course')updateGlobalWowFact(name);if(name==='home'){updateStats();if(typeof updateCourseMetrics==='function')updateCourseMetrics();}document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id===name));document.querySelectorAll('.nav button, .bottom-nav button').forEach(el=>el.classList.toggle('active',el.dataset.page===name));window.scrollTo({top:0,behavior:'smooth'});}
 document.querySelectorAll('[data-go],[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go||b.dataset.page)));
 function toast(text){const el=document.getElementById('feedbacktoast');el.textContent=text;el.classList.remove('hidden');clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>el.classList.add('hidden'),5500)}
 // Some Android browsers populate getVoices() late. Don't block speech when it is empty:
