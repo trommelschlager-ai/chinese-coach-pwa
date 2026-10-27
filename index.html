@@ -7,6 +7,7 @@
 <meta name="description" content="Персональный офлайн-тренажёр китайского: тоны, HSK, тесты и прогресс.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preload" as="image" href="./assets/approved-home-v36.png" fetchpriority="high">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
@@ -446,7 +447,7 @@ body.focus-mode .shell{padding-bottom:48px}
 }
 @media(prefers-reduced-motion:reduce){.btn{transition:none!important}}
 
-body.launch-active{background:#10132a;overflow:hidden}body.launch-active .shell{display:none!important}#launch-entry{position:fixed;inset:0;display:none;z-index:90;align-items:center;justify-content:center;background:#10132a}body.launch-active #launch-entry{display:flex}#launch-entry::before{content:"";position:absolute;inset:-25px;background:url("./assets/approved-final-home.svg") center/cover no-repeat;filter:blur(22px) brightness(.65);opacity:.85;pointer-events:none}#launch-entry .launch-screen{z-index:1}#launch-entry[hidden],#launch-entry .launch-screen[hidden]{display:none!important}#launch-entry .launch-screen{position:relative;height:min(100dvh,177.68vw);width:min(100vw,56.28dvh);overflow:hidden;background:#17103d}#launch-entry img{width:100%;height:100%;display:block;pointer-events:none;user-select:none}#launch-entry button{position:absolute;background:none;border:0;color:transparent;font-size:0;cursor:pointer;touch-action:manipulation;border-radius:20px}#launch-entry button:focus-visible{outline:3px solid #fff;outline-offset:-3px}#launch-entry button:active{background:#fff2}.hit-start{left:13%;top:79%;width:74%;height:12.1%}.hit-choice{left:12%;width:76%;height:10%}.hit-choice[data-choice="0"]{top:25%}.hit-choice[data-choice="1"]{top:36.5%}.hit-choice[data-choice="2"]{top:48%}.hit-choice[data-choice="3"]{top:59.5%}.hit-choice[data-choice="4"]{top:71%}.hit-back{left:7%;width:43%;top:86.6%;height:9%}.hit-all{left:52%;width:41%;top:86.6%;height:9%}
+body.launch-active{background:#10132a;overflow:hidden}body.launch-active .shell{display:none!important}#launch-entry{position:fixed;inset:0;display:none;z-index:90;align-items:center;justify-content:center;background:#10132a}body.launch-active #launch-entry{display:flex}#launch-entry::before{content:"";position:absolute;inset:-25px;background:url("./assets/approved-home-v36.png") center/cover no-repeat;filter:blur(22px) brightness(.65);opacity:.85;pointer-events:none}#launch-entry .launch-screen{z-index:1}#launch-entry[hidden],#launch-entry .launch-screen[hidden]{display:none!important}#launch-entry .launch-screen{position:relative;height:min(100dvh,177.68vw);width:min(100vw,56.28dvh);overflow:hidden;background:#17103d}#launch-entry img{width:100%;height:100%;display:block;pointer-events:none;user-select:none}#launch-entry button{position:absolute;background:none;border:0;color:transparent;font-size:0;cursor:pointer;touch-action:manipulation;border-radius:20px}#launch-entry button:focus-visible{outline:3px solid #fff;outline-offset:-3px}#launch-entry button:active{background:#fff2}.hit-start{left:13%;top:79%;width:74%;height:12.1%}.hit-choice{left:12%;width:76%;height:10%}.hit-choice[data-choice="0"]{top:25%}.hit-choice[data-choice="1"]{top:36.5%}.hit-choice[data-choice="2"]{top:48%}.hit-choice[data-choice="3"]{top:59.5%}.hit-choice[data-choice="4"]{top:71%}.hit-back{left:7%;width:43%;top:86.6%;height:9%}.hit-all{left:52%;width:41%;top:86.6%;height:9%}
 /* Gentle Sakura transition between the unchanged, approved cover and lesson menu. */
 #launch-entry.launch-sakura .launch-screen{
  position:absolute;inset:0;margin:auto;transform-origin:center;
@@ -1538,11 +1539,15 @@ body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .foc
 #launch-entry.petals-falling #launch-petals{display:block;pointer-events:none}
 #launch-entry.petals-falling #launch-petals .sakura-petal{animation-duration:var(--duration,3200ms)!important;animation-fill-mode:both;animation-play-state:running!important}
 @media(prefers-reduced-motion:reduce){#launch-entry.petals-falling #launch-petals{display:none}}
+/* Preserve the complete 635 × 1536 approved cover without cropping or stretching.
+   The lesson menu retains its existing dimensions. */
+#launch-entry #launch-cover{width:min(100vw,41.3411458333dvh);height:min(100dvh,241.88976378vw)}
+#launch-cover .hit-start{left:14%;top:80.6%;width:72%;height:8%}
 </style>
 <link rel="stylesheet" href="./assets/final-design.css?v=35">
 <script src="./assets/semantic-art.js?v=29"></script>
 </head>
-<body class="launch-active"><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><img src="./assets/approved-final-home.svg" alt="Китайский — это легко! Девушка в розовом платье и одна кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></section><section id="launch-menu" class="launch-screen" hidden><img src="./assets/approved-lessons.png" alt="Выбери звуки, слова, диалоги, практику или тест"><button class="hit-choice" data-choice="0" aria-label="Звуки и тоны">Звуки и тоны</button><button class="hit-choice" data-choice="1" aria-label="Базовые слова">Базовые слова</button><button class="hit-choice" data-choice="2" aria-label="Диалоги">Диалоги</button><button class="hit-choice" data-choice="3" aria-label="Практика">Практика</button><button class="hit-choice" data-choice="4" aria-label="Тест">Тест</button><button class="hit-back" id="launch-back" aria-label="Главная">Главная</button><button class="hit-all" id="launch-all" aria-label="Все уроки">Уроки</button></section></div>
+<body class="launch-active"><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><img src="./assets/approved-home-v36.png" width="635" height="1536" fetchpriority="high" alt="Мой Китайский. Девушка в розовом платье и кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></section><section id="launch-menu" class="launch-screen" hidden><img src="./assets/approved-lessons.png" alt="Выбери звуки, слова, диалоги, практику или тест"><button class="hit-choice" data-choice="0" aria-label="Звуки и тоны">Звуки и тоны</button><button class="hit-choice" data-choice="1" aria-label="Базовые слова">Базовые слова</button><button class="hit-choice" data-choice="2" aria-label="Диалоги">Диалоги</button><button class="hit-choice" data-choice="3" aria-label="Практика">Практика</button><button class="hit-choice" data-choice="4" aria-label="Тест">Тест</button><button class="hit-back" id="launch-back" aria-label="Главная">Главная</button><button class="hit-all" id="launch-all" aria-label="Все уроки">Уроки</button></section></div>
 <div class="shell">
 <header class="topbar"><div class="brand"><span class="brandmark"><svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 43 L15 31 23 36 32 22 47 43 Z" fill="#356184" opacity=".8"/><path d="M10 45l12-8 10 5 10-7 7 10Z" fill="#4f7691"/><path d="M12 27 Q26 23 40 27 L45 29 40 32 12 32 7 29 Z" fill="#f3c876"/><path d="M16 17 Q26 14 36 17 L41 20 36 23 16 23 11 20 Z" fill="#f5d596"/><path d="M26 11L26 16M22 10l4-4 4 4" stroke="#f1ca7f" stroke-width="2" fill="none"/><path d="M16 32H36V43H16Z" fill="#f1c270"/><path d="M21 32V43M31 32V43" stroke="#132c48" stroke-width="2"/><path d="M20 23H32V27H20Z" fill="#e6b761"/><path d="M4 46H48" stroke="#e8c587" stroke-width="2"/></svg><span class="brandmark-badge">中</span></span><div><div class="brandtitle">我的中文老师</div><div class="brandsub" id="wow-fact" aria-live="polite">💡 Вау: 666 (liù liù liù) в китайском интернете означает «круто!».</div></div></div><span class="statuspill">● 5 уроков · Начальный уровень</span></header>
 <nav class="nav" aria-label="Разделы тренажёра"><button data-page="home" class="active">⌂ Главная</button><button data-page="course">📖 Уроки (5)</button><button data-page="tones">🎙 Произношение</button><button data-page="words">▦ Словарь</button><button data-page="quiz">✓ Проверка</button><button data-page="dialog">✦ Практика с AI</button></nav>
@@ -1746,8 +1751,13 @@ async function updateOfflineBar(){const info=document.getElementById('offlineinf
  else{info.textContent='Подготовка офлайн-режима… Открой приложение с интернетом.';bar.className='offlinebar notready';}}
 window.addEventListener('online',updateOfflineBar);window.addEventListener('offline',updateOfflineBar);
 if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')){
- navigator.serviceWorker.register('./sw.js',{scope:'./'}).then(()=>navigator.serviceWorker.ready).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
- navigator.serviceWorker.addEventListener('controllerchange',updateOfflineBar);
+ const hadServiceWorkerController=!!navigator.serviceWorker.controller;
+ navigator.serviceWorker.register('./sw.js',{scope:'./',updateViaCache:'none'}).then(()=>navigator.serviceWorker.ready).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
+ navigator.serviceWorker.addEventListener('controllerchange',()=>{
+  // Replace an already-open cached shell once the new offline version takes control.
+  if(hadServiceWorkerController)location.reload();
+  else updateOfflineBar();
+ });
 }
 updateOfflineBar();
 // User-owned local backup (no external upload).
