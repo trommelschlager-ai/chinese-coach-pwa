@@ -21,8 +21,8 @@ jobs:
           file /tmp/scenery.jpg >> assets/image-import-diagnostic.txt 2>&1 || true
           wc -c /tmp/scenery.jpg >> assets/image-import-diagnostic.txt 2>&1 || true
           python3 - <<'PY' >> assets/image-import-diagnostic.txt 2>&1
-          from PIL import Image
           try:
+              from PIL import Image
               im=Image.open('/tmp/scenery.jpg')
               print('dimensions', im.size)
               if im.width>=600:
