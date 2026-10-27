@@ -1509,6 +1509,27 @@ body.focus-mode #course .course-content[data-lesson="5"] .course-options button:
 #tones .tone-intro.scenic{background-image:linear-gradient(90deg,rgba(255,253,249,.45),rgba(255,250,247,0) 86%),url("./assets/course-scene-01.webp")!important}
 #dialog .ai-hero.scenic{background-image:linear-gradient(90deg,rgba(255,253,249,.49),rgba(255,250,247,0) 85%),url("./assets/course-scene-03.webp")!important}
 
+
+/* v33 — larger readable pinyin and Russian translation in Lesson 2 dialogues. */
+body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .focus-pinyin{
+ font-size:clamp(25px,6.1vw,36px)!important;
+ line-height:1.3!important;
+ font-weight:800!important;
+ color:#2368a8!important;
+ overflow-wrap:anywhere;
+ text-shadow:0 1px 1px #fff8!important;
+}
+body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .focus-russian{
+ font-size:clamp(23px,5.4vw,31px)!important;
+ line-height:1.32!important;
+ font-weight:700!important;
+ color:#183456!important;
+ overflow-wrap:anywhere;
+ text-shadow:0 1px 1px #fff8!important;
+}
+body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .focus-phrase{
+ gap:8px!important;
+}
 </style>
 <link rel="stylesheet" href="./assets/final-design.css?v=31">
 <script src="./assets/semantic-art.js?v=29"></script>
@@ -1757,7 +1778,7 @@ const COURSE = [
    {title:'Вежливые ответы',text:'На 谢谢 («спасибо») можно ответить 不客气 («не за что»). На 对不起 («извините») — 没关系 («ничего страшного»).',hz:'谢谢！— 不客气！',py:'xièxie! — bú kèqi!',ru:'Спасибо! — Не за что!'}
   ],
   vocab:[['你好','nǐ hǎo','привет'],['您好','nín hǎo','здравствуйте (вежливо)'],['再见','zàijiàn','до свидания'],['谢谢','xièxie','спасибо'],['不客气','bú kèqi','не за что'],['对不起','duìbuqǐ','извините'],['没关系','méi guānxi','ничего страшного'],['请','qǐng','пожалуйста (просьба)'],['叫','jiào','называться'],['什么','shénme','что / какой'],['名字','míngzi','имя'],['我叫小明','wǒ jiào Xiǎomíng','меня зовут Сяомин']],
-  dialogue:[['A','早上好！','zǎoshang hǎo!','Доброе утро!'],['B','你好！你叫什么名字？','nǐ hǎo! nǐ jiào shénme míngzi?','Привет! Как тебя зовут?'],['A','我叫小明。你呢？','wǒ jiào Xiǎomíng. nǐ ne?','Меня зовут Сяомин. А тебя?'],['B','我叫安娜。','wǒ jiào Ānnà.','Меня зовут Анна.'],['A','再见！','zàijiàn!','Пока!']],
+  dialogue:[['A','早上好！','zǎoshang hǎo!','Доброе утро!'],['B','下午好！','xiàwǔ hǎo!','Добрый день!'],['A','晚上好！','wǎnshang hǎo!','Добрый вечер!'],['B','我叫安娜。','wǒ jiào Ānnà.','Меня зовут Анна.'],['A','再见！','zàijiàn!','Пока!']],
   tip:'Заметь: при произношении 你好 первый третий тон переходит во второй. В письменном пиньине обычно оставляют nǐ hǎo.',
   quiz:[
    ['Как сказать «спасибо»?',['再见','谢谢','名字','请'],1,'谢谢 (xièxie) — спасибо.'],
