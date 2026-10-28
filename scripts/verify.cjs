@@ -21,7 +21,12 @@ const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>
 let spoken=[];w.speechSynthesis={getVoices:()=>[{lang:'zh-CN',localService:true}],cancel(){},speak(u){spoken.push(u.text)}};w.SpeechSynthesisUtterance=function(t){this.text=t};
 w.eval(fs.readFileSync('assets/semantic-art.js','utf8'));
 w.eval([...html.matchAll(/<script(?: [^>]*)?>([\s\S]*?)<\/script>/g)].map(s=>s[1]).join('\n').replace("'use strict';",'')); 
+w.eval(fs.readFileSync('assets/listening-lab.js','utf8'));
 const doc=w.document;
+assert.equal(doc.querySelectorAll('#listening-lab [data-ear-tone]').length,4,'Listening lab presents four tone choices');
+assert.equal(doc.querySelectorAll('#listening-lab .ear-credits a').length,4,'All four human sample recordings are credited');
+assert.equal(doc.querySelector('#ear-counter').textContent,'Вопрос 1 из 8');
+assert([...doc.querySelectorAll('#listening-lab [data-ear-tone]')].every(b=>b.disabled),'Choices stay locked until audio plays');
 let panels=0,questions=0,options=0,missing=new Set();
 const asset=el=>{if(el?.dataset.art){const p=w.semanticArt.path(el.dataset.art);if(!fs.existsSync(p))missing.add(p)}};
 for(let id=1;id<=5;id++){
