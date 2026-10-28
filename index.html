@@ -1617,7 +1617,7 @@ const words=[
 const tones=[{hz:'妈',py:'mā',ru:'мама',label:'1-й · ровный',color:'#a98029'}, {hz:'麻',py:'má',ru:'конопля',label:'2-й · восходящий',color:'#307c9b'}, {hz:'马',py:'mǎ',ru:'лошадь',label:'3-й · низкий/ломаный',color:'#9a5892'}, {hz:'骂',py:'mà',ru:'ругать',label:'4-й · нисходящий',color:'#be524a'}];
 const cacheKey='chinese-coach-personal-v1';let state={learned:[],correct:0};try{const parsed=JSON.parse(localStorage.getItem(cacheKey)||'null');if(parsed){state.learned=Array.isArray(parsed.learned)?parsed.learned.filter(x=>typeof x==='string'):[];state.correct=Number.isFinite(parsed.correct)?Math.max(0,parsed.correct):0;}}catch(e){}
 function save(){try{localStorage.setItem(cacheKey,JSON.stringify(state));}catch(e){}updateStats()}
-function updateStats(){const n=words.filter(w=>state.learned.includes(w.hz)).length;document.getElementById('statwords').textContent=`${n} / ${words.length}`;document.getElementById('statquiz').textContent=state.correct;document.getElementById('statpercent').textContent=Math.round(100*n/words.length)+'%';document.getElementById('progressbar').style.width=(100*n/words.length)+'%'}
+function updateStats(){const n=words.filter(w=>state.learned.includes(w.hz)).length;const info=document.getElementById('wordmessage');if(info)info.textContent=`В отдельном словаре отмечено: ${n} из ${words.length} слов.`;/* Главные показатели принадлежат пяти урокам и обновляются только updateCourseMetrics(). */}
 function updateGlobalWowFact(page){
  const facts={
   home:'💡 Вау: 666 (liù liù liù) — в китайском интернете «круто!»',
@@ -1801,7 +1801,7 @@ const COURSE = [
    {title:'Вежливые ответы',text:'На 谢谢 («спасибо») можно ответить 不客气 («не за что»). На 对不起 («извините») — 没关系 («ничего страшного»).',hz:'谢谢！— 不客气！',py:'xièxie! — bú kèqi!',ru:'Спасибо! — Не за что!'}
   ],
   vocab:[['你好','nǐ hǎo','привет'],['您好','nín hǎo','здравствуйте (вежливо)'],['再见','zàijiàn','до свидания'],['谢谢','xièxie','спасибо'],['不客气','bú kèqi','не за что'],['对不起','duìbuqǐ','извините'],['没关系','méi guānxi','ничего страшного'],['请','qǐng','пожалуйста (просьба)'],['叫','jiào','называться'],['什么','shénme','что / какой'],['名字','míngzi','имя'],['我叫小明','wǒ jiào Xiǎomíng','меня зовут Сяомин']],
-  dialogue:[['A','早上好！','zǎoshang hǎo!','Доброе утро!'],['B','下午好！','xiàwǔ hǎo!','Добрый день!'],['A','晚上好！','wǎnshang hǎo!','Добрый вечер!'],['B','我叫安娜。','wǒ jiào Ānnà.','Меня зовут Анна.'],['A','再见！','zàijiàn!','Пока!']],
+  dialogue:[['A','你好！','nǐ hǎo!','Привет!'],['B','你好！','nǐ hǎo!','Привет!'],['A','你叫什么名字？','nǐ jiào shénme míngzi?','Как тебя зовут?'],['B','我叫安娜。你呢？','wǒ jiào Ānnà. nǐ ne?','Меня зовут Анна. А тебя?'],['A','我叫小明。','wǒ jiào Xiǎomíng.','Меня зовут Сяомин.'],['B','再见！','zàijiàn!','До свидания!']],
   tip:'Заметь: при произношении 你好 первый третий тон переходит во второй. В письменном пиньине обычно оставляют nǐ hǎo.',
   quiz:[
    ['Как сказать «спасибо»?',['再见','谢谢','名字','请'],1,'谢谢 (xièxie) — спасибо.'],
