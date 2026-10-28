@@ -1549,7 +1549,7 @@ body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .foc
  #launch-cover .launch-cover-art{inset:auto;left:50%;top:min(50dvh,calc(95dvh - max(38.6dvh,93.3694488191vw)));width:max(100vw,41.3411458333dvh);height:max(100dvh,241.88976378vw);transform:translate(-50%,-50%)}
 }
 </style>
-<link rel="stylesheet" href="./assets/final-design.css?v=38">
+<link rel="stylesheet" href="./assets/final-design.css?v=40">
 <script src="./assets/semantic-art.js?v=29"></script>
 </head>
 <body class="launch-active"><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><div class="launch-cover-art"><img src="./assets/approved-home-v36.png" width="635" height="1536" fetchpriority="high" alt="Мой Китайский. Девушка в розовом платье и кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></div></section><section id="launch-menu" class="launch-screen" hidden><img src="./assets/approved-lessons.png" alt="Выбери звуки, слова, диалоги, практику или тест"><button class="hit-choice" data-choice="0" aria-label="Звуки и тоны">Звуки и тоны</button><button class="hit-choice" data-choice="1" aria-label="Базовые слова">Базовые слова</button><button class="hit-choice" data-choice="2" aria-label="Диалоги">Диалоги</button><button class="hit-choice" data-choice="3" aria-label="Практика">Практика</button><button class="hit-choice" data-choice="4" aria-label="Тест">Тест</button><button class="hit-back" id="launch-back" aria-label="Главная">Главная</button><button class="hit-all" id="launch-all" aria-label="Все уроки">Уроки</button></section></div>
@@ -1636,12 +1636,14 @@ function toast(text){const el=document.getElementById('feedbacktoast');el.textCo
 // let the installed TTS engine resolve the Mandarin locale from utterance.lang.
 function chineseVoice(){
  if(!('speechSynthesis' in window))return null;
- const voices=window.speechSynthesis.getVoices();
- return voices.find(v=>/^zh[-_]CN/i.test(v.lang)&&v.localService)
+ const voices=window.speechSynthesis.getVoices().filter(v=>/^(zh|cmn)([-_]|$)/i.test(v.lang));
+ let chosen='';
+ try{chosen=localStorage.getItem('chinese-coach-tts-voice-v1')||''}catch(e){}
+ return voices.find(v=>v.voiceURI===chosen&&chosen)
+   ||voices.find(v=>/^zh[-_]CN/i.test(v.lang)&&v.localService)
    ||voices.find(v=>/^zh[-_]CN/i.test(v.lang))
-   ||voices.find(v=>/^zh[-_]/i.test(v.lang)&&v.localService)
-   ||voices.find(v=>/^zh[-_]/i.test(v.lang))
-   ||null;
+   ||voices.find(v=>v.localService)
+   ||voices[0]||null;
 }
 function showChineseVoiceHelp(){
  const help=document.getElementById('voicehelp');
@@ -1663,7 +1665,9 @@ function speakChinese(hanzi,rate){
  u.lang='zh-CN';
  // When the list is still empty, a valid OS engine may still speak via lang.
  if(voice)u.voice=voice;
- u.rate=rate;
+ let userRate=null;
+ try{const stored=Number(localStorage.getItem('chinese-coach-tts-rate-v1'));if(stored>=.75&&stored<=1.15)userRate=stored}catch(e){}
+ u.rate=userRate??.95;
  u.pitch=1;
  u.onerror=()=>{
    toast('Китайский голос не сработал. Открой инструкцию по настройке озвучки.');
@@ -1913,6 +1917,12 @@ function practiceButtons(hz,py){
  return `<div class="focus-practice-actions"><button type="button" class="btn dark neon-blue" data-play-focus="${safe(hz)}">🔊 Слушать</button><button type="button" class="btn dark neon-blue" id="focus-repeat">🎤 Повторить</button></div><button type="button" id="focus-check" class="btn primary neon-gold focus-check" data-check-hz="${safe(hz)}" data-check-py="${safe(py)}">🎯 ${label}</button><div class="focus-feedback" id="focus-feedback" aria-live="polite"></div>`;
 }
 function connectPractice(panel,rate=.84){
+ const listenLink=panel.querySelector('#focus-open-listening');
+ if(listenLink)listenLink.addEventListener('click',()=>{
+   go('tones');
+   const lab=document.getElementById('listening-lab');
+   if(lab)lab.scrollIntoView({behavior:'smooth',block:'start'});
+ });
  panel.querySelectorAll('[data-play-focus]').forEach(b=>b.addEventListener('click',()=>sayAtRate(b.dataset.playFocus,rate)));
  panel.querySelectorAll('[data-say-tone]').forEach(b=>b.addEventListener('click',()=>sayAtRate(b.dataset.sayTone,.85)));
  const repeat=panel.querySelector('#focus-repeat');if(repeat)repeat.addEventListener('click',recordFocusRepeat);
@@ -1997,7 +2007,7 @@ function renderCoursePanel(){
      const sample=[['mā','妈','мама','—'],['má','麻','конопля','↗'],['mǎ','马','лошадь','⌄'],['mà','骂','ругать','↘']];
      panel.innerHTML=`<div class="lesson-banner scenic focus-banner"><h2>Как работают 4 тона</h2><p>Один слог — четыре разных значения.</p></div>
      <div class="focus-tones">${sample.map((t,i)=>`<button type="button" class="focus-tone ${i===0?'active-tone':''}" data-say-tone="${t[1]}" data-py="${t[0]}"><span>${i+1} тон</span><b class="contour">${t[3]}</b><strong>${t[0]}</strong><em>${t[1]}</em><small>${t[2]}</small><span class="tone-speaker">🔊</span></button>`).join('')}</div><div class="focus-tone-check"><span id="focus-tone-choice">Выбран: mā · 妈</span><button type="button" id="focus-check-tone" class="btn primary neon-gold" data-hz="妈" data-py="mā">🎯 Проверить тон</button><div id="focus-tone-feedback" class="focus-feedback" aria-live="polite"></div></div>
-     <div class="focus-saycard"><div class="focus-card-title">Практикуй фразу</div>${focusedCard('你好','nǐ hǎo','Привет')}${practiceButtons('你好','nǐ hǎo')}</div>
+     <button type="button" class="btn soft focus-open-listening" id="focus-open-listening">🎧 Новый тренажёр: угадай тон на слух →</button><div class="focus-saycard"><div class="focus-card-title">Практикуй фразу</div>${focusedCard('你好','nǐ hǎo','Привет')}${practiceButtons('你好','nǐ hǎo')}</div>
      <details class="focus-details"><summary>💡 Совет учителя и правило третьего тона</summary><p>Сначала слушай, потом повторяй вслух три раза. В записи 你好 — nǐ hǎo, но в речи первый слог звучит ní (изменение третьего тона).</p>${l.notes.map(n=>`<div class="focus-mini"><strong>${safe(n.title)}</strong><p>${safe(n.text)}</p></div>`).join('')}</details>`;
    }else{
      const n=l.notes[0],others=l.notes.slice(1);
@@ -2397,8 +2407,18 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   }
   exit();oldGo(name);
  };
- show('cover');
+ if(new URLSearchParams(window.location.search).get('start')==='listening'){
+   exit();
+   oldGo('tones');
+ }else show('cover');
 })();
 </script>
-<script src="./assets/listening-lab.js?v=1"></script></body>
+<script src="./assets/voice-settings.js?v=1"></script>
+<script src="./assets/listening-lab.js?v=2"></script>
+<script>
+ if(new URLSearchParams(window.location.search).get('start')==='listening'){
+  const target=document.getElementById('listening-lab');
+  if(target)target.scrollIntoView({behavior:'instant',block:'start'});
+ }
+</script></body>
 </html>

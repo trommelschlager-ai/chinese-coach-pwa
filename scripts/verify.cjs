@@ -21,8 +21,11 @@ const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>
 let spoken=[];w.speechSynthesis={getVoices:()=>[{lang:'zh-CN',localService:true}],cancel(){},speak(u){spoken.push(u.text)}};w.SpeechSynthesisUtterance=function(t){this.text=t};
 w.eval(fs.readFileSync('assets/semantic-art.js','utf8'));
 w.eval([...html.matchAll(/<script(?: [^>]*)?>([\s\S]*?)<\/script>/g)].map(s=>s[1]).join('\n').replace("'use strict';",'')); 
+w.eval(fs.readFileSync('assets/voice-settings.js','utf8'));
 w.eval(fs.readFileSync('assets/listening-lab.js','utf8'));
 const doc=w.document;
+assert.equal(doc.querySelectorAll('#mandarin-voice-settings select').length,1,'Voice selector is available');
+assert.equal(doc.querySelectorAll('#mandarin-voice-settings #mandarin-voice-preview').length,1,'Voice preview control is available');
 assert.equal(doc.querySelectorAll('#listening-lab [data-ear-tone]').length,4,'Listening lab presents four tone choices');
 assert.equal(doc.querySelectorAll('#listening-lab .ear-credits a').length,4,'All four human sample recordings are credited');
 assert.equal(doc.querySelector('#ear-counter').textContent,'Вопрос 1 из 8');
@@ -31,7 +34,7 @@ let panels=0,questions=0,options=0,missing=new Set();
 const asset=el=>{if(el?.dataset.art){const p=w.semanticArt.path(el.dataset.art);if(!fs.existsSync(p))missing.add(p)}};
 for(let id=1;id<=5;id++){
  for(let step=0;step<4;step++){
-  w.openCourseLesson(id,step);assert.equal(doc.querySelector('.step-counter').textContent,`Шаг ${step+1} из 4`);panels++;
+  w.openCourseLesson(id,step);if(id===1&&step===0)assert(doc.getElementById('focus-open-listening'),'Listening link visible in Lesson 1');assert.equal(doc.querySelector('.step-counter').textContent,`Шаг ${step+1} из 4`);panels++;
   if(step===1){const total=JSON.parse(course(html))[id-1].vocab.length;for(let j=0;j<total;j++){asset(doc.querySelector('.focus-phrase'));doc.querySelector('[data-play-focus]').click();assert(spoken.length>0);if(j<total-1)doc.getElementById('course-next').click()}}
   if(step===2){const total=JSON.parse(course(html))[id-1].dialogue.length;for(let j=0;j<total;j++){asset(doc.querySelector('.focus-phrase'));assert(doc.getElementById('focus-check'));if(j<total-1)doc.getElementById('course-next').click()}}
   if(step===3){const qs=JSON.parse(course(html))[id-1].quiz;for(const q of qs){questions++;asset(doc.querySelector('.course-quiz-question'));const bs=[...doc.querySelectorAll('[data-answer]')];assert.equal(bs.length,4);for(const b of bs){asset(b);options++}bs[q[2]].click();assert(bs[q[2]].classList.contains('correct'));assert(bs.every(b=>b.disabled));assert(!doc.getElementById('course-answer-next').classList.contains('hidden'));doc.getElementById('course-answer-next').click()}assert(doc.querySelector('.course-score').textContent.includes('7 / 7'))}

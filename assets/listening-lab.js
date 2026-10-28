@@ -32,7 +32,7 @@
     '<p class="ear-notice">Голоса реальных носителей; записи загружаются через интернет. Без сети используется установленный китайский голос телефона, если он доступен. Этот тест тренирует слух, а не оценивает твоё произношение.</p>',
     '<details class="ear-credits"><summary>Авторы записей и лицензии</summary><div id="ear-credit-list"></div></details>'
   ].join('');
-  host.after(lab);
+  host.before(lab);
 
   const counter=lab.querySelector('#ear-counter'),feedback=lab.querySelector('#ear-feedback'),playBtn=lab.querySelector('#ear-play'),replayBtn=lab.querySelector('#ear-replay'),nextBtn=lab.querySelector('#ear-next'),choices=[...lab.querySelectorAll('[data-ear-tone]')];
   const sourceLinks=lab.querySelector('#ear-credit-list');
