@@ -82,7 +82,7 @@
       if(token!==playSequence)return;
       // The fallback is explicitly marked as synthetic and only offered if a zh voice exists.
       const voice=typeof chineseVoice==='function'?chineseVoice():null;
-      if(voice&&typeof speakChinese==='function'){
+      if(voice&&(navigator.onLine||voice.localService!==false)&&typeof speakChinese==='function'){
         speakChinese(item.hz,.8);
         feedback.textContent='Оригинальная запись недоступна. Включён системный китайский голос — результаты могут отличаться.';
         heard=true;lockChoices(answered);replayBtn.disabled=false;
