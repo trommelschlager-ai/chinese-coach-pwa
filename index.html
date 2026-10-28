@@ -1549,7 +1549,7 @@ body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .foc
  #launch-cover .launch-cover-art{inset:auto;left:50%;top:min(50dvh,calc(95dvh - max(38.6dvh,93.3694488191vw)));width:max(100vw,41.3411458333dvh);height:max(100dvh,241.88976378vw);transform:translate(-50%,-50%)}
 }
 </style>
-<link rel="stylesheet" href="./assets/final-design.css?v=40">
+<link rel="stylesheet" href="./assets/final-design.css?v=41">
 <script src="./assets/semantic-art.js?v=29"></script>
 </head>
 <body class="launch-active"><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><div class="launch-cover-art"><img src="./assets/approved-home-v36.png" width="635" height="1536" fetchpriority="high" alt="Мой Китайский. Девушка в розовом платье и кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></div></section><section id="launch-menu" class="launch-screen" hidden><img src="./assets/approved-lessons.png" alt="Выбери звуки, слова, диалоги, практику или тест"><button class="hit-choice" data-choice="0" aria-label="Звуки и тоны">Звуки и тоны</button><button class="hit-choice" data-choice="1" aria-label="Базовые слова">Базовые слова</button><button class="hit-choice" data-choice="2" aria-label="Диалоги">Диалоги</button><button class="hit-choice" data-choice="3" aria-label="Практика">Практика</button><button class="hit-choice" data-choice="4" aria-label="Тест">Тест</button><button class="hit-back" id="launch-back" aria-label="Главная">Главная</button><button class="hit-all" id="launch-all" aria-label="Все уроки">Уроки</button></section></div>
@@ -1920,6 +1920,7 @@ function connectPractice(panel,rate=.84){
  const listenLink=panel.querySelector('#focus-open-listening');
  if(listenLink)listenLink.addEventListener('click',()=>{
    go('tones');
+   if(typeof window.showPronunciationMode==='function')window.showPronunciationMode('quiz');
    const lab=document.getElementById('listening-lab');
    if(lab)lab.scrollIntoView({behavior:'smooth',block:'start'});
  });
@@ -2415,10 +2416,5 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
 </script>
 <script src="./assets/voice-settings.js?v=1"></script>
 <script src="./assets/listening-lab.js?v=2"></script>
-<script>
- if(new URLSearchParams(window.location.search).get('start')==='listening'){
-  const target=document.getElementById('listening-lab');
-  if(target)target.scrollIntoView({behavior:'instant',block:'start'});
- }
-</script></body>
+<script src="./assets/pronunciation-hub.js?v=1"></script></body>
 </html>
