@@ -94,9 +94,6 @@
     }else if(scroll)head.scrollIntoView({behavior:'smooth',block:'start'});
     // The actual audio lab remains in the document; we only control visibility.
   }
-  hub.querySelectorAll('[data-pronunciation-mode]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.pronunciationMode)));
-  view.querySelector('#pronunciation-back').addEventListener('click',()=>show(null));
-
   // Restore the original DOM order before showing a new section, especially
   // for listen mode's two elements, without duplicating any event handlers.
   const originalShow=show;
@@ -110,9 +107,6 @@
     }
     originalShow(modeName,scroll);
   }
-  hub.querySelectorAll('[data-pronunciation-mode]').forEach(b=>{
-    b.replaceWith(b.cloneNode(true));
-  });
   hub.querySelectorAll('[data-pronunciation-mode]').forEach(b=>b.addEventListener('click',()=>showStable(b.dataset.pronunciationMode)));
   view.querySelector('#pronunciation-back').onclick=()=>showStable(null);
 
@@ -139,5 +133,7 @@
   document.querySelectorAll('[data-page="tones"],[data-go="tones"]').forEach(el=>el.addEventListener('click',()=>showStable(null,false)));
   window.showPronunciationMode=(name)=>showStable(name,true);
   const params=new URLSearchParams(window.location.search);
-  showStable(params.get('start')==='listening'?'quiz':null,false);
+  const deepLinked=params.get('start')==='listening';
+  showStable(deepLinked?'quiz':null,false);
+  if(deepLinked)requestAnimationFrame(()=>view.scrollIntoView({block:'start'}));
 })();
