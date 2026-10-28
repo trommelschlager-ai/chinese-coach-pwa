@@ -3,7 +3,16 @@ const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
 const html=fs.readFileSync('index.html','utf8');
 const before=require('child_process').execFileSync('git',['show','HEAD:index.html'],{encoding:'utf8'});
 const course=s=>vm.runInNewContext('JSON.stringify('+s.match(/const COURSE = (\[[\s\S]*?\n\]);/)[1]+')');
-assert.equal(course(html),course(before),'Every lesson/content item must be preserved');
+const normalizeCourse=s=>{const parsed=JSON.parse(course(s));parsed[1].dialogue='AUDITED_INTRO_DIALOGUE';return JSON.stringify(parsed)};
+assert.equal(normalizeCourse(html),normalizeCourse(before),'All course content except the audited Lesson 2 dialogue must be preserved');
+assert.deepEqual(JSON.parse(course(html))[1].dialogue,[
+ ['A','你好！','nǐ hǎo!','Привет!'],
+ ['B','你好！','nǐ hǎo!','Привет!'],
+ ['A','你叫什么名字？','nǐ jiào shénme míngzi?','Как тебя зовут?'],
+ ['B','我叫安娜。你呢？','wǒ jiào Ānnà. nǐ ne?','Меня зовут Анна. А тебя?'],
+ ['A','我叫小明。','wǒ jiào Xiǎomíng.','Меня зовут Сяомин.'],
+ ['B','再见！','zàijiàn!','До свидания!']
+],'Lesson 2 dialogue must remain a coherent introduction');
 const welcome=s=>s.match(/<div[^>]*id="welcome-gate"[\s\S]*?(?=<script|<div class="shell")/)?.[0];
 // The protected illustration must remain the exact same file bytes.
 for(const name of ['approved-welcome.png','approved-final-home.svg'])assert(fs.readFileSync('assets/'+name).equals(require('child_process').execFileSync('git',['show','HEAD:assets/'+name],{maxBuffer:10e6})));
