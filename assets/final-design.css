@@ -70,3 +70,27 @@ body.focus-mode #course .course-content #focus-check-tone{font-size:15px!importa
 
 /* v38: readable Russian introduction for the first tone lesson. */
 body.focus-mode #course .course-content[data-lesson="1"] .focus-banner p{font-size:clamp(16px,4.1vw,19px)!important;line-height:1.4;max-width:none}
+
+/* Scoped Mandarin listening lab: new functionality, no changes to approved visuals. */
+#listening-lab{margin-top:18px;background:linear-gradient(145deg,#fffefc,#faf5ff);border:1px solid #e7d7f1;border-radius:22px;box-shadow:0 5px 20px #3c32600d;padding:20px}
+#listening-lab .ear-overline{letter-spacing:.07em;font-weight:850;font-size:12px;color:#7651a5}
+#listening-lab h2{font-size:clamp(22px,5vw,28px);color:#16244d;line-height:1.2;margin:8px 0}
+#listening-lab .ear-description{font-size:14px;line-height:1.55;color:#455476;margin:0 0 15px}
+#listening-lab .ear-counter{font-size:15px;font-weight:800;color:#56407b;margin-bottom:11px}
+#listening-lab .ear-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+#listening-lab .ear-actions .btn{min-height:47px;flex:1 1 160px;font-size:15px}
+#listening-lab .ear-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+#listening-lab .ear-options button{cursor:pointer;border:2px solid #d9c5ef;border-radius:15px;background:linear-gradient(#fff,#f6eefd);color:#4a2774;min-height:69px;font-weight:850;font-size:17px;padding:6px}
+#listening-lab .ear-options small{display:block;font-size:24px;line-height:1.3;color:#8560ae}
+#listening-lab .ear-options button:disabled{cursor:default;opacity:.55}
+#listening-lab .ear-options button.ear-correct{background:#e7f8ef;border-color:#47aa75;color:#16623f;opacity:1}
+#listening-lab .ear-options button.ear-wrong{background:#fff0ef;border-color:#d37575;color:#873532;opacity:1}
+#listening-lab .ear-options button:focus-visible{outline:3px solid #6d55a5;outline-offset:2px}
+#listening-lab .ear-feedback{background:#f2ecf9;border:1px solid #e7d9f2;border-radius:12px;color:#4e3970;font-size:14px;line-height:1.55;padding:11px;margin-top:12px;min-height:50px}
+#listening-lab .ear-next{margin-top:12px;min-height:44px;font-size:14px}
+#listening-lab .ear-next[hidden]{display:none!important}
+#listening-lab .ear-notice{font-size:12px;line-height:1.55;color:#667086;margin:16px 0 5px}
+#listening-lab .ear-credits{font-size:12px;color:#67758a;margin-top:8px}
+#listening-lab .ear-credits p{margin:8px 0}
+#listening-lab .ear-credits a{color:#694d9a;text-decoration:underline}
+@media(max-width:430px){#listening-lab{padding:14px}#listening-lab .ear-options{gap:5px}#listening-lab .ear-options button{min-height:63px;padding:4px;font-size:15px}#listening-lab .ear-options small{font-size:20px}}
