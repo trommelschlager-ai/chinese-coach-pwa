@@ -1639,11 +1639,19 @@ function chineseVoice(){
  const voices=window.speechSynthesis.getVoices().filter(v=>/^(zh|cmn)([-_]|$)/i.test(v.lang));
  let chosen='';
  try{chosen=localStorage.getItem('chinese-coach-tts-voice-v1')||''}catch(e){}
- return voices.find(v=>v.voiceURI===chosen&&chosen)
-   ||voices.find(v=>/^zh[-_]CN/i.test(v.lang)&&v.localService)
-   ||voices.find(v=>/^zh[-_]CN/i.test(v.lang))
-   ||voices.find(v=>v.localService)
-   ||voices[0]||null;
+ // Respect an explicit choice; otherwise prefer clearer modern Mandarin voices
+ // over the first local voice, which can sound robotic on Android.
+ const available=navigator.onLine?voices:voices.filter(v=>v.localService!==false);
+ const selected=available.find(v=>chosen&&v.voiceURI===chosen);
+ if(selected)return selected;
+ const quality=voice=>{
+   const name=String(voice.name||'');
+   return (/^(zh|cmn)[-_]CN/i.test(voice.lang)?25:0)
+     +(/natural|neural|xiaoxiao|xiaoyi|yunxi|xiaohan|xiaomo/i.test(name)?50:0)
+     +(/google|microsoft/i.test(name)?16:0)
+     +(voice.localService?4:0);
+ };
+ return available.slice().sort((a,b)=>quality(b)-quality(a))[0]||voices[0]||null;
 }
 function showChineseVoiceHelp(){
  const help=document.getElementById('voicehelp');
@@ -1665,9 +1673,14 @@ function speakChinese(hanzi,rate){
  u.lang='zh-CN';
  // When the list is still empty, a valid OS engine may still speak via lang.
  if(voice)u.voice=voice;
- let userRate=null;
- try{const stored=Number(localStorage.getItem('chinese-coach-tts-rate-v1'));if(stored>=.75&&stored<=1.15)userRate=stored}catch(e){}
- u.rate=userRate??.95;
+ // One consistent, comfortable learning speed for words and dialogues.
+ // Explicit slow-play buttons remain slower; keep pitch unchanged for tones.
+ let preferredRate=.82;
+ try{const stored=Number(localStorage.getItem('chinese-coach-tts-rate-v2'));if(stored>=.70&&stored<=1.10)preferredRate=stored}catch(e){}
+ const requested=typeof rate==='number'&&Number.isFinite(rate)?rate:null;
+ u.rate=requested!==null&&requested<=.80
+   ?Math.max(.70,Math.min(preferredRate,requested))
+   :preferredRate;
  u.pitch=1;
  u.onerror=()=>{
    toast('Китайский голос не сработал. Открой инструкцию по настройке озвучки.');
@@ -2415,7 +2428,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
  }else show('cover');
 })();
 </script>
-<script src="./assets/voice-settings.js?v=1"></script>
+<script src="./assets/voice-settings.js?v=2"></script>
 <script src="./assets/listening-lab.js?v=2"></script>
 <script src="./assets/pronunciation-hub.js?v=1"></script></body>
 </html>

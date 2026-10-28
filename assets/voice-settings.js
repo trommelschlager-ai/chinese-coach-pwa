@@ -15,8 +15,8 @@
     '<select id="mandarin-voice-choice" aria-label="Китайский голос"></select>',
     '<button type="button" class="btn soft" id="mandarin-voice-preview">▶ Послушать</button>',
     '</div>',
-    '<label for="mandarin-voice-rate">Скорость: <output id="mandarin-voice-rate-value">0,95×</output></label>',
-    '<input type="range" min="0.75" max="1.15" step="0.05" id="mandarin-voice-rate" value="0.95">',
+    '<label for="mandarin-voice-rate">Скорость: <output id="mandarin-voice-rate-value">0,82×</output></label>',
+    '<input type="range" min="0.70" max="1.10" step="0.02" id="mandarin-voice-rate" value="0.82">',
     '<p class="voice-settings-help" id="mandarin-voice-help" role="status" aria-live="polite"></p>',
     '<button type="button" class="voice-install-help" id="mandarin-voice-install">Как установить другой китайский голос?</button>',
     '</div>'
@@ -26,7 +26,7 @@
   const rate=details.querySelector('#mandarin-voice-rate');
   const output=details.querySelector('#mandarin-voice-rate-value');
   const hint=details.querySelector('#mandarin-voice-help');
-  const key='chinese-coach-tts-voice-v1',speedKey='chinese-coach-tts-rate-v1';
+  const key='chinese-coach-tts-voice-v1',speedKey='chinese-coach-tts-rate-v2';
   const get=(k)=>{try{return localStorage.getItem(k)||''}catch(e){return ''}};
   const put=(k,value)=>{try{localStorage.setItem(k,value)}catch(e){}};
   const zhVoices=()=>('speechSynthesis' in window?window.speechSynthesis.getVoices():[])
@@ -35,7 +35,7 @@
     const voices=zhVoices(),preferred=get(key);
     select.replaceChildren();
     const auto=document.createElement('option');
-    auto.value='';auto.textContent='Автоматически — китайский';select.appendChild(auto);
+    auto.value='';const recommended=typeof chineseVoice==='function'?chineseVoice():null;auto.textContent=recommended?'Авто · '+recommended.name:'Автоматически — китайский';select.appendChild(auto);
     for(const voice of voices){
       const opt=document.createElement('option');
       opt.value=voice.voiceURI;
@@ -46,10 +46,14 @@
     if(!('speechSynthesis' in window))hint.textContent='Этот браузер не поддерживает системную озвучку.';
     else if(!voices.length)hint.textContent='Китайские голоса пока не обнаружены. Проверь настройки синтеза речи телефона.';
     else if(voices.length===1)hint.textContent='Найден только один китайский голос. Чтобы действительно сменить звучание, установи другой голос в настройках телефона.';
-    else hint.textContent='Доступно китайских голосов: '+voices.length+'. Прослушай и выбери подходящий. *Доступность офлайн зависит от устройства.';
+    else hint.textContent='Доступно китайских голосов: '+voices.length+'. По умолчанию выбран наиболее естественный из доступных. Прослушай варианты: качество зависит от телефона.';
   }
   const savedRate=Number(get(speedKey));
-  rate.value=savedRate>=0.75&&savedRate<=1.15?String(savedRate):'0.95';
+  const previousRate=Number(get('chinese-coach-tts-rate-v1'));
+  // On upgrade slow down old 0.95x defaults, but preserve an explicitly slower setting.
+  const initialRate=savedRate>=.70&&savedRate<=1.10?savedRate:(previousRate>=.70&&previousRate<.82?previousRate:.82);
+  rate.value=String(initialRate);
+  put(speedKey,rate.value);
   output.textContent=Number(rate.value).toFixed(2).replace('.',',')+'×';
   rate.addEventListener('input',()=>{
     output.textContent=Number(rate.value).toFixed(2).replace('.',',')+'×';
