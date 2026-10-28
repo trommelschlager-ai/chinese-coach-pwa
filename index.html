@@ -2408,7 +2408,8 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   }
   exit();oldGo(name);
  };
- if(new URLSearchParams(window.location.search).get('start')==='listening'){
+ const direct=new URLSearchParams(window.location.search).get('start');
+ if(direct==='listening'||direct==='pronunciation'){
    exit();
    oldGo('tones');
  }else show('cover');
