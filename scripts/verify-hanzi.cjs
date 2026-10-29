@@ -47,6 +47,8 @@ d.getElementById('next').click();
 await Promise.resolve();
 assert.equal(d.querySelector('#character').textContent,'人','Next character loaded');
 assert(opened.includes('人'));
+await Promise.resolve(); await Promise.resolve();
+await new Promise(resolve=>setTimeout(resolve,0));
 console.log('Hanzi pilot: syntax, tabs, Chinese speech, animation, quiz and progress checks passed');
 dom.window.close();
 })().catch(err=>{console.error(err);process.exitCode=1});
