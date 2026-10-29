@@ -28,7 +28,7 @@
       '</button>',
       '<button type="button" class="pronunciation-choice" data-pronunciation-mode="quiz">',
         '<span class="pronunciation-icon" aria-hidden="true">🧠</span>',
-        '<span class="pronunciation-choice-copy"><strong>Угадать на слух</strong><small>8 коротких вопросов</small></span>',
+        '<span class="pronunciation-choice-copy"><strong>Угадать на слух</strong><small>10 вопросов · включая нейтральный тон</small></span>',
         '<span class="pronunciation-chevron" aria-hidden="true">›</span>',
       '</button>',
       '<button type="button" class="pronunciation-choice" data-pronunciation-mode="speak">',
