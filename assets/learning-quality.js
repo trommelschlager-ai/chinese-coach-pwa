@@ -211,7 +211,7 @@
  function status(text){audioStatus.hidden=true;audioStatus.querySelector('span').textContent=text;if(/не удалось|недоступна/i.test(text))toast(text);}
  async function playWord(text,rate=.82,token=audioGeneration,voice=null){
   const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=window.courseHumanAudio?.[key];
-  if(file){const a=new Audio(file);audio=a;a.playbackRate=rate<.8?rate:Math.max(.94,rate);a.preservesPitch=true;
+  if(file){const a=new Audio(file);audio=a;a.playbackRate=rate<=.8?rate:Math.max(.94,rate);a.preservesPitch=true;
    status('Загружается запись носителя…');
    try{await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{a.pause();reject(Error('timeout'))},10000);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(Error('audio'))};a.onpause=()=>{clearTimeout(timer);resolve()};Promise.resolve(a.play()).then(()=>{if(token!==audioGeneration){a.pause();resolve()}else status('Играет запись носителя')},reject)});return}
    catch{a.pause();if(token!==audioGeneration)return;status('Запись недоступна · голос телефона');}
