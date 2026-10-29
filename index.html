@@ -1569,7 +1569,7 @@ body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .foc
 <link rel="stylesheet" href="./assets/final-design.css?v=41">
 <link rel="stylesheet" href="./assets/six-lessons-menu.css?v=2">
 <link rel="stylesheet" href="./assets/learning-quality.css?v=53">
-<link rel="stylesheet" href="./assets/simple-learning.css?v=54">
+<link rel="stylesheet" href="./assets/simple-learning.css?v=55">
 <script src="./assets/semantic-art.js?v=29"></script>
 </head>
 <body class="launch-active"><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><div class="launch-cover-art"><img src="./assets/approved-home-v36.png" width="635" height="1536" fetchpriority="high" alt="Мой Китайский. Девушка в розовом платье и кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></div></section><section id="launch-menu" class="launch-screen six-lessons-menu" hidden>
@@ -2420,8 +2420,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   document.body.classList.add('launch-active');
   cover.hidden=what!=='cover';
   menu.hidden=what!=='menu';
-  // Sakura plays on the approved cover, not twice on Start.
-  if(what==='cover')startPetals();
+  // Do not start petals simply because the welcome cover is shown.
   window.scrollTo(0,0);
  }
  function startWithSakura(){
@@ -2435,7 +2434,8 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   cover.inert=true;
   menu.inert=true;
   root.classList.add('launch-sakura');
-  // Petals already started when the cover opened.
+  // One Sakura burst happens only when the learner presses Start.
+  startPetals();
   transitionTimer=setTimeout(()=>{
    transitionTimer=0;
    transitioning=false;
@@ -2484,9 +2484,9 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
  }else show('cover');
 })();
 </script>
-<script src="./assets/voice-settings.js?v=2"></script>
+<script src="./assets/voice-settings.js?v=3"></script>
 <script src="./assets/listening-lab.js?v=3"></script>
 <script src="./assets/pronunciation-hub.js?v=2"></script>
 <script src="./assets/human-audio-map.js?v=49"></script>
-<script src="./assets/learning-quality.js?v=54"></script></body>
+<script src="./assets/learning-quality.js?v=55"></script></body>
 </html>
