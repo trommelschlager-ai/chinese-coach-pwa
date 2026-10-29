@@ -176,3 +176,131 @@ body[data-current-page="tones"] #tones .tonegrid .tone[aria-pressed="true"]{bord
 /* 3–4 second petals on the cover; only the page transition is short. */
 #launch-entry.launch-sakura #launch-cover{animation-duration:.65s!important}
 #launch-entry.launch-sakura #launch-menu{animation-duration:.65s!important}
+
+/* v55 — student-first visual refresh. Does not style the Hanzi writing trainer. */
+body:not(.writing-simple) #topics{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(150deg,#fffdfd 0%,#fff9fd 46%,#f8f0ff 100%)!important;
+  border:1px solid #e4cbee!important;
+  border-radius:23px!important;
+  box-shadow:0 12px 32px rgba(101,51,148,.10)!important;
+  padding:16px 15px 20px!important;
+}
+body:not(.writing-simple) #topics::before{
+  content:"中文";
+  position:absolute;right:14px;top:12px;
+  color:#a575c2;font:700 18px/1 "Noto Serif SC","Songti SC",serif;
+  background:#f3e1fa;border:1px solid #dfbde9;
+  border-radius:12px;padding:9px 10px;opacity:.78;
+  pointer-events:none;
+}
+body:not(.writing-simple) #topics h1{
+  max-width:calc(100% - 75px);
+  color:#47275f!important;
+  font:850 clamp(25px,6vw,32px)/1.2 "Trebuchet MS",system-ui,sans-serif!important;
+  letter-spacing:-.45px;margin:5px 0 5px!important;
+}
+body:not(.writing-simple) #topics .topic-lead{
+  color:#766483!important;font-size:15px!important;
+  line-height:1.36!important;margin:0 0 14px!important;
+}
+body:not(.writing-simple) #topics .topic-grid{display:grid;grid-template-columns:1fr!important;gap:10px!important;margin:10px 0 0!important}
+body:not(.writing-simple) #topics .topic-card{
+  position:relative;isolation:isolate;
+  display:grid!important;
+  grid-template-columns:48px minmax(0,1fr) 23px!important;
+  grid-template-rows:auto auto!important;
+  grid-template-areas:"icon title arrow" "icon detail arrow";
+  align-content:center!important;align-items:center;
+  column-gap:12px!important;row-gap:3px!important;
+  width:100%;min-height:88px!important;
+  padding:11px 14px!important;border-radius:17px!important;
+  border:1.5px solid #e2c9eb!important;
+  background:linear-gradient(105deg,#f4e6fc 0%,#fff8ff 85%)!important;
+  color:#40245a!important;
+  box-shadow:0 4px 11px rgba(102,48,146,.08),inset 0 1px 0 #fff!important;
+  text-align:left;cursor:pointer;
+  transition:transform .15s ease,box-shadow .15s ease;
+}
+body:not(.writing-simple) #topics .topic-card:nth-child(2){background:linear-gradient(105deg,#ffe6f3,#fff9fd 85%)!important;border-color:#efd0de!important}
+body:not(.writing-simple) #topics .topic-card:nth-child(3){background:linear-gradient(105deg,#e7efff,#fbfaff 85%)!important;border-color:#cfd8f2!important}
+body:not(.writing-simple) #topics .topic-card:nth-child(4){background:linear-gradient(105deg,#fff0de,#fffaf4 85%)!important;border-color:#efdac1!important}
+body:not(.writing-simple) #topics .topic-card:nth-child(5){background:linear-gradient(105deg,#e2f9f0,#fbfffd 85%)!important;border-color:#cce8da!important}
+body:not(.writing-simple) #topics .topic-card:active{transform:scale(.992)}
+body:not(.writing-simple) #topics .topic-card:focus-visible{outline:3px solid #b171da;outline-offset:2px}
+body:not(.writing-simple) #topics .topic-card .topic-icon{
+  grid-area:icon!important;display:grid;place-items:center!important;
+  width:46px;height:48px;min-width:0;align-self:center;
+  font-size:26px!important;line-height:1!important;
+  border-radius:14px!important;
+  background:rgba(255,255,255,.70);
+  box-shadow:0 2px 8px rgba(122,70,147,.08);
+}
+body:not(.writing-simple) #topics .topic-card strong{
+  grid-area:title!important;
+  font:850 clamp(18px,5vw,22px)/1.23 "Trebuchet MS",system-ui,sans-serif!important;
+  color:#46255f!important;letter-spacing:-.3px;overflow-wrap:anywhere;
+}
+body:not(.writing-simple) #topics .topic-card .topic-sub{
+  grid-area:detail!important;
+  color:#6a5876!important;font-size:14px!important;line-height:1.35!important;
+}
+body:not(.writing-simple) #topics .topic-card .topic-arrow{
+  grid-area:arrow!important;align-self:center!important;justify-self:center;
+  color:#8949b0!important;font:800 28px/1 system-ui!important;
+}
+body:not(.writing-simple) #topics .topic-progress{
+  font-size:13px!important;line-height:1.4!important;color:#8d7d97!important;
+  margin:1px 0 9px!important;
+}
+/* Keep information screens inviting without making study cards bigger. */
+body:not(.writing-simple) #words .columnhead,
+body:not(.writing-simple) #quiz .columnhead,
+body:not(.writing-simple) #dialog .columnhead{
+  background:linear-gradient(125deg,#fff 0%,#f8eefa 100%)!important;
+  border:1px solid #e6cfef!important;border-radius:19px!important;
+  box-shadow:0 5px 15px rgba(105,62,136,.07)!important;
+  padding:14px 17px!important;
+}
+body:not(.writing-simple) #words .columnhead h1,
+body:not(.writing-simple) #quiz .columnhead h1,
+body:not(.writing-simple) #dialog .columnhead h1{
+  font:850 clamp(25px,6.5vw,32px)/1.25 "Trebuchet MS",system-ui,sans-serif!important;
+  color:#47245f!important;letter-spacing:-.4px;
+}
+body:not(.writing-simple) #words .wordcard{
+  border:1px solid #dfc8eb!important;border-radius:17px!important;
+  box-shadow:0 4px 13px rgba(110,61,148,.08)!important;
+}
+body:not(.writing-simple) #words .wordcard .hz{
+  font-size:clamp(37px,10vw,55px)!important;
+  font-family:"Noto Sans SC","PingFang SC",system-ui,sans-serif;
+}
+body:not(.writing-simple) #words .wordcard .wordpy{
+  font-size:clamp(22px,5.7vw,27px)!important;font-weight:750;
+}
+body:not(.writing-simple) #words .wordcard .wordru{
+  font-size:clamp(18px,4.7vw,22px)!important;
+}
+body:not(.writing-simple) #quiz #quizopts button{
+  border-radius:15px!important;font-weight:750!important;
+}
+body:not(.writing-simple) #dialog .dialogcard{
+  border-radius:18px!important;
+  box-shadow:0 5px 16px rgba(100,52,142,.08)!important;
+}
+body:not(.writing-simple) #dialog .dialogcard .dialogline{
+  font-size:clamp(21px,5.6vw,27px)!important;
+}
+/* The learner can listen uninterrupted. Show an error toast only if sound fails. */
+#learning-audio-status{display:none!important}
+@media(max-width:350px){
+ body:not(.writing-simple) #topics .topic-card{grid-template-columns:40px minmax(0,1fr) 16px!important;column-gap:8px!important;padding:9px 10px!important}
+ body:not(.writing-simple) #topics .topic-card .topic-icon{width:40px;height:43px;font-size:23px!important}
+ body:not(.writing-simple) #topics .topic-card strong{font-size:17px!important}
+ body:not(.writing-simple) #topics .topic-card .topic-sub{font-size:13px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ body:not(.writing-simple) #topics .topic-card{transition:none!important}
+}
