@@ -125,6 +125,13 @@
   $('section-back').textContent=sectionOrigin==='practice'&&name!=='topics'?'← Практика':sectionOrigin==='words'&&name==='words'?'← Темы слов':'← Разделы';
   const label=$('course-topics-back');label.textContent=topicKind==='words'?'← Темы слов':topicKind==='dialogues'?'← Диалоги':'← Все уроки';
  }
+ // Avoid jumping the whole page when the active card is already visible.
+ focusScroll=function(){
+  const panel=$('lesson-panel'),page=$('course');
+  if(!panel||!page.classList.contains('active'))return;
+  const top=panel.getBoundingClientRect().top;
+  if(top<16||top>window.innerHeight*.75)panel.scrollIntoView({behavior:'instant',block:'start'});
+ };
  // All routes contain only learning position, never recordings or personal data.
  let restoring=false,lastLocation='';
  function courseHash(){return '#course/'+selectedLesson+'/'+selectedStep+'/'+(selectedStep===0?selectedNote:selectedStep===1?vocabIndex:selectedStep===2?dialogueIndex:0)}
@@ -146,7 +153,17 @@
  $('launch-start').addEventListener('click',()=>{pushRoute('home');document.body.dataset.currentPage='menu';updateResume()});
  $('launch-back').addEventListener('click',()=>{stopLearningAudio();history.pushState({learning:true},'','#cover');lastLocation='#cover';document.body.dataset.currentPage='cover'});
  $('launch-resume').onclick=()=>continueLearning();
- function updateResume(){const r=read('chinese-coach-resume-v1',null),b=$('launch-resume');b.hidden=false;b.textContent=r&&COURSE.some(l=>l.id===r.id)?'Продолжить · урок '+r.id+' →':'Начать первый урок →';}
+ // Keep the approved cover and first-run petals. Returning learners go straight to their choices.
+ const welcomeKey='chinese-coach-welcome-seen-v1';
+ $('launch-start').addEventListener('click',event=>{
+  let seen=false;
+  try{seen=localStorage.getItem(welcomeKey)==='1';localStorage.setItem(welcomeKey,'1')}catch(e){}
+  if(!seen)return;
+  event.preventDefault();event.stopImmediatePropagation();
+  window.showLaunchMenu?.();
+  pushRoute('home');document.body.dataset.currentPage='menu';updateResume();
+ },true);
+ function updateResume(){const r=read('chinese-coach-resume-v1',null),b=$('launch-resume');b.hidden=false;const validResume=r&&COURSE.some(l=>l.id===r.id);b.textContent=validResume?'▶ Продолжить урок '+r.id+' →':'▶ Начать урок 1 · Звуки и тоны →';b.setAttribute('aria-label',validResume?'Продолжить обучение с урока '+r.id:'Начать обучение по порядку, с первого урока');}
  // Unify card learning, visible position and review intervals.
  const basePanel=renderCoursePanel;
  renderCoursePanel=function(){stopLearningAudio();basePanel();
@@ -163,12 +180,29 @@
    const hz=COURSE[selectedLesson-1].vocab[vocabIndex][0];
    $('recall-again').onclick=()=>{schedule(hz,false);state.learned=state.learned.filter(w=>w!==hz);mirrorKnown();updateCourseMetrics();$('course-next').click()};
   }
+  if(selectedStep===1){
+   const hint=document.createElement('p');hint.className='learning-one-step';hint.textContent='Слушай слово → повтори вслух → проверь память → далее.';
+   panel.prepend(hint);
+  }
+  const toneButton=panel.querySelector('#focus-check-tone');
+  if(toneButton)toneButton.textContent='🎙️ Сравнить мелодику';
+  const phraseButton=panel.querySelector('#focus-check');
+  if(phraseButton)phraseButton.textContent=phraseButton.dataset.checkPy&&isSingleToneSyllable(phraseButton.dataset.checkPy,phraseButton.dataset.checkHz)?'Сравнить мелодику':'Распознать фразу';
   if(selectedStep===2){const play=document.createElement('button');play.type='button';play.className='btn soft dialogue-full';play.textContent='Слушать весь диалог';play.onclick=()=>playDialogue(COURSE[selectedLesson-1]);panel.querySelector('.dialogue-transcript').before(play);panel.querySelector('.current-line').append(panel.querySelector('.focus-dialog-card'));}
 
   if(document.body.dataset.currentPage==='course')pushRoute('course');updateResume();
  };
  const baseLessonQuiz=renderLessonQuiz;
- renderLessonQuiz=function(){baseLessonQuiz();document.querySelectorAll('.course-options button,.course-quiz-question').forEach(b=>b.style.setProperty('background-image','none','important'))};
+ renderLessonQuiz=function(){
+  baseLessonQuiz();
+  document.querySelectorAll('.course-options button,.course-quiz-question').forEach(b=>b.style.setProperty('background-image','none','important'));
+  const result=$('lesson-panel').querySelector('.course-score');
+  if(result){
+   const note=document.createElement('p');note.className='learning-assessment-note';
+   note.textContent='Этот результат отражает знание слов и правил, а не точность произношения. Для тренировки речи открой «Звуки и тоны».';
+   result.append(note);
+  }
+ };
  // Errors become due for repetition; they do not silently mark a word learned.
  document.addEventListener('click',e=>{
   const answer=e.target.closest('#quizopts button');if(answer&&answer.classList.contains('wrong')){const w=quiz[qi];if(w)schedule(w.hz,false)}
@@ -261,6 +295,7 @@
   }catch(error){$('backupmessage').textContent='Не удалось восстановить: '+error.message}finally{e.target.value=''}
  });
 
+ $('tone-check').textContent='🎙️ Сравнить мелодику';
  renderWords();resetQuiz();updateCourseMetrics();updateResume();
  if(location.hash)restoreRoute();else{history.replaceState({learning:true},'','#cover');lastLocation='#cover';}
 })();
