@@ -2405,7 +2405,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   void root.offsetWidth;
   root.classList.add('petals-falling');
-  petalTimer=setTimeout(stopPetals,3000);
+  petalTimer=setTimeout(stopPetals,3500);
  }
  function cancelTransition(){
   stopPetals();
