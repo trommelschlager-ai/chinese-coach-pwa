@@ -97,3 +97,12 @@ body.focus-mode #course .course-content .focus-count{font-size:15px!important}
 body.focus-mode #course .course-content .focus-direction{font-size:16px!important}
 body.focus-mode #course .course-content .course-footnav .btn{font-size:17px!important;background-image:none!important}
 @media(max-width:350px){body.focus-mode #course .course-content .focus-practice-actions{grid-template-columns:1fr!important}body.focus-mode #course .course-content .focus-practice-actions .btn{min-height:50px!important;height:auto!important}}
+
+/* Audit 2026-10-29: clear learning path, accessible neutral-tone choice and compact learning prompts. */
+#launch-entry #launch-menu #launch-resume{min-height:51px;padding:10px 14px;background:#f3dcff;color:#4e2379;border:2px solid #e9bbff;box-shadow:0 3px 12px #4c1d6b27;font-weight:850}
+#launch-entry #launch-menu #launch-resume:focus-visible{outline:3px solid #fff;outline-offset:3px}
+#listening-lab .ear-options{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+#listening-lab .ear-options [data-ear-tone="5"]{font-size:14px}
+#course .learning-one-step{margin:2px 0 12px;color:#5b426e;font-size:15px;line-height:1.5}
+#course .learning-assessment-note{font-size:15px;line-height:1.5;color:#594772;margin:12px 0 0}
+@media(max-width:540px){#listening-lab .ear-options{grid-template-columns:repeat(3,minmax(0,1fr))}}
