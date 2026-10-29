@@ -5,12 +5,7 @@
   const host = document.querySelector('#tones .practice');
   if (!host || document.getElementById('listening-lab')) return;
 
-  const examples = [
-    {tone:1,hz:'高',py:'gāo',ru:'высокий',url:'https://upload.wikimedia.org/wikipedia/commons/6/6f/Zh-g%C4%81o.ogg',page:'https://commons.wikimedia.org/wiki/File:Zh-g%C4%81o.ogg',credit:'Wei Gao, Vion Nicolas',license:'CC BY 2.0 FR'},
-    {tone:2,hz:'麻',py:'má',ru:'конопля',url:'https://upload.wikimedia.org/wikipedia/commons/c/c9/Zh-m%C3%A1.ogg',page:'https://commons.wikimedia.org/wiki/File:Zh-m%C3%A1.ogg',credit:'Yue Tan',license:'CC BY-SA 3.0 US'},
-    {tone:3,hz:'马',py:'mǎ',ru:'лошадь',url:'https://upload.wikimedia.org/wikipedia/commons/c/cc/Zh-m%C7%8E.ogg',page:'https://commons.wikimedia.org/wiki/File:Zh-m%C7%8E.ogg',credit:'Wei Gao, Vion Nicolas',license:'CC BY 2.0 FR'},
-    {tone:4,hz:'骂',py:'mà',ru:'ругать',url:'https://upload.wikimedia.org/wikipedia/commons/1/1d/Zh-m%C3%A0.ogg',page:'https://commons.wikimedia.org/wiki/File:Zh-m%C3%A0.ogg',credit:'Yue Tan',license:'CC BY-SA 3.0 US'}
-  ];
+  const examples = [{"tone": 1, "hz": "高", "py": "gāo", "ru": "высокий", "url": "./assets/course-human/cmn-高.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}, {"tone": 1, "hz": "三", "py": "sān", "ru": "три", "url": "./assets/course-human/cmn-三.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}, {"tone": 1, "hz": "喝", "py": "hē", "ru": "пить", "url": "./assets/course-human/cmn-喝.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}, {"tone": 2, "hz": "麻", "py": "má", "ru": "конопля", "url": "./assets/course-human/cmn-麻.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}, {"tone": 2, "hz": "人", "py": "rén", "ru": "человек", "url": "./assets/course-human/cmn-人.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}, {"tone": 2, "hz": "茶", "py": "chá", "ru": "чай", "url": "./assets/course-human/cmn-茶.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}, {"tone": 3, "hz": "马", "py": "mǎ", "ru": "лошадь", "url": "./assets/course-human/cmn-马.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}, {"tone": 3, "hz": "五", "py": "wǔ", "ru": "пять", "url": "./assets/course-human/cmn-五.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}, {"tone": 3, "hz": "水", "py": "shuǐ", "ru": "вода", "url": "./assets/course-human/cmn-水.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}, {"tone": 4, "hz": "骂", "py": "mà", "ru": "ругать", "url": "./assets/course-human/cmn-骂.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}, {"tone": 4, "hz": "四", "py": "sì", "ru": "четыре", "url": "./assets/course-human/cmn-四.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}, {"tone": 4, "hz": "大", "py": "dà", "ru": "большой", "url": "./assets/hanzi-human/cmn-大.mp3", "page": "https://github.com/hugolpz/audio-cmn", "credit": "Yue Tan", "license": "CC BY-SA 3.0 US"}];
   const lab=document.createElement('section');
   lab.className='panel';
   lab.id='listening-lab';
@@ -18,7 +13,7 @@
   lab.innerHTML=[
     '<div class="ear-overline">🎧 ПРАКТИКА АУДИРОВАНИЯ</div>',
     '<h2>Какой тон ты услышал?</h2>',
-    '<p class="ear-description">8 вопросов. Прослушай голос носителя, а затем выбери тон. Здесь намеренно разные слова и два голоса: ориентируйся на движение интонации, не на высоту голоса собеседника.</p>',
+    '<p class="ear-description">8 вопросов. Прослушай голос носителя, а затем выбери тон. Для каждого тона есть несколько слов. Ориентируйся на движение интонации, а не запоминай одну запись.</p>',
     '<div id="ear-counter" class="ear-counter" aria-live="polite">Вопрос 1 из 8</div>',
     '<div class="ear-actions"><button type="button" id="ear-play" class="btn dark">🔊 Слушать запись</button><button type="button" id="ear-replay" class="btn soft" disabled>↻ Повторить</button></div>',
     '<div class="ear-options" role="group" aria-label="Выбери номер тона">',
@@ -29,7 +24,7 @@
     '</div>',
     '<div id="ear-feedback" class="ear-feedback" role="status" aria-live="polite">Нажми «Слушать запись», затем выбери один из четырёх тонов.</div>',
     '<button type="button" class="btn primary ear-next" id="ear-next" hidden>Следующий вопрос →</button>',
-    '<p class="ear-notice">Голоса реальных носителей; записи загружаются через интернет. Без сети используется установленный китайский голос телефона, если он доступен. Этот тест тренирует слух, а не оценивает твоё произношение.</p>',
+    '<p class="ear-notice">Локальные записи носителя. Для работы без сети скачай материалы в настройках. Если запись недоступна, используется китайский голос телефона. Этот тест тренирует слух, а не оценивает твоё произношение.</p>',
     '<details class="ear-credits"><summary>Авторы записей и лицензии</summary><div id="ear-credit-list"></div></details>'
   ].join('');
   host.before(lab);
@@ -51,8 +46,9 @@
     for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}
     return out;
   }
-  function sample(){return examples[deck[index]-1]}
+  function sample(){return examples[deck[index]]}
   function stopAudio(){playSequence++;if(currentAudio){currentAudio.pause();currentAudio=null}}
+  window.addEventListener('learning-audio-stop',stopAudio);
   function lockChoices(disabled){choices.forEach(b=>b.disabled=disabled)}
   function newQuestion(){
     stopAudio();answered=false;heard=false;
@@ -73,12 +69,13 @@
       if(!navigator.onLine)throw new Error('offline');
       const a=new Audio(item.url);
       a.preload='auto';currentAudio=a;
-      await a.play();
+      await Promise.race([a.play(),new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),10000))]);
       if(token!==playSequence){a.pause();return}
       feedback.textContent='Запись звучит. Выбери услышанный тон.';
       heard=true;lockChoices(answered);
       replayBtn.disabled=false;
     }catch(err){
+      currentAudio?.pause();
       if(token!==playSequence)return;
       // The fallback is explicitly marked as synthetic and only offered if a zh voice exists.
       const voice=typeof chineseVoice==='function'?chineseVoice():null;
@@ -121,7 +118,7 @@
   }
   function start(){
     // Two trials of each tone in a randomized order.
-    deck=shuffled([1,2,3,4,1,2,3,4]);
+    deck=shuffled([1,2,3,4].flatMap(tone=>shuffled(examples.map((v,i)=>v.tone===tone?i:-1).filter(i=>i>=0)).slice(0,2)));
     index=0;score=0;errors=[];newQuestion();
   }
   playBtn.addEventListener('click',playSample);

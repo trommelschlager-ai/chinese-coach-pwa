@@ -16,7 +16,7 @@
     .mini-progress{display:flex;align-items:center;gap:12px;margin:0 2px 16px;color:#69567b;font-size:13px;font-weight:750}
     .mini-progress .bar{flex:1;height:7px;border-radius:99px;background:#e4d4ec;overflow:hidden}
     .mini-progress .bar>div{height:100%;width:0;background:linear-gradient(90deg,#996abc,#6f409c);border-radius:99px;transition:width .3s}
-    .character-tabs{display:flex;gap:9px;overflow:auto;padding:17px 1px 17px;scrollbar-width:thin}.character-tabs button{flex:0 0 auto;border-radius:15px;border:1px solid #e1d2ec;background:#fff;padding:7px 12px;min-width:60px;color:#423151;box-shadow:0 4px 8px #43276208}.character-tabs button span{font:30px/1.25 "Noto Serif CJK SC","Songti SC",serif;display:block}.character-tabs button small{font-size:11px;color:#786a85}.character-tabs button[aria-pressed=true]{color:white;border-color:#684093;background:#684093}.character-tabs button[aria-pressed=true] small{color:#f1dffc}.character-tabs button.done:not([aria-pressed=true]){border-color:#66b99b;background:#ecf9f3}
+    .character-tabs{display:flex;gap:9px;overflow:auto;padding:17px 1px 17px;scrollbar-width:thin}.character-tabs button{flex:0 0 auto;border-radius:15px;border:1px solid #e1d2ec;background:#fff;padding:7px 12px;min-width:60px;color:#423151;box-shadow:0 4px 8px #43276208}.character-tabs button span{font:30px/1.25 "Noto Serif CJK SC","Songti SC",serif;display:block}.character-tabs button small{font-size:14px;color:#665074}.character-tabs button[aria-pressed=true]{color:white;border-color:#684093;background:#684093}.character-tabs button[aria-pressed=true] small{color:#f1dffc}.character-tabs button.done:not([aria-pressed=true]){border-color:#66b99b;background:#ecf9f3}
     .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:15px}.card{background:#fff;border:1px solid var(--line);border-radius:23px;padding:22px;box-shadow:0 8px 26px #533d6c0a}.drawing-card{display:flex;flex-direction:column;align-items:center}.layout>.card:nth-child(2)::before{content:"";display:block;width:100%;height:115px;border-radius:16px;margin-bottom:17px;background:linear-gradient(180deg,rgba(253,245,255,.10),rgba(252,244,255,.17)),url("./assets/chinese-painting-pronouns.webp") center 48%/cover no-repeat;box-shadow:inset 0 0 0 1px #f1e5f5}.card h2{font-size:21px;line-height:1.25;margin:0 0 7px}.subtitle{color:var(--muted);font-size:13px;margin:0 0 12px}.glyph-title{display:flex;align-items:baseline;gap:13px;flex-wrap:wrap}.glyph-title strong{font:700 49px/1.15 "Noto Serif CJK SC","Songti SC",serif;color:var(--deep)}.glyph-title .py{font-size:22px;color:var(--purple);font-weight:800}.meaning{font-size:22px;font-weight:750;margin:10px 0 12px;color:#372749}.section-label{font-size:12px;color:#81519c;letter-spacing:.07em;text-transform:uppercase;font-weight:900;margin:23px 0 8px}.example{background:#f7f1fb;border:1px solid #ebdef3;padding:14px;border-radius:15px}.example .zh{font:700 25px/1.3 "Songti SC",serif}.example .py{font-size:15px;font-weight:750;color:#7954a0}.example .ru{font-size:13px;color:#554d61}.note{font-size:14px;line-height:1.6;margin:8px 0 0;color:#51465d}.hint{background:#fff8ee;border:1px solid #f5dfc3;border-radius:13px;padding:12px;color:#76542a;font-size:13px;margin-top:12px}
     .paper{width:min(100%,330px);aspect-ratio:1;background-color:#fffbfe;background-image:linear-gradient(#d8c6e7a9 1px,transparent 1px),linear-gradient(90deg,#d8c6e7a9 1px,transparent 1px),linear-gradient(45deg,transparent calc(50% - .6px),#e8d9ed calc(50% - .6px),#e8d9ed calc(50% + .6px),transparent calc(50% + .6px)),linear-gradient(-45deg,transparent calc(50% - .6px),#e8d9ed calc(50% - .6px),#e8d9ed calc(50% + .6px),transparent calc(50% + .6px));background-size:50% 50%,50% 50%,100% 100%,100% 100%;border:2px solid #d4b8e5;border-radius:18px;display:grid;place-items:center;position:relative;overflow:hidden;touch-action:none}
     #writer{touch-action:none;display:grid;place-items:center;width:100%;height:100%}#writer svg{touch-action:none}.paper .fallback{font:130px/1 "Songti SC",serif;color:#9673a9;pointer-events:none}
@@ -26,11 +26,11 @@
     @media(max-width:670px){.shell{padding:12px 12px 40px}.layout{grid-template-columns:1fr}.card{padding:17px}.character-tabs{margin-inline:-12px;padding-inline:12px}.paper{width:min(100%,345px)}.bottom{align-items:flex-start}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
   </style>
-  <script defer src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.3/dist/hanzi-writer.min.js"></script>
+  <script defer src="./assets/vendor/hanzi-writer.min.js"></script>
 </head>
 <body>
 <main class="shell">
-  <div class="top"><a class="back" href="./index.html">← На главную «Мой китайский»</a><span class="top-pill">Пробный урок · 1 из 10</span></div>
+  <div class="top"><a class="back" href="./index.html#menu">← К разделам «Мой китайский»</a><span class="top-pill">Иероглиф · 1 из 10</span></div>
   <nav class="character-tabs" aria-label="Выбор иероглифа" id="character-tabs"></nav>
   <div class="mini-progress" aria-label="Прогресс изучения иероглифов"><span id="progress-text">Изучено 0 из 10</span><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progress-track"><div id="progress-fill"></div></div></div>
   <div class="layout">
@@ -60,7 +60,7 @@
     </section>
   </div>
   <div class="bottom"><span class="progress-details" id="lesson-counter">Иероглиф 1 из 10</span></div>
-  <p class="footnote">Пилотный модуль: для загрузки анимации и данных о чертах пока нужен интернет. Запись произношения — голос носителя Yue Tan (CC BY-SA 3.0 US), <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">источник и лицензия</a>. На телефоне при отсутствии аудио включается запасной голос. Тренажёр проверяет штрихи и их последовательность, но не заменяет преподавателя каллиграфии. Прогресс сохраняется только на этом устройстве.</p>
+  <p class="footnote">Образцы письма и черты сохраняются вместе с материалами в настройках приложения. Запись произношения — голос носителя Yue Tan (CC BY-SA 3.0 US), <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">источник и лицензия</a>. На телефоне при отсутствии аудио включается запасной голос. Тренажёр проверяет штрихи и их последовательность, но не заменяет преподавателя каллиграфии. Прогресс сохраняется только на этом устройстве.</p>
 </main>
 <script>
 window.addEventListener('DOMContentLoaded',function(){
@@ -92,7 +92,7 @@ window.addEventListener('DOMContentLoaded',function(){
     $('explanation').textContent=d.explain;$('example-zh').textContent=d.word;$('example-py').textContent=d.wordPy;$('example-ru').textContent=d.wordRu;$('tone-note').textContent=d.toneHint;
     $('stroke-status').textContent=`Количество черт: ${d.count}`;$('lesson-counter').textContent=`Иероглиф ${index+1} из ${lessons.length}`;
     $('next').textContent=index===lessons.length-1?'↻ К первому иероглифу':'Следующий иероглиф →';
-    document.querySelector('.top-pill').textContent=`Пробный урок · ${index+1} из ${lessons.length}`;
+    document.querySelector('.top-pill').textContent=`Иероглиф · ${index+1} из ${lessons.length}`;
     renderTabs();setButtons(false);say('Загружаем образец и порядок черт…');
     $('writer').innerHTML='<span class="fallback" aria-hidden="true"></span>';$('writer').firstChild.textContent=d.hz;
     if(!window.HanziWriter){say('Не удалось загрузить модуль письма. Проверь интернет и обнови страницу.','bad');return;}
@@ -101,6 +101,7 @@ window.addEventListener('DOMContentLoaded',function(){
     try{
       writer=window.HanziWriter.create('writer',d.hz,{
         width:size,height:size,padding:19,showOutline:true,showCharacter:false,
+        charDataLoader:function(char,onComplete,onError){fetch('./assets/hanzi-data/'+encodeURIComponent(char)+'.json').then(r=>{if(!r.ok)throw Error('load');return r.json()}).then(onComplete).catch(onError);},
         strokeColor:'#65368e',radicalColor:'#a5539f',outlineColor:'#e5d7ef',
         drawingColor:'#8a48a4',highlightColor:'#f1b34c',strokeAnimationSpeed:1.15,delayBetweenStrokes:420,
         showHintAfterMisses:3,acceptBackwardsStrokes:false,

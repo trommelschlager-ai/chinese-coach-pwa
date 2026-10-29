@@ -53,7 +53,7 @@
             '<p><a href="https://commons.wikimedia.org/wiki/File:Zh-m%C3%A1.ogg" target="_blank" rel="noopener noreferrer">麻 má: Yue Tan, CC BY-SA 3.0 US</a></p>',
             '<p><a href="https://commons.wikimedia.org/wiki/File:Zh-m%C7%8E.ogg" target="_blank" rel="noopener noreferrer">马 mǎ: Wei Gao / Vion Nicolas, CC BY 2.0 FR</a></p>',
           '</details>',
-          '<p class="pronunciation-demo-notice">Пока мы проверяем образцы, слова и диалоги продолжают использовать выбранный голос телефона. Полная замена не включена без проверки всех китайских тонов.</p>',
+          '<p class="pronunciation-demo-notice">Для части слов доступны локальные записи носителя. Фразы без готовой записи озвучивает выбранный китайский голос телефона.</p>',
         '</section>',
       '</details>',
       '<details id="pronunciation-howto"><summary>📖 Как заниматься</summary>',
@@ -79,6 +79,7 @@
 
   function hide(el,hidden){el.hidden=hidden;el.classList.toggle('pronunciation-panel-hidden',hidden);}
   function stopDemo(){if(voiceAudio){voiceAudio.pause();voiceAudio=null}}
+  window.addEventListener('learning-audio-stop',stopDemo);
   function show(modeName,scroll=true){
     stopDemo();
     if(!Object.prototype.hasOwnProperty.call(sections,modeName))modeName=null;
