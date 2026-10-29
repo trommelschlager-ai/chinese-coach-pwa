@@ -1,0 +1,38 @@
+name: Import licensed Hanzi voice recordings (one-time)
+on:
+  push:
+    branches: [feature/hanzi-auto-human-voice-20261029]
+    paths: [.github/workflows/hanzi-recordings.yml]
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download ten original native-speaker recordings
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/hanzi-human
+          for character in 大 人 小 一 二 三 口 日 月 木; do
+            file="assets/hanzi-human/cmn-${character}.mp3"
+            curl --fail --show-error --silent --location --retry 3 --max-time 45 \
+              "https://raw.githubusercontent.com/hugolpz/audio-cmn/master/64k/hsk/cmn-${character}.mp3" -o "$file"
+            size="$(stat -c%s "$file")"
+            test "$size" -ge 4000 && test "$size" -le 100000
+            echo "verified $file ($size bytes)"
+          done
+      - name: Commit licensed audio to feature branch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hanzi-human
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: vendor 10 credited human Mandarin pronunciations"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
