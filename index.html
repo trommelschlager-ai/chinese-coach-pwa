@@ -1796,7 +1796,15 @@ const scenes={intro:`Будь моим преподавателем китайс
 document.querySelectorAll('[data-scene]').forEach(b=>b.addEventListener('click',()=>{document.getElementById('dialogprompt').value=scenes[b.dataset.scene];document.getElementById('copymsg').textContent='Сценарий выбран. Скопируй его и вставь в ChatGPT.';}));document.getElementById('dialogprompt').value=scenes.intro;
 semanticArt.paint(document.querySelector('.scene-intro .scene-photo'),'intro','photo');
 semanticArt.paint(document.querySelector('.scene-cafe .scene-photo'),'cafe','photo');
-document.querySelectorAll('#tones .tonegrid .tone').forEach((el,i)=>semanticArt.paint(el,['mother','hemp','horse','scold'][i],'button'));
+document.querySelectorAll('#tones .tonegrid .tone').forEach((el,i)=>{
+ const key=['mother','hemp','horse','scold'][i];
+ semanticArt.paint(el,key,'button');
+ // Keep exactly the approved meaning photographs, with a dark veil for readable white text.
+ el.style.setProperty('background-image','linear-gradient(180deg,rgba(28,14,50,.22),rgba(27,11,44,.64)),url("'+semanticArt.path(key)+'")','important');
+ el.style.setProperty('background-size','cover','important');
+ el.style.setProperty('background-position','center','important');
+ el.style.setProperty('background-repeat','no-repeat','important');
+});
 
 document.getElementById('copyprompt').addEventListener('click',async()=>{let t=document.getElementById('dialogprompt');try{await navigator.clipboard.writeText(t.value);document.getElementById('copymsg').textContent='✓ Задание скопировано. Открой ChatGPT и вставь текст.'}catch(e){t.focus();t.select();document.getElementById('copymsg').textContent='Скопируй выделенный текст вручную (долгое нажатие → Копировать).'}});
 
