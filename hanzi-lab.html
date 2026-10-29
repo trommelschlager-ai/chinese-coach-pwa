@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#42216c">
+  <meta name="description" content="Пилотный урок по иероглифам: анимация черт, произношение, письмо пальцем и проверка порядка черт.">
+  <title>Мой китайский — Учимся писать иероглифы</title>
+  <style>
+    :root{color-scheme:light;--purple:#5b3188;--deep:#3e245e;--accent:#9c6ac2;--ink:#29203f;--muted:#6b6480;--line:#e9def0;--white:#fff;--good:#1f7852;--bad:#a34155}
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:linear-gradient(180deg,rgba(249,246,255,.91),rgba(250,247,255,.95)),url("./assets/china-landscape.svg") center top/cover fixed no-repeat;color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+    button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}button:focus-visible,a:focus-visible{outline:3px solid #b35ae0;outline-offset:3px}
+    .shell{width:min(100%,880px);padding:20px 18px 55px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.back{display:inline-flex;gap:7px;text-decoration:none;align-items:center;color:#5b3188;font-weight:750;font-size:14px;padding:10px 0}.top-pill{font-size:12px;padding:7px 12px;background:white;color:#694688;border:1px solid var(--line);border-radius:100px;font-weight:800}
+    .hero{background:linear-gradient(115deg,rgba(49,27,92,.94),rgba(90,55,141,.86)),url("./assets/china-landscape.svg") center 44%/cover no-repeat;padding:24px 25px;color:white;border-radius:25px;box-shadow:0 15px 40px #5b31881f;position:relative;overflow:hidden}.hero::after{content:"书";position:absolute;font:160px/1 serif;right:-14px;top:-37px;color:#ffffff10;pointer-events:none}.hero h1{font-size:clamp(24px,5vw,34px);line-height:1.15;margin:7px 0}.hero p{max-width:580px;color:#f6eafb;font-size:14px;margin:0}.eyebrow{font-size:12px;letter-spacing:.1em;color:#ead0ff;font-weight:850}
+    .statline{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:17px;color:#f6e8ff;font-size:12px}.bar{flex:1 1 130px;min-width:110px;max-width:240px;background:#ffffff38;height:9px;border-radius:20px;overflow:hidden}.bar>div{height:100%;width:0;background:#efd0ff;border-radius:20px;transition:width .3s}
+    .character-tabs{display:flex;gap:9px;overflow:auto;padding:17px 1px 17px;scrollbar-width:thin}.character-tabs button{flex:0 0 auto;border-radius:15px;border:1px solid #e1d2ec;background:#fff;padding:7px 12px;min-width:60px;color:#423151;box-shadow:0 4px 8px #43276208}.character-tabs button span{font:30px/1.25 "Noto Serif CJK SC","Songti SC",serif;display:block}.character-tabs button small{font-size:11px;color:#786a85}.character-tabs button[aria-pressed=true]{color:white;border-color:#684093;background:#684093}.character-tabs button[aria-pressed=true] small{color:#f1dffc}.character-tabs button.done:not([aria-pressed=true]){border-color:#66b99b;background:#ecf9f3}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:15px}.card{background:#fff;border:1px solid var(--line);border-radius:23px;padding:22px;box-shadow:0 8px 26px #533d6c0a}.drawing-card{display:flex;flex-direction:column;align-items:center}.card h2{font-size:21px;line-height:1.25;margin:0 0 7px}.subtitle{color:var(--muted);font-size:13px;margin:0 0 12px}.glyph-title{display:flex;align-items:baseline;gap:13px;flex-wrap:wrap}.glyph-title strong{font:700 49px/1.15 "Noto Serif CJK SC","Songti SC",serif;color:var(--deep)}.glyph-title .py{font-size:22px;color:var(--purple);font-weight:800}.meaning{font-size:22px;font-weight:750;margin:10px 0 12px;color:#372749}.section-label{font-size:12px;color:#81519c;letter-spacing:.07em;text-transform:uppercase;font-weight:900;margin:23px 0 8px}.example{background:#f7f1fb;border:1px solid #ebdef3;padding:14px;border-radius:15px}.example .zh{font:700 25px/1.3 "Songti SC",serif}.example .py{font-size:15px;font-weight:750;color:#7954a0}.example .ru{font-size:13px;color:#554d61}.note{font-size:14px;line-height:1.6;margin:8px 0 0;color:#51465d}.hint{background:#fff8ee;border:1px solid #f5dfc3;border-radius:13px;padding:12px;color:#76542a;font-size:13px;margin-top:12px}
+    .paper{width:min(100%,330px);aspect-ratio:1;background-color:#fffbfe;background-image:linear-gradient(#d8c6e7a9 1px,transparent 1px),linear-gradient(90deg,#d8c6e7a9 1px,transparent 1px),linear-gradient(45deg,transparent calc(50% - .6px),#e8d9ed calc(50% - .6px),#e8d9ed calc(50% + .6px),transparent calc(50% + .6px)),linear-gradient(-45deg,transparent calc(50% - .6px),#e8d9ed calc(50% - .6px),#e8d9ed calc(50% + .6px),transparent calc(50% + .6px));background-size:50% 50%,50% 50%,100% 100%,100% 100%;border:2px solid #d4b8e5;border-radius:18px;display:grid;place-items:center;position:relative;overflow:hidden;touch-action:none}
+    #writer{touch-action:none;display:grid;place-items:center;width:100%;height:100%}#writer svg{touch-action:none}.paper .fallback{font:130px/1 "Songti SC",serif;color:#9673a9;pointer-events:none}
+    .controls{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;margin-top:15px}.control{padding:12px 9px;min-height:49px;background:#f5ecfc;border:1px solid #ddcaec;border-radius:13px;color:#58337d;font-weight:800;font-size:14px}.control.primary{background:#663e94;border-color:#663e94;color:white}.control.full{grid-column:span 2}.feedback{width:100%;font-size:13px;color:#615271;background:#faf6fd;border:1px solid #eaddf1;min-height:55px;padding:10px 12px;border-radius:13px;margin-top:11px;line-height:1.45}.feedback.good{background:#edf9f3;color:#176944;border-color:#afe2cb}.feedback.bad{background:#fff4f4;color:#934452;border-color:#f2cbd1}
+    .progress-details{font-size:13px;color:#786582;margin-top:10px;text-align:center}.bottom{margin-top:19px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}.next{background:#3f2764;border:0;color:white;border-radius:13px;min-height:47px;padding:12px 22px;font-weight:800}.footnote{font-size:12px;color:#716783;margin-top:19px;max-width:760px}
+    .voice-box{width:100%;margin-top:13px;padding:12px;border:1px solid #e8d9f1;border-radius:15px;background:#faf6ff}.voice-box label{display:block;font-size:13px;color:#634180;font-weight:800;margin-bottom:6px}.voice-box select{width:100%;min-height:43px;padding:8px;border-radius:10px;border:1px solid #d7bee9;background:#fff;color:#34224a;font-size:14px}.voice-box .voice-help{font-size:12px;color:#6b6078;margin:7px 0 0}.voice-row{display:flex;align-items:center;gap:9px;margin-top:8px;font-size:12px;color:#5d4973}.voice-row input{flex:1;accent-color:#6e429d}
+    @media(max-width:670px){.shell{padding:12px 12px 40px}.hero{padding:21px 20px}.layout{grid-template-columns:1fr}.card{padding:17px}.character-tabs{margin-inline:-12px;padding-inline:12px}.paper{width:min(100%,345px)}.bottom{align-items:flex-start}.next{width:100%}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.3/dist/hanzi-writer.min.js"></script>
+</head>
+<body>
+<main class="shell">
+  <div class="top"><a class="back" href="./index.html">← На главную «Мой китайский»</a><span class="top-pill">Пробный урок · 1 из 10</span></div>
+  <header class="hero">
+    <div class="eyebrow">我的中文 · НАПИСАНИЕ ИЕРОГЛИФОВ</div>
+    <h1>Пишем китайские иероглифы ✍️</h1>
+    <p>Посмотри, как пишется иероглиф, произнеси его и повтори каждый штрих пальцем. Начинаем с простых знаков.</p>
+    <div class="statline"><span id="progress-text">Изучено 0 из 10</span><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progress-track"><div id="progress-fill"></div></div></div>
+  </header>
+  <nav class="character-tabs" aria-label="Выбор иероглифа" id="character-tabs"></nav>
+  <div class="layout">
+    <section class="card drawing-card" aria-labelledby="practice-title">
+      <h2 id="practice-title">Порядок написания</h2><p class="subtitle">Сначала анимация, затем твоя очередь</p>
+      <div class="paper" aria-label="Поле для письма пальцем"><div id="writer"><span class="fallback" aria-hidden="true">大</span></div></div>
+      <div class="controls">
+        <button class="control" id="animate" type="button">▶ Показать черты</button>
+        <button class="control" id="speak" type="button">🔊 Произношение</button>
+        <button class="control primary full" id="practice" type="button">✍️ Написать самому</button>
+        <button class="control" id="retry" type="button">↻ Начать заново</button>
+        <button class="control" id="hint-stroke" type="button">💡 Подсказка</button>
+      </div>
+      <div class="voice-box"><label for="chinese-voice">🎙️ Китайский голос</label><select id="chinese-voice"><option value="">Поиск голосов устройства…</option></select><div class="voice-row"><span>Скорость</span><input id="voice-rate" type="range" min="0.7" max="1.1" step="0.05" value="0.85"><output id="voice-rate-label">0.85×</output></div><p class="voice-help">Выбирай доступный голос Mandarin (zh-CN). Если на телефоне только один голос, другие появятся после установки китайского голосового пакета.</p></div>
+      <div class="feedback" id="feedback" role="status" aria-live="polite">Загрузка тренажёра…</div>
+      <div class="progress-details" id="stroke-status">Количество черт: 3</div>
+    </section>
+    <section class="card" aria-labelledby="explain-title">
+      <h2 id="explain-title">Разбираем иероглиф</h2>
+      <div class="glyph-title"><strong id="character">大</strong><span class="py" id="pinyin">dà · 4-й тон</span></div>
+      <p class="meaning" id="meaning">Большой</p>
+      <div class="section-label">Как его запомнить</div><p class="note" id="explanation">Силуэт человека с широко разведёнными руками. Представь: «вот такой большой!»</p>
+      <div class="section-label">Пример слова</div>
+      <div class="example"><div class="zh" lang="zh-Hans" id="example-zh">大学</div><div class="py" id="example-py">dàxué</div><div class="ru" id="example-ru">университет</div></div>
+      <div class="hint" id="tone-note">4-й тон dà: голос быстро опускается сверху вниз. Не путай с dǎ и dá.</div>
+      <div class="section-label">Как тренироваться</div><p class="note">Нажми «Показать черты», затем «Написать самому». Пиши в квадрате в указанном порядке. После трёх ошибок приложение покажет нужный штрих.</p>
+    </section>
+  </div>
+  <div class="bottom"><span class="progress-details" id="lesson-counter">Иероглиф 1 из 10</span><button class="next" id="next" type="button">Следующий иероглиф →</button></div>
+  <p class="footnote">Пилотный модуль: для загрузки анимации и данных о чертах нужен интернет. Озвучивание зависит от китайских голосов, установленных на устройстве; выбор голоса не является записью носителя. Тренажёр проверяет штрихи и их последовательность, но не заменяет преподавателя каллиграфии. Прогресс сохраняется только на этом устройстве.</p>
+</main>
+<script>
+window.addEventListener('DOMContentLoaded',function(){
+  'use strict';
+  const lessons=[
+    {hz:'大',py:'dà',tone:'4-й тон',ru:'Большой',count:3,explain:'Похоже на человека с широко разведёнными руками: «вот такой большой!» Это мнемоника, а не точная историческая этимология.',word:'大学',wordPy:'dàxué',wordRu:'университет',toneHint:'4-й тон dà: голос резко идёт вниз. Не путай dà с dá или dǎ.'},
+    {hz:'人',py:'rén',tone:'2-й тон',ru:'Человек',count:2,explain:'Два расходящихся штриха напоминают фигуру человека. Первый штрих начинается сверху.',word:'人口',wordPy:'rénkǒu',wordRu:'население',toneHint:'2-й тон rén: голос поднимается, как при переспросе.'},
+    {hz:'小',py:'xiǎo',tone:'3-й тон',ru:'Маленький',count:3,explain:'Три компактных штриха. Сравни с 大 (большой): противоположные значения.',word:'小孩',wordPy:'xiǎohái',wordRu:'ребёнок',toneHint:'3-й тон xiǎo: низкий тон с возможным подъёмом в конце при отдельном произношении.'},
+    {hz:'一',py:'yī',tone:'1-й тон',ru:'Один',count:1,explain:'Самый простой иероглиф: одна горизонтальная черта, слева направо.',word:'一天',wordPy:'yì tiān',wordRu:'один день',toneHint:'Отдельно 一 = yī (1-й тон), но перед 1-м тоном в 一天 обычно произносим yì tiān. Это изменение тона!'},
+    {hz:'二',py:'èr',tone:'4-й тон',ru:'Два',count:2,explain:'Две горизонтальные черты: короткая сверху, длинная снизу.',word:'二月',wordPy:'èr yuè',wordRu:'февраль',toneHint:'4-й тон èr: высокий старт и резкое падение.'},
+    {hz:'三',py:'sān',tone:'1-й тон',ru:'Три',count:3,explain:'Три горизонтальные черты. Внимательно следи за длиной и порядком черт.',word:'三天',wordPy:'sān tiān',wordRu:'три дня',toneHint:'1-й тон sān: высокий и ровный, без подъёма и падения.'},
+    {hz:'口',py:'kǒu',tone:'3-й тон',ru:'Рот',count:3,explain:'Напоминает открытый рот. Не рисуй квадрат одним замкнутым движением: тут три черты.',word:'人口',wordPy:'rénkǒu',wordRu:'население',toneHint:'3-й тон kǒu: низкий, при отдельном произношении часто с подъёмом.'},
+    {hz:'日',py:'rì',tone:'4-й тон',ru:'Солнце / день',count:4,explain:'Прямоугольный знак с внутренней горизонтальной чертой. Тренируй пропорции.',word:'生日',wordPy:'shēngrì',wordRu:'день рождения',toneHint:'4-й тон rì: резко вниз. Начальный звук r в китайском не равен русскому р.'},
+    {hz:'月',py:'yuè',tone:'4-й тон',ru:'Луна / месяц',count:4,explain:'Высокая вытянутая форма с двумя чертами внутри. Используется и в обозначении месяцев.',word:'月亮',wordPy:'yuèliang',wordRu:'луна',toneHint:'4-й тон yuè: резко вниз. Пиньинь yue не читается как английское «юэ».'},
+    {hz:'木',py:'mù',tone:'4-й тон',ru:'Дерево / древесина',count:4,explain:'Вертикальный ствол и расходящиеся ветви напоминают дерево.',word:'木头',wordPy:'mùtou',wordRu:'дерево, древесина',toneHint:'4-й тон mù: короткое падение высоты голоса.'}
+  ];
+  const $=id=>document.getElementById(id);
+  let index=0,writer=null,loaded=false,quizActive=false,sequence=0,misses=0,currentStroke=0,completed=new Set();
+  const storageKey='chinese-coach-hanzi-lab-v1';
+  try{const saved=JSON.parse(localStorage.getItem(storageKey)||'[]');if(Array.isArray(saved)) completed=new Set(saved.filter(x=>lessons.some(l=>l.hz===x)));}catch(_){/* storage can be disabled */}
+  function save(){try{localStorage.setItem(storageKey,JSON.stringify([...completed]));}catch(_){/* storage may be unavailable */}}
+  function say(message,kind){const el=$('feedback');el.textContent=message;el.className='feedback'+(kind?' '+kind:'');}
+  function progress(){const n=completed.size;$('progress-text').textContent=`Изучено ${n} из ${lessons.length}`;$('progress-fill').style.width=`${100*n/lessons.length}%`;$('progress-track').setAttribute('aria-valuenow',String(n));}
+  function setButtons(enabled){for(const id of ['animate','practice','retry','hint-stroke'])$(id).disabled=!enabled;}
+  function renderTabs(){const bar=$('character-tabs');bar.textContent='';lessons.forEach((l,i)=>{const btn=document.createElement('button');btn.type='button';btn.setAttribute('aria-pressed',String(i===index));btn.className=completed.has(l.hz)?'done':'';const hz=document.createElement('span');hz.lang='zh-Hans';hz.textContent=l.hz;const sub=document.createElement('small');sub.textContent=completed.has(l.hz)?'✓ пройден':l.py;btn.append(hz,sub);btn.addEventListener('click',()=>select(i));bar.appendChild(btn);});}
+  function select(i){
+    sequence++; const seq=sequence; index=(i+lessons.length)%lessons.length;const d=lessons[index];loaded=false;quizActive=false;misses=0;currentStroke=0;writer=null;
+    $('character').textContent=d.hz;$('pinyin').textContent=`${d.py} · ${d.tone}`;$('meaning').textContent=d.ru;
+    $('explanation').textContent=d.explain;$('example-zh').textContent=d.word;$('example-py').textContent=d.wordPy;$('example-ru').textContent=d.wordRu;$('tone-note').textContent=d.toneHint;
+    $('stroke-status').textContent=`Количество черт: ${d.count}`;$('lesson-counter').textContent=`Иероглиф ${index+1} из ${lessons.length}`;
+    $('next').textContent=index===lessons.length-1?'Вернуться к первому ↻':'Следующий иероглиф →';
+    document.querySelector('.top-pill').textContent=`Пробный урок · ${index+1} из ${lessons.length}`;
+    renderTabs();setButtons(false);say('Загружаем образец и порядок черт…');
+    $('writer').innerHTML='<span class="fallback" aria-hidden="true"></span>';$('writer').firstChild.textContent=d.hz;
+    if(!window.HanziWriter){say('Не удалось загрузить модуль письма. Проверь интернет и обнови страницу.','bad');return;}
+    const size=Math.min(310,Math.max(215,Math.floor($('writer').clientWidth-14)));
+    $('writer').textContent='';
+    try{
+      writer=window.HanziWriter.create('writer',d.hz,{
+        width:size,height:size,padding:19,showOutline:true,showCharacter:false,
+        strokeColor:'#65368e',radicalColor:'#a5539f',outlineColor:'#e5d7ef',
+        drawingColor:'#8a48a4',highlightColor:'#f1b34c',strokeAnimationSpeed:1.15,delayBetweenStrokes:420,
+        showHintAfterMisses:3,acceptBackwardsStrokes:false,
+        onLoadCharDataSuccess:function(){if(seq!==sequence)return;loaded=true;setButtons(true);say('Готово! Посмотри написание и нажми «Написать самому».');},
+        onLoadCharDataError:function(){if(seq!==sequence)return;setButtons(false);say('Не удалось загрузить черты. Проверь соединение и попробуй обновить страницу.','bad');}
+      });
+    }catch(err){setButtons(false);say('Ошибка запуска тренажёра. Попробуй обновить страницу.','bad');}
+  }
+  function animate(){if(!loaded||!writer)return;quizActive=false;writer.cancelQuiz();say('Смотри внимательно: черты появляются в правильном порядке.');writer.animateCharacter();}
+  function startQuiz(){if(!loaded||!writer)return;misses=0;currentStroke=0;quizActive=true;const quizSequence=sequence;writer.cancelQuiz();say('Твоя очередь! Напиши первый штрих пальцем в квадрате.');
+    writer.hideCharacter({duration:0}).then(()=>{
+      if(!quizActive||quizSequence!==sequence)return;
+      writer.quiz({
+        onMistake:function(data){if(!quizActive||quizSequence!==sequence)return;misses=data.totalMistakes;say(`Пока неверно. Ошибок: ${misses}. Попробуй этот штрих ещё раз.`, 'bad');},
+        onCorrectStroke:function(data){if(!quizActive||quizSequence!==sequence)return;currentStroke=data.strokeNum+1;say(data.strokesRemaining?`Правильно! Осталось черт: ${data.strokesRemaining}.`:'Последний штрих верный!','good');},
+        onComplete:function(data){if(!quizActive||quizSequence!==sequence)return;quizActive=false;const d=lessons[index];completed.add(d.hz);save();progress();renderTabs();say(`Отлично! ${d.hz} написан в правильном порядке. Ошибок за попытку: ${data.totalMistakes}.`,'good');}
+      });
+    }).catch(()=>say('Не удалось начать тренировку. Попробуй «Начать заново».','bad'));
+  }
+  function hint(){if(!loaded||!writer)return;if(!quizActive){say('Сначала нажми «Написать самому».');return;}writer.highlightStroke(currentStroke);say('Нужный штрих подсвечен. Попробуй его повторить пальцем.');}
+  const voiceSelect=$('chinese-voice'),rateControl=$('voice-rate'),rateLabel=$('voice-rate-label');
+  let chineseVoices=[];
+  const voiceStorage='chinese-coach-hanzi-voice-v2';
+  function preferredVoice(v){const n=(v.name||'').toLowerCase();return (/zh[-_](cn|hans)/i.test(v.lang)?50:0)+(/natural|neural|premium|enhanced|google/i.test(n)?20:0)+(v.localService?4:0);}
+  function refreshVoices(){
+    if(!('speechSynthesis' in window)){voiceSelect.innerHTML='<option value="">Синтез речи недоступен</option>';voiceSelect.disabled=true;return;}
+    chineseVoices=window.speechSynthesis.getVoices().filter(v=>/^zh([-_]|$)/i.test(v.lang)).sort((a,b)=>preferredVoice(b)-preferredVoice(a));
+    const prev=voiceSelect.value;let stored='';try{stored=localStorage.getItem(voiceStorage)||'';}catch(_){}
+    voiceSelect.replaceChildren();
+    if(!chineseVoices.length){const opt=new Option('Нет установленного китайского голоса','');voiceSelect.appendChild(opt);voiceSelect.disabled=true;return;}
+    voiceSelect.disabled=false;
+    chineseVoices.forEach((v,i)=>{const opt=new Option(v.name+' · '+v.lang,i.toString());voiceSelect.appendChild(opt);});
+    const chosen=chineseVoices.findIndex(v=>v.voiceURI===(stored||prev));voiceSelect.value=String(chosen>=0?chosen:0);
+  }
+  if('speechSynthesis' in window){window.speechSynthesis.addEventListener?.('voiceschanged',refreshVoices);refreshVoices();}
+  voiceSelect.addEventListener('change',()=>{const selected=chineseVoices[Number(voiceSelect.value)];if(selected){try{localStorage.setItem(voiceStorage,selected.voiceURI);}catch(_){} }speak();});
+  rateControl.addEventListener('input',()=>{rateLabel.textContent=Number(rateControl.value).toFixed(2)+'×';});
+  function speak(){
+    const d=lessons[index];if(!('speechSynthesis' in window)){say('Озвучка недоступна в этом браузере. Смотри пиньинь и обозначение тона.','bad');return;}
+    if(!chineseVoices.length)refreshVoices();
+    window.speechSynthesis.cancel();
+    const utterance=new SpeechSynthesisUtterance(d.hz);utterance.lang='zh-CN';utterance.rate=Number(rateControl.value);utterance.pitch=1;
+    const preferred=chineseVoices[Number(voiceSelect.value)];
+    if(preferred)utterance.voice=preferred;
+    utterance.onerror=()=>say('Не удалось озвучить. Установи китайский голос на телефоне или выбери другой вариант.','bad');
+    window.speechSynthesis.speak(utterance);
+  }
+  $('animate').addEventListener('click',animate);$('practice').addEventListener('click',startQuiz);$('retry').addEventListener('click',()=>select(index));$('hint-stroke').addEventListener('click',hint);$('speak').addEventListener('click',speak);$('next').addEventListener('click',()=>select(index+1));
+  progress();select(0);
+});
+</script>
+</body>
+</html>
