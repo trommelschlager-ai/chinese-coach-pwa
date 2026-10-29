@@ -19,3 +19,4 @@ jobs:
       - run: npm run check
       - run: node scripts/verify-offline.cjs
       - run: node scripts/verify-hanzi.cjs
+      - run: node scripts/verify-launch.cjs
