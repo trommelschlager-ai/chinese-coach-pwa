@@ -15,8 +15,8 @@
     '<select id="mandarin-voice-choice" aria-label="Китайский голос"></select>',
     '<button type="button" class="btn soft" id="mandarin-voice-preview">▶ Послушать</button>',
     '</div>',
-    '<label for="mandarin-voice-rate">Скорость: <output id="mandarin-voice-rate-value">0,82×</output></label>',
-    '<input type="range" min="0.70" max="1.10" step="0.02" id="mandarin-voice-rate" value="0.82">',
+    '<label for="mandarin-voice-rate">Скорость: <output id="mandarin-voice-rate-value">0,94×</output></label>',
+    '<input type="range" min="0.70" max="1.10" step="0.02" id="mandarin-voice-rate" value="0.94">',
     '<p class="voice-settings-help" id="mandarin-voice-help" role="status" aria-live="polite"></p>',
     '<button type="button" class="voice-install-help" id="mandarin-voice-install">Как установить другой китайский голос?</button>',
     '</div>'
@@ -46,22 +46,27 @@
     if(!('speechSynthesis' in window))hint.textContent='Этот браузер не поддерживает системную озвучку.';
     else if(!voices.length)hint.textContent='Китайские голоса пока не обнаружены. Проверь настройки синтеза речи телефона.';
     else if(voices.length===1)hint.textContent='Найден только один китайский голос. Чтобы действительно сменить звучание, установи другой голос в настройках телефона.';
-    else hint.textContent='Доступно китайских голосов: '+voices.length+'. По умолчанию выбран наиболее естественный из доступных. Прослушай варианты: качество зависит от телефона.';
+    else hint.textContent='Доступно китайских голосов: '+voices.length+'. Автоматически выбирается более естественный голос из доступных. Качество зависит от устройства — сравни варианты.';
   }
-  const savedRate=Number(get(speedKey));
-  const previousRate=Number(get('chinese-coach-tts-rate-v1'));
-  // On upgrade slow down old 0.95x defaults, but preserve an explicitly slower setting.
-  const initialRate=savedRate>=.70&&savedRate<=1.10?savedRate:(previousRate>=.70&&previousRate<.82?previousRate:.82);
+  const savedText=get(speedKey);
+  const savedRate=Number(savedText),previousRate=Number(get('chinese-coach-tts-rate-v1'));
+  const touched=get('chinese-coach-tts-rate-custom-v55')==='1';
+  // Preserve explicit new choices. Migrate the former automatic 0.82× speed:
+  // heavy slowing made even genuine Mandarin recordings sound less natural.
+  const initialRate=savedText&&savedRate>=.70&&savedRate<=1.10
+    ?(Math.abs(savedRate-.82)<.001&&!touched?.94:savedRate)
+    :(previousRate>=.70&&previousRate<.82?previousRate:.94);
   rate.value=String(initialRate);
   put(speedKey,rate.value);
   output.textContent=Number(rate.value).toFixed(2).replace('.',',')+'×';
   rate.addEventListener('input',()=>{
     output.textContent=Number(rate.value).toFixed(2).replace('.',',')+'×';
     put(speedKey,rate.value);
+    put('chinese-coach-tts-rate-custom-v55','1');
   });
   select.addEventListener('change',()=>{
     put(key,select.value);
-    hint.textContent='Выбранный голос сохранён. Он будет использоваться и для слов, и для диалогов.';
+    hint.textContent='Голос сохранён. Где есть запись носителя, приложение использует её; остальные фразы озвучивает выбранный китайский голос телефона.';
   });
   details.querySelector('#mandarin-voice-preview').addEventListener('click',()=>{
     if(typeof speakChinese==='function')speakChinese('你好！我很高兴认识你。',.95);
