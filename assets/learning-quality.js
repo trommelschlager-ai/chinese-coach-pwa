@@ -61,10 +61,10 @@
  const notice=$('words').querySelector('.notice');notice.textContent='Записи носителя доступны для отдельных слов. Для остальных фраз используется китайский голос телефона. Голос и загрузки — в настройках.';
  // User-owned settings remain available without occupying the lesson viewport.
  const settings=document.createElement('details');settings.id='app-settings';settings.className='app-settings';
- settings.innerHTML='<summary>Настройки</summary><div class="settings-content"><p>Для распознавания фраз нужен интернет. Проверка мелодики одиночного слога приблизительная.</p><div id="offline-settings-slot"></div><button class="btn primary" id="download-course" type="button">Скачать материалы для занятий</button><p id="download-status" role="status" aria-live="polite">Сохрани учебные картинки, аудио и письмо для занятий без сети.</p><button class="btn soft" id="open-voice-settings" type="button">Выбрать голос и скорость</button><button class="btn soft" id="apply-course-update" type="button" hidden>Применить обновление</button><details><summary>Об аудио и лицензиях</summary><p>Локальные записи слов: Yue Tan, CC BY-SA 3.0 US. Слог mā: Chen Wang, CC BY-SA. Источник: <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">audio-cmn</a>. Тоны и демонстрационные записи сохраняют авторство, указанное в соответствующих упражнениях.</p><p>Библиотека письма Hanzi Writer: Chanind, MIT; данные черт Make Me a Hanzi: Arphic Public License. <a href="https://github.com/chanind/hanzi-writer" target="_blank" rel="noopener noreferrer">Исходный код и лицензии</a>.</p></details><div id="backup-settings-slot"></div></div>';
+ settings.innerHTML='<summary>Настройки</summary><div class="settings-content"><p class="settings-intro">Для проверки фраз нужен интернет. Оценка тонов приблизительная.</p><div id="offline-settings-slot"></div><button class="btn primary" id="download-course" type="button">Скачать материалы для занятий</button><p id="download-status" role="status" aria-live="polite"></p><button class="btn soft" id="open-voice-settings" type="button">Выбрать голос и скорость</button><button class="btn soft" id="apply-course-update" type="button" hidden>Применить обновление</button><details><summary>Об аудио и лицензиях</summary><p>Локальные записи слов: Yue Tan, CC BY-SA 3.0 US. Слог mā: Chen Wang, CC BY-SA. Источник: <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">audio-cmn</a>. Тоны и демонстрационные записи сохраняют авторство, указанное в соответствующих упражнениях.</p><p>Библиотека письма Hanzi Writer: Chanind, MIT; данные черт Make Me a Hanzi: Arphic Public License. <a href="https://github.com/chanind/hanzi-writer" target="_blank" rel="noopener noreferrer">Исходный код и лицензии</a>.</p></details><div id="backup-settings-slot"></div></div>';
  document.querySelector('.shell > main').before(settings);
  $('offline-settings-slot').append($('offlinebar'),$('installhelp'));
- $('backup-settings-slot').append(document.querySelector('.backup-panel'));
+ const backupDisclosure=document.createElement('details');backupDisclosure.className='backup-disclosure';backupDisclosure.innerHTML='<summary>💾 Резервная копия прогресса</summary>';backupDisclosure.append(document.querySelector('.backup-panel'));$('backup-settings-slot').append(backupDisclosure);
  const voiceSettings=$('pronunciation-settings');settings.querySelector('.settings-content').append(voiceSettings);
  $('open-voice-settings').remove();
  const courseTech=document.querySelector('.course-tech');settings.querySelector('.settings-content').append(courseTech);
@@ -105,7 +105,7 @@
   return COURSE.map(l=>'<button class="topic-card" type="button" data-topic-lesson="'+l.id+'" data-topic-step="'+step+'"><strong>'+safe(l.title)+'</strong><span>'+ (kind==='words'?l.vocab.length+' слов и выражений':kind==='dialogues'?l.dialogue.length+' реплик':'4 этапа · объяснение, слова, диалог, тест')+'</span><span aria-hidden="true">→</span></button>').join('');}
  window.openLearningTopics=function(kind='course'){
   topicKind=['course','words','dialogues'].includes(kind)?kind:'course';
-  topics.innerHTML='<button class="btn soft" type="button" data-back-menu>← Разделы</button><h1>'+({course:'Пять тематических уроков',words:'Базовые слова по темам',dialogues:'Выбери диалог'})[topicKind]+'</h1><p>Выбери тему и занимайся в своём темпе.</p>'+(topicKind==='words'?'<button class="btn primary" type="button" data-full-dictionary>Открыть общий словарь</button>':'')+'<p class="topic-progress">Пройдено тем: '+courseState.completed.length+' из '+COURSE.length+' · Знакомых слов: '+state.learned.length+' из '+words.length+'</p><div class="topic-grid">'+topicButtons(topicKind)+'</div>';
+  topics.innerHTML='<button class="btn soft" type="button" data-back-menu>← Разделы</button><h1>'+({course:'Пять тематических уроков',words:'Базовые слова по темам',dialogues:'Выбери диалог'})[topicKind]+'</h1><p>Выбери тему и занимайся в своём темпе.</p>'+(topicKind==='words'?'<button class="btn primary" type="button" data-full-dictionary>Открыть общий словарь</button>':'')+ (topicKind==='dialogues'?'':'<p class="topic-progress">Уроков: '+courseState.completed.length+'/'+COURSE.length+' · Слов: '+state.learned.length+'/'+words.length+'</p>')+'<div class="topic-grid">'+topicButtons(topicKind)+'</div>';
   topics.querySelector('[data-back-menu]').onclick=()=>go('home');
   topics.querySelector('[data-full-dictionary]')?.addEventListener('click',()=>{sectionOrigin='words';go('words')});
   topics.querySelectorAll('[data-topic-lesson]').forEach(b=>b.onclick=()=>openCourseLesson(Number(b.dataset.topicLesson),Number(b.dataset.topicStep)));
@@ -153,16 +153,7 @@
  $('launch-start').addEventListener('click',()=>{pushRoute('home');document.body.dataset.currentPage='menu';updateResume()});
  $('launch-back').addEventListener('click',()=>{stopLearningAudio();history.pushState({learning:true},'','#cover');lastLocation='#cover';document.body.dataset.currentPage='cover'});
  $('launch-resume').onclick=()=>continueLearning();
- // Keep the approved cover and first-run petals. Returning learners go straight to their choices.
- const welcomeKey='chinese-coach-welcome-seen-v1';
- $('launch-start').addEventListener('click',event=>{
-  let seen=false;
-  try{seen=localStorage.getItem(welcomeKey)==='1';localStorage.setItem(welcomeKey,'1')}catch(e){}
-  if(!seen)return;
-  event.preventDefault();event.stopImmediatePropagation();
-  window.showLaunchMenu?.();
-  pushRoute('home');document.body.dataset.currentPage='menu';updateResume();
- },true);
+ // Do not suppress Sakura for returning learners; cover owns the animation.
  function updateResume(){const r=read('chinese-coach-resume-v1',null),b=$('launch-resume');b.hidden=false;const validResume=r&&COURSE.some(l=>l.id===r.id);b.textContent=validResume?'▶ Продолжить урок '+r.id+' →':'▶ Начать урок 1 · Звуки и тоны →';b.setAttribute('aria-label',validResume?'Продолжить обучение с урока '+r.id:'Начать обучение по порядку, с первого урока');}
  // Unify card learning, visible position and review intervals.
  const basePanel=renderCoursePanel;
