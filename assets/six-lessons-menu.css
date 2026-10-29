@@ -1,0 +1,104 @@
+/* Six-course screen, approved order: sound, words, Hanzi, dialogues, practice, test.
+   The five-lesson raster remains a decorative, dimmed nightscape only; all new cards are live HTML. */
+#launch-entry #launch-menu.six-lessons-menu{isolation:isolate;background:#211c55}
+#launch-entry #launch-menu.six-lessons-menu>.six-original-scenery{
+ position:absolute;inset:-2%;width:104%;height:104%;object-fit:fill;
+ filter:blur(10px) brightness(.70) saturate(1.42);opacity:1;
+ user-select:none;pointer-events:none;z-index:0;
+}
+#launch-entry #launch-menu.six-lessons-menu::before{
+ content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+ background:linear-gradient(180deg,#1a1c5b42 0%,#44237333 35%,#30194a21 67%,#231b5544 100%);
+}
+#launch-entry #launch-menu.six-lessons-menu>.six-screen-content{
+ position:absolute;inset:0;z-index:3;display:grid;grid-template-rows:25% minmax(0,1fr) 10.5%;
+ gap:1.35%;padding:2.65% 7.1% 2.6%;box-sizing:border-box;min-height:0;
+}
+#launch-entry #launch-menu .six-menu-header{
+ display:flex;flex-direction:column;justify-content:space-between;gap:9px;min-height:0;
+ color:#fff;text-align:center;text-shadow:0 2px 9px #190a5ac7;
+}
+#launch-entry #launch-menu .six-menu-brand{display:flex;align-items:center;gap:11px;text-align:left;font:800 clamp(16px,4.1vw,25px)/1.1 system-ui,sans-serif}
+#launch-entry #launch-menu .six-pagoda{
+ width:clamp(40px,10.8vw,76px);height:clamp(40px,10.8vw,76px);
+ border:3px solid #faf2ff;border-radius:16px;box-shadow:0 0 12px 3px #af4effdc;
+ color:#fbd570;background:#172153de;display:grid;place-items:center;
+ font:800 clamp(26px,7vw,42px)/1 "Songti SC",serif;flex:0 0 auto;
+}
+#launch-entry #launch-menu .six-menu-header h1{
+ margin:0 0 4px;font:850 clamp(21px,5.55vw,35px)/1.18 system-ui,sans-serif;
+ letter-spacing:-.4px;white-space:nowrap;
+}
+#launch-entry #launch-menu .six-menu-header h1 span{display:block;color:#f9dffb;font-size:.93em;margin-top:3px}
+#launch-entry #launch-menu .six-menu-cards{
+ display:grid;grid-template-rows:repeat(6,minmax(0,1fr));gap:1.6%;min-height:0;
+ position:relative;
+}
+#launch-entry #launch-menu .six-card{
+ position:relative;width:100%;height:100%;min-height:0;min-width:0;
+ display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;align-items:center;gap:clamp(7px,2.2vw,14px);
+ padding:4px clamp(12px,3vw,24px);border:1px solid #fff9;border-radius:clamp(15px,4vw,28px);
+ box-shadow:0 5px 15px #180b4940,inset 0 1px 0 #fff;
+ color:#27104f;text-decoration:none;text-align:left;
+ font:800 clamp(13px,3.8vw,23px)/1.15 system-ui,sans-serif;
+ cursor:pointer;touch-action:manipulation;overflow:hidden;
+}
+#launch-entry #launch-menu .six-card:focus-visible{outline:3px solid #fff;outline-offset:2px}
+#launch-entry #launch-menu .six-card:active{transform:scale(.988);filter:brightness(.96)}
+#launch-entry #launch-menu .six-number{
+ display:grid;place-items:center;flex:0 0 auto;min-width:0;
+ width:clamp(39px,10vw,70px);height:clamp(39px,10vw,70px);border-radius:50%;
+ color:white;font-size:clamp(21px,5.5vw,39px);font-weight:900;
+}
+#launch-entry #launch-menu .six-icon{
+ width:clamp(31px,9.2vw,64px);height:clamp(34px,10vw,68px);
+ display:grid;place-items:center;line-height:1;
+ font-size:clamp(27px,7.9vw,51px);font-weight:750;
+}
+#launch-entry #launch-menu .six-icon>svg{display:block;width:100%;height:100%;overflow:visible}
+#launch-entry #launch-menu .six-hanzi-icon{position:relative;font-family:"Songti SC",serif;font-size:clamp(27px,8vw,51px)}
+#launch-entry #launch-menu .six-hanzi-icon>svg{position:absolute;width:clamp(12px,3vw,21px);height:clamp(12px,3vw,21px);right:-4px;bottom:0;transform:rotate(-13deg)}
+#launch-entry #launch-menu .six-label{min-width:0;white-space:nowrap;letter-spacing:-.25px}
+#launch-entry #launch-menu .six-card.six-orange .six-label{font-size:.88em;letter-spacing:-.5px}
+#launch-entry #launch-menu .six-arrow{font:700 clamp(28px,8vw,52px)/1 system-ui,sans-serif}
+#launch-entry #launch-menu .six-purple{background:linear-gradient(115deg,#f1ddff,#f8e6ff)}
+#launch-entry #launch-menu .six-purple .six-number{background:linear-gradient(135deg,#d38bfb,#9a42dd)}
+#launch-entry #launch-menu .six-purple .six-icon,#launch-entry #launch-menu .six-purple .six-arrow{color:#9b3ee3}
+#launch-entry #launch-menu .six-pink{background:linear-gradient(115deg,#ffddf4,#fae9ff)}
+#launch-entry #launch-menu .six-pink .six-number{background:linear-gradient(135deg,#fd86de,#ec3cc9)}
+#launch-entry #launch-menu .six-pink .six-icon,#launch-entry #launch-menu .six-pink .six-arrow{color:#db2bb8}
+#launch-entry #launch-menu .six-orange{background:linear-gradient(115deg,#fff3dd,#fff7ee)}
+#launch-entry #launch-menu .six-orange .six-number{background:linear-gradient(135deg,#ffb73d,#f47e21)}
+#launch-entry #launch-menu .six-orange .six-icon,#launch-entry #launch-menu .six-orange .six-arrow{color:#f17f19}
+#launch-entry #launch-menu .six-coral{background:linear-gradient(115deg,#ffe3e0,#fff0f1)}
+#launch-entry #launch-menu .six-coral .six-number{background:linear-gradient(135deg,#ff9b80,#f75b66)}
+#launch-entry #launch-menu .six-coral .six-icon,#launch-entry #launch-menu .six-coral .six-arrow{color:#f45f58}
+#launch-entry #launch-menu .six-blue{background:linear-gradient(115deg,#d9eaff,#e9f6ff)}
+#launch-entry #launch-menu .six-blue .six-number{background:linear-gradient(135deg,#75c0ff,#386fec)}
+#launch-entry #launch-menu .six-blue .six-icon,#launch-entry #launch-menu .six-blue .six-arrow{color:#347ced}
+#launch-entry #launch-menu .six-green{background:linear-gradient(115deg,#d2fff3,#e9fef9)}
+#launch-entry #launch-menu .six-green .six-number{background:linear-gradient(135deg,#28e2ba,#00b998)}
+#launch-entry #launch-menu .six-green .six-icon,#launch-entry #launch-menu .six-green .six-arrow{color:#00b990}
+#launch-entry #launch-menu .six-menu-bottom{
+ display:grid;grid-template-columns:1fr 1fr;gap:6px;align-items:stretch;
+ border-radius:999px;padding:5px;border:2px solid #fff9;
+ background:linear-gradient(135deg,#f6edffed,#e5d7f9f5);
+ box-shadow:0 0 16px #f2a5f8a6;min-height:0;
+}
+#launch-entry #launch-menu .six-bottom-tab{
+ display:flex;position:relative;flex-direction:column;align-items:center;justify-content:center;gap:0;
+ border:0;border-radius:999px;color:#77708e;background:transparent;
+ font:750 clamp(11px,3.3vw,17px)/1.05 system-ui,sans-serif;cursor:pointer;min-height:0;
+}
+#launch-entry #launch-menu .six-bottom-tab span{display:block;font-size:clamp(22px,6.8vw,37px);line-height:1}
+#launch-entry #launch-menu .six-bottom-tab.active{background:linear-gradient(135deg,#f8c9ff,#deb4fb);color:#7627c5;box-shadow:inset 0 1px 0 #fff}
+#launch-entry #launch-menu .six-bottom-tab:focus-visible{outline:3px solid #8241da;outline-offset:2px}
+@media(max-width:350px){#launch-entry #launch-menu .six-card{gap:5px;padding-inline:8px;font-size:12px}
+ #launch-entry #launch-menu .six-card.six-orange .six-label{font-size:10.4px}
+ #launch-entry #launch-menu .six-number{width:36px;height:36px}
+ #launch-entry #launch-menu .six-icon{width:25px;font-size:25px}
+ #launch-entry #launch-menu .six-menu-header h1{font-size:19px}}
+@media(max-height:650px){#launch-entry #launch-menu .six-screen-content{grid-template-rows:24% minmax(0,1fr) 9.5%;gap:1%;padding-block:2%}
+ #launch-entry #launch-menu .six-number{width:34px;height:34px;font-size:19px}
+ #launch-entry #launch-menu .six-card{border-radius:13px}
+ #launch-entry #launch-menu .six-menu-header h1{font-size:clamp(18px,4.6vw,27px)}}
