@@ -16,8 +16,8 @@ w.speechSynthesis={getVoices(){return voices},cancel(){},speak(u){spoken.push({t
 w.SpeechSynthesisUtterance=function(text){this.text=text};
 w.HanziWriter={create(id,character,opts){opened.push(character);const stub={cancelQuiz(){},hideCharacter(){return Promise.resolve()},animateCharacter(){modes.push('animation')},highlightStroke(){modes.push('hint')},quiz(handlers){modes.push('quiz');handlers.onCorrectStroke({strokeNum:0,strokesRemaining:0});handlers.onComplete({totalMistakes:0});}};Promise.resolve().then(()=>opts.onLoadCharDataSuccess());return stub}};
 w.eval(scripts[0]);
-w.dispatchEvent(new w.Event('DOMContentLoaded'));
 (async()=>{
+await new Promise(resolve=>w.addEventListener('DOMContentLoaded',resolve,{once:true}));
 await Promise.resolve();
 assert.equal(d.querySelectorAll('#character-tabs button').length,10,'Ten character tabs');
 assert.equal(d.querySelector('#character').textContent,'大','First hanzi');
