@@ -102,17 +102,18 @@
  const topics=document.createElement('section');topics.id='topics';topics.className='page';document.querySelector('main').append(topics);
  let topicKind='course';
  function topicButtons(kind){const step=kind==='words'?1:kind==='dialogues'?2:0;
-  return COURSE.map(l=>'<button class="topic-card" type="button" data-topic-lesson="'+l.id+'" data-topic-step="'+step+'"><strong>'+safe(l.title)+'</strong><span>'+ (kind==='words'?l.vocab.length+' слов и выражений':kind==='dialogues'?l.dialogue.length+' реплик':'4 этапа · объяснение, слова, диалог, тест')+'</span><span aria-hidden="true">→</span></button>').join('');}
+  const illustrations=['🎵','💬','🌏','🕒','🍵'];
+  return COURSE.map(l=>'<button class="topic-card" type="button" data-topic-lesson="'+l.id+'" data-topic-step="'+step+'"><span class="topic-icon" aria-hidden="true">'+illustrations[l.id-1]+'</span><strong>'+safe(l.title)+'</strong><span class="topic-sub">'+(kind==='words'?l.vocab.length+' слов и выражений':kind==='dialogues'?l.dialogue.length+' реплик':'Правила · слова · диалог · тест')+'</span><span class="topic-arrow" aria-hidden="true">›</span></button>').join('');}
  window.openLearningTopics=function(kind='course'){
   topicKind=['course','words','dialogues'].includes(kind)?kind:'course';
-  topics.innerHTML='<button class="btn soft" type="button" data-back-menu>← Разделы</button><h1>'+({course:'Пять тематических уроков',words:'Базовые слова по темам',dialogues:'Выбери диалог'})[topicKind]+'</h1><p>Выбери тему и занимайся в своём темпе.</p>'+(topicKind==='words'?'<button class="btn primary" type="button" data-full-dictionary>Открыть общий словарь</button>':'')+ (topicKind==='dialogues'?'':'<p class="topic-progress">Уроков: '+courseState.completed.length+'/'+COURSE.length+' · Слов: '+state.learned.length+'/'+words.length+'</p>')+'<div class="topic-grid">'+topicButtons(topicKind)+'</div>';
+  topics.innerHTML='<button class="btn soft" type="button" data-back-menu>← Разделы</button><h1>'+({course:'Пять тематических уроков',words:'Базовые слова по темам',dialogues:'Выбери диалог'})[topicKind]+'</h1><p class="topic-lead">Выбери тему и начни занятие.</p>'+(topicKind==='words'?'<button class="btn primary" type="button" data-full-dictionary>Открыть общий словарь</button>':'')+ (topicKind==='dialogues'?'':'<p class="topic-progress">Уроков: '+courseState.completed.length+'/'+COURSE.length+' · Слов: '+state.learned.length+'/'+words.length+'</p>')+'<div class="topic-grid">'+topicButtons(topicKind)+'</div>';
   topics.querySelector('[data-back-menu]').onclick=()=>go('home');
   topics.querySelector('[data-full-dictionary]')?.addEventListener('click',()=>{sectionOrigin='words';go('words')});
   topics.querySelectorAll('[data-topic-lesson]').forEach(b=>b.onclick=()=>openCourseLesson(Number(b.dataset.topicLesson),Number(b.dataset.topicStep)));
   go('topics');
  };
  window.openPracticeChoices=function(){
-  topicKind='practice';topics.innerHTML='<button class="btn soft" data-back-menu type="button">← Разделы</button><h1>Практика китайского</h1><p>Выбери упражнение.</p><div class="topic-grid"><button class="topic-card" data-practice="tones"><strong>Тренировать речь</strong><span>Слушай, различай тоны, записывай себя</span></button><button class="topic-card" data-practice="words"><strong>Повторить слова</strong><span>Общий словарь и повторение ошибок</span></button><button class="topic-card" data-practice="dialog"><strong>Разговор в ChatGPT ↗</strong><span>Два сценария · откроется отдельно · нужен интернет</span></button></div>';
+  topicKind='practice';topics.innerHTML='<button class="btn soft" data-back-menu type="button">← Разделы</button><h1>Практика китайского</h1><p>Выбери упражнение.</p><div class="topic-grid"><button class="topic-card" data-practice="tones"><span class="topic-icon" aria-hidden="true">🎙️</span><strong>Тренировать речь</strong><span class="topic-sub">Слушай и повторяй китайские тоны</span><span class="topic-arrow" aria-hidden="true">›</span></button><button class="topic-card" data-practice="words"><span class="topic-icon" aria-hidden="true">📚</span><strong>Повторить слова</strong><span class="topic-sub">Слова, которые пора вспомнить</span><span class="topic-arrow" aria-hidden="true">›</span></button><button class="topic-card" data-practice="dialog"><span class="topic-icon" aria-hidden="true">🗣️</span><strong>Разговор с ИИ</strong><span class="topic-sub">Диалоги в ChatGPT · нужен интернет</span><span class="topic-arrow" aria-hidden="true">›</span></button></div>';
   topics.querySelector('[data-back-menu]').onclick=()=>go('home');topics.querySelectorAll('[data-practice]').forEach(b=>b.onclick=()=>{sectionOrigin='practice';go(b.dataset.practice)});go('topics');
  };
  window.returnToLearningTopics=()=>window.openLearningTopics(['course','words','dialogues'].includes(topicKind)?topicKind:'course');
@@ -207,10 +208,10 @@
  const audioStatus=document.createElement('div');audioStatus.id='learning-audio-status';audioStatus.className='audio-status';audioStatus.hidden=true;
  audioStatus.innerHTML='<span role="status" aria-live="polite"></span><button type="button">Остановить</button>';
  document.body.append(audioStatus);audioStatus.querySelector('button').onclick=()=>{stopLearningAudio();audioStatus.hidden=true};
- function status(text){audioStatus.hidden=false;audioStatus.querySelector('span').textContent=text;}
+ function status(text){audioStatus.hidden=true;audioStatus.querySelector('span').textContent=text;if(/не удалось|недоступна/i.test(text))toast(text);}
  async function playWord(text,rate=.82,token=audioGeneration,voice=null){
   const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=window.courseHumanAudio?.[key];
-  if(file){const a=new Audio(file);audio=a;a.playbackRate=rate;a.preservesPitch=true;
+  if(file){const a=new Audio(file);audio=a;a.playbackRate=rate<.8?rate:Math.max(.94,rate);a.preservesPitch=true;
    status('Загружается запись носителя…');
    try{await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{a.pause();reject(Error('timeout'))},10000);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(Error('audio'))};a.onpause=()=>{clearTimeout(timer);resolve()};Promise.resolve(a.play()).then(()=>{if(token!==audioGeneration){a.pause();resolve()}else status('Играет запись носителя')},reject)});return}
    catch{a.pause();if(token!==audioGeneration)return;status('Запись недоступна · голос телефона');}
@@ -222,13 +223,13 @@
   await new Promise(resolve=>{
    const u=new SpeechSynthesisUtterance(text);let timer;
    const finish=()=>{clearTimeout(timer);if(finishSpeech===finish)finishSpeech=null;resolve()};finishSpeech=finish;
-   u.lang='zh-CN';const selected=voice==='B'?(choices.find(x=>x.voiceURI!==v?.voiceURI)||v):v;if(selected)u.voice=selected;
+   u.lang='zh-CN';const selected=voice==='B'?(choices.find(x=>x.voiceURI!==v?.voiceURI&&/natural|neural|xiaoxiao|xiaoyi|yunxi|google|microsoft/i.test(x.name))||v):v;if(selected)u.voice=selected;
    u.rate=rate;u.pitch=1;u.onend=finish;u.onerror=()=>{toast('Не удалось озвучить. Выбери китайский голос в настройках.');finish()};
    timer=setTimeout(finish,20000);speechSynthesis.speak(u);
   });
  }
 
- speakChinese=function(text,rate){stopLearningAudio();const token=audioGeneration;const pref=Number(localStorage.getItem('chinese-coach-tts-rate-v2'))||.82;const speed=rate&&rate<=.8?Math.min(pref,rate):pref;return playWord(text,speed,token).finally(()=>{if(token===audioGeneration)audioStatus.hidden=true})};
+ speakChinese=function(text,rate){stopLearningAudio();const token=audioGeneration;const pref=Number(localStorage.getItem('chinese-coach-tts-rate-v2'))||.94;const speed=rate&&rate<=.8?Math.min(pref,rate):pref;return playWord(text,speed,token).finally(()=>{if(token===audioGeneration)audioStatus.hidden=true})};
  async function playDialogue(lesson){stopLearningAudio();const token=audioGeneration;
   const rows=[...document.querySelectorAll('.dialogue-row')];
   try{for(let i=0;i<lesson.dialogue.length;i++){if(token!==audioGeneration)break;const [who,hz]=lesson.dialogue[i];rows.forEach((r,j)=>r.classList.toggle('playing-line',j===i));await playWord(hz,.85,token,who)}}
