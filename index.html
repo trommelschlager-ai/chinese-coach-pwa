@@ -1569,7 +1569,7 @@ body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .foc
 <link rel="stylesheet" href="./assets/final-design.css?v=41">
 <link rel="stylesheet" href="./assets/six-lessons-menu.css?v=2">
 <link rel="stylesheet" href="./assets/learning-quality.css?v=53">
-<link rel="stylesheet" href="./assets/simple-learning.css?v=52">
+<link rel="stylesheet" href="./assets/simple-learning.css?v=54">
 <script src="./assets/semantic-art.js?v=29"></script>
 </head>
 <body class="launch-active"><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><div class="launch-cover-art"><img src="./assets/approved-home-v36.png" width="635" height="1536" fetchpriority="high" alt="Мой Китайский. Девушка в розовом платье и кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></div></section><section id="launch-menu" class="launch-screen six-lessons-menu" hidden>
@@ -1731,7 +1731,7 @@ function speakChinese(hanzi,rate){
 function say(hanzi){speakChinese(hanzi,.82)}
 const tonegrid=document.getElementById('tonegrid');let activeTone=0;
 function tonePattern(i){const paths=['M8 14 H72','M8 31 L72 5','M8 12 Q36 42 49 30 T72 15','M8 5 L72 32'];return paths[i]}
-tones.forEach((t,i)=>{let b=document.createElement('button');b.className='tone';b.type='button';b.setAttribute('aria-pressed',i===0?'true':'false');b.innerHTML=`<div class="char">${t.hz}</div><div class="pinyin">${t.py}</div><svg viewBox="0 0 80 40" aria-hidden="true"><path d="${tonePattern(i)}" stroke="${t.color}" stroke-width="4.5" fill="none" stroke-linecap="round" /></svg><div class="tone-title">${t.label}</div>`;b.addEventListener('click',()=>selectTone(i));tonegrid.appendChild(b)});
+tones.forEach((t,i)=>{let b=document.createElement('button');b.className='tone';b.type='button';b.setAttribute('aria-pressed',i===0?'true':'false');b.innerHTML=`<div class="char">${t.hz}</div><div class="pinyin">${t.py}</div><svg viewBox="0 0 80 40" aria-hidden="true"><path d="${tonePattern(i)}" stroke="${t.color}" stroke-width="4.5" fill="none" stroke-linecap="round" /></svg><div class="tone-title">${t.label}</div>`;b.setAttribute('aria-label',t.label+' · '+t.hz+' '+t.py+'. Нажми, чтобы услышать произношение');b.addEventListener('click',()=>{selectTone(i);speakChinese(t.hz,.82)});tonegrid.appendChild(b)});
 function selectTone(i){activeTone=i;document.querySelectorAll('.tone').forEach((b,j)=>b.setAttribute('aria-pressed',i===j?'true':'false'));document.getElementById('practicehanzi').textContent=tones[i].hz;document.getElementById('practicepinyin').textContent=tones[i].py;document.getElementById('practicetranslation').textContent=tones[i].ru;document.getElementById('voicePath').setAttribute('d','');drawTarget();document.getElementById('micmessage').textContent='Прослушай, произнеси и сравни мелодику.'}
 function targetY(t){switch(activeTone){case 0:return 47;case 1:return 118-83*t;case 2:return 60+55*Math.sin(Math.PI*t)-18*t;case 3:return 29+95*t;}}
 function drawTarget(){const pts=Array.from({length:50},(_,i)=>`${i?'L':'M'}${(i/49*400).toFixed(1)} ${targetY(i/49).toFixed(1)}`).join(' ');document.getElementById('targetPath').setAttribute('d',pts)}drawTarget();
@@ -2412,7 +2412,8 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   document.body.classList.add('launch-active');
   cover.hidden=what!=='cover';
   menu.hidden=what!=='menu';
-  // The welcome cover stays motionless; petals start only after pressing «Начать».
+  // Sakura plays on the approved cover, not twice on Start.
+  if(what==='cover')startPetals();
   window.scrollTo(0,0);
  }
  function startWithSakura(){
@@ -2426,7 +2427,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   cover.inert=true;
   menu.inert=true;
   root.classList.add('launch-sakura');
-  startPetals();
+  // Petals already started when the cover opened.
   transitionTimer=setTimeout(()=>{
    transitionTimer=0;
    transitioning=false;
@@ -2437,7 +2438,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
    menu.inert=false;
    const firstLesson=menu.querySelector('[data-choice="0"]');
    if(firstLesson)firstLesson.focus({preventScroll:true});
-  },3000);
+  },650);
  }
  function exit(){
   cancelTransition();
@@ -2479,5 +2480,5 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
 <script src="./assets/listening-lab.js?v=3"></script>
 <script src="./assets/pronunciation-hub.js?v=2"></script>
 <script src="./assets/human-audio-map.js?v=49"></script>
-<script src="./assets/learning-quality.js?v=53"></script></body>
+<script src="./assets/learning-quality.js?v=54"></script></body>
 </html>
