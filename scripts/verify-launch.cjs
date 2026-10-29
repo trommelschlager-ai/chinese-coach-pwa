@@ -31,8 +31,8 @@ assert.equal(root.querySelectorAll('#launch-petals .sakura-petal').length,190,'P
 assert.equal(cards.length,6,'Six same-sized clickable cards must be present');
 assert.equal(menu.querySelectorAll('[data-choice]').length,6,'Exactly six independent lesson links');
 assert(!d.getElementById('launch-hanzi'),'Tiny old sixth button removed');
-assert(d.querySelector('.six-menu-header h1').textContent.includes('6 разделов'),'Title updated to six lessons');
-cards.forEach((card,i)=>{assert.equal(card.dataset.choice,String(i),'Correct navigation order');assert.equal(card.querySelector('.six-number').textContent.trim(),String(i+1),'Visual number '+(i+1));assert(card.textContent.includes(expected[i]),'Card '+(i+1)+' must be '+expected[i]);});
+assert(d.querySelector('.six-menu-header h1').textContent.includes('Чем займёмся?'),'Menu describes a choice, not six sequential lessons');
+cards.forEach((card,i)=>{assert.equal(card.dataset.choice,String(i),'Correct navigation order');assert(card.textContent.includes(expected[i]),'Card '+(i+1)+' must be '+expected[i]);});
 assert(cards[2].tagName==='A','Third card must be a direct link');
 assert.equal(cards[2].getAttribute('href'),'./hanzi-lab.html#return-menu','Third card opens writing lesson');
 assert(cards[0].tagName==='BUTTON'&&cards[3].tagName==='BUTTON','Other lessons remain buttons');

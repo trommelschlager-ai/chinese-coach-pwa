@@ -25,7 +25,7 @@ assert.equal(new Set(cards().map(c=>c.querySelector('.hz').textContent)).size,ca
 assert(cards().find(c=>c.querySelector('.hz').textContent==='我').classList.contains('learned'),'Lesson knowledge appears in dictionary');
 const knownCard=cards().find(c=>c.querySelector('.hz').textContent==='我');knownCard.querySelector('[data-learn]').click();
 w.openCourseLesson(3,1,0);assert(!d.getElementById('focus-known').classList.contains('is-known'),'Unmarking in dictionary reaches lesson');
-w.openCourseLesson(5,0);assert(d.getElementById('course-next').textContent.includes('Следующее правило'));
+w.openCourseLesson(5,0);assert(d.getElementById('course-next').textContent.includes('Далее'));
 const headings=[];for(let i=0;i<4;i++){headings.push(d.querySelector('#lesson-panel h2').textContent);if(i<3)d.getElementById('course-next').click()}
 assert.equal(new Set(headings).size,4,'All four rules are visible sequentially');
 assert(headings.includes('Как спросить цену?')&&headings.includes('Как отказаться от острого'));

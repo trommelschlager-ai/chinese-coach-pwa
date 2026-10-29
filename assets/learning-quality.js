@@ -53,6 +53,7 @@
   words=all.filter(w=>(topicFilter==='all'||w.lessons.includes(Number(topicFilter)))&&(!query||[w.hz,w.py,w.ru].some(v=>v.toLocaleLowerCase().includes(query)))&&(filter!=='due'||due(w.hz)));
   const f=filter;if(f==='due')filter='all';try{baseRenderWords()}finally{words=all;filter=f}
   document.querySelectorAll('#wordlist .star').forEach(el=>{if(el.textContent==='HSK 1–2')el.textContent='Из курса'});
+  document.querySelectorAll('#wordlist .wordcard').forEach(e=>e.style.removeProperty('background-image'));
   updateCourseMetrics();
  };
  $('vocab-topic').onchange=e=>{topicFilter=e.target.value;renderWords()};$('vocab-search').oninput=()=>renderWords();
@@ -60,11 +61,19 @@
  const notice=$('words').querySelector('.notice');notice.textContent='Записи носителя доступны для отдельных слов. Для остальных фраз используется китайский голос телефона. Голос и загрузки — в настройках.';
  // User-owned settings remain available without occupying the lesson viewport.
  const settings=document.createElement('details');settings.id='app-settings';settings.className='app-settings';
- settings.innerHTML='<summary>Настройки · аудио · загрузки</summary><div class="settings-content"><p>Для распознавания фраз нужен интернет. Проверка мелодики одиночного слога приблизительная.</p><div id="offline-settings-slot"></div><button class="btn primary" id="download-course" type="button">Скачать материалы для занятий</button><p id="download-status" role="status" aria-live="polite">Сохрани учебные картинки, аудио и письмо для занятий без сети.</p><button class="btn soft" id="open-voice-settings" type="button">Выбрать голос и скорость</button><button class="btn soft" id="apply-course-update" type="button" hidden>Применить обновление</button><details><summary>Об аудио и лицензиях</summary><p>Локальные записи слов: Yue Tan, CC BY-SA 3.0 US. Слог mā: Chen Wang, CC BY-SA. Источник: <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">audio-cmn</a>. Тоны и демонстрационные записи сохраняют авторство, указанное в соответствующих упражнениях.</p><p>Библиотека письма Hanzi Writer: Chanind, MIT; данные черт Make Me a Hanzi: Arphic Public License. <a href="https://github.com/chanind/hanzi-writer" target="_blank" rel="noopener noreferrer">Исходный код и лицензии</a>.</p></details><div id="backup-settings-slot"></div></div>';
+ settings.innerHTML='<summary>Настройки</summary><div class="settings-content"><p>Для распознавания фраз нужен интернет. Проверка мелодики одиночного слога приблизительная.</p><div id="offline-settings-slot"></div><button class="btn primary" id="download-course" type="button">Скачать материалы для занятий</button><p id="download-status" role="status" aria-live="polite">Сохрани учебные картинки, аудио и письмо для занятий без сети.</p><button class="btn soft" id="open-voice-settings" type="button">Выбрать голос и скорость</button><button class="btn soft" id="apply-course-update" type="button" hidden>Применить обновление</button><details><summary>Об аудио и лицензиях</summary><p>Локальные записи слов: Yue Tan, CC BY-SA 3.0 US. Слог mā: Chen Wang, CC BY-SA. Источник: <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">audio-cmn</a>. Тоны и демонстрационные записи сохраняют авторство, указанное в соответствующих упражнениях.</p><p>Библиотека письма Hanzi Writer: Chanind, MIT; данные черт Make Me a Hanzi: Arphic Public License. <a href="https://github.com/chanind/hanzi-writer" target="_blank" rel="noopener noreferrer">Исходный код и лицензии</a>.</p></details><div id="backup-settings-slot"></div></div>';
  document.querySelector('.shell > main').before(settings);
  $('offline-settings-slot').append($('offlinebar'),$('installhelp'));
  $('backup-settings-slot').append(document.querySelector('.backup-panel'));
- $('open-voice-settings').onclick=()=>{go('tones');window.showPronunciationMode?.(null);$('pronunciation-settings').open=true;$('mandarin-voice-settings').open=true;$('pronunciation-settings').scrollIntoView({block:'start'})};
+ const voiceSettings=$('pronunciation-settings');settings.querySelector('.settings-content').append(voiceSettings);
+ $('open-voice-settings').remove();
+ const courseTech=document.querySelector('.course-tech');settings.querySelector('.settings-content').append(courseTech);
+ const tools=document.createElement('div');tools.className='section-tools';
+ tools.innerHTML='<button class="btn soft" type="button" id="section-back">← Разделы</button>';
+ settings.before(tools);tools.append(settings);
+ let sectionOrigin='menu';
+ $('section-back').onclick=()=>{if(sectionOrigin==='practice'&&document.body.dataset.currentPage!=='topics')window.openPracticeChoices();else if(sectionOrigin==='words'&&document.body.dataset.currentPage==='words')window.openLearningTopics('words');else go('home')};
+
  window.addEventListener('course-update-ready',()=>{$('apply-course-update').hidden=false;toast('Доступно обновление. Можно применить его в настройках.')});
  $('apply-course-update').onclick=()=>location.reload();
  settings.addEventListener('toggle',()=>{if(settings.open&&!settings.dataset.sizeLoaded){settings.dataset.sizeLoaded='1';fetch('./assets/offline-pack.json').then(r=>r.json()).then(m=>{$('download-course').textContent='Скачать материалы · около '+(m.bytes/1000000).toFixed(1).replace('.',',')+' МБ'}).catch(()=>{})}});
@@ -98,21 +107,31 @@
   topicKind=['course','words','dialogues'].includes(kind)?kind:'course';
   topics.innerHTML='<button class="btn soft" type="button" data-back-menu>← Разделы</button><h1>'+({course:'Пять тематических уроков',words:'Базовые слова по темам',dialogues:'Выбери диалог'})[topicKind]+'</h1><p>Выбери тему и занимайся в своём темпе.</p>'+(topicKind==='words'?'<button class="btn primary" type="button" data-full-dictionary>Открыть общий словарь</button>':'')+'<p class="topic-progress">Пройдено тем: '+courseState.completed.length+' из '+COURSE.length+' · Знакомых слов: '+state.learned.length+' из '+words.length+'</p><div class="topic-grid">'+topicButtons(topicKind)+'</div>';
   topics.querySelector('[data-back-menu]').onclick=()=>go('home');
-  topics.querySelector('[data-full-dictionary]')?.addEventListener('click',()=>go('words'));
+  topics.querySelector('[data-full-dictionary]')?.addEventListener('click',()=>{sectionOrigin='words';go('words')});
   topics.querySelectorAll('[data-topic-lesson]').forEach(b=>b.onclick=()=>openCourseLesson(Number(b.dataset.topicLesson),Number(b.dataset.topicStep)));
   go('topics');
  };
  window.openPracticeChoices=function(){
-  topicKind='practice';topics.innerHTML='<button class="btn soft" data-back-menu type="button">← Разделы</button><h1>Практика китайского</h1><p>Выбери упражнение.</p><div class="topic-grid"><button class="topic-card" data-practice="tones"><strong>Слух и произношение</strong><span>Слушай, различай тоны, записывай себя</span></button><button class="topic-card" data-practice="words"><strong>Повторить слова</strong><span>Общий словарь и повторение ошибок</span></button><button class="topic-card" data-practice="dialog"><strong>Разговор в ChatGPT ↗</strong><span>Два сценария · откроется отдельно · нужен интернет</span></button></div>';
-  topics.querySelector('[data-back-menu]').onclick=()=>go('home');topics.querySelectorAll('[data-practice]').forEach(b=>b.onclick=()=>go(b.dataset.practice));go('topics');
+  topicKind='practice';topics.innerHTML='<button class="btn soft" data-back-menu type="button">← Разделы</button><h1>Практика китайского</h1><p>Выбери упражнение.</p><div class="topic-grid"><button class="topic-card" data-practice="tones"><strong>Тренировать речь</strong><span>Слушай, различай тоны, записывай себя</span></button><button class="topic-card" data-practice="words"><strong>Повторить слова</strong><span>Общий словарь и повторение ошибок</span></button><button class="topic-card" data-practice="dialog"><strong>Разговор в ChatGPT ↗</strong><span>Два сценария · откроется отдельно · нужен интернет</span></button></div>';
+  topics.querySelector('[data-back-menu]').onclick=()=>go('home');topics.querySelectorAll('[data-practice]').forEach(b=>b.onclick=()=>{sectionOrigin='practice';go(b.dataset.practice)});go('topics');
  };
+ window.returnToLearningTopics=()=>window.openLearningTopics(['course','words','dialogues'].includes(topicKind)?topicKind:'course');
+ $('course-topics-back').onclick=()=>window.returnToLearningTopics();
+ document.querySelectorAll('.six-number').forEach(e=>e.remove());
+ document.querySelector('.six-orange').setAttribute('aria-label','Пишем иероглифы');
+ function simplifyPage(name){
+  document.querySelectorAll('#words .wordcard,#quiz .quizpicture,#quiz #quizopts button').forEach(e=>e.style.removeProperty('background-image'));
+  if(name==='tones')window.showPronunciationMode?.(null);
+  $('section-back').textContent=sectionOrigin==='practice'&&name!=='topics'?'← Практика':sectionOrigin==='words'&&name==='words'?'← Темы слов':'← Разделы';
+  const label=$('course-topics-back');label.textContent=topicKind==='words'?'← Темы слов':topicKind==='dialogues'?'← Диалоги':'← Все уроки';
+ }
  // All routes contain only learning position, never recordings or personal data.
  let restoring=false,lastLocation='';
  function courseHash(){return '#course/'+selectedLesson+'/'+selectedStep+'/'+(selectedStep===0?selectedNote:selectedStep===1?vocabIndex:selectedStep===2?dialogueIndex:0)}
  function routeFor(name){return name==='home'?'#menu':name==='topics'?'#topics/'+topicKind:name==='course'?courseHash():'#'+name}
  function pushRoute(name){if(restoring)return;const hash=routeFor(name);if(location.hash!==hash)history.pushState({learning:true},'',hash);lastLocation=hash;}
  const baseGo=go;
- go=function(name){stopLearningAudio();if(name==='course'&&!restoring&&document.body.dataset.currentPage!=='course')closeLessonPicker();baseGo(name);if(name==='home')document.body.dataset.currentPage='menu';else document.body.dataset.currentPage=name;pushRoute(name);updateResume();};
+ go=function(name){stopLearningAudio();if(name==='course'&&!restoring&&document.body.dataset.currentPage!=='course')closeLessonPicker();if(name==='home'||document.body.dataset.currentPage==='menu')sectionOrigin='menu';baseGo(name);if(name==='home')document.body.dataset.currentPage='menu';else document.body.dataset.currentPage=name;pushRoute(name);updateResume();simplifyPage(name);};
  function restoreRoute(){const parts=location.hash.slice(1).split('/'),name=parts[0];restoring=true;
   try{if(name==='menu'){window.showLaunchMenu();document.body.dataset.currentPage='menu'}
    else if(name==='cover'){window.showLaunchCover();document.body.dataset.currentPage='cover'}
@@ -127,18 +146,29 @@
  $('launch-start').addEventListener('click',()=>{pushRoute('home');document.body.dataset.currentPage='menu';updateResume()});
  $('launch-back').addEventListener('click',()=>{stopLearningAudio();history.pushState({learning:true},'','#cover');lastLocation='#cover';document.body.dataset.currentPage='cover'});
  $('launch-resume').onclick=()=>continueLearning();
- function updateResume(){const r=read('chinese-coach-resume-v1',null),b=$('launch-resume');b.hidden=!(r&&COURSE.some(l=>l.id===r.id));if(!b.hidden)b.textContent='Продолжить · урок '+r.id+' →';}
+ function updateResume(){const r=read('chinese-coach-resume-v1',null),b=$('launch-resume');b.hidden=false;b.textContent=r&&COURSE.some(l=>l.id===r.id)?'Продолжить · урок '+r.id+' →':'Начать первый урок →';}
  // Unify card learning, visible position and review intervals.
  const basePanel=renderCoursePanel;
  renderCoursePanel=function(){stopLearningAudio();basePanel();
   document.querySelectorAll('.course-footnav .btn').forEach(b=>b.style.setProperty('background-image','none','important'));
+  const next=$('course-next');if(/^Следующ/.test(next.textContent))next.textContent='Далее →';
   const panel=$('lesson-panel');panel.querySelectorAll('.focus-hanzi').forEach(e=>e.lang='zh-Hans');
   const b=panel.querySelector('#focus-known');if(b){const hz=COURSE[selectedLesson-1].vocab[vocabIndex][0];b.addEventListener('click',()=>schedule(hz,true))}
-  if(selectedStep===2){const play=document.createElement('button');play.type='button';play.className='btn soft dialogue-full';play.textContent='Слушать весь диалог';play.onclick=()=>playDialogue(COURSE[selectedLesson-1]);panel.querySelector('.focus-saycard').before(play);}
+  panel.querySelectorAll('.focus-phrase,.focus-banner,.course-quiz-question').forEach(e=>e.style.removeProperty('background-image'));
+  const recall=panel.querySelector('.recall-practice');
+  if(recall){const phrase=panel.querySelector('.focus-phrase');
+   const hideAnswer=hide=>phrase.querySelectorAll('.focus-pinyin,.focus-russian').forEach(e=>e.hidden=hide);
+   recall.addEventListener('toggle',()=>{hideAnswer(recall.open);$('recall-assessment').hidden=true;$('recall-reveal').hidden=false});
+   $('recall-reveal').onclick=()=>{hideAnswer(false);$('recall-assessment').hidden=false;$('recall-reveal').hidden=true};
+   const hz=COURSE[selectedLesson-1].vocab[vocabIndex][0];
+   $('recall-again').onclick=()=>{schedule(hz,false);state.learned=state.learned.filter(w=>w!==hz);mirrorKnown();updateCourseMetrics();$('course-next').click()};
+  }
+  if(selectedStep===2){const play=document.createElement('button');play.type='button';play.className='btn soft dialogue-full';play.textContent='Слушать весь диалог';play.onclick=()=>playDialogue(COURSE[selectedLesson-1]);panel.querySelector('.dialogue-transcript').before(play);panel.querySelector('.current-line').append(panel.querySelector('.focus-dialog-card'));}
+
   if(document.body.dataset.currentPage==='course')pushRoute('course');updateResume();
  };
  const baseLessonQuiz=renderLessonQuiz;
- renderLessonQuiz=function(){baseLessonQuiz();document.querySelectorAll('.course-options button').forEach(b=>b.style.setProperty('background-image','none','important'))};
+ renderLessonQuiz=function(){baseLessonQuiz();document.querySelectorAll('.course-options button,.course-quiz-question').forEach(b=>b.style.setProperty('background-image','none','important'))};
  // Errors become due for repetition; they do not silently mark a word learned.
  document.addEventListener('click',e=>{
   const answer=e.target.closest('#quizopts button');if(answer&&answer.classList.contains('wrong')){const w=quiz[qi];if(w)schedule(w.hz,false)}
@@ -175,7 +205,9 @@
 
  speakChinese=function(text,rate){stopLearningAudio();const token=audioGeneration;const pref=Number(localStorage.getItem('chinese-coach-tts-rate-v2'))||.82;const speed=rate&&rate<=.8?Math.min(pref,rate):pref;return playWord(text,speed,token).finally(()=>{if(token===audioGeneration)audioStatus.hidden=true})};
  async function playDialogue(lesson){stopLearningAudio();const token=audioGeneration;
-  for(const [who,hz] of lesson.dialogue){if(token!==audioGeneration)break;await playWord(hz,.85,token,who)}
+  const rows=[...document.querySelectorAll('.dialogue-row')];
+  try{for(let i=0;i<lesson.dialogue.length;i++){if(token!==audioGeneration)break;const [who,hz]=lesson.dialogue[i];rows.forEach((r,j)=>r.classList.toggle('playing-line',j===i));await playWord(hz,.85,token,who)}}
+  finally{rows.forEach(r=>r.classList.remove('playing-line'))}
   if(token===audioGeneration)audioStatus.hidden=true;
  }
  // Record until Stop, retain a replay button; navigation cancels recording and releases the mic.

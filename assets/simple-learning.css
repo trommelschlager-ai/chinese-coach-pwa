@@ -1,0 +1,121 @@
+/* One learning task at a time. The approved cover and six entry cards stay intact. */
+body:not(.launch-active){background:#f7f2fb!important;color:#30243d}
+body:not(.launch-active)>.shell{max-width:820px;padding:16px 16px 40px!important}
+body .topbar,body .nav,body .bottom-nav{display:none!important}
+[hidden]{display:none!important}
+.section-tools{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;margin-bottom:16px}
+.section-tools .btn{justify-self:start;min-height:46px;font-size:16px;background:#fff!important;color:#512773!important;box-shadow:none;border:1px solid #c6afd5}
+.section-tools .app-settings{margin:0;background:#fff;border-color:#c6afd5}
+.section-tools .app-settings>summary{font-size:16px;color:#512773;min-height:46px}
+.section-tools:has(.app-settings[open]) .app-settings{grid-column:1/-1}
+body.focus-mode .section-tools{display:none}
+#topics>[data-back-menu]{display:none}
+#topics .topic-progress{font-size:15px}
+#topics .topic-grid{grid-template-columns:1fr}
+#topics .topic-card{min-height:88px;background:#fff;box-shadow:none}
+body #tones .columnhead,body #words .columnhead,body #quiz .columnhead,body #dialog .columnhead{background:#fff!important;background-image:none!important;border:0;box-shadow:none;min-height:0!important;padding:16px!important}
+body .columnhead .eyebrow,body .columnhead .flag{display:none}
+body .columnhead h1{font-size:clamp(24px,6vw,30px);line-height:1.3}
+body #words .columnhead p,body #words>.notice{display:none}
+#launch-entry #launch-menu .six-card{grid-template-columns:auto minmax(0,1fr) 20px!important}
+#launch-entry #launch-menu .six-menu-header h1{font-size:clamp(23px,5.6vw,30px)}
+#launch-entry #launch-menu .six-menu-header h1>span{font-size:.65em}
+#launch-entry #launch-menu .six-menu-header #launch-resume{min-height:48px!important;font-size:17px;background:#6a3497;color:#fff;border:1px solid #fff8;box-shadow:none}
+#launch-entry #launch-menu .six-menu-bottom .six-bottom-tab{font-size:16px}
+body.focus-mode #course #course-content.course-content{padding:20px!important;border:1px solid #d6b9e7!important;border-radius:20px!important;background:#fff!important;box-shadow:none!important}
+body.focus-mode #course #course-content .focus-head{margin:0 0 12px}
+body.focus-mode #course #course-content .focus-head h1{font-size:clamp(21px,5vw,26px);line-height:1.35}
+body.focus-mode #course #course-content .step-counter{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+body.focus-mode #course #course-content .focus-stepnav{gap:6px;margin:12px 0 18px;grid-template-columns:repeat(4,minmax(0,1fr))!important}
+body.focus-mode #course #course-content .focus-step{padding:9px 4px;min-height:48px;border-radius:10px;box-shadow:none;background:#f7f1fb}
+body.focus-mode #course #course-content .focus-step>span{display:none}
+body.focus-mode #course #course-content .focus-step small{font-size:14px!important;line-height:1.4!important;overflow-wrap:normal}
+body.focus-mode #course #course-content .focus-step.selected{background:#ead9f7;border-color:#9765b6}
+body.focus-mode #course #course-content .focus-banner{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;min-height:0!important;margin:0 0 16px;border-radius:0}
+body.focus-mode #course #course-content .focus-banner h2{max-width:100%;font:700 22px/1.4 system-ui;background:none!important;color:#30243d;padding:0}
+body.focus-mode #course #course-content .focus-banner p{display:none}
+body.focus-mode #course #course-content .focus-saycard{background:#fff!important;box-shadow:none!important;border:0!important;border-radius:0!important;padding:0!important}
+body.focus-mode #course #course-content[data-lesson] .focus-phrase{background:#fff!important;background-image:none!important;box-shadow:none!important;border:0!important;min-height:0!important;padding:18px 0!important;border-radius:0!important;display:flex;flex-direction:column;gap:9px}
+body.focus-mode #course #course-content .focus-phrase>*{background:none!important;padding:0;max-width:100%;width:auto}
+body.focus-mode #course #course-content .focus-hanzi{font-size:clamp(40px,10vw,60px)!important;line-height:1.4;overflow-wrap:anywhere}
+body.focus-mode #course #course-content .focus-pinyin{font-size:clamp(22px,5.5vw,28px)!important;line-height:1.5;color:#315986}
+body.focus-mode #course #course-content .focus-russian{font-size:20px!important;color:#382b46}
+body.focus-mode #course #course-content .focus-practice-actions{display:block!important;margin:10px 0 0}
+body.focus-mode #course #course-content[data-lesson] .focus-practice-actions .btn[data-play-focus]{background:#ede0f7!important;background-image:none!important;color:#4e256a!important;width:100%;border:1px solid #ab7fc4;min-height:50px;font:700 18px/1.4 system-ui!important;box-shadow:none!important;text-shadow:none}
+body.focus-mode #course #course-content .speech-practice,body.focus-mode #course #course-content .recall-practice{border:0;border-top:1px solid #e3d5ec;margin-top:12px;padding-top:4px;color:#513364;font:16px/1.5 system-ui}
+body.focus-mode #course #course-content .speech-practice>summary,body.focus-mode #course #course-content .recall-practice>summary{cursor:pointer;min-height:48px;padding:10px 2px;font-weight:650}
+body.focus-mode #course #course-content .practice-help{font-size:15px;line-height:1.5;margin:8px 0;color:#55455f}
+body.focus-mode #course #course-content .speech-practice .btn,body.focus-mode #course #course-content #focus-known,body.focus-mode #course #course-content #recall-reveal,body.focus-mode #course #course-content #recall-again{background:#f7f1fb!important;background-image:none!important;box-shadow:none!important;text-shadow:none!important;color:#4e256a!important;border:1px solid #b795cb;border-radius:12px;font:650 16px/1.4 system-ui!important;min-height:48px!important;padding:10px 14px;margin:6px 4px 6px 0;height:auto;width:auto}
+body.focus-mode #course #course-content .focus-feedback:empty{display:none}
+body.focus-mode #course #course-content .course-footnav{position:static!important;background:#fff!important;margin-top:20px;padding:12px 0 0;border-top:1px solid #e5d9ee;box-shadow:none!important;grid-template-columns:minmax(80px,.6fr) minmax(0,1fr)}
+body.focus-mode #course #course-content .course-footnav .btn{border-radius:12px!important;font-size:17px!important;min-height:50px!important;white-space:normal}
+body.focus-mode #course #course-content .course-footnav #course-next{background:#693a90!important;color:#fff!important;border:1px solid #693a90!important}
+body.focus-mode #course #course-content .course-footnav.quiz-mode{display:none}
+body.focus-mode #course #course-content .course-quiz-question{background:#fff!important;background-image:none!important;min-height:0!important;padding:15px 0!important;border:0!important;box-shadow:none!important;font:700 24px/1.4 system-ui!important}
+body.focus-mode #course #course-content .course-options{grid-template-columns:1fr 1fr;gap:12px}
+body.focus-mode #course #course-content[data-lesson] .course-options button:not(.correct):not(.incorrect){background:#faf6fd!important;background-image:none!important;color:#30243d!important;min-height:72px!important;box-shadow:none!important}
+body #quiz #quizopts button{background-image:none!important;box-shadow:none!important}
+body #words .wordcard{background:#fff!important;background-image:none!important;box-shadow:none!important}
+.dialogue-transcript{display:grid;gap:12px;margin:14px 0}
+.dialogue-row{border:1px solid #d7c4e4;border-radius:16px;background:#faf6fd;max-width:94%}
+.dialogue-row[data-speaker="B"]{margin-left:6%;background:#fef4f8}
+.dialogue-row.current-line{border:2px solid #8e5ab1}
+.dialogue-row.playing-line{outline:3px solid #a96dc8;outline-offset:2px}
+.dialogue-row>button{display:grid;gap:6px;width:100%;font:17px/1.5 system-ui;text-align:left;background:none;border:0;padding:14px;color:#30243d;cursor:pointer;border-radius:14px}
+.dialogue-row strong{font:500 clamp(25px,6vw,36px)/1.45 "Noto Sans SC",system-ui;overflow-wrap:anywhere}
+.dialogue-speaker{font-size:14px;font-weight:700;color:#5c3d71}
+.dialogue-pinyin{font-size:20px;color:#315986;overflow-wrap:anywhere}
+@media(max-width:400px){body:not(.launch-active)>.shell{padding:12px 10px 28px!important}body.focus-mode #course #course-content.course-content{padding:14px!important}body.focus-mode #course #course-content .focus-stepnav{grid-template-columns:repeat(4,minmax(0,1fr))!important}body.focus-mode #course #course-content .course-options{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html,body{scroll-behavior:auto!important}}
+/* The writing trainer uses the same quiet surface and progressive disclosure. */
+body.writing-simple{background:#f7f2fb!important}
+body.writing-simple .shell{width:min(100%,620px);padding:14px 14px 35px}
+.writing-simple .layout{grid-template-columns:1fr}
+.writing-simple .top{margin-bottom:4px;flex-wrap:wrap}
+.writing-simple .back,.writing-simple .top-pill{font-size:15px}
+.writing-simple .character-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;overflow:visible;margin:0;padding:12px 0}
+.writing-simple .character-tabs button{min-width:0;padding:6px 2px;box-shadow:none;min-height:64px}
+.writing-simple .character-tabs button small{font-size:14px}
+.writing-simple .mini-progress{font-size:14px}
+.writing-simple .card{padding:18px;border-radius:18px;box-shadow:none}
+.writing-simple .layout>.card:nth-child(2)::before{display:none}
+.writing-simple .glyph-title{align-items:center;width:100%;gap:12px;flex-wrap:wrap}
+.writing-simple .glyph-title strong{font-size:44px}
+.writing-simple .glyph-title #speak{margin-left:auto;min-height:46px;padding:8px 12px;font-size:16px}
+.writing-simple .meaning{width:100%;font-size:21px;margin:6px 0 12px}
+.writing-simple .subtitle{font-size:15px}
+.writing-simple .controls{display:flex;flex-direction:column}
+.writing-simple .control{font-size:17px;min-height:48px!important;box-shadow:none!important}
+.writing-simple .control.next-control{background:#663e94;border-color:#663e94}
+.writing-simple .control#retry{background:#f5ecfc;color:#58337d}
+.writing-simple .feedback{font-size:16px;min-height:0}
+.writing-simple .writing-help,.writing-simple .writing-settings,.writing-simple .writing-about{width:100%;margin-top:14px;border-top:1px solid #e1d3e9;padding-top:4px;color:#513364}
+.writing-simple details>summary{font-size:16px;font-weight:700;min-height:48px;padding:12px 0;cursor:pointer}
+.writing-simple .note,.writing-simple .hint,.writing-simple .example .ru,.writing-simple .footnote{font-size:16px;line-height:1.55}
+.writing-simple .section-label,.writing-simple .progress-details{font-size:14px}
+.writing-simple .voice-row,.writing-simple .voice-box label,.writing-simple .voice-help,.writing-simple .human-explain{font-size:15px}
+.writing-simple .voice-box select{font-size:16px;min-height:46px}
+.writing-simple .bottom{display:none}
+
+@media(max-width:350px){body.focus-mode #course #course-content .focus-stepnav{grid-template-columns:1fr 1fr!important}}
+body:has(#tones.active #pronunciation-selected-view:not([hidden])) .section-tools{display:none}
+#tones:has(#pronunciation-selected-view:not([hidden]))>.columnhead{display:none}
+.writing-simple .controls #next:not(.primary){background:#f5ecfc;color:#58337d;border-color:#ddcaec}
+
+#launch-entry #launch-menu .six-card{font-size:clamp(18px,4.5vw,24px)!important}
+.writing-simple .character-picker>summary{font-size:16px;font-weight:650;min-height:46px;padding:10px 0;cursor:pointer;color:#513364}
+.writing-simple #practice-title{font-size:22px;line-height:1.3;width:100%;margin:0 0 6px}
+.writing-simple .subtitle{width:100%;margin:0 0 12px}
+.writing-simple .controls{display:grid;grid-template-columns:1fr 1fr}
+.writing-simple .controls #practice{grid-column:1/-1;order:0}
+.writing-simple .controls #animate,.writing-simple .controls #retry{order:1}
+.writing-simple .controls #next{order:2}
+.writing-simple .controls #retry{font-size:16px}
+
+body.focus-mode #course #course-content.course-content{outline:none!important}
+body.focus-mode #course #course-content .dialogue-row .focus-dialog-card{margin:0 14px 14px;padding:0!important;background:transparent!important}
+body.focus-mode #course #course-content .dialogue-row .focus-practice-actions .btn{width:100%;font-size:17px!important}
+
+.writing-simple .layout{grid-template-columns:minmax(0,1fr)}
+.writing-simple .layout>*{min-width:0;max-width:100%}
+.writing-simple .drawing-card{width:100%;min-width:0}

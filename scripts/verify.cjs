@@ -15,7 +15,7 @@ assert.deepEqual(JSON.parse(course(html))[1].dialogue,[
 ],'Lesson 2 dialogue must remain a coherent introduction');
 const welcome=s=>s.match(/<div[^>]*id="welcome-gate"[\s\S]*?(?=<script|<div class="shell")/)?.[0];
 // The protected illustration must remain the exact same file bytes.
-for(const name of ['approved-welcome.png','approved-final-home.svg'])assert(fs.readFileSync('assets/'+name).equals(require('child_process').execFileSync('git',['show','HEAD:assets/'+name],{maxBuffer:10e6})));
+for(const name of ['approved-home-v36.png','approved-welcome.png','approved-final-home.svg'])assert(fs.readFileSync('assets/'+name).equals(require('child_process').execFileSync('git',['show','HEAD:assets/'+name],{maxBuffer:10e6})));
 const dom=new JSDOM(html,{url:'https://test.local/chinese-coach-pwa/',runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};w.URL.createObjectURL=()=>'';
 let spoken=[];w.speechSynthesis={getVoices:()=>[{lang:'zh-CN',localService:true}],cancel(){},speak(u){spoken.push(u.text)}};w.SpeechSynthesisUtterance=function(t){this.text=t};
