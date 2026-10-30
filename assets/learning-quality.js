@@ -101,15 +101,32 @@
  // Named sections open topic choices rather than an arbitrary lesson in the middle.
  const topics=document.createElement('section');topics.id='topics';topics.className='page';document.querySelector('main').append(topics);
  let topicKind='course';
- function topicButtons(kind){const step=kind==='words'?1:kind==='dialogues'?2:0;
+
+ // The first lesson teaches tones. Do not repeat that lesson as a vocabulary topic.
+ // Search appears automatically when the growing course exceeds eight word topics.
+ function learningTopicsFor(kind){return kind==='words'?COURSE.filter(l=>l.id!==1):COURSE;}
+ function topicButtons(kind,items=learningTopicsFor(kind)){
+  const step=kind==='words'?1:kind==='dialogues'?2:0;
   const illustrations=['🎵','💬','🌏','🕒','🍵'];
-  return COURSE.map(l=>'<button class="topic-card" type="button" data-topic-lesson="'+l.id+'" data-topic-step="'+step+'"><span class="topic-icon" aria-hidden="true">'+illustrations[l.id-1]+'</span><strong>'+safe(l.title)+'</strong><span class="topic-sub">'+(kind==='words'?l.vocab.length+' слов и выражений':kind==='dialogues'?l.dialogue.length+' реплик':'Правила · слова · диалог · тест')+'</span><span class="topic-arrow" aria-hidden="true">›</span></button>').join('');}
+  return items.map(l=>'<button class="topic-card" type="button" data-topic-lesson="'+l.id+'" data-topic-step="'+step+'"><span class="topic-icon" aria-hidden="true">'+(illustrations[l.id-1]||'📖')+'</span><strong>'+safe(l.title)+'</strong><span class="topic-sub">'+(kind==='words'?l.vocab.length+' слов и выражений':kind==='dialogues'?l.dialogue.length+' реплик':'Правила · слова · диалог · тест')+'</span><span class="topic-arrow" aria-hidden="true">›</span></button>').join('');
+ }
  window.openLearningTopics=function(kind='course'){
   topicKind=['course','words','dialogues'].includes(kind)?kind:'course';
-  topics.innerHTML='<button class="btn soft" type="button" data-back-menu>← Разделы</button><h1>'+({course:'Пять тематических уроков',words:'Базовые слова по темам',dialogues:'Выбери диалог'})[topicKind]+'</h1><p class="topic-lead">Выбери тему и начни занятие.</p>'+(topicKind==='words'?'<button class="btn primary" type="button" data-full-dictionary>Открыть общий словарь</button>':'')+ (topicKind==='dialogues'?'':'<p class="topic-progress">Уроков: '+courseState.completed.length+'/'+COURSE.length+' · Слов: '+state.learned.length+'/'+words.length+'</p>')+'<div class="topic-grid">'+topicButtons(topicKind)+'</div>';
+  topics.dataset.topicKind=topicKind;
+  const shown=learningTopicsFor(topicKind),sum=shown.reduce((n,l)=>n+l.vocab.length,0);
+  const overview='<div class="words-overview"><p class="words-overview-count">'+shown.length+' темы · '+sum+' слов и выражений</p><button class="words-all-link" type="button" data-full-dictionary>Весь словарь ›</button></div>';
+  const search=topicKind==='words'&&shown.length>8?'<label class="topic-search-label" for="topic-search">Найти тему</label><input id="topic-search" class="topic-search" type="search" placeholder="Поиск темы" autocomplete="off">':'';
+  topics.innerHTML='<button class="btn soft" type="button" data-back-menu>← Разделы</button><h1>'+({course:'Уроки китайского',words:'Слова и фразы',dialogues:'Выбери диалог'})[topicKind]+'</h1>'+(topicKind==='words'?overview+search:'<p class="topic-lead">Выбери тему и начни занятие.</p>')+(topicKind==='course'?'<p class="topic-progress">Пройдено уроков: '+courseState.completed.length+'/'+COURSE.length+'</p>':'')+'<div class="topic-grid">'+topicButtons(topicKind,shown)+'</div>';
   topics.querySelector('[data-back-menu]').onclick=()=>go('home');
   topics.querySelector('[data-full-dictionary]')?.addEventListener('click',()=>{sectionOrigin='words';go('words')});
-  topics.querySelectorAll('[data-topic-lesson]').forEach(b=>b.onclick=()=>openCourseLesson(Number(b.dataset.topicLesson),Number(b.dataset.topicStep)));
+  function bindTopicButtons(){topics.querySelectorAll('[data-topic-lesson]').forEach(b=>b.onclick=()=>openCourseLesson(Number(b.dataset.topicLesson),Number(b.dataset.topicStep)));}
+  topics.querySelector('#topic-search')?.addEventListener('input',e=>{
+   const q=e.target.value.trim().toLocaleLowerCase('ru');
+   const selected=shown.filter(l=>(l.title+' '+l.subtitle).toLocaleLowerCase('ru').includes(q));
+   topics.querySelector('.topic-grid').innerHTML=topicButtons(topicKind,selected)||'<p class="topic-empty">Такая тема пока не найдена.</p>';
+   bindTopicButtons();
+  });
+  bindTopicButtons();
   go('topics');
  };
  window.openPracticeChoices=function(){
@@ -230,14 +247,18 @@
  function getDialogueClip(lessonId,index,speaker){
   return './assets/dialogue-voices/l'+lessonId+'-'+String(index+1).padStart(2,'0')+'-'+speaker.toLowerCase()+'.mp3';
  }
- async function playWord(text,rate=.82,token=audioGeneration,voice=null,dialogueClip=null){
+ async function playWord(text,rate=.82,token=audioGeneration,voice=null,dialogueClip=null,allowSystem=false){
   const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=dialogueClip||(voice?null:(window.courseHumanAudio?.[key]||window.courseNaturalAudio?.[key]));
   if(file){const a=new Audio(file);audio=a;a.playbackRate=rate<=.8?rate:Math.max(.94,rate);a.preservesPitch=true;
    status('Загружается запись носителя…');
    try{await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{a.pause();reject(Error('timeout'))},10000);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(Error('audio'))};a.onpause=()=>{clearTimeout(timer);resolve()};Promise.resolve(a.play()).then(()=>{if(token!==audioGeneration){a.pause();resolve()}else status('Играет запись носителя')},reject)});return}
-   catch{a.pause();if(token!==audioGeneration)return;status('Запись недоступна · голос телефона');}
+   catch{a.pause();if(token!==audioGeneration)return;
+    if(!allowSystem){status('Не удалось загрузить MP3. Проверь интернет или скачай урок в настройках.');return;}
+   }
   }
   if(token!==audioGeneration)return;
+  // Synthetic speech is strictly opt-in for the explicitly marked phone-voice preview.
+  if(!allowSystem){status('Для этой учебной фразы ещё нет MP3-записи.');return;}
   status('Голос телефона · '+(voice?'собеседник '+voice:'учебная фраза'));
   if(!('speechSynthesis' in window)){status('Китайская озвучка недоступна в этом браузере.');return}
   const v=chineseVoice(),choices=speechSynthesis.getVoices().filter(x=>/^(zh|cmn)[-_]CN/i.test(x.lang));
@@ -253,7 +274,7 @@
   });
  }
 
- speakChinese=function(text,rate){stopLearningAudio();const token=audioGeneration;const pref=Number(localStorage.getItem('chinese-coach-tts-rate-v2'))||.94;const speed=rate&&rate<=.8?Math.min(pref,rate):pref;return playWord(text,speed,token).finally(()=>{if(token===audioGeneration)audioStatus.hidden=true})};
+ speakChinese=function(text,rate,allowSystem=false){stopLearningAudio();const token=audioGeneration;const pref=Number(localStorage.getItem('chinese-coach-tts-rate-v2'))||.94;const speed=rate&&rate<=.8?Math.min(pref,rate):pref;return playWord(text,speed,token,null,null,allowSystem).finally(()=>{if(token===audioGeneration)audioStatus.hidden=true})};
  window.playDialogueLine=async function(lessonId,index){
   const lesson=COURSE.find(x=>x.id===lessonId),line=lesson?.dialogue[index];
   if(!line)return;
