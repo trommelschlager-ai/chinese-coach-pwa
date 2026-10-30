@@ -100,7 +100,9 @@ function dialogueCategories(){
 function showDialogue(id){
  const l=COURSE.find(l=>l.id===id&&l.id!==1);if(!l)return;
  dialogLesson=id;view='dialogues';stopAudio();
- const content='<div class="clean-dialog-head"><button type="button" class="clean-action-primary" data-dialogue-play-all>▶ Слушать весь диалог</button></div>'+
+ const lowered=localStorage.getItem('chinese-coach-dialogue-natural-v71')!=='1';
+ const voiceRow='<div class="clean-dialog-voice"><span data-dialogue-voice-caption>'+(lowered?'Тембр голоса: немного ниже':'Тембр голоса: оригинальный')+'</span><button type="button" data-dialogue-timbre-toggle>'+(lowered?'Слушать оригинал':'Сделать голос ниже')+'</button></div>';
+ const content='<div class="clean-dialog-head"><button type="button" class="clean-action-primary" data-dialogue-play-all>▶ Слушать весь диалог</button></div>'+voiceRow+
  '<div class="clean-dialog-lines">'+l.dialogue.map(([who,hz,py,ru],i)=>
  '<article class="dialogue-row clean-dialog-line" data-standalone-line="'+i+'"><div class="clean-dialog-avatar '+(who==='A'?'girl':'boy')+'">'+
  '<img src="./assets/'+(who==='A'?'meaning-woman.webp':'meaning-man.webp')+'" alt="'+(who==='A'?'Собеседница А':'Собеседник Б')+'"></div>'+
@@ -109,6 +111,13 @@ function showDialogue(id){
  frame(l.title,'Диалог · '+l.dialogue.length+' реплик',content,dialogueCategories);
  $$('[data-dialogue-line]').forEach(b=>b.onclick=()=>window.playDialogueLine?.(id,Number(b.dataset.dialogueLine)));
  $('[data-dialogue-play-all]').onclick=()=>window.playStandaloneDialogue?.(id);
+ $('[data-dialogue-timbre-toggle]').onclick=()=>{
+  const nowOriginal=localStorage.getItem('chinese-coach-dialogue-natural-v71')!=='1';
+  localStorage.setItem('chinese-coach-dialogue-natural-v71',nowOriginal?'1':'0');
+  stopAudio();window.dispatchEvent(new Event('learning-audio-stop'));
+  $('[data-dialogue-voice-caption]').textContent=nowOriginal?'Тембр голоса: оригинальный':'Тембр голоса: немного ниже';
+  $('[data-dialogue-timbre-toggle]').textContent=nowOriginal?'Сделать голос ниже':'Слушать оригинал';
+ };
 }
 function choiceButtons(target,correctCallback){
  const others=allWords.filter(w=>w.hz!==target.hz&&w.ru!==target.ru);

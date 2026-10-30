@@ -253,7 +253,13 @@
  }
  async function playWord(text,rate=.82,token=audioGeneration,voice=null,dialogueClip=null,allowSystem=false){
   const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=dialogueClip||(voice?null:(window.courseHumanAudio?.[key]||window.courseNaturalAudio?.[key]));
-  if(file){const a=new Audio(file);audio=a;a.playbackRate=rate<=.8?rate:Math.max(.94,rate);a.preservesPitch=true;
+  if(file){const a=new Audio(file);audio=a;
+   const lowered=Boolean(dialogueClip)&&localStorage.getItem('chinese-coach-dialogue-natural-v71')!=='1';
+   // Preview-only timbre adjustment: slow down and lower absolute F0 together.
+   // The relative Mandarin tone contour remains intact; the 25 MP3 files are unchanged.
+   a.playbackRate=lowered?(voice==='B'?.89:.92):(rate<=.8?rate:Math.max(.94,rate));
+   a.preservesPitch=!lowered;
+   if('webkitPreservesPitch' in a)a.webkitPreservesPitch=!lowered;
    status('Загружается запись носителя…');
    try{await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{a.pause();reject(Error('timeout'))},10000);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(Error('audio'))};a.onpause=()=>{clearTimeout(timer);resolve()};Promise.resolve(a.play()).then(()=>{if(token!==audioGeneration){a.pause();resolve()}else status('Играет запись носителя')},reject)});return}
    catch{a.pause();if(token!==audioGeneration)return;
