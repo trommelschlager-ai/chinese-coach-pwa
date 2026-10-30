@@ -1,0 +1,36 @@
+name: Build Pinyin syllable MP3 previews
+on:
+  push:
+    paths:
+      - ".github/workflows/generate-pinyin-combinations.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Chinese speech generator and ffprobe
+        run: |
+          python -m pip install --disable-pip-version-check edge-tts==7.3.1
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          command -v ffprobe
+      - name: Generate and validate thirteen example MP3s
+        run: python scripts/generate_pinyin_audio.py
+      - name: Commit and publish validated MP3, offline manifest and PWA version
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/pinyin-combinations/ assets/offline-pack.json sw.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish thirteen validated Mandarin pinyin examples, offline-ready PWA v63"
+            git push
+          fi
