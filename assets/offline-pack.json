@@ -1,6 +1,6 @@
 {
-  "version": 61,
-  "bytes": 6777577,
+  "version": 62,
+  "bytes": 6783967,
   "files": [
     "./assets/approved-home-v36.png",
     "./assets/approved-lesson-design.css?v=56",
@@ -177,8 +177,9 @@
     "./assets/meaning-woman.webp",
     "./assets/meaning-work.webp",
     "./assets/mobile-compact-v60.css?v=61",
+    "./assets/pinyin-combinations.css?v=62",
     "./assets/pronunciation-hub.js",
-    "./assets/pronunciation-hub.js?v=61",
+    "./assets/pronunciation-hub.js?v=62",
     "./assets/scene-daily-banner.svg",
     "./assets/scene-daily-card.svg",
     "./assets/scene-greetings-banner.svg",
