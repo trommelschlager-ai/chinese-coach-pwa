@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "note": "Do not claim audio is ready until genuine Mandarin MP3s are supplied, checked and uploaded. A=female, B=male.",
+  "version": 2,
+  "note": "Voice selections only. Do not claim dialogue audio is replaced until 25 verified MP3s have been generated and installed. No synthesized voice is installed in the app yet.",
   "settings": {
     "language": "zh-CN",
     "pace": "natural, slightly slower than conversation",
@@ -258,5 +258,21 @@
       "translation": "Спасибо!",
       "file": "assets/dialogue-voices/l5-06-b.mp3"
     }
-  ]
+  ],
+  "selectedVoices": {
+    "A": {
+      "role": "female",
+      "choice": "Вариант №1",
+      "provider": "Microsoft Azure Speech",
+      "voiceId": "zh-CN-XiaoxiaoNeural",
+      "status": "approved; source MP3 not generated"
+    },
+    "B": {
+      "role": "male",
+      "choice": "Вариант №2 из прослушанных образцов",
+      "provider": "not established",
+      "voiceId": null,
+      "status": "approved sample; need verified male Mandarin voice identity"
+    }
+  }
 }
