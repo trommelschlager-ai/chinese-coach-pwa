@@ -75,7 +75,10 @@
   practice?.remove();
   transcript.querySelectorAll('[data-chat-listen]').forEach(button=>button.addEventListener('click',()=>{
    const i=Number(button.dataset.chatListen);
-   if(lesson.dialogue[i])speakChinese(lesson.dialogue[i][1],.94);
+   if(lesson.dialogue[i]){
+    if(typeof window.playDialogueLine==='function')window.playDialogueLine(lesson.id,i);
+    else speakChinese(lesson.dialogue[i][1],.94);
+   }
   }));
   transcript.querySelectorAll('[data-chat-repeat]').forEach(button=>button.addEventListener('click',()=>{
    const i=Number(button.dataset.chatRepeat);
