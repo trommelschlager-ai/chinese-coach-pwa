@@ -2,7 +2,7 @@
  // the requested photograph is included in the offline cache and adult dialogue MP3s exist.
 const fs=require('fs'),assert=require('node:assert/strict'),{JSDOM}=require('jsdom');
 const html=fs.readFileSync('index.html','utf8'),css=fs.readFileSync('assets/ui-polish-v71.css','utf8');
-const script=fs.readFileSync('scripts/generate_dialogue_mp3.py','utf8');
+const script=fs.readFileSync('scripts/mature_dialogue_audio.py','utf8');
 const sw=fs.readFileSync('sw.js','utf8'),status=JSON.parse(fs.readFileSync('assets/dialogue-voices/status.json'));
 const files=JSON.parse(fs.readFileSync('assets/offline-pack.json'));
 const d=new JSDOM(html).window.document;
@@ -13,9 +13,10 @@ assert(css.includes('#topics[data-simple-section="dialogues"] .clean-category:nt
 for(const word of ['#f5b1d4','#f5cca1','#aed1f8','#a5e7d3'])assert(css.includes(word));
 assert(fs.readFileSync('assets/clean-learning-sections.js','utf8').includes('clean-dialog-hanzi'),'Chinese badge restored');
 assert(status.ready&&status.count===25);
-assert.equal(status.voices.A,'zh-CN-XiaoruiNeural');
-assert.equal(status.voices.B,'zh-CN-YunyangNeural');
-assert(script.includes('must_regenerate'),'Generator forces fresh MP3s when voice pair changes');
+assert.equal(status.voices.A,'zh-CN-XiaoxiaoNeural');
+assert.equal(status.voices.B,'zh-CN-YunxiNeural');
+assert.equal(status.processing,'mature-timbre-v71','Original MP3s must really be processed before release');
+assert(script.includes('FACTORS='),'25-clip pitch processing script is included');
 for(const entry of JSON.parse(fs.readFileSync('assets/dialogue-voice-plan.json','utf8')).entries){
  let data=fs.readFileSync(entry.file);
  assert(data.length>1800,entry.file);

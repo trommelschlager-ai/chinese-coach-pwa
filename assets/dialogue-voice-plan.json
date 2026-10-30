@@ -1,14 +1,16 @@
 {
   "version": 4,
-  "note": "25 dialogue MP3 previews use adult-sounding neural female Xiaorui and male Yunyang. Personal evaluation only. Do not distribute commercially without a valid speech synthesis license.",
+  "note": "V71 uses the original Xiaoxiao/Yunxi recordings with subtle pitch adjustment for less childish sound. This is not a new adult narrator recording. Commercial use still requires appropriately licensed audio.",
   "settings": {
     "language": "zh-CN",
     "pace": "natural, slightly slower than conversation",
     "pitch": "natural",
     "avoid": "robotic tone, changing tone contours, long pauses, English accent",
-    "voices": {
-      "A": "zh-CN-XiaoruiNeural",
-      "B": "zh-CN-YunyangNeural"
+    "processing": {
+      "method": "ffmpeg",
+      "profile": "mature-timbre-v71",
+      "factor_A": 0.91,
+      "factor_B": 0.86
     }
   },
   "entries": [
