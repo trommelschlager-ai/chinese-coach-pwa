@@ -1,0 +1,37 @@
+name: Build Mandarin dialogue MP3 previews
+on:
+  push:
+    paths:
+      - ".github/workflows/generate-dialogue-audio.yml"
+      - "scripts/generate_dialogue_mp3.py"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out current branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install speech generation dependency
+        run: python -m pip install --disable-pip-version-check edge-tts==7.3.1
+      - name: Generate and verify all 25 MP3 clips
+        run: python scripts/generate_dialogue_mp3.py
+      - name: Commit all validated outputs together
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/dialogue-voices assets/dialogue-voices-map.js
+          if git diff --cached --quiet; then
+            echo "All MP3 files already up to date"
+          else
+            git commit -m "Add 25 verified Mandarin dialogue preview MP3 files (female Xiaoxiao, male Yunxi)"
+            git push
+          fi
