@@ -294,3 +294,40 @@ body.focus-mode #course .focus-details{background:#fffaf7!important;border:2px s
  #quiz #quizopts button{min-height:121px!important;font-size:16px!important}
 }
 @media(prefers-reduced-motion:reduce){#course .approved-chat *{animation:none!important;transition:none!important}}
+
+/* Voice actions throughout exercises follow the approved green / sky-blue pairing. */
+body.focus-mode #course #course-content .speech-practice #focus-repeat,
+body.focus-mode #course #course-content .approved-action-accordion #focus-repeat,
+body.focus-mode #course #course-content #replay-recording{
+ background:linear-gradient(130deg,#f3faff,#d4eaff)!important;color:#1667c4!important;
+ border:2px solid #89c8fa!important;box-shadow:0 0 10px #7bc5ff86!important;
+ border-radius:15px!important;font-weight:750!important
+}
+body:not(.launch-active) #words .wordactions [data-listen],
+body:not(.launch-active) #tones #listen{
+ background:linear-gradient(125deg,#f6fff8,#d8fce3)!important;color:#0c722f!important;
+ border:2px solid #8be4a1!important;box-shadow:0 0 10px #7ff0af7a!important;
+ border-radius:16px!important;font-weight:750!important
+}
+body:not(.launch-active) #words .vocabcontrols .chip[data-filter="due"],
+body:not(.launch-active) #words .vocabcontrols .chip[data-filter="new"]{
+ border:1.5px solid #90c6f4!important;background:#e6f3ff!important;
+ color:#1668bb!important
+}
+/* Listening icon within a quiz question, plus visual reading order. */
+#quiz #quizbody>.quizword{order:1}
+#quiz #quizbody>#quizpinyin{order:2}
+#quiz #quizbody>.approved-quiz-listen{order:3}
+#quiz #quizbody>h3{order:4}
+#quiz #quizbody>#quizopts{order:5}
+#quiz #quizbody>#quizfeedback{order:6}
+#quiz #quizbody>#nextq{order:7}
+#quiz .approved-quiz-listen{
+ display:grid;place-items:center;width:52px;height:52px;
+ border:2px solid #b3d1f6;border-radius:50%;font-size:25px;
+ color:#7246a6;background:linear-gradient(120deg,#fcf6ff,#e5eaff);
+ box-shadow:0 0 10px #cda8ee75;cursor:pointer;margin:0 auto 5px
+}
+#quiz .approved-quiz-listen:focus-visible{outline:3px solid #9361c8;outline-offset:2px}
+#quiz .quizpanel #quizbody>h3{margin:4px 0 14px!important}
+#quiz .quizpanel #quizbody>#quizpinyin{margin:0 0 3px!important}
