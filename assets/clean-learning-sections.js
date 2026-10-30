@@ -12,8 +12,12 @@ const $=(s,within=section)=>within.querySelector(s);
 const $$=(s,within=section)=>[...within.querySelectorAll(s)];
 const esc=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 const norm=s=>String(s).replace(/[！!。．，,？?\s]/g,'');
-function getKnown(){try{return JSON.parse(localStorage.getItem('chinese-coach-basic-known-v1')||'[]')||[]}catch{return []}}
+function getKnown(){try{const list=JSON.parse(localStorage.getItem('chinese-coach-basic-known-v1')||'[]');return Array.isArray(list)?list:[]}catch{return []}}
 const known=new Set(getKnown().filter(k=>byHanzi.has(k)));
+window.addEventListener('basic-known-restored',()=>{
+ known.clear();getKnown().filter(k=>byHanzi.has(k)).forEach(k=>known.add(k));
+ if(view==='words'){if(currentCategory)openCategory(currentCategory);else categories();}
+});
 function saveKnown(){try{localStorage.setItem('chinese-coach-basic-known-v1',JSON.stringify([...known]))}catch{}}
 let currentCategory=null,view='words',dialogLesson=null,practiceMode='recall',practiceIndex=0,score=0,attempts=0,audio=null;
 const practicePool=allWords.filter(w=>w.hz.length<=4);

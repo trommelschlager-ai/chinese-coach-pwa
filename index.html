@@ -472,7 +472,7 @@ body.launch-active{background:#10132a;overflow:hidden}body.launch-active .shell{
  background:radial-gradient(ellipse at 25% 25%,#fff8fd 0%,#ffd5ed 30%,#f7a5d0 66%,#df78b7 100%);
  box-shadow:0 0 10px 2px #ffd6ed55;
  opacity:0;
- animation:sakura-petal-fall 1.35s ease-in-out var(--delay) both;
+ animation:sakura-petal-fall var(--duration,2.4s) ease-in-out var(--delay) both;
  will-change:transform,opacity;
 }
 @keyframes sakura-cover-out{
@@ -2450,7 +2450,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
    menu.inert=false;
    const firstLesson=menu.querySelector('[data-choice="0"]');
    if(firstLesson)firstLesson.focus({preventScroll:true});
-  },650);
+  },1800);
  }
  function exit(){
   cancelTransition();
@@ -2494,7 +2494,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
 <script src="./assets/human-audio-map.js?v=49"></script>
 <script src="./assets/study-audio-map.js?v=59"></script>
 <script src="./assets/basic-word-audio-map.js?v=66"></script>
-<script src="./assets/learning-quality.js?v=67"></script>
+<script src="./assets/learning-quality.js?v=68"></script>
 <script src="./assets/approved-lesson-design.js?v=57"></script>
-<script src="./assets/clean-learning-sections.js?v=67"></script></body>
+<script src="./assets/clean-learning-sections.js?v=68"></script></body>
 </html>

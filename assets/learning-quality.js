@@ -225,7 +225,7 @@
  const audioStatus=document.createElement('div');audioStatus.id='learning-audio-status';audioStatus.className='audio-status';audioStatus.hidden=true;
  audioStatus.innerHTML='<span role="status" aria-live="polite"></span><button type="button">Остановить</button>';
  document.body.append(audioStatus);audioStatus.querySelector('button').onclick=()=>{stopLearningAudio();audioStatus.hidden=true};
- function status(text){audioStatus.hidden=true;audioStatus.querySelector('span').textContent=text;if(/не удалось|недоступна/i.test(text))toast(text);}
+ function status(text){audioStatus.hidden=false;audioStatus.querySelector('span').textContent=text;if(/не удалось|недоступна/i.test(text))toast(text);}
  // Dialogue voice files are used only after the generated batch passes all 25 MP3 checks.
  let dialogueMp3Status=null,dialogueMp3Checked=0,dialogueMp3Check=null;
  async function ensureDialogueMp3Ready(){
@@ -331,8 +331,8 @@
  // A single backup includes the unified vocabulary, repetition, writing and resume position.
  $('exportprogress').addEventListener('click',e=>{
   e.stopImmediatePropagation();
-  const data={format:'chinese-trainer-offline',version:3,exportedAt:new Date().toISOString(),learned:state.learned,correct:state.correct,course:courseState,review,hanzi:read('chinese-coach-hanzi-lab-v1',[]),resume:read('chinese-coach-resume-v1',null)};
-  const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='moi-kitaiskii-progress.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);$('backupmessage').textContent='Сохранены слова, уроки, повторение и иероглифы.';
+  const data={format:'chinese-trainer-offline',version:3,exportedAt:new Date().toISOString(),learned:state.learned,correct:state.correct,course:courseState,review,hanzi:read('chinese-coach-hanzi-lab-v1',[]),basicKnown:read('chinese-coach-basic-known-v1',[]),resume:read('chinese-coach-resume-v1',null)};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='moi-kitaiskii-progress.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);$('backupmessage').textContent='Сохранены базовые слова, уроки, повторение и иероглифы.';
  },true);
  const importOld=$('importprogress'),importNew=importOld.cloneNode(true);importOld.replaceWith(importNew);
  importNew.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;
@@ -348,6 +348,10 @@
    }
    if(data.review&&typeof data.review==='object'&&!Array.isArray(data.review)){review={};for(const [hz,v] of Object.entries(data.review)){if(valid.has(hz)&&Number.isInteger(v?.level)&&v.level>=0&&v.level<=4&&Number.isFinite(v.due))review[hz]={level:v.level,due:v.due}}write('chinese-coach-review-v1',review)}
    if(Array.isArray(data.hanzi))write('chinese-coach-hanzi-lab-v1',[...new Set(data.hanzi.filter(h=>'大人小一二三口日月木'.includes(h)&&h.length===1))]);
+   if(Array.isArray(data.basicKnown)){
+    const allowed=new Set((window.__simpleSectionPreview?.data||[]).flatMap(g=>g.words.map(w=>w.hz)));
+    if(allowed.size){write('chinese-coach-basic-known-v1',[...new Set(data.basicKnown)].filter(h=>typeof h==='string'&&allowed.has(h)).slice(0,allowed.size));window.dispatchEvent(new Event('basic-known-restored'));}
+   }
    const r=data.resume;if(r&&Number.isInteger(r.id)&&r.id>=1&&r.id<=COURSE.length&&Number.isInteger(r.step)&&r.step>=0&&r.step<=3)write('chinese-coach-resume-v1',{id:r.id,step:r.step,part:Math.max(0,Number(r.part)||0)});
    mirrorKnown();renderWords();updateCourseMetrics();updateResume();$('backupmessage').textContent='Прогресс восстановлен.';
   }catch(error){$('backupmessage').textContent='Не удалось восстановить: '+error.message}finally{e.target.value=''}
