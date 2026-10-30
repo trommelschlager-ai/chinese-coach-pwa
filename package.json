@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "check": "node scripts/verify.cjs && node scripts/verify-quality.cjs && node scripts/verify-simple-learning.cjs && node scripts/verify-hanzi.cjs && node scripts/verify-launch.cjs && node scripts/verify-offline.cjs && node scripts/verify-pinyin-reading.cjs"
+    "check": "node scripts/verify.cjs && node scripts/verify-quality.cjs && node scripts/verify-simple-learning.cjs && node scripts/verify-hanzi.cjs && node scripts/verify-launch.cjs && node scripts/verify-offline.cjs && node scripts/verify-pinyin-reading.cjs && node scripts/verify-clean-sections.cjs"
   },
   "devDependencies": {
     "vite": "7.1.12",
