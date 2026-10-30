@@ -42,7 +42,7 @@ function leaveToMenu(){stopAudio();go('home')}
 function frame(title,desc,body,back){
  section.dataset.simpleSection=view;
  section.innerHTML='<div class="clean-section-head"><button type="button" class="clean-back" data-clean-back>← '+(back?'К темам':'Разделы')+'</button>'+
-  '<h1>'+esc(title)+'</h1>'+(desc?'<p>'+esc(desc)+'</p>':'')+'</div>'+body+
+  '<h1>'+esc(title)+'</h1>'+(view==='dialogues'&&title==='Диалоги'?'<span class="clean-dialog-hanzi" lang="zh-Hans">中文</span>':'')+(desc?'<p>'+esc(desc)+'</p>':'')+'</div>'+body+
   '<p data-section-audio class="clean-audio-feedback" role="status" aria-live="polite"></p>';
  $('[data-clean-back]').onclick=()=>back?back():leaveToMenu();
 }

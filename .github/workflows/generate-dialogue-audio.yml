@@ -40,6 +40,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "All MP3 files already up to date"
           else
-            git commit -m "Add 25 verified Mandarin dialogue preview MP3 files (female Xiaoxiao, male Yunxi)"
+            git commit -m "Regenerate 25 adult Mandarin dialogue previews (Xiaorui and Yunyang)"
             git push
           fi

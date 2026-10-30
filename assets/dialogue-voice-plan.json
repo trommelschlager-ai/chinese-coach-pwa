@@ -1,11 +1,15 @@
 {
-  "version": 3,
-  "note": "Personal-use preview pipeline only. Do not claim clips are present until all 25 verified MP3 files have been committed and the application has been checked. Edge Read Aloud audio has no explicitly documented commercial redistribution grant; use appropriately licensed Azure Speech for paid distribution.",
+  "version": 4,
+  "note": "25 dialogue MP3 previews use adult-sounding neural female Xiaorui and male Yunyang. Personal evaluation only. Do not distribute commercially without a valid speech synthesis license.",
   "settings": {
     "language": "zh-CN",
     "pace": "natural, slightly slower than conversation",
     "pitch": "natural",
-    "avoid": "robotic tone, changing tone contours, long pauses, English accent"
+    "avoid": "robotic tone, changing tone contours, long pauses, English accent",
+    "voices": {
+      "A": "zh-CN-XiaoruiNeural",
+      "B": "zh-CN-YunyangNeural"
+    }
   },
   "entries": [
     {

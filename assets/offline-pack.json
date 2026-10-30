@@ -1,6 +1,6 @@
 {
-  "version": 70,
-  "bytes": 10318874,
+  "version": 71,
+  "bytes": 10335332,
   "files": [
     "./assets/approved-home-v36.png",
     "./assets/approved-lesson-design.css?v=56",
@@ -123,6 +123,7 @@
     "./assets/basic-words-audio/b113.mp3",
     "./assets/basic-words-audio/status.json",
     "./assets/basic-words-categories.json",
+    "./assets/china-autumn-pagoda-v71.webp",
     "./assets/china-landscape.svg",
     "./assets/china-misty-pavilion-v70.webp",
     "./assets/chinese-lake-vocab.svg",
@@ -541,6 +542,7 @@
     "./assets/study-voices/s30.mp3",
     "./assets/ui-polish-v69.css",
     "./assets/ui-polish-v70.css",
+    "./assets/ui-polish-v71.css",
     "./assets/vendor/hanzi-writer-LICENSE.txt",
     "./assets/vendor/hanzi-writer.min.js",
     "./assets/voice-settings.js",

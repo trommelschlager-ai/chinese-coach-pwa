@@ -242,7 +242,7 @@
     const response=await fetch('./assets/dialogue-voices/status.json',{cache:'no-store'});
     if(!response.ok)return false;
     const status=await response.json();
-    return status.ready===true&&status.count===25&&status.voices?.A==='zh-CN-XiaoxiaoNeural'&&status.voices?.B==='zh-CN-YunxiNeural';
+    return status.ready===true&&status.count===25&&status.voices?.A==='zh-CN-XiaoruiNeural'&&status.voices?.B==='zh-CN-YunyangNeural';
    }catch{return false}
   })();
   dialogueMp3Status=await dialogueMp3Check;dialogueMp3Check=null;

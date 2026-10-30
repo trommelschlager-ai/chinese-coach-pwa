@@ -16,7 +16,7 @@ import edge_tts
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 PLAN = ROOT / "assets/dialogue-voice-plan.json"
 OUT = ROOT / "assets/dialogue-voices"
-VOICES = {"A": "zh-CN-XiaoxiaoNeural", "B": "zh-CN-YunxiNeural"}
+VOICES = {"A": "zh-CN-XiaoruiNeural", "B": "zh-CN-YunyangNeural"}
 
 
 def valid_mp3(path: pathlib.Path) -> bool:
@@ -66,8 +66,13 @@ async def main() -> None:
     assert sum(entry["speaker"] == "A" for entry in entries) == 13
     assert sum(entry["speaker"] == "B" for entry in entries) == 12
     OUT.mkdir(parents=True, exist_ok=True)
+    previous_status = OUT / 'status.json'
+    recorded_voices = json.loads(previous_status.read_text(encoding='utf-8')).get('voices', {}) if previous_status.exists() else {}
+    must_regenerate = recorded_voices != VOICES
+    if must_regenerate:
+        print('Voice change detected: rebuilding all 25 dialogue MP3s', flush=True)
     for entry in entries:
-        if valid_mp3(ROOT / entry["file"]):
+        if not must_regenerate and valid_mp3(ROOT / entry["file"]):
             print(f"REUSE {entry['file']}", flush=True)
         else:
             await generate_one(entry)
@@ -83,18 +88,12 @@ async def main() -> None:
     manifest = json.loads(offline.read_text(encoding="utf-8"))
     paths = ["./" + entry["file"] for entry in entries]
     manifest["files"] = sorted(set(manifest["files"]) | set(paths))
-    manifest["bytes"] = max(
-        manifest.get("bytes", 0),
-        sum((ROOT / entry["file"]).stat().st_size for entry in entries),
-    ) + sum((ROOT / entry["file"]).stat().st_size for entry in entries)
-    manifest["version"] = 58
+    manifest["version"] = max(manifest.get("version", 0), 71)
+    manifest["bytes"] = sum((ROOT / item.removeprefix("./")).stat().st_size
+                            for item in manifest["files"]
+                            if (ROOT / item.removeprefix("./")).exists())
     offline.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    # Cache busting forces preinstalled Android PWAs to see the new recordings.
-    service_worker = ROOT / "sw.js"
-    sw = service_worker.read_text(encoding="utf-8")
-    if "chinese-coach-pwa-v57" not in sw:
-        raise RuntimeError("Unexpected PWA service worker version; review before publish")
-    service_worker.write_text(sw.replace("chinese-coach-pwa-v57", "chinese-coach-pwa-v58"), encoding="utf-8")
+    # PWA version is maintained by the release PR, never reset to an old v58 cache.
     status = {"ready": True, "count": len(entries), "voices": VOICES,
               "source": "edge-tts (Microsoft Edge Read Aloud); personal evaluation only",
               "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}

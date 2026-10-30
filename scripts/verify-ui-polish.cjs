@@ -15,9 +15,9 @@ assert(!html.includes('график — учебная подсказка, а н
 assert(!ear.includes('<p class="ear-notice">'));
 assert(ear.includes('ear-credits')&&voice.includes('licenseSection.append(listeningCredits)'));
 assert(html.includes('ui-polish-v69.css?v=69')&&sw.includes('ui-polish-v69.css?v=69'));
-assert(JSON.parse(fs.readFileSync('assets/offline-pack.json')).version===70);
+assert(JSON.parse(fs.readFileSync('assets/offline-pack.json')).version===71);
 assert(JSON.parse(fs.readFileSync('assets/offline-pack.json')).files.includes('./assets/ui-polish-v69.css'));
-assert(sw.includes('chinese-coach-pwa-v70'));
+assert(sw.includes('chinese-coach-pwa-v71'));
 assert(html.includes('ui-polish-v70.css?v=70'));
 assert(d.getElementById('listen')&&d.getElementById('record')&&d.getElementById('tone-check')&&d.getElementById('pitchchart'));
 console.log('Approved V69 visual fixes validated; existing pronunciation controls and six destinations preserved.');
