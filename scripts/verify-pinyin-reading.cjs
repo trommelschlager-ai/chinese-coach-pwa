@@ -39,7 +39,7 @@ for(const clip of curriculum.clips){
  assert(fs.statSync(path).size>1500,'Missing generated MP3: '+path);
  assert(pack.files.includes('./'+path),'Offline download missing clip: '+path);
 }
-const status=JSON.parse(fs.readFileSync('assets/pinyin-reading/status.json','utf8'));
+const status=JSON.parse(fs.readFileSync('assets/pinyin-reading-v2/status.json','utf8'));
 assert.equal(status.ready,true);
 assert.equal(status.count,curriculum.clips.length);
 assert.equal(status.voice,'zh-CN-XiaoyiNeural','Natural-sounding alternate Xiaoyi voice used');
