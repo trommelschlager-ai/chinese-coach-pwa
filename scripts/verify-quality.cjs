@@ -13,7 +13,9 @@ assert(d.getElementById('launch-cover').hidden===false,'Cover remains the first 
 assert(!d.getElementById('launch-entry').classList.contains('petals-falling'),'No petals before Start');
 d.getElementById('launch-start').click();assert.equal(w.location.hash,'#menu');
 d.querySelector('[data-choice="1"]').click();assert.equal(w.location.hash,'#topics/words');
-assert.equal(d.querySelectorAll('#topics [data-topic-lesson]').length,5);
+assert.equal(d.querySelectorAll('#topics [data-topic-lesson]').length,4,'Vocabulary topics exclude phonetics taught in Lesson 1');
+assert.equal(d.querySelectorAll('#topics [data-topic-lesson="1"]').length,0,'Tone lesson is not repeated under words');
+assert(d.querySelector('#topics .words-overview').textContent.includes('56 слов'),'All remaining vocabulary lessons stay available');
 d.querySelector('#topics [data-topic-lesson="3"]').click();
 assert.equal(w.location.hash,'#course/3/1/0');
 const word=d.querySelector('.focus-hanzi').textContent;assert.equal(word,'我');d.getElementById('focus-known').click();
