@@ -78,6 +78,23 @@ async def main() -> None:
     js = "// Generated only after all 25 MP3 files pass validation.\n"
     js += "window.dialogueVoiceAudio=" + json.dumps(lookup, ensure_ascii=False, separators=(",", ":")) + ";\n"
     (ROOT / "assets/dialogue-voices-map.js").write_text(js, encoding="utf-8")
+    # Include all 25 generated clips in the existing offline-download pack.
+    offline = ROOT / "assets/offline-pack.json"
+    manifest = json.loads(offline.read_text(encoding="utf-8"))
+    paths = ["./" + entry["file"] for entry in entries]
+    manifest["files"] = sorted(set(manifest["files"]) | set(paths))
+    manifest["bytes"] = max(
+        manifest.get("bytes", 0),
+        sum((ROOT / entry["file"]).stat().st_size for entry in entries),
+    ) + sum((ROOT / entry["file"]).stat().st_size for entry in entries)
+    manifest["version"] = 58
+    offline.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    # Cache busting forces preinstalled Android PWAs to see the new recordings.
+    service_worker = ROOT / "sw.js"
+    sw = service_worker.read_text(encoding="utf-8")
+    if "chinese-coach-pwa-v57" not in sw:
+        raise RuntimeError("Unexpected PWA service worker version; review before publish")
+    service_worker.write_text(sw.replace("chinese-coach-pwa-v57", "chinese-coach-pwa-v58"), encoding="utf-8")
     status = {"ready": True, "count": len(entries), "voices": VOICES,
               "source": "edge-tts (Microsoft Edge Read Aloud); personal evaluation only",
               "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
