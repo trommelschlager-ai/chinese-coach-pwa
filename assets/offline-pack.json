@@ -1,6 +1,6 @@
 {
-  "version": 68,
-  "bytes": 10297531,
+  "version": 69,
+  "bytes": 10303487,
   "files": [
     "./assets/approved-home-v36.png",
     "./assets/approved-lesson-design.css?v=56",
@@ -538,6 +538,7 @@
     "./assets/study-voices/s28.mp3",
     "./assets/study-voices/s29.mp3",
     "./assets/study-voices/s30.mp3",
+    "./assets/ui-polish-v69.css",
     "./assets/vendor/hanzi-writer-LICENSE.txt",
     "./assets/vendor/hanzi-writer.min.js",
     "./assets/voice-settings.js",

@@ -25,7 +25,6 @@
     '</div>',
     '<div id="ear-feedback" class="ear-feedback" role="status" aria-live="polite">Нажми «Слушать запись», затем выбери тон. В двухсложном слове слушай второй слог.</div>',
     '<button type="button" class="btn primary ear-next" id="ear-next" hidden>Следующий вопрос →</button>',
-    '<p class="ear-notice">Локальные записи носителя. Для работы без сети скачай материалы в настройках. Если запись недоступна, упражнение предложит повторить загрузку, а не заменит голос на телефонный. Этот тест тренирует слух, а не оценивает произношение.</p>',
     '<details class="ear-credits"><summary>Авторы записей и лицензии</summary><div id="ear-credit-list"></div></details>'
   ].join('');
   host.before(lab);

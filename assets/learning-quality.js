@@ -68,6 +68,10 @@
  const voiceSettings=$('pronunciation-settings');settings.querySelector('.settings-content').append(voiceSettings);
  $('open-voice-settings').remove();
  const courseTech=document.querySelector('.course-tech');settings.querySelector('.settings-content').append(courseTech);
+ // Attribution remains accessible in Settings rather than under the listening quiz.
+ const listeningCredits=document.querySelector('#listening-lab .ear-credits');
+ const licenseSection=settings.querySelector('.settings-content > details');
+ if(listeningCredits&&licenseSection)licenseSection.append(listeningCredits);
  const tools=document.createElement('div');tools.className='section-tools';
  tools.innerHTML='<button class="btn soft" type="button" id="section-back">← Разделы</button>';
  settings.before(tools);tools.append(settings);
