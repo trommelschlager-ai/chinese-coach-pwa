@@ -25,7 +25,7 @@
     '</div>',
     '<div id="ear-feedback" class="ear-feedback" role="status" aria-live="polite">Нажми «Слушать запись», затем выбери тон. В двухсложном слове слушай второй слог.</div>',
     '<button type="button" class="btn primary ear-next" id="ear-next" hidden>Следующий вопрос →</button>',
-    '<p class="ear-notice">Локальные записи носителя. Для работы без сети скачай материалы в настройках. Если запись недоступна, используется китайский голос телефона. Этот тест тренирует слух, а не оценивает твоё произношение.</p>',
+    '<p class="ear-notice">Локальные записи носителя. Для работы без сети скачай материалы в настройках. Если запись недоступна, упражнение предложит повторить загрузку, а не заменит голос на телефонный. Этот тест тренирует слух, а не оценивает произношение.</p>',
     '<details class="ear-credits"><summary>Авторы записей и лицензии</summary><div id="ear-credit-list"></div></details>'
   ].join('');
   host.before(lab);
@@ -77,16 +77,9 @@
     }catch(err){
       currentAudio?.pause();
       if(token!==playSequence)return;
-      // The fallback is explicitly marked as synthetic and only offered if a zh voice exists.
-      const voice=typeof chineseVoice==='function'?chineseVoice():null;
-      if(voice&&(navigator.onLine||voice.localService!==false)&&typeof speakChinese==='function'){
-        speakChinese(item.hz,.8);
-        feedback.textContent='Оригинальная запись недоступна. Включён системный китайский голос — результаты могут отличаться.';
-        heard=true;lockChoices(answered);replayBtn.disabled=false;
-      }else{
-        feedback.textContent='Не удалось загрузить запись. Проверь интернет или установи китайский голос zh-CN и попробуй снова. Ответы пока заблокированы.';
-        heard=false;lockChoices(true);
-      }
+      // Never substitute synthetic speech in a listening test: it changes the tone evidence.
+      feedback.textContent='Запись не загрузилась. Подключи интернет или скачай материалы, затем нажми «Слушать запись» ещё раз.';
+      heard=false;lockChoices(true);replayBtn.disabled=true;
     }finally{
       if(token===playSequence)playBtn.disabled=false;
     }
