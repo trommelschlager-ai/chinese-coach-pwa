@@ -61,7 +61,7 @@
     </details>
   </div>
   <div class="bottom"><span class="progress-details" id="lesson-counter">Иероглиф 1 из 10</span></div>
-  <details class="writing-settings"><summary>Настройки озвучки</summary>      <div class="voice-box"><div class="human-label">🎧 Живое произношение</div><p class="human-explain">По умолчанию проигрывается аудиозапись носителя китайского языка. Если она недоступна, используется системный голос.</p><label for="chinese-voice">Запасной китайский голос</label><select id="chinese-voice"><option value="">Поиск голосов устройства…</option></select><div class="voice-row"><span>Скорость</span><input id="voice-rate" type="range" min="0.7" max="1.1" step="0.05" value="0.85"><output id="voice-rate-label">0.85×</output></div><p class="voice-help">Выбирай доступный голос Mandarin (zh-CN). Если на телефоне только один голос, другие появятся после установки китайского голосового пакета.</p></div></details>
+  <details class="writing-settings"><summary>Настройки озвучки</summary>      <div class="voice-box"><div class="human-label">🎧 Живое произношение</div><p class="human-explain">По умолчанию проигрывается аудиозапись носителя китайского языка. Если она недоступна, приложение сообщит об ошибке. Системный голос можно включить вручную в настройках.</p><label for="chinese-voice">Запасной китайский голос</label><select id="chinese-voice"><option value="">Поиск голосов устройства…</option></select><div class="voice-row"><span>Скорость</span><input id="voice-rate" type="range" min="0.7" max="1.1" step="0.05" value="0.85"><output id="voice-rate-label">0.85×</output></div><p class="voice-help">Выбирай доступный голос Mandarin (zh-CN). Если на телефоне только один голос, другие появятся после установки китайского голосового пакета.</p></div></details>
   <details class="writing-about"><summary>Об аудио и тренажёре</summary><p class="footnote">Образцы письма и черты сохраняются вместе с материалами в настройках приложения. Запись произношения — голос носителя Yue Tan (CC BY-SA 3.0 US), <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">источник и лицензия</a>. На телефоне при отсутствии аудио включается запасной голос. Тренажёр проверяет штрихи и их последовательность, но не заменяет преподавателя каллиграфии. Прогресс сохраняется только на этом устройстве.</p></details>
 </main>
 <script>
@@ -172,9 +172,9 @@ window.addEventListener('DOMContentLoaded',function(){
   function speak(){
     const d=lessons[index];const token=++recordingToken;
     try{if(activeRecording){activeRecording.pause();activeRecording.currentTime=0;}}catch(_){}
-    if(typeof Audio!=='function'){speakSystem();return;}
+    if(typeof Audio!=='function'){say('Запись недоступна в этом браузере.','bad');return;}
     let fallbackDone=false;
-    const fallback=()=>{if(token!==recordingToken||fallbackDone)return;fallbackDone=true;say('Запись носителя не загрузилась. Включён запасной китайский голос.');speakSystem();};
+    const fallback=()=>{if(token!==recordingToken||fallbackDone)return;fallbackDone=true;say('Запись носителя не загрузилась. Подключи интернет или скачай материалы в настройках.','bad');};
     try{
       activeRecording=new Audio(AUDIO_BASE+'cmn-'+encodeURIComponent(d.hz)+'.mp3');
       activeRecording.preload='auto';
