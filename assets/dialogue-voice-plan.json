@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "note": "Voice selections only. Do not claim dialogue audio is replaced until 25 verified MP3s have been generated and installed. No synthesized voice is installed in the app yet.",
+  "version": 3,
+  "note": "Personal-use preview pipeline only. Do not claim clips are present until all 25 verified MP3 files have been committed and the application has been checked. Edge Read Aloud audio has no explicitly documented commercial redistribution grant; use appropriately licensed Azure Speech for paid distribution.",
   "settings": {
     "language": "zh-CN",
     "pace": "natural, slightly slower than conversation",
@@ -263,16 +263,16 @@
     "A": {
       "role": "female",
       "choice": "Вариант №1",
-      "provider": "Microsoft Azure Speech",
+      "provider": "Microsoft Edge Read Aloud (preview)",
       "voiceId": "zh-CN-XiaoxiaoNeural",
-      "status": "approved; source MP3 not generated"
+      "status": "user approved; MP3 not confirmed"
     },
     "B": {
       "role": "male",
-      "choice": "Вариант №2 из прослушанных образцов",
-      "provider": "not established",
-      "voiceId": null,
-      "status": "approved sample; need verified male Mandarin voice identity"
+      "choice": "Пробный мужской Mandarin-голос для сравнения; исходный вариант №2 не привязан к гарантированно мужскому идентификатору",
+      "provider": "Microsoft Edge Read Aloud (preview)",
+      "voiceId": "zh-CN-YunxiNeural",
+      "status": "preview pending user listening approval"
     }
   }
 }
