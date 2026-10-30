@@ -25,3 +25,102 @@
  #tones .pinyin-combo-tile{min-height:116px;padding:7px 2px}
 }
 @media(prefers-reduced-motion:reduce){#tones .pinyin-combo-tile{transition:none}}
+
+
+/* A-Z reference: one selected letter is displayed at a time, no endless scrolling. */
+#tones .pinyin-reading-switch{
+ display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 10px;
+}
+#tones .pinyin-reading-switch button{
+ min-height:48px;padding:8px 7px;border-radius:14px;
+ border:1.5px solid #d7b8e7;background:#fff;color:#614174;
+ font:750 clamp(14px,3.7vw,17px)/1.25 system-ui;
+}
+#tones .pinyin-reading-switch button[aria-pressed="true"]{
+ background:linear-gradient(110deg,#bd7adf,#7643b3);
+ color:#fff;border-color:#8d54bc;box-shadow:0 3px 10px #8b4fb144;
+}
+#tones .pinyin-reading-brief{
+ margin:0 0 10px;padding:0 3px;
+ font:500 clamp(13px,3.7vw,16px)/1.48 system-ui;color:#6b5877;
+}
+#tones .pinyin-alphabet{
+ display:flex;gap:5px;padding:6px 2px 8px;
+ overflow-x:auto;overscroll-behavior-x:contain;
+ scroll-snap-type:x proximity;scrollbar-width:thin;
+ margin:0 0 4px;
+}
+#tones .pinyin-alphabet button{
+ flex:0 0 auto;min-width:40px;min-height:43px;
+ border:1px solid #dac7e8;border-radius:11px;
+ background:#fff;color:#533573;
+ font:800 16px/1 system-ui;scroll-snap-align:center;
+}
+#tones .pinyin-alphabet button.selected{
+ background:#7543ab;color:#fff;border-color:#7543ab;
+ box-shadow:0 2px 8px #9456ba55;
+}
+#tones .pinyin-letter-progress{
+ font:700 13px/1.35 system-ui;color:#76608c;
+ margin:3px 0 8px;text-align:right;
+}
+#tones .pinyin-combo-tile .pinyin-combo-unit{
+ display:inline-block;color:#8465a1;background:#f4ebfb;
+ font:800 clamp(17px,4.6vw,23px)/1.2 system-ui;
+ padding:3px 9px;border-radius:9px;
+ max-width:100%;overflow-wrap:anywhere;
+}
+#tones .pinyin-combo-tile .pinyin-combo-pinyin{
+ color:#7741a1;font-size:clamp(17px,4.3vw,22px)!important;
+}
+#tones .pinyin-letter-actions{
+ display:grid;grid-template-columns:1fr 1.45fr;gap:8px;margin:12px 0;
+}
+#tones .pinyin-letter-actions button{
+ min-height:49px;padding:9px 6px;
+ border:1.5px solid #cfb3e1;border-radius:14px;
+ background:#faf5ff;color:#52346e;font:800 15px/1.2 system-ui;
+}
+#tones .pinyin-letter-actions button[data-letter-next]{
+ background:#7242a6;color:#fff;border-color:#7242a6;
+}
+#tones .pinyin-letter-actions button:disabled{
+ opacity:.42;box-shadow:none;cursor:default;
+}
+#tones .pinyin-rules-chapter{margin:13px 0 15px}
+#tones .pinyin-rules-chapter>h3{
+ margin:0 0 8px;font:800 clamp(18px,5.2vw,23px)/1.3 system-ui;
+ color:#643783;border-bottom:1px solid #ead7f0;padding:0 0 8px;
+}
+#tones .pinyin-reading-rule-head{
+ margin:0 0 9px;font:500 15px/1.45 system-ui;color:#625273;
+}
+#tones .pinyin-rule{
+ border:1px solid #e0cde9;border-radius:15px;
+ background:#fff;margin:7px 0;overflow:hidden;
+}
+#tones .pinyin-rule>summary{
+ position:relative;cursor:pointer;list-style:none;
+ display:flex;align-items:center;justify-content:space-between;
+ min-height:51px;padding:11px 12px;
+ font:750 clamp(14px,3.8vw,17px)/1.4 system-ui;color:#56316d;
+}
+#tones .pinyin-rule>summary::-webkit-details-marker{display:none}
+#tones .pinyin-rule>summary::after{content:"＋";color:#955fc2;font-weight:850;font-size:22px;margin-left:7px}
+#tones .pinyin-rule[open]>summary::after{content:"−"}
+#tones .pinyin-rule>p{margin:0 12px 11px;font:500 15px/1.48 system-ui;color:#584a62}
+#tones .pinyin-rule .pinyin-combo-tiles{padding:0 10px 11px}
+#tones .pinyin-rule .pinyin-combo-tile{min-height:110px}
+#tones .pinyin-rule .pinyin-combo-tile strong{font-size:clamp(26px,8vw,37px)}
+#tones .pinyin-rule .pinyin-combo-tile small{font-size:12px}
+#tones .pinyin-rule:focus-within{border-color:#b68ad1}
+#tones .pinyin-rule>summary:focus-visible,
+#tones .pinyin-reading-switch button:focus-visible,
+#tones .pinyin-alphabet button:focus-visible,
+#tones .pinyin-letter-actions button:focus-visible{outline:3px solid #9a5cce;outline-offset:2px}
+#tones #pinyin-reading-letters[hidden],#tones #pinyin-reading-rules[hidden]{display:none!important}
+@media(max-width:360px){
+ #tones .pinyin-combo-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #tones .pinyin-reading-switch button{font-size:13px}
+ #tones .pinyin-alphabet button{min-width:38px}
+}
