@@ -8,9 +8,11 @@ assert(html.includes('src="./assets/approved-home-v36.png"'),'Approved welcome c
 assert(html.includes('src="./assets/lessons-backdrop.webp"'),'Approved five-card menu image must be kept');
 assert(fs.existsSync('hanzi-lab.html'),'Hanzi writing trainer must exist');
 assert(!html.includes("if(what==='cover')startPetals()"),'Cover should not create petals on entry');
+assert(html.includes('animation:sakura-petal-fall var(--duration,2.4s)'),'Petal duration matches per-petal timing');
 const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(x=>x[1]).filter(Boolean);
 const launch=scripts.find(s=>s.includes("const root=document.getElementById('launch-entry')"));
 assert(launch,'Launch controller script is present');
+assert(launch.includes('},1800);'),'Cover-to-menu timing must match 1.8-second CSS animation');
 const dom=new JSDOM(html,{url:'https://example.test/chinese-coach-pwa/',runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window,d=w.document;
 let opened=0;
