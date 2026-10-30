@@ -32,5 +32,6 @@ jobs:
           git add assets/pinyin-reading/
           if ! git diff --cached --quiet; then
             git commit -m "Publish validated A-Z Mandarin Pinyin pronunciation MP3 previews"
-            git push
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
