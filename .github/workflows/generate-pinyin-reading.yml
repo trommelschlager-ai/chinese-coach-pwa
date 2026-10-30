@@ -1,4 +1,4 @@
-name: Build complete A-Z Pinyin pronunciation previews
+name: Build expanded slow-voice Pinyin reading previews
 on:
   push:
     paths:
@@ -25,13 +25,13 @@ jobs:
           ffprobe -version | head -n 1
       - name: Generate and validate all Pinyin syllables
         run: python scripts/generate_pinyin_reading.py
-      - name: Publish 91 MP3 files with validation status
+      - name: Publish regenerated slow Xiaoyi recordings and validation status
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/pinyin-reading/
+          git add assets/pinyin-reading-v2/
           if ! git diff --cached --quiet; then
-            git commit -m "Publish validated A-Z Mandarin Pinyin pronunciation MP3 previews"
+            git commit -m "Publish regenerated Xiaoyi slow A-Z Pinyin MP3 previews"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
