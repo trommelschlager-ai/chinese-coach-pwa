@@ -1,0 +1,798 @@
+{
+  "version": 1,
+  "voice": "zh-CN-XiaoyiNeural",
+  "license": "Noncommercial prototype recordings. Regenerate with licensed Azure Speech for paid sale.",
+  "items": [
+    {
+      "hz": "您",
+      "py": "nín",
+      "ru": "Вы (вежливо)",
+      "id": "b001",
+      "file": "assets/basic-words-audio/b001.mp3"
+    },
+    {
+      "hz": "它",
+      "py": "tā",
+      "ru": "оно",
+      "id": "b002",
+      "file": "assets/basic-words-audio/b002.mp3"
+    },
+    {
+      "hz": "我们",
+      "py": "wǒmen",
+      "ru": "мы",
+      "id": "b003",
+      "file": "assets/basic-words-audio/b003.mp3"
+    },
+    {
+      "hz": "你们",
+      "py": "nǐmen",
+      "ru": "вы",
+      "id": "b004",
+      "file": "assets/basic-words-audio/b004.mp3"
+    },
+    {
+      "hz": "他们",
+      "py": "tāmen",
+      "ru": "они",
+      "id": "b005",
+      "file": "assets/basic-words-audio/b005.mp3"
+    },
+    {
+      "hz": "那",
+      "py": "nà",
+      "ru": "то",
+      "id": "b006",
+      "file": "assets/basic-words-audio/b006.mp3"
+    },
+    {
+      "hz": "自己",
+      "py": "zìjǐ",
+      "ru": "сам, себя",
+      "id": "b007",
+      "file": "assets/basic-words-audio/b007.mp3"
+    },
+    {
+      "hz": "别人",
+      "py": "biérén",
+      "ru": "другие люди",
+      "id": "b008",
+      "file": "assets/basic-words-audio/b008.mp3"
+    },
+    {
+      "hz": "大家",
+      "py": "dàjiā",
+      "ru": "все",
+      "id": "b009",
+      "file": "assets/basic-words-audio/b009.mp3"
+    },
+    {
+      "hz": "谁",
+      "py": "shéi",
+      "ru": "кто",
+      "id": "b010",
+      "file": "assets/basic-words-audio/b010.mp3"
+    },
+    {
+      "hz": "从哪里",
+      "py": "cóng nǎlǐ",
+      "ru": "откуда",
+      "id": "b011",
+      "file": "assets/basic-words-audio/b011.mp3"
+    },
+    {
+      "hz": "去哪里",
+      "py": "qù nǎlǐ",
+      "ru": "куда",
+      "id": "b012",
+      "file": "assets/basic-words-audio/b012.mp3"
+    },
+    {
+      "hz": "哪个",
+      "py": "nǎge",
+      "ru": "который",
+      "id": "b013",
+      "file": "assets/basic-words-audio/b013.mp3"
+    },
+    {
+      "hz": "什么时候",
+      "py": "shénme shíhou",
+      "ru": "когда",
+      "id": "b014",
+      "file": "assets/basic-words-audio/b014.mp3"
+    },
+    {
+      "hz": "为什么",
+      "py": "wèishénme",
+      "ru": "почему",
+      "id": "b015",
+      "file": "assets/basic-words-audio/b015.mp3"
+    },
+    {
+      "hz": "怎么",
+      "py": "zěnme",
+      "ru": "как",
+      "id": "b016",
+      "file": "assets/basic-words-audio/b016.mp3"
+    },
+    {
+      "hz": "多少",
+      "py": "duōshao",
+      "ru": "сколько",
+      "id": "b017",
+      "file": "assets/basic-words-audio/b017.mp3"
+    },
+    {
+      "hz": "几",
+      "py": "jǐ",
+      "ru": "сколько (небольшое число)",
+      "id": "b018",
+      "file": "assets/basic-words-audio/b018.mp3"
+    },
+    {
+      "hz": "怎么样",
+      "py": "zěnmeyàng",
+      "ru": "какой, как",
+      "id": "b019",
+      "file": "assets/basic-words-audio/b019.mp3"
+    },
+    {
+      "hz": "少",
+      "py": "shǎo",
+      "ru": "мало",
+      "id": "b020",
+      "file": "assets/basic-words-audio/b020.mp3"
+    },
+    {
+      "hz": "很多",
+      "py": "hěn duō",
+      "ru": "очень много",
+      "id": "b021",
+      "file": "assets/basic-words-audio/b021.mp3"
+    },
+    {
+      "hz": "很少",
+      "py": "hěn shǎo",
+      "ru": "очень мало",
+      "id": "b022",
+      "file": "assets/basic-words-audio/b022.mp3"
+    },
+    {
+      "hz": "一点儿",
+      "py": "yìdiǎnr",
+      "ru": "немного",
+      "id": "b023",
+      "file": "assets/basic-words-audio/b023.mp3"
+    },
+    {
+      "hz": "一些",
+      "py": "yìxiē",
+      "ru": "несколько, немного",
+      "id": "b024",
+      "file": "assets/basic-words-audio/b024.mp3"
+    },
+    {
+      "hz": "比较",
+      "py": "bǐjiào",
+      "ru": "сравнительно",
+      "id": "b025",
+      "file": "assets/basic-words-audio/b025.mp3"
+    },
+    {
+      "hz": "更",
+      "py": "gèng",
+      "ru": "ещё более",
+      "id": "b026",
+      "file": "assets/basic-words-audio/b026.mp3"
+    },
+    {
+      "hz": "全部",
+      "py": "quánbù",
+      "ru": "всё, целиком",
+      "id": "b027",
+      "file": "assets/basic-words-audio/b027.mp3"
+    },
+    {
+      "hz": "每",
+      "py": "měi",
+      "ru": "каждый",
+      "id": "b028",
+      "file": "assets/basic-words-audio/b028.mp3"
+    },
+    {
+      "hz": "一点",
+      "py": "yìdiǎn",
+      "ru": "чуть-чуть",
+      "id": "b029",
+      "file": "assets/basic-words-audio/b029.mp3"
+    },
+    {
+      "hz": "昨天",
+      "py": "zuótiān",
+      "ru": "вчера",
+      "id": "b030",
+      "file": "assets/basic-words-audio/b030.mp3"
+    },
+    {
+      "hz": "以前",
+      "py": "yǐqián",
+      "ru": "раньше",
+      "id": "b031",
+      "file": "assets/basic-words-audio/b031.mp3"
+    },
+    {
+      "hz": "以后",
+      "py": "yǐhòu",
+      "ru": "позже, после",
+      "id": "b032",
+      "file": "assets/basic-words-audio/b032.mp3"
+    },
+    {
+      "hz": "然后",
+      "py": "ránhòu",
+      "ru": "затем",
+      "id": "b033",
+      "file": "assets/basic-words-audio/b033.mp3"
+    },
+    {
+      "hz": "再",
+      "py": "zài",
+      "ru": "снова (о будущем)",
+      "id": "b034",
+      "file": "assets/basic-words-audio/b034.mp3"
+    },
+    {
+      "hz": "又",
+      "py": "yòu",
+      "ru": "опять (о произошедшем)",
+      "id": "b035",
+      "file": "assets/basic-words-audio/b035.mp3"
+    },
+    {
+      "hz": "已经",
+      "py": "yǐjīng",
+      "ru": "уже",
+      "id": "b036",
+      "file": "assets/basic-words-audio/b036.mp3"
+    },
+    {
+      "hz": "还",
+      "py": "hái",
+      "ru": "ещё",
+      "id": "b037",
+      "file": "assets/basic-words-audio/b037.mp3"
+    },
+    {
+      "hz": "刚才",
+      "py": "gāngcái",
+      "ru": "только что",
+      "id": "b038",
+      "file": "assets/basic-words-audio/b038.mp3"
+    },
+    {
+      "hz": "马上",
+      "py": "mǎshàng",
+      "ru": "скоро, сейчас же",
+      "id": "b039",
+      "file": "assets/basic-words-audio/b039.mp3"
+    },
+    {
+      "hz": "早上",
+      "py": "zǎoshang",
+      "ru": "утром",
+      "id": "b040",
+      "file": "assets/basic-words-audio/b040.mp3"
+    },
+    {
+      "hz": "晚上",
+      "py": "wǎnshang",
+      "ru": "вечером",
+      "id": "b041",
+      "file": "assets/basic-words-audio/b041.mp3"
+    },
+    {
+      "hz": "时候",
+      "py": "shíhou",
+      "ru": "время, момент",
+      "id": "b042",
+      "file": "assets/basic-words-audio/b042.mp3"
+    },
+    {
+      "hz": "回",
+      "py": "huí",
+      "ru": "возвращаться",
+      "id": "b043",
+      "file": "assets/basic-words-audio/b043.mp3"
+    },
+    {
+      "hz": "读",
+      "py": "dú",
+      "ru": "читать",
+      "id": "b044",
+      "file": "assets/basic-words-audio/b044.mp3"
+    },
+    {
+      "hz": "卖",
+      "py": "mài",
+      "ru": "продавать",
+      "id": "b045",
+      "file": "assets/basic-words-audio/b045.mp3"
+    },
+    {
+      "hz": "找",
+      "py": "zhǎo",
+      "ru": "искать",
+      "id": "b046",
+      "file": "assets/basic-words-audio/b046.mp3"
+    },
+    {
+      "hz": "拿",
+      "py": "ná",
+      "ru": "брать",
+      "id": "b047",
+      "file": "assets/basic-words-audio/b047.mp3"
+    },
+    {
+      "hz": "知道",
+      "py": "zhīdào",
+      "ru": "знать",
+      "id": "b048",
+      "file": "assets/basic-words-audio/b048.mp3"
+    },
+    {
+      "hz": "明白",
+      "py": "míngbai",
+      "ru": "понимать",
+      "id": "b049",
+      "file": "assets/basic-words-audio/b049.mp3"
+    },
+    {
+      "hz": "学校",
+      "py": "xuéxiào",
+      "ru": "школа",
+      "id": "b050",
+      "file": "assets/basic-words-audio/b050.mp3"
+    },
+    {
+      "hz": "公司",
+      "py": "gōngsī",
+      "ru": "компания",
+      "id": "b051",
+      "file": "assets/basic-words-audio/b051.mp3"
+    },
+    {
+      "hz": "商店",
+      "py": "shāngdiàn",
+      "ru": "магазин",
+      "id": "b052",
+      "file": "assets/basic-words-audio/b052.mp3"
+    },
+    {
+      "hz": "饭店",
+      "py": "fàndiàn",
+      "ru": "ресторан",
+      "id": "b053",
+      "file": "assets/basic-words-audio/b053.mp3"
+    },
+    {
+      "hz": "医院",
+      "py": "yīyuàn",
+      "ru": "больница",
+      "id": "b054",
+      "file": "assets/basic-words-audio/b054.mp3"
+    },
+    {
+      "hz": "车站",
+      "py": "chēzhàn",
+      "ru": "станция, вокзал",
+      "id": "b055",
+      "file": "assets/basic-words-audio/b055.mp3"
+    },
+    {
+      "hz": "机场",
+      "py": "jīchǎng",
+      "ru": "аэропорт",
+      "id": "b056",
+      "file": "assets/basic-words-audio/b056.mp3"
+    },
+    {
+      "hz": "这里",
+      "py": "zhèlǐ",
+      "ru": "здесь",
+      "id": "b057",
+      "file": "assets/basic-words-audio/b057.mp3"
+    },
+    {
+      "hz": "那里",
+      "py": "nàlǐ",
+      "ru": "там",
+      "id": "b058",
+      "file": "assets/basic-words-audio/b058.mp3"
+    },
+    {
+      "hz": "里面",
+      "py": "lǐmiàn",
+      "ru": "внутри",
+      "id": "b059",
+      "file": "assets/basic-words-audio/b059.mp3"
+    },
+    {
+      "hz": "外面",
+      "py": "wàimiàn",
+      "ru": "снаружи",
+      "id": "b060",
+      "file": "assets/basic-words-audio/b060.mp3"
+    },
+    {
+      "hz": "左边",
+      "py": "zuǒbian",
+      "ru": "слева",
+      "id": "b061",
+      "file": "assets/basic-words-audio/b061.mp3"
+    },
+    {
+      "hz": "右边",
+      "py": "yòubian",
+      "ru": "справа",
+      "id": "b062",
+      "file": "assets/basic-words-audio/b062.mp3"
+    },
+    {
+      "hz": "爸爸",
+      "py": "bàba",
+      "ru": "папа",
+      "id": "b063",
+      "file": "assets/basic-words-audio/b063.mp3"
+    },
+    {
+      "hz": "哥哥",
+      "py": "gēge",
+      "ru": "старший брат",
+      "id": "b064",
+      "file": "assets/basic-words-audio/b064.mp3"
+    },
+    {
+      "hz": "弟弟",
+      "py": "dìdi",
+      "ru": "младший брат",
+      "id": "b065",
+      "file": "assets/basic-words-audio/b065.mp3"
+    },
+    {
+      "hz": "姐姐",
+      "py": "jiějie",
+      "ru": "старшая сестра",
+      "id": "b066",
+      "file": "assets/basic-words-audio/b066.mp3"
+    },
+    {
+      "hz": "妹妹",
+      "py": "mèimei",
+      "ru": "младшая сестра",
+      "id": "b067",
+      "file": "assets/basic-words-audio/b067.mp3"
+    },
+    {
+      "hz": "同事",
+      "py": "tóngshì",
+      "ru": "коллега",
+      "id": "b068",
+      "file": "assets/basic-words-audio/b068.mp3"
+    },
+    {
+      "hz": "孩子",
+      "py": "háizi",
+      "ru": "ребёнок",
+      "id": "b069",
+      "file": "assets/basic-words-audio/b069.mp3"
+    },
+    {
+      "hz": "坏",
+      "py": "huài",
+      "ru": "плохой",
+      "id": "b070",
+      "file": "assets/basic-words-audio/b070.mp3"
+    },
+    {
+      "hz": "旧",
+      "py": "jiù",
+      "ru": "старый",
+      "id": "b071",
+      "file": "assets/basic-words-audio/b071.mp3"
+    },
+    {
+      "hz": "容易",
+      "py": "róngyì",
+      "ru": "легко",
+      "id": "b072",
+      "file": "assets/basic-words-audio/b072.mp3"
+    },
+    {
+      "hz": "难",
+      "py": "nán",
+      "ru": "трудный",
+      "id": "b073",
+      "file": "assets/basic-words-audio/b073.mp3"
+    },
+    {
+      "hz": "便宜",
+      "py": "piányi",
+      "ru": "дешёвый",
+      "id": "b074",
+      "file": "assets/basic-words-audio/b074.mp3"
+    },
+    {
+      "hz": "鸡蛋",
+      "py": "jīdàn",
+      "ru": "яйцо",
+      "id": "b075",
+      "file": "assets/basic-words-audio/b075.mp3"
+    },
+    {
+      "hz": "牛奶",
+      "py": "niúnǎi",
+      "ru": "молоко",
+      "id": "b076",
+      "file": "assets/basic-words-audio/b076.mp3"
+    },
+    {
+      "hz": "水果",
+      "py": "shuǐguǒ",
+      "ru": "фрукты",
+      "id": "b077",
+      "file": "assets/basic-words-audio/b077.mp3"
+    },
+    {
+      "hz": "苹果",
+      "py": "píngguǒ",
+      "ru": "яблоко",
+      "id": "b078",
+      "file": "assets/basic-words-audio/b078.mp3"
+    },
+    {
+      "hz": "面包",
+      "py": "miànbāo",
+      "ru": "хлеб",
+      "id": "b079",
+      "file": "assets/basic-words-audio/b079.mp3"
+    },
+    {
+      "hz": "没有",
+      "py": "méiyǒu",
+      "ru": "не иметь, нет",
+      "id": "b080",
+      "file": "assets/basic-words-audio/b080.mp3"
+    },
+    {
+      "hz": "会",
+      "py": "huì",
+      "ru": "уметь (навык)",
+      "id": "b081",
+      "file": "assets/basic-words-audio/b081.mp3"
+    },
+    {
+      "hz": "可以",
+      "py": "kěyǐ",
+      "ru": "можно",
+      "id": "b082",
+      "file": "assets/basic-words-audio/b082.mp3"
+    },
+    {
+      "hz": "了",
+      "py": "le",
+      "ru": "частица завершённости/изменения",
+      "id": "b083",
+      "file": "assets/basic-words-audio/b083.mp3"
+    },
+    {
+      "hz": "过",
+      "py": "guo",
+      "ru": "суффикс опыта",
+      "id": "b084",
+      "file": "assets/basic-words-audio/b084.mp3"
+    },
+    {
+      "hz": "的",
+      "py": "de",
+      "ru": "частица определения",
+      "id": "b085",
+      "file": "assets/basic-words-audio/b085.mp3"
+    },
+    {
+      "hz": "呢",
+      "py": "ne",
+      "ru": "частица вопроса/темы",
+      "id": "b086",
+      "file": "assets/basic-words-audio/b086.mp3"
+    },
+    {
+      "hz": "和",
+      "py": "hé",
+      "ru": "и (между существительными)",
+      "id": "b087",
+      "file": "assets/basic-words-audio/b087.mp3"
+    },
+    {
+      "hz": "因为",
+      "py": "yīnwèi",
+      "ru": "потому что",
+      "id": "b088",
+      "file": "assets/basic-words-audio/b088.mp3"
+    },
+    {
+      "hz": "所以",
+      "py": "suǒyǐ",
+      "ru": "поэтому",
+      "id": "b089",
+      "file": "assets/basic-words-audio/b089.mp3"
+    },
+    {
+      "hz": "但是",
+      "py": "dànshì",
+      "ru": "но",
+      "id": "b090",
+      "file": "assets/basic-words-audio/b090.mp3"
+    },
+    {
+      "hz": "如果",
+      "py": "rúguǒ",
+      "ru": "если",
+      "id": "b091",
+      "file": "assets/basic-words-audio/b091.mp3"
+    },
+    {
+      "hz": "上",
+      "py": "shàng",
+      "ru": "верх, вверх",
+      "id": "b092",
+      "file": "assets/basic-words-audio/b092.mp3"
+    },
+    {
+      "hz": "下",
+      "py": "xià",
+      "ru": "низ, вниз",
+      "id": "b093",
+      "file": "assets/basic-words-audio/b093.mp3"
+    },
+    {
+      "hz": "前",
+      "py": "qián",
+      "ru": "перед, впереди",
+      "id": "b094",
+      "file": "assets/basic-words-audio/b094.mp3"
+    },
+    {
+      "hz": "后",
+      "py": "hòu",
+      "ru": "зад, после",
+      "id": "b095",
+      "file": "assets/basic-words-audio/b095.mp3"
+    },
+    {
+      "hz": "这边",
+      "py": "zhèbiān",
+      "ru": "эта сторона, здесь",
+      "id": "b096",
+      "file": "assets/basic-words-audio/b096.mp3"
+    },
+    {
+      "hz": "那边",
+      "py": "nàbiān",
+      "ru": "та сторона, там",
+      "id": "b097",
+      "file": "assets/basic-words-audio/b097.mp3"
+    },
+    {
+      "hz": "远",
+      "py": "yuǎn",
+      "ru": "далеко",
+      "id": "b098",
+      "file": "assets/basic-words-audio/b098.mp3"
+    },
+    {
+      "hz": "近",
+      "py": "jìn",
+      "ru": "близко",
+      "id": "b099",
+      "file": "assets/basic-words-audio/b099.mp3"
+    },
+    {
+      "hz": "进",
+      "py": "jìn",
+      "ru": "входить",
+      "id": "b100",
+      "file": "assets/basic-words-audio/b100.mp3"
+    },
+    {
+      "hz": "出",
+      "py": "chū",
+      "ru": "выходить",
+      "id": "b101",
+      "file": "assets/basic-words-audio/b101.mp3"
+    },
+    {
+      "hz": "到",
+      "py": "dào",
+      "ru": "прибывать",
+      "id": "b102",
+      "file": "assets/basic-words-audio/b102.mp3"
+    },
+    {
+      "hz": "从",
+      "py": "cóng",
+      "ru": "из, от",
+      "id": "b103",
+      "file": "assets/basic-words-audio/b103.mp3"
+    },
+    {
+      "hz": "向",
+      "py": "xiàng",
+      "ru": "в направлении",
+      "id": "b104",
+      "file": "assets/basic-words-audio/b104.mp3"
+    },
+    {
+      "hz": "左",
+      "py": "zuǒ",
+      "ru": "лево",
+      "id": "b105",
+      "file": "assets/basic-words-audio/b105.mp3"
+    },
+    {
+      "hz": "右",
+      "py": "yòu",
+      "ru": "право",
+      "id": "b106",
+      "file": "assets/basic-words-audio/b106.mp3"
+    },
+    {
+      "hz": "百",
+      "py": "bǎi",
+      "ru": "сто",
+      "id": "b107",
+      "file": "assets/basic-words-audio/b107.mp3"
+    },
+    {
+      "hz": "千",
+      "py": "qiān",
+      "ru": "тысяча",
+      "id": "b108",
+      "file": "assets/basic-words-audio/b108.mp3"
+    },
+    {
+      "hz": "个",
+      "py": "gè",
+      "ru": "универсальное счётное слово",
+      "id": "b109",
+      "file": "assets/basic-words-audio/b109.mp3"
+    },
+    {
+      "hz": "不对",
+      "py": "bú duì",
+      "ru": "неправильно",
+      "id": "b110",
+      "file": "assets/basic-words-audio/b110.mp3"
+    },
+    {
+      "hz": "好的",
+      "py": "hǎo de",
+      "ru": "хорошо",
+      "id": "b111",
+      "file": "assets/basic-words-audio/b111.mp3"
+    },
+    {
+      "hz": "好吧",
+      "py": "hǎo ba",
+      "ru": "ладно",
+      "id": "b112",
+      "file": "assets/basic-words-audio/b112.mp3"
+    },
+    {
+      "hz": "欢迎",
+      "py": "huānyíng",
+      "ru": "добро пожаловать",
+      "id": "b113",
+      "file": "assets/basic-words-audio/b113.mp3"
+    }
+  ]
+}
