@@ -1,0 +1,71 @@
+/* v71: exact direction from approved dialogue mockup, with real decorative SVG art. */
+#topics[data-simple-section="dialogues"]{
+ background:linear-gradient(160deg,#fffcff,#fbf2ff 72%,#fff5fb)!important;
+ border-radius:30px!important;padding:20px 16px 25px!important;
+ box-shadow:0 5px 22px #af7bb62b!important;
+}
+#topics[data-simple-section="dialogues"] .clean-section-head{margin-bottom:16px!important}
+#topics[data-simple-section="dialogues"] .clean-section-head h1{font:850 clamp(27px,6.5vw,36px)/1.2 system-ui!important;color:#4c2369!important}
+#topics[data-simple-section="dialogues"] .clean-section-head p{font-size:clamp(15px,4vw,18px)!important;line-height:1.5!important}
+#topics[data-simple-section="dialogues"] .clean-category-list{gap:13px!important}
+#topics[data-simple-section="dialogues"] .clean-category{
+ position:relative;isolation:isolate;min-height:116px!important;overflow:hidden;
+ display:grid;grid-template-columns:clamp(57px,13vw,76px) minmax(0,1fr) 22px!important;
+ gap:12px!important;padding:13px 14px!important;
+ border-radius:22px!important;border:1.6px solid var(--edge)!important;
+ background:linear-gradient(115deg,var(--start) 0%,var(--end) 100%)!important;
+ box-shadow:0 4px 15px var(--halo),0 0 6px var(--halo),inset 0 1px 0 #fff!important;
+}
+#topics[data-simple-section="dialogues"] .clean-category:nth-child(1){--start:#fff0f8;--end:#ffedf6;--edge:#f4accd;--halo:#f4b1d64c;--accent:#993974;--scene:url("./dialogue-sakura-v71.svg")}
+#topics[data-simple-section="dialogues"] .clean-category:nth-child(2){--start:#fff4e5;--end:#fff5eb;--edge:#f4c99e;--halo:#eec39350;--accent:#a36e43;--scene:url("./dialogue-pagoda-v71.svg")}
+#topics[data-simple-section="dialogues"] .clean-category:nth-child(3){--start:#edf7ff;--end:#e9f3ff;--edge:#b2d2f5;--halo:#a9cef555;--accent:#3265aa;--scene:url("./dialogue-clock-v71.svg")}
+#topics[data-simple-section="dialogues"] .clean-category:nth-child(4){--start:#edfff8;--end:#e6fcf3;--edge:#a6e5cd;--halo:#b2eccf59;--accent:#317e66;--scene:url("./dialogue-cafe-v71.svg")}
+#topics[data-simple-section="dialogues"] .clean-category::after{
+ content:""!important;position:absolute;z-index:0;inset:0 0 0 auto;
+ width:55%;opacity:.85;transform:none!important;pointer-events:none;
+ background:linear-gradient(90deg,transparent,rgba(255,255,255,.08) 100%),var(--scene) right center/cover no-repeat!important;
+ filter:none!important;
+}
+#topics[data-simple-section="dialogues"] .clean-category-icon{
+ width:clamp(54px,12vw,72px)!important;height:clamp(54px,12vw,72px)!important;
+ background:linear-gradient(140deg,#fffffffa,var(--start))!important;
+ border:1.5px solid var(--edge)!important;
+ border-radius:19px!important;
+ box-shadow:0 3px 12px var(--halo),inset 0 1px 0 #fff!important;
+ font-size:clamp(26px,6vw,34px)!important;color:var(--accent)!important;
+ position:relative;z-index:2;
+}
+#topics[data-simple-section="dialogues"] .clean-category>span:nth-child(2){min-width:0;position:relative;z-index:2}
+#topics[data-simple-section="dialogues"] .clean-category strong{
+ font:850 clamp(17px,4.7vw,22px)/1.2 "Trebuchet MS",system-ui,sans-serif!important;
+ color:#49245c!important;text-wrap:pretty;
+}
+#topics[data-simple-section="dialogues"] .clean-category small{
+ color:#75617e!important;font:550 clamp(14px,3.9vw,17px)/1.35 system-ui!important;margin-top:7px!important;
+}
+#topics[data-simple-section="dialogues"] .clean-category>span:last-child{
+ position:relative;z-index:2;color:#693880!important;
+ font-size:clamp(27px,7vw,33px)!important;
+}
+#topics[data-simple-section="dialogues"] .clean-category:active{transform:scale(.987)}
+/* Recorded dialog: the tone adjustment is explicitly optional and reversible. */
+#topics .clean-dialog-voice{display:flex;align-items:center;flex-wrap:wrap;gap:8px;justify-content:space-between;background:linear-gradient(110deg,#f8f0fc,#fffaff);border:1px solid #dfc3ed;border-radius:13px;padding:9px 11px;margin:10px 0;font-size:14px;line-height:1.35;color:#5b3c78}
+#topics .clean-dialog-voice button{border-radius:11px;border:1px solid #bfa2dc;min-height:40px;padding:7px 12px;background:#fff;color:#653993;font:750 14px system-ui;cursor:pointer}
+#topics .clean-dialog-voice button:focus-visible{outline:3px solid #945bce;outline-offset:2px}
+@media(max-width:380px){
+ #topics[data-simple-section="dialogues"] .clean-category{grid-template-columns:55px minmax(0,1fr) 19px!important;gap:9px!important;padding:10px!important;min-height:106px!important}
+ #topics[data-simple-section="dialogues"] .clean-category-icon{width:52px!important;height:52px!important}
+ #topics[data-simple-section="dialogues"] .clean-category strong{font-size:17px!important}
+}
+
+/* User's third screenshot: actual cropped autumn temple photo, gently dimmed. */
+#launch-entry #launch-menu.six-lessons-menu{
+ background-color:#253044!important;
+ background-image:linear-gradient(180deg,rgba(19,25,34,.34),rgba(22,24,37,.40) 48%,rgba(19,22,35,.53)),url("./china-autumn-temple-v71.webp")!important;
+ background-size:cover!important;background-position:center center!important;
+ background-repeat:no-repeat!important;
+}
+#launch-entry #launch-menu.six-lessons-menu::before{
+ background:linear-gradient(180deg,rgba(19,23,39,.10),rgba(29,22,43,.27) 70%,rgba(17,22,33,.43))!important;
+}
+#launch-entry #launch-menu.six-lessons-menu>.six-original-scenery{display:none!important}
