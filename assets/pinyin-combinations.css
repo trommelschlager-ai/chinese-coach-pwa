@@ -1,0 +1,27 @@
+/* Introductory Mandarin initials and finals; scope to the new pronunciation mode. */
+#tones #pinyin-combinations{margin:10px 0 16px;display:block}
+#tones #pinyin-combinations[hidden]{display:none!important}
+#tones .pinyin-combo-intro{font:500 16px/1.52 system-ui;color:#513c61;background:#fffafc;border:1px solid #e8d3ef;border-radius:16px;padding:12px 14px;margin:0 0 12px}
+#tones .pinyin-combo-groups{display:grid;gap:11px}
+#tones .pinyin-combo-group{padding:14px;border:1px solid #e4d3ee;background:linear-gradient(135deg,#fffefd,#fff6fb);border-radius:18px;box-shadow:0 4px 13px #8966a00c}
+#tones .pinyin-combo-group:nth-child(2){background:linear-gradient(135deg,#fffefe,#f2f3ff)}
+#tones .pinyin-combo-group:nth-child(3){background:linear-gradient(135deg,#fffefd,#fff6ed)}
+#tones .pinyin-combo-group:nth-child(4){background:linear-gradient(135deg,#fffefd,#e9faf7)}
+#tones .pinyin-combo-group h3{font:800 22px/1.25 system-ui;color:#613a83;margin:0 0 5px}
+#tones .pinyin-combo-group p{font:500 14px/1.45 system-ui;color:#685878;margin:0 0 11px}
+#tones .pinyin-combo-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#tones .pinyin-combo-tile{position:relative;min-width:0;display:flex;align-items:center;flex-direction:column;justify-content:center;gap:2px;padding:9px 4px 8px;border-radius:15px;border:1.5px solid #d4b6e6;background:#fff;box-shadow:0 3px 10px #7956a012;color:#39234f;text-align:center;min-height:125px}
+#tones .pinyin-combo-tile strong{font:750 clamp(29px,8vw,42px)/1.3 "Noto Sans SC",system-ui}
+#tones .pinyin-combo-tile span:not(.pinyin-combo-play){font:750 clamp(18px,5vw,24px)/1.25 system-ui;color:#7947b0}
+#tones .pinyin-combo-tile small{font:500 clamp(12px,3.3vw,15px)/1.3 system-ui;color:#655674;overflow-wrap:anywhere}
+#tones .pinyin-combo-play{position:absolute;top:5px;right:7px;color:#a878cf;font:700 11px system-ui}
+#tones .pinyin-combo-tile.playing{border:2px solid #9b5ec4;background:#f6e9ff;box-shadow:0 0 0 2px #ead2f8}
+#tones .pinyin-combo-tile:focus-visible{outline:3px solid #9a60d5;outline-offset:3px}
+#tones .pinyin-combo-warning{font:500 15px/1.5 system-ui;color:#5b4669;border:1px solid #ead6c4;background:#fff8eb;padding:12px 14px;border-radius:14px;margin:13px 0 0}
+#tones .pinyin-combo-feedback{font:650 14px/1.4 system-ui;color:#6e467e;margin:9px 0 0;min-height:21px}
+@media(max-width:380px){
+ #tones .pinyin-combo-group{padding:11px}
+ #tones .pinyin-combo-tiles{gap:5px}
+ #tones .pinyin-combo-tile{min-height:116px;padding:7px 2px}
+}
+@media(prefers-reduced-motion:reduce){#tones .pinyin-combo-tile{transition:none}}
