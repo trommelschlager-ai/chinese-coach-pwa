@@ -13,7 +13,7 @@
     '<label for="mandarin-voice-choice">Голос на этом телефоне</label>',
     '<div class="voice-settings-row">',
     '<select id="mandarin-voice-choice" aria-label="Китайский голос"></select>',
-    '<button type="button" class="btn soft" id="mandarin-voice-preview">▶ Послушать</button>',
+    '<button type="button" class="btn soft" id="mandarin-voice-preview">▶ Голос телефона</button>',
     '</div>',
     '<label for="mandarin-voice-rate">Скорость: <output id="mandarin-voice-rate-value">0,94×</output></label>',
     '<input type="range" min="0.70" max="1.10" step="0.02" id="mandarin-voice-rate" value="0.94">',
@@ -66,10 +66,10 @@
   });
   select.addEventListener('change',()=>{
     put(key,select.value);
-    hint.textContent='Голос сохранён. Где есть запись носителя, приложение использует её; остальные фразы озвучивает выбранный китайский голос телефона.';
+    hint.textContent='Выбор сохранён для сравнения голоса телефона. В уроках используются MP3; системный голос автоматически не включается.';
   });
   details.querySelector('#mandarin-voice-preview').addEventListener('click',()=>{
-    if(typeof speakChinese==='function')speakChinese('你好！我很高兴认识你。',.95);
+    if(typeof speakChinese==='function')speakChinese('你好！我很高兴认识你。',.95,true);
   });
   details.querySelector('#mandarin-voice-install').addEventListener('click',()=>{
     if(typeof showChineseVoiceHelp==='function')showChineseVoiceHelp();
