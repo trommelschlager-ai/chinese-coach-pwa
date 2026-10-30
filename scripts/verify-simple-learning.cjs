@@ -45,7 +45,7 @@ assert(d.querySelector('[data-dialog-lesson="2"]'),'Conversation topic is visibl
 d.querySelector('[data-dialog-lesson="2"]').click();
 assert.equal(d.querySelectorAll('#topics .clean-dialog-line').length,6,'All conversation turns shown with no tones');
 w.openCourseLesson(2,2,0);
-assert.equal(d.querySelectorAll('.dialogue-row').length,6,'All dialogue turns remain visible');
+assert.equal(d.querySelectorAll('#course .dialogue-row').length,6,'All course dialogue turns remain visible');
 for(let n=0;n<3;n++)d.getElementById('course-next').click();
 assert.equal(w.location.hash,'#course/2/2/3');
 assert.equal(d.querySelectorAll('.current-line').length,1);
