@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "note": "Do not claim audio is ready until genuine Mandarin MP3s are supplied, checked and uploaded. A=female, B=male.",
+  "settings": {
+    "language": "zh-CN",
+    "pace": "natural, slightly slower than conversation",
+    "pitch": "natural",
+    "avoid": "robotic tone, changing tone contours, long pauses, English accent"
+  },
+  "entries": [
+    {
+      "lesson": 1,
+      "line": 1,
+      "speaker": "A",
+      "voice": "female",
+      "text": "你好！",
+      "pinyin": "nǐ hǎo!",
+      "translation": "Привет!",
+      "file": "assets/dialogue-voices/l1-01-a.mp3"
+    },
+    {
+      "lesson": 1,
+      "line": 2,
+      "speaker": "B",
+      "voice": "male",
+      "text": "你好！",
+      "pinyin": "nǐ hǎo!",
+      "translation": "Привет!",
+      "file": "assets/dialogue-voices/l1-02-b.mp3"
+    },
+    {
+      "lesson": 1,
+      "line": 3,
+      "speaker": "A",
+      "voice": "female",
+      "text": "你好吗？",
+      "pinyin": "nǐ hǎo ma?",
+      "translation": "Как дела?",
+      "file": "assets/dialogue-voices/l1-03-a.mp3"
+    },
+    {
+      "lesson": 1,
+      "line": 4,
+      "speaker": "B",
+      "voice": "male",
+      "text": "我很好，谢谢！",
+      "pinyin": "wǒ hěn hǎo, xièxie!",
+      "translation": "У меня всё хорошо, спасибо!",
+      "file": "assets/dialogue-voices/l1-04-b.mp3"
+    },
+    {
+      "lesson": 2,
+      "line": 1,
+      "speaker": "A",
+      "voice": "female",
+      "text": "你好！",
+      "pinyin": "nǐ hǎo!",
+      "translation": "Привет!",
+      "file": "assets/dialogue-voices/l2-01-a.mp3"
+    },
+    {
+      "lesson": 2,
+      "line": 2,
+      "speaker": "B",
+      "voice": "male",
+      "text": "你好！",
+      "pinyin": "nǐ hǎo!",
+      "translation": "Привет!",
+      "file": "assets/dialogue-voices/l2-02-b.mp3"
+    },
+    {
+      "lesson": 2,
+      "line": 3,
+      "speaker": "A",
+      "voice": "female",
+      "text": "你叫什么名字？",
+      "pinyin": "nǐ jiào shénme míngzi?",
+      "translation": "Как тебя зовут?",
+      "file": "assets/dialogue-voices/l2-03-a.mp3"
+    },
+    {
+      "lesson": 2,
+      "line": 4,
+      "speaker": "B",
+      "voice": "male",
+      "text": "我叫安娜。你呢？",
+      "pinyin": "wǒ jiào Ānnà. nǐ ne?",
+      "translation": "Меня зовут Анна. А тебя?",
+      "file": "assets/dialogue-voices/l2-04-b.mp3"
+    },
+    {
+      "lesson": 2,
+      "line": 5,
+      "speaker": "A",
+      "voice": "female",
+      "text": "我叫小明。",
+      "pinyin": "wǒ jiào Xiǎomíng.",
+      "translation": "Меня зовут Сяомин.",
+      "file": "assets/dialogue-voices/l2-05-a.mp3"
+    },
+    {
+      "lesson": 2,
+      "line": 6,
+      "speaker": "B",
+      "voice": "male",
+      "text": "再见！",
+      "pinyin": "zàijiàn!",
+      "translation": "До свидания!",
+      "file": "assets/dialogue-voices/l2-06-b.mp3"
+    },
+    {
+      "lesson": 3,
+      "line": 1,
+      "speaker": "A",
+      "voice": "female",
+      "text": "你好！你是哪国人？",
+      "pinyin": "nǐ hǎo! nǐ shì nǎ guó rén?",
+      "translation": "Привет! Из какой ты страны?",
+      "file": "assets/dialogue-voices/l3-01-a.mp3"
+    },
+    {
+      "lesson": 3,
+      "line": 2,
+      "speaker": "B",
+      "voice": "male",
+      "text": "我是俄罗斯人。你呢？",
+      "pinyin": "wǒ shì Éluósī rén. nǐ ne?",
+      "translation": "Я из России. А ты?",
+      "file": "assets/dialogue-voices/l3-02-b.mp3"
+    },
+    {
+      "lesson": 3,
+      "line": 3,
+      "speaker": "A",
+      "voice": "female",
+      "text": "我是中国人。",
+      "pinyin": "wǒ shì Zhōngguó rén.",
+      "translation": "Я китаец/китаянка.",
+      "file": "assets/dialogue-voices/l3-03-a.mp3"
+    },
+    {
+      "lesson": 3,
+      "line": 4,
+      "speaker": "B",
+      "voice": "male",
+      "text": "你住在哪里？",
+      "pinyin": "nǐ zhù zài nǎli?",
+      "translation": "Где ты живёшь?",
+      "file": "assets/dialogue-voices/l3-04-b.mp3"
+    },
+    {
+      "lesson": 3,
+      "line": 5,
+      "speaker": "A",
+      "voice": "female",
+      "text": "我住在北京。",
+      "pinyin": "wǒ zhù zài Běijīng.",
+      "translation": "Я живу в Пекине.",
+      "file": "assets/dialogue-voices/l3-05-a.mp3"
+    },
+    {
+      "lesson": 4,
+      "line": 1,
+      "speaker": "A",
+      "voice": "female",
+      "text": "你多大？",
+      "pinyin": "nǐ duō dà?",
+      "translation": "Сколько тебе лет?",
+      "file": "assets/dialogue-voices/l4-01-a.mp3"
+    },
+    {
+      "lesson": 4,
+      "line": 2,
+      "speaker": "B",
+      "voice": "male",
+      "text": "我二十五岁。",
+      "pinyin": "wǒ èrshíwǔ suì.",
+      "translation": "Мне 25.",
+      "file": "assets/dialogue-voices/l4-02-b.mp3"
+    },
+    {
+      "lesson": 4,
+      "line": 3,
+      "speaker": "A",
+      "voice": "female",
+      "text": "现在几点？",
+      "pinyin": "xiànzài jǐ diǎn?",
+      "translation": "Который час?",
+      "file": "assets/dialogue-voices/l4-03-a.mp3"
+    },
+    {
+      "lesson": 4,
+      "line": 4,
+      "speaker": "B",
+      "voice": "male",
+      "text": "现在三点。",
+      "pinyin": "xiànzài sān diǎn.",
+      "translation": "Сейчас три часа.",
+      "file": "assets/dialogue-voices/l4-04-b.mp3"
+    },
+    {
+      "lesson": 5,
+      "line": 1,
+      "speaker": "A",
+      "voice": "female",
+      "text": "你好！你想喝什么？",
+      "pinyin": "nǐ hǎo! nǐ xiǎng hē shénme?",
+      "translation": "Здравствуйте! Что будете пить?",
+      "file": "assets/dialogue-voices/l5-01-a.mp3"
+    },
+    {
+      "lesson": 5,
+      "line": 2,
+      "speaker": "B",
+      "voice": "male",
+      "text": "我想喝一杯茶。",
+      "pinyin": "wǒ xiǎng hē yì bēi chá.",
+      "translation": "Я хотел(а) бы чашку чая.",
+      "file": "assets/dialogue-voices/l5-02-b.mp3"
+    },
+    {
+      "lesson": 5,
+      "line": 3,
+      "speaker": "A",
+      "voice": "female",
+      "text": "好的。",
+      "pinyin": "hǎo de.",
+      "translation": "Хорошо.",
+      "file": "assets/dialogue-voices/l5-03-a.mp3"
+    },
+    {
+      "lesson": 5,
+      "line": 4,
+      "speaker": "B",
+      "voice": "male",
+      "text": "请问，多少钱？",
+      "pinyin": "qǐngwèn, duōshao qián?",
+      "translation": "Скажите, сколько стоит?",
+      "file": "assets/dialogue-voices/l5-04-b.mp3"
+    },
+    {
+      "lesson": 5,
+      "line": 5,
+      "speaker": "A",
+      "voice": "female",
+      "text": "十块。",
+      "pinyin": "shí kuài.",
+      "translation": "Десять юаней (разг.).",
+      "file": "assets/dialogue-voices/l5-05-a.mp3"
+    },
+    {
+      "lesson": 5,
+      "line": 6,
+      "speaker": "B",
+      "voice": "male",
+      "text": "谢谢！",
+      "pinyin": "xièxie!",
+      "translation": "Спасибо!",
+      "file": "assets/dialogue-voices/l5-06-b.mp3"
+    }
+  ]
+}
