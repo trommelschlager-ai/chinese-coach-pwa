@@ -1,0 +1,311 @@
+{
+  "version": 1,
+  "purpose": "Natural-sounding Mandarin MP3 preview for 32 vocabulary/rule phrases that currently fall back to phone TTS",
+  "commercialUse": "Preview only. Verify provider licensing before distributing with a paid product.",
+  "entries": [
+    {
+      "key": "中国",
+      "display": "中国",
+      "sources": [
+        "dictionary",
+        "vocab"
+      ],
+      "spoken": "中国",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s01.mp3"
+    },
+    {
+      "key": "你好",
+      "display": "你好",
+      "sources": [
+        "vocab",
+        "rule"
+      ],
+      "spoken": "你好",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s02.mp3"
+    },
+    {
+      "key": "您好",
+      "display": "您好",
+      "sources": [
+        "vocab"
+      ],
+      "spoken": "您好",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s03.mp3"
+    },
+    {
+      "key": "不客气",
+      "display": "不客气",
+      "sources": [
+        "vocab"
+      ],
+      "spoken": "不客气",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s04.mp3"
+    },
+    {
+      "key": "我叫小明",
+      "display": "我叫小明",
+      "sources": [
+        "vocab",
+        "rule"
+      ],
+      "spoken": "我叫小明",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s05.mp3"
+    },
+    {
+      "key": "俄罗斯",
+      "display": "俄罗斯",
+      "sources": [
+        "vocab"
+      ],
+      "spoken": "俄罗斯",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s06.mp3"
+    },
+    {
+      "key": "我住在中国",
+      "display": "我住在中国",
+      "sources": [
+        "vocab"
+      ],
+      "spoken": "我住在中国",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s07.mp3"
+    },
+    {
+      "key": "二十",
+      "display": "二十",
+      "sources": [
+        "vocab"
+      ],
+      "spoken": "二十",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s08.mp3"
+    },
+    {
+      "key": "几点",
+      "display": "几点",
+      "sources": [
+        "vocab"
+      ],
+      "spoken": "几点",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s09.mp3"
+    },
+    {
+      "key": "面条",
+      "display": "面条",
+      "sources": [
+        "vocab"
+      ],
+      "spoken": "面条",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s10.mp3"
+    },
+    {
+      "key": "多少钱",
+      "display": "多少钱",
+      "sources": [
+        "vocab"
+      ],
+      "spoken": "多少钱",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s11.mp3"
+    },
+    {
+      "key": "一杯茶",
+      "display": "一杯茶",
+      "sources": [
+        "vocab"
+      ],
+      "spoken": "一杯茶",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s12.mp3"
+    },
+    {
+      "key": "不要辣",
+      "display": "不要辣",
+      "sources": [
+        "vocab",
+        "rule"
+      ],
+      "spoken": "不要辣",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s13.mp3"
+    },
+    {
+      "key": "妈·麻·马·骂",
+      "display": "妈 · 麻 · 马 · 骂",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "妈，麻，马，骂。",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s14.mp3"
+    },
+    {
+      "key": "mā→má→mǎ→mà",
+      "display": "mā → má → mǎ → mà",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "妈，麻，马，骂。",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s15.mp3"
+    },
+    {
+      "key": "你好吗",
+      "display": "你好吗？",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "你好吗？",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s16.mp3"
+    },
+    {
+      "key": "你好您好",
+      "display": "你好！您好！",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "你好！您好！",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s17.mp3"
+    },
+    {
+      "key": "你叫什么名字",
+      "display": "你叫什么名字？",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "你叫什么名字？",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s18.mp3"
+    },
+    {
+      "key": "谢谢—不客气",
+      "display": "谢谢！— 不客气！",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "谢谢！不客气！",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s19.mp3"
+    },
+    {
+      "key": "我·你·他·她",
+      "display": "我 · 你 · 他 · 她",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "我，你，他，她。",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s20.mp3"
+    },
+    {
+      "key": "我是学生",
+      "display": "我是学生。",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "我是学生。",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s21.mp3"
+    },
+    {
+      "key": "我是俄罗斯人",
+      "display": "我是俄罗斯人。",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "我是俄罗斯人。",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s22.mp3"
+    },
+    {
+      "key": "你住在哪里",
+      "display": "你住在哪里？",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "你住在哪里？",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s23.mp3"
+    },
+    {
+      "key": "二十五",
+      "display": "二十五",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "二十五",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s24.mp3"
+    },
+    {
+      "key": "两个人",
+      "display": "两个人",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "两个人",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s25.mp3"
+    },
+    {
+      "key": "我二十五岁",
+      "display": "我二十五岁。",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "我二十五岁。",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s26.mp3"
+    },
+    {
+      "key": "现在几点",
+      "display": "现在几点？",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "现在几点？",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s27.mp3"
+    },
+    {
+      "key": "我想喝茶",
+      "display": "我想喝茶。",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "我想喝茶。",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s28.mp3"
+    },
+    {
+      "key": "我想喝一杯茶",
+      "display": "我想喝一杯茶。",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "我想喝一杯茶。",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s29.mp3"
+    },
+    {
+      "key": "请问这个多少钱",
+      "display": "请问，这个多少钱？",
+      "sources": [
+        "rule"
+      ],
+      "spoken": "请问，这个多少钱？",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "file": "assets/study-voices/s30.mp3"
+    }
+  ]
+}
