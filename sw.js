@@ -1,4 +1,4 @@
-const CACHE='chinese-coach-pwa-v57';
+const CACHE='chinese-coach-pwa-v58';
 // Only the application shell is required for an update. Pictures and audio are resumable downloads.
 const CORE=['./','./index.html','./hanzi-lab.html','./manifest.webmanifest','./assets/approved-home-v36.png','./assets/lessons-backdrop.webp','./assets/final-design.css?v=41','./assets/six-lessons-menu.css?v=2','./assets/learning-quality.css?v=53','./assets/semantic-art.js?v=29','./assets/voice-settings.js?v=3','./assets/listening-lab.js?v=3','./assets/pronunciation-hub.js?v=2','./assets/human-audio-map.js?v=49','./assets/learning-quality.js?v=57','./assets/simple-learning.css?v=55','./assets/approved-lesson-design.css?v=56','./assets/approved-lesson-design.js?v=57','./assets/offline-pack.json','./assets/vendor/hanzi-writer.min.js','./icons/icon-192.png','./icons/icon-512.png','./icons/maskable-512.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE.map(path=>new Request(path,{cache:'reload'})))).then(()=>self.skipWaiting())));

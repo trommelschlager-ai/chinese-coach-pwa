@@ -1,0 +1,10 @@
+{
+  "ready": true,
+  "count": 25,
+  "voices": {
+    "A": "zh-CN-XiaoxiaoNeural",
+    "B": "zh-CN-YunxiNeural"
+  },
+  "source": "edge-tts (Microsoft Edge Read Aloud); personal evaluation only",
+  "generated_at": "2026-10-30T05:27:43Z"
+}
