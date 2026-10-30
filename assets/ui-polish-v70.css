@@ -1,0 +1,144 @@
+/* v70: match the approved illustrated neon mockups more closely.
+   No changes to lesson data, Mandarin recordings, tone analysis or approved cover. */
+
+/* Approved photo 6: a clean, cropped, locally hosted image beneath a muted overlay.
+   Unlike v69 the real photograph is visible, not the old blurred raster menu. */
+#launch-entry #launch-menu.six-lessons-menu{
+ background-color:#24334b!important;
+ background-image:linear-gradient(180deg,rgba(12,24,40,.34),rgba(29,18,48,.53) 52%,rgba(17,21,40,.56)),url("./china-misty-pavilion-v70.webp")!important;
+ background-repeat:no-repeat!important;background-size:cover!important;background-position:center center!important;
+}
+#launch-entry #launch-menu.six-lessons-menu>.six-original-scenery{display:none!important}
+#launch-entry #launch-menu.six-lessons-menu::before{background:linear-gradient(180deg,#22172b11,#241d3840 45%,#1b26314d 100%)!important}
+#launch-entry #launch-menu.six-lessons-menu>.six-screen-content{
+ display:grid!important;grid-template-rows:minmax(0,1fr) 10.5%!important;
+ gap:1%!important;padding:3.5% 7.1% 2.4%!important;
+}
+#launch-entry #launch-menu .six-menu-header{display:none!important}
+#launch-entry #launch-menu .six-menu-cards{
+ height:min(73dvh,1100px)!important;max-height:none!important;
+ align-self:start!important;margin-top:clamp(34px,6.3dvh,90px)!important;
+ grid-template-rows:repeat(6,minmax(0,1fr))!important;gap:1.6%!important;
+}
+#launch-entry #launch-menu .six-card{
+ border-radius:clamp(19px,5vw,29px)!important;
+ border:1.5px solid #fffde8!important;
+ box-shadow:0 5px 19px #17223580,inset 0 1px 1px #fff!important;
+ font:800 clamp(18px,4.75vw,26px)/1.18 "Trebuchet MS",system-ui,sans-serif!important;
+ padding:7px clamp(12px,3vw,20px)!important;
+}
+#launch-entry #launch-menu .six-label{overflow-wrap:normal!important;letter-spacing:-.23px!important}
+#launch-entry #launch-menu .six-icon{filter:drop-shadow(0 1px 3px #fff8)}
+#launch-entry #launch-menu .six-menu-bottom{box-shadow:0 0 18px #ffe0f9ac,0 5px 19px #17223567!important}
+@media(max-height:720px){
+ #launch-entry #launch-menu.six-lessons-menu>.six-screen-content{padding:2.5% 7% 2%!important;min-height:0!important;position:absolute!important;overflow:auto!important}
+ #launch-entry #launch-menu .six-menu-cards{height:76dvh!important;margin-top:0!important}
+ #launch-entry #launch-menu .six-card{font-size:clamp(15px,4.3vw,21px)!important;padding-block:4px!important}
+}
+@media(max-width:355px){
+ #launch-entry #launch-menu .six-card{font-size:clamp(16px,4.7vw,19px)!important;gap:6px!important}
+ #launch-entry #launch-menu .six-icon{width:29px!important}
+}
+
+/* Dialogue selection: illustrated colored panels, not only thin border changes. */
+#topics[data-simple-section="dialogues"]{background:linear-gradient(155deg,#fffdfd,#f9effe 70%,#f6f1ff)!important}
+#topics[data-simple-section="dialogues"] .clean-category-list{gap:12px!important}
+#topics[data-simple-section="dialogues"] .clean-category{
+ position:relative;isolation:isolate;overflow:hidden;min-height:105px!important;
+ padding:14px!important;border:2px solid var(--dlg-edge)!important;
+ background:linear-gradient(105deg,var(--dlg-a) 0%,#fffdfdfa 55%,var(--dlg-b) 100%)!important;
+ box-shadow:0 3px 12px var(--dlg-glow),0 0 13px var(--dlg-glow),inset 0 1px 0 #fff!important;
+}
+#topics[data-simple-section="dialogues"] .clean-category::after{
+ content:var(--dlg-art);pointer-events:none;position:absolute;z-index:-1;
+ right:29px;top:50%;transform:translateY(-50%);font-size:clamp(44px,14vw,85px);
+ opacity:.2;filter:saturate(.8);
+}
+#topics[data-simple-section="dialogues"] .clean-category:nth-child(1){--dlg-art:"🌸";--dlg-a:#ffe5f2;--dlg-b:#ffe6f4;--dlg-edge:#f7a8cf;--dlg-glow:#f1a6d580}
+#topics[data-simple-section="dialogues"] .clean-category:nth-child(2){--dlg-art:"🏯";--dlg-a:#fff0dc;--dlg-b:#fff0e8;--dlg-edge:#fac291;--dlg-glow:#fac48a80}
+#topics[data-simple-section="dialogues"] .clean-category:nth-child(3){--dlg-art:"🕒";--dlg-a:#e2f2ff;--dlg-b:#e9f0ff;--dlg-edge:#9fc9ff;--dlg-glow:#a4d6fd80}
+#topics[data-simple-section="dialogues"] .clean-category:nth-child(4){--dlg-art:"☕";--dlg-a:#dffaf0;--dlg-b:#e9fff6;--dlg-edge:#8de4c3;--dlg-glow:#9de9cb80}
+#topics[data-simple-section="dialogues"] .clean-category-icon{
+ width:48px!important;height:51px!important;position:relative;z-index:1;
+ border:1.5px solid var(--dlg-edge)!important;box-shadow:0 2px 14px var(--dlg-glow)!important;
+ background:linear-gradient(140deg,#fff,#fff9)!important;font-size:28px!important;
+}
+#topics[data-simple-section="dialogues"] .clean-category>span:not(.clean-category-icon){position:relative;z-index:1}
+#topics[data-simple-section="dialogues"] .clean-category strong{font-size:clamp(18px,5vw,23px)!important;line-height:1.2!important}
+#topics[data-simple-section="dialogues"] .clean-category small{font-size:clamp(14px,3.5vw,17px)!important;margin-top:8px!important}
+
+/* Pronunciation: more visible neon, themed background art on four choices. */
+#tones .pronunciation-hub{padding:16px!important;background:linear-gradient(140deg,#fff9fd,#f9f0ff)!important;border-radius:26px!important}
+#tones .pronunciation-choices{gap:13px!important}
+#tones .pronunciation-choice{
+ position:relative;isolation:isolate;overflow:hidden;
+ min-height:99px!important;padding:14px!important;
+ border:2px solid var(--tone-edge)!important;border-radius:23px!important;
+ background:linear-gradient(110deg,var(--tone-a),#fffdfdf0 60%,var(--tone-b))!important;
+ box-shadow:0 3px 15px var(--tone-glow),0 0 11px var(--tone-glow),inset 0 1px 0 #fff!important;
+}
+#tones .pronunciation-choice::after{
+ content:var(--tone-art);position:absolute;pointer-events:none;z-index:-1;
+ top:50%;right:36px;transform:translateY(-50%);font-size:clamp(38px,12vw,70px);
+ opacity:.19;filter:saturate(.8);
+}
+#tones .pronunciation-choice:nth-child(1){--tone-a:#ffdef6;--tone-b:#ffe5f3;--tone-edge:#f0a5df;--tone-glow:#e78bd979;--tone-art:"〰"}
+#tones .pronunciation-choice:nth-child(2){--tone-a:#e0f3ff;--tone-b:#e9f5ff;--tone-edge:#92d5ff;--tone-glow:#7ecfff86;--tone-art:"🏯"}
+#tones .pronunciation-choice:nth-child(3){--tone-a:#dcffef;--tone-b:#e7fff8;--tone-edge:#8de6b7;--tone-glow:#77e9b280;--tone-art:"🌿"}
+#tones .pronunciation-choice:nth-child(4){--tone-a:#ffeddf;--tone-b:#ffe8f1;--tone-edge:#f4b6aa;--tone-glow:#f6a6af80;--tone-art:"🎤"}
+#tones .pronunciation-icon{
+ position:relative;z-index:1;
+ width:52px!important;height:52px!important;flex:0 0 52px!important;
+ background:linear-gradient(140deg,#fff,var(--tone-a))!important;
+ border:1px solid var(--tone-edge)!important;
+ box-shadow:0 3px 12px var(--tone-glow)!important;border-radius:18px!important;
+}
+#tones .pronunciation-choice-copy,#tones .pronunciation-chevron{position:relative;z-index:1}
+#tones .pronunciation-choice-copy strong{font-size:clamp(18px,4.8vw,22px)!important;color:#38234e!important}
+#tones .pronunciation-choice-copy small{font-size:clamp(14px,3.8vw,16px)!important;color:#615471!important;line-height:1.42!important}
+#tones .pronunciation-chevron{font-size:34px!important;color:var(--tone-ink,#7142b2)!important}
+
+/* Pronunciation practice: consistent neon button system with tight spacing. */
+#tones .practice>.panel:first-child{padding:clamp(14px,4.2vw,21px)!important;box-shadow:0 4px 20px #d7afd74d!important}
+#tones .practice .tbuttons{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px!important;margin:13px 0 10px!important}
+#tones #listen,#tones #contourSound,#tones #record,#tones #tone-check{
+ min-height:57px!important;border-width:2px!important;border-radius:24px!important;
+ font-size:clamp(14px,4vw,18px)!important;
+ box-shadow:0 0 10px currentColor,inset 0 1px 0 #fff!important;
+ background-image:none!important;
+}
+#tones #listen{background:linear-gradient(110deg,#dfffe9,#e9fff4)!important;color:#175b42!important;border-color:#81e6aa!important}
+#tones #contourSound{background:linear-gradient(110deg,#f0e5ff,#faeeff)!important;color:#7441a7!important;border-color:#d4aff7!important}
+#tones #record{background:linear-gradient(110deg,#e2f1ff,#f3efff)!important;color:#3d639f!important;border-color:#97c4f9!important}
+#tones #tone-check{background:linear-gradient(110deg,#ffe4f3,#fff1fa)!important;color:#8f306a!important;border-color:#f2a6d0!important;box-shadow:0 0 14px #f1a8d4b0,inset 0 1px 0 #fff!important}
+#tones .practice .voice-help{background:linear-gradient(105deg,#eff7ff,#f5faff)!important;border-color:#b8d9ee!important;margin-top:12px!important}
+#tones .practice #micmessage{line-height:1.45!important;color:#6a6080!important}
+#tones .practice .notice{display:none!important}
+
+/* Listening quiz: stronger controls, scenery tint and answer tile styling. */
+#tones #listening-lab{
+ border:2px solid #e4cdf9!important;border-radius:28px!important;
+ background-image:linear-gradient(115deg,#fffcfff2,#fffaf5e8),url("./chinese-pastel-wallpaper.svg")!important;
+ background-position:center,center!important;background-size:cover!important;
+ box-shadow:0 6px 25px #b789d54d,0 0 17px #ebd1f878!important;
+}
+#tones #listening-lab h2{font-size:clamp(23px,6.2vw,32px)!important;color:#322052!important;line-height:1.24!important}
+#tones #listening-lab .ear-actions{gap:9px!important;margin:13px 0 15px!important}
+#tones #ear-play{background:linear-gradient(125deg,#b883f2,#8047c8)!important;border:2px solid #d4a8ff!important;border-radius:19px!important;color:#fff!important;box-shadow:0 3px 17px #a576d1ad!important;text-shadow:none!important;font-weight:800!important}
+#tones #ear-replay{background:linear-gradient(120deg,#fffaff,#f6edff)!important;border:2px solid #e6cffa!important;border-radius:19px!important;color:#7957aa!important}
+#tones #listening-lab .ear-options button{
+ border:2px solid #e1c7f4!important;border-radius:18px!important;
+ background:linear-gradient(135deg,#fffdff,#f6eeff)!important;
+ box-shadow:0 2px 8px #d3b5e35c!important;min-height:74px!important;
+ color:#8150aa!important;font-size:clamp(16px,4.6vw,20px)!important;
+}
+#tones #listening-lab .ear-options button:disabled{opacity:.5!important}
+#tones #listening-lab .ear-options button.ear-correct{background:#def9ed!important;border-color:#5cb58b!important;color:#276f4b!important;opacity:1!important}
+#tones #listening-lab .ear-options button.ear-wrong{background:#ffedef!important;border-color:#e09ba4!important;color:#aa4351!important;opacity:1!important}
+#tones #listening-lab .ear-feedback{background:linear-gradient(110deg,#f8ecff,#f4effb)!important;border-color:#e3ccef!important;border-radius:17px!important;padding:13px 16px!important;line-height:1.5!important}
+@media(max-width:380px){
+ #tones .pronunciation-choice{min-height:91px!important;padding:11px!important}
+ #topics[data-simple-section="dialogues"] .clean-category{min-height:92px!important}
+ #tones #listen,#tones #contourSound,#tones #record,#tones #tone-check{font-size:14px!important;padding-inline:6px!important}
+}
+@media(prefers-reduced-motion:reduce){#tones .pronunciation-choice,#topics .clean-category{transition:none!important}}
