@@ -82,6 +82,8 @@ async def main():
     old = '<script src="./assets/human-audio-map.js?v=49"></script>'
     assert html.count(old) == 1, "Unexpected course entrypoint"
     html = html.replace(old, old + '\n<script src="./assets/study-audio-map.js?v=59"></script>')
+    assert html.count('./assets/learning-quality.js?v=57') == 1
+    html = html.replace('./assets/learning-quality.js?v=57', './assets/learning-quality.js?v=59')
     index.write_text(html, encoding="utf-8")
 
     worker = ROOT / "sw.js"
@@ -91,13 +93,15 @@ async def main():
     old_core = "'./assets/human-audio-map.js?v=49'"
     assert sw.count(old_core) == 1
     sw = sw.replace(old_core, old_core + ",'./assets/study-audio-map.js?v=59'")
+    assert sw.count('./assets/learning-quality.js?v=57') == 1
+    sw = sw.replace('./assets/learning-quality.js?v=57', './assets/learning-quality.js?v=59')
     worker.write_text(sw, encoding="utf-8")
 
     pack = ROOT / "assets/offline-pack.json"
     manifest = json.loads(pack.read_text(encoding="utf-8"))
     assert manifest["version"] == 58
     paths = ["./" + e["file"] for e in entries]
-    manifest["files"] = sorted(set(manifest["files"]) | set(paths) | {"./assets/study-audio-map.js?v=59"})
+    manifest["files"] = sorted((set(manifest["files"]) - {"./assets/learning-quality.js?v=57"}) | set(paths) | {"./assets/study-audio-map.js?v=59", "./assets/learning-quality.js?v=59"})
     manifest["bytes"] = manifest.get("bytes", 0) + sum((ROOT / e["file"]).stat().st_size for e in entries)
     manifest["version"] = 59
     pack.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
