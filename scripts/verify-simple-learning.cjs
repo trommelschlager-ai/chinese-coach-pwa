@@ -27,7 +27,7 @@ w.openLearningTopics('words');d.querySelector('[data-topic-lesson="3"]').click()
 assert.equal(w.location.hash,'#course/3/1/0');
 assert(!d.querySelector('.speech-practice').open,'Recording and checking are collapsed by default');
 assert(!d.querySelector('.recall-practice').open);
-assert.equal(d.querySelector('#focus-check').textContent,'Проверить мелодику тона','Single syllable checks are named honestly');
+assert.equal(d.querySelector('#focus-check').textContent,'Сравнить мелодику','Single syllable checks are named honestly');
 const recall=d.querySelector('.recall-practice');recall.open=true;await tick();
 assert(d.querySelector('.focus-russian').hidden&&d.querySelector('.focus-pinyin').hidden,'Recall must hide the answer');
 assert(d.getElementById('recall-assessment').hidden,'No premature self-assessment');
