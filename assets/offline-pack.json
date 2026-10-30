@@ -1,10 +1,10 @@
 {
-  "version": 56,
+  "version": 57,
   "bytes": 6122442,
   "files": [
     "./assets/approved-home-v36.png",
     "./assets/approved-lesson-design.css?v=56",
-    "./assets/approved-lesson-design.js?v=56",
+    "./assets/approved-lesson-design.js?v=57",
     "./assets/artwork-provenance.md",
     "./assets/china-landscape.svg",
     "./assets/chinese-lake-vocab.svg",
@@ -112,7 +112,7 @@
     "./assets/learning-quality.css",
     "./assets/learning-quality.css?v=53",
     "./assets/learning-quality.js",
-    "./assets/learning-quality.js?v=55",
+    "./assets/learning-quality.js?v=57",
     "./assets/lessons-backdrop.webp",
     "./assets/listening-lab.js",
     "./assets/listening-lab.js?v=3",
