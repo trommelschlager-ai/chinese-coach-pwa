@@ -5,6 +5,11 @@
     "A": "zh-CN-XiaoxiaoNeural",
     "B": "zh-CN-YunxiNeural"
   },
-  "source": "edge-tts (Microsoft Edge Read Aloud); personal evaluation only",
-  "generated_at": "2026-10-30T05:27:43Z"
+  "source": "Original Xiaoxiao/Yunxi MP3s with subtle offline ffmpeg pitch adjustment; not newly recorded; personal evaluation only",
+  "generated_at": "2026-10-30T05:27:43Z",
+  "processing": "mature-timbre-v71",
+  "pitch_factors": {
+    "A": 0.91,
+    "B": 0.86
+  }
 }
