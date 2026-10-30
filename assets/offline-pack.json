@@ -1,6 +1,6 @@
 {
-  "version": 59,
-  "bytes": 6768570,
+  "version": 60,
+  "bytes": 6775577,
   "files": [
     "./assets/approved-home-v36.png",
     "./assets/approved-lesson-design.css?v=56",
@@ -176,6 +176,7 @@
     "./assets/meaning-water.webp",
     "./assets/meaning-woman.webp",
     "./assets/meaning-work.webp",
+    "./assets/mobile-compact-v60.css?v=60",
     "./assets/pronunciation-hub.js",
     "./assets/pronunciation-hub.js?v=2",
     "./assets/scene-daily-banner.svg",
