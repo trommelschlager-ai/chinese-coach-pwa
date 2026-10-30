@@ -1,0 +1,1696 @@
+{
+  "version": 1,
+  "groups": [
+    {
+      "letter": "A",
+      "title": "a → ao · простые финали",
+      "hint": "a, ai, an, ang и ao. Отличай передний -n от заднего -ng.",
+      "items": [
+        {
+          "unit": "a",
+          "py": "bā",
+          "hz": "八",
+          "ru": "восемь",
+          "id": "p001"
+        },
+        {
+          "unit": "ai",
+          "py": "ài",
+          "hz": "爱",
+          "ru": "любить",
+          "id": "p002"
+        },
+        {
+          "unit": "an",
+          "py": "ān",
+          "hz": "安",
+          "ru": "спокойствие",
+          "id": "p003"
+        },
+        {
+          "unit": "ang",
+          "py": "áng",
+          "hz": "昂",
+          "ru": "высокий",
+          "id": "p004"
+        },
+        {
+          "unit": "ao",
+          "py": "ǎo",
+          "hz": "袄",
+          "ru": "куртка",
+          "id": "p005"
+        }
+      ]
+    },
+    {
+      "letter": "B",
+      "title": "b · согласная",
+      "hint": "b без сильного придыхания. Сравни потом с p.",
+      "items": [
+        {
+          "unit": "b",
+          "py": "bāo",
+          "hz": "包",
+          "ru": "сумка",
+          "id": "p006"
+        }
+      ]
+    },
+    {
+      "letter": "C",
+      "title": "c · ch",
+      "hint": "c — передний придыхательный звук; ch — с языком, загнутым назад.",
+      "items": [
+        {
+          "unit": "c",
+          "py": "cài",
+          "hz": "菜",
+          "ru": "блюдо",
+          "id": "p007"
+        },
+        {
+          "unit": "ch",
+          "py": "chī",
+          "hz": "吃",
+          "ru": "есть",
+          "id": "p008"
+        }
+      ]
+    },
+    {
+      "letter": "D",
+      "title": "d · согласная",
+      "hint": "d без сильного придыхания; t произносится с сильнее заметным выдохом.",
+      "items": [
+        {
+          "unit": "d",
+          "py": "dà",
+          "hz": "大",
+          "ru": "большой",
+          "id": "p009"
+        }
+      ]
+    },
+    {
+      "letter": "E",
+      "title": "e → er · финали",
+      "hint": "e не всегда русское «э»; ei — скользящее сочетание. er — особый слог.",
+      "items": [
+        {
+          "unit": "e",
+          "py": "è",
+          "hz": "饿",
+          "ru": "голодный",
+          "id": "p010"
+        },
+        {
+          "unit": "ei",
+          "py": "bēi",
+          "hz": "杯",
+          "ru": "чашка",
+          "id": "p011"
+        },
+        {
+          "unit": "en",
+          "py": "ēn",
+          "hz": "恩",
+          "ru": "доброта",
+          "id": "p012"
+        },
+        {
+          "unit": "eng",
+          "py": "dēng",
+          "hz": "灯",
+          "ru": "лампа",
+          "id": "p013"
+        },
+        {
+          "unit": "er",
+          "py": "èr",
+          "hz": "二",
+          "ru": "два",
+          "id": "p014"
+        }
+      ]
+    },
+    {
+      "letter": "F",
+      "title": "f · согласная",
+      "hint": "f похожа на русскую «ф».",
+      "items": [
+        {
+          "unit": "f",
+          "py": "fàn",
+          "hz": "饭",
+          "ru": "еда",
+          "id": "p015"
+        }
+      ]
+    },
+    {
+      "letter": "G",
+      "title": "g · согласная",
+      "hint": "g без придыхания, в отличие от k.",
+      "items": [
+        {
+          "unit": "g",
+          "py": "gē",
+          "hz": "哥",
+          "ru": "старший брат",
+          "id": "p016"
+        }
+      ]
+    },
+    {
+      "letter": "H",
+      "title": "h · согласная",
+      "hint": "h образуется глубже в горле; не совсем русское «х».",
+      "items": [
+        {
+          "unit": "h",
+          "py": "hǎo",
+          "hz": "好",
+          "ru": "хорошо",
+          "id": "p017"
+        }
+      ]
+    },
+    {
+      "letter": "I",
+      "title": "i → iu · финали",
+      "hint": "После некоторых согласных i звучит необычно: в zi, zhi она не равна обычному «и».",
+      "items": [
+        {
+          "unit": "i",
+          "py": "yī",
+          "hz": "衣",
+          "ru": "одежда",
+          "id": "p018"
+        },
+        {
+          "unit": "ia",
+          "py": "jiā",
+          "hz": "家",
+          "ru": "дом",
+          "id": "p019"
+        },
+        {
+          "unit": "ian",
+          "py": "tiān",
+          "hz": "天",
+          "ru": "небо",
+          "id": "p020"
+        },
+        {
+          "unit": "iang",
+          "py": "xiāng",
+          "hz": "香",
+          "ru": "ароматный",
+          "id": "p021"
+        },
+        {
+          "unit": "iao",
+          "py": "xiǎo",
+          "hz": "小",
+          "ru": "маленький",
+          "id": "p022"
+        },
+        {
+          "unit": "ie",
+          "py": "xiè",
+          "hz": "谢",
+          "ru": "благодарить",
+          "id": "p023"
+        },
+        {
+          "unit": "in",
+          "py": "xīn",
+          "hz": "新",
+          "ru": "новый",
+          "id": "p024"
+        },
+        {
+          "unit": "ing",
+          "py": "tīng",
+          "hz": "听",
+          "ru": "слушать",
+          "id": "p025"
+        },
+        {
+          "unit": "iong",
+          "py": "xióng",
+          "hz": "熊",
+          "ru": "медведь",
+          "id": "p026"
+        },
+        {
+          "unit": "iu",
+          "py": "liù",
+          "hz": "六",
+          "ru": "шесть",
+          "id": "p027"
+        }
+      ]
+    },
+    {
+      "letter": "J",
+      "title": "j · согласная",
+      "hint": "j — мягкий звук без сильного выдоха. Сравни с q.",
+      "items": [
+        {
+          "unit": "j",
+          "py": "jī",
+          "hz": "鸡",
+          "ru": "курица",
+          "id": "p028"
+        }
+      ]
+    },
+    {
+      "letter": "K",
+      "title": "k · согласная",
+      "hint": "k произносится с придыханием; в паре g/k важно ощущать выдох.",
+      "items": [
+        {
+          "unit": "k",
+          "py": "kě",
+          "hz": "可",
+          "ru": "можно",
+          "id": "p029"
+        }
+      ]
+    },
+    {
+      "letter": "L",
+      "title": "l · согласная",
+      "hint": "l произносится кончиком языка у верхних зубов.",
+      "items": [
+        {
+          "unit": "l",
+          "py": "lái",
+          "hz": "来",
+          "ru": "приходить",
+          "id": "p030"
+        }
+      ]
+    },
+    {
+      "letter": "M",
+      "title": "m · согласная",
+      "hint": "m — носовой звук.",
+      "items": [
+        {
+          "unit": "m",
+          "py": "mā",
+          "hz": "妈",
+          "ru": "мама",
+          "id": "p031"
+        }
+      ]
+    },
+    {
+      "letter": "N",
+      "title": "n · согласная",
+      "hint": "n — носовой звук, не путай с l.",
+      "items": [
+        {
+          "unit": "n",
+          "py": "nǐ",
+          "hz": "你",
+          "ru": "ты",
+          "id": "p032"
+        }
+      ]
+    },
+    {
+      "letter": "O",
+      "title": "o → ou · финали",
+      "hint": "ong — носовая финаль; ou — скользящий гласный.",
+      "items": [
+        {
+          "unit": "o",
+          "py": "bō",
+          "hz": "波",
+          "ru": "волна",
+          "id": "p033"
+        },
+        {
+          "unit": "ong",
+          "py": "dōng",
+          "hz": "东",
+          "ru": "восток",
+          "id": "p034"
+        },
+        {
+          "unit": "ou",
+          "py": "ōu",
+          "hz": "欧",
+          "ru": "Европа",
+          "id": "p035"
+        }
+      ]
+    },
+    {
+      "letter": "P",
+      "title": "p · согласная",
+      "hint": "p — сильное придыхание; поднеси ладонь ко рту и почувствуй выдох.",
+      "items": [
+        {
+          "unit": "p",
+          "py": "pāi",
+          "hz": "拍",
+          "ru": "хлопать",
+          "id": "p036"
+        }
+      ]
+    },
+    {
+      "letter": "Q",
+      "title": "q · согласная",
+      "hint": "q похожа на мягкий придыхательный «ч», не путай с ch.",
+      "items": [
+        {
+          "unit": "q",
+          "py": "qī",
+          "hz": "七",
+          "ru": "семь",
+          "id": "p037"
+        }
+      ]
+    },
+    {
+      "letter": "R",
+      "title": "r · согласная",
+      "hint": "Китайская r не равна русской раскатистой «р».",
+      "items": [
+        {
+          "unit": "r",
+          "py": "rén",
+          "hz": "人",
+          "ru": "человек",
+          "id": "p038"
+        }
+      ]
+    },
+    {
+      "letter": "S",
+      "title": "s · sh",
+      "hint": "s — передний звук, sh — с загнутым назад языком.",
+      "items": [
+        {
+          "unit": "s",
+          "py": "sān",
+          "hz": "三",
+          "ru": "три",
+          "id": "p039"
+        },
+        {
+          "unit": "sh",
+          "py": "shū",
+          "hz": "书",
+          "ru": "книга",
+          "id": "p040"
+        }
+      ]
+    },
+    {
+      "letter": "T",
+      "title": "t · согласная",
+      "hint": "t с выраженным придыханием, в отличие от d.",
+      "items": [
+        {
+          "unit": "t",
+          "py": "tā",
+          "hz": "他",
+          "ru": "он",
+          "id": "p041"
+        }
+      ]
+    },
+    {
+      "letter": "U",
+      "title": "u → uo · финали",
+      "hint": "ui и un — сокращённые записи uei и uen. Различай u и ü.",
+      "items": [
+        {
+          "unit": "u",
+          "py": "wū",
+          "hz": "屋",
+          "ru": "дом",
+          "id": "p042"
+        },
+        {
+          "unit": "ua",
+          "py": "huā",
+          "hz": "花",
+          "ru": "цветок",
+          "id": "p043"
+        },
+        {
+          "unit": "uai",
+          "py": "kuài",
+          "hz": "快",
+          "ru": "быстрый",
+          "id": "p044"
+        },
+        {
+          "unit": "uan",
+          "py": "guān",
+          "hz": "关",
+          "ru": "закрывать",
+          "id": "p045"
+        },
+        {
+          "unit": "uang",
+          "py": "guāng",
+          "hz": "光",
+          "ru": "свет",
+          "id": "p046"
+        },
+        {
+          "unit": "ueng",
+          "py": "wēng",
+          "hz": "翁",
+          "ru": "старец",
+          "id": "p047"
+        },
+        {
+          "unit": "ui",
+          "py": "shuǐ",
+          "hz": "水",
+          "ru": "вода",
+          "id": "p048"
+        },
+        {
+          "unit": "un",
+          "py": "chūn",
+          "hz": "春",
+          "ru": "весна",
+          "id": "p049"
+        },
+        {
+          "unit": "uo",
+          "py": "guó",
+          "hz": "国",
+          "ru": "страна",
+          "id": "p050"
+        }
+      ]
+    },
+    {
+      "letter": "Ü",
+      "title": "ü · финали с округлёнными губами",
+      "hint": "Скажи «и», сохрани положение языка и округли губы как для «у».",
+      "items": [
+        {
+          "unit": "ü",
+          "py": "nǚ",
+          "hz": "女",
+          "ru": "женщина",
+          "id": "p051"
+        },
+        {
+          "unit": "üe",
+          "py": "yuè",
+          "hz": "月",
+          "ru": "луна",
+          "id": "p052"
+        },
+        {
+          "unit": "üan",
+          "py": "yuán",
+          "hz": "圆",
+          "ru": "круглый",
+          "id": "p053"
+        },
+        {
+          "unit": "ün",
+          "py": "yún",
+          "hz": "云",
+          "ru": "облако",
+          "id": "p054"
+        }
+      ]
+    },
+    {
+      "letter": "W",
+      "title": "w · вспомогательная буква",
+      "hint": "w записывает слоги без начального согласного: wu, wo, wai, wen.",
+      "items": [
+        {
+          "unit": "w",
+          "py": "wǒ",
+          "hz": "我",
+          "ru": "я",
+          "id": "p055"
+        }
+      ]
+    },
+    {
+      "letter": "X",
+      "title": "x · согласная",
+      "hint": "x — мягкая шипящая согласная; не путай с русским «кс».",
+      "items": [
+        {
+          "unit": "x",
+          "py": "xī",
+          "hz": "西",
+          "ru": "запад",
+          "id": "p056"
+        }
+      ]
+    },
+    {
+      "letter": "Y",
+      "title": "y · вспомогательная буква",
+      "hint": "y записывает слоги без начального согласного: yi, ya, ye, yu.",
+      "items": [
+        {
+          "unit": "y",
+          "py": "yī",
+          "hz": "一",
+          "ru": "один",
+          "id": "p057"
+        }
+      ]
+    },
+    {
+      "letter": "Z",
+      "title": "z · zh",
+      "hint": "z произносится с языком впереди; zh — с языком, загнутым назад.",
+      "items": [
+        {
+          "unit": "z",
+          "py": "zì",
+          "hz": "字",
+          "ru": "иероглиф",
+          "id": "p058"
+        },
+        {
+          "unit": "zh",
+          "py": "zhī",
+          "hz": "知",
+          "ru": "знать",
+          "id": "p059"
+        }
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "title": "1. Слог = начальная + финаль + тон",
+      "detail": "Начальной согласной может не быть. В bā: b + a + первый тон.",
+      "items": [
+        {
+          "py": "bā",
+          "hz": "八",
+          "ru": "восемь",
+          "id": "p001"
+        },
+        {
+          "py": "mā",
+          "hz": "妈",
+          "ru": "мама",
+          "id": "p031"
+        }
+      ]
+    },
+    {
+      "title": "2. Придыхание: b/p, d/t, g/k",
+      "detail": "Пары отличаются прежде всего силой выдоха, а не русским противопоставлением «звонкий/глухой».",
+      "items": [
+        {
+          "py": "bā",
+          "hz": "八",
+          "ru": "восемь",
+          "id": "p001"
+        },
+        {
+          "py": "pā",
+          "hz": "趴",
+          "ru": "лежать лицом вниз",
+          "id": "p060"
+        },
+        {
+          "py": "dà",
+          "hz": "大",
+          "ru": "большой",
+          "id": "p009"
+        },
+        {
+          "py": "tā",
+          "hz": "他",
+          "ru": "он",
+          "id": "p041"
+        },
+        {
+          "py": "gē",
+          "hz": "哥",
+          "ru": "брат",
+          "id": "p016"
+        },
+        {
+          "py": "kē",
+          "hz": "科",
+          "ru": "предмет науки",
+          "id": "p061"
+        }
+      ]
+    },
+    {
+      "title": "3. Передние z/c/s и загнутые zh/ch/sh/r",
+      "detail": "В zh, ch, sh кончик языка отходит назад. В z, c, s остаётся ближе к зубам.",
+      "items": [
+        {
+          "py": "zì",
+          "hz": "字",
+          "ru": "иероглиф",
+          "id": "p058"
+        },
+        {
+          "py": "cì",
+          "hz": "次",
+          "ru": "раз",
+          "id": "p062"
+        },
+        {
+          "py": "sì",
+          "hz": "四",
+          "ru": "четыре",
+          "id": "p063"
+        },
+        {
+          "py": "zhī",
+          "hz": "知",
+          "ru": "знать",
+          "id": "p059"
+        },
+        {
+          "py": "chī",
+          "hz": "吃",
+          "ru": "есть",
+          "id": "p008"
+        },
+        {
+          "py": "shī",
+          "hz": "诗",
+          "ru": "стих",
+          "id": "p064"
+        },
+        {
+          "py": "rì",
+          "hz": "日",
+          "ru": "день",
+          "id": "p065"
+        }
+      ]
+    },
+    {
+      "title": "4. Мягкие j/q/x",
+      "detail": "j без сильного выдоха, q с придыханием, x — щелевой звук. Не заменяй русскими «дж/ч/кс».",
+      "items": [
+        {
+          "py": "jī",
+          "hz": "鸡",
+          "ru": "курица",
+          "id": "p028"
+        },
+        {
+          "py": "qī",
+          "hz": "七",
+          "ru": "семь",
+          "id": "p037"
+        },
+        {
+          "py": "xī",
+          "hz": "西",
+          "ru": "запад",
+          "id": "p056"
+        }
+      ]
+    },
+    {
+      "title": "5. Особенная i после z, c, s, zh, ch, sh, r",
+      "detail": "В zi, ci, si, zhi, chi, shi, ri буква i не произносится как обычное «и».",
+      "items": [
+        {
+          "py": "zì",
+          "hz": "字",
+          "ru": "иероглиф",
+          "id": "p058"
+        },
+        {
+          "py": "cí",
+          "hz": "词",
+          "ru": "слово",
+          "id": "p066"
+        },
+        {
+          "py": "sì",
+          "hz": "四",
+          "ru": "четыре",
+          "id": "p063"
+        },
+        {
+          "py": "zhī",
+          "hz": "知",
+          "ru": "знать",
+          "id": "p059"
+        },
+        {
+          "py": "chī",
+          "hz": "吃",
+          "ru": "есть",
+          "id": "p008"
+        },
+        {
+          "py": "shì",
+          "hz": "是",
+          "ru": "быть",
+          "id": "p067"
+        },
+        {
+          "py": "rì",
+          "hz": "日",
+          "ru": "день",
+          "id": "p065"
+        }
+      ]
+    },
+    {
+      "title": "6. ü и написание после j, q, x, y",
+      "detail": "После j/q/x/y точки над ü опускаются: ju, qu, xu, yu. Но звучит ü, не u.",
+      "items": [
+        {
+          "py": "jǔ",
+          "hz": "举",
+          "ru": "поднимать",
+          "id": "p068"
+        },
+        {
+          "py": "qù",
+          "hz": "去",
+          "ru": "идти",
+          "id": "p069"
+        },
+        {
+          "py": "xū",
+          "hz": "需",
+          "ru": "нужно",
+          "id": "p070"
+        },
+        {
+          "py": "yú",
+          "hz": "鱼",
+          "ru": "рыба",
+          "id": "p071"
+        }
+      ]
+    },
+    {
+      "title": "7. После n и l точки над ü остаются",
+      "detail": "nǚ и lǜ не путай с nu и lu — это разные слоги.",
+      "items": [
+        {
+          "py": "nǚ",
+          "hz": "女",
+          "ru": "женщина",
+          "id": "p051"
+        },
+        {
+          "py": "lǜ",
+          "hz": "绿",
+          "ru": "зелёный",
+          "id": "p072"
+        }
+      ]
+    },
+    {
+      "title": "8. Почему пишут y и w",
+      "detail": "Если начального согласного нет, написание начинается с y/w: yi, wu, ya, wo, yu.",
+      "items": [
+        {
+          "py": "yī",
+          "hz": "衣",
+          "ru": "одежда",
+          "id": "p018"
+        },
+        {
+          "py": "wū",
+          "hz": "屋",
+          "ru": "дом",
+          "id": "p042"
+        },
+        {
+          "py": "yú",
+          "hz": "鱼",
+          "ru": "рыба",
+          "id": "p071"
+        },
+        {
+          "py": "wǒ",
+          "hz": "我",
+          "ru": "я",
+          "id": "p055"
+        }
+      ]
+    },
+    {
+      "title": "9. Сокращение iou → iu",
+      "detail": "После согласного полное сочетание iou пишут iu: liù, niú. Знак тона ставится над u.",
+      "items": [
+        {
+          "py": "liù",
+          "hz": "六",
+          "ru": "шесть",
+          "id": "p027"
+        },
+        {
+          "py": "niú",
+          "hz": "牛",
+          "ru": "корова",
+          "id": "p073"
+        }
+      ]
+    },
+    {
+      "title": "10. Сокращение uei → ui",
+      "detail": "После согласного uei пишут ui: shuǐ, duì. Знак тона ставится над i.",
+      "items": [
+        {
+          "py": "shuǐ",
+          "hz": "水",
+          "ru": "вода",
+          "id": "p048"
+        },
+        {
+          "py": "duì",
+          "hz": "对",
+          "ru": "верно",
+          "id": "p074"
+        }
+      ]
+    },
+    {
+      "title": "11. Сокращение uen → un",
+      "detail": "После согласного uen пишут un: chūn, lùn.",
+      "items": [
+        {
+          "py": "chūn",
+          "hz": "春",
+          "ru": "весна",
+          "id": "p049"
+        },
+        {
+          "py": "lùn",
+          "hz": "论",
+          "ru": "обсуждать",
+          "id": "p075"
+        }
+      ]
+    },
+    {
+      "title": "12. Куда ставить знак тона",
+      "detail": "Приоритет у a, затем o/e; в сочетаниях iu/ui знак над последней гласной.",
+      "items": [
+        {
+          "py": "hǎo",
+          "hz": "好",
+          "ru": "хорошо",
+          "id": "p017"
+        },
+        {
+          "py": "liù",
+          "hz": "六",
+          "ru": "шесть",
+          "id": "p027"
+        },
+        {
+          "py": "shuǐ",
+          "hz": "水",
+          "ru": "вода",
+          "id": "p048"
+        }
+      ]
+    },
+    {
+      "title": "13. Четыре тона и нейтральный",
+      "detail": "mā высокий ровный, má восходящий, mǎ низкий (изолированно с подъёмом), mà нисходящий; ma — без собственного устойчивого тона.",
+      "items": [
+        {
+          "py": "mā",
+          "hz": "妈",
+          "ru": "мама",
+          "id": "p031"
+        },
+        {
+          "py": "má",
+          "hz": "麻",
+          "ru": "конопля",
+          "id": "p076"
+        },
+        {
+          "py": "mǎ",
+          "hz": "马",
+          "ru": "лошадь",
+          "id": "p077"
+        },
+        {
+          "py": "mà",
+          "hz": "骂",
+          "ru": "ругать",
+          "id": "p078"
+        },
+        {
+          "py": "ma",
+          "hz": "吗",
+          "ru": "вопросительная частица",
+          "id": "p079"
+        }
+      ]
+    },
+    {
+      "title": "14. Два третьих тона подряд",
+      "detail": "В 你好 словарно nǐ hǎo, а в обычной речи первый слог звучит как ní.",
+      "items": [
+        {
+          "py": "nǐ hǎo",
+          "hz": "你好",
+          "ru": "привет",
+          "id": "p080"
+        },
+        {
+          "py": "hěn hǎo",
+          "hz": "很好",
+          "ru": "очень хорошо",
+          "id": "p081"
+        }
+      ]
+    },
+    {
+      "title": "15. Как меняется 不 (bù)",
+      "detail": "Перед 4-м тоном bù произносится bú, например bú shì; в других обычных случаях остаётся bù.",
+      "items": [
+        {
+          "py": "bú shì",
+          "hz": "不是",
+          "ru": "не является",
+          "id": "p082"
+        },
+        {
+          "py": "bù hǎo",
+          "hz": "不好",
+          "ru": "нехорошо",
+          "id": "p083"
+        }
+      ]
+    },
+    {
+      "title": "16. Как меняется 一 (yī)",
+      "detail": "Перед 4-м тоном часто yí, перед 1–3-м — yì. В изолированном чтении — yī.",
+      "items": [
+        {
+          "py": "yí gè",
+          "hz": "一个",
+          "ru": "один (предмет)",
+          "id": "p084"
+        },
+        {
+          "py": "yì tiān",
+          "hz": "一天",
+          "ru": "один день",
+          "id": "p085"
+        },
+        {
+          "py": "yī",
+          "hz": "一",
+          "ru": "один",
+          "id": "p057"
+        }
+      ]
+    },
+    {
+      "title": "17. Нейтральные слоги",
+      "detail": "Вторая часть слова может быть краткой и без значка тона.",
+      "items": [
+        {
+          "py": "māma",
+          "hz": "妈妈",
+          "ru": "мама",
+          "id": "p086"
+        },
+        {
+          "py": "xièxie",
+          "hz": "谢谢",
+          "ru": "спасибо",
+          "id": "p087"
+        },
+        {
+          "py": "ma",
+          "hz": "吗",
+          "ru": "вопросительная частица",
+          "id": "p079"
+        }
+      ]
+    },
+    {
+      "title": "18. Окончания -n и -ng",
+      "detail": "-n — язык у верхних зубов; -ng — задняя носовая финаль, язык дальше к мягкому нёбу.",
+      "items": [
+        {
+          "py": "xīn",
+          "hz": "新",
+          "ru": "новый",
+          "id": "p024"
+        },
+        {
+          "py": "xīng",
+          "hz": "星",
+          "ru": "звезда",
+          "id": "p088"
+        },
+        {
+          "py": "ān",
+          "hz": "安",
+          "ru": "спокойствие",
+          "id": "p003"
+        },
+        {
+          "py": "áng",
+          "hz": "昂",
+          "ru": "высокий",
+          "id": "p004"
+        }
+      ]
+    },
+    {
+      "title": "19. Апостроф разделяет слоги",
+      "detail": "Перед новым слогом на a/o/e ставят апостроф, когда без него возникает двусмысленность: Xī'ān ≠ xiān.",
+      "items": [
+        {
+          "py": "Xī'ān",
+          "hz": "西安",
+          "ru": "город Сиань",
+          "id": "p089"
+        },
+        {
+          "py": "xiān",
+          "hz": "先",
+          "ru": "раньше",
+          "id": "p090"
+        }
+      ]
+    },
+    {
+      "title": "20. -r и er",
+      "detail": "er — отдельный слог; в разговорной речи окончание -r добавляется к слову (儿化).",
+      "items": [
+        {
+          "py": "èr",
+          "hz": "二",
+          "ru": "два",
+          "id": "p014"
+        },
+        {
+          "py": "nǎr",
+          "hz": "哪儿",
+          "ru": "где",
+          "id": "p091"
+        }
+      ]
+    },
+    {
+      "title": "21. Не все сочетания букв допустимы",
+      "detail": "Например, sz — не стандартный слог пиньиня. Правильно zi, si; ch, sh, zh считаются одной начальной согласной.",
+      "items": [
+        {
+          "py": "zì",
+          "hz": "字",
+          "ru": "иероглиф",
+          "id": "p058"
+        },
+        {
+          "py": "sì",
+          "hz": "四",
+          "ru": "четыре",
+          "id": "p063"
+        },
+        {
+          "py": "chī",
+          "hz": "吃",
+          "ru": "есть",
+          "id": "p008"
+        }
+      ]
+    }
+  ],
+  "clips": [
+    {
+      "id": "p001",
+      "text": "八",
+      "pinyin": "bā",
+      "file": "assets/pinyin-reading/p001.mp3"
+    },
+    {
+      "id": "p002",
+      "text": "爱",
+      "pinyin": "ài",
+      "file": "assets/pinyin-reading/p002.mp3"
+    },
+    {
+      "id": "p003",
+      "text": "安",
+      "pinyin": "ān",
+      "file": "assets/pinyin-reading/p003.mp3"
+    },
+    {
+      "id": "p004",
+      "text": "昂",
+      "pinyin": "áng",
+      "file": "assets/pinyin-reading/p004.mp3"
+    },
+    {
+      "id": "p005",
+      "text": "袄",
+      "pinyin": "ǎo",
+      "file": "assets/pinyin-reading/p005.mp3"
+    },
+    {
+      "id": "p006",
+      "text": "包",
+      "pinyin": "bāo",
+      "file": "assets/pinyin-reading/p006.mp3"
+    },
+    {
+      "id": "p007",
+      "text": "菜",
+      "pinyin": "cài",
+      "file": "assets/pinyin-reading/p007.mp3"
+    },
+    {
+      "id": "p008",
+      "text": "吃",
+      "pinyin": "chī",
+      "file": "assets/pinyin-reading/p008.mp3"
+    },
+    {
+      "id": "p009",
+      "text": "大",
+      "pinyin": "dà",
+      "file": "assets/pinyin-reading/p009.mp3"
+    },
+    {
+      "id": "p010",
+      "text": "饿",
+      "pinyin": "è",
+      "file": "assets/pinyin-reading/p010.mp3"
+    },
+    {
+      "id": "p011",
+      "text": "杯",
+      "pinyin": "bēi",
+      "file": "assets/pinyin-reading/p011.mp3"
+    },
+    {
+      "id": "p012",
+      "text": "恩",
+      "pinyin": "ēn",
+      "file": "assets/pinyin-reading/p012.mp3"
+    },
+    {
+      "id": "p013",
+      "text": "灯",
+      "pinyin": "dēng",
+      "file": "assets/pinyin-reading/p013.mp3"
+    },
+    {
+      "id": "p014",
+      "text": "二",
+      "pinyin": "èr",
+      "file": "assets/pinyin-reading/p014.mp3"
+    },
+    {
+      "id": "p015",
+      "text": "饭",
+      "pinyin": "fàn",
+      "file": "assets/pinyin-reading/p015.mp3"
+    },
+    {
+      "id": "p016",
+      "text": "哥",
+      "pinyin": "gē",
+      "file": "assets/pinyin-reading/p016.mp3"
+    },
+    {
+      "id": "p017",
+      "text": "好",
+      "pinyin": "hǎo",
+      "file": "assets/pinyin-reading/p017.mp3"
+    },
+    {
+      "id": "p018",
+      "text": "衣",
+      "pinyin": "yī",
+      "file": "assets/pinyin-reading/p018.mp3"
+    },
+    {
+      "id": "p019",
+      "text": "家",
+      "pinyin": "jiā",
+      "file": "assets/pinyin-reading/p019.mp3"
+    },
+    {
+      "id": "p020",
+      "text": "天",
+      "pinyin": "tiān",
+      "file": "assets/pinyin-reading/p020.mp3"
+    },
+    {
+      "id": "p021",
+      "text": "香",
+      "pinyin": "xiāng",
+      "file": "assets/pinyin-reading/p021.mp3"
+    },
+    {
+      "id": "p022",
+      "text": "小",
+      "pinyin": "xiǎo",
+      "file": "assets/pinyin-reading/p022.mp3"
+    },
+    {
+      "id": "p023",
+      "text": "谢",
+      "pinyin": "xiè",
+      "file": "assets/pinyin-reading/p023.mp3"
+    },
+    {
+      "id": "p024",
+      "text": "新",
+      "pinyin": "xīn",
+      "file": "assets/pinyin-reading/p024.mp3"
+    },
+    {
+      "id": "p025",
+      "text": "听",
+      "pinyin": "tīng",
+      "file": "assets/pinyin-reading/p025.mp3"
+    },
+    {
+      "id": "p026",
+      "text": "熊",
+      "pinyin": "xióng",
+      "file": "assets/pinyin-reading/p026.mp3"
+    },
+    {
+      "id": "p027",
+      "text": "六",
+      "pinyin": "liù",
+      "file": "assets/pinyin-reading/p027.mp3"
+    },
+    {
+      "id": "p028",
+      "text": "鸡",
+      "pinyin": "jī",
+      "file": "assets/pinyin-reading/p028.mp3"
+    },
+    {
+      "id": "p029",
+      "text": "可",
+      "pinyin": "kě",
+      "file": "assets/pinyin-reading/p029.mp3"
+    },
+    {
+      "id": "p030",
+      "text": "来",
+      "pinyin": "lái",
+      "file": "assets/pinyin-reading/p030.mp3"
+    },
+    {
+      "id": "p031",
+      "text": "妈",
+      "pinyin": "mā",
+      "file": "assets/pinyin-reading/p031.mp3"
+    },
+    {
+      "id": "p032",
+      "text": "你",
+      "pinyin": "nǐ",
+      "file": "assets/pinyin-reading/p032.mp3"
+    },
+    {
+      "id": "p033",
+      "text": "波",
+      "pinyin": "bō",
+      "file": "assets/pinyin-reading/p033.mp3"
+    },
+    {
+      "id": "p034",
+      "text": "东",
+      "pinyin": "dōng",
+      "file": "assets/pinyin-reading/p034.mp3"
+    },
+    {
+      "id": "p035",
+      "text": "欧",
+      "pinyin": "ōu",
+      "file": "assets/pinyin-reading/p035.mp3"
+    },
+    {
+      "id": "p036",
+      "text": "拍",
+      "pinyin": "pāi",
+      "file": "assets/pinyin-reading/p036.mp3"
+    },
+    {
+      "id": "p037",
+      "text": "七",
+      "pinyin": "qī",
+      "file": "assets/pinyin-reading/p037.mp3"
+    },
+    {
+      "id": "p038",
+      "text": "人",
+      "pinyin": "rén",
+      "file": "assets/pinyin-reading/p038.mp3"
+    },
+    {
+      "id": "p039",
+      "text": "三",
+      "pinyin": "sān",
+      "file": "assets/pinyin-reading/p039.mp3"
+    },
+    {
+      "id": "p040",
+      "text": "书",
+      "pinyin": "shū",
+      "file": "assets/pinyin-reading/p040.mp3"
+    },
+    {
+      "id": "p041",
+      "text": "他",
+      "pinyin": "tā",
+      "file": "assets/pinyin-reading/p041.mp3"
+    },
+    {
+      "id": "p042",
+      "text": "屋",
+      "pinyin": "wū",
+      "file": "assets/pinyin-reading/p042.mp3"
+    },
+    {
+      "id": "p043",
+      "text": "花",
+      "pinyin": "huā",
+      "file": "assets/pinyin-reading/p043.mp3"
+    },
+    {
+      "id": "p044",
+      "text": "快",
+      "pinyin": "kuài",
+      "file": "assets/pinyin-reading/p044.mp3"
+    },
+    {
+      "id": "p045",
+      "text": "关",
+      "pinyin": "guān",
+      "file": "assets/pinyin-reading/p045.mp3"
+    },
+    {
+      "id": "p046",
+      "text": "光",
+      "pinyin": "guāng",
+      "file": "assets/pinyin-reading/p046.mp3"
+    },
+    {
+      "id": "p047",
+      "text": "翁",
+      "pinyin": "wēng",
+      "file": "assets/pinyin-reading/p047.mp3"
+    },
+    {
+      "id": "p048",
+      "text": "水",
+      "pinyin": "shuǐ",
+      "file": "assets/pinyin-reading/p048.mp3"
+    },
+    {
+      "id": "p049",
+      "text": "春",
+      "pinyin": "chūn",
+      "file": "assets/pinyin-reading/p049.mp3"
+    },
+    {
+      "id": "p050",
+      "text": "国",
+      "pinyin": "guó",
+      "file": "assets/pinyin-reading/p050.mp3"
+    },
+    {
+      "id": "p051",
+      "text": "女",
+      "pinyin": "nǚ",
+      "file": "assets/pinyin-reading/p051.mp3"
+    },
+    {
+      "id": "p052",
+      "text": "月",
+      "pinyin": "yuè",
+      "file": "assets/pinyin-reading/p052.mp3"
+    },
+    {
+      "id": "p053",
+      "text": "圆",
+      "pinyin": "yuán",
+      "file": "assets/pinyin-reading/p053.mp3"
+    },
+    {
+      "id": "p054",
+      "text": "云",
+      "pinyin": "yún",
+      "file": "assets/pinyin-reading/p054.mp3"
+    },
+    {
+      "id": "p055",
+      "text": "我",
+      "pinyin": "wǒ",
+      "file": "assets/pinyin-reading/p055.mp3"
+    },
+    {
+      "id": "p056",
+      "text": "西",
+      "pinyin": "xī",
+      "file": "assets/pinyin-reading/p056.mp3"
+    },
+    {
+      "id": "p057",
+      "text": "一",
+      "pinyin": "yī",
+      "file": "assets/pinyin-reading/p057.mp3"
+    },
+    {
+      "id": "p058",
+      "text": "字",
+      "pinyin": "zì",
+      "file": "assets/pinyin-reading/p058.mp3"
+    },
+    {
+      "id": "p059",
+      "text": "知",
+      "pinyin": "zhī",
+      "file": "assets/pinyin-reading/p059.mp3"
+    },
+    {
+      "id": "p060",
+      "text": "趴",
+      "pinyin": "pā",
+      "file": "assets/pinyin-reading/p060.mp3"
+    },
+    {
+      "id": "p061",
+      "text": "科",
+      "pinyin": "kē",
+      "file": "assets/pinyin-reading/p061.mp3"
+    },
+    {
+      "id": "p062",
+      "text": "次",
+      "pinyin": "cì",
+      "file": "assets/pinyin-reading/p062.mp3"
+    },
+    {
+      "id": "p063",
+      "text": "四",
+      "pinyin": "sì",
+      "file": "assets/pinyin-reading/p063.mp3"
+    },
+    {
+      "id": "p064",
+      "text": "诗",
+      "pinyin": "shī",
+      "file": "assets/pinyin-reading/p064.mp3"
+    },
+    {
+      "id": "p065",
+      "text": "日",
+      "pinyin": "rì",
+      "file": "assets/pinyin-reading/p065.mp3"
+    },
+    {
+      "id": "p066",
+      "text": "词",
+      "pinyin": "cí",
+      "file": "assets/pinyin-reading/p066.mp3"
+    },
+    {
+      "id": "p067",
+      "text": "是",
+      "pinyin": "shì",
+      "file": "assets/pinyin-reading/p067.mp3"
+    },
+    {
+      "id": "p068",
+      "text": "举",
+      "pinyin": "jǔ",
+      "file": "assets/pinyin-reading/p068.mp3"
+    },
+    {
+      "id": "p069",
+      "text": "去",
+      "pinyin": "qù",
+      "file": "assets/pinyin-reading/p069.mp3"
+    },
+    {
+      "id": "p070",
+      "text": "需",
+      "pinyin": "xū",
+      "file": "assets/pinyin-reading/p070.mp3"
+    },
+    {
+      "id": "p071",
+      "text": "鱼",
+      "pinyin": "yú",
+      "file": "assets/pinyin-reading/p071.mp3"
+    },
+    {
+      "id": "p072",
+      "text": "绿",
+      "pinyin": "lǜ",
+      "file": "assets/pinyin-reading/p072.mp3"
+    },
+    {
+      "id": "p073",
+      "text": "牛",
+      "pinyin": "niú",
+      "file": "assets/pinyin-reading/p073.mp3"
+    },
+    {
+      "id": "p074",
+      "text": "对",
+      "pinyin": "duì",
+      "file": "assets/pinyin-reading/p074.mp3"
+    },
+    {
+      "id": "p075",
+      "text": "论",
+      "pinyin": "lùn",
+      "file": "assets/pinyin-reading/p075.mp3"
+    },
+    {
+      "id": "p076",
+      "text": "麻",
+      "pinyin": "má",
+      "file": "assets/pinyin-reading/p076.mp3"
+    },
+    {
+      "id": "p077",
+      "text": "马",
+      "pinyin": "mǎ",
+      "file": "assets/pinyin-reading/p077.mp3"
+    },
+    {
+      "id": "p078",
+      "text": "骂",
+      "pinyin": "mà",
+      "file": "assets/pinyin-reading/p078.mp3"
+    },
+    {
+      "id": "p079",
+      "text": "吗",
+      "pinyin": "ma",
+      "file": "assets/pinyin-reading/p079.mp3"
+    },
+    {
+      "id": "p080",
+      "text": "你好",
+      "pinyin": "nǐ hǎo",
+      "file": "assets/pinyin-reading/p080.mp3"
+    },
+    {
+      "id": "p081",
+      "text": "很好",
+      "pinyin": "hěn hǎo",
+      "file": "assets/pinyin-reading/p081.mp3"
+    },
+    {
+      "id": "p082",
+      "text": "不是",
+      "pinyin": "bú shì",
+      "file": "assets/pinyin-reading/p082.mp3"
+    },
+    {
+      "id": "p083",
+      "text": "不好",
+      "pinyin": "bù hǎo",
+      "file": "assets/pinyin-reading/p083.mp3"
+    },
+    {
+      "id": "p084",
+      "text": "一个",
+      "pinyin": "yí gè",
+      "file": "assets/pinyin-reading/p084.mp3"
+    },
+    {
+      "id": "p085",
+      "text": "一天",
+      "pinyin": "yì tiān",
+      "file": "assets/pinyin-reading/p085.mp3"
+    },
+    {
+      "id": "p086",
+      "text": "妈妈",
+      "pinyin": "māma",
+      "file": "assets/pinyin-reading/p086.mp3"
+    },
+    {
+      "id": "p087",
+      "text": "谢谢",
+      "pinyin": "xièxie",
+      "file": "assets/pinyin-reading/p087.mp3"
+    },
+    {
+      "id": "p088",
+      "text": "星",
+      "pinyin": "xīng",
+      "file": "assets/pinyin-reading/p088.mp3"
+    },
+    {
+      "id": "p089",
+      "text": "西安",
+      "pinyin": "Xī'ān",
+      "file": "assets/pinyin-reading/p089.mp3"
+    },
+    {
+      "id": "p090",
+      "text": "先",
+      "pinyin": "xiān",
+      "file": "assets/pinyin-reading/p090.mp3"
+    },
+    {
+      "id": "p091",
+      "text": "哪儿",
+      "pinyin": "nǎr",
+      "file": "assets/pinyin-reading/p091.mp3"
+    }
+  ]
+}
