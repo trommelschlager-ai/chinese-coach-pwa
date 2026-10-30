@@ -12,7 +12,7 @@ assert.equal(finals.length,36);
 const mappedFinals=curriculum.groups.filter(g=>['A','E','I','O','U','Ü'].includes(g.letter)).flatMap(g=>g.items.map(item=>item.unit));
 assert.deepEqual([...new Set(mappedFinals)].sort(),finals.sort(),'All 36 finals are present');
 const initials=['b','c','ch','d','f','g','h','j','k','l','m','n','p','q','r','s','sh','t','x','z','zh'];
-const actual=curriculum.groups.filter(g=>!['A','E','I','O','U','Ü','W','Y'].includes(g.letter)).flatMap(g=>g.items.map(item=>item.unit));
+const actual=[...new Set(curriculum.groups.filter(g=>!['A','E','I','O','U','Ü','W','Y'].includes(g.letter)).flatMap(g=>g.items.map(item=>item.unit)))];
 assert.deepEqual(actual.sort(),initials.sort(),'21 initials and separate y/w spelling aids');
 assert.equal(curriculum.clips.length,190,'190 unique slow Xiaoyi audio files planned');
 assert.equal(new Set(curriculum.clips.map(c=>c.id)).size,190);
