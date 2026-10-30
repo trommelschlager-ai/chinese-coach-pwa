@@ -5,10 +5,13 @@ on:
       - ".github/workflows/generate-dialogue-audio.yml"
       - "scripts/generate_dialogue_mp3.py"
   workflow_dispatch:
+  issues:
+    types: [opened]
 permissions:
   contents: write
 jobs:
   generate:
+    if: github.event_name != 'issues' || startsWith(github.event.issue.title, '[generate-dialogue-audio]')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
