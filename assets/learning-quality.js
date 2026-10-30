@@ -58,7 +58,7 @@
  };
  $('vocab-topic').onchange=e=>{topicFilter=e.target.value;renderWords()};$('vocab-search').oninput=()=>renderWords();
  $('wordlist').addEventListener('click',e=>{const b=e.target.closest('[data-learn]');if(b){schedule(b.dataset.learn,state.learned.includes(b.dataset.learn));updateCourseMetrics()}});
- const notice=$('words').querySelector('.notice');notice.textContent='Записи носителя доступны для отдельных слов. Для остальных фраз используется китайский голос телефона. Голос и загрузки — в настройках.';
+ const notice=$('words').querySelector('.notice');notice.textContent='Для большинства слов доступны MP3. При недоступности записи роботизированный голос не включается. Загрузки — в настройках.';
  // User-owned settings remain available without occupying the lesson viewport.
  const settings=document.createElement('details');settings.id='app-settings';settings.className='app-settings';
  settings.innerHTML='<summary>Настройки</summary><div class="settings-content"><p class="settings-intro">Для проверки фраз нужен интернет. Оценка тонов приблизительная.</p><div id="offline-settings-slot"></div><button class="btn primary" id="download-course" type="button">Скачать материалы для занятий</button><p id="download-status" role="status" aria-live="polite"></p><button class="btn soft" id="open-voice-settings" type="button">Выбрать голос и скорость</button><button class="btn soft" id="apply-course-update" type="button" hidden>Применить обновление</button><details><summary>Об аудио и лицензиях</summary><p>Локальные записи слов: Yue Tan, CC BY-SA 3.0 US. Слог mā: Chen Wang, CC BY-SA. Источник: <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">audio-cmn</a>. Тоны и демонстрационные записи сохраняют авторство, указанное в соответствующих упражнениях.</p><p>Библиотека письма Hanzi Writer: Chanind, MIT; данные черт Make Me a Hanzi: Arphic Public License. <a href="https://github.com/chanind/hanzi-writer" target="_blank" rel="noopener noreferrer">Исходный код и лицензии</a>.</p></details><div id="backup-settings-slot"></div></div>';
@@ -283,6 +283,11 @@
   const [speaker,text]=line;
   try{await playWord(text,.97,token,speaker,ready?getDialogueClip(lessonId,index,speaker):null)}
   finally{if(token===audioGeneration)audioStatus.hidden=true}
+ };
+ window.playStandaloneDialogue=function(lessonId){
+  const lesson=COURSE.find(l=>l.id===Number(lessonId)&&l.id!==1);
+  if(!lesson)return Promise.resolve();
+  return playDialogue(lesson);
  };
  async function playDialogue(lesson){
   stopLearningAudio();const token=audioGeneration;
