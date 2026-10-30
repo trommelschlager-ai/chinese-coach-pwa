@@ -1,0 +1,36 @@
+name: Build complete A-Z Pinyin pronunciation previews
+on:
+  push:
+    paths:
+      - ".github/workflows/generate-pinyin-reading.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install synthesizer and audio validator
+        run: |
+          python -m pip install --disable-pip-version-check edge-tts==7.3.1
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          ffprobe -version | head -n 1
+      - name: Generate and validate all Pinyin syllables
+        run: python scripts/generate_pinyin_reading.py
+      - name: Publish 91 MP3 files with validation status
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/pinyin-reading/
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish validated A-Z Mandarin Pinyin pronunciation MP3 previews"
+            git push
+          fi
