@@ -26,6 +26,11 @@
         '<span class="pronunciation-choice-copy"><strong>Слушать тоны</strong><small>Узнай, как звучат четыре тона</small></span>',
         '<span class="pronunciation-chevron" aria-hidden="true">›</span>',
       '</button>',
+      '<button type="button" class="pronunciation-choice" data-pronunciation-mode="combinations">',
+        '<span class="pronunciation-icon" aria-hidden="true">拼</span>',
+        '<span class="pronunciation-choice-copy"><strong>Звукосочетания</strong><small>zh, ch, sh · z, c, s · ai, pai и другие</small></span>',
+        '<span class="pronunciation-chevron" aria-hidden="true">›</span>',
+      '</button>',
       '<button type="button" class="pronunciation-choice" data-pronunciation-mode="quiz">',
         '<span class="pronunciation-icon" aria-hidden="true">🧠</span>',
         '<span class="pronunciation-choice-copy"><strong>Угадать на слух</strong><small>10 вопросов · включая нейтральный тон</small></span>',
@@ -53,7 +58,7 @@
             '<p><a href="https://commons.wikimedia.org/wiki/File:Zh-m%C3%A1.ogg" target="_blank" rel="noopener noreferrer">麻 má: Yue Tan, CC BY-SA 3.0 US</a></p>',
             '<p><a href="https://commons.wikimedia.org/wiki/File:Zh-m%C7%8E.ogg" target="_blank" rel="noopener noreferrer">马 mǎ: Wei Gao / Vion Nicolas, CC BY 2.0 FR</a></p>',
           '</details>',
-          '<p class="pronunciation-demo-notice">Для части слов доступны локальные записи носителя. Фразы без готовой записи озвучивает выбранный китайский голос телефона.</p>',
+          '<p class="pronunciation-demo-notice">В уроках используется сохранённое MP3-аудио. Голос телефона включается только при ручном выборе образца.</p>',
         '</section>',
       '</details>',
       '<details id="pronunciation-howto"><summary>📖 Как заниматься</summary>',
@@ -61,6 +66,54 @@
       '</details>',
     '</div>'
   ].join('');
+
+
+  // Short beginner guide: initials, finals and full syllables are not interchangeable.
+  const combinations=[
+    {name:'zh · ch · sh',hint:'Похожие шипящие. Кончик языка немного загибается назад.',items:[
+      ['zhi','zhī','知','знать'],['chi','chī','吃','есть'],['shi','shī','诗','стих']
+    ]},
+    {name:'z · c · s',hint:'Произносятся с кончиком языка ближе к передним зубам.',items:[
+      ['zi','zì','字','иероглиф'],['ci','cì','次','раз'],['si','sì','四','четыре']
+    ]},
+    {name:'ai → pai',hint:'ai — финаль. p + ai = pai, то есть целый слог.',items:[
+      ['pai','pāi','拍','хлопать'],['bai','bái','白','белый'],['mai','mǎi','买','покупать']
+    ]},
+    {name:'j · q · x',hint:'Мягкие согласные. Следи за отличием q от ch.',items:[
+      ['ji','jī','鸡','курица'],['qi','qī','七','семь'],['xi','xī','西','запад']
+    ]},
+    {name:'ü',hint:'Произнеси «и» и округли губы, как для «у».',items:[
+      ['nü','nǚ','女','женщина']
+    ]}
+  ];
+  const comboSection=document.createElement('section');
+  comboSection.id='pinyin-combinations';
+  comboSection.className='pinyin-combinations';
+  comboSection.innerHTML='<p class="pinyin-combo-intro">Китайский слог обычно складывается из начального звука и финали. Нажимай на примеры, слушай и повторяй.</p>'+
+   '<div class="pinyin-combo-groups">'+combinations.map(group=>
+     '<section class="pinyin-combo-group"><h3>'+group.name+'</h3><p>'+group.hint+'</p><div class="pinyin-combo-tiles">'+
+     group.items.map(([id,py,hz,ru])=>
+       '<button type="button" class="pinyin-combo-tile" data-pinyin-audio="'+id+'" aria-label="Послушать '+py+' — '+ru+'"><strong lang="zh-Hans">'+hz+'</strong><span>'+py+'</span><small>'+ru+'</small><span class="pinyin-combo-play" aria-hidden="true">▶</span></button>'
+     ).join('')+'</div></section>'
+   ).join('')+'</div>'+
+   '<p class="pinyin-combo-warning"><strong>Важно:</strong> «sz» не используется как стандартное звукосочетание пиньиня. Есть отдельные z, s и слоги zi, si. А ch — одна начальная согласная из двух букв.</p>'+
+   '<p class="pinyin-combo-feedback" role="status" aria-live="polite"></p>';
+  const comboFeedback=comboSection.querySelector('.pinyin-combo-feedback');
+  let comboAudio=null;
+  function stopComboAudio(){if(comboAudio){comboAudio.pause();comboAudio=null;}comboSection.querySelectorAll('.pinyin-combo-tile').forEach(b=>b.classList.remove('playing'));}
+  comboSection.querySelectorAll('[data-pinyin-audio]').forEach(button=>button.addEventListener('click',async()=>{
+    stopComboAudio();
+    const id=button.dataset.pinyinAudio;
+    const a=new Audio('./assets/pinyin-combinations/'+id+'.mp3');
+    a.preload='auto';comboAudio=a;
+    button.classList.add('playing');
+    comboFeedback.textContent='Звучит пример — повтори слог.';
+    a.onended=()=>{if(comboAudio===a){stopComboAudio();comboFeedback.textContent='Повтори ещё раз или выбери следующий слог.';}};
+    a.onerror=()=>{if(comboAudio===a){stopComboAudio();comboFeedback.textContent='Запись не загрузилась. Проверь интернет или скачай материалы в настройках.';}};
+    try{await a.play();}catch{if(comboAudio===a){stopComboAudio();comboFeedback.textContent='Не получилось включить MP3. Нажми ещё раз.';}}
+  }));
+  window.addEventListener('learning-audio-stop',stopComboAudio);
+  window.addEventListener('pagehide',stopComboAudio);
 
   const view=document.createElement('section');
   view.id='pronunciation-selected-view';
@@ -73,15 +126,15 @@
   const voiceSlot=hub.querySelector('#pronunciation-voice-slot');
   voiceSlot.appendChild(voices);
   const settings=hub.querySelector('#pronunciation-settings');
-  const modeTitles={listen:'Слушать тоны',quiz:'Угадать на слух',speak:'Моё произношение'};
-  const sections={listen:[intro,grid],quiz:[lab],speak:[practice]};
+  const modeTitles={listen:'Слушать тоны',combinations:'Звукосочетания',quiz:'Угадать на слух',speak:'Моё произношение'};
+  const sections={listen:[intro,grid],combinations:[comboSection],quiz:[lab],speak:[practice]};
   let mode=null,voiceAudio=null;
 
   function hide(el,hidden){el.hidden=hidden;el.classList.toggle('pronunciation-panel-hidden',hidden);}
   function stopDemo(){if(voiceAudio){voiceAudio.pause();voiceAudio=null}}
   window.addEventListener('learning-audio-stop',stopDemo);
   function show(modeName,scroll=true){
-    stopDemo();
+    stopDemo();stopComboAudio();
     if(!Object.prototype.hasOwnProperty.call(sections,modeName))modeName=null;
     mode=modeName;
     hide(hub,!!mode);
