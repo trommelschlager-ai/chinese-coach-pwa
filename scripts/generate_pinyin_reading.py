@@ -15,9 +15,9 @@ import edge_tts
 
 ROOT = Path(__file__).resolve().parents[1]
 PLAN = ROOT / "assets/pinyin-reading-curriculum.json"
-OUT = ROOT / "assets/pinyin-reading"
+OUT = ROOT / "assets/pinyin-reading-v2"
 LEGACY = ROOT / "assets/pinyin-combinations"
-VOICE = "zh-CN-XiaoxiaoNeural"
+VOICE = "zh-CN-XiaoyiNeural"
 LEGACY_SAMPLES = {
     "知": "zhi", "吃": "chi", "诗": "shi", "字": "zi", "次": "ci",
     "四": "si", "拍": "pai", "白": "bai", "买": "mai",
@@ -48,17 +48,11 @@ async def generate_one(item: dict) -> None:
     if valid_mp3(path):
         print("REUSE", path.name, flush=True)
         return
-    old_name = LEGACY_SAMPLES.get(item["text"])
-    if old_name:
-        old = LEGACY / (old_name + ".mp3")
-        if valid_mp3(old):
-            shutil.copyfile(old, path)
-            print("COPY", path.name, item["text"], flush=True)
-            return
+    # Regenerate all samples for Xiaoyi; do not copy the previous Xiaoxiao voice.
     for attempt in range(1, 5):
         tmp = path.with_suffix(".tmp.mp3")
         try:
-            await edge_tts.Communicate(item["text"], voice=VOICE, rate="-3%").save(str(tmp))
+            await edge_tts.Communicate(item["text"], voice=VOICE, rate="-16%").save(str(tmp))
             if not valid_mp3(tmp):
                 raise RuntimeError("Invalid MP3 received")
             tmp.replace(path)
@@ -76,14 +70,15 @@ async def main() -> None:
     plan = json.loads(PLAN.read_text(encoding="utf-8"))
     assert len(plan["groups"]) == 26
     assert len(plan["rules"]) == 21
+    assert plan["version"] == 2
     clips = plan["clips"]
-    assert len(clips) >= 80
+    assert len(clips) >= 175
     assert len({e["id"] for e in clips}) == len(clips)
     assert len({e["text"] for e in clips}) == len(clips)
     OUT.mkdir(parents=True, exist_ok=True)
     for item in clips:
         await generate_one(item)
-        await asyncio.sleep(.4)
+        await asyncio.sleep(.23)
     if not all(valid_mp3(ROOT / item["file"]) for item in clips):
         raise RuntimeError("Some MP3 files missing or invalid")
     status = {
@@ -93,7 +88,7 @@ async def main() -> None:
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     }
     (OUT / "status.json").write_text(json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print("DONE", len(clips), "verified MP3 files", flush=True)
+    print("DONE", len(clips), "Xiaoyi MP3s; previous voice not reused", flush=True)
 
 
 if __name__ == "__main__":
