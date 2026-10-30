@@ -57,3 +57,15 @@
  #topics[data-simple-section="dialogues"] .clean-category-icon{width:52px!important;height:52px!important}
  #topics[data-simple-section="dialogues"] .clean-category strong{font-size:17px!important}
 }
+
+/* User's third screenshot: actual cropped autumn temple photo, gently dimmed. */
+#launch-entry #launch-menu.six-lessons-menu{
+ background-color:#253044!important;
+ background-image:linear-gradient(180deg,rgba(19,25,34,.34),rgba(22,24,37,.40) 48%,rgba(19,22,35,.53)),url("./china-autumn-temple-v71.webp")!important;
+ background-size:cover!important;background-position:center center!important;
+ background-repeat:no-repeat!important;
+}
+#launch-entry #launch-menu.six-lessons-menu::before{
+ background:linear-gradient(180deg,rgba(19,23,39,.10),rgba(29,22,43,.27) 70%,rgba(17,22,33,.43))!important;
+}
+#launch-entry #launch-menu.six-lessons-menu>.six-original-scenery{display:none!important}
