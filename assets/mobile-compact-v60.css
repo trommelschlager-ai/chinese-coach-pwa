@@ -1,0 +1,161 @@
+/* Mobile layout refinement v60. Preserve approved Chinese painting, approved cover,
+   all faces, neon color palette, lesson data, speaking/quiz functions and Hanzi lab. */
+@media (max-width: 600px){
+  body:not(.writing-simple) #topics{
+    padding:12px 12px 15px!important;
+  }
+  body:not(.writing-simple) #topics h1{
+    margin:2px 0 5px!important;
+    font-size:clamp(23px,5.7vw,28px)!important;
+  }
+  /* This instruction repeats what the five topic cards already communicate. */
+  body:not(.writing-simple) #topics .topic-lead{display:none!important}
+  body:not(.writing-simple) #topics .topic-grid{
+    gap:8px!important;margin-top:8px!important;
+  }
+  body:not(.writing-simple) #topics .topic-card{
+    min-height:77px!important;padding:9px 12px!important;
+    grid-template-columns:42px minmax(0,1fr) 20px!important;
+    column-gap:9px!important;border-radius:15px!important;
+  }
+  body:not(.writing-simple) #topics .topic-card .topic-icon{
+    width:42px;height:44px;font-size:23px!important;
+  }
+  body:not(.writing-simple) #topics .topic-card strong{
+    font-size:clamp(17px,4.6vw,20px)!important;
+  }
+  body:not(.writing-simple) #course .focus-toolbar{
+    margin:0 0 6px!important;padding:0!important;
+  }
+  body.focus-mode #course #course-content .focus-head{
+    margin:2px 0 7px!important;
+  }
+  body.focus-mode #course #course-content .focus-head h1{
+    font-size:clamp(22px,5.9vw,27px)!important;
+    line-height:1.24!important;
+  }
+  body.focus-mode #course #course-content .focus-stepnav{
+    gap:5px!important;margin:7px 0 11px!important;
+  }
+  body.focus-mode #course #course-content .focus-step{
+    min-height:45px!important;padding:6px 3px!important;
+  }
+  body.focus-mode #course #course-content .focus-step small{
+    font-size:clamp(12px,3.4vw,15px)!important;
+  }
+  /* Word cards should foreground the word, not identical instructions repeated 65 times. */
+  body.focus-mode #course .learning-one-step{display:none!important}
+  body.focus-mode #course #course-content .focus-wordcard{
+    padding:10px 11px 12px!important;
+  }
+  body.focus-mode #course #course-content .focus-wordcard .focus-phrase{
+    min-height:165px!important;
+    padding:9px 5px 4px!important;gap:4px!important;
+  }
+  body.focus-mode #course #course-content .focus-wordcard .focus-hanzi{
+    font-size:clamp(66px,16vw,89px)!important;line-height:1.14!important;
+  }
+  body.focus-mode #course #course-content .focus-wordcard .focus-pinyin{
+    font-size:clamp(24px,6.8vw,32px)!important;
+  }
+  body.focus-mode #course #course-content .focus-wordcard .focus-russian{
+    font-size:clamp(20px,5.5vw,26px)!important;
+  }
+  body.focus-mode #course .approved-word-sound{
+    width:41px;height:41px;font-size:19px;margin:2px auto!important;
+  }
+  body.focus-mode #course .approved-gold-divider{margin:0 0 7px!important}
+  body.focus-mode #course .approved-action-accordion{
+    margin:7px 0!important;border-radius:16px!important;
+  }
+  body.focus-mode #course .approved-action-accordion>summary{
+    min-height:56px!important;padding:8px 10px!important;gap:9px!important;
+  }
+  body.focus-mode #course .approved-action-accordion .approved-accordion-icon{
+    width:39px;height:39px;flex-basis:39px;font-size:21px!important;
+  }
+  body.focus-mode #course .approved-action-accordion .approved-accordion-copy strong{
+    font-size:clamp(16px,4.3vw,19px)!important;
+  }
+  body.focus-mode #course .approved-action-accordion .approved-accordion-copy small{
+    font-size:12px!important;
+  }
+  /* All dialogue lines remain fully visible; reduce whitespace, not learning data. */
+  #course .approved-dialogue-toolbar{
+    margin:0 0 11px!important;padding:9px!important;
+    border-radius:18px!important;gap:7px!important;
+  }
+  #course .approved-dialogue-toolbar .btn{
+    min-height:49px!important;border-radius:13px!important;
+    font-size:clamp(12px,3.3vw,15px)!important;
+    padding:5px 5px!important;
+  }
+  body.focus-mode #course #course-content .dialogue-transcript.approved-chat{
+    gap:9px!important;margin:4px 0 8px!important;
+  }
+  #course .approved-chat .approved-speaker{
+    flex:0 0 44px!important;padding-top:4px!important;gap:3px!important;
+  }
+  #course .approved-chat .approved-avatar{
+    width:44px!important;height:44px!important;
+  }
+  #course .approved-chat .approved-speaker-label{
+    font-size:10px!important;line-height:1.16!important;
+  }
+  #course .approved-chat .approved-chat-bubble{
+    border-radius:17px!important;padding:9px 9px 8px!important;
+  }
+  #course .approved-chat .approved-chat-hanzi{
+    font-size:clamp(27px,7.25vw,35px)!important;line-height:1.2!important;
+  }
+  #course .approved-chat .approved-chat-pinyin{
+    font-size:clamp(17px,4.55vw,21px)!important;line-height:1.3!important;
+  }
+  #course .approved-chat .approved-chat-russian{
+    font-size:clamp(14px,3.85vw,17px)!important;
+    line-height:1.3!important;margin-bottom:5px!important;
+  }
+  #course .approved-chat .approved-chat-actions{gap:6px!important;margin-top:5px!important}
+  #course .approved-chat .approved-chat-actions .btn{
+    min-height:45px!important;padding:5px 3px!important;
+    font-size:clamp(12px,3.45vw,15px)!important;
+  }
+  #course .approved-chat .approved-extra-check{margin-top:5px!important}
+  #course .approved-chat .approved-extra-check>summary{
+    min-height:38px!important;padding:7px 0!important;font-size:12px!important;
+  }
+  body.focus-mode #course #course-content .course-footnav{
+    margin:11px 0 0!important;
+  }
+  body.focus-mode #course #course-content .course-footnav .btn{
+    min-height:49px!important;font-size:17px!important;
+  }
+  /* Restore comfortable touch targets while reducing empty illustration height. */
+  body[data-current-page="tones"] #tones .tonegrid .tone{
+    min-height:clamp(195px,52vw,240px)!important;
+  }
+  body[data-current-page="tones"] #tones .tonegrid .tone .tone-title{
+    min-height:42px!important;
+  }
+  #tones .tone-intro.scenic{
+    padding:14px 16px!important;margin-bottom:10px!important;
+  }
+  #tones .tone-intro h2{font-size:clamp(22px,5.5vw,27px)!important;margin:6px 0!important}
+  #quiz .quizpanel{padding:12px 10px 16px!important}
+  #quiz #quizbody{gap:5px!important}
+  #quiz .quizword{
+    font-size:clamp(72px,22vw,104px)!important;padding:7px 2px!important;
+  }
+  #quiz #quizpinyin{margin:0 0 7px!important;font-size:clamp(23px,6vw,31px)!important}
+  #quiz #quizopts button{min-height:119px!important;padding:8px!important}
+  #quiz #quizbody>h3{font-size:clamp(20px,5.2vw,25px)!important}
+  #words .columnhead,#quiz .columnhead,#dialog .columnhead{padding:11px 13px!important}
+  #words .words{gap:9px!important}
+  #dialog .dialogcard .scene-photo{min-height:95px!important}
+}
+/* Layout-only changes; preserve keyboard access and reduce-motion settings. */
+@media (max-width:360px){
+ #course .approved-chat .approved-speaker{flex-basis:39px!important}
+ #course .approved-chat .approved-avatar{width:39px!important;height:39px!important}
+ #course .approved-chat .approved-chat-actions .btn{font-size:12px!important}
+}
