@@ -231,7 +231,7 @@
   return './assets/dialogue-voices/l'+lessonId+'-'+String(index+1).padStart(2,'0')+'-'+speaker.toLowerCase()+'.mp3';
  }
  async function playWord(text,rate=.82,token=audioGeneration,voice=null,dialogueClip=null){
-  const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=dialogueClip||(voice?null:window.courseHumanAudio?.[key]);
+  const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=dialogueClip||(voice?null:(window.courseHumanAudio?.[key]||window.courseNaturalAudio?.[key]));
   if(file){const a=new Audio(file);audio=a;a.playbackRate=rate<=.8?rate:Math.max(.94,rate);a.preservesPitch=true;
    status('Загружается запись носителя…');
    try{await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{a.pause();reject(Error('timeout'))},10000);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(Error('audio'))};a.onpause=()=>{clearTimeout(timer);resolve()};Promise.resolve(a.play()).then(()=>{if(token!==audioGeneration){a.pause();resolve()}else status('Играет запись носителя')},reject)});return}
