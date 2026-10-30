@@ -1,8 +1,10 @@
 {
-  "version": 55,
-  "bytes": 6098442,
+  "version": 56,
+  "bytes": 6122442,
   "files": [
     "./assets/approved-home-v36.png",
+    "./assets/approved-lesson-design.css?v=56",
+    "./assets/approved-lesson-design.js?v=56",
     "./assets/artwork-provenance.md",
     "./assets/china-landscape.svg",
     "./assets/chinese-lake-vocab.svg",
