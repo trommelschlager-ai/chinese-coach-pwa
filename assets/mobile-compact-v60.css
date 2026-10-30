@@ -159,3 +159,53 @@
  #course .approved-chat .approved-avatar{width:39px!important;height:39px!important}
  #course .approved-chat .approved-chat-actions .btn{font-size:12px!important}
 }
+
+
+/* v61: a vocabulary category is not a second copy of the phonetics lesson. */
+#topics[data-topic-kind="words"]::before{display:none!important}
+#topics[data-topic-kind="words"] h1{
+ max-width:100%!important;
+ margin:4px 0 11px!important;
+ font-size:clamp(25px,6vw,31px)!important;
+}
+#topics[data-topic-kind="words"] .words-overview{
+ display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+ gap:8px 12px;margin:0 0 13px;padding:9px 11px;
+ background:linear-gradient(110deg,#fffdfd,#f5eafb);
+ border:1px solid #e7d1ee;border-radius:14px;
+}
+#topics[data-topic-kind="words"] .words-overview-count{
+ margin:0!important;font-size:14px!important;
+ color:#665273!important;font-weight:700;line-height:1.4;
+}
+#topics[data-topic-kind="words"] .words-all-link{
+ min-height:43px;padding:8px 12px;border-radius:11px;
+ border:1px solid #cdaae4;background:#f5e9ff;
+ color:#542e70;font-size:15px;font-weight:750;white-space:nowrap;
+}
+#topics[data-topic-kind="words"] .words-all-link:focus-visible,
+#topics[data-topic-kind="words"] .topic-search:focus-visible{
+ outline:3px solid #a45cd5;outline-offset:2px;
+}
+#topics[data-topic-kind="words"] .topic-grid{
+ margin-top:7px!important;gap:9px!important;
+}
+#topics[data-topic-kind="words"] .topic-card{
+ min-height:79px!important;padding:10px 12px!important;
+ border-radius:15px!important;
+}
+#topics .topic-search-label{
+ display:block;font-size:14px;color:#513561;font-weight:700;margin:0 0 4px;
+}
+#topics .topic-search{
+ width:100%;min-height:47px;background:#fff;
+ border:1px solid #d7b9e6;border-radius:13px;
+ font:16px system-ui;color:#34233f;padding:10px 13px;margin:0 0 10px;
+}
+#topics .topic-empty{
+ margin:10px 0;font:16px/1.45 system-ui;color:#695675;
+}
+@media(max-width:390px){
+ #topics[data-topic-kind="words"] .words-overview-count{font-size:13px!important}
+ #topics[data-topic-kind="words"] .words-all-link{padding:7px 10px;font-size:14px}
+}
