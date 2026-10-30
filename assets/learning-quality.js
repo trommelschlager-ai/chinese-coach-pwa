@@ -291,7 +291,7 @@
  };
  async function playDialogue(lesson){
   stopLearningAudio();const token=audioGeneration;
-  const rows=[...document.querySelectorAll('.dialogue-row')];
+  const rows=[...document.querySelectorAll('#topics.active .dialogue-row, #course.active .dialogue-row')];
   const ready=await ensureDialogueMp3Ready();if(token!==audioGeneration)return;
   try{
    for(let i=0;i<lesson.dialogue.length;i++){
