@@ -121,7 +121,7 @@
     const which=button.dataset.demoVoice;
     if(which==='system'){
       demoFeedback.textContent='Воспроизводится системный китайский голос телефона.';
-      if(typeof speakChinese==='function')speakChinese('你好',.95);
+      if(typeof speakChinese==='function')speakChinese('你好',.95,true);
       return;
     }
     if(!navigator.onLine){demoFeedback.textContent='Для голосов носителей подключи интернет.';return;}
