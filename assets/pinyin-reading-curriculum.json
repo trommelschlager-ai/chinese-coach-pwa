@@ -1,9 +1,9 @@
 {
-  "version": 1,
+  "version": 2,
   "groups": [
     {
       "letter": "A",
-      "title": "a → ao · простые финали",
+      "title": "a → ao · финали",
       "hint": "a, ai, an, ang и ao. Отличай передний -n от заднего -ng.",
       "items": [
         {
@@ -40,6 +40,41 @@
           "hz": "袄",
           "ru": "куртка",
           "id": "p005"
+        },
+        {
+          "unit": "a",
+          "py": "dà",
+          "hz": "大",
+          "ru": "большой",
+          "id": "p009"
+        },
+        {
+          "unit": "ai",
+          "py": "lái",
+          "hz": "来",
+          "ru": "приходить",
+          "id": "p030"
+        },
+        {
+          "unit": "an",
+          "py": "kàn",
+          "hz": "看",
+          "ru": "смотреть",
+          "id": "p092"
+        },
+        {
+          "unit": "ang",
+          "py": "máng",
+          "hz": "忙",
+          "ru": "занятой",
+          "id": "p093"
+        },
+        {
+          "unit": "ao",
+          "py": "hǎo",
+          "hz": "好",
+          "ru": "хорошо",
+          "id": "p017"
         }
       ]
     },
@@ -54,6 +89,48 @@
           "hz": "包",
           "ru": "сумка",
           "id": "p006"
+        },
+        {
+          "unit": "b",
+          "py": "bā",
+          "hz": "八",
+          "ru": "восемь",
+          "id": "p001"
+        },
+        {
+          "unit": "b",
+          "py": "bǐ",
+          "hz": "比",
+          "ru": "сравнивать",
+          "id": "p094"
+        },
+        {
+          "unit": "b",
+          "py": "bù",
+          "hz": "不",
+          "ru": "не",
+          "id": "p095"
+        },
+        {
+          "unit": "b",
+          "py": "běi",
+          "hz": "北",
+          "ru": "север",
+          "id": "p096"
+        },
+        {
+          "unit": "b",
+          "py": "běn",
+          "hz": "本",
+          "ru": "книга (счётное слово)",
+          "id": "p097"
+        },
+        {
+          "unit": "b",
+          "py": "biǎo",
+          "hz": "表",
+          "ru": "таблица",
+          "id": "p098"
         }
       ]
     },
@@ -75,6 +152,41 @@
           "hz": "吃",
           "ru": "есть",
           "id": "p008"
+        },
+        {
+          "unit": "c",
+          "py": "cì",
+          "hz": "次",
+          "ru": "раз",
+          "id": "p062"
+        },
+        {
+          "unit": "c",
+          "py": "cǎo",
+          "hz": "草",
+          "ru": "трава",
+          "id": "p099"
+        },
+        {
+          "unit": "ch",
+          "py": "chá",
+          "hz": "茶",
+          "ru": "чай",
+          "id": "p100"
+        },
+        {
+          "unit": "ch",
+          "py": "chūn",
+          "hz": "春",
+          "ru": "весна",
+          "id": "p049"
+        },
+        {
+          "unit": "ch",
+          "py": "cháng",
+          "hz": "长",
+          "ru": "длинный",
+          "id": "p101"
         }
       ]
     },
@@ -89,6 +201,41 @@
           "hz": "大",
           "ru": "большой",
           "id": "p009"
+        },
+        {
+          "unit": "d",
+          "py": "duì",
+          "hz": "对",
+          "ru": "верно",
+          "id": "p074"
+        },
+        {
+          "unit": "d",
+          "py": "duō",
+          "hz": "多",
+          "ru": "много",
+          "id": "p102"
+        },
+        {
+          "unit": "d",
+          "py": "dōng",
+          "hz": "东",
+          "ru": "восток",
+          "id": "p034"
+        },
+        {
+          "unit": "d",
+          "py": "diàn",
+          "hz": "电",
+          "ru": "электричество",
+          "id": "p103"
+        },
+        {
+          "unit": "d",
+          "py": "dī",
+          "hz": "低",
+          "ru": "низкий",
+          "id": "p104"
         }
       ]
     },
@@ -131,6 +278,41 @@
           "hz": "二",
           "ru": "два",
           "id": "p014"
+        },
+        {
+          "unit": "e",
+          "py": "é",
+          "hz": "额",
+          "ru": "лоб",
+          "id": "p105"
+        },
+        {
+          "unit": "ei",
+          "py": "gěi",
+          "hz": "给",
+          "ru": "давать",
+          "id": "p106"
+        },
+        {
+          "unit": "en",
+          "py": "hěn",
+          "hz": "很",
+          "ru": "очень",
+          "id": "p107"
+        },
+        {
+          "unit": "eng",
+          "py": "lěng",
+          "hz": "冷",
+          "ru": "холодный",
+          "id": "p108"
+        },
+        {
+          "unit": "er",
+          "py": "ěr",
+          "hz": "耳",
+          "ru": "ухо",
+          "id": "p109"
         }
       ]
     },
@@ -145,6 +327,41 @@
           "hz": "饭",
           "ru": "еда",
           "id": "p015"
+        },
+        {
+          "unit": "f",
+          "py": "fēi",
+          "hz": "飞",
+          "ru": "летать",
+          "id": "p110"
+        },
+        {
+          "unit": "f",
+          "py": "fēng",
+          "hz": "风",
+          "ru": "ветер",
+          "id": "p111"
+        },
+        {
+          "unit": "f",
+          "py": "fáng",
+          "hz": "房",
+          "ru": "комната",
+          "id": "p112"
+        },
+        {
+          "unit": "f",
+          "py": "fēn",
+          "hz": "分",
+          "ru": "минута",
+          "id": "p113"
+        },
+        {
+          "unit": "f",
+          "py": "fàng",
+          "hz": "放",
+          "ru": "класть",
+          "id": "p114"
         }
       ]
     },
@@ -159,6 +376,41 @@
           "hz": "哥",
           "ru": "старший брат",
           "id": "p016"
+        },
+        {
+          "unit": "g",
+          "py": "gāo",
+          "hz": "高",
+          "ru": "высокий",
+          "id": "p115"
+        },
+        {
+          "unit": "g",
+          "py": "gōng",
+          "hz": "工",
+          "ru": "работа",
+          "id": "p116"
+        },
+        {
+          "unit": "g",
+          "py": "guì",
+          "hz": "贵",
+          "ru": "дорогой",
+          "id": "p117"
+        },
+        {
+          "unit": "g",
+          "py": "guǒ",
+          "hz": "果",
+          "ru": "фрукт",
+          "id": "p118"
+        },
+        {
+          "unit": "g",
+          "py": "gēn",
+          "hz": "跟",
+          "ru": "с",
+          "id": "p119"
         }
       ]
     },
@@ -173,6 +425,41 @@
           "hz": "好",
           "ru": "хорошо",
           "id": "p017"
+        },
+        {
+          "unit": "h",
+          "py": "hē",
+          "hz": "喝",
+          "ru": "пить",
+          "id": "p120"
+        },
+        {
+          "unit": "h",
+          "py": "hǎi",
+          "hz": "海",
+          "ru": "море",
+          "id": "p121"
+        },
+        {
+          "unit": "h",
+          "py": "hěn",
+          "hz": "很",
+          "ru": "очень",
+          "id": "p107"
+        },
+        {
+          "unit": "h",
+          "py": "hóng",
+          "hz": "红",
+          "ru": "красный",
+          "id": "p122"
+        },
+        {
+          "unit": "h",
+          "py": "huā",
+          "hz": "花",
+          "ru": "цветок",
+          "id": "p043"
         }
       ]
     },
@@ -250,6 +537,48 @@
           "hz": "六",
           "ru": "шесть",
           "id": "p027"
+        },
+        {
+          "unit": "ian",
+          "py": "miàn",
+          "hz": "面",
+          "ru": "лицо",
+          "id": "p123"
+        },
+        {
+          "unit": "iang",
+          "py": "xiǎng",
+          "hz": "想",
+          "ru": "думать",
+          "id": "p124"
+        },
+        {
+          "unit": "iao",
+          "py": "niǎo",
+          "hz": "鸟",
+          "ru": "птица",
+          "id": "p125"
+        },
+        {
+          "unit": "ie",
+          "py": "xiě",
+          "hz": "写",
+          "ru": "писать",
+          "id": "p126"
+        },
+        {
+          "unit": "ing",
+          "py": "míng",
+          "hz": "明",
+          "ru": "светлый",
+          "id": "p127"
+        },
+        {
+          "unit": "iu",
+          "py": "jiǔ",
+          "hz": "九",
+          "ru": "девять",
+          "id": "p128"
         }
       ]
     },
@@ -264,6 +593,41 @@
           "hz": "鸡",
           "ru": "курица",
           "id": "p028"
+        },
+        {
+          "unit": "j",
+          "py": "jiàn",
+          "hz": "见",
+          "ru": "видеть",
+          "id": "p129"
+        },
+        {
+          "unit": "j",
+          "py": "jiā",
+          "hz": "家",
+          "ru": "дом",
+          "id": "p019"
+        },
+        {
+          "unit": "j",
+          "py": "jiǔ",
+          "hz": "九",
+          "ru": "девять",
+          "id": "p128"
+        },
+        {
+          "unit": "j",
+          "py": "jiào",
+          "hz": "叫",
+          "ru": "звать",
+          "id": "p130"
+        },
+        {
+          "unit": "j",
+          "py": "jiù",
+          "hz": "就",
+          "ru": "как раз",
+          "id": "p131"
         }
       ]
     },
@@ -278,6 +642,41 @@
           "hz": "可",
           "ru": "можно",
           "id": "p029"
+        },
+        {
+          "unit": "k",
+          "py": "kāi",
+          "hz": "开",
+          "ru": "открывать",
+          "id": "p132"
+        },
+        {
+          "unit": "k",
+          "py": "kǒu",
+          "hz": "口",
+          "ru": "рот",
+          "id": "p133"
+        },
+        {
+          "unit": "k",
+          "py": "kuài",
+          "hz": "快",
+          "ru": "быстрый",
+          "id": "p044"
+        },
+        {
+          "unit": "k",
+          "py": "kōng",
+          "hz": "空",
+          "ru": "пустой",
+          "id": "p134"
+        },
+        {
+          "unit": "k",
+          "py": "kàn",
+          "hz": "看",
+          "ru": "смотреть",
+          "id": "p092"
         }
       ]
     },
@@ -292,6 +691,41 @@
           "hz": "来",
           "ru": "приходить",
           "id": "p030"
+        },
+        {
+          "unit": "l",
+          "py": "lǎo",
+          "hz": "老",
+          "ru": "старый",
+          "id": "p135"
+        },
+        {
+          "unit": "l",
+          "py": "lǐ",
+          "hz": "里",
+          "ru": "внутри",
+          "id": "p136"
+        },
+        {
+          "unit": "l",
+          "py": "lù",
+          "hz": "路",
+          "ru": "дорога",
+          "id": "p137"
+        },
+        {
+          "unit": "l",
+          "py": "liù",
+          "hz": "六",
+          "ru": "шесть",
+          "id": "p027"
+        },
+        {
+          "unit": "l",
+          "py": "lǜ",
+          "hz": "绿",
+          "ru": "зелёный",
+          "id": "p072"
         }
       ]
     },
@@ -306,6 +740,41 @@
           "hz": "妈",
           "ru": "мама",
           "id": "p031"
+        },
+        {
+          "unit": "m",
+          "py": "mǎ",
+          "hz": "马",
+          "ru": "лошадь",
+          "id": "p077"
+        },
+        {
+          "unit": "m",
+          "py": "mǐ",
+          "hz": "米",
+          "ru": "рис",
+          "id": "p138"
+        },
+        {
+          "unit": "m",
+          "py": "mǎi",
+          "hz": "买",
+          "ru": "покупать",
+          "id": "p139"
+        },
+        {
+          "unit": "m",
+          "py": "màn",
+          "hz": "慢",
+          "ru": "медленный",
+          "id": "p140"
+        },
+        {
+          "unit": "m",
+          "py": "méi",
+          "hz": "没",
+          "ru": "не иметь",
+          "id": "p141"
         }
       ]
     },
@@ -320,6 +789,41 @@
           "hz": "你",
           "ru": "ты",
           "id": "p032"
+        },
+        {
+          "unit": "n",
+          "py": "nián",
+          "hz": "年",
+          "ru": "год",
+          "id": "p142"
+        },
+        {
+          "unit": "n",
+          "py": "nán",
+          "hz": "男",
+          "ru": "мужчина",
+          "id": "p143"
+        },
+        {
+          "unit": "n",
+          "py": "nǚ",
+          "hz": "女",
+          "ru": "женщина",
+          "id": "p051"
+        },
+        {
+          "unit": "n",
+          "py": "néng",
+          "hz": "能",
+          "ru": "мочь",
+          "id": "p144"
+        },
+        {
+          "unit": "n",
+          "py": "nán",
+          "hz": "南",
+          "ru": "юг",
+          "id": "p145"
         }
       ]
     },
@@ -348,6 +852,55 @@
           "hz": "欧",
           "ru": "Европа",
           "id": "p035"
+        },
+        {
+          "unit": "o",
+          "py": "pō",
+          "hz": "坡",
+          "ru": "склон",
+          "id": "p146"
+        },
+        {
+          "unit": "o",
+          "py": "mō",
+          "hz": "摸",
+          "ru": "трогать",
+          "id": "p147"
+        },
+        {
+          "unit": "o",
+          "py": "fó",
+          "hz": "佛",
+          "ru": "Будда",
+          "id": "p148"
+        },
+        {
+          "unit": "ong",
+          "py": "hóng",
+          "hz": "红",
+          "ru": "красный",
+          "id": "p122"
+        },
+        {
+          "unit": "ong",
+          "py": "zhōng",
+          "hz": "中",
+          "ru": "середина",
+          "id": "p149"
+        },
+        {
+          "unit": "ou",
+          "py": "zǒu",
+          "hz": "走",
+          "ru": "идти",
+          "id": "p150"
+        },
+        {
+          "unit": "ou",
+          "py": "shǒu",
+          "hz": "手",
+          "ru": "рука",
+          "id": "p151"
         }
       ]
     },
@@ -362,6 +915,41 @@
           "hz": "拍",
           "ru": "хлопать",
           "id": "p036"
+        },
+        {
+          "unit": "p",
+          "py": "pà",
+          "hz": "怕",
+          "ru": "бояться",
+          "id": "p152"
+        },
+        {
+          "unit": "p",
+          "py": "piào",
+          "hz": "票",
+          "ru": "билет",
+          "id": "p153"
+        },
+        {
+          "unit": "p",
+          "py": "pǎo",
+          "hz": "跑",
+          "ru": "бежать",
+          "id": "p154"
+        },
+        {
+          "unit": "p",
+          "py": "péng",
+          "hz": "朋",
+          "ru": "друг",
+          "id": "p155"
+        },
+        {
+          "unit": "p",
+          "py": "píng",
+          "hz": "平",
+          "ru": "ровный",
+          "id": "p156"
         }
       ]
     },
@@ -376,6 +964,41 @@
           "hz": "七",
           "ru": "семь",
           "id": "p037"
+        },
+        {
+          "unit": "q",
+          "py": "qù",
+          "hz": "去",
+          "ru": "идти",
+          "id": "p069"
+        },
+        {
+          "unit": "q",
+          "py": "qián",
+          "hz": "钱",
+          "ru": "деньги",
+          "id": "p157"
+        },
+        {
+          "unit": "q",
+          "py": "qǐng",
+          "hz": "请",
+          "ru": "пожалуйста",
+          "id": "p158"
+        },
+        {
+          "unit": "q",
+          "py": "qǐ",
+          "hz": "起",
+          "ru": "вставать",
+          "id": "p159"
+        },
+        {
+          "unit": "q",
+          "py": "qiú",
+          "hz": "球",
+          "ru": "мяч",
+          "id": "p160"
         }
       ]
     },
@@ -390,6 +1013,41 @@
           "hz": "人",
           "ru": "человек",
           "id": "p038"
+        },
+        {
+          "unit": "r",
+          "py": "rè",
+          "hz": "热",
+          "ru": "горячий",
+          "id": "p161"
+        },
+        {
+          "unit": "r",
+          "py": "rì",
+          "hz": "日",
+          "ru": "день",
+          "id": "p065"
+        },
+        {
+          "unit": "r",
+          "py": "ràng",
+          "hz": "让",
+          "ru": "позволять",
+          "id": "p162"
+        },
+        {
+          "unit": "r",
+          "py": "róng",
+          "hz": "容",
+          "ru": "вмещать",
+          "id": "p163"
+        },
+        {
+          "unit": "r",
+          "py": "ròu",
+          "hz": "肉",
+          "ru": "мясо",
+          "id": "p164"
         }
       ]
     },
@@ -411,6 +1069,48 @@
           "hz": "书",
           "ru": "книга",
           "id": "p040"
+        },
+        {
+          "unit": "s",
+          "py": "sì",
+          "hz": "四",
+          "ru": "четыре",
+          "id": "p063"
+        },
+        {
+          "unit": "s",
+          "py": "sòng",
+          "hz": "送",
+          "ru": "дарить",
+          "id": "p165"
+        },
+        {
+          "unit": "s",
+          "py": "sù",
+          "hz": "素",
+          "ru": "вегетарианский",
+          "id": "p166"
+        },
+        {
+          "unit": "sh",
+          "py": "shān",
+          "hz": "山",
+          "ru": "гора",
+          "id": "p167"
+        },
+        {
+          "unit": "sh",
+          "py": "shuǐ",
+          "hz": "水",
+          "ru": "вода",
+          "id": "p048"
+        },
+        {
+          "unit": "sh",
+          "py": "shuō",
+          "hz": "说",
+          "ru": "говорить",
+          "id": "p168"
         }
       ]
     },
@@ -425,6 +1125,41 @@
           "hz": "他",
           "ru": "он",
           "id": "p041"
+        },
+        {
+          "unit": "t",
+          "py": "tiān",
+          "hz": "天",
+          "ru": "небо",
+          "id": "p020"
+        },
+        {
+          "unit": "t",
+          "py": "tīng",
+          "hz": "听",
+          "ru": "слушать",
+          "id": "p025"
+        },
+        {
+          "unit": "t",
+          "py": "tài",
+          "hz": "太",
+          "ru": "слишком",
+          "id": "p169"
+        },
+        {
+          "unit": "t",
+          "py": "tóng",
+          "hz": "同",
+          "ru": "одинаковый",
+          "id": "p170"
+        },
+        {
+          "unit": "t",
+          "py": "tǔ",
+          "hz": "土",
+          "ru": "земля",
+          "id": "p171"
         }
       ]
     },
@@ -495,6 +1230,62 @@
           "hz": "国",
           "ru": "страна",
           "id": "p050"
+        },
+        {
+          "unit": "u",
+          "py": "wǔ",
+          "hz": "五",
+          "ru": "пять",
+          "id": "p172"
+        },
+        {
+          "unit": "ua",
+          "py": "guā",
+          "hz": "瓜",
+          "ru": "дыня",
+          "id": "p173"
+        },
+        {
+          "unit": "uai",
+          "py": "wài",
+          "hz": "外",
+          "ru": "снаружи",
+          "id": "p174"
+        },
+        {
+          "unit": "uan",
+          "py": "wán",
+          "hz": "玩",
+          "ru": "играть",
+          "id": "p175"
+        },
+        {
+          "unit": "uang",
+          "py": "wáng",
+          "hz": "王",
+          "ru": "король",
+          "id": "p176"
+        },
+        {
+          "unit": "ui",
+          "py": "duì",
+          "hz": "对",
+          "ru": "верно",
+          "id": "p074"
+        },
+        {
+          "unit": "un",
+          "py": "lùn",
+          "hz": "论",
+          "ru": "обсуждать",
+          "id": "p075"
+        },
+        {
+          "unit": "uo",
+          "py": "shuō",
+          "hz": "说",
+          "ru": "говорить",
+          "id": "p168"
         }
       ]
     },
@@ -530,6 +1321,41 @@
           "hz": "云",
           "ru": "облако",
           "id": "p054"
+        },
+        {
+          "unit": "ü",
+          "py": "lǜ",
+          "hz": "绿",
+          "ru": "зелёный",
+          "id": "p072"
+        },
+        {
+          "unit": "ü",
+          "py": "yú",
+          "hz": "鱼",
+          "ru": "рыба",
+          "id": "p071"
+        },
+        {
+          "unit": "üe",
+          "py": "xuě",
+          "hz": "雪",
+          "ru": "снег",
+          "id": "p177"
+        },
+        {
+          "unit": "üan",
+          "py": "juǎn",
+          "hz": "卷",
+          "ru": "сворачивать",
+          "id": "p178"
+        },
+        {
+          "unit": "ün",
+          "py": "qún",
+          "hz": "群",
+          "ru": "группа",
+          "id": "p179"
         }
       ]
     },
@@ -544,6 +1370,41 @@
           "hz": "我",
           "ru": "я",
           "id": "p055"
+        },
+        {
+          "unit": "w",
+          "py": "wèn",
+          "hz": "问",
+          "ru": "спрашивать",
+          "id": "p180"
+        },
+        {
+          "unit": "w",
+          "py": "wǎn",
+          "hz": "晚",
+          "ru": "поздний",
+          "id": "p181"
+        },
+        {
+          "unit": "w",
+          "py": "wán",
+          "hz": "玩",
+          "ru": "играть",
+          "id": "p175"
+        },
+        {
+          "unit": "w",
+          "py": "wài",
+          "hz": "外",
+          "ru": "снаружи",
+          "id": "p174"
+        },
+        {
+          "unit": "w",
+          "py": "wú",
+          "hz": "无",
+          "ru": "нет",
+          "id": "p182"
         }
       ]
     },
@@ -558,6 +1419,41 @@
           "hz": "西",
           "ru": "запад",
           "id": "p056"
+        },
+        {
+          "unit": "x",
+          "py": "xiǎng",
+          "hz": "想",
+          "ru": "думать",
+          "id": "p124"
+        },
+        {
+          "unit": "x",
+          "py": "xuě",
+          "hz": "雪",
+          "ru": "снег",
+          "id": "p177"
+        },
+        {
+          "unit": "x",
+          "py": "xué",
+          "hz": "学",
+          "ru": "учиться",
+          "id": "p183"
+        },
+        {
+          "unit": "x",
+          "py": "xiān",
+          "hz": "先",
+          "ru": "сначала",
+          "id": "p090"
+        },
+        {
+          "unit": "x",
+          "py": "xiè",
+          "hz": "谢",
+          "ru": "благодарить",
+          "id": "p023"
         }
       ]
     },
@@ -572,6 +1468,41 @@
           "hz": "一",
           "ru": "один",
           "id": "p057"
+        },
+        {
+          "unit": "y",
+          "py": "yuè",
+          "hz": "月",
+          "ru": "луна",
+          "id": "p052"
+        },
+        {
+          "unit": "y",
+          "py": "yún",
+          "hz": "云",
+          "ru": "облако",
+          "id": "p054"
+        },
+        {
+          "unit": "y",
+          "py": "yáng",
+          "hz": "羊",
+          "ru": "овца",
+          "id": "p184"
+        },
+        {
+          "unit": "y",
+          "py": "yǒu",
+          "hz": "有",
+          "ru": "иметь",
+          "id": "p185"
+        },
+        {
+          "unit": "y",
+          "py": "yào",
+          "hz": "要",
+          "ru": "хотеть",
+          "id": "p186"
         }
       ]
     },
@@ -593,6 +1524,48 @@
           "hz": "知",
           "ru": "знать",
           "id": "p059"
+        },
+        {
+          "unit": "z",
+          "py": "zuò",
+          "hz": "做",
+          "ru": "делать",
+          "id": "p187"
+        },
+        {
+          "unit": "z",
+          "py": "zǒu",
+          "hz": "走",
+          "ru": "идти",
+          "id": "p150"
+        },
+        {
+          "unit": "z",
+          "py": "zài",
+          "hz": "在",
+          "ru": "находиться",
+          "id": "p188"
+        },
+        {
+          "unit": "zh",
+          "py": "zhè",
+          "hz": "这",
+          "ru": "этот",
+          "id": "p189"
+        },
+        {
+          "unit": "zh",
+          "py": "zhōng",
+          "hz": "中",
+          "ru": "середина",
+          "id": "p149"
+        },
+        {
+          "unit": "zh",
+          "py": "zǎo",
+          "hz": "早",
+          "ru": "рано",
+          "id": "p190"
         }
       ]
     }
@@ -1150,547 +2123,1154 @@
       "id": "p001",
       "text": "八",
       "pinyin": "bā",
-      "file": "assets/pinyin-reading/p001.mp3"
+      "file": "assets/pinyin-reading-v2/p001.mp3"
     },
     {
       "id": "p002",
       "text": "爱",
       "pinyin": "ài",
-      "file": "assets/pinyin-reading/p002.mp3"
+      "file": "assets/pinyin-reading-v2/p002.mp3"
     },
     {
       "id": "p003",
       "text": "安",
       "pinyin": "ān",
-      "file": "assets/pinyin-reading/p003.mp3"
+      "file": "assets/pinyin-reading-v2/p003.mp3"
     },
     {
       "id": "p004",
       "text": "昂",
       "pinyin": "áng",
-      "file": "assets/pinyin-reading/p004.mp3"
+      "file": "assets/pinyin-reading-v2/p004.mp3"
     },
     {
       "id": "p005",
       "text": "袄",
       "pinyin": "ǎo",
-      "file": "assets/pinyin-reading/p005.mp3"
+      "file": "assets/pinyin-reading-v2/p005.mp3"
     },
     {
       "id": "p006",
       "text": "包",
       "pinyin": "bāo",
-      "file": "assets/pinyin-reading/p006.mp3"
+      "file": "assets/pinyin-reading-v2/p006.mp3"
     },
     {
       "id": "p007",
       "text": "菜",
       "pinyin": "cài",
-      "file": "assets/pinyin-reading/p007.mp3"
+      "file": "assets/pinyin-reading-v2/p007.mp3"
     },
     {
       "id": "p008",
       "text": "吃",
       "pinyin": "chī",
-      "file": "assets/pinyin-reading/p008.mp3"
+      "file": "assets/pinyin-reading-v2/p008.mp3"
     },
     {
       "id": "p009",
       "text": "大",
       "pinyin": "dà",
-      "file": "assets/pinyin-reading/p009.mp3"
+      "file": "assets/pinyin-reading-v2/p009.mp3"
     },
     {
       "id": "p010",
       "text": "饿",
       "pinyin": "è",
-      "file": "assets/pinyin-reading/p010.mp3"
+      "file": "assets/pinyin-reading-v2/p010.mp3"
     },
     {
       "id": "p011",
       "text": "杯",
       "pinyin": "bēi",
-      "file": "assets/pinyin-reading/p011.mp3"
+      "file": "assets/pinyin-reading-v2/p011.mp3"
     },
     {
       "id": "p012",
       "text": "恩",
       "pinyin": "ēn",
-      "file": "assets/pinyin-reading/p012.mp3"
+      "file": "assets/pinyin-reading-v2/p012.mp3"
     },
     {
       "id": "p013",
       "text": "灯",
       "pinyin": "dēng",
-      "file": "assets/pinyin-reading/p013.mp3"
+      "file": "assets/pinyin-reading-v2/p013.mp3"
     },
     {
       "id": "p014",
       "text": "二",
       "pinyin": "èr",
-      "file": "assets/pinyin-reading/p014.mp3"
+      "file": "assets/pinyin-reading-v2/p014.mp3"
     },
     {
       "id": "p015",
       "text": "饭",
       "pinyin": "fàn",
-      "file": "assets/pinyin-reading/p015.mp3"
+      "file": "assets/pinyin-reading-v2/p015.mp3"
     },
     {
       "id": "p016",
       "text": "哥",
       "pinyin": "gē",
-      "file": "assets/pinyin-reading/p016.mp3"
+      "file": "assets/pinyin-reading-v2/p016.mp3"
     },
     {
       "id": "p017",
       "text": "好",
       "pinyin": "hǎo",
-      "file": "assets/pinyin-reading/p017.mp3"
+      "file": "assets/pinyin-reading-v2/p017.mp3"
     },
     {
       "id": "p018",
       "text": "衣",
       "pinyin": "yī",
-      "file": "assets/pinyin-reading/p018.mp3"
+      "file": "assets/pinyin-reading-v2/p018.mp3"
     },
     {
       "id": "p019",
       "text": "家",
       "pinyin": "jiā",
-      "file": "assets/pinyin-reading/p019.mp3"
+      "file": "assets/pinyin-reading-v2/p019.mp3"
     },
     {
       "id": "p020",
       "text": "天",
       "pinyin": "tiān",
-      "file": "assets/pinyin-reading/p020.mp3"
+      "file": "assets/pinyin-reading-v2/p020.mp3"
     },
     {
       "id": "p021",
       "text": "香",
       "pinyin": "xiāng",
-      "file": "assets/pinyin-reading/p021.mp3"
+      "file": "assets/pinyin-reading-v2/p021.mp3"
     },
     {
       "id": "p022",
       "text": "小",
       "pinyin": "xiǎo",
-      "file": "assets/pinyin-reading/p022.mp3"
+      "file": "assets/pinyin-reading-v2/p022.mp3"
     },
     {
       "id": "p023",
       "text": "谢",
       "pinyin": "xiè",
-      "file": "assets/pinyin-reading/p023.mp3"
+      "file": "assets/pinyin-reading-v2/p023.mp3"
     },
     {
       "id": "p024",
       "text": "新",
       "pinyin": "xīn",
-      "file": "assets/pinyin-reading/p024.mp3"
+      "file": "assets/pinyin-reading-v2/p024.mp3"
     },
     {
       "id": "p025",
       "text": "听",
       "pinyin": "tīng",
-      "file": "assets/pinyin-reading/p025.mp3"
+      "file": "assets/pinyin-reading-v2/p025.mp3"
     },
     {
       "id": "p026",
       "text": "熊",
       "pinyin": "xióng",
-      "file": "assets/pinyin-reading/p026.mp3"
+      "file": "assets/pinyin-reading-v2/p026.mp3"
     },
     {
       "id": "p027",
       "text": "六",
       "pinyin": "liù",
-      "file": "assets/pinyin-reading/p027.mp3"
+      "file": "assets/pinyin-reading-v2/p027.mp3"
     },
     {
       "id": "p028",
       "text": "鸡",
       "pinyin": "jī",
-      "file": "assets/pinyin-reading/p028.mp3"
+      "file": "assets/pinyin-reading-v2/p028.mp3"
     },
     {
       "id": "p029",
       "text": "可",
       "pinyin": "kě",
-      "file": "assets/pinyin-reading/p029.mp3"
+      "file": "assets/pinyin-reading-v2/p029.mp3"
     },
     {
       "id": "p030",
       "text": "来",
       "pinyin": "lái",
-      "file": "assets/pinyin-reading/p030.mp3"
+      "file": "assets/pinyin-reading-v2/p030.mp3"
     },
     {
       "id": "p031",
       "text": "妈",
       "pinyin": "mā",
-      "file": "assets/pinyin-reading/p031.mp3"
+      "file": "assets/pinyin-reading-v2/p031.mp3"
     },
     {
       "id": "p032",
       "text": "你",
       "pinyin": "nǐ",
-      "file": "assets/pinyin-reading/p032.mp3"
+      "file": "assets/pinyin-reading-v2/p032.mp3"
     },
     {
       "id": "p033",
       "text": "波",
       "pinyin": "bō",
-      "file": "assets/pinyin-reading/p033.mp3"
+      "file": "assets/pinyin-reading-v2/p033.mp3"
     },
     {
       "id": "p034",
       "text": "东",
       "pinyin": "dōng",
-      "file": "assets/pinyin-reading/p034.mp3"
+      "file": "assets/pinyin-reading-v2/p034.mp3"
     },
     {
       "id": "p035",
       "text": "欧",
       "pinyin": "ōu",
-      "file": "assets/pinyin-reading/p035.mp3"
+      "file": "assets/pinyin-reading-v2/p035.mp3"
     },
     {
       "id": "p036",
       "text": "拍",
       "pinyin": "pāi",
-      "file": "assets/pinyin-reading/p036.mp3"
+      "file": "assets/pinyin-reading-v2/p036.mp3"
     },
     {
       "id": "p037",
       "text": "七",
       "pinyin": "qī",
-      "file": "assets/pinyin-reading/p037.mp3"
+      "file": "assets/pinyin-reading-v2/p037.mp3"
     },
     {
       "id": "p038",
       "text": "人",
       "pinyin": "rén",
-      "file": "assets/pinyin-reading/p038.mp3"
+      "file": "assets/pinyin-reading-v2/p038.mp3"
     },
     {
       "id": "p039",
       "text": "三",
       "pinyin": "sān",
-      "file": "assets/pinyin-reading/p039.mp3"
+      "file": "assets/pinyin-reading-v2/p039.mp3"
     },
     {
       "id": "p040",
       "text": "书",
       "pinyin": "shū",
-      "file": "assets/pinyin-reading/p040.mp3"
+      "file": "assets/pinyin-reading-v2/p040.mp3"
     },
     {
       "id": "p041",
       "text": "他",
       "pinyin": "tā",
-      "file": "assets/pinyin-reading/p041.mp3"
+      "file": "assets/pinyin-reading-v2/p041.mp3"
     },
     {
       "id": "p042",
       "text": "屋",
       "pinyin": "wū",
-      "file": "assets/pinyin-reading/p042.mp3"
+      "file": "assets/pinyin-reading-v2/p042.mp3"
     },
     {
       "id": "p043",
       "text": "花",
       "pinyin": "huā",
-      "file": "assets/pinyin-reading/p043.mp3"
+      "file": "assets/pinyin-reading-v2/p043.mp3"
     },
     {
       "id": "p044",
       "text": "快",
       "pinyin": "kuài",
-      "file": "assets/pinyin-reading/p044.mp3"
+      "file": "assets/pinyin-reading-v2/p044.mp3"
     },
     {
       "id": "p045",
       "text": "关",
       "pinyin": "guān",
-      "file": "assets/pinyin-reading/p045.mp3"
+      "file": "assets/pinyin-reading-v2/p045.mp3"
     },
     {
       "id": "p046",
       "text": "光",
       "pinyin": "guāng",
-      "file": "assets/pinyin-reading/p046.mp3"
+      "file": "assets/pinyin-reading-v2/p046.mp3"
     },
     {
       "id": "p047",
       "text": "翁",
       "pinyin": "wēng",
-      "file": "assets/pinyin-reading/p047.mp3"
+      "file": "assets/pinyin-reading-v2/p047.mp3"
     },
     {
       "id": "p048",
       "text": "水",
       "pinyin": "shuǐ",
-      "file": "assets/pinyin-reading/p048.mp3"
+      "file": "assets/pinyin-reading-v2/p048.mp3"
     },
     {
       "id": "p049",
       "text": "春",
       "pinyin": "chūn",
-      "file": "assets/pinyin-reading/p049.mp3"
+      "file": "assets/pinyin-reading-v2/p049.mp3"
     },
     {
       "id": "p050",
       "text": "国",
       "pinyin": "guó",
-      "file": "assets/pinyin-reading/p050.mp3"
+      "file": "assets/pinyin-reading-v2/p050.mp3"
     },
     {
       "id": "p051",
       "text": "女",
       "pinyin": "nǚ",
-      "file": "assets/pinyin-reading/p051.mp3"
+      "file": "assets/pinyin-reading-v2/p051.mp3"
     },
     {
       "id": "p052",
       "text": "月",
       "pinyin": "yuè",
-      "file": "assets/pinyin-reading/p052.mp3"
+      "file": "assets/pinyin-reading-v2/p052.mp3"
     },
     {
       "id": "p053",
       "text": "圆",
       "pinyin": "yuán",
-      "file": "assets/pinyin-reading/p053.mp3"
+      "file": "assets/pinyin-reading-v2/p053.mp3"
     },
     {
       "id": "p054",
       "text": "云",
       "pinyin": "yún",
-      "file": "assets/pinyin-reading/p054.mp3"
+      "file": "assets/pinyin-reading-v2/p054.mp3"
     },
     {
       "id": "p055",
       "text": "我",
       "pinyin": "wǒ",
-      "file": "assets/pinyin-reading/p055.mp3"
+      "file": "assets/pinyin-reading-v2/p055.mp3"
     },
     {
       "id": "p056",
       "text": "西",
       "pinyin": "xī",
-      "file": "assets/pinyin-reading/p056.mp3"
+      "file": "assets/pinyin-reading-v2/p056.mp3"
     },
     {
       "id": "p057",
       "text": "一",
       "pinyin": "yī",
-      "file": "assets/pinyin-reading/p057.mp3"
+      "file": "assets/pinyin-reading-v2/p057.mp3"
     },
     {
       "id": "p058",
       "text": "字",
       "pinyin": "zì",
-      "file": "assets/pinyin-reading/p058.mp3"
+      "file": "assets/pinyin-reading-v2/p058.mp3"
     },
     {
       "id": "p059",
       "text": "知",
       "pinyin": "zhī",
-      "file": "assets/pinyin-reading/p059.mp3"
+      "file": "assets/pinyin-reading-v2/p059.mp3"
     },
     {
       "id": "p060",
       "text": "趴",
       "pinyin": "pā",
-      "file": "assets/pinyin-reading/p060.mp3"
+      "file": "assets/pinyin-reading-v2/p060.mp3"
     },
     {
       "id": "p061",
       "text": "科",
       "pinyin": "kē",
-      "file": "assets/pinyin-reading/p061.mp3"
+      "file": "assets/pinyin-reading-v2/p061.mp3"
     },
     {
       "id": "p062",
       "text": "次",
       "pinyin": "cì",
-      "file": "assets/pinyin-reading/p062.mp3"
+      "file": "assets/pinyin-reading-v2/p062.mp3"
     },
     {
       "id": "p063",
       "text": "四",
       "pinyin": "sì",
-      "file": "assets/pinyin-reading/p063.mp3"
+      "file": "assets/pinyin-reading-v2/p063.mp3"
     },
     {
       "id": "p064",
       "text": "诗",
       "pinyin": "shī",
-      "file": "assets/pinyin-reading/p064.mp3"
+      "file": "assets/pinyin-reading-v2/p064.mp3"
     },
     {
       "id": "p065",
       "text": "日",
       "pinyin": "rì",
-      "file": "assets/pinyin-reading/p065.mp3"
+      "file": "assets/pinyin-reading-v2/p065.mp3"
     },
     {
       "id": "p066",
       "text": "词",
       "pinyin": "cí",
-      "file": "assets/pinyin-reading/p066.mp3"
+      "file": "assets/pinyin-reading-v2/p066.mp3"
     },
     {
       "id": "p067",
       "text": "是",
       "pinyin": "shì",
-      "file": "assets/pinyin-reading/p067.mp3"
+      "file": "assets/pinyin-reading-v2/p067.mp3"
     },
     {
       "id": "p068",
       "text": "举",
       "pinyin": "jǔ",
-      "file": "assets/pinyin-reading/p068.mp3"
+      "file": "assets/pinyin-reading-v2/p068.mp3"
     },
     {
       "id": "p069",
       "text": "去",
       "pinyin": "qù",
-      "file": "assets/pinyin-reading/p069.mp3"
+      "file": "assets/pinyin-reading-v2/p069.mp3"
     },
     {
       "id": "p070",
       "text": "需",
       "pinyin": "xū",
-      "file": "assets/pinyin-reading/p070.mp3"
+      "file": "assets/pinyin-reading-v2/p070.mp3"
     },
     {
       "id": "p071",
       "text": "鱼",
       "pinyin": "yú",
-      "file": "assets/pinyin-reading/p071.mp3"
+      "file": "assets/pinyin-reading-v2/p071.mp3"
     },
     {
       "id": "p072",
       "text": "绿",
       "pinyin": "lǜ",
-      "file": "assets/pinyin-reading/p072.mp3"
+      "file": "assets/pinyin-reading-v2/p072.mp3"
     },
     {
       "id": "p073",
       "text": "牛",
       "pinyin": "niú",
-      "file": "assets/pinyin-reading/p073.mp3"
+      "file": "assets/pinyin-reading-v2/p073.mp3"
     },
     {
       "id": "p074",
       "text": "对",
       "pinyin": "duì",
-      "file": "assets/pinyin-reading/p074.mp3"
+      "file": "assets/pinyin-reading-v2/p074.mp3"
     },
     {
       "id": "p075",
       "text": "论",
       "pinyin": "lùn",
-      "file": "assets/pinyin-reading/p075.mp3"
+      "file": "assets/pinyin-reading-v2/p075.mp3"
     },
     {
       "id": "p076",
       "text": "麻",
       "pinyin": "má",
-      "file": "assets/pinyin-reading/p076.mp3"
+      "file": "assets/pinyin-reading-v2/p076.mp3"
     },
     {
       "id": "p077",
       "text": "马",
       "pinyin": "mǎ",
-      "file": "assets/pinyin-reading/p077.mp3"
+      "file": "assets/pinyin-reading-v2/p077.mp3"
     },
     {
       "id": "p078",
       "text": "骂",
       "pinyin": "mà",
-      "file": "assets/pinyin-reading/p078.mp3"
+      "file": "assets/pinyin-reading-v2/p078.mp3"
     },
     {
       "id": "p079",
       "text": "吗",
       "pinyin": "ma",
-      "file": "assets/pinyin-reading/p079.mp3"
+      "file": "assets/pinyin-reading-v2/p079.mp3"
     },
     {
       "id": "p080",
       "text": "你好",
       "pinyin": "nǐ hǎo",
-      "file": "assets/pinyin-reading/p080.mp3"
+      "file": "assets/pinyin-reading-v2/p080.mp3"
     },
     {
       "id": "p081",
       "text": "很好",
       "pinyin": "hěn hǎo",
-      "file": "assets/pinyin-reading/p081.mp3"
+      "file": "assets/pinyin-reading-v2/p081.mp3"
     },
     {
       "id": "p082",
       "text": "不是",
       "pinyin": "bú shì",
-      "file": "assets/pinyin-reading/p082.mp3"
+      "file": "assets/pinyin-reading-v2/p082.mp3"
     },
     {
       "id": "p083",
       "text": "不好",
       "pinyin": "bù hǎo",
-      "file": "assets/pinyin-reading/p083.mp3"
+      "file": "assets/pinyin-reading-v2/p083.mp3"
     },
     {
       "id": "p084",
       "text": "一个",
       "pinyin": "yí gè",
-      "file": "assets/pinyin-reading/p084.mp3"
+      "file": "assets/pinyin-reading-v2/p084.mp3"
     },
     {
       "id": "p085",
       "text": "一天",
       "pinyin": "yì tiān",
-      "file": "assets/pinyin-reading/p085.mp3"
+      "file": "assets/pinyin-reading-v2/p085.mp3"
     },
     {
       "id": "p086",
       "text": "妈妈",
       "pinyin": "māma",
-      "file": "assets/pinyin-reading/p086.mp3"
+      "file": "assets/pinyin-reading-v2/p086.mp3"
     },
     {
       "id": "p087",
       "text": "谢谢",
       "pinyin": "xièxie",
-      "file": "assets/pinyin-reading/p087.mp3"
+      "file": "assets/pinyin-reading-v2/p087.mp3"
     },
     {
       "id": "p088",
       "text": "星",
       "pinyin": "xīng",
-      "file": "assets/pinyin-reading/p088.mp3"
+      "file": "assets/pinyin-reading-v2/p088.mp3"
     },
     {
       "id": "p089",
       "text": "西安",
       "pinyin": "Xī'ān",
-      "file": "assets/pinyin-reading/p089.mp3"
+      "file": "assets/pinyin-reading-v2/p089.mp3"
     },
     {
       "id": "p090",
       "text": "先",
       "pinyin": "xiān",
-      "file": "assets/pinyin-reading/p090.mp3"
+      "file": "assets/pinyin-reading-v2/p090.mp3"
     },
     {
       "id": "p091",
       "text": "哪儿",
       "pinyin": "nǎr",
-      "file": "assets/pinyin-reading/p091.mp3"
+      "file": "assets/pinyin-reading-v2/p091.mp3"
+    },
+    {
+      "id": "p092",
+      "text": "看",
+      "pinyin": "kàn",
+      "file": "assets/pinyin-reading-v2/p092.mp3"
+    },
+    {
+      "id": "p093",
+      "text": "忙",
+      "pinyin": "máng",
+      "file": "assets/pinyin-reading-v2/p093.mp3"
+    },
+    {
+      "id": "p094",
+      "text": "比",
+      "pinyin": "bǐ",
+      "file": "assets/pinyin-reading-v2/p094.mp3"
+    },
+    {
+      "id": "p095",
+      "text": "不",
+      "pinyin": "bù",
+      "file": "assets/pinyin-reading-v2/p095.mp3"
+    },
+    {
+      "id": "p096",
+      "text": "北",
+      "pinyin": "běi",
+      "file": "assets/pinyin-reading-v2/p096.mp3"
+    },
+    {
+      "id": "p097",
+      "text": "本",
+      "pinyin": "běn",
+      "file": "assets/pinyin-reading-v2/p097.mp3"
+    },
+    {
+      "id": "p098",
+      "text": "表",
+      "pinyin": "biǎo",
+      "file": "assets/pinyin-reading-v2/p098.mp3"
+    },
+    {
+      "id": "p099",
+      "text": "草",
+      "pinyin": "cǎo",
+      "file": "assets/pinyin-reading-v2/p099.mp3"
+    },
+    {
+      "id": "p100",
+      "text": "茶",
+      "pinyin": "chá",
+      "file": "assets/pinyin-reading-v2/p100.mp3"
+    },
+    {
+      "id": "p101",
+      "text": "长",
+      "pinyin": "cháng",
+      "file": "assets/pinyin-reading-v2/p101.mp3"
+    },
+    {
+      "id": "p102",
+      "text": "多",
+      "pinyin": "duō",
+      "file": "assets/pinyin-reading-v2/p102.mp3"
+    },
+    {
+      "id": "p103",
+      "text": "电",
+      "pinyin": "diàn",
+      "file": "assets/pinyin-reading-v2/p103.mp3"
+    },
+    {
+      "id": "p104",
+      "text": "低",
+      "pinyin": "dī",
+      "file": "assets/pinyin-reading-v2/p104.mp3"
+    },
+    {
+      "id": "p105",
+      "text": "额",
+      "pinyin": "é",
+      "file": "assets/pinyin-reading-v2/p105.mp3"
+    },
+    {
+      "id": "p106",
+      "text": "给",
+      "pinyin": "gěi",
+      "file": "assets/pinyin-reading-v2/p106.mp3"
+    },
+    {
+      "id": "p107",
+      "text": "很",
+      "pinyin": "hěn",
+      "file": "assets/pinyin-reading-v2/p107.mp3"
+    },
+    {
+      "id": "p108",
+      "text": "冷",
+      "pinyin": "lěng",
+      "file": "assets/pinyin-reading-v2/p108.mp3"
+    },
+    {
+      "id": "p109",
+      "text": "耳",
+      "pinyin": "ěr",
+      "file": "assets/pinyin-reading-v2/p109.mp3"
+    },
+    {
+      "id": "p110",
+      "text": "飞",
+      "pinyin": "fēi",
+      "file": "assets/pinyin-reading-v2/p110.mp3"
+    },
+    {
+      "id": "p111",
+      "text": "风",
+      "pinyin": "fēng",
+      "file": "assets/pinyin-reading-v2/p111.mp3"
+    },
+    {
+      "id": "p112",
+      "text": "房",
+      "pinyin": "fáng",
+      "file": "assets/pinyin-reading-v2/p112.mp3"
+    },
+    {
+      "id": "p113",
+      "text": "分",
+      "pinyin": "fēn",
+      "file": "assets/pinyin-reading-v2/p113.mp3"
+    },
+    {
+      "id": "p114",
+      "text": "放",
+      "pinyin": "fàng",
+      "file": "assets/pinyin-reading-v2/p114.mp3"
+    },
+    {
+      "id": "p115",
+      "text": "高",
+      "pinyin": "gāo",
+      "file": "assets/pinyin-reading-v2/p115.mp3"
+    },
+    {
+      "id": "p116",
+      "text": "工",
+      "pinyin": "gōng",
+      "file": "assets/pinyin-reading-v2/p116.mp3"
+    },
+    {
+      "id": "p117",
+      "text": "贵",
+      "pinyin": "guì",
+      "file": "assets/pinyin-reading-v2/p117.mp3"
+    },
+    {
+      "id": "p118",
+      "text": "果",
+      "pinyin": "guǒ",
+      "file": "assets/pinyin-reading-v2/p118.mp3"
+    },
+    {
+      "id": "p119",
+      "text": "跟",
+      "pinyin": "gēn",
+      "file": "assets/pinyin-reading-v2/p119.mp3"
+    },
+    {
+      "id": "p120",
+      "text": "喝",
+      "pinyin": "hē",
+      "file": "assets/pinyin-reading-v2/p120.mp3"
+    },
+    {
+      "id": "p121",
+      "text": "海",
+      "pinyin": "hǎi",
+      "file": "assets/pinyin-reading-v2/p121.mp3"
+    },
+    {
+      "id": "p122",
+      "text": "红",
+      "pinyin": "hóng",
+      "file": "assets/pinyin-reading-v2/p122.mp3"
+    },
+    {
+      "id": "p123",
+      "text": "面",
+      "pinyin": "miàn",
+      "file": "assets/pinyin-reading-v2/p123.mp3"
+    },
+    {
+      "id": "p124",
+      "text": "想",
+      "pinyin": "xiǎng",
+      "file": "assets/pinyin-reading-v2/p124.mp3"
+    },
+    {
+      "id": "p125",
+      "text": "鸟",
+      "pinyin": "niǎo",
+      "file": "assets/pinyin-reading-v2/p125.mp3"
+    },
+    {
+      "id": "p126",
+      "text": "写",
+      "pinyin": "xiě",
+      "file": "assets/pinyin-reading-v2/p126.mp3"
+    },
+    {
+      "id": "p127",
+      "text": "明",
+      "pinyin": "míng",
+      "file": "assets/pinyin-reading-v2/p127.mp3"
+    },
+    {
+      "id": "p128",
+      "text": "九",
+      "pinyin": "jiǔ",
+      "file": "assets/pinyin-reading-v2/p128.mp3"
+    },
+    {
+      "id": "p129",
+      "text": "见",
+      "pinyin": "jiàn",
+      "file": "assets/pinyin-reading-v2/p129.mp3"
+    },
+    {
+      "id": "p130",
+      "text": "叫",
+      "pinyin": "jiào",
+      "file": "assets/pinyin-reading-v2/p130.mp3"
+    },
+    {
+      "id": "p131",
+      "text": "就",
+      "pinyin": "jiù",
+      "file": "assets/pinyin-reading-v2/p131.mp3"
+    },
+    {
+      "id": "p132",
+      "text": "开",
+      "pinyin": "kāi",
+      "file": "assets/pinyin-reading-v2/p132.mp3"
+    },
+    {
+      "id": "p133",
+      "text": "口",
+      "pinyin": "kǒu",
+      "file": "assets/pinyin-reading-v2/p133.mp3"
+    },
+    {
+      "id": "p134",
+      "text": "空",
+      "pinyin": "kōng",
+      "file": "assets/pinyin-reading-v2/p134.mp3"
+    },
+    {
+      "id": "p135",
+      "text": "老",
+      "pinyin": "lǎo",
+      "file": "assets/pinyin-reading-v2/p135.mp3"
+    },
+    {
+      "id": "p136",
+      "text": "里",
+      "pinyin": "lǐ",
+      "file": "assets/pinyin-reading-v2/p136.mp3"
+    },
+    {
+      "id": "p137",
+      "text": "路",
+      "pinyin": "lù",
+      "file": "assets/pinyin-reading-v2/p137.mp3"
+    },
+    {
+      "id": "p138",
+      "text": "米",
+      "pinyin": "mǐ",
+      "file": "assets/pinyin-reading-v2/p138.mp3"
+    },
+    {
+      "id": "p139",
+      "text": "买",
+      "pinyin": "mǎi",
+      "file": "assets/pinyin-reading-v2/p139.mp3"
+    },
+    {
+      "id": "p140",
+      "text": "慢",
+      "pinyin": "màn",
+      "file": "assets/pinyin-reading-v2/p140.mp3"
+    },
+    {
+      "id": "p141",
+      "text": "没",
+      "pinyin": "méi",
+      "file": "assets/pinyin-reading-v2/p141.mp3"
+    },
+    {
+      "id": "p142",
+      "text": "年",
+      "pinyin": "nián",
+      "file": "assets/pinyin-reading-v2/p142.mp3"
+    },
+    {
+      "id": "p143",
+      "text": "男",
+      "pinyin": "nán",
+      "file": "assets/pinyin-reading-v2/p143.mp3"
+    },
+    {
+      "id": "p144",
+      "text": "能",
+      "pinyin": "néng",
+      "file": "assets/pinyin-reading-v2/p144.mp3"
+    },
+    {
+      "id": "p145",
+      "text": "南",
+      "pinyin": "nán",
+      "file": "assets/pinyin-reading-v2/p145.mp3"
+    },
+    {
+      "id": "p146",
+      "text": "坡",
+      "pinyin": "pō",
+      "file": "assets/pinyin-reading-v2/p146.mp3"
+    },
+    {
+      "id": "p147",
+      "text": "摸",
+      "pinyin": "mō",
+      "file": "assets/pinyin-reading-v2/p147.mp3"
+    },
+    {
+      "id": "p148",
+      "text": "佛",
+      "pinyin": "fó",
+      "file": "assets/pinyin-reading-v2/p148.mp3"
+    },
+    {
+      "id": "p149",
+      "text": "中",
+      "pinyin": "zhōng",
+      "file": "assets/pinyin-reading-v2/p149.mp3"
+    },
+    {
+      "id": "p150",
+      "text": "走",
+      "pinyin": "zǒu",
+      "file": "assets/pinyin-reading-v2/p150.mp3"
+    },
+    {
+      "id": "p151",
+      "text": "手",
+      "pinyin": "shǒu",
+      "file": "assets/pinyin-reading-v2/p151.mp3"
+    },
+    {
+      "id": "p152",
+      "text": "怕",
+      "pinyin": "pà",
+      "file": "assets/pinyin-reading-v2/p152.mp3"
+    },
+    {
+      "id": "p153",
+      "text": "票",
+      "pinyin": "piào",
+      "file": "assets/pinyin-reading-v2/p153.mp3"
+    },
+    {
+      "id": "p154",
+      "text": "跑",
+      "pinyin": "pǎo",
+      "file": "assets/pinyin-reading-v2/p154.mp3"
+    },
+    {
+      "id": "p155",
+      "text": "朋",
+      "pinyin": "péng",
+      "file": "assets/pinyin-reading-v2/p155.mp3"
+    },
+    {
+      "id": "p156",
+      "text": "平",
+      "pinyin": "píng",
+      "file": "assets/pinyin-reading-v2/p156.mp3"
+    },
+    {
+      "id": "p157",
+      "text": "钱",
+      "pinyin": "qián",
+      "file": "assets/pinyin-reading-v2/p157.mp3"
+    },
+    {
+      "id": "p158",
+      "text": "请",
+      "pinyin": "qǐng",
+      "file": "assets/pinyin-reading-v2/p158.mp3"
+    },
+    {
+      "id": "p159",
+      "text": "起",
+      "pinyin": "qǐ",
+      "file": "assets/pinyin-reading-v2/p159.mp3"
+    },
+    {
+      "id": "p160",
+      "text": "球",
+      "pinyin": "qiú",
+      "file": "assets/pinyin-reading-v2/p160.mp3"
+    },
+    {
+      "id": "p161",
+      "text": "热",
+      "pinyin": "rè",
+      "file": "assets/pinyin-reading-v2/p161.mp3"
+    },
+    {
+      "id": "p162",
+      "text": "让",
+      "pinyin": "ràng",
+      "file": "assets/pinyin-reading-v2/p162.mp3"
+    },
+    {
+      "id": "p163",
+      "text": "容",
+      "pinyin": "róng",
+      "file": "assets/pinyin-reading-v2/p163.mp3"
+    },
+    {
+      "id": "p164",
+      "text": "肉",
+      "pinyin": "ròu",
+      "file": "assets/pinyin-reading-v2/p164.mp3"
+    },
+    {
+      "id": "p165",
+      "text": "送",
+      "pinyin": "sòng",
+      "file": "assets/pinyin-reading-v2/p165.mp3"
+    },
+    {
+      "id": "p166",
+      "text": "素",
+      "pinyin": "sù",
+      "file": "assets/pinyin-reading-v2/p166.mp3"
+    },
+    {
+      "id": "p167",
+      "text": "山",
+      "pinyin": "shān",
+      "file": "assets/pinyin-reading-v2/p167.mp3"
+    },
+    {
+      "id": "p168",
+      "text": "说",
+      "pinyin": "shuō",
+      "file": "assets/pinyin-reading-v2/p168.mp3"
+    },
+    {
+      "id": "p169",
+      "text": "太",
+      "pinyin": "tài",
+      "file": "assets/pinyin-reading-v2/p169.mp3"
+    },
+    {
+      "id": "p170",
+      "text": "同",
+      "pinyin": "tóng",
+      "file": "assets/pinyin-reading-v2/p170.mp3"
+    },
+    {
+      "id": "p171",
+      "text": "土",
+      "pinyin": "tǔ",
+      "file": "assets/pinyin-reading-v2/p171.mp3"
+    },
+    {
+      "id": "p172",
+      "text": "五",
+      "pinyin": "wǔ",
+      "file": "assets/pinyin-reading-v2/p172.mp3"
+    },
+    {
+      "id": "p173",
+      "text": "瓜",
+      "pinyin": "guā",
+      "file": "assets/pinyin-reading-v2/p173.mp3"
+    },
+    {
+      "id": "p174",
+      "text": "外",
+      "pinyin": "wài",
+      "file": "assets/pinyin-reading-v2/p174.mp3"
+    },
+    {
+      "id": "p175",
+      "text": "玩",
+      "pinyin": "wán",
+      "file": "assets/pinyin-reading-v2/p175.mp3"
+    },
+    {
+      "id": "p176",
+      "text": "王",
+      "pinyin": "wáng",
+      "file": "assets/pinyin-reading-v2/p176.mp3"
+    },
+    {
+      "id": "p177",
+      "text": "雪",
+      "pinyin": "xuě",
+      "file": "assets/pinyin-reading-v2/p177.mp3"
+    },
+    {
+      "id": "p178",
+      "text": "卷",
+      "pinyin": "juǎn",
+      "file": "assets/pinyin-reading-v2/p178.mp3"
+    },
+    {
+      "id": "p179",
+      "text": "群",
+      "pinyin": "qún",
+      "file": "assets/pinyin-reading-v2/p179.mp3"
+    },
+    {
+      "id": "p180",
+      "text": "问",
+      "pinyin": "wèn",
+      "file": "assets/pinyin-reading-v2/p180.mp3"
+    },
+    {
+      "id": "p181",
+      "text": "晚",
+      "pinyin": "wǎn",
+      "file": "assets/pinyin-reading-v2/p181.mp3"
+    },
+    {
+      "id": "p182",
+      "text": "无",
+      "pinyin": "wú",
+      "file": "assets/pinyin-reading-v2/p182.mp3"
+    },
+    {
+      "id": "p183",
+      "text": "学",
+      "pinyin": "xué",
+      "file": "assets/pinyin-reading-v2/p183.mp3"
+    },
+    {
+      "id": "p184",
+      "text": "羊",
+      "pinyin": "yáng",
+      "file": "assets/pinyin-reading-v2/p184.mp3"
+    },
+    {
+      "id": "p185",
+      "text": "有",
+      "pinyin": "yǒu",
+      "file": "assets/pinyin-reading-v2/p185.mp3"
+    },
+    {
+      "id": "p186",
+      "text": "要",
+      "pinyin": "yào",
+      "file": "assets/pinyin-reading-v2/p186.mp3"
+    },
+    {
+      "id": "p187",
+      "text": "做",
+      "pinyin": "zuò",
+      "file": "assets/pinyin-reading-v2/p187.mp3"
+    },
+    {
+      "id": "p188",
+      "text": "在",
+      "pinyin": "zài",
+      "file": "assets/pinyin-reading-v2/p188.mp3"
+    },
+    {
+      "id": "p189",
+      "text": "这",
+      "pinyin": "zhè",
+      "file": "assets/pinyin-reading-v2/p189.mp3"
+    },
+    {
+      "id": "p190",
+      "text": "早",
+      "pinyin": "zǎo",
+      "file": "assets/pinyin-reading-v2/p190.mp3"
     }
-  ]
+  ],
+  "audio": {
+    "voice": "zh-CN-XiaoyiNeural",
+    "source": "Edge Read Aloud personal-preview only",
+    "synthesisRate": "-16%",
+    "playbackRate": 0.82,
+    "slowRate": 0.72,
+    "note": "Only MP3s of complete example syllables; unit labels denote a component, not standalone audio."
+  },
+  "guidance": {
+    "o": "Финаль o после b, p, m, f звучит с коротким переходом через u: b(u)o, p(u)o, m(u)o, f(u)o. В кнопке звучит целый слог, а не отдельная буква.",
+    "a": "Для финали a пример 八 bā: произносится весь слог b+a с первым тоном.",
+    "notice": "На карточке записан целый пример (иероглиф и пиньинь). Обозначение сверху показывает изучаемую часть слога."
+  }
 }
