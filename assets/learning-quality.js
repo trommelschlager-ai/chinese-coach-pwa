@@ -209,8 +209,29 @@
  audioStatus.innerHTML='<span role="status" aria-live="polite"></span><button type="button">Остановить</button>';
  document.body.append(audioStatus);audioStatus.querySelector('button').onclick=()=>{stopLearningAudio();audioStatus.hidden=true};
  function status(text){audioStatus.hidden=true;audioStatus.querySelector('span').textContent=text;if(/не удалось|недоступна/i.test(text))toast(text);}
- async function playWord(text,rate=.82,token=audioGeneration,voice=null){
-  const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=window.courseHumanAudio?.[key];
+ // Dialogue voice files are used only after the generated batch passes all 25 MP3 checks.
+ let dialogueMp3Status=null,dialogueMp3Checked=0,dialogueMp3Check=null;
+ async function ensureDialogueMp3Ready(){
+  if(dialogueMp3Status===true)return true;
+  if(dialogueMp3Check)return dialogueMp3Check;
+  if(dialogueMp3Status===false && Date.now()-dialogueMp3Checked<60000)return false;
+  dialogueMp3Checked=Date.now();
+  dialogueMp3Check=(async()=>{
+   try{
+    const response=await fetch('./assets/dialogue-voices/status.json',{cache:'no-store'});
+    if(!response.ok)return false;
+    const status=await response.json();
+    return status.ready===true&&status.count===25&&status.voices?.A==='zh-CN-XiaoxiaoNeural'&&status.voices?.B==='zh-CN-YunxiNeural';
+   }catch{return false}
+  })();
+  dialogueMp3Status=await dialogueMp3Check;dialogueMp3Check=null;
+  return dialogueMp3Status;
+ }
+ function getDialogueClip(lessonId,index,speaker){
+  return './assets/dialogue-voices/l'+lessonId+'-'+String(index+1).padStart(2,'0')+'-'+speaker.toLowerCase()+'.mp3';
+ }
+ async function playWord(text,rate=.82,token=audioGeneration,voice=null,dialogueClip=null){
+  const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=dialogueClip||(voice?null:window.courseHumanAudio?.[key]);
   if(file){const a=new Audio(file);audio=a;a.playbackRate=rate<=.8?rate:Math.max(.94,rate);a.preservesPitch=true;
    status('Загружается запись носителя…');
    try{await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{a.pause();reject(Error('timeout'))},10000);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(Error('audio'))};a.onpause=()=>{clearTimeout(timer);resolve()};Promise.resolve(a.play()).then(()=>{if(token!==audioGeneration){a.pause();resolve()}else status('Играет запись носителя')},reject)});return}
@@ -223,18 +244,37 @@
   await new Promise(resolve=>{
    const u=new SpeechSynthesisUtterance(text);let timer;
    const finish=()=>{clearTimeout(timer);if(finishSpeech===finish)finishSpeech=null;resolve()};finishSpeech=finish;
-   u.lang='zh-CN';const selected=voice==='B'?(choices.find(x=>x.voiceURI!==v?.voiceURI&&/natural|neural|xiaoxiao|xiaoyi|yunxi|google|microsoft/i.test(x.name))||v):v;if(selected)u.voice=selected;
+   u.lang='zh-CN';
+    const selected=voice==='A'?(choices.find(x=>/xiaoxiao/i.test(x.name))||v):
+      voice==='B'?(choices.find(x=>/yunxi/i.test(x.name))||v):v;
+    if(selected)u.voice=selected;
    u.rate=rate;u.pitch=1;u.onend=finish;u.onerror=()=>{toast('Не удалось озвучить. Выбери китайский голос в настройках.');finish()};
    timer=setTimeout(finish,20000);speechSynthesis.speak(u);
   });
  }
 
  speakChinese=function(text,rate){stopLearningAudio();const token=audioGeneration;const pref=Number(localStorage.getItem('chinese-coach-tts-rate-v2'))||.94;const speed=rate&&rate<=.8?Math.min(pref,rate):pref;return playWord(text,speed,token).finally(()=>{if(token===audioGeneration)audioStatus.hidden=true})};
- async function playDialogue(lesson){stopLearningAudio();const token=audioGeneration;
+ window.playDialogueLine=async function(lessonId,index){
+  const lesson=COURSE.find(x=>x.id===lessonId),line=lesson?.dialogue[index];
+  if(!line)return;
+  stopLearningAudio();const token=audioGeneration;
+  const ready=await ensureDialogueMp3Ready();if(token!==audioGeneration)return;
+  const [speaker,text]=line;
+  try{await playWord(text,.97,token,speaker,ready?getDialogueClip(lessonId,index,speaker):null)}
+  finally{if(token===audioGeneration)audioStatus.hidden=true}
+ };
+ async function playDialogue(lesson){
+  stopLearningAudio();const token=audioGeneration;
   const rows=[...document.querySelectorAll('.dialogue-row')];
-  try{for(let i=0;i<lesson.dialogue.length;i++){if(token!==audioGeneration)break;const [who,hz]=lesson.dialogue[i];rows.forEach((r,j)=>r.classList.toggle('playing-line',j===i));await playWord(hz,.85,token,who)}}
-  finally{rows.forEach(r=>r.classList.remove('playing-line'))}
-  if(token===audioGeneration)audioStatus.hidden=true;
+  const ready=await ensureDialogueMp3Ready();if(token!==audioGeneration)return;
+  try{
+   for(let i=0;i<lesson.dialogue.length;i++){
+    if(token!==audioGeneration)break;
+    const [speaker,text]=lesson.dialogue[i];
+    rows.forEach((r,j)=>r.classList.toggle('playing-line',j===i));
+    await playWord(text,.97,token,speaker,ready?getDialogueClip(lesson.id,i,speaker):null);
+   }
+  }finally{rows.forEach(r=>r.classList.remove('playing-line'));if(token===audioGeneration)audioStatus.hidden=true}
  }
  // Record until Stop, retain a replay button; navigation cancels recording and releases the mic.
  recordFocusRepeat=async function(){
