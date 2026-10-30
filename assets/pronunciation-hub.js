@@ -28,7 +28,7 @@
       '</button>',
       '<button type="button" class="pronunciation-choice" data-pronunciation-mode="combinations">',
         '<span class="pronunciation-icon" aria-hidden="true">拼</span>',
-        '<span class="pronunciation-choice-copy"><strong>Звукосочетания</strong><small>zh, ch, sh · z, c, s · ai, pai и другие</small></span>',
+        '<span class="pronunciation-choice-copy"><strong>Чтение пиньиня A–Z</strong><small>Все звуки, финали, сочетания и правила</small></span>',
         '<span class="pronunciation-chevron" aria-hidden="true">›</span>',
       '</button>',
       '<button type="button" class="pronunciation-choice" data-pronunciation-mode="quiz">',
@@ -160,7 +160,7 @@
   const voiceSlot=hub.querySelector('#pronunciation-voice-slot');
   voiceSlot.appendChild(voices);
   const settings=hub.querySelector('#pronunciation-settings');
-  const modeTitles={listen:'Слушать тоны',combinations:'Звукосочетания',quiz:'Угадать на слух',speak:'Моё произношение'};
+  const modeTitles={listen:'Слушать тоны',combinations:'Чтение пиньиня A–Z',quiz:'Угадать на слух',speak:'Моё произношение'};
   const sections={listen:[intro,grid],combinations:[comboSection],quiz:[lab],speak:[practice]};
   let mode=null,voiceAudio=null;
 
