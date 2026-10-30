@@ -88,7 +88,7 @@ async def main() -> None:
         sum((ROOT / entry["file"]).stat().st_size for entry in entries),
     ) + sum((ROOT / entry["file"]).stat().st_size for entry in entries)
     manifest["version"] = 58
-    offline.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    offline.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     # Cache busting forces preinstalled Android PWAs to see the new recordings.
     service_worker = ROOT / "sw.js"
     sw = service_worker.read_text(encoding="utf-8")
