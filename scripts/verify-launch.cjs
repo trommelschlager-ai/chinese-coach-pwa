@@ -23,7 +23,7 @@ const root=d.getElementById('launch-entry');
 const cover=d.getElementById('launch-cover');
 const menu=d.getElementById('launch-menu');
 const cards=[...menu.querySelectorAll('.six-menu-cards .six-card')];
-const expected=['Звуки и тоны','Базовые слова','Пишем иероглифы','Диалоги','Практика','Тест'];
+const expected=['Звуки, звукосочетания и тоны','Базовые слова','Пишем иероглифы','Диалоги','Практика','Тест'];
 assert(root&&!root.hidden,'Welcome overlay is visible');
 assert(!cover.hidden&&menu.hidden,'Approved cover must be the first screen');
 assert(!root.classList.contains('petals-falling')&&!root.classList.contains('launch-sakura'),'No falling petals on first launch');
