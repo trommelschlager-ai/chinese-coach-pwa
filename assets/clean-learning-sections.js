@@ -100,8 +100,8 @@ function dialogueCategories(){
 function showDialogue(id){
  const l=COURSE.find(l=>l.id===id&&l.id!==1);if(!l)return;
  dialogLesson=id;view='dialogues';stopAudio();
- const lowered=localStorage.getItem('chinese-coach-dialogue-natural-v71')!=='1';
- const voiceRow='<div class="clean-dialog-voice"><span data-dialogue-voice-caption>'+(lowered?'Тембр голоса: немного ниже':'Тембр голоса: оригинальный')+'</span><button type="button" data-dialogue-timbre-toggle>'+(lowered?'Слушать оригинал':'Сделать голос ниже')+'</button></div>';
+ const legacy=localStorage.getItem('chinese-coach-dialogue-original-v72')==='1';
+ const voiceRow='<div class="clean-dialog-voice"><span data-dialogue-voice-caption>'+(legacy?'Старые голоса · Xiaoxiao / Yunxi':'Новые голоса · Xiaoxuan / Yunjian')+'</span><button type="button" data-dialogue-voice-toggle>'+(legacy?'Включить новые голоса':'Сравнить со старыми')+'</button></div>';
  const content='<div class="clean-dialog-head"><button type="button" class="clean-action-primary" data-dialogue-play-all>▶ Слушать весь диалог</button></div>'+voiceRow+
  '<div class="clean-dialog-lines">'+l.dialogue.map(([who,hz,py,ru],i)=>
  '<article class="dialogue-row clean-dialog-line" data-standalone-line="'+i+'"><div class="clean-dialog-avatar '+(who==='A'?'girl':'boy')+'">'+
@@ -111,12 +111,12 @@ function showDialogue(id){
  frame(l.title,'Диалог · '+l.dialogue.length+' реплик',content,dialogueCategories);
  $$('[data-dialogue-line]').forEach(b=>b.onclick=()=>window.playDialogueLine?.(id,Number(b.dataset.dialogueLine)));
  $('[data-dialogue-play-all]').onclick=()=>window.playStandaloneDialogue?.(id);
- $('[data-dialogue-timbre-toggle]').onclick=()=>{
-  const nowOriginal=localStorage.getItem('chinese-coach-dialogue-natural-v71')!=='1';
-  localStorage.setItem('chinese-coach-dialogue-natural-v71',nowOriginal?'1':'0');
+ $('[data-dialogue-voice-toggle]').onclick=()=>{
+  const wasLegacy=localStorage.getItem('chinese-coach-dialogue-original-v72')==='1';
+  localStorage.setItem('chinese-coach-dialogue-original-v72',wasLegacy?'0':'1');
   stopAudio();window.dispatchEvent(new Event('learning-audio-stop'));
-  $('[data-dialogue-voice-caption]').textContent=nowOriginal?'Тембр голоса: оригинальный':'Тембр голоса: немного ниже';
-  $('[data-dialogue-timbre-toggle]').textContent=nowOriginal?'Сделать голос ниже':'Слушать оригинал';
+  $('[data-dialogue-voice-caption]').textContent=wasLegacy?'Новые голоса · Xiaoxuan / Yunjian':'Старые голоса · Xiaoxiao / Yunxi';
+  $('[data-dialogue-voice-toggle]').textContent=wasLegacy?'Сравнить со старыми':'Включить новые голоса';
  };
 }
 function choiceButtons(target,correctCallback){

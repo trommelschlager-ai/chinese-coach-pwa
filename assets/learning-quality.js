@@ -239,27 +239,27 @@
   dialogueMp3Checked=Date.now();
   dialogueMp3Check=(async()=>{
    try{
-    const response=await fetch('./assets/dialogue-voices/status.json',{cache:'no-store'});
+    const response=await fetch('./assets/dialogue-voices-v72/status.json',{cache:'no-store'});
     if(!response.ok)return false;
     const status=await response.json();
-    return status.ready===true&&status.count===25&&status.voices?.A==='zh-CN-XiaoxiaoNeural'&&status.voices?.B==='zh-CN-YunxiNeural';
+    return status.ready===true&&status.count===25&&status.voices?.A==='zh-CN-XiaoxuanNeural'&&status.voices?.B==='zh-CN-YunjianNeural';
    }catch{return false}
   })();
   dialogueMp3Status=await dialogueMp3Check;dialogueMp3Check=null;
   return dialogueMp3Status;
  }
- function getDialogueClip(lessonId,index,speaker){
-  return './assets/dialogue-voices/l'+lessonId+'-'+String(index+1).padStart(2,'0')+'-'+speaker.toLowerCase()+'.mp3';
+ function getDialogueClip(lessonId,index,speaker,useNew){
+  const folder=useNew?'dialogue-voices-v72':'dialogue-voices';
+  return './assets/'+folder+'/l'+lessonId+'-'+String(index+1).padStart(2,'0')+'-'+speaker.toLowerCase()+'.mp3';
  }
  async function playWord(text,rate=.82,token=audioGeneration,voice=null,dialogueClip=null,allowSystem=false){
   const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=dialogueClip||(voice?null:(window.courseHumanAudio?.[key]||window.courseNaturalAudio?.[key]));
   if(file){const a=new Audio(file);audio=a;
-   const lowered=Boolean(dialogueClip)&&localStorage.getItem('chinese-coach-dialogue-natural-v71')!=='1';
-   // Preview-only timbre adjustment: slow down and lower absolute F0 together.
-   // The relative Mandarin tone contour remains intact; the 25 MP3 files are unchanged.
-   a.playbackRate=lowered?(voice==='B'?.89:.92):(rate<=.8?rate:Math.max(.94,rate));
-   a.preservesPitch=!lowered;
-   if('webkitPreservesPitch' in a)a.webkitPreservesPitch=!lowered;
+   // Fresh v72 MP3s are truly different voices; keep original native pitch and tone contours.
+   // For optional A/B comparison, play the unmodified old MP3 at its natural pitch too.
+   a.playbackRate=dialogueClip?1:(rate<=.8?rate:Math.max(.94,rate));
+   a.preservesPitch=true;
+   if('webkitPreservesPitch' in a)a.webkitPreservesPitch=true;
    status('Загружается запись носителя…');
    try{await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{a.pause();reject(Error('timeout'))},10000);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(Error('audio'))};a.onpause=()=>{clearTimeout(timer);resolve()};Promise.resolve(a.play()).then(()=>{if(token!==audioGeneration){a.pause();resolve()}else status('Играет запись носителя')},reject)});return}
    catch{a.pause();if(token!==audioGeneration)return;
@@ -291,7 +291,7 @@
   stopLearningAudio();const token=audioGeneration;
   const ready=await ensureDialogueMp3Ready();if(token!==audioGeneration)return;
   const [speaker,text]=line;
-  try{await playWord(text,.97,token,speaker,ready?getDialogueClip(lessonId,index,speaker):null)}
+  try{await playWord(text,.97,token,speaker,getDialogueClip(lessonId,index,speaker,ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1'))}
   finally{if(token===audioGeneration)audioStatus.hidden=true}
  };
  window.playStandaloneDialogue=function(lessonId){
@@ -308,7 +308,7 @@
     if(token!==audioGeneration)break;
     const [speaker,text]=lesson.dialogue[i];
     rows.forEach((r,j)=>r.classList.toggle('playing-line',j===i));
-    await playWord(text,.97,token,speaker,ready?getDialogueClip(lesson.id,i,speaker):null);
+    await playWord(text,.97,token,speaker,getDialogueClip(lesson.id,i,speaker,ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1'));
    }
   }finally{rows.forEach(r=>r.classList.remove('playing-line'));if(token===audioGeneration)audioStatus.hidden=true}
  }
