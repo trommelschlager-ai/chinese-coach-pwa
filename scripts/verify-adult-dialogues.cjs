@@ -22,7 +22,7 @@ for(const e of plan.entries){
  assert.notEqual(hash(newPath),hash(oldPath),'The old and new MP3 MUST be different: '+newPath);
  assert(pack.files.includes('./'+newPath),'Offline pack missing '+newPath);
 }
-assert(pack.version===76&&pack.files.includes('./assets/dialogue-voices-v73/status.json'));
+assert(pack.version===77&&pack.files.includes('./assets/dialogue-voices-v73/status.json'));
 assert(quality.includes("fetch('./assets/dialogue-voices-v73/status.json'"));
 assert(quality.includes("folder=useNew?'dialogue-voices-v73':'dialogue-voices'"));
 assert(quality.includes("a.playbackRate=dialogueClip?1:"));
