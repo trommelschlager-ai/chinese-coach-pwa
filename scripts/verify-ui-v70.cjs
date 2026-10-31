@@ -16,7 +16,7 @@ for(const n of [1,2,3,4]){
 assert(css.includes('#tones #listening-lab')&&css.includes('#tones #ear-play'),'Listening quiz is restyled');
 assert(css.includes('#tones #tone-check')&&css.includes('#tones #record'),'Microphone and graph buttons restyled');
 assert(d.getElementById('pitchchart'),'Voice graph preserved');
-assert(/chinese-coach-pwa-v(?:70|71|72|73|74)/.test(sw),'New SW version');
+assert(/chinese-coach-pwa-v(?:70|71|72|73|74|75)/.test(sw),'New SW version');
 assert(sw.includes('china-misty-pavilion-v70.webp'),'Photo cached for offline');
 assert(sw.includes('ui-polish-v70.css?v=70'),'V70 CSS cached');
 assert(pack.version>=70);
