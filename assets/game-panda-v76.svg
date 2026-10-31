@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 390" role="img" aria-label="Панда с китайской книгой">
+<defs><linearGradient id="robe" x2=".65" y2="1"><stop stop-color="#cf9dfa"/><stop offset="1" stop-color="#7351b7"/></linearGradient><linearGradient id="paper" x2="0" y2="1"><stop stop-color="#fff6ff"/><stop offset="1" stop-color="#ddc5ee"/></linearGradient><filter id="shadow"><feGaussianBlur stdDeviation="9"/></filter></defs>
+<ellipse cx="190" cy="364" rx="126" ry="17" fill="#71589d" opacity=".18" filter="url(#shadow)"/>
+<circle cx="105" cy="112" r="56" fill="#2c2742"/><circle cx="275" cy="111" r="56" fill="#2c2742"/>
+<ellipse cx="190" cy="260" rx="110" ry="113" fill="url(#robe)" stroke="#fff3ff" stroke-width="6"/>
+<ellipse cx="138" cy="332" rx="51" ry="43" fill="#302941"/><ellipse cx="250" cy="332" rx="51" ry="43" fill="#302941"/>
+<ellipse cx="138" cy="330" rx="26" ry="21" fill="#bd869a"/><ellipse cx="250" cy="330" rx="26" ry="21" fill="#bd869a"/>
+<path d="M177 158l-27 105 44 37 41-44-30-98" fill="#f5d8ff" opacity=".7"/>
+<ellipse cx="190" cy="143" rx="127" ry="121" fill="#fff8fd" stroke="#e7d8ee" stroke-width="4"/>
+<ellipse cx="132" cy="158" rx="42" ry="52" transform="rotate(22 132 158)" fill="#333044"/>
+<ellipse cx="247" cy="158" rx="42" ry="52" transform="rotate(-22 247 158)" fill="#333044"/>
+<path d="M104 151q19-19 43 0m85 0q20-19 44 0" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+<ellipse cx="107" cy="198" rx="23" ry="14" fill="#ffbdd3" opacity=".8"/><ellipse cx="272" cy="198" rx="23" ry="14" fill="#ffbdd3" opacity=".8"/>
+<path d="M173 193q17-17 34 0q-5 17-17 18q-11 0-17-18" fill="#342b41"/>
+<path d="M161 218q29 38 59 0q-4 51-30 52q-25-4-29-52" fill="#572f50"/><ellipse cx="190" cy="247" rx="18" ry="9" fill="#ff90ae"/>
+<path d="M293 97q23-33 41-13q-4 17-26 25" fill="#b586ec"/><circle cx="304" cy="89" r="14" fill="#f6c1e6"/>
+<path d="M120 242q-41-9-43 36q-1 29 47 42l14-37" fill="#342e45"/>
+<path d="M258 242q43-8 46 39q-2 23-43 37l-15-40" fill="#342e45"/>
+<path d="M121 250q42-14 69 10q27-28 73-11l-6 91q-42-20-67 3q-32-26-69-7z" fill="#684aa6" stroke="#f0c8ff" stroke-width="5" stroke-linejoin="round"/>
+<path d="M132 263q34-9 57 13v50q-25-16-58-8zm113 1q-30-7-55 12v50q27-14 56-6z" fill="url(#paper)" stroke="#a785cc" stroke-width="2"/>
+<path d="M190 260v81" stroke="#c3a3e6" stroke-width="4"/>
+<text x="213" y="303" fill="#65428b" font-size="34" font-weight="bold" text-anchor="middle" font-family="sans-serif">汉</text>
+<g fill="#ffb7d4" opacity=".87"><circle cx="45" cy="210" r="8"/><circle cx="329" cy="232" r="7"/><circle cx="325" cy="47" r="6"/></g>
+<g fill="#f6cd78"><path d="M48 116l7 13 12 6-12 6-7 13-6-13-14-6 14-6z"/><path d="M315 179l6 10 11 5-11 5-6 10-5-10-11-5 11-5z"/></g>
+</svg>
