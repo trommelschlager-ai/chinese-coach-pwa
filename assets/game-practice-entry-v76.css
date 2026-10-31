@@ -1,0 +1,12 @@
+/* Isolated entry tile for the approved game, original practice modes remain. */
+#topics[data-simple-section="practice"] .clean-game-feature{
+ display:grid;grid-template-columns:55px minmax(0,1fr) 30px;align-items:center;gap:13px;
+ text-align:left;min-height:115px;padding:16px;margin:0 0 15px;width:100%;
+ border:1.8px solid #dba9f4;border-radius:23px;
+ background:linear-gradient(110deg,#eaddffe8,#fff0faee 72%,#f7def6);
+ box-shadow:0 4px 13px #c083e064,0 0 13px #dbb0f285;color:#3c1e60
+}
+#topics .clean-game-feature>span:first-child{font-size:33px;display:grid;place-items:center;width:55px;height:55px;border-radius:18px;background:#f9ecff;border:1px solid #ebc9fa}
+#topics .clean-game-feature strong{display:block;font:800 clamp(19px,5.4vw,24px)/1.2 system-ui}
+#topics .clean-game-feature small{display:block;font:500 clamp(13px,3.7vw,16px)/1.38 system-ui;color:#73578c;margin-top:5px}
+#topics .clean-game-feature b{font-size:29px;color:#8851bf}

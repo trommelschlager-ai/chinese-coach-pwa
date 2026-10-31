@@ -1,6 +1,6 @@
 {
-  "version": 75,
-  "bytes": 17361274,
+  "version": 76,
+  "bytes": 17395340,
   "files": [
     "./assets/approved-home-v36.png",
     "./assets/approved-lesson-design.css?v=56",
@@ -287,6 +287,10 @@
     "./assets/dialogue-voices/l5-06-b.mp3",
     "./assets/final-design.css",
     "./assets/final-design.css?v=41",
+    "./assets/game-panda-v76.svg",
+    "./assets/game-practice-entry-v76.css",
+    "./assets/game-practice-v76.css",
+    "./assets/game-practice-v76.js",
     "./assets/hanzi-data/ARPHICPL.TXT",
     "./assets/hanzi-data/一.json",
     "./assets/hanzi-data/三.json",

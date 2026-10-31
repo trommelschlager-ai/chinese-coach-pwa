@@ -13,8 +13,8 @@ assert(source.includes('data-pinyin-rate="0.85" aria-pressed="true"'));
 assert(source.includes("readingView='letters',readingRate=.85"),'Default pace is 0.85x');
 assert(source.includes('data-pinyin-rate="0.75" aria-pressed="false"'),'Slow practice mode remains');
 assert(source.includes('a.preservesPitch=true'),'Keep Mandarin F0 contour');
-assert(html.includes('pronunciation-hub.js?v=75')&&sw.includes('chinese-coach-pwa-v75'));
-assert(pack.version===75&&curr.clips.length===190);
+assert(html.includes('pronunciation-hub.js?v=75')&&sw.includes('chinese-coach-pwa-v76'));
+assert(pack.version===76&&curr.clips.length===190);
 assert.equal(curr.audio.voice,'zh-CN-YunyangNeural');
 const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 for(const clip of curr.clips){
