@@ -3,7 +3,12 @@ const fs=require('fs'),assert=require('node:assert/strict'),{JSDOM}=require('jsd
 const read=p=>fs.readFileSync(p,'utf8'),pack=JSON.parse(read('assets/offline-pack.json'));
 const html=read('index.html'),clean=read('assets/clean-learning-sections.js'),js=read('assets/game-practice-v76.js');
 assert(html.includes('game-practice-v76.js?v=77')&&html.includes('game-practice-v76.css?v=77'));
-assert(html.includes('data-choice="6"')&&html.includes("window.openGamePractice?.()"),'Game must have a separate home-menu button');
+assert(html.includes('data-choice="6"')&&html.includes("window.location.assign('./game.html')"),'Game must open isolated screen');
+const game=read('game.html');
+assert(game.includes('game-standalone-v80.css?v=80')&&game.includes('game-practice-v76.js?v=77'),'Game keeps working controls in its own page');
+assert(!game.includes('lessons-backdrop.webp'),'No old menu picture with printed text');
+assert(read('assets/game-standalone-v80.css').includes('chinese-painting-daily.webp'),'Clean Chinese landscape loads');
+assert(pack.files.includes('./game.html')&&pack.files.includes('./assets/game-standalone-v80.css'),'New game available in offline package');
 assert(!clean.includes('data-open-game'),'No duplicate game button inside old Practice');
 assert(html.includes('game-polish-v77.css?v=77'),'New illustrated CSS must load');
 assert(pack.version===79);
