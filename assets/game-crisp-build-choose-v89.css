@@ -24,3 +24,26 @@
 }
 #topics .game-shell:has(.game-build-hero) .game-prompt,
 #topics .game-shell:has(.game-choice-list) .game-prompt{background:rgba(255,249,255,.95)!important}
+
+/* v91: scenic background corrections, scoped to the two exercise screens only.
+   The previous background was stretched, causing visible pixelation.
+   Keep panda, live questions, Russian text, answer controls and MP3 untouched. */
+#topics .game-shell:has(.game-build-hero){
+ background-color:#eadcf0!important;
+ background-image:linear-gradient(180deg,#f5edff06,#faf2ff12 70%,#eddbf923),url("./chinese-painting-daily.webp")!important;
+ background-size:100% 100%,cover!important;
+ background-position:center top,center center!important;
+ background-repeat:no-repeat!important;
+}
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero)){
+ background-color:#ecdef6!important;
+ background-image:linear-gradient(180deg,#fff8ff08,#f6e8fc0e 66%,#f1d9fb20),url("./china-misty-pavilion-v70.webp")!important;
+ background-size:100% 100%,cover!important;
+ background-position:center top,center center!important;
+ background-repeat:no-repeat!important;
+}
+#topics .game-shell:has(.game-build-hero)::before,
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero))::before{
+ background:none!important;filter:none!important;opacity:0!important;
+}
+#topics .game-shell:has(.game-build-hero) .game-task-title{margin-bottom:20px!important}
