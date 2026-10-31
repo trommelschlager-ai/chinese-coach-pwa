@@ -295,3 +295,18 @@ body{background:#ead7f9}
   text-shadow:-2px -2px 0 #261330,2px -2px 0 #261330,-2px 2px 0 #261330,2px 2px 0 #261330,0 3px 5px #261330!important
  }
 }
+
+/* v87: stronger, sharper garden background behind the phrase-building game.
+   Do not recolor or replace the existing panda or affect the other lessons. */
+#topics .game-shell:has(.game-build-hero){
+ background-image:linear-gradient(180deg,#fff4fa08 0%,#fff3f600 36%,#f8e4f73b 74%,#f8e4f766 100%),url("./chinese-painting-daily.webp")!important;
+ background-size:100% 100%,auto 920px!important;
+ background-position:center center,center top!important;
+ background-repeat:no-repeat!important;
+}
+#topics .game-shell:has(.game-build-hero)::before{
+ background:linear-gradient(180deg,transparent 0%,#fff0fa00 35%,#fff0fa38 72%,#f9e7fa70 100%)!important;
+ opacity:1!important;
+}
+#topics .game-shell:has(.game-build-hero) .game-panda{filter:drop-shadow(0 6px 7px #7f52a34c) contrast(1.12) saturate(1.08)!important}
+#topics .game-shell:has(.game-build-hero) .game-task-title h1{color:#fff!important}
