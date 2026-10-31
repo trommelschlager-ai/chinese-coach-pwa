@@ -52,33 +52,24 @@ function stopAudio(){
  if(currentAudio){currentAudio.pause();currentAudio=null}
  try{window.speechSynthesis?.cancel?.()}catch{}
 }
-/* Recorded Mandarin MP3s take precedence; fallback synthesizer is only for missing words. */
-/* Consistent Mandarin voice for selectable word tiles; dialogue recordings are unchanged. */
-let selectedMandarinVoice=null;
+/* One consistent pre-recorded Mandarin voice: never use the device's robotic TTS.
+   The approved dialogue-mode MP3s are intentionally left untouched. */
 function speakCardWord(han){
  stopAudio();
  const note=one('[data-game-audio-feedback]');
- if(!window.speechSynthesis || !window.SpeechSynthesisUtterance){
-  if(note)note.textContent='Озвучка слов недоступна на этом устройстве.';
+ const source=window.courseHumanAudio?.[han];
+ if(!source){
+  if(note)note.textContent='Для «'+han+'» пока нет записи этого диктора.';
   return;
  }
- try{
-  const voices=window.speechSynthesis.getVoices()||[];
-  const available=voices.filter(v=>/^(zh-CN|cmn)/i.test(v.lang));
-  if(!selectedMandarinVoice || !voices.some(v=>v.voiceURI===selectedMandarinVoice.voiceURI)){
-   selectedMandarinVoice=available.find(v=>/xiaoxiao|xiaoxuan|yunyang|google.*chinese/i.test(v.name))
-     || available[0] || voices.find(v=>/^zh/i.test(v.lang)) || null;
-  }
-  const speech=new SpeechSynthesisUtterance(han);
-  speech.lang='zh-CN';speech.rate=0.84;speech.pitch=1;
-  if(selectedMandarinVoice)speech.voice=selectedMandarinVoice;
-  if(note)note.textContent='🔊 '+han;
-  window.speechSynthesis.speak(speech);
- }catch{
-  if(note)note.textContent='Не удалось воспроизвести слово.';
- }
+ const audio=new Audio(source);currentAudio=audio;
+ audio.playbackRate=0.92;
+ audio.preservesPitch=true;
+ if('webkitPreservesPitch' in audio)audio.webkitPreservesPitch=true;
+ if(note)note.textContent='🔊 '+han;
+ audio.onerror=()=>{if(currentAudio===audio){currentAudio=null;if(note)note.textContent='Запись временно недоступна: '+han;}};
+ Promise.resolve(audio.play()).catch(()=>{if(currentAudio===audio){currentAudio=null;if(note)note.textContent='Не получилось воспроизвести запись: '+han;}});
 }
-
 window.addEventListener('learning-audio-stop',stopAudio);
 function play(){
  if(!session)return;

@@ -1,0 +1,26 @@
+/* v89 – New crisp illustrated backdrops for ONLY Build and Choose game modes.
+   Independent HTML answers/panda graphics stay unchanged. */
+#topics .game-shell:has(.game-build-hero){
+ background:#edd9f2 linear-gradient(180deg,rgba(255,237,255,.12),rgba(255,243,255,.15) 70%,rgba(244,221,255,.35)),url("./china-autumn-temple-v71.webp") center top / 100% 100%,cover no-repeat!important;
+ background-image:linear-gradient(180deg,rgba(255,245,255,.12),rgba(255,238,255,.06) 58%,rgba(248,231,255,.22)),url("./china-autumn-temple-v71.webp")!important;
+ background-size:100% 100%,cover!important;
+ background-position:center center,center top!important;
+ background-repeat:no-repeat!important;
+}
+#topics .game-shell:has(.game-build-hero)::before{
+ background:linear-gradient(to bottom,rgba(255,249,255,.08),transparent 25%,rgba(251,232,255,.04) 75%,rgba(252,233,255,.16))!important;
+ opacity:1!important;filter:none!important;
+}
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero)){
+ background-image:linear-gradient(180deg,rgba(255,249,255,.1),rgba(255,242,252,.08) 58%,rgba(255,230,250,.24)),url("./chinese-pastel-wallpaper.svg")!important;
+ background-size:100% 100%,100% 100%!important;
+ background-position:center center,center top!important;
+ background-repeat:no-repeat!important;
+ background-color:#f3dcef!important;
+}
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero))::before{
+ background:linear-gradient(180deg,rgba(255,250,255,.04),rgba(255,250,255,.12) 95%)!important;
+ opacity:1!important;filter:none!important;
+}
+#topics .game-shell:has(.game-build-hero) .game-prompt,
+#topics .game-shell:has(.game-choice-list) .game-prompt{background:rgba(255,249,255,.95)!important}
