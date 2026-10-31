@@ -15,7 +15,7 @@ assert(learn.includes("lessonId===2||"),'Single dialogue line always uses correc
 assert(learn.includes("lesson.id===2||"),'Full dialogue always uses corrected cast');
 assert(pron.includes('./assets/pinyin-reading-v5/'),'All 190 examples must use Yunyang audio');
 assert(html.includes('pronunciation-hub.js?v=75'));
-assert(sw.includes('chinese-coach-pwa-v78'));assert.equal(pack.version,78);
+assert(sw.includes('chinese-coach-pwa-v79'));assert.equal(pack.version,79);
 const digest=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 for(const sample of curr.clips){let p='assets/pinyin-reading-v4/'+sample.id+'.mp3';assert(fs.statSync(p).size>1500);assert.notEqual(digest(p),digest(sample.file));assert(pack.files.includes('./'+p));}
 for(const line of plan.entries){let p=line.file.replace('dialogue-voices/','dialogue-voices-v73/');assert(fs.statSync(p).size>1500);assert(pack.files.includes('./'+p));}
