@@ -117,7 +117,7 @@ function bankTile(t,i,selected){
 function buildBody(q){
  const answer=session.selected.map((i,k)=>{const t=session.bank[i];return '<button type="button" data-game-remove="'+k+'" class="game-answer-token" '+(session.locked?'disabled':'')+'><small>'+safe(t.pin)+'</small><strong lang="zh-Hans">'+safe(t.han)+'</strong></button>'}).join('');
  const blanks=Math.max(0,q.parts.length-session.selected.length);
- return '<div class="game-prompt"><span>Переведи предложение</span><strong>'+safe(q.ru)+'</strong></div>'+
+ return '<div class="game-build-hero">'+panda()+'<div class="game-prompt"><span>Переведи предложение</span><strong>'+safe(q.ru)+'</strong></div></div>'+
  '<div class="game-answer-area" aria-label="Ваш ответ">'+answer+Array.from({length:blanks},()=>'<span class="game-blank" aria-hidden="true">+</span>').join('')+'</div>'+
  '<div class="game-bank" aria-label="Карточки для составления ответа">'+session.bank.map((t,i)=>bankTile(t,i,session.selected.includes(i))).join('')+'</div>';
 }
@@ -140,7 +140,7 @@ function renderQuestion(){
  const q=items[session.index],mode=session.mode,config=modes[mode];
  const task=mode==='build'?'<h1>Переведи<br>предложение</h1>':mode==='listen'?'<h1>Прослушай<br>и выбери</h1>':'<h1>Выбери<br>перевод</h1>';
  const body=mode==='build'?buildBody(q):mode==='listen'?
- '<div class="game-listening"><button type="button" class="game-play-big" data-game-play aria-label="Воспроизвести китайскую фразу">▶</button>'+
+ '<div class="game-listen-hero">'+panda()+'</div><div class="game-listening"><button type="button" class="game-play-big" data-game-play aria-label="Воспроизвести китайскую фразу">▶</button>'+
  '<span>Нажми, чтобы прослушать</span><button type="button" class="game-pinyin-toggle" data-game-toggle-pinyin aria-expanded="'+session.showPinyin+'">'+(session.showPinyin?'Скрыть пиньинь':'Показать пиньинь')+'</button></div>'+answerOptions(mode):
  '<div class="game-prompt"><span>Что означает эта фраза?</span><strong lang="zh-Hans">'+safe(q.zh)+'</strong><small>'+safe(q.py)+'</small>'+
  '<button type="button" class="game-prompt-audio" data-game-play>🔊 Послушать</button></div>'+answerOptions(mode);
