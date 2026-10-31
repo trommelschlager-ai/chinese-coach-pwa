@@ -222,7 +222,7 @@ function renderQuestion(){
  '<div class="game-prompt"><span>Что означает эта фраза?</span><strong lang="zh-Hans">'+safe(q.zh)+'</strong><small>'+safe(q.py)+'</small>'+
  '<button type="button" class="game-prompt-audio" data-game-play>🔊 Послушать</button></div>'+answerOptions(mode);
  shell(topBar('Игровая практика')+meter()+
- '<div class="game-task-title">'+task+'<p>'+safe(config.subtitle)+'</p></div>'+
+ '<div class="game-task-title">'+task+(mode==='build'?'':'<p>'+safe(config.subtitle)+'</p>')+'</div>'+
  '<div class="game-question-wrap">'+body+'</div>'+
  '<div class="game-feedback" role="status" aria-live="polite">'+safe(feedback)+(session.locked?'<div class="game-correction"><strong>Правильный ответ:</strong> <span lang="zh-Hans">'+safe(q.zh)+'</span><small>'+(mode==='listen'&&!session.showPinyin?'':safe(q.py)+' · ')+safe(q.ru)+'</small></div>':'')+'</div>'+
  '<div class="game-audio-note" data-game-audio-feedback role="status" aria-live="polite"></div>'+
