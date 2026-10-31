@@ -1,4 +1,4 @@
-/* v76: self-contained game practice. Does not replace the established lessons. */
+/* v77: game practice on the main menu. Does not replace the established lessons. */
 (()=>{
 'use strict';
 const section=document.getElementById('topics');
@@ -67,7 +67,7 @@ function shuffled(n,seed){
 }
 function start(mode){
  if(!modes[mode])return;
- session={mode,index:0,score:0,combo:0,bestCombo:0,errors:[],done:false,selected:[],choice:-1,locked:false,bank:[]};
+ session={mode,index:0,score:0,combo:0,bestCombo:0,errors:[],done:false,selected:[],choice:-1,locked:false,bank:[],showPinyin:false};
  screen='question';initQuestion();render();
 }
 function initQuestion(){
@@ -76,7 +76,7 @@ function initQuestion(){
  const distractions=extra.slice((session.index*2)%Math.max(1,extra.length-2),((session.index*2)%Math.max(1,extra.length-2))+2)
  .map(p=>({han:p[0],pin:p[1],target:-1}));
  const arr=[...base,...distractions],order=shuffled(arr.length,197+(session.index+1)*93);
- session.bank=order.map(i=>arr[i]);session.selected=[];session.choice=-1;session.locked=false;feedback='';
+ session.bank=order.map(i=>arr[i]);session.selected=[];session.choice=-1;session.locked=false;session.showPinyin=false;feedback='';
  stopAudio();
 }
 function shell(inner){
@@ -132,7 +132,7 @@ function answerOptions(mode){
   const x=items[id],selected=session.choice===i;
   return '<button type="button" class="game-choice'+(selected?' is-selected':'')+'" data-game-option="'+i+'" aria-pressed="'+selected+'" '+(session.locked?'disabled':'')+'>'+
   '<span class="game-choice-index">'+(i+1)+'</span><span class="game-choice-words">'+
-  (mode==='listen'?'<strong lang="zh-Hans">'+safe(x.zh)+'</strong><span>'+safe(x.py)+'</span><small>'+safe(x.ru)+'</small>':
+  (mode==='listen'?'<strong lang="zh-Hans">'+safe(x.zh)+'</strong>'+(session.showPinyin?'<span class="game-choice-pinyin">'+safe(x.py)+'</span>':'')+'<small>'+safe(x.ru)+'</small>':
   '<strong>'+safe(x.ru)+'</strong>')+'</span><span class="game-radio" aria-hidden="true"></span></button>';
  }).join('')+'</div>';
 }
@@ -141,7 +141,7 @@ function renderQuestion(){
  const task=mode==='build'?'<h1>Переведи<br>предложение</h1>':mode==='listen'?'<h1>Прослушай<br>и выбери</h1>':'<h1>Выбери<br>перевод</h1>';
  const body=mode==='build'?buildBody(q):mode==='listen'?
  '<div class="game-listening"><button type="button" class="game-play-big" data-game-play aria-label="Воспроизвести китайскую фразу">▶</button>'+
- '<span>Нажми, чтобы прослушать</span></div>'+answerOptions(mode):
+ '<span>Нажми, чтобы прослушать</span><button type="button" class="game-pinyin-toggle" data-game-toggle-pinyin aria-expanded="'+session.showPinyin+'">'+(session.showPinyin?'Скрыть пиньинь':'Показать пиньинь')+'</button></div>'+answerOptions(mode):
  '<div class="game-prompt"><span>Что означает эта фраза?</span><strong lang="zh-Hans">'+safe(q.zh)+'</strong><small>'+safe(q.py)+'</small>'+
  '<button type="button" class="game-prompt-audio" data-game-play>🔊 Послушать</button></div>'+answerOptions(mode);
  shell(topBar('Игровая практика')+meter()+
@@ -198,13 +198,14 @@ function render(){if(screen==='question')renderQuestion();else if(screen==='hub'
 section.addEventListener('click',event=>{
  if(section.dataset.simpleSection!=='game')return;
  const button=event.target.closest('button');if(!button||!section.contains(button))return;
- if(button.hasAttribute('data-game-back')){stopAudio();if(screen==='hub'){window.openPracticeChoices?.()}else renderHub();return}
+ if(button.hasAttribute('data-game-back')){stopAudio();if(screen==='hub'){window.showLaunchMenu?.()}else renderHub();return}
  if(button.hasAttribute('data-game-hub')){renderHub();return}
  if(button.hasAttribute('data-game-mode')){start(button.dataset.gameMode);return}
  if(button.hasAttribute('data-game-results')){renderResultsHub();return}
  if(button.hasAttribute('data-game-retry-mode')||button.hasAttribute('data-game-retry')){if(session)start(session.mode);return}
  if(!session||screen!=='question')return;
  if(button.hasAttribute('data-game-play')){play();return}
+ if(button.hasAttribute('data-game-toggle-pinyin')&&session.mode==='listen'){session.showPinyin=!session.showPinyin;renderQuestion();return}
  if(button.hasAttribute('data-game-clear')&&!session.locked){session.selected=[];feedback='';renderQuestion();return}
  if(button.hasAttribute('data-game-remove')&&!session.locked){
   session.selected.splice(Number(button.dataset.gameRemove),1);feedback='';renderQuestion();return
