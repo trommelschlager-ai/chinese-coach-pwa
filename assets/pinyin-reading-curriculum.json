@@ -3261,11 +3261,11 @@
     }
   ],
   "audio": {
-    "voice": "zh-CN-XiaoyiNeural",
+    "voice": "zh-CN-YunyangNeural",
     "source": "Edge Read Aloud personal-preview only",
-    "synthesisRate": "-16%",
-    "playbackRate": 0.82,
-    "slowRate": 0.72,
+    "synthesisRate": "-3%",
+    "playbackRate": 0.85,
+    "slowRate": 0.75,
     "note": "Only MP3s of complete example syllables; unit labels denote a component, not standalone audio."
   },
   "guidance": {

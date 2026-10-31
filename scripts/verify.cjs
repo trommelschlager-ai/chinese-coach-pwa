@@ -47,7 +47,8 @@ assert.equal(doc.querySelectorAll('#pinyin-reading-letters [data-pinyin-letter]'
 assert.equal(doc.querySelectorAll('#pinyin-reading-letters .pinyin-combo-tile').length,10,'A includes five finals and five extra syllable examples');
 assert.equal(doc.querySelectorAll('#pinyin-reading-rules details.pinyin-rule').length,21,'All 21 reading rules are present');
 assert.equal(doc.querySelectorAll('[data-pinyin-rate]').length,3,'Three playback speed choices');
-assert.equal(doc.querySelector('[data-pinyin-rate="0.75"]').getAttribute('aria-pressed'),'true','Slow playback starts selected');
+assert.equal(doc.querySelector('[data-pinyin-rate="0.85"]').getAttribute('aria-pressed'),'true','Natural pace starts selected');
+assert.equal(doc.querySelector('[data-pinyin-rate="0.75"]').getAttribute('aria-pressed'),'false','Extra slow practice is optional');
 doc.querySelector('[data-pinyin-letter="2"]').click();
 assert(doc.querySelector('#pinyin-reading-letters').textContent.includes('chī'),'C presents both c and ch');
 doc.querySelector('[data-pinyin-letter="8"]').click();
