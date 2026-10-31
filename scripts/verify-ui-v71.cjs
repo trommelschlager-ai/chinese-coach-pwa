@@ -8,12 +8,12 @@ assert(css.includes('dialogue-pagoda-v71.svg')&&css.includes('dialogue-clock-v71
 assert(css.includes('data-simple-section="dialogues"'));
 assert(clean.includes("chinese-coach-dialogue-original-v72"));
 assert(learn.includes("a.preservesPitch=true"));
-assert(learn.includes("dialogue-voices-v72"));
+assert(learn.includes("dialogue-voices-v73"));
 assert(clean.includes("data-dialogue-voice-toggle"));
 assert(d.getElementById('pitchchart'),'Tone analyzer unchanged');
-assert(sw.includes('chinese-coach-pwa-v72'));
+assert(sw.includes('chinese-coach-pwa-v73'));
 assert(css.includes('china-autumn-temple-v71.webp'),'Actual screenshot 3 photo applied to menu');
 assert(fs.statSync('assets/china-autumn-temple-v71.webp').size===4338,'Cropping removed screenshot UI');
-assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).version===72);
+assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).version===73);
 for(const p of ['./assets/china-autumn-temple-v71.webp','./assets/dialogue-sakura-v71.svg','./assets/dialogue-pagoda-v71.svg','./assets/dialogue-clock-v71.svg','./assets/dialogue-cafe-v71.svg'])assert(JSON.parse(fs.readFileSync('assets/offline-pack.json')).files.includes(p));
 console.log('V71 dialogue art and reversible lower-pitch preview checks passed');

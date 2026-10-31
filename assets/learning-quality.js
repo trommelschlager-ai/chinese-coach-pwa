@@ -239,17 +239,17 @@
   dialogueMp3Checked=Date.now();
   dialogueMp3Check=(async()=>{
    try{
-    const response=await fetch('./assets/dialogue-voices-v72/status.json',{cache:'no-store'});
+    const response=await fetch('./assets/dialogue-voices-v73/status.json',{cache:'no-store'});
     if(!response.ok)return false;
     const status=await response.json();
-    return status.ready===true&&status.count===25&&status.voices?.A==='zh-CN-XiaoxuanNeural'&&status.voices?.B==='zh-CN-YunjianNeural';
+    return status.ready===true&&status.count===25&&status.voices?.A==='zh-CN-XiaoxuanNeural'&&status.voices?.B==='zh-CN-YunjianNeural'&&status.role_override?.lesson===2&&status.role_override?.A==='male'&&status.role_override?.B==='female';
    }catch{return false}
   })();
   dialogueMp3Status=await dialogueMp3Check;dialogueMp3Check=null;
   return dialogueMp3Status;
  }
  function getDialogueClip(lessonId,index,speaker,useNew){
-  const folder=useNew?'dialogue-voices-v72':'dialogue-voices';
+  const folder=useNew?'dialogue-voices-v73':'dialogue-voices';
   return './assets/'+folder+'/l'+lessonId+'-'+String(index+1).padStart(2,'0')+'-'+speaker.toLowerCase()+'.mp3';
  }
  async function playWord(text,rate=.82,token=audioGeneration,voice=null,dialogueClip=null,allowSystem=false){
@@ -291,7 +291,7 @@
   stopLearningAudio();const token=audioGeneration;
   const ready=await ensureDialogueMp3Ready();if(token!==audioGeneration)return;
   const [speaker,text]=line;
-  try{await playWord(text,.97,token,speaker,getDialogueClip(lessonId,index,speaker,ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1'))}
+  try{await playWord(text,.97,token,speaker,getDialogueClip(lessonId,index,speaker,lessonId===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1')))}
   finally{if(token===audioGeneration)audioStatus.hidden=true}
  };
  window.playStandaloneDialogue=function(lessonId){
@@ -308,7 +308,7 @@
     if(token!==audioGeneration)break;
     const [speaker,text]=lesson.dialogue[i];
     rows.forEach((r,j)=>r.classList.toggle('playing-line',j===i));
-    await playWord(text,.97,token,speaker,getDialogueClip(lesson.id,i,speaker,ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1'));
+    await playWord(text,.97,token,speaker,getDialogueClip(lesson.id,i,speaker,lesson.id===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1')));
    }
   }finally{rows.forEach(r=>r.classList.remove('playing-line'));if(token===audioGeneration)audioStatus.hidden=true}
  }

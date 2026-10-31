@@ -22,7 +22,7 @@ assert.equal(curriculum.groups.reduce((n,g)=>n+g.items.length,0),198,'Expanded e
 assert(curriculum.guidance.o.includes('коротким переходом через u'),'O after b/p/m/f must be explained accurately');
 assert(js.includes('data-pinyin-rate="0.75"'),'Slow Pinyin playback is the default');
 assert(js.includes('a.playbackRate=readingRate'),'Audio actually uses playback speed');
-assert(js.includes('./assets/pinyin-reading-v2/'),'Old voice MP3s are not silently reused');
+assert(js.includes('./assets/pinyin-reading-v3/'),'Pinyin MP3s must use the new voice folder');
 assert(curriculum.rules.some(r=>r.title.includes('iou → iu')));
 assert(curriculum.rules.some(r=>r.title.includes('uei → ui')));
 assert(curriculum.rules.some(r=>r.title.includes('uen → un')));
@@ -32,15 +32,23 @@ assert(curriculum.rules.some(r=>r.title.includes('Апостроф')));
 assert(html.includes('Звуки, звукосочетания и тоны'),'Main menu label preserves user request');
 assert(js.includes('data-reference-mode="rules"')&&js.includes('data-pinyin-letter'),'Alphabet and rule controls are present');
 assert(html.includes('pinyin-combinations.css?v=65'),'Updated Pinyin CSS linked');
-assert(html.includes('pronunciation-hub.js?v=65'),'Updated Pinyin JS linked');
+assert(html.includes('pronunciation-hub.js?v=73'),'Updated Pinyin JS linked');
 assert(pack.version>=65,'PWA offline pack includes pronunciation assets');
 for(const clip of curriculum.clips){
  const path=clip.file;
  assert(fs.statSync(path).size>1500,'Missing generated MP3: '+path);
  assert(pack.files.includes('./'+path),'Offline download missing clip: '+path);
 }
-const status=JSON.parse(fs.readFileSync('assets/pinyin-reading-v2/status.json','utf8'));
+const status=JSON.parse(fs.readFileSync('assets/pinyin-reading-v3/status.json','utf8'));
 assert.equal(status.ready,true);
 assert.equal(status.count,curriculum.clips.length);
-assert.equal(status.voice,'zh-CN-XiaoyiNeural','Natural-sounding alternate Xiaoyi voice used');
-console.log('Pinyin checks passed: 26 A-Z units, 36 finals, 21 initials, 21 rules and 190 slow Xiaoyi MP3 recordings.');
+assert.equal(status.voice,'zh-CN-YunjianNeural','New mature male pinyin voice');
+const crypto=require('node:crypto'),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+for(const clip of curriculum.clips){
+ const newFile=clip.file.replace('pinyin-reading-v2/','pinyin-reading-v3/');
+ assert(fs.statSync(newFile).size>1500,'No new MP3 '+newFile);
+ assert(pack.files.includes('./'+newFile),'Offline pack missing '+newFile);
+ assert.notEqual(hash(clip.file),hash(newFile),'Old voice not replaced for '+clip.id);
+}
+assert(js.includes('"zh-CN-YunjianNeural"'),'Pinyin source voice not changed');
+console.log('Pinyin checks passed: 26 groups, 36 finals, 21 initials, 21 rules, 190 fresh Yunjian MP3s.');

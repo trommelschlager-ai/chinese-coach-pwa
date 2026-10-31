@@ -101,17 +101,20 @@ function showDialogue(id){
  const l=COURSE.find(l=>l.id===id&&l.id!==1);if(!l)return;
  dialogLesson=id;view='dialogues';stopAudio();
  const legacy=localStorage.getItem('chinese-coach-dialogue-original-v72')==='1';
- const voiceRow='<div class="clean-dialog-voice"><span data-dialogue-voice-caption>'+(legacy?'Старые голоса · Xiaoxiao / Yunxi':'Новые голоса · Xiaoxuan / Yunjian')+'</span><button type="button" data-dialogue-voice-toggle>'+(legacy?'Включить новые голоса':'Сравнить со старыми')+'</button></div>';
+ const voiceRow=id===2
+  ?'<div class="clean-dialog-voice"><span>Анна — женский голос · Сяомин — мужской голос</span></div>'
+  :'<div class="clean-dialog-voice"><span data-dialogue-voice-caption>'+(legacy?'Старые голоса · Xiaoxiao / Yunxi':'Новые голоса · Xiaoxuan / Yunjian')+'</span><button type="button" data-dialogue-voice-toggle>'+(legacy?'Включить новые голоса':'Сравнить со старыми')+'</button></div>';
  const content='<div class="clean-dialog-head"><button type="button" class="clean-action-primary" data-dialogue-play-all>▶ Слушать весь диалог</button></div>'+voiceRow+
  '<div class="clean-dialog-lines">'+l.dialogue.map(([who,hz,py,ru],i)=>
- '<article class="dialogue-row clean-dialog-line" data-standalone-line="'+i+'"><div class="clean-dialog-avatar '+(who==='A'?'girl':'boy')+'">'+
- '<img src="./assets/'+(who==='A'?'meaning-woman.webp':'meaning-man.webp')+'" alt="'+(who==='A'?'Собеседница А':'Собеседник Б')+'"></div>'+
+ '<article class="dialogue-row clean-dialog-line" data-standalone-line="'+i+'"><div class="clean-dialog-avatar '+((id===2?who==='B':who==='A')?'girl':'boy')+'">'+
+ '<img src="./assets/'+((id===2?who==='B':who==='A')?'meaning-woman.webp':'meaning-man.webp')+'" alt="'+((id===2?who==='B':who==='A')?'Собеседница':'Собеседник')+'"></div>'+
  '<div class="clean-dialog-bubble"><strong lang="zh-Hans">'+esc(hz)+'</strong><span>'+esc(py)+'</span><small>'+esc(ru)+'</small>'+
  '<button type="button" data-dialogue-line="'+i+'">🔊 Слушать</button></div></article>').join('')+'</div>';
  frame(l.title,'Диалог · '+l.dialogue.length+' реплик',content,dialogueCategories);
  $$('[data-dialogue-line]').forEach(b=>b.onclick=()=>window.playDialogueLine?.(id,Number(b.dataset.dialogueLine)));
  $('[data-dialogue-play-all]').onclick=()=>window.playStandaloneDialogue?.(id);
- $('[data-dialogue-voice-toggle]').onclick=()=>{
+ const toggle=$('[data-dialogue-voice-toggle]');
+ if(toggle)toggle.onclick=()=>{
   const wasLegacy=localStorage.getItem('chinese-coach-dialogue-original-v72')==='1';
   localStorage.setItem('chinese-coach-dialogue-original-v72',wasLegacy?'0':'1');
   stopAudio();window.dispatchEvent(new Event('learning-audio-stop'));
