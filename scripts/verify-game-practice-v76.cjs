@@ -5,7 +5,7 @@ const html=read('index.html'),clean=read('assets/clean-learning-sections.js'),js
 assert(html.includes('game-practice-v76.js?v=77')&&html.includes('game-practice-v76.css?v=77'));
 assert(html.includes('data-choice="6"')&&html.includes("window.location.assign('./game.html')"),'Game must open isolated screen');
 const game=read('game.html');
-assert(game.includes('game-standalone-v80.css?v=80')&&game.includes('game-practice-v76.js?v=81'),'Game keeps working controls in its own page');
+assert(game.includes('game-standalone-v80.css?v=80')&&game.includes('game-practice-v76.js?v=82'),'Game keeps working controls in its own page');
 assert(js.includes('game-panda-v80.webp')&&pack.files.includes('./assets/game-panda-v80.webp'),'Polished painted panda is bundled');
 assert(!game.includes('lessons-backdrop.webp'),'No old menu picture with printed text');
 assert(read('assets/game-standalone-v80.css').includes('chinese-painting-daily.webp'),'Clean Chinese landscape loads');
@@ -16,9 +16,13 @@ assert(pack.version===79);
 assert(html.includes('game-immersive-v78.css?v=79'),'Approved immersive game style must load');
 assert(pack.files.includes('./assets/game-immersive-v78.css'),'New game styling must work offline');
 for(const p of ['./assets/game-practice-v76.js','./assets/game-practice-v76.css','./assets/game-practice-entry-v76.css','./assets/game-panda-v76.svg','./assets/game-polish-v77.css','./assets/game-landscape-v77.svg'])assert(pack.files.includes(p),'Game missing offline: '+p);
+assert(game.includes('human-audio-map.js?v=49')&&game.includes('basic-word-audio-map.js?v=66'),'Recorded Mandarin word maps loaded in the game');
+assert(js.includes('speakCardWord(word)'),'Selecting Chinese tokens must trigger instant pronunciation');
+assert(read('assets/game-standalone-v80.css').includes('-webkit-text-stroke:1.8px #261330'),'Outlined white Chinese game headings required');
 const dom=new JSDOM('<!doctype html><div id="topics"></div>',{url:'https://example.test/',runScripts:'outside-only'});
 const w=dom.window,node=w.document.querySelector('#topics'),played=[];
 w.Audio=function(src){played.push(src);this.pause=()=>{};this.play=()=>Promise.resolve()};
+w.courseHumanAudio={'我':'./assets/course-human/cmn-我.mp3','你':'./assets/course-human/cmn-你.mp3','叫':'./assets/course-human/cmn-叫.mp3','吗':'./assets/course-human/cmn-吗.mp3'};
 w.eval(js);
 const api=w.__gamePracticeV76;
 assert.equal(api.items.length,10);assert.equal(Object.keys(api.modes).length,3);
@@ -31,6 +35,7 @@ api.open();assert.equal(node.querySelectorAll('[data-game-mode]').length,3);
 node.querySelector('[data-game-mode="build"]').click();
 for(let k=0;k<10;k++){
  const q=api.items[k];
+ if(k===0){const first=[...node.querySelectorAll('[data-game-token]')].find(b=>b.querySelector('strong')?.textContent==='我');first.click();assert(played.includes('./assets/course-human/cmn-我.mp3'),'Tap on 我 speaks the recorded Mandarin audio');first.closest('#topics')?.querySelector('[data-game-remove]')?.click();}
  for(const [han] of q.parts){
   const tile=[...node.querySelectorAll('[data-game-token]:not(:disabled)')].find(b=>b.querySelector('strong')?.textContent===han);
   assert(tile,'Missing tile '+han+' in Q'+k);tile.click();

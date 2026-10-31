@@ -48,7 +48,39 @@ function recordResult(){
  writeStats(st);return st;
 }
 let session=null,screen='hub',currentAudio=null,feedback='';
-function stopAudio(){if(currentAudio){currentAudio.pause();currentAudio=null}}
+function stopAudio(){
+ if(currentAudio){currentAudio.pause();currentAudio=null}
+ try{window.speechSynthesis?.cancel?.()}catch{}
+}
+/* Recorded Mandarin MP3s take precedence; fallback synthesizer is only for missing words. */
+function speakCardWord(han){
+ stopAudio();
+ const note=one('[data-game-audio-feedback]');
+ const sources=[window.courseHumanAudio,window.basicWordAudio,window.basicPinyinAudio];
+ const source=sources.reduce((file,map)=>file||(map&&map[han])||'', '');
+ const fallback=()=>{
+  if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){
+   if(note)note.textContent='Нет записи для '+han+'. Установи китайский голос для резервной озвучки.';
+   return;
+  }
+  try{
+   const utterance=new SpeechSynthesisUtterance(han);
+   utterance.lang='zh-CN';utterance.rate=0.85;utterance.pitch=1;
+   const voices=window.speechSynthesis.getVoices?.()||[];
+   const mandarin=voices.find(v=>/^(zh-CN|cmn)/i.test(v.lang))||voices.find(v=>/^zh/i.test(v.lang));
+   if(mandarin)utterance.voice=mandarin;
+   if(note)note.textContent='🔊 '+han+' · резервное произношение';
+   window.speechSynthesis.speak(utterance);
+  }catch{if(note)note.textContent='Не удалось озвучить '+han}
+ };
+ if(!source){fallback();return}
+ const audio=new Audio(source);currentAudio=audio;
+ audio.playbackRate=0.92;audio.preservesPitch=true;
+ if('webkitPreservesPitch' in audio)audio.webkitPreservesPitch=true;
+ if(note)note.textContent='🔊 '+han;
+ audio.onerror=()=>{if(currentAudio===audio){currentAudio=null;fallback()}};
+ Promise.resolve(audio.play()).catch(()=>{if(currentAudio===audio){currentAudio=null;fallback()}});
+}
 window.addEventListener('learning-audio-stop',stopAudio);
 function play(){
  if(!session)return;
@@ -212,7 +244,7 @@ section.addEventListener('click',event=>{
  }
  if(button.hasAttribute('data-game-token')&&!session.locked){
   const idx=Number(button.dataset.gameToken);
-  if(!session.selected.includes(idx)){session.selected.push(idx);feedback='';renderQuestion()}
+  if(!session.selected.includes(idx)){const word=session.bank[idx].han;session.selected.push(idx);feedback='';renderQuestion();speakCardWord(word)}
   return
  }
  if(button.hasAttribute('data-game-option')&&!session.locked){

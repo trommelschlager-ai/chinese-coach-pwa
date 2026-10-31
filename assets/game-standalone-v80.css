@@ -199,3 +199,99 @@ body{background:#ead7f9}
  #topics .game-choice{min-height:100px!important}
 }
 @media(prefers-reduced-motion:reduce){#topics .game-meter i{transition:none!important}}
+
+
+/* V82 finishing pass: crisp legibility, narrower mobile proportions, no fog layer.
+   All selectors are isolated to /game.html. */
+#topics .game-shell{
+ padding-left:clamp(22px,6.25vw,32px)!important;
+ padding-right:clamp(22px,6.25vw,32px)!important;
+ background-color:#eeddf5!important;
+ background-image:linear-gradient(180deg,#fff4fb10 0%,#fff3f500 27%,#f7e4f46e 61%,#f9e6f8bf 100%),url("./chinese-painting-daily.webp")!important;
+ background-size:100% 100%,auto 520px!important;
+ background-position:center center,42% top!important;
+ background-repeat:no-repeat,no-repeat!important;
+}
+#topics .game-shell::before{
+ height:100%!important;inset:0!important;opacity:1!important;filter:none!important;
+ background-image:linear-gradient(180deg,transparent 0%,#fff5fc00 24%,#fbeefa94 46%,#f5e5facf 90%),
+ url("./chinese-pastel-wallpaper.svg")!important;
+ background-size:100% 100%,100% auto!important;
+ background-position:center top,center 490px!important;
+ background-repeat:no-repeat,no-repeat!important;
+}
+#topics .game-shell::after{display:none!important}
+#topics .game-task-title h1{
+ color:#fff!important;
+ -webkit-text-fill-color:#fff;
+ -webkit-text-stroke:1.8px #261330;
+ paint-order:stroke fill;
+ text-shadow:0 3px 0 #261330,1px 3px 4px #3420428f!important;
+ font-size:clamp(33px,9vw,47px)!important;
+ letter-spacing:-.025em!important;line-height:1.06!important
+}
+#topics .game-task-title p{
+ color:#50375f!important;
+ font-size:clamp(15px,4vw,18px)!important;
+ font-weight:760!important;
+ text-shadow:0 1px 2px #fff6fc;
+}
+#topics .game-metrics{min-height:41px!important;padding:7px 12px!important}
+#topics .game-meter{margin-bottom:17px!important;height:12px!important}
+#topics .game-task-title{margin-bottom:13px!important}
+#topics .game-hero{min-height:215px!important}
+#topics .game-streak{min-height:63px!important;margin-bottom:14px!important}
+#topics .game-mode{min-height:122px!important;padding:14px 17px!important}
+#topics .game-results-link{min-height:89px!important}
+#topics .game-build-hero{min-height:155px!important;margin-bottom:10px!important}
+#topics .game-build-hero .game-panda{
+ height:150px!important;width:100%!important;max-width:160px!important;
+ transform:none!important;object-fit:contain!important;
+ filter:drop-shadow(0 5px 7px #7f52a34c) contrast(1.12) saturate(1.08)!important;
+ image-rendering:auto!important;
+}
+#topics .game-hero .game-panda{
+ width:100%!important;height:165px!important;max-height:165px!important;
+ transform:none!important;object-fit:contain!important;
+ filter:drop-shadow(0 5px 7px #7f52a34c) contrast(1.12) saturate(1.08)!important
+}
+#topics .game-build-hero .game-prompt{
+ min-height:110px!important;padding:13px 10px!important;border-radius:22px!important
+}
+#topics .game-build-hero .game-prompt>strong{font-size:clamp(17px,4.65vw,25px)!important}
+#topics .game-answer-area{min-height:99px!important;margin-bottom:12px!important;padding:10px 8px!important}
+#topics .game-blank{min-height:59px!important;width:min(21vw,65px)!important}
+#topics .game-answer-token{min-height:58px!important}
+#topics .game-bank{gap:7px!important}
+#topics .game-token{min-height:77px!important;padding:6px 3px!important}
+#topics .game-token small{font-size:clamp(12px,3.2vw,15px)!important}
+#topics .game-token strong{font-size:clamp(24px,6.4vw,31px)!important}
+#topics .game-listen-hero{height:109px!important;width:152px!important;top:-13px!important;right:-8px!important}
+#topics .game-listen-hero .game-panda{
+ width:149px!important;height:147px!important;max-width:149px!important;
+ object-fit:contain!important;filter:drop-shadow(0 5px 7px #7f52a34c) contrast(1.12) saturate(1.1)!important
+}
+#topics .game-listening{min-height:179px!important;padding:8px 0 16px!important;gap:7px!important}
+#topics .game-play-big{width:119px!important;height:119px!important;font-size:46px!important;margin-left:8px!important}
+#topics .game-listening>span{margin:3px 0 0!important}
+#topics .game-pinyin-toggle{min-height:43px!important;margin-left:3px!important;padding:7px 15px!important}
+#topics .game-choice-list{gap:10px!important}
+#topics .game-choice{min-height:92px!important;padding:12px 13px!important;border-radius:22px!important}
+#topics .game-choice-words strong[lang="zh-Hans"]{font-size:clamp(27px,7.2vw,36px)!important}
+#topics .game-prompt{padding:16px 12px!important}
+#topics .game-actions button{min-height:61px!important}
+#topics .game-result-header{min-height:170px!important}
+#topics .game-result-score{padding:20px 12px!important}
+@media(max-width:390px){
+ #topics .game-shell{padding-inline:21px!important}
+ #topics .game-task-title h1{font-size:35px!important}
+ #topics .game-hero h1{font-size:33px!important}
+ #topics .game-hero .game-panda{height:151px!important}
+ #topics .game-listen-hero .game-panda{height:137px!important}
+ #topics .game-build-hero .game-panda{height:143px!important}
+}
+@supports not (-webkit-text-stroke:1px black){
+ #topics .game-task-title h1{
+  text-shadow:-2px -2px 0 #261330,2px -2px 0 #261330,-2px 2px 0 #261330,2px 2px 0 #261330,0 3px 5px #261330!important
+ }
+}
