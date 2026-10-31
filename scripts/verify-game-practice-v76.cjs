@@ -35,10 +35,11 @@ api.open();assert.equal(node.querySelectorAll('[data-game-mode]').length,3);
 node.querySelector('[data-game-mode="build"]').click();
 for(let k=0;k<10;k++){
  const q=api.items[k];
- if(k===0){const first=[...node.querySelectorAll('[data-game-token]')].find(b=>b.querySelector('strong')?.textContent==='我');first.click();assert(played.includes('./assets/course-human/cmn-我.mp3'),'Tap on 我 speaks the recorded Mandarin audio');first.closest('#topics')?.querySelector('[data-game-remove]')?.click();}
+
  for(const [han] of q.parts){
   const tile=[...node.querySelectorAll('[data-game-token]:not(:disabled)')].find(b=>b.querySelector('strong')?.textContent===han);
   assert(tile,'Missing tile '+han+' in Q'+k);tile.click();
+  if(k===0&&han==='我')assert(played.includes('./assets/course-human/cmn-我.mp3'),'Tap on 我 must play Mandarin recording');
  }
  node.querySelector('[data-game-check]').click();
  assert(node.textContent.includes('Верно!'),'Correct phrase rejected: '+q.id);
