@@ -5,7 +5,7 @@ const html=read('index.html'),clean=read('assets/clean-learning-sections.js'),js
 assert(html.includes('game-practice-v76.js?v=77')&&html.includes('game-practice-v76.css?v=77'));
 assert(html.includes('data-choice="6"')&&html.includes("window.location.assign('./game.html')"),'Game must open isolated screen');
 const game=read('game.html');
-assert(game.includes('game-standalone-v80.css?v=82')&&game.includes('game-practice-v76.js?v=82'),'Game keeps working controls in its own page');
+assert(game.includes('game-standalone-v80.css?v=82')&&game.includes('game-practice-v76.js?v=85'),'Game keeps working controls in its own page');
 assert(js.includes('game-panda-v80.webp')&&pack.files.includes('./assets/game-panda-v80.webp'),'Polished painted panda is bundled');
 assert(!game.includes('lessons-backdrop.webp'),'No old menu picture with printed text');
 assert(read('assets/game-standalone-v80.css').includes('chinese-painting-daily.webp'),'Clean Chinese landscape loads');
@@ -19,6 +19,8 @@ for(const p of ['./assets/game-practice-v76.js','./assets/game-practice-v76.css'
 assert(game.includes('human-audio-map.js?v=49')&&game.includes('basic-word-audio-map.js?v=66'),'Recorded Mandarin word maps loaded in the game');
 assert(js.includes('speakCardWord(word)'),'Selecting Chinese tokens must trigger instant pronunciation');
 assert(read('assets/game-standalone-v80.css').includes('-webkit-text-stroke:1.8px #261330'),'Outlined white Chinese game headings required');
+assert(game.includes('game-approved-layout-v85.css?v=85'),'Approved high-resolution art layout is connected');
+assert(js.includes('game-approved-hub-v85.png')&&js.includes('approved-hit-build'),'Approved artwork interaction targets are ready');
 const dom=new JSDOM('<!doctype html><div id="topics"></div>',{url:'https://example.test/',runScripts:'outside-only'});
 const w=dom.window,node=w.document.querySelector('#topics'),played=[];
 w.Audio=function(src){played.push(src);this.pause=()=>{};this.play=()=>Promise.resolve()};

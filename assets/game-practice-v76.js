@@ -125,8 +125,34 @@ function menuCard(mode,sub,meta,icon){
  '<span class="game-mode-copy"><span class="game-mode-icon" aria-hidden="true">'+icon+'</span><strong>'+safe(modes[mode].title)+'</strong>'+
  '<small>'+safe(sub)+'</small><em>'+meta+'</em></span><span class="game-mode-arrow" aria-hidden="true">→</span></button>';
 }
+/* Faithful original artwork view. Automatically used once approved PNG is uploaded
+   to /assets/game-approved-hub-v85.png. Does not interfere with gameplay. */
+let approvedArtReady=false,approvedArtChecked=false;
+function renderApprovedHub(){
+ if(!approvedArtReady||screen!=='hub')return;
+ const st=readStats();
+ shell('<div class="approved-art-hub">'+
+ '<img class="approved-art-image" src="./assets/game-approved-hub-v85.png" width="941" height="1672" alt="" aria-hidden="true" decoding="async">'+
+ '<button type="button" class="approved-hit approved-hit-back" data-game-back aria-label="Вернуться к занятиям"></button>'+
+ '<button type="button" class="approved-hit approved-hit-build" data-game-mode="build" aria-label="Собери фразу — 10 заданий"></button>'+
+ '<button type="button" class="approved-hit approved-hit-choose" data-game-mode="choose" aria-label="Выбери ответ — 10 заданий"></button>'+
+ '<button type="button" class="approved-hit approved-hit-listen" data-game-mode="listen" aria-label="Слушай и выбирай — 10 заданий"></button>'+
+ '<button type="button" class="approved-hit approved-hit-results" data-game-results aria-label="Результаты и награды"></button>'+
+ (st.streak||st.points?'<span class="approved-progress-live" aria-live="polite">🔥 '+st.streak+' '+pluralDays(st.streak)+' · ⭐ '+st.points+' очков</span>':'')+
+ '</div>');
+}
+function checkApprovedArt(){
+ if(approvedArtChecked)return;
+ approvedArtChecked=true;
+ const image=new Image();
+ image.onload=()=>{approvedArtReady=true;if(screen==='hub')renderApprovedHub()};
+ image.onerror=()=>{approvedArtReady=false};
+ image.src='./assets/game-approved-hub-v85.png';
+}
 function renderHub(){
  screen='hub';session=null;stopAudio();
+ if(approvedArtReady){renderApprovedHub();return}
+ checkApprovedArt();
  const st=readStats();
  shell(topBar('К занятиям')+
  '<div class="game-hero"><div class="game-hero-copy"><span class="game-kicker">🎮 Новая игра</span>'+
