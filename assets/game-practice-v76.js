@@ -54,21 +54,30 @@ function stopAudio(){
 }
 /* One consistent pre-recorded Mandarin voice: never use the device's robotic TTS.
    The approved dialogue-mode MP3s are intentionally left untouched. */
+/* Only Yue Tan's licensed Mandarin MP3s. No speechSynthesis or mixed speakers.
+   Compound sequences keep their parts in the same voice, with short natural pauses.
+   小明 is deliberately unavailable until a faithful Yue Tan rendition is sourced. */
+const compoundAudioParts={'中国人':['中','国','人'],'二十五':['二','十','五']};
 function speakCardWord(han){
  stopAudio();
  const note=one('[data-game-audio-feedback]');
- const source=window.courseHumanAudio?.[han];
- if(!source){
-  if(note)note.textContent='Для «'+han+'» пока нет записи этого диктора.';
+ const parts=compoundAudioParts[han]||[han];
+ const sources=parts.map(part=>window.courseHumanAudio?.[part]);
+ if(sources.some(source=>!source)){
+  if(note)note.textContent='Нет проверенной записи «'+han+'» этим голосом.';
   return;
  }
- const audio=new Audio(source);currentAudio=audio;
- audio.playbackRate=0.92;
- audio.preservesPitch=true;
- if('webkitPreservesPitch' in audio)audio.webkitPreservesPitch=true;
  if(note)note.textContent='🔊 '+han;
- audio.onerror=()=>{if(currentAudio===audio){currentAudio=null;if(note)note.textContent='Запись временно недоступна: '+han;}};
- Promise.resolve(audio.play()).catch(()=>{if(currentAudio===audio){currentAudio=null;if(note)note.textContent='Не получилось воспроизвести запись: '+han;}});
+ let index=0;
+ function playPart(){
+  const file=sources[index];
+  const audio=new Audio(file);currentAudio=audio;
+  audio.playbackRate=1;
+  audio.onerror=()=>{if(currentAudio===audio){currentAudio=null;if(note)note.textContent='MP3 недоступен: '+han;}};
+  audio.onended=()=>{if(currentAudio!==audio)return;index++;if(index<sources.length)playPart();else currentAudio=null;};
+  Promise.resolve(audio.play()).catch(()=>{if(currentAudio===audio){currentAudio=null;if(note)note.textContent='Не удалось воспроизвести '+han;}});
+ }
+ playPart();
 }
 window.addEventListener('learning-audio-stop',stopAudio);
 function play(){

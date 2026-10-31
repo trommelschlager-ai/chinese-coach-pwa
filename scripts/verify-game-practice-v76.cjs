@@ -5,7 +5,7 @@ const html=read('index.html'),clean=read('assets/clean-learning-sections.js'),js
 assert(html.includes('game-practice-v76.js?v=77')&&html.includes('game-practice-v76.css?v=77'));
 assert(html.includes('data-choice="6"')&&html.includes("window.location.assign('./game.html')"),'Game must open isolated screen');
 const game=read('game.html');
-assert(game.includes('game-standalone-v80.css?v=88')&&game.includes('game-practice-v76.js?v=89'),'Game keeps working controls in its own page');
+assert(game.includes('game-standalone-v80.css?v=88')&&game.includes('game-practice-v76.js?v=90'),'Game keeps working controls in its own page');
 assert(js.includes('game-panda-v80.webp')&&pack.files.includes('./assets/game-panda-v80.webp'),'Polished painted panda is bundled');
 assert(!game.includes('lessons-backdrop.webp'),'No old menu picture with printed text');
 assert(read('assets/game-standalone-v80.css').includes('chinese-painting-daily.webp'),'Clean Chinese landscape loads');
@@ -17,7 +17,7 @@ assert(html.includes('game-immersive-v78.css?v=79'),'Approved immersive game sty
 assert(pack.files.includes('./assets/game-immersive-v78.css'),'New game styling must work offline');
 for(const p of ['./assets/game-practice-v76.js','./assets/game-practice-v76.css','./assets/game-practice-entry-v76.css','./assets/game-panda-v76.svg','./assets/game-polish-v77.css','./assets/game-landscape-v77.svg'])assert(pack.files.includes(p),'Game missing offline: '+p);
 assert(game.includes('human-audio-map.js?v=49')&&!game.includes('basic-word-audio-map.js?v=66'),'Use only one Mandarin word-voice corpus in the game');
-assert(!js.includes('new SpeechSynthesisUtterance')&&js.includes('window.courseHumanAudio?.[han]'),'No device TTS for game tokens');
+assert(!js.includes('new SpeechSynthesisUtterance')&&js.includes('window.courseHumanAudio?.[part]'),'No device TTS for game tokens');
 assert(game.includes('game-crisp-build-choose-v89.css?v=89'),'Crisp new game backgrounds included');
 assert(js.includes('speakCardWord(word)'),'Selecting Chinese tokens must trigger instant pronunciation');
 assert(read('assets/game-standalone-v80.css').includes('-webkit-text-stroke:1.8px #261330'),'Outlined white Chinese game headings required');
