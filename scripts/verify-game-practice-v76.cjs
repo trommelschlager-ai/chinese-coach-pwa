@@ -6,7 +6,9 @@ assert(html.includes('game-practice-v76.js?v=77')&&html.includes('game-practice-
 assert(html.includes('data-choice="6"')&&html.includes("window.openGamePractice?.()"),'Game must have a separate home-menu button');
 assert(!clean.includes('data-open-game'),'No duplicate game button inside old Practice');
 assert(html.includes('game-polish-v77.css?v=77'),'New illustrated CSS must load');
-assert(pack.version===77);
+assert(pack.version===78);
+assert(html.includes('game-immersive-v78.css?v=78'),'Approved immersive game style must load');
+assert(pack.files.includes('./assets/game-immersive-v78.css'),'New game styling must work offline');
 for(const p of ['./assets/game-practice-v76.js','./assets/game-practice-v76.css','./assets/game-practice-entry-v76.css','./assets/game-panda-v76.svg','./assets/game-polish-v77.css','./assets/game-landscape-v77.svg'])assert(pack.files.includes(p),'Game missing offline: '+p);
 const dom=new JSDOM('<!doctype html><div id="topics"></div>',{url:'https://example.test/',runScripts:'outside-only'});
 const w=dom.window,node=w.document.querySelector('#topics'),played=[];
