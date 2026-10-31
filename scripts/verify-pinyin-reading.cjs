@@ -32,7 +32,7 @@ assert(curriculum.rules.some(r=>r.title.includes('Апостроф')));
 assert(html.includes('Звуки, звукосочетания и тоны'),'Main menu label preserves user request');
 assert(js.includes('data-reference-mode="rules"')&&js.includes('data-pinyin-letter'),'Alphabet and rule controls are present');
 assert(html.includes('pinyin-combinations.css?v=65'),'Updated Pinyin CSS linked');
-assert(html.includes('pronunciation-hub.js?v=73'),'Updated Pinyin JS linked');
+assert(html.includes('pronunciation-hub.js?v=74'),'Updated Pinyin JS linked');
 assert(pack.version>=65,'PWA offline pack includes pronunciation assets');
 for(const clip of curriculum.clips){
  const path=clip.file;
