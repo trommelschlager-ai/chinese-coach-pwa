@@ -8,7 +8,7 @@ assert(css.includes('dialogue-pagoda-v71.svg')&&css.includes('dialogue-clock-v71
 assert(css.includes('data-simple-section="dialogues"'));
 assert(clean.includes("chinese-coach-dialogue-original-v72"));
 assert(learn.includes("a.preservesPitch=true"));
-assert(learn.includes("dialogue-voices-v72"));
+assert(learn.includes("dialogue-voices-v73"));
 assert(clean.includes("data-dialogue-voice-toggle"));
 assert(d.getElementById('pitchchart'),'Tone analyzer unchanged');
 assert(sw.includes('chinese-coach-pwa-v73'));

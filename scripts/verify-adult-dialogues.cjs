@@ -7,7 +7,7 @@ const quality=fs.readFileSync('assets/learning-quality.js','utf8');
 const screen=fs.readFileSync('assets/clean-learning-sections.js','utf8');
 const sw=fs.readFileSync('sw.js','utf8');
 const html=fs.readFileSync('index.html','utf8');
-assert(status.ready===true&&status.count===25&&status.version===72);
+assert(status.ready===true&&status.count===25&&status.version===73);
 assert.equal(status.voices.A,'zh-CN-XiaoxuanNeural');
 assert.equal(status.voices.B,'zh-CN-YunjianNeural');
 assert(plan.entries.length===25);
@@ -22,7 +22,7 @@ for(const e of plan.entries){
  assert.notEqual(hash(newPath),hash(oldPath),'The old and new MP3 MUST be different: '+newPath);
  assert(pack.files.includes('./'+newPath),'Offline pack missing '+newPath);
 }
-assert(pack.version===72&&pack.files.includes('./assets/dialogue-voices-v73/status.json'));
+assert(pack.version===73&&pack.files.includes('./assets/dialogue-voices-v73/status.json'));
 assert(quality.includes("fetch('./assets/dialogue-voices-v73/status.json'"));
 assert(quality.includes("folder=useNew?'dialogue-voices-v73':'dialogue-voices'"));
 assert(quality.includes("a.playbackRate=dialogueClip?1:"));
@@ -30,5 +30,5 @@ assert(quality.includes('a.preservesPitch=true'));
 assert(screen.includes('data-dialogue-voice-toggle'));
 assert(screen.includes('Новые голоса'));
 assert(sw.includes("chinese-coach-pwa-v73"));
-assert(html.includes("learning-quality.js?v=72")&&html.includes("clean-learning-sections.js?v=72"));
+assert(html.includes("learning-quality.js?v=73")&&html.includes("clean-learning-sections.js?v=73"));
 console.log('All 25 truly different Mandarin dialogue MP3s verified, new voices live by default, legacy comparison and offline cache preserved.');
