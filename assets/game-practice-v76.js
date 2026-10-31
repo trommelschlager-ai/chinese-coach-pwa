@@ -194,7 +194,28 @@ function answerOptions(mode){
   '<strong>'+safe(x.ru)+'</strong>')+'</span><span class="game-radio" aria-hidden="true"></span></button>';
  }).join('')+'</div>';
 }
+/* The listening screen uses the user's original, unaltered two-screen artwork.
+   CSS crops its RIGHT half; functional answer controls overlay the printed example. */
+function renderApprovedListening(){
+ const q=items[session.index],st=readStats(),choices=session.choices||choiceOptions();session.choices=choices;
+ const rows=choices.map((id,i)=>{const x=items[id],selected=session.choice===i;
+ return '<button type="button" class="original-listen-answer'+(selected?' is-selected':'')+'" data-game-option="'+i+'" aria-pressed="'+selected+'" '+(session.locked?'disabled':'')+'><b class="original-listen-num">'+(i+1)+'</b><span class="original-listen-words"><strong lang="zh-Hans">'+safe(x.zh)+'</strong>'+(session.showPinyin?'<span class="original-listen-py">'+safe(x.py)+'</span>':'')+'<small>'+safe(x.ru)+'</small></span><span class="original-listen-radio" aria-hidden="true"></span></button>'}).join('');
+ shell('<div class="original-listen-screen" aria-label="Прослушай и выбери — игровая практика">'+
+ '<div class="original-listen-art" aria-hidden="true"></div>'+
+ '<button type="button" class="original-listen-back" data-game-back aria-label="К игровой практике">← Игровая практика</button>'+
+ '<div class="original-listen-combo">🔥 Комбо ×'+session.combo+'</div>'+
+ '<div class="original-listen-progress"><span>Задание '+(session.index+1)+' из 10</span><div class="original-listen-meter"><i style="width:'+((session.index+1)*10)+'%"></i></div></div>'+
+ '<button type="button" class="original-listen-play" data-game-play aria-label="Прослушать китайскую фразу"><span aria-hidden="true">▶</span></button>'+
+ '<div class="original-listen-audio-note" data-game-audio-feedback role="status" aria-live="polite">Можно прослушать ещё раз</div>'+
+ '<div class="original-listen-answers">'+rows+'</div>'+
+ '<button type="button" class="original-listen-pinyin" data-game-toggle-pinyin aria-expanded="'+session.showPinyin+'">◉ '+(session.showPinyin?'Скрыть пиньинь':'Показать пиньинь')+'</button>'+
+ '<div class="original-listen-feedback" role="status" aria-live="polite">'+safe(feedback)+(session.locked?'<small>Правильный ответ: '+safe(q.zh)+' '+(session.showPinyin?safe(q.py):'')+'</small>':'')+'</div>'+
+ '<button type="button" class="original-listen-check" data-game-check>'+(session.locked?(session.index===9?'Результат →':'Далее →'):'Проверить →')+'</button>'+
+ '</div>');
+}
 function renderQuestion(){
+ if(session.mode==='listen'){renderApprovedListening();return;}
+
  const q=items[session.index],mode=session.mode,config=modes[mode];
  const task=mode==='build'?'<h1>Переведи<br>предложение</h1>':mode==='listen'?'<h1>Прослушай<br>и выбери</h1>':'<h1>Выбери<br>перевод</h1>';
  const body=mode==='build'?buildBody(q):mode==='listen'?

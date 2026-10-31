@@ -1,0 +1,32 @@
+/* Exact source artwork, untouched pixels. Natural right panel 768 x 1365 from the user's 1536 x 1365 PNG. */
+#topics .game-shell:has(.original-listen-screen){width:100%!important;max-width:560px!important;padding:0!important;margin:0 auto!important;min-height:0!important;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}
+#topics .original-listen-screen{position:relative;width:100%;aspect-ratio:768/1365;isolation:isolate;color:#341154;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+#topics .original-listen-art{position:absolute;inset:0;z-index:-1;background-image:url('./game-original-both-screens-v86.png');background-size:200% 100%;background-position:right top;background-repeat:no-repeat;image-rendering:auto}
+#topics .original-listen-back,#topics .original-listen-combo,#topics .original-listen-progress,#topics .original-listen-answers,#topics .original-listen-audio-note,#topics .original-listen-feedback,#topics .original-listen-pinyin,#topics .original-listen-check,#topics .original-listen-play{position:absolute;z-index:1;box-sizing:border-box}
+#topics .original-listen-back{left:5.2%;top:2%;width:41%;height:4.1%;border:1px solid #d0a6ed;border-radius:50px;background:#fff4fffa;color:#57218c;font-size:clamp(11px,3.2vw,18px);font-weight:760}
+#topics .original-listen-combo{right:3.5%;top:2%;width:25%;height:4.1%;border-radius:40px;background:#fff5fffc;display:grid;place-items:center;font-size:clamp(12px,3.25vw,19px);font-weight:760}
+#topics .original-listen-progress{left:5%;top:7.7%;width:64%;height:5.5%;padding:1.2% 3%;border-radius:32px;background:#fff5fffb;font-size:clamp(11px,3.1vw,18px);font-weight:740}
+#topics .original-listen-meter{margin-top:1.2%;height:30%;background:#d9c6e2;border-radius:20px;overflow:hidden}
+#topics .original-listen-meter i{display:block;height:100%;background:linear-gradient(90deg,#d379ff,#8e31e5);border-radius:20px}
+#topics .original-listen-play{left:34%;top:30%;width:27%;height:15.2%;border:0;background:transparent;color:transparent;border-radius:50%;cursor:pointer}
+#topics .original-listen-play span{visibility:hidden}
+#topics .original-listen-play:focus-visible{outline:4px solid #7629ca;outline-offset:3px}
+#topics .original-listen-audio-note{top:44%;left:26%;width:49%;height:3.8%;border-radius:40px;background:#fff3fffa;color:#7735a2;display:grid;place-items:center;text-align:center;font-size:clamp(10px,2.5vw,16px);font-weight:650;padding:2px}
+#topics .original-listen-answers{left:5%;top:49.5%;width:90%;height:27%;display:grid;grid-template-rows:repeat(3,1fr);gap:1.8%}
+#topics .original-listen-answer{box-sizing:border-box;width:100%;height:100%;display:flex;align-items:center;gap:4%;text-align:left;border:2px solid #f0d4f8;border-radius:25px;padding:1% 4%;background:#fff7ff;box-shadow:0 3px 8px #7e46b017;color:#25113b;min-width:0}
+#topics .original-listen-answer.is-selected{border-color:#a347eb;background:#f3dffd}
+#topics .original-listen-num{flex:0 0 9%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#ead6f4;font-size:clamp(13px,3.6vw,21px)}
+#topics .original-listen-words{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+#topics .original-listen-words strong{font-size:clamp(19px,5.1vw,31px);line-height:1.22;font-weight:850}
+#topics .original-listen-words small{font-size:clamp(11px,2.8vw,17px);line-height:1.25;color:#6d5e78}
+#topics .original-listen-py{font-size:clamp(10px,2.3vw,15px);color:#914bbb;font-weight:650}
+#topics .original-listen-radio{flex:0 0 6%;aspect-ratio:1;border:2px solid #bfaacc;border-radius:50%}
+#topics .original-listen-answer.is-selected .original-listen-radio{background:#913aeb;box-shadow:inset 0 0 0 4px #f7e6ff;border-color:#913aeb}
+#topics .original-listen-pinyin{left:28%;top:80%;width:44%;height:4.2%;border:2px solid #d5a1f5;border-radius:40px;background:#f9ebfffa;color:#6e2ba2;font-size:clamp(11px,2.9vw,17px);font-weight:700}
+#topics .original-listen-feedback{left:7%;top:84.5%;width:86%;min-height:3%;font-size:clamp(11px,2.9vw,16px);font-weight:700;text-align:center;color:#5d1d90;background:#ffffffc9;border-radius:15px}
+#topics .original-listen-feedback:empty{background:transparent}
+#topics .original-listen-feedback small{display:block;font-size:0.85em}
+#topics .original-listen-check{left:5%;top:87%;width:90%;height:7.2%;border:2px solid #fcecff;border-radius:65px;background:linear-gradient(155deg,#c477ff,#9027e3 60%,#ae4ef4);color:white;box-shadow:0 4px 18px #9d30ec70;font-size:clamp(18px,4.4vw,27px);font-weight:800}
+#topics .original-listen-screen button{cursor:pointer;touch-action:manipulation}
+#topics .original-listen-screen button:focus-visible{outline:3px solid #7422bb;outline-offset:1px}
+@media(max-width:355px){#topics .original-listen-answer{border-radius:15px;padding:1% 2%}#topics .original-listen-answers{gap:1%}#topics .original-listen-words strong{font-size:17px}}
