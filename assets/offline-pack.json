@@ -1,6 +1,6 @@
 {
-  "version": 76,
-  "bytes": 17395340,
+  "version": 77,
+  "bytes": 17428558,
   "files": [
     "./assets/approved-home-v36.png",
     "./assets/approved-lesson-design.css?v=56",
@@ -287,7 +287,9 @@
     "./assets/dialogue-voices/l5-06-b.mp3",
     "./assets/final-design.css",
     "./assets/final-design.css?v=41",
+    "./assets/game-landscape-v77.svg",
     "./assets/game-panda-v76.svg",
+    "./assets/game-polish-v77.css",
     "./assets/game-practice-entry-v76.css",
     "./assets/game-practice-v76.css",
     "./assets/game-practice-v76.js",
