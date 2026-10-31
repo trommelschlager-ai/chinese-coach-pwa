@@ -1,0 +1,16 @@
+{
+  "ready": true,
+  "version": 73,
+  "count": 25,
+  "voices": {
+    "A": "zh-CN-XiaoxuanNeural",
+    "B": "zh-CN-YunjianNeural"
+  },
+  "role_override": {
+    "lesson": 2,
+    "A": "male",
+    "B": "female"
+  },
+  "source": "edge-tts new personal-preview MP3s; not licensed for commercial redistribution",
+  "created_at": "2026-10-31T06:51:28Z"
+}
