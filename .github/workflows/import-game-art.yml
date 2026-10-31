@@ -1,0 +1,50 @@
+name: Import approved game artwork
+on:
+  push:
+    paths: [".github/workflows/import-game-art.yml"]
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get approved high-resolution image
+        env:
+          CANVA_URL: "https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2F8ca18e1a-6e27-46d3-a0d1-53bf9f2dc4f7/watermark:F/width:112?csig=AAAAAAAAAAAAAAAAAAAAAJ0BBOI2j-tEgAU2jnyTzck8FNAEAX1CaOSUAeFRd7GT&exp=1793480839&osig=AAAAAAAAAAAAAAAAAAAAAIo9ge_Jb0pCa3CCVX2_B3S3oYsfwOj2AIosmuXpkuOw&signer=media-rpc&token=AAIAAU0AJDhjYTE4ZTFhLTZlMjctNDZkMy1hMGQxLTUzYmY5ZjJkYzRmNwAAAAABoZPJz1j5_HVos34kMTYVFak_KDO26kPmWQ0P9W9nCKkl87feSw&x-canva-quality=thumbnail"
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          python3 - <<'PY'
+          import os,urllib.request
+          raw=os.environ['CANVA_URL']
+          for label,url in [
+            ('full',raw.replace('/height:200/','/height:1672/').replace('/width:112?','/width:941?').replace('x-canva-quality=thumbnail','x-canva-quality=screen_2x')),
+            ('original',raw.replace('/height:200/','/height:1672/').replace('/width:112?','/width:941?')),
+            ('thumb',raw)
+          ]:
+            try:
+              rq=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0'})
+              with urllib.request.urlopen(rq,timeout=25) as resp: data=resp.read()
+              print(label, 'downloaded',len(data),'bytes')
+              import struct
+              if data[:8]==b'\x89PNG\r\n\x1a\n':
+                w,h=struct.unpack('>II',data[16:24])
+                print(label,'dimensions',w,h)
+                if w>=900 and h>=1600:
+                  open('assets/game-approved-hub-v85.png','wb').write(data)
+                  break
+              else: print('Not a PNG')
+            except Exception as e:
+              print(label,'failed',str(e)[:300])
+          else: print('No high-resolution image available; image was not replaced.')
+          PY
+      - name: Commit approved art if high resolution
+        run: |
+          if [ ! -f assets/game-approved-hub-v85.png ]; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/game-approved-hub-v85.png
+          git commit -m "Import approved 941px Game Practice artwork" || exit 0
+          git push
