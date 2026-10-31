@@ -2,14 +2,14 @@
    v77 had a washed-out geometric illustration. Use the existing painted Chinese
    lesson backdrop, not an enlarged decorative SVG, and bring the UI to the
    approved game mockup hierarchy. No recordings/game state are changed. */
-body:has(#topics[data-simple-section="game"]){background:#e8d8f6!important}
-body:has(#topics[data-simple-section="game"]) .shell{
+body:has(#topics[data-simple-section="game"].active){background:#e8d8f6!important}
+body:has(#topics[data-simple-section="game"].active) .shell{
   max-width:none!important;width:100%!important;padding:0!important;margin:0!important;
   background:transparent!important;border:0!important;box-shadow:none!important
 }
-body:has(#topics[data-simple-section="game"]) .shell>.topbar,
-body:has(#topics[data-simple-section="game"]) .shell>.nav,
-body:has(#topics[data-simple-section="game"]) .shell>.offlinebar{
+body:has(#topics[data-simple-section="game"].active) .shell>.topbar,
+body:has(#topics[data-simple-section="game"].active) .shell>.nav,
+body:has(#topics[data-simple-section="game"].active) .shell>.offlinebar{
   display:none!important
 }
 #topics[data-simple-section="game"]{
@@ -275,7 +275,7 @@ body:has(#topics[data-simple-section="game"]) .shell>.offlinebar{
 }
 #topics[data-simple-section="game"] .game-repeat h2{font-size:clamp(23px,6vw,29px)!important}
 @media(min-width:800px){
- body:has(#topics[data-simple-section="game"]){background:#e9d5f4!important}
+ body:has(#topics[data-simple-section="game"].active){background:#e9d5f4!important}
  #topics[data-simple-section="game"]{box-shadow:0 0 45px #9e73b866!important}
 }
 @media(max-width:390px){
@@ -294,3 +294,7 @@ body:has(#topics[data-simple-section="game"]) .shell>.offlinebar{
 @media(prefers-reduced-motion:reduce){
  #topics[data-simple-section="game"] .game-shell button{transition:none!important}
 }
+
+/* Hide only the old outer section-toolbar while the game page is active. */
+body:has(#topics[data-simple-section="game"].active) .section-tools{display:none!important}
+body:has(#topics[data-simple-section="game"].active) main{max-width:none!important;padding:0!important;margin:0!important}
