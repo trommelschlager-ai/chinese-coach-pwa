@@ -29,6 +29,6 @@ assert(quality.includes("a.playbackRate=dialogueClip?1:"));
 assert(quality.includes('a.preservesPitch=true'));
 assert(screen.includes('data-dialogue-voice-toggle'));
 assert(screen.includes('Новые голоса'));
-assert(sw.includes("chinese-coach-pwa-v76"));
+assert(sw.includes("chinese-coach-pwa-v77"));
 assert(html.includes("learning-quality.js?v=73")&&html.includes("clean-learning-sections.js?v=73"));
 console.log('All 25 truly different Mandarin dialogue MP3s verified, new voices live by default, legacy comparison and offline cache preserved.');
