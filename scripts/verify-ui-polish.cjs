@@ -17,7 +17,7 @@ assert(ear.includes('ear-credits')&&voice.includes('licenseSection.append(listen
 assert(html.includes('ui-polish-v69.css?v=69')&&sw.includes('ui-polish-v69.css?v=69'));
 assert(JSON.parse(fs.readFileSync('assets/offline-pack.json')).version>=70);
 assert(JSON.parse(fs.readFileSync('assets/offline-pack.json')).files.includes('./assets/ui-polish-v69.css'));
-assert(/chinese-coach-pwa-v(?:70|71|72|73|74|75|76|77)/.test(sw));
+assert(/chinese-coach-pwa-v(?:70|71|72|73|74|75|76|77|78)/.test(sw));
 assert(html.includes('ui-polish-v70.css?v=70'));
 assert(d.getElementById('listen')&&d.getElementById('record')&&d.getElementById('tone-check')&&d.getElementById('pitchchart'));
 console.log('Approved V69 visual fixes validated; existing pronunciation controls and six destinations preserved.');
