@@ -13,8 +13,8 @@ assert(source.includes('data-pinyin-rate="0.85" aria-pressed="true"'));
 assert(source.includes("readingView='letters',readingRate=.85"),'Default pace is 0.85x');
 assert(source.includes('data-pinyin-rate="0.75" aria-pressed="false"'),'Slow practice mode remains');
 assert(source.includes('a.preservesPitch=true'),'Keep Mandarin F0 contour');
-assert(html.includes('pronunciation-hub.js?v=75')&&sw.includes('chinese-coach-pwa-v76'));
-assert(pack.version===76&&curr.clips.length===190);
+assert(html.includes('pronunciation-hub.js?v=75')&&sw.includes('chinese-coach-pwa-v77'));
+assert(pack.version===77&&curr.clips.length===190);
 assert.equal(curr.audio.voice,'zh-CN-YunyangNeural');
 const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 for(const clip of curr.clips){
@@ -26,5 +26,5 @@ for(const clip of curr.clips){
 }
 assert(pack.files.includes('./assets/pinyin-reading-v5/status.json'));
 assert(learn.includes("fetch('./assets/dialogue-voices-v73/status.json'"),'Do not change accepted dialogue');
-assert.equal(new JSDOM(html).window.document.querySelectorAll('#launch-menu .six-menu-cards [data-choice]').length,6);
+assert.equal(new JSDOM(html).window.document.querySelectorAll('#launch-menu .six-menu-cards [data-choice]').length,7);
 console.log('V75 passes: 190 real Yunyang MP3s, normal default speed, preserved tones, unchanged dialogues and navigation');
