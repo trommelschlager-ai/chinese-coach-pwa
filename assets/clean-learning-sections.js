@@ -140,7 +140,7 @@ function practiceHome(){
  ['translation','🔤','Выбери перевод','Найди правильное значение'],
  ['listening','🎧','Узнай слово на слух','Слушай MP3 и выбирай перевод']
  ].map(([key,icon,title,info])=>'<button type="button" class="clean-category" data-practice-mode="'+key+'"><span class="clean-category-icon">'+icon+'</span><span><strong>'+title+'</strong><small>'+info+'</small></span><span>›</span></button>').join('')+'</div>',false);
- $('[data-practice-mode]').forEach(b=>b.onclick=()=>startPractice(b.dataset.practiceMode));
+ $$('[data-practice-mode]').forEach(b=>b.onclick=()=>startPractice(b.dataset.practiceMode));
  const game=$('[data-open-game]');if(game)game.onclick=()=>window.openGamePractice?.();
 }
 function practiceCandidates(){
