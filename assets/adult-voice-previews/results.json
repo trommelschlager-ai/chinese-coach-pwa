@@ -1,0 +1,45 @@
+{
+  "text": "你好！我是中国人。很高兴认识你。",
+  "voices": [
+    {
+      "gender": "female",
+      "voice": "zh-CN-XiaoxuanNeural",
+      "ok": true,
+      "size": 29088,
+      "duration": 4.85
+    },
+    {
+      "gender": "female",
+      "voice": "zh-CN-XiaoqiuNeural",
+      "ok": false,
+      "error": "NoAudioReceived"
+    },
+    {
+      "gender": "female",
+      "voice": "zh-CN-XiaomoNeural",
+      "ok": false,
+      "error": "NoAudioReceived"
+    },
+    {
+      "gender": "female",
+      "voice": "zh-CN-XiaohanNeural",
+      "ok": false,
+      "error": "NoAudioReceived"
+    },
+    {
+      "gender": "male",
+      "voice": "zh-CN-YunjianNeural",
+      "ok": true,
+      "size": 32544,
+      "duration": 5.42
+    },
+    {
+      "gender": "male",
+      "voice": "zh-CN-YunyangNeural",
+      "ok": true,
+      "size": 27216,
+      "duration": 4.54
+    }
+  ],
+  "requirement": "new adult Mandarin female and male MP3s, not pitch-shifted originals"
+}
