@@ -94,3 +94,33 @@
  #topics[data-simple-section="game"] .game-mode{padding:15px;min-height:125px}
 }
 @media(prefers-reduced-motion:reduce){#topics[data-simple-section="game"] .game-panda{transform:none}}
+
+/* Mascot-led illustrated question screens, as in the approved sketches. */
+#topics[data-simple-section="game"] .game-build-hero{
+ display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);align-items:center;gap:7px;
+ min-height:178px;margin-bottom:7px
+}
+#topics[data-simple-section="game"] .game-build-hero .game-panda{
+ height:176px;max-height:none;width:100%;object-fit:contain;transform:scale(1.08);
+ filter:drop-shadow(0 8px 14px #a665ae66)
+}
+#topics[data-simple-section="game"] .game-build-hero .game-prompt{
+ margin:0;min-height:125px;display:flex;align-items:center;justify-content:center;
+ border-radius:24px;position:relative;overflow:visible
+}
+#topics[data-simple-section="game"] .game-build-hero .game-prompt::before{
+ content:"";position:absolute;left:-12px;top:54%;width:19px;height:19px;
+ background:#fffaff;border-left:2px solid #fff;border-bottom:2px solid #fff;
+ transform:translateY(-50%) rotate(45deg)
+}
+#topics[data-simple-section="game"] .game-build-hero .game-prompt>strong{font-size:clamp(18px,5.15vw,30px)}
+#topics[data-simple-section="game"] .game-listen-hero{height:122px;margin:-13px 0 -24px;display:flex;justify-content:flex-end;pointer-events:none}
+#topics[data-simple-section="game"] .game-listen-hero .game-panda{
+ max-width:185px;height:157px;object-fit:contain;filter:drop-shadow(0 7px 10px #8a66af66)
+}
+#topics[data-simple-section="game"] .game-listening{position:relative;z-index:1}
+@media(max-width:350px){
+ #topics[data-simple-section="game"] .game-build-hero .game-panda{height:141px}
+ #topics[data-simple-section="game"] .game-build-hero{min-height:152px}
+ #topics[data-simple-section="game"] .game-build-hero .game-prompt>strong{font-size:18px}
+}
