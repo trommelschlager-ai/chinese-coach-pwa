@@ -2478,7 +2478,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   else if(n===3)window.openLearningTopics('dialogues');
   else if(n===4)window.openPracticeChoices();
   else if(n===5)go('quiz');
-  else if(n===6){go('topics');window.openGamePractice?.();}
+  else if(n===6){window.location.assign('./game.html');return;}
  });
  const oldGo=go;
  go=function(name){
@@ -2492,7 +2492,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
  if(direct==='listening'||direct==='pronunciation'){
    exit();
    oldGo('tones');
- }else show('cover');
+ }else if(new URLSearchParams(window.location.search).has('gameReturn'))show('menu');else show('cover');
 })();
 </script>
 <script src="./assets/voice-settings.js?v=61"></script>
