@@ -22,13 +22,13 @@ for(const e of plan.entries){
  assert.notEqual(hash(newPath),hash(oldPath),'The old and new MP3 MUST be different: '+newPath);
  assert(pack.files.includes('./'+newPath),'Offline pack missing '+newPath);
 }
-assert(pack.version===73&&pack.files.includes('./assets/dialogue-voices-v73/status.json'));
+assert(pack.version===74&&pack.files.includes('./assets/dialogue-voices-v73/status.json'));
 assert(quality.includes("fetch('./assets/dialogue-voices-v73/status.json'"));
 assert(quality.includes("folder=useNew?'dialogue-voices-v73':'dialogue-voices'"));
 assert(quality.includes("a.playbackRate=dialogueClip?1:"));
 assert(quality.includes('a.preservesPitch=true'));
 assert(screen.includes('data-dialogue-voice-toggle'));
 assert(screen.includes('Новые голоса'));
-assert(sw.includes("chinese-coach-pwa-v73"));
+assert(sw.includes("chinese-coach-pwa-v74"));
 assert(html.includes("learning-quality.js?v=73")&&html.includes("clean-learning-sections.js?v=73"));
 console.log('All 25 truly different Mandarin dialogue MP3s verified, new voices live by default, legacy comparison and offline cache preserved.');

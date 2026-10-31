@@ -14,7 +14,7 @@ assert.deepEqual([...new Set(mappedFinals)].sort(),finals.sort(),'All 36 finals 
 const initials=['b','c','ch','d','f','g','h','j','k','l','m','n','p','q','r','s','sh','t','x','z','zh'];
 const actual=[...new Set(curriculum.groups.filter(g=>!['A','E','I','O','U','Ü','W','Y'].includes(g.letter)).flatMap(g=>g.items.map(item=>item.unit)))];
 assert.deepEqual(actual.sort(),initials.sort(),'21 initials and separate y/w spelling aids');
-assert.equal(curriculum.clips.length,190,'190 unique slow Xiaoyi audio files planned');
+assert.equal(curriculum.clips.length,190,'190 unique Pinyin example audio files planned');
 assert.equal(new Set(curriculum.clips.map(c=>c.id)).size,190);
 assert(curriculum.groups.some(g=>g.items.some(x=>x.py==='pāi')));
 assert(curriculum.groups.every(g=>g.items.length>=6),'Every letter offers at least six reading examples');
@@ -22,7 +22,7 @@ assert.equal(curriculum.groups.reduce((n,g)=>n+g.items.length,0),198,'Expanded e
 assert(curriculum.guidance.o.includes('коротким переходом через u'),'O after b/p/m/f must be explained accurately');
 assert(js.includes('data-pinyin-rate="0.75"'),'Slow Pinyin playback is the default');
 assert(js.includes('a.playbackRate=readingRate'),'Audio actually uses playback speed');
-assert(js.includes('./assets/pinyin-reading-v3/'),'Pinyin MP3s must use the new voice folder');
+assert(js.includes('./assets/pinyin-reading-v4/'),'Pinyin MP3s must use the new softer voice folder');
 assert(curriculum.rules.some(r=>r.title.includes('iou → iu')));
 assert(curriculum.rules.some(r=>r.title.includes('uei → ui')));
 assert(curriculum.rules.some(r=>r.title.includes('uen → un')));
@@ -39,16 +39,16 @@ for(const clip of curriculum.clips){
  assert(fs.statSync(path).size>1500,'Missing generated MP3: '+path);
  assert(pack.files.includes('./'+path),'Offline download missing clip: '+path);
 }
-const status=JSON.parse(fs.readFileSync('assets/pinyin-reading-v3/status.json','utf8'));
+const status=JSON.parse(fs.readFileSync('assets/pinyin-reading-v4/status.json','utf8'));
 assert.equal(status.ready,true);
 assert.equal(status.count,curriculum.clips.length);
-assert.equal(status.voice,'zh-CN-YunjianNeural','New mature male pinyin voice');
+assert.equal(status.voice,'zh-CN-XiaoxuanNeural','Soft adult Xiaoxuan voice must be used');
 const crypto=require('node:crypto'),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 for(const clip of curriculum.clips){
- const newFile=clip.file.replace('pinyin-reading-v2/','pinyin-reading-v3/');
+ const newFile=clip.file.replace('pinyin-reading-v2/','pinyin-reading-v4/');
  assert(fs.statSync(newFile).size>1500,'No new MP3 '+newFile);
  assert(pack.files.includes('./'+newFile),'Offline pack missing '+newFile);
  assert.notEqual(hash(clip.file),hash(newFile),'Old voice not replaced for '+clip.id);
 }
-assert(js.includes('"zh-CN-YunjianNeural"'),'Pinyin source voice not changed');
-console.log('Pinyin checks passed: 26 groups, 36 finals, 21 initials, 21 rules, 190 fresh Yunjian MP3s.');
+assert(js.includes('"zh-CN-XiaoxuanNeural"'),'Pinyin source voice not changed');
+console.log('Pinyin checks passed: 26 groups, 36 finals, 21 initials, 21 rules, 190 fresh Xiaoxuan MP3s.');
