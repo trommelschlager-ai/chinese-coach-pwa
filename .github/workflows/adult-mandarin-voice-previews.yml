@@ -1,0 +1,36 @@
+name: Test genuine mature Mandarin voice previews
+on:
+  push:
+    paths:
+      - ".github/workflows/adult-mandarin-voice-previews.yml"
+      - "scripts/test_mature_voices.py"
+permissions:
+  contents: write
+jobs:
+  synthesize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install speech synthesizer and MP3 validation
+        run: |
+          python -m pip install --disable-pip-version-check edge-tts==7.3.1
+          command -v ffprobe
+      - name: Probe voices and save real MP3 samples
+        run: python scripts/test_mature_voices.py
+      - name: Commit verified preview MP3s to this branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/adult-voice-previews/
+          if git diff --cached --quiet; then
+            echo "No new previews"
+          else
+            git commit -m "Save tested Chinese voice MP3 previews and availability report"
+            git push
+          fi
