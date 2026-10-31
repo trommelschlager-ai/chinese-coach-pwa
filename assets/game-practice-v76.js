@@ -147,7 +147,7 @@ function renderQuestion(){
  shell(topBar('Игровая практика')+meter()+
  '<div class="game-task-title">'+task+'<p>'+safe(config.subtitle)+'</p></div>'+
  '<div class="game-question-wrap">'+body+'</div>'+
- '<div class="game-feedback" role="status" aria-live="polite">'+safe(feedback)+(session.locked?'<div class="game-correction"><strong>Правильный ответ:</strong> <span lang="zh-Hans">'+safe(q.zh)+'</span><small>'+safe(q.py)+' · '+safe(q.ru)+'</small></div>':'')+'</div>'+
+ '<div class="game-feedback" role="status" aria-live="polite">'+safe(feedback)+(session.locked?'<div class="game-correction"><strong>Правильный ответ:</strong> <span lang="zh-Hans">'+safe(q.zh)+'</span><small>'+(mode==='listen'&&!session.showPinyin?'':safe(q.py)+' · ')+safe(q.ru)+'</small></div>':'')+'</div>'+
  '<div class="game-audio-note" data-game-audio-feedback role="status" aria-live="polite"></div>'+
  '<div class="game-actions">'+(mode==='build'?'<button type="button" class="game-secondary" data-game-clear '+(session.locked?'disabled':'')+'>Очистить</button>':'')+
  '<button type="button" class="game-primary" data-game-check>'+ (session.locked?(session.index===9?'Результат →':'Далее →'):'Проверить →')+'</button></div>');
