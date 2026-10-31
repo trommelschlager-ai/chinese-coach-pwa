@@ -14,7 +14,7 @@ assert(learn.includes("status.role_override?.lesson===2"),'Validate audio pack r
 assert(learn.includes("lessonId===2||"),'Single dialogue line always uses corrected cast');
 assert(learn.includes("lesson.id===2||"),'Full dialogue always uses corrected cast');
 assert(pron.includes('./assets/pinyin-reading-v4/'),'All 190 examples must use new softer audio');
-assert(html.includes('pronunciation-hub.js?v=73'));
+assert(html.includes('pronunciation-hub.js?v=74'));
 assert(sw.includes('chinese-coach-pwa-v74'));assert.equal(pack.version,74);
 const digest=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 for(const sample of curr.clips){let p='assets/pinyin-reading-v4/'+sample.id+'.mp3';assert(fs.statSync(p).size>1500);assert.notEqual(digest(p),digest(sample.file));assert(pack.files.includes('./'+p));}
