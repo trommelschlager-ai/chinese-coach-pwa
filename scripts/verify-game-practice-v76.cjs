@@ -56,7 +56,7 @@ assert(node.textContent.includes('Верно!'));
 node.querySelector('[data-game-back]').click();
 node.querySelector('[data-game-mode="listen"]').click();
 node.querySelector('[data-game-play]').click();
-assert.equal(played[0],'./assets/dialogue-voices-v73/'+api.items[0].audio);
+assert.equal(played.at(-1),'./assets/dialogue-voices-v73/'+api.items[0].audio);
 assert.equal(node.querySelectorAll('[data-game-option]').length,3);
 assert(node.querySelector('[data-game-toggle-pinyin]'),'Show Pinyin control must appear in listening');
 assert.equal(node.querySelectorAll('.game-choice-pinyin').length,0,'Listening Pinyin hidden by default');
