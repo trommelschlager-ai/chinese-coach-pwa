@@ -1,6 +1,6 @@
 {
-  "version": 78,
-  "bytes": 17460868,
+  "version": 79,
+  "bytes": 17461538,
   "files": [
     "./assets/approved-home-v36.png",
     "./assets/approved-lesson-design.css?v=56",
@@ -288,7 +288,7 @@
     "./assets/final-design.css",
     "./assets/final-design.css?v=41",
     "./assets/game-immersive-v78.css",
-    "./assets/game-immersive-v78.css?v=78",
+    "./assets/game-immersive-v78.css?v=79",
     "./assets/game-landscape-v77.svg",
     "./assets/game-panda-v76.svg",
     "./assets/game-polish-v77.css",
