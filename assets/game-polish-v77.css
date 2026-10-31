@@ -1,0 +1,126 @@
+/* V77 original four-screen panda game rework. Standalone main menu destination.
+   Retains gameplay accessibility, MP3s and existing approved app UI. */
+#launch-entry #launch-menu .six-menu-cards{
+  grid-template-rows:repeat(7,minmax(0,1fr))!important;height:min(77dvh,1100px)!important;
+  margin-top:clamp(10px,2.6dvh,35px)!important;gap:1.4%!important
+}
+#launch-entry #launch-menu .six-card{font-size:clamp(17px,4.6vw,24px)!important}
+#launch-entry #launch-menu .six-violet-game{
+ background:linear-gradient(105deg,#efdeffed,#eed7ffed,#fde6ffed)!important;
+ border-color:#f6d2ff!important;
+ box-shadow:0 0 17px #e6a6ffa6,0 5px 17px #21183a70!important
+}
+#launch-entry #launch-menu .six-violet-game .six-icon,
+#launch-entry #launch-menu .six-violet-game .six-arrow{color:#9948d9}
+#launch-entry #launch-menu .six-game-icon{filter:drop-shadow(0 1px 4px #dcbaff)!important}
+@media(max-height:740px){
+ #launch-entry #launch-menu .six-menu-cards{height:76dvh!important;margin-top:0!important;gap:1%!important}
+ #launch-entry #launch-menu .six-card{font-size:clamp(14px,4vw,19px)!important;padding-block:3px!important}
+ #launch-entry #launch-menu .six-icon{height:clamp(25px,8vw,49px)!important}
+}
+@media(max-width:360px){#launch-entry #launch-menu .six-violet-game .six-label{font-size:.96em!important}}
+#topics[data-simple-section="game"]{width:100%;max-width:850px}
+#topics[data-simple-section="game"] .game-shell{
+ background-color:#f7eafa!important;
+ background-image:linear-gradient(180deg,#ffecff26 0%,#f5edff3a 47%,#fff3fb5c 88%,#ffeffb5e 100%),url("./game-landscape-v77.svg")!important;
+ background-repeat:no-repeat!important;background-position:center top!important;background-size:100% 100%!important;
+ border:0!important;box-shadow:0 13px 31px #995fb03f!important;
+ padding:22px clamp(15px,4vw,28px) 32px!important;
+ border-radius:25px!important;min-height:max(850px,100dvh - 140px)!important
+}
+#topics[data-simple-section="game"] .game-shell .game-back{min-height:52px;padding-inline:20px;font-weight:800;box-shadow:0 7px 19px #9473c16c;border-color:#e1ccf2;background:#fff8fff4}
+#topics[data-simple-section="game"] .game-hero{min-height:240px;grid-template-columns:1.02fr .98fr;align-items:center;margin:3px -5px}
+#topics[data-simple-section="game"] .game-hero h1{font-size:clamp(32px,9.4vw,66px);color:#2f1455;text-shadow:0 2px 2px #ffeaff80}
+#topics[data-simple-section="game"] .game-hero .game-panda{max-height:245px;transform:scale(1.14);filter:drop-shadow(0 8px 12px #78428f48)}
+#topics[data-simple-section="game"] .game-streak{
+ border-radius:23px;border:1.5px solid #e7c6f5;background:#fff8fff0;
+ box-shadow:0 7px 22px #ad85c162;font-size:clamp(14px,3.7vw,18px);min-height:65px
+}
+#topics[data-simple-section="game"] .game-mode{min-height:142px;border-width:1.5px;padding:19px 20px 19px 22px}
+#topics[data-simple-section="game"] .game-mode::before{
+ content:"";position:absolute;right:25px;top:11px;width:43%;height:90%;opacity:.16;pointer-events:none;
+ background-size:contain;background-repeat:no-repeat;background-position:center
+}
+#topics[data-simple-section="game"] .game-mode-build::before{
+ background-image:url("./game-panda-v76.svg");opacity:.11
+}
+#topics[data-simple-section="game"] .game-mode-choose::before{
+ content:"✓";font:900 96px/1.35 system-ui;color:#64b978;text-align:center;opacity:.23
+}
+#topics[data-simple-section="game"] .game-mode-listen::before{
+ content:"♫";font:900 108px/1.3 system-ui;color:#704ac2;text-align:center;opacity:.17
+}
+#topics[data-simple-section="game"] .game-mode-copy{z-index:1;max-width:82%}
+#topics[data-simple-section="game"] .game-mode strong{font-size:clamp(21px,5.6vw,29px);letter-spacing:-.025em}
+#topics[data-simple-section="game"] .game-mode small{font-size:clamp(14px,3.8vw,18px);color:#6d5082}
+#topics[data-simple-section="game"] .game-mode-arrow{z-index:2}
+#topics[data-simple-section="game"] .game-results-link{background:#ffeef8ee;border-color:#edc7df;min-height:112px;border-radius:26px}
+#topics[data-simple-section="game"] .game-task-title{position:relative;padding-top:7px}
+#topics[data-simple-section="game"] .game-task-title h1{font-size:clamp(34px,9vw,62px)}
+#topics[data-simple-section="game"] .game-metrics{border-radius:23px;padding:10px 13px;margin-top:15px;background:#fffaffcc;border:1px solid #ebd4ef;min-height:42px}
+#topics[data-simple-section="game"] .game-meter{height:16px;border:5px solid #fffaffde;box-sizing:content-box;background:#ded3ef;border-radius:20px;margin-bottom:25px}
+#topics[data-simple-section="game"] .game-prompt{
+ position:relative;background:#fffafff2;border:2px solid #fff;border-radius:28px;
+ box-shadow:0 7px 19px #9d7cbd5e;padding-block:23px;
+}
+#topics[data-simple-section="game"] .game-answer-area{background:#fff8fff2;border-radius:30px;border:2px solid #f0ddff;box-shadow:0 9px 24px #bd8acd53}
+#topics[data-simple-section="game"] .game-token{min-height:94px;border:1.6px solid #e6d4f4;background:#fffaffef;border-radius:24px;box-shadow:0 6px 16px #ac7dbb54}
+#topics[data-simple-section="game"] .game-answer-token{background:#f2e3ff;border:2px solid #a979da;border-radius:18px}
+#topics[data-simple-section="game"] .game-blank{background:#f5e5ff95;border:2px dashed #c7a1e0;border-radius:18px}
+#topics[data-simple-section="game"] .game-choice{background:#fffaffea;border:2px solid #edd5f5;min-height:116px;border-radius:27px;box-shadow:0 6px 19px #bc92d05a}
+#topics[data-simple-section="game"] .game-choice.is-selected{background:#f6e2fff4;border-color:#af59ec;box-shadow:0 5px 20px #a76be579}
+#topics[data-simple-section="game"] .game-play-big{width:124px;height:124px;background:linear-gradient(140deg,#d693ff,#8b38ea);border:9px solid #fff4ff;box-shadow:0 0 25px 8px #ba89f39c}
+#topics[data-simple-section="game"] .game-pinyin-toggle{
+ min-height:47px;padding:9px 19px;border:1.5px solid #cda6e9;background:#f6e6ffe8;
+ border-radius:999px;color:#6b2baa;font:780 clamp(14px,3.9vw,18px) system-ui;box-shadow:0 3px 11px #c18bed55
+}
+#topics[data-simple-section="game"] .game-listening{padding-bottom:17px}
+#topics[data-simple-section="game"] .game-actions{position:relative;padding:10px 2px;margin-top:15px}
+#topics[data-simple-section="game"] .game-actions button{min-height:69px;border-radius:25px}
+#topics[data-simple-section="game"] .game-primary{background:linear-gradient(120deg,#c174ff,#9038dd);box-shadow:0 7px 19px #a45be491;border:2px solid #d6a7ff}
+#topics[data-simple-section="game"] .game-secondary{background:#fffaffeb;box-shadow:0 6px 15px #c69be260}
+#topics[data-simple-section="game"] .game-result-header{min-height:195px}
+#topics[data-simple-section="game"] .game-result-header .game-panda{max-height:220px;filter:drop-shadow(0 9px 10px #a774b873)}
+#topics[data-simple-section="game"] .game-result-score{min-height:235px;border-radius:32px;background:linear-gradient(140deg,#fff9ffee,#f1e4fff3);box-shadow:0 10px 23px #ad80d169}
+#topics[data-simple-section="game"] .game-result-score>strong{font-size:clamp(69px,19vw,118px);text-shadow:0 3px 3px #e7baff}
+#topics[data-simple-section="game"] .game-awards{min-height:111px;background:#fffafff2;border-radius:26px;box-shadow:0 7px 20px #a67eb861}
+#topics[data-simple-section="game"] .game-repeat{min-height:155px;border-radius:26px;background:#fff6fbf0;box-shadow:0 6px 18px #b184bc4e}
+@media(max-width:390px){
+ #topics[data-simple-section="game"] .game-shell{padding-inline:12px!important}
+ #topics[data-simple-section="game"] .game-hero h1{font-size:clamp(29px,8.4vw,38px)}
+ #topics[data-simple-section="game"] .game-hero .game-panda{max-height:190px}
+ #topics[data-simple-section="game"] .game-streak{font-size:13px}
+ #topics[data-simple-section="game"] .game-token strong{font-size:24px}
+ #topics[data-simple-section="game"] .game-mode{padding:15px;min-height:125px}
+}
+@media(prefers-reduced-motion:reduce){#topics[data-simple-section="game"] .game-panda{transform:none}}
+
+/* Mascot-led illustrated question screens, as in the approved sketches. */
+#topics[data-simple-section="game"] .game-build-hero{
+ display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);align-items:center;gap:7px;
+ min-height:178px;margin-bottom:7px
+}
+#topics[data-simple-section="game"] .game-build-hero .game-panda{
+ height:176px;max-height:none;width:100%;object-fit:contain;transform:scale(1.08);
+ filter:drop-shadow(0 8px 14px #a665ae66)
+}
+#topics[data-simple-section="game"] .game-build-hero .game-prompt{
+ margin:0;min-height:125px;display:flex;align-items:center;justify-content:center;
+ border-radius:24px;position:relative;overflow:visible
+}
+#topics[data-simple-section="game"] .game-build-hero .game-prompt::before{
+ content:"";position:absolute;left:-12px;top:54%;width:19px;height:19px;
+ background:#fffaff;border-left:2px solid #fff;border-bottom:2px solid #fff;
+ transform:translateY(-50%) rotate(45deg)
+}
+#topics[data-simple-section="game"] .game-build-hero .game-prompt>strong{font-size:clamp(18px,5.15vw,30px)}
+#topics[data-simple-section="game"] .game-listen-hero{height:122px;margin:-13px 0 -24px;display:flex;justify-content:flex-end;pointer-events:none}
+#topics[data-simple-section="game"] .game-listen-hero .game-panda{
+ max-width:185px;height:157px;object-fit:contain;filter:drop-shadow(0 7px 10px #8a66af66)
+}
+#topics[data-simple-section="game"] .game-listening{position:relative;z-index:1}
+@media(max-width:350px){
+ #topics[data-simple-section="game"] .game-build-hero .game-panda{height:141px}
+ #topics[data-simple-section="game"] .game-build-hero{min-height:152px}
+ #topics[data-simple-section="game"] .game-build-hero .game-prompt>strong{font-size:18px}
+}

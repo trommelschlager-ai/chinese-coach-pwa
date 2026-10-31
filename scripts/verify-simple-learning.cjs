@@ -12,7 +12,7 @@ w.Audio=function(){this.play=()=>{this.onended?.();return Promise.resolve()};thi
 w.eval([...d.scripts].map(s=>s.src?fs.readFileSync(decodeURI(new URL(s.src).pathname.replace('/chinese-coach-pwa/','')),'utf8'):s.textContent).join('\n').replace("'use strict';",''));
 const tick=()=>new Promise(r=>setTimeout(r,10));
 (async()=>{
-assert.equal(d.querySelectorAll('.six-card').length,6);
+assert.equal(d.querySelectorAll('.six-card').length,7);
 assert.equal(d.querySelectorAll('.six-number').length,0,'Tools should not look like six numbered lessons');
 assert.equal(d.querySelectorAll('#launch-cover img').length,1);
 assert(!d.getElementById('launch-resume').hidden,'A new learner gets a direct start action');

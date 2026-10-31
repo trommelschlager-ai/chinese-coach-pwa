@@ -2,7 +2,7 @@ const assert=require('node:assert/strict'),fs=require('fs'),{JSDOM}=require('jsd
 const html=fs.readFileSync('index.html','utf8'),css=fs.readFileSync('assets/ui-polish-v69.css','utf8');
 const voice=fs.readFileSync('assets/learning-quality.js','utf8'),ear=fs.readFileSync('assets/listening-lab.js','utf8'),sw=fs.readFileSync('sw.js','utf8');
 const d=new JSDOM(html).window.document,menu=d.getElementById('launch-menu');
-assert.equal(menu.querySelectorAll('.six-menu-cards [data-choice]').length,6);
+assert.equal(menu.querySelectorAll('.six-menu-cards [data-choice]').length,7);
 assert(!menu.querySelector('.six-menu-brand,.six-menu-header h1'));
 assert(menu.querySelector('#launch-resume'));
 assert(css.includes('.six-menu-header{display:none!important}')&&css.includes('.six-number{display:none!important}'));
@@ -17,7 +17,7 @@ assert(ear.includes('ear-credits')&&voice.includes('licenseSection.append(listen
 assert(html.includes('ui-polish-v69.css?v=69')&&sw.includes('ui-polish-v69.css?v=69'));
 assert(JSON.parse(fs.readFileSync('assets/offline-pack.json')).version>=70);
 assert(JSON.parse(fs.readFileSync('assets/offline-pack.json')).files.includes('./assets/ui-polish-v69.css'));
-assert(/chinese-coach-pwa-v(?:70|71|72|73|74|75|76)/.test(sw));
+assert(/chinese-coach-pwa-v(?:70|71|72|73|74|75|76|77)/.test(sw));
 assert(html.includes('ui-polish-v70.css?v=70'));
 assert(d.getElementById('listen')&&d.getElementById('record')&&d.getElementById('tone-check')&&d.getElementById('pitchchart'));
 console.log('Approved V69 visual fixes validated; existing pronunciation controls and six destinations preserved.');
