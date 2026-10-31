@@ -1,0 +1,12 @@
+{
+  "ready": true,
+  "version": 72,
+  "count": 25,
+  "voices": {
+    "A": "zh-CN-XiaoxuanNeural",
+    "B": "zh-CN-YunjianNeural"
+  },
+  "rate": "-5%",
+  "source": "edge-tts Microsoft Read Aloud (new MP3s, personal evaluation only; no commercial redistribution grant)",
+  "generated_at": "2026-10-31T00:04:09Z"
+}
