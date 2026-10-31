@@ -13,7 +13,7 @@
 }
 #topics .game-shell:has(.approved-art-hub)::before,
 #topics .game-shell:has(.approved-art-hub)::after{display:none!important}
-#topics .approved-art-hub{position:relative;width:100%;max-width:540px;margin:auto;aspect-ratio:941/1672}
+#topics .approved-art-hub{position:relative;width:100%;max-width:540px;margin:auto;aspect-ratio:864/1536}
 #topics .approved-art-image{display:block;width:100%;height:auto;max-width:100%;image-rendering:auto}
 #topics .approved-hit{position:absolute;z-index:2;display:block;cursor:pointer;
   padding:0;border:0;background:transparent;box-shadow:none;border-radius:20px;
@@ -28,3 +28,12 @@
 #topics .approved-progress-live{position:absolute;top:42.3%;right:6%;z-index:2;font:700 12px system-ui;
  color:#622d9e;background:#fff6ffed;border:1px solid #edc4f9;border-radius:20px;padding:4px 9px}
 @media(prefers-reduced-motion:reduce){#topics .approved-hit{transition:none}}
+
+/* v87 approved image: same panda, colors, lettering and button artwork. */
+#topics .approved-progress-live{display:none!important}
+#topics .approved-art-image{image-rendering:auto;object-fit:contain;filter:none}
+#topics .approved-hit-back{left:4%;top:2.5%;width:37%;height:6%}
+#topics .approved-hit-build{left:3%;top:43.5%;width:94%;height:12.2%}
+#topics .approved-hit-choose{left:3%;top:56.5%;width:94%;height:12.2%}
+#topics .approved-hit-listen{left:3%;top:69.5%;width:94%;height:12.2%}
+#topics .approved-hit-results{left:3%;top:82.5%;width:94%;height:13%}

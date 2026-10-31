@@ -30,3 +30,14 @@
 #topics .original-listen-screen button{cursor:pointer;touch-action:manipulation}
 #topics .original-listen-screen button:focus-visible{outline:3px solid #7422bb;outline-offset:1px}
 @media(max-width:355px){#topics .original-listen-answer{border-radius:15px;padding:1% 2%}#topics .original-listen-answers{gap:1%}#topics .original-listen-words strong{font-size:17px}}
+
+/* v87: hide the source screenshot's printed answer choices, replacing them with real buttons. */
+#topics .original-listen-screen{background:linear-gradient(180deg,transparent 0%,transparent 48%,#fbeafa 49%,#f3d8f7 80%,#f3d6f5 100%)}
+#topics .original-listen-art{clip-path:inset(0 0 50.5% 0)}
+#topics .original-listen-answers{top:50.4%;height:29%;gap:2.2%}
+#topics .original-listen-answer{background:#fff5ff!important;border:2px solid #e9c9f8!important;box-shadow:0 5px 16px #a267b13d!important}
+#topics .original-listen-answer.is-selected{border-color:#a347eb!important;background:#eed6ff!important}
+#topics .original-listen-pinyin{top:81%}
+#topics .original-listen-feedback{top:85%;min-height:0;background:transparent}
+#topics .original-listen-check{top:88%;height:7%}
+#topics .original-listen-audio-note{top:44%;background:#fff3fffb}

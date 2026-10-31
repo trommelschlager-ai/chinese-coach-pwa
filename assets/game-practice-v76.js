@@ -53,34 +53,32 @@ function stopAudio(){
  try{window.speechSynthesis?.cancel?.()}catch{}
 }
 /* Recorded Mandarin MP3s take precedence; fallback synthesizer is only for missing words. */
+/* Consistent Mandarin voice for selectable word tiles; dialogue recordings are unchanged. */
+let selectedMandarinVoice=null;
 function speakCardWord(han){
  stopAudio();
  const note=one('[data-game-audio-feedback]');
- const sources=[window.courseHumanAudio,window.basicWordAudio,window.basicPinyinAudio];
- const source=sources.reduce((file,map)=>file||(map&&map[han])||'', '');
- const fallback=()=>{
-  if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){
-   if(note)note.textContent='Нет записи для '+han+'. Установи китайский голос для резервной озвучки.';
-   return;
+ if(!window.speechSynthesis || !window.SpeechSynthesisUtterance){
+  if(note)note.textContent='Озвучка слов недоступна на этом устройстве.';
+  return;
+ }
+ try{
+  const voices=window.speechSynthesis.getVoices()||[];
+  const available=voices.filter(v=>/^(zh-CN|cmn)/i.test(v.lang));
+  if(!selectedMandarinVoice || !voices.some(v=>v.voiceURI===selectedMandarinVoice.voiceURI)){
+   selectedMandarinVoice=available.find(v=>/xiaoxiao|xiaoxuan|yunyang|google.*chinese/i.test(v.name))
+     || available[0] || voices.find(v=>/^zh/i.test(v.lang)) || null;
   }
-  try{
-   const utterance=new SpeechSynthesisUtterance(han);
-   utterance.lang='zh-CN';utterance.rate=0.85;utterance.pitch=1;
-   const voices=window.speechSynthesis.getVoices?.()||[];
-   const mandarin=voices.find(v=>/^(zh-CN|cmn)/i.test(v.lang))||voices.find(v=>/^zh/i.test(v.lang));
-   if(mandarin)utterance.voice=mandarin;
-   if(note)note.textContent='🔊 '+han+' · резервное произношение';
-   window.speechSynthesis.speak(utterance);
-  }catch{if(note)note.textContent='Не удалось озвучить '+han}
- };
- if(!source){fallback();return}
- const audio=new Audio(source);currentAudio=audio;
- audio.playbackRate=0.92;audio.preservesPitch=true;
- if('webkitPreservesPitch' in audio)audio.webkitPreservesPitch=true;
- if(note)note.textContent='🔊 '+han;
- audio.onerror=()=>{if(currentAudio===audio){currentAudio=null;fallback()}};
- Promise.resolve(audio.play()).catch(()=>{if(currentAudio===audio){currentAudio=null;fallback()}});
+  const speech=new SpeechSynthesisUtterance(han);
+  speech.lang='zh-CN';speech.rate=0.84;speech.pitch=1;
+  if(selectedMandarinVoice)speech.voice=selectedMandarinVoice;
+  if(note)note.textContent='🔊 '+han;
+  window.speechSynthesis.speak(speech);
+ }catch{
+  if(note)note.textContent='Не удалось воспроизвести слово.';
+ }
 }
+
 window.addEventListener('learning-audio-stop',stopAudio);
 function play(){
  if(!session)return;
@@ -126,13 +124,13 @@ function menuCard(mode,sub,meta,icon){
  '<small>'+safe(sub)+'</small><em>'+meta+'</em></span><span class="game-mode-arrow" aria-hidden="true">→</span></button>';
 }
 /* Faithful original artwork view. Automatically used once approved PNG is uploaded
-   to /assets/game-approved-hub-v85.png. Does not interfere with gameplay. */
+   to /assets/game-approved-menu-v87-original.png. Does not interfere with gameplay. */
 let approvedArtReady=false,approvedArtChecked=false;
 function renderApprovedHub(){
  if(!approvedArtReady||screen!=='hub')return;
  const st=readStats();
  shell('<div class="approved-art-hub">'+
- '<img class="approved-art-image" src="./assets/game-approved-hub-v85.png" width="941" height="1672" alt="" aria-hidden="true" decoding="async">'+
+ '<img class="approved-art-image" src="./assets/game-approved-menu-v87-original.png" width="864" height="1536" alt="" aria-hidden="true" decoding="async">'+
  '<button type="button" class="approved-hit approved-hit-back" data-game-back aria-label="Вернуться к занятиям"></button>'+
  '<button type="button" class="approved-hit approved-hit-build" data-game-mode="build" aria-label="Собери фразу — 10 заданий"></button>'+
  '<button type="button" class="approved-hit approved-hit-choose" data-game-mode="choose" aria-label="Выбери ответ — 10 заданий"></button>'+
@@ -147,7 +145,7 @@ function checkApprovedArt(){
  const image=new Image();
  image.onload=()=>{approvedArtReady=true;if(screen==='hub')renderApprovedHub()};
  image.onerror=()=>{approvedArtReady=false};
- image.src='./assets/game-approved-hub-v85.png';
+ image.src='./assets/game-approved-menu-v87-original.png';
 }
 function renderHub(){
  screen='hub';session=null;stopAudio();
