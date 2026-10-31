@@ -134,12 +134,14 @@ function choiceButtons(target,correctCallback){
 function practiceHome(){
  view='practice';stopAudio();
  frame('Практика','Не повторяем тоны и правила — здесь тренируем память, перевод и понимание.',
+ '<button class="clean-game-feature" type="button" data-open-game><span aria-hidden="true">🎮</span><span><strong>Игровая практика</strong><small>Собирай фразы, выбирай перевод и слушай китайскую речь</small></span><b aria-hidden="true">→</b></button>'+
  '<div class="clean-category-list">'+[
  ['recall','🧠','Карточки на память','Вспомни перевод и проверь себя'],
  ['translation','🔤','Выбери перевод','Найди правильное значение'],
  ['listening','🎧','Узнай слово на слух','Слушай MP3 и выбирай перевод']
  ].map(([key,icon,title,info])=>'<button type="button" class="clean-category" data-practice-mode="'+key+'"><span class="clean-category-icon">'+icon+'</span><span><strong>'+title+'</strong><small>'+info+'</small></span><span>›</span></button>').join('')+'</div>',false);
- $$('[data-practice-mode]').forEach(b=>b.onclick=()=>startPractice(b.dataset.practiceMode));
+ $('[data-practice-mode]').forEach(b=>b.onclick=()=>startPractice(b.dataset.practiceMode));
+ const game=$('[data-open-game]');if(game)game.onclick=()=>window.openGamePractice?.();
 }
 function practiceCandidates(){
  return practiceMode==='listening'?practicePool.filter(w=>Boolean(getFile(w.hz))):practicePool;

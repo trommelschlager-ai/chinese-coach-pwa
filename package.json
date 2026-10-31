@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "check": "node scripts/verify.cjs && node scripts/verify-quality.cjs && node scripts/verify-simple-learning.cjs && node scripts/verify-hanzi.cjs && node scripts/verify-launch.cjs && node scripts/verify-offline.cjs && node scripts/verify-pinyin-reading.cjs && node scripts/verify-clean-sections.cjs && node scripts/verify-ui-polish.cjs && node scripts/verify-ui-v70.cjs && node scripts/verify-ui-v71.cjs && node scripts/verify-adult-dialogues.cjs && node scripts/verify-v73-roles-and-pinyin.cjs && node scripts/verify-soft-pinyin-v74.cjs && node scripts/verify-yunyang-pinyin-v75.cjs"
+    "check": "node scripts/verify.cjs && node scripts/verify-quality.cjs && node scripts/verify-simple-learning.cjs && node scripts/verify-hanzi.cjs && node scripts/verify-launch.cjs && node scripts/verify-offline.cjs && node scripts/verify-pinyin-reading.cjs && node scripts/verify-clean-sections.cjs && node scripts/verify-ui-polish.cjs && node scripts/verify-ui-v70.cjs && node scripts/verify-ui-v71.cjs && node scripts/verify-adult-dialogues.cjs && node scripts/verify-v73-roles-and-pinyin.cjs && node scripts/verify-soft-pinyin-v74.cjs && node scripts/verify-yunyang-pinyin-v75.cjs && node scripts/verify-game-practice-v76.cjs"
   },
   "devDependencies": {
     "vite": "7.1.12",
