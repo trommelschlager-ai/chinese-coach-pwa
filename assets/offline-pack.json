@@ -1,6 +1,6 @@
 {
   "version": 79,
-  "bytes": 17461538,
+  "bytes": 17490281,
   "files": [
     "./assets/approved-home-v36.png",
     "./assets/approved-lesson-design.css?v=56",
@@ -295,6 +295,8 @@
     "./assets/game-practice-entry-v76.css",
     "./assets/game-practice-v76.css",
     "./assets/game-practice-v76.js",
+    "./assets/game-standalone-v80.css",
+    "./assets/game-standalone-v80.css?v=80",
     "./assets/hanzi-data/ARPHICPL.TXT",
     "./assets/hanzi-data/一.json",
     "./assets/hanzi-data/三.json",
@@ -1184,6 +1186,7 @@
     "./assets/vendor/hanzi-writer.min.js",
     "./assets/voice-settings.js",
     "./assets/voice-settings.js?v=61",
+    "./game.html",
     "./hanzi-lab.html",
     "./icons/icon-192.png",
     "./icons/icon-512.png",
