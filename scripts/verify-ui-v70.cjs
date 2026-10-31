@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('fs'),{JSDOM}=require('jsd
 const html=fs.readFileSync('index.html','utf8'),css=fs.readFileSync('assets/ui-polish-v70.css','utf8');
 const sw=fs.readFileSync('sw.js','utf8'),pack=JSON.parse(fs.readFileSync('assets/offline-pack.json'));
 const d=new JSDOM(html).window.document,menu=d.getElementById('launch-menu');
-assert(menu.querySelectorAll('.six-menu-cards [data-choice]').length===6,'Six real clickable cards');
+assert(menu.querySelectorAll('.six-menu-cards [data-choice]').length===7,'Seven real clickable cards');
 assert(css.includes('url("./china-misty-pavilion-v70.webp")'),'Requested photo is the actual background');
 assert(css.includes('six-original-scenery{display:none!important}'),'Old background disabled');
 assert(css.includes('height:min(73dvh,1100px)'),'Menu cards have explicit height; avoid v69 tiny cards');
@@ -16,7 +16,7 @@ for(const n of [1,2,3,4]){
 assert(css.includes('#tones #listening-lab')&&css.includes('#tones #ear-play'),'Listening quiz is restyled');
 assert(css.includes('#tones #tone-check')&&css.includes('#tones #record'),'Microphone and graph buttons restyled');
 assert(d.getElementById('pitchchart'),'Voice graph preserved');
-assert(/chinese-coach-pwa-v(?:70|71|72|73|74|75|76)/.test(sw),'New SW version');
+assert(/chinese-coach-pwa-v(?:70|71|72|73|74|75|76|77)/.test(sw),'New SW version');
 assert(sw.includes('china-misty-pavilion-v70.webp'),'Photo cached for offline');
 assert(sw.includes('ui-polish-v70.css?v=70'),'V70 CSS cached');
 assert(pack.version>=70);

@@ -1,5 +1,5 @@
 // Focused regression: the approved cover is still and only the Start action launches petals.
-// Six menu choices are available; choice six navigates to the separate writing trainer.
+// Seven menu choices are available; choice six navigates to the separate writing trainer.
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const {JSDOM}=require('jsdom');
@@ -25,13 +25,13 @@ const root=d.getElementById('launch-entry');
 const cover=d.getElementById('launch-cover');
 const menu=d.getElementById('launch-menu');
 const cards=[...menu.querySelectorAll('.six-menu-cards .six-card')];
-const expected=['Звуки, звукосочетания и тоны','Базовые слова','Пишем иероглифы','Диалоги','Практика','Тест'];
+const expected=['Звуки, звукосочетания и тоны','Базовые слова','Пишем иероглифы','Диалоги','Практика','Тест','Игровая Практика'];
 assert(root&&!root.hidden,'Welcome overlay is visible');
 assert(!cover.hidden&&menu.hidden,'Approved cover must be the first screen');
 assert(!root.classList.contains('petals-falling')&&!root.classList.contains('launch-sakura'),'No falling petals on first launch');
 assert.equal(root.querySelectorAll('#launch-petals .sakura-petal').length,190,'Petal elements preloaded but inactive');
-assert.equal(cards.length,6,'Six same-sized clickable cards must be present');
-assert.equal(menu.querySelectorAll('[data-choice]').length,6,'Exactly six independent lesson links');
+assert.equal(cards.length,7,'Seven same-sized clickable cards must be present');
+assert.equal(menu.querySelectorAll('[data-choice]').length,7,'Exactly seven independent lesson links');
 assert(!d.getElementById('launch-hanzi'),'Tiny old sixth button removed');
 assert(!d.querySelector('.six-menu-header h1,.six-menu-brand'),'Requested main-menu headings removed');
 assert(menu.querySelector('#launch-resume').closest('.six-menu-header').getAttribute('aria-hidden')==='true','Resume state remains compatible but visually hidden');
@@ -39,9 +39,10 @@ cards.forEach((card,i)=>{assert.equal(card.dataset.choice,String(i),'Correct nav
 assert(cards[2].tagName==='A','Third card must be a direct link');
 assert.equal(cards[2].getAttribute('href'),'./hanzi-lab.html#return-menu','Third card opens writing lesson');
 assert(cards[0].tagName==='BUTTON'&&cards[3].tagName==='BUTTON','Other lessons remain buttons');
+assert(cards[6].tagName==='BUTTON'&&cards[6].dataset.choice==='6','Game is a separate seventh button');
 assert(fs.existsSync('assets/six-lessons-menu.css'),'Six-card stylesheet exists');
 const css=fs.readFileSync('assets/six-lessons-menu.css','utf8');
-assert(css.includes('grid-template-rows:repeat(6,minmax(0,1fr))'),'Cards have six equal-height grid rows');
+assert(css.includes('grid-template-rows:repeat(7,minmax(0,1fr))'),'Cards have seven equal-height grid rows');
 assert(css.includes('.six-orange')&&css.includes('.six-green'),'Six-card color palette');
 assert(!d.querySelector('#launch-cover .six-screen-content'),'Original cover unchanged');
 d.getElementById('launch-start').click();
@@ -55,5 +56,5 @@ d.getElementById('launch-all').click();
 assert(root.hidden,'Opening existing lessons closes overlay');
 assert.equal(opened,1,'Original lesson selection remains functional');
 assert(!root.classList.contains('petals-falling'),'Exiting overlay cancels petal animation');
-console.log('Launch checks passed: approved cover, Start-only petals, six equal lesson cards, third Hanzi link.');
+console.log('Launch checks passed: approved cover, Start-only petals, seven equal lesson cards, third Hanzi link.');
 dom.window.close();
