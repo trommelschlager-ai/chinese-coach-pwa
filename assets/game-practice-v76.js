@@ -83,7 +83,7 @@ function shell(inner){
  section.dataset.simpleSection='game';section.innerHTML='<div class="game-shell">'+inner+'</div>';
 }
 function panda(){
- return '<img class="game-panda" src="./assets/game-panda-v76.svg" alt="Панда с книжкой — талисман игры" loading="lazy">';
+ return '<img class="game-panda" src="./assets/game-panda-v80.webp" alt="Панда с книжкой — талисман игры" loading="lazy">';
 }
 function topBar(text){
  return '<button class="game-back" type="button" data-game-back>← '+safe(text)+'</button>';

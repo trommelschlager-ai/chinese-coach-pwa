@@ -1,6 +1,6 @@
 {
   "version": 79,
-  "bytes": 17490281,
+  "bytes": 17511454,
   "files": [
     "./assets/approved-home-v36.png",
     "./assets/approved-lesson-design.css?v=56",
@@ -291,10 +291,12 @@
     "./assets/game-immersive-v78.css?v=79",
     "./assets/game-landscape-v77.svg",
     "./assets/game-panda-v76.svg",
+    "./assets/game-panda-v80.webp",
     "./assets/game-polish-v77.css",
     "./assets/game-practice-entry-v76.css",
     "./assets/game-practice-v76.css",
     "./assets/game-practice-v76.js",
+    "./assets/game-practice-v76.js?v=81",
     "./assets/game-standalone-v80.css",
     "./assets/game-standalone-v80.css?v=80",
     "./assets/hanzi-data/ARPHICPL.TXT",
