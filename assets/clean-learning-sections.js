@@ -123,7 +123,7 @@ function showDialogue(id,page=0){
  section.dataset.simpleSection='dialogues';
  const lines=l.dialogue.map(([who,hz,py,ru],i)=>{
   const female=(id===2?who==='B':who==='A');
-  return '<article class="dialogue-row rose-card'+(i<start||i>=end?' rose-hidden':'')+'" data-standalone-line="'+i+'" '+(i<start||i>=end?'aria-hidden="true"':'')+'>'+
+  return '<article class="dialogue-row rose-card'+(String(hz).length>21?' rose-very-long':String(hz).length>11?' rose-long':'')+(i<start||i>=end?' rose-hidden':'')+'" data-standalone-line="'+i+'" '+(i<start||i>=end?'aria-hidden="true"':'')+'>'+
    '<div class="rose-character"><div class="rose-avatar"><img src="./assets/'+(female?'meaning-woman.webp':'meaning-man.webp')+'" alt="'+(female?'Собеседница':'Собеседник')+'"></div>'+
    '<span class="rose-role">'+(female?'Она':'Он')+' · '+(i+1)+'</span></div>'+
    '<div class="rose-bubble"><div class="rose-line-top"><span class="rose-pinyin">'+esc(py)+'</span>'+
