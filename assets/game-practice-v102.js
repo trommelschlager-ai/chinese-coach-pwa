@@ -174,7 +174,7 @@ function shuffled(n,seed){
 function start(mode,order){
  if(!modes[mode])return;
  const questions=order?.length?order:Array.from({length:items.length},(_,i)=>i);
- session={mode,index:questions[0],order:questions,position:0,review:!!order,score:0,combo:0,bestCombo:0,errors:[],mistakes:[],done:false,selected:[],choice:-1,locked:false,bank:[],showPinyin:false};
+ session={mode,index:questions[0],order:questions,position:0,review:!!order,score:0,combo:0,bestCombo:0,errors:[],mistakes:[],done:false,selected:[],choice:-1,locked:false,bank:[],showPinyin:mode==='build'};
  screen='question';initQuestion();render();
 }
 function initQuestion(){
@@ -183,7 +183,7 @@ function initQuestion(){
  const distractions=extra.slice((session.index*2)%Math.max(1,extra.length-2),((session.index*2)%Math.max(1,extra.length-2))+2)
  .map(p=>({han:p[0],pin:p[1],target:-1}));
  const arr=[...base,...distractions],order=shuffled(arr.length,197+(session.index+1)*93);
- session.bank=order.map(i=>arr[i]);session.selected=[];session.choice=-1;session.locked=false;session.showPinyin=false;feedback='';audioNote='Нажми ▶, чтобы прослушать';
+ session.bank=order.map(i=>arr[i]);session.selected=[];session.choice=-1;session.locked=false;if(session.mode!=='build')session.showPinyin=false;feedback='';audioNote='Нажми ▶, чтобы прослушать';
  stopAudio();
 }
 
@@ -210,7 +210,7 @@ const explanations={
  fine:'Я + очень + хорошо, спасибо: 我 + 很 + 好 + 谢谢.',howold:'你多大？ — «Сколько тебе лет?». 多大 спрашивает возраст.'
 };
 function correction(q){return session.locked?'<div class="audit-correction"><strong>Правильный ответ</strong><span lang="zh-Hans">'+safe(q.zh)+'</span>'+
- (session.mode!=='listen'||session.showPinyin?'<small>'+safe(q.py)+'</small>':'')+'<p>'+safe(q.ru)+'</p>'+
+ (session.showPinyin||session.mode==='choose'?'<small>'+safe(q.py)+'</small>':'')+'<p>'+safe(q.ru)+'</p>'+
  (session.lastCorrect?'':'<p>'+safe(explanations[q.id])+'</p>')+'</div>':''}
 function token(t,i,selected=false){return '<button type="button" class="'+(selected?'audit-answer-token':'audit-token')+'" '+(selected?'data-game-remove="'+i+'"':'data-game-token="'+i+'"')+' '+(session.locked?'disabled':'')+
  ' aria-label="'+safe((selected?'Убрать ':'Добавить ')+t.han+' '+t.pin)+'"><small>'+safe(t.pin)+'</small><strong lang="zh-Hans">'+safe(t.han)+'</strong></button>'}
@@ -227,7 +227,8 @@ function renderQuestion(){
  const q=items[session.index],mode=session.mode;let body='';
  const meter=(session.position+(session.locked?1:0))/session.order.length*100;
  if(mode==='build'){
-  body=restoredStage(mode,'<div class="audit-prompt"><p>Переведи предложение</p><h2>'+safe(q.ru)+'</h2></div>',meter)+'<div class="restore-deck game-build-static" style="--game-bank-rows:'+Math.ceil(session.bank.length/3)+';--game-answer-rows:'+Math.ceil(q.parts.length/Math.max(2,Math.min(4,Math.floor((Math.min(section.clientWidth||360,540)*.874-24)/70))))+'">'+
+  body=restoredStage(mode,'<div class="audit-prompt"><p>Переведи предложение</p><h2>'+safe(q.ru)+'</h2></div>'+
+  '<button type="button" class="game-build-pinyin-toggle" data-game-toggle-pinyin aria-pressed="'+session.showPinyin+'">'+(session.showPinyin?'Скрыть пиньинь':'Показать пиньинь')+'</button>',meter)+'<div class="restore-deck game-build-static'+(session.showPinyin?'':' game-py-hidden')+'" style="--game-bank-rows:'+Math.ceil(session.bank.length/3)+';--game-answer-rows:'+Math.ceil(q.parts.length/Math.max(2,Math.min(4,Math.floor((Math.min(section.clientWidth||360,540)*.874-24)/70))))+'">'+
   '<div class="audit-answer" role="group" aria-label="Твоя фраза">'+session.selected.map((id,k)=>token(session.bank[id],k,true)).join('')+
   (session.selected.length?'':'<span class="audit-answer-hint">Нажимай слова ниже. Нажми выбранное слово, чтобы убрать его.</span>')+'</div>'+
   '<div class="audit-bank" role="group" aria-label="Слова для ответа">'+session.bank.map((t,id)=>session.selected.includes(id)?'':token(t,id)).join('')+'</div><p class="audit-audio-note" data-game-audio-feedback role="status" aria-live="polite"></p>';
@@ -302,7 +303,15 @@ section.addEventListener('click',event=>{
  if(b.hasAttribute('data-game-retry')){if(session)start(session.mode);return}
  if(!session||screen!=='question')return;
  if(b.hasAttribute('data-game-play')){play();return}
- if(b.hasAttribute('data-game-toggle-pinyin')&&session.mode==='listen'){session.showPinyin=!session.showPinyin;renderQuestion();return}
+ if(b.hasAttribute('data-game-toggle-pinyin')){
+  if(session.mode==='build'){
+   session.showPinyin=!session.showPinyin;
+   one('.game-build-static')?.classList.toggle('game-py-hidden',!session.showPinyin);
+   b.textContent=session.showPinyin?'Скрыть пиньинь':'Показать пиньинь';
+   b.setAttribute('aria-pressed',String(session.showPinyin));return;
+  }
+  if(session.mode==='listen'){session.showPinyin=!session.showPinyin;renderQuestion();return}
+ }
  if(b.hasAttribute('data-game-clear')&&!session.locked){session.selected=[];feedback='';updateBuildTokens();return}
  if(b.hasAttribute('data-game-remove')&&!session.locked){session.selected.splice(Number(b.dataset.gameRemove),1);feedback='';updateBuildTokens();return}
  if(b.hasAttribute('data-game-token')&&!session.locked){
