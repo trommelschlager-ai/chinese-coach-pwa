@@ -80,7 +80,7 @@ assert.equal(node.querySelectorAll('.original-listen-py').length,0,'Button hides
 node.querySelector('[data-game-check]').click();node.querySelector('[data-game-check]').click();
 assert.equal(node.querySelectorAll('.original-listen-py').length,0,'Next question hides Pinyin again');
 node.querySelector('[data-game-back]').click();node.querySelector('[data-game-mode="build"]').click();
-assert(node.querySelector('.game-token small')?.textContent,'Pinyin remains in phrase cards');
+assert(node.querySelector('.ap-v95-token small, .game-token small')?.textContent,'Pinyin remains in phrase cards');
 node.querySelector('[data-game-back]').click();node.querySelector('[data-game-mode="choose"]').click();
-assert(node.querySelector('.game-prompt small')?.textContent,'Pinyin remains visible in translation mode');
+assert(node.querySelector('.ap-v95-choose-prompt small, .game-prompt small')?.textContent,'Pinyin remains visible in translation mode');
 console.log('V76 game passed: ten phrase assemblies, translation check, dialogue MP3, three modes, score persistence.');
