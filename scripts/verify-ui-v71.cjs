@@ -11,7 +11,7 @@ assert(learn.includes("a.preservesPitch=true"));
 assert(learn.includes("dialogue-voices-v73"));
 assert(clean.includes("data-dialogue-voice-toggle"));
 assert(d.getElementById('pitchchart'),'Tone analyzer unchanged');
-assert(sw.includes('chinese-coach-pwa-v79'));
+assert(Number(sw.match(/chinese-coach-pwa-v(\d+)/)?.[1] || 0)>=79);
 assert(css.includes('china-autumn-temple-v71.webp'),'Actual screenshot 3 photo applied to menu');
 assert(fs.statSync('assets/china-autumn-temple-v71.webp').size===4338,'Cropping removed screenshot UI');
 assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).version===79);

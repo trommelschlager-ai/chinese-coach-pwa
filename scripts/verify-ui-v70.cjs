@@ -16,8 +16,8 @@ for(const n of [1,2,3,4]){
 assert(css.includes('#tones #listening-lab')&&css.includes('#tones #ear-play'),'Listening quiz is restyled');
 assert(css.includes('#tones #tone-check')&&css.includes('#tones #record'),'Microphone and graph buttons restyled');
 assert(d.getElementById('pitchchart'),'Voice graph preserved');
-assert(/chinese-coach-pwa-v(?:70|71|72|73|74|75|76|77|78|79)/.test(sw),'New SW version');
-assert(sw.includes('china-misty-pavilion-v70.webp'),'Photo cached for offline');
+assert(Number(sw.match(/chinese-coach-pwa-v(\d+)/)?.[1] || 0)>=70,'New SW version');
+assert(pack.files.includes('./assets/china-misty-pavilion-v70.webp'),'Photo available in the optional offline pack');
 assert(sw.includes('ui-polish-v70.css?v=70'),'V70 CSS cached');
 assert(pack.version>=70);
 for(const asset of ['./assets/ui-polish-v70.css','./assets/china-misty-pavilion-v70.webp'])assert(pack.files.includes(asset),asset+' in offline list');

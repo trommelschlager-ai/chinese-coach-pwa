@@ -13,7 +13,7 @@ assert(source.includes('data-pinyin-rate="0.85" aria-pressed="true"'));
 assert(source.includes("readingView='letters',readingRate=.85"),'Default pace is 0.85x');
 assert(source.includes('data-pinyin-rate="0.75" aria-pressed="false"'),'Slow practice mode remains');
 assert(source.includes('a.preservesPitch=true'),'Keep Mandarin F0 contour');
-assert(html.includes('pronunciation-hub.js?v=75')&&sw.includes('chinese-coach-pwa-v79'));
+assert(html.includes('pronunciation-hub.js?v=75')&&Number(sw.match(/chinese-coach-pwa-v(\d+)/)?.[1] || 0)>=79);
 assert(pack.version===79&&curr.clips.length===190);
 assert.equal(curr.audio.voice,'zh-CN-YunyangNeural');
 const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
