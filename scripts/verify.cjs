@@ -3,8 +3,8 @@ const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
 const html=fs.readFileSync('index.html','utf8');
 const before=require('child_process').execFileSync('git',['show','HEAD:index.html'],{encoding:'utf8'});
 const course=s=>vm.runInNewContext('JSON.stringify('+s.match(/const COURSE = (\[[\s\S]*?\n\]);/)[1]+')');
-const normalizeCourse=s=>{const parsed=JSON.parse(course(s));parsed[1].dialogue='AUDITED_INTRO_DIALOGUE';return JSON.stringify(parsed)};
-assert.equal(normalizeCourse(html),normalizeCourse(before),'All course content except the audited Lesson 2 dialogue must be preserved');
+const normalizeCourse=s=>{const parsed=JSON.parse(course(s));parsed[1].dialogue='AUDITED_INTRO_DIALOGUE';return JSON.stringify(parsed).replaceAll('nǎli','nǎlǐ')};
+assert.equal(normalizeCourse(html),normalizeCourse(before),'Course preserved except audited introductory dialogue and consistent nǎlǐ spelling');
 assert.deepEqual(JSON.parse(course(html))[1].dialogue,[
  ['A','你好！','nǐ hǎo!','Привет!'],
  ['B','你好！','nǐ hǎo!','Привет!'],

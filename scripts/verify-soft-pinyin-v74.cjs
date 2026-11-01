@@ -11,7 +11,7 @@ assert(status.voice==='zh-CN-XiaoxuanNeural','Must use approved softer female vo
 assert(pron.includes("new Audio('./assets/pinyin-reading-v5/'+id+'.mp3')"));
 assert(pron.includes('"zh-CN-YunyangNeural"'));
 assert(pron.includes('a.preservesPitch=true'),'Mandarin pitch contour must not be pitch-shifted');
-assert(html.includes('pronunciation-hub.js?v=75'),'Client must load updated player');
+assert(html.includes('pronunciation-hub.js?v=98'),'Client must load updated player');
 assert(Number(sw.match(/chinese-coach-pwa-v(\d+)/)?.[1] || 0)>=79,'New service worker cache version');
 assert(pack.version===79);
 assert(curriculum.clips.length===190);

@@ -341,13 +341,26 @@
  // A single backup includes the unified vocabulary, repetition, writing and resume position.
  $('exportprogress').addEventListener('click',e=>{
   e.stopImmediatePropagation();
-  const data={format:'chinese-trainer-offline',version:3,exportedAt:new Date().toISOString(),learned:state.learned,correct:state.correct,course:courseState,review,hanzi:read('chinese-coach-hanzi-lab-v1',[]),basicKnown:read('chinese-coach-basic-known-v1',[]),resume:read('chinese-coach-resume-v1',null)};
-  const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='moi-kitaiskii-progress.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);$('backupmessage').textContent='Сохранены базовые слова, уроки, повторение и иероглифы.';
+  const data={format:'chinese-trainer-offline',version:4,game:window.courseProgress.readGame(),basicReview:read('chinese-coach-basic-review-v98',{}),dailyStudy:read('chinese-coach-daily-v98',null),exportedAt:new Date().toISOString(),learned:state.learned,correct:state.correct,course:courseState,review,hanzi:read('chinese-coach-hanzi-lab-v1',[]),basicKnown:read('chinese-coach-basic-known-v1',[]),resume:read('chinese-coach-resume-v1',null)};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='moi-kitaiskii-progress.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);$('backupmessage').textContent='Сохранены слова, уроки, повторение, иероглифы и достижения игр.';
  },true);
  const importOld=$('importprogress'),importNew=importOld.cloneNode(true);importOld.replaceWith(importNew);
  importNew.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;
   try{if(file.size>250000)throw Error('Файл слишком большой');const data=JSON.parse(await file.text());
    if(data.format!=='chinese-trainer-offline'||!Array.isArray(data.learned)||!Number.isFinite(data.correct)||data.correct<0)throw Error('Неверный формат прогресса');
+   const importedGame=data.game===undefined?null:window.courseProgress.normalizeGame(data.game,true);
+   const allowedBasic=new Set((window.__simpleSectionPreview?.data||[]).flatMap(g=>g.words.map(w=>w.hz)));
+   let importedReview=null;
+   if(data.basicReview!==undefined){
+    if(!data.basicReview||typeof data.basicReview!=='object'||Array.isArray(data.basicReview))throw Error('Неверная очередь повторения');
+    importedReview={};
+    for(const [hz,v] of Object.entries(data.basicReview)){
+     if(!allowedBasic.has(hz)||!Number.isInteger(v?.level)||v.level<0||v.level>4||!Number.isFinite(v?.due)||v.due<0)throw Error('Неверное слово в очереди повторения');
+     importedReview[hz]={level:v.level,due:v.due};
+    }
+   }
+   let importedDaily=null;
+   if(data.dailyStudy!=null){const v=data.dailyStudy;if(typeof v!=='object'||!/^\d{4}-\d{2}-\d{2}$/.test(v.day)||!Number.isInteger(v.step)||v.step<0||v.step>5)throw Error('Неверное ежедневное занятие');importedDaily={day:v.day,step:v.step,paused:v.paused===true}}
    state.learned=[...new Set(data.learned)].filter(h=>valid.has(h));state.correct=Math.floor(data.correct);
    if(data.course&&typeof data.course==='object'){
     courseState.completed=Array.isArray(data.course.completed)?[...new Set(data.course.completed.filter(id=>Number.isInteger(id)&&id>=1&&id<=COURSE.length))]:[];
@@ -363,11 +376,14 @@
     if(allowed.size){write('chinese-coach-basic-known-v1',[...new Set(data.basicKnown)].filter(h=>typeof h==='string'&&allowed.has(h)).slice(0,allowed.size));window.dispatchEvent(new Event('basic-known-restored'));}
    }
    const r=data.resume;if(r&&Number.isInteger(r.id)&&r.id>=1&&r.id<=COURSE.length&&Number.isInteger(r.step)&&r.step>=0&&r.step<=3)write('chinese-coach-resume-v1',{id:r.id,step:r.step,part:Math.max(0,Number(r.part)||0)});
+   if(importedGame)window.courseProgress.writeGame(importedGame);
+   if(importedReview){write('chinese-coach-basic-review-v98',importedReview);window.dispatchEvent(new Event('basic-review-restored'))}
+   if(importedDaily){write('chinese-coach-daily-v98',importedDaily);window.dispatchEvent(new Event('daily-progress-restored'))}
    mirrorKnown();renderWords();updateCourseMetrics();updateResume();$('backupmessage').textContent='Прогресс восстановлен.';
   }catch(error){$('backupmessage').textContent='Не удалось восстановить: '+error.message}finally{e.target.value=''}
  });
 
- $('tone-check').textContent='🎙️ Сравнить мелодику';
+ $('tone-check').textContent='🎙️ Записать и сравнить';
  renderWords();resetQuiz();updateCourseMetrics();updateResume();
  if(location.hash)restoreRoute();else{history.replaceState({learning:true},'','#cover');lastLocation='#cover';}
 })();

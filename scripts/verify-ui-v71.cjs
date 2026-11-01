@@ -9,7 +9,7 @@ assert(css.includes('data-simple-section="dialogues"'));
 assert(clean.includes("chinese-coach-dialogue-original-v72"));
 assert(learn.includes("a.preservesPitch=true"));
 assert(learn.includes("dialogue-voices-v73"));
-assert(clean.includes("data-dialogue-voice-toggle"));
+assert(fs.readFileSync('assets/daily-study-v98.js','utf8').includes('data-dialogue-voice-toggle'));
 assert(d.getElementById('pitchchart'),'Tone analyzer unchanged');
 assert(Number(sw.match(/chinese-coach-pwa-v(\d+)/)?.[1] || 0)>=79);
 assert(css.includes('china-autumn-temple-v71.webp'),'Actual screenshot 3 photo applied to menu');

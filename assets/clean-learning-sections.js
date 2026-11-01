@@ -21,6 +21,17 @@ window.addEventListener('basic-known-restored',()=>{
 function saveKnown(){try{localStorage.setItem('chinese-coach-basic-known-v1',JSON.stringify([...known]))}catch{}}
 let currentCategory=null,view='words',dialogLesson=null,practiceMode='recall',practiceIndex=0,score=0,attempts=0,audio=null;
 const practicePool=allWords.filter(w=>w.hz.length<=4);
+const REVIEW_KEY='chinese-coach-basic-review-v98';
+function getBasicReview(){try{const v=JSON.parse(localStorage.getItem(REVIEW_KEY)||'{}');return v&&typeof v==='object'&&!Array.isArray(v)?v:{}}catch{return {}}}
+let basicReview=getBasicReview(),skipped=new Set();
+window.addEventListener('basic-review-restored',()=>{basicReview=getBasicReview()});
+function scheduleBasic(word,success){
+ const level=success?Math.min(4,(Number(basicReview[word.hz]?.level)||0)+1):0;
+ basicReview[word.hz]={level,due:Date.now()+(success?[0,1,3,7,14][level]*86400000:600000)};
+ try{localStorage.setItem(REVIEW_KEY,JSON.stringify(basicReview))}catch{}
+ if(success)known.add(word.hz);else known.delete(word.hz);saveKnown();
+}
+function updatePracticeMetrics(){const e=$('.clean-practice-metrics');if(e)e.textContent='Карточка '+(practiceIndex+1)+' · Верно: '+score+' из '+attempts;}
 function stopAudio(){if(audio){audio.pause();audio=null;}}
 function getFile(hz){
  const key=norm(hz);
@@ -94,33 +105,24 @@ function dialogueCategories(){
  frame('Диалоги','Только разговоры. Женский и мужской голоса по ролям.',
  '<div class="clean-category-list">'+lessons.map(l=>
  '<button class="clean-category" data-dialog-lesson="'+l.id+'" type="button"><span class="clean-category-icon" aria-hidden="true">💬</span>'+
- '<span><strong>'+esc(l.title)+'</strong><small>'+l.dialogue.length+' реплик</small></span><span aria-hidden="true">›</span></button>').join('')+'</div>',false);
+ '<span><strong>'+esc(l.id===3?'Страна и место жительства':l.title)+'</strong><small>'+l.dialogue.length+' реплик</small></span><span aria-hidden="true">›</span></button>').join('')+'</div>',false);
  $$('[data-dialog-lesson]').forEach(b=>b.onclick=()=>showDialogue(Number(b.dataset.dialogLesson)));
 }
 function showDialogue(id){
  const l=COURSE.find(l=>l.id===id&&l.id!==1);if(!l)return;
  dialogLesson=id;view='dialogues';stopAudio();
  const legacy=localStorage.getItem('chinese-coach-dialogue-original-v72')==='1';
- const voiceRow=id===2
-  ?'<div class="clean-dialog-voice"><span>Анна — женский голос · Сяомин — мужской голос</span></div>'
-  :'<div class="clean-dialog-voice"><span data-dialogue-voice-caption>'+(legacy?'Старые голоса · Xiaoxiao / Yunxi':'Новые голоса · Xiaoxuan / Yunjian')+'</span><button type="button" data-dialogue-voice-toggle>'+(legacy?'Включить новые голоса':'Сравнить со старыми')+'</button></div>';
+ const voiceRow='<div class="clean-dialog-voice"><span>'+(id===2?'Анна — женский голос · Сяомин — мужской голос':'Женская и мужская роли')+'</span></div>';
  const content='<div class="clean-dialog-head"><button type="button" class="clean-action-primary" data-dialogue-play-all>▶ Слушать весь диалог</button></div>'+voiceRow+
  '<div class="clean-dialog-lines">'+l.dialogue.map(([who,hz,py,ru],i)=>
  '<article class="dialogue-row clean-dialog-line" data-standalone-line="'+i+'"><div class="clean-dialog-avatar '+((id===2?who==='B':who==='A')?'girl':'boy')+'">'+
  '<img src="./assets/'+((id===2?who==='B':who==='A')?'meaning-woman.webp':'meaning-man.webp')+'" alt="'+((id===2?who==='B':who==='A')?'Собеседница':'Собеседник')+'"></div>'+
  '<div class="clean-dialog-bubble"><strong lang="zh-Hans">'+esc(hz)+'</strong><span>'+esc(py)+'</span><small>'+esc(ru)+'</small>'+
  '<button type="button" data-dialogue-line="'+i+'">🔊 Слушать</button></div></article>').join('')+'</div>';
- frame(l.title,'Диалог · '+l.dialogue.length+' реплик',content,dialogueCategories);
+ frame(l.id===3?'Страна и место жительства':l.title,'Диалог · '+l.dialogue.length+' реплик',content,dialogueCategories);
  $$('[data-dialogue-line]').forEach(b=>b.onclick=()=>window.playDialogueLine?.(id,Number(b.dataset.dialogueLine)));
  $('[data-dialogue-play-all]').onclick=()=>window.playStandaloneDialogue?.(id);
- const toggle=$('[data-dialogue-voice-toggle]');
- if(toggle)toggle.onclick=()=>{
-  const wasLegacy=localStorage.getItem('chinese-coach-dialogue-original-v72')==='1';
-  localStorage.setItem('chinese-coach-dialogue-original-v72',wasLegacy?'0':'1');
-  stopAudio();window.dispatchEvent(new Event('learning-audio-stop'));
-  $('[data-dialogue-voice-caption]').textContent=wasLegacy?'Новые голоса · Xiaoxuan / Yunjian':'Старые голоса · Xiaoxiao / Yunxi';
-  $('[data-dialogue-voice-toggle]').textContent=wasLegacy?'Сравнить со старыми':'Включить новые голоса';
- };
+
 }
 function choiceButtons(target,correctCallback){
  const others=allWords.filter(w=>w.hz!==target.hz&&w.ru!==target.ru);
@@ -146,14 +148,14 @@ function practiceCandidates(){
  return practiceMode==='listening'?practicePool.filter(w=>Boolean(getFile(w.hz))):practicePool;
 }
 function startPractice(mode){
- practiceMode=mode;practiceIndex=0;score=0;attempts=0;renderPractice();
+ practiceMode=mode;practiceIndex=0;score=0;attempts=0;skipped=new Set();basicReview=getBasicReview();renderPractice();
 }
 function renderPractice(){
  view='practice';stopAudio();
  const pool=practiceCandidates();if(!pool.length){frame('Практика','Нет доступных озвученных слов.','<p>Сначала скачай MP3 в настройках.</p>',practiceHome);return}
- const word=pool[(practiceIndex*17+5)%pool.length];
+ const word=pool.find(w=>!skipped.has(w.hz)&&Number.isFinite(basicReview[w.hz]?.due)&&basicReview[w.hz].due<=Date.now())||pool[(practiceIndex*17+5)%pool.length];
  const heading=practiceMode==='recall'?'Карточки на память':practiceMode==='listening'?'Узнай слово на слух':'Выбери перевод';
- const left='<div class="clean-practice-metrics">Задание '+(attempts+1)+' · Верно: '+score+' из '+attempts+'</div>';
+ const left='<div class="clean-practice-metrics">Карточка '+(practiceIndex+1)+' · Верно: '+score+' из '+attempts+'</div>';
  const prompt=practiceMode==='listening'?'<button class="clean-listen-main" type="button" data-practice-listen>🔊 Послушать слово</button>':
  '<div class="clean-practice-hanzi" lang="zh-Hans">'+esc(word.hz)+'</div><div class="clean-practice-pinyin">'+esc(word.py)+'</div>'+
  '<button class="clean-listen-sub" type="button" data-practice-listen>▶ Послушать</button>';
@@ -165,17 +167,22 @@ function renderPractice(){
  $('[data-practice-listen]').onclick=()=>play(word.hz,.85);
  if(practiceMode==='recall'){
   $('[data-reveal]').onclick=()=>{$('.clean-practice-answer').hidden=false;$('[data-reveal]').hidden=true;$('.clean-practice-result').hidden=false};
-  $$('[data-recall]').forEach(b=>b.onclick=()=>{attempts++;if(b.dataset.recall==='know'){score++;known.add(word.hz);saveKnown()}practiceIndex++;renderPractice()});
+  $$('[data-recall]').forEach(b=>b.onclick=()=>{
+   if(b.disabled)return;
+   const success=b.dataset.recall==='know';attempts++;if(success)score++;scheduleBasic(word,success);updatePracticeMetrics();
+   $$('[data-recall]').forEach(v=>v.disabled=true);
+   $('.clean-practice-feedback').textContent=success?'✓ Верно. Слово вернётся в повторении позже.':'Слово сохранено для повторения через 10 минут.';
+  });
  }else{
   $$('[data-choice-ru]').forEach(b=>b.onclick=()=>{
    if($('[data-choice-ru]:disabled'))return;
-   const correct=b.dataset.choiceRu===word.ru;attempts++;if(correct){score++;known.add(word.hz);saveKnown()}
+   const correct=b.dataset.choiceRu===word.ru;attempts++;if(correct)score++;scheduleBasic(word,correct);updatePracticeMetrics();
    $$('.clean-choice-grid button').forEach(v=>{v.disabled=true;v.classList.toggle('is-correct',v.dataset.choiceRu===word.ru)});
    b.classList.toggle('is-wrong',!correct);
-   $('.clean-practice-feedback').textContent=correct?'Верно! ✓':'Правильный перевод: '+word.ru;
+   $('.clean-practice-feedback').textContent=correct?'Верно! ✓':'Неверно. Правильный перевод: '+word.ru;
   });
  }
- $('[data-practice-next]').onclick=()=>{practiceIndex++;renderPractice()};
+ $('[data-practice-next]').onclick=()=>{skipped.add(word.hz);practiceIndex++;renderPractice()};
 }
 window.openLearningTopics=function(kind='course'){
  if(kind==='words'){originalOpenTopics('words');categories();return}
@@ -184,4 +191,8 @@ window.openLearningTopics=function(kind='course'){
 };
 window.openPracticeChoices=function(){originalPractice();practiceHome()};
 window.__simpleSectionPreview={data:courseCategories,total:allWords.length,getFile};
+// The initial route is restored before this progressive enhancement loads.
+if(location.hash==='#topics/words')categories();
+else if(location.hash==='#topics/dialogues')dialogueCategories();
+else if(location.hash==='#topics/practice')practiceHome();
 })();
