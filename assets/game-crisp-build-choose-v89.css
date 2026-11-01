@@ -47,3 +47,34 @@
  background:none!important;filter:none!important;opacity:0!important;
 }
 #topics .game-shell:has(.game-build-hero) .game-task-title{margin-bottom:20px!important}
+
+
+/* v92 — sharp portrait-only scene artwork. The old 220×291 thumbnail and 960×480
+   banner must never be stretched to full-height game canvases. The scene is
+   behind the existing live answers, panda, audio, and accessible controls. */
+#topics .game-shell:has(.game-build-hero) {
+  background-color:#f3e5f7!important;
+  background-image:linear-gradient(180deg,rgba(255,248,255,.12),rgba(255,245,255,.05) 47%,rgba(251,235,253,.38)),url("./chinese-pastel-wallpaper.svg")!important;
+  background-size:100% 100%,100% 100%!important;
+  background-position:center center,center top!important;
+  background-repeat:no-repeat!important;
+}
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero)) {
+  background-color:#f2e2fa!important;
+  background-image:linear-gradient(180deg,rgba(255,247,255,.06),rgba(255,242,255,.08) 51%,rgba(252,237,255,.40)),url("./game-landscape-v77.svg")!important;
+  background-size:100% 100%,100% 100%!important;
+  background-position:center center,center top!important;
+  background-repeat:no-repeat!important;
+}
+#topics .game-shell:has(.game-build-hero)::before,
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero))::before {
+  background:none!important;
+  opacity:0!important;
+  filter:none!important;
+  pointer-events:none!important;
+}
+#topics .game-shell:has(.game-build-hero) .game-task-title h1,
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero)) .game-task-title h1 {
+  color:#35124f!important;
+  text-shadow:0 2px 2px #fff9ff!important;
+}
