@@ -132,7 +132,7 @@ function showDialogue(id,page=0){
   const i=start+localIndex;
   const female=id===2?who==='B':who==='A';
   const size=hz.length>24?' ch110-line-long':hz.length>14?' ch110-line-medium':'';
-  return '<article class="ch110-line'+size+'" data-standalone-line="'+i+'">'+
+  return '<article class="ch110-line dialogue-row'+size+'" data-standalone-line="'+i+'">'+
   '<div class="ch110-person"><img src="./assets/'+(female?'meaning-woman.webp':'meaning-man.webp')+'" alt="'+(female?'Женщина':'Мужчина')+'" class="ch110-portrait">'+
   '<span class="ch110-person-name">'+(female?'Она':'Он')+' · '+(i+1)+'</span></div>'+
   '<div class="ch110-speech">'+
