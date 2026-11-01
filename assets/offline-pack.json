@@ -1,6 +1,6 @@
 {
-  "version": 101,
-  "bytes": 22352464,
+  "version": 102,
+  "bytes": 22355093,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -332,8 +332,8 @@
     "./assets/game-polish-v77.css?v=77",
     "./assets/game-practice-entry-v76.css",
     "./assets/game-practice-entry-v76.css?v=76",
-    "./assets/game-practice-v101.js",
-    "./assets/game-practice-v101.js?v=101.1",
+    "./assets/game-practice-v102.js",
+    "./assets/game-practice-v102.js?v=102.1",
     "./assets/game-practice-v76.css",
     "./assets/game-practice-v76.css?v=77",
     "./assets/game-scene-build-v93.webp",
@@ -343,6 +343,8 @@
     "./assets/game-scene-license-v94.md",
     "./assets/game-standalone-v80.css",
     "./assets/game-standalone-v80.css?v=88",
+    "./assets/game-static-background-v102.css",
+    "./assets/game-static-background-v102.css?v=102.1",
     "./assets/game-words-v99/README.md",
     "./assets/game-words-v99/xiaoming.mp3",
     "./assets/game-words-v99/zhongguoren.mp3",
