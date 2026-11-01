@@ -5,16 +5,18 @@ const html=read('index.html'),clean=read('assets/clean-learning-sections.js'),js
 assert(html.includes('game-practice-v76.js?v=77')&&html.includes('game-practice-v76.css?v=77'));
 assert(html.includes('data-choice="6"')&&html.includes("window.location.assign('./game.html')"),'Game must open isolated screen');
 const game=read('game.html');
-assert(game.includes('approved-v95.css?v=96'),'Approved live game artwork stylesheet loaded');
+assert(game.includes('approved-v95.css?v=97'),'Approved live game artwork stylesheet loaded');
 const approvedCss=read('assets/approved-v95.css');
 assert(approvedCss.includes('ap-v95-choice')&&approvedCss.includes('ap-v95-build-prompt'),'Both approved interactive layouts styled');
-assert(approvedCss.includes('.ap-v95-token.ap-v95-used')&&approvedCss.includes('visibility:visible!important'),'Chosen word cannot expose old printed tile under it');
+assert(js.includes('positions.filter(id=>!session.selected.includes(id))'),'Selected tiles must be removed from the DOM grid');
+assert(approvedCss.includes('#topics .ap-v95-build .ap-v95-bank{')&&approvedCss.includes('background:#f9eefa!important'),'Opaque bank hides baked-in empty squares');
+assert(approvedCss.includes('top:60.45%!important')&&approvedCss.includes('background:#fcf4ff!important'),'Opaque translation cards hide baked-in duplicate labels');
 assert(approvedCss.includes('background:linear-gradient(145deg,#fffaff 0%,#fff4ff 55%,#f4e6f7 100%)!important'),'Dynamic question card must be opaque to avoid printed duplicate text');
-assert(swCache(read('sw.js'))==='chinese-coach-pwa-v96','PWA cache bumped to v96 for old screenshots');
+assert(swCache(read('sw.js'))==='chinese-coach-pwa-v97','PWA cache bumped to v96 for old screenshots');
 function swCache(source){return source.match(/const CACHE='([^']+)'/)?.[1]}
 assert(js.includes('function renderApprovedV95')&&js.includes('session.mode===\'build\'||session.mode===\'choose\''),'Approved layouts active for both modes');
 for(const art of ['approved-choose-v95.webp','approved-build-v95.webp']){assert(fs.statSync('assets/'+art).size>50000,'Missing approved artwork');assert(pack.files.includes('./assets/'+art),'Approved artwork not in offline package')}
-assert(game.includes('game-standalone-v80.css?v=88')&&game.includes('game-practice-v76.js?v=95'),'Game keeps working controls in its own page');
+assert(game.includes('game-standalone-v80.css?v=88')&&game.includes('game-practice-v76.js?v=97'),'Game keeps working controls in its own page');
 assert(js.includes('game-panda-v80.webp')&&pack.files.includes('./assets/game-panda-v80.webp'),'Polished painted panda is bundled');
 assert(!game.includes('lessons-backdrop.webp'),'No old menu picture with printed text');
 assert(read('assets/game-standalone-v80.css').includes('chinese-painting-daily.webp'),'Clean Chinese landscape loads');

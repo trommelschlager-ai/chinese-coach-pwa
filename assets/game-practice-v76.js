@@ -227,13 +227,14 @@ function renderApprovedV95(){
    const id=session.selected[k];if(id===undefined)return '<span class="ap-v95-slot" aria-label="Пустое место">+</span>';
    const token=session.bank[id];return '<button type="button" class="ap-v95-slot ap-v95-filled" data-game-remove="'+k+'" '+(session.locked?'disabled':'')+'><small>'+safe(token.pin)+'</small><strong lang="zh-Hans">'+safe(token.han)+'</strong></button>';
   }).join('');
-  const tiles=positions.map(id=>{
-   const tile=session.bank[id],used=session.selected.includes(id);
-   return '<button type="button" class="ap-v95-token'+(used?' ap-v95-used':'')+'" data-game-token="'+id+'" '+(used||session.locked?'disabled':'')+'><small>'+safe(tile.pin)+'</small><strong lang="zh-Hans">'+safe(tile.han)+'</strong></button>';
+  // Only render remaining words. Used words disappear and the grid closes gaps.
+  const tiles=positions.filter(id=>!session.selected.includes(id)).map(id=>{
+   const tile=session.bank[id];
+   return '<button type="button" class="ap-v95-token" data-game-token="'+id+'" '+(session.locked?'disabled':'')+'><small>'+safe(tile.pin)+'</small><strong lang="zh-Hans">'+safe(tile.han)+'</strong></button>';
   }).join('');
   content='<div class="ap-v95-build-prompt"><span>Переведи предложение</span><strong>'+safe(q.ru)+'</strong></div>'+
   '<div class="ap-v95-slots" style="--slot-count:'+q.parts.length+'">'+slots+'</div>'+
-  '<div class="ap-v95-bank">'+tiles+'</div>';
+  '<div class="ap-v95-bank'+(session.bank.length>6?' ap-v95-bank-many':'')+'">'+tiles+'</div>';
  }else{
   const choices=session.choices||(session.index===0?[0,6,3]:choiceOptions());session.choices=choices;
   content='<div class="ap-v95-choose-prompt"><span>Что означает эта фраза?</span><strong lang="zh-Hans">'+safe(q.zh)+'</strong><small>'+safe(q.py)+'</small><button type="button" data-game-play>🔊 Послушать</button><em data-game-audio-feedback role="status" aria-live="polite"></em></div>'+

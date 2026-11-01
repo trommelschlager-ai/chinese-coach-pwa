@@ -105,3 +105,81 @@ body:has(#topics .ap-v95){background:#ede0f5!important}
   width:83%!important;
   gap:1.4%!important;
 }
+
+/* v97 — final overlay fix for the two approved screenshots.
+   The art already contains static tiles and option text. Cover the entire printed
+   area with one SOLID panel; only render live, remaining tiles over it. */
+#topics .ap-v95-build .ap-v95-bank{
+  position:absolute!important;
+  top:69.9%!important;
+  left:6.5%!important;
+  width:87%!important;
+  min-height:22.1%!important;
+  padding:1.6% 1.8%!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:1.5%!important;
+  align-content:start!important;
+  box-sizing:border-box!important;
+  border:2px solid #fff!important;
+  border-radius:26px!important;
+  background:#f9eefa!important;
+  box-shadow:0 5px 16px rgba(64,29,83,.27)!important;
+  isolation:isolate!important;
+  z-index:2!important;
+}
+#topics .ap-v95-build .ap-v95-bank.ap-v95-bank-many{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+#topics .ap-v95-build .ap-v95-bank::before{
+  content:none!important;
+}
+#topics .ap-v95-build .ap-v95-token{
+  position:relative!important;
+  min-width:0!important;
+  margin:0!important;
+  background:#fffaff!important;
+  border:2px solid #fff!important;
+  box-shadow:0 2px 7px rgba(68,23,87,.16)!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+#topics .ap-v95-build .ap-v95-token.ap-v95-used{
+  display:none!important;
+}
+#topics .ap-v95-build .ap-v95-bank-many .ap-v95-token small{
+  font-size:clamp(10px,2.8vw,15px)!important;
+}
+#topics .ap-v95-build .ap-v95-bank-many .ap-v95-token strong{
+  font-size:clamp(20px,5vw,34px)!important;
+}
+#topics .ap-v95-build .ap-v95-slots{
+  top:56.6%!important;
+  left:6.8%!important;
+  width:86.4%!important;
+  height:12.4%!important;
+  box-sizing:border-box!important;
+  background:#f9effb!important;
+}
+#topics .ap-v95-choose .ap-v95-choose-prompt{
+  top:37.2%!important;
+  left:5.7%!important;
+  width:88.6%!important;
+  height:22.4%!important;
+  box-sizing:border-box!important;
+  background:#fcf4ff!important;
+}
+#topics .ap-v95-choose .ap-v95-choice{
+  left:5.7%!important;
+  width:88.6%!important;
+  height:11.2%!important;
+  box-sizing:border-box!important;
+  background:#faf0fd!important;
+  opacity:1!important;
+}
+#topics .ap-v95-choose .ap-v95-choice-0{top:60.45%!important}
+#topics .ap-v95-choose .ap-v95-choice-1{top:72.1%!important}
+#topics .ap-v95-choose .ap-v95-choice-2{top:83.8%!important}
+#topics .ap-v95-choose .ap-v95-choice.ap-v95-selected{
+  background:#efdbf9!important;
+}
