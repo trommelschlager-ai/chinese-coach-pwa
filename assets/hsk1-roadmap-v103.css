@@ -1,0 +1,33 @@
+/* Supplemental roadmap only. Does not change approved cover or existing lesson cards. */
+#topics[data-topic-kind="course"] .hsk1-roadmap{
+ margin:26px 0 8px;padding:17px clamp(13px,4vw,22px);
+ background:linear-gradient(150deg,#fffaff,#f8edff 68%,#fff8f8);
+ border:1.5px solid #ebd4f3;border-radius:23px;box-shadow:0 7px 18px #9878aa1b;
+ color:#342347;font-family:inherit
+}
+#topics .hsk1-roadmap-heading{margin:0 0 12px}
+#topics .hsk1-roadmap-kicker{font-size:13px;font-weight:800;color:#8652a8}
+#topics .hsk1-roadmap-heading h2{font-size:clamp(20px,5.5vw,27px);line-height:1.2;margin:6px 0 7px;color:#351f51;font-weight:850}
+#topics .hsk1-roadmap-heading p{margin:0;font-size:14px;line-height:1.5;color:#645472}
+#topics .hsk1-catalogue-coverage{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0 8px}
+#topics .hsk1-catalogue-coverage>span{background:#ffffffd9;border:1px solid #ead8f3;border-radius:15px;padding:11px 12px;display:flex;flex-direction:column;gap:4px}
+#topics .hsk1-catalogue-coverage b{font-size:clamp(19px,5vw,25px);color:#7d3bb9;font-weight:850}
+#topics .hsk1-catalogue-coverage small{font-size:12px;line-height:1.35;color:#6c567b}
+#topics .hsk1-coverage-note,#topics .hsk1-roadmap-disclaimer{font-size:12px;line-height:1.45;color:#756281;margin:7px 0 12px}
+#topics .hsk1-more-topics{border:1px solid #e6ccef;border-radius:17px;background:#fffafaed;overflow:hidden}
+#topics .hsk1-more-topics summary{padding:14px 15px;list-style:none;cursor:pointer;min-height:48px;font-size:15px;font-weight:800;color:#633c87;display:flex;justify-content:space-between;align-items:center}
+#topics .hsk1-more-topics summary::-webkit-details-marker{display:none}
+#topics .hsk1-more-topics summary:focus-visible,#topics .hsk1-path-card:focus-visible{outline:3px solid #955ac9;outline-offset:-3px}
+#topics .hsk1-more-topics[open] summary{border-bottom:1px solid #e9d6f0}
+#topics .hsk1-path-grid{display:grid;grid-template-columns:1fr;gap:9px;padding:10px}
+#topics .hsk1-path-card{display:flex;align-items:center;text-align:left;gap:12px;width:100%;padding:12px 13px;min-height:90px;border:1px solid #ecdef2;background:#fff;border-radius:15px;color:#342448;cursor:pointer;box-shadow:0 2px 7px #a176b01a;font:inherit}
+#topics .hsk1-path-card:active{transform:scale(.995)}
+#topics .hsk1-path-icon{font-size:26px;flex:0 0 33px}
+#topics .hsk1-path-info{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
+#topics .hsk1-path-info strong{font-size:16px;font-weight:800;line-height:1.28}
+#topics .hsk1-path-words{font-size:13px;color:#835f92}
+#topics .hsk1-path-example{font-family:"Noto Sans SC",system-ui,sans-serif;font-size:21px;font-weight:750;margin-top:4px;line-height:1.25}
+#topics .hsk1-path-pinyin{font-size:13px;color:#80569a}
+#topics .hsk1-path-translation{font-size:13px;color:#514763}
+#topics .hsk1-path-arrow{font-size:23px;color:#9869b7;flex:0 0 16px}
+@media(min-width:650px){#topics .hsk1-path-grid{grid-template-columns:1fr 1fr}#topics .hsk1-path-card{align-items:flex-start}}
