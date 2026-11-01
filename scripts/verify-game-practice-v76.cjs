@@ -18,9 +18,9 @@ assert(pack.files.includes('./assets/game-immersive-v78.css'),'New game styling 
 for(const p of ['./assets/game-practice-v76.js','./assets/game-practice-v76.css','./assets/game-practice-entry-v76.css','./assets/game-panda-v76.svg','./assets/game-polish-v77.css','./assets/game-landscape-v77.svg'])assert(pack.files.includes(p),'Game missing offline: '+p);
 assert(game.includes('human-audio-map.js?v=90')&&!game.includes('basic-word-audio-map.js?v=66'),'Use only one Mandarin word-voice corpus in the game');
 assert(!js.includes('new SpeechSynthesisUtterance')&&js.includes('window.courseHumanAudio?.[part]'),'No device TTS for game tokens');
-assert(game.includes('game-crisp-build-choose-v89.css?v=93'),'Crisp new game backgrounds included');
-assert(read('assets/game-crisp-build-choose-v89.css').includes('game-scene-build-v93.webp')&&read('assets/game-crisp-build-choose-v89.css').includes('game-scene-choose-v93.webp'),'Both sharp backgrounds are actively referenced');
-for(const scene of ['game-scene-build-v93.webp','game-scene-choose-v93.webp']){assert(fs.statSync('assets/'+scene).size>100000,'Portrait photo must be high-resolution');assert(pack.files.includes('./assets/'+scene),'Portrait photo missing offline: '+scene);}
+assert(game.includes('game-crisp-build-choose-v89.css?v=94'),'Crisp new game backgrounds included');
+assert(read('assets/game-crisp-build-choose-v89.css').includes('game-scene-build-v94.webp')&&read('assets/game-crisp-build-choose-v89.css').includes('game-scene-choose-v94.webp'),'Both sharp backgrounds are actively referenced');
+for(const scene of ['game-scene-build-v94.webp','game-scene-choose-v94.webp']){assert(fs.statSync('assets/'+scene).size>100000,'Portrait photo must be high-resolution');assert(pack.files.includes('./assets/'+scene),'Portrait photo missing offline: '+scene);}
 assert(js.includes('speakCardWord(word)'),'Selecting Chinese tokens must trigger instant pronunciation');
 assert(read('assets/game-standalone-v80.css').includes('-webkit-text-stroke:1.8px #261330'),'Outlined white Chinese game headings required');
 assert(game.includes('game-approved-layout-v85.css?v=87'),'Approved high-resolution art layout is connected');

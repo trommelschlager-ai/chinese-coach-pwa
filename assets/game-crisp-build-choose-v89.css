@@ -109,3 +109,33 @@
  -webkit-text-stroke:0!important;
  text-shadow:0 2px 7px rgba(255,255,255,.92)!important;
 }
+
+/* v94 approved vivid portrait art — two separate local illustration files.
+   Avoid faded vectors and keep all live HTML quiz controls above the artwork. */
+#topics .game-shell:has(.game-build-hero) {
+ background:#e9daf4 linear-gradient(180deg,rgba(255,246,255,.24),rgba(255,244,255,.04) 50%,rgba(252,232,255,.27)),url("./game-scene-build-v94.webp") center top / 100% 100%,cover no-repeat!important;
+ background-image:linear-gradient(180deg,rgba(255,246,255,.24),rgba(255,244,255,.04) 50%,rgba(252,232,255,.27)),url("./game-scene-build-v94.webp")!important;
+ background-size:100% 100%,cover!important;
+ background-position:center center,center top!important;
+ background-repeat:no-repeat!important;
+}
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero)) {
+ background:#e9ddf4!important;
+ background-image:linear-gradient(180deg,rgba(255,246,255,.25),rgba(255,244,255,.06) 50%,rgba(252,232,255,.27)),url("./game-scene-choose-v94.webp")!important;
+ background-size:100% 100%,cover!important;
+ background-position:center center,center top!important;
+ background-repeat:no-repeat!important;
+}
+#topics .game-shell:has(.game-build-hero)::before,
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero))::before {
+ opacity:0!important;
+ background:none!important;
+ filter:none!important;
+ pointer-events:none!important;
+}
+#topics .game-shell:has(.game-build-hero) .game-task-title h1,
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero)) .game-task-title h1 {
+ color:#2c1246!important;
+ -webkit-text-stroke:0!important;
+ text-shadow:0 2px 7px rgba(255,255,255,.93)!important;
+}
