@@ -227,11 +227,28 @@ function renderQuestion(){
  const q=items[session.index],mode=session.mode;let body='';
  const meter=(session.position+(session.locked?1:0))/session.order.length*100;
  if(mode==='build'){
-  body=restoredStage(mode,'<div class="audit-prompt"><p>Переведи предложение</p><h2>'+safe(q.ru)+'</h2></div>'+
-  '<button type="button" class="game-build-pinyin-toggle" data-game-toggle-pinyin aria-pressed="'+session.showPinyin+'">'+(session.showPinyin?'Скрыть пиньинь':'Показать пиньинь')+'</button>',meter)+'<div class="restore-deck game-build-static'+(session.showPinyin?'':' game-py-hidden')+'" style="--game-bank-rows:'+Math.ceil(session.bank.length/3)+';--game-answer-rows:'+Math.ceil(q.parts.length/Math.max(2,Math.min(4,Math.floor((Math.min(section.clientWidth||360,540)*.874-24)/70))))+'">'+
-  '<div class="audit-answer" role="group" aria-label="Твоя фраза">'+session.selected.map((id,k)=>token(session.bank[id],k,true)).join('')+
-  (session.selected.length?'':'<span class="audit-answer-hint">Нажимай слова ниже. Нажми выбранное слово, чтобы убрать его.</span>')+'</div>'+
-  '<div class="audit-bank" role="group" aria-label="Слова для ответа">'+session.bank.map((t,id)=>session.selected.includes(id)?'':token(t,id)).join('')+'</div><p class="audit-audio-note" data-game-audio-feedback role="status" aria-live="polite"></p>';
+  // Fully structured interactive screen: the artwork is a static backdrop,
+  // not a giant image which resizes when answer tiles change.
+  body='<div class="ch110-build-screen"><header class="ch110-game-toolbar">'+
+   '<button class="ch110-game-back" type="button" data-game-back>‹ Игровая практика</button>'+
+   '<div class="ch110-game-status"><span>Задание '+(session.position+1)+' из '+session.order.length+'</span><span>🔥 Комбо ×'+session.combo+'</span></div>'+
+   '<progress class="ch110-game-progress" max="100" value="'+meter+'"></progress></header>'+
+   '<div class="ch110-game-title">Переведи<br>предложение</div>'+
+   '<div class="ch110-prompt-row"><img class="ch110-panda" src="./assets/game-panda-v80.webp" alt="Панда с книгой">'+
+   '<div class="ch110-prompt"><span>Переведи предложение</span><strong>'+safe(q.ru)+'</strong></div></div>'+
+   '<div class="ch110-build-controls"><button class="ch110-game-pinyin" type="button" data-game-toggle-pinyin aria-pressed="'+session.showPinyin+'">'+
+   (session.showPinyin?'Скрыть пиньинь':'Показать пиньинь')+'</button></div>'+
+   '<div class="restore-deck game-build-static'+(session.showPinyin?'':' game-py-hidden')+'">'+
+   '<div class="audit-answer" role="group" aria-label="Твоя фраза">'+session.selected.map((id,k)=>token(session.bank[id],k,true)).join('')+
+   (session.selected.length?'':'<span class="audit-answer-hint">Выбери слова ниже</span>')+'</div>'+
+   '<div class="audit-bank" role="group" aria-label="Слова для ответа">'+session.bank.map((t,id)=>session.selected.includes(id)?'':token(t,id)).join('')+
+   '</div><p class="audit-audio-note" data-game-audio-feedback aria-live="polite"></p></div>'+
+   '<div class="ch110-game-bottom"><div class="audit-feedback" role="status" aria-live="polite">'+safe(feedback)+'</div>'+correction(q)+
+   '<div class="audit-actions"><button type="button" class="audit-secondary ch110-game-reset" data-game-clear '+(session.locked?'disabled':'')+' aria-label="Сбросить ответ">↻</button>'+
+   '<button type="button" class="audit-primary" data-game-check>'+(session.locked?(session.position===session.order.length-1?'Результат →':'Далее →'):'Проверить →')+
+   '</button></div></div></div>';
+  shell('<div class="audit-question restored-question" data-mode="build">'+body+'</div>');
+  return;
  }else{
   const choices=session.choices||choiceOptions();session.choices=choices;
   const prompt=mode==='listen'?'<div class="audit-listen"><button type="button" class="audit-play" data-game-play aria-label="Прослушать китайскую фразу">▶ Прослушать</button><p>Какая фраза прозвучала?</p></div>':
