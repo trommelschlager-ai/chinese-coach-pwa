@@ -28,7 +28,7 @@
 #topics .rose-dialogue .rose-counter{font-size:clamp(11px,3vw,15px)!important;color:#765983!important}
 #topics .rose-dialogue .rose-lines{
  flex:1 1 auto;min-height:0!important;display:flex!important;flex-direction:column!important;
- justify-content:space-evenly!important;gap:clamp(12px,2.3dvh,30px)!important;
+ justify-content:center!important;gap:clamp(12px,2.3dvh,30px)!important;
  margin:0!important;padding:clamp(7px,1dvh,15px) 0!important;
 }
 #topics .rose-dialogue .rose-card{
