@@ -78,3 +78,34 @@
   color:#35124f!important;
   text-shadow:0 2px 2px #fff9ff!important;
 }
+
+
+/* v93 — Actual locally hosted 1080 × 1920 photo backgrounds, not faded vector previews.
+   Scoped to Build / Choose. Preserve all user-approved game mechanics and art elsewhere. */
+#topics .game-shell:has(.game-build-hero) {
+ background-color:#e9daf5!important;
+ background-image:linear-gradient(180deg,rgba(248,240,255,.15),rgba(255,246,255,.06) 47%,rgba(251,235,252,.33)),url("./game-scene-build-v93.webp")!important;
+ background-size:100% 100%,cover!important;
+ background-position:center center,center top!important;
+ background-repeat:no-repeat!important;
+}
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero)) {
+ background-color:#eedff8!important;
+ background-image:linear-gradient(180deg,rgba(250,245,255,.16),rgba(255,247,254,.10) 49%,rgba(251,235,251,.34)),url("./game-scene-choose-v93.webp")!important;
+ background-size:100% 100%,cover!important;
+ background-position:center center,center top!important;
+ background-repeat:no-repeat!important;
+}
+#topics .game-shell:has(.game-build-hero)::before,
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero))::before {
+ background:none!important;
+ opacity:0!important;
+ filter:none!important;
+ pointer-events:none!important;
+}
+#topics .game-shell:has(.game-build-hero) .game-task-title h1,
+#topics .game-shell:has(.game-choice-list):not(:has(.game-build-hero)) .game-task-title h1 {
+ color:#301040!important;
+ -webkit-text-stroke:0!important;
+ text-shadow:0 2px 7px rgba(255,255,255,.92)!important;
+}
