@@ -177,3 +177,46 @@ body.rose-dialogue-open{overflow:hidden!important}
  #topics .rose-avatar{width:min(100%,65px)}
 }
 @media(prefers-reduced-motion:reduce){#topics .rose-dialogue *{transition:none!important;animation:none!important}}
+
+
+/* v108: stronger visual match to approved white/pink mobile dialogue mockup. */
+#topics .rose-dialogue{
+ background-image:
+  linear-gradient(180deg,#fff9ff80 0%,#fff9ffec 25%,#fffaffef 68%,#fff8fba8 100%),
+  url('./chinese-pastel-wallpaper.svg')!important;
+ background-position:center top,center center!important;
+ background-repeat:no-repeat!important;
+ background-size:100% 100%,cover!important;
+}
+#topics .rose-meta{
+ align-items:start!important;
+ padding-bottom:clamp(12px,2dvh,24px)!important;
+ border-bottom:1px solid #dca9e766;
+}
+#topics .rose-lines{
+ justify-content:center!important;
+ gap:clamp(14px,3.5dvh,44px)!important;
+ margin-top:clamp(0px,1dvh,12px)!important;
+}
+#topics .rose-card{flex:0 1 auto!important}
+#topics .rose-bubble{
+ min-height:clamp(125px,23dvh,260px)!important;
+ box-sizing:border-box!important;
+ background:#fffafef5!important;
+ box-shadow:0 7px 21px #c66ec735,0 0 0 1px #ffffff inset!important;
+}
+#topics .rose-role{
+ background:linear-gradient(180deg,#b95ed8,#81309f)!important;
+ color:#fff!important;border:1px solid #f3b8e8!important;
+ font-weight:800!important;box-shadow:0 2px 8px #bd68d07a!important;
+}
+#topics .rose-translation{background:#f4dafa!important}
+#topics .rose-next{
+ background:linear-gradient(180deg,#ffe7f5 0%,#ffcae6 60%,#ffbce0 100%)!important;
+ border-color:#df83be!important;color:#151018!important;
+}
+@media(max-height:750px){
+ #topics .rose-lines{gap:9px!important;margin-top:0!important}
+ #topics .rose-bubble{min-height:clamp(103px,20dvh,160px)!important}
+ #topics .rose-meta{padding-bottom:5px!important}
+}
