@@ -291,7 +291,8 @@
   stopLearningAudio();const token=audioGeneration;
   const ready=await ensureDialogueMp3Ready();if(token!==audioGeneration)return;
   const [speaker,text]=line;
-  try{await playWord(text,.97,token,speaker,getDialogueClip(lessonId,index,speaker,lessonId===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1')))}
+  const newGreeting=Number(lessonId)===2&&index===1&&text.startsWith('哈喽');
+  try{await playWord(text,.97,token,newGreeting?null:speaker,newGreeting?null:getDialogueClip(lessonId,index,speaker,lessonId===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1')),newGreeting)}
   finally{if(token===audioGeneration)audioStatus.hidden=true}
  };
  window.playStandaloneDialogue=function(lessonId){
@@ -308,7 +309,8 @@
     if(token!==audioGeneration)break;
     const [speaker,text]=lesson.dialogue[i];
     rows.forEach((r,j)=>r.classList.toggle('playing-line',j===i));
-    await playWord(text,.97,token,speaker,getDialogueClip(lesson.id,i,speaker,lesson.id===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1')));
+    const newGreeting=lesson.id===2&&i===1&&text.startsWith('哈喽');
+    await playWord(text,.97,token,newGreeting?null:speaker,newGreeting?null:getDialogueClip(lesson.id,i,speaker,lesson.id===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1')),newGreeting);
    }
   }finally{rows.forEach(r=>r.classList.remove('playing-line'));if(token===audioGeneration)audioStatus.hidden=true}
  }
