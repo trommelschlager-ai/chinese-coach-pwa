@@ -100,6 +100,7 @@ function openCategory(id){
  bindWords();
 }
 function dialogueCategories(){
+ document.body.classList.remove('rose-dialogue-open');
  dialogLesson=null;view='dialogues';
  const lessons=COURSE.filter(l=>l.id!==1&&l.dialogue?.length);
  frame('Диалоги','Только разговоры. Женский и мужской голоса по ролям.',
@@ -108,21 +109,53 @@ function dialogueCategories(){
  '<span><strong>'+esc(l.id===3?'Страна и место жительства':l.title)+'</strong><small>'+l.dialogue.length+' реплик</small></span><span aria-hidden="true">›</span></button>').join('')+'</div>',false);
  $$('[data-dialog-lesson]').forEach(b=>b.onclick=()=>showDialogue(Number(b.dataset.dialogLesson)));
 }
-function showDialogue(id){
+function showDialogue(id,page=0){
  const l=COURSE.find(l=>l.id===id&&l.id!==1);if(!l)return;
  dialogLesson=id;view='dialogues';stopAudio();
- const legacy=localStorage.getItem('chinese-coach-dialogue-original-v72')==='1';
- const voiceRow='<div class="clean-dialog-voice"><span>'+(id===2?'Анна — женский голос · Сяомин — мужской голос':'Женская и мужская роли')+'</span></div>';
- const content='<div class="clean-dialog-head"><button type="button" class="clean-action-primary" data-dialogue-play-all>▶ Слушать весь диалог</button></div>'+voiceRow+
- '<div class="clean-dialog-lines">'+l.dialogue.map(([who,hz,py,ru],i)=>
- '<article class="dialogue-row clean-dialog-line" data-standalone-line="'+i+'"><div class="clean-dialog-avatar '+((id===2?who==='B':who==='A')?'girl':'boy')+'">'+
- '<img src="./assets/'+((id===2?who==='B':who==='A')?'meaning-woman.webp':'meaning-man.webp')+'" alt="'+((id===2?who==='B':who==='A')?'Собеседница':'Собеседник')+'"></div>'+
- '<div class="clean-dialog-bubble"><strong lang="zh-Hans">'+esc(hz)+'</strong><span>'+esc(py)+'</span><small>'+esc(ru)+'</small>'+
- '<button type="button" data-dialogue-line="'+i+'">🔊 Слушать</button></div></article>').join('')+'</div>';
- frame(l.id===3?'Страна и место жительства':l.title,'Диалог · '+l.dialogue.length+' реплик',content,dialogueCategories);
- $$('[data-dialogue-line]').forEach(b=>b.onclick=()=>window.playDialogueLine?.(id,Number(b.dataset.dialogueLine)));
+ const tallText=l.dialogue.some(line=>String(line[1]).length>25||String(line[2]).length>80);
+ const h=window.innerHeight||740;
+ const perPage=h<650?1:(h<940?(tallText?1:2):(tallText?2:3));
+ const pages=Math.ceil(l.dialogue.length/perPage);
+ page=Math.max(0,Math.min(page,pages-1));
+ const start=page*perPage,end=start+perPage;
+ const title=l.id===3?'Страна и место жительства':l.title;
+ document.body.classList.add('rose-dialogue-open');
+ section.dataset.simpleSection='dialogues';
+ const lines=l.dialogue.map(([who,hz,py,ru],i)=>{
+  const female=(id===2?who==='B':who==='A');
+  return '<article class="dialogue-row rose-card'+(i<start||i>=end?' rose-hidden':'')+'" data-standalone-line="'+i+'" '+(i<start||i>=end?'aria-hidden="true"':'')+'>'+
+   '<div class="rose-character"><div class="rose-avatar"><img src="./assets/'+(female?'meaning-woman.webp':'meaning-man.webp')+'" alt="'+(female?'Собеседница':'Собеседник')+'"></div>'+
+   '<span class="rose-role">'+(female?'Она':'Он')+' · '+(i+1)+'</span></div>'+
+   '<div class="rose-bubble"><div class="rose-line-top"><span class="rose-pinyin">'+esc(py)+'</span>'+
+   '<button type="button" class="rose-line-play" data-dialogue-line="'+i+'" aria-label="Прослушать реплику '+(i+1)+'">🔊</button></div>'+
+   '<strong lang="zh-Hans" class="rose-hanzi">'+esc(hz)+'</strong><span class="rose-translation">'+esc(ru)+'</span></div></article>';
+ }).join('');
+ section.innerHTML='<div class="rose-dialogue" role="region" aria-label="Диалог: '+esc(title)+'">'+
+  '<header class="rose-toolbar"><button class="rose-top-button rose-exit" type="button" data-rose-back aria-label="К темам">‹</button>'+
+  '<span class="rose-toolbar-ornament" aria-hidden="true">✦</span>'+
+  '<button class="rose-top-button rose-play-all" type="button" data-dialogue-play-all aria-label="Слушать весь диалог">🔊</button></header>'+
+  '<div class="rose-meta"><span class="rose-topic">'+esc(title)+'</span>'+
+  '<span class="rose-counter">Реплики '+(start+1)+'–'+Math.min(end,l.dialogue.length)+' из '+l.dialogue.length+'</span></div>'+
+  '<main class="rose-lines">'+lines+'</main>'+
+  '<footer class="rose-footer"><div class="rose-footer-nav">'+
+  '<button type="button" class="rose-prev" data-rose-prev '+(page===0?'disabled':'')+'>‹ Назад</button>'+
+  '<span class="rose-page" aria-label="Страница '+(page+1)+' из '+pages+'">'+(page+1)+' / '+pages+'</span></div>'+
+  '<button type="button" class="rose-next" data-rose-next>'+esc(page+1<pages?'Далее  »':'К диалогам  »')+'</button></footer></div>';
+ $('[data-rose-back]').onclick=()=>dialogueCategories();
  $('[data-dialogue-play-all]').onclick=()=>window.playStandaloneDialogue?.(id);
-
+ $$('[data-dialogue-line]').forEach(b=>b.onclick=()=>window.playDialogueLine?.(id,Number(b.dataset.dialogueLine)));
+ $('[data-rose-next]').onclick=()=>page+1<pages?showDialogue(id,page+1):dialogueCategories();
+ const prev=$('[data-rose-prev]');if(page>0)prev.onclick=()=>showDialogue(id,page-1);
+ let x0=null;
+ const panel=$('.rose-lines');
+ panel.addEventListener('touchstart',e=>{if(e.touches.length===1)x0=e.touches[0].clientX},{passive:true});
+ panel.addEventListener('touchend',e=>{
+  if(x0===null||e.changedTouches.length!==1)return;
+  const d=e.changedTouches[0].clientX-x0;x0=null;
+  if(Math.abs(d)<85)return;
+  if(d<0&&page+1<pages)showDialogue(id,page+1);
+  else if(d>0&&page>0)showDialogue(id,page-1);
+ },{passive:true});
 }
 function choiceButtons(target,correctCallback){
  const others=allWords.filter(w=>w.hz!==target.hz&&w.ru!==target.ru);
