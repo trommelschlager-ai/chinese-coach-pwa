@@ -1,4 +1,4 @@
-name: Import approved high-resolution game scenery
+name: Import licensed high-resolution game scenery
 on:
   push:
     paths:
@@ -14,31 +14,29 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Download and split full-resolution approved artwork
-        env:
-          SOURCE_ART: "https://media.canva.com/v2/image-resize/format:PNG/height:1536/quality:100/uri:ifs%3A%2F%2FM%2F8e0aa45b-980d-4d4b-b768-703fd356ab95/watermark:F/width:1024?csig=AAAAAAAAAAAAAAAAAAAAAFtBPGt3-p3e5owHzqtXPIS9nf0UJPr7vNLpJIVXjlMJ&exp=1793506889&osig=AAAAAAAAAAAAAAAAAAAAAIRx8Cej8HlG3Ye8oP1nnzHTMYfiRbi9w6YzMxqU7T7B&signer=media-rpc&token=AAIAAU0AJDhlMGFhNDViLTk4MGQtNGQ0Yi1iNzY4LTcwM2ZkMzU2YWI5NQAAAAABoZVXTShBjF7BmthZG3gBeSGHi0n4H1jcEqsRi-UqRNEXyUZDOg&x-canva-quality=thumbnail"
+      - name: Download two full-resolution backgrounds
         run: |
           python -m pip install --quiet requests Pillow
           python - <<'PY'
-          import io, os, requests
-          from PIL import Image
-          response=requests.get(os.environ["SOURCE_ART"], timeout=45)
-          print('Asset request:', response.status_code, 'bytes:', len(response.content))
-          response.raise_for_status()
-          image=Image.open(io.BytesIO(response.content)).convert('RGB')
-          print('Artwork dimensions:', image.size)
-          assert image.width >= 900 and image.height >= 1200, 'Source art too small'
-          width,height=image.size
-          for name,box in [
-            ('build',(0,0,width//2,height)),
-            ('choose',(width//2,0,width,height))
-          ]:
-            image.crop(box).save(f'assets/game-scene-{name}-v93.webp', 'WEBP', quality=86, method=6)
+          import io,requests
+          from PIL import Image,ImageOps
+          sources={
+             'build':'https://images.unsplash.com/photo-1768837383080-4cc790c57ff7',
+             'choose':'https://images.unsplash.com/photo-1554190354-aff7005e20ee',
+          }
+          for name,url in sources.items():
+              response=requests.get(url,params={'w':2400,'q':91,'fit':'max','auto':'format'},timeout=60)
+              response.raise_for_status()
+              image=Image.open(io.BytesIO(response.content)).convert('RGB')
+              print(name, 'original size:',image.size)
+              assert image.width>=1000 and image.height>=800, 'Too small for phone wallpaper'
+              image=ImageOps.fit(image,(1080,1920),method=Image.Resampling.LANCZOS,centering=(.55,.5))
+              image.save(f'assets/game-scene-{name}-v93.webp','WEBP',quality=86,method=6)
           PY
-      - name: Commit app-owned background images
+      - name: Commit locally hosted game images
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/game-scene-build-v93.webp assets/game-scene-choose-v93.webp
-          git commit -m "art(game): add approved vivid Chinese scene backgrounds [scene assets]"
+          git commit -m "art(game): store sharp licensed China photos for both game exercises [scene assets]"
           git push
