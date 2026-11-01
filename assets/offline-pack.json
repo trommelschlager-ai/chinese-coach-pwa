@@ -1,6 +1,6 @@
 {
   "version": 79,
-  "bytes": 17511454,
+  "bytes": 17982943,
   "files": [
     "./assets/approved-home-v36.png",
     "./assets/approved-lesson-design.css?v=56",
@@ -298,10 +298,11 @@
     "./assets/final-design.css",
     "./assets/final-design.css?v=41",
     "./assets/game-approved-menu-v87-original.png",
-    "./assets/game-crisp-build-choose-v89.css",
+    "./assets/game-crisp-build-choose-v89.css?v=92",
     "./assets/game-immersive-v78.css",
     "./assets/game-immersive-v78.css?v=79",
     "./assets/game-landscape-v77.svg",
+    "./assets/game-original-both-screens-v86.png",
     "./assets/game-panda-v76.svg",
     "./assets/game-panda-v80.webp",
     "./assets/game-polish-v77.css",
