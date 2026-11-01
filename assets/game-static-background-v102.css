@@ -38,3 +38,23 @@
  transition:none!important;
  animation:none!important;
 }
+
+
+/* v104 — Keep the original approved backdrop pixel-stable on word taps.
+   "cover" was rescaling scenic backgrounds whenever the deck height changed.
+   Fixed percentage WIDTH sizing + top anchor makes the picture independent of
+   selected/returned words, on Android and desktop alike. */
+#topics .game-shell.audit-game:has(.game-build-static) {
+  background-color:#f1ddf6!important;
+  background-image:url('./game-scene-choose-v94.webp')!important;
+  background-repeat:no-repeat!important;
+  background-position:center top!important;
+  background-size:100% auto!important;
+}
+#topics .restore-build + .restore-deck.game-build-static {
+  background-color:#f2def7!important;
+  background-image:url('./game-scene-build-v94.webp')!important;
+  background-repeat:no-repeat!important;
+  background-position:center top!important;
+  background-size:100% auto!important;
+}
