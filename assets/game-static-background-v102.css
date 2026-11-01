@@ -58,3 +58,7 @@
   background-position:center top!important;
   background-size:100% auto!important;
 }
+
+/* v107: Toggle pinyin in the 'Собери фразу' game; avoid changing deck height or moving the scene. */
+#topics .restore-build>.game-build-pinyin-toggle{position:absolute!important;z-index:3;left:43%;top:43%;width:50%;min-height:37px;height:7%;border:2px solid #d8afe9;border-radius:100px;background:#fff8ffef;color:#612a82;font:750 clamp(12px,3.3vw,18px)/1.1 system-ui;box-shadow:0 3px 12px #af65c64b;padding:5px 8px;white-space:nowrap}
+#topics .game-build-static.game-py-hidden .audit-token small,#topics .game-build-static.game-py-hidden .audit-answer-token small{visibility:hidden!important}
