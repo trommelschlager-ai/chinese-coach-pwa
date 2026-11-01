@@ -1,6 +1,6 @@
 {
-  "version": 102,
-  "bytes": 22355093,
+  "version": 103,
+  "bytes": 22371167,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -370,6 +370,11 @@
     "./assets/hanzi-human/cmn-日.mp3",
     "./assets/hanzi-human/cmn-月.mp3",
     "./assets/hanzi-human/cmn-木.mp3",
+    "./assets/hsk1-audit-v103.json",
+    "./assets/hsk1-roadmap-v103.css",
+    "./assets/hsk1-roadmap-v103.css?v=103",
+    "./assets/hsk1-roadmap-v103.js",
+    "./assets/hsk1-roadmap-v103.js?v=103",
     "./assets/human-audio-map.js",
     "./assets/human-audio-map.js?v=90",
     "./assets/learning-quality.css",
