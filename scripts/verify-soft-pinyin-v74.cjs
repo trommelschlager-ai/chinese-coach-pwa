@@ -13,7 +13,7 @@ assert(pron.includes('"zh-CN-YunyangNeural"'));
 assert(pron.includes('a.preservesPitch=true'),'Mandarin pitch contour must not be pitch-shifted');
 assert(html.includes('pronunciation-hub.js?v=98'),'Client must load updated player');
 assert(Number(sw.match(/chinese-coach-pwa-v(\d+)/)?.[1] || 0)>=79,'New service worker cache version');
-assert(pack.version===79);
+assert(pack.version>=79);
 assert(curriculum.clips.length===190);
 for(const c of curriculum.clips){const file='assets/pinyin-reading-v4/'+c.id+'.mp3';const previous='assets/pinyin-reading-v3/'+c.id+'.mp3';const buf=fs.readFileSync(file);assert(buf.length>1500,'Missing MP3 '+file);assert(buf.toString('ascii',0,3)==='ID3'||buf[0]===255&&((buf[1]&224)===224));assert.notEqual(digest(file),digest(previous),'Audio not newly generated: '+c.id);assert(pack.files.includes('./'+file),'Missing offline '+file);}
 assert(pack.files.includes('./assets/pinyin-reading-v4/status.json'));

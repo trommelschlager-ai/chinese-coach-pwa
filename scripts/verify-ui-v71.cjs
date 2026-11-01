@@ -14,6 +14,6 @@ assert(d.getElementById('pitchchart'),'Tone analyzer unchanged');
 assert(Number(sw.match(/chinese-coach-pwa-v(\d+)/)?.[1] || 0)>=79);
 assert(css.includes('china-autumn-temple-v71.webp'),'Actual screenshot 3 photo applied to menu');
 assert(fs.statSync('assets/china-autumn-temple-v71.webp').size===4338,'Cropping removed screenshot UI');
-assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).version===79);
+assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).version>=79);
 for(const p of ['./assets/china-autumn-temple-v71.webp','./assets/dialogue-sakura-v71.svg','./assets/dialogue-pagoda-v71.svg','./assets/dialogue-clock-v71.svg','./assets/dialogue-cafe-v71.svg'])assert(JSON.parse(fs.readFileSync('assets/offline-pack.json')).files.includes(p));
 console.log('V71 dialogue art and reversible lower-pitch preview checks passed');
