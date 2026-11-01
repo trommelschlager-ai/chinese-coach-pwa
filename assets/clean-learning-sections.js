@@ -103,7 +103,7 @@ function dialogueCategories(){
  document.body.classList.remove('rose-dialogue-open');
  dialogLesson=null;view='dialogues';
  const lessons=COURSE.filter(l=>l.id!==1&&l.dialogue?.length);
- frame('Диалоги','Только разговоры. Женский и мужской голоса по ролям.',
+ frame('Диалоги','',
  '<div class="clean-category-list">'+lessons.map(l=>
  '<button class="clean-category" data-dialog-lesson="'+l.id+'" type="button"><span class="clean-category-icon" aria-hidden="true">💬</span>'+
  '<span><strong>'+esc(l.id===3?'Страна и место жительства':l.title)+'</strong><small>'+l.dialogue.length+' реплик</small></span><span aria-hidden="true">›</span></button>').join('')+'</div>',false);
