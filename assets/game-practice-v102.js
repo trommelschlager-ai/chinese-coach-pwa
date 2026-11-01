@@ -227,7 +227,7 @@ function renderQuestion(){
  const q=items[session.index],mode=session.mode;let body='';
  const meter=(session.position+(session.locked?1:0))/session.order.length*100;
  if(mode==='build'){
-  body=restoredStage(mode,'<div class="audit-prompt"><p>Переведи предложение</p><h2>'+safe(q.ru)+'</h2></div>',meter)+'<div class="restore-deck game-build-static" style="--game-bank-rows:'+Math.ceil(session.bank.length/3)+';--game-answer-rows:'+(q.parts.length>=5?2:1)+'">'+
+  body=restoredStage(mode,'<div class="audit-prompt"><p>Переведи предложение</p><h2>'+safe(q.ru)+'</h2></div>',meter)+'<div class="restore-deck game-build-static" style="--game-bank-rows:'+Math.ceil(session.bank.length/3)+';--game-answer-rows:'+Math.ceil(q.parts.length/Math.max(2,Math.min(4,Math.floor((Math.min(section.clientWidth||360,540)*.874-24)/70))))+'">'+
   '<div class="audit-answer" role="group" aria-label="Твоя фраза">'+session.selected.map((id,k)=>token(session.bank[id],k,true)).join('')+
   (session.selected.length?'':'<span class="audit-answer-hint">Нажимай слова ниже. Нажми выбранное слово, чтобы убрать его.</span>')+'</div>'+
   '<div class="audit-bank" role="group" aria-label="Слова для ответа">'+session.bank.map((t,id)=>session.selected.includes(id)?'':token(t,id)).join('')+'</div><p class="audit-audio-note" data-game-audio-feedback role="status" aria-live="polite"></p>';
