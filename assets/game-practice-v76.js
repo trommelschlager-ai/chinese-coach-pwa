@@ -211,8 +211,48 @@ function renderApprovedListening(){
  '<button type="button" class="original-listen-check" data-game-check>'+(session.locked?(session.index===9?'Результат →':'Далее →'):'Проверить →')+'</button>'+
  '</div>');
 }
+/* v95 user-approved screen art: preserve the exact supplied background and
+   render real, changeable question fields on top of the printed example. */
+function renderApprovedV95(){
+ const q=items[session.index],build=session.mode==='build';
+ const name=build?'build':'choose';
+ const back='<button type="button" data-game-back class="ap-v95-back" aria-label="Вернуться к игровой практике"></button>';
+ const status='<div class="ap-v95-progress"><span>Задание '+(session.index+1)+' из 10</span><span>🔥 Комбо ×'+session.combo+'</span></div>'+
+ '<div class="ap-v95-meter" role="progressbar" aria-label="Прогресс" aria-valuemin="0" aria-valuemax="10" aria-valuenow="'+session.index+'"><i style="width:'+(session.index*10)+'%"></i></div>';
+ let content='';
+ if(build){
+  const positions=session.bank.map((t,i)=>i);
+  if(session.index===0){const priorities=['小明','吗','叫','我','你'];positions.sort((a,b)=>priorities.indexOf(session.bank[a].han)-priorities.indexOf(session.bank[b].han));}
+  const slots=q.parts.map((x,k)=>{
+   const id=session.selected[k];if(id===undefined)return '<span class="ap-v95-slot" aria-label="Пустое место">+</span>';
+   const token=session.bank[id];return '<button type="button" class="ap-v95-slot ap-v95-filled" data-game-remove="'+k+'" '+(session.locked?'disabled':'')+'><small>'+safe(token.pin)+'</small><strong lang="zh-Hans">'+safe(token.han)+'</strong></button>';
+  }).join('');
+  const tiles=positions.map(id=>{
+   const tile=session.bank[id],used=session.selected.includes(id);
+   return '<button type="button" class="ap-v95-token'+(used?' ap-v95-used':'')+'" data-game-token="'+id+'" '+(used||session.locked?'disabled':'')+'><small>'+safe(tile.pin)+'</small><strong lang="zh-Hans">'+safe(tile.han)+'</strong></button>';
+  }).join('');
+  content='<div class="ap-v95-build-prompt"><span>Переведи предложение</span><strong>'+safe(q.ru)+'</strong></div>'+
+  '<div class="ap-v95-slots" style="--slot-count:'+q.parts.length+'">'+slots+'</div>'+
+  '<div class="ap-v95-bank">'+tiles+'</div>';
+ }else{
+  const choices=session.choices||(session.index===0?[0,6,3]:choiceOptions());session.choices=choices;
+  content='<div class="ap-v95-choose-prompt"><span>Что означает эта фраза?</span><strong lang="zh-Hans">'+safe(q.zh)+'</strong><small>'+safe(q.py)+'</small><button type="button" data-game-play>🔊 Послушать</button><em data-game-audio-feedback role="status" aria-live="polite"></em></div>'+
+  choices.map((id,i)=>{
+   const selected=session.choice===i,correct=session.locked&&id===session.index;
+   return '<button type="button" class="ap-v95-choice ap-v95-choice-'+i+(selected?' ap-v95-selected':'')+(correct?' ap-v95-correct':'')+'" data-game-option="'+i+'" aria-pressed="'+selected+'" '+(session.locked?'disabled':'')+'><b>'+(i+1)+'</b><span>'+safe(items[id].ru)+'</span><i aria-hidden="true"></i></button>';
+  }).join('');
+ }
+ shell('<div class="ap-v95 ap-v95-'+name+'">'+
+  '<img class="ap-v95-art" src="./assets/approved-'+name+'-v95.webp" alt="" aria-hidden="true" draggable="false" decoding="async">'+
+  back+status+content+'</div>'+
+  '<div class="ap-v95-footer"><div class="ap-v95-feedback" role="status" aria-live="polite">'+safe(feedback)+
+  (session.locked?'<small>Правильный ответ: <span lang="zh-Hans">'+safe(q.zh)+'</span> · '+safe(q.ru)+'</small>':'')+'</div>'+
+  '<div class="ap-v95-actions">'+(build?'<button type="button" class="ap-v95-clear" data-game-clear '+(session.locked?'disabled':'')+'>Очистить</button>':'')+
+  '<button type="button" class="ap-v95-check" data-game-check>'+(session.locked?(session.index===9?'Результат →':'Далее →'):'Проверить →')+'</button></div></div>');
+}
 function renderQuestion(){
  if(session.mode==='listen'){renderApprovedListening();return;}
+ if(session.mode==='build'||session.mode==='choose'){renderApprovedV95();return;}
 
  const q=items[session.index],mode=session.mode,config=modes[mode];
  const task=mode==='build'?'<h1>Переведи<br>предложение</h1>':mode==='listen'?'<h1>Прослушай<br>и выбери</h1>':'<h1>Выбери<br>перевод</h1>';

@@ -5,7 +5,12 @@ const html=read('index.html'),clean=read('assets/clean-learning-sections.js'),js
 assert(html.includes('game-practice-v76.js?v=77')&&html.includes('game-practice-v76.css?v=77'));
 assert(html.includes('data-choice="6"')&&html.includes("window.location.assign('./game.html')"),'Game must open isolated screen');
 const game=read('game.html');
-assert(game.includes('game-standalone-v80.css?v=88')&&game.includes('game-practice-v76.js?v=91'),'Game keeps working controls in its own page');
+assert(game.includes('approved-v95.css?v=95'),'Approved live game artwork stylesheet loaded');
+const approvedCss=read('assets/approved-v95.css');
+assert(approvedCss.includes('ap-v95-choice')&&approvedCss.includes('ap-v95-build-prompt'),'Both approved interactive layouts styled');
+assert(js.includes('function renderApprovedV95')&&js.includes('session.mode===\'build\'||session.mode===\'choose\''),'Approved layouts active for both modes');
+for(const art of ['approved-choose-v95.webp','approved-build-v95.webp']){assert(fs.statSync('assets/'+art).size>50000,'Missing approved artwork');assert(pack.files.includes('./assets/'+art),'Approved artwork not in offline package')}
+assert(game.includes('game-standalone-v80.css?v=88')&&game.includes('game-practice-v76.js?v=95'),'Game keeps working controls in its own page');
 assert(js.includes('game-panda-v80.webp')&&pack.files.includes('./assets/game-panda-v80.webp'),'Polished painted panda is bundled');
 assert(!game.includes('lessons-backdrop.webp'),'No old menu picture with printed text');
 assert(read('assets/game-standalone-v80.css').includes('chinese-painting-daily.webp'),'Clean Chinese landscape loads');

@@ -1,0 +1,60 @@
+/* v95 — the two user-supplied, approved artwork screens are the actual canvas.
+   Only live question text, selectable answers, progress and audio are HTML.
+   Keeps the accepted original layout while retaining the 10-question logic. */
+body:has(#topics .ap-v95){background:#ede0f5!important}
+#topics[data-simple-section="game"]:has(.ap-v95){margin:0 auto!important;max-width:540px!important;overflow:visible!important;padding:0!important}
+#topics .game-shell:has(.ap-v95){max-width:540px!important;width:100%!important;padding:0!important;margin:0 auto!important;min-height:0!important;border:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
+#topics .game-shell:has(.ap-v95)::before,#topics .game-shell:has(.ap-v95)::after{display:none!important}
+#topics .ap-v95{position:relative;margin:auto;width:100%;max-width:540px;isolation:isolate;font-family:system-ui,"Noto Sans",sans-serif;color:#38134f}
+#topics .ap-v95-build{aspect-ratio:865/1536}
+#topics .ap-v95-choose{aspect-ratio:864/1461}
+#topics .ap-v95-art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:-1;display:block;pointer-events:none}
+#topics .ap-v95 button{font-family:inherit;cursor:pointer;touch-action:manipulation}
+#topics .ap-v95 button:focus-visible{outline:3px solid #7224cd;outline-offset:1px}
+#topics .ap-v95-back{position:absolute;top:4%;left:7%;width:49%;height:7%;border:0;background:transparent;border-radius:50px;box-shadow:none}
+#topics .ap-v95-choose .ap-v95-back{top:2.7%;left:6.5%}
+#topics .ap-v95-progress{position:absolute;top:12.95%;left:8.6%;width:81%;height:4.55%;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 2px;white-space:nowrap;font-size:clamp(11px,3.4vw,20px);font-weight:740;color:#722a9e;background:#f8effbec;border-radius:100px;z-index:2}
+#topics .ap-v95-choose .ap-v95-progress{top:11.35%;height:4.75%;left:8.2%;width:82.8%}
+#topics .ap-v95-meter{position:absolute;top:18.75%;left:8.1%;width:83.5%;height:2.05%;border-radius:30px;background:#d9c3ec;box-shadow:0 0 0 3px #fbf6ff;border:1px solid #e6cafa;overflow:hidden}
+#topics .ap-v95-choose .ap-v95-meter{top:17.7%;left:7.5%;width:85%;height:1.9%}
+#topics .ap-v95-meter i{display:block;height:100%;border-radius:30px;background:linear-gradient(90deg,#cc81ff,#8c30df);transition:width .22s}
+#topics .ap-v95-build-prompt{position:absolute;left:41.8%;top:37.2%;width:50.2%;height:18.2%;padding:4%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:5px;border:2px solid #fff;border-radius:8%;background:linear-gradient(140deg,#fff8fff7,#f6e7f9f8);box-shadow:0 6px 17px #47234c44;overflow:hidden}
+#topics .ap-v95-build-prompt span{font-weight:760;color:#9230c2;font-size:clamp(13px,3.3vw,21px);line-height:1.2}
+#topics .ap-v95-build-prompt strong{font-size:clamp(17px,4.2vw,28px);line-height:1.25;font-weight:850;color:#300c48}
+#topics .ap-v95-slots{position:absolute;left:7.8%;top:57.1%;width:83.3%;height:11.7%;display:flex;align-items:center;justify-content:center;gap:1.5%;padding:2.2%;border:2px solid #fff;border-radius:8%/32%;background:linear-gradient(150deg,#fff9fffa,#f7eafbfc);box-shadow:0 5px 20px #49214a48;overflow:hidden}
+#topics .ap-v95-slot{min-width:0;flex:0 1 calc(70% / var(--slot-count));max-width:20%;height:65%;border:2px dashed #bb63df;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f7ecf7e0;color:#9c3de1;font-weight:600;font-size:clamp(19px,6vw,30px);line-height:1.05}
+#topics .ap-v95-filled{border:2px solid #c98df0;background:#f0dcf9;color:#300c48;overflow:hidden}
+#topics .ap-v95-slot small{font-size:clamp(10px,2vw,12px);font-weight:600;color:#8a48ac;line-height:1.05}
+#topics .ap-v95-slot strong{font-size:clamp(18px,5.4vw,29px)}
+#topics .ap-v95-bank{position:absolute;left:7.7%;top:70.5%;width:84%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:stretch}
+#topics .ap-v95-token{display:flex;flex-direction:column;justify-content:center;align-items:center;min-width:0;aspect-ratio:1.46/1;border:2px solid #fff;border-radius:23%;background:linear-gradient(150deg,#fffcfffa,#f4e5f8fa);color:#350d4d;box-shadow:0 4px 16px #2f16403a;padding:4px 1px;line-height:1.1;overflow:hidden}
+#topics .ap-v95-token small{color:#9d3cc3;font-size:clamp(12px,3vw,18px);font-weight:500}
+#topics .ap-v95-token strong{font-size:clamp(25px,7.2vw,42px);font-weight:850;margin-top:4px}
+#topics .ap-v95-token.ap-v95-used{visibility:hidden}
+#topics .ap-v95-choose-prompt{position:absolute;left:6.4%;top:37.6%;width:87%;height:21.6%;padding:2.5% 3%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;border:2px solid #fff;border-radius:9%/13%;background:linear-gradient(160deg,#fffafffb,#f3e7f8fc);box-shadow:0 6px 18px #4d294b3e}
+#topics .ap-v95-choose-prompt span{color:#985abb;font-size:clamp(12px,3.3vw,19px);font-weight:620}
+#topics .ap-v95-choose-prompt strong{font-weight:900;font-size:clamp(29px,8.2vw,50px);line-height:1.16;color:#340b4d}
+#topics .ap-v95-choose-prompt small{font-weight:650;color:#925db2;font-size:clamp(12px,3vw,18px)}
+#topics .ap-v95-choose-prompt button{margin-top:4px;border:1px solid #aeeccc;background:#dcffee;color:#227854;border-radius:90px;padding:2% 6%;font-size:clamp(14px,3.7vw,23px);font-weight:750;min-height:25%}
+#topics .ap-v95-choose-prompt em{font-style:normal;font-size:11px;color:#665a81;min-height:10px}
+#topics .ap-v95-choice{position:absolute;left:6.4%;width:87%;height:10.7%;display:flex;align-items:center;gap:3.4%;padding:2.5% 3.2%;border:2px solid #fff;border-radius:10%/28%;box-shadow:0 6px 15px #522c6040;background:linear-gradient(130deg,#fff8fffc,#f4e5fafa);color:#321048;text-align:left;overflow:hidden}
+#topics .ap-v95-choice-0{top:60.8%}
+#topics .ap-v95-choice-1{top:72.5%}
+#topics .ap-v95-choice-2{top:84.2%}
+#topics .ap-v95-choice b{flex:0 0 auto;width:10%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#ddaff4;color:#502075;font-size:clamp(15px,4.3vw,24px)}
+#topics .ap-v95-choice span{flex:1;min-width:0;font-weight:850;line-height:1.16;font-size:clamp(15px,4.4vw,24px)}
+#topics .ap-v95-choice i{flex:0 0 auto;width:6%;aspect-ratio:1;border-radius:50%;border:2px solid #c19ed2}
+#topics .ap-v95-choice.ap-v95-selected{background:linear-gradient(130deg,#f9e5ff,#edd0ff);border-color:#b95bf4}
+#topics .ap-v95-choice.ap-v95-selected i{background:#8f35d8;box-shadow:inset 0 0 0 4px #f6e0ff;border-color:#8f35d8}
+#topics .ap-v95-choice.ap-v95-correct{border-color:#5fb985}
+#topics .ap-v95-footer{max-width:540px;margin:-1px auto 0;padding:11px 13px 28px;background:linear-gradient(180deg,#f1e0f8,#eee0f6);font-family:system-ui,sans-serif}
+#topics .ap-v95-feedback{font-size:15px;text-align:center;color:#713198;min-height:24px;font-weight:700;margin:3px 0 6px}
+#topics .ap-v95-feedback small{display:block;font-size:12px;line-height:1.3;margin:3px auto;max-width:94%;color:#613b79}
+#topics .ap-v95-actions{display:flex;gap:10px;align-items:center}
+#topics .ap-v95-actions button{min-height:56px;border-radius:90px;font-weight:800;font-size:18px;cursor:pointer}
+#topics .ap-v95-check{flex:1;border:2px solid #fff;background:linear-gradient(120deg,#ba66ed,#8331d5);color:#fff;box-shadow:0 5px 18px #8c4fbb75}
+#topics .ap-v95-clear{border:1px solid #d1b2e9;background:#fffaff;color:#74439b;padding:10px 16px}
+@media(max-width:370px){#topics .ap-v95-progress{font-size:12px}#topics .ap-v95-build-prompt strong{font-size:15px}#topics .ap-v95-token strong{font-size:24px}#topics .ap-v95-choice span{font-size:14px}#topics .ap-v95-slots{padding:1.5%}#topics .ap-v95-slot{border-radius:11px}}
+@media(prefers-reduced-motion:reduce){#topics .ap-v95 *{transition:none!important}}
+#topics .ap-v95-art{z-index:0}
+#topics .ap-v95 > :not(.ap-v95-art){z-index:1}
