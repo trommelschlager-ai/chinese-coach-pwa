@@ -58,3 +58,50 @@ body:has(#topics .ap-v95){background:#ede0f5!important}
 @media(prefers-reduced-motion:reduce){#topics .ap-v95 *{transition:none!important}}
 #topics .ap-v95-art{z-index:0}
 #topics .ap-v95 > :not(.ap-v95-art){z-index:1}
+
+/* v96 — fix the user's Android screenshots: approved artwork already has
+   question/answer text painted into it. Every dynamic control MUST cover that
+   old text completely, not reveal it with translucent fills or disabled opacity. */
+#topics .ap-v95-progress {
+  background:linear-gradient(105deg,#fff8ff,#f5e9fa)!important;
+  opacity:1!important;
+  border:1px solid #e8d8f4!important;
+  padding:0 2.4%!important;
+}
+#topics .ap-v95-build-prompt,
+#topics .ap-v95-choose-prompt {
+  background:linear-gradient(145deg,#fffaff 0%,#fff4ff 55%,#f4e6f7 100%)!important;
+  opacity:1!important;
+  border:2px solid #fff!important;
+  box-shadow:0 5px 16px #5f36702b!important;
+}
+#topics .ap-v95-slots {
+  background:linear-gradient(140deg,#fffaff 0%,#f6e9f9 100%)!important;
+  opacity:1!important;
+}
+#topics .ap-v95-slot,
+#topics .ap-v95-token,
+#topics .ap-v95-choice {
+  background:linear-gradient(145deg,#fffaff 0%,#f5e9f8 100%)!important;
+  opacity:1!important;
+}
+/* Never hide a selected word tile: the original screenshot has another word
+   painted underneath. Keep a fully opaque empty tile in exactly its place. */
+#topics .ap-v95-token.ap-v95-used {
+  visibility:visible!important;
+  opacity:1!important;
+  background:linear-gradient(145deg,#f9f1fd,#f1e4fa)!important;
+  border-style:dashed!important;
+  border-color:#d2a5e8!important;
+  box-shadow:inset 0 2px 7px #cc9ae625!important;
+  pointer-events:none;
+}
+#topics .ap-v95-token.ap-v95-used small,
+#topics .ap-v95-token.ap-v95-used strong {visibility:hidden!important}
+/* Match the printed tile artwork so neither card border remains alongside
+   the live button on narrow Android screens. */
+#topics .ap-v95-bank {
+  left:8.5%!important;
+  width:83%!important;
+  gap:1.4%!important;
+}

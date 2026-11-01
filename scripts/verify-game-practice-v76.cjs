@@ -5,9 +5,13 @@ const html=read('index.html'),clean=read('assets/clean-learning-sections.js'),js
 assert(html.includes('game-practice-v76.js?v=77')&&html.includes('game-practice-v76.css?v=77'));
 assert(html.includes('data-choice="6"')&&html.includes("window.location.assign('./game.html')"),'Game must open isolated screen');
 const game=read('game.html');
-assert(game.includes('approved-v95.css?v=95'),'Approved live game artwork stylesheet loaded');
+assert(game.includes('approved-v95.css?v=96'),'Approved live game artwork stylesheet loaded');
 const approvedCss=read('assets/approved-v95.css');
 assert(approvedCss.includes('ap-v95-choice')&&approvedCss.includes('ap-v95-build-prompt'),'Both approved interactive layouts styled');
+assert(approvedCss.includes('.ap-v95-token.ap-v95-used')&&approvedCss.includes('visibility:visible!important'),'Chosen word cannot expose old printed tile under it');
+assert(approvedCss.includes('background:linear-gradient(145deg,#fffaff 0%,#fff4ff 55%,#f4e6f7 100%)!important'),'Dynamic question card must be opaque to avoid printed duplicate text');
+assert(swCache(read('sw.js'))==='chinese-coach-pwa-v96','PWA cache bumped to v96 for old screenshots');
+function swCache(source){return source.match(/const CACHE='([^']+)'/)?.[1]}
 assert(js.includes('function renderApprovedV95')&&js.includes('session.mode===\'build\'||session.mode===\'choose\''),'Approved layouts active for both modes');
 for(const art of ['approved-choose-v95.webp','approved-build-v95.webp']){assert(fs.statSync('assets/'+art).size>50000,'Missing approved artwork');assert(pack.files.includes('./assets/'+art),'Approved artwork not in offline package')}
 assert(game.includes('game-standalone-v80.css?v=88')&&game.includes('game-practice-v76.js?v=95'),'Game keeps working controls in its own page');
