@@ -1,0 +1,40 @@
+/* v102: The approved autumn temple and panda artwork must remain completely still
+   when a word is selected or returned. Reserve both answer and word-bank height
+   from the start, so the image with background-size:cover never rescales. */
+#topics .restore-build + .game-build-static .audit-answer{
+ height:calc(var(--game-answer-rows,1) * 75px + 24px)!important;
+ min-height:calc(var(--game-answer-rows,1) * 75px + 24px)!important;
+ max-height:none!important;
+ align-content:center;
+ box-sizing:border-box!important;
+}
+#topics .restore-build + .game-build-static .audit-bank{
+ height:calc(var(--game-bank-rows,2) * 84px + 23px)!important;
+ min-height:calc(var(--game-bank-rows,2) * 84px + 23px)!important;
+ max-height:none!important;
+ align-content:flex-start!important;
+ box-sizing:border-box!important;
+}
+/* Play-state messages should not change the deck's height after each tap. */
+#topics .restore-build + .game-build-static > .audit-audio-note{
+ height:32px!important;
+ min-height:32px!important;
+ max-height:32px!important;
+ margin:10px auto!important;
+ box-sizing:border-box!important;
+ display:flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ line-height:1.2!important;
+ padding:4px 10px!important;
+ background:transparent!important;
+}
+#topics .restore-build + .game-build-static > .audit-audio-note:not(:empty){
+ background:#fff4ff!important;
+}
+/* No animations on the scene or question panels during answer selection. */
+#topics .game-build-static .audit-answer,
+#topics .game-build-static .audit-bank{
+ transition:none!important;
+ animation:none!important;
+}
