@@ -13,7 +13,10 @@ for(const han of mustHave){
  assert(bytes[0]===0xff||bytes.toString('ascii',0,3)==='ID3','Not MP3 '+han);
  assert(pack.files.includes(file),'Missing offline inclusion '+han);
 }
-assert(js.includes("const compoundAudioParts={'中国人':['中','国','人'],'二十五':['二','十','五']}"));
+assert(js.includes("const compoundAudioParts={'二十五':['二','十','五']}"));
+assert(js.includes("'小明':'./assets/game-words-v99/xiaoming.mp3'"));
+assert(js.includes("'中国人':'./assets/game-words-v99/zhongguoren.mp3'"));
+for(const name of ['xiaoming','zhongguoren']){assert(fs.statSync('assets/game-words-v99/'+name+'.mp3').size>3000);assert(pack.files.includes('./assets/game-words-v99/'+name+'.mp3'));}
 assert(!js.includes('new SpeechSynthesisUtterance'),'No robotic TTS in game');
 assert(!dict['小明'],'Do not claim an unverified same-speaker full-name recording');
-console.log('V90 single-source Mandarin voice inventory: 10 added clips; compounds explicit; no robot fallback.');
+console.log('V99 token inventory: original native clips retained, two whole-word corrections, no device TTS fallback.');

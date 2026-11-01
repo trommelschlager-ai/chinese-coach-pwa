@@ -94,3 +94,18 @@ const stats=api.getStats();
 assert.deepEqual(JSON.parse(w.localStorage.getItem(w.courseProgress.gameKey)),JSON.parse(JSON.stringify(stats)));
 assert.throws(()=>w.courseProgress.normalizeGame({points:-1},true));
 console.log('V98 game verified: all 30 questions, correct/wrong feedback, hidden pinyin, clear/remove/capacity, errors-only review and progress.');
+
+// v99: names and nationality each start one continuous whole-word MP3.
+node.querySelector('[data-game-clear]').click();
+const beforeName=played.length;
+[...node.querySelectorAll('[data-game-token]')].find(b=>b.textContent.includes('小明')).click();
+assert.equal(played.length,beforeName+1);assert.equal(played.at(-1),'./assets/game-words-v99/xiaoming.mp3');
+node.querySelector('[data-game-clear]').click();
+for(const [han] of api.items[0].parts)[...node.querySelectorAll('[data-game-token]')].find(b=>b.querySelector('strong').textContent===han).click();
+node.querySelector('[data-game-check]').click();node.querySelector('[data-game-check]').click();
+const beforeCountry=played.length;
+[...node.querySelectorAll('[data-game-token]')].find(b=>b.textContent.includes('中国人')).click();
+assert.equal(played.length,beforeCountry+1);assert.equal(played.at(-1),'./assets/game-words-v99/zhongguoren.mp3');
+assert(node.querySelector('.restore-stage.restore-build'),'Approved image stage present');
+assert(node.querySelector('.restore-deck .audit-bank'),'Live bank outside painted artwork');
+console.log('V99: restored artwork with live flow layout and both whole-word MP3s verified.');

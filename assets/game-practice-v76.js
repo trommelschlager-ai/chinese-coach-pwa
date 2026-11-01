@@ -47,17 +47,15 @@ function stopAudio(){
  if(currentAudio){currentAudio.pause();currentAudio=null}
  try{window.speechSynthesis?.cancel?.()}catch{}
 }
-/* One consistent pre-recorded Mandarin voice: never use the device's robotic TTS.
-   The approved dialogue-mode MP3s are intentionally left untouched. */
-/* Only Yue Tan's licensed Mandarin MP3s. No speechSynthesis or mixed speakers.
-   Compound sequences keep their parts in the same voice, with short natural pauses.
-   小明 is deliberately unavailable until a faithful Yue Tan rendition is sourced. */
-const compoundAudioParts={'中国人':['中','国','人'],'二十五':['二','十','五']};
+/* Whole-word clips avoid the missing name and the pauses between 中国人 syllables.
+   These two use the established Yunyang course narrator; other token audio is preserved. */
+const wholeWordAudio={'小明':'./assets/game-words-v99/xiaoming.mp3','中国人':'./assets/game-words-v99/zhongguoren.mp3'};
+const compoundAudioParts={'二十五':['二','十','五']};
 function speakCardWord(han){
  stopAudio();
  const note=one('[data-game-audio-feedback]');
  const parts=compoundAudioParts[han]||[han];
- const sources=parts.map(part=>window.courseHumanAudio?.[part]);
+ const sources=wholeWordAudio[han]?[wholeWordAudio[han]]:parts.map(part=>window.courseHumanAudio?.[part]);
  if(sources.some(source=>!source)){
   if(note)note.textContent='Нет проверенной записи «'+han+'» этим голосом.';
   return;
@@ -114,10 +112,11 @@ function topBar(text){return '<button class="audit-back" type="button" data-game
 function hero(title,subtitle){return '<header class="audit-game-hero"><div><h1>'+safe(title)+'</h1><p>'+safe(subtitle)+'</p></div>'+panda()+'</header>'}
 function renderHub(){
  screen='hub';session=null;stopAudio();const s=readStats();
- shell(topBar('К занятиям')+hero('Игровая практика','Короткие упражнения на знакомые слова')+
- '<div class="audit-stats" aria-label="Прогресс обучения"><span>Серия: <b>'+s.streak+' '+pluralDays(s.streak)+'</b></span><span><b>'+s.points+'</b> очков</span></div>'+
- '<nav class="audit-game-modes" aria-label="Выбери упражнение">'+Object.entries(modes).map(([key,v])=>'<button type="button" data-game-mode="'+key+'" class="audit-mode audit-mode-'+key+'"><span><strong>'+safe(v.title)+'</strong><small>'+safe(v.subtitle)+' · 10 заданий</small></span><span aria-hidden="true">›</span></button>').join('')+'</nav>'+
- '<button type="button" class="audit-secondary audit-full" data-game-results>Результаты и награды →</button>');
+ shell('<div class="approved-art-hub restored-hub"><img class="approved-art-image" src="./assets/game-approved-menu-v87-original.png" width="864" height="1536" alt="" aria-hidden="true">'+
+ '<h1 class="restore-sr">Игровая практика</h1><button type="button" class="approved-hit approved-hit-back" data-game-back aria-label="К занятиям"></button>'+
+ '<div class="restore-hub-stats" aria-label="Прогресс обучения"><span>🔥 Серия: <b>'+s.streak+' '+pluralDays(s.streak)+'</b></span><span>⭐ <b>'+s.points+'</b> очков</span></div>'+
+ Object.entries(modes).map(([key,v])=>'<button type="button" class="approved-hit approved-hit-'+key+'" data-game-mode="'+key+'" aria-label="'+safe(v.title)+' — 10 заданий"></button>').join('')+
+ '<button type="button" class="approved-hit approved-hit-results" data-game-results aria-label="Результаты и награды"></button></div>');
 }
 function pluralDays(n){const v=n%100,k=n%10;return v>=11&&v<=14?'дней':k===1?'день':k>=2&&k<=4?'дня':'дней'}
 const explanations={
@@ -136,19 +135,24 @@ function choiceOptions(){
  const other=shuffled(items.length,session.index*119+13).filter(i=>i!==session.index).slice(0,2);
  return shuffled(3,session.index+89).map(i=>[session.index,...other][i]);
 }
+function restoredStage(mode,content,meter){
+ return '<div class="restore-stage restore-'+mode+'">'+topBar('Игровая практика')+
+ '<h1 class="restore-sr">'+safe(modes[mode].title)+'</h1><div class="restore-status"><span>'+(session.review?'Повтор · ':'')+'Задание '+(session.position+1)+' из '+session.order.length+'</span><span>🔥 Комбо ×'+session.combo+'</span></div>'+
+ '<progress class="restore-meter" max="100" value="'+meter+'" aria-label="Выполнено заданий"></progress>'+content+'</div>';
+}
 function renderQuestion(){
  const q=items[session.index],mode=session.mode;let body='';
  const meter=(session.position+(session.locked?1:0))/session.order.length*100;
  if(mode==='build'){
-  body='<div class="audit-prompt"><p>Переведи на китайский</p><h2>'+safe(q.ru)+'</h2></div>'+
+  body=restoredStage(mode,'<div class="audit-prompt"><p>Переведи предложение</p><h2>'+safe(q.ru)+'</h2></div>',meter)+'<div class="restore-deck">'+
   '<div class="audit-answer" role="group" aria-label="Твоя фраза">'+session.selected.map((id,k)=>token(session.bank[id],k,true)).join('')+
   (session.selected.length?'':'<span class="audit-answer-hint">Нажимай слова ниже. Нажми выбранное слово, чтобы убрать его.</span>')+'</div>'+
-  '<div class="audit-bank" role="group" aria-label="Слова для ответа">'+session.bank.map((t,id)=>session.selected.includes(id)?'':token(t,id)).join('')+'</div>';
+  '<div class="audit-bank" role="group" aria-label="Слова для ответа">'+session.bank.map((t,id)=>session.selected.includes(id)?'':token(t,id)).join('')+'</div><p class="audit-audio-note" data-game-audio-feedback role="status" aria-live="polite"></p>';
  }else{
   const choices=session.choices||choiceOptions();session.choices=choices;
-  body=mode==='listen'?'<div class="audit-listen"><button type="button" class="audit-play" data-game-play aria-label="Прослушать китайскую фразу">▶ Прослушать</button><p>Какая фраза прозвучала?</p></div>':
+  const prompt=mode==='listen'?'<div class="audit-listen"><button type="button" class="audit-play" data-game-play aria-label="Прослушать китайскую фразу">▶ Прослушать</button><p>Какая фраза прозвучала?</p></div>':
   '<div class="audit-prompt"><p>Что означает эта фраза?</p><h2 lang="zh-Hans">'+safe(q.zh)+'</h2><p class="audit-pinyin">'+safe(q.py)+'</p><button type="button" class="audit-secondary" data-game-play>🔊 Послушать</button></div>';
-  body+='<p class="audit-audio-note" data-game-audio-feedback role="status" aria-live="polite">'+(mode==='listen'?safe(audioNote):'')+'</p>'+
+  body=restoredStage(mode,prompt+'<p class="audit-audio-note" data-game-audio-feedback role="status" aria-live="polite">'+(mode==='listen'?safe(audioNote):'')+'</p>',meter)+'<div class="restore-deck">'+
   '<div class="audit-choices" role="group" aria-label="Варианты ответа">'+choices.map((id,i)=>{
    const selected=session.choice===i,correct=session.locked&&id===session.index,wrong=session.locked&&selected&&!correct,x=items[id];
    return '<button type="button" data-game-option="'+i+'" class="audit-choice'+(selected?' is-selected':'')+(correct?' is-correct':'')+(wrong?' is-wrong':'')+'" aria-pressed="'+selected+'" '+(session.locked?'disabled':'')+'><b aria-hidden="true">'+(i+1)+'</b><span>'+
@@ -157,10 +161,10 @@ function renderQuestion(){
   }).join('')+'</div>';
   if(mode==='listen')body+='<button type="button" class="audit-secondary audit-pinyin-toggle" data-game-toggle-pinyin aria-expanded="'+session.showPinyin+'">'+(session.showPinyin?'Скрыть пиньинь':'Показать пиньинь')+'</button>';
  }
- shell(topBar('Игровая практика')+'<div class="audit-question" data-mode="'+mode+'"><header class="audit-question-head"><h1>'+safe(modes[mode].title)+'</h1><span>'+(session.review?'Повтор ошибок · ':'')+'Задание '+(session.position+1)+' из '+session.order.length+'</span><progress max="100" value="'+meter+'" aria-label="Выполнено заданий"></progress></header>'+body+
+ shell('<div class="audit-question restored-question" data-mode="'+mode+'">'+body+
  '<div class="audit-feedback" role="status" aria-live="polite">'+safe(feedback)+'</div>'+correction(q)+
  '<div class="audit-actions">'+(mode==='build'?'<button type="button" class="audit-secondary" data-game-clear '+(session.locked?'disabled':'')+'>Очистить</button>':'')+
- '<button type="button" class="audit-primary" data-game-check>'+(session.locked?(session.position===session.order.length-1?'Результат →':'Далее →'):'Проверить →')+'</button></div></div>');
+ '<button type="button" class="audit-primary" data-game-check>'+(session.locked?(session.position===session.order.length-1?'Результат →':'Далее →'):'Проверить →')+'</button></div></div></div>');
 }
 function check(){
  if(session.locked){next();return}
