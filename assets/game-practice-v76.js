@@ -24,7 +24,22 @@ const modes={
 const safe=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 const one=s=>section.querySelector(s);
 const all=s=>[...section.querySelectorAll(s)];
-const soundFile=i=>'./assets/dialogue-voices-v73/'+items[i].audio;
+// Prefer the complete, same-speaker clean recording set when deployed.
+// Until the manifest is present, the last working audio remains available.
+let unifiedVoiceManifest=null;
+const soundFile=i=>unifiedVoiceManifest?.sentences?.[items[i].id] || './assets/dialogue-voices-v73/'+items[i].audio;
+async function discoverUnifiedVoice(){
+ try{
+  const response=await fetch('./assets/game-unified-voice-v100/manifest.json?v=100.1',{cache:'no-store'});
+  if(!response.ok)return;
+  const manifest=await response.json();
+  const words=[...new Set(items.flatMap(q=>q.parts.map(p=>p[0])).concat(['你','吗','我','不','很','谢谢','三','在']))];
+  if(!words.every(w=>typeof manifest.words?.[w]==='string'))return;
+  if(!items.every(q=>typeof manifest.sentences?.[q.id]==='string'))return;
+  unifiedVoiceManifest=manifest;
+ }catch{ /* Stay on last known working assets during network or deployment delays. */ }
+}
+discoverUnifiedVoice();
 function readStats(){return window.courseProgress.readGame()}
 function writeStats(s){try{window.courseProgress.writeGame(s)}catch{feedback='Не удалось сохранить достижения. Проверь свободное место и разрешение хранения данных.'}}
 const dayKey=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
@@ -55,7 +70,7 @@ function speakCardWord(han){
  stopAudio();
  const note=one('[data-game-audio-feedback]');
  const parts=compoundAudioParts[han]||[han];
- const sources=wholeWordAudio[han]?[wholeWordAudio[han]]:parts.map(part=>window.courseHumanAudio?.[part]);
+ const sources=unifiedVoiceManifest?.words?.[han]?[unifiedVoiceManifest.words[han]]:wholeWordAudio[han]?[wholeWordAudio[han]]:parts.map(part=>window.courseHumanAudio?.[part]);
  if(sources.some(source=>!source)){
   if(note)note.textContent='Нет проверенной записи «'+han+'» этим голосом.';
   return;
