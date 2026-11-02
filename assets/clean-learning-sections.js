@@ -76,7 +76,7 @@ function bindWords(){
 }
 function categories(){
  currentCategory=null;view='words';
- const body=
+ const body='<span class="clean-screen-reader-title">193 слов в 13 темах</span>'+ 
  '<label class="clean-search-label" for="clean-word-search">Поиск китайского слова</label>'+
  '<input type="search" id="clean-word-search" class="clean-search" placeholder="我, nǎlǐ, куда..." autocomplete="off">'+
  '<div class="clean-category-list">'+courseCategories.map(g=>
