@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {chromium} from 'playwright';
 
 const BASE=process.env.QA_BASE||'http://127.0.0.1:4173';
-const OUT='qa/v113';
+const OUT='qa/v114';
 const sizes=[[360,800],[393,852],[412,915]];
 fs.mkdirSync(OUT,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--autoplay-policy=no-user-gesture-required']});
@@ -92,6 +92,14 @@ try{
   await page.evaluate(()=>window.openLearningTopics('dialogues'));
   await page.locator('[data-dialog-lesson="2"]').click();
   assert.equal(await page.locator('.ch110-line').count(),2);
+  // Dynamic dialogue images must be fully decoded before the screenshot.
+  // Otherwise headless Chromium can capture blank avatar circles while WebP is loading.
+  const portraitInfo=await page.locator('.ch110-portrait').evaluateAll(async images=>{
+   await Promise.all(images.map(img=>img.decode()));
+   return images.map(img=>({complete:img.complete,width:img.naturalWidth,height:img.naturalHeight,src:img.currentSrc}));
+  });
+  assert.equal(portraitInfo.length,2,'Approved male/female portrait pair must exist');
+  assert(portraitInfo.every(img=>img.complete&&img.width>=100&&img.height>=100),'Both portraits must decode: '+JSON.stringify(portraitInfo));
   await page.screenshot({path:OUT+'/dialogue-'+size+'.png',fullPage:true});
   assert.equal(await page.locator('.ch110-person-name').first().textContent(),'Она · 1');
   assert.equal(await page.locator('.ch110-person-name').nth(1).textContent(),'Он · 2');
@@ -106,11 +114,11 @@ try{
   await page.waitForTimeout(300);
   await page.locator('[data-dialogue-line="1"]').click();
   await page.waitForTimeout(300);
-  record(size,'dialogue',{mp3Info,first:'female 你好',second:'male 哈喽',pageErrors});
+  record(size,'dialogue',{mp3Info,portraitInfo,first:'female 你好',second:'male 哈喽',pageErrors});
   assert(!pageErrors.length,'Browser JS errors: '+pageErrors.join(' | '));
   await context.close();
  }
- const report={version:113,testedAt:new Date().toISOString(),sizes,findings,method:'Playwright Chromium rendering actual index.html and game.html on localhost; full-page PNGs'};
+ const report={version:114,testedAt:new Date().toISOString(),sizes,findings,method:'Playwright Chromium rendering actual index.html and game.html on localhost; full-page PNGs'};
  fs.writeFileSync(OUT+'/results.json',JSON.stringify(report,null,2)+'\n');
  console.log('MOBILE_QA_PASS: '+JSON.stringify(findings));
 }finally{await browser.close()}
