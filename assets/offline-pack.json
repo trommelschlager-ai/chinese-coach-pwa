@@ -1,6 +1,6 @@
 {
-  "version": 112,
-  "bytes": 23378418,
+  "version": 113,
+  "bytes": 23400882,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -252,6 +252,9 @@
     "./assets/daily-study-v98.js?v=98",
     "./assets/dialogue-cafe-v71.svg",
     "./assets/dialogue-clock-v71.svg",
+    "./assets/dialogue-greetings-v113/l2-01-a.mp3",
+    "./assets/dialogue-greetings-v113/l2-02-b.mp3",
+    "./assets/dialogue-greetings-v113/status.json",
     "./assets/dialogue-pagoda-v71.svg",
     "./assets/dialogue-sakura-v71.svg",
     "./assets/dialogue-voice-plan.json",

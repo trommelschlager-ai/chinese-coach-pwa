@@ -249,6 +249,11 @@
   return dialogueMp3Status;
  }
  function getDialogueClip(lessonId,index,speaker,useNew){
+  // These two *exact-text* recordings match the first two approved portraits:
+  // 你好 — adult woman; 哈喽 — adult man. Never substitute 你好 audio for 哈喽.
+  if(Number(lessonId)===2 && index<2){
+   return './assets/dialogue-greetings-v113/l2-'+String(index+1).padStart(2,'0')+'-'+speaker.toLowerCase()+'.mp3';
+  }
   const folder=useNew?'dialogue-voices-v73':'dialogue-voices';
   return './assets/'+folder+'/l'+lessonId+'-'+String(index+1).padStart(2,'0')+'-'+speaker.toLowerCase()+'.mp3';
  }
@@ -291,8 +296,7 @@
   stopLearningAudio();const token=audioGeneration;
   const ready=await ensureDialogueMp3Ready();if(token!==audioGeneration)return;
   const [speaker,text]=line;
-  const newGreeting=Number(lessonId)===2&&index===1&&text.startsWith('哈喽');
-  try{await playWord(text,.97,token,newGreeting?null:speaker,newGreeting?null:getDialogueClip(lessonId,index,speaker,lessonId===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1')),newGreeting)}
+  try{await playWord(text,.97,token,speaker,getDialogueClip(lessonId,index,speaker,lessonId===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1')),false)}
   finally{if(token===audioGeneration)audioStatus.hidden=true}
  };
  window.playStandaloneDialogue=function(lessonId){
@@ -309,8 +313,7 @@
     if(token!==audioGeneration)break;
     const [speaker,text]=lesson.dialogue[i];
     rows.forEach((r,j)=>r.classList.toggle('playing-line',j===i));
-    const newGreeting=lesson.id===2&&i===1&&text.startsWith('哈喽');
-    await playWord(text,.97,token,newGreeting?null:speaker,newGreeting?null:getDialogueClip(lesson.id,i,speaker,lesson.id===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1')),newGreeting);
+    await playWord(text,.97,token,speaker,getDialogueClip(lesson.id,i,speaker,lesson.id===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1')),false);
    }
   }finally{rows.forEach(r=>r.classList.remove('playing-line'));if(token===audioGeneration)audioStatus.hidden=true}
  }

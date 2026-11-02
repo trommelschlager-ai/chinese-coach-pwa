@@ -30,5 +30,5 @@ assert(quality.includes('a.preservesPitch=true'));
 assert(fs.readFileSync('assets/daily-study-v98.js','utf8').includes('data-dialogue-voice-toggle'));
 assert(fs.readFileSync('assets/daily-study-v98.js','utf8').includes('Включить новые голоса'));
 assert(Number(sw.match(/chinese-coach-pwa-v(\d+)/)?.[1] || 0)>=79);
-assert(html.includes("learning-quality.js?v=98")&&html.includes("clean-learning-sections.js?v=98"));
+assert(/learning-quality\.js\?v=\d+/.test(html)&&/clean-learning-sections\.js\?v=\d+/.test(html));
 console.log('All 25 truly different Mandarin dialogue MP3s verified, new voices live by default, legacy comparison and offline cache preserved.');

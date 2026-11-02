@@ -1,0 +1,21 @@
+{
+  "ready": true,
+  "count": 2,
+  "version": 113,
+  "commercial_use": false,
+  "source": "Edge Read Aloud personal evaluation only",
+  "clips": [
+    {
+      "file": "l2-01-a.mp3",
+      "text": "你好！",
+      "voice": "zh-CN-XiaoxuanNeural",
+      "role": "female"
+    },
+    {
+      "file": "l2-02-b.mp3",
+      "text": "哈喽！",
+      "voice": "zh-CN-YunjianNeural",
+      "role": "male"
+    }
+  ]
+}
