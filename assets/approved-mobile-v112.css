@@ -577,3 +577,24 @@
 #topics#topics#topics .ch110-dialogue-body{min-height:210px!important}
 }
 @media(prefers-reduced-motion:reduce){#topics#topics#topics .ch110-build-screen *,#topics#topics#topics .ch110-dialogue *,#quiz#quiz#quiz *{animation:none!important;transition:none!important}}
+
+
+/* v118: Give the approved game hub the full phone canvas.
+   The source image contains the approved labels; hotspots remain relative to its
+   geometry. Only the hub is affected, never the real game-question UI. */
+#topics#topics#topics[data-simple-section='game']:has(.approved-art-hub){
+  max-width:100%!important;width:100%!important;margin:0!important;padding:0!important;
+  overflow:hidden!important;background:#f5dafa!important;
+}
+#topics#topics#topics[data-simple-section='game'] .game-shell:has(.approved-art-hub){
+  width:100%!important;min-height:100dvh!important;height:100dvh!important;
+  padding:0!important;overflow:hidden!important;
+}
+#topics#topics#topics[data-simple-section='game'] .approved-art-hub{
+  width:100%!important;max-width:540px!important;height:100dvh!important;
+  min-height:100dvh!important;aspect-ratio:auto!important;margin:auto!important;
+}
+#topics#topics#topics[data-simple-section='game'] .approved-art-image{
+  display:block!important;width:100%!important;height:100%!important;
+  max-width:100%!important;object-fit:fill!important;
+}
