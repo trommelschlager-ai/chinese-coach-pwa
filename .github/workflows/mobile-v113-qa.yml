@@ -1,11 +1,11 @@
-name: v113 real mobile browser QA
+name: v114 mobile dialogue portrait and game QA
 on:
   push:
-    branches: [fix/mobile-dialogue-game-20261102]
-    paths-ignore: ['qa/v113/**']
+    branches: [fix/v114-portrait-preload]
+    paths-ignore: ['qa/v114/**']
   workflow_dispatch:
 concurrency:
-  group: v113-mobile-qa-${{ github.ref }}
+  group: v114-mobile-qa-${{ github.ref }}
   cancel-in-progress: true
 permissions:
   contents: write
@@ -40,16 +40,16 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: v113-mobile-screenshots
-          path: qa/v113/
+          name: v114-mobile-screenshots
+          path: qa/v114/
           if-no-files-found: warn
       - name: Publish verified screenshots to this review branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add qa/v113
+          git add qa/v114
           if ! git diff --cached --quiet; then
-            git commit -m "Record passing v113 mobile screenshot and audio evidence"
+            git commit -m "Record passing v114 mobile screenshots with decoded portraits"
             git fetch origin "$GITHUB_REF_NAME"
             git rebase -X theirs "origin/$GITHUB_REF_NAME"
             git push origin "HEAD:$GITHUB_REF_NAME"

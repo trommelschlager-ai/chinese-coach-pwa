@@ -134,7 +134,7 @@ function showDialogue(id,page=0){
   const female=id===2 ? (i===0 || (i>1 && who==='B')) : who==='A';
   const size=hz.length>24?' ch110-line-long':hz.length>14?' ch110-line-medium':'';
   return '<article class="ch110-line dialogue-row'+size+'" data-standalone-line="'+i+'">'+
-  '<div class="ch110-person"><img src="./assets/'+(female?'approved-woman-v112.webp':'approved-man-v112.webp')+'" alt="'+(female?'Женщина':'Мужчина')+'" class="ch110-portrait">'+
+  '<div class="ch110-person"><img src="./assets/'+(female?'approved-woman-v112.webp':'approved-man-v112.webp')+'" alt="'+(female?'Женщина':'Мужчина')+'" class="ch110-portrait" loading="eager" decoding="sync" fetchpriority="high" width="142" height="161">'+
   '<span class="ch110-person-name">'+(female?'Она':'Он')+' · '+(i+1)+'</span></div>'+
   '<div class="ch110-speech">'+
   '<div class="ch110-speech-top"><span class="ch110-pinyin" lang="zh-Latn">'+esc(py)+'</span>'+
