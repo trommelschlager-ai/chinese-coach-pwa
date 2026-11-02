@@ -336,7 +336,7 @@ section.addEventListener('click',event=>{
  if(b.hasAttribute('data-game-toggle-pinyin')){
   if(session.mode==='build'){
    session.showPinyin=!session.showPinyin;
-   one('.game-build-static')?.classList.toggle('game-py-hidden',!session.showPinyin);
+   all('.game-build-static').forEach(panel=>panel.classList.toggle('game-py-hidden',!session.showPinyin));
    b.textContent=session.showPinyin?'Скрыть пиньинь':'Показать пиньинь';
    b.setAttribute('aria-pressed',String(session.showPinyin));return;
   }
