@@ -4,6 +4,9 @@ on:
     branches: [fix/mobile-dialogue-game-20261102]
     paths-ignore: ['qa/v113/**']
   workflow_dispatch:
+concurrency:
+  group: v113-mobile-qa-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: write
 jobs:
@@ -48,6 +51,6 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "Record passing v113 mobile screenshot and audio evidence"
             git fetch origin "$GITHUB_REF_NAME"
-            git rebase "origin/$GITHUB_REF_NAME"
+            git rebase -X theirs "origin/$GITHUB_REF_NAME"
             git push origin "HEAD:$GITHUB_REF_NAME"
           fi
