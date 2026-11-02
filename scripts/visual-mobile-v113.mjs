@@ -19,11 +19,13 @@ async function inspect(page,mode,size){
  });
  assert(data.scrollWidth<=data.innerWidth+3,mode+' horizontal overflow at '+size+': '+JSON.stringify(data));
  assert(data.check?.right<=data.innerWidth+3&&data.check?.left>=-3,mode+' Check button horizontal clipping');
+ assert(data.check?.bottom<=data.innerHeight-3,mode+' Check button is below phone viewport: '+JSON.stringify(data));
  assert(data.scrollHeight<=(data.innerHeight*1.45),mode+' unreasonable vertical scrolling '+JSON.stringify(data));
  if(mode==='choose'){
    assert(data.choices&&data.choices.height<320,'Translation answers are too tall: '+JSON.stringify(data));
  }else if(mode==='build'){
    assert(data.bank&&data.bank.height<310,'Builder has excessively stretched word bank: '+JSON.stringify(data));
+   assert(data.innerHeight-data.check.bottom<70,'Builder button floats above large empty lower space: '+JSON.stringify(data));
  }
  record(size,mode,data);
 }
