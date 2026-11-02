@@ -110,9 +110,9 @@ function categories(){
  '<button class="clean-more-categories" data-clean-more type="button">Показать ещё 5 тем ↓</button>'+ 
  '<div class="clean-search-results" hidden></div>';
  frame('Базовые слова','Только слова по темам. Без диалогов, правил и тестов.',body,false);
- $('[data-clean-category]').forEach(b=>b.onclick=()=>openCategory(b.dataset.cleanCategory));
+ $$('[data-clean-category]').forEach(b=>b.onclick=()=>openCategory(b.dataset.cleanCategory));
  let moreShown=false;const more=$('[data-clean-more]');
- more.onclick=()=>{moreShown=true;$('[data-clean-category]').forEach(b=>b.hidden=false);more.hidden=true};
+ more.onclick=()=>{moreShown=true;$$('[data-clean-category]').forEach(b=>b.hidden=false);more.hidden=true};
  $('#clean-word-search').oninput=e=>{
   const q=e.target.value.toLocaleLowerCase().trim();
   const result=$('.clean-search-results'),items=$('.clean-category-list');
