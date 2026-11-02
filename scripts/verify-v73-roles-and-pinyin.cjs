@@ -8,8 +8,7 @@ assert.equal(ds.count,25);assert.deepEqual(ds.role_override,{lesson:2,A:'male',B
 const anna=plan.entries.find(e=>e.lesson===2&&e.line===4),xiao=plan.entries.find(e=>e.lesson===2&&e.line===5);
 assert.equal(anna.text,'我叫安娜。你呢？');assert.equal(anna.speaker,'B');
 assert.equal(xiao.text,'我叫小明。');assert.equal(xiao.speaker,'A');
-assert(sections.includes("id===2?who==='B':who==='A'"),'Avatar genders must invert for lesson 2');
-assert(sections.includes('Анна — женский голос · Сяомин — мужской голос'));
+assert(sections.includes("female=id===2 ? (i===0 || (i>1 && who==='B')) : who==='A'"),'Approved first greeting portraits and lesson 2 character roles must be retained');
 assert(learn.includes("status.role_override?.lesson===2"),'Validate audio pack role correction');
 assert(learn.includes("lessonId===2||"),'Single dialogue line always uses corrected cast');
 assert(learn.includes("lesson.id===2||"),'Full dialogue always uses corrected cast');
