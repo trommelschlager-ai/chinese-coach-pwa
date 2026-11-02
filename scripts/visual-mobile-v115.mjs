@@ -84,7 +84,7 @@ try{
     assert.equal(await page.locator('[data-game-remove]').count(),0);
    }
    const imgs=page.locator('.v115-panda');if(await imgs.count())await imgs.first().evaluate(el=>el.decode());
-   await checkLayout(page,size,mode);
+   await checkLayout(page,[width,height],mode);
    await page.screenshot({path:OUT+'/'+mode+'-'+size+'.png',fullPage:true});
    if(mode==='choose'){
     const correct=await page.locator('.v115-scene h2').textContent();
