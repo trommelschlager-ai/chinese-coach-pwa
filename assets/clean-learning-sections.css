@@ -17,6 +17,7 @@
 #topics .clean-category:nth-child(4n+3){background:linear-gradient(100deg,#f3f7ff,#fff)}
 #topics .clean-category:nth-child(4n+4){background:linear-gradient(100deg,#f1fffa,#fff)}
 #topics .clean-category-icon{display:grid;place-items:center;background:linear-gradient(145deg,#fff,#f5e1ff);border:1px solid #e8c0ee;border-radius:17px;width:50px;height:53px;font-size:26px;box-shadow:0 2px 8px #ca88d34d}
+#topics .clean-category-icon .clean-icon-art{display:block;width:49px;height:51px;max-width:100%;max-height:100%;border-radius:16px;filter:drop-shadow(0 2px 2px #c883b755)}
 #topics .clean-category strong{display:block;font:800 clamp(17px,4.6vw,20px)/1.28 system-ui}
 #topics .clean-category small{display:block;font:500 14px/1.35 system-ui;color:#856d93;margin-top:4px}
 #topics .clean-category>span:last-child{font:800 26px system-ui;color:#9564ac}
