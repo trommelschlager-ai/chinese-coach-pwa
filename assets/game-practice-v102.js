@@ -209,7 +209,7 @@ const explanations={
  age:'Я + возраст + лет: 我 + 二十五 + 岁. Здесь 是 не нужно.',three:'Сейчас + три + часа: 现在 + 三 + 点.',
  fine:'Я + очень + хорошо, спасибо: 我 + 很 + 好 + 谢谢.',howold:'你多大？ — «Сколько тебе лет?». 多大 спрашивает возраст.'
 };
-function correction(q){return session.locked?'<div class="audit-correction"><strong>Правильный ответ</strong><span lang="zh-Hans">'+safe(q.zh)+'</span>'+
+function correction(q){if(session.mode==='choose')return '';return session.locked?'<div class="audit-correction"><strong>Правильный ответ</strong><span lang="zh-Hans">'+safe(q.zh)+'</span>'+
  (session.showPinyin||session.mode==='choose'?'<small>'+safe(q.py)+'</small>':'')+'<p>'+safe(q.ru)+'</p>'+
  (session.lastCorrect?'':'<p>'+safe(explanations[q.id])+'</p>')+'</div>':''}
 function token(t,i,selected=false){return '<button type="button" class="'+(selected?'audit-answer-token':'audit-token')+'" '+(selected?'data-game-remove="'+i+'"':'data-game-token="'+i+'"')+' '+(session.locked?'disabled':'')+
@@ -221,7 +221,7 @@ function choiceOptions(){
 function restoredStage(mode,content,meter){
  return '<div class="restore-stage restore-'+mode+'">'+topBar('Игровая практика')+
  '<h1 class="restore-sr">'+safe(modes[mode].title)+'</h1><div class="restore-status"><span>'+(session.review?'Повтор · ':'')+'Задание '+(session.position+1)+' из '+session.order.length+'</span><span>🔥 Комбо ×'+session.combo+'</span></div>'+
- '<progress class="restore-meter" max="100" value="'+meter+'" aria-label="Выполнено заданий"></progress>'+content+'</div>';
+ '<progress class="restore-meter" max="100" value="'+meter+'" aria-label="Выполнено заданий"></progress>'+(mode==='choose'?'<h2 class="restore-task-title">Выбери перевод</h2>':'')+content+'</div>';
 }
 function renderQuestion(){
  const q=items[session.index],mode=session.mode;let body='';
@@ -276,7 +276,7 @@ function updateBuildTokens(){
  const bank=one('.game-build-static .audit-bank');
  if(!answer||!bank){renderQuestion();return}
  answer.innerHTML=session.selected.map((id,k)=>token(session.bank[id],k,true)).join('')+
-  (session.selected.length?'':'<span class="audit-answer-hint">Нажимай слова ниже. Нажми выбранное слово, чтобы убрать его.</span>');
+  (session.selected.length?'':'<span class="audit-answer-hint">Выбери слова ниже</span>');
  bank.innerHTML=session.bank.map((t,id)=>session.selected.includes(id)?'':token(t,id)).join('');
  const status=one('.audit-feedback');if(status)status.textContent=feedback;
 }
@@ -289,7 +289,7 @@ function check(){
  session.locked=true;session.lastCorrect=correct;
  if(correct){session.score++;session.combo++;session.bestCombo=Math.max(session.bestCombo,session.combo)}
  else{session.combo=0;session.errors.push(q.id);session.mistakes.push({id:q.id,answer:session.mode==='build'?session.selected.map(id=>session.bank[id].han).join(''):items[session.choices[session.choice]].zh})}
- feedback=correct?'✓ Верно!':'✕ Неверно. Сравни свой ответ с образцом.';renderQuestion();
+ feedback=correct?'✓ Верно!':(session.mode==='choose'?'✕ Неверно. Правильный перевод выделен зелёным.':'✕ Неверно. Сравни свой ответ с образцом.');renderQuestion();
 }
 function next(){
  if(session.position===session.order.length-1){const s=recordResult();session.done=true;renderResult(s);return}
