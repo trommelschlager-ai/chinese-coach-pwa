@@ -1,0 +1,53 @@
+name: v113 real mobile browser QA
+on:
+  push:
+    branches: [fix/mobile-dialogue-game-20261102]
+    paths-ignore: ['qa/v113/**']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify-mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install test dependencies
+        run: npm ci
+      - name: Exercise all main release logic, offline, scoring and voice inventory
+        run: npm run check:release
+      - name: Install Playwright for responsive visual verification
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Start static app server
+        run: |
+          python3 -m http.server 4173 >/tmp/v113-http.log 2>&1 &
+          echo $! > /tmp/v113-http.pid
+          for i in $(seq 1 15); do curl -fsS http://127.0.0.1:4173/game.html >/dev/null && break; sleep 1; done
+      - name: Screenshot and test real app on 360 393 and 412 pixel phones
+        run: node scripts/visual-mobile-v113.mjs
+      - name: Upload evidence even if visual checks fail
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v113-mobile-screenshots
+          path: qa/v113/
+          if-no-files-found: warn
+      - name: Publish verified screenshots to this review branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add qa/v113
+          if ! git diff --cached --quiet; then
+            git commit -m "Record passing v113 mobile screenshot and audio evidence"
+            git fetch origin "$GITHUB_REF_NAME"
+            git rebase "origin/$GITHUB_REF_NAME"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
