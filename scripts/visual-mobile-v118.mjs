@@ -91,9 +91,12 @@ try{
   await page.evaluate(()=>window.openLearningTopics('words'));
   await page.locator('#topics .clean-category-list').waitFor();
   assert.equal(await page.locator('.clean-icon-art').count(),13);
+  assert.equal(await page.locator('[data-clean-category]:visible').count(),8,'First screen must show exactly eight categories');
   assert.equal(await page.locator('.clean-word-summary').count(),0);
   assert(await page.locator('#topics').evaluate(el=>getComputedStyle(el).backgroundImage.includes('approved-quiz-scene')),'Vocabulary should retain the approved scenic background');
   await screenshot(page,'03-word-categories',size);
+  await page.locator('[data-clean-more]').click();
+  assert.equal(await page.locator('[data-clean-category]:visible').count(),13,'Expanding must reveal all vocabulary topics');
   await page.locator('[data-clean-category="g01"]').click();
   assert((await page.locator('.clean-word-card').count())>=10);
   await screenshot(page,'04-word-detail',size);
@@ -103,6 +106,7 @@ try{
   await page.locator('[data-practice-mode="translation"]').click();
   await page.locator('[data-choice-ru]').first().waitFor();
   assert.equal(await page.locator('[data-choice-ru]').count(),4);
+  assert.equal(await page.locator('.clean-choice-grid').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length),2,'Translation choices must be a two-column grid');
   assert(await page.locator('#topics').evaluate(el=>getComputedStyle(el).backgroundImage.includes('approved-quiz-scene')),'Translation should retain the approved scenic background');
   await screenshot(page,'05-translation',size);
 
@@ -111,6 +115,7 @@ try{
   await page.locator('[data-practice-mode="listening"]').click();
   await page.locator('[data-practice-listen]').waitFor();
   assert.equal(await page.locator('[data-choice-ru]').count(),4);
+  assert.equal(await page.locator('.clean-choice-grid').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length),2,'Listening choices must be a two-column grid');
   await screenshot(page,'06-listening',size);
 
   // Image 7: the writing canvas remains live, not a screenshot.
