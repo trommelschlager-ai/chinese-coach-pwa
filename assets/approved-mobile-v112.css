@@ -230,10 +230,11 @@
  background:linear-gradient(180deg,#ffe8f5,#eda5db)!important;color:#43124d!important;
  box-shadow:0 4px 10px #7c4c9255!important;font:800 21px/1.2 Arial,sans-serif!important;
 }
-@media(max-height:750px){
- #topics#topics#topics .restored-question[data-mode='choose']{gap:8px!important;padding:9px 12px 14px!important}
- #topics#topics#topics .restore-choose>.audit-prompt{min-height:126px!important;padding:10px!important}
- #topics#topics#topics .restored-question[data-mode='choose'] .audit-choice{min-height:56px!important;padding:7px 12px!important}
+@media(max-height:825px){
+ #topics#topics#topics .restored-question[data-mode='choose']{gap:6px!important;padding:7px 12px 10px!important}
+ #topics#topics#topics .restore-choose .restore-task-title{margin-top:0!important;font-size:clamp(27px,7.5vw,34px)!important}
+ #topics#topics#topics .restore-choose>.audit-prompt{min-height:112px!important;padding:8px!important}
+ #topics#topics#topics .restored-question[data-mode='choose'] .audit-choice{min-height:50px!important;padding:6px 10px!important}
 }
 
 /* Phrase builder. Scene dimensions depend only on the viewport, never on tokens. */
@@ -269,7 +270,7 @@
 #topics#topics#topics .ch110-game-pinyin{border:1px solid #b483d4!important;border-radius:30px!important;padding:8px 18px!important;min-height:38px!important;background:#fcf5ff!important;color:#69219c!important;font:600 14px/1.2 Arial,sans-serif!important}
 #topics#topics#topics .ch110-build-screen .game-py-hidden small{visibility:hidden!important}
 #topics#topics#topics .ch110-build-screen .audit-audio-note{min-height:0!important;height:auto!important;margin:0!important;padding:0!important;background:none!important;font:13px/1.2 Arial,sans-serif!important;color:#6a2782!important}
-#topics#topics#topics .ch110-game-bottom{flex:none!important;padding:12px 3px 0!important;background:transparent!important}
+#topics#topics#topics .ch110-game-bottom{flex:none!important;margin-top:auto!important;padding:12px 3px 0!important;background:transparent!important}
 #topics#topics#topics .ch110-game-bottom .audit-actions{position:static!important;display:flex!important;flex-direction:row!important;gap:12px!important;align-items:center!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important}
 #topics#topics#topics .ch110-game-bottom .audit-primary{flex:1!important;width:auto!important;font-size:23px!important}
 #topics#topics#topics .ch110-game-bottom .audit-secondary{display:grid!important;place-items:center!important;flex:none!important;width:48px!important;height:48px!important;min-height:48px!important;padding:0!important;border:1px solid #d4a3e5!important;border-radius:50%!important;background:#fffaff!important;color:#7621a1!important;font-size:36px!important;box-shadow:0 2px 5px #b48bc150!important}
