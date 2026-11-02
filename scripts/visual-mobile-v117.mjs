@@ -10,9 +10,11 @@ const browser=await chromium.launch({headless:true,args:['--no-sandbox','--autop
 const results=[];
 async function screenshot(page,name,size){
  const info=await page.evaluate(()=>({
-  viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth,
-  scrollHeight:document.documentElement.scrollHeight,
-  title:document.title
+  viewport:innerWidth,screenWidth:screen.width,outerWidth:outerWidth,scrollWidth:document.documentElement.scrollWidth,
+  scrollHeight:document.documentElement.scrollHeight,title:document.title,
+  viewportMeta:document.querySelector('meta[name="viewport"]')?.content,
+  stylesheets:[...document.styleSheets].map(x=>x.href?.split('/').slice(-1)[0]||'inline').slice(0,20),
+  rightmost:[...document.body.querySelectorAll('*')].map(e=>({tag:e.tagName,cl:e.className?.baseVal||e.className||'',id:e.id,right:Math.round(e.getBoundingClientRect().right),width:Math.round(e.getBoundingClientRect().width)})).filter(x=>x.right>screen.width+10||x.width>screen.width+10).sort((a,b)=>b.right-a.right).slice(0,12)
  }));
  assert(info.scrollWidth<=size[0]+2,'Horizontal overflow '+name+' '+size+': '+JSON.stringify(info));
  await page.screenshot({path:OUT+'/'+name+'-'+size[0]+'.png',fullPage:true,animations:'disabled'});
