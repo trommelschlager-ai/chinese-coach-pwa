@@ -1,0 +1,300 @@
+{
+  "version": 113,
+  "testedAt": "2026-11-02T14:48:18.715Z",
+  "sizes": [
+    [
+      360,
+      800
+    ],
+    [
+      393,
+      852
+    ],
+    [
+      412,
+      915
+    ]
+  ],
+  "findings": [
+    {
+      "size": "360x800",
+      "mode": "choose",
+      "innerWidth": 360,
+      "innerHeight": 800,
+      "scrollWidth": 360,
+      "scrollHeight": 800,
+      "stage": {
+        "top": 12,
+        "bottom": 353,
+        "left": 14,
+        "right": 346,
+        "height": 341
+      },
+      "choices": {
+        "top": 378,
+        "bottom": 682,
+        "left": 27,
+        "right": 333,
+        "height": 305
+      },
+      "question": {
+        "top": 183,
+        "bottom": 353,
+        "left": 14,
+        "right": 346,
+        "height": 169
+      },
+      "bank": null,
+      "check": {
+        "top": 756,
+        "bottom": 812,
+        "left": 27,
+        "right": 333,
+        "height": 56
+      }
+    },
+    {
+      "size": "360x800",
+      "mode": "build",
+      "innerWidth": 360,
+      "innerHeight": 800,
+      "scrollWidth": 360,
+      "scrollHeight": 800,
+      "stage": {
+        "top": 0,
+        "bottom": 800,
+        "left": 0,
+        "right": 360,
+        "height": 800
+      },
+      "choices": null,
+      "question": {
+        "top": 224,
+        "bottom": 327,
+        "left": 140,
+        "right": 348,
+        "height": 103
+      },
+      "bank": {
+        "top": 490,
+        "bottom": 558,
+        "left": 27,
+        "right": 333,
+        "height": 68
+      },
+      "check": {
+        "top": 652,
+        "bottom": 709,
+        "left": 75,
+        "right": 345,
+        "height": 57
+      }
+    },
+    {
+      "size": "360x800",
+      "mode": "dialogue",
+      "mp3Info": [
+        {
+          "url": "./assets/dialogue-greetings-v113/l2-01-a.mp3",
+          "status": 200,
+          "bytes": 11232
+        },
+        {
+          "url": "./assets/dialogue-greetings-v113/l2-02-b.mp3",
+          "status": 200,
+          "bytes": 11232
+        }
+      ],
+      "first": "female 你好",
+      "second": "male 哈喽",
+      "pageErrors": []
+    },
+    {
+      "size": "393x852",
+      "mode": "choose",
+      "innerWidth": 393,
+      "innerHeight": 852,
+      "scrollWidth": 393,
+      "scrollHeight": 852,
+      "stage": {
+        "top": 12,
+        "bottom": 357,
+        "left": 14,
+        "right": 379,
+        "height": 345
+      },
+      "choices": {
+        "top": 382,
+        "bottom": 693,
+        "left": 27,
+        "right": 366,
+        "height": 310
+      },
+      "question": {
+        "top": 186,
+        "bottom": 357,
+        "left": 14,
+        "right": 379,
+        "height": 171
+      },
+      "bank": null,
+      "check": {
+        "top": 766,
+        "bottom": 822,
+        "left": 27,
+        "right": 366,
+        "height": 56
+      }
+    },
+    {
+      "size": "393x852",
+      "mode": "build",
+      "innerWidth": 393,
+      "innerHeight": 852,
+      "scrollWidth": 393,
+      "scrollHeight": 852,
+      "stage": {
+        "top": 0,
+        "bottom": 852,
+        "left": 0,
+        "right": 393,
+        "height": 852
+      },
+      "choices": null,
+      "question": {
+        "top": 198,
+        "bottom": 301,
+        "left": 152,
+        "right": 381,
+        "height": 103
+      },
+      "bank": {
+        "top": 463,
+        "bottom": 531,
+        "left": 27,
+        "right": 366,
+        "height": 68
+      },
+      "check": {
+        "top": 626,
+        "bottom": 683,
+        "left": 75,
+        "right": 378,
+        "height": 57
+      }
+    },
+    {
+      "size": "393x852",
+      "mode": "dialogue",
+      "mp3Info": [
+        {
+          "url": "./assets/dialogue-greetings-v113/l2-01-a.mp3",
+          "status": 200,
+          "bytes": 11232
+        },
+        {
+          "url": "./assets/dialogue-greetings-v113/l2-02-b.mp3",
+          "status": 200,
+          "bytes": 11232
+        }
+      ],
+      "first": "female 你好",
+      "second": "male 哈喽",
+      "pageErrors": []
+    },
+    {
+      "size": "412x915",
+      "mode": "choose",
+      "innerWidth": 412,
+      "innerHeight": 915,
+      "scrollWidth": 412,
+      "scrollHeight": 915,
+      "stage": {
+        "top": 12,
+        "bottom": 361,
+        "left": 14,
+        "right": 398,
+        "height": 349
+      },
+      "choices": {
+        "top": 386,
+        "bottom": 699,
+        "left": 27,
+        "right": 385,
+        "height": 314
+      },
+      "question": {
+        "top": 188,
+        "bottom": 361,
+        "left": 14,
+        "right": 398,
+        "height": 173
+      },
+      "bank": null,
+      "check": {
+        "top": 773,
+        "bottom": 829,
+        "left": 27,
+        "right": 385,
+        "height": 56
+      }
+    },
+    {
+      "size": "412x915",
+      "mode": "build",
+      "innerWidth": 412,
+      "innerHeight": 915,
+      "scrollWidth": 412,
+      "scrollHeight": 915,
+      "stage": {
+        "top": 0,
+        "bottom": 915,
+        "left": 0,
+        "right": 412,
+        "height": 915
+      },
+      "choices": null,
+      "question": {
+        "top": 198,
+        "bottom": 301,
+        "left": 159,
+        "right": 400,
+        "height": 103
+      },
+      "bank": {
+        "top": 463,
+        "bottom": 531,
+        "left": 27,
+        "right": 385,
+        "height": 68
+      },
+      "check": {
+        "top": 626,
+        "bottom": 683,
+        "left": 75,
+        "right": 397,
+        "height": 57
+      }
+    },
+    {
+      "size": "412x915",
+      "mode": "dialogue",
+      "mp3Info": [
+        {
+          "url": "./assets/dialogue-greetings-v113/l2-01-a.mp3",
+          "status": 200,
+          "bytes": 11232
+        },
+        {
+          "url": "./assets/dialogue-greetings-v113/l2-02-b.mp3",
+          "status": 200,
+          "bytes": 11232
+        }
+      ],
+      "first": "female 你好",
+      "second": "male 哈喽",
+      "pageErrors": []
+    }
+  ],
+  "method": "Playwright Chromium rendering actual index.html and game.html on localhost; full-page PNGs"
+}
