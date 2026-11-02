@@ -1,21 +1,23 @@
 /* Independent home-menu destinations. Layout scoped under the #topics page.
    Approved home cover, avatars, palette and existing sequential lessons untouched. */
-#topics[data-simple-section]{background:linear-gradient(160deg,#fffcff,#f8effb 60%,#fff4f6);border-radius:24px;padding:18px 15px 24px;margin:7px auto 20px;max-width:770px;box-shadow:0 7px 27px #6a4b9015}
-#topics .clean-section-head{margin:0 0 17px}
-#topics .clean-back{min-height:45px;border:1px solid #dec8e8;border-radius:13px;background:#fffafd;color:#63417f;font:750 16px/1.3 system-ui;padding:10px 14px;margin-bottom:13px}
+#topics[data-simple-section]{background:linear-gradient(180deg,#fffaffed,#f8effbed),url('./approved-pastel-v112.webp') center top/cover no-repeat;border-radius:24px;padding:18px 15px 24px;margin:7px auto 20px;max-width:770px;box-shadow:0 7px 27px #6a4b9015}
+#topics .clean-section-head{margin:0 0 6px}
+#topics .clean-screen-reader-title,#topics .clean-practice-metrics,#topics .clean-search-label{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important}
+#topics .clean-back{min-height:47px;border:1px solid #dc9bea;border-radius:22px;background:linear-gradient(125deg,#fffaff,#f7e2ff);color:#63417f;font:750 16px/1.3 system-ui;padding:10px 16px;margin-bottom:8px;box-shadow:0 3px 9px #c67fde40}
 #topics .clean-section-head h1{font:800 clamp(25px,6.5vw,34px)/1.2 system-ui;color:#402952;margin:0 0 7px}
 #topics .clean-section-head p{font:450 16px/1.48 system-ui;color:#76647f;margin:0}
 #topics .clean-word-summary{display:flex;flex-wrap:wrap;justify-content:space-between;gap:7px;padding:12px;background:#fff;border:1px solid #e5d1ef;border-radius:14px;margin-bottom:12px;color:#614473}
 #topics .clean-word-summary strong{font:750 15px/1.4 system-ui}
 #topics .clean-word-summary span{font:650 14px/1.4 system-ui;color:#805c94}
 #topics .clean-search-label{display:block;font:700 14px/1.5 system-ui;color:#625173;margin-bottom:4px}
-#topics .clean-search{display:block;width:100%;box-sizing:border-box;min-height:49px;border:1px solid #d9c4e5;border-radius:12px;background:#fff;color:#342244;font:16px system-ui;padding:10px 13px;margin-bottom:13px}
-#topics .clean-category-list{display:grid;gap:9px}
-#topics .clean-category{width:100%;display:grid;grid-template-columns:45px minmax(0,1fr) 20px;align-items:center;gap:12px;text-align:left;min-height:80px;padding:12px;background:linear-gradient(100deg,#fffafc,#f9effe);border:1px solid #e0c9ed;border-radius:17px;color:#4e3064;box-shadow:0 2px 9px #744b9010}
+#topics .clean-search{display:block;width:100%;box-sizing:border-box;min-height:51px;border:1px solid #d1a0ed;border-radius:22px;background:#fff9ff;color:#342244;font:16px system-ui;padding:10px 17px;margin-bottom:15px;box-shadow:0 3px 12px #cf89e455}
+#topics .clean-category-list{display:grid;gap:12px}
+#topics .clean-category{width:100%;display:grid;grid-template-columns:50px minmax(0,1fr) 20px;align-items:center;gap:12px;text-align:left;min-height:89px;padding:12px;background:linear-gradient(105deg,#fff8ff,#f5e5ff);border:1px solid #e1a9ed;border-radius:21px;color:#4e3064;box-shadow:0 4px 12px #c76dc04a,inset 0 0 0 2px #fff9ff}
 #topics .clean-category:nth-child(4n+2){background:linear-gradient(100deg,#fff6fc,#fff)}
 #topics .clean-category:nth-child(4n+3){background:linear-gradient(100deg,#f3f7ff,#fff)}
 #topics .clean-category:nth-child(4n+4){background:linear-gradient(100deg,#f1fffa,#fff)}
-#topics .clean-category-icon{display:grid;place-items:center;background:#ffffffd9;border-radius:14px;width:44px;height:47px;font-size:23px}
+#topics .clean-category-icon{display:grid;place-items:center;background:linear-gradient(145deg,#fff,#f5e1ff);border:1px solid #e8c0ee;border-radius:17px;width:50px;height:53px;font-size:26px;box-shadow:0 2px 8px #ca88d34d}
+#topics .clean-category-icon .clean-icon-art{display:block;width:49px;height:51px;max-width:100%;max-height:100%;border-radius:16px;filter:drop-shadow(0 2px 2px #c883b755)}
 #topics .clean-category strong{display:block;font:800 clamp(17px,4.6vw,20px)/1.28 system-ui}
 #topics .clean-category small{display:block;font:500 14px/1.35 system-ui;color:#856d93;margin-top:4px}
 #topics .clean-category>span:last-child{font:800 26px system-ui;color:#9564ac}
@@ -29,7 +31,8 @@
 #topics .clean-word-known{display:block;width:100%;min-height:39px;border:1px solid #e6d3eb;border-radius:10px;background:#f9f4fd;color:#6b4b7b;font:700 13px system-ui}
 #topics .clean-word-known.is-known{background:#e5f9f0;border-color:#a3d4c1;color:#267357}
 #topics .clean-results-label,#topics .clean-audio-feedback{font:500 14px/1.48 system-ui;color:#735783;margin:10px 0}
-#topics .clean-audio-feedback{min-height:17px}
+#topics .clean-audio-feedback{min-height:0}
+#topics .clean-audio-feedback:empty{display:none!important}
 #topics .clean-action-primary,#topics .clean-listen-main{min-height:52px;border:1px solid #8d4fba;border-radius:15px;background:linear-gradient(105deg,#b579da,#7647b6);color:#fff;font:800 16px/1.3 system-ui;padding:10px 16px;box-shadow:0 3px 12px #9959bd4a}
 #topics .clean-dialog-head{margin-bottom:12px}
 #topics .clean-dialog-head button{width:100%}
@@ -45,7 +48,7 @@
 #topics .clean-dialog-bubble button{min-height:43px;padding:8px 17px;border-radius:11px;background:#dff8eb;border:1px solid #87cbae;color:#205a49;font:750 15px system-ui}
 #topics .clean-dialog-line.playing-line .clean-dialog-bubble{outline:2px solid #9e62cf}
 #topics .clean-practice-metrics{font:750 14px system-ui;color:#78548e;margin-bottom:13px}
-#topics .clean-practice-card{background:#fff;border-radius:19px;padding:15px;border:1px solid #e6cfef;text-align:center}
+#topics .clean-practice-card{background:linear-gradient(170deg,#fffcffed,#f7eaffee),url('./approved-quiz-scene-v112.webp') center/cover no-repeat;border-radius:24px;padding:clamp(16px,4vw,25px);border:1px solid #d8a1ed;text-align:center;box-shadow:0 4px 18px #c989d44d}
 #topics .clean-practice-hanzi{font:750 clamp(65px,18vw,92px)/1.3 "Noto Sans SC",system-ui;color:#3e285c}
 #topics .clean-practice-pinyin{font:750 24px system-ui;color:#8b5ca9;margin:0 0 12px}
 #topics .clean-listen-main{display:block;width:100%;margin:16px 0 23px}
@@ -56,11 +59,11 @@
 #topics .clean-practice-result button{min-height:50px;flex:1;border-radius:11px;border:1px solid #d2ade0;background:#f9edff;color:#673982;font:750 15px system-ui}
 #topics .clean-practice-result button:last-child{background:#e2f6eb;color:#327556;border-color:#97cfb2}
 #topics .clean-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-#topics .clean-choice-grid button{min-height:69px;background:#fdf9ff;border:1px solid #d5b8e7;color:#56346b;border-radius:12px;font:750 16px/1.32 system-ui;padding:7px}
+#topics .clean-choice-grid button{min-height:82px;background:linear-gradient(150deg,#fffaff,#f6eaff);border:1px solid #d5a0e7;color:#56346b;border-radius:20px;font:750 17px/1.32 system-ui;padding:10px;box-shadow:0 3px 10px #b98ac947}
 #topics .clean-choice-grid button.is-correct{background:#d8f5e4;color:#256c4e;border-color:#6cad90}
 #topics .clean-choice-grid button.is-wrong{background:#ffeded;color:#a54850;border-color:#edabb1}
 #topics .clean-practice-feedback{font:700 15px/1.4 system-ui;color:#684f7a;min-height:25px;margin:13px 0 6px}
-#topics .clean-action-next{width:100%;min-height:49px;background:#f4eafc;color:#693b82;border:1px solid #d4b1e4;border-radius:13px;font:750 15px system-ui}
+#topics .clean-action-next{width:100%;min-height:55px;background:linear-gradient(180deg,#f9ecff,#f0d5fa);color:#572474;border:1px solid #ce8cea;border-radius:22px;font:800 18px system-ui;box-shadow:0 4px 12px #cf8ee655}
 #topics [hidden]{display:none!important}
 #topics button:focus-visible,#topics input:focus-visible{outline:3px solid #9a65cd;outline-offset:2px}
 @media(max-width:380px){#topics[data-simple-section]{padding:12px 10px}#topics .clean-word-grid{gap:6px}#topics .clean-word-play strong{font-size:34px}#topics .clean-word-play span{font-size:17px}#topics .clean-choice-grid{grid-template-columns:1fr} }
@@ -220,3 +223,88 @@ body.rose-dialogue-open{overflow:hidden!important}
  #topics .rose-bubble{min-height:clamp(103px,20dvh,160px)!important}
  #topics .rose-meta{padding-bottom:5px!important}
 }
+
+
+/* v118: restore the approved sakura, mountain and pagoda scenery without
+   baking UI text into a screenshot. All cards and buttons remain native. */
+#topics#topics#topics[data-simple-section='words'],
+#topics#topics#topics[data-simple-section='practice']{
+  min-height:calc(100dvh - 76px)!important;
+  background:linear-gradient(180deg,#fff9ffe0 0%,#fff6ffbf 38%,#fff8ff99 72%,#fff8ff47 100%),
+    url('./approved-quiz-scene-v112.webp') center bottom/100% 100% no-repeat!important;
+  box-shadow:none!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category{
+  position:relative!important;overflow:hidden!important;
+  background:linear-gradient(105deg,#fff0ffed 0%,#fffbffed 73%,#f9e3ffea 100%)!important;
+  border:1.3px solid #e5a2ee!important;
+  box-shadow:inset 0 0 0 1px #fff,0 3px 8px #d37edb48!important;
+  border-radius:24px!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category::after{
+  content:'✿';position:absolute;right:24px;top:5px;pointer-events:none;
+  color:#e8a0d4;opacity:.45;font-size:31px;font-family:Georgia,serif;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category-icon{
+  position:relative;z-index:1;
+  width:54px;height:54px;border-color:#eaa6d8;
+  background:#fff9fff5;box-shadow:0 0 13px #eb94d865;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category-icon .clean-icon-art{
+  width:52px;height:52px;filter:drop-shadow(0 2px 3px #c468bd75);
+}
+#topics#topics#topics[data-simple-section='words'] .clean-search{
+  background:#fffcfff8!important;border:2px solid #e5a2e8!important;
+  box-shadow:0 0 15px #efb0e77d!important;
+}
+#topics#topics#topics[data-simple-section='practice'] .clean-practice-card{
+  border:2px solid #df99e9!important;
+  box-shadow:0 0 0 3px #fffaffa6,0 5px 18px #d583db88!important;
+  background:linear-gradient(165deg,#fff9fff3,#f9ecfff0)!important;
+}
+#topics#topics#topics[data-simple-section='practice'] .clean-choice-grid button,
+#topics#topics#topics[data-simple-section='practice'] .clean-action-next{
+  box-shadow:0 3px 10px #cf88db66,0 0 12px #e9b1ef66!important;
+}
+@media(max-width:380px){
+  #topics#topics#topics[data-simple-section='words'] .clean-category{
+    grid-template-columns:54px minmax(0,1fr) 18px!important;padding:10px!important;
+  }
+}
+
+
+/* v118 small-phone fidelity: four answer choices remain 2×2, never 1×4. */
+#topics#topics#topics[data-simple-section='practice'] .clean-choice-grid{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:9px!important;
+}
+#topics#topics#topics[data-simple-section='practice'] .clean-choice-grid button{
+ min-height:71px!important;min-width:0!important;overflow-wrap:anywhere!important;
+ padding:8px 5px!important;font-size:clamp(15px,4.2vw,18px)!important;
+}
+/* Eight concise groups on the first screen; remaining groups are always reachable. */
+#topics#topics#topics[data-simple-section='words'] .clean-category-list{gap:7px!important}
+#topics#topics#topics[data-simple-section='words'] .clean-category{
+ min-height:69px!important;grid-template-columns:47px minmax(0,1fr) 19px!important;
+ gap:8px!important;padding:7px 10px!important;border-radius:20px!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category-icon{
+ width:44px!important;height:46px!important;border-radius:15px!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category-icon .clean-icon-art{
+ width:43px!important;height:43px!important;border-radius:14px!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category strong{
+ font-size:clamp(15px,4.2vw,18px)!important;line-height:1.18!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category small{
+ font-size:12px!important;margin-top:2px!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-more-categories{
+ display:block;width:100%;min-height:49px;margin:12px 0 2px;
+ padding:8px 15px;border:2px solid #dca1e9;border-radius:28px;
+ background:linear-gradient(140deg,#fff0ff,#f8d9f9);color:#62257a;
+ font:800 16px/1.3 system-ui;box-shadow:0 3px 14px #df85e76b;
+}
+#topics#topics#topics[data-simple-section='words'] [hidden],
+#topics#topics#topics[data-simple-section='practice'] [hidden]{display:none!important}

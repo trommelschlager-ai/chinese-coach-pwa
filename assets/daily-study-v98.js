@@ -11,7 +11,7 @@
  const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
  function read(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');return s&&s.day===today()&&Number.isInteger(s.step)&&s.step>=0&&s.step<=steps.length?s:null}catch{return null}}
  function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch{}}
- const bar=document.createElement('aside');bar.id='daily-study-progress';bar.setAttribute('aria-label','Занятие сегодня');document.body.prepend(bar);
+ const bar=document.createElement('aside');bar.id='daily-study-progress';bar.setAttribute('aria-label','Занятие сегодня');document.getElementById('launch-menu')?.append(bar); // Keep daily-plan progress on the home menu, never above lessons or games.
  function navigate(s){
   const step=steps[s.step];if(!step){render();return}
   if(document.getElementById('launch-menu')){

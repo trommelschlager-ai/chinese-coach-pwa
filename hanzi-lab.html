@@ -10,7 +10,7 @@
     :root{color-scheme:light;--purple:#5b3188;--deep:#3e245e;--accent:#9c6ac2;--ink:#29203f;--muted:#6b6480;--line:#e9def0;--white:#fff;--good:#1f7852;--bad:#a34155}
     *,*::before,*::after{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{margin:0;background:linear-gradient(180deg,rgba(250,247,255,.87),rgba(247,242,253,.92)),url("./assets/chinese-painting-daily.webp") center top/cover fixed no-repeat;color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+    body{margin:0;background:linear-gradient(180deg,rgba(255,248,255,.48),rgba(246,235,255,.45)),url("./assets/approved-quiz-scene-v112.webp") center top/cover fixed no-repeat;color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
     button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}button:focus-visible,a:focus-visible{outline:3px solid #b35ae0;outline-offset:3px}
     .shell{width:min(100%,880px);padding:20px 18px 55px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.back{display:inline-flex;gap:7px;text-decoration:none;align-items:center;color:#5b3188;font-weight:750;font-size:14px;padding:10px 0}.top-pill{font-size:12px;padding:7px 12px;background:white;color:#694688;border:1px solid var(--line);border-radius:100px;font-weight:800}
     .mini-progress{display:flex;align-items:center;gap:12px;margin:0 2px 16px;color:#69567b;font-size:13px;font-weight:750}
@@ -25,19 +25,40 @@
     .voice-box{width:100%;margin-top:13px;padding:12px;border:1px solid #e8d9f1;border-radius:15px;background:#faf6ff}.voice-box label{display:block;font-size:13px;color:#634180;font-weight:800;margin-bottom:6px}.voice-box select{width:100%;min-height:43px;padding:8px;border-radius:10px;border:1px solid #d7bee9;background:#fff;color:#34224a;font-size:14px}.voice-box .voice-help{font-size:12px;color:#6b6078;margin:7px 0 0}.voice-box .human-label{font-size:14px;font-weight:800;color:#4f2b7b;margin:0 0 8px}.voice-box .human-explain{font-size:12px;color:#645679;margin:4px 0 10px}.voice-row{display:flex;align-items:center;gap:9px;margin-top:8px;font-size:12px;color:#5d4973}.voice-row input{flex:1;accent-color:#6e429d}
     @media(max-width:670px){.shell{padding:12px 12px 40px}.layout{grid-template-columns:1fr}.card{padding:17px}.character-tabs{margin-inline:-12px;padding-inline:12px}.paper{width:min(100%,345px)}.bottom{align-items:flex-start}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+    /* Refined writing exercise: keep live stroke canvas and navigation interactive. */
+    .visually-hidden,.mini-progress{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important}
+    .shell{max-width:680px}
+    .top{margin-bottom:16px}
+    .back,.top-pill{padding:10px 15px;border:1px solid #d7a9e8;border-radius:24px;background:linear-gradient(140deg,#fffbff,#f6e6ff);box-shadow:0 4px 10px #b980d14d;color:#643081}
+    .layout{grid-template-columns:1fr}
+    .drawing-card{background:linear-gradient(160deg,#fffaffed,#fcf0ffef),url('./assets/approved-quiz-scene-v112.webp') center/cover;border:1.5px solid #e0aff0;border-radius:27px;box-shadow:inset 0 0 0 2px #fff,0 5px 18px #b77bd54a}
+    .glyph-title{width:100%;display:flex;align-items:center;justify-content:center;gap:clamp(10px,4vw,22px)}
+    .glyph-title strong{font-size:clamp(55px,15vw,75px)}
+    .glyph-title .py{font-size:clamp(18px,5vw,25px)}
+    .meaning{display:inline-flex;align-self:center;background:#f2dcff;border-radius:22px;padding:4px 14px;margin:6px 0 17px;font-size:21px;color:#6b3187}
+    #speak{border-color:#a3cfeb;background:#e9faff;box-shadow:0 3px 12px #86cfe05a}
+    .paper{width:min(100%,390px);border-color:#c99de2;box-shadow:0 2px 11px #c88bd13b}
+    .controls{gap:11px;margin-top:18px}
+    .controls #practice{order:-2;min-height:57px;border-radius:23px;background:linear-gradient(140deg,#a851d2,#71319b);box-shadow:0 4px 14px #a544d75a;color:#fff}
+    .controls #animate{order:-1}
+    .controls #next{order:0}
+    .controls #retry{order:1}
+    .controls .control{border-radius:19px;box-shadow:0 3px 9px #b989d148}
+    .character-picker{margin-top:10px;border:1px solid #e0c9ee;border-radius:16px;padding:9px 13px;background:#fffaff}
+    .feedback:empty{display:none}
+    @media(max-width:380px){.glyph-title{gap:8px}.glyph-title strong{font-size:52px}.glyph-title .py{font-size:17px}.drawing-card{padding:13px}.control{font-size:13px}}
   </style>
-  <link rel="stylesheet" href="./assets/simple-learning.css?v=52">
+  <link rel="stylesheet" href="./assets/simple-learning.css?v=118">
   <script defer src="./assets/vendor/hanzi-writer.min.js"></script>
 <link rel="stylesheet" href="./assets/audit-fixes-v98.css?v=98.2">
 </head>
 <body class="writing-simple">
 <main class="shell">
   <div class="top"><a class="back" href="./index.html#menu">← Разделы</a><span class="top-pill">Иероглиф · 1 из 10</span></div>
-  <details class="character-picker"><summary>Выбрать другой иероглиф</summary><nav class="character-tabs" aria-label="Выбор иероглифа" id="character-tabs"></nav></details>
   <div class="mini-progress" aria-label="Прогресс изучения иероглифов"><span id="progress-text">Изучено 0 из 10</span><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progress-track"><div id="progress-fill"></div></div></div>
   <div class="layout">
     <section class="card drawing-card" aria-labelledby="practice-title">
-      <h1 id="practice-title">Пишем иероглифы</h1><p class="subtitle">Смотри порядок черт, затем напиши сам.</p>
+      <h1 id="practice-title" class="visually-hidden">Пишем иероглифы</h1>
       <div class="glyph-title"><strong id="character">大</strong><span class="py" id="pinyin">dà · 4-й тон</span><button class="control" id="speak" type="button" aria-label="Послушать иероглиф">Слушать</button></div>
       <p class="meaning" id="meaning">Большой</p>
       <div class="paper" aria-label="Поле для письма пальцем"><div id="writer"><span class="fallback" aria-hidden="true">大</span></div></div>
@@ -51,6 +72,8 @@
       <div class="feedback" id="feedback" role="status" aria-live="polite">Загрузка тренажёра…</div>
       <div class="progress-details" id="stroke-status">Количество черт: 3</div>
     </section>
+  </div>
+  <details class="writing-extras" id="writing-extras"><summary>Дополнительно · подсказки и настройки</summary>
     <details class="writing-help" id="writing-help"><summary>Подсказки и пример слова</summary>
 
 
@@ -60,10 +83,11 @@
       <div class="hint" id="tone-note">4-й тон dà: голос быстро опускается сверху вниз. Не путай с dǎ и dá.</div>
       <div class="section-label">Как тренироваться</div><p class="note">Нажми «Показать черты», затем «Написать самому». Пиши в квадрате в указанном порядке. После трёх ошибок приложение покажет нужный штрих.</p>
     </details>
-  </div>
   <div class="bottom"><span class="progress-details" id="lesson-counter">Иероглиф 1 из 10</span></div>
+  <details class="character-picker"><summary>Выбрать другой иероглиф</summary><nav class="character-tabs" aria-label="Выбор иероглифа" id="character-tabs"></nav></details>
   <details class="writing-settings"><summary>Настройки озвучки</summary>      <div class="voice-box"><div class="human-label">🎧 Живое произношение</div><p class="human-explain">По умолчанию проигрывается аудиозапись носителя китайского языка. Если она недоступна, приложение сообщит об ошибке. Системный голос можно включить вручную в настройках.</p><label for="chinese-voice">Запасной китайский голос</label><select id="chinese-voice"><option value="">Поиск голосов устройства…</option></select><div class="voice-row"><span>Скорость</span><input id="voice-rate" type="range" min="0.7" max="1.1" step="0.05" value="0.85"><output id="voice-rate-label">0.85×</output></div><p class="voice-help">Выбирай доступный голос Mandarin (zh-CN). Если на телефоне только один голос, другие появятся после установки китайского голосового пакета.</p></div></details>
   <details class="writing-about"><summary>Об аудио и тренажёре</summary><p class="footnote">Образцы письма и черты сохраняются вместе с материалами в настройках приложения. Запись произношения — голос носителя Yue Tan (CC BY-SA 3.0 US), <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">источник и лицензия</a>. На телефоне при отсутствии аудио включается запасной голос. Тренажёр проверяет штрихи и их последовательность, но не заменяет преподавателя каллиграфии. Прогресс сохраняется только на этом устройстве.</p></details>
+  </details>
 </main>
 <script>
 window.addEventListener('DOMContentLoaded',function(){

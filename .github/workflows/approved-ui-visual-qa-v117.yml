@@ -1,0 +1,39 @@
+name: Approved v118 mobile visual QA
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  screenshot-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install app and Chromium
+        run: |
+          npm ci
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Exercise mobile screens and save screenshots
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/vite-v117.log 2>&1 &
+          VITE_PID=$!
+          trap 'kill $VITE_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 45); do
+            if curl -fsS http://127.0.0.1:4173/index.html >/dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:4173/index.html >/dev/null || { cat /tmp/vite-v117.log; exit 1; }
+          node scripts/visual-mobile-v118.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chinese-coach-mobile-v118-screenshots
+          path: qa/v118/
+          if-no-files-found: warn
