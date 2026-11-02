@@ -13,6 +13,7 @@ async function screenshot(page,name,size){
   viewport:innerWidth,screenWidth:screen.width,outerWidth:outerWidth,scrollWidth:document.documentElement.scrollWidth,
   scrollHeight:document.documentElement.scrollHeight,title:document.title,
   viewportMeta:document.querySelector('meta[name="viewport"]')?.content,
+  hubDebug:(()=>{const x=document.querySelector('.approved-art-image');if(!x)return null;const p=x.parentElement, root=document.querySelector('#topics');return {style:getComputedStyle(x).width, cssMax:getComputedStyle(x).maxWidth, imageAttr:x.getAttribute('width'), parentStyle:getComputedStyle(p).width, parentClient:p.clientWidth, rootStyle:getComputedStyle(root).width, bodyMargin:getComputedStyle(document.body).margin, documentClient:document.documentElement.clientWidth};})(),
   stylesheets:[...document.styleSheets].map(x=>x.href?.split('/').slice(-1)[0]||'inline').slice(0,20),
   rightmost:[...document.body.querySelectorAll('*')].map(e=>({tag:e.tagName,cl:e.className?.baseVal||e.className||'',id:e.id,right:Math.round(e.getBoundingClientRect().right),width:Math.round(e.getBoundingClientRect().width)})).filter(x=>x.right>screen.width+10||x.width>screen.width+10).sort((a,b)=>b.right-a.right).slice(0,12)
  }));
