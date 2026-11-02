@@ -1,6 +1,6 @@
 {
   "version": 115,
-  "at": "2026-11-02T16:27:15.264Z",
+  "at": "2026-11-02T16:27:48.820Z",
   "results": [
     {
       "size": "360x800",
@@ -39,6 +39,18 @@
       "panelHeight": 216
     },
     {
+      "size": "360x800",
+      "mode": "build",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "scrollHeight": 800,
+      "buttonBottom": 609,
+      "buttonLeft": 82,
+      "buttonRight": 342,
+      "panelHeight": 257
+    },
+    {
       "size": "393x852",
       "mode": "choose",
       "width": 393,
@@ -75,6 +87,18 @@
       "panelHeight": 248
     },
     {
+      "size": "393x852",
+      "mode": "build",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "scrollHeight": 852,
+      "buttonBottom": 735.171875,
+      "buttonLeft": 84,
+      "buttonRight": 373,
+      "panelHeight": 293
+    },
+    {
       "size": "412x915",
       "mode": "choose",
       "width": 412,
@@ -109,6 +133,18 @@
       "buttonLeft": 84,
       "buttonRight": 392,
       "panelHeight": 248
+    },
+    {
+      "size": "412x915",
+      "mode": "build",
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 412,
+      "scrollHeight": 915,
+      "buttonBottom": 741,
+      "buttonLeft": 84,
+      "buttonRight": 392,
+      "panelHeight": 293
     }
   ]
 }
