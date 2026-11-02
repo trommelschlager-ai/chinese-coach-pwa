@@ -1,0 +1,10 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> check:release
+> node scripts/verify-approved-mobile-v112.cjs && node scripts/verify-audit-v98.cjs && node scripts/verify-hsk1-v103.cjs && node scripts/verify-game-voice-coverage-v90.cjs && node scripts/verify-offline.cjs
+
+v112 passed: 21 dialogue lines, orientation anchor, single quiz audio control, pinyin, all 10 quiz questions, 30 game answers, stable scene DOM, clear/remove, persisted scores, image inventory.
+V98 regression passed: export/import round trip, legacy import, invalid stats rejected, daily route and five-tone instruction.
+HSK 1 v103 roadmap: 141/300 factual audit, ten existing categories, old lessons and navigation preserved.
+V99 token inventory: original native clips retained, two whole-word corrections, no device TTS fallback.
+Offline checks passed: 73 core URLs; 1394 optional files, failed-download recovery, local writing, home isolation.
