@@ -1,0 +1,40 @@
+name: Create exact Mandarin greeting previews v113
+on:
+  push:
+    branches:
+      - fix/mobile-dialogue-game-20261102
+    paths:
+      - .github/workflows/greeting-preview-v113.yml
+      - scripts/generate_greeting_previews_v113.py
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  create-greetings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Mandarin TTS preview and verification tools
+        run: |
+          python -m pip install --disable-pip-version-check edge-tts==7.3.1
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Generate exact 你好 and 哈喽 recordings and verify MP3 format
+        run: python scripts/generate_greeting_previews_v113.py
+      - name: Commit validated previews only to the working branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/dialogue-greetings-v113 assets/offline-pack.json
+          if git diff --cached --quiet; then
+            echo 'No audio changes'
+          else
+            git commit -m "Add verified greeting previews for 你好 and 哈喽"
+            git push
+          fi
