@@ -61,8 +61,10 @@ function updatePracticeMetrics(){const e=$('.clean-practice-metrics');if(e)e.tex
 function stopAudio(){if(audio){audio.pause();audio=null;}}
 function getFile(hz){
  const key=norm(hz);
- return window.courseHumanAudio?.[key]||window.courseNaturalAudio?.[key]||
-  window.basicWordAudio?.[hz]||window.basicPinyinAudio?.[hz]||null;
+ // Prefer the consistent Xiaoyi vocabulary takes where they exist.
+ // Legacy Yue Tan material remains fallback so beginner words never go silent.
+ return window.basicWordAudio?.[hz]||window.basicPinyinAudio?.[hz]||
+  window.courseNaturalAudio?.[key]||window.courseHumanAudio?.[key]||null;
 }
 function play(hz,speed=.86){
  stopAudio();
