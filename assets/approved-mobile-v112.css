@@ -496,6 +496,12 @@
 #topics#topics#topics .v115-game .v116-word-panel .ch110-build-controls{
  min-height:35px!important;margin:0!important;padding:0!important;
 }
+/* Word pronunciation stays available through aria-live without adding a third text block. */
+#topics#topics#topics .v115-game .v116-word-panel .audit-audio-note{
+ position:absolute!important;width:1px!important;height:1px!important;min-height:0!important;
+ margin:-1px!important;padding:0!important;border:0!important;overflow:hidden!important;
+ clip-path:inset(50%)!important;white-space:nowrap!important;
+}
 #topics#topics#topics .v115-game[data-mode='build'] .v115-footer{
  margin-top:10px!important;
 }
