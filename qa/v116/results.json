@@ -1,6 +1,6 @@
 {
   "version": 116,
-  "at": "2026-11-02T20:31:16.283Z",
+  "at": "2026-11-02T20:32:55.310Z",
   "results": [
     {
       "size": "360x800",
@@ -33,7 +33,7 @@
       "height": 800,
       "scrollWidth": 360,
       "scrollHeight": 800,
-      "buttonBottom": 569,
+      "buttonBottom": 549,
       "buttonLeft": 82,
       "buttonRight": 342,
       "panelHeight": 59
@@ -81,7 +81,7 @@
       "height": 852,
       "scrollWidth": 393,
       "scrollHeight": 852,
-      "buttonBottom": 653,
+      "buttonBottom": 631,
       "buttonLeft": 84,
       "buttonRight": 373,
       "panelHeight": 71
@@ -129,7 +129,7 @@
       "height": 915,
       "scrollWidth": 412,
       "scrollHeight": 915,
-      "buttonBottom": 653,
+      "buttonBottom": 631,
       "buttonLeft": 84,
       "buttonRight": 392,
       "panelHeight": 71
