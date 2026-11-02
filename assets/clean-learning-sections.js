@@ -11,6 +11,29 @@ const originalPractice=window.openPracticeChoices;
 const $=(s,within=section)=>within.querySelector(s);
 const $$=(s,within=section)=>[...within.querySelectorAll(s)];
 const esc=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+// Shared lightweight SVG art makes category cards crisp on Android without decorative raster overlays.
+const categoryMotifs={
+ g01:'<rect x="18" y="14" width="36" height="45" rx="5" fill="#fff1d9" stroke="#be869a" stroke-width="2"/><path d="M18 20h36M18 52h36" stroke="#c89b62" stroke-width="4"/><text x="36" y="44" text-anchor="middle" font-size="25" font-weight="700" fill="#753c8d">人</text>',
+ g02:'<path d="M33 12v49" stroke="#a56c6a" stroke-width="5" stroke-linecap="round"/><path d="M16 18h43l8 9-8 9H16z" fill="#ffe9ac" stroke="#d79e7e" stroke-width="2"/><path d="M12 40h43l-8 9H12z" fill="#f4bfdb" stroke="#b77ab4" stroke-width="2"/><text x="38" y="31" text-anchor="middle" font-size="15" font-weight="700" fill="#743a70">哪儿</text><text x="31" y="47" text-anchor="middle" font-size="11" fill="#743a70">哪里</text>',
+ g03:'<path d="M36 17v41m-20-34h40M25 56h22" stroke="#ac7193" stroke-width="4" stroke-linecap="round"/><circle cx="36" cy="17" r="5" fill="#ffcf6e"/><path d="m20 24-9 21h18l-9-21m32 0-9 21h18l-9-21" fill="#fff1c6" stroke="#d59c53" stroke-width="2"/><path d="M10 45q10 14 20 0m12 0q10 14 20 0" fill="#ffd46e" stroke="#bb8b55" stroke-width="2"/>',
+ g04:'<circle cx="36" cy="37" r="24" fill="#fffaf4" stroke="#b68ab8" stroke-width="4"/><circle cx="36" cy="37" r="3" fill="#aa4bb0"/><path d="M36 22v15l12 6" fill="none" stroke="#76368d" stroke-width="4" stroke-linecap="round"/><path d="M36 15v6M36 53v6M14 37h6M52 37h6" stroke="#c08aad" stroke-width="2"/>',
+ g05:'<circle cx="45" cy="17" r="8" fill="#e5a1b6"/><path d="m36 28-11 13 17 2 9-13m-10 12-16 15m16-14 17 12m-29-14-12-5" stroke="#814b99" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="m33 29 12-4" stroke="#ffc96a" stroke-width="8" stroke-linecap="round"/>',
+ g06:'<path d="M12 52 28 19l19 6 13 30-20-6-28 3" fill="#e2dbf4" stroke="#b09cd9" stroke-width="2"/><path d="M48 12c-10 0-17 7-17 17 0 13 17 27 17 27s17-14 17-27c0-10-7-17-17-17z" fill="#e77aab" stroke="#af598a" stroke-width="2"/><circle cx="48" cy="29" r="7" fill="#fff4f9"/>',
+ g07:'<circle cx="23" cy="28" r="9" fill="#d0a4e5"/><circle cx="49" cy="28" r="9" fill="#c18cd8"/><circle cx="36" cy="36" r="7" fill="#ffd0ab"/><path d="M8 59c0-15 7-20 17-20 7 0 11 4 12 11M64 59c0-15-7-20-17-20-7 0-11 4-12 11M23 63c0-13 6-19 13-19s13 6 13 19" fill="#9164b8" stroke="#6e448f" stroke-width="2"/>',
+ g08:'<path d="M36 58C13 47 13 32 25 17c1 12 6 18 11 22 5-4 10-10 11-22 12 15 12 30-11 41Z" fill="#fbb3d0" stroke="#ca6ba6" stroke-width="2"/><path d="M36 55C22 47 22 32 36 14c14 18 14 33 0 41Z" fill="#ffe0f0" stroke="#d885bf" stroke-width="2"/><path d="M17 58q19 10 38 0" fill="none" stroke="#76bb9e" stroke-width="4" stroke-linecap="round"/>',
+ g09:'<path d="M15 31h43l-7 23H23z" fill="#f7e2b0" stroke="#b99470" stroke-width="3"/><path d="M18 32q15 8 36 0M26 18q-6 6 0 11m13-15q-6 6 0 12m12-8q-6 6 0 11" stroke="#a870ac" stroke-width="3" fill="none" stroke-linecap="round"/>',
+ g10:'<rect x="14" y="20" width="23" height="36" rx="3" fill="#f5d6ed" stroke="#a875bd" stroke-width="2"/><rect x="37" y="20" width="22" height="36" rx="3" fill="#e6ddff" stroke="#a875bd" stroke-width="2"/><path d="M36 20v36M20 31h10m14 0h9M20 40h10m14 0h9" stroke="#ad8ab7" stroke-width="2"/><circle cx="36" cy="15" r="6" fill="#ffc968"/>',
+ g11:'<circle cx="36" cy="37" r="24" fill="#fff6ea" stroke="#b89ac9" stroke-width="3"/><path d="m47 24-8 16-17 10 10-17z" fill="#f4a0c0" stroke="#bb6c9b" stroke-width="2"/><circle cx="36" cy="37" r="4" fill="#8451a6"/><text x="36" y="18" font-size="9" text-anchor="middle" fill="#6e508b">N</text>',
+ g12:'<rect x="15" y="16" width="43" height="41" rx="3" fill="#f6debc" stroke="#aa7a6b" stroke-width="4"/><path d="M19 28h35M19 43h35M28 21v32M43 21v32" stroke="#ae8a75" stroke-width="2"/><circle cx="28" cy="32" r="5" fill="#a66aaf"/><circle cx="43" cy="40" r="5" fill="#e99baf"/>',
+ g13:'<path d="M13 18h47v28H33L23 56v-10H13z" fill="#fff2f9" stroke="#bd88cf" stroke-width="3"/><text x="36" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#8551a3">谢</text>'
+};
+function categoryArt(group){
+ return '<svg class="clean-icon-art" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false">'+
+  '<rect x="2" y="2" width="68" height="68" rx="19" fill="#fff8ff" stroke="#edc8f2" stroke-width="2"/>'+
+  (categoryMotifs[group.id]||'')+
+  '<circle cx="10" cy="10" r="5" fill="#f7b3dd"/><circle cx="16" cy="9" r="3" fill="#ffc7e7"/><circle cx="9" cy="17" r="3" fill="#ffc7e7"/>'+
+  '</svg>';
+}
 const norm=s=>String(s).replace(/[！!。．，,？?\s]/g,'');
 const PINYIN_PREF='chinese-coach-show-pinyin';
 function getPinyinPreference(){try{return localStorage.getItem(PINYIN_PREF)!=='false'}catch{return true}}
@@ -80,7 +103,7 @@ function categories(){
  '<label class="clean-search-label" for="clean-word-search">Поиск китайского слова</label>'+
  '<input type="search" id="clean-word-search" class="clean-search" placeholder="我, nǎlǐ, куда..." autocomplete="off">'+
  '<div class="clean-category-list">'+courseCategories.map(g=>
- '<button class="clean-category" type="button" data-clean-category="'+g.id+'"><span class="clean-category-icon" aria-hidden="true">'+g.icon+'</span>'+
+ '<button class="clean-category" type="button" data-clean-category="'+g.id+'"><span class="clean-category-icon" aria-hidden="true">'+categoryArt(g)+'</span>'+
  '<span><strong>'+esc(g.title)+'</strong><small>'+g.words.length+' слов</small></span><span aria-hidden="true">›</span></button>').join('')+'</div>'+
  '<div class="clean-search-results" hidden></div>';
  frame('Базовые слова','Только слова по темам. Без диалогов, правил и тестов.',body,false);
