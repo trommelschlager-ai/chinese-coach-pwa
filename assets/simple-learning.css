@@ -334,3 +334,43 @@ body.writing-simple .controls #practice{
   min-height:57px!important;
 }
 body.writing-simple .controls #next{grid-column:auto!important}
+
+/* One intentional doorway for advanced writing controls. Keep the lesson
+   and finger-writing canvas visible on first load without scrolling. */
+body.writing-simple .writing-extras{
+  display:block;width:100%;max-width:620px;margin:8px auto 0;
+  border:0!important;background:transparent!important;padding:0 8px!important;
+}
+body.writing-simple .writing-extras>summary{
+  list-style:none;display:flex;align-items:center;justify-content:center;
+  min-height:43px!important;width:100%;margin:0 auto;padding:8px 15px!important;
+  border:1px solid #e7c8ef;border-radius:21px;background:#fff8ffda;
+  color:#70458a;font:700 14px/1.3 system-ui!important;
+  box-shadow:0 3px 12px #d4a4d234;cursor:pointer;
+}
+body.writing-simple .writing-extras>summary::-webkit-details-marker{display:none}
+body.writing-simple .writing-extras>summary:before{content:'＋';margin-right:9px;color:#a751c3;font-size:18px;font-weight:800}
+body.writing-simple .writing-extras[open]>summary:before{content:'−'}
+body.writing-simple .writing-extras:not([open])>details{display:none}
+body.writing-simple .writing-extras[open]>.character-picker,
+body.writing-simple .writing-extras[open]>.writing-settings,
+body.writing-simple .writing-extras[open]>.writing-about,
+body.writing-simple .writing-extras[open]>.writing-help{margin:5px 0!important}
+body.writing-simple .feedback{
+  margin-top:8px!important;min-height:0!important;padding:7px 11px!important;
+  font-size:13px!important;line-height:1.33!important;border-color:#ead3f5!important;
+}
+body.writing-simple #stroke-status{margin-top:6px!important;font-size:12px!important}
+body.writing-simple .paper{background-color:#fffaff!important}
+body.writing-simple .controls #animate,
+body.writing-simple .controls #next{background:linear-gradient(150deg,#f9e8ff,#f3d2ff)!important;border:1px solid #c28bdc!important}
+body.writing-simple .controls #animate,
+body.writing-simple .controls #next{color:#673081!important}
+@media(max-width:400px){
+ body.writing-simple .shell{padding:10px 10px 16px!important}
+ body.writing-simple .top{margin-bottom:6px!important}
+ body.writing-simple .drawing-card{padding:14px 12px!important}
+ body.writing-simple .meaning{margin:3px 0 10px!important}
+ body.writing-simple .controls{margin-top:10px!important}
+}
+
