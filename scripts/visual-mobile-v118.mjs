@@ -123,10 +123,18 @@ try{
   await hanzi.goto(BASE+'/hanzi-lab.html?v=117',{waitUntil:'domcontentloaded'});
   await hanzi.locator('#character').waitFor();
   await hanzi.locator('#writer svg').waitFor({timeout:12000});
+  await hanzi.waitForFunction(()=>document.querySelector('#feedback')?.textContent?.includes('Теперь твоя очередь'),{timeout:16000});
   assert.equal(await hanzi.locator('#practice').count(),1);
   assert.equal(await hanzi.locator('#animate').count(),1);
+  assert.equal(await hanzi.locator('.writing-extras').getAttribute('open'),null,'Advanced writing options must start collapsed');
   assert(await hanzi.locator('body').evaluate(el=>getComputedStyle(el).backgroundImage.includes('approved-quiz-scene')),'Hanzi writing should show the approved scenic background');
   await screenshot(hanzi,'07-hanzi',size);
+  await hanzi.locator('.writing-extras > summary').click();
+  await hanzi.locator('.character-picker > summary').click();
+  assert.equal(await hanzi.locator('#character-tabs button:visible').count(),10,'All ten writing lessons must remain available');
+  await hanzi.locator('.character-picker > summary').click();
+  await hanzi.locator('.writing-extras > summary').click();
+  assert.equal(await hanzi.locator('#writer svg').count(),1,'Closing advanced options must not reset writing canvas');
   await hanzi.close();
 
   // Image 8: dialogue controls and pinyin visibility for all cards.
