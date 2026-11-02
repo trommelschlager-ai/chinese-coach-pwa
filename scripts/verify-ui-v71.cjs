@@ -6,7 +6,7 @@ assert.equal(d.querySelectorAll('#launch-menu .six-menu-cards [data-choice]').le
 assert(css.includes('dialogue-sakura-v71.svg')&&css.includes('dialogue-cafe-v71.svg'));
 assert(css.includes('dialogue-pagoda-v71.svg')&&css.includes('dialogue-clock-v71.svg'));
 assert(css.includes('data-simple-section="dialogues"'));
-assert(clean.includes("chinese-coach-dialogue-original-v72"));
+assert(learn.includes("chinese-coach-dialogue-original-v72"),'Legacy dialogue audio comparison is retained in the playback engine');
 assert(learn.includes("a.preservesPitch=true"));
 assert(learn.includes("dialogue-voices-v73"));
 assert(fs.readFileSync('assets/daily-study-v98.js','utf8').includes('data-dialogue-voice-toggle'));
