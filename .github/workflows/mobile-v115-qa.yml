@@ -1,0 +1,53 @@
+name: v115 approved game responsive screenshots
+on:
+  push:
+    branches: [fix/approved-games-v115]
+    paths-ignore: ["qa/v115/**"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Full game and audio release checks
+        run: |
+          npm ci
+          npm run check:release
+          npm run check
+      - name: Install real Chromium
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Start static web app
+        run: |
+          python3 -m http.server 4173 >/tmp/v115-http.log 2>&1 &
+          for i in $(seq 1 20); do if curl -fsS http://127.0.0.1:4173/game.html >/dev/null; then break; fi; sleep 1; done
+      - name: Exercise and capture three game modes at three phone sizes
+        run: node scripts/visual-mobile-v115.mjs
+      - name: Upload screenshots and QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: approved-v115-three-screen-mobile
+          path: qa/v115/
+          if-no-files-found: warn
+      - name: Save verified screenshots on review branch
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add qa/v115/
+          if ! git diff --cached --quiet; then
+            git commit -m "Record v115 approved mobile game evidence"
+            git pull --rebase -X theirs origin "$GITHUB_REF_NAME"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
