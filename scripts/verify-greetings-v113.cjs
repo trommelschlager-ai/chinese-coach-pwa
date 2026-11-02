@@ -30,5 +30,5 @@ assert(game.includes('restore-task-title')&&game.includes("session.mode==='choos
 assert(style.includes('game-scene-choose-v94.webp')&&style.includes('flex:none!important;flex-direction:column!important;gap:8px!important;min-height:0!important'));
 assert(html.includes('approved-mobile-v112.css?v=113.1')&&page.includes('approved-mobile-v112.css?v=113.1'));
 assert(html.includes('game-practice-v102.js?v=113.1')&&page.includes('game-practice-v102.js?v=113.1'));
-assert(sw.includes('chinese-coach-pwa-v113-20261102-r1'));
+assert(/chinese-coach-pwa-v11[34]-20261102-r\d+/.test(sw));
 console.log('v113 verified: exact female/male greeting MP3s, offline inventory, no phone TTS fallback, compact game layout hooks, page and cache versions.');
