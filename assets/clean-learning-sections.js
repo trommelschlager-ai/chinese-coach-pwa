@@ -103,19 +103,22 @@ function categories(){
  currentCategory=null;view='words';
  const body='<span class="clean-screen-reader-title">193 слов в 13 темах</span>'+ 
  '<label class="clean-search-label" for="clean-word-search">Поиск китайского слова</label>'+
- '<input type="search" id="clean-word-search" class="clean-search" placeholder="我, nǎlǐ, куда..." autocomplete="off">'+
- '<div class="clean-category-list">'+courseCategories.map(g=>
- '<button class="clean-category" type="button" data-clean-category="'+g.id+'"><span class="clean-category-icon" aria-hidden="true">'+categoryArt(g)+'</span>'+
- '<span><strong>'+esc(g.title)+'</strong><small>'+g.words.length+' слов</small></span><span aria-hidden="true">›</span></button>').join('')+'</div>'+
+ '<input type="search" id="clean-word-search" class="clean-search" placeholder="🔎 Поиск китайского слова" autocomplete="off">'+
+ '<div class="clean-category-list">'+courseCategories.map((g,i)=>
+ '<button class="clean-category" type="button" '+(i>=8?'hidden ':'')+'data-clean-category="'+g.id+'"><span class="clean-category-icon" aria-hidden="true">'+categoryArt(g)+'</span>'+
+ '<span><strong>'+esc(g.title)+'</strong><small>'+g.words.length+' слов</small></span><span aria-hidden="true">›</span></button>').join('')+'</div>'+ 
+ '<button class="clean-more-categories" data-clean-more type="button">Показать ещё 5 тем ↓</button>'+ 
  '<div class="clean-search-results" hidden></div>';
  frame('Базовые слова','Только слова по темам. Без диалогов, правил и тестов.',body,false);
- $$('[data-clean-category]').forEach(b=>b.onclick=()=>openCategory(b.dataset.cleanCategory));
+ $('[data-clean-category]').forEach(b=>b.onclick=()=>openCategory(b.dataset.cleanCategory));
+ let moreShown=false;const more=$('[data-clean-more]');
+ more.onclick=()=>{moreShown=true;$('[data-clean-category]').forEach(b=>b.hidden=false);more.hidden=true};
  $('#clean-word-search').oninput=e=>{
   const q=e.target.value.toLocaleLowerCase().trim();
   const result=$('.clean-search-results'),items=$('.clean-category-list');
-  if(!q){items.hidden=false;result.hidden=true;result.innerHTML='';return}
+  if(!q){items.hidden=false;more.hidden=moreShown;result.hidden=true;result.innerHTML='';return}
   const matches=allWords.filter(w=>[w.hz,w.py,w.ru].some(x=>x.toLocaleLowerCase().includes(q))).slice(0,90);
-  items.hidden=true;result.hidden=false;
+  items.hidden=true;more.hidden=true;result.hidden=false;
   result.innerHTML='<p class="clean-results-label">'+matches.length+' совпадений</p><div class="clean-word-grid">'+matches.map(wordTile).join('')+'</div>';
   bindWords();
  };
