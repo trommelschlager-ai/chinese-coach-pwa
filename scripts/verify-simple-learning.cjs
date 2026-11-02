@@ -43,7 +43,16 @@ d.getElementById('course-topics-back').click();assert.equal(w.location.hash,'#to
 w.openLearningTopics('dialogues');
 assert(d.querySelector('[data-dialog-lesson="2"]'),'Conversation topic is visible independently');
 d.querySelector('[data-dialog-lesson="2"]').click();
-assert.equal(d.querySelectorAll('#topics .clean-dialog-line').length,6,'All conversation turns shown with no tones');
+let allDialogLines=0;
+do {
+ const lines=d.querySelectorAll('#topics .ch110-line');
+ assert(lines.length>0&&lines.length<=2,'Current dialogue page contains one or two cards');
+ allDialogLines+=lines.length;
+ assert(d.querySelector('[data-dialogue-play-all]'),'Entire dialogue remains playable');
+ assert.equal(d.querySelectorAll('[data-dialogue-line]').length,lines.length,'Each visible card can be played');
+ d.querySelector('[data-110-next]').click();
+} while(d.querySelector('[data-110-next]'));
+assert.equal(allDialogLines,6,'All six conversation turns are reachable across pages');
 w.openCourseLesson(2,2,0);
 assert.equal(d.querySelectorAll('#course .dialogue-row').length,6,'All course dialogue turns remain visible');
 for(let n=0;n<3;n++)d.getElementById('course-next').click();
