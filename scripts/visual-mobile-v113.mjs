@@ -56,7 +56,7 @@ try{
   await page.locator('[data-game-back]').click();
   await page.locator('[data-game-mode="build"]').click();
   for(let index=0;index<4;index++){
-   const current=await page.evaluate(()=>window.__gamePracticeV76.items[Number(document.querySelector('.ch110-game-status span').textContent.match(/\\d+/)[0])-1]);
+   const current=await page.evaluate(()=>window.__gamePracticeV76.items[Number(document.querySelector('.ch110-game-status span').textContent.match(/\d+/)[0])-1]);
    assert(current,'Known phrase at '+index);
    for(const [han] of current.parts){
     await page.evaluate(h=>{
@@ -85,6 +85,8 @@ try{
   // Independent approved dialogue page, with exact female and male MP3s.
   await page.goto(BASE+'/index.html?v=113',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>typeof window.openLearningTopics==='function');
+  await page.locator('#launch-start').click();
+  await page.locator('#launch-all').click();
   await page.evaluate(()=>window.openLearningTopics('dialogues'));
   await page.locator('[data-dialog-lesson="2"]').click();
   assert.equal(await page.locator('.ch110-line').count(),2);
