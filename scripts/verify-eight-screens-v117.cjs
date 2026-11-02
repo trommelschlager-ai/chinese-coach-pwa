@@ -46,7 +46,8 @@ assert.equal(d.querySelectorAll('[data-clean-category]').length,13);
 assert(d.querySelector('#clean-word-search'));
 assert(!d.querySelector('.clean-word-summary'));
 assert(!d.querySelector('.clean-section-head p'));
-assert(d.querySelector('[data-clean-category="g02"] .clean-category-icon').textContent.includes('🧭'));
+assert(d.querySelector('[data-clean-category="g02"] .clean-icon-art'),'Questions have custom vector signpost artwork');
+assert.equal(d.querySelectorAll('.clean-category .clean-icon-art').length,13,'All word categories use vector art');
 
 // Photos 5-6: real answer/listen buttons, no repeating explanation banner.
 w.openPracticeChoices();
