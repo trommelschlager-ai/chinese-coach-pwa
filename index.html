@@ -1588,7 +1588,7 @@ body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .foc
 <link rel="stylesheet" href="./assets/restore-design-v99.css?v=99.2">
 <link rel="stylesheet" href="./assets/hsk1-roadmap-v103.css?v=103">
 <link rel="stylesheet" href="./assets/approved-screens-v109.css?v=112">
-<link rel="stylesheet" href="./assets/approved-mobile-v112.css?v=115">
+<link rel="stylesheet" href="./assets/approved-mobile-v112.css?v=116">
 </head>
 <body class="launch-active"><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><div class="launch-cover-art"><img src="./assets/approved-home-v36.png" width="635" height="1536" fetchpriority="high" alt="Мой Китайский. Девушка в розовом платье и кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></div></section><section id="launch-menu" class="launch-screen six-lessons-menu" hidden>
 <img class="six-original-scenery" src="./assets/lessons-backdrop.webp" alt="" aria-hidden="true">
@@ -1849,7 +1849,7 @@ async function updateOfflineBar(){const info=document.getElementById('offlineinf
 window.addEventListener('online',updateOfflineBar);window.addEventListener('offline',updateOfflineBar);
 if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')){
  const hadServiceWorkerController=!!navigator.serviceWorker.controller;
- navigator.serviceWorker.register('./sw.js?v=115',{scope:'./',updateViaCache:'none'}).then(()=>navigator.serviceWorker.ready).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
+ navigator.serviceWorker.register('./sw.js?v=116',{scope:'./',updateViaCache:'none'}).then(()=>navigator.serviceWorker.ready).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
  navigator.serviceWorker.addEventListener('controllerchange',()=>{
   // Replace an already-open cached shell once the new offline version takes control.
   if(hadServiceWorkerController){
@@ -2535,6 +2535,6 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
 <script src="./assets/approved-lesson-design.js?v=112"></script>
 <script src="./assets/clean-learning-sections.js?v=114"></script>
 <script src="./assets/hsk1-roadmap-v103.js?v=103"></script>
-<script src="./assets/game-practice-v102.js?v=115"></script><script src="./assets/daily-study-v98.js?v=98"></script>
+<script src="./assets/game-practice-v102.js?v=116"></script><script src="./assets/daily-study-v98.js?v=98"></script>
 </body>
 </html>
