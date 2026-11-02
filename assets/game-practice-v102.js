@@ -236,13 +236,14 @@ function renderQuestion(){
    '<div class="ch110-game-title">Переведи<br>предложение</div>'+
    '<div class="ch110-prompt-row"><img class="ch110-panda" src="./assets/game-panda-v80.webp" alt="Панда с книгой">'+
    '<div class="ch110-prompt"><span>Переведи предложение</span><strong>'+safe(q.ru)+'</strong></div></div>'+
-   '<div class="ch110-build-controls"><button class="ch110-game-pinyin" type="button" data-game-toggle-pinyin aria-pressed="'+session.showPinyin+'">'+
-   (session.showPinyin?'Скрыть пиньинь':'Показать пиньинь')+'</button></div>'+
    '<div class="restore-deck game-build-static'+(session.showPinyin?'':' game-py-hidden')+'">'+
    '<div class="audit-answer" role="group" aria-label="Твоя фраза">'+session.selected.map((id,k)=>token(session.bank[id],k,true)).join('')+
    (session.selected.length?'':'<span class="audit-answer-hint">Выбери слова ниже</span>')+'</div>'+
    '<div class="audit-bank" role="group" aria-label="Слова для ответа">'+session.bank.map((t,id)=>session.selected.includes(id)?'':token(t,id)).join('')+
-   '</div><p class="audit-audio-note" data-game-audio-feedback aria-live="polite"></p></div>'+
+   '</div>'+
+   '<div class="ch110-build-controls"><button class="ch110-game-pinyin" type="button" data-game-toggle-pinyin aria-pressed="'+session.showPinyin+'">'+
+   (session.showPinyin?'Скрыть пиньинь':'Показать пиньинь')+'</button></div>'+
+   '<p class="audit-audio-note" data-game-audio-feedback aria-live="polite"></p></div>'+
    '<div class="ch110-game-bottom"><div class="audit-feedback" role="status" aria-live="polite">'+safe(feedback)+'</div>'+correction(q)+
    '<div class="audit-actions"><button type="button" class="audit-secondary ch110-game-reset" data-game-clear '+(session.locked?'disabled':'')+' aria-label="Сбросить ответ">↻</button>'+
    '<button type="button" class="audit-primary" data-game-check>'+(session.locked?(session.position===session.order.length-1?'Результат →':'Далее →'):'Проверить →')+

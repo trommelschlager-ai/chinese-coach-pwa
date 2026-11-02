@@ -6,5 +6,5 @@ for(const [,p] of fs.readFileSync('index.html','utf8').matchAll(/(?:href|src)="(
 for(const [,p] of fs.readFileSync('game.html','utf8').matchAll(/(?:href|src)="(\.\/(?:assets|icons)\/[^"#]+)"/g))files.add(p);
 for(const p of ['./game.html','./index.html','./hanzi-lab.html','./manifest.webmanifest'])files.add(p);
 const list=[...files].sort(),bytes=list.reduce((n,p)=>n+fs.statSync(p.split('?')[0]).size,0);
-fs.writeFileSync('assets/offline-pack.json',JSON.stringify({version:103,bytes,files:list},null,2)+'\n');
+fs.writeFileSync('assets/offline-pack.json',JSON.stringify({version:112,bytes,files:list},null,2)+'\n');
 console.log(`${list.length} offline assets; ${bytes} bytes`);

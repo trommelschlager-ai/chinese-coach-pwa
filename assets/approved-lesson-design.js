@@ -109,6 +109,7 @@
  renderCoursePanel=function(){basePanel();enhancePanel()};
  // This file loads after the base UI has already been initially rendered.
  if($('lesson-panel')?.children.length)enhancePanel();
+ if($('quizplay'))return; // Canonical word-check already provides its audio control.
  const quizAudio=document.createElement('button');
  quizAudio.type='button';quizAudio.className='approved-quiz-listen';
  quizAudio.textContent='🔊';quizAudio.setAttribute('aria-label','Послушать китайское слово');

@@ -19,6 +19,7 @@ window.addEventListener('basic-known-restored',()=>{
  if(view==='words'){if(currentCategory)openCategory(currentCategory);else categories();}
 });
 function saveKnown(){try{localStorage.setItem('chinese-coach-basic-known-v1',JSON.stringify([...known]))}catch{}}
+let dialogueStart=0,dialoguePerPage=0;
 let currentCategory=null,view='words',dialogLesson=null,practiceMode='recall',practiceIndex=0,score=0,attempts=0,audio=null;
 const practicePool=allWords.filter(w=>w.hz.length<=4);
 const REVIEW_KEY='chinese-coach-basic-review-v98';
@@ -106,15 +107,15 @@ function dialogueCategories(){
  const lessons=COURSE.filter(l=>l.id!==1&&l.dialogue?.length);
  const titles={3:'Страна и место жительства'};
  section.innerHTML='<div class="ch110-categories">'+
- '<header class="ch110-category-header"><button type="button" class="ch110-back" data-110-back>← Разделы</button><span class="ch110-chinese" lang="zh-Hans">中文</span></header>'+
- '<h1 class="ch110-category-title">Диалоги</h1>'+
+ '<header class="ch110-category-header"><button type="button" class="ch110-back" data-110-back aria-label="К разделам"><img src="./assets/vendor/icons/arrow-left.svg" alt=""></button><h1 class="ch110-category-title">Диалоги</h1><button type="button" class="ch110-chinese" data-category-audio aria-label="Слушать первый диалог"><img src="./assets/vendor/icons/volume-2.svg" alt=""></button></header>'+
  '<div class="ch110-category-list">'+lessons.map((l,i)=>
  '<button class="ch110-category ch110-category-'+i+'" data-dialog-lesson="'+l.id+'" type="button">'+
- '<span class="ch110-category-icon" aria-hidden="true">☏</span>'+
- '<span class="ch110-category-copy"><strong>'+esc(titles[l.id]||l.title)+'</strong><small>'+l.dialogue.length+' реплик</small></span>'+
+ '<span class="ch110-category-icon" aria-hidden="true"><img src="./assets/vendor/icons/message-circle-more.svg" alt=""></span>'+
+ '<span class="ch110-category-copy"><strong>'+esc(titles[l.id]||l.title)+'</strong><small>'+l.dialogue.length+(l.dialogue.length===4?' реплики':' реплик')+'</small></span>'+
  '<span class="ch110-category-next" aria-hidden="true">›</span></button>'
- ).join('')+'</div><div class="ch110-category-footer" aria-hidden="true"></div></div>';
+ ).join('')+'</div><div class="ch110-category-footer">Выберите тему диалога</div></div>';
  $('[data-110-back]').onclick=()=>leaveToMenu();
+ $('[data-category-audio]').onclick=()=>window.playStandaloneDialogue?.(lessons[0].id);
  $$('[data-dialog-lesson]').forEach(b=>b.onclick=()=>showDialogue(Number(b.dataset.dialogLesson)));
 }
 function showDialogue(id,page=0){
@@ -123,29 +124,29 @@ function showDialogue(id,page=0){
  const perPage=(window.innerHeight||700)<640?1:2;
  const pages=Math.ceil(l.dialogue.length/perPage);
  page=Math.max(0,Math.min(page,pages-1));
- const start=page*perPage;
+ const start=page*perPage;dialogueStart=start;dialoguePerPage=perPage;
  const shown=l.dialogue.slice(start,start+perPage);
  const title=l.id===3?'Страна и место жительства':l.title;
  document.body.classList.add('rose-dialogue-open','ch110-detail-open');
  section.dataset.simpleSection='dialogues';
  const lines=shown.map(([who,hz,py,ru],localIndex)=>{
   const i=start+localIndex;
-  const female=id===2||who==='A';
+  const female=id===2 ? (i===0 || (i>1 && who==='B')) : who==='A';
   const size=hz.length>24?' ch110-line-long':hz.length>14?' ch110-line-medium':'';
   return '<article class="ch110-line dialogue-row'+size+'" data-standalone-line="'+i+'">'+
-  '<div class="ch110-person"><img src="./assets/'+(female?'meaning-woman.webp':'meaning-man.webp')+'" alt="'+(female?'Женщина':'Мужчина')+'" class="ch110-portrait">'+
+  '<div class="ch110-person"><img src="./assets/'+(female?'approved-woman-v112.webp':'approved-man-v112.webp')+'" alt="'+(female?'Женщина':'Мужчина')+'" class="ch110-portrait">'+
   '<span class="ch110-person-name">'+(female?'Она':'Он')+' · '+(i+1)+'</span></div>'+
   '<div class="ch110-speech">'+
   '<div class="ch110-speech-top"><span class="ch110-pinyin" lang="zh-Latn">'+esc(py)+'</span>'+
-  '<button class="ch110-play" type="button" data-dialogue-line="'+i+'" aria-label="Прослушать реплику '+(i+1)+'">🔊</button></div>'+
+  '<button class="ch110-play" type="button" data-dialogue-line="'+i+'" aria-label="Прослушать реплику '+(i+1)+'"><img src="./assets/vendor/icons/volume-2.svg" alt=""></button></div>'+
   '<strong class="ch110-hanzi" lang="zh-Hans">'+esc(hz)+'</strong>'+
   '<span class="ch110-meaning">'+esc(ru)+'</span></div></article>';
  }).join('');
  section.innerHTML='<section class="ch110-dialogue" aria-label="'+esc(title)+'">'+
- '<header class="ch110-toolbar"><button class="ch110-round" type="button" data-110-return aria-label="К темам">‹</button>'+
- '<button class="ch110-round ch110-listen" type="button" data-dialogue-play-all aria-label="Слушать весь диалог">🔊</button></header>'+
+ '<header class="ch110-toolbar"><button class="ch110-round" type="button" data-110-return aria-label="К темам"><img src="./assets/vendor/icons/arrow-left.svg" alt=""></button>'+
+ '<button class="ch110-round ch110-listen" type="button" data-dialogue-play-all aria-label="Слушать весь диалог"><img src="./assets/vendor/icons/volume-2.svg" alt=""></button></header>'+
  '<div class="ch110-heading"><h1>'+esc(title)+'</h1><span>Реплики '+(start+1)+'–'+(start+shown.length)+' из '+l.dialogue.length+'</span></div>'+
- '<div class="ch110-heading-ornament" aria-hidden="true">❀</div>'+
+ '<div class="ch110-heading-ornament" aria-hidden="true"><img src="./assets/approved-divider-v112.webp" alt=""></div>'+
  '<main class="ch110-dialogue-body">'+lines+'</main>'+
  '<footer class="ch110-dialogue-footer">'+
  '<div class="ch110-pagination"><button type="button" data-110-prev '+(page===0?'disabled':'')+'>‹ Назад</button>'+
@@ -228,6 +229,10 @@ function renderPractice(){
  }
  $('[data-practice-next]').onclick=()=>{skipped.add(word.hz);practiceIndex++;renderPractice()};
 }
+window.addEventListener('resize',()=>{
+ const count=window.innerHeight<640?1:2;
+ if(dialogLesson!==null&&section.classList.contains('active')&&count!==dialoguePerPage)showDialogue(dialogLesson,Math.floor(dialogueStart/count));
+});
 window.openLearningTopics=function(kind='course'){
  if(kind==='words'){originalOpenTopics('words');categories();return}
  if(kind==='dialogues'){originalOpenTopics('dialogues');dialogueCategories();return}
