@@ -1,6 +1,6 @@
 {
   "version": 116,
-  "at": "2026-11-02T20:32:55.310Z",
+  "at": "2026-11-02T20:33:25.698Z",
   "results": [
     {
       "size": "360x800",
@@ -46,6 +46,18 @@
       "scrollWidth": 360,
       "scrollHeight": 800,
       "buttonBottom": 650,
+      "buttonLeft": 82,
+      "buttonRight": 342,
+      "panelHeight": 107
+    },
+    {
+      "size": "360x800",
+      "mode": "build",
+      "width": 360,
+      "height": 800,
+      "scrollWidth": 360,
+      "scrollHeight": 800,
+      "buttonBottom": 569.5,
       "buttonLeft": 82,
       "buttonRight": 342,
       "panelHeight": 107
@@ -99,6 +111,18 @@
       "panelHeight": 127
     },
     {
+      "size": "393x852",
+      "mode": "build",
+      "width": 393,
+      "height": 852,
+      "scrollWidth": 393,
+      "scrollHeight": 852,
+      "buttonBottom": 651.5,
+      "buttonLeft": 84,
+      "buttonRight": 373,
+      "panelHeight": 127
+    },
+    {
       "size": "412x915",
       "mode": "choose",
       "width": 412,
@@ -142,6 +166,18 @@
       "scrollWidth": 412,
       "scrollHeight": 915,
       "buttonBottom": 748,
+      "buttonLeft": 84,
+      "buttonRight": 392,
+      "panelHeight": 127
+    },
+    {
+      "size": "412x915",
+      "mode": "build",
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 412,
+      "scrollHeight": 915,
+      "buttonBottom": 651.5,
       "buttonLeft": 84,
       "buttonRight": 392,
       "panelHeight": 127
