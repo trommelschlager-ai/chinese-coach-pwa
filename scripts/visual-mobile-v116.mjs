@@ -134,6 +134,14 @@ try{
     assert.equal(await page.locator('.v116-word-panel [data-game-token]').count(),3,'Only three unused tea options remain');
     assert.equal(await page.locator('.v115-scene').evaluate(e=>getComputedStyle(e).backgroundImage),sceneBefore);
     await page.screenshot({path:OUT+'/build-tea-selected-'+size+'.png',fullPage:true});
+    await page.locator('.v116-word-panel [data-game-token]').filter({hasText:'茶'}).click();
+    assert.equal(await page.locator('.v116-empty-slot').count(),0);
+    assert.equal(await page.locator('.v116-word-panel [data-game-token]').count(),2);
+    await page.locator('[data-game-check]').click();
+    assert.match(await page.locator('.audit-feedback').textContent(),/Верно/);
+    assert.equal(await page.locator('.v115-footer .audit-correction').count(),0,'No duplicate full correction panel after a correct answer');
+    await checkLayout(page,[width,height],mode);
+    await page.screenshot({path:OUT+'/build-tea-correct-'+size+'.png',fullPage:true});
    }
   }
   assert.deepEqual(errors,[],'Browser errors '+size+': '+errors.join(';'));
