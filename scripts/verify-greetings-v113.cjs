@@ -26,9 +26,9 @@ assert(html.includes("['B','哈喽！','hālou!','Привет! (неформа�
 assert(engine.includes("'./assets/dialogue-greetings-v113/l2-'"));
 assert(!engine.includes('newGreeting'),'No phone-speech exception for greeting');
 assert(engine.includes('window.playDialogueLine')&&engine.includes('window.playStandaloneDialogue'));
-assert(game.includes('restore-task-title')&&game.includes("session.mode==='choose'?'✕ Неверно"));
-assert(style.includes('game-scene-choose-v94.webp')&&style.includes('flex:none!important;flex-direction:column!important;gap:8px!important;min-height:0!important'));
-assert(html.includes('approved-mobile-v112.css?v=113.1')&&page.includes('approved-mobile-v112.css?v=113.1'));
-assert(html.includes('game-practice-v102.js?v=113.1')&&page.includes('game-practice-v102.js?v=113.1'));
-assert(/chinese-coach-pwa-v11[34]-20261102-r\d+/.test(sw));
+assert(game.includes('v115-game')&&game.includes('v115-pinyin')&&game.includes("session.mode==='choose'?'✕ Неверно"),'Approved v115 live game structure and feedback');
+assert(style.includes('approved-pastel-v112.webp')&&style.includes('v115-build-panel')&&style.includes('v115-scene-listen'),'Approved scenery and shared game layout are present');
+assert(html.includes('approved-mobile-v112.css?v=115')&&page.includes('approved-mobile-v112.css?v=115'));
+assert(html.includes('game-practice-v102.js?v=115')&&page.includes('game-practice-v102.js?v=115'));
+assert(/chinese-coach-pwa-v11[345]-20261102-r\d+/.test(sw));
 console.log('v113 verified: exact female/male greeting MP3s, offline inventory, no phone TTS fallback, compact game layout hooks, page and cache versions.');
