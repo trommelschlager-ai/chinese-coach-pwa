@@ -61,6 +61,8 @@ try{
     await btn.click();assert.equal(await page.locator('.v115-scene .audit-pinyin').count(),0);
     const q=await page.locator('.v115-scene h2').textContent();
     assert(q.includes('我'),'Quiz hanzi visible');
+    const h2=await rect(page,'.v115-scene h2'),scene=await rect(page,'.v115-scene');
+    assert(h2.top>=scene.top-2&&h2.bottom<=scene.bottom+2,'Chinese prompt must not be clipped: '+JSON.stringify({h2,scene}));
     assert.equal(await page.locator('[data-game-option]').count(),3);
    }else if(mode==='listen'){
     assert.equal(await page.locator('.v115-game .audit-pinyin').count(),0);
@@ -94,6 +96,34 @@ try{
     await page.locator('[data-game-check]').click();
     assert.equal(await page.locator('.is-correct').count(),1);
     assert.match(await page.locator('.audit-feedback').textContent(),/Верно/);
+   }else if(mode==='build'){
+    // Reach the approved long tea sentence and verify all 8 tiles and 6-token answer.
+    for(let step=0;step<4;step++){
+     const current=await page.evaluate(i=>window.__gamePracticeV76.items[i],step);
+     for(const [han] of current.parts){
+      await page.evaluate(h=>{
+       const tile=[...document.querySelectorAll('[data-game-token]')].find(el=>el.querySelector('strong')?.textContent===h);
+       if(!tile)throw Error('No tile: '+h);tile.click();
+      },han);
+     }
+     await page.locator('[data-game-check]').click();
+     assert.match(await page.locator('.audit-feedback').textContent(),/Верно/);
+     await page.locator('[data-game-check]').click();
+    }
+    assert.match(await page.locator('.v115-scene-text').textContent(),/чашку чая/);
+    assert.equal(await page.locator('[data-game-token]').count(),8);
+    await checkLayout(page,[width,height],mode);
+    await page.screenshot({path:OUT+'/build-tea-'+size+'.png',fullPage:true});
+    const sceneBefore=await page.locator('.v115-scene').evaluate(e=>getComputedStyle(e).backgroundImage);
+    for(const part of (await page.evaluate(()=>window.__gamePracticeV76.items[4].parts)).slice(0,5)){
+      await page.evaluate(h=>{
+       const tile=[...document.querySelectorAll('[data-game-token]')].find(el=>el.querySelector('strong')?.textContent===h);
+       if(!tile)throw Error('Missing tea token '+h);tile.click();
+      },part[0]);
+    }
+    assert.equal(await page.locator('[data-game-remove]').count(),5);
+    assert.equal(await page.locator('.v115-scene').evaluate(e=>getComputedStyle(e).backgroundImage),sceneBefore);
+    await page.screenshot({path:OUT+'/build-tea-selected-'+size+'.png',fullPage:true});
    }
   }
   assert.deepEqual(errors,[],'Browser errors '+size+': '+errors.join(';'));
