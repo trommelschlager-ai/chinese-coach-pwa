@@ -209,7 +209,8 @@
  filter:drop-shadow(0 5px 4px #a96caa3a)!important;
 }
 #topics#topics#topics .v115-game .v115-scene-text{
- position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;
+ position:relative!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
  flex-direction:column!important;gap:6px!important;
  box-sizing:border-box!important;flex:none!important;
  width:64%!important;min-height:0!important;height:auto!important;
