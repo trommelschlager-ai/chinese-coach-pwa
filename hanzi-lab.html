@@ -72,6 +72,8 @@
       <div class="feedback" id="feedback" role="status" aria-live="polite">Загрузка тренажёра…</div>
       <div class="progress-details" id="stroke-status">Количество черт: 3</div>
     </section>
+  </div>
+  <details class="writing-extras" id="writing-extras"><summary>Дополнительно · подсказки и настройки</summary>
     <details class="writing-help" id="writing-help"><summary>Подсказки и пример слова</summary>
 
 
@@ -81,11 +83,11 @@
       <div class="hint" id="tone-note">4-й тон dà: голос быстро опускается сверху вниз. Не путай с dǎ и dá.</div>
       <div class="section-label">Как тренироваться</div><p class="note">Нажми «Показать черты», затем «Написать самому». Пиши в квадрате в указанном порядке. После трёх ошибок приложение покажет нужный штрих.</p>
     </details>
-  </div>
   <div class="bottom"><span class="progress-details" id="lesson-counter">Иероглиф 1 из 10</span></div>
   <details class="character-picker"><summary>Выбрать другой иероглиф</summary><nav class="character-tabs" aria-label="Выбор иероглифа" id="character-tabs"></nav></details>
   <details class="writing-settings"><summary>Настройки озвучки</summary>      <div class="voice-box"><div class="human-label">🎧 Живое произношение</div><p class="human-explain">По умолчанию проигрывается аудиозапись носителя китайского языка. Если она недоступна, приложение сообщит об ошибке. Системный голос можно включить вручную в настройках.</p><label for="chinese-voice">Запасной китайский голос</label><select id="chinese-voice"><option value="">Поиск голосов устройства…</option></select><div class="voice-row"><span>Скорость</span><input id="voice-rate" type="range" min="0.7" max="1.1" step="0.05" value="0.85"><output id="voice-rate-label">0.85×</output></div><p class="voice-help">Выбирай доступный голос Mandarin (zh-CN). Если на телефоне только один голос, другие появятся после установки китайского голосового пакета.</p></div></details>
   <details class="writing-about"><summary>Об аудио и тренажёре</summary><p class="footnote">Образцы письма и черты сохраняются вместе с материалами в настройках приложения. Запись произношения — голос носителя Yue Tan (CC BY-SA 3.0 US), <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">источник и лицензия</a>. На телефоне при отсутствии аудио включается запасной голос. Тренажёр проверяет штрихи и их последовательность, но не заменяет преподавателя каллиграфии. Прогресс сохраняется только на этом устройстве.</p></details>
+  </details>
 </main>
 <script>
 window.addEventListener('DOMContentLoaded',function(){
