@@ -231,10 +231,19 @@ function gameHeader(meter){
 function gameFooter(mode){
  return '<footer class="v115-footer'+(mode==='build'?' ch110-game-bottom':'')+'">'+
  '<div class="audit-feedback" role="status" aria-live="polite">'+safe(feedback)+'</div>'+
- (mode==='build'?correction(items[session.index]):'')+
+ (mode==='build'&&session.locked&&!session.lastCorrect?correction(items[session.index]):'')+
  '<div class="audit-actions">'+
  (mode==='build'?'<button type="button" class="audit-secondary ch110-game-reset" data-game-clear '+(session.locked?'disabled':'')+' aria-label="Очистить собранную фразу">↻</button>':'')+
  '<button type="button" class="audit-primary" data-game-check>'+(session.locked?(session.position===session.order.length-1?'Результат »':'Далее »'):'Проверить »')+'</button></div></footer>';
+}
+// Two independent blocks: the upper row holds the sentence in the chosen order;
+// the lower one holds ONLY unused options. Empty placeholders never appear below.
+function buildAnswerSlots(){
+ const needed=items[session.index].parts.length;
+ return Array.from({length:needed},(_,i)=>{
+  if(i<session.selected.length)return token(session.bank[session.selected[i]],i,true);
+  return '<span class="v116-empty-slot" aria-hidden="true"></span>';
+ }).join('');
 }
 function renderQuestion(){
  const q=items[session.index],mode=session.mode,meter=(session.position+(session.locked?1:0))/session.order.length*100;
@@ -243,8 +252,9 @@ function renderQuestion(){
   area='<div class="v115-scene v115-scene-build ch110-prompt-row">'+
    '<img class="v115-panda ch110-panda" src="./assets/game-panda-v80.webp" alt="" aria-hidden="true" width="148" height="169">'+
    '<div class="v115-scene-text ch110-prompt"><strong>'+safe(q.ru)+'</strong></div></div>'+
-   '<section class="v115-panel v115-build-panel restore-deck game-build-static'+(session.showPinyin?'':' game-py-hidden')+'" aria-label="Собери китайскую фразу">'+
-   '<div class="audit-answer" role="group" aria-label="Твоя фраза">'+session.selected.map((id,k)=>token(session.bank[id],k,true)).join('')+'</div>'+
+   '<section class="v115-panel v116-answer-panel restore-deck game-build-static'+(session.showPinyin?'':' game-py-hidden')+'" aria-label="Собери предложение">'+
+   '<div class="audit-answer" role="group" aria-label="Твоя фраза">'+buildAnswerSlots()+'</div></section>'+
+   '<section class="v115-panel v115-build-panel v116-word-panel restore-deck game-build-static'+(session.showPinyin?'':' game-py-hidden')+'" aria-label="Доступные китайские слова">'+
    '<div class="audit-bank" role="group" aria-label="Слова для ответа">'+session.bank.map((t,id)=>session.selected.includes(id)?'':token(t,id)).join('')+'</div>'+
    '<div class="ch110-build-controls">'+pinyinButton()+'</div>'+
    '<p class="audit-audio-note" data-game-audio-feedback role="status" aria-live="polite"></p></section>';
@@ -275,10 +285,10 @@ function renderQuestion(){
 // made the background and the browser scroll anchor jump on mobile.
 function updateBuildTokens(){
  if(!session||session.mode!=='build'||screen!=='question')return;
- const answer=one('.game-build-static .audit-answer');
- const bank=one('.game-build-static .audit-bank');
+ const answer=one('.v116-answer-panel .audit-answer');
+ const bank=one('.v116-word-panel .audit-bank');
  if(!answer||!bank){renderQuestion();return}
- answer.innerHTML=session.selected.map((id,k)=>token(session.bank[id],k,true)).join('');
+ answer.innerHTML=buildAnswerSlots();
  bank.innerHTML=session.bank.map((t,id)=>session.selected.includes(id)?'':token(t,id)).join('');
  const status=one('.audit-feedback');if(status)status.textContent=feedback;
 }
