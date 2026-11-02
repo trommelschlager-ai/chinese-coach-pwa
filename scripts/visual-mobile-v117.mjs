@@ -51,6 +51,9 @@ try{
   // Image 2: game hub without any global step-by-step banner.
   const game=await context.newPage();await game.goto(BASE+'/game.html?v=117',{waitUntil:'domcontentloaded'});
   await game.locator('[data-game-mode="build"]').waitFor();
+  await game.waitForLoadState('load');
+  await game.locator('.approved-art-image').evaluate(img=>img.decode());
+  await game.waitForFunction(()=>getComputedStyle(document.body).marginLeft==='0px');
   assert.equal(await game.locator('#daily-study-progress').count(),0);
   await screenshot(game,'02-game-hub',size);
   await game.close();
