@@ -34,6 +34,33 @@ try{
   const errors=[];context.on('page',p=>p.on('pageerror',e=>errors.push(e.message)));
   // Image 1: Chinese character and pinyin must be vertically adjacent.
   const page=await appPage(context);
+  if(width===360){
+   const clips=await page.evaluate(async()=>{
+    const results=[];
+    const audioContext=new (window.AudioContext||window.webkitAudioContext)();
+    for(const text of ['我','你','喜欢','明白','中国','你好','面条','谢谢']){
+      const src=window.__simpleSectionPreview.getFile(text);
+      if(!src)throw Error('No audio for '+text);
+      const res=await fetch(src,{cache:'no-store'});
+      if(!res.ok)throw Error(text+': MP3 HTTP '+res.status);
+      const bytes=await res.arrayBuffer();
+      const decoded=await audioContext.decodeAudioData(bytes.slice(0));
+      const values=decoded.getChannelData(0);
+      const stride=Math.max(1,Math.floor(values.length/12000));
+      let sum=0,peak=0,n=0;
+      for(let i=0;i<values.length;i+=stride){const v=values[i];sum+=v*v;peak=Math.max(peak,Math.abs(v));n++}
+      results.push({word:text,source:src,duration:Math.round(decoded.duration*100)/100,
+        rms:Math.sqrt(sum/n),peak,bytes:bytes.byteLength,sampleRate:decoded.sampleRate});
+    }
+    await audioContext.close();
+    return results;
+   });
+   for(const clip of clips){
+    assert(clip.duration>=0.15&&clip.duration<8,'Unusual clip length: '+JSON.stringify(clip));
+    assert(clip.rms>0.0005&&clip.peak>0.003,'Missing audible signal: '+JSON.stringify(clip));
+   }
+   fs.writeFileSync(OUT+'/audio-samples.json',JSON.stringify({note:'Objective MP3 decode and signal only; not a human review of accent, noise or commercial rights',clips},null,2)+'\\n');
+  }
   await page.evaluate(()=>window.go('quiz'));
   await page.locator('#quiz.page.active #quizhanzi').waitFor();
   const visualOrder=await page.evaluate(()=>{
