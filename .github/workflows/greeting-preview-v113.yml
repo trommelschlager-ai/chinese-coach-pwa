@@ -36,5 +36,9 @@ jobs:
             echo 'No audio changes'
           else
             git commit -m "Add verified greeting previews for 你好 and 哈喽"
-            git push
+            # The design branch may advance while the speech files are being generated.
+            # Integrate that work before pushing; never force-push over newer changes.
+            git fetch origin "$GITHUB_REF_NAME"
+            git rebase "origin/$GITHUB_REF_NAME"
+            git push origin "HEAD:$GITHUB_REF_NAME"
           fi
