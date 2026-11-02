@@ -223,3 +223,51 @@ body.rose-dialogue-open{overflow:hidden!important}
  #topics .rose-bubble{min-height:clamp(103px,20dvh,160px)!important}
  #topics .rose-meta{padding-bottom:5px!important}
 }
+
+
+/* v118: restore the approved sakura, mountain and pagoda scenery without
+   baking UI text into a screenshot. All cards and buttons remain native. */
+#topics#topics#topics[data-simple-section='words'],
+#topics#topics#topics[data-simple-section='practice']{
+  min-height:calc(100dvh - 76px)!important;
+  background:linear-gradient(180deg,#fff9ffe0 0%,#fff6ffbf 38%,#fff8ff99 72%,#fff8ff47 100%),
+    url('./approved-quiz-scene-v112.webp') center bottom/100% 100% no-repeat!important;
+  box-shadow:none!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category{
+  position:relative!important;overflow:hidden!important;
+  background:linear-gradient(105deg,#fff0ffed 0%,#fffbffed 73%,#f9e3ffea 100%)!important;
+  border:1.3px solid #e5a2ee!important;
+  box-shadow:inset 0 0 0 1px #fff,0 3px 8px #d37edb48!important;
+  border-radius:24px!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category::after{
+  content:'✿';position:absolute;right:24px;top:5px;pointer-events:none;
+  color:#e8a0d4;opacity:.45;font-size:31px;font-family:Georgia,serif;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category-icon{
+  position:relative;z-index:1;
+  width:54px;height:54px;border-color:#eaa6d8;
+  background:#fff9fff5;box-shadow:0 0 13px #eb94d865;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category-icon .clean-icon-art{
+  width:52px;height:52px;filter:drop-shadow(0 2px 3px #c468bd75);
+}
+#topics#topics#topics[data-simple-section='words'] .clean-search{
+  background:#fffcfff8!important;border:2px solid #e5a2e8!important;
+  box-shadow:0 0 15px #efb0e77d!important;
+}
+#topics#topics#topics[data-simple-section='practice'] .clean-practice-card{
+  border:2px solid #df99e9!important;
+  box-shadow:0 0 0 3px #fffaffa6,0 5px 18px #d583db88!important;
+  background:linear-gradient(165deg,#fff9fff3,#f9ecfff0)!important;
+}
+#topics#topics#topics[data-simple-section='practice'] .clean-choice-grid button,
+#topics#topics#topics[data-simple-section='practice'] .clean-action-next{
+  box-shadow:0 3px 10px #cf88db66,0 0 12px #e9b1ef66!important;
+}
+@media(max-width:380px){
+  #topics#topics#topics[data-simple-section='words'] .clean-category{
+    grid-template-columns:54px minmax(0,1fr) 18px!important;padding:10px!important;
+  }
+}
