@@ -59,7 +59,7 @@ try{
     assert(clip.duration>=0.15&&clip.duration<8,'Unusual clip length: '+JSON.stringify(clip));
     assert(clip.rms>0.0005&&clip.peak>0.003,'Missing audible signal: '+JSON.stringify(clip));
    }
-   fs.writeFileSync(OUT+'/audio-samples.json',JSON.stringify({note:'Objective MP3 decode and signal only; not a human review of accent, noise or commercial rights',clips},null,2)+'\\n');
+   fs.writeFileSync(OUT+'/audio-samples.json',JSON.stringify({note:'Objective MP3 decode and signal only; not a human review of accent, noise or commercial rights',clips},null,2)+'\n');
   }
   await page.evaluate(()=>window.go('quiz'));
   await page.locator('#quiz.page.active #quizhanzi').waitFor();
