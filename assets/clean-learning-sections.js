@@ -124,8 +124,8 @@ function wordTile(word){
  '<button class="clean-word-study-btn" type="button" data-study-word="'+esc(word.hz)+'" aria-label="Изучить '+esc(word.py)+' на большой карточке">Изучить →</button></article>';
 }
 function bindWords(){
- $('[data-clean-play]').forEach(b=>b.onclick=()=>play(b.dataset.cleanPlay,.83));
- $('[data-study-word]').forEach(b=>b.onclick=()=>showWordStudy(b.dataset.studyWord));
+ document.querySelectorAll('[data-clean-play]').forEach(b=>b.onclick=()=>play(b.dataset.cleanPlay,.83));
+ document.querySelectorAll('[data-study-word]').forEach(b=>b.onclick=()=>showWordStudy(b.dataset.studyWord));
  $$('[data-clean-known]').forEach(b=>b.onclick=()=>{
   const hz=b.dataset.cleanKnown;if(known.has(hz))known.delete(hz);else known.add(hz);
   saveKnown();b.setAttribute('aria-pressed',String(known.has(hz)));
