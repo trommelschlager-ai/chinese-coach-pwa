@@ -109,6 +109,7 @@ try{
   await page.locator('[data-study-word="它"]').click();
   await page.locator('.clean-study-hanzi').waitFor();
   assert.equal(await page.locator('.clean-study-hanzi').textContent(),'它','Native flashcard must show selected Chinese character');
+  assert.equal(await page.locator('.clean-study-settings').count(),0,'Use existing global settings only, never a duplicate');
   assert.equal(await page.locator('.clean-study-pinyin').textContent(),'tā','First tone on the pronoun 它 must be preserved');
   assert.equal(await page.locator('.clean-study-translation').isVisible(),false,'Translation starts hidden');
   await screenshot(page,'09-single-word-card',size);
