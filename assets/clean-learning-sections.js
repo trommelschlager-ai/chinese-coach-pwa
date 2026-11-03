@@ -27,12 +27,43 @@ const categoryMotifs={
  g12:'<rect x="15" y="16" width="43" height="41" rx="3" fill="#f6debc" stroke="#aa7a6b" stroke-width="4"/><path d="M19 28h35M19 43h35M28 21v32M43 21v32" stroke="#ae8a75" stroke-width="2"/><circle cx="28" cy="32" r="5" fill="#a66aaf"/><circle cx="43" cy="40" r="5" fill="#e99baf"/>',
  g13:'<path d="M13 18h47v28H33L23 56v-10H13z" fill="#fff2f9" stroke="#bd88cf" stroke-width="3"/><text x="36" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#8551a3">谢</text>'
 };
+// Native layered vector illustrations: one motif per group, translucent
+// petals, glazed edges and shadows. All category text and links remain HTML.
 function categoryArt(group){
+ const id='art-'+group.id;
  return '<svg class="clean-icon-art" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false">'+
-  '<rect x="2" y="2" width="68" height="68" rx="19" fill="#fff8ff" stroke="#edc8f2" stroke-width="2"/>'+
-  (categoryMotifs[group.id]||'')+
-  '<circle cx="10" cy="10" r="5" fill="#f7b3dd"/><circle cx="16" cy="9" r="3" fill="#ffc7e7"/><circle cx="9" cy="17" r="3" fill="#ffc7e7"/>'+
+  '<defs><linearGradient id="'+id+'-tile" x2=".78" y2="1"><stop stop-color="#fffdfd"/><stop offset=".55" stop-color="#ffeafa"/><stop offset="1" stop-color="#e7d0ff"/></linearGradient>'+
+  '<radialGradient id="'+id+'-shine"><stop stop-color="#fff9d8" stop-opacity=".95"/><stop offset="1" stop-color="#fff9d8" stop-opacity="0"/></radialGradient>'+
+  '<filter id="'+id+'-shadow" x="-25%" y="-25%" width="150%" height="165%"><feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-color="#a75bb2" flood-opacity=".45"/></filter></defs>'+
+  '<rect x="2" y="2" width="68" height="68" rx="19" fill="url(#'+id+'-tile)" stroke="#dda5e7" stroke-width="2.2"/>'+
+  '<ellipse cx="42" cy="24" rx="30" ry="24" fill="url(#'+id+'-shine)"/>'+
+  '<g filter="url(#'+id+'-shadow)">'+(categoryMotifs[group.id]||'')+'</g>'+
+  '<path d="M4 50Q8 60 23 65" stroke="#fff" stroke-width="2.5" opacity=".65" fill="none"/>'+
+  '<g transform="translate(10 10)"><circle r="4" fill="#fce1f2"/><ellipse cx="0" cy="-5" rx="2.8" ry="5.2" fill="#f9a9d4"/><ellipse cx="0" cy="-5" rx="2.8" ry="5.2" fill="#f4b5de" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.8" ry="5.2" fill="#f9a9d4" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.8" ry="5.2" fill="#f4b5de" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.8" ry="5.2" fill="#f9a9d4" transform="rotate(288)"/><circle r="2" fill="#f7d078"/></g>'+
   '</svg>';
+}
+const flowerVariants=[
+ {x:18,y:16,a:-13,c:'#f5a6d6'}, {x:37,y:25,a:16,c:'#f9b2db'},
+ {x:22,y:33,a:28,c:'#f4a5cc'}, {x:46,y:18,a:-22,c:'#ef9ed5'},
+ {x:32,y:30,a:8,c:'#f0a0cd'}, {x:43,y:36,a:-12,c:'#f8b0d7'},
+ {x:24,y:19,a:25,c:'#eab1de'}, {x:42,y:18,a:44,c:'#dca5ee'},
+ {x:34,y:34,a:11,c:'#f8bedc'}, {x:15,y:29,a:-30,c:'#f3a6d2'},
+ {x:45,y:19,a:20,c:'#ee9bd2'}, {x:27,y:23,a:-11,c:'#f4b2d7'},
+ {x:38,y:29,a:33,c:'#eba1dd'}
+];
+function categoryPetals(i){
+ const f=flowerVariants[i%flowerVariants.length],f2=flowerVariants[(i+4)%flowerVariants.length];
+ function bloom(x,y,r,color){
+  let s='<g transform="translate('+x+' '+y+')">';
+  for(let n=0;n<5;n++)s+='<ellipse cx="0" cy="'+(-r*.65)+'" rx="'+(r*.37)+'" ry="'+(r*.68)+'" transform="rotate('+(n*72)+')" fill="'+color+'" stroke="#fff4fb" stroke-width=".7"/>';
+  return s+'<circle r="'+(r*.25)+'" fill="#f9d47f"/></g>';
+ }
+ return '<svg viewBox="0 0 88 58" focusable="false" role="presentation" xmlns="http://www.w3.org/2000/svg">'+
+ '<path d="M2 51 Q30 '+f.y+' 84 7 M42 31 Q62 9 60 1" stroke="#ab779e" stroke-width="2" fill="none" stroke-linecap="round"/>'+
+ '<path d="M26 30 Q18 13 8 20 Q16 34 26 30 M52 19 Q52 4 65 9 Q64 18 52 19" fill="#c2d6a9" opacity=".9"/>'+
+ bloom(f.x,f.y,10,f.c)+bloom(f2.x+26,f2.y-4,7,f2.c)+
+ '<ellipse cx="72" cy="43" rx="4" ry="9" transform="rotate(31 72 43)" fill="#f2adcf" opacity=".85"/>'+
+ '</svg>';
 }
 const norm=s=>String(s).replace(/[！!。．，,？?\s]/g,'');
 const PINYIN_PREF='chinese-coach-show-pinyin';
@@ -106,7 +137,7 @@ function categories(){
  '<input type="search" id="clean-word-search" class="clean-search" placeholder="🔎 Поиск китайского слова" autocomplete="off">'+
  '<div class="clean-category-list">'+courseCategories.map((g,i)=>
  '<button class="clean-category" type="button" '+(i>=8?'hidden ':'')+'data-clean-category="'+g.id+'"><span class="clean-category-icon" aria-hidden="true">'+categoryArt(g)+'</span>'+
- '<span><strong>'+esc(g.title)+'</strong><small>'+g.words.length+' слов</small></span><span aria-hidden="true">›</span></button>').join('')+'</div>'+ 
+ '<span><strong>'+esc(g.title)+'</strong><small>'+g.words.length+' слов</small></span><span class="clean-category-petals" aria-hidden="true">'+categoryPetals(i)+'</span><span aria-hidden="true">›</span></button>').join('')+'</div>'+ 
  '<button class="clean-more-categories" data-clean-more type="button">Показать ещё 5 тем ↓</button>'+ 
  '<div class="clean-search-results" hidden></div>';
  frame('Базовые слова','Только слова по темам. Без диалогов, правил и тестов.',body,false);
