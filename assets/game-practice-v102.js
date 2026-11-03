@@ -322,6 +322,21 @@ function renderResultsHub(){
  '<div class="audit-best">'+Object.entries(modes).map(([key,v])=>'<p><strong>'+safe(v.title)+'</strong><span>'+(s.best[key]===undefined?'Пока нет результата':s.best[key]+' из 10')+'</span></p>').join('')+'</div><button type="button" class="audit-primary audit-full" data-game-hub>К играм →</button>');
 }
 function render(){if(screen==='question')renderQuestion();else if(screen==='hub')renderHub()}
+/* Short-lived visual feedback for the transparent tap areas painted into the
+   approved raster artwork. No duplicate buttons or text layers are introduced. */
+section.addEventListener('pointerdown',event=>{
+ if(section.dataset.simpleSection!=='game')return;
+ const target=event.target.closest('.approved-hit');
+ if(target&&section.contains(target))target.classList.add('is-pressed');
+});
+function releaseApprovedHit(event){
+ const target=event.target.closest('.approved-hit');
+ if(target&&section.contains(target)){
+  window.setTimeout(()=>target.classList.remove('is-pressed'),140);
+ }
+}
+section.addEventListener('pointerup',releaseApprovedHit);
+section.addEventListener('pointercancel',releaseApprovedHit);
 section.addEventListener('click',event=>{
  if(section.dataset.simpleSection!=='game')return;
  const b=event.target.closest('button');if(!b||!section.contains(b)||b.disabled)return;
