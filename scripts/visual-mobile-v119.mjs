@@ -106,6 +106,18 @@ try{
   await page.locator('[data-clean-category="g01"]').click();
   assert((await page.locator('.clean-word-card').count())>=10);
   await screenshot(page,'04-word-detail',size);
+  await page.locator('[data-study-word="它"]').click();
+  await page.locator('.clean-study-hanzi').waitFor();
+  assert.equal(await page.locator('.clean-study-hanzi').textContent(),'它','Native flashcard must show selected Chinese character');
+  assert.equal(await page.locator('.clean-study-pinyin').textContent(),'tā','First tone on the pronoun 它 must be preserved');
+  assert.equal(await page.locator('.clean-study-translation').isVisible(),false,'Translation starts hidden');
+  await screenshot(page,'09-single-word-card',size);
+  await page.locator('[data-study-reveal]').click();
+  assert.equal(await page.locator('.clean-study-translation').textContent(),'оно','Translation reveal must use the real vocabulary data');
+  await page.locator('[data-study-next]').click();
+  assert.notEqual(await page.locator('.clean-study-hanzi').textContent(),'它','Next word must advance to a different character');
+  await page.locator('[data-study-back]').click();
+  assert(await page.locator('.clean-word-card').count()>=10,'Back restores the original topic word list');
 
   // Image 5: choose translation.
   await page.evaluate(()=>window.openPracticeChoices());
@@ -161,5 +173,5 @@ try{
   await context.close();
  }
  fs.writeFileSync(OUT+'/results.json',JSON.stringify({version:119,at:new Date().toISOString(),results},null,2)+'\n');
- console.log('PASS v119 real-browser responsive screens: '+results.length+' screenshots and controls.');
+ console.log('PASS v119 real-browser responsive screens + standalone flashcards: '+results.length+' screenshots and controls.');
 }finally{await browser.close()}
