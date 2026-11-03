@@ -231,7 +231,7 @@ body.rose-dialogue-open{overflow:hidden!important}
 #topics#topics#topics[data-simple-section='practice']{
   min-height:calc(100dvh - 76px)!important;
   background:linear-gradient(180deg,#fff9ffe0 0%,#fff6ffbf 38%,#fff8ff99 72%,#fff8ff47 100%),
-    url('./approved-quiz-scene-v112.webp') center bottom/100% 100% no-repeat!important;
+    url('./approved-quiz-scene-v112.webp') center center/cover no-repeat!important;
   box-shadow:none!important;
 }
 #topics#topics#topics[data-simple-section='words'] .clean-category{
@@ -285,14 +285,22 @@ body.rose-dialogue-open{overflow:hidden!important}
 /* Eight concise groups on the first screen; remaining groups are always reachable. */
 #topics#topics#topics[data-simple-section='words'] .clean-category-list{gap:7px!important}
 #topics#topics#topics[data-simple-section='words'] .clean-category{
- min-height:69px!important;grid-template-columns:47px minmax(0,1fr) 19px!important;
- gap:8px!important;padding:7px 10px!important;border-radius:20px!important;
+ min-height:75px!important;grid-template-columns:58px minmax(0,1fr) 19px!important;
+ gap:8px!important;padding:8px 10px!important;border-radius:24px!important;
+ overflow:visible!important;isolation:isolate!important;
+ box-shadow:inset 0 0 0 1.5px #fff,0 4px 13px #c873d16b,0 0 12px #efa8ec50!important;
+ transition:transform .13s ease,box-shadow .13s ease!important;
 }
 #topics#topics#topics[data-simple-section='words'] .clean-category-icon{
- width:44px!important;height:46px!important;border-radius:15px!important;
+ position:relative!important;z-index:3!important;
+ width:59px!important;height:59px!important;border-radius:20px!important;
+ background:linear-gradient(135deg,#fffdfd,#fce5fe)!important;
+ border:1.5px solid #e7afe7!important;
+ box-shadow:0 3px 8px #c36fd264,0 0 12px #e7a5de6e!important;
 }
 #topics#topics#topics[data-simple-section='words'] .clean-category-icon .clean-icon-art{
- width:43px!important;height:43px!important;border-radius:14px!important;
+ display:block!important;width:58px!important;height:58px!important;border-radius:20px!important;
+ filter:drop-shadow(0 2px 2px #a75ec46a)!important;
 }
 #topics#topics#topics[data-simple-section='words'] .clean-category strong{
  font-size:clamp(15px,4.2vw,18px)!important;line-height:1.18!important;
@@ -308,3 +316,184 @@ body.rose-dialogue-open{overflow:hidden!important}
 }
 #topics#topics#topics[data-simple-section='words'] [hidden],
 #topics#topics#topics[data-simple-section='practice'] [hidden]{display:none!important}
+
+
+/* v119: organic blossom accents vary in every topic, never cover live text. */
+#topics#topics#topics[data-simple-section='words'] .clean-category-petals{
+ position:absolute!important;right:22px!important;top:50%!important;
+ transform:translateY(-50%) rotate(var(--flower-angle,0deg))!important;
+ width:clamp(58px,18vw,86px)!important;height:58px!important;
+ display:block!important;pointer-events:none!important;z-index:0!important;
+ opacity:.74!important;filter:drop-shadow(0 2px 3px #cf83bf65)!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category-petals svg{
+ width:100%!important;height:100%!important;overflow:visible!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category:nth-child(4n+2) .clean-category-petals{--flower-angle:-12deg}
+#topics#topics#topics[data-simple-section='words'] .clean-category:nth-child(4n+3) .clean-category-petals{--flower-angle:18deg}
+#topics#topics#topics[data-simple-section='words'] .clean-category:nth-child(4n+4) .clean-category-petals{--flower-angle:-22deg}
+#topics#topics#topics[data-simple-section='words'] .clean-category::after{display:none!important}
+#topics#topics#topics[data-simple-section='words'] .clean-category>span:nth-child(2){
+ position:relative!important;z-index:2!important;
+ text-shadow:0 1px 1px #fff!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category>span:last-child{
+ position:relative!important;z-index:3!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-category:active,
+#topics#topics#topics[data-simple-section='words'] .clean-category.is-pressed{
+ transform:translateY(2px) scale(.985)!important;
+ box-shadow:inset 0 0 0 2px #fff,0 1px 5px #bc6cd083,0 0 20px #ee91f2a1!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-search{
+ min-height:56px!important;border-radius:100px!important;
+ background:linear-gradient(150deg,#fffafffa,#fff4ffff)!important;
+ box-shadow:inset 0 2px 2px #fff,0 0 11px #ce80e780,0 5px 13px #b980de36!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-more-categories{
+ min-height:56px!important;background:linear-gradient(180deg,#fff9ff,#edd2fb)!important;
+ box-shadow:inset 0 2px #fff,0 6px 0 #d8a3ea6b,0 9px 16px #a451bd3d!important;
+ transition:transform .12s ease,box-shadow .12s ease!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-more-categories:active{
+ transform:translateY(3px) scale(.99)!important;box-shadow:inset 0 2px #fff,0 2px 0 #d8a3ea99!important;
+}
+@media(max-width:380px){
+ #topics#topics#topics[data-simple-section='words'] .clean-category{
+  grid-template-columns:54px minmax(0,1fr) 18px!important;
+  padding:8px 9px!important;gap:6px!important;
+ }
+ #topics#topics#topics[data-simple-section='words'] .clean-category-icon{
+  width:53px!important;height:55px!important;
+ }
+ #topics#topics#topics[data-simple-section='words'] .clean-category-icon .clean-icon-art{
+  width:52px!important;height:54px!important;
+ }
+ #topics#topics#topics[data-simple-section='words'] .clean-category-petals{
+  right:20px!important;opacity:.58!important;width:52px!important;
+ }
+ #topics#topics#topics[data-simple-section='words'] .clean-category strong{
+  font-size:clamp(13px,4.1vw,17px)!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ #topics#topics#topics[data-simple-section='words'] .clean-category,
+ #topics#topics#topics[data-simple-section='words'] .clean-more-categories{
+  transition:none!important;
+ }
+}
+
+
+/* v119: approved dedicated one-word reading screen, rendered with native HTML
+   and actual MP3, translation, next-word and back controls. */
+#topics#topics#topics[data-word-study='true']{
+ position:relative!important;isolation:isolate!important;
+ box-sizing:border-box!important;min-height:100dvh!important;
+ max-width:640px!important;width:100%!important;
+ padding:15px 15px 30px!important;margin:0 auto!important;border-radius:0!important;
+ background:#fff9ff url('./approved-quiz-scene-v112.webp') center center/cover no-repeat!important;
+ box-shadow:none!important;overflow-x:clip!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-screen{
+ display:flex!important;flex-direction:column!important;gap:18px!important;
+ box-sizing:border-box!important;min-height:calc(100dvh - 47px)!important;
+ width:100%!important;max-width:570px!important;margin:0 auto!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-top{
+ display:flex!important;justify-content:space-between!important;align-items:center!important;gap:10px!important;
+ min-height:56px!important;margin:0 0 5px!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-back,
+#topics#topics#topics[data-word-study='true'] .clean-study-chinese{
+ display:inline-grid!important;place-items:center!important;min-height:53px!important;
+ padding:8px 16px!important;border-radius:50px!important;
+ background:linear-gradient(165deg,#fffafffa,#f5dafcf3)!important;
+ border:1.5px solid #dfafe7!important;
+ color:#673280!important;box-shadow:inset 0 2px #fff,0 5px 12px #c186c35f!important;
+ font:750 clamp(17px,4.9vw,23px)/1.2 system-ui!important;
+ white-space:nowrap!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-chinese{
+ min-width:65px!important;color:#8c4a9f!important;font-family:"Noto Sans SC",system-ui!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-card{
+ display:flex!important;flex-direction:column!important;align-items:center!important;
+ width:100%!important;min-height:clamp(410px,57dvh,515px)!important;box-sizing:border-box!important;
+ gap:10px!important;padding:42px 20px 23px!important;border-radius:32px!important;
+ border:2px solid #daa0e8!important;
+ background:linear-gradient(160deg,#fffafffa,#f8e8fff7)!important;
+ box-shadow:0 0 0 5px #fff9ffaf,0 0 21px #de83e78a,0 12px 20px #c187dc4c!important;
+ position:relative!important;isolation:isolate!important;overflow:hidden!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-card::before{
+ content:'✿';position:absolute;left:14px;top:8px;color:#f2a4d5;opacity:.66;
+ font:53px/1 Georgia,serif;text-shadow:0 4px 8px #edc7e7;z-index:-1;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-card::after{
+ content:'✿';position:absolute;right:18px;bottom:15px;color:#f7b6db;opacity:.54;
+ font:35px/1 Georgia,serif;text-shadow:0 4px 8px #edc7e7;z-index:-1;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-hanzi{
+ display:block!important;max-width:100%!important;
+ font:850 clamp(91px,29vw,148px)/1.2 "Noto Sans SC","Microsoft YaHei",sans-serif!important;
+ color:#321046!important;letter-spacing:0!important;overflow-wrap:anywhere!important;
+ text-align:center!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-pinyin{
+ display:block!important;margin:2px 0 14px!important;
+ color:#8850a5!important;font:750 clamp(26px,7vw,33px)/1.15 system-ui!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-actions{
+ display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important;width:100%!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-actions button{
+ min-height:62px!important;padding:9px 6px!important;white-space:normal!important;
+ border-radius:22px!important;font:800 clamp(13px,3.9vw,18px)/1.15 system-ui!important;
+ box-shadow:inset 0 2px #fff7,0 5px 12px #b972cf55!important;
+ transition:transform .14s ease,filter .14s ease!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-listen{
+ color:#3b7b9a!important;background:linear-gradient(155deg,#f7ffff,#cceaff)!important;
+ border:1.5px solid #99cde7!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-reveal{
+ color:white!important;background:linear-gradient(150deg,#bc72dc,#832cba)!important;
+ border:1.5px solid #8e37bd!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-translation{
+ padding:8px 15px!important;margin:7px auto 0!important;
+ background:#f6dbfa!important;color:#672685!important;
+ border-radius:22px!important;font:700 18px/1.3 system-ui!important;text-align:center!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-next{
+ display:block!important;width:100%!important;min-height:60px!important;
+ margin:auto 0 0!important;border:1.5px solid #d19ee7!important;border-radius:100px!important;
+ background:linear-gradient(180deg,#fff6ff,#eecbf9)!important;
+ color:#612778!important;font:850 clamp(17px,4.5vw,23px)/1.2 system-ui!important;
+ box-shadow:inset 0 2px #fff,0 5px 0 #d4a1e6,0 9px 13px #a554c74d!important;
+ transition:transform .15s ease,box-shadow .15s ease!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-back:active,
+#topics#topics#topics[data-word-study='true'] .clean-study-actions button:active{transform:scale(.967)!important;filter:brightness(1.07)!important}
+#topics#topics#topics[data-word-study='true'] .clean-study-next:active{
+ transform:translateY(3px) scale(.99)!important;
+ box-shadow:inset 0 2px #fff,0 2px 0 #d4a1e6,0 4px 7px #a554c74d!important;
+}
+#topics#topics#topics[data-word-study='true'] [hidden]{display:none!important}
+@media(max-width:375px){
+ #topics#topics#topics[data-word-study='true']{padding:9px 10px 20px!important}
+ #topics#topics#topics[data-word-study='true'] .clean-study-card{
+   padding:32px 13px 18px!important;min-height:390px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ #topics#topics#topics[data-word-study='true'] button{transition:none!important}
+}
+#topics#topics#topics[data-simple-section='words'] .clean-word-study-btn{
+ display:block!important;width:100%!important;min-height:39px!important;margin-top:6px!important;
+ border:1px solid #d4ace6!important;border-radius:12px!important;
+ background:linear-gradient(140deg,#fffaff,#edd6fb)!important;
+ color:#753392!important;font:800 14px system-ui!important;
+ transition:transform .12s ease!important;
+}
+#topics#topics#topics[data-simple-section='words'] .clean-word-study-btn:active{transform:scale(.97)!important}

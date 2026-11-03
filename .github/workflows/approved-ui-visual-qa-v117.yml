@@ -1,4 +1,4 @@
-name: Approved v118 mobile visual QA
+name: Approved v119 mobile visual QA
 on:
   pull_request:
     branches: [main]
@@ -30,10 +30,10 @@ jobs:
             sleep 1
           done
           curl -fsS http://127.0.0.1:4173/index.html >/dev/null || { cat /tmp/vite-v117.log; exit 1; }
-          node scripts/visual-mobile-v118.mjs
+          node scripts/visual-mobile-v119.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: chinese-coach-mobile-v118-screenshots
-          path: qa/v118/
+          name: chinese-coach-mobile-v119-screenshots
+          path: qa/v119/
           if-no-files-found: warn

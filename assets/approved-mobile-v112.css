@@ -11,7 +11,7 @@
 #topics#topics#topics .ch110-categories,#topics#topics#topics .ch110-dialogue{
  box-sizing:border-box!important;position:relative!important;isolation:isolate!important;display:flex!important;flex-direction:column!important;
  width:100%!important;max-width:560px!important;min-height:100dvh!important;margin:auto!important;padding:20px 16px 90px!important;
- background:url('./approved-pastel-v112.webp') center/100% 100% no-repeat!important;color:#53136d!important;
+ background:url('./approved-quiz-scene-v112.webp') center center/cover no-repeat!important;color:#53136d!important;
  font-family:Arial,system-ui,sans-serif!important;
 }
 #topics#topics#topics .ch110-categories{padding:20px 20px 26px!important;gap:22px!important}
@@ -91,7 +91,7 @@
 #topics#topics#topics .ch110-forward::before,#quiz#quiz#quiz #nextq::before{right:calc(100% + 6px)!important}
 #topics#topics#topics .ch110-forward::after,#quiz#quiz#quiz #nextq::after{left:calc(100% + 6px)!important;transform:scaleX(-1)!important}
 /* Word test uses one scenic card, separate answer grid, and a visible footer. */
-#quiz#quiz#quiz.page.active{display:block!important;background:#fff8fe url('./approved-pastel-v112.webp') center/100% 100% no-repeat!important;padding:20px 18px 70px!important;font-family:Arial,sans-serif!important}
+#quiz#quiz#quiz.page.active{display:block!important;background:#fff8fe url('./approved-quiz-scene-v112.webp') center center/cover no-repeat!important;padding:20px 18px 70px!important;font-family:Arial,sans-serif!important}
 #quiz#quiz#quiz .ch111-quiz-nav{display:flex!important;justify-content:space-between!important;align-items:center!important;max-width:500px!important;margin:0 auto 8px!important;min-height:46px!important}
 #quiz#quiz#quiz .columnhead{display:block!important;max-width:310px!important;margin:0 auto 12px!important;padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important}
 #quiz#quiz#quiz .columnhead .eyebrow,#quiz#quiz#quiz .columnhead .flag{display:none!important}
@@ -99,7 +99,7 @@
 #quiz#quiz#quiz .quizpanel{display:block!important;max-width:500px!important;margin:auto!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
 #quiz#quiz#quiz #quizcount{display:table!important;width:auto!important;margin:0 auto 12px!important;padding:7px 23px!important;border:1px solid #bd80d9!important;border-radius:25px!important;background:#fff7ff!important;color:#6c2592!important;font:600 16px/1.2 Arial,sans-serif!important}
 #quiz#quiz#quiz #quizbody{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:12px!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;background:none!important;min-height:0!important}
-#quiz#quiz#quiz .quiz-word-card{width:100%!important;position:relative!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:11px!important;padding:46px 17px 14px!important;min-height:255px!important;box-sizing:border-box!important;border:1px solid #d3a5e3!important;border-radius:22px!important;background:#fff8fe url('./approved-quiz-scene-v112.webp') center/100% 100% no-repeat!important;box-shadow:inset 0 0 0 3px #ffffff80,0 3px 7px #bc8bcd50!important}
+#quiz#quiz#quiz .quiz-word-card{width:100%!important;position:relative!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:11px!important;padding:46px 17px 14px!important;min-height:255px!important;box-sizing:border-box!important;border:1px solid #d3a5e3!important;border-radius:22px!important;background:linear-gradient(150deg,#fffafff7,#f9e9fff5)!important;box-shadow:inset 0 0 0 3px #ffffffc2,0 0 17px #e991ee70,0 7px 20px #bc8bcd48!important}
 #quiz#quiz#quiz #quiz-pinyin-toggle{position:absolute!important;right:14px!important;top:10px!important;display:flex!important;gap:10px!important;align-items:center!important;padding:7px 12px!important;min-height:36px!important;border:1px solid #bd83d6!important;border-radius:25px!important;color:#5e207e!important;background:#f9ebff!important;font:600 13px Arial,sans-serif!important}
 #quiz#quiz#quiz #quiz-pinyin-toggle span{display:block!important;border-radius:20px!important;background:#990fbc!important;color:white!important;width:37px!important;line-height:23px!important;text-align:right!important;padding-right:3px!important;font-size:22px!important}
 #quiz#quiz#quiz #quiz-pinyin-toggle[aria-pressed='false'] span{background:#c5b1cd!important;text-align:left!important;padding-left:3px!important}
@@ -579,22 +579,96 @@
 @media(prefers-reduced-motion:reduce){#topics#topics#topics .ch110-build-screen *,#topics#topics#topics .ch110-dialogue *,#quiz#quiz#quiz *{animation:none!important;transition:none!important}}
 
 
-/* v118: Give the approved game hub the full phone canvas.
-   The source image contains the approved labels; hotspots remain relative to its
-   geometry. Only the hub is affected, never the real game-question UI. */
+/* v119: preserve the source painting's 864×1536 proportions. Previously
+   object-fit:fill warped panda, lettering and artwork on tall Android screens.
+   Keep the original image and relative interactive hit targets as one unit. */
 #topics#topics#topics[data-simple-section='game']:has(.approved-art-hub){
-  max-width:100%!important;width:100%!important;margin:0!important;padding:0!important;
-  overflow:hidden!important;background:#f5dafa!important;
+ max-width:100%!important;width:100%!important;margin:0!important;padding:0!important;
+ min-height:100dvh!important;overflow-x:hidden!important;
+ background:#f5dafa url('./approved-quiz-scene-v112.webp') center top/cover no-repeat!important;
 }
 #topics#topics#topics[data-simple-section='game'] .game-shell:has(.approved-art-hub){
-  width:100%!important;min-height:100dvh!important;height:100dvh!important;
-  padding:0!important;overflow:hidden!important;
+ width:100%!important;height:auto!important;min-height:100dvh!important;
+ padding:0!important;overflow:hidden!important;
+ background:linear-gradient(180deg,transparent 70%,#f2d6f65c 100%)!important;
 }
 #topics#topics#topics[data-simple-section='game'] .approved-art-hub{
-  width:100%!important;max-width:540px!important;height:100dvh!important;
-  min-height:100dvh!important;aspect-ratio:auto!important;margin:auto!important;
+ position:relative!important;width:min(100%,540px)!important;height:auto!important;
+ min-height:0!important;max-width:540px!important;
+ aspect-ratio:864 / 1536!important;margin:auto!important;isolation:isolate!important;
 }
 #topics#topics#topics[data-simple-section='game'] .approved-art-image{
-  display:block!important;width:100%!important;height:100%!important;
-  max-width:100%!important;object-fit:fill!important;
+ display:block!important;width:100%!important;height:auto!important;
+ max-width:100%!important;object-fit:contain!important;aspect-ratio:864 / 1536!important;
+}
+#topics#topics#topics[data-simple-section='game'] .approved-hit{
+ border-radius:32px!important;transition:background-color .12s ease,box-shadow .12s ease,transform .12s ease!important;
+ -webkit-tap-highlight-color:transparent!important;
+}
+#topics#topics#topics[data-simple-section='game'] .approved-hit:active,
+#topics#topics#topics[data-simple-section='game'] .approved-hit.is-pressed{
+ transform:translateY(2px) scale(.975)!important;
+ background:linear-gradient(135deg,#fff8ff85,#ce70ef51)!important;
+ box-shadow:inset 0 0 0 3px #fff6ffb5,0 0 17px 5px #ee80f388!important;
+ filter:brightness(1.08)!important;
+}
+#topics#topics#topics[data-simple-section='game'] .approved-hit:focus-visible{
+ outline:3px solid #7f24cb!important;outline-offset:0!important;background:#fff3ff49!important;
+}
+/* Dialogue: polished, light lavender-pink switch with real accessible pressed state. */
+#topics#topics#topics .ch110-pinyin-toggle{
+ position:relative!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ gap:14px!important;min-height:50px!important;padding:7px 13px 7px 22px!important;
+ border:1.5px solid #e2a0e8!important;border-radius:100px!important;
+ background:linear-gradient(160deg,#fff8ff,#fae2fd 78%,#f5d5f9)!important;
+ box-shadow:inset 0 2px 3px #fff,0 0 0 3px #ffeaff6b,0 5px 14px #d67dd476!important;
+ color:#541f70!important;font:800 17px/1.1 system-ui!important;
+ text-shadow:0 1px #fff!important;
+ transition:box-shadow .18s ease,transform .12s ease,background .18s ease!important;
+}
+#topics#topics#topics .ch110-pinyin-toggle::before{
+ content:'✿';position:absolute;left:-12px;top:-9px;color:#e994d3;
+ font:700 23px/1 Georgia,serif;text-shadow:0 2px 5px #dba1e7;pointer-events:none;
+}
+#topics#topics#topics .ch110-pinyin-toggle span{
+ display:block!important;position:relative!important;flex:none!important;
+ width:64px!important;height:34px!important;padding:0!important;
+ font-size:0!important;line-height:0!important;text-align:initial!important;
+ border:1.5px solid #cd72e3!important;border-radius:100px!important;
+ background:linear-gradient(150deg,#e9a8f1,#d17de5,#e6a3f0)!important;
+ box-shadow:inset 0 2px 4px #a648b03d,0 0 7px #eaaffc!important;
+}
+#topics#topics#topics .ch110-pinyin-toggle span::after{
+ content:''!important;display:block!important;position:absolute!important;
+ top:2px!important;right:2px!important;width:27px!important;height:27px!important;border-radius:50%!important;
+ background:linear-gradient(145deg,#fff,#fff3ff)!important;
+ border:1px solid #fff!important;box-shadow:0 2px 7px #9d3ea44d!important;
+ transition:right .19s ease,left .19s ease!important;
+}
+#topics#topics#topics .ch110-pinyin-toggle[aria-pressed='false']{
+ background:linear-gradient(155deg,#fffbff,#f6e9fb)!important;
+}
+#topics#topics#topics .ch110-pinyin-toggle[aria-pressed='false'] span{
+ background:linear-gradient(135deg,#eee3f4,#dfcce9)!important;
+ border-color:#d4b2df!important;
+}
+#topics#topics#topics .ch110-pinyin-toggle[aria-pressed='false'] span::after{
+ right:auto!important;left:2px!important;
+}
+#topics#topics#topics .ch110-pinyin-toggle:active{transform:scale(.965)!important;box-shadow:0 1px 4px #bb79cb!important}
+#topics#topics#topics .ch110-pinyin-toggle:focus-visible{
+ outline:3px solid #8837bc!important;outline-offset:3px!important;
+}
+/* A soft neon highlight on the live Chinese quiz, without rasterizing buttons. */
+#quiz#quiz#quiz .quiz-word-card{
+ border:2px solid #dba1e4!important;border-radius:30px!important;
+ box-shadow:inset 0 0 0 3px #ffffffc5,0 0 21px #e7a4e594,0 8px 22px #a769c43a!important;
+}
+#quiz#quiz#quiz #quizplay,
+#quiz#quiz#quiz #nextq{transition:transform .13s ease,filter .13s ease!important}
+#quiz#quiz#quiz #quizplay:active,#quiz#quiz#quiz #nextq:active{transform:scale(.96)!important;filter:brightness(1.06)!important}
+@media(prefers-reduced-motion:reduce){
+ #topics#topics#topics[data-simple-section='game'] .approved-hit,
+ #topics#topics#topics .ch110-pinyin-toggle,#topics#topics#topics .ch110-pinyin-toggle span::after,
+ #quiz#quiz#quiz #quizplay,#quiz#quiz#quiz #nextq{transition:none!important}
 }

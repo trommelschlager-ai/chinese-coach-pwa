@@ -13,26 +13,57 @@ const $$=(s,within=section)=>[...within.querySelectorAll(s)];
 const esc=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 // Shared lightweight SVG art makes category cards crisp on Android without decorative raster overlays.
 const categoryMotifs={
- g01:'<rect x="18" y="14" width="36" height="45" rx="5" fill="#fff1d9" stroke="#be869a" stroke-width="2"/><path d="M18 20h36M18 52h36" stroke="#c89b62" stroke-width="4"/><text x="36" y="44" text-anchor="middle" font-size="25" font-weight="700" fill="#753c8d">人</text>',
+ g01:'<rect x="15" y="14" width="42" height="43" rx="4" fill="#ffe9bf" stroke="#bf7c78" stroke-width="2.5"/><rect x="17" y="11" width="38" height="6" rx="3" fill="#f3c778" stroke="#ae7292" stroke-width="1"/><path d="M12 57h48" stroke="#bb7f4c" stroke-width="5" stroke-linecap="round"/><text x="36" y="45" text-anchor="middle" font-size="30" font-weight="800" fill="#6b257a">你</text><path d="M54 45l10-21" stroke="#ad796b" stroke-width="4" stroke-linecap="round"/><path d="M62 18l5 4-4 6-5-4Z" fill="#453058"/>',
  g02:'<path d="M33 12v49" stroke="#a56c6a" stroke-width="5" stroke-linecap="round"/><path d="M16 18h43l8 9-8 9H16z" fill="#ffe9ac" stroke="#d79e7e" stroke-width="2"/><path d="M12 40h43l-8 9H12z" fill="#f4bfdb" stroke="#b77ab4" stroke-width="2"/><text x="38" y="31" text-anchor="middle" font-size="15" font-weight="700" fill="#743a70">哪儿</text><text x="31" y="47" text-anchor="middle" font-size="11" fill="#743a70">哪里</text>',
- g03:'<path d="M36 17v41m-20-34h40M25 56h22" stroke="#ac7193" stroke-width="4" stroke-linecap="round"/><circle cx="36" cy="17" r="5" fill="#ffcf6e"/><path d="m20 24-9 21h18l-9-21m32 0-9 21h18l-9-21" fill="#fff1c6" stroke="#d59c53" stroke-width="2"/><path d="M10 45q10 14 20 0m12 0q10 14 20 0" fill="#ffd46e" stroke="#bb8b55" stroke-width="2"/>',
+ g03:'<rect x="10" y="17" width="54" height="43" rx="4" fill="#c37b59" stroke="#a15c6b" stroke-width="2"/><rect x="15" y="21" width="44" height="35" rx="2" fill="#f9dfb4" stroke="#a6685c" stroke-width="2"/><path d="M17 33h40M17 44h40M25 22v33M36 22v33M48 22v33" stroke="#935b4b" stroke-width="2.5"/><g fill="#f2b841" stroke="#b5823a" stroke-width="1"><circle cx="25" cy="28" r="4"/><circle cx="36" cy="28" r="4"/><circle cx="48" cy="28" r="4"/><circle cx="25" cy="39" r="4"/><circle cx="36" cy="40" r="4"/><circle cx="48" cy="40" r="4"/><circle cx="25" cy="50" r="4"/><circle cx="36" cy="50" r="4"/><circle cx="48" cy="50" r="4"/></g>',
  g04:'<circle cx="36" cy="37" r="24" fill="#fffaf4" stroke="#b68ab8" stroke-width="4"/><circle cx="36" cy="37" r="3" fill="#aa4bb0"/><path d="M36 22v15l12 6" fill="none" stroke="#76368d" stroke-width="4" stroke-linecap="round"/><path d="M36 15v6M36 53v6M14 37h6M52 37h6" stroke="#c08aad" stroke-width="2"/>',
- g05:'<circle cx="45" cy="17" r="8" fill="#e5a1b6"/><path d="m36 28-11 13 17 2 9-13m-10 12-16 15m16-14 17 12m-29-14-12-5" stroke="#814b99" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="m33 29 12-4" stroke="#ffc96a" stroke-width="8" stroke-linecap="round"/>',
- g06:'<path d="M12 52 28 19l19 6 13 30-20-6-28 3" fill="#e2dbf4" stroke="#b09cd9" stroke-width="2"/><path d="M48 12c-10 0-17 7-17 17 0 13 17 27 17 27s17-14 17-27c0-10-7-17-17-17z" fill="#e77aab" stroke="#af598a" stroke-width="2"/><circle cx="48" cy="29" r="7" fill="#fff4f9"/>',
+ g05:'<rect x="16" y="15" width="34" height="40" rx="5" fill="#ffe7bd" stroke="#ca8a74" stroke-width="3"/><rect x="13" y="12" width="40" height="6" rx="3" fill="#f1bb77" stroke="#a9706e" stroke-width="1.5"/><rect x="13" y="52" width="40" height="6" rx="3" fill="#f1bb77" stroke="#a9706e" stroke-width="1.5"/><text x="33" y="46" text-anchor="middle" font-size="28" font-weight="700" fill="#69406e">做</text><path d="M51 57 61 21" stroke="#924e72" stroke-width="5" stroke-linecap="round"/><path d="M61 21l3-10 4 8-5 6Z" fill="#302538"/>',
+ g06:'<path d="M6 58h62" stroke="#7c71bb" stroke-width="3"/><path d="M14 35h44v23H14z" fill="#ffc980" stroke="#be6991" stroke-width="2"/><path d="M12 45h48M23 35v23M49 35v23" stroke="#9a62a7" stroke-width="2"/><path d="M7 34 36 12l29 22-7 3-22-13-22 13z" fill="#826ab6" stroke="#5c4c91" stroke-width="2"/><path d="M16 29 36 13l20 16" stroke="#d9bfed" stroke-width="2" fill="none"/><path d="M28 46h16v12H28Z" fill="#e7a4be" stroke="#8a5a9f" stroke-width="1.5"/><path d="M12 61Q37 55 60 61" stroke="#89c1c5" stroke-width="3" fill="none"/>',
  g07:'<circle cx="23" cy="28" r="9" fill="#d0a4e5"/><circle cx="49" cy="28" r="9" fill="#c18cd8"/><circle cx="36" cy="36" r="7" fill="#ffd0ab"/><path d="M8 59c0-15 7-20 17-20 7 0 11 4 12 11M64 59c0-15-7-20-17-20-7 0-11 4-12 11M23 63c0-13 6-19 13-19s13 6 13 19" fill="#9164b8" stroke="#6e448f" stroke-width="2"/>',
- g08:'<path d="M36 58C13 47 13 32 25 17c1 12 6 18 11 22 5-4 10-10 11-22 12 15 12 30-11 41Z" fill="#fbb3d0" stroke="#ca6ba6" stroke-width="2"/><path d="M36 55C22 47 22 32 36 14c14 18 14 33 0 41Z" fill="#ffe0f0" stroke="#d885bf" stroke-width="2"/><path d="M17 58q19 10 38 0" fill="none" stroke="#76bb9e" stroke-width="4" stroke-linecap="round"/>',
+ g08:'<circle cx="36" cy="37" r="24" fill="#fff6d9" stroke="#c690b2" stroke-width="2.7"/><path d="M36 13a24 24 0 0 1 0 48c-13 0-12-12 0-12a12 12 0 0 0 0-24c-12 0-13-12 0-12Z" fill="#815d8a"/><circle cx="36" cy="25" r="4" fill="#fff6d9"/><circle cx="36" cy="49" r="4" fill="#815d8a"/><path d="M36 13a24 24 0 1 0 0 48" fill="none" stroke="#edc982" stroke-width="2"/>',
  g09:'<path d="M15 31h43l-7 23H23z" fill="#f7e2b0" stroke="#b99470" stroke-width="3"/><path d="M18 32q15 8 36 0M26 18q-6 6 0 11m13-15q-6 6 0 12m12-8q-6 6 0 11" stroke="#a870ac" stroke-width="3" fill="none" stroke-linecap="round"/>',
  g10:'<rect x="14" y="20" width="23" height="36" rx="3" fill="#f5d6ed" stroke="#a875bd" stroke-width="2"/><rect x="37" y="20" width="22" height="36" rx="3" fill="#e6ddff" stroke="#a875bd" stroke-width="2"/><path d="M36 20v36M20 31h10m14 0h9M20 40h10m14 0h9" stroke="#ad8ab7" stroke-width="2"/><circle cx="36" cy="15" r="6" fill="#ffc968"/>',
  g11:'<circle cx="36" cy="37" r="24" fill="#fff6ea" stroke="#b89ac9" stroke-width="3"/><path d="m47 24-8 16-17 10 10-17z" fill="#f4a0c0" stroke="#bb6c9b" stroke-width="2"/><circle cx="36" cy="37" r="4" fill="#8451a6"/><text x="36" y="18" font-size="9" text-anchor="middle" fill="#6e508b">N</text>',
  g12:'<rect x="15" y="16" width="43" height="41" rx="3" fill="#f6debc" stroke="#aa7a6b" stroke-width="4"/><path d="M19 28h35M19 43h35M28 21v32M43 21v32" stroke="#ae8a75" stroke-width="2"/><circle cx="28" cy="32" r="5" fill="#a66aaf"/><circle cx="43" cy="40" r="5" fill="#e99baf"/>',
  g13:'<path d="M13 18h47v28H33L23 56v-10H13z" fill="#fff2f9" stroke="#bd88cf" stroke-width="3"/><text x="36" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#8551a3">谢</text>'
 };
+// Native layered vector illustrations: one motif per group, translucent
+// petals, glazed edges and shadows. All category text and links remain HTML.
 function categoryArt(group){
+ const id='art-'+group.id;
  return '<svg class="clean-icon-art" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false">'+
-  '<rect x="2" y="2" width="68" height="68" rx="19" fill="#fff8ff" stroke="#edc8f2" stroke-width="2"/>'+
-  (categoryMotifs[group.id]||'')+
-  '<circle cx="10" cy="10" r="5" fill="#f7b3dd"/><circle cx="16" cy="9" r="3" fill="#ffc7e7"/><circle cx="9" cy="17" r="3" fill="#ffc7e7"/>'+
+  '<defs><linearGradient id="'+id+'-tile" x2=".78" y2="1"><stop stop-color="#fffdfd"/><stop offset=".55" stop-color="#ffeafa"/><stop offset="1" stop-color="#e7d0ff"/></linearGradient>'+
+  '<radialGradient id="'+id+'-shine"><stop stop-color="#fff9d8" stop-opacity=".95"/><stop offset="1" stop-color="#fff9d8" stop-opacity="0"/></radialGradient>'+
+  '<filter id="'+id+'-shadow" x="-25%" y="-25%" width="150%" height="165%"><feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-color="#a75bb2" flood-opacity=".45"/></filter></defs>'+
+  '<rect x="2" y="2" width="68" height="68" rx="19" fill="url(#'+id+'-tile)" stroke="#dda5e7" stroke-width="2.2"/>'+
+  '<ellipse cx="42" cy="24" rx="30" ry="24" fill="url(#'+id+'-shine)"/>'+
+  '<g filter="url(#'+id+'-shadow)">'+(categoryMotifs[group.id]||'')+'</g>'+
+  '<path d="M4 50Q8 60 23 65" stroke="#fff" stroke-width="2.5" opacity=".65" fill="none"/>'+
+  '<g transform="translate(10 10)"><circle r="4" fill="#fce1f2"/><ellipse cx="0" cy="-5" rx="2.8" ry="5.2" fill="#f9a9d4"/><ellipse cx="0" cy="-5" rx="2.8" ry="5.2" fill="#f4b5de" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="2.8" ry="5.2" fill="#f9a9d4" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="2.8" ry="5.2" fill="#f4b5de" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="2.8" ry="5.2" fill="#f9a9d4" transform="rotate(288)"/><circle r="2" fill="#f7d078"/></g>'+
   '</svg>';
+}
+const flowerVariants=[
+ {x:18,y:16,a:-13,c:'#f5a6d6'}, {x:37,y:25,a:16,c:'#f9b2db'},
+ {x:22,y:33,a:28,c:'#f4a5cc'}, {x:46,y:18,a:-22,c:'#ef9ed5'},
+ {x:32,y:30,a:8,c:'#f0a0cd'}, {x:43,y:36,a:-12,c:'#f8b0d7'},
+ {x:24,y:19,a:25,c:'#eab1de'}, {x:42,y:18,a:44,c:'#dca5ee'},
+ {x:34,y:34,a:11,c:'#f8bedc'}, {x:15,y:29,a:-30,c:'#f3a6d2'},
+ {x:45,y:19,a:20,c:'#ee9bd2'}, {x:27,y:23,a:-11,c:'#f4b2d7'},
+ {x:38,y:29,a:33,c:'#eba1dd'}
+];
+function categoryPetals(i){
+ const f=flowerVariants[i%flowerVariants.length],f2=flowerVariants[(i+4)%flowerVariants.length];
+ function bloom(x,y,r,color){
+  let s='<g transform="translate('+x+' '+y+')">';
+  for(let n=0;n<5;n++)s+='<ellipse cx="0" cy="'+(-r*.65)+'" rx="'+(r*.37)+'" ry="'+(r*.68)+'" transform="rotate('+(n*72)+')" fill="'+color+'" stroke="#fff4fb" stroke-width=".7"/>';
+  return s+'<circle r="'+(r*.25)+'" fill="#f9d47f"/></g>';
+ }
+ return '<svg viewBox="0 0 88 58" focusable="false" role="presentation" xmlns="http://www.w3.org/2000/svg">'+
+ '<path d="M2 51 Q30 '+f.y+' 84 7 M42 31 Q62 9 60 1" stroke="#ab779e" stroke-width="2" fill="none" stroke-linecap="round"/>'+
+ '<path d="M26 30 Q18 13 8 20 Q16 34 26 30 M52 19 Q52 4 65 9 Q64 18 52 19" fill="#c2d6a9" opacity=".9"/>'+
+ bloom(f.x,f.y,10,f.c)+bloom(f2.x+26,f2.y-4,7,f2.c)+
+ '<ellipse cx="72" cy="43" rx="4" ry="9" transform="rotate(31 72 43)" fill="#f2adcf" opacity=".85"/>'+
+ '</svg>';
 }
 const norm=s=>String(s).replace(/[！!。．，,？?\s]/g,'');
 const PINYIN_PREF='chinese-coach-show-pinyin';
@@ -79,6 +110,7 @@ function play(hz,speed=.86){
 }
 function leaveToMenu(){stopAudio();go('home')}
 function frame(title,desc,body,back){
+ delete section.dataset.wordStudy;
  section.dataset.simpleSection=view;
  section.innerHTML='<div class="clean-section-head"><button type="button" class="clean-back" data-clean-back>← '+(back?'К темам':'Разделы')+'</button>'+
   '<h1 class="clean-screen-reader-title">'+esc(title)+'</h1></div>'+body+
@@ -88,16 +120,49 @@ function frame(title,desc,body,back){
 function wordTile(word){
  const done=known.has(word.hz);
  return '<article class="clean-word-card"><button type="button" class="clean-word-play" data-clean-play="'+esc(word.hz)+'" aria-label="Послушать '+esc(word.py)+'"><strong lang="zh-Hans">'+esc(word.hz)+'</strong><span>'+esc(word.py)+'</span><small>'+esc(word.ru)+'</small><b aria-hidden="true">▶</b></button>'+
- '<button class="clean-word-known'+(done?' is-known':'')+'" type="button" data-clean-known="'+esc(word.hz)+'" aria-pressed="'+done+'">'+(done?'✓ Знаю':'☆ Выучил')+'</button></article>';
+ '<button class="clean-word-known'+(done?' is-known':'')+'" type="button" data-clean-known="'+esc(word.hz)+'" aria-pressed="'+done+'">'+(done?'✓ Знаю':'☆ Выучил')+'</button>'+
+ '<button class="clean-word-study-btn" type="button" data-study-word="'+esc(word.hz)+'" aria-label="Изучить '+esc(word.py)+' на большой карточке">Изучить →</button></article>';
 }
 function bindWords(){
- $$('[data-clean-play]').forEach(b=>b.onclick=()=>play(b.dataset.cleanPlay,.83));
+ document.querySelectorAll('[data-clean-play]').forEach(b=>b.onclick=()=>play(b.dataset.cleanPlay,.83));
+ document.querySelectorAll('[data-study-word]').forEach(b=>b.onclick=()=>showWordStudy(b.dataset.studyWord));
  $$('[data-clean-known]').forEach(b=>b.onclick=()=>{
   const hz=b.dataset.cleanKnown;if(known.has(hz))known.delete(hz);else known.add(hz);
   saveKnown();b.setAttribute('aria-pressed',String(known.has(hz)));
   b.textContent=known.has(hz)?'✓ Знаю':'☆ Выучил';b.classList.toggle('is-known',known.has(hz));
   const counter=$('[data-clean-known-counter]');if(counter)counter.textContent=known.size+' / '+allWords.length+' выучено';
  });
+}
+/* Approved one-word learning view. The existing 193-word grid and learning
+   progress stay intact: this view is an optional drill accessed from each tile. */
+function showWordStudy(hz){
+ const group=courseCategories.find(c=>c.id===currentCategory);
+ const pool=group?group.words:allWords;
+ let i=pool.findIndex(x=>x.hz===hz);if(i<0)i=0;
+ const word=pool[i],pinyinVisible=getPinyinPreference();
+ stopAudio();view='words';section.dataset.simpleSection='words';section.dataset.wordStudy='true';
+ const back=()=>group?openCategory(group.id):categories();
+ // The base app already displays its settings panel above #topics. Never
+ // inject a second settings bar into the approved single-word design.
+ section.innerHTML='<div class="clean-study-screen">'+
+  '<div class="clean-study-top"><button type="button" class="clean-study-back" data-study-back>← К темам</button><span lang="zh-Hans" class="clean-study-chinese">中文</span></div>'+
+  '<article class="clean-study-card">'+
+  '<strong class="clean-study-hanzi" lang="zh-Hans">'+esc(word.hz)+'</strong>'+
+  '<span class="clean-study-pinyin" lang="zh-Latn"'+(pinyinVisible?'':' hidden')+'>'+esc(word.py)+'</span>'+
+  '<div class="clean-study-actions"><button type="button" class="clean-study-listen" data-study-listen>▶ Послушать</button>'+
+  '<button type="button" class="clean-study-reveal" data-study-reveal aria-expanded="false">Показать перевод</button></div>'+
+  '<p class="clean-study-translation" hidden>'+esc(word.ru)+'</p>'+
+  '<button type="button" class="clean-study-next" data-study-next>Следующее слово →</button></article>'+
+  '<p data-section-audio class="clean-audio-feedback" role="status" aria-live="polite"></p></div>';
+ $('[data-study-back]').onclick=back;
+ $('[data-study-listen]').onclick=()=>play(word.hz,.84);
+ $('[data-study-reveal]').onclick=()=>{
+  const value=$('.clean-study-translation'),button=$('[data-study-reveal]');
+  value.hidden=!value.hidden;button.textContent=value.hidden?'Показать перевод':'Скрыть перевод';
+  button.setAttribute('aria-expanded',String(!value.hidden));
+ };
+ $('[data-study-next]').onclick=()=>showWordStudy(pool[(i+1)%pool.length].hz);
+
 }
 function categories(){
  currentCategory=null;view='words';
@@ -106,7 +171,7 @@ function categories(){
  '<input type="search" id="clean-word-search" class="clean-search" placeholder="🔎 Поиск китайского слова" autocomplete="off">'+
  '<div class="clean-category-list">'+courseCategories.map((g,i)=>
  '<button class="clean-category" type="button" '+(i>=8?'hidden ':'')+'data-clean-category="'+g.id+'"><span class="clean-category-icon" aria-hidden="true">'+categoryArt(g)+'</span>'+
- '<span><strong>'+esc(g.title)+'</strong><small>'+g.words.length+' слов</small></span><span aria-hidden="true">›</span></button>').join('')+'</div>'+ 
+ '<span><strong>'+esc(g.title)+'</strong><small>'+g.words.length+' слов</small></span><span class="clean-category-petals" aria-hidden="true">'+categoryPetals(i)+'</span><span aria-hidden="true">›</span></button>').join('')+'</div>'+ 
  '<button class="clean-more-categories" data-clean-more type="button">Показать ещё 5 тем ↓</button>'+ 
  '<div class="clean-search-results" hidden></div>';
  frame('Базовые слова','Только слова по темам. Без диалогов, правил и тестов.',body,false);
