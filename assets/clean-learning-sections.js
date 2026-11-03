@@ -142,9 +142,9 @@ function showWordStudy(hz){
  const word=pool[i],pinyinVisible=getPinyinPreference();
  stopAudio();view='words';section.dataset.simpleSection='words';section.dataset.wordStudy='true';
  const back=()=>group?openCategory(group.id):categories();
+ // The base app already displays its settings panel above #topics. Never
+ // inject a second settings bar into the approved single-word design.
  section.innerHTML='<div class="clean-study-screen">'+
-  '<details class="clean-study-settings"><summary>▸ Настройки</summary>'+
-  '<button type="button" class="clean-study-pinyin-pref" data-study-pinyin aria-pressed="'+pinyinVisible+'">Пиньинь: '+(pinyinVisible?'показан':'скрыт')+'</button></details>'+
   '<div class="clean-study-top"><button type="button" class="clean-study-back" data-study-back>← К темам</button><span lang="zh-Hans" class="clean-study-chinese">中文</span></div>'+
   '<article class="clean-study-card">'+
   '<strong class="clean-study-hanzi" lang="zh-Hans">'+esc(word.hz)+'</strong>'+
@@ -162,13 +162,7 @@ function showWordStudy(hz){
   button.setAttribute('aria-expanded',String(!value.hidden));
  };
  $('[data-study-next]').onclick=()=>showWordStudy(pool[(i+1)%pool.length].hz);
- $('[data-study-pinyin]').onclick=event=>{
-  const enabled=event.currentTarget.getAttribute('aria-pressed')!=='true';
-  event.currentTarget.setAttribute('aria-pressed',String(enabled));
-  event.currentTarget.textContent='Пиньинь: '+(enabled?'показан':'скрыт');
-  $('.clean-study-pinyin').hidden=!enabled;
-  try{localStorage.setItem(PINYIN_PREF,String(enabled))}catch{}
- };
+
 }
 function categories(){
  currentCategory=null;view='words';
