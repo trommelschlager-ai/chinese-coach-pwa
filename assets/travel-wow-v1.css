@@ -1,0 +1,53 @@
+/* Panda Go Travel WOW v1 — map/voice visuals only.
+   All gameplay, audio, achievements and local progress remain unchanged. */
+#map-screen{gap:clamp(9px,1.5vh,14px)}
+#map-screen .title-card{gap:5px}
+#map-screen .title-card .eyebrow{font-size:13px;font-weight:900;letter-spacing:.2px;padding:8px 17px;background:linear-gradient(120deg,#a6428cc7,#593ba8dd,#ae4c8dc7);border:1px solid #ffd0f4;box-shadow:inset 0 1px 0 #fff8,0 0 16px #f87cba6d}
+#map-screen .title-card h1{font-size:clamp(28px,7.5vw,40px);letter-spacing:-.9px;color:#fff6e9;text-shadow:0 2px 2px #7e183d,0 4px 0 #771344,0 0 18px #ef73ad}
+#map-screen .title-card p{font-size:clamp(12px,3.6vw,15px);color:#fff0fa}
+#travel-map{min-height:clamp(390px,54vh,635px);background:linear-gradient(180deg,#36266d55 0%,#28175433 43%,#1f0a51aa 100%),url('./approved-panda-lake-v112.webp') center/cover no-repeat;border:2px solid #ffd6f0d9;border-radius:29px;box-shadow:0 0 0 2px #eb7fd02b,0 0 34px #dc62ba46,0 20px 34px #100c386b;overflow:hidden}
+#travel-map:before{content:"";position:absolute;inset:-3px;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 90% 23%,#f8a3b725,transparent 43%),radial-gradient(ellipse at 14% 80%,#e988fa2c,transparent 40%);}
+#travel-map:after{background:linear-gradient(180deg,#26184d61 0%,#1b13421c 35%,#1d0c4380 94%);z-index:0}
+#travel-map .route{z-index:1;overflow:visible}
+#travel-map .route-track{fill:none;stroke:#5b264c;stroke-width:4.5;stroke-linecap:round;opacity:.8}
+#travel-map .route-light{fill:none;stroke:#ffd774;stroke-width:3.4;stroke-linecap:round;filter:drop-shadow(0 0 1px #fff4bf) drop-shadow(0 0 3px #ffac23) drop-shadow(0 0 6px #ffb92d)}
+#travel-map .route-dashes{fill:none;stroke:#fff5af;stroke-width:2.3;stroke-linecap:round;stroke-dasharray:2 6;stroke-dashoffset:0;filter:drop-shadow(0 0 2px #ffcb4c);animation:travel-route-flow 2.7s linear infinite}
+#travel-map .route-runner{fill:#fff5d1;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 5px #ffcd3f) drop-shadow(0 0 10px #ff9b27)}
+#travel-map .travel-map-panda{position:absolute;z-index:2;bottom:4.5%;left:3%;width:clamp(55px,18%,105px);aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 3px 6px #250838) drop-shadow(0 0 11px #ffaad8);pointer-events:none;animation:travel-panda-breathe 4s ease-in-out infinite}
+#travel-map .travel-spark{position:absolute;z-index:1;pointer-events:none;width:7px;height:7px;border-radius:50%;background:#fff9c5;box-shadow:0 0 3px 2px #fff8b5,0 0 15px 5px #f8a529;animation:travel-spark-pulse 2.6s ease-in-out infinite}
+#travel-map .spark-one{left:54%;top:27%;animation-delay:-.6s}
+#travel-map .spark-two{left:29%;top:50%;animation-delay:-1.6s}
+#travel-map .spark-three{left:64%;top:74%;animation-delay:-2.2s}
+#travel-map .stop{min-height:68px;width:50%;border:1.7px solid #fff4f9;padding:10px 11px;border-radius:22px;box-shadow:0 7px 17px #1b0c3f8f,inset 0 1px 0 #fffd;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:transform .18s ease,box-shadow .18s ease}
+#travel-map .stop strong{font-size:clamp(13px,3.4vw,17px);line-height:1.2}
+#travel-map .stop small{font-size:clamp(11px,2.8vw,13px)}
+#travel-map .stop .emoji{font-size:clamp(24px,7.4vw,35px);filter:drop-shadow(0 2px 2px #2a1d3670)}
+#travel-map .stop-airport{top:10%;left:5%;background:linear-gradient(125deg,#edfff5f5,#95f2d7ef);color:#083a35;border-color:#b5ffe2;box-shadow:0 0 0 3px #fffba123,0 0 25px #fff2a078,inset 0 1px 0 #fff,0 9px 18px #17284a80;animation:travel-available 3.6s ease-in-out infinite}
+#travel-map .stop-airport small{color:#1a6454}
+#travel-map .stop-airport::before{content:"✦";color:#fffbea;background:#18c79f;border:2px solid #cefff2;border-radius:100%;height:26px;width:26px;display:grid;place-items:center;top:-12px;right:-10px;box-shadow:0 0 15px #74e6ab;font-weight:900}
+#travel-map.completed .stop-airport::before{content:"✓"}
+#travel-map .stop-hotel{top:32%;right:4%;background:linear-gradient(135deg,#fbeafaed,#dbbdf2ef)}
+#travel-map .stop-restaurant{top:56%;left:4%;background:linear-gradient(135deg,#fce5ecf2,#e2c1ebed)}
+#travel-map .stop-shop{top:77%;right:4%;background:linear-gradient(135deg,#fae4fbed,#e2b7e8ef)}
+#travel-map .stop:disabled{filter:none;opacity:1}
+#travel-map .stop:disabled::before{top:-12px;right:-7px;font-size:16px;filter:drop-shadow(0 0 4px #fbd89e)}
+#travel-map .stop:active:not(:disabled){transform:scale(.96)}
+#travel-map .map-badge{bottom:12px;left:50%;max-width:calc(100% - 100px);font-size:clamp(11px,3vw,13px);padding:9px 14px;text-align:center;border:1px solid #ffc8f0;background:#331061ef;box-shadow:inset 0 1px 0 #ffffff58,0 0 22px #ff7ece81;white-space:normal}
+#map-screen .bottom-actions{padding-top:2px;gap:11px}
+#map-screen .btn-primary{min-height:62px;border-radius:26px;background:linear-gradient(180deg,#ffb8e2 0%,#ff62b6 42%,#ef2988 100%);border:2px solid #ffe9f5;box-shadow:inset 0 2px 0 #ffffffc4,0 0 22px #ff70c48b,0 9px 17px #270d4475;font-size:clamp(17px,5.2vw,22px);text-shadow:0 2px 3px #a52167}
+#map-screen #voice-from-map{border:1.5px solid #ffe3ff;min-height:54px;border-radius:22px;background:linear-gradient(135deg,#fff2ff,#f4c6f0);color:#713b81;font-size:clamp(13px,3.8vw,17px);box-shadow:0 0 14px #ffcaf257}
+#map-screen #voice-from-map[hidden]{display:none!important}
+.travel-voice .voice-scene{background:linear-gradient(100deg,#25154baa,#68376dbb),url('./game-scene-choose-v94.webp') center/cover;box-shadow:inset 0 1px #fff8,0 7px 24px #160d3675}
+.travel-voice .voice-task{border:2px solid #fff4fd;box-shadow:0 0 0 2px #ff86c026,0 10px 28px #170d3ba1;background:linear-gradient(150deg,#ffe8f7 0%,#f0dcff 55%,#e4c9fa 100%)}
+.travel-voice .voice-zh{text-shadow:0 1px 0 #fff8}
+.travel-voice .voice-mic{min-height:60px;background:linear-gradient(180deg,#ff9bd2,#f23292);box-shadow:inset 0 2px 0 #ffffff95,0 0 0 2px #ffacdf4b,0 0 19px #ff75ba96;transition:transform .16s ease,box-shadow .16s ease}
+.travel-voice .voice-mic:not(:disabled):active{transform:scale(.97)}
+.travel-voice .voice-action-card{background:linear-gradient(130deg,#392960ed,#251843eb);border:1px solid #eaa7ea9c;box-shadow:0 8px 28px #0a093066}
+.travel-voice .voice-small{background:linear-gradient(125deg,#fff7ff,#ebd9fa);border-color:#b78ac6}
+@keyframes travel-route-flow{to{stroke-dashoffset:-32}}
+@keyframes travel-available{50%{box-shadow:0 0 0 5px #fffba13f,0 0 34px #fae48cb5,inset 0 1px 0 #fff,0 9px 18px #17284a80}}
+@keyframes travel-spark-pulse{50%{opacity:.4;transform:scale(.6)}}
+@keyframes travel-panda-breathe{50%{transform:translateY(-6px) rotate(-3deg)}}
+@media(max-height:720px){#travel-map{min-height:320px}#map-screen .title-card h1{font-size:27px}#travel-map .stop{min-height:58px;padding:6px 8px}#map-screen .btn-primary{min-height:52px}}
+@media(max-width:350px){#travel-map .stop{width:51%;border-radius:17px;padding:7px}#travel-map .stop strong{font-size:12px}#travel-map .stop small{font-size:10px}#travel-map .map-badge{max-width:calc(100% - 73px);padding:6px}}
+@media(prefers-reduced-motion:reduce){#travel-map .route-runner{display:none}#travel-map .route-dashes,#travel-map .stop-airport,#travel-map .travel-map-panda,#travel-map .travel-spark{animation:none!important}}
