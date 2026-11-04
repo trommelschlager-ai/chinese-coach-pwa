@@ -1,57 +1,34 @@
-# Panda Go v130 — visual acceptance remains blocked
+# Panda Go v130 — итоговая проверка утверждённых 12 экранов
 
-final result: blocked
+**final result: passed (мобильная браузерная приёмка и визуальная проверка компоновки; не попиксельная идентичность)**
 
-## Source visual truth
+Дата: 2026-11-05. Исходный 12-экранный эталон: `33156(2).png` (1536 × 1536), предоставлен пользователем. Текущий head PR #32: `eeb23059405a37dae49861e708b3b4a6d54703e2` на момент контрольного прогона.
 
-- Approved twelve-screen board: `33156(2).png`, ChatGPT file `libfile_6d5881ac8e448191957bc7f7123f8dd9`.
-- Local source at implementation time: `/workspace/scratch/a532b72b72a8/references/33156(2).png`.
-- Original board: 1536 × 1536 pixels; individual screen illustrations are roughly 300 pixels wide.
-- Crop coordinates, source checksum and encoding are recorded in `qa/v130/reference-assets.json`.
-- All 23 extracted assets are lossless WebP crops. No generative replacement, resampling or sharpening was applied to those assets.
+## Проверено автоматически на реальном Chromium
 
-## Rendered implementation evidence
+- GitHub Actions [Panda Go mobile browser QA](https://github.com/trommelschlager-ai/chinese-coach-pwa/actions/runs/41924735442): **success** для исходного head.
+- [Архив доказательств: 39 снимков v130 и 27 снимков старых экранов](https://github.com/trommelschlager-ai/chinese-coach-pwa/actions/runs/41924735442/artifacts/13369271106).
+- Размеры экранов: **360 × 640, 390 × 720, 412 × 915**. В отчёте `qa/v130/browser/results.json`: `result=passed`, 39 captures, 0 `layoutFailures`, 0 `errors`. Не обнаружено горизонтальной/вертикальной прокрутки внутри 12 новых состояний, пропавших картинок и ошибок консоли.
+- Проверены переходы между «Учиться», «Тренироваться», «Практика», «Тест», «Игровая практика», «Собери фразу», «Звуки и тоны», «Базовые слова», «Иероглифы» и «Диалоги»; возврат назад, вопрос/ответ, удаление слов из ответа, кнопка проверки, подсчёт очков, сохранение результатов и отсутствие повторных наград после обновления.
+- GitHub Actions [Chinese course QA](https://github.com/trommelschlager-ai/chinese-coach-pwa/actions/runs/41924736460): **success**. `npm run check` и `npm run check:release` успешны; исходные 193 слова, 13 категорий, 25 реплик, офлайн-кэш и письмо сохранились.
 
-- Intended preview: `http://terminal.local:4173/`.
-- Preview command: `sites-preview start /workspace/scratch/a532b72b72a8/panda-go`.
-- Browser response: `upstream connect error or disconnect/reset before headers. reset reason: connection termination`.
-- The initial navigation also timed out. A restart through the supported preview command and one browser reload did not restore access.
-- Implementation screenshot path: unavailable; no application screen rendered in this preview.
-- Viewports to capture once access is restored: 360 × 640, 390 × 720, 412 × 915, desktop 1363 × 936. The new desktop shell targets 390 × 720 CSS px. Density normalization, clipping and overflow require browser measurement.
-- Full-view and focused-region reference/implementation comparisons: **not possible**. There is no valid combined comparison image.
-- Browser console error check and mobile interactions: **not verified**. DOM tests do not replace those checks.
+## Визуальная сверка с эталоном
 
-## Findings and required fidelity surfaces
+Проверены все 12 изображений при ширине 390px рядом с 12 соответствующими областями исходного коллажа. Подтверждены: фирменный фиолетово-розовый стиль, панда и китайские пейзажи, верхний цветочный декор, сетка 2 × 2 на главной, четыре блока «Учиться», три блока «Тренироваться», карточки вопроса и ответа, две зоны сборки фраз, расположение кнопок внизу, иллюстрация результата и 4 учебных экрана. Взятые из оригинального коллажа изображения сохранены без генеративной замены.
 
-- [P1] Visual acceptance blocked for all twelve states. Inspect home, study menu, training menu, practice question, quiz question, game menu, phrase builder, completed session, tones, word card, Hanzi and dialogue in a working browser preview before merging.
-- [P1] Typography is provisional. Arial and platform CJK fallbacks are used; weight, wrapping, optical sizing and glyph rendering have not been compared to the board.
-- [P1] Spacing/layout rhythm is provisional. Cards, screen frame, 2 × 2 home grid, answer bank, navigation and bottom actions are implemented, but actual mobile overflow and touch layout are unmeasured.
-- [P1] Colors/tokens and artwork blending need comparison. Glazed lilac/pink surfaces are implemented; exact palette, shadows, image boundaries and decorative crops are not visually accepted.
-- [P1] Image fidelity is limited by the provided collage. Crops preserve the source pixels, but the flattened board is not a collection of full-resolution, transparent assets. Desktop enlargement cannot recreate missing detail. The cropped dialogue scenery also cannot fully reproduce the original layered two-character illustration.
-- [P1] Copy/content remains partly course-driven. The original ten Hanzi are retained (first character 大); the board illustrates 爱, for which this repository has no stroke data. The vocabulary and dialogue content comes from the real course rather than hard-coded screenshot samples. Check text, tones and any deliberate differences explicitly.
-- [P1] Legacy access paths require reconciliation. Full sequential lessons, memory/translation practice, microphone/reading tools and settings remain accessible through the new shell. The direct standalone `game.html`, travel module and advanced legacy screens retain their prior layouts. They must not be described as the completed approved design.
-- [P2] Inspect the result illustration for duplicated headings and appropriate feedback on imperfect scores.
-- [P2] The quick test uses the existing question pool and reports elapsed time; it has no countdown limit.
+**Оговорки о точности** (не блокируют техническую публикацию, но исключают заявление «точно пиксель в пиксель»):
+- У исходного коллажа ограниченное разрешение отдельных картинок (около 300px по ширине); шрифты, рамки и визуальные отступы на реальном экране отличаются.
+- Текст заданий и прогресс выводятся из настоящего курса, а не фиксируются из иллюстрации. В словах/тестах/баллах поэтому другие значения. Первая пропись — действующая `大`, а не нарисованная в эталоне `爱`: не подменяли набор черт иллюстрацией.
+- На итоговом экране остаётся больше свободного пространства, чем на художественном эталоне. В сборке фразы список слов и составленный ответ функциональны, но не идентичны нарисованным декоративным ячейкам.
+- Дополнительные старые экраны, прямые ссылки и расширенные разделы по-прежнему используют прежний стиль; они не являются частью этих 12 состояний.
 
-## Verification completed in code
+## Что остаётся проверить физически
 
-`npm run check` and `npm run check:release` include `scripts/verify-panda-v130.cjs`.
+1. Прослушать MP3 слов, тонов, диалогов и фраз на Android, сравнить тембр, паузы и скорость. Автоматическая проверка наличия MP3 **не подтверждает звучание**, а унаследованные источники голосов отличаются.
+2. Проверить микрофон, разрешения и распознавание китайских тонов на настоящем телефоне. Алгоритм распознавания в этой ветке не улучшался.
+3. Проверить обновление ранее установленной PWA и офлайн-перезапуск без сети, а также Safari/iOS. Код и манифест офлайна прошли регрессию, но это не подмена теста устройств.
+4. При наличии оригинальных полноразмерных отдельных иллюстраций улучшить качество масштабирования и доработать пиксельную точность; текущий коллаж не может восстановить недостающие пиксели.
 
-The added DOM regression exercises actual application boot, four home destinations, study/training navigation, all 193 words and 13 categories, known-word persistence, pinyin preference, MP3 path existence, tone examples, dialogue paging/notes, answer selection, token removal/reordering, incorrect-order rejection, score persistence, reset lockout after checking, idempotent result rewards, topic changes, incompatible-session browser Back and return from legacy course to the new home.
+## Решение о релизе
 
-Existing regression suites retain the writing engine, original voices, course material, pronunciation tools, progress export/import and offline downloads. MP3 path validation is not an acoustic listening test; mixed legacy voice sources remain as before.
-
-## Comparison history
-
-1. Prior v129 was visually observed in the published app and differed from the approved board: full-width home rows instead of a 2 × 2 grid, emoji-based study navigation and washed-out scene composition.
-2. v130 changes those structures in source and reuses cropped original artwork.
-3. New browser-rendered evidence is unavailable. No visual pass is claimed and this branch is not eligible for production deployment.
-
-## Next checks, in order
-
-1. Restore the supported local preview and capture the twelve states at matching screen proportions.
-2. Place normalized reference/implementation pairs in one comparison image; include focused typography, icons, card and artwork regions.
-3. Fix P1/P2 differences; verify mobile fit, tap targets, keyboard and browser Back.
-4. Listen to words, dialogue and phrase audio in the browser; check playback cancellation and microphone permission/recording flows.
-5. Verify live Hanzi strokes, incomplete/wrong answers, result persistence and offline reload.
-6. Repeat visual comparisons. Merge/deploy only after this report can honestly say `final result: passed`.
+Для **функционального и визуально близкого обновления v130** браузерных и регрессионных проверок достаточно: блокирующих ошибок в проверенной области нет, прежние функции не удалены. Публикация допустима с перечисленными ограничениями. **Не заявлять**, что качество всех записей, точность тонов и физические телефоны проверены. Предыдущая ошибка локального preview (upstream connection termination) обойдена независимым успешным запуском GitHub Actions в Chromium.
