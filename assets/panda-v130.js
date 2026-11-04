@@ -19,9 +19,19 @@ function status(text){const el=root.querySelector('[data-status]');if(el)el.text
 function stop(){audioToken++;if(audio){audio.pause();audio=null}window.dispatchEvent(new Event('learning-audio-stop'))}
 const norm=s=>s.replace(/[！!。．，,？?\s]/g,'');
 function fileFor(hz){return window.__simpleSectionPreview.getFile(hz)||window.courseNaturalAudio?.[norm(hz)]||window.courseHumanAudio?.[norm(hz)]}
-function play(hz){const file=fileFor(hz);if(!file){status('Для этой фразы пока нет записи.');return}playFile(file)}
-function playFile(file){stop();const token=audioToken;audio=new Audio(file);audio.preservesPitch=true;audio.playbackRate=.9;audio.onerror=()=>{if(token===audioToken)status('Не удалось загрузить запись. Проверь подключение.')};Promise.resolve(audio.play()).catch(()=>{if(token===audioToken)status('Не удалось включить звук. Нажми ещё раз.')})}
-function playSequence(texts){stop();const token=audioToken;let index=0;const next=()=>{if(token!==audioToken||index>=texts.length)return;const text=texts[index++],file=fileFor(text);if(!file){status('Для этой фразы пока нет записи.');return}audio=new Audio(file);audio.playbackRate=.9;audio.onended=next;audio.onerror=()=>status('Запись недоступна.');Promise.resolve(audio.play()).catch(()=>status('Нажми ещё раз для воспроизведения.'))};next()}
+function play(hz){
+ const key=norm(hz);
+ // The native Yue Tan recording is the same speaker as 喜欢. For words that
+ // have it, use the existing noise-trimmed game engine, not mixed fallback MP3s.
+ if(window.courseHumanAudio?.[key]&&window.__pandaGameSpeech130){
+  stop();window.__pandaGameSpeech130([key],key);return;
+ }
+ const file=fileFor(hz);
+ if(!file){status('Для этой фразы пока нет записи.');return}
+ playFile(file);
+}
+function playFile(file){stop();const token=audioToken;audio=new Audio(file);audio.preservesPitch=true;audio.playbackRate=1;audio.onerror=()=>{if(token===audioToken)status('Не удалось загрузить запись. Проверь подключение.')};Promise.resolve(audio.play()).catch(()=>{if(token===audioToken)status('Не удалось включить звук. Нажми ещё раз.')})}
+function playSequence(texts){stop();const token=audioToken;let index=0;const next=()=>{if(token!==audioToken||index>=texts.length)return;const text=texts[index++],file=fileFor(text);if(!file){status('Для этой фразы пока нет записи.');return}audio=new Audio(file);audio.playbackRate=1;audio.onended=next;audio.onerror=()=>status('Запись недоступна.');Promise.resolve(audio.play()).catch(()=>status('Нажми ещё раз для воспроизведения.'))};next()}
 function stats(){return window.courseProgress?.readGame()||{points:0,streak:0,completed:0,best:{}}}
 function back(route){return `<button class="pg-back" data-route="${route}" aria-label="Назад"><img src="./assets/vendor/icons/arrow-left.svg" alt=""></button>`}
 function heading(title,art,route='home',subtitle='',compact=false){return `${back(route)}<header class="pg-heading${compact?' compact':''}">${icon(art)}<h1>${title}</h1>${subtitle?`<p>${subtitle}</p>`:''}</header>`}
@@ -40,7 +50,7 @@ function games(){frame(heading('Игровая практика','controller','t
 const wordFilters=[['all','Все'],['g07','Люди'],['g06','Место'],['g05','Действия'],['g09','Еда']];
 function wordPool(){return wordGroup==='all'?allWords:(groups.find(g=>g.id===wordGroup)?.words||allWords)}
 function examplesFor(word){
- if(word.hz==='我')return [{hz:'我是学生。',py:'Wǒ shì xuésheng.',ru:'Я студент.'},{hz:'我喜欢中国。',py:'Wǒ xǐhuan Zhōngguó.',ru:'Мне нравится Китай.',audioParts:['我','喜欢','中国']}];
+ if(word.hz==='我')return [{hz:'我是学生。',py:'Wǒ shì xuésheng.',ru:'Я студент.',audioParts:['我','是','学生']},{hz:'我喜欢中国。',py:'Wǒ xǐhuan Zhōngguó.',ru:'Мне нравится Китай.',audioParts:['我','喜欢','中','国']}];
  const examples=[];
  for(const l of lessons){
   for(const n of l.notes||[]){if(n.hz?.includes(word.hz)&&!/[·—]/.test(n.hz)&&n.hz.length<18&&fileFor(n.hz))examples.push({hz:n.hz,py:n.py,ru:n.ru})}
