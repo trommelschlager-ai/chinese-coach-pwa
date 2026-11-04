@@ -76,7 +76,7 @@ try{
   await qToggle.click();assert.equal(await page.locator('#quizpinyin').isVisible(),true);
 
   // Image 2: game hub without any global step-by-step banner.
-  const game=await context.newPage();await game.goto(BASE+'/game.html?v=119',{waitUntil:'domcontentloaded'});
+  const game=await context.newPage();await game.goto(BASE+'/game.html?v=119&legacy=1',{waitUntil:'domcontentloaded'});
   await game.locator('[data-game-mode="build"]').waitFor();
   await game.waitForLoadState('load');
   await game.locator('.approved-art-image').evaluate(img=>img.decode());

@@ -55,11 +55,14 @@ try{
   await rootBack(page);await button(page,'[data-route=dialogues]');await capture(page,'12-dialogues',size);
   await button(page,'[data-action=dialog-next][data-value="1"]');assert((await page.locator('#pg130 .pg-bubble strong').first().textContent()).includes('名字'));
   await page.goBack();await ready(page);assert.equal(await page.locator('#pg130 h1').textContent(),'Учиться','Browser Back restores study menu');
-  await button(page,'[data-route=hanzi]');
+  await page.locator('#pg130 [data-route=hanzi]').click();
   await page.locator('#writer svg').waitFor();
   await page.waitForFunction(()=>document.querySelector('#feedback')?.textContent.includes('Теперь твоя очередь'),null,{timeout:20000});
   await capture(page,'11-hanzi',size,true);
   assert((await page.locator('#writer svg path').count())>0,'Live stroke paths');
+  const writingBoxes=await page.evaluate(()=>{const rect=id=>{const r=document.querySelector(id).getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height}};return {paper:rect('.paper'),card:rect('.drawing-card'),next:rect('#next'),controls:['#animate','#practice','#retry'].filter(id=>!document.querySelector(id).hidden).map(rect)}});
+  assert(writingBoxes.controls.every(b=>b.x>=writingBoxes.paper.right-2),'Writing controls must not overlap the paper');
+  assert(writingBoxes.next.width>=writingBoxes.card.width-25,'Next character spans the writing card');
   await page.locator('#next').click();await page.waitForFunction(()=>document.querySelector('#character').textContent==='人');
   await page.locator('.top .back').click();await ready(page);
   await rootBack(page);await button(page,'[data-route=training]');await capture(page,'03-training',size);
@@ -86,7 +89,9 @@ try{
   assert((await page.locator('#pg130').textContent()).includes('5 из 5'));
   assert.equal(await page.evaluate(()=>window.courseProgress.readGame().points),10);
   await page.reload({waitUntil:'load'});await ready(page);assert.equal(await page.evaluate(()=>window.courseProgress.readGame().points),10,'Result reload must not grant rewards twice');
-  report.checks.push({width,check:'navigation, persistence, answer verification, Hanzi, tokens, scoring',passed:true});
+  await page.goto(BASE+'/game.html',{waitUntil:'load'});await ready(page);assert.equal(await page.locator('#pg130 h1').textContent(),'Игровая практика','Saved game links open the new UI');
+  await rootBack(page);await page.reload({waitUntil:'load'});await ready(page);assert.equal(await page.locator('#pg130 h1').textContent(),'Тренироваться','Hash route takes precedence after redirect/reload');
+  report.checks.push({width,check:'navigation, persistence, answer verification, Hanzi, tokens, scoring, direct game links',passed:true});
   await context.close();
  }
  assert.deepEqual(report.errors,[],'Browser runtime/console errors');
