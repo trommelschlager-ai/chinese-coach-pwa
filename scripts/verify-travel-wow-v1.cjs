@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('travel.html','utf8');
 const css=fs.readFileSync('assets/travel-wow-v1.css','utf8');
-assert(html.includes('assets/travel-wow-v1.css?v=1'),'New map stylesheet must be loaded');
+assert(html.includes('assets/travel-wow-v1.css?v=2'),'New map stylesheet must be loaded');
 assert(!html.includes('Панда ждёт тебя!'),'Remove redundant panda waiting banner');
 const dom=new JSDOM(html);
 const d=dom.window.document;
