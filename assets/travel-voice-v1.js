@@ -84,7 +84,7 @@ el.recognize.addEventListener('click',()=>{
  const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!Speech){note('Браузер не поддерживает проверку слов. Можно записать голос.','hint');return}
  if(!navigator.onLine){note('Нет сети. Попробуй записать свой голос и сравнить с образцом.','hint');return}
- stopRecording();
+ stopAudio();stopRecording();
  const phrase=phrases[step],gen=++recognizerGen;let rec;
  try{rec=new Speech();rec.lang='zh-CN';rec.interimResults=false;rec.continuous=false;rec.maxAlternatives=3}catch{note('Проверка слов не запустилась.','hint');return}
  recognizer=rec;el.recognize.classList.add('is-listening');el.recognize.querySelector('span').textContent='Остановить';
@@ -104,7 +104,7 @@ el.recognize.addEventListener('click',()=>{
 el.record.addEventListener('click',async()=>{
  if(recorder?.state==='recording'){recorder.stop();return}
  if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){note('Браузер не поддерживает запись.','hint');return}
- stopRecognizer();clearClip();const generation=sessionGen;
+ stopAudio();stopRecognizer();clearClip();const generation=sessionGen;
  try{
   const source=await navigator.mediaDevices.getUserMedia({audio:true});
   if(generation!==sessionGen||screen.hidden){source.getTracks().forEach(t=>t.stop());return}
