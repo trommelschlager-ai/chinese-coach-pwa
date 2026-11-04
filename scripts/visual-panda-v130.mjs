@@ -74,14 +74,15 @@ try{
   await button(page,'[data-action=answer][data-value="1"]');await button(page,'[data-action=question-check]');
   assert.equal(await page.locator('#pg130 [data-action=answer]:disabled').count(),4);
   await rootBack(page);await button(page,'[data-route=games]');await capture(page,'06-games',size);
-  await button(page,'[data-route=build]');
+  await button(page,'[data-route=build]');await capture(page,'07-build-initial',size);
   for(const id of [0,1,2])await button(page,`[data-action=token-add][data-value="${id}"]`);
   await capture(page,'07-build',size);
-  assert.equal(await page.locator('#pg130 .pg-token-pool button').count(),0,'Selected tokens leave no empty pool placeholders');
+  assert.equal(await page.locator('#pg130 .pg-token-pool button').count(),2,'Two distractors remain; selected tokens leave no empty placeholders');
   await button(page,'[data-action=token-return][data-value="2"]');assert(await page.locator('#pg130 [data-action=game-check]').isDisabled());
   await button(page,'[data-action=token-add][data-value="2"]');
   for(let index=0;index<5;index++){
-   if(index>0){const ids=await page.locator('#pg130 [data-action=token-add]').evaluateAll(bs=>bs.map(b=>Number(b.dataset.value)).sort((a,b)=>a-b));for(const id of ids)await button(page,`[data-action=token-add][data-value="${id}"]`)}
+   if(index>0){const needed=Number(await page.locator('#pg130 .pg-answer-box').getAttribute('data-required'));const ids=await page.locator('#pg130 [data-action=token-add]').evaluateAll((bs,n)=>bs.map(b=>Number(b.dataset.value)).filter(id=>id<n).sort((a,b)=>a-b),needed);for(const id of ids)await button(page,`[data-action=token-add][data-value="${id}"]`)}
+   const nextControl=await page.locator('#pg130 [data-action=game-check]').boundingBox();assert(nextControl.y+nextControl.height<=height+1,'Phrase check action must remain visible');
    await button(page,'[data-action=game-check]');assert((await page.locator('#pg130 .pg-feedback').textContent()).includes('Верно'));
    assert(await page.locator('#pg130 [data-action=game-reset]').isDisabled());await button(page,'[data-action=game-next]');
   }

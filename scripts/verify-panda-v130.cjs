@@ -25,14 +25,14 @@ w.__panda130.show('tones');click('[data-action=tone][data-value="2"]');assert(fs
 click('[data-action=tone-tab][data-value="Инициали"]');click('[data-action=syllable][data-value=bo]');assert(fs.existsSync(played.at(-1).replace('./','')));
 click('[data-action=tone-tab][data-value="Сочетания"]');click('[data-action=syllable][data-value=pai]');assert(fs.existsSync(played.at(-1).replace('./','')));
 w.__panda130.show('dialogues');assert(q('.pg-bubble'));const initial=q('.pg-bubble strong').textContent;click('[data-action=dialog-next][data-value="1"]');assert.notEqual(q('.pg-bubble strong').textContent,initial);click('[data-action=dialog-notes]');assert(root.textContent.includes('Как спросить имя'));
-w.__panda130.show('build');assert(q('[data-action=game-check]').disabled);assert.equal(q('.pg-token-pool').children.length,3);
+w.__panda130.show('build');assert(q('[data-action=game-check]').disabled);assert.equal(q('.pg-token-pool').children.length,5,'Phrase bank includes two distractors');
 for(const i of [0,1,2])click('[data-action=token-add][data-value="'+i+'"]');
-assert.equal(q('.pg-token-pool').children.length,0,'Selected tokens leave no empty placeholder');assert(!q('[data-action=game-check]').disabled);
+assert.equal(q('.pg-token-pool').children.length,2,'Selected words leave two real distractors and no placeholders');assert(!q('[data-action=game-check]').disabled);
 click('[data-action=token-return][data-value="1"]');assert(q('[data-action=game-check]').disabled);click('[data-action=token-add][data-value="1"]');click('[data-action=game-check]');assert(root.textContent.includes('Правильно: 我喜欢中国。'),'Wrong order is rejected');
 assert(q('[data-action=game-reset]').disabled,'Checked question cannot be reset to farm score');
 click('[data-action=game-next]');
 for(let question=1;question<5;question++){
- const ids=[...root.querySelectorAll('[data-action=token-add]')].map(b=>Number(b.dataset.value)).sort((a,b)=>a-b);ids.forEach(i=>click('[data-action=token-add][data-value="'+i+'"]'));click('[data-action=game-check]');assert(root.textContent.includes('Верно!'));click('[data-action=game-next]');
+ const ids=[...root.querySelectorAll('[data-action=token-add]')].map(b=>Number(b.dataset.value)).filter(id=>id<Number(q('.pg-answer-box').dataset.required)).sort((a,b)=>a-b);ids.forEach(i=>click('[data-action=token-add][data-value="'+i+'"]'));click('[data-action=game-check]');assert(root.textContent.includes('Верно!'));click('[data-action=game-next]');
 }
 assert(root.textContent.includes('Правильных ответов: 4 из 5'));const points=w.courseProgress.readGame().points;assert.equal(points,8);assert.equal(w.courseProgress.readGame().completed,1);assert.equal(w.courseProgress.readGame().best.build,4);
 w.__panda130.show('result');assert.equal(w.courseProgress.readGame().points,points,'Reopening results never grants points twice');

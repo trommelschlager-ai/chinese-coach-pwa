@@ -136,3 +136,22 @@ body.pg130-active>#launch-entry,body.pg130-active>.shell,body.pg130-active>.bott
 @media(max-height:690px){#pg130 .pg-home-grid button{padding:6px}}
 #pg130 .pg-dialogue-scene{height:auto;aspect-ratio:271/155;object-fit:contain;margin-bottom:-88px}
 #pg130 .pg-bubble{width:78%;max-width:78%}
+
+/* Match the reference menu rhythm and compact the two overflowing small-phone states. */
+#pg130 .pg-heading:not(.compact){min-height:190px}
+#pg130 .pg-resume .pg-meter{display:block;width:100%;margin-top:5px}
+#pg130 .pg-token-pool{min-height:80px}
+#pg130 .pg-answer-box{min-height:90px}
+@media(max-height:690px){
+ #pg130 .pg-heading:not(.compact){min-height:170px}
+ #pg130 .pg-route-tones .pg-subtools{flex-wrap:nowrap;gap:5px}
+ #pg130 .pg-route-tones .pg-secondary{font-size:11px;padding:6px 7px;white-space:nowrap}
+ #pg130 .pg-tone-box{padding:10px 8px}
+ #pg130 .pg-tone-labels{margin-bottom:8px}
+ #pg130 .pg-tone .pg-contour{height:42px}
+ #pg130 .pg-tone small{min-height:28px}
+ #pg130 .pg-game-prompt{min-height:110px}
+ #pg130 .pg-game-prompt>.pg-portrait{height:110px}
+}
+#pg130 .pg-token{padding:5px 8px}
+#pg130 .pg-token-pool .pg-token{font-size:23px;padding:5px 6px;min-height:39px}
