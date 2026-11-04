@@ -15,6 +15,7 @@ d.getElementById('launch-start').click();assert(!root.hidden);assert.equal(root.
 click('[data-route=learn]');assert.equal(root.querySelectorAll('.pg-card').length,4);
 click('[data-route=words]');assert.equal(q('.pg-hanzi').textContent,'我');
 click('[data-action=known]');assert(JSON.parse(w.localStorage.getItem('chinese-coach-basic-known-v1')).includes('我'));
+click('[data-action=example][data-value="0"]');assert(fs.existsSync(played.at(-1).replace('./','')),'Sentence example resolves to an existing MP3');
 click('[data-action=word-play]');assert(played.length);assert(fs.existsSync(played.at(-1).replace('./','')));
 click('[data-action=pinyin]');assert(!q('.pg-pinyin'));assert.equal(w.localStorage.getItem('chinese-coach-show-pinyin'),'false');
 click('[data-action=pinyin]');click('[data-action=word-next][data-value="1"]');assert.equal(q('.pg-hanzi').textContent,'你');

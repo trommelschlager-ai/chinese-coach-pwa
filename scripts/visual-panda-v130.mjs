@@ -7,6 +7,7 @@ const OUT='qa/v130/browser';
 const sizes=[[360,640],[390,720],[412,915]];
 fs.mkdirSync(OUT,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+let activePage;
 const report={version:130,at:new Date().toISOString(),captures:[],checks:[],errors:[],layoutFailures:[]};
 async function ready(page){await page.locator('#pg130:not([hidden])').waitFor();await page.locator('#pg130 img').evaluateAll(images=>Promise.all(images.map(img=>img.decode().catch(()=>{}))));}
 async function capture(page,name,size,hanzi=false){
@@ -32,7 +33,7 @@ try{
   const [width,height]=size;
   const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,isMobile:true,hasTouch:true,reducedMotion:'reduce'});
   context.on('page',p=>p.on('pageerror',e=>report.errors.push({width,message:e.message})));
-  const page=await context.newPage();
+  const page=await context.newPage();activePage=page;
   page.on('console',message=>{if(message.type()==='error')report.errors.push({width,message:message.text()})});
   await page.goto(BASE+'/index.html',{waitUntil:'load'});
   await page.locator('#launch-start').click();await ready(page);
@@ -92,5 +93,5 @@ try{
  assert.deepEqual(report.layoutFailures,[],'Every approved screen must fit its mobile viewport');
  report.result='passed';
  console.log(`PASS v130: ${report.captures.length} captures across ${sizes.length} mobile sizes, real UI flows, persistence and scoring.`);
-}catch(error){report.result='failed';report.failure=String(error.stack||error);throw error}
+}catch(error){report.result='failed';report.failure=String(error.stack||error);if(activePage&&!activePage.isClosed()){report.failureUrl=activePage.url();report.failureDOM=await activePage.locator('body').innerText().catch(()=>'?');await activePage.screenshot({path:OUT+'/failure.png',fullPage:true}).catch(()=>{})}throw error}
 finally{fs.writeFileSync(OUT+'/results.json',JSON.stringify(report,null,2)+'\n');await browser.close()}
