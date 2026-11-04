@@ -17,9 +17,9 @@ assert(js.includes('window.courseHumanAudio?.[key]&&window.__pandaGameSpeech130'
 assert.equal((js.match(/audio\.playbackRate=1;/g)||[]).length,2,'Single-word and sequence MP3s must retain natural speed');
 assert(js.includes("audioParts:['我','是','学生']"),'Example 1 must use valid individual recordings');
 assert(js.includes("audioParts:['我','喜欢','中','国']"),'Example 2 must not request missing 中国 clip');
-for(const [selector,dimension] of [['.pg-word-main>.pg-portrait','width:113px'],['.pg-game-prompt>.pg-portrait','width:89px'],['.pg-dialogue-scene','width:min(100%,271px)']]){
- assert(css.includes(dimension),'Original crops must not be enlarged: '+selector);
-}
+// Small source crops cannot be repaired by shrinking them: retain the approved composition.
+assert(css.includes('#pg130 .pg-game-prompt{display:grid;grid-template-columns:31% 1fr'),'The approved portrait proportion must remain intact');
+assert(css.includes('#pg130 .pg-dialogue-scene{height:auto;aspect-ratio:271/155'),'The approved dialogue composition must remain intact');
 const index=fs.readFileSync('index.html','utf8');
 const sw=fs.readFileSync('sw.js','utf8');
 const pack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
@@ -29,4 +29,4 @@ for(const suffix of ['css','js']){
  assert(sw.includes(url),'Offline shell must load current '+url);
  assert(pack.files.includes(url),'Optional offline pack must load current '+url);
 }
-console.log('Panda Go v131: clean speaker, natural speed, example audio coverage, crop limits, offline cache OK.');
+console.log('Panda Go v131: clean speaker, natural speed, example audio coverage, approved layout, offline cache OK.');
