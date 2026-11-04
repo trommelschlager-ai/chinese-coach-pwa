@@ -1,5 +1,5 @@
 {
-  "version": 113,
+  "version": 114,
   "bytes": 23400882,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -1399,8 +1399,8 @@
     "./icons/maskable-512.png",
     "./index.html",
     "./manifest.webmanifest",
-    "./assets/panda-v130.css?v=130",
-    "./assets/panda-v130.js?v=130",
+    "./assets/panda-v130.css?v=131",
+    "./assets/panda-v130.js?v=131",
     "./assets/panda-hanzi-v130.css?v=130",
     "./assets/panda-hanzi-v130.js?v=130",
     "./assets/panda-v130/book.webp",
