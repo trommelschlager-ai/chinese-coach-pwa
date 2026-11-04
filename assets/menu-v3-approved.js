@@ -6,7 +6,7 @@ const menu=document.getElementById('launch-menu');
 if(!menu||menu.dataset.pandaV3==='1')return;
 const backing=menu.querySelector('.six-screen-content');
 const originalCards=backing?.querySelector('.six-menu-cards');
-if(!originalCards||originalCards.querySelectorAll('[data-choice]').length!==8)return;
+if(!originalCards||originalCards.querySelectorAll('[data-choice]').length!==7||!originalCards.querySelector('.six-travel'))return;
 menu.dataset.pandaV3='1';
 const view=document.createElement('div');view.className='panda-v3-view';
 view.innerHTML=`
