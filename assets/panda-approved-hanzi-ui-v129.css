@@ -1,0 +1,72 @@
+/* Panda Go v129 — match the approved pink/sakura Hanzi screen with live stroke canvas. */
+body.writing-simple{
+ color:#3e1758;
+ background:linear-gradient(180deg,#f3d7f4d9,#f9e2f8c9 42%,#f3ddffdd),
+   url('./approved-panda-lake-v112.webp') center top/cover fixed no-repeat!important;
+}
+body.writing-simple .shell{max-width:650px;padding:clamp(10px,3vw,20px) 12px 35px}
+body.writing-simple .top{margin-bottom:14px;gap:9px}
+body.writing-simple .back,body.writing-simple .top-pill{
+ border:2px solid #edd0ff;border-radius:999px;
+ background:linear-gradient(140deg,#fffaff,#f1d9ff);
+ box-shadow:inset 0 2px 1px #fff,0 5px 13px #bd7cd05c;
+ color:#68238f;font-weight:850;
+}
+body.writing-simple .drawing-card{
+ padding:clamp(14px,4vw,28px)!important;
+ border:2px solid #e1acef!important;border-radius:29px!important;
+ background:linear-gradient(180deg,#fffaffec 0%,#f5dffbf7 100%)!important;
+ box-shadow:inset 0 2px 0 #fff,0 12px 26px #a95bba54!important;
+}
+body.writing-simple .drawing-card::before{
+ content:"🖌️";display:grid;place-items:center;width:48px;height:48px;
+ font-size:31px;margin:0 auto 4px;border-radius:999px;
+ background:linear-gradient(135deg,#fff7ff,#eac0fa);
+ box-shadow:0 4px 13px #ab76cc66;
+}
+body.writing-simple .glyph-title{width:100%;justify-content:center;align-items:center;gap:9px}
+body.writing-simple .glyph-title strong{font-size:clamp(60px,15vw,93px);color:#72298e}
+body.writing-simple .glyph-title .py{font-size:clamp(18px,4.7vw,25px);color:#873fa9}
+body.writing-simple .meaning{
+ color:#5d287a;background:linear-gradient(120deg,#f8e8ff,#edd2fb);
+ border:1px solid #e3bbed;box-shadow:0 3px 9px #a366bb46;
+ border-radius:999px;padding:7px 22px;font-size:clamp(18px,4.6vw,24px)
+}
+body.writing-simple .paper{
+ background-color:#fffbff!important;
+ border:3px solid #daaae6!important;
+ border-radius:22px!important;
+ box-shadow:inset 0 0 0 1px #fff,0 10px 23px #a765ba4c!important;
+ max-width:390px;
+}
+body.writing-simple .control{
+ border:1.5px solid #d5a2ec;border-radius:17px;
+ color:#63317f;font-weight:800;
+ background:linear-gradient(145deg,#fff9ff,#f0dbfa);
+ box-shadow:inset 0 1px 0 #fff,0 5px 10px #bd88cc55;
+}
+body.writing-simple #practice,body.writing-simple #next{
+ color:#fff!important;
+ background:linear-gradient(180deg,#f66fd2 0%,#d42bbd 73%,#a922b1 100%)!important;
+ border:2px solid #ffd8f4!important;border-radius:999px!important;
+ box-shadow:inset 0 2px #fff7,0 5px 0 #a82ea2,0 10px 17px #c864d96b!important;
+}
+body.writing-simple #animate{background:linear-gradient(135deg,#eee2ff,#d5c3fc);color:#643095}
+body.writing-simple .feedback{
+ background:#fff8ffee;border:1px solid #dca9eb;border-radius:16px;
+ box-shadow:inset 0 1px #fff;min-height:44px;
+}
+body.writing-simple .writing-extras{
+ margin-top:18px;padding:10px 14px;
+ border:1.5px solid #deb8f0;border-radius:20px;
+ background:#fff7ffec;box-shadow:0 6px 17px #ac76c74d;
+}
+body.writing-simple .character-picker{border-radius:18px}
+@media(max-width:400px){
+ body.writing-simple .drawing-card{padding:12px!important}
+ body.writing-simple .controls{gap:8px}
+ body.writing-simple .paper{width:min(100%,345px)}
+}
+@media(prefers-reduced-motion:reduce){
+ body.writing-simple .control{transition:none!important}
+}
