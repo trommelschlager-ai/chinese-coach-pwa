@@ -66,6 +66,16 @@ const {JSDOM}=require('jsdom');
  d.getElementById('voice-close').click();
  assert.equal(qa.getScreen(),'hidden');
  assert.equal(d.getElementById('reward-screen').hidden,false);
+ // Returning learner can access voice practice directly from the map.
+ const mapStatus=d.getElementById('airport-status');
+ mapStatus.textContent='Пройдено ✓ · Повторить';
+ await Promise.resolve();
+ assert.equal(d.getElementById('voice-from-map').hidden,false);
+ d.getElementById('voice-from-map').click();
+ assert.equal(d.getElementById('map-screen').hidden,true);
+ assert.equal(qa.getScreen(),'visible');
+ d.getElementById('voice-close').click();
+ assert.equal(d.getElementById('map-screen').hidden,false);
  // Existing quiz progress is not modified.
  assert.equal(w.localStorage.getItem('panda-go-travel-v1'),null);
  w.close();
