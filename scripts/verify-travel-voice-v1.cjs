@@ -9,6 +9,8 @@ const {JSDOM}=require('jsdom');
  assert(html.includes('travel-voice-v1.js?v=3'));
  assert(html.includes('travel-voice-v1.css?v=2'));
  assert(css.includes('.travel-voice .voice-action-card'));
+ assert(css.includes('#voice-from-map[hidden],.travel-voice [hidden]{display:none!important}'));
+
  assert(!js.includes('92%'),'No fabricated pronunciation rating');
  assert(js.includes('Распознавание слов не означает правильность всех китайских тонов.'));
  const dom=new JSDOM(html,{url:'https://example.test/chinese-coach-pwa/travel.html',runScripts:'outside-only',pretendToBeVisual:true});
