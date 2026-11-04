@@ -7,7 +7,7 @@ const OUT='qa/v130/browser';
 const sizes=[[360,640],[390,720],[412,915]];
 fs.mkdirSync(OUT,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
-const report={version:130,at:new Date().toISOString(),captures:[],checks:[],errors:[]};
+const report={version:130,at:new Date().toISOString(),captures:[],checks:[],errors:[],layoutFailures:[]};
 async function ready(page){await page.locator('#pg130:not([hidden])').waitFor();await page.locator('#pg130 img').evaluateAll(images=>Promise.all(images.map(img=>img.decode().catch(()=>{}))));}
 async function capture(page,name,size,hanzi=false){
  const screen=page.locator(hanzi?'body.writing-simple .shell':'#pg130 .pg-screen');
@@ -18,9 +18,9 @@ async function capture(page,name,size,hanzi=false){
    heading:el.querySelector('h1')?.textContent,
    actions:[...el.querySelectorAll('button,a')].filter(x=>x.getBoundingClientRect().width&&x.getBoundingClientRect().height).map(x=>{const b=x.getBoundingClientRect();return {text:x.getAttribute('aria-label')||x.textContent.trim(),left:b.left-r.left,right:b.right-r.left,top:b.top-r.top,bottom:b.bottom-r.top}})};
  });
- assert(metrics.scrollWidth<=metrics.clientWidth+2,`${name} horizontal overflow: ${JSON.stringify(metrics)}`);
- assert.equal(metrics.missingImages.length,0,`${name} missing illustrations`);
- if(!hanzi)assert(metrics.scrollHeight<=metrics.clientHeight+2,`${name} requires scrolling at ${size}: ${JSON.stringify(metrics)}`);
+ if(metrics.scrollWidth>metrics.clientWidth+2)report.layoutFailures.push({name,size,kind:'horizontal overflow',metrics});
+ if(metrics.missingImages.length)report.layoutFailures.push({name,size,kind:'missing images',metrics});
+ if(!hanzi&&metrics.scrollHeight>metrics.clientHeight+2)report.layoutFailures.push({name,size,kind:'vertical overflow',metrics});
  const box=await screen.boundingBox();
  await page.screenshot({path:`${OUT}/${name}-${size[0]}.png`,clip:box,animations:'disabled'});
  report.captures.push({name,viewport:size,density:1,...metrics});
@@ -89,6 +89,7 @@ try{
   await context.close();
  }
  assert.deepEqual(report.errors,[],'Browser runtime/console errors');
+ assert.deepEqual(report.layoutFailures,[],'Every approved screen must fit its mobile viewport');
  report.result='passed';
  console.log(`PASS v130: ${report.captures.length} captures across ${sizes.length} mobile sizes, real UI flows, persistence and scoring.`);
 }catch(error){report.result='failed';report.failure=String(error.stack||error);throw error}
