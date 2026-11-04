@@ -252,3 +252,44 @@ body .panda-v129-petal svg{display:block;width:100%;height:100%;overflow:visible
  .panda-v129-petal{animation:none!important}
  #launch-entry #launch-menu .panda-v3-subcard{transition:none!important}
 }
+
+/* v129 mobile specificity refinements */
+
+/* v129 mobile specificity refinements: original section CSS intentionally uses three IDs. */
+#topics#topics#topics[data-word-study='true'] .clean-study-card{
+ min-height:clamp(330px,51dvh,420px)!important;padding:22px 15px 16px!important;
+ gap:7px!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-card::before{
+ content:""!important;position:absolute!important;left:15px!important;right:auto!important;
+ top:18px!important;width:100px!important;height:115px!important;
+ border:2px solid #ffdbf6!important;border-radius:21px!important;margin:0!important;
+ background:url('./approved-woman-v112.webp') center 15%/cover no-repeat!important;
+ box-shadow:0 7px 14px #ae6ac34f!important;opacity:1!important;z-index:0!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-hanzi{
+ font-size:clamp(62px,18vw,90px)!important;
+ line-height:1.14!important;min-height:112px;display:grid!important;place-items:center;
+ max-width:calc(100% - 115px)!important;align-self:flex-end!important;
+ margin:0 4px 0 0!important;overflow-wrap:normal!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-pinyin{
+ margin:0 0 9px!important;font-size:clamp(23px,6vw,29px)!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-actions button{min-height:54px!important}
+#topics#topics#topics[data-word-study='true'] .clean-study-next{min-height:53px!important}
+#topics#topics#topics[data-simple-section='practice'] .clean-choice-grid button{
+ min-height:51px!important;border:1.5px solid #dfb3ed!important;
+ background:linear-gradient(140deg,#fffaff,#f3defb)!important;
+ color:#442259!important;border-radius:999px!important;
+ box-shadow:inset 0 2px #fff,0 3px 9px #b985c65c!important;
+}
+#topics#topics#topics[data-simple-section='practice'] .clean-choice-grid button.is-correct{background:#d6f7e4!important;color:#195c42!important}
+#topics#topics#topics[data-simple-section='practice'] .clean-choice-grid button.is-wrong{background:#ffe0e9!important;color:#a23348!important}
+@media(max-width:520px){
+ #topics#topics#topics[data-simple-section='practice'] .clean-choice-grid{
+  grid-template-columns:1fr!important;gap:9px!important;
+ }
+ #topics#topics#topics[data-word-study='true'] .clean-study-card::before{width:86px!important;height:104px!important}
+ #topics#topics#topics[data-word-study='true'] .clean-study-hanzi{max-width:calc(100% - 94px)!important}
+}
