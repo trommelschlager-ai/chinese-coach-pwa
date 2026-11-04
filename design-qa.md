@@ -1,83 +1,57 @@
-# «Мой Китайский» — проверка выпуска v112, 2 ноября 2026
+# Panda Go v130 — visual acceptance remains blocked
 
-final result: passed
+final result: blocked
 
-Область проверки: темы диалогов, отдельный диалог, проверка слов, сборка фразы. Это проверка исправленного существующего приложения, а не замена курса прототипом. Полное попиксельное совпадение с иллюстративным макетом не заявляется.
+## Source visual truth
 
-## Исходное состояние
+- Approved twelve-screen board: `33156(2).png`, ChatGPT file `libfile_6d5881ac8e448191957bc7f7123f8dd9`.
+- Local source at implementation time: `/workspace/scratch/a532b72b72a8/references/33156(2).png`.
+- Original board: 1536 × 1536 pixels; individual screen illustrations are roughly 300 pixels wide.
+- Crop coordinates, source checksum and encoding are recorded in `qa/v130/reference-assets.json`.
+- All 23 extracted assets are lossless WebP crops. No generative replacement, resampling or sharpening was applied to those assets.
 
-Продолжение начато с `main` / `b1a7c432123a7095f39129c2b94a3adf2bf635e8` (v111). Рабочая копия была чистой. Существующая удалённая ветка `backup/before-design-rebuild-20261102` указывала на тот же коммит. История последних изменений проверена. Предыдущий корневой отчёт относился к v29; сохранён в `qa/design-qa-v29.md`. Проверки v98 из `qa/FIXES-v98.md` учтены; это не подтверждение дизайна v111.
+## Rendered implementation evidence
 
-Код выпуска: `8bbe2278bb8c613caff84ccc87b33c15d7958a4b`. Старые MP3, словари, COURSE, алгоритмы оценки, ключи прогресса и резервное копирование не заменялись.
+- Intended preview: `http://terminal.local:4173/`.
+- Preview command: `sites-preview start /workspace/scratch/a532b72b72a8/panda-go`.
+- Browser response: `upstream connect error or disconnect/reset before headers. reset reason: connection termination`.
+- The initial navigation also timed out. A restart through the supported preview command and one browser reload did not restore access.
+- Implementation screenshot path: unavailable; no application screen rendered in this preview.
+- Viewports to capture once access is restored: 360 × 640, 390 × 720, 412 × 915, desktop 1363 × 936. The new desktop shell targets 390 × 720 CSS px. Density normalization, clipping and overflow require browser measurement.
+- Full-view and focused-region reference/implementation comparisons: **not possible**. There is no valid combined comparison image.
+- Browser console error check and mobile interactions: **not verified**. DOM tests do not replace those checks.
 
-## Визуальная основа и доказательства
+## Findings and required fidelity surfaces
 
-Исходники пользователя: `upload/01-32682.png` (768 × 1536, пастельный фон), `upload/02-32681.png` (768 × 1536, панда и озеро), `upload/03-32680.png` (663 × 1199, темы/тест), `upload/04-32677.png` (1536 × 1024, три утверждённых экрана). Их рабочие копии находились вне Git-каталога, в соседней папке `upload`.
+- [P1] Visual acceptance blocked for all twelve states. Inspect home, study menu, training menu, practice question, quiz question, game menu, phrase builder, completed session, tones, word card, Hanzi and dialogue in a working browser preview before merging.
+- [P1] Typography is provisional. Arial and platform CJK fallbacks are used; weight, wrapping, optical sizing and glyph rendering have not been compared to the board.
+- [P1] Spacing/layout rhythm is provisional. Cards, screen frame, 2 × 2 home grid, answer bank, navigation and bottom actions are implemented, but actual mobile overflow and touch layout are unmeasured.
+- [P1] Colors/tokens and artwork blending need comparison. Glazed lilac/pink surfaces are implemented; exact palette, shadows, image boundaries and decorative crops are not visually accepted.
+- [P1] Image fidelity is limited by the provided collage. Crops preserve the source pixels, but the flattened board is not a collection of full-resolution, transparent assets. Desktop enlargement cannot recreate missing detail. The cropped dialogue scenery also cannot fully reproduce the original layered two-character illustration.
+- [P1] Copy/content remains partly course-driven. The original ten Hanzi are retained (first character 大); the board illustrates 爱, for which this repository has no stroke data. The vocabulary and dialogue content comes from the real course rather than hard-coded screenshot samples. Check text, tones and any deliberate differences explicitly.
+- [P1] Legacy access paths require reconciliation. Full sequential lessons, memory/translation practice, microphone/reading tools and settings remain accessible through the new shell. The direct standalone `game.html`, travel module and advanced legacy screens retain their prior layouts. They must not be described as the completed approved design.
+- [P2] Inspect the result illustration for duplicated headings and appropriate feedback on imperfect scores.
+- [P2] The quick test uses the existing question pool and reports elapsed time; it has no countdown limit.
 
-Доказательства: `qa/v112/approved-reference.jpg`, `qa/v112/comparison-v112.jpg`, `qa/v112/mobile-v112-final.jpg`, отдельные `*-v112-final.jpg`, `sizes-v112.jpg`, `landscape-v112.jpg`, `checked-v112.jpg`, `before-v112.jpg`.
+## Verification completed in code
 
-Chrome, реальное приложение в iframe: 360 × 800, 393 × 852, 412 × 915 CSS px. Для сопоставления с трёхэкранным макетом — три области по 393 × 786 CSS px, без рамки телефона. Каждая панель исходника 512 × 1024 уменьшена до 393 × 786. Отдельные снимки браузера имеют 393 × 786 px; масштаб снимков 1×. Сравнение содержит макет и браузер рядом для каждого экрана. Полноразмерные колонки читаемы; дополнительное увеличение для оценки основных надписей не требовалось.
+`npm run check` and `npm run check:release` include `scripts/verify-panda-v130.cjs`.
 
-Альбомная проверка: 844 × 390 CSS px, по одной реплике, прокрутка и переход «Далее» работают. Это браузерные размеры, не физический Android/iPhone.
+The added DOM regression exercises actual application boot, four home destinations, study/training navigation, all 193 words and 13 categories, known-word persistence, pinyin preference, MP3 path existence, tone examples, dialogue paging/notes, answer selection, token removal/reordering, incorrect-order rejection, score persistence, reset lockout after checking, idempotent result rewards, topic changes, incompatible-session browser Back and return from legacy course to the new home.
 
-## Найдено, исправлено, перепроверено
+Existing regression suites retain the writing engine, original voices, course material, pronunciation tools, progress export/import and offline downloads. MP3 path validation is not an acoustic listening test; mixed legacy voice sources remain as before.
 
-| Приоритет | Находка | Исправление и повторная проверка |
-| --- | --- | --- |
-| P1 | Рендерер сборки фразы создавал `ch110-build-*`, для которых не было CSS | Полный стиль действующего экрана; сцена, банк, ответ, проверка и результат работают. `builder-v112-final.jpg`, `checked-v112.jpg` |
-| P1 | Структурные стили v109/v110/v111 перекрывали друг друга | Три последних файла отключены; из v109 удалены заменённые правила диалогов и теста. Один канонический `approved-mobile-v112.css` |
-| P1 | Вместо утверждённых фонов и портретов использовались другие изображения | Использованы предоставленные фоны, отдельные фрагменты портретов/декора из макета. Текст, кнопки и задания остаются HTML |
-| P2 | Две кнопки озвучки внутри карточки теста | Улучшатель не добавляет вторую кнопку, если `quizplay` уже существует; проверено DOM и браузером |
-| P2 | Обе первые реплики имели женский портрет | Первые две реплики соответствуют макету; далее роли привязаны к собеседникам; аудиозаписи сохранены |
-| P2 | В промежуточной сборке слова переносились в три ряда, нижние действия сдвигались | Исправлены `flex-basis`, направление действий, лишняя тень банка и компактность сцены; на 393 × 786 низ кнопки проверки ≈776 CSS px |
-| P2 | Тест наследовал ширину по содержимому и старые фотографии | Полная ширина карточки, отдельная сетка 2×2, иллюстрированные пастельные ответы, крупный пейзаж в карточке слова |
-| P2 | Поворот менял число реплик без сохранения позиции | При смене 2↔1 реплик сохраняется текущая строка; проверено сценарием resize и альбомной навигацией |
-| P2 | Первое сравнение показывало растянутые карточки тем и почти пустой пейзаж теста | Убрано растяжение тем по всей высоте; отдельный пейзаж карточки получен из предоставленного фона. Повторное сравнение — `comparison-v112.jpg` |
+## Comparison history
 
-После исправлений блокирующих P0/P1/P2 для указанной области не осталось. Сообщения правильного/неправильного ответа читаются, ошибочный ответ не маскируется только цветом, варианты после проверки не бледнеют. Длинные диалоги и развёрнутое объяснение могут прокручиваться; элементы не перекрывают друг друга.
+1. Prior v129 was visually observed in the published app and differed from the approved board: full-width home rows instead of a 2 × 2 grid, emoji-based study navigation and washed-out scene composition.
+2. v130 changes those structures in source and reuses cropped original artwork.
+3. New browser-rendered evidence is unavailable. No visual pass is claimed and this branch is not eligible for production deployment.
 
-## Пять поверхностей соответствия
+## Next checks, in order
 
-- **Типографика:** Arial/system-ui для интерфейса, Georgia для заголовка теста/ответов, китайский системный sans-serif. Иерархия, размеры, переносы и пиньинь проверены. Реальные длинные слова переносятся; содержимое не заменено надписями из картинки.
-- **Композиция:** портрет слева, облако реплики справа; отдельные карточка слова, четыре ответа и действие; статичная игровая сцена с живыми карточками. На малой высоте доступна прокрутка. Контуры и интервалы адаптированы к реальному содержимому.
-- **Цвета:** розовый/сиреневый, мятный и голубой варианты, тёмный текст, синие кнопки аудио. Правильный и ошибочный ответы имеют текст и цвет; варианты сохраняют непрозрачность.
-- **Изображения:** предоставленные фоны; портреты, орнамент и небольшие тематические иллюстрации извлечены из утверждённой композиции. Не использованы снимки целых экранов как замена интерактивному экрану. Стандартные иконки Lucide поставляются локально с лицензией.
-- **Текст:** учебные данные сохранены. Исправлено склонение «4 реплики». Пиньинь отображается/скрывается действующей кнопкой. В игре его исходное отображение сохранено согласно прежнему требованию пользователя.
-
-## Осознанные отличия и P3
-
-- Содержимое теста случайное; слова и ответы в снимке отличаются от примера макета. Это не подмена словаря.
-- В игре сохранены отдельная область собранного ответа, отвлекающие слова и видимый возврат. Поэтому банк расположен ниже, чем в художественном макете. Это сохраняет проверку, отмену выбора и рабочую навигацию.
-- В тесте вместо настройки голоса доступен видимый возврат к разделам. Настройки приложения сохранены вне этого экрана.
-- Остались мелкие отличия контуров заголовков, системных шрифтов и индикатора страниц (число вместо декоративных точек). Сходство оформления не означает попиксельной идентичности.
-
-## Проверки
-
-`npm run check:release` — успешно. Лог: `qa/v112/release-check.log`.
-
-- Все 21 реплика доступны; смена ориентации сохраняет строку.
-- Все 10 вопросов теста, блокировка повторного ответа, итог и перезапуск.
-- Все 30 правильных игровых ответов: 10 сборок, 10 переводов, 10 аудирований, начисление/сохранение очков.
-- Отмена выбранного слова, сброс, пустой ответ, переключение пиньиня.
-- Тот же DOM сцены сохраняется при выборе слова. В браузере положение заголовка и CSS фона до/после трёх выборов одинаковы; размер фона привязан к viewport.
-- Экспорт/импорт прогресса, старый формат и отклонение некорректных данных.
-- HSK1-маршрут и инвентарь прежних аудиофайлов.
-- Установка/обновление worker, 73 обязательных URL, 1394 дополнительных файла, восстановление неполной загрузки, офлайн-навигация и письмо. Лимит оболочки проверяется по количеству и фактическому объёму <3 МБ.
-
-В Chrome вручную проверены темы, приветствие и длинные реплики, «Далее»/возврат, ответ теста и пиньинь, сборка «我叫小明», проверка и объяснение. На финальных проходах ошибок приложения в консоли не обнаружено; сообщения расширения `chrome-extension://...` к приложению не относятся.
-
-Старый `npm run check` не проходит уже на исходной v111: `verify.cjs` ожидает второе «你好», тогда как ранее опубликованный курс содержит «哈喽». До/после: `baseline-check.log` и `legacy-check.log`. Это не исправлялось изменением учебного содержания или ослаблением старой проверки. Для текущих точек входа добавлена отдельная полноценная проверка `check:release`.
-
-## Пределы проверки
-
-Не проверены физический Android/iPhone, Safari, разрешения микрофона, реальное обновление уже установленной PWA и качество всех записей прослушиванием. MP3 и механизм оценки не менялись; наличие записей и офлайн-кэш проверены программно. Обновлённый cache key: `chinese-coach-pwa-v112-20261102-r3`.
-
-## Итоговый список
-
-- [x] История, рабочее состояние и предыдущие отчёты проверены.
-- [x] Работа продолжена от сохранённого состояния v111; резервная ветка подтверждена.
-- [x] Курс, озвучка и хранилища прогресса сохранены.
-- [x] Четыре целевых экрана исправлены и сопоставлены с макетами.
-- [x] Мобильные размеры, альбомная навигация и основные действия проверены.
-- [x] Скриншоты, сравнение и логи сохранены в репозитории.
-- [x] Выпуск подготовлен для GitHub Pages; результат публикации проверяется отдельно после обновления `main`.
+1. Restore the supported local preview and capture the twelve states at matching screen proportions.
+2. Place normalized reference/implementation pairs in one comparison image; include focused typography, icons, card and artwork regions.
+3. Fix P1/P2 differences; verify mobile fit, tap targets, keyboard and browser Back.
+4. Listen to words, dialogue and phrase audio in the browser; check playback cancellation and microphone permission/recording flows.
+5. Verify live Hanzi strokes, incomplete/wrong answers, result persistence and offline reload.
+6. Repeat visual comparisons. Merge/deploy only after this report can honestly say `final result: passed`.

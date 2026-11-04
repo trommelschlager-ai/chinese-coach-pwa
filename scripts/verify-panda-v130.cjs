@@ -1,0 +1,46 @@
+/* End-to-end DOM regression checks for the new presentation and shared storage. */
+const assert=require('node:assert/strict'),fs=require('node:fs'),{JSDOM}=require('jsdom');
+const html=fs.readFileSync('index.html','utf8');
+const dom=new JSDOM(html,{url:'https://example.test/chinese-coach-pwa/',runScripts:'outside-only',pretendToBeVisual:true});
+const w=dom.window,d=w.document,errors=[],played=[];
+w.addEventListener('error',e=>errors.push(e.error));
+w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};w.matchMedia=()=>({matches:true});
+w.speechSynthesis={getVoices:()=>[],cancel(){},speak(u){u.onend?.()}};w.SpeechSynthesisUtterance=function(){};
+w.Audio=function(url){this.src=url;this.play=()=>{played.push(url);return Promise.resolve()};this.pause=()=>{this.onpause?.()}};
+const scripts=[...d.scripts].map(s=>s.src?fs.readFileSync(decodeURI(new URL(s.src).pathname.replace('/chinese-coach-pwa/','')),'utf8'):s.textContent).join('\n');
+w.eval(scripts);
+const root=d.getElementById('pg130'),q=s=>root.querySelector(s),click=s=>{const b=q(s);assert(b,'Control missing: '+s);assert(!b.disabled,'Control disabled: '+s);b.click()};
+assert(root.hidden,'Approved original cover remains at launch');
+d.getElementById('launch-start').click();assert(!root.hidden);assert.equal(root.querySelectorAll('.pg-home-grid button').length,4);
+click('[data-route=learn]');assert.equal(root.querySelectorAll('.pg-card').length,4);
+click('[data-route=words]');assert.equal(q('.pg-hanzi').textContent,'我');
+click('[data-action=known]');assert(JSON.parse(w.localStorage.getItem('chinese-coach-basic-known-v1')).includes('我'));
+click('[data-action=word-play]');assert(played.length);assert(fs.existsSync(played.at(-1).replace('./','')));
+click('[data-action=pinyin]');assert(!q('.pg-pinyin'));assert.equal(w.localStorage.getItem('chinese-coach-show-pinyin'),'false');
+click('[data-action=pinyin]');click('[data-action=word-next][data-value="1"]');assert.equal(q('.pg-hanzi').textContent,'你');
+click('[data-route=word-topics]');assert.equal(root.querySelectorAll('[data-action=word-filter]').length,13);
+click('[data-value=g09]');assert.equal(q('.pg-hanzi').textContent,'水');
+w.__panda130.show('tones');click('[data-action=tone][data-value="2"]');assert(fs.existsSync(played.at(-1).replace('./','')));
+click('[data-action=tone-tab][data-value="Инициали"]');click('[data-action=syllable][data-value=bo]');assert(fs.existsSync(played.at(-1).replace('./','')));
+click('[data-action=tone-tab][data-value="Сочетания"]');click('[data-action=syllable][data-value=pai]');assert(fs.existsSync(played.at(-1).replace('./','')));
+w.__panda130.show('dialogues');assert(q('.pg-bubble'));const initial=q('.pg-bubble strong').textContent;click('[data-action=dialog-next][data-value="1"]');assert.notEqual(q('.pg-bubble strong').textContent,initial);click('[data-action=dialog-notes]');assert(root.textContent.includes('Как спросить имя'));
+w.__panda130.show('build');assert(q('[data-action=game-check]').disabled);assert.equal(q('.pg-token-pool').children.length,3);
+for(const i of [0,1,2])click('[data-action=token-add][data-value="'+i+'"]');
+assert.equal(q('.pg-token-pool').children.length,0,'Selected tokens leave no empty placeholder');assert(!q('[data-action=game-check]').disabled);
+click('[data-action=token-return][data-value="1"]');assert(q('[data-action=game-check]').disabled);click('[data-action=token-add][data-value="1"]');click('[data-action=game-check]');assert(root.textContent.includes('Правильно: 我喜欢中国。'),'Wrong order is rejected');
+assert(q('[data-action=game-reset]').disabled,'Checked question cannot be reset to farm score');
+click('[data-action=game-next]');
+for(let question=1;question<5;question++){
+ const ids=[...root.querySelectorAll('[data-action=token-add]')].map(b=>Number(b.dataset.value)).sort((a,b)=>a-b);ids.forEach(i=>click('[data-action=token-add][data-value="'+i+'"]'));click('[data-action=game-check]');assert(root.textContent.includes('Верно!'));click('[data-action=game-next]');
+}
+assert(root.textContent.includes('Правильных ответов: 4 из 5'));const points=w.courseProgress.readGame().points;assert.equal(points,8);assert.equal(w.courseProgress.readGame().completed,1);assert.equal(w.courseProgress.readGame().best.build,4);
+w.__panda130.show('result');assert.equal(w.courseProgress.readGame().points,points,'Reopening results never grants points twice');
+w.__panda130.show('quiz');assert(q('[data-action=question-check]').disabled);click('[data-action=answer][data-value="1"]');click('[data-action=question-check]');assert(root.querySelectorAll('[data-action=answer]:disabled').length===4);click('[data-action=question-next]');
+w.__panda130.show('practice');click('[data-action=question-play]');assert(fs.existsSync(played.at(-1).replace('./','')));const select=q('[data-topic]');select.value='5';select.dispatchEvent(new w.Event('change',{bubbles:true}));assert.equal(q('[data-topic]').value,'5');
+w.__panda130.show('build');w.__panda130.show('quiz');w.history.replaceState(null,'','#panda/build');w.dispatchEvent(new w.PopStateEvent('popstate'));w.dispatchEvent(new w.HashChangeEvent('hashchange'));assert(q('.pg-token-pool'),'Browser Back recovers a compatible game session');
+w.__panda130.show('course');assert(root.hidden);w.eval("go('home')");assert(!root.hidden,'Legacy course returns to the new home');
+w.__panda130.show('unknown');assert(q('.pg-home-grid'),'Invalid route recovers home');
+for(const img of root.querySelectorAll('img'))assert(fs.existsSync(new URL(img.src).pathname.replace('/chinese-coach-pwa/','')),'Asset exists: '+img.src);
+assert.deepEqual(errors,[]);assert.equal(w.__simpleSectionPreview.total,193,'Original course data retained');
+console.log('Panda v130 passed: actual boot, routes, 193 words, examples/audio, pinyin, 13 groups, tone recordings, dialogue paging, reorderable tokens, scoring, reward idempotency and topic switching.');
+w.close();

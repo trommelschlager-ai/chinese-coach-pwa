@@ -45,7 +45,7 @@ assert(d.querySelector('#topics [data-dialogue-play-all]'),'Whole dialogue playb
 assert(!d.querySelector('#topics .focus-stepnav'),'No rules or word lesson tabs inside Dialogues');
 w.openCourseLesson(2,2,0);
 assert.equal(w.location.hash,'#course/2/2/0');
-w.go('home');assert(!d.getElementById('launch-menu').hidden);assert(!d.getElementById('launch-resume').hidden);d.getElementById('launch-resume').click();assert.equal(w.location.hash,'#course/2/2/0');
+w.go('home');assert(!d.getElementById('pg130').hidden);assert(d.querySelector('#pg130 [data-action=resume]'));d.querySelector('#pg130 [data-action=resume]').click();assert.equal(w.location.hash,'#course/2/2/0');
 const before=w.localStorage.getItem('chinese-coach-course-v1');assert(before,'Progress persisted');
 console.log('Quality checks passed: six section destinations, resume, sequential rules, unified knowledge, unique vocabulary, low-third uncertainty, dialogue controls.');
 w.close();
