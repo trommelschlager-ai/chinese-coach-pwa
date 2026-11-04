@@ -241,7 +241,7 @@ body .panda-v129-petal svg{display:block;width:100%;height:100%;overflow:visible
  93%{opacity:.74}
  100%{opacity:0;transform:translate3d(var(--d),120vh,0) rotate(315deg)}
 }
-@media(max-width:410px){
+@media(max-width:520px){
  #topics .clean-word-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  #topics .clean-study-card::before{height:125px;width:32%}
  #topics .clean-choice-grid{grid-template-columns:1fr!important}
