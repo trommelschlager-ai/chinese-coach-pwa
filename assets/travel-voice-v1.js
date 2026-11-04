@@ -81,7 +81,7 @@ function finish(){
 openButton.addEventListener('click',()=>open('reward'));
 mapButton.addEventListener('click',()=>open('map'));
 $('voice-close').addEventListener('click',close);
-el.next.addEventListener('click',()=>{if(!$('voice-end').hidden){open();return}if(step===2)finish();else{step++;render()}});
+el.next.addEventListener('click',()=>{if(!$('voice-end').hidden){open(returnTo);return}if(step===2)finish();else{step++;render()}});
 el.pinyin.addEventListener('click',()=>{pinyinVisible=!pinyinVisible;el.py.hidden=!pinyinVisible;el.pinyin.textContent=pinyinVisible?'Скрыть пиньинь':'Показать пиньинь';el.pinyin.setAttribute('aria-pressed',String(pinyinVisible))});
 el.listen.addEventListener('click',async()=>{
  stopAudio();const audio=new Audio(phrases[step].audio);listenAudio=audio;el.listen.disabled=true;
