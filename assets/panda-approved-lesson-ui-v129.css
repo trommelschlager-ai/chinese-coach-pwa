@@ -105,7 +105,8 @@
 /* Full-size, legible lesson pages: no blurred raster stretch or text embedded as artwork. */
 body[data-current-page="tones"] #tones,
 body[data-current-page="quiz"] #quiz,
-#topics[data-simple-section]{
+#topics[data-simple-section="words"],
+#topics[data-simple-section="practice"]{
  color:#351547;
  background:linear-gradient(180deg,#f0d6f5f0,#f8e5faf4 40%,#f3d8f9e8),
   url('./approved-panda-lake-v112.webp') center top/cover no-repeat!important;
