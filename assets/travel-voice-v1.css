@@ -1,0 +1,38 @@
+
+/* Isolated compact voice practice on the airport quest. Existing lessons remain unchanged. */
+.travel-voice{gap:10px;padding-bottom:4px}
+.travel-voice .voice-top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;color:#fff0fb}
+.travel-voice .voice-top span{color:#ffe0a4;font-weight:850}
+.travel-voice .voice-progress{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.travel-voice .voice-progress span{height:6px;background:#fff4;border-radius:99px}
+.travel-voice .voice-progress span.active{background:linear-gradient(90deg,#ffd7ae,#ff7cba);box-shadow:0 0 9px #ff8fbcaa}
+.travel-voice .voice-scene{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:19px;background:linear-gradient(110deg,#342967db,#6b4380e6);border:1px solid #ffddf880}
+.travel-voice .voice-scene>span{font-size:34px}
+.travel-voice .voice-scene strong{display:block;font-size:15px}
+.travel-voice .voice-scene small{display:block;font-size:12px;color:#fff0f5}
+.travel-voice .voice-task{display:grid;justify-items:center;gap:8px;padding:18px 14px;border-radius:23px;border:1px solid #fff7;box-shadow:0 10px 22px #170a3a88;background:linear-gradient(150deg,#ffe5f6,#e0d0fa);color:#472355;text-align:center}
+.travel-voice .voice-zh{font-weight:900;font-size:clamp(30px,8vw,41px);line-height:1.35;overflow-wrap:anywhere}
+.travel-voice .voice-py{font-size:clamp(16px,4.3vw,20px);font-weight:850;color:#8c3c87}
+.travel-voice .voice-ru{font-size:14px;font-weight:700}
+.travel-voice .voice-sample{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:4px}
+.travel-voice .voice-small{min-height:43px;padding:9px 12px;border:1px solid #b77ed5;background:#fff0ff;color:#592c70;border-radius:14px;font-size:13px;font-weight:800}
+.travel-voice .voice-small:active{transform:scale(.98)}
+.travel-voice .voice-action-card{padding:15px;border:1px solid #ffe3fa8f;border-radius:23px;background:linear-gradient(145deg,#352560df,#2d1c5be6);display:grid;gap:9px;justify-items:stretch}
+.travel-voice .voice-prompt{font-size:16px;font-weight:900;text-align:center;margin:0}
+.travel-voice .voice-mic{display:flex;gap:12px;align-items:center;justify-content:center;min-height:57px;padding:9px 14px;border:1px solid #ffc4e9;border-radius:19px;background:linear-gradient(160deg,#ffb5d9,#fa4a9f);color:#fff;font-size:25px;font-weight:900;box-shadow:0 0 21px #fe78b475}
+.travel-voice .voice-mic span{font-size:15px}
+.travel-voice .is-listening{background:linear-gradient(120deg,#e36284,#a02b71)!important;animation:pulse 1s infinite}
+.travel-voice .voice-result{margin:0;text-align:center;font-size:13px;color:#fbe9fc;min-height:39px;line-height:1.5}
+.travel-voice .voice-result.good{color:#b5ffdf}
+.travel-voice .voice-result.hint{color:#ffe9b4}
+.travel-voice .voice-record-controls{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.travel-voice .voice-record-controls audio{width:min(100%,240px);height:38px}
+.travel-voice .voice-privacy{margin:0;font-size:11px;line-height:1.36;text-align:center;color:#e0d1ea}
+.travel-voice .voice-end{margin:auto 0;display:grid;gap:15px;justify-items:center;text-align:center;padding:20px 15px;border-radius:24px;border:1px solid #ffdcff99;background:#36245ed9}
+.travel-voice .voice-end[hidden]{display:none}
+.travel-voice .voice-medal{font-size:66px;line-height:1}
+.travel-voice .voice-end h2{font-size:27px;margin:0;color:#ffe8aa}
+.travel-voice .voice-end p{margin:0;font-size:14px}
+.travel-voice .voice-bottom{margin-top:auto}
+@media(max-height:710px){.travel-voice{gap:7px}.travel-voice .voice-task{padding:12px 10px;gap:6px}.travel-voice .voice-action-card{padding:11px;gap:6px}.travel-voice .voice-mic{min-height:51px}.travel-voice .voice-scene{padding:8px 13px}}
+@media(max-width:350px){.travel-voice .voice-small{font-size:12px;padding:7px 10px}.travel-voice .voice-zh{font-size:28px}.travel-voice .voice-action-card{padding:10px}}
