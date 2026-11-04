@@ -54,3 +54,6 @@
  .travel-voice .voice-privacy{font-size:10px}
 }
 @media(max-height:610px){.travel-voice .voice-scene{display:none}}
+
+/* The hidden attribute must override .btn/.voice-task/.voice-action-card display rules. */
+#voice-from-map[hidden],.travel-voice [hidden]{display:none!important}
