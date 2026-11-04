@@ -9,7 +9,7 @@ const art=fs.readFileSync('assets/menu-v3-approved.webp');
 assert(art.length>40000&&art.length<300000,'Approved image asset must be optimized for Android');
 assert.equal(art.toString('ascii',0,4),'RIFF');
 assert.equal(art.toString('ascii',8,12),'WEBP');
-assert(html.includes('menu-v3-approved.css?v=1')&&html.includes('menu-v3-approved.js?v=2'));
+assert(html.includes('menu-v3-approved.css?v=1')&&html.includes('menu-v3-approved.js?v=3'));
 assert(css.includes('prefers-reduced-motion:reduce'),'Respect OS reduced-motion setting');
 assert(css.includes('pointer-events:none!important'),'Petals never steal taps');
 assert(css.includes('infinite both'),'Petals always fall');
