@@ -125,7 +125,7 @@ try{
   await page.locator('[data-practice-mode="translation"]').click();
   await page.locator('[data-choice-ru]').first().waitFor();
   assert.equal(await page.locator('[data-choice-ru]').count(),4);
-  assert.equal(await page.locator('.clean-choice-grid').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length),2,'Translation choices must be a two-column grid');
+  assert.equal(await page.locator('.clean-choice-grid').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length),1,'Approved v129 translation choices should be one clear answer per row on a phone');
   assert(await page.locator('#topics').evaluate(el=>getComputedStyle(el).backgroundImage.includes('approved-quiz-scene')),'Translation should retain the approved scenic background');
   await screenshot(page,'05-translation',size);
 
@@ -134,7 +134,7 @@ try{
   await page.locator('[data-practice-mode="listening"]').click();
   await page.locator('[data-practice-listen]').waitFor();
   assert.equal(await page.locator('[data-choice-ru]').count(),4);
-  assert.equal(await page.locator('.clean-choice-grid').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length),2,'Listening choices must be a two-column grid');
+  assert.equal(await page.locator('.clean-choice-grid').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length),1,'Approved v129 listening choices should be one clear answer per row on a phone');
   await screenshot(page,'06-listening',size);
 
   // Image 7: the writing canvas remains live, not a screenshot.

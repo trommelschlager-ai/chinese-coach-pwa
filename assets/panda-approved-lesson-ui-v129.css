@@ -1,0 +1,295 @@
+/* Panda Go 2026 v129 — approved 33150/33151 visual system.
+ * Uses original high-quality in-repo artwork and live controls, never screenshots as a fake UI.
+ * All changes are scoped: audio, speech, Hanzi writer, stored progress and the approved Game Practice art remain untouched.
+ */
+:root{--pg-plum:#3e145c;--pg-violet:#852ac3;--pg-lilac:#e4b6fa;--pg-pink:#f24cba;--pg-cream:#fff9fc}
+#launch-entry #launch-menu.panda-v3-active .panda-v3-overlay{
+  position:absolute;inset:0;padding:0;align-items:stretch;justify-content:stretch;
+  background:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  overflow:hidden;z-index:20;
+}
+#launch-entry #launch-menu.panda-v3-active .panda-v3-panel{
+  position:relative;display:flex;flex-direction:column;gap:clamp(11px,1.75cqh,19px);
+  width:100%;height:100%;max-height:none;overflow-x:hidden;overflow-y:auto;
+  border:0;border-radius:0;box-shadow:none;box-sizing:border-box;
+  padding:clamp(17px,4.2cqw,31px) clamp(16px,5cqw,30px) max(22px,env(safe-area-inset-bottom));
+  color:var(--pg-plum);
+  background:linear-gradient(180deg,#efd0ffe8 0%,#f2d7f9df 28%,#f9e5fbe7 69%,#f2d4ffbd 100%),
+    url('./approved-panda-lake-v112.webp') center bottom/cover no-repeat;
+  isolation:isolate;
+}
+#launch-entry #launch-menu .panda-v3-panel::before,#launch-entry #launch-menu .panda-v3-panel::after{
+ content:"";position:absolute;pointer-events:none;z-index:-1;background:url('./dialogue-sakura-v71.svg') center/contain no-repeat;
+}
+#launch-entry #launch-menu .panda-v3-panel::before{width:54%;height:29%;top:-7%;right:-12%;transform:rotate(16deg);opacity:.74}
+#launch-entry #launch-menu .panda-v3-panel::after{width:42%;height:24%;bottom:-3%;left:-10%;transform:rotate(196deg);opacity:.5}
+#launch-entry #launch-menu .panda-v3-panel .panda-v3-close{
+  position:relative!important;align-self:flex-start;order:-1;
+  width:clamp(48px,12cqw,62px);height:clamp(48px,12cqw,62px);min-height:0;
+  padding:0!important;border:2px solid #fff!important;border-radius:100%!important;
+  color:transparent!important;font-size:0!important;
+  background:linear-gradient(150deg,#fffaff,#f3e0fe)!important;box-shadow:0 4px 13px #a05eb675!important;
+}
+#launch-entry #launch-menu .panda-v3-panel .panda-v3-close::before{
+ content:"‹";color:#6d2b9c;font:900 42px/.9 system-ui;display:grid;place-items:center;height:100%;
+}
+#launch-entry #launch-menu .panda-v3-panel h2{
+ font:900 clamp(30px,8.2cqw,48px)/1.05 system-ui;letter-spacing:-.9px;
+ text-align:center;margin:clamp(4px,1cqh,15px) 0 0;color:#39104e;text-shadow:0 2px 1px #fff,0 4px 11px #fff8;
+}
+#launch-entry #launch-menu .panda-v3-panel h2::before{
+ content:"📖";display:block;font-size:clamp(44px,12cqw,70px);margin-bottom:12px;filter:drop-shadow(0 5px 7px #d565bd83)
+}
+#launch-entry #launch-menu .panda-v3-panel[data-kind="practice"] h2::before{content:"🎮"}
+#launch-entry #launch-menu .panda-v3-subtitle{
+ margin:0 0 clamp(12px,2cqh,25px)!important;text-align:center;
+ font:500 clamp(14px,3.65cqw,19px)/1.25 system-ui;color:#563669;text-shadow:0 1px 0 #fff8;
+}
+#launch-entry #launch-menu [data-v3-links]{
+ display:grid;grid-template-columns:1fr;gap:clamp(10px,1.45cqh,16px);margin:0;
+}
+#launch-entry #launch-menu .panda-v3-panel button.panda-v3-subcard{
+ display:grid!important;grid-template-columns:clamp(43px,13cqw,64px) minmax(0,1fr) 21px!important;
+ align-items:center!important;column-gap:clamp(10px,2.7cqw,18px)!important;
+ min-height:clamp(74px,11cqh,102px);padding:12px clamp(13px,3.2cqw,23px)!important;
+ background:linear-gradient(135deg,#fffafd 5%,#fbeafa 56%,#f0ddfd 100%)!important;
+ border:1.6px solid #d8a2ee!important;border-radius:clamp(19px,5cqw,28px)!important;
+ box-shadow:inset 0 2px 1px #fff,0 7px 15px #8b53ad45,0 0 0 1px #fff7!important;
+ text-align:left!important;color:#34154c!important;font:600 16px/1.2 system-ui!important;
+ white-space:normal!important;
+}
+#launch-entry #launch-menu .panda-v3-panel button.panda-v3-subcard:focus-visible{
+ outline:3px solid #d342bb!important;outline-offset:2px!important;
+}
+#launch-entry #launch-menu .panda-v3-panel button.panda-v3-subcard:active{
+ filter:brightness(.96);transform:scale(.985);
+}
+#launch-entry #launch-menu .panda-v3-subcard-icon{
+ display:grid;place-items:center;width:100%;aspect-ratio:1;
+ border-radius:18px;background:linear-gradient(140deg,#f9e7ff,#e1bff7);
+ box-shadow:0 4px 9px #a95cba50,inset 0 1px 0 #fff;
+ font-size:clamp(30px,8cqw,47px);
+}
+#launch-entry #launch-menu .panda-v3-subcard-copy{display:flex;flex-direction:column;min-width:0;gap:4px}
+#launch-entry #launch-menu .panda-v3-subcard-copy strong{
+ color:#381652;font:850 clamp(16px,4.65cqw,24px)/1.12 system-ui;
+ letter-spacing:-.3px;
+}
+#launch-entry #launch-menu .panda-v3-subcard-copy small{
+ font:550 clamp(11px,3.1cqw,16px)/1.32 system-ui;color:#785a89;
+}
+#launch-entry #launch-menu .panda-v3-subcard-arrow{color:#b432c4;font-size:clamp(31px,8cqw,44px);font-weight:800;line-height:1}
+#launch-entry #launch-menu .panda-v3-scene{
+ flex:1 0 clamp(138px,21cqh,270px);
+ margin-top:clamp(6px,1.5cqh,14px);position:relative;
+ border-radius:27px;border:1.5px solid #fffc;
+ color:transparent;font-size:0;pointer-events:none;
+ background:linear-gradient(180deg,#fff0 25%,#dfbbef30 65%,#f4d4ff24),
+ url('./approved-panda-lake-v112.webp') center 58%/cover no-repeat;
+ box-shadow:inset 0 0 0 2px #fff8,0 8px 20px #b875d456;
+}
+#launch-entry #launch-menu .panda-v3-scene[data-kind=practice]{
+ background:linear-gradient(180deg,#fff0 20%,#f0c0f350 100%),url('./game-approved-menu-v87-original.png') center 18%/cover no-repeat;
+}
+#launch-entry #launch-menu .panda-v3-scene::after{
+ content:"🏆";position:absolute;bottom:8%;left:6%;font-size:clamp(41px,13cqw,79px);filter:drop-shadow(0 4px 9px #b27c4ea8);
+}
+#launch-entry #launch-menu .panda-v3-scene[data-kind=learn]::after{content:"🌸"}
+@media(max-height:720px){
+ #launch-entry #launch-menu .panda-v3-panel{gap:8px}
+ #launch-entry #launch-menu .panda-v3-panel h2{font-size:clamp(25px,7.2cqw,38px);margin-top:0}
+ #launch-entry #launch-menu .panda-v3-panel h2::before{font-size:40px;margin-bottom:4px}
+ #launch-entry #launch-menu .panda-v3-panel button.panda-v3-subcard{min-height:66px}
+ #launch-entry #launch-menu .panda-v3-scene{flex-basis:80px}
+}
+/* Full-size, legible lesson pages: no blurred raster stretch or text embedded as artwork. */
+body[data-current-page="tones"] #tones,
+body[data-current-page="quiz"] #quiz,
+#topics[data-simple-section="words"],
+#topics[data-simple-section="practice"]{
+ color:#351547;
+ background:linear-gradient(180deg,#f0d6f5f0,#f8e5faf4 40%,#f3d8f9e8),
+  url('./approved-quiz-scene-v112.webp') center top/cover no-repeat!important;
+ border:1px solid #e3b6ed;border-radius:25px;
+ box-shadow:inset 0 1px #fff,0 12px 26px #b05caf29;
+ padding:clamp(12px,3.2vw,25px)!important;
+}
+/* All interactive cards are DOM elements, not a flat screenshot. */
+#tones .columnhead h1,#quiz .columnhead h1,#topics .clean-section-head h1,
+#topics .ch110-category-title,#topics .ch110-heading h1{
+ color:#381450!important;
+ font:900 clamp(26px,7vw,38px)/1.13 system-ui!important;
+ text-shadow:0 2px 0 #fff7;
+}
+#tones .tone-intro,#tones .tone,#tones .practice .panel,
+#quiz .quizpanel,#topics .clean-practice-card,
+#topics .clean-study-card,#topics .clean-category,
+#topics .clean-word-card,#topics .ch110-category,
+#topics .ch110-speech{
+ background:linear-gradient(145deg,#fffafff7 0%,#f5e0fcf4 100%)!important;
+ border:1.5px solid #dba9ee!important;border-radius:23px!important;
+ box-shadow:inset 0 1px 0 #fff,0 7px 19px #a35bcb3c!important;
+ color:#3c1b50!important;
+}
+#tones .tone-intro{min-height:0!important;padding:clamp(17px,5vw,29px)!important}
+#tones .tone-intro h2{color:#471969!important;text-shadow:0 2px 1px #fff7;font-family:system-ui!important}
+#tones .tone-intro p{color:#704e7b!important}
+#tones .tonegrid{gap:clamp(7px,1.6vw,14px)!important}
+#tones .tone{
+ border-color:#ddacec!important;padding:clamp(11px,3vw,21px)!important;min-width:0;
+ background:linear-gradient(160deg,#fff8fe,#f9e5fa)!important;
+ transition:transform .16s ease,box-shadow .16s ease;
+}
+#tones .tone[aria-pressed=true]{outline:3px solid #e785d6;box-shadow:0 0 19px #d956d36b!important;transform:translateY(-2px)}
+#tones .tone-title{color:#8c34bc!important}
+#tones #practicehanzi{color:#51216f!important}
+#tones .practice .panel{padding:clamp(14px,3vw,25px)!important}
+#tones .tbuttons button,#tones .tone-main-check,#quiz #nextq,#quiz #resetquiz,
+#topics .clean-action-next,#topics .clean-action-primary,#topics .clean-listen-main,
+#topics .ch110-forward{
+ background:linear-gradient(180deg,#f766ca,#cd20b7 80%,#a219b3)!important;
+ border:2px solid #ffd3ee!important;border-radius:999px!important;
+ color:#fff!important;font-weight:800!important;box-shadow:inset 0 2px 1px #fff8,0 5px 0 #9a2b9b,0 9px 17px #cf5fb955!important;
+ min-height:48px;
+}
+#tones .tbuttons button:active,#quiz #nextq:active,#topics .clean-action-next:active{transform:translateY(3px);box-shadow:0 2px 0 #9a2b9b!important}
+/* Vocabulary: 13 original categories, 193 words, existing audio and memory preserved. */
+#topics .clean-category{min-height:79px!important;gap:12px}
+#topics .clean-category-icon{
+ background:linear-gradient(140deg,#f9e5ff,#eac8ff)!important;
+ border-color:#ecc0ec!important;box-shadow:0 4px 12px #ce85e04a!important;
+}
+#topics .clean-word-grid{gap:13px!important}
+#topics .clean-word-card{padding:13px!important;border-radius:21px!important}
+#topics .clean-word-play{min-height:139px}
+#topics .clean-word-play strong{font-size:clamp(40px,11vw,62px)!important;color:#6b198b!important}
+#topics .clean-word-play>span{color:#9a42a6!important}
+#topics .clean-study-card{position:relative;padding:clamp(20px,4.5vw,36px)!important}
+#topics .clean-study-card::before{
+ content:"";display:block;float:right;width:38%;height:170px;max-width:180px;
+ border:2px solid #ffdbf6;border-radius:24px;margin:0 0 12px 10px;
+ background:url('./approved-woman-v112.webp') center top/cover no-repeat;box-shadow:0 8px 17px #aa70ba38;
+}
+#topics .clean-study-hanzi{font-size:clamp(73px,20vw,105px)!important;color:#7c188d!important}
+#topics .clean-study-pinyin{color:#a64cb8!important}
+#topics .clean-search,#topics .clean-search-results{border-radius:20px!important}
+/* Dialogues: high-quality existing portraits, soft two-person conversation bubbles. */
+#topics .ch110-categories,#topics .ch110-dialogue{
+ background:linear-gradient(180deg,#fbebffca,#f9e7fdf0),
+ url('./approved-panda-lake-v112.webp') center top/cover no-repeat!important;
+}
+#topics .ch110-categories{padding:clamp(12px,3.5vw,24px)!important;border-radius:23px}
+#topics .ch110-category{border:2px solid #e5b8f4!important;border-radius:23px!important;
+ background:linear-gradient(120deg,#fff8ff,#efd8f9)!important;box-shadow:0 7px 17px #ba78c14b!important}
+#topics .ch110-dialogue{color:#3c1658!important}
+#topics .ch110-speech{border-radius:26px!important;background:linear-gradient(135deg,#f0f7ffed,#f4dcffed)!important}
+#topics .ch110-line:nth-child(even) .ch110-speech{background:linear-gradient(135deg,#fff0fa,#ffe1f0)!important}
+#topics .ch110-hanzi{color:#441b65!important}
+#topics .ch110-pinyin{color:#8d4aa9!important}
+#topics .ch110-portrait{box-shadow:0 5px 16px #b47ec77c!important}
+#topics .ch110-forward{border-radius:999px!important}
+/* Practice: same visual language, real quiz scoring and translation answers. */
+#topics .clean-practice-card{padding:clamp(17px,4.3vw,28px)!important}
+#topics .clean-practice-hanzi{color:#6f268d!important}
+#topics .clean-practice-pinyin{color:#a448ba!important}
+#topics .clean-choice-grid button{
+ min-height:72px!important;border-radius:999px!important;
+ background:linear-gradient(135deg,#fffaff,#f5e0ff)!important;
+ border:1.5px solid #d9a4e8!important;box-shadow:0 4px 10px #a96db641!important;
+ color:#46225d!important;transition:transform .12s ease;
+}
+#topics .clean-choice-grid button.is-correct{background:#def6e9!important;color:#25664b!important}
+#topics .clean-choice-grid button.is-wrong{background:#ffdedf!important;color:#a23850!important}
+#topics .clean-choice-grid button:active{transform:scale(.98)}
+#topics .clean-practice-feedback{font-size:16px!important}
+#quiz .quizpanel{padding:clamp(15px,4vw,29px)!important}
+#quiz .quiz-word-card{
+ background:linear-gradient(135deg,#fffaff,#edd9fa)!important;border:1.5px solid #e1afeb!important;
+ border-radius:22px!important;
+}
+#quiz .quizword{color:#68248a!important;font-size:clamp(48px,13vw,85px)!important}
+#quiz #quizopts{display:grid!important;gap:11px!important}
+#quiz #quizopts button:not(.right):not(.wrong){
+ border:1.5px solid #daaae9!important;border-radius:999px!important;
+ background:linear-gradient(140deg,#fffaff,#f5e3ff)!important;
+ box-shadow:0 4px 11px #a05bbc38!important;
+ color:#3f195d!important;min-height:51px!important;
+}
+#quiz #quizopts button.right{background:#dcfbe9!important;color:#195a3a!important}
+#quiz #quizopts button.wrong{background:#ffe1e9!important;color:#a12c47!important}
+/* A delicate layer of *moving* sakura, as approved on Game Practice. */
+body .panda-v129-petals{
+ position:fixed;inset:0;z-index:90;overflow:hidden;pointer-events:none!important;touch-action:none!important;
+ user-select:none;visibility:hidden;contain:paint;
+}
+body:not(.launch-active):has(#tones.active) .panda-v129-petals,
+body:not(.launch-active):has(#topics.active) .panda-v129-petals,
+body:not(.launch-active):has(#quiz.active) .panda-v129-petals{visibility:visible}
+body .panda-v129-petal{
+ position:absolute;left:var(--sx);top:-7vh;width:var(--sz);aspect-ratio:1;
+ pointer-events:none!important;opacity:0;
+ animation:panda-v129-fall var(--dur) linear var(--delay) infinite both;will-change:transform,opacity;
+ filter:drop-shadow(0 3px 3px #913a9750);
+}
+body .panda-v129-petal svg{display:block;width:100%;height:100%;overflow:visible}
+@keyframes panda-v129-fall{
+ 0%{opacity:0;transform:translate3d(0,-15px,0) rotate(0)}
+ 7%{opacity:.74}
+ 26%{transform:translate3d(var(--a),28vh,0) rotate(95deg)}
+ 53%{transform:translate3d(var(--b),57vh,0) rotate(175deg)}
+ 83%{transform:translate3d(var(--c),94vh,0) rotate(260deg)}
+ 93%{opacity:.74}
+ 100%{opacity:0;transform:translate3d(var(--d),120vh,0) rotate(315deg)}
+}
+@media(max-width:520px){
+ #topics .clean-word-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #topics .clean-study-card::before{height:125px;width:32%}
+ #topics .clean-choice-grid{grid-template-columns:1fr!important}
+ #launch-entry #launch-menu .panda-v3-panel{padding-inline:14px}
+}
+@media(prefers-reduced-motion:reduce){
+ .panda-v129-petals{display:none!important}
+ .panda-v129-petal{animation:none!important}
+ #launch-entry #launch-menu .panda-v3-subcard{transition:none!important}
+}
+
+/* v129 mobile specificity refinements */
+
+/* v129 mobile specificity refinements: original section CSS intentionally uses three IDs. */
+#topics#topics#topics[data-word-study='true'] .clean-study-card{
+ min-height:clamp(330px,51dvh,420px)!important;padding:22px 15px 16px!important;
+ gap:7px!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-card::before{
+ content:""!important;position:absolute!important;left:15px!important;right:auto!important;
+ top:18px!important;width:100px!important;height:115px!important;
+ border:2px solid #ffdbf6!important;border-radius:21px!important;margin:0!important;
+ background:url('./approved-woman-v112.webp') center 15%/cover no-repeat!important;
+ box-shadow:0 7px 14px #ae6ac34f!important;opacity:1!important;z-index:0!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-hanzi{
+ font-size:clamp(62px,18vw,90px)!important;
+ line-height:1.14!important;min-height:112px;display:grid!important;place-items:center;
+ max-width:calc(100% - 115px)!important;align-self:flex-end!important;
+ margin:0 4px 0 0!important;overflow-wrap:normal!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-pinyin{
+ margin:0 0 9px!important;font-size:clamp(23px,6vw,29px)!important;
+}
+#topics#topics#topics[data-word-study='true'] .clean-study-actions button{min-height:54px!important}
+#topics#topics#topics[data-word-study='true'] .clean-study-next{min-height:53px!important}
+#topics#topics#topics[data-simple-section='practice'] .clean-choice-grid button{
+ min-height:51px!important;border:1.5px solid #dfb3ed!important;
+ background:linear-gradient(140deg,#fffaff,#f3defb)!important;
+ color:#442259!important;border-radius:999px!important;
+ box-shadow:inset 0 2px #fff,0 3px 9px #b985c65c!important;
+}
+#topics#topics#topics[data-simple-section='practice'] .clean-choice-grid button.is-correct{background:#d6f7e4!important;color:#195c42!important}
+#topics#topics#topics[data-simple-section='practice'] .clean-choice-grid button.is-wrong{background:#ffe0e9!important;color:#a23348!important}
+@media(max-width:520px){
+ #topics#topics#topics[data-simple-section='practice'] .clean-choice-grid{
+  grid-template-columns:1fr!important;gap:9px!important;
+ }
+ #topics#topics#topics[data-word-study='true'] .clean-study-card::before{width:86px!important;height:104px!important}
+ #topics#topics#topics[data-word-study='true'] .clean-study-hanzi{max-width:calc(100% - 94px)!important}
+}

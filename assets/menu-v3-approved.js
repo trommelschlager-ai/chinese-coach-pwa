@@ -72,16 +72,47 @@ const options={
  practice:[['🧠 Практика',4],['✅ Тест',5],['🎮 Игровая практика',6]]
 };
 function openMenu(kind){
+ const panel=view.querySelector('.panda-v3-panel');
  const links=view.querySelector('[data-v3-links]');links.replaceChildren();
- view.querySelector('[data-v3-title]').textContent=kind==='learn'?'Учиться':'Тренироваться';
- for(const [label,n] of options[kind]){
-  const b=document.createElement('button');b.type='button';b.textContent=label;
+ const training=kind==='practice';
+ panel.dataset.kind=kind;
+ view.querySelector('[data-v3-title]').textContent=training?'Тренироваться':'Учиться';
+ let hint=panel.querySelector('.panda-v3-subtitle');
+ if(!hint){hint=document.createElement('p');hint.className='panda-v3-subtitle';panel.querySelector('h2').after(hint);}
+ hint.textContent=training?'Закрепляй знания в разных форматах':'Основы китайского шаг за шагом';
+ const details=training?[
+  ['🎯','Практика','Упражнения по темам, перевод и память'],
+  ['📋','Тест','Проверь свои знания'],
+  ['🎮','Игровая практика','Игры и интерактивные задания']
+ ]:[
+  ['🎧','Звуки и тоны','Произношение и правила чтения'],
+  ['📚','Базовые слова','Самые нужные слова'],
+  ['🖌️','Иероглифы','Письмо и порядок черт'],
+  ['💬','Диалоги','Готовые фразы для общения']
+ ];
+ options[kind].forEach(([label,n],i)=>{
+  const [emoji,title,desc]=details[i];
+  const b=document.createElement('button');b.type='button';
+  b.className='panda-v3-subcard';
+  const ico=document.createElement('span');ico.className='panda-v3-subcard-icon';ico.textContent=emoji;
+  const copy=document.createElement('span');copy.className='panda-v3-subcard-copy';
+  const h=document.createElement('strong');h.textContent=title;
+  const p=document.createElement('small');p.textContent=desc;
+  copy.append(h,p);
+  const arrow=document.createElement('span');arrow.className='panda-v3-subcard-arrow';arrow.textContent='›';arrow.setAttribute('aria-hidden','true');
+  b.append(ico,copy,arrow);
   b.onclick=()=>{closeMenu();const target=originalCards.querySelector('[data-choice="'+n+'"]');if(target)target.click()};
   links.append(b);
- }
- overlay.hidden=false;view.querySelectorAll('.panda-v3-hit').forEach(b=>b.tabIndex=-1);
+ });
+ let scene=panel.querySelector('.panda-v3-scene');
+ if(!scene){scene=document.createElement('div');scene.className='panda-v3-scene';scene.setAttribute('aria-hidden','true');panel.append(scene);}
+ scene.dataset.kind=kind;
+ scene.textContent=training?'🏆　🐼':'🌸';
+ overlay.hidden=false;
+ view.querySelectorAll('.panda-v3-hit').forEach(b=>b.tabIndex=-1);
  view.querySelector('.panda-v3-close').focus({preventScroll:true});
 }
+
 view.addEventListener('click',e=>{
  if(e.target===overlay||e.target.closest('[data-v3-close]')){closeMenu();return}
  const b=e.target.closest('[data-v3-action]');if(!b)return;
