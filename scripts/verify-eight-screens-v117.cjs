@@ -88,7 +88,7 @@ assert(hanzi.indexOf('class="character-picker"')>hanzi.indexOf('id="writer"'));
 
 // Versioned script and cache references must match.
 const sw=fs.readFileSync('sw.js','utf8');
-assert(sw.includes('chinese-coach-pwa-v124'));
+assert(sw.includes('chinese-coach-pwa-v125'));
 for(const file of ['index.html','game.html'])assert(fs.readFileSync(file,'utf8').includes('approved-mobile-v112.css?v=119'));
 console.log('v117 checks passed: quiz/pinyin, compact words, listening/translation, daily banner, dialogues and live writing.');
 w.close();
