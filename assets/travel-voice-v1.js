@@ -3,6 +3,7 @@
 (()=>{
 'use strict';
 const reward=document.getElementById('reward-screen');
+const map=document.getElementById('map-screen');
 if(!reward||document.getElementById('voice-screen'))return;
 const phrases=[
  {zh:'你好！',py:'Nǐ hǎo!',ru:'Здравствуйте!',audio:'./assets/dialogue-voices/l1-01-a.mp3'},
@@ -14,6 +15,14 @@ const openButton=document.createElement('button');
 openButton.id='voice-open';openButton.className='btn btn-primary';openButton.type='button';
 openButton.textContent='🎤 Голосовая практика · 3 фразы';
 reward.querySelector('.bottom-actions').prepend(openButton);
+const mapButton=document.createElement('button');
+mapButton.id='voice-from-map';mapButton.type='button';mapButton.className='btn btn-secondary';
+mapButton.textContent='🎤 Голосовая практика · Аэропорт';
+map.querySelector('.bottom-actions').append(mapButton);
+const mapStatus=document.getElementById('airport-status');
+const updateMapButton=()=>{mapButton.hidden=!mapStatus.textContent.includes('Пройдено')};
+new MutationObserver(updateMapButton).observe(mapStatus,{subtree:true,characterData:true,childList:true});
+updateMapButton();
 const screen=document.createElement('section');
 screen.className='screen travel-voice';screen.id='voice-screen';screen.hidden=true;screen.setAttribute('aria-label','Голосовая практика аэропорта');
 screen.innerHTML=[
@@ -37,6 +46,7 @@ screen.innerHTML=[
 ].join('');
 reward.before(screen);
 const el={zh:$('voice-zh'),py:$('voice-py'),ru:$('voice-ru'),next:$('voice-next'),listen:$('voice-listen'),pinyin:$('voice-pinyin'),recognize:$('voice-recognize'),record:$('voice-record'),result:$('voice-result'),player:$('voice-playback')};
+let returnTo='reward';
 let step=0,attempted=new Set(),pinyinVisible=true,listenAudio=null,recognizer=null,recognizerTimer=0,recognizerGen=0,recorder=null,stream=null,recordTimer=0,blobUrl=null,sessionGen=0;
 function note(text,cls=''){el.result.textContent=text;el.result.className='voice-result '+cls}
 function stopAudio(){if(listenAudio){try{listenAudio.pause();listenAudio.currentTime=0}catch{}listenAudio=null}el.listen.disabled=false}
@@ -58,8 +68,8 @@ function render(){
  el.record.disabled=!(navigator.mediaDevices?.getUserMedia&&window.MediaRecorder);
  note(Speech?'Нажми на микрофон и произнеси фразу.':'Проверка слов недоступна. Запиши свой голос или переходи дальше.');
 }
-function open(){step=0;attempted=new Set();pinyinVisible=true;reward.hidden=true;screen.hidden=false;render();window.scrollTo(0,0)}
-function close(){cleanup();screen.hidden=true;reward.hidden=false;window.scrollTo(0,0)}
+function open(origin='reward'){returnTo=origin;step=0;attempted=new Set();pinyinVisible=true;reward.hidden=true;map.hidden=true;screen.hidden=false;render();$('voice-close').textContent=origin==='map'?'← На карту':'← К награде';window.scrollTo(0,0)}
+function close(){cleanup();screen.hidden=true;if(returnTo==='map')map.hidden=false;else reward.hidden=false;window.scrollTo(0,0)}
 function mark(){attempted.add(step)}
 function finish(){
  cleanup();$('voice-end').hidden=false;$('voice-actions').hidden=true;$('voice-task').hidden=true;$('voice-counter').textContent='Готово';
@@ -68,7 +78,8 @@ function finish(){
  el.next.textContent='↻ Повторить голосовую практику';
  if(n===3)try{localStorage.setItem('panda-go-travel-voice-v1',JSON.stringify({finished:true,date:new Date().toISOString()}))}catch{}
 }
-openButton.addEventListener('click',open);
+openButton.addEventListener('click',()=>open('reward'));
+mapButton.addEventListener('click',()=>open('map'));
 $('voice-close').addEventListener('click',close);
 el.next.addEventListener('click',()=>{if(!$('voice-end').hidden){open();return}if(step===2)finish();else{step++;render()}});
 el.pinyin.addEventListener('click',()=>{pinyinVisible=!pinyinVisible;el.py.hidden=!pinyinVisible;el.pinyin.textContent=pinyinVisible?'Скрыть пиньинь':'Показать пиньинь';el.pinyin.setAttribute('aria-pressed',String(pinyinVisible))});
