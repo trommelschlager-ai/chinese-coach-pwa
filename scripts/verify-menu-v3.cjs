@@ -27,7 +27,8 @@ assert(menu.classList.contains('panda-v3-active'),'Approved layout activated');
 assert.equal(menu.querySelectorAll('.panda-v3-petal').length,16,'Sixteen diverse falling petals');
 assert.equal(menu.querySelectorAll('.panda-v3-hit').length,5,'Five real navigation hits');
 assert.equal(menu.querySelector('.panda-v3-live-stats').textContent.includes('320'),true,'Live progress');
-assert.equal(menu.querySelectorAll('.six-menu-cards [data-choice]').length,8,'Old categories preserved');
+assert.equal(menu.querySelectorAll('.six-menu-cards [data-choice]').length,7,'Old seven direct categories preserved');
+assert(menu.querySelector('.six-menu-cards .six-travel'),'Travel link preserved');
 function click(action){menu.querySelector('[data-v3-action="'+action+'"]').click()}
 click('learn');assert(!menu.querySelector('.panda-v3-overlay').hidden);
 assert.equal(menu.querySelectorAll('[data-v3-links] button').length,4);
