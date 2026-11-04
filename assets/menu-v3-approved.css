@@ -1,0 +1,105 @@
+/* Panda Go v127: faithful approved screen 3, with real clickable courses.
+   The existing home cover, learning flows and game pages are untouched. */
+#launch-entry #launch-menu.panda-v3-active::before,
+#launch-entry #launch-menu.panda-v3-active>.six-original-scenery,
+#launch-entry #launch-menu.panda-v3-active>.six-screen-content{display:none!important}
+#launch-entry #launch-menu.panda-v3-active{background:#f4d9ff!important}
+#launch-entry #launch-menu.panda-v3-active .panda-v3-view{
+  position:absolute;inset:0;z-index:5;overflow:hidden;isolation:isolate;
+  width:100%;height:100%;container-type:size;
+}
+#launch-entry #launch-menu .panda-v3-art{
+  display:block!important;position:absolute;inset:0;width:100%!important;height:100%!important;
+  object-fit:fill;z-index:0;pointer-events:none!important;
+}
+/* Existing drawing is still; falling sakura are a separate real animation. */
+#launch-entry #launch-menu .panda-v3-petals{
+ position:absolute;inset:0;z-index:1;overflow:hidden;contain:paint;
+ pointer-events:none!important;touch-action:none!important;user-select:none;
+}
+#launch-entry #launch-menu .panda-v3-petal{
+ position:absolute;top:-10%;display:block;width:var(--size);height:var(--size);
+ opacity:0;pointer-events:none!important;will-change:transform,opacity;
+ animation:panda-v3-fall var(--time) linear var(--delay) infinite both;
+ filter:drop-shadow(0 2px 2px #8539985c);
+}
+#launch-entry #launch-menu .panda-v3-petal>svg{width:100%;height:100%;display:block}
+@keyframes panda-v3-fall{
+ 0%{transform:translate3d(0,-20px,0) rotate(var(--angle0));opacity:0}
+ 6%{opacity:var(--alpha)}
+ 25%{transform:translate3d(var(--x1),28cqh,0) rotate(var(--angle1))}
+ 51%{transform:translate3d(var(--x2),60cqh,0) rotate(var(--angle2))}
+ 75%{transform:translate3d(var(--x3),88cqh,0) rotate(var(--angle3))}
+ 94%{opacity:var(--alpha)}
+ 100%{transform:translate3d(var(--x4),125cqh,0) rotate(var(--angle4));opacity:0}
+}
+#launch-entry #launch-menu .panda-v3-hit{
+ display:block!important;position:absolute!important;z-index:4;
+ margin:0!important;padding:0!important;border:0!important;
+ background:transparent!important;color:transparent!important;box-shadow:none!important;
+ border-radius:18px;cursor:pointer;touch-action:manipulation;font-size:0!important;
+}
+#launch-entry #launch-menu .panda-v3-hit:focus-visible{outline:3px solid #a635dc!important;outline-offset:-1px}
+#launch-entry #launch-menu .panda-v3-hit:active{background:#ffffff3b!important}
+#launch-entry #launch-menu .panda-v3-back{left:4%;top:2.8%;width:36%;height:5%}
+#launch-entry #launch-menu .panda-v3-start{left:20%;top:58.3%;width:59%;height:5.1%}
+#launch-entry #launch-menu .panda-v3-learn{left:3%;top:65.2%;width:94%;height:8.1%}
+#launch-entry #launch-menu .panda-v3-practice{left:3%;top:74%;width:94%;height:7.8%}
+#launch-entry #launch-menu .panda-v3-travel{left:3%;top:82.5%;width:94%;height:10%}
+/* Actual game score overrides the mock numbers baked into the approved artwork. */
+#launch-entry #launch-menu .panda-v3-live-stats{
+ position:absolute;z-index:3;left:11%;top:31.6%;width:78%;height:4.6%;
+ display:flex;align-items:center;justify-content:space-around;gap:5px;
+ border:1px solid #fff9;border-radius:999px;
+ box-shadow:0 1px 9px #9d67ba53,inset 0 1px 0 #fff9;
+ background:linear-gradient(105deg,#f7e9fff5,#f0d6fcee);color:#3f1b5c;
+ font:650 clamp(11px,3.65cqw,19px)/1.05 system-ui,sans-serif;
+ pointer-events:none!important;white-space:nowrap;
+}
+#launch-entry #launch-menu .panda-v3-live-stats b{font-weight:850}
+#launch-entry #launch-menu .panda-v3-lesson-counter{
+ position:absolute;z-index:3;left:66%;top:52.95%;width:17%;height:2.75%;
+ background:linear-gradient(95deg,#ecd1fc,#f7dffa);border-radius:100px;
+ display:flex;align-items:center;justify-content:center;color:#301045;
+ font:750 clamp(11px,3.5cqw,17px) system-ui,sans-serif;pointer-events:none!important;
+}
+#launch-entry #launch-menu .panda-v3-lesson-meter{
+ position:absolute;z-index:3;left:23%;top:55.4%;width:53%;height:1.5%;
+ overflow:hidden;border-radius:100px;border:1px solid #fff9;
+ background:#e9d2f9;box-shadow:inset 0 1px 2px #724b9c56;pointer-events:none!important;
+}
+#launch-entry #launch-menu .panda-v3-lesson-meter>span{
+ display:block;width:0%;height:100%;border-radius:100px;
+ background:linear-gradient(90deg,#f889ec,#a73fe0);transition:width .3s ease;
+}
+/* Compact accessible submenus; original 8 buttons stay mounted under the art. */
+#launch-entry #launch-menu .panda-v3-overlay[hidden]{display:none!important}
+#launch-entry #launch-menu .panda-v3-overlay{
+ position:absolute;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;
+ padding:5%;background:#230742b8;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+}
+#launch-entry #launch-menu .panda-v3-panel{
+ width:100%;max-height:92%;overflow-y:auto;padding:5%;display:flex;flex-direction:column;gap:10px;
+ border:2px solid #ffe2ff;border-radius:25px;
+ background:linear-gradient(155deg,#fff5ff,#e8cefa);box-shadow:0 10px 30px #280a5b99;
+ color:#442054;font:600 clamp(14px,3.5cqw,20px) system-ui,sans-serif;
+}
+#launch-entry #launch-menu .panda-v3-panel h2{font-size:clamp(19px,5.4cqw,29px);line-height:1.2;margin:0 0 5px}
+#launch-entry #launch-menu .panda-v3-panel button{
+ position:static!important;display:flex!important;align-items:center;justify-content:space-between!important;
+ flex:none;width:100%;min-height:46px;padding:10px 14px!important;margin:0!important;
+ border:1px solid #dca4ef!important;border-radius:15px!important;
+ background:#fff9fff7!important;color:#542279!important;text-align:left!important;
+ box-shadow:0 2px 8px #9c54bc3a!important;
+ font:750 clamp(13px,3.5cqw,19px)/1.25 system-ui,sans-serif!important;
+ cursor:pointer;
+}
+#launch-entry #launch-menu .panda-v3-panel button:active{background:#efdbff!important}
+#launch-entry #launch-menu .panda-v3-panel .panda-v3-close{
+ align-self:flex-end;width:auto;background:transparent!important;border:0!important;
+ box-shadow:none!important;color:#7f39a6!important;min-height:28px;padding:4px 8px!important;
+}
+@media(prefers-reduced-motion:reduce){
+ #launch-entry #launch-menu .panda-v3-petals{display:none!important}
+ #launch-entry #launch-menu .panda-v3-petal{animation:none!important}
+}
