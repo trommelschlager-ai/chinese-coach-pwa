@@ -1,0 +1,12 @@
+/* Panda Go travel entry: only main launch menu changes. No changes to other lessons. */
+#launch-entry #launch-menu .six-menu-cards{grid-template-rows:repeat(8,minmax(0,1fr));gap:1.15%}
+#launch-entry #launch-menu .six-card{font-size:clamp(12px,3.35vw,20px);padding-block:2px;gap:clamp(5px,1.9vw,11px)}
+#launch-entry #launch-menu .six-number{width:clamp(32px,8.2vw,59px);height:clamp(32px,8.2vw,59px);font-size:clamp(18px,5vw,33px)}
+#launch-entry #launch-menu .six-icon{width:clamp(28px,8vw,55px);height:clamp(29px,8vw,57px)}
+#launch-entry #launch-menu .six-travel{background:linear-gradient(110deg,#fff1df,#ffe3ee);color:#682e58;border:1px solid #fff7dc}
+#launch-entry #launch-menu .six-travel .six-number{background:linear-gradient(135deg,#f9c56f,#ee8a8e);color:#582247}
+#launch-entry #launch-menu .six-travel .six-icon,#launch-entry #launch-menu .six-travel .six-arrow{color:#b44b87}
+#launch-entry #launch-menu .six-travel .six-label{font-weight:900;letter-spacing:-.35px}
+#launch-entry #launch-menu .six-travel::after{content:"НОВОЕ";position:absolute;right:5px;top:2px;color:#a83672;font-size:9px;font-weight:950;letter-spacing:.3px}
+@media(max-width:350px){#launch-entry #launch-menu .six-card{font-size:11.5px;padding-inline:8px}#launch-entry #launch-menu .six-number{width:29px;height:29px;font-size:17px}#launch-entry #launch-menu .six-icon{width:25px;height:27px}#launch-entry #launch-menu .six-travel::after{font-size:8px}}
+@media(max-height:680px){#launch-entry #launch-menu .six-card{font-size:clamp(11px,3vw,16px);border-radius:12px}#launch-entry #launch-menu .six-number{width:29px;height:29px;font-size:16px}#launch-entry #launch-menu .six-icon{width:25px;height:27px}#launch-entry #launch-menu .six-menu-cards{gap:.9%}}
