@@ -1,5 +1,5 @@
 // Focused regression: the approved cover is still and only the Start action launches petals.
-// Seven menu choices are available; choice six navigates to the separate writing trainer.
+// Eight menu cards are visible; the original seven choices and writing trainer remain unchanged.
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const {JSDOM}=require('jsdom');
@@ -25,24 +25,28 @@ const root=d.getElementById('launch-entry');
 const cover=d.getElementById('launch-cover');
 const menu=d.getElementById('launch-menu');
 const cards=[...menu.querySelectorAll('.six-menu-cards .six-card')];
-const expected=['Звуки, звукосочетания и тоны','Базовые слова','Пишем иероглифы','Диалоги','Практика','Тест','Игровая Практика'];
+const expected=['Звуки, звукосочетания и тоны','Базовые слова','Пишем иероглифы','Диалоги','Практика','Тест','Игровая Практика','✈️ Путешествие по Китаю'];
 assert(root&&!root.hidden,'Welcome overlay is visible');
 assert(!cover.hidden&&menu.hidden,'Approved cover must be the first screen');
 assert(!root.classList.contains('petals-falling')&&!root.classList.contains('launch-sakura'),'No falling petals on first launch');
 assert.equal(root.querySelectorAll('#launch-petals .sakura-petal').length,190,'Petal elements preloaded but inactive');
-assert.equal(cards.length,7,'Seven same-sized clickable cards must be present');
+assert.equal(cards.length,8,'Eight same-sized clickable cards must be present');
 assert.equal(menu.querySelectorAll('[data-choice]').length,7,'Exactly seven independent lesson links');
 assert(!d.getElementById('launch-hanzi'),'Tiny old sixth button removed');
 assert(!d.querySelector('.six-menu-header h1,.six-menu-brand'),'Requested main-menu headings removed');
 assert(menu.querySelector('#launch-resume').closest('.six-menu-header').getAttribute('aria-hidden')==='true','Resume state remains compatible but visually hidden');
-cards.forEach((card,i)=>{assert.equal(card.dataset.choice,String(i),'Correct navigation order');assert(card.textContent.includes(expected[i]),'Card '+(i+1)+' must be '+expected[i]);});
+cards.forEach((card,i)=>{if(i<7)assert.equal(card.dataset.choice,String(i),'Original navigation order stays unchanged');assert(card.textContent.includes(expected[i]),'Card '+(i+1)+' must be '+expected[i]);});
 assert(cards[2].tagName==='A','Third card must be a direct link');
 assert.equal(cards[2].getAttribute('href'),'./hanzi-lab.html#return-menu','Third card opens writing lesson');
 assert(cards[0].tagName==='BUTTON'&&cards[3].tagName==='BUTTON','Other lessons remain buttons');
-assert(cards[6].tagName==='BUTTON'&&cards[6].dataset.choice==='6','Game is a separate seventh button');
+assert(cards[6].tagName==='BUTTON'&&cards[6].dataset.choice==='6','Game remains the seventh button');
+assert(cards[7].tagName==='A'&&cards[7].getAttribute('href')==='./travel.html','Eighth card opens the new China travel quest');
+assert(fs.existsSync('travel.html'),'Travel quest must exist');
 assert(fs.existsSync('assets/six-lessons-menu.css'),'Six-card stylesheet exists');
 const css=fs.readFileSync('assets/six-lessons-menu.css','utf8');
-assert(css.includes('grid-template-rows:repeat(7,minmax(0,1fr))'),'Cards have seven equal-height grid rows');
+assert(css.includes('grid-template-rows:repeat(7,minmax(0,1fr))'),'Original seven-card stylesheet is preserved');
+const travelCss=fs.readFileSync('assets/travel-entry-v1.css','utf8');
+assert(travelCss.includes('grid-template-rows:repeat(8,minmax(0,1fr))'),'Travel stylesheet lays out eight menu cards');
 assert(css.includes('.six-orange')&&css.includes('.six-green'),'Six-card color palette');
 assert(!d.querySelector('#launch-cover .six-screen-content'),'Original cover unchanged');
 d.getElementById('launch-start').click();
