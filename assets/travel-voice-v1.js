@@ -122,7 +122,7 @@ el.record.addEventListener('click',async()=>{
   r.onerror=()=>{note('Ошибка записи. Проверь микрофон.','hint');stopRecording()};
   r.start();el.record.classList.add('is-listening');el.record.textContent='■ Остановить запись';note('🎙️ Идёт запись · до 6 секунд');
   recordTimer=setTimeout(()=>{if(recorder===r&&r.state==='recording')r.stop()},6000);
- }catch{if(generation===sessionGen)note('Нет доступа к микрофону. Разреши его в Chrome.','hint')}
+ }catch{if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}if(generation===sessionGen)note('Нет доступа к микрофону. Разреши его в Chrome.','hint')}
 });
 window.addEventListener('pagehide',cleanup);
 window.__travelVoiceQA={open,close,getStep:()=>step,getAttempts:()=>attempted.size,getScreen:()=>screen.hidden?'hidden':'visible'};
