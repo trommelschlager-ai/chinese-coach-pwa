@@ -36,3 +36,21 @@
 .travel-voice .voice-bottom{margin-top:auto}
 @media(max-height:710px){.travel-voice{gap:7px}.travel-voice .voice-task{padding:12px 10px;gap:6px}.travel-voice .voice-action-card{padding:11px;gap:6px}.travel-voice .voice-mic{min-height:51px}.travel-voice .voice-scene{padding:8px 13px}}
 @media(max-width:350px){.travel-voice .voice-small{font-size:12px;padding:7px 10px}.travel-voice .voice-zh{font-size:28px}.travel-voice .voice-action-card{padding:10px}}
+
+/* Compact one-row navigation for narrow Android screens. */
+.travel-voice .voice-bottom{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:stretch;gap:8px}
+.travel-voice .voice-bottom #voice-next{grid-column:2;grid-row:1;font-size:14px;min-height:48px;padding:9px 7px}
+.travel-voice .voice-bottom #voice-close{grid-column:1;grid-row:1;font-size:13px;min-height:48px;padding:9px 7px}
+@media(max-height:720px){
+ .travel-voice{gap:6px}
+ .travel-voice .voice-scene{padding:6px 10px}
+ .travel-voice .voice-scene>span{font-size:25px}
+ .travel-voice .voice-task{padding:9px;gap:4px}
+ .travel-voice .voice-zh{font-size:clamp(27px,7vw,33px)}
+ .travel-voice .voice-action-card{padding:9px;gap:5px}
+ .travel-voice .voice-prompt{font-size:14px}
+ .travel-voice .voice-mic{min-height:43px}
+ .travel-voice .voice-record-controls .voice-small{min-height:37px}
+ .travel-voice .voice-privacy{font-size:10px}
+}
+@media(max-height:610px){.travel-voice .voice-scene{display:none}}
