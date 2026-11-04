@@ -1,0 +1,36 @@
+body.writing-simple{min-height:100dvh;background:#755293!important;color:#341345!important}
+body.writing-simple .shell{position:relative;margin:0 auto;max-width:390px;min-height:min(100dvh,720px);padding:16px 13px 26px;border:3px solid #f9dbff;border-radius:32px;background:linear-gradient(#d6b3ef,#ecd0f5 53%,#dfb8ef);box-shadow:inset 0 0 0 3px #ba8bdc,inset 0 0 17px 6px #fff8,0 0 12px #efb5ff}
+body.writing-simple .shell::before{content:"";position:absolute;top:0;right:0;left:0;height:70px;background:url('./panda-v130/flowers.webp') top center/100% auto no-repeat;pointer-events:none}
+.pg-hanzi-heading{text-align:center;height:95px;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px}
+.pg-hanzi-heading img{width:52px;height:47px;object-fit:contain;mix-blend-mode:normal}.pg-hanzi-heading h1{font:900 25px/1.1 Arial,sans-serif;letter-spacing:-.7px;margin:0}
+body.writing-simple .top{position:absolute;top:13px;left:13px;right:13px;z-index:2;margin:0}
+body.writing-simple .top .back{width:39px;height:39px;padding:7px;border-radius:50%;font-size:0;display:grid;place-items:center}
+body.writing-simple .top .back::before{content:'‹';font:800 32px/1 Arial,sans-serif;color:#702494}
+body.writing-simple .top-pill{font-size:10px;padding:5px 8px;max-width:120px}
+body.writing-simple .mini-progress{position:relative;margin:0 2px 12px;background:transparent;border:0;box-shadow:none;padding:0;font-size:11px}
+body.writing-simple .mini-progress .bar{height:7px}
+body.writing-simple .drawing-card{padding:10px!important;border-radius:20px!important;display:grid!important;grid-template-columns:minmax(0,1fr) 104px;grid-template-rows:repeat(3,62px) auto auto auto;gap:10px!important;align-items:center;background:linear-gradient(145deg,#fff6ff,#ead6f8)!important;border:1.5px solid #e1b9f3!important;box-shadow:inset 0 2px #fff,0 4px 8px #9a52b85a!important}
+body.writing-simple .drawing-card::before{display:none!important}
+body.writing-simple .glyph-title{grid-column:1/-1;grid-row:4;display:flex;justify-content:center;gap:7px;margin:0!important}
+body.writing-simple .glyph-title strong{font-size:36px!important;line-height:1.1!important;color:#763145}
+body.writing-simple .glyph-title .py{font-size:15px!important;color:#5a255e}
+body.writing-simple .glyph-title #speak{font-size:11px;min-height:30px;border-radius:16px;padding:5px 8px}
+body.writing-simple .meaning{grid-column:1/-1;grid-row:5;justify-self:center;padding:6px 18px;font:600 17px/1.15 Arial,sans-serif;margin:0!important;background:#f4dcf7}
+body.writing-simple .paper{grid-column:1;grid-row:1/4;width:100%!important;max-width:100%!important;aspect-ratio:1;border:2px solid #c99cda!important;border-radius:16px!important;margin:0!important;background:#fff7fc!important;box-shadow:inset 0 1px #fff!important}
+body.writing-simple #writer{width:100%!important;height:100%!important;min-height:0!important;display:grid;place-items:center;padding:0!important}
+body.writing-simple #writer svg{max-width:100%;height:auto}
+body.writing-simple .controls{display:contents!important}
+body.writing-simple #animate,body.writing-simple #practice,body.writing-simple #retry{grid-column:2;min-height:48px;font-size:12px!important;padding:8px 5px!important;border-radius:14px!important;color:#562166!important;background:linear-gradient(#fff6ff,#e4c8f4)!important;box-shadow:inset 0 1px #fff,0 3px 4px #ac6bc061!important;border:1px solid #cd9ae3!important}
+body.writing-simple #animate{grid-row:1}body.writing-simple #practice{grid-row:2}body.writing-simple #retry{grid-row:3}
+body.writing-simple #next{grid-column:1/-1;grid-row:6;margin-top:2px;min-height:47px;font-size:17px!important;padding:8px 11px!important;background:linear-gradient(#f35fdd,#bd1cc1)!important;border-radius:26px!important;color:white!important;box-shadow:inset 0 2px #fff9,0 4px 0 #8e32a8,0 7px 10px #bc46c55e!important;border:2px solid #ffdcfc!important}
+body.writing-simple .feedback{grid-column:1/-1;grid-row:7;font-size:12px;padding:8px;border-radius:12px;min-height:43px;line-height:1.25}
+body.writing-simple #stroke-status{grid-column:1/-1;grid-row:8;font-size:11px;margin:0;text-align:center}
+body.writing-simple .writing-extras{margin-top:15px;font-size:12px;padding:9px 11px;border-radius:15px;background:#f9ebff}
+body.writing-simple .writing-extras summary{font-size:12px}
+@media(max-width:420px){body.writing-simple .shell{min-height:100dvh;border:3px solid #f9dbff;border-radius:30px;box-shadow:inset 0 0 0 2px #efbaf8,inset 0 0 13px #fff8}}
+@media(min-width:421px){body.writing-simple{padding:12px 0}}
+
+/* Legacy lesson CSS is not loaded on this standalone screen. */
+body.writing-simple .visually-hidden,body.writing-simple .mini-progress,body.writing-simple .top-pill{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+body.writing-simple .controls #animate,body.writing-simple .controls #practice,body.writing-simple .controls #retry{grid-column:2;order:initial}
+body.writing-simple .controls #next{grid-column:1/-1;order:initial}

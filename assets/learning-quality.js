@@ -161,7 +161,7 @@
  function pushRoute(name){if(restoring)return;const hash=routeFor(name);if(location.hash!==hash)history.pushState({learning:true},'',hash);lastLocation=hash;}
  const baseGo=go;
  go=function(name){stopLearningAudio();if(name==='course'&&!restoring&&document.body.dataset.currentPage!=='course')closeLessonPicker();if(name==='home'||document.body.dataset.currentPage==='menu')sectionOrigin='menu';baseGo(name);if(name==='home')document.body.dataset.currentPage='menu';else document.body.dataset.currentPage=name;pushRoute(name);updateResume();simplifyPage(name);};
- function restoreRoute(){const parts=location.hash.slice(1).split('/'),name=parts[0];restoring=true;
+ function restoreRoute(){if(location.hash.startsWith('#panda/'))return;const parts=location.hash.slice(1).split('/'),name=parts[0];restoring=true;
   try{if(name==='menu'){window.showLaunchMenu();document.body.dataset.currentPage='menu'}
    else if(name==='cover'){window.showLaunchCover();document.body.dataset.currentPage='cover'}
    else if(name==='course'){const id=Number(parts[1]),step=Number(parts[2]),part=Number(parts[3]);if(Number.isInteger(id)&&id>=1&&id<=COURSE.length&&Number.isInteger(step)&&step>=0&&step<=3)openCourseLesson(id,step,Number.isInteger(part)?part:0);else go('home')}
@@ -229,7 +229,7 @@
  const audioStatus=document.createElement('div');audioStatus.id='learning-audio-status';audioStatus.className='audio-status';audioStatus.hidden=true;
  audioStatus.innerHTML='<span role="status" aria-live="polite"></span><button type="button">Остановить</button>';
  document.body.append(audioStatus);audioStatus.querySelector('button').onclick=()=>{stopLearningAudio();audioStatus.hidden=true};
- function status(text){audioStatus.hidden=false;audioStatus.querySelector('span').textContent=text;if(/не удалось|недоступна/i.test(text))toast(text);}
+ function status(text){const modern=document.querySelector('#pg130:not([hidden]) [data-status]');if(modern){modern.textContent=text;return}audioStatus.hidden=false;audioStatus.querySelector('span').textContent=text;if(/не удалось|недоступна/i.test(text))toast(text);}
  // Dialogue voice files are used only after the generated batch passes all 25 MP3 checks.
  let dialogueMp3Status=null,dialogueMp3Checked=0,dialogueMp3Check=null;
  async function ensureDialogueMp3Ready(){

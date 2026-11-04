@@ -16,6 +16,7 @@ const items=[
  {id:'fine',zh:'我很好，谢谢！',py:'wǒ hěn hǎo, xièxie!',ru:'У меня всё хорошо, спасибо!',audio:'l1-04-b.mp3',parts:[['我','wǒ'],['很','hěn'],['好','hǎo'],['谢谢','xièxie']]},
  {id:'howold',zh:'你多大？',py:'nǐ duō dà?',ru:'Сколько тебе лет?',audio:'l4-01-a.mp3',parts:[['你','nǐ'],['多','duō'],['大','dà']]}
 ];
+window.__pandaGameItems130=items;
 const modes={
  build:{title:'Собери фразу',subtitle:'Переведи предложение',icon:'🧩'},
  choose:{title:'Выбери перевод',subtitle:'Найди правильный перевод',icon:'✅'},
@@ -112,7 +113,7 @@ function spokenRange(buffer,firstSyllable){
 async function playHumanSpeech(hans,display){
  stopAudio();
  const generation=voiceGeneration;
- const notice=one('[data-game-audio-feedback]');
+ const notice=document.querySelector('#pg130:not([hidden]) [data-status]')||one('[data-game-audio-feedback]');
  const note=message=>{if(generation===voiceGeneration && notice)notice.textContent=message};
  try{
   const ctx=contextForAudio();
@@ -158,6 +159,7 @@ async function playHumanSpeech(hans,display){
   }
  }
 }
+window.__pandaGameSpeech130=playHumanSpeech;
 function speakCardWord(han){playHumanSpeech([han],han)}
 window.addEventListener('learning-audio-stop',stopAudio);
 function play(){

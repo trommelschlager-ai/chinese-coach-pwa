@@ -76,7 +76,7 @@ try{
   await qToggle.click();assert.equal(await page.locator('#quizpinyin').isVisible(),true);
 
   // Image 2: game hub without any global step-by-step banner.
-  const game=await context.newPage();await game.goto(BASE+'/game.html?v=119',{waitUntil:'domcontentloaded'});
+  const game=await context.newPage();await game.goto(BASE+'/game.html?v=119&legacy=1',{waitUntil:'domcontentloaded'});
   await game.locator('[data-game-mode="build"]').waitFor();
   await game.waitForLoadState('load');
   await game.locator('.approved-art-image').evaluate(img=>img.decode());
@@ -146,7 +146,8 @@ try{
   assert.equal(await hanzi.locator('#practice').count(),1);
   assert.equal(await hanzi.locator('#animate').count(),1);
   assert.equal(await hanzi.locator('.writing-extras').getAttribute('open'),null,'Advanced writing options must start collapsed');
-  assert(await hanzi.locator('body').evaluate(el=>getComputedStyle(el).backgroundImage.includes('approved-quiz-scene')),'Hanzi writing should show the approved scenic background');
+  assert.equal(await hanzi.locator('.pg-hanzi-heading h1').textContent(),'Иероглифы','Standalone writer uses the v130 heading');
+  assert(await hanzi.locator('.shell').evaluate(el=>getComputedStyle(el).backgroundImage.includes('linear-gradient')),'Hanzi retains its v130 lilac screen surface');
   await screenshot(hanzi,'07-hanzi',size);
   await hanzi.locator('.writing-extras > summary').click();
   await hanzi.locator('.character-picker > summary').click();
