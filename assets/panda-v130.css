@@ -63,8 +63,8 @@ body.pg130-active>#launch-entry,body.pg130-active>.shell,body.pg130-active>.bott
 #pg130 .pg-tip{margin-top:13px;padding:13px 12px;font-size:13px;line-height:1.25;background:#fff7e7;border:1px solid #edc5e5;border-radius:15px;box-shadow:0 3px 5px #ab69c24d}
 #pg130 .pg-pagination{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:7px 10px;min-height:47px}
 #pg130 .pg-round{width:37px;height:32px;border:1px solid #e1b5ef;background:linear-gradient(#fffaff,#e8c7f8);border-radius:18px;font-size:29px;line-height:1;box-shadow:0 2px 3px #9f62b65c}
-#pg130 .pg-word-main{display:grid;grid-template-columns:minmax(0,113px) minmax(0,1fr) 33px;align-items:center;min-height:164px;overflow:hidden;padding:8px 7px 8px 0}
-#pg130 .pg-word-main>.pg-portrait{align-self:center;width:113px;max-width:100%;height:127px;object-fit:contain;object-position:center;mix-blend-mode:normal}
+#pg130 .pg-word-main{display:grid;grid-template-columns:41% 1fr 33px;align-items:center;min-height:164px;overflow:hidden;padding:8px 7px 8px 0}
+#pg130 .pg-word-main>.pg-portrait{align-self:stretch;width:100%;height:154px;object-fit:cover;object-position:top;mix-blend-mode:normal}
 #pg130 .pg-word-copy{text-align:center}#pg130 .pg-hanzi{display:block;font:500 65px/1.15 'Noto Serif CJK SC','Songti SC',serif;color:#6f254a}
 #pg130 .pg-word-copy .pg-pinyin{font-size:18px;margin:3px 0;display:block}#pg130 .pg-word-copy .pg-meaning{font-size:13px}
 #pg130 .pg-word-tools{align-self:stretch;display:flex;flex-direction:column;justify-content:space-around;gap:8px}
@@ -101,8 +101,8 @@ body.pg130-active>#launch-entry,body.pg130-active>.shell,body.pg130-active>.bott
 #pg130 .pg-feedback{font-size:13px;text-align:center;min-height:30px;padding:8px 2px;font-weight:700}
 #pg130 .pg-reward{margin:10px 0;padding:10px;border-radius:22px;background:linear-gradient(#fff9d9,#ffe4d2);font-size:21px;text-align:center;box-shadow:0 3px 5px #b46fbe4f}
 #pg130 .pg-game-intro{padding:6px 8px 9px;text-align:center;font-size:14px}
-#pg130 .pg-game-prompt{display:grid;grid-template-columns:minmax(0,89px) minmax(0,1fr);align-items:center;min-height:124px}
-#pg130 .pg-game-prompt>.pg-portrait{width:89px;max-width:100%;height:107px;object-fit:contain;object-position:center top;mix-blend-mode:normal}
+#pg130 .pg-game-prompt{display:grid;grid-template-columns:31% 1fr;align-items:center;min-height:124px}
+#pg130 .pg-game-prompt>.pg-portrait{width:100%;height:133px;object-fit:cover;object-position:center top;mix-blend-mode:normal}
 #pg130 .pg-game-prompt .pg-surface{padding:11px;font-size:19px;display:flex;align-items:center;gap:8px;margin-right:2px}
 #pg130 .pg-answer-box{min-height:104px;padding:10px 8px;display:flex;align-content:flex-start;justify-content:center;gap:7px;flex-wrap:wrap;margin:8px 0}
 #pg130 .pg-token{min-height:43px;padding:5px 11px;font-size:25px;font-family:'Noto Serif CJK SC',serif;font-weight:650;background:linear-gradient(#fffaff,#ead7fa);border:1px solid #deb0eb;border-radius:14px;box-shadow:0 3px 4px #a46dbc4f}
@@ -134,7 +134,7 @@ body.pg130-active>#launch-entry,body.pg130-active>.shell,body.pg130-active>.bott
 /* Preserve the original illustration colors and the approved glowing frame. */
 @media(max-width:420px){#pg130 .pg-screen{border-width:3px;border-radius:30px;box-shadow:inset 0 0 0 2px #b883d6,inset 0 0 13px #fff8,0 0 9px #efb5ff}}
 @media(max-height:690px){#pg130 .pg-home-grid button{padding:6px}}
-#pg130 .pg-dialogue-scene{width:min(100%,271px);height:auto;aspect-ratio:271/155;object-fit:contain;margin-inline:auto;margin-bottom:-88px}
+#pg130 .pg-dialogue-scene{height:auto;aspect-ratio:271/155;object-fit:contain;margin-bottom:-88px}
 #pg130 .pg-bubble{width:78%;max-width:78%}
 
 /* Match the reference menu rhythm and compact the two overflowing small-phone states. */
@@ -151,7 +151,7 @@ body.pg130-active>#launch-entry,body.pg130-active>.shell,body.pg130-active>.bott
  #pg130 .pg-tone .pg-contour{height:42px}
  #pg130 .pg-tone small{min-height:28px}
  #pg130 .pg-game-prompt{min-height:110px}
- #pg130 .pg-game-prompt>.pg-portrait{height:107px}
+ #pg130 .pg-game-prompt>.pg-portrait{height:110px}
 }
 #pg130 .pg-token{padding:5px 8px}
 #pg130 .pg-token-pool .pg-token{font-size:23px;padding:5px 6px;min-height:39px}
