@@ -9,8 +9,8 @@
 #travel-map:before{content:"";position:absolute;inset:-3px;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 90% 23%,#f8a3b725,transparent 43%),radial-gradient(ellipse at 14% 80%,#e988fa2c,transparent 40%);}
 #travel-map:after{background:linear-gradient(180deg,#26184d61 0%,#1b13421c 35%,#1d0c4380 94%);z-index:0}
 #travel-map .route{z-index:1;overflow:visible}
-#travel-map .route-track{fill:none;stroke:#5b264c;stroke-width:4.5;stroke-linecap:round;opacity:.8}
-#travel-map .route-light{fill:none;stroke:#ffd774;stroke-width:3.4;stroke-linecap:round;filter:drop-shadow(0 0 1px #fff4bf) drop-shadow(0 0 3px #ffac23) drop-shadow(0 0 6px #ffb92d)}
+#travel-map .route-track{fill:none;stroke:#5b264c;stroke-width:4.5;stroke-linecap:round;stroke-dasharray:none;opacity:.8}
+#travel-map .route-light{fill:none;stroke:#ffd774;stroke-width:3.4;stroke-linecap:round;stroke-dasharray:none;filter:drop-shadow(0 0 1px #fff4bf) drop-shadow(0 0 3px #ffac23) drop-shadow(0 0 6px #ffb92d)}
 #travel-map .route-dashes{fill:none;stroke:#fff5af;stroke-width:2.3;stroke-linecap:round;stroke-dasharray:2 6;stroke-dashoffset:0;filter:drop-shadow(0 0 2px #ffcb4c);animation:travel-route-flow 2.7s linear infinite}
 #travel-map .route-runner{fill:#fff5d1;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 5px #ffcd3f) drop-shadow(0 0 10px #ff9b27)}
 #travel-map .travel-map-panda{position:absolute;z-index:2;bottom:4.5%;left:3%;width:clamp(55px,18%,105px);aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 3px 6px #250838) drop-shadow(0 0 11px #ffaad8);pointer-events:none;animation:travel-panda-breathe 4s ease-in-out infinite}
