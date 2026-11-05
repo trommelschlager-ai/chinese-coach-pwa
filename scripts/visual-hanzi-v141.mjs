@@ -63,7 +63,30 @@ try{
   const actual=await sharp(stagePath).removeAlpha().raw().toBuffer({resolveWithObject:true});
   const expected=await sharp('assets/hanzi-approved-v141.png').resize(actual.info.width,actual.info.height).removeAlpha().raw().toBuffer();
   let error=0;for(let i=0;i<expected.length;i++)error+=Math.abs(expected[i]-actual.data[i]);
-  const mae=error/expected.length;assert(mae<8,'Initial reference image MAE '+mae);report.checks.push({width,height,initialReferenceMAE:mae});
+  const mae=error/expected.length;
+  // The background is the unchanged approved PNG. The SVG writing canvas is
+  // intentionally alive and will not equal the static character printed in
+  // the approved reference. Compare every static pixel at the old threshold,
+  // excluding only the native live writer's exact measured bounding rectangle.
+  const stageBox=await page.locator('#pg-hanzi-approved').boundingBox();
+  const paperBox=await page.locator('.pg-art-stroke-paper').boundingBox();
+  const sx=actual.info.width/stageBox.width,sy=actual.info.height/stageBox.height;
+  const masked={left:Math.max(0,Math.floor((paperBox.x-stageBox.x)*sx)),
+   right:Math.min(actual.info.width,Math.ceil((paperBox.x+paperBox.width-stageBox.x)*sx)),
+   top:Math.max(0,Math.floor((paperBox.y-stageBox.y)*sy)),
+   bottom:Math.min(actual.info.height,Math.ceil((paperBox.y+paperBox.height-stageBox.y)*sy))};
+  let stableError=0,stablePixels=0;
+  const channels=actual.info.channels;
+  for(let y=0;y<actual.info.height;y++)for(let x=0;x<actual.info.width;x++){
+   if(x>=masked.left&&x<masked.right&&y>=masked.top&&y<masked.bottom)continue;
+   const base=(y*actual.info.width+x)*channels;
+   for(let channel=0;channel<channels;channel++)stableError+=Math.abs(expected[base+channel]-actual.data[base+channel]);
+   stablePixels++;
+  }
+  assert(stablePixels>actual.info.width*actual.info.height*.85,'Static comparison covers at least 85% of approved artwork');
+  const staticMae=stableError/(stablePixels*channels);
+  assert(staticMae<8,'Unchanged approved background MAE '+staticMae+' (full-frame MAE '+mae+')');
+  report.checks.push({width,height,initialReferenceMAE:mae,staticReferenceMAE:staticMae,excludedLiveWritingCanvas:masked});
   await tap('meaning');await page.locator('.pg-dynamic-explanation').waitFor();await capture(`meaning-${width}-${height}`);
   await tap('words');assert.equal(await page.locator('.pg-dynamic-row').count(),3);await capture(`words-${width}-${height}`);
   await tap('examples');
@@ -85,7 +108,9 @@ try{
   await tap('next');await page.waitForFunction(()=>document.querySelector('#character').textContent==='人');
   await page.waitForFunction(()=>!document.querySelector('[data-art-hit=write]').disabled);
   assert.equal(await page.locator('#pg-hanzi-approved').getAttribute('data-dynamic'),'true');
-  assert.equal(await page.locator('.pg-dynamic-glyph').textContent(),'人');
+  // HanziWriter draws SVG strokes; a static glyph would overlap them.
+  assert.equal((await page.locator('.pg-dynamic-glyph').textContent()).trim(),'','No duplicate static Hanzi may overlay the live writer');
+  await page.waitForFunction(()=>document.querySelector('#writer svg')?.querySelectorAll('path').length>0);
   await layout(width,height);await capture(`ren-${width}-${height}`);
   await tap('strokes');await page.waitForFunction(()=>document.querySelector('#feedback').textContent.includes('Теперь твоя очередь'));
   await tap('write');await page.waitForFunction(()=>document.body.dataset.writingStage==='writing');

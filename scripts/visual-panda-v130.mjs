@@ -11,7 +11,7 @@ let activePage;
 const report={version:130,at:new Date().toISOString(),captures:[],checks:[],errors:[],layoutFailures:[]};
 async function ready(page){await page.locator('#pg130:not([hidden])').waitFor();await page.locator('#pg130 img').evaluateAll(images=>Promise.all(images.map(img=>img.decode().catch(()=>{}))));}
 async function capture(page,name,size,hanzi=false){
- const screen=page.locator(hanzi?'body.writing-simple .shell':'#pg130 .pg-screen');
+ const screen=page.locator(hanzi?'#pg-hanzi-approved':'#pg130 .pg-screen');
  await screen.waitFor();
  const metrics=await screen.evaluate(el=>{
   const r=el.getBoundingClientRect();return {width:r.width,height:r.height,scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,scrollHeight:el.scrollHeight,clientHeight:el.clientHeight,font:getComputedStyle(el).fontFamily,
@@ -36,10 +36,14 @@ try{
   const page=await context.newPage();activePage=page;
   page.on('console',message=>{if(message.type()==='error')report.errors.push({width,message:message.text()})});
   await page.goto(BASE+'/index.html',{waitUntil:'load'});
-  await page.locator('#launch-start').click();await ready(page);
+  // Panda Go v145 mounts the modern shell directly; legacy Start is covered.
+  await ready(page);
   await capture(page,'01-home',size);
-  assert.equal(await page.locator('#pg130 .pg-home-grid button').count(),4);
-  await button(page,'[data-route=learn]');await capture(page,'02-learn',size);
+  // The approved main artwork uses six transparent hotspots, not the retired card grid.
+  assert.equal(await page.locator('#pg130 .pg-home-hit').count(),6);
+  for(const route of ['tones','words','dialogues','travel'])assert.equal(await page.locator(`#pg130 .pg-home-hit[data-route="${route}"]`).count(),1);
+  await page.evaluate(()=>window.__panda130.show('learn'));await ready(page);
+  await capture(page,'02-learn',size);
   await button(page,'[data-route=tones]');await capture(page,'09-tones',size);
   await button(page,'[data-action=tone][data-value="1"]');
   assert.equal(await page.locator('#pg130 .pg-tone[aria-pressed=true] strong').textContent(),'má');
@@ -53,19 +57,25 @@ try{
   await button(page,'[data-action=pinyin]');
   await button(page,'[data-action=word-next][data-value="1"]');assert.equal(await page.locator('#pg130 .pg-hanzi').textContent(),'你');
   await rootBack(page);await button(page,'[data-route=dialogues]');await capture(page,'12-dialogues',size);
-  await button(page,'[data-action=dialog-next][data-value="1"]');assert((await page.locator('#pg130 .pg-bubble strong').first().textContent()).includes('名字'));
+  assert.equal(await page.locator('#pg130 [data-dialog-line]').count(),6,'Full first dialogue remains visible');
+  await button(page,'[data-action=dialog-tab][data-value="1"]');
+  assert.equal(await page.locator('#pg130 [data-dialog-line]').count(),5,'Second dialogue has all five lines');
+  assert((await page.locator('#pg130 .pg-bubble strong').first().textContent()).includes('哪国人'));
   await page.goBack();await ready(page);assert.equal(await page.locator('#pg130 h1').textContent(),'Учиться','Browser Back restores study menu');
   await page.locator('#pg130 [data-route=hanzi]').click();
   await page.locator('#writer svg').waitFor();
   await page.waitForFunction(()=>document.querySelector('#feedback')?.textContent.includes('Теперь твоя очередь'),null,{timeout:20000});
   await capture(page,'11-hanzi',size,true);
   assert((await page.locator('#writer svg path').count())>0,'Live stroke paths');
-  const writingBoxes=await page.evaluate(()=>{const rect=id=>{const r=document.querySelector(id).getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height}};return {paper:rect('.paper'),card:rect('.drawing-card'),next:rect('#next'),controls:['#animate','#practice','#retry'].filter(id=>!document.querySelector(id).hidden).map(rect)}});
-  assert(writingBoxes.controls.every(b=>b.x>=writingBoxes.paper.right-2),'Writing controls must not overlap the paper');
-  assert(writingBoxes.next.width>=writingBoxes.card.width-25,'Next character spans the writing card');
-  await page.locator('#next').click();await page.waitForFunction(()=>document.querySelector('#character').textContent==='人');
-  await page.locator('.top .back').click();await ready(page);
-  await rootBack(page);await button(page,'[data-route=training]');await capture(page,'03-training',size);
+  const approved=await page.locator('#pg-hanzi-approved').boundingBox();
+  assert(Math.abs(approved.width-width)<2,'Exact approved Hanzi artwork fills the phone width');
+  assert(await page.locator('#pg-hanzi-approved [data-art-hit=next]').isVisible(),'Approved Go еще action is accessible');
+  await page.locator('[data-art-hit=next]').click();await page.waitForFunction(()=>document.querySelector('#character').textContent==='人');
+  await page.locator('[data-art-hit=back]').click();await ready(page);
+  // Return from the approved Hanzi scene to Learn, then open Training via the route API.
+  // The raster home has no old menu card linking directly to Training.
+  await page.evaluate(()=>window.__panda130.show('training'));await ready(page);
+  await capture(page,'03-training',size);
   await button(page,'[data-route=practice]');await capture(page,'04-practice',size);
   await button(page,'[data-action=answer][data-value="0"]');await button(page,'[data-action=question-check]');
   assert((await page.locator('#pg130 .pg-feedback').textContent()).includes('Верно'));
