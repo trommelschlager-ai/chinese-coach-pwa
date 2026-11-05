@@ -180,7 +180,6 @@
  // Unify card learning, visible position and review intervals.
  const basePanel=renderCoursePanel;
  renderCoursePanel=function(){stopLearningAudio();basePanel();
-  document.querySelectorAll('.course-footnav .btn').forEach(b=>b.style.setProperty('background-image','none','important'));
   const next=$('course-next');if(/^Следующ/.test(next.textContent))next.textContent='Далее →';
   const panel=$('lesson-panel');panel.querySelectorAll('.focus-hanzi').forEach(e=>e.lang='zh-Hans');
   const b=panel.querySelector('#focus-known');if(b){const hz=COURSE[selectedLesson-1].vocab[vocabIndex][0];b.addEventListener('click',()=>schedule(hz,true))}
@@ -249,11 +248,7 @@
   return dialogueMp3Status;
  }
  function getDialogueClip(lessonId,index,speaker,useNew){
-  // These two *exact-text* recordings match the first two approved portraits:
-  // 你好 — adult woman; 哈喽 — adult man. Never substitute 你好 audio for 哈喽.
-  if(Number(lessonId)===2 && index<2){
-   return './assets/dialogue-greetings-v113/l2-'+String(index+1).padStart(2,'0')+'-'+speaker.toLowerCase()+'.mp3';
-  }
+  // Keep each role's voice unchanged for the entire conversation.
   const folder=useNew?'dialogue-voices-v73':'dialogue-voices';
   return './assets/'+folder+'/l'+lessonId+'-'+String(index+1).padStart(2,'0')+'-'+speaker.toLowerCase()+'.mp3';
  }
@@ -261,7 +256,7 @@
   const lesson=COURSE.find(l=>l.id===Number(lessonId)),line=lesson?.dialogue[index];
   if(!line)return null;
   const ready=await ensureDialogueMp3Ready();
-  return getDialogueClip(lesson.id,index,line[0],lesson.id===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1'));
+  return ready?getDialogueClip(lesson.id,index,line[0],true):null;
  };
  async function playWord(text,rate=.82,token=audioGeneration,voice=null,dialogueClip=null,allowSystem=false){
   const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=dialogueClip||(voice?null:(window.courseHumanAudio?.[key]||window.courseNaturalAudio?.[key]));
@@ -272,7 +267,7 @@
    a.preservesPitch=true;
    if('webkitPreservesPitch' in a)a.webkitPreservesPitch=true;
    status('Загружается MP3…');
-   try{await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{a.pause();reject(Error('timeout'))},10000);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(Error('audio'))};a.onpause=()=>{clearTimeout(timer);resolve()};Promise.resolve(a.play()).then(()=>{if(token!==audioGeneration){a.pause();resolve()}else status('Играет MP3')},reject)});return}
+   try{await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{a.pause();reject(Error('timeout'))},10000);a.onplaying=()=>clearTimeout(timer);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(Error('audio'))};a.onpause=()=>{clearTimeout(timer);resolve()};Promise.resolve(a.play()).then(()=>{if(token!==audioGeneration){a.pause();resolve()}else status('Играет MP3')},reject)});return}
    catch{a.pause();if(token!==audioGeneration)return;
     if(!allowSystem){status('Не удалось загрузить MP3. Проверь интернет или скачай урок в настройках.');return;}
    }

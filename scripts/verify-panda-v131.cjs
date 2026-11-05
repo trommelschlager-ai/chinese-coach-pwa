@@ -15,8 +15,9 @@ for(const word of ['我','是','学生','喜欢','中','国','明白','找','给
 }
 assert(js.includes('window.courseHumanAudio?.[key]&&window.__pandaGameSpeech130'),'Preferred clean speaker is not used in the v130 shell');
 assert.equal((js.match(/audio\.playbackRate=1;/g)||[]).length,2,'Single-word and sequence MP3s must retain natural speed');
-assert(js.includes("audioParts:['我','是','学生']"),'Example 1 must use valid individual recordings');
-assert(js.includes("audioParts:['我','喜欢','中','国']"),'Example 2 must not request missing 中国 clip');
+const examples={window:{}};vm.runInNewContext(fs.readFileSync('assets/word-examples-v144.js','utf8'),examples);
+assert(examples.window.PANDA_WORD_EXAMPLES.filter(e=>e.hz.includes('我')).length>=3,'At least three complete recorded sentences for 我');
+for(const e of examples.window.PANDA_WORD_EXAMPLES)assert(fs.existsSync(e.file.replace('./','')),'Complete example recording exists');
 // Small source crops cannot be repaired by shrinking them: retain the approved composition.
 assert(css.includes('#pg130 .pg-game-prompt{display:grid;grid-template-columns:31% 1fr'),'The approved portrait proportion must remain intact');
 assert(css.includes('#pg130 .pg-dialogue-scene{height:auto;aspect-ratio:271/155'),'The approved dialogue composition must remain intact');

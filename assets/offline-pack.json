@@ -1,6 +1,6 @@
 {
-  "version": 115,
-  "bytes": 25424100,
+  "version": 145,
+  "bytes": 31356867,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -408,7 +408,7 @@
     "./assets/learning-quality.css",
     "./assets/learning-quality.css?v=53",
     "./assets/learning-quality.js",
-    "./assets/learning-quality.js?v=108",
+    "./assets/learning-quality.js?v=145",
     "./assets/lessons-backdrop.webp",
     "./assets/listening-lab.js",
     "./assets/listening-lab.js?v=61",
@@ -1399,8 +1399,8 @@
     "./icons/maskable-512.png",
     "./index.html",
     "./manifest.webmanifest",
-    "./assets/panda-v130.css?v=143",
-    "./assets/panda-v130.js?v=142",
+    "./assets/panda-v130.css?v=145",
+    "./assets/panda-v130.js?v=145",
     "./assets/panda-hanzi-v130.css?v=138",
     "./assets/panda-hanzi-v130.js?v=135",
     "./assets/panda-v130/book.webp",
@@ -1499,6 +1499,14 @@
     "./assets/hanzi-phrases-v141/bc990de66dcda8c3.mp3",
     "./assets/hanzi-phrases-v141/71edbdab36163b0e.mp3",
     "./assets/hanzi-phrases-v141/1d03275776a748a6.mp3",
-    "./assets/hanzi-phrases-v141/38e719fbc0a53bf1.mp3"
+    "./assets/hanzi-phrases-v141/38e719fbc0a53bf1.mp3",
+    "./assets/dialogue-player-v144.js",
+    "./assets/dialogue-player-v144.js?v=145",
+    "./assets/word-examples-v144.js",
+    "./assets/word-examples-v144.js?v=145",
+    "./assets/hanzi-exact-v141.js",
+    "./assets/hanzi-exact-v141.js?v=145",
+    "./assets/hanzi-exact-v141.css",
+    "./assets/hanzi-exact-v141.css?v=145"
   ]
 }

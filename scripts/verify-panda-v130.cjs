@@ -16,7 +16,7 @@ d.getElementById('launch-start').click();assert(!root.hidden);assert.equal(root.
 w.__panda130.show('learn');assert.equal(root.querySelectorAll('.pg-card').length,4);
 click('[data-route=words]');assert.equal(q('.pg-hanzi').textContent,'我');
 click('[data-action=known]');assert(JSON.parse(w.localStorage.getItem('chinese-coach-basic-known-v1')).includes('我'));
-click('[data-action=example][data-value="0"]');assert.deepEqual(spoken.at(-1),['我','是','学生'],'Sentence example uses real same-speaker MP3 fragments');
+click('[data-action=example][data-value="0"]');assert(played.at(-1).includes('/hanzi-phrases-v141/'),'Sentence example uses a complete existing phrase recording');
 click('[data-action=word-play]');assert.deepEqual(spoken.at(-1),['我'],'Existing clean speaker preferred for word playback');
 click('[data-action=pinyin]');assert(!q('.pg-pinyin'));assert.equal(w.localStorage.getItem('chinese-coach-show-pinyin'),'false');
 click('[data-action=pinyin]');click('[data-action=word-next][data-value="1"]');assert.equal(q('.pg-hanzi').textContent,'你');
