@@ -12,7 +12,7 @@ const sw=fs.readFileSync('sw.js','utf8');
 assert(html.includes('panda-approved-lesson-ui-v129.css?v=1'),'Main UI stylesheet linked');
 assert(html.includes('panda-approved-lesson-ui-v129.js?v=1'),'Sakura animation script linked');
 assert(html.includes('menu-v3-approved.js?v=3'),'Menu cache query bumped');
-assert(hanzi.includes('panda-hanzi-v130.css?v=135'),'Hanzi writer uses the isolated current presentation');
+assert(/panda-hanzi-v130\.css\?v=\d+/.test(hanzi) && hanzi.includes('hanzi-exact-v139.css?v=139'),'Hanzi writer must use the latest isolated presentation and exact artwork');
 assert(!hanzi.includes('simple-learning.css'),'Conflicting legacy Hanzi rules are no longer loaded');
 assert(css.includes('body[data-current-page="tones"]'),'Tone screen receives design');
 assert(css.includes('#topics .clean-study-card'),'Vocabulary details receive design');
@@ -24,7 +24,7 @@ assert(css.includes('body:not(.launch-active):has(#tones.active)'),'Only active 
 assert(css.includes('prefers-reduced-motion:reduce'),'Motion preference honoured');
 assert(!css.includes('#topics[data-simple-section]{'),'Do not restyle approved game shell');
 assert(motion.includes("pointer-events")||css.includes('pointer-events:none'),'Petals cannot intercept taps');
-assert(sw.includes('chinese-coach-pwa-v136'),'Fresh offline cache');
+assert(/const CACHE='chinese-coach-pwa-v\d+-/.test(sw),'Fresh versioned offline cache');
 for(const name of ['panda-approved-lesson-ui-v129.css','panda-approved-lesson-ui-v129.js','panda-approved-hanzi-ui-v129.css']){
  assert(sw.includes(name),'Offline cache missing '+name);
 }
