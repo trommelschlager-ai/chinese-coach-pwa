@@ -547,7 +547,7 @@ body.pg130-active{background:#47c1e8!important}
  height:clamp(92px,15dvh,152px);width:100%;
  border-radius:18px;
  background:linear-gradient(180deg,transparent 55%,#f5ddf6ea 100%),
- url('./panda-v130/dialogue-scene.webp') center center/cover no-repeat;
+ url('./meaning-intro.webp') 61% center/cover no-repeat;
  box-shadow:inset 0 0 0 1px #fff6;
 }
 #pg130 .pg-route-dialogues .pg-bubble{
