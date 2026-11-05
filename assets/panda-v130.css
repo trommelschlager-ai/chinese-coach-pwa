@@ -392,8 +392,8 @@ body.pg130-active{background:#47c1e8!important}
  border-radius:20px;
  background:linear-gradient(145deg,#fce7fa,#ddc1ee);
  image-rendering:auto;
- /* Sharpen only via intrinsic raster; never stretch the low-res file to fullscreen. */
- filter:saturate(1.05);
+ /* Keep the illustration inside the established card. */
+ filter:none;
  box-shadow:inset 0 0 0 1px #fff8;
 }
 #pg130 .pg-route-words .pg-word-copy {min-width:0;align-self:center;padding:4px 1px 4px 3px}
@@ -415,6 +415,7 @@ body.pg130-active{background:#47c1e8!important}
  background:linear-gradient(150deg,#fff9fffa,#f5e3fbf3 80%,#eed0f8ec);
  box-shadow:inset 0 2px 2px #fff,0 5px 12px #a255b768;
 }
+#pg130 .pg-route-words .pg-audio-kind{font:11px/1.2 system-ui,sans-serif;color:#754c83;margin-bottom:2px}
 #pg130 .pg-route-words .pg-example-head {
  display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:2px;
 }

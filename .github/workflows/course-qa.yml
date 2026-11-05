@@ -18,6 +18,7 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run check:release
+      - run: node scripts/verify-full-audit-v151.cjs
       - run: node scripts/verify-quality.cjs
       - run: node scripts/verify-offline.cjs
       - run: node scripts/verify-hanzi.cjs

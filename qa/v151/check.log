@@ -1,0 +1,63 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> check
+> node scripts/verify.cjs && node scripts/verify-quality.cjs && node scripts/verify-simple-learning.cjs && node scripts/verify-hanzi.cjs && node scripts/verify-launch.cjs && node scripts/verify-offline.cjs && node scripts/verify-pinyin-reading.cjs && node scripts/verify-clean-sections.cjs && node scripts/verify-ui-polish.cjs && node scripts/verify-ui-v70.cjs && node scripts/verify-ui-v71.cjs && node scripts/verify-adult-dialogues.cjs && node scripts/verify-v73-roles-and-pinyin.cjs && node scripts/verify-soft-pinyin-v74.cjs && node scripts/verify-yunyang-pinyin-v75.cjs && node scripts/verify-game-practice-v76.cjs && node scripts/verify-game-voice-coverage-v90.cjs && node scripts/verify-audit-v98.cjs && node scripts/verify-hsk1-v103.cjs && node scripts/verify-eight-screens-v117.cjs && node scripts/verify-audio-v118.cjs && node scripts/verify-travel-voice-v1.cjs && node scripts/verify-travel-wow-v1.cjs && node scripts/verify-game-sakura-v126.cjs && node scripts/verify-menu-v3.cjs && node scripts/verify-panda-approved-v129.cjs && node scripts/verify-panda-v130.cjs && node scripts/verify-panda-v131.cjs && node scripts/verify-assemble-alive-v149.cjs
+
+{
+  "panels": 20,
+  "questions": 35,
+  "options": 140,
+  "spoken": 69,
+  "missing": []
+}
+Quality checks passed: six section destinations, resume, sequential rules, unified knowledge, unique vocabulary, low-third uncertainty, dialogue controls.
+Simplification checks passed: correct returns, initial start, collapsed settings and recording, recall before assessment, review scheduling, complete dialogue, resume, browser Back and test errors.
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at HTMLButtonElement.eval (eval at <anonymous> (/workspace/scratch/819c74e96762/panda-go/scripts/verify-hanzi.cjs:26:3), <anonymous>:217:271)
+    at HTMLButtonElement.callTheUserObjectsOperation (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
+    at innerInvokeEventListeners (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25)
+    at invokeEventListeners (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)
+    at HTMLButtonElementImpl._dispatch (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)
+    at fireAnEvent (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/helpers/events.js:18:36)
+    at HTMLButtonElementImpl.click (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/nodes/HTMLElement-impl.js:85:5)
+    at HTMLButtonElement.click (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/generated/HTMLElement.js:108:34) undefined
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at HTMLButtonElement.eval (eval at <anonymous> (/workspace/scratch/819c74e96762/panda-go/scripts/verify-hanzi.cjs:26:3), <anonymous>:217:271)
+    at HTMLButtonElement.callTheUserObjectsOperation (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
+    at innerInvokeEventListeners (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25)
+    at invokeEventListeners (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)
+    at HTMLButtonElementImpl._dispatch (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)
+    at fireAnEvent (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/helpers/events.js:18:36)
+    at HTMLButtonElementImpl.click (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/nodes/HTMLElement-impl.js:85:5)
+    at HTMLButtonElement.click (/workspace/scratch/819c74e96762/panda-go/node_modules/jsdom/lib/jsdom/living/generated/HTMLElement.js:108:34) undefined
+Hanzi pilot: syntax, tabs, Chinese speech, animation, quiz and progress checks passed
+Launch checks passed: approved cover, Start-only petals, seven equal lesson cards, third Hanzi link.
+Offline checks passed: 121 core URLs; 1509 optional files, failed-download recovery, local writing, home isolation.
+Pinyin checks passed: 26 groups, 36 finals, 21 initials, 21 rules, 190 fresh Yunyang MP3s.
+Clean sections verified: 193 words in 13 groups; dialogue-only; three real practice modes; no repeated tones; course remains intact.
+Approved V69 visual fixes validated; existing pronunciation controls and six destinations preserved.
+V70: photographed background and four substantially restyled training screens checks passed
+V71 dialogue art and reversible lower-pitch preview checks passed
+All 25 truly different Mandarin dialogue MP3s verified, new voices live by default, legacy comparison and offline cache preserved.
+V73 voice review passed: 190 new Pinyin recordings, 25 dialogue MP3s and fixed Anna/Xiaoming gender.
+V74 archive retained; v75 Yunyang active; original dialogue recordings remain untouched.
+V75 passes: 190 real Yunyang MP3s, normal default speed, preserved tones, unchanged dialogues and navigation
+V98 game verified: all 30 questions, correct/wrong feedback, hidden pinyin, clear/remove/capacity, errors-only review and progress.
+V99: restored artwork with live flow layout and both whole-word MP3s verified.
+V99 token inventory: original native clips retained, two whole-word corrections, no device TTS fallback.
+V98 regression passed: export/import round trip, legacy import, invalid stats rejected, daily route and five-tone instruction.
+HSK 1 v103 roadmap: 141/300 factual audit, ten existing categories, old lessons and navigation preserved.
+v117 checks passed: quiz/pinyin, compact words, listening/translation, daily banner, dialogues and live writing.
+v118 audio coverage OK. 193/193 MP3 paths: {"dedicated":113,"pinyin":32,"study":4,"human":44}; 25/25 legacy dialogue mappings; 2 greeting overrides. Mixed voice sources and preview-only licenses STILL REQUIRE review.
+Travel voice checks passed: 3 phrases, speech-result honesty, pinyin, optional skip, safe return, old quiz preserved.
+Travel WOW checks passed: approved moving path, no redundant banner, existing lesson and voice untouched.
+Game sakura v126 OK: petals are decorative, loop, respect reduced motion, leave controls and questions intact.
+v127 Panda Go approved menu: optimized art, 16 animated petals, existing study/practice/travel and live stats verified.
+Panda v129 design OK: four study, three practice, real navigation, sakura, offline, Hanzi and Game safety.
+Panda v132 passed: actual boot, routes, 193 words, examples/audio, pinyin, 13 groups, tone recordings, dialogue paging, reorderable tokens, scoring, reward idempotency and topic switching.
+Panda Go v131: clean speaker, natural speed, example audio coverage, approved layout, offline cache OK.
+Alive café: errors, editing, pinyin, 6 scenes, local audio, completion and restart OK.
