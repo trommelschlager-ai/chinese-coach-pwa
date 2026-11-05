@@ -1,0 +1,95 @@
+/* Panda Go exact approved Hanzi artwork. The original PNG is NEVER modified.
+   Interaction hotspots and dynamic learning text are separate DOM layers. */
+html:has(body.writing-simple){background:#2b0d53!important}
+body.writing-simple{margin:0!important;min-height:100dvh!important;overflow-x:hidden!important;background:#2b0d53!important}
+body.writing-simple::before,body.writing-simple .pg-hanzi-petals{display:none!important}
+body.writing-simple>.shell{
+ position:absolute!important;left:-12000px!important;top:0!important;
+ width:420px!important;max-width:420px!important;min-height:0!important;
+ opacity:0!important;pointer-events:none!important;overflow:visible!important
+}
+#pg-hanzi-approved{position:relative;width:min(100vw,520px);aspect-ratio:941/1672;margin:0 auto;isolation:isolate;overflow:hidden;color:#581076;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+#pg-hanzi-approved *{box-sizing:border-box}
+#pg-hanzi-approved .pg-art{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;user-select:none;-webkit-user-drag:none;pointer-events:none}
+#pg-hanzi-approved .pg-hit{position:absolute;z-index:8;appearance:none;border:0!important;margin:0!important;padding:0!important;background:transparent!important;box-shadow:none!important;border-radius:30px!important;cursor:pointer;touch-action:manipulation;color:transparent!important;font-size:0!important}
+#pg-hanzi-approved .pg-hit:focus-visible{outline:3px solid #fff!important;outline-offset:-3px}
+#pg-hanzi-approved .pg-hit:active{background:rgba(255,255,255,.14)!important;box-shadow:inset 0 0 0 2px #fff9!important}
+#pg-hanzi-approved [hidden]{display:none!important}
+#pg-hanzi-approved .pg-hit-back{left:1.5%;top:4.3%;width:12%;height:6%}
+#pg-hanzi-approved .pg-hit-strokes{left:65%;top:14%;width:32%;height:7.7%}
+#pg-hanzi-approved .pg-hit-write{left:65%;top:22.6%;width:32%;height:7.4%}
+#pg-hanzi-approved .pg-hit-speak{left:64%;top:41.9%;width:12%;height:6%}
+#pg-hanzi-approved .pg-hit-meaning{left:4%;top:57.2%;width:29%;height:4.8%}
+#pg-hanzi-approved .pg-hit-examples{left:34%;top:57.2%;width:30%;height:4.8%}
+#pg-hanzi-approved .pg-hit-words{left:65%;top:57.2%;width:31%;height:4.8%}
+#pg-hanzi-approved .pg-hit-example-0{left:7.4%;top:63.5%;width:12%;height:5.6%}
+#pg-hanzi-approved .pg-hit-example-1{left:7.4%;top:70.6%;width:12%;height:5.6%}
+#pg-hanzi-approved .pg-hit-example-2{left:7.4%;top:77.8%;width:12%;height:5.6%}
+#pg-hanzi-approved .pg-hit-next{left:10%;top:85.3%;width:79%;height:7.2%}
+#pg-hanzi-approved .pg-art-stroke-paper{position:absolute;left:14.7%;top:9.2%;width:48%;height:27.5%;z-index:4;overflow:hidden;background:radial-gradient(ellipse at 43% 38%,#ffefd8 0%,#ffead2 55%,#f5d6b7 100%);border-radius:2px}
+#pg-hanzi-approved .pg-art-stroke-paper>.paper{
+ position:relative!important;left:auto!important;top:auto!important;width:100%!important;height:100%!important;
+ max-width:none!important;min-height:0!important;margin:0!important;padding:0!important;
+ border:0!important;border-radius:0!important;box-shadow:none!important;
+ background:transparent!important;display:block!important;overflow:hidden!important;touch-action:none!important
+}
+#pg-hanzi-approved .pg-art-stroke-paper .paper::before,#pg-hanzi-approved .pg-art-stroke-paper .paper::after,#pg-hanzi-approved .pg-scroll-corner{display:none!important}
+#pg-hanzi-approved .pg-art-stroke-paper #writer{
+ position:relative!important;display:grid!important;place-items:center!important;
+ width:100%!important;height:100%!important;aspect-ratio:auto!important;transform:none!important;touch-action:none!important;overflow:hidden
+}
+#pg-hanzi-approved .pg-art-stroke-paper #writer svg{width:100%!important;height:100%!important;max-width:100%!important;touch-action:none!important}
+#pg-hanzi-approved .pg-dynamic-glyph{
+ position:absolute;z-index:3;left:16.6%;top:10.1%;width:46.2%;height:25%;display:flex;
+ align-items:center;justify-content:center;background:radial-gradient(ellipse at 48% 43%,#ffefd8 0%,#ffead2 55%,#f3d4b4 100%);
+ color:#751d09;font:400 clamp(150px,50vw,260px)/1 "Noto Serif CJK SC","Songti SC",serif;text-align:center
+}
+#pg-hanzi-approved .pg-dynamic-pronounce{
+ position:absolute;z-index:4;left:23%;top:42.6%;width:39%;height:4.7%;
+ display:flex;align-items:center;justify-content:center;gap:10px;
+ background:linear-gradient(90deg,#ffe3cf,#ffe4d9);color:#541579;
+ font:800 clamp(13px,3.55vw,23px)/1.1 system-ui,sans-serif
+}
+#pg-hanzi-approved .pg-dynamic-pronounce b{font:400 clamp(28px,7vw,45px)/1 "Noto Serif CJK SC","Songti SC",serif}
+#pg-hanzi-approved .pg-dynamic-meaning{
+ position:absolute;z-index:4;left:29%;top:48.8%;width:42%;height:4.8%;display:grid;place-items:center;
+ border:1px solid #ffd48a;border-radius:99px;background:linear-gradient(#fff2d8,#ffe6ad);
+ color:#5e147d;font:900 clamp(16px,5vw,30px)/1.1 system-ui,sans-serif;
+ box-shadow:0 2px 5px #a4556d70
+}
+#pg-hanzi-approved .pg-dynamic-tabs{
+ position:absolute;z-index:5;left:3.5%;top:57.2%;width:93%;height:5.1%;
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;pointer-events:none
+}
+#pg-hanzi-approved .pg-dynamic-tabs span{
+ display:grid;place-items:center;background:linear-gradient(#fff9f7,#f4ccdf);
+ border:1px solid #f9bad7;border-radius:29px 29px 5px 5px;
+ color:#5d187b;font-weight:850;font-size:clamp(13px,3.2vw,22px)
+}
+#pg-hanzi-approved .pg-dynamic-tabs span[aria-current="true"]{
+ color:#fff;background:linear-gradient(#ff55cf,#d400a5);text-shadow:0 2px 2px #980065
+}
+#pg-hanzi-approved .pg-dynamic-panel{
+ position:absolute;z-index:4;left:3.3%;top:62%;width:93.8%;height:22.1%;
+ padding:1.3% 1.5%;display:flex;flex-direction:column;gap:1.5%;
+ border:2px solid #ffb5d2;border-radius:30px;background:linear-gradient(180deg,#ffd6e8,#fbc9e2);
+ box-shadow:0 5px 11px #a91f8975;overflow:hidden
+}
+#pg-hanzi-approved .pg-dynamic-row{
+ display:grid;grid-template-columns:minmax(0,1.07fr) minmax(0,.96fr);gap:6px;align-items:center;
+ padding:1.2% 2.8% 1.2% 17.5%;flex:1;min-height:0;
+ background:linear-gradient(#fff9f4,#ffe8e1);border:1px solid #f5a1c3;border-radius:999px;
+ box-shadow:0 3px 5px #a9449e45;color:#541278
+}
+#pg-hanzi-approved .pg-dynamic-row .pg-left{min-width:0}
+#pg-hanzi-approved .pg-dynamic-row strong{display:block;font:700 clamp(15px,4vw,27px)/1.05 "Noto Serif CJK SC","Songti SC",serif}
+#pg-hanzi-approved .pg-dynamic-row small{display:block;margin-top:3px;font:600 clamp(9px,2.3vw,16px)/1.1 system-ui,sans-serif;color:#7c568e}
+#pg-hanzi-approved .pg-dynamic-row .pg-russian{font:700 clamp(11px,2.65vw,19px)/1.12 system-ui,sans-serif}
+#pg-hanzi-approved .pg-dynamic-explanation{overflow:auto;padding:6% 7%;font-size:clamp(12px,3.1vw,21px);font-weight:700;line-height:1.35}
+#pg-hanzi-approved .pg-dynamic-explanation strong{display:block;margin-bottom:12px;font-size:1.16em}
+#pg-hanzi-approved .pg-dynamic-explanation small{display:block;margin-top:8px;font-weight:550}
+#pg-hanzi-approved .pg-art-status{position:absolute;z-index:12;left:12%;bottom:7.4%;width:76%;padding:8px 10px;border-radius:14px;background:#fff0f9fa;color:#64217d;font-size:clamp(10px,2.5vw,15px);text-align:center;box-shadow:0 0 8px #ca58b499}
+#pg-hanzi-tail{width:min(100vw,520px);height:max(0px,calc(100dvh - 177.68vw));margin:auto;pointer-events:none;background:linear-gradient(180deg,#2c1259,#4d1b77 42%,#301252);position:relative;overflow:hidden}
+#pg-hanzi-tail::before{content:"";position:absolute;inset:0;background-image:url("./hanzi-approved-exact-20261105.png");background-position:center bottom;background-size:100% 440%;background-repeat:no-repeat;opacity:.86;filter:blur(2px)}
+@media(min-width:521px){#pg-hanzi-tail{display:none}}
+@media(prefers-reduced-motion:reduce){#pg-hanzi-approved .pg-hit{transition:none!important}}
