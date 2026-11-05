@@ -61,7 +61,7 @@
  const notice=$('words').querySelector('.notice');notice.textContent='Для большинства слов доступны MP3. При недоступности записи роботизированный голос не включается. Загрузки — в настройках.';
  // User-owned settings remain available without occupying the lesson viewport.
  const settings=document.createElement('details');settings.id='app-settings';settings.className='app-settings';
- settings.innerHTML='<summary>Настройки</summary><div class="settings-content"><p class="settings-intro">Для проверки фраз нужен интернет. Оценка тонов приблизительная.</p><div id="offline-settings-slot"></div><button class="btn primary" id="download-course" type="button">Скачать материалы для занятий</button><p id="download-status" role="status" aria-live="polite"></p><button class="btn soft" id="open-voice-settings" type="button">Выбрать голос и скорость</button><button class="btn soft" id="apply-course-update" type="button" hidden>Применить обновление</button><details><summary>Об аудио и лицензиях</summary><p>Локальные записи слов: Yue Tan, CC BY-SA 3.0 US. Слог mā: Chen Wang, CC BY-SA. Источник: <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">audio-cmn</a>. Тоны и демонстрационные записи сохраняют авторство, указанное в соответствующих упражнениях.</p><p>Библиотека письма Hanzi Writer: Chanind, MIT; данные черт Make Me a Hanzi: Arphic Public License. <a href="https://github.com/chanind/hanzi-writer" target="_blank" rel="noopener noreferrer">Исходный код и лицензии</a>.</p></details><div id="backup-settings-slot"></div></div>';
+ settings.innerHTML='<summary>Настройки</summary><div class="settings-content"><p class="settings-intro">Для проверки фраз нужен интернет. Распознавание текста не проверяет точность тонов. График голоса помогает сравнивать мелодику.</p><div id="offline-settings-slot"></div><button class="btn primary" id="download-course" type="button">Скачать материалы для занятий</button><p id="download-status" role="status" aria-live="polite"></p><button class="btn soft" id="open-voice-settings" type="button">Выбрать голос и скорость</button><button class="btn soft" id="apply-course-update" type="button" hidden>Применить обновление</button><details><summary>Об аудио и лицензиях</summary><p>Локальные записи слов: Yue Tan, CC BY-SA 3.0 US. Слог mā: Chen Wang, CC BY-SA. Источник: <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">audio-cmn</a>. Тоны и демонстрационные записи сохраняют авторство, указанное в соответствующих упражнениях.</p><p>Библиотека письма Hanzi Writer: Chanind, MIT; данные черт Make Me a Hanzi: Arphic Public License. <a href="https://github.com/chanind/hanzi-writer" target="_blank" rel="noopener noreferrer">Исходный код и лицензии</a>.</p></details><div id="backup-settings-slot"></div></div>';
  document.querySelector('.shell > main').before(settings);
  $('offline-settings-slot').append($('offlinebar'),$('installhelp'));
  const backupDisclosure=document.createElement('details');backupDisclosure.className='backup-disclosure';backupDisclosure.innerHTML='<summary>💾 Резервная копия прогресса</summary>';backupDisclosure.append(document.querySelector('.backup-panel'));$('backup-settings-slot').append(backupDisclosure);
@@ -257,6 +257,12 @@
   const folder=useNew?'dialogue-voices-v73':'dialogue-voices';
   return './assets/'+folder+'/l'+lessonId+'-'+String(index+1).padStart(2,'0')+'-'+speaker.toLowerCase()+'.mp3';
  }
+ window.getDialogueAudioFile=async function(lessonId,index){
+  const lesson=COURSE.find(l=>l.id===Number(lessonId)),line=lesson?.dialogue[index];
+  if(!line)return null;
+  const ready=await ensureDialogueMp3Ready();
+  return getDialogueClip(lesson.id,index,line[0],lesson.id===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1'));
+ };
  async function playWord(text,rate=.82,token=audioGeneration,voice=null,dialogueClip=null,allowSystem=false){
   const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=dialogueClip||(voice?null:(window.courseHumanAudio?.[key]||window.courseNaturalAudio?.[key]));
   if(file){const a=new Audio(file);audio=a;
@@ -265,8 +271,8 @@
    a.playbackRate=dialogueClip?1:(rate<=.8?rate:Math.max(.94,rate));
    a.preservesPitch=true;
    if('webkitPreservesPitch' in a)a.webkitPreservesPitch=true;
-   status('Загружается запись носителя…');
-   try{await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{a.pause();reject(Error('timeout'))},10000);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(Error('audio'))};a.onpause=()=>{clearTimeout(timer);resolve()};Promise.resolve(a.play()).then(()=>{if(token!==audioGeneration){a.pause();resolve()}else status('Играет запись носителя')},reject)});return}
+   status('Загружается MP3…');
+   try{await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{a.pause();reject(Error('timeout'))},10000);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(Error('audio'))};a.onpause=()=>{clearTimeout(timer);resolve()};Promise.resolve(a.play()).then(()=>{if(token!==audioGeneration){a.pause();resolve()}else status('Играет MP3')},reject)});return}
    catch{a.pause();if(token!==audioGeneration)return;
     if(!allowSystem){status('Не удалось загрузить MP3. Проверь интернет или скачай урок в настройках.');return;}
    }

@@ -78,13 +78,23 @@ body.pg130-active>#launch-entry,body.pg130-active>.shell,body.pg130-active>.bott
 #pg130 .pg-word-footer{margin-top:auto;padding-top:8px}
 #pg130 .pg-secondary{border:1px solid #e0aeea;border-radius:20px;background:linear-gradient(#fffcff,#e9d1f5);padding:7px 13px;box-shadow:0 2px 3px #9655ad4d;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:5px}
 #pg130 .pg-subtools{display:flex;justify-content:center;gap:8px;margin-top:9px;flex-wrap:wrap}
-#pg130 .pg-dialogue-scene{width:100%;height:170px;object-fit:cover;object-position:center top;border-radius:16px;mix-blend-mode:normal;margin-bottom:-50px}
-#pg130 .pg-dialogue-lines{display:grid;gap:12px;z-index:1;padding:0 3px}
-#pg130 .pg-bubble{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:center;max-width:92%;padding:11px 12px;min-height:93px}
-#pg130 .pg-bubble:nth-child(even){justify-self:end;background:linear-gradient(#ffe8f8,#f2c0e4)}
-#pg130 .pg-bubble strong{display:block;font-size:23px;color:#27152d;font-weight:800}#pg130 .pg-bubble small{display:block;font-size:13px;line-height:1.2;margin-top:3px}
-#pg130 .pg-dialogue-actions{display:grid;gap:9px;margin-top:17px}
-#pg130 .pg-dialogue-actions .pg-primary{min-height:43px;font-size:18px}
+#pg130 .pg-dialogue-scene{height:auto;aspect-ratio:271/155;width:100%;max-height:110px;object-fit:contain;border-radius:16px;margin:0 0 9px;flex:none}
+#pg130 .pg-dialogue-lines{display:flex;flex-direction:column;gap:12px;z-index:1;padding:5px;overflow:auto;flex:1;min-height:150px;scroll-padding:10px;overscroll-behavior:contain}
+#pg130 .pg-bubble{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center;width:92%;padding:10px 12px;flex:none;border:2px solid #edcbff}
+#pg130 .pg-bubble:nth-child(even){align-self:flex-end;background:linear-gradient(#ffe8f8,#f2c0e4)}
+#pg130 .pg-bubble strong{display:block;font-size:23px;color:#27152d;font-weight:800;overflow-wrap:anywhere}
+#pg130 .pg-bubble small{display:block;font-size:13px;line-height:1.3;margin-top:3px}
+#pg130 .pg-bubble small[hidden]{display:none}
+#pg130 .pg-bubble .pg-dialog-speaker{font-size:11px;color:#67317d;margin:0 0 4px}
+#pg130 .pg-bubble.pg-speaking{border-color:#bd24b5;box-shadow:inset 0 0 0 1px #fff,0 0 10px #f184d9; background:#ffe0f5}
+#pg130 .pg-dialogue-actions{display:grid;gap:6px;margin-top:9px;flex:none;padding-bottom:env(safe-area-inset-bottom)}
+#pg130 .pg-dialogue-actions .pg-primary{min-height:44px;font-size:18px}
+#pg130 .pg-dialogue-actions .pg-subtools{margin-top:0}
+#pg130 .pg-dialog-status{font-size:12px;line-height:1.3;min-height:30px;text-align:center}
+#pg130 .pg-settings-content{min-height:0;overflow:auto}
+#pg130 .pg-settings-content .app-settings{margin-top:0;border-radius:19px;background:linear-gradient(150deg,#fff8ff,#f1dcfa 72%,#dfc4f4)}
+#pg130 .pg-settings-content .settings-content{font-size:15px;padding:12px}
+#pg130 .pg-settings-content .settings-content button{min-height:44px}
 #pg130 .pg-progressline{display:flex;align-items:center;gap:10px;margin:3px 2px 12px;font-size:14px}
 #pg130 .pg-progressline .pg-meter{flex:1}
 #pg130 .pg-topic{width:100%;border:1px solid #d7a8ec;border-radius:18px;background:linear-gradient(#fff5ff,#e4c4f2);padding:7px 12px;font-size:14px;box-shadow:inset 0 1px #fff,0 2px 4px #9560b8;margin:0 0 7px}
@@ -120,22 +130,21 @@ body.pg130-active>#launch-entry,body.pg130-active>.shell,body.pg130-active>.bott
 #pg130 .pg-version{position:absolute;bottom:3px;right:14px;font-size:8px;color:#623576}
 #pg130 .pg-live-status{position:fixed;bottom:9px;left:50%;transform:translateX(-50%);z-index:3;max-width:340px;background:#fff4fc;color:#5e2378;padding:8px 15px;border:1px solid #db9be8;border-radius:20px;font-size:12px;box-shadow:0 4px 13px #6e2b9b45;text-align:center}
 #pg130 .pg-live-status:empty{display:none}
-@media(max-width:420px){#pg130 .pg-screen{height:100dvh;border-radius:0;width:100%;border-width:0;padding-top:max(12px,env(safe-area-inset-top));padding-bottom:max(17px,env(safe-area-inset-bottom));box-shadow:inset 0 0 0 2px #efbaf8,inset 0 0 13px #fff8}#pg130 .pg-home{padding-top:45px}}
+@media(max-width:480px){#pg130 .pg-screen{height:100dvh;border-radius:0;width:100%;border-width:0;padding-top:max(12px,env(safe-area-inset-top));padding-bottom:max(17px,env(safe-area-inset-bottom));box-shadow:inset 0 0 0 2px #efbaf8,inset 0 0 13px #fff8}#pg130 .pg-home{padding-top:45px}}
 @media(max-height:690px){#pg130 .pg-heading{min-height:119px;padding-bottom:14px}#pg130 .pg-heading.compact{min-height:88px}#pg130 .pg-card{min-height:69px}#pg130 .pg-card strong{font-size:18px}#pg130 .pg-scenery{max-height:170px}#pg130 .pg-home-grid button{min-height:111px}#pg130 .pg-question{min-height:280px}#pg130 .pg-result-art{height:275px}}
-@media(prefers-reduced-motion:no-preference){#pg130 .pg-screen{animation:pg130-enter .25s ease-out}@keyframes pg130-enter{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}}
+/* The mounted lesson shell stays opaque during navigation and answer updates. */
 
 /* Result illustration already contains its approved headline. */
 #pg130 .pg-visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 #pg130 .pg-result-art{height:clamp(200px,39dvh,300px);margin-top:8px}
-@media(max-height:690px){#pg130 .pg-dialogue-scene{height:140px}#pg130 .pg-dialogue-actions{margin-top:10px;gap:6px}#pg130 .pg-bubble{min-height:86px;padding:9px 11px}#pg130 .pg-result .pg-achievements{margin:8px 0 12px}}
+@media(max-height:690px){#pg130 .pg-dialogue-actions{margin-top:10px;gap:6px}#pg130 .pg-bubble{min-height:86px;padding:9px 11px}#pg130 .pg-result .pg-achievements{margin:8px 0 12px}}
 
 @media(max-height:690px){#pg130 .pg-home-grid button{padding:8px 6px}#pg130 .pg-home-grid{gap:8px}}
 
 /* Preserve the original illustration colors and the approved glowing frame. */
-@media(max-width:420px){#pg130 .pg-screen{border-width:3px;border-radius:30px;box-shadow:inset 0 0 0 2px #b883d6,inset 0 0 13px #fff8,0 0 9px #efb5ff}}
+@media(max-width:480px){#pg130 .pg-screen{border-width:3px;border-radius:30px;box-shadow:inset 0 0 0 2px #b883d6,inset 0 0 13px #fff8,0 0 9px #efb5ff}}
 @media(max-height:690px){#pg130 .pg-home-grid button{padding:6px}}
-#pg130 .pg-dialogue-scene{height:auto;aspect-ratio:271/155;object-fit:contain;margin-bottom:-88px}
-#pg130 .pg-bubble{width:78%;max-width:78%}
+
 
 /* Match the reference menu rhythm and compact the two overflowing small-phone states. */
 #pg130 .pg-heading:not(.compact){min-height:190px}
@@ -177,7 +186,7 @@ body.pg130-active>#launch-entry,body.pg130-active>.shell,body.pg130-active>.bott
 #pg130 .pg-sakura-petal:nth-child(5n+2){background:radial-gradient(circle at 30% 30%,#fff,#fbd3e6 58%,#f291bf)}
 #pg130 .pg-sakura-petal:nth-child(5n+3){background:radial-gradient(circle at 30% 30%,#fff,#f1d4ff 58%,#c78ff2)}
 @keyframes pg132-petal{0%{opacity:0;transform:translate3d(0,-8vh,0) rotate(0)}7%{opacity:.94}87%{opacity:.8}100%{opacity:0;transform:translate3d(var(--petal-drift),110vh,0) rotate(590deg)}}
-@media(max-width:420px){#pg130 .pg-sakura{width:100%;height:100dvh;border-radius:0}#pg130 .pg-home-v132{border:0!important;border-radius:0!important;box-shadow:none!important}}
+@media(max-width:480px){#pg130 .pg-sakura{width:100%;height:100dvh;border-radius:0}#pg130 .pg-home-v132{border:0!important;border-radius:0!important;box-shadow:none!important}}
 @media(prefers-reduced-motion:reduce){#pg130 .pg-sakura{display:none!important}}
 
 /* Tapping the Panda resumes the last lesson, with no extra visible UI over artwork. */

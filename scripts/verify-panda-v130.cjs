@@ -25,7 +25,7 @@ click('[data-value=g09]');assert.equal(q('.pg-hanzi').textContent,'水');
 w.__panda130.show('tones');click('[data-action=tone][data-value="2"]');assert.deepEqual(spoken.at(-1),['马'],'Third tone uses an available native speaker MP3');
 click('[data-action=tone-tab][data-value="Инициали"]');click('[data-action=syllable][data-value=bo]');assert(fs.existsSync(played.at(-1).replace('./','')));
 click('[data-action=tone-tab][data-value="Сочетания"]');click('[data-action=syllable][data-value=pai]');assert(fs.existsSync(played.at(-1).replace('./','')));
-w.__panda130.show('dialogues');assert(q('.pg-bubble'));const initial=q('.pg-bubble strong').textContent;click('[data-action=dialog-next][data-value="1"]');assert.notEqual(q('.pg-bubble strong').textContent,initial);click('[data-action=dialog-notes]');assert(root.textContent.includes('Как спросить имя'));
+w.__panda130.show('dialogues');assert(q('.pg-bubble'));assert.equal(root.querySelectorAll('[data-dialog-line]').length,6,'Entire six-line transcript stays mounted');click('[data-action=dialog-tab][data-value="1"]');assert.equal(root.querySelectorAll('[data-dialog-line]').length,5,'Switch topic replaces full transcript');click('[data-action=dialog-tab][data-value="0"]');click('[data-action=dialog-notes]');assert(root.textContent.includes('Как спросить имя'));
 w.__panda130.show('build');assert(q('[data-action=game-check]').disabled);assert.equal(q('.pg-token-pool').children.length,5,'Phrase bank includes two distractors');
 for(const i of [0,1,2])click('[data-action=token-add][data-value="'+i+'"]');
 assert.equal(q('.pg-token-pool').children.length,2,'Selected words leave two real distractors and no placeholders');assert(!q('[data-action=game-check]').disabled);

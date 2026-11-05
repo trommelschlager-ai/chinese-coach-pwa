@@ -1,0 +1,32 @@
+/* Regression coverage for real media-event ordering; does not assess audio quality. */
+const assert=require('node:assert/strict'),fs=require('node:fs'),{JSDOM}=require('jsdom');
+const dom=new JSDOM(fs.readFileSync('index.html','utf8'),{url:'https://example.test/chinese-coach-pwa/',runScripts:'outside-only',pretendToBeVisual:true});
+const w=dom.window,d=w.document,clips=[],errors=[];
+w.addEventListener('error',e=>errors.push(e.error));
+w.fetch=async url=>({ok:true,json:async()=>JSON.parse(fs.readFileSync(String(url).replace('./',''),'utf8'))});w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};w.matchMedia=()=>({matches:true});
+w.speechSynthesis={getVoices:()=>[],cancel(){},speak(u){u.onend?.()}};w.SpeechSynthesisUtterance=function(){};
+w.Audio=function(src){this.src=src;this.paused=true;clips.push(this);this.play=()=>{this.paused=false;this.onplaying?.();return Promise.resolve()};this.pause=()=>{this.paused=true;this.onpause?.()}};
+w.eval([...d.scripts].map(s=>s.src?fs.readFileSync(decodeURI(new URL(s.src).pathname.replace('/chinese-coach-pwa/','')),'utf8'):s.textContent).join('\n'));
+const root=d.getElementById('pg130'),q=s=>root.querySelector(s),click=s=>{const b=q(s);assert(b&&!b.disabled,s);b.click()},tick=()=>new Promise(r=>setImmediate(r));
+(async()=>{
+ w.getDialogueAudioFile=async(id,i)=>`./assets/dialogue-voices-v73/l${id}-${String(i+1).padStart(2,'0')}-${i%2?'b':'a'}.mp3`;
+ w.__panda130.show('dialogues');assert.equal(root.querySelectorAll('[data-dialog-line]').length,6);
+ const shell=q('.pg-screen'),decoration=q('.pg-sakura');
+ click('[data-action=dialog-all]');await tick();assert.equal(q('.pg-speaking').dataset.dialogLine,'0');
+ const first=clips.at(-1);assert.equal(first.playbackRate,1);
+ click('[data-action=dialog-pause]');assert(first.paused);assert.equal(q('[data-action=dialog-pause]').textContent,'Продолжить');
+ click('[data-action=pinyin]');click('[data-action=dialog-translation]');assert.equal(clips.at(-1),first);assert(root.querySelectorAll('.pg-dialog-pinyin[hidden]').length===6);assert.equal(q('.pg-screen'),shell);
+ click('[data-action=dialog-pause]');assert(!first.paused);
+ first.onended();await tick();assert.equal(q('.pg-speaking').dataset.dialogLine,'1');
+ for(let i=1;i<6;i++){assert.equal(q('.pg-speaking').dataset.dialogLine,String(i));assert(fs.existsSync(clips.at(-1).src.replace('./','')));clips.at(-1).onended();await tick()}
+ assert(!q('.pg-speaking'));assert(root.textContent.includes('Диалог завершён'));assert.equal(root.querySelectorAll('[data-dialog-line]').length,6);
+ click('[data-action=dialog-repeat]');await tick();assert.equal(q('.pg-speaking').dataset.dialogLine,'0');
+ const obsolete=clips.at(-1);click('[data-action=dialog-tab][data-value="1"]');assert(obsolete.paused);obsolete.onended();await tick();assert(!q('.pg-speaking'));assert.equal(root.querySelectorAll('[data-dialog-line]').length,5);
+ click('[data-action=dialog-line][data-value="3"]');await tick();assert.equal(q('.pg-speaking').dataset.dialogLine,'3');clips.at(-1).onerror();assert(root.textContent.includes('Не удалось воспроизвести'));
+ let resolve;w.getDialogueAudioFile=()=>new Promise(r=>resolve=r);click('[data-action=dialog-all]');w.__panda130.show('words');resolve('obsolete.mp3');await tick();assert(!clips.some(a=>a.src==='obsolete.mp3'),'Cancelled loading may not begin after route change');
+ const portrait=q('.pg-portrait');click('[data-action=known]');assert.equal(q('.pg-portrait'),portrait,'Decoded approved portrait survives answer updates');assert.equal(q('.pg-screen'),shell);assert.equal(q('.pg-sakura'),decoration);
+ w.__panda130.show('settings');assert(root.contains(d.getElementById('app-settings')));assert(d.getElementById('app-settings').open);assert(q('#download-course'));assert(q('#exportprogress'));
+ w.__panda130.show('home');assert(!root.contains(d.getElementById('app-settings')));w.__panda130.show('settings');assert(q('#exportprogress'),'Original backup controls survive repeat navigation');
+ await tick();assert.equal(errors.length,0);console.log('v142: full transcripts, media-event sync, pause/resume, repeat, per-line playback, stale-load cancellation, missing-MP3 error, in-place toggles, stable images, reachable settings and preserved backup controls passed.');
+ w.close();
+})().catch(e=>{console.error(e);w.close();process.exitCode=1});

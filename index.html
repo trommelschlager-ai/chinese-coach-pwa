@@ -1593,7 +1593,7 @@ body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .foc
 <link rel="stylesheet" href="./assets/travel-entry-v1.css?v=1">
 <link rel="stylesheet" href="./assets/menu-v3-approved.css?v=1">
 <link rel="stylesheet" href="./assets/panda-approved-lesson-ui-v129.css?v=1">
-<link rel="stylesheet" href="./assets/panda-v130.css?v=137">
+<link rel="stylesheet" href="./assets/panda-v130.css?v=142">
 </head>
 <body class="launch-active"><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><div class="launch-cover-art"><img src="./assets/approved-home-v36.png" width="635" height="1536" fetchpriority="high" alt="Мой Китайский. Девушка в розовом платье и кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></div></section><section id="launch-menu" class="launch-screen six-lessons-menu" hidden>
 <img class="six-original-scenery" src="./assets/lessons-backdrop.webp" alt="" aria-hidden="true">
@@ -1860,7 +1860,7 @@ async function updateOfflineBar(){const info=document.getElementById('offlineinf
 window.addEventListener('online',updateOfflineBar);window.addEventListener('offline',updateOfflineBar);
 if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')){
  const hadServiceWorkerController=!!navigator.serviceWorker.controller;
- navigator.serviceWorker.register('./sw.js?v=141',{scope:'./',updateViaCache:'none'}).then(()=>navigator.serviceWorker.ready).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
+ navigator.serviceWorker.register('./sw.js?v=142',{scope:'./',updateViaCache:'none'}).then(()=>navigator.serviceWorker.ready).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
  navigator.serviceWorker.addEventListener('controllerchange',()=>{
   // Replace an already-open cached shell once the new offline version takes control.
   if(hadServiceWorkerController){
@@ -1909,7 +1909,7 @@ const COURSE = [
    {title:'Вежливые ответы',text:'На 谢谢 («спасибо») можно ответить 不客气 («не за что»). На 对不起 («извините») — 没关系 («ничего страшного»).',hz:'谢谢！— 不客气！',py:'xièxie! — bú kèqi!',ru:'Спасибо! — Не за что!'}
   ],
   vocab:[['你好','nǐ hǎo','привет'],['您好','nín hǎo','здравствуйте (вежливо)'],['再见','zàijiàn','до свидания'],['谢谢','xièxie','спасибо'],['不客气','bú kèqi','не за что'],['对不起','duìbuqǐ','извините'],['没关系','méi guānxi','ничего страшного'],['请','qǐng','пожалуйста (просьба)'],['叫','jiào','называться'],['什么','shénme','что / какой'],['名字','míngzi','имя'],['我叫小明','wǒ jiào Xiǎomíng','меня зовут Сяомин']],
-  dialogue:[['A','你好！','nǐ hǎo!','Привет!'],['B','哈喽！','hālou!','Привет! (неформально)'],['A','你叫什么名字？','nǐ jiào shénme míngzi?','Как тебя зовут?'],['B','我叫安娜。你呢？','wǒ jiào Ānnà. nǐ ne?','Меня зовут Анна. А тебя?'],['A','我叫小明。','wǒ jiào Xiǎomíng.','Меня зовут Сяомин.'],['B','再见！','zàijiàn!','До свидания!']],
+  dialogue:[['A','你好！','nǐ hǎo!','Привет!'],['B','哈喽！','hālóu!','Привет! (неформально)'],['A','你叫什么名字？','nǐ jiào shénme míngzi?','Как тебя зовут?'],['B','我叫安娜。你呢？','wǒ jiào Ānnà. nǐ ne?','Меня зовут Анна. А тебя?'],['A','我叫小明。','wǒ jiào Xiǎomíng.','Меня зовут Сяомин.'],['B','再见！','zàijiàn!','До свидания!']],
   tip:'Заметь: при произношении 你好 первый третий тон переходит во второй. В письменном пиньине обычно оставляют nǐ hǎo.',
   quiz:[
    ['Как сказать «спасибо»?',['再见','谢谢','名字','请'],1,'谢谢 (xièxie) — спасибо.'],
@@ -2542,13 +2542,13 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
 <script src="./assets/study-audio-map.js?v=59"></script>
 <script src="./assets/basic-word-audio-map.js?v=66"></script>
 <script src="./assets/progress-store-v98.js?v=98"></script>
-<script src="./assets/learning-quality.js?v=113"></script>
+<script src="./assets/learning-quality.js?v=142"></script>
 <script src="./assets/approved-lesson-design.js?v=112"></script>
 <script src="./assets/clean-learning-sections.js?v=119"></script>
 <script src="./assets/hsk1-roadmap-v103.js?v=103"></script>
 <script src="./assets/game-practice-v102.js?v=119"></script><script src="./assets/daily-study-v98.js?v=117"></script>
 <script src="./assets/menu-v3-approved.js?v=3"></script>
 <script src="./assets/panda-approved-lesson-ui-v129.js?v=1"></script>
-<script src="./assets/panda-v130.js?v=136"></script>
+<script src="./assets/panda-v130.js?v=142"></script>
 </body>
 </html>

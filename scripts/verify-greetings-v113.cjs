@@ -22,7 +22,7 @@ for(const clip of status.clips){
  assert(pack.files.includes('./'+full),'Missing from offline pack '+full);
 }
 assert(pack.files.includes('./assets/dialogue-greetings-v113/status.json'));
-assert(html.includes("['B','哈喽！','hālou!','Привет! (неформально)']"));
+assert(html.includes("['B','哈喽！','hālóu!','Привет! (неформально)']"));
 assert(engine.includes("'./assets/dialogue-greetings-v113/l2-'"));
 assert(!engine.includes('newGreeting'),'No phone-speech exception for greeting');
 assert(engine.includes('window.playDialogueLine')&&engine.includes('window.playStandaloneDialogue'));
