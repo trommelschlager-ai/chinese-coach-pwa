@@ -129,7 +129,7 @@ window.addEventListener('DOMContentLoaded',function(){
       writer=window.HanziWriter.create('writer',d.hz,{
         width:size,height:size,padding:19,showOutline:true,showCharacter:false,
         charDataLoader:function(char,onComplete,onError){fetch('./assets/hanzi-data/'+encodeURIComponent(char)+'.json').then(r=>{if(!r.ok)throw Error('load');return r.json()}).then(onComplete).catch(onError);},
-        strokeColor:'#65368e',radicalColor:'#a5539f',outlineColor:'#e5d7ef',
+        strokeColor:'#6c2618',radicalColor:'#943a45',outlineColor:'#e4c2a8',
         drawingColor:'#8a48a4',highlightColor:'#f1b34c',strokeAnimationSpeed:1.15,delayBetweenStrokes:420,
         showHintAfterMisses:3,acceptBackwardsStrokes:false,
         onLoadCharDataSuccess:function(){if(seq!==sequence)return;loaded=true;setButtons(true);runAnimation(seq,true);},
