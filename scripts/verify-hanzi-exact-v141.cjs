@@ -9,12 +9,13 @@ w.scrollTo=()=>{};
 w.Audio=class{constructor(src){this.src=src}play(){played.push(this.src);return Promise.resolve()}pause(){}};
 w.speechSynthesis={getVoices:()=>[{lang:'zh-CN',name:'Mandarin',voiceURI:'test'}],addEventListener(){},cancel(){},speak(u){spoken.push(u.text)}};
 w.SpeechSynthesisUtterance=function(text){this.text=text};
-w.HanziWriter={create(id,hz,options){const writer={hz,cancelQuiz(){},animateCharacter(){return Promise.resolve()},hideCharacter(){return Promise.resolve()},quiz(callbacks){this.callbacks=callbacks}};writers.push(writer);queueMicrotask(()=>options.onLoadCharDataSuccess());return writer}};
+w.HanziWriter={create(id,hz,options){const writer={hz,cancelQuiz(){},pauseAnimation(){},showOutline(){return Promise.resolve()},hideOutline(){return Promise.resolve()},animateCharacter(){this.animations=(this.animations||0)+1;return Promise.resolve()},hideCharacter(){return Promise.resolve()},quiz(callbacks){this.callbacks=callbacks}};writers.push(writer);queueMicrotask(()=>options.onLoadCharDataSuccess());return writer}};
+w.eval(fs.readFileSync('assets/hanzi-exact-v141.js','utf8'));
 w.eval(inline);
 const tick=()=>new Promise(resolve=>setTimeout(resolve,35));
 (async()=>{
  await new Promise(resolve=>w.addEventListener('DOMContentLoaded',resolve,{once:true}));
- w.eval(fs.readFileSync('assets/hanzi-exact-v141.js','utf8'));w.eval(fs.readFileSync('assets/hanzi-phrases-v141.js','utf8'));await tick();
+ w.eval(fs.readFileSync('assets/hanzi-phrases-v141.js','utf8'));await tick();
  const stage=d.querySelector('#pg-hanzi-approved'),hit=name=>stage.querySelector('[data-art-hit="'+name+'"]');
  assert(stage);assert.equal(stage.dataset.dynamic,'false');
  assert(d.querySelector('.paper').closest('#pg-hanzi-approved'));
@@ -25,10 +26,13 @@ const tick=()=>new Promise(resolve=>setTimeout(resolve,35));
  hit('examples').click();await tick();assert(stage.querySelector('.pg-dynamic-panel').hidden);assert(stage.querySelector('.pg-panel-clean').hidden);
  for(const hz of ['大','人','小','一','二','三','口','日','月','木']){
   assert.equal(d.querySelector('#character').textContent,hz);assert.equal(writers.at(-1).hz,hz);
+  assert.equal(stage.querySelector('.pg-art-stroke-paper').hidden,false,'Automatic animation must be visible before pressing any control');
+  assert.equal(writers.at(-1).animations,1,'Each new character animates automatically');
+  assert.equal(stage.querySelector('.pg-dynamic-glyph').hidden,true,'No static character may cover the animated writer');
   hit('speak').click();assert(played.at(-1).includes(encodeURIComponent(hz)));
   for(let i=0;i<3;i++){const before=played.length;hit('example-'+i).click();assert.equal(played.length,before+1);assert(played.at(-1).includes('/hanzi-phrases-v141/'),'Each example has a local Mandarin recording')}
   if(hz!=='大'){
-   assert.equal(stage.dataset.dynamic,'true');assert.equal(stage.querySelector('.pg-dynamic-glyph').textContent,hz);
+   assert.equal(stage.dataset.dynamic,'true');assert.equal(stage.querySelector('.pg-dynamic-glyph').hidden,true);
    assert.equal(stage.querySelector('.pg-dynamic-panel').hidden,false);assert.equal(stage.querySelectorAll('.pg-dynamic-row').length,3);
   }
   hit('strokes').click();await tick();assert.equal(stage.querySelector('.pg-art-stroke-paper').hidden,false);

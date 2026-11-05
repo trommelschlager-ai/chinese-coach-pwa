@@ -22,7 +22,7 @@ w.Audio=class {
 };
 w.speechSynthesis={getVoices(){return voices},cancel(){},speak(u){spoken.push({text:u.text,lang:u.lang,voice:u.voice,rate:u.rate})},addEventListener(){}};
 w.SpeechSynthesisUtterance=function(text){this.text=text};
-w.HanziWriter={create(id,character,opts){opened.push(character);const stub={cancelQuiz(){},hideCharacter(){return Promise.resolve()},animateCharacter(){modes.push('animation');return Promise.resolve({canceled:false})},highlightStroke(){modes.push('hint')},quiz(handlers){modes.push('quiz');handlers.onCorrectStroke({strokeNum:0,strokesRemaining:0});handlers.onComplete({totalMistakes:0});}};Promise.resolve().then(()=>opts.onLoadCharDataSuccess());return stub}};
+w.HanziWriter={create(id,character,opts){opened.push(character);const stub={cancelQuiz(){},pauseAnimation(){},showOutline(){return Promise.resolve()},hideOutline(){return Promise.resolve()},hideCharacter(){return Promise.resolve()},animateCharacter(){modes.push('animation');return Promise.resolve({canceled:false})},highlightStroke(){modes.push('hint')},quiz(handlers){modes.push('quiz');handlers.onCorrectStroke({strokeNum:0,strokesRemaining:0});handlers.onComplete({totalMistakes:0});}};Promise.resolve().then(()=>opts.onLoadCharDataSuccess());return stub}};
 w.eval(scripts[0]);
 (async()=>{
 await new Promise(resolve=>w.addEventListener('DOMContentLoaded',resolve,{once:true}));

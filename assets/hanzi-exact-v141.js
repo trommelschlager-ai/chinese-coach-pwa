@@ -19,7 +19,7 @@
    ['next','Go еще — следующий иероглиф']
   ];
   stage.innerHTML='<img hidden class="pg-art" src="./assets/hanzi-approved-v141.png" alt="Panda Go: китайский свиток с иероглифом, сакура, озеро, кнопки Черты, Писать, примеры и Go еще." decoding="async" fetchpriority="high">'
-   +'<div class="pg-art-stroke-paper" hidden></div>'
+   +'<div class="pg-art-stroke-paper"></div>'
    +'<div class="pg-dynamic-glyph" lang="zh-Hans" hidden></div>'
    +'<div class="pg-dynamic-pronounce" hidden><b lang="zh-Hans"></b><span></span></div>'
    +'<div class="pg-dynamic-meaning" hidden></div>'
@@ -34,7 +34,7 @@
   const $=sel=>stage.querySelector(sel);
   const canvasDock=$('.pg-art-stroke-paper');
   canvasDock.appendChild(nativePaper);
-  let writingVisible=false;
+  let writingVisible=true;
   let previousCharacter=originalCharacter.textContent.trim();
   function showCanvas(){
    writingVisible=true;
@@ -46,13 +46,13 @@
   function activeTab(){return document.querySelector('.pg-lex-tab[aria-selected="true"]')?.dataset.hanziTab||'examples'}
   function render(){
    const ch=originalCharacter.textContent.trim()||'大',tab=activeTab();
-   if(ch!==previousCharacter){previousCharacter=ch;writingVisible=false;}
+   if(ch!==previousCharacter){previousCharacter=ch;writingVisible=true;}
    const isInitial=ch==='大';
    stage.dataset.dynamic=String(!isInitial);
    stage.setAttribute('aria-label','Иероглиф '+ch+' — '+document.getElementById('meaning').textContent);
    $('.pg-readable').textContent=document.getElementById('pinyin').textContent+'; '+lexicon.textContent;
    canvasDock.hidden=!writingVisible;
-   liveGlyph.hidden=writingVisible||isInitial;
+   liveGlyph.hidden=true;
    if(!liveGlyph.hidden)liveGlyph.textContent=ch;
    livePron.hidden=isInitial;
    liveMeaning.hidden=isInitial;
@@ -115,7 +115,7 @@
     return;
    }
    if(action==='next'){
-    writingVisible=false;
+    writingVisible=true;
     originalNext.click();
     render();
    }

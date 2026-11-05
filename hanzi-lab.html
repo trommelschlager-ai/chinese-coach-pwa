@@ -27,7 +27,9 @@
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
   </style>
   <script defer src="./assets/vendor/hanzi-writer.min.js"></script>
-<link rel="stylesheet" href="./assets/hanzi-exact-v141.css?v=141">
+<link rel="preload" as="image" href="./assets/hanzi-paper-v141.png">
+<link rel="preload" as="image" href="./assets/hanzi-dynamic-v141.png">
+<link rel="stylesheet" href="./assets/hanzi-exact-v141.css?v=145">
 </head>
 <body class="writing-simple">
 <main class="shell">
@@ -81,6 +83,7 @@
   <details class="writing-about"><summary>Об аудио и тренажёре</summary><p class="footnote">Образцы письма и черты сохраняются вместе с материалами в настройках приложения. Запись произношения — голос носителя Yue Tan (CC BY-SA 3.0 US), <a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener noreferrer">источник и лицензия</a>. На телефоне при отсутствии аудио включается запасной голос. Тренажёр проверяет штрихи и их последовательность, но не заменяет преподавателя каллиграфии. Прогресс сохраняется только на этом устройстве.</p></details>
   </details>
 </main>
+<script src="./assets/hanzi-exact-v141.js?v=145"></script>
 <script>
 window.addEventListener('DOMContentLoaded',function(){
   'use strict';
@@ -114,20 +117,20 @@ window.addEventListener('DOMContentLoaded',function(){
 
   function renderTabs(){const bar=$('character-tabs');bar.textContent='';lessons.forEach((l,i)=>{const btn=document.createElement('button');btn.type='button';btn.setAttribute('aria-pressed',String(i===index));btn.className=completed.has(l.hz)?'done':'';btn.setAttribute('aria-label',l.hz+' '+l.py+(completed.has(l.hz)?' · пройден':''));const hz=document.createElement('span');hz.lang='zh-Hans';hz.textContent=l.hz;const sub=document.createElement('small');sub.textContent=completed.has(l.hz)?'✓':l.py;btn.append(hz,sub);btn.addEventListener('click',()=>select(i));bar.appendChild(btn);});}
   function select(i){
-    recordingToken++;window.speechSynthesis?.cancel();try{if(activeRecording){activeRecording.pause();activeRecording.currentTime=0;}}catch(_){} sequence++; const seq=sequence; index=(i+lessons.length)%lessons.length;const d=lessons[index];loaded=false;quizActive=false;misses=0;currentStroke=0;writer=null;
+    recordingToken++;window.speechSynthesis?.cancel();try{if(activeRecording){activeRecording.pause();activeRecording.currentTime=0;}}catch(_){} writer?.cancelQuiz();writer?.pauseAnimation?.();sequence++; const seq=sequence; index=(i+lessons.length)%lessons.length;const d=lessons[index];loaded=false;quizActive=false;misses=0;currentStroke=0;writer=null;
     $('character').textContent=d.hz;$('pinyin').textContent=`${d.py} · ${d.tone}`;$('meaning').textContent=d.ru;
     $('explanation').textContent=d.explain;$('example-zh').textContent=d.word;$('example-py').textContent=d.wordPy;$('example-ru').textContent=d.wordRu;$('tone-note').textContent=d.toneHint;
     $('stroke-status').textContent=`Количество черт: ${d.count}`;$('lesson-counter').textContent=`Иероглиф ${index+1} из ${lessons.length}`;
     $('next').textContent=index===lessons.length-1?'К первому →':'Далее →';
     document.querySelector('.top-pill').textContent=`Иероглиф · ${index+1} из ${lessons.length}`;
     $('writing-help').open=false;document.querySelector('.character-picker').open=false;renderTabs();setButtons(false);say('Загружаем образец и порядок черт…');
-    $('writer').innerHTML='<span class="fallback" aria-hidden="true"></span>';$('writer').firstChild.textContent=d.hz;
+    $('writer').textContent='';
     if(!window.HanziWriter){say('Не удалось загрузить модуль письма. Проверь интернет и обнови страницу.','bad');return;}
     const size=Math.max(1,Math.floor($('writer').clientWidth));
     $('writer').textContent='';
     try{
       writer=window.HanziWriter.create('writer',d.hz,{
-        width:size,height:size,padding:5,showOutline:true,showCharacter:false,
+        width:size,height:size,padding:5,showOutline:false,showCharacter:false,
         charDataLoader:function(char,onComplete,onError){fetch('./assets/hanzi-data/'+encodeURIComponent(char)+'.json').then(r=>{if(!r.ok)throw Error('load');return r.json()}).then(onComplete).catch(onError);},
         strokeColor:'#6c2618',radicalColor:'#943a45',outlineColor:'#e4c2a8',
         drawingColor:'#8a48a4',highlightColor:'#f1b34c',strokeAnimationSpeed:1.15,delayBetweenStrokes:420,
@@ -139,7 +142,7 @@ window.addEventListener('DOMContentLoaded',function(){
   }
   function runAnimation(targetSequence,auto){
     if(!loaded||!writer)return;
-    writingStage('observe');const activeWriter=writer;quizActive=false;activeWriter.cancelQuiz();
+    writingStage('observe');const activeWriter=writer;quizActive=false;activeWriter.cancelQuiz();activeWriter.hideOutline({duration:0});
     say(auto?'Смотри: иероглиф пишется сам, штрих за штрихом…':'Показываю правильный порядок черт…');
     Promise.resolve(activeWriter.animateCharacter()).then(result=>{
       if(targetSequence!==sequence||writer!==activeWriter||quizActive||result?.canceled)return;
@@ -147,7 +150,7 @@ window.addEventListener('DOMContentLoaded',function(){
     }).catch(()=>{if(targetSequence===sequence&&!quizActive)say('Не удалось показать анимацию. Попробуй ещё раз.','bad');});
   }
   function animate(){runAnimation(sequence,false);}
-  function startQuiz(){if(!loaded||!writer)return;writingStage('writing');misses=0;currentStroke=0;quizActive=true;const quizSequence=sequence;writer.cancelQuiz();say('Твоя очередь! Напиши первый штрих пальцем в квадрате.');
+  function startQuiz(){if(!loaded||!writer)return;writingStage('writing');misses=0;currentStroke=0;quizActive=true;const quizSequence=sequence;writer.cancelQuiz();writer.showOutline({duration:0});say('Твоя очередь! Напиши первый штрих пальцем в квадрате.');
     writer.hideCharacter({duration:0}).then(()=>{
       if(!quizActive||quizSequence!==sequence)return;
       writer.quiz({
@@ -305,6 +308,6 @@ function renderPgLexicon(){
 </script>
 <script src="./assets/daily-study-v98.js?v=98"></script>
 <script src="./assets/hanzi-phrases-v141.js?v=141"></script>
-<script src="./assets/hanzi-exact-v141.js?v=141"></script>
+
 </body>
 </html>
