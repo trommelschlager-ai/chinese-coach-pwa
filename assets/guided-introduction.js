@@ -52,7 +52,7 @@
     ['住', 'zhù', 'жить / проживать'],
     ['在', 'zài', 'в / на — перед местом'],
     ['哪里', 'nǎlǐ', 'где'],
-    ['北京', 'Běijīng', 'Пекин · послушай в фразе «Я живу в Пекине»'],
+    ['北京', 'Běijīng', 'Пекин'],
   ];
   const locationDialogue = [
     ['А', '你住在哪里？', 'Nǐ zhù zài nǎlǐ?', 'Где ты живёшь?', './assets/dialogue-voices-v73/l3-04-b.mp3'],
@@ -286,7 +286,7 @@
       title: 'Действие и место',
       body: () => words.map(([hz, py, ru]) =>
         '<div class="card word"><div>' + phrase(hz, py, ru) + '</div><button data-word="' + hz + '" aria-label="' +
-        (hz === '北京' ? 'Послушать 北京 в предложении' : 'Послушать ' + hz) + '">🔊</button></div>'
+        ('Послушать ' + hz) + '">🔊</button></div>'
       ).join(''),
       next: 'Перейти к правилу',
     },
@@ -382,18 +382,16 @@
     const button = event.target.closest('button');
     if (!button) return;
     if (button.dataset.word) {
-      const file = button.dataset.word === '北京'
-        ? './assets/dialogue-voices-v73/l3-05-a.mp3'
-        : window.courseHumanAudio?.[button.dataset.word] || window.courseNaturalAudio?.[button.dataset.word];
+      const file = window.courseGuidedAudio?.[button.dataset.word];
       if (file) playFiles([file]);
       else feedback.textContent = 'Запись пока недоступна.';
     }
     if (button.hasAttribute('data-listen-all')) {
-      playFiles(dialogue.map(line => line[4]), [...content.querySelectorAll('[data-line]')]);
+      playFiles(dialogue.map(line => window.courseGuidedAudio?.[line[1]]), [...content.querySelectorAll('[data-line]')]);
     }
     if (button.hasAttribute('data-listen')) {
       const index = Number(button.dataset.listen);
-      playFiles([dialogue[index][4]], [content.querySelector('[data-line="' + index + '"]')]);
+      playFiles([window.courseGuidedAudio?.[dialogue[index][1]]], [content.querySelector('[data-line="' + index + '"]')]);
     }
     if (button.hasAttribute('data-stop')) {
       stopAudio();
