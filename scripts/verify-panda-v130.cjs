@@ -42,6 +42,25 @@ w.__panda130.show('practice');click('[data-action=question-play]');assert(fs.exi
 w.__panda130.show('build');w.__panda130.show('quiz');w.history.replaceState(null,'','#panda/build');w.dispatchEvent(new w.PopStateEvent('popstate'));w.dispatchEvent(new w.HashChangeEvent('hashchange'));assert(q('.pg-token-pool'),'Browser Back recovers a compatible game session');
 w.__panda130.show('course');assert(root.hidden);w.eval("go('home')");assert(!root.hidden,'Legacy course returns to the new home');
 w.__panda130.show('words');click('[data-action=word-filter][data-value="g07"]');assert.equal(q('.pg-hanzi').textContent,'妈妈');assert.equal(root.querySelectorAll('.pg-example').length,3,'Mama has three useful example sentences');assert(root.textContent.includes('Она моя мама.'));click('[data-action=example][data-value="0"]');assert(played.at(-1).includes('/pinyin-reading-v2/p086.mp3'),'Mama uses a local recorded MP3 rather than device TTS');
+const allV148=w.PANDA_WORD_SENTENCES_V148,wordCards=w.__simpleSectionPreview.data.flatMap(g=>g.words);
+assert.equal(Object.keys(allV148).length,193,'All 193 words have manually reviewed example sentences');
+for(const word of wordCards){
+ const rows=allV148[word.hz];
+ assert(rows&&rows.length>=1,'Missing example for '+word.hz);
+ for(const row of rows)assert(row.hz.includes(word.hz)&&row.py&&row.ru,'Untranslated or off-target example for '+word.hz);
+}
+click('[data-action=word-next][data-value="1"]');
+assert.equal(q('.pg-hanzi').textContent,'爸爸');
+assert.equal(root.querySelectorAll('.pg-example').length,3,'Dad now has three real, translated examples');
+assert(q('.pg-portrait').src.includes('/assets/meaning-man.webp'),'Father must not reuse the girl portrait');
+click('[data-action=word-filter][data-value="all"]');
+for(let i=0;i<7;i++)click('[data-action=word-next][data-value="1"]');
+assert.equal(q('.pg-hanzi').textContent,'你们');
+assert.equal(root.querySelectorAll('.pg-example').length,3,'Plural you has three complete written example sentences');
+assert(q('.pg-portrait').src.includes('/assets/meaning-group.webp'),'Plural you uses a group illustration');
+assert(!root.textContent.includes('Озвученные примеры для этого слова пока не подготовлены'),'Never show a dead empty example block');
+const currentCss=fs.readFileSync('assets/panda-v130.css','utf8');
+assert(currentCss.includes('Panda Go v148: consolidate'),'New lesson layout must replace prior visual patches');
 w.__panda130.show('unknown');assert(q('.pg-home-hit-tones'),'Invalid route recovers approved home');
 for(const img of root.querySelectorAll('img'))assert(fs.existsSync(new URL(img.src).pathname.replace('/chinese-coach-pwa/','')),'Asset exists: '+img.src);
 assert.deepEqual(errors,[]);assert.equal(w.__simpleSectionPreview.total,193,'Original course data retained');
