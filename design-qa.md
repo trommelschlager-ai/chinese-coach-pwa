@@ -1,42 +1,86 @@
-# Hanzi v141 — QA blocked, draft only
+# Panda Go — проверка экрана иероглифов v141
 
-final result: blocked
+final result: passed
 
-Source visual truth: assets/hanzi-approved-v141.png, the exact attached file bytes (named .png, JPEG-encoded); 864 × 1536 pixels. SHA-256: bf2f759f94ecbf6954e38f088f426c99a1ae4d67fbeb39a577cf590beffc7b7a.
+Проверен экран `hanzi-lab.html`. Существующие остальные экраны приложения не перерабатывались.
 
-Implementation screenshot: unavailable. No browser-rendered mobile screenshot exists for this draft. No visual fidelity pass is claimed.
+## Ссылки и версия
 
-Required viewports: 360, 393, 412, 430 CSS pixels, with short and tall heights. These have NOT been visually verified. Device density normalization and full-view/focused comparisons have NOT been performed.
+- Приложение: https://trommelschlager-ai.github.io/chinese-coach-pwa/hanzi-lab.html
+- Изменения: https://github.com/trommelschlager-ai/chinese-coach-pwa/pull/34
+- Проверенная версия интерфейса: `6e37620e6e433d23586c7fdba5327334c60d7725`.
+- Проверка Chromium: https://github.com/trommelschlager-ai/chinese-coach-pwa/actions/runs/41974599174 — задание `hanzi-focused` успешно.
+- Общие проверки кода и выпуска: https://github.com/trommelschlager-ai/chinese-coach-pwa/actions/runs/41974599210 — успешно.
+- Исходная версия для отката: `e27e726aa2eb7a7cbbc27c5b52ab888fca655b7f`.
 
-## Blocking findings
+## Эталон и сравнение
 
-- P0 verification: managed local preview returns “upstream connect error or disconnect/reset before headers”. Retried after installing dependencies and then using the supported static-directory configuration; both remained unavailable.
-- An owner-private test deployment succeeded, but the cloud browser requires a new ChatGPT sign-in. No credentials were requested because the user instructed autonomous execution without questions. No private access gate was bypassed.
-- P2 pending: dynamic text wrapping, source-derived clean-paper texture, alternate tabs, long sentences, bottom decoration on tall screens and safe-area behavior require screenshots before acceptance.
+Использован именно файл пользователя `33237.png`, сохранённый как `assets/hanzi-approved-v141.png` **без изменения байтов**. Файл назван PNG, но содержит JPEG: 864 × 1536 пикселей, SHA-256 `bf2f759f94ecbf6954e38f088f426c99a1ae4d67fbeb39a577cf590beffc7b7a`.
 
-## Required fidelity surfaces
+Основная иллюстрация сохраняет пропорции 864:1536. На коротком экране доступна вертикальная прокрутка. На высоком экране ниже исходного изображения продолжается только пейзаж из его нижнего фрагмента; элементы управления не дублируются. Это продолжение фона — дополнение за пределами эталона, сам эталон не растянут.
 
-- Typography: initial screen lettering stays in the source raster; dynamic HTML text uses available serif CJK and Arial/system fonts. Dynamic font fidelity and wrapping remain unverified.
-- Spacing/layout: hotspots measured against 864 × 1536 source. Stage preserves its aspect ratio. Mobile measurements and hit targets remain unverified in a browser.
-- Colors: initial source pixels unchanged; alternate text sits over source-derived clean layers. No generated replacement scenery.
-- Images: source attachment retained byte-for-byte. Dynamic layers use harmonic interpolation from surrounding source pixels to clear only changing glyph/text. Those layers are not claimed to be visually identical to an unavailable clean original.
-- Copy: retained 10 lessons, original word/sentence data and tone marks. Three sentences or three words per character. No learning data or existing storage keys removed.
+- Полное сравнение: `qa/hanzi-v141/comparison-393.jpg`.
+- Сравнение карточек и нижней кнопки: `qa/hanzi-v141/comparison-details.jpg`.
+- Мобильный скриншот: `qa/hanzi-v141/mobile-393.png`.
+- Четыре ширины рядом: `qa/hanzi-v141/mobile-widths.jpg`.
+- Пример другого знака: `qa/hanzi-v141/ren-393-852.jpg`.
+- Длинное значение и три читаемых примера: `qa/hanzi-v141/wood-examples-393.jpg`.
+- Полные машинные результаты: `qa/hanzi-v141/results.json`.
 
-## Automated checks
+Нормализация для сравнения: исходные 864 × 1536 приведены к 393 × 699; реальный снимок области иллюстрации — 393 × 699. CSS-окно 393 × 852, deviceScaleFactor=1. Сравнение выполнено по общей картинке с эталоном и снимком рядом, затем отдельно по карточкам и кнопке. Средняя абсолютная разница каналов после масштабирования: 2,81 из 255 на ширине 393; на всех проверенных размерах менее 8. Это проверка близости масштабированного изображения, а не утверждение о побайтовом равенстве браузерного снимка.
 
-- npm run check: passed, including existing course, Hanzi, quiz, audio coverage and offline regression suites.
-- node scripts/verify-hanzi-exact-v141.cjs: passed. Tests hotspot routing for all 10 characters, all 30 example-audio actions, meaning/words/examples tabs, animation and quiz initiation, mistake/correct/completion callbacks, persisted progress, next and wraparound.
-- These tests use jsdom and mocked media/HanziWriter. They do not verify sound, touch accuracy, actual stroke matching, rendering or Android behavior.
-- Existing 10 character MP3 files are retained. Example audio still depends on an installed Mandarin system voice. Real playback has NOT been heard or verified.
-- Attempt to prepare additional local sentence audio failed certificate verification; no failed or empty audio files were added, no TLS protection was disabled.
-- Browser console on the actual implementation: NOT checked because authentication blocked access.
+## Результаты функций
 
-## Before merging or deploying GitHub Pages
+| Элемент | Что проверено | Результат |
+|---|---|---|
+| «Черты» | Настоящие SVG-пути HanziWriter и завершение анимации 大 и 人 | Пройдено |
+| «Писать» | Реальные события touch в Chromium; правильные черты 大 и 人 | Пройдено |
+| Проверка порядка | Для 大 сначала введена вторая черта; тренажёр сообщил ошибку, затем принял правильное написание | Пройдено |
+| Произношение знака | Запуск исходного MP3 大 через настоящее воспроизведение браузера | Пройдено |
+| «Значение» | Значение, краткое объяснение, подсказка о тоне; текст не закрывает значки | Пройдено |
+| «Примеры» | По три предложения, пиньинь и перевод для всех 10 знаков | Пройдено |
+| «Слова» | По три слова для всех 10 знаков | Пройдено |
+| Озвучка карточек | Все 60 действий: 30 предложений и 30 слов; реальный `Audio.play()` без подмены воспроизведения | Пройдено |
+| «Go еще →» | Следующий знак, произношение, значение и карточки; цикл из 10 знаков | Пройдено |
+| «Назад» | Переход на `index.html#panda/learn` | Пройдено |
+| Прогресс | Завершённые 大 и 人 сохраняются в исходном ключе и переживают перезагрузку; автоматическая проверка всех 10 знаков в jsdom | Пройдено |
+| Кэш | v141 CSS/JS, карта MP3 в обязательном кэше; изображения и 62 MP3 в офлайн-пакете | Проверки файлов пройдены |
 
-1. Restore a working browser preview and compare source and rendered screenshots in the same image, at matching content dimensions.
-2. Check all four widths and several heights. Verify no horizontal scrolling, readable examples and fully accessible bottom button.
-3. Check 大 and 人, including switching back to 大. Ensure no original glyph or original sentence remains under dynamic content.
-4. Verify every control, actual Mandarin playback and finger drawing with correct and incorrect stroke order on Android.
-5. Fix all P0/P1/P2 findings, then change final result to passed with captured evidence.
+В поставке 62 локальные записи для фраз и слов, включая сохранённые длинные варианты. Десять исходных записей отдельных знаков сохранены. Для работы карточек больше не требуется устанавливать китайский системный голос. Системный голос сохранён как резервный механизм.
 
-The default branch and existing GitHub Pages deployment must remain unchanged until this gate passes.
+Пять слишком длинных предложений получили короткие варианты для карточек, чтобы текст помещался без уменьшения до нечитаемого размера. Исходные предложения и прочие учебные данные оставлены в коде. Ключи сохранения прогресса и настроек не менялись.
+
+## Мобильные размеры
+
+Проверены 360 × 560, 360 × 800, 393 × 852, 412 × 740, 430 × 932 CSS-пикселя. Горизонтальной прокрутки нет; рамки кнопок остаются внутри иллюстрации. При недостаточной высоте страница прокручивается вертикально. Нижняя кнопка доступна целиком. В 393 × 852 дополнительно проверены все 10 знаков и обе вкладки с карточками.
+
+47 снимков, 44 записанные проверки, 65 событий проверки аудио; ошибок JavaScript/консоли в целевом сценарии — 0.
+
+## Визуальные поверхности
+
+- **Шрифты:** начальный текст является частью эталона. Изменяемые знаки и подписи выполнены HTML/SVG; их шрифт может отличаться от нарисованного текста. Длинное значение «Дерево / древесина» помещается в исходную плашку.
+- **Расположение:** пропорции свитка, кнопок, вкладок, карточек и нижней кнопки сохранены. Кнопки — прозрачные интерактивные области поверх изображения.
+- **Цвета:** исходное оформление не перекрашено. Меняющиеся поля используют подготовленные из оригинала слои, а не новый пейзаж или набор CSS-градиентов.
+- **Изображения:** пагоды, озеро, мост, горы, сакура, свиток и украшения взяты из прикреплённого файла. Для смены знака и текста очищены отдельные области исходника интерполяцией соседних пикселей. Нарисованный 大 не остаётся под другим знаком.
+- **Содержание:** три примера на вкладке, корректные тоновые знаки пиньиня, соответствующие MP3; подпись «Go еще →» сохранена.
+
+## Исправленные замечания
+
+| Итерация | Найдено | Исправлено и подтверждено |
+|---|---|---|
+| 1 | Предыдущая картинка 941 × 1672 отличалась от вложения | Подставлен точный файл 864 × 1536; обновлены координаты |
+| 2 | Текст «Значение» пересекался со значками и разделителями | Три кратких блока расположены внутри исходных карточек; новый снимок |
+| 3 | На высоком экране фон повторял карточки и кнопку | Продолжается только нижний пейзаж; снимки 360 × 800 и 393 × 852 |
+| 4 | Длинные предложения выходили из карточек | Добавлены краткие варианты, исходные сохранены; проверены все 10 знаков |
+| 5 | «Дерево / древесина» выходило из плашки | Для длинных значений уменьшен только динамический шрифт; новый снимок |
+| 6 | Сообщение о завершении занимало две строки и задевало вкладки | Короткое однострочное сообщение; проверка пересечения с кнопками |
+
+## Ограничения проверки
+
+- Использовалась мобильная эмуляция Chromium в GitHub Actions, не физический Android. Реальный Android и его системная панель отдельно не проверялись. Предусмотрен `safe-area-inset-bottom`.
+- Проверено успешное воспроизведение и соответствие файла фразе; отдельного прослушивания человеком не было.
+- Динамические надписи и новый знак отличаются шрифтом от нарисованного 大. Высокий экран содержит дополнительное продолжение исходного пейзажа ниже эталона.
+- Существующий общий визуальный сценарий `visual-panda-v130.mjs` по-прежнему останавливается на стартовой странице (`#launch-start`), до открытия иероглифов. Он не изменён в финальной версии. Это отдельная незавершённая проверка других экранов; общий прогон визуальных тестов не объявляется успешным.
+- Локальный предпросмотр Work остался недоступен. По согласованному продолжению проверка выполнена через GitHub, без входа пользователя в Google.
+
+Новых изображений вместо эталона не генерировали. Остальных разделов курса визуальные изменения не касаются.
