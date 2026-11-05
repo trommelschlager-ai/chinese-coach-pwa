@@ -1,36 +1,55 @@
-body.writing-simple{min-height:100dvh;background:#755293!important;color:#341345!important}
-body.writing-simple .shell{position:relative;margin:0 auto;max-width:390px;min-height:min(100dvh,720px);padding:16px 13px 26px;border:3px solid #f9dbff;border-radius:32px;background:linear-gradient(#d6b3ef,#ecd0f5 53%,#dfb8ef);box-shadow:inset 0 0 0 3px #ba8bdc,inset 0 0 17px 6px #fff8,0 0 12px #efb5ff}
-body.writing-simple .shell::before{content:"";position:absolute;top:0;right:0;left:0;height:70px;background:url('./panda-v130/flowers.webp') top center/100% auto no-repeat;pointer-events:none}
-.pg-hanzi-heading{text-align:center;height:95px;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px}
-.pg-hanzi-heading img{width:52px;height:47px;object-fit:contain;mix-blend-mode:normal}.pg-hanzi-heading h1{font:900 25px/1.1 Arial,sans-serif;letter-spacing:-.7px;margin:0}
-body.writing-simple .top{position:absolute;top:13px;left:13px;right:13px;z-index:2;margin:0}
-body.writing-simple .top .back{width:39px;height:39px;padding:7px;border-radius:50%;font-size:0;display:grid;place-items:center}
-body.writing-simple .top .back::before{content:'‹';font:800 32px/1 Arial,sans-serif;color:#702494}
-body.writing-simple .top-pill{font-size:10px;padding:5px 8px;max-width:120px}
-body.writing-simple .mini-progress{position:relative;margin:0 2px 12px;background:transparent;border:0;box-shadow:none;padding:0;font-size:11px}
-body.writing-simple .mini-progress .bar{height:7px}
-body.writing-simple .drawing-card{padding:10px!important;border-radius:20px!important;display:grid!important;grid-template-columns:minmax(0,1fr) 104px;grid-template-rows:repeat(3,62px) auto auto auto;gap:10px!important;align-items:center;background:linear-gradient(145deg,#fff6ff,#ead6f8)!important;border:1.5px solid #e1b9f3!important;box-shadow:inset 0 2px #fff,0 4px 8px #9a52b85a!important}
-body.writing-simple .drawing-card::before{display:none!important}
-body.writing-simple .glyph-title{grid-column:1/-1;grid-row:4;display:flex;justify-content:center;gap:7px;margin:0!important}
-body.writing-simple .glyph-title strong{font-size:36px!important;line-height:1.1!important;color:#763145}
-body.writing-simple .glyph-title .py{font-size:15px!important;color:#5a255e}
-body.writing-simple .glyph-title #speak{font-size:11px;min-height:30px;border-radius:16px;padding:5px 8px}
-body.writing-simple .meaning{grid-column:1/-1;grid-row:5;justify-self:center;padding:6px 18px;font:600 17px/1.15 Arial,sans-serif;margin:0!important;background:#f4dcf7}
-body.writing-simple .paper{grid-column:1;grid-row:1/4;width:100%!important;max-width:100%!important;aspect-ratio:1;border:2px solid #c99cda!important;border-radius:16px!important;margin:0!important;background:#fff7fc!important;box-shadow:inset 0 1px #fff!important}
-body.writing-simple #writer{width:100%!important;height:100%!important;min-height:0!important;display:grid;place-items:center;padding:0!important}
-body.writing-simple #writer svg{max-width:100%;height:auto}
+/* Panda Go Hanzi v133 — approved giant interactive parchment.
+   The live HanziWriter SVG remains the only writing surface. No flattened screenshot. */
+:root{--pg-ink:#3d1557;--pg-pink:#f83de2;--pg-purple:#6818a6}
+html{background:#31105b}
+body.writing-simple{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 51% 3%,#bd55db88,transparent 41%),radial-gradient(ellipse at 70% 78%,#e77ad29c,transparent 54%),linear-gradient(176deg,#251151 0%,#592080 30%,#ad4fb0 65%,#cc8ad3 100%)!important;color:#45175f!important;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+body.writing-simple::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.65;background:url('./panda-v130/flowers.webp') left top/78% auto no-repeat,radial-gradient(circle at 85% 8%,#ffbaf544,transparent 18%),radial-gradient(circle at 7% 89%,#fff8d545,transparent 20%);z-index:0}
+body.writing-simple .shell{position:relative;isolation:isolate;width:min(100%,445px);max-width:445px;min-height:100dvh;margin:auto;padding:72px 12px 24px!important;background:linear-gradient(180deg,#31105b0a,#6f269320 55%,#c47bc838 90%),url('./approved-panda-lake-v112.webp') center bottom/100% auto no-repeat;box-shadow:0 0 32px #160a3b46;border:0!important;border-radius:0!important}
+body.writing-simple .shell::before{content:none!important}
+body.writing-simple .pg-hanzi-heading{display:none!important}
+body.writing-simple .top{position:absolute;left:13px;right:13px;top:111px;z-index:8;display:flex;justify-content:space-between;margin:0;pointer-events:none}
+body.writing-simple .top .back{pointer-events:auto;display:grid;place-items:center;width:46px;height:46px;min-width:46px;padding:0!important;border:2px solid #ffe5ff;border-radius:50%;background:linear-gradient(#fff3ff,#e9c5f8);box-shadow:0 4px 10px #4a1373a6,inset 0 2px #fff;font-size:0!important;text-decoration:none!important;color:#542073}
+body.writing-simple .top .back::before{content:"‹";font:800 43px/1 Arial;color:#63217d}
+body.writing-simple .top-pill,body.writing-simple .visually-hidden,body.writing-simple .mini-progress{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap;margin:-1px!important;padding:0!important}
+body.writing-simple .layout{display:block!important}
+body.writing-simple .card.drawing-card{position:relative;display:grid!important;grid-template-columns:minmax(0,69fr) minmax(0,31fr);grid-template-rows:clamp(360px,99vw,468px) auto auto auto auto auto;column-gap:8px;row-gap:11px;align-items:center;padding:0!important;background:none!important;box-shadow:none!important;border:0!important;border-radius:0!important;overflow:visible!important}
+body.writing-simple .drawing-card::before{content:none!important}
+body.writing-simple .paper{grid-column:1;grid-row:1;position:relative;align-self:stretch;justify-self:stretch;width:100%!important;max-width:none!important;min-height:0;height:100%!important;aspect-ratio:auto!important;display:flex;align-items:center;justify-content:center;margin:0!important;padding:10px 4px;border:4px solid #ba6a37!important;border-radius:5px!important;overflow:visible!important;touch-action:none;background:repeating-linear-gradient(55deg,#fff0d333 0 2px,transparent 2px 13px),radial-gradient(ellipse at 50% 35%,#fff8eb,#ffe2be 83%,#eebd8c 100%)!important;box-shadow:inset 0 0 0 3px #ffdfb7,inset 0 0 32px #c970466b,0 9px 25px #380b4773!important}
+body.writing-simple .paper::before,body.writing-simple .paper::after{content:"";position:absolute;z-index:2;left:-12px;right:-12px;height:29px;pointer-events:none;border:2px solid #d07845;border-radius:25px;background:linear-gradient(180deg,#fff1c5 0%,#d6864a 20%,#fff5cb 43%,#f9b471 60%,#b75a32 83%,#f8cf86 100%);box-shadow:0 3px 8px #4d185399}
+body.writing-simple .paper::before{top:-18px}body.writing-simple .paper::after{bottom:-18px}
+body.writing-simple #writer{width:100%!important;height:auto!important;max-height:100%!important;aspect-ratio:1;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:none!important;padding:0!important}
+body.writing-simple #writer svg{width:100%;max-width:100%;height:auto;touch-action:none!important;display:block}
+body.writing-simple .paper .fallback{font:400 clamp(130px,49vw,230px)/1 "Noto Serif CJK SC","Songti SC",serif;color:#6d2b16;pointer-events:none}
 body.writing-simple .controls{display:contents!important}
-body.writing-simple #animate,body.writing-simple #practice,body.writing-simple #retry{grid-column:2;min-height:48px;font-size:12px!important;padding:8px 5px!important;border-radius:14px!important;color:#562166!important;background:linear-gradient(#fff6ff,#e4c8f4)!important;box-shadow:inset 0 1px #fff,0 3px 4px #ac6bc061!important;border:1px solid #cd9ae3!important}
-body.writing-simple #animate{grid-row:1}body.writing-simple #practice{grid-row:2}body.writing-simple #retry{grid-row:3}
-body.writing-simple #next{grid-column:1/-1;grid-row:6;margin-top:2px;min-height:47px;font-size:17px!important;padding:8px 11px!important;background:linear-gradient(#f35fdd,#bd1cc1)!important;border-radius:26px!important;color:white!important;box-shadow:inset 0 2px #fff9,0 4px 0 #8e32a8,0 7px 10px #bc46c55e!important;border:2px solid #ffdcfc!important}
-body.writing-simple .feedback{grid-column:1/-1;grid-row:7;font-size:12px;padding:8px;border-radius:12px;min-height:43px;line-height:1.25}
-body.writing-simple #stroke-status{grid-column:1/-1;grid-row:8;font-size:11px;margin:0;text-align:center}
-body.writing-simple .writing-extras{margin-top:15px;font-size:12px;padding:9px 11px;border-radius:15px;background:#f9ebff}
-body.writing-simple .writing-extras summary{font-size:12px}
-@media(max-width:420px){body.writing-simple .shell{min-height:100dvh;border:3px solid #f9dbff;border-radius:30px;box-shadow:inset 0 0 0 2px #efbaf8,inset 0 0 13px #fff8}}
-@media(min-width:421px){body.writing-simple{padding:12px 0}}
-
-/* Legacy lesson CSS is not loaded on this standalone screen. */
-body.writing-simple .visually-hidden,body.writing-simple .mini-progress,body.writing-simple .top-pill{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-body.writing-simple .controls #animate,body.writing-simple .controls #practice,body.writing-simple .controls #retry{grid-column:2;order:initial}
-body.writing-simple .controls #next{grid-column:1/-1;order:initial}
+body.writing-simple #animate,body.writing-simple #practice,body.writing-simple #pg-trace,body.writing-simple #retry{grid-column:2;grid-row:1;justify-self:stretch;min-width:0;min-height:68px;padding:9px 5px!important;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px;color:#57216e!important;font:800 clamp(13px,3.6vw,17px)/1.2 system-ui,sans-serif!important;text-shadow:0 1px #fff9;border:2px solid #ffc5f0!important;border-bottom-color:#ff9f6c!important;border-radius:27px!important;background:linear-gradient(180deg,#fffafc,#f5d9f0 90%)!important;box-shadow:inset 0 3px 3px #fff,0 4px 0 #d9789b,0 8px 14px #2d0d5691!important;white-space:normal;z-index:3}
+body.writing-simple #animate{align-self:start;margin-top:84px}
+body.writing-simple #pg-trace{align-self:center;margin-top:-12px}
+body.writing-simple #practice,body.writing-simple #retry{align-self:end;margin-bottom:83px}
+body.writing-simple [hidden]{display:none!important}
+body.writing-simple #pg-trace:disabled{opacity:.5}
+body.writing-simple .glyph-title{grid-column:1/-1;grid-row:2;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:17px 4px 0!important;padding:7px 8px;background:linear-gradient(110deg,#ffe1c3,#fff0da 48%,#ffd4cf);border:2px solid #ffcaac;border-radius:28px;box-shadow:0 4px 15px #6e145d4a}
+body.writing-simple .glyph-title strong{font:500 53px/1 "Noto Serif CJK SC","Songti SC",serif!important;color:#5d1640!important}
+body.writing-simple .glyph-title .py{font-size:clamp(18px,5.2vw,24px)!important;font-weight:850;color:#4d1763!important}
+body.writing-simple .glyph-title #speak{min-width:54px;min-height:48px;border-radius:50%;padding:6px 10px!important;color:#681d89!important;background:linear-gradient(#fff5ff,#e9aaf4)!important;box-shadow:inset 0 2px #fff,0 3px 8px #ab4eb2;font-size:12px}
+body.writing-simple .meaning{grid-column:1/-1;grid-row:3;justify-self:center;min-width:60%;margin:0!important;padding:6px 20px;border-radius:99px;background:linear-gradient(#fff5df,#ffe3d0);border:2px solid #ffc2a6;color:#5c2170!important;font:850 clamp(24px,7vw,32px)/1.25 system-ui,sans-serif!important;text-align:center}
+body.writing-simple #next{grid-column:1/-1;grid-row:4;width:calc(100% - 20px);justify-self:center;min-height:71px;padding:9px 15px!important;margin:20px 0 0!important;font:850 clamp(21px,5.3vw,28px)/1.2 system-ui,sans-serif!important;color:#fff!important;border:3px solid #ffd4fc!important;border-radius:999px!important;background:linear-gradient(180deg,#ff8afb 0%,#f135d4 35%,#b400bb 95%)!important;box-shadow:inset 0 4px 2px #fff9,0 5px 0 #76147e,0 8px 19px #e148d198!important;text-shadow:0 2px 3px #6b1366}
+body.writing-simple .feedback{grid-column:1/-1;grid-row:5;min-height:0;margin:0 10px!important;padding:10px 13px;border-radius:13px;border:1px solid #edbdeb;background:#f8e9fbdc;color:#652f7b;font-size:13px;line-height:1.45}
+body.writing-simple #stroke-status{grid-column:1/-1;grid-row:6;text-align:center;font-size:12px;color:#f9e5ff;margin:0;text-shadow:0 1px #29104b}
+body.writing-simple .pg-hanzi-lexicon{margin:14px 8px 0;border-radius:25px;padding:0 7px 8px;background:linear-gradient(#ffe3e8ec,#ffecf3ec);border:2px solid #ffcfdd;box-shadow:0 8px 16px #3f10566b}
+body.writing-simple .pg-lexicon-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;margin:-2px -8px 7px;overflow:hidden;border-radius:25px 25px 7px 7px}
+body.writing-simple .pg-lex-tab{min-height:51px;padding:7px 2px;font:850 clamp(13px,3.8vw,19px)/1.2 system-ui,sans-serif;color:#4c186d;background:linear-gradient(#fffaf7,#ffe4eb);border:1px solid #f6c9dc;border-radius:23px 23px 6px 6px}
+body.writing-simple .pg-lex-tab[aria-selected=true]{background:linear-gradient(#ff73e9,#c80dac);color:white;text-shadow:0 1px #7d117a;box-shadow:inset 0 2px #ffe8ff}
+body.writing-simple .pg-lexicon-list{display:grid;gap:5px}
+body.writing-simple .pg-lexicon-entry{display:grid;grid-template-columns:27% minmax(0,1fr);gap:7px;align-items:center;min-height:56px;padding:4px 11px;background:linear-gradient(#fffdf9,#ffeef3);border:1.5px solid #f1c0cc;border-radius:22px;box-shadow:0 2px 4px #ac6eac44}
+body.writing-simple .pg-lexicon-entry strong{font:550 clamp(28px,8vw,37px)/1.25 "Noto Serif CJK SC","Songti SC",serif;color:#501267;text-align:center;white-space:nowrap}
+body.writing-simple .pg-lexicon-entry span{font:700 clamp(13px,3.7vw,17px)/1.3 system-ui,sans-serif;color:#52246b;overflow-wrap:anywhere}
+body.writing-simple .pg-lex-note{font-size:13px;font-weight:750;color:#7f3793;margin:2px 9px 5px}
+body.writing-simple .writing-extras{margin:16px 9px 10px;padding:9px 11px;border-radius:16px;background:#f8e4fadd;color:#633679;font-size:13px}
+body.writing-simple .writing-extras summary{font-size:13px;font-weight:750}
+body.writing-simple .writing-extras details{margin-top:8px}
+body.writing-simple .writing-extras .voice-box{width:100%;overflow:hidden}
+body.writing-simple button:focus-visible,body.writing-simple a:focus-visible{outline:3px solid #fff!important;outline-offset:3px}
+body.writing-simple button:active{filter:brightness(.98);transform:scale(.975)}
+@media(max-width:365px){body.writing-simple .shell{padding-left:7px!important;padding-right:7px!important}body.writing-simple .card.drawing-card{grid-template-columns:minmax(0,68fr) minmax(0,32fr);gap:6px;grid-template-rows:340px auto auto auto auto auto}body.writing-simple #animate,body.writing-simple #pg-trace,body.writing-simple #practice,body.writing-simple #retry{min-height:58px;font-size:12px!important}body.writing-simple #animate{margin-top:72px}body.writing-simple #practice,body.writing-simple #retry{margin-bottom:70px}}
+@media(min-width:446px){body.writing-simple{padding:10px 0}}
+@media(prefers-reduced-motion:reduce){body.writing-simple *{animation:none!important;transition:none!important}}
