@@ -30,5 +30,5 @@ assert(game.includes('v115-game')&&game.includes('v115-pinyin')&&game.includes("
 assert(style.includes('approved-pastel-v112.webp')&&style.includes('v115-build-panel')&&style.includes('v115-scene-listen'),'Approved scenery and shared game layout are present');
 assert(html.includes('approved-mobile-v112.css?v=119')&&page.includes('approved-mobile-v112.css?v=119'));
 assert(html.includes('game-practice-v102.js?v=119')&&page.includes('game-practice-v102.js?v=119'));
-assert(/chinese-coach-pwa-v131-20261105-media-quality/.test(sw));
+assert(/chinese-coach-pwa-v132-20261105-approved-art-sakura/.test(sw));
 console.log('v113 verified: exact female/male greeting MP3s, offline inventory, no phone TTS fallback, compact game layout hooks, page and cache versions.');
