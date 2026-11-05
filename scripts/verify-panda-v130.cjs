@@ -22,9 +22,9 @@ click('[data-action=pinyin]');assert(!q('.pg-pinyin'));assert.equal(w.localStora
 click('[data-action=pinyin]');click('[data-action=word-next][data-value="1"]');assert.equal(q('.pg-hanzi').textContent,'你');
 click('[data-route=word-topics]');assert.equal(root.querySelectorAll('[data-action=word-filter]').length,13);
 click('[data-value=g09]');assert.equal(q('.pg-hanzi').textContent,'水');
-w.__panda130.show('tones');click('[data-action=tone][data-value="2"]');assert.deepEqual(spoken.at(-1),['马'],'Third tone uses an available native speaker MP3');
-click('[data-action=tone-tab][data-value="Инициали"]');click('[data-action=syllable][data-value=bo]');assert(fs.existsSync(played.at(-1).replace('./','')));
-click('[data-action=tone-tab][data-value="Сочетания"]');click('[data-action=syllable][data-value=pai]');assert(fs.existsSync(played.at(-1).replace('./','')));
+w.__panda130.show('tones');assert.equal(q('.pg-tabs button').textContent,'Тоны','Tone tab should be first');click('[data-action=tone][data-value="2"]');assert.deepEqual(spoken.at(-1),['马'],'Third tone uses an available native speaker MP3');
+click('[data-action=tone-tab][data-value="Инициали"]');click('[data-action=syllable][data-value=bo]');assert(fs.existsSync(played.at(-1).replace('./','')));assert(played.at(-1).includes('/pinyin-reading/p006.mp3'),'Initial uses the same Xiaoxiao speaker as combinations');
+click('[data-action=tone-tab][data-value="Сочетания"]');assert(q('[data-action=syllable][data-value=zi] small').textContent.includes('zì'),'Combination must show toned Pinyin');click('[data-action=syllable][data-value=pai]');assert(fs.existsSync(played.at(-1).replace('./','')));
 w.__panda130.show('dialogues');assert(q('.pg-bubble'));assert.equal(root.querySelectorAll('[data-dialog-line]').length,6,'Entire six-line transcript stays mounted');click('[data-action=dialog-tab][data-value="1"]');assert.equal(root.querySelectorAll('[data-dialog-line]').length,5,'Switch topic replaces full transcript');click('[data-action=dialog-tab][data-value="0"]');click('[data-action=dialog-notes]');assert(root.textContent.includes('Как спросить имя'));
 w.__panda130.show('build');assert(q('[data-action=game-check]').disabled);assert.equal(q('.pg-token-pool').children.length,5,'Phrase bank includes two distractors');
 for(const i of [0,1,2])click('[data-action=token-add][data-value="'+i+'"]');
@@ -41,6 +41,7 @@ w.__panda130.show('quiz');assert(q('[data-action=question-check]').disabled);cli
 w.__panda130.show('practice');click('[data-action=question-play]');assert(fs.existsSync(played.at(-1).replace('./','')));const select=q('[data-topic]');select.value='5';select.dispatchEvent(new w.Event('change',{bubbles:true}));assert.equal(q('[data-topic]').value,'5');
 w.__panda130.show('build');w.__panda130.show('quiz');w.history.replaceState(null,'','#panda/build');w.dispatchEvent(new w.PopStateEvent('popstate'));w.dispatchEvent(new w.HashChangeEvent('hashchange'));assert(q('.pg-token-pool'),'Browser Back recovers a compatible game session');
 w.__panda130.show('course');assert(root.hidden);w.eval("go('home')");assert(!root.hidden,'Legacy course returns to the new home');
+w.__panda130.show('words');click('[data-action=word-filter][data-value="g07"]');assert.equal(q('.pg-hanzi').textContent,'妈妈');assert.equal(root.querySelectorAll('.pg-example').length,3,'Mama has three useful example sentences');assert(root.textContent.includes('Она моя мама.'));click('[data-action=example][data-value="0"]');assert(played.at(-1).includes('/pinyin-reading-v2/p086.mp3'),'Mama uses a local recorded MP3 rather than device TTS');
 w.__panda130.show('unknown');assert(q('.pg-home-hit-tones'),'Invalid route recovers approved home');
 for(const img of root.querySelectorAll('img'))assert(fs.existsSync(new URL(img.src).pathname.replace('/chinese-coach-pwa/','')),'Asset exists: '+img.src);
 assert.deepEqual(errors,[]);assert.equal(w.__simpleSectionPreview.total,193,'Original course data retained');
