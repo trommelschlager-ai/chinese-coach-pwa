@@ -1,0 +1,50 @@
+/* Coordinates are measured in the approved 864 × 1536 artwork. */
+html {background:#30115e; min-height:100%}
+body.writing-simple {margin:0;min-height:100dvh;overflow-x:hidden;background:#30115e url('./hanzi-approved-v141.png') center bottom / min(100vw,520px) auto repeat-y}
+body.writing-simple > .shell {display:none!important}
+#pg-hanzi-approved {position:relative;isolation:isolate;width:min(100%,520px);min-height:0;aspect-ratio:864/1536;margin:auto;overflow:hidden;color:#550878;font-family:Arial,system-ui,sans-serif;container-type:inline-size;background:url('./hanzi-approved-v141.png') center/100% 100% no-repeat}
+#pg-hanzi-approved * {box-sizing:border-box}
+#pg-hanzi-approved[data-dynamic=true] {background-image:url('./hanzi-dynamic-v141.png')}
+#pg-hanzi-approved [hidden] {display:none!important}
+#pg-hanzi-approved .pg-hit {position:absolute;z-index:8;appearance:none;border:0;margin:0;padding:0;background:transparent;box-shadow:none;border-radius:999px;cursor:pointer;touch-action:manipulation;color:transparent;font-size:0}
+#pg-hanzi-approved .pg-hit:focus-visible {outline:3px solid #fff;outline-offset:-3px}
+#pg-hanzi-approved .pg-hit:active {background:#ffffff22}
+#pg-hanzi-approved .pg-hit:disabled {cursor:wait}
+#pg-hanzi-approved .pg-hit-back {left:2.3%;top:4.9%;width:8.6%;height:4.7%}
+#pg-hanzi-approved .pg-hit-strokes {left:67.4%;top:14.5%;width:30.7%;height:6.5%}
+#pg-hanzi-approved .pg-hit-write {left:67.4%;top:23.3%;width:30.7%;height:6.6%}
+#pg-hanzi-approved .pg-hit-speak {left:65.6%;top:42.4%;width:10.3%;height:4.9%}
+#pg-hanzi-approved .pg-hit-meaning {left:5%;top:58.2%;width:29.5%;height:4.6%}
+#pg-hanzi-approved .pg-hit-examples {left:34.6%;top:58.2%;width:31%;height:4.6%}
+#pg-hanzi-approved .pg-hit-words {left:65.6%;top:58.2%;width:29.5%;height:4.6%}
+#pg-hanzi-approved .pg-hit-example-0 {left:8.6%;top:64.9%;width:9.5%;height:4.1%}
+#pg-hanzi-approved .pg-hit-example-1 {left:8.6%;top:72%;width:9.5%;height:4.1%}
+#pg-hanzi-approved .pg-hit-example-2 {left:8.6%;top:79%;width:9.5%;height:4.1%}
+#pg-hanzi-approved .pg-hit-next {left:10.6%;top:86.7%;width:78.4%;height:6.9%}
+#pg-hanzi-approved .pg-art-stroke-paper {position:absolute;z-index:5;left:18.287%;top:9.765625%;width:44.213%;height:24.21875%;background:url('./hanzi-paper-v141.png') center/100% 100%}
+#pg-hanzi-approved .paper {width:100%!important;height:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;border-radius:0!important;background:transparent!important;overflow:hidden!important;touch-action:none}
+#pg-hanzi-approved #writer {display:grid;place-items:center;width:100%;height:100%;touch-action:none}
+#pg-hanzi-approved #writer svg {display:block;width:100%;height:100%;touch-action:none}
+#pg-hanzi-approved .pg-scroll-corner {display:none}
+#pg-hanzi-approved .pg-dynamic-glyph {position:absolute;left:18.287%;top:9.765625%;width:44.213%;height:24.21875%;display:grid;place-items:center;color:#701b04;font:400 43cqw/1 'Noto Serif CJK SC','Songti SC',serif;pointer-events:none}
+#pg-hanzi-approved .pg-dynamic-pronounce {position:absolute;left:26%;top:42.2%;width:37%;height:5.4%;display:flex;gap:3cqw;align-items:center;justify-content:center;white-space:nowrap;color:#570980;font-size:4.2cqw;font-weight:800}
+#pg-hanzi-approved .pg-dynamic-pronounce b {font:400 10cqw/1 'Noto Serif CJK SC','Songti SC',serif}
+#pg-hanzi-approved .pg-dynamic-meaning {position:absolute;left:29%;top:49.4%;width:42%;height:4.8%;display:grid;place-items:center;text-align:center;font-size:5.4cqw;line-height:1.03;font-weight:800}
+#pg-hanzi-approved .pg-dynamic-tabs {position:absolute;z-index:6;left:5%;top:58.2%;width:90%;height:4.6%;display:flex;pointer-events:none}
+#pg-hanzi-approved .pg-dynamic-tabs span {flex:1;display:grid;place-items:center;border-radius:6cqw 6cqw 0 0;background:url('./hanzi-tab-inactive-v141.png') center/100% 100%;font-size:4.2cqw;font-weight:800}
+#pg-hanzi-approved .pg-dynamic-tabs [aria-current=true] {color:white;background-image:url('./hanzi-tab-active-v141.png')}
+#pg-hanzi-approved .pg-dynamic-panel {position:absolute;z-index:6;left:20.8%;top:64.1%;width:69.1%;height:19.8%;display:flex;flex-direction:column;pointer-events:none}
+#pg-hanzi-approved .pg-dynamic-row {flex:1;min-height:0;display:grid;grid-template-columns:1.05fr 1fr;gap:1cqw;align-items:center}
+#pg-hanzi-approved .pg-dynamic-row strong {display:block;font:700 4.8cqw/1.06 'Noto Serif CJK SC','Songti SC',serif;overflow-wrap:anywhere}
+#pg-hanzi-approved .pg-dynamic-row small {display:block;font-size:3.05cqw;line-height:1.1;color:#79518e}
+#pg-hanzi-approved .pg-russian {font-size:3.5cqw;line-height:1.12;font-weight:700;overflow-wrap:anywhere}
+#pg-hanzi-approved .pg-dynamic-explanation {position:absolute;left:-21.3%;top:-5%;width:128%;height:108%;padding:4%;border-radius:5cqw;background:url('./hanzi-panel-v141.png') center/100% 100%;pointer-events:auto;overflow:auto;font-size:3.7cqw;line-height:1.35}
+#pg-hanzi-approved .pg-dynamic-explanation strong {display:block;margin-bottom:2cqw;font-size:4.5cqw}
+#pg-hanzi-approved .pg-dynamic-explanation small {display:block;margin-top:2cqw}
+#pg-hanzi-approved .pg-art-status {position:absolute;z-index:12;left:7%;top:54.7%;width:86%;padding:1cqw 2cqw;background:#fff1e9f5;border-radius:3cqw;color:#64217d;font-size:3cqw;text-align:center;pointer-events:none}
+/* Short viewports scroll; tall viewports keep the same composition and fill the screen. */
+@supports(padding:env(safe-area-inset-bottom)) {body.writing-simple {padding-bottom:env(safe-area-inset-bottom)}}
+
+#pg-hanzi-approved .pg-panel-clean {position:absolute;z-index:4;left:3.588%;top:62.76%;width:92.94%;height:22.46%;pointer-events:none}
+
+#pg-hanzi-approved .pg-readable {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}

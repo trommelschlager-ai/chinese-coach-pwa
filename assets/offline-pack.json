@@ -1429,6 +1429,12 @@
     "./assets/panda-v130/coin.webp",
     "./assets/panda-v130/profile.webp",
     "./assets/panda-go-home-v136-clean.png",
-    "./assets/hanzi-approved-exact-20261105.png"
+    "./assets/hanzi-approved-exact-20261105.png",
+    "./assets/hanzi-approved-v141.png",
+    "./assets/hanzi-panel-v141.png",
+    "./assets/hanzi-tab-inactive-v141.png",
+    "./assets/hanzi-tab-active-v141.png",
+    "./assets/hanzi-paper-v141.png",
+    "./assets/hanzi-dynamic-v141.png"
   ]
 }
