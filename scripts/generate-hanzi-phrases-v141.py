@@ -21,6 +21,10 @@ async def main():
         async with sem:
             file=hashlib.sha256(text.encode()).hexdigest()[:16]+'.mp3'
             path=OUT/file
+            if path.exists() and path.stat().st_size>1500:
+                duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(path)],text=True))
+                if .2<duration<15:
+                    return text,'assets/hanzi-phrases-v141/'+file
             for attempt in range(3):
                 try:
                     await asyncio.wait_for(edge_tts.Communicate(text,voice=VOICE,rate='-5%').save(str(path)),timeout=40)
