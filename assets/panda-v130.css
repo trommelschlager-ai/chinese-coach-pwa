@@ -619,3 +619,198 @@ body.pg130-active{background:#47c1e8!important}
  #pg130 .pg-route-tones .pg-tone{min-height:138px}
  #pg130 .pg-route-tones .pg-tip{font-size:12px;padding:9px 11px}
 }
+
+
+/* Panda Go v149: approved single-paint scenic background and Go navigation.
+   Keeps supplied artwork, natural image proportions, Chinese text, saved progress
+   and audio sources unchanged. No extra overlay image layer across the header. */
+#pg130 .pg-screen.pg-route-words,
+#pg130 .pg-screen.pg-route-tones,
+#pg130 .pg-screen.pg-route-learn,
+#pg130 .pg-screen.pg-route-dialogues {
+ background-image:
+   linear-gradient(180deg,rgba(245,216,252,.12) 0%,rgba(246,219,255,.10) 60%,rgba(231,184,246,.10) 100%),
+   url('./approved-panda-lake-v112.webp');
+ background-position:center center;
+ background-size:cover;
+ background-repeat:no-repeat;
+}
+#pg130 .pg-screen.pg-route-words::before,
+#pg130 .pg-screen.pg-route-words::after,
+#pg130 .pg-screen.pg-route-tones::before,
+#pg130 .pg-screen.pg-route-tones::after,
+#pg130 .pg-screen.pg-route-learn::before,
+#pg130 .pg-screen.pg-route-learn::after,
+#pg130 .pg-screen.pg-route-dialogues::before,
+#pg130 .pg-screen.pg-route-dialogues::after {
+ display:none!important;
+}
+#pg130 .pg-route-words .pg-heading.compact {
+ min-height:clamp(72px,11dvh,92px);
+ gap:0;
+ padding:9px 0 8px;
+ justify-content:center;
+}
+#pg130 .pg-route-words .pg-heading.compact>.pg-icon {display:none!important}
+#pg130 .pg-route-words .pg-heading.compact h1 {
+ font-size:clamp(24px,6.6vw,32px);
+ color:#3a104c;
+ text-shadow:0 1px 4px #fff8;
+}
+#pg130 .pg-route-words .pg-tabs{
+ margin-bottom:10px;
+ background:linear-gradient(145deg,#f9ddffb9,#eac7f1cc);
+}
+#pg130 .pg-route-words .pg-tabs button{
+ min-height:44px;
+ font-size:clamp(11px,3.5vw,16px);
+}
+#pg130 .pg-route-words .pg-word-main,
+#pg130 .pg-route-words .pg-examples {
+ background:linear-gradient(145deg,rgba(255,248,255,.95),rgba(238,205,252,.92));
+ border:1.5px solid rgba(255,255,255,.94);
+ box-shadow:0 4px 12px #9753bd55,0 0 8px #f6b2f689,inset 0 2px 2px #fff7;
+}
+#pg130 .pg-route-words .pg-word-main>.pg-portrait {
+ object-fit:contain;
+ object-position:center center;
+ width:100%;
+ height:100%;
+ min-height:0;
+ max-height:clamp(158px,22dvh,204px);
+ border-radius:20px;
+ background:linear-gradient(160deg,#f9e3fc,#e6bef5);
+ filter:none;
+}
+#pg130 .pg-route-words .pg-word-footer {
+ flex:none;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:flex-end;
+ margin-top:auto;
+ gap:clamp(7px,1.2dvh,13px);
+ padding-top:clamp(8px,1.6dvh,16px);
+ z-index:2;
+}
+#pg130 .pg-route-words .pg-pinyin-toggle {
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ width:min(78%,300px);
+ min-height:clamp(40px,6dvh,48px);
+ padding:7px 16px;
+ border-radius:30px;
+ color:#5e1b65;
+ font-weight:850;
+ font-size:clamp(15px,4.1vw,19px);
+ background:linear-gradient(180deg,#ffddf7 0%,#f9bee9 55%,#f28fe0 100%);
+ border:1px solid #f8b9ef;
+ box-shadow:0 2px 8px #9b4cb54a,0 0 5px #f7a7ed6a;
+ text-shadow:none;
+}
+#pg130 .pg-route-words .pg-pinyin-toggle[aria-pressed="true"] {
+ color:#fff;
+ background:linear-gradient(180deg,#f46fe9,#da32d2 60%,#b51dc6);
+ text-shadow:0 1px 1px #8d3196;
+}
+#pg130 .pg-approved-go {
+ position:relative;
+ flex:none;
+ align-self:center;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ width:100%;
+ min-height:clamp(48px,7.5dvh,64px);
+ padding:10px 16px;
+ margin:0;
+ border:1px solid #c848d5;
+ border-radius:33px;
+ background:linear-gradient(180deg,#f651e8 0%,#d82ed5 48%,#aa1cc6 100%);
+ color:#fff;
+ font-size:clamp(19px,5.2vw,24px);
+ font-weight:900;
+ letter-spacing:.1px;
+ text-shadow:0 1px 2px #6d246a8a;
+ /* Soft neon only; no white line, inner stroke or ornamental stripe. */
+ box-shadow:0 0 8px 2px #e64aeb66,0 5px 11px #8d36a27a;
+}
+#pg130 .pg-approved-go::before,
+#pg130 .pg-approved-go::after {content:none!important;display:none!important}
+#pg130 .pg-approved-go:active{
+ transform:translateY(2px);
+ box-shadow:0 0 5px 1px #e64aeb66,0 2px 5px #8d36a27a;
+}
+#pg130 .pg-approved-go:focus-visible{outline:3px solid #fff;outline-offset:3px}
+#pg130 .pg-route-words .pg-word-go {
+ min-height:clamp(51px,7dvh,62px);
+ margin-top:0;
+}
+#pg130 .pg-route-words .pg-example{
+ padding-top:clamp(4px,.7dvh,7px);
+ padding-bottom:clamp(4px,.7dvh,7px);
+}
+#pg130 .pg-route-words .pg-examples{
+ min-height:0;
+ max-height:none;
+ overflow:auto;
+ scrollbar-width:thin;
+}
+#pg130 .pg-route-words .pg-word-copy .pg-hanzi {
+ font-size:clamp(46px,13vw,73px);
+ line-height:1.05;
+}
+#pg130 .pg-route-learn .pg-approved-go-footer{
+ margin-top:auto;
+ padding-top:clamp(10px,2dvh,21px);
+ margin-bottom:clamp(4px,1dvh,13px);
+ z-index:2;
+}
+#pg130 .pg-route-learn .pg-approved-go-footer .pg-approved-go{
+ width:min(90%,350px);
+}
+#pg130 .pg-route-tones .pg-footer{
+ display:flex;
+ flex-direction:column;
+ align-items:stretch;
+ gap:10px;
+ padding-top:8px;
+}
+#pg130 .pg-route-tones .pg-footer .pg-subtools{
+ margin-top:0;
+}
+#pg130 .pg-route-tones .pg-approved-go {
+ width:min(100%,380px);
+}
+#pg130 .pg-route-dialogues{
+ gap:0;
+}
+#pg130 .pg-route-dialogues .pg-dialogue-player {
+ flex:1 1 auto;
+ min-height:0;
+ overflow:hidden;
+}
+#pg130 .pg-route-dialogues .pg-dialogue-go{
+ width:min(100%,380px);
+ min-height:clamp(46px,6.3dvh,55px);
+ margin-top:clamp(7px,1.1dvh,12px);
+ font-size:clamp(18px,4.7vw,22px);
+}
+@media (max-height:720px){
+ #pg130 .pg-route-words .pg-heading.compact{min-height:69px;padding-top:5px}
+ #pg130 .pg-route-words .pg-word-main{min-height:146px}
+ #pg130 .pg-route-words .pg-word-main>.pg-portrait{max-height:145px}
+ #pg130 .pg-route-words .pg-examples{padding:8px 11px}
+ #pg130 .pg-route-words .pg-example{padding:3px 2px}
+ #pg130 .pg-route-words .pg-word-footer{gap:6px;padding-top:5px}
+ #pg130 .pg-route-words .pg-pinyin-toggle{min-height:38px}
+ #pg130 .pg-route-words .pg-approved-go{min-height:46px}
+ #pg130 .pg-route-dialogues .pg-dialogue-lines::before{height:80px}
+ #pg130 .pg-route-dialogues .pg-dialogue-go{min-height:42px}
+ #pg130 .pg-route-learn .pg-menu{gap:9px;margin-top:9px}
+ #pg130 .pg-route-learn .pg-card{min-height:70px}
+}
+@media (prefers-reduced-motion:reduce) {
+ #pg130 .pg-approved-go {transition:none}
+}
