@@ -710,9 +710,11 @@ body.pg130-active{background:#47c1e8!important}
  text-shadow:none;
 }
 #pg130 .pg-route-words .pg-pinyin-toggle[aria-pressed="true"] {
- color:#fff;
- background:linear-gradient(180deg,#f46fe9,#da32d2 60%,#b51dc6);
- text-shadow:0 1px 1px #8d3196;
+ color:#5e1b65;
+ background:linear-gradient(180deg,#ffd5f6,#f5a7e6 55%,#e879d6);
+ border-color:#f4a1e7;
+ box-shadow:0 2px 8px #9b4cb54a,0 0 7px #f4b5f0a8;
+ text-shadow:none;
 }
 #pg130 .pg-approved-go {
  position:relative;
