@@ -1,6 +1,6 @@
 {
-  "version": 114,
-  "bytes": 23400882,
+  "version": 115,
+  "bytes": 25424100,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1428,6 +1428,7 @@
     "./assets/panda-v130/word-girl.webp",
     "./assets/panda-v130/coin.webp",
     "./assets/panda-v130/profile.webp",
-    "./assets/panda-go-home-v136-clean.png"
+    "./assets/panda-go-home-v136-clean.png",
+    "./assets/hanzi-approved-exact-20261105.png"
   ]
 }
