@@ -12,7 +12,7 @@ const sw=fs.readFileSync('sw.js','utf8');
 assert(html.includes('panda-approved-lesson-ui-v129.css?v=1'),'Main UI stylesheet linked');
 assert(html.includes('panda-approved-lesson-ui-v129.js?v=1'),'Sakura animation script linked');
 assert(html.includes('menu-v3-approved.js?v=3'),'Menu cache query bumped');
-assert(/panda-hanzi-v130\.css\?v=\d+/.test(hanzi) && hanzi.includes('hanzi-exact-v139.css?v=139'),'Hanzi writer must use the latest isolated presentation and exact artwork');
+assert(hanzi.includes('hanzi-exact-v141.css?v=141') && hanzi.includes('hanzi-exact-v141.js?v=141'),'Hanzi writer must use the latest isolated presentation and exact artwork');
 assert(!hanzi.includes('simple-learning.css'),'Conflicting legacy Hanzi rules are no longer loaded');
 assert(css.includes('body[data-current-page="tones"]'),'Tone screen receives design');
 assert(css.includes('#topics .clean-study-card'),'Vocabulary details receive design');

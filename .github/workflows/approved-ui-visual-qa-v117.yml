@@ -40,3 +40,56 @@ jobs:
             qa/v130/browser/
             qa/v119/
           if-no-files-found: warn
+  hanzi-focused:
+    needs: hanzi-phrase-audio
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install existing browser test dependencies
+        run: |
+          npm ci
+          npm install --no-save --no-package-lock playwright@1.56.1 sharp@0.34.4
+          npx playwright install --with-deps chromium
+      - uses: actions/download-artifact@v4
+        with:
+          name: hanzi-v141-phrase-audio
+          path: assets
+      - name: Check exact Hanzi screen directly
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/hanzi-v141-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/hanzi-lab.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/visual-hanzi-v141.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hanzi-v141-mobile-evidence
+          path: qa/hanzi-v141/
+          if-no-files-found: error
+  hanzi-phrase-audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install edge-tts==7.3.1
+      - run: sudo apt-get update -qq && sudo apt-get install -y ffmpeg
+      - run: python scripts/generate-hanzi-phrases-v141.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hanzi-v141-phrase-audio
+          path: |
+            assets/hanzi-phrases-v141/
+            assets/hanzi-phrases-v141.js
+          if-no-files-found: error
