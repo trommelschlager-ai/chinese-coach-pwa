@@ -370,12 +370,12 @@ body.pg130-active{background:#47c1e8!important}
 #pg130 .pg-route-learn .pg-chevron {font-size:39px;font-weight:bold;color:#b72ac1}
 
 /* Words: a balanced illustration, meaningful example cards, and no empty filler. */
-#pg130 .pg-route-words .pg-heading.compact {min-height:clamp(96px,14dvh,115px);padding:2px 0 9px}
+#pg130 .pg-route-words .pg-heading.compact {min-height:clamp(85px,12dvh,100px);padding:1px 0 7px}
 #pg130 .pg-route-words .pg-heading.compact>.pg-icon {width:66px;height:49px;filter:drop-shadow(0 2px 4px #7b369557)}
 #pg130 .pg-route-words .pg-heading.compact h1 {font-size:clamp(24px,6.2vw,30px)}
 #pg130 .pg-route-words .pg-tabs {border-radius:24px;padding:5px;gap:4px;margin-bottom:11px}
 #pg130 .pg-route-words .pg-tabs button {
- min-height:43px;font-size:clamp(12px,3.7vw,16px);padding:7px 3px;border-radius:21px;
+ min-height:41px;font-size:clamp(12px,3.7vw,16px);padding:6px 3px;border-radius:21px;
 }
 #pg130 .pg-route-words .pg-word-main {
  display:grid;flex:none;min-height:clamp(166px,24dvh,218px);
@@ -410,13 +410,13 @@ body.pg130-active{background:#47c1e8!important}
 #pg130 .pg-route-words .pg-examples{
  position:relative;flex:1 1 auto;min-height:0;
  overflow:auto;overscroll-behavior:contain;
- margin-top:12px;padding:13px 15px 15px;
+ margin-top:10px;padding:10px 13px 11px;
  border:2px solid #fff9;border-radius:25px;
  background:linear-gradient(150deg,#fff9fffa,#f5e3fbf3 80%,#eed0f8ec);
  box-shadow:inset 0 2px 2px #fff,0 5px 12px #a255b768;
 }
 #pg130 .pg-route-words .pg-example-head {
- display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:4px;
+ display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:2px;
 }
 #pg130 .pg-route-words .pg-example-head b{font-size:18px;color:#442251}
 #pg130 .pg-route-words .pg-example-head span {
@@ -424,7 +424,7 @@ body.pg130-active{background:#47c1e8!important}
 }
 #pg130 .pg-route-words .pg-example {
  display:grid;grid-template-columns:39px minmax(0,1fr);align-items:center;
- gap:10px;padding:9px 2px;margin:0;border-bottom:1px solid #deb8ea9b;
+ gap:9px;padding:4px 2px;margin:0;border-bottom:1px solid #deb8ea9b;
 }
 #pg130 .pg-route-words .pg-example:last-of-type {border-bottom:0}
 #pg130 .pg-route-words .pg-example .pg-icon-button {
@@ -432,12 +432,12 @@ body.pg130-active{background:#47c1e8!important}
  display:grid;place-items:center;box-shadow:0 3px 5px #9e4cbc69;
 }
 #pg130 .pg-route-words .pg-example strong {
- display:block;font-size:clamp(20px,5.5vw,26px);
+ display:block;font-size:clamp(19px,5vw,24px);
  line-height:1.16;color:#42214f;overflow-wrap:anywhere;
 }
 #pg130 .pg-route-words .pg-example small {display:block;line-height:1.25}
-#pg130 .pg-route-words .pg-example-pinyin {font-size:12px;color:#7b4487;margin-top:4px}
-#pg130 .pg-route-words .pg-example-translation {font-size:13px;margin-top:3px;color:#664574}
+#pg130 .pg-route-words .pg-example-pinyin {font-size:11px;color:#7b4487;margin-top:2px}
+#pg130 .pg-route-words .pg-example-translation {font-size:12px;margin-top:2px;color:#664574}
 #pg130 .pg-route-words .pg-example-audio-note {
  font-size:10px;line-height:1.35;color:#8b6890;margin-top:8px;
 }
@@ -448,7 +448,7 @@ body.pg130-active{background:#47c1e8!important}
 #pg130 .pg-route-words .pg-word-footer .pg-secondary {
  min-height:38px;padding:7px 12px;border-radius:24px;font-size:clamp(12px,3.4vw,16px);
 }
-#pg130 .pg-route-words .pg-pagination {margin-top:9px;min-height:48px;border-radius:25px}
+#pg130 .pg-route-words .pg-pagination {margin-top:6px;min-height:45px;border-radius:25px}
 #pg130 .pg-route-words .pg-round {height:36px;width:42px;border-radius:19px}
 /* Tones: the first tab is the learning entry point and cards remain fully readable. */
 #pg130 .pg-route-tones .pg-heading.compact {min-height:clamp(95px,14dvh,118px);padding:4px 0 7px}
