@@ -27,7 +27,7 @@
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
   </style>
   <script defer src="./assets/vendor/hanzi-writer.min.js"></script>
-<link rel="stylesheet" href="./assets/panda-hanzi-v130.css?v=133">
+<link rel="stylesheet" href="./assets/panda-hanzi-v130.css?v=134">
 </head>
 <body class="writing-simple">
 <main class="shell">
@@ -43,9 +43,9 @@
       <div class="controls">
         <button class="control" id="animate" type="button">▶ Черты</button>
         <button class="control primary full" id="practice" type="button">✍️ Писать</button>
-        <button class="control" id="pg-trace" type="button">🖌️ Пропись</button>
+        
         <button class="control" id="retry" type="button">↻ Заново</button>
-        <button class="control next-control" id="next" type="button" aria-label="Следующий иероглиф">Далее →</button>
+        <button class="control next-control" id="next" type="button" aria-label="Следующий иероглиф">Следующий иероглиф ❯</button>
       </div>
 
       <div class="feedback" id="feedback" role="status" aria-live="polite">Загрузка тренажёра…</div>
@@ -55,8 +55,8 @@
 
   <section class="pg-hanzi-lexicon" aria-label="Значение, примеры и слова">
     <div class="pg-lexicon-tabs" role="tablist" aria-label="Разбор иероглифа">
-      <button type="button" class="pg-lex-tab" role="tab" aria-selected="true" data-hanzi-tab="meaning">Значение</button>
-      <button type="button" class="pg-lex-tab" role="tab" aria-selected="false" data-hanzi-tab="examples">Примеры</button>
+      <button type="button" class="pg-lex-tab" role="tab" aria-selected="false" data-hanzi-tab="meaning">Значение</button>
+      <button type="button" class="pg-lex-tab" role="tab" aria-selected="true" data-hanzi-tab="examples">Примеры</button>
       <button type="button" class="pg-lex-tab" role="tab" aria-selected="false" data-hanzi-tab="words">Слова</button>
     </div>
     <div id="pg-hanzi-lexicon-list" class="pg-lexicon-list" role="tabpanel" aria-live="polite">
@@ -123,7 +123,7 @@ window.addEventListener('DOMContentLoaded',function(){
     $('writing-help').open=false;document.querySelector('.character-picker').open=false;renderTabs();setButtons(false);say('Загружаем образец и порядок черт…');
     $('writer').innerHTML='<span class="fallback" aria-hidden="true"></span>';$('writer').firstChild.textContent=d.hz;
     if(!window.HanziWriter){say('Не удалось загрузить модуль письма. Проверь интернет и обнови страницу.','bad');return;}
-    const size=Math.min(440,Math.max(205,Math.floor($('writer').clientWidth-8)));
+    const size=Math.min(440,Math.max(180,Math.floor($('writer').clientWidth-8)));
     $('writer').textContent='';
     try{
       writer=window.HanziWriter.create('writer',d.hz,{
@@ -236,18 +236,17 @@ window.addEventListener('DOMContentLoaded',function(){
     document.querySelectorAll('.pg-lex-tab').forEach(tab=>tab.setAttribute('aria-selected',String(tab===button)));
     renderPgLexicon();
   }));
-  $('pg-trace').addEventListener('click',()=>{if(!loaded)return;animate();say('Следи за чертами, затем выбери «Писать» и повтори пальцем.');});
   const pgObserver=new MutationObserver(renderPgLexicon);
   pgObserver.observe($('character'),{childList:true,characterData:true});
   renderPgLexicon();
 
-  $('animate').addEventListener('click',animate);$('practice').addEventListener('click',startQuiz);$('retry').addEventListener('click',()=>select(index));$('speak').addEventListener('click',speak);$('next').addEventListener('click',()=>select(index+1));
+  $('animate').addEventListener('click',animate);$('practice').addEventListener('click',startQuiz);$('retry').addEventListener('click',()=>select(index));$('speak').addEventListener('click',speak);$('next').addEventListener('click',()=>{select(index+1);window.scrollTo?.(0,0);});
   if(typeof ResizeObserver==='function'){new ResizeObserver(()=>{if(loaded&&writer?.updateDimensions){const size=Math.min(440,Math.max(180,Math.floor($('writer').clientWidth-8)));writer.updateDimensions({width:size,height:size,padding:19});}}).observe(document.querySelector('.paper'));}
   window.addEventListener('pagehide',()=>{recordingToken++;activeRecording?.pause();window.speechSynthesis?.cancel();});
   progress();select(0);
 });
 </script>
 <script src="./assets/daily-study-v98.js?v=98"></script>
-<script src="./assets/panda-hanzi-v130.js?v=133"></script>
+<script src="./assets/panda-hanzi-v130.js?v=134"></script>
 </body>
 </html>
