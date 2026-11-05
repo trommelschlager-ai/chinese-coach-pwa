@@ -277,3 +277,154 @@ body.pg130-active{background:#47c1e8!important}
 #pg130 .pg-route-tones .pg-live-status:empty{display:block;visibility:hidden}
 
 .pg-dialogue-player .pg-record-line{display:block;margin-top:6px;padding:4px 10px;font-size:12px}
+
+
+/* Panda Go v147 — eight-screen user review. Keep existing screen logic and saved progress intact. */
+/* Improve legibility and scenic depth without enlarging low-resolution texture assets. */
+#pg130 .pg-screen.pg-route-tones,
+#pg130 .pg-screen.pg-route-words,
+#pg130 .pg-screen.pg-route-learn{
+ background:radial-gradient(circle at 10% 15%,#f9e9ff 0%,transparent 42%),
+ linear-gradient(180deg,rgba(228,199,250,.94),rgba(245,218,252,.92) 56%,rgba(226,190,242,.84)),
+ url('./approved-panda-lake-v112.webp') center bottom/cover no-repeat;
+}
+#pg130 .pg-screen.pg-route-tones::after,
+#pg130 .pg-screen.pg-route-words::after,
+#pg130 .pg-screen.pg-route-learn::after{
+ height:clamp(125px,23dvh,245px);
+ background:url('./approved-panda-lake-v112.webp') center bottom/cover no-repeat;
+ opacity:.42;
+ mask-image:linear-gradient(transparent 0%,#000 67%);
+ -webkit-mask-image:linear-gradient(transparent 0%,#000 67%);
+}
+/* Talk: no empty top banner or extra bottom action row. Full transcript stays scrollable. */
+#pg130 .pg-screen.pg-route-dialogues{
+ padding:8px 13px max(12px,env(safe-area-inset-bottom));
+ overflow:hidden;
+ background:linear-gradient(180deg,rgba(230,193,251,.82),rgba(250,226,253,.88) 52%,rgba(211,174,243,.97)),
+ url('./panda-v130/dialogue-scene.webp') center top/100% auto no-repeat;
+}
+#pg130 .pg-route-dialogues::before{display:none}
+#pg130 .pg-route-dialogues::after{display:none}
+#pg130 .pg-route-dialogues .pg-heading.compact{min-height:96px;padding:4px 0 6px}
+#pg130 .pg-route-dialogues .pg-heading.compact>.pg-icon{width:58px;height:49px;filter:drop-shadow(0 3px 4px #8f42b16b)}
+#pg130 .pg-route-dialogues .pg-heading.compact h1{font-size:29px}
+#pg130 .pg-route-dialogues .pg-back{top:12px;left:13px;width:47px;height:47px;box-shadow:inset 0 2px 2px white,0 5px 10px #975ab880}
+#pg130 .pg-route-dialogues .pg-tabs{margin:0 0 9px;padding:5px;gap:4px;border-radius:25px;background:#eecff7e8}
+#pg130 .pg-route-dialogues .pg-tabs button{min-height:47px;min-width:0;padding:8px 4px;font-size:clamp(11px,3vw,16px);border-radius:23px}
+#pg130 .pg-route-dialogues .pg-dialogue-player{flex:1;min-height:0;overflow:hidden}
+#pg130 .pg-route-dialogues .pg-dialogue-lines{
+ border:1px solid #fff9;
+ border-radius:22px;
+ padding:10px 7px 12px;
+ gap:10px;
+ background:linear-gradient(180deg,#fff7fe5e,#f7e5fc69);
+ box-shadow:inset 0 1px 7px #9e60ba46;
+}
+#pg130 .pg-route-dialogues .pg-dialogue-lines::before{
+ content:"";
+ display:block;
+ flex:0 0 clamp(84px,14dvh,122px);
+ width:100%;
+ border-radius:18px;
+ margin-bottom:-43px;
+ background:linear-gradient(180deg,transparent 70%,#f8e2fc 100%),
+ url('./panda-v130/dialogue-scene.webp') center 45%/cover no-repeat;
+}
+#pg130 .pg-route-dialogues .pg-bubble{
+ width:93%;
+ min-height:86px;
+ flex:none;
+ grid-template-columns:44px minmax(0,1fr);
+ gap:10px;
+ padding:11px 12px;
+ border:2px solid #fff9;
+ border-radius:24px;
+ background:linear-gradient(145deg,#fdfafffa,#dfc9f8f6);
+ box-shadow:inset 0 2px 2px #fff,0 6px 12px #9c5aae70;
+}
+#pg130 .pg-route-dialogues .pg-bubble:nth-child(2n+1){align-self:flex-start}
+#pg130 .pg-route-dialogues .pg-bubble:nth-child(2n){align-self:flex-end;background:linear-gradient(150deg,#fff2f9,#f1c9ea)}
+#pg130 .pg-route-dialogues .pg-bubble strong{font-size:clamp(24px,5.3vw,30px);line-height:1.2}
+#pg130 .pg-route-dialogues .pg-bubble .pg-dialog-speaker{font-size:12px}
+#pg130 .pg-route-dialogues .pg-bubble .pg-dialog-pinyin,
+#pg130 .pg-route-dialogues .pg-bubble .pg-dialog-translation{font-size:13px;line-height:1.25}
+#pg130 .pg-route-dialogues .pg-bubble .pg-icon-button{
+ width:44px;height:44px;min-width:44px;
+ display:grid;place-items:center;border-radius:16px;
+ box-shadow:inset 0 1px 2px #fffa,0 3px 7px #a245c488;
+}
+#pg130 .pg-route-dialogues .pg-bubble .pg-icon-button img{width:29px;height:29px}
+#pg130 .pg-route-dialogues .pg-dialogue-actions{gap:6px;margin:7px 1px 0;padding:0}
+#pg130 .pg-route-dialogues .pg-dialogue-actions .pg-primary{
+ min-height:59px;font-size:clamp(18px,4.8vw,23px);
+ border-width:3px;border-radius:31px;
+}
+#pg130 .pg-route-dialogues .pg-dialogue-actions .pg-subtools{gap:9px;justify-content:center;flex-wrap:nowrap}
+#pg130 .pg-route-dialogues .pg-dialogue-main-tools{margin-top:2px}
+#pg130 .pg-route-dialogues .pg-dialogue-actions [data-action=dialog-pause]{display:none!important}
+#pg130 .pg-route-dialogues .pg-dialogue-actions .pg-secondary{
+ min-height:38px;min-width:0;padding:7px 13px;font-size:clamp(12px,3.3vw,16px);border-radius:24px;
+}
+#pg130 .pg-route-dialogues .pg-dialogue-actions .pg-dialog-notes{min-width:40%;font-weight:750}
+#pg130 .pg-route-dialogues .pg-dialog-status{min-height:0;padding:1px 0;font-size:12px}
+#pg130 .pg-route-dialogues .pg-dialog-status:empty{display:none}
+/* Make the phonetic lesson topic hierarchy explicit; tabs wrap neither text nor sound. */
+#pg130 .pg-route-tones .pg-heading.compact{min-height:94px}
+#pg130 .pg-route-tones .pg-tabs{padding:5px;gap:4px}
+#pg130 .pg-route-tones .pg-tabs button{padding:10px 3px;min-height:47px;font-size:clamp(11px,3.05vw,15px);border-radius:20px}
+#pg130 .pg-route-tones .pg-tone-content{padding-top:3px}
+#pg130 .pg-route-tones .pg-letter-grid{gap:10px;padding:12px;border:2px solid #f7daff}
+#pg130 .pg-route-tones .pg-letter-grid button{
+ min-height:78px;padding:12px 4px;
+ border:1.5px solid #dfb5e9;border-radius:17px;
+ background:linear-gradient(160deg,#fffaff,#f9eafd);
+ box-shadow:inset 0 2px 1px #fff,0 3px 8px #a86ab340;
+}
+#pg130 .pg-route-tones .pg-letter-grid small{font-size:12px;line-height:1.1;margin-top:7px;color:#6e3680}
+#pg130 .pg-route-tones .pg-tone{border-radius:18px;border:1.5px solid #eac3f4;box-shadow:0 5px 9px #a964bc40}
+#pg130 .pg-route-tones .pg-tone[aria-pressed=true]{outline:3px solid #d644c9;background:linear-gradient(170deg,#ffe6f8,#f4d7ff)}
+#pg130 .pg-route-tones .pg-tone-box{border-radius:23px}
+#pg130 .pg-route-tones .pg-tip{border-radius:22px;font-size:14px;line-height:1.4}
+/* Word card: clearer and more balanced picture and consistent examples. */
+#pg130 .pg-route-words .pg-word-main{min-height:168px;padding:8px 7px 8px 6px;grid-template-columns:40% 1fr 38px}
+#pg130 .pg-route-words .pg-word-main>.pg-portrait{
+ height:156px;width:100%;
+ object-fit:contain;object-position:center center;
+ filter:contrast(1.07) saturate(1.12);
+ image-rendering:auto;
+ background:linear-gradient(135deg,#f7e3fc,#e2c9f6);
+ border-radius:14px;
+}
+#pg130 .pg-route-words .pg-word-copy .pg-meaning{font-size:15px}
+#pg130 .pg-route-words .pg-examples{min-height:155px;max-height:40dvh;padding:14px;box-shadow:0 5px 12px #a75dbb50}
+#pg130 .pg-route-words .pg-example{grid-template-columns:43px 1fr;gap:10px;margin-top:12px}
+#pg130 .pg-route-words .pg-example .pg-icon-button{min-width:40px;min-height:43px;border-radius:15px}
+#pg130 .pg-route-words .pg-example strong{font-size:clamp(20px,5.2vw,25px)}
+/* Learn: eliminate the oversized empty area and make each approved card distinct. */
+#pg130 .pg-route-learn .pg-heading{min-height:142px}
+#pg130 .pg-route-learn .pg-menu{
+ flex:1;
+ align-content:start;
+ margin-top:clamp(22px,5dvh,47px);
+ gap:clamp(13px,2.1dvh,21px);
+}
+#pg130 .pg-route-learn .pg-card{
+ min-height:clamp(85px,12dvh,105px);
+ grid-template-columns:70px minmax(0,1fr) 22px;
+ gap:10px;
+ padding:11px 14px;
+ border-radius:24px;
+ background:linear-gradient(145deg,#fff9fffa,#f1d8f9e8 73%,#e7c0f0ea);
+ box-shadow:inset 0 2px 2px #fff,0 6px 11px #a258bd54;
+}
+#pg130 .pg-route-learn .pg-card>.pg-icon{width:64px;height:64px;filter:drop-shadow(0 3px 2px #a870b45c)}
+#pg130 .pg-route-learn .pg-card strong{font-size:clamp(20px,5.2vw,25px)}
+#pg130 .pg-route-learn .pg-card small{font-size:clamp(13px,3.25vw,16px);line-height:1.3}
+@media(max-height:730px){
+ #pg130 .pg-route-dialogues .pg-dialogue-lines::before{flex-basis:65px;margin-bottom:-22px}
+ #pg130 .pg-route-dialogues .pg-heading.compact{min-height:83px}
+ #pg130 .pg-route-dialogues .pg-tabs button{min-height:40px}
+ #pg130 .pg-route-dialogues .pg-dialogue-actions .pg-primary{min-height:52px}
+ #pg130 .pg-route-learn .pg-menu{margin-top:18px}
+}
