@@ -200,9 +200,18 @@ body.pg130-active{background:#47c1e8!important}
 #pg130 .pg-home-v136::-webkit-scrollbar{display:none}
 #pg130 .pg-screen.pg-home-v136::before{display:none!important}
 #pg130 .pg-screen.pg-home-v136::after{
-  content:"";position:relative;display:block!important;width:100%;height:auto;
-  flex:1 0 0;min-height:0;z-index:0;pointer-events:none;
-  background:linear-gradient(180deg,#54c8e9 0%,#23a3cd 60%,#6acbed 100%);
+  /* Extend only the existing approved lakeside artwork on tall phones.
+     Mirror a narrow strip of its lower water-and-flowers area into the spare
+     viewport space; keep the four original buttons and full-size image intact. */
+  content:"";position:relative;display:block!important;
+  width:min(100%,calc(100dvh * 941 / 1522))!important;
+  height:auto;flex:1 0 0;min-height:0;z-index:0;pointer-events:none;
+  background-image:url("./panda-go-home-v136-clean.png");
+  background-position:center bottom;background-size:100% 900%;
+  background-repeat:no-repeat;
+  transform:scaleY(-1);filter:blur(3px) saturate(1.06);opacity:.80;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.88) 55%,#000 100%);
+  mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.88) 55%,#000 100%);
 }
 #pg130 .pg-home-v136 .pg-home-image-wrap{
   display:block;position:relative;flex:0 0 auto;
