@@ -41,7 +41,11 @@ async function draw(hz){
  }
  for(const median of data.medians)await send(median);
  await page.waitForFunction(()=>document.body.dataset.writingStage==='complete',null,{timeout:15000});
- await cdp.detach();report.checks.push({hz,correctTouchStrokes:true});
+ await page.waitForTimeout(450);
+ const status=await page.locator('.pg-art-status').evaluate(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom}});
+ const controls=await page.locator('#pg-hanzi-approved .pg-hit:not([hidden])').evaluateAll(es=>es.map(el=>el.getBoundingClientRect().toJSON()));
+ assert(!controls.some(r=>Math.min(status.right,r.right)>Math.max(status.x,r.x)&&Math.min(status.bottom,r.bottom)>Math.max(status.y,r.y)),'Feedback must not cover controls');
+ await cdp.detach();report.checks.push({hz,correctTouchStrokes:true,feedbackClearOfButtons:true});
 }
 try{
  for(const [width,height] of [[360,560],[360,800],[393,852],[412,740],[430,932]]){
@@ -103,6 +107,12 @@ try{
       }
       await tap('examples');await tap('next');
     }
+  }
+  if(width===393){
+    const before=await page.evaluate(()=>localStorage.getItem('chinese-coach-hanzi-lab-v1'));
+    await page.reload({waitUntil:'networkidle'});
+    assert.equal(await page.evaluate(()=>localStorage.getItem('chinese-coach-hanzi-lab-v1')),before,'Completed characters survive reload');
+    report.checks.push({width,persistedAfterReload:true});
   }
   await tap('back');await page.waitForURL('**/index.html#panda/learn');
   report.checks.push({width,height,backNavigation:true});await context.close();

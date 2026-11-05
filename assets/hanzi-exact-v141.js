@@ -129,7 +129,11 @@
   const feedback=document.getElementById('feedback');
   if(feedback)new MutationObserver(()=>{
    if(feedback.classList.contains('bad')||document.body.dataset.writingStage==='writing'||document.body.dataset.writingStage==='complete'){
-    liveStatus.textContent=feedback.textContent.trim().slice(0,190);liveStatus.hidden=false;
+    let message=feedback.textContent.trim();
+    if(document.body.dataset.writingStage==='complete')message='Верно! '+originalCharacter.textContent+' написан.';
+    else if(message.startsWith('Пока неверно'))message='Повтори черту. '+(message.match(/Ошибок: \d+/)?.[0]||'');
+    else if(message.startsWith('Твоя очередь!'))message='Пиши черты в правильном порядке.';
+    liveStatus.textContent=message;liveStatus.setAttribute('aria-label',feedback.textContent.trim());liveStatus.hidden=false;
    }else liveStatus.hidden=true;
   }).observe(feedback,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});
   // Ensure the interactive drawing canvas follows the image when the viewport changes.

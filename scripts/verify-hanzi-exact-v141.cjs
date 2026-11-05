@@ -33,7 +33,7 @@ const tick=()=>new Promise(resolve=>setTimeout(resolve,35));
   }
   hit('strokes').click();await tick();assert.equal(stage.querySelector('.pg-art-stroke-paper').hidden,false);
   hit('write').click();await tick();assert.equal(d.body.dataset.writingStage,'writing');
-  const callbacks=writers.at(-1).callbacks;assert(callbacks);callbacks.onMistake({totalMistakes:1});await tick();assert(stage.querySelector('.pg-art-status').textContent.includes('неверно'));
+  const callbacks=writers.at(-1).callbacks;assert(callbacks);callbacks.onMistake({totalMistakes:1});await tick();assert(stage.querySelector('.pg-art-status').textContent.includes('Повтори'));
   callbacks.onCorrectStroke({strokeNum:0,strokesRemaining:0});callbacks.onComplete({totalMistakes:1});await tick();assert.equal(d.body.dataset.writingStage,'complete');
   hit('next').click();await tick();
  }
