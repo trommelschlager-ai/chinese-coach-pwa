@@ -7,7 +7,7 @@ const normalizeCourse=s=>{const parsed=JSON.parse(course(s));parsed[1].dialogue=
 assert.equal(normalizeCourse(html),normalizeCourse(before),'Course preserved except audited introductory dialogue and consistent nǎlǐ spelling');
 assert.deepEqual(JSON.parse(course(html))[1].dialogue,[
  ['A','你好！','nǐ hǎo!','Привет!'],
- ['B','哈喽！','hālóu!','Привет! (неформально)'],
+ ['B','你好！','nǐ hǎo!','Привет!'],
  ['A','你叫什么名字？','nǐ jiào shénme míngzi?','Как тебя зовут?'],
  ['B','我叫安娜。你呢？','wǒ jiào Ānnà. nǐ ne?','Меня зовут Анна. А тебя?'],
  ['A','我叫小明。','wǒ jiào Xiǎomíng.','Меня зовут Сяомин.'],
