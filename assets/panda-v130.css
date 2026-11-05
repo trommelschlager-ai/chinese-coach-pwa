@@ -402,6 +402,7 @@ body.pg130-active{background:#47c1e8!important}
 #pg130 .pg-route-words .pg-example .pg-icon-button{min-width:40px;min-height:43px;border-radius:15px}
 #pg130 .pg-route-words .pg-example strong{font-size:clamp(20px,5.2vw,25px)}
 /* Learn: eliminate the oversized empty area and make each approved card distinct. */
+#pg130 .pg-screen.pg-route-learn{padding-bottom:clamp(14px,2dvh,26px)}
 #pg130 .pg-route-learn .pg-heading{min-height:142px}
 #pg130 .pg-route-learn .pg-menu{
  flex:1;
