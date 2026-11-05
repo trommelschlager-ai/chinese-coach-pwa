@@ -4,8 +4,8 @@
 :root{color-scheme:light;--pg-purple:#5b167b;--pg-gold:#ffcb5b;--pg-rose:#e836bd}
 html{background:#3c155f;scroll-behavior:smooth}
 body.writing-simple{margin:0;min-height:100dvh;background:#39115d!important;color:#43165e!important;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
-body.writing-simple::before{content:"";position:fixed;inset:0;background:linear-gradient(180deg,#2b085560 0%,#7a2b7306 38%,#3710684a 100%),url('./approved-quiz-scene-v112.webp') center center/cover no-repeat;filter:saturate(1.55) contrast(1.14);pointer-events:none;z-index:-1}
-body.writing-simple .shell{position:relative;width:min(100%,450px);max-width:450px;min-height:100dvh;margin:auto;padding:calc(17px + env(safe-area-inset-top)) 12px calc(15px + env(safe-area-inset-bottom))!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;isolation:isolate}
+body.writing-simple::before{content:"";position:fixed;inset:0;background:linear-gradient(180deg,#2b085560 0%,#7a2b7306 38%,#3710684a 100%),url('./approved-quiz-scene-v112.webp') center center/cover no-repeat;filter:saturate(1.55) contrast(1.14);pointer-events:none;z-index:0}
+body.writing-simple .shell{position:relative;width:min(100%,450px);max-width:450px;min-height:100dvh;margin:auto;padding:calc(17px + env(safe-area-inset-top)) 12px calc(15px + env(safe-area-inset-bottom))!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;isolation:isolate;z-index:1}
 body.writing-simple .shell::before{content:"";display:block;position:absolute;z-index:-1;left:0;right:0;top:0;height:145px;pointer-events:none;background:url('./panda-v130/flowers.webp') left top/230px auto no-repeat;opacity:.85}
 body.writing-simple .pg-hanzi-heading{display:none!important}
 body.writing-simple .top{position:absolute;z-index:9;pointer-events:none;left:6px;right:6px;top:calc(47px + env(safe-area-inset-top));display:flex;justify-content:space-between;margin:0}
@@ -68,3 +68,10 @@ body.writing-simple button:focus-visible,body.writing-simple a:focus-visible{out
 @media(max-width:370px){body.writing-simple .shell{padding-inline:7px!important}body.writing-simple .drawing-card{grid-template-columns:minmax(0,64fr) minmax(0,36fr);column-gap:8px}body.writing-simple .pg-lexicon-entry{grid-template-columns:38px minmax(0,1.25fr) minmax(0,1fr);gap:3px;padding:4px 5px}body.writing-simple .pg-example-audio{width:34px;height:34px;min-width:34px;min-height:34px}}
 @media(min-width:451px){body.writing-simple{padding:10px 0}}
 @media(prefers-reduced-motion:reduce){body.writing-simple *,body.writing-simple *::before,body.writing-simple *::after{animation:none!important;transition:none!important}}
+
+/* Noninteractive falling cherry petals across the seamless background. */
+body.writing-simple .pg-hanzi-petals{position:fixed;inset:0;pointer-events:none!important;z-index:0;overflow:hidden;contain:paint}
+body.writing-simple .pg-hanzi-petals i{position:absolute;top:-7%;left:var(--x);width:13px;height:10px;border-radius:84% 16% 72% 28%;background:radial-gradient(circle at 28% 28%,#fff,#ffbddf 48%,#f77dc4 88%);box-shadow:0 0 3px #fff;opacity:0;animation:pg-hanzi-falling var(--dur) var(--delay) linear infinite}
+body.writing-simple .pg-hanzi-petals i:nth-child(3n){background:radial-gradient(circle at 28% 28%,#fff,#e3bafa 55%,#ad69d2)}
+@keyframes pg-hanzi-falling{0%{opacity:0;transform:translate3d(0,-4vh,0) rotate(0deg)}9%{opacity:.8}85%{opacity:.65}100%{opacity:0;transform:translate3d(var(--drift),109vh,0) rotate(590deg)}}
+@media(prefers-reduced-motion:reduce){body.writing-simple .pg-hanzi-petals{display:none!important}}
