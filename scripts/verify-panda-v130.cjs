@@ -19,13 +19,13 @@ click('[data-action=known]');assert(JSON.parse(w.localStorage.getItem('chinese-c
 click('[data-action=example][data-value="0"]');assert(played.at(-1).includes('/hanzi-phrases-v141/'),'Sentence example uses a complete existing phrase recording');
 click('[data-action=word-play]');assert.deepEqual(spoken.at(-1),['我'],'Existing clean speaker preferred for word playback');
 click('[data-action=pinyin]');assert(!q('.pg-pinyin'));assert.equal(w.localStorage.getItem('chinese-coach-show-pinyin'),'false');
-click('[data-action=pinyin]');click('[data-action=word-next][data-value="1"]');assert.equal(q('.pg-hanzi').textContent,'你');
-click('[data-route=word-topics]');assert.equal(root.querySelectorAll('[data-action=word-filter]').length,13);
+click('[data-action=pinyin]');click('[data-action=word-go]');assert.equal(q('.pg-hanzi').textContent,'你');
+assert(!root.querySelector('.pg-pagination'),'Approved word screen has no obsolete page-number footer');assert(!root.querySelector('.pg-route-words .pg-heading .pg-icon'),'Approved word screen hides four colored diamond logo');assert(q('[data-action=word-go]').textContent.includes('Дальше Go'),'Next Go is present');assert(q('[data-action=pinyin]').getAttribute('aria-pressed')==='true','Pinyin preference is interactive');w.__panda130.show('word-topics');assert.equal(root.querySelectorAll('[data-action=word-filter]').length,13);
 click('[data-value=g09]');assert.equal(q('.pg-hanzi').textContent,'水');
-w.__panda130.show('tones');assert.equal(q('.pg-tabs button').textContent,'Тоны','Tone tab should be first');click('[data-action=tone][data-value="2"]');assert.deepEqual(spoken.at(-1),['马'],'Third tone uses an available native speaker MP3');
+w.__panda130.show('learn');assert(q('[data-action=learn-go]'),'Learn has Next Go');click('[data-action=learn-go]');assert.equal(q('.pg-heading h1').textContent,'Звуки и тоны');assert(q('[data-action=tone-go]'),'Tones have Next Go');w.__panda130.show('tones');assert.equal(q('.pg-tabs button').textContent,'Тоны','Tone tab should be first');click('[data-action=tone][data-value="2"]');assert.deepEqual(spoken.at(-1),['马'],'Third tone uses an available native speaker MP3');
 click('[data-action=tone-tab][data-value="Инициали"]');click('[data-action=syllable][data-value=bo]');assert(fs.existsSync(played.at(-1).replace('./','')));assert(played.at(-1).includes('/pinyin-reading/p006.mp3'),'Initial uses the same Xiaoxiao speaker as combinations');
 click('[data-action=tone-tab][data-value="Сочетания"]');assert(q('[data-action=syllable][data-value=zi] small').textContent.includes('zì'),'Combination must show toned Pinyin');click('[data-action=syllable][data-value=pai]');assert(fs.existsSync(played.at(-1).replace('./','')));
-w.__panda130.show('dialogues');assert(q('.pg-bubble'));assert.equal(root.querySelectorAll('[data-dialog-line]').length,6,'Entire six-line transcript stays mounted');click('[data-action=dialog-tab][data-value="1"]');assert.equal(root.querySelectorAll('[data-dialog-line]').length,5,'Switch topic replaces full transcript');click('[data-action=dialog-tab][data-value="0"]');click('[data-action=dialog-notes]');assert(root.textContent.includes('Как спросить имя'));
+w.__panda130.show('dialogues');assert(q('[data-action=dialog-go]'),'Dialogues have Next Go');assert(q('.pg-bubble'));assert.equal(root.querySelectorAll('[data-dialog-line]').length,6,'Entire six-line transcript stays mounted');click('[data-action=dialog-tab][data-value="1"]');assert.equal(root.querySelectorAll('[data-dialog-line]').length,5,'Switch topic replaces full transcript');click('[data-action=dialog-tab][data-value="0"]');click('[data-action=dialog-notes]');assert(root.textContent.includes('Как спросить имя'));
 w.__panda130.show('build');assert(q('[data-action=game-check]').disabled);assert.equal(q('.pg-token-pool').children.length,5,'Phrase bank includes two distractors');
 for(const i of [0,1,2])click('[data-action=token-add][data-value="'+i+'"]');
 assert.equal(q('.pg-token-pool').children.length,2,'Selected words leave two real distractors and no placeholders');assert(!q('[data-action=game-check]').disabled);
@@ -49,12 +49,12 @@ for(const word of wordCards){
  assert(rows&&rows.length>=1,'Missing example for '+word.hz);
  for(const row of rows)assert(row.hz.includes(word.hz)&&row.py&&row.ru,'Untranslated or off-target example for '+word.hz);
 }
-click('[data-action=word-next][data-value="1"]');
+click('[data-action=word-go]');
 assert.equal(q('.pg-hanzi').textContent,'爸爸');
 assert.equal(root.querySelectorAll('.pg-example').length,3,'Dad now has three real, translated examples');
 assert(q('.pg-portrait').src.includes('/assets/meaning-man.webp'),'Father must not reuse the girl portrait');
 click('[data-action=word-filter][data-value="all"]');
-for(let i=0;i<7;i++)click('[data-action=word-next][data-value="1"]');
+for(let i=0;i<7;i++)click('[data-action=word-go]');
 assert.equal(q('.pg-hanzi').textContent,'你们');
 assert.equal(root.querySelectorAll('.pg-example').length,3,'Plural you has three complete written example sentences');
 assert(q('.pg-portrait').src.includes('/assets/meaning-group.webp'),'Plural you uses a group illustration');
