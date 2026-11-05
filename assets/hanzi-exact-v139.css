@@ -90,6 +90,6 @@ body.writing-simple>.shell{
 #pg-hanzi-approved .pg-dynamic-explanation small{display:block;margin-top:8px;font-weight:550}
 #pg-hanzi-approved .pg-art-status{position:absolute;z-index:12;left:12%;bottom:7.4%;width:76%;padding:8px 10px;border-radius:14px;background:#fff0f9fa;color:#64217d;font-size:clamp(10px,2.5vw,15px);text-align:center;box-shadow:0 0 8px #ca58b499}
 #pg-hanzi-tail{width:min(100vw,520px);height:max(0px,calc(100dvh - 177.68vw));margin:auto;pointer-events:none;background:linear-gradient(180deg,#2c1259,#4d1b77 42%,#301252);position:relative;overflow:hidden}
-#pg-hanzi-tail::before{content:"";position:absolute;inset:0;background-image:url("./hanzi-approved-exact-20261105.png");background-position:center bottom;background-size:100% 440%;background-repeat:no-repeat;opacity:.86;filter:blur(2px)}
+#pg-hanzi-tail::before{content:"";position:absolute;inset:0;background-image:url("./hanzi-approved-exact-20261105.png");background-position:center bottom;background-size:100% 1600%;background-repeat:no-repeat;opacity:.86;filter:blur(2px)}
 @media(min-width:521px){#pg-hanzi-tail{display:none}}
 @media(prefers-reduced-motion:reduce){#pg-hanzi-approved .pg-hit{transition:none!important}}
