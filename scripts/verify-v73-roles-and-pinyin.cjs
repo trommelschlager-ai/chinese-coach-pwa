@@ -10,7 +10,7 @@ assert.equal(anna.text,'我叫安娜。你呢？');assert.equal(anna.speaker,'B'
 assert.equal(xiao.text,'我叫小明。');assert.equal(xiao.speaker,'A');
 assert(sections.includes("female=id===2 ? (i===0 || (i>1 && who==='B')) : who==='A'"),'Approved first greeting portraits and lesson 2 character roles must be retained');
 assert(learn.includes("status.role_override?.lesson===2"),'Validate audio pack role correction');
-assert(learn.includes("lessonId===2||"),'Single dialogue line always uses corrected cast');
+assert(learn.includes("window.getDialogueAudioFile(lessonId,index)"),'Single-line examples use the same pinned role bank as the shared player');
 assert(learn.includes("lesson.id===2||"),'Full dialogue always uses corrected cast');
 assert(pron.includes('./assets/pinyin-reading-v5/'),'All 190 examples must use Yunyang audio');
 assert(html.includes('pronunciation-hub.js?v=98'));

@@ -24,7 +24,7 @@ for(const clip of status.clips){
 assert(pack.files.includes('./assets/dialogue-greetings-v113/status.json'));
 assert(html.includes("['B','你好！','nǐ hǎo!','Привет!']"),'Lesson 2 greeting must match its v73 recorded phrase rather than archival 哈喽');
 assert(!engine.includes("'./assets/dialogue-greetings-v113/l2-'"),'An archived greeting must not switch a character voice halfway through a dialogue');
-assert(engine.includes("return ready?getDialogueClip(lesson.id,index,line[0],true):null"),'Only the validated consistent role bank may be chosen automatically');
+assert(engine.includes("return getDialogueClip(lesson.id,index,line[0],true)"),'Only the pinned validated role bank may be chosen automatically');
 assert(!engine.includes('newGreeting'),'No phone-speech exception for greeting');
 assert(engine.includes('window.playDialogueLine')&&engine.includes('window.playStandaloneDialogue'));
 assert(game.includes('v115-game')&&game.includes('v115-pinyin')&&game.includes("session.mode==='choose'?'✕ Неверно"),'Approved v115 live game structure and feedback');

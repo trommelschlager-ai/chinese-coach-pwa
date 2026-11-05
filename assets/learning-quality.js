@@ -255,8 +255,9 @@
  window.getDialogueAudioFile=async function(lessonId,index){
   const lesson=COURSE.find(l=>l.id===Number(lessonId)),line=lesson?.dialogue[index];
   if(!line)return null;
-  const ready=await ensureDialogueMp3Ready();
-  return ready?getDialogueClip(lesson.id,index,line[0],true):null;
+  // This pinned release ships the validated v73 batch. A separate network
+  // status request must not disable locally cached, playable recordings.
+  return getDialogueClip(lesson.id,index,line[0],true);
  };
  async function playWord(text,rate=.82,token=audioGeneration,voice=null,dialogueClip=null,allowSystem=false){
   const key=String(text).replace(/[！!。．，,？?\s]/g,''),file=dialogueClip||(voice?null:(window.courseHumanAudio?.[key]||window.courseNaturalAudio?.[key]));
@@ -295,9 +296,9 @@
   const lesson=COURSE.find(x=>x.id===lessonId),line=lesson?.dialogue[index];
   if(!line)return;
   stopLearningAudio();const token=audioGeneration;
-  const ready=await ensureDialogueMp3Ready();if(token!==audioGeneration)return;
+  const file=await window.getDialogueAudioFile(lessonId,index);if(token!==audioGeneration)return;
   const [speaker,text]=line;
-  try{await playWord(text,.97,token,speaker,getDialogueClip(lessonId,index,speaker,lessonId===2||(ready&&localStorage.getItem('chinese-coach-dialogue-original-v72')!=='1')),false)}
+  try{await playWord(text,.97,token,speaker,file,false)}
   finally{if(token===audioGeneration)audioStatus.hidden=true}
  };
  window.playStandaloneDialogue=function(lessonId){

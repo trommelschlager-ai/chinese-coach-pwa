@@ -1,0 +1,24 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> check:release
+> node scripts/verify-approved-mobile-v112.cjs && node scripts/verify-audit-v98.cjs && node scripts/verify-hsk1-v103.cjs && node scripts/verify-game-voice-coverage-v90.cjs && node scripts/verify-offline.cjs && node scripts/verify-greetings-v113.cjs && node scripts/verify-eight-screens-v117.cjs && node scripts/verify-audio-v118.cjs && node scripts/verify-travel-voice-v1.cjs && node scripts/verify-travel-wow-v1.cjs && node scripts/verify-game-sakura-v126.cjs && node scripts/verify-menu-v3.cjs && node scripts/verify-panda-approved-v129.cjs && node scripts/verify-panda-v130.cjs && node scripts/verify-panda-v131.cjs && node scripts/verify-dialogue-player-v142.cjs && node scripts/verify-hanzi-exact-v141.cjs && node scripts/verify-mobile-v145.cjs && node scripts/verify-assemble-alive-v149.cjs
+
+v112 passed: 21 dialogue lines, orientation anchor, single quiz audio control, pinyin, all 10 quiz questions, 30 game answers, stable scene DOM, clear/remove, persisted scores, image inventory.
+V98 regression passed: export/import round trip, legacy import, invalid stats rejected, daily route and five-tone instruction.
+HSK 1 v103 roadmap: 141/300 factual audit, ten existing categories, old lessons and navigation preserved.
+V99 token inventory: original native clips retained, two whole-word corrections, no device TTS fallback.
+Offline checks passed: 121 core URLs; 1509 optional files, failed-download recovery, local writing, home isolation.
+v113 verified: exact female/male greeting MP3s, offline inventory, no phone TTS fallback, compact game layout hooks, page and cache versions.
+v117 checks passed: quiz/pinyin, compact words, listening/translation, daily banner, dialogues and live writing.
+v118 audio coverage OK. 193/193 MP3 paths: {"dedicated":113,"pinyin":32,"study":4,"human":44}; 25/25 legacy dialogue mappings; 2 greeting overrides. Mixed voice sources and preview-only licenses STILL REQUIRE review.
+Travel voice checks passed: 3 phrases, speech-result honesty, pinyin, optional skip, safe return, old quiz preserved.
+Travel WOW checks passed: approved moving path, no redundant banner, existing lesson and voice untouched.
+Game sakura v126 OK: petals are decorative, loop, respect reduced motion, leave controls and questions intact.
+v127 Panda Go approved menu: optimized art, 16 animated petals, existing study/practice/travel and live stats verified.
+Panda v129 design OK: four study, three practice, real navigation, sakura, offline, Hanzi and Game safety.
+Panda v132 passed: actual boot, routes, 193 words, examples/audio, pinyin, 13 groups, tone recordings, dialogue paging, reorderable tokens, scoring, reward idempotency and topic switching.
+Panda Go v131: clean speaker, natural speed, example audio coverage, approved layout, offline cache OK.
+v142: full transcripts, media-event sync, pause/resume, repeat, per-line playback, stale-load cancellation, missing-MP3 error, in-place toggles, stable images, reachable settings and preserved backup controls passed.
+PASS: exact overlay, 10 characters, 30 sentence routes, tabs, animation, quiz callbacks, progress and wraparound. Browser and real-device QA remain separate.
+v145: 193 cards, 36 with three recorded examples, 193 with any; 49 phonetic buttons and 25 role-consistent dialogue paths. Missing examples explicitly listed, not replaced by repeated words.
+Alive café: errors, editing, pinyin, 6 scenes, local audio, completion and restart OK.
