@@ -24,7 +24,7 @@ assert(css.includes('body:not(.launch-active):has(#tones.active)'),'Only active 
 assert(css.includes('prefers-reduced-motion:reduce'),'Motion preference honoured');
 assert(!css.includes('#topics[data-simple-section]{'),'Do not restyle approved game shell');
 assert(motion.includes("pointer-events")||css.includes('pointer-events:none'),'Petals cannot intercept taps');
-assert(sw.includes('chinese-coach-pwa-v135'),'Fresh offline cache');
+assert(sw.includes('chinese-coach-pwa-v136'),'Fresh offline cache');
 for(const name of ['panda-approved-lesson-ui-v129.css','panda-approved-lesson-ui-v129.js','panda-approved-hanzi-ui-v129.css']){
  assert(sw.includes(name),'Offline cache missing '+name);
 }

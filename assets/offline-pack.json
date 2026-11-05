@@ -1399,8 +1399,8 @@
     "./icons/maskable-512.png",
     "./index.html",
     "./manifest.webmanifest",
-    "./assets/panda-v130.css?v=132",
-    "./assets/panda-v130.js?v=132",
+    "./assets/panda-v130.css?v=136",
+    "./assets/panda-v130.js?v=136",
     "./assets/panda-hanzi-v130.css?v=135",
     "./assets/panda-hanzi-v130.js?v=135",
     "./assets/panda-v130/book.webp",
@@ -1428,6 +1428,6 @@
     "./assets/panda-v130/word-girl.webp",
     "./assets/panda-v130/coin.webp",
     "./assets/panda-v130/profile.webp",
-    "./assets/panda-go-approved-home-v132.jpg"
+    "./assets/panda-go-home-v136-clean.png"
   ]
 }

@@ -182,3 +182,52 @@ body.pg130-active>#launch-entry,body.pg130-active>.shell,body.pg130-active>.bott
 
 /* Tapping the Panda resumes the last lesson, with no extra visible UI over artwork. */
 #pg130 .pg-home-hit-resume{top:25.5%;left:47%;width:48%;height:18%;border-radius:45%}
+
+
+/* Panda Go v136 — verified exact approved art. No regeneration, no resampling,
+   no deliberate cropping of UI cards. Only the faux browser toolbar was removed. */
+body.pg130-active{background:#47c1e8!important}
+#pg130:has(.pg-home-v136){background:linear-gradient(180deg,#dda8fa,#8061cb 70%,#35c9e8)!important}
+#pg130 .pg-screen.pg-home-v136{
+  width:100vw!important;max-width:450px!important;
+  height:100dvh!important;max-height:none!important;
+  min-height:0!important;padding:0!important;margin:0!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important;
+  background:linear-gradient(180deg,#cca5ec 0%,#6349ba 55%,#55d0e6 95%)!important;
+  display:flex!important;flex-direction:column;align-items:center;
+  justify-content:flex-start;overflow-x:hidden;overflow-y:auto;scrollbar-width:none;
+}
+#pg130 .pg-home-v136::-webkit-scrollbar{display:none}
+#pg130 .pg-screen.pg-home-v136::before{display:none!important}
+#pg130 .pg-screen.pg-home-v136::after{
+  content:"";position:relative;display:block!important;width:100%;height:auto;
+  flex:1 0 0;min-height:0;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,#54c8e9 0%,#23a3cd 60%,#6acbed 100%);
+}
+#pg130 .pg-home-v136 .pg-home-image-wrap{
+  display:block;position:relative;flex:0 0 auto;
+  width:min(100%,calc(100dvh * 941 / 1522))!important;
+  aspect-ratio:941 / 1522!important;overflow:visible!important;
+  background:#d0a5ec;
+}
+#pg130 .pg-home-v136 .pg-home-image{
+  position:absolute;left:0!important;top:0!important;display:block;
+  width:100%!important;max-width:100%!important;height:100%!important;
+  object-fit:contain!important;object-position:center center!important;
+  image-rendering:auto!important;user-select:none;-webkit-user-drag:none;
+}
+#pg130 .pg-home-v136 .pg-home-hit{
+  position:absolute;display:block;z-index:5;cursor:pointer;touch-action:manipulation;
+  border:0!important;padding:0!important;margin:0!important;background:transparent!important;
+  border-radius:999px;transition:background .12s ease,box-shadow .12s ease;
+}
+#pg130 .pg-home-v136 .pg-home-hit:active{background:#fff4!important;box-shadow:inset 0 0 0 2px #fff9,0 0 18px #ffd7fd}
+#pg130 .pg-home-v136 .pg-home-hit:focus-visible{outline:3px solid #4c146f!important;outline-offset:-2px}
+#pg130 .pg-home-v136 .pg-home-hit-profile{top:2.1%;left:83.1%;width:11.5%;height:6%;border-radius:50%}
+#pg130 .pg-home-v136 .pg-home-hit-resume{top:20%;left:44%;width:47%;height:23%;border-radius:45%}
+#pg130 .pg-home-v136 .pg-home-hit-tones{top:43.8%;left:3.9%;width:92.4%;height:10.6%}
+#pg130 .pg-home-v136 .pg-home-hit-words{top:55.2%;left:3.9%;width:92.4%;height:10.2%}
+#pg130 .pg-home-v136 .pg-home-hit-dialogues{top:65.9%;left:3.9%;width:92.4%;height:10.2%}
+#pg130 .pg-home-v136 .pg-home-hit-travel{top:76.5%;left:3.9%;width:92.4%;height:11.5%}
+#pg130:has(.pg-home-v136) .pg-sakura{width:100%;height:100%;border-radius:0}
+@media(prefers-reduced-motion:reduce){#pg130:has(.pg-home-v136) .pg-sakura{display:none!important}}
