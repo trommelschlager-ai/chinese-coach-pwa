@@ -27,11 +27,11 @@
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
   </style>
   <script defer src="./assets/vendor/hanzi-writer.min.js"></script>
-<link rel="stylesheet" href="./assets/panda-hanzi-v130.css?v=130">
+<link rel="stylesheet" href="./assets/panda-hanzi-v130.css?v=133">
 </head>
 <body class="writing-simple">
 <main class="shell">
-<header class="pg-hanzi-heading"><img src="./assets/panda-v130/brush.webp" alt=""><h1>Иероглифы</h1></header>
+
   <div class="top"><a class="back" href="./index.html#panda/learn">← Разделы</a><span class="top-pill">Иероглиф · 1 из 10</span></div>
   <div class="mini-progress" aria-label="Прогресс изучения иероглифов"><span id="progress-text">Изучено 0 из 10</span><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progress-track"><div id="progress-fill"></div></div></div>
   <div class="layout">
@@ -41,9 +41,10 @@
       <p class="meaning" id="meaning">Большой</p>
       <div class="paper" aria-label="Поле для письма пальцем"><div id="writer"><span class="fallback" aria-hidden="true">大</span></div></div>
       <div class="controls">
-        <button class="control" id="animate" type="button">▶ Показать черты</button>
-        <button class="control primary full" id="practice" type="button">✍️ Написать самому</button>
-        <button class="control" id="retry" type="button">↻ Начать заново</button>
+        <button class="control" id="animate" type="button">▶ Черты</button>
+        <button class="control primary full" id="practice" type="button">✍️ Писать</button>
+        <button class="control" id="pg-trace" type="button">🖌️ Пропись</button>
+        <button class="control" id="retry" type="button">↻ Заново</button>
         <button class="control next-control" id="next" type="button" aria-label="Следующий иероглиф">Далее →</button>
       </div>
 
@@ -51,6 +52,19 @@
       <div class="progress-details" id="stroke-status">Количество черт: 3</div>
     </section>
   </div>
+
+  <section class="pg-hanzi-lexicon" aria-label="Значение, примеры и слова">
+    <div class="pg-lexicon-tabs" role="tablist" aria-label="Разбор иероглифа">
+      <button type="button" class="pg-lex-tab" role="tab" aria-selected="true" data-hanzi-tab="meaning">Значение</button>
+      <button type="button" class="pg-lex-tab" role="tab" aria-selected="false" data-hanzi-tab="examples">Примеры</button>
+      <button type="button" class="pg-lex-tab" role="tab" aria-selected="false" data-hanzi-tab="words">Слова</button>
+    </div>
+    <div id="pg-hanzi-lexicon-list" class="pg-lexicon-list" role="tabpanel" aria-live="polite">
+      <div class="pg-lexicon-entry"><strong lang="zh-Hans">大人</strong><span>dàrén — взрослый</span></div>
+      <div class="pg-lexicon-entry"><strong lang="zh-Hans">大学</strong><span>dàxué — университет</span></div>
+      <div class="pg-lexicon-entry"><strong lang="zh-Hans">大家</strong><span>dàjiā — все, друзья</span></div>
+    </div>
+  </section>
   <details class="writing-extras" id="writing-extras"><summary>Дополнительно · подсказки и настройки</summary>
     <details class="writing-help" id="writing-help"><summary>Подсказки и пример слова</summary>
 
@@ -109,7 +123,7 @@ window.addEventListener('DOMContentLoaded',function(){
     $('writing-help').open=false;document.querySelector('.character-picker').open=false;renderTabs();setButtons(false);say('Загружаем образец и порядок черт…');
     $('writer').innerHTML='<span class="fallback" aria-hidden="true"></span>';$('writer').firstChild.textContent=d.hz;
     if(!window.HanziWriter){say('Не удалось загрузить модуль письма. Проверь интернет и обнови страницу.','bad');return;}
-    const size=Math.min(310,Math.max(215,Math.floor($('writer').clientWidth-14)));
+    const size=Math.min(440,Math.max(205,Math.floor($('writer').clientWidth-8)));
     $('writer').textContent='';
     try{
       writer=window.HanziWriter.create('writer',d.hz,{
@@ -187,13 +201,53 @@ window.addEventListener('DOMContentLoaded',function(){
       if(playing&&typeof playing.catch==='function')playing.catch(fallback);
     }catch(_){fallback();}
   }
+
+  const pgExamples={
+    '大':[['大人','dàrén','взрослый'],['大学','dàxué','университет'],['大家','dàjiā','все, друзья']],
+    '人':[['人口','rénkǒu','население'],['人们','rénmen','люди'],['大人','dàrén','взрослый']],
+    '小':[['小孩','xiǎohái','ребёнок'],['小时','xiǎoshí','час'],['小心','xiǎoxīn','осторожно']],
+    '一':[['一天','yì tiān','один день'],['一个','yí ge','один (счётное слово)'],['一月','yī yuè','январь']],
+    '二':[['二月','èr yuè','февраль'],['第二','dì èr','второй'],['二十','èr shí','двадцать']],
+    '三':[['三天','sān tiān','три дня'],['三月','sān yuè','март'],['三个人','sān ge rén','три человека']],
+    '口':[['人口','rénkǒu','население'],['入口','rùkǒu','вход'],['开口','kāikǒu','открыть рот']],
+    '日':[['生日','shēngrì','день рождения'],['日子','rìzi','дни, время'],['日本','Rìběn','Япония']],
+    '月':[['月亮','yuèliang','луна'],['一月','yī yuè','январь'],['月份','yuèfèn','месяц']],
+    '木':[['木头','mùtou','дерево, древесина'],['木材','mùcái','лесоматериал'],['树木','shùmù','деревья']]
+  };
+  function renderPgLexicon(){
+    const root=$('pg-hanzi-lexicon-list');if(!root)return;
+    const active=document.querySelector('.pg-lex-tab[aria-selected="true"]')?.dataset.hanziTab||'meaning';
+    const data=lessons[index],items=pgExamples[data.hz]||[];
+    root.replaceChildren();
+    if(active==='examples'){
+      const line=document.createElement('p');line.className='pg-lex-note';line.textContent='Посмотри, как этот иероглиф используется в словах.';root.append(line);
+    }
+    if(active==='words'){
+      const line=document.createElement('p');line.className='pg-lex-note';line.textContent='Слова с иероглифом '+data.hz+' · '+data.py;root.append(line);
+    }
+    for(const [zh,py,ru] of items){
+      const row=document.createElement('div');row.className='pg-lexicon-entry';
+      const hz=document.createElement('strong');hz.lang='zh-Hans';hz.textContent=zh;
+      const meaning=document.createElement('span');meaning.textContent=py+' — '+ru;
+      row.append(hz,meaning);root.append(row);
+    }
+  }
+  document.querySelectorAll('.pg-lex-tab').forEach(button=>button.addEventListener('click',()=>{
+    document.querySelectorAll('.pg-lex-tab').forEach(tab=>tab.setAttribute('aria-selected',String(tab===button)));
+    renderPgLexicon();
+  }));
+  $('pg-trace').addEventListener('click',()=>{if(!loaded)return;animate();say('Следи за чертами, затем выбери «Писать» и повтори пальцем.');});
+  const pgObserver=new MutationObserver(renderPgLexicon);
+  pgObserver.observe($('character'),{childList:true,characterData:true});
+  renderPgLexicon();
+
   $('animate').addEventListener('click',animate);$('practice').addEventListener('click',startQuiz);$('retry').addEventListener('click',()=>select(index));$('speak').addEventListener('click',speak);$('next').addEventListener('click',()=>select(index+1));
-  if(typeof ResizeObserver==='function'){new ResizeObserver(()=>{if(loaded&&writer?.updateDimensions){const size=Math.min(310,Math.max(150,Math.floor($('writer').clientWidth-14)));writer.updateDimensions({width:size,height:size,padding:19});}}).observe(document.querySelector('.paper'));}
+  if(typeof ResizeObserver==='function'){new ResizeObserver(()=>{if(loaded&&writer?.updateDimensions){const size=Math.min(440,Math.max(180,Math.floor($('writer').clientWidth-8)));writer.updateDimensions({width:size,height:size,padding:19});}}).observe(document.querySelector('.paper'));}
   window.addEventListener('pagehide',()=>{recordingToken++;activeRecording?.pause();window.speechSynthesis?.cancel();});
   progress();select(0);
 });
 </script>
 <script src="./assets/daily-study-v98.js?v=98"></script>
-<script src="./assets/panda-hanzi-v130.js?v=130"></script>
+<script src="./assets/panda-hanzi-v130.js?v=133"></script>
 </body>
 </html>
