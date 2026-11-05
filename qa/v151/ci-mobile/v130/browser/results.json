@@ -1,0 +1,4082 @@
+{
+  "version": 130,
+  "at": "2026-11-05T20:54:39.015Z",
+  "captures": [
+    {
+      "name": "01-home",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "scrollHeight": 640,
+      "clientHeight": 640,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "actions": [
+        {
+          "text": "Профиль и достижения",
+          "left": 299.15625,
+          "right": 340.546875,
+          "top": 12.21875,
+          "bottom": 47.140625
+        },
+        {
+          "text": "Продолжить последнее занятие",
+          "left": 158.390625,
+          "right": 327.578125,
+          "top": 116.453125,
+          "bottom": 250.359375
+        },
+        {
+          "text": "Звуки и тоны",
+          "left": 14.03125,
+          "right": 346.65625,
+          "top": 255.03125,
+          "bottom": 316.75
+        },
+        {
+          "text": "Слова и выражения",
+          "left": 14.03125,
+          "right": 346.65625,
+          "top": 321.40625,
+          "bottom": 380.796875
+        },
+        {
+          "text": "Диалоги и общение",
+          "left": 14.03125,
+          "right": 346.65625,
+          "top": 383.703125,
+          "bottom": 443.09375
+        },
+        {
+          "text": "Китай в жизни",
+          "left": 14.03125,
+          "right": 346.65625,
+          "top": 445.421875,
+          "bottom": 512.375
+        }
+      ]
+    },
+    {
+      "name": "02-learn",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Учиться",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Звуки и тоныПроизношение и правила чтения›",
+          "left": 16,
+          "right": 344,
+          "top": 161.40625,
+          "bottom": 235.40625
+        },
+        {
+          "text": "Базовые словаСамые нужные слова›",
+          "left": 16,
+          "right": 344,
+          "top": 244.40625,
+          "bottom": 318.40625
+        },
+        {
+          "text": "ИероглифыПисьмо и порядок черт›",
+          "left": 16,
+          "right": 344,
+          "top": 327.40625,
+          "bottom": 401.40625
+        },
+        {
+          "text": "ДиалогиГотовые фразы для общения›",
+          "left": 16,
+          "right": 344,
+          "top": 410.40625,
+          "bottom": 484.40625
+        },
+        {
+          "text": "Дальше Go →",
+          "left": 16,
+          "right": 344,
+          "top": 567.609375,
+          "bottom": 616.609375
+        }
+      ]
+    },
+    {
+      "name": "09-tones",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Звуки и тоны",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Тоны",
+          "left": 21,
+          "right": 96.75,
+          "top": 115,
+          "bottom": 162
+        },
+        {
+          "text": "Инициали",
+          "left": 101.75,
+          "right": 177.5,
+          "top": 115,
+          "bottom": 162
+        },
+        {
+          "text": "Финали",
+          "left": 182.5,
+          "right": 258.25,
+          "top": 115,
+          "bottom": 162
+        },
+        {
+          "text": "Сочетания",
+          "left": 263.25,
+          "right": 339,
+          "top": 115,
+          "bottom": 162
+        },
+        {
+          "text": "1 тон: mā",
+          "left": 27,
+          "right": 98.25,
+          "top": 241.046875,
+          "bottom": 390.1875
+        },
+        {
+          "text": "2 тон: má",
+          "left": 105.25,
+          "right": 176.5,
+          "top": 241.046875,
+          "bottom": 390.1875
+        },
+        {
+          "text": "3 тон: mǎ",
+          "left": 183.5,
+          "right": 254.75,
+          "top": 241.046875,
+          "bottom": 390.1875
+        },
+        {
+          "text": "4 тон: mà",
+          "left": 261.75,
+          "right": 333,
+          "top": 241.046875,
+          "bottom": 390.1875
+        },
+        {
+          "text": "Прослушать",
+          "left": 69.5,
+          "right": 111.5,
+          "top": 405.1875,
+          "bottom": 447.1875
+        },
+        {
+          "text": "Проверить произношение",
+          "left": 31,
+          "right": 194.296875,
+          "top": 521,
+          "bottom": 562
+        },
+        {
+          "text": "Все правила чтения",
+          "left": 199.296875,
+          "right": 328.984375,
+          "top": 521,
+          "bottom": 562
+        },
+        {
+          "text": "Следующий раздел звуков и тонов",
+          "left": 16,
+          "right": 344,
+          "top": 572,
+          "bottom": 620
+        }
+      ]
+    },
+    {
+      "name": "10-words",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 79.53125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Люди",
+          "left": 83.53125,
+          "right": 142.0625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Место",
+          "left": 146.0625,
+          "right": 204.59375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Действия",
+          "left": 208.59375,
+          "right": 276.484375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Еда",
+          "left": 280.484375,
+          "right": 339.015625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 292,
+          "right": 333,
+          "top": 167.34375,
+          "bottom": 209.34375
+        },
+        {
+          "text": "Послушать слово",
+          "left": 292,
+          "right": 333,
+          "top": 240.046875,
+          "bottom": 282.046875
+        },
+        {
+          "text": "Слушать запись предложения",
+          "left": 30,
+          "right": 68,
+          "top": 362.1875,
+          "bottom": 404.1875
+        },
+        {
+          "text": "Слушать запись предложения",
+          "left": 30,
+          "right": 68,
+          "top": 441.71875,
+          "bottom": 483.71875
+        },
+        {
+          "text": "Слушать запись предложения",
+          "left": 30,
+          "right": 68,
+          "top": 521.25,
+          "bottom": 563.25
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 52.078125,
+          "right": 307.90625,
+          "top": 530,
+          "bottom": 568
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 344,
+          "top": 574,
+          "bottom": 620
+        }
+      ]
+    },
+    {
+      "name": "10a-mother-examples",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 79.53125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Люди",
+          "left": 83.53125,
+          "right": 142.0625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Место",
+          "left": 146.0625,
+          "right": 204.59375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Действия",
+          "left": 208.59375,
+          "right": 276.484375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Еда",
+          "left": 280.484375,
+          "right": 339.015625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 292,
+          "right": 333,
+          "top": 165.5,
+          "bottom": 207.5
+        },
+        {
+          "text": "Послушать слово",
+          "left": 292,
+          "right": 333,
+          "top": 234.5,
+          "bottom": 276.5
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 354.765625,
+          "bottom": 396.765625
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 434.296875,
+          "bottom": 476.296875
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 513.828125,
+          "bottom": 555.828125
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 52.078125,
+          "right": 307.90625,
+          "top": 530,
+          "bottom": 568
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 344,
+          "top": 574,
+          "bottom": 620
+        }
+      ]
+    },
+    {
+      "name": "10b-father-examples",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 79.53125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Люди",
+          "left": 83.53125,
+          "right": 142.0625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Место",
+          "left": 146.0625,
+          "right": 204.59375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Действия",
+          "left": 208.59375,
+          "right": 276.484375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Еда",
+          "left": 280.484375,
+          "right": 339.015625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 292,
+          "right": 333,
+          "top": 165.5,
+          "bottom": 207.5
+        },
+        {
+          "text": "Послушать слово",
+          "left": 292,
+          "right": 333,
+          "top": 234.5,
+          "bottom": 276.5
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 354.765625,
+          "bottom": 396.765625
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 434.296875,
+          "bottom": 476.296875
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 513.828125,
+          "bottom": 555.828125
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 52.078125,
+          "right": 307.90625,
+          "top": 530,
+          "bottom": 568
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 344,
+          "top": 574,
+          "bottom": 620
+        }
+      ]
+    },
+    {
+      "name": "10c-plural-you-examples",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 79.53125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Люди",
+          "left": 83.53125,
+          "right": 142.0625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Место",
+          "left": 146.0625,
+          "right": 204.59375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Действия",
+          "left": 208.59375,
+          "right": 276.484375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Еда",
+          "left": 280.484375,
+          "right": 339.015625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 292,
+          "right": 333,
+          "top": 165.5,
+          "bottom": 207.5
+        },
+        {
+          "text": "Послушать слово",
+          "left": 292,
+          "right": 333,
+          "top": 234.5,
+          "bottom": 276.5
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 354.765625,
+          "bottom": 396.765625
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 434.296875,
+          "bottom": 476.296875
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 513.828125,
+          "bottom": 555.828125
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 52.078125,
+          "right": 307.90625,
+          "top": 530,
+          "bottom": 568
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 344,
+          "top": 574,
+          "bottom": 620
+        }
+      ]
+    },
+    {
+      "name": "12-dialogues",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Диалоги",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 62,
+          "top": 14,
+          "bottom": 60
+        },
+        {
+          "text": "Знакомство",
+          "left": 21,
+          "right": 97.5,
+          "top": 103.21875,
+          "bottom": 147.21875
+        },
+        {
+          "text": "Место",
+          "left": 101.5,
+          "right": 178,
+          "top": 103.21875,
+          "bottom": 147.21875
+        },
+        {
+          "text": "Время",
+          "left": 182,
+          "right": 258.5,
+          "top": 103.21875,
+          "bottom": 147.21875
+        },
+        {
+          "text": "В кафе",
+          "left": 262.5,
+          "right": 339,
+          "top": 103.21875,
+          "bottom": 147.21875
+        },
+        {
+          "text": "Прослушать реплику 1",
+          "left": 39,
+          "right": 80,
+          "top": 291.015625,
+          "bottom": 335.015625
+        },
+        {
+          "text": "Прослушать реплику 2",
+          "left": 63.640625,
+          "right": 104.640625,
+          "top": 404.609375,
+          "bottom": 448.609375
+        },
+        {
+          "text": "Прослушать реплику 3",
+          "left": 39,
+          "right": 80,
+          "top": 518.203125,
+          "bottom": 562.203125
+        },
+        {
+          "text": "Прослушать реплику 4",
+          "left": 63.640625,
+          "right": 104.640625,
+          "top": 631.796875,
+          "bottom": 675.796875
+        },
+        {
+          "text": "Прослушать реплику 5",
+          "left": 39,
+          "right": 80,
+          "top": 745.390625,
+          "bottom": 789.390625
+        },
+        {
+          "text": "Прослушать реплику 6",
+          "left": 63.640625,
+          "right": 104.640625,
+          "top": 858.984375,
+          "bottom": 902.984375
+        },
+        {
+          "text": "▶ Слушать диалог",
+          "left": 16,
+          "right": 344,
+          "top": 439.46875,
+          "bottom": 492.46875
+        },
+        {
+          "text": "📖 Разбор",
+          "left": 53.640625,
+          "right": 175,
+          "top": 502.46875,
+          "bottom": 539.46875
+        },
+        {
+          "text": "↻ Повторить",
+          "left": 185,
+          "right": 306.359375,
+          "top": 498.46875,
+          "bottom": 539.46875
+        },
+        {
+          "text": "Пиньинь: показан",
+          "left": 57.046875,
+          "right": 176.609375,
+          "top": 579.46875,
+          "bottom": 617.46875
+        },
+        {
+          "text": "Перевод: показан",
+          "left": 184.609375,
+          "right": 302.953125,
+          "top": 579.46875,
+          "bottom": 617.46875
+        },
+        {
+          "text": "Следующий диалог",
+          "left": 16,
+          "right": 344,
+          "top": 580.5,
+          "bottom": 625
+        }
+      ]
+    },
+    {
+      "name": "11-hanzi",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "scrollHeight": 640,
+      "clientHeight": 640,
+      "font": "Arial, system-ui, sans-serif",
+      "missingImages": [],
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 8.265625,
+          "right": 39.21875,
+          "top": 31.359375,
+          "bottom": 61.4375
+        },
+        {
+          "text": "Показать черты",
+          "left": 242.625,
+          "right": 353.140625,
+          "top": 92.796875,
+          "bottom": 134.390625
+        },
+        {
+          "text": "Писать иероглиф",
+          "left": 242.625,
+          "right": 353.140625,
+          "top": 149.109375,
+          "bottom": 191.34375
+        },
+        {
+          "text": "Послушать иероглиф",
+          "left": 236.15625,
+          "right": 273.234375,
+          "top": 271.359375,
+          "bottom": 302.71875
+        },
+        {
+          "text": "Значение",
+          "left": 18,
+          "right": 124.1875,
+          "top": 372.46875,
+          "bottom": 401.90625
+        },
+        {
+          "text": "Примеры",
+          "left": 124.546875,
+          "right": 236.140625,
+          "top": 372.46875,
+          "bottom": 401.90625
+        },
+        {
+          "text": "Слова",
+          "left": 236.15625,
+          "right": 342.34375,
+          "top": 372.46875,
+          "bottom": 401.90625
+        },
+        {
+          "text": "Послушать пример 1",
+          "left": 30.953125,
+          "right": 65.140625,
+          "top": 415.359375,
+          "bottom": 441.59375
+        },
+        {
+          "text": "Послушать пример 2",
+          "left": 30.953125,
+          "right": 65.140625,
+          "top": 460.796875,
+          "bottom": 487.03125
+        },
+        {
+          "text": "Послушать пример 3",
+          "left": 30.953125,
+          "right": 65.140625,
+          "top": 505.59375,
+          "bottom": 531.828125
+        },
+        {
+          "text": "Go еще — следующий иероглиф",
+          "left": 38.15625,
+          "right": 320.390625,
+          "top": 554.875,
+          "bottom": 599.03125
+        }
+      ]
+    },
+    {
+      "name": "03-training",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Тренироваться",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "ПрактикаУпражнения по темам›",
+          "left": 16,
+          "right": 344,
+          "top": 185,
+          "bottom": 260
+        },
+        {
+          "text": "ТестПроверь свои знания›",
+          "left": 16,
+          "right": 344,
+          "top": 272,
+          "bottom": 347
+        },
+        {
+          "text": "Игровая практикаИгры и интерактивные задания›",
+          "left": 16,
+          "right": 344,
+          "top": 359,
+          "bottom": 434
+        }
+      ]
+    },
+    {
+      "name": "04-practice",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Прослушать",
+          "left": 69.5,
+          "right": 111.5,
+          "top": 250.5,
+          "bottom": 292.5
+        },
+        {
+          "text": "здравствуйте (вежливо)",
+          "left": 28,
+          "right": 332,
+          "top": 306.5,
+          "bottom": 349.5
+        },
+        {
+          "text": "привет",
+          "left": 28,
+          "right": 332,
+          "top": 359.5,
+          "bottom": 402.5
+        },
+        {
+          "text": "спасибо",
+          "left": 28,
+          "right": 332,
+          "top": 412.5,
+          "bottom": 455.5
+        },
+        {
+          "text": "до свидания",
+          "left": 28,
+          "right": 332,
+          "top": 465.5,
+          "bottom": 508.5
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 16,
+          "right": 344,
+          "top": 571,
+          "bottom": 620
+        }
+      ]
+    },
+    {
+      "name": "05-quiz",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Тест",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "再见",
+          "left": 28,
+          "right": 332,
+          "top": 226.5,
+          "bottom": 269.5
+        },
+        {
+          "text": "谢谢",
+          "left": 28,
+          "right": 332,
+          "top": 279.5,
+          "bottom": 322.5
+        },
+        {
+          "text": "名字",
+          "left": 28,
+          "right": 332,
+          "top": 332.5,
+          "bottom": 375.5
+        },
+        {
+          "text": "请",
+          "left": 28,
+          "right": 332,
+          "top": 385.5,
+          "bottom": 428.5
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 16,
+          "right": 344,
+          "top": 571,
+          "bottom": 620
+        }
+      ]
+    },
+    {
+      "name": "06-games",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Игровая практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Собери и оживиПанда в кафе · 6 живых сцен›",
+          "left": 16,
+          "right": 344,
+          "top": 117.25,
+          "bottom": 192.25
+        },
+        {
+          "text": "Собери фразуСоставь правильноепредложение›",
+          "left": 16,
+          "right": 344,
+          "top": 204.25,
+          "bottom": 279.25
+        },
+        {
+          "text": "Слушай и выбирайПрослушай и выбериверный вариант›",
+          "left": 16,
+          "right": 344,
+          "top": 291.25,
+          "bottom": 366.25
+        },
+        {
+          "text": "Выбери ответОтветь на вопроспо теме›",
+          "left": 16,
+          "right": 344,
+          "top": 378.25,
+          "bottom": 453.25
+        },
+        {
+          "text": "Быстрый тестКороткий тест на скорость›",
+          "left": 16,
+          "right": 344,
+          "top": 465.25,
+          "bottom": 540.25
+        }
+      ]
+    },
+    {
+      "name": "07-build-initial",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Игровая практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Послушать фразу",
+          "left": 129.671875,
+          "right": 163.671875,
+          "top": 215.75,
+          "bottom": 248.75
+        },
+        {
+          "text": "我",
+          "left": 48.5,
+          "right": 85.5,
+          "top": 422.875,
+          "bottom": 463.625
+        },
+        {
+          "text": "中国",
+          "left": 93.5,
+          "right": 153.5,
+          "top": 422.875,
+          "bottom": 463.625
+        },
+        {
+          "text": "是",
+          "left": 161.5,
+          "right": 198.5,
+          "top": 422.875,
+          "bottom": 463.625
+        },
+        {
+          "text": "喜欢",
+          "left": 206.5,
+          "right": 266.5,
+          "top": 422.875,
+          "bottom": 463.625
+        },
+        {
+          "text": "你",
+          "left": 274.5,
+          "right": 311.5,
+          "top": 422.875,
+          "bottom": 463.625
+        },
+        {
+          "text": "Пиньинь",
+          "left": 137.484375,
+          "right": 222.5,
+          "top": 502.25,
+          "bottom": 534.5
+        },
+        {
+          "text": "Начать фразу заново",
+          "left": 16,
+          "right": 53,
+          "top": 580,
+          "bottom": 612
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 61,
+          "right": 344,
+          "top": 572,
+          "bottom": 620
+        }
+      ]
+    },
+    {
+      "name": "07-build",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Игровая практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Послушать фразу",
+          "left": 129.671875,
+          "right": 163.671875,
+          "top": 215.75,
+          "bottom": 248.75
+        },
+        {
+          "text": "我",
+          "left": 83.5,
+          "right": 126.5,
+          "top": 306.25,
+          "bottom": 349.5
+        },
+        {
+          "text": "喜欢",
+          "left": 133.5,
+          "right": 201.5,
+          "top": 306.25,
+          "bottom": 349.5
+        },
+        {
+          "text": "中国",
+          "left": 208.5,
+          "right": 276.5,
+          "top": 306.25,
+          "bottom": 349.5
+        },
+        {
+          "text": "是",
+          "left": 139,
+          "right": 176,
+          "top": 422.875,
+          "bottom": 463.625
+        },
+        {
+          "text": "你",
+          "left": 184,
+          "right": 221,
+          "top": 422.875,
+          "bottom": 463.625
+        },
+        {
+          "text": "Пиньинь",
+          "left": 137.484375,
+          "right": 222.5,
+          "top": 502.25,
+          "bottom": 534.5
+        },
+        {
+          "text": "Начать фразу заново",
+          "left": 16,
+          "right": 53,
+          "top": 580,
+          "bottom": 612
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 61,
+          "right": 344,
+          "top": 572,
+          "bottom": 620
+        }
+      ]
+    },
+    {
+      "name": "08-result",
+      "viewport": [
+        360,
+        640
+      ],
+      "density": 1,
+      "width": 360,
+      "height": 640,
+      "scrollWidth": 354,
+      "clientWidth": 354,
+      "scrollHeight": 634,
+      "clientHeight": 634,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Отлично!",
+      "actions": [
+        {
+          "text": "Продолжить ›",
+          "left": 16,
+          "right": 344,
+          "top": 571,
+          "bottom": 620
+        }
+      ]
+    },
+    {
+      "name": "01-home",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "scrollHeight": 720,
+      "clientHeight": 720,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "actions": [
+        {
+          "text": "Профиль и достижения",
+          "left": 324.078125,
+          "right": 368.921875,
+          "top": 13.234375,
+          "bottom": 51.078125
+        },
+        {
+          "text": "Продолжить последнее занятие",
+          "left": 171.59375,
+          "right": 354.890625,
+          "top": 126.15625,
+          "bottom": 271.234375
+        },
+        {
+          "text": "Звуки и тоны",
+          "left": 15.203125,
+          "right": 375.5625,
+          "top": 276.28125,
+          "bottom": 343.140625
+        },
+        {
+          "text": "Слова и выражения",
+          "left": 15.203125,
+          "right": 375.5625,
+          "top": 348.1875,
+          "bottom": 412.515625
+        },
+        {
+          "text": "Диалоги и общение",
+          "left": 15.203125,
+          "right": 375.5625,
+          "top": 415.6875,
+          "bottom": 480.015625
+        },
+        {
+          "text": "Китай в жизни",
+          "left": 15.203125,
+          "right": 375.5625,
+          "top": 482.546875,
+          "bottom": 555.078125
+        }
+      ]
+    },
+    {
+      "name": "02-learn",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Учиться",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Звуки и тоныПроизношение и правила чтения›",
+          "left": 16,
+          "right": 374,
+          "top": 161.71875,
+          "bottom": 242.265625
+        },
+        {
+          "text": "Базовые словаСамые нужные слова›",
+          "left": 16,
+          "right": 374,
+          "top": 251.265625,
+          "bottom": 331.8125
+        },
+        {
+          "text": "ИероглифыПисьмо и порядок черт›",
+          "left": 16,
+          "right": 374,
+          "top": 340.8125,
+          "bottom": 421.359375
+        },
+        {
+          "text": "ДиалогиГотовые фразы для общения›",
+          "left": 16,
+          "right": 374,
+          "top": 430.359375,
+          "bottom": 510.90625
+        },
+        {
+          "text": "Дальше Go →",
+          "left": 16,
+          "right": 374,
+          "top": 646.8125,
+          "bottom": 695.8125
+        }
+      ]
+    },
+    {
+      "name": "09-tones",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Звуки и тоны",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Тоны",
+          "left": 21,
+          "right": 104.25,
+          "top": 120.796875,
+          "bottom": 167.796875
+        },
+        {
+          "text": "Инициали",
+          "left": 109.25,
+          "right": 192.5,
+          "top": 120.796875,
+          "bottom": 167.796875
+        },
+        {
+          "text": "Финали",
+          "left": 197.5,
+          "right": 280.75,
+          "top": 120.796875,
+          "bottom": 167.796875
+        },
+        {
+          "text": "Сочетания",
+          "left": 285.75,
+          "right": 369,
+          "top": 120.796875,
+          "bottom": 167.796875
+        },
+        {
+          "text": "1 тон: mā",
+          "left": 27,
+          "right": 105.75,
+          "top": 251.734375,
+          "bottom": 408.15625
+        },
+        {
+          "text": "2 тон: má",
+          "left": 112.75,
+          "right": 191.5,
+          "top": 251.734375,
+          "bottom": 408.15625
+        },
+        {
+          "text": "3 тон: mǎ",
+          "left": 198.5,
+          "right": 277.25,
+          "top": 251.734375,
+          "bottom": 408.15625
+        },
+        {
+          "text": "4 тон: mà",
+          "left": 284.25,
+          "right": 363,
+          "top": 251.734375,
+          "bottom": 408.15625
+        },
+        {
+          "text": "Прослушать",
+          "left": 84.5,
+          "right": 126.5,
+          "top": 423.15625,
+          "bottom": 465.15625
+        },
+        {
+          "text": "Проверить произношение",
+          "left": 33.890625,
+          "right": 209.1875,
+          "top": 595,
+          "bottom": 636
+        },
+        {
+          "text": "Все правила чтения",
+          "left": 217.1875,
+          "right": 356.109375,
+          "top": 595,
+          "bottom": 636
+        },
+        {
+          "text": "Следующий раздел звуков и тонов",
+          "left": 16,
+          "right": 374,
+          "top": 646,
+          "bottom": 700
+        }
+      ]
+    },
+    {
+      "name": "10-words",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 85.78125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Люди",
+          "left": 89.78125,
+          "right": 154.5625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Место",
+          "left": 158.5625,
+          "right": 223.34375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Действия",
+          "left": 227.34375,
+          "right": 300.203125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Еда",
+          "left": 304.203125,
+          "right": 368.984375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 322,
+          "right": 363,
+          "top": 169.75,
+          "bottom": 211.75
+        },
+        {
+          "text": "Послушать слово",
+          "left": 322,
+          "right": 363,
+          "top": 247.25,
+          "bottom": 289.25
+        },
+        {
+          "text": "Слушать запись предложения",
+          "left": 30,
+          "right": 68,
+          "top": 373.046875,
+          "bottom": 415.046875
+        },
+        {
+          "text": "Слушать запись предложения",
+          "left": 30,
+          "right": 68,
+          "top": 453.15625,
+          "bottom": 495.15625
+        },
+        {
+          "text": "Слушать запись предложения",
+          "left": 30,
+          "right": 68,
+          "top": 533.265625,
+          "bottom": 575.265625
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 55.375,
+          "right": 334.609375,
+          "top": 608.65625,
+          "bottom": 646.65625
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 374,
+          "top": 652.65625,
+          "bottom": 700
+        }
+      ]
+    },
+    {
+      "name": "10a-mother-examples",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 85.78125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Люди",
+          "left": 89.78125,
+          "right": 154.5625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Место",
+          "left": 158.5625,
+          "right": 223.34375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Действия",
+          "left": 227.34375,
+          "right": 300.203125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Еда",
+          "left": 304.203125,
+          "right": 368.984375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 322,
+          "right": 363,
+          "top": 165.5,
+          "bottom": 207.5
+        },
+        {
+          "text": "Послушать слово",
+          "left": 322,
+          "right": 363,
+          "top": 234.5,
+          "bottom": 276.5
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 356.046875,
+          "bottom": 398.046875
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 436.15625,
+          "bottom": 478.15625
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 516.265625,
+          "bottom": 558.265625
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 55.375,
+          "right": 334.609375,
+          "top": 608.65625,
+          "bottom": 646.65625
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 374,
+          "top": 652.65625,
+          "bottom": 700
+        }
+      ]
+    },
+    {
+      "name": "10b-father-examples",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 85.78125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Люди",
+          "left": 89.78125,
+          "right": 154.5625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Место",
+          "left": 158.5625,
+          "right": 223.34375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Действия",
+          "left": 227.34375,
+          "right": 300.203125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Еда",
+          "left": 304.203125,
+          "right": 368.984375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 322,
+          "right": 363,
+          "top": 165.5,
+          "bottom": 207.5
+        },
+        {
+          "text": "Послушать слово",
+          "left": 322,
+          "right": 363,
+          "top": 234.5,
+          "bottom": 276.5
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 356.046875,
+          "bottom": 398.046875
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 436.15625,
+          "bottom": 478.15625
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 516.265625,
+          "bottom": 558.265625
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 55.375,
+          "right": 334.609375,
+          "top": 608.65625,
+          "bottom": 646.65625
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 374,
+          "top": 652.65625,
+          "bottom": 700
+        }
+      ]
+    },
+    {
+      "name": "10c-plural-you-examples",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 85.78125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Люди",
+          "left": 89.78125,
+          "right": 154.5625,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Место",
+          "left": 158.5625,
+          "right": 223.34375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Действия",
+          "left": 227.34375,
+          "right": 300.203125,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Еда",
+          "left": 304.203125,
+          "right": 368.984375,
+          "top": 89,
+          "bottom": 133
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 322,
+          "right": 363,
+          "top": 165.5,
+          "bottom": 207.5
+        },
+        {
+          "text": "Послушать слово",
+          "left": 322,
+          "right": 363,
+          "top": 234.5,
+          "bottom": 276.5
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 356.046875,
+          "bottom": 398.046875
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 436.15625,
+          "bottom": 478.15625
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 30,
+          "right": 68,
+          "top": 516.265625,
+          "bottom": 558.265625
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 55.375,
+          "right": 334.609375,
+          "top": 608.65625,
+          "bottom": 646.65625
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 374,
+          "top": 652.65625,
+          "bottom": 700
+        }
+      ]
+    },
+    {
+      "name": "12-dialogues",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Диалоги",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 62,
+          "top": 14,
+          "bottom": 60
+        },
+        {
+          "text": "Знакомство",
+          "left": 21,
+          "right": 105,
+          "top": 108.59375,
+          "bottom": 152.59375
+        },
+        {
+          "text": "Место",
+          "left": 109,
+          "right": 193,
+          "top": 108.59375,
+          "bottom": 152.59375
+        },
+        {
+          "text": "Время",
+          "left": 197,
+          "right": 281,
+          "top": 108.59375,
+          "bottom": 152.59375
+        },
+        {
+          "text": "В кафе",
+          "left": 285,
+          "right": 369,
+          "top": 108.59375,
+          "bottom": 152.59375
+        },
+        {
+          "text": "Прослушать реплику 1",
+          "left": 39,
+          "right": 80,
+          "top": 297.296875,
+          "bottom": 341.296875
+        },
+        {
+          "text": "Прослушать реплику 2",
+          "left": 66.046875,
+          "right": 107.046875,
+          "top": 412.703125,
+          "bottom": 456.703125
+        },
+        {
+          "text": "Прослушать реплику 3",
+          "left": 39,
+          "right": 80,
+          "top": 528.109375,
+          "bottom": 572.109375
+        },
+        {
+          "text": "Прослушать реплику 4",
+          "left": 66.046875,
+          "right": 107.046875,
+          "top": 643.515625,
+          "bottom": 687.515625
+        },
+        {
+          "text": "Прослушать реплику 5",
+          "left": 39,
+          "right": 80,
+          "top": 758.921875,
+          "bottom": 802.921875
+        },
+        {
+          "text": "Прослушать реплику 6",
+          "left": 66.046875,
+          "right": 107.046875,
+          "top": 874.328125,
+          "bottom": 918.328125
+        },
+        {
+          "text": "▶ Слушать диалог",
+          "left": 16,
+          "right": 374,
+          "top": 518.1875,
+          "bottom": 571.1875
+        },
+        {
+          "text": "📖 Разбор",
+          "left": 57.546875,
+          "right": 190,
+          "top": 581.1875,
+          "bottom": 618.1875
+        },
+        {
+          "text": "↻ Повторить",
+          "left": 200,
+          "right": 332.453125,
+          "top": 577.1875,
+          "bottom": 618.1875
+        },
+        {
+          "text": "Пиньинь: показан",
+          "left": 63.859375,
+          "right": 191.65625,
+          "top": 658.1875,
+          "bottom": 696.1875
+        },
+        {
+          "text": "Перевод: показан",
+          "left": 199.65625,
+          "right": 326.125,
+          "top": 658.1875,
+          "bottom": 696.1875
+        },
+        {
+          "text": "Следующий диалог",
+          "left": 16,
+          "right": 374,
+          "top": 660.09375,
+          "bottom": 705
+        }
+      ]
+    },
+    {
+      "name": "11-hanzi",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 693.328125,
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "scrollHeight": 693,
+      "clientHeight": 693,
+      "font": "Arial, system-ui, sans-serif",
+      "missingImages": [],
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 8.96875,
+          "right": 42.5,
+          "top": 33.96875,
+          "bottom": 66.546875
+        },
+        {
+          "text": "Показать черты",
+          "left": 262.859375,
+          "right": 382.578125,
+          "top": 100.53125,
+          "bottom": 145.59375
+        },
+        {
+          "text": "Писать иероглиф",
+          "left": 262.859375,
+          "right": 382.578125,
+          "top": 161.53125,
+          "bottom": 207.28125
+        },
+        {
+          "text": "Послушать иероглиф",
+          "left": 255.828125,
+          "right": 295.984375,
+          "top": 293.96875,
+          "bottom": 327.9375
+        },
+        {
+          "text": "Значение",
+          "left": 19.5,
+          "right": 134.546875,
+          "top": 403.515625,
+          "bottom": 435.40625
+        },
+        {
+          "text": "Примеры",
+          "left": 134.9375,
+          "right": 255.828125,
+          "top": 403.515625,
+          "bottom": 435.40625
+        },
+        {
+          "text": "Слова",
+          "left": 255.828125,
+          "right": 370.875,
+          "top": 403.515625,
+          "bottom": 435.40625
+        },
+        {
+          "text": "Послушать пример 1",
+          "left": 33.53125,
+          "right": 70.578125,
+          "top": 449.96875,
+          "bottom": 478.390625
+        },
+        {
+          "text": "Послушать пример 2",
+          "left": 33.53125,
+          "right": 70.578125,
+          "top": 499.1875,
+          "bottom": 527.609375
+        },
+        {
+          "text": "Послушать пример 3",
+          "left": 33.53125,
+          "right": 70.578125,
+          "top": 547.71875,
+          "bottom": 576.140625
+        },
+        {
+          "text": "Go еще — следующий иероглиф",
+          "left": 41.328125,
+          "right": 347.078125,
+          "top": 601.109375,
+          "bottom": 648.9375
+        }
+      ]
+    },
+    {
+      "name": "03-training",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Тренироваться",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "ПрактикаУпражнения по темам›",
+          "left": 16,
+          "right": 374,
+          "top": 205,
+          "bottom": 282
+        },
+        {
+          "text": "ТестПроверь свои знания›",
+          "left": 16,
+          "right": 374,
+          "top": 294,
+          "bottom": 371
+        },
+        {
+          "text": "Игровая практикаИгры и интерактивные задания›",
+          "left": 16,
+          "right": 374,
+          "top": 383,
+          "bottom": 460
+        }
+      ]
+    },
+    {
+      "name": "04-practice",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Прослушать",
+          "left": 84.5,
+          "right": 126.5,
+          "top": 264.5,
+          "bottom": 306.5
+        },
+        {
+          "text": "здравствуйте (вежливо)",
+          "left": 28,
+          "right": 362,
+          "top": 323.5,
+          "bottom": 366.5
+        },
+        {
+          "text": "привет",
+          "left": 28,
+          "right": 362,
+          "top": 376.5,
+          "bottom": 419.5
+        },
+        {
+          "text": "спасибо",
+          "left": 28,
+          "right": 362,
+          "top": 429.5,
+          "bottom": 472.5
+        },
+        {
+          "text": "до свидания",
+          "left": 28,
+          "right": 362,
+          "top": 482.5,
+          "bottom": 525.5
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 16,
+          "right": 374,
+          "top": 651,
+          "bottom": 700
+        }
+      ]
+    },
+    {
+      "name": "05-quiz",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Тест",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "再见",
+          "left": 28,
+          "right": 362,
+          "top": 237.5,
+          "bottom": 280.5
+        },
+        {
+          "text": "谢谢",
+          "left": 28,
+          "right": 362,
+          "top": 290.5,
+          "bottom": 333.5
+        },
+        {
+          "text": "名字",
+          "left": 28,
+          "right": 362,
+          "top": 343.5,
+          "bottom": 386.5
+        },
+        {
+          "text": "请",
+          "left": 28,
+          "right": 362,
+          "top": 396.5,
+          "bottom": 439.5
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 16,
+          "right": 374,
+          "top": 651,
+          "bottom": 700
+        }
+      ]
+    },
+    {
+      "name": "06-games",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Игровая практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Собери и оживиПанда в кафе · 6 живых сцен›",
+          "left": 16,
+          "right": 374,
+          "top": 117.25,
+          "bottom": 194.25
+        },
+        {
+          "text": "Собери фразуСоставь правильноепредложение›",
+          "left": 16,
+          "right": 374,
+          "top": 206.25,
+          "bottom": 283.25
+        },
+        {
+          "text": "Слушай и выбирайПрослушай и выбериверный вариант›",
+          "left": 16,
+          "right": 374,
+          "top": 295.25,
+          "bottom": 372.25
+        },
+        {
+          "text": "Выбери ответОтветь на вопроспо теме›",
+          "left": 16,
+          "right": 374,
+          "top": 384.25,
+          "bottom": 461.25
+        },
+        {
+          "text": "Быстрый тестКороткий тест на скорость›",
+          "left": 16,
+          "right": 374,
+          "top": 473.25,
+          "bottom": 550.25
+        }
+      ]
+    },
+    {
+      "name": "07-build-initial",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Игровая практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Послушать фразу",
+          "left": 138.96875,
+          "right": 172.96875,
+          "top": 238.25,
+          "bottom": 271.25
+        },
+        {
+          "text": "我",
+          "left": 63.5,
+          "right": 100.5,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "中国",
+          "left": 108.5,
+          "right": 168.5,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "是",
+          "left": 176.5,
+          "right": 213.5,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "喜欢",
+          "left": 221.5,
+          "right": 281.5,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "你",
+          "left": 289.5,
+          "right": 326.5,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "Пиньинь",
+          "left": 152.484375,
+          "right": 237.5,
+          "top": 536.25,
+          "bottom": 568.5
+        },
+        {
+          "text": "Начать фразу заново",
+          "left": 16,
+          "right": 53,
+          "top": 660,
+          "bottom": 692
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 61,
+          "right": 374,
+          "top": 652,
+          "bottom": 700
+        }
+      ]
+    },
+    {
+      "name": "07-build",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Игровая практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Послушать фразу",
+          "left": 138.96875,
+          "right": 172.96875,
+          "top": 238.25,
+          "bottom": 271.25
+        },
+        {
+          "text": "我",
+          "left": 98.5,
+          "right": 141.5,
+          "top": 340.25,
+          "bottom": 383.5
+        },
+        {
+          "text": "喜欢",
+          "left": 148.5,
+          "right": 216.5,
+          "top": 340.25,
+          "bottom": 383.5
+        },
+        {
+          "text": "中国",
+          "left": 223.5,
+          "right": 291.5,
+          "top": 340.25,
+          "bottom": 383.5
+        },
+        {
+          "text": "是",
+          "left": 154,
+          "right": 191,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "你",
+          "left": 199,
+          "right": 236,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "Пиньинь",
+          "left": 152.484375,
+          "right": 237.5,
+          "top": 536.25,
+          "bottom": 568.5
+        },
+        {
+          "text": "Начать фразу заново",
+          "left": 16,
+          "right": 53,
+          "top": 660,
+          "bottom": 692
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 61,
+          "right": 374,
+          "top": 652,
+          "bottom": 700
+        }
+      ]
+    },
+    {
+      "name": "08-result",
+      "viewport": [
+        390,
+        720
+      ],
+      "density": 1,
+      "width": 390,
+      "height": 720,
+      "scrollWidth": 384,
+      "clientWidth": 384,
+      "scrollHeight": 714,
+      "clientHeight": 714,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Отлично!",
+      "actions": [
+        {
+          "text": "Продолжить ›",
+          "left": 16,
+          "right": 374,
+          "top": 651,
+          "bottom": 700
+        }
+      ]
+    },
+    {
+      "name": "01-home",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 412,
+      "clientWidth": 412,
+      "scrollHeight": 915,
+      "clientHeight": 915,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "actions": [
+        {
+          "text": "Профиль и достижения",
+          "left": 342.359375,
+          "right": 389.734375,
+          "top": 13.984375,
+          "bottom": 53.953125
+        },
+        {
+          "text": "Продолжить последнее занятие",
+          "left": 181.265625,
+          "right": 374.890625,
+          "top": 133.265625,
+          "bottom": 286.53125
+        },
+        {
+          "text": "Звуки и тоны",
+          "left": 16.0625,
+          "right": 396.75,
+          "top": 291.859375,
+          "bottom": 362.484375
+        },
+        {
+          "text": "Слова и выражения",
+          "left": 16.0625,
+          "right": 396.75,
+          "top": 367.828125,
+          "bottom": 435.796875
+        },
+        {
+          "text": "Диалоги и общение",
+          "left": 16.0625,
+          "right": 396.75,
+          "top": 439.140625,
+          "bottom": 507.109375
+        },
+        {
+          "text": "Китай в жизни",
+          "left": 16.0625,
+          "right": 396.75,
+          "top": 509.765625,
+          "bottom": 586.390625
+        }
+      ]
+    },
+    {
+      "name": "02-learn",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Учиться",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Звуки и тоныПроизношение и правила чтения›",
+          "left": 16,
+          "right": 396,
+          "top": 191,
+          "bottom": 293.46875
+        },
+        {
+          "text": "Базовые словаСамые нужные слова›",
+          "left": 16,
+          "right": 396,
+          "top": 310.46875,
+          "bottom": 412.9375
+        },
+        {
+          "text": "ИероглифыПисьмо и порядок черт›",
+          "left": 16,
+          "right": 396,
+          "top": 429.9375,
+          "bottom": 532.40625
+        },
+        {
+          "text": "ДиалогиГотовые фразы для общения›",
+          "left": 16,
+          "right": 396,
+          "top": 549.40625,
+          "bottom": 651.875
+        },
+        {
+          "text": "Дальше Go →",
+          "left": 16,
+          "right": 396,
+          "top": 839.859375,
+          "bottom": 888.859375
+        }
+      ]
+    },
+    {
+      "name": "09-tones",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Звуки и тоны",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Тоны",
+          "left": 21,
+          "right": 109.75,
+          "top": 138,
+          "bottom": 185
+        },
+        {
+          "text": "Инициали",
+          "left": 114.75,
+          "right": 203.5,
+          "top": 138,
+          "bottom": 185
+        },
+        {
+          "text": "Финали",
+          "left": 208.5,
+          "right": 297.25,
+          "top": 138,
+          "bottom": 185
+        },
+        {
+          "text": "Сочетания",
+          "left": 302.25,
+          "right": 391,
+          "top": 138,
+          "bottom": 185
+        },
+        {
+          "text": "1 тон: mā",
+          "left": 27,
+          "right": 111.25,
+          "top": 269.609375,
+          "bottom": 443.453125
+        },
+        {
+          "text": "2 тон: má",
+          "left": 118.25,
+          "right": 202.5,
+          "top": 269.609375,
+          "bottom": 443.453125
+        },
+        {
+          "text": "3 тон: mǎ",
+          "left": 209.5,
+          "right": 293.75,
+          "top": 269.609375,
+          "bottom": 443.453125
+        },
+        {
+          "text": "4 тон: mà",
+          "left": 300.75,
+          "right": 385,
+          "top": 269.609375,
+          "bottom": 443.453125
+        },
+        {
+          "text": "Прослушать",
+          "left": 95.5,
+          "right": 137.5,
+          "top": 458.453125,
+          "bottom": 500.453125
+        },
+        {
+          "text": "Проверить произношение",
+          "left": 36.96875,
+          "right": 221.21875,
+          "top": 780,
+          "bottom": 821
+        },
+        {
+          "text": "Все правила чтения",
+          "left": 229.21875,
+          "right": 375.015625,
+          "top": 780,
+          "bottom": 821
+        },
+        {
+          "text": "Следующий раздел звуков и тонов",
+          "left": 16,
+          "right": 396,
+          "top": 831,
+          "bottom": 895
+        }
+      ]
+    },
+    {
+      "name": "10-words",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 90.375,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Люди",
+          "left": 94.375,
+          "right": 163.75,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Место",
+          "left": 167.75,
+          "right": 237.125,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Действия",
+          "left": 241.125,
+          "right": 317.625,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Еда",
+          "left": 321.625,
+          "right": 391,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 344,
+          "right": 385,
+          "top": 206.5,
+          "bottom": 248.5
+        },
+        {
+          "text": "Послушать слово",
+          "left": 344,
+          "right": 385,
+          "top": 311.5,
+          "bottom": 353.5
+        },
+        {
+          "text": "Слушать запись предложения",
+          "left": 32,
+          "right": 70,
+          "top": 457.078125,
+          "bottom": 499.078125
+        },
+        {
+          "text": "Слушать запись предложения",
+          "left": 32,
+          "right": 70,
+          "top": 545.234375,
+          "bottom": 587.234375
+        },
+        {
+          "text": "Слушать запись предложения",
+          "left": 32,
+          "right": 70,
+          "top": 633.390625,
+          "bottom": 675.390625
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 57.796875,
+          "right": 354.1875,
+          "top": 784.03125,
+          "bottom": 822.03125
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 396,
+          "top": 833,
+          "bottom": 895
+        }
+      ]
+    },
+    {
+      "name": "10a-mother-examples",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 90.375,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Люди",
+          "left": 94.375,
+          "right": 163.75,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Место",
+          "left": 167.75,
+          "right": 237.125,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Действия",
+          "left": 241.125,
+          "right": 317.625,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Еда",
+          "left": 321.625,
+          "right": 391,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 344,
+          "right": 385,
+          "top": 206.5,
+          "bottom": 248.5
+        },
+        {
+          "text": "Послушать слово",
+          "left": 344,
+          "right": 385,
+          "top": 311.5,
+          "bottom": 353.5
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 32,
+          "right": 70,
+          "top": 457.078125,
+          "bottom": 499.078125
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 32,
+          "right": 70,
+          "top": 545.234375,
+          "bottom": 587.234375
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 32,
+          "right": 70,
+          "top": 633.390625,
+          "bottom": 675.390625
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 57.796875,
+          "right": 354.1875,
+          "top": 784.03125,
+          "bottom": 822.03125
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 396,
+          "top": 833,
+          "bottom": 895
+        }
+      ]
+    },
+    {
+      "name": "10b-father-examples",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 90.375,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Люди",
+          "left": 94.375,
+          "right": 163.75,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Место",
+          "left": 167.75,
+          "right": 237.125,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Действия",
+          "left": 241.125,
+          "right": 317.625,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Еда",
+          "left": 321.625,
+          "right": 391,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 344,
+          "right": 385,
+          "top": 206.5,
+          "bottom": 248.5
+        },
+        {
+          "text": "Послушать слово",
+          "left": 344,
+          "right": 385,
+          "top": 311.5,
+          "bottom": 353.5
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 32,
+          "right": 70,
+          "top": 457.078125,
+          "bottom": 499.078125
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 32,
+          "right": 70,
+          "top": 545.234375,
+          "bottom": 587.234375
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 32,
+          "right": 70,
+          "top": 633.390625,
+          "bottom": 675.390625
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 57.796875,
+          "right": 354.1875,
+          "top": 784.03125,
+          "bottom": 822.03125
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 396,
+          "top": 833,
+          "bottom": 895
+        }
+      ]
+    },
+    {
+      "name": "10c-plural-you-examples",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Базовые слова",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Все",
+          "left": 21,
+          "right": 90.375,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Люди",
+          "left": 94.375,
+          "right": 163.75,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Место",
+          "left": 167.75,
+          "right": 237.125,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Действия",
+          "left": 241.125,
+          "right": 317.625,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Еда",
+          "left": 321.625,
+          "right": 391,
+          "top": 112,
+          "bottom": 156
+        },
+        {
+          "text": "Отметить как выученное",
+          "left": 344,
+          "right": 385,
+          "top": 206.5,
+          "bottom": 248.5
+        },
+        {
+          "text": "Послушать слово",
+          "left": 344,
+          "right": 385,
+          "top": 311.5,
+          "bottom": 353.5
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 32,
+          "right": 70,
+          "top": 457.078125,
+          "bottom": 499.078125
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 32,
+          "right": 70,
+          "top": 545.234375,
+          "bottom": 587.234375
+        },
+        {
+          "text": "Послушать слова по порядку",
+          "left": 32,
+          "right": 70,
+          "top": 633.390625,
+          "bottom": 675.390625
+        },
+        {
+          "text": "Скрыть пиньинь",
+          "left": 57.796875,
+          "right": 354.1875,
+          "top": 784.03125,
+          "bottom": 822.03125
+        },
+        {
+          "text": "Следующее слово",
+          "left": 16,
+          "right": 396,
+          "top": 833,
+          "bottom": 895
+        }
+      ]
+    },
+    {
+      "name": "12-dialogues",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Диалоги",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 62,
+          "top": 14,
+          "bottom": 60
+        },
+        {
+          "text": "Знакомство",
+          "left": 21,
+          "right": 110.5,
+          "top": 126,
+          "bottom": 170
+        },
+        {
+          "text": "Место",
+          "left": 114.5,
+          "right": 204,
+          "top": 126,
+          "bottom": 170
+        },
+        {
+          "text": "Время",
+          "left": 208,
+          "right": 297.5,
+          "top": 126,
+          "bottom": 170
+        },
+        {
+          "text": "В кафе",
+          "left": 301.5,
+          "right": 391,
+          "top": 126,
+          "bottom": 170
+        },
+        {
+          "text": "Прослушать реплику 1",
+          "left": 39,
+          "right": 80,
+          "top": 372.65625,
+          "bottom": 416.65625
+        },
+        {
+          "text": "Прослушать реплику 2",
+          "left": 67.8125,
+          "right": 108.8125,
+          "top": 489.484375,
+          "bottom": 533.484375
+        },
+        {
+          "text": "Прослушать реплику 3",
+          "left": 39,
+          "right": 80,
+          "top": 606.3125,
+          "bottom": 650.3125
+        },
+        {
+          "text": "Прослушать реплику 4",
+          "left": 67.8125,
+          "right": 108.8125,
+          "top": 723.140625,
+          "bottom": 767.140625
+        },
+        {
+          "text": "Прослушать реплику 5",
+          "left": 39,
+          "right": 80,
+          "top": 839.96875,
+          "bottom": 883.96875
+        },
+        {
+          "text": "Прослушать реплику 6",
+          "left": 67.8125,
+          "right": 108.8125,
+          "top": 956.796875,
+          "bottom": 1000.796875
+        },
+        {
+          "text": "▶ Слушать диалог",
+          "left": 16,
+          "right": 396,
+          "top": 700.9375,
+          "bottom": 753.9375
+        },
+        {
+          "text": "📖 Разбор",
+          "left": 60.40625,
+          "right": 201,
+          "top": 763.9375,
+          "bottom": 800.9375
+        },
+        {
+          "text": "↻ Повторить",
+          "left": 211,
+          "right": 351.59375,
+          "top": 759.9375,
+          "bottom": 800.9375
+        },
+        {
+          "text": "Пиньинь: показан",
+          "left": 68.765625,
+          "right": 202.703125,
+          "top": 840.9375,
+          "bottom": 878.9375
+        },
+        {
+          "text": "Перевод: показан",
+          "left": 210.703125,
+          "right": 343.234375,
+          "top": 840.9375,
+          "bottom": 878.9375
+        },
+        {
+          "text": "Следующий диалог",
+          "left": 16,
+          "right": 396,
+          "top": 845,
+          "bottom": 900
+        }
+      ]
+    },
+    {
+      "name": "11-hanzi",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 732.4375,
+      "scrollWidth": 412,
+      "clientWidth": 412,
+      "scrollHeight": 732,
+      "clientHeight": 732,
+      "font": "Arial, system-ui, sans-serif",
+      "missingImages": [],
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 9.46875,
+          "right": 44.890625,
+          "top": 35.875,
+          "bottom": 70.296875
+        },
+        {
+          "text": "Показать черты",
+          "left": 277.6875,
+          "right": 404.15625,
+          "top": 106.203125,
+          "bottom": 153.796875
+        },
+        {
+          "text": "Писать иероглиф",
+          "left": 277.6875,
+          "right": 404.15625,
+          "top": 170.65625,
+          "bottom": 218.984375
+        },
+        {
+          "text": "Послушать иероглиф",
+          "left": 270.265625,
+          "right": 312.6875,
+          "top": 310.546875,
+          "bottom": 346.421875
+        },
+        {
+          "text": "Значение",
+          "left": 20.59375,
+          "right": 142.125,
+          "top": 426.265625,
+          "bottom": 459.953125
+        },
+        {
+          "text": "Примеры",
+          "left": 142.546875,
+          "right": 270.265625,
+          "top": 426.265625,
+          "bottom": 459.953125
+        },
+        {
+          "text": "Слова",
+          "left": 270.265625,
+          "right": 391.796875,
+          "top": 426.265625,
+          "bottom": 459.953125
+        },
+        {
+          "text": "Послушать пример 1",
+          "left": 35.421875,
+          "right": 74.546875,
+          "top": 475.34375,
+          "bottom": 505.359375
+        },
+        {
+          "text": "Послушать пример 2",
+          "left": 35.421875,
+          "right": 74.546875,
+          "top": 527.34375,
+          "bottom": 557.359375
+        },
+        {
+          "text": "Послушать пример 3",
+          "left": 35.421875,
+          "right": 74.546875,
+          "top": 578.625,
+          "bottom": 608.640625
+        },
+        {
+          "text": "Go еще — следующий иероглиф",
+          "left": 43.671875,
+          "right": 366.671875,
+          "top": 635.015625,
+          "bottom": 685.546875
+        }
+      ]
+    },
+    {
+      "name": "03-training",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Тренироваться",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "ПрактикаУпражнения по темам›",
+          "left": 16,
+          "right": 396,
+          "top": 205,
+          "bottom": 282
+        },
+        {
+          "text": "ТестПроверь свои знания›",
+          "left": 16,
+          "right": 396,
+          "top": 294,
+          "bottom": 371
+        },
+        {
+          "text": "Игровая практикаИгры и интерактивные задания›",
+          "left": 16,
+          "right": 396,
+          "top": 383,
+          "bottom": 460
+        }
+      ]
+    },
+    {
+      "name": "04-practice",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Прослушать",
+          "left": 95.5,
+          "right": 137.5,
+          "top": 264.5,
+          "bottom": 306.5
+        },
+        {
+          "text": "здравствуйте (вежливо)",
+          "left": 28,
+          "right": 384,
+          "top": 323.5,
+          "bottom": 366.5
+        },
+        {
+          "text": "привет",
+          "left": 28,
+          "right": 384,
+          "top": 376.5,
+          "bottom": 419.5
+        },
+        {
+          "text": "спасибо",
+          "left": 28,
+          "right": 384,
+          "top": 429.5,
+          "bottom": 472.5
+        },
+        {
+          "text": "до свидания",
+          "left": 28,
+          "right": 384,
+          "top": 482.5,
+          "bottom": 525.5
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 16,
+          "right": 396,
+          "top": 846,
+          "bottom": 895
+        }
+      ]
+    },
+    {
+      "name": "05-quiz",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Тест",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "再见",
+          "left": 28,
+          "right": 384,
+          "top": 237.5,
+          "bottom": 280.5
+        },
+        {
+          "text": "谢谢",
+          "left": 28,
+          "right": 384,
+          "top": 290.5,
+          "bottom": 333.5
+        },
+        {
+          "text": "名字",
+          "left": 28,
+          "right": 384,
+          "top": 343.5,
+          "bottom": 386.5
+        },
+        {
+          "text": "请",
+          "left": 28,
+          "right": 384,
+          "top": 396.5,
+          "bottom": 439.5
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 16,
+          "right": 396,
+          "top": 846,
+          "bottom": 895
+        }
+      ]
+    },
+    {
+      "name": "06-games",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Игровая практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Собери и оживиПанда в кафе · 6 живых сцен›",
+          "left": 16,
+          "right": 396,
+          "top": 117.25,
+          "bottom": 194.25
+        },
+        {
+          "text": "Собери фразуСоставь правильноепредложение›",
+          "left": 16,
+          "right": 396,
+          "top": 206.25,
+          "bottom": 283.25
+        },
+        {
+          "text": "Слушай и выбирайПрослушай и выбериверный вариант›",
+          "left": 16,
+          "right": 396,
+          "top": 295.25,
+          "bottom": 372.25
+        },
+        {
+          "text": "Выбери ответОтветь на вопроспо теме›",
+          "left": 16,
+          "right": 396,
+          "top": 384.25,
+          "bottom": 461.25
+        },
+        {
+          "text": "Быстрый тестКороткий тест на скорость›",
+          "left": 16,
+          "right": 396,
+          "top": 473.25,
+          "bottom": 550.25
+        }
+      ]
+    },
+    {
+      "name": "07-build-initial",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Игровая практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Послушать фразу",
+          "left": 145.796875,
+          "right": 179.796875,
+          "top": 238.25,
+          "bottom": 271.25
+        },
+        {
+          "text": "我",
+          "left": 74.5,
+          "right": 111.5,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "中国",
+          "left": 119.5,
+          "right": 179.5,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "是",
+          "left": 187.5,
+          "right": 224.5,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "喜欢",
+          "left": 232.5,
+          "right": 292.5,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "你",
+          "left": 300.5,
+          "right": 337.5,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "Пиньинь",
+          "left": 163.484375,
+          "right": 248.5,
+          "top": 536.25,
+          "bottom": 568.5
+        },
+        {
+          "text": "Начать фразу заново",
+          "left": 16,
+          "right": 53,
+          "top": 855,
+          "bottom": 887
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 61,
+          "right": 396,
+          "top": 847,
+          "bottom": 895
+        }
+      ]
+    },
+    {
+      "name": "07-build",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Игровая практика",
+      "actions": [
+        {
+          "text": "Назад",
+          "left": 16,
+          "right": 55,
+          "top": 16,
+          "bottom": 55
+        },
+        {
+          "text": "Послушать фразу",
+          "left": 145.796875,
+          "right": 179.796875,
+          "top": 238.25,
+          "bottom": 271.25
+        },
+        {
+          "text": "我",
+          "left": 109.5,
+          "right": 152.5,
+          "top": 340.25,
+          "bottom": 383.5
+        },
+        {
+          "text": "喜欢",
+          "left": 159.5,
+          "right": 227.5,
+          "top": 340.25,
+          "bottom": 383.5
+        },
+        {
+          "text": "中国",
+          "left": 234.5,
+          "right": 302.5,
+          "top": 340.25,
+          "bottom": 383.5
+        },
+        {
+          "text": "是",
+          "left": 165,
+          "right": 202,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "你",
+          "left": 210,
+          "right": 247,
+          "top": 456.875,
+          "bottom": 497.625
+        },
+        {
+          "text": "Пиньинь",
+          "left": 163.484375,
+          "right": 248.5,
+          "top": 536.25,
+          "bottom": 568.5
+        },
+        {
+          "text": "Начать фразу заново",
+          "left": 16,
+          "right": 53,
+          "top": 855,
+          "bottom": 887
+        },
+        {
+          "text": "✓ Проверить",
+          "left": 61,
+          "right": 396,
+          "top": 847,
+          "bottom": 895
+        }
+      ]
+    },
+    {
+      "name": "08-result",
+      "viewport": [
+        412,
+        915
+      ],
+      "density": 1,
+      "width": 412,
+      "height": 915,
+      "scrollWidth": 406,
+      "clientWidth": 406,
+      "scrollHeight": 909,
+      "clientHeight": 909,
+      "font": "Arial, sans-serif",
+      "missingImages": [],
+      "heading": "Отлично!",
+      "actions": [
+        {
+          "text": "Продолжить ›",
+          "left": 16,
+          "right": 396,
+          "top": 846,
+          "bottom": 895
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "width": 360,
+      "check": "tone recording requests",
+      "resources": [
+        "http://127.0.0.1:4173/assets/course-human/cmn-%E9%BA%BB.mp3"
+      ]
+    },
+    {
+      "width": 360,
+      "check": "navigation, persistence, answer verification, Hanzi, tokens, scoring, direct game links",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "check": "tone recording requests",
+      "resources": [
+        "http://127.0.0.1:4173/assets/course-human/cmn-%E9%BA%BB.mp3"
+      ]
+    },
+    {
+      "width": 390,
+      "check": "navigation, persistence, answer verification, Hanzi, tokens, scoring, direct game links",
+      "passed": true
+    },
+    {
+      "width": 412,
+      "check": "tone recording requests",
+      "resources": [
+        "http://127.0.0.1:4173/assets/course-human/cmn-%E9%BA%BB.mp3"
+      ]
+    },
+    {
+      "width": 412,
+      "check": "navigation, persistence, answer verification, Hanzi, tokens, scoring, direct game links",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "layoutFailures": [],
+  "result": "passed"
+}
