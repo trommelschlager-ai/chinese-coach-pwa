@@ -2,6 +2,7 @@
   "version": 150,
   "bytes": 31378165,
   "files": [
+    "./start-chinese.html",
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
     "./assets/approved-cloud-v112.webp",
@@ -1401,7 +1402,7 @@
     "./manifest.webmanifest",
     "./assets/panda-v130.css?v=150",
     "./assets/panda-word-sentences-v148.js?v=148",
-    "./assets/panda-v130.js?v=150",
+    "./assets/panda-v130.js?v=1501",
     "./assets/panda-hanzi-v130.css?v=138",
     "./assets/panda-hanzi-v130.js?v=135",
     "./assets/panda-v130/book.webp",

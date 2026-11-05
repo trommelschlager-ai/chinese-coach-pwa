@@ -87,7 +87,7 @@ function home(){
  +'<button class="pg-home-hit pg-home-hit-dialogues" data-route="dialogues" aria-label="Диалоги и общение"><span class="pg-visually-hidden">Диалоги и общение</span></button>'
  +'<button class="pg-home-hit pg-home-hit-travel" data-route="travel" aria-label="Китай в жизни"><span class="pg-visually-hidden">Китай в жизни</span></button>'
  +'</div>';
- frame(art,'pg-home pg-home-v136');
+ frame(art+'<a href="./start-chinese.html" style="position:absolute;bottom:14px;left:8%;width:84%;z-index:5;text-align:center;background:#fff3fc;color:#69245d;font-weight:800;padding:12px;border:2px solid #eac798;border-radius:22px;text-decoration:none">Урок 1 · Знакомство →</a>','pg-home pg-home-v136');
 }
 function learn(){frame(heading('Учиться','book','home','Основы китайского шаг за шагом')+`<nav class="pg-menu">${card('Звуки и тоны','Произношение и правила чтения','headphones','tones')}${card('Базовые слова','Самые нужные слова','books','words')}${card('Иероглифы','Письмо и порядок черт','brush','hanzi')}${card('Диалоги','Готовые фразы для общения','chat','dialogues')}</nav><div class="pg-approved-go-footer">${primary('Дальше Go →','learn-go')}</div>`)}
 function training(){frame(heading('Тренироваться','controller','home','Закрепляй знания в разных форматах')+`<nav class="pg-menu">${card('Практика','Упражнения по темам','target','practice')}${card('Тест','Проверь свои знания','clipboard','quiz')}${card('Игровая практика','Игры и интерактивные задания','controller','games')}</nav><img class="pg-scenery" src="${A}training-panda.webp" alt="Панда и золотой кубок">`,'pg-training')}
