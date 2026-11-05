@@ -3,9 +3,9 @@
   'use strict';
 
   const requestedLesson = Number(new URLSearchParams(location.search).get('lesson'));
-  const lessonNumber = [1, 2, 3].includes(requestedLesson) ? requestedLesson : 1;
-  const lessonTitles = { 1: 'Знакомство', 2: 'Откуда ты?', 3: 'В кафе' };
-  const storageKeys = { 1: 'pg-intro-step', 2: 'pg-identity-step', 3: 'pg-cafe-step' };
+  const lessonNumber = [1, 2, 3, 4].includes(requestedLesson) ? requestedLesson : 1;
+  const lessonTitles = { 1: 'Знакомство', 2: 'Откуда ты?', 3: 'В кафе', 4: 'Где ты живёшь?' };
+  const storageKeys = { 1: 'pg-intro-step', 2: 'pg-identity-step', 3: 'pg-cafe-step', 4: 'pg-location-step' };
   const storageKey = storageKeys[lessonNumber];
   document.title = lessonTitles[lessonNumber] + ' · Panda Go';
   document.querySelector('header span').textContent = lessonTitles[lessonNumber];
@@ -48,8 +48,18 @@
     ['Б', '我想喝一杯茶。', 'Wǒ xiǎng hē yì bēi chá.', 'Я хотел(а) бы выпить чашку чая.', './assets/dialogue-voices-v73/l5-02-b.mp3'],
     ['А', '好的。', 'Hǎo de.', 'Хорошо.', './assets/dialogue-voices-v73/l5-03-a.mp3'],
   ];
-  const wordsByLesson = { 1: introductionWords, 2: identityWords, 3: cafeWords };
-  const dialoguesByLesson = { 1: introductionDialogue, 2: identityDialogue, 3: cafeDialogue };
+  const locationWords = [
+    ['住', 'zhù', 'жить / проживать'],
+    ['在', 'zài', 'в / на — перед местом'],
+    ['哪里', 'nǎlǐ', 'где'],
+    ['北京', 'Běijīng', 'Пекин · послушай в фразе «Я живу в Пекине»'],
+  ];
+  const locationDialogue = [
+    ['А', '你住在哪里？', 'Nǐ zhù zài nǎlǐ?', 'Где ты живёшь?', './assets/dialogue-voices-v73/l3-04-b.mp3'],
+    ['Б', '我住在北京。', 'Wǒ zhù zài Běijīng.', 'Я живу в Пекине.', './assets/dialogue-voices-v73/l3-05-a.mp3'],
+  ];
+  const wordsByLesson = { 1: introductionWords, 2: identityWords, 3: cafeWords, 4: locationWords };
+  const dialoguesByLesson = { 1: introductionDialogue, 2: identityDialogue, 3: cafeDialogue, 4: locationDialogue };
   const words = wordsByLesson[lessonNumber];
   const dialogue = dialoguesByLesson[lessonNumber];
 
@@ -262,18 +272,88 @@
     },
     {
       title: 'Третий урок завершён',
-      body: () => card('<h2>Ты умеешь заказать чай</h2><p>想 + действие — хочу что-то сделать. 一杯茶 — одна чашка чая.</p><p>Повтори весь разговор, ответив за гостя кафе своим голосом.</p><a href="./start-chinese.html?lesson=2">Повторить «Откуда ты?» →</a>'),
+      body: () => card('<h2>Ты умеешь заказать чай</h2><p>想 + действие — хочу что-то сделать. 一杯茶 — одна чашка чая.</p><p>Повтори весь разговор, ответив за гостя кафе своим голосом.</p><a href="./start-chinese.html?lesson=4">Урок 4 · Где ты живёшь? →</a>'),
       next: 'Повторить урок',
     },
   ];
-  const pagesByLesson = { 1: introductionPages, 2: identityPages, 3: cafePages };
+  const locationPages = [
+    {
+      title: 'Скажи, где ты живёшь',
+      body: () => card('<h2>Что ты сможешь сказать</h2><p>«Я живу в Пекине» и «Где ты живёшь?»</p><p>Вспомним 我 — я и 你 — ты. Затем добавим действие 住 и место после 在.</p><small>Около 5 минут · 6 коротких шагов</small>'),
+      next: 'Начать урок',
+    },
+    {
+      title: 'Действие и место',
+      body: () => words.map(([hz, py, ru]) =>
+        '<div class="card word"><div>' + phrase(hz, py, ru) + '</div><button data-word="' + hz + '" aria-label="' +
+        (hz === '北京' ? 'Послушать 北京 в предложении' : 'Послушать ' + hz) + '">🔊</button></div>'
+      ).join(''),
+      next: 'Перейти к правилу',
+    },
+    {
+      title: 'Кто + живёт + где',
+      body: () => card(phrase('我住在北京。', 'Wǒ zhù zài Běijīng.', 'Я живу в Пекине.') +
+        '<p><strong>我 + 住 + 在 + 北京</strong></p><p>我 — кто говорит, 住 — живёт, 在 — вводит место, 北京 — название города. В этом шаблоне 在 стоит после 住.</p>') +
+        card(phrase('你住在哪里？', 'Nǐ zhù zài nǎlǐ?', 'Где ты живёшь?') +
+        '<p>哪里 заменяет название места. Для ответа меняем 你 на 我, а 哪里 — на 北京.</p><p>Вопрос уже содержит 哪里, поэтому 吗 добавлять не нужно.</p>') +
+        card('<h2>Страна и место проживания</h2>' + phrase('我是俄罗斯人。', 'Wǒ shì Éluósī rén.', 'Я из России.') +
+        phrase('我住在北京。', 'Wǒ zhù zài Běijīng.', 'Я живу в Пекине.') +
+        '<p>Можно быть из одной страны и жить в другой. 住在 описывает место проживания.</p>'),
+      next: 'Послушать разговор',
+    },
+    {
+      title: 'Где ты живёшь?',
+      body: introductionPages[3].body,
+      next: 'Проверить себя',
+    },
+    {
+      title: 'Ответь «Я живу в Пекине»',
+      body: () => card('<div class="answers"><button data-answer="no" aria-pressed="false"><span lang="zh-Hans">我是北京。</span></button>' +
+        '<button data-answer="yes" aria-pressed="false"><span lang="zh-Hans">我住在北京。</span></button></div>'),
+      next: 'Ответить самостоятельно',
+    },
+    {
+      title: 'Теперь твоя очередь',
+      body: () => card('<p>Спроси, где живёт собеседник. Затем ответь за человека, который живёт в Пекине.</p>' +
+        '<details><summary>Сверить с образцом</summary>' + phrase('你住在哪里？', 'Nǐ zhù zài nǎlǐ?', 'Где ты живёшь?') +
+        phrase('我住在北京。', 'Wǒ zhù zài Běijīng.', 'Я живу в Пекине.') + '</details>'),
+      next: 'Завершить урок',
+    },
+    {
+      title: 'Четвёртый урок завершён',
+      body: () => card('<h2>Собери рассказ о себе</h2><p>Меня зовут… — 我叫…</p><p>Я из России — 我是俄罗斯人。</p><p>Я живу в Пекине — 我住在北京。</p>' +
+        '<p>Повтори эти фразы, затем вернись к нужной теме через меню «Уроки».</p>'),
+      next: 'Повторить урок',
+    },
+  ];
+  const pagesByLesson = { 1: introductionPages, 2: identityPages, 3: cafePages, 4: locationPages };
   const pages = pagesByLesson[lessonNumber];
   const answerFeedback = {
     1: ['你呢？ значит «А ты?». Сначала назови своё имя с 我叫…', 'Верно. После 我叫 ставим своё имя.'],
     2: ['中国人 означает «китаец / китаянка». Для России используй 俄罗斯人.', 'Верно. 俄罗斯人 — человек из России.'],
+    4: ['我是北京 означает «Я — Пекин». Чтобы сказать, где ты живёшь, используй 住在 перед названием города.', 'Верно. 我 + 住 + 在 + 北京 — я живу в Пекине.'],
     3: ['我是一杯茶 означает «Я — чашка чая». Для желания нужно 想, а для действия — 喝.', 'Верно. 我 + 想 + 喝 + 一杯茶 — я хочу выпить чашку чая.'],
   };
 
+
+  const lessonMenu = document.createElement('details');
+  lessonMenu.className = 'lesson-menu';
+  document.querySelector('header').after(lessonMenu);
+
+  function renderLessonMenu() {
+    const entries = Object.entries(lessonTitles).map(([number, title]) => {
+      let progress = 0;
+      try {
+        const saved = Number(localStorage.getItem(storageKeys[number]));
+        if (Number.isInteger(saved) && saved >= 0 && saved <= 6) progress = saved;
+      } catch {}
+      const status = progress === 6 ? 'Завершён' : progress > 0 ? 'Шаг ' + (progress + 1) + ' из 6' : 'Начать';
+      return '<a href="./start-chinese.html?lesson=' + number + '"' +
+        (Number(number) === lessonNumber ? ' aria-current="page"' : '') +
+        '><strong>' + number + '. ' + title + '</strong><small>' + status + '</small></a>';
+    });
+    lessonMenu.innerHTML = '<summary>Уроки</summary><nav aria-label="Все уроки">' + entries.join('') + '</nav>';
+  }
 
   function render() {
     stopAudio();
@@ -287,6 +367,7 @@
     nextButton.disabled = step === 4 && !answered;
     nextButton.textContent = page.next;
     try { localStorage.setItem(storageKey, String(step)); } catch {}
+    renderLessonMenu();
     heading.focus({ preventScroll: true });
     window.scrollTo(0, 0);
   }
@@ -301,7 +382,9 @@
     const button = event.target.closest('button');
     if (!button) return;
     if (button.dataset.word) {
-      const file = window.courseHumanAudio?.[button.dataset.word] || window.courseNaturalAudio?.[button.dataset.word];
+      const file = button.dataset.word === '北京'
+        ? './assets/dialogue-voices-v73/l3-05-a.mp3'
+        : window.courseHumanAudio?.[button.dataset.word] || window.courseNaturalAudio?.[button.dataset.word];
       if (file) playFiles([file]);
       else feedback.textContent = 'Запись пока недоступна.';
     }
