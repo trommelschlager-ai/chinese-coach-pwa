@@ -8,7 +8,17 @@ const lessons=typeof COURSE==='undefined'?[]:COURSE;
 const root=document.createElement('main');root.id='pg130';root.hidden=true;root.setAttribute('aria-label','Panda Go');document.body.append(root);
 const A='./assets/panda-v130/';
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const icon=(name,cls='pg-icon')=>`<img class="${cls}" src="${A+name}.webp" alt="" aria-hidden="true">`;
+const icon=(name,cls='pg-icon')=>{
+ // Simple scalable inline vector illustrations replace tiny, blurred menu thumbnails.
+ const shapes={
+  headphones:'<path d="M12 35V30a20 20 0 0 1 40 0v5" fill="none" stroke="#8a20bb" stroke-width="7" stroke-linecap="round"/><rect x="7" y="31" width="13" height="22" rx="6" fill="#db3ce2" stroke="#7e15b0" stroke-width="2"/><rect x="44" y="31" width="13" height="22" rx="6" fill="#db3ce2" stroke="#7e15b0" stroke-width="2"/>',
+  books:'<path d="M12 13l24-7 18 7-25 8z" fill="#f9a35d" stroke="#a75259" stroke-width="2"/><path d="M10 23l24-7 20 7-23 9z" fill="#48b6da" stroke="#4376a3" stroke-width="2"/><path d="M10 34l23-7 20 7-23 9z" fill="#9f6ee5" stroke="#7657bb" stroke-width="2"/><path d="M9 45l23-7 22 7-24 10z" fill="#f7df8b" stroke="#b68265" stroke-width="2"/>',
+  book:'<path d="M7 13q13-5 25 4 12-9 25-4v35q-13-5-25 4-12-9-25-4z" fill="#fff4e7" stroke="#8d2bbd" stroke-width="4" stroke-linejoin="round"/><path d="M32 17v35" stroke="#ab4cc6" stroke-width="3"/><path d="M13 23q8-2 14 2M13 31q8-2 14 2M38 25q8-4 14-2M38 33q8-4 14-2" fill="none" stroke="#ec8ace" stroke-width="2.5" stroke-linecap="round"/>',
+  brush:'<path d="M40 9l12 12-25 25-11-12z" fill="#b97ae5" stroke="#7d2eac" stroke-width="2"/><path d="M40 9l7-7 12 12-7 7z" fill="#f6c77c" stroke="#a77139" stroke-width="2"/><path d="M16 34l11 12-6 6-10-10z" fill="#f7e8a9" stroke="#ab724e"/><path d="M12 42q-8 9-8 19 13-1 18-9z" fill="#562f70" stroke="#7e2aa4" stroke-width="1.5"/>',
+  chat:'<path d="M8 10h48a8 8 0 0 1 8 8v22a8 8 0 0 1-8 8H31L18 59V48H8a8 8 0 0 1-8-8V18a8 8 0 0 1 8-8z" transform="translate(4 0) scale(.9)" fill="#be35d9" stroke="#7b199a" stroke-width="3"/><circle cx="20" cy="29" r="4" fill="white"/><circle cx="34" cy="29" r="4" fill="white"/><circle cx="48" cy="29" r="4" fill="white"/>'
+ };
+ return shapes[name]?'<svg class="'+cls+'" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">'+shapes[name]+'</svg>':'<img class="'+cls+'" src="'+A+name+'.webp" alt="" aria-hidden="true">';
+};
 const speaker=()=>'<img src="./assets/vendor/icons/volume-2.svg" alt="" aria-hidden="true">';
 const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}};
 const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));return true}catch{status('Не удалось сохранить прогресс на устройстве.');return false}};
