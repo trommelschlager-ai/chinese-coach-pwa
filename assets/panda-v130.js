@@ -108,7 +108,7 @@ const previousGo=go;
 go=function(name){if(name==='home'){show('home');return}return previousGo(name)};
 window.showLaunchMenu=()=>show('home');
 const start=document.getElementById('launch-start');if(start)start.onclick=()=>show('home');
-const direct=new URLSearchParams(location.search).get('panda');const hashRoute=window.__pandaRoute130||location.hash.match(/^#panda\/(.+)$/)?.[1];if(direct||hashRoute)route(hashRoute||direct);else if(new URLSearchParams(location.search).has('gameReturn'))show('home',true);
+const direct=new URLSearchParams(location.search).get('panda');const hashRoute=window.__pandaRoute130||location.hash.match(/^#panda\/(.+)$/)?.[1];if(direct||hashRoute)route(hashRoute||direct);else show('home',true);
 window.addEventListener('hashchange',event=>{if(location.hash.startsWith('#panda/')){event.stopImmediatePropagation();const r=location.hash.slice(7);if(['build','listen','choose','practice','quiz','quick','result'].includes(r)&&!session)route(r==='result'?'home':r);else show(r,true)}},true);
 window.addEventListener('pagehide',stop);
 window.__panda130={show:route,version:132};
