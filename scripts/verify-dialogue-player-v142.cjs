@@ -1,4 +1,5 @@
 /* Regression coverage for real media-event ordering and offline assets; does not assess audio quality. */
+const assert=require('node:assert/strict'),fs=require('node:fs'),{JSDOM}=require('jsdom');
 // Offline dialogue regression: the status gate and every immutable v73 MP3 must
 // be available before the app attempts to play a dialogue without a connection.
 const dialoguePlan=JSON.parse(fs.readFileSync('assets/dialogue-voice-plan.json','utf8'));
@@ -9,8 +10,6 @@ for(const entry of dialoguePlan.entries){
  assert(fs.existsSync(path.slice(2)),'Dialogue clip absent: '+path);
  assert(offlineSW.includes(JSON.stringify(path)),'Dialogue clip not pre-cached: '+path);
 }
-
-const assert=require('node:assert/strict'),fs=require('node:fs'),{JSDOM}=require('jsdom');
 const dom=new JSDOM(fs.readFileSync('index.html','utf8'),{url:'https://example.test/chinese-coach-pwa/',runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window,d=w.document,clips=[],errors=[];
 w.addEventListener('error',e=>errors.push(e.error));
