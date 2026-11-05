@@ -11,9 +11,9 @@ const scripts=[...d.scripts].map(s=>s.src?fs.readFileSync(decodeURI(new URL(s.sr
 w.eval(scripts);
 const spoken=[];w.__pandaGameSpeech130=parts=>{spoken.push([...parts])};
 const root=d.getElementById('pg130'),q=s=>root.querySelector(s),click=s=>{const b=q(s);assert(b,'Control missing: '+s);assert(!b.disabled,'Control disabled: '+s);b.click()};
-assert(root.hidden,'Approved original cover remains at launch');
-d.getElementById('launch-start').click();assert(!root.hidden);assert.equal(root.querySelectorAll('.pg-home-grid button').length,4);
-click('[data-route=learn]');assert.equal(root.querySelectorAll('.pg-card').length,4);
+assert(!root.hidden,'Approved v132 home opens without an obsolete splash screen');
+d.getElementById('launch-start').click();assert(!root.hidden);assert.equal(root.querySelectorAll('.pg-home-hit[data-route]').length,5,'Four illustrated sections plus profile');
+w.__panda130.show('learn');assert.equal(root.querySelectorAll('.pg-card').length,4);
 click('[data-route=words]');assert.equal(q('.pg-hanzi').textContent,'我');
 click('[data-action=known]');assert(JSON.parse(w.localStorage.getItem('chinese-coach-basic-known-v1')).includes('我'));
 click('[data-action=example][data-value="0"]');assert.deepEqual(spoken.at(-1),['我','是','学生'],'Sentence example uses real same-speaker MP3 fragments');
@@ -41,8 +41,8 @@ w.__panda130.show('quiz');assert(q('[data-action=question-check]').disabled);cli
 w.__panda130.show('practice');click('[data-action=question-play]');assert(fs.existsSync(played.at(-1).replace('./','')));const select=q('[data-topic]');select.value='5';select.dispatchEvent(new w.Event('change',{bubbles:true}));assert.equal(q('[data-topic]').value,'5');
 w.__panda130.show('build');w.__panda130.show('quiz');w.history.replaceState(null,'','#panda/build');w.dispatchEvent(new w.PopStateEvent('popstate'));w.dispatchEvent(new w.HashChangeEvent('hashchange'));assert(q('.pg-token-pool'),'Browser Back recovers a compatible game session');
 w.__panda130.show('course');assert(root.hidden);w.eval("go('home')");assert(!root.hidden,'Legacy course returns to the new home');
-w.__panda130.show('unknown');assert(q('.pg-home-grid'),'Invalid route recovers home');
+w.__panda130.show('unknown');assert(q('.pg-home-hit-tones'),'Invalid route recovers approved home');
 for(const img of root.querySelectorAll('img'))assert(fs.existsSync(new URL(img.src).pathname.replace('/chinese-coach-pwa/','')),'Asset exists: '+img.src);
 assert.deepEqual(errors,[]);assert.equal(w.__simpleSectionPreview.total,193,'Original course data retained');
-console.log('Panda v130 passed: actual boot, routes, 193 words, examples/audio, pinyin, 13 groups, tone recordings, dialogue paging, reorderable tokens, scoring, reward idempotency and topic switching.');
+console.log('Panda v132 passed: actual boot, routes, 193 words, examples/audio, pinyin, 13 groups, tone recordings, dialogue paging, reorderable tokens, scoring, reward idempotency and topic switching.');
 w.close();

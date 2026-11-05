@@ -24,7 +24,7 @@ const index=fs.readFileSync('index.html','utf8');
 const sw=fs.readFileSync('sw.js','utf8');
 const pack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
 for(const suffix of ['css','js']){
- const url='./assets/panda-v130.'+suffix+'?v=131';
+ const url='./assets/panda-v130.'+suffix+'?v=132';
  assert(index.includes(url),'App must load current '+url);
  assert(sw.includes(url),'Offline shell must load current '+url);
  assert(pack.files.includes(url),'Optional offline pack must load current '+url);

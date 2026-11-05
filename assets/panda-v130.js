@@ -53,6 +53,7 @@ function home(){
  const art='<div class="pg-home-image-wrap">'
  +'<img class="pg-home-image" src="./assets/panda-go-approved-home-v132.jpg" alt="Panda Go. Твой путь к китайскому. Панда в наушниках, цветущая сакура и четыре раздела." decoding="async" fetchpriority="high" draggable="false">'
  +'<button class="pg-home-hit pg-home-hit-profile" data-route="progress" aria-label="Профиль и достижения"><span class="pg-visually-hidden">Профиль</span></button>'
+ +'<button class="pg-home-hit pg-home-hit-resume" data-action="resume" aria-label="Продолжить последний урок"><span class="pg-visually-hidden">Продолжить урок</span></button>'
  +'<button class="pg-home-hit pg-home-hit-tones" data-route="tones" aria-label="Звуки и тоны"><span class="pg-visually-hidden">Звуки и тоны</span></button>'
  +'<button class="pg-home-hit pg-home-hit-words" data-route="words" aria-label="Слова и выражения"><span class="pg-visually-hidden">Слова и выражения</span></button>'
  +'<button class="pg-home-hit pg-home-hit-dialogues" data-route="dialogues" aria-label="Диалоги и общение"><span class="pg-visually-hidden">Диалоги и общение</span></button>'

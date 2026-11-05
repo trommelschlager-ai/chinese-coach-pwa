@@ -1399,8 +1399,8 @@
     "./icons/maskable-512.png",
     "./index.html",
     "./manifest.webmanifest",
-    "./assets/panda-v130.css?v=131",
-    "./assets/panda-v130.js?v=131",
+    "./assets/panda-v130.css?v=132",
+    "./assets/panda-v130.js?v=132",
     "./assets/panda-hanzi-v130.css?v=130",
     "./assets/panda-hanzi-v130.js?v=130",
     "./assets/panda-v130/book.webp",
@@ -1427,6 +1427,7 @@
     "./assets/panda-v130/trophy.webp",
     "./assets/panda-v130/word-girl.webp",
     "./assets/panda-v130/coin.webp",
-    "./assets/panda-v130/profile.webp"
+    "./assets/panda-v130/profile.webp",
+    "./assets/panda-go-approved-home-v132.jpg"
   ]
 }
