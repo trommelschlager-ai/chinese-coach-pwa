@@ -227,6 +227,17 @@ window.addEventListener('DOMContentLoaded',function(){
  '木':[['这是木头。','Zhè shì mùtou.','Это древесина.'],['这里有很多树木。','Zhèlǐ yǒu hěn duō shùmù.','Здесь много деревьев.'],['这张桌子是木头做的。','Zhè zhāng zhuōzi shì mùtou zuò de.','Этот стол сделан из дерева.']]
 };
 function playPgExample(phrase){
+  const local=window.PANDA_HANZI_PHRASE_AUDIO?.[phrase];
+  if(local){
+    const token=++recordingToken;
+    try{activeRecording?.pause();window.speechSynthesis?.cancel();}catch(_){}
+    activeRecording=new Audio('./'+local);
+    activeRecording.playbackRate=1;
+    activeRecording.onerror=()=>{if(token===recordingToken)say('Не удалось загрузить запись. Подключи интернет или скачай материалы.','bad');};
+    activeRecording.play().catch(()=>{if(token===recordingToken)say('Не удалось воспроизвести запись. Проверь звук и попробуй ещё раз.','bad');});
+    return;
+  }
+
   if(!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance!=='function'){
     say('Для озвучивания фраз установи на телефоне китайский голос Mandarin.','bad');
     return;
@@ -285,6 +296,7 @@ function renderPgLexicon(){
 });
 </script>
 <script src="./assets/daily-study-v98.js?v=98"></script>
+<script src="./assets/hanzi-phrases-v141.js?v=141"></script>
 <script src="./assets/hanzi-exact-v141.js?v=141"></script>
 </body>
 </html>

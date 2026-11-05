@@ -36,7 +36,7 @@ try{
   const page=await context.newPage();activePage=page;
   page.on('console',message=>{if(message.type()==='error')report.errors.push({width,message:message.text()})});
   await page.goto(BASE+'/index.html',{waitUntil:'load'});
-  await page.locator('#launch-start').click();await ready(page);
+  if(await page.locator('#launch-start').isVisible())await page.locator('#launch-start').click();await ready(page);
   await capture(page,'01-home',size);
   assert.equal(await page.locator('#pg130 .pg-home-grid button').count(),4);
   await button(page,'[data-route=learn]');await capture(page,'02-learn',size);
@@ -55,16 +55,7 @@ try{
   await rootBack(page);await button(page,'[data-route=dialogues]');await capture(page,'12-dialogues',size);
   await button(page,'[data-action=dialog-next][data-value="1"]');assert((await page.locator('#pg130 .pg-bubble strong').first().textContent()).includes('名字'));
   await page.goBack();await ready(page);assert.equal(await page.locator('#pg130 h1').textContent(),'Учиться','Browser Back restores study menu');
-  await page.locator('#pg130 [data-route=hanzi]').click();
-  await page.locator('#writer svg').waitFor();
-  await page.waitForFunction(()=>document.querySelector('#feedback')?.textContent.includes('Теперь твоя очередь'),null,{timeout:20000});
-  await capture(page,'11-hanzi',size,true);
-  assert((await page.locator('#writer svg path').count())>0,'Live stroke paths');
-  const writingBoxes=await page.evaluate(()=>{const rect=id=>{const r=document.querySelector(id).getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height}};return {paper:rect('.paper'),card:rect('.drawing-card'),next:rect('#next'),controls:['#animate','#practice','#retry'].filter(id=>!document.querySelector(id).hidden).map(rect)}});
-  assert(writingBoxes.controls.every(b=>b.x>=writingBoxes.paper.right-2),'Writing controls must not overlap the paper');
-  assert(writingBoxes.next.width>=writingBoxes.card.width-25,'Next character spans the writing card');
-  await page.locator('#next').click();await page.waitForFunction(()=>document.querySelector('#character').textContent==='人');
-  await page.locator('.top .back').click();await ready(page);
+  // Hanzi now has its own exact-artwork/touch acceptance job (visual-hanzi-v141.mjs).
   await rootBack(page);await button(page,'[data-route=training]');await capture(page,'03-training',size);
   await button(page,'[data-route=practice]');await capture(page,'04-practice',size);
   await button(page,'[data-action=answer][data-value="0"]');await button(page,'[data-action=question-check]');

@@ -19,8 +19,8 @@ const tick=()=>new Promise(resolve=>setTimeout(resolve,35));
  assert(stage);assert.equal(stage.dataset.dynamic,'false');
  assert(d.querySelector('.paper').closest('#pg-hanzi-approved'));
  assert(d.querySelector('.shell').inert,'Hidden original controls must not enter keyboard order');
- hit('meaning').click();await tick();assert.equal(stage.querySelector('.pg-panel-clean').hidden,false);assert(stage.querySelector('.pg-dynamic-panel').textContent.includes('мнемоника'));
- assert(hit('example-0').hidden);
+ hit('meaning').click();await tick();assert.equal(stage.querySelector('.pg-panel-clean').hidden,false);assert(stage.querySelector('.pg-dynamic-panel').textContent.includes('разведёнными'));
+ assert(!hit('example-0').hidden);
  hit('words').click();await tick();assert.equal(stage.querySelectorAll('.pg-dynamic-row').length,3);assert(stage.querySelector('.pg-dynamic-panel').textContent.includes('大学'));
  hit('examples').click();await tick();assert(stage.querySelector('.pg-dynamic-panel').hidden);assert(stage.querySelector('.pg-panel-clean').hidden);
  for(const hz of ['大','人','小','一','二','三','口','日','月','木']){

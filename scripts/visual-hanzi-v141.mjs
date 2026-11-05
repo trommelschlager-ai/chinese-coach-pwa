@@ -38,7 +38,9 @@ async function draw(hz){
 try{
  for(const [width,height] of [[360,560],[360,800],[393,852],[412,740],[430,932]]){
   const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,isMobile:true,hasTouch:true});
-  page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));
+  page=await context.newPage();
+  await page.addInitScript(()=>{window.__qaMedia=[];const native=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){const entry={src:this.src,played:false,error:null};window.__qaMedia.push(entry);const result=native.call(this);result?.then(()=>entry.played=true).catch(e=>entry.error=e.message);return result;};});
+  page.on('pageerror',e=>report.errors.push(e.message));
   page.on('console',m=>{if(m.type()==='error')report.errors.push(m.text())});
   await page.goto(BASE+'/hanzi-lab.html',{waitUntil:'networkidle'});
   await page.locator('#pg-hanzi-approved').waitFor();
@@ -54,8 +56,15 @@ try{
   await tap('words');assert.equal(await page.locator('.pg-dynamic-row').count(),3);await capture(`words-${width}-${height}`);
   await tap('examples');
   await tap('speak');
-  const audioRequests=await page.evaluate(()=>performance.getEntriesByType('resource').filter(r=>r.name.includes('/hanzi-human/')).map(r=>r.name));
+  await page.waitForFunction(()=>window.__qaMedia.some(x=>x.played&&decodeURIComponent(x.src).includes('cmn-大.mp3')));
+  const audioRequests=await page.evaluate(()=>window.__qaMedia.filter(x=>x.played).map(x=>x.src));
   assert(audioRequests.some(s=>decodeURIComponent(s).includes('大')),'Correct character recording requested');report.audio.push({hz:'大',audioRequests});
+  for(let n=0;n<3;n++){
+    const phrase=await page.locator('#pg-hanzi-lexicon-list .pg-lexicon-entry strong').nth(n).textContent();
+    await tap('example-'+n);
+    await page.waitForFunction(text=>window.__qaMedia.some(x=>x.played&&x.src.endsWith(window.PANDA_HANZI_PHRASE_AUDIO[text])),phrase);
+  }
+
   await tap('strokes');await page.locator('.pg-art-stroke-paper:not([hidden])').waitFor();
   await page.waitForFunction(()=>document.querySelector('#feedback').textContent.includes('Теперь твоя очередь'));
   await capture(`strokes-${width}-${height}`);

@@ -65,7 +65,7 @@
    [...liveTabs.children].forEach((el,i)=>el.setAttribute('aria-current',String(tabNames[i]===tab)));
    const needsPanel=!isInitial||tab!=='examples';
    livePanel.hidden=!needsPanel;
-   stage.querySelectorAll('[data-art-hit^="example-"]').forEach(button=>button.hidden=tab==='meaning');
+   stage.querySelectorAll('[data-art-hit^="example-"]').forEach(button=>button.hidden=false);
    $('.pg-panel-clean').hidden=!isInitial||tab==='examples';
    if(!needsPanel)return;
    // Original 大 examples stay raster-exact; other states use clean source-derived layers.
@@ -74,8 +74,9 @@
     const native=lexicon.querySelector('.pg-meaning-card');
     const heading=document.createElement('strong'),explanation=document.createElement('div'),note=document.createElement('small');
     heading.textContent=native?.querySelector('strong')?.textContent||ch;
-    explanation.textContent=native?.querySelector('p')?.textContent||document.getElementById('explanation')?.textContent||'';
-    note.textContent=native?.querySelector('small')?.textContent||'';
+    const shortNotes={'大':'Человек с разведёнными руками: «вот такой большой!»','人':'Два расходящихся штриха напоминают человека.','小':'Три компактных штриха. Противоположность 大 — большой.','一':'Одна горизонтальная черта, слева направо.','二':'Две черты: короткая сверху, длинная снизу.','三':'Три горизонтальные черты. Следи за длиной и порядком.','口':'Рот. Пиши тремя чертами, а не одним квадратом.','日':'Прямоугольник с внутренней горизонтальной чертой.','月':'Вытянутая форма с двумя чертами внутри.','木':'Вертикальный ствол и расходящиеся ветви дерева.'};
+    explanation.textContent=shortNotes[ch]||document.getElementById('explanation').textContent;
+    note.textContent=(native?.querySelector('small')?.textContent||'').split('.')[0]+'.';
     const box=document.createElement('div');box.className='pg-dynamic-explanation';
     box.append(heading,explanation,note);livePanel.append(box);
    }else{
@@ -108,6 +109,7 @@
    if(tabNames.includes(action)){activateTab(action);return;}
    if(action.startsWith('example-')){
     const n=Number(action.slice(-1));
+    if(activeTab()==='meaning'){document.getElementById('speak')?.click();return;}
     lexicon.querySelectorAll('.pg-example-audio')[n]?.click();
     return;
    }
