@@ -39,8 +39,11 @@ try{
   // Panda Go v145 mounts the modern shell directly; legacy Start is covered.
   await ready(page);
   await capture(page,'01-home',size);
-  assert.equal(await page.locator('#pg130 .pg-home-grid button').count(),4);
-  await button(page,'[data-route=learn]');await capture(page,'02-learn',size);
+  // The approved main artwork uses six transparent hotspots, not the retired card grid.
+  assert.equal(await page.locator('#pg130 .pg-home-hit').count(),6);
+  for(const route of ['tones','words','dialogues','travel'])assert.equal(await page.locator(`#pg130 .pg-home-hit[data-route="${route}"]`).count(),1);
+  await page.evaluate(()=>window.__panda130.show('learn'));await ready(page);
+  await capture(page,'02-learn',size);
   await button(page,'[data-route=tones]');await capture(page,'09-tones',size);
   await button(page,'[data-action=tone][data-value="1"]');
   assert.equal(await page.locator('#pg130 .pg-tone[aria-pressed=true] strong').textContent(),'má');
