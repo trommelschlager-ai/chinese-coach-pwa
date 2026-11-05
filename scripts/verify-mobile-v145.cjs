@@ -10,7 +10,7 @@ const root=d.querySelector('#pg130'),tick=()=>new Promise(r=>setImmediate(r)),cl
   const hz=root.querySelector('.pg-hanzi').textContent,py=root.querySelector('.pg-word-copy .pg-pinyin')?.textContent;assert(py?.trim(),hz+' pinyin');
   const examples=[...root.querySelectorAll('.pg-example strong')].map(e=>e.textContent);assert(examples.length<=3);assert(examples.every(x=>x.replace(/[。！？!？]/g,'')!==hz),'A bare word is not an example sentence');
   for(let n=0;n<examples.length;n++){const before=played.length;click(`[data-action=example][data-value="${n}"]`);await tick();await tick();assert(played.length>before,hz+' example audio');assert(fs.existsSync(decodeURIComponent(played.at(-1)).replace('./','')),played.at(-1))}
-  rows.push({hz,py,examples});if(i<192)click('[data-action=word-next][data-value="1"]');
+  rows.push({hz,py,examples});if(i<192)click('[data-action=word-go]');
  }
  w.__panda130.show('words');click('[data-action=pinyin]');assert(!root.querySelector('.pg-word-copy .pg-pinyin'));assert(!root.querySelector('.pg-example small')?.textContent.includes('Wǒ'));assert(root.textContent.includes('Пиньинь: скрыт'));click('[data-action=pinyin]');
  w.__panda130.show('tones');for(const tab of ['Инициали','Финали','Сочетания']){click(`[data-action=tone-tab][data-value="${tab}"]`);for(const b of root.querySelectorAll('[data-action=syllable]')){const before=played.length;b.click();assert(played.length>before,tab+' '+b.textContent);assert(fs.existsSync(decodeURIComponent(played.at(-1)).replace('./','')))}}
