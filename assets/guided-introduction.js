@@ -2,22 +2,41 @@
 (() => {
   'use strict';
 
-  const storageKey = 'pg-intro-step';
+  const lessonNumber = new URLSearchParams(location.search).get('lesson') === '2' ? 2 : 1;
+  const storageKey = lessonNumber === 1 ? 'pg-intro-step' : 'pg-identity-step';
+  if (lessonNumber === 2) {
+    document.title = 'Откуда ты? · Panda Go';
+    document.querySelector('header span').textContent = 'Откуда ты?';
+  }
   const content = document.getElementById('content');
   const nextButton = document.getElementById('next');
   const backButton = document.getElementById('back');
   const feedback = document.getElementById('feedback');
   const heading = document.querySelector('h1');
-  const words = [
+  const introductionWords = [
     ['我', 'wǒ', 'я'],
     ['你', 'nǐ', 'ты'],
     ['叫', 'jiào', 'зваться'],
   ];
-  const dialogue = [
+  const introductionDialogue = [
     ['А', '你叫什么名字？', 'Nǐ jiào shénme míngzi?', 'Как тебя зовут?', './assets/dialogue-voices-v73/l2-03-a.mp3'],
     ['Б', '我叫安娜。你呢？', 'Wǒ jiào Ānnà. Nǐ ne?', 'Меня зовут Анна. А тебя?', './assets/dialogue-voices-v73/l2-04-b.mp3'],
     ['А', '我叫小明。', 'Wǒ jiào Xiǎomíng.', 'Меня зовут Сяомин.', './assets/dialogue-voices-v73/l2-05-a.mp3'],
   ];
+
+  const identityWords = [
+    ['是', 'shì', 'быть / являться'],
+    ['人', 'rén', 'человек'],
+    ['中国', 'Zhōngguó', 'Китай'],
+    ['俄罗斯', 'Éluósī', 'Россия'],
+  ];
+  const identityDialogue = [
+    ['А', '你好！你是哪国人？', 'Nǐ hǎo! Nǐ shì nǎ guó rén?', 'Привет! Из какой ты страны?', './assets/dialogue-voices-v73/l3-01-a.mp3'],
+    ['Б', '我是俄罗斯人。你呢？', 'Wǒ shì Éluósī rén. Nǐ ne?', 'Я из России. А ты?', './assets/dialogue-voices-v73/l3-02-b.mp3'],
+    ['А', '我是中国人。', 'Wǒ shì Zhōngguó rén.', 'Я китаец / китаянка.', './assets/dialogue-voices-v73/l3-03-a.mp3'],
+  ];
+  const words = lessonNumber === 2 ? identityWords : introductionWords;
+  const dialogue = lessonNumber === 2 ? identityDialogue : introductionDialogue;
 
   let step = 0;
   let answered = false;
@@ -79,7 +98,7 @@
     await playAt(0);
   }
 
-  const pages = [
+  const introductionPages = [
     {
       title: 'Представься по-китайски',
       body: () => card('<h2>Что ты сможешь сказать</h2><p>«Меня зовут…» и «Как тебя зовут?»</p><p>Сначала выучим три слова, затем соберём фразу и попробуем короткий разговор.</p><small>Около 5 минут · 6 коротких шагов</small>'),
@@ -130,15 +149,66 @@
       title: 'Первый урок завершён',
       body: () => card('<h2>Ты потренировался</h2><p>Представляться с 我叫… и спрашивать имя с 你叫什么名字？</p>' +
         '<p>Вернись к разговору и попробуй ответить за собеседника Б, используя своё имя.</p>' +
-        '<a href="./index.html?panda=dialogues#panda/dialogues">Открыть диалоги →</a>'),
+        '<a href="./start-chinese.html?lesson=2">Урок 2 · Откуда ты? →</a>'),
       next: 'Повторить урок',
     },
   ];
 
+  const identityPages = [
+    {
+      title: 'Расскажи, откуда ты',
+      body: () => card('<h2>Что ты сможешь сказать</h2><p>«Я из России» и «Из какой ты страны?»</p><p>Мы уже знаем 我 — я, 你 — ты и 你呢？ — «А ты?». Сейчас добавим четыре слова и правило 是.</p><small>Около 5 минут · 6 коротких шагов</small>'),
+      next: 'Начать урок',
+    },
+    {
+      title: 'Четыре новых слова',
+      body: () => words.map(([hz, py, ru]) =>
+        '<div class="card word"><div>' + phrase(hz, py, ru) + '</div><button data-word="' + hz + '" aria-label="Послушать ' + hz + '">🔊</button></div>'
+      ).join('') + '<p>Послушай и повтори слова. 人 после названия страны обозначает человека из этой страны.</p>',
+      next: 'Перейти к правилу',
+    },
+    {
+      title: 'Я из России',
+      body: () => card(phrase('我是俄罗斯人。', 'Wǒ shì Éluósī rén.', 'Я из России.') +
+        '<p><strong>我 + 是 + 俄罗斯人</strong></p><p>是 связывает человека с тем, кем он является. В русском «я россиянин» слово «есть» обычно опускают. В этой китайской конструкции 是 нужно.</p>' +
+        '<p>俄罗斯 + 人 → 俄罗斯人 — россиянин / россиянка. 中国 + 人 → 中国人 — китаец / китаянка.</p>') +
+        card(phrase('你是哪国人？', 'Nǐ shì nǎ guó rén?', 'Из какой ты страны?') +
+        '<p>哪 — какой / который, 国 — страна. 哪国 — «какая страна». Частицу 吗 не добавляем: вопрос уже содержит 哪.</p>' +
+        '<p>你好！(Nǐ hǎo!) в начале разговора — «Привет!». При произнесении первый третий тон становится вторым.</p>'),
+      next: 'Послушать разговор',
+    },
+    {
+      title: 'Знакомство продолжается',
+      body: introductionPages[3].body,
+      next: 'Проверить себя',
+    },
+    {
+      title: 'Скажи «Я из России»',
+      body: () => card('<div class="answers"><button data-answer="no" aria-pressed="false"><span lang="zh-Hans">我是中国人。</span></button>' +
+        '<button data-answer="yes" aria-pressed="false"><span lang="zh-Hans">我是俄罗斯人。</span></button></div>'),
+      next: 'Ответить самостоятельно',
+    },
+    {
+      title: 'Теперь твоя очередь',
+      body: () => card('<p>Скажи по-китайски «Я из России». Затем спроси собеседника, из какой он страны.</p>' +
+        '<details><summary>Сверить с образцом</summary>' + phrase('我是俄罗斯人。', 'Wǒ shì Éluósī rén.', 'Я из России.') +
+        phrase('你是哪国人？', 'Nǐ shì nǎ guó rén?', 'Из какой ты страны?') + '</details>') +
+        '<small>Если ты из другой страны, в своём ответе используй её название + 人.</small>',
+      next: 'Завершить урок',
+    },
+    {
+      title: 'Второй урок завершён',
+      body: () => card('<h2>Соедини два урока</h2><p>Сначала представься с 我叫…, затем скажи, откуда ты, с 我是…人.</p>' +
+        '<p>Попробуй ответить на оба вопроса без подсказки.</p><a href="./start-chinese.html">Повторить знакомство →</a>'),
+      next: 'Повторить урок',
+    },
+  ];
+  const pages = lessonNumber === 2 ? identityPages : introductionPages;
+
   function render() {
     stopAudio();
     const page = pages[step];
-    document.getElementById('step').textContent = step < 6 ? 'Урок 1 · Шаг ' + (step + 1) + ' из 6' : 'Урок 1 · Завершён';
+    document.getElementById('step').textContent = step < 6 ? 'Урок ' + lessonNumber + ' · Шаг ' + (step + 1) + ' из 6' : 'Урок ' + lessonNumber + ' · Завершён';
     document.querySelector('progress').value = step;
     heading.textContent = page.title;
     content.innerHTML = page.body();
@@ -161,7 +231,7 @@
     const button = event.target.closest('button');
     if (!button) return;
     if (button.dataset.word) {
-      const file = window.courseHumanAudio?.[button.dataset.word];
+      const file = window.courseHumanAudio?.[button.dataset.word] || window.courseNaturalAudio?.[button.dataset.word];
       if (file) playFiles([file]);
       else feedback.textContent = 'Запись пока недоступна.';
     }
@@ -180,7 +250,9 @@
       answered = button.dataset.answer === 'yes';
       content.querySelectorAll('[data-answer]').forEach(answer => answer.setAttribute('aria-pressed', String(answer === button)));
       nextButton.disabled = !answered;
-      feedback.textContent = answered ? 'Верно. После 我叫 ставим своё имя.' : '你呢？ значит «А ты?». Сначала назови своё имя с 我叫…';
+      feedback.textContent = lessonNumber === 2
+        ? (answered ? 'Верно. 俄罗斯人 — человек из России.' : '中国人 означает «китаец / китаянка». Для России используй 俄罗斯人.')
+        : (answered ? 'Верно. После 我叫 ставим своё имя.' : '你呢？ значит «А ты?». Сначала назови своё имя с 我叫…');
     }
   });
   window.addEventListener('pagehide', stopAudio);
