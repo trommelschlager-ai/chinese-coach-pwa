@@ -1,4 +1,15 @@
-/* Regression coverage for real media-event ordering; does not assess audio quality. */
+/* Regression coverage for real media-event ordering and offline assets; does not assess audio quality. */
+// Offline dialogue regression: the status gate and every immutable v73 MP3 must
+// be available before the app attempts to play a dialogue without a connection.
+const dialoguePlan=JSON.parse(fs.readFileSync('assets/dialogue-voice-plan.json','utf8'));
+const offlineSW=fs.readFileSync('sw.js','utf8');
+assert(offlineSW.includes('"./assets/dialogue-voices-v73/status.json"'),'Missing offline ready-status needed for dialogue audio');
+for(const entry of dialoguePlan.entries){
+ const path='./assets/dialogue-voices-v73/'+entry.file.split('/').pop();
+ assert(fs.existsSync(path.slice(2)),'Dialogue clip absent: '+path);
+ assert(offlineSW.includes(JSON.stringify(path)),'Dialogue clip not pre-cached: '+path);
+}
+
 const assert=require('node:assert/strict'),fs=require('node:fs'),{JSDOM}=require('jsdom');
 const dom=new JSDOM(fs.readFileSync('index.html','utf8'),{url:'https://example.test/chinese-coach-pwa/',runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window,d=w.document,clips=[],errors=[];
