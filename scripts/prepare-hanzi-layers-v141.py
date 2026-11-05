@@ -40,3 +40,7 @@ for name,box in [('active',(302,897,564,963)),('inactive',(44,897,297,963))]:
 print('Prepared original artwork and dynamic layers')
 
 Image.open(root/'hanzi-dynamic-v141.png').crop((31,964,834,1309)).save(root/'hanzi-panel-v141.png')
+
+# Seamless source-only scenery continuation for viewports taller than the artwork.
+from PIL import ImageOps
+footer=im.crop((0,1440,864,1536));tile=Image.new('RGB',(864,192));tile.paste(ImageOps.flip(footer),(0,0));tile.paste(footer,(0,96));tile.save(root/'hanzi-footer-v141.png')

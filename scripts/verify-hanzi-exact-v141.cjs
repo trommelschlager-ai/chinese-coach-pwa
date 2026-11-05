@@ -14,7 +14,7 @@ w.eval(inline);
 const tick=()=>new Promise(resolve=>setTimeout(resolve,35));
 (async()=>{
  await new Promise(resolve=>w.addEventListener('DOMContentLoaded',resolve,{once:true}));
- w.eval(fs.readFileSync('assets/hanzi-exact-v141.js','utf8'));await tick();
+ w.eval(fs.readFileSync('assets/hanzi-exact-v141.js','utf8'));w.eval(fs.readFileSync('assets/hanzi-phrases-v141.js','utf8'));await tick();
  const stage=d.querySelector('#pg-hanzi-approved'),hit=name=>stage.querySelector('[data-art-hit="'+name+'"]');
  assert(stage);assert.equal(stage.dataset.dynamic,'false');
  assert(d.querySelector('.paper').closest('#pg-hanzi-approved'));
@@ -26,7 +26,7 @@ const tick=()=>new Promise(resolve=>setTimeout(resolve,35));
  for(const hz of ['大','人','小','一','二','三','口','日','月','木']){
   assert.equal(d.querySelector('#character').textContent,hz);assert.equal(writers.at(-1).hz,hz);
   hit('speak').click();assert(played.at(-1).includes(encodeURIComponent(hz)));
-  for(let i=0;i<3;i++){hit('example-'+i).click();assert(spoken.at(-1),'Each example routes to current Mandarin text')}
+  for(let i=0;i<3;i++){const before=played.length;hit('example-'+i).click();assert.equal(played.length,before+1);assert(played.at(-1).includes('/hanzi-phrases-v141/'),'Each example has a local Mandarin recording')}
   if(hz!=='大'){
    assert.equal(stage.dataset.dynamic,'true');assert.equal(stage.querySelector('.pg-dynamic-glyph').textContent,hz);
    assert.equal(stage.querySelector('.pg-dynamic-panel').hidden,false);assert.equal(stage.querySelectorAll('.pg-dynamic-row').length,3);

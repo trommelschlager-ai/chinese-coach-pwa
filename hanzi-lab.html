@@ -226,6 +226,14 @@ window.addEventListener('DOMContentLoaded',function(){
  '月':[['月亮很亮。','Yuèliang hěn liàng.','Луна яркая.'],['下个月见！','Xià ge yuè jiàn!','Увидимся в следующем месяце!'],['现在是十月。','Xiànzài shì shí yuè.','Сейчас октябрь.']],
  '木':[['这是木头。','Zhè shì mùtou.','Это древесина.'],['这里有很多树木。','Zhèlǐ yǒu hěn duō shùmù.','Здесь много деревьев.'],['这张桌子是木头做的。','Zhè zhāng zhuōzi shì mùtou zuò de.','Этот стол сделан из дерева.']]
 };
+// Short screen variants keep all three cards readable; original sentences above remain retained.
+const pgScreenSentences={
+ '一天有二十四个小时。':['一天很长。','Yì tiān hěn cháng.','День долгий.'],
+ '我的生日在五月。':['生日快乐！','Shēngrì kuàilè!','С днём рождения!'],
+ '日本离中国不远。':['日本不远。','Rìběn bù yuǎn.','Япония недалеко.'],
+ '这里有很多树木。':['这里有树木。','Zhèlǐ yǒu shùmù.','Здесь есть деревья.'],
+ '这张桌子是木头做的。':['木头很硬。','Mùtou hěn yìng.','Древесина твёрдая.']
+};
 function playPgExample(phrase){
   const local=window.PANDA_HANZI_PHRASE_AUDIO?.[phrase];
   if(local){
@@ -267,7 +275,7 @@ function renderPgLexicon(){
    meaning.append(title,note,tone);root.append(meaning);
    return;
  }
- const rows=active==='examples'?(pgSentences[d.hz]||[]):(pgExamples[d.hz]||[]);
+ const rows=active==='examples'?(pgSentences[d.hz]||[]).map(row=>pgScreenSentences[row[0]]||row):(pgExamples[d.hz]||[]);
  rows.slice(0,3).forEach(([zh,py,ru])=>{
    const row=document.createElement('div');row.className='pg-lexicon-entry';
    const audio=document.createElement('button');audio.type='button';audio.className='pg-example-audio';

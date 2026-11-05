@@ -97,7 +97,7 @@ try{
           await page.waitForFunction(({phrase,before})=>window.__qaMedia.slice(before).some(x=>x.played&&x.src.endsWith(window.PANDA_HANZI_PHRASE_AUDIO[phrase])),{phrase,before});
           report.audio.push({hz,phrase,played:true});
         }
-        await capture(`all-${hz}-${tabName}-393`);
+        await layout(width,height);await capture(`all-${hz}-${tabName}-393`);
       }
       await tap('examples');await tap('next');
     }

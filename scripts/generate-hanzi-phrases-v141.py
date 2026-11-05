@@ -13,6 +13,9 @@ for name in ('pgSentences','pgExamples'):
     for rows in data.values():
         for row in rows:
             if row[0] not in phrases: phrases.append(row[0])
+screen=ast.literal_eval(re.search(r'const pgScreenSentences=({.*?});',html,re.S).group(1))
+for row in screen.values():
+    if row[0] not in phrases: phrases.append(row[0])
 VOICE='zh-CN-XiaoxiaoNeural'
 async def main():
     OUT.mkdir(parents=True,exist_ok=True)

@@ -1,6 +1,6 @@
 /* Coordinates are measured in the approved 864 × 1536 artwork. */
 html {background:#30115e; min-height:100%}
-body.writing-simple {margin:0;min-height:100dvh;overflow-x:hidden;background:#30115e url('./hanzi-approved-v141.png') center bottom / min(100vw,520px) auto repeat-y}
+body.writing-simple {margin:0;min-height:100dvh;overflow-x:hidden;background:#30115e}
 body.writing-simple > .shell {display:none!important}
 #pg-hanzi-approved {position:relative;isolation:isolate;width:min(100%,520px);min-height:0;aspect-ratio:864/1536;margin:auto;overflow:hidden;color:#550878;font-family:Arial,system-ui,sans-serif;container-type:inline-size;background:url('./hanzi-approved-v141.png') center/100% 100% no-repeat}
 #pg-hanzi-approved * {box-sizing:border-box}
@@ -48,3 +48,6 @@ body.writing-simple > .shell {display:none!important}
 #pg-hanzi-approved .pg-panel-clean {position:absolute;z-index:4;left:3.588%;top:62.76%;width:92.94%;height:22.46%;pointer-events:none}
 
 #pg-hanzi-approved .pg-readable {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* Extend only source scenery below tall viewports; never repeat the painted controls. */
+body.writing-simple::after {content:"";display:block;pointer-events:none;width:min(100%,520px);height:max(0px,calc(100dvh - min(100vw,520px) * 16 / 9));margin:auto;background:url('./hanzi-footer-v141.png') center top / 100% auto repeat-y}
