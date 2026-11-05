@@ -2,12 +2,13 @@
 (() => {
   'use strict';
 
-  const lessonNumber = new URLSearchParams(location.search).get('lesson') === '2' ? 2 : 1;
-  const storageKey = lessonNumber === 1 ? 'pg-intro-step' : 'pg-identity-step';
-  if (lessonNumber === 2) {
-    document.title = 'Откуда ты? · Panda Go';
-    document.querySelector('header span').textContent = 'Откуда ты?';
-  }
+  const requestedLesson = Number(new URLSearchParams(location.search).get('lesson'));
+  const lessonNumber = [1, 2, 3].includes(requestedLesson) ? requestedLesson : 1;
+  const lessonTitles = { 1: 'Знакомство', 2: 'Откуда ты?', 3: 'В кафе' };
+  const storageKeys = { 1: 'pg-intro-step', 2: 'pg-identity-step', 3: 'pg-cafe-step' };
+  const storageKey = storageKeys[lessonNumber];
+  document.title = lessonTitles[lessonNumber] + ' · Panda Go';
+  document.querySelector('header span').textContent = lessonTitles[lessonNumber];
   const content = document.getElementById('content');
   const nextButton = document.getElementById('next');
   const backButton = document.getElementById('back');
@@ -35,8 +36,22 @@
     ['Б', '我是俄罗斯人。你呢？', 'Wǒ shì Éluósī rén. Nǐ ne?', 'Я из России. А ты?', './assets/dialogue-voices-v73/l3-02-b.mp3'],
     ['А', '我是中国人。', 'Wǒ shì Zhōngguó rén.', 'Я китаец / китаянка.', './assets/dialogue-voices-v73/l3-03-a.mp3'],
   ];
-  const words = lessonNumber === 2 ? identityWords : introductionWords;
-  const dialogue = lessonNumber === 2 ? identityDialogue : introductionDialogue;
+  const cafeWords = [
+    ['想', 'xiǎng', 'хотеть / хотеть что-то сделать'],
+    ['喝', 'hē', 'пить'],
+    ['茶', 'chá', 'чай'],
+    ['一', 'yī', 'один'],
+    ['杯', 'bēi', 'чашка / стакан; счётное слово'],
+  ];
+  const cafeDialogue = [
+    ['А', '你好！你想喝什么？', 'Nǐ hǎo! Nǐ xiǎng hē shénme?', 'Здравствуйте! Что хотите выпить?', './assets/dialogue-voices-v73/l5-01-a.mp3'],
+    ['Б', '我想喝一杯茶。', 'Wǒ xiǎng hē yì bēi chá.', 'Я хотел(а) бы выпить чашку чая.', './assets/dialogue-voices-v73/l5-02-b.mp3'],
+    ['А', '好的。', 'Hǎo de.', 'Хорошо.', './assets/dialogue-voices-v73/l5-03-a.mp3'],
+  ];
+  const wordsByLesson = { 1: introductionWords, 2: identityWords, 3: cafeWords };
+  const dialoguesByLesson = { 1: introductionDialogue, 2: identityDialogue, 3: cafeDialogue };
+  const words = wordsByLesson[lessonNumber];
+  const dialogue = dialoguesByLesson[lessonNumber];
 
   let step = 0;
   let answered = false;
@@ -199,11 +214,66 @@
     {
       title: 'Второй урок завершён',
       body: () => card('<h2>Соедини два урока</h2><p>Сначала представься с 我叫…, затем скажи, откуда ты, с 我是…人.</p>' +
-        '<p>Попробуй ответить на оба вопроса без подсказки.</p><a href="./start-chinese.html">Повторить знакомство →</a>'),
+        '<p>Попробуй ответить на оба вопроса без подсказки.</p><a href="./start-chinese.html?lesson=3">Урок 3 · В кафе →</a>'),
       next: 'Повторить урок',
     },
   ];
-  const pages = lessonNumber === 2 ? identityPages : introductionPages;
+  const cafePages = [
+    {
+      title: 'Закажи чай по-китайски',
+      body: () => card('<h2>Что ты сможешь сказать</h2><p>«Я хочу выпить чаю» и «Я хотел(а) бы чашку чая».</p><p>Мы уже знаем 我 — я, 你 — ты и 什么 — что. Теперь добавим 想 — хотеть, 喝 — пить и название напитка.</p><small>Около 5 минут · 6 коротких шагов</small>'),
+      next: 'Начать урок',
+    },
+    {
+      title: 'Пять слов для заказа',
+      body: () => words.map(([hz, py, ru]) =>
+        '<div class="card word"><div>' + phrase(hz, py, ru) + '</div><button data-word="' + hz + '" aria-label="Послушать ' + hz + '">🔊</button></div>'
+      ).join('') + '<p>一 отдельно произносится yī. В сочетании 一杯 — yì bēi. Это изменение тона разберём дальше.</p>',
+      next: 'Перейти к правилу',
+    },
+    {
+      title: 'Хочу выпить чашку чая',
+      body: () => card(phrase('我想喝茶。', 'Wǒ xiǎng hē chá.', 'Я хочу выпить чаю.') +
+        '<p><strong>我 + 想 + 喝 + 茶</strong></p><p>我 — я, 想 — хочу, 喝 — пить, 茶 — чай. После 想 ставим действие. Перед 喝 слово 是 не добавляем.</p>') +
+        card(phrase('我想喝一杯茶。', 'Wǒ xiǎng hē yì bēi chá.', 'Я хотел(а) бы выпить чашку чая.') +
+        '<p><strong>一 + 杯 + 茶</strong> — одна чашка чая. 杯 здесь указывает, чем измеряем напиток. Счётное слово стоит между числом и названием напитка.</p><p>Перед первым тоном bēi единица 一 произносится четвёртым тоном — yì. Запомни сочетание yì bēi.</p>') +
+        card(phrase('你想喝什么？', 'Nǐ xiǎng hē shénme?', 'Что ты хочешь выпить?') +
+        '<p>什么 — «что» — стоит на месте напитка. Для ответа меняем 什么 на 茶 и 你 на 我.</p><p>好的 (hǎo de) — «хорошо». Это короткое подтверждение твоего заказа.</p>'),
+      next: 'Послушать разговор',
+    },
+    {
+      title: 'Короткий заказ в кафе',
+      body: introductionPages[3].body,
+      next: 'Проверить себя',
+    },
+    {
+      title: 'Закажи чашку чая',
+      body: () => card('<p>Выбери «Я хочу выпить чашку чая».</p><div class="answers">' +
+        '<button data-answer="yes" aria-pressed="false"><span lang="zh-Hans">我想喝一杯茶。</span></button>' +
+        '<button data-answer="no" aria-pressed="false"><span lang="zh-Hans">我是一杯茶。</span></button></div>'),
+      next: 'Ответить самостоятельно',
+    },
+    {
+      title: 'Теперь твой заказ',
+      body: () => card('<p>Ответь вслух на вопрос 你想喝什么？ Закажи одну чашку чая.</p>' +
+        '<details><summary>Сверить с образцом</summary>' + phrase('我想喝一杯茶。', 'Wǒ xiǎng hē yì bēi chá.', 'Я хотел(а) бы выпить чашку чая.') +
+        '<p>Проверь порядок 想 → 喝 → 一杯茶. Произнеси 一杯 как yì bēi.</p></details>'),
+      next: 'Завершить урок',
+    },
+    {
+      title: 'Третий урок завершён',
+      body: () => card('<h2>Ты умеешь заказать чай</h2><p>想 + действие — хочу что-то сделать. 一杯茶 — одна чашка чая.</p><p>Повтори весь разговор, ответив за гостя кафе своим голосом.</p><a href="./start-chinese.html?lesson=2">Повторить «Откуда ты?» →</a>'),
+      next: 'Повторить урок',
+    },
+  ];
+  const pagesByLesson = { 1: introductionPages, 2: identityPages, 3: cafePages };
+  const pages = pagesByLesson[lessonNumber];
+  const answerFeedback = {
+    1: ['你呢？ значит «А ты?». Сначала назови своё имя с 我叫…', 'Верно. После 我叫 ставим своё имя.'],
+    2: ['中国人 означает «китаец / китаянка». Для России используй 俄罗斯人.', 'Верно. 俄罗斯人 — человек из России.'],
+    3: ['我是一杯茶 означает «Я — чашка чая». Для желания нужно 想, а для действия — 喝.', 'Верно. 我 + 想 + 喝 + 一杯茶 — я хочу выпить чашку чая.'],
+  };
+
 
   function render() {
     stopAudio();
@@ -250,9 +320,7 @@
       answered = button.dataset.answer === 'yes';
       content.querySelectorAll('[data-answer]').forEach(answer => answer.setAttribute('aria-pressed', String(answer === button)));
       nextButton.disabled = !answered;
-      feedback.textContent = lessonNumber === 2
-        ? (answered ? 'Верно. 俄罗斯人 — человек из России.' : '中国人 означает «китаец / китаянка». Для России используй 俄罗斯人.')
-        : (answered ? 'Верно. После 我叫 ставим своё имя.' : '你呢？ значит «А ты?». Сначала назови своё имя с 我叫…');
+      feedback.textContent = answerFeedback[lessonNumber][Number(answered)];
     }
   });
   window.addEventListener('pagehide', stopAudio);
