@@ -1401,7 +1401,7 @@
     "./manifest.webmanifest",
     "./assets/panda-v130.css?v=148",
     "./assets/panda-word-sentences-v148.js?v=148",
-    "./assets/panda-v130.js?v=148",
+    "./assets/panda-v130.js?v=149",
     "./assets/panda-hanzi-v130.css?v=138",
     "./assets/panda-hanzi-v130.js?v=135",
     "./assets/panda-v130/book.webp",
@@ -1508,6 +1508,8 @@
     "./assets/hanzi-exact-v141.js",
     "./assets/hanzi-exact-v141.js?v=145",
     "./assets/hanzi-exact-v141.css",
-    "./assets/hanzi-exact-v141.css?v=145"
+    "./assets/hanzi-exact-v141.css?v=145",
+    "./assets/assemble-alive-v149.js?v=1",
+    "./assets/assemble-alive-v149.css?v=1"
   ]
 }
