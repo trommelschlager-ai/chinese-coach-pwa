@@ -1,14 +1,58 @@
-<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Знакомство · Panda Go</title><style>*{box-sizing:border-box}body{margin:0;background:#ece0f3;color:#42203f;font:18px/1.5 system-ui}main{max-width:460px;min-height:100svh;margin:auto;padding:22px;background:#fff5fb}article{background:white;padding:18px;border-radius:18px;border:1px solid #e3bfd7}h1{line-height:1.2}button,a{font:inherit;color:#733465}button{padding:10px;border:1px solid #dbb5d2;border-radius:14px;margin:4px;background:white}#next{background:#a83075;color:white;width:100%;margin:18px 0}b{font-size:24px}</style><main><a href="./index.html">← Главная</a><p id="step"></p><h1></h1><article></article><p role="status"></p><button id="next"></button><button id="back">← Назад</button></main>
-<script src="./assets/human-audio-map.js?v=106"></script><script>
-const pages=[
-['Знакомство','После урока ты сможешь спросить имя собеседника и представиться.','Начать урок'],
-['Три слова',['我|wǒ|я','你|nǐ|ты','叫|jiào|зваться'].map(row=>{const [word,py,ru]=row.split('|');return '<p><b>'+word+'</b> · '+py+' · '+ru+' <button data-word="'+word+'" aria-label="Послушать '+word+'">🔊</button></p>'}).join(''),'Составить фразу'],
-['Как назвать своё имя','<b>我叫安娜。</b><br>Wǒ jiào Ānnà. — Меня зовут Анна.<p>Сначала скажи 我叫, затем добавь имя. Чтобы спросить «А ты?», скажи 你呢？ (Nǐ ne?).</p>','Прочитать разговор'],
-['Знакомство в разговоре','<p>А · <b>你叫什么名字？</b><br>Nǐ jiào shénme míngzi?<br>Как тебя зовут?</p><p>Б · <b>我叫安娜。你呢？</b><br>Wǒ jiào Ānnà. Nǐ ne?<br>Меня зовут Анна. А тебя?</p><p>А · <b>我叫小明。</b><br>Wǒ jiào Xiǎomíng.<br>Меня зовут Сяомин.</p>什么名字 — «какое имя». Здесь вопрос уже содержит 什么, поэтому 吗 не требуется.','Проверить себя'],
-['Как ответить на вопрос об имени?','<b>你叫什么名字？</b><p><button data-answer="no">你呢？</button><button data-answer="yes">我叫安娜。</button></p>','Ответить самостоятельно'],
-['Теперь твоя очередь','Представься вслух по-китайски, используя своё имя.<details><summary>Сверить с образцом</summary>我叫… · Wǒ jiào…</details>','Завершить урок'],
-['Урок пройден','Ты потренировался спрашивать имя и представляться. <p><a href="./index.html?panda=dialogues#panda/dialogues">Послушать диалог «Знакомство» →</a></p>','Повторить урок']];
-const q=s=>document.querySelector(s);let i=0,clip,correct=false;try{i=Math.max(0,Math.min(6,parseInt(localStorage.getItem('pg-intro-step'))||0))}catch{}
-function draw(){clip?.pause();q('#step').textContent='Урок 1 · '+(i<6?'Шаг '+(i+1)+' из 6':'Завершено');q('h1').textContent=pages[i][0];q('article').innerHTML=pages[i][1];q('#next').textContent=pages[i][2];q('#back').hidden=!i;q('#next').disabled=i===4&&!correct;q('[role=status]').textContent='';try{localStorage.setItem('pg-intro-step',i)}catch{}}
-q('#next').onclick=()=>{i=(i+1)%pages.length;if(!i)correct=false;draw()};q('#back').onclick=()=>{i--;draw()};q('article').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.word){clip?.pause();clip=new Audio(window.courseHumanAudio[b.dataset.word]);clip.play().catch(()=>q('[role=status]').textContent='Не удалось включить запись.')}if(b.dataset.answer){correct=b.dataset.answer==='yes';q('#next').disabled=!correct;q('[role=status]').textContent=correct?'Верно. После 我叫 ставим имя.':'你呢？ означает «А ты?». Сначала назови своё имя.'}};draw();
-</script></html>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ead6ef">
+  <title>Знакомство · Panda Go</title>
+  <style>
+* { box-sizing: border-box; }
+body { margin: 0; background: #e6cfee; color: #432440; font: 17px/1.55 system-ui, sans-serif; }
+main { max-width: 470px; min-height: 100svh; margin: auto; padding: 20px; background: linear-gradient(#fff9fbdc, #f2e2f7ef), url('./assets/panda-v130/landscape.webp') center/cover fixed; }
+header { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+a { color: #733463; text-underline-offset: 4px; }
+h1 { font-size: 29px; line-height: 1.2; margin: 20px 0; }
+h1:focus { outline: none; }
+h2 { font-size: 20px; margin: 0 0 12px; }
+p { margin: 10px 0; }
+#step { color: #77536d; margin-top: 24px; font-size: 14px; }
+progress { width: 100%; height: 8px; accent-color: #b33b85; }
+.card, .line { padding: 18px; margin: 12px 0; border: 1px solid #dec0d8; border-radius: 20px; background: #fffafdf2; box-shadow: 0 4px 14px #7c3f6b0d; }
+.word { display: grid; grid-template-columns: 1fr auto; align-items: center; }
+[lang="zh-Hans"] { font-size: 27px; font-weight: 600; line-height: 1.5; }
+.py { display: block; color: #78516d; font-size: 16px; }
+small { color: #78516d; }
+button { font: inherit; color: #68325c; background: #fff7fc; border: 1px solid #d6b2cb; padding: 11px 16px; border-radius: 16px; min-height: 46px; cursor: pointer; }
+button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid #813d9c; outline-offset: 3px; }
+button:disabled { opacity: .5; cursor: default; }
+.primary { background: linear-gradient(#ed8cc4, #c54a96); border-color: #c54a96; color: #fff; font-weight: 750; box-shadow: 0 3px 0 #a3377a, 0 0 12px #df76bd30; }
+nav { display: grid; gap: 14px; padding: 8px 0 20px; }
+#feedback { min-height: 26px; font-size: 15px; color: #71345e; }
+.answers { display: grid; gap: 10px; }
+.answers button { text-align: left; }
+.answers [aria-pressed="true"] { outline: 2px solid #a34789; }
+.line[data-active="true"] { border-color: #b33b85; background: #fce5f3; }
+.controls { display: flex; gap: 10px; flex-wrap: wrap; }
+summary { cursor: pointer; padding: 10px 0; }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: no-preference) { button:active { transform: translateY(1px); } }
+
+  </style>
+</head>
+<body>
+  <main>
+    <header><a href="./index.html">← Главная</a><span>Знакомство</span></header>
+    <p id="step"></p>
+    <progress max="6" value="0" aria-label="Прогресс урока"></progress>
+    <h1 tabindex="-1"></h1>
+    <section id="content" aria-label="Материал урока"></section>
+    <p id="feedback" role="status" aria-live="polite"></p>
+    <nav aria-label="Шаги урока">
+      <button id="next" class="primary"></button>
+      <button id="back">← Предыдущий шаг</button>
+    </nav>
+  </main>
+  <script src="./assets/human-audio-map.js?v=106"></script>
+  <script src="./assets/guided-introduction.js?v=2"></script>
+</body>
+</html>
