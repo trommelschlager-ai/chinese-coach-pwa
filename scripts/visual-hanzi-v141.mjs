@@ -85,7 +85,9 @@ try{
   await tap('next');await page.waitForFunction(()=>document.querySelector('#character').textContent==='人');
   await page.waitForFunction(()=>!document.querySelector('[data-art-hit=write]').disabled);
   assert.equal(await page.locator('#pg-hanzi-approved').getAttribute('data-dynamic'),'true');
-  assert.equal(await page.locator('.pg-dynamic-glyph').textContent(),'人');
+  // HanziWriter draws SVG strokes; a static glyph would overlap them.
+  assert.equal((await page.locator('.pg-dynamic-glyph').textContent()).trim(),'','No duplicate static Hanzi may overlay the live writer');
+  await page.waitForFunction(()=>document.querySelector('#writer svg')?.querySelectorAll('path').length>0);
   await layout(width,height);await capture(`ren-${width}-${height}`);
   await tap('strokes');await page.waitForFunction(()=>document.querySelector('#feedback').textContent.includes('Теперь твоя очередь'));
   await tap('write');await page.waitForFunction(()=>document.body.dataset.writingStage==='writing');
