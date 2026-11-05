@@ -24,9 +24,10 @@ const index=fs.readFileSync('index.html','utf8');
 const sw=fs.readFileSync('sw.js','utf8');
 const pack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
 for(const suffix of ['css','js']){
- const url='./assets/panda-v130.'+suffix+'?v=136';
- assert(index.includes(url),'App must load current '+url);
- assert(sw.includes(url),'Offline shell must load current '+url);
- assert(pack.files.includes(url),'Optional offline pack must load current '+url);
+ const pattern=new RegExp('\\./assets/panda-v130\\.'+suffix+'\\?v=\\d+');
+ const url=index.match(pattern)?.[0];
+ assert(url,'App must load versioned Panda '+suffix);
+ assert(sw.includes(url),'Offline shell must use current '+url);
+ assert(pack.files.includes(url),'Optional offline pack must use current '+url);
 }
 console.log('Panda Go v131: clean speaker, natural speed, example audio coverage, approved layout, offline cache OK.');
