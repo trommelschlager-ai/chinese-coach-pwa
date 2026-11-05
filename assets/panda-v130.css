@@ -503,12 +503,111 @@ body.pg130-active{background:#47c1e8!important}
 #pg130 .pg-route-tones .pg-live-status:empty {display:none!important;min-height:0!important}
 #pg130 .pg-route-tones .pg-footer {z-index:2}
 #pg130 .pg-route-tones .pg-footer .pg-secondary {min-height:41px;padding:7px 8px;font-size:clamp(11px,3.1vw,15px)}
-/* Dialogue remains visible, playable and scrollable with the approved two-speaker styling. */
-#pg130 .pg-route-dialogues .pg-heading.compact{min-height:93px;padding:5px 0 8px}
-#pg130 .pg-route-dialogues .pg-tabs button {min-height:46px;font-size:clamp(11px,3.1vw,15px)}
-#pg130 .pg-route-dialogues .pg-bubble{min-height:75px;grid-template-columns:41px minmax(0,1fr)}
-#pg130 .pg-route-dialogues .pg-dialogue-actions{margin-top:7px}
-#pg130 .pg-route-dialogues .pg-dialogue-actions .pg-primary{min-height:55px}
+/* Dialogue: one scenic visual at the top, clear two-speaker bubbles, no duplicated footer. */
+#pg130 .pg-screen.pg-route-dialogues{
+ padding:7px 13px max(12px,env(safe-area-inset-bottom));
+ overflow:hidden;
+ background:linear-gradient(180deg,#dbb5f1ee,#f0dafaeb 53%,#dcbaeded),
+ url('./approved-panda-lake-v112.webp') center bottom/cover no-repeat;
+}
+#pg130 .pg-screen.pg-route-dialogues::before,
+#pg130 .pg-screen.pg-route-dialogues::after{display:none}
+#pg130 .pg-route-dialogues .pg-heading.compact{
+ min-height:clamp(81px,13dvh,111px);padding:4px 0 7px;gap:2px;
+}
+#pg130 .pg-route-dialogues .pg-heading.compact>.pg-icon{
+ width:60px;height:48px;filter:drop-shadow(0 3px 7px #bd4ad36b);
+}
+#pg130 .pg-route-dialogues .pg-heading.compact h1{font-size:clamp(25px,7vw,30px)}
+#pg130 .pg-route-dialogues .pg-back{
+ top:11px;left:13px;width:46px;height:46px;
+ box-shadow:inset 0 2px 2px #fff,0 5px 10px #a458bd80;
+}
+#pg130 .pg-route-dialogues .pg-tabs{
+ margin:0 0 9px;border-radius:23px;gap:4px;padding:5px;
+ background:linear-gradient(150deg,#f5ddf9,#edd1f5);
+}
+#pg130 .pg-route-dialogues .pg-tabs button{
+ min-height:44px;min-width:0;padding:7px 3px;
+ font-size:clamp(11px,3.1vw,15px);border-radius:21px;
+}
+#pg130 .pg-route-dialogues .pg-dialogue-player{
+ flex:1;min-height:0;overflow:hidden;
+}
+#pg130 .pg-route-dialogues .pg-dialogue-lines{
+ display:flex;flex:1;min-height:0;
+ padding:8px 8px 10px;gap:10px;
+ border:2px solid #fbe9ff;border-radius:24px;
+ background:linear-gradient(180deg,#fff3ffc2,#f8eafa9c);
+ box-shadow:inset 0 1px 5px #b078d860;
+ overscroll-behavior:contain;
+}
+#pg130 .pg-route-dialogues .pg-dialogue-lines::before{
+ content:"";display:block;flex:none;
+ height:clamp(92px,15dvh,152px);width:100%;
+ border-radius:18px;
+ background:linear-gradient(180deg,transparent 55%,#f5ddf6ea 100%),
+ url('./panda-v130/dialogue-scene.webp') center center/cover no-repeat;
+ box-shadow:inset 0 0 0 1px #fff6;
+}
+#pg130 .pg-route-dialogues .pg-bubble{
+ display:grid;flex:none;width:92%;min-height:75px;
+ grid-template-columns:42px minmax(0,1fr);gap:9px;
+ align-items:center;padding:10px 11px;
+ border:2px solid #fff9;border-radius:23px;
+ background:linear-gradient(145deg,#fffaff,#e5d4f9);
+ box-shadow:inset 0 2px 2px #fff,0 5px 10px #a260bb73;
+}
+#pg130 .pg-route-dialogues .pg-bubble:nth-child(even){
+ align-self:flex-end;background:linear-gradient(145deg,#ffeafa,#f4cfe9);
+}
+#pg130 .pg-route-dialogues .pg-bubble strong{
+ display:block;font-size:clamp(21px,5.8vw,29px);line-height:1.12;
+ overflow-wrap:anywhere;
+}
+#pg130 .pg-route-dialogues .pg-bubble .pg-dialog-speaker{
+ font-size:11px;color:#7b3d87;margin-bottom:2px;
+}
+#pg130 .pg-route-dialogues .pg-bubble .pg-icon-button{
+ display:grid;place-items:center;width:41px;height:44px;
+ border:1px solid #e9b8f6;border-radius:15px;
+ background:linear-gradient(160deg,#e66bed,#a925c3);
+ box-shadow:0 3px 5px #b34ac18c;
+}
+#pg130 .pg-route-dialogues .pg-bubble .pg-icon-button img{width:26px;height:26px}
+#pg130 .pg-route-dialogues .pg-dialogue-actions{
+ gap:6px;margin:8px 0 0;flex:none;padding:0;
+}
+#pg130 .pg-route-dialogues .pg-dialogue-actions .pg-primary{
+ min-height:53px;padding:9px 10px;
+ font-size:clamp(18px,4.9vw,22px);
+ border-radius:27px;box-shadow:inset 0 2px 2px #fff9,0 4px 2px #8e38b9,0 7px 12px #ba60d79a;
+}
+#pg130 .pg-route-dialogues .pg-dialogue-main-tools{justify-content:center;gap:10px}
+#pg130 .pg-route-dialogues .pg-dialogue-main-tools .pg-secondary{
+ min-width:37%;min-height:37px;font-size:clamp(13px,3.55vw,16px);
+ border-radius:21px;padding:6px 10px;
+}
+#pg130 .pg-route-dialogues [data-action=dialog-pause]{display:none!important}
+#pg130 .pg-route-dialogues .pg-dialog-settings{
+ flex:none;text-align:center;margin-top:3px;
+}
+#pg130 .pg-route-dialogues .pg-dialog-settings summary{
+ display:inline-block;font-size:12px;font-weight:600;cursor:pointer;
+ color:#6c3481;list-style:none;border-radius:18px;padding:4px 10px;
+ background:#fff5ffdb;border:1px solid #efd2f6;
+}
+#pg130 .pg-route-dialogues .pg-dialog-settings .pg-subtools{
+ justify-content:center;margin-top:6px;gap:8px;
+}
+#pg130 .pg-route-dialogues .pg-dialog-settings .pg-secondary{
+ min-height:38px;border-radius:20px;font-size:clamp(11px,3.1vw,14px);padding:7px 9px;
+}
+#pg130 .pg-route-dialogues .pg-dialog-status{
+ min-height:0;font-size:11px;line-height:1.2;
+}
+#pg130 .pg-route-dialogues .pg-dialog-status:empty{display:none}
+
 @media(max-height:710px) {
  #pg130 .pg-route-learn .pg-heading{min-height:110px!important}
  #pg130 .pg-route-learn .pg-menu{margin-top:9px;gap:10px}
