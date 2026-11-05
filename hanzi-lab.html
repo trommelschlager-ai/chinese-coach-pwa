@@ -214,24 +214,40 @@ window.addEventListener('DOMContentLoaded',function(){
     '月':[['月亮','yuèliang','луна'],['一月','yī yuè','январь'],['月份','yuèfèn','месяц']],
     '木':[['木头','mùtou','дерево, древесина'],['木材','mùcái','лесоматериал'],['树木','shùmù','деревья']]
   };
-  function renderPgLexicon(){
-    const root=$('pg-hanzi-lexicon-list');if(!root)return;
-    const active=document.querySelector('.pg-lex-tab[aria-selected="true"]')?.dataset.hanziTab||'meaning';
-    const data=lessons[index],items=pgExamples[data.hz]||[];
-    root.replaceChildren();
-    if(active==='examples'){
-      const line=document.createElement('p');line.className='pg-lex-note';line.textContent='Посмотри, как этот иероглиф используется в словах.';root.append(line);
-    }
-    if(active==='words'){
-      const line=document.createElement('p');line.className='pg-lex-note';line.textContent='Слова с иероглифом '+data.hz+' · '+data.py;root.append(line);
-    }
-    for(const [zh,py,ru] of items){
-      const row=document.createElement('div');row.className='pg-lexicon-entry';
-      const hz=document.createElement('strong');hz.lang='zh-Hans';hz.textContent=zh;
-      const meaning=document.createElement('span');meaning.textContent=py+' — '+ru;
-      row.append(hz,meaning);root.append(row);
-    }
-  }
+  const pgSentences={
+ '大':[['他是大人。','Tā shì dàrén.','Он взрослый.'],['我上大学。','Wǒ shàng dàxué.','Я учусь в университете.'],['大家好！','Dàjiā hǎo!','Всем привет!']],
+ '人':[['我是中国人。','Wǒ shì Zhōngguó rén.','Я китаец.'],['这里有很多人。','Zhèlǐ yǒu hěn duō rén.','Здесь много людей.'],['那个人是谁？','Nà ge rén shì shéi?','Кто тот человек?']],
+ '小':[['这个很小。','Zhège hěn xiǎo.','Это очень маленькое.'],['小心！','Xiǎoxīn!','Осторожно!'],['我有一只小猫。','Wǒ yǒu yì zhī xiǎo māo.','У меня есть котёнок.']],
+ '一':[['我有一个朋友。','Wǒ yǒu yí ge péngyou.','У меня один друг.'],['一天有二十四个小时。','Yì tiān yǒu èrshísì ge xiǎoshí.','В сутках 24 часа.'],['一起走吧！','Yìqǐ zǒu ba!','Пойдём вместе!']],
+ '二':[['二月很冷。','Èr yuè hěn lěng.','Февраль холодный.'],['今天是二号。','Jīntiān shì èr hào.','Сегодня второе число.'],['这是第二课。','Zhè shì dì èr kè.','Это второй урок.']],
+ '三':[['我有三本书。','Wǒ yǒu sān běn shū.','У меня три книги.'],['三点见！','Sān diǎn jiàn!','Увидимся в три!'],['我们有三个人。','Wǒmen yǒu sān ge rén.','Нас трое.']],
+ '口':[['入口在这里。','Rùkǒu zài zhèlǐ.','Вход здесь.'],['请开口说话。','Qǐng kāikǒu shuōhuà.','Пожалуйста, говори.'],['这是一口井。','Zhè shì yì kǒu jǐng.','Это колодец.']],
+ '日':[['今天是星期日。','Jīntiān shì xīngqīrì.','Сегодня воскресенье.'],['我的生日在五月。','Wǒ de shēngrì zài wǔ yuè.','Мой день рождения в мае.'],['日本离中国不远。','Rìběn lí Zhōngguó bù yuǎn.','Япония недалеко от Китая.']],
+ '月':[['月亮很亮。','Yuèliang hěn liàng.','Луна яркая.'],['下个月见！','Xià ge yuè jiàn!','Увидимся в следующем месяце!'],['现在是十月。','Xiànzài shì shí yuè.','Сейчас октябрь.']],
+ '木':[['这是木头。','Zhè shì mùtou.','Это древесина.'],['这里有很多树木。','Zhèlǐ yǒu hěn duō shùmù.','Здесь много деревьев.'],['这张桌子是木头做的。','Zhè zhāng zhuōzi shì mùtou zuò de.','Этот стол сделан из дерева.']]
+};
+function renderPgLexicon(){
+ const root=$('pg-hanzi-lexicon-list');if(!root)return;
+ const active=document.querySelector('.pg-lex-tab[aria-selected="true"]')?.dataset.hanziTab||'examples';
+ const d=lessons[index];root.replaceChildren();
+ if(active==='meaning'){
+   const meaning=document.createElement('div');meaning.className='pg-meaning-card';
+   const title=document.createElement('strong');title.textContent=d.hz+' — '+d.ru;
+   const note=document.createElement('p');note.textContent=d.explain;
+   const tone=document.createElement('small');tone.textContent=d.toneHint;
+   meaning.append(title,note,tone);root.append(meaning);
+   return;
+ }
+ const rows=active==='examples'?(pgSentences[d.hz]||[]):(pgExamples[d.hz]||[]);
+ rows.slice(0,3).forEach(([zh,py,ru])=>{
+   const row=document.createElement('div');row.className='pg-lexicon-entry';
+   const left=document.createElement('div');left.className='pg-lex-left';
+   const word=document.createElement('strong');word.lang='zh-Hans';word.textContent=zh;
+   const reading=document.createElement('small');reading.textContent=py;
+   const translation=document.createElement('span');translation.textContent=ru;
+   left.append(word,reading);row.append(left,translation);root.append(row);
+ });
+}
   document.querySelectorAll('.pg-lex-tab').forEach(button=>button.addEventListener('click',()=>{
     document.querySelectorAll('.pg-lex-tab').forEach(tab=>tab.setAttribute('aria-selected',String(tab===button)));
     renderPgLexicon();
