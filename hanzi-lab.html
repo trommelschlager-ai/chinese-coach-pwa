@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#42216c">
   <meta name="description" content="Пилотный урок по иероглифам: анимация черт, произношение, письмо пальцем и проверка порядка черт.">
-  <title>Мой китайский — Учимся писать иероглифы</title>
+  <title>Panda Go — Пропись иероглифов</title>
   <style>
     :root{color-scheme:light;--purple:#5b3188;--deep:#3e245e;--accent:#9c6ac2;--ink:#29203f;--muted:#6b6480;--line:#e9def0;--white:#fff;--good:#1f7852;--bad:#a34155}
     *,*::before,*::after{box-sizing:border-box}
@@ -27,7 +27,7 @@
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
   </style>
   <script defer src="./assets/vendor/hanzi-writer.min.js"></script>
-<link rel="stylesheet" href="./assets/panda-hanzi-v130.css?v=134">
+<link rel="stylesheet" href="./assets/panda-hanzi-v130.css?v=135">
 </head>
 <body class="writing-simple">
 <main class="shell">
@@ -37,9 +37,9 @@
   <div class="layout">
     <section class="card drawing-card" aria-labelledby="practice-title">
       <h1 id="practice-title" class="visually-hidden">Пишем иероглифы</h1>
-      <div class="glyph-title"><strong id="character">大</strong><span class="py" id="pinyin">dà · 4-й тон</span><button class="control" id="speak" type="button" aria-label="Послушать иероглиф">Слушать</button></div>
+      <div class="glyph-title"><strong id="character">大</strong><span class="py" id="pinyin">dà · 4-й тон</span><button class="control" id="speak" type="button" aria-label="Послушать иероглиф"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7m3-10a9 9 0 0 1 0 13"/></svg></button></div>
       <p class="meaning" id="meaning">Большой</p>
-      <div class="paper" aria-label="Поле для письма пальцем"><div id="writer"><span class="fallback" aria-hidden="true">大</span></div></div>
+      <div class="paper" aria-label="Поле для письма пальцем"><span class="pg-scroll-corner tl" aria-hidden="true"></span><span class="pg-scroll-corner tr" aria-hidden="true"></span><span class="pg-scroll-corner bl" aria-hidden="true"></span><span class="pg-scroll-corner br" aria-hidden="true"></span><div id="writer"><span class="fallback" aria-hidden="true">大</span></div></div>
       <div class="controls">
         <button class="control" id="animate" type="button">▶ Черты</button>
         <button class="control primary full" id="practice" type="button">✍️ Писать</button>
@@ -123,11 +123,11 @@ window.addEventListener('DOMContentLoaded',function(){
     $('writing-help').open=false;document.querySelector('.character-picker').open=false;renderTabs();setButtons(false);say('Загружаем образец и порядок черт…');
     $('writer').innerHTML='<span class="fallback" aria-hidden="true"></span>';$('writer').firstChild.textContent=d.hz;
     if(!window.HanziWriter){say('Не удалось загрузить модуль письма. Проверь интернет и обнови страницу.','bad');return;}
-    const size=Math.min(440,Math.max(180,Math.floor($('writer').clientWidth-8)));
+    const size=Math.min(440,Math.max(180,Math.floor($('writer').clientWidth-4)));
     $('writer').textContent='';
     try{
       writer=window.HanziWriter.create('writer',d.hz,{
-        width:size,height:size,padding:19,showOutline:true,showCharacter:false,
+        width:size,height:size,padding:5,showOutline:true,showCharacter:false,
         charDataLoader:function(char,onComplete,onError){fetch('./assets/hanzi-data/'+encodeURIComponent(char)+'.json').then(r=>{if(!r.ok)throw Error('load');return r.json()}).then(onComplete).catch(onError);},
         strokeColor:'#6c2618',radicalColor:'#943a45',outlineColor:'#e4c2a8',
         drawingColor:'#8a48a4',highlightColor:'#f1b34c',strokeAnimationSpeed:1.15,delayBetweenStrokes:420,
@@ -226,6 +226,24 @@ window.addEventListener('DOMContentLoaded',function(){
  '月':[['月亮很亮。','Yuèliang hěn liàng.','Луна яркая.'],['下个月见！','Xià ge yuè jiàn!','Увидимся в следующем месяце!'],['现在是十月。','Xiànzài shì shí yuè.','Сейчас октябрь.']],
  '木':[['这是木头。','Zhè shì mùtou.','Это древесина.'],['这里有很多树木。','Zhèlǐ yǒu hěn duō shùmù.','Здесь много деревьев.'],['这张桌子是木头做的。','Zhè zhāng zhuōzi shì mùtou zuò de.','Этот стол сделан из дерева.']]
 };
+function playPgExample(phrase){
+  if(!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance!=='function'){
+    say('Для озвучивания фраз установи на телефоне китайский голос Mandarin.','bad');
+    return;
+  }
+  if(!chineseVoices.length)refreshVoices();
+  const chosen=chineseVoices[Number(voiceSelect.value)]||chineseVoices[0];
+  if(!chosen){
+    say('На устройстве нет китайского голоса. Добавь голос Mandarin (zh-CN) в настройках речи, затем попробуй снова.','bad');
+    return;
+  }
+  recordingToken++;
+  try{activeRecording?.pause();window.speechSynthesis.cancel();}catch(_){}
+  const u=new SpeechSynthesisUtterance(phrase);
+  u.lang='zh-CN';u.voice=chosen;u.rate=Math.min(1,Number(rateControl.value)||0.85);u.pitch=1;
+  u.onerror=()=>say('Не удалось произнести фразу китайским голосом. Проверь установленный голос.','bad');
+  window.speechSynthesis.speak(u);
+}
 function renderPgLexicon(){
  const root=$('pg-hanzi-lexicon-list');if(!root)return;
  const active=document.querySelector('.pg-lex-tab[aria-selected="true"]')?.dataset.hanziTab||'examples';
@@ -241,11 +259,15 @@ function renderPgLexicon(){
  const rows=active==='examples'?(pgSentences[d.hz]||[]):(pgExamples[d.hz]||[]);
  rows.slice(0,3).forEach(([zh,py,ru])=>{
    const row=document.createElement('div');row.className='pg-lexicon-entry';
+   const audio=document.createElement('button');audio.type='button';audio.className='pg-example-audio';
+   audio.setAttribute('aria-label','Послушать: '+zh);
+   audio.innerHTML='<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7m3-10a9 9 0 0 1 0 13"/></svg>';
+   audio.addEventListener('click',()=>playPgExample(zh));
    const left=document.createElement('div');left.className='pg-lex-left';
    const word=document.createElement('strong');word.lang='zh-Hans';word.textContent=zh;
    const reading=document.createElement('small');reading.textContent=py;
    const translation=document.createElement('span');translation.textContent=ru;
-   left.append(word,reading);row.append(left,translation);root.append(row);
+   left.append(word,reading);row.append(audio,left,translation);root.append(row);
  });
 }
   document.querySelectorAll('.pg-lex-tab').forEach(button=>button.addEventListener('click',()=>{
@@ -257,12 +279,12 @@ function renderPgLexicon(){
   renderPgLexicon();
 
   $('animate').addEventListener('click',animate);$('practice').addEventListener('click',startQuiz);$('retry').addEventListener('click',()=>select(index));$('speak').addEventListener('click',speak);$('next').addEventListener('click',()=>{select(index+1);window.scrollTo?.(0,0);});
-  if(typeof ResizeObserver==='function'){new ResizeObserver(()=>{if(loaded&&writer?.updateDimensions){const size=Math.min(440,Math.max(180,Math.floor($('writer').clientWidth-8)));writer.updateDimensions({width:size,height:size,padding:19});}}).observe(document.querySelector('.paper'));}
+  if(typeof ResizeObserver==='function'){new ResizeObserver(()=>{if(loaded&&writer?.updateDimensions){const size=Math.min(440,Math.max(180,Math.floor($('writer').clientWidth-8)));writer.updateDimensions({width:size,height:size,padding:5});}}).observe(document.querySelector('.paper'));}
   window.addEventListener('pagehide',()=>{recordingToken++;activeRecording?.pause();window.speechSynthesis?.cancel();});
   progress();select(0);
 });
 </script>
 <script src="./assets/daily-study-v98.js?v=98"></script>
-<script src="./assets/panda-hanzi-v130.js?v=134"></script>
+<script src="./assets/panda-hanzi-v130.js?v=135"></script>
 </body>
 </html>
