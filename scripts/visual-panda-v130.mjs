@@ -72,7 +72,10 @@ try{
   assert(await page.locator('#pg-hanzi-approved [data-art-hit=next]').isVisible(),'Approved Go еще action is accessible');
   await page.locator('[data-art-hit=next]').click();await page.waitForFunction(()=>document.querySelector('#character').textContent==='人');
   await page.locator('[data-art-hit=back]').click();await ready(page);
-  await rootBack(page);await button(page,'[data-route=training]');await capture(page,'03-training',size);
+  // Return from the approved Hanzi scene to Learn, then open Training via the route API.
+  // The raster home has no old menu card linking directly to Training.
+  await page.evaluate(()=>window.__panda130.show('training'));await ready(page);
+  await capture(page,'03-training',size);
   await button(page,'[data-route=practice]');await capture(page,'04-practice',size);
   await button(page,'[data-action=answer][data-value="0"]');await button(page,'[data-action=question-check]');
   assert((await page.locator('#pg130 .pg-feedback').textContent()).includes('Верно'));
