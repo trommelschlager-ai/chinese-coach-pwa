@@ -121,7 +121,7 @@ function dialogues(){
  const l=dialogLessons[dialogIndex];
  frame(heading('Диалоги','chat','learn','',true)+tabs(dialogLessons.map((l,i)=>[String(i),({2:'Знакомство',3:'Место',4:'Время',5:'В кафе'})[l.id]||l.title]),String(dialogIndex),'dialog-tab')+'<div class="pg-dialogue-player"></div>');
  dialoguePlayer=window.PandaDialoguePlayer.mount(root.querySelector('.pg-dialogue-player'),l,{onNotes:()=>show('dialog-notes')});
- const go=document.createElement('button');go.type='button';go.className='pg-primary pg-approved-go pg-dialogue-go';go.dataset.action='dialog-go';go.textContent='Дальше Go →';go.setAttribute('aria-label','Следующий диалог');root.appendChild(go);
+ const go=document.createElement('button');go.type='button';go.className='pg-primary pg-approved-go pg-dialogue-go';go.dataset.action='dialog-go';go.textContent='Дальше Go →';go.setAttribute('aria-label','Следующий диалог');root.querySelector('.pg-screen').appendChild(go);
 }
 function startDialogue(index=0,all=true){dialoguePlayer?.play(index,all)}
 function toggleDialoguePause(){dialoguePlayer?.pause()}
