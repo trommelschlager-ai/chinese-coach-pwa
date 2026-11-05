@@ -120,7 +120,8 @@ try{
   const hanzi=await context.newPage();
   await hanzi.goto(BASE+'/hanzi-lab.html',{waitUntil:'load'});
   await hanzi.locator('#pg-hanzi-approved').waitFor();
-  await hanzi.locator('#writer svg path').first().waitFor({timeout:20000});
+  await hanzi.locator('#writer svg').waitFor({timeout:20000});
+  assert((await hanzi.locator('#writer svg path').count())>0,'Writing SVG retains real stroke paths');
   assert.equal(await hanzi.locator('[data-art-hit="next"]').count(),1,'Go еще button stays mounted');
   assert.equal(await hanzi.locator('#practice').count(),1,'Original writing control is retained');
   await screenshot(hanzi,'06-hanzi',size);
