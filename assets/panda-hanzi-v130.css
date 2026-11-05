@@ -1,51 +1,70 @@
-/* Panda Go v134 — single-page native character writer, approved pastel variant 2.
-   Real HanziWriter controls remain interactive; no screenshot underlays. */
-:root{--hanzi-purple:#5e1a91;--hanzi-magenta:#d81dba;--hanzi-paper:#fff2dc}
-html{background:#5a3b8e}
-body.writing-simple{margin:0;min-height:100dvh;color:#441765!important;background:linear-gradient(180deg,#ebc9f2aa,#ffe5f1a0),url("./approved-quiz-scene-v112.webp") center center/cover fixed no-repeat!important;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
-body.writing-simple .shell{position:relative;isolation:isolate;margin:0 auto;width:min(100%,430px);max-width:430px;min-height:100dvh;padding:12px 9px calc(14px + env(safe-area-inset-bottom))!important;background:linear-gradient(180deg,#f7d4fa0d,#edc7e837 55%,#d6b6eb24)!important;box-shadow:0 0 24px #37105121;border:0!important;border-radius:0!important}
-body.writing-simple .shell::before{display:none!important}
+/* Panda Go v135 — coherent, interactive Hanzi screen.
+   Visual reference: approved sakura/scroll design. This stylesheet uses a single
+   continuous local landscape and keeps native HanziWriter strokes/touch events. */
+:root{color-scheme:light;--pg-purple:#5b167b;--pg-gold:#ffcb5b;--pg-rose:#e836bd}
+html{background:#3c155f;scroll-behavior:smooth}
+body.writing-simple{margin:0;min-height:100dvh;background:#39115d!important;color:#43165e!important;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
+body.writing-simple::before{content:"";position:fixed;inset:0;background:linear-gradient(180deg,#2b085560 0%,#7a2b7306 38%,#3710684a 100%),url('./approved-quiz-scene-v112.webp') center center/cover no-repeat;filter:saturate(1.55) contrast(1.14);pointer-events:none;z-index:-1}
+body.writing-simple .shell{position:relative;width:min(100%,450px);max-width:450px;min-height:100dvh;margin:auto;padding:calc(17px + env(safe-area-inset-top)) 12px calc(15px + env(safe-area-inset-bottom))!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;isolation:isolate}
+body.writing-simple .shell::before{content:"";display:block;position:absolute;z-index:-1;left:0;right:0;top:0;height:145px;pointer-events:none;background:url('./panda-v130/flowers.webp') left top/230px auto no-repeat;opacity:.85}
 body.writing-simple .pg-hanzi-heading{display:none!important}
-body.writing-simple .top{position:absolute;z-index:5;top:calc(16px + env(safe-area-inset-top));left:7px;right:7px;margin:0;pointer-events:none}
-body.writing-simple .back{pointer-events:auto;width:41px;height:41px;padding:0!important;display:grid;place-items:center;border-radius:50%;background:linear-gradient(#fff8ff,#eacaff);border:2px solid #fff;box-shadow:0 2px 9px #7d329e85;text-decoration:none;font-size:0!important}
-body.writing-simple .back::before{content:"‹";color:#661da5;font:850 38px/1 Arial,sans-serif}
-body.writing-simple .top-pill,body.writing-simple .mini-progress,body.writing-simple .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;margin:-1px!important;padding:0!important;clip-path:inset(50%);white-space:nowrap}
+body.writing-simple .top{position:absolute;z-index:9;pointer-events:none;left:6px;right:6px;top:calc(47px + env(safe-area-inset-top));display:flex;justify-content:space-between;margin:0}
+body.writing-simple .back{pointer-events:auto;display:grid;place-items:center;width:44px;height:44px;margin:0;padding:0!important;border:2px solid #fff;border-radius:50%;background:linear-gradient(#fff9ff,#e7c5fc);box-shadow:inset 0 2px 2px #fff,0 0 0 1px #d593f3,0 5px 9px #49206c9c;font-size:0!important;color:#58218a;text-decoration:none}
+body.writing-simple .back::before{content:"‹";font:800 39px/1 Arial,sans-serif;color:#6d1b9e}
+body.writing-simple .top-pill,body.writing-simple .mini-progress,body.writing-simple .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap!important}
 body.writing-simple .layout{display:block!important}
-body.writing-simple .drawing-card{display:grid!important;grid-template-columns:minmax(0,68fr) minmax(0,32fr);grid-template-rows:clamp(258px,40dvh,362px) auto auto auto auto auto auto;column-gap:8px;row-gap:6px;align-items:center;padding:10px 1px 0!important;background:transparent!important;box-shadow:none!important;border:0!important;border-radius:0!important;overflow:visible}
+body.writing-simple .drawing-card{display:grid!important;grid-template-columns:minmax(0,67fr) minmax(0,33fr);grid-template-rows:clamp(260px,40dvh,358px) auto auto auto auto auto auto;column-gap:10px;row-gap:7px;align-items:center;margin:0!important;padding:14px 0 0!important;border:none!important;border-radius:0!important;box-shadow:none!important;background:transparent!important;overflow:visible}
 body.writing-simple .drawing-card::before{display:none!important}
-body.writing-simple .paper{grid-column:1;grid-row:1;position:relative;justify-self:stretch;align-self:stretch;width:100%!important;max-width:100%!important;height:100%!important;aspect-ratio:auto!important;margin:0!important;padding:18px 4px!important;display:flex;align-items:center;justify-content:center;touch-action:none;background:linear-gradient(145deg,#fff9ed,#ffe5c9)!important;border:3px solid #dfad74!important;border-radius:6px!important;overflow:visible!important;box-shadow:inset 0 0 16px #edbe95,0 6px 13px #4e1c6252!important}
-body.writing-simple .paper::before,body.writing-simple .paper::after{content:"";position:absolute;left:-8px;right:-8px;height:22px;pointer-events:none;border-radius:15px;border:1px solid #dba066;background:linear-gradient(#fff5d3,#efb86d 20%,#fff1bf 45%,#e1a35f 86%,#ffefbf);box-shadow:0 2px 7px #71376f77}
-body.writing-simple .paper::before{top:-11px}body.writing-simple .paper::after{bottom:-11px}
-body.writing-simple #writer{display:grid;place-items:center;width:100%!important;height:auto!important;aspect-ratio:1;max-height:100%;padding:0!important;touch-action:none!important}
+body.writing-simple .paper{grid-column:1;grid-row:1;position:relative;width:calc(100% - 7px)!important;max-width:none!important;height:100%!important;aspect-ratio:auto!important;justify-self:end;align-self:stretch;display:grid;place-items:center;margin:0!important;padding:13px 2px!important;overflow:visible!important;touch-action:none;background:radial-gradient(ellipse at 48% 45%,#fffaf0 0%,#ffebd2 64%,#edc39b 100%)!important;border:3px solid #c77b4a!important;border-radius:3px!important;box-shadow:inset 0 0 0 2px #ffe2b8,inset 0 0 14px #cd81534d,0 9px 20px #3d0c4c75!important}
+body.writing-simple .paper::before,body.writing-simple .paper::after{content:"";position:absolute;z-index:4;left:-12px;right:-12px;height:27px;pointer-events:none;border-radius:17px;border:1px solid #ad381f;background:linear-gradient(90deg,#89192a 0%,#d62f24 5%,#ffd44f 9%,#a32c24 12%,#e5a04f 15%,#fff1c6 23%,#ffe2a0 72%,#d78b45 86%,#a5292b 88%,#ffd04b 92%,#97162d 96%,#b11a2e 100%);box-shadow:inset 0 2px 1px #fff9,inset 0 -3px 2px #8132267a,0 4px 9px #3a0f4ea1}
+body.writing-simple .paper::before{top:-14px}body.writing-simple .paper::after{bottom:-14px}
+body.writing-simple .pg-scroll-corner{position:absolute;z-index:3;width:33px;height:33px;pointer-events:none;opacity:.9;border:3px solid #c8442d}
+body.writing-simple .pg-scroll-corner.tl{left:13px;top:15px;border-right:0;border-bottom:0}
+body.writing-simple .pg-scroll-corner.tr{right:13px;top:15px;border-left:0;border-bottom:0}
+body.writing-simple .pg-scroll-corner.bl{left:13px;bottom:15px;border-right:0;border-top:0}
+body.writing-simple .pg-scroll-corner.br{right:13px;bottom:15px;border-left:0;border-top:0}
+body.writing-simple .pg-scroll-corner::before{content:"";display:block;position:absolute;width:13px;height:13px;border:3px solid #c8442d}
+body.writing-simple .pg-scroll-corner.tl::before{left:6px;top:6px;border-right:0;border-bottom:0}
+body.writing-simple .pg-scroll-corner.tr::before{right:6px;top:6px;border-left:0;border-bottom:0}
+body.writing-simple .pg-scroll-corner.bl::before{left:6px;bottom:6px;border-right:0;border-top:0}
+body.writing-simple .pg-scroll-corner.br::before{right:6px;bottom:6px;border-left:0;border-top:0}
+body.writing-simple #writer{position:relative;z-index:2;width:100%!important;height:auto!important;aspect-ratio:1;display:grid;place-items:center;touch-action:none!important;overflow:hidden;transform:scale(1.07)}
 body.writing-simple #writer svg{display:block;width:100%;max-width:100%;height:auto;touch-action:none!important}
-body.writing-simple .paper .fallback{font:300 clamp(128px,44vw,205px)/1 "Noto Serif CJK SC","Songti SC",serif;color:#65301f}
+body.writing-simple .fallback{font:400 clamp(145px,44vw,218px)/1 "Songti SC","Noto Serif CJK SC",serif!important;color:#682718!important;pointer-events:none}
 body.writing-simple .controls{display:contents!important}
-body.writing-simple #animate,body.writing-simple #practice,body.writing-simple #retry{grid-column:2;grid-row:1;justify-self:stretch;align-items:center;justify-content:center;min-width:0;min-height:58px;padding:9px 4px!important;border:2px solid #ffbde6!important;border-radius:28px!important;background:linear-gradient(#fffcfe,#f2dbf6 88%)!important;color:#601d8a!important;font:800 clamp(13px,3.7vw,18px)/1.2 system-ui,sans-serif!important;white-space:normal;box-shadow:inset 0 2px #fff,0 4px 0 #e3a1aa,0 7px 13px #6b2d7980!important;text-shadow:none!important}
-body.writing-simple #animate{align-self:start;margin-top:calc(clamp(258px,40dvh,362px)*.24)}
-body.writing-simple #practice,body.writing-simple #retry{align-self:end;margin-bottom:calc(clamp(258px,40dvh,362px)*.24)}
+body.writing-simple #animate,body.writing-simple #practice,body.writing-simple #retry{grid-column:2;grid-row:1;justify-self:stretch;min-width:0;min-height:62px;padding:7px 3px!important;display:flex;align-items:center;justify-content:center;gap:4px;border:2px solid #ffd5ec!important;border-radius:30px!important;color:#5b178e!important;background:linear-gradient(175deg,#fff9fe 0%,#ffebf1 63%,#f2c8e7 100%)!important;box-shadow:inset 0 3px 2px #fff,0 0 0 1px #ffac5e,0 4px 0 #ed9d49,0 5px 17px #f96bc5ac!important;font:900 clamp(14px,4vw,19px)/1.15 system-ui,sans-serif!important;text-shadow:0 1px #fff8;white-space:normal}
+body.writing-simple #animate{align-self:start;margin-top:calc(clamp(260px,40dvh,358px)*.25)}
+body.writing-simple #practice,body.writing-simple #retry{align-self:end;margin-bottom:calc(clamp(260px,40dvh,358px)*.25)}
 body.writing-simple [hidden]{display:none!important}
-body.writing-simple .glyph-title{grid-column:1/-1;grid-row:2;display:flex;justify-content:center;align-items:center;flex-wrap:nowrap;gap:8px;margin:16px 5px 0!important;padding:4px 8px!important;min-width:0;min-height:53px;border:2px solid #ffcda6;border-radius:33px;background:linear-gradient(110deg,#ffdfca,#fff6ec 55%,#ffe5de);box-shadow:0 3px 12px #9c478a45}
-body.writing-simple .glyph-title strong{font:400 clamp(36px,9vw,49px)/1 "Noto Serif CJK SC","Songti SC",serif!important;color:#591d55!important;white-space:nowrap}
-body.writing-simple .glyph-title .py{font:800 clamp(14px,4.3vw,21px)/1.1 system-ui,sans-serif!important;color:#5a226d!important;white-space:nowrap}
-body.writing-simple #speak{min-height:38px;min-width:54px;margin:0!important;padding:5px 7px!important;border-radius:28px;border:1px solid #e9aaf9;background:linear-gradient(#fffcff,#e9beff)!important;box-shadow:inset 0 2px #fff,0 3px 6px #7d439d55;color:#632494;font-size:11px!important}
-body.writing-simple .meaning{grid-column:1/-1;grid-row:3;margin:0!important;justify-self:center;min-width:60%;padding:5px 16px;border-radius:99px;border:1.5px solid #f2bc8a;background:linear-gradient(#fff8e7,#ffecc9);color:#58226d!important;text-align:center;font:850 clamp(21px,6vw,29px)/1.1 system-ui,sans-serif!important}
-body.writing-simple .pg-hanzi-lexicon{grid-column:1/-1;grid-row:4;align-self:stretch;margin:6px 2px 0!important;padding:0 5px 6px;border-radius:23px;border:2px solid #ffcedd;background:linear-gradient(#ffe0eaf2,#ffe9f4ee);box-shadow:0 5px 15px #7443854a}
-body.writing-simple .pg-lexicon-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;margin:-2px -6px 5px;border-radius:22px 22px 6px 6px;overflow:hidden}
-body.writing-simple .pg-lex-tab{border:1px solid #ebbad8;min-height:37px;padding:3px 1px;border-radius:19px 19px 5px 5px;color:#54216e;background:linear-gradient(#fff9fb,#fbe0eb);font:800 clamp(12px,3.6vw,17px)/1.1 system-ui,sans-serif}
-body.writing-simple .pg-lex-tab[aria-selected=true]{background:linear-gradient(#ff75e3,#ca17b1);color:#fff;box-shadow:inset 0 2px #fff9;text-shadow:0 1px #812a88}
-body.writing-simple .pg-lexicon-list{display:grid;gap:4px}
-body.writing-simple .pg-lexicon-entry{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:center;min-height:49px;gap:5px;padding:3px 8px;border:1.2px solid #f1bfd5;border-radius:19px;background:linear-gradient(#fffcf8,#ffeff2);box-shadow:0 1px 4px #a2549550}
-body.writing-simple .pg-lexicon-entry strong{font:500 clamp(18px,5.2vw,26px)/1.15 "Noto Serif CJK SC","Songti SC",serif;color:#57206b;white-space:normal}
-body.writing-simple .pg-lexicon-entry span{font:700 clamp(11px,3.2vw,15px)/1.23 system-ui,sans-serif;color:#592b6d;overflow-wrap:anywhere}
-body.writing-simple .pg-lex-note{font-size:12px;margin:5px 9px;color:#663077}
-body.writing-simple .pg-lex-left small{display:block;margin-top:1px;font:600 clamp(10px,2.8vw,13px)/1.15 system-ui,sans-serif;color:#80618f}body.writing-simple .pg-meaning-card{padding:8px 10px;font-size:13px;line-height:1.4;color:#5a3472}body.writing-simple .pg-meaning-card strong{display:block;font-size:18px;color:#52216e}body.writing-simple .pg-meaning-card p{margin:5px 0}body.writing-simple .pg-meaning-card small{color:#744a86}body.writing-simple #next{grid-column:1/-1;grid-row:5;width:calc(100% - 16px);justify-self:center;margin:6px 0 0!important;padding:8px!important;min-height:54px;border:2.5px solid #ffd4ff!important;border-radius:35px!important;background:linear-gradient(#ff83ec 0%,#e52ad2 42%,#ad00b3 100%)!important;box-shadow:inset 0 3px 3px #fff8,0 4px 0 #821286,0 5px 12px #a52fa6aa!important;color:white!important;text-shadow:0 1px 3px #8c1784;font:850 clamp(18px,4.8vw,24px)/1.2 system-ui,sans-serif!important}
-body.writing-simple .feedback{grid-column:1/-1;grid-row:6;min-height:0;margin:0 8px!important;padding:4px 8px;font-size:11px;border-radius:10px;background:#fff3f6d9;border:1px solid #e8c4db;color:#67377d}
-body.writing-simple .feedback:not(.good):not(.bad){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:-1px!important;padding:0}
-body.writing-simple #stroke-status{grid-column:1/-1;grid-row:7;margin:0;font-size:11px;text-align:center;color:#663878}
-body.writing-simple .writing-extras{margin:7px 7px 3px;border-radius:14px;padding:7px 9px;background:#ffedfade;color:#5c2970;font-size:12px}
+body.writing-simple .glyph-title{grid-column:1/-1;grid-row:2;display:flex;justify-content:center;align-items:center;flex-wrap:nowrap;min-width:0;gap:9px;margin:14px 9px 0!important;padding:5px 10px!important;min-height:56px;border:2px solid #ffa99f;border-radius:999px;background:linear-gradient(100deg,#fddac4 0%,#fff3e9 47%,#f9d1df 100%);box-shadow:0 0 0 2px #ffecce5f,0 3px 15px #82355e7d}
+body.writing-simple .glyph-title strong{font:400 clamp(35px,10vw,51px)/1 "Songti SC","Noto Serif CJK SC",serif!important;color:#5f1f5e!important;white-space:nowrap}
+body.writing-simple .glyph-title .py{font:900 clamp(15px,4.5vw,22px)/1.15 system-ui,sans-serif!important;color:#50186d!important;white-space:nowrap}
+body.writing-simple #speak{flex:0 0 auto;min-width:50px;min-height:48px;margin:0!important;padding:6px 8px!important;display:grid;place-items:center;border:2px solid #eea8ff!important;border-radius:50%!important;background:linear-gradient(#fff9ff,#f3bcff)!important;box-shadow:inset 0 2px #fff,0 3px 7px #a24ab9b0!important;color:#781cca!important}
+body.writing-simple .meaning{grid-column:1/-1;grid-row:3;justify-self:center;margin:0!important;padding:5px 26px;min-height:38px;min-width:56%;border:2px solid #f8c37e;border-radius:999px;background:linear-gradient(#fff9e8,#ffe5be);box-shadow:0 2px 9px #d66e6d81;color:#52177b!important;text-align:center;font:900 clamp(21px,6.4vw,30px)/1.1 system-ui,sans-serif!important}
+body.writing-simple .pg-hanzi-lexicon{grid-column:1/-1;grid-row:4;align-self:stretch;margin:7px 3px 0!important;padding:0 7px 8px;border:2px solid #ffcbdc;border-radius:27px;background:linear-gradient(#ffe4edee,#ffe2ebf7);box-shadow:0 6px 17px #87236b65}
+body.writing-simple .pg-lexicon-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;margin:-2px -8px 6px;overflow:hidden;border-radius:25px 25px 4px 4px}
+body.writing-simple .pg-lex-tab{min-width:0;min-height:43px;padding:4px 2px;border:1px solid #ffd9e6;border-radius:23px 23px 4px 4px;background:linear-gradient(#fff8f7,#f4d2e7);color:#551a75;font:900 clamp(13px,3.7vw,19px)/1.1 system-ui,sans-serif}
+body.writing-simple .pg-lex-tab[aria-selected=true]{background:linear-gradient(#fb58d0,#d205a6);color:#fff;box-shadow:inset 0 3px #ffcdff;text-shadow:0 1px 3px #611365}
+body.writing-simple .pg-lexicon-list{display:grid;gap:6px}
+body.writing-simple .pg-lexicon-entry{display:grid;grid-template-columns:46px minmax(0,1.32fr) minmax(0,1fr);gap:5px;align-items:center;min-height:57px;padding:5px 8px;border:1.5px solid #f3bdd1;border-radius:25px;background:linear-gradient(#fffdf7,#fff0eb);box-shadow:0 2px 5px #a92f8382}
+body.writing-simple .pg-example-audio{min-width:39px;min-height:39px;width:39px;height:39px;padding:5px;display:grid;place-items:center;border:2px solid #f2aff7;border-radius:50%;background:linear-gradient(#fff9ff,#f4c9ff);color:#801ccd;box-shadow:inset 0 2px #fff,0 2px 6px #d96fd496}
+body.writing-simple .pg-example-audio:active{transform:scale(.96)}
+body.writing-simple .pg-lex-left{min-width:0;display:flex;flex-direction:column;gap:0}
+body.writing-simple .pg-lexicon-entry strong{display:block;font:600 clamp(19px,5.5vw,25px)/1.12 "Noto Serif CJK SC","Songti SC",serif!important;color:#561c75!important;overflow-wrap:anywhere}
+body.writing-simple .pg-lex-left small{display:block;margin-top:1px;color:#7b5089;font:650 clamp(10px,2.9vw,13px)/1.15 system-ui,sans-serif!important}
+body.writing-simple .pg-lexicon-entry span{font:750 clamp(12px,3.3vw,16px)/1.25 system-ui,sans-serif!important;color:#4d1b69!important;overflow-wrap:anywhere}
+body.writing-simple .pg-meaning-card{padding:11px 15px;min-height:144px;font:600 14px/1.4 system-ui,sans-serif;color:#542078}
+body.writing-simple .pg-meaning-card strong{display:block;font-size:20px}
+body.writing-simple .pg-meaning-card p{margin:6px 0}
+body.writing-simple .pg-meaning-card small{font-size:12px}
+body.writing-simple #next{grid-column:1/-1;grid-row:5;justify-self:center;width:calc(100% - 19px);min-height:58px;margin:8px 0 0!important;padding:8px 10px!important;border:3px solid #ffc4ff!important;border-radius:999px!important;color:#fff!important;background:linear-gradient(#ff92ef 0%,#eb2aca 44%,#ab02ab 98%)!important;box-shadow:inset 0 3px #ffe0ff,0 4px 0 #89129b,0 6px 14px #942190bf,0 0 13px #ff8af2!important;text-shadow:0 2px 3px #7a1074;font:900 clamp(20px,5.25vw,27px)/1.15 system-ui,sans-serif!important}
+body.writing-simple .feedback{grid-column:1/-1;grid-row:6;margin:2px 13px 0!important;padding:7px 10px;border:1px solid #e9bfd6;border-radius:13px;background:#fff2fb;color:#6b3c7c;font-size:12px;min-height:0}
+body.writing-simple .feedback:not(.bad):not(.good){position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%);padding:0!important;margin:-1px!important}
+body.writing-simple #stroke-status{grid-column:1/-1;grid-row:7;margin:0;font-size:12px;color:#fee9ff;text-align:center;text-shadow:0 1px 2px #281047}
+body.writing-simple .writing-extras{margin:12px 9px 0;padding:9px 12px;border-radius:15px;background:#ffe3f3ee;border:1px solid #ffc2ef;color:#58286d;font-size:12px}
 body.writing-simple .writing-extras summary{font-size:12px;font-weight:700}
-body.writing-simple button:focus-visible,body.writing-simple a:focus-visible{outline:3px solid #fff!important;outline-offset:2px}
-body.writing-simple button:active{filter:brightness(.96)}
-@media(max-width:355px){body.writing-simple .shell{padding-inline:6px!important}body.writing-simple .drawing-card{column-gap:5px;grid-template-rows:clamp(240px,39dvh,315px) auto auto auto auto auto auto}body.writing-simple #animate{margin-top:52px}body.writing-simple #practice,body.writing-simple #retry{margin-bottom:52px}}
-@media(min-width:431px){body.writing-simple{padding:10px 0}}
-@media(prefers-reduced-motion:reduce){body.writing-simple *{animation:none!important;transition:none!important}}
+body.writing-simple button:focus-visible,body.writing-simple a:focus-visible{outline:3px solid #fff!important;outline-offset:3px}
+@media(max-height:740px){body.writing-simple .drawing-card{grid-template-rows:clamp(240px,38dvh,294px) auto auto auto auto auto auto;row-gap:5px}body.writing-simple #animate{margin-top:clamp(55px,10dvh,84px)}body.writing-simple #practice,body.writing-simple #retry{margin-bottom:clamp(55px,10dvh,84px)}body.writing-simple .pg-lexicon-entry{min-height:48px;padding:3px 7px}body.writing-simple .pg-lex-tab{min-height:37px}body.writing-simple .glyph-title{margin-top:11px!important;min-height:49px}body.writing-simple #next{min-height:52px;margin-top:6px!important}}
+@media(max-width:370px){body.writing-simple .shell{padding-inline:7px!important}body.writing-simple .drawing-card{grid-template-columns:minmax(0,64fr) minmax(0,36fr);column-gap:8px}body.writing-simple .pg-lexicon-entry{grid-template-columns:38px minmax(0,1.25fr) minmax(0,1fr);gap:3px;padding:4px 5px}body.writing-simple .pg-example-audio{width:34px;height:34px;min-width:34px;min-height:34px}}
+@media(min-width:451px){body.writing-simple{padding:10px 0}}
+@media(prefers-reduced-motion:reduce){body.writing-simple *,body.writing-simple *::before,body.writing-simple *::after{animation:none!important;transition:none!important}}
