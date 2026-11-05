@@ -60,6 +60,7 @@
     livePron.querySelector('b').textContent=ch;
     livePron.querySelector('span').textContent=document.getElementById('pinyin')?.textContent||'';
     liveMeaning.textContent=document.getElementById('meaning')?.textContent||'';
+    liveMeaning.dataset.long=String(liveMeaning.textContent.length>14);
    }
    liveTabs.hidden=tab==='examples';
    [...liveTabs.children].forEach((el,i)=>el.setAttribute('aria-current',String(tabNames[i]===tab)));

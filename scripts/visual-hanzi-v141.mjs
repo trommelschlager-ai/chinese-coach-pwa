@@ -14,11 +14,13 @@ async function layout(width,height){
   const stage=document.querySelector('#pg-hanzi-approved'),r=stage.getBoundingClientRect();
   return {width:r.width,height:r.height,scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth,
    buttons:[...stage.querySelectorAll('.pg-hit:not([hidden])')].map(el=>{const b=el.getBoundingClientRect();return {name:el.dataset.artHit,x:b.x-r.x,y:b.y-r.y,w:b.width,h:b.height}}),
+   meaning:(()=>{const el=stage.querySelector('.pg-dynamic-meaning:not([hidden])');return el?{height:el.clientHeight,scrollHeight:el.scrollHeight}:null})(),
    rows:[...stage.querySelectorAll('.pg-dynamic-row')].map(el=>({scrollHeight:el.scrollHeight,height:el.clientHeight,text:el.textContent})),
    paper:document.querySelector('.pg-art-stroke-paper').getBoundingClientRect().toJSON()};
  });
  assert(metrics.scrollWidth<=width+1,'No horizontal overflow');assert(Math.abs(metrics.width-width)<1,'Artwork fills mobile width');
  assert(Math.abs(metrics.height-width*1536/864)<1,'Source aspect ratio is preserved');
+ if(metrics.meaning)assert(metrics.meaning.scrollHeight<=metrics.meaning.height+1,'Meaning stays in its badge');
  for(const b of metrics.buttons){assert(b.x>=-1&&b.x+b.w<=width+1,'Button within width: '+b.name);assert(b.y>=-1&&b.y+b.h<=metrics.height+1,'Button within artwork: '+b.name)}
  report.checks.push({width,height,layout:metrics});
 }

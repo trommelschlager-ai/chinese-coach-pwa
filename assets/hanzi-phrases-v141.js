@@ -55,5 +55,10 @@ window.PANDA_HANZI_PHRASE_AUDIO={
   "月份": "assets/hanzi-phrases-v141/a27822d1350647af.mp3",
   "木头": "assets/hanzi-phrases-v141/3915f9fdd0acc2b1.mp3",
   "木材": "assets/hanzi-phrases-v141/30a9333b4fe5013b.mp3",
-  "树木": "assets/hanzi-phrases-v141/5192170aa71fb829.mp3"
+  "树木": "assets/hanzi-phrases-v141/5192170aa71fb829.mp3",
+  "一天很长。": "assets/hanzi-phrases-v141/71edbdab36163b0e.mp3",
+  "生日快乐！": "assets/hanzi-phrases-v141/1d03275776a748a6.mp3",
+  "日本不远。": "assets/hanzi-phrases-v141/bc990de66dcda8c3.mp3",
+  "这里有树木。": "assets/hanzi-phrases-v141/1cdd5369064d2029.mp3",
+  "木头很硬。": "assets/hanzi-phrases-v141/38e719fbc0a53bf1.mp3"
 };

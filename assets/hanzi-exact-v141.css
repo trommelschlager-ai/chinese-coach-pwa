@@ -51,3 +51,5 @@ body.writing-simple > .shell {display:none!important}
 
 /* Extend only source scenery below tall viewports; never repeat the painted controls. */
 body.writing-simple::after {content:"";display:block;pointer-events:none;width:min(100%,520px);height:max(0px,calc(100dvh - min(100vw,520px) * 16 / 9));margin:auto;background:url('./hanzi-footer-v141.png') center top / 100% auto repeat-y}
+
+#pg-hanzi-approved .pg-dynamic-meaning[data-long=true] {font-size:4cqw;white-space:nowrap}
