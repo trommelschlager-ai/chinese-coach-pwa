@@ -155,3 +155,27 @@ body.pg130-active>#launch-entry,body.pg130-active>.shell,body.pg130-active>.bott
 }
 #pg130 .pg-token{padding:5px 8px}
 #pg130 .pg-token-pool .pg-token{font-size:23px;padding:5px 6px;min-height:39px}
+
+/* v132: approved artwork is displayed without raster resampling or text re-creation. */
+#pg130 .pg-home-v132{padding:0!important;background:#cda7e8!important;overflow-x:hidden;overflow-y:auto;scrollbar-width:none;align-items:stretch}
+#pg130 .pg-home-v132::before,#pg130 .pg-home-v132::after{display:none!important}
+#pg130 .pg-home-v132::-webkit-scrollbar{display:none}
+#pg130 .pg-home-image-wrap{position:relative;width:100%;aspect-ratio:790/1440;flex:0 0 auto;overflow:hidden;background:linear-gradient(170deg,#edccfa,#c69ce1 56%,#63ccee)}
+#pg130 .pg-home-image{position:absolute;display:block;width:110%;max-width:none!important;height:auto;left:-5%;top:-3.3%;object-fit:unset!important;image-rendering:auto;user-select:none;-webkit-user-drag:none}
+#pg130 .pg-home-hit{position:absolute;display:block;padding:0;margin:0;border:0!important;background:transparent;touch-action:manipulation;cursor:pointer;z-index:3;border-radius:999px;transition:box-shadow .14s ease,background .14s ease,transform .14s ease}
+#pg130 .pg-home-hit:active{background:#fff3;box-shadow:inset 0 0 0 2px #fff8,0 0 17px #f7c9f8;transform:scale(.985)}
+#pg130 .pg-home-hit:focus-visible{outline:3px solid #432070!important;outline-offset:-3px;background:#ffffff30}
+#pg130 .pg-home-hit-profile{top:2.6%;left:86.8%;width:10%;height:5.9%;border-radius:50%}
+#pg130 .pg-home-hit-tones{top:45.4%;left:2.4%;width:95.2%;height:12.1%}
+#pg130 .pg-home-hit-words{top:57.6%;left:2.4%;width:95.2%;height:12%}
+#pg130 .pg-home-hit-dialogues{top:69.7%;left:2.4%;width:95.2%;height:12%}
+#pg130 .pg-home-hit-travel{top:81.8%;left:2.4%;width:95.2%;height:12.1%}
+/* Floating Sakura stays above the v130 shell but never steals touch events. */
+#pg130 .pg-sakura{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100%,390px);height:min(100dvh,720px);overflow:hidden;pointer-events:none!important;z-index:9;border-radius:30px;contain:paint}
+#pg130 .pg-sakura-petal{position:absolute;top:-9%;left:var(--petal-x);width:var(--petal-size);height:calc(var(--petal-size)*.72);display:block;pointer-events:none;border-radius:85% 15% 75% 25%;background:radial-gradient(circle at 30% 30%,#fff9fe,#ffaddf 46%,#ef7ebc 86%);box-shadow:0 0 3px #fff8;opacity:0;transform:rotate(35deg);animation:pg132-petal var(--petal-duration) linear var(--petal-delay) infinite}
+#pg130 .pg-sakura-petal:nth-child(5n+1){background:radial-gradient(circle at 30% 30%,#fff,#e8c5ff 58%,#bb83e1)}
+#pg130 .pg-sakura-petal:nth-child(5n+2){background:radial-gradient(circle at 30% 30%,#fff,#fbd3e6 58%,#f291bf)}
+#pg130 .pg-sakura-petal:nth-child(5n+3){background:radial-gradient(circle at 30% 30%,#fff,#f1d4ff 58%,#c78ff2)}
+@keyframes pg132-petal{0%{opacity:0;transform:translate3d(0,-8vh,0) rotate(0)}7%{opacity:.94}87%{opacity:.8}100%{opacity:0;transform:translate3d(var(--petal-drift),110vh,0) rotate(590deg)}}
+@media(max-width:420px){#pg130 .pg-sakura{width:100%;height:100dvh;border-radius:0}#pg130 .pg-home-v132{border:0!important;border-radius:0!important;box-shadow:none!important}}
+@media(prefers-reduced-motion:reduce){#pg130 .pg-sakura{display:none!important}}

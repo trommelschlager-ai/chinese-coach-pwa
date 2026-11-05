@@ -18,7 +18,7 @@ const knownKey='chinese-coach-basic-known-v1';
 function status(text){const el=root.querySelector('[data-status]');if(el)el.textContent=text;clearTimeout(statusTimer);if(text)statusTimer=setTimeout(()=>{if(el?.isConnected)el.textContent=''},5000)}
 function stop(){audioToken++;if(audio){audio.pause();audio=null}window.dispatchEvent(new Event('learning-audio-stop'))}
 const norm=s=>s.replace(/[！!。．，,？?\s]/g,'');
-function fileFor(hz){return window.__simpleSectionPreview.getFile(hz)||window.courseNaturalAudio?.[norm(hz)]||window.courseHumanAudio?.[norm(hz)]}
+function fileFor(hz){const key=norm(hz);return window.courseHumanAudio?.[key]||window.courseNaturalAudio?.[key]||window.__simpleSectionPreview.getFile(hz)}
 function play(hz){
  const key=norm(hz);
  // The native Yue Tan recording is the same speaker as 喜欢. For words that
@@ -42,8 +42,23 @@ function progress(n,total){return `<div class="pg-progressline"><div class="pg-m
 function pagination(i,total,action){return `<div class="pg-pagination pg-surface"><button class="pg-round" data-action="${action}" data-value="-1" aria-label="Предыдущая карточка"${i===0?' disabled':''}>‹</button><span>${i+1}/${total}</span><button class="pg-round" data-action="${action}" data-value="1" aria-label="Следующая карточка"${i===total-1?' disabled':''}>›</button></div>`}
 function wave(action='listen'){return `<div class="pg-wave"><button class="pg-play" data-action="${action}" aria-label="Прослушать">▶</button><span class="pg-wave-bars" aria-hidden="true">${Array.from({length:29},(_,i)=>`<i style="--h:${7+((i*17+5)%28)}px"></i>`).join('')}</span></div>`}
 function show(route,replace=false){stop();root.hidden=false;document.body.classList.remove('launch-active','focus-mode');document.body.classList.add('pg130-active');current=route;render();const hash='#panda/'+route;if(location.hash!==hash){if(replace)history.replaceState({panda:route},'',hash);else history.pushState({panda:route},'',hash)}root.querySelector('.pg-screen').scrollTop=0;const focus=root.querySelector('h1');if(focus){focus.tabIndex=-1;focus.focus({preventScroll:true})}}
-function frame(content,cls=''){root.innerHTML=`<section class="pg-screen ${cls} pg-route-${current}" aria-label="${({home:'Главная',learn:'Учиться',training:'Тренироваться',games:'Игровая практика',words:'Базовые слова',tones:'Звуки и тоны',dialogues:'Диалоги',practice:'Практика',quiz:'Тест',build:'Собери фразу',result:'Результат',progress:'Мой прогресс'})[current]||'Занятие'}">${content}<span class="pg-version">v130</span></section><div class="pg-live-status" data-status role="status" aria-live="polite"></div>`}
-function home(){const saved=read('chinese-coach-resume-v1',null),resume=saved&&lessons.find(l=>l.id===saved.id);const s=stats(),known=read(knownKey,[]),pct=Math.round(known.length/allWords.length*100);frame(`<div class="pg-stats"><span class="pg-stat">${icon('fire')}${s.streak}</span><span class="pg-stat">${icon('coin')}${s.points}</span><button class="pg-profile" data-route="progress" aria-label="Мой прогресс">${icon('profile')}</button></div><img class="pg-hero" src="${A}home-hero.webp" alt="Panda Go. Твой путь к китайскому. Панда с книгой."><button class="pg-resume pg-surface" data-action="resume"><span class="pg-play" aria-hidden="true">▶</span><span><strong>Продолжить урок</strong><small>${resume?esc(resume.title):'Базовые слова'} <b style="float:right">${resume?'Шаг '+(saved.step+1)+'/4':pct+'%'}</b></small><span class="pg-meter"><span style="width:${resume?(saved.step+1)/4*100:pct}%"></span></span></span></button><nav class="pg-home-grid" aria-label="Занятия">${[['learn','book','Учиться','Тоны, слова,<br>иероглифы, диалоги'],['training','controller','Тренироваться','Практика, тесты,<br>игровые задания'],['travel','plane','Путешествие<br>по Китаю','Реальные ситуации'],['progress','trophy','Мой прогресс','Достижения,<br>серия, награды']].map(([route,art,title,desc])=>`<button class="pg-surface" data-route="${route}">${icon(art)}<strong>${title}</strong><small>${desc}</small></button>`).join('')}</nav>`,'pg-home')}
+/* Animated Sakura is part of the active Panda Go shell, not the retired launcher. */
+function petalMarkup(){
+ return '<div class="pg-sakura" aria-hidden="true">'
+ + Array.from({length:18},(_,i)=>'<i class="pg-sakura-petal" style="--petal-x:'+((i*37+11)%100)+'%;--petal-delay:'+(-(i*3.7)%17).toFixed(2)+'s;--petal-duration:'+(10+(i%7)*1.4).toFixed(2)+'s;--petal-size:'+(11+(i*7)%13)+'px;--petal-drift:'+(-32+(i*17)%69)+'px"></i>').join('')
+ + '</div>';
+}
+function frame(content,cls=''){root.innerHTML=`<section class="pg-screen ${cls} pg-route-${current}" aria-label="${({home:'Главная',learn:'Учиться',training:'Тренироваться',games:'Игровая практика',words:'Базовые слова',tones:'Звуки и тоны',dialogues:'Диалоги',practice:'Практика',quiz:'Тест',build:'Собери фразу',result:'Результат',progress:'Мой прогресс'})[current]||'Занятие'}">${content}<span class="pg-version">v132</span></section>${petalMarkup()}<div class="pg-live-status" data-status role="status" aria-live="polite"></div>`}
+function home(){
+ const art='<div class="pg-home-image-wrap">'
+ +'<img class="pg-home-image" src="./assets/panda-go-approved-home-v132.jpg" alt="Panda Go. Твой путь к китайскому. Панда в наушниках, цветущая сакура и четыре раздела." decoding="async" fetchpriority="high" draggable="false">'
+ +'<button class="pg-home-hit pg-home-hit-profile" data-route="progress" aria-label="Профиль и достижения"><span class="pg-visually-hidden">Профиль</span></button>'
+ +'<button class="pg-home-hit pg-home-hit-tones" data-route="tones" aria-label="Звуки и тоны"><span class="pg-visually-hidden">Звуки и тоны</span></button>'
+ +'<button class="pg-home-hit pg-home-hit-words" data-route="words" aria-label="Слова и выражения"><span class="pg-visually-hidden">Слова и выражения</span></button>'
+ +'<button class="pg-home-hit pg-home-hit-dialogues" data-route="dialogues" aria-label="Диалоги и общение"><span class="pg-visually-hidden">Диалоги и общение</span></button>'
+ +'<button class="pg-home-hit pg-home-hit-travel" data-route="travel" aria-label="Китай в жизни"><span class="pg-visually-hidden">Китай в жизни</span></button></div>';
+ frame(art,'pg-home pg-home-v132');
+}
 function learn(){frame(heading('Учиться','book','home','Основы китайского шаг за шагом')+`<nav class="pg-menu">${card('Звуки и тоны','Произношение и правила чтения','headphones','tones')}${card('Базовые слова','Самые нужные слова','books','words')}${card('Иероглифы','Письмо и порядок черт','brush','hanzi')}${card('Диалоги','Готовые фразы для общения','chat','dialogues')}</nav>`)}
 function training(){frame(heading('Тренироваться','controller','home','Закрепляй знания в разных форматах')+`<nav class="pg-menu">${card('Практика','Упражнения по темам','target','practice')}${card('Тест','Проверь свои знания','clipboard','quiz')}${card('Игровая практика','Игры и интерактивные задания','controller','games')}</nav><img class="pg-scenery" src="${A}training-panda.webp" alt="Панда и золотой кубок">`,'pg-training')}
 function games(){frame(heading('Игровая практика','controller','training','Выбери формат и тренируйся',true)+`<nav class="pg-menu">${card('Собери фразу','Составь правильное<br>предложение','puzzle','build')}${card('Слушай и выбирай','Прослушай и выбери<br>верный вариант','headphones','listen')}${card('Выбери ответ','Ответь на вопрос<br>по теме','check','choose')}${card('Быстрый тест','Короткий тест на скорость','lightning','quick')}</nav>`)}
@@ -96,5 +111,5 @@ const start=document.getElementById('launch-start');if(start)start.onclick=()=>s
 const direct=new URLSearchParams(location.search).get('panda');const hashRoute=window.__pandaRoute130||location.hash.match(/^#panda\/(.+)$/)?.[1];if(direct||hashRoute)route(hashRoute||direct);else if(new URLSearchParams(location.search).has('gameReturn'))show('home',true);
 window.addEventListener('hashchange',event=>{if(location.hash.startsWith('#panda/')){event.stopImmediatePropagation();const r=location.hash.slice(7);if(['build','listen','choose','practice','quiz','quick','result'].includes(r)&&!session)route(r==='result'?'home':r);else show(r,true)}},true);
 window.addEventListener('pagehide',stop);
-window.__panda130={show:route,version:130};
+window.__panda130={show:route,version:132};
 })();
