@@ -84,7 +84,7 @@ const show=()=>{
  $('py').textContent=item.pinyin_reference;
  $('note').textContent=item.notes||'Пиньинь — справочный; проверить интонацию и тоны у носителя.';
  $('prev').disabled=busy||index===0;$('next').disabled=busy||index===rows.length-1;
- $('record').disabled=busy;$('stop').disabled=!busy;
+ $('record').disabled=busy||!micSupported;$('stop').disabled=!busy;
  $('listen').disabled=busy||!existing;$('clear').disabled=busy||!existing;
  $('export').disabled=busy||takes.size===0;
  $('count').textContent=takes.size+' из '+rows.length+' записано';
@@ -95,7 +95,8 @@ const show=()=>{
 function stopAudio(){if(audio){audio.pause();audio.src='';audio=null}}
 function stopStream(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
 const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(t=>window.MediaRecorder?.isTypeSupported?.(t))||'';
-if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){status('Этот браузер не поддерживает запись. Открой страницу в Chrome на Android или настольном Chrome.');$('record').disabled=true;return}
+const micSupported=!!(navigator.mediaDevices?.getUserMedia&&window.MediaRecorder);
+if(!micSupported)status('Просмотр доступен, но запись микрофона в этом браузере не поддерживается. Используй Chrome на Android или настольный Chrome.');
 $('record').onclick=async()=>{
  if(busy)return;
  stopAudio();const id=rows[index].id;busy=true;show();
@@ -162,7 +163,7 @@ try{
  if(!response.ok)throw Error('HTTP '+response.status);
  const data=await response.json();
  if(data.version!==168||data.items.length!==56||data.recordings_exist!==false)throw Error('Неожиданный список записей');
- rows=data.items;show();status('Готово. Доступ к микрофону запрашивается только после нажатия «Записать».');
+ rows=data.items;show();status(micSupported?'Готово. Доступ к микрофону запрашивается только после нажатия «Записать».':'Список открыт только для просмотра: запись микрофона не поддерживается в этом браузере.');
 }catch(e){status('Не удалось загрузить сценарий: '+e.message);$('record').disabled=true}
 window.addEventListener('pagehide',()=>{if(recorder?.state==='recording')recorder.stop();stopStream();stopAudio()});
 })();
