@@ -106,3 +106,35 @@ button:focus-visible,a:focus-visible{outline:3px solid #b12abd;outline-offset:3p
 .hsk1-speech-speed select{min-height:40px;min-width:0;max-width:58%;border:1.5px solid #e9b3e4;background:#ffeffc;color:#622172;border-radius:14px;padding:4px 7px;font:800 13px/1.3 system-ui,-apple-system,'Segoe UI',sans-serif}
 .hsk1-speech-speed select:focus-visible{outline:3px solid #b12abd;outline-offset:2px}
 @media(max-width:360px){.hsk1-speech-speed{padding:5px 7px;gap:5px}.hsk1-speech-speed label{font-size:12px}.hsk1-speech-speed select{font-size:12px}}
+
+/* v170: responsive usability polish. Approved scenery, artwork, button palette and layout stay untouched. */
+.lesson-line > div:nth-child(2){min-width:0}
+.lesson-line .lesson-hanzi,.lesson-line .lesson-ru,.lesson-card .lesson-hanzi{overflow-wrap:anywhere}
+.lesson-step{min-height:44px}
+.lesson-word-nav>button{min-height:44px}
+.lesson-line .lesson-audio{width:44px;height:44px}
+.lesson-step:not(:disabled),
+.lesson-audio:not(:disabled),
+.lesson-action:not(:disabled),
+.lesson-choice:not(:disabled),
+.lesson-token:not(:disabled),
+.lesson-controls button:not(:disabled),
+.lesson-word-nav>button:not(:disabled),
+.lesson-tone-answer button:not(:disabled){
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .12s ease,box-shadow .12s ease,filter .12s ease;
+}
+.lesson-step:not(:disabled):active,
+.lesson-audio:not(:disabled):active,
+.lesson-action:not(:disabled):active,
+.lesson-choice:not(:disabled):active,
+.lesson-token:not(:disabled):active,
+.lesson-controls button:not(:disabled):active,
+.lesson-word-nav>button:not(:disabled):active,
+.lesson-tone-answer button:not(:disabled):active{transform:translateY(2px);filter:brightness(.97)}
+.lesson-controls .lesson-primary:not(:disabled):active{box-shadow:0 2px 0 #933b9a,0 3px 6px #ba70ac65}
+.lesson-dialogue-hero .hero-play:not(:disabled):active{filter:brightness(.93)}
+@media(prefers-reduced-motion:reduce){
+  .lesson-step,.lesson-audio,.lesson-action,.lesson-choice,.lesson-token,
+  .lesson-controls button,.lesson-word-nav>button,.lesson-tone-answer button{transition:none!important}
+}
