@@ -33,7 +33,12 @@ try{
   assert.equal(await page.locator('.lesson-step').count(),7);
   assert.equal(await page.locator('.lesson-word').count(),4);
   assert(await page.locator('#lesson-next').isDisabled(),'Words must be visited in groups');
+  const speed=page.locator('#hsk1-female-voice-speed');
+  assert(await speed.isVisible(),'Visible female speed selector on '+width+'px');
+  assert.equal(await speed.inputValue(),'0.85','Default female educational speed must be 0.85×');
   await capture('02-lesson1-words');
+  await speed.selectOption('0.75');
+  assert.equal(await page.evaluate(()=>localStorage.getItem('pg-hsk1-female-speed-v161')),'0.75','Store speech speed separately from user progress');
   await page.locator('[data-word-next]').click();
   await capture('02a-lesson1-next-words');
   while(await page.locator('[data-word-next]').count())await page.locator('[data-word-next]').click();
@@ -51,6 +56,8 @@ try{
   await capture('04-lesson1-dialogue');
   await page.goto(base+'/hsk1-lesson.html?lesson=2',{waitUntil:'load'});
   assert((await page.locator('#course-heading').textContent()).includes('Личные местоимения'));
+  assert.equal(await page.locator('#hsk1-female-voice-speed').inputValue(),'0.75','Slow speed must persist across lessons');
+  await page.locator('#hsk1-female-voice-speed').selectOption('0.85');
   await capture('05-lesson2-pronouns');
   while(await page.locator('[data-word-next]').count())await page.locator('[data-word-next]').click();
   await page.locator('#lesson-next').click();
