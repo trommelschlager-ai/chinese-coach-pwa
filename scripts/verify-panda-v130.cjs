@@ -12,7 +12,7 @@ w.eval(scripts);
 const spoken=[];w.__pandaGameSpeech130=parts=>{spoken.push([...parts])};
 const root=d.getElementById('pg130'),q=s=>root.querySelector(s),click=s=>{const b=q(s);assert(b,'Control missing: '+s);assert(!b.disabled,'Control disabled: '+s);b.click()};
 assert(!root.hidden,'Approved v132 home opens without an obsolete splash screen');
-d.getElementById('launch-start').click();assert(!root.hidden);assert.equal(root.querySelectorAll('.pg-hsk-level').length,6,'Six HSK level choices');assert(q('.pg-hsk-level[href="./hsk1-map.html"]'),'HSK 1 opens lesson map');assert(q('.pg-hsk-backdrop img').src.includes('panda-go-panda-only-v173.webp'),'Keep approved sharp Panda art');
+d.getElementById('launch-start').click();assert(!root.hidden);assert.equal(root.querySelectorAll('.pg-hsk-level').length,6,'Six HSK level choices');assert(q('.pg-hsk-level[href="./hsk1-map.html"]'),'HSK 1 opens lesson map');assert(q('.pg-hsk-backdrop img').src.includes('panda-go-hero-clean-v174.webp'),'Keep approved sharp Panda art');
 w.__panda130.show('learn');assert.equal(root.querySelectorAll('.pg-card').length,4);
 click('[data-route=words]');assert.equal(q('.pg-hanzi').textContent,'我');
 click('[data-action=known]');assert(JSON.parse(w.localStorage.getItem('chinese-coach-basic-known-v1')).includes('我'));
