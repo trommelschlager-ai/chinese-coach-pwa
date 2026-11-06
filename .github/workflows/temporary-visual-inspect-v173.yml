@@ -1,4 +1,4 @@
-name: Temporary approved art inspection v173
+name: Temporary approved art inspection v173 (full panda crop)
 on:
   push:
     branches: [fix/panda-reference-accurate-v173]
