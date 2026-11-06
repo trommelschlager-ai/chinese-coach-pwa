@@ -1,6 +1,6 @@
 {
-  "version": 160,
-  "bytes": 31533176,
+  "version": 161,
+  "bytes": 31534676,
   "files": [
     "./start-chinese.html",
     "./hsk1-map.html",
@@ -1544,8 +1544,8 @@
     "./assets/guided-voice-v1506/8d0fd9537bd276fc.mp3",
     "./assets/hsk-approved-three-screens-v151.css?v=151",
     "./hsk1-lesson.html",
-    "./assets/hsk1-foundations-v152.css?v=154",
-    "./assets/hsk1-foundations-v152.js?v=160",
+    "./assets/hsk1-foundations-v152.css?v=161",
+    "./assets/hsk1-foundations-v152.js?v=161",
     "./assets/hsk1-foundations-data-v152.js?v=154",
     "./assets/hsk1-voices-map-v160.js?v=160",
     "./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3",
