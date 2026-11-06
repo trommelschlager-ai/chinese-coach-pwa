@@ -38,7 +38,7 @@
 <header class="map-title"><h1>HSK 1</h1><p>Начальный уровень</p></header>
 <section class="map-summary" aria-label="Прогресс HSK 1"><div class="meta"><strong>Путь по Китаю</strong><span id="progress-label">0 из 7 уроков</span></div><div class="meter"><i id="progress-fill"></i></div></section>
 <nav class="map-road" aria-label="Карта уроков HSK 1">
-<svg class="path" viewBox="0 0 380 715" preserveAspectRatio="none" aria-hidden="true"><path d="M255 655 C30 607 25 576 250 535 S365 455 115 435 S10 358 265 339 S380 265 115 244 S20 165 240 145 S320 90 175 35"/><path class="path-line" d="M255 655 C30 607 25 576 250 535 S365 455 115 435 S10 358 265 339 S380 265 115 244 S20 165 240 145 S320 90 175 35"/></svg>
+<svg class="path" viewBox="0 0 380 715" preserveAspectRatio="none" aria-hidden="true"><path d="M150 673 C208 625 274 603 256 552 S147 480 208 432 S310 369 239 324 S165 265 246 216 S296 145 222 97 S192 52 238 32"/><path class="path-line" d="M150 673 C208 625 274 603 256 552 S147 480 208 432 S310 369 239 324 S165 265 246 216 S296 145 222 97 S192 52 238 32"/></svg>
 <a class="node" data-num="7" href="./hsk1-lesson.html?lesson=7" aria-label="Урок 7. Погода"><span class="circle">☁</span><span class="caption"><strong>Урок 7 · Погода</strong><small data-status="7">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 <a class="node" data-num="6" href="./hsk1-lesson.html?lesson=6" aria-label="Урок 6. Моя семья"><span class="circle">👪</span><span class="caption"><strong>Урок 6 · Моя семья</strong><small data-status="6">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 <a class="node" data-num="5" href="./hsk1-lesson.html?lesson=5" aria-label="Урок 5. Месяцы и даты"><span class="circle">📆</span><span class="caption"><strong>Урок 5 · Месяцы и даты</strong><small data-status="5">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
@@ -70,6 +70,31 @@
      if(finished)node.querySelector('.arrow').textContent='✓';
    }
  }
+ // All seven actual lesson links remain in the DOM, but future stops are locked
+ // until the preceding lesson is completed. Existing completed lessons stay open.
+ const frontier=firstUnfinished||7;
+ document.querySelectorAll('.map-road a.node').forEach(node=>{
+   const n=Number(node.dataset.num),id=topicIds[n-1],finished=completed.includes(id)||node.classList.contains('done');
+   const locked=!finished&&n>frontier;
+   node.classList.toggle('locked',locked);
+   node.setAttribute('aria-disabled',String(locked));
+   if(locked){
+     node.setAttribute('tabindex','-1');
+     node.querySelector('.arrow').textContent='🔒';
+     node.setAttribute('title','Сначала заверши предыдущий урок');
+   }else{
+     node.removeAttribute('tabindex');
+     node.removeAttribute('title');
+     if(!finished)node.querySelector('.arrow').textContent='›';
+   }
+ });
+ document.querySelector('.map-road').addEventListener('click',event=>{
+   const stop=event.target.closest('a.node.locked');
+   if(stop){
+     event.preventDefault();
+     event.stopPropagation();
+   }
+ });
  const label=document.getElementById('progress-label'),bar=document.getElementById('progress-fill');
  if(label)label.textContent=done+' из 7 уроков';
  if(bar)bar.style.width=(done/7*100)+'%';
