@@ -12,9 +12,9 @@ const pack=JSON.parse(read('assets/offline-pack.json'));
 for(const [pageName,page] of [['home',root],['map',map],['lesson',lesson]])
  assert(page.includes('assets/panda-approved-three-screen-v172.css?v=172'),
   'Missing visual reference CSS in '+pageName);
-assert(root.includes('panda-v130.js?v=173'),'Home script cache must refresh');
+assert(root.includes('panda-v130.js?v=174'),'Home script cache must refresh');
 assert(lesson.includes('hsk1-foundations-v152.js?v=172'),'Lesson step icons must refresh');
-assert(homeJs.includes('panda-go-panda-only-v173.webp'),'Existing approved panda hero must remain');
+assert(homeJs.includes('panda-go-hero-clean-v174.webp'),'Existing approved panda hero must remain');
 assert(stepsJs.includes('pg-hsk1-v3-'),'Persisted lesson progress must stay isolated');
 assert(stepsJs.includes('FEMALE_SPEED_KEY'),'Lesson audio speed must remain working');
 assert(lesson.includes('hsk1-voices-map-v160.js'),'Do not alter the female and male voice assignments');
@@ -30,7 +30,7 @@ const m=new JSDOM(map).window.document;
 assert.equal(m.querySelectorAll('nav.map-road > a.node').length,7,'Map must display seven actual lessons');
 assert.equal(m.querySelectorAll('nav.map-road > a[href^="./hsk1-lesson.html?lesson="]').length,7);
 assert(map.includes('pg-hsk1-v3-complete'),'HSK map progress must use original storage key');
-assert(map.includes('assets/game-panda-v76.svg'),'Original transparent panda stays on road');
+assert(map.includes('assets/panda-explorer-v174.svg'),'Approved reference requires a traveller panda on the mountain route');
 const l=new JSDOM(lesson).window.document;
 assert(l.querySelector('#lesson-next')&&l.querySelector('#lesson-prev'),'Real lesson navigation is required');
 assert(l.querySelector('#lesson-progress[role="progressbar"]'),'Seven-step progress remains accessible');
@@ -40,13 +40,13 @@ assert(stepsJs.includes("['Новые слова','📖']")&&stepsJs.includes("[
 for(const selector of ['#pg130 .pg-hsk-level-list','.map-shell .map-road','.lesson-shell .lesson-step.active',
  '.lesson-shell .lesson-line .lesson-hanzi','.lesson-shell .lesson-progress::after'])
  assert(css.includes(selector),'Approved design lacks '+selector);
-for(const keep of ['panda-go-panda-only-v173.webp','approved-panda-lake-v112.webp','panda-v130/landscape.webp','panda-v130/flowers.webp'])
+for(const keep of ['panda-go-hero-clean-v174.webp','approved-panda-lake-v112.webp','panda-v130/landscape.webp','panda-v130/flowers.webp'])
  assert(css.includes(keep)||homeJs.includes(keep),'Approved landscape asset missing '+keep);
 const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
 assert(core.length<=131,'Install must remain under 131 critical assets');
 assert(core.includes('./assets/panda-approved-three-screen-v172.css?v=172'),'Offline style is not in critical assets');
-assert(core.includes('./assets/panda-v130.js?v=173'),'New home must work offline');
+assert(core.includes('./assets/panda-v130.js?v=174'),'New home must work offline');
 assert(core.includes('./assets/hsk1-foundations-v152.js?v=172'),'Lesson controls must work offline');
-assert(pack.version===173&&pack.files.includes('./assets/panda-approved-three-screen-v172.css?v=172'),
+assert(pack.version===174&&pack.files.includes('./assets/panda-approved-three-screen-v172.css?v=172'),
  'Full offline pack must carry the new art stylesheet');
 console.log('PASS v172: 3 real approved screens, 6 HSK buttons, 7 real map lessons, 7 stages, voice/progress untouched and offline reference styles.');

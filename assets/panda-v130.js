@@ -90,10 +90,11 @@ function home(){
   ['5','lantern','cyan','Культура и общество'],
   ['6','pagoda','mint','Свободное владение']
  ];
- const artwork='<div class="pg-hsk-backdrop" aria-hidden="true"><img src="./assets/panda-go-panda-only-v173.webp" alt="" fetchpriority="high" decoding="async" draggable="false"></div>';
+ const artwork='<div class="pg-hsk-backdrop" aria-hidden="true"><img src="./assets/panda-go-hero-clean-v174.webp" alt="" fetchpriority="high" decoding="async" draggable="false"></div>';
  const brand='<header class="pg-hsk-brand"><span class="pg-hsk-paw" aria-hidden="true">🐾</span><h1>Panda Go</h1><p>Твой путь к китайскому</p></header>';
  const buttons=levels.map(([n,art,color,desc])=>{
-  const body=icon(art)+'<span class="pg-hsk-copy"><strong>HSK '+n+'</strong><small>'+desc+'</small></span><span class="pg-hsk-arrow" aria-hidden="true">›</span>';
+  const artPiece=Number(n)<=3?'<img class="pg-icon" src="./assets/panda-hsk-card-'+n+'-v174.webp" alt="" aria-hidden="true" draggable="false">':icon(art);
+  const body=artPiece+'<span class="pg-hsk-copy"><strong>HSK '+n+'</strong><small>'+desc+'</small></span><span class="pg-hsk-arrow" aria-hidden="true">›</span>';
   return n==='1'
    ?'<a class="pg-hsk-level pg-hsk-'+color+'" href="./hsk1-map.html" aria-label="Открыть HSK 1 — карта уроков">'+body+'</a>'
    :'<div class="pg-hsk-level pg-hsk-'+color+' pg-hsk-unavailable" aria-label="HSK '+n+' — готовится">'+body+'<span class="pg-hsk-coming" aria-hidden="true">🔒</span></div>';
