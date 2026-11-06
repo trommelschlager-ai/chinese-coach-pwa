@@ -103,7 +103,7 @@ function downloadFile(blob,name){
  a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
  setTimeout(()=>URL.revokeObjectURL(url),60000);
 }
-function setBusy(v){busy=v;for(const id of ['missing','all','playAll','downloadZip','downloadList','downloadReport'])$(id).disabled=v||(!loaded&&id!=='downloadReport');$('stop').disabled=!active;render()}
+function setBusy(v){busy=v;for(const id of ['missing','all','playAll','downloadZip','downloadList'])$(id).disabled=v||!loaded;$('downloadReport').disabled=v||!loaded||marked.size===0;$('stop').disabled=!active;render()}
 function stop(){playAll=false;if(active){active.pause();active.src='';active=null} $('stop').disabled=true;render()}
 function listen(i,sequential=false){
  if(busy)return;
