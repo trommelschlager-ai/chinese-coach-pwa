@@ -816,3 +816,29 @@ body.pg130-active{background:#47c1e8!important}
 @media (prefers-reduced-motion:reduce) {
  #pg130 .pg-approved-go {transition:none}
 }
+
+
+/* HSK LEVEL CHOOSER v1: keep the approved Panda Go art sharp and reuse its original source PNG. */
+#pg130 .pg-hsk-page{padding:0!important;width:min(100%,470px)!important;height:100dvh!important;max-height:100dvh!important;background:#ddbbfa;overflow-y:auto;overscroll-behavior:contain}
+#pg130 .pg-hsk-page::before,#pg130 .pg-hsk-page::after{display:none!important}
+#pg130 .pg-hsk-backdrop{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#pg130 .pg-hsk-backdrop img{width:100%;height:100%;object-fit:cover;object-position:center top;max-width:none;filter:none!important;image-rendering:auto}
+#pg130 .pg-hsk-profile{position:absolute;z-index:5;top:max(13px,env(safe-area-inset-top));right:15px}
+#pg130 .pg-hsk-profile button{display:grid;place-items:center;width:37px;height:37px;border:2px solid #fff8ff;border-radius:50%;background:linear-gradient(#fff8fa,#f5a6de);box-shadow:0 3px 8px #733a8a96;color:#7b299f;font-size:23px;font-weight:900}
+#pg130 .pg-hsk-level-list{position:relative;z-index:2;display:grid;gap:clamp(8px,1.12dvh,12px);margin-top:clamp(265px,40dvh,354px);padding:16px 16px 23px;background:linear-gradient(180deg,#e6bcf6f2 0%,#ddbeedfa 20%,#d5b9f1f9 100%);border-top:2px solid #fff4ff;border-radius:28px 28px 0 0;box-shadow:0 -8px 28px #b64ddb50}
+#pg130 .pg-hsk-level{position:relative;display:grid;grid-template-columns:59px 1fr 39px;gap:9px;align-items:center;height:clamp(55px,8.2dvh,72px);padding:4px 9px 4px 7px;text-decoration:none;color:#431650;border:2px solid #f6cdfe;border-radius:40px;background:linear-gradient(110deg,#ffdef7,#ffeafa 55%,#ffceef);box-shadow:inset 0 2px 1px #fff,0 4px 0 #b842b2,0 5px 9px #74288c4b}
+#pg130 .pg-hsk-level .pg-icon{width:53px;height:49px;object-fit:contain;filter:none}
+#pg130 .pg-hsk-level strong{font-size:clamp(23px,5.3vw,29px);font-weight:900;letter-spacing:.1px}
+#pg130 .pg-hsk-arrow,#pg130 .pg-hsk-lock{display:grid;place-items:center;width:37px;height:37px;border:2px solid #fffbff;border-radius:50%;background:linear-gradient(#ff7cdc,#d21ba3);color:#fff;font-size:29px;line-height:1;box-shadow:0 2px 6px #8d3585}
+#pg130 .pg-hsk-lock{font-size:16px;filter:grayscale(.2);background:linear-gradient(#d0a4dc,#987caf)}
+#pg130 .pg-hsk-violet{background:linear-gradient(110deg,#ecd9fd,#f9e4ff,#e4cdf8)}
+#pg130 .pg-hsk-blue{background:linear-gradient(110deg,#c4f1ff,#e9f7ff,#c6dcff);border-color:#d8faff}
+#pg130 .pg-hsk-cyan{background:linear-gradient(110deg,#c5efff,#f4faff,#b6e8ff);border-color:#dbfaff}
+#pg130 .pg-hsk-mint{background:linear-gradient(110deg,#b9f7df,#eefff2,#b6f6e6);border-color:#ddffe8}
+#pg130 .pg-hsk-rose{background:linear-gradient(110deg,#ffd6e8,#fff0f5,#f9bfe6)}
+#pg130 a.pg-hsk-level:focus-visible{outline:4px solid #7036a8;outline-offset:3px}
+#pg130 a.pg-hsk-level:active{transform:translateY(2px);box-shadow:inset 0 2px 1px #fff,0 2px 0 #b842b2,0 3px 6px #74288c4b}
+#pg130 .pg-hsk-unavailable{opacity:.89;cursor:default}
+#pg130 .pg-hsk-page .pg-live-status{position:relative;z-index:3;margin:0 16px}
+@media(max-width:360px){#pg130 .pg-hsk-level-list{margin-top:38dvh;padding-inline:11px}#pg130 .pg-hsk-level{grid-template-columns:50px 1fr 35px}#pg130 .pg-hsk-level .pg-icon{width:48px;height:43px}}
+@media(prefers-reduced-motion:reduce){#pg130 .pg-hsk-level{transition:none}}
