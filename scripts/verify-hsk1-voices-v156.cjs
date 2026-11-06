@@ -16,6 +16,7 @@ vm.runInNewContext(fs.readFileSync(mapFile,'utf8'),ctx);
 const voices=JSON.parse(JSON.stringify(ctx.window.PANDA_HSK1_VOICES));
 assert.equal(Object.keys(voices.female).length,metadata.role_counts.female);
 assert.equal(Object.keys(voices.male).length,metadata.role_counts.male);
+assert.equal(voices.female['日'],'./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3');
 const topicCtx={window:{}};
 vm.runInNewContext(fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8'),topicCtx);
 const topics=JSON.parse(JSON.stringify(topicCtx.window.PANDA_HSK1_FOUNDATIONS));
@@ -24,7 +25,12 @@ function demand(role,hz,where){
  const loc=voices[role]?.[hz];
  assert(loc,where+': no '+role+' Mandarin recording for '+hz);
  const abs=loc.replace(/^\.\//,'');
- assert(abs.startsWith('assets/hsk1-voices-v156/'),where+': invalid audio path '+loc);
+ const nativeRi='assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3';
+ if(role==='female'&&hz==='日'){
+  assert.equal(abs,nativeRi,'日 must use licensed native 4th-tone pronunciation');
+ } else {
+  assert(abs.startsWith('assets/hsk1-voices-v156/'),where+': invalid audio path '+loc);
+ }
  assert(fs.existsSync(abs),where+': missing binary '+abs);
  assert(fs.statSync(abs).size>=1200,where+': MP3 too short '+abs);
  const head=fs.readFileSync(abs).subarray(0,3);
