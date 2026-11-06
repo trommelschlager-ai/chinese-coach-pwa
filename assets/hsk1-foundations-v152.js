@@ -30,8 +30,8 @@ let mediaRecorder=null,micStream=null,micObjectUrl=null,micRecording=false;
 const exerciseOrder=[2,0,3,1];
 const builds=topic.builds||[topic.build];
 const stepTitles=[
- ['Новые слова','▤'],['Тоны и произношение','◉'],['Примеры','▱'],
- ['Диалог','●'],['Собери предложение','✥'],['Говори сам','🎙'],['Итог и повторение','↻']
+ ['Новые слова','📖'],['Тоны и произношение','🎚'],['Примеры','📚'],
+ ['Диалог','💬'],['Собери предложение','🧩'],['Говори сам','🎙'],['Итог и повторение','🔄']
 ];
 const norm=s=>String(s).replace(/[。？！!?.,，\s]/g,'');
 const maps=[
