@@ -23,6 +23,24 @@ try:
  print('Removed old nav badges with sky inpainting')
 except ImportError:
  print('CV2 unavailable; use original image and avoid reporting badges cleaned')
+# Replace any faint inpainting smudges with softly blended clean pink-blue sky,
+# without touching the logo or panda (which start lower in the image).
+W,H=hero.size
+skin=Image.new('RGB',(W,H),(0,0,0))
+mask=Image.new('L',(W,H),0)
+pixels=skin.load();alphas=mask.load()
+for Y in range(min(H,124)):
+ fade_y=1 if Y<57 else max(0,(124-Y)/67)
+ for X in range(527,W):
+  fade_x=min(1,max(0,(X-527)/55))
+  alpha=int(254*fade_x*fade_y)
+  if alpha<=0:continue
+  t=(X-527)/max(1,(W-527))
+  tY=Y/123
+  pixels[X,Y]=(int(234-27*t+8*tY),int(213-9*t+2*tY),int(250+3*t))
+  alphas[X,Y]=alpha
+mask=mask.filter(ImageFilter.GaussianBlur(5))
+hero.paste(skin,(0,0),mask)
 hero.save(ASSETS/'panda-go-hero-clean-v174.webp',format='WEBP',quality=94,method=6)
 
 # Reference-inspired map scene: mirror the existing approved landscape to put
@@ -110,9 +128,9 @@ for filename in ('panda-go-hero-clean-v174.webp','panda-hsk1-mountain-v174.webp'
 # pagoda vector assets rather than copying painted/text-bearing buttons.
 original=Image.open(ASSETS/'panda-go-home-v136-clean.png').convert('RGBA')
 crops=[
- ('1',(85,795,382,956)),
- ('2',(90,790,377,957)),
- ('3',(75,945,386,1113))
+ ('1',(96,844,368,960)),
+ ('2',(92,838,375,960)),
+ ('3',(80,996,380,1138))
 ]
 for level,box in crops:
  sticker=original.crop(box)
