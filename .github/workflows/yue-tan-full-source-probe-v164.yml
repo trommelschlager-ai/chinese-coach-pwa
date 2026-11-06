@@ -1,0 +1,38 @@
+name: Probe full Yue Tan 8597 recording original and mirrors
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  source-access:
+    if: ${{ github.event.pull_request.head.ref == 'review/hsk1-yue-tan-human-audio-coverage-20261106' && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test source endpoints (2 KB each, no full corpus downloads)
+        run: python scripts/probe-yue-tan-full-archive-v164.py
+      - name: Commit verified mirror-access findings to review branch only
+        run: |
+          git config user.name "Panda Go Mandarin Audio Research"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add review/hsk1-yue-tan-v163/full-archive-probe-v164.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "audio(review): record full Yue Tan corpus mirror availability"
+          git push origin "HEAD:refs/heads/${{ github.head_ref }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: PandaGo-Yue-Tan-Full-Corpus-Source-Research
+          path: review/hsk1-yue-tan-v163/full-archive-probe-v164.json
+          if-no-files-found: warn
+          retention-days: 7

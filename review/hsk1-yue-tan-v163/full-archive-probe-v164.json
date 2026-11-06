@@ -1,0 +1,69 @@
+{
+  "status": "READ_ONLY_SOURCE_PROBE_NO_NEW_AUDIO_CLAIM",
+  "target": "Yue Tan full original 8,597 recordings vs 5,596-file MP3 subset",
+  "source_probes": [
+    {
+      "label": "shtooka_original_http",
+      "requested_url": "http://download.shtooka.net/cmn-caen-tan_flac.tar",
+      "accessible": false,
+      "error": "URLError: <urlopen error [Errno -2] Name or service not known>"
+    },
+    {
+      "label": "shtooka_original_https",
+      "requested_url": "https://download.shtooka.net/cmn-caen-tan_flac.tar",
+      "accessible": false,
+      "error": "URLError: <urlopen error [Errno -2] Name or service not known>"
+    },
+    {
+      "label": "shtooka_ogg_original",
+      "requested_url": "https://download.shtooka.net/cmn-caen-tan_ogg.tar",
+      "accessible": false,
+      "error": "URLError: <urlopen error [Errno -2] Name or service not known>"
+    },
+    {
+      "label": "shtooka_credits",
+      "requested_url": "https://packs.shtooka.net/cmn-caen-tan/readme.txt",
+      "accessible": false,
+      "error": "URLError: <urlopen error [Errno -2] Name or service not known>"
+    },
+    {
+      "label": "shtooka_pack_index",
+      "requested_url": "https://packs.shtooka.net/cmn-caen-tan/",
+      "accessible": false,
+      "error": "URLError: <urlopen error [Errno -2] Name or service not known>"
+    },
+    {
+      "label": "yojik_archive_listing",
+      "requested_url": "https://www.yojik.eu/oldshtooka/download.html",
+      "http_status": 206,
+      "final_url": "https://www.yojik.eu/oldshtooka/download.html",
+      "content_type": "text/html",
+      "content_length_header": "2048",
+      "content_range": "bytes 0-2047/38740",
+      "read_bytes": 2048,
+      "sample_prefix_hex": "3c21444f43545950452068746d6c3e0a",
+      "accessible": true,
+      "page_links_containing_cmn": []
+    },
+    {
+      "label": "yojik_archive_listing_2",
+      "requested_url": "https://aijan.yojik.net/oldshtooka/download.html",
+      "accessible": false,
+      "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'aijan.yojik.net'. (_ssl.c:1011)>"
+    },
+    {
+      "label": "commercial_permitted_audio_pack",
+      "requested_url": "https://www.dropbox.com/s/bh3ctzsgwbagbw0/fc_mandarin_audio_pack.zip?dl=1",
+      "http_status": 206,
+      "final_url": "https://ucdb52258675ca832f50fd03b687.dl.dropboxusercontent.com/cd/0/get/DLa_qNQeK0ehUCDMD4uV7mWmbXBOGy6p3jloVVz6vffCpw6jh_3N6gj37FWmhatK6PHi93N39x6LV1o6NtNtfR0RFjOPRZhvAyi5DIXU9OiWCnyNHn71agHtzK9jzUE2UFM/file?dl=1",
+      "content_type": "application/binary",
+      "content_length_header": "2048",
+      "content_range": "bytes 0-2047/603974575",
+      "read_bytes": 2048,
+      "sample_prefix_hex": "504b03040a00000000004854e44a0000",
+      "accessible": true,
+      "seems_binary": true
+    }
+  ],
+  "note": "Even if a URL is reachable, exact recordings still require verified index, metadata, file inspection, tone QA, and licensing."
+}

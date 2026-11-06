@@ -1,0 +1,473 @@
+{
+  "status": "RECORDING_BRIEF_ONLY_NOT_PUBLISHED",
+  "speaker": "Yue Tan native female Mandarin; no synthetic voice substitution",
+  "source": "review/hsk1-yue-tan-v163/coverage.json",
+  "total_lesson_audio_positions": 124,
+  "human_matches": 59,
+  "missing_audio_positions": 65,
+  "unique_recording_scripts": 56,
+  "duplicate_punctuation_variants": 9,
+  "short_phrases_upto_3_hanzi": 33,
+  "long_phrases_4plus_hanzi": 23,
+  "needs_native_review": true,
+  "not_suitable_to_splice_syllables": true,
+  "recordings": [
+    {
+      "base_text": "妈",
+      "recording_text": "妈",
+      "variants": [
+        "妈"
+      ],
+      "pinyin": "mā"
+    },
+    {
+      "base_text": "八月",
+      "recording_text": "八月",
+      "variants": [
+        "八月"
+      ],
+      "pinyin": "bā yuè"
+    },
+    {
+      "base_text": "二月",
+      "recording_text": "二月",
+      "variants": [
+        "二月"
+      ],
+      "pinyin": "èr yuè"
+    },
+    {
+      "base_text": "九月",
+      "recording_text": "九月",
+      "variants": [
+        "九月"
+      ],
+      "pinyin": "jiǔ yuè"
+    },
+    {
+      "base_text": "六月",
+      "recording_text": "六月",
+      "variants": [
+        "六月"
+      ],
+      "pinyin": "liù yuè"
+    },
+    {
+      "base_text": "你好",
+      "recording_text": "你好！",
+      "variants": [
+        "你好",
+        "你好！"
+      ],
+      "pinyin": "nǐ hǎo"
+    },
+    {
+      "base_text": "拼音",
+      "recording_text": "拼音",
+      "variants": [
+        "拼音"
+      ],
+      "pinyin": "pīnyīn"
+    },
+    {
+      "base_text": "七月",
+      "recording_text": "七月",
+      "variants": [
+        "七月"
+      ],
+      "pinyin": "qī yuè"
+    },
+    {
+      "base_text": "三月",
+      "recording_text": "三月",
+      "variants": [
+        "三月"
+      ],
+      "pinyin": "sān yuè"
+    },
+    {
+      "base_text": "十三",
+      "recording_text": "十三",
+      "variants": [
+        "十三"
+      ],
+      "pinyin": "shísān"
+    },
+    {
+      "base_text": "十一",
+      "recording_text": "十一",
+      "variants": [
+        "十一"
+      ],
+      "pinyin": "Shíyī"
+    },
+    {
+      "base_text": "十月",
+      "recording_text": "十月",
+      "variants": [
+        "十月"
+      ],
+      "pinyin": "shí yuè"
+    },
+    {
+      "base_text": "四月",
+      "recording_text": "四月",
+      "variants": [
+        "四月"
+      ],
+      "pinyin": "sì yuè"
+    },
+    {
+      "base_text": "我的",
+      "recording_text": "我的",
+      "variants": [
+        "我的"
+      ],
+      "pinyin": "wǒ de"
+    },
+    {
+      "base_text": "五月",
+      "recording_text": "五月",
+      "variants": [
+        "五月"
+      ],
+      "pinyin": "wǔ yuè"
+    },
+    {
+      "base_text": "下雪",
+      "recording_text": "下雪",
+      "variants": [
+        "下雪"
+      ],
+      "pinyin": "xià xuě"
+    },
+    {
+      "base_text": "下雨",
+      "recording_text": "下雨",
+      "variants": [
+        "下雨"
+      ],
+      "pinyin": "xià yǔ"
+    },
+    {
+      "base_text": "一百",
+      "recording_text": "一百",
+      "variants": [
+        "一百"
+      ],
+      "pinyin": "yì bǎi"
+    },
+    {
+      "base_text": "一个",
+      "recording_text": "一个",
+      "variants": [
+        "一个"
+      ],
+      "pinyin": "yí ge"
+    },
+    {
+      "base_text": "一月",
+      "recording_text": "一月",
+      "variants": [
+        "一月"
+      ],
+      "pinyin": "yī yuè"
+    },
+    {
+      "base_text": "二十三",
+      "recording_text": "二十三",
+      "variants": [
+        "二十三"
+      ],
+      "pinyin": "èrshísān"
+    },
+    {
+      "base_text": "两个人",
+      "recording_text": "两个人",
+      "variants": [
+        "两个人"
+      ],
+      "pinyin": "liǎng ge rén"
+    },
+    {
+      "base_text": "三十五",
+      "recording_text": "三十五",
+      "variants": [
+        "三十五"
+      ],
+      "pinyin": "Sānshíwǔ"
+    },
+    {
+      "base_text": "十二月",
+      "recording_text": "十二月",
+      "variants": [
+        "十二月"
+      ],
+      "pinyin": "shí'èr yuè"
+    },
+    {
+      "base_text": "十一月",
+      "recording_text": "十一月",
+      "variants": [
+        "十一月"
+      ],
+      "pinyin": "shíyī yuè"
+    },
+    {
+      "base_text": "我很忙",
+      "recording_text": "我很忙。",
+      "variants": [
+        "我很忙。"
+      ],
+      "pinyin": "Wǒ hěn máng."
+    },
+    {
+      "base_text": "星期二",
+      "recording_text": "星期二",
+      "variants": [
+        "星期二"
+      ],
+      "pinyin": "xīngqīèr"
+    },
+    {
+      "base_text": "星期六",
+      "recording_text": "星期六",
+      "variants": [
+        "星期六"
+      ],
+      "pinyin": "xīngqīliù"
+    },
+    {
+      "base_text": "星期三",
+      "recording_text": "星期三",
+      "variants": [
+        "星期三"
+      ],
+      "pinyin": "xīngqīsān"
+    },
+    {
+      "base_text": "星期四",
+      "recording_text": "星期四",
+      "variants": [
+        "星期四"
+      ],
+      "pinyin": "xīngqīsì"
+    },
+    {
+      "base_text": "星期天",
+      "recording_text": "星期天",
+      "variants": [
+        "星期天"
+      ],
+      "pinyin": "xīngqītiān"
+    },
+    {
+      "base_text": "星期五",
+      "recording_text": "星期五",
+      "variants": [
+        "星期五"
+      ],
+      "pinyin": "xīngqīwǔ"
+    },
+    {
+      "base_text": "星期一",
+      "recording_text": "星期一",
+      "variants": [
+        "星期一"
+      ],
+      "pinyin": "xīngqīyī"
+    },
+    {
+      "base_text": "冬天很冷",
+      "recording_text": "冬天很冷。",
+      "variants": [
+        "冬天很冷。"
+      ],
+      "pinyin": "Dōngtiān hěn lěng."
+    },
+    {
+      "base_text": "今天很冷",
+      "recording_text": "今天很冷。",
+      "variants": [
+        "今天很冷",
+        "今天很冷。"
+      ],
+      "pinyin": "Jīntiān hěn lěng."
+    },
+    {
+      "base_text": "今天下雨",
+      "recording_text": "今天下雨。",
+      "variants": [
+        "今天下雨",
+        "今天下雨。"
+      ],
+      "pinyin": "Jīntiān xià yǔ."
+    },
+    {
+      "base_text": "明天下雨",
+      "recording_text": "明天下雨。",
+      "variants": [
+        "明天下雨",
+        "明天下雨。"
+      ],
+      "pinyin": "Míngtiān xià yǔ."
+    },
+    {
+      "base_text": "你是学生",
+      "recording_text": "你是学生",
+      "variants": [
+        "你是学生"
+      ],
+      "pinyin": "Nǐ shì xuésheng."
+    },
+    {
+      "base_text": "他是老师",
+      "recording_text": "他是老师",
+      "variants": [
+        "他是老师"
+      ],
+      "pinyin": "Tā shì lǎoshī."
+    },
+    {
+      "base_text": "我的妈妈",
+      "recording_text": "我的妈妈",
+      "variants": [
+        "我的妈妈"
+      ],
+      "pinyin": "wǒ de māma"
+    },
+    {
+      "base_text": "我是老师",
+      "recording_text": "我是老师。",
+      "variants": [
+        "我是老师",
+        "我是老师。"
+      ],
+      "pinyin": "Wǒ shì lǎoshī."
+    },
+    {
+      "base_text": "我有两个",
+      "recording_text": "我有两个。",
+      "variants": [
+        "我有两个。"
+      ],
+      "pinyin": "Wǒ yǒu liǎng ge."
+    },
+    {
+      "base_text": "今天星期五",
+      "recording_text": "今天星期五。",
+      "variants": [
+        "今天星期五",
+        "今天星期五。"
+      ],
+      "pinyin": "Jīntiān xīngqīwǔ."
+    },
+    {
+      "base_text": "你是老师吗",
+      "recording_text": "你是老师吗？",
+      "variants": [
+        "你是老师吗？"
+      ],
+      "pinyin": "Nǐ shì lǎoshī ma?"
+    },
+    {
+      "base_text": "我不是老师",
+      "recording_text": "我不是老师。",
+      "variants": [
+        "我不是老师。"
+      ],
+      "pinyin": "Wǒ bú shì lǎoshī."
+    },
+    {
+      "base_text": "我没有哥哥",
+      "recording_text": "我没有哥哥。",
+      "variants": [
+        "我没有哥哥",
+        "我没有哥哥。"
+      ],
+      "pinyin": "Wǒ méiyǒu gēge."
+    },
+    {
+      "base_text": "这是我爸爸",
+      "recording_text": "这是我爸爸。",
+      "variants": [
+        "这是我爸爸",
+        "这是我爸爸。"
+      ],
+      "pinyin": "Zhè shì wǒ bàba."
+    },
+    {
+      "base_text": "不是我是学生",
+      "recording_text": "不是，我是学生。",
+      "variants": [
+        "不是，我是学生。"
+      ],
+      "pinyin": "Bú shì, wǒ shì xuésheng."
+    },
+    {
+      "base_text": "今天几月几号",
+      "recording_text": "今天几月几号？",
+      "variants": [
+        "今天几月几号？"
+      ],
+      "pinyin": "Jīntiān jǐ yuè jǐ hào?"
+    },
+    {
+      "base_text": "今天是星期五",
+      "recording_text": "今天是星期五。",
+      "variants": [
+        "今天是星期五。"
+      ],
+      "pinyin": "Jīntiān shì xīngqīwǔ."
+    },
+    {
+      "base_text": "是这是我妈妈",
+      "recording_text": "是，这是我妈妈。",
+      "variants": [
+        "是，这是我妈妈。"
+      ],
+      "pinyin": "Shì, zhè shì wǒ māma."
+    },
+    {
+      "base_text": "我有一个妹妹",
+      "recording_text": "我有一个妹妹。",
+      "variants": [
+        "我有一个妹妹",
+        "我有一个妹妹。"
+      ],
+      "pinyin": "Wǒ yǒu yí ge mèimei."
+    },
+    {
+      "base_text": "今天十一月六号",
+      "recording_text": "今天十一月六号。",
+      "variants": [
+        "今天十一月六号。"
+      ],
+      "pinyin": "Jīntiān shíyī yuè liù hào."
+    },
+    {
+      "base_text": "今天天气怎么样",
+      "recording_text": "今天天气怎么样？",
+      "variants": [
+        "今天天气怎么样？"
+      ],
+      "pinyin": "Jīntiān tiānqì zěnmeyàng?"
+    },
+    {
+      "base_text": "有我有一个妹妹",
+      "recording_text": "有，我有一个妹妹。",
+      "variants": [
+        "有，我有一个妹妹。"
+      ],
+      "pinyin": "Yǒu, wǒ yǒu yí ge mèimei."
+    },
+    {
+      "base_text": "二零二六年十一月六日",
+      "recording_text": "二零二六年十一月六日",
+      "variants": [
+        "二零二六年十一月六日"
+      ],
+      "pinyin": "Èr líng èr liù nián shíyī yuè liù rì"
+    }
+  ]
+}
