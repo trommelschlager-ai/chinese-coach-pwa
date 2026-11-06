@@ -94,7 +94,7 @@ function home(){
    ?'<a class="pg-hsk-level pg-hsk-'+color+'" href="./hsk1-map.html" aria-label="Открыть HSK 1 — карта уроков">'+body+'</a>'
    :'<div class="pg-hsk-level pg-hsk-'+color+' pg-hsk-unavailable" aria-label="HSK '+n+' — готовится">'+body+'<span class="pg-hsk-coming" aria-hidden="true">🔒</span></div>';
  }).join('');
- frame(artwork+brand+'<button hidden data-action="resume" aria-label="Продолжить предыдущий курс">Продолжить</button><nav class="pg-hsk-level-list" aria-label="Выбери уровень китайского языка">'+buttons+'</nav>','pg-home pg-hsk-page');
+ frame(artwork+'<div class="pg-hsk-top-clean" aria-hidden="true"></div>'+brand+'<button hidden data-action="resume" aria-label="Продолжить предыдущий курс">Продолжить</button><nav class="pg-hsk-level-list" aria-label="Выбери уровень китайского языка">'+buttons+'</nav>','pg-home pg-hsk-page');
 }
 function learn(){frame(heading('Учиться','book','home','Основы китайского шаг за шагом')+`<nav class="pg-menu">${card('Звуки и тоны','Произношение и правила чтения','headphones','tones')}${card('Базовые слова','Самые нужные слова','books','words')}${card('Иероглифы','Письмо и порядок черт','brush','hanzi')}${card('Диалоги','Готовые фразы для общения','chat','dialogues')}</nav><div class="pg-approved-go-footer">${primary('Дальше Go →','learn-go')}</div>`)}
 function training(){frame(heading('Тренироваться','controller','home','Закрепляй знания в разных форматах')+`<nav class="pg-menu">${card('Практика','Упражнения по темам','target','practice')}${card('Тест','Проверь свои знания','clipboard','quiz')}${card('Игровая практика','Игры и интерактивные задания','controller','games')}</nav><img class="pg-scenery" src="${A}training-panda.webp" alt="Панда и золотой кубок">`,'pg-training')}
