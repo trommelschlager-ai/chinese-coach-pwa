@@ -104,3 +104,25 @@ canvas.save(ASSETS/'panda-stone-staircase-v174.webp',format='WEBP',quality=94,me
 for filename in ('panda-go-hero-clean-v174.webp','panda-hsk1-mountain-v174.webp','panda-stone-staircase-v174.webp'):
  p=ASSETS/filename
  print('Created',filename,p.stat().st_size,'bytes',Image.open(p).size)
+
+# Three existing high-detail course illustrations (book, scroll and speech
+# bubbles) are reused as transparent stickers; 4-6 keep custom fan, lantern,
+# pagoda vector assets rather than copying painted/text-bearing buttons.
+original=Image.open(ASSETS/'panda-go-home-v136-clean.png').convert('RGBA')
+crops=[
+ ('1',(85,795,382,956)),
+ ('2',(90,790,377,957)),
+ ('3',(75,945,386,1113))
+]
+for level,box in crops:
+ sticker=original.crop(box)
+ alpha=Image.new('L',sticker.size,0)
+ ad=ImageDraw.Draw(alpha)
+ pad=9
+ ad.rounded_rectangle((pad,pad,sticker.width-pad,sticker.height-pad),radius=31,fill=255)
+ alpha=alpha.filter(ImageFilter.GaussianBlur(10))
+ sticker.putalpha(alpha)
+ sticker.thumbnail((270,145),resample=Image.Resampling.LANCZOS)
+ dest=ASSETS/f'panda-hsk-card-{level}-v174.webp'
+ sticker.save(dest,format='WEBP',quality=94,method=6)
+ print('Generated illustrated HSK card',level,sticker.size,dest.stat().st_size)
