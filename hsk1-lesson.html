@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#b348c6">
 <title>HSK 1 · Panda Go</title>
-<link rel="stylesheet" href="./assets/hsk1-foundations-v152.css?v=154">
+<link rel="stylesheet" href="./assets/hsk1-foundations-v152.css?v=161">
 </head>
 <body>
 <main class="lesson-shell" id="hsk1-app">
@@ -14,6 +14,14 @@
 <div><strong id="course-heading">HSK 1</strong><small id="lesson-count">Урок 1 · Шаг 1 из 7</small></div>
 </header>
 <div class="lesson-progress" aria-label="Прогресс урока"><div id="progress-fill"></div></div>
+<div class="hsk1-speech-speed" aria-label="Настройка скорости женской речи">
+ <label for="hsk1-female-voice-speed">🎧 Темп женской речи</label>
+ <select id="hsk1-female-voice-speed" aria-label="Скорость женской речи">
+  <option value="0.75">Медленно · 0,75×</option>
+  <option value="0.85" selected>Учебный · 0,85×</option>
+  <option value="1">Оригинал · 1×</option>
+ </select>
+</div>
 <nav class="lesson-steps" id="lesson-steps" aria-label="Шаги выбранного урока"></nav>
 <section class="lesson-body" id="lesson-body" aria-live="polite" aria-label="Материалы урока">
 <h1 id="stage-title">Материал урока</h1>
@@ -32,6 +40,6 @@
 
 <script src="./assets/hsk1-foundations-data-v152.js?v=154"></script>
 <script src="./assets/hsk1-voices-map-v160.js?v=160"></script>
-<script src="./assets/hsk1-foundations-v152.js?v=160"></script>
+<script src="./assets/hsk1-foundations-v152.js?v=161"></script>
 </body>
 </html>
