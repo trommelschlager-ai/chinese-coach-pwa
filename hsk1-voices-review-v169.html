@@ -146,6 +146,7 @@ function render(){
   btns.append(feedback);card.append(btns);$('words').append(card);
  });
 }
+$('search').addEventListener('input',()=>{if(!busy)render()});
 $('missing').onclick=()=>{if(busy)return;stop();mode='missing';rows=missing;$('search').value='';render();status('Открыты 56 фраз, для которых пока нет настоящих женских записей.')};
 $('all').onclick=()=>{if(busy)return;stop();mode='all';rows=allRows;$('search').value='';render();status('Открыты все 124 синтетических женских MP3 из уроков HSK 1.')};
 $('playAll').onclick=()=>{if(!busy)listen(0,true)};
