@@ -28,8 +28,17 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  assert.equal(errors.length,0,'Runtime error on lesson '+topicNo+': '+errors.join('; '));
  assert.equal(d.querySelectorAll('.lesson-step').length,7,'Seven stages in '+topicNo);
  const words=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].words.length;
- assert.equal(d.querySelectorAll('.lesson-word').length,words,'Vocabulary card count in '+topicNo);
- assert(!d.getElementById('lesson-next').disabled,'First stage is navigable');
+ assert.equal(d.querySelectorAll('.lesson-word').length,Math.min(4,words),'First four cards visible');
+ assert(d.getElementById('lesson-next').disabled,'Must visit all word groups first');
+ let seen=0;
+ while(d.querySelector('[data-word-next]')){
+   seen+=d.querySelectorAll('.lesson-word').length;
+   d.querySelector('[data-word-next]').click();
+ }
+ seen+=d.querySelectorAll('.lesson-word').length;
+ assert.equal(seen,words,'All vocabulary cards in '+topicNo);
+ assert(!d.getElementById('lesson-next').disabled,'Last word group unlocks next step');
+ assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-'+w.PANDA_HSK1_FOUNDATIONS[topicNo-1].id)).wordPage,Math.ceil(words/4)-1);
  if(topicNo===1){
   for(const k of audioKeys)assert(w.courseHumanAudio[k],'Tone MP3 missing for '+k);
   d.getElementById('lesson-next').click();
@@ -42,13 +51,29 @@ for(const topicNo of [1,2,3,4,5,6,7]){
     btn.click();
   }
   assert(!d.getElementById('lesson-next').disabled,'Correct tone listening unlocks next stage');
+ } else {
+  d.getElementById('lesson-next').click();
+  assert(d.querySelector('[data-listen-prompt]'),'Same-speaker ear training is visible');
+  assert(d.getElementById('lesson-next').disabled,'Ear exercise cannot be skipped');
+  const data=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].listen;
+  for(const [hz] of data.items)assert(w.courseHumanAudio[hz],'Missing recorded single-speaker lexeme '+hz);
+  for(const answer of [2,0,3,1]){
+    d.querySelector('[data-listen-prompt]').click();
+    d.querySelector('[data-listen-answer="'+answer+'"]').click();
+  }
+  assert(!d.getElementById('lesson-next').disabled,'All four listening questions unlock next');
  }
  while(d.querySelector('#lesson-count').textContent!=='Шаг 5 из 7')d.getElementById('lesson-next').click();
  assert(d.getElementById('lesson-next').disabled,'Builder must block unverified answer in '+topicNo);
- const target=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].build.target;
- target.forEach((_,i)=>{const btn=d.querySelector('[data-add="'+i+'"]');assert(btn,'Missing composition token '+i);btn.click()});
- d.querySelector('[data-verify-build]').click();
- assert(!d.getElementById('lesson-next').disabled,'Correct assembly should unlock next in '+topicNo);
+ const builds=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].builds;
+ assert.equal(builds.length,3,'Three independent assembly tasks');
+ for(let k=0;k<builds.length;k++){
+  const target=builds[k].target;
+  target.forEach((_,i)=>{const btn=d.querySelector('[data-add="'+i+'"]');assert(btn,'Missing composition token '+i+' in task '+k);btn.click()});
+  d.querySelector('[data-verify-build]').click();
+  assert.equal(d.getElementById('lesson-next').disabled,k<2,'Task '+k+' did not unlock correctly');
+ }
+ assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-'+w.PANDA_HSK1_FOUNDATIONS[topicNo-1].id)).buildProgress,3,'Three assembly tasks saved');
  d.getElementById('lesson-next').click();
  assert(d.getElementById('lesson-next').disabled,'Speaking confirmation needed');
  d.querySelector('[data-spoken]').click();
@@ -66,4 +91,4 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  assert.equal(w.localStorage.getItem('pg-hsk1-completed-v1'),null,'Old completion data must stay untouched');
  dom.window.close();
 }
-console.log('HSK 1 v152: seven new topical lessons, four tones, explanation, interactive assembly, quiz, independent progress and old-course isolation OK.');
+console.log('HSK 1 v154: seven lessons, all vocabulary pages, 28 same-voice listening checks, 21 sentence tasks, quiz and isolated progress OK.');
