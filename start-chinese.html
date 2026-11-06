@@ -43,11 +43,47 @@ summary { cursor: pointer; padding: 10px 0; }
     .lesson-menu a { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 12px; border-radius: 14px; border: 1px solid #dec0d8; background: #fffafd; text-decoration: none; font-size: 15px; }
     .lesson-menu a[aria-current="page"] { border: 2px solid #b33b85; }
     .lesson-menu small { flex-shrink: 0; font-size: 12px; }
-  </style>
+  
+/* HSK 1 illustrated lessons: clear readable cards over a sharp non-stretched background. */
+html{background:#8f61b7}
+body{background:linear-gradient(110deg,#7846b0,#a364bc);color:#3d1747}
+main{position:relative;isolation:isolate;min-height:100dvh;max-width:470px;padding:clamp(14px,4vw,20px);padding-bottom:max(22px,env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(253,243,255,.90),rgba(243,215,250,.89)),url("./assets/lessons-backdrop.webp") center center/cover no-repeat;box-shadow:0 0 18px #4e256e70;border-inline:2px solid #fce0a7}
+main::before{content:"";position:absolute;z-index:-1;inset:0 0 auto;height:85px;background:url("./assets/panda-v130/flowers.webp") center top/100% auto no-repeat;pointer-events:none}
+header{align-items:center;position:relative;z-index:2;color:#5c286e}
+header a{display:inline-flex;min-height:42px;align-items:center;padding:7px 12px;color:#6e2a85;text-decoration:none;border:1px solid #f3b7e5;border-radius:24px;background:#fff7fdc9;font-size:14px;font-weight:750}
+header span{font-weight:850;font-size:16px;text-align:right}
+#step{display:inline-block;margin:22px 0 11px;background:#ffeafbdf;border:1px solid #e7b8ec;padding:5px 13px;border-radius:15px;font-weight:800;color:#7c307c}
+progress{height:10px;display:block;border-radius:99px;overflow:hidden;accent-color:#de359b;background:#ead1eb}
+progress::-webkit-progress-bar{background:#e5cce8;border-radius:99px}progress::-webkit-progress-value{background:linear-gradient(90deg,#ee77c5,#a13de5);border-radius:99px}
+h1{color:#4c1b5d;font-size:clamp(27px,6.4vw,34px);font-weight:900;letter-spacing:-.5px;line-height:1.18;margin:23px 0}
+.card,.line{background:#fff9fff5;border:1.5px solid #e9b7e4;border-radius:22px;box-shadow:0 6px 13px #8c45933d,inset 0 1px #fff;padding:19px;margin:12px 0}
+.word{min-height:128px;grid-template-columns:1fr auto;gap:14px}
+.word [lang="zh-Hans"]{font-size:38px;line-height:1.25;color:#4d215d}
+.py{font-size:19px;color:#75408e;margin:7px 0}
+.word p{font-size:19px;color:#58245d}
+button{border:1.5px solid #dab2df;background:linear-gradient(160deg,#fff9ff,#f3e1fd);box-shadow:0 2px 5px #904e9e26;color:#622871;font-weight:700}
+.word button{width:66px;height:66px;border-radius:24px;font-size:25px;background:linear-gradient(150deg,#fff0fd,#eccffc)}
+.primary{background:linear-gradient(180deg,#ff9bd8,#ed53ae 49%,#b92da4);border:2px solid #fff2fc;color:white;font-size:19px;min-height:54px;border-radius:28px;box-shadow:inset 0 1px #fff8,0 4px 0 #8e2f96,0 9px 16px #ae529d66}
+.line[data-active="true"]{border-color:#df41b7;background:#ffddf3}
+.line>small{font-weight:800;color:#85348f}
+.line [lang="zh-Hans"]{font-size:29px;line-height:1.4;overflow-wrap:anywhere}
+.line button{background:linear-gradient(130deg,#fff8fc,#f3d7ef);min-height:44px}
+.answers{gap:13px}
+.answers button{padding:13px 15px;border-radius:15px;font-size:18px}
+.answers button[aria-pressed="true"]{background:#ffe0f5;border:2px solid #cf3aab}
+nav[aria-label="Шаги урока"]{position:relative;z-index:1;margin:16px 0 0;gap:15px;padding-bottom:20px}
+nav[aria-label="Шаги урока"] button{width:100%}
+.lesson-menu summary{background:#fff9ffbb;border-radius:15px;padding:9px 15px;border:1px solid #e5bee4}
+.lesson-menu nav{position:relative;z-index:4;gap:10px}
+.lesson-menu a{background:#fff8ffed;border-color:#ecc2e5;border-radius:17px}
+#feedback{color:#763278;font-weight:750}
+@media(min-width:700px){main{border-radius:25px}}
+
+</style>
 </head>
 <body>
   <main>
-    <header><a href="./index.html">← Главная</a><span>Знакомство</span></header>
+    <header><a href="./hsk1-map.html">← Карта HSK 1</a><span>Знакомство</span></header>
     <p id="step"></p>
     <progress max="6" value="0" aria-label="Прогресс урока"></progress>
     <h1 tabindex="-1"></h1>
@@ -60,6 +96,6 @@ summary { cursor: pointer; padding: 10px 0; }
   </main>
   
   <script src="./assets/guided-voice-v1506.js?v=1"></script>
-  <script src="./assets/guided-introduction.js?v=6"></script>
+  <script src="./assets/guided-introduction.js?v=7"></script>
 </body>
 </html>
