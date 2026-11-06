@@ -49,10 +49,10 @@ body:has(.map-shell){background:#9a58c5}
 .map-shell .node.locked .circle{background:linear-gradient(#e2d7ee,#89789d);border-color:#fff0d6}
 .map-shell .node.current .circle,.map-shell .node.done .circle{background:linear-gradient(150deg,#d8ff88,#66c849 53%,#0c9928)}
 .map-shell .node.done .arrow{color:#18ac43}
-.map-shell .node[data-num="7"]{top:2%;left:40%}.map-shell .node[data-num="6"]{top:15%;left:30%}
-.map-shell .node[data-num="5"]{top:28%;left:17%}.map-shell .node[data-num="4"]{top:41%;left:25%}
-.map-shell .node[data-num="3"]{top:54%;left:8%}.map-shell .node[data-num="2"]{top:67%;left:28%}
-.map-shell .node[data-num="1"]{top:80%;left:29%}
+.map-shell .node[data-num="7"]{top:2%;left:21%}.map-shell .node[data-num="6"]{top:15%;left:20%}
+.map-shell .node[data-num="5"]{top:28%;left:17%}.map-shell .node[data-num="4"]{top:41%;left:21%}
+.map-shell .node[data-num="3"]{top:54%;left:8%}.map-shell .node[data-num="2"]{top:67%;left:21%}
+.map-shell .node[data-num="1"]{top:80%;left:21%}
 .map-shell .panda{width:clamp(78px,25vw,123px);bottom:2%;left:0;right:auto;object-fit:contain}
 @media(max-width:360px){.map-shell .node{width:83%;min-height:55px;gap:5px}.map-shell .node .circle{width:47px;height:47px}.map-shell .node strong{font-size:13px}.map-shell .node[data-num="7"]{left:18%}.map-shell .node[data-num="6"]{left:17%}.map-shell .node[data-num="4"]{left:13%}.map-shell .node[data-num="2"]{left:13%}.map-shell .node[data-num="1"]{left:16%}}
 
