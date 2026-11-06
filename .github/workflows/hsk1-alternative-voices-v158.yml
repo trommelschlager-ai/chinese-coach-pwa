@@ -1,0 +1,58 @@
+name: Preview alternative Mandarin female voices (not release)
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  kokoro-alternatives:
+    if: ${{ github.event.pull_request.head.ref == 'test/hsk1-alternative-mandarin-voices-20261106' && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install free Kokoro Chinese TTS
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "kokoro==0.9.4" "misaki[zh]>=0.9" numpy soundfile
+          sudo apt-get update -qq && sudo apt-get install -y ffmpeg
+      - name: Create two alternative female timbre previews
+        run: python scripts/preview-hsk1-alternative-voices-v158.py kokoro
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: panda-go-alternative-voices-kokoro-xiaoyi-xiaoni
+          path: .voice-staging/hsk1-alternatives-v158/
+          retention-days: 7
+          if-no-files-found: warn
+  melotts-alternative:
+    if: ${{ github.event.pull_request.head.ref == 'test/hsk1-alternative-mandarin-voices-20261106' && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install independent Chinese MeloTTS (MIT)
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          git clone --depth=1 https://github.com/myshell-ai/MeloTTS.git /tmp/MeloTTS
+          python -m pip install -e /tmp/MeloTTS
+          # Older MeloTTS/librosa imports pkg_resources, removed from latest setuptools.
+          python -m pip install 'setuptools<81'
+          # MeloTTS imports Japanese MeCab even when generating Chinese speech.
+          python -m unidic download
+          sudo apt-get update -qq && sudo apt-get install -y ffmpeg
+      - name: Render seven Mandarin pronunciation contrasts
+        run: python scripts/preview-hsk1-alternative-voices-v158.py melo
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: panda-go-alternative-voice-melotts-zh
+          path: .voice-staging/hsk1-alternatives-v158/
+          retention-days: 7
+          if-no-files-found: warn
