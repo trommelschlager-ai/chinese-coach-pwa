@@ -35,6 +35,9 @@ try{
   await page.locator('#lesson-next').click();
   assert(await page.locator('.lesson-tone-grid').isVisible());
   await capture('03-lesson1-four-tones');
+  assert(await page.locator('#lesson-next').isDisabled(),'Tone discrimination is required');
+  for(const tone of [3,1,4,2])await page.locator('[data-tone-choice="'+tone+'"]').click();
+  assert(await page.locator('#lesson-next').isEnabled(),'Four correct tone choices unlock examples');
   await page.locator('#lesson-next').click();
   assert(await page.locator('.lesson-character-grid').isVisible());
   await page.locator('#lesson-next').click();
