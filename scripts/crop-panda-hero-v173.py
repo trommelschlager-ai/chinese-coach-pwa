@@ -23,3 +23,18 @@ with Image.open(source) as image:
     print('Cropped approved hero',image.size,'=>',cropped.size,output.stat().st_size,'bytes')
     if output.stat().st_size > 1900000:
         raise SystemExit('Hero image too large for an offline mobile course')
+
+# The existing map art contains a large panda PRINTED across the left side
+# of the landscape. Use the right-hand scenic composition, so the only panda
+# in the HSK map is the separate actual PNG/SVG at the bottom of the trail.
+map_source=root/'assets/approved-panda-lake-v112.webp'
+map_output=root/'assets/panda-hsk1-landscape-clean-v173.webp'
+with Image.open(map_source) as image:
+    target_width=min(image.width,round(image.height*0.49))
+    offset=max(0,image.width-target_width)
+    scene=image.convert('RGB').crop((offset,0,image.width,image.height))
+    scene.save(map_output,'WEBP',quality=93,method=6)
+    print('Cropped approved scenic map',image.size,'=>',scene.size,
+          'left crop',offset,'bytes',map_output.stat().st_size)
+    if map_output.stat().st_size>1900000:
+        raise SystemExit('Scenic map too large for offline mobile course')
