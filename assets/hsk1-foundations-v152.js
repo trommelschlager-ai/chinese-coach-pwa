@@ -67,12 +67,39 @@ function stopAudio(){playId++;if(currentAudio){currentAudio.onended=null;current
  // Native-human listening samples and the user's own mic recording are not modified.
 // The rejected female Kokoro voice is replaced by independent Mandarin MeloTTS.
 // Never alter the phonetic pitch or stretch Mandarin syllables.
-const FEMALE_MANDARIN_RATE=1.0;
+// Slower learning pace for female Mandarin MeloTTS only, with pitch preservation.
+// The user's microphone and human tone reference recordings stay at original speed.
+// Persist separately from lesson progress so changing a preference never alters completion.
+const FEMALE_SPEED_KEY='pg-hsk1-female-speed-v161';
+const FEMALE_SPEED_OPTIONS=[0.75,0.85,1.0];
+let femaleSpeed=0.85;
+try {
+ const remembered=Number(localStorage.getItem(FEMALE_SPEED_KEY));
+ if(FEMALE_SPEED_OPTIONS.includes(remembered))femaleSpeed=remembered;
+} catch {}
+function isFemaleLessonClip(file,role){
+ return role==='female'&&typeof file==='string'&&file.includes('/hsk1-voices-v160/');
+}
 function tuneVoice(audio,file,role){
- if(role==='female'&&typeof file==='string'&&file.includes('/hsk1-voices-v160/')){
-  audio.playbackRate=FEMALE_MANDARIN_RATE;
+ if(isFemaleLessonClip(file,role)){
+  audio.playbackRate=femaleSpeed;
   if('preservesPitch' in audio)audio.preservesPitch=true;
+  if('webkitPreservesPitch' in audio)audio.webkitPreservesPitch=true;
  }
+}
+const speedControl=$('hsk1-female-voice-speed');
+if(speedControl){
+ speedControl.value=String(femaleSpeed);
+ speedControl.addEventListener('change',()=>{
+  const chosen=Number(speedControl.value);
+  if(!FEMALE_SPEED_OPTIONS.includes(chosen))return;
+  femaleSpeed=chosen;
+  try{localStorage.setItem(FEMALE_SPEED_KEY,String(chosen))}catch{}
+  // Apply immediately to an already playing female lesson clip, never to human tone samples.
+  if(currentAudio&&isFemaleLessonClip(currentAudio.src,'female')){
+   currentAudio.playbackRate=femaleSpeed;
+  }
+ });
 }
 function playOne(file,row,role='female'){
  if(!file){feedback('Для этого элемента пока нет готовой записи.');return;}
