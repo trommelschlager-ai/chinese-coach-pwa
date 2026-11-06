@@ -30,7 +30,7 @@ const m=new JSDOM(map).window.document;
 assert.equal(m.querySelectorAll('nav.map-road > a.node').length,7,'Map must display seven actual lessons');
 assert.equal(m.querySelectorAll('nav.map-road > a[href^="./hsk1-lesson.html?lesson="]').length,7);
 assert(map.includes('pg-hsk1-v3-complete'),'HSK map progress must use original storage key');
-assert(map.includes('assets/game-panda-v76.svg'),'Original transparent panda stays on road');
+assert(map.includes('assets/panda-explorer-v174.svg'),'Approved reference requires a traveller panda on the mountain route');
 const l=new JSDOM(lesson).window.document;
 assert(l.querySelector('#lesson-next')&&l.querySelector('#lesson-prev'),'Real lesson navigation is required');
 assert(l.querySelector('#lesson-progress[role="progressbar"]'),'Seven-step progress remains accessible');
