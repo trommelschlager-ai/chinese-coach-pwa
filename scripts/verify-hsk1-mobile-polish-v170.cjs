@@ -9,7 +9,7 @@ const js=fs.readFileSync('assets/hsk1-foundations-v152.js','utf8');
 const dom=new JSDOM(page);
 const d=dom.window.document;
 assert(/hsk1-foundations-v152\.css\?v=(?:170|171)/.test(page),'Mobile css cache bust missing');
-assert(/hsk1-foundations-v152\\.js\\?v=(?:170|172)/.test(page),'Mobile JS cache bust missing');
+assert(/hsk1-foundations-v152\.js\?v=(?:170|172)/.test(page),'Mobile JS cache bust missing');
 const bar=d.getElementById('lesson-progress');
 assert(bar,'Lesson progress bar missing');
 assert.equal(bar.getAttribute('role'),'progressbar');
