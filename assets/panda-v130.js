@@ -90,7 +90,7 @@ function home(){
   ['5','lantern','cyan','Культура и общество'],
   ['6','pagoda','mint','Свободное владение']
  ];
- const artwork='<div class="pg-hsk-backdrop" aria-hidden="true"><img src="./assets/panda-go-home-v136-clean.png" alt="" fetchpriority="high" decoding="async" draggable="false"></div>';
+ const artwork='<div class="pg-hsk-backdrop" aria-hidden="true"><img src="./assets/panda-go-panda-only-v173.webp" alt="" fetchpriority="high" decoding="async" draggable="false"></div>';
  const brand='<header class="pg-hsk-brand"><span class="pg-hsk-paw" aria-hidden="true">🐾</span><h1>Panda Go</h1><p>Твой путь к китайскому</p></header>';
  const buttons=levels.map(([n,art,color,desc])=>{
   const body=icon(art)+'<span class="pg-hsk-copy"><strong>HSK '+n+'</strong><small>'+desc+'</small></span><span class="pg-hsk-arrow" aria-hidden="true">›</span>';
