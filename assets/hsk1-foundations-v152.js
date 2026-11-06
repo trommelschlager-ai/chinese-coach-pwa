@@ -65,12 +65,12 @@ function feedback(message){$('lesson-feedback').textContent=message}
 function stopAudio(){playId++;if(currentAudio){currentAudio.onended=null;currentAudio.onerror=null;currentAudio.pause();currentAudio=null;}document.querySelectorAll('[data-playing]').forEach(n=>n.removeAttribute('data-playing'));}
 // Preserve Mandarin pitch while gently shortening overlong synthetic syllables.
  // Native-human listening samples and the user's own mic recording are not modified.
-// The user selected the second alternative zf_xiaoni at its natural 1.0x tempo.
-// Do not carry over the 1.12x workaround from the rejected female voice.
-const FEMALE_KOKORO_RATE=1.0;
+// The rejected female Kokoro voice is replaced by independent Mandarin MeloTTS.
+// Never alter the phonetic pitch or stretch Mandarin syllables.
+const FEMALE_MANDARIN_RATE=1.0;
 function tuneVoice(audio,file,role){
- if(role==='female'&&typeof file==='string'&&file.includes('/hsk1-voices-v159/')){
-  audio.playbackRate=FEMALE_KOKORO_RATE;
+ if(role==='female'&&typeof file==='string'&&file.includes('/hsk1-voices-v160/')){
+  audio.playbackRate=FEMALE_MANDARIN_RATE;
   if('preservesPitch' in audio)audio.preservesPitch=true;
  }
 }
