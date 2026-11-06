@@ -4,11 +4,11 @@ const fs=require('node:fs'),assert=require('node:assert/strict'),{JSDOM}=require
 const read=p=>fs.readFileSync(p,'utf8');
 const site=read('index.html'),map=read('hsk1-map.html'),lesson=read('start-chinese.html'),style=read('assets/hsk-approved-three-screens-v151.css'),main=read('assets/panda-v130.js'),guided=read('assets/guided-introduction.js');
 for(const [name,html] of [['index',site],['map',map],['lesson',lesson]])assert(html.includes('hsk-approved-three-screens-v151.css?v=151'),name+' must use approved stylesheet');
-assert(site.includes('panda-v130.js?v=173'),'Home version must be bumped');
+assert(site.includes('panda-v130.js?v=174'),'Home version must be bumped');
 assert(lesson.includes('guided-introduction.js?v=151'),'Guided script version must be bumped');
 assert(/<progress max="7"/.test(lesson),'Progress consists of seven steps');
 assert(lesson.includes('id="lesson-step-list"'),'Guided step list must be visible');
-assert(main.includes('panda-go-panda-only-v173.webp'),'Previously approved home art must be retained');
+assert(main.includes('panda-go-hero-clean-v174.webp'),'Previously approved home art must be retained');
 assert(main.includes('href="./hsk1-map.html"'),'HSK 1 opens the map');
 assert(main.includes('pg-hsk-unavailable'),'Unfinished levels must not act as completed courses');
 assert(map.includes('data-num="7" href="./hsk1-lesson.html?lesson=7"'),'Approved seventh topic opens its new lesson');
@@ -50,7 +50,7 @@ for(let n=1;n<=4;n++){
  dom.window.close();
 }
 const sw=read('sw.js'),pack=JSON.parse(read('assets/offline-pack.json'));
-for(const url of ['./assets/hsk-approved-three-screens-v151.css?v=151','./assets/guided-introduction.js?v=151','./assets/panda-v130.js?v=173']){
+for(const url of ['./assets/hsk-approved-three-screens-v151.css?v=151','./assets/guided-introduction.js?v=151','./assets/panda-v130.js?v=174']){
  assert(site.includes(url)||lesson.includes(url)||map.includes(url),'Page must request '+url);
  assert(sw.includes(url),'Offline shell must cache '+url);
  assert(pack.files.includes(url),'Offline bundle must include '+url);
