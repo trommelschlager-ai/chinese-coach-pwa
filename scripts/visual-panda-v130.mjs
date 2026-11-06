@@ -44,9 +44,9 @@ try{
     const scout=await context.newPage(); await scout.setViewportSize({width:750,height:1260});
     await scout.goto(BASE+'/index.html',{waitUntil:'load'});
     await scout.setContent('<style>body{margin:0;background:#fff;font:17px Arial}.grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}.sample{position:relative;height:300px;background:#ddd;overflow:hidden}.sample img{width:100%;height:100%;object-fit:cover}.sample b{position:absolute;bottom:0;left:0;right:0;background:#fffc;font-size:13px;padding:4px}</style><div class="grid">'+[
-      'approved-panda-lake-v112.webp','approved-pastel-v112.webp','panda-v130/landscape.webp',
-      'panda-v130/home-hero.webp','lessons-backdrop.webp','panda-go-home-v136-clean.png',
-      'china-landscape.svg','chinese-pastel-wallpaper.svg'
+      'panda-v130/training-panda.webp','game-panda-v80.webp','game-panda-v76.svg',
+      'panda-v130/success.webp','panda-v130/home-hero.webp','approved-panda-lake-v112.webp',
+      'panda-v130/word-girl.webp','panda-v130/game-girl.webp'
     ].map(k=>'<div class="sample"><img src="'+BASE+'/assets/'+k+'"><b>'+k+'</b></div>').join('')+'</div>');
     await scout.locator('img').evaluateAll(imgs=>Promise.all(imgs.map(x=>x.decode().catch(()=>{}))));
     const sc=await scout.screenshot({type:'jpeg',quality:31,fullPage:true});
