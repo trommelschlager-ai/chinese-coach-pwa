@@ -25,7 +25,7 @@ jobs:
         run: |
           git config user.name "Panda Go Design QA"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/panda-go-panda-only-v173.webp
+          git add assets/panda-go-panda-only-v173.webp assets/panda-hsk1-landscape-clean-v173.webp
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "art(panda): add clean crop from approved home panda without baked controls"
           git pull --rebase origin fix/panda-reference-accurate-v173
