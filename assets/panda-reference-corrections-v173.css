@@ -127,7 +127,7 @@ body:has(.map-shell) .map-shell{
   background-image:linear-gradient(180deg,#f9defa38,#d6b6e915),
     url("./panda-hsk1-landscape-clean-v173.webp")!important;
   background-size:100% 100%,cover!important;
-  background-position:center center,center center!important;
+  background-position:center center,center top!important;
   background-repeat:no-repeat,no-repeat!important;
 }
 .map-shell::before{opacity:.8;height:100px!important;top:85px!important}
