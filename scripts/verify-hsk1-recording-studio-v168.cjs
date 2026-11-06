@@ -39,6 +39,7 @@ const src=(p.match(/<script>([\s\S]*?)<\/script>/)||[])[1];
 assert(src&&src.length>2000,'Studio JS absent');
 new Function(src); // syntax only
 const dom=new JSDOM(p,{url:'https://panda.test/hsk1-recording-studio.html',runScripts:'outside-only',pretendToBeVisual:true});
+dom.window.TextEncoder=require('node:util').TextEncoder; // jsdom's sandbox omits the browser TextEncoder global
 dom.window.fetch=async()=>({ok:true,json:async()=>queue});
 dom.window.eval(src);
 setTimeout(()=>{
