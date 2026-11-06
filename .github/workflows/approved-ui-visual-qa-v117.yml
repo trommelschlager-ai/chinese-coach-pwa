@@ -34,6 +34,7 @@ jobs:
           node scripts/visual-mobile-v119.mjs
           node scripts/visual-hsk1-v152.mjs
           node scripts/visual-hsk1-v171.mjs
+          node scripts/visual-panda-reference-v172.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -43,6 +44,7 @@ jobs:
             qa/v119/
             qa/hsk1-v152/
             qa/hsk1-v171/
+            qa/panda-v172/
           if-no-files-found: warn
   hanzi-focused:
     needs: hanzi-phrase-audio

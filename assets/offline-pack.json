@@ -1,6 +1,6 @@
 {
-  "version": 167,
-  "bytes": 31534676,
+  "version": 172,
+  "bytes": 31549304,
   "files": [
     "./start-chinese.html",
     "./hsk1-map.html",
@@ -1403,7 +1403,7 @@
     "./manifest.webmanifest",
     "./assets/panda-v130.css?v=151",
     "./assets/panda-word-sentences-v148.js?v=148",
-    "./assets/panda-v130.js?v=152",
+    "./assets/panda-v130.js?v=172",
     "./assets/panda-hanzi-v130.css?v=138",
     "./assets/panda-hanzi-v130.js?v=135",
     "./assets/panda-v130/book.webp",
@@ -1544,12 +1544,13 @@
     "./assets/guided-voice-v1506/8d0fd9537bd276fc.mp3",
     "./assets/hsk-approved-three-screens-v151.css?v=151",
     "./hsk1-lesson.html",
-    "./assets/hsk1-foundations-v152.css?v=167",
-    "./assets/hsk1-foundations-v152.js?v=167",
+    "./assets/hsk1-foundations-v152.css?v=171",
+    "./assets/hsk1-foundations-v152.js?v=172",
     "./assets/hsk1-foundations-data-v152.js?v=154",
     "./assets/hsk1-voices-map-v160.js?v=160",
     "./assets/hsk1-native-human-map-v167.js?v=167",
     "./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3",
-    "./assets/hsk1-voice-corrections-v157/README.md"
+    "./assets/hsk1-voice-corrections-v157/README.md",
+    "./assets/panda-approved-three-screen-v172.css?v=172"
   ]
 }

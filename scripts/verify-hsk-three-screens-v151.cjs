@@ -4,7 +4,7 @@ const fs=require('node:fs'),assert=require('node:assert/strict'),{JSDOM}=require
 const read=p=>fs.readFileSync(p,'utf8');
 const site=read('index.html'),map=read('hsk1-map.html'),lesson=read('start-chinese.html'),style=read('assets/hsk-approved-three-screens-v151.css'),main=read('assets/panda-v130.js'),guided=read('assets/guided-introduction.js');
 for(const [name,html] of [['index',site],['map',map],['lesson',lesson]])assert(html.includes('hsk-approved-three-screens-v151.css?v=151'),name+' must use approved stylesheet');
-assert(site.includes('panda-v130.js?v=152'),'Home version must be bumped');
+assert(site.includes('panda-v130.js?v=172'),'Home version must be bumped');
 assert(lesson.includes('guided-introduction.js?v=151'),'Guided script version must be bumped');
 assert(/<progress max="7"/.test(lesson),'Progress consists of seven steps');
 assert(lesson.includes('id="lesson-step-list"'),'Guided step list must be visible');
@@ -50,7 +50,7 @@ for(let n=1;n<=4;n++){
  dom.window.close();
 }
 const sw=read('sw.js'),pack=JSON.parse(read('assets/offline-pack.json'));
-for(const url of ['./assets/hsk-approved-three-screens-v151.css?v=151','./assets/guided-introduction.js?v=151','./assets/panda-v130.js?v=152']){
+for(const url of ['./assets/hsk-approved-three-screens-v151.css?v=151','./assets/guided-introduction.js?v=151','./assets/panda-v130.js?v=172']){
  assert(site.includes(url)||lesson.includes(url)||map.includes(url),'Page must request '+url);
  assert(sw.includes(url),'Offline shell must cache '+url);
  assert(pack.files.includes(url),'Offline bundle must include '+url);
