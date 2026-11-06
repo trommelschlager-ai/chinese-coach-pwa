@@ -39,9 +39,36 @@ try{
   // Panda Go v145 mounts the modern shell directly; legacy Start is covered.
   await ready(page);
   await capture(page,'01-home',size);
-  // The approved main artwork uses six transparent hotspots, not the retired card grid.
-  assert.equal(await page.locator('#pg130 .pg-home-hit').count(),6);
-  for(const route of ['tones','words','dialogues','travel'])assert.equal(await page.locator(`#pg130 .pg-home-hit[data-route="${route}"]`).count(),1);
+  // HSK 1 end-to-end: course map -> 6 guided steps -> saved completion.
+  const guided=await context.newPage();
+  await guided.goto(BASE+'/hsk1-map.html',{waitUntil:'load'});
+  assert.equal(await guided.locator('.map-road .node').count(),7,'HSK 1 map has seven topics');
+  assert.equal(await guided.locator('.map-road a.node').count(),4,'Four existing guided lessons are clickable');
+  await guided.screenshot({path:`${OUT}/01a-hsk-map-${width}.png`,fullPage:true,animations:'disabled'});
+  await guided.locator('.map-road a.node[data-num="1"]').click();
+  await guided.locator('#next').click();
+  assert.equal(await guided.locator('#content .word').count(),3,'Introduction preserves three vocabulary cards');
+  await guided.screenshot({path:`${OUT}/01b-hsk-words-${width}.png`,fullPage:true,animations:'disabled'});
+  await guided.locator('#next').click();
+  await guided.locator('#next').click();
+  assert.equal(await guided.locator('#content [data-line]').count(),3,'The complete introductory dialogue remains visible');
+  await guided.screenshot({path:`${OUT}/01c-hsk-dialogue-${width}.png`,fullPage:true,animations:'disabled'});
+  await guided.locator('#next').click();
+  assert(await guided.locator('#next').isDisabled(),'A graded answer is required');
+  await guided.locator('#content [data-answer="yes"]').click();
+  assert(await guided.locator('#next').isEnabled(),'Correct response unlocks next step');
+  await guided.locator('#next').click();
+  await guided.locator('#next').click();
+  assert((await guided.evaluate(()=>JSON.parse(localStorage.getItem('pg-hsk1-completed-v1')))).includes(1),'Completed lesson saved');
+  await guided.goto(BASE+'/hsk1-map.html',{waitUntil:'load'});
+  assert((await guided.locator('[data-status="1"]').textContent()).includes('Пройден'),'Map shows saved completion');
+  report.checks.push({width,check:'HSK map, words, dialogue, quiz, completion persistence',passed:true});
+  await guided.close();
+  // HSK 1 opens the guided map; advanced levels are visible but not fake-playable.
+  assert.equal(await page.locator('#pg130 .pg-hsk-level').count(),6);
+  assert.equal(await page.locator('#pg130 .pg-hsk-level[href="./hsk1-map.html"]').count(),1);
+  assert.equal(await page.locator('#pg130 .pg-hsk-unavailable').count(),5);
+  assert.equal(await page.locator('#pg130 .pg-hsk-backdrop img').count(),1);
   await page.evaluate(()=>window.__panda130.show('learn'));await ready(page);
   await capture(page,'02-learn',size);
   assert.equal(await page.locator('#pg130 [data-action=learn-go]').count(),1,'Learn Next Go is present');

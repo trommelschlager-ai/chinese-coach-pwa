@@ -96,6 +96,10 @@
         feedback.textContent = 'Прослушивание завершено.';
         return;
       }
+      if (!files[index]) {
+        feedback.textContent = 'Запись этой реплики пока недоступна.';
+        return;
+      }
       const clip = new Audio(files[index]);
       audio = clip;
       const valid = () => token === generation && audio === clip;
@@ -366,7 +370,17 @@
     backButton.hidden = step === 0;
     nextButton.disabled = step === 4 && !answered;
     nextButton.textContent = page.next;
-    try { localStorage.setItem(storageKey, String(step)); } catch {}
+    try {
+      localStorage.setItem(storageKey, String(step));
+      if (step === 6) {
+        const key = 'pg-hsk1-completed-v1';
+        let finished = [];
+        try { finished = JSON.parse(localStorage.getItem(key) || '[]'); } catch {}
+        if (!Array.isArray(finished)) finished = [];
+        if (!finished.includes(lessonNumber)) finished.push(lessonNumber);
+        localStorage.setItem(key, JSON.stringify(finished));
+      }
+    } catch {}
     renderLessonMenu();
     heading.focus({ preventScroll: true });
     window.scrollTo(0, 0);
