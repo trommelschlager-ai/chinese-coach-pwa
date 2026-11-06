@@ -138,3 +138,9 @@ body:has(.lesson-shell) main.lesson-shell{background:linear-gradient(180deg,#ffe
 /* A real DOM cover is deliberately above the background graphic: the legacy art has three decorative buttons baked into the top right corner. */
 #pg130 .pg-hsk-top-clean{position:absolute;z-index:9;top:0;right:0;width:44%;height:68px;pointer-events:none;background:linear-gradient(105deg,#f3d9fb 0%,#decdf9 65%,#cad0fd 100%);border-bottom-left-radius:29px}
 @media(max-width:360px){#pg130 .pg-hsk-top-clean{height:61px}}
+
+/* v153: use a real transparent panda illustration, not trophy art with its own panel. */
+.map-shell .panda{height:clamp(97px,18dvh,150px);width:clamp(82px,24vw,114px);bottom:1%;left:0;object-fit:contain;filter:drop-shadow(0 6px 6px #642e77ad)}
+/* A scenic sky texture disguises the old baked-in icons without a flat blank patch. */
+#pg130 .pg-hsk-top-clean{background:linear-gradient(115deg,#efd8fecc,#d0d7f7bb),url("./approved-panda-lake-v112.webp") center top/cover no-repeat}
+main.lesson-shell:has(.lesson-step-row.active[data-go-step="3"])>h1{position:absolute;width:1px;height:1px;margin:0;overflow:hidden;clip-path:inset(50%)}
