@@ -1,0 +1,873 @@
+{
+  "status": "USER_APPROVED_VOICE_TIMBRE__PHONETIC_REVIEW_PENDING",
+  "model": "hexgrad/Kokoro-82M",
+  "license": "Apache-2.0",
+  "speaker": "zf_xiaoni",
+  "speed": 1.0,
+  "total_files": 123,
+  "excluded_native_pronunciation": "日 (rì)",
+  "human_tone_audit_complete": false,
+  "files": [
+    {
+      "text": "一",
+      "pinyin_reference": "yī",
+      "file": "a7f2c9f0dffabf9492ed.mp3",
+      "duration_seconds": 1.416,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "一个",
+      "pinyin_reference": "yí ge",
+      "file": "d032369648bdd1e6787e.mp3",
+      "duration_seconds": 1.056,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "一月",
+      "pinyin_reference": "yī yuè",
+      "file": "a77a0a845a43eb734df5.mp3",
+      "duration_seconds": 1.392,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "一百",
+      "pinyin_reference": "yì bǎi",
+      "file": "21e4edb7d091091780cb.mp3",
+      "duration_seconds": 0.984,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "七",
+      "pinyin_reference": "qī",
+      "file": "f15c7f782984638376b7.mp3",
+      "duration_seconds": 0.96,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "七月",
+      "pinyin_reference": "qī yuè",
+      "file": "6fc9779fef788feaf272.mp3",
+      "duration_seconds": 1.2,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "三",
+      "pinyin_reference": "sān",
+      "file": "dba2db859eab46d297b8.mp3",
+      "duration_seconds": 0.936,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "三十五",
+      "pinyin_reference": "Sānshíwǔ",
+      "file": "0c6fcd02c6b6509d44ed.mp3",
+      "duration_seconds": 2.112,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "三月",
+      "pinyin_reference": "sān yuè",
+      "file": "bfe3bd0c7f305dc5ef46.mp3",
+      "duration_seconds": 1.248,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "下雨",
+      "pinyin_reference": "xià yǔ",
+      "file": "442fe0603f63bd516582.mp3",
+      "duration_seconds": 1.056,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "下雪",
+      "pinyin_reference": "xià xuě",
+      "file": "25b0ba601c46260ba5b3.mp3",
+      "duration_seconds": 1.176,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "不是，我是学生。",
+      "pinyin_reference": "Bú shì, wǒ shì xuésheng.",
+      "file": "09c2caa7af58feba9405.mp3",
+      "duration_seconds": 2.712,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "两个人",
+      "pinyin_reference": "liǎng ge rén",
+      "file": "7a01019f56db9632a88c.mp3",
+      "duration_seconds": 1.56,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "九",
+      "pinyin_reference": "jiǔ",
+      "file": "c70ba12335fa0a9311d9.mp3",
+      "duration_seconds": 0.792,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "九月",
+      "pinyin_reference": "jiǔ yuè",
+      "file": "62c5689dfbd5745a266e.mp3",
+      "duration_seconds": 1.104,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "二",
+      "pinyin_reference": "èr",
+      "file": "65fb5aa1cc708aec050c.mp3",
+      "duration_seconds": 1.56,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "二十三",
+      "pinyin_reference": "èrshísān",
+      "file": "a4138a6175d14e925db8.mp3",
+      "duration_seconds": 2.256,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "二月",
+      "pinyin_reference": "èr yuè",
+      "file": "243a87f467879413c1f4.mp3",
+      "duration_seconds": 1.704,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "二零二六年十一月六日",
+      "pinyin_reference": "Èr líng èr liù nián shíyī yuè liù rì",
+      "file": "72b1cb55ab71e81fac81.mp3",
+      "duration_seconds": 3.24,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "五",
+      "pinyin_reference": "wǔ",
+      "file": "733b4ae599e65e0495b2.mp3",
+      "duration_seconds": 1.128,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "五月",
+      "pinyin_reference": "wǔ yuè",
+      "file": "5ad040fd864207369315.mp3",
+      "duration_seconds": 1.152,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "人",
+      "pinyin_reference": "rén",
+      "file": "31970b13c835b06c4118.mp3",
+      "duration_seconds": 1.032,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "今天",
+      "pinyin_reference": "jīntiān",
+      "file": "dc0f8c6a1c10f9cdd193.mp3",
+      "duration_seconds": 1.176,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "今天下雨",
+      "pinyin_reference": "Jīntiān xià yǔ.",
+      "file": "647d114dbc14cf8e48f5.mp3",
+      "duration_seconds": 2.544,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "今天下雨。",
+      "pinyin_reference": "Jīntiān xià yǔ.",
+      "file": "d317def8795862aff0e7.mp3",
+      "duration_seconds": 2.52,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "今天几月几号？",
+      "pinyin_reference": "Jīntiān jǐ yuè jǐ hào?",
+      "file": "2a2ee3f1d20f421b6211.mp3",
+      "duration_seconds": 2.784,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "今天十一月六号。",
+      "pinyin_reference": "Jīntiān shíyī yuè liù hào.",
+      "file": "580ee4200bb650c57a02.mp3",
+      "duration_seconds": 2.88,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "今天天气怎么样？",
+      "pinyin_reference": "Jīntiān tiānqì zěnmeyàng?",
+      "file": "32bb08f75948fb74f8b8.mp3",
+      "duration_seconds": 2.904,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "今天很冷",
+      "pinyin_reference": "Jīntiān hěn lěng.",
+      "file": "e80b91c27e2f2d31ff0e.mp3",
+      "duration_seconds": 2.424,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "今天很冷。",
+      "pinyin_reference": "Jīntiān hěn lěng.",
+      "file": "b96d69dd7405a1224352.mp3",
+      "duration_seconds": 2.424,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "今天星期五",
+      "pinyin_reference": "Jīntiān xīngqīwǔ.",
+      "file": "7fb66ed771193863d702.mp3",
+      "duration_seconds": 2.592,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "今天星期五。",
+      "pinyin_reference": "Jīntiān xīngqīwǔ.",
+      "file": "19762a770aabd4180393.mp3",
+      "duration_seconds": 2.616,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "今天是星期五。",
+      "pinyin_reference": "Jīntiān shì xīngqīwǔ.",
+      "file": "26c1beebc3b07258f396.mp3",
+      "duration_seconds": 2.808,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "他",
+      "pinyin_reference": "tā",
+      "file": "6250fcf4ddffe0e09e0b.mp3",
+      "duration_seconds": 0.792,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "他们",
+      "pinyin_reference": "tāmen",
+      "file": "264cb1f9d1cdd7c1d0ff.mp3",
+      "duration_seconds": 0.96,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "他是老师",
+      "pinyin_reference": "Tā shì lǎoshī.",
+      "file": "33c5bbd396585874f421.mp3",
+      "duration_seconds": 2.328,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "你",
+      "pinyin_reference": "nǐ",
+      "file": "b3121374185eaf99fa54.mp3",
+      "duration_seconds": 1.248,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "你们",
+      "pinyin_reference": "nǐmen",
+      "file": "288177dfcd2e36a4c06d.mp3",
+      "duration_seconds": 1.128,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "你好",
+      "pinyin_reference": "nǐ hǎo",
+      "file": "c73e4a56c46a3be50a3c.mp3",
+      "duration_seconds": 1.128,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "你好！",
+      "pinyin_reference": "Nǐ hǎo!",
+      "file": "f3d7769419a3314f9344.mp3",
+      "duration_seconds": 1.2,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "你是学生",
+      "pinyin_reference": "Nǐ shì xuésheng.",
+      "file": "c6281505244900ffd895.mp3",
+      "duration_seconds": 2.4,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "你是老师吗？",
+      "pinyin_reference": "Nǐ shì lǎoshī ma?",
+      "file": "b22e5452e374c1d7b72f.mp3",
+      "duration_seconds": 2.568,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "八",
+      "pinyin_reference": "bā",
+      "file": "6c23ab6e91124d69d1ca.mp3",
+      "duration_seconds": 0.864,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "八月",
+      "pinyin_reference": "bā yuè",
+      "file": "eda69ffdd3fc5c8d203d.mp3",
+      "duration_seconds": 1.104,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "六",
+      "pinyin_reference": "liù",
+      "file": "a6bfa444b36a023cbd01.mp3",
+      "duration_seconds": 0.84,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "六月",
+      "pinyin_reference": "liù yuè",
+      "file": "a081a500b95273aa74bd.mp3",
+      "duration_seconds": 1.128,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "冬天",
+      "pinyin_reference": "dōngtiān",
+      "file": "312c146a9eeb3d8b554e.mp3",
+      "duration_seconds": 1.248,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "冬天很冷。",
+      "pinyin_reference": "Dōngtiān hěn lěng.",
+      "file": "a740821e5205d1cccabf.mp3",
+      "duration_seconds": 2.4,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "冷",
+      "pinyin_reference": "lěng",
+      "file": "42b51e95d67c7b7917b1.mp3",
+      "duration_seconds": 0.864,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "几",
+      "pinyin_reference": "jǐ",
+      "file": "e2e4b1164ea07e93d0a4.mp3",
+      "duration_seconds": 0.864,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "十",
+      "pinyin_reference": "shí",
+      "file": "d852f4fc79b5575b2d7a.mp3",
+      "duration_seconds": 0.96,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "十一",
+      "pinyin_reference": "Shíyī",
+      "file": "e505ac4494c3d5c3e4f6.mp3",
+      "duration_seconds": 1.152,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "十一月",
+      "pinyin_reference": "shíyī yuè",
+      "file": "3548d6b59d06b3d155d2.mp3",
+      "duration_seconds": 1.632,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "十三",
+      "pinyin_reference": "shísān",
+      "file": "efeec658f1a1dd900ae8.mp3",
+      "duration_seconds": 1.128,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "十二月",
+      "pinyin_reference": "shí'èr yuè",
+      "file": "323822b572b28a44df11.mp3",
+      "duration_seconds": 1.608,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "十月",
+      "pinyin_reference": "shí yuè",
+      "file": "40179eadff8cac8c6d0c.mp3",
+      "duration_seconds": 1.224,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "口",
+      "pinyin_reference": "kǒu",
+      "file": "3e6fc718125dba248779.mp3",
+      "duration_seconds": 0.768,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "号",
+      "pinyin_reference": "hào",
+      "file": "67672593634e45419ef2.mp3",
+      "duration_seconds": 0.816,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "吗",
+      "pinyin_reference": "ma",
+      "file": "94c297c29512a9a21645.mp3",
+      "duration_seconds": 0.816,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "哥哥",
+      "pinyin_reference": "gēge",
+      "file": "ebda92600798695680bb.mp3",
+      "duration_seconds": 0.864,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "四",
+      "pinyin_reference": "sì",
+      "file": "7f0b593c512ac6418c29.mp3",
+      "duration_seconds": 1.056,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "四月",
+      "pinyin_reference": "sì yuè",
+      "file": "e962b46f59eb9d0484f5.mp3",
+      "duration_seconds": 1.152,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "声调",
+      "pinyin_reference": "shēngdiào",
+      "file": "9d39160d0eb452892b91.mp3",
+      "duration_seconds": 1.152,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "夏天",
+      "pinyin_reference": "xiàtiān",
+      "file": "9bd1a1247a6c9be88187.mp3",
+      "duration_seconds": 1.224,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "天气",
+      "pinyin_reference": "tiānqì",
+      "file": "ab03b2484d6f4861e102.mp3",
+      "duration_seconds": 1.344,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "女",
+      "pinyin_reference": "nǚ",
+      "file": "65ed0dda9ff03b470cfe.mp3",
+      "duration_seconds": 1.008,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "她",
+      "pinyin_reference": "tā",
+      "file": "8b745dd7610b534d1bf9.mp3",
+      "duration_seconds": 0.792,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "妈",
+      "pinyin_reference": "mā",
+      "file": "79a2b7d7ee22a7a741b1.mp3",
+      "duration_seconds": 0.96,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "妈妈",
+      "pinyin_reference": "māma",
+      "file": "378dc59e4f5f478ada72.mp3",
+      "duration_seconds": 1.128,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "妹妹",
+      "pinyin_reference": "mèimei",
+      "file": "f2b2837b18136f86a4a1.mp3",
+      "duration_seconds": 1.44,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "姐姐",
+      "pinyin_reference": "jiějie",
+      "file": "3d9e0e52fe3426b15605.mp3",
+      "duration_seconds": 1.08,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "学生",
+      "pinyin_reference": "xuésheng",
+      "file": "98bbd8130a78d2b4cc1b.mp3",
+      "duration_seconds": 1.368,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "它",
+      "pinyin_reference": "tā",
+      "file": "c6d0a8e4f60d09176e24.mp3",
+      "duration_seconds": 0.792,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "家",
+      "pinyin_reference": "jiā",
+      "file": "4e957452635a351b50ca.mp3",
+      "duration_seconds": 0.864,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "年",
+      "pinyin_reference": "nián",
+      "file": "fe17a7595182e54e20c2.mp3",
+      "duration_seconds": 0.912,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "弟弟",
+      "pinyin_reference": "dìdi",
+      "file": "e1d8980e0e9b987d7950.mp3",
+      "duration_seconds": 1.032,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我",
+      "pinyin_reference": "wǒ",
+      "file": "ef5e1f7cc69ee652e35c.mp3",
+      "duration_seconds": 0.912,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我不是老师。",
+      "pinyin_reference": "Wǒ bú shì lǎoshī.",
+      "file": "32614d44cc0c47c8f652.mp3",
+      "duration_seconds": 2.496,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我们",
+      "pinyin_reference": "wǒmen",
+      "file": "900366662530adb33e88.mp3",
+      "duration_seconds": 1.056,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我很忙。",
+      "pinyin_reference": "Wǒ hěn máng.",
+      "file": "20a7bb03b21cc0442c29.mp3",
+      "duration_seconds": 2.256,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我是老师",
+      "pinyin_reference": "Wǒ shì lǎoshī.",
+      "file": "fa5003b4eea8e86a4990.mp3",
+      "duration_seconds": 2.376,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我是老师。",
+      "pinyin_reference": "Wǒ shì lǎoshī.",
+      "file": "a9bfe33b3286701febc9.mp3",
+      "duration_seconds": 2.376,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我有一个妹妹",
+      "pinyin_reference": "Wǒ yǒu yí ge mèimei.",
+      "file": "13af526b72742e807ea2.mp3",
+      "duration_seconds": 2.496,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我有一个妹妹。",
+      "pinyin_reference": "Wǒ yǒu yí ge mèimei.",
+      "file": "dddde6c3a753c768ea15.mp3",
+      "duration_seconds": 2.52,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我有两个。",
+      "pinyin_reference": "Wǒ yǒu liǎng ge.",
+      "file": "bdff02754b2d33f6d432.mp3",
+      "duration_seconds": 2.16,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我没有哥哥",
+      "pinyin_reference": "Wǒ méiyǒu gēge.",
+      "file": "93fa57c9370b09434c40.mp3",
+      "duration_seconds": 2.544,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我没有哥哥。",
+      "pinyin_reference": "Wǒ méiyǒu gēge.",
+      "file": "864e84c90ab7990e306e.mp3",
+      "duration_seconds": 2.448,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我的",
+      "pinyin_reference": "wǒ de",
+      "file": "aff9ef7fa33cef43554e.mp3",
+      "duration_seconds": 0.864,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "我的妈妈",
+      "pinyin_reference": "wǒ de māma",
+      "file": "543483835bc2b0c18b47.mp3",
+      "duration_seconds": 2.064,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "拼音",
+      "pinyin_reference": "pīnyīn",
+      "file": "ecd269374f7ca1a18aea.mp3",
+      "duration_seconds": 1.464,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "明天",
+      "pinyin_reference": "míngtiān",
+      "file": "679cd4984d824ade4afa.mp3",
+      "duration_seconds": 1.224,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "明天下雨",
+      "pinyin_reference": "Míngtiān xià yǔ.",
+      "file": "2001d68ef28b34b1af30.mp3",
+      "duration_seconds": 2.544,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "明天下雨。",
+      "pinyin_reference": "Míngtiān xià yǔ.",
+      "file": "7de4dafc79197781a3f7.mp3",
+      "duration_seconds": 2.52,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "星期",
+      "pinyin_reference": "xīngqī",
+      "file": "92611b3bbea1298a77d4.mp3",
+      "duration_seconds": 1.8,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "星期一",
+      "pinyin_reference": "xīngqīyī",
+      "file": "d8e2aa87ec298975e69e.mp3",
+      "duration_seconds": 2.376,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "星期三",
+      "pinyin_reference": "xīngqīsān",
+      "file": "0554618107fbbe4b6483.mp3",
+      "duration_seconds": 2.4,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "星期二",
+      "pinyin_reference": "xīngqīèr",
+      "file": "c22f0948323a09e8d550.mp3",
+      "duration_seconds": 2.136,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "星期五",
+      "pinyin_reference": "xīngqīwǔ",
+      "file": "9fd22377172e6c790356.mp3",
+      "duration_seconds": 2.232,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "星期六",
+      "pinyin_reference": "xīngqīliù",
+      "file": "1a89d85688d5a7932a80.mp3",
+      "duration_seconds": 2.256,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "星期四",
+      "pinyin_reference": "xīngqīsì",
+      "file": "934a081cdbabcb9e2e6f.mp3",
+      "duration_seconds": 2.376,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "星期天",
+      "pinyin_reference": "xīngqītiān",
+      "file": "326b3ffcd362b2dc0bff.mp3",
+      "duration_seconds": 2.352,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "星期日",
+      "pinyin_reference": "xīngqīrì",
+      "file": "d50c55b8235d60b59ba1.mp3",
+      "duration_seconds": 2.4,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "春天",
+      "pinyin_reference": "chūntiān",
+      "file": "101e2e3c3dccf289ab1a.mp3",
+      "duration_seconds": 1.176,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "昨天",
+      "pinyin_reference": "zuótiān",
+      "file": "534bc4ba031c04ffec88.mp3",
+      "duration_seconds": 1.128,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "是",
+      "pinyin_reference": "shì",
+      "file": "3354ea2825a501b26e6e.mp3",
+      "duration_seconds": 1.008,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "是，这是我妈妈。",
+      "pinyin_reference": "Shì, zhè shì wǒ māma.",
+      "file": "702358eea35f9bb78dc6.mp3",
+      "duration_seconds": 2.664,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "晴",
+      "pinyin_reference": "qíng",
+      "file": "334b652e4a3cf7f8f9f2.mp3",
+      "duration_seconds": 0.96,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "月",
+      "pinyin_reference": "yuè",
+      "file": "754ca9e42cc3af67d903.mp3",
+      "duration_seconds": 0.984,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "有",
+      "pinyin_reference": "yǒu",
+      "file": "8eda305b3cda34d82569.mp3",
+      "duration_seconds": 0.888,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "有，我有一个妹妹。",
+      "pinyin_reference": "Yǒu, wǒ yǒu yí ge mèimei.",
+      "file": "1ccd567257a49b2a14fd.mp3",
+      "duration_seconds": 2.64,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "木",
+      "pinyin_reference": "mù",
+      "file": "2a19ab942db1e690bdf2.mp3",
+      "duration_seconds": 0.936,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "汉字",
+      "pinyin_reference": "hànzì",
+      "file": "76b38345e37580d9eeaa.mp3",
+      "duration_seconds": 1.248,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "没有",
+      "pinyin_reference": "méiyǒu",
+      "file": "43797dd6c8e7ec6a30e9.mp3",
+      "duration_seconds": 1.008,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "热",
+      "pinyin_reference": "rè",
+      "file": "a2fb8f40490c863e5f67.mp3",
+      "duration_seconds": 1.08,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "爸爸",
+      "pinyin_reference": "bàba",
+      "file": "ba80f8a261b27e146fbf.mp3",
+      "duration_seconds": 1.08,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "百",
+      "pinyin_reference": "bǎi",
+      "file": "ff77006fbeaee3011893.mp3",
+      "duration_seconds": 0.816,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "秋天",
+      "pinyin_reference": "qiūtiān",
+      "file": "659c3a4ab7adc58599fd.mp3",
+      "duration_seconds": 1.128,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "老师",
+      "pinyin_reference": "lǎoshī",
+      "file": "e1c095f86b03eb39a5cb.mp3",
+      "duration_seconds": 0.912,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "这是我爸爸",
+      "pinyin_reference": "Zhè shì wǒ bàba.",
+      "file": "4d41c00bea9f0ff365ff.mp3",
+      "duration_seconds": 2.52,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "这是我爸爸。",
+      "pinyin_reference": "Zhè shì wǒ bàba.",
+      "file": "b972932b91caf0ab406d.mp3",
+      "duration_seconds": 2.448,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "阴",
+      "pinyin_reference": "yīn",
+      "file": "2572d95631bcccd85a55.mp3",
+      "duration_seconds": 1.584,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "零",
+      "pinyin_reference": "líng",
+      "file": "8b80e9b3aee79a19e761.mp3",
+      "duration_seconds": 0.888,
+      "review": "requires_native_tone_check"
+    },
+    {
+      "text": "风",
+      "pinyin_reference": "fēng",
+      "file": "c4c5c4c1257185d7058e.mp3",
+      "duration_seconds": 0.888,
+      "review": "requires_native_tone_check"
+    }
+  ]
+}
