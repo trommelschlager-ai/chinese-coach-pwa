@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#a057c3">
+<title>Panda Go · Студия записи 56 фраз HSK 1</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#402452;background:#f8edff;line-height:1.45}
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;background:linear-gradient(155deg,#e6cdfd,#fff4fa 48%,#e6f2ff) fixed}
+main{width:min(100% - 24px,740px);margin:auto;padding:17px 0 46px}
+header{border-radius:28px;padding:20px 18px;background:linear-gradient(110deg,#8438b8,#ba58d0 60%,#ee91b9);color:white;box-shadow:0 10px 25px #7847b947}
+header h1{font-size:clamp(24px,6vw,35px);margin:7px 0 5px;line-height:1.14}
+header p{margin:0;font-size:14px}
+header a{color:#fff;font-weight:750}
+.panel{margin-top:14px;padding:18px;border:1px solid #e6c6ef;border-radius:24px;background:#fff9ff;box-shadow:0 6px 18px #aa73b624}
+.note{font-size:13px;color:#694c73}.warn{color:#923051;font-weight:700}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.meter{height:12px;background:#eee0f4;border-radius:15px;overflow:hidden;margin:12px 0 5px}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#9d61e7,#ee7abc);transition:width .2s}
+#word{font-size:clamp(40px,12vw,64px);font-weight:900;text-align:center;line-height:1.18;margin:8px 0 6px;color:#4f2872}
+#py{text-align:center;font-size:22px;font-weight:750;color:#9654a0}
+#num{text-align:center;font-size:12px;font-weight:800;letter-spacing:.05em;color:#775183}
+#note{font-size:14px;text-align:center;color:#70417a;min-height:20px}
+button{font:800 15px/1.2 system-ui;border:0;border-radius:18px;padding:14px 15px;cursor:pointer;min-height:48px;background:linear-gradient(160deg,#ff9fd8,#df4aa9);color:#fff;box-shadow:0 4px 0 #ac3f8a;touch-action:manipulation}
+button.secondary{background:linear-gradient(165deg,#ecdeff,#e5c8fc);color:#663083;box-shadow:0 3px 0 #ae91d1}
+button:disabled{opacity:.42;cursor:not-allowed;box-shadow:none}
+button:focus-visible{outline:3px solid #6d42db;outline-offset:3px}
+.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:18px}
+.controls button{width:100%}
+button.primary{grid-column:1/-1;background:linear-gradient(150deg,#f778bb,#c53cb5)}
+#status{padding:10px 12px;background:#f5e8f9;border-radius:14px;margin:14px 0;min-height:43px;font-size:14px}
+nav{display:flex;gap:10px;margin-top:14px}nav button{flex:1}
+#list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:10px;max-height:280px;overflow:auto}
+#list button{font-size:13px;text-align:left;min-height:40px;padding:9px 11px;background:#f3e3ff;color:#63387c;box-shadow:none;border:1px solid #e0c7f7}
+#list button.active{background:#e7bff2;border:2px solid #b957c3}
+#list button.done{background:#dcf6e7;border-color:#93c9ac;color:#286849}
+#list button.active.done{border:2px solid #7a5dc7}
+#export{width:100%;margin-top:14px}
+@media(max-width:420px){#list{grid-template-columns:1fr}.panel{padding:15px}.controls{gap:8px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<a href="./yue-tan-listening.html">← 59 оригиналов Yue Tan</a>
+<h1>🎙 Студия: 56 фраз HSK 1</h1>
+<p>Запись нового женского голоса для Panda Go · без клонирования и синтетической подмены.</p>
+</header>
+<section class="panel">
+<div class="toolbar"><strong id="count">0 из 56 записано</strong><span class="note">Запись хранится только на этом устройстве до закрытия страницы.</span></div>
+<div class="meter" aria-label="Прогресс записи"><i id="meter"></i></div>
+<div id="num">ФРАЗА 1 ИЗ 56</div>
+<div id="word" lang="zh-Hans"></div>
+<div id="py"></div>
+<p id="note"></p>
+<div id="status" role="status" aria-live="polite">Загрузка списка…</div>
+<div class="controls">
+<button class="primary" id="record" type="button">● Записать голос</button>
+<button id="stop" type="button" class="secondary" disabled>■ Остановить</button>
+<button id="listen" type="button" class="secondary" disabled>▶ Прослушать</button>
+<button id="clear" type="button" class="secondary" disabled>↻ Перезаписать</button>
+</div>
+<nav><button type="button" class="secondary" id="prev">← Назад</button><button type="button" id="next">Следующая →</button></nav>
+<button id="export" type="button" disabled>Сохранить записанное в ZIP ↓</button>
+<p class="note warn">Важно: загрузка и прослушивание не доказывают правильность тонов. Перед публикацией необходима проверка носителем и документированное разрешение на коммерческое использование.</p>
+<p class="note">Нажми «Записать» и дай доступ к микрофону. Произноси целое слово или предложение естественно, без музыки. Запиши все 56 фраз одним диктором. Изменять высоту тона, склеивать отдельные слоги и выдавать синтез за человека запрещено.</p>
+</section>
+<section class="panel"><strong>Список фраз для записи</strong><div id="list"></div>
+<p class="note">Нажми на любую фразу для перехода. Доступны исходные варианты написания и справочный пиньинь. <a href="https://github.com/trommelschlager-ai/chinese-coach-pwa/blob/main/docs/HSK1-NATIVE-VOICE-GAPS-v167.md">Причины отсутствия записей</a>.</p></section>
+</main>
+<script>
+'use strict';
+(async()=>{
+const $=id=>document.getElementById(id);
+let rows=[],index=0,recorder=null,stream=null,takes=new Map(),audio=null,busy=false;
+const enc=new TextEncoder();
+const status=s=>{$('status').textContent=s};
+const show=()=>{
+ if(!rows.length)return;
+ const item=rows[index],existing=takes.get(item.id);
+ $('num').textContent='ФРАЗА '+(index+1)+' ИЗ '+rows.length;
+ $('word').textContent=item.display;
+ $('py').textContent=item.pinyin_reference;
+ $('note').textContent=item.notes||'Пиньинь — справочный; проверить интонацию и тоны у носителя.';
+ $('prev').disabled=busy||index===0;$('next').disabled=busy||index===rows.length-1;
+ $('record').disabled=busy;$('stop').disabled=!busy;
+ $('listen').disabled=busy||!existing;$('clear').disabled=busy||!existing;
+ $('export').disabled=busy||takes.size===0;
+ $('count').textContent=takes.size+' из '+rows.length+' записано';
+ $('meter').style.width=(takes.size/rows.length*100)+'%';
+ $('list').replaceChildren();
+ rows.forEach((x,n)=>{const btn=document.createElement('button');btn.type='button';btn.className=(n===index?'active ':'')+(takes.has(x.id)?'done':'');btn.textContent=(takes.has(x.id)?'✓ ':'')+(n+1)+'. '+x.display;btn.disabled=busy;btn.onclick=()=>{if(audio)audio.pause();index=n;show();status(takes.has(x.id)?'Запись сохранена в памяти. Можно прослушать или перезаписать.':'Фраза готова к записи.')};$('list').append(btn)});
+};
+function stopAudio(){if(audio){audio.pause();audio.src='';audio=null}}
+function stopStream(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
+const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(t=>window.MediaRecorder?.isTypeSupported?.(t))||'';
+if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){status('Этот браузер не поддерживает запись. Открой страницу в Chrome на Android или настольном Chrome.');$('record').disabled=true;return}
+$('record').onclick=async()=>{
+ if(busy)return;
+ stopAudio();const id=rows[index].id;busy=true;show();
+ try{
+  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:false});
+  const parts=[];
+  recorder=new MediaRecorder(stream,mime?{mimeType:mime}:undefined);
+  recorder.ondataavailable=e=>{if(e.data.size)parts.push(e.data)};
+  recorder.onstop=()=>{
+   const blob=new Blob(parts,{type:recorder.mimeType||'audio/webm'});stopStream();recorder=null;busy=false;
+   if(blob.size>1500){takes.set(id,blob);status('✓ Запись сохранена только в памяти браузера. Прослушай её и оцени тоны.')}else status('Запись пустая или слишком короткая. Попробуй ещё раз.');
+   show();
+  };
+  recorder.start();status('🔴 Идёт запись: '+rows[index].display);
+  show();
+ }catch(e){busy=false;stopStream();status('Не удалось записать: '+(e?.message||'доступ к микрофону запрещён'));show()}
+};
+$('stop').onclick=()=>{if(recorder&&recorder.state==='recording')recorder.stop()};
+$('listen').onclick=()=>{
+ const item=rows[index],blob=takes.get(item.id);if(!blob)return;
+ stopAudio();const url=URL.createObjectURL(blob);audio=new Audio(url);
+ audio.onended=()=>{URL.revokeObjectURL(url);audio=null};
+ audio.onerror=()=>{URL.revokeObjectURL(url);audio=null;status('Не удалось воспроизвести запись.')};
+ audio.play().catch(()=>{URL.revokeObjectURL(url);audio=null;status('Не удалось запустить запись. Нажми ещё раз.')});
+};
+$('clear').onclick=()=>{if(busy)return;stopAudio();takes.delete(rows[index].id);show();status('Прежняя запись убрана. Запиши заново.')};
+$('prev').onclick=()=>{if(index>0&&!busy){stopAudio();index--;show();status('Готово к записи.')}};
+$('next').onclick=()=>{if(index<rows.length-1&&!busy){stopAudio();index++;show();status('Готово к записи.')}};
+const u16=n=>[n&255,(n>>>8)&255],u32=n=>[n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255];
+const table=(()=>{const a=[];for(let n=0;n<256;n++){let c=n;for(let i=0;i<8;i++)c=c&1?0xEDB88320^(c>>>1):c>>>1;a.push(c>>>0)}return a})();
+function crc32(data){let c=0xFFFFFFFF;for(const b of data)c=table[(c^b)&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
+function zipStore(entries){
+ const local=[],central=[];let offset=0;
+ for(const item of entries){
+  const name=enc.encode(item.name),d=item.bytes,crc=crc32(d);
+  const head=new Uint8Array([80,75,3,4,20,0,0,0,0,0,0,0,0,0,...u32(crc),...u32(d.length),...u32(d.length),...u16(name.length),0,0]);
+  local.push(head,name,d);
+  central.push(new Uint8Array([80,75,1,2,20,0,20,0,0,0,0,0,0,0,0,0,...u32(crc),...u32(d.length),...u32(d.length),...u16(name.length),0,0,0,0,0,0,0,0,0,0,0,0,...u32(offset)]),name);
+  offset+=head.length+name.length+d.length;
+ }
+ const csize=central.reduce((a,x)=>a+x.length,0);
+ const end=new Uint8Array([80,75,5,6,0,0,0,0,...u16(entries.length),...u16(entries.length),...u32(csize),...u32(offset),0,0]);
+ return new Blob([...local,...central,end],{type:'application/zip'});
+}
+$('export').onclick=async()=>{
+ if(busy||!takes.size)return;
+ $('export').disabled=true;status('Собираю ZIP из записей на устройстве…');
+ try{
+  const files=[],details=[];
+  for(const item of rows){const blob=takes.get(item.id);if(!blob)continue;
+   const ext=blob.type.includes('mp4')?'m4a':'webm';const name='recordings/'+item.id+'.'+ext;
+   files.push({name,bytes:new Uint8Array(await blob.arrayBuffer())});
+   details.push({id:item.id,hanzi:item.hanzi,filename:name,bytes:blob.size,media_type:blob.type,language:'cmn-Hans-CN',verified_by_native:false,recording_rights:'NEEDS_SIGNED_PERMISSION'});
+  }
+  files.push({name:'manifest.json',bytes:enc.encode(JSON.stringify({version:168,recordings:details,warning:'NO_NATIVE_TONE_OR_RIGHTS_QA YET. Do not publish as approved audio.'},null,2))});
+  const zip=zipStore(files),url=URL.createObjectURL(zip),a=document.createElement('a');
+  a.href=url;a.download='panda-go-hsk1-native-takes-'+details.length+'-of-56.zip';document.body.append(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+  status('ZIP готов: '+details.length+' записей. Они не отправлялись на сервер; перед публикацией нужен контроль произношения и прав.');
+ }catch(e){status('Ошибка сохранения ZIP: '+(e?.message||String(e)))}finally{show()}
+};
+try{
+ const response=await fetch('./assets/hsk1-native-recording-queue-v168.json',{cache:'no-cache'});
+ if(!response.ok)throw Error('HTTP '+response.status);
+ const data=await response.json();
+ if(data.version!==168||data.items.length!==56||data.recordings_exist!==false)throw Error('Неожиданный список записей');
+ rows=data.items;show();status('Готово. Доступ к микрофону запрашивается только после нажатия «Записать».');
+}catch(e){status('Не удалось загрузить сценарий: '+e.message);$('record').disabled=true}
+window.addEventListener('pagehide',()=>{if(recorder?.state==='recording')recorder.stop();stopStream();stopAudio()});
+})();
+</script>
+</body>
+</html>
