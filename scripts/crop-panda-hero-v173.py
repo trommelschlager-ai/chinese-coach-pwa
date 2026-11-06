@@ -17,8 +17,12 @@ with Image.open(source) as image:
         raise SystemExit(f'Unexpected approved source dimensions: {image.size}')
     # Keep the logo, temple, sky, flowers and the full panda; cut before the
     # pre-painted extra course button starts at ~35% of source image height.
-    cutoff=round(image.height*0.326)
-    cropped=image.convert('RGB').crop((0,0,image.width,cutoff))
+    # The painted course button begins below ~43% of the original. Preserve
+    # the full panda, paws and headphones by retaining the artwork above it.
+    # Trim 4% from the top to exclude the obsolete circular profile badges.
+    top=round(image.height*0.04)
+    cutoff=round(image.height*0.433)
+    cropped=image.convert('RGB').crop((0,top,image.width,cutoff))
     cropped.save(output,'WEBP',quality=95,method=6)
     print('Cropped approved hero',image.size,'=>',cropped.size,output.stat().st_size,'bytes')
     if output.stat().st_size > 1900000:
