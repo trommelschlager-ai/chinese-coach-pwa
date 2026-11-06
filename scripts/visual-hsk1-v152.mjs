@@ -16,6 +16,7 @@ try{
   page.on('console',msg=>{if(msg.type()==='error'&&!msg.text().includes('favicon'))report.errors.push({width,console:msg.text()})});
   async function capture(name){
    const shell=page.locator('main').first();await shell.waitFor();
+   await shell.locator('img').evaluateAll(images=>Promise.all(images.map(img=>img.decode().catch(()=>{}))));
    const m=await shell.evaluate(el=>({
      scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,
      images:[...el.querySelectorAll('img')].map(img=>({src:img.src,ok:img.complete&&img.naturalWidth>0}))
