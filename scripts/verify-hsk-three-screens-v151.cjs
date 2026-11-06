@@ -11,7 +11,7 @@ assert(lesson.includes('id="lesson-step-list"'),'Guided step list must be visibl
 assert(main.includes('panda-go-home-v136-clean.png'),'Previously approved home art must be retained');
 assert(main.includes('href="./hsk1-map.html"'),'HSK 1 opens the map');
 assert(main.includes('pg-hsk-unavailable'),'Unfinished levels must not act as completed courses');
-assert(map.includes('class="node locked" data-num="7"'),'Seventh unfinished lesson stays locked');
+assert(map.includes('data-num="7" href="./hsk1-lesson.html?lesson=7"'),'Approved seventh topic opens its new lesson');
 assert(style.includes('object-fit:cover')&&!style.includes('image-rendering:pixelated'),'No pixelated or stretched image styling');
 const voice={},voiceScript=read('assets/guided-voice-v1506.js');
 const vm=require('node:vm');vm.runInNewContext(voiceScript,{window:voice});

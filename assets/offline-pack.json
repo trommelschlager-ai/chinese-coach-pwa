@@ -1,6 +1,6 @@
 {
-  "version": 152,
-  "bytes": 31408176,
+  "version": 153,
+  "bytes": 31465176,
   "files": [
     "./start-chinese.html",
     "./hsk1-map.html",
@@ -1542,6 +1542,10 @@
     "./assets/guided-voice-v1506/092cd95e8a64d58d.mp3",
     "./assets/guided-voice-v1506/7deb2396a5b21cd1.mp3",
     "./assets/guided-voice-v1506/8d0fd9537bd276fc.mp3",
-    "./assets/hsk-approved-three-screens-v151.css?v=151"
+    "./assets/hsk-approved-three-screens-v151.css?v=151",
+    "./hsk1-lesson.html",
+    "./assets/hsk1-foundations-v152.css?v=152",
+    "./assets/hsk1-foundations-v152.js?v=152",
+    "./assets/hsk1-foundations-data-v152.js?v=152"
   ]
 }
