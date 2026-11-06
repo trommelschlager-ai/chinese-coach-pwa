@@ -179,7 +179,7 @@ $('downloadZip').onclick=async()=>{
    status('Скачано '+(i+1)+'/'+rows.length+' MP3 · 下载中 '+pct+'%');
   }
   entries.push({name:'manifest.json',bytes:enc.encode(JSON.stringify({project:'Panda Go',version:169,count:rows.length,kind:'AI_SYNTHETIC_FEMALE_NOT_HUMAN',native_tone_qa:false,items:manifest},null,2))});
-  entries.push({name:'READ_ME_请先阅读.txt',bytes:enc.encode('中文：这些录音来自AI合成声音，并非真人录制。请检查每条录音的声调、变调、轻声、自然度、发音与原文是否一致。请反馈有问题的编号。\n\nРусский: запись синтезирована ИИ MeloTTS, китайские тоны ещё не проверены носителем. Это аудио для оценки, не новые записи дикторши.\n')});
+  entries.push({name:'README.txt',bytes:enc.encode('中文：这些录音来自AI合成声音，并非真人录制。请检查每条录音的声调、变调、轻声、自然度、发音与原文是否一致。请反馈有问题的编号。\n\nРусский: запись синтезирована ИИ MeloTTS, китайские тоны ещё не проверены носителем. Это аудио для оценки, не новые записи дикторши.\n')});
   const blob=zipStore(entries);downloadFile(blob,'panda-go-hsk1-'+rows.length+'-AI-mandarin-voices.zip');
   status('✅ ZIP собран: '+rows.length+' MP3 и список. Проверка тонов носителем всё ещё требуется.');$('progress').style.width='100%';
  }catch(e){status('Не удалось создать полный ZIP: '+e.message+' Попробуй ещё раз при стабильном интернете.');$('progress').style.width='0%'}
