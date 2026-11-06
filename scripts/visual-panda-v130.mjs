@@ -39,12 +39,14 @@ try{
   // Panda Go v145 mounts the modern shell directly; legacy Start is covered.
   await ready(page);
   await capture(page,'01-home',size);
+  if(width===390){const shot=await page.screenshot({type:'jpeg',quality:26,animations:'disabled'});console.log('HSK_CAPTURE_HOME_BEGIN'+shot.toString('base64')+'HSK_CAPTURE_HOME_END');}
   // HSK 1: seven-step navigation with actual tone, dialogue and assembly checks.
   const guided=await context.newPage();
   await guided.goto(BASE+'/hsk1-map.html',{waitUntil:'load'});
   assert.equal(await guided.locator('.map-road .node').count(),7,'Seven lesson stops');
   assert.equal(await guided.locator('.map-road a.node').count(),4,'Four available lessons');
   await guided.screenshot({path:`${OUT}/01a-hsk-map-${width}.png`,fullPage:true,animations:'disabled'});
+  if(width===390){const shot=await guided.screenshot({type:'jpeg',quality:26,fullPage:true,animations:'disabled'});console.log('HSK_CAPTURE_MAP_BEGIN'+shot.toString('base64')+'HSK_CAPTURE_MAP_END');}
   await guided.locator('.map-road a.node[data-num="1"]').click();
   assert.equal(await guided.locator('#lesson-step-list .lesson-step-row').count(),7,'Seven steps visible');
   assert.equal(await guided.locator('#content .word').count(),3,'Three original word cards');
@@ -56,6 +58,7 @@ try{
   assert.equal(await guided.locator('#content [data-line]').count(),3,'Three visible dialogue turns');
   assert.equal(await guided.locator('#content .lesson-dialogue-play').count(),1,'Illustrated player exists');
   await guided.screenshot({path:`${OUT}/01c-hsk-dialogue-${width}.png`,fullPage:true,animations:'disabled'});
+  if(width===390){const shot=await guided.screenshot({type:'jpeg',quality:26,fullPage:true,animations:'disabled'});console.log('HSK_CAPTURE_DIALOGUE_BEGIN'+shot.toString('base64')+'HSK_CAPTURE_DIALOGUE_END');}
   await guided.locator('#next').click(); // assembly
   assert(await guided.locator('#next').isDisabled(),'Assembly step cannot be skipped');
   for (const i of [0,1,2]) await guided.locator('#content [data-piece="'+i+'"]').click();
