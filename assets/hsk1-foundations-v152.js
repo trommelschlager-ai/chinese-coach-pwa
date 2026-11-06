@@ -63,10 +63,19 @@ function save(){
 }
 function feedback(message){$('lesson-feedback').textContent=message}
 function stopAudio(){playId++;if(currentAudio){currentAudio.onended=null;currentAudio.onerror=null;currentAudio.pause();currentAudio=null;}document.querySelectorAll('[data-playing]').forEach(n=>n.removeAttribute('data-playing'));}
-function playOne(file,row){
+// Preserve Mandarin pitch while gently shortening overlong synthetic syllables.
+ // Native-human listening samples and the user's own mic recording are not modified.
+const FEMALE_KOKORO_RATE=1.12;
+function tuneVoice(audio,file,role){
+ if(role==='female'&&typeof file==='string'&&file.includes('/hsk1-voices-v156/')){
+  audio.playbackRate=FEMALE_KOKORO_RATE;
+  if('preservesPitch' in audio)audio.preservesPitch=true;
+ }
+}
+function playOne(file,row,role='female'){
  if(!file){feedback('Для этого элемента пока нет готовой записи.');return;}
  stopAudio();const token=playId;
- try{const audio=new Audio(file);currentAudio=audio;
+ try{const audio=new Audio(file);tuneVoice(audio,file,role);currentAudio=audio;
   audio.onplaying=()=>{if(token===playId&&row)row.setAttribute('data-playing','true')};
   audio.onended=()=>{if(token===playId){currentAudio=null;if(row)row.removeAttribute('data-playing')}};
   audio.onerror=()=>{if(token===playId)feedback('Аудиофайл не загрузился.')};
@@ -80,7 +89,7 @@ function playDialogue(){
  const next=()=>{if(token!==playId||index>=clips.length)return;
   document.querySelectorAll('[data-playing]').forEach(n=>n.removeAttribute('data-playing'));
   const current=index++;const row=document.querySelector('[data-dialog-row="'+current+'"]');
-  const audio=new Audio(clips[current]);currentAudio=audio;
+  const audio=new Audio(clips[current]);tuneVoice(audio,clips[current],roleForDialogue(topic.dialogue[current][0]));currentAudio=audio;
   audio.onplaying=()=>{if(token===playId)row?.setAttribute('data-playing','true')};
   audio.onended=next;audio.onerror=()=>{if(token===playId)feedback('Ошибка загрузки реплики.')};
   Promise.resolve(audio.play()).catch(()=>{if(token===playId)feedback('Звук не включился.')});
@@ -321,7 +330,7 @@ $('stage-content').addEventListener('click',e=>{
    return;
  }
  if(button.hasAttribute('data-play')){
-  playOne(clipFor(button.dataset.play,button.dataset.speaker||'female'),button.closest('.lesson-line,.lesson-word,.lesson-card'))
+  playOne(clipFor(button.dataset.play,button.dataset.speaker||'female'),button.closest('.lesson-line,.lesson-word,.lesson-card'),button.dataset.speaker||'female')
   return;
  }
  if(button.hasAttribute('data-tones-demo')){
