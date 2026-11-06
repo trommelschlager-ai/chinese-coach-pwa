@@ -293,6 +293,8 @@ function render(){
  $('course-heading').textContent='Урок '+lessonNumber+' · '+topic.name;
  $('lesson-count').textContent='Шаг '+(state.step+1)+' из 7';
  $('progress-fill').style.width=(state.completed?100:state.step/7*100)+'%';
+ $('lesson-progress').setAttribute('aria-valuenow',String(state.completed?7:state.step));
+ $('lesson-progress').setAttribute('aria-valuetext','Пройдено '+(state.completed?7:state.step)+' из 7 шагов');
  document.title='Урок '+lessonNumber+' · '+topic.name+' — Panda Go';
  renderSteps();
  const renderers=[renderWords,renderPronunciation,renderRules,renderDialogue,renderCompose,renderSpeak,renderReview];
