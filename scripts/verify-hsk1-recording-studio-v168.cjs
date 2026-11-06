@@ -38,6 +38,24 @@ assert(!p.includes("fetch('https://")&&!p.includes('WebSocket'),'No upload of au
 const src=(p.match(/<script>([\s\S]*?)<\/script>/)||[])[1];
 assert(src&&src.length>2000,'Studio JS absent');
 new Function(src); // syntax only
+// Verify that our no-dependency browser ZIP writer produces an archive readable by real unzip.
+const sourceZip=src.slice(src.indexOf('const u16='),src.indexOf("$('export').onclick="));
+assert(sourceZip.includes('function zipStore(entries)'), 'ZIP writer missing');
+const zipStore=new Function('const enc=new TextEncoder();'+sourceZip+'return zipStore;')();
+const sampleZip=zipStore([
+ {name:'recordings/001.webm',bytes:Uint8Array.from([0x1a,0x45,0xdf,0xa3,1,2,3])},
+ {name:'manifest.json',bytes:new TextEncoder().encode('{"version":168}')}
+]);
+sampleZip.arrayBuffer().then(bytes=>{
+ const os=require('node:os'),path=require('node:path'),child=require('node:child_process');
+ const name=path.join(os.tmpdir(),'panda-native-zip-check-'+process.pid+'.zip');
+ try{
+  fs.writeFileSync(name,Buffer.from(bytes));
+  const result=child.spawnSync('unzip',['-t',name],{encoding:'utf8'});
+  assert.equal(result.status,0,'ZIP export invalid: '+result.stdout+' '+result.stderr);
+ }finally{try{fs.unlinkSync(name)}catch{}}
+}).catch(e=>{console.error(e);process.exitCode=1});
+
 const dom=new JSDOM(p,{url:'https://panda.test/hsk1-recording-studio.html',runScripts:'outside-only',pretendToBeVisual:true});
 dom.window.TextEncoder=require('node:util').TextEncoder; // jsdom's sandbox omits the browser TextEncoder global
 dom.window.fetch=async()=>({ok:true,json:async()=>queue});
