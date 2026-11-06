@@ -11,7 +11,7 @@ const retained='./assets/course-human/cmn-我.mp3',oldImage='./assets/hanzi-pape
 const oldCache=await cacheAPI.open('chinese-coach-pwa-v48');for(const path of [retained,oldImage,oldData])await oldCache.put(path,await network(path));
 await oldCache.put('./assets/obsolete.js?v=1',new Response('obsolete'));await oldCache.put('./index.html',new Response('obsolete shell'));
 events.activate({waitUntil:p=>pending=p});await pending;assert(!stores.has('chinese-coach-pwa-v48'));
-for(const p of [retained,oldImage,oldData,'./assets/panda-go-panda-only-v173.webp','./assets/hanzi-approved-v141.png'])assert((await cacheAPI.match(p))?.ok,'Required media retained: '+p);
+for(const p of [retained,oldImage,oldData,'./assets/panda-go-hero-clean-v174.webp','./assets/hanzi-approved-v141.png'])assert((await cacheAPI.match(p))?.ok,'Required media retained: '+p);
 assert(!await cacheAPI.match('./assets/obsolete.js?v=1'),'Obsolete scripts must not be migrated');
 
 const request=async(url,mode)=>{let p;events.fetch({request:{url:normalize(url),method:'GET',mode},respondWith:r=>p=r});return await p};
