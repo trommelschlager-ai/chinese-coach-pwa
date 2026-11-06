@@ -28,8 +28,7 @@ const stepTitles=[
 const norm=s=>String(s).replace(/[。？！!?.,，\s]/g,'');
 const maps=[
  window.courseGuidedAudio||{},window.courseHumanAudio||{},
- window.basicWordAudio||{},window.basicPinyinAudio||{},
- window.courseNaturalAudio||{}
+ window.basicWordAudio||{},window.basicPinyinAudio||{}
 ];
 const resolved={};
 for(const map of maps){for(const [k,v] of Object.entries(map)){const key=norm(k);if(key&&!resolved[key]&&typeof v==='string'&&v.endsWith('.mp3'))resolved[key]=v;}}
@@ -183,7 +182,9 @@ $('stage-content').addEventListener('click',e=>{
   return;
  }
  if(button.hasAttribute('data-tones-demo')){
-  playOne((window.courseNaturalAudio||{})['妈·麻·马·骂']||(window.courseNaturalAudio||{})['mā→má→mǎ→mà'],null);return;
+  const keys=['妈','麻','马','骂'],clips=keys.map(k=>(window.courseHumanAudio||{})[k]); 
+  if(clips.some(x=>!x)){feedback('Нет полных записей четырёх тонов.');return;}
+  stopAudio();const token=playId;let i=0;const playNext=()=>{if(token!==playId||i>=clips.length)return;const a=new Audio(clips[i++]);currentAudio=a;a.onplaying=()=>{if(token===playId)feedback('Звучит тон '+i+' из 4.')};a.onended=playNext;a.onerror=()=>{if(token===playId)feedback('Запись тона не загрузилась.')};Promise.resolve(a.play()).catch(()=>{if(token===playId)feedback('Звук не включился.')});};playNext();return;
  }
  if(button.hasAttribute('data-dialog-all')){playDialogue();return;}
  if(button.hasAttribute('data-add')&&!state.buildPassed){const id=Number(button.dataset.add);if(!assembled.includes(id)){assembled.push(id);$('lesson-build-area').innerHTML=buildTokens()}return;}
