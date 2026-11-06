@@ -116,7 +116,7 @@ def main():
     rows=[]
     for item in needs:
         wanted=clean(item["canonical"])
-        hits=[n for n in source if wanted and wanted in clean(pathlib.PurePosixPath(n).stem)]
+        hits=[n for n in source if wanted and clean(pathlib.PurePosixPath(n).stem.rsplit('_',1)[-1])==wanted]
         rows.append({"text":item["canonical"],"pinyin":item.get("pinyin"),
              "archive_candidates":hits[:15],"candidate_count":len(hits),
              "status":"CANDIDATE_NEEDS_AUDIO_AND_TONE_VALIDATION" if hits else
