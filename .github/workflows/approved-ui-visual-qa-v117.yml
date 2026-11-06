@@ -32,6 +32,7 @@ jobs:
           curl -fsS http://127.0.0.1:4173/index.html >/dev/null || { cat /tmp/vite-v117.log; exit 1; }
           node scripts/visual-panda-v130.mjs
           node scripts/visual-mobile-v119.mjs
+          node scripts/visual-hsk1-v152.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -39,6 +40,7 @@ jobs:
           path: |
             qa/v130/browser/
             qa/v119/
+            qa/hsk1-v152/
           if-no-files-found: warn
   hanzi-focused:
     needs: hanzi-phrase-audio
