@@ -4,7 +4,7 @@
 body{margin:0;color:var(--ink);font:600 15px/1.45 system-ui,-apple-system,'Segoe UI',sans-serif}
 button{font:inherit;cursor:pointer}button:disabled{cursor:default;opacity:.5}
 button:focus-visible,a:focus-visible{outline:3px solid #b12abd;outline-offset:3px}
-.lesson-shell{min-height:100dvh;max-width:470px;margin:0 auto;position:relative;isolation:isolate;padding:max(20px,env(safe-area-inset-top)) 14px max(26px,env(safe-area-inset-bottom));border-inline:2px solid #f7dc9b;background:linear-gradient(180deg,#fcecffd8 0%,#eac7f8ed 55%,#d5b2f2e7 100%),url('./lessons-backdrop.webp') center center/cover no-repeat;box-shadow:0 0 25px #48216e90;overflow-x:hidden}
+.lesson-shell{min-height:100dvh;max-width:470px;margin:0 auto;position:relative;isolation:isolate;padding:max(20px,env(safe-area-inset-top)) 14px max(26px,env(safe-area-inset-bottom));border-inline:2px solid #f7dc9b;background:linear-gradient(180deg,rgba(252,235,255,.59),rgba(238,210,255,.74) 52%,rgba(207,165,238,.68) 100%),url('./approved-panda-lake-v112.webp') center top/cover no-repeat;box-shadow:0 0 25px #48216e90;overflow-x:hidden}
 .lesson-shell::before{content:"";position:absolute;inset:0 0 auto;height:100px;z-index:-1;background:url('./panda-v130/flowers.webp') center top/100% auto no-repeat;pointer-events:none}
 .lesson-header{display:flex;align-items:center;gap:12px;padding:7px 2px 11px;text-align:center;position:relative}
 .lesson-header>div{flex:1;padding-right:48px}
