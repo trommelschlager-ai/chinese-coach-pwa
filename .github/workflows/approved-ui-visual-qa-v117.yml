@@ -95,3 +95,29 @@ jobs:
             assets/hanzi-phrases-v141/
             assets/hanzi-phrases-v141.js
           if-no-files-found: error
+
+  kokoro-voice-samples:
+    # Generate *candidate* Chinese speech only for the explicitly approved voice preview branch.
+    if: ${{ github.event_name == 'pull_request' && github.head_ref == 'feat/hsk1-kokoro-two-voice-preflight-20261106' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install free local TTS runtime and MP3 encoder
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "kokoro==0.9.4" "misaki[zh]>=0.9" numpy soundfile
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+      - name: Render 6 sample phrases only (never publish app changes)
+        run: python scripts/hsk1_kokoro_audio_v155.py --render-samples
+      - name: Share preview as a private CI artifact for manual tone review
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-go-mandarin-kokoro-v155-6-samples
+          path: .voice-staging/hsk1-kokoro-v155/
+          if-no-files-found: error
+          retention-days: 7
