@@ -76,3 +76,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #b12abd;outline-offset:3p
 .lesson-fineprint a{color:#7d2b90}
 @media(max-width:360px){.lesson-steps{gap:5px}.lesson-step{gap:5px;min-height:40px;grid-template-columns:29px 27px minmax(0,1fr) 17px}.lesson-step .step-icon{font-size:18px}.lesson-step .step-label{font-size:13px}.lesson-shell{padding-inline:10px}.lesson-card{padding:12px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+.lesson-tone-answer{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:13px 0}
+.lesson-tone-answer button{min-height:52px;border:2px solid #f8dbf8;border-radius:18px;color:#5b1a78;background:linear-gradient(150deg,#fff8ff,#ebcdf9);font-size:16px;font-weight:900;box-shadow:0 3px 6px #a45aa66d}
+.lesson-tone-answer button:active{background:#ffd9f6}
