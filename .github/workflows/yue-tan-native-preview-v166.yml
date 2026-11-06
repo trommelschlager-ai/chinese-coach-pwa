@@ -1,0 +1,49 @@
+name: Build mobile Yue Tan human audio review page (no lesson change)
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  prepare-audio:
+    if: ${{ github.event.pull_request.head.ref == 'feat/yue-tan-human-voice-preview-v166' && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install ffprobe for strict file inspection
+        run: sudo apt-get update -qq && sudo apt-get install -y ffmpeg
+      - name: Load original 58 human MP3 files from completed review branch (no TTS)
+        run: |
+          if test -d assets/yue-tan-human-v166 && test "$(find assets/yue-tan-human-v166 -name '*.mp3' | wc -l)" -eq 58; then
+            echo "Already staged 58 genuine MP3 files."
+          else
+            git fetch --depth=1 origin refs/heads/review/hsk1-yue-tan-human-audio-coverage-20261106
+            git restore --source=FETCH_HEAD --worktree -- review/hsk1-yue-tan-v163/audio
+          fi
+      - name: Stage and verify every MP3 plus already active native 日
+        run: python scripts/verify-yue-tan-listening-v166.py
+      - name: Commit original licensed MP3 for review page, not lessons
+        run: |
+          git config user.name "Panda Go Native Audio QA"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/yue-tan-human-v166/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "audio(review): stage 58 source-verified Yue Tan MP3 for mobile listening"
+          git push origin "HEAD:refs/heads/${{ github.head_ref }}"
+      - name: Upload review sample bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PandaGo-59-Native-Female-MP3-Review-v166
+          path: assets/yue-tan-human-v166/
+          retention-days: 7
+          if-no-files-found: warn
