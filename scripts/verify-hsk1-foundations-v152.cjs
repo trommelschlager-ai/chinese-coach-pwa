@@ -12,7 +12,7 @@ for(let i=1;i<=7;i++)assert(map.includes('hsk1-lesson.html?lesson='+i),'Map miss
 assert(!renderer.includes('pg-hsk1-completed-v1'),'Never recycle old progress');
 assert(renderer.includes('pg-hsk1-v3-'),'Versioned progress key required');
 assert(!page.includes('study-audio-map.js'),'Do not use noncommercial study voice previews in new lessons');
-assert(css.includes('lesson-dialogue-hero')&&css.includes('lessons-backdrop.webp'),'Approved scenic style retained');
+assert(css.includes('lesson-dialogue-hero')&&css.includes('approved-panda-lake-v112.webp'),'Approved scenic style retained');
 assert(fs.existsSync('assets/panda-v130/dialogue-scene.webp'),'Dialogue artwork is shipped');
 const audioKeys=['妈','麻','马','骂'];
 for(const topicNo of [1,2,3,4,5,6,7]){
