@@ -91,7 +91,7 @@ window.PANDA_HSK1_VOICES={
     "我的": "./assets/hsk1-voices-v156/aff9ef7fa33cef43554e.mp3",
     "我的妈妈": "./assets/hsk1-voices-v156/543483835bc2b0c18b47.mp3",
     "拼音": "./assets/hsk1-voices-v156/ecd269374f7ca1a18aea.mp3",
-    "日": "./assets/hsk1-voices-v156/da80baf9eabc01c9a745.mp3",
+    "日": "./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3",
     "明天": "./assets/hsk1-voices-v156/679cd4984d824ade4afa.mp3",
     "明天下雨": "./assets/hsk1-voices-v156/2001d68ef28b34b1af30.mp3",
     "明天下雨。": "./assets/hsk1-voices-v156/7de4dafc79197781a3f7.mp3",
