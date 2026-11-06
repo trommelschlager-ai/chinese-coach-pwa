@@ -8,7 +8,7 @@ const topic=topics[lessonNumber-1];
 if(!topic){document.getElementById('stage-content').textContent='Материал пока недоступен.';return;}
 const key='pg-hsk1-v3-'+topic.id,completeKey='pg-hsk1-v3-complete';
 const $=id=>document.getElementById(id),esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false};
+let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0};
 try{
  const raw=JSON.parse(localStorage.getItem(key)||'{}');
  if(raw&&typeof raw==='object'){
@@ -17,6 +17,7 @@ try{
    state.buildPassed=raw.buildPassed===true;
    state.quizPassed=raw.quizPassed===true;
    state.spoken=raw.spoken===true;
+   state.toneEarProgress=Math.max(0,Math.min(4,Number(raw.toneEarProgress)||0));
    state.completed=raw.completed===true;
  }
 }catch{}
@@ -79,6 +80,16 @@ function renderWords(){
  topic.words.map(([hz,py,ru])=>'<article class="lesson-card lesson-word"><div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz)+'</article>').join('')+
  '<div class="lesson-note">Повторяй вслух и обращай внимание на знаки тонов в пиньине. Ключевые слова мы ещё встретим в примерах.</div>';
 }
+const toneOrder=['马','妈','骂','麻'];
+function renderToneEar(){
+ const i=state.toneEarProgress;
+ if(i>=4)return '<div class="lesson-note">✅ Ты различил все четыре тона на слух. Можно переходить дальше.</div>';
+ return '<div class="lesson-card"><h2>Проверь слух · '+(i+1)+' из 4</h2>'+
+   '<p>Прослушай запись, затем выбери номер тона. Иероглиф и пиньинь намеренно скрыты.</p>'+
+   '<button type="button" class="lesson-action" data-tone-hear>▶ Прослушать тон</button>'+
+   '<div class="lesson-tone-answer">'+[1,2,3,4].map(n=>'<button type="button" data-tone-choice="'+n+'">'+n+'-й тон</button>').join('')+'</div>'+
+   '<p class="lesson-small">После правильного ответа прозвучит следующий образец. Все записи — один диктор.</p></div>';
+}
 function renderPronunciation(){
  let extra='';
  if(topic.id==='foundations')extra=
@@ -86,7 +97,7 @@ function renderPronunciation(){
  [['mā','1-й · высокий ровный'],['má','2-й · восходящий'],['mǎ','3-й · низкий'],['mà','4-й · нисходящий']].map(x=>'<div class="lesson-tone"><b>'+x[0]+'</b><small>'+x[1]+'</small></div>').join('')+'</div>'+
  '<div class="lesson-sound-demo"><strong>Послушай все четыре тона</strong><button type="button" data-tones-demo>▶ Аудио</button></div>'+
  '<p class="lesson-note">Пятый вариант — нейтральный тон, без знака: ma. Он короткий и зависит от соседних слогов.</p>'+
- '<div class="lesson-character-grid" aria-label="Примеры согласных и звукосочетаний"><span>zh</span><span>ch</span><span>sh</span><span>j</span><span>q</span><span>x</span><span>z</span><span>c</span><span>s</span><span>ü</span></div>';
+ '<div class="lesson-character-grid" aria-label="Примеры согласных и звукосочетаний"><span>zh</span><span>ch</span><span>sh</span><span>j</span><span>q</span><span>x</span><span>z</span><span>c</span><span>s</span><span>ü</span></div>'+renderToneEar();
  else extra='<div class="lesson-note">Отработай чтение каждого слова: иероглиф → пиньинь → тон → значение. После прослушивания произнеси фразу ещё раз.</div>';
  return extra+topic.pronunciation.map((p,i)=>'<article class="lesson-card"><span class="lesson-rule-head">'+(i+1)+'.</span><p>'+esc(p)+'</p></article>').join('')+
  '<p class="lesson-fineprint">Аудио воспроизводится только для записей, которые уже есть в приложении. Непроверенные голоса автоматически не подставляются.</p>';
@@ -155,12 +166,13 @@ function render(){
  $('stage-content').innerHTML=renderers[state.step]();
  feedback('');
  $('lesson-prev').disabled=state.step===0;
- $('lesson-next').disabled=(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed);
+ $('lesson-next').disabled=(state.step===1&&topic.id==='foundations'&&state.toneEarProgress<4)||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed);
  $('lesson-next').textContent=state.step===6?'✓ Завершить и к карте':'Дальше →';
  if(state.completed&&state.step===6)$('lesson-next').textContent='К карте HSK 1 →';
  save();
 }
 function goNext(){
+ if(state.step===1&&topic.id==='foundations'&&state.toneEarProgress<4){feedback('Пройди четыре задания на распознавание тонов.');return;}
  if(state.step===4&&!state.buildPassed){feedback('Сначала правильно собери фразу.');return;}
  if(state.step===5&&!state.spoken){feedback('Сначала проговори фразу и подтверди повторение.');return;}
  if(state.step===6){
@@ -177,6 +189,20 @@ $('lesson-steps').addEventListener('click',e=>{
 });
 $('stage-content').addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button||button.disabled)return;
+ if(button.hasAttribute('data-tone-hear')){
+   playOne((window.courseHumanAudio||{})[toneOrder[state.toneEarProgress]],null);return;
+ }
+ if(button.hasAttribute('data-tone-choice')){
+   const correct=['妈','麻','马','骂'].indexOf(toneOrder[state.toneEarProgress])+1;
+   if(Number(button.dataset.toneChoice)===correct){
+     state.toneEarProgress=Math.min(4,state.toneEarProgress+1);save();
+     const container=document.querySelector('.lesson-tone-answer')?.closest('.lesson-card');
+     if(container)container.outerHTML=renderToneEar();
+     feedback(state.toneEarProgress===4?'✅ Четыре тона распознаны правильно!':'Верно! Теперь слушай следующий тон.');
+     if(state.toneEarProgress>=4)$('lesson-next').disabled=false;
+   }else feedback('Не совпало. Прослушай ещё раз и обрати внимание на направление тона.');
+   return;
+ }
  if(button.hasAttribute('data-play')){
   playOne(clipFor(button.dataset.play),button.closest('.lesson-line,.lesson-word,.lesson-card'));
   return;
