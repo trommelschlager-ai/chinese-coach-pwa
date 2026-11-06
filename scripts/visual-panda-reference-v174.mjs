@@ -36,6 +36,7 @@ try{
   await page.screenshot({path:out+'/01-home-'+width+'x'+height+'.png',fullPage:true,animations:'disabled'});
   await page.locator('#pg130 a[href="./hsk1-map.html"]').click();
   await page.waitForURL('**/hsk1-map.html');
+  await Promise.all([page.locator('.pg-stone-stairs').evaluate(img=>img.decode()),page.locator('.panda').evaluate(img=>img.decode())]);
   const map=await page.evaluate(()=>{
    const root=document.querySelector('.map-shell'),stairs=root.querySelector('.pg-stone-stairs'),panda=root.querySelector('.panda');
    const rect=el=>{const r=el.getBoundingClientRect();return{x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height}};
