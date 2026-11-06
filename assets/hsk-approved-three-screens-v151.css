@@ -118,3 +118,19 @@ main.lesson-shell{max-width:470px;min-height:100dvh;padding:clamp(12px,3.2vw,17p
 .lesson-shell #feedback:empty{min-height:0}
 @media(max-width:360px){.lesson-shell .lesson-step-row{grid-template-columns:30px 24px 1fr 20px;gap:5px;font-size:12px;min-height:34px}.lesson-shell .lesson-step-art{font-size:18px}.lesson-shell .lesson-step-number{font-size:17px}.lesson-shell .lesson-dialogue-visual{height:172px}.lesson-shell .lesson-chat-line [lang="zh-Hans"]{font-size:20px}}
 @media(prefers-reduced-motion:reduce){#pg130 .pg-hsk-level,.lesson-shell button{transition:none!important}}
+
+/* v152: eliminate old artwork's baked-in menu controls and duplicate title.
+   The approved head art remains intact; all lesson controls remain real DOM buttons. */
+#pg130 .pg-screen.pg-hsk-page{background:linear-gradient(180deg,#f8d7fa 0%,#d6b9ef 52%,#afe9f1 100%)!important}
+#pg130 .pg-hsk-backdrop{height:clamp(250px,40dvh,382px);bottom:auto;overflow:hidden;z-index:0}
+#pg130 .pg-hsk-backdrop img{height:auto!important;max-width:100%!important;width:100%;object-fit:unset!important;object-position:top center;transform:none!important}
+#pg130 .pg-hsk-brand{display:none!important}
+#pg130 .pg-hsk-level-list{margin-top:clamp(252px,39dvh,385px)!important;position:relative;z-index:3;padding:8px clamp(10px,3vw,15px) 20px!important;border-top:2px solid #fff7;border-radius:22px 22px 0 0;background:linear-gradient(180deg,#f6d6f8f6 0%,#ecc6f1f9 70%,#d5c9f1f2)!important;box-shadow:0 -5px 20px #a84ead3c!important}
+#pg130 .pg-hsk-page::before{display:block!important;content:"";position:absolute;right:0;top:0;z-index:2;width:43%;height:59px;background:linear-gradient(105deg,#efd4ff,#d6cafb);border-radius:0 0 0 26px;pointer-events:none}
+#pg130 .pg-hsk-level{background-clip:padding-box}
+@media(max-height:700px){#pg130 .pg-hsk-level-list{margin-top:clamp(223px,34dvh,285px)!important}#pg130 .pg-hsk-backdrop{height:clamp(240px,37dvh,290px)}}
+@media(max-width:360px){#pg130 .pg-hsk-page::before{height:51px}#pg130 .pg-hsk-level-list{padding-inline:8px!important}}
+/* The old 'lessons-backdrop.webp' has words and buttons printed into its pixels.
+   Never use it under the new map or guided lessons. */
+body:has(.map-shell) .map-shell{background:linear-gradient(180deg,#fff1ff4d,#d9b3ff38 80%,#bea6ff24),url("./approved-panda-lake-v112.webp") center center/cover no-repeat,#e0bef3!important}
+body:has(.lesson-shell) main.lesson-shell{background:linear-gradient(180deg,#ffe8ffb8,#eed3fbc9 60%,#e8bdf7db),url("./approved-panda-lake-v112.webp") center center/cover no-repeat,#ead0ee!important}
