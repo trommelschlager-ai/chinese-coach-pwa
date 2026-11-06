@@ -823,7 +823,7 @@ body.pg130-active{background:#47c1e8!important}
 #pg130 .pg-hsk-page::before,#pg130 .pg-hsk-page::after{display:none!important}
 #pg130 .pg-hsk-backdrop{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 #pg130 .pg-hsk-backdrop img{width:100%;height:100%;object-fit:cover;object-position:center top;max-width:none;filter:none!important;image-rendering:auto}
-#pg130 .pg-hsk-profile{position:absolute;z-index:5;top:max(13px,env(safe-area-inset-top));right:15px}
+#pg130 .pg-hsk-profile{position:absolute;z-index:5;top:max(13px,env(safe-area-inset-top));right:15px;display:flex;align-items:center;gap:8px}
 #pg130 .pg-hsk-profile button{display:grid;place-items:center;width:37px;height:37px;border:2px solid #fff8ff;border-radius:50%;background:linear-gradient(#fff8fa,#f5a6de);box-shadow:0 3px 8px #733a8a96;color:#7b299f;font-size:23px;font-weight:900}
 #pg130 .pg-hsk-level-list{position:relative;z-index:2;display:grid;gap:clamp(8px,1.12dvh,12px);margin-top:clamp(265px,40dvh,354px);padding:16px 16px 23px;background:linear-gradient(180deg,#e6bcf6f2 0%,#ddbeedfa 20%,#d5b9f1f9 100%);border-top:2px solid #fff4ff;border-radius:28px 28px 0 0;box-shadow:0 -8px 28px #b64ddb50}
 #pg130 .pg-hsk-level{position:relative;display:grid;grid-template-columns:59px 1fr 39px;gap:9px;align-items:center;height:clamp(55px,8.2dvh,72px);padding:4px 9px 4px 7px;text-decoration:none;color:#431650;border:2px solid #f6cdfe;border-radius:40px;background:linear-gradient(110deg,#ffdef7,#ffeafa 55%,#ffceef);box-shadow:inset 0 2px 1px #fff,0 4px 0 #b842b2,0 5px 9px #74288c4b}
@@ -842,3 +842,9 @@ body.pg130-active{background:#47c1e8!important}
 #pg130 .pg-hsk-page .pg-live-status{position:relative;z-index:3;margin:0 16px}
 @media(max-width:360px){#pg130 .pg-hsk-level-list{margin-top:38dvh;padding-inline:11px}#pg130 .pg-hsk-level{grid-template-columns:50px 1fr 35px}#pg130 .pg-hsk-level .pg-icon{width:48px;height:43px}}
 @media(prefers-reduced-motion:reduce){#pg130 .pg-hsk-level{transition:none}}
+
+/* Fit the six HSK levels on a small Android viewport without softening the original art. */
+#pg130 .pg-hsk-level-list{margin-top:clamp(210px,36dvh,330px);gap:clamp(5px,.8dvh,10px);padding:10px 13px 16px}
+#pg130 .pg-hsk-level{height:clamp(48px,7.6dvh,68px)}
+#pg130 .pg-hsk-profile [data-action="resume"]{font-size:19px}
+@media(max-width:360px){#pg130 .pg-hsk-level-list{margin-top:34dvh}}
