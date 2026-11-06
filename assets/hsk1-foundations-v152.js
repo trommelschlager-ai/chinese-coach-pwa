@@ -8,7 +8,7 @@ const topic=topics[lessonNumber-1];
 if(!topic){document.getElementById('stage-content').textContent='Материал пока недоступен.';return;}
 const key='pg-hsk1-v3-'+topic.id,completeKey='pg-hsk1-v3-complete';
 const $=id=>document.getElementById(id),esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0,earProgress:0,buildProgress:0};
+let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0,earProgress:0,buildProgress:0,wordPage:0};
 try{
  const raw=JSON.parse(localStorage.getItem(key)||'{}');
  if(raw&&typeof raw==='object'){
@@ -18,6 +18,7 @@ try{
    state.buildProgress=Math.min(3,Math.max(0,Number.isInteger(raw.buildProgress)?raw.buildProgress:(raw.buildPassed?1:0)));
    state.buildPassed=state.buildProgress===3;
    state.earProgress=Math.min(4,Math.max(0,Number(raw.earProgress)||0));
+   state.wordPage=Math.min(Math.ceil(topic.words.length/4)-1,Math.max(0,Number(raw.wordPage)||0));
    state.quizPassed=raw.quizPassed===true;
    state.spoken=raw.spoken===true;
    state.toneEarProgress=Math.max(0,Math.min(4,Number(raw.toneEarProgress)||0));
@@ -82,9 +83,14 @@ function hanzi(hz,py,ru){
  return '<strong class="lesson-hanzi" lang="zh-Hans">'+esc(hz)+'</strong><span class="lesson-py">'+esc(py)+'</span><span class="lesson-ru">'+esc(ru)+'</span>';
 }
 function renderWords(){
+ const from=state.wordPage*4,to=Math.min(topic.words.length,from+4),pages=Math.ceil(topic.words.length/4);
  return '<p class="lesson-intro">'+esc(topic.goal)+'</p>'+
- topic.words.map(([hz,py,ru])=>'<article class="lesson-card lesson-word"><div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz)+'</article>').join('')+
- '<div class="lesson-note">Повторяй вслух и обращай внимание на знаки тонов в пиньине. Ключевые слова мы ещё встретим в примерах.</div>';
+ '<div class="lesson-exercise-indicator">Слова '+(from+1)+'–'+to+' из '+topic.words.length+' · группа '+(state.wordPage+1)+' из '+pages+'</div>'+
+ topic.words.slice(from,to).map(([hz,py,ru])=>'<article class="lesson-card lesson-word"><div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz)+'</article>').join('')+
+ '<nav class="lesson-word-nav" aria-label="Группы новых слов">'+
+ (state.wordPage>0?'<button type="button" data-word-prev>← Предыдущие слова</button>':'<span></span>')+
+ (state.wordPage<pages-1?'<button type="button" class="lesson-action" data-word-next>Следующие слова →</button>':'<span class="lesson-word-finished">✓ Все слова показаны</span>')+'</nav>'+
+ '<div class="lesson-note">Повторяй вслух, обращая внимание на тоны в пиньине. Возвращайся к любой группе слов, если нужно.</div>';
 }
 function renderListeningEar(){
  if(topic.id==='foundations')return '';
@@ -237,12 +243,13 @@ function render(){
  $('stage-content').innerHTML=renderers[state.step]();
  feedback('');
  $('lesson-prev').disabled=state.step===0;
- $('lesson-next').disabled=(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4))||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed);
+ $('lesson-next').disabled=(state.step===0&&state.wordPage<Math.ceil(topic.words.length/4)-1)||(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4))||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed);
  $('lesson-next').textContent=state.step===6?'✓ Завершить и к карте':'Дальше →';
  if(state.completed&&state.step===6)$('lesson-next').textContent='К карте HSK 1 →';
  save();
 }
 function goNext(){
+ if(state.step===0&&state.wordPage<Math.ceil(topic.words.length/4)-1){feedback('Сначала пройди все группы новых слов.');return;}
  if(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4)){feedback('Сначала пройди четыре задания на слух.');return;}
  if(state.step===4&&!state.buildPassed){feedback('Сначала правильно собери фразу.');return;}
  if(state.step===5&&!state.spoken){feedback('Сначала проговори фразу и подтверди повторение.');return;}
@@ -260,6 +267,12 @@ $('lesson-steps').addEventListener('click',e=>{
 });
 $('stage-content').addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button||button.disabled)return;
+ if(button.hasAttribute('data-word-next')){
+   state.wordPage=Math.min(Math.ceil(topic.words.length/4)-1,state.wordPage+1);render();return;
+ }
+ if(button.hasAttribute('data-word-prev')){
+   state.wordPage=Math.max(0,state.wordPage-1);render();return;
+ }
  if(button.hasAttribute('data-listen-prompt')){
    const item=topic.listen?.items?.[exerciseOrder[state.earProgress]];
    playOne(item&&(window.courseHumanAudio||{})[item[0]],null);return;
