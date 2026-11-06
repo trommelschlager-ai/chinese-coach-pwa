@@ -134,3 +134,7 @@ main.lesson-shell{max-width:470px;min-height:100dvh;padding:clamp(12px,3.2vw,17p
    Never use it under the new map or guided lessons. */
 body:has(.map-shell) .map-shell{background:linear-gradient(180deg,#fff1ff4d,#d9b3ff38 80%,#bea6ff24),url("./approved-panda-lake-v112.webp") center center/cover no-repeat,#e0bef3!important}
 body:has(.lesson-shell) main.lesson-shell{background:linear-gradient(180deg,#ffe8ffb8,#eed3fbc9 60%,#e8bdf7db),url("./approved-panda-lake-v112.webp") center center/cover no-repeat,#ead0ee!important}
+
+/* A real DOM cover is deliberately above the background graphic: the legacy art has three decorative buttons baked into the top right corner. */
+#pg130 .pg-hsk-top-clean{position:absolute;z-index:9;top:0;right:0;width:44%;height:68px;pointer-events:none;background:linear-gradient(105deg,#f3d9fb 0%,#decdf9 65%,#cad0fd 100%);border-bottom-left-radius:29px}
+@media(max-width:360px){#pg130 .pg-hsk-top-clean{height:61px}}
