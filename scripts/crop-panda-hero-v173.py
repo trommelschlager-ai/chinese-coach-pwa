@@ -30,8 +30,9 @@ with Image.open(source) as image:
 map_source=root/'assets/approved-panda-lake-v112.webp'
 map_output=root/'assets/panda-hsk1-landscape-clean-v173.webp'
 with Image.open(map_source) as image:
-    target_width=min(image.width,round(image.height*0.49))
-    offset=max(0,image.width-target_width)
+    # Crop away the left 32% where the old landscape has a painted giant panda.
+    offset=round(image.width*0.32)
+    target_width=image.width-offset
     scene=image.convert('RGB').crop((offset,0,image.width,image.height))
     scene.save(map_output,'WEBP',quality=93,method=6)
     print('Cropped approved scenic map',image.size,'=>',scene.size,
