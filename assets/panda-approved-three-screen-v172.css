@@ -452,3 +452,21 @@ main.lesson-shell{
 @media(prefers-reduced-motion:reduce){
   #pg130 .pg-hsk-level,.map-shell .node,.lesson-shell .lesson-step{transition:none!important}
 }
+
+/* Seven fixed visual cells: the live progress bar still comes from the lesson state. */
+.lesson-shell .lesson-progress{
+  background:linear-gradient(#f5deef,#e9c6e6);
+}
+.lesson-shell .lesson-progress::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:inherit;
+  background:repeating-linear-gradient(90deg,
+    transparent 0,transparent calc(14.2857% - 3px),
+    #a673b9 calc(14.2857% - 3px),#a673b9 14.2857%);
+}
+.lesson-shell #progress-fill{
+  background:linear-gradient(180deg,#ff84c8 0%,#ee168e 58%,#b91c8f 100%)!important;
+}
