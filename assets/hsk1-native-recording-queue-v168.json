@@ -1,0 +1,984 @@
+{
+  "version": 168,
+  "purpose": "Human Mandarin voice recording for all missing Panda Go HSK1 full phrases",
+  "speaker_role": "one female native speaker of Standard Mandarin",
+  "recording_count": 56,
+  "original_missing_slots": 65,
+  "format": "WebM/Opus recorded locally; convert to MP3 with FFmpeg only after consent and checks",
+  "license_status": "USER_MUST_COLLECT_EXPLICIT_COMMERCIAL_DISTRIBUTION_PERMISSION",
+  "recordings_exist": false,
+  "no_voice_cloning": true,
+  "base_voice": "Yue Tan samples are reference-only; do not claim same identity",
+  "items": [
+    {
+      "id": "001",
+      "hanzi": "一个",
+      "display": "一个",
+      "variants": [
+        "一个"
+      ],
+      "used_in": [
+        "Урок 6 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "001.webm",
+      "pinyin_reference": "yí ge",
+      "notes": "一 before 个: yí ge (tone sandhi); do not isolate the syllable.",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "002",
+      "hanzi": "一月",
+      "display": "一月",
+      "variants": [
+        "一月"
+      ],
+      "used_in": [
+        "Урок 5 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "002.webm",
+      "pinyin_reference": "yī yuè",
+      "notes": "Month name: ordinal 一 is usually yī here; confirm with speaker.",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "003",
+      "hanzi": "一百",
+      "display": "一百",
+      "variants": [
+        "一百"
+      ],
+      "used_in": [
+        "Урок 3 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "003.webm",
+      "pinyin_reference": "yì bǎi",
+      "notes": "Standard numeral: yì bǎi in connected speech.",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "004",
+      "hanzi": "七月",
+      "display": "七月",
+      "variants": [
+        "七月"
+      ],
+      "used_in": [
+        "Урок 5 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "004.webm",
+      "pinyin_reference": "qī yuè",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "005",
+      "hanzi": "三十五",
+      "display": "三十五",
+      "variants": [
+        "三十五"
+      ],
+      "used_in": [
+        "Урок 3 · сборка"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "005.webm",
+      "pinyin_reference": "Sānshíwǔ",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "006",
+      "hanzi": "三月",
+      "display": "三月",
+      "variants": [
+        "三月"
+      ],
+      "used_in": [
+        "Урок 5 · слова, Урок 5 · сборка"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "006.webm",
+      "pinyin_reference": "sān yuè",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "007",
+      "hanzi": "下雨",
+      "display": "下雨",
+      "variants": [
+        "下雨"
+      ],
+      "used_in": [
+        "Урок 7 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "007.webm",
+      "pinyin_reference": "xià yǔ",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "008",
+      "hanzi": "下雪",
+      "display": "下雪",
+      "variants": [
+        "下雪"
+      ],
+      "used_in": [
+        "Урок 7 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "008.webm",
+      "pinyin_reference": "xià xuě",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "009",
+      "hanzi": "不是我是学生",
+      "display": "不是，我是学生。",
+      "variants": [
+        "不是，我是学生。"
+      ],
+      "used_in": [
+        "Урок 2 · женская реплика"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "009.webm",
+      "pinyin_reference": "Bú shì, wǒ shì xuésheng.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "010",
+      "hanzi": "两个人",
+      "display": "两个人",
+      "variants": [
+        "两个人"
+      ],
+      "used_in": [
+        "Урок 3 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "010.webm",
+      "pinyin_reference": "liǎng ge rén",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "011",
+      "hanzi": "九月",
+      "display": "九月",
+      "variants": [
+        "九月"
+      ],
+      "used_in": [
+        "Урок 5 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "011.webm",
+      "pinyin_reference": "jiǔ yuè",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "012",
+      "hanzi": "二十三",
+      "display": "二十三",
+      "variants": [
+        "二十三"
+      ],
+      "used_in": [
+        "Урок 3 · примеры, Урок 3 · говорение, Урок 3 · сборка"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "012.webm",
+      "pinyin_reference": "èrshísān",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "013",
+      "hanzi": "二月",
+      "display": "二月",
+      "variants": [
+        "二月"
+      ],
+      "used_in": [
+        "Урок 5 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "013.webm",
+      "pinyin_reference": "èr yuè",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "014",
+      "hanzi": "二零二六年十一月六日",
+      "display": "二零二六年十一月六日",
+      "variants": [
+        "二零二六年十一月六日"
+      ],
+      "used_in": [
+        "Урок 5 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "014.webm",
+      "pinyin_reference": "Èr líng èr liù nián shíyī yuè liù rì",
+      "notes": "Read digits of year individually; confirm date tone and pauses.",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "015",
+      "hanzi": "五月",
+      "display": "五月",
+      "variants": [
+        "五月"
+      ],
+      "used_in": [
+        "Урок 5 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "015.webm",
+      "pinyin_reference": "wǔ yuè",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "016",
+      "hanzi": "今天下雨",
+      "display": "今天下雨。",
+      "variants": [
+        "今天下雨",
+        "今天下雨。"
+      ],
+      "used_in": [
+        "Урок 7 · сборка",
+        "Урок 7 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "016.webm",
+      "pinyin_reference": "Jīntiān xià yǔ.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "017",
+      "hanzi": "今天几月几号",
+      "display": "今天几月几号？",
+      "variants": [
+        "今天几月几号？"
+      ],
+      "used_in": [
+        "Урок 5 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "017.webm",
+      "pinyin_reference": "Jīntiān jǐ yuè jǐ hào?",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "018",
+      "hanzi": "今天十一月六号",
+      "display": "今天十一月六号。",
+      "variants": [
+        "今天十一月六号。"
+      ],
+      "used_in": [
+        "Урок 5 · женская реплика, Урок 5 · говорение"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "018.webm",
+      "pinyin_reference": "Jīntiān shíyī yuè liù hào.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "019",
+      "hanzi": "今天天气怎么样",
+      "display": "今天天气怎么样？",
+      "variants": [
+        "今天天气怎么样？"
+      ],
+      "used_in": [
+        "Урок 7 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "019.webm",
+      "pinyin_reference": "Jīntiān tiānqì zěnmeyàng?",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "020",
+      "hanzi": "今天很冷",
+      "display": "今天很冷。",
+      "variants": [
+        "今天很冷",
+        "今天很冷。"
+      ],
+      "used_in": [
+        "Урок 7 · сборка",
+        "Урок 7 · примеры, Урок 7 · женская реплика, Урок 7 · говорение"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "020.webm",
+      "pinyin_reference": "Jīntiān hěn lěng.",
+      "notes": "很 + 冷: written hěn lěng, commonly spoken hén lěng.",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "021",
+      "hanzi": "今天星期五",
+      "display": "今天星期五。",
+      "variants": [
+        "今天星期五",
+        "今天星期五。"
+      ],
+      "used_in": [
+        "Урок 4 · сборка",
+        "Урок 4 · женская реплика, Урок 4 · говорение"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "021.webm",
+      "pinyin_reference": "Jīntiān xīngqīwǔ.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "022",
+      "hanzi": "今天是星期五",
+      "display": "今天是星期五。",
+      "variants": [
+        "今天是星期五。"
+      ],
+      "used_in": [
+        "Урок 4 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "022.webm",
+      "pinyin_reference": "Jīntiān shì xīngqīwǔ.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "023",
+      "hanzi": "他是老师",
+      "display": "他是老师",
+      "variants": [
+        "他是老师"
+      ],
+      "used_in": [
+        "Урок 2 · сборка"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "023.webm",
+      "pinyin_reference": "Tā shì lǎoshī.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "024",
+      "hanzi": "你好",
+      "display": "你好！",
+      "variants": [
+        "你好",
+        "你好！"
+      ],
+      "used_in": [
+        "Урок 1 · слова, Урок 1 · сборка",
+        "Урок 1 · женская реплика, Урок 1 · говорение"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "024.webm",
+      "pinyin_reference": "nǐ hǎo",
+      "notes": "Two 3rd tones: written nǐ hǎo; spoken ní hǎo.",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "025",
+      "hanzi": "你是学生",
+      "display": "你是学生",
+      "variants": [
+        "你是学生"
+      ],
+      "used_in": [
+        "Урок 2 · сборка"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "025.webm",
+      "pinyin_reference": "Nǐ shì xuésheng.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "026",
+      "hanzi": "你是老师吗",
+      "display": "你是老师吗？",
+      "variants": [
+        "你是老师吗？"
+      ],
+      "used_in": [
+        "Урок 2 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "026.webm",
+      "pinyin_reference": "Nǐ shì lǎoshī ma?",
+      "notes": "吗 is neutral ma, interrogative rise is from intonation, not a second tone.",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "027",
+      "hanzi": "八月",
+      "display": "八月",
+      "variants": [
+        "八月"
+      ],
+      "used_in": [
+        "Урок 5 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "027.webm",
+      "pinyin_reference": "bā yuè",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "028",
+      "hanzi": "六月",
+      "display": "六月",
+      "variants": [
+        "六月"
+      ],
+      "used_in": [
+        "Урок 5 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "028.webm",
+      "pinyin_reference": "liù yuè",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "029",
+      "hanzi": "冬天很冷",
+      "display": "冬天很冷。",
+      "variants": [
+        "冬天很冷。"
+      ],
+      "used_in": [
+        "Урок 7 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "029.webm",
+      "pinyin_reference": "Dōngtiān hěn lěng.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "030",
+      "hanzi": "十一",
+      "display": "十一",
+      "variants": [
+        "十一"
+      ],
+      "used_in": [
+        "Урок 3 · сборка"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "030.webm",
+      "pinyin_reference": "Shíyī",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "031",
+      "hanzi": "十一月",
+      "display": "十一月",
+      "variants": [
+        "十一月"
+      ],
+      "used_in": [
+        "Урок 5 · слова, Урок 5 · примеры, Урок 5 · сборка"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "031.webm",
+      "pinyin_reference": "shíyī yuè",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "032",
+      "hanzi": "十三",
+      "display": "十三",
+      "variants": [
+        "十三"
+      ],
+      "used_in": [
+        "Урок 3 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "032.webm",
+      "pinyin_reference": "shísān",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "033",
+      "hanzi": "十二月",
+      "display": "十二月",
+      "variants": [
+        "十二月"
+      ],
+      "used_in": [
+        "Урок 5 · слова, Урок 5 · сборка"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "033.webm",
+      "pinyin_reference": "shí'èr yuè",
+      "notes": "Separate shí + èr in pronunciation, no merged syllable.",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "034",
+      "hanzi": "十月",
+      "display": "十月",
+      "variants": [
+        "十月"
+      ],
+      "used_in": [
+        "Урок 5 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "034.webm",
+      "pinyin_reference": "shí yuè",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "035",
+      "hanzi": "四月",
+      "display": "四月",
+      "variants": [
+        "四月"
+      ],
+      "used_in": [
+        "Урок 5 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "035.webm",
+      "pinyin_reference": "sì yuè",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "036",
+      "hanzi": "妈",
+      "display": "妈",
+      "variants": [
+        "妈"
+      ],
+      "used_in": [
+        "Урок 1 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "036.webm",
+      "pinyin_reference": "mā",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "037",
+      "hanzi": "我不是老师",
+      "display": "我不是老师。",
+      "variants": [
+        "我不是老师。"
+      ],
+      "used_in": [
+        "Урок 2 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "037.webm",
+      "pinyin_reference": "Wǒ bú shì lǎoshī.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "038",
+      "hanzi": "我很忙",
+      "display": "我很忙。",
+      "variants": [
+        "我很忙。"
+      ],
+      "used_in": [
+        "Урок 2 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "038.webm",
+      "pinyin_reference": "Wǒ hěn máng.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "039",
+      "hanzi": "我是老师",
+      "display": "我是老师。",
+      "variants": [
+        "我是老师",
+        "我是老师。"
+      ],
+      "used_in": [
+        "Урок 2 · сборка",
+        "Урок 2 · примеры, Урок 2 · говорение"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "039.webm",
+      "pinyin_reference": "Wǒ shì lǎoshī.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "040",
+      "hanzi": "我有一个妹妹",
+      "display": "我有一个妹妹。",
+      "variants": [
+        "我有一个妹妹",
+        "我有一个妹妹。"
+      ],
+      "used_in": [
+        "Урок 6 · сборка",
+        "Урок 6 · примеры, Урок 6 · говорение"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "040.webm",
+      "pinyin_reference": "Wǒ yǒu yí ge mèimei.",
+      "notes": "我 + 有: two third tones; 一 个: yí ge; 妹妹 second syllable neutral.",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "041",
+      "hanzi": "我有两个",
+      "display": "我有两个。",
+      "variants": [
+        "我有两个。"
+      ],
+      "used_in": [
+        "Урок 3 · женская реплика"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "041.webm",
+      "pinyin_reference": "Wǒ yǒu liǎng ge.",
+      "notes": "个 is neutral; 两 liǎng; check the natural connected phrase.",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "042",
+      "hanzi": "我没有哥哥",
+      "display": "我没有哥哥。",
+      "variants": [
+        "我没有哥哥",
+        "我没有哥哥。"
+      ],
+      "used_in": [
+        "Урок 6 · сборка",
+        "Урок 6 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "042.webm",
+      "pinyin_reference": "Wǒ méiyǒu gēge.",
+      "notes": "哥哥 second syllable neutral.",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "043",
+      "hanzi": "我的",
+      "display": "我的",
+      "variants": [
+        "我的"
+      ],
+      "used_in": [
+        "Урок 6 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "043.webm",
+      "pinyin_reference": "wǒ de",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "044",
+      "hanzi": "我的妈妈",
+      "display": "我的妈妈",
+      "variants": [
+        "我的妈妈"
+      ],
+      "used_in": [
+        "Урок 6 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "044.webm",
+      "pinyin_reference": "wǒ de māma",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "045",
+      "hanzi": "拼音",
+      "display": "拼音",
+      "variants": [
+        "拼音"
+      ],
+      "used_in": [
+        "Урок 1 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "045.webm",
+      "pinyin_reference": "pīnyīn",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "046",
+      "hanzi": "明天下雨",
+      "display": "明天下雨。",
+      "variants": [
+        "明天下雨",
+        "明天下雨。"
+      ],
+      "used_in": [
+        "Урок 7 · сборка",
+        "Урок 7 · женская реплика"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "046.webm",
+      "pinyin_reference": "Míngtiān xià yǔ.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "047",
+      "hanzi": "星期一",
+      "display": "星期一",
+      "variants": [
+        "星期一"
+      ],
+      "used_in": [
+        "Урок 4 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "047.webm",
+      "pinyin_reference": "xīngqīyī",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "048",
+      "hanzi": "星期三",
+      "display": "星期三",
+      "variants": [
+        "星期三"
+      ],
+      "used_in": [
+        "Урок 4 · слова, Урок 4 · примеры, Урок 4 · сборка"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "048.webm",
+      "pinyin_reference": "xīngqīsān",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "049",
+      "hanzi": "星期二",
+      "display": "星期二",
+      "variants": [
+        "星期二"
+      ],
+      "used_in": [
+        "Урок 4 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "049.webm",
+      "pinyin_reference": "xīngqīèr",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "050",
+      "hanzi": "星期五",
+      "display": "星期五",
+      "variants": [
+        "星期五"
+      ],
+      "used_in": [
+        "Урок 4 · слова, Урок 4 · сборка"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "050.webm",
+      "pinyin_reference": "xīngqīwǔ",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "051",
+      "hanzi": "星期六",
+      "display": "星期六",
+      "variants": [
+        "星期六"
+      ],
+      "used_in": [
+        "Урок 4 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "051.webm",
+      "pinyin_reference": "xīngqīliù",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "052",
+      "hanzi": "星期四",
+      "display": "星期四",
+      "variants": [
+        "星期四"
+      ],
+      "used_in": [
+        "Урок 4 · слова"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "052.webm",
+      "pinyin_reference": "xīngqīsì",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "053",
+      "hanzi": "星期天",
+      "display": "星期天",
+      "variants": [
+        "星期天"
+      ],
+      "used_in": [
+        "Урок 4 · слова, Урок 4 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "053.webm",
+      "pinyin_reference": "xīngqītiān",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "054",
+      "hanzi": "是这是我妈妈",
+      "display": "是，这是我妈妈。",
+      "variants": [
+        "是，这是我妈妈。"
+      ],
+      "used_in": [
+        "Урок 6 · женская реплика"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "054.webm",
+      "pinyin_reference": "Shì, zhè shì wǒ māma.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "055",
+      "hanzi": "有我有一个妹妹",
+      "display": "有，我有一个妹妹。",
+      "variants": [
+        "有，我有一个妹妹。"
+      ],
+      "used_in": [
+        "Урок 6 · женская реплика"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "055.webm",
+      "pinyin_reference": "Yǒu, wǒ yǒu yí ge mèimei.",
+      "notes": "",
+      "pinyin_reviewed": false
+    },
+    {
+      "id": "056",
+      "hanzi": "这是我爸爸",
+      "display": "这是我爸爸。",
+      "variants": [
+        "这是我爸爸",
+        "这是我爸爸。"
+      ],
+      "used_in": [
+        "Урок 6 · сборка",
+        "Урок 6 · примеры"
+      ],
+      "status": "recording_required",
+      "qa": "native_mandarin_tones_pending",
+      "recording_filename": "056.webm",
+      "pinyin_reference": "Zhè shì wǒ bàba.",
+      "notes": "",
+      "pinyin_reviewed": false
+    }
+  ]
+}
