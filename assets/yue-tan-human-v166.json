@@ -1,0 +1,429 @@
+{
+  "status": "HUMAN_NATIVE_VOICE_LISTENING_REVIEW_ONLY",
+  "total": 59,
+  "speaker": "Yue Tan (Shtooka cmn-caen-tan)",
+  "speaker_region": "Liaoning, China",
+  "license": "CC BY-SA 3.0 US",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0/us/",
+  "sources": [
+    "https://github.com/hugolpz/audio-cmn",
+    "https://commons.wikimedia.org/wiki/File:Zh-r%C3%AC.ogg"
+  ],
+  "credit": "Original speaker Yue Tan (c) 2009, Shtooka Project; Hugo Lopez audio-cmn MP3 conversion/cataloguing. MP3 compressed versions; separate isolated 日 from existing vetted source.",
+  "warning": "Technical playback inspection only. Not a native-speaker tone QA of all 59 recordings; remaining 65 HSK1 voice slots not covered, production lessons unchanged.",
+  "items": [
+    {
+      "hanzi": "一",
+      "pinyin": "yī",
+      "path": "./assets/yue-tan-human-v166/001_a7f2c9f0dffabf9492ed.mp3",
+      "duration_seconds": 0.97,
+      "source_path": "96k/hsk/cmn-一.mp3"
+    },
+    {
+      "hanzi": "七",
+      "pinyin": "qī",
+      "path": "./assets/yue-tan-human-v166/005_f15c7f782984638376b7.mp3",
+      "duration_seconds": 1.02,
+      "source_path": "96k/hsk/cmn-七.mp3"
+    },
+    {
+      "hanzi": "三",
+      "pinyin": "sān",
+      "path": "./assets/yue-tan-human-v166/007_dba2db859eab46d297b8.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-三.mp3"
+    },
+    {
+      "hanzi": "九",
+      "pinyin": "jiǔ",
+      "path": "./assets/yue-tan-human-v166/014_c70ba12335fa0a9311d9.mp3",
+      "duration_seconds": 1.18,
+      "source_path": "96k/hsk/cmn-九.mp3"
+    },
+    {
+      "hanzi": "二",
+      "pinyin": "èr",
+      "path": "./assets/yue-tan-human-v166/016_65fb5aa1cc708aec050c.mp3",
+      "duration_seconds": 0.91,
+      "source_path": "96k/hsk/cmn-二.mp3"
+    },
+    {
+      "hanzi": "五",
+      "pinyin": "wǔ",
+      "path": "./assets/yue-tan-human-v166/020_733b4ae599e65e0495b2.mp3",
+      "duration_seconds": 1.18,
+      "source_path": "96k/hsk/cmn-五.mp3"
+    },
+    {
+      "hanzi": "人",
+      "pinyin": "rén",
+      "path": "./assets/yue-tan-human-v166/022_31970b13c835b06c4118.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-人.mp3"
+    },
+    {
+      "hanzi": "今天",
+      "pinyin": "jīntiān",
+      "path": "./assets/yue-tan-human-v166/023_dc0f8c6a1c10f9cdd193.mp3",
+      "duration_seconds": 1.41,
+      "source_path": "96k/hsk/cmn-今天.mp3"
+    },
+    {
+      "hanzi": "他",
+      "pinyin": "tā",
+      "path": "./assets/yue-tan-human-v166/034_6250fcf4ddffe0e09e0b.mp3",
+      "duration_seconds": 1.02,
+      "source_path": "96k/hsk/cmn-他.mp3"
+    },
+    {
+      "hanzi": "他们",
+      "pinyin": "tāmen",
+      "path": "./assets/yue-tan-human-v166/035_264cb1f9d1cdd7c1d0ff.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-他们.mp3"
+    },
+    {
+      "hanzi": "你",
+      "pinyin": "nǐ",
+      "path": "./assets/yue-tan-human-v166/037_b3121374185eaf99fa54.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-你.mp3"
+    },
+    {
+      "hanzi": "你们",
+      "pinyin": "nǐmen",
+      "path": "./assets/yue-tan-human-v166/038_288177dfcd2e36a4c06d.mp3",
+      "duration_seconds": 1.18,
+      "source_path": "96k/hsk/cmn-你们.mp3"
+    },
+    {
+      "hanzi": "八",
+      "pinyin": "bā",
+      "path": "./assets/yue-tan-human-v166/043_6c23ab6e91124d69d1ca.mp3",
+      "duration_seconds": 1.07,
+      "source_path": "96k/hsk/cmn-八.mp3"
+    },
+    {
+      "hanzi": "六",
+      "pinyin": "liù",
+      "path": "./assets/yue-tan-human-v166/045_a6bfa444b36a023cbd01.mp3",
+      "duration_seconds": 1.02,
+      "source_path": "96k/hsk/cmn-六.mp3"
+    },
+    {
+      "hanzi": "冬天",
+      "pinyin": "dōngtiān",
+      "path": "./assets/yue-tan-human-v166/047_312c146a9eeb3d8b554e.mp3",
+      "duration_seconds": 1.67,
+      "source_path": "96k/hsk/cmn-冬天.mp3"
+    },
+    {
+      "hanzi": "冷",
+      "pinyin": "lěng",
+      "path": "./assets/yue-tan-human-v166/049_42b51e95d67c7b7917b1.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-冷.mp3"
+    },
+    {
+      "hanzi": "几",
+      "pinyin": "jǐ",
+      "path": "./assets/yue-tan-human-v166/050_e2e4b1164ea07e93d0a4.mp3",
+      "duration_seconds": 1.25,
+      "source_path": "96k/hsk/cmn-几.mp3"
+    },
+    {
+      "hanzi": "十",
+      "pinyin": "shí",
+      "path": "./assets/yue-tan-human-v166/051_d852f4fc79b5575b2d7a.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-十.mp3"
+    },
+    {
+      "hanzi": "口",
+      "pinyin": "kǒu",
+      "path": "./assets/yue-tan-human-v166/057_3e6fc718125dba248779.mp3",
+      "duration_seconds": 1.23,
+      "source_path": "96k/hsk/cmn-口.mp3"
+    },
+    {
+      "hanzi": "号",
+      "pinyin": "hào",
+      "path": "./assets/yue-tan-human-v166/058_67672593634e45419ef2.mp3",
+      "duration_seconds": 0.97,
+      "source_path": "96k/hsk/cmn-号.mp3"
+    },
+    {
+      "hanzi": "吗",
+      "pinyin": "ma",
+      "path": "./assets/yue-tan-human-v166/059_94c297c29512a9a21645.mp3",
+      "duration_seconds": 0.91,
+      "source_path": "96k/hsk/cmn-吗.mp3"
+    },
+    {
+      "hanzi": "哥哥",
+      "pinyin": "gēge",
+      "path": "./assets/yue-tan-human-v166/060_ebda92600798695680bb.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-哥哥.mp3"
+    },
+    {
+      "hanzi": "四",
+      "pinyin": "sì",
+      "path": "./assets/yue-tan-human-v166/061_7f0b593c512ac6418c29.mp3",
+      "duration_seconds": 1.07,
+      "source_path": "96k/hsk/cmn-四.mp3"
+    },
+    {
+      "hanzi": "声调",
+      "pinyin": "shēngdiào",
+      "path": "./assets/yue-tan-human-v166/063_9d39160d0eb452892b91.mp3",
+      "duration_seconds": 1.36,
+      "source_path": "96k/hsk/cmn-声调.mp3"
+    },
+    {
+      "hanzi": "夏天",
+      "pinyin": "xiàtiān",
+      "path": "./assets/yue-tan-human-v166/064_9bd1a1247a6c9be88187.mp3",
+      "duration_seconds": 1.41,
+      "source_path": "96k/hsk/cmn-夏天.mp3"
+    },
+    {
+      "hanzi": "天气",
+      "pinyin": "tiānqì",
+      "path": "./assets/yue-tan-human-v166/065_ab03b2484d6f4861e102.mp3",
+      "duration_seconds": 1.25,
+      "source_path": "96k/hsk/cmn-天气.mp3"
+    },
+    {
+      "hanzi": "女",
+      "pinyin": "nǚ",
+      "path": "./assets/yue-tan-human-v166/066_65ed0dda9ff03b470cfe.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-女.mp3"
+    },
+    {
+      "hanzi": "她",
+      "pinyin": "tā",
+      "path": "./assets/yue-tan-human-v166/067_8b745dd7610b534d1bf9.mp3",
+      "duration_seconds": 0.91,
+      "source_path": "96k/hsk/cmn-她.mp3"
+    },
+    {
+      "hanzi": "妈妈",
+      "pinyin": "māma",
+      "path": "./assets/yue-tan-human-v166/069_378dc59e4f5f478ada72.mp3",
+      "duration_seconds": 1.07,
+      "source_path": "96k/hsk/cmn-妈妈.mp3"
+    },
+    {
+      "hanzi": "妹妹",
+      "pinyin": "mèimei",
+      "path": "./assets/yue-tan-human-v166/070_f2b2837b18136f86a4a1.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-妹妹.mp3"
+    },
+    {
+      "hanzi": "姐姐",
+      "pinyin": "jiějie",
+      "path": "./assets/yue-tan-human-v166/071_3d9e0e52fe3426b15605.mp3",
+      "duration_seconds": 1.18,
+      "source_path": "96k/hsk/cmn-姐姐.mp3"
+    },
+    {
+      "hanzi": "学生",
+      "pinyin": "xuésheng",
+      "path": "./assets/yue-tan-human-v166/072_98bbd8130a78d2b4cc1b.mp3",
+      "duration_seconds": 1.23,
+      "source_path": "96k/hsk/cmn-学生.mp3"
+    },
+    {
+      "hanzi": "它",
+      "pinyin": "tā",
+      "path": "./assets/yue-tan-human-v166/073_c6d0a8e4f60d09176e24.mp3",
+      "duration_seconds": 0.91,
+      "source_path": "96k/hsk/cmn-它.mp3"
+    },
+    {
+      "hanzi": "家",
+      "pinyin": "jiā",
+      "path": "./assets/yue-tan-human-v166/074_4e957452635a351b50ca.mp3",
+      "duration_seconds": 1.07,
+      "source_path": "96k/hsk/cmn-家.mp3"
+    },
+    {
+      "hanzi": "年",
+      "pinyin": "nián",
+      "path": "./assets/yue-tan-human-v166/075_fe17a7595182e54e20c2.mp3",
+      "duration_seconds": 1.07,
+      "source_path": "96k/hsk/cmn-年.mp3"
+    },
+    {
+      "hanzi": "弟弟",
+      "pinyin": "dìdi",
+      "path": "./assets/yue-tan-human-v166/076_e1d8980e0e9b987d7950.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-弟弟.mp3"
+    },
+    {
+      "hanzi": "我",
+      "pinyin": "wǒ",
+      "path": "./assets/yue-tan-human-v166/077_ef5e1f7cc69ee652e35c.mp3",
+      "duration_seconds": 1.18,
+      "source_path": "96k/hsk/cmn-我.mp3"
+    },
+    {
+      "hanzi": "我们",
+      "pinyin": "wǒmen",
+      "path": "./assets/yue-tan-human-v166/079_900366662530adb33e88.mp3",
+      "duration_seconds": 1.18,
+      "source_path": "96k/hsk/cmn-我们.mp3"
+    },
+    {
+      "hanzi": "明天",
+      "pinyin": "míngtiān",
+      "path": "./assets/yue-tan-human-v166/091_679cd4984d824ade4afa.mp3",
+      "duration_seconds": 1.36,
+      "source_path": "96k/hsk/cmn-明天.mp3"
+    },
+    {
+      "hanzi": "星期",
+      "pinyin": "xīngqī",
+      "path": "./assets/yue-tan-human-v166/094_92611b3bbea1298a77d4.mp3",
+      "duration_seconds": 1.36,
+      "source_path": "96k/hsk/cmn-星期.mp3"
+    },
+    {
+      "hanzi": "星期日",
+      "pinyin": "xīngqīrì",
+      "path": "./assets/yue-tan-human-v166/102_d50c55b8235d60b59ba1.mp3",
+      "duration_seconds": 1.52,
+      "source_path": "96k/hsk/cmn-星期日.mp3"
+    },
+    {
+      "hanzi": "春天",
+      "pinyin": "chūntiān",
+      "path": "./assets/yue-tan-human-v166/103_101e2e3c3dccf289ab1a.mp3",
+      "duration_seconds": 1.41,
+      "source_path": "96k/hsk/cmn-春天.mp3"
+    },
+    {
+      "hanzi": "昨天",
+      "pinyin": "zuótiān",
+      "path": "./assets/yue-tan-human-v166/104_534bc4ba031c04ffec88.mp3",
+      "duration_seconds": 1.36,
+      "source_path": "96k/hsk/cmn-昨天.mp3"
+    },
+    {
+      "hanzi": "是",
+      "pinyin": "shì",
+      "path": "./assets/yue-tan-human-v166/105_3354ea2825a501b26e6e.mp3",
+      "duration_seconds": 1.02,
+      "source_path": "96k/hsk/cmn-是.mp3"
+    },
+    {
+      "hanzi": "晴",
+      "pinyin": "qíng",
+      "path": "./assets/yue-tan-human-v166/107_334b652e4a3cf7f8f9f2.mp3",
+      "duration_seconds": 1.23,
+      "source_path": "96k/hsk/cmn-晴.mp3"
+    },
+    {
+      "hanzi": "月",
+      "pinyin": "yuè",
+      "path": "./assets/yue-tan-human-v166/108_754ca9e42cc3af67d903.mp3",
+      "duration_seconds": 0.97,
+      "source_path": "96k/hsk/cmn-月.mp3"
+    },
+    {
+      "hanzi": "有",
+      "pinyin": "yǒu",
+      "path": "./assets/yue-tan-human-v166/109_8eda305b3cda34d82569.mp3",
+      "duration_seconds": 1.18,
+      "source_path": "96k/hsk/cmn-有.mp3"
+    },
+    {
+      "hanzi": "木",
+      "pinyin": "mù",
+      "path": "./assets/yue-tan-human-v166/111_2a19ab942db1e690bdf2.mp3",
+      "duration_seconds": 0.97,
+      "source_path": "96k/hsk/cmn-木.mp3"
+    },
+    {
+      "hanzi": "汉字",
+      "pinyin": "hànzì",
+      "path": "./assets/yue-tan-human-v166/112_76b38345e37580d9eeaa.mp3",
+      "duration_seconds": 1.31,
+      "source_path": "96k/hsk/cmn-汉字.mp3"
+    },
+    {
+      "hanzi": "没有",
+      "pinyin": "méiyǒu",
+      "path": "./assets/yue-tan-human-v166/113_43797dd6c8e7ec6a30e9.mp3",
+      "duration_seconds": 1.25,
+      "source_path": "96k/hsk/cmn-没有.mp3"
+    },
+    {
+      "hanzi": "热",
+      "pinyin": "rè",
+      "path": "./assets/yue-tan-human-v166/114_a2fb8f40490c863e5f67.mp3",
+      "duration_seconds": 1.07,
+      "source_path": "96k/hsk/cmn-热.mp3"
+    },
+    {
+      "hanzi": "爸爸",
+      "pinyin": "bàba",
+      "path": "./assets/yue-tan-human-v166/115_ba80f8a261b27e146fbf.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-爸爸.mp3"
+    },
+    {
+      "hanzi": "百",
+      "pinyin": "bǎi",
+      "path": "./assets/yue-tan-human-v166/116_ff77006fbeaee3011893.mp3",
+      "duration_seconds": 1.18,
+      "source_path": "96k/hsk/cmn-百.mp3"
+    },
+    {
+      "hanzi": "秋天",
+      "pinyin": "qiūtiān",
+      "path": "./assets/yue-tan-human-v166/117_659c3a4ab7adc58599fd.mp3",
+      "duration_seconds": 1.41,
+      "source_path": "96k/hsk/cmn-秋天.mp3"
+    },
+    {
+      "hanzi": "老师",
+      "pinyin": "lǎoshī",
+      "path": "./assets/yue-tan-human-v166/118_e1c095f86b03eb39a5cb.mp3",
+      "duration_seconds": 1.31,
+      "source_path": "96k/hsk/cmn-老师.mp3"
+    },
+    {
+      "hanzi": "阴",
+      "pinyin": "yīn",
+      "path": "./assets/yue-tan-human-v166/121_2572d95631bcccd85a55.mp3",
+      "duration_seconds": 1.07,
+      "source_path": "96k/hsk/cmn-阴.mp3"
+    },
+    {
+      "hanzi": "零",
+      "pinyin": "líng",
+      "path": "./assets/yue-tan-human-v166/122_8b80e9b3aee79a19e761.mp3",
+      "duration_seconds": 1.12,
+      "source_path": "96k/hsk/cmn-零.mp3"
+    },
+    {
+      "hanzi": "风",
+      "pinyin": "fēng",
+      "path": "./assets/yue-tan-human-v166/123_c4c5c4c1257185d7058e.mp3",
+      "duration_seconds": 0.97,
+      "source_path": "96k/hsk/cmn-风.mp3"
+    },
+    {
+      "hanzi": "日",
+      "pinyin": "rì",
+      "path": "./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3",
+      "duration_seconds": 0.91,
+      "source_path": "96k/hsk/cmn-日.mp3"
+    }
+  ]
+}
