@@ -16,6 +16,7 @@ vm.runInNewContext(fs.readFileSync(mapFile,'utf8'),ctx);
 const voices=JSON.parse(JSON.stringify(ctx.window.PANDA_HSK1_VOICES));
 assert.equal(Object.keys(voices.female).length,metadata.role_counts.female);
 assert.equal(Object.keys(voices.male).length,metadata.role_counts.male);
+assert.equal(voices.female['日'],'./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3');
 const topicCtx={window:{}};
 vm.runInNewContext(fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8'),topicCtx);
 const topics=JSON.parse(JSON.stringify(topicCtx.window.PANDA_HSK1_FOUNDATIONS));
@@ -24,7 +25,12 @@ function demand(role,hz,where){
  const loc=voices[role]?.[hz];
  assert(loc,where+': no '+role+' Mandarin recording for '+hz);
  const abs=loc.replace(/^\.\//,'');
- assert(abs.startsWith('assets/hsk1-voices-v156/'),where+': invalid audio path '+loc);
+ const nativeRi='assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3';
+ if(role==='female'&&hz==='日'){
+  assert.equal(abs,nativeRi,'日 must use licensed native 4th-tone pronunciation');
+ } else {
+  assert(abs.startsWith('assets/hsk1-voices-v156/'),where+': invalid audio path '+loc);
+ }
  assert(fs.existsSync(abs),where+': missing binary '+abs);
  assert(fs.statSync(abs).size>=1200,where+': MP3 too short '+abs);
  const head=fs.readFileSync(abs).subarray(0,3);
@@ -49,8 +55,11 @@ for(let i=0;i<topics.length;i++){
  const dom=new JSDOM(html,{url:'https://example.test/chinese-coach-pwa/hsk1-lesson.html?lesson='+(i+1),runScripts:'outside-only',pretendToBeVisual:true});
  const w=dom.window,d=w.document;
  w.scrollTo=()=>{};
- const calls=[];
- w.Audio=function(src){calls.push(src);this.pause=()=>{};this.play=()=>Promise.resolve();this.src=src;};
+ const calls=[],played=[];
+ w.Audio=function(src){
+  calls.push(src);played.push(this);this.pause=()=>{};this.play=()=>Promise.resolve();this.src=src;
+  this.playbackRate=1;this.preservesPitch=true;
+ };
  w.localStorage.setItem('pg-hsk1-v3-'+topic.id,JSON.stringify({step:3,maxStep:3}));
  for(const el of [...d.querySelectorAll('script[src]')]){
   const f=new URL(el.src).pathname.replace('/chinese-coach-pwa/','');
@@ -67,9 +76,21 @@ for(let i=0;i<topics.length;i++){
   assert.equal(btn.dataset.speaker,role,'Incorrect role on '+topic.id+' row '+row);
   btn.click();
   assert.equal(calls[calls.length-1],voices[role][hz],'Wrong voice in '+topic.id+' row '+row);
+  assert.equal(played[played.length-1].playbackRate,role==='female'?1.12:1,
+   'Incorrect speech pacing in '+topic.id+' row '+row);
+ }
+ if(i===0){
+  // Reach the last vocabulary page to check that native 日 replaces synthetic 日.
+  d.querySelector('[data-step="0"]').click();
+  while(d.querySelector('[data-word-next]'))d.querySelector('[data-word-next]').click();
+  const ri=d.querySelector('button[data-play="日"]');
+  assert(ri&&!ri.disabled,'Native 日 vocabulary playback missing');
+  ri.click();
+  assert.equal(calls[calls.length-1],voices.female['日']);
+  assert.equal(played[played.length-1].playbackRate,1,'Human native 日 sample must play unmodified');
  }
  w.close();
 }
 const allMP3=metadata.files.map(x=>x.file);
 assert.equal(new Set(allMP3).size,allMP3.length,'Duplicate generated file IDs');
-console.log('Panda Go v156: '+wanted.size+' verified exact-role voice clips, seven complete dialogues and unchanged tone-recording references. Native-language tone review still required.');
+console.log('Panda Go v157: '+wanted.size+' verified role-specific clips, female 1.12x pitch-preserving pace, native 日 unmodified, seven complete dialogues.');
