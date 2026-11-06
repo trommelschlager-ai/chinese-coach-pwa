@@ -1,0 +1,29 @@
+name: Temporary approved art inspection v173
+on:
+  push:
+    branches: [fix/panda-reference-accurate-v173]
+    paths: ['.github/workflows/temporary-visual-inspect-v173.yml']
+  workflow_dispatch:
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install pillow==11.2.1
+      - name: Emit tiny visual previews for reference comparison
+        run: |
+          python - <<'PY'
+          from PIL import Image
+          from io import BytesIO
+          import base64
+          paths={'HERO':'assets/panda-go-panda-only-v173.webp','MAP':'assets/panda-hsk1-landscape-clean-v173.webp'}
+          for name,path in paths.items():
+              img=Image.open(path)
+              img.thumbnail((370,660))
+              buff=BytesIO();img.convert('RGB').save(buff,format='JPEG',quality=70,optimize=True)
+              print('PANDA_PREVIEW_'+name+'_BEGIN')
+              print(base64.b64encode(buff.getvalue()).decode())
+              print('PANDA_PREVIEW_'+name+'_END')
+          PY
