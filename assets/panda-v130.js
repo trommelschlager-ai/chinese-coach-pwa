@@ -78,16 +78,17 @@ function frame(content,cls=''){
 }
 function settingsView(){frame(heading('Настройки','books','progress','',true)+'<div class="pg-settings-content"></div>');if(nativeSettings){nativeSettings.open=true;root.querySelector('.pg-settings-content').append(nativeSettings)}}
 function home(){
- const art='<div class="pg-home-image-wrap">'
- +'<img class="pg-home-image" src="./assets/panda-go-home-v136-clean.png" alt="Panda Go — твой путь к китайскому. Панда в наушниках, сакура, четыре раздела и китайский пейзаж." decoding="async" fetchpriority="high" draggable="false">'
- +'<button class="pg-home-hit pg-home-hit-profile" data-route="progress" aria-label="Профиль и достижения"><span class="pg-visually-hidden">Профиль и достижения</span></button>'
- +'<button class="pg-home-hit pg-home-hit-resume" data-action="resume" aria-label="Продолжить последнее занятие"><span class="pg-visually-hidden">Продолжить урок</span></button>'
- +'<button class="pg-home-hit pg-home-hit-tones" data-route="tones" aria-label="Звуки и тоны"><span class="pg-visually-hidden">Звуки и тоны</span></button>'
- +'<button class="pg-home-hit pg-home-hit-words" data-route="words" aria-label="Слова и выражения"><span class="pg-visually-hidden">Слова и выражения</span></button>'
- +'<button class="pg-home-hit pg-home-hit-dialogues" data-route="dialogues" aria-label="Диалоги и общение"><span class="pg-visually-hidden">Диалоги и общение</span></button>'
- +'<button class="pg-home-hit pg-home-hit-travel" data-route="travel" aria-label="Китай в жизни"><span class="pg-visually-hidden">Китай в жизни</span></button>'
- +'</div>';
- frame(art+'<a href="./start-chinese.html" style="position:absolute;bottom:14px;left:8%;width:84%;z-index:5;text-align:center;background:#fff3fc;color:#69245d;font-weight:800;padding:12px;border:2px solid #eac798;border-radius:22px;text-decoration:none">Урок 1 · Знакомство →</a>','pg-home pg-home-v136');
+ const levels=[
+  ['1','book','pink'],['2','chat','violet'],['3','chat','blue'],
+  ['4','book','cyan'],['5','target','mint'],['6','brush','rose']
+ ];
+ const artwork='<div class="pg-hsk-backdrop" aria-hidden="true"><img src="./assets/panda-go-home-v136-clean.png" alt="" fetchpriority="high" decoding="async" draggable="false"></div>';
+ const heading='<div class="pg-hsk-profile"><button data-route="progress" aria-label="Мой прогресс">♙</button></div>';
+ const buttons=levels.map(([n,art,color])=>n==='1'
+  ?'<a class="pg-hsk-level pg-hsk-'+color+'" href="./hsk1-map.html" aria-label="Открыть HSK 1 — карту уроков">'+icon(art)+'<strong>HSK '+n+'</strong><span class="pg-hsk-arrow" aria-hidden="true">›</span></a>'
+  :'<div class="pg-hsk-level pg-hsk-'+color+' pg-hsk-unavailable" aria-label="HSK '+n+' — готовится">'+icon(art)+'<strong>HSK '+n+'</strong><span class="pg-hsk-lock" aria-hidden="true">🔒</span></div>'
+ ).join('');
+ frame(artwork+heading+'<nav class="pg-hsk-level-list" aria-label="Выбери уровень китайского языка">'+buttons+'</nav>','pg-home pg-hsk-page');
 }
 function learn(){frame(heading('Учиться','book','home','Основы китайского шаг за шагом')+`<nav class="pg-menu">${card('Звуки и тоны','Произношение и правила чтения','headphones','tones')}${card('Базовые слова','Самые нужные слова','books','words')}${card('Иероглифы','Письмо и порядок черт','brush','hanzi')}${card('Диалоги','Готовые фразы для общения','chat','dialogues')}</nav><div class="pg-approved-go-footer">${primary('Дальше Go →','learn-go')}</div>`)}
 function training(){frame(heading('Тренироваться','controller','home','Закрепляй знания в разных форматах')+`<nav class="pg-menu">${card('Практика','Упражнения по темам','target','practice')}${card('Тест','Проверь свои знания','clipboard','quiz')}${card('Игровая практика','Игры и интерактивные задания','controller','games')}</nav><img class="pg-scenery" src="${A}training-panda.webp" alt="Панда и золотой кубок">`,'pg-training')}
