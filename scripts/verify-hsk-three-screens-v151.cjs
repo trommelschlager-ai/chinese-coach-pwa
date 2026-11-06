@@ -50,7 +50,7 @@ for(let n=1;n<=4;n++){
  dom.window.close();
 }
 const sw=read('sw.js'),pack=JSON.parse(read('assets/offline-pack.json'));
-for(const url of ['./assets/hsk-approved-three-screens-v151.css?v=151','./assets/guided-introduction.js?v=151','./assets/panda-v130.js?v=152']){
+for(const url of ['./assets/hsk-approved-three-screens-v151.css?v=151','./assets/guided-introduction.js?v=151','./assets/panda-v130.js?v=172']){
  assert(site.includes(url)||lesson.includes(url)||map.includes(url),'Page must request '+url);
  assert(sw.includes(url),'Offline shell must cache '+url);
  assert(pack.files.includes(url),'Offline bundle must include '+url);
