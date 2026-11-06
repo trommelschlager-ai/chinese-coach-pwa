@@ -43,7 +43,7 @@ try{
     stops:[...e.querySelectorAll('a.node')].map(x=>x.getAttribute('href'))
   }));
   assert(map.sw<=map.cw+3,'Map overflow on '+width);
-  assert(map.background.includes('approved-panda-lake-v112.webp'),'Map must retain approved landscape');
+  assert(map.background.includes('panda-hsk1-landscape-clean-v173.webp'),'Map must use clean crop of the approved scenic artwork');
   assert(map.art>0&&map.paths===2,'Panda and mountain trail missing');
   assert.equal(new Set(map.stops).size,7,'Map cards need seven unique lesson routes');
   await p.screenshot({path:out+'/02-map-'+width+'.png',fullPage:true,animations:'disabled'});
