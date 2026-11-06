@@ -3,14 +3,16 @@
 const fs=require('node:fs'),assert=require('node:assert/strict'),vm=require('node:vm');
 const {JSDOM}=require('jsdom');
 const path=require('node:path');
-const mapFile='assets/hsk1-voices-map-v159.js',manifest='assets/hsk1-voices-v156/manifest.json';
-const femaleManifestFile='assets/hsk1-voices-v159/manifest.json';
-assert(fs.existsSync(femaleManifestFile),'Approved Xiaoni female recordings are not generated');
+const mapFile='assets/hsk1-voices-map-v160.js',manifest='assets/hsk1-voices-v156/manifest.json';
+const femaleManifestFile='assets/hsk1-voices-v160/manifest.json';
+assert(fs.existsSync(femaleManifestFile),'New Chinese MeloTTS recordings have not been generated');
 const femaleManifest=JSON.parse(fs.readFileSync(femaleManifestFile,'utf8'));
-assert.equal(femaleManifest.speaker,'zf_xiaoni');
-assert.equal(femaleManifest.license,'Apache-2.0');
+assert.equal(femaleManifest.voice,'MeloTTS-ZH');
+assert.equal(femaleManifest.engine,'myshell-ai/MeloTTS');
+assert.equal(femaleManifest.license,'MIT');
 assert.equal(femaleManifest.total_files,123);
-assert.equal(femaleManifest.human_tone_audit_complete,false);
+assert.equal(femaleManifest.all_utterance_tones_verified,false);
+assert(femaleManifest.files.some(x=>x.text==='妈妈'&&x.pinyin_reference==='māma'),'Critical māma pronunciation clip missing');
 assert(fs.existsSync(mapFile),'No rendered two-speaker audio map. Do not ship ungenerated voice bundle.');
 assert(fs.existsSync(manifest),'No reviewed Kokoro voice metadata');
 const metadata=JSON.parse(fs.readFileSync(manifest,'utf8'));
@@ -36,7 +38,7 @@ function demand(role,hz,where){
  if(role==='female'&&hz==='日'){
   assert.equal(abs,nativeRi,'日 must use licensed native 4th-tone pronunciation');
  } else {
-  assert(abs.startsWith(role==='female'?'assets/hsk1-voices-v159/':'assets/hsk1-voices-v156/'),where+': incorrect speaker audio path '+loc);
+  assert(abs.startsWith(role==='female'?'assets/hsk1-voices-v160/':'assets/hsk1-voices-v156/'),where+': incorrect speaker audio path '+loc);
  }
  assert(fs.existsSync(abs),where+': missing binary '+abs);
  assert(fs.statSync(abs).size>=1200,where+': MP3 too short '+abs);
@@ -54,10 +56,10 @@ for(const t of topics){
 }
 assert.equal(wanted.size,metadata.total_files,'Every binary should correspond to an active course phrase');
 const html=fs.readFileSync('hsk1-lesson.html','utf8');
-assert(html.indexOf('hsk1-voices-map-v159.js')<html.indexOf('hsk1-foundations-v152.js'),'Role map must load before player');
+assert(html.indexOf('hsk1-voices-map-v160.js')<html.indexOf('hsk1-foundations-v152.js'),'Role map must load before player');
 const source=fs.readFileSync('assets/hsk1-foundations-v152.js','utf8');
 assert(source.includes('roleForDialogue')&&source.includes("data-speaker"),'Player must preserve role-specific playback');
-assert(source.includes('FEMALE_KOKORO_RATE=1.0'),'Approved Xiaoni voice must play at natural speed');
+assert(source.includes('FEMALE_MANDARIN_RATE=1.0'),'Approved Xiaoni voice must play at natural speed');
 for(let i=0;i<topics.length;i++){
  const topic=topics[i];
  const dom=new JSDOM(html,{url:'https://example.test/chinese-coach-pwa/hsk1-lesson.html?lesson='+(i+1),runScripts:'outside-only',pretendToBeVisual:true});
@@ -101,4 +103,4 @@ for(let i=0;i<topics.length;i++){
 }
 const allMP3=metadata.files.map(x=>x.file);
 assert.equal(new Set(allMP3).size,allMP3.length,'Duplicate generated file IDs');
-console.log('Panda Go v159: '+wanted.size+' verified role-specific clips, 123 approved Xiaoni recordings at natural tempo, unchanged male + native 日, seven complete dialogues.');
+console.log('Panda Go v160: '+wanted.size+' exact voice clips, 123 independent Mandarin MeloTTS recordings with 妈妈, unchanged male and native 日, seven dialogues.');
