@@ -39,28 +39,12 @@ try{
   // Panda Go v145 mounts the modern shell directly; legacy Start is covered.
   await ready(page);
   await capture(page,'01-home',size);
-  if(width===390){const shot=await page.screenshot({type:'jpeg',quality:26,animations:'disabled'});console.log('HSK_CAPTURE_HOME_BEGIN'+shot.toString('base64')+'HSK_CAPTURE_HOME_END');}
-  if(width===390){
-    const scout=await context.newPage(); await scout.setViewportSize({width:750,height:1260});
-    await scout.goto(BASE+'/index.html',{waitUntil:'load'});
-    await scout.setContent('<style>body{margin:0;background:#fff;font:17px Arial}.grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}.sample{position:relative;height:300px;background:#ddd;overflow:hidden}.sample img{width:100%;height:100%;object-fit:cover}.sample b{position:absolute;bottom:0;left:0;right:0;background:#fffc;font-size:13px;padding:4px}</style><div class="grid">'+[
-      'panda-v130/training-panda.webp','game-panda-v80.webp','game-panda-v76.svg',
-      'panda-v130/success.webp','panda-v130/home-hero.webp','approved-panda-lake-v112.webp',
-      'panda-v130/word-girl.webp','panda-v130/game-girl.webp'
-    ].map(k=>'<div class="sample"><img src="'+BASE+'/assets/'+k+'"><b>'+k+'</b></div>').join('')+'</div>');
-    await scout.locator('img').evaluateAll(imgs=>Promise.all(imgs.map(x=>x.decode().catch(()=>{}))));
-    const sc=await scout.screenshot({type:'jpeg',quality:31,fullPage:true});
-    console.log('HSK_ASSET_MOSAIC_BEGIN'+sc.toString('base64')+'HSK_ASSET_MOSAIC_END');
-    await scout.close();
-  }
-
   // HSK 1: seven-step navigation with actual tone, dialogue and assembly checks.
   const guided=await context.newPage();
   await guided.goto(BASE+'/hsk1-map.html',{waitUntil:'load'});
   assert.equal(await guided.locator('.map-road .node').count(),7,'Seven lesson stops');
   assert.equal(await guided.locator('.map-road a.node').count(),4,'Four available lessons');
   await guided.screenshot({path:`${OUT}/01a-hsk-map-${width}.png`,fullPage:true,animations:'disabled'});
-  if(width===390){const shot=await guided.screenshot({type:'jpeg',quality:26,fullPage:true,animations:'disabled'});console.log('HSK_CAPTURE_MAP_BEGIN'+shot.toString('base64')+'HSK_CAPTURE_MAP_END');}
   await guided.locator('.map-road a.node[data-num="1"]').click();
   assert.equal(await guided.locator('#lesson-step-list .lesson-step-row').count(),7,'Seven steps visible');
   assert.equal(await guided.locator('#content .word').count(),3,'Three original word cards');
@@ -72,7 +56,6 @@ try{
   assert.equal(await guided.locator('#content [data-line]').count(),3,'Three visible dialogue turns');
   assert.equal(await guided.locator('#content .lesson-dialogue-play').count(),1,'Illustrated player exists');
   await guided.screenshot({path:`${OUT}/01c-hsk-dialogue-${width}.png`,fullPage:true,animations:'disabled'});
-  if(width===390){const shot=await guided.screenshot({type:'jpeg',quality:26,fullPage:true,animations:'disabled'});console.log('HSK_CAPTURE_DIALOGUE_BEGIN'+shot.toString('base64')+'HSK_CAPTURE_DIALOGUE_END');}
   await guided.locator('#next').click(); // assembly
   assert(await guided.locator('#next').isDisabled(),'Assembly step cannot be skipped');
   for (const i of [0,1,2]) await guided.locator('#content [data-piece="'+i+'"]').click();
