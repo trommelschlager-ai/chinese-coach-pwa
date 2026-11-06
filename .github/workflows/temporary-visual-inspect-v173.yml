@@ -18,7 +18,7 @@ jobs:
           from PIL import Image
           from io import BytesIO
           import base64
-          paths={'HERO':'assets/panda-go-panda-only-v173.webp','MAP':'assets/panda-hsk1-landscape-clean-v173.webp'}
+          paths={'HERO':'assets/panda-go-panda-only-v173.webp','MAP':'assets/panda-hsk1-landscape-clean-v173.webp','ORIGINAL':'assets/panda-go-home-v136-clean.png','HOMEASSET':'assets/panda-v130/home-hero.webp'}
           for name,path in paths.items():
               img=Image.open(path)
               img.thumbnail((370,660))
