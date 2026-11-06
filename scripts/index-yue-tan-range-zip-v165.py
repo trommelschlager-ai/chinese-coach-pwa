@@ -35,7 +35,7 @@ class RemoteZip(io.RawIOBase):
              "Range":"bytes=0-0"})
         with urllib.request.urlopen(req,timeout=50) as r:
             if r.status!=206:raise RuntimeError("Need byte-range support for 604 MB ZIP")
-            self.url=r.url
+            self.last_redirect=r.url  # Dropbox signs redirected URLs per request; ALWAYS repeat requests to the canonical Dropbox share link.
             match=re.search(r"/(\d+)$",r.headers.get("Content-Range",""))
             if not match:raise RuntimeError(f"No Content-Range: {r.headers}")
             self.length=int(match.group(1))
