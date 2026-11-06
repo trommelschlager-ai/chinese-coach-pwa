@@ -39,30 +39,36 @@ try{
   // Panda Go v145 mounts the modern shell directly; legacy Start is covered.
   await ready(page);
   await capture(page,'01-home',size);
-  // HSK 1 end-to-end: course map -> 6 guided steps -> saved completion.
+  // HSK 1: seven-step navigation with actual tone, dialogue and assembly checks.
   const guided=await context.newPage();
   await guided.goto(BASE+'/hsk1-map.html',{waitUntil:'load'});
-  assert.equal(await guided.locator('.map-road .node').count(),7,'HSK 1 map has seven topics');
-  assert.equal(await guided.locator('.map-road a.node').count(),4,'Four existing guided lessons are clickable');
+  assert.equal(await guided.locator('.map-road .node').count(),7,'Seven lesson stops');
+  assert.equal(await guided.locator('.map-road a.node').count(),4,'Four available lessons');
   await guided.screenshot({path:`${OUT}/01a-hsk-map-${width}.png`,fullPage:true,animations:'disabled'});
   await guided.locator('.map-road a.node[data-num="1"]').click();
-  await guided.locator('#next').click();
-  assert.equal(await guided.locator('#content .word').count(),3,'Introduction preserves three vocabulary cards');
+  assert.equal(await guided.locator('#lesson-step-list .lesson-step-row').count(),7,'Seven steps visible');
+  assert.equal(await guided.locator('#content .word').count(),3,'Three original word cards');
   await guided.screenshot({path:`${OUT}/01b-hsk-words-${width}.png`,fullPage:true,animations:'disabled'});
-  await guided.locator('#next').click();
-  await guided.locator('#next').click();
-  assert.equal(await guided.locator('#content [data-line]').count(),3,'The complete introductory dialogue remains visible');
+  await guided.locator('#next').click(); // tones
+  assert((await guided.locator('#content').textContent()).includes('Третий тон'),'Tone exercise works');
+  await guided.locator('#next').click(); // examples
+  await guided.locator('#next').click(); // dialogue
+  assert.equal(await guided.locator('#content [data-line]').count(),3,'Three visible dialogue turns');
+  assert.equal(await guided.locator('#content .lesson-dialogue-play').count(),1,'Illustrated player exists');
   await guided.screenshot({path:`${OUT}/01c-hsk-dialogue-${width}.png`,fullPage:true,animations:'disabled'});
-  await guided.locator('#next').click();
-  assert(await guided.locator('#next').isDisabled(),'A graded answer is required');
-  await guided.locator('#content [data-answer="yes"]').click();
-  assert(await guided.locator('#next').isEnabled(),'Correct response unlocks next step');
-  await guided.locator('#next').click();
-  await guided.locator('#next').click();
-  assert((await guided.evaluate(()=>JSON.parse(localStorage.getItem('pg-hsk1-completed-v1')))).includes(1),'Completed lesson saved');
+  await guided.locator('#next').click(); // assembly
+  assert(await guided.locator('#next').isDisabled(),'Assembly step cannot be skipped');
+  for (const i of [0,1,2]) await guided.locator('#content [data-piece="'+i+'"]').click();
+  await guided.locator('#content [data-check-build]').click();
+  assert(await guided.locator('#next').isEnabled(),'Correct order unlocks continuation');
+  await guided.locator('#next').click(); // speak
+  await guided.locator('#next').click(); // review
+  await guided.locator('#next').click(); // completion
+  assert((await guided.evaluate(()=>JSON.parse(localStorage.getItem('pg-hsk1-completed-v1')))).includes(1),'Legacy completion retained');
+  assert.equal(await guided.evaluate(()=>localStorage.getItem('pg-hsk1-v2-lesson-1')),'7','Seven-step progress saved');
   await guided.goto(BASE+'/hsk1-map.html',{waitUntil:'load'});
-  assert((await guided.locator('[data-status="1"]').textContent()).includes('Пройден'),'Map shows saved completion');
-  report.checks.push({width,check:'HSK map, words, dialogue, quiz, completion persistence',passed:true});
+  assert((await guided.locator('[data-status="1"]').textContent()).includes('Пройден'),'Map shows completion');
+  report.checks.push({width,check:'seven HSK steps, tones, dialogue, assembly and progress',passed:true});
   await guided.close();
   // HSK 1 opens the guided map; advanced levels are visible but not fake-playable.
   assert.equal(await page.locator('#pg130 .pg-hsk-level').count(),6);
