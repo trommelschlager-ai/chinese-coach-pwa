@@ -1,6 +1,6 @@
 {
-  "version": 173,
-  "bytes": 29900844,
+  "version": 174,
+  "bytes": 30450844,
   "files": [
     "./start-chinese.html",
     "./hsk1-map.html",
@@ -1403,7 +1403,7 @@
     "./manifest.webmanifest",
     "./assets/panda-v130.css?v=151",
     "./assets/panda-word-sentences-v148.js?v=148",
-    "./assets/panda-v130.js?v=173",
+    "./assets/panda-v130.js?v=174",
     "./assets/panda-hanzi-v130.css?v=138",
     "./assets/panda-hanzi-v130.js?v=135",
     "./assets/panda-v130/book.webp",
@@ -1431,7 +1431,7 @@
     "./assets/panda-v130/word-girl.webp",
     "./assets/panda-v130/coin.webp",
     "./assets/panda-v130/profile.webp",
-    "./assets/panda-go-panda-only-v173.webp",
+    "./assets/panda-go-hero-clean-v174.webp",
     "./assets/hanzi-approved-exact-20261105.png",
     "./assets/hanzi-approved-v141.png",
     "./assets/hanzi-panel-v141.png",
@@ -1553,6 +1553,12 @@
     "./assets/hsk1-voice-corrections-v157/README.md",
     "./assets/panda-approved-three-screen-v172.css?v=172",
     "./assets/panda-reference-corrections-v173.css?v=173",
-    "./assets/panda-hsk1-landscape-clean-v173.webp"
+    "./assets/panda-hsk1-mountain-v174.webp",
+    "./assets/panda-reference-faithful-v174.css?v=174",
+    "./assets/panda-stone-staircase-v174.webp",
+    "./assets/panda-explorer-v174.svg",
+    "./assets/panda-hsk-card-1-v174.webp",
+    "./assets/panda-hsk-card-2-v174.webp",
+    "./assets/panda-hsk-card-3-v174.webp"
   ]
 }
