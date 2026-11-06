@@ -35,6 +35,13 @@ for(const topicNo of [1,2,3,4,5,6,7]){
   d.getElementById('lesson-next').click();
   assert(d.querySelector('[data-tones-demo]'),'Four-tone listening exercise missing');
   d.querySelector('[data-tones-demo]').click();
+  assert(d.getElementById('lesson-next').disabled,'Listening check must precede examples');
+  for(const tone of [3,1,4,2]){
+    const btn=d.querySelector('[data-tone-choice="'+tone+'"]');
+    assert(btn,'Missing listening answer for tone '+tone);
+    btn.click();
+  }
+  assert(!d.getElementById('lesson-next').disabled,'Correct tone listening unlocks next stage');
  }
  while(d.querySelector('#lesson-count').textContent!=='Шаг 5 из 7')d.getElementById('lesson-next').click();
  assert(d.getElementById('lesson-next').disabled,'Builder must block unverified answer in '+topicNo);
