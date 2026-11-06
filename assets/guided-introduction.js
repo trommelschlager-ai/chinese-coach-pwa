@@ -449,7 +449,10 @@
     backButton.hidden=step===0;
     nextButton.textContent=page.next;
     nextButton.disabled=step===4&&!buildSolved;
+    visitedMax=Math.max(visitedMax,step);
     renderStepList();
+    const seg=document.getElementById("lesson-segments");
+    if(seg)seg.innerHTML=Array.from({length:7},(_,i)=>"<span class=\""+(i<step?"done":i===step?"active":"")+"\"></span>").join("");
     if(step===4)renderBuildTask();
     try{
       visitedMax=Math.max(visitedMax,step);
