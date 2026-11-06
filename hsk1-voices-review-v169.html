@@ -91,7 +91,7 @@ function zipStore(entries){
   const name=enc.encode(item.name),d=item.bytes,crc=crc32(d);
   const h=new Uint8Array([80,75,3,4,20,0,0,0,0,0,0,0,0,0,...u32(crc),...u32(d.length),...u32(d.length),...u16(name.length),0,0]);
   local.push(h,name,d);
-  central.push(new Uint8Array([80,75,1,2,20,0,20,0,0,0,0,0,0,0,0,0,...u32(crc),...u32(d.length),...u32(d.length),...u16(name.length),0,0,0,0,0,0,0,0,...u32(offset)]),name);
+  central.push(new Uint8Array([80,75,1,2,20,0,20,0,0,0,0,0,0,0,0,0,...u32(crc),...u32(d.length),...u32(d.length),...u16(name.length),0,0,0,0,0,0,0,0,0,0,0,0,...u32(offset)]),name);
   offset+=h.length+name.length+d.length;
  }
  const count=entries.length,centralBytes=central.reduce((s,x)=>s+x.length,0);
