@@ -1,0 +1,1567 @@
+{
+  "status": "PROVISIONAL_ARTIFACTS_PENDING_PHONETIC_TONE_REVIEW",
+  "format": "mp3 mono 24000 Hz; exact Mandarin transcript mapping",
+  "source_model": "hexgrad/Kokoro-82M",
+  "model_license": "Apache-2.0",
+  "voices": {
+    "female": "zf_xiaoxiao",
+    "male": "zm_yunjian"
+  },
+  "voice_timbres_approved_from_six_samples": true,
+  "all_utterance_tones_native_reviewed": false,
+  "automatic_speech_accuracy_claimed": false,
+  "created_from": "HSK 1 seven-topic official Panda Go curriculum",
+  "total_files": 138,
+  "role_counts": {
+    "female": 124,
+    "male": 14
+  },
+  "durations_seconds_range": [
+    0.82,
+    3.02
+  ],
+  "files": [
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "一",
+      "file": "a7f2c9f0dffabf9492ed.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "yī",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "一个",
+      "file": "d032369648bdd1e6787e.mp3",
+      "sources": [
+        "family.words"
+      ],
+      "pinyin_reference": "yí ge",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "一月",
+      "file": "a77a0a845a43eb734df5.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "yī yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "一百",
+      "file": "21e4edb7d091091780cb.mp3",
+      "sources": [
+        "numbers.rule.100 и дальше"
+      ],
+      "pinyin_reference": "yì bǎi",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "七",
+      "file": "f15c7f782984638376b7.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "qī",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "七月",
+      "file": "6fc9779fef788feaf272.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "qī yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "三",
+      "file": "dba2db859eab46d297b8.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "sān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "三十五",
+      "file": "0c6fcd02c6b6509d44ed.mp3",
+      "sources": [
+        "numbers.build"
+      ],
+      "pinyin_reference": "Sānshíwǔ",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "三月",
+      "file": "bfe3bd0c7f305dc5ef46.mp3",
+      "sources": [
+        "dates.words",
+        "dates.build"
+      ],
+      "pinyin_reference": "sān yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "下雨",
+      "file": "442fe0603f63bd516582.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "xià yǔ",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "下雪",
+      "file": "25b0ba601c46260ba5b3.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "xià xuě",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "不是，我是学生。",
+      "file": "09c2caa7af58feba9405.mp3",
+      "sources": [
+        "pronouns.dialogue.Б"
+      ],
+      "pinyin_reference": "Bú shì, wǒ shì xuésheng.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "两个人",
+      "file": "7a01019f56db9632a88c.mp3",
+      "sources": [
+        "numbers.rule.Число + счётное слово + предмет"
+      ],
+      "pinyin_reference": "liǎng ge rén",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "九",
+      "file": "c70ba12335fa0a9311d9.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "jiǔ",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "九月",
+      "file": "62c5689dfbd5745a266e.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "jiǔ yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "二",
+      "file": "65fb5aa1cc708aec050c.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "èr",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "二十三",
+      "file": "a4138a6175d14e925db8.mp3",
+      "sources": [
+        "numbers.rule.Десятки: число + 十",
+        "numbers.build",
+        "numbers.speech"
+      ],
+      "pinyin_reference": "èrshísān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "二月",
+      "file": "243a87f467879413c1f4.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "èr yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "二零二六年十一月六日",
+      "file": "72b1cb55ab71e81fac81.mp3",
+      "sources": [
+        "dates.rule.Порядок даты"
+      ],
+      "pinyin_reference": "Èr líng èr liù nián shíyī yuè liù rì",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "五",
+      "file": "733b4ae599e65e0495b2.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "wǔ",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "五月",
+      "file": "5ad040fd864207369315.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "wǔ yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "人",
+      "file": "31970b13c835b06c4118.mp3",
+      "sources": [
+        "foundations.words",
+        "foundations.rule.Черты и порядок письма"
+      ],
+      "pinyin_reference": "rén",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "今天",
+      "file": "dc0f8c6a1c10f9cdd193.mp3",
+      "sources": [
+        "weekdays.words",
+        "dates.words"
+      ],
+      "pinyin_reference": "jīntiān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "今天下雨",
+      "file": "647d114dbc14cf8e48f5.mp3",
+      "sources": [
+        "weather.build"
+      ],
+      "pinyin_reference": "Jīntiān xià yǔ.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "今天下雨。",
+      "file": "d317def8795862aff0e7.mp3",
+      "sources": [
+        "weather.rule.Осадки как действие"
+      ],
+      "pinyin_reference": "Jīntiān xià yǔ.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "今天几月几号？",
+      "file": "2a2ee3f1d20f421b6211.mp3",
+      "sources": [
+        "dates.rule.Как спросить дату"
+      ],
+      "pinyin_reference": "Jīntiān jǐ yuè jǐ hào?",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "今天十一月六号。",
+      "file": "580ee4200bb650c57a02.mp3",
+      "sources": [
+        "dates.dialogue.Б",
+        "dates.speech"
+      ],
+      "pinyin_reference": "Jīntiān shíyī yuè liù hào.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "今天天气怎么样？",
+      "file": "32bb08f75948fb74f8b8.mp3",
+      "sources": [
+        "weather.rule.Как спросить?"
+      ],
+      "pinyin_reference": "Jīntiān tiānqì zěnmeyàng?",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "今天很冷",
+      "file": "e80b91c27e2f2d31ff0e.mp3",
+      "sources": [
+        "weather.build"
+      ],
+      "pinyin_reference": "Jīntiān hěn lěng.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "今天很冷。",
+      "file": "b96d69dd7405a1224352.mp3",
+      "sources": [
+        "weather.rule.Погода как описание",
+        "weather.dialogue.Б",
+        "weather.speech"
+      ],
+      "pinyin_reference": "Jīntiān hěn lěng.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "今天星期五",
+      "file": "7fb66ed771193863d702.mp3",
+      "sources": [
+        "weekdays.build"
+      ],
+      "pinyin_reference": "Jīntiān xīngqīwǔ.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "今天星期五。",
+      "file": "19762a770aabd4180393.mp3",
+      "sources": [
+        "weekdays.dialogue.Б",
+        "weekdays.speech"
+      ],
+      "pinyin_reference": "Jīntiān xīngqīwǔ.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "今天是星期五。",
+      "file": "26c1beebc3b07258f396.mp3",
+      "sources": [
+        "weekdays.rule.Какой сегодня день?"
+      ],
+      "pinyin_reference": "Jīntiān shì xīngqīwǔ.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "他",
+      "file": "6250fcf4ddffe0e09e0b.mp3",
+      "sources": [
+        "pronouns.words"
+      ],
+      "pinyin_reference": "tā",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "他们",
+      "file": "264cb1f9d1cdd7c1d0ff.mp3",
+      "sources": [
+        "pronouns.words"
+      ],
+      "pinyin_reference": "tāmen",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "他是老师",
+      "file": "33c5bbd396585874f421.mp3",
+      "sources": [
+        "pronouns.build"
+      ],
+      "pinyin_reference": "Tā shì lǎoshī.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "你",
+      "file": "b3121374185eaf99fa54.mp3",
+      "sources": [
+        "foundations.rule.Пиньинь не заменяет иероглифы",
+        "pronouns.words"
+      ],
+      "pinyin_reference": "nǐ",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "你们",
+      "file": "288177dfcd2e36a4c06d.mp3",
+      "sources": [
+        "pronouns.words"
+      ],
+      "pinyin_reference": "nǐmen",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "你好",
+      "file": "c73e4a56c46a3be50a3c.mp3",
+      "sources": [
+        "foundations.words",
+        "foundations.build"
+      ],
+      "pinyin_reference": "nǐ hǎo",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "你好！",
+      "file": "f3d7769419a3314f9344.mp3",
+      "sources": [
+        "foundations.dialogue.Б",
+        "foundations.speech"
+      ],
+      "pinyin_reference": "Nǐ hǎo!",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "你是学生",
+      "file": "c6281505244900ffd895.mp3",
+      "sources": [
+        "pronouns.build"
+      ],
+      "pinyin_reference": "Nǐ shì xuésheng.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "你是老师吗？",
+      "file": "b22e5452e374c1d7b72f.mp3",
+      "sources": [
+        "pronouns.rule.Вопрос с 吗"
+      ],
+      "pinyin_reference": "Nǐ shì lǎoshī ma?",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "八",
+      "file": "6c23ab6e91124d69d1ca.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "bā",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "八月",
+      "file": "eda69ffdd3fc5c8d203d.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "bā yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "六",
+      "file": "a6bfa444b36a023cbd01.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "liù",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "六月",
+      "file": "a081a500b95273aa74bd.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "liù yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "冬天",
+      "file": "312c146a9eeb3d8b554e.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "dōngtiān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "冬天很冷。",
+      "file": "a740821e5205d1cccabf.mp3",
+      "sources": [
+        "weather.rule.Времена года"
+      ],
+      "pinyin_reference": "Dōngtiān hěn lěng.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "冷",
+      "file": "42b51e95d67c7b7917b1.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "lěng",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "几",
+      "file": "e2e4b1164ea07e93d0a4.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "jǐ",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "十",
+      "file": "d852f4fc79b5575b2d7a.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "shí",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "十一",
+      "file": "e505ac4494c3d5c3e4f6.mp3",
+      "sources": [
+        "numbers.build"
+      ],
+      "pinyin_reference": "Shíyī",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "十一月",
+      "file": "3548d6b59d06b3d155d2.mp3",
+      "sources": [
+        "dates.words",
+        "dates.rule.Месяц = число + 月",
+        "dates.build"
+      ],
+      "pinyin_reference": "shíyī yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "十三",
+      "file": "efeec658f1a1dd900ae8.mp3",
+      "sources": [
+        "numbers.rule.11–19: десять + единицы"
+      ],
+      "pinyin_reference": "shísān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "十二月",
+      "file": "323822b572b28a44df11.mp3",
+      "sources": [
+        "dates.words",
+        "dates.build"
+      ],
+      "pinyin_reference": "shí'èr yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "十月",
+      "file": "40179eadff8cac8c6d0c.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "shí yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "口",
+      "file": "3e6fc718125dba248779.mp3",
+      "sources": [
+        "foundations.words"
+      ],
+      "pinyin_reference": "kǒu",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "号",
+      "file": "67672593634e45419ef2.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "hào",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "吗",
+      "file": "94c297c29512a9a21645.mp3",
+      "sources": [
+        "pronouns.words"
+      ],
+      "pinyin_reference": "ma",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "哥哥",
+      "file": "ebda92600798695680bb.mp3",
+      "sources": [
+        "family.words"
+      ],
+      "pinyin_reference": "gēge",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "四",
+      "file": "7f0b593c512ac6418c29.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "sì",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "四月",
+      "file": "e962b46f59eb9d0484f5.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "sì yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "声调",
+      "file": "9d39160d0eb452892b91.mp3",
+      "sources": [
+        "foundations.words",
+        "foundations.build"
+      ],
+      "pinyin_reference": "shēngdiào",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "夏天",
+      "file": "9bd1a1247a6c9be88187.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "xiàtiān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "天气",
+      "file": "ab03b2484d6f4861e102.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "tiānqì",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "女",
+      "file": "65ed0dda9ff03b470cfe.mp3",
+      "sources": [
+        "foundations.words"
+      ],
+      "pinyin_reference": "nǚ",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "她",
+      "file": "8b745dd7610b534d1bf9.mp3",
+      "sources": [
+        "pronouns.words"
+      ],
+      "pinyin_reference": "tā",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "妈",
+      "file": "79a2b7d7ee22a7a741b1.mp3",
+      "sources": [
+        "foundations.rule.Ключи и компоненты"
+      ],
+      "pinyin_reference": "mā",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "妈妈",
+      "file": "378dc59e4f5f478ada72.mp3",
+      "sources": [
+        "family.words"
+      ],
+      "pinyin_reference": "māma",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "妹妹",
+      "file": "f2b2837b18136f86a4a1.mp3",
+      "sources": [
+        "family.words"
+      ],
+      "pinyin_reference": "mèimei",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "姐姐",
+      "file": "3d9e0e52fe3426b15605.mp3",
+      "sources": [
+        "family.words"
+      ],
+      "pinyin_reference": "jiějie",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "学生",
+      "file": "98bbd8130a78d2b4cc1b.mp3",
+      "sources": [
+        "pronouns.words"
+      ],
+      "pinyin_reference": "xuésheng",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "它",
+      "file": "c6d0a8e4f60d09176e24.mp3",
+      "sources": [
+        "pronouns.words"
+      ],
+      "pinyin_reference": "tā",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "家",
+      "file": "4e957452635a351b50ca.mp3",
+      "sources": [
+        "family.words"
+      ],
+      "pinyin_reference": "jiā",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "年",
+      "file": "fe17a7595182e54e20c2.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "nián",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "弟弟",
+      "file": "e1d8980e0e9b987d7950.mp3",
+      "sources": [
+        "family.words"
+      ],
+      "pinyin_reference": "dìdi",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我",
+      "file": "ef5e1f7cc69ee652e35c.mp3",
+      "sources": [
+        "pronouns.words"
+      ],
+      "pinyin_reference": "wǒ",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我不是老师。",
+      "file": "32614d44cc0c47c8f652.mp3",
+      "sources": [
+        "pronouns.rule.Отрицание через 不"
+      ],
+      "pinyin_reference": "Wǒ bú shì lǎoshī.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我们",
+      "file": "900366662530adb33e88.mp3",
+      "sources": [
+        "pronouns.words"
+      ],
+      "pinyin_reference": "wǒmen",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我很忙。",
+      "file": "20a7bb03b21cc0442c29.mp3",
+      "sources": [
+        "pronouns.rule.Не ставь 是 автоматически"
+      ],
+      "pinyin_reference": "Wǒ hěn máng.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我是老师",
+      "file": "fa5003b4eea8e86a4990.mp3",
+      "sources": [
+        "pronouns.build"
+      ],
+      "pinyin_reference": "Wǒ shì lǎoshī.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我是老师。",
+      "file": "a9bfe33b3286701febc9.mp3",
+      "sources": [
+        "pronouns.rule.Кто + 是 + кто/что",
+        "pronouns.speech"
+      ],
+      "pinyin_reference": "Wǒ shì lǎoshī.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我有一个妹妹",
+      "file": "13af526b72742e807ea2.mp3",
+      "sources": [
+        "family.build"
+      ],
+      "pinyin_reference": "Wǒ yǒu yí ge mèimei.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我有一个妹妹。",
+      "file": "dddde6c3a753c768ea15.mp3",
+      "sources": [
+        "family.rule.Старший и младший",
+        "family.speech"
+      ],
+      "pinyin_reference": "Wǒ yǒu yí ge mèimei.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我有两个。",
+      "file": "bdff02754b2d33f6d432.mp3",
+      "sources": [
+        "numbers.dialogue.Б"
+      ],
+      "pinyin_reference": "Wǒ yǒu liǎng ge.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我没有哥哥",
+      "file": "93fa57c9370b09434c40.mp3",
+      "sources": [
+        "family.build"
+      ],
+      "pinyin_reference": "Wǒ méiyǒu gēge.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我没有哥哥。",
+      "file": "864e84c90ab7990e306e.mp3",
+      "sources": [
+        "family.rule.Есть / нет"
+      ],
+      "pinyin_reference": "Wǒ méiyǒu gēge.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我的",
+      "file": "aff9ef7fa33cef43554e.mp3",
+      "sources": [
+        "family.words"
+      ],
+      "pinyin_reference": "wǒ de",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "我的妈妈",
+      "file": "543483835bc2b0c18b47.mp3",
+      "sources": [
+        "family.rule.Принадлежность с 的"
+      ],
+      "pinyin_reference": "wǒ de māma",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "拼音",
+      "file": "ecd269374f7ca1a18aea.mp3",
+      "sources": [
+        "foundations.words"
+      ],
+      "pinyin_reference": "pīnyīn",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "日",
+      "file": "da80baf9eabc01c9a745.mp3",
+      "sources": [
+        "foundations.words",
+        "dates.words"
+      ],
+      "pinyin_reference": "rì",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "明天",
+      "file": "679cd4984d824ade4afa.mp3",
+      "sources": [
+        "weekdays.words"
+      ],
+      "pinyin_reference": "míngtiān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "明天下雨",
+      "file": "2001d68ef28b34b1af30.mp3",
+      "sources": [
+        "weather.build"
+      ],
+      "pinyin_reference": "Míngtiān xià yǔ.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "明天下雨。",
+      "file": "7de4dafc79197781a3f7.mp3",
+      "sources": [
+        "weather.dialogue.Б"
+      ],
+      "pinyin_reference": "Míngtiān xià yǔ.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "星期",
+      "file": "92611b3bbea1298a77d4.mp3",
+      "sources": [
+        "weekdays.words"
+      ],
+      "pinyin_reference": "xīngqī",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "星期一",
+      "file": "d8e2aa87ec298975e69e.mp3",
+      "sources": [
+        "weekdays.words"
+      ],
+      "pinyin_reference": "xīngqīyī",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "星期三",
+      "file": "0554618107fbbe4b6483.mp3",
+      "sources": [
+        "weekdays.words",
+        "weekdays.rule.Понедельник–суббота",
+        "weekdays.build"
+      ],
+      "pinyin_reference": "xīngqīsān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "星期二",
+      "file": "c22f0948323a09e8d550.mp3",
+      "sources": [
+        "weekdays.words"
+      ],
+      "pinyin_reference": "xīngqīèr",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "星期五",
+      "file": "9fd22377172e6c790356.mp3",
+      "sources": [
+        "weekdays.words",
+        "weekdays.build"
+      ],
+      "pinyin_reference": "xīngqīwǔ",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "星期六",
+      "file": "1a89d85688d5a7932a80.mp3",
+      "sources": [
+        "weekdays.words"
+      ],
+      "pinyin_reference": "xīngqīliù",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "星期四",
+      "file": "934a081cdbabcb9e2e6f.mp3",
+      "sources": [
+        "weekdays.words"
+      ],
+      "pinyin_reference": "xīngqīsì",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "星期天",
+      "file": "326b3ffcd362b2dc0bff.mp3",
+      "sources": [
+        "weekdays.words",
+        "weekdays.rule.Воскресенье — отдельное слово"
+      ],
+      "pinyin_reference": "xīngqītiān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "星期日",
+      "file": "d50c55b8235d60b59ba1.mp3",
+      "sources": [
+        "weekdays.words"
+      ],
+      "pinyin_reference": "xīngqīrì",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "春天",
+      "file": "101e2e3c3dccf289ab1a.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "chūntiān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "昨天",
+      "file": "534bc4ba031c04ffec88.mp3",
+      "sources": [
+        "weekdays.words"
+      ],
+      "pinyin_reference": "zuótiān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "是",
+      "file": "3354ea2825a501b26e6e.mp3",
+      "sources": [
+        "pronouns.words"
+      ],
+      "pinyin_reference": "shì",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "是，这是我妈妈。",
+      "file": "702358eea35f9bb78dc6.mp3",
+      "sources": [
+        "family.dialogue.Б"
+      ],
+      "pinyin_reference": "Shì, zhè shì wǒ māma.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "晴",
+      "file": "334b652e4a3cf7f8f9f2.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "qíng",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "月",
+      "file": "754ca9e42cc3af67d903.mp3",
+      "sources": [
+        "dates.words"
+      ],
+      "pinyin_reference": "yuè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "有",
+      "file": "8eda305b3cda34d82569.mp3",
+      "sources": [
+        "family.words"
+      ],
+      "pinyin_reference": "yǒu",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "有，我有一个妹妹。",
+      "file": "1ccd567257a49b2a14fd.mp3",
+      "sources": [
+        "family.dialogue.Б"
+      ],
+      "pinyin_reference": "Yǒu, wǒ yǒu yí ge mèimei.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "木",
+      "file": "2a19ab942db1e690bdf2.mp3",
+      "sources": [
+        "foundations.words"
+      ],
+      "pinyin_reference": "mù",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "汉字",
+      "file": "76b38345e37580d9eeaa.mp3",
+      "sources": [
+        "foundations.words",
+        "foundations.build"
+      ],
+      "pinyin_reference": "hànzì",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "没有",
+      "file": "43797dd6c8e7ec6a30e9.mp3",
+      "sources": [
+        "family.words"
+      ],
+      "pinyin_reference": "méiyǒu",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "热",
+      "file": "a2fb8f40490c863e5f67.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "rè",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "爸爸",
+      "file": "ba80f8a261b27e146fbf.mp3",
+      "sources": [
+        "family.words"
+      ],
+      "pinyin_reference": "bàba",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "百",
+      "file": "ff77006fbeaee3011893.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "bǎi",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "秋天",
+      "file": "659c3a4ab7adc58599fd.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "qiūtiān",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "老师",
+      "file": "e1c095f86b03eb39a5cb.mp3",
+      "sources": [
+        "pronouns.words"
+      ],
+      "pinyin_reference": "lǎoshī",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "这是我爸爸",
+      "file": "4d41c00bea9f0ff365ff.mp3",
+      "sources": [
+        "family.build"
+      ],
+      "pinyin_reference": "Zhè shì wǒ bàba.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "这是我爸爸。",
+      "file": "b972932b91caf0ab406d.mp3",
+      "sources": [
+        "family.rule.Кто это?"
+      ],
+      "pinyin_reference": "Zhè shì wǒ bàba.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "阴",
+      "file": "2572d95631bcccd85a55.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "yīn",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "零",
+      "file": "8b80e9b3aee79a19e761.mp3",
+      "sources": [
+        "numbers.words"
+      ],
+      "pinyin_reference": "líng",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "female",
+      "voice": "zf_xiaoxiao",
+      "text": "风",
+      "file": "c4c5c4c1257185d7058e.mp3",
+      "sources": [
+        "weather.words"
+      ],
+      "pinyin_reference": "fēng",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "二十三。",
+      "file": "045431a3f69722fde137.mp3",
+      "sources": [
+        "numbers.dialogue.А"
+      ],
+      "pinyin_reference": "Èrshísān.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "今天几月几号？",
+      "file": "6ce9800aaf023d92b07a.mp3",
+      "sources": [
+        "dates.dialogue.А"
+      ],
+      "pinyin_reference": "Jīntiān jǐ yuè jǐ hào?",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "今天天气怎么样？",
+      "file": "4f021cfad29f631acf58.mp3",
+      "sources": [
+        "weather.dialogue.А"
+      ],
+      "pinyin_reference": "Jīntiān tiānqì zěnmeyàng?",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "今天星期几？",
+      "file": "6e8daa383f9dc6dadab4.mp3",
+      "sources": [
+        "weekdays.dialogue.А"
+      ],
+      "pinyin_reference": "Jīntiān xīngqī jǐ?",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "你好！",
+      "file": "ca2a36b2097b5a6321a2.mp3",
+      "sources": [
+        "foundations.dialogue.А"
+      ],
+      "pinyin_reference": "Nǐ hǎo!",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "你是老师吗？",
+      "file": "f9d705a301ff75946c24.mp3",
+      "sources": [
+        "pronouns.dialogue.А"
+      ],
+      "pinyin_reference": "Nǐ shì lǎoshī ma?",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "你有几个？",
+      "file": "6284fda9e8ce00a9d759.mp3",
+      "sources": [
+        "numbers.dialogue.А"
+      ],
+      "pinyin_reference": "Nǐ yǒu jǐ ge?",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "你有妹妹吗？",
+      "file": "5bcb7cc3d9cdfa23140c.mp3",
+      "sources": [
+        "family.dialogue.А"
+      ],
+      "pinyin_reference": "Nǐ yǒu mèimei ma?",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "我叫小明。",
+      "file": "c3a1fb62d2633fff79bb.mp3",
+      "sources": [
+        "foundations.dialogue.А"
+      ],
+      "pinyin_reference": "Wǒ jiào Xiǎomíng.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "我是老师。",
+      "file": "663bd39daa131a011fc0.mp3",
+      "sources": [
+        "pronouns.dialogue.А"
+      ],
+      "pinyin_reference": "Wǒ shì lǎoshī.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "明天七号。",
+      "file": "c786c530cc8d48ace9c0.mp3",
+      "sources": [
+        "dates.dialogue.А"
+      ],
+      "pinyin_reference": "Míngtiān qī hào.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "明天下雨吗？",
+      "file": "7b5bc650039702f88f4c.mp3",
+      "sources": [
+        "weather.dialogue.А"
+      ],
+      "pinyin_reference": "Míngtiān xià yǔ ma?",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "明天星期六。",
+      "file": "ecb56237b96af780f69e.mp3",
+      "sources": [
+        "weekdays.dialogue.А"
+      ],
+      "pinyin_reference": "Míngtiān xīngqīliù.",
+      "review_status": "pending_native_tone_check"
+    },
+    {
+      "role": "male",
+      "voice": "zm_yunjian",
+      "text": "这是你妈妈吗？",
+      "file": "df020afdbe187df9761f.mp3",
+      "sources": [
+        "family.dialogue.А"
+      ],
+      "pinyin_reference": "Zhè shì nǐ māma ma?",
+      "review_status": "pending_native_tone_check"
+    }
+  ]
+}

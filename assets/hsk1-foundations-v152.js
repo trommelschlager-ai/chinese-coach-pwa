@@ -40,7 +40,19 @@ const maps=[
 ];
 const resolved={};
 for(const map of maps){for(const [k,v] of Object.entries(map)){const key=norm(k);if(key&&!resolved[key]&&typeof v==='string'&&v.endsWith('.mp3'))resolved[key]=v;}}
-const clipFor=hz=>resolved[norm(hz)]||null;
+// One approved female narrator and fixed two-speaker dialogue.
+ // When a complete production map is loaded, never accidentally fall back to a
+ // different legacy speaker for the same Chinese text.
+const productionVoices=window.PANDA_HSK1_VOICES||null;
+function clipFor(hz,role='female'){
+ if(productionVoices){
+  return productionVoices[role]?.[hz]||null;
+ }
+ // Legacy teaching MP3 stay available while the reviewed voice pack is staged.
+ // No legacy voice is labelled male if its identity is unknown.
+ return role==='male'?null:(resolved[norm(hz)]||null);
+}
+function roleForDialogue(speaker){return speaker==='А'?'male':'female'}
 function save(){
  try{localStorage.setItem(key,JSON.stringify(state));if(state.completed){
    let all=[];try{all=JSON.parse(localStorage.getItem(completeKey)||'[]')}catch{}
@@ -62,7 +74,7 @@ function playOne(file,row){
  }catch{feedback('Не удалось запустить аудио.');}
 }
 function playDialogue(){
- const clips=topic.dialogue.map(x=>clipFor(x[1]));
+ const clips=topic.dialogue.map(x=>clipFor(x[1],roleForDialogue(x[0])));
  if(clips.some(x=>!x)){feedback('Не все реплики пока записаны одним голосом. Можно читать диалог и слушать доступные реплики отдельно.');return;}
  stopAudio();const token=playId;let index=0;
  const next=()=>{if(token!==playId||index>=clips.length)return;
@@ -76,8 +88,9 @@ function playDialogue(){
  next();
 }
 function audioButton(hz,role){
- const file=clipFor(hz);
- return '<div class="lesson-audio-label"><button type="button" class="lesson-audio" data-play="'+esc(hz)+'"'+(file?'':' disabled title="Запись готовится"')+' aria-label="'+(file?'Прослушать ':'Записи пока нет: ')+esc(hz)+'">'+(file?'🔊':'—')+'</button>'+(file?'':'<small class="lesson-audio-caption">Нет записи</small>')+'</div>';
+ const speaker=role||'female';
+ const file=clipFor(hz,speaker);
+ return '<div class="lesson-audio-label"><button type="button" class="lesson-audio" data-play="'+esc(hz)+'" data-speaker="'+esc(speaker)+'"'+(file?'':' disabled title="Запись готовится"')+' aria-label="'+(file?'Прослушать ':'Записи пока нет: ')+esc(hz)+'">'+(file?'🔊':'—')+'</button>'+(file?'':'<small class="lesson-audio-caption">Нет записи</small>')+'</div>';
 }
 function hanzi(hz,py,ru){
  return '<strong class="lesson-hanzi" lang="zh-Hans">'+esc(hz)+'</strong><span class="lesson-py">'+esc(py)+'</span><span class="lesson-ru">'+esc(ru)+'</span>';
@@ -133,14 +146,14 @@ function renderRules(){
  return radicals+topic.rules.map(([head,desc,hz,py,ru])=>'<article class="lesson-card"><h2>'+esc(head)+'</h2><p>'+esc(desc)+'</p><div>'+hanzi(hz,py,ru)+'</div><div style="margin-top:10px">'+audioButton(hz)+'</div></article>').join('');
 }
 function renderDialogue(){
- const allRecorded=topic.dialogue.every(d=>clipFor(d[1]));
+ const allRecorded=topic.dialogue.every(d=>clipFor(d[1],roleForDialogue(d[0])));
  let out='<div class="lesson-dialogue-hero"><img src="./assets/panda-v130/dialogue-scene.webp" alt="Мужчина и женщина разговаривают на улице китайского города">'+
  '<button type="button" class="hero-play" data-dialog-all aria-label="Прослушать весь диалог"'+(allRecorded?'':' disabled title="Полная запись готовится"')+'>▶</button></div>'+
  '<p class="lesson-note">'+(allRecorded?'Нажми ▶, чтобы прослушать весь разговор.':'Весь диалог показан ниже. Для некоторых реплик ещё не готовы точные аудиозаписи.')+'</p><div class="lesson-chat">';
  topic.dialogue.forEach(([who,hz,py,ru],i)=>{
   out+='<div class="lesson-line '+(who==='Б'?'speaker-b':'speaker-a')+'" data-dialog-row="'+i+'">'+
   '<img class="lesson-portrait" src="./assets/approved-'+(who==='Б'?'woman':'man')+'-v112.webp" alt="" aria-hidden="true">'+
-  '<div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz)+'</div>';
+  '<div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz,roleForDialogue(who))+'</div>';
  });
  return out+'</div>';
 }
@@ -308,7 +321,7 @@ $('stage-content').addEventListener('click',e=>{
    return;
  }
  if(button.hasAttribute('data-play')){
-  playOne(clipFor(button.dataset.play),button.closest('.lesson-line,.lesson-word,.lesson-card'));
+  playOne(clipFor(button.dataset.play,button.dataset.speaker||'female'),button.closest('.lesson-line,.lesson-word,.lesson-card'))
   return;
  }
  if(button.hasAttribute('data-tones-demo')){
