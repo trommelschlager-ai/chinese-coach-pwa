@@ -15,7 +15,11 @@ const icon=(name,cls='pg-icon')=>{
   books:'<path d="M12 13l24-7 18 7-25 8z" fill="#f9a35d" stroke="#a75259" stroke-width="2"/><path d="M10 23l24-7 20 7-23 9z" fill="#48b6da" stroke="#4376a3" stroke-width="2"/><path d="M10 34l23-7 20 7-23 9z" fill="#9f6ee5" stroke="#7657bb" stroke-width="2"/><path d="M9 45l23-7 22 7-24 10z" fill="#f7df8b" stroke="#b68265" stroke-width="2"/>',
   book:'<path d="M7 13q13-5 25 4 12-9 25-4v35q-13-5-25 4-12-9-25-4z" fill="#fff4e7" stroke="#8d2bbd" stroke-width="4" stroke-linejoin="round"/><path d="M32 17v35" stroke="#ab4cc6" stroke-width="3"/><path d="M13 23q8-2 14 2M13 31q8-2 14 2M38 25q8-4 14-2M38 33q8-4 14-2" fill="none" stroke="#ec8ace" stroke-width="2.5" stroke-linecap="round"/>',
   brush:'<path d="M40 9l12 12-25 25-11-12z" fill="#b97ae5" stroke="#7d2eac" stroke-width="2"/><path d="M40 9l7-7 12 12-7 7z" fill="#f6c77c" stroke="#a77139" stroke-width="2"/><path d="M16 34l11 12-6 6-10-10z" fill="#f7e8a9" stroke="#ab724e"/><path d="M12 42q-8 9-8 19 13-1 18-9z" fill="#562f70" stroke="#7e2aa4" stroke-width="1.5"/>',
-  chat:'<path d="M8 10h48a8 8 0 0 1 8 8v22a8 8 0 0 1-8 8H31L18 59V48H8a8 8 0 0 1-8-8V18a8 8 0 0 1 8-8z" transform="translate(4 0) scale(.9)" fill="#be35d9" stroke="#7b199a" stroke-width="3"/><circle cx="20" cy="29" r="4" fill="white"/><circle cx="34" cy="29" r="4" fill="white"/><circle cx="48" cy="29" r="4" fill="white"/>'
+  chat:'<path d="M8 10h48a8 8 0 0 1 8 8v22a8 8 0 0 1-8 8H31L18 59V48H8a8 8 0 0 1-8-8V18a8 8 0 0 1 8-8z" transform="translate(4 0) scale(.9)" fill="#be35d9" stroke="#7b199a" stroke-width="3"/><circle cx="20" cy="29" r="4" fill="white"/><circle cx="34" cy="29" r="4" fill="white"/><circle cx="48" cy="29" r="4" fill="white"/>',
+  /* Decorations match the approved HSK 4–6 fan, lantern and pagoda motifs. */
+  fan:'<path d="M8 46Q2 24 32 9Q61 24 56 46Q33 38 8 46Z" fill="#ffcfeb" stroke="#b42aaa" stroke-width="2.4"/><path d="M9 45Q32 31 55 45M32 10V43M20 16L26 41M44 16L38 41M12 26L20 43M52 26L44 43" fill="none" stroke="#d33e9f" stroke-width="2"/><path d="M11 48L53 48L33 55Z" fill="#f6be77" stroke="#a9694e" stroke-width="2"/><circle cx="33" cy="51" r="3" fill="#b52c9c"/>',
+  lantern:'<path d="M31 4v7M24 11h16" fill="none" stroke="#d49a36" stroke-width="3" stroke-linecap="round"/><ellipse cx="32" cy="32" rx="22" ry="19" fill="#ff567a" stroke="#b82c4b" stroke-width="3"/><path d="M17 18Q32 7 47 18M17 46Q32 55 47 46M26 15Q19 32 26 48M38 15Q45 32 38 48" fill="none" stroke="#ffe37b" stroke-width="3"/><path d="M23 52h18M32 52v9M28 57h8" stroke="#edba4e" stroke-width="3" stroke-linecap="round"/>',
+  pagoda:'<path d="M10 51h45v8H10Z" fill="#f0bd76" stroke="#974c42" stroke-width="2"/><path d="M18 37h28v14H18Z" fill="#ffdf8f" stroke="#964d42" stroke-width="2"/><path d="M10 36L32 26L55 36L60 38Q32 42 5 38Z" fill="#ed7045" stroke="#a23958" stroke-width="2.5"/><path d="M20 20h24v10H20Z" fill="#ffe1a0" stroke="#9e4a49" stroke-width="2"/><path d="M11 20L32 10L54 20L60 22Q32 26 4 22Z" fill="#f88150" stroke="#9e3156" stroke-width="2.5"/><path d="M27 7h10" fill="none" stroke="#e4b645" stroke-width="3"/><path d="M24 39v11M40 39v11M28 27v8M36 27v8" stroke="#9b4767" stroke-width="3"/>'
  };
  return shapes[name]?'<svg class="'+cls+'" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">'+shapes[name]+'</svg>':'<img class="'+cls+'" src="'+A+name+'.webp" alt="" aria-hidden="true">';
 };
@@ -79,12 +83,12 @@ function frame(content,cls=''){
 function settingsView(){frame(heading('Настройки','books','progress','',true)+'<div class="pg-settings-content"></div>');if(nativeSettings){nativeSettings.open=true;root.querySelector('.pg-settings-content').append(nativeSettings)}}
 function home(){
  const levels=[
-  ['1','book','pink','Базовый китайский'],
+  ['1','brush','pink','Базовый китайский'],
   ['2','book','violet','Повседневное общение'],
   ['3','chat','blue','Жизнь и путешествия'],
-  ['4','brush','rose','Учёба и работа'],
-  ['5','target','cyan','Культура и общество'],
-  ['6','books','mint','Свободное владение']
+  ['4','fan','rose','Учёба и работа'],
+  ['5','lantern','cyan','Культура и общество'],
+  ['6','pagoda','mint','Свободное владение']
  ];
  const artwork='<div class="pg-hsk-backdrop" aria-hidden="true"><img src="./assets/panda-go-home-v136-clean.png" alt="" fetchpriority="high" decoding="async" draggable="false"></div>';
  const brand='<header class="pg-hsk-brand"><span class="pg-hsk-paw" aria-hidden="true">🐾</span><h1>Panda Go</h1><p>Твой путь к китайскому</p></header>';
