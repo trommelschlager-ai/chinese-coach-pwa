@@ -18,3 +18,6 @@ secrets.json
 secrets.*.json
 *.log
 .DS_Store
+
+# Do not publish unreviewed AI-generated Mandarin voices.
+.voice-staging/
