@@ -63,15 +63,22 @@
   const words = wordsByLesson[lessonNumber];
   const dialogue = dialoguesByLesson[lessonNumber];
 
-  let step = 0;
-  let answered = false;
-  let audio = null;
-  let generation = 0;
+  // Preserve the original six-step keys while tracking the approved seven-step journey separately.
+  const v2Key = 'pg-hsk1-v2-lesson-' + lessonNumber;
+  const visitedKey = 'pg-hsk1-v2-visited-' + lessonNumber;
+  let step = 0, visitedMax = 0, assembled = [], buildSolved = false;
+  let answered = false, audio = null, generation = 0;
   try {
-    const saved = Number(localStorage.getItem(storageKey));
-    if (Number.isInteger(saved) && saved >= 0 && saved <= 6) step = saved;
+    const savedV2 = localStorage.getItem(v2Key);
+    if (savedV2 !== null && /^\\d+$/.test(savedV2) && Number(savedV2) <= 7) {
+      step = Number(savedV2);
+    } else {
+      const old = Number(localStorage.getItem(storageKey) || '0');
+      // Legacy 6 meant lesson completed. 1=words, 2=examples, 3=dialogue, 4=quiz, 5=speak.
+      step = old >= 6 ? 7 : [0,0,2,3,4,5][Math.max(0,Math.min(5,old))];
+    }
+    visitedMax = Math.max(step,Math.min(7,Number(localStorage.getItem(visitedKey))||0));
   } catch {}
-
   const card = text => '<div class="card">' + text + '</div>';
   const phrase = (hz, py, ru) =>
     '<span lang="zh-Hans">' + hz + '</span><span class="py">' + py + '</span><p>' + ru + '</p>';
@@ -331,7 +338,78 @@
     },
   ];
   const pagesByLesson = { 1: introductionPages, 2: identityPages, 3: cafePages, 4: locationPages };
-  const pages = pagesByLesson[lessonNumber];
+  const oldPages = pagesByLesson[lessonNumber];
+  const toneNotes = {
+    1: [['你','nǐ','Третий тон'],['叫','jiào','Четвёртый тон'],['我','wǒ','Третий тон']],
+    2: [['是','shì','Четвёртый тон'],['人','rén','Второй тон'],['中国','Zhōngguó','Первый + второй тон']],
+    3: [['想','xiǎng','Третий тон'],['喝','hē','Первый тон'],['茶','chá','Второй тон'],['杯','bēi','Первый тон']],
+    4: [['住','zhù','Четвёртый тон'],['在','zài','Четвёртый тон'],['北京','Běijīng','Третий + первый тон']]
+  };
+  const assembleWords = {
+    1:['我','叫','安娜'],2:['我','是','俄罗斯人'],
+    3:['我','想','喝','茶'],4:['我','住','在','北京']
+  };
+  const assemblePinyin = {
+    1:'Wǒ jiào Ānnà.',2:'Wǒ shì Éluósī rén.',
+    3:'Wǒ xiǎng hē chá.',4:'Wǒ zhù zài Běijīng.'
+  };
+  const buildGoal = assembleWords[lessonNumber];
+  const steps = [
+    ['Новые слова','📖'],['Тоны и произношение','◉'],['Примеры','▣'],
+    ['Диалог','💬'],['Собери предложение','🧩'],['Говори сам','🎙'],
+    ['Итог и повторение','↻']
+  ];
+  const toneBody = () => '<p class="lesson-instruction">Нажми на каждое слово, внимательно повтори тон.</p>' +
+    '<div class="lesson-tone-grid">' + toneNotes[lessonNumber].map(([hz,py,note]) =>
+      '<div class="card lesson-tone-card"><button data-word="'+hz+'" aria-label="Послушать '+hz+'"><strong lang="zh-Hans">'+hz+'</strong><span>'+py+'</span><small>'+note+'</small><b aria-hidden="true">🔊</b></button></div>'
+    ).join('') + '</div>' +
+    (lessonNumber===1?'<p class="lesson-note">В сочетании 你好 (nǐ hǎo) два третьих тона произносятся как второй и третий: ní hǎo.</p>':
+     lessonNumber===3?'<p class="lesson-note">Перед первым тоном 一 в 一杯 (yì bēi) произносится четвёртым тоном.</p>':'');
+  const dialogueBody = () => '<div class="lesson-dialogue-visual">' +
+    '<img src="./assets/panda-v130/dialogue-scene.webp" alt="Два собеседника в китайском городе" loading="eager">' +
+    '<button class="lesson-dialogue-play" data-listen-all aria-label="Прослушать весь диалог">▶</button></div>' +
+    '<div class="lesson-dialogue-actions"><button data-stop>■ Остановить</button><span>Нажми на реплику, чтобы услышать её</span></div>' +
+    '<div class="lesson-chat">' + dialogue.map(([speaker,hz,py,ru],index)=>
+      '<div class="line lesson-chat-line '+(speaker==='Б'?'lesson-speaker-b':'lesson-speaker-a')+'" data-line="'+index+'">' +
+      '<img src="./assets/approved-'+(speaker==='Б'?'woman':'man')+'-v112.webp" alt="" aria-hidden="true">' +
+      '<div class="lesson-bubble">'+phrase(hz,py,ru)+'</div>' +
+      '<button data-listen="'+index+'" aria-label="Прослушать реплику '+(index+1)+'">🔊</button></div>'
+    ).join('') + '</div>';
+  const buildBody = () => '<div class="card lesson-build-card"><h2>Собери китайскую фразу</h2>' +
+    '<p>Расставь слова в правильном порядке. При ошибке попробуй снова.</p>' +
+    '<div id="build-task" aria-live="polite"></div></div>';
+  const pages = [
+    {title:steps[0][0],body:oldPages[1].body,next:'Дальше →'},
+    {title:steps[1][0],body:toneBody,next:'Дальше →'},
+    {title:steps[2][0],body:oldPages[2].body,next:'Дальше →'},
+    {title:steps[3][0],body:dialogueBody,next:'Дальше →'},
+    {title:steps[4][0],body:buildBody,next:'Дальше →'},
+    {title:steps[5][0],body:oldPages[5].body,next:'Дальше →'},
+    {title:steps[6][0],body:()=>card('<h2>Повтори главное</h2><p>Прочитай разговор ещё раз, прослушай реплики и проверь своё произношение.</p>')+dialogueBody(),next:'Завершить урок'},
+    {title:'Урок завершён',body:oldPages[6].body,next:'Повторить урок'}
+  ];
+  function renderBuildTask(){
+    const task=document.getElementById('build-task');
+    if(!task)return;
+    const available=buildGoal.map((word,i)=>({word,i})).filter(x=>!assembled.includes(x.i)).reverse();
+    task.innerHTML='<p class="lesson-built" aria-label="Твой ответ">'+
+      (assembled.length?assembled.map((i,pos)=>'<button data-remove-index="'+pos+'" aria-label="Убрать '+buildGoal[i]+'">'+buildGoal[i]+' ×</button>').join(''):'Нажми на слова внизу')+
+      '</p><div class="lesson-build-pool">'+available.map(({word,i})=>'<button data-piece="'+i+'">'+word+'</button>').join('')+'</div>'+
+      '<div class="lesson-build-buttons"><button data-check-build'+(assembled.length!==buildGoal.length||buildSolved?' disabled':'')+'>Проверить</button><button data-reset-build>Сбросить</button></div>'+
+      (buildSolved?'<p class="lesson-correct">✓ Верно! '+assemblePinyin[lessonNumber]+'</p>':'');
+    nextButton.disabled=!buildSolved;
+  }
+  function renderStepList(){
+    const box=document.getElementById('lesson-step-list');
+    if(!box)return;
+    box.innerHTML=steps.map(([label,art],i)=>{
+      const active=step===i,done=step>i||step===7;
+      return '<button class="lesson-step-row'+(active?' active':'')+(done?' done':'')+'" data-go-step="'+i+'"'+(i>visitedMax?' disabled':'')+
+        ' aria-current="'+(active?'step':'false')+'"><span class="lesson-step-number">'+(i+1)+'</span>'+
+        '<span class="lesson-step-art" aria-hidden="true">'+art+'</span><span class="lesson-step-name">'+label+'</span>'+
+        '<span class="lesson-step-state" aria-hidden="true">'+(done?'✓':active?'›':i>visitedMax?'🔒':'•')+'</span></button>';
+    }).join('');
+  }
   const answerFeedback = {
     1: ['你呢？ значит «А ты?». Сначала назови своё имя с 我叫…', 'Верно. После 我叫 ставим своё имя.'],
     2: ['中国人 означает «китаец / китаянка». Для России используй 俄罗斯人.', 'Верно. 俄罗斯人 — человек из России.'],
@@ -345,77 +423,94 @@
   document.querySelector('header').after(lessonMenu);
 
   function renderLessonMenu() {
-    const entries = Object.entries(lessonTitles).map(([number, title]) => {
-      let progress = 0;
-      try {
-        const saved = Number(localStorage.getItem(storageKeys[number]));
-        if (Number.isInteger(saved) && saved >= 0 && saved <= 6) progress = saved;
-      } catch {}
-      const status = progress === 6 ? 'Завершён' : progress > 0 ? 'Шаг ' + (progress + 1) + ' из 6' : 'Начать';
-      return '<a href="./start-chinese.html?lesson=' + number + '"' +
-        (Number(number) === lessonNumber ? ' aria-current="page"' : '') +
-        '><strong>' + number + '. ' + title + '</strong><small>' + status + '</small></a>';
+    const entries=Object.entries(lessonTitles).map(([number,title])=>{
+      let current=0,previous=0;
+      try{
+        const raw=localStorage.getItem('pg-hsk1-v2-lesson-'+number);
+        previous=Number(localStorage.getItem(storageKeys[number])||0);
+        current=raw!==null?Number(raw):(previous>=6?7:[0,0,2,3,4,5][Math.min(5,Math.max(0,previous))]);
+      }catch{}
+      const status=current>=7?'Завершён':current>0?'Шаг '+(current+1)+' из 7':'Начать';
+      return '<a href="./start-chinese.html?lesson='+number+'"'+(Number(number)===lessonNumber?' aria-current="page"':'')+'><strong>'+number+'. '+title+'</strong><small>'+status+'</small></a>';
     });
-    lessonMenu.innerHTML = '<summary>Уроки</summary><nav aria-label="Все уроки">' + entries.join('') + '</nav>';
+    lessonMenu.innerHTML='<summary>Уроки</summary><nav aria-label="Все уроки">'+entries.join('')+'</nav>';
   }
 
   function render() {
     stopAudio();
-    const page = pages[step];
-    document.getElementById('step').textContent = step < 6 ? 'Урок ' + lessonNumber + ' · Шаг ' + (step + 1) + ' из 6' : 'Урок ' + lessonNumber + ' · Завершён';
-    document.querySelector('progress').value = step;
-    heading.textContent = page.title;
-    content.innerHTML = page.body();
-    feedback.textContent = '';
-    backButton.hidden = step === 0;
-    nextButton.disabled = step === 4 && !answered;
-    nextButton.textContent = page.next;
-    try {
-      localStorage.setItem(storageKey, String(step));
-      if (step === 6) {
-        const key = 'pg-hsk1-completed-v1';
-        let finished = [];
-        try { finished = JSON.parse(localStorage.getItem(key) || '[]'); } catch {}
-        if (!Array.isArray(finished)) finished = [];
-        if (!finished.includes(lessonNumber)) finished.push(lessonNumber);
-        localStorage.setItem(key, JSON.stringify(finished));
+    const page=pages[step];
+    const stepLabel=document.getElementById('step');
+    stepLabel.textContent=step<7?'Шаг '+(step+1)+' из 7':'Урок '+lessonNumber+' завершён';
+    document.querySelector('progress').value=step;
+    heading.textContent=page.title;
+    document.querySelector('header span').textContent='Урок '+lessonNumber+' · '+lessonTitles[lessonNumber];
+    content.innerHTML=page.body();
+    feedback.textContent='';
+    backButton.hidden=step===0;
+    nextButton.textContent=page.next;
+    nextButton.disabled=step===4&&!buildSolved;
+    visitedMax=Math.max(visitedMax,step);
+    renderStepList();
+    const seg=document.getElementById("lesson-segments");
+    if(seg)seg.innerHTML=Array.from({length:7},(_,i)=>"<span class=\""+(i<step?"done":i===step?"active":"")+"\"></span>").join("");
+    if(step===4)renderBuildTask();
+    try{
+      visitedMax=Math.max(visitedMax,step);
+      localStorage.setItem(v2Key,String(step));
+      localStorage.setItem(visitedKey,String(visitedMax));
+      // Keep the old completion key exactly as before; don't downgrade older 6-step learners.
+      if(step===7){
+        localStorage.setItem(storageKey,'6');
+        const key='pg-hsk1-completed-v1';
+        let finished=[];try{finished=JSON.parse(localStorage.getItem(key)||'[]');}catch{}
+        if(!Array.isArray(finished))finished=[];
+        if(!finished.includes(lessonNumber))finished.push(lessonNumber);
+        localStorage.setItem(key,JSON.stringify(finished));
       }
-    } catch {}
+    }catch{}
     renderLessonMenu();
-    heading.focus({ preventScroll: true });
-    window.scrollTo(0, 0);
+    heading.focus({preventScroll:true});
+    window.scrollTo(0,0);
   }
-
-  nextButton.addEventListener('click', () => {
-    step = (step + 1) % pages.length;
-    if (step === 0) answered = false;
+  nextButton.addEventListener('click',()=>{
+    if(step===4&&!buildSolved)return;
+    step=(step+1)%pages.length;
+    if(step===0){assembled=[];buildSolved=false;}
+    if(step===4){assembled=[];buildSolved=false;}
     render();
   });
-  backButton.addEventListener('click', () => { step--; render(); });
-  content.addEventListener('click', event => {
-    const button = event.target.closest('button');
-    if (!button) return;
-    if (button.dataset.word) {
-      const file = window.courseGuidedAudio?.[button.dataset.word];
-      if (file) playFiles([file]);
-      else feedback.textContent = 'Запись пока недоступна.';
+  backButton.addEventListener('click',()=>{if(step>0){step--;render();}});
+  document.getElementById('lesson-step-list')?.addEventListener('click',event=>{
+    const button=event.target.closest('button[data-go-step]');
+    if(!button||button.disabled)return;
+    step=Number(button.dataset.goStep);
+    if(step===4){assembled=[];buildSolved=false;}
+    render();
+  });
+  content.addEventListener('click',event=>{
+    const button=event.target.closest('button');
+    if(!button||button.disabled)return;
+    if(button.dataset.word){
+      const file=window.courseGuidedAudio?.[button.dataset.word];
+      if(file)playFiles([file]);
+      else feedback.textContent='Запись пока недоступна.';
     }
-    if (button.hasAttribute('data-listen-all')) {
-      playFiles(dialogue.map(line => window.courseGuidedAudio?.[line[1]]), [...content.querySelectorAll('[data-line]')]);
+    if(button.hasAttribute('data-listen-all'))playFiles(dialogue.map(line=>window.courseGuidedAudio?.[line[1]]),[...content.querySelectorAll('[data-line]')]);
+    if(button.hasAttribute('data-listen')){
+      const index=Number(button.dataset.listen);
+      playFiles([window.courseGuidedAudio?.[dialogue[index][1]]],[content.querySelector('[data-line="'+index+'"]')]);
     }
-    if (button.hasAttribute('data-listen')) {
-      const index = Number(button.dataset.listen);
-      playFiles([window.courseGuidedAudio?.[dialogue[index][1]]], [content.querySelector('[data-line="' + index + '"]')]);
+    if(button.hasAttribute('data-stop')){stopAudio();feedback.textContent='Прослушивание остановлено.';}
+    if(button.hasAttribute('data-piece')){
+      const index=Number(button.dataset.piece);
+      if(!assembled.includes(index)){assembled.push(index);renderBuildTask();}
     }
-    if (button.hasAttribute('data-stop')) {
-      stopAudio();
-      feedback.textContent = 'Прослушивание остановлено.';
-    }
-    if (button.dataset.answer) {
-      answered = button.dataset.answer === 'yes';
-      content.querySelectorAll('[data-answer]').forEach(answer => answer.setAttribute('aria-pressed', String(answer === button)));
-      nextButton.disabled = !answered;
-      feedback.textContent = answerFeedback[lessonNumber][Number(answered)];
+    if(button.hasAttribute('data-remove-index')){assembled.splice(Number(button.dataset.removeIndex),1);buildSolved=false;renderBuildTask();}
+    if(button.hasAttribute('data-reset-build')){assembled=[];buildSolved=false;feedback.textContent='';renderBuildTask();}
+    if(button.hasAttribute('data-check-build')){
+      buildSolved=assembled.length===buildGoal.length&&assembled.every((i,position)=>i===position);
+      feedback.textContent=buildSolved?'Отлично! Предложение составлено правильно.':'Неправильный порядок слов. Попробуй ещё раз.';
+      renderBuildTask();
     }
   });
   window.addEventListener('pagehide', stopAudio);

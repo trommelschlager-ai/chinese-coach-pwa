@@ -28,22 +28,23 @@
 @media(max-width:360px){.node{width:87%;min-height:57px;padding:4px}.node .circle{width:47px;height:47px;font-size:22px}.node strong{font-size:14px}.node[data-num="1"],.node[data-num="3"],.node[data-num="5"],.node[data-num="7"]{left:11%}.map-road{height:677px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.node,.meter>i{transition:none}}
 </style>
+<link rel="stylesheet" href="./assets/hsk-approved-three-screens-v151.css?v=151">
 </head>
 <body>
 <main class="map-shell">
 <a class="back" href="./index.html#panda/home" aria-label="Назад к уровням HSK">‹</a>
-<header class="map-title"><h1>HSK 1</h1><p>Начальный уровень · твой путь к китайскому</p></header>
+<header class="map-title"><h1>HSK 1</h1><p>Начальный уровень</p></header>
 <section class="map-summary" aria-label="Прогресс HSK 1"><div class="meta"><strong>Путь по Китаю</strong><span id="progress-label">0 из 4 доступных уроков</span></div><div class="meter"><i id="progress-fill"></i></div></section>
 <nav class="map-road" aria-label="Карта уроков HSK 1">
 <svg class="path" viewBox="0 0 380 715" preserveAspectRatio="none" aria-hidden="true"><path d="M255 655 C30 607 25 576 250 535 S365 455 115 435 S10 358 265 339 S380 265 115 244 S20 165 240 145 S320 90 175 35"/><path class="path-line" d="M255 655 C30 607 25 576 250 535 S365 455 115 435 S10 358 265 339 S380 265 115 244 S20 165 240 145 S320 90 175 35"/></svg>
 <div class="node locked" data-num="7" aria-label="Урок 7. Мой день. Готовится"><span class="circle">🔒</span><span class="caption"><strong>Урок 7 · Мой день</strong><small>Готовится</small></span></div>
 <div class="node locked" data-num="6" aria-label="Урок 6. Числа и время. Готовится"><span class="circle">🔒</span><span class="caption"><strong>Урок 6 · Числа и время</strong><small>Готовится</small></span></div>
 <div class="node locked" data-num="5" aria-label="Урок 5. Моя семья. Готовится"><span class="circle">🔒</span><span class="caption"><strong>Урок 5 · Моя семья</strong><small>Готовится</small></span></div>
-<a class="node" data-num="4" href="./start-chinese.html?lesson=4"><span class="circle">🏠</span><span class="caption"><strong>Урок 4 · Где ты живёшь?</strong><small data-status="4">6 шагов</small></span><span class="arrow">›</span></a>
-<a class="node" data-num="3" href="./start-chinese.html?lesson=3"><span class="circle">☕</span><span class="caption"><strong>Урок 3 · В кафе</strong><small data-status="3">6 шагов</small></span><span class="arrow">›</span></a>
-<a class="node" data-num="2" href="./start-chinese.html?lesson=2"><span class="circle">💬</span><span class="caption"><strong>Урок 2 · Откуда ты?</strong><small data-status="2">6 шагов</small></span><span class="arrow">›</span></a>
+<a class="node" data-num="4" href="./start-chinese.html?lesson=4"><span class="circle">🏠</span><span class="caption"><strong>Урок 4 · Где ты живёшь?</strong><small data-status="4">7 шагов</small></span><span class="arrow">›</span></a>
+<a class="node" data-num="3" href="./start-chinese.html?lesson=3"><span class="circle">☕</span><span class="caption"><strong>Урок 3 · В кафе</strong><small data-status="3">7 шагов</small></span><span class="arrow">›</span></a>
+<a class="node" data-num="2" href="./start-chinese.html?lesson=2"><span class="circle">💬</span><span class="caption"><strong>Урок 2 · Откуда ты?</strong><small data-status="2">7 шагов</small></span><span class="arrow">›</span></a>
 <a class="node current" data-num="1" href="./start-chinese.html?lesson=1"><span class="circle">1</span><span class="caption"><strong>Урок 1 · Знакомство</strong><small data-status="1">Начать обучение</small></span><span class="arrow">›</span></a>
-<img class="panda" src="./assets/panda-v130/home-hero.webp" alt="" aria-hidden="true" loading="lazy">
+<img class="panda" src="./assets/game-panda-v76.svg" alt="" aria-hidden="true" loading="lazy">
 </nav>
 <p class="map-footer">Пройденные уроки можно повторять в любое время. Прогресс хранится на устройстве.</p>
 </main>
@@ -55,11 +56,13 @@ try{complete=JSON.parse(localStorage.getItem('pg-hsk1-completed-v1')||'[]');if(!
 var finished=0,firstOpen=0;
 keys.forEach(function(key,i){
   var saved=0;try{saved=Number(localStorage.getItem(key)||0);}catch(e){}
-  var isDone=complete.includes(i+1)||saved>=6;
+  var v2=null;try{v2=localStorage.getItem('pg-hsk1-v2-lesson-'+(i+1));}catch(e){}
+  var progressStep=v2!==null?Number(v2):[0,0,2,3,4,5,7][Math.min(6,Math.max(0,saved))];
+  var isDone=complete.includes(i+1)||(v2!==null?progressStep>=7:saved>=6);
   if(isDone)finished++;
   if(!isDone&&!firstOpen)firstOpen=i+1;
   var label=document.querySelector('[data-status="'+(i+1)+'"]');
-  if(label)label.textContent=isDone?'✓ Пройден · повторить':saved>0?'Продолжить · шаг '+(saved+1)+' из 6':'6 шагов · начать';
+  if(label)label.textContent=isDone?'✓ Пройден · повторить':progressStep>0?'Продолжить · шаг '+(progressStep+1)+' из 7':'7 шагов · начать';
   var link=document.querySelector('.node[data-num="'+(i+1)+'"]');
   if(link){link.classList.toggle('current',!isDone&&(firstOpen===i+1));link.classList.toggle('done',isDone);}
 });
