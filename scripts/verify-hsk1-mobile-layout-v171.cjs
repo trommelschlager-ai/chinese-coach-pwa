@@ -8,7 +8,7 @@ const css=fs.readFileSync('assets/hsk1-foundations-v152.css','utf8');
 const sw=fs.readFileSync('sw.js','utf8');
 const html=new JSDOM(page).window.document;
 assert(page.includes('./assets/hsk1-foundations-v152.css?v=171'),'Latest layout CSS query missing');
-assert(/hsk1-foundations-v152\\.js\\?v=(?:170|172)/.test(page),'HSK 1 JS asset must use current version');
+assert(/hsk1-foundations-v152\.js\?v=(?:170|172)/.test(page),'HSK 1 JS asset must use current version');
 assert(page.includes('hsk1-voices-map-v160.js?v=160'),'Female and male MP3 map must remain unchanged');
 assert(page.includes('hsk1-native-human-map-v167.js?v=167'),'Optional real voice samples must stay available');
 assert(css.includes('/* v171: readable mobile lesson content'),'Dedicated readability layer missing');
