@@ -1,0 +1,28 @@
+'use strict';
+/* v171 mobile HSK1 safeguards: keep approved art, 7-step flow and original voice references. */
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const {JSDOM}=require('jsdom');
+const page=fs.readFileSync('hsk1-lesson.html','utf8');
+const css=fs.readFileSync('assets/hsk1-foundations-v152.css','utf8');
+const sw=fs.readFileSync('sw.js','utf8');
+const html=new JSDOM(page).window.document;
+assert(page.includes('./assets/hsk1-foundations-v152.css?v=171'),'Latest layout CSS query missing');
+assert(page.includes('./assets/hsk1-foundations-v152.js?v=170'),'Do not change working lesson JS');
+assert(page.includes('hsk1-voices-map-v160.js?v=160'),'Female and male MP3 map must remain unchanged');
+assert(page.includes('hsk1-native-human-map-v167.js?v=167'),'Optional real voice samples must stay available');
+assert(css.includes('/* v171: readable mobile lesson content'),'Dedicated readability layer missing');
+assert(css.includes("url('./approved-panda-lake-v112.webp')"),'Approved panda artwork must remain untouched');
+assert(css.includes('.lesson-shell .lesson-controls{\n  position:fixed;'),'Next button must be reachable while scrolling');
+assert(css.includes('calc(var(--pg-lesson-nav-height) + 32px + env(safe-area-inset-bottom))'),'Content must clear fixed controls');
+assert(css.includes('.lesson-shell .lesson-audio-native{\n  min-width:44px;min-height:44px'),'Native recordings require 44px touch targets');
+assert(css.includes('.lesson-shell .lesson-line .lesson-hanzi{'),'Mandarin dialogue text must have dedicated layout');
+assert(css.includes('grid-template-columns:repeat(2,minmax(0,1fr));'),'Word navigation should not overflow at 320px');
+assert(sw.includes('chinese-coach-pwa-v171-20261106-hsk1-mobile-layout'),'Offline cache must refresh');
+assert(sw.includes('./assets/hsk1-foundations-v152.css?v=171'),'PWA offline cache needs exact CSS version');
+assert(sw.includes('./assets/hsk1-foundations-v152.js?v=170'),'PWA offline cache needs exact lesson JS version');
+assert.equal(html.querySelectorAll('nav.lesson-controls button').length,2,'Back / Next nav preserved');
+assert.equal(html.querySelector('#lesson-next').textContent.trim(),'Дальше →');
+assert(html.querySelector('#lesson-steps'),'Seven lesson stages still render in JS');
+assert(html.querySelector('#hsk1-female-voice-speed'),'Speech speed control must remain visible');
+console.log('PASS v171: approved scenery/audio untouched, safe-area fixed Next, 44px controls, readable Mandarin and PWA cache coherency.');
