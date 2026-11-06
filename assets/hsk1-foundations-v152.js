@@ -8,13 +8,17 @@ const topic=topics[lessonNumber-1];
 if(!topic){document.getElementById('stage-content').textContent='Материал пока недоступен.';return;}
 const key='pg-hsk1-v3-'+topic.id,completeKey='pg-hsk1-v3-complete';
 const $=id=>document.getElementById(id),esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0};
+let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0,earProgress:0,buildProgress:0,wordPage:0};
 try{
  const raw=JSON.parse(localStorage.getItem(key)||'{}');
  if(raw&&typeof raw==='object'){
    state.step=Math.max(0,Math.min(6,Number(raw.step)||0));
    state.maxStep=Math.max(state.step,Math.min(6,Number(raw.maxStep)||0));
-   state.buildPassed=raw.buildPassed===true;
+   // The previous one-question builder remains credited as task 1, not as all three new tasks.
+   state.buildProgress=Math.min(3,Math.max(0,Number.isInteger(raw.buildProgress)?raw.buildProgress:(raw.buildPassed?1:0)));
+   state.buildPassed=state.buildProgress===3;
+   state.earProgress=Math.min(4,Math.max(0,Number(raw.earProgress)||0));
+   state.wordPage=Math.min(Math.ceil(topic.words.length/4)-1,Math.max(0,Number(raw.wordPage)||0));
    state.quizPassed=raw.quizPassed===true;
    state.spoken=raw.spoken===true;
    state.toneEarProgress=Math.max(0,Math.min(4,Number(raw.toneEarProgress)||0));
@@ -22,6 +26,9 @@ try{
  }
 }catch{}
 let assembled=[],currentAudio=null,playId=0,answerChosen=-1;
+let mediaRecorder=null,micStream=null,micObjectUrl=null,micRecording=false;
+const exerciseOrder=[2,0,3,1];
+const builds=topic.builds||[topic.build];
 const stepTitles=[
  ['Новые слова','▤'],['Тоны и произношение','◉'],['Примеры','▱'],
  ['Диалог','●'],['Собери предложение','✥'],['Говори сам','🎙'],['Итог и повторение','↻']
@@ -76,9 +83,27 @@ function hanzi(hz,py,ru){
  return '<strong class="lesson-hanzi" lang="zh-Hans">'+esc(hz)+'</strong><span class="lesson-py">'+esc(py)+'</span><span class="lesson-ru">'+esc(ru)+'</span>';
 }
 function renderWords(){
+ const from=state.wordPage*4,to=Math.min(topic.words.length,from+4),pages=Math.ceil(topic.words.length/4);
  return '<p class="lesson-intro">'+esc(topic.goal)+'</p>'+
- topic.words.map(([hz,py,ru])=>'<article class="lesson-card lesson-word"><div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz)+'</article>').join('')+
- '<div class="lesson-note">Повторяй вслух и обращай внимание на знаки тонов в пиньине. Ключевые слова мы ещё встретим в примерах.</div>';
+ '<div class="lesson-exercise-indicator">Слова '+(from+1)+'–'+to+' из '+topic.words.length+' · группа '+(state.wordPage+1)+' из '+pages+'</div>'+
+ topic.words.slice(from,to).map(([hz,py,ru])=>'<article class="lesson-card lesson-word"><div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz)+'</article>').join('')+
+ '<nav class="lesson-word-nav" aria-label="Группы новых слов">'+
+ (state.wordPage>0?'<button type="button" data-word-prev>← Предыдущие слова</button>':'<span></span>')+
+ (state.wordPage<pages-1?'<button type="button" class="lesson-action" data-word-next>Следующие слова →</button>':'<span class="lesson-word-finished">✓ Все слова показаны</span>')+'</nav>'+
+ '<div class="lesson-note">Повторяй вслух, обращая внимание на тоны в пиньине. Возвращайся к любой группе слов, если нужно.</div>';
+}
+function renderListeningEar(){
+ if(topic.id==='foundations')return '';
+ const list=topic.listen?.items||[],i=state.earProgress;
+ if(!list.length)return '';
+ if(i>=list.length)return '<div class="lesson-note">✅ Ты правильно различил все '+list.length+' записи на слух.</div>';
+ const index=exerciseOrder[i%exerciseOrder.length],item=list[index];
+ const file=(window.courseHumanAudio||{})[item[0]];
+ return '<article class="lesson-card lesson-listening"><h2>Слушай и выбирай · '+(i+1)+' из '+list.length+'</h2>'+
+ '<p>'+esc(topic.listen.tip)+'</p>'+
+ '<button type="button" class="lesson-action" data-listen-prompt'+(file?'':' disabled')+'>'+ (file?'▶ Слушать запись':'Запись недоступна')+'</button>'+
+ '<div class="lesson-tone-answer">'+list.map(([hz,label],j)=>'<button type="button" data-listen-answer="'+j+'"'+(file?'':' disabled')+'>'+esc(label)+'</button>').join('')+'</div>'+
+ '<p class="lesson-small">Все четыре записи этого задания принадлежат одному диктору. Ответ не зависит от написания.</p></article>';
 }
 const toneOrder=['马','妈','骂','麻'];
 function renderToneEar(){
@@ -98,7 +123,7 @@ function renderPronunciation(){
  '<div class="lesson-sound-demo"><strong>Послушай все четыре тона</strong><button type="button" data-tones-demo>▶ Аудио</button></div>'+
  '<p class="lesson-note">Пятый вариант — нейтральный тон, без знака: ma. Он короткий и зависит от соседних слогов.</p>'+
  '<div class="lesson-character-grid" aria-label="Примеры согласных и звукосочетаний"><span>zh</span><span>ch</span><span>sh</span><span>j</span><span>q</span><span>x</span><span>z</span><span>c</span><span>s</span><span>ü</span></div>'+renderToneEar();
- else extra='<div class="lesson-note">Отработай чтение каждого слова: иероглиф → пиньинь → тон → значение. После прослушивания произнеси фразу ещё раз.</div>';
+ else extra='<div class="lesson-note">Отработай чтение каждого слова: иероглиф → пиньинь → тон → значение. После прослушивания произнеси фразу ещё раз.</div>'+renderListeningEar();
  return extra+topic.pronunciation.map((p,i)=>'<article class="lesson-card"><span class="lesson-rule-head">'+(i+1)+'.</span><p>'+esc(p)+'</p></article>').join('')+
  '<p class="lesson-fineprint">Аудио воспроизводится только для записей, которые уже есть в приложении. Непроверенные голоса автоматически не подставляются.</p>';
 }
@@ -119,23 +144,74 @@ function renderDialogue(){
  });
  return out+'</div>';
 }
+function currentBuild(){return builds[Math.min(state.buildProgress,builds.length-1)]}
 function buildTokens(){
- const target=topic.build.target;const unused=target.map((t,i)=>({t,i})).filter(o=>!assembled.includes(o.i)).reverse();
+ const target=currentBuild().target;
+ const unused=target.map((t,i)=>({t,i})).filter(o=>!assembled.includes(o.i)).reverse();
  return '<div class="lesson-selected" aria-label="Твой ответ">'+(assembled.length?assembled.map(i=>'<button class="lesson-token" type="button" data-remove="'+i+'" lang="zh-Hans">'+esc(target[i])+' ×</button>').join(''):'<span class="lesson-small">Нажимай слова снизу по порядку</span>')+'</div>'+
  '<div class="lesson-tokens" aria-label="Слова для составления">'+unused.map(o=>'<button class="lesson-token" type="button" data-add="'+o.i+'" lang="zh-Hans">'+esc(o.t)+'</button>').join('')+'</div>';
 }
 function renderCompose(){
- return '<article class="lesson-compose"><h2>'+esc(topic.build.prompt)+'</h2><div id="lesson-build-area">'+buildTokens()+'</div>'+
+ if(state.buildPassed)return '<article class="lesson-compose"><h2>✅ Все три упражнения выполнены</h2>'+
+  builds.map((b,i)=>'<p class="lesson-note">'+(i+1)+'. '+esc(b.target.join(''))+' — '+esc(b.py)+'</p>').join('')+
+  '<p>Теперь можно переходить к самостоятельной речи.</p></article>';
+ const b=currentBuild();
+ return '<article class="lesson-compose"><div class="lesson-exercise-indicator">Задание '+(state.buildProgress+1)+' из '+builds.length+'</div>'+
+ '<h2>'+esc(b.prompt)+'</h2><div id="lesson-build-area">'+buildTokens()+'</div>'+
  '<p class="lesson-small">Нажимай слова по порядку. Чтобы убрать слово, нажми его в верхней строке.</p>'+
- '<button type="button" id="lesson-verify-build" class="lesson-action" data-verify-build>Проверить</button>'+
- (state.buildPassed?'<p class="lesson-note">✓ Верно! '+esc(topic.build.note)+'</p>':'')+'</article>';
+ '<button type="button" id="lesson-verify-build" class="lesson-action" data-verify-build>Проверить</button></article>';
 }
 function renderSpeak(){
+ const micCapable=!!(navigator.mediaDevices?.getUserMedia&&window.MediaRecorder);
  return '<article class="lesson-card"><p>Произнеси всю фразу вслух, уделяя внимание каждому тону.</p>'+hanzi(topic.speech.hz,topic.speech.py,topic.speech.ru)+
  '<div style="margin-top:15px">'+audioButton(topic.speech.hz)+'</div>'+
  '<p class="lesson-note">'+esc(topic.speech.tip)+'</p>'+
- '<p class="lesson-fineprint">Это самостоятельная тренировка: автоматическая оценка тонов на этом экране не выполняется.</p>'+
- '<button type="button" class="lesson-action" data-spoken>'+ (state.spoken?'✓ Я повторил фразу':'Я повторил фразу вслух')+'</button></article>';
+ (micCapable?
+   '<div id="lesson-microphone" class="lesson-recorder"><button class="lesson-action" type="button" data-record-start>🎙 Записать свой голос</button>'+
+   '<button type="button" class="lesson-action" data-record-stop hidden>■ Остановить запись</button>'+
+   '<button type="button" class="lesson-action" data-record-play hidden>▶ Прослушать себя</button>'+
+   '<p class="lesson-fineprint">Запись остаётся на устройстве и не отправляется на сервер. После ухода с этой страницы запись удалится из памяти.</p></div>':
+   '<p class="lesson-fineprint">Запись микрофона недоступна в этом браузере. Можно проговорить фразу вслух.</p>')+
+ '<p class="lesson-fineprint">Проверь звучание самостоятельно: автоматической оценки тонов здесь пока нет.</p>'+
+ '<button type="button" class="lesson-action" data-spoken>'+ (state.spoken?'✓ Я повторил и сверил':'Я повторил и сверил произношение')+'</button></article>';
+}
+function refreshMic(){
+ const root=$('lesson-microphone');if(!root)return;
+ const start=root.querySelector('[data-record-start]'),stop=root.querySelector('[data-record-stop]'),play=root.querySelector('[data-record-play]');
+ if(start)start.hidden=micRecording;
+ if(stop)stop.hidden=!micRecording;
+ if(play)play.hidden=micRecording||!micObjectUrl;
+}
+function releaseMic(){
+ if(mediaRecorder&&mediaRecorder.state!=='inactive'){mediaRecorder.onstop=null;try{mediaRecorder.stop()}catch{}}
+ mediaRecorder=null;micRecording=false;
+ if(micStream){micStream.getTracks().forEach(track=>track.stop());micStream=null}
+ if(micObjectUrl&&window.URL?.revokeObjectURL){URL.revokeObjectURL(micObjectUrl);micObjectUrl=null}
+}
+async function startMic(){
+ if(state.step!==5||!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)return;
+ releaseMic();
+ try{
+  const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:false});
+  if(state.step!==5){stream.getTracks().forEach(track=>track.stop());return}
+  micStream=stream;
+  const opts=MediaRecorder.isTypeSupported?.('audio/webm;codecs=opus')?{mimeType:'audio/webm;codecs=opus'}:{};
+  const recorder=new MediaRecorder(stream,opts),parts=[];mediaRecorder=recorder;
+  recorder.ondataavailable=e=>{if(e.data.size>0)parts.push(e.data)};
+  recorder.onstop=()=>{
+   const blob=new Blob(parts,{type:recorder.mimeType||'audio/webm'});
+   if(micStream){micStream.getTracks().forEach(track=>track.stop());micStream=null}
+   micRecording=false;
+   if(blob.size&&window.URL?.createObjectURL){micObjectUrl=URL.createObjectURL(blob);feedback('Запись готова. Послушай себя и сравни с образцом.')}
+   else feedback('Запись получилась пустой. Попробуй ещё раз.');
+   refreshMic();
+  };
+  recorder.onerror=()=>{micRecording=false;feedback('Ошибка записи. Попробуй ещё раз.');refreshMic()};
+  recorder.start();micRecording=true;refreshMic();feedback('Идёт запись. Произнеси фразу и нажми «Остановить».');
+ }catch{feedback('Нет доступа к микрофону. Разреши его в настройках браузера или повтори фразу вслух.')}
+}
+function stopMic(){
+ if(mediaRecorder?.state==='recording')mediaRecorder.stop();
 }
 function renderReview(){
  const q=topic.quiz;
@@ -156,6 +232,7 @@ function renderSteps(){
 }
 function render(){
  stopAudio();
+ if(state.step!==5)releaseMic();
  $('course-heading').textContent='Урок '+lessonNumber+' · '+topic.name;
  $('lesson-count').textContent='Шаг '+(state.step+1)+' из 7';
  $('progress-fill').style.width=(state.completed?100:state.step/7*100)+'%';
@@ -166,13 +243,14 @@ function render(){
  $('stage-content').innerHTML=renderers[state.step]();
  feedback('');
  $('lesson-prev').disabled=state.step===0;
- $('lesson-next').disabled=(state.step===1&&topic.id==='foundations'&&state.toneEarProgress<4)||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed);
+ $('lesson-next').disabled=(state.step===0&&state.wordPage<Math.ceil(topic.words.length/4)-1)||(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4))||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed);
  $('lesson-next').textContent=state.step===6?'✓ Завершить и к карте':'Дальше →';
  if(state.completed&&state.step===6)$('lesson-next').textContent='К карте HSK 1 →';
  save();
 }
 function goNext(){
- if(state.step===1&&topic.id==='foundations'&&state.toneEarProgress<4){feedback('Пройди четыре задания на распознавание тонов.');return;}
+ if(state.step===0&&state.wordPage<Math.ceil(topic.words.length/4)-1){feedback('Сначала пройди все группы новых слов.');return;}
+ if(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4)){feedback('Сначала пройди четыре задания на слух.');return;}
  if(state.step===4&&!state.buildPassed){feedback('Сначала правильно собери фразу.');return;}
  if(state.step===5&&!state.spoken){feedback('Сначала проговори фразу и подтверди повторение.');return;}
  if(state.step===6){
@@ -189,6 +267,32 @@ $('lesson-steps').addEventListener('click',e=>{
 });
 $('stage-content').addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button||button.disabled)return;
+ if(button.hasAttribute('data-word-next')){
+   state.wordPage=Math.min(Math.ceil(topic.words.length/4)-1,state.wordPage+1);render();return;
+ }
+ if(button.hasAttribute('data-word-prev')){
+   state.wordPage=Math.max(0,state.wordPage-1);render();return;
+ }
+ if(button.hasAttribute('data-listen-prompt')){
+   const item=topic.listen?.items?.[exerciseOrder[state.earProgress]];
+   playOne(item&&(window.courseHumanAudio||{})[item[0]],null);return;
+ }
+ if(button.hasAttribute('data-listen-answer')){
+   const correct=exerciseOrder[state.earProgress];
+   if(Number(button.dataset.listenAnswer)===correct){
+    state.earProgress=Math.min(4,state.earProgress+1);save();
+    const root=document.querySelector('.lesson-listening');if(root)root.outerHTML=renderListeningEar();
+    feedback(state.earProgress===4?'✅ Все четыре записи распознаны!':'Верно. Прослушай следующий пример.');
+    if(state.earProgress>=4)$('lesson-next').disabled=false;
+   }else feedback('Пока нет. Прослушай ещё раз и сравни звучание.');
+   return;
+ }
+ if(button.hasAttribute('data-record-start')){startMic();return}
+ if(button.hasAttribute('data-record-stop')){stopMic();return}
+ if(button.hasAttribute('data-record-play')){
+   if(micObjectUrl){stopAudio();playOne(micObjectUrl,null)}
+   return;
+ }
  if(button.hasAttribute('data-tone-hear')){
    playOne((window.courseHumanAudio||{})[toneOrder[state.toneEarProgress]],null);return;
  }
@@ -216,10 +320,16 @@ $('stage-content').addEventListener('click',e=>{
  if(button.hasAttribute('data-add')&&!state.buildPassed){const id=Number(button.dataset.add);if(!assembled.includes(id)){assembled.push(id);$('lesson-build-area').innerHTML=buildTokens()}return;}
  if(button.hasAttribute('data-remove')&&!state.buildPassed){assembled=assembled.filter(i=>i!==Number(button.dataset.remove));$('lesson-build-area').innerHTML=buildTokens();return;}
  if(button.hasAttribute('data-verify-build')){
-  const target=topic.build.target;
-  state.buildPassed=assembled.length===target.length&&assembled.every((v,i)=>v===i);
-  if(state.buildPassed){save();feedback('✓ Верно! '+topic.build.note);$('lesson-next').disabled=false;}
-  else feedback('Проверь порядок слов или иероглифов и попробуй снова.');
+  const b=currentBuild(),target=b.target;
+  const correct=assembled.length===target.length&&assembled.every((v,i)=>v===i);
+  if(correct){
+    state.buildProgress=Math.min(builds.length,state.buildProgress+1);
+    state.buildPassed=state.buildProgress>=builds.length;
+    assembled=[];save();
+    $('stage-content').innerHTML=renderCompose();
+    feedback(state.buildPassed?'✅ Все три предложения составлены!':'Верно! '+b.note+' Теперь следующий пример.');
+    $('lesson-next').disabled=!state.buildPassed;
+  }else feedback('Проверь порядок слов или иероглифов и попробуй снова.');
   return;
  }
  if(button.hasAttribute('data-spoken')){state.spoken=true;save();button.textContent='✓ Я повторил фразу';$('lesson-next').disabled=false;feedback('Отлично. Теперь переходи к повторению.');return;}
@@ -234,6 +344,6 @@ $('stage-content').addEventListener('click',e=>{
   });
  }
 });
-window.addEventListener('pagehide',stopAudio);
+window.addEventListener('pagehide',()=>{stopAudio();releaseMic();});
 render();
 })();

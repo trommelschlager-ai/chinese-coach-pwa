@@ -31,8 +31,13 @@ try{
   await capture('01-map');
   await page.goto(base+'/hsk1-lesson.html?lesson=1',{waitUntil:'load'});
   assert.equal(await page.locator('.lesson-step').count(),7);
-  assert.equal(await page.locator('.lesson-word').count(),9);
+  assert.equal(await page.locator('.lesson-word').count(),4);
+  assert(await page.locator('#lesson-next').isDisabled(),'Words must be visited in groups');
   await capture('02-lesson1-words');
+  await page.locator('[data-word-next]').click();
+  await capture('02a-lesson1-next-words');
+  while(await page.locator('[data-word-next]').count())await page.locator('[data-word-next]').click();
+  assert(await page.locator('#lesson-next').isEnabled());
   await page.locator('#lesson-next').click();
   assert(await page.locator('.lesson-tone-grid').isVisible());
   await capture('03-lesson1-four-tones');
@@ -47,6 +52,13 @@ try{
   await page.goto(base+'/hsk1-lesson.html?lesson=2',{waitUntil:'load'});
   assert((await page.locator('#course-heading').textContent()).includes('Личные местоимения'));
   await capture('05-lesson2-pronouns');
+  while(await page.locator('[data-word-next]').count())await page.locator('[data-word-next]').click();
+  await page.locator('#lesson-next').click();
+  assert(await page.locator('[data-listen-prompt]').count(),'Listening quiz must be present for pronouns');
+  assert(await page.locator('#lesson-next').isDisabled(),'Cannot skip listening');
+  await capture('05a-lesson2-listening');
+  for(const index of [2,0,3,1])await page.locator('[data-listen-answer="'+index+'"]').click();
+  assert(await page.locator('#lesson-next').isEnabled(),'Four correct answers unlock next step');
   await page.goto(base+'/hsk1-lesson.html?lesson=7',{waitUntil:'load'});
   assert((await page.locator('#course-heading').textContent()).includes('Погода'));
   await capture('06-lesson7-weather');
@@ -55,6 +67,6 @@ try{
  }
  assert.deepEqual(report.errors,[],'Browser runtime errors');
  report.result='passed';
- console.log('HSK 1 v152 mobile QA: 18 captures across 360, 390 and 412 px. All seven lesson routes, image loading and scrolling checked.');
+ console.log('HSK 1 v154 mobile QA: word groups, listening quiz and scenic lessons on 360, 390 and 412 px. All seven lesson routes, image loading and scrolling checked.');
 }catch(e){report.result='failed';report.failure=String(e.stack||e);throw e}
 finally{fs.writeFileSync(out+'/report.json',JSON.stringify(report,null,2));await browser.close()}
