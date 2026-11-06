@@ -1,0 +1,46 @@
+{
+  "status": "REVIEW_ONLY_NOT_PUBLISHED_TO_COURSE",
+  "provider": "AI Doc Maker voice generator",
+  "style": "delicate",
+  "approval": "User approved timbre and longer sample; standalone phoneme review pending",
+  "commercial_usage": "unverified for production file use; requires explicit license verification",
+  "audio_source_kind": "publicly accessible short preview URLs, not production hosting",
+  "files": [
+    {
+      "text": "妈妈",
+      "pinyin": "māma",
+      "url": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/833213e5-ed8b-49d3-bd08-045b9ef43442.mp3",
+      "file": "mama.mp3"
+    },
+    {
+      "text": "拼音",
+      "pinyin": "pīnyīn",
+      "url": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/cb50d693-6091-406f-98c2-c89c30d4e654.mp3",
+      "file": "pinyin.mp3"
+    },
+    {
+      "text": "汉字",
+      "pinyin": "hànzì",
+      "url": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/c4190a75-1091-41d3-b56a-5590a5abcdfe.mp3",
+      "file": "hanzi.mp3"
+    },
+    {
+      "text": "朋友",
+      "pinyin": "péngyou",
+      "url": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/7789b3c9-7fac-4516-b129-ef86c277658f.mp3",
+      "file": "pengyou.mp3"
+    },
+    {
+      "text": "日",
+      "pinyin": "rì",
+      "url": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/64c00ee2-3ab4-44ef-b3cc-0fa04978793e.mp3",
+      "file": "ri.mp3"
+    },
+    {
+      "text": "这是我的妈妈。",
+      "pinyin": "Zhè shì wǒ de māma.",
+      "url": "https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/b7b49714-2f5a-40a4-944c-833d6a784046.mp3",
+      "file": "this_is_mama.mp3"
+    }
+  ]
+}
