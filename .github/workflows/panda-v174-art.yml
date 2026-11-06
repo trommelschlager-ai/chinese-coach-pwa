@@ -20,7 +20,7 @@ jobs:
         run: |
           git config user.name "Panda Go Design QA"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/panda-go-hero-clean-v174.webp assets/panda-hsk1-mountain-v174.webp assets/panda-stone-staircase-v174.webp
+          git add assets/panda-go-hero-clean-v174.webp assets/panda-hsk1-mountain-v174.webp assets/panda-stone-staircase-v174.webp assets/panda-hsk-card-1-v174.webp assets/panda-hsk-card-2-v174.webp assets/panda-hsk-card-3-v174.webp
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "art(panda): reference-inspired clean hero and detailed mountain stone staircase"
           for i in 1 2 3 4 5; do
