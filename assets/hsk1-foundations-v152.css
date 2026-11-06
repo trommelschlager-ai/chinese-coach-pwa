@@ -38,7 +38,13 @@ button:focus-visible,a:focus-visible{outline:3px solid #b12abd;outline-offset:3p
 .lesson-audio{width:54px;height:54px;border-radius:19px;background:linear-gradient(150deg,#fff5fd,#ead4ff);border:1.5px solid #daa4da;color:#9f2bab;font-size:23px;box-shadow:0 2px 5px #9c4daa66}
 .lesson-audio:disabled{font-size:14px}
 .lesson-audio-caption{font-size:11px;color:#775878;font-weight:650;display:block;text-align:center}
-.lesson-audio-label{display:grid;justify-items:center}
+.lesson-audio-label{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap}
+.lesson-audio-native{width:44px;height:44px;flex:none;border:1.5px solid #e4a9ce;border-radius:15px;background:linear-gradient(155deg,#ffe6f3,#f4ccff);color:#7a267d;font-size:21px;box-shadow:0 2px 5px #9c4daa4d;cursor:pointer}
+.lesson-audio-native:active{transform:translateY(2px);box-shadow:0 1px 2px #9c4daa4d}
+.lesson-audio-native:focus-visible{outline:3px solid #aa35bf;outline-offset:3px}
+.lesson-line .lesson-audio-native{width:38px;height:38px;font-size:18px}
+@media(max-width:360px){.lesson-audio-label{gap:4px}.lesson-audio-native{width:39px;height:39px;font-size:18px}}
+
 .lesson-rule-head{color:#752d92;font-weight:900}
 .lesson-note{padding:13px 14px;background:#fae3ff;border-left:4px solid #dc36bc;border-radius:14px;margin:10px 0;font-size:15px}
 .lesson-tone-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
