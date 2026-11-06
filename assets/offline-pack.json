@@ -1,6 +1,6 @@
 {
   "version": 173,
-  "bytes": 29560844,
+  "bytes": 29900844,
   "files": [
     "./start-chinese.html",
     "./hsk1-map.html",
@@ -1552,6 +1552,7 @@
     "./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3",
     "./assets/hsk1-voice-corrections-v157/README.md",
     "./assets/panda-approved-three-screen-v172.css?v=172",
-    "./assets/panda-reference-corrections-v173.css?v=173"
+    "./assets/panda-reference-corrections-v173.css?v=173",
+    "./assets/panda-hsk1-landscape-clean-v173.webp"
   ]
 }
