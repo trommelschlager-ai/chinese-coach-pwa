@@ -1,3 +1,4 @@
+// The decorative staircase WebP is generated from approved scenery; link and progress remain live DOM.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {chromium} from 'playwright';
