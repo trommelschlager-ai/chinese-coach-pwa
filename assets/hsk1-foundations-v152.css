@@ -138,3 +138,149 @@ button:focus-visible,a:focus-visible{outline:3px solid #b12abd;outline-offset:3p
   .lesson-step,.lesson-audio,.lesson-action,.lesson-choice,.lesson-token,
   .lesson-controls button,.lesson-word-nav>button,.lesson-tone-answer button{transition:none!important}
 }
+
+/* v171: readable mobile lesson content and always-reachable navigation.
+   Do not replace the approved scenery, images, seven steps, colors, or audio. */
+.lesson-shell{
+  --pg-lesson-nav-height:84px;
+  padding-bottom:calc(var(--pg-lesson-nav-height) + 32px + env(safe-area-inset-bottom));
+}
+.lesson-shell .lesson-header{min-height:59px}
+.lesson-shell .lesson-header>div{min-width:0}
+.lesson-shell .lesson-header strong{overflow-wrap:anywhere}
+.lesson-shell .lesson-back{
+  min-width:44px;min-height:44px;
+  -webkit-tap-highlight-color:transparent;
+}
+.lesson-shell .lesson-steps{gap:8px}
+.lesson-shell .lesson-step{min-height:46px}
+.lesson-shell .lesson-step .step-label{
+  min-width:0;
+  font-size:clamp(14px,3.7vw,17px);
+  line-height:1.22;
+  overflow-wrap:anywhere;
+}
+.lesson-shell .lesson-body h1{
+  font-size:clamp(24px,6.2vw,30px);
+  line-height:1.22;
+  margin:12px 3px 15px;
+}
+.lesson-shell .lesson-intro{line-height:1.57}
+.lesson-shell .lesson-card,
+.lesson-shell .lesson-quiz,
+.lesson-shell .lesson-compose{
+  padding:clamp(13px,3.7vw,18px);
+  border-color:#ebbee5;
+  box-shadow:0 5px 13px #733a9840,inset 0 1px 2px #fff;
+}
+.lesson-shell .lesson-word{
+  grid-template-columns:minmax(0,1fr) 68px;
+  gap:10px;
+  min-height:112px;
+}
+.lesson-shell .lesson-word>div:first-child{min-width:0}
+.lesson-shell .lesson-word .lesson-hanzi{
+  font-size:clamp(32px,8.7vw,42px);
+  line-height:1.18;
+  overflow-wrap:anywhere;
+}
+.lesson-shell .lesson-word .lesson-py{
+  font-size:clamp(18px,4.8vw,21px);
+  line-height:1.35;
+  margin:6px 0 5px;
+}
+.lesson-shell .lesson-word .lesson-ru{font-size:16px;line-height:1.45}
+.lesson-shell .lesson-audio-label{gap:6px}
+.lesson-shell .lesson-audio-native{
+  min-width:44px;min-height:44px;
+  width:44px;height:44px;
+}
+.lesson-shell .lesson-line .lesson-audio-native{
+  width:44px;height:44px;
+  font-size:19px;
+}
+.lesson-shell .lesson-line{
+  grid-template-columns:40px minmax(0,1fr) 48px;
+  gap:9px;
+  padding:13px 10px;
+  align-items:start;
+}
+.lesson-shell .lesson-line .lesson-portrait{width:40px;height:40px}
+.lesson-shell .lesson-line .lesson-hanzi{
+  font-size:clamp(21px,5.8vw,25px);
+  line-height:1.28;
+  overflow-wrap:anywhere;
+}
+.lesson-shell .lesson-line .lesson-py{
+  font-size:clamp(14px,3.9vw,17px);
+  line-height:1.4;
+  margin:5px 0;
+  overflow-wrap:anywhere;
+}
+.lesson-shell .lesson-line .lesson-ru{
+  font-size:clamp(14px,3.7vw,16px);
+  line-height:1.45;
+  overflow-wrap:anywhere;
+}
+.lesson-shell .lesson-note{line-height:1.54}
+.lesson-shell .lesson-token{min-height:48px}
+.lesson-shell .lesson-choice{min-height:48px}
+.lesson-shell .lesson-word-nav{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  align-items:stretch;
+  gap:9px;
+}
+.lesson-shell .lesson-word-nav>button,
+.lesson-shell .lesson-word-nav>.lesson-word-finished{
+  min-width:0;
+  min-height:48px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:9px 8px;
+  font-size:clamp(12px,3.6vw,15px);
+  line-height:1.24;
+  white-space:normal;
+}
+.lesson-shell .lesson-recorder button,
+.lesson-shell .lesson-tone-answer button,
+.lesson-shell .lesson-sound-demo button{min-height:48px}
+.lesson-shell .lesson-controls{
+  position:fixed;
+  left:50%;
+  bottom:0;
+  width:min(470px,100%);
+  max-width:470px;
+  margin:0;
+  transform:translateX(-50%);
+  padding:10px 14px calc(12px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,#fce6f7f5,#eed1f7fb 54%,#e1b9f3);
+  border-top:2px solid #fff3dc;
+  border-radius:20px 20px 0 0;
+  box-shadow:0 -7px 20px #72378044,0 -1px 0 #a96cba32;
+  z-index:30;
+}
+.lesson-shell .lesson-controls button{
+  min-height:52px;
+  border-radius:24px;
+  line-height:1.2;
+}
+.lesson-shell #lesson-feedback{line-height:1.45;overflow-wrap:anywhere}
+@media(max-width:360px){
+  .lesson-shell .lesson-line{grid-template-columns:36px minmax(0,1fr) 44px;gap:7px;padding:11px 8px}
+  .lesson-shell .lesson-line .lesson-portrait{width:36px;height:36px}
+  .lesson-shell .lesson-controls{padding-inline:10px;gap:9px}
+  .lesson-shell .lesson-word-nav{gap:7px}
+  .lesson-shell .lesson-word{grid-template-columns:minmax(0,1fr) 62px;gap:7px}
+  .lesson-shell .lesson-audio-label{gap:4px}
+  .lesson-shell .lesson-body h1{margin-top:10px}
+}
+@media(max-height:530px) and (orientation:landscape){
+  .lesson-shell .lesson-controls{padding-top:6px;padding-bottom:calc(6px + env(safe-area-inset-bottom))}
+  .lesson-shell .lesson-controls button{min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){
+  .lesson-shell .lesson-controls{scroll-behavior:auto}
+}
