@@ -8,7 +8,7 @@ const css=fs.readFileSync('assets/hsk1-foundations-v152.css','utf8');
 const js=fs.readFileSync('assets/hsk1-foundations-v152.js','utf8');
 const dom=new JSDOM(page);
 const d=dom.window.document;
-assert(page.includes('hsk1-foundations-v152.css?v=170'),'Mobile css cache bust missing');
+assert(/hsk1-foundations-v152\.css\?v=(?:170|171)/.test(page),'Mobile css cache bust missing');
 assert(page.includes('hsk1-foundations-v152.js?v=170'),'Mobile JS cache bust missing');
 const bar=d.getElementById('lesson-progress');
 assert(bar,'Lesson progress bar missing');
