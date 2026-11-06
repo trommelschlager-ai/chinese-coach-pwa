@@ -79,16 +79,22 @@ function frame(content,cls=''){
 function settingsView(){frame(heading('Настройки','books','progress','',true)+'<div class="pg-settings-content"></div>');if(nativeSettings){nativeSettings.open=true;root.querySelector('.pg-settings-content').append(nativeSettings)}}
 function home(){
  const levels=[
-  ['1','book','pink'],['2','chat','violet'],['3','chat','blue'],
-  ['4','book','cyan'],['5','target','mint'],['6','brush','rose']
+  ['1','book','pink','Базовый китайский'],
+  ['2','book','violet','Повседневное общение'],
+  ['3','chat','blue','Жизнь и путешествия'],
+  ['4','brush','rose','Учёба и работа'],
+  ['5','target','cyan','Культура и общество'],
+  ['6','books','mint','Свободное владение']
  ];
  const artwork='<div class="pg-hsk-backdrop" aria-hidden="true"><img src="./assets/panda-go-home-v136-clean.png" alt="" fetchpriority="high" decoding="async" draggable="false"></div>';
- const heading='<div class="pg-hsk-profile"><button data-action="resume" aria-label="Продолжить обучение">▶</button><button data-route="progress" aria-label="Мой прогресс">♙</button></div>';
- const buttons=levels.map(([n,art,color])=>n==='1'
-  ?'<a class="pg-hsk-level pg-hsk-'+color+'" href="./hsk1-map.html" aria-label="Открыть HSK 1 — карту уроков">'+icon(art)+'<strong>HSK '+n+'</strong><span class="pg-hsk-arrow" aria-hidden="true">›</span></a>'
-  :'<div class="pg-hsk-level pg-hsk-'+color+' pg-hsk-unavailable" aria-label="HSK '+n+' — готовится">'+icon(art)+'<strong>HSK '+n+'</strong><span class="pg-hsk-lock" aria-hidden="true">🔒</span></div>'
- ).join('');
- frame(artwork+heading+'<nav class="pg-hsk-level-list" aria-label="Выбери уровень китайского языка">'+buttons+'</nav>','pg-home pg-hsk-page');
+ const brand='<header class="pg-hsk-brand"><span class="pg-hsk-paw" aria-hidden="true">🐾</span><h1>Panda Go</h1><p>Твой путь к китайскому</p></header>';
+ const buttons=levels.map(([n,art,color,desc])=>{
+  const body=icon(art)+'<span class="pg-hsk-copy"><strong>HSK '+n+'</strong><small>'+desc+'</small></span><span class="pg-hsk-arrow" aria-hidden="true">›</span>';
+  return n==='1'
+   ?'<a class="pg-hsk-level pg-hsk-'+color+'" href="./hsk1-map.html" aria-label="Открыть HSK 1 — карта уроков">'+body+'</a>'
+   :'<div class="pg-hsk-level pg-hsk-'+color+' pg-hsk-unavailable" aria-label="HSK '+n+' — готовится">'+body+'<span class="pg-hsk-coming" aria-hidden="true">🔒</span></div>';
+ }).join('');
+ frame(artwork+brand+'<nav class="pg-hsk-level-list" aria-label="Выбери уровень китайского языка">'+buttons+'</nav>','pg-home pg-hsk-page');
 }
 function learn(){frame(heading('Учиться','book','home','Основы китайского шаг за шагом')+`<nav class="pg-menu">${card('Звуки и тоны','Произношение и правила чтения','headphones','tones')}${card('Базовые слова','Самые нужные слова','books','words')}${card('Иероглифы','Письмо и порядок черт','brush','hanzi')}${card('Диалоги','Готовые фразы для общения','chat','dialogues')}</nav><div class="pg-approved-go-footer">${primary('Дальше Go →','learn-go')}</div>`)}
 function training(){frame(heading('Тренироваться','controller','home','Закрепляй знания в разных форматах')+`<nav class="pg-menu">${card('Практика','Упражнения по темам','target','practice')}${card('Тест','Проверь свои знания','clipboard','quiz')}${card('Игровая практика','Игры и интерактивные задания','controller','games')}</nav><img class="pg-scenery" src="${A}training-panda.webp" alt="Панда и золотой кубок">`,'pg-training')}
