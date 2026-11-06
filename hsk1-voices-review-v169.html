@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#9c4eb5">
+<title>Panda Go — 56 женских аудио для проверки</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#422454;background:#f9f0ff}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(150deg,#eadbff,#fff1fb 50%,#edf5ff) fixed;min-height:100dvh}
+main{width:min(740px,calc(100% - 22px));margin:0 auto;padding:14px 0 56px}
+.hero{padding:22px 19px;background:linear-gradient(135deg,#7330ac,#a554c7 65%,#ef8dbb);border-radius:27px;color:#fff;box-shadow:0 12px 26px #8241ae48}
+.hero h1{margin:9px 0 5px;font-size:clamp(23px,6vw,36px)}.hero p{font-size:14px;line-height:1.55;margin:6px 0}
+.hero a{color:#fff;font-size:13px;font-weight:700}
+.box{background:#fffafd;border:1px solid #e6cdea;box-shadow:0 5px 17px #9e63ac20;margin-top:13px;padding:17px;border-radius:23px}
+.notice{font-size:13px;padding:10px;border:1px solid #e8c4df;border-radius:12px;background:#fff0f8;color:#6d3b62;margin-top:12px;line-height:1.55}
+strong{font-weight:850}
+.chinese{font-size:14px;color:#61416b;margin-top:10px;line-height:1.6}
+.segment{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:13px 0}
+button{border:0;border-radius:15px;cursor:pointer;min-height:44px;padding:11px 12px;font:700 14px system-ui;background:#eddcf8;color:#663579;touch-action:manipulation}
+button:focus-visible,input:focus-visible{outline:3px solid #8e42be;outline-offset:2px}
+button.active,button.primary{background:linear-gradient(145deg,#ea73bc,#b43aaa);color:white;box-shadow:0 4px 0 #91408a}
+button.secondary{background:#e9d7fa;color:#63387c}
+button:disabled{opacity:.55;cursor:not-allowed}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.actions .wide{grid-column:1/-1}
+input{font:16px system-ui;border:1px solid #dec4e6;border-radius:13px;padding:12px;width:100%;background:#fff;color:#452455}
+.status{min-height:40px;background:#f6e9fc;color:#663377;border-radius:12px;padding:10px;font-size:13px;line-height:1.45;margin:12px 0 0}
+.progress{height:8px;border-radius:9px;background:#eeddf6;overflow:hidden;margin-top:6px}
+.progress i{display:block;width:0%;height:100%;background:linear-gradient(90deg,#a75cdf,#f27bb3)}
+#counter{font-size:14px;color:#804ba1;font-weight:800}
+#words{display:grid;gap:9px;padding-top:2px}
+.word{border:1px solid #e9d7ed;border-radius:17px;padding:12px;background:white}
+.word.playing{border:2px solid #b14bd1;background:#fff4fe}
+.head{display:flex;gap:10px;align-items:start}
+.num{font-size:12px;color:#78558a;font-weight:850;width:28px;flex:none;padding-top:8px}
+.hanzi{font-size:clamp(22px,6.5vw,29px);font-weight:850;color:#572b76;line-height:1.38;overflow-wrap:anywhere}
+.py{font-size:13px;color:#9565a0;margin-top:2px}
+.rowBtns{display:flex;gap:7px;margin-top:10px;padding-left:37px}
+.rowBtns button{flex:1;min-height:39px;font-size:13px;padding:7px 7px}
+.rowBtns button.flagged{background:#ffe2e2;color:#953d51}
+.rowBtns button.good{background:#e0f5eb;color:#357857}
+#report{display:none;margin-top:12px}
+footer{padding:12px 8px;font-size:12px;color:#704b7a}
+</style>
+</head>
+<body><main>
+<header class="hero">
+<a href="./hsk1-recording-studio.html">← Запись настоящей дикторши / 真人录音</a>
+<h1>🐼 Panda Go · Женская озвучка HSK 1</h1>
+<p>56 готовых синтетических MP3, которые соответствуют фразам, пока не имеющим записей носительницы. Прослушай или скачай все вместе, чтобы китаянка могла проверить тоны.</p>
+<p>已有56段人工智能女声音频，可以逐条播放，也可以一次下载全部录音。</p>
+</header>
+<section class="box">
+<strong>Режим прослушивания / 选择内容</strong>
+<div class="segment"><button id="missing" type="button" class="active">56 нужных фраз</button><button id="all" type="button">Все 124 женских MP3</button></div>
+<div class="notice"><strong>Важно / 注意：</strong> это <strong>ИИ-голос MeloTTS</strong>, не записи китаянки Yue Tan. Китайские тоны и естественность ещё не проверены носителем. Озвучка уроков не меняется.<div class="chinese">这些音频由人工智能语音合成，不是真人录音。声调、变调、轻声和语调尚未经过普通话母语者审核。</div></div>
+<div class="actions" style="margin-top:12px">
+<button id="playAll" type="button" class="primary">▶ Слушать по порядку</button>
+<button id="stop" type="button" class="secondary" disabled>■ Остановить</button>
+<button id="downloadZip" type="button" class="primary wide">↓ Скачать 56 MP3 одним ZIP</button>
+<button id="downloadList" type="button" class="secondary wide">↓ Скачать список фраз · 中文清单</button>
+</div>
+<div id="status" class="status" role="status" aria-live="polite">Загрузка списка…</div>
+<div class="progress"><i id="progress"></i></div>
+<p style="font-size:13px;margin:10px 0 0">Китаянка может пометить проблемные фразы и скачать отчёт / 可标记需要修改的录音并导出报告。</p>
+<button id="downloadReport" type="button" class="secondary" disabled style="width:100%;margin-top:9px">↓ Отчёт о проверке · 审核结果</button>
+</section>
+<section class="box">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><strong>Аудиозаписи / 音频列表</strong><span id="counter">0</span></div>
+<input id="search" type="search" placeholder="Поиск по иероглифам или пиньиню · 搜索" aria-label="Поиск" style="margin:12px 0"/>
+<div id="words"></div>
+</section>
+<footer>Исходные MP3 уже находятся в Panda Go (v160), 56-фразовый список — v168. Здесь они собраны для проверки, а не перезаписаны заново. Права на реальные новые записи необходимо согласовать с дикторшей.</footer>
+</main>
+<script src="./assets/hsk1-voices-map-v160.js"></script>
+<script>
+'use strict';
+(async()=>{
+const $=id=>document.getElementById(id),female=window.PANDA_HSK1_VOICES?.female||{};
+const norm=s=>s.replace(/[。？！!?.,，\s]/g,'');
+const allRows=Object.entries(female).map(([hanzi,mp3],i)=>({id:String(i+1).padStart(3,'0'),hanzi,pinyin:'',mp3,source:hanzi}));
+let missing=[],mode='missing',rows=[],active=null,playAll=false,busy=false,marked=new Map(),loaded=false;
+const enc=new TextEncoder(),status=s=>{$('status').textContent=s};
+const u16=n=>[n&255,(n>>>8)&255],u32=n=>[n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255];
+const crcTable=(()=>{const a=[];for(let n=0;n<256;n++){let c=n;for(let i=0;i<8;i++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;a.push(c>>>0)}return a})();
+const crc32=data=>{let c=0xffffffff;for(const n of data)c=crcTable[(c^n)&255]^(c>>>8);return(c^0xffffffff)>>>0};
+function zipStore(entries){
+ const local=[],central=[];let offset=0;
+ for(const item of entries){
+  const name=enc.encode(item.name),d=item.bytes,crc=crc32(d);
+  const h=new Uint8Array([80,75,3,4,20,0,0,0,0,0,0,0,0,0,...u32(crc),...u32(d.length),...u32(d.length),...u16(name.length),0,0]);
+  local.push(h,name,d);
+  central.push(new Uint8Array([80,75,1,2,20,0,20,0,0,0,0,0,0,0,0,0,...u32(crc),...u32(d.length),...u32(d.length),...u16(name.length),0,0,0,0,0,0,0,0,...u32(offset)]),name);
+  offset+=h.length+name.length+d.length;
+ }
+ const count=entries.length,centralBytes=central.reduce((s,x)=>s+x.length,0);
+ const end=new Uint8Array([80,75,5,6,0,0,0,0,...u16(count),...u16(count),...u32(centralBytes),...u32(offset),0,0]);
+ return new Blob([...local,...central,end],{type:'application/zip'});
+}
+function downloadFile(blob,name){
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+function setBusy(v){busy=v;for(const id of ['missing','all','playAll','downloadZip','downloadList','downloadReport'])$(id).disabled=v||(!loaded&&id!=='downloadReport');$('stop').disabled=!active;render()}
+function stop(){playAll=false;if(active){active.pause();active.src='';active=null} $('stop').disabled=true;render()}
+function listen(i,sequential=false){
+ if(busy)return;
+ stop();playAll=sequential;
+ const item=rows[i];if(!item)return;
+ const player=new Audio(item.mp3);player.preload='auto';player.playbackRate=1;
+ active=player;
+ $('stop').disabled=false;
+ const now=()=>{status('▶ '+item.hanzi+' · '+(i+1)+'/'+rows.length);render()};
+ player.onplay=now;
+ player.onerror=()=>{stop();status('Не удалось открыть MP3 / 无法加载录音：'+item.hanzi)};
+ player.onended=()=>{const cont=playAll,at=i;stop();if(cont&&at+1<rows.length)listen(at+1,true);else status('Прослушивание завершено / 播放结束')};
+ player.play().catch(e=>{stop();status('Автовоспроизведение остановлено браузером. Нажми ▶ ещё раз. '+(e?.message||''))});
+}
+const reportKey=item=>mode+':'+item.id;
+function render(){
+ $('counter').textContent=rows.length+' записей';
+ $('downloadZip').textContent='↓ Скачать '+rows.length+' MP3 одним ZIP';
+ $('missing').classList.toggle('active',mode==='missing');$('all').classList.toggle('active',mode==='all');
+ const query=$('search').value.trim().toLowerCase();
+ $('words').replaceChildren();
+ rows.forEach((r,i)=>{
+  if(query&&!r.hanzi.includes(query)&&!r.pinyin.toLowerCase().includes(query))return;
+  const card=document.createElement('article');card.className='word'+(active&&active.src?.includes(r.mp3.replace('./',''))?' playing':'');
+  const head=document.createElement('div');head.className='head';
+  const num=document.createElement('span');num.className='num';num.textContent=r.id;
+  const block=document.createElement('div');const word=document.createElement('div');word.className='hanzi';word.lang='zh-Hans';word.textContent=r.hanzi;
+  block.append(word);
+  if(r.pinyin){const py=document.createElement('div');py.className='py';py.textContent=r.pinyin;block.append(py)}
+  head.append(num,block);card.append(head);
+  const btns=document.createElement('div');btns.className='rowBtns';
+  const play=document.createElement('button');play.type='button';play.textContent='▶ 听 / Слушать';play.disabled=busy;play.onclick=()=>listen(i);btns.append(play);
+  const file=document.createElement('button');file.type='button';file.textContent='↓ MP3';file.disabled=busy;file.onclick=()=>{const a=document.createElement('a');a.href=r.mp3;a.download=r.id+'.mp3';a.click()};btns.append(file);
+  const feedback=document.createElement('button');feedback.type='button';const mark=marked.get(reportKey(r));
+  feedback.textContent=mark==='fix'?'❗ 需修改':'✓ / ❗';
+  feedback.className=mark==='fix'?'flagged':mark==='good'?'good':'';
+  feedback.disabled=busy;
+  feedback.title='Нажатия: ✓ нормально → ❗ исправить → не оценено';
+  feedback.onclick=()=>{const k=reportKey(r),m=marked.get(k);if(m==='good')marked.set(k,'fix');else if(m==='fix')marked.delete(k);else marked.set(k,'good');$('downloadReport').disabled=!marked.size;render()};
+  btns.append(feedback);card.append(btns);$('words').append(card);
+ });
+}
+$('missing').onclick=()=>{if(busy)return;stop();mode='missing';rows=missing;$('search').value='';render();status('Открыты 56 фраз, для которых пока нет настоящих женских записей.')};
+$('all').onclick=()=>{if(busy)return;stop();mode='all';rows=allRows;$('search').value='';render();status('Открыты все 124 синтетических женских MP3 из уроков HSK 1.')};
+$('playAll').onclick=()=>{if(!busy)listen(0,true)};
+$('stop').onclick=()=>{stop();status('Прослушивание остановлено / 已停止播放')};
+$('downloadList').onclick=()=>{
+ const content='Panda Go HSK 1 — '+rows.length+' phrases / '+rows.length+'条录音\nAI-generated sample voices / AI合成语音；母语者尚未审核声调。\n\n'+rows.map(r=>r.id+'. '+r.hanzi+(r.pinyin?'  /  '+r.pinyin:'')).join('\n')+'\n';
+ downloadFile(new Blob([content],{type:'text/plain;charset=utf-8'}),'panda-go-hsk1-'+rows.length+'-script.txt');
+};
+$('downloadReport').onclick=()=>{
+ const report=[...marked].map(([k,v])=>{const [source,id]=k.split(':');const row=(source==='missing'?missing:allRows).find(x=>x.id===id);return (row?row.hanzi:k)+' — '+(v==='good'?'通过 / ОК':'需修改 / Исправить')});
+ downloadFile(new Blob(['Panda Go Mandarin QA / 普通话发音审核\n\n'+report.join('\n')+'\n'],{type:'text/plain;charset=utf-8'}),'panda-go-hsk1-tone-qa.txt');
+};
+$('downloadZip').onclick=async()=>{
+ if(busy||!rows.length)return;
+ stop();setBusy(true);$('progress').style.width='0%';
+ try{
+  const entries=[],manifest=[];
+  for(let i=0;i<rows.length;i++){
+   const r=rows[i],res=await fetch(r.mp3,{cache:'force-cache'});
+   if(!res.ok)throw Error('HTTP '+res.status+' для '+r.hanzi);
+   const type=res.headers.get('content-type')||'';
+   if(type.includes('text/html'))throw Error('Вместо MP3 сайт вернул HTML: '+r.hanzi);
+   const bytes=new Uint8Array(await res.arrayBuffer());
+   if(bytes.length<1000||bytes.length>25*1024*1024)throw Error('Неверный размер аудио: '+r.hanzi);
+   const path='audio/'+r.id+'.mp3';
+   entries.push({name:path,bytes});
+   manifest.push({id:r.id,hanzi:r.hanzi,pinyin_reference:r.pinyin,mp3_path:path,source_url:r.mp3,voice_engine:'MeloTTS synthetic female Mandarin',verified_by_native:false});
+   const pct=Math.round((i+1)/rows.length*96);
+   $('progress').style.width=pct+'%';
+   status('Скачано '+(i+1)+'/'+rows.length+' MP3 · 下载中 '+pct+'%');
+  }
+  entries.push({name:'manifest.json',bytes:enc.encode(JSON.stringify({project:'Panda Go',version:169,count:rows.length,kind:'AI_SYNTHETIC_FEMALE_NOT_HUMAN',native_tone_qa:false,items:manifest},null,2))});
+  entries.push({name:'READ_ME_请先阅读.txt',bytes:enc.encode('中文：这些录音来自AI合成声音，并非真人录制。请检查每条录音的声调、变调、轻声、自然度、发音与原文是否一致。请反馈有问题的编号。\n\nРусский: запись синтезирована ИИ MeloTTS, китайские тоны ещё не проверены носителем. Это аудио для оценки, не новые записи дикторши.\n')});
+  const blob=zipStore(entries);downloadFile(blob,'panda-go-hsk1-'+rows.length+'-AI-mandarin-voices.zip');
+  status('✅ ZIP собран: '+rows.length+' MP3 и список. Проверка тонов носителем всё ещё требуется.');$('progress').style.width='100%';
+ }catch(e){status('Не удалось создать полный ZIP: '+e.message+' Попробуй ещё раз при стабильном интернете.');$('progress').style.width='0%'}
+ finally{setBusy(false)}
+};
+try{
+ const resp=await fetch('./assets/hsk1-native-recording-queue-v168.json',{cache:'no-cache'});
+ if(!resp.ok)throw Error('HTTP '+resp.status);
+ const queue=await resp.json();
+ if(queue.items.length!==56||allRows.length!==124)throw Error('Неверное число аудиопозиций');
+ missing=queue.items.map(item=>{
+  const source=Object.keys(female).find(k=>k===item.display)||Object.keys(female).find(k=>norm(k)===item.hanzi);
+  if(!source)throw Error('Нет MP3: '+item.display);
+  return {id:item.id,hanzi:item.display,pinyin:item.pinyin_reference,mp3:female[source],source};
+ });
+ rows=missing;loaded=true;setBusy(false);
+ status('✅ 56/56 аудиофайлов найдены в карте Panda Go. Прослушивай или скачай ZIP.');
+}catch(e){status('Не удалось открыть карту аудио: '+e.message);$('playAll').disabled=$('downloadZip').disabled=true}
+})();
+</script></body></html>
