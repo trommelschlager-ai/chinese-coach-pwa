@@ -5,33 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7638ad">
 <title>HSK 1 — Карта уроков · Panda Go</title>
-<style>
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font:600 16px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;color:#36123f;background:#7846a6}
-.map-shell{position:relative;isolation:isolate;width:min(100%,470px);min-height:100dvh;margin:auto;padding:0 14px 24px;overflow:hidden;background:linear-gradient(180deg,rgba(248,216,255,.25),rgba(144,63,182,.26)),url("./assets/lessons-backdrop.webp") center center/cover no-repeat,#e5c0f7;border-inline:3px solid #f5d4a3;box-shadow:0 0 35px #4f1360a0}
-.map-shell::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 60%,transparent 35%,rgba(73,22,103,.27) 100%)}
-.back{position:absolute;left:17px;top:18px;z-index:4;display:grid;place-items:center;width:45px;height:45px;border:2px solid #ffecff;background:#fff5fe;border-radius:50%;box-shadow:0 3px 10px #783f8c80;color:#66307c;font-size:25px;text-decoration:none}
-.map-title{position:relative;z-index:2;text-align:center;margin:15px auto 8px;padding:8px 50px 10px;max-width:350px;background:linear-gradient(100deg,#ffeafdde,#fff9f8dd,#efd2f8dd);border:2px solid #fff2dc;border-radius:27px;box-shadow:0 3px 12px #75428570}
-.map-title h1{font-size:37px;line-height:1;margin:0;font-weight:950;color:#611774;text-shadow:0 1px #fff}.map-title p{margin:6px 0 0;font-size:13px}
-.map-summary{position:relative;z-index:3;max-width:335px;margin:10px auto 4px;padding:10px 14px;border-radius:20px;background:#fff9ffed;border:1px solid #fff9d8;box-shadow:0 3px 9px #61306b55}
-.map-summary .meta{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:13px}.meter{height:10px;border-radius:20px;overflow:hidden;background:#e3cce9;border:1px solid #e6b9e8;margin-top:7px}.meter>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#91d949,#42bd64);border-radius:inherit;transition:width .25s}
-.map-road{position:relative;height:715px;width:100%;max-width:420px;margin:3px auto 0}
-.path{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;filter:drop-shadow(0 4px 4px #a4544d)}
-.path path{stroke:#ffe49b;stroke-width:29;stroke-linecap:round;stroke-linejoin:round;fill:none}.path .path-line{stroke:#f6aa38;stroke-width:4;stroke-dasharray:7 14}
-.node{position:absolute;z-index:2;width:81%;min-height:62px;display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;background:linear-gradient(112deg,#fff9fbf8,#ffe7f9fb,#fffaf9f4);border:2px solid #fbe1ab;border-radius:40px;box-shadow:0 6px 0 #ae55a4,0 9px 15px #5e265c66;color:#3d173f;text-decoration:none;transition:transform .12s}
-.node:focus-visible{outline:4px solid #5c24a3;outline-offset:4px}.node:active:not(.locked){transform:translateY(3px);box-shadow:0 3px 0 #ae55a4}
-.node .circle{display:grid;place-items:center;width:56px;height:56px;flex:none;border-radius:50%;border:3px solid #fff9d2;box-shadow:inset 0 2px 5px #ffffffa6,0 3px 7px #8f34906b;background:linear-gradient(#f791db,#b135dd);color:white;font-size:26px;font-weight:900}
-.node .caption{min-width:0;flex:1}.node strong{display:block;font-size:16px;font-weight:900}.node small{display:block;color:#7b507f;font-weight:700;font-size:11px;margin-top:3px}.node .arrow{font-size:22px;font-weight:900;color:#b021a1}
-.node.locked{border-color:#e4cfec;box-shadow:0 4px 8px #55316d45;background:#fff8ffdf}.node.locked .circle{background:linear-gradient(#a7a0bc,#74658a);border-color:#e9dce9}.node.current{background:linear-gradient(115deg,#fffdf4,#ffe1f5);border-color:#ffd780;box-shadow:0 6px 0 #cd47a0,0 0 18px #e855dbb0}.node.current .circle{background:linear-gradient(#a3ea66,#3cb64c)}
-.node[data-num="7"]{top:2%;left:15%}.node[data-num="6"]{top:15%;left:2%}.node[data-num="5"]{top:28%;left:17%}.node[data-num="4"]{top:41%;left:4%}.node[data-num="3"]{top:54%;left:16%}.node[data-num="2"]{top:67%;left:3%}.node[data-num="1"]{top:80%;left:15%}
-.panda{position:absolute;right:1%;bottom:0;z-index:1;width:101px;filter:drop-shadow(0 6px 6px #6e247e99)}
-.map-footer{text-align:center;font-size:12px;position:relative;z-index:2;border-radius:17px;background:#fff8fee8;padding:9px;margin:0 auto;max-width:345px;color:#643469}
-@media(max-width:360px){.node{width:87%;min-height:57px;padding:4px}.node .circle{width:47px;height:47px;font-size:22px}.node strong{font-size:14px}.node[data-num="1"],.node[data-num="3"],.node[data-num="5"],.node[data-num="7"]{left:11%}.map-road{height:677px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.node,.meter>i{transition:none}}
-</style>
-<link rel="stylesheet" href="./assets/hsk-approved-three-screens-v151.css?v=151">
-<link rel="stylesheet" href="./assets/panda-approved-three-screen-v172.css?v=172">
-<link rel="stylesheet" href="./assets/panda-reference-corrections-v173.css?v=173">
-<link rel="stylesheet" href="./assets/panda-reference-faithful-v174.css?v=174">
+
+
+
+
+
+<link rel="stylesheet" href="./assets/panda-reference-v175.css?v=175">
 </head>
 <body>
 <main class="map-shell">
@@ -39,16 +18,16 @@
 <header class="map-title"><h1>HSK 1</h1><p>Начальный уровень</p></header>
 <section class="map-summary" aria-label="Прогресс HSK 1"><div class="meta"><strong>Путь по Китаю</strong><span id="progress-label">0 из 7 уроков</span></div><div class="meter"><i id="progress-fill"></i></div></section>
 <nav class="map-road" aria-label="Карта уроков HSK 1">
-<svg class="path" viewBox="0 0 380 715" preserveAspectRatio="none" aria-hidden="true"><path d="M150 673 C208 625 274 603 256 552 S147 480 208 432 S310 369 239 324 S165 265 246 216 S296 145 222 97 S192 52 238 32"/><path class="path-line" d="M150 673 C208 625 274 603 256 552 S147 480 208 432 S310 369 239 324 S165 265 246 216 S296 145 222 97 S192 52 238 32"/></svg>
-<img class="pg-stone-stairs" src="./assets/panda-stone-staircase-v174.webp" alt="" aria-hidden="true" draggable="false">
-<a class="node" data-num="7" href="./hsk1-lesson.html?lesson=7" aria-label="Урок 7. Погода"><span class="circle">☁</span><span class="caption"><strong>Урок 7 · Погода</strong><small data-status="7">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="6" href="./hsk1-lesson.html?lesson=6" aria-label="Урок 6. Моя семья"><span class="circle">👪</span><span class="caption"><strong>Урок 6 · Моя семья</strong><small data-status="6">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="5" href="./hsk1-lesson.html?lesson=5" aria-label="Урок 5. Месяцы и даты"><span class="circle">📆</span><span class="caption"><strong>Урок 5 · Месяцы и даты</strong><small data-status="5">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="4" href="./hsk1-lesson.html?lesson=4" aria-label="Урок 4. Дни недели"><span class="circle">📅</span><span class="caption"><strong>Урок 4 · Дни недели</strong><small data-status="4">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="3" href="./hsk1-lesson.html?lesson=3" aria-label="Урок 3. Числа и их строение"><span class="circle">🔢</span><span class="caption"><strong>Урок 3 · Числа и их строение</strong><small data-status="3">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="2" href="./hsk1-lesson.html?lesson=2" aria-label="Урок 2. Личные местоимения"><span class="circle">💬</span><span class="caption"><strong>Урок 2 · Личные местоимения</strong><small data-status="2">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node current" data-num="1" href="./hsk1-lesson.html?lesson=1" aria-label="Урок 1. Базовое знакомство"><span class="circle">1</span><span class="caption"><strong>Урок 1 · Базовое знакомство</strong><small data-status="1">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
-<img class="panda" src="./assets/panda-explorer-v174.svg" alt="" aria-hidden="true" loading="lazy">
+
+
+<a class="node" data-num="7" href="./hsk1-lesson.html?lesson=7" aria-label="Урок 7. Погода"><span class="circle">7</span><span class="caption"><strong>Урок 7 ·<br> Погода</strong><small data-status="7">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
+<a class="node" data-num="6" href="./hsk1-lesson.html?lesson=6" aria-label="Урок 6. Моя семья"><span class="circle">6</span><span class="caption"><strong>Урок 6 ·<br> Моя семья</strong><small data-status="6">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
+<a class="node" data-num="5" href="./hsk1-lesson.html?lesson=5" aria-label="Урок 5. Месяцы и даты"><span class="circle">5</span><span class="caption"><strong>Урок 5 ·<br> Месяцы и даты</strong><small data-status="5">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
+<a class="node" data-num="4" href="./hsk1-lesson.html?lesson=4" aria-label="Урок 4. Дни недели"><span class="circle">4</span><span class="caption"><strong>Урок 4 ·<br> Дни недели</strong><small data-status="4">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
+<a class="node" data-num="3" href="./hsk1-lesson.html?lesson=3" aria-label="Урок 3. Числа и их строение"><span class="circle">3</span><span class="caption"><strong>Урок 3 ·<br> Числа и их строение</strong><small data-status="3">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
+<a class="node" data-num="2" href="./hsk1-lesson.html?lesson=2" aria-label="Урок 2. Личные местоимения"><span class="circle">2</span><span class="caption"><strong>Урок 2 ·<br> Личные местоимения</strong><small data-status="2">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
+<a class="node current" data-num="1" href="./hsk1-lesson.html?lesson=1" aria-label="Урок 1. Базовое знакомство"><span class="circle">1</span><span class="caption"><strong>Урок 1 ·<br> Базовое знакомство</strong><small data-status="1">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
+
 </nav>
 <p class="map-footer">Прогресс сохраняется отдельно для каждой темы. Пройденные уроки можно повторять.</p>
 </main>
@@ -82,7 +61,7 @@
    node.setAttribute('aria-disabled',String(locked));
    if(locked){
      node.setAttribute('tabindex','-1');
-     node.querySelector('.arrow').textContent='🔒';
+     node.querySelector('.circle').textContent='';node.querySelector('.circle').classList.add('locked-icon');node.querySelector('.arrow').textContent='';
      node.setAttribute('title','Сначала заверши предыдущий урок');
    }else{
      node.removeAttribute('tabindex');

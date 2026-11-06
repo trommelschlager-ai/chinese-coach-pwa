@@ -1,92 +1,39 @@
-# Panda Go — проверка экрана иероглифов v141
+# Panda Go v175 — two-screen reference implementation
 
 final result: passed
 
-Проверен экран `hanzi-lab.html`. Существующие остальные экраны приложения не перерабатывались.
+## Visual truth and normalization
 
-## Ссылки и версия
+User attachments: `02-33887.jpg` is the approved home, `01-33888.jpg` is the approved mountain map; the other two images show the rejected live design. Compared only app content, excluding Android/iPhone status bars and phone frames.
 
-- Приложение: https://trommelschlager-ai.github.io/chinese-coach-pwa/hanzi-lab.html
-- Изменения: https://github.com/trommelschlager-ai/chinese-coach-pwa/pull/34
-- Проверенная версия интерфейса: `6e37620e6e433d23586c7fdba5327334c60d7725`.
-- Проверка Chromium: https://github.com/trommelschlager-ai/chinese-coach-pwa/actions/runs/41974599174 — задание `hanzi-focused` успешно.
-- Общие проверки кода и выпуска: https://github.com/trommelschlager-ai/chinese-coach-pwa/actions/runs/41974599210 — успешно.
-- Исходная версия для отката: `e27e726aa2eb7a7cbbc27c5b52ab888fca655b7f`.
+Source home: 694×1536, app crop (34,184)–(600,1398). Source map: 694×1536, app crop (51,199)–(603,1381). Normalized comparisons are 390×844; screenshots use actual CSS iframe viewports inside the cloud Chromium browser. Screenshot density: 1 image pixel per CSS pixel. Iframes contain the actual production pages; no alternate application is used.
 
-## Эталон и сравнение
+Evidence: `qa/v175/home-{320,360,390,430}.jpg`, `qa/v175/map-{320,360,390,430}.jpg`, `qa/v175/compare-home.jpg`, `qa/v175/compare-map.jpg`, `qa/v175/responsive.json`. Viewports: 320×693, 360×779, 390×844, 430×931. These are responsive browser checks, not physical Android device testing.
 
-Использован именно файл пользователя `33237.png`, сохранённый как `assets/hanzi-approved-v141.png` **без изменения байтов**. Файл назван PNG, но содержит JPEG: 864 × 1536 пикселей, SHA-256 `bf2f759f94ecbf6954e38f088f426c99a1ae4d67fbeb39a577cf590beffc7b7a`.
+## Comparison history
 
-Основная иллюстрация сохраняет пропорции 864:1536. На коротком экране доступна вертикальная прокрутка. На высоком экране ниже исходного изображения продолжается только пейзаж из его нижнего фрагмента; элементы управления не дублируются. Это продолжение фона — дополнение за пределами эталона, сам эталон не растянут.
+1. Initial rendered home had a large blank area caused by legacy v151 styles. Removed superseded two-screen stylesheet imports, keeping lesson pages and their styles intact. Confirmed continuous hero → six buttons → bridge in recaptured home.
+2. Preview service worker cached Vite CSS transform output after edits. Replaced development server with a static production-file server and excluded local preview requests from SW interception. Hard reloaded and confirmed actual CSS rendering. Production cache and media migration retained.
+3. Map initially omitted the reference laurel marks and positioned its title too low. Extracted decorative laurels from supplied art, moved title up and removed the extra back-button disc. Final map captures show the corrected header.
 
-- Полное сравнение: `qa/hanzi-v141/comparison-393.jpg`.
-- Сравнение карточек и нижней кнопки: `qa/hanzi-v141/comparison-details.jpg`.
-- Мобильный скриншот: `qa/hanzi-v141/mobile-393.png`.
-- Четыре ширины рядом: `qa/hanzi-v141/mobile-widths.jpg`.
-- Пример другого знака: `qa/hanzi-v141/ren-393-852.jpg`.
-- Длинное значение и три читаемых примера: `qa/hanzi-v141/wood-examples-393.jpg`.
-- Полные машинные результаты: `qa/hanzi-v141/results.json`.
+## Required fidelity surfaces
 
-Нормализация для сравнения: исходные 864 × 1536 приведены к 393 × 699; реальный снимок области иллюстрации — 393 × 699. CSS-окно 393 × 852, deviceScaleFactor=1. Сравнение выполнено по общей картинке с эталоном и снимком рядом, затем отдельно по карточкам и кнопке. Средняя абсолютная разница каналов после масштабирования: 2,81 из 255 на ширине 393; на всех проверенных размерах менее 8. Это проверка близости масштабированного изображения, а не утверждение о побайтовом равенстве браузерного снимка.
+- Typography: home text remains part of each supplied individual artwork skin, with accessible semantic names on each separate control. Map uses bold dark-purple live text and two-line lesson labels. Existing longer curriculum titles require smaller type than the mock's shorter titles.
+- Layout: six independent home controls; seven map links placed bottom-to-top along stone stairs; explorer at bottom left. No horizontal overflow at the four tested widths. Map hit targets are at least 44px tall at 320px. Images retain intrinsic aspect ratio; short screens can scroll.
+- Color: supplied glossy pink/cyan/purple/mint card art, gold borders, purple heading, pink lesson pills, green current lesson and grey locked state.
+- Art: exact supplied home hero, six separately extracted button skins and bridge; newly generated raster mountain/staircase/traveler background. No whole-screen screenshot click overlay, flat road, drawn SVG staircase or flat HSK icons. Map locks and laurels are raster assets from the supplied reference.
+- Content: real seven current course names and original lesson IDs retained. Mock names and fake completion checkmark were intentionally not copied.
 
-## Результаты функций
+## Functional and regression checks
 
-| Элемент | Что проверено | Результат |
-|---|---|---|
-| «Черты» | Настоящие SVG-пути HanziWriter и завершение анимации 大 и 人 | Пройдено |
-| «Писать» | Реальные события touch в Chromium; правильные черты 大 и 人 | Пройдено |
-| Проверка порядка | Для 大 сначала введена вторая черта; тренажёр сообщил ошибку, затем принял правильное написание | Пройдено |
-| Произношение знака | Запуск исходного MP3 大 через настоящее воспроизведение браузера | Пройдено |
-| «Значение» | Значение, краткое объяснение, подсказка о тоне; текст не закрывает значки | Пройдено |
-| «Примеры» | По три предложения, пиньинь и перевод для всех 10 знаков | Пройдено |
-| «Слова» | По три слова для всех 10 знаков | Пройдено |
-| Озвучка карточек | Все 60 действий: 30 предложений и 30 слов; реальный `Audio.play()` без подмены воспроизведения | Пройдено |
-| «Go еще →» | Следующий знак, произношение, значение и карточки; цикл из 10 знаков | Пройдено |
-| «Назад» | Переход на `index.html#panda/learn` | Пройдено |
-| Прогресс | Завершённые 大 и 人 сохраняются в исходном ключе и переживают перезагрузку; автоматическая проверка всех 10 знаков в jsdom | Пройдено |
-| Кэш | v141 CSS/JS, карта MP3 в обязательном кэше; изображения и 62 MP3 в офлайн-пакете | Проверки файлов пройдены |
+Browser: HSK1 home link → actual map; first lesson → actual lesson with all seven steps and voice controls; lesson Back → map → home; HSK2 button announces that the course is being prepared. Locked links are aria-disabled; navigation prevention is covered by DOM regression tests. Console checked: extension metadata errors only, no application JavaScript errors observed.
 
-В поставке 62 локальные записи для фраз и слов, включая сохранённые длинные варианты. Десять исходных записей отдельных знаков сохранены. Для работы карточек больше не требуется устанавливать китайский системный голос. Системный голос сохранён как резервный механизм.
+`npm run check` and `npm run check:release`: passed. Historical art/version assertions were updated to current assets; lesson/audio checks retained. Added v175 scenarios for fresh state, completed first lesson, out-of-order completed lesson, isolated topic completion, malformed saved data, blocked future navigation and unchanged localStorage. 131-file install budget and full offline retry/migration checks passed.
 
-Пять слишком длинных предложений получили короткие варианты для карточек, чтобы текст помещался без уменьшения до нечитаемого размера. Исходные предложения и прочие учебные данные оставлены в коде. Ключи сохранения прогресса и настроек не менялись.
+No MP3s, voice maps, speech recognition, exercises or saved-progress keys changed. Source diff confirms lesson runtime/data/audio files untouched.
 
-## Мобильные размеры
+## Remaining differences
 
-Проверены 360 × 560, 360 × 800, 393 × 852, 412 × 740, 430 × 932 CSS-пикселя. Горизонтальной прокрутки нет; рамки кнопок остаются внутри иллюстрации. При недостаточной высоте страница прокручивается вертикально. Нижняя кнопка доступна целиком. В 393 × 852 дополнительно проверены все 10 знаков и обе вкладки с карточками.
+The generated landscape preserves subjects and composition but is not a pixel-identical reconstruction: rock shapes, stair turns, flowers and panda pose differ. The map uses actual course titles and actual stored lock/completion states, unlike the illustrative mock. Home artwork quality is limited by the supplied 694px-wide reference, so it cannot be represented as original vector/high-resolution source art. These limits are explicitly disclosed, not claimed as exact identity.
 
-47 снимков, 44 записанные проверки, 65 событий проверки аудио; ошибок JavaScript/консоли в целевом сценарии — 0.
-
-## Визуальные поверхности
-
-- **Шрифты:** начальный текст является частью эталона. Изменяемые знаки и подписи выполнены HTML/SVG; их шрифт может отличаться от нарисованного текста. Длинное значение «Дерево / древесина» помещается в исходную плашку.
-- **Расположение:** пропорции свитка, кнопок, вкладок, карточек и нижней кнопки сохранены. Кнопки — прозрачные интерактивные области поверх изображения.
-- **Цвета:** исходное оформление не перекрашено. Меняющиеся поля используют подготовленные из оригинала слои, а не новый пейзаж или набор CSS-градиентов.
-- **Изображения:** пагоды, озеро, мост, горы, сакура, свиток и украшения взяты из прикреплённого файла. Для смены знака и текста очищены отдельные области исходника интерполяцией соседних пикселей. Нарисованный 大 не остаётся под другим знаком.
-- **Содержание:** три примера на вкладке, корректные тоновые знаки пиньиня, соответствующие MP3; подпись «Go еще →» сохранена.
-
-## Исправленные замечания
-
-| Итерация | Найдено | Исправлено и подтверждено |
-|---|---|---|
-| 1 | Предыдущая картинка 941 × 1672 отличалась от вложения | Подставлен точный файл 864 × 1536; обновлены координаты |
-| 2 | Текст «Значение» пересекался со значками и разделителями | Три кратких блока расположены внутри исходных карточек; новый снимок |
-| 3 | На высоком экране фон повторял карточки и кнопку | Продолжается только нижний пейзаж; снимки 360 × 800 и 393 × 852 |
-| 4 | Длинные предложения выходили из карточек | Добавлены краткие варианты, исходные сохранены; проверены все 10 знаков |
-| 5 | «Дерево / древесина» выходило из плашки | Для длинных значений уменьшен только динамический шрифт; новый снимок |
-| 6 | Сообщение о завершении занимало две строки и задевало вкладки | Короткое однострочное сообщение; проверка пересечения с кнопками |
-
-## Ограничения проверки
-
-- Использовалась мобильная эмуляция Chromium в GitHub Actions, не физический Android. Реальный Android и его системная панель отдельно не проверялись. Предусмотрен `safe-area-inset-bottom`.
-- Проверено успешное воспроизведение и соответствие файла фразе; отдельного прослушивания человеком не было.
-- Динамические надписи и новый знак отличаются шрифтом от нарисованного 大. Высокий экран содержит дополнительное продолжение исходного пейзажа ниже эталона.
-- Существующий общий визуальный сценарий `visual-panda-v130.mjs` по-прежнему останавливается на стартовой странице (`#launch-start`), до открытия иероглифов. Он не изменён в финальной версии. Это отдельная незавершённая проверка других экранов; общий прогон визуальных тестов не объявляется успешным.
-- Локальный предпросмотр Work остался недоступен. По согласованному продолжению проверка выполнена через GitHub, без входа пользователя в Google.
-
-Новых изображений вместо эталона не генерировали. Остальных разделов курса визуальные изменения не касаются.
-
-## Подтверждение публикации
-
-Обновление объединено с `main` коммитом [`4c0a200`](https://github.com/trommelschlager-ai/chinese-coach-pwa/commit/4c0a20080a6eb2a61041a0021e06f2ac3a6ddcaf). Развёртывание [GitHub Pages](https://github.com/trommelschlager-ai/chinese-coach-pwa/actions/runs/41975424686) завершилось успешно. Проверка кода после объединения также прошла: [запуск](https://github.com/trommelschlager-ai/chinese-coach-pwa/actions/runs/41975425603).
-
-После публикации публичная страница открыта в облачном Chrome без входа в Google. Подтверждены загрузка исходного изображения, смена 大 → 人 с обновлением карточек, нажатие озвучки первого примера без сообщения об ошибке и завершение анимации «Черты» с настоящими SVG-путями HanziWriter. Снимок опубликованной страницы со вторым знаком: `qa/hanzi-v141/published-live.jpg` (область приложения шириной 521 пиксель; мобильные 393 px — в остальных снимках).
+Focused comparison: home HSK1–6 artwork and map header/cards are readable in the 390px side-by-side captures. No unresolved blocking layout, interaction or missing-asset issues.

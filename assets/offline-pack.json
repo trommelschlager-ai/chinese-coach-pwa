@@ -1,5 +1,5 @@
 {
-  "version": 174,
+  "version": 175,
   "bytes": 30450844,
   "files": [
     "./start-chinese.html",
@@ -1559,6 +1559,20 @@
     "./assets/panda-explorer-v174.svg",
     "./assets/panda-hsk-card-1-v174.webp",
     "./assets/panda-hsk-card-2-v174.webp",
-    "./assets/panda-hsk-card-3-v174.webp"
+    "./assets/panda-hsk-card-3-v174.webp",
+    "./assets/panda-reference-v175/hero.webp",
+    "./assets/panda-reference-v175/bridge.webp",
+    "./assets/panda-reference-v175/mountain-stairs.webp",
+    "./assets/panda-reference-v175/lock.webp",
+    "./assets/panda-reference-v175/level-1.webp",
+    "./assets/panda-reference-v175/level-2.webp",
+    "./assets/panda-reference-v175/level-3.webp",
+    "./assets/panda-reference-v175/level-4.webp",
+    "./assets/panda-reference-v175/level-5.webp",
+    "./assets/panda-reference-v175/level-6.webp",
+    "./assets/panda-reference-v175.css?v=175",
+    "./assets/panda-v130.js?v=175",
+    "./assets/panda-reference-v175/laurel-left.png",
+    "./assets/panda-reference-v175/laurel-right.png"
   ]
 }

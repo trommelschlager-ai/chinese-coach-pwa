@@ -1,0 +1,41 @@
+/* Two-screen layout. Source artwork is split into hero, six independent button
+   skins and bridge; every level retains its own accessible HTML control. */
+#pg130 .pg-screen.pg-hsk-page{position:relative;display:block;width:min(100%,470px);height:100dvh;max-height:none;min-height:0;padding:0;border:2px solid #f3cf89;border-radius:24px;overflow:auto;scrollbar-width:none;background:#b88be3;box-shadow:inset 0 0 0 1px #fff5c4;isolation:isolate}
+#pg130 .pg-screen.pg-hsk-page::before,#pg130 .pg-screen.pg-hsk-page::after{display:none!important}
+#pg130 .pg-hsk-backdrop{position:relative;inset:auto;width:100%;height:auto;pointer-events:none;z-index:0;overflow:hidden}
+#pg130 .pg-hsk-backdrop img{display:block;width:100%;height:auto;max-width:none;object-fit:contain}
+#pg130 .pg-hsk-page .pg-hsk-level-list{display:grid;grid-template-columns:minmax(0,1fr);position:relative;width:100%;max-width:none;padding:0 3px;margin:0;gap:0;background:none;border:0;box-shadow:none;z-index:1}
+#pg130 .pg-hsk-page .pg-hsk-level{position:relative;display:block;width:100%;height:auto;min-height:0;margin:0;padding:0;border:0;border-radius:999px;background:transparent;box-shadow:none;text-decoration:none;cursor:pointer;opacity:1;overflow:hidden;line-height:0;transition:filter .12s,transform .12s}
+#pg130 .pg-hsk-page .pg-hsk-level::before,#pg130 .pg-hsk-page .pg-hsk-level::after{display:none}
+#pg130 .pg-hsk-art{display:block;width:100%;height:auto;max-width:none;object-fit:contain}
+#pg130 .pg-hsk-level:active{transform:scale(.985);filter:brightness(1.1)}
+#pg130 .pg-hsk-level:focus-visible{outline:3px solid #fff;outline-offset:-5px}
+#pg130 .pg-hsk-bridge{display:block;width:100%;height:auto;margin:0;pointer-events:none}
+#pg130 .pg-hsk-accessible{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+#pg130 .pg-hsk-page .pg-live-status:empty{display:none}
+#pg130 .pg-hsk-page .pg-live-status:not(:empty){position:absolute;left:8%;right:8%;bottom:2%;z-index:10;padding:10px;border-radius:16px;background:#fff5fc;color:#4c125c;box-shadow:0 2px 16px #5c246c77;text-align:center;font-size:14px}
+/* Artwork retains its aspect ratio even on short/wide phones. Scrolling is
+   preferable to stretching either a panda, a landscape or a button. */
+*{box-sizing:border-box}
+body:has(.map-shell){margin:0;background:#9560b4;color:#321039;font-family:Arial,system-ui,sans-serif}
+.map-shell{position:relative;isolation:isolate;width:min(100%,470px);aspect-ratio:1/2;min-height:100dvh;margin:auto;overflow:hidden;border:2px solid #f2ce8b;border-radius:24px;background:url('./panda-reference-v175/mountain-stairs.webp') center bottom/cover no-repeat;box-shadow:inset 0 0 0 1px #fff1b9}
+.map-title{position:absolute;left:12%;right:9%;top:2.8%;text-align:center;margin:0;z-index:2}
+.map-title h1{margin:0;color:#510363;font-size:clamp(38px,11.4vw,55px);font-style:italic;font-weight:950;line-height:1.12;letter-spacing:-1px;text-shadow:0 1px #fff}
+.map-title p{display:inline-block;margin:4px 0 0;padding:3px 12px;border:1.5px solid #c174b9;border-radius:99px;background:linear-gradient(#fff5ffed,#f3c7eeeb);color:#3e1845;font-size:clamp(12px,3.7vw,17px);font-weight:800;line-height:1.2}
+.back{position:absolute;left:5%;top:2.8%;width:42px;height:42px;display:grid;place-items:center;z-index:3;text-decoration:none;color:#301133;font-size:39px;line-height:1;border-radius:50%;background:transparent}
+.map-summary,.map-footer{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.map-road{position:absolute;inset:0;z-index:1}
+.node{position:absolute;display:flex;align-items:center;width:64%;height:6.4%;gap:6px;padding:2px 8px 2px 0;border:2px solid #ffefb9;border-radius:999px;text-decoration:none;color:#321039;background:linear-gradient(160deg,#fff5fd 0%,#f5caeb 60%,#ffe9f2 100%);box-shadow:inset 0 2px 2px #fff,0 3px 0 #b98758,0 5px 8px #58264b80,0 0 5px #ffb7ed;transition:transform .12s}
+.node .circle{flex:none;display:grid;place-items:center;height:115%;aspect-ratio:1;width:auto;margin-left:-5px;border:2px solid #fff0c7;border-radius:50%;box-shadow:inset 0 2px 4px #fff9,0 3px 0 #be8b43,0 5px 6px #56364e88;background:linear-gradient(#ffb5e7,#e530a8 65%,#ba238e);color:white;font-size:clamp(25px,7vw,34px);font-weight:900;text-shadow:0 2px 3px #42334080}
+.node .caption{flex:1;min-width:0}.node strong{display:block;font-size:clamp(13px,3.85vw,18px);font-weight:850;line-height:1.05;letter-spacing:-.3px;text-shadow:0 1px #fff}
+.node small{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+.node .arrow{flex:none;font-size:20px;color:#a32d88;font-weight:900}
+.node.locked .circle{background: url('./panda-reference-v175/lock.webp') center/cover no-repeat}
+.node.current,.node.done{background:linear-gradient(130deg,#fffdf0,#e2ffd5);border-color:#ffe478}
+.node.current .circle,.node.done .circle{background:linear-gradient(140deg,#d3ff9d,#55e559 60%,#15a335);box-shadow:inset 0 2px 4px #fff9,0 3px 0 #c69534,0 0 13px #e9ff73}
+.node:focus-visible,.back:focus-visible{outline:3px solid #76189b;outline-offset:3px}.node:active:not(.locked){transform:translateY(2px)}
+.node[data-num="7"]{top:29%;left:35%}.node[data-num="6"]{top:38%;left:29%}.node[data-num="5"]{top:46.5%;left:21%}.node[data-num="4"]{top:55%;left:12%}.node[data-num="3"]{top:63.5%;left:9%}.node[data-num="2"]{top:72%;left:20%}.node[data-num="1"]{top:81.7%;left:35%}
+@media(min-width:471px){.map-title h1{font-size:55px}.node strong{font-size:18px}}
+@media(prefers-reduced-motion:reduce){.node,#pg130 .pg-hsk-level{transition:none}}
+
+.map-title h1::before,.map-title h1::after{content:"";display:inline-block;width:27px;height:42px;vertical-align:middle;background:center/contain no-repeat;margin:0 8px}.map-title h1::before{background-image:url("./panda-reference-v175/laurel-left.png")}.map-title h1::after{background-image:url("./panda-reference-v175/laurel-right.png")}
