@@ -42,6 +42,8 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           git clone --depth=1 https://github.com/myshell-ai/MeloTTS.git /tmp/MeloTTS
           python -m pip install -e /tmp/MeloTTS
+          # Older MeloTTS/librosa imports pkg_resources, removed from latest setuptools.
+          python -m pip install 'setuptools<81'
           sudo apt-get update -qq && sudo apt-get install -y ffmpeg
       - name: Render seven Mandarin pronunciation contrasts
         run: python scripts/preview-hsk1-alternative-voices-v158.py melo
