@@ -44,6 +44,9 @@ for(const map of maps){for(const [k,v] of Object.entries(map)){const key=norm(k)
  // When a complete production map is loaded, never accidentally fall back to a
  // different legacy speaker for the same Chinese text.
 const productionVoices=window.PANDA_HSK1_VOICES||null;
+// Human Mandarin examples are available only by explicitly pressing 🎙.
+// Never replace a dialogue line with an unreviewed speaker or concatenate fragments.
+const humanSamples=window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
 function clipFor(hz,role='female'){
  if(productionVoices){
   return productionVoices[role]?.[hz]||null;
@@ -128,7 +131,10 @@ function playDialogue(){
 function audioButton(hz,role){
  const speaker=role||'female';
  const file=clipFor(hz,speaker);
- return '<div class="lesson-audio-label"><button type="button" class="lesson-audio" data-play="'+esc(hz)+'" data-speaker="'+esc(speaker)+'"'+(file?'':' disabled title="Запись готовится"')+' aria-label="'+(file?'Прослушать ':'Записи пока нет: ')+esc(hz)+'">'+(file?'🔊':'—')+'</button>'+(file?'':'<small class="lesson-audio-caption">Нет записи</small>')+'</div>';
+ const original=speaker==='female'?humanSamples[hz]:null;
+ return '<div class="lesson-audio-label"><button type="button" class="lesson-audio" data-play="'+esc(hz)+'" data-speaker="'+esc(speaker)+'"'+(file?'':' disabled title="Запись готовится"')+' aria-label="'+(file?'Прослушать ':'Записи пока нет: ')+esc(hz)+'">'+(file?'🔊':'—')+'</button>'+
+  (original?'<button type="button" class="lesson-audio-native" data-human-play="'+esc(hz)+'" title="Оригинальная запись Yue Tan (1×)" aria-label="Послушать носительницу Yue Tan: '+esc(hz)+'">🎙</button>':'')+
+  (file?'':'<small class="lesson-audio-caption">Нет записи</small>')+'</div>';
 }
 function hanzi(hz,py,ru){
  return '<strong class="lesson-hanzi" lang="zh-Hans">'+esc(hz)+'</strong><span class="lesson-py">'+esc(py)+'</span><span class="lesson-ru">'+esc(ru)+'</span>';
@@ -141,7 +147,7 @@ function renderWords(){
  '<nav class="lesson-word-nav" aria-label="Группы новых слов">'+
  (state.wordPage>0?'<button type="button" data-word-prev>← Предыдущие слова</button>':'<span></span>')+
  (state.wordPage<pages-1?'<button type="button" class="lesson-action" data-word-next>Следующие слова →</button>':'<span class="lesson-word-finished">✓ Все слова показаны</span>')+'</nav>'+
- '<div class="lesson-note">Повторяй вслух, обращая внимание на тоны в пиньине. Возвращайся к любой группе слов, если нужно.</div>';
+ '<div class="lesson-note">🔊 — учебная озвучка. 🎙 — оригинальная запись носительницы Yue Tan при точном совпадении, всегда на скорости 1×. <a href="./yue-tan-listening.html">Все 59 записей и авторство</a>.</div>';
 }
 function renderListeningEar(){
  if(topic.id==='foundations')return '';
@@ -357,6 +363,12 @@ $('stage-content').addEventListener('click',e=>{
      if(state.toneEarProgress>=4)$('lesson-next').disabled=false;
    }else feedback('Не совпало. Прослушай ещё раз и обрати внимание на направление тона.');
    return;
+ }
+ if(button.hasAttribute('data-human-play')){
+  const original=humanSamples[button.dataset.humanPlay];
+  if(original&&original.startsWith('./assets/')&&original.endsWith('.mp3'))playOne(original,button.closest('.lesson-line,.lesson-word,.lesson-card'),'human');
+  else feedback('Оригинальной записи этой фразы пока нет.');
+  return;
  }
  if(button.hasAttribute('data-play')){
   playOne(clipFor(button.dataset.play,button.dataset.speaker||'female'),button.closest('.lesson-line,.lesson-word,.lesson-card'),button.dataset.speaker||'female')
