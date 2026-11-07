@@ -1,6 +1,6 @@
 {
-  "version": 185,
-  "bytes": 33023749,
+  "version": 186,
+  "bytes": 33216147,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -517,8 +517,8 @@
     "./assets/hsk1-compact-v180.js?v=181",
     "./assets/hsk1-foundations-data-v152.js?v=154",
     "./assets/hsk1-foundations-v152.css?v=171",
-    "./assets/hsk1-human-voice-v183.js?v=185",
-    "./assets/hsk1-human-voice-v184.js?v=185",
+    "./assets/hsk1-human-voice-v183.js?v=186",
+    "./assets/hsk1-human-voice-v184.js?v=186",
     "./assets/hsk1-foundations-v152.js?v=172",
     "./assets/hsk1-foundations-v152.js?v=180",
     "./assets/hsk1-foundations-v152.js?v=181",
