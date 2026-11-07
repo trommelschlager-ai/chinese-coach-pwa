@@ -1,0 +1,62 @@
+/* Panda Go v181 — teaching mechanics ONLY.
+   Do not change approved home, HSK map or lesson staircase. */
+body.pg-study-open .pg-recall-active .lesson-ru{visibility:hidden!important}
+body.pg-study-open .pg-recall-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+body.pg-study-open .pg-recall-controls:has(>button:only-child){grid-template-columns:1fr}
+body.pg-study-open .pg-recall-controls button,
+body.pg-study-open .pg-inline-action{
+ min-height:46px;padding:9px 10px;border:2px solid #ffe4fb;border-radius:16px;
+ background:linear-gradient(170deg,#fff7ff,#e9c3f4);color:#58146a;
+ font-weight:850;font-size:clamp(13px,3.7vw,16px);box-shadow:0 3px 0 #a45da7
+}
+body.pg-study-open .pg-recall-controls .pg-recall-known,
+body.pg-study-open .pg-recall-controls .pg-recall-start{
+ background:linear-gradient(170deg,#ff9be1,#f32fac 65%,#b40c89);
+ color:#fff;box-shadow:0 3px 0 #81236c,0 0 8px #ef65d18a
+}
+body.pg-study-open .pg-recall-controls button:focus-visible,
+body.pg-study-open .pg-inline-action:focus-visible{
+ outline:3px solid #ffdb5a;outline-offset:2px
+}
+body.pg-study-open .pg-stage-voice{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ width:52px;height:43px;gap:0;line-height:1.12;padding:3px 1px;
+ font-size:11px;letter-spacing:0;white-space:nowrap
+}
+body.pg-study-open .pg-stage-voice .pg-voice-icon{font-size:16px;line-height:1}
+body.pg-study-open .pg-stage-voice .pg-voice-speed{font-size:10px;font-weight:850}
+body.pg-study-open .pg-dialogue-explain{
+ display:flex;flex-direction:column;gap:4px;border:1px solid #f4c2fa;
+ border-radius:17px;background:#fbe2fff2;padding:11px 13px;
+ color:#551761;font-size:14px;line-height:1.4
+}
+body.pg-study-open .pg-dialogue-explain strong{font-size:15px}
+body.pg-study-open .pg-dialogue-explain span{overflow-wrap:anywhere}
+body.pg-study-open .pg-quiz-audio{
+ display:flex;justify-content:center;align-items:center;
+ margin:1px 0 5px;padding:8px;border-radius:16px;
+ background:#f7dcffe6
+}
+body.pg-study-open .pg-result-card{
+ text-align:center;min-height:200px;display:flex;flex-direction:column;justify-content:center;gap:12px
+}
+body.pg-study-open .pg-result-card h2{font-size:clamp(23px,6vw,29px)!important;margin:0}
+body.pg-study-open .pg-result-card p{font-size:15px;line-height:1.5;margin:0}
+body.pg-study-open .pg-difficult-word{
+ display:grid;grid-template-columns:1fr auto;align-items:center;gap:7px;
+ padding:9px 2px;border-bottom:1px solid #f1c9ff70
+}
+body.pg-study-open .pg-difficult-word .lesson-hanzi{font-size:26px!important;grid-row:1}
+body.pg-study-open .pg-difficult-word .lesson-py,
+body.pg-study-open .pg-difficult-word .lesson-ru{font-size:14px!important}
+body.pg-study-open .pg-difficult-word .lesson-audio-label{grid-column:2;grid-row:1/4}
+body.pg-study-open .lesson-quiz .lesson-choice.is-wrong{
+ border-color:#db388d!important;background:linear-gradient(#ffe7f0,#ffbed4)!important
+}
+body.pg-study-open #lesson-feedback{border-left:3px solid #ffb9ea}
+@media(max-width:360px){
+ body.pg-study-open .pg-recall-controls button{font-size:13px;min-height:43px}
+ body.pg-study-open .pg-stage-voice{width:48px}
+ body.pg-study-open .pg-stage-heading strong{font-size:17px!important}
+}
+@media(prefers-reduced-motion:reduce){body.pg-study-open *{animation:none!important}}
