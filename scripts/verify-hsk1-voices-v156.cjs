@@ -100,15 +100,14 @@ for(let i=0;i<topics.length;i++){
    'Female slow mode must not modify male speaker in '+topic.id+' row '+row);
   assert.equal(played[played.length-1].preservesPitch,true,'Chinese pitch must be preserved');
   if(row<topic.dialogue.length-1){
-   const forward=d.querySelector('[data-dialogue-next]');
-   assert(forward,'Next dialogue card missing in '+topic.id);
-   forward.click();
+   assert(d.getElementById('lesson-next').textContent.includes('Следующая реплика'),'One clear button must advance dialogue');
+   d.getElementById('lesson-next').click();
   }
  }
  if(i===0){
   // Return to the female reply, because only one dialogue line is visible.
-  while(d.querySelector('[data-dialogue-prev]'))d.querySelector('[data-dialogue-prev]').click();
-  d.querySelector('[data-dialogue-next]').click();
+  for(let k=1;k<topic.dialogue.length;k++)d.getElementById('lesson-prev').click();
+  d.getElementById('lesson-next').click();
   const femaleRow=d.querySelector('[data-dialog-row]');
   assert(femaleRow?.querySelector('[data-speaker="female"]'),'Need a female dialogue line for speed test');
   const control=d.getElementById('hsk1-female-voice-speed');
@@ -122,7 +121,7 @@ for(let i=0;i<topics.length;i++){
   assert.equal(w.localStorage.getItem('pg-hsk1-female-speed-v161'),'0.85');
   // Reach the last vocabulary page to check that native 日 replaces synthetic 日.
   d.querySelector('[data-step="0"]').click();
-  while(d.querySelector('[data-word-next]'))d.querySelector('[data-word-next]').click();
+  for(let k=1;k<topic.words.length;k++)d.getElementById('lesson-next').click();
   const ri=d.querySelector('button[data-play="日"]');
   assert(ri&&!ri.disabled,'Native 日 vocabulary playback missing');
   ri.click();
