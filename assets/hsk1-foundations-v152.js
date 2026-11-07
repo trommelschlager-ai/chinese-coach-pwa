@@ -12,6 +12,11 @@ const bonusBuild=topic.id==='foundations'?{
  py:'Wǒ jiào Xiǎomíng.',note:'我 (wǒ) — я; 叫 (jiào) — звать; 小明 (Xiǎomíng) — имя.'
 }:null;
 const builds=bonusBuild?[...(topic.builds||[topic.build]),bonusBuild]:(topic.builds||[topic.build]);
+const speakingPrompts=topic.id==='foundations'?[
+ topic.speech,
+ {hz:'我叫小明。',py:'Wǒ jiào Xiǎomíng.',ru:'Меня зовут Сяомин.',
+  role:'male',tip:'我 (wǒ) — я; 叫 (jiào) — зовут. После тренировки сможешь подставить своё имя.'}
+]:[topic.speech];
 const reviewQuestions=topic.id==='foundations'?
  [topic.quiz,
   {question:'Что означает 你好?',choices:['Привет! Здравствуйте!','Спасибо','До свидания','Доброе утро'],correct:0,explain:'你好 (nǐ hǎo) — приветствие.',audio:'你好',speaker:'female'},
@@ -21,7 +26,7 @@ const tonePool=['妈','麻','马','骂'];
 const shuffleTones=()=>{const a=[...tonePool];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const $=id=>document.getElementById(id),esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0,earProgress:0,buildProgress:0,wordPage:0,wordIndex:0,ruleIndex:0,dialogueIndex:0,
- wordRatings:{},toneSequence:shuffleTones(),reviewProgress:0};
+ wordRatings:{},toneSequence:shuffleTones(),reviewProgress:0,speechProgress:0};
 try{
  const raw=JSON.parse(localStorage.getItem(key)||'{}');
  if(raw&&typeof raw==='object'){
@@ -47,6 +52,8 @@ try{
    if(Array.isArray(raw.toneSequence)&&raw.toneSequence.length===4&&
       tonePool.every(v=>raw.toneSequence.includes(v)))state.toneSequence=[...raw.toneSequence];
    state.spoken=raw.spoken===true;
+   state.speechProgress=state.spoken?speakingPrompts.length:
+    Math.max(0,Math.min(speakingPrompts.length,Number(raw.speechProgress)||0));
    state.toneEarProgress=Math.max(0,Math.min(4,Number(raw.toneEarProgress)||0));
    state.completed=raw.completed===true;
  }
@@ -273,18 +280,20 @@ function renderCompose(){
 }
 function renderSpeak(){
  const micCapable=!!(navigator.mediaDevices?.getUserMedia&&window.MediaRecorder);
+ const i=Math.min(state.speechProgress,speakingPrompts.length-1),speech=speakingPrompts[i];
  return '<article class="lesson-card pg-speak-card">'+
- hanzi(topic.speech.hz,topic.speech.py,topic.speech.ru)+
- '<p class="pg-mini-instruction" style="color:#692778">Сначала послушай, потом произнеси вслух.</p>'+
- audioButton(topic.speech.hz)+
+ '<div class="lesson-exercise-indicator">Произнеси фразу '+(i+1)+' из '+speakingPrompts.length+'</div>'+
+ hanzi(speech.hz,speech.py,speech.ru)+
+ '<p class="pg-mini-instruction" style="color:#692778">Сначала слушай, затем повторяй и сравни.</p>'+
+ audioButton(speech.hz,speech.role||'female')+
  (micCapable?
  '<div id="lesson-microphone" class="lesson-recorder"><button class="lesson-action" type="button" data-record-start>🎙 Записать себя</button>'+
  '<button class="lesson-action" type="button" data-record-stop hidden>■ Остановить запись</button>'+
  '<button class="lesson-action" type="button" data-record-play hidden>▶ Прослушать себя</button></div>':
  '<p class="lesson-small">Микрофон недоступен. Произнеси фразу без записи.</p>')+
  '<button type="button" class="lesson-action" data-spoken>'+(state.spoken?'✓ Я сравнил':'Я повторил и сравнил')+'</button>'+
- '<details class="pg-more" style="width:100%"><summary>Совет по произношению</summary><p>'+esc(topic.speech.tip)+'</p>'+
- '<p>Автоматической оценки тонов пока нет. Запись хранится только на устройстве и удаляется при выходе с экрана.</p></details>'+
+ '<details class="pg-more" style="width:100%"><summary>Совет по произношению</summary><p>'+esc(speech.tip)+'</p>'+
+ '<p>Автоматической оценки тонов пока нет. Запись остаётся на устройстве и удаляется при выходе с экрана.</p></details>'+
  '</article>';
 }
 function refreshMic(){
@@ -514,7 +523,16 @@ $('stage-content').addEventListener('click',e=>{
   }
   return;
  }
- if(button.hasAttribute('data-spoken')){state.spoken=true;save();button.textContent='✓ Я повторил фразу';$('lesson-next').disabled=false;feedback('Отлично. Теперь переходи к повторению.');return;}
+ if(button.hasAttribute('data-spoken')){
+  if(!state.spoken){
+   state.speechProgress=Math.min(speakingPrompts.length,state.speechProgress+1);
+   state.spoken=state.speechProgress>=speakingPrompts.length;
+   save();releaseMic();render();
+  }
+  feedback(state.spoken?'✓ Обе фразы повторены. Переходи к итогу.':
+   '✓ Приветствие отработано. Теперь повтори «Меня зовут Сяомин».');
+  return;
+ }
  if(button.hasAttribute('data-answer')){
   if(state.completed||state.reviewProgress>=reviewQuestions.length)return;
   const q=reviewQuestions[state.reviewProgress];
