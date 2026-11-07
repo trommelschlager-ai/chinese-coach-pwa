@@ -42,6 +42,7 @@
   return m?Math.max(0,Math.min(6,Number(m[1])-1)):0;
  }
  function refresh(){
+  if(!window.document?.body)return;
   const i=activeIndex();
   document.body.dataset.pgStep=String(i+1);
   const count='Урок '+lesson+' · Шаг '+(i+1)+' из 7';
