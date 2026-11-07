@@ -39,7 +39,7 @@ const tonePool=['妈','麻','马','骂'];
 const shuffleTones=()=>{const a=[...tonePool];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const $=id=>document.getElementById(id),esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0,earProgress:0,buildProgress:0,wordPage:0,wordIndex:0,ruleIndex:0,dialogueIndex:0,
- wordRatings:{},toneSequence:shuffleTones(),reviewProgress:0,speechProgress:0,firstTryCorrect:0,reviewErrors:{}};
+ wordRatings:{},toneSequence:shuffleTones(),reviewProgress:0,speechProgress:0,firstTryCorrect:0,reviewErrors:{},buildPending:false};
 try{
  const raw=JSON.parse(localStorage.getItem(key)||'{}');
  if(raw&&typeof raw==='object'){
@@ -49,6 +49,7 @@ try{
    state.buildProgress=Math.min(builds.length,Math.max(0,
     raw.buildPassed===true?builds.length:(Number.isInteger(raw.buildProgress)?raw.buildProgress:0)));
    state.buildPassed=raw.buildPassed===true||state.buildProgress===builds.length;
+   state.buildPending=raw.buildPending===true&&!state.buildPassed;
    state.earProgress=Math.min(4,Math.max(0,Number(raw.earProgress)||0));
    state.wordPage=Math.min(Math.ceil(topic.words.length/4)-1,Math.max(0,Number(raw.wordPage)||0));
    // Migrate old four-card pages to one-card navigation, keeping the saved spot.
@@ -292,6 +293,15 @@ function buildTokens(){
  '<div class="lesson-tokens" aria-label="Слова для составления">'+unused.map(o=>'<button class="lesson-token" type="button" data-add="'+o.i+'" lang="zh-Hans">'+esc(o.t)+'</button>').join('')+'</div>';
 }
 function renderCompose(){
+ if(state.buildPending){
+  const b=currentBuild(),answer=b.target.join('');
+  return '<article class="lesson-compose pg-build-confirmed"><h2>✓ Правильно!</h2>'+
+   '<strong lang="zh-Hans" class="lesson-hanzi">'+esc(answer)+'</strong>'+
+   '<span class="lesson-py">'+esc(b.py)+'</span>'+
+   (clipFor(answer)?audioButton(answer):'<p class="pg-mini-instruction">Произнеси фразу вслух.</p>')+
+   '<p>'+esc(b.note)+'</p>'+
+   '<p class="pg-mini-instruction">Теперь переходи к следующему заданию.</p></article>';
+ }
  if(state.buildPassed)return '<article class="lesson-compose"><h2>✅ Все задания выполнены!</h2>'+
  '<p>Ты собрал слова и фразу. Теперь потренируй произношение.</p>'+
  '<details class="pg-more"><summary>Вспомнить готовые ответы</summary>'+
@@ -412,10 +422,13 @@ function render(){
  feedback('');
  $('lesson-prev').disabled=state.step===0&&state.wordIndex===0;
  $('lesson-prev').textContent=state.step===0&&state.wordIndex>0?'← Слово':state.step===2&&state.ruleIndex>0?'← Пример':state.step===3&&state.dialogueIndex>0?'← Реплика':'← Назад';
- $('lesson-next').disabled=(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4))||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed&&!state.completed);
+ $('lesson-next').disabled=(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4))||
+ (state.step===4&&!state.buildPassed&&!state.buildPending)||
+ (state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed&&!state.completed);
  $('lesson-next').textContent=state.step===0?(state.wordIndex<topic.words.length-1?'Следующее слово →':'К тонам →'):
  state.step===2?(state.ruleIndex<topic.rules.length-1?'Следующий пример →':'К диалогу →'):
  state.step===3?(state.dialogueIndex<topic.dialogue.length-1?'Следующая реплика →':'К заданию →'):
+ state.step===4&&state.buildPending?(state.buildProgress===builds.length-1?'К произношению →':'Следующее задание →'):
  state.step===6?(state.completed?'К карте HSK 1 →':'✓ Завершить урок'):'Дальше →';
  if(state.completed&&state.step===6)$('lesson-next').textContent='К карте HSK 1 →';
  save();
@@ -428,6 +441,13 @@ function goNext(){
  if(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4)){feedback('Сначала пройди четыре задания на слух.');return;}
  if(state.step===2&&state.ruleIndex<topic.rules.length-1){state.ruleIndex++;render();return;}
  if(state.step===3&&state.dialogueIndex<topic.dialogue.length-1){state.dialogueIndex++;render();return;}
+ if(state.step===4&&state.buildPending){
+  state.buildPending=false;
+  state.buildProgress=Math.min(builds.length,state.buildProgress+1);
+  state.buildPassed=state.buildProgress>=builds.length;
+  assembled=[];save();
+  if(!state.buildPassed){render();return;}
+ }
  if(state.step===4&&!state.buildPassed){feedback('Сначала правильно собери фразу.');return;}
  if(state.step===5&&!state.spoken){feedback('Сначала проговори фразу и подтверди повторение.');return;}
  if(state.step===6){
@@ -542,13 +562,9 @@ $('stage-content').addEventListener('click',e=>{
   const b=currentBuild(),target=b.target;
   const correct=assembled.length===target.length&&assembled.every((v,i)=>v===i);
   if(correct){
-    state.buildProgress=Math.min(builds.length,state.buildProgress+1);
-    state.buildPassed=state.buildProgress>=builds.length;
-    assembled=[];save();
-    $('stage-content').innerHTML=renderCompose();
-    buildMistakes=0;
-    feedback(state.buildPassed?'✅ Все '+builds.length+' задания выполнены!':'Верно! '+b.note+' Следующее задание.');
-    $('lesson-next').disabled=!state.buildPassed;
+    state.buildPending=true;
+    assembled=[];buildMistakes=0;save();render();
+    feedback('✓ Правильно! Прослушай готовую фразу, если есть запись, и нажми «Дальше».');
   }else{
    buildMistakes++;
    const hint=buildMistakes>=2?' Начни с «'+target[0]+'».':' Попробуй ещё раз.';
