@@ -8,7 +8,7 @@ const renderer=fs.readFileSync('assets/hsk1-foundations-v152.js','utf8');
 const css=fs.readFileSync('assets/hsk1-foundations-v152.css','utf8');
 assert.match(map,/Базовое знакомство/);
 for(const topic of ['Личные местоимения','Числа и их строение','Дни недели','Месяцы и даты','Моя семья','Погода'])assert(map.includes(topic),'Map missing '+topic);
-for(let i=1;i<=7;i++)assert(map.includes('hsk1-lesson.html?lesson='+i),'Map missing lesson '+i);
+assert(map.includes('hsk1-first-v189.html'),'Map missing rebuilt lesson 1'); for(let i=2;i<=7;i++)assert(map.includes('hsk1-lesson.html?lesson='+i),'Map missing lesson '+i);
 assert(!renderer.includes('pg-hsk1-completed-v1'),'Never recycle old progress');
 assert(renderer.includes('pg-hsk1-v3-'),'Versioned progress key required');
 assert(!page.includes('study-audio-map.js'),'Do not use noncommercial study voice previews in new lessons');
