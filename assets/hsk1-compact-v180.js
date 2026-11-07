@@ -11,8 +11,14 @@
  const voice=document.createElement('button');
  voice.type='button';
  voice.className='pg-stage-voice';
- voice.textContent='🎧';
- voice.setAttribute('aria-label','Настройки скорости озвучки');
+ const speed=document.getElementById('hsk1-female-voice-speed');
+ const updateSpeed=()=>{
+  const value=(speed?.value||'0.85').replace('.',',');
+  voice.innerHTML='<span class="pg-voice-icon" aria-hidden="true">🎧</span><span class="pg-voice-speed">'+value+'×</span>';
+  voice.setAttribute('aria-label','Темп женской речи: '+value+' раза. Открыть настройки');
+ };
+ updateSpeed();
+ speed?.addEventListener('change',updateSpeed);
  voice.setAttribute('aria-controls','hsk1-female-voice-speed');
  voice.setAttribute('aria-expanded','false');
  header.appendChild(voice);
