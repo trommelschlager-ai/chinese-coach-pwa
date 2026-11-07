@@ -1,6 +1,6 @@
 {
-  "version": 188,
-  "bytes": 33231647,
+  "version": 189,
+  "bytes": 33265369,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1591,6 +1591,9 @@
     "./icons/maskable-512.png",
     "./index.html",
     "./manifest.webmanifest",
-    "./start-chinese.html"
+    "./start-chinese.html",
+    "./hsk1-first-v189.html",
+    "./assets/hsk1-first-v189.css?v=189",
+    "./assets/hsk1-first-v189.js?v=189"
   ]
 }
