@@ -85,11 +85,13 @@ for(let i=0;i<topics.length;i++){
  const defaultSpeed=i===1?0.75:0.85;
  assert.equal(Number(control.value),defaultSpeed,'Persisted / default learning speed mismatch');
  const rows=[...d.querySelectorAll('[data-dialog-row]')];
- assert.equal(rows.length,topic.dialogue.length,'Dialogue lines preserved for '+topic.id);
+ assert.equal(rows.length,1,'Exactly one dialogue card visible for '+topic.id);
  assert(!d.querySelector('[data-dialog-all]').disabled,'Full dialogue playback enabled for '+topic.id);
- for(let row=0;row<rows.length;row++){
+ for(let row=0;row<topic.dialogue.length;row++){
   const [who,hz]=topic.dialogue[row],role=who==='А'?'male':'female';
-  const btn=rows[row].querySelector('button[data-play]');
+  const active=d.querySelector('[data-dialog-row]');
+  assert(active&&Number(active.dataset.dialogRow)===row,'Dialogue progress must expose row '+row);
+  const btn=active.querySelector('button[data-play]');
   assert(btn&&!btn.disabled,'Dialogue line unavailable: '+topic.id+' row '+row);
   assert.equal(btn.dataset.speaker,role,'Incorrect role on '+topic.id+' row '+row);
   btn.click();
@@ -97,10 +99,18 @@ for(let i=0;i<topics.length;i++){
   assert.equal(played[played.length-1].playbackRate,role==='female'?defaultSpeed:1,
    'Female slow mode must not modify male speaker in '+topic.id+' row '+row);
   assert.equal(played[played.length-1].preservesPitch,true,'Chinese pitch must be preserved');
+  if(row<topic.dialogue.length-1){
+   const forward=d.querySelector('[data-dialogue-next]');
+   assert(forward,'Next dialogue card missing in '+topic.id);
+   forward.click();
+  }
  }
  if(i===0){
-  const femaleRow=rows.find(el=>el.querySelector('[data-speaker="female"]'));
-  assert(femaleRow,'Need a female dialogue line for speed test');
+  // Return to the female reply, because only one dialogue line is visible.
+  while(d.querySelector('[data-dialogue-prev]'))d.querySelector('[data-dialogue-prev]').click();
+  d.querySelector('[data-dialogue-next]').click();
+  const femaleRow=d.querySelector('[data-dialog-row]');
+  assert(femaleRow?.querySelector('[data-speaker="female"]'),'Need a female dialogue line for speed test');
   const control=d.getElementById('hsk1-female-voice-speed');
   control.value='0.75';control.dispatchEvent(new w.Event('change',{bubbles:true}));
   assert.equal(w.localStorage.getItem('pg-hsk1-female-speed-v161'),'0.75');
