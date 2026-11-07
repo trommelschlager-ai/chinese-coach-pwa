@@ -73,24 +73,24 @@ body.pg-exact-loaded .lesson-shell .lesson-step[data-step="1"]{--hit-x:28.5%;--h
 body.pg-exact-loaded .lesson-shell .lesson-step[data-step="0"]{--hit-x:33.2%;--hit-y:71.2%;--hit-w:65.8%;--hit-h:8.9%}
 /* The provided reference shows step 1. On later steps overlay only the
    progress and step number, not the scenery, panda or any seven printed pills. */
-body.pg-exact-loaded .lesson-shell .lesson-journey:not([data-current-step="1"]) .lesson-header>div{
+body.pg-exact-loaded .lesson-shell .lesson-journey:has(.lesson-step.active:not([data-step="0"])) .lesson-header>div{
  visibility:visible!important;position:absolute!important;left:33%;top:10.95%;
  width:37%;padding:2px 3px!important;border-radius:12px!important;
  background:linear-gradient(120deg,#f8d4f5,#d6bdf4)!important;
  box-shadow:0 1px 4px #76339050
 }
-body.pg-exact-loaded .lesson-shell .lesson-journey:not([data-current-step="1"]) .lesson-header strong{display:none!important}
-body.pg-exact-loaded .lesson-shell .lesson-journey:not([data-current-step="1"]) .lesson-header small{
+body.pg-exact-loaded .lesson-shell .lesson-journey:has(.lesson-step.active:not([data-step="0"])) .lesson-header strong{display:none!important}
+body.pg-exact-loaded .lesson-shell .lesson-journey:has(.lesson-step.active:not([data-step="0"])) .lesson-header small{
  display:block!important;margin:0!important;font-size:clamp(13px,4.5vw,22px)!important;
  font-weight:950!important;color:#3b1151!important;line-height:1.4;text-align:center
 }
-body.pg-exact-loaded .lesson-shell .lesson-journey:not([data-current-step="1"]) .lesson-progress{
+body.pg-exact-loaded .lesson-shell .lesson-journey:has(.lesson-step.active:not([data-step="0"])) .lesson-progress{
  visibility:visible!important;z-index:5!important;top:15.34%!important;
  left:17.8%!important;width:64%!important;height:2.12%!important;min-height:12px!important;
  border:2px solid #ffe0ab!important;border-radius:50px!important;
  background:linear-gradient(#a03fe5,#42118c)!important;box-shadow:0 0 9px #f963f2!important
 }
-body.pg-exact-loaded .lesson-shell .lesson-journey:not([data-current-step="1"]) #progress-fill{
+body.pg-exact-loaded .lesson-shell .lesson-journey:has(.lesson-step.active:not([data-step="0"])) #progress-fill{
  background:linear-gradient(#ff9dd6,#f022a1)!important;height:100%!important
 }
 body.pg-exact-loaded .lesson-shell .lesson-study{
