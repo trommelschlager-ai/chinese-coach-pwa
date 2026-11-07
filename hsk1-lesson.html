@@ -8,8 +8,18 @@
 <link rel="stylesheet" href="./assets/hsk1-foundations-v152.css?v=171">
 <link rel="stylesheet" href="./assets/panda-approved-three-screen-v172.css?v=172">
 <link rel="stylesheet" href="./assets/hsk1-journey-approved-v176.css?v=176">
+<link rel="stylesheet" href="./assets/hsk1-reference-exact-v177.css?v=177">
 </head>
 <body>
+<script>
+/* Activate screenshot-accurate HSK1 only after its approved WebP exists.
+   The v176 lesson remains completely usable while the asset is absent. */
+if(Number(new URLSearchParams(location.search).get('lesson') || '1')===1){
+  const approvedImage=new Image();
+  approvedImage.onload=()=>document.body.classList.add('pg-exact-loaded');
+  approvedImage.src='./assets/hsk1-approved-reference-v177.webp?v=177';
+}
+</script>
 <main class="lesson-shell" id="hsk1-app">
 <div class="lesson-journey" id="lesson-journey" aria-label="Карта семи шагов">
 <header class="lesson-header">
