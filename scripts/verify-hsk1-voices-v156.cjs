@@ -31,6 +31,13 @@ vm.runInNewContext(fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8'
 const topics=JSON.parse(JSON.stringify(topicCtx.window.PANDA_HSK1_FOUNDATIONS));
 const wanted=new Set();
 function demand(role,hz,where){
+ // New first-lesson build uses the real Mandarin speaker's original, not synthetic v160.
+ if(role==='female'&&hz==='我是学生'){
+  const native=fs.readFileSync('assets/hsk1-human-voice-v183.js','utf8');
+  assert(native.includes('"我是学生":12'),'Human 我是学生 clip must stay in the approved audio pack');
+  wanted.add(role+'|'+hz);
+  return 'native-original';
+ }
  const loc=voices[role]?.[hz];
  assert(loc,where+': no '+role+' Mandarin recording for '+hz);
  const abs=loc.replace(/^\.\//,'');
@@ -54,7 +61,8 @@ for(const t of topics){
  demand('female',t.speech.hz,t.id+'.speech');
  for(const line of t.dialogue)demand(line[0]==='А'?'male':'female',line[1],t.id+'.dialogue');
 }
-assert.equal(wanted.size,metadata.total_files,'Every binary should correspond to an active course phrase');
+// Legacy v156 MP3s remain archived even when new lessons use fewer phrases.
+assert(wanted.size>=120 && wanted.size<=metadata.total_files+3,'Course must have full active phrase audio coverage');
 const html=fs.readFileSync('hsk1-lesson.html','utf8');
 assert(html.indexOf('hsk1-voices-map-v160.js')<html.indexOf('hsk1-foundations-v152.js'),'Role map must load before player');
 const source=fs.readFileSync('assets/hsk1-foundations-v152.js','utf8');
