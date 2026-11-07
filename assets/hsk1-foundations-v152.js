@@ -8,7 +8,7 @@ const topic=topics[lessonNumber-1];
 if(!topic){document.getElementById('stage-content').textContent='Материал пока недоступен.';return;}
 const key='pg-hsk1-v3-'+topic.id,completeKey='pg-hsk1-v3-complete';
 const $=id=>document.getElementById(id),esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0,earProgress:0,buildProgress:0,wordPage:0};
+let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0,earProgress:0,buildProgress:0,wordPage:0,wordIndex:0,ruleIndex:0,dialogueIndex:0};
 try{
  const raw=JSON.parse(localStorage.getItem(key)||'{}');
  if(raw&&typeof raw==='object'){
@@ -19,6 +19,10 @@ try{
    state.buildPassed=state.buildProgress===3;
    state.earProgress=Math.min(4,Math.max(0,Number(raw.earProgress)||0));
    state.wordPage=Math.min(Math.ceil(topic.words.length/4)-1,Math.max(0,Number(raw.wordPage)||0));
+   // Migrate old four-card pages to one-card navigation, keeping the saved spot.
+   state.wordIndex=Math.min(topic.words.length-1,Math.max(0,Number.isInteger(raw.wordIndex)?raw.wordIndex:state.wordPage*4));
+   state.ruleIndex=Math.min(topic.rules.length-1,Math.max(0,Number(raw.ruleIndex)||0));
+   state.dialogueIndex=Math.min(topic.dialogue.length-1,Math.max(0,Number(raw.dialogueIndex)||0));
    state.quizPassed=raw.quizPassed===true;
    state.spoken=raw.spoken===true;
    state.toneEarProgress=Math.max(0,Math.min(4,Number(raw.toneEarProgress)||0));
@@ -144,14 +148,19 @@ function hanzi(hz,py,ru){
  return '<strong class="lesson-hanzi" lang="zh-Hans">'+esc(hz)+'</strong><span class="lesson-py">'+esc(py)+'</span><span class="lesson-ru">'+esc(ru)+'</span>';
 }
 function renderWords(){
- const from=state.wordPage*4,to=Math.min(topic.words.length,from+4),pages=Math.ceil(topic.words.length/4);
- return '<p class="lesson-intro">'+esc(topic.goal)+'</p>'+
- '<div class="lesson-exercise-indicator">Слова '+(from+1)+'–'+to+' из '+topic.words.length+' · группа '+(state.wordPage+1)+' из '+pages+'</div>'+
- topic.words.slice(from,to).map(([hz,py,ru])=>'<article class="lesson-card lesson-word"><div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz)+'</article>').join('')+
- '<nav class="lesson-word-nav" aria-label="Группы новых слов">'+
- (state.wordPage>0?'<button type="button" data-word-prev>← Предыдущие слова</button>':'<span></span>')+
- (state.wordPage<pages-1?'<button type="button" class="lesson-action" data-word-next>Следующие слова →</button>':'<span class="lesson-word-finished">✓ Все слова показаны</span>')+'</nav>'+
- '<div class="lesson-note">🔊 — учебная озвучка. 🎙 — оригинальная запись носительницы Yue Tan при точном совпадении, всегда на скорости 1×. <a href="./yue-tan-listening.html">Все 59 записей и авторство</a>.</div>';
+ const i=state.wordIndex,[hz,py,ru]=topic.words[i];
+ return '<div class="lesson-exercise-indicator">Слово '+(i+1)+' из '+topic.words.length+'</div>'+
+ '<article class="lesson-card lesson-word">'+hanzi(hz,py,ru)+audioButton(hz)+'</article>'+
+ '<p class="pg-mini-instruction">Нажми 🔊, послушай и повтори вслух.</p>'+
+ '<nav class="pg-card-pager" aria-label="Переключение слов">'+
+ '<button type="button" data-word-prev'+(i===0?' disabled':'')+'>← Назад</button>'+
+ (i<topic.words.length-1?
+  '<button type="button" data-word-next>Следующее слово →</button>':
+  '<button type="button" disabled>✓ Все '+topic.words.length+' слов</button>')+
+ '</nav>'+
+ '<details class="pg-more"><summary>Подробнее об изучении слов</summary><p>'+
+ esc(topic.goal)+'</p><p>🔊 — учебная озвучка. 🎙 — отдельная запись носительницы, если доступна.</p>'+
+ '<p><a href="./yue-tan-listening.html">Список оригинальных записей и авторство</a></p></details>';
 }
 function renderListeningEar(){
  if(topic.id==='foundations')return '';
@@ -169,41 +178,52 @@ function renderListeningEar(){
 const toneOrder=['马','妈','骂','麻'];
 function renderToneEar(){
  const i=state.toneEarProgress;
- if(i>=4)return '<div class="lesson-note">✅ Ты различил все четыре тона на слух. Можно переходить дальше.</div>';
- return '<div class="lesson-card"><h2>Проверь слух · '+(i+1)+' из 4</h2>'+
-   '<p>Прослушай запись, затем выбери номер тона. Иероглиф и пиньинь намеренно скрыты.</p>'+
-   '<button type="button" class="lesson-action" data-tone-hear>▶ Прослушать тон</button>'+
-   '<div class="lesson-tone-answer">'+[1,2,3,4].map(n=>'<button type="button" data-tone-choice="'+n+'">'+n+'-й тон</button>').join('')+'</div>'+
-   '<p class="lesson-small">После правильного ответа прозвучит следующий образец. Все записи — один диктор.</p></div>';
+ if(i>=4)return '<div class="lesson-note">✅ Все четыре тона распознаны. Можно дальше!</div>';
+ return '<article class="lesson-card lesson-listening"><div class="lesson-exercise-indicator">Задание на слух '+(i+1)+' из 4</div>'+
+ '<button type="button" class="lesson-action" data-tone-hear>▶ Слушать тон</button>'+
+ '<div class="lesson-tone-answer">'+[1,2,3,4].map(n=>'<button type="button" data-tone-choice="'+n+'">'+n+'-й тон</button>').join('')+'</div>'+
+ '<p class="lesson-small">Послушай и выбери номер услышанного тона.</p></article>';
 }
 function renderPronunciation(){
- let extra='';
- if(topic.id==='foundations')extra=
+ const grid=topic.id==='foundations'?
  '<div class="lesson-tone-grid" aria-label="Четыре тона китайского языка">'+
- [['mā','1-й · высокий ровный'],['má','2-й · восходящий'],['mǎ','3-й · низкий'],['mà','4-й · нисходящий']].map(x=>'<div class="lesson-tone"><b>'+x[0]+'</b><small>'+x[1]+'</small></div>').join('')+'</div>'+
- '<div class="lesson-sound-demo"><strong>Послушай все четыре тона</strong><button type="button" data-tones-demo>▶ Аудио</button></div>'+
- '<p class="lesson-note">Пятый вариант — нейтральный тон, без знака: ma. Он короткий и зависит от соседних слогов.</p>'+
- '<div class="lesson-character-grid" aria-label="Примеры согласных и звукосочетаний"><span>zh</span><span>ch</span><span>sh</span><span>j</span><span>q</span><span>x</span><span>z</span><span>c</span><span>s</span><span>ü</span></div>'+renderToneEar();
- else extra='<div class="lesson-note">Отработай чтение каждого слова: иероглиф → пиньинь → тон → значение. После прослушивания произнеси фразу ещё раз.</div>'+renderListeningEar();
- return extra+topic.pronunciation.map((p,i)=>'<article class="lesson-card"><span class="lesson-rule-head">'+(i+1)+'.</span><p>'+esc(p)+'</p></article>').join('')+
- '<p class="lesson-fineprint">Аудио воспроизводится только для записей, которые уже есть в приложении. Непроверенные голоса автоматически не подставляются.</p>';
+ [['mā','1-й · ровный'],['má','2-й · вверх'],['mǎ','3-й · низкий'],['mà','4-й · вниз']].map(([a,b])=>
+ '<div class="lesson-tone"><b>'+a+'</b><small>'+b+'</small></div>').join('')+'</div>'+
+ '<div class="lesson-sound-demo"><strong>Сравни все тоны</strong><button type="button" data-tones-demo>▶ Слушать</button></div>':
+ '<p class="pg-mini-instruction">Послушай знакомые слова и выбери правильный ответ.</p>';
+ return grid+(topic.id==='foundations'?renderToneEar():renderListeningEar())+
+ '<details class="pg-more"><summary>Правила произношения и пиньиня</summary>'+
+ topic.pronunciation.map((p,i)=>'<p><b>'+(i+1)+'.</b> '+esc(p)+'</p>').join('')+
+ (topic.id==='foundations'?'<p>Нейтральный тон: ma (без знака). Звукосочетания: zh, ch, sh, j, q, x, z, c, s, ü.</p>':'')+
+ '</details>';
 }
 function renderRules(){
- const radicals=topic.id==='foundations'
- ?'<div class="lesson-character-grid" aria-label="Элементы иероглифов"><span>人</span><span>口</span><span>女</span><span>木</span><span>日</span></div><p class="lesson-note">Некоторые ключи используются как смысловые компоненты, а другие элементы подсказывают чтение. Не каждый знак произошёл от рисунка.</p>':'';
- return radicals+topic.rules.map(([head,desc,hz,py,ru])=>'<article class="lesson-card"><h2>'+esc(head)+'</h2><p>'+esc(desc)+'</p><div>'+hanzi(hz,py,ru)+'</div><div style="margin-top:10px">'+audioButton(hz)+'</div></article>').join('');
+ const i=state.ruleIndex,[head,desc,hz,py,ru]=topic.rules[i];
+ return '<div class="lesson-exercise-indicator">Пример '+(i+1)+' из '+topic.rules.length+'</div>'+
+ '<article class="lesson-card pg-rule-card"><h2>'+esc(head)+'</h2>'+hanzi(hz,py,ru)+audioButton(hz)+'</article>'+
+ '<nav class="pg-card-pager" aria-label="Примеры">'+
+ '<button type="button" data-rule-prev'+(i===0?' disabled':'')+'>← Назад</button>'+
+ (i<topic.rules.length-1?'<button type="button" data-rule-next>Следующий пример →</button>':
+ '<button type="button" disabled>✓ Примеры пройдены</button>')+'</nav>'+
+ '<details class="pg-more"><summary>Объяснение примера</summary><p>'+esc(desc)+'</p>'+
+ (topic.id==='foundations'?'<p>Базовые компоненты: 人 · 口 · 女 · 木 · 日.</p>':'')+'</details>';
 }
 function renderDialogue(){
+ const i=state.dialogueIndex,[who,hz,py,ru]=topic.dialogue[i];
  const allRecorded=topic.dialogue.every(d=>clipFor(d[1],roleForDialogue(d[0])));
- let out='<div class="lesson-dialogue-hero"><img src="./assets/panda-v130/dialogue-scene.webp" alt="Мужчина и женщина разговаривают на улице китайского города">'+
- '<button type="button" class="hero-play" data-dialog-all aria-label="Прослушать весь диалог"'+(allRecorded?'':' disabled title="Полная запись готовится"')+'>▶</button></div>'+
- '<p class="lesson-note">'+(allRecorded?'Нажми ▶, чтобы прослушать весь разговор.':'Весь диалог показан ниже. Для некоторых реплик ещё не готовы точные аудиозаписи.')+'</p><div class="lesson-chat">';
- topic.dialogue.forEach(([who,hz,py,ru],i)=>{
-  out+='<div class="lesson-line '+(who==='Б'?'speaker-b':'speaker-a')+'" data-dialog-row="'+i+'">'+
-  '<img class="lesson-portrait" src="./assets/approved-'+(who==='Б'?'woman':'man')+'-v112.webp" alt="" aria-hidden="true">'+
-  '<div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz,roleForDialogue(who))+'</div>';
- });
- return out+'</div>';
+ return '<div class="lesson-exercise-indicator">Реплика '+(i+1)+' из '+topic.dialogue.length+'</div>'+
+ '<img class="pg-dialogue-scene" src="./assets/panda-v130/dialogue-scene.webp" alt="Собеседники в китайском городе">'+
+ '<div class="lesson-line '+(who==='Б'?'speaker-b':'speaker-a')+'" data-dialog-row="'+i+'">'+
+ '<img class="lesson-portrait" src="./assets/approved-'+(who==='Б'?'woman':'man')+'-v112.webp" alt="">'+
+ '<div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz,roleForDialogue(who))+'</div>'+
+ '<p class="pg-mini-instruction">Прослушай и повтори реплику.</p>'+
+ '<nav class="pg-card-pager" aria-label="Реплики диалога">'+
+ '<button type="button" data-dialogue-prev'+(i===0?' disabled':'')+'>← Назад</button>'+
+ (i<topic.dialogue.length-1?'<button type="button" data-dialogue-next>Следующая реплика →</button>':
+ '<button type="button" disabled>✓ Диалог пройден</button>')+'</nav>'+
+ '<details class="pg-more"><summary>Весь диалог'+(allRecorded?' · слушать':'')+'</summary>'+
+ (allRecorded?'<button type="button" class="lesson-action" data-dialog-all>▶ Прослушать целиком</button>':'')+
+ topic.dialogue.map(d=>'<p>'+esc(d[1])+' — '+esc(d[3])+'</p>').join('')+'</details>';
 }
 function currentBuild(){return builds[Math.min(state.buildProgress,builds.length-1)]}
 function buildTokens(){
@@ -213,28 +233,32 @@ function buildTokens(){
  '<div class="lesson-tokens" aria-label="Слова для составления">'+unused.map(o=>'<button class="lesson-token" type="button" data-add="'+o.i+'" lang="zh-Hans">'+esc(o.t)+'</button>').join('')+'</div>';
 }
 function renderCompose(){
- if(state.buildPassed)return '<article class="lesson-compose"><h2>✅ Все три упражнения выполнены</h2>'+
-  builds.map((b,i)=>'<p class="lesson-note">'+(i+1)+'. '+esc(b.target.join(''))+' — '+esc(b.py)+'</p>').join('')+
-  '<p>Теперь можно переходить к самостоятельной речи.</p></article>';
+ if(state.buildPassed)return '<article class="lesson-compose"><h2>✅ Все три предложения собраны!</h2>'+
+ '<p>Можно переходить к произношению.</p>'+
+ '<details class="pg-more"><summary>Повторить готовые предложения</summary>'+
+ builds.map((b,i)=>'<p>'+(i+1)+'. '+esc(b.target.join(''))+' — '+esc(b.py)+'</p>').join('')+'</details></article>';
  const b=currentBuild();
- return '<article class="lesson-compose"><div class="lesson-exercise-indicator">Задание '+(state.buildProgress+1)+' из '+builds.length+'</div>'+
- '<h2>'+esc(b.prompt)+'</h2><div id="lesson-build-area">'+buildTokens()+'</div>'+
- '<p class="lesson-small">Нажимай слова по порядку. Чтобы убрать слово, нажми его в верхней строке.</p>'+
- '<button type="button" id="lesson-verify-build" class="lesson-action" data-verify-build>Проверить</button></article>';
+ return '<article class="lesson-compose"><div class="lesson-exercise-indicator">Предложение '+(state.buildProgress+1)+' из '+builds.length+'</div>'+
+ '<h2>'+esc(b.prompt)+'</h2>'+
+ '<div id="lesson-build-area">'+buildTokens()+'</div>'+
+ '<button type="button" id="lesson-verify-build" class="lesson-action" data-verify-build>Проверить ✓</button>'+
+ '<details class="pg-more"><summary>Как собирать предложение?</summary><p>Нажимай иероглифы снизу по порядку. Чтобы убрать выбранный иероглиф, нажми его в верхней строке.</p></details></article>';
 }
 function renderSpeak(){
  const micCapable=!!(navigator.mediaDevices?.getUserMedia&&window.MediaRecorder);
- return '<article class="lesson-card"><p>Произнеси всю фразу вслух, уделяя внимание каждому тону.</p>'+hanzi(topic.speech.hz,topic.speech.py,topic.speech.ru)+
- '<div style="margin-top:15px">'+audioButton(topic.speech.hz)+'</div>'+
- '<p class="lesson-note">'+esc(topic.speech.tip)+'</p>'+
+ return '<article class="lesson-card pg-speak-card">'+
+ hanzi(topic.speech.hz,topic.speech.py,topic.speech.ru)+
+ '<p class="pg-mini-instruction" style="color:#692778">Сначала послушай, потом произнеси вслух.</p>'+
+ audioButton(topic.speech.hz)+
  (micCapable?
-   '<div id="lesson-microphone" class="lesson-recorder"><button class="lesson-action" type="button" data-record-start>🎙 Записать свой голос</button>'+
-   '<button type="button" class="lesson-action" data-record-stop hidden>■ Остановить запись</button>'+
-   '<button type="button" class="lesson-action" data-record-play hidden>▶ Прослушать себя</button>'+
-   '<p class="lesson-fineprint">Запись остаётся на устройстве и не отправляется на сервер. После ухода с этой страницы запись удалится из памяти.</p></div>':
-   '<p class="lesson-fineprint">Запись микрофона недоступна в этом браузере. Можно проговорить фразу вслух.</p>')+
- '<p class="lesson-fineprint">Проверь звучание самостоятельно: автоматической оценки тонов здесь пока нет.</p>'+
- '<button type="button" class="lesson-action" data-spoken>'+ (state.spoken?'✓ Я повторил и сверил':'Я повторил и сверил произношение')+'</button></article>';
+ '<div id="lesson-microphone" class="lesson-recorder"><button class="lesson-action" type="button" data-record-start>🎙 Записать себя</button>'+
+ '<button class="lesson-action" type="button" data-record-stop hidden>■ Остановить запись</button>'+
+ '<button class="lesson-action" type="button" data-record-play hidden>▶ Прослушать себя</button></div>':
+ '<p class="lesson-small">Микрофон недоступен. Произнеси фразу без записи.</p>')+
+ '<button type="button" class="lesson-action" data-spoken>'+(state.spoken?'✓ Я сравнил':'Я повторил и сравнил')+'</button>'+
+ '<details class="pg-more" style="width:100%"><summary>Совет по произношению</summary><p>'+esc(topic.speech.tip)+'</p>'+
+ '<p>Автоматической оценки тонов пока нет. Запись хранится только на устройстве и удаляется при выходе с экрана.</p></details>'+
+ '</article>';
 }
 function refreshMic(){
  const root=$('lesson-microphone');if(!root)return;
@@ -276,12 +300,14 @@ function stopMic(){
 }
 function renderReview(){
  const q=topic.quiz;
- return '<article class="lesson-card"><h2>Повтори главное</h2><p>'+esc(topic.review)+'</p></article>'+
- '<div class="lesson-quiz"><h2>Контрольный вопрос</h2><p class="lesson-question">'+esc(q.question)+'</p>'+
+ return '<article class="lesson-quiz"><div class="lesson-exercise-indicator">Проверь себя</div>'+
+ '<p class="lesson-question">'+esc(q.question)+'</p>'+
  '<div class="lesson-choices">'+q.choices.map((c,i)=>
-  '<button type="button" data-answer="'+i+'" class="lesson-choice '+(answerChosen===i?(i===q.correct?'is-correct':'is-wrong'):'')+'">'+esc(c)+'</button>').join('')+'</div>'+
- (state.quizPassed?'<p class="lesson-note">✓ Правильно! '+esc(q.explain)+'</p>':'')+'</div>'+
- (state.completed?'<p class="lesson-note">✅ Урок завершён и сохранён. Его можно повторить в любое время.</p>':'');
+ '<button type="button" data-answer="'+i+'" class="lesson-choice '+(answerChosen===i?(i===q.correct?'is-correct':'is-wrong'):'')+'">'+esc(c)+'</button>').join('')+'</div>'+
+ (state.quizPassed?'<p class="lesson-note">✓ Верно! '+esc(q.explain)+'</p>':'')+
+ '</article>'+
+ '<details class="pg-more"><summary>Повторить главное</summary><p>'+esc(topic.review)+'</p></details>'+
+ (state.completed?'<p class="lesson-note">✅ Урок завершён и сохранён.</p>':'');
 }
 function renderSteps(){
  $('lesson-steps').innerHTML=stepTitles.map(([name,icon],i)=>{
@@ -306,14 +332,17 @@ function render(){
  $('stage-content').innerHTML=renderers[state.step]();
  feedback('');
  $('lesson-prev').disabled=state.step===0;
- $('lesson-next').disabled=(state.step===0&&state.wordPage<Math.ceil(topic.words.length/4)-1)||(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4))||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed);
+ $('lesson-next').disabled=(state.step===0&&state.wordIndex<topic.words.length-1)||(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4))||(state.step===2&&state.ruleIndex<topic.rules.length-1)||(state.step===3&&state.dialogueIndex<topic.dialogue.length-1)||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed);
  $('lesson-next').textContent=state.step===6?'✓ Завершить и к карте':'Дальше →';
  if(state.completed&&state.step===6)$('lesson-next').textContent='К карте HSK 1 →';
  save();
+ const pane=$('lesson-body');if(pane)pane.scrollTop=0;
 }
 function goNext(){
- if(state.step===0&&state.wordPage<Math.ceil(topic.words.length/4)-1){feedback('Сначала пройди все группы новых слов.');return;}
+ if(state.step===0&&state.wordIndex<topic.words.length-1){feedback('Прослушай все слова по одному.');return;}
  if(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4)){feedback('Сначала пройди четыре задания на слух.');return;}
+ if(state.step===2&&state.ruleIndex<topic.rules.length-1){feedback('Просмотри все примеры.');return;}
+ if(state.step===3&&state.dialogueIndex<topic.dialogue.length-1){feedback('Прослушай все реплики.');return;}
  if(state.step===4&&!state.buildPassed){feedback('Сначала правильно собери фразу.');return;}
  if(state.step===5&&!state.spoken){feedback('Сначала проговори фразу и подтверди повторение.');return;}
  if(state.step===6){
@@ -330,11 +359,18 @@ $('lesson-steps').addEventListener('click',e=>{
 });
 $('stage-content').addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button||button.disabled)return;
- if(button.hasAttribute('data-word-next')){
-   state.wordPage=Math.min(Math.ceil(topic.words.length/4)-1,state.wordPage+1);render();return;
+ if(button.hasAttribute('data-word-next')||button.hasAttribute('data-word-prev')){
+   state.wordIndex=Math.max(0,Math.min(topic.words.length-1,state.wordIndex+(button.hasAttribute('data-word-next')?1:-1)));
+   state.wordPage=Math.floor(state.wordIndex/4);
+   render();return;
  }
- if(button.hasAttribute('data-word-prev')){
-   state.wordPage=Math.max(0,state.wordPage-1);render();return;
+ if(button.hasAttribute('data-rule-next')||button.hasAttribute('data-rule-prev')){
+   state.ruleIndex=Math.max(0,Math.min(topic.rules.length-1,state.ruleIndex+(button.hasAttribute('data-rule-next')?1:-1)));
+   render();return;
+ }
+ if(button.hasAttribute('data-dialogue-next')||button.hasAttribute('data-dialogue-prev')){
+   state.dialogueIndex=Math.max(0,Math.min(topic.dialogue.length-1,state.dialogueIndex+(button.hasAttribute('data-dialogue-next')?1:-1)));
+   render();return;
  }
  if(button.hasAttribute('data-listen-prompt')){
    const item=topic.listen?.items?.[exerciseOrder[state.earProgress]];
