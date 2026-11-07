@@ -36,6 +36,7 @@
  // position from an older long-format card group.
  let previous=stage?.firstElementChild;
  const observer=new MutationObserver(()=>{
+  if(!window.document?.body){observer.disconnect();return}
   if(stage?.firstElementChild!==previous){
    previous=stage?.firstElementChild;
    const pane=document.getElementById('lesson-body');
