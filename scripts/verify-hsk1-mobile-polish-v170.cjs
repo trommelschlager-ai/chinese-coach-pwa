@@ -28,7 +28,7 @@ assert(css.includes("@media(prefers-reduced-motion:reduce)"),"Motion reduction r
 assert(css.includes("approved-panda-lake-v112.webp"),"Approved HSK1 landscape must remain unchanged");
 assert(page.includes('hsk1-native-human-map-v167.js'),"Licensed native sample mapping must be unchanged");
 assert(page.includes('hsk1-voices-map-v160.js'),"Existing female voice references must be unchanged");
-assert(d.querySelector('.lesson-controls #lesson-next').textContent.includes('Следующее слово'),"Pink Next button must lead straight to the next word");
+assert(d.querySelector('.lesson-controls #lesson-next').textContent.includes('Дальше')&&js.includes("'Следующее слово →'"),"Static footer must be present; active lesson should relabel it to Next word");
 assert(d.querySelector('nav#lesson-steps'),"Seven lesson steps must remain");
 assert(d.querySelector('.lesson-journey')?.contains(d.querySelector('nav#lesson-steps')),'Visual journey must contain seven real controls');
 assert(journey.includes('panda-reference-v175/mountain-stairs.webp'),'Approved staircase artwork must stay sharp');
