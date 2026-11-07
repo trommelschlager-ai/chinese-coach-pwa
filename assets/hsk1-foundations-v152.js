@@ -139,7 +139,7 @@ try {
  if(FEMALE_SPEED_OPTIONS.includes(remembered))femaleSpeed=remembered;
 } catch {}
 function isFemaleLessonClip(file,role){
- return role==='female'&&typeof file==='string'&&file.includes('/hsk1-voices-v160/');
+ return role==='female'&&typeof file==='string'&&(file.includes('/hsk1-voices-v160/')||file.startsWith('data:audio/mpeg;base64,'));
 }
 function tuneVoice(audio,file,role){
  if(isFemaleLessonClip(file,role)){
