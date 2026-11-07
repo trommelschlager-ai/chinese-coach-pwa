@@ -9,6 +9,7 @@ body.pg-study-open.pg-exact-loaded main.lesson-shell{
  padding:0!important;background:#240d40!important;box-shadow:0 0 20px #180223b0!important;
  overflow:visible!important
 }
+body:not(.pg-study-open) .lesson-shell .lesson-study{display:none!important}
 body.pg-study-open .lesson-shell .lesson-journey{display:none!important}
 body.pg-study-open .lesson-shell .lesson-study,
 body.pg-study-open.pg-exact-loaded .lesson-shell .lesson-study{
