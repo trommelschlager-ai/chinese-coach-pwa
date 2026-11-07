@@ -1,5 +1,5 @@
 {
-  "version": 190,
+  "version": 191,
   "bytes": 33265369,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -1593,7 +1593,7 @@
     "./manifest.webmanifest",
     "./start-chinese.html",
     "./hsk1-first-v189.html",
-    "./assets/hsk1-first-v189.css?v=190",
-    "./assets/hsk1-first-v189.js?v=190"
+    "./assets/hsk1-first-v189.css?v=191",
+    "./assets/hsk1-first-v189.js?v=191"
   ]
 }
