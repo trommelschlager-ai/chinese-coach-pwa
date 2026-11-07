@@ -1,6 +1,6 @@
 {
-  "version": 179,
-  "bytes": 31645708,
+  "version": 180,
+  "bytes": 31660140,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -510,9 +510,12 @@
     "./assets/hsk1-approved-reference-v177.webp?v=177",
     "./assets/hsk1-archive-style-v178.css?v=179",
     "./assets/hsk1-audit-v103.json",
+    "./assets/hsk1-compact-v180.css?v=180",
+    "./assets/hsk1-compact-v180.js?v=180",
     "./assets/hsk1-foundations-data-v152.js?v=154",
     "./assets/hsk1-foundations-v152.css?v=171",
     "./assets/hsk1-foundations-v152.js?v=172",
+    "./assets/hsk1-foundations-v152.js?v=180",
     "./assets/hsk1-native-human-map-v167.js?v=167",
     "./assets/hsk1-reference-exact-v177.css?v=177",
     "./assets/hsk1-roadmap-v103.css",
