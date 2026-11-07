@@ -201,6 +201,8 @@ function resetRecall(){recallMode=false;recallRevealed=false;wordPlayed=false}
 function renderWords(){
  const i=state.wordIndex,[hz,py,ru]=topic.words[i],rating=state.wordRatings[i];
  const example=topic.dialogue.find(row=>row[1].includes(hz));
+ // Keep one clear learning goal: see the word, hear it and understand it.
+ // The example, tone hint and review actions remain available but do not crowd the word.
  const context=example?'<div class="pg-word-example" aria-label="Пример употребления">'+
   '<span class="pg-word-example-label">В предложении</span>'+
   '<strong lang="zh-Hans">'+esc(example[1])+'</strong><span>'+esc(example[3])+'</span></div>':'';
@@ -211,19 +213,17 @@ function renderWords(){
  const isHidden=recallMode&&!recallRevealed;
  return '<div class="lesson-exercise-indicator">Слово '+(i+1)+' из '+topic.words.length+'</div>'+
  '<article class="lesson-card lesson-word'+(isHidden?' pg-recall-active':'')+'">'+
- hanzi(hz,py,ru)+neutral+audioButton(hz,'female',true)+context+
+ hanzi(hz,py,ru)+audioButton(hz,'female',true)+
  '<div class="pg-word-tools"><button type="button" class="pg-word-translation" '+toggle+' aria-pressed="'+isHidden+'">'+label+'</button>'+
  '<button type="button" class="pg-word-pin" data-word-pin aria-pressed="'+(rating==='review')+'" aria-label="'+
- (rating==='review'?'Убрать из повторения':'Добавить слово в повторение')+'">'+bookmark+'</button></div>'+
- '</article>'+
- '<details class="pg-more"><summary>Подробнее и повторение</summary>'+
- '<p>'+esc(topic.goal)+'</p>'+
- (humanSamples[hz]?'<button type="button" class="pg-inline-action" data-human-play="'+esc(hz)+'">▶ Слушать носительницу (оригинал)</button>':'')+
- '<p>Отметь трудное слово значком ☆. Список повторения сохраняется на устройстве.</p>'+
+ (rating==='review'?'Убрать из повторения':'Добавить слово в повторение')+'">'+bookmark+'</button></div></article>'+
+ '<details class="pg-more"><summary>Пример и повторение</summary>'+
+ context+neutral+
+ (humanSamples[hz]?'<button type="button" class="pg-inline-action" data-human-play="'+esc(hz)+'">▶ Дополнительный образец</button>':'')+
  '<div class="pg-rating-tools"><button type="button" data-recall-mark="know">✓ Запомнил</button>'+
  '<button type="button" data-recall-mark="review">↻ Повторить</button></div>'+
- (i>0?'<button type="button" class="pg-inline-action" data-word-restart>С первого слова</button>':'')+
- '<p><a href="./yue-tan-listening.html">Оригинальные записи и авторство</a></p></details>';
+ (i>0?'<button type="button" class="pg-inline-action" data-word-restart>К первому слову</button>':'')+
+ '</details>';
 }
 function renderListeningEar(){
  if(topic.id==='foundations')return '';
