@@ -105,6 +105,14 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  d.getElementById('lesson-next').click();
  assert(d.getElementById('lesson-next').disabled,'Speaking confirmation needed');
  d.querySelector('[data-spoken]').click();
+ if(topicNo===1){
+  assert(d.getElementById('lesson-next').disabled,'Introduction speech requires a second recorded phrase');
+  const phrase=d.querySelector('.pg-speak-card .lesson-hanzi');
+  assert.equal(phrase.textContent,'我叫小明。','Second speech card must teach a meaningful spoken sentence');
+  assert(d.querySelector('[data-play="我叫小明。"][data-speaker="male"]'),
+   'Introduction speech must use approved male recording');
+  d.querySelector('[data-spoken]').click();
+ }
  assert(!d.getElementById('lesson-next').disabled);
  d.getElementById('lesson-next').click();
  assert(d.getElementById('lesson-next').disabled,'Quiz requires correct answer');
