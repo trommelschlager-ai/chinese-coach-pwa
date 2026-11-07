@@ -152,12 +152,7 @@ function renderWords(){
  return '<div class="lesson-exercise-indicator">Слово '+(i+1)+' из '+topic.words.length+'</div>'+
  '<article class="lesson-card lesson-word">'+hanzi(hz,py,ru)+audioButton(hz)+'</article>'+
  '<p class="pg-mini-instruction">Нажми 🔊, послушай и повтори вслух.</p>'+
- '<nav class="pg-card-pager" aria-label="Переключение слов">'+
- '<button type="button" data-word-prev'+(i===0?' disabled':'')+'>← Назад</button>'+
- (i<topic.words.length-1?
-  '<button type="button" data-word-next>Следующее слово →</button>':
-  '<button type="button" disabled>✓ Все '+topic.words.length+' слов</button>')+
- '</nav>'+
+ ''+
  '<details class="pg-more"><summary>Подробнее об изучении слов</summary><p>'+
  esc(topic.goal)+'</p><p>🔊 — учебная озвучка. 🎙 — отдельная запись носительницы, если доступна.</p>'+
  '<p><a href="./yue-tan-listening.html">Список оригинальных записей и авторство</a></p></details>';
@@ -201,10 +196,7 @@ function renderRules(){
  const i=state.ruleIndex,[head,desc,hz,py,ru]=topic.rules[i];
  return '<div class="lesson-exercise-indicator">Пример '+(i+1)+' из '+topic.rules.length+'</div>'+
  '<article class="lesson-card pg-rule-card"><h2>'+esc(head)+'</h2>'+hanzi(hz,py,ru)+audioButton(hz)+'</article>'+
- '<nav class="pg-card-pager" aria-label="Примеры">'+
- '<button type="button" data-rule-prev'+(i===0?' disabled':'')+'>← Назад</button>'+
- (i<topic.rules.length-1?'<button type="button" data-rule-next>Следующий пример →</button>':
- '<button type="button" disabled>✓ Примеры пройдены</button>')+'</nav>'+
+ ''+
  '<details class="pg-more"><summary>Объяснение примера</summary><p>'+esc(desc)+'</p>'+
  (topic.id==='foundations'?'<p>Базовые компоненты: 人 · 口 · 女 · 木 · 日.</p>':'')+'</details>';
 }
@@ -217,10 +209,7 @@ function renderDialogue(){
  '<img class="lesson-portrait" src="./assets/approved-'+(who==='Б'?'woman':'man')+'-v112.webp" alt="">'+
  '<div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz,roleForDialogue(who))+'</div>'+
  '<p class="pg-mini-instruction">Прослушай и повтори реплику.</p>'+
- '<nav class="pg-card-pager" aria-label="Реплики диалога">'+
- '<button type="button" data-dialogue-prev'+(i===0?' disabled':'')+'>← Назад</button>'+
- (i<topic.dialogue.length-1?'<button type="button" data-dialogue-next>Следующая реплика →</button>':
- '<button type="button" disabled>✓ Диалог пройден</button>')+'</nav>'+
+ ''+
  '<details class="pg-more"><summary>Весь диалог'+(allRecorded?' · слушать':'')+'</summary>'+
  (allRecorded?'<button type="button" class="lesson-action" data-dialog-all>▶ Прослушать целиком</button>':'')+
  topic.dialogue.map(d=>'<p>'+esc(d[1])+' — '+esc(d[3])+'</p>').join('')+'</details>';
@@ -331,18 +320,24 @@ function render(){
  $('stage-title').textContent=stepTitles[state.step][0];
  $('stage-content').innerHTML=renderers[state.step]();
  feedback('');
- $('lesson-prev').disabled=state.step===0;
- $('lesson-next').disabled=(state.step===0&&state.wordIndex<topic.words.length-1)||(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4))||(state.step===2&&state.ruleIndex<topic.rules.length-1)||(state.step===3&&state.dialogueIndex<topic.dialogue.length-1)||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed);
- $('lesson-next').textContent=state.step===6?'✓ Завершить и к карте':'Дальше →';
+ $('lesson-prev').disabled=state.step===0&&state.wordIndex===0;
+ $('lesson-prev').textContent=state.step===0&&state.wordIndex>0?'← Слово':state.step===2&&state.ruleIndex>0?'← Пример':state.step===3&&state.dialogueIndex>0?'← Реплика':'← Назад';
+ $('lesson-next').disabled=(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4))||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed);
+ $('lesson-next').textContent=state.step===0?(state.wordIndex<topic.words.length-1?'Следующее слово →':'К тонам →'):
+ state.step===2?(state.ruleIndex<topic.rules.length-1?'Следующий пример →':'К диалогу →'):
+ state.step===3?(state.dialogueIndex<topic.dialogue.length-1?'Следующая реплика →':'К заданию →'):
+ state.step===6?'✓ Завершить и к карте':'Дальше →';
  if(state.completed&&state.step===6)$('lesson-next').textContent='К карте HSK 1 →';
  save();
  const pane=$('lesson-body');if(pane)pane.scrollTop=0;
 }
 function goNext(){
- if(state.step===0&&state.wordIndex<topic.words.length-1){feedback('Прослушай все слова по одному.');return;}
+ if(state.step===0&&state.wordIndex<topic.words.length-1){
+  state.wordIndex++;state.wordPage=Math.floor(state.wordIndex/4);render();return;
+ }
  if(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4)){feedback('Сначала пройди четыре задания на слух.');return;}
- if(state.step===2&&state.ruleIndex<topic.rules.length-1){feedback('Просмотри все примеры.');return;}
- if(state.step===3&&state.dialogueIndex<topic.dialogue.length-1){feedback('Прослушай все реплики.');return;}
+ if(state.step===2&&state.ruleIndex<topic.rules.length-1){state.ruleIndex++;render();return;}
+ if(state.step===3&&state.dialogueIndex<topic.dialogue.length-1){state.dialogueIndex++;render();return;}
  if(state.step===4&&!state.buildPassed){feedback('Сначала правильно собери фразу.');return;}
  if(state.step===5&&!state.spoken){feedback('Сначала проговори фразу и подтверди повторение.');return;}
  if(state.step===6){
@@ -352,7 +347,12 @@ function goNext(){
  state.step+=1;state.maxStep=Math.max(state.maxStep,state.step);save();render();openStudy();
 }
 $('lesson-next').addEventListener('click',goNext);
-$('lesson-prev').addEventListener('click',()=>{if(state.step>0){state.step--;render();openStudy()}});
+$('lesson-prev').addEventListener('click',()=>{
+ if(state.step===0&&state.wordIndex>0){state.wordIndex--;state.wordPage=Math.floor(state.wordIndex/4);render();return;}
+ if(state.step===2&&state.ruleIndex>0){state.ruleIndex--;render();return;}
+ if(state.step===3&&state.dialogueIndex>0){state.dialogueIndex--;render();return;}
+ if(state.step>0){state.step--;render();openStudy()}
+});
 $('lesson-steps').addEventListener('click',e=>{
  const b=e.target.closest('[data-step]');if(!b||b.disabled)return;
  const s=Number(b.dataset.step);if(s<=state.maxStep){state.step=s;render();openStudy(true)}
