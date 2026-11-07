@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#b348c6">
 <title>HSK 1 · Panda Go</title>
+<script>
+/* Route legacy lesson-1 links to the rebuilt, independent lesson.
+   Leaves lesson=2..7 and their saved state untouched. */
+if(!new URLSearchParams(location.search).has('lesson')||
+   new URLSearchParams(location.search).get('lesson')==='1'){
+  location.replace('./hsk1-first-v189.html');
+}
+</script>
 <link rel="stylesheet" href="./assets/hsk1-foundations-v152.css?v=171">
 <link rel="stylesheet" href="./assets/panda-approved-three-screen-v172.css?v=172">
 <link rel="stylesheet" href="./assets/hsk1-journey-approved-v176.css?v=176">
