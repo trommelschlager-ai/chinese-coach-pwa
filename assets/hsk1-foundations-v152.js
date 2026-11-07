@@ -208,7 +208,8 @@ function renderListeningEar(){
 const toneOrder=state.toneSequence;
 function renderToneEar(){
  const i=state.toneEarProgress;
- if(i>=4)return '<div class="lesson-note">✅ Все четыре тона распознаны. Можно дальше!</div>';
+ if(i>=4)return '<div class="lesson-note">✅ Четыре тона распознаны!</div>'+
+ '<button type="button" class="lesson-action" data-tone-reset>↻ Повторить тоны в другом порядке</button>';
  return '<article class="lesson-card lesson-listening"><div class="lesson-exercise-indicator">Задание на слух '+(i+1)+' из 4</div>'+
  '<button type="button" class="lesson-action" data-tone-hear>▶ Слушать тон</button>'+
  '<div class="lesson-tone-answer">'+[1,2,3,4].map(n=>'<button type="button" data-tone-choice="'+n+'">'+n+'-й тон</button>').join('')+'</div>'+
@@ -373,18 +374,18 @@ function render(){
  feedback('');
  $('lesson-prev').disabled=state.step===0&&state.wordIndex===0;
  $('lesson-prev').textContent=state.step===0&&state.wordIndex>0?'← Слово':state.step===2&&state.ruleIndex>0?'← Пример':state.step===3&&state.dialogueIndex>0?'← Реплика':'← Назад';
- $('lesson-next').disabled=(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4))||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed);
+ $('lesson-next').disabled=(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4))||(state.step===4&&!state.buildPassed)||(state.step===5&&!state.spoken)||(state.step===6&&!state.quizPassed&&!state.completed);
  $('lesson-next').textContent=state.step===0?(state.wordIndex<topic.words.length-1?'Следующее слово →':'К тонам →'):
  state.step===2?(state.ruleIndex<topic.rules.length-1?'Следующий пример →':'К диалогу →'):
  state.step===3?(state.dialogueIndex<topic.dialogue.length-1?'Следующая реплика →':'К заданию →'):
- state.step===6?'✓ Завершить и к карте':'Дальше →';
+ state.step===6?(state.completed?'К карте HSK 1 →':'✓ Завершить урок'):'Дальше →';
  if(state.completed&&state.step===6)$('lesson-next').textContent='К карте HSK 1 →';
  save();
  const pane=$('lesson-body');if(pane)pane.scrollTop=0;
 }
 function goNext(){
  if(state.step===0&&state.wordIndex<topic.words.length-1){
-  state.wordIndex++;state.wordPage=Math.floor(state.wordIndex/4);render();return;
+  state.wordIndex++;state.wordPage=Math.floor(state.wordIndex/4);resetRecall();render();return;
  }
  if(state.step===1&&(topic.id==='foundations'?state.toneEarProgress<4:state.earProgress<4)){feedback('Сначала пройди четыре задания на слух.');return;}
  if(state.step===2&&state.ruleIndex<topic.rules.length-1){state.ruleIndex++;render();return;}
@@ -392,14 +393,15 @@ function goNext(){
  if(state.step===4&&!state.buildPassed){feedback('Сначала правильно собери фразу.');return;}
  if(state.step===5&&!state.spoken){feedback('Сначала проговори фразу и подтверди повторение.');return;}
  if(state.step===6){
-  if(!state.quizPassed){feedback('Сначала ответь на контрольный вопрос.');return;}
-  state.completed=true;save();location.href='./hsk1-map.html';return;
+  if(state.completed){location.href='./hsk1-map.html';return;}
+  if(!state.quizPassed){feedback('Ответь на все вопросы итоговой проверки.');return;}
+  state.completed=true;save();render();return;
  }
  state.step+=1;state.maxStep=Math.max(state.maxStep,state.step);save();render();openStudy();
 }
 $('lesson-next').addEventListener('click',goNext);
 $('lesson-prev').addEventListener('click',()=>{
- if(state.step===0&&state.wordIndex>0){state.wordIndex--;state.wordPage=Math.floor(state.wordIndex/4);render();return;}
+ if(state.step===0&&state.wordIndex>0){state.wordIndex--;state.wordPage=Math.floor(state.wordIndex/4);resetRecall();render();return;}
  if(state.step===2&&state.ruleIndex>0){state.ruleIndex--;render();return;}
  if(state.step===3&&state.dialogueIndex>0){state.dialogueIndex--;render();return;}
  if(state.step>0){state.step--;render();openStudy()}
@@ -410,9 +412,20 @@ $('lesson-steps').addEventListener('click',e=>{
 });
 $('stage-content').addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button||button.disabled)return;
+ if(button.hasAttribute('data-recall-start')){recallMode=true;recallRevealed=false;render();return}
+ if(button.hasAttribute('data-recall-reveal')){recallRevealed=true;render();return}
+ if(button.hasAttribute('data-recall-mark')){
+   state.wordRatings[state.wordIndex]=button.dataset.recallMark==='know'?'know':'review';
+   save();resetRecall();render();
+   feedback(state.wordRatings[state.wordIndex]==='know'?'✓ Отмечено как знакомое.':'↻ Добавлено в повторение.');
+   return;
+ }
+ if(button.hasAttribute('data-word-restart')){
+   state.wordIndex=0;state.wordPage=0;resetRecall();render();return;
+ }
  if(button.hasAttribute('data-word-next')||button.hasAttribute('data-word-prev')){
    state.wordIndex=Math.max(0,Math.min(topic.words.length-1,state.wordIndex+(button.hasAttribute('data-word-next')?1:-1)));
-   state.wordPage=Math.floor(state.wordIndex/4);
+   state.wordPage=Math.floor(state.wordIndex/4);resetRecall();
    render();return;
  }
  if(button.hasAttribute('data-rule-next')||button.hasAttribute('data-rule-prev')){
@@ -443,6 +456,9 @@ $('stage-content').addEventListener('click',e=>{
    if(micObjectUrl){stopAudio();playOne(micObjectUrl,null)}
    return;
  }
+ if(button.hasAttribute('data-tone-reset')){
+   state.toneEarProgress=0;toneOrder.splice(0,4,...shuffleTones());save();render();return;
+ }
  if(button.hasAttribute('data-tone-hear')){
    playOne((window.courseHumanAudio||{})[toneOrder[state.toneEarProgress]],null);return;
  }
@@ -452,9 +468,13 @@ $('stage-content').addEventListener('click',e=>{
      state.toneEarProgress=Math.min(4,state.toneEarProgress+1);save();
      const container=document.querySelector('.lesson-tone-answer')?.closest('.lesson-card');
      if(container)container.outerHTML=renderToneEar();
-     feedback(state.toneEarProgress===4?'✅ Четыре тона распознаны правильно!':'Верно! Теперь слушай следующий тон.');
+     feedback(state.toneEarProgress===4?'✅ Четыре тона распознаны правильно!':'Верно! Слушай следующий тон.');
      if(state.toneEarProgress>=4)$('lesson-next').disabled=false;
-   }else feedback('Не совпало. Прослушай ещё раз и обрати внимание на направление тона.');
+   }else{
+     const shapes={1:'высокий и ровный',2:'повышается',3:'обычно низкий, иногда с подъёмом',4:'резко понижается'};
+     const choice=Number(button.dataset.toneChoice);
+     feedback('Ты выбрал '+choice+'-й тон ('+shapes[choice]+'), а прозвучал '+correct+'-й ('+shapes[correct]+'). Прослушай ещё раз.');
+   }
    return;
  }
  if(button.hasAttribute('data-human-play')){
@@ -483,21 +503,34 @@ $('stage-content').addEventListener('click',e=>{
     state.buildPassed=state.buildProgress>=builds.length;
     assembled=[];save();
     $('stage-content').innerHTML=renderCompose();
-    feedback(state.buildPassed?'✅ Все три предложения составлены!':'Верно! '+b.note+' Теперь следующий пример.');
+    buildMistakes=0;
+    feedback(state.buildPassed?'✅ Все '+builds.length+' задания выполнены!':'Верно! '+b.note+' Следующее задание.');
     $('lesson-next').disabled=!state.buildPassed;
-  }else feedback('Проверь порядок слов или иероглифов и попробуй снова.');
+  }else{
+   buildMistakes++;
+   const hint=buildMistakes>=2?' Начни с «'+target[0]+'».':' Попробуй ещё раз.';
+   feedback(assembled.length!==target.length?'Нужно выбрать '+target.length+' элемента. Выбрано: '+assembled.length+'.':
+     'Порядок элементов пока неверный.'+hint);
+  }
   return;
  }
  if(button.hasAttribute('data-spoken')){state.spoken=true;save();button.textContent='✓ Я повторил фразу';$('lesson-next').disabled=false;feedback('Отлично. Теперь переходи к повторению.');return;}
  if(button.hasAttribute('data-answer')){
+  if(state.completed||state.reviewProgress>=reviewQuestions.length)return;
+  const q=reviewQuestions[state.reviewProgress];
   answerChosen=Number(button.dataset.answer);
-  const correct=answerChosen===topic.quiz.correct;
-  if(correct){state.quizPassed=true;save();feedback('✓ Верно! '+topic.quiz.explain);$('lesson-next').disabled=false;}
-  else feedback('Пока неверно. Подумай ещё раз — можно вернуться к объяснениям.');
-  document.querySelectorAll('.lesson-choice').forEach((el,i)=>{
-    el.classList.toggle('is-correct',i===topic.quiz.correct&&correct);
-    el.classList.toggle('is-wrong',i===answerChosen&&!correct);
-  });
+  if(answerChosen===q.correct){
+    state.reviewProgress++;reviewMistakes=0;answerChosen=-1;
+    state.quizPassed=state.reviewProgress===reviewQuestions.length;
+    save();$('stage-content').innerHTML=renderReview();
+    feedback('✓ Верно! '+q.explain+(state.quizPassed?' Проверка завершена.':' Следующий вопрос.'));
+    $('lesson-next').disabled=!state.quizPassed;
+  }else{
+    reviewMistakes++;
+    feedback(reviewMistakes>1?'Пока неверно. Попробуй повторить тему и сравнить варианты.':
+     'Пока неверно. Прослушай ещё раз или открой «Повторить теорию».');
+    document.querySelectorAll('.lesson-choice').forEach((el,i)=>el.classList.toggle('is-wrong',i===answerChosen));
+  }
  }
 });
 window.addEventListener('pagehide',()=>{stopAudio();releaseMic();});
