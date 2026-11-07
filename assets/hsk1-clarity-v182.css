@@ -8,6 +8,10 @@ body.pg-study-open .lesson-word .lesson-hanzi{font-size:clamp(52px,15vw,76px)!im
 body.pg-study-open .lesson-word .lesson-py{font-size:clamp(20px,5.7vw,25px)!important;margin:1px 0!important}
 body.pg-study-open .lesson-word .lesson-ru{font-size:clamp(16px,4.6vw,20px)!important;margin:0!important}
 body.pg-study-open .lesson-word .lesson-audio-label{margin:1px 0 3px}
+/* During self-recall, do not give away the meaning in the context translation. */
+body.pg-study-open .lesson-word.pg-recall-active .pg-word-example{
+ visibility:hidden!important
+}
 body.pg-study-open .pg-word-example{
  display:flex;flex-direction:column;align-items:center;gap:2px;
  padding:8px 10px;margin:4px 0 1px;width:min(100%,340px);
