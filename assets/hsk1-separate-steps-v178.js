@@ -24,6 +24,10 @@
  hint.setAttribute('role','note');
  study.prepend(hint);
  study.prepend(header);
+ const illustration=document.createElement('div');
+ illustration.className='pg-step-illustration';
+ illustration.setAttribute('aria-hidden','true');
+ hint.insertAdjacentElement('afterend',illustration);
  const instructions=[
   'Сначала прослушай новые слова. Перелистывай группы кнопкой «Следующие слова».',
   'Послушай четыре тона и выполни четыре задания на слух.',
