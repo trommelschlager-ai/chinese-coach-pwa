@@ -14,7 +14,7 @@
   ];
   let page=0,radical=0,stroke=0,root=null,returnFocus=null;
   const esc=t=>String(t).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const allRadicals=RADICALS.map((x,i)=>`<button type="button" class="pg-intro-radical${radical===i?' active':''}" data-intro-radical="${i}" aria-pressed="${radical===i}"><strong lang="zh-Hans">${x.hanzi}</strong><span>${x.ru}</span></button>`).join('');
+  const allRadicals=()=>RADICALS.map((x,i)=>`<button type="button" class="pg-intro-radical${radical===i?' active':''}" data-intro-radical="${i}" aria-pressed="${radical===i}"><strong lang="zh-Hans">${x.hanzi}</strong><span>${x.ru}</span></button>`).join('');
   const screens=[
     ()=>`<div class="pg-intro-eyebrow">Шаг 1 · Основы китайского письма</div>
       <h1>Что такое иероглиф?</h1>
