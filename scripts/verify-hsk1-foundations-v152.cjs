@@ -29,6 +29,9 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  assert.equal(d.querySelectorAll('.lesson-step').length,7,'Seven stages in '+topicNo);
  const words=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].words.length;
  assert.equal(d.querySelectorAll('.lesson-word').length,1,'Only one vocabulary card visible at a time');
+ assert.equal(d.querySelectorAll('.lesson-word .lesson-audio').length,1,'One primary audio on a vocabulary card');
+ assert.equal(d.querySelectorAll('.lesson-word .lesson-audio-native').length,0,'Original human sample must not look like microphone');
+ assert(d.querySelector('[data-word-pin]'),'Small bookmark available without extra full-width buttons');
  const recall=d.querySelector('[data-recall-start]');assert(recall,'Word should offer self-recall');
  recall.click();assert(d.querySelector('.pg-recall-active'),'Translation must hide during recall');
  d.querySelector('[data-recall-reveal]').click();
@@ -97,12 +100,22 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  assert.equal(builds.length,topicNo===1?4:3,'Real introduction sentence should augment existing exercises');
  for(let k=0;k<builds.length;k++){
   const target=builds[k].target;
-  target.forEach((_,i)=>{const btn=d.querySelector('[data-add="'+i+'"]');assert(btn,'Missing composition token '+i+' in task '+k);btn.click()});
+  target.forEach((_,i)=>{
+   const btn=d.querySelector('[data-add="'+i+'"]');
+   assert(btn,'Missing composition token '+i+' in task '+k);btn.click();
+  });
   d.querySelector('[data-verify-build]').click();
-  assert.equal(d.getElementById('lesson-next').disabled,k<builds.length-1,'Task '+k+' did not unlock correctly');
+  assert(d.querySelector('.pg-build-confirmed'),'Show correct assembled phrase before advancing');
+  assert(d.querySelector('.pg-build-confirmed .lesson-hanzi')?.textContent===target.join(''),
+   'Correct sentence must remain visible on the confirmation screen');
+  assert(!d.getElementById('lesson-next').disabled,'Next must unlock on solved sentence');
+  const pending=JSON.parse(w.localStorage.getItem('pg-hsk1-v3-'+w.PANDA_HSK1_FOUNDATIONS[topicNo-1].id));
+  assert(pending.buildPending,'Successful build result should persist until Next');
+  d.getElementById('lesson-next').click();
+  if(k<builds.length-1)assert(d.getElementById('lesson-next').disabled,'Unsolved next build must be blocked');
  }
  assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-'+w.PANDA_HSK1_FOUNDATIONS[topicNo-1].id)).buildProgress,builds.length,'All assembly tasks saved');
- d.getElementById('lesson-next').click();
+ assert(d.getElementById('lesson-count').textContent.includes('Шаг 6'),'Last confirmed build leads to speaking');
  assert(d.getElementById('lesson-next').disabled,'Speaking confirmation needed');
  d.querySelector('[data-spoken]').click();
  if(topicNo===1){
@@ -117,7 +130,13 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  d.getElementById('lesson-next').click();
  assert(d.getElementById('lesson-next').disabled,'Quiz requires correct answer');
  const answers=topicNo===1?[w.PANDA_HSK1_FOUNDATIONS[0].quiz.correct,0,0]:
-  [w.PANDA_HSK1_FOUNDATIONS[topicNo-1].quiz.correct];
+  [w.PANDA_HSK1_FOUNDATIONS[topicNo-1].quiz.correct,1,1];
+ if(topicNo===2){
+  const wrong=(answers[0]+1)%4;
+  d.querySelector('[data-answer="'+wrong+'"]').click();
+  const afterWrong=JSON.parse(w.localStorage.getItem('pg-hsk1-v3-pronouns'));
+  assert.equal(afterWrong.reviewErrors[0],1,'Wrong answers must be counted, not given credit');
+ }
  for(let k=0;k<answers.length;k++){
    d.querySelector('[data-answer="'+answers[k]+'"]').click();
    assert.equal(d.getElementById('lesson-next').disabled,k<answers.length-1,
@@ -125,6 +144,7 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  }
  const savedReview=JSON.parse(w.localStorage.getItem('pg-hsk1-v3-'+w.PANDA_HSK1_FOUNDATIONS[topicNo-1].id));
  assert.equal(savedReview.reviewProgress,answers.length,'Review answers must persist');
+ assert.equal(savedReview.firstTryCorrect,topicNo===2?2:3,'First-attempt score must not credit corrected mistakes');
  d.getElementById('lesson-next').click();
  assert(d.querySelector('.pg-result-card'),'Completion should display result before returning to map');
  const id=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].id;
@@ -134,4 +154,4 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  assert.equal(w.localStorage.getItem('pg-hsk1-completed-v1'),null,'Old completion data must stay untouched');
  dom.window.close();
 }
-console.log('HSK 1 v181: seven lessons, self-recall, randomized tone questions, 22 sentence tasks, three-check introduction, results and preserved progress OK.');
+console.log('HSK 1 v182: seven lessons, simplified audio, context, 3-question quizzes, honest first-attempt scores, confirmed builds and preserved progress OK.');
