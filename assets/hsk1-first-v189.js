@@ -44,7 +44,7 @@
  let step=0,radical=0,stroke=0,toneChoice=0,order=[],verified=false,audio=null,recorder=null,stream=null,recordUrl=null,recording=false,playedAtLeastOnce=false;
  try{const v=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');if(v&&Number.isInteger(v.step))step=Math.min(STEPS-1,Math.max(0,v.step))}catch{}
  const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const intro=(n,title,sub)=>`<p class="screen-eyebrow">${esc(n)}</p><h1 class="screen-title">${esc(title)}</h1><p class="screen-sub">${sub}</p>`;
+ const intro=(n,title,sub)=>`${n?`<p class="screen-eyebrow">${esc(n)}</p>`:""}<h1 class="screen-title">${esc(title)}</h1>${sub?`<p class="screen-sub">${sub}</p>`:""}`;
  const getClip=key=>{
   const vo=window.PANDA_HSK1_VOICES?.female||{};
   if(vo[key])return vo[key];
