@@ -165,12 +165,12 @@ function playDialogue(){
  };
  next();
 }
-function audioButton(hz,role){
+function audioButton(hz,role,hideNative=false){
  const speaker=role||'female';
  const file=clipFor(hz,speaker);
  const original=speaker==='female'?humanSamples[hz]:null;
  return '<div class="lesson-audio-label"><button type="button" class="lesson-audio" data-play="'+esc(hz)+'" data-speaker="'+esc(speaker)+'"'+(file?'':' disabled title="Запись готовится"')+' aria-label="'+(file?'Прослушать ':'Записи пока нет: ')+esc(hz)+'">'+(file?'🔊':'—')+'</button>'+
-  (original?'<button type="button" class="lesson-audio-native" data-human-play="'+esc(hz)+'" title="Оригинальная запись Yue Tan (1×)" aria-label="Послушать носительницу Yue Tan: '+esc(hz)+'">🎙</button>':'')+
+  (original&&!hideNative?'<button type="button" class="lesson-audio-native" data-human-play="'+esc(hz)+'" title="Дополнительная запись носительницы Yue Tan (1×)" aria-label="Слушать носительницу Yue Tan: '+esc(hz)+'">🎙</button>':'')+
   (file?'':'<small class="lesson-audio-caption">Нет записи</small>')+'</div>';
 }
 function hanzi(hz,py,ru){
@@ -179,24 +179,29 @@ function hanzi(hz,py,ru){
 function resetRecall(){recallMode=false;recallRevealed=false;wordPlayed=false}
 function renderWords(){
  const i=state.wordIndex,[hz,py,ru]=topic.words[i],rating=state.wordRatings[i];
- const card='<article class="lesson-card lesson-word'+(recallMode&&!recallRevealed?' pg-recall-active':'')+'">'+
- hanzi(hz,py,ru)+audioButton(hz)+'</article>';
- let recall;
- if(!recallMode)recall='<button type="button" class="pg-recall-start" data-recall-start>🧠 Проверить себя</button>';
- else if(!recallRevealed)recall='<button type="button" class="pg-recall-start" data-recall-reveal>Показать перевод</button>';
- else recall='<button type="button" data-recall-mark="review">↻ Повторить</button>'+
- '<button type="button" class="pg-recall-known" data-recall-mark="know">✓ Запомнил</button>';
+ const example=topic.dialogue.find(row=>row[1].includes(hz));
+ const context=example?'<div class="pg-word-example" aria-label="Пример употребления">'+
+  '<span class="pg-word-example-label">В предложении</span>'+
+  '<strong lang="zh-Hans">'+esc(example[1])+'</strong><span>'+esc(example[3])+'</span></div>':'';
+ const neutral=hz==='吗'&&py==='ma'?'<small class="pg-neutral-hint">Нейтральный тон — без значка над гласной</small>':'';
+ const label=recallMode&&!recallRevealed?'Показать перевод':'Скрыть перевод';
+ const toggle=recallMode&&!recallRevealed?'data-recall-reveal':'data-recall-start';
+ const bookmark=rating==='review'?'↻':'☆';
+ const isHidden=recallMode&&!recallRevealed;
  return '<div class="lesson-exercise-indicator">Слово '+(i+1)+' из '+topic.words.length+'</div>'+
- card+'<div class="pg-recall-controls">'+recall+'</div>'+
- '<p class="pg-mini-instruction">'+
- (recallMode&&!recallRevealed?'Вспомни значение, затем открой перевод.':
-  rating==='know'?'✓ Ты отмечал это слово как знакомое.':
-  rating==='review'?'↻ Это слово стоит повторить.':
-  '🔊 Послушай и повтори, потом попробуй вспомнить перевод.')+'</p>'+
+ '<article class="lesson-card lesson-word'+(isHidden?' pg-recall-active':'')+'">'+
+ hanzi(hz,py,ru)+neutral+audioButton(hz,'female',true)+context+
+ '<div class="pg-word-tools"><button type="button" class="pg-word-translation" '+toggle+' aria-pressed="'+isHidden+'">'+label+'</button>'+
+ '<button type="button" class="pg-word-pin" data-word-pin aria-pressed="'+(rating==='review')+'" aria-label="'+
+ (rating==='review'?'Убрать из повторения':'Добавить слово в повторение')+'">'+bookmark+'</button></div>'+
+ '</article>'+
  '<details class="pg-more"><summary>Подробнее и повторение</summary>'+
  '<p>'+esc(topic.goal)+'</p>'+
- '<p>Отметки «Запомнил» и «Повторить» сохраняются отдельно от прохождения урока.</p>'+
- (i>0?'<button type="button" class="pg-inline-action" data-word-restart>Начать слова с первого</button>':'')+
+ (humanSamples[hz]?'<button type="button" class="pg-inline-action" data-human-play="'+esc(hz)+'">▶ Слушать носительницу (оригинал)</button>':'')+
+ '<p>Отметь трудное слово значком ☆. Список повторения сохраняется на устройстве.</p>'+
+ '<div class="pg-rating-tools"><button type="button" data-recall-mark="know">✓ Запомнил</button>'+
+ '<button type="button" data-recall-mark="review">↻ Повторить</button></div>'+
+ (i>0?'<button type="button" class="pg-inline-action" data-word-restart>С первого слова</button>':'')+
  '<p><a href="./yue-tan-listening.html">Оригинальные записи и авторство</a></p></details>';
 }
 function renderListeningEar(){
@@ -422,11 +427,16 @@ $('lesson-steps').addEventListener('click',e=>{
 $('stage-content').addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button||button.disabled)return;
  if(button.hasAttribute('data-recall-start')){recallMode=true;recallRevealed=false;render();return}
- if(button.hasAttribute('data-recall-reveal')){recallRevealed=true;render();return}
+ if(button.hasAttribute('data-recall-reveal')){recallMode=false;recallRevealed=true;render();return}
+ if(button.hasAttribute('data-word-pin')){
+  if(state.wordRatings[state.wordIndex]==='review')delete state.wordRatings[state.wordIndex];
+  else state.wordRatings[state.wordIndex]='review';
+  save();render();return;
+ }
  if(button.hasAttribute('data-recall-mark')){
    state.wordRatings[state.wordIndex]=button.dataset.recallMark==='know'?'know':'review';
    save();resetRecall();render();
-   feedback(state.wordRatings[state.wordIndex]==='know'?'✓ Отмечено как знакомое.':'↻ Добавлено в повторение.');
+   // The compact bookmark on the card already indicates whether repetition is needed.
    return;
  }
  if(button.hasAttribute('data-word-restart')){
