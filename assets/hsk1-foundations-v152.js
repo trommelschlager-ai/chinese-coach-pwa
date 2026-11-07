@@ -7,32 +7,54 @@ const lessonNumber=Number.isInteger(requested)&&requested>=1&&requested<=topics.
 const topic=topics[lessonNumber-1];
 if(!topic){document.getElementById('stage-content').textContent='Материал пока недоступен.';return;}
 const key='pg-hsk1-v3-'+topic.id,completeKey='pg-hsk1-v3-complete';
+const bonusBuild=topic.id==='foundations'?{
+ target:['我','叫','小明。'],prompt:'Собери предложение «Меня зовут Сяомин»',
+ py:'Wǒ jiào Xiǎomíng.',note:'我 (wǒ) — я; 叫 (jiào) — звать; 小明 (Xiǎomíng) — имя.'
+}:null;
+const builds=bonusBuild?[...(topic.builds||[topic.build]),bonusBuild]:(topic.builds||[topic.build]);
+const reviewQuestions=topic.id==='foundations'?
+ [topic.quiz,
+  {question:'Что означает 你好?',choices:['Привет! Здравствуйте!','Спасибо','До свидания','Доброе утро'],correct:0,explain:'你好 (nǐ hǎo) — приветствие.',audio:'你好',speaker:'female'},
+  {question:'Что значит 我叫小明。?',choices:['Меня зовут Сяомин.','Я учу китайский.','Как тебя зовут?','Я иду домой.'],correct:0,explain:'我 — я, 叫 — зовут, 小明 — Сяомин.',audio:'我叫小明。',speaker:'male'}]:
+ [topic.quiz];
+const tonePool=['妈','麻','马','骂'];
+const shuffleTones=()=>{const a=[...tonePool];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const $=id=>document.getElementById(id),esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0,earProgress:0,buildProgress:0,wordPage:0,wordIndex:0,ruleIndex:0,dialogueIndex:0};
+let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0,earProgress:0,buildProgress:0,wordPage:0,wordIndex:0,ruleIndex:0,dialogueIndex:0,
+ wordRatings:{},toneSequence:shuffleTones(),reviewProgress:0};
 try{
  const raw=JSON.parse(localStorage.getItem(key)||'{}');
  if(raw&&typeof raw==='object'){
    state.step=Math.max(0,Math.min(6,Number(raw.step)||0));
    state.maxStep=Math.max(state.step,Math.min(6,Number(raw.maxStep)||0));
    // The previous one-question builder remains credited as task 1, not as all three new tasks.
-   state.buildProgress=Math.min(3,Math.max(0,Number.isInteger(raw.buildProgress)?raw.buildProgress:(raw.buildPassed?1:0)));
-   state.buildPassed=state.buildProgress===3;
+   state.buildProgress=Math.min(builds.length,Math.max(0,
+    raw.buildPassed===true?builds.length:(Number.isInteger(raw.buildProgress)?raw.buildProgress:0)));
+   state.buildPassed=raw.buildPassed===true||state.buildProgress===builds.length;
    state.earProgress=Math.min(4,Math.max(0,Number(raw.earProgress)||0));
    state.wordPage=Math.min(Math.ceil(topic.words.length/4)-1,Math.max(0,Number(raw.wordPage)||0));
    // Migrate old four-card pages to one-card navigation, keeping the saved spot.
    state.wordIndex=Math.min(topic.words.length-1,Math.max(0,Number.isInteger(raw.wordIndex)?raw.wordIndex:state.wordPage*4));
    state.ruleIndex=Math.min(topic.rules.length-1,Math.max(0,Number(raw.ruleIndex)||0));
    state.dialogueIndex=Math.min(topic.dialogue.length-1,Math.max(0,Number(raw.dialogueIndex)||0));
-   state.quizPassed=raw.quizPassed===true;
+   state.reviewProgress=Math.max(0,Math.min(reviewQuestions.length,
+    Number.isInteger(raw.reviewProgress)?raw.reviewProgress:(raw.completed?reviewQuestions.length:(raw.quizPassed?1:0))));
+   state.quizPassed=raw.completed===true||state.reviewProgress===reviewQuestions.length;
+   if(raw.wordRatings&&typeof raw.wordRatings==='object'&&!Array.isArray(raw.wordRatings)){
+    state.wordRatings=Object.fromEntries(Object.entries(raw.wordRatings)
+     .filter(([k,v])=>/^\d+$/.test(k)&&Number(k)<topic.words.length&&['know','review'].includes(v)));
+   }
+   if(Array.isArray(raw.toneSequence)&&raw.toneSequence.length===4&&
+      tonePool.every(v=>raw.toneSequence.includes(v)))state.toneSequence=[...raw.toneSequence];
    state.spoken=raw.spoken===true;
    state.toneEarProgress=Math.max(0,Math.min(4,Number(raw.toneEarProgress)||0));
    state.completed=raw.completed===true;
  }
 }catch{}
 let assembled=[],currentAudio=null,playId=0,answerChosen=-1;
+let recallMode=false,recallRevealed=false,wordPlayed=false,buildMistakes=0,reviewMistakes=0;
 let mediaRecorder=null,micStream=null,micObjectUrl=null,micRecording=false;
 const exerciseOrder=[2,0,3,1];
-const builds=topic.builds||[topic.build];
 const stepTitles=[
  ['Новые слова','你好'],['Тоны и произношение','ā á ǎ à'],['Примеры','📖'],
  ['Диалог','💬'],['Собери предложение','🧩'],['Говори сам','🎙'],['Итог и повторение','🏆']
@@ -170,7 +192,7 @@ function renderListeningEar(){
  '<div class="lesson-tone-answer">'+list.map(([hz,label],j)=>'<button type="button" data-listen-answer="'+j+'"'+(file?'':' disabled')+'>'+esc(label)+'</button>').join('')+'</div>'+
  '<p class="lesson-small">Все четыре записи этого задания принадлежат одному диктору. Ответ не зависит от написания.</p></article>';
 }
-const toneOrder=['马','妈','骂','麻'];
+const toneOrder=state.toneSequence;
 function renderToneEar(){
  const i=state.toneEarProgress;
  if(i>=4)return '<div class="lesson-note">✅ Все четыре тона распознаны. Можно дальше!</div>';
