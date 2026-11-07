@@ -17,16 +17,29 @@ const speakingPrompts=topic.id==='foundations'?[
  {hz:'我叫小明。',py:'Wǒ jiào Xiǎomíng.',ru:'Меня зовут Сяомин.',
   role:'male',tip:'我 (wǒ) — я; 叫 (jiào) — зовут. После тренировки сможешь подставить своё имя.'}
 ]:[topic.speech];
+function extraQuestions(){
+ const [word0,word1,word2,word3]=topic.words;
+ const last=topic.dialogue[topic.dialogue.length-1];
+ const alternatives=[...new Set([...topic.dialogue.map(line=>line[3]),...topic.words.map(w=>w[2])])]
+  .filter(text=>text!==last[3]).slice(0,3);
+ return [
+  {question:'Что означает '+word0[0]+'?',choices:[word2[2],word0[2],word1[2],word3[2]],
+   correct:1,explain:word0[0]+' ('+word0[1]+') — '+word0[2]+'.',audio:word0[0],speaker:'female'},
+  {question:'Как переводится '+last[1]+'?',choices:[alternatives[0],last[3],alternatives[1],alternatives[2]],
+   correct:1,explain:last[1]+' — '+last[3],audio:last[1],
+   speaker:last[0]==='А'?'male':'female'}
+ ];
+}
 const reviewQuestions=topic.id==='foundations'?
  [topic.quiz,
   {question:'Что означает 你好?',choices:['Привет! Здравствуйте!','Спасибо','До свидания','Доброе утро'],correct:0,explain:'你好 (nǐ hǎo) — приветствие.',audio:'你好',speaker:'female'},
   {question:'Что значит 我叫小明。?',choices:['Меня зовут Сяомин.','Я учу китайский.','Как тебя зовут?','Я иду домой.'],correct:0,explain:'我 — я, 叫 — зовут, 小明 — Сяомин.',audio:'我叫小明。',speaker:'male'}]:
- [topic.quiz];
+ [topic.quiz,...extraQuestions()];
 const tonePool=['妈','麻','马','骂'];
 const shuffleTones=()=>{const a=[...tonePool];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const $=id=>document.getElementById(id),esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state={step:0,maxStep:0,buildPassed:false,quizPassed:false,spoken:false,completed:false,toneEarProgress:0,earProgress:0,buildProgress:0,wordPage:0,wordIndex:0,ruleIndex:0,dialogueIndex:0,
- wordRatings:{},toneSequence:shuffleTones(),reviewProgress:0,speechProgress:0};
+ wordRatings:{},toneSequence:shuffleTones(),reviewProgress:0,speechProgress:0,firstTryCorrect:0,reviewErrors:{}};
 try{
  const raw=JSON.parse(localStorage.getItem(key)||'{}');
  if(raw&&typeof raw==='object'){
@@ -43,8 +56,15 @@ try{
    state.ruleIndex=Math.min(topic.rules.length-1,Math.max(0,Number(raw.ruleIndex)||0));
    state.dialogueIndex=Math.min(topic.dialogue.length-1,Math.max(0,Number(raw.dialogueIndex)||0));
    state.reviewProgress=Math.max(0,Math.min(reviewQuestions.length,
-    Number.isInteger(raw.reviewProgress)?raw.reviewProgress:(raw.completed?reviewQuestions.length:(raw.quizPassed?1:0))));
+    Number.isInteger(raw.reviewProgress)?raw.reviewProgress:
+     (raw.completed?reviewQuestions.length:(raw.quizPassed?1:0))));
    state.quizPassed=raw.completed===true||state.reviewProgress===reviewQuestions.length;
+   state.firstTryCorrect=Number.isInteger(raw.firstTryCorrect)&&raw.firstTryCorrect>=0?
+    Math.min(reviewQuestions.length,raw.firstTryCorrect):
+    (state.reviewProgress>0?null:0);
+   if(raw.reviewErrors&&typeof raw.reviewErrors==='object'&&!Array.isArray(raw.reviewErrors))
+    state.reviewErrors=Object.fromEntries(Object.entries(raw.reviewErrors)
+      .filter(([k,v])=>/^\d+$/.test(k)&&Number(k)<reviewQuestions.length&&Number.isInteger(v)&&v>=0));
    if(raw.wordRatings&&typeof raw.wordRatings==='object'&&!Array.isArray(raw.wordRatings)){
     state.wordRatings=Object.fromEntries(Object.entries(raw.wordRatings)
      .filter(([k,v])=>/^\d+$/.test(k)&&Number(k)<topic.words.length&&['know','review'].includes(v)));
@@ -343,9 +363,12 @@ function renderReview(){
  if(state.completed){
   const flagged=topic.words.filter((_,i)=>state.wordRatings[i]==='review');
   const known=Object.values(state.wordRatings).filter(v=>v==='know').length;
+  const firstTry=state.firstTryCorrect===null?'Оценка с первой попытки не сохранилась':
+   'С первой попытки: '+state.firstTryCorrect+' из '+reviewQuestions.length;
   return '<article class="lesson-quiz pg-result-card"><h2>🏆 Урок завершён!</h2>'+
-   '<p>Проверка: '+reviewQuestions.length+' из '+reviewQuestions.length+
-   ' · Знакомых слов: '+known+' из '+topic.words.length+'</p>'+
+   '<p>Вопросы пройдены: '+reviewQuestions.length+' из '+reviewQuestions.length+
+   ' · '+firstTry+'</p>'+
+   '<p>Отмечено как знакомое: '+known+' из '+topic.words.length+'</p>'+
    '<p>Ты изучил слова, потренировал слух, собрал фразы и повторил произношение.</p></article>'+
    (flagged.length?'<details class="pg-more"><summary>↻ Повторить трудные слова ('+flagged.length+')</summary>'+
     flagged.map(([hz,py,ru])=>'<div class="pg-difficult-word">'+hanzi(hz,py,ru)+audioButton(hz)+'</div>').join('')+'</details>':'')+
@@ -353,7 +376,8 @@ function renderReview(){
  }
  if(state.reviewProgress>=reviewQuestions.length){
   return '<article class="lesson-quiz pg-result-card"><h2>✅ Проверка пройдена!</h2>'+
-   '<p>Правильных ответов: '+reviewQuestions.length+' из '+reviewQuestions.length+'</p>'+
+   '<p>Все вопросы пройдены: '+reviewQuestions.length+' из '+reviewQuestions.length+'</p>'+
+   (state.firstTryCorrect===null?'':'<p>С первой попытки: '+state.firstTryCorrect+' из '+reviewQuestions.length+'</p>')+
    '<p>Нажми «Завершить», чтобы сохранить результат.</p></article>';
  }
  const q=reviewQuestions[state.reviewProgress];
@@ -548,6 +572,8 @@ $('stage-content').addEventListener('click',e=>{
   const q=reviewQuestions[state.reviewProgress];
   answerChosen=Number(button.dataset.answer);
   if(answerChosen===q.correct){
+    const thisQuestion=state.reviewProgress;
+    if(state.firstTryCorrect!==null&&!state.reviewErrors[thisQuestion])state.firstTryCorrect++;
     state.reviewProgress++;reviewMistakes=0;answerChosen=-1;
     state.quizPassed=state.reviewProgress===reviewQuestions.length;
     save();$('stage-content').innerHTML=renderReview();
@@ -555,6 +581,8 @@ $('stage-content').addEventListener('click',e=>{
     $('lesson-next').disabled=!state.quizPassed;
   }else{
     reviewMistakes++;
+    state.reviewErrors[state.reviewProgress]=(state.reviewErrors[state.reviewProgress]||0)+1;
+    save();
     feedback(reviewMistakes>1?'Пока неверно. Попробуй повторить тему и сравнить варианты.':
      'Пока неверно. Прослушай ещё раз или открой «Повторить теорию».');
     document.querySelectorAll('.lesson-choice').forEach((el,i)=>el.classList.toggle('is-wrong',i===answerChosen));
