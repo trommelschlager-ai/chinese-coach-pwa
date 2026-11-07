@@ -95,7 +95,7 @@ for(let i=0;i<topics.length;i++){
   assert(btn&&!btn.disabled,'Dialogue line unavailable: '+topic.id+' row '+row);
   assert.equal(btn.dataset.speaker,role,'Incorrect role on '+topic.id+' row '+row);
   btn.click();
-  assert.equal(calls[calls.length-1],voices[role][hz],'Wrong voice in '+topic.id+' row '+row);
+  assert.equal(calls[calls.length-1],w.PANDA_HSK1_VOICES[role][hz],'Wrong voice in '+topic.id+' row '+row);
   assert.equal(played[played.length-1].playbackRate,role==='female'?defaultSpeed:1,
    'Female slow mode must not modify male speaker in '+topic.id+' row '+row);
   assert.equal(played[played.length-1].preservesPitch,true,'Chinese pitch must be preserved');
