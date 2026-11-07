@@ -65,6 +65,10 @@ function save(){
  }}catch{feedback('Прогресс не удалось сохранить на устройстве. Проверь свободное место.')}
 }
 function feedback(message){$('lesson-feedback').textContent=message}
+function openStudy(smooth=false){
+ const section=$('lesson-study');
+ if(section&&typeof section.scrollIntoView==='function')section.scrollIntoView({behavior:smooth?'smooth':'auto',block:'start'});
+}
 function stopAudio(){playId++;if(currentAudio){currentAudio.onended=null;currentAudio.onerror=null;currentAudio.pause();currentAudio=null;}document.querySelectorAll('[data-playing]').forEach(n=>n.removeAttribute('data-playing'));}
 // Preserve Mandarin pitch while gently shortening overlong synthetic syllables.
  // Native-human listening samples and the user's own mic recording are not modified.
@@ -316,13 +320,13 @@ function goNext(){
   if(!state.quizPassed){feedback('Сначала ответь на контрольный вопрос.');return;}
   state.completed=true;save();location.href='./hsk1-map.html';return;
  }
- state.step+=1;state.maxStep=Math.max(state.maxStep,state.step);save();render();document.getElementById('lesson-study')?.scrollIntoView({behavior:'auto',block:'start'});
+ state.step+=1;state.maxStep=Math.max(state.maxStep,state.step);save();render();openStudy();
 }
 $('lesson-next').addEventListener('click',goNext);
-$('lesson-prev').addEventListener('click',()=>{if(state.step>0){state.step--;render();document.getElementById('lesson-study')?.scrollIntoView({behavior:'auto',block:'start'})}});
+$('lesson-prev').addEventListener('click',()=>{if(state.step>0){state.step--;render();openStudy()}});
 $('lesson-steps').addEventListener('click',e=>{
  const b=e.target.closest('[data-step]');if(!b||b.disabled)return;
- const s=Number(b.dataset.step);if(s<=state.maxStep){state.step=s;render();document.getElementById('lesson-study')?.scrollIntoView({behavior:'smooth',block:'start'})}
+ const s=Number(b.dataset.step);if(s<=state.maxStep){state.step=s;render();openStudy(true)}
 });
 $('stage-content').addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button||button.disabled)return;
