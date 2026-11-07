@@ -49,6 +49,9 @@ assert(core.length<=131,'Install must remain under 131 critical assets');
 assert(core.includes('./assets/panda-reference-v175.css?v=175'),'Offline style is not in critical assets');
 assert(core.includes('./assets/panda-v130.js?v=175'),'New home must work offline');
 assert(core.includes('./assets/hsk1-foundations-v152.js?v=176'),'Lesson controls must work offline');
-assert(pack.version===175&&pack.files.includes('./assets/panda-reference-v175.css?v=175'),
- 'Full offline pack must carry the new art stylesheet');
+assert(pack.version>=179&&pack.files.includes('./assets/panda-reference-v175.css?v=175')&&
+ pack.files.includes('./assets/hsk1-archive-style-v178.css?v=179')&&
+ pack.files.includes('./assets/hsk1-separate-steps-v178.js?v=179')&&
+ pack.files.includes('./assets/panda-go-original-details-v178.webp'),
+ 'Full offline pack must preserve the approved art and the restored learning screens');
 console.log('PASS v172: 3 real approved screens, 6 HSK buttons, 7 real map lessons, 7 stages, voice/progress untouched and offline reference styles.');
