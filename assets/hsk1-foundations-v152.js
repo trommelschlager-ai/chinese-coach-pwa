@@ -169,15 +169,28 @@ function audioButton(hz,role){
 function hanzi(hz,py,ru){
  return '<strong class="lesson-hanzi" lang="zh-Hans">'+esc(hz)+'</strong><span class="lesson-py">'+esc(py)+'</span><span class="lesson-ru">'+esc(ru)+'</span>';
 }
+function resetRecall(){recallMode=false;recallRevealed=false;wordPlayed=false}
 function renderWords(){
- const i=state.wordIndex,[hz,py,ru]=topic.words[i];
+ const i=state.wordIndex,[hz,py,ru]=topic.words[i],rating=state.wordRatings[i];
+ const card='<article class="lesson-card lesson-word'+(recallMode&&!recallRevealed?' pg-recall-active':'')+'">'+
+ hanzi(hz,py,ru)+audioButton(hz)+'</article>';
+ let recall;
+ if(!recallMode)recall='<button type="button" class="pg-recall-start" data-recall-start>🧠 Проверить себя</button>';
+ else if(!recallRevealed)recall='<button type="button" class="pg-recall-start" data-recall-reveal>Показать перевод</button>';
+ else recall='<button type="button" data-recall-mark="review">↻ Повторить</button>'+
+ '<button type="button" class="pg-recall-known" data-recall-mark="know">✓ Запомнил</button>';
  return '<div class="lesson-exercise-indicator">Слово '+(i+1)+' из '+topic.words.length+'</div>'+
- '<article class="lesson-card lesson-word">'+hanzi(hz,py,ru)+audioButton(hz)+'</article>'+
- '<p class="pg-mini-instruction">Нажми 🔊, послушай и повтори вслух.</p>'+
- ''+
- '<details class="pg-more"><summary>Подробнее об изучении слов</summary><p>'+
- esc(topic.goal)+'</p><p>🔊 — учебная озвучка. 🎙 — отдельная запись носительницы, если доступна.</p>'+
- '<p><a href="./yue-tan-listening.html">Список оригинальных записей и авторство</a></p></details>';
+ card+'<div class="pg-recall-controls">'+recall+'</div>'+
+ '<p class="pg-mini-instruction">'+
+ (recallMode&&!recallRevealed?'Вспомни значение, затем открой перевод.':
+  rating==='know'?'✓ Ты отмечал это слово как знакомое.':
+  rating==='review'?'↻ Это слово стоит повторить.':
+  '🔊 Послушай и повтори, потом попробуй вспомнить перевод.')+'</p>'+
+ '<details class="pg-more"><summary>Подробнее и повторение</summary>'+
+ '<p>'+esc(topic.goal)+'</p>'+
+ '<p>Отметки «Запомнил» и «Повторить» сохраняются отдельно от прохождения урока.</p>'+
+ (i>0?'<button type="button" class="pg-inline-action" data-word-restart>Начать слова с первого</button>':'')+
+ '<p><a href="./yue-tan-listening.html">Оригинальные записи и авторство</a></p></details>';
 }
 function renderListeningEar(){
  if(topic.id==='foundations')return '';
@@ -230,9 +243,11 @@ function renderDialogue(){
  '<div class="lesson-line '+(who==='Б'?'speaker-b':'speaker-a')+'" data-dialog-row="'+i+'">'+
  '<img class="lesson-portrait" src="./assets/approved-'+(who==='Б'?'woman':'man')+'-v112.webp" alt="">'+
  '<div>'+hanzi(hz,py,ru)+'</div>'+audioButton(hz,roleForDialogue(who))+'</div>'+
- '<p class="pg-mini-instruction">Прослушай и повтори реплику.</p>'+
- ''+
- '<details class="pg-more"><summary>Весь диалог'+(allRecorded?' · слушать':'')+'</summary>'+
+ '<p class="pg-mini-instruction">Послушай и повтори. Затем переходи к следующей реплике.</p>'+
+ (topic.id==='foundations'&&i===topic.dialogue.length-1?
+ '<div class="pg-dialogue-explain"><strong>Как сказать «Меня зовут...»</strong>'+
+ '<span>我 (wǒ) — я · 叫 (jiào) — зовут · 小明 (Xiǎomíng) — имя.</span></div>':'')+
+ '<details class="pg-more"><summary>Весь разговор'+(allRecorded?' · прослушать':'')+'</summary>'+
  (allRecorded?'<button type="button" class="lesson-action" data-dialog-all>▶ Прослушать целиком</button>':'')+
  topic.dialogue.map(d=>'<p>'+esc(d[1])+' — '+esc(d[3])+'</p>').join('')+'</details>';
 }
@@ -244,16 +259,16 @@ function buildTokens(){
  '<div class="lesson-tokens" aria-label="Слова для составления">'+unused.map(o=>'<button class="lesson-token" type="button" data-add="'+o.i+'" lang="zh-Hans">'+esc(o.t)+'</button>').join('')+'</div>';
 }
 function renderCompose(){
- if(state.buildPassed)return '<article class="lesson-compose"><h2>✅ Все три предложения собраны!</h2>'+
- '<p>Можно переходить к произношению.</p>'+
- '<details class="pg-more"><summary>Повторить готовые предложения</summary>'+
+ if(state.buildPassed)return '<article class="lesson-compose"><h2>✅ Все задания выполнены!</h2>'+
+ '<p>Ты собрал слова и фразу. Теперь потренируй произношение.</p>'+
+ '<details class="pg-more"><summary>Вспомнить готовые ответы</summary>'+
  builds.map((b,i)=>'<p>'+(i+1)+'. '+esc(b.target.join(''))+' — '+esc(b.py)+'</p>').join('')+'</details></article>';
  const b=currentBuild();
- return '<article class="lesson-compose"><div class="lesson-exercise-indicator">Предложение '+(state.buildProgress+1)+' из '+builds.length+'</div>'+
+ return '<article class="lesson-compose"><div class="lesson-exercise-indicator">Задание '+(state.buildProgress+1)+' из '+builds.length+'</div>'+
  '<h2>'+esc(b.prompt)+'</h2>'+
  '<div id="lesson-build-area">'+buildTokens()+'</div>'+
  '<button type="button" id="lesson-verify-build" class="lesson-action" data-verify-build>Проверить ✓</button>'+
- '<details class="pg-more"><summary>Как собирать предложение?</summary><p>Нажимай иероглифы снизу по порядку. Чтобы убрать выбранный иероглиф, нажми его в верхней строке.</p></details></article>';
+ '<details class="pg-more"><summary>Подсказка</summary><p>Нажимай элементы снизу в нужном порядке. Чтобы убрать элемент, нажми его сверху.</p></details></article>';
 }
 function renderSpeak(){
  const micCapable=!!(navigator.mediaDevices?.getUserMedia&&window.MediaRecorder);
@@ -310,15 +325,29 @@ function stopMic(){
  if(mediaRecorder?.state==='recording')mediaRecorder.stop();
 }
 function renderReview(){
- const q=topic.quiz;
- return '<article class="lesson-quiz"><div class="lesson-exercise-indicator">Проверь себя</div>'+
+ if(state.completed){
+  const flagged=topic.words.filter((_,i)=>state.wordRatings[i]==='review');
+  const known=Object.values(state.wordRatings).filter(v=>v==='know').length;
+  return '<article class="lesson-quiz pg-result-card"><h2>🏆 Урок завершён!</h2>'+
+   '<p>Проверка: '+reviewQuestions.length+' из '+reviewQuestions.length+
+   ' · Знакомых слов: '+known+' из '+topic.words.length+'</p>'+
+   '<p>Ты изучил слова, потренировал слух, собрал фразы и повторил произношение.</p></article>'+
+   (flagged.length?'<details class="pg-more"><summary>↻ Повторить трудные слова ('+flagged.length+')</summary>'+
+    flagged.map(([hz,py,ru])=>'<div class="pg-difficult-word">'+hanzi(hz,py,ru)+audioButton(hz)+'</div>').join('')+'</details>':'')+
+   '<p class="pg-mini-instruction">Нажми «К карте HSK 1», чтобы продолжить обучение.</p>';
+ }
+ if(state.reviewProgress>=reviewQuestions.length){
+  return '<article class="lesson-quiz pg-result-card"><h2>✅ Проверка пройдена!</h2>'+
+   '<p>Правильных ответов: '+reviewQuestions.length+' из '+reviewQuestions.length+'</p>'+
+   '<p>Нажми «Завершить», чтобы сохранить результат.</p></article>';
+ }
+ const q=reviewQuestions[state.reviewProgress];
+ return '<article class="lesson-quiz"><div class="lesson-exercise-indicator">Проверка '+(state.reviewProgress+1)+' из '+reviewQuestions.length+'</div>'+
  '<p class="lesson-question">'+esc(q.question)+'</p>'+
+ (q.audio?'<div class="pg-quiz-audio">'+audioButton(q.audio,q.speaker)+'</div>':'')+
  '<div class="lesson-choices">'+q.choices.map((c,i)=>
- '<button type="button" data-answer="'+i+'" class="lesson-choice '+(answerChosen===i?(i===q.correct?'is-correct':'is-wrong'):'')+'">'+esc(c)+'</button>').join('')+'</div>'+
- (state.quizPassed?'<p class="lesson-note">✓ Верно! '+esc(q.explain)+'</p>':'')+
- '</article>'+
- '<details class="pg-more"><summary>Повторить главное</summary><p>'+esc(topic.review)+'</p></details>'+
- (state.completed?'<p class="lesson-note">✅ Урок завершён и сохранён.</p>':'');
+ '<button type="button" data-answer="'+i+'" class="lesson-choice '+(answerChosen===i?'is-wrong':'')+'">'+esc(c)+'</button>').join('')+'</div></article>'+
+ '<details class="pg-more"><summary>Повторить теорию</summary><p>'+esc(topic.review)+'</p></details>';
 }
 function renderSteps(){
  $('lesson-steps').innerHTML=stepTitles.map(([name,icon],i)=>{
