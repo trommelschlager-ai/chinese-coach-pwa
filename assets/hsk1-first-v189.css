@@ -23,3 +23,17 @@
 .recorder{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin:10px 0}.recorder button{border:1px solid #dbbce8;background:#faf2ff;border-radius:16px;padding:11px 15px;color:#683a96;font-weight:800}.recorder button:first-child{background:#f6d5ec}.result-title{text-align:center;color:#5b3289;font-size:23px;font-weight:850}.learned{display:grid;gap:8px;grid-template-columns:repeat(3,1fr);margin-top:13px}.learned span{display:block;text-align:center;padding:10px 6px;border-radius:13px;background:#f4e8ff;font-size:26px;color:#59338b}.learned small{display:block;font-size:10px;color:#7a5998}.complete-links{display:flex;flex-direction:column;gap:9px;margin-top:13px}.complete-links a,.complete-links button{display:block;text-align:center;background:#fff;border:1px solid #e4caed;color:#6b4195;text-decoration:none;padding:13px 16px;border-radius:15px;font-weight:800}
 .pg-footer{display:flex;gap:11px;flex-shrink:0;padding:11px 18px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(77,32,115,.18),rgba(58,21,87,.86));border-top:1px solid rgba(255,255,255,.18)}.pg-footer button{height:52px;border-radius:18px;font-weight:850;font-size:15px}.pg-footer .secondary{flex:0 0 31%;border:1px solid rgba(255,255,255,.5);color:white;background:rgba(255,255,255,.17)}.pg-footer .primary{flex:1;border:1px solid rgba(255,228,168,.8);background:linear-gradient(120deg,#fa88d0,#e77bba 50%,#ffb3e0);box-shadow:0 0 16px rgba(255,130,208,.34);color:#572757}
 @media(max-width:360px){.pg-header{padding-left:12px;padding-right:12px}.content{padding-left:12px;padding-right:12px}.sheet{padding:12px}.brand{font-size:18px}.screen-title{font-size:25px}.screen-sub{font-size:13px}.pg-footer{padding-left:11px;padding-right:11px}}@media(min-width:560px){.pg-lesson{border-left:1px solid #9b6cac;border-right:1px solid #9b6cac}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+/* v190 — aligned radical/word pairs and compact exercise descriptions in the standalone lesson. */
+.screen-sub:empty,.audio-error:empty,.inline-result:empty{display:none}
+.word-subparts{text-align:center;color:#6e458f;font-weight:750;font-size:14px;margin:7px auto 10px}
+.radical-link{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;background:#fff6e7;border:1px solid #efd6af;border-radius:14px;margin-top:12px;padding:12px 8px;color:#79588d}
+.radical-link b{font-size:34px;color:#5e2e88;line-height:1}
+.radical-link span{font-size:12px;font-weight:750}
+.radical-hint{text-align:center;font-size:12px;color:#705789;line-height:1.45;margin:9px auto 0;max-width:290px}
+.learning-pairs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0 8px}
+.learning-pair{min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:13px 4px 11px;background:linear-gradient(160deg,#fff7e8,#f7e8ff);border:1px solid #f2d2ea;border-radius:16px;box-shadow:0 3px 9px rgba(81,28,125,.06)}
+.learning-pair .pair-key{font-size:40px;color:#682e8e;line-height:1.1}
+.learning-pair .pair-arrow{color:#d17bb3;font-size:19px;line-height:1}
+.learning-pair .pair-word{font-size:29px;color:#5b268c;line-height:1.2;white-space:nowrap}
+.learning-pair small{font-size:11px;color:#74578e;font-weight:700;text-align:center}
+@media(max-width:360px){.learning-pair .pair-word{font-size:25px}.learning-pair .pair-key{font-size:35px}}
