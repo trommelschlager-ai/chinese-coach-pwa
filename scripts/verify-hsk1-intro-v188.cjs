@@ -12,16 +12,17 @@ check.eval(data);
 const topic=check.PANDA_HSK1_FOUNDATIONS[0];
 assert.equal(topic.words[0][0],'我','The first spoken word after introduction must be 我');
 const taught=topic.words.map(w=>w[0]);
-for(const item of ['我','是','学生','你','好','你好','叫','小明'])assert(taught.includes(item),'Intro vocabulary missing '+item);
-assert(taught.indexOf('学生')<topic.rules.findIndex(x=>x[2]==='我是学生。')+taught.length,'Student must be taught before examples');
-assert(topic.words.findIndex(w=>w[0]==='你好')>topic.words.findIndex(w=>w[0]==='好'),'Explain 好 before 你好');
+for(const item of ['我','是','学生','你','你好','人','口','木','日'])assert(taught.includes(item),'Intro vocabulary missing '+item);
+assert.equal(taught.slice(0,3).join(','),'我,是,学生','Student introduced before first sentence');
+assert(topic.words.find(w=>w[0]==='你好')[2].includes('好 — хороший'),'Explain 好 on the 你好 card');
 for(const [speaker,text] of topic.dialogue){
  assert(['A','Б','А','B'].includes(speaker),'Unexpected dialogue speaker');
- for(const token of ['我','是','学生','你','好','叫','小明']){
+ for(const token of ['我','是','学生','你','你好']){
   // Spoken dialogue tokens are all introduced in the vocabulary stage.
   if(text.includes(token))assert(taught.includes(token),'Dialogue introduces unknown '+token);
  }
 }
+assert(topic.rules.some(r=>r[1].includes('叫 (jiào)')&&r[1].includes('小明')),'Explain 叫 and 小明 before dialogue');
 const dom=new JSDOM(page,{url:'https://example.test/chinese-coach-pwa/hsk1-lesson.html?lesson=1',runScripts:'outside-only'});
 const w=dom.window;
 w.scrollTo=()=>{};
