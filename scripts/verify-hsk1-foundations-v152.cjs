@@ -29,15 +29,13 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  assert.equal(d.querySelectorAll('.lesson-step').length,7,'Seven stages in '+topicNo);
  const words=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].words.length;
  assert.equal(d.querySelectorAll('.lesson-word').length,1,'Only one vocabulary card visible at a time');
- assert(d.getElementById('lesson-next').disabled,'Must see all vocabulary words first');
- let seen=0;
- while(d.querySelector('[data-word-next]')){
-   seen+=d.querySelectorAll('.lesson-word').length;
-   d.querySelector('[data-word-next]').click();
+ assert(!d.getElementById('lesson-next').disabled,'One main Next action should be enabled on each word');
+ assert(d.getElementById('lesson-next').textContent.includes('Следующее слово'),'First word must show clear Next label');
+ for(let k=0;k<words;k++){
+  assert.equal(d.querySelectorAll('.lesson-word').length,1,'Only one vocabulary card visible');
+  if(k<words-1)d.getElementById('lesson-next').click();
  }
- seen+=d.querySelectorAll('.lesson-word').length;
- assert.equal(seen,words,'All one-by-one vocabulary cards in '+topicNo);
- assert(!d.getElementById('lesson-next').disabled,'Last word unlocks next step');
+ assert(d.getElementById('lesson-next').textContent.includes('К тонам'),'Final word should open tone exercise');
  const checkpoint=JSON.parse(w.localStorage.getItem('pg-hsk1-v3-'+w.PANDA_HSK1_FOUNDATIONS[topicNo-1].id));
  assert.equal(checkpoint.wordIndex,words-1,'Individual word index should survive reopening');
  assert.equal(checkpoint.wordPage,Math.floor((words-1)/4),'Back-compat word page must remain saved');
@@ -67,27 +65,20 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  }
  d.getElementById('lesson-next').click();
  assert.equal(d.getElementById('lesson-count').textContent,'Шаг 3 из 7','Listening should lead to examples');
- assert(d.getElementById('lesson-next').disabled,'Examples require visiting all examples');
  const rules=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].rules;
- let ruleSeen=0;
- while(d.querySelector('[data-rule-next]')){
-   assert.equal(d.querySelectorAll('.pg-rule-card').length,1,'Only one example shown');
-   ruleSeen++;d.querySelector('[data-rule-next]').click();
+ for(let k=0;k<rules.length;k++){
+  assert.equal(d.querySelectorAll('.pg-rule-card').length,1,'Only one example shown');
+  if(k<rules.length-1)d.getElementById('lesson-next').click();
  }
- ruleSeen++;
- assert.equal(ruleSeen,rules.length,'All explanation examples must be reachable');
- assert(!d.getElementById('lesson-next').disabled,'Last example unlocks dialogue');
+ assert(d.getElementById('lesson-next').textContent.includes('К диалогу'),'Final example should lead to dialogue');
  d.getElementById('lesson-next').click();
  assert.equal(d.getElementById('lesson-count').textContent,'Шаг 4 из 7','Examples should lead to dialogue');
- assert(d.getElementById('lesson-next').disabled,'Dialogue requires visiting all lines');
- let dialogueSeen=0;
- while(d.querySelector('[data-dialogue-next]')){
-   assert.equal(d.querySelectorAll('.lesson-line').length,1,'Only one dialogue line shown');
-   dialogueSeen++;d.querySelector('[data-dialogue-next]').click();
+ const lines=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].dialogue.length;
+ for(let k=0;k<lines;k++){
+  assert.equal(d.querySelectorAll('.lesson-line').length,1,'Only one dialogue line shown');
+  if(k<lines-1)d.getElementById('lesson-next').click();
  }
- dialogueSeen++;
- assert.equal(dialogueSeen,w.PANDA_HSK1_FOUNDATIONS[topicNo-1].dialogue.length,'All dialogue lines must be accessible');
- assert(!d.getElementById('lesson-next').disabled,'Last dialogue line unlocks sentence builder');
+ assert(d.getElementById('lesson-next').textContent.includes('К заданию'),'Final dialogue reply should lead to builder');
  d.getElementById('lesson-next').click();
  assert.equal(d.getElementById('lesson-count').textContent,'Шаг 5 из 7');
  assert(d.getElementById('lesson-next').disabled,'Builder must block unverified answer in '+topicNo);
