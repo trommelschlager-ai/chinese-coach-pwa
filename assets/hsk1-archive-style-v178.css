@@ -176,3 +176,25 @@ body.pg-study-open #lesson-stage-art{display:none}
  body.pg-study-open .hsk1-speech-speed select{max-width:52%}
 }
 @media(prefers-reduced-motion:reduce){body.pg-study-open *{scroll-behavior:auto!important}}
+
+/* Original, image-only details cropped from the approved November 5 screens.
+   No baked-in answers or fictitious tone scoring are used here. */
+body.pg-study-open .pg-step-illustration{
+ height:clamp(125px,40vw,192px)!important;
+ margin:0 0 13px;border:3px solid #ffe3ad;border-radius:23px;
+ background-image:url('./panda-go-original-details-v178.webp');
+ background-size:300% 200%;background-position:0% 0%;
+ box-shadow:0 4px 0 #aa568e,0 8px 17px #19072e,0 0 16px #fbb8f7;
+}
+body.pg-study-open[data-pg-step="2"] .pg-step-illustration,
+body.pg-study-open[data-pg-step="7"] .pg-step-illustration{background-position:50% 0%}
+body.pg-study-open[data-pg-step="3"] .pg-step-illustration{background-position:100% 0%}
+body.pg-study-open[data-pg-step="4"] .pg-step-illustration{display:none}
+body.pg-study-open[data-pg-step="5"] .pg-step-illustration{background-position:50% 100%}
+body.pg-study-open[data-pg-step="6"] .pg-step-illustration{background-position:100% 100%}
+body.pg-study-open[data-pg-step="4"] .lesson-dialogue-hero{
+ background-image:url('./panda-go-original-details-v178.webp')!important;
+ background-position:0% 100%!important;background-size:300% 200%!important;
+ background-repeat:no-repeat!important;height:clamp(190px,55vw,260px)!important;
+}
+body.pg-study-open[data-pg-step="4"] .lesson-dialogue-hero img{opacity:0!important}
