@@ -272,7 +272,8 @@ function renderRules(){
 function renderDialogue(){
  const i=state.dialogueIndex,[who,hz,py,ru]=topic.dialogue[i];
  const allRecorded=topic.dialogue.every(d=>clipFor(d[1],roleForDialogue(d[0])));
- return '<div class="lesson-exercise-indicator">Реплика '+(i+1)+' из '+topic.dialogue.length+'</div>'+
+ return (topic.id==='foundations'&&i===0?'<p class="pg-mini-instruction pg-dialogue-prep">Перед диалогом: <strong>叫</strong> (jiào) — «зовут»; <strong>小明</strong> (Xiǎomíng) — имя Сяомин.</p>':'')+
+ '<div class="lesson-exercise-indicator">Реплика '+(i+1)+' из '+topic.dialogue.length+'</div>'+
  '<img class="pg-dialogue-scene" src="./assets/panda-v130/dialogue-scene.webp" alt="Собеседники в китайском городе">'+
  '<div class="lesson-line '+(who==='Б'?'speaker-b':'speaker-a')+'" data-dialog-row="'+i+'">'+
  '<img class="lesson-portrait" src="./assets/approved-'+(who==='Б'?'woman':'man')+'-v112.webp" alt="">'+
