@@ -10,7 +10,7 @@ body.pg-exact-loaded main.lesson-shell{
 body.pg-exact-loaded .lesson-shell .lesson-journey{
  width:100%!important;min-height:0!important;height:auto!important;
  aspect-ratio:694/1232!important;isolation:isolate;position:relative!important;
- background:#12091a url('./hsk1-approved-reference-v177.webp') center top/100% 100% no-repeat!important;
+ background:#12091a url('./hsk1-approved-reference-v177.webp?v=177') center top/100% 100% no-repeat!important;
  overflow:hidden!important;contain:layout paint
 }
 body.pg-exact-loaded .lesson-shell .lesson-journey::before,
