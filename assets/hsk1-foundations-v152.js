@@ -30,8 +30,8 @@ let mediaRecorder=null,micStream=null,micObjectUrl=null,micRecording=false;
 const exerciseOrder=[2,0,3,1];
 const builds=topic.builds||[topic.build];
 const stepTitles=[
- ['Новые слова','📖'],['Тоны и произношение','🎚'],['Примеры','📚'],
- ['Диалог','💬'],['Собери предложение','🧩'],['Говори сам','🎙'],['Итог и повторение','🔄']
+ ['Новые слова','你好'],['Тоны и произношение','ā á ǎ à'],['Примеры','📖'],
+ ['Диалог','💬'],['Собери предложение','🧩'],['Говори сам','🎙'],['Итог и повторение','🏆']
 ];
 const norm=s=>String(s).replace(/[。？！!?.,，\s]/g,'');
 const maps=[
@@ -284,15 +284,15 @@ function renderSteps(){
   const current=i===state.step,passed=i<state.maxStep||state.completed,disabled=i>state.maxStep&&!state.completed;
   return '<button class="lesson-step '+(current?'active ':passed?'passed ':'')+'" type="button" data-step="'+i+'"'+(disabled?' disabled':'')+
    ' aria-current="'+(current?'step':'false')+'" aria-label="Шаг '+(i+1)+': '+name+'">'+
-   '<span class="step-index">'+(i+1)+'</span><span class="step-icon">'+icon+'</span><span class="step-label">'+name+'</span><span class="step-status">'+(passed?'✓':current?'›':disabled?'🔒':'›')+'</span></button>';
- }).join('');
+   '<span class="step-index">'+(i+1)+'</span><span class="step-icon">'+icon+'</span><span class="step-label">'+name+'</span><span class="step-status">'+(passed?'✓':current?'›':'')+'</span></button>';
+ }).reverse().join('');
 }
 function render(){
  stopAudio();
  if(state.step!==5)releaseMic();
- $('course-heading').textContent='Урок '+lessonNumber+' · '+topic.name;
+ $('course-heading').innerHTML='<span class="pg-lesson-no">Урок '+lessonNumber+'</span><span class="pg-lesson-name">'+esc(topic.name)+'</span>';
  $('lesson-count').textContent='Шаг '+(state.step+1)+' из 7';
- $('progress-fill').style.width=(state.completed?100:state.step/7*100)+'%';
+ $('progress-fill').style.width=(state.completed?100:(state.step+1)/7*100)+'%';
  $('lesson-progress').setAttribute('aria-valuenow',String(state.completed?7:state.step));
  $('lesson-progress').setAttribute('aria-valuetext','Пройдено '+(state.completed?7:state.step)+' из 7 шагов');
  document.title='Урок '+lessonNumber+' · '+topic.name+' — Panda Go';
@@ -316,13 +316,13 @@ function goNext(){
   if(!state.quizPassed){feedback('Сначала ответь на контрольный вопрос.');return;}
   state.completed=true;save();location.href='./hsk1-map.html';return;
  }
- state.step+=1;state.maxStep=Math.max(state.maxStep,state.step);save();render();window.scrollTo({top:0,behavior:'instant'});
+ state.step+=1;state.maxStep=Math.max(state.maxStep,state.step);save();render();document.getElementById('lesson-study')?.scrollIntoView({behavior:'auto',block:'start'});
 }
 $('lesson-next').addEventListener('click',goNext);
-$('lesson-prev').addEventListener('click',()=>{if(state.step>0){state.step--;render();window.scrollTo(0,0)}});
+$('lesson-prev').addEventListener('click',()=>{if(state.step>0){state.step--;render();document.getElementById('lesson-study')?.scrollIntoView({behavior:'auto',block:'start'})}});
 $('lesson-steps').addEventListener('click',e=>{
  const b=e.target.closest('[data-step]');if(!b||b.disabled)return;
- const s=Number(b.dataset.step);if(s<=state.maxStep){state.step=s;render();window.scrollTo(0,0)}
+ const s=Number(b.dataset.step);if(s<=state.maxStep){state.step=s;render();document.getElementById('lesson-study')?.scrollIntoView({behavior:'smooth',block:'start'})}
 });
 $('stage-content').addEventListener('click',e=>{
  const button=e.target.closest('button');if(!button||button.disabled)return;
