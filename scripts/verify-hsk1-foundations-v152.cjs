@@ -28,17 +28,19 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  assert.equal(errors.length,0,'Runtime error on lesson '+topicNo+': '+errors.join('; '));
  assert.equal(d.querySelectorAll('.lesson-step').length,7,'Seven stages in '+topicNo);
  const words=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].words.length;
- assert.equal(d.querySelectorAll('.lesson-word').length,Math.min(4,words),'First four cards visible');
- assert(d.getElementById('lesson-next').disabled,'Must visit all word groups first');
+ assert.equal(d.querySelectorAll('.lesson-word').length,1,'Only one vocabulary card visible at a time');
+ assert(d.getElementById('lesson-next').disabled,'Must see all vocabulary words first');
  let seen=0;
  while(d.querySelector('[data-word-next]')){
    seen+=d.querySelectorAll('.lesson-word').length;
    d.querySelector('[data-word-next]').click();
  }
  seen+=d.querySelectorAll('.lesson-word').length;
- assert.equal(seen,words,'All vocabulary cards in '+topicNo);
- assert(!d.getElementById('lesson-next').disabled,'Last word group unlocks next step');
- assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-'+w.PANDA_HSK1_FOUNDATIONS[topicNo-1].id)).wordPage,Math.ceil(words/4)-1);
+ assert.equal(seen,words,'All one-by-one vocabulary cards in '+topicNo);
+ assert(!d.getElementById('lesson-next').disabled,'Last word unlocks next step');
+ const checkpoint=JSON.parse(w.localStorage.getItem('pg-hsk1-v3-'+w.PANDA_HSK1_FOUNDATIONS[topicNo-1].id));
+ assert.equal(checkpoint.wordIndex,words-1,'Individual word index should survive reopening');
+ assert.equal(checkpoint.wordPage,Math.floor((words-1)/4),'Back-compat word page must remain saved');
  if(topicNo===1){
   for(const k of audioKeys)assert(w.courseHumanAudio[k],'Tone MP3 missing for '+k);
   d.getElementById('lesson-next').click();
@@ -63,7 +65,31 @@ for(const topicNo of [1,2,3,4,5,6,7]){
   }
   assert(!d.getElementById('lesson-next').disabled,'All four listening questions unlock next');
  }
- while(d.querySelector('#lesson-count').textContent!=='Шаг 5 из 7')d.getElementById('lesson-next').click();
+ d.getElementById('lesson-next').click();
+ assert.equal(d.getElementById('lesson-count').textContent,'Шаг 3 из 7','Listening should lead to examples');
+ assert(d.getElementById('lesson-next').disabled,'Examples require visiting all examples');
+ const rules=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].rules;
+ let ruleSeen=0;
+ while(d.querySelector('[data-rule-next]')){
+   assert.equal(d.querySelectorAll('.pg-rule-card').length,1,'Only one example shown');
+   ruleSeen++;d.querySelector('[data-rule-next]').click();
+ }
+ ruleSeen++;
+ assert.equal(ruleSeen,rules.length,'All explanation examples must be reachable');
+ assert(!d.getElementById('lesson-next').disabled,'Last example unlocks dialogue');
+ d.getElementById('lesson-next').click();
+ assert.equal(d.getElementById('lesson-count').textContent,'Шаг 4 из 7','Examples should lead to dialogue');
+ assert(d.getElementById('lesson-next').disabled,'Dialogue requires visiting all lines');
+ let dialogueSeen=0;
+ while(d.querySelector('[data-dialogue-next]')){
+   assert.equal(d.querySelectorAll('.lesson-line').length,1,'Only one dialogue line shown');
+   dialogueSeen++;d.querySelector('[data-dialogue-next]').click();
+ }
+ dialogueSeen++;
+ assert.equal(dialogueSeen,w.PANDA_HSK1_FOUNDATIONS[topicNo-1].dialogue.length,'All dialogue lines must be accessible');
+ assert(!d.getElementById('lesson-next').disabled,'Last dialogue line unlocks sentence builder');
+ d.getElementById('lesson-next').click();
+ assert.equal(d.getElementById('lesson-count').textContent,'Шаг 5 из 7');
  assert(d.getElementById('lesson-next').disabled,'Builder must block unverified answer in '+topicNo);
  const builds=w.PANDA_HSK1_FOUNDATIONS[topicNo-1].builds;
  assert.equal(builds.length,3,'Three independent assembly tasks');
@@ -91,4 +117,4 @@ for(const topicNo of [1,2,3,4,5,6,7]){
  assert.equal(w.localStorage.getItem('pg-hsk1-completed-v1'),null,'Old completion data must stay untouched');
  dom.window.close();
 }
-console.log('HSK 1 v154: seven lessons, all vocabulary pages, 28 same-voice listening checks, 21 sentence tasks, quiz and isolated progress OK.');
+console.log('HSK 1 v180: seven lessons, one-card vocabulary, compact examples and dialogue, 28 same-voice listening checks, 21 sentence tasks, quiz and isolated progress OK.');
