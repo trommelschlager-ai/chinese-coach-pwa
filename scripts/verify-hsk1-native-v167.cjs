@@ -37,7 +37,7 @@ for(let lesson=1;lesson<=7;lesson++){
  const d=w.document;
  // Every native button must have exactly one original MP3; no human asset means no native button.
  let counted=0;
- for(let k=0;k<Math.ceil(w.PANDA_HSK1_FOUNDATIONS[lesson-1].words.length/4);k++){
+ for(let k=0;k<w.PANDA_HSK1_FOUNDATIONS[lesson-1].words.length;k++){
   const buttons=[...d.querySelectorAll('button[data-human-play]')];
   for(const btn of buttons){
    const hz=btn.dataset.humanPlay;
@@ -51,7 +51,7 @@ for(let lesson=1;lesson<=7;lesson++){
   assert(ordinary.length>0,'Teaching audio missing');
   const first=ordinary[0];first.click();
   assert.equal(played.at(-1).src,normal.female[first.dataset.play],'Default teaching voice must remain unchanged');
-  const next=d.querySelector('[data-word-next]');if(next)next.click();
+  if(k<w.PANDA_HSK1_FOUNDATIONS[lesson-1].words.length-1)d.getElementById('lesson-next').click();
  }
  assert(counted>0,'Native sample should be reachable in every lesson '+lesson);
  // Dialogue must use the existing original gender-specific mapping, not a native substitute.
