@@ -19,9 +19,11 @@ assert(css.includes('calc(var(--pg-lesson-nav-height) + 32px + env(safe-area-ins
 assert(css.includes('.lesson-shell .lesson-audio-native{\n  min-width:44px;min-height:44px'),'Native recordings require 44px touch targets');
 assert(css.includes('.lesson-shell .lesson-line .lesson-hanzi{'),'Mandarin dialogue text must have dedicated layout');
 assert(css.includes('grid-template-columns:repeat(2,minmax(0,1fr));'),'Word navigation should not overflow at 320px');
-assert(sw.includes('chinese-coach-pwa-v176-20261107-hsk1-scenic-staircase'),'Offline cache must refresh');
+assert(sw.includes('chinese-coach-pwa-v179-20261107-restored-student-lessons'),'Offline cache must refresh');
 assert(sw.includes('./assets/hsk1-foundations-v152.css?v=171'),'PWA offline cache needs exact CSS version');
 assert(sw.includes('./assets/hsk1-foundations-v152.js?v=176'),'PWA offline cache needs current lesson JS version');
+assert(sw.includes('./assets/hsk1-archive-style-v178.css?v=179'),'Offline shell includes original approved lesson style');
+assert(sw.includes('./assets/hsk1-separate-steps-v178.js?v=179'),'Offline shell opens lesson as independent screen');
 assert(journey.includes('.lesson-shell .lesson-controls{position:relative!important'),'New journey must not cover lesson text with a fixed footer');
 assert.equal(html.querySelectorAll('nav.lesson-controls button').length,2,'Back / Next nav preserved');
 assert.equal(html.querySelector('#lesson-next').textContent.trim(),'Дальше →');
