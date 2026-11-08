@@ -43,7 +43,11 @@
    let refreshed={};
    if(n===2)try{refreshed=JSON.parse(localStorage.getItem('pg-hsk1-v203-pronouns')||'{}')||{}}catch{}
    if(n===3)try{refreshed=JSON.parse(localStorage.getItem('pg-hsk1-v213-numbers')||'{}')||{}}catch{}
-    if(n===4)try{refreshed=JSON.parse(localStorage.getItem('pg-hsk1-v214-weekdays')||'{}')||{}}catch{}
+    if(n===4)try{
+      const updated=JSON.parse(localStorage.getItem('pg-hsk1-v215-weekdays')||'null');
+      const original=JSON.parse(localStorage.getItem('pg-hsk1-v214-weekdays')||'{}')||{};
+      refreshed=updated&&typeof updated==='object'?Object.assign({},updated,{done:updated.done===true||updated.legacyDone===true||original.done===true}):original;
+    }catch{}
    const finished=completed.includes(id)||state.completed===true||((n===2&&refreshed.completed===true)||((n===3||n===4)&&refreshed.done===true));
    if(finished)done++;else if(!firstUnfinished)firstUnfinished=n;
    const label=document.querySelector('[data-status="'+n+'"]');
