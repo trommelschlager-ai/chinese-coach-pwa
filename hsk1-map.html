@@ -25,7 +25,7 @@
 <a class="node" data-num="5" href="./hsk1-lesson.html?lesson=5" aria-label="Урок 5. Месяцы и даты"><span class="circle">5</span><span class="caption"><strong>Урок 5 ·<br> Месяцы и даты</strong><small data-status="5">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 <a class="node" data-num="4" href="./hsk1-lesson.html?lesson=4" aria-label="Урок 4. Дни недели"><span class="circle">4</span><span class="caption"><strong>Урок 4 ·<br> Дни недели</strong><small data-status="4">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 <a class="node" data-num="3" href="./hsk1-lesson.html?lesson=3" aria-label="Урок 3. Числа и их строение"><span class="circle">3</span><span class="caption"><strong>Урок 3 ·<br> Числа и их строение</strong><small data-status="3">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="2" href="./hsk1-lesson.html?lesson=2" aria-label="Урок 2. Личные местоимения"><span class="circle">2</span><span class="caption"><strong>Урок 2 ·<br> Личные местоимения</strong><small data-status="2">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
+<a class="node" data-num="2" href="./hsk1-second-v203.html" aria-label="Урок 2. Личные местоимения"><span class="circle">2</span><span class="caption"><strong>Урок 2 ·<br> Личные местоимения</strong><small data-status="2">12 экранов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 <a class="node current" data-num="1" href="./hsk1-first-v189.html" aria-label="Урок 1. Базовое знакомство"><span class="circle">1</span><span class="caption"><strong>Урок 1 ·<br> Базовое знакомство</strong><small data-status="1">15 экранов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 
 </nav>
@@ -40,7 +40,9 @@
  for(let i=0;i<topicIds.length;i++){
    const n=i+1,id=topicIds[i];let state={};
    try{state=JSON.parse(localStorage.getItem('pg-hsk1-v3-'+id)||'{}')||{}}catch{}
-   const finished=completed.includes(id)||state.completed===true;
+   let refreshed={};
+   if(n===2)try{refreshed=JSON.parse(localStorage.getItem('pg-hsk1-v203-pronouns')||'{}')||{}}catch{}
+   const finished=completed.includes(id)||state.completed===true||(n===2&&refreshed.completed===true);
    if(finished)done++;else if(!firstUnfinished)firstUnfinished=n;
    const label=document.querySelector('[data-status="'+n+'"]');
    if(label){
@@ -52,6 +54,7 @@
      }catch{}
      label.textContent=finished?'✓ Пройден · повторить':
        n===1?(introPosition>0?'Продолжить · экран '+(introPosition+1)+' из 15':'15 экранов · начать'):
+       n===2?(Number.isInteger(refreshed.step)&&refreshed.step>0?'Продолжить · экран '+(refreshed.step+1)+' из 12':'12 экранов · начать'):
        state.maxStep>0?'Продолжить · шаг '+(Number(state.step||0)+1)+' из 7':'7 шагов · начать';
    }
    const node=document.querySelector('.node[data-num="'+n+'"]');
