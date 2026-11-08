@@ -19,7 +19,7 @@ assert(css.includes('calc(var(--pg-lesson-nav-height) + 32px + env(safe-area-ins
 assert(css.includes('.lesson-shell .lesson-audio-native{\n  min-width:44px;min-height:44px'),'Native recordings require 44px touch targets');
 assert(css.includes('.lesson-shell .lesson-line .lesson-hanzi{'),'Mandarin dialogue text must have dedicated layout');
 assert(css.includes('grid-template-columns:repeat(2,minmax(0,1fr));'),'Word navigation should not overflow at 320px');
-assert(sw.includes('chinese-coach-pwa-v192-20261108-wo-strokes-no-tone-quiz'),'Offline cache must refresh');
+assert(sw.includes('chinese-coach-pwa-v193-20261108-hao-intro-six-strokes'),'Offline cache must refresh');
 assert(sw.includes('./assets/hsk1-foundations-v152.css?v=171'),'PWA offline cache needs exact CSS version');
 assert(sw.includes('./assets/hsk1-foundations-v152.js?v=187'),'PWA offline cache needs current lesson JS version');
 assert(sw.includes('./assets/hsk1-archive-style-v178.css?v=179'),'Offline shell includes original approved lesson style');

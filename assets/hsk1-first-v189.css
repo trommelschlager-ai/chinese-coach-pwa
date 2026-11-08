@@ -63,7 +63,7 @@
 @media (prefers-reduced-motion:reduce){.writing-animate .pg-write-path{animation:none!important;stroke-dashoffset:0!important}}
 @media(max-width:360px){.tone-item{min-height:174px}.tone-choice{min-height:127px}.tone-curve{height:43px}}
 
-/* Panda Go v192 — informative tone lesson, 8 strokes overview, automatic seven-stroke 我. */
+/* Panda Go v193 — approved beginner-intro screens. */
 .strokes{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
 .strokes .stroke{min-width:0;padding:10px 2px;border-radius:13px;background:linear-gradient(145deg,#fff8ff,#eee4fb)}
 .strokes .stroke b{font-size:clamp(29px,7.8vw,37px);min-height:40px;line-height:1.2}
@@ -71,21 +71,30 @@
 .stroke-footnote{text-align:center;font-size:12px;color:#786093;line-height:1.45;margin:12px 0 0}
 .tone-choice{cursor:default;user-select:text}
 .tone-item{cursor:default}
-.pg-wo-writing{max-width:245px;max-height:245px}
-.pg-wo-writing .pg-wo-stroke{fill:none;stroke:#7739a7;stroke-width:60;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:100;stroke-dashoffset:100;animation-duration:8.4s;animation-timing-function:linear;animation-iteration-count:infinite}
-@media(max-width:360px){.strokes{gap:5px}.strokes .stroke span{font-size:10px}}
-.pg-wo-writing .pg-wo-1{animation-name:pgWo1}
-@keyframes pgWo1{0%,0%{stroke-dashoffset:100}9%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
-.pg-wo-writing .pg-wo-2{animation-name:pgWo2}
-@keyframes pgWo2{0%,11%{stroke-dashoffset:100}20%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
-.pg-wo-writing .pg-wo-3{animation-name:pgWo3}
-@keyframes pgWo3{0%,22%{stroke-dashoffset:100}31%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
-.pg-wo-writing .pg-wo-4{animation-name:pgWo4}
-@keyframes pgWo4{0%,33%{stroke-dashoffset:100}42%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
-.pg-wo-writing .pg-wo-5{animation-name:pgWo5}
-@keyframes pgWo5{0%,44%{stroke-dashoffset:100}53%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
-.pg-wo-writing .pg-wo-6{animation-name:pgWo6}
-@keyframes pgWo6{0%,55%{stroke-dashoffset:100}64%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
-.pg-wo-writing .pg-wo-7{animation-name:pgWo7}
-@keyframes pgWo7{0%,66%{stroke-dashoffset:100}75%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
-@media(prefers-reduced-motion:reduce){.pg-wo-writing .pg-wo-stroke{animation:none!important;stroke-dashoffset:0!important}}
+.pg-hanzi-intro{display:flex;flex-direction:column;align-items:center;gap:3px}
+.pg-hanzi-intro .big-hanzi{margin-bottom:0}
+.pg-hanzi-intro .pinyin{margin:0;color:#9558b7;font-size:20px;font-weight:700}
+.pg-hanzi-intro .translation{margin:2px 0 10px;text-align:center}
+.pg-intro-equation{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:5px;width:100%;padding:12px 7px;border-radius:16px;background:linear-gradient(140deg,#f9eafa,#fff9f2)}
+.pg-intro-part{min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px}
+.pg-intro-part b{font-size:clamp(30px,9vw,46px);color:#63328e;line-height:1.15}
+.pg-intro-part small{font-size:11px;font-weight:700;color:#7c5895;white-space:nowrap}
+.pg-intro-op{font-size:19px;font-weight:800;color:#d28cb5}
+.pg-intro-info{margin:12px 4px 1px;font-size:13px;line-height:1.45;color:#75518a;text-align:center}
+.pg-hao-writing{max-width:245px;max-height:245px}
+.pg-hao-writing .pg-hao-guide{fill:#a96fc9;opacity:.14}
+.pg-hao-writing .pg-hao-stroke{fill:none;stroke:#7739a7;stroke-width:66;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100;animation-duration:7.4s;animation-timing-function:linear;animation-iteration-count:infinite}
+@media(max-width:360px){.strokes{gap:5px}.strokes .stroke span{font-size:10px}.pg-intro-part small{font-size:10px}.pg-intro-equation{gap:3px;padding-left:3px;padding-right:3px}}
+.pg-hao-writing .pg-hao-1{animation-name:pgHao1}
+@keyframes pgHao1{0%,0%{stroke-dashoffset:100}11%,94%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+.pg-hao-writing .pg-hao-2{animation-name:pgHao2}
+@keyframes pgHao2{0%,14%{stroke-dashoffset:100}25%,94%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+.pg-hao-writing .pg-hao-3{animation-name:pgHao3}
+@keyframes pgHao3{0%,28%{stroke-dashoffset:100}39%,94%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+.pg-hao-writing .pg-hao-4{animation-name:pgHao4}
+@keyframes pgHao4{0%,42%{stroke-dashoffset:100}53%,94%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+.pg-hao-writing .pg-hao-5{animation-name:pgHao5}
+@keyframes pgHao5{0%,56%{stroke-dashoffset:100}67%,94%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+.pg-hao-writing .pg-hao-6{animation-name:pgHao6}
+@keyframes pgHao6{0%,70%{stroke-dashoffset:100}81%,94%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+@media(prefers-reduced-motion:reduce){.pg-hao-writing .pg-hao-stroke{animation:none!important;stroke-dashoffset:0!important}}
