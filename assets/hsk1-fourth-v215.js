@@ -322,7 +322,8 @@ function dialogue(){
  '<small>'+GLOSS[d.female]+'</small></div>'+
  '<div class="from-m placeholder" id="pg4-male-preview"><strong lang="zh-Hans">?</strong><small>Твой ответ</small></div></div>'+
  '<div class="pg4-dialog-actions">'+audioButton(d.female,'▶ Слушать вопрос')+
- '<button type="button" data-dialogue-scene>▶ Сценка (две роли)</button><button type="button" data-dialogue-stop>■ Стоп</button></div>'+
+ '<button type="button" data-dialogue-scene>▶ Сценка (две роли)</button>'+
+ '<button type="button" data-dialogue-male>▶ Ответ мужчины</button><button type="button" data-dialogue-stop>■ Стоп</button></div>'+
  '<p class="pg4-info">Женский вопрос — запись носительницы. Мужская реплика — системный китайский голос, если доступен.</p>'+
  '<p>Выбери смысловой ответ:</p>'+choices(d.choices,'dialog-answer',false,locked)+displayFeedback()+
  '<div class="pg4-voice-tools"><button type="button" data-mic-record>🎙 Записать себя</button>'+
@@ -619,6 +620,14 @@ stage.addEventListener('click',ev=>{
   return;
  }
  if(btn.hasAttribute('data-dialogue-scene')){playConversation();return}
+ if(btn.hasAttribute('data-dialogue-male')){
+  const d=DIALOG[state.ix[9]];
+  if(d){const node=stage.querySelector('#pg4-male-preview');
+   if(node){node.innerHTML='<strong lang="zh-Hans">'+d.male+'</strong><small>Системная реплика</small>';node.classList.add('active')}
+   play(d.male,()=>node?.classList.remove('active'),'male',true);
+  }
+  return;
+ }
  if(btn.hasAttribute('data-dialogue-stop')){soundStop();message('Сценка остановлена.');return}
  if(btn.hasAttribute('data-mic-record')){makeMicRecording();return}
  if(btn.hasAttribute('data-mic-stop')){if(recorder?.state==='recording')recorder.stop();return}
