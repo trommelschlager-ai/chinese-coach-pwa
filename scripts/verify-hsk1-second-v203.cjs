@@ -9,7 +9,7 @@ const map=fs.readFileSync('hsk1-map.html','utf8');
 const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const voices=fs.readFileSync('assets/hsk1-voices-map-v160.js','utf8');
 assert(html.includes('hsk1-first-v189.css?v=194'),'Keep first lesson approved visual style');
-assert(html.includes('hsk1-second-v203.js?v=203'),'Second lesson JS version');
+assert(html.includes('hsk1-second-v203.js?v=204'),'Second lesson JS version');
 assert(html.includes('hsk1-second-v203.css?v=203'),'Second lesson CSS version');
 assert(map.includes('data-num="2" href="./hsk1-second-v203.html"'),'Map must open new lesson');
 assert(css.includes('.pg3-word')&&css.includes('.pg3-answers'),'Mobile practice layout');
