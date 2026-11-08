@@ -1,0 +1,36 @@
+/* Panda Go HSK1 lesson 2: isolated new components over the approved lesson 1 design. */
+.pg2-vocab{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:13px 0}
+.pg2-vocab.three{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.pg2-word{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(155deg,#fff9ff,#f0e3fc);border:1px solid #e3c7ed;border-radius:17px;padding:12px 5px 10px;gap:3px;text-align:center}
+.pg2-word b{font:500 clamp(33px,9.8vw,59px)/1.17 'Noto Sans CJK SC','Microsoft YaHei',sans-serif;color:#542c86;white-space:nowrap}
+.pg2-vocab.three .pg2-word b{font-size:clamp(28px,8vw,43px)}
+.pg2-word .pg2-py{font-size:14px;font-weight:800;color:#9864b3;white-space:nowrap}
+.pg2-word .pg2-ru{font-size:12px;color:#54386f;font-weight:800;min-height:29px}
+.pg2-word button{border:0;border-radius:18px;background:#f6d8ed;color:#69368f;font-weight:800;font-size:12px;padding:7px 12px;margin-top:4px;min-height:37px}
+.pg2-word button:disabled{opacity:.5}
+.pg2-rule{font-size:14px;line-height:1.5;color:#66477f;text-align:center;margin:12px 0}
+.pg2-focus{font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif;font-size:clamp(29px,8vw,47px);line-height:1.27;color:#592c90;text-align:center;font-weight:700;margin:12px 0 3px}
+.pg2-note{border-radius:13px;background:#f6eafd;padding:12px 13px;color:#664780;font-size:13px;line-height:1.5;margin:12px 0 4px}
+.pg2-soft-example{border-radius:13px;background:#fff6e4;border:1px solid #efdaa8;padding:11px;text-align:center;color:#594074;font-weight:750;margin:12px 0}
+.pg2-soft-example strong{font-size:22px;display:block;color:#5d3189}
+.pg2-token{border:1.5px solid #e4c9f2;background:#fff;border-radius:14px;color:#5a2d88;padding:10px 12px;min-height:52px;font-size:29px;font-weight:650}
+.pg2-token.selected{background:#fff0f9;border-color:#e99bc9}
+.pg2-row{display:flex;gap:9px;justify-content:center;align-items:center;flex-wrap:wrap;margin:12px 0}
+.pg2-check{display:block;margin:13px auto 5px;background:linear-gradient(135deg,#ac64e5,#ea78bc);color:#fff;border:0;border-radius:24px;padding:12px 23px;min-height:46px;font-size:15px;font-weight:850}
+.pg2-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:14px 0}
+.pg2-choice{border:2px solid #e8cfef;border-radius:16px;background:#fff8ff;color:#653990;font-size:18px;font-weight:800;padding:16px 6px;min-height:61px;overflow-wrap:anywhere}
+.pg2-choice:active,.pg2-word button:active,.pg2-check:active{transform:scale(.98)}
+.pg2-result{color:#744092;font-weight:800;text-align:center;min-height:25px;margin:13px 0}
+.pg2-title-row{display:flex;align-items:center;gap:8px;margin:10px 0}
+.pg2-avatar{flex:0 0 38px;width:38px;height:38px;border-radius:50%;background:#f7d8f1;display:grid;place-items:center;font-size:22px}
+.pg2-dialogue .dialogue-line:nth-child(2){flex-direction:row-reverse}
+.pg2-dialogue .bubble{max-width:calc(100% - 54px);font-size:clamp(18px,5vw,24px);overflow-wrap:anywhere}
+.pg2-dialogue .sound-sm{min-height:31px;display:block}
+.pg2-finish{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.pg2-finish a,.pg2-finish button{display:block;text-align:center;background:#fff;border:1px solid #e4caed;color:#6b4195;text-decoration:none;padding:12px 16px;border-radius:15px;font-weight:800}
+.pg2-disclaimer{font-size:11px;text-align:center;color:#7d6591;line-height:1.4;margin-top:10px}
+.pg2-voice-status{font-size:12px;color:#77508d;text-align:center;margin:8px 0}
+.pg2-compact-audio{display:flex;align-items:center;justify-content:center;gap:6px;margin:10px auto}
+.pg2-compact-audio button{border:0;border-radius:20px;background:#efd8f5;color:#68408d;padding:11px 14px;font-weight:800;min-height:42px}
+.pg2-dialogue button:disabled{opacity:.6}
+@media(max-width:360px){.pg2-word{padding:10px 3px}.pg2-word .pg2-ru{font-size:11px}.pg2-word button{padding:7px 8px}.pg2-choices{gap:6px}.pg2-choice{font-size:16px}}
