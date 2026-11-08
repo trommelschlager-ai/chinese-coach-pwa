@@ -21,6 +21,10 @@ const ITEMS=[
  ['我是老师。','Wǒ shì lǎoshī.','Я учитель.'],
  ['是的，我是老师。','Shì de, wǒ shì lǎoshī.','Да, я учитель.']
 ];
+const QUICK_WORDS=['我','你','您','他','我是老师。','你是老师吗？'];
+let mode='full';
+const activeItems=()=>mode==='quick'?ITEMS.filter(item=>QUICK_WORDS.includes(item[0])):ITEMS;
+const storageKey=()=>mode==='quick'?'pg-hsk1-v211-speaking-quick':STORAGE_KEY;
 const Native=()=>window.SpeechRecognition||window.webkitSpeechRecognition;
 const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalize=s=>String(s||'').normalize('NFKC').replace(/[\s.,!?，。！？、；;：:"“”'‘’（）()]/g,'').trim();
@@ -36,18 +40,22 @@ function isCorrect(target,possibilities){
  const allowed=(aliases[target]||[target]).map(normalize);
  return possibilities.some(transcript=>allowed.includes(normalize(transcript)));
 }
-let saved={position:0,streak:0,finished:false,correctTotal:0};
-try{
- const existing=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
- if(existing&&typeof existing==='object'){
-  saved.position=Number.isInteger(existing.position)?Math.max(0,Math.min(ITEMS.length-1,existing.position)):0;
-  saved.streak=Number.isInteger(existing.streak)?Math.max(0,Math.min(3,existing.streak)):0;
-  saved.finished=existing.finished===true;
-  saved.correctTotal=Number.isInteger(existing.correctTotal)?Math.max(0,existing.correctTotal):0;
- }
-}catch{}
+function loadProgress(){
+ const result={position:0,streak:0,finished:false,correctTotal:0};
+ try{
+  const old=JSON.parse(localStorage.getItem(storageKey())||'null');
+  if(old&&typeof old==='object'){
+   result.position=Number.isInteger(old.position)?Math.max(0,Math.min(activeItems().length-1,old.position)):0;
+   result.streak=Number.isInteger(old.streak)?Math.max(0,Math.min(3,old.streak)):0;
+   result.finished=old.finished===true;
+   result.correctTotal=Number.isInteger(old.correctTotal)?Math.max(0,old.correctTotal):0;
+  }
+ }catch{}
+ return result;
+}
+let saved=loadProgress();
 let heard=false,busy=false,audio=null,recognition=null,speechUtterance=null,attemptEpoch=0,feedbackText='';
-const persist=()=>{try{localStorage.setItem(STORAGE_KEY,JSON.stringify(saved))}catch{}};
+const persist=()=>{try{localStorage.setItem(storageKey(),JSON.stringify(saved))}catch{}};
 const root=()=>document.getElementById('pg2-speaking-root');
 const availableAudio=word=>{
  const unified=window.PANDA_HSK1_L2_ONE_VOICE_V208||{};
@@ -90,7 +98,7 @@ function sample(){
  if(busy){setStatus('Заверши текущую запись перед прослушиванием.');return}
  stopPlayback();
  heard=false;
- const word=ITEMS[saved.position][0];
+ const word=activeItems()[saved.position][0];
  const file=availableAudio(word);
  feedbackText=file?'Слушай образец, затем повтори в микрофон.':'Слушай системное китайское произношение.';
  if(file){
@@ -124,7 +132,7 @@ function sample(){
 function hearResult(transcripts,epoch){
  if(epoch!==attemptEpoch||!busy)return;
  busy=false;recognition=null;
- const target=ITEMS[saved.position][0],passed=isCorrect(target,transcripts);
+ const target=activeItems()[saved.position][0],passed=isCorrect(target,transcripts);
  if(passed){
   saved.streak=Math.min(3,saved.streak+1);
   saved.correctTotal++;
@@ -178,7 +186,7 @@ function startRecording(){
    update();
   };
   recognition.start();
-  feedbackText='🎙 Слушаю. Произнеси «'+ITEMS[saved.position][0]+'» один раз.';
+  feedbackText='🎙 Слушаю. Произнеси «'+activeItems()[saved.position][0]+'» один раз.';
   update();
  }catch(error){
   busy=false;recognition=null;
@@ -189,7 +197,7 @@ function startRecording(){
 function advance(){
  if(saved.streak<3||busy||saved.finished)return;
  cleanUp();
- if(saved.position===ITEMS.length-1){
+ if(saved.position===activeItems().length-1){
   saved.finished=true;
   feedbackText='Все слова завершены!';
  }else{
@@ -207,15 +215,15 @@ function restart(){
 }
 function markup(){
  if(saved.finished){
-  return '<div class="pg9-finished"><h3>🎉 Все 16 слов и фраз повторены!</h3>'+
+  return '<div class="pg9-finished"><h3>🎉 Все '+activeItems().length+' слов и фраз повторены!</h3>'+
    '<p>В каждом пункте три раза подряд браузер распознал нужное слово. Продолжай тренировать тоны на слух.</p>'+
    '<button data-speak-restart type="button">↻ Пройти тренировку заново</button></div>';
  }
- const [word,pinyin,translation]=ITEMS[saved.position];
+ const [word,pinyin,translation]=activeItems()[saved.position];
  const file=availableAudio(word);
  const options=Native();
  return '<div class="pg9-training" aria-label="Повтори каждое слово три раза подряд">'+
-  '<div class="pg9-progress">Слово '+(saved.position+1)+' из '+ITEMS.length+
+  '<div class="pg9-progress">Слово '+(saved.position+1)+' из '+activeItems().length+
   '<span>Нужно 3 подряд</span></div>'+
   '<strong class="pg9-hanzi" lang="zh-Hans">'+escapeHtml(word)+'</strong>'+
   '<div class="pg9-pinyin">'+escapeHtml(pinyin)+'</div>'+
@@ -228,7 +236,7 @@ function markup(){
   (busy?'🎙 Слушаю…':'🎤 Произнести')+'</button>'+
   '<div class="pg9-feedback" data-speak-feedback role="status">'+escapeHtml(feedbackText||'Послушай слово и произнеси его три раза, каждый раз нажимая микрофон.')+'</div>'+
   '<button class="pg9-next" type="button" data-speak-next'+(saved.streak===3?'':' disabled')+'>'+
-  (saved.position===ITEMS.length-1?'Завершить тренировку ✓':'Следующее слово →')+'</button>'+
+  (saved.position===activeItems().length-1?'Завершить тренировку ✓':'Следующее слово →')+'</button>'+
   (!options?'<p class="pg9-warning">Распознавание речи недоступно. Для этой проверки нужен совместимый браузер с микрофоном, например Chrome на Android. Без распознавания переход не засчитывается.</p>':'')+
   (!file?'<p class="pg9-warning">Временно звучит системный голос, не запись нашей китаянки.</p>':'')+
   ((word==='他'||word==='她'||word==='它')?
@@ -247,10 +255,19 @@ if(area){
   else if(btn.hasAttribute('data-speak-restart'))restart();
  });
 }
+function setMode(nextMode){
+ if(nextMode!=='quick'&&nextMode!=='full')return;
+ cleanUp();
+ mode=nextMode;
+ saved=loadProgress();
+ heard=false;feedbackText='';
+ update();
+}
 window.PG2_SPEAKING={
  render:()=>'<section id="pg2-speaking-root" class="pg9-section">'+
   '<h2>🎧 Слушай и произноси</h2>'+
-  '<p class="pg9-intro">Каждое слово нужно произнести так, чтобы оно было распознано три раза подряд. Только тогда открывается следующее.</p>'+
+  '<p class="pg9-intro">'+(mode==='quick'?'6 ключевых слов и фраз. ':'Полная тренировка — 16 слов и фраз. ')+
+  'Произнеси каждый пункт так, чтобы браузер распознал его три раза подряд. Это не проверка тонов.</p>'+
   markup()+'</section>',
  afterRender(){
   // Re-enter the final screen with the last saved word and preserved streak.
@@ -258,6 +275,10 @@ window.PG2_SPEAKING={
   heard=false;busy=false;
  },
  reset:restart,
+ setMode,
+ getItems:()=>ITEMS.map(item=>item.slice()),
+ getMode:()=>mode,
+ audioFor:availableAudio,
  cleanup:cleanUp,
  test:{isCorrect,normalize}
 };
