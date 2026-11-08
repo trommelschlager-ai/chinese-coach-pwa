@@ -63,3 +63,25 @@
  .pg7-review-controls button{font-size:12px;padding:8px}
  .pg7-review-controls button:last-child{flex-basis:65px}
 }
+
+/* v211: finish the lesson before optional pronunciation practice. */
+.pg11-final-sheet{max-width:460px;padding:19px 15px!important}
+.pg11-result{border:1px solid #e3c8eb;border-radius:19px;background:linear-gradient(130deg,#f6e8fc,#fcecf4);text-align:center;padding:18px 10px 14px;color:#75478d;font-size:18px}
+.pg11-result strong{font-size:28px;font-weight:900;color:#64318e}
+.pg11-result span{display:block;color:#795a93;font-size:12px;margin-top:5px}
+.pg11-skills{padding:15px 7px 7px}
+.pg11-skills h2,.pg11-choose{text-align:center;color:#60358d;font-weight:850;font-size:19px;margin:0 0 12px}
+.pg11-skills p{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #e7cdef;padding:10px 4px;margin:0}
+.pg11-skills p:last-child{border:0}
+.pg11-skills strong{font-family:'Noto Sans CJK SC','PingFang SC','Microsoft YaHei',sans-serif;color:#60318c;font-size:clamp(22px,6.5vw,27px);font-weight:700}
+.pg11-skills span{font-size:12px;color:#77528f;text-align:right;line-height:1.35}
+.pg11-choose{margin:14px 0 12px}
+.pg11-actions{display:grid;gap:10px}
+.pg11-actions a{display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center;border:1px solid #e2c7eb;border-radius:17px;padding:13px 11px;min-height:50px;font-size:14px;font-weight:850;color:#643a88;background:#fff9ff}
+.pg11-actions a.pg11-primary{background:linear-gradient(115deg,#a963e3,#ea86c8);color:#fff;border-color:#ce83d4;box-shadow:0 7px 18px rgba(115,46,145,.16)}
+.pg11-actions a:focus-visible{outline:3px solid #a86bd9;outline-offset:3px}
+.pg11-reminder{font-size:12px;line-height:1.55;color:#855f98;background:#f8eefd;padding:12px;border-radius:14px;margin:15px 0;text-align:center}
+.pg3-dialogue-repeat p{color:#663e87;font-weight:750;font-size:14px;line-height:1.5;text-align:center;margin:10px auto}
+.pg3-dialogue-repeat button{display:block;border:1px solid #debfe8;border-radius:16px;background:#f9edfb;color:#6c4291;font-size:14px;padding:11px 12px;margin:8px auto;font-weight:800;min-height:43px}
+.pg3-note{white-space:pre-line}
+@media(max-width:355px){.pg11-final-sheet{padding:14px 10px!important}.pg11-skills p{gap:6px}.pg11-actions a{font-size:13px}}
