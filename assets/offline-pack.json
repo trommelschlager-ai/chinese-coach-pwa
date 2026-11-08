@@ -1,6 +1,6 @@
 {
-  "version": 211,
-  "bytes": 33739893,
+  "version": 212,
+  "bytes": 33780592,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1623,6 +1623,9 @@
     "./assets/hsk1-second-speaking-v209.css?v=211",
     "./hsk1-second-practice.html",
     "./assets/hsk1-second-practice-v211.js?v=211",
-    "./assets/hsk1-second-practice-v211.css?v=211"
+    "./assets/hsk1-second-practice-v211.css?v=211",
+    "./hsk1-third-v212.html",
+    "./assets/hsk1-third-v212.js?v=212",
+    "./assets/hsk1-third-v212.css?v=212"
   ]
 }
