@@ -9,8 +9,8 @@ const map=fs.readFileSync('hsk1-map.html','utf8');
 const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const voices=fs.readFileSync('assets/hsk1-voices-map-v160.js','utf8');
 assert(html.includes('hsk1-first-v189.css?v=194'),'Keep first lesson approved visual style');
-assert(html.includes('hsk1-second-v203.js?v=204'),'Second lesson JS version');
-assert(html.includes('hsk1-second-v203.css?v=203'),'Second lesson CSS version');
+assert(html.includes('hsk1-second-v203.js?v=207'),'Second lesson JS version');
+assert(html.includes('hsk1-second-v203.css?v=207'),'Second lesson CSS version');
 assert(map.includes('data-num="2" href="./hsk1-second-v203.html"'),'Map must open new lesson');
 assert(css.includes('.pg3-word')&&css.includes('.pg3-answers'),'Mobile practice layout');
 assert(!js.includes('不是'), 'Move negative sentence grammar to later lesson');
@@ -48,7 +48,7 @@ answer(1);proceed(); // step 2: he/she
 answer(1);proceed(); // step 3: distinguish
 for(const a of [2,1,1])answer(a);
 proceed(); // step 4: plural
-answer(1);proceed(); // step 5 listening
+answer(1);answer(1);proceed(); // step 5 listening: plural and respectful singular 您
 assert(doc.querySelector('[data-audio="我们"]'),'Must have actual listening sample');
 for(const a of [2,3,0,2])answer(a);
 proceed(); // step 6 example
@@ -80,7 +80,12 @@ assert(doc.querySelector('[data-review-answer]'),'Missed questions must be repea
 click('[data-review-answer="0"]');
 assert(doc.querySelector('[data-finish]'),'Complete after correct review of mistakes');
 click('[data-finish]');
-assert(doc.getElementById('pg-content').textContent.includes('Ты справился'),'Completion page shown');
+assert(doc.getElementById('pg-content').textContent.includes('Ты уже говоришь по-китайски'),'Completion page shown');
+assert.equal(doc.querySelectorAll('[data-review-one]').length,16,'Review includes 16 single words and phrases');
+assert(doc.getElementById('pg-content').textContent.includes('您'),'Polite pronoun must be visible in recap');
+assert(doc.getElementById('pg-content').textContent.includes('是的，我是老师。'),'Full positive reply should be included');
+assert(doc.querySelector('[data-review-all]'),'Two-repeat listening action must be present');
+assert(doc.querySelector('[data-review-stop]'),'Review must be stoppable');
 const progress=JSON.parse(w.localStorage.getItem('pg-hsk1-v203-pronouns'));
 assert.equal(progress.completed,true);
 assert.equal(progress.finalFirstTry,4,'One missed first attempt');
@@ -90,4 +95,4 @@ assert.equal(legacy.step,5,'Old second lesson progress must remain unchanged');
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v202-pronouns-preview')).step,12,'v202 preview must not be lost');
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('pronouns'),'Next HSK1 lesson unlocked');
 d.window.close();
-console.log('PASS HSK1 v203: 12 screens, six new words, 23+ graded micro-actions, two builds series, native listening, conversation, spoken review, wrong-answer replay, legacy progress preserved.');
+console.log('PASS HSK1 v207: 12 screens, respectful singular 您, 16 bilingual audio-review entries, speaking practice, mistake replay, legacy progress preserved.');
