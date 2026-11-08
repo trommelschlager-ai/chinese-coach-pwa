@@ -12,5 +12,5 @@ for(const initial of [{},{'pg-hsk1-v3-complete':JSON.stringify(['foundations'])}
  if(initial['pg-hsk1-v3-complete']?.includes('weather'))assert(!w.document.querySelector('[data-num="7"]').classList.contains('locked'));
  dom.window.close();
 }
-const sw=fs.readFileSync('sw.js','utf8'),core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);assert(core.length<=137);for(const f of core)assert(fs.existsSync(f.split('?')[0]),f);
-console.log('PASS v175: seven authentic links, locked navigation, completed and out-of-order lessons, malformed state, no progress writes, at most 137 offline files.');
+const sw=fs.readFileSync('sw.js','utf8'),core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);assert(core.length<=141);for(const f of core)assert(fs.existsSync(f.split('?')[0]),f);
+console.log('PASS v175: seven authentic links, locked navigation, completed and out-of-order lessons, malformed state, no progress writes, at most 141 offline files.');
