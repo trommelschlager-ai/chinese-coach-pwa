@@ -353,6 +353,7 @@ function skipCompletedDrills(){
 }
 function render(){
  skipCompletedDrills();
+ if(state.step!==11||!state.completed)window.PG2_SPEAKING?.cleanup?.();
  stopReview();
  window.PG2_EXTRAS?.beforeRender?.();
  stopAudio();
