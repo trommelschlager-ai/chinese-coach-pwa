@@ -1,113 +1,116 @@
 'use strict';
-/* Verify lesson-2 screen 10 never goes blank and final speaking checks 3
- * CONSECUTIVE recognized Mandarin utterances before unlocking the next word.
- * This tests speech recognition matching, not Mandarin tone contours.
- */
+/* Panda Go lesson 2 v211: distinct graduation, optional 6/16 ASR drills and a
+   nonblocking listening dictionary. Browser recognition checks words, not tones.
+*/
 const assert=require('node:assert/strict'),fs=require('node:fs');
 const {JSDOM}=require('jsdom');
-const html=fs.readFileSync('hsk1-second-v203.html','utf8');
-const course=fs.readFileSync('assets/hsk1-second-v203.js','utf8');
+const practiceHTML=fs.readFileSync('hsk1-second-practice.html','utf8');
+const lessonHTML=fs.readFileSync('hsk1-second-v203.html','utf8');
+const main=fs.readFileSync('assets/hsk1-second-v203.js','utf8');
 const extras=fs.readFileSync('assets/hsk1-second-extras-v204.js','utf8');
-const speech=fs.readFileSync('assets/hsk1-second-speaking-v209.js','utf8');
+const spoken=fs.readFileSync('assets/hsk1-second-speaking-v209.js','utf8');
+const practice=fs.readFileSync('assets/hsk1-second-practice-v211.js','utf8');
 const voices=fs.readFileSync('assets/hsk1-voices-map-v160.js','utf8');
-const unified=fs.readFileSync('assets/hsk1-lesson2-audio-v208.js','utf8');
 const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
-const progress=(step,done=false)=>{
- const completed=Array(12).fill(false);if(done)completed[9]=true;
- return JSON.stringify({step,completed:step===11,done:completed,index:done?{'9':2}:{},
- finalFirstTry:5,reviewing:false});
+const unified=fs.readFileSync('assets/hsk1-lesson2-audio-v208.js','utf8');
+assert(practiceHTML.includes('hsk1-second-practice-v211.js?v=211'));
+assert(practiceHTML.includes('hsk1-second-speaking-v209.js?v=211'));
+assert(!lessonHTML.includes('hsk1-second-speaking-v209.js'),'Main lesson must not load microphone checkpoint');
+const click=(d,s)=>{
+ const item=d.querySelector(s);
+ assert(item,'Control missing: '+s);
+ assert(!item.disabled,'Control unexpectedly disabled: '+s);
+ item.click();
 };
-function make(step,done=true,enableRecognition=true){
- const dom=new JSDOM(html,{url:'https://example.test/chinese-coach-pwa/hsk1-second-v203.html',runScripts:'outside-only'});
- const w=dom.window,doc=w.document,recognitions=[];
- w.localStorage.setItem('pg-hsk1-v203-pronouns',progress(step,done));
- w.eval(voices);w.eval(native);w.eval(unified);
- const played=[];
- w.Audio=function(src){
-  this.src=src;played.push(this);
-  this.pause=()=>{};
-  this.play=()=>{this.onplaying?.();return Promise.resolve()};
- };
- if(enableRecognition){
-  class Recognition{
+function make(mode='quick',recognitionSupported=true,oldFull=null){
+ const dom=new JSDOM(practiceHTML,{url:'https://example.test/chinese-coach-pwa/hsk1-second-practice.html?mode='+mode,runScripts:'outside-only'});
+ const w=dom.window,d=w.document,heard=[],recognitions=[];
+ if(oldFull)w.localStorage.setItem('pg-hsk1-v209-speaking-check',JSON.stringify(oldFull));
+ w.eval(voices);w.eval(unified);
+ w.Audio=function(path){this.src=path;heard.push(this);this.pause=()=>{};this.play=()=>{this.onplaying?.();return Promise.resolve()}};
+ if(recognitionSupported){
+  w.webkitSpeechRecognition=class MockRecognition{
    constructor(){recognitions.push(this)}
    start(){this.started=true}
    stop(){this.stopped=true}
-  }
-  w.webkitSpeechRecognition=Recognition;
+  };
  }
- w.eval(extras);w.eval(speech);w.eval(course);
- return {w,doc,dom,played,recognitions};
+ w.eval(spoken);w.eval(practice);
+ return {dom,w,d,heard,recognitions};
 }
-const click=(doc,selector)=>{
- const el=doc.querySelector(selector);
- assert(el,'Missing control: '+selector);
- assert(!el.disabled,'Unexpectedly disabled: '+selector);
- el.click();
-};
-const recognize=(w,recognitions,words)=>{
- const x=recognitions[recognitions.length-1];
- assert(x&&x.started,'Recognizer not started');
- assert.equal(x.lang,'zh-CN');
- assert.equal(x.continuous,false);
- assert.equal(x.interimResults,false);
- const alternatives=words.map(text=>({transcript:text,confidence:.8}));
- const response={isFinal:true,length:alternatives.length};
- alternatives.forEach((item,n)=>response[n]=item);
- x.onresult({results:[response]});
-};
+function say(d,recognitions,transcript){
+ click(d,'[data-speak-start]');
+ const recognition=recognitions.at(-1);
+ assert(recognition?.started,'Browser speech recognizer not started');
+ assert.equal(recognition.lang,'zh-CN');
+ const answer={isFinal:true,length:1,0:{transcript}};
+ recognition.onresult({results:[answer]});
+}
 {
- const {doc,w,dom}=make(9,true);
- assert.equal(doc.querySelector('#pg-counter').textContent,'10 / 12');
- assert(doc.querySelector('.sheet.pg3-dialogue-sheet'),'Resumed completed dialogue needs content sheet');
- assert(doc.querySelector('.pg4-scene'),'Completed dialogue screen should show the animation instead of blank background');
- assert(doc.querySelector('[data-scene-play]'),'Animated scene must remain replayable');
- assert(doc.querySelector('[data-dialogue-again]'),'Completed dialogue questions must be replayable');
- click(doc,'[data-dialogue-again]');
- assert(doc.querySelector('[data-answer]'),'Retry restores dialogue questions');
+ const l=new JSDOM(lessonHTML,{url:'https://example.test/chinese-coach-pwa/hsk1-second-v203.html',runScripts:'outside-only'});
+ const w=l.window,d=l.window.document;
+ const done=Array(12).fill(false);done[9]=true;
+ w.localStorage.setItem('pg-hsk1-v203-pronouns',JSON.stringify({step:9,done,index:{9:2}}));
+ w.eval(native);w.eval(voices);w.eval(unified);
+ w.Audio=function(src){this.src=src;this.pause=()=>{};this.play=()=>Promise.resolve()};
+ w.eval(extras);w.eval(main);
+ assert(d.querySelector('.pg4-scene'),'Resumed finished dialogue screen must never be empty');
+ assert(d.querySelector('[data-scene-play]'),'Animated scene must be replayable');
+ assert(d.querySelector('[data-dialogue-again]'),'Dialog practice must be repeatable');
+ click(d,'[data-dialogue-again]');
+ assert(d.querySelector('[data-answer]'),'Replaying restores interaction');
+ l.window.close();
+}
+{
+ const {dom,w,d,heard,recognitions}=make('quick');
+ assert(d.querySelector('.pg9-hanzi')?.textContent==='我');
+ assert(d.querySelector('.pg9-progress')?.textContent.includes('из 6'),'Quick drill must be six items');
+ assert(d.querySelector('[data-speak-next]').disabled,'Cannot skip a word');
+ assert(d.querySelector('[data-speak-start]').disabled,'Listen before speaking');
+ click(d,'[data-speak-listen]');
+ assert.equal(heard[0].src,'./assets/hsk1-voice-unified-v208/wo.mp3');
+ assert(d.querySelector('[data-speak-start]').disabled,'Do not count the playing example as the user');
+ heard[0].onended();
+ assert(!d.querySelector('[data-speak-start]').disabled,'Microphone unlocked after reference ends');
+ say(d,recognitions,'我');
+ say(d,recognitions,'我');
+ assert(d.querySelector('.pg9-dots').getAttribute('aria-label').includes('2 из 3'));
+ say(d,recognitions,'你');
+ assert(d.querySelector('.pg9-dots').getAttribute('aria-label').includes('0 из 3'),'Wrong word resets consecutive streak');
+ assert(d.querySelector('[data-speak-next]').disabled);
+ say(d,recognitions,'我');say(d,recognitions,'我');say(d,recognitions,'我');
+ assert(!d.querySelector('[data-speak-next]').disabled,'Three accepted words unlock next');
+ click(d,'[data-speak-next]');
+ assert.equal(d.querySelector('.pg9-hanzi').textContent,'你');
+ assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v211-speaking-quick')).position,1,'Quick result saves separately');
+ assert.equal(w.localStorage.getItem('pg-hsk1-v209-speaking-check'),null,'Quick drill never overwrites full drill');
+ assert(w.PG2_SPEAKING.test.isCorrect('她',['他']),'Same sound tā must be treated as equivalent in audio');
+ assert(!w.PG2_SPEAKING.test.isCorrect('您',['你']),'Respectful nín is not nǐ');
+ click(d,'[data-practice-mode="listen"]');
+ assert.equal(d.querySelectorAll('.pg11-dict-row').length,16,'All 16 words visible in listening dictionary');
+ assert(!d.querySelector('[data-speak-start]'),'Listening mode must not require microphone');
+ click(d,'[data-practice-mode="quick"]');
+ assert.equal(d.querySelector('.pg9-hanzi').textContent,'你','Quick mode must restore progress');
  dom.window.close();
 }
 {
- const {doc,w,dom,played,recognitions}=make(11,true);
- assert(doc.querySelector('#pg2-speaking-root'),'Spoken recall practice must be displayed');
- assert(doc.querySelector('[data-speak-next]').disabled,'Next word must start locked');
- assert(doc.querySelector('[data-speak-start]').disabled,'Microphone is gated until reference playback');
- assert(doc.querySelector('.pg9-hanzi').textContent==='我','First word must be 我');
- click(doc,'[data-speak-listen]');
- assert.equal(played[0].src,'./assets/hsk1-voice-unified-v208/wo.mp3');
- assert(doc.querySelector('[data-speak-start]').disabled,'Cannot start microphone over playback audio');
- played[0].onended();
- assert(!doc.querySelector('[data-speak-start]').disabled,'Finishing reference audio unlocks microphone');
- const speak=words=>{click(doc,'[data-speak-start]');recognize(w,recognitions,words)};
- speak(['我']);
- assert(doc.querySelector('[data-speak-next]').disabled);
- assert(doc.querySelector('.pg9-dots').getAttribute('aria-label').includes('1 из 3'));
- speak(['我']);
- assert(doc.querySelector('.pg9-dots').getAttribute('aria-label').includes('2 из 3'));
- speak(['你']); // One wrong attempt must reset consecutive count.
- assert(doc.querySelector('.pg9-dots').getAttribute('aria-label').includes('0 из 3'));
- assert(doc.querySelector('[data-speak-next]').disabled);
- speak(['我']);speak(['我']);speak(['我']);
- assert(doc.querySelector('.pg9-dots').getAttribute('aria-label').includes('3 из 3'));
- assert(!doc.querySelector('[data-speak-next]').disabled,'Only 3 in a row unlock Next');
- click(doc,'[data-speak-next]');
- assert(doc.querySelector('.pg9-hanzi').textContent==='你','Next word starts only after passing');
- assert(doc.querySelector('[data-speak-next]').disabled,'New word cannot be skipped');
- const saved=JSON.parse(w.localStorage.getItem('pg-hsk1-v209-speaking-check'));
- assert.equal(saved.position,1);
- assert.equal(saved.streak,0);
- assert.equal(saved.correctTotal,5);
- assert(w.PG2_SPEAKING.test.isCorrect('她',['他']),'Homophone 他/她 should not be false negative in audio');
- assert(w.PG2_SPEAKING.test.isCorrect('它',['她']),'All three tā characters are acoustically identical');
- assert(!w.PG2_SPEAKING.test.isCorrect('您',['你']),'nín and nǐ must not count as equivalent');
- assert(!w.PG2_SPEAKING.test.isCorrect('我',['你']),'Different words must be rejected');
+ const {dom,w,d}=make('full',true,{position:3,streak:2,finished:false,correctTotal:8});
+ assert(d.querySelector('.pg9-progress').textContent.includes('из 16'));
+ assert(d.querySelector('.pg9-hanzi').textContent==='他','Prior full-progress state must be retained');
+ assert(d.querySelector('.pg9-dots').getAttribute('aria-label').includes('2 из 3'));
+ click(d,'[data-practice-mode="quick"]');
+ assert(d.querySelector('.pg9-progress').textContent.includes('из 6'));
+ click(d,'[data-practice-mode="full"]');
+ assert(d.querySelector('.pg9-hanzi').textContent==='他','Full progress persists across mode switches');
  dom.window.close();
 }
 {
- const {doc,dom}=make(11,true,false);
- assert(doc.querySelector('[data-speak-start]').disabled,'Unsupported Web Speech browser must not fake score');
- assert(doc.querySelector('.pg9-warning').textContent.includes('Chrome'),'Unsupported browser must explain what to do');
- assert(doc.querySelector('[data-speak-next]').disabled,'Unsupported browser must not skip words as passed');
+ const {dom,d}=make('quick',false);
+ assert(d.querySelector('[data-speak-start]').disabled,'Unsupported browser cannot claim voice recognition');
+ assert(d.querySelector('[data-speak-next]').disabled,'Unsupported browser must not mark completed');
+ assert(d.querySelector('.pg9-warning').textContent.includes('Chrome'));
+ click(d,'[data-practice-mode="listen"]');
+ assert.equal(d.querySelectorAll('.pg11-dict-row').length,16,'Listening available without mic recognition');
  dom.window.close();
 }
-console.log('PASS HSK1 v209: screen 10 resumed dialogue visible; voice playback+microphone gate, 3 consecutive recognized utterances, wrong reset, homophone honesty, persistence, unsupported browser fallback.');
+console.log('PASS HSK1 lesson 2 v211: replayable two-speaker scene, short and full speech drills with separate progress, 3 consecutive ASR matches, 16-word audio dictionary without mic.');
