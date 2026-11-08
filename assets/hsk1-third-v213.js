@@ -104,8 +104,9 @@ try{
   if(legacy&&typeof legacy==='object'){
    state.legacyCompleted=legacy.completed===true;
    state.written=Array.isArray(legacy.written)?legacy.written.slice():[];
-   state.viewed[1]=legacy.viewed?.[1]||[];
-   state.viewed[2]=legacy.viewed?.[2]||[];
+   const previousToDigit=x=>x==='十'?10:DIGITS.indexOf(x);
+   state.viewed[1]=(legacy.viewed?.[1]||[]).map(previousToDigit).filter(x=>x>=1&&x<=5);
+   state.viewed[2]=(legacy.viewed?.[2]||[]).map(previousToDigit).filter(x=>x>=6&&x<=10);
    // New extended material starts at the beginning. The v212 save is intact.
   }
  }
