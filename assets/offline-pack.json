@@ -1,6 +1,6 @@
 {
-  "version": 210,
-  "bytes": 33729724,
+  "version": 211,
+  "bytes": 33739893,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1599,10 +1599,10 @@
     "./assets/hsk1-tone-clean-v202/ma2.mp3",
     "./assets/hsk1-tone-clean-v202/ma3.mp3",
     "./hsk1-second-v203.html",
-    "./assets/hsk1-second-v203.css?v=207",
-    "./assets/hsk1-second-v203.js?v=209",
-    "./assets/hsk1-second-extras-v204.css?v=204",
-    "./assets/hsk1-second-extras-v204.js?v=206",
+    "./assets/hsk1-second-v203.css?v=211",
+    "./assets/hsk1-second-v203.js?v=211",
+    "./assets/hsk1-second-extras-v204.css?v=211",
+    "./assets/hsk1-second-extras-v204.js?v=211",
     "./assets/hanzi-data/他.json",
     "./assets/hsk1-scene-v205/female-im-teacher-normalized.mp3",
     "./assets/hsk1-lesson2-audio-v208.js?v=208",
@@ -1619,7 +1619,10 @@
     "./assets/hsk1-voice-unified-v208/wo.mp3",
     "./assets/hsk1-voice-unified-v208/women.mp3",
     "./assets/hsk1-voice-unified-v208/xuesheng.mp3",
-    "./assets/hsk1-second-speaking-v209.js?v=210",
-    "./assets/hsk1-second-speaking-v209.css?v=209"
+    "./assets/hsk1-second-speaking-v209.js?v=211",
+    "./assets/hsk1-second-speaking-v209.css?v=211",
+    "./hsk1-second-practice.html",
+    "./assets/hsk1-second-practice-v211.js?v=211",
+    "./assets/hsk1-second-practice-v211.css?v=211"
   ]
 }
