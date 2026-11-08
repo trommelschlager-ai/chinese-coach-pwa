@@ -47,24 +47,29 @@ assert(doc.getElementById('pg-next').disabled,'Cannot skip initial review');
 answer(1);proceed(); // step 2: he/she
 answer(1);proceed(); // step 3: distinguish
 for(const a of [2,1,1])answer(a);
-proceed(); // step 4: plural
+assert.equal(step(),4,'Completed recognition drill should advance without empty confirmation card');
+assert(!doc.getElementById('pg-content').textContent.includes('Упражнение выполнено'),'No giant completed card on step 3');
+// step 4: plural
 answer(1);answer(1);proceed(); // step 5 listening: plural and respectful singular 您
 assert(doc.querySelector('[data-audio="我们"]'),'Must have actual listening sample');
 for(const a of [2,3,0,2])answer(a);
-proceed(); // step 6 example
+assert.equal(step(),6,'Listening drill should auto-advance');
+// step 6 example
 answer(0);proceed(); // step 7 3 builds
 for(let exercise=0;exercise<3;exercise++){
  assert(doc.getElementById('pg-next').disabled,'Cannot skip sentence build');
  for(const i of [0,1,2])click('[data-add="'+i+'"]');
  click('[data-check-build]');
 }
-proceed(); // step 8 particle
+assert.equal(step(),8,'Sentence building should auto-advance without summary card');
+// step 8 particle
 answer(2);proceed(); // step 9 2 questions build
 for(let exercise=0;exercise<2;exercise++){
  for(const i of [0,1,2,3])click('[data-add="'+i+'"]');
  click('[data-check-build]');
 }
-proceed(); // step 10 conversation
+assert.equal(step(),10,'Question-building should auto-advance without summary card');
+// step 10 conversation
 for(const a of [0,1])answer(a);
 proceed(); // step 11 speak
 assert(doc.getElementById('pg-next').disabled,'Speaking requires listen and confirm');
@@ -95,4 +100,4 @@ assert.equal(legacy.step,5,'Old second lesson progress must remain unchanged');
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v202-pronouns-preview')).step,12,'v202 preview must not be lost');
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('pronouns'),'Next HSK1 lesson unlocked');
 d.window.close();
-console.log('PASS HSK1 v207: 12 screens, respectful singular 您, 16 bilingual audio-review entries, speaking practice, mistake replay, legacy progress preserved.');
+console.log('PASS HSK1 v208: 12 screens, completed drills auto-advance without blank cards, polite 您, 16 review entries and preserved progress.');
