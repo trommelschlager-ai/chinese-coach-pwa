@@ -11,10 +11,11 @@ const voices=fs.readFileSync('assets/hsk1-voices-map-v160.js','utf8');
 const speech=fs.readFileSync('assets/hsk1-second-speaking-v209.js','utf8');
 const oneVoice=fs.readFileSync('assets/hsk1-lesson2-audio-v208.js','utf8');
 assert(html.includes('hsk1-first-v189.css?v=194'),'Keep first lesson approved visual style');
-assert(html.includes('hsk1-second-v203.js?v=209'),'Second lesson JS version');
-assert(html.includes('hsk1-second-speaking-v209.js?v=210'),'New microphone practice should be loaded');
+assert(html.includes('hsk1-second-v203.js?v=211'),'Second lesson JS version');
+assert(!html.includes('hsk1-second-speaking-v209.js'),'Main lesson must not load optional microphone training');
+assert(fs.readFileSync('hsk1-second-practice.html','utf8').includes('hsk1-second-speaking-v209.js?v=211'),'Dedicated practice loads the trainer');
 assert(html.includes('hsk1-lesson2-audio-v208.js?v=208'),'One-speaker voice map must be loaded first');
-assert(html.includes('hsk1-second-v203.css?v=207'),'Second lesson CSS version');
+assert(html.includes('hsk1-second-v203.css?v=211'),'Second lesson CSS version');
 assert(map.includes('data-num="2" href="./hsk1-second-v203.html"'),'Map must open new lesson');
 assert(css.includes('.pg3-word')&&css.includes('.pg3-answers'),'Mobile practice layout');
 assert(!js.includes('不是'), 'Move negative sentence grammar to later lesson');
@@ -58,7 +59,7 @@ assert.equal(step(),1);
 assert(doc.getElementById('pg-next').disabled,'Cannot skip initial review');
 answer(1);proceed(); // step 2: he/she
 answer(1);proceed(); // step 3: distinguish
-for(const a of [2,1,1])answer(a);
+for(const a of [2,1])answer(a);
 assert.equal(step(),4,'Completed recognition drill should advance without empty confirmation card');
 assert(!doc.getElementById('pg-content').textContent.includes('Упражнение выполнено'),'No giant completed card on step 3');
 // step 4: plural
@@ -67,13 +68,13 @@ click('[data-audio="你们"]');
 assert.equal(lastAudio,oneVoiceFiles['你们'],'All regular vocabulary should use same voice');
 proceed(); // step 5 listening: plural and respectful singular 您
 assert(doc.querySelector('[data-audio="我们"]'),'Must have actual listening sample');
-for(const a of [2,3,0,2])answer(a);
+for(const a of [2,3,0])answer(a);
 assert.equal(step(),6,'Listening drill should auto-advance');
 // step 6 example
 click('[data-audio="我是老师。"]');
 assert.equal(lastAudio,oneVoiceFiles['我是老师。'],'Narration example must use the SAME voice as words');
 answer(0);proceed(); // step 7 3 builds
-for(let exercise=0;exercise<3;exercise++){
+for(let exercise=0;exercise<2;exercise++){
  assert(doc.getElementById('pg-next').disabled,'Cannot skip sentence build');
  for(const i of [0,1,2])click('[data-add="'+i+'"]');
  click('[data-check-build]');
@@ -83,7 +84,7 @@ assert.equal(step(),8,'Sentence building should auto-advance without summary car
 click('[data-audio="你是老师吗？"]');
 assert.equal(lastAudio,oneVoiceFiles['你是老师吗？'],'Non-dialog question narration must use the unified voice');
 answer(2);proceed(); // step 9 2 questions build
-for(let exercise=0;exercise<2;exercise++){
+for(let exercise=0;exercise<1;exercise++){
  for(const i of [0,1,2,3])click('[data-add="'+i+'"]');
  click('[data-check-build]');
 }
@@ -108,12 +109,12 @@ click('[data-review-answer="0"]');
 assert(doc.querySelector('[data-finish]'),'Complete after correct review of mistakes');
 click('[data-finish]');
 assert(doc.getElementById('pg-content').textContent.includes('Ты уже говоришь по-китайски'),'Completion page shown');
-assert(doc.querySelector('#pg2-speaking-root'),'Guided 16-item listening and speaking practice should be displayed');
-assert(doc.querySelector('.pg9-hanzi')?.textContent==='我','Final practice must start with 我 before unlocking 您');
-assert(speech.includes("['是的，我是老师。'"),'Final speaking practice must include full positive reply');
-assert(doc.querySelector('[data-speak-listen]'),'Each word needs an audible example');
-assert(doc.querySelector('[data-speak-start]'),'Each word needs microphone recognition');
-assert(doc.querySelector('[data-speak-next]').disabled,'Do not advance without three consecutive correct recognitions');
+assert(!doc.querySelector('#pg2-speaking-root'),'Main graduation should not force the 16-word microphone drill');
+for(const mode of ['quick','full','listen']){
+ const link=doc.querySelector('[href="./hsk1-second-practice.html?mode='+mode+'"]');
+ assert(link,'Dedicated optional mode must be linked: '+mode);
+}
+assert(doc.getElementById('pg-content').textContent.includes('您好')===false,'Respectful greeting belongs in vocabulary context, not final score');
 const progress=JSON.parse(w.localStorage.getItem('pg-hsk1-v203-pronouns'));
 assert.equal(progress.completed,true);
 assert.equal(progress.finalFirstTry,4,'One missed first attempt');
@@ -123,4 +124,4 @@ assert.equal(legacy.step,5,'Old second lesson progress must remain unchanged');
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v202-pronouns-preview')).step,12,'v202 preview must not be lost');
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('pronouns'),'Next HSK1 lesson unlocked');
 d.window.close();
-console.log('PASS HSK1 v208: 12 screens, completed drill autoadvance, one-native-speaker vocabulary/examples, two-voice dialogue, polite 您, 16 review entries and preserved progress.');
+console.log('PASS HSK1 v211: 12 screens, fewer redundant tasks, polite 您, separate optional speaking/dictionary pages, graduation without mic and saved progress.');
