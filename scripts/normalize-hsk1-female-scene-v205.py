@@ -32,7 +32,7 @@ female_before=loudness(FEMALE)
 male_before=loudness(MALE)
 # Aim for a clearly audible but not clipped female answer, close to the male level.
 # Target range avoids crushing a quiet synthetic source or excessively loud playback.
-target=max(-18.0,min(-14.0,male_before+1.0))
+target=max(-23.0,min(-17.0,male_before+2.0))
 run("ffmpeg","-nostdin","-hide_banner","-loglevel","error","-y",
     "-i",str(FEMALE),"-vn","-map_metadata","-1",
     "-af",f"highpass=f=85,loudnorm=I={target:.1f}:TP=-1.5:LRA=8",
