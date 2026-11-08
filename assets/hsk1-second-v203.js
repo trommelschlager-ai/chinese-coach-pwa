@@ -104,7 +104,11 @@ function play(hz,role='female'){
   a.playbackRate=vocab[cleanText(hz)]?1:0.85;
   a.onerror=()=>{if(audio===a)feedback('Запись не загрузилась. Проверь интернет.')};
   a.onended=()=>{if(audio===a)audio=null};
-  if(state.step===10&&cleanText(hz)==='你是老师吗')state.heard=true;
+  a.onplaying=()=>{
+   if(state.step===10&&cleanText(hz)==='你是老师吗'){
+    state.heard=true;save();const confirm=area.querySelector('[data-spoken]');if(confirm)confirm.disabled=false;
+   }
+  };
   Promise.resolve(a.play()).catch(()=>feedback('Нажми «Слушать» ещё раз.'));
   save();
  }catch{feedback('Не удалось включить аудио.')}
@@ -184,17 +188,17 @@ const screens=[
  ()=>head('УРОК 2 · HSK1','Вспомним знакомое','Сначала повторим 我 и 你, потом добавим новые слова.')+
   sample('ПОВТОРЕНИЕ',['我','你'],'Вспомни знакомые слова из первого урока.')+
   '<div class="sheet">'+questionBlock(0)+'</div>',
- ()=>head('НОВЫЕ СЛОВА · 1/3','Он и она','Два иероглифа — одно произношение tā.')+
+ ()=>head('НОВЫЕ СЛОВА · 1/4','Он и она','Два иероглифа — одно произношение tā.')+
   sample('НОВОЕ',['他','她'],'他 = он, 她 = она. Оба слова звучат одинаково с первым тоном. На слух их не различают.')+
   '<div class="sheet">'+questionBlock(1)+'</div>',
  ()=>head('ПРАКТИКА','Кто есть кто?','Выбирай по значению, а не по звуку.')+
   '<div class="sheet">'+questionBlock(2)+'</div>',
- ()=>head('НОВЫЕ СЛОВА · 2/3','Мы и вы','Добавь 们 (men) к знакомому местоимению.')+
+ ()=>head('НОВЫЕ СЛОВА · 2/4','Мы и вы','Добавь 们 (men) к знакомому местоимению.')+
   sample('НОВОЕ',['我们','你们'],'们 (men) произносится нейтральным тоном: wǒmen, nǐmen.')+
   '<div class="sheet">'+questionBlock(3)+'</div>',
  ()=>head('ТРЕНИРОВКА СЛУХА','Узнай слово','Отличай короткие местоимения от форм с 们.')+
   '<div class="sheet">'+questionBlock(4)+'</div>',
- ()=>head('НОВОЕ СЛОВО · 3/3','Кто ты?','老师 — учитель. Повторим связку 是.')+
+ ()=>head('НОВОЕ СЛОВО · 3/4','Кто ты?','老师 — учитель. Повторим связку 是.')+
   sample('НОВОЕ СЛОВО',['老师'],'是 (shì) уже знакомо: оно связывает подлежащее с существительным.')+
   '<div class="sheet"><div class="pg3-sentence">我是老师。</div>'+
   '<p class="pinyin">Wǒ shì lǎoshī.</p><p class="translation">Я учитель.</p>'+
