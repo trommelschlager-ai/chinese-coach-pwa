@@ -11,7 +11,7 @@ const data=JSON.parse(fs.readFileSync('assets/hanzi-data/他.json','utf8'));
 assert.equal(data.strokes.length,5,'他 must have exactly five authentic strokes');
 assert.equal(data.medians.length,5,'Every stroke needs medians for correct pen tracing');
 assert(html.includes('assets/vendor/hanzi-writer.min.js'),'Use existing local Hanzi Writer');
-assert(html.includes('assets/hsk1-second-extras-v204.js?v=204'));
+assert(html.includes('assets/hsk1-second-extras-v204.js?v=205'));
 assert(html.includes('assets/hsk1-second-extras-v204.css?v=204'));
 assert(style.includes('touch-action:none'),'Finger-writing surface should disable touch scrolling');
 const mk=(step)=>{
@@ -41,6 +41,9 @@ const mk=(step)=>{
  assert.equal(doc.querySelector('#pg-counter').textContent,'02 / 12');
  const panel=doc.querySelector('[data-writing-panel]');
  assert(panel,'Second screen should have optional handwriting panel');
+ assert(panel.open,'Writing must be expanded by default, not hidden in an accordion');
+ assert(Boolean(panel.compareDocumentPosition(doc.querySelector('.sheet'))&w.Node.DOCUMENT_POSITION_FOLLOWING),
+  'Handwriting trainer must appear BEFORE the word cards, near top of second screen');
  assert(panel.querySelector('summary').textContent.includes('5 черт'));
  assert.equal(doc.querySelectorAll('.pg4-scene').length,0,'No scene on vocabulary screen');
  // A full Hanzi Writer stub verifies the correct engine and quiz integration.
@@ -77,7 +80,10 @@ const mk=(step)=>{
  assert(doc.querySelector('[data-scene-caption]').textContent.includes('你是老师吗？'));
  instances[0].onended();
  assert.equal(instances.length,2,'Next play existing female response');
- assert.equal(instances[1].src,'./assets/f.mp3');
+ assert.equal(instances[1].src,'./assets/hsk1-scene-v205/female-im-teacher-normalized.mp3',
+  'Female scene must use balanced amplitude MP3, not quiet original');
+ assert(fs.existsSync('assets/hsk1-scene-v205/female-im-teacher-normalized.mp3'),
+  'Normalized female scene clip must exist');
  assert.equal(doc.querySelector('[data-scene-window]').dataset.phase,'2');
  assert(doc.querySelector('[data-scene-caption]').textContent.includes('我是老师。'));
  instances[1].onended();
@@ -88,4 +94,4 @@ const mk=(step)=>{
  assert.equal(doc.querySelector('[data-scene-window]').dataset.phase,'idle');
  d.window.close();
 }
-console.log('PASS lesson 2 v204: authentic five-stroke 他 in optional finger-writing panel, two real voiced scene lines and original 12-step course preserved.');
+console.log('PASS lesson 2 v205: authentic 他 tracing visible by default; male original and volume-balanced female scene, 12 steps preserved.');
