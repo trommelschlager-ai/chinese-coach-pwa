@@ -38,3 +38,9 @@
 @keyframes pg4-cloud{from{transform:translateX(-3%)}to{transform:translateX(3%)}}
 @media(prefers-reduced-motion:reduce){.pg4-scene-glow{animation:none}.pg4-scene-actor{transition:none}}
 @media(max-width:360px){.pg4-writing summary{font-size:14px;padding:13px}.pg4-scene-window{aspect-ratio:16/11}.pg4-scene-controls{gap:5px}.pg4-scene-controls button{padding:9px 10px}}
+
+/* Optional etymological comparison — never a compulsory new vocabulary block. */
+.pg11-tabi{margin:12px 0 7px;padding:8px 10px;border:1px solid #e4c4eb;background:#f9f1fc;border-radius:13px;color:#6b418b}
+.pg11-tabi summary{font-size:13px;font-weight:800;cursor:pointer;line-height:1.5}
+.pg11-tabi p{font-size:12px;line-height:1.55;margin:8px 4px}
+.pg11-tabi b{color:#643290;font-family:'Noto Sans CJK SC',sans-serif;font-size:17px}
