@@ -1,6 +1,6 @@
 {
-  "version": 213,
-  "bytes": 36612618,
+  "version": 214,
+  "bytes": 37190084,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1728,6 +1728,27 @@
     "./assets/hsk1-numbers-clean-v213/096.mp3",
     "./assets/hsk1-numbers-clean-v213/097.mp3",
     "./assets/hsk1-numbers-clean-v213/098.mp3",
-    "./assets/hsk1-numbers-clean-v213/099.mp3"
+    "./assets/hsk1-numbers-clean-v213/099.mp3",
+    "./hsk1-fourth-v214.html",
+    "./assets/hsk1-fourth-v214.js?v=214",
+    "./assets/hsk1-fourth-v214.css?v=214",
+    "./assets/hsk1-weekdays-audio-map-v214.js?v=214",
+    "./assets/hsk1-weekdays-clean-v214/001.mp3",
+    "./assets/hsk1-weekdays-clean-v214/002.mp3",
+    "./assets/hsk1-weekdays-clean-v214/003.mp3",
+    "./assets/hsk1-weekdays-clean-v214/004.mp3",
+    "./assets/hsk1-weekdays-clean-v214/005.mp3",
+    "./assets/hsk1-weekdays-clean-v214/006.mp3",
+    "./assets/hsk1-weekdays-clean-v214/007.mp3",
+    "./assets/hsk1-weekdays-clean-v214/008.mp3",
+    "./assets/hsk1-weekdays-clean-v214/009.mp3",
+    "./assets/hsk1-weekdays-clean-v214/010.mp3",
+    "./assets/hsk1-weekdays-clean-v214/011.mp3",
+    "./assets/hsk1-weekdays-clean-v214/012.mp3",
+    "./assets/hsk1-weekdays-clean-v214/013.mp3",
+    "./assets/hsk1-weekdays-clean-v214/014.mp3",
+    "./assets/hsk1-weekdays-clean-v214/015.mp3",
+    "./assets/hsk1-weekdays-clean-v214/016.mp3",
+    "./assets/hsk1-weekdays-clean-v214/017.mp3"
   ]
 }
