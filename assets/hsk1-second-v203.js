@@ -91,10 +91,20 @@ let audio=null,recorder=null,stream=null,recUrl=null,micBusy=false,recordChunks=
 let reviewEpoch=0,reviewDelay=0,reviewResume=null;
 const index=s=>Math.max(0,Math.min(50,Number(state.index[s])||0));
 const audioMap=window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
+const unified=window.PANDA_HSK1_L2_ONE_VOICE_V208||{};
 const course=window.PANDA_HSK1_VOICES||{};
 function fileFor(hz,role='female'){
  const text=String(hz),key=cleanText(text);
- if(text==='我是老师。')return './assets/hsk1-scene-v205/female-im-teacher-normalized.mp3';
+ // The animated dialogue on screen 10 retains its two speakers.
+ if(state.step===9){
+  if(role==='female'&&text==='我是老师。')
+   return './assets/hsk1-scene-v205/female-im-teacher-normalized.mp3';
+  return course[role]?.[text]||course[role]?.[key]||unified[text]||null;
+ }
+ // Every available regular word and example uses the same human Yue Tan speaker.
+ if(unified[text])return unified[text];
+ if(unified[key])return unified[key];
+ // A few words absent from that recording have an openly labeled fallback.
  if(vocab[key]&&audioMap[key])return audioMap[key];
  return course[role]?.[text]||course[role]?.[key]||null;
 }
@@ -126,7 +136,7 @@ function playReviewEntry(entry,epoch){
   if(file){
    try{
     player=new Audio(file);audio=player;
-    player.preload='auto';player.preservesPitch=true;player.playbackRate=.9;
+    player.preload='auto';player.preservesPitch=true;player.playbackRate=unified[hanzi]?1:.9;
     player.onended=complete;player.onerror=complete;
     const attempt=player.play();
     if(attempt&&typeof attempt.catch==='function')attempt.catch(complete);
@@ -206,8 +216,8 @@ function play(hz,role='female'){
  try{
   const a=new Audio(file);audio=a;a.preload='auto';
   a.preservesPitch=true;
-  // Native vocabulary stays unmodified at 1×. Longer existing course sentences at 0.85×.
-  a.playbackRate=vocab[cleanText(hz)]?1:0.85;
+  // Do not slow already prepared same-speaker recordings: preserve natural pitches and tones.
+  a.playbackRate=unified[hz]||unified[cleanText(hz)]?1:(vocab[cleanText(hz)]?1:0.9);
   a.onerror=()=>{if(audio===a)feedback('Запись не загрузилась. Проверь интернет.')};
   a.onended=()=>{if(audio===a)audio=null};
   a.onplaying=()=>{
@@ -326,7 +336,7 @@ const screens=[
   sample('НОВОЕ',['吗'],'吗 ставится в конце предложения, произносится нейтральным тоном.')+
   '<div class="sheet"><div class="pg3-sentence">你是老师吗？</div>'+
   '<p class="pinyin">Nǐ shì lǎoshī ma?</p><p class="translation">Ты учитель?</p>'+
-  audioButton('你是老师吗？','▶ Слушать вопрос','male')+
+  audioButton('你是老师吗？','▶ Слушать вопрос','female')+
   questionBlock(7)+'</div>',
  ()=>head('ПРАКТИКА','Собери вопрос','Добавляй 吗 в конец.')+
   buildSheet(8),
@@ -335,7 +345,7 @@ const screens=[
  ()=>head('ПРОИЗНОШЕНИЕ','Теперь скажи сам','Послушай, повтори вслух и сравни с записью.')+
   '<div class="sheet"><div class="pg3-sentence">你是老师吗？</div>'+
   '<p class="pinyin">Nǐ shì lǎoshī ma?</p><p class="translation">Ты учитель?</p>'+
-  audioButton('你是老师吗？','▶ Слушать образец','male')+
+  audioButton('你是老师吗？','▶ Слушать образец','female')+
   '<div class="pg3-recorder">'+
   '<button data-record-start'+(micBusy?' disabled':'')+'>🎙 Записать</button>'+
   '<button data-record-stop'+(micBusy?'':' disabled')+'>■ Стоп</button>'+
