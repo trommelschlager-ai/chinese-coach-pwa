@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="440" viewBox="0 0 420 440" role="img" aria-label="Панда Panda Go в наушниках и современной китайской одежде">
+<defs>
+<linearGradient id="j" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#d85488"/><stop offset=".55" stop-color="#a33467"/><stop offset="1" stop-color="#6a2c5b"/></linearGradient>
+<linearGradient id="h" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbfcff"/><stop offset="1" stop-color="#f4e4f1"/></linearGradient>
+<linearGradient id="ear" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#504055"/><stop offset="1" stop-color="#2c2538"/></linearGradient>
+<linearGradient id="pink" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f39dc9"/><stop offset="1" stop-color="#dc6eab"/></linearGradient>
+<filter id="shadow"><feGaussianBlur stdDeviation="7"/></filter>
+</defs>
+<ellipse cx="214" cy="415" rx="135" ry="15" fill="#6b417d" opacity=".15" filter="url(#shadow)"/>
+<path d="M123 289 Q96 308 85 345 Q76 380 102 399 Q132 409 160 379 L182 320Z" fill="#393040"/>
+<path d="M286 289 Q319 298 340 345 Q352 377 327 394 Q299 402 277 373 L245 327Z" fill="#393040"/>
+<ellipse cx="209" cy="337" rx="115" ry="81" fill="url(#j)" stroke="#873958" stroke-width="5"/>
+<path d="M142 282 Q176 301 220 292 Q249 285 281 285 L281 370 Q257 393 208 397 Q151 394 128 365Z" fill="#e9a2be" opacity=".17"/>
+<path d="M140 294 Q174 320 214 331 Q245 329 282 301" fill="none" stroke="#e9bc77" stroke-width="5" stroke-linecap="round"/>
+<path d="M213 328 L213 390" stroke="#f3c57a" stroke-width="4" stroke-linecap="round"/>
+<circle cx="229" cy="344" r="5" fill="#f6ce86"/><circle cx="229" cy="367" r="5" fill="#f6ce86"/>
+<path d="M126 301 Q95 306 93 329 Q88 348 111 360 Q135 361 150 339" fill="#342c3d" stroke="#342c3d" stroke-width="6"/>
+<path d="M282 299 Q312 310 317 333 Q313 354 294 357 Q282 354 271 339" fill="#342c3d" stroke="#342c3d" stroke-width="6"/>
+<circle cx="124" cy="122" r="45" fill="url(#ear)"/><circle cx="293" cy="122" r="45" fill="url(#ear)"/>
+<ellipse cx="211" cy="207" rx="125" ry="124" fill="url(#h)" stroke="#ead5e4" stroke-width="3"/>
+<ellipse cx="150" cy="211" rx="41" ry="55" transform="rotate(17 150 211)" fill="#423b4b"/>
+<ellipse cx="273" cy="211" rx="41" ry="55" transform="rotate(-17 273 211)" fill="#423b4b"/>
+<ellipse cx="157" cy="206" rx="19" ry="27" fill="#fff"/><ellipse cx="267" cy="206" rx="19" ry="27" fill="#fff"/>
+<ellipse cx="165" cy="211" rx="11" ry="18" fill="#271f32"/><ellipse cx="259" cy="211" rx="11" ry="18" fill="#271f32"/>
+<circle cx="170" cy="202" r="5" fill="#fff"/><circle cx="262" cy="202" r="5" fill="#fff"/>
+<ellipse cx="130" cy="260" rx="23" ry="13" fill="#e8a1bf" opacity=".74"/>
+<ellipse cx="290" cy="260" rx="23" ry="13" fill="#e8a1bf" opacity=".74"/>
+<ellipse cx="211" cy="261" rx="40" ry="28" fill="#fff4f7"/>
+<path d="M193 250 Q211 237 229 250 Q227 266 211 267 Q196 264 193 250Z" fill="#393343"/>
+<path d="M211 267 Q212 281 199 282 M211 267 Q209 281 224 283" stroke="#4b3448" fill="none" stroke-width="3" stroke-linecap="round"/>
+<path d="M116 163 Q104 71 208 65 Q312 67 306 159" fill="none" stroke="#6b3b73" stroke-width="19" stroke-linecap="round"/>
+<path d="M103 170 Q82 176 88 224 Q91 244 107 239 L121 225 L121 183Z" fill="url(#pink)" stroke="#874784" stroke-width="5"/>
+<path d="M309 170 Q334 176 333 224 Q329 244 313 239 L299 225 L299 183Z" fill="url(#pink)" stroke="#874784" stroke-width="5"/>
+<path d="M96 205 Q103 211 104 222 M320 205 Q315 213 315 222" fill="none" stroke="#f9d9ee" stroke-width="4" stroke-linecap="round"/>
+<path d="M309 226 Q331 248 307 279" stroke="#844285" stroke-width="6" fill="none" stroke-linecap="round"/>
+<rect x="292" y="271" width="36" height="15" rx="7.5" fill="#e69abf" stroke="#8a4b88" stroke-width="3"/>
+<g opacity=".95"><path d="M70 114 Q78 102 86 113 Q76 120 70 114Z" fill="#eaa6bd"/><circle cx="71" cy="130" r="3.5" fill="#f1c7cc"/><path d="M349 142 Q357 130 365 141 Q358 150 349 142Z" fill="#e6acd2"/></g>
+</svg>
