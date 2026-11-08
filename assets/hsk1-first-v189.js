@@ -64,13 +64,15 @@
   return `<button type="button" class="audio" data-say="${esc(key)}" ${has?'':'disabled'}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5ZM15 9c1 2 1 4 0 6m3-9c3 4 3 8 0 12"/></svg>${has?txt:'Запись недоступна'}</button><p class="audio-error" id="audio-error" role="status"></p>`;
  };
  const word=(hz,py,ru,extra='')=>`<div class="sheet soft"><span class="sheet-label">НОВОЕ СЛОВО</span><strong lang="zh-Hans" class="big-hanzi">${esc(hz)}</strong><p class="pinyin">${esc(py)}</p><div class="translation">${esc(ru)}</div>${playBtn(hz)}${extra}</div>`;
+ // Denoised copies of the SAME original licensed human voice, used only for má and mǎ.
+ const CLEAN_MA_TONES=Object.freeze({'麻':'./assets/hsk1-tone-clean-v201/ma2.mp3','马':'./assets/hsk1-tone-clean-v201/ma3.mp3'});
  const toneCards=()=>[
   {hz:'妈',py:'mā',name:'1-й тон',label:'ровный',curve:'M11 16 H85 M77 8 L85 16 L77 24'},
   {hz:'麻',py:'má',name:'2-й тон',label:'восходящий',curve:'M12 43 L84 12 M73 12 L84 12 L83 24'},
   {hz:'马',py:'mǎ',name:'3-й тон',label:'вниз и вверх',curve:'M11 18 Q43 58 84 17 M72 19 L84 17 L80 29'},
   {hz:'骂',py:'mà',name:'4-й тон',label:'нисходящий',curve:'M12 12 L84 44 M75 32 L84 44 L71 44'}
  ].map((t,i)=>{
-  const source=window.courseHumanAudio?.[t.hz];
+  const source=CLEAN_MA_TONES[t.hz]||window.courseHumanAudio?.[t.hz];
   return `<div class="tone-item">
     <div class="tone-choice">
       <b>${t.py}</b>
@@ -264,7 +266,7 @@
   if(btn.hasAttribute('data-radical')){radical=Number(btn.dataset.radical);render();return}
   if(btn.id==='stroke-restart'){const svg=area.querySelector('.writing-animate');if(svg)svg.replaceWith(svg.cloneNode(true));return}
   if(btn.hasAttribute('data-say')){play(clipCandidates(btn.dataset.say),btn.dataset.say);return}
-  if(btn.hasAttribute('data-tone-play')){play([window.courseHumanAudio?.[btn.dataset.tonePlay],...clipCandidates(btn.dataset.tonePlay)],btn.dataset.tonePlay,'tone');return}
+  if(btn.hasAttribute('data-tone-play')){play([CLEAN_MA_TONES[btn.dataset.tonePlay]||window.courseHumanAudio?.[btn.dataset.tonePlay],...clipCandidates(btn.dataset.tonePlay)],btn.dataset.tonePlay,'tone');return}
   if(btn.hasAttribute('data-listen-answer')){listenSelected=btn.dataset.listenAnswer;if(!listenTarget){listenPassed=true;render();return}listenPassed=listenSelected===listenTarget;render();if(!listenPassed)showMessage('Послушай ещё раз.');return}
   if(btn.hasAttribute('data-add')){const i=Number(btn.dataset.add);if(!order.includes(i)){order.push(i);verified=false;render()}return}
   if(btn.hasAttribute('data-remove')){order.splice(Number(btn.dataset.remove),1);verified=false;render();return}
