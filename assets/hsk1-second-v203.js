@@ -174,22 +174,8 @@ async function playReviewAll(){
  if(stopBtn)stopBtn.disabled=true;
 }
 function renderReviewList(){
- return '<section class="pg7-recap" aria-label="Словарь после второго урока">'+
- '<h2>🐼 Твой китайский словарь</h2>'+
- '<p>Ты уже знаешь эти слова и фразы. Послушай и повтори вслух. Бонусное слово 它 отмечено отдельно.</p>'+
- '<div class="pg7-review-controls"><button type="button" data-review-all>▶ Повторить всё по 2 раза</button>'+
- '<button type="button" data-review-stop disabled>■ Стоп</button></div>'+
- '<p class="pg7-review-status" data-review-status role="status">Нажми на слово или запусти весь список.</p>'+
- '<div class="pg7-review-list">'+reviewEntries.map((entry,i)=>{
-  const [zh,py,ru]=entry;
-  const extra=(!nativeOrTTS(zh));
-  return '<div class="pg7-review-row"><div class="pg7-review-word"><strong lang="zh-Hans">'+escapeHtml(zh)+'</strong>'+
-   '<span>'+escapeHtml(py)+'</span><small>'+escapeHtml(ru)+'</small></div>'+
-   '<button type="button" data-review-one="'+i+'" aria-label="Прослушать и повторить '+escapeHtml(zh)+'">▶</button>'+
-   (extra?'<small class="pg7-review-fallback">Системная озвучка</small>':'')+'</div>';
- }).join('')+'</div>'+
- '<p class="pg7-review-footnote">Для 您 и фразы 是的，我是老师。 пока используется системная китайская озвучка. Проверенную запись китаянки добавим отдельно.</p>'+
- '</section>';
+ return window.PG2_SPEAKING?.render?.()||
+  '<p>Тренировка произношения недоступна. Перезагрузи страницу.</p>';
 }
 function audioButton(hz,label='▶ Слушать',role='female'){
  const file=fileFor(hz,role),fallback=hz==='您';
@@ -282,11 +268,9 @@ function sample(title,items,extra=''){
 }
 function renderFinal(){
  if(state.completed){
-  return head('УРОК 2 · ГОТОВО!','Ты уже говоришь по-китайски! 🐼','Повторим всё, что ты освоил.')+
-   '<div class="sheet"><p class="pg3-success">🏆 Молодец! Второй урок завершён</p>'+
-   '<p class="pg3-result">С первой попытки: <strong>'+state.finalFirstTry+' из 5</strong></p>'+
-   '<p class="pg3-note">'+(state.finalWrong.length?'Ошибки разобраны и повторены.':'Отличная работа: все ответы верны с первой попытки!')+'</p>'+
-   renderReviewList()+
+  return head('УРОК 2 · ГОТОВО!','Ты уже говоришь по-китайски! 🐼','Закрепим слова с помощью микрофона.')+
+   '<div class="sheet pg9-final-sheet">'+renderReviewList()+
+   '<div class="pg9-final-score">Тест урока с первой попытки: <strong>'+state.finalFirstTry+' из 5</strong></div>'+
    '<div class="pg3-finish"><button data-restart>↻ Повторить урок</button><a href="./hsk1-map.html">К карте HSK1 →</a></div></div>';
  }
  if(index(11)>=5&&(!state.finalWrong.length||state.reviewIndex>=state.finalWrong.length)){
@@ -380,6 +364,7 @@ function render(){
  fill.style.width=(100*(p+1)/TOTAL)+'%';
  area.innerHTML=screens[p]();
  window.PG2_EXTRAS?.afterRender?.(p,area);
+ if(p===11&&state.completed)window.PG2_SPEAKING?.afterRender?.();
  area.scrollTop=0;
  back.disabled=p===0;
  next.hidden=p===11;
