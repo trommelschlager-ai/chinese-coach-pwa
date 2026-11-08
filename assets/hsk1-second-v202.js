@@ -215,7 +215,7 @@ function isGated(){
  return false;
 }
 function cleanMicrophone(){
- if(recorder?.state==='recording'){try{recorder.stop()}catch{}}
+ if(recorder?.state==='recording'){try{recorder.onstop=null;recorder.stop()}catch{}}
  if(stream){for(const track of stream.getTracks())track.stop();stream=null}
  recorder=null;recording=false;
 }
@@ -279,17 +279,19 @@ area.addEventListener('click',async event=>{
   if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){showStatus('Запись не поддерживается. Повтори фразу вслух.');return}
   try{
    cleanMicrophone();
-   stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}});
+   try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}})}
+   catch{stream=await navigator.mediaDevices.getUserMedia({audio:true})}
    const types=['audio/webm;codecs=opus','audio/mp4','audio/webm'];
    const format=types.find(x=>MediaRecorder.isTypeSupported(x));
    recorder=new MediaRecorder(stream,format?{mimeType:format}:undefined);
    recordChunks=[];
+   const captureMime=recorder.mimeType||'audio/webm';
    recorder.ondataavailable=e=>{if(e.data.size)recordChunks.push(e.data)};
    recorder.onstop=()=>{
     const chunks=recordChunks.slice();
     if(chunks.length){
      if(recordUrl)URL.revokeObjectURL(recordUrl);
-     recordUrl=URL.createObjectURL(new Blob(chunks,{type:recorder.mimeType||'audio/webm'}));
+     recordUrl=URL.createObjectURL(new Blob(chunks,{type:captureMime}));
     }
     if(stream){for(const track of stream.getTracks())track.stop();stream=null}
     recording=false;recorder=null;render();
