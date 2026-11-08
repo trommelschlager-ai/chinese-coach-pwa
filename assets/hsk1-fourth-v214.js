@@ -401,7 +401,10 @@ root.addEventListener('click',event=>{
   play(name,ok=>{
    if(ok&&!state.heardWords.includes(name))state.heardWords.push(name);
    const card=root.querySelector('[data-day="'+name+'"]');if(card&&ok)card.classList.add('heard');
-   if(ok)next.disabled=!ready();
+   if(ok){
+    next.disabled=!ready();
+    note('✓ '+name+' прослушано. Теперь можно выбрать следующее слово.','success');
+   }
    save();
   });
   return;
@@ -411,6 +414,12 @@ root.addEventListener('click',event=>{
   // For interactive listening quizzes, only unlock after end of recording.
   const isQuestion=s===3||s===9||s===11&&EXAM[state.indexes[11]]?.kind==='audio';
   play(word,ok=>{
+   if((s===1||s===2)&&ok&&DAYS.some(x=>x.hz===word)){
+    if(!state.heardWords.includes(word))state.heardWords.push(word);
+    root.querySelector('[data-day="'+word+'"]')?.classList.add('heard');
+    next.disabled=!ready();save();
+    note('✓ '+word+' прослушано.','success');
+   }
    if(isQuestion&&ok)root.querySelectorAll('[data-quiz-answer],[data-chat-answer],[data-exam-answer]').forEach(x=>x.disabled=false);
    if(isQuestion&&ok)note('Теперь выбирай ответ.','success');
   });
