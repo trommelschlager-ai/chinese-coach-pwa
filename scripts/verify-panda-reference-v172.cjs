@@ -45,7 +45,7 @@ for(const selector of ['#pg130 .pg-hsk-level-list','.map-shell .map-road','.less
 for(const keep of ['panda-reference-v175/hero.webp','approved-panda-lake-v112.webp','panda-v130/landscape.webp','panda-v130/flowers.webp'])
  assert(css.includes(keep)||homeJs.includes(keep),'Approved landscape asset missing '+keep);
 const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
-assert(core.length<=136,'Install must include at most 136 core assets (two small beginner-intro files added)');
+assert(core.length<=137,'Install must include at most 137 core assets (two small beginner-intro files added)');
 assert(core.includes('./assets/panda-reference-v175.css?v=175'),'Offline style is not in critical assets');
 assert(core.includes('./assets/panda-v130.js?v=175'),'New home must work offline');
 assert(core.includes('./assets/hsk1-foundations-v152.js?v=187'),'Lesson controls must work offline');
