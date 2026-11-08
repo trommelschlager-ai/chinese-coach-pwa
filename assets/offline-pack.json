@@ -1,6 +1,6 @@
 {
-  "version": 214,
-  "bytes": 37190084,
+  "version": 215,
+  "bytes": 37215768,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1730,8 +1730,6 @@
     "./assets/hsk1-numbers-clean-v213/098.mp3",
     "./assets/hsk1-numbers-clean-v213/099.mp3",
     "./hsk1-fourth-v214.html",
-    "./assets/hsk1-fourth-v214.js?v=214",
-    "./assets/hsk1-fourth-v214.css?v=214",
     "./assets/hsk1-weekdays-audio-map-v214.js?v=214",
     "./assets/hsk1-weekdays-clean-v214/001.mp3",
     "./assets/hsk1-weekdays-clean-v214/002.mp3",
@@ -1749,6 +1747,9 @@
     "./assets/hsk1-weekdays-clean-v214/014.mp3",
     "./assets/hsk1-weekdays-clean-v214/015.mp3",
     "./assets/hsk1-weekdays-clean-v214/016.mp3",
-    "./assets/hsk1-weekdays-clean-v214/017.mp3"
+    "./assets/hsk1-weekdays-clean-v214/017.mp3",
+    "./assets/hsk1-fourth-v215.js?v=215",
+    "./assets/hsk1-fourth-v215.css?v=215",
+    "./assets/panda-guide-v215.svg"
   ]
 }
