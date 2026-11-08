@@ -81,9 +81,9 @@ function practice(){
  }catch{setWritingStatus('Не удалось начать письмо.')}
 }
 function writingMarkup(){
- return '<details class="pg4-writing" data-writing-panel><summary>✍️ Попробуй написать 他 · 5 черт'+
+ return '<details class="pg4-writing" data-writing-panel open><summary>✍️ ПИШЕМ 他 · 5 черт'+
  (saved.hanziCompleted?' ✓':'')+'</summary>'+
- '<div class="pg4-writing-body"><p class="pg4-writing-tip">Нажми «Показать черты», затем напиши 他 пальцем. Сначала пишем 亻, затем 也.</p>'+
+ '<div class="pg4-writing-body"><p class="pg4-writing-tip">Смотри, как пишется 他, затем повтори пальцем. 亻 — сначала, 也 — затем.</p>'+
  '<div class="pg4-writing-paper"><div id="pg3-handwriting" aria-label="Пиши пальцем иероглиф 他 в правильном порядке"></div></div>'+
  '<div class="pg4-write-controls"><button data-write-demo type="button">▶ Показать черты</button>'+
  '<button data-write-practice type="button">✍️ Написать самому</button></div>'+
@@ -172,7 +172,7 @@ window.PG2_EXTRAS={
  afterRender(step,root){
   if(step===1){
    const sheets=root.querySelectorAll('.sheet'),last=sheets[sheets.length-1];
-   if(last)last.insertAdjacentHTML('afterend',writingMarkup());
+   if(last){last.insertAdjacentHTML('beforebegin',writingMarkup());loadWriting();}
   }
   if(step===9){
    const sheet=root.querySelector('.sheet');
