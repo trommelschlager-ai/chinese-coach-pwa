@@ -44,12 +44,13 @@
   const original=matches.find(([,v])=>v.startsWith('data:audio/mpeg;base64,'));
   const realHuman=Object.entries(window.courseHumanAudio||{}).find(([k,v])=>
     typeof v==='string'&&k.replace(/[。！?!？，,\s]/g,'')===norm)?.[1];
-  // Approved speaker -> licensed human speaker -> synthesized old voice.
-  return [...new Set([original?.[1],realHuman,vo[key],...matches.map(x=>x[1])].filter(Boolean))];
+  // The user's three new isolated original clips win over older excerpts.
+  const latest=window.PANDA_HSK1_OWNER_V200?.[norm];
+  return [...new Set([latest,original?.[1],realHuman,vo[key],...matches.map(x=>x[1])].filter(Boolean))];
  };
  const getClip=key=>clipCandidates(key)[0]||null;
  const listeningWords=['我','是','学生'];
- const nativeSamples=listeningWords.filter(key=>String(getClip(key)||'').startsWith('data:audio/mpeg;base64,'));
+ const nativeSamples=listeningWords.filter(key=>{const clip=String(getClip(key)||'');return clip.startsWith('data:audio/mpeg;base64,')||clip.startsWith('./assets/native-owner-v200/');});
  const validSamples=nativeSamples.length?nativeSamples:listeningWords.filter(key=>!!getClip(key));
  const listenTarget=(savedListenTarget&&validSamples.includes(savedListenTarget))?savedListenTarget:(validSamples.length?validSamples[Math.floor(Math.random()*validSamples.length)]:null);
  const listenMarkup=()=>'<div class="sheet pg-listening"><span class="sheet-label">СЛУШАЙ И УЗНАВАЙ</span>'+
