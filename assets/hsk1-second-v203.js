@@ -341,7 +341,9 @@ const screens=[
  ()=>head('ПРАКТИКА','Собери вопрос','Добавляй 吗 в конец.')+
   buildSheet(8),
  ()=>head('МИНИ-ДИАЛОГ','Ответь собеседнику','Послушай реплику и выбери осмысленный ответ.')+
-  practiceSheet(9),
+  '<div class="sheet pg3-dialogue-sheet">'+questionBlock(9)+
+  (index(9)>=prompts[9].length?'<div class="pg3-dialogue-repeat"><button type="button" data-dialogue-again>↻ Ещё раз ответить на вопросы</button></div>':'')+
+  '</div>',
  ()=>head('ПРОИЗНОШЕНИЕ','Теперь скажи сам','Послушай, повтори вслух и сравни с записью.')+
   '<div class="sheet"><div class="pg3-sentence">你是老师吗？</div>'+
   '<p class="pinyin">Nǐ shì lǎoshī ma?</p><p class="translation">Ты учитель?</p>'+
@@ -439,6 +441,7 @@ next.addEventListener('click',advance);
 area.addEventListener('click',async ev=>{
  const btn=ev.target.closest('button');
  if(!btn||btn.disabled)return;
+ if(btn.hasAttribute('data-dialogue-again')){state.index[9]=0;state.done[9]=false;render();return}
  if(btn.hasAttribute('data-review-all')){playReviewAll();return}
  if(btn.hasAttribute('data-review-stop')){stopReview();btn.disabled=true;return}
  if(btn.hasAttribute('data-review-one')){
