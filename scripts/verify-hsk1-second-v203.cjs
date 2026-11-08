@@ -8,8 +8,10 @@ const css=fs.readFileSync('assets/hsk1-second-v203.css','utf8');
 const map=fs.readFileSync('hsk1-map.html','utf8');
 const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const voices=fs.readFileSync('assets/hsk1-voices-map-v160.js','utf8');
+const oneVoice=fs.readFileSync('assets/hsk1-lesson2-audio-v208.js','utf8');
 assert(html.includes('hsk1-first-v189.css?v=194'),'Keep first lesson approved visual style');
-assert(html.includes('hsk1-second-v203.js?v=207'),'Second lesson JS version');
+assert(html.includes('hsk1-second-v203.js?v=208'),'Second lesson JS version');
+assert(html.includes('hsk1-lesson2-audio-v208.js?v=208'),'One-speaker voice map must be loaded first');
 assert(html.includes('hsk1-second-v203.css?v=207'),'Second lesson CSS version');
 assert(map.includes('data-num="2" href="./hsk1-second-v203.html"'),'Map must open new lesson');
 assert(css.includes('.pg3-word')&&css.includes('.pg3-answers'),'Mobile practice layout');
@@ -17,7 +19,7 @@ assert(!js.includes('不是'), 'Move negative sentence grammar to later lesson')
 assert(!js.includes('他们'), 'Extra third-person plural moves to future lesson');
 const d=new JSDOM(html,{url:'https://example.test/chinese-coach-pwa/hsk1-second-v203.html',runScripts:'outside-only'});
 const w=d.window,doc=w.document;
-w.eval(native);w.eval(voices);
+w.eval(native);w.eval(voices);w.eval(oneVoice);
 const lessonWords=['我','你','他','她','我们','你们','老师','吗','学生','是'];
 for(const hz of lessonWords){
  const file=w.PANDA_HSK1_NATIVE_HUMAN_V167[hz];
@@ -27,7 +29,15 @@ for(const phrase of ['我是老师。','你是老师吗？']){
  assert(w.PANDA_HSK1_VOICES.female[phrase],'Missing female sample '+phrase);
 }
 assert(w.PANDA_HSK1_VOICES.male['你是老师吗？'],'Missing male dialogue sample');
-w.Audio=function(src){this.src=src;this.pause=()=>{};this.play=()=>{this.onplaying?.();return Promise.resolve()}};
+const oneVoiceFiles=w.PANDA_HSK1_L2_ONE_VOICE_V208;
+assert.equal(Object.keys(oneVoiceFiles).length,13,'11 individual words and two sentences should share one native speaker');
+for(const [word,path] of Object.entries(oneVoiceFiles)){
+ assert(path.startsWith('./assets/hsk1-voice-unified-v208/'),'Wrong speaker or asset family: '+word);
+ assert(fs.existsSync(path.slice(2)),'Missing verified same-speaker audio file: '+word);
+ assert(fs.statSync(path.slice(2)).size>5000,'Invalid voice file: '+word);
+}
+let lastAudio=null;
+w.Audio=function(src){this.src=src;lastAudio=src;this.pause=()=>{};this.play=()=>{this.onplaying?.();return Promise.resolve()}};
 w.localStorage.setItem('pg-hsk1-v3-pronouns',JSON.stringify({step:5,completed:false,wordIndex:9}));
 w.localStorage.setItem('pg-hsk1-v202-pronouns-preview',JSON.stringify({step:12,listenIndex:4}));
 w.eval(js);
@@ -50,11 +60,16 @@ for(const a of [2,1,1])answer(a);
 assert.equal(step(),4,'Completed recognition drill should advance without empty confirmation card');
 assert(!doc.getElementById('pg-content').textContent.includes('Упражнение выполнено'),'No giant completed card on step 3');
 // step 4: plural
-answer(1);answer(1);proceed(); // step 5 listening: plural and respectful singular 您
+answer(1);answer(1);
+click('[data-audio="你们"]');
+assert.equal(lastAudio,oneVoiceFiles['你们'],'All regular vocabulary should use same voice');
+proceed(); // step 5 listening: plural and respectful singular 您
 assert(doc.querySelector('[data-audio="我们"]'),'Must have actual listening sample');
 for(const a of [2,3,0,2])answer(a);
 assert.equal(step(),6,'Listening drill should auto-advance');
 // step 6 example
+click('[data-audio="我是老师。"]');
+assert.equal(lastAudio,oneVoiceFiles['我是老师。'],'Narration example must use the SAME voice as words');
 answer(0);proceed(); // step 7 3 builds
 for(let exercise=0;exercise<3;exercise++){
  assert(doc.getElementById('pg-next').disabled,'Cannot skip sentence build');
@@ -63,6 +78,8 @@ for(let exercise=0;exercise<3;exercise++){
 }
 assert.equal(step(),8,'Sentence building should auto-advance without summary card');
 // step 8 particle
+click('[data-audio="你是老师吗？"]');
+assert.equal(lastAudio,oneVoiceFiles['你是老师吗？'],'Non-dialog question narration must use the unified voice');
 answer(2);proceed(); // step 9 2 questions build
 for(let exercise=0;exercise<2;exercise++){
  for(const i of [0,1,2,3])click('[data-add="'+i+'"]');
@@ -70,11 +87,14 @@ for(let exercise=0;exercise<2;exercise++){
 }
 assert.equal(step(),10,'Question-building should auto-advance without summary card');
 // step 10 conversation
+click('[data-audio="你是老师吗？"]');
+assert.equal(lastAudio,w.PANDA_HSK1_VOICES.male['你是老师吗？'],'Dialogues must retain their separate male voice');
 for(const a of [0,1])answer(a);
 proceed(); // step 11 speak
 assert(doc.getElementById('pg-next').disabled,'Speaking requires listen and confirm');
 assert(doc.querySelector('[data-spoken]').disabled,'Speak confirmation initially disabled');
 click('[data-audio="你是老师吗？"]');
+assert.equal(lastAudio,oneVoiceFiles['你是老师吗？'],'Speaking demo should reuse the unified female voice');
 assert(!doc.querySelector('[data-spoken]').disabled,'Real audio playback unlocks speaking confirmation');
 click('[data-spoken]');proceed(); // step 12 final
 assert.equal(step(),12);
@@ -100,4 +120,4 @@ assert.equal(legacy.step,5,'Old second lesson progress must remain unchanged');
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v202-pronouns-preview')).step,12,'v202 preview must not be lost');
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('pronouns'),'Next HSK1 lesson unlocked');
 d.window.close();
-console.log('PASS HSK1 v208: 12 screens, completed drills auto-advance without blank cards, polite 您, 16 review entries and preserved progress.');
+console.log('PASS HSK1 v208: 12 screens, completed drill autoadvance, one-native-speaker vocabulary/examples, two-voice dialogue, polite 您, 16 review entries and preserved progress.');
