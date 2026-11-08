@@ -62,3 +62,30 @@
 .tone-item .tone-play:disabled{opacity:.45}
 @media (prefers-reduced-motion:reduce){.writing-animate .pg-write-path{animation:none!important;stroke-dashoffset:0!important}}
 @media(max-width:360px){.tone-item{min-height:174px}.tone-choice{min-height:127px}.tone-curve{height:43px}}
+
+/* Panda Go v192 — informative tone lesson, 8 strokes overview, automatic seven-stroke 我. */
+.strokes{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.strokes .stroke{min-width:0;padding:10px 2px;border-radius:13px;background:linear-gradient(145deg,#fff8ff,#eee4fb)}
+.strokes .stroke b{font-size:clamp(29px,7.8vw,37px);min-height:40px;line-height:1.2}
+.strokes .stroke span{display:block;font-size:10.5px;white-space:nowrap}
+.stroke-footnote{text-align:center;font-size:12px;color:#786093;line-height:1.45;margin:12px 0 0}
+.tone-choice{cursor:default;user-select:text}
+.tone-item{cursor:default}
+.pg-wo-writing{max-width:245px;max-height:245px}
+.pg-wo-writing .pg-wo-stroke{fill:none;stroke:#7739a7;stroke-width:60;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:100;stroke-dashoffset:100;animation-duration:8.4s;animation-timing-function:linear;animation-iteration-count:infinite}
+@media(max-width:360px){.strokes{gap:5px}.strokes .stroke span{font-size:10px}}
+.pg-wo-writing .pg-wo-1{animation-name:pgWo1}
+@keyframes pgWo1{0%,0%{stroke-dashoffset:100}9%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+.pg-wo-writing .pg-wo-2{animation-name:pgWo2}
+@keyframes pgWo2{0%,11%{stroke-dashoffset:100}20%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+.pg-wo-writing .pg-wo-3{animation-name:pgWo3}
+@keyframes pgWo3{0%,22%{stroke-dashoffset:100}31%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+.pg-wo-writing .pg-wo-4{animation-name:pgWo4}
+@keyframes pgWo4{0%,33%{stroke-dashoffset:100}42%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+.pg-wo-writing .pg-wo-5{animation-name:pgWo5}
+@keyframes pgWo5{0%,44%{stroke-dashoffset:100}53%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+.pg-wo-writing .pg-wo-6{animation-name:pgWo6}
+@keyframes pgWo6{0%,55%{stroke-dashoffset:100}64%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+.pg-wo-writing .pg-wo-7{animation-name:pgWo7}
+@keyframes pgWo7{0%,66%{stroke-dashoffset:100}75%,95%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+@media(prefers-reduced-motion:reduce){.pg-wo-writing .pg-wo-stroke{animation:none!important;stroke-dashoffset:0!important}}
