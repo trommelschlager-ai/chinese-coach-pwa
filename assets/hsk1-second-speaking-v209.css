@@ -1,0 +1,32 @@
+/* Panda Go — lesson 2 guided Mandarin speech checkpoint v209.
+   Clear one-word-at-a-time UI; no empty success panels. */
+.pg9-section{margin:5px auto 13px;max-width:480px}
+.pg9-section>h2{font-size:clamp(21px,5.8vw,27px);color:#63358c;text-align:center;margin:5px 0 9px;font-weight:850}
+.pg9-intro{font-size:13px;line-height:1.48;color:#77558e;text-align:center;margin:0 0 16px}
+.pg9-training{border:1.5px solid #e3c7ec;background:linear-gradient(156deg,#fffaff,#f4eafa);border-radius:22px;padding:16px 12px 18px;text-align:center}
+.pg9-progress{display:flex;justify-content:space-between;align-items:center;gap:7px;color:#87609a;font-weight:850;font-size:13px}
+.pg9-progress span{color:#a26ab3;font-size:12px;white-space:nowrap}
+.pg9-hanzi{display:block;font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif;font-size:clamp(51px,12.2vw,74px);line-height:1.25;font-weight:750;color:#602d8f;overflow-wrap:anywhere;margin:14px auto 2px}
+.pg9-pinyin{font-size:clamp(21px,5vw,27px);font-weight:800;color:#935bad;line-height:1.35}
+.pg9-translation{font-size:15px;font-weight:750;color:#5c3975;line-height:1.5;margin:7px auto 13px}
+.pg9-dots{display:flex;align-items:center;justify-content:center;gap:16px;margin:14px auto}
+.pg9-dots span{width:43px;height:43px;display:grid;place-items:center;background:#f9effb;border:2px solid #d9bee7;border-radius:50%;color:#9769ac;font-size:17px;font-weight:800}
+.pg9-dots span.active{background:#c883cb;border-color:#c883cb;color:white}
+.pg9-listen,.pg9-microphone,.pg9-next,.pg9-finished button{width:100%;margin:5px 0;min-height:54px;border:0;border-radius:21px;font-size:16px;font-weight:850}
+.pg9-listen{background:linear-gradient(120deg,#a55edb,#d47ac5);color:#fff;box-shadow:0 6px 17px rgba(108,44,148,.16)}
+.pg9-microphone{background:#fff;border:2px solid #d0a0df;color:#68388b}
+.pg9-microphone:disabled{opacity:.5}
+.pg9-next{background:linear-gradient(115deg,#ec8bbf,#efb2d0);color:#613076;margin-top:11px}
+.pg9-next:disabled{filter:grayscale(.75);opacity:.55}
+.pg9-feedback{font-size:13px;line-height:1.5;min-height:39px;color:#75508f;margin:12px 2px 3px}
+.pg9-caveat,.pg9-warning{font-size:11px;line-height:1.55;margin:12px 0 0;color:#9176a1}
+.pg9-warning{color:#925063;font-weight:750}
+.pg9-finished{text-align:center;border:1px solid #ddc2ed;border-radius:19px;padding:22px 13px;background:#f8effc}
+.pg9-finished h3{font-size:21px;color:#63358c;margin:0 0 10px}
+.pg9-finished p{font-size:14px;line-height:1.5;color:#79558f}
+.pg9-finished button{background:linear-gradient(120deg,#b36add,#e480c6);color:white;font-size:14px;margin-top:10px}
+.pg9-final-score{text-align:center;font-size:13px;font-weight:750;color:#79518c;margin:17px 0 8px}
+.pg9-final-score strong{font-size:16px;color:#693a91}
+.pg9-final-sheet{padding-top:20px!important}
+.pg9-final-sheet .pg3-finish{margin-top:16px}
+@media(max-width:355px){.pg9-training{padding:13px 9px}.pg9-hanzi{font-size:51px}.pg9-progress{font-size:12px}.pg9-dots{gap:12px}.pg9-listen,.pg9-microphone,.pg9-next{font-size:14px}}
