@@ -8,7 +8,7 @@ import json
 import subprocess
 
 BASE = Path("assets/course-human")
-OUT = Path("assets/hsk1-tone-clean-v201")
+OUT = Path("assets/hsk1-tone-clean-v202")
 OUT.mkdir(parents=True, exist_ok=True)
 PAIRS = [("麻", "ma2"), ("马", "ma3")]
 
@@ -29,13 +29,12 @@ for hanzi, slug in PAIRS:
     duration = probe(source)
     if not 0.2 <= duration <= 15:
         raise SystemExit("Unexpected source duration: " + str(source))
-    # Stationary background reduction without time stretching or pitch shifts.
-    # Broad Mandarin speech frequencies retained: only low rumble and high hiss
-    # are cut. Very short fades prevent clicks, not a shortened third tone.
+    # Reduced background noise without stretching the audio or repitching the voice.
+    # Stronger stationary-noise subtraction (v202) and gentle hiss cutoff.\n    # No aggressive gate: do not erase quiet third-tone contours or vowel endings.\n    # Very short fade prevents a click but preserves the word duration.
     chain = (
         "highpass=f=85,"
-        "afftdn=nr=14:nf=-32:nt=w,"
-        "lowpass=f=7500,"
+        "afftdn=nr=22:nf=-34:tn=1:gs=10,"
+        "lowpass=f=5900,"
         "alimiter=limit=0.93,"
         "afade=t=in:st=0:d=0.025"
     )
