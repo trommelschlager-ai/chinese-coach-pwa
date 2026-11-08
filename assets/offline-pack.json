@@ -1,5 +1,5 @@
 {
-  "version": 194,
+  "version": 195,
   "bytes": 33265369,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -1594,6 +1594,6 @@
     "./start-chinese.html",
     "./hsk1-first-v189.html",
     "./assets/hsk1-first-v189.css?v=194",
-    "./assets/hsk1-first-v189.js?v=194"
+    "./assets/hsk1-first-v189.js?v=195"
   ]
 }

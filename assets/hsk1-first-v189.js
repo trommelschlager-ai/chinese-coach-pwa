@@ -1,4 +1,4 @@
-/* Panda Go HSK1 v194 — contextual character study, auditory recognition and persistent progress. */
+/* Panda Go HSK1 v195 — contextual learning, consistent audio recognition on reload and persistent answers. */
 /* 好 drawing data from Hanzi Writer Data / Make Me A Hanzi (Arphic Public License).
    License in repository: assets/hanzi-data/ARPHICPL.TXT */
 (()=>{
@@ -33,8 +33,8 @@
     "fact": "子 — правая часть 好, но не его словарный ключ."
   }
 ];
- let step=0,radical=0,order=[],verified=false,listenPassed=false,listenSelected='',audio=null,recorder=null,stream=null,recordUrl=null,recording=false,playedAtLeastOnce=false;
- try{const v=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');if(v&&Number.isInteger(v.step)){const alreadyDone=v.step===13&&v.lessonVersion!==194;step=alreadyDone?14:Math.min(STEPS-1,Math.max(0,v.step));verified=!!v.verified||v.step>8;listenPassed=!!v.listenPassed||alreadyDone}}catch{}
+ let step=0,radical=0,order=[],verified=false,listenPassed=false,listenSelected='',savedListenTarget=null,audio=null,recorder=null,stream=null,recordUrl=null,recording=false,playedAtLeastOnce=false;
+ try{const v=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');if(v&&Number.isInteger(v.step)){const alreadyDone=v.step===13&&(!v.lessonVersion||v.lessonVersion<194);step=alreadyDone?14:Math.min(STEPS-1,Math.max(0,v.step));verified=!!v.verified||v.step>8;listenPassed=!!v.listenPassed||alreadyDone;order=Array.isArray(v.order)?v.order.filter(n=>Number.isInteger(n)&&n>=0&&n<=2).slice(0,3):(verified?[0,1,2]:[]);savedListenTarget=typeof v.listenTarget==='string'?v.listenTarget:null;listenSelected=typeof v.listenSelected==='string'?v.listenSelected:''}}catch{}
  const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const intro=(n,title,sub)=>`${n?`<p class="screen-eyebrow">${esc(n)}</p>`:""}<h1 class="screen-title">${esc(title)}</h1>${sub?`<p class="screen-sub">${sub}</p>`:""}`;
  const getClip=key=>{
@@ -47,7 +47,7 @@
  const listeningWords=['我','是','学生'];
  const nativeSamples=listeningWords.filter(key=>String(getClip(key)||'').startsWith('data:audio/mpeg;base64,'));
  const validSamples=nativeSamples.length?nativeSamples:listeningWords.filter(key=>!!getClip(key));
- const listenTarget=validSamples.length?validSamples[Math.floor(Math.random()*validSamples.length)]:null;
+ const listenTarget=(savedListenTarget&&validSamples.includes(savedListenTarget))?savedListenTarget:(validSamples.length?validSamples[Math.floor(Math.random()*validSamples.length)]:null);
  const listenMarkup=()=>'<div class="sheet pg-listening"><span class="sheet-label">СЛУШАЙ И УЗНАВАЙ</span>'+
   '<h2 class="result-title">Какое слово ты слышишь?</h2>'+
   (listenTarget?'<button class="audio" type="button" data-say="'+listenTarget+'">▶ Слушать</button>':
@@ -109,7 +109,7 @@
   ()=>intro('Практика · 3/3','Проверь слух','')+listenMarkup(),
   ()=>intro('','Отлично, первые шаги сделаны!','')+`<div class="sheet"><p class="result-title">Ты уже умеешь</p><div class="learning-pairs">${[['我','wǒ','я'],['是','shì','быть'],['学生','xuésheng','студент']].map(([hz,py,ru])=>`<div class="learning-pair"><b class="pair-word">${hz}</b><small>${py}</small><small>${ru}</small></div>`).join('')}</div><div class="rule" style="margin-top:15px"><b>我是学生。</b><div class="mini-desc">Я студент.</div></div><div class="complete-links"><button type="button" id="repeat-course">↻ Повторить урок</button><a href="./hsk1-map.html">К карте HSK 1 →</a></div></div>`
  ];
- function save(){try{localStorage.setItem(PROGRESS_KEY,JSON.stringify({step,verified,listenPassed,lessonVersion:194,updatedAt:Date.now()}))}catch{}}
+ function save(){try{localStorage.setItem(PROGRESS_KEY,JSON.stringify({step,order,verified,listenPassed,listenTarget,listenSelected,lessonVersion:195,updatedAt:Date.now()}))}catch{}}
  function markComplete(){try{const prev=JSON.parse(localStorage.getItem(LEGACY_KEY)||'{}')||{};if(!prev.completed)localStorage.setItem(LEGACY_KEY,JSON.stringify({...prev,completed:true,maxStep:6,step:6}));let ids=JSON.parse(localStorage.getItem(COMPLETE_KEY)||'[]');if(!Array.isArray(ids))ids=[];if(!ids.includes('foundations')){ids.push('foundations');localStorage.setItem(COMPLETE_KEY,JSON.stringify(ids))}}catch{}}
  function stopSound(){if(audio){try{audio.pause()}catch{}audio=null}}
  function showMessage(message){note.textContent=message;const feedback=document.querySelector('#audio-error');if(feedback)feedback.textContent=message}
