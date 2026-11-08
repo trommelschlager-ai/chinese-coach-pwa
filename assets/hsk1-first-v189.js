@@ -1,4 +1,4 @@
-/* Panda Go HSK1 v196 — prefer approved human audio even when punctuation differs. */
+/* Panda Go HSK1 v197 — audio source failover, real human fallback, safe local mic loudness correction. */
 /* 好 drawing data from Hanzi Writer Data / Make Me A Hanzi (Arphic Public License).
    License in repository: assets/hanzi-data/ARPHICPL.TXT */
 (()=>{
@@ -37,13 +37,17 @@
  try{const v=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');if(v&&Number.isInteger(v.step)){const alreadyDone=v.step===13&&(!v.lessonVersion||v.lessonVersion<194);step=alreadyDone?14:Math.min(STEPS-1,Math.max(0,v.step));verified=!!v.verified||v.step>8;listenPassed=!!v.listenPassed||alreadyDone;order=Array.isArray(v.order)?v.order.filter(n=>Number.isInteger(n)&&n>=0&&n<=2).slice(0,3):(verified?[0,1,2]:[]);savedListenTarget=typeof v.listenTarget==='string'?v.listenTarget:null;listenSelected=typeof v.listenSelected==='string'?v.listenSelected:''}}catch{}
  const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const intro=(n,title,sub)=>`${n?`<p class="screen-eyebrow">${esc(n)}</p>`:""}<h1 class="screen-title">${esc(title)}</h1>${sub?`<p class="screen-sub">${sub}</p>`:""}`;
- const getClip=key=>{
+ const clipCandidates=key=>{
   const vo=window.PANDA_HSK1_VOICES?.female||{};
   const norm=String(key).replace(/[。！?!？，,\s]/g,'');
   const matches=Object.entries(vo).filter(([k,v])=>typeof v==='string'&&k.replace(/[。！?!？，,\s]/g,'')===norm);
   const original=matches.find(([,v])=>v.startsWith('data:audio/mpeg;base64,'));
-  return original?original[1]:(vo[key]||matches[0]?.[1]||null);
+  const realHuman=Object.entries(window.courseHumanAudio||{}).find(([k,v])=>
+    typeof v==='string'&&k.replace(/[。！?!？，,\s]/g,'')===norm)?.[1];
+  // Approved speaker -> licensed human speaker -> synthesized old voice.
+  return [...new Set([original?.[1],realHuman,vo[key],...matches.map(x=>x[1])].filter(Boolean))];
  };
+ const getClip=key=>clipCandidates(key)[0]||null;
  const listeningWords=['我','是','学生'];
  const nativeSamples=listeningWords.filter(key=>String(getClip(key)||'').startsWith('data:audio/mpeg;base64,'));
  const validSamples=nativeSamples.length?nativeSamples:listeningWords.filter(key=>!!getClip(key));
@@ -111,11 +115,73 @@
  ];
  function save(){try{localStorage.setItem(PROGRESS_KEY,JSON.stringify({step,order,verified,listenPassed,listenTarget,listenSelected,lessonVersion:195,updatedAt:Date.now()}))}catch{}}
  function markComplete(){try{const prev=JSON.parse(localStorage.getItem(LEGACY_KEY)||'{}')||{};if(!prev.completed)localStorage.setItem(LEGACY_KEY,JSON.stringify({...prev,completed:true,maxStep:6,step:6}));let ids=JSON.parse(localStorage.getItem(COMPLETE_KEY)||'[]');if(!Array.isArray(ids))ids=[];if(!ids.includes('foundations')){ids.push('foundations');localStorage.setItem(COMPLETE_KEY,JSON.stringify(ids))}}catch{}}
- function stopSound(){if(audio){try{audio.pause()}catch{}audio=null}}
+ let playbackEpoch=0,recordEpoch=0;
+ function stopSound(){playbackEpoch++;if(audio){try{audio.pause()}catch{}audio=null}}
  function showMessage(message){note.textContent=message;const feedback=document.querySelector('#audio-error');if(feedback)feedback.textContent=message}
- function play(src){stopSound();if(!src){showMessage('Для этой фразы пока нет аудиозаписи.');return}try{audio=new Audio(src);audio.playbackRate=1;audio.preservesPitch=true;audio.onended=()=>{audio=null};audio.onerror=()=>showMessage('Не удалось загрузить аудио. Проверь интернет.');const result=audio.play();if(result?.catch)result.catch(()=>showMessage('Нажми ещё раз для воспроизведения.'))}catch{showMessage('Не удалось воспроизвести запись.')}}
+ function play(src){
+  stopSound();
+  const epoch=playbackEpoch,sources=(Array.isArray(src)?src:[src]).filter(Boolean);
+  if(!sources.length){showMessage('Запись недоступна.');return}
+  let index=0;
+  const nextSource=()=>{
+   if(epoch!==playbackEpoch)return;
+   if(index>=sources.length){showMessage('Не удалось воспроизвести запись. Проверь звук и интернет.');return}
+   try{
+    const item=new Audio(sources[index++]);audio=item;
+    item.preload='auto';item.playbackRate=1;item.preservesPitch=true;
+    item.onerror=()=>{if(epoch===playbackEpoch)nextSource()};
+    item.onended=()=>{if(epoch===playbackEpoch)audio=null};
+    const started=item.play();
+    if(started&&typeof started.catch==='function')started.catch(error=>{
+     if(epoch!==playbackEpoch)return;
+     if(error?.name==='NotAllowedError')showMessage('Нажми ещё раз для воспроизведения.');
+     else nextSource();
+    });
+   }catch{nextSource()}
+  };
+  nextSource();
+ }
+ // Normalize only the learner's local recording. Nothing is uploaded.
+ async function levelRecording(blob){
+  const Context=window.AudioContext||window.webkitAudioContext;
+  if(!Context||blob.size>12000000)return blob;
+  let ctx=null;
+  try{
+   ctx=new Context();
+   const decoded=await ctx.decodeAudioData(await blob.arrayBuffer());
+   if(!decoded.length||decoded.duration>90||decoded.sampleRate>96000)return blob;
+   const len=decoded.length,mono=new Float32Array(len);
+   for(let c=0;c<decoded.numberOfChannels;c++){
+    const channel=decoded.getChannelData(c);
+    for(let i=0;i<len;i++)mono[i]+=channel[i]/decoded.numberOfChannels;
+   }
+   const frame=Math.max(64,Math.round(decoded.sampleRate*0.025));
+   let peak=0,windowMax=0;const levels=[];
+   for(let begin=0;begin<len;begin+=frame){
+    let sum=0,n=0;
+    for(let i=begin;i<Math.min(len,begin+frame);i++){const v=mono[i];peak=Math.max(peak,Math.abs(v));sum+=v*v;n++}
+    const rms=Math.sqrt(sum/Math.max(1,n));levels.push(rms);windowMax=Math.max(windowMax,rms);
+   }
+   if(peak<0.001)return blob;
+   const threshold=Math.max(0.003,windowMax*0.18);
+   let activeSum=0,activeCount=0;
+   for(const v of levels)if(v>=threshold){activeSum+=v*v;activeCount++}
+   const activeRms=Math.sqrt(activeSum/Math.max(1,activeCount));
+   const gain=Math.min(12,Math.max(1,0.18/Math.max(0.001,activeRms)),0.92/peak);
+   if(gain<1.05)return blob;
+   const buffer=new ArrayBuffer(44+len*2),dv=new DataView(buffer);
+   const word=(pos,t)=>{for(let i=0;i<t.length;i++)dv.setUint8(pos+i,t.charCodeAt(i))};
+   word(0,'RIFF');dv.setUint32(4,36+len*2,true);word(8,'WAVE');word(12,'fmt ');
+   dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,1,true);
+   dv.setUint32(24,decoded.sampleRate,true);dv.setUint32(28,decoded.sampleRate*2,true);
+   dv.setUint16(32,2,true);dv.setUint16(34,16,true);word(36,'data');dv.setUint32(40,len*2,true);
+   for(let i=0;i<len;i++)dv.setInt16(44+i*2,Math.round(Math.max(-0.92,Math.min(0.92,mono[i]*gain))*32767),true);
+   return new Blob([buffer],{type:'audio/wav'});
+  }catch{return blob}
+  finally{if(ctx)try{await ctx.close()}catch{}}
+ }
  function stopRecord(){if(recorder&&recorder.state==='recording')recorder.stop();stream?.getTracks()?.forEach(t=>t.stop());stream=null;recording=false}
- function cleanupRecord(){stopRecord();if(recordUrl){URL.revokeObjectURL(recordUrl);recordUrl=null}}
+ function cleanupRecord(){recordEpoch++;stopRecord();if(recordUrl){URL.revokeObjectURL(recordUrl);recordUrl=null}}
  function render(){stopSound();counter.textContent=String(step+1).padStart(2,'0')+' / '+STEPS;progress.setAttribute('aria-valuenow',String(step+1));fill.style.width=(100*(step+1)/STEPS)+'%';area.innerHTML=views[step]();area.scrollTop=0;prev.disabled=step===0;next.hidden=step===STEPS-1;next.textContent=step===STEPS-2?'Завершить урок ✓':step===3?'К первым словам →':'Дальше →';next.disabled=(step===8&&!verified)||(step===13&&!!listenTarget&&!listenPassed);if(step===STEPS-1){markComplete();prev.textContent='← Назад'}save()}
  function advance(){if(step===8&&!verified)return;if(step===13&&listenTarget&&!listenPassed)return;if(step<STEPS-1){if(step===12)cleanupRecord();step++;render()}}
  prev.addEventListener('click',()=>{if(step>0){if(step===12)cleanupRecord();step--;render()}});
@@ -124,8 +190,8 @@
   const btn=e.target.closest('button');if(!btn||btn.disabled)return;
   if(btn.hasAttribute('data-radical')){radical=Number(btn.dataset.radical);render();return}
   if(btn.id==='stroke-restart'){const svg=area.querySelector('.writing-animate');if(svg)svg.replaceWith(svg.cloneNode(true));return}
-  if(btn.hasAttribute('data-say')){play(getClip(btn.dataset.say));return}
-  if(btn.hasAttribute('data-tone-play')){play(window.courseHumanAudio?.[btn.dataset.tonePlay]);return}
+  if(btn.hasAttribute('data-say')){play(clipCandidates(btn.dataset.say));return}
+  if(btn.hasAttribute('data-tone-play')){play([window.courseHumanAudio?.[btn.dataset.tonePlay],...clipCandidates(btn.dataset.tonePlay)]);return}
   if(btn.hasAttribute('data-listen-answer')){listenSelected=btn.dataset.listenAnswer;if(!listenTarget){listenPassed=true;render();return}listenPassed=listenSelected===listenTarget;render();if(!listenPassed)showMessage('Послушай ещё раз.');return}
   if(btn.hasAttribute('data-add')){const i=Number(btn.dataset.add);if(!order.includes(i)){order.push(i);verified=false;render()}return}
   if(btn.hasAttribute('data-remove')){order.splice(Number(btn.dataset.remove),1);verified=false;render();return}
@@ -134,9 +200,28 @@
   if(btn.id==='record-start'){
    if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){showMessage('В этом браузере запись недоступна. Повтори фразу вслух.');return}
    try{
-    cleanupRecord();stream=await navigator.mediaDevices.getUserMedia({audio:true});recorder=new MediaRecorder(stream);const chunks=[];
+    cleanupRecord();
+    try{stream=await navigator.mediaDevices.getUserMedia({audio:{
+     echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1
+    }})}catch{stream=await navigator.mediaDevices.getUserMedia({audio:true})}
+    const types=['audio/webm;codecs=opus','audio/mp4','audio/webm'];
+    const mime=types.find(type=>MediaRecorder.isTypeSupported?.(type));
+    recorder=new MediaRecorder(stream,mime?{mimeType:mime}:undefined);
+    const chunks=[],epoch=recordEpoch;
     recorder.ondataavailable=ev=>{if(ev.data.size)chunks.push(ev.data)};
-    recorder.onstop=()=>{if(!chunks.length)return;recordUrl=URL.createObjectURL(new Blob(chunks,{type:recorder.mimeType||'audio/webm'}));const p=document.querySelector('#record-listen');if(p)p.hidden=false};
+    recorder.onstop=async()=>{
+     if(!chunks.length||epoch!==recordEpoch)return;
+     const status=document.querySelector('#record-status');
+     if(status)status.textContent='Выравниваю громкость записи';
+     const raw=new Blob(chunks,{type:recorder.mimeType||'audio/webm'});
+     const processed=await levelRecording(raw);
+     if(epoch!==recordEpoch)return;
+     if(recordUrl)URL.revokeObjectURL(recordUrl);
+     recordUrl=URL.createObjectURL(processed);
+     const listen=document.querySelector('#record-listen');
+     if(listen)listen.hidden=false;
+     if(status)status.textContent='Запись готова';
+    };
     recorder.start();recording=true;btn.hidden=true;document.querySelector('#record-stop').hidden=false;document.querySelector('#record-status').textContent='Идёт запись';
    }catch{showMessage('Микрофон не разрешён. Можно просто повторить вслух.')}return
   }

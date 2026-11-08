@@ -19,10 +19,11 @@ const normalized=s=>String(s).replace(/[。！?!？，,\s]/g,'');
 const resolve=s=>{
  const matches=Object.entries(map).filter(([k,v])=>typeof v==='string'&&normalized(k)===normalized(s));
  const original=matches.find(([,src])=>human(src));
- return original?original[1]:(map[s]||matches[0]?.[1]||null);
+ const shared=Object.entries(window.courseHumanAudio||{}).find(([k,v])=>typeof v==='string'&&normalized(k)===normalized(s))?.[1];
+ return original?original[1]:(shared||map[s]||matches[0]?.[1]||null);
 };
 const required=['我','是','学生','你','你好','你好！','我是学生','我是学生。'];
-let originals=0,other=0;const fallback=[];const nativePhrases=[];
+let originals=0,other=0;const fallback=[];const nativePhrases=[];const otherHuman=[];
 for(const phrase of required){
  const clip=resolve(phrase);
  assert(clip,'Missing first-lesson voice: '+phrase);
@@ -34,7 +35,7 @@ for(const phrase of required){
  }else{
    assert(typeof clip==='string'&&clip.startsWith('./assets/'),'Unexpected fallback path for '+phrase);
    assert(fs.existsSync(clip.slice(2)),'Missing fallback audio file for '+phrase);
-   other++;fallback.push(phrase);
+   other++;fallback.push(phrase);if(clip.includes('/course-human/'))otherHuman.push(phrase);
  }
 }
 for(const syllable of ['妈','麻','马','骂']){
@@ -46,4 +47,5 @@ console.log('HSK1 audio source audit PASS: '+originals+'/'+required.length+
  ' first-lesson phrases use original approved native samples; '+other+
  ' use another licensed/synthetic source; 4 separate human tone examples exist. Manual Mandarin listening QA still needed.');
 console.log('Native phrases: '+nativePhrases.join(' · '));
-console.log('Remaining fallbacks: '+fallback.join(' · '));
+console.log('Licensed human recordings: '+otherHuman.join(' · '));
+console.log('Remaining non-owner recordings: '+fallback.join(' · '));
