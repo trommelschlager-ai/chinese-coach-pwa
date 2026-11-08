@@ -65,7 +65,7 @@
  };
  const word=(hz,py,ru,extra='')=>`<div class="sheet soft"><span class="sheet-label">НОВОЕ СЛОВО</span><strong lang="zh-Hans" class="big-hanzi">${esc(hz)}</strong><p class="pinyin">${esc(py)}</p><div class="translation">${esc(ru)}</div>${playBtn(hz)}${extra}</div>`;
  // Denoised copies of the SAME original licensed human voice, used only for má and mǎ.
- const CLEAN_MA_TONES=Object.freeze({'麻':'./assets/hsk1-tone-clean-v201/ma2.mp3','马':'./assets/hsk1-tone-clean-v201/ma3.mp3'});
+ const CLEAN_MA_TONES=Object.freeze({'麻':'./assets/hsk1-tone-clean-v202/ma2.mp3','马':'./assets/hsk1-tone-clean-v202/ma3.mp3'});
  const toneCards=()=>[
   {hz:'妈',py:'mā',name:'1-й тон',label:'ровный',curve:'M11 16 H85 M77 8 L85 16 L77 24'},
   {hz:'麻',py:'má',name:'2-й тон',label:'восходящий',curve:'M12 43 L84 12 M73 12 L84 12 L83 24'},
