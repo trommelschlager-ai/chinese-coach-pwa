@@ -76,7 +76,7 @@ const defaults=()=>({
  step:0,maxStep:0,done:false,heardWords:[],selected:'星期一',
  indexes:{3:0,4:0,7:0,9:0,11:0},errors:{},firstTry:0,
  audioReady:false,audioPlaying:false,tiles:[],used:[],promptIndex:0,
- lastPracticeCorrect:false,sentenceDone:false,timeViewed:[],
+ lastPracticeCorrect:false,sentenceDone:false,timeViewed:[],passedSunday:false,passedQuestion:false,
 });
 let state=defaults();
 try{
@@ -328,10 +328,10 @@ function ready(){
  if(s===2)return DAYS.slice(3).every(d=>state.heardWords.includes(d.hz));
  if(s===3)return state.indexes[3]>=HEAR.length;
  if(s===4)return state.indexes[4]>=BUILDS.length;
- if(s===5)return state.lastPracticeCorrect===true;
+ if(s===5)return state.passedSunday===true;
  if(s===6)return TIMES.every(x=>state.timeViewed.includes(x.hz));
  if(s===7)return state.indexes[7]>=CONTEXT.length;
- if(s===8)return state.lastPracticeCorrect===true;
+ if(s===8)return state.passedQuestion===true;
  if(s===9)return state.indexes[9]>=CHAT.length;
  if(s===10)return state.sentenceDone===true;
  if(s===11)return state.indexes[11]>=EXAM.length;
@@ -448,7 +448,7 @@ root.addEventListener('click',event=>{
  }
  if(b.hasAttribute('data-sunday-answer')){
   checked(b.dataset.sundayAnswer==='星期天','星期天','Воскресенье: 星期天 или 星期日, не 星期七.','sun',()=>{
-   state.lastPracticeCorrect=true;nextStep();
+   state.passedSunday=true;nextStep();
   });return;
  }
  if(b.hasAttribute('data-calendar-answer')){
@@ -458,7 +458,7 @@ root.addEventListener('click',event=>{
  }
  if(b.hasAttribute('data-question-answer')){
   checked(b.dataset.questionAnswer==='今天星期几？','今天星期几？','几 уже делает предложение вопросительным.','question',()=>{
-   state.lastPracticeCorrect=true;nextStep();
+   state.passedQuestion=true;nextStep();
   });return;
  }
  if(b.hasAttribute('data-chat-answer')){
