@@ -174,7 +174,7 @@ window.PG2_EXTRAS={
  afterRender(step,root){
   if(step===1){
    const sheets=root.querySelectorAll('.sheet'),last=sheets[sheets.length-1];
-   if(last){last.insertAdjacentHTML('beforebegin',writingMarkup());loadWriting();}
+   if(last){root.querySelector('.sheet').insertAdjacentHTML('beforebegin',writingMarkup());loadWriting();}
   }
   if(step===9){
    const sheet=root.querySelector('.sheet');
