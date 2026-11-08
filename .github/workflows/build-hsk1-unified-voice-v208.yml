@@ -1,0 +1,32 @@
+name: Build one-speaker HSK1 Lesson 2 voice pack
+on:
+  push:
+    paths:
+      - .github/workflows/build-hsk1-unified-voice-v208.yml
+      - scripts/build-hsk1-unified-voice-v208.py
+permissions:
+  contents: write
+jobs:
+  one-speaker-audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install FFmpeg if missing
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          fi
+      - name: Normalize native woman voice and stitch two example phrases
+        run: python3 scripts/build-hsk1-unified-voice-v208.py
+      - name: Commit cleaned recordings without touching original voice files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk1-voice-unified-v208/
+          if ! git diff --cached --quiet; then
+            git commit -m "HSK1 lesson 2: 11 matched native voice clips and two sentence examples"
+            git push origin HEAD:main
+          fi
