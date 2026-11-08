@@ -109,8 +109,8 @@ assert(doc.querySelector('[data-finish]'),'Complete after correct review of mist
 click('[data-finish]');
 assert(doc.getElementById('pg-content').textContent.includes('Ты уже говоришь по-китайски'),'Completion page shown');
 assert(doc.querySelector('#pg2-speaking-root'),'Guided 16-item listening and speaking practice should be displayed');
-assert(doc.getElementById('pg-content').textContent.includes('您'),'Polite pronoun must be visible in recap');
-assert(doc.getElementById('pg-content').textContent.includes('是的，我是老师。'),'Full positive reply should be included');
+assert(doc.querySelector('.pg9-hanzi')?.textContent==='我','Final practice must start with 我 before unlocking 您');
+assert(speech.includes("['是的，我是老师。'"),'Final speaking practice must include full positive reply');
 assert(doc.querySelector('[data-speak-listen]'),'Each word needs an audible example');
 assert(doc.querySelector('[data-speak-start]'),'Each word needs microphone recognition');
 assert(doc.querySelector('[data-speak-next]').disabled,'Do not advance without three consecutive correct recognitions');
