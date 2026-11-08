@@ -88,7 +88,7 @@ try{
  }
 }catch{}
 let audio=null,recorder=null,stream=null,recUrl=null,micBusy=false,recordChunks=[];
-let reviewEpoch=0,reviewDelay=0;
+let reviewEpoch=0,reviewDelay=0,reviewResume=null;
 const index=s=>Math.max(0,Math.min(50,Number(state.index[s])||0));
 const audioMap=window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
 const course=window.PANDA_HSK1_VOICES||{};
@@ -103,7 +103,7 @@ function stopAudio(){
 }
 function stopReview(){
  reviewEpoch++;
- if(reviewDelay){clearTimeout(reviewDelay);reviewDelay=0}
+ if(reviewDelay){clearTimeout(reviewDelay);reviewDelay=0;if(reviewResume){const resolve=reviewResume;reviewResume=null;resolve()}}
  stopAudio();
  try{window.speechSynthesis?.cancel()}catch{}
  const status=area.querySelector('[data-review-status]');
@@ -157,7 +157,7 @@ async function playReviewAll(){
    if(status)status.textContent='Слушаем '+(i+1)+' / '+reviewEntries.length+': '+reviewEntries[i][0]+' · повтор '+(repeat+1)+' из 2';
    await playReviewEntry(reviewEntries[i],epoch);
    if(epoch!==reviewEpoch)return;
-   await new Promise(done=>{reviewDelay=setTimeout(()=>{reviewDelay=0;done()},repeat===0?650:900)});
+   await new Promise(done=>{reviewResume=done;reviewDelay=setTimeout(()=>{reviewDelay=0;reviewResume=null;done()},repeat===0?650:900)});
   }
  }
  if(status)status.textContent='✓ Все слова повторены два раза!';
@@ -182,8 +182,8 @@ function renderReviewList(){
  '</section>';
 }
 function audioButton(hz,label='▶ Слушать',role='female'){
- const file=fileFor(hz,role);
- return '<button class="pg3-audio" data-audio="'+escapeHtml(hz)+'" data-role="'+escapeHtml(role)+'"'+(file?'':' disabled')+'>'+escapeHtml(label)+'</button>';
+ const file=fileFor(hz,role),fallback=hz==='您';
+ return '<button class="pg3-audio" data-audio="'+escapeHtml(hz)+'" data-role="'+escapeHtml(role)+'"'+(file||fallback?'':' disabled')+'>'+escapeHtml(label)+'</button>';
 }
 function feedback(message){
  if(announcement)announcement.textContent=message;
@@ -192,7 +192,15 @@ function feedback(message){
 }
 function play(hz,role='female'){
  const file=fileFor(hz,role);
- if(!file){feedback('Запись пока недоступна.');return}
+ if(!file){
+  if(hz==='您'){
+   stopReview();
+   const epoch=reviewEpoch;
+   feedback('Слушаем 您: временная системная китайская озвучка.');
+   playReviewEntry([hz],epoch);
+  }else feedback('Запись пока недоступна.');
+  return;
+ }
  window.PG2_EXTRAS?.stopScene?.();
  stopAudio();
  try{
