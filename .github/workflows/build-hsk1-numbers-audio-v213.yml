@@ -1,0 +1,30 @@
+name: HSK1 numbers 0-99 noise reduced native audio
+on:
+  push:
+    paths:
+      - scripts/build-hsk1-numbers-audio-v213.py
+      - .github/workflows/build-hsk1-numbers-audio-v213.yml
+permissions:
+  contents: write
+jobs:
+  build-clean-audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install FFmpeg
+        run: |
+          command -v ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y ffmpeg)
+      - name: Normalize and stitch one-speaker samples without changing pitch
+        run: python3 scripts/build-hsk1-numbers-audio-v213.py
+      - name: Commit cleaned recordings and manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk1-numbers-clean-v213/ assets/hsk1-numbers-audio-map-v213.js
+          if ! git diff --cached --quiet; then
+            git commit -m "HSK1 lesson 3 v213 cleaned one-speaker number audio 0-99"
+            git push origin HEAD:main
+          fi
