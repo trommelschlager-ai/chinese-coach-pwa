@@ -11,8 +11,8 @@ const data=JSON.parse(fs.readFileSync('assets/hanzi-data/他.json','utf8'));
 assert.equal(data.strokes.length,5,'他 must have exactly five authentic strokes');
 assert.equal(data.medians.length,5,'Every stroke needs medians for correct pen tracing');
 assert(html.includes('assets/vendor/hanzi-writer.min.js'),'Use existing local Hanzi Writer');
-assert(html.includes('assets/hsk1-second-extras-v204.js?v=206'));
-assert(html.includes('assets/hsk1-second-extras-v204.css?v=204'));
+assert(html.includes('assets/hsk1-second-extras-v204.js?v=211'));
+assert(html.includes('assets/hsk1-second-extras-v204.css?v=211'));
 assert(style.includes('touch-action:none'),'Finger-writing surface should disable touch scrolling');
 const mk=(step)=>{
  const d=new JSDOM(html,{url:'https://example.test/chinese-coach-pwa/hsk1-second-v203.html',runScripts:'outside-only'});
@@ -45,6 +45,7 @@ const mk=(step)=>{
  assert(Boolean(panel.compareDocumentPosition(doc.querySelector('.sheet'))&w.Node.DOCUMENT_POSITION_FOLLOWING),
   'Handwriting trainer must appear BEFORE the word cards, near top of second screen');
  assert(panel.querySelector('summary').textContent.includes('5 черт'));
+ assert(panel.textContent.includes('他, 她, 它'),'Optional difference between same-tone pronouns should exist');
  assert.equal(doc.querySelectorAll('.pg4-scene').length,0,'No scene on vocabulary screen');
  // A full Hanzi Writer stub verifies the correct engine and quiz integration.
  let config=null,character=null,quizConfig=null;
@@ -94,4 +95,4 @@ const mk=(step)=>{
  assert.equal(doc.querySelector('[data-scene-window]').dataset.phase,'idle');
  d.window.close();
 }
-console.log('PASS lesson 2 v205: authentic 他 tracing visible by default; male original and volume-balanced female scene, 12 steps preserved.');
+console.log('PASS lesson 2 v211: authentic 他 tracing and optional 他/她/它 comparison; two-voice scene stays unchanged.');
