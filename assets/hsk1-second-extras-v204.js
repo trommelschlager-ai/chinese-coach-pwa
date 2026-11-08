@@ -89,7 +89,11 @@ function writingMarkup(){
  '<button data-write-practice type="button">✍️ Написать самому</button></div>'+
  '<p class="pg4-writing-status" role="status" data-writing-status>'+
  (saved.hanziCompleted?'✓ Ты уже написал 他 правильно.':'Упражнение по желанию. Кнопка «Дальше» остаётся доступной после ответа на вопрос.')+
- '</p><small class="pg4-writing-license">Hanzi Writer / Make Me A Hanzi · Arphic Public License</small></div></details>';
+ '</p><details class="pg11-tabi"><summary>Бонус · 他, 她, 它 — в чём отличие?</summary>'+ 
+ '<p><b>他</b> — он: 亻 (человек) + 也.</p>'+ 
+ '<p><b>她</b> — она: 女 (женщина) + 也.</p>'+ 
+ '<p><b>它</b> — оно: 宀 (крыша) + 匕. Все три звучат <b>tā</b> — 1-й тон.</p></details>'+ 
+ '<small class="pg4-writing-license">Hanzi Writer / Make Me A Hanzi · Arphic Public License</small></div></details>';
 }
 function sceneMarkup(){
  return '<section class="pg4-scene" aria-label="Анимированная сценка с преподавателями">'+
