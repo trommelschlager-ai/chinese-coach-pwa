@@ -72,12 +72,13 @@
      if(finished)node.querySelector('.arrow').textContent='✓';
    }
  }
- // All seven actual lesson links remain in the DOM, but future stops are locked
- // until the preceding lesson is completed. Existing completed lessons stay open.
+ // Keep the suggested learning order: future lessons are locked until prerequisites
+ // are completed, except lesson 4 which remains accessible for review and testing.
+ // Preserve all local lesson completion/progress records.
  const frontier=firstUnfinished||7;
  document.querySelectorAll('.map-road a.node').forEach(node=>{
    const n=Number(node.dataset.num),id=topicIds[n-1],finished=completed.includes(id)||node.classList.contains('done');
-   const locked=!finished&&n>frontier;
+   const locked=!finished&&n>frontier&&n!==4; // Lesson 4 remains accessible for curriculum review.
    node.classList.toggle('locked',locked);
    node.setAttribute('aria-disabled',String(locked));
    if(locked){
