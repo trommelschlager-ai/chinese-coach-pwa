@@ -1,0 +1,23 @@
+/* Panda Go HSK1 lesson 2 — focused, separately accessible review modes. */
+.pg11-practice-footer a{display:grid;place-items:center;height:52px;min-width:0;padding:5px 9px;text-decoration:none;text-align:center;border-radius:18px;font-size:13px;font-weight:850}
+.pg11-practice-footer .secondary{flex:0 0 33%;border:1px solid rgba(255,255,255,.5);color:#fff;background:rgba(255,255,255,.17)}
+.pg11-practice-footer .primary{flex:1;border:1px solid rgba(255,228,168,.8);background:linear-gradient(120deg,#fa88d0,#e77bba 50%,#ffb3e0);color:#572757}
+.pg11-mode-selector{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;max-width:460px;margin:12px auto 18px}
+.pg11-mode-selector button{min-width:0;min-height:47px;border-radius:15px;border:1px solid rgba(246,215,255,.46);color:#fff;font-size:12px;line-height:1.3;font-weight:750;padding:7px 5px;background:rgba(96,49,133,.52)}
+.pg11-mode-selector button.active{color:#573079;background:#ffe2f6;border-color:#ffefa8}
+.pg11-speaking-sheet{padding:15px 12px!important}
+.pg11-dict-sheet{padding:17px 12px!important}
+.pg11-dict-sheet h2{font-size:22px;color:#63338c;text-align:center;margin:1px 0 11px}
+.pg11-muted{font-size:12px;line-height:1.6;color:#88699a;text-align:center;margin:9px auto 12px}
+.pg11-status{min-height:23px;color:#7a4d96;text-align:center;font-size:13px;font-weight:700;margin:11px 0}
+.pg11-dict-list{display:grid;gap:8px}
+.pg11-dict-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border:1px solid #e5ceeb;border-radius:15px;background:rgba(255,255,255,.68);padding:10px}
+.pg11-dict-text{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.pg11-dict-text strong{font-family:'Noto Sans CJK SC','PingFang SC',sans-serif;color:#612c91;font-size:clamp(23px,6.7vw,33px);line-height:1.3;overflow-wrap:anywhere}
+.pg11-dict-text span{color:#9b62b5;font-weight:700;font-size:14px}
+.pg11-dict-text small{color:#6c5280;font-size:12px;line-height:1.4}
+.pg11-dict-row button{flex:0 0 49px;width:49px;height:49px;border-radius:50%;border:0;background:linear-gradient(120deg,#ad69df,#dd78c6);color:#fff;font-size:19px;font-weight:800}
+.pg11-dict-fallback{width:100%;text-align:right;color:#9b7c9f;font-size:10px}
+.pg11-outro{color:#f1d2f5;text-align:center;font-size:11px;line-height:1.5;max-width:450px;margin:13px auto 18px}
+.pg11-mode-selector button:focus-visible,.pg11-dict-row button:focus-visible{outline:3px solid #ffeab1;outline-offset:3px}
+@media(max-width:345px){.pg11-mode-selector{gap:5px}.pg11-mode-selector button{font-size:11px;padding:6px 3px}.pg11-practice-footer a{font-size:12px}}
