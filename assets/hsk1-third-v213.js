@@ -359,7 +359,7 @@ function summary(){
   mainCard(heading('🎧 Слушай числа и повторяй')+
    '<div class="pg13-recap">'+ITEMS.map(x=>'<button type="button" data-audio="'+x.n+'">'+x.z+'<small>'+x.py+'</small></button>').join('')+'</div>')+
   mainCard(heading('Проверим произвольное число')+generator())+
-  '<div class="pg3-finish-links"><a class="primary" href="./hsk1-lesson.html?lesson=4">Урок №4 →</a>'+
+  '<div class="pg3-finish-links"><a class="primary" href="./hsk1-fourth-v214.html">Урок №4 →</a>'+
   '<a href="./hsk1-map.html">К карте HSK1</a><button type="button" data-restart>↻ Пройти урок №3 снова</button></div>';
 }
 const SCREENS=[intro,()=>study(1),()=>study(2),()=>listenQuiz(3,TONES),writing,teen,tens,compound,hundred,builder,()=>listenQuiz(10,HEAR),context,exam,summary];
