@@ -75,7 +75,9 @@ const recognize=(w,recognitions,words)=>{
  assert(doc.querySelector('.pg9-hanzi').textContent==='我','First word must be 我');
  click(doc,'[data-speak-listen]');
  assert.equal(played[0].src,'./assets/hsk1-voice-unified-v208/wo.mp3');
- assert(!doc.querySelector('[data-speak-start]').disabled,'Reference audio unlocks microphone');
+ assert(doc.querySelector('[data-speak-start]').disabled,'Cannot start microphone over playback audio');
+ played[0].onended();
+ assert(!doc.querySelector('[data-speak-start]').disabled,'Finishing reference audio unlocks microphone');
  const speak=words=>{click(doc,'[data-speak-start]');recognize(w,recognitions,words)};
  speak(['我']);
  assert(doc.querySelector('[data-speak-next]').disabled);
