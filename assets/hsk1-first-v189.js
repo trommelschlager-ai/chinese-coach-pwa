@@ -1,4 +1,4 @@
-/* Panda Go HSK1 v195 — contextual learning, consistent audio recognition on reload and persistent answers. */
+/* Panda Go HSK1 v196 — prefer approved human audio even when punctuation differs. */
 /* 好 drawing data from Hanzi Writer Data / Make Me A Hanzi (Arphic Public License).
    License in repository: assets/hanzi-data/ARPHICPL.TXT */
 (()=>{
@@ -39,10 +39,10 @@
  const intro=(n,title,sub)=>`${n?`<p class="screen-eyebrow">${esc(n)}</p>`:""}<h1 class="screen-title">${esc(title)}</h1>${sub?`<p class="screen-sub">${sub}</p>`:""}`;
  const getClip=key=>{
   const vo=window.PANDA_HSK1_VOICES?.female||{};
-  if(vo[key])return vo[key];
   const norm=String(key).replace(/[。！?!？，,\s]/g,'');
-  for(const [k,v] of Object.entries(vo))if(k.replace(/[。！?!？，,\s]/g,'')===norm&&typeof v==='string')return v;
-  return null;
+  const matches=Object.entries(vo).filter(([k,v])=>typeof v==='string'&&k.replace(/[。！?!？，,\s]/g,'')===norm);
+  const original=matches.find(([,v])=>v.startsWith('data:audio/mpeg;base64,'));
+  return original?original[1]:(vo[key]||matches[0]?.[1]||null);
  };
  const listeningWords=['我','是','学生'];
  const nativeSamples=listeningWords.filter(key=>String(getClip(key)||'').startsWith('data:audio/mpeg;base64,'));

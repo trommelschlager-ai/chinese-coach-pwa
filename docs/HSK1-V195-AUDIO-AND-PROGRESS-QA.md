@@ -8,3 +8,6 @@
 - Browser/audio and Android visual listening quality checks still require a physical device; do not claim subjective sound checks were done.
 - The first-lesson UI is available at hsk1-first-v189.html; the file name remains stable for bookmarks while its cache version updates.
 - Before cloning lessons 2–7, verify HSK syllabus scope and record native-speaker question-and-answer dialogue audio.
+
+## v196 — normalized human-first voice lookup
+The lesson now selects an available approved human recording for punctuation-equivalent expressions before selecting an exact synthetic fallback. No audio files were modified or manufactured. The CI audio audit logs each remaining non-human key for targeted native-speaker recording.
