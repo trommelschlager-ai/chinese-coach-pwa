@@ -11,7 +11,7 @@ assert(html.includes('hsk1-first-v189.css?v=194'),'Reuse approved HSK1 visual la
 assert(html.includes('hsk1-native-human-map-v167.js'),'Use one licensed native speaker for all 12 words');
 assert(html.includes('hsk1-second-v202.js?v=202'),'No cached older engine');
 assert(css.includes('.pg2-vocab'),'Second lesson must render mobile-friendly vocabulary');
-assert(legacy.includes('lesson=2')===false || legacy.includes('lesson=2'),'Legacy page must exist');
+assert(legacy.includes('hsk1-foundations-v152.js'),'Original lesson-2 engine must remain available');
 const dom=new JSDOM(html,{url:'https://example.test/chinese-coach-pwa/hsk1-second-v202.html',runScripts:'outside-only'});
 const w=dom.window, doc=w.document;
 const vocab=['我','你','他','她','它','我们','你们','他们','是','老师','学生','吗'];
