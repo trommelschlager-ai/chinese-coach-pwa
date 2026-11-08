@@ -1,0 +1,170 @@
+'use strict';
+/* Panda Go HSK1 lesson 4 v215 regression.
+ * Validates content, 13 real screens, replay, wrong-answer scoring, speech end
+ * gating, 4-stroke writing, calendar boundaries, 2-role chat and legacy
+ * progress. Real MP3 noise, native-tone quality & visual Android QA are NOT
+ * verified by these mocks.
+ */
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const {JSDOM}=require('jsdom');
+const html=fs.readFileSync('hsk1-fourth-v214.html','utf8');
+const app=fs.readFileSync('assets/hsk1-fourth-v215.js','utf8');
+const css=fs.readFileSync('assets/hsk1-fourth-v215.css','utf8');
+const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
+const voice=fs.readFileSync('assets/hsk1-weekdays-audio-map-v214.js','utf8');
+const map=fs.readFileSync('hsk1-map.html','utf8');
+assert(html.includes('hsk1-fourth-v215.css?v=215'));
+assert(html.includes('hsk1-fourth-v215.js?v=215'));
+assert(!html.includes('hsk1-third-v212.css'),'Lesson 4 should not depend on lesson 3 CSS');
+assert(!html.includes('hsk1-third-v213.css'),'Lesson 4 styles should be standalone');
+assert(html.includes('hanzi-writer.min.js'),'Stroke-writing library required');
+assert(fs.existsSync('assets/panda-guide-v215.svg'));
+const mascot=fs.readFileSync('assets/panda-guide-v215.svg','utf8');
+assert(mascot.includes('наушниках')&&!mascot.includes('соломенной')&&!mascot.includes('рюкзак'));
+assert(css.includes('.pg4-final-score')&&css.includes('.pg4-sunday-pair'));
+assert(map.includes('data-num="4" href="./hsk1-fourth-v214.html"'));
+assert(app.includes('二 èr — четвёртый тон'),'Erroneous 2nd-tone label must be removed');
+assert(!app.includes('二 èr — второй тон'));
+assert(app.includes('星期日')&&app.includes('星期天'));
+assert(app.includes('今天是星期五。'),'link previous lesson 是');
+assert(app.includes('acceptBackwardsStrokes:false'),'Writing stroke order must be checked');
+const dom=new JSDOM(html,{url:'https://panda.test/chinese-coach-pwa/hsk1-fourth-v214.html',runScripts:'outside-only'});
+const w=dom.window,d=w.document;
+const previous={
+  v214:JSON.stringify({step:12,done:true,firstTry:5,heardWords:[]}),
+  lesson2:JSON.stringify({step:8,completed:true}),
+  lesson3:JSON.stringify({step:13,done:true}),
+  done:JSON.stringify(['foundations','pronouns','numbers','weekdays'])
+};
+w.localStorage.setItem('pg-hsk1-v214-weekdays',previous.v214);
+w.localStorage.setItem('pg-hsk1-v203-pronouns',previous.lesson2);
+w.localStorage.setItem('pg-hsk1-v213-numbers',previous.lesson3);
+w.localStorage.setItem('pg-hsk1-v3-complete',previous.done);
+w.eval(native);w.eval(voice);
+const played=[],utt=[];
+w.Audio=function(file){
+ this.src=file;this.pause=()=>{};this.play=()=>{played.push(this);return Promise.resolve()};
+};
+w.speechSynthesis={cancel(){},getVoices(){return [{name:'Microsoft Yunxi',lang:'zh-CN'},{name:'Microsoft Xiaoxiao',lang:'zh-CN'}]},speak(u){utt.push(u);u.onend?.()}};
+w.SpeechSynthesisUtterance=class{constructor(text){this.text=text}};
+const strokes=[];
+w.HanziWriter={create(id,character,options){
+ strokes.push({character,options});
+ return {cancelQuiz(){},animateCharacter(){},quiz({onComplete}){onComplete()}};
+}};
+w.eval(app);
+const step=()=>Number(d.getElementById('pg3-count').textContent.split(' ')[0]);
+const click=sel=>{
+ const b=d.querySelector(sel);
+ assert(b,'Missing '+sel+' on screen '+step());
+ assert(!b.disabled,'Disabled '+sel+' on screen '+step());
+ b.click();return b;
+};
+const play=(word)=>{
+ click('[data-play="'+word+'"]');
+ const rec=played.at(-1);
+ assert(rec,'No audio played '+word);
+ assert(rec.src.includes('.mp3'),'Unexpected recorded audio '+word);
+ assert.equal(typeof rec.onended,'function');
+ rec.onended();
+};
+const next=()=>click('#pg3-next');
+assert.equal(step(),1,'Old lesson completion should not skip new curriculum');
+assert(d.querySelector('img[src="./assets/panda-guide-v215.svg"]'),'New mascot');
+assert(d.querySelector('.pg4-rule-visual'),'Weekday composition explained on first screen');
+next();assert.equal(step(),2);
+for(const word of ['星期一','星期二','星期三']){
+ click('[data-learn="'+word+'"]');
+ assert(d.getElementById('pg3-next').disabled,'Do not skip before all three recordings finish');
+ played.at(-1).onended();
+}
+next();assert.equal(step(),3);
+for(const word of ['星期四','星期五','星期六']){click('[data-learn="'+word+'"]');played.at(-1).onended();}
+next();assert.equal(step(),4);
+assert(d.getElementById('pg3-stage').textContent.includes('星期天'));
+assert(d.getElementById('pg3-stage').textContent.includes('星期日'));
+click('[data-sun-answer="星期七"]');assert(!d.getElementById('pg3-next').disabled);
+next();assert.equal(step(),5);
+const seven=[
+ ['星期一','星期一'],['星期二','星期二'],['星期三','星期三'],
+ ['星期四','星期四'],['星期五','星期五'],['星期六','星期六'],
+ ['星期日','星期日']
+];
+for(let i=0;i<seven.length;i++){
+ const [audio,right]=seven[i];
+ assert(d.querySelector('[data-listening-answer]').disabled,'Audio gate must wait for completion');
+ play(audio);
+ click('[data-listening-answer="'+right+'"]');
+ assert(d.querySelector('.pg4-feedback.correct'),'Correct answer should retain readable feedback');
+ click('[data-next-item]');
+}
+assert.equal(step(),6);
+for(const word of ['今天','明天','昨天']){click('[data-time="'+word+'"]');played.at(-1).onended()}
+next();assert.equal(step(),7);
+assert(d.getElementById('pg3-stage').textContent.includes('今天是星期五。'));
+click('[data-grammar-answer="今天星期几？"]');next();assert.equal(step(),8);
+for(const answer of ['星期天','星期四','星期一','星期五']){
+ click('[data-calendar-answer="'+answer+'"]');click('[data-next-item]');
+}
+assert.equal(step(),9);
+assert.equal(strokes.at(-1)?.character,'日');
+assert.equal(strokes.at(-1)?.options.acceptBackwardsStrokes,false);
+click('[data-trace]');next();assert.equal(step(),10);
+assert(d.querySelector('img[src="./assets/approved-man-v112.webp"]'),'Male character in dialogue');
+assert(d.querySelector('img[src="./assets/approved-woman-v112.webp"]'),'Female character in dialogue');
+for(const answer of ['今天星期五。','明天星期六。']){
+ click('[data-dialog-answer="'+answer+'"]');click('[data-next-item]');
+}
+assert.equal(step(),11);
+const targets=[['今天','星期','五'],['明天','星期','六'],['昨天','星期','二']];
+for(const parts of targets){
+ for(const x of parts){
+  const tile=Array.from(d.querySelectorAll('[data-tile]')).find(el=>!el.disabled&&el.textContent.trim()===x);
+  assert(tile,'Tile missing '+x+' at step '+step());
+  tile.click();
+ }
+ click('[data-check-tiles]');
+ assert(d.querySelector('.pg4-feedback.correct'),'Completed sentence must be celebrated before moving');
+ click('[data-next-item]');
+}
+assert.equal(step(),12);
+const answers=[
+ '星期一','星期六','星期天 и 星期日','星期四','завтра',
+ '今天星期几？','星期一','вчера','星期二','明天星期六。'
+];
+for(let i=0;i<answers.length;i++){
+ if(i===3)play('星期四');
+ if(i===8)play('星期二');
+ // Deliberately miss exam questions 1 and 4 to test score and review.
+ const wrong=i===0?'星期二':i===3?'星期三':null;
+ click('[data-exam-answer="'+(wrong||answers[i])+'"]');
+ if(wrong)assert(d.querySelector('.pg4-feedback.incorrect'),'Exam must show wrong feedback and lock answer');
+ click('[data-next-item]');
+}
+assert.equal(step(),13);
+assert(d.querySelector('.pg4-final-score')?.textContent.includes('8 / 10'));
+assert(d.querySelector('.pg4-mistakes')?.textContent.includes('Что повторить: 2'));
+assert(d.getElementById('pg3-stage').textContent.includes('Прошлый результат версии v214: 5 из 7'));
+assert(d.querySelector('.pg4-dictionary')&&d.querySelectorAll('.pg4-dict-line').length>=15);
+assert(d.querySelector('a[href="./hsk1-lesson.html?lesson=5"]'));
+const saved=JSON.parse(w.localStorage.getItem('pg-hsk1-v215-weekdays'));
+assert.equal(saved.done,true);
+assert.equal(saved.legacyScore,5);
+assert.equal(saved.examAnswers[0].correct,false);
+assert.equal(saved.examAnswers[3].correct,false);
+assert.equal(w.localStorage.getItem('pg-hsk1-v214-weekdays'),previous.v214,'Old fourth lesson progress untouched');
+assert.equal(w.localStorage.getItem('pg-hsk1-v203-pronouns'),previous.lesson2);
+assert.equal(w.localStorage.getItem('pg-hsk1-v213-numbers'),previous.lesson3);
+assert.deepEqual(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')),JSON.parse(previous.done));
+click('[data-review-mistakes]');
+assert.equal(step(),12);
+for(const answer of ['星期一','星期四']){
+ if(answer==='星期四')play('星期四');
+ click('[data-exam-answer="'+answer+'"]');click('[data-next-item]');
+}
+assert.equal(step(),13);
+assert(d.querySelector('.pg4-final-score')?.textContent.includes('8 / 10'),'Retake must preserve original first-try score');
+click('[data-restart]');assert.equal(step(),1);
+assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v215-weekdays')).legacyDone,true);
+dom.window.close();
+console.log('PASS HSK1 lesson4 v215: fully integrated 13-screen responsive standalone weekday course, 7 listening items, Sunday, tone corrections, calendar, 日 handwriting, 2-role dialogue, 3 compositions, 10-question final, targeted error review, legacy progress.');
