@@ -115,25 +115,97 @@
  ];
  function save(){try{localStorage.setItem(PROGRESS_KEY,JSON.stringify({step,order,verified,listenPassed,listenTarget,listenSelected,lessonVersion:195,updatedAt:Date.now()}))}catch{}}
  function markComplete(){try{const prev=JSON.parse(localStorage.getItem(LEGACY_KEY)||'{}')||{};if(!prev.completed)localStorage.setItem(LEGACY_KEY,JSON.stringify({...prev,completed:true,maxStep:6,step:6}));let ids=JSON.parse(localStorage.getItem(COMPLETE_KEY)||'[]');if(!Array.isArray(ids))ids=[];if(!ids.includes('foundations')){ids.push('foundations');localStorage.setItem(COMPLETE_KEY,JSON.stringify(ids))}}catch{}}
- let playbackEpoch=0,recordEpoch=0;
- function stopSound(){playbackEpoch++;if(audio){try{audio.pause()}catch{}audio=null}}
+
+ // Audio correction v199: preserve native recordings, separate word endings and soften tone samples.
+ let playbackEpoch=0,recordEpoch=0,playbackFrame=0,toneContext=null,toneNodes=[];
+ const WORD_TAIL_TRIM=Object.freeze({'我':0.055,'是':0.070,'学生':0.100});
+ function disconnectTone(){
+  for(const node of toneNodes){try{node.disconnect()}catch{}}
+  toneNodes=[];
+ }
+ function stopSound(){
+  playbackEpoch++;
+  if(playbackFrame){cancelAnimationFrame(playbackFrame);playbackFrame=0}
+  if(audio){try{audio.pause()}catch{}audio=null}
+  disconnectTone();
+ }
  function showMessage(message){note.textContent=message;const feedback=document.querySelector('#audio-error');if(feedback)feedback.textContent=message}
- function play(src){
+ // The four tone files remain the SAME licensed human recordings; only gentle EQ,
+ // peak compression, lower output level, and short edge fades are applied.
+ function softenTone(item){
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtx)return 0.78; // Older browsers still get a quieter original.
+  try{
+   if(!toneContext)toneContext=new AudioCtx();
+   const source=toneContext.createMediaElementSource(item);
+   const high=toneContext.createBiquadFilter();
+   high.type='highpass';high.frequency.value=95;high.Q.value=0.707;
+   const low=toneContext.createBiquadFilter();
+   low.type='lowpass';low.frequency.value=5850;low.Q.value=0.707;
+   const comp=toneContext.createDynamicsCompressor();
+   comp.threshold.value=-21;comp.knee.value=16;comp.ratio.value=2.1;
+   comp.attack.value=0.012;comp.release.value=0.17;
+   const gain=toneContext.createGain();gain.gain.value=0.82;
+   source.connect(high);high.connect(low);low.connect(comp);comp.connect(gain);
+   gain.connect(toneContext.destination);
+   toneNodes=[source,high,low,comp,gain];
+   toneContext.resume().catch(()=>{});
+   return 1; // The output gain is already reduced in the Web Audio graph.
+  }catch{
+   disconnectTone();
+   return 0.78;
+  }
+ }
+ function play(src,key='',kind='word'){
   stopSound();
   const epoch=playbackEpoch,sources=(Array.isArray(src)?src:[src]).filter(Boolean);
   if(!sources.length){showMessage('Запись недоступна.');return}
+  const tone=kind==='tone',trim=(!tone&&Object.prototype.hasOwnProperty.call(WORD_TAIL_TRIM,key))?WORD_TAIL_TRIM[key]:0;
   let index=0;
   const nextSource=()=>{
    if(epoch!==playbackEpoch)return;
+   if(audio){try{audio.pause()}catch{}audio=null}
+   if(playbackFrame){cancelAnimationFrame(playbackFrame);playbackFrame=0}
+   disconnectTone();
    if(index>=sources.length){showMessage('Не удалось воспроизвести запись. Проверь звук и интернет.');return}
    try{
     const item=new Audio(sources[index++]);audio=item;
-    item.preload='auto';item.playbackRate=1;item.preservesPitch=true;
-    item.onerror=()=>{if(epoch===playbackEpoch)nextSource()};
-    item.onended=()=>{if(epoch===playbackEpoch)audio=null};
+    item.preload='auto';
+    // HTMLMediaElement preserves the original speaker's pitch and all four tones.
+    item.playbackRate=tone?0.94:(trim?0.8:1);
+    item.preservesPitch=true;
+    if('mozPreservesPitch' in item)item.mozPreservesPitch=true;
+    if('webkitPreservesPitch' in item)item.webkitPreservesPitch=true;
+    const baseVolume=tone?softenTone(item):(trim?0.94:1);
+    let endAt=Infinity;
+    item.onloadedmetadata=()=>{
+     if(Number.isFinite(item.duration)&&item.duration>0){
+      // Protect short third-tone vowels from excessive trimming.
+      endAt=Math.max(0.16,item.duration-Math.min(trim,item.duration*0.20));
+     }
+    };
+    const envelope=()=>{
+     if(epoch!==playbackEpoch||audio!==item||item.paused)return;
+     const remaining=endAt-item.currentTime;
+     if(remaining<=0){
+      try{item.pause()}catch{}
+      audio=null;disconnectTone();playbackFrame=0;return;
+     }
+     const startFade=Math.min(1,Math.max(0.08,item.currentTime/0.037));
+     const endFade=Number.isFinite(endAt)?Math.min(1,Math.max(0.02,remaining/(tone?0.085:0.060))):1;
+     item.volume=Math.max(0,Math.min(1,baseVolume*startFade*endFade));
+     playbackFrame=requestAnimationFrame(envelope);
+    };
+    item.onplaying=()=>{if(epoch!==playbackEpoch||audio!==item)return;playbackFrame=requestAnimationFrame(envelope)};
+    item.onerror=()=>{if(epoch===playbackEpoch&&audio===item)nextSource()};
+    item.onended=()=>{
+     if(epoch!==playbackEpoch||audio!==item)return;
+     if(playbackFrame){cancelAnimationFrame(playbackFrame);playbackFrame=0}
+     audio=null;disconnectTone();
+    };
     const started=item.play();
     if(started&&typeof started.catch==='function')started.catch(error=>{
-     if(epoch!==playbackEpoch)return;
+     if(epoch!==playbackEpoch||audio!==item)return;
      if(error?.name==='NotAllowedError')showMessage('Нажми ещё раз для воспроизведения.');
      else nextSource();
     });
@@ -190,8 +262,8 @@
   const btn=e.target.closest('button');if(!btn||btn.disabled)return;
   if(btn.hasAttribute('data-radical')){radical=Number(btn.dataset.radical);render();return}
   if(btn.id==='stroke-restart'){const svg=area.querySelector('.writing-animate');if(svg)svg.replaceWith(svg.cloneNode(true));return}
-  if(btn.hasAttribute('data-say')){play(clipCandidates(btn.dataset.say));return}
-  if(btn.hasAttribute('data-tone-play')){play([window.courseHumanAudio?.[btn.dataset.tonePlay],...clipCandidates(btn.dataset.tonePlay)]);return}
+  if(btn.hasAttribute('data-say')){play(clipCandidates(btn.dataset.say),btn.dataset.say);return}
+  if(btn.hasAttribute('data-tone-play')){play([window.courseHumanAudio?.[btn.dataset.tonePlay],...clipCandidates(btn.dataset.tonePlay)],btn.dataset.tonePlay,'tone');return}
   if(btn.hasAttribute('data-listen-answer')){listenSelected=btn.dataset.listenAnswer;if(!listenTarget){listenPassed=true;render();return}listenPassed=listenSelected===listenTarget;render();if(!listenPassed)showMessage('Послушай ещё раз.');return}
   if(btn.hasAttribute('data-add')){const i=Number(btn.dataset.add);if(!order.includes(i)){order.push(i);verified=false;render()}return}
   if(btn.hasAttribute('data-remove')){order.splice(Number(btn.dataset.remove),1);verified=false;render();return}
