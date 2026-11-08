@@ -19,7 +19,7 @@ assert(css.includes('calc(var(--pg-lesson-nav-height) + 32px + env(safe-area-ins
 assert(css.includes('.lesson-shell .lesson-audio-native{\n  min-width:44px;min-height:44px'),'Native recordings require 44px touch targets');
 assert(css.includes('.lesson-shell .lesson-line .lesson-hanzi{'),'Mandarin dialogue text must have dedicated layout');
 assert(css.includes('grid-template-columns:repeat(2,minmax(0,1fr));'),'Word navigation should not overflow at 320px');
-assert(sw.includes('chinese-coach-pwa-v204-20261108-hanzi-tracing-dialogue-scene'),'Offline cache must refresh');
+assert(sw.includes('chinese-coach-pwa-v205-20261108-louder-female-visible-tracing'),'Offline cache must refresh');
 assert(sw.includes('./assets/native-owner-v200.js?v=200'),'New original owner voice map must work offline');
 assert(sw.includes('./assets/hsk1-foundations-v152.css?v=171'),'PWA offline cache needs exact CSS version');
 assert(sw.includes('./assets/hsk1-foundations-v152.js?v=187'),'PWA offline cache needs current lesson JS version');
