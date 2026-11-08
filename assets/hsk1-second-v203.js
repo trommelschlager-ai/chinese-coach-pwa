@@ -235,7 +235,7 @@ function word(hz){
 }
 function questionBlock(step){
  const seq=prompts[step],pos=index(step);
- if(pos>=seq.length)return '<div class="pg3-success">✓ Упражнение выполнено. Можешь идти дальше.</div>';
+ if(pos>=seq.length)return '';
  const q=seq[pos];
  return '<div class="pg3-question"><p class="pg3-small">Задание '+(pos+1)+' из '+seq.length+'</p>'+
  '<h2>'+escapeHtml(q.q)+'</h2>'+
@@ -244,9 +244,17 @@ function questionBlock(step){
  '<button type="button" data-answer="'+i+'">'+escapeHtml(answer)+'</button>').join('')+'</div>'+
  '<p class="pg3-feedback" data-feedback role="status"></p></div>';
 }
+function practiceSheet(step){
+ const sequence=prompts[step]||[];
+ return index(step)>=sequence.length?'':'<div class="sheet">'+questionBlock(step)+'</div>';
+}
+function buildSheet(step){
+ const sequence=builds[step]||[];
+ return index(step)>=sequence.length?'':'<div class="sheet">'+buildBlock(step)+'</div>';
+}
 function buildBlock(step){
  const seq=builds[step],pos=index(step);
- if(pos>=seq.length)return '<div class="pg3-success">✓ Все предложения собраны.</div>';
+ if(pos>=seq.length)return '';
  const current=seq[pos],selected=state.selected.filter(i=>i<current.tokens.length);
  const available=current.tokens.map((x,i)=>({x,i})).filter(o=>!selected.includes(o.i)).reverse();
  return '<div class="pg3-question"><p class="pg3-small">Предложение '+(pos+1)+' из '+seq.length+'</p>'+
@@ -294,17 +302,17 @@ function renderFinal(){
 const screens=[
  ()=>head('УРОК 2 · HSK1','Вспомним знакомое','Сначала повторим 我 и 你, потом добавим новые слова.')+
   sample('ПОВТОРЕНИЕ',['我','你'],'Вспомни знакомые слова из первого урока.')+
-  '<div class="sheet">'+questionBlock(0)+'</div>',
+  practiceSheet(0),
  ()=>head('НОВЫЕ СЛОВА · 1/4','Он и она','Два иероглифа — одно произношение tā.')+
   sample('НОВОЕ',['他','她'],'他 = он, 她 = она. Оба слова звучат одинаково с первым тоном. На слух их не различают.')+
-  '<div class="sheet">'+questionBlock(1)+'</div>',
+  practiceSheet(1),
  ()=>head('ПРАКТИКА','Кто есть кто?','Выбирай по значению, а не по звуку.')+
-  '<div class="sheet">'+questionBlock(2)+'</div>',
+  practiceSheet(2),
  ()=>head('НОВЫЕ СЛОВА · 2/4','Мы, вы и вежливое «Вы»','Познакомимся с тремя формами обращения.')+
   sample('НОВОЕ',['我们','你们','您'],'们 (men) образует множественное число: 我们 — мы, 你们 — вы. 您 (nín) — уважительное «Вы» одному человеку, например преподавателю или старшему. Не путай 您 и 你们.')+
-  '<div class="sheet">'+questionBlock(3)+'</div>',
+  practiceSheet(3),
  ()=>head('ТРЕНИРОВКА СЛУХА','Узнай слово','Отличай короткие местоимения от форм с 们.')+
-  '<div class="sheet">'+questionBlock(4)+'</div>',
+  practiceSheet(4),
  ()=>head('НОВОЕ СЛОВО · 3/4','Кто ты?','老师 — учитель. Повторим связку 是.')+
   sample('НОВОЕ СЛОВО',['老师'],'是 (shì) уже знакомо: оно связывает подлежащее с существительным.')+
   '<div class="sheet"><div class="pg3-sentence">我是老师。</div>'+
@@ -313,7 +321,7 @@ const screens=[
   '<div class="pg3-note">我 — я · 是 — являюсь · 老师 — учитель</div>'+
   questionBlock(5)+'</div>',
  ()=>head('ПРАКТИКА','Собери утверждение','Три предложения из уже знакомых слов.')+
-  '<div class="sheet">'+buildBlock(6)+'</div>',
+  buildSheet(6),
  ()=>head('НОВОЕ СЛОВО · 4/4','Как задать вопрос?','Новая частица 吗 (ma).')+
   sample('НОВОЕ',['吗'],'吗 ставится в конце предложения, произносится нейтральным тоном.')+
   '<div class="sheet"><div class="pg3-sentence">你是老师吗？</div>'+
@@ -321,9 +329,9 @@ const screens=[
   audioButton('你是老师吗？','▶ Слушать вопрос','male')+
   questionBlock(7)+'</div>',
  ()=>head('ПРАКТИКА','Собери вопрос','Добавляй 吗 в конец.')+
-  '<div class="sheet">'+buildBlock(8)+'</div>',
+  buildSheet(8),
  ()=>head('МИНИ-ДИАЛОГ','Ответь собеседнику','Послушай реплику и выбери осмысленный ответ.')+
-  '<div class="sheet">'+questionBlock(9)+'</div>',
+  practiceSheet(9),
  ()=>head('ПРОИЗНОШЕНИЕ','Теперь скажи сам','Послушай, повтори вслух и сравни с записью.')+
   '<div class="sheet"><div class="pg3-sentence">你是老师吗？</div>'+
   '<p class="pinyin">Nǐ shì lǎoshī ma?</p><p class="translation">Ты учитель?</p>'+
@@ -343,7 +351,12 @@ function safeStopMic(){
  if(stream){for(const t of stream.getTracks())t.stop()}
  stream=null;recorder=null;micBusy=false;
 }
+const AUTO_ADVANCE_DRILLS=new Set([2,4,6,8]);
+function skipCompletedDrills(){
+ while(state.step>=0&&state.step<TOTAL-1&&AUTO_ADVANCE_DRILLS.has(state.step)&&state.done[state.step])state.step++;
+}
 function render(){
+ skipCompletedDrills();
  stopReview();
  window.PG2_EXTRAS?.beforeRender?.();
  stopAudio();
@@ -375,6 +388,7 @@ function applyAnswer(step,choice){
   state.index[step]=pos+1;
   if(step!==11&&pos+1===seq.length)state.done[step]=true;
   if(step===11&&pos+1===seq.length&&state.finalWrong.length===0)state.done[11]=true;
+  if(step!==11&&AUTO_ADVANCE_DRILLS.has(step)&&state.done[step]){state.step++;state.selected=[]}
   render();return;
  }
  state.attempts[key]=(state.attempts[key]||0)+1;
@@ -389,7 +403,7 @@ function applyBuild(step){
  if(!good){feedback('Проверь порядок: кто + 是 + профессия'+(step===8?' + 吗':'')+'.');return}
  state.index[step]=pos+1;
  state.selected=[];
- if(state.index[step]===builds[step].length)state.done[step]=true;
+ if(state.index[step]===builds[step].length){state.done[step]=true;if(AUTO_ADVANCE_DRILLS.has(step)){state.step++;state.selected=[]}}
  render();
 }
 function finish(){
@@ -405,7 +419,11 @@ function finish(){
  render();
 }
 back.addEventListener('click',()=>{
- if(state.step>0){state.step--;state.selected=[];render()}
+ if(state.step>0){
+  state.step--;
+  while(state.step>0&&AUTO_ADVANCE_DRILLS.has(state.step)&&state.done[state.step])state.step--;
+  state.selected=[];render();
+ }
 });
 next.addEventListener('click',advance);
 area.addEventListener('click',async ev=>{
