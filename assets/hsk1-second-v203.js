@@ -14,9 +14,12 @@ const vocab={
  '他':['tā','он','новое'],'她':['tā','она','новое'],
  '我们':['wǒmen','мы','новое'],'你们':['nǐmen','вы (несколько)','новое'],
  '老师':['lǎoshī','учитель','новое'],'吗':['ma','вопросительная частица','новое'],
- '学生':['xuésheng','студент','повторение'],'是':['shì','быть / являться','повторение']
+ '学生':['xuésheng','студент','повторение'],'是':['shì','быть / являться','повторение'],
+ '您':['nín','Вы — уважительно к одному человеку','новое'],
+ '它':['tā','оно (бонус)','дополнительно'],
+ '你好':['nǐ hǎo','привет / здравствуйте','повторение']
 };
-const newWords=['他','她','我们','你们','老师','吗'];
+const newWords=['他','她','我们','你们','老师','吗','您'];
 const prompts={
  0:[{q:'Вспомни: какое слово означает «ты»?',a:['我','你','是'],r:1}],
  1:[{q:'Выбери иероглиф «она».',a:['他','她','我'],r:1}],
@@ -24,7 +27,8 @@ const prompts={
   {q:'Как пишется «он»?',a:['她','我','他'],r:2},
   {q:'Как пишется «она»?',a:['你','她','他'],r:1},
   {q:'Какая пара звучит одинаково: tā?',a:['我 / 你','他 / 她','老师 / 学生'],r:1}],
- 3:[{q:'Что означает 我们 (wǒmen)?',a:['вы','мы','они'],r:1}],
+ 3:[{q:'Что означает 我们 (wǒmen)?',a:['вы','мы','они'],r:1},
+    {q:'Как вежливо сказать «Вы» одному человеку?',a:['你们','您','我们'],r:1}],
  4:[
   {q:'Что прозвучало?',sound:'我们',a:['你们','我','我们','你'],r:2},
   {q:'Что прозвучало?',sound:'你',a:['我们','你们','我','你'],r:3},
@@ -51,6 +55,17 @@ const builds={
   {label:'Ты учитель?',tokens:['你','是','老师','吗'],py:'Nǐ shì lǎoshī ma?'},
   {label:'Она студентка?',tokens:['她','是','学生','吗'],py:'Tā shì xuésheng ma?'}]
 };
+const reviewEntries=[
+ ['我','wǒ','я'],['你','nǐ','ты'],['您','nín','Вы — вежливо к одному'],
+ ['他','tā','он'],['她','tā','она'],['它','tā','оно · бонус'],
+ ['我们','wǒmen','мы'],['你们','nǐmen','вы — несколько'],
+ ['你好','nǐ hǎo','привет / здравствуйте'],
+ ['是','shì','быть / являться'],['老师','lǎoshī','учитель'],
+ ['学生','xuésheng','студент'],['吗','ma','вопросительная частица'],
+ ['你是老师吗？','Nǐ shì lǎoshī ma?','Ты учитель?'],
+ ['我是老师。','Wǒ shì lǎoshī.','Я учитель.'],
+ ['是的，我是老师。','Shì de, wǒ shì lǎoshī.','Да, я учитель.']
+];
 const cleanText=s=>String(s).replace(/[。！？，?!,\s]/g,'');
 const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const defaults=()=>({step:0,done:Array(TOTAL).fill(false),index:{},attempts:{},
@@ -73,16 +88,98 @@ try{
  }
 }catch{}
 let audio=null,recorder=null,stream=null,recUrl=null,micBusy=false,recordChunks=[];
+let reviewEpoch=0,reviewDelay=0;
 const index=s=>Math.max(0,Math.min(50,Number(state.index[s])||0));
 const audioMap=window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
 const course=window.PANDA_HSK1_VOICES||{};
 function fileFor(hz,role='female'){
  const text=String(hz),key=cleanText(text);
+ if(text==='我是老师。')return './assets/hsk1-scene-v205/female-im-teacher-normalized.mp3';
  if(vocab[key]&&audioMap[key])return audioMap[key];
  return course[role]?.[text]||course[role]?.[key]||null;
 }
 function stopAudio(){
  if(audio){try{audio.pause()}catch{}audio.onended=null;audio=null}
+}
+function stopReview(){
+ reviewEpoch++;
+ if(reviewDelay){clearTimeout(reviewDelay);reviewDelay=0}
+ stopAudio();
+ try{window.speechSynthesis?.cancel()}catch{}
+ const status=area.querySelector('[data-review-status]');
+ if(status)status.textContent='Повторение остановлено.';
+}
+function nativeOrTTS(text){
+ return fileFor(text,'female')||null;
+}
+function playReviewEntry(entry,epoch){
+ return new Promise(resolve=>{
+  if(epoch!==reviewEpoch){resolve();return}
+  const [hanzi]=entry,file=nativeOrTTS(hanzi);
+  let done=false;
+  const complete=()=>{
+   if(done)return;done=true;
+   if(audio===player)audio=null;
+   resolve();
+  };
+  let player=null;
+  if(file){
+   try{
+    player=new Audio(file);audio=player;
+    player.preload='auto';player.preservesPitch=true;player.playbackRate=.9;
+    player.onended=complete;player.onerror=complete;
+    const attempt=player.play();
+    if(attempt&&typeof attempt.catch==='function')attempt.catch(complete);
+   }catch{complete()}
+  }else if(window.speechSynthesis&&window.SpeechSynthesisUtterance){
+   try{
+    const utterance=new SpeechSynthesisUtterance(hanzi);
+    utterance.lang='zh-CN';utterance.rate=.83;utterance.pitch=1;
+    const voices=window.speechSynthesis.getVoices?.()||[];
+    const chinese=voices.filter(v=>/^zh[-_]/i.test(v.lang||''));
+    const preferred=chinese.find(v=>/female|woman|xiaoxiao|tingting|huihui|meijia|xiaoyi/i.test(v.name||''))||chinese[0];
+    if(preferred)utterance.voice=preferred;
+    utterance.onend=complete;utterance.onerror=complete;
+    window.speechSynthesis.speak(utterance);
+   }catch{complete()}
+  }else{complete()}
+ });
+}
+async function playReviewAll(){
+ stopReview();
+ const epoch=reviewEpoch;
+ const status=area.querySelector('[data-review-status]');
+ const stopBtn=area.querySelector('[data-review-stop]');
+ if(stopBtn)stopBtn.disabled=false;
+ for(let i=0;i<reviewEntries.length;i++){
+  for(let repeat=0;repeat<2;repeat++){
+   if(epoch!==reviewEpoch)return;
+   if(status)status.textContent='Слушаем '+(i+1)+' / '+reviewEntries.length+': '+reviewEntries[i][0]+' · повтор '+(repeat+1)+' из 2';
+   await playReviewEntry(reviewEntries[i],epoch);
+   if(epoch!==reviewEpoch)return;
+   await new Promise(done=>{reviewDelay=setTimeout(()=>{reviewDelay=0;done()},repeat===0?650:900)});
+  }
+ }
+ if(status)status.textContent='✓ Все слова повторены два раза!';
+ if(stopBtn)stopBtn.disabled=true;
+}
+function renderReviewList(){
+ return '<section class="pg7-recap" aria-label="Словарь после второго урока">'+
+ '<h2>🐼 Твой китайский словарь</h2>'+
+ '<p>Ты уже знаешь эти слова и фразы. Послушай и повтори вслух. Бонусное слово 它 отмечено отдельно.</p>'+
+ '<div class="pg7-review-controls"><button type="button" data-review-all>▶ Повторить всё по 2 раза</button>'+
+ '<button type="button" data-review-stop disabled>■ Стоп</button></div>'+
+ '<p class="pg7-review-status" data-review-status role="status">Нажми на слово или запусти весь список.</p>'+
+ '<div class="pg7-review-list">'+reviewEntries.map((entry,i)=>{
+  const [zh,py,ru]=entry;
+  const extra=(!nativeOrTTS(zh));
+  return '<div class="pg7-review-row"><div class="pg7-review-word"><strong lang="zh-Hans">'+escapeHtml(zh)+'</strong>'+
+   '<span>'+escapeHtml(py)+'</span><small>'+escapeHtml(ru)+'</small></div>'+
+   '<button type="button" data-review-one="'+i+'" aria-label="Прослушать и повторить '+escapeHtml(zh)+'">▶</button>'+
+   (extra?'<small class="pg7-review-fallback">Системная озвучка</small>':'')+'</div>';
+ }).join('')+'</div>'+
+ '<p class="pg7-review-footnote">Для 您 и фразы 是的，我是老师。 пока используется системная китайская озвучка. Проверенную запись китаянки добавим отдельно.</p>'+
+ '</section>';
 }
 function audioButton(hz,label='▶ Слушать',role='female'){
  const file=fileFor(hz,role);
@@ -159,10 +256,11 @@ function sample(title,items,extra=''){
 }
 function renderFinal(){
  if(state.completed){
-  return head('УРОК 2 · ПРОЙДЕН','Ты справился!','Личные местоимения, фразы и вопросы.')+
-   '<div class="sheet"><p class="pg3-success">✓ Урок завершён</p>'+
-   '<p class="pg3-result">Ответы с первой попытки: <strong>'+state.finalFirstTry+' из 5</strong></p>'+
-   '<p class="pg3-note">Ошибки повторены. Потренируйся ещё раз завтра — так новые слова запомнятся лучше.</p>'+
+  return head('УРОК 2 · ГОТОВО!','Ты уже говоришь по-китайски! 🐼','Повторим всё, что ты освоил.')+
+   '<div class="sheet"><p class="pg3-success">🏆 Молодец! Второй урок завершён</p>'+
+   '<p class="pg3-result">С первой попытки: <strong>'+state.finalFirstTry+' из 5</strong></p>'+
+   '<p class="pg3-note">'+(state.finalWrong.length?'Ошибки разобраны и повторены.':'Отличная работа: все ответы верны с первой попытки!')+'</p>'+
+   renderReviewList()+
    '<div class="pg3-finish"><button data-restart>↻ Повторить урок</button><a href="./hsk1-map.html">К карте HSK1 →</a></div></div>';
  }
  if(index(11)>=5&&(!state.finalWrong.length||state.reviewIndex>=state.finalWrong.length)){
@@ -194,8 +292,8 @@ const screens=[
   '<div class="sheet">'+questionBlock(1)+'</div>',
  ()=>head('ПРАКТИКА','Кто есть кто?','Выбирай по значению, а не по звуку.')+
   '<div class="sheet">'+questionBlock(2)+'</div>',
- ()=>head('НОВЫЕ СЛОВА · 2/4','Мы и вы','Добавь 们 (men) к знакомому местоимению.')+
-  sample('НОВОЕ',['我们','你们'],'们 (men) произносится нейтральным тоном: wǒmen, nǐmen.')+
+ ()=>head('НОВЫЕ СЛОВА · 2/4','Мы, вы и вежливое «Вы»','Познакомимся с тремя формами обращения.')+
+  sample('НОВОЕ',['我们','你们','您'],'们 (men) образует множественное число: 我们 — мы, 你们 — вы. 您 (nín) — уважительное «Вы» одному человеку, например преподавателю или старшему. Не путай 您 и 你们.')+
   '<div class="sheet">'+questionBlock(3)+'</div>',
  ()=>head('ТРЕНИРОВКА СЛУХА','Узнай слово','Отличай короткие местоимения от форм с 们.')+
   '<div class="sheet">'+questionBlock(4)+'</div>',
@@ -238,6 +336,7 @@ function safeStopMic(){
  stream=null;recorder=null;micBusy=false;
 }
 function render(){
+ stopReview();
  window.PG2_EXTRAS?.beforeRender?.();
  stopAudio();
  if(state.step!==10&&micBusy)safeStopMic();
@@ -304,6 +403,19 @@ next.addEventListener('click',advance);
 area.addEventListener('click',async ev=>{
  const btn=ev.target.closest('button');
  if(!btn||btn.disabled)return;
+ if(btn.hasAttribute('data-review-all')){playReviewAll();return}
+ if(btn.hasAttribute('data-review-stop')){stopReview();btn.disabled=true;return}
+ if(btn.hasAttribute('data-review-one')){
+  const i=Number(btn.dataset.reviewOne);
+  if(!Number.isInteger(i)||i<0||i>=reviewEntries.length)return;
+  stopReview();
+  const epoch=reviewEpoch;
+  const status=area.querySelector('[data-review-status]');
+  if(status)status.textContent='Слушай и повторяй: '+reviewEntries[i][0];
+  await playReviewEntry(reviewEntries[i],epoch);
+  if(epoch===reviewEpoch&&status)status.textContent='✓ Повтори вслух: '+reviewEntries[i][0];
+  return;
+ }
  if(btn.hasAttribute('data-audio')){play(btn.dataset.audio,btn.dataset.role||'female');return}
  if(btn.hasAttribute('data-answer')){applyAnswer(state.step,Number(btn.dataset.answer));return}
  if(btn.hasAttribute('data-add')){
@@ -365,7 +477,7 @@ area.addEventListener('click',async ev=>{
  }
 });
 window.addEventListener('pagehide',()=>{
- stopAudio();safeStopMic();
+ stopReview();stopAudio();safeStopMic();
  if(recUrl)URL.revokeObjectURL(recUrl);
 });
 render();
