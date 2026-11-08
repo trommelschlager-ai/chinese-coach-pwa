@@ -1,0 +1,36 @@
+/* Panda Go HSK1 second lesson v203 — dedicated practice components.
+   The approved scenic foundation remains assets/hsk1-first-v189.css. */
+.pg3-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px auto}
+.pg3-word{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;border:1.5px solid #e9cfed;border-radius:18px;padding:14px 7px 12px;background:linear-gradient(140deg,#fffaff,#f2e9fb)}
+.pg3-word strong{font:600 clamp(39px,12vw,65px)/1.22 'Noto Sans CJK SC','PingFang SC','Microsoft YaHei',sans-serif;color:#572b88;white-space:nowrap}
+.pg3-word .pg3-py{font-size:17px;font-weight:800;color:#8a50ad}
+.pg3-word .pg3-ru{font-size:14px;line-height:1.3;color:#5e447d;min-height:20px;font-weight:750}
+.pg3-audio{border:0;border-radius:25px;background:linear-gradient(135deg,#b574e5,#ec83c5);color:#fff;min-height:44px;padding:10px 17px;font-size:14px;font-weight:800;margin:9px auto 2px;display:block;box-shadow:0 3px 12px rgba(113,44,161,.16)}
+.pg3-word .pg3-audio{background:#f4d9ef;color:#713c92;box-shadow:none;padding:9px 10px;font-size:12px;min-height:39px;width:100%;max-width:150px}
+.pg3-audio:disabled{opacity:.4}
+.pg3-note{font-size:13px;line-height:1.55;color:#6e5283;background:#f4e9fc;border-radius:14px;padding:11px 13px;margin:12px 0 3px}
+.pg3-small{font-size:12px;font-weight:800;letter-spacing:.6px;color:#9b68b1;margin:5px 0 9px;text-align:center}
+.pg3-question{padding:5px 0 7px}
+.pg3-question h2{font-size:clamp(18px,5.2vw,23px);line-height:1.35;text-align:center;font-weight:850;color:#58327b;margin:10px 0 16px}
+.pg3-answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.pg3-answers button{background:linear-gradient(152deg,#fffaff,#f4e8fb);color:#5b3483;border:1.5px solid #e4c7e9;border-radius:16px;padding:13px 8px;min-height:62px;font-size:clamp(16px,4.5vw,21px);font-weight:850;overflow-wrap:anywhere}
+.pg3-answers button:focus-visible,.pg3-token:focus-visible,.pg3-main:focus-visible,.pg3-audio:focus-visible{outline:3px solid #ad68e4;outline-offset:2px}
+.pg3-answers button:active,.pg3-token:active,.pg3-main:active{transform:scale(.98)}
+.pg3-answers button:nth-child(3):last-child{grid-column:1/-1}
+.pg3-feedback{font-size:13px;font-weight:750;color:#8a4179;text-align:center;line-height:1.5;min-height:19px;margin:12px 0 3px}
+.pg3-feedback:empty{display:none}
+.pg3-success{font-size:17px;color:#6a388b;background:#f4eafa;border:1px solid #e2c9ee;border-radius:16px;padding:18px;text-align:center;font-weight:850;margin:10px 0}
+.pg3-built{min-height:85px;border:2px dashed #d7b4e8;border-radius:16px;background:#fffaff;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;padding:12px;margin:11px 0}
+.pg3-built span{font-size:13px;color:#9674a8;text-align:center}
+.pg3-tokens{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:13px 0}
+.pg3-token{border:1.5px solid #e2c7e9;border-radius:14px;background:#fff8ff;min-width:52px;padding:10px 13px;color:#60378c;font-size:clamp(24px,7vw,32px);min-height:51px;font-weight:650;font-family:'Noto Sans CJK SC',system-ui,sans-serif}
+.pg3-token.chosen{border-color:#e89ccf;background:linear-gradient(135deg,#fff6e7,#f9dcf3)}
+.pg3-main{display:block;margin:16px auto 5px;padding:12px 22px;border:1px solid #e8a8d4;border-radius:24px;min-height:47px;background:linear-gradient(135deg,#ae63e8,#ef86c8);box-shadow:0 4px 15px rgba(148,55,175,.23);color:#fff;font-size:15px;font-weight:850}
+.pg3-main:disabled{opacity:.5}
+.pg3-sentence{font-size:clamp(30px,9vw,47px);font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif;color:#56298b;font-weight:650;text-align:center;margin:17px auto 3px;line-height:1.27;overflow-wrap:anywhere}
+.pg3-result{font-size:17px;text-align:center;color:#633585;font-weight:750;line-height:1.4}
+.pg3-recorder{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:13px auto}
+.pg3-recorder button{border:1px solid #e0c2e9;background:#f9eafb;border-radius:15px;color:#6b3b94;padding:11px 13px;font-size:14px;font-weight:800;min-height:45px}
+.pg3-finish{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+.pg3-finish a,.pg3-finish button{display:block;text-align:center;border:1px solid #e5c9e9;background:#fffaff;border-radius:16px;color:#5b3489;padding:14px;text-decoration:none;font-size:15px;font-weight:800}
+@media(max-width:365px){.pg3-grid{gap:7px}.pg3-word{padding:12px 5px}.pg3-word strong{font-size:clamp(35px,11vw,52px)}.pg3-answers button{min-height:55px}.pg3-recorder button{padding:9px 10px}}
