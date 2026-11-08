@@ -1,5 +1,5 @@
 {
-  "version": 205,
+  "version": 206,
   "bytes": 33471861,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -1602,7 +1602,7 @@
     "./assets/hsk1-second-v203.css?v=203",
     "./assets/hsk1-second-v203.js?v=204",
     "./assets/hsk1-second-extras-v204.css?v=204",
-    "./assets/hsk1-second-extras-v204.js?v=205",
+    "./assets/hsk1-second-extras-v204.js?v=206",
     "./assets/hanzi-data/他.json",
     "./assets/hsk1-scene-v205/female-im-teacher-normalized.mp3"
   ]
