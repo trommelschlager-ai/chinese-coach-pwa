@@ -98,3 +98,12 @@
 .pg-hao-writing .pg-hao-6{animation-name:pgHao6}
 @keyframes pgHao6{0%,70%{stroke-dashoffset:100}81%,94%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
 @media(prefers-reduced-motion:reduce){.pg-hao-writing .pg-hao-stroke{animation:none!important;stroke-dashoffset:0!important}}
+
+/* HSK1 v194: align components with already introduced characters, compact listening review. */
+.pg-parts-intro .radical-tabs{grid-template-columns:repeat(2,minmax(0,1fr));max-width:290px;margin:0 auto 13px}
+.pg-parts-intro .radical-tab{font-size:40px}
+.pg-listening .result-title{font-size:22px}
+.listening-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:11px 0 12px}
+.listening-choice{min-height:86px;border:2px solid #ead0f1;border-radius:16px;background:linear-gradient(145deg,#fff8ff,#f2e9fa);font-family:'Noto Sans CJK SC',sans-serif;font-size:clamp(25px,6vw,36px);color:#613789;font-weight:750}
+.listening-choice[aria-pressed=true]{border-color:#d668af;background:#fbe2f6}
+.learning-pair .pair-word{font-size:clamp(24px,6.4vw,34px)}

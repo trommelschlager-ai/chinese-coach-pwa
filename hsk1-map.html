@@ -26,7 +26,7 @@
 <a class="node" data-num="4" href="./hsk1-lesson.html?lesson=4" aria-label="Урок 4. Дни недели"><span class="circle">4</span><span class="caption"><strong>Урок 4 ·<br> Дни недели</strong><small data-status="4">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 <a class="node" data-num="3" href="./hsk1-lesson.html?lesson=3" aria-label="Урок 3. Числа и их строение"><span class="circle">3</span><span class="caption"><strong>Урок 3 ·<br> Числа и их строение</strong><small data-status="3">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 <a class="node" data-num="2" href="./hsk1-lesson.html?lesson=2" aria-label="Урок 2. Личные местоимения"><span class="circle">2</span><span class="caption"><strong>Урок 2 ·<br> Личные местоимения</strong><small data-status="2">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node current" data-num="1" href="./hsk1-first-v189.html" aria-label="Урок 1. Базовое знакомство"><span class="circle">1</span><span class="caption"><strong>Урок 1 ·<br> Базовое знакомство</strong><small data-status="1">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
+<a class="node current" data-num="1" href="./hsk1-first-v189.html" aria-label="Урок 1. Базовое знакомство"><span class="circle">1</span><span class="caption"><strong>Урок 1 ·<br> Базовое знакомство</strong><small data-status="1">15 экранов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 
 </nav>
 <p class="map-footer">Прогресс сохраняется отдельно для каждой темы. Пройденные уроки можно повторять.</p>
@@ -43,7 +43,17 @@
    const finished=completed.includes(id)||state.completed===true;
    if(finished)done++;else if(!firstUnfinished)firstUnfinished=n;
    const label=document.querySelector('[data-status="'+n+'"]');
-   if(label)label.textContent=finished?'✓ Пройден · повторить':state.maxStep>0?'Продолжить · шаг '+(Number(state.step||0)+1)+' из 7':'7 шагов · начать';
+   if(label){
+     let introPosition=null;
+     if(n===1)try{
+       const v=JSON.parse(localStorage.getItem('pg-hsk1-v189-lesson1')||'null');
+       if(v&&Number.isInteger(v.step))
+         introPosition=v.step===13&&v.lessonVersion!==194?14:Math.min(14,Math.max(0,v.step));
+     }catch{}
+     label.textContent=finished?'✓ Пройден · повторить':
+       n===1?(introPosition>0?'Продолжить · экран '+(introPosition+1)+' из 15':'15 экранов · начать'):
+       state.maxStep>0?'Продолжить · шаг '+(Number(state.step||0)+1)+' из 7':'7 шагов · начать';
+   }
    const node=document.querySelector('.node[data-num="'+n+'"]');
    if(node){
      node.classList.toggle('current',!finished&&firstUnfinished===n);
