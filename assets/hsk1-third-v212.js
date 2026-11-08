@@ -37,7 +37,7 @@ const review=[
  {sound:'九',answer:'九',choices:['六','九','七']},
  {sound:'四',answer:'四',choices:['十','四','七']},
  {sound:'十二',answer:'十二',choices:['十一','二十','十二']},
- {sound:'二十三',answer:'二十三',choices:['二十','二十三','十三']}
+ {sound:'二十三',answer:'二十三',choices:['二十','二十三','十一']}
 ];
 const defaults=()=>({
  step:0,maxStep:0,completed:false,
@@ -168,7 +168,7 @@ function question(step){
  '<p class="pg3-muted pg3-center">Прослушай число и выбери правильный вариант.</p>'+
  audioButton(obj.sound,'🔊 Слушать число')+
  '<div class="pg3-answer-list">'+choices.map(x=>'<button class="pg3-answer" type="button" data-answer="'+x+'"'+(isHeard?'':' disabled')+'>'+
- '<i class="radio" aria-hidden="true"></i><strong lang="zh-Hans">'+x+'</strong><span>'+((byHanzi[x]||structures[x]||['',''])[0])+'</span></button>').join('')+'</div>'+
+ '<i class="radio" aria-hidden="true"></i><strong lang="zh-Hans">'+x+'</strong><span>'+((byHanzi[x]?byHanzi[x][1]+' · '+byHanzi[x][2]:structures[x]?structures[x][0]+' · '+structures[x][1]:'') )+'</span></button>').join('')+'</div>'+
  '<p class="pg3-muted pg3-center">'+(isHeard?'Выбери один вариант ответа.':'Сначала нажми «Слушать число».')+'</p></div>';
 }
 function pair(){
