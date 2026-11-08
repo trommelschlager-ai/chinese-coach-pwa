@@ -89,6 +89,7 @@ function sample(){
  if(saved.finished)return;
  if(busy){setStatus('Заверши текущую запись перед прослушиванием.');return}
  stopPlayback();
+ heard=false;
  const word=ITEMS[saved.position][0];
  const file=availableAudio(word);
  feedbackText=file?'Слушай образец, затем повтори в микрофон.':'Слушай системное китайское произношение.';
@@ -96,7 +97,8 @@ function sample(){
   try{
    const player=new Audio(file);audio=player;
    player.preload='auto';player.preservesPitch=true;player.playbackRate=1;
-   player.onplaying=enableMicrophone;
+   player.onplaying=()=>setStatus('Слушай произношение до конца. Затем откроется микрофон.');
+   player.onended=()=>{if(audio===player){audio=null;enableMicrophone()}};
    player.onerror=()=>setStatus('Файл не открылся. Проверь подключение и попробуй ещё раз.');
    const result=player.play();
    if(result&&typeof result.catch==='function')result.catch(()=>setStatus('Нажми «Слушать» ещё раз.'));
@@ -110,7 +112,8 @@ function sample(){
    const zh=voices.filter(v=>/^zh[-_]/i.test(v.lang||''));
    const preferred=zh.find(v=>/female|woman|xiaoxiao|tingting|huihui|meijia|xiaoyi/i.test(v.name||''))||zh[0];
    if(preferred)utterance.voice=preferred;
-   utterance.onstart=enableMicrophone;
+   utterance.onstart=()=>setStatus('Слушай образец до конца. Затем откроется микрофон.');
+   utterance.onend=enableMicrophone;
    utterance.onerror=()=>setStatus('Системная озвучка недоступна.');
    window.speechSynthesis.speak(utterance);
   }catch{setStatus('Системная китайская озвучка недоступна.')}
