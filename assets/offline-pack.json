@@ -1,6 +1,6 @@
 {
-  "version": 202,
-  "bytes": 33398426,
+  "version": 203,
+  "bytes": 33427167,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1597,6 +1597,9 @@
     "./assets/hsk1-first-v189.js?v=202",
     "./assets/hsk1-native-clean-v198.js?v=198",
     "./assets/hsk1-tone-clean-v202/ma2.mp3",
-    "./assets/hsk1-tone-clean-v202/ma3.mp3"
+    "./assets/hsk1-tone-clean-v202/ma3.mp3",
+    "./hsk1-second-v203.html",
+    "./assets/hsk1-second-v203.css?v=203",
+    "./assets/hsk1-second-v203.js?v=203"
   ]
 }
