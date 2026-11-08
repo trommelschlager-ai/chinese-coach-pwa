@@ -126,3 +126,6 @@
 #pg3-notice[data-kind=success]{background:#eef9ed;color:#46804e;border-color:#b5d9b9}
 @media(max-width:350px){.pg13-intro-hero{grid-template-columns:.32fr 1fr}.pg13-num-card strong{font-size:35px}.pg13-num-card span{font-size:15px}.pg13-three-cards{gap:4px}.pg13-concept-py{font-size:13px}.pg13-focused-number strong{font-size:43px}.pg13-recap{grid-template-columns:repeat(3,1fr)}}
 @media(max-height:690px){.pg13-intro-hero img{max-height:120px}.pg3-card{padding:13px;margin:7px auto}.pg3-scroll{padding-bottom:14px}}
+
+.pg13-credit{max-width:460px;margin:12px auto 20px;padding:0 7px;color:#927991;font-size:10px;line-height:1.55;text-align:center}
+.pg13-credit a{color:#805c91;text-decoration:underline}
