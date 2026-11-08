@@ -26,5 +26,9 @@ jobs:
           git add assets/hsk1-numbers-clean-v213/ assets/hsk1-numbers-audio-map-v213.js
           if ! git diff --cached --quiet; then
             git commit -m "HSK1 lesson 3 v213 cleaned one-speaker number audio 0-99"
+            # Other lesson changes may land while audio is encoding.
+            # Preserve all unrelated commits; never force-push or overwrite.
+            git fetch origin main
+            git rebase origin/main
             git push origin HEAD:main
           fi
