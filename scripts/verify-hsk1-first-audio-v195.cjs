@@ -8,7 +8,8 @@ for(const p of [
  'assets/hsk1-voices-map-v160.js',
  'assets/hsk1-human-voice-v183.js',
  'assets/hsk1-human-voice-v184.js',
- 'assets/human-audio-map.js'
+ 'assets/human-audio-map.js',
+ 'assets/hsk1-native-clean-v198.js'
 ]){
  assert(fs.existsSync(p),'Missing first-lesson audio map: '+p);
  vm.runInNewContext(fs.readFileSync(p,'utf8'),sandbox,{filename:p,timeout:15000});
@@ -49,3 +50,5 @@ console.log('HSK1 audio source audit PASS: '+originals+'/'+required.length+
 console.log('Native phrases: '+nativePhrases.join(' · '));
 console.log('Licensed human recordings: '+otherHuman.join(' · '));
 console.log('Remaining non-owner recordings: '+fallback.join(' · '));
+assert.equal(originals,8,'All first-lesson pictured words and sentence variants must use the authorized speaker');
+for(const hz of ['我','是','学生','你','你好','我是学生'])assert(window.PANDA_HSK1_OWNER_CLEAN_V198.includes(hz),'Missing cleaned owner recording '+hz);

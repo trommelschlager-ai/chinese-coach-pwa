@@ -70,10 +70,10 @@ assert.deepEqual([...d.querySelectorAll('.learning-pair .pair-word')].map(x=>x.t
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-foundations')).completed,true,'Legacy completion must be preserved');
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('foundations'),'Unlock lesson 2 on the map');
 assert(!d.querySelector('.lesson-step'),'Old seven-step bulky UI must not mount in the new lesson');assert(map.includes('15 экранов'),'First map must show its actual fifteen screen count');
-assert(!js.includes('speechSynthesis'),'No cloned or invented speaker voice');assert(js.includes("matches.find(([,v])=>v.startsWith('data:audio/mpeg;base64,'))"),'Prefer owner voice');assert(js.includes('const realHuman='),'Use licensed real human fallback');assert(js.includes('autoGainControl:true'),'Automatic mic gain');assert(js.includes('async function levelRecording(blob)'),'Normalize recorded volume');assert(js.includes('decodeAudioData'),'Web Audio normalization fallback');
+assert(!js.includes('speechSynthesis'),'No cloned or invented speaker voice');assert(page.includes('hsk1-native-clean-v198.js?v=198'),'Owner recording overlay is loaded after all older voices');assert(js.includes("matches.find(([,v])=>v.startsWith('data:audio/mpeg;base64,'))"),'Prefer owner voice');assert(js.includes('const realHuman='),'Use licensed real human fallback');assert(js.includes('autoGainControl:true'),'Automatic mic gain');assert(js.includes('async function levelRecording(blob)'),'Normalize recorded volume');assert(js.includes('decodeAudioData'),'Web Audio normalization fallback');
 for(const removed of ['Оригинальная запись носительницы','Временный учебный голос','Оценка произношения не автоматическая','Никакой автоматической оценки','Сначала послушай носительницу'])assert(!js.includes(removed),'Redundant status copy returned: '+removed);
-assert(page.includes('hsk1-first-v189.js?v=197'),'New JS query bust');
+assert(page.includes('hsk1-first-v189.js?v=198'),'New JS query bust');
 assert(page.includes('hsk1-first-v189.css?v=194'),'New CSS query bust');
 assert(css.includes('animation-iteration-count:infinite'),'Writing must run continuously');for(let i=1;i<=6;i++)assert(css.includes('@keyframes pgHao'+i),'Missing sequential six-stroke writing frame');assert(!js.includes('pg-wo-writing'),'Old seven-stroke character must be removed');assert(!js.includes('toneChoice'),'Intro tone choices must be absent');
-console.log('PASS v197: 好 introduction, six-stroke animation, non-quiz tones, first words and saved completion');
+console.log('PASS v198: 好 introduction, six-stroke animation, non-quiz tones, first words and saved completion');
 w.close();
