@@ -12,7 +12,7 @@ const speech=fs.readFileSync('assets/hsk1-second-speaking-v209.js','utf8');
 const oneVoice=fs.readFileSync('assets/hsk1-lesson2-audio-v208.js','utf8');
 assert(html.includes('hsk1-first-v189.css?v=194'),'Keep first lesson approved visual style');
 assert(html.includes('hsk1-second-v203.js?v=209'),'Second lesson JS version');
-assert(html.includes('hsk1-second-speaking-v209.js?v=209'),'New microphone practice should be loaded');
+assert(html.includes('hsk1-second-speaking-v209.js?v=210'),'New microphone practice should be loaded');
 assert(html.includes('hsk1-lesson2-audio-v208.js?v=208'),'One-speaker voice map must be loaded first');
 assert(html.includes('hsk1-second-v203.css?v=207'),'Second lesson CSS version');
 assert(map.includes('data-num="2" href="./hsk1-second-v203.html"'),'Map must open new lesson');
