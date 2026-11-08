@@ -1,6 +1,6 @@
 {
-  "version": 206,
-  "bytes": 33471861,
+  "version": 207,
+  "bytes": 33484314,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1599,8 +1599,8 @@
     "./assets/hsk1-tone-clean-v202/ma2.mp3",
     "./assets/hsk1-tone-clean-v202/ma3.mp3",
     "./hsk1-second-v203.html",
-    "./assets/hsk1-second-v203.css?v=203",
-    "./assets/hsk1-second-v203.js?v=204",
+    "./assets/hsk1-second-v203.css?v=207",
+    "./assets/hsk1-second-v203.js?v=207",
     "./assets/hsk1-second-extras-v204.css?v=204",
     "./assets/hsk1-second-extras-v204.js?v=206",
     "./assets/hanzi-data/他.json",
