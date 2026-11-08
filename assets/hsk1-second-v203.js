@@ -96,6 +96,7 @@ function feedback(message){
 function play(hz,role='female'){
  const file=fileFor(hz,role);
  if(!file){feedback('Запись пока недоступна.');return}
+ window.PG2_EXTRAS?.stopScene?.();
  stopAudio();
  try{
   const a=new Audio(file);audio=a;a.preload='auto';
@@ -237,6 +238,7 @@ function safeStopMic(){
  stream=null;recorder=null;micBusy=false;
 }
 function render(){
+ window.PG2_EXTRAS?.beforeRender?.();
  stopAudio();
  if(state.step!==10&&micBusy)safeStopMic();
  const p=state.step;
@@ -245,6 +247,7 @@ function render(){
  progress.setAttribute('aria-valuenow',String(p+1));
  fill.style.width=(100*(p+1)/TOTAL)+'%';
  area.innerHTML=screens[p]();
+ window.PG2_EXTRAS?.afterRender?.(p,area);
  area.scrollTop=0;
  back.disabled=p===0;
  next.hidden=p===11;
