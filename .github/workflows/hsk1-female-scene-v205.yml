@@ -1,0 +1,32 @@
+name: Normalize HSK1 lesson 2 female scene line only
+on:
+  push:
+    paths:
+      - .github/workflows/hsk1-female-scene-v205.yml
+      - scripts/normalize-hsk1-female-scene-v205.py
+permissions:
+  contents: write
+jobs:
+  improve-female-scene-line:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Ensure FFmpeg
+        run: |
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          fi
+      - name: Normalize the female line and inspect durations/loudness
+        run: python3 scripts/normalize-hsk1-female-scene-v205.py
+      - name: Commit only the processed female response
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk1-scene-v205/female-im-teacher-normalized.mp3
+          if ! git diff --cached --quiet; then
+            git commit -m "HSK1 scene: normalize female answer without changing the male voice"
+            git push origin HEAD:main
+          fi
