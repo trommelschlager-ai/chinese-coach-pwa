@@ -11,7 +11,7 @@ const data=JSON.parse(fs.readFileSync('assets/hanzi-data/他.json','utf8'));
 assert.equal(data.strokes.length,5,'他 must have exactly five authentic strokes');
 assert.equal(data.medians.length,5,'Every stroke needs medians for correct pen tracing');
 assert(html.includes('assets/vendor/hanzi-writer.min.js'),'Use existing local Hanzi Writer');
-assert(html.includes('assets/hsk1-second-extras-v204.js?v=205'));
+assert(html.includes('assets/hsk1-second-extras-v204.js?v=206'));
 assert(html.includes('assets/hsk1-second-extras-v204.css?v=204'));
 assert(style.includes('touch-action:none'),'Finger-writing surface should disable touch scrolling');
 const mk=(step)=>{
