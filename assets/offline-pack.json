@@ -1,6 +1,6 @@
 {
-  "version": 223,
-  "bytes": 38718289,
+  "version": 225,
+  "bytes": 38738901,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1770,6 +1770,8 @@
     "./assets/lesson4-reference-v216/calendar-5.webp",
     "./assets/lesson3-mint-garden-v222.svg",
     "./assets/lesson3-panda-headphones-v222.svg",
-    "./assets/lesson3-approved-panda-v223.webp"
+    "./assets/lesson3-approved-panda-v223.webp",
+    "./assets/lesson5-lilac-v225.css?v=225",
+    "./assets/lesson5-lilac-sakura-v225.svg"
   ]
 }
