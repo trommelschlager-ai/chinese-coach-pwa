@@ -10,8 +10,8 @@ const html=fs.readFileSync('hsk1-third-v212.html','utf8'),
  css=fs.readFileSync('assets/hsk1-third-v213.css','utf8'),
  map=fs.readFileSync('hsk1-map.html','utf8'),
  native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
-assert(html.includes('hsk1-third-v213.js?v=213'));
-assert(html.includes('hsk1-third-v213.css?v=213'));
+assert(html.includes('hsk1-third-v213.js?v=222'));
+assert(html.includes('hsk1-third-v213.css?v=222'));
 assert(map.includes('14 экранов'));
 assert(css.includes('.pg13-study-grid')&&css.includes('.pg13-tens-grid'));
 assert(js.includes("if(n===100)return ['yì','bǎi']"),'100 must be yì bǎi');
