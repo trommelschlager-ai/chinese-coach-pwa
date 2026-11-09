@@ -22,6 +22,14 @@ if(!new URLSearchParams(location.search).has('lesson')||
 <link rel="stylesheet" href="./assets/hsk1-coach-v181.css?v=181">
 <link rel="stylesheet" href="./assets/hsk1-clarity-v182.css?v=182">
 <link rel="stylesheet" href="./assets/hsk1-intro-v188.css?v=188">
+<script>
+/* Only lesson 5 uses the approved very-light lilac and sakura design. */
+if(new URLSearchParams(location.search).get('lesson')==='5'){
+  document.documentElement.classList.add('pg5-lilac');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content','#f6f0ff');
+}
+</script>
+<link rel="stylesheet" href="./assets/lesson5-lilac-v225.css?v=225">
 </head>
 <body>
 <script>
@@ -41,6 +49,15 @@ if(Number(new URLSearchParams(location.search).get('lesson') || '1')===1){
 </header>
 <div class="lesson-progress" id="lesson-progress" role="progressbar" aria-label="Прогресс урока" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><div id="progress-fill"></div></div>
 
+<div class="pg5-hero" aria-hidden="true">
+  <img src="./assets/lesson3-approved-panda-v223.webp" alt="" width="131" height="124" loading="eager">
+  <div class="pg5-hero-content">
+    <span class="pg5-kicker">HSK 1 · УРОК 5</span>
+    <div class="pg5-hero-heading">Месяцы и даты</div>
+    <p class="pg5-hero-detail">Учимся называть месяцы и читать календарные даты</p>
+    <span class="pg5-calendar-pill">🌸 年 · 月 · 日 · 号</span>
+  </div>
+</div>
 <nav class="lesson-steps" id="lesson-steps" aria-label="Шаги выбранного урока"></nav>
 </div>
 <div class="lesson-study" id="lesson-study">
