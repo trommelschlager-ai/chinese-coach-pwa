@@ -1,0 +1,92 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#fff0db"><title>Карточки урока 4 · Panda Go</title><style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#432e21;background:#fff1db}
+body{background:linear-gradient(145deg,#fff1dc,#ffe3dc)}
+.wrap{max-width:480px;margin:auto;min-height:100dvh;display:flex;flex-direction:column;background:#fff3e2}
+header{padding:calc(12px + env(safe-area-inset-top,0px)) 16px 8px;display:grid;grid-template-columns:45px 1fr 45px;align-items:center;gap:7px}
+.back{display:grid;place-items:center;height:45px;width:45px;border-radius:50%;border:1px solid #dfb17b;background:#fff9ec;color:#614126;text-decoration:none;font-size:29px}
+.logo{width:145px;display:block;margin:auto;max-width:100%}small.sub{display:block;text-align:center;color:#8b6b51;font-size:11px}
+.counter{text-align:right;font-size:13px;font-weight:850}
+.heading{text-align:center;padding:8px 12px 0}.kicker{display:inline-block;background:#ed427a;color:white;border-radius:30px 10px 30px 10px;padding:7px 20px;font-size:12px;font-weight:850}
+h1{font-size:26px;margin:10px 0 3px}.subtitle{margin:2px 0 11px;font-size:12px;color:#836448}
+.track{height:9px;border-radius:20px;background:#e4d8c9;margin:5px 20px 12px;border:1px solid #c9ae91;overflow:hidden}
+.fill{height:100%;width:0;background:#83dc53;transition:width .2s}
+.tabs{display:flex;justify-content:center;gap:8px;padding:0 12px 13px}
+.tabs button{font-size:13px;font-weight:800;border-radius:20px;border:1px solid #dfb67e;background:#fff9ef;color:#593c27;min-height:39px;padding:8px 13px}
+.tabs button.active{border-color:#e9357b;background:#ffe4ef;color:#b82a69}
+main{padding:0 16px 20px;flex:1}.at{text-align:center;font-size:13px;color:#8e6248;margin-bottom:10px}
+.scene{position:relative;height:clamp(330px,49dvh,475px);perspective:1100px}
+.flash{height:100%;width:100%;position:relative;cursor:pointer;outline-offset:4px}
+.spin{height:100%;width:100%;position:relative;transform-style:preserve-3d;transition:transform .46s}
+.flash.open .spin{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border:2px solid #e1b061;border-radius:27px;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:radial-gradient(circle at 85% 0%,#ffe8ee,transparent 46%),#fffaf0;box-shadow:inset 0 0 0 4px #fffdf8,0 7px 17px #96622e22;overflow:hidden}
+.front{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:25px 24px 90px}
+.muted{font-size:12px;color:#ac376a;font-weight:800;letter-spacing:.5px}.hanzi{font-size:clamp(36px,10vw,62px);line-height:1.4;font-weight:800;margin:22px 0;word-break:break-word}
+.hanzi.long{font-size:clamp(22px,6.2vw,36px)}.hint{font-size:13px;color:#8c6b50}
+.reverse{transform:rotateY(180deg);padding:22px 18px 80px;overflow-y:auto;overscroll-behavior:contain}
+.backzh{font-size:clamp(21px,6vw,33px);font-weight:800;line-height:1.4;overflow-wrap:anywhere;padding-right:50px;margin:11px 0}
+.py{font-size:clamp(16px,4.6vw,21px);font-weight:800;color:#c22a69;margin:9px 0}.ru{font-size:clamp(15px,4.2vw,19px);font-weight:740;margin:0 0 16px;line-height:1.4}
+.label{font-size:12px;font-weight:800;color:#926947;border-top:1px solid #e7c99e;padding-top:10px;margin-bottom:8px}
+.parts{display:grid;gap:7px}.parts div{border:1px solid #edd3ae;border-radius:11px;background:#fffdf7;padding:8px 10px;font-size:14px;line-height:1.5}.parts b{font-size:18px;margin-right:8px}
+.sound{position:absolute;z-index:3;left:50%;bottom:16px;transform:translateX(-50%);width:64px;height:64px;border:2px solid white;border-radius:21px;background:linear-gradient(145deg,#fb536c,#df1b45 70%,#b30e34);box-shadow:0 0 16px #ec3b72a0,0 3px 10px #ac23504d;display:grid;place-items:center;cursor:pointer}
+.sound img{width:30px;height:30px;filter:brightness(0) invert(1)}
+.scene.flipped .sound{left:auto;right:15px;top:15px;bottom:auto;transform:none;width:49px;height:49px;border-radius:15px}.scene.flipped .sound img{width:24px;height:24px}
+.missing{position:absolute;bottom:17px;left:50%;transform:translateX(-50%);background:#fff6e6;border:1px solid #e3ba8b;border-radius:12px;padding:9px 12px;color:#856447;font-size:12px;white-space:nowrap}
+.scene.flipped .missing{bottom:8px}
+.status{text-align:center;font-size:12px;min-height:25px;color:#86634b;margin:10px 0 2px}
+.grade{display:flex;gap:10px;margin:10px 0}.grade button{min-height:53px;flex:1;border-radius:16px;font-size:16px;font-weight:850;cursor:pointer}
+.again{border:1px solid #ddb481;background:#fff8eb;color:#61412e}.known{border:1px solid #ffb8cf;background:linear-gradient(140deg,#fa5090,#dc216c);color:white;box-shadow:0 0 12px #ee4b8b4f}
+.nav{display:flex;justify-content:space-between;gap:10px}.nav button{min-height:44px;border-radius:12px;background:#fffaef;color:#5e442f;border:1px solid #e4c08e;padding:9px 16px;font-weight:800;cursor:pointer}
+footer{padding:13px 12px max(16px,env(safe-area-inset-bottom,0px));background:#fff1df;border-top:1px solid #ead0ac;text-align:center;color:#805e44;font-size:12px;line-height:1.5}
+.empty{text-align:center;border:1px solid #dcb386;background:#fffaf0;border-radius:25px;padding:60px 22px;min-height:320px}.empty h2{font-size:23px}.empty button{min-height:44px;background:#ed3476;color:white;border:0;border-radius:13px;padding:10px 17px;font-weight:800}
+button:focus-visible,.flash:focus-visible,a:focus-visible{outline:3px solid #dd276c;outline-offset:3px}
+@media(max-width:355px){header{padding-left:8px;padding-right:8px}.logo{width:125px}.tabs button{padding:7px;font-size:12px}.scene{height:clamp(300px,46dvh,410px)}main{padding:0 10px 16px}.reverse{padding:15px 12px 76px}.grade button{font-size:14px}}
+@media(max-height:670px){.scene{height:clamp(285px,45dvh,390px)}h1{font-size:22px}.subtitle{display:none}}
+@media(prefers-reduced-motion:reduce){.spin,.fill{transition:none}}
+</style></head><body><div class="wrap"><header><a class="back" href="./hsk1-map.html" aria-label="Назад к карте">‹</a><div><img class="logo" src="./assets/lesson4-reference-v216/logo.webp" alt="Panda Go"><small class="sub">Китайский с нуля</small></div><div class="counter" id="counter">1 / 25</div></header><section class="heading"><span class="kicker">HSK1 · УРОК 4</span><h1>Карточки для повторения</h1><p class="subtitle">Сначала звук и иероглифы — потом перевод</p></section><div class="track"><div id="bar" class="fill"></div></div><nav class="tabs"><button id="tab-all" type="button">Все 25</button><button id="tab-hard" type="button">Не знаю · повторить</button></nav><main id="panel"></main><footer>✓ Знаю: <b id="known-count">0</b> из <b id="all-count">25</b><div>Прогресс отдельно от уроков Panda Go</div></footer></div><script src="./assets/hsk1-native-human-map-v167.js?v=167"></script><script src="./assets/hsk1-weekdays-audio-map-v214.js?v=214"></script><script>
+(()=>{
+'use strict';
+const DATA=[["星期","xīngqī","неделя; основа названий дней","星=звезда|期=период, срок"],["星期一","xīngqī yī","понедельник","星期=день недели|一=один"],["星期二","xīngqī èr","вторник","星期=день недели|二=два"],["星期三","xīngqī sān","среда","星期=день недели|三=три"],["星期四","xīngqī sì","четверг","星期=день недели|四=четыре"],["星期五","xīngqī wǔ","пятница","星期=день недели|五=пять"],["星期六","xīngqī liù","суббота","星期=день недели|六=шесть"],["星期日","xīngqī rì","воскресенье","星期=день недели|日=солнце, день"],["星期天","xīngqī tiān","воскресенье (разговорное)","星期=день недели|天=день"],["今天","jīntiān","сегодня","今=нынешний|天=день"],["明天","míngtiān","завтра","明=следующий|天=день"],["昨天","zuótiān","вчера","昨=вчерашний|天=день"],["几","jǐ","сколько; какой по счёту","几=вопрос о числе или порядке"],["日","rì","день; солнце","日=иероглиф из четырёх черт"],["今天星期几？","Jīntiān xīngqī jǐ?","Какой сегодня день недели?","今天=сегодня|星期=день недели|几=какой по счёту"],["明天星期几？","Míngtiān xīngqī jǐ?","Какой завтра день недели?","明天=завтра|星期=день недели|几=какой по счёту"],["今天星期五。","Jīntiān xīngqī wǔ.","Сегодня пятница.","今天=сегодня|星期五=пятница"],["明天星期六。","Míngtiān xīngqī liù.","Завтра суббота.","明天=завтра|星期六=суббота"],["昨天星期二。","Zuótiān xīngqī èr.","Вчера был вторник.","昨天=вчера|星期二=вторник"],["今天星期三。","Jīntiān xīngqī sān.","Сегодня среда.","今天=сегодня|星期三=среда"],["今天星期一。","Jīntiān xīngqī yī.","Сегодня понедельник.","今天=сегодня|星期一=понедельник"],["今天是星期五。","Jīntiān shì xīngqī wǔ.","Сегодня пятница.","今天=сегодня|是=быть, являться|星期五=пятница"],["你星期几有空？","Nǐ xīngqī jǐ yǒu kòng?","В какой день недели ты свободен?","你=ты|星期几=какой день недели|有空=быть свободным"],["我星期六有空。","Wǒ xīngqī liù yǒu kòng.","Я свободен в субботу.","我=я|星期六=суббота|有空=есть свободное время"],["我们星期六一起去看电影吧！","Wǒmen xīngqī liù yìqǐ qù kàn diànyǐng ba!","Давай вместе сходим в кино в субботу!","我们=мы|星期六=суббота|一起=вместе|去=идти|看电影=смотреть фильм|吧=частица предложения"]];
+const KEY='pg-hsk1-l4-flashcards-v1';
+const owner={'今天':'./assets/lesson4-owner-review-v217/owner-15.mp3','今天星期五。':'./assets/lesson4-owner-review-v217/owner-21.mp3','今天是星期五。':'./assets/lesson4-owner-review-v217/owner-22.mp3'};
+const file=(word)=>owner[word]||(window.PANDA_HSK1_L4_VOICE_V214||{})[word]||(window.PANDA_HSK1_NATIVE_HUMAN_V167||{})[word]||null;
+const e=id=>document.getElementById(id);
+let grades={},mode='all',pos=0,open=false,audio=null;
+try{const old=JSON.parse(localStorage.getItem(KEY)||'null');if(old&&typeof old==='object'){grades=old.grades||{};mode=old.mode==='hard'?'hard':'all';pos=Math.max(0,Number(old.pos)||0)}}catch{}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({grades,mode,pos}))}catch{}};
+const visible=()=>mode==='hard'?DATA.filter(x=>grades[x[0]]==='again'):DATA;
+const stop=()=>{if(audio){try{audio.pause()}catch{}audio=null}};
+function sound(path){stop();const a=new Audio(path);audio=a;a.playbackRate=1;a.onended=()=>{if(audio===a)audio=null};a.onerror=()=>{e('status').textContent='Ошибка загрузки аудио'};a.play().catch(()=>{e('status').textContent='Нажми на звук ещё раз'})}
+function render(){
+ const list=visible();if(pos>=list.length)pos=Math.max(0,list.length-1);
+ const known=DATA.filter(x=>grades[x[0]]==='known').length;
+ e('known-count').textContent=known;e('all-count').textContent=DATA.length;e('bar').style.width=known/DATA.length*100+'%';
+ e('tab-all').classList.toggle('active',mode==='all');e('tab-hard').classList.toggle('active',mode==='hard');
+ e('counter').textContent=list.length?pos+1+' / '+list.length:'0 / 0';
+ if(!list.length){e('panel').innerHTML='<div class="empty"><h2>🎉 Сложных слов пока нет</h2><p>Отмечай «Не знаю», чтобы собрать их сюда для повторения.</p><button id="showall">Все карточки</button></div>';e('showall').onclick=()=>switchTab('all');save();return}
+ const card=list[pos],zh=card[0],py=card[1],ru=card[2],parts=card[3].split('|');
+ const path=file(zh);
+ e('panel').innerHTML='<div class="at">'+(pos+1)+' из '+list.length+' · '+(grades[zh]==='known'?'✓ Знаю':grades[zh]==='again'?'× Повторить':'Новое слово')+'</div>'+
+ '<div class="scene" id="scene"><div class="flash" id="flash" role="button" tabindex="0" aria-label="Перевернуть карточку"><div class="spin">'+
+ '<div class="face front"><span class="muted">Слушай и вспоминай</span><div class="hanzi '+(zh.length>9?'long':'')+'">'+zh+'</div><span class="hint">Нажми, чтобы увидеть перевод</span></div>'+
+ '<div class="face reverse"><div class="muted">Перевод и разбор</div><div class="backzh">'+zh+'</div><p class="py">'+py+'</p><p class="ru">'+ru+'</p><div class="label">Разбор по словам</div><div class="parts">'+
+ parts.map(p=>{const x=p.split('=');return '<div><b>'+x[0]+'</b>'+x.slice(1).join('=')+'</div>'}).join('')+'</div></div></div></div>'+
+ (path?'<button class="sound" id="sound" aria-label="Слушать произношение"><img src="./assets/vendor/icons/volume-2.svg" alt=""></button>':'<span class="missing">🔇 Запись готовится</span>')+'</div>'+
+ '<p class="status" id="status">Сначала вспомни значение, затем переверни</p>'+
+ '<div class="grade"><button class="again" id="again">× Не знаю</button><button class="known" id="yes">✓ Знаю</button></div>'+
+ '<div class="nav"><button id="prev">← Назад</button><button id="next">Дальше →</button></div>';
+ const area=e('scene'),flip=e('flash');if(open){flip.classList.add('open');area.classList.add('flipped')}
+ function turn(){open=!open;flip.classList.toggle('open',open);area.classList.toggle('flipped',open);e('status').textContent=open?'Нажми снова, чтобы увидеть иероглифы':'Сначала вспомни значение, затем переверни'}
+ flip.onclick=turn;flip.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();turn()}};
+ if(path)e('sound').onclick=()=>sound(path);
+ e('prev').onclick=()=>move(-1);e('next').onclick=()=>move(1);
+ e('yes').onclick=()=>rate('known');e('again').onclick=()=>rate('again');
+ save();
+}
+function move(n){stop();const nCards=visible().length;if(!nCards)return;pos=(pos+n+nCards)%nCards;open=false;render()}
+function rate(value){const list=visible();if(!list.length)return;const oldPos=pos;grades[list[pos][0]]=value;stop();open=false;const remain=visible();pos=remain.length?(mode==='hard'&&value==='known'?Math.min(oldPos,remain.length-1):(oldPos+1)%remain.length):0;render()}
+function switchTab(tab){stop();mode=tab;pos=0;open=false;render()}
+e('tab-all').onclick=()=>switchTab('all');e('tab-hard').onclick=()=>switchTab('hard');
+window.addEventListener('pagehide',stop);
+render();
+})();
+</script></body></html>
