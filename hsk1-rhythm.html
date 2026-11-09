@@ -3,119 +3,60 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#e9d6ff">
-<meta name="description" content="Panda Go HSK 1: короткие ритмичные фразы, карточки, правильные тоны и прослушивание">
+<meta name="theme-color" content="#e7d1f6">
 <title>Китайский в ритме · HSK 1 · Panda Go</title>
 <style>
-:root{color-scheme:light;--ink:#432a61;--sub:#705b85;--pink:#ed65b1;--pinkdark:#bf2c82;--gold:#d39e47;--lav:#f4ebff;--card:#fffafd}
+:root{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans SC",Arial,sans-serif;color:#4a2864;background:#eee0f7}
 *{box-sizing:border-box}
-html{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans SC",Arial,sans-serif}
-body{margin:0;color:var(--ink);background:linear-gradient(155deg,#fbf4ffcc,#f8e5f4cc),url("./assets/approved-pastel-v112.webp") center/cover fixed no-repeat}
-button,select{font:inherit}
-button{cursor:pointer}
-button:disabled{cursor:not-allowed;opacity:.5}
-a:focus-visible,button:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #9d31ae;outline-offset:3px}
-.shell{width:min(100%,480px);min-height:100dvh;margin:auto;padding:calc(env(safe-area-inset-top,0px) + 14px) 14px calc(env(safe-area-inset-bottom,0px) + 24px);background:linear-gradient(#fff7ffdd,#f0e4ffde);box-shadow:0 0 38px #54236630}
-.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
-.back{display:flex;align-items:center;gap:6px;color:#704282;text-decoration:none;font-size:14px;font-weight:850}
-.brand{font-size:18px;font-weight:950;color:#773386}
-.brand .panda{font-size:25px;vertical-align:middle}
-.hero{padding:18px 17px;border:1px solid #fff9da;border-radius:25px;background:linear-gradient(128deg,#8455b8,#9c6bcc 50%,#e089ca);box-shadow:0 8px 28px #7b39af3d;color:white}
-.tag{display:inline-block;font-size:11px;font-weight:850;letter-spacing:.8px;border:1px solid #fff9d7aa;border-radius:99px;padding:5px 11px;background:#ffffff23;color:#fffce8}
-h1{margin:10px 0 4px;font-size:29px;line-height:1.13}
-.hero p{margin:0;font-size:13px;color:#fff0ff}
-.meter{margin:16px 0 5px;height:9px;border:1px solid #ffffff67;border-radius:99px;background:#5f3a9075;overflow:hidden}
-.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffeb9b,#ffd3f2);transition:width .25s}
-.meta{display:flex;justify-content:space-between;font-size:12px;color:#fff4ff}
-.audio{border-radius:22px;border:1px solid #d9b6f5;background:#fffafd;padding:15px;margin-top:14px;box-shadow:0 4px 16px #a26ec223}
-.section-title{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:16px;font-weight:900}
-.status{font-size:12px;line-height:1.5;color:#76578a;margin:9px 0 12px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.btn{min-height:48px;border-radius:16px;padding:10px 12px;border:1px solid #d4a7d5;background:#fff6ff;color:#682c78;font-weight:850;transition:transform .12s}
-.btn:active:not(:disabled){transform:scale(.985)}
-.btn.primary{border-color:#ec73ba;color:white;background:linear-gradient(125deg,#fb82c2,#ec4aa0 60%,#ce2883);box-shadow:0 3px 11px #dc419c3d}
-.btn.secondary{background:#fdf6ff}
-.btn.full{width:100%}
-.audio-options{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;font-size:12px}
-.audio-options select{border:1px solid #dbb4e4;background:#fff5fd;border-radius:10px;padding:8px;color:#603275;min-width:108px}
-.routine{margin-top:11px;color:#845b95;font-size:12px;line-height:1.5;text-align:center}
-.cardtools{margin:17px 0 8px;display:flex;justify-content:space-between;align-items:center;gap:6px}
-.cardtools h2{margin:0;font-size:19px}
-.filters{display:flex;gap:5px}
-.pill{min-height:35px;border-radius:99px;border:1px solid #dcbadf;color:#7a4d7d;background:#fff8ff;padding:6px 10px;font-size:12px;font-weight:800}
-.pill[aria-pressed="true"]{background:#f5d9f0;color:#a02b80;border-color:#eaa1d1}
-.counter{text-align:center;color:#845d94;font-size:12px;margin:8px 0}
-.flash{display:block;width:100%;border:2px solid #e4c79d;background:linear-gradient(153deg,#fffaf8,#fff7fd);box-shadow:0 8px 24px #9a4d9c23,inset 0 0 0 4px #fff;height:auto;min-height:250px;border-radius:27px;padding:26px 17px;position:relative;text-align:center}
-.flash::before{content:"✿";position:absolute;top:11px;left:16px;color:#f4b9d5;font-size:28px}
-.flash::after{content:"✿";position:absolute;bottom:10px;right:17px;color:#f4b9d5;font-size:25px}
-.hanzi{font-size:clamp(26px,7.1vw,35px);line-height:1.55;letter-spacing:.1px;font-weight:850;color:#52256e;margin:18px 0 10px;overflow-wrap:anywhere}
-.pinyin{font-size:16px;font-weight:800;color:#aa478d;line-height:1.5}
-.translation{font-size:16px;line-height:1.5;font-weight:800;color:#463355;margin-top:12px}
-.words{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:16px;text-align:left}
-.word{border:1px solid #ebd2e7;background:#ffffffb5;border-radius:11px;padding:7px;font-size:12px;color:#704c74}
-.word b{display:block;color:#603070;font-size:15px}
-.tap{font-size:12px;color:#997a97;margin-top:20px}
-.nav{margin:10px 0;display:flex;gap:9px}
-.nav .btn{flex:1}
-.grade{display:flex;gap:9px;margin-top:8px}
-.grade .btn{flex:1}
-.minitext{font-size:12px;color:#806d8b;text-align:center;line-height:1.5}
-.notes{border-radius:15px;margin:14px 0;padding:13px;border:1px solid #e1c8ee;background:#fdf8ffb8;color:#685579;font-size:12px;line-height:1.6}
-.empty{border-radius:22px;text-align:center;border:1px solid #e6cceb;padding:32px 15px;background:#fffafd}
-footer{padding:14px 0;text-align:center;color:#806f8f;font-size:11px}
-@media(max-width:360px){.shell{padding-left:9px;padding-right:9px}.hanzi{font-size:25px}.words{grid-template-columns:1fr}.hero h1{font-size:25px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+html,body{margin:0;min-height:100%;overflow-x:hidden}
+body{background:linear-gradient(#fff7ffbd,#f5e4fcce),url("./assets/approved-pastel-v112.webp") center/cover fixed no-repeat}
+button{font:inherit;cursor:pointer}
+button:focus-visible,.flash:focus-visible{outline:3px solid #ab3197;outline-offset:3px}
+button:disabled{opacity:.38;cursor:default}
+.frame{width:min(100%,480px);min-height:100svh;margin:auto;padding:calc(12px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:15px;background:linear-gradient(160deg,#fff8ffdb,#f4e5fbe8);box-shadow:0 0 28px #6c3e9230}
+.hero{position:relative;border:2px solid #ffefd9;border-radius:24px;padding:18px 18px 15px;text-align:center;background:linear-gradient(125deg,#7e4ba9,#a56cca 58%,#dd95d3);box-shadow:0 5px 18px #6b39863c;color:#fff}
+.brand{font-size:12px;letter-spacing:.8px;font-weight:900;color:#ffe3fa}
+h1{margin:5px 0 4px;font-size:clamp(25px,6.7vw,34px);line-height:1.16}
+.subtitle{margin:0;font-size:12px;color:#fbe5ff}
+.count{margin-top:10px;font-weight:850;font-size:13px;color:#ffeedb}
+.study{flex:1;display:flex;flex-direction:column;justify-content:center}
+.flash{position:relative;border:2px solid #e4c49d;border-radius:26px;background:linear-gradient(150deg,#fffbff,#fff6fb);min-height:clamp(285px,48svh,435px);width:100%;padding:30px 19px;box-shadow:inset 0 0 0 4px #fff,0 8px 20px #955daa2f;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;overflow-wrap:anywhere;overflow-y:auto;cursor:pointer}
+.flash::before,.flash::after{content:"✿";position:absolute;color:#f4bfdc;font-size:24px;pointer-events:none}
+.flash::before{top:11px;left:15px}.flash::after{bottom:11px;right:15px}
+.hanzi{font-weight:850;font-size:clamp(29px,7.7vw,39px);line-height:1.55;color:#52296c}
+.pinyin{font-size:16px;font-weight:750;line-height:1.5;color:#a74b91}
+.translation{font-size:16px;font-weight:750;line-height:1.4;color:#51375e}
+.words{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:7px;text-align:left}
+.word{border-radius:11px;border:1px solid #efd8e7;background:#ffffffd6;padding:8px 9px;font-size:12px;color:#6c5878;line-height:1.4}
+.word strong{display:block;font-size:16px;color:#663976}
+.hint{font-size:12px;color:#a38ba8;line-height:1.4}
+.controls{display:grid;grid-template-columns:60px minmax(0,1fr) 60px;gap:12px}
+.controls button{height:59px;border-radius:18px;border:1.5px solid #e9b5db;font-size:24px;font-weight:900;box-shadow:0 3px 10px #b778b43a;background:linear-gradient(#fffaff,#f9d9ef);color:#7d3c80}
+.controls #listen{background:linear-gradient(145deg,#fa78bf,#e7439d);border-color:#ffd4ed;color:#fff;font-size:17px;letter-spacing:.1px;box-shadow:0 5px 13px #d1499a52}
+.controls button:active:not(:disabled){transform:translateY(1px)}
+.note{min-height:19px;margin:0;text-align:center;color:#995179;font-size:12px;line-height:1.45}
+@media(max-height:630px){.frame{gap:9px}.hero{padding:10px 12px}.count{margin-top:5px}.flash{min-height:230px;padding:15px}.controls button{height:51px}}
+@media(max-width:345px){.frame{padding-left:10px;padding-right:10px}.controls{gap:7px;grid-template-columns:51px minmax(0,1fr) 51px}.words{grid-template-columns:1fr}.hanzi{font-size:26px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto;transition:none!important}}
 </style>
 </head>
 <body>
-<main class="shell">
- <header class="top">
-   <a class="back" href="./hsk1-map.html" aria-label="Вернуться к карте HSK 1">← HSK 1</a>
-   <div class="brand"><span class="panda">🐼</span> Panda Go</div>
- </header>
- <section class="hero" aria-label="Заголовок тренажёра">
-   <span class="tag">HSK 1 · ПРАКТИКА</span>
-   <h1>Китайский в ритме 🎵</h1>
-   <p>Короткие фразы. Правильные тоны. Удобное повторение.</p>
-   <div class="meter" role="progressbar" aria-label="Выучено фраз" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progress-wrap"><i id="meter"></i></div>
-   <div class="meta"><span id="learned">Выучено 0 из 10</span><span>10 фраз</span></div>
- </section>
- <section class="audio" aria-label="Аудиотренажёр">
-   <div class="section-title"><span>🎧 Слушать и повторять</span><span style="font-size:12px;color:#ad5c95">4 сек. × 2</span></div>
-   <p class="status" id="audio-status" role="status">Проверяем наличие качественных аудиозаписей…</p>
-   <div class="actions">
-     <button id="play-all" type="button" class="btn primary" disabled>▶ Слушать всё</button>
-     <button id="play-one" type="button" class="btn secondary" disabled>♫ Эту фразу</button>
-     <button id="stop" type="button" class="btn secondary" disabled>■ Стоп</button>
-     <button id="next-audio" type="button" class="btn secondary" disabled>→ Следующая</button>
-   </div>
-   <div class="audio-options"><label for="pause">Пауза после китайской фразы</label><select id="pause"><option value="4000">4 секунды</option><option value="3000">3 секунды</option><option value="5000">5 секунд</option></select></div>
-   <div class="routine">🇨🇳 Китайский → 4 сек. → 🇨🇳 повтор → 4 сек. → 🇷🇺 перевод</div>
- </section>
- <section aria-label="Интерактивные карточки">
-   <div class="cardtools">
-     <h2>🎴 Карточки</h2>
-     <div class="filters" role="group" aria-label="Фильтр карточек">
-       <button id="all-filter" class="pill" type="button" aria-pressed="true">Все</button>
-       <button id="hard-filter" class="pill" type="button" aria-pressed="false">Повторить</button>
-     </div>
-   </div>
-   <p class="counter" id="card-counter">Карточка 1 из 10</p>
-   <div id="card-zone"></div>
-   <div class="grade" id="grade">
-     <button class="btn secondary" type="button" id="mark-hard">↻ Повторить</button>
-     <button class="btn primary" type="button" id="mark-known">✓ Знаю</button>
-   </div>
-   <div class="nav">
-     <button type="button" class="btn secondary" id="prev">← Назад</button>
-     <button type="button" class="btn primary" id="next">Дальше Go →</button>
-   </div>
-   <p class="minitext">Нажми на карточку, чтобы увидеть пиньинь, перевод и разбор.</p>
- </section>
- <div class="notes">
-   <strong>Важно для произношения.</strong> Ритм помогает запомнить структуру, но не заменяет китайские тоны. Сначала слушай носителя, затем повторяй. Новые аудиозаписи добавляются отдельно и не затрагивают существующие уроки.
- </div>
- <footer>Личный прогресс этого тренажёра сохраняется отдельно от уроков Panda Go.</footer>
+<main class="frame">
+  <header class="hero">
+    <div class="brand">🐼 PANDA GO · HSK 1</div>
+    <h1>Китайский в ритме</h1>
+    <p class="subtitle">Слушай · Повторяй · Запоминай</p>
+    <div class="count" id="counter" aria-live="polite">1 / 10</div>
+  </header>
+  <section class="study" aria-label="Карточка китайского предложения">
+    <article class="flash" id="flash" role="button" tabindex="0" aria-expanded="false" aria-label="Показать пиньинь, перевод и разбор"></article>
+  </section>
+  <nav class="controls" aria-label="Переключение предложений">
+    <button id="prev" type="button" aria-label="Предыдущее предложение">&lt;</button>
+    <button id="listen" type="button">▶ Слушать</button>
+    <button id="next" type="button" aria-label="Следующее предложение">&gt;</button>
+  </nav>
+  <p class="note" id="notice" role="status" aria-live="polite"></p>
 </main>
 <script>
 "use strict";
@@ -132,109 +73,59 @@ const data=[
  {zh:"今天天气好，明天天气也好。",py:"Jīntiān tiānqì hǎo, míngtiān tiānqì yě hǎo.",ru:"Сегодня хорошая погода, завтра тоже будет хорошая.",w:[["天气","погода"],["好","хороший"],["明天","завтра"],["也","тоже"]]}
 ];
 const $=id=>document.getElementById(id);
-const key="pg-hsk1-rhythm-v1";
-let known=[];
-try{const v=JSON.parse(localStorage.getItem(key)||"[]");if(Array.isArray(v))known=v.filter(i=>Number.isInteger(i)&&i>=0&&i<10)}catch{}
-let position=0,showBack=false,hardOnly=false,sequence=0,player=null,timeout=null,allMode=false,audioAvailable=[];
-const order=()=>data.map((_,i)=>i).filter(i=>!hardOnly||!known.includes(i));
-function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+let pos=0,open=false,run=0,sound=null,noticeTimer=0;
+function escapeHTML(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function showNotice(message){$("notice").textContent=message;}
 function render(){
- const ids=order();
- if(!ids.length){$("card-zone").innerHTML='<div class="empty"><h2>🎉 Всё выучено!</h2><p>Все фразы отмечены как знакомые.</p><button class="btn" id="return-all">Показать все карточки</button></div>';$("return-all").onclick=()=>{hardOnly=false;showBack=false;render()};$("grade").hidden=true;$("prev").disabled=true;$("next").disabled=true;$("card-counter").textContent="";return}
- $("grade").hidden=false;
- if(!ids.includes(position))position=ids[0];
- const item=data[position],ordinal=ids.indexOf(position)+1;
- $("card-counter").textContent="Карточка "+ordinal+" из "+ids.length+" · "+(known.includes(position)?"✓ Знаю":"Для повторения");
- const content=showBack?'<div class="pinyin">'+escapeHtml(item.py)+'</div><div class="translation">'+escapeHtml(item.ru)+'</div><div class="words">'+item.w.map(w=>'<div class="word"><b>'+escapeHtml(w[0])+'</b>'+escapeHtml(w[1])+'</div>').join('')+'</div>':'<div class="tap">Нажми, чтобы открыть пиньинь и перевод</div>';
- $("card-zone").innerHTML='<button type="button" class="flash" id="flash" aria-label="Карточка: '+escapeHtml(item.zh)+'. Нажми для '+(showBack?'скрытия':'открытия')+' перевода"><div class="hanzi" lang="zh-CN">'+escapeHtml(item.zh)+'</div>'+content+'</button>';
- $("flash").onclick=()=>{showBack=!showBack;render()};
- $("prev").disabled=ordinal===1;$("next").disabled=ordinal===ids.length;
- $("all-filter").setAttribute("aria-pressed",String(!hardOnly));
- $("hard-filter").setAttribute("aria-pressed",String(hardOnly));
- $("learned").textContent="Выучено "+known.length+" из "+data.length;
- $("meter").style.width=(known.length/data.length*100)+"%";
- $("progress-wrap").setAttribute("aria-valuenow",String(known.length));
- $("play-one").disabled=!audioAvailable[position];
+ const entry=data[pos];
+ $("counter").textContent=(pos+1)+" / "+data.length;
+ $("prev").disabled=pos===0;$("next").disabled=pos===data.length-1;
+ $("flash").setAttribute("aria-expanded",String(open));
+ $("flash").setAttribute("aria-label",open?"Скрыть перевод":"Показать пиньинь, перевод и разбор");
+ const details=open?'<div class="pinyin">'+escapeHTML(entry.py)+'</div><div class="translation">'+escapeHTML(entry.ru)+'</div><div class="words">'+entry.w.map(pair=>'<div class="word"><strong>'+escapeHTML(pair[0])+'</strong>'+escapeHTML(pair[1])+'</div>').join("")+'</div>':'<div class="hint">Нажми на карточку — перевод и разбор</div>';
+ $("flash").innerHTML='<div class="hanzi" lang="zh-CN">'+escapeHTML(entry.zh)+'</div>'+details;
 }
-function move(dir){const ids=order(),index=ids.indexOf(position),next=ids[index+dir];if(next===undefined)return;position=next;showBack=false;render()}
-function gradeItem(mastered){
- if(mastered){if(!known.includes(position))known.push(position)}
- else known=known.filter(i=>i!==position);
- localStorage.setItem(key,JSON.stringify(known));
- const ids=order(),p=ids.indexOf(position);
- if(ids.length&&p>=0&&p+1<ids.length)position=ids[p+1];
- else if(ids.length&&!ids.includes(position))position=ids[0];
- showBack=false;render()
-}
-$("mark-hard").onclick=()=>gradeItem(false);
-$("mark-known").onclick=()=>gradeItem(true);
-$("prev").onclick=()=>move(-1);
-$("next").onclick=()=>move(1);
-$("all-filter").onclick=()=>{hardOnly=false;showBack=false;render()};
-$("hard-filter").onclick=()=>{hardOnly=true;showBack=false;render()};
-function path(i,lang){return"./assets/hsk1-rhythm/"+lang+"-"+String(i+1).padStart(2,"0")+".mp3"}
-async function probe(i){try{const results=await Promise.all(["zh","ru"].map(l=>fetch(path(i,l),{method:"HEAD",cache:"no-store"})));return results.every(r=>r.ok)}catch{return false}}
-let currentRun=0;
-function cancelAudio(){
- currentRun++;sequence++;allMode=false;
- if(timeout!==null){clearTimeout(timeout);timeout=null}
- if(player){player.pause();player.src="";player=null}
- $("stop").disabled=true;$("next-audio").disabled=true;
- $("play-all").disabled=!audioAvailable.some(Boolean);
- $("play-one").disabled=!audioAvailable[position];
-}
-function wait(ms,run){return new Promise(resolve=>{timeout=setTimeout(()=>{timeout=null;resolve(run===currentRun)},ms)})}
-async function playFile(url,run){
+function cancel(){run++;if(sound){sound.pause();sound.removeAttribute("src");sound.load();sound=null;}$("listen").textContent="▶ Слушать";}
+function move(step){const n=pos+step;if(n<0||n>=data.length)return;cancel();pos=n;open=false;showNotice("");render();}
+$("prev").addEventListener("click",()=>move(-1));
+$("next").addEventListener("click",()=>move(1));
+function toggle(){open=!open;render();}
+$("flash").addEventListener("click",toggle);
+$("flash").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
+function audioPath(i,lang){return "./assets/hsk1-rhythm/"+lang+"-"+String(i+1).padStart(2,"0")+".mp3";}
+function playFile(file,token){
  return new Promise(resolve=>{
-  if(run!==currentRun)return resolve(false);
-  player=new Audio(url);
-  player.onended=()=>resolve(run===currentRun);
-  player.onerror=()=>resolve(false);
-  player.play().catch(()=>resolve(false));
- })
+  if(token!==run)return resolve(false);
+  const a=new Audio();sound=a;let finished=false;
+  const done=ok=>{if(finished)return;finished=true;a.onended=null;a.onerror=null;resolve(ok&&token===run);};
+  a.onended=()=>done(true);a.onerror=()=>done(false);a.src=file;
+  a.play().catch(()=>done(false));
+ });
 }
-async function runItem(i,run){
- position=i;showBack=false;render();
- const sec=Number($("pause").value);
- const steps=[[path(i,"zh"),"🇨🇳 Китайский"],[null,"⏸ Повтори сам"],[path(i,"zh"),"🇨🇳 Повтор"],[null,"⏸ Повтори по памяти"],[path(i,"ru"),"🇷🇺 Русский перевод"]];
- for(const [url,label] of steps){
-  if(run!==currentRun)return false;
-  $("audio-status").textContent="Фраза "+(i+1)+" из 10 · "+label;
-  const ok=url?await playFile(url,run):await wait(sec,run);
-  if(!ok)return false;
+function delay(ms,token){return new Promise(resolve=>setTimeout(()=>resolve(token===run),ms));}
+async function listen(){
+ cancel();const token=run;
+ $("listen").textContent="■ Стоп";
+ showNotice("🇨🇳 Слушаем китайский");
+ const steps=[
+  [audioPath(pos,"zh"),"🇨🇳 Слушаем китайский"],
+  [null,"Повтори вслух · 4 секунды"],
+  [audioPath(pos,"zh"),"🇨🇳 Слушаем повтор"],
+  [null,"Повтори по памяти · 4 секунды"],
+  [audioPath(pos,"ru"),"🇷🇺 Перевод"]
+ ];
+ for(const [src,label] of steps){
+   if(token!==run)return;
+   showNotice(label);
+   const ok=src?await playFile(src,token):await delay(4000,token);
+   if(token!==run)return;
+   if(!ok){cancel();showNotice("Запись пока не загружена. Карточка доступна без звука.");return;}
  }
- return true;
+ if(token===run){cancel();showNotice("");}
 }
-async function runAudio(all){
- cancelAudio();allMode=all;const run=++currentRun;
- $("stop").disabled=false;$("next-audio").disabled=!all;
- $("play-one").disabled=true;$("play-all").disabled=true;
- const ids=all?data.map((_,i)=>i).filter(i=>audioAvailable[i]):[position];
- for(const i of ids){
-   if(run!==currentRun)break;
-   const ok=await runItem(i,run);
-   if(!ok){if(run===currentRun)$("audio-status").textContent="Не удалось воспроизвести аудиофайл. Проверь подключение.";break}
- }
- if(run===currentRun){cancelAudio();$("audio-status").textContent="Прослушивание завершено. Можешь повторить ещё раз."}
-}
-$("play-one").onclick=()=>runAudio(false);
-$("play-all").onclick=()=>runAudio(true);
-$("stop").onclick=()=>{cancelAudio();$("audio-status").textContent="Прослушивание остановлено."};
-$("next-audio").onclick=()=>{
- const n=Math.min(9,position+1);
- cancelAudio();position=n;showBack=false;render();if(audioAvailable[n])runAudio(false)
-};
-$("pause").onchange=()=>{$("audio-status").textContent=audioAvailable.some(Boolean)?"Настроена пауза "+(Number($("pause").value)/1000)+" сек.":"Записи носителя пока не загружены.";document.querySelector(".routine").textContent="🇨🇳 Китайский → "+(Number($("pause").value)/1000)+" сек. → 🇨🇳 повтор → "+(Number($("pause").value)/1000)+" сек. → 🇷🇺 перевод"};
-async function init(){
- render();
- audioAvailable=await Promise.all(data.map((_,i)=>probe(i)));
- const count=audioAvailable.filter(Boolean).length;
- $("play-all").disabled=count===0;
- $("play-one").disabled=!audioAvailable[position];
- $("audio-status").textContent=count===0?"Для этого набора ещё нет утверждённых записей носителя. Карточки работают, но роботизированную озвучку мы не включаем.":count===10?"Все 10 фраз готовы к прослушиванию.":"Озвучено "+count+" из 10 фраз. Доступны готовые записи.";
-}
-window.addEventListener("pagehide",cancelAudio);
-init();
+$("listen").addEventListener("click",()=>{if($("listen").textContent.includes("Стоп")){cancel();showNotice("");}else listen();});
+window.addEventListener("pagehide",cancel);
+render();
 </script>
 </body>
 </html>
