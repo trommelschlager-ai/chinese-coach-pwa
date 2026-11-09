@@ -201,7 +201,7 @@ function heading(text){return '<h2 class="pg13-card-heading">'+text+'</h2>'}
 function basic(n,extra=''){return '<strong lang="zh-Hans">'+chinese(n)+'</strong><span>'+pinyin(n)+'</span><small>'+extra+'</small>'}
 function intro(){
  const cards=[1,2,3,4,5].map(n=>'<div class="pg3-intro-num">'+basic(n,RU[n])+'</div>').join('');
- return '<div class="pg13-intro-hero"><img src="./assets/lesson3-panda-headphones-v222.svg" alt="Панда — помощник в изучении китайского">'+
+ return '<div class="pg13-intro-hero"><img src="./assets/lesson3-approved-panda-v223.svg" alt="Панда — помощник в изучении китайского">'+
   '<div><span class="pg13-small-kicker">HSK 1 · НОВЫЙ УРОК</span><h2>Считаем до 100!</h2><p>Не нужно учить сто новых слов: достаточно цифр и трёх простых правил.</p></div></div>'+
   mainCard('<div class="pg3-intro-numbers">'+cards+'</div><p class="pg3-muted pg3-center">Сначала числа, потом десятки и сотня.</p>')+
   mainCard(heading('После урока ты сможешь')+
@@ -230,20 +230,18 @@ function study(step){
    '</div>');
 }
 function listenQuiz(step,arr){
- const idx=state.phase[step]||0;
- if(idx>=arr.length)return mainCard(heading('✓ Практика завершена')+
-  '<p>Ты разобрал все вопросы. Можешь повторить их или идти дальше.</p>'+
-  '<button class="pg13-soft-button" type="button" data-replay-quiz="'+step+'">↻ Пройти ещё раз</button>');
- const x=arr[idx],needed=state.passed[step+'-'+idx]===true;
+ const finished=(state.phase[step]||0)>=arr.length;
+ const idx=finished?arr.length-1:(state.phase[step]||0);
+ const x=arr[idx];
  const answers=x.options.map(n=>'<button class="pg13-answer" type="button" data-answer="'+n+'" '+
-  (!state.heard||state.sounding?'disabled':'')+'><strong>'+((step===10||step===3)?n:chinese(n))+
+  (finished||!state.heard||state.sounding?'disabled':'')+'><strong>'+((step===10||step===3)?n:chinese(n))+
   '</strong>'+(step===10||step===3?'':'<small>'+pinyin(n)+'</small>')+'</button>').join('');
  return mainCard('<div class="pg13-quiz-count">Вопрос '+(idx+1)+' из '+arr.length+'</div>'+
    heading(step===3?'Какое число звучит?':step===10?'Слушай и выбирай':'Выбери правильное число')+
    '<p class="pg3-muted pg3-center">Пока слушаешь, ответы заблокированы.</p>'+
    '<div class="pg13-audio-center">'+audioButton(x.n,'🔊 Прослушать')+'</div>'+
    '<div class="pg13-answers">'+answers+'</div>'+
-   '<p class="pg13-hint">'+(state.sounding?'Сейчас звучит запись…':state.heard?'Теперь выбери ответ.':'Нажми «Прослушать».')+'</p>');
+   '<p class="pg13-hint">'+(finished?'✓ Задание пройдено. Нажми «Дальше».':state.sounding?'Сейчас звучит запись…':state.heard?'Теперь выбери ответ.':'Нажми «Прослушать».')+'</p>');
 }
 function writing(){
  const z=state.writing;
@@ -261,7 +259,7 @@ function conceptCard(n){
 }
 function rulePractice(step,arr){
  const idx=state.phase[step]||0;
- if(idx>=arr.length)return '<div class="pg13-rule-result">✓ Правило закреплено! <button data-review-rule="'+step+'" type="button">Повторить вопросы</button></div>';
+ if(idx>=arr.length)return '';
  const obj=arr[idx];
  return mainCard(heading('Попробуй без подсказки: '+obj.n)+
   '<p class="pg3-muted">Как правильно написать число '+obj.n+'?</p>'+
@@ -310,48 +308,45 @@ function hundred(){
   '<strong>两 liǎng</strong> часто используют перед счётным словом: 两个人 (liǎng ge rén) — два человека. Пока запомни только разницу.</p></details>');
 }
 function builder(){
- const ix=state.phase[9],n=BUILD[ix];
- if(ix>=BUILD.length)return mainCard(heading('✓ Все числа собраны')+
-  '<p>Ты самостоятельно составил 23, 47, 68 и 90. Можешь повторить задания.</p>'+
-  '<button class="pg13-soft-button" data-reset-build type="button">↻ Собрать ещё раз</button>');
+ const finished=(state.phase[9]||0)>=BUILD.length;
+ const ix=finished?BUILD.length-1:(state.phase[9]||0),n=BUILD[ix];
  const correct=chinese(n).split('');
  const pool=correct.concat(n===90?['三']:['四']); // one distractor
- const placed=(state.builder||[]).join('');
+ const placed=finished?chinese(n):(state.builder||[]).join('');
  const complete=placed===chinese(n);
  return mainCard('<div class="pg13-quiz-count">Число '+(ix+1)+' из '+BUILD.length+'</div>'+
   heading('Собери '+n+' по правилу десятков')+
-  '<div class="pg13-builder-line">'+correct.map((_,i)=>'<div class="'+(state.builder[i]?'filled':'')+'">'+(state.builder[i]||'＿')+'</div>').join('')+'</div>'+
-  '<div class="pg13-tiles">'+pool.map((z,i)=>'<button type="button" data-tile-index="'+i+'"'+(state.used?.includes(i)?' disabled':'')+'>'+z+'</button>').join('')+'</div>'+
-  '<div class="pg13-builder-buttons"><button data-clear-build type="button">↻ Сброс</button>'+
-  '<button data-check-build type="button" '+((state.builder?.length||0)!==correct.length?'disabled':'')+'>Проверить</button></div>'+
-  '<p class="pg3-muted">'+(state.wrong['build-'+ix]?'Подсказка: десятки ставим перед единицами.':'Подсказка появится только после ошибки.')+'</p>');
+  '<div class="pg13-builder-line">'+correct.map((_,i)=>'<div class="'+(state.builder[i]?'filled':'')+'">'+(finished?correct[i]:(state.builder[i]||'＿'))+'</div>').join('')+'</div>'+
+  '<div class="pg13-tiles">'+pool.map((z,i)=>'<button type="button" data-tile-index="'+i+'"'+(finished||state.used?.includes(i)?' disabled':'')+'>'+z+'</button>').join('')+'</div>'+
+  '<div class="pg13-builder-buttons"><button data-clear-build type="button" '+(finished?'disabled':'')+'>↻ Сброс</button>'+
+  '<button data-check-build type="button" '+((finished||(state.builder?.length||0)!==correct.length?'disabled':'')+'>Проверить</button></div>'+
+  '<p class="pg3-muted">'+(finished?'✓ Число собрано. Нажми «Дальше».':state.wrong['build-'+ix]?'Подсказка: десятки ставим перед единицами.':'Подсказка появится только после ошибки.')+'</p>');
 }
 function context(){
- const idx=state.phase[11]||0;
- if(idx>=CONTEXT.length)return mainCard(heading('✓ Все жизненные ситуации пройдены')+
-  '<button type="button" data-replay-context class="pg13-soft-button">↻ Повторить</button>');
+ const finished=(state.phase[11]||0)>=CONTEXT.length;
+ const idx=finished?CONTEXT.length-1:(state.phase[11]||0);
  const o=CONTEXT[idx];
  return mainCard('<div class="pg13-quiz-count">Ситуация '+(idx+1)+' из '+CONTEXT.length+'</div>'+
   heading(o.q)+'<div class="pg13-context-visual">'+o.visual+'</div>'+
-  '<div class="pg13-answers">'+o.options.map(n=>'<button type="button" class="pg13-answer" data-context-answer="'+n+'">'+
-    '<strong lang="zh-Hans">'+chinese(n)+'</strong><small>'+pinyin(n)+'</small></button>').join('')+'</div>');
+  '<div class="pg13-answers">'+o.options.map(n=>'<button type="button" class="pg13-answer" data-context-answer="'+n+'" '+(finished?'disabled':'')+'>'+
+    '<strong lang="zh-Hans">'+chinese(n)+'</strong><small>'+pinyin(n)+'</small></button>').join('')+'</div>'+
+   (finished?'<p class="pg13-hint">✓ Задания выполнены. Нажми «Дальше».</p>':''));
 }
 function exam(){
- const idx=state.phase[12]||0;
- if(idx>=EXAM.length)return mainCard(heading('✓ Проверка пройдена')+
-  '<p>Ты ответил на все вопросы. Посмотрим результат!</p>');
+ const finished=(state.phase[12]||0)>=EXAM.length;
+ const idx=finished?EXAM.length-1:(state.phase[12]||0);
  const q=EXAM[idx];
  return mainCard('<div class="pg13-quiz-count">Задание '+(idx+1)+' из '+EXAM.length+'</div>'+
   heading(q.q)+
   (q.kind==='audio'?'<div class="pg13-audio-center">'+audioButton(q.n,'🔊 Слушать вопрос')+'</div>':'')+
-  '<div class="pg13-answers">'+q.options.map(n=>'<button type="button" class="pg13-answer" data-exam-answer="'+n+'" '+(q.kind==='audio'&&(!state.heard||state.sounding)?'disabled':'')+'>'+
+  '<div class="pg13-answers">'+q.options.map(n=>'<button type="button" class="pg13-answer" data-exam-answer="'+n+'" '+(finished||q.kind==='audio'&&(!state.heard||state.sounding)?'disabled':'')+'>'+
    '<strong lang="'+(q.kind==='digit'?'ru':'zh-Hans')+'">'+(q.kind==='digit'?n:chinese(n))+'</strong>'+
    (q.kind==='digit'?'':'<small>'+pinyin(n)+'</small>')+'</button>').join('')+'</div>'+
-  '<p class="pg13-hint">'+(q.kind==='audio'?'Сначала прослушай аудио.':'Выбери один правильный ответ.')+'</p>');
+  '<p class="pg13-hint">'+(finished?'✓ Проверка выполнена. Нажми «Дальше».':q.kind==='audio'?'Сначала прослушай аудио.':'Выбери один правильный ответ.')+'</p>');
 }
 function summary(){
  const score=Number(state.firstTry)||0,errors=Object.keys(state.wrong).filter(k=>k.startsWith('exam-'));
- return '<div class="pg13-congrats"><img src="./assets/lesson3-panda-headphones-v222.svg" alt="Панда поздравляет с завершением урока">'+
+ return '<div class="pg13-congrats"><img src="./assets/lesson3-approved-panda-v223.svg" alt="Панда поздравляет с завершением урока">'+
   '<h2>🎉 Урок 3 пройден!</h2><p>Теперь ты знаешь, как образуются любые целые числа от 0 до 100.</p></div>'+
   mainCard('<div class="pg13-score"><strong>'+score+' / '+EXAM.length+'</strong><span>правильно с первой попытки</span></div>'+
    (errors.length?'<p class="pg3-muted">Повторить стоит: '+errors.map(k=>chinese(EXAM[Number(k.split('-')[1])].n)).join(', ')+'.</p>':
@@ -459,8 +454,8 @@ function handlePlay(n){
   play(n,success=>{
    if(!success)return;
    const buttons=root.querySelectorAll('[data-answer],[data-exam-answer]');
-   buttons.forEach(b=>b.disabled=false);
-   inform('Теперь можно ответить.','success');
+   const done=state.step===3?state.phase[3]>=TONES.length:state.step===10?state.phase[10]>=HEAR.length:state.step===12?state.phase[12]>=EXAM.length:false;
+   if(!done){buttons.forEach(b=>b.disabled=false);inform('Теперь можно ответить.','success');}
   });
  }else play(n);
 }
