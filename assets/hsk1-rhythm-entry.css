@@ -1,0 +1,13 @@
+/* HSK1 rhythm practice entry — scoped to the approved map, no changes to lesson nodes. */
+.map-shell .rhythm-entry{
+  position:absolute;left:12%;right:12%;top:18%;height:6%;min-height:48px;z-index:3;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:6px 12px;border:2px solid #ffedcb;border-radius:999px;
+  text-align:center;text-decoration:none;font-size:clamp(13px,3.4vw,16px);
+  font-weight:900;color:#633069;
+  background:linear-gradient(130deg,#fff0fb,#f5c9ee 58%,#edc3fb);
+  box-shadow:inset 0 2px #ffffffcc,0 3px 0 #b77da5,0 6px 12px #53274755,0 0 10px #ffdcf2;
+}
+.map-shell .rhythm-entry:focus-visible{outline:3px solid #8a2ba6;outline-offset:3px}
+.map-shell .rhythm-entry:active{transform:translateY(2px)}
+@media(prefers-reduced-motion:reduce){.map-shell .rhythm-entry{transition:none}}
