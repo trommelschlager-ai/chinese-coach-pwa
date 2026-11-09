@@ -73,7 +73,7 @@ html.pg5-lilac .pg5-hero{
   background:linear-gradient(125deg,#fffdf9ef,#f9edffed 65%,#fff6fded);
   box-shadow:0 8px 22px #c9accf26,inset 0 1px #fff;
 }
-html.pg5-lilac .pg5-hero img{width:100%;max-width:131px;max-height:125px;object-fit:contain;filter:drop-shadow(0 6px 10px #bc93c447)}
+html.pg5-lilac .pg5-hero .pg5-mascot{width:100%;height:125px;min-width:0;overflow:hidden;border-radius:22px;background-image:url('./panda-reference-v175/hero.webp');background-repeat:no-repeat;background-size:auto 240px;background-position:80% 85%;box-shadow:inset 0 0 0 1px #e9cbea66,0 5px 12px #bb9acc40;}
 html.pg5-lilac .pg5-hero-content{min-width:0;text-align:left;color:#635281}
 html.pg5-lilac .pg5-kicker{display:block;font-size:11px;font-weight:900;color:#ca83b1;letter-spacing:.8px}
 html.pg5-lilac .pg5-hero-heading{font-size:clamp(20px,5.6vw,28px);font-weight:950;color:#7956a0;line-height:1.18;margin:3px 0 5px}
@@ -272,7 +272,7 @@ html.pg5-lilac body.pg-study-open #stage-content{min-width:0;overflow-wrap:anywh
 html.pg5-lilac body.pg-study-open .lesson-fineprint{color:#806e99!important}
 @media(max-width:360px){
  html.pg5-lilac .pg5-hero{margin-inline:11px;gap:6px;padding-right:7px;grid-template-columns:32% 1fr}
- html.pg5-lilac .pg5-hero img{max-height:110px}
+ html.pg5-lilac .pg5-hero .pg5-mascot{height:110px;background-size:auto 214px}
  html.pg5-lilac .pg5-hero-heading{font-size:21px}
  html.pg5-lilac .lesson-shell .lesson-steps{margin-inline:11px!important}
  html.pg5-lilac .lesson-shell .lesson-step{padding-right:7px!important;grid-template-columns:37px 26px minmax(0,1fr) 15px!important;gap:6px!important}
