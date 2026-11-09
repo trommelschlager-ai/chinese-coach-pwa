@@ -24,7 +24,7 @@
 
 <a class="node" data-num="7" href="./hsk1-lesson.html?lesson=7" aria-label="Урок 7. Погода"><span class="circle">7</span><span class="caption"><strong>Урок 7 ·<br> Погода</strong><small data-status="7">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 <a class="node" data-num="6" href="./hsk1-lesson.html?lesson=6" aria-label="Урок 6. Моя семья"><span class="circle">6</span><span class="caption"><strong>Урок 6 ·<br> Моя семья</strong><small data-status="6">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="5" href="./hsk1-lesson.html?lesson=5" aria-label="Урок 5. Месяцы и даты"><span class="circle">5</span><span class="caption"><strong>Урок 5 ·<br> Месяцы и даты</strong><small data-status="5">7 шагов</small></span><span class="arrow" aria-hidden="true">›</span></a>
+<a class="node" data-num="5" href="./hsk1-fifth-v227.html" aria-label="Урок 5. Месяцы и даты"><span class="circle">5</span><span class="caption"><strong>Урок 5 ·<br> Месяцы и даты</strong><small data-status="5">14 экранов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 <a class="node" data-num="4" href="./hsk1-fourth-v214.html" aria-label="Урок 4. Дни недели"><span class="circle">4</span><span class="caption"><strong>Урок 4 ·<br> Дни недели</strong><small data-status="4">13 экранов</small></span><span class="arrow" aria-hidden="true">›</span></a>
 <a class="node" data-num="3" href="./hsk1-third-v212.html" aria-label="Урок 3. Числа и их строение"><span class="circle">3</span><span class="caption"><strong>Урок 3 ·<br> Числа и их строение</strong><small data-status="3">14 экранов · 0–100</small></span><span class="arrow" aria-hidden="true">›</span></a>
 <a class="node" data-num="2" href="./hsk1-second-v203.html" aria-label="Урок 2. Личные местоимения"><span class="circle">2</span><span class="caption"><strong>Урок 2 ·<br> Личные местоимения</strong><small data-status="2">12 экранов</small></span><span class="arrow" aria-hidden="true">›</span></a>
@@ -45,12 +45,13 @@
    let refreshed={};
    if(n===2)try{refreshed=JSON.parse(localStorage.getItem('pg-hsk1-v203-pronouns')||'{}')||{}}catch{}
    if(n===3)try{refreshed=JSON.parse(localStorage.getItem('pg-hsk1-v213-numbers')||'{}')||{}}catch{}
+   if(n===5)try{refreshed=JSON.parse(localStorage.getItem('pg-hsk1-l5-v227')||'{}')||{}}catch{}
     if(n===4)try{
       const updated=JSON.parse(localStorage.getItem('pg-hsk1-v215-weekdays')||'null');
       const original=JSON.parse(localStorage.getItem('pg-hsk1-v214-weekdays')||'{}')||{};
       refreshed=updated&&typeof updated==='object'?Object.assign({},updated,{done:updated.done===true||updated.legacyDone===true||original.done===true}):original;
     }catch{}
-   const finished=completed.includes(id)||state.completed===true||((n===2&&refreshed.completed===true)||((n===3||n===4)&&refreshed.done===true));
+   const finished=completed.includes(id)||state.completed===true||((n===2&&refreshed.completed===true)||((n===3||n===4||n===5)&&refreshed.done===true));
    if(finished)done++;else if(!firstUnfinished)firstUnfinished=n;
    const label=document.querySelector('[data-status="'+n+'"]');
    if(label){
@@ -65,6 +66,7 @@
        n===2?(Number.isInteger(refreshed.step)&&refreshed.step>0?'Продолжить · экран '+(refreshed.step+1)+' из 12':'12 экранов · начать'):
        n===3?(Number.isInteger(refreshed.step)&&refreshed.step>0?'Продолжить · экран '+(refreshed.step+1)+' из 14':'14 экранов · от 0 до 100'):
         n===4?(Number.isInteger(refreshed.step)&&refreshed.step>0?'Продолжить · экран '+(refreshed.step+1)+' из 13':'13 экранов · дни недели'):
+       n===5?(Number.isInteger(refreshed.step)&&refreshed.step>0?'Продолжить · экран '+(refreshed.step+1)+' из 14':'14 экранов · месяцы и даты'):
        state.maxStep>0?'Продолжить · шаг '+(Number(state.step||0)+1)+' из 7':'7 шагов · начать';
    }
    const node=document.querySelector('.node[data-num="'+n+'"]');
