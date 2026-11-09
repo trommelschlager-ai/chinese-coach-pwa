@@ -16,6 +16,7 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - run: node scripts/verify-hsk1-fifth-v227.cjs
       - run: npm run check
       - run: npm run check:release
       - run: node scripts/verify-quality.cjs
