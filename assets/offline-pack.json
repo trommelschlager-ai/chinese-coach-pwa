@@ -1,5 +1,5 @@
 {
-  "version": 225,
+  "version": 226,
   "bytes": 38738901,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -524,7 +524,7 @@
     "./assets/hsk1-foundations-v152.js?v=172",
     "./assets/hsk1-foundations-v152.js?v=180",
     "./assets/hsk1-foundations-v152.js?v=181",
-    "./assets/hsk1-foundations-v152.js?v=187",
+    "./assets/hsk1-foundations-v152.js?v=226",
     "./assets/hsk1-native-human-map-v167.js?v=167",
     "./assets/hsk1-reference-exact-v177.css?v=177",
     "./assets/hsk1-roadmap-v103.css",
@@ -1771,7 +1771,7 @@
     "./assets/lesson3-mint-garden-v222.svg",
     "./assets/lesson3-panda-headphones-v222.svg",
     "./assets/lesson3-approved-panda-v223.webp",
-    "./assets/lesson5-lilac-v225.css?v=225",
+    "./assets/lesson5-lilac-v225.css?v=226",
     "./assets/lesson5-lilac-sakura-v225.svg"
   ]
 }
