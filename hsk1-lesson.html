@@ -6,6 +6,12 @@
 <meta name="theme-color" content="#b348c6">
 <title>HSK 1 · Panda Go</title>
 <script>
+/* Keep existing seven-step content available at ?lesson=5&legacy=1.
+   New lesson 5 follows the approved 14-screen design; no other topics rerouted. */
+if(new URLSearchParams(location.search).get('lesson')==='5'&&
+   new URLSearchParams(location.search).get('legacy')!=='1'){
+  location.replace('./hsk1-fifth-v227.html');
+}
 /* Route legacy lesson-1 links to the rebuilt, independent lesson.
    Leaves lesson=2..7 and their saved state untouched. */
 if(!new URLSearchParams(location.search).has('lesson')||
