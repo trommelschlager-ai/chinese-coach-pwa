@@ -1,0 +1,27 @@
+name: Clear one obsolete Panda Go Pages deployment
+on:
+  push:
+    paths:
+      - '.github/workflows/clear-stuck-pages-v227.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+jobs:
+  clear-obsolete:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check and cancel only the known obsolete Pages deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          old_sha="52df2eaa758fe32f854360339ad903a8e2c0bea6"
+          endpoint="repos/${{ github.repository }}/pages/deployments/${old_sha}"
+          status="$(gh api "$endpoint" --jq '.status' 2>/dev/null || true)"
+          echo "Obsolete Pages deployment status: ${status:-not-found}"
+          case "$status" in
+            ""|"succeed"|"failed"|"cancelled"|"canceled") echo "No active obsolete deployment to cancel"; exit 0 ;;
+            *) echo "Canceling obsolete stuck Pages deployment"; gh api -X POST "$endpoint/cancel" ;;
+          esac
