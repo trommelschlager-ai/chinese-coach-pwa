@@ -1,6 +1,6 @@
 {
-  "version": 226,
-  "bytes": 38738901,
+  "version": 227,
+  "bytes": 38774112,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1772,6 +1772,9 @@
     "./assets/lesson3-panda-headphones-v222.svg",
     "./assets/lesson3-approved-panda-v223.webp",
     "./assets/lesson5-lilac-v225.css?v=226",
-    "./assets/lesson5-lilac-sakura-v225.svg"
+    "./assets/lesson5-lilac-sakura-v225.svg",
+    "./hsk1-fifth-v227.html",
+    "./assets/hsk1-fifth-v227.js?v=227",
+    "./assets/hsk1-fifth-v227.css?v=227"
   ]
 }
