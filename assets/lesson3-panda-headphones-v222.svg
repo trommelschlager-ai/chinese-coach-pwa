@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 360" role="img" aria-label="Панда Panda Go в фиолетовых наушниках">
+<defs><linearGradient id="ear" x1=".1" y1=".1" x2=".8" y2="1"><stop stop-color="#7454bc"/><stop offset="1" stop-color="#4f3291"/></linearGradient><linearGradient id="white" x2=".8" y2="1"><stop stop-color="#fffefb"/><stop offset="1" stop-color="#e7f5ed"/></linearGradient></defs>
+<ellipse cx="160" cy="341" rx="98" ry="12" fill="#4e9674" opacity=".18"/>
+<g stroke="#273b38" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="161" cy="263" rx="83" ry="78" fill="url(#white)"/>
+<ellipse cx="96" cy="252" rx="30" ry="43" fill="#303d46" transform="rotate(22 96 252)"/>
+<ellipse cx="229" cy="250" rx="30" ry="43" fill="#303d46" transform="rotate(-22 229 250)"/>
+<ellipse cx="125" cy="322" rx="36" ry="19" fill="#303d46"/><ellipse cx="198" cy="322" rx="36" ry="19" fill="#303d46"/>
+<circle cx="91" cy="80" r="46" fill="#303d46"/><circle cx="230" cy="80" r="46" fill="#303d46"/>
+<ellipse cx="161" cy="143" rx="118" ry="112" fill="url(#white)"/>
+<ellipse cx="107" cy="150" rx="33" ry="43" fill="#333c48" transform="rotate(16 107 150)"/>
+<ellipse cx="212" cy="150" rx="33" ry="43" fill="#333c48" transform="rotate(-16 212 150)"/>
+</g>
+<path d="M54 114C55-36 264-31 268 114" fill="none" stroke="url(#ear)" stroke-width="24" stroke-linecap="round"/>
+<path d="M54 110C55-33 261-28 268 111" fill="none" stroke="#b8a7f1" stroke-width="5" stroke-linecap="round"/>
+<g stroke="#4a3982" stroke-width="5"><rect x="24" y="112" width="39" height="78" rx="19" fill="#8e71d3"/><rect x="258" y="112" width="39" height="78" rx="19" fill="#8e71d3"/></g>
+<g fill="#fff"><circle cx="119" cy="143" r="9"/><circle cx="202" cy="143" r="9"/></g><g fill="#263636"><circle cx="116" cy="146" r="5"/><circle cx="199" cy="146" r="5"/></g>
+<ellipse cx="161" cy="188" rx="19" ry="14" fill="#283b3c"/><path d="M149 207Q160 225 173 207" fill="none" stroke="#c4757c" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="74" cy="194" rx="20" ry="12" fill="#f2b9bd" opacity=".6"/><ellipse cx="246" cy="194" rx="20" ry="12" fill="#f2b9bd" opacity=".6"/>
+<path d="M112 241Q162 276 209 240" fill="none" stroke="#e0a6ad" stroke-width="15" stroke-linecap="round"/>
+<path d="M111 252Q156 280 205 252" fill="none" stroke="#f2c8bc" stroke-width="7" stroke-linecap="round"/>
+</svg>
