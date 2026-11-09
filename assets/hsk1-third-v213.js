@@ -316,10 +316,10 @@ function builder(){
  const complete=placed===chinese(n);
  return mainCard('<div class="pg13-quiz-count">Число '+(ix+1)+' из '+BUILD.length+'</div>'+
   heading('Собери '+n+' по правилу десятков')+
-  '<div class="pg13-builder-line">'+correct.map((_,i)=>'<div class="'+(state.builder[i]?'filled':'')+'">'+(finished?correct[i]:(state.builder[i]||'＿'))+'</div>').join('')+'</div>'+
+  '<div class="pg13-builder-line">'+correct.map((_,i)=>'<div class="'+(finished||state.builder[i]?'filled':'')+'">'+(finished?correct[i]:(state.builder[i]||'＿'))+'</div>').join('')+'</div>'+
   '<div class="pg13-tiles">'+pool.map((z,i)=>'<button type="button" data-tile-index="'+i+'"'+(finished||state.used?.includes(i)?' disabled':'')+'>'+z+'</button>').join('')+'</div>'+
   '<div class="pg13-builder-buttons"><button data-clear-build type="button" '+(finished?'disabled':'')+'>↻ Сброс</button>'+
-  '<button data-check-build type="button" '+((finished||(state.builder?.length||0)!==correct.length?'disabled':'')+'>Проверить</button></div>'+
+  '<button data-check-build type="button" '+(finished||(state.builder?.length||0)!==correct.length?'disabled':'')+'>Проверить</button></div>'+
   '<p class="pg3-muted">'+(finished?'✓ Число собрано. Нажми «Дальше».':state.wrong['build-'+ix]?'Подсказка: десятки ставим перед единицами.':'Подсказка появится только после ошибки.')+'</p>');
 }
 function context(){
