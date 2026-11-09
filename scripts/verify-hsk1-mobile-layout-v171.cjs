@@ -19,7 +19,9 @@ assert(css.includes('calc(var(--pg-lesson-nav-height) + 32px + env(safe-area-ins
 assert(css.includes('.lesson-shell .lesson-audio-native{\n  min-width:44px;min-height:44px'),'Native recordings require 44px touch targets');
 assert(css.includes('.lesson-shell .lesson-line .lesson-hanzi{'),'Mandarin dialogue text must have dedicated layout');
 assert(css.includes('grid-template-columns:repeat(2,minmax(0,1fr));'),'Word navigation should not overflow at 320px');
-assert(sw.includes('chinese-coach-pwa-v215-20261109-weekdays-audit'),'Offline cache must refresh');
+const cacheVersion=Number((sw.match(/const CACHE='chinese-coach-pwa-v(\d+)-/)||[])[1]);
+assert(cacheVersion>=171,'Offline cache must include mobile layout updates');
+assert.equal(cacheVersion,JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).version,'Offline cache version must match the downloadable pack');
 assert(sw.includes('./assets/native-owner-v200.js?v=200'),'New original owner voice map must work offline');
 assert(sw.includes('./assets/hsk1-foundations-v152.css?v=171'),'PWA offline cache needs exact CSS version');
 assert(sw.includes('./assets/hsk1-foundations-v152.js?v=187'),'PWA offline cache needs current lesson JS version');

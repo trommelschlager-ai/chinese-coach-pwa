@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-09",
+  "url": "https://trommelschlager-ai.github.io/chinese-coach-pwa/hsk1-fourth-v214.html",
+  "tested_code_commit": "140cad5e21182dffecf4e682614cb8927463adc4",
+  "viewport_css": [
+    390,
+    844
+  ],
+  "screens_traversed": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "real_mp3_end_gates": "passed for all six study days, seven listening items, time words and both exam audio questions",
+  "handwriting": "日 SVG loaded and demo button exercised; physical finger accuracy not certified",
+  "dialogue": "scene start highlights question; both visible replies and answer progression checked; end-to-end sequence additionally covered by DOM test",
+  "exam": {
+    "first_attempt_correct": 8,
+    "total": 10,
+    "deliberate_errors": [
+      1,
+      4
+    ],
+    "targeted_retry": "passed",
+    "original_score_after_retry": "8/10"
+  },
+  "map_return": "passed; weekday topic marked complete",
+  "app_console_errors": "none observed; Chrome extension metadata errors excluded",
+  "known_gaps": [
+    "13 spliced audio references; 5 missing recordings",
+    "No native auditory sign-off of all tones/noise",
+    "No physical Android microphone test"
+  ],
+  "screenshot": "../../qa/lesson4-v216/published-cover.jpg",
+  "screenshot_css_size": [
+    480,
+    936
+  ],
+  "screenshot_note": "Top-level public cover; cross-origin iframe capture is unavailable. Mobile flow itself was tested at 390×844."
+}
