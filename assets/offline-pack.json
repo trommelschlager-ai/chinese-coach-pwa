@@ -1,6 +1,6 @@
 {
-  "version": 215,
-  "bytes": 37215768,
+  "version": 216,
+  "bytes": 38693253,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1748,8 +1748,25 @@
     "./assets/hsk1-weekdays-clean-v214/015.mp3",
     "./assets/hsk1-weekdays-clean-v214/016.mp3",
     "./assets/hsk1-weekdays-clean-v214/017.mp3",
-    "./assets/hsk1-fourth-v215.js?v=215",
-    "./assets/hsk1-fourth-v215.css?v=215",
-    "./assets/panda-guide-v215.svg"
+    "./assets/hsk1-fourth-v216.js?v=216",
+    "./assets/hsk1-fourth-v216.css?v=216",
+    "./assets/panda-guide-v215.svg",
+    "./assets/lesson4-reference-v216/hero.webp",
+    "./assets/lesson4-reference-v216/practice.webp",
+    "./assets/lesson4-reference-v216/guide.webp",
+    "./assets/lesson4-reference-v216/flowers.webp",
+    "./assets/lesson4-reference-v216/celebrate.webp",
+    "./assets/lesson4-reference-v216/woman.webp",
+    "./assets/lesson4-reference-v216/man.webp",
+    "./assets/lesson4-reference-v216/sakura-right.webp",
+    "./assets/lesson4-reference-v216/sakura-left.webp",
+    "./assets/lesson4-reference-v216/calendar-2.webp",
+    "./assets/lesson4-reference-v216/calendar-1.webp",
+    "./assets/lesson4-reference-v216/calendar-3.webp",
+    "./assets/lesson4-reference-v216/logo.webp",
+    "./assets/lesson4-reference-v216/calendar-4.webp",
+    "./assets/lesson4-reference-v216/calendar-7.webp",
+    "./assets/lesson4-reference-v216/calendar-6.webp",
+    "./assets/lesson4-reference-v216/calendar-5.webp"
   ]
 }

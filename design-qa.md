@@ -1,39 +1,27 @@
-# Panda Go v175 — two-screen reference implementation
+# Panda Go — lesson 4 v216 visual QA
 
 final result: passed
 
-## Visual truth and normalization
+Scope: responsive lesson UI and retained functionality. This does NOT certify native pronunciation, noise-free recordings or a fully completed audio task. Audio release gaps are listed in docs/lesson4-v216/audio-audit.md and recording-list.md.
 
-User attachments: `02-33887.jpg` is the approved home, `01-33888.jpg` is the approved mountain map; the other two images show the rejected live design. Compared only app content, excluding Android/iPhone status bars and phone frames.
+Source visual truth: user upload ../upload/01-34174.png, 1404×1536. Durable copy: qa/lesson4-v216/approved-reference.webp. The reference contains eight illustrative phone views, not thirteen executable screens.
+Implementation: qa/lesson4-v216/screen-01.jpg through screen-13.jpg. Captured real production HTML/JS in cloud Chromium, inside 390×844 CSS iframe, density 1. Full browser screenshots were cropped to the measured iframe rectangle (487,0)–(877,844). Source phone content is normalized to the same 390×844 excluding phone bezel and OS status bar.
+Full-view evidence: qa/lesson4-v216/reference-comparison.jpg and all-13-screens.jpg. Focused checks used original 390px captures for Chinese/pinyin, weekday cards, Sunday pair, chat bubbles, buttons and result score; these remain legible at 1×.
 
-Source home: 694×1536, app crop (34,184)–(600,1398). Source map: 694×1536, app crop (51,199)–(603,1381). Normalized comparisons are 390×844; screenshots use actual CSS iframe viewports inside the cloud Chromium browser. Screenshot density: 1 image pixel per CSS pixel. Iframes contain the actual production pages; no alternate application is used.
+Comparison history:
+1. Removed duplicated focus-word cards, reduced study headings, moved long cover plan into a disclosure, added original calendar icons and logo. This restored the reference's list-card rhythm and visible mascot.
+2. Removed accidental source count/calendar slivers from decorative crops. Enlarged dialogue text and placed exact source characters alongside the two speech bubbles. Removed repeated result headline; added persistent map navigation on result.
+3. A first cover capture caught a previous compositor frame. Re-captured after DOM and image readiness observation. Verified 1/13–13/13 labels in the final image set.
+4. Final reference comparison reviewed after these corrections. No UI blocking P0/P1/P2 issue remains within the 13-screen adaptation described below.
 
-Evidence: `qa/v175/home-{320,360,390,430}.jpg`, `qa/v175/map-{320,360,390,430}.jpg`, `qa/v175/compare-home.jpg`, `qa/v175/compare-map.jpg`, `qa/v175/responsive.json`. Viewports: 320×693, 360×779, 390×844, 430×931. These are responsive browser checks, not physical Android device testing.
+Required fidelity surfaces:
+- Typography: original raster logo and artwork text preserved; real interface text uses system Cyrillic and CJK fallback. Chinese 25–32px on cards, pinyin readable with diacritics; larger chat translation than the original implementation. Exact source handwritten interface font is not available; this is an explicitly disclosed adaptation, not a pixel-copy claim.
+- Layout: real 13-screen curriculum retained rather than flattening eight reference pictures. Weekdays split 3+3+Sunday; long grammar/dialogue content scrolls while footer remains reachable. At 320×693 and 430×931, all 13 app/stage widths fit the iframe and footer bottom equals viewport height. Machine evidence: qa/lesson4-v216/mobile-{320,430}.json. Final icon rows additionally rechecked at narrow width.
+- Colors: cream/peach backgrounds, gold borders, fuchsia buttons with soft glow, green progress and correct-answer states. No lavender scene or straw-hat/backpack mascot.
+- Images: exact source crops for headphone panda, graduation panda, sakura, logo, calendar icons and dialogue characters. No alternate generated art, whole-screen click overlay or re-created phone chrome. Source raster resolution is 323px for hero; scaling is modest and disclosed.
+- Copy: 星期 + 1–6, Sunday synonyms, 二 fourth tone, 今天/明天/昨天, practical phrases with accurate pinyin and translations. Literal source sketch typo-like 今天是星期三 pinyin mismatch is not copied; course sentences and romanization correspond.
 
-## Comparison history
+Primary interaction validation: DOM regression traverses all 13 screens, MP3 end gating, errors, locked exam replay, calendar wrap, handwriting callbacks, one-voice chat sequencing, sentence building, 8/10 score, targeted retake, restart and preserved/resumed existing progress. Cloud browser checked every screen, visible loading, responsive bounds, native MP3 playback and navigation (live verification documented separately in final handoff).
+Console: application JS errors not found in captured browser logs; extension metadata errors excluded by source URL. Full repository checks return 0 with known legacy jsdom warnings outside lesson 4. Microphone hardware and actual Android are not certified.
 
-1. Initial rendered home had a large blank area caused by legacy v151 styles. Removed superseded two-screen stylesheet imports, keeping lesson pages and their styles intact. Confirmed continuous hero → six buttons → bridge in recaptured home.
-2. Preview service worker cached Vite CSS transform output after edits. Replaced development server with a static production-file server and excluded local preview requests from SW interception. Hard reloaded and confirmed actual CSS rendering. Production cache and media migration retained.
-3. Map initially omitted the reference laurel marks and positioned its title too low. Extracted decorative laurels from supplied art, moved title up and removed the extra back-button disc. Final map captures show the corrected header.
-
-## Required fidelity surfaces
-
-- Typography: home text remains part of each supplied individual artwork skin, with accessible semantic names on each separate control. Map uses bold dark-purple live text and two-line lesson labels. Existing longer curriculum titles require smaller type than the mock's shorter titles.
-- Layout: six independent home controls; seven map links placed bottom-to-top along stone stairs; explorer at bottom left. No horizontal overflow at the four tested widths. Map hit targets are at least 44px tall at 320px. Images retain intrinsic aspect ratio; short screens can scroll.
-- Color: supplied glossy pink/cyan/purple/mint card art, gold borders, purple heading, pink lesson pills, green current lesson and grey locked state.
-- Art: exact supplied home hero, six separately extracted button skins and bridge; newly generated raster mountain/staircase/traveler background. No whole-screen screenshot click overlay, flat road, drawn SVG staircase or flat HSK icons. Map locks and laurels are raster assets from the supplied reference.
-- Content: real seven current course names and original lesson IDs retained. Mock names and fake completion checkmark were intentionally not copied.
-
-## Functional and regression checks
-
-Browser: HSK1 home link → actual map; first lesson → actual lesson with all seven steps and voice controls; lesson Back → map → home; HSK2 button announces that the course is being prepared. Locked links are aria-disabled; navigation prevention is covered by DOM regression tests. Console checked: extension metadata errors only, no application JavaScript errors observed.
-
-`npm run check` and `npm run check:release`: passed. Historical art/version assertions were updated to current assets; lesson/audio checks retained. Added v175 scenarios for fresh state, completed first lesson, out-of-order completed lesson, isolated topic completion, malformed saved data, blocked future navigation and unchanged localStorage. 131-file install budget and full offline retry/migration checks passed.
-
-No MP3s, voice maps, speech recognition, exercises or saved-progress keys changed. Source diff confirms lesson runtime/data/audio files untouched.
-
-## Remaining differences
-
-The generated landscape preserves subjects and composition but is not a pixel-identical reconstruction: rock shapes, stair turns, flowers and panda pose differ. The map uses actual course titles and actual stored lock/completion states, unlike the illustrative mock. Home artwork quality is limited by the supplied 694px-wide reference, so it cannot be represented as original vector/high-resolution source art. These limits are explicitly disclosed, not claimed as exact identity.
-
-Focused comparison: home HSK1–6 artwork and map header/cards are readable in the 390px side-by-side captures. No unresolved blocking layout, interaction or missing-asset issues.
+Remaining adaptations, disclosed: responsive/system typography, larger scrolling explanations and preserved 13-step pacing; source has eight example views only. P3: higher-resolution original art would improve larger-screen sharpness. Audio is an explicitly open task: 13 spliced references and 5 missing phrases require 18 complete recordings and native listening review. No random TTS substitute is present.
