@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 1400" preserveAspectRatio="xMidYMid slice">
+<defs>
+ <linearGradient id="sky" x2=".18" y2="1"><stop stop-color="#d3f2e8"/><stop offset=".43" stop-color="#f6fcf3"/><stop offset="1" stop-color="#f3e8d9"/></linearGradient>
+ <linearGradient id="hill" x2=".4" y2="1"><stop stop-color="#a7d2c7"/><stop offset="1" stop-color="#d1e7d6"/></linearGradient>
+ <linearGradient id="water" x2="0" y2="1"><stop stop-color="#bfe2d8"/><stop offset="1" stop-color="#ecf6e7"/></linearGradient>
+ <linearGradient id="wood" x2="0" y2="1"><stop stop-color="#a45340"/><stop offset="1" stop-color="#dc8d66"/></linearGradient>
+ <filter id="soft"><feGaussianBlur stdDeviation="17"/></filter>
+</defs>
+<rect width="780" height="1400" fill="url(#sky)"/>
+<g opacity=".35" filter="url(#soft)"><ellipse cx="150" cy="220" rx="190" ry="75" fill="#fff"/><ellipse cx="665" cy="370" rx="175" ry="125" fill="#fff"/><ellipse cx="295" cy="1030" rx="270" ry="110" fill="#fff"/></g>
+<path d="M-60 420Q65 245 160 345Q280 125 390 331Q490 255 573 359Q673 204 828 395V700H-60Z" fill="#b7d9d1" opacity=".62"/>
+<path d="M-50 535Q125 344 233 452Q379 309 493 438Q620 320 840 481V775H-50Z" fill="url(#hill)" opacity=".8"/>
+<path d="M-30 650Q146 490 320 566Q455 468 565 567Q720 482 820 575V851H-30Z" fill="#e0eddb" opacity=".91"/>
+<path d="M0 755Q200 709 365 755T780 746V1400H0Z" fill="url(#water)"/>
+<path d="M0 900Q198 835 376 876Q550 927 780 845V1010Q525 947 332 1009Q145 1048 0 1002Z" fill="#b6ded0" opacity=".51"/>
+<g fill="none" stroke="#fafff2" stroke-width="6" stroke-linecap="round" opacity=".74"><path d="M62 864Q210 847 346 866"/><path d="M478 935Q619 916 743 936"/><path d="M98 1116Q253 1096 400 1114"/><path d="M400 1212Q557 1194 702 1212"/></g>
+<g opacity=".60">
+ <path d="M0 964Q88 904 178 931Q90 975 0 1003Z" fill="#6ca899"/>
+ <path d="M600 1051Q691 989 780 1037V1079Q678 1042 600 1051Z" fill="#85bc9f"/>
+</g>
+<!-- A restrained pagoda beyond the lesson cards -->
+<g transform="translate(514 386)" opacity=".72">
+ <path d="M61 48V177H144V48" fill="#fff2d8" stroke="#b17c5c" stroke-width="7"/>
+ <path d="M49 58L101 24 158 58Z" fill="#996f66"/>
+ <path d="M18 67Q107 0 187 65L165 73Q106 42 39 74Z" fill="#70877c" stroke="#456a65" stroke-width="5"/>
+ <path d="M45 113Q101 72 166 113L178 123Q107 100 31 124Z" fill="#719387" stroke="#456a65" stroke-width="5"/>
+ <path d="M43 171Q105 132 164 171L178 179Q100 163 25 182Z" fill="#708c81" stroke="#456a65" stroke-width="5"/>
+ <rect x="92" y="122" width="24" height="55" rx="10" fill="#a87f66"/>
+ <g fill="#dfba8d"><rect x="60" y="83" width="13" height="23"/><rect x="132" y="83" width="13" height="23"/></g>
+</g>
+<!-- Bamboo as side framing -->
+<g fill="none" stroke="#669c7c" stroke-linecap="round" opacity=".52">
+ <path d="M42 1300Q55 1006 52 700" stroke-width="15"/><path d="M98 1345Q96 1020 120 833" stroke-width="12"/>
+ <path d="M47 972Q-18 917-30 865M48 1020Q89 943 150 944M49 831Q3 776-24 763M96 1100Q163 1015 205 1036" stroke-width="9"/>
+ <path d="M740 1266Q725 1032 753 770" stroke-width="13"/><path d="M686 1375Q705 1110 661 944" stroke-width="10"/>
+ <path d="M746 965Q698 889 650 889M740 1058Q806 979 823 956M692 1190Q624 1120 587 1140" stroke-width="9"/>
+</g>
+<g fill="#76b597" opacity=".56">
+ <path d="M52 899Q-4 885-20 816Q55 824 52 899"/><path d="M53 1021Q104 944 169 950Q138 1016 53 1021"/><path d="M118 909Q75 833 50 815Q118 816 118 909"/><path d="M745 955Q688 914 659 858Q730 865 745 955"/><path d="M704 1176Q635 1110 583 1124Q632 1191 704 1176"/><path d="M744 1057Q788 979 834 977Q810 1041 744 1057"/>
+</g>
+<!-- Sakura branches across upper edge, keeping center clear -->
+<g stroke="#a68a73" stroke-width="12" stroke-linecap="round" fill="none" opacity=".72">
+ <path d="M780 36Q686 73 606 134Q575 168 560 213"/><path d="M692 77Q683 132 708 183"/><path d="M623 130Q624 190 655 222"/>
+</g>
+<g fill="#f7bfcc" opacity=".9">
+ <circle cx="611" cy="139" r="19"/><circle cx="662" cy="103" r="22"/><circle cx="709" cy="174" r="19"/><circle cx="577" cy="206" r="18"/><circle cx="653" cy="223" r="15"/><circle cx="747" cy="66" r="18"/>
+</g>
+<g fill="#fff2f1" opacity=".92"><circle cx="609" cy="139" r="7"/><circle cx="664" cy="102" r="8"/><circle cx="710" cy="174" r="7"/><circle cx="576" cy="204" r="6"/><circle cx="655" cy="222" r="5"/></g>
+<g fill="#f9ccda" opacity=".65"><ellipse cx="620" cy="344" rx="9" ry="5" transform="rotate(30 620 344)"/><ellipse cx="147" cy="549" rx="7" ry="5" transform="rotate(-25 147 549)"/><ellipse cx="727" cy="624" rx="8" ry="5" transform="rotate(45 727 624)"/><ellipse cx="211" cy="782" rx="7" ry="5" transform="rotate(25 211 782)"/></g>
+</svg>
