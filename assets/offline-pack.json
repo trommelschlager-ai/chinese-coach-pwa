@@ -1,6 +1,6 @@
 {
-  "version": 216,
-  "bytes": 38693253,
+  "version": 222,
+  "bytes": 38706633,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1625,9 +1625,9 @@
     "./assets/hsk1-second-practice-v211.js?v=211",
     "./assets/hsk1-second-practice-v211.css?v=211",
     "./hsk1-third-v212.html",
-    "./assets/hsk1-third-v213.js?v=213",
+    "./assets/hsk1-third-v213.js?v=222",
     "./assets/hsk1-third-v212.css?v=212",
-    "./assets/hsk1-third-v213.css?v=213",
+    "./assets/hsk1-third-v213.css?v=222",
     "./assets/hsk1-numbers-audio-map-v213.js?v=213",
     "./assets/hsk1-numbers-clean-v213/000.mp3",
     "./assets/hsk1-numbers-clean-v213/001.mp3",
@@ -1767,6 +1767,8 @@
     "./assets/lesson4-reference-v216/calendar-4.webp",
     "./assets/lesson4-reference-v216/calendar-7.webp",
     "./assets/lesson4-reference-v216/calendar-6.webp",
-    "./assets/lesson4-reference-v216/calendar-5.webp"
+    "./assets/lesson4-reference-v216/calendar-5.webp",
+    "./assets/lesson3-mint-garden-v222.svg",
+    "./assets/lesson3-panda-headphones-v222.svg"
   ]
 }
