@@ -1,0 +1,229 @@
+{
+  "lesson": 4,
+  "inventory_version": 217,
+  "production_changed": false,
+  "source_pack": "User-provided native woman, existing authorized v183/v186 recordings",
+  "total": 25,
+  "existing_whole_recordings": 3,
+  "missing_same_speaker": 22,
+  "no_tts_generated": true,
+  "no_audio_splices_generated": true,
+  "production_note": "Current lesson keeps its v216 source voice. Review clips are not imported into the learner runtime, so voices are not mixed.",
+  "rows": [
+    {
+      "id": 1,
+      "zh": "星期",
+      "pinyin": "xīngqī",
+      "russian": "неделя; основа названий дней",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 2,
+      "zh": "星期一",
+      "pinyin": "xīngqī yī",
+      "russian": "понедельник",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 3,
+      "zh": "星期二",
+      "pinyin": "xīngqī èr",
+      "russian": "вторник",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 4,
+      "zh": "星期三",
+      "pinyin": "xīngqī sān",
+      "russian": "среда",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 5,
+      "zh": "星期四",
+      "pinyin": "xīngqī sì",
+      "russian": "четверг",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 6,
+      "zh": "星期五",
+      "pinyin": "xīngqī wǔ",
+      "russian": "пятница",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 7,
+      "zh": "星期六",
+      "pinyin": "xīngqī liù",
+      "russian": "суббота",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 8,
+      "zh": "星期日",
+      "pinyin": "xīngqī rì",
+      "russian": "воскресенье",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 9,
+      "zh": "星期天",
+      "pinyin": "xīngqī tiān",
+      "russian": "воскресенье",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 10,
+      "zh": "今天",
+      "pinyin": "jīntiān",
+      "russian": "сегодня",
+      "status": "existing_whole_recording_staged",
+      "file": "./assets/lesson4-owner-review-v217/owner-15.mp3",
+      "sha256": "2a5e54abe6eb07afaa2e82fb5fdd3dbdc39c5cd2ceb81c758d5e35194f3a1bee",
+      "source": "assets/hsk1-human-voice-v183.js: native clip 15",
+      "duration_seconds": 1.296,
+      "decode": "passed",
+      "auditory_signoff": false
+    },
+    {
+      "id": 11,
+      "zh": "明天",
+      "pinyin": "míngtiān",
+      "russian": "завтра",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 12,
+      "zh": "昨天",
+      "pinyin": "zuótiān",
+      "russian": "вчера",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 13,
+      "zh": "几",
+      "pinyin": "jǐ",
+      "russian": "сколько; какой по счёту",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 14,
+      "zh": "日",
+      "pinyin": "rì",
+      "russian": "день; солнце",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 15,
+      "zh": "今天星期几？",
+      "pinyin": "Jīntiān xīngqī jǐ?",
+      "russian": "Какой сегодня день недели?",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 16,
+      "zh": "明天星期几？",
+      "pinyin": "Míngtiān xīngqī jǐ?",
+      "russian": "Какой завтра день недели?",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 17,
+      "zh": "今天星期五。",
+      "pinyin": "Jīntiān xīngqī wǔ.",
+      "russian": "Сегодня пятница.",
+      "status": "existing_whole_recording_staged",
+      "file": "./assets/lesson4-owner-review-v217/owner-21.mp3",
+      "sha256": "c2c751a601106d901b661fb31708688788521f87825cd2dd1965e832856dae44",
+      "source": "assets/hsk1-human-voice-v183.js: native clip 21",
+      "duration_seconds": 2.64,
+      "decode": "passed",
+      "auditory_signoff": false
+    },
+    {
+      "id": 18,
+      "zh": "明天星期六。",
+      "pinyin": "Míngtiān xīngqī liù.",
+      "russian": "Завтра суббота.",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 19,
+      "zh": "昨天星期二。",
+      "pinyin": "Zuótiān xīngqī èr.",
+      "russian": "Вчера был вторник.",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 20,
+      "zh": "今天星期三。",
+      "pinyin": "Jīntiān xīngqī sān.",
+      "russian": "Сегодня среда.",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 21,
+      "zh": "今天星期一。",
+      "pinyin": "Jīntiān xīngqī yī.",
+      "russian": "Сегодня понедельник.",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 22,
+      "zh": "今天是星期五。",
+      "pinyin": "Jīntiān shì xīngqī wǔ.",
+      "russian": "Сегодня пятница.",
+      "status": "existing_whole_recording_staged",
+      "file": "./assets/lesson4-owner-review-v217/owner-22.mp3",
+      "sha256": "04a15b3ec22f18b6e1bf0683f88f44827fd832d4e73106197baa9cec8ff0558b",
+      "source": "assets/hsk1-human-voice-v183.js: native clip 22",
+      "duration_seconds": 3.072,
+      "decode": "passed",
+      "auditory_signoff": false
+    },
+    {
+      "id": 23,
+      "zh": "你星期几有空？",
+      "pinyin": "Nǐ xīngqī jǐ yǒu kòng?",
+      "russian": "В какой день недели ты свободен?",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 24,
+      "zh": "我星期六有空。",
+      "pinyin": "Wǒ xīngqī liù yǒu kòng.",
+      "russian": "Я свободен в субботу.",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    },
+    {
+      "id": 25,
+      "zh": "我们星期六一起去看电影吧！",
+      "pinyin": "Wǒmen xīngqī liù yìqǐ qù kàn diànyǐng ba!",
+      "russian": "Давай в субботу сходим в кино!",
+      "status": "needs_same_speaker_recording",
+      "file": null
+    }
+  ]
+}

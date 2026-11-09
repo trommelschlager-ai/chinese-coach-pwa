@@ -1,0 +1,39 @@
+{
+  "original_audio_files_reviewed": 3,
+  "coverage": [
+    {
+      "duration_seconds": 33.173333,
+      "contains_today_friday": false,
+      "contains_today_is_friday": false,
+      "contains_tomorrow_question": false,
+      "contains_weekday_list": false,
+      "method": "local ASR content screen; not phonetic certification"
+    },
+    {
+      "duration_seconds": 92.992,
+      "contains_today_friday": true,
+      "contains_today_is_friday": true,
+      "contains_tomorrow_question": false,
+      "contains_weekday_list": false,
+      "method": "local ASR content screen; not phonetic certification"
+    },
+    {
+      "duration_seconds": 8.0,
+      "contains_today_friday": false,
+      "contains_today_is_friday": false,
+      "contains_tomorrow_question": false,
+      "contains_weekday_list": false,
+      "method": "local ASR content screen; not phonetic certification"
+    }
+  ],
+  "source_maps_checked": [
+    "assets/hsk1-human-voice-v183.js",
+    "assets/hsk1-human-voice-v184.js"
+  ],
+  "missing_set_is_based_on_whole_recordings_only": true,
+  "notes": [
+    "All three original audio files were successfully decoded and automatically transcribed locally.",
+    "No additional exact whole weekday list or tomorrow question was found in those transcripts.",
+    "ASR and source labels are not native-listener certification."
+  ]
+}
