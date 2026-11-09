@@ -83,7 +83,10 @@ let assembled=[],currentAudio=null,playId=0,answerChosen=-1;
 let recallMode=false,recallRevealed=false,wordPlayed=false,buildMistakes=0,reviewMistakes=0;
 let mediaRecorder=null,micStream=null,micObjectUrl=null,micRecording=false;
 const exerciseOrder=[2,0,3,1];
-const stepTitles=[
+const stepTitles=topic.id==='dates'?[
+ ['Новые слова','月'],['Тоны и произношение','声调'],['Примеры','📅'],
+ ['Диалог','💬'],['Собери предложение','🧩'],['Говори сам','🎙'],['Итог и повторение','🏆']
+]:[
  ['Новые слова','你好'],['Тоны и произношение','ā á ǎ à'],['Примеры','📖'],
  ['Диалог','💬'],['Собери предложение','🧩'],['Говори сам','🎙'],['Итог и повторение','🏆']
 ];
