@@ -19,7 +19,7 @@ html,body{background:#e4f4ea;color:var(--pg3-ink)}
 .pg3-app:before,.pg3-app:after{content:none;background:none;display:none}
 .pg3-header{padding:calc(12px + env(safe-area-inset-top)) 15px 8px;background:linear-gradient(180deg,rgba(252,255,248,.96),rgba(245,252,245,.6));border-bottom:1px solid #bce1cfaa;gap:7px}
 .pg3-back-top{height:44px;flex-basis:44px;border:1.5px solid #bddbcc;color:var(--pg3-forest);background:linear-gradient(#fffefa,#e8f6e8);border-radius:15px;box-shadow:0 4px 10px #4779631c}
-.pg3-brand-panda{display:block;flex:0 0 42px;width:42px;height:42px;font-size:0;color:transparent;filter:drop-shadow(0 3px 5px #3f806c33);background:url('./lesson3-approved-panda-v223.svg') center center/contain no-repeat}
+.pg3-brand-panda{display:block;flex:0 0 42px;width:42px;height:42px;font-size:0;color:transparent;filter:drop-shadow(0 3px 5px #3f806c33);background:url('./lesson3-approved-panda-v223.webp') center center/contain no-repeat}
 .pg3-brand{gap:5px}
 .pg3-brand strong{color:#315d55;font-size:clamp(18px,5.4vw,25px);letter-spacing:-.7px}
 .pg3-brand strong span{color:var(--pg3-coral-dark)}
