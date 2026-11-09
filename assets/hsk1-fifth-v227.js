@@ -118,6 +118,7 @@ function dateRule(){return card('<h2 class="center">年 → 月 → 日 / 号</h
  '<div class="rule-card">Год в китайском читают по цифрам. В записи полных дат сначала идёт год, затем месяц и день.</div>');}
 function sounds(){return card('<h2>Не спутай похожие слова</h2><div class="grid two">'+
  [['四月','sì yuè','апрель'],['十月','shí yuè','октябрь'],['十一月','shíyī yuè','ноябрь'],['十二月','shíèr yuè','декабрь']].map(word).join('')+'</div>')+
+ card('<h2>Ещё два полезных слова</h2><div class="grid two">'+topic.words.slice(16,18).map(word).join('')+'</div>')+
  card('<p>В <b>月 yuè</b> — четвёртый тон. Слушай также <b>十 shí</b> (второй тон) и <b>四 sì</b> (четвёртый тон).</p>');}
 function conversation(){return card('<h2>Послушай разговор</h2><div class="dialogue">'+topic.dialogue.map(([who,hz,py,ru])=>
  '<div class="bubble"><strong lang="zh-Hans">'+esc(hz)+'</strong><small>'+esc(py)+'</small><span class="ru">'+esc(ru)+'</span>'+audioButton(hz,who==='А'?'male':'female')+'</div>').join('')+'</div>')+
@@ -184,7 +185,7 @@ function refresh(){
  app.innerHTML=renderers[step]();say('');
  back.disabled=step===0;forward.disabled=(step===9&&state.listen<questions.length)||
   (step===10&&state.built<builds.length)||(step===13&&!state.quizPassed);
- forward.textContent=step===13?'✓ Завершить урок':'Дальше →';
+ forward.textContent=step===0?'Начать урок →':step===13?'✓ Завершить урок':'Дальше →';
  scroll.scrollTop=0;save();
  if(step===11)prepareWriter();
 }
