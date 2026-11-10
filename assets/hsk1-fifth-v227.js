@@ -218,11 +218,11 @@ async function recordStart(){
  try{
   if(recorder&&recorder.state==='recording')return;
   if(micUrl){URL.revokeObjectURL(micUrl);micUrl=null}
-  stream=await navigator.mediaDevices.getUserMedia({audio:true});recordParts=[];
+  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}});recordParts=[];
   recorder=new MediaRecorder(stream);
   recorder.ondataavailable=e=>{if(e.data?.size)recordParts.push(e.data)};
   recorder.onstop=()=>{
-   if(recordParts.length){micUrl=URL.createObjectURL(new Blob(recordParts,{type:recorder.mimeType||'audio/webm'}))}
+   if(recordParts.length){const raw=new Blob(recordParts,{type:recorder.mimeType||'audio/webm'});micUrl=URL.createObjectURL(raw);window.PANDA_MIC_V236?.enhance?.(raw,micUrl,()=>micUrl,url=>{micUrl=url})}
    stream?.getTracks().forEach(t=>t.stop());stream=null;setButtons();
    say(micUrl?'Запись готова. Нажми «Мой голос».':'Запись не получилась.',micUrl?'good':'bad');
   };
