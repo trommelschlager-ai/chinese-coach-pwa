@@ -493,7 +493,7 @@ area.addEventListener('click',async ev=>{
    recorder.ondataavailable=e=>{if(e.data?.size)recordChunks.push(e.data)};
    recorder.onstop=()=>{
     const parts=recordChunks.slice();
-    if(parts.length){if(recUrl)URL.revokeObjectURL(recUrl);recUrl=URL.createObjectURL(new Blob(parts,{type}))}
+    if(parts.length){if(recUrl)URL.revokeObjectURL(recUrl);const raw=new Blob(parts,{type});recUrl=URL.createObjectURL(raw);window.PANDA_MIC_V236?.enhance?.(raw,recUrl,()=>recUrl,url=>{recUrl=url})}
     if(stream){for(const track of stream.getTracks())track.stop();stream=null}
     recorder=null;micBusy=false;render();
    };
