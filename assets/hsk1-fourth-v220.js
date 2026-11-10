@@ -70,10 +70,8 @@ const CALENDAR=[
  {today:6,ask:'Вчера',correct:5,choices:[4,7,5],explain:'Перед субботой была пятница.'}
 ];
 const DIALOG=[
- {female:'今天星期几？',male:'今天星期五。',correct:'今天星期五。',
-  choices:['今天星期五。','昨天星期二。','你是老师吗？'],explain:'今天 — сегодня. Назови сегодняшний день: 今天星期五。'},
  {female:'明天星期几？',male:'明天星期六。',correct:'明天星期六。',
-  choices:['今天星期五。','明天星期六。','昨天星期二。'],explain:'明天 — завтра. Правильный ответ: 明天星期六。'}
+ choices:['明天星期六。','今天星期五。'],explain:'明天 — завтра. Ответ: 明天星期六。'}
 ];
 const BUILDS=[
  {prompt:'Собери «Сегодня пятница»',target:['今天','星期','五'],pool:['五','今天','星期'],audio:'今天星期五。'},
@@ -147,7 +145,9 @@ const ownerMap=Object.freeze({
 });
 const fileMap=()=>window.PANDA_HSK1_L4_VOICE_V214||{};
 const nativeMap=()=>window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
-const fileFor=word=>window.PandaCleanAudioV249?.lookup(word)||window.PandaOwnerAudio?.lookup(word)||fileMap()[word]||ownerMap[word]||nativeMap()[word]||null;
+const fileFor=(word,role='female')=>role==='male'
+ ? (window.PANDA_HSK1_VOICES?.male?.[word]||null)
+ : (window.PandaCleanAudioV250?.lookup(word)||window.PandaCleanAudioV249?.lookup(word)||window.PandaOwnerAudio?.lookup(word)||fileMap()[word]||ownerMap[word]||nativeMap()[word]||null);
 const AUDIO_LEVELS={"./assets/lesson4-owner-review-v217/owner-15.mp3":0.88,"./assets/lesson4-owner-review-v217/owner-21.mp3":0.88,"./assets/lesson4-owner-review-v217/owner-22.mp3":0.88,"./assets/hsk1-weekdays-clean-v214/001.mp3": 0.7834, "./assets/hsk1-weekdays-clean-v214/002.mp3": 0.9661, "./assets/hsk1-weekdays-clean-v214/003.mp3": 0.9716, "./assets/hsk1-weekdays-clean-v214/004.mp3": 0.8861, "./assets/hsk1-weekdays-clean-v214/005.mp3": 0.8008, "./assets/hsk1-weekdays-clean-v214/006.mp3": 1, "./assets/hsk1-weekdays-clean-v214/007.mp3": 0.9258, "./assets/hsk1-weekdays-clean-v214/008.mp3": 0.673, "./assets/hsk1-weekdays-clean-v214/009.mp3": 0.6331, "./assets/hsk1-weekdays-clean-v214/010.mp3": 0.9761, "./assets/hsk1-weekdays-clean-v214/011.mp3": 0.858, "./assets/hsk1-weekdays-clean-v214/012.mp3": 0.8366, "./assets/hsk1-weekdays-clean-v214/013.mp3": 0.7943, "./assets/hsk1-weekdays-clean-v214/014.mp3": 0.8511, "./assets/hsk1-weekdays-clean-v214/015.mp3": 0.9863, "./assets/hsk1-weekdays-clean-v214/016.mp3": 0.874, "./assets/hsk1-weekdays-clean-v214/017.mp3": 0.7825, "./assets/yue-tan-human-v166/094_92611b3bbea1298a77d4.mp3": 0.6434, "./assets/yue-tan-human-v166/050_e2e4b1164ea07e93d0a4.mp3": 0.9539, "./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3": 0.6124};
 let audio=null,epoch=0,dialoguePlayback='idle',writer=null,writerEpoch=0,recorder=null,recStream=null,micBlobURL=null;
 function soundStop(){
@@ -165,13 +165,13 @@ function writerStop(){writerEpoch++;try{writer?.cancelQuiz?.()}catch{}writer=nul
 function message(text='',kind='info'){
  notice.textContent=text;notice.hidden=!text;notice.dataset.kind=kind;
 }
-function play(word,callback){
+function play(word,callback,role='female'){
  soundStop();
  const serial=epoch;
- const file=fileFor(word);
+ const file=fileFor(word,role);
  if(file){
   try{
-   const player=new Audio(window.PandaAudioLevel?.[file]||file);audio=player;player.preload='auto';player.preservesPitch=true;player.playbackRate=1;player.volume=window.PandaAudioLevel?.[file]?1:(AUDIO_LEVELS[file]??1);
+   const player=new Audio(window.PandaAudioLevel?.[file]||file);audio=player;player.preload='auto';player.preservesPitch=true;player.playbackRate=role==='male'?0.92:1;player.volume=window.PandaAudioLevel?.[file]?1:(AUDIO_LEVELS[file]??1);
    player.onended=()=>{if(serial===epoch){audio=null;callback?.(true)}};
    player.onerror=()=>{if(serial===epoch){audio=null;message('Аудиофайл не загрузился — повтори попытку.','error');callback?.(false)}};
    const p=player.play();if(p?.catch)p.catch(()=>{if(serial===epoch){audio=null;message('Браузер заблокировал звук. Нажми ещё раз.','error');callback?.(false)}});
@@ -294,26 +294,19 @@ function handwriting(){
  '<p id="pg4-writing-result" class="pg4-info">'+(state.written.includes('日')?'✓ Иероглиф уже написан правильно.':'Письмо необязательно для перехода дальше.')+'</p>');
 }
 function dialogue(){
- const i=state.ix[9]||0;
- if(i>=DIALOG.length)return card(h('✓ Ты ответил на обе реплики')+
- '<div class="pg4-bubbles"><div class="from-f"><strong>今天星期几？</strong><small>Jīntiān xīngqī jǐ? — Какой сегодня день недели?</small></div><div class="from-m"><strong>今天星期五。</strong><small>Jīntiān xīngqī wǔ. — Сегодня пятница.</small></div></div>'+
- '<p class="pg4-info">Попробуй самостоятельно ответить вслух ещё раз.</p>'+
- '<button data-repeat="9" type="button" class="pg4-audio">↺ Повторить диалог</button>');
- const d=DIALOG[i],locked=state.answered?.step===9&&state.answered.correct;
- return card('<div class="pg4-question-progress">Диалог '+(i+1)+' из '+DIALOG.length+'</div>'+
+ const d=DIALOG[0];
+ const locked=(state.ix[9]||0)>=DIALOG.length||(state.answered?.step===9&&state.answered.correct);
+ return card('<div class="pg4-question-progress">Короткий диалог — вопрос и ответ</div>'+
  '<div class="pg4-people">'+
- '<div><img src="./assets/lesson4-reference-v216/woman.webp" alt="Собеседница А"><span>А · вопрос</span></div>'+
- '<div><img src="./assets/lesson4-reference-v216/man.webp" alt="Собеседник Б"><span>Б · ответ</span></div></div>'+
+ '<div><img src="./assets/lesson4-reference-v216/woman.webp" alt="Девушка — женский голос"><span>Девушка · вопрос</span></div>'+
+ '<div><img src="./assets/lesson4-reference-v216/man.webp" alt="Парень — мужской голос"><span>Парень · ответ</span></div></div>'+
  '<div class="pg4-bubbles"><div class="from-f"><strong lang="zh-Hans">'+d.female+'</strong>'+
  '<small>'+GLOSS[d.female]+'</small></div>'+
  '<div class="from-m" id="pg4-male-preview"><strong lang="zh-Hans">'+d.male+'</strong><small>'+GLOSS[d.male]+'</small></div></div>'+
- '<div class="pg4-dialog-actions"><button type="button" class="pg4-audio" data-dialogue-toggle aria-pressed="false">▶ Слушать</button></div>'+ 
- '<p class="pg4-info">Прослушай обе роли по очереди и повтори вопрос и ответ вслух.</p>'+
- practicalPhrases()+'<p>Выбери смысловой ответ:</p>'+choices(d.choices,'dialog-answer',false,locked)+displayFeedback()+
- '<div class="pg4-voice-tools"><button type="button" data-mic-record>🎙 Записать себя</button>'+
- '<button type="button" data-mic-stop>■ Завершить запись</button>'+
- '<button type="button" data-mic-play>▶ Слушать свою запись</button></div>'+
- '<p class="pg4-info" id="pg4-mic-status">Запись необязательна. Можно просто повторить вслух. Приложение не оценивает тоны автоматически.</p>');
+ '<div class="pg4-dialog-actions"><button type="button" class="pg4-audio" data-dialogue-toggle aria-pressed="false">▶ Слушать</button></div>'+
+ '<p class="pg4-info">Девушка спрашивает, парень отвечает. Послушай и повтори.</p>'+
+ '<p class="pg4-info">Выбери правильный ответ:</p>'+
+ choices(d.choices,'dialog-answer',false,locked)+displayFeedback());
 }
 function practicalPhrases(){
  const phrases=[
@@ -392,9 +385,12 @@ function complete(){
  save();
 }
 function screen(keep=false){
- // Skip saved completion-only views from older versions without changing stored progress.
- if(state.step===7 && state.ix[7]>=CALENDAR.length){state.step=8;keep=false}
- if(state.step===10 && state.ix[10]>=BUILDS.length){state.step=11;keep=false}
+ // Skip empty completion-only screens, preserving the listening exams and saved results.
+ const completedPage=n=>(n===4&&state.ix[4]>=LISTEN.length)||
+ (n===7&&state.ix[7]>=CALENDAR.length)||
+ (n===10&&state.ix[10]>=BUILDS.length)||
+ (n===11&&state.ix[11]>=examSet().length);
+ while(state.step<12&&completedPage(state.step)){state.step++;keep=false}
  const pos=viewport.scrollTop;
  soundStop();writerStop();if(!keep)micStop(true);
  const s=state.step;if(s===12&&!state.done)complete();
@@ -491,7 +487,7 @@ function playConversation(){
   left?.classList.remove('active');right?.classList.add('active');
   play(d.male,()=>{
    right?.classList.remove('active');dialoguePlayback='idle';updateDialogueButton();
-  });
+  },'male');
   dialoguePlayback='playing';updateDialogueButton();
  });
  dialoguePlayback='playing';updateDialogueButton();
@@ -661,9 +657,12 @@ stage.addEventListener('click',ev=>{
 back.addEventListener('click',()=>{
  if(state.step===0){location.href='./hsk1-map.html';return}
  let previous=state.step-1;
- // Back should not land on a removed empty result view.
- if(previous===10 && state.ix[10]>=BUILDS.length)previous=9;
- if(previous===7 && state.ix[7]>=CALENDAR.length)previous=6;
+ // On back navigation skip all previously completed exercise placeholders.
+ const completedPage=n=>(n===4&&state.ix[4]>=LISTEN.length)||
+ (n===7&&state.ix[7]>=CALENDAR.length)||
+ (n===10&&state.ix[10]>=BUILDS.length)||
+ (n===11&&state.ix[11]>=examSet().length);
+ while(previous>0&&completedPage(previous))previous--;
  state.step=previous;state.answered=null;state.listenReady=false;state.tiles=[];state.used=[];screen()
 });
 forward.addEventListener('click',nextScreen);
