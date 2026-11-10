@@ -6,12 +6,12 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('hsk1-fifth-v227.html','utf8');
 const js=fs.readFileSync('assets/hsk1-fifth-v227.js','utf8');
-const css=fs.readFileSync('assets/hsk1-fifth-v227.css','utf8');
+const css=fs.readFileSync('assets/panda-go-approved-lessons-v231.css','utf8');
 const data=fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8');
-assert(html.includes('hsk1-fifth-v227.js?v=230'));
-assert(html.includes('hsk1-fifth-v227.css?v=230'));
+assert(html.includes('hsk1-fifth-v227.js?v=231'));
+assert(html.includes('panda-go-approved-lessons-v231.css?v=231'));
 assert(!html.includes('lesson3-approved-panda'),'Wrong screenshot mosaic must never return');
-assert(css.includes('lesson4-reference-v216/guide.webp'),'A single approved headphone-wearing Panda Go mascot required');
+assert(css.includes('panda-go-approved-lesson5-v231.svg'),'A single approved headphone-wearing Panda Go mascot required');
 assert(css.includes('#faf6ff'),'Approved light-lilac palette required');
 new (require('node:vm').Script)(js);
 const dom=new JSDOM(html,{url:'https://panda.test/hsk1-fifth-v227.html',runScripts:'outside-only'});
@@ -28,7 +28,8 @@ const click=(selector)=>{
 };
 assert.equal(steps(),1);
 assert(d.querySelector('.intro-art'),'Panda intro missing');
-assert(d.querySelectorAll('.date-chip').length===3,'Intro calendar examples missing');
+assert(d.querySelectorAll('.cover-milestones>div').length===3,'Approved 3-month cover examples missing');
+assert(!d.getElementById('pg5-stage').textContent.includes('2026年11月10日'),'Remove the date beside the panda in the first approved image');
 for(let i=1;i<9;i++){click('#pg5-next');assert.equal(steps(),i+1);}
 assert.equal(steps(),9);
 assert.equal(d.querySelectorAll('.bubble').length,3,'Original date dialogue must stay');
