@@ -18,10 +18,13 @@ for(const [phrase,parts] of [['是，这是我妈妈。',['是','这是我妈妈
 assert(native('一个','female')===null,'Do not pretend complete original exists for yí ge');
 assert(src.includes('familyOriginalParts(hz,role)||[src]'),'Player should actually use original parts');
 for(const f of ['hsk1-family-v231.html','hsk1-weather-v231.html'])
- assert(read(f).includes('panda-go-companion-v231.js?v='+(f.includes('weather')?'247':'244')),f+' must load latest player');
+ assert(read(f).includes('panda-go-companion-v231.js?v='+(f.includes('weather')?'248':'244')),f+' must load latest player');
 const gain=read('assets/panda-lesson-audio-v240.js');new vm.Script(gain);
-assert(gain.includes('source.connect(highpass);highpass.connect(gain);gain.connect(compressor);compressor.connect(ctx.destination);'),'Limit peaks after gain, not before');
-assert(read('hsk1-fifth-v227.html').includes('panda-lesson-audio-v240.js?v=247'));
+assert(gain.includes('source.connect(hp);hp.connect(lp);lp.connect(presence);presence.connect(compressor);'),'Rumble/hiss filters must precede compressor');
+assert(gain.includes('compressor.connect(gain);gain.connect(limiter);limiter.connect(ctx.destination);'),'Loudness limiter must follow gain');
+for(const hanzi of ['今天','几','明天七号','明天下雨吗','明天下雨'])assert(gain.includes("'"+hanzi+"'"),'Missing focused processing for '+hanzi);
+assert(read('assets/lesson-audio-source.js').includes("lessonNumber==='5'||lessonNumber==='7'"),'Remove voice/version debug text from lessons 5 and 7');
+assert(read('hsk1-fifth-v227.html').includes('panda-lesson-audio-v240.js?v=248'));
 const queue=JSON.parse(read('qa/v244/audio-recording-queue.json'));
 assert(queue.totalFlaggedUniqueActivePhrases===63);
 const rows=Object.values(queue.perLesson).flat();

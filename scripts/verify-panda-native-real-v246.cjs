@@ -64,7 +64,7 @@ for(const html of [weatherHtml,dateHtml]){
  assert(html.indexOf('hsk1-human-voice-v183.js')<html.indexOf('panda-native-recovered-v246.js'),'Owner snapshot load order');
  assert(html.indexOf('panda-native-recovered-v246.js')<html.indexOf('panda-owner-lessons5-7-native-v221.js'),'Capture original before override');
 }
-assert(weatherHtml.includes('panda-go-companion-v231.js?v=247'));
-assert(dateHtml.includes('hsk1-fifth-v227.js?v=247'));
+assert(weatherHtml.includes('panda-go-companion-v231.js?v=248'));
+assert(dateHtml.includes('hsk1-fifth-v227.js?v=248'));
 assert(read('assets/lesson-audio-source.js').includes('Звук v246'));
 console.log('PASS Panda Go v246: '+monthNames.length+' native months, '+count[5].unique+' active date phrases ('+count[5].buttons+' buttons), '+count[7].unique+' original native weather phrases ('+count[7].buttons+' buttons). Recovered '+w.PandaNativeRecoveredV246.available+' source clips.');
