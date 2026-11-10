@@ -1,0 +1,49 @@
+name: Panda Go v250 original Mandarin audio cleanup
+on:
+  push:
+    paths:
+      - scripts/build-hsk1-numbers-audio-v250.py
+      - scripts/repair-panda-native-audio-v250.py
+      - .github/workflows/repair-panda-audio-v250.yml
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install ffmpeg
+        run: command -v ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y ffmpeg)
+      - name: Remove noisy Yi tails and rebuild 0–99 from one speaker
+        run: python3 scripts/build-hsk1-numbers-audio-v250.py
+      - name: Restore recorded yibai and clean phrases
+        run: python3 scripts/repair-panda-native-audio-v250.py
+      - name: Verify generated MP3 files
+        run: |
+          python3 - <<'PY'
+          import json,subprocess,pathlib
+          num=pathlib.Path('assets/hsk1-numbers-clean-v250')
+          assert len(list(num.glob('*.mp3')))==100
+          clean=pathlib.Path('assets/panda-native-clean-v250')
+          manifest=json.loads((clean/'manifest.json').read_text())
+          assert len(manifest['clips'])>=34
+          assert (clean/'yibai.mp3').stat().st_size>4000
+          for path in [num/'001.mp3',num/'011.mp3',num/'021.mp3',num/'091.mp3',clean/'yibai.mp3',clean/'jintian.mp3',clean/'mingtian_xingqiliu.mp3']:
+            duration=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',str(path)],text=True))
+            assert duration>0.3,(path,duration)
+          print('PASS: 100 mastered numbers +',len(manifest['clips']),'human Mandarin phrases')
+          PY
+      - name: Commit cleaned Mandarin MP3s
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk1-numbers-clean-v250/ assets/hsk1-numbers-audio-map-v250.js assets/panda-native-clean-v250/ assets/panda-clean-audio-v250.js
+          if ! git diff --cached --quiet; then
+            git commit -m "audio: v250 clean Yi tail in 0-99 and original yibai and weekday voices"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
