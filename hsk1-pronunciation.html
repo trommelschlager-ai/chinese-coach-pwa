@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6edff">
+<meta name="description" content="Panda Go · тренажёр китайского произношения: 13 сложных сочетаний, 190 примеров со звуком и 21 правило чтения.">
+<title>Тренажёр произношения — Panda Go</title>
+<link rel="stylesheet" href="./assets/hsk1-pronunciation-v242.css?v=242">
+</head>
+<body>
+<main class="coach" id="pronunciation-app">
+<header class="topbar">
+<a class="back" href="./hsk1-map.html" aria-label="Вернуться к карте HSK1">‹</a>
+<div class="logo"><span class="logo-panda" aria-hidden="true"></span><span><strong>Panda <em>Go</em></strong><small>Китайский с нуля</small></span></div>
+<span class="level">HSK 1</span>
+</header>
+<div class="content">
+<section class="hero" aria-labelledby="trainer-title">
+<div class="hero-copy"><span class="eyebrow">🌸 ПРОИЗНОШЕНИЕ</span><h1 id="trainer-title">Научись звучать по-китайски</h1><p>Слушай настоящие китайские слоги, сравнивай звуки и повторяй в своём темпе.</p></div>
+<img class="hero-panda" src="./assets/panda-go-approved-lesson5-v231.svg" alt="Весёлая панда Panda Go в наушниках" width="172" height="180">
+</section>
+<section class="progress" aria-label="Прогресс произношения"><div><span>Моя практика</span><strong id="pr-progress">0 из 190 прослушано</strong></div><div class="meter"><span id="pr-fill"></span></div></section>
+<nav class="sections" aria-label="Разделы тренажёра">
+<button type="button" data-mode="combos" class="section active" aria-pressed="true"><span class="section-icon">拼</span><strong>Сочетания</strong><small>13 трудных</small></button>
+<button type="button" data-mode="syllables" class="section" aria-pressed="false"><span class="section-icon">音</span><strong>Чтение слогов</strong><small>190 MP3</small></button>
+<button type="button" data-mode="tones" class="section" aria-pressed="false"><span class="section-icon">声</span><strong>Тоны и правила</strong><small>21 правило</small></button>
+</nav>
+<div id="trainer-content" aria-live="polite">
+<div class="loading" role="status">Подготавливаем карточки и звуки…</div>
+</div>
+<section class="recorder" aria-labelledby="recording-title">
+<div class="recorder-head"><div><span class="mini">🎙 СРАВНИ СВОЙ ГОЛОС</span><h2 id="recording-title">Послушай → повтори → сравни</h2></div></div>
+<div class="record-controls"><button type="button" class="rec-btn" id="record-start">● Записать</button><button type="button" class="rec-btn secondary" id="record-stop" disabled>■ Стоп</button><button type="button" class="rec-btn secondary" id="record-replay" disabled>▶ Мой голос</button></div>
+<p id="rec-feedback" class="feedback" role="status">Запись остаётся на устройстве. Автоматической оценки тонов нет.</p>
+</section>
+<p class="license-note">Звуковые примеры из сохранённой тестовой библиотеки. Перед коммерческим выпуском требуется подтверждённая лицензия или замена записей.</p>
+</div>
+<footer class="footer"><a href="./hsk1-map.html" class="footer-back">← К урокам</a><button type="button" id="footer-next" class="footer-next">Продолжить практику →</button></footer>
+</main>
+<script src="./assets/hsk1-pronunciation-v242.js?v=242" defer></script>
+</body>
+</html>
