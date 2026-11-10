@@ -132,6 +132,7 @@ function recording(n){
  const key=chinese(n);
  const list=CLEAN();
  if(n!==100&&list[key])return list[key];
+ if(n===100)return window.PANDA_HSK1_NATIVE_HUMAN_V167?.['一百']||window.PANDA_HSK1_VOICES?.female?.['一百']||null;
  if(n<=10)return HUMAN()[key]||null;
  return null;
 }
@@ -193,7 +194,7 @@ function audioButton(n,label='▶ Слушать',extra=''){
  const invalid=recording(n)===null&&n>10&&n!==100;
  return '<button class="pg3-audio" type="button" data-audio="'+n+'" '+extra+
   ' aria-label="'+escape(label)+' — '+escape(pretty(n))+'">'+escape(label)+'</button>'+
-  (n===100?'<small class="pg13-audio-note">Системная озвучка yì bǎi</small>':
+  (n===100?'<small class="pg13-audio-note">'+(recording(100)?'Временная запись yì bǎi':'Системная озвучка yì bǎi')+'</small>':
    invalid?'<small class="pg13-audio-note">Сборка из записей носительницы</small>':'');
 }
 function mainCard(body,classes=''){return '<section class="pg3-card '+classes+'">'+body+'</section>'}

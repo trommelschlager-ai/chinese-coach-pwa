@@ -147,7 +147,7 @@ const ownerMap=Object.freeze({
 });
 const fileMap=()=>window.PANDA_HSK1_L4_VOICE_V214||{};
 const nativeMap=()=>window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
-const fileFor=word=>ownerMap[word]||fileMap()[word]||nativeMap()[word]||null;
+const fileFor=word=>fileMap()[word]||ownerMap[word]||nativeMap()[word]||null;
 const AUDIO_LEVELS={"./assets/lesson4-owner-review-v217/owner-15.mp3":0.88,"./assets/lesson4-owner-review-v217/owner-21.mp3":0.88,"./assets/lesson4-owner-review-v217/owner-22.mp3":0.88,"./assets/hsk1-weekdays-clean-v214/001.mp3": 0.7834, "./assets/hsk1-weekdays-clean-v214/002.mp3": 0.9661, "./assets/hsk1-weekdays-clean-v214/003.mp3": 0.9716, "./assets/hsk1-weekdays-clean-v214/004.mp3": 0.8861, "./assets/hsk1-weekdays-clean-v214/005.mp3": 0.8008, "./assets/hsk1-weekdays-clean-v214/006.mp3": 1, "./assets/hsk1-weekdays-clean-v214/007.mp3": 0.9258, "./assets/hsk1-weekdays-clean-v214/008.mp3": 0.673, "./assets/hsk1-weekdays-clean-v214/009.mp3": 0.6331, "./assets/hsk1-weekdays-clean-v214/010.mp3": 0.9761, "./assets/hsk1-weekdays-clean-v214/011.mp3": 0.858, "./assets/hsk1-weekdays-clean-v214/012.mp3": 0.8366, "./assets/hsk1-weekdays-clean-v214/013.mp3": 0.7943, "./assets/hsk1-weekdays-clean-v214/014.mp3": 0.8511, "./assets/hsk1-weekdays-clean-v214/015.mp3": 0.9863, "./assets/hsk1-weekdays-clean-v214/016.mp3": 0.874, "./assets/hsk1-weekdays-clean-v214/017.mp3": 0.7825, "./assets/yue-tan-human-v166/094_92611b3bbea1298a77d4.mp3": 0.6434, "./assets/yue-tan-human-v166/050_e2e4b1164ea07e93d0a4.mp3": 0.9539, "./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3": 0.6124};
 let audio=null,epoch=0,writer=null,writerEpoch=0,recorder=null,recStream=null,micBlobURL=null;
 function soundStop(){
@@ -183,7 +183,7 @@ const audioButton=(word,label='▶ Слушать',additional='')=>!fileFor(word
 const compactAudioButton=(word)=>fileFor(word)
  ? '<button type="button" class="pg4-audio-icon" data-play="'+esc(word)+'" aria-label="Прослушать '+esc(word)+'" title="Прослушать фразу"><img src="./assets/vendor/icons/volume-2.svg" alt=""></button>'
  : '<span class="pg4-missing-audio" role="note">🔇 Запись готовится</span>';
-const audioCredits="<details class=\"pg13-credit\"><summary>Об аудио</summary><p>Три цельные записи (今天, 今天星期五。, 今天是星期五。) — оригинальные записи китаянки. Остальные образцы временные: Yue Tan / Shtooka, <a href=\"https://creativecommons.org/licenses/by-sa/3.0/us/\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY-SA 3.0 US</a>. Дни с 一–六 и часть предложений собраны из отдельных фрагментов. Для 星期天 и разговорных фраз ожидаются цельные записи. Системная озвучка отключена.</p></details>";
+const audioCredits="<details class=\"pg13-credit\"><summary>Об аудио</summary><p>Подключены 22 оригинальные записи китаянки для слов и фраз урока 4. Для отсутствующих в этом наборе фраз используются ранее подготовленные записи Yue Tan / Shtooka (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/us/\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY-SA 3.0 US</a>). Часть исторических файлов собрана из фрагментов. Системная озвучка не используется.</p></details>";
 const card=(body,cls='')=>'<section class="pg4-card '+cls+'">'+body+'</section>';
 const h=(title)=>'<h2 class="pg4-card-title">'+title+'</h2>';
 function scrollNew(){viewport.scrollTop=0}
@@ -208,7 +208,7 @@ function sunday(){
  '<div class="pg4-sunday-pair"><div><strong lang="zh-Hans">星期天</strong><span>xīngqī tiān</span><small>Обычно в разговоре</small>'+
  audioButton('星期天')+'</div><b>=</b><div><strong lang="zh-Hans">星期日</strong><span>xīngqī rì</span><small>Также правильно</small>'+
  audioButton('星期日','▶ Слушать')+'</div></div>'+
- '<p class="pg4-info">Для 星期天 нужна цельная запись носительницы. Пока слушай равнозначный вариант 星期日.</p>')+
+ '<p class="pg4-info">星期天 и 星期日 — правильные варианты воскресенья. Прослушай оба и сравни.</p>')+
  card(h('Проверь себя')+
  '<p>Какой вариант <b>неправильный</b>?</p>'+
  choices(['星期天','星期七','星期日'],'sun-answer',true)+
@@ -309,7 +309,7 @@ function dialogue(){
  '<div class="pg4-dialog-actions">'+audioButton(d.female,'▶ Слушать вопрос')+
  '<button type="button" data-dialogue-scene>▶ Сценка (две роли)</button>'+
  '<button type="button" data-dialogue-male>▶ Слушать ответ</button><button type="button" data-dialogue-stop>■ Стоп</button></div>'+
- '<p class="pg4-info">Сейчас вопрос и ответ могут звучать разными голосами: вопрос — составной образец, ответ «Сегодня пятница» — оригинальная запись китаянки. Цельные записи заменят временные позже.</p>'+
+ '<p class="pg4-info">Прослушай обе роли по очереди и повтори вопрос и ответ вслух.</p>'+
  practicalPhrases()+'<p>Выбери смысловой ответ:</p>'+choices(d.choices,'dialog-answer',false,locked)+displayFeedback()+
  '<div class="pg4-voice-tools"><button type="button" data-mic-record>🎙 Записать себя</button>'+
  '<button type="button" data-mic-stop>■ Завершить запись</button>'+
@@ -361,7 +361,7 @@ function final(){
  '<a href="./hsk1-map.html">К карте HSK1</a></div>')+
  (hardWords.length?card(h('Трудные слова — повтори ещё раз')+hardWords.map(x=>'<div class="pg4-dict-line"><div><strong lang="zh-Hans">'+x.zh+'</strong><span>'+x.py+'</span><small>'+x.ru+'</small></div>'+audioButton(x.zh)+'</div>').join('')):'')+
  card('<details class="pg4-dictionary"><summary>🎧 Весь словарь — '+allWords.length+' слов и фраз</summary>'+
- '<p class="pg4-info">Словарь из 25 слов и фраз. Три цельные записи китаянки доступны, остальные озвучки временные или ожидаются; отсутствующие помечены.</p>'+
+ '<p class="pg4-info">Словарь из 25 слов и фраз. Подключён дополнительный набор из 22 записей китаянки; для некоторых выражений используются резервные образцы.</p>'+
  allWords.map(x=>'<div class="pg4-dict-line"><div><strong lang="zh-Hans">'+esc(x.zh)+'</strong><span>'+esc(x.py)+'</span><small>'+esc(x.ru)+'</small></div>'+
  audioButton(x.zh,'▶')+'</div>').join('')+'</details>')+
  '<button type="button" data-restart class="pg4-restart">↺ Повторить весь урок №4</button>'+audioCredits;

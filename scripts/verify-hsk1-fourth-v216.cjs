@@ -72,7 +72,7 @@ const play=(word)=>{
 const next=()=>click('#pg3-next');
 assert.equal(step(),1,'Old lesson completion should not skip new curriculum');
 assert(d.querySelector('img[src="./assets/lesson4-reference-v216/hero.webp"]'),'Approved raster mascot');
-assert(d.querySelector('.pg4-rule-visual'),'Weekday composition explained on first screen');
+assert(d.querySelector('.pg4-cover h2')?.textContent.includes('Дни недели'),'Approved intro must introduce weekdays');
 next();assert.equal(step(),2);
 for(const word of ['星期一','星期二','星期三']){
  click('[data-learn="'+word+'"]');
