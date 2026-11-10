@@ -82,7 +82,27 @@ function done(){
 function say(message,kind=''){notice.textContent=message;notice.className='result '+kind;notice.hidden=!message}
 function stopAudio(){serial++;try{audio?.pause();audio.currentTime=0}catch{}audio=null;stage.querySelectorAll('[aria-busy]').forEach(b=>b.removeAttribute('aria-busy'))}
 const mappings=window.PANDA_HSK1_VOICES||{},human=window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
+/* v239: Weather lesson uses ONE consistent, offline, pre-existing female MeloTTS voice.
+ * Never mix approved native clips, old male Kokoro dialogue, and fallback voices here.
+ * Only one phrase is missing from the prepackaged v160 female set; it plays
+ * two matching female v160 fragments (明天下雨 + 吗) until a whole take exists.
+ * This is clearly a temporary synthetic voice, NOT the original speaker.
+ * Family lesson retains its approved owner recordings and original dialogue roles.
+ */
+function weatherClips(hz){
+ if(isFamily)return null;
+ const f=mappings.female||{};
+ const plain=String(hz).replace(/[。！？!?]\s*$/,'');
+ const file=f[hz]||f[plain];
+ if(typeof file==='string'&&file.startsWith('./assets/hsk1-voices-v160/'))return [file];
+ if(plain==='明天下雨吗'){
+  const core=f['明天下雨'],particle=f['吗'];
+  if(core?.startsWith('./assets/hsk1-voices-v160/')&&particle?.startsWith('./assets/hsk1-voices-v160/'))return [core,particle];
+ }
+ return [];
+}
 function resolve(hz,role='female'){
+ if(!isFamily)return weatherClips(hz)[0]||null;
  const plain=String(hz).replace(/[。！？!?]\s*$/,'');
  const original=role==='female'&&window.PandaOwnerAudio?.lookup(hz);if(original)return original;
  if(role==='male')return mappings.male?.[hz]||mappings.male?.[plain]||null;
@@ -95,20 +115,28 @@ function resolve(hz,role='female'){
 }
 function play(hz,role='female'){
  const src=resolve(hz,role);
- if(!src){say('Для этой фразы пока нет проверенной записи.','bad');return}
+ if(!src){say('Для этой фразы пока нет доступной записи.','bad');return}
  stopAudio();const token=serial;
- try{
-  audio=new Audio(window.PandaAudioLevel?.[src]||src);const a=audio;a.preload='auto';a.preservesPitch=true;a.playbackRate=1;
-  const button=[...stage.querySelectorAll('[data-play]')].find(x=>x.dataset.play===hz);
-  button?.setAttribute('aria-busy','true');
-  a.onended=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy')};
-  a.onerror=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy');say('Аудио не загрузилось. Попробуй снова.','bad')};
-  Promise.resolve(a.play()).catch(()=>{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Нажми кнопку звука ещё раз.','bad')}});
- }catch{say('Не удалось включить звук.','bad')}
+ const parts=isFamily?[src]:weatherClips(hz);
+ const button=[...stage.querySelectorAll('[data-play]')].find(x=>x.dataset.play===hz);
+ button?.setAttribute('aria-busy','true');
+ let index=0;
+ function playNext(){
+  if(token!==serial)return;
+  const clip=parts[index++];
+  if(!clip){audio=null;button?.removeAttribute('aria-busy');return}
+  try{
+   const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;a.playbackRate=1;
+   a.onended=()=>{if(token!==serial)return;playNext()};
+   a.onerror=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy');say('Аудио не загрузилось. Попробуй снова.','bad')};
+   Promise.resolve(a.play()).catch(()=>{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Нажми кнопку звука ещё раз.','bad')}});
+  }catch{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Не удалось включить звук.','bad')}}
+ }
+ playNext();
 }
 function playBtn(hz,role='female'){
  const available=!!resolve(hz,role);
- return '<button type="button" class="audio" data-play="'+esc(hz)+'" data-role="'+role+'"'+(!available?' disabled title="Запись пока отсутствует"':'')+' aria-label="'+(available?'Слушать ':'Нет записи: ')+esc(hz)+'">🔊</button>';
+ return '<button type="button" class="audio" data-play="'+esc(hz)+'" data-role="'+(isFamily?role:'female')+'"'+(!available?' disabled title="Запись пока отсутствует"':'')+' aria-label="'+(available?'Слушать ':'Нет записи: ')+esc(hz)+'">🔊</button>';
 }
 const symbols=isFamily?{'妈妈':'👩','爸爸':'👨','哥哥':'👦','姐姐':'👩‍🎓','弟弟':'🧒','妹妹':'👧','家':'🏠','我的':'💗','有':'✅','没有':'❌','一个':'☝️'}:{'天气':'🌤️','冷':'❄️','热':'☀️','晴':'🌞','阴':'☁️','下雨':'🌧️','下雪':'🌨️','风':'💨','春天':'🌸','夏天':'🌻','秋天':'🍁','冬天':'⛄'};
 function word(w){
