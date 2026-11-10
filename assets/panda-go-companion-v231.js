@@ -138,7 +138,7 @@ function play(hz,role='female'){
   if(!clip){audio=null;button?.removeAttribute('aria-busy');return}
   try{
    const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;a.playbackRate=isFamily?1:0.85; // human weather recordings slowed without shifting pitch
-   if(!isFamily && clip.startsWith('data:audio/'))window.PandaLessonAudioV240?.improve?.(a,'weather');
+   if(!isFamily && (clip.startsWith('data:audio/')||window.PandaLessonAudioV240?.isPriority?.(hz)))window.PandaLessonAudioV240?.improve?.(a,'weather',hz);
    a.onended=()=>{if(token!==serial)return;playNext()};
    a.onerror=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy');say('Аудио не загрузилось. Попробуй снова.','bad')};
    Promise.resolve(a.play()).catch(()=>{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Нажми кнопку звука ещё раз.','bad')}});

@@ -3,6 +3,11 @@
  const selector='[data-say],[data-audio],[data-play],[data-tone-play],[data-study]';
  document.addEventListener('click',event=>{
   const button=event.target.closest(selector);if(!button||button.disabled)return;
+  // Hide debug voice credits on all screens of the completed lessons 5 and 7.
+  const lessonNumber=document.querySelector('.app')?.dataset.lesson;
+  if(lessonNumber==='5'||lessonNumber==='7'){
+   document.getElementById('audio-source-status')?.remove();return;
+  }
   let text=button.dataset.say||button.dataset.play||button.dataset.tonePlay||button.dataset.audio||button.querySelector('strong')?.textContent||'';
   const role=button.dataset.role||'female';
   let status=document.getElementById('audio-source-status');
