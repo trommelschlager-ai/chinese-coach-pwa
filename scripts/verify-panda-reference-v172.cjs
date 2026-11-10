@@ -48,7 +48,7 @@ const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
 assert(core.length<=141,'Install must include at most 141 core assets (three new original-speaker clips and their map)');
 assert(core.includes('./assets/panda-reference-v175.css?v=175'),'Offline style is not in critical assets');
 assert(core.includes('./assets/panda-v130.js?v=175'),'New home must work offline');
-assert(core.includes('./assets/hsk1-foundations-v152.js?v=187'),'Lesson controls must work offline');
+assert(core.includes('./assets/hsk1-foundations-v152.js?v=230'),'Lesson controls must work offline');
 assert(pack.version>=179&&pack.files.includes('./assets/panda-reference-v175.css?v=175')&&
  pack.files.includes('./assets/hsk1-archive-style-v178.css?v=179')&&
  pack.files.includes('./assets/hsk1-separate-steps-v178.js?v=179')&&
