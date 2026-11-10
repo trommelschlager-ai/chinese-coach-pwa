@@ -13,7 +13,7 @@ for(const [pageName,page] of [['home',root],['map',map],['lesson',lesson]])
  assert(page.includes(pageName==='lesson'?'assets/panda-approved-three-screen-v172.css?v=172':'assets/panda-reference-v175.css?v=175'),
   'Missing visual reference CSS in '+pageName);
 assert(root.includes('panda-v130.js?v=175'),'Home script cache must refresh');
-assert(lesson.includes('hsk1-foundations-v152.js?v=187'),'Lesson step icons must refresh');
+assert(lesson.includes('hsk1-foundations-v152.js?v=230'),'Lesson step icons must refresh');
 assert(homeJs.includes('panda-reference-v175/hero.webp'),'Existing approved panda hero must remain');
 assert(stepsJs.includes('pg-hsk1-v3-'),'Persisted lesson progress must stay isolated');
 assert(stepsJs.includes('FEMALE_SPEED_KEY'),'Lesson audio speed must remain working');
@@ -28,7 +28,7 @@ assert(levelSection.includes('href="./hsk1-map.html"'),'HSK1 must open actual ma
 assert(levelSection.includes('pg-hsk-unavailable'),'Future HSK2–6 must not lead to broken pages');
 const m=new JSDOM(map).window.document;
 assert.equal(m.querySelectorAll('nav.map-road > a.node').length,7,'Map must display seven actual lessons');
-assert.equal(m.querySelectorAll('nav.map-road > a[href^="./hsk1-lesson.html?lesson="]').length,3); assert.equal(m.querySelector('nav.map-road > a[data-num="1"]')?.getAttribute('href'),'./hsk1-first-v189.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="2"]')?.getAttribute('href'),'./hsk1-second-v203.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="3"]')?.getAttribute('href'),'./hsk1-third-v212.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="4"]')?.getAttribute('href'),'./hsk1-fourth-v214.html');
+assert.equal(m.querySelectorAll('nav.map-road > a[href^="./hsk1-lesson.html?lesson="]').length,2); assert.equal(m.querySelector('nav.map-road > a[data-num="1"]')?.getAttribute('href'),'./hsk1-first-v189.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="2"]')?.getAttribute('href'),'./hsk1-second-v203.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="3"]')?.getAttribute('href'),'./hsk1-third-v212.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="4"]')?.getAttribute('href'),'./hsk1-fourth-v214.html');
 assert(map.includes('pg-hsk1-v3-complete'),'HSK map progress must use original storage key');
 assert(read('assets/panda-reference-v175.css').includes('mountain-stairs.webp'),'Approved reference requires a traveller panda on the mountain route');
 const l=new JSDOM(lesson).window.document;
