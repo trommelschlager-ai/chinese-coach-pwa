@@ -1,0 +1,659 @@
+{
+  "version": 244,
+  "created": "2026-11-10",
+  "base": "qa/v237/active-audio-registry.json",
+  "scope": "96 screens / 202 snapshot audio buttons; not an acoustic listening review",
+  "notes": [
+    "v237 registry is a historical snapshot, not live v244. Lesson 7 currently uses a uniform female synthetic voice although some original female recordings exist.",
+    "Two complete family replies have been rebuilt with previously approved original speaker parts in v244; test actual prosody before approving.",
+    "Number combinations need not be recorded in full until base digit/decade samples and transitions are audited.",
+    "Two unmapped voice source ids 049/050 require manual identification. Do not assign text from guesses.",
+    "A measured sound level does not prove natural pronunciation, correct tone or low noise."
+  ],
+  "totalFlaggedUniqueActivePhrases": 63,
+  "perLesson": {
+    "1": [],
+    "2": [
+      {
+        "lesson": 2,
+        "hanzi": "他",
+        "pinyin": "tā",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 2,
+        "hanzi": "你们",
+        "pinyin": "nǐmen",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 2,
+        "hanzi": "你是老师吗？",
+        "pinyin": "nǐ shì lǎo shī ma？",
+        "buttonUses": 3,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 2,
+        "hanzi": "吗",
+        "pinyin": "ma",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 2,
+        "hanzi": "她",
+        "pinyin": "tā",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 2,
+        "hanzi": "您",
+        "pinyin": "nín",
+        "buttonUses": 1,
+        "existingSound": "no playback captured",
+        "originalAvailable": false,
+        "status": "system_voice_pending_native",
+        "priority": "highest"
+      },
+      {
+        "lesson": 2,
+        "hanzi": "我们",
+        "pinyin": "wǒmen",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 2,
+        "hanzi": "我是老师。",
+        "pinyin": "wǒ shì lǎo shī。",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 2,
+        "hanzi": "老师",
+        "pinyin": "lǎo shī",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      }
+    ],
+    "3": [
+      {
+        "lesson": 3,
+        "hanzi": "一",
+        "pinyin": "yī",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "一百",
+        "pinyin": "yì bǎi",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "七",
+        "pinyin": "qī",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "七十",
+        "pinyin": "qī shí",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "三",
+        "pinyin": "sān",
+        "buttonUses": 3,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "三十",
+        "pinyin": "sān shí",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "三十六",
+        "pinyin": "sān shí liù",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "九",
+        "pinyin": "jiǔ",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "九十",
+        "pinyin": "jiǔ shí",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "二",
+        "pinyin": "èr",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "二十",
+        "pinyin": "èr shí",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "五",
+        "pinyin": "wǔ",
+        "buttonUses": 3,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "五十",
+        "pinyin": "wǔ shí",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "八",
+        "pinyin": "bā",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "八十",
+        "pinyin": "bā shí",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "六",
+        "pinyin": "liù",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "六十",
+        "pinyin": "liù shí",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "十",
+        "pinyin": "shí",
+        "buttonUses": 3,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "十一",
+        "pinyin": "shí yī",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "十九",
+        "pinyin": "shí jiǔ",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "十二",
+        "pinyin": "shí èr",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "四",
+        "pinyin": "sì",
+        "buttonUses": 3,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "四十",
+        "pinyin": "sì shí",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 3,
+        "hanzi": "零",
+        "pinyin": "líng",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      }
+    ],
+    "4": [
+      {
+        "lesson": 4,
+        "hanzi": "今天",
+        "pinyin": "jīn tiān",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 4,
+        "hanzi": "今天星期五。",
+        "pinyin": "jīn tiān xīng qī wǔ。",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 4,
+        "hanzi": "今天是星期五。",
+        "pinyin": "jīn tiān shì xīng qī wǔ。",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      }
+    ],
+    "5": [
+      {
+        "lesson": 5,
+        "hanzi": "一月",
+        "pinyin": "yí yuè",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "七月",
+        "pinyin": "qī yuè",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "三月",
+        "pinyin": "sān yuè",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "九月",
+        "pinyin": "jiǔ yuè",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "二月",
+        "pinyin": "èr yuè",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "二零二六年十一月六日",
+        "pinyin": "èr líng èr liù nián shí yī yuè liù rì",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "五月",
+        "pinyin": "wǔ yuè",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "今天",
+        "pinyin": "jīn tiān",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "今天几月几号？",
+        "pinyin": "jīn tiān jǐ yuè jǐ hào？",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "今天十一月六号。",
+        "pinyin": "jīn tiān shí yī yuè liù hào。",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "八月",
+        "pinyin": "bā yuè",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "六月",
+        "pinyin": "liù yuè",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "high"
+      },
+      {
+        "lesson": 5,
+        "hanzi": "明天七号。",
+        "pinyin": "míng tiān qī hào。",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": true,
+        "status": "missing_native_recording",
+        "priority": "high"
+      }
+    ],
+    "6": [
+      {
+        "lesson": 6,
+        "hanzi": "一个",
+        "pinyin": "yí gè",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "missing_native_recording",
+        "priority": "highest"
+      },
+      {
+        "lesson": 6,
+        "hanzi": "你有妹妹吗？",
+        "pinyin": "nǐ yǒu mèi mèi ma？",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": true,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      },
+      {
+        "lesson": 6,
+        "hanzi": "是，这是我妈妈。",
+        "pinyin": "shì ， zhè shì wǒ mā mā。",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "new_native_composite_v244",
+        "priority": "normal"
+      },
+      {
+        "lesson": 6,
+        "hanzi": "有，我有一个妹妹。",
+        "pinyin": "yǒu ， wǒ yǒu yí gè mèi mèi。",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "new_native_composite_v244",
+        "priority": "normal"
+      },
+      {
+        "lesson": 6,
+        "hanzi": "这是你妈妈吗？",
+        "pinyin": "zhè shì nǐ mā mā ma？",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": true,
+        "status": "missing_native_recording",
+        "priority": "normal"
+      }
+    ],
+    "7": [
+      {
+        "lesson": 7,
+        "hanzi": "下雨",
+        "pinyin": "xià yǔ",
+        "buttonUses": 3,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "synthetic_female_until_full_native_set",
+        "priority": "high"
+      },
+      {
+        "lesson": 7,
+        "hanzi": "下雪",
+        "pinyin": "xià xuě",
+        "buttonUses": 2,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "synthetic_female_until_full_native_set",
+        "priority": "high"
+      },
+      {
+        "lesson": 7,
+        "hanzi": "今天",
+        "pinyin": "jīn tiān",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "synthetic_female_until_full_native_set",
+        "priority": "high"
+      },
+      {
+        "lesson": 7,
+        "hanzi": "今天下雨。",
+        "pinyin": "jīn tiān xià yǔ。",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "synthetic_female_until_full_native_set",
+        "priority": "high"
+      },
+      {
+        "lesson": 7,
+        "hanzi": "今天天气怎么样？",
+        "pinyin": "jīn tiān tiān qì zěn me yàng？",
+        "buttonUses": 3,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "synthetic_female_until_full_native_set",
+        "priority": "high"
+      },
+      {
+        "lesson": 7,
+        "hanzi": "今天很冷。",
+        "pinyin": "jīn tiān hěn lěng。",
+        "buttonUses": 4,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "synthetic_female_until_full_native_set",
+        "priority": "high"
+      },
+      {
+        "lesson": 7,
+        "hanzi": "冬天",
+        "pinyin": "dōng tiān",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "synthetic_female_until_full_native_set",
+        "priority": "high"
+      },
+      {
+        "lesson": 7,
+        "hanzi": "冬天很冷。",
+        "pinyin": "dōng tiān hěn lěng。",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": false,
+        "status": "synthetic_female_until_full_native_set",
+        "priority": "high"
+      },
+      {
+        "lesson": 7,
+        "hanzi": "明天下雨吗？",
+        "pinyin": "míng tiān xià yǔ ma？",
+        "buttonUses": 1,
+        "existingSound": "existing fallback; speaker needs review",
+        "originalAvailable": true,
+        "status": "synthetic_female_until_full_native_set",
+        "priority": "high"
+      }
+    ]
+  }
+}
