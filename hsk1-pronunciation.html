@@ -3,45 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f5eafb">
-<meta name="description" content="Panda Go — компактный тренажёр пиньиня, сложных сочетаний и китайских тонов с 203 аудиопримерами.">
+<meta name="theme-color" content="#f7edfd">
+<meta name="description" content="Panda Go — чёткие китайские слоги и тоны с прослушиванием и повторением.">
 <title>Тренажёр произношения — Panda Go</title>
-<link rel="stylesheet" href="./assets/hsk1-pronunciation-v243.css?v=243">
+<link rel="stylesheet" href="./assets/hsk1-pronunciation-v244.css?v=244">
 </head>
 <body>
 <main class="coach" id="pronunciation-app" data-mode="combos">
   <header class="topbar">
-    <a class="back" href="./hsk1-map.html" aria-label="Назад к карте HSK 1">‹</a>
-    <div class="logo"><span class="logo-panda" aria-hidden="true"></span><strong>Panda <em>Go</em></strong></div>
+    <a class="back" href="./hsk1-map.html" aria-label="Назад к карте уроков">‹</a>
+    <span class="logo-panda" aria-hidden="true"></span>
+    <div class="header-title"><strong>Panda <em>Go</em></strong><small>Тренажёр произношения</small></div>
     <span class="level">HSK 1</span>
   </header>
-  <section class="mini-hero" aria-labelledby="trainer-title">
-    <div class="hero-copy">
-      <h1 id="trainer-title">Тренажёр<br>произношения</h1>
-      <p>Слушай, повторяй и тренируй китайские звуки</p>
-    </div>
-    <img class="hero-panda" src="./assets/panda-go-approved-lesson5-v231.svg" alt="Панда Panda Go в наушниках" width="108" height="106">
-  </section>
-  <div class="stats" aria-label="Объём тренажёра">
-    <span><b>◖))</b> 190 аудио</span>
-    <span><b>▤</b> 59 элементов пиньиня</span>
-    <span><b>▥</b> 21 правило</span>
-  </div>
   <nav class="sections" aria-label="Разделы тренажёра">
-    <button class="section active" data-mode="combos" type="button" aria-pressed="true"><span aria-hidden="true">◖))</span> Сочетания</button>
-    <button class="section" data-mode="syllables" type="button" aria-pressed="false"><span aria-hidden="true">⠿</span> Слоги</button>
-    <button class="section" data-mode="tones" type="button" aria-pressed="false"><span aria-hidden="true">▥</span> Тоны</button>
+    <button class="section active" data-mode="combos" type="button" aria-pressed="true">Сочетания</button>
+    <button class="section" data-mode="syllables" type="button" aria-pressed="false">Слоги</button>
+    <button class="section" data-mode="tones" type="button" aria-pressed="false">Тоны</button>
   </nav>
   <div id="trainer-content" class="trainer-view" aria-live="polite">
-    <p class="loading" role="status">Открываем аудиокарточки…</p>
+    <p class="loading" role="status">Загружаем звуки…</p>
   </div>
   <footer class="footer">
-    <div class="practice-progress" aria-label="Прогресс тренировки">
+    <div class="practice-progress" aria-label="Прослушанные записи">
       <div id="pr-ring" class="progress-ring"><b id="pr-percent">0%</b></div>
-      <span class="progress-label">Прогресс<small id="pr-progress">0 из 203</small></span>
+      <span class="progress-label">Прослушано<small id="pr-progress">0 из 203</small></span>
       <span class="meter" aria-hidden="true"><i id="pr-fill"></i></span>
     </div>
-    <button class="footer-next" type="button" id="footer-next">▶ Начать тренировку</button>
+    <button class="footer-next" type="button" id="footer-next">🎙 Тренироваться</button>
   </footer>
   <dialog class="practice-dialog" id="practice-dialog" aria-labelledby="practice-title">
     <div class="practice-head">
@@ -54,7 +43,14 @@
       <small id="practice-translation">иероглиф</small>
       <button class="practice-sound" id="practice-play" data-combo="zi" type="button">▶ Послушать</button>
     </div>
-    <p class="practice-explanation">Сначала прослушай пример. Затем запиши свой голос и сравни. Автоматической проверки тонов нет.</p>
+    <div class="voice-settings" aria-label="Выбор голоса диктора">
+      <span>Голос диктора</span>
+      <div class="voice-options" role="group" aria-label="Голос для всех примеров">
+        <label><input type="radio" name="narrator" value="female" checked><span>Женский</span></label>
+        <label><input type="radio" name="narrator" value="male"><span>Мужской</span></label>
+      </div>
+    </div>
+    <p class="practice-explanation">Слушай запись, повторяй и сравнивай. Тоны автоматически не оцениваются.</p>
     <div class="record-controls">
       <button class="rec-btn" type="button" id="record-start">● Записать</button>
       <button class="rec-btn secondary" type="button" id="record-stop" disabled>■ Стоп</button>
@@ -62,9 +58,9 @@
     </div>
     <p class="feedback" id="rec-feedback" role="status">Запись остаётся на твоём устройстве.</p>
     <button class="practice-next" type="button" id="practice-next">Следующий звук →</button>
-    <p class="license-note">Звуки из тестовой библиотеки: для коммерческого выпуска необходимо подтвердить лицензию или заменить записи.</p>
+    <p class="license-note">Используются тестовые синтезированные записи. Перед коммерческим выпуском требуется лицензия. Для bái пока сохранён прежний голос: в доступных полных наборах нет этого слога.</p>
   </dialog>
 </main>
-<script src="./assets/hsk1-pronunciation-v243.js?v=243" defer></script>
+<script src="./assets/hsk1-pronunciation-v244.js?v=244" defer></script>
 </body>
 </html>
