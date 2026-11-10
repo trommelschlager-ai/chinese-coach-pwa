@@ -1,6 +1,6 @@
 {
-  "version": 233,
-  "bytes": 39691271,
+  "version": 234,
+  "bytes": 39746271,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1775,7 +1775,7 @@
     "./assets/lesson5-lilac-sakura-v225.svg",
     "./hsk1-fifth-v227.html",
     "./assets/hsk1-fifth-v227.js?v=233",
-    "./assets/panda-go-approved-lessons-v231.css?v=233",
+    "./assets/panda-go-approved-lessons-v231.css?v=234",
     "./assets/hsk1-family-weather-lilac-v228.css?v=228",
     "./hsk1-family-v231.html",
     "./hsk1-weather-v231.html",
@@ -1797,13 +1797,15 @@
     "./assets/lesson-hanzi-v233.woff",
     "./assets/lesson-sakura-v233.webp",
     "./assets/lesson-success-v233.webp",
-    "./assets/lesson-visuals-v233.js",
+    "./assets/lesson-visuals-v233.js?v=234",
     "./assets/lesson5-scene-v233.webp",
     "./assets/lesson6-relatives-v233.webp",
     "./assets/lesson6-scene-v233.webp",
     "./assets/lesson7-scene-v233.webp",
     "./assets/lesson7-weather-v233.webp",
     "./assets/noto-hanzi-license-v233.txt",
-    "./assets/speaker-fill-v233.svg"
+    "./assets/speaker-fill-v233.svg",
+    "./assets/family-people-v234.png",
+    "./assets/family-cover-v234.jpg"
   ]
 }
