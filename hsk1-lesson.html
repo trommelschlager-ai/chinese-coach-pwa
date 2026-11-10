@@ -36,6 +36,14 @@ if(new URLSearchParams(location.search).get('lesson')==='5'){
 }
 </script>
 <link rel="stylesheet" href="./assets/lesson5-lilac-v225.css?v=226">
+<script>
+/* Lessons 6 and 7 use the pale-lilac course scene, keeping original 7-step pedagogy. */
+if(['6','7'].includes(new URLSearchParams(location.search).get('lesson'))){
+ document.documentElement.classList.add('pg67-lilac');
+ document.querySelector('meta[name="theme-color"]')?.setAttribute('content','#f6f0ff');
+}
+</script>
+<link rel="stylesheet" href="./assets/hsk1-family-weather-lilac-v228.css?v=228">
 </head>
 <body>
 <script>
@@ -63,6 +71,15 @@ if(Number(new URLSearchParams(location.search).get('lesson') || '1')===1){
     <p class="pg5-hero-detail">Учимся называть месяцы и читать календарные даты</p>
     <span class="pg5-calendar-pill">🌸 年 · 月 · 日 · 号</span>
   </div>
+</div>
+<div class="pg67-hero" aria-hidden="true">
+ <img src="./assets/lesson4-reference-v216/guide.webp" width="131" height="124" alt="" loading="eager">
+ <div class="pg67-hero-content">
+ <span class="pg67-kicker">HSK1 · PANDA GO</span>
+ <div class="pg5-hero-heading">Учим китайский вместе</div>
+ <p class="pg5-hero-detail">Слушай, повторяй и практикуйся</p>
+ <span class="pg67-calendar-pill">🌸 汉语 · 拼音 · 练习</span>
+ </div>
 </div>
 <nav class="lesson-steps" id="lesson-steps" aria-label="Шаги выбранного урока"></nav>
 </div>
