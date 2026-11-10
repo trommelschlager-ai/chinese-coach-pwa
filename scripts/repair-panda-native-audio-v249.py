@@ -22,6 +22,7 @@ if not routes or not human.get("一"):
     print("Original v183 prefix:",repr(text[:310]),flush=True)
     print("v183 numeric clip IDs:",list(by_id)[:50],flush=True)
     print("v183 sample routes:",list(routes.items())[:65],flush=True)
+    print("V183 last code lines:", [ln[:150] for ln in text.splitlines()[-110:] if len(ln)<450][-60:],flush=True)
     raise RuntimeError("Original v183 Chinese label-to-recording routing incomplete")
 print("Loaded human original phrases:",list(human)[-55:],flush=True)
 
