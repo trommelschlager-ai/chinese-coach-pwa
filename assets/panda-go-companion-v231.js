@@ -89,6 +89,14 @@ const mappings=window.PANDA_HSK1_VOICES||{},human=window.PANDA_HSK1_NATIVE_HUMAN
  * This is clearly a temporary synthetic voice, NOT the original speaker.
  * Family lesson retains its approved owner recordings and original dialogue roles.
  */
+function familyOriginalParts(hz,role='female'){
+ if(!isFamily||role!=='female')return null;
+ const pair=hz==='是，这是我妈妈。'?['是','这是我妈妈。']:
+            hz==='有，我有一个妹妹。'?['有','我有一个妹妹。']:null;
+ if(!pair)return null;
+ const parts=pair.map(x=>window.PandaOwnerAudio?.lookup(x)||null);
+ return parts.every(Boolean)?parts:null;
+}
 function weatherClips(hz){
  if(isFamily)return null;
  const f=window.PandaWeatherFemaleV240||mappings.female||{};
@@ -104,6 +112,7 @@ function weatherClips(hz){
 function resolve(hz,role='female'){
  if(!isFamily)return weatherClips(hz)[0]||null;
  const plain=String(hz).replace(/[。！？!?]\s*$/,'');
+ const composed=familyOriginalParts(hz,role);if(composed)return composed[0];
  const original=role==='female'&&window.PandaOwnerAudio?.lookup(hz);if(original)return original;
  if(role==='male')return mappings.male?.[hz]||mappings.male?.[plain]||null;
  const f=mappings.female||{};
@@ -117,7 +126,7 @@ function play(hz,role='female'){
  const src=resolve(hz,role);
  if(!src){say('Для этой фразы пока нет доступной записи.','bad');return}
  stopAudio();const token=serial;
- const parts=isFamily?[src]:weatherClips(hz);
+ const parts=isFamily?(familyOriginalParts(hz,role)||[src]):weatherClips(hz);
  const button=[...stage.querySelectorAll('[data-play]')].find(x=>x.dataset.play===hz);
  button?.setAttribute('aria-busy','true');
  let index=0;
