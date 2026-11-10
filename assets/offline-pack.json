@@ -1,6 +1,6 @@
 {
-  "version": 244,
-  "bytes": 46981088,
+  "version": 245,
+  "bytes": 46979967,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -2076,8 +2076,8 @@
     "./assets/hsk1-fifth-v227.js?v=240",
     "./assets/lesson-audio-source.js?v=241",
     "./hsk1-pronunciation.html",
-    "./assets/hsk1-pronunciation-v243.js?v=243",
-    "./assets/hsk1-pronunciation-v243.css?v=243",
+    "./assets/hsk1-pronunciation-v244.js?v=244",
+    "./assets/hsk1-pronunciation-v244.css?v=244",
     "./assets/hsk1-pronunciation-entry-v242.css?v=242",
     "./assets/panda-go-companion-v231.js?v=244",
     "./assets/panda-lesson-audio-v240.js?v=244"
