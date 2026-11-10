@@ -86,3 +86,6 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #9d76
 .loading{text-align:center;padding:22px;color:#936da8}
 @media(max-width:360px){.content{padding:10px}.hero{padding:12px 7px 13px 12px;grid-template-columns:1fr 34%}.hero h1{font-size:22px}.hero-panda{max-height:170px}.section{padding:8px 3px}.section strong{font-size:11px}.sound-card{padding:10px 6px}.sound-card strong{font-size:30px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}
+.toolbar select{min-height:34px;padding:3px 7px;border:1px solid #e4d1ed;border-radius:11px;background:#fffafd;color:#74588f;font-weight:800}
