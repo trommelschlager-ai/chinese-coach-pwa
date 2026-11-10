@@ -18,7 +18,7 @@ for(const [phrase,parts] of [['是，这是我妈妈。',['是','这是我妈妈
 assert(native('一个','female')===null,'Do not pretend complete original exists for yí ge');
 assert(src.includes('familyOriginalParts(hz,role)||[src]'),'Player should actually use original parts');
 for(const f of ['hsk1-family-v231.html','hsk1-weather-v231.html'])
- assert(read(f).includes('panda-go-companion-v231.js?v=244'),f+' must load latest player');
+ assert(read(f).includes('panda-go-companion-v231.js?v='+(f.includes('weather')?'246':'244')),f+' must load latest player');
 const gain=read('assets/panda-lesson-audio-v240.js');new vm.Script(gain);
 assert(gain.includes('source.connect(gain);gain.connect(compressor);compressor.connect(ctx.destination);'),'Limit peaks after gain, not before');
 assert(read('hsk1-fifth-v227.html').includes('panda-lesson-audio-v240.js?v=244'));
