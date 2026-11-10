@@ -1,6 +1,6 @@
 {
-  "version": 234,
-  "bytes": 39746271,
+  "version": 235,
+  "bytes": 39926025,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1806,6 +1806,9 @@
     "./assets/noto-hanzi-license-v233.txt",
     "./assets/speaker-fill-v233.svg",
     "./assets/family-people-v234.png",
-    "./assets/family-cover-v234.jpg"
+    "./assets/family-cover-v234.jpg",
+    "./assets/family-cover-v235.webp",
+    "./assets/family-people-v235.webp",
+    "./assets/panda-go-approved-lessons-v231.css?v=235"
   ]
 }

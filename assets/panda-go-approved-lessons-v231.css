@@ -29,18 +29,18 @@ h1{font-size:30px;line-height:1.12;letter-spacing:-.5px;text-align:center;margin
 @media(max-width:365px){.header{padding-left:12px;padding-right:12px}.body{padding-left:13px;padding-right:13px}.intro{margin-left:-13px;margin-right:-13px}.intro-copy strong,h1{font-size:28px}.word{padding-left:10px;grid-template-columns:minmax(0,1fr) 38px}.word strong{font-size:28px}.word .py{font-size:14px}.audio{width:38px;min-width:38px;height:38px}.card{padding:10px}.app[data-lesson="6"] .word>div{grid-template-columns:54px minmax(57px,1fr) minmax(60px,1fr);gap:5px}.app[data-lesson="6"] .word-art{width:52px;height:52px}.app[data-lesson="6"] .word strong{font-size:26px}.footer{gap:9px;padding-left:13px;padding-right:13px}.footer button{font-size:16px}}
 @media(prefers-reduced-motion:reduce){.fill{transition:none}}
 
-/* Lesson 6 human-family art direction v234: 8 consistent character/meaning portraits.
+/* Lesson 6 human-family art direction v235: 8 consistent character/meaning portraits.
    Scope all overrides to family lesson only; lessons 5/7 retain their approved artwork. */
 .app[data-lesson="6"] .word-art.human {
-  background-image:url('./family-people-v234.png');
+  background-image:url('./family-people-v235.webp');
   background-size:400% 200%;
   background-repeat:no-repeat;
 }
 .app[data-lesson="6"][data-step="0"] .intro-art{
-  background-image:url('./family-cover-v234.jpg');
+  background-image:url('./family-cover-v235.webp');
 }
 .app[data-lesson="6"] .dialogue .bubble:before{
-  background-image:url('./family-people-v234.png');
+  background-image:url('./family-people-v235.webp');
   background-size:400% 200%;
   background-position:33.3333% 0;
   background-repeat:no-repeat;
@@ -49,8 +49,20 @@ h1{font-size:30px;line-height:1.12;letter-spacing:-.5px;text-align:center;margin
   background-position:0 0;
 }
 .app[data-lesson="6"] .coach-scene{
-  background-image:url('./family-people-v234.png');
+  background-image:url('./family-people-v235.webp');
   background-size:400% 200%;
   background-position:66.6667% 0;
   background-repeat:no-repeat;
 }
+
+/* Lesson 6 v235: keep navigation attached to the visible mobile viewport and
+   prevent the first-screen CTA from sliding under Android's bottom bar.
+   The content remains independently scrollable, including the 14th screen. */
+.app[data-lesson="6"] .body{flex:1 1 0;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:112px}
+.app[data-lesson="6"] .footer{position:fixed;z-index:30;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,430px);box-sizing:border-box;flex:none;grid-template-columns:38% 1fr;gap:10px;padding:12px 16px max(16px,env(safe-area-inset-bottom));border-top:1px solid #e7b8ec;background:linear-gradient(180deg,#fdf1ff,#f9e7ff);box-shadow:0 -8px 20px #aa79bf36}
+.app[data-lesson="6"][data-step="0"] .footer{grid-template-columns:1fr}
+.app[data-lesson="6"] .footer button{min-height:56px;border-radius:28px;font-size:18px;font-weight:800;box-shadow:0 4px 10px #9c69b745,inset 0 1px 2px #fff;white-space:nowrap}
+.app[data-lesson="6"] .footer .primary{color:#fff;text-shadow:0 1px 2px #8f2d77;border:1px solid #f9a3df;background:linear-gradient(180deg,#ff8ad4 0%,#f94fb2 54%,#e92f9d 100%);box-shadow:0 6px 14px #d64baf70,inset 0 1px 2px #fff9}
+.app[data-lesson="6"] .footer .soft:not(.primary){border-color:#dca4e6;color:#4d206f;background:linear-gradient(#fffaff,#f7e9fd)}
+.app[data-lesson="6"] .intro-art,.app[data-lesson="6"] .word-art.human,.app[data-lesson="6"] .dialogue .bubble:before{image-rendering:auto}
+@media(max-width:365px){.app[data-lesson="6"] .footer{gap:8px;padding-left:12px;padding-right:12px}.app[data-lesson="6"] .footer button{font-size:16px}}

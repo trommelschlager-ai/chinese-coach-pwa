@@ -1,0 +1,31 @@
+{
+  "version": 235,
+  "lesson": 6,
+  "source": "Approved crisp lesson 6 mockups from this chat",
+  "assets": [
+    {
+      "path": "assets/family-cover-v235.webp",
+      "width": 941,
+      "height": 627,
+      "bytes": 104578
+    },
+    {
+      "path": "assets/family-people-v235.webp",
+      "width": 832,
+      "height": 416,
+      "bytes": 75176
+    }
+  ],
+  "comparedToV234": "Cover source 430px wide; replaced with 941px. New character atlas is 832x416px. No audio, curriculum or progress script changes.",
+  "footer": "Viewport-fixed navigation scoped to lesson 6; scroll body reserves room for mobile controls.",
+  "originalAssetsRetained": [
+    "./assets/family-people-v234.png",
+    "./assets/family-cover-v234.jpg"
+  ],
+  "checks": [
+    "all 14 screens remain from unchanged JS",
+    "CSS changes scoped to data-lesson=6",
+    "asset references changed to v235",
+    "offline manifest and SW cache bumped"
+  ]
+}
