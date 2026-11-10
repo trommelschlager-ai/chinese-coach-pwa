@@ -517,7 +517,7 @@ function makeMicRecording(){
    stream.getTracks().forEach(t=>t.stop());recStream=null;
    if(chunks.length){
     if(micBlobURL)URL.revokeObjectURL(micBlobURL);
-    micBlobURL=URL.createObjectURL(new Blob(chunks,{type:recorder?.mimeType||'audio/webm'}));
+    const raw=new Blob(chunks,{type:recorder?.mimeType||'audio/webm'});micBlobURL=URL.createObjectURL(raw);window.PANDA_MIC_V236?.enhance?.(raw,micBlobURL,()=>micBlobURL,url=>{micBlobURL=url});
     setMic('Запись готова. Можно прослушать себя и сравнить с образцом.');
    }else setMic('Звук не записался.');
   };
