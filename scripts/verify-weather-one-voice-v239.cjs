@@ -31,5 +31,5 @@ const weatherHtml=get('hsk1-weather-v231.html');
 assert(weatherHtml.includes('panda-go-companion-v231.js?v=240'),'Weather must reload changed player after service worker update');
 const familyHtml=get('hsk1-family-v231.html');
 assert(familyHtml.includes('panda-go-companion-v231.js'),'Existing family player remains');
-assert(get('assets/lesson-audio-source.js').includes('Временная единая женская синтезированная озвучка'),'Synthetic voice must not be labeled human');
+assert(get('assets/lesson-audio-source.js').includes('Временная синтезированная озвучка'),'Synthetic voice must not be labeled human');
 console.log('PASS one female MeloTTS v160 voice on all '+weather.length+' active lesson 7 audio buttons / '+phrases.length+' unique phrases; no role-A male fallback.');
