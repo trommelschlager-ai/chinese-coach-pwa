@@ -8,13 +8,13 @@
 const assert=require('node:assert/strict'),fs=require('node:fs');
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('hsk1-fourth-v214.html','utf8');
-const app=fs.readFileSync('assets/hsk1-fourth-v216.js','utf8');
-const css=fs.readFileSync('assets/hsk1-fourth-v216.css','utf8');
+const app=fs.readFileSync('assets/hsk1-fourth-v220.js','utf8');
+const css=fs.readFileSync('assets/hsk1-fourth-v219.css','utf8');
 const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const voice=fs.readFileSync('assets/hsk1-weekdays-audio-map-v214.js','utf8');
 const map=fs.readFileSync('hsk1-map.html','utf8');
-assert(html.includes('hsk1-fourth-v216.css?v=216'));
-assert(html.includes('hsk1-fourth-v216.js?v=216'));
+assert(html.includes('hsk1-fourth-v219.css?v=229'));
+assert(html.includes('hsk1-fourth-v220.js?v=220'));
 assert(!html.includes('hsk1-third-v212.css'),'Lesson 4 should not depend on lesson 3 CSS');
 assert(!html.includes('hsk1-third-v213.css'),'Lesson 4 styles should be standalone');
 assert(html.includes('hanzi-writer.min.js'),'Stroke-writing library required');
