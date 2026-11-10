@@ -12,7 +12,7 @@ assert(html.includes('hsk1-fifth-v227.js?v=231'));
 assert(html.includes('panda-go-approved-lessons-v231.css?v=232'));
 assert(!html.includes('lesson3-approved-panda'),'Wrong screenshot mosaic must never return');
 assert(css.includes('panda-go-approved-lesson5-v231.svg'),'A single approved headphone-wearing Panda Go mascot required');
-assert(css.includes('#faf6ff'),'Approved light-lilac palette required');
+assert(css.includes('#f8f2ff')&&css.includes('#fffaff'),'Approved pale-lilac and pearl-pink palette required');
 new (require('node:vm').Script)(js);
 const dom=new JSDOM(html,{url:'https://panda.test/hsk1-fifth-v227.html',runScripts:'outside-only'});
 const w=dom.window,d=w.document;
