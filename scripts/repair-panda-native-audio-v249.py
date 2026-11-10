@@ -14,11 +14,16 @@ OUT.mkdir(exist_ok=True)
 SRC183=ASSETS/"hsk1-human-voice-v183.js"
 text=SRC183.read_text(encoding="utf-8")
 matches=re.findall(r"[\"']([^\"']+)[\"']\s*:\s*[\"'](data:audio/mpeg;base64,[A-Za-z0-9+/=]+)[\"']",text)
-human=dict(matches)
-if not human:
-    print("Original v183 beginning:",repr(text[:650]),flush=True)
-    raise RuntimeError("Original human v183 audio map not matched")
-print("Original v183 human sample keys:",list(human)[:50],flush=True)
+by_id=dict(matches)
+routes=dict(re.findall(r"[\"']([^\"']+)[\"']\s*:\s*[\"']([0-9]{2})[\"']",text))
+human=dict(by_id)
+human.update({phrase:by_id[clipid] for phrase,clipid in routes.items() if clipid in by_id})
+if not routes or not human.get("一"):
+    print("Original v183 prefix:",repr(text[:310]),flush=True)
+    print("v183 numeric clip IDs:",list(by_id)[:50],flush=True)
+    print("v183 sample routes:",list(routes.items())[:65],flush=True)
+    raise RuntimeError("Original v183 Chinese label-to-recording routing incomplete")
+print("Loaded human original phrases:",list(human)[-55:],flush=True)
 
 # Lesson 3 first number; lesson 4 weekday expressions; lesson 5 summary;
 # lesson 7 weather dialogue. No clips are invented or assembled.
