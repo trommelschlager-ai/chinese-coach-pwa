@@ -91,7 +91,7 @@ const mappings=window.PANDA_HSK1_VOICES||{},human=window.PANDA_HSK1_NATIVE_HUMAN
  */
 function weatherClips(hz){
  if(isFamily)return null;
- const f=mappings.female||{};
+ const f=window.PandaWeatherFemaleV240||mappings.female||{};
  const plain=String(hz).replace(/[。！？!?]\s*$/,'');
  const file=f[hz]||f[plain];
  if(typeof file==='string'&&file.startsWith('./assets/hsk1-voices-v160/'))return [file];
@@ -126,7 +126,7 @@ function play(hz,role='female'){
   const clip=parts[index++];
   if(!clip){audio=null;button?.removeAttribute('aria-busy');return}
   try{
-   const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;a.playbackRate=1;
+   const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;a.playbackRate=isFamily?1:0.86;
    a.onended=()=>{if(token!==serial)return;playNext()};
    a.onerror=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy');say('Аудио не загрузилось. Попробуй снова.','bad')};
    Promise.resolve(a.play()).catch(()=>{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Нажми кнопку звука ещё раз.','bad')}});
