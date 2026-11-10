@@ -8,11 +8,14 @@ const data=fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8');
 const css=fs.readFileSync('assets/panda-go-approved-lessons-v231.css','utf8');
 new vm.Script(source);
 assert(css.includes('panda-go-approved-lesson5-v231.svg'));
+assert(css.includes('.app[data-step="0"] .body>h1'),'Intro should use one visual heading, not repeated titles');
+assert(css.includes('.card .grid.two .word{display:flex'),'Vocabulary must be touch friendly and legible on mobile');
+assert(!css.includes('filter:blur('),'Do not blur art or Chinese text');
 for(const lesson of [6,7]){
  const topic=lesson===6?'family':'weather';
  const filename=lesson===6?'hsk1-family-v231.html':'hsk1-weather-v231.html';
  const html=fs.readFileSync(filename,'utf8');
- assert(html.includes('panda-go-approved-lessons-v231.css?v=231'));
+ assert(html.includes('panda-go-approved-lessons-v231.css?v=232'));
  assert(html.includes('panda-go-companion-v231.js?v=231'));
  assert(html.includes('panda-owner-lessons5-7-native-v221.js?v=221'));
  assert(css.includes('panda-go-approved-lesson'+lesson+'-v231.svg'));
