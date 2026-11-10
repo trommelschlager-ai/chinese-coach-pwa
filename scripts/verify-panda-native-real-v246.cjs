@@ -54,7 +54,7 @@ for(const lesson of [5,7]){
  }
  count[lesson]={buttons:rows.length,unique:seen.size};
 }
-assert(companion.includes('a.playbackRate=isFamily?1:0.90'),'Natural speaker speed must remain gentle');
+assert(companion.includes('a.playbackRate=isFamily?1:0.85'),'Natural speaker speed must remain gentle');
 assert(!companion.slice(start,end).includes('hsk1-voices-v160'),'Do not silently switch weather back to synthetic v160');
 const weatherHtml=read('hsk1-weather-v231.html'),dateHtml=read('hsk1-fifth-v227.html');
 for(const html of [weatherHtml,dateHtml]){
@@ -64,7 +64,7 @@ for(const html of [weatherHtml,dateHtml]){
  assert(html.indexOf('hsk1-human-voice-v183.js')<html.indexOf('panda-native-recovered-v246.js'),'Owner snapshot load order');
  assert(html.indexOf('panda-native-recovered-v246.js')<html.indexOf('panda-owner-lessons5-7-native-v221.js'),'Capture original before override');
 }
-assert(weatherHtml.includes('panda-go-companion-v231.js?v=246'));
-assert(dateHtml.includes('hsk1-fifth-v227.js?v=246'));
+assert(weatherHtml.includes('panda-go-companion-v231.js?v=247'));
+assert(dateHtml.includes('hsk1-fifth-v227.js?v=247'));
 assert(read('assets/lesson-audio-source.js').includes('Звук v246'));
 console.log('PASS Panda Go v246: '+monthNames.length+' native months, '+count[5].unique+' active date phrases ('+count[5].buttons+' buttons), '+count[7].unique+' original native weather phrases ('+count[7].buttons+' buttons). Recovered '+w.PandaNativeRecoveredV246.available+' source clips.');
