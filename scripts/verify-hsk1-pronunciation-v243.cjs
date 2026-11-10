@@ -13,7 +13,7 @@ assert(css.includes('grid-template-columns:repeat(2,minmax(0,1fr))'),'Compact tw
 assert(css.includes('height:100dvh'),'Full-height screen, internal scroll required');
 assert(html.includes('59 элементов пиньиня'),'Correct metric wording required');
 assert(!html.includes('59 сочетаний'),'Do not mislabel pinyin elements');
-assert(/13 сложных сочетаний/.test(html),'Intro should state its intended scope');
+assert(html.includes('190 аудио')&&html.includes('59 элементов пиньиня')&&js.includes('const special=['),'Intro should show accurate corpus stats and 13-combo data');
 for(const c of data.clips){
  assert(/^p\d{3}$/.test(c.id),'Bad sample id '+c.id);
  assert(fs.existsSync('assets/pinyin-reading-v4/'+c.id+'.mp3'),'Missing MP3 '+c.id);
