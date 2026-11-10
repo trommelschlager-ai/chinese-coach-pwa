@@ -15,9 +15,10 @@ SRC183=ASSETS/"hsk1-human-voice-v183.js"
 text=SRC183.read_text(encoding="utf-8")
 matches=re.findall(r"[\"']([^\"']+)[\"']\s*:\s*[\"'](data:audio/mpeg;base64,[A-Za-z0-9+/=]+)[\"']",text)
 by_id=dict(matches)
-routes=dict(re.findall(r"[\"']([^\"']+)[\"']\s*:\s*[\"']([0-9]{2})[\"']",text))
+words_match=re.search(r"const words\s*=\s*(\{[\s\S]*?\})\s*;",text)
+routes=json.loads(words_match.group(1)) if words_match else {}
 human=dict(by_id)
-human.update({phrase:by_id[clipid] for phrase,clipid in routes.items() if clipid in by_id})
+human.update({phrase:by_id[str(clipid).zfill(2)] for phrase,clipid in routes.items() if str(clipid).zfill(2) in by_id})
 if not routes or not human.get("一"):
     print("Original v183 prefix:",repr(text[:310]),flush=True)
     print("v183 numeric clip IDs:",list(by_id)[:50],flush=True)
