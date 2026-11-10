@@ -89,6 +89,8 @@ async function main(){
    for(const [width,height] of [[320,568],[320,780],[360,568],[360,780],[393,568],[393,780],[430,568],[430,780]]){
     await page.setViewport({width,height,deviceScaleFactor:1,isMobile:true,hasTouch:true});
     try{
+     // The preceding 393px pass restores the last screen; clear only the QA tab's state.
+     if(width===430&&height===568)await page.evaluate(key=>localStorage.removeItem(key),lesson.key);
      await page.goto('http://127.0.0.1:'+port+'/'+lesson.file,{waitUntil:'networkidle2',timeout:45000});
      await page.evaluate(()=>document.fonts?.ready);
      let row=await evaluateLayout(page,l+1,1,width,height,errors);
