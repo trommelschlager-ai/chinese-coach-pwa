@@ -1,5 +1,5 @@
 {
-  "version": 243,
+  "version": 244,
   "bytes": 46981088,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -1048,8 +1048,6 @@
     "./assets/panda-go-approved-lessons-v231.css?v=234",
     "./assets/panda-go-approved-lessons-v231.css?v=235",
     "./assets/panda-go-approved-lessons-v231.css?v=237",
-    "./assets/panda-go-companion-v231.js?v=233",
-    "./assets/panda-go-companion-v231.js?v=237",
     "./assets/panda-go-hero-clean-v174.webp",
     "./assets/panda-go-legacy-atlas-v178.webp",
     "./assets/panda-go-original-details-v178.webp",
@@ -2073,16 +2071,15 @@
     "./index.html",
     "./manifest.webmanifest",
     "./start-chinese.html",
-    "./assets/panda-go-companion-v231.js?v=239",
     "./assets/lesson-audio-source.js?v=239",
     "./assets/panda-weather-female-v240.js?v=240",
-    "./assets/panda-lesson-audio-v240.js?v=240",
-    "./assets/panda-go-companion-v231.js?v=240",
     "./assets/hsk1-fifth-v227.js?v=240",
     "./assets/lesson-audio-source.js?v=241",
     "./hsk1-pronunciation.html",
     "./assets/hsk1-pronunciation-v243.js?v=243",
     "./assets/hsk1-pronunciation-v243.css?v=243",
-    "./assets/hsk1-pronunciation-entry-v242.css?v=242"
+    "./assets/hsk1-pronunciation-entry-v242.css?v=242",
+    "./assets/panda-go-companion-v231.js?v=244",
+    "./assets/panda-lesson-audio-v240.js?v=244"
   ]
 }
