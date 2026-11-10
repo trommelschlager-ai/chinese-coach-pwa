@@ -85,12 +85,11 @@ function voice(hz,role='female'){
  // Prioritize the learner-authorized speaker. When not recorded, prefer
  // an exact, original human sample over a different synthetic narrator.
  // Preserve the explicitly assigned male voice for dialogue role A.
- if(role==='male'&&primary)return primary;
+ // Dialogue also uses the authorized original female recording; never synthesize a different narrator.
  const owner=typeof female==='string'&&
    (female.startsWith('data:audio/mpeg;base64,')||female.includes('native-owner-v200/'))?female:null;
- const native=(window.PANDA_HSK1_NATIVE_HUMAN_V167||{})[hz]||null;
- const alternate=(window.courseNaturalAudio||{})[hz]||(window.courseHumanAudio||{})[hz]||null;
- return owner||native||female||alternate||null;
+ const approved=x=>typeof x==='string'&&(x.startsWith('data:audio/mpeg;base64,')||x.includes('native-owner-v200/'));
+ return owner||(approved(primary)?primary:null)||null;
 }
 function play(hz,role='female'){
  const path=voice(hz,role);if(!path){say('Для этой фразы пока нет проверенной записи.','bad');return}
@@ -98,9 +97,9 @@ function play(hz,role='female'){
  try{
   const a=new Audio(window.PandaAudioLevel?.[path]||path);audio=a;a.preload='auto';
   a.preservesPitch=true;
-  a.playbackRate=0.92; // easier to hear complete Mandarin tones
-  // Archived v186 owner files were level-balanced already. Do not amplify them twice.
-  if(!path.startsWith('data:audio/'))window.PandaLessonAudioV240?.improve?.(a,'dates');
+  a.playbackRate=0.86; // slower with preserved pitch for new learners
+  // Owner-clean files are already balanced; gently level only inline originals.
+  if(path.startsWith('data:audio/'))window.PandaLessonAudioV240?.improve?.(a,'dates');
   const pressed=[...app.querySelectorAll('[data-play]')].find(el=>el.dataset.play===hz);
   pressed?.setAttribute('aria-busy','true');
   a.onended=()=>{if(serial!==playId)return;audio=null;pressed?.removeAttribute('aria-busy')};

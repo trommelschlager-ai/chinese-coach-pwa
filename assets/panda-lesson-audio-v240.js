@@ -7,18 +7,19 @@
  const AudioCtx=window.AudioContext||window.webkitAudioContext;
  let ctx=null;
  function improve(element,profile='dates'){
-  if(!AudioCtx||!element||profile!=='dates')return false;
-  let source=null,compressor=null,gain=null;
+  if(!AudioCtx||!element||!['dates','weather'].includes(profile))return false;
+  let source=null,compressor=null,gain=null,highpass=null;
   try{
    if(!ctx)ctx=new AudioCtx();
    source=ctx.createMediaElementSource(element);
    compressor=ctx.createDynamicsCompressor();
-   compressor.threshold.value=-12;compressor.knee.value=8;
-   compressor.ratio.value=10;compressor.attack.value=0.003;compressor.release.value=0.18;
+   compressor.threshold.value=-15;compressor.knee.value=6;
+   compressor.ratio.value=3;compressor.attack.value=0.006;compressor.release.value=0.20;
    gain=ctx.createGain();
-   gain.gain.value=1.75;
-   source.connect(gain);gain.connect(compressor);compressor.connect(ctx.destination); // limiter follows gain
-   const cleanup=()=>{try{source.disconnect();compressor.disconnect();gain.disconnect()}catch{}};
+   gain.gain.value=profile==='dates'?1.35:1.4;
+   highpass=ctx.createBiquadFilter();highpass.type='highpass';highpass.frequency.value=75;
+   source.connect(highpass);highpass.connect(gain);gain.connect(compressor);compressor.connect(ctx.destination); // gentle voice levelling
+   const cleanup=()=>{try{source.disconnect();highpass.disconnect();compressor.disconnect();gain.disconnect()}catch{}};
    element.addEventListener('ended',cleanup,{once:true});
    element.addEventListener('pause',cleanup,{once:true});
    element.addEventListener('error',cleanup,{once:true});

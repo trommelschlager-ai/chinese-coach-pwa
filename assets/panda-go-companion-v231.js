@@ -82,12 +82,8 @@ function done(){
 function say(message,kind=''){notice.textContent=message;notice.className='result '+kind;notice.hidden=!message}
 function stopAudio(){serial++;try{audio?.pause();audio.currentTime=0}catch{}audio=null;stage.querySelectorAll('[aria-busy]').forEach(b=>b.removeAttribute('aria-busy'))}
 const mappings=window.PANDA_HSK1_VOICES||{},human=window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
-/* v239: Weather lesson uses ONE consistent, offline, pre-existing female MeloTTS voice.
- * Never mix approved native clips, old male Kokoro dialogue, and fallback voices here.
- * Only one phrase is missing from the prepackaged v160 female set; it plays
- * two matching female v160 fragments (明天下雨 + 吗) until a whole take exists.
- * This is clearly a temporary synthetic voice, NOT the original speaker.
- * Family lesson retains its approved owner recordings and original dialogue roles.
+/* v247: Lesson 7 prefers original authorized female speaker recordings.
+ * Do not fall back to synthetic voices. Lesson 6 remains unchanged.
  */
 function familyOriginalParts(hz,role='female'){
  if(!isFamily||role!=='female')return null;
@@ -102,9 +98,9 @@ function weatherClips(hz){
  const plain=String(hz).replace(/[。！？!?]\s*$/,'');
  // Priority 1: the already-recorded Chinese woman. v183/v184 originals were
  // ignored by the old v240 player even though we have every lesson-7 phrase.
- const recovered=window.PandaNativeRecoveredV246?.lookup(hz);
+ const recovered=window.PandaNativeRecoveredV246?.lookup(hz)||window.PandaNativeRecoveredV246?.lookup(plain);
  if(recovered)return [recovered];
- const approved=window.PandaOwnerAudio?.lookup(hz);
+ const approved=window.PandaOwnerAudio?.lookup(hz)||window.PandaOwnerAudio?.lookup(plain);
  if(approved)return [approved];
  // v221 records are additional MP3 clips of the same approved woman.
  const female=mappings.female||{};
@@ -141,7 +137,8 @@ function play(hz,role='female'){
   const clip=parts[index++];
   if(!clip){audio=null;button?.removeAttribute('aria-busy');return}
   try{
-   const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;a.playbackRate=isFamily?1:0.90; // natural owner voice, slightly slower for HSK1
+   const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;a.playbackRate=isFamily?1:0.85; // human weather recordings slowed without shifting pitch
+   if(!isFamily && clip.startsWith('data:audio/'))window.PandaLessonAudioV240?.improve?.(a,'weather');
    a.onended=()=>{if(token!==serial)return;playNext()};
    a.onerror=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy');say('Аудио не загрузилось. Попробуй снова.','bad')};
    Promise.resolve(a.play()).catch(()=>{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Нажми кнопку звука ещё раз.','bad')}});
