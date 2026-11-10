@@ -99,14 +99,20 @@ function familyOriginalParts(hz,role='female'){
 }
 function weatherClips(hz){
  if(isFamily)return null;
- const f=window.PandaWeatherFemaleV240||mappings.female||{};
  const plain=String(hz).replace(/[。！？!?]\s*$/,'');
- const file=f[hz]||f[plain];
- if(typeof file==='string'&&file.startsWith('./assets/hsk1-voices-v160/'))return [file];
- if(plain==='明天下雨吗'){
-  const core=f['明天下雨'],particle=f['吗'];
-  if(core?.startsWith('./assets/hsk1-voices-v160/')&&particle?.startsWith('./assets/hsk1-voices-v160/'))return [core,particle];
- }
+ // Priority 1: the already-recorded Chinese woman. v183/v184 originals were
+ // ignored by the old v240 player even though we have every lesson-7 phrase.
+ const recovered=window.PandaNativeRecoveredV246?.lookup(hz);
+ if(recovered)return [recovered];
+ const approved=window.PandaOwnerAudio?.lookup(hz);
+ if(approved)return [approved];
+ // v221 records are additional MP3 clips of the same approved woman.
+ const female=mappings.female||{};
+ const native=female[hz]||female[plain];
+ if(typeof native==='string'&&native.startsWith('data:audio/mpeg;base64,'))return [native];
+ const extra=window.PANDA_HSK1_OWNER_V200?.[hz]||window.PANDA_HSK1_OWNER_V200?.[plain];
+ if(typeof extra==='string')return [extra];
+ // Do not silently switch back to the rejected childlike/synthetic voice.
  return [];
 }
 function resolve(hz,role='female'){
@@ -135,7 +141,7 @@ function play(hz,role='female'){
   const clip=parts[index++];
   if(!clip){audio=null;button?.removeAttribute('aria-busy');return}
   try{
-   const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;a.playbackRate=isFamily?1:0.86;
+   const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;a.playbackRate=isFamily?1:0.90; // natural owner voice, slightly slower for HSK1
    a.onended=()=>{if(token!==serial)return;playNext()};
    a.onerror=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy');say('Аудио не загрузилось. Попробуй снова.','bad')};
    Promise.resolve(a.play()).catch(()=>{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Нажми кнопку звука ещё раз.','bad')}});
