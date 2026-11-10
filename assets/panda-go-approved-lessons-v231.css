@@ -1,4 +1,4 @@
-/* Panda Go · HSK1 lessons 5–7 · 14-screen approved concept visual language v231.
+/* Panda Go · HSK1 lessons 5–7 · 14-screen crisp approved mobile art v232.
    Standalone design: no shared CSS hacks; 7-step legacy remains at ?lesson=5&legacy=1.
 */
 :root{--ink:#644f88;--sub:#8b729e;--lilac:#f0e2fb;--soft:#fcf7ff;--pink:#eaaad6;--purple:#a779cd;--card:#fffdfd;--border:#ebd4f0;--shadow:#bd99ca38;color-scheme:light}
@@ -8,7 +8,7 @@ body{color:var(--ink);font:500 15px/1.45 system-ui,-apple-system,'Segoe UI',Aria
 button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #8e64d2;outline-offset:3px}
 .app{width:min(100%,480px);height:100dvh;min-height:0;margin:0 auto;position:relative;isolation:isolate;display:flex;flex-direction:column;overflow:hidden;
- background:linear-gradient(180deg,#faf6ffcc 0%,#fff9ffdc 41%,#f8f0ffed 100%),url('./lesson5-lilac-sakura-v225.svg') center center/cover no-repeat,#f7efff;box-shadow:0 0 55px #b4a0cd55}
+ background:linear-gradient(180deg,#fffaffba 0%,#fffafdca 38%,#f9f2fff1 100%),url('./lesson5-lilac-sakura-v225.svg') center center/cover no-repeat,#f7efff;box-shadow:0 0 55px #b4a0cd55}
 .app::before{content:'';position:absolute;inset:0 0 auto;height:155px;z-index:-1;background:linear-gradient(180deg,#ffffff61,transparent);pointer-events:none}
 .header{flex:0 0 auto;display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:9px;padding:calc(10px + env(safe-area-inset-top)) 13px 9px;
  background:linear-gradient(#fdf9fff5,#f9f1ffea);border-bottom:1px solid #ebd8f1;box-shadow:0 3px 13px #b7a1bf21}
@@ -21,7 +21,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #8e64
 .count{white-space:nowrap;min-width:59px;padding:7px 8px;border:1px solid #e8cfef;border-radius:12px;text-align:center;background:#fff9ffdf;font-size:12px;font-weight:850;color:#8a60a8}
 .bar{height:9px;flex:0 0 9px;margin:9px 16px 3px;border-radius:99px;background:#e9d9f0;border:1px solid #e4cde9;overflow:hidden;box-shadow:inset 0 2px 4px #a684b82c}
 .fill{height:100%;width:7.14%;border-radius:99px;background:linear-gradient(90deg,#c4a7ed,#eab3dd,#e381ba);transition:width .23s}
-.body{min-height:0;flex:1;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#d9b6e1 transparent;padding:5px 15px 25px}
+.body{min-height:0;flex:1;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#d9b6e1 transparent;padding:5px 15px 22px}
 .kicker{display:table;margin:10px auto 7px;padding:6px 19px;text-align:center;border:1px solid #e7c9e9;border-radius:99px;color:#a66eaf;background:linear-gradient(115deg,#fffbff,#f7e8ff);font-size:12px;font-weight:950;letter-spacing:.65px;box-shadow:0 3px 11px #c59ecb32}
 h1{font-size:clamp(24px,7vw,32px);line-height:1.16;color:#68498e;text-align:center;letter-spacing:-.5px;margin:6px 0 6px;font-weight:950;text-shadow:0 1px #fff}
 .subtitle{font-size:14px;color:#806798;text-align:center;max-width:390px;margin:0 auto 13px;line-height:1.42}
@@ -54,11 +54,11 @@ h1{font-size:clamp(24px,7vw,32px);line-height:1.16;color:#68498e;text-align:cent
 .example strong{display:block;font-size:clamp(25px,7vw,36px);color:#6e4c96;font-family:'Noto Sans SC',system-ui,sans-serif}
 .example .py{display:block;color:#b879ab;font-size:14px;font-weight:750;margin:2px 0}
 .example .ru{color:#8b729c;font-size:13px}
-.intro{display:grid;grid-template-columns:minmax(0,1fr) 48%;align-items:center;gap:3px;min-height:245px;padding:19px 7px 15px 17px;border:1.5px solid #e7cbed;border-radius:27px;position:relative;
+.intro{display:grid;grid-template-columns:minmax(0,1fr) 48%;align-items:center;gap:5px;min-height:245px;padding:16px 8px 14px 16px;border:1.5px solid #e7cbed;border-radius:27px;position:relative;
  background:radial-gradient(ellipse at 86% 8%,#fff 0%,transparent 47%),linear-gradient(130deg,#fffcffef,#f5e9fce9 71%,#fcecffea);box-shadow:0 12px 28px #b6a0c64a;overflow:hidden}
-.intro-copy{padding-left:8px;min-width:0}.intro-copy strong{display:block;font-size:clamp(21px,6.3vw,28px);line-height:1.17;color:#6c4c95;text-shadow:0 1px #fff}
-.intro-copy p{font-size:13px;line-height:1.45;color:#8a709c;margin:8px 0}
-.intro-art{height:220px;min-width:0;background:url('./panda-go-approved-lesson5-v231.svg') center/contain no-repeat;filter:drop-shadow(0 8px 12px #aa8aca48);border-radius:24px}
+.intro-copy{padding-left:4px;min-width:0;position:relative;z-index:1}.intro-copy strong{display:block;font-size:clamp(22px,6.1vw,29px);line-height:1.16;color:#68468f;text-shadow:0 1px #fff;font-weight:950;overflow-wrap:anywhere}
+.intro-copy p{font-size:13px;line-height:1.45;color:#856a9a;margin:9px 0 0}
+.intro-art{height:220px;min-width:0;background:url('./panda-go-approved-lesson5-v231.svg') center/contain no-repeat;border-radius:24px;image-rendering:auto;transform:none}
 .date-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
 .date-chip{text-align:center;padding:9px 3px;border-radius:15px;background:#fff9fc;border:1px solid #ebd5ef}
 .date-chip strong{display:block;font-size:25px;color:#7653a0}.date-chip small{color:#ad7ca9;font-size:11px}
@@ -87,7 +87,12 @@ h1{font-size:clamp(24px,7vw,32px);line-height:1.16;color:#68498e;text-align:cent
 @media(prefers-reduced-motion:reduce){.fill,.audio{transition:none!important}}
 
 /* Recreated approved four-panel UI motifs, with live accessible elements. */
-.app[data-lesson="6"]{--lesson-mascot:url('./panda-go-approved-lesson6-v231.svg')}
+.app[data-lesson="6"]{--lesson-mascot:url('./panda-go-approved-lesson6-v231.svg');--lesson-accent:#cf9fd7}
+.app[data-lesson="7"]{--lesson-accent:#9fa4dc}
+.app[data-lesson="7"] .intro{border-color:#dcd9f4;background:linear-gradient(132deg,#fffafe,#f0edff 72%,#faf1fd)}
+.app[data-lesson="7"] .card-choice.chosen{border-color:#a2a3d6}
+.app[data-lesson="7"] .word{border-color:#e0dcf3}
+
 .app[data-lesson="7"]{--lesson-mascot:url('./panda-go-approved-lesson7-v231.svg')}
 .app[data-lesson="6"] .brand-panda,.app[data-lesson="7"] .brand-panda{background-image:var(--lesson-mascot)}
 .app[data-lesson="6"] .intro-art,.app[data-lesson="7"] .intro-art{background-image:var(--lesson-mascot)}
@@ -95,16 +100,42 @@ h1{font-size:clamp(24px,7vw,32px);line-height:1.16;color:#68498e;text-align:cent
 .app[data-step="0"] .footer #pg5-prev{display:none}
 .app[data-step="0"] .footer .primary{min-height:58px;font-size:18px}
 .app .body{background:linear-gradient(180deg,#ffffff08,#fff9ff20)}
+/* First screen is a real illustrated cover, not three repeated headings.
+   Keep the title and sample chips as separately rendered, sharply rasterized DOM. */
+.app[data-step="0"] .kicker,
+.app[data-step="0"] .body>h1,
+.app[data-step="0"] .subtitle{display:none}
+.app[data-step="0"] .body{padding-top:13px}
+.app[data-step="0"] .intro{min-height:265px;background:radial-gradient(ellipse at 81% 25%,#ffffffeb,transparent 58%),linear-gradient(130deg,#fffefef5,#f6e8fffa 75%,#fff1f8f4);box-shadow:0 12px 25px #bfa0ce3c}
+.app[data-step="0"] .intro .pg5-kicker{display:block;margin:0 0 7px;color:#bd7eb8;font-size:11px;font-weight:950;letter-spacing:.9px}
+.app[data-step="0"] .intro-art{height:235px}
+.app[data-step="0"] .intro-copy p{max-width:175px}
+.app[data-step="0"] .cover-note{margin-bottom:8px}
+.app[data-step="13"] .intro{min-height:195px}
+.app[data-step="13"] .intro-art{height:170px}
+.app[data-step="13"] .intro-copy strong{font-size:clamp(25px,7.4vw,33px)}
+/* Same bright, carefully sized cards on every step; keep hanzi and pinyin sharp. */
+.card .grid.two .word{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;padding:13px 6px 10px;text-align:center}
+.card .grid.two .word>div{width:100%;min-width:0}
+.card .grid.two .word .audio{margin:7px auto 0;flex:none}
+.card .grid.two .word strong{line-height:1.2;overflow-wrap:anywhere}
+.card .grid.two .word .ru{line-height:1.35;min-height:15px;white-space:normal}
+.word-emoji{display:block;font-size:23px;line-height:1.1;margin:1px auto 4px}
+.app[data-lesson="7"] .word-emoji{font-size:25px}
+.card .grid.two .word:has(.word-emoji){min-height:178px}
+.app[data-lesson="7"] .cover-milestones strong{font-size:clamp(23px,6vw,31px)}
+/* Portrait: no baked-in text, blurred screenshot overlays, or CSS blur. */
+.app .intro-art,.app .brand-panda{backdrop-filter:none;filter:none}
 .cover-milestones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:13px 0 6px}
-.cover-milestones div{padding:11px 3px;text-align:center;border:1.5px solid #edd6f1;border-radius:17px;background:#fff9ffed;box-shadow:0 4px 12px #c7a4d22e;color:#76559e}
+.cover-milestones div{padding:11px 3px;text-align:center;border:1.5px solid #edd6f1;border-radius:17px;background:#fffafffa;box-shadow:0 4px 12px #c7a4d22e;color:#76559e;min-width:0}
 .cover-milestones strong{font-size:clamp(23px,6.5vw,32px);font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;display:block;font-weight:800;line-height:1.3}
 .cover-milestones small{display:block;color:#a276a5;font-size:11px;padding-top:2px}
 .cover-caption{text-align:center;font-size:14px;color:#9279a4;margin:9px auto}
 .cover-note{display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid #ead9f0;border-radius:17px;background:#fff9ffed;padding:11px 8px;font-size:13px;color:#7c5a98;margin:9px 0}
 .cover-note strong{color:#7652a0}
-.card .word{background:linear-gradient(135deg,#fffdfa,#fdf8ff);border-color:#edd8f1;min-height:104px}
-.card .word strong{font-size:clamp(30px,8.4vw,39px)}
-.card .word .py{font-size:15px;letter-spacing:.1px;color:#ad6cae}
+.card .word{background:linear-gradient(135deg,#fffdfa,#fdf8ff);border-color:#edd8f1;min-height:148px}
+.card .word strong{font-size:clamp(29px,7.7vw,38px)}
+.card .word .py{font-size:14px;letter-spacing:.1px;color:#a66aa9;line-height:1.35}
 .card .word .ru{font-size:13px}
 .grid.two{gap:10px}.grid.two .word{min-width:0}
 .grid.two .word .audio{min-width:40px;width:40px;height:40px}
