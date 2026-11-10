@@ -1,17 +1,25 @@
 <!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Panda Go v237 · Mobile rendering QA</title>
-<style>*{box-sizing:border-box}body{margin:15px;font:14px system-ui;background:#f6edfc;color:#542379}header{position:sticky;top:0;background:#fff4ff;padding:10px;z-index:2}button,select{font:inherit;padding:8px;margin:3px}#frames{display:flex;gap:12px;align-items:start}iframe{border:1px solid #cba5df;display:block}pre{white-space:pre-wrap}.label{text-align:center;font-weight:700}</style>
+<style>*{box-sizing:border-box}body{margin:15px;font:14px system-ui;background:#f6edfc;color:#542379}header{position:sticky;top:0;background:#fff4ff;padding:10px;z-index:2}button,select{font:inherit;padding:8px;margin:3px}#frames{display:flex;gap:12px;align-items:start}iframe{box-sizing:content-box;border:1px solid #cba5df;display:block}pre{white-space:pre-wrap}.label{text-align:center;font-weight:700}</style>
 <header><strong>Panda Go v237 — проверка реального рендеринга Chromium</strong><br><button id="run">Проверить все 7 уроков</button><select id="lesson"><option value="0">Урок 1</option><option value="1">Урок 2</option><option value="2" selected>Урок 3</option><option value="3">Урок 4</option><option value="4">Урок 5</option><option value="5">Урок 6</option><option value="6">Урок 7</option></select><input id="step" type="number" min="1" max="15" value="1"><button id="show">Показать экран</button><div id="status" role="status">Учебный прогресс изолирован: тест использует память каждого фрейма.</div></header>
 <div id="frames"></div><pre id="result"></pre>
 <script>
 const pages=[['hsk1-first-v189.html','pg-hsk1-v189-lesson1',15],['hsk1-second-v203.html','pg-hsk1-v203-pronouns',12],['hsk1-third-v212.html','pg-hsk1-v213-numbers',14],['hsk1-fourth-v214.html','pg-hsk1-v215-weekdays',13],['hsk1-fifth-v227.html','pg-hsk1-l5-v227',14],['hsk1-family-v231.html','pg-hsk1-l6-v231',14],['hsk1-weather-v231.html','pg-hsk1-l7-v231',14]];
-const widths=[320,360,393,430],frames=[],source=new Map(),status=document.getElementById('status');
+const widths=[320,360,393,430],frames=[],source=new Map(),scriptSources=new Map(),status=document.getElementById('status');
 for(const width of widths){const box=document.createElement('div');box.innerHTML='<div class="label">'+width+' × 780 CSS px</div>';const f=document.createElement('iframe');f.width=width;f.height=780;f.title='Урок на ширине '+width;box.append(f);document.getElementById('frames').append(box);frames.push(f)}
 async function load(frame,lesson,step,height=780){
- const [page,key,total]=pages[lesson];if(!source.has(page))source.set(page,await fetch('../../'+page,{cache:'reload'}).then(r=>{if(!r.ok)throw Error(page+' HTTP '+r.status);return r.text()}));
+ const [page,key,total]=pages[lesson];
+ if(!source.has(page))source.set(page,(async()=>{
+  let html=await fetch('../../'+page,{cache:'reload'}).then(r=>{if(!r.ok)throw Error(page+' HTTP '+r.status);return r.text()});
+  const tags=[...html.matchAll(/<script src="([^"]+)"[^>]*><\/script>/g)];
+  await Promise.all(tags.map(async tag=>{const url=new URL(tag[1],new URL('../../'+page,location.href)).href;if(!scriptSources.has(url))scriptSources.set(url,fetch(url).then(r=>{if(!r.ok)throw Error(url);return r.text()}));await scriptSources.get(url)}));
+  for(const tag of tags){const url=new URL(tag[1],new URL('../../'+page,location.href)).href;const js=await scriptSources.get(url);html=html.replace(tag[0],'<script>'+js.replace(/<\/script/gi,'<\\/script')+'<\/script>')}
+  return html;
+ })());
+ const html=await source.get(page);
  const seed=JSON.stringify({step,lessonVersion:237,maxStep:total-1,done:lesson===1?Array(total).fill(false):false,viewed:{1:[],2:[]},completedSpeech:{1:[],2:[]},selected:{1:1,2:6}});
  const setup='<base href="'+new URL('../../',location.href).href+'"><script>(()=>{const m=new Map([['+JSON.stringify(key)+','+JSON.stringify(seed)+']]);Object.defineProperty(window,"localStorage",{value:{getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,String(v)),removeItem:k=>m.delete(k),clear:()=>m.clear()}});window.qaErrors=[];window.addEventListener("error",e=>window.qaErrors.push(e.message));})();<\/script>';
  frame.height=height;
- await new Promise((resolve,reject)=>{const t=setTimeout(()=>reject(Error('Frame load timed out')),20000);frame.onload=()=>{clearTimeout(t);resolve()};frame.srcdoc=source.get(page).replace('<head>','<head>'+setup)});
+ await new Promise((resolve,reject)=>{const t=setTimeout(()=>reject(Error('Frame load timed out')),20000);frame.onload=()=>{clearTimeout(t);resolve()};frame.srcdoc=html.replace('<head>','<head>'+setup)});
  await frame.contentDocument.fonts.ready;
  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
 }
@@ -38,7 +46,7 @@ document.getElementById('run').onclick=async()=>{
  const rows=[];document.getElementById('run').disabled=true;
  try{for(const height of [568,780])for(let lesson=0;lesson<7;lesson++)for(let step=0;step<pages[lesson][2];step++){
   status.textContent='Проверка: '+height+' px, урок '+(lesson+1)+', экран '+(step+1);
-  await Promise.all(frames.map(async f=>{await load(f,lesson,step,height);rows.push(check(f,lesson,step,height))}));
+  await Promise.all(frames.map(async f=>{await load(f,lesson,step,height);const row=check(f,lesson,step,height);rows.push(row);if(row.issues.length)document.getElementById('result').textContent=JSON.stringify(rows.filter(x=>x.issues.length),null,2)}));
  }
  const failed=rows.filter(x=>x.issues.length);document.getElementById('result').textContent=JSON.stringify({checks:rows.length,passed:rows.length-failed.length,failed},null,2);status.textContent='Проверка завершена: '+(rows.length-failed.length)+' / '+rows.length+' без ошибок компоновки.';window.qaResults=rows;await show();
  }catch(e){status.textContent='Ошибка проверки: '+e.message}finally{document.getElementById('run').disabled=false}
