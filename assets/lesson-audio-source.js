@@ -10,10 +10,15 @@
   if(!status)return;
   const lesson=document.querySelector('.app')?.dataset.lesson;
   const fromNative=!!window.PandaOwnerAudio?.lookup(text);
+  const recovered=!!window.PandaNativeRecoveredV246?.lookup(text);
+  const nativeMap=window.PANDA_HSK1_VOICES?.female||{};
+  const phrase=String(text).replace(/[。！？!?]\\s*$/,'');
+  const fromInline=String(nativeMap[text]||nativeMap[phrase]||'').startsWith('data:audio/mpeg;base64,');
+  const isOwner=recovered||fromNative||fromInline;
   status.textContent=lesson==='7'
-   ?'Звук v241 · единый женский голос, скорость 86%. Временная синтезированная озвучка.'
+   ?(isOwner?'Звук v246 · оригинальный женский голос китаянки · скорость 90%.':'Нужна запись носительницы: оригинал пока не найден.')
    :lesson==='5'
-   ?('Звук v241 · громкость усилена, скорость 92%. '+(fromNative?'Оригинальная запись носительницы.':'Временный источник записи.'))
+   ?('Звук v246 · скорость 92%. '+(isOwner?'Оригинальная запись китаянки.':'Временный источник: нужен оригинал носительницы.'))
    :role==='male'?'Мужская роль диалога.':fromNative?'Оригинальная запись носительницы.':'Временная запись другого источника. Нужна запись носительницы.';
  },true);
 })();
