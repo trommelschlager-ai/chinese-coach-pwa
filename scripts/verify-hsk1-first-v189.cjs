@@ -72,14 +72,14 @@ assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('found
 assert(!d.querySelector('.lesson-step'),'Old seven-step bulky UI must not mount in the new lesson');assert(map.includes('15 экранов'),'First map must show its actual fifteen screen count');
 assert(!js.includes('speechSynthesis'),'No cloned or invented speaker voice');assert(page.includes('hsk1-native-clean-v198.js?v=198'),'Owner recording overlay is loaded after all older voices');assert(js.includes("matches.find(([,v])=>v.startsWith('data:audio/mpeg;base64,'))"),'Prefer owner voice');assert(js.includes('const realHuman='),'Use licensed real human fallback');assert(js.includes('autoGainControl:true'),'Automatic mic gain');assert(js.includes('async function levelRecording(blob)'),'Normalize recorded volume');assert(js.includes('decodeAudioData'),'Web Audio normalization fallback');
 for(const removed of ['Оригинальная запись носительницы','Временный учебный голос','Оценка произношения не автоматическая','Никакой автоматической оценки','Сначала послушай носительницу'])assert(!js.includes(removed),'Redundant status copy returned: '+removed);
-assert(page.includes('hsk1-first-v189.js?v=237'),'New JS query bust');
+assert(page.includes('hsk1-first-v189.js?v=242'),'New JS query bust');
 assert(js.includes("'麻':'./assets/hsk1-tone-clean-v202/ma2.mp3'")&&js.includes("'马':'./assets/hsk1-tone-clean-v202/ma3.mp3'"),'Only second and third tones must use cleaned original voice clips');
 assert(!js.includes("'妈':'./assets/hsk1-tone-clean")&&!js.includes("'骂':'./assets/hsk1-tone-clean"),'First and fourth tones must remain unchanged');
 assert(page.includes('native-owner-v200.js?v=200'),'New owner audio map must load after v198');
 assert(js.includes('endAt=item.duration;'),'Never cut syllable endings during playback');
 assert(js.includes('item.playbackRate=1;'),'Natural speech rate must preserve syllable quality');
 assert(js.includes("high.type='highpass'")&&js.includes("low.type='lowpass'")&&js.includes('createDynamicsCompressor'),'Tone source must be gently processed without replacement');
-assert(page.includes('hsk1-first-v189.css?v=237'),'New CSS query bust');
+assert(page.includes('hsk1-first-v189.css?v=242'),'New CSS query bust');
 assert(css.includes('animation-iteration-count:infinite'),'Writing must run continuously');for(let i=1;i<=6;i++)assert(css.includes('@keyframes pgHao'+i),'Missing sequential six-stroke writing frame');assert(!js.includes('pg-wo-writing'),'Old seven-stroke character must be removed');assert(!js.includes('toneChoice'),'Intro tone choices must be absent');
 console.log('PASS v202: 好 introduction, six-stroke animation, non-quiz tones, first words and saved completion');
 w.close();
