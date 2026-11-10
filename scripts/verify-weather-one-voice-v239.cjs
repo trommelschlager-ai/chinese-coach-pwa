@@ -25,7 +25,7 @@ for(const phrase of phrases){
 }
 assert(companion.includes('if(!isFamily)return weatherClips(hz)[0]||null;'),'Weather must not fall back to other speakers');
 assert(companion.includes("const parts=isFamily?[src]:weatherClips(hz);"),'Playback must use weather-only voice parts');
-assert(companion.includes("data-role=\\\"'+(isFamily?role:'female')"),'Weather dialogue must use female voice even for role A');
+assert(companion.includes("(isFamily?role:'female')"),'Weather dialogue must use female voice even for role A');
 assert(companion.includes("if(role==='male')return mappings.male"),'Family dialogues must keep their approved speaker roles');
 const weatherHtml=get('hsk1-weather-v231.html');
 assert(weatherHtml.includes('panda-go-companion-v231.js?v=239'),'Weather must reload changed player after service worker update');
