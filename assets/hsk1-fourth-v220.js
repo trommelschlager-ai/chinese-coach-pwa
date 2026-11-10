@@ -149,9 +149,10 @@ const fileMap=()=>window.PANDA_HSK1_L4_VOICE_V214||{};
 const nativeMap=()=>window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
 const fileFor=word=>window.PandaOwnerAudio?.lookup(word)||fileMap()[word]||ownerMap[word]||nativeMap()[word]||null;
 const AUDIO_LEVELS={"./assets/lesson4-owner-review-v217/owner-15.mp3":0.88,"./assets/lesson4-owner-review-v217/owner-21.mp3":0.88,"./assets/lesson4-owner-review-v217/owner-22.mp3":0.88,"./assets/hsk1-weekdays-clean-v214/001.mp3": 0.7834, "./assets/hsk1-weekdays-clean-v214/002.mp3": 0.9661, "./assets/hsk1-weekdays-clean-v214/003.mp3": 0.9716, "./assets/hsk1-weekdays-clean-v214/004.mp3": 0.8861, "./assets/hsk1-weekdays-clean-v214/005.mp3": 0.8008, "./assets/hsk1-weekdays-clean-v214/006.mp3": 1, "./assets/hsk1-weekdays-clean-v214/007.mp3": 0.9258, "./assets/hsk1-weekdays-clean-v214/008.mp3": 0.673, "./assets/hsk1-weekdays-clean-v214/009.mp3": 0.6331, "./assets/hsk1-weekdays-clean-v214/010.mp3": 0.9761, "./assets/hsk1-weekdays-clean-v214/011.mp3": 0.858, "./assets/hsk1-weekdays-clean-v214/012.mp3": 0.8366, "./assets/hsk1-weekdays-clean-v214/013.mp3": 0.7943, "./assets/hsk1-weekdays-clean-v214/014.mp3": 0.8511, "./assets/hsk1-weekdays-clean-v214/015.mp3": 0.9863, "./assets/hsk1-weekdays-clean-v214/016.mp3": 0.874, "./assets/hsk1-weekdays-clean-v214/017.mp3": 0.7825, "./assets/yue-tan-human-v166/094_92611b3bbea1298a77d4.mp3": 0.6434, "./assets/yue-tan-human-v166/050_e2e4b1164ea07e93d0a4.mp3": 0.9539, "./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3": 0.6124};
-let audio=null,epoch=0,writer=null,writerEpoch=0,recorder=null,recStream=null,micBlobURL=null;
+let audio=null,epoch=0,dialoguePlayback='idle',writer=null,writerEpoch=0,recorder=null,recStream=null,micBlobURL=null;
 function soundStop(){
  epoch++;
+ dialoguePlayback='idle';
  if(audio){audio.onended=null;audio.onerror=null;try{audio.pause()}catch{}audio=null}
 }
 function micStop(preserve=false){
@@ -306,9 +307,7 @@ function dialogue(){
  '<div class="pg4-bubbles"><div class="from-f"><strong lang="zh-Hans">'+d.female+'</strong>'+
  '<small>'+GLOSS[d.female]+'</small></div>'+
  '<div class="from-m" id="pg4-male-preview"><strong lang="zh-Hans">'+d.male+'</strong><small>'+GLOSS[d.male]+'</small></div></div>'+
- '<div class="pg4-dialog-actions">'+audioButton(d.female,'▶ Слушать вопрос')+
- '<button type="button" data-dialogue-scene>▶ Сценка (две роли)</button>'+
- '<button type="button" data-dialogue-male>▶ Слушать ответ</button><button type="button" data-dialogue-stop>■ Стоп</button></div>'+
+ '<div class="pg4-dialog-actions"><button type="button" class="pg4-audio" data-dialogue-toggle aria-pressed="false">▶ Слушать</button></div>'+ 
  '<p class="pg4-info">Прослушай обе роли по очереди и повтори вопрос и ответ вслух.</p>'+
  practicalPhrases()+'<p>Выбери смысловой ответ:</p>'+choices(d.choices,'dialog-answer',false,locked)+displayFeedback()+
  '<div class="pg4-voice-tools"><button type="button" data-mic-record>🎙 Записать себя</button>'+
@@ -477,18 +476,40 @@ function initWriter(){
  }catch{message('Пропись недоступна, упражнение можно пропустить.','error')}
 }
 function setWrite(text){const el=stage.querySelector('#pg4-writing-result');if(el)el.textContent=text}
+function updateDialogueButton(){
+ const btn=stage.querySelector('[data-dialogue-toggle]');if(!btn)return;
+ btn.textContent=dialoguePlayback==='playing'?'⏸ Пауза':dialoguePlayback==='paused'?'▶ Продолжить':'▶ Слушать';
+ btn.setAttribute('aria-pressed',dialoguePlayback==='playing'?'true':'false');
+}
 function playConversation(){
- const s=state.step;if(s!==9)return;
- const idx=state.ix[9],d=DIALOG[idx];if(!d)return;
+ if(state.step!==9)return;
+ const d=DIALOG[state.ix[9]];if(!d)return;
  const left=stage.querySelector('.from-f'),right=stage.querySelector('.from-m');
- if(left)left.classList.add('active');
- message('Слушай обе реплики. Вопрос пока составлен из фрагментов, ответ уже записала китаянка.');
+ left?.classList.add('active');right?.classList.remove('active');message('');
  play(d.female,ok=>{
-  if(!ok)return;
-  if(left)left.classList.remove('active');
-  if(right){right.classList.add('active');right.innerHTML='<strong lang="zh-Hans">'+d.male+'</strong><small>'+GLOSS[d.male]+'</small>'}
-  play(d.male,()=>{if(right)right.classList.remove('active')});
+  if(!ok){left?.classList.remove('active');dialoguePlayback='idle';updateDialogueButton();return}
+  left?.classList.remove('active');right?.classList.add('active');
+  play(d.male,()=>{
+   right?.classList.remove('active');dialoguePlayback='idle';updateDialogueButton();
+  });
+  dialoguePlayback='playing';updateDialogueButton();
  });
+ dialoguePlayback='playing';updateDialogueButton();
+}
+function toggleConversation(){
+ if(state.step!==9)return;
+ if(dialoguePlayback==='playing'&&audio){
+  try{audio.pause();dialoguePlayback='paused';updateDialogueButton()}catch{message('Не удалось приостановить звук.','error')}
+  return;
+ }
+ if(dialoguePlayback==='paused'&&audio){
+  try{
+   const p=audio.play();dialoguePlayback='playing';updateDialogueButton();
+   if(p?.catch)p.catch(()=>{dialoguePlayback='paused';updateDialogueButton();message('Нажми «Продолжить» ещё раз.','error')});
+  }catch{message('Не удалось продолжить звук.','error')}
+  return;
+ }
+ playConversation();
 }
 function playQuestion(word){
  state.listenReady=false;
@@ -618,17 +639,8 @@ stage.addEventListener('click',ev=>{
   catch{message('Не удалось включить проверку черт.','error')}
   return;
  }
- if(btn.hasAttribute('data-dialogue-scene')){playConversation();return}
- if(btn.hasAttribute('data-dialogue-male')){
-  const d=DIALOG[state.ix[9]];
-  if(d){const node=stage.querySelector('#pg4-male-preview');
-   if(node){node.innerHTML='<strong lang="zh-Hans">'+d.male+'</strong><small>'+GLOSS[d.male]+'</small>';node.classList.add('active')}
-   play(d.male,()=>node?.classList.remove('active'));
-  }
-  return;
- }
- if(btn.hasAttribute('data-dialogue-stop')){soundStop();message('Сценка остановлена.');return}
- if(btn.hasAttribute('data-mic-record')){makeMicRecording();return}
+ if(btn.hasAttribute('data-dialogue-toggle')){toggleConversation();return}
+  if(btn.hasAttribute('data-mic-record')){makeMicRecording();return}
  if(btn.hasAttribute('data-mic-stop')){if(recorder?.state==='recording')recorder.stop();return}
  if(btn.hasAttribute('data-mic-play')){
   if(!micBlobURL){setMic('Сначала запиши свой голос.');return}
