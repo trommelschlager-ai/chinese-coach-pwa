@@ -1,0 +1,39 @@
+name: Panda Go rendered mobile QA v238
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/qa-chromium-layout-v238.cjs'
+      - '.github/workflows/pandago-browser-v238.yml'
+      - 'assets/lesson-viewport.js'
+      - 'assets/hsk1-*.css'
+      - 'assets/panda-go-approved-lessons-v231.css'
+      - 'hsk1-*.html'
+permissions:
+  contents: read
+jobs:
+  chromium-layout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Install Chrome driver (no bundled browser)
+        run: npm install --no-save --no-package-lock puppeteer-core@24.27.0
+      - name: Verify Chrome binary
+        run: which google-chrome || which chromium || true
+      - name: Run real Chromium mobile layout checks and screenshots
+        run: node scripts/qa-chromium-layout-v238.cjs
+      - name: Preserve real-browser results and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-go-real-chromium-v238
+          path: |
+            qa/v237/browser-results.json
+            qa/v237/browser-screenshots/*.png
+          if-no-files-found: warn
