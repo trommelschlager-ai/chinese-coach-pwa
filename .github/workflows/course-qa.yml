@@ -18,6 +18,7 @@ jobs:
       - run: npm ci
       - run: node scripts/verify-hsk1-fifth-v227.cjs
       - run: node scripts/verify-panda-go-approved-v231.cjs
+      - run: node scripts/verify-panda-go-audio-v236.cjs
       - run: npm run check
       - run: npm run check:release
       - run: node scripts/verify-quality.cjs
