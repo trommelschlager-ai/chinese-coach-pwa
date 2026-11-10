@@ -13,11 +13,11 @@
    if(!ctx)ctx=new AudioCtx();
    source=ctx.createMediaElementSource(element);
    compressor=ctx.createDynamicsCompressor();
-   compressor.threshold.value=-14;compressor.knee.value=14;
-   compressor.ratio.value=6;compressor.attack.value=0.004;compressor.release.value=0.18;
+   compressor.threshold.value=-12;compressor.knee.value=8;
+   compressor.ratio.value=10;compressor.attack.value=0.003;compressor.release.value=0.18;
    gain=ctx.createGain();
    gain.gain.value=1.75;
-   source.connect(compressor);compressor.connect(gain);gain.connect(ctx.destination);
+   source.connect(gain);gain.connect(compressor);compressor.connect(ctx.destination); // limiter follows gain
    const cleanup=()=>{try{source.disconnect();compressor.disconnect();gain.disconnect()}catch{}};
    element.addEventListener('ended',cleanup,{once:true});
    element.addEventListener('pause',cleanup,{once:true});
