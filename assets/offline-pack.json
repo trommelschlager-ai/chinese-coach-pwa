@@ -1,5 +1,5 @@
 {
-  "version": 237,
+  "version": 239,
   "bytes": 46941508,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2072,6 +2072,8 @@
     "./icons/maskable-512.png",
     "./index.html",
     "./manifest.webmanifest",
-    "./start-chinese.html"
+    "./start-chinese.html",
+    "./assets/panda-go-companion-v231.js?v=239",
+    "./assets/lesson-audio-source.js?v=239"
   ]
 }
