@@ -76,9 +76,17 @@ function stopAudio(){
 }
 function voice(hz,role='female'){
  const maps=window.PANDA_HSK1_VOICES||{};
- const primary=maps[role]?.[hz]||maps.female?.[hz];
- const alternate=(window.courseHumanAudio||{})[hz]||(window.courseNaturalAudio||{})[hz];
- return typeof primary==='string'&&primary?primary:(typeof alternate==='string'&&alternate?alternate:null);
+ const primary=maps[role]?.[hz]||null;
+ const female=maps.female?.[hz]||null;
+ // Prioritize the learner-authorized speaker. When not recorded, prefer
+ // an exact, original human sample over a different synthetic narrator.
+ // Preserve the explicitly assigned male voice for dialogue role A.
+ if(role==='male'&&primary)return primary;
+ const owner=typeof female==='string'&&
+   (female.startsWith('data:audio/mpeg;base64,')||female.includes('native-owner-v200/'))?female:null;
+ const native=(window.PANDA_HSK1_NATIVE_HUMAN_V167||{})[hz]||null;
+ const alternate=(window.courseNaturalAudio||{})[hz]||(window.courseHumanAudio||{})[hz]||null;
+ return owner||native||female||alternate||null;
 }
 function play(hz,role='female'){
  const path=voice(hz,role);if(!path){say('Для этой фразы пока нет проверенной записи.','bad');return}
