@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "ready": true,
+  "count": 10,
+  "files": [
+    "assets/hsk1-rhythm/zh-01.mp3",
+    "assets/hsk1-rhythm/ru-01.mp3",
+    "assets/hsk1-rhythm/zh-02.mp3",
+    "assets/hsk1-rhythm/ru-02.mp3",
+    "assets/hsk1-rhythm/zh-03.mp3",
+    "assets/hsk1-rhythm/ru-03.mp3",
+    "assets/hsk1-rhythm/zh-04.mp3",
+    "assets/hsk1-rhythm/ru-04.mp3",
+    "assets/hsk1-rhythm/zh-05.mp3",
+    "assets/hsk1-rhythm/ru-05.mp3",
+    "assets/hsk1-rhythm/zh-06.mp3",
+    "assets/hsk1-rhythm/ru-06.mp3",
+    "assets/hsk1-rhythm/zh-07.mp3",
+    "assets/hsk1-rhythm/ru-07.mp3",
+    "assets/hsk1-rhythm/zh-08.mp3",
+    "assets/hsk1-rhythm/ru-08.mp3",
+    "assets/hsk1-rhythm/zh-09.mp3",
+    "assets/hsk1-rhythm/ru-09.mp3",
+    "assets/hsk1-rhythm/zh-10.mp3",
+    "assets/hsk1-rhythm/ru-10.mp3"
+  ],
+  "voices": {
+    "zh": "zh-CN-YunjianNeural",
+    "ru": "ru-RU-DmitryNeural"
+  },
+  "rate": "-5%",
+  "license_status": "non-commercial Edge Read Aloud preview; no verified commercial redistribution grant",
+  "tone_validation": "not yet manually validated",
+  "source": "edge-tts personal evaluation"
+}
