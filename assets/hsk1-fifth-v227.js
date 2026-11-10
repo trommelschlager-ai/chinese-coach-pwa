@@ -95,7 +95,8 @@ function play(hz,role='female'){
  try{
   const a=new Audio(window.PandaAudioLevel?.[path]||path);audio=a;a.preload='auto';
   a.preservesPitch=true;
-  a.playbackRate=1;
+  a.playbackRate=0.92; // easier to hear complete Mandarin tones
+  window.PandaLessonAudioV240?.improve?.(a,'dates'); // local gain + gentle compression
   const pressed=[...app.querySelectorAll('[data-play]')].find(el=>el.dataset.play===hz);
   pressed?.setAttribute('aria-busy','true');
   a.onended=()=>{if(serial!==playId)return;audio=null;pressed?.removeAttribute('aria-busy')};
