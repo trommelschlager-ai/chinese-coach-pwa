@@ -10,7 +10,7 @@ const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const voices=fs.readFileSync('assets/hsk1-voices-map-v160.js','utf8');
 const speech=fs.readFileSync('assets/hsk1-second-speaking-v209.js','utf8');
 const oneVoice=fs.readFileSync('assets/hsk1-lesson2-audio-v208.js','utf8');
-assert(html.includes('hsk1-first-v189.css?v=194'),'Keep first lesson approved visual style');
+assert(html.includes('hsk1-first-v189.css?v=228'),'Keep first lesson approved visual style');
 assert(html.includes('hsk1-second-v203.js?v=211'),'Second lesson JS version');
 assert(!html.includes('hsk1-second-speaking-v209.js'),'Main lesson must not load optional microphone training');
 assert(fs.readFileSync('hsk1-second-practice.html','utf8').includes('hsk1-second-speaking-v209.js?v=211'),'Dedicated practice loads the trainer');
