@@ -1,5 +1,5 @@
 {
-  "version": 239,
+  "version": 240,
   "bytes": 46941508,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2074,6 +2074,10 @@
     "./manifest.webmanifest",
     "./start-chinese.html",
     "./assets/panda-go-companion-v231.js?v=239",
-    "./assets/lesson-audio-source.js?v=239"
+    "./assets/lesson-audio-source.js?v=239",
+    "./assets/panda-weather-female-v240.js?v=240",
+    "./assets/panda-lesson-audio-v240.js?v=240",
+    "./assets/panda-go-companion-v231.js?v=240",
+    "./assets/hsk1-fifth-v227.js?v=240"
   ]
 }
