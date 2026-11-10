@@ -1,5 +1,5 @@
 {
-  "version": 230,
+  "version": 231,
   "bytes": 38792612,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -1774,8 +1774,14 @@
     "./assets/lesson5-lilac-v225.css?v=226",
     "./assets/lesson5-lilac-sakura-v225.svg",
     "./hsk1-fifth-v227.html",
-    "./assets/hsk1-fifth-v227.js?v=230",
-    "./assets/hsk1-fifth-v227.css?v=230",
-    "./assets/hsk1-family-weather-lilac-v228.css?v=228"
+    "./assets/hsk1-fifth-v227.js?v=231",
+    "./assets/panda-go-approved-lessons-v231.css?v=231",
+    "./assets/hsk1-family-weather-lilac-v228.css?v=228",
+    "./hsk1-family-v231.html",
+    "./hsk1-weather-v231.html",
+    "./assets/panda-go-companion-v231.js?v=231",
+    "./assets/panda-go-approved-lesson5-v231.svg",
+    "./assets/panda-go-approved-lesson6-v231.svg",
+    "./assets/panda-go-approved-lesson7-v231.svg"
   ]
 }
