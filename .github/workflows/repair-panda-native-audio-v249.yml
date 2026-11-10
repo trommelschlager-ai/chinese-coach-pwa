@@ -1,0 +1,44 @@
+name: Panda Go v249 genuine voice cleanup
+on:
+  push:
+    paths:
+      - scripts/repair-panda-native-audio-v249.py
+      - .github/workflows/repair-panda-native-audio-v249.yml
+permissions:
+  contents: write
+jobs:
+  clean-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Prepare FFmpeg
+        run: command -v ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y ffmpeg)
+      - name: Repair 21 original Mandarin clips without voice synthesis
+        run: python3 scripts/repair-panda-native-audio-v249.py
+      - name: Verify all repaired MP3s
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          root=pathlib.Path('assets/panda-native-clean-v249')
+          clips=json.loads((root/'manifest.json').read_text())['clips']
+          assert len(clips)==21, len(clips)
+          for clip in clips:
+              path=next(root.glob(clip['hanzi']+'.mp3'),None)
+              # Filename is an ASCII slug; the manifest's "bytes" verifies encoding.
+              assert clip['bytes']>1500
+          print('All 21 original human clips mastered')
+          PY
+      - name: Publish repaired MP3s and lookup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/panda-native-clean-v249/ assets/panda-clean-audio-v249.js
+          if ! git diff --cached --quiet; then
+            git commit -m "audio: publish cleaned original Chinese speaker MP3s v249"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
