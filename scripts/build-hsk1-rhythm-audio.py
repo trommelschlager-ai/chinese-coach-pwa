@@ -52,7 +52,7 @@ def verify_audio(file: pathlib.Path) -> None:
         raise RuntimeError(f"Incorrect audio data: {file}, {duration}, {codecs}")
 
 async def generate_audio(text: str, voice: str, destination: pathlib.Path) -> None:
-    for attempt in range(1, 4):
+    for attempt in range(1, 7):
         temporary = destination.with_suffix(".tmp.mp3")
         try:
             temporary.unlink(missing_ok=True)
@@ -62,9 +62,11 @@ async def generate_audio(text: str, voice: str, destination: pathlib.Path) -> No
             return
         except Exception as error:
             temporary.unlink(missing_ok=True)
-            if attempt == 3:
+            if attempt == 6:
                 raise RuntimeError(f"Failed: {destination.name}: {error}") from error
-            await asyncio.sleep(attempt * 3)
+            delay = min(60, 9 * attempt)
+            print(f"RETRY {destination.name}: {type(error).__name__}; pause {delay}s", flush=True)
+            await asyncio.sleep(delay)
 
 async def main() -> None:
     cards = read_cards()
@@ -74,7 +76,7 @@ async def main() -> None:
             target = DEST / f"{lang}-{idx:02d}.mp3"
             await generate_audio(card[lang], VOICES[lang], target)
             print(f"OK {target.relative_to(ROOT)}: {card[lang]}", flush=True)
-        await asyncio.sleep(.5)
+        await asyncio.sleep(3)
     paths = [DEST / f"{lang}-{idx:02d}.mp3"
              for idx in range(1, 11) for lang in ("zh", "ru")]
     for path in paths:
