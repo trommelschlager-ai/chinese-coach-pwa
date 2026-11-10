@@ -6,53 +6,59 @@
 <meta name="theme-color" content="#e7d1f6">
 <title>Китайский в ритме · HSK 1 · Panda Go</title>
 <style>
-:root{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans SC",Arial,sans-serif;color:#4a2864;background:#eee0f7}
+:root{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans SC",Arial,sans-serif;color:#4b2a64;background:#efe3f7}
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;overflow-x:hidden}
-body{background:linear-gradient(#fff7ffbd,#f5e4fcce),url("./assets/approved-pastel-v112.webp") center/cover fixed no-repeat}
+body{background:linear-gradient(158deg,#faf3ffed 0%,#efe2faeb 55%,#ffeaf6e9 100%),url("./assets/approved-pastel-v112.webp") center/cover fixed no-repeat}
 button{font:inherit;cursor:pointer}
-button:focus-visible,.flash:focus-visible{outline:3px solid #ab3197;outline-offset:3px}
-button:disabled{opacity:.38;cursor:default}
-.frame{width:min(100%,480px);min-height:100svh;margin:auto;padding:calc(12px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:15px;background:linear-gradient(160deg,#fff8ffdb,#f4e5fbe8);box-shadow:0 0 28px #6c3e9230}
-.hero{position:relative;border:2px solid #ffefd9;border-radius:24px;padding:18px 18px 15px;text-align:center;background:linear-gradient(125deg,#7e4ba9,#a56cca 58%,#dd95d3);box-shadow:0 5px 18px #6b39863c;color:#fff}
-.brand{font-size:12px;letter-spacing:.8px;font-weight:900;color:#ffe3fa}
-h1{margin:5px 0 4px;font-size:clamp(25px,6.7vw,34px);line-height:1.16}
-.subtitle{margin:0;font-size:12px;color:#fbe5ff}
-.count{margin-top:10px;font-weight:850;font-size:13px;color:#ffeedb}
-.study{flex:1;display:flex;flex-direction:column;justify-content:center}
-.flash{position:relative;border:2px solid #e4c49d;border-radius:26px;background:linear-gradient(150deg,#fffbff,#fff6fb);min-height:clamp(285px,48svh,435px);width:100%;padding:24px 19px 18px;box-shadow:inset 0 0 0 4px #fff,0 8px 20px #955daa2f;display:flex;flex-direction:column;align-items:center;text-align:center;overflow-wrap:anywhere;overflow-y:auto;cursor:pointer;touch-action:pan-y}
-.card-body{flex:1;width:100%;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px}
+button:focus-visible,.flash:focus-visible{outline:3px solid #a33194;outline-offset:3px}
+button:disabled{opacity:.4;cursor:default}
+.frame{position:relative;width:min(100%,480px);height:100dvh;min-height:530px;margin:auto;padding:calc(16px + env(safe-area-inset-top,0px)) 17px calc(22px + env(safe-area-inset-bottom,0px));display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:16px;background:linear-gradient(175deg,#fff9ffcf,#f2e7fbd9);box-shadow:0 0 24px #6f49962b}
+.hero{position:relative;border:1.5px solid #f5d6eb;border-radius:24px;padding:16px 18px 15px;background:linear-gradient(125deg,#8250b4 0%,#a975cb 58%,#d58dc9 100%);box-shadow:0 6px 17px #77449e36;color:white}
+.hero-top,.hero-title{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hero-top{margin-bottom:11px}
+.brand{font-size:13px;letter-spacing:.3px;font-weight:850;color:#fff7fb}
+.level{border:1px solid #ffe4f4a3;border-radius:99px;background:#ffffff24;color:#fff6ff;padding:5px 10px;white-space:nowrap;font-size:11px;font-weight:850}
+h1{margin:0;font-size:clamp(20px,5.7vw,27px);line-height:1.15;letter-spacing:-.35px;font-weight:900}
+.count{display:block;flex:none;font-weight:850;font-size:13px;color:#fff6e7;white-space:nowrap}
+.progress{height:5px;border-radius:99px;background:#61358560;overflow:hidden;margin-top:14px}
+.progress span{display:block;height:100%;width:10%;border-radius:inherit;background:linear-gradient(90deg,#ffe8a4,#fff5ff);transition:width .18s}
+.study{min-height:0;display:flex;align-items:stretch}
+.flash{position:relative;display:flex;flex-direction:column;align-items:center;width:100%;height:100%;min-height:0;padding:24px 20px 17px;border:1.5px solid #e6c795;border-radius:29px;background:linear-gradient(165deg,#fffdfd 0%,#fffafc 65%,#fff4fb 100%);box-shadow:0 7px 20px #a55db02b,inset 0 0 0 3px #fffdfb;cursor:pointer;text-align:center;overflow-wrap:anywhere;overflow-y:auto;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:#edc5e9 transparent}
+.flash::before,.flash::after{content:"";position:absolute;width:35px;height:35px;border-top:2px solid #efcce8;top:15px;pointer-events:none}
+.flash::before{left:14px;border-left:2px solid #efcce8;border-top-left-radius:13px}
+.flash::after{right:14px;border-right:2px solid #efcce8;border-top-right-radius:13px}
+.card-body{width:100%;min-height:0;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
 .flash[aria-expanded="true"] .card-body{justify-content:center}
-.hint{align-self:center;width:100%;margin-top:auto;padding-top:14px;padding-bottom:3px;font-size:12px;color:#a38ba8;line-height:1.4}
-.flash::before,.flash::after{content:"✿";position:absolute;color:#f4bfdc;font-size:24px;pointer-events:none}
-.flash::before{top:11px;left:15px}.flash::after{bottom:11px;right:15px}
-.hanzi{font-weight:850;font-size:clamp(29px,7.7vw,39px);line-height:1.55;color:#52296c}
-.pinyin{font-size:16px;font-weight:750;line-height:1.5;color:#a74b91}
-.translation{font-size:16px;font-weight:750;line-height:1.4;color:#51375e}
-.words{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:7px;text-align:left}
-.word{border-radius:11px;border:1px solid #efd8e7;background:#ffffffd6;padding:8px 9px;font-size:12px;color:#6c5878;line-height:1.4}
-.word strong{display:block;font-size:16px;color:#663976}
-.controls{display:flex;align-items:center;justify-content:center;gap:24px;padding:2px 0 0}
-.controls button{display:grid;place-items:center;width:69px;height:69px;border-radius:50%;border:2px solid #fff6dc;font-weight:900;box-shadow:inset 0 2px 3px #fff8,0 4px 0 #b68a9f,0 7px 17px #a45eae55;transition:transform .12s,box-shadow .12s}
-.controls #listen{color:#fff;background:linear-gradient(145deg,#ffb2de,#fa61b1 52%,#ce2b8f);box-shadow:inset 0 2px 4px #fff9,0 4px 0 #b83383,0 7px 19px #e44caa80}
-.controls #pinyin-btn{font-size:28px;color:#7c3a94;background:linear-gradient(145deg,#fffdfc,#f4ddff 65%,#e8bbf0)}
-.controls #pinyin-btn[aria-pressed="true"]{border-color:#f8d16d;background:linear-gradient(145deg,#ffefc6,#f9c7e9);box-shadow:0 0 0 3px #ffedb599,0 5px 13px #aa64a655}
-.controls #listen svg{height:31px;width:31px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.controls button:active:not(:disabled){transform:scale(.95)}
+.hanzi{font-weight:850;font-size:clamp(31px,8.4vw,42px);line-height:1.55;letter-spacing:.2px;color:#53266f}
+.pinyin{font-size:clamp(14px,3.8vw,17px);font-weight:700;color:#a34c91;line-height:1.45}
+.translation{font-size:16px;font-weight:800;color:#573665;line-height:1.45;border-top:1px solid #f3e4ed;padding-top:13px;width:100%}
+.words{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;text-align:left}
+.word{min-width:0;border:1px solid #eedce9;border-radius:11px;background:#fff6fc;padding:7px 9px;font-size:12px;line-height:1.35;color:#765c7e}
+.word strong{display:block;font-size:15px;color:#653478}
+.hint{align-self:center;margin-top:auto;width:100%;padding-top:16px;padding-bottom:1px;color:#a38aa7;font-size:11.5px;line-height:1.45;text-align:center}
+.controls{display:flex;justify-content:center;align-items:center;gap:28px;padding:0 0 2px}
+.controls button{display:grid;place-items:center;width:64px;height:64px;border:2px solid #fff5e7;border-radius:50%;box-shadow:inset 0 2px 3px #fff8,0 4px 0 #b68b9b,0 6px 12px #a45eae42;transition:transform .12s}
+.controls #listen{color:white;background:linear-gradient(145deg,#ffa7db 0%,#ef61ad 55%,#d5328c);box-shadow:inset 0 2px 3px #fff9,0 4px 0 #b5367f,0 7px 16px #d858a67d}
+.controls #pinyin-btn{font-size:27px;font-weight:850;color:#7d4094;background:linear-gradient(145deg,#fffefc 0%,#f6e6ff 65%,#e5c3f3)}
+.controls #pinyin-btn[aria-pressed="true"]{border-color:#ffe5ae;background:linear-gradient(145deg,#ffeec9,#f8d0ea);box-shadow:0 0 0 3px #ffeeb9a1,0 5px 13px #aa64a655}
+.controls #listen svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.controls button:active:not(:disabled){transform:scale(.94)}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
-.note{min-height:19px;margin:0;text-align:center;color:#995179;font-size:12px;line-height:1.45}
-@media(max-height:630px){.frame{gap:9px}.hero{padding:10px 12px}.count{margin-top:5px}.flash{min-height:230px;padding:14px 15px}.card-body{min-height:170px}.controls button{width:57px;height:57px}}
-@media(max-width:345px){.frame{padding-left:10px;padding-right:10px}.controls{gap:17px}.controls button{width:60px;height:60px}.words{grid-template-columns:1fr}.hanzi{font-size:26px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto;transition:none!important}}
+.note{position:absolute;z-index:4;left:24px;right:24px;bottom:calc(100px + env(safe-area-inset-bottom,0px));margin:0;text-align:center;color:#854a78;font-size:12px;line-height:1.45}
+.note:not(:empty){padding:8px 12px;border:1px solid #ead2ed;border-radius:13px;background:#fffafef2;box-shadow:0 3px 13px #8a438b23}
+.note:empty{display:none}
+@media(max-height:690px){.frame{gap:10px;padding-top:calc(9px + env(safe-area-inset-top,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}.hero{padding:12px 15px}.hero-top{margin-bottom:7px}.progress{margin-top:9px}.flash{padding:15px 14px}.card-body{gap:9px}.controls button{width:56px;height:56px}.note{bottom:calc(79px + env(safe-area-inset-bottom,0px))}}
+@media(max-width:345px){.frame{padding-left:10px;padding-right:10px}.hero{padding-left:13px;padding-right:13px}.hanzi{font-size:28px}.words{grid-template-columns:1fr}.controls{gap:22px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
 </style>
 </head>
 <body>
 <main class="frame">
   <header class="hero">
-    <div class="brand">🐼 PANDA GO · HSK 1</div>
-    <h1>Китайский в ритме</h1>
-    <p class="subtitle">Слушай · Повторяй · Запоминай</p>
-    <div class="count" id="counter" aria-live="polite">1 / 10</div>
+    <div class="hero-top"><span class="brand">🐼 Panda Go</span><span class="level">HSK 1</span></div>
+    <div class="hero-title"><h1>Китайский в ритме</h1><span class="count" id="counter" aria-live="polite">1 / 10</span></div>
+    <div class="progress" aria-hidden="true"><span id="progress-fill"></span></div>
   </header>
   <section class="study" aria-label="Карточка китайского предложения">
     <article class="flash" id="flash" role="button" tabindex="0" aria-expanded="false" aria-label="Показать перевод и разбор слов"></article>
@@ -88,6 +94,7 @@ function showNotice(message){$("notice").textContent=message;}
 function render(){
  const entry=data[pos];
  $("counter").textContent=(pos+1)+" / "+data.length;
+ $("progress-fill").style.width=((pos+1)/data.length*100)+"%";
  $("flash").setAttribute("aria-expanded",String(open));
  $("flash").setAttribute("aria-label",open?"Скрыть перевод и разбор":"Показать перевод и разбор");
  $("pinyin-btn").setAttribute("aria-pressed",String(showPinyin));
