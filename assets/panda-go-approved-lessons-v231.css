@@ -28,3 +28,29 @@ h1{font-size:30px;line-height:1.12;letter-spacing:-.5px;text-align:center;margin
 .footer{display:grid;grid-template-columns:38% 1fr;gap:12px;flex:none;padding:12px 17px calc(13px + env(safe-area-inset-bottom));background:#fbeaff}.footer button{min-height:52px;border-radius:25px;font-size:17px}.footer .primary{font-size:18px}
 @media(max-width:365px){.header{padding-left:12px;padding-right:12px}.body{padding-left:13px;padding-right:13px}.intro{margin-left:-13px;margin-right:-13px}.intro-copy strong,h1{font-size:28px}.word{padding-left:10px;grid-template-columns:minmax(0,1fr) 38px}.word strong{font-size:28px}.word .py{font-size:14px}.audio{width:38px;min-width:38px;height:38px}.card{padding:10px}.app[data-lesson="6"] .word>div{grid-template-columns:54px minmax(57px,1fr) minmax(60px,1fr);gap:5px}.app[data-lesson="6"] .word-art{width:52px;height:52px}.app[data-lesson="6"] .word strong{font-size:26px}.footer{gap:9px;padding-left:13px;padding-right:13px}.footer button{font-size:16px}}
 @media(prefers-reduced-motion:reduce){.fill{transition:none}}
+
+/* Lesson 6 human-family art direction v234: 8 consistent character/meaning portraits.
+   Scope all overrides to family lesson only; lessons 5/7 retain their approved artwork. */
+.app[data-lesson="6"] .word-art.human {
+  background-image:url('./family-people-v234.png');
+  background-size:400% 200%;
+  background-repeat:no-repeat;
+}
+.app[data-lesson="6"][data-step="0"] .intro-art{
+  background-image:url('./family-cover-v234.jpg');
+}
+.app[data-lesson="6"] .dialogue .bubble:before{
+  background-image:url('./family-people-v234.png');
+  background-size:400% 200%;
+  background-position:33.3333% 0;
+  background-repeat:no-repeat;
+}
+.app[data-lesson="6"] .dialogue .bubble:nth-child(even):before{
+  background-position:0 0;
+}
+.app[data-lesson="6"] .coach-scene{
+  background-image:url('./family-people-v234.png');
+  background-size:400% 200%;
+  background-position:66.6667% 0;
+  background-repeat:no-repeat;
+}
