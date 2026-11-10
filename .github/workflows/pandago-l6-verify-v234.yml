@@ -1,40 +1,21 @@
-name: Verify Panda Go lesson 6 v234
+name: Verify Panda Go lesson 6 v234 (legacy manual)
 on:
-  push:
-    paths:
-      - '.github/workflows/pandago-l6-verify-v234.yml'
-      - 'hsk1-family-v231.html'
-      - 'assets/lesson-visuals-v233.js'
-      - 'assets/panda-go-approved-lessons-v231.css'
-      - 'assets/family-people-v234.png'
-      - 'assets/family-cover-v234.jpg'
-      - 'assets/offline-pack.json'
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: true
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '22'
           cache: npm
       - run: npm ci
-      - name: Confirm unchanged course content, dialogue and audio
+      - name: Confirm complete content, dialogues and audio mapping
         run: node scripts/verify-lessons-preserved-v233.cjs
       - name: Check family and weather lesson UI
         run: node scripts/verify-panda-go-approved-v231.cjs
       - name: Check offline pack
         run: node scripts/verify-offline.cjs
-      - name: Record verified build
-        run: |
-          mkdir -p qa/v234
-          node -e "require('fs').writeFileSync('qa/v234/status.json',JSON.stringify({version:234,lesson:6,automatedChecks:'passed',audioAndProgress:'preserved',assetFiles:['assets/family-people-v234.png','assets/family-cover-v234.jpg'],verifiedCommit:process.env.GITHUB_SHA},null,2))"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add qa/v234/status.json
-          git diff --cached --quiet || (git commit -m "Record passing Panda Go lesson 6 v234 checks" && git push)
