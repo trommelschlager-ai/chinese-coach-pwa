@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="330" height="340" viewBox="0 0 330 340" role="img" aria-label="Панда Panda Go в наушниках">
+<defs><radialGradient id="mist"><stop stop-color="#fffefb"/><stop offset=".58" stop-color="#fceffa"/><stop offset="1" stop-color="#e7d8f6" stop-opacity="0"/></radialGradient><linearGradient id="coat" x2=".9" y2="1"><stop stop-color="#d9c3f3"/><stop offset=".58" stop-color="#e5b2d4"/><stop offset="1" stop-color="#8765b0"/></linearGradient><linearGradient id="face" x2=".8" y2="1"><stop stop-color="#fffefb"/><stop offset=".7" stop-color="#f7f3f6"/><stop offset="1" stop-color="#e4dbe6"/></linearGradient><linearGradient id="headphone" x2=".7" y2="1"><stop stop-color="#cfa8f5"/><stop offset=".5" stop-color="#8f62cb"/><stop offset="1" stop-color="#6034a1"/></linearGradient><filter id="shadow"><feGaussianBlur stdDeviation="7"/></filter></defs>
+<ellipse cx="169" cy="324" rx="122" ry="14" fill="#856f9c" opacity=".18" filter="url(#shadow)"/><circle cx="160" cy="162" r="150" fill="url(#mist)"/>
+<ellipse cx="170" cy="253" rx="95" ry="79" fill="url(#coat)" stroke="#6a5085" stroke-width="4"/>
+<ellipse cx="110" cy="293" rx="33" ry="21" fill="#473d50"/><ellipse cx="220" cy="293" rx="33" ry="21" fill="#473d50"/>
+<path d="M102 222L143 267Q166 283 193 266L235 217" stroke="#fff3fd" stroke-width="9" fill="none" opacity=".76"/>
+<circle cx="90" cy="96" r="43" fill="#3b3846"/><circle cx="237" cy="95" r="43" fill="#3b3846"/>
+<ellipse cx="163" cy="144" rx="117" ry="112" fill="url(#face)" stroke="#5b5366" stroke-width="5"/>
+<path d="M61 120C55-23 272-24 264 120" fill="none" stroke="url(#headphone)" stroke-width="27" stroke-linecap="round"/>
+<path d="M64 119C60-17 268-13 260 121" fill="none" stroke="#e6d1fc" stroke-width="6" stroke-linecap="round" opacity=".65"/>
+<rect x="25" y="117" width="43" height="82" rx="21" fill="url(#headphone)" stroke="#75549e" stroke-width="5"/>
+<rect x="259" y="117" width="43" height="82" rx="21" fill="url(#headphone)" stroke="#75549e" stroke-width="5"/>
+<rect x="32" y="128" width="11" height="54" rx="6" fill="#e4d0ff" opacity=".8"/>
+<rect x="286" y="128" width="10" height="54" rx="6" fill="#e4d0ff" opacity=".75"/>
+<ellipse cx="106" cy="151" rx="35" ry="47" transform="rotate(17 106 151)" fill="#3e3e4b"/>
+<ellipse cx="217" cy="150" rx="35" ry="47" transform="rotate(-16 217 150)" fill="#3e3e4b"/>
+<ellipse cx="116" cy="146" rx="12" ry="15" fill="#fff"/><ellipse cx="208" cy="145" rx="12" ry="15" fill="#fff"/>
+<circle cx="119" cy="149" r="6" fill="#31313d"/><circle cx="205" cy="148" r="6" fill="#31313d"/>
+<circle cx="121" cy="144" r="3" fill="#fff"/><circle cx="206" cy="143" r="3" fill="#fff"/>
+<ellipse cx="160" cy="187" rx="20" ry="13" fill="#39404a"/><path d="M145 203Q159 220 178 204" stroke="#ad607c" stroke-width="5" fill="none" stroke-linecap="round"/>
+<ellipse cx="80" cy="202" rx="21" ry="12" fill="#f8b3c9" opacity=".63"/><ellipse cx="242" cy="200" rx="21" ry="12" fill="#f8b3c9" opacity=".63"/>
+<ellipse cx="85" cy="240" rx="31" ry="25" transform="rotate(-28 85 240)" fill="#3e3b49"/>
+<ellipse cx="238" cy="241" rx="31" ry="25" transform="rotate(22 238 241)" fill="#3e3b49"/>
+<path d="M133 244L161 255L189 244" stroke="#f6dce9" stroke-width="5" fill="none" stroke-linecap="round"/>
+<g transform="translate(202 208) scale(.46)"><ellipse cx="72" cy="145" rx="82" ry="82" fill="#fff8f9" stroke="#766189" stroke-width="6"/><circle cx="22" cy="82" r="32" fill="#40384b"/><circle cx="125" cy="82" r="32" fill="#40384b"/><ellipse cx="45" cy="134" rx="27" ry="36" fill="#484054"/><ellipse cx="104" cy="134" rx="27" ry="36" fill="#484054"/><circle cx="48" cy="131" r="9" fill="#fff"/><circle cx="101" cy="131" r="9" fill="#fff"/><ellipse cx="76" cy="166" rx="13" ry="10" fill="#46374b"/><path d="M61 182Q78 195 91 181" stroke="#c98096" stroke-width="4" fill="none"/></g>
+</svg>
