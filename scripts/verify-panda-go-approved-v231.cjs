@@ -11,11 +11,15 @@ assert(css.includes('lesson5-scene-v233.webp'));
 assert(css.includes('.app[data-step="0"] .body>h1'),'Intro should use one visual heading, not repeated titles');
 assert(css.includes('min-height:143px'),'Vocabulary must be touch friendly and legible on mobile');
 assert(!css.includes('filter:blur('),'Do not blur art or Chinese text');
+assert(css.includes('family-cover-v235.webp'),'Lesson 6 cover must use high-resolution source');
+assert(css.includes('family-people-v235.webp'),'Lesson 6 people must use high-resolution atlas');
+assert(css.includes('.app[data-lesson="6"] .footer{position:fixed;'),'Lesson 6 bottom actions must stay visible on phones');
+
 for(const lesson of [6,7]){
  const topic=lesson===6?'family':'weather';
  const filename=lesson===6?'hsk1-family-v231.html':'hsk1-weather-v231.html';
  const html=fs.readFileSync(filename,'utf8');
- assert(html.includes('panda-go-approved-lessons-v231.css?v='+(lesson===6?'234':'233')));
+ assert(html.includes('panda-go-approved-lessons-v231.css?v='+(lesson===6?'235':'233')));
  assert(html.includes('panda-go-companion-v231.js?v=233'));
  assert(html.includes('panda-owner-lessons5-7-native-v221.js?v=221'));
  assert(css.includes('lesson'+lesson+'-scene-v233.webp'));
