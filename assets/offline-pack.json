@@ -1,5 +1,5 @@
 {
-  "version": 240,
+  "version": 241,
   "bytes": 46941508,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2078,6 +2078,7 @@
     "./assets/panda-weather-female-v240.js?v=240",
     "./assets/panda-lesson-audio-v240.js?v=240",
     "./assets/panda-go-companion-v231.js?v=240",
-    "./assets/hsk1-fifth-v227.js?v=240"
+    "./assets/hsk1-fifth-v227.js?v=240",
+    "./assets/lesson-audio-source.js?v=241"
   ]
 }
