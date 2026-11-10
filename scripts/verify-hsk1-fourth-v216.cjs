@@ -13,8 +13,8 @@ const css=fs.readFileSync('assets/hsk1-fourth-v219.css','utf8');
 const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const voice=fs.readFileSync('assets/hsk1-weekdays-audio-map-v214.js','utf8');
 const map=fs.readFileSync('hsk1-map.html','utf8');
-assert(html.includes('hsk1-fourth-v219.css?v=237'));
-assert(html.includes('hsk1-fourth-v220.js?v=237'));
+assert(html.includes('hsk1-fourth-v219.css?v=249'));
+assert(html.includes('hsk1-fourth-v220.js?v=249'));
 assert(!html.includes('hsk1-third-v212.css'),'Lesson 4 should not depend on lesson 3 CSS');
 assert(!html.includes('hsk1-third-v213.css'),'Lesson 4 styles should be standalone');
 assert(html.includes('hanzi-writer.min.js'),'Stroke-writing library required');
@@ -114,7 +114,14 @@ click('[data-trace]');next();assert.equal(step(),10);
 assert(d.querySelector('img[src="./assets/lesson4-reference-v216/man.webp"]'),'Male character in dialogue');
 assert(d.querySelector('img[src="./assets/lesson4-reference-v216/woman.webp"]'),'Female character in dialogue');
 for(const answer of ['今天星期五。','明天星期六。']){
- click('[data-dialogue-scene]');const questionPlayer=played.at(-1);questionPlayer.onended();assert(d.querySelector('.from-m.active'),'Reply highlights the visible dialogue bubble');played.at(-1).onended();assert.equal(utt.length,0,'Dialogue never falls back to TTS');
+ assert.equal(d.querySelectorAll('.pg4-dialog-actions button').length,1,'Dialogue must have one listen/pause control');
+ click('[data-dialogue-toggle]');const questionPlayer=played.at(-1);
+ assert(d.querySelector('[data-dialogue-toggle]').textContent.includes('Пауза'),'Playing button becomes Pause');
+ click('[data-dialogue-toggle]');assert(d.querySelector('[data-dialogue-toggle]').textContent.includes('Продолжить'),'Pause must work');
+ click('[data-dialogue-toggle]');assert(d.querySelector('[data-dialogue-toggle]').textContent.includes('Пауза'),'Resume must work');
+ questionPlayer.onended();assert(d.querySelector('.from-m.active'),'Reply highlights visible dialogue bubble');
+ played.at(-1).onended();assert(d.querySelector('[data-dialogue-toggle]').textContent.includes('Слушать'),'Replay restored after dialogue ends');
+ assert.equal(utt.length,0,'Dialogue never falls back to TTS');
  click('[data-dialog-answer="'+answer+'"]');click('[data-next-item]');
 }
 assert.equal(step(),11);
