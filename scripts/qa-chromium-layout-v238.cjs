@@ -58,6 +58,13 @@ async function evaluateLayout(page,lesson,screen,width,height,errors){
    if(content.scrollWidth>content.clientWidth+3)issues.push('Horizontal overflow inside scroll content');
   }
   if(document.documentElement.scrollWidth>window.innerWidth+3)issues.push('Horizontal page overflow');
+  const counter=document.querySelector('#pg-counter,#pg3-count,#pg5-count');
+  const actualStep=Number(counter?.textContent?.match(/\\d+/)?.[0]);
+  if(Number.isFinite(actualStep)&&actualStep!==screen)issues.push('Restored screen mismatch: expected '+screen+', found '+actualStep);
+  for(const img of document.images){
+   const rect=img.getBoundingClientRect();
+   if(rect.width>30&&rect.height>30&&img.complete&&img.naturalWidth===0)issues.push('Missing image: '+img.getAttribute('src'));
+  }
   if(lesson===3&&screen===1){
    const img=document.querySelector('img[src*="lesson-success-v233.webp"]');
    if(!img||!img.naturalWidth||img.naturalWidth<100)issues.push('Lesson 3 panda image missing or failed to load');
@@ -88,7 +95,7 @@ async function main(){
      rows.push(row);
      if(width===393&&height===780){
       await page.screenshot({path:path.join(SHOTS,'lesson-'+(l+1)+'-cover.png')});
-      for(const screen of [Math.min(6,lesson.steps-1),lesson.steps-1]){
+      for(let screen=1;screen<lesson.steps;screen++){
        errors=[];
        await page.evaluate(({key,step,steps,lessonNumber})=>{
         const seed={step,maxStep:steps-1,lessonVersion:237,done:lessonNumber===2?Array(steps).fill(false):false,viewed:{1:[],2:[]},completedSpeech:{1:[],2:[]},selected:{1:1,2:6}};
@@ -98,7 +105,7 @@ async function main(){
        await page.evaluate(()=>document.fonts?.ready);
        row=await evaluateLayout(page,l+1,screen+1,width,height,errors);
        rows.push(row);
-       if(screen===6)await page.screenshot({path:path.join(SHOTS,'lesson-'+(l+1)+'-screen-'+(screen+1)+'.png')});
+       if([3,5,6,lesson.steps-1].includes(screen))await page.screenshot({path:path.join(SHOTS,'lesson-'+(l+1)+'-screen-'+(screen+1)+'.png')});
       }
      }
      errors=[];
@@ -108,7 +115,7 @@ async function main(){
   }
  }finally{await browser.close();await new Promise(r=>server.close(r))}
  const failures=rows.filter(r=>r.issues.length);
- const results={version:238,engine:'headless Chromium (actual rendered DOM, not jsdom)',tested_at:new Date().toISOString(),checks:rows.length,passed:rows.length-failures.length,failed:failures.length,failures,limitations:['Not a physical Android test','Does not assess audio tone or subjective sound quality','Spot-checks cover, screen 7, and final screen; not every intermediate screen']};
+ const results={version:238,engine:'headless Chromium (actual rendered DOM, not jsdom)',tested_at:new Date().toISOString(),checks:rows.length,passed:rows.length-failures.length,failed:failures.length,failures,limitations:['Not a physical Android test','Does not assess audio tone or subjective sound quality','All screens checked at 393x780, all covers at 320/360/393/430 and two heights']};
  fs.writeFileSync(OUT,JSON.stringify(results,null,2)+'\n');
  console.log('PANDA GO browser QA:',rows.length,'checks,',failures.length,'failures');
  for(const r of failures.slice(0,35))console.log(JSON.stringify(r));
