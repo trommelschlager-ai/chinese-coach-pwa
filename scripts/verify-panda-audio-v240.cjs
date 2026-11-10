@@ -7,7 +7,7 @@ const ordered=[
  'hsk1-voices-map-v160.js?v=160',
  'panda-weather-female-v240.js?v=240',
  'panda-owner-lessons5-7-native-v221.js?v=221',
- 'panda-go-companion-v231.js?v=240'
+ 'panda-go-companion-v231.js?v=244'
 ];
 let last=-1;for(const file of ordered){
  const at=weatherHtml.indexOf(file);assert(at>last,'Weather script missing or out of order: '+file);last=at;
@@ -37,7 +37,7 @@ assert(clips('明天下雨吗？').length===2,'Two available female parts must c
 assert(companion.includes('a.playbackRate=isFamily?1:0.86'),'Weather speech should be slowed without pitch change');
 const gain=read('assets/panda-lesson-audio-v240.js');
 new vm.Script(gain);
-assert(datesHtml.includes('panda-lesson-audio-v240.js?v=240'));
+assert(datesHtml.includes('panda-lesson-audio-v240.js?v=244'));
 assert(datesHtml.includes('hsk1-fifth-v227.js?v=240'));
 const dates=read('assets/hsk1-fifth-v227.js');
 assert(dates.includes('a.playbackRate=0.92'));
