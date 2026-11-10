@@ -10,7 +10,7 @@ const legacy=fs.readFileSync('hsk1-lesson.html','utf8');
 const sw=fs.readFileSync('sw.js','utf8');
 assert(!page.includes('hsk1-foundations-v152.js'),'New lesson must not load old lesson engine');
 assert(!page.includes('hsk1-intro-v188.js'),'New lesson must not stack old onboarding');
-assert(css.includes('approved-panda-lake-v112.webp'),'Reuse approved scenic background');
+assert(css.includes('lesson5-lilac-sakura-v225.svg'),'Approved lilac sakura background must load');
 assert(map.includes('hsk1-first-v189.html'),'HSK map must route to rebuilt first lesson');
 assert(legacy.includes('hsk1-first-v189.html'),'Old first lesson URL must route to new implementation');
 assert(sw.includes('hsk1-first-v189.js'),'New lesson must be in offline app shell');
@@ -79,7 +79,7 @@ assert(page.includes('native-owner-v200.js?v=200'),'New owner audio map must loa
 assert(js.includes("'我':0.055")&&js.includes("'是':0.070")&&js.includes("'学生':0.100"),'Word clips must have safe tail trims');
 assert(js.includes('item.playbackRate=tone?0.94:(trim?0.8:1)'),'Isolated first words should play at 0.8x with pitch preserved');
 assert(js.includes("high.type='highpass'")&&js.includes("low.type='lowpass'")&&js.includes('createDynamicsCompressor'),'Tone source must be gently processed without replacement');
-assert(page.includes('hsk1-first-v189.css?v=194'),'New CSS query bust');
+assert(page.includes('hsk1-first-v189.css?v=228'),'New CSS query bust');
 assert(css.includes('animation-iteration-count:infinite'),'Writing must run continuously');for(let i=1;i<=6;i++)assert(css.includes('@keyframes pgHao'+i),'Missing sequential six-stroke writing frame');assert(!js.includes('pg-wo-writing'),'Old seven-stroke character must be removed');assert(!js.includes('toneChoice'),'Intro tone choices must be absent');
 console.log('PASS v202: 好 introduction, six-stroke animation, non-quiz tones, first words and saved completion');
 w.close();
