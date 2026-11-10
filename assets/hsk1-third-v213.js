@@ -130,6 +130,7 @@ function stopWriter(){writerId++;try{writer?.cancelQuiz?.()}catch{}writer=null}
 function recording(n){
  // Compiled waveforms from the same Yue Tan voice: only when the pack is verified.
  const key=chinese(n);
+ const restored=window.PandaCleanAudioV249?.lookup(key);if(restored)return restored;
  const original=window.PandaOwnerAudio?.lookup(key);if(original)return original;
  const list=CLEAN();
  if(n!==100&&list[key])return list[key];

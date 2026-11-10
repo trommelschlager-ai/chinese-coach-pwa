@@ -95,6 +95,7 @@ function familyOriginalParts(hz,role='female'){
 }
 function weatherClips(hz){
  if(isFamily)return null;
+ const restored=window.PandaCleanAudioV249?.lookup(hz);if(restored)return [restored];
  const plain=String(hz).replace(/[。！？!?]\s*$/,'');
  // Priority 1: the already-recorded Chinese woman. v183/v184 originals were
  // ignored by the old v240 player even though we have every lesson-7 phrase.
@@ -138,7 +139,7 @@ function play(hz,role='female'){
   if(!clip){audio=null;button?.removeAttribute('aria-busy');return}
   try{
    const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;a.playbackRate=isFamily?1:0.85; // human weather recordings slowed without shifting pitch
-   if(!isFamily && (clip.startsWith('data:audio/')||window.PandaLessonAudioV240?.isPriority?.(hz)))window.PandaLessonAudioV240?.improve?.(a,'weather',hz);
+   if(!isFamily && !clip.includes('panda-native-clean-v249/') && (clip.startsWith('data:audio/')||window.PandaLessonAudioV240?.isPriority?.(hz)))window.PandaLessonAudioV240?.improve?.(a,'weather',hz);
    a.onended=()=>{if(token!==serial)return;playNext()};
    a.onerror=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy');say('Аудио не загрузилось. Попробуй снова.','bad')};
    Promise.resolve(a.play()).catch(()=>{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Нажми кнопку звука ещё раз.','bad')}});

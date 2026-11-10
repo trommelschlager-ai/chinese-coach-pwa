@@ -75,6 +75,7 @@ function stopAudio(){
  app.querySelectorAll('[aria-busy="true"]').forEach(el=>el.removeAttribute('aria-busy'));
 }
 function voice(hz,role='female'){
+ const restored=window.PandaCleanAudioV249?.lookup(hz);if(restored)return restored;
  // Native woman first: recovered 36 + 9 archived recordings and cleaned v237 tracks.
  const recovered=window.PandaNativeRecoveredV246?.lookup(hz);
  if(recovered)return recovered;
@@ -99,7 +100,7 @@ function play(hz,role='female'){
   a.preservesPitch=true;
   a.playbackRate=0.86; // slower with preserved pitch for new learners
   // Owner-clean files are already balanced; gently level only inline originals.
-  if(path.startsWith('data:audio/')||window.PandaLessonAudioV240?.isPriority?.(hz))window.PandaLessonAudioV240?.improve?.(a,'dates',hz);
+  if(!path.includes('panda-native-clean-v249/')&&(path.startsWith('data:audio/')||window.PandaLessonAudioV240?.isPriority?.(hz)))window.PandaLessonAudioV240?.improve?.(a,'dates',hz);
   const pressed=[...app.querySelectorAll('[data-play]')].find(el=>el.dataset.play===hz);
   pressed?.setAttribute('aria-busy','true');
   a.onended=()=>{if(serial!==playId)return;audio=null;pressed?.removeAttribute('aria-busy')};

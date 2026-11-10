@@ -131,6 +131,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{o
 .pg4-bubbles .from-f.active,.pg4-bubbles .from-m.active{box-shadow:0 0 0 3px #e8d7ee}
 .pg4-dialog-actions{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:10px auto}
 .pg4-dialog-actions button{min-height:43px;padding:7px 10px;font-size:13px}
+.pg4-dialog-actions [data-dialogue-toggle]{min-width:210px;padding:11px 20px;font-size:16px}
 .pg4-voice-tools{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:15px auto 5px}
 .pg4-voice-tools button{font-size:12px;padding:8px 11px}
 .pg4-build-slots{display:flex;gap:8px;justify-content:center;margin:16px auto}
