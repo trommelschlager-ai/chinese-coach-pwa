@@ -1,6 +1,6 @@
 {
-  "version": 227,
-  "bytes": 38774112,
+  "version": 230,
+  "bytes": 38792612,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -524,7 +524,7 @@
     "./assets/hsk1-foundations-v152.js?v=172",
     "./assets/hsk1-foundations-v152.js?v=180",
     "./assets/hsk1-foundations-v152.js?v=181",
-    "./assets/hsk1-foundations-v152.js?v=226",
+    "./assets/hsk1-foundations-v152.js?v=230",
     "./assets/hsk1-native-human-map-v167.js?v=167",
     "./assets/hsk1-reference-exact-v177.css?v=177",
     "./assets/hsk1-roadmap-v103.css",
@@ -1593,7 +1593,7 @@
     "./manifest.webmanifest",
     "./start-chinese.html",
     "./hsk1-first-v189.html",
-    "./assets/hsk1-first-v189.css?v=194",
+    "./assets/hsk1-first-v189.css?v=228",
     "./assets/hsk1-first-v189.js?v=202",
     "./assets/hsk1-native-clean-v198.js?v=198",
     "./assets/hsk1-tone-clean-v202/ma2.mp3",
@@ -1627,7 +1627,7 @@
     "./hsk1-third-v212.html",
     "./assets/hsk1-third-v213.js?v=223",
     "./assets/hsk1-third-v212.css?v=212",
-    "./assets/hsk1-third-v213.css?v=223",
+    "./assets/hsk1-third-v213.css?v=229",
     "./assets/hsk1-numbers-audio-map-v213.js?v=213",
     "./assets/hsk1-numbers-clean-v213/000.mp3",
     "./assets/hsk1-numbers-clean-v213/001.mp3",
@@ -1748,8 +1748,8 @@
     "./assets/hsk1-weekdays-clean-v214/015.mp3",
     "./assets/hsk1-weekdays-clean-v214/016.mp3",
     "./assets/hsk1-weekdays-clean-v214/017.mp3",
-    "./assets/hsk1-fourth-v216.js?v=216",
-    "./assets/hsk1-fourth-v216.css?v=216",
+    "./assets/hsk1-fourth-v220.js?v=220",
+    "./assets/hsk1-fourth-v219.css?v=229",
     "./assets/panda-guide-v215.svg",
     "./assets/lesson4-reference-v216/hero.webp",
     "./assets/lesson4-reference-v216/practice.webp",
@@ -1774,7 +1774,8 @@
     "./assets/lesson5-lilac-v225.css?v=226",
     "./assets/lesson5-lilac-sakura-v225.svg",
     "./hsk1-fifth-v227.html",
-    "./assets/hsk1-fifth-v227.js?v=227",
-    "./assets/hsk1-fifth-v227.css?v=227"
+    "./assets/hsk1-fifth-v227.js?v=230",
+    "./assets/hsk1-fifth-v227.css?v=230",
+    "./assets/hsk1-family-weather-lilac-v228.css?v=228"
   ]
 }
