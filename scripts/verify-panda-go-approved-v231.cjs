@@ -20,14 +20,14 @@ for(const lesson of [6,7]){
  const filename=lesson===6?'hsk1-family-v231.html':'hsk1-weather-v231.html';
  const html=fs.readFileSync(filename,'utf8');
  assert(html.includes('panda-go-approved-lessons-v231.css?v='+'237'));
- assert(html.includes('panda-go-companion-v231.js?v=237'));
+ assert(html.includes('panda-go-companion-v231.js?v='+(lesson===7?'239':'237')));
  assert(html.includes('panda-owner-lessons5-7-native-v221.js?v=221'));
  assert(css.includes('lesson'+lesson+'-scene-v233.webp'));
  const dom=new JSDOM(html,{url:'https://panda.test/chinese-coach-pwa/'+filename,runScripts:'outside-only'});
  const w=dom.window,d=w.document;
  w.eval(data);
  w.PANDA_HSK1_VOICES={
-  female:new Proxy({}, {get(_,p){return './assets/sample/'+String(p)+'.mp3'}}),
+  female:new Proxy({}, {get(_,p){return './assets/hsk1-voices-v160/mock-'+String(p)+'.mp3'}}),
   male:new Proxy({}, {get(_,p){return './assets/sample/'+String(p)+'.mp3'}})
  };
  w.PANDA_HSK1_NATIVE_HUMAN_V167={};
