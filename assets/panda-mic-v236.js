@@ -33,7 +33,10 @@
    for(const level of levels)if(level>=threshold){power+=level*level;count++}
    if(!count)return blob;
    const activeRms=Math.sqrt(power/count);
-   const gain=Math.min(4,Math.max(1,0.16/Math.max(0.001,activeRms)),0.9/peak);
+   const quiet=levels.filter(x=>x<threshold).sort((a,b)=>a-b);
+   const floor=quiet.length?quiet[Math.floor(quiet.length/2)]:0;
+   const noiseCap=floor>0.008?Math.max(1,0.018/floor):4;
+   const gain=Math.min(4,noiseCap,Math.max(1,0.16/Math.max(0.001,activeRms)),0.9/peak);
    if(!Number.isFinite(gain)||gain<1.07)return blob;
    const buffer=new ArrayBuffer(44+n*2),dv=new DataView(buffer);
    const word=(pos,w)=>{for(let i=0;i<w.length;i++)dv.setUint8(pos+i,w.charCodeAt(i))};

@@ -8,7 +8,7 @@ assert(helper.includes('audio/wav'),'Safe microphone normalization must produce 
 assert(helper.includes('getUrl()!==currentUrl'),'Older mic take must never replace newer recording');
 assert(helper.includes('Math.min(4,'),'Microphone gain must be capped');
 const lesson4=read('assets/hsk1-fourth-v220.js');
-assert(lesson4.includes('fileFor=word=>fileMap()[word]||ownerMap[word]||nativeMap()[word]'),'Use latest approved owner voice first');
+assert(lesson4.includes('fileFor=word=>window.PandaOwnerAudio?.lookup(word)||fileMap()[word]||ownerMap[word]||nativeMap()[word]'),'Use latest approved owner voice first');
 assert(!lesson4.includes('Для 星期天 нужна цельная запись'),'Outdated Sunday notice must be removed');
 assert(read('assets/panda-owner-l4-native-v221.js').includes('"星期天": "009"'));
 const numbers=read('assets/hsk1-third-v213.js');
@@ -23,7 +23,7 @@ for(const [page,source] of [
  ['hsk1-weather-v231.html','panda-go-companion-v231.js']
 ]){
  const html=read(page),js=read('assets/'+source);
- assert(html.includes('panda-mic-v236.js?v=236'),page+' missing mic helper');
+ assert(html.includes('panda-mic-v236.js?v=237'),page+' missing mic helper');
  assert(html.indexOf('panda-mic-v236.js')<html.indexOf(source),'Mic helper must load before lesson');
  assert(js.includes('PANDA_MIC_V236?.enhance?.'),source+' missing local playback gain');
  new vm.Script(js);

@@ -13,8 +13,8 @@ const practice=fs.readFileSync('assets/hsk1-second-practice-v211.js','utf8');
 const voices=fs.readFileSync('assets/hsk1-voices-map-v160.js','utf8');
 const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const unified=fs.readFileSync('assets/hsk1-lesson2-audio-v208.js','utf8');
-assert(practiceHTML.includes('hsk1-second-practice-v211.js?v=211'));
-assert(practiceHTML.includes('hsk1-second-speaking-v209.js?v=211'));
+assert(practiceHTML.includes('hsk1-second-practice-v211.js?v=237'));
+assert(practiceHTML.includes('hsk1-second-speaking-v209.js?v=237'));
 assert(!lessonHTML.includes('hsk1-second-speaking-v209.js'),'Main lesson must not load microphone checkpoint');
 const click=(d,s)=>{
  const item=d.querySelector(s);

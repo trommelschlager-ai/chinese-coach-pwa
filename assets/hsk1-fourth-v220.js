@@ -147,18 +147,18 @@ const ownerMap=Object.freeze({
 });
 const fileMap=()=>window.PANDA_HSK1_L4_VOICE_V214||{};
 const nativeMap=()=>window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
-const fileFor=word=>fileMap()[word]||ownerMap[word]||nativeMap()[word]||null;
+const fileFor=word=>window.PandaOwnerAudio?.lookup(word)||fileMap()[word]||ownerMap[word]||nativeMap()[word]||null;
 const AUDIO_LEVELS={"./assets/lesson4-owner-review-v217/owner-15.mp3":0.88,"./assets/lesson4-owner-review-v217/owner-21.mp3":0.88,"./assets/lesson4-owner-review-v217/owner-22.mp3":0.88,"./assets/hsk1-weekdays-clean-v214/001.mp3": 0.7834, "./assets/hsk1-weekdays-clean-v214/002.mp3": 0.9661, "./assets/hsk1-weekdays-clean-v214/003.mp3": 0.9716, "./assets/hsk1-weekdays-clean-v214/004.mp3": 0.8861, "./assets/hsk1-weekdays-clean-v214/005.mp3": 0.8008, "./assets/hsk1-weekdays-clean-v214/006.mp3": 1, "./assets/hsk1-weekdays-clean-v214/007.mp3": 0.9258, "./assets/hsk1-weekdays-clean-v214/008.mp3": 0.673, "./assets/hsk1-weekdays-clean-v214/009.mp3": 0.6331, "./assets/hsk1-weekdays-clean-v214/010.mp3": 0.9761, "./assets/hsk1-weekdays-clean-v214/011.mp3": 0.858, "./assets/hsk1-weekdays-clean-v214/012.mp3": 0.8366, "./assets/hsk1-weekdays-clean-v214/013.mp3": 0.7943, "./assets/hsk1-weekdays-clean-v214/014.mp3": 0.8511, "./assets/hsk1-weekdays-clean-v214/015.mp3": 0.9863, "./assets/hsk1-weekdays-clean-v214/016.mp3": 0.874, "./assets/hsk1-weekdays-clean-v214/017.mp3": 0.7825, "./assets/yue-tan-human-v166/094_92611b3bbea1298a77d4.mp3": 0.6434, "./assets/yue-tan-human-v166/050_e2e4b1164ea07e93d0a4.mp3": 0.9539, "./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3": 0.6124};
 let audio=null,epoch=0,writer=null,writerEpoch=0,recorder=null,recStream=null,micBlobURL=null;
 function soundStop(){
  epoch++;
  if(audio){audio.onended=null;audio.onerror=null;try{audio.pause()}catch{}audio=null}
 }
-function micStop(){
+function micStop(preserve=false){
  if(recorder&&recorder.state!=='inactive')try{recorder.stop()}catch{}
  recorder=null;
  if(recStream){for(const track of recStream.getTracks())track.stop();recStream=null}
- if(micBlobURL){try{URL.revokeObjectURL(micBlobURL)}catch{}micBlobURL=null}
+ if(!preserve&&micBlobURL){try{URL.revokeObjectURL(micBlobURL)}catch{}micBlobURL=null}
 }
 function writerStop(){writerEpoch++;try{writer?.cancelQuiz?.()}catch{}writer=null}
 function message(text='',kind='info'){
@@ -170,7 +170,7 @@ function play(word,callback){
  const file=fileFor(word);
  if(file){
   try{
-   const player=new Audio(file);audio=player;player.preload='auto';player.preservesPitch=true;player.playbackRate=1;player.volume=AUDIO_LEVELS[file]??1;
+   const player=new Audio(window.PandaAudioLevel?.[file]||file);audio=player;player.preload='auto';player.preservesPitch=true;player.playbackRate=1;player.volume=window.PandaAudioLevel?.[file]?1:(AUDIO_LEVELS[file]??1);
    player.onended=()=>{if(serial===epoch){audio=null;callback?.(true)}};
    player.onerror=()=>{if(serial===epoch){audio=null;message('Аудиофайл не загрузился — повтори попытку.','error');callback?.(false)}};
    const p=player.play();if(p?.catch)p.catch(()=>{if(serial===epoch){audio=null;message('Браузер заблокировал звук. Нажми ещё раз.','error');callback?.(false)}});
@@ -397,7 +397,7 @@ function screen(keep=false){
  if(state.step===7 && state.ix[7]>=CALENDAR.length){state.step=8;keep=false}
  if(state.step===10 && state.ix[10]>=BUILDS.length){state.step=11;keep=false}
  const pos=viewport.scrollTop;
- soundStop();writerStop();if(!keep)micStop();
+ soundStop();writerStop();if(!keep)micStop(true);
  const s=state.step;if(s===12&&!state.done)complete();
  state.maxStep=Math.max(state.maxStep,s);
  heading.textContent=SECTIONS[s][1];subtitle.textContent=SECTIONS[s][2];
@@ -632,7 +632,7 @@ stage.addEventListener('click',ev=>{
  if(btn.hasAttribute('data-mic-stop')){if(recorder?.state==='recording')recorder.stop();return}
  if(btn.hasAttribute('data-mic-play')){
   if(!micBlobURL){setMic('Сначала запиши свой голос.');return}
-  soundStop();try{audio=new Audio(micBlobURL);audio.play().catch(()=>setMic('Не удалось воспроизвести запись.'))}catch{}
+  soundStop();try{audio=new Audio(window.PandaAudioLevel?.[micBlobURL]||micBlobURL);audio.play().catch(()=>setMic('Не удалось воспроизвести запись.'))}catch{}
   return;
  }
  if(btn.hasAttribute('data-review-mistakes')){
@@ -656,7 +656,6 @@ back.addEventListener('click',()=>{
 });
 forward.addEventListener('click',nextScreen);
 window.addEventListener('pagehide',()=>{soundStop();writerStop();micStop()});
-function fitViewport(){const h=Math.round(window.visualViewport?.height||window.innerHeight||0);if(h>320)document.documentElement.style.setProperty('--pg4-visible-height',h+'px')}
-fitViewport();window.visualViewport?.addEventListener('resize',fitViewport);window.addEventListener('resize',fitViewport);
+
 screen();
 })();

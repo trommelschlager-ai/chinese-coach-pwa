@@ -1,0 +1,108 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> check
+> node scripts/verify.cjs && node scripts/verify-quality.cjs && node scripts/verify-simple-learning.cjs && node scripts/verify-hanzi.cjs && node scripts/verify-launch.cjs && node scripts/verify-offline.cjs && node scripts/verify-pinyin-reading.cjs && node scripts/verify-clean-sections.cjs && node scripts/verify-ui-polish.cjs && node scripts/verify-ui-v70.cjs && node scripts/verify-ui-v71.cjs && node scripts/verify-adult-dialogues.cjs && node scripts/verify-v73-roles-and-pinyin.cjs && node scripts/verify-soft-pinyin-v74.cjs && node scripts/verify-yunyang-pinyin-v75.cjs && node scripts/verify-game-practice-v76.cjs && node scripts/verify-game-voice-coverage-v90.cjs && node scripts/verify-audit-v98.cjs && node scripts/verify-hsk1-v103.cjs && node scripts/verify-eight-screens-v117.cjs && node scripts/verify-audio-v118.cjs && node scripts/verify-travel-voice-v1.cjs && node scripts/verify-travel-wow-v1.cjs && node scripts/verify-game-sakura-v126.cjs && node scripts/verify-menu-v3.cjs && node scripts/verify-panda-approved-v129.cjs && node scripts/verify-panda-v130.cjs && node scripts/verify-panda-v131.cjs && node scripts/verify-assemble-alive-v149.cjs && node scripts/verify-hsk-three-screens-v151.cjs && node scripts/verify-hsk1-foundations-v152.cjs && python3 scripts/verify_hsk1_kokoro_plan_v155.py && node scripts/verify-hsk1-voices-v156.cjs && node scripts/verify-hsk1-native-v167.cjs && node scripts/verify-hsk1-recording-studio-v168.cjs && node scripts/verify-hsk1-voice-pack-v169.cjs && node scripts/verify-hsk1-mobile-polish-v170.cjs && node scripts/verify-hsk1-mobile-layout-v171.cjs && node scripts/verify-panda-reference-v172.cjs && node scripts/verify-panda-reference-v175.cjs && node scripts/verify-hsk1-intro-v188.cjs && node scripts/verify-hsk1-first-v189.cjs && node scripts/verify-hsk1-first-audio-v195.cjs && node scripts/verify-hsk1-owner-v198.cjs && node scripts/verify-hsk1-second-v202.cjs && node scripts/verify-hsk1-second-v203.cjs && node scripts/verify-hsk1-second-extras-v204.cjs && node scripts/verify-hsk1-second-speaking-v209.cjs && node scripts/verify-hsk1-third-v213.cjs && node scripts/verify-hsk1-fourth-v216.cjs
+
+{
+  "panels": 20,
+  "questions": 35,
+  "options": 140,
+  "spoken": 69,
+  "missing": []
+}
+Quality checks passed: six section destinations, resume, sequential rules, unified knowledge, unique vocabulary, low-third uncertainty, dialogue controls.
+Simplification checks passed: correct returns, initial start, collapsed settings and recording, recall before assessment, review scheduling, complete dialogue, resume, browser Back and test errors.
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at HTMLButtonElement.eval (eval at <anonymous> (/workspace/scratch/5670623da63d/chinese-coach-pwa/scripts/verify-hanzi.cjs:26:3), <anonymous>:217:271)
+    at HTMLButtonElement.callTheUserObjectsOperation (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
+    at innerInvokeEventListeners (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25)
+    at invokeEventListeners (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)
+    at HTMLButtonElementImpl._dispatch (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)
+    at fireAnEvent (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/helpers/events.js:18:36)
+    at HTMLButtonElementImpl.click (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/nodes/HTMLElement-impl.js:85:5)
+    at HTMLButtonElement.click (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/generated/HTMLElement.js:108:34) undefined
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at HTMLButtonElement.eval (eval at <anonymous> (/workspace/scratch/5670623da63d/chinese-coach-pwa/scripts/verify-hanzi.cjs:26:3), <anonymous>:217:271)
+    at HTMLButtonElement.callTheUserObjectsOperation (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
+    at innerInvokeEventListeners (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25)
+    at invokeEventListeners (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)
+    at HTMLButtonElementImpl._dispatch (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)
+    at fireAnEvent (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/helpers/events.js:18:36)
+    at HTMLButtonElementImpl.click (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/nodes/HTMLElement-impl.js:85:5)
+    at HTMLButtonElement.click (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/generated/HTMLElement.js:108:34) undefined
+Hanzi pilot: syntax, tabs, Chinese speech, animation, quiz and progress checks passed
+Launch checks passed: approved cover, Start-only petals, seven equal lesson cards, third Hanzi link.
+Offline checks passed: 145 core URLs; 2071 optional files, failed-download recovery, local writing, home isolation.
+Pinyin checks passed: 26 groups, 36 finals, 21 initials, 21 rules, 190 fresh Yunyang MP3s.
+Clean sections verified: 193 words in 13 groups; dialogue-only; three real practice modes; no repeated tones; course remains intact.
+Approved V69 visual fixes validated; existing pronunciation controls and six destinations preserved.
+V70: photographed background and four substantially restyled training screens checks passed
+V71 dialogue art and reversible lower-pitch preview checks passed
+All 25 truly different Mandarin dialogue MP3s verified, new voices live by default, legacy comparison and offline cache preserved.
+V73 voice review passed: 190 new Pinyin recordings, 25 dialogue MP3s and fixed Anna/Xiaoming gender.
+V74 archive retained; v75 Yunyang active; original dialogue recordings remain untouched.
+V75 passes: 190 real Yunyang MP3s, normal default speed, preserved tones, unchanged dialogues and navigation
+V98 game verified: all 30 questions, correct/wrong feedback, hidden pinyin, clear/remove/capacity, errors-only review and progress.
+V99: restored artwork with live flow layout and both whole-word MP3s verified.
+V99 token inventory: original native clips retained, two whole-word corrections, no device TTS fallback.
+V98 regression passed: export/import round trip, legacy import, invalid stats rejected, daily route and five-tone instruction.
+HSK 1 v103 roadmap: 141/300 factual audit, ten existing categories, old lessons and navigation preserved.
+v117 checks passed: quiz/pinyin, compact words, listening/translation, daily banner, dialogues and live writing.
+v118 audio coverage OK. 193/193 MP3 paths: {"dedicated":113,"pinyin":32,"study":4,"human":44}; 25/25 legacy dialogue mappings; 2 greeting overrides. Mixed voice sources and preview-only licenses STILL REQUIRE review.
+Travel voice checks passed: 3 phrases, speech-result honesty, pinyin, optional skip, safe return, old quiz preserved.
+Travel WOW checks passed: approved moving path, no redundant banner, existing lesson and voice untouched.
+Game sakura v126 OK: petals are decorative, loop, respect reduced motion, leave controls and questions intact.
+v127 Panda Go approved menu: optimized art, 16 animated petals, existing study/practice/travel and live stats verified.
+Panda v129 design OK: four study, three practice, real navigation, sakura, offline, Hanzi and Game safety.
+Panda v132 passed: actual boot, routes, 193 words, examples/audio, pinyin, 13 groups, tone recordings, dialogue paging, reorderable tokens, scoring, reward idempotency and topic switching.
+Panda Go v131: clean speaker, natural speed, example audio coverage, approved layout, offline cache OK.
+Alive café: errors, editing, pinyin, 6 scenes, local audio, completion and restart OK.
+Panda Go v151: six HSK levels, seven steps in four lessons, MP3 coverage, progress migration, assets and cache verified.
+HSK 1 v182: seven lessons, simplified audio, context, 3-question quizzes, honest first-attempt scores, confirmed builds and preserved progress OK.
+Approved lesson sources: 7, unique voice/text pairs: 134, roles: {'female': 120, 'male': 14}
+Created local review manifest; no voices generated.
+HSK 1 v155: licensed model attribution, female/male role map, exact text and non-published review status OK
+Panda Go v161: 134 exact audio files, 0.85x female default and 0.75x/1.0x saved speed choices, male and human tone clips unchanged.
+PASS v230: 59 exact original human MP3 samples, human-first fallback for matching text, preserved two-speaker dialogue roles.
+PASS v168: 56 exact human recording slots, 65 original variants, local-only studio, Zip export UI, missing-mic browser mode.
+PASS v169: 56 existing AI MP3s all mapped, 124 full female recordings, 56/124 interactive review UI, ZIP validity and native-speaker review flags.
+PASS v170: preserved approved HSK1 scenery, seven steps and voices; mobile press effects, non-overflow Chinese and accessible progress.
+PASS v171: approved scenery/audio untouched, safe-area fixed Next, 44px controls, readable Mandarin and PWA cache coherency.
+PASS v172: 3 real approved screens, 6 HSK buttons, 7 real map lessons, 7 stages, voice/progress untouched and offline reference styles.
+PASS v175: seven authentic links, locked navigation, completed and out-of-order lessons, malformed state, no progress writes, at most 145 offline files.
+PASS v188: 3 beginner introduction screens, 3 radicals, stroke sequence, first word 我, preserved progress
+PASS v202: 好 introduction, six-stroke animation, non-quiz tones, first words and saved completion
+HSK1 audio source audit PASS: 8/8 first-lesson phrases use original approved native samples; 0 use another licensed/synthetic source; 4 separate human tone examples exist. Manual Mandarin listening QA still needed.
+Native phrases: 我 · 是 · 学生 · 你 · 你好 · 你好！ · 我是学生 · 我是学生。
+Licensed human recordings: 
+Remaining non-owner recordings: 
+PASS HSK1 owner voice v198: all 8 checked word/phrase variants from the same provided recording; tone charts still require separate owner samples.
+PASS v202: 16 approved-style screens, vocabulary, fixed phrase roles, both builds, 4 listening choices, 3-question quiz, isolated progress.
+PASS HSK1 v211: 12 screens, fewer redundant tasks, polite 您, separate optional speaking/dictionary pages, graduation without mic and saved progress.
+PASS lesson 2 v211: authentic 他 tracing and optional 他/她/它 comparison; two-voice scene stays unchanged.
+Error: Uncaught [TypeError: Cannot read properties of undefined (reading 'querySelector')]
+    at reportException (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/helpers/runtime-script-errors.js:66:24)
+    at innerInvokeEventListeners (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:353:9)
+    at invokeEventListeners (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)
+    at HTMLDetailsElementImpl._dispatch (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:217:9)
+    at fireAnEvent (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/helpers/events.js:18:36)
+    at HTMLDetailsElementImpl._dispatchToggleEvent (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/nodes/HTMLDetailsElement-impl.js:17:5)
+    at listOnTimeout (node:internal/timers:685:17)
+    at process.processTimers (node:internal/timers:618:7) TypeError: Cannot read properties of undefined (reading 'querySelector')
+    at $ (eval at mk (/workspace/scratch/5670623da63d/chinese-coach-pwa/scripts/verify-hsk1-second-extras-v204.cjs:32:4), <anonymous>:14:30)
+    at loadWriting (eval at mk (/workspace/scratch/5670623da63d/chinese-coach-pwa/scripts/verify-hsk1-second-extras-v204.cjs:32:4), <anonymous>:23:14)
+    at HTMLElement.eval (eval at mk (/workspace/scratch/5670623da63d/chinese-coach-pwa/scripts/verify-hsk1-second-extras-v204.cjs:32:4), <anonymous>:166:55)
+    at HTMLElement.callTheUserObjectsOperation (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
+    at innerInvokeEventListeners (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25)
+    at invokeEventListeners (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)
+    at HTMLDetailsElementImpl._dispatch (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:217:9)
+    at fireAnEvent (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/helpers/events.js:18:36)
+    at HTMLDetailsElementImpl._dispatchToggleEvent (/workspace/scratch/5670623da63d/chinese-coach-pwa/node_modules/jsdom/lib/jsdom/living/nodes/HTMLDetailsElement-impl.js:17:5)
+    at listOnTimeout (node:internal/timers:685:17)
+PASS HSK1 lesson 2 v211: replayable two-speaker scene, short and full speech drills with separate progress, 3 consecutive ASR matches, 16-word audio dictionary without mic.
+PASS HSK1 numbers lesson v213: 14 screens, 0–100, voice gated after completion, 3 tones, 1–10, handwriting, decade rules, random calculator, four builders, six listens, real-life quiz, eight-question exam, saved old progress.
+PASS HSK1 lesson4 v216: fully integrated 13-screen responsive standalone weekday course, 7 listening items, Sunday, tone corrections, calendar, 日 handwriting, 2-role dialogue, 3 compositions, 10-question final, targeted error review, legacy progress.

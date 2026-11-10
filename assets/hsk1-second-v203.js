@@ -83,7 +83,7 @@ try{
   state.heard=raw.heard===true;state.spoken=raw.spoken===true;state.completed=raw.completed===true;
  }
 }catch{}
-let audio=null,recorder=null,stream=null,recUrl=null,micBusy=false,recordChunks=[];
+let audio=null,recorder=null,stream=null,recUrl=null,micBusy=false,recordChunks=[],micEpoch=0;
 let reviewEpoch=0,reviewDelay=0,reviewResume=null;
 const index=s=>Math.max(0,Math.min(50,Number(state.index[s])||0));
 const audioMap=window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
@@ -91,6 +91,7 @@ const unified=window.PANDA_HSK1_L2_ONE_VOICE_V208||{};
 const course=window.PANDA_HSK1_VOICES||{};
 function fileFor(hz,role='female'){
  const text=String(hz),key=cleanText(text);
+ const original=role==='female'&&window.PandaOwnerAudio?.lookup(text);if(original)return original;
  // The animated dialogue on screen 10 retains its two speakers.
  if(state.step===9){
   if(role==='female'&&text==='我是老师。')
@@ -131,7 +132,7 @@ function playReviewEntry(entry,epoch){
   let player=null;
   if(file){
    try{
-    player=new Audio(file);audio=player;
+    player=new Audio(window.PandaAudioLevel?.[file]||file);audio=player;
     player.preload='auto';player.preservesPitch=true;player.playbackRate=unified[hanzi]?1:.9;
     player.onended=complete;player.onerror=complete;
     const attempt=player.play();
@@ -196,7 +197,7 @@ function play(hz,role='female'){
  window.PG2_EXTRAS?.stopScene?.();
  stopAudio();
  try{
-  const a=new Audio(file);audio=a;a.preload='auto';
+  const a=new Audio(window.PandaAudioLevel?.[file]||file);audio=a;a.preload='auto';
   a.preservesPitch=true;
   // Do not slow already prepared same-speaker recordings: preserve natural pitches and tones.
   a.playbackRate=unified[hz]||unified[cleanText(hz)]?1:(vocab[cleanText(hz)]?1:0.9);
@@ -350,7 +351,7 @@ const screens=[
  renderFinal
 ];
 function safeStopMic(){
- if(recorder?.state==='recording'){try{recorder.onstop=null;recorder.stop()}catch{}}
+ if(recorder?.state==='recording'){try{recorder.stop()}catch{}}
  if(stream){for(const t of stream.getTracks())t.stop()}
  stream=null;recorder=null;micBusy=false;
 }
@@ -484,7 +485,7 @@ area.addEventListener('click',async ev=>{
    feedback('Микрофон недоступен. Повтори вслух и нажми «Я произнёс фразу».');return;
   }
   try{
-   safeStopMic();
+   safeStopMic();const take=++micEpoch;
    stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
    const formats=['audio/webm;codecs=opus','audio/mp4','audio/webm'];
    const mime=formats.find(m=>MediaRecorder.isTypeSupported(m));
@@ -492,6 +493,7 @@ area.addEventListener('click',async ev=>{
    const type=recorder.mimeType||'audio/webm';recordChunks=[];
    recorder.ondataavailable=e=>{if(e.data?.size)recordChunks.push(e.data)};
    recorder.onstop=()=>{
+    if(take!==micEpoch)return;
     const parts=recordChunks.slice();
     if(parts.length){if(recUrl)URL.revokeObjectURL(recUrl);const raw=new Blob(parts,{type});recUrl=URL.createObjectURL(raw);window.PANDA_MIC_V236?.enhance?.(raw,recUrl,()=>recUrl,url=>{recUrl=url})}
     if(stream){for(const track of stream.getTracks())track.stop();stream=null}
@@ -505,7 +507,7 @@ area.addEventListener('click',async ev=>{
   if(recorder?.state==='recording')recorder.stop();return;
  }
  if(btn.hasAttribute('data-record-play')&&recUrl){
-  stopAudio();try{audio=new Audio(recUrl);Promise.resolve(audio.play()).catch(()=>feedback('Не удалось воспроизвести свою запись.'))}catch{feedback('Запись недоступна.')}return;
+  stopAudio();try{audio=new Audio(window.PandaAudioLevel?.[recUrl]||recUrl);Promise.resolve(audio.play()).catch(()=>feedback('Не удалось воспроизвести свою запись.'))}catch{feedback('Запись недоступна.')}return;
  }
 });
 window.addEventListener('pagehide',()=>{

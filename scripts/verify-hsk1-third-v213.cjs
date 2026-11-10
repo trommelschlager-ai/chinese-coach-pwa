@@ -10,8 +10,8 @@ const html=fs.readFileSync('hsk1-third-v212.html','utf8'),
  css=fs.readFileSync('assets/hsk1-third-v213.css','utf8'),
  map=fs.readFileSync('hsk1-map.html','utf8'),
  native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
-assert(html.includes('hsk1-third-v213.js?v=223'));
-assert(html.includes('hsk1-third-v213.css?v=229'));
+assert(html.includes('hsk1-third-v213.js?v=237'));
+assert(html.includes('hsk1-third-v213.css?v=237'));
 assert(map.includes('14 экранов'));
 assert(css.includes('.pg13-study-grid')&&css.includes('.pg13-tens-grid'));
 assert(js.includes("if(n===100)return ['yì','bǎi']"),'100 must be yì bǎi');
@@ -61,7 +61,7 @@ const hear=n=>{
 const advance=()=>click('#pg3-next');
 assert.equal(step(),1);
 assert(d.querySelector('.pg13-intro-hero img'),'Branded mascot must show');
-assert(d.querySelector('.pg13-intro-hero img').getAttribute('src').includes('lesson3-approved-panda-v223.webp'),'Reference mascot from owner mockup must show');
+assert(d.querySelector('.pg13-intro-hero img').getAttribute('src').includes('lesson-success-v233.webp'),'Reference mascot from owner mockup must show');
 assert(d.querySelector('#pg3-progress').getAttribute('aria-valuemax')==='14');
 advance();
 assert.equal(step(),2);

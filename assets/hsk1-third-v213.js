@@ -130,6 +130,7 @@ function stopWriter(){writerId++;try{writer?.cancelQuiz?.()}catch{}writer=null}
 function recording(n){
  // Compiled waveforms from the same Yue Tan voice: only when the pack is verified.
  const key=chinese(n);
+ const original=window.PandaOwnerAudio?.lookup(key);if(original)return original;
  const list=CLEAN();
  if(n!==100&&list[key])return list[key];
  if(n===100)return window.PANDA_HSK1_NATIVE_HUMAN_V167?.['一百']||window.PANDA_HSK1_VOICES?.female?.['一百']||null;
@@ -150,7 +151,7 @@ function play(n,onEnd){
  const file=recording(n);
  if(file){
   try{
-   const player=new Audio(file);audio=player;player.preload='auto';
+   const player=new Audio(window.PandaAudioLevel?.[file]||file);audio=player;player.preload='auto';
    player.preservesPitch=true;player.playbackRate=1;
    player.onended=()=>finished(true);
    player.onerror=()=>{finished(false);inform('Запись не загрузилась. Попробуй снова.','error')};
@@ -181,7 +182,7 @@ function play(n,onEnd){
   if(serial!==requestId)return;
   if(i===parts.length){finished(true);return}
   try{
-   const player=new Audio(parts[i++]);audio=player;player.preload='auto';player.preservesPitch=true;
+   const candidate=parts[i++];const player=new Audio(window.PandaAudioLevel?.[candidate]||candidate);audio=player;player.preload='auto';player.preservesPitch=true;
    player.onended=nextPart;
    player.onerror=()=>finished(false);
    const promise=player.play();if(promise?.catch)promise.catch(()=>finished(false));
@@ -202,7 +203,7 @@ function heading(text){return '<h2 class="pg13-card-heading">'+text+'</h2>'}
 function basic(n,extra=''){return '<strong lang="zh-Hans">'+chinese(n)+'</strong><span>'+pinyin(n)+'</span><small>'+extra+'</small>'}
 function intro(){
  const cards=[1,2,3,4,5].map(n=>'<div class="pg3-intro-num">'+basic(n,RU[n])+'</div>').join('');
- return '<div class="pg13-intro-hero"><img src="./assets/lesson3-approved-panda-v223.webp" alt="Панда — помощник в изучении китайского">'+
+ return '<div class="pg13-intro-hero"><img src="./assets/lesson-success-v233.webp" alt="Панда — помощник в изучении китайского">'+
   '<div><span class="pg13-small-kicker">HSK 1 · НОВЫЙ УРОК</span><h2>Считаем до 100!</h2><p>Не нужно учить сто новых слов: достаточно цифр и трёх простых правил.</p></div></div>'+
   mainCard('<div class="pg3-intro-numbers">'+cards+'</div><p class="pg3-muted pg3-center">Сначала числа, потом десятки и сотня.</p>')+
   mainCard(heading('После урока ты сможешь')+
@@ -347,7 +348,7 @@ function exam(){
 }
 function summary(){
  const score=Number(state.firstTry)||0,errors=Object.keys(state.wrong).filter(k=>k.startsWith('exam-'));
- return '<div class="pg13-congrats"><img src="./assets/lesson3-approved-panda-v223.webp" alt="Панда поздравляет с завершением урока">'+
+ return '<div class="pg13-congrats"><img src="./assets/lesson-success-v233.webp" alt="Панда поздравляет с завершением урока">'+
   '<h2>🎉 Урок 3 пройден!</h2><p>Теперь ты знаешь, как образуются любые целые числа от 0 до 100.</p></div>'+
   mainCard('<div class="pg13-score"><strong>'+score+' / '+EXAM.length+'</strong><span>правильно с первой попытки</span></div>'+
    (errors.length?'<p class="pg3-muted">Повторить стоит: '+errors.map(k=>chinese(EXAM[Number(k.split('-')[1])].n)).join(', ')+'.</p>':

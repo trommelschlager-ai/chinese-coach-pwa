@@ -23,7 +23,7 @@ function playDict(word){
  const file=speech.audioFor(word);
  if(file){
   try{
-   playback=new Audio(file);
+   playback=new Audio(window.PandaAudioLevel?.[file]||file);
    playback.preload='auto';playback.preservesPitch=true;playback.playbackRate=1;
    playback.onerror=()=>note('Не удалось воспроизвести запись. Попробуй ещё раз.');
    Promise.resolve(playback.play()).then(()=>note('Слушаем «'+word+'».')).catch(()=>note('Нажми ▶ ещё раз.'));

@@ -84,6 +84,7 @@ function stopAudio(){serial++;try{audio?.pause();audio.currentTime=0}catch{}audi
 const mappings=window.PANDA_HSK1_VOICES||{},human=window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
 function resolve(hz,role='female'){
  const plain=String(hz).replace(/[。！？!?]\s*$/,'');
+ const original=role==='female'&&window.PandaOwnerAudio?.lookup(hz);if(original)return original;
  if(role==='male')return mappings.male?.[hz]||mappings.male?.[plain]||null;
  const f=mappings.female||{};
  const primary=f[hz]||f[plain]||null;
@@ -97,7 +98,7 @@ function play(hz,role='female'){
  if(!src){say('Для этой фразы пока нет проверенной записи.','bad');return}
  stopAudio();const token=serial;
  try{
-  audio=new Audio(src);const a=audio;a.preload='auto';a.preservesPitch=true;a.playbackRate=1;
+  audio=new Audio(window.PandaAudioLevel?.[src]||src);const a=audio;a.preload='auto';a.preservesPitch=true;a.playbackRate=1;
   const button=[...stage.querySelectorAll('[data-play]')].find(x=>x.dataset.play===hz);
   button?.setAttribute('aria-busy','true');
   a.onended=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy')};
@@ -224,6 +225,7 @@ function prepareWriter(){
  }catch{el.textContent=ch;el.style.fontSize='87px'}
 }
 function refresh(){
+ if(media?.state==='recording')media.stop();
  stopAudio();stopWriter();const n=state.step;
  shell.dataset.step=String(n);state.maxStep=Math.max(state.maxStep,n);
  const [k,h,d]=titles[n];label.textContent=k;title.textContent=h;sub.textContent=d;
@@ -233,7 +235,7 @@ function refresh(){
  prev.disabled=n===0;
  next.disabled=(n===9&&state.listen<listening.length)||(n===10&&state.built<builds.length)||(n===13&&!state.quizPassed);
  next.textContent=n===0?'Начать урок →':n===13?'✓ Завершить урок':'Дальше →';
- scroll.scrollTop=0;save();
+ scroll.scrollTop=0;save();recorderButtons();
  if(n===11)prepareWriter();
 }
 function advance(dir){
@@ -291,7 +293,7 @@ stage.addEventListener('click',e=>{
  if(b.hasAttribute('data-record')){record();return}
  if(b.hasAttribute('data-stop')){if(media?.state==='recording')media.stop();return}
  if(b.hasAttribute('data-replay')&&micUrl){
-  stopAudio();try{audio=new Audio(micUrl);audio.play().catch(()=>say('Не удалось воспроизвести запись.','bad'))}catch{}return;
+  stopAudio();try{audio=new Audio(window.PandaAudioLevel?.[micUrl]||micUrl);audio.play().catch(()=>say('Не удалось воспроизвести запись.','bad'))}catch{}return;
  }
  if(b.hasAttribute('data-final')){
   if(Number(b.dataset.final)===topic.quiz.correct){state.quizPassed=true;done();refresh();say('✓ Отлично, правильный ответ!','good')}

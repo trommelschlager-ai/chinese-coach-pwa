@@ -45,12 +45,12 @@
   const realHuman=Object.entries(window.courseHumanAudio||{}).find(([k,v])=>
     typeof v==='string'&&k.replace(/[。！?!？，,\s]/g,'')===norm)?.[1];
   // The user's three new isolated original clips win over older excerpts.
-  const latest=window.PANDA_HSK1_OWNER_V200?.[norm];
+  const latest=window.PandaOwnerAudio?.lookup(norm)||window.PANDA_HSK1_OWNER_V200?.[norm];
   return [...new Set([latest,original?.[1],realHuman,vo[key],...matches.map(x=>x[1])].filter(Boolean))];
  };
  const getClip=key=>clipCandidates(key)[0]||null;
  const listeningWords=['我','是','学生'];
- const nativeSamples=listeningWords.filter(key=>{const clip=String(getClip(key)||'');return clip.startsWith('data:audio/mpeg;base64,')||clip.startsWith('./assets/native-owner-v200/');});
+ const nativeSamples=listeningWords.filter(key=>{const clip=String(getClip(key)||'');return clip.startsWith('data:audio/mpeg;base64,')||clip.startsWith('./assets/native-owner-v200/')||clip.startsWith('./assets/owner-clean-v237/');});
  const validSamples=nativeSamples.length?nativeSamples:listeningWords.filter(key=>!!getClip(key));
  const listenTarget=(savedListenTarget&&validSamples.includes(savedListenTarget))?savedListenTarget:(validSamples.length?validSamples[Math.floor(Math.random()*validSamples.length)]:null);
  const listenMarkup=()=>'<div class="sheet pg-listening"><span class="sheet-label">СЛУШАЙ И УЗНАВАЙ</span>'+
@@ -72,7 +72,7 @@
   {hz:'马',py:'mǎ',name:'3-й тон',label:'вниз и вверх',curve:'M11 18 Q43 58 84 17 M72 19 L84 17 L80 29'},
   {hz:'骂',py:'mà',name:'4-й тон',label:'нисходящий',curve:'M12 12 L84 44 M75 32 L84 44 L71 44'}
  ].map((t,i)=>{
-  const source=CLEAN_MA_TONES[t.hz]||window.courseHumanAudio?.[t.hz];
+  const source=window.PandaOwnerAudio?.lookup(t.hz)||CLEAN_MA_TONES[t.hz]||window.courseHumanAudio?.[t.hz];
   return `<div class="tone-item">
     <div class="tone-choice">
       <b>${t.py}</b>
@@ -112,7 +112,7 @@
   ()=>intro('Ещё одно слово','Ты — 你','')+word('你','nǐ','ты'),
   ()=>intro('Первое приветствие','你好 — привет!','')+word('你好','nǐ hǎo','привет, здравствуйте',`<div class="word-subparts">你 — ты · 好 — хороший</div><details class="word-structure"><summary>Почему произношение меняется?</summary><p>Оба иероглифа пишутся с третьим тоном. В живой речи первый обычно звучит как второй: ní hǎo. Значки пиньиня в записи остаются nǐ hǎo.</p></details>`),
   ()=>intro('Мини-диалог','Разговор из знакомых слов','')+dialogue(),
-  ()=>intro('Практика · 2/2','Скажи сам','')+`<div class="sheet"><strong class="big-hanzi" style="font-size:clamp(46px,13vw,65px)">我是学生。</strong><p class="pinyin">Wǒ shì xuésheng.</p><p class="translation">Я студент.</p>${playBtn('我是学生','Слушать образец')}<div class="recorder"><button type="button" id="record-start">🎙 Записать себя</button><button type="button" id="record-stop" hidden>■ Стоп</button><button type="button" id="record-listen" hidden>▶ Мой голос</button></div><span class="sr-only" id="record-status" role="status"></span></div>`,
+  ()=>intro('Практика · 2/2','Скажи сам','')+`<div class="sheet"><strong class="big-hanzi" style="font-size:clamp(46px,13vw,65px)">我是学生。</strong><p class="pinyin">Wǒ shì xuésheng.</p><p class="translation">Я студент.</p>${playBtn('我是学生','Слушать образец')}<div class="recorder"><button type="button" id="record-start">🎙 Записать себя</button><button type="button" id="record-stop" hidden>■ Стоп</button><button type="button" id="record-listen" ${recordUrl?'':'hidden'}>▶ Мой голос</button></div><span class="sr-only" id="record-status" role="status"></span></div>`,
   ()=>intro('Практика · 3/3','Проверь слух','')+listenMarkup(),
   ()=>intro('','Отлично, первые шаги сделаны!','')+`<div class="sheet"><p class="result-title">Ты уже умеешь</p><div class="learning-pairs">${[['我','wǒ','я'],['是','shì','быть'],['学生','xuésheng','студент']].map(([hz,py,ru])=>`<div class="learning-pair"><b class="pair-word">${hz}</b><small>${py}</small><small>${ru}</small></div>`).join('')}</div><div class="rule" style="margin-top:15px"><b>我是学生。</b><div class="mini-desc">Я студент.</div></div><div class="complete-links"><button type="button" id="repeat-course">↻ Повторить урок</button><a href="./hsk1-map.html">К карте HSK 1 →</a></div></div>`
  ];
@@ -172,19 +172,20 @@
    disconnectTone();
    if(index>=sources.length){showMessage('Не удалось воспроизвести запись. Проверь звук и интернет.');return}
    try{
-    const item=new Audio(sources[index++]);audio=item;
+    const candidate=sources[index++];const item=new Audio(window.PandaAudioLevel?.[candidate]||candidate);audio=item;
     item.preload='auto';
     // HTMLMediaElement preserves the original speaker's pitch and all four tones.
-    item.playbackRate=tone?0.94:(trim?0.8:1);
+    item.playbackRate=1;
     item.preservesPitch=true;
     if('mozPreservesPitch' in item)item.mozPreservesPitch=true;
     if('webkitPreservesPitch' in item)item.webkitPreservesPitch=true;
-    const baseVolume=tone?softenTone(item):(trim?0.94:1);
+    const leveled=String(item.src).includes('-clean-v237/');
+    const baseVolume=leveled?1:(tone?softenTone(item):1);
     let endAt=Infinity;
     item.onloadedmetadata=()=>{
      if(Number.isFinite(item.duration)&&item.duration>0){
-      // Protect short third-tone vowels from excessive trimming.
-      endAt=Math.max(0.16,item.duration-Math.min(trim,item.duration*0.20));
+      // Preserve every syllable ending; only apply an 8 ms edge fade.
+      endAt=item.duration;
      }
     };
     const envelope=()=>{
@@ -194,8 +195,8 @@
       try{item.pause()}catch{}
       audio=null;disconnectTone();playbackFrame=0;return;
      }
-     const startFade=Math.min(1,Math.max(0.08,item.currentTime/0.037));
-     const endFade=Number.isFinite(endAt)?Math.min(1,Math.max(0.02,remaining/(tone?0.085:0.060))):1;
+     const startFade=Math.min(1,Math.max(0.08,item.currentTime/0.008));
+     const endFade=Number.isFinite(endAt)?Math.min(1,Math.max(0.02,remaining/0.008)):1;
      item.volume=Math.max(0,Math.min(1,baseVolume*startFade*endFade));
      playbackFrame=requestAnimationFrame(envelope);
     };
@@ -242,7 +243,10 @@
    let activeSum=0,activeCount=0;
    for(const v of levels)if(v>=threshold){activeSum+=v*v;activeCount++}
    const activeRms=Math.sqrt(activeSum/Math.max(1,activeCount));
-   const gain=Math.min(12,Math.max(1,0.18/Math.max(0.001,activeRms)),0.92/peak);
+   const quiet=levels.filter(v=>v<threshold).sort((a,b)=>a-b);
+   const floor=quiet.length?quiet[Math.floor(quiet.length/2)]:0;
+   const noiseCap=floor>0.008?Math.max(1,0.018/floor):4;
+   const gain=Math.min(4,noiseCap,Math.max(1,0.18/Math.max(0.001,activeRms)),0.92/peak);
    if(gain<1.05)return blob;
    const buffer=new ArrayBuffer(44+len*2),dv=new DataView(buffer);
    const word=(pos,t)=>{for(let i=0;i<t.length;i++)dv.setUint8(pos+i,t.charCodeAt(i))};
@@ -258,15 +262,15 @@
  function stopRecord(){if(recorder&&recorder.state==='recording')recorder.stop();stream?.getTracks()?.forEach(t=>t.stop());stream=null;recording=false}
  function cleanupRecord(){recordEpoch++;stopRecord();if(recordUrl){URL.revokeObjectURL(recordUrl);recordUrl=null}}
  function render(){stopSound();counter.textContent=String(step+1).padStart(2,'0')+' / '+STEPS;progress.setAttribute('aria-valuenow',String(step+1));fill.style.width=(100*(step+1)/STEPS)+'%';area.innerHTML=views[step]();area.scrollTop=0;prev.disabled=step===0;next.hidden=step===STEPS-1;next.textContent=step===STEPS-2?'Завершить урок ✓':step===3?'К первым словам →':'Дальше →';next.disabled=(step===8&&!verified)||(step===13&&!!listenTarget&&!listenPassed);if(step===STEPS-1){markComplete();prev.textContent='← Назад'}save()}
- function advance(){if(step===8&&!verified)return;if(step===13&&listenTarget&&!listenPassed)return;if(step<STEPS-1){if(step===12)cleanupRecord();step++;render()}}
- prev.addEventListener('click',()=>{if(step>0){if(step===12)cleanupRecord();step--;render()}});
+ function advance(){if(step===8&&!verified)return;if(step===13&&listenTarget&&!listenPassed)return;if(step<STEPS-1){if(step===12)stopRecord();step++;render()}}
+ prev.addEventListener('click',()=>{if(step>0){if(step===12)stopRecord();step--;render()}});
  next.addEventListener('click',advance);
  area.addEventListener('click',async e=>{
   const btn=e.target.closest('button');if(!btn||btn.disabled)return;
   if(btn.hasAttribute('data-radical')){radical=Number(btn.dataset.radical);render();return}
   if(btn.id==='stroke-restart'){const svg=area.querySelector('.writing-animate');if(svg)svg.replaceWith(svg.cloneNode(true));return}
   if(btn.hasAttribute('data-say')){play(clipCandidates(btn.dataset.say),btn.dataset.say);return}
-  if(btn.hasAttribute('data-tone-play')){play([CLEAN_MA_TONES[btn.dataset.tonePlay]||window.courseHumanAudio?.[btn.dataset.tonePlay],...clipCandidates(btn.dataset.tonePlay)],btn.dataset.tonePlay,'tone');return}
+  if(btn.hasAttribute('data-tone-play')){play([window.PandaOwnerAudio?.lookup(btn.dataset.tonePlay)||CLEAN_MA_TONES[btn.dataset.tonePlay]||window.courseHumanAudio?.[btn.dataset.tonePlay],...clipCandidates(btn.dataset.tonePlay)],btn.dataset.tonePlay,'tone');return}
   if(btn.hasAttribute('data-listen-answer')){listenSelected=btn.dataset.listenAnswer;if(!listenTarget){listenPassed=true;render();return}listenPassed=listenSelected===listenTarget;render();if(!listenPassed)showMessage('Послушай ещё раз.');return}
   if(btn.hasAttribute('data-add')){const i=Number(btn.dataset.add);if(!order.includes(i)){order.push(i);verified=false;render()}return}
   if(btn.hasAttribute('data-remove')){order.splice(Number(btn.dataset.remove),1);verified=false;render();return}

@@ -58,6 +58,7 @@ let heard=false,busy=false,audio=null,recognition=null,speechUtterance=null,atte
 const persist=()=>{try{localStorage.setItem(storageKey(),JSON.stringify(saved))}catch{}};
 const root=()=>document.getElementById('pg2-speaking-root');
 const availableAudio=word=>{
+ const original=window.PandaOwnerAudio?.lookup(word);if(original)return original;
  const unified=window.PANDA_HSK1_L2_ONE_VOICE_V208||{};
  const map=window.PANDA_HSK1_VOICES?.female||{};
  return unified[word]||map[word]||null;
@@ -103,7 +104,7 @@ function sample(){
  feedbackText=file?'Слушай образец, затем повтори в микрофон.':'Слушай системное китайское произношение.';
  if(file){
   try{
-   const player=new Audio(file);audio=player;
+   const player=new Audio(window.PandaAudioLevel?.[file]||file);audio=player;
    player.preload='auto';player.preservesPitch=true;player.playbackRate=1;
    player.onplaying=()=>setStatus('Слушай произношение до конца. Затем откроется микрофон.');
    player.onended=()=>{if(audio===player){audio=null;enableMicrophone()}};
@@ -237,6 +238,7 @@ function markup(){
   '<div class="pg9-feedback" data-speak-feedback role="status">'+escapeHtml(feedbackText||'Послушай слово и произнеси его три раза, каждый раз нажимая микрофон.')+'</div>'+
   '<button class="pg9-next" type="button" data-speak-next'+(saved.streak===3?'':' disabled')+'>'+
   (saved.position===activeItems().length-1?'Завершить тренировку ✓':'Следующее слово →')+'</button>'+
+  '<p class="pg9-caveat"><a href="./hsk1-second-practice.html?mode=listen">Тренироваться без распознавания</a></p>'+
   (!options?'<p class="pg9-warning">Распознавание речи недоступно. Для этой проверки нужен совместимый браузер с микрофоном, например Chrome на Android. Без распознавания переход не засчитывается.</p>':'')+
   (!file?'<p class="pg9-warning">Временно звучит системный голос, не запись нашей китаянки.</p>':'')+
   ((word==='他'||word==='她'||word==='它')?

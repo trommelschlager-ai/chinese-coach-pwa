@@ -75,6 +75,7 @@ function stopAudio(){
  app.querySelectorAll('[aria-busy="true"]').forEach(el=>el.removeAttribute('aria-busy'));
 }
 function voice(hz,role='female'){
+ const original=role==='female'&&window.PandaOwnerAudio?.lookup(hz);if(original)return original;
  const maps=window.PANDA_HSK1_VOICES||{};
  const primary=maps[role]?.[hz]||null;
  const female=maps.female?.[hz]||null;
@@ -92,7 +93,7 @@ function play(hz,role='female'){
  const path=voice(hz,role);if(!path){say('Для этой фразы пока нет проверенной записи.','bad');return}
  stopAudio();const serial=playId;
  try{
-  const a=new Audio(path);audio=a;a.preload='auto';
+  const a=new Audio(window.PandaAudioLevel?.[path]||path);audio=a;a.preload='auto';
   a.preservesPitch=true;
   a.playbackRate=1;
   const pressed=[...app.querySelectorAll('[data-play]')].find(el=>el.dataset.play===hz);
@@ -185,6 +186,7 @@ function prepareWriter(){
  }catch{area.innerHTML='<span style="font-size:85px;color:#6c5192">月</span>'}
 }
 function refresh(){
+ if(recorder?.state==='recording')recorder.stop();
  stopAudio();stopWriter();const step=state.step;
  document.querySelector('.app')?.setAttribute('data-step',String(step));
  state.maxStep=Math.max(state.maxStep,step);
@@ -196,7 +198,7 @@ function refresh(){
  back.disabled=step===0;forward.disabled=(step===9&&state.listen<questions.length)||
   (step===10&&state.built<builds.length)||(step===13&&!state.quizPassed);
  forward.textContent=step===0?'Начать урок →':step===13?'✓ Завершить урок':'Дальше →';
- scroll.scrollTop=0;save();
+ scroll.scrollTop=0;save();setButtons();
  if(step===11)prepareWriter();
 }
 function go(d){
@@ -258,7 +260,7 @@ app.addEventListener('click',event=>{
  if(b.hasAttribute('data-trace')){try{writer?.quiz?.({onComplete:()=>say('✓ Ты написал 月!','good')})}catch{say('Пропись недоступна.','bad')}return}
  if(b.hasAttribute('data-record-start')){recordStart();return}
  if(b.hasAttribute('data-record-stop')){recordStop();return}
- if(b.hasAttribute('data-record-play')){if(micUrl){stopAudio();try{audio=new Audio(micUrl);audio.play().catch(()=>say('Не удалось открыть запись.','bad'))}catch{}}return}
+ if(b.hasAttribute('data-record-play')){if(micUrl){stopAudio();try{audio=new Audio(window.PandaAudioLevel?.[micUrl]||micUrl);audio.play().catch(()=>say('Не удалось открыть запись.','bad'))}catch{}}return}
  if(b.hasAttribute('data-final')){
   const index=Number(b.dataset.final);
   if(index===topic.quiz.correct){state.quizPassed=true;markDone();refresh();say('✓ Правильно! '+topic.quiz.explain,'good')}
