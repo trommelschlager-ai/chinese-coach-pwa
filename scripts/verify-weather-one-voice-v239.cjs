@@ -24,7 +24,7 @@ for(const phrase of phrases){
  if(phrase==='明天下雨吗？')assert(clips.length===2,'Incomplete question must use two same-voice clips');
 }
 assert(companion.includes('if(!isFamily)return weatherClips(hz)[0]||null;'),'Weather must not fall back to other speakers');
-assert(companion.includes("const parts=isFamily?[src]:weatherClips(hz);"),'Playback must use weather-only voice parts');
+assert(companion.includes("const parts=isFamily?(familyOriginalParts(hz,role)||[src]):weatherClips(hz);"),'Playback must use weather-only voice parts');
 assert(companion.includes("(isFamily?role:'female')"),'Weather dialogue must use female voice even for role A');
 assert(companion.includes("if(role==='male')return mappings.male"),'Family dialogues must keep their approved speaker roles');
 const weatherHtml=get('hsk1-weather-v231.html');
