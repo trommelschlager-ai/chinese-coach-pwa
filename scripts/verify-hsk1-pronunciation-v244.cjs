@@ -85,6 +85,7 @@ async function run(){
  assert(played.at(-1).endsWith('/pinyin-reading-v5/p076.mp3'),'Male voice option should switch all sample audio');
  click('#practice-close');assert(!d.querySelector('#practice-dialog').open);
  click('[data-mode="combos"]');
+ change('#combo-group','all');
  click('#trainer-content [data-combo="zi"]');await tick();
  assert(played.at(-1).endsWith('/pinyin-reading-v5/p058.mp3'),'Adult voice switch must apply to combos too');
  assert.equal(w.localStorage.getItem('pg-hsk1-narrator-v244'),'male');
