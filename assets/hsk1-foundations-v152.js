@@ -105,12 +105,19 @@ const productionVoices=window.PANDA_HSK1_VOICES||null;
 // Never replace a dialogue line with an unreviewed speaker or concatenate fragments.
 const humanSamples=window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
 function clipFor(hz,role='female'){
+ const exactNative=humanSamples[hz]||null;
  if(productionVoices){
-  return productionVoices[role]?.[hz]||null;
+  const clip=productionVoices[role]?.[hz]||null;
+  // A and B remain separate dialogue roles. No fake voice cloning.
+  if(role==='male')return clip;
+  // Exact approved owner's utterances always take precedence.
+  const owner=typeof clip==='string'&&
+    (clip.startsWith('data:audio/mpeg;base64,')||clip.includes('native-owner-v200/'))?clip:null;
+  // If that text was not recorded by the owner, an exact real Yue Tan
+  // sample is preferable to switching to another synthetic narrator.
+  return owner||exactNative||clip||null;
  }
- // Legacy teaching MP3 stay available while the reviewed voice pack is staged.
- // No legacy voice is labelled male if its identity is unknown.
- return role==='male'?null:(resolved[norm(hz)]||null);
+ return role==='male'?null:(exactNative||resolved[norm(hz)]||null);
 }
 function roleForDialogue(speaker){return speaker==='А'?'male':'female'}
 function save(){
