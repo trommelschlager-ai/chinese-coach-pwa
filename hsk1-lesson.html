@@ -12,6 +12,12 @@ if(new URLSearchParams(location.search).get('lesson')==='5'&&
    new URLSearchParams(location.search).get('legacy')!=='1'){
   location.replace('./hsk1-fifth-v227.html');
 }
+/* Approved standalone HSK1 family and weather lessons; preserve old 7-step UI with &legacy=1. */
+const pgGoParams=new URLSearchParams(location.search);
+if(pgGoParams.get('legacy')!=='1'){
+ if(pgGoParams.get('lesson')==='6')location.replace('./hsk1-family-v231.html');
+ if(pgGoParams.get('lesson')==='7')location.replace('./hsk1-weather-v231.html');
+}
 /* Route legacy lesson-1 links to the rebuilt, independent lesson.
    Leaves lesson=2..7 and their saved state untouched. */
 if(!new URLSearchParams(location.search).has('lesson')||
