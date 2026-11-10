@@ -75,7 +75,10 @@ function stopAudio(){
  app.querySelectorAll('[aria-busy="true"]').forEach(el=>el.removeAttribute('aria-busy'));
 }
 function voice(hz,role='female'){
- const original=role==='female'&&window.PandaOwnerAudio?.lookup(hz);if(original)return original;
+ // Native woman first: recovered 36 + 9 archived recordings and cleaned v237 tracks.
+ const recovered=window.PandaNativeRecoveredV246?.lookup(hz);
+ if(recovered)return recovered;
+ const original=window.PandaOwnerAudio?.lookup(hz);if(original)return original;
  const maps=window.PANDA_HSK1_VOICES||{};
  const primary=maps[role]?.[hz]||null;
  const female=maps.female?.[hz]||null;
@@ -96,7 +99,8 @@ function play(hz,role='female'){
   const a=new Audio(window.PandaAudioLevel?.[path]||path);audio=a;a.preload='auto';
   a.preservesPitch=true;
   a.playbackRate=0.92; // easier to hear complete Mandarin tones
-  window.PandaLessonAudioV240?.improve?.(a,'dates'); // local gain + gentle compression
+  // Archived v186 owner files were level-balanced already. Do not amplify them twice.
+  if(!path.startsWith('data:audio/'))window.PandaLessonAudioV240?.improve?.(a,'dates');
   const pressed=[...app.querySelectorAll('[data-play]')].find(el=>el.dataset.play===hz);
   pressed?.setAttribute('aria-busy','true');
   a.onended=()=>{if(serial!==playId)return;audio=null;pressed?.removeAttribute('aria-busy')};
