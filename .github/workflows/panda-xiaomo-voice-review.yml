@@ -1,0 +1,93 @@
+name: Panda Go - Xiaomo voice review
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prepare-samples:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Panda Go
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate 15 tone samples without network
+        run: |
+          python -m py_compile scripts/panda_xiaomo_preview.py
+          python scripts/panda_xiaomo_preview.py --dry-run > /tmp/xiaomo-preview-plan.json
+          python - <<'PY'
+          import json
+          d = json.load(open('/tmp/xiaomo-preview-plan.json', encoding='utf-8'))
+          assert d['voice'] == 'zh-CN-XiaomoNeural'
+          assert len(d['clips']) == 15
+          assert d['rate'] == '-15%'
+          print('PASS: 15 Mandarin sample definitions / selected Xiaomo voice')
+          PY
+
+      - name: Generate Xiaomo MP3 files privately
+        env:
+          AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+          AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
+        run: |
+          set -euo pipefail
+          if [ -z "$AZURE_SPEECH_KEY" ] || [ -z "$AZURE_SPEECH_REGION" ]; then
+            echo "::error::Set AZURE_SPEECH_KEY and AZURE_SPEECH_REGION in repository Actions secrets before running"
+            exit 1
+          fi
+          python scripts/panda_xiaomo_preview.py --out "$RUNNER_TEMP/xiaomo-review"
+
+      - name: Validate audio and create listening page
+        env:
+          REVIEW_DIR: ${{ runner.temp }}/xiaomo-review
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import html, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ['REVIEW_DIR'])
+          manifest = json.loads((root / 'manifest.json').read_text(encoding='utf-8'))
+          entries = manifest['clips']
+          assert len(entries) == 15
+          sections = []
+          for x in entries:
+              p = root / x['file']
+              assert p.is_file() and p.stat().st_size > 1000, x['file']
+              probe = subprocess.run(
+                  ['ffprobe', '-v', 'error', '-show_entries', 'format=duration',
+                   '-of', 'default=noprint_wrappers=1:nokey=1', str(p)],
+                  text=True, capture_output=True, check=True)
+              duration = float(probe.stdout.strip())
+              assert 0.12 < duration < 25, (p.name, duration)
+              subprocess.run(['ffmpeg', '-v', 'error', '-xerror', '-i', str(p),
+                              '-f', 'null', '-'], check=True)
+              label = html.escape(x['hanzi'] + ' — ' + x['pinyin'])
+              desc = html.escape(x['check'])
+              name = html.escape(x['file'])
+              sections.append(f'<section><h2>{label}</h2><p>{desc}</p><audio controls preload="none" src="{name}"></audio></section>')
+              print(f'PASS {p.name}: {duration:.2f}s, decodable MP3')
+          page = ('<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+                  '<title>Panda Go • Xiaomo — 15 пробных записей</title>'
+                  '<style>body{font:16px system-ui;background:#f5ecff;color:#422963;max-width:600px;margin:0 auto;padding:20px}'
+                  'section{background:white;margin:12px 0;padding:16px;border:1px solid #dfc5ef;border-radius:18px}'
+                  'h2{font-size:22px;margin:0}p{font-size:13px}audio{width:100%}</style>'
+                  '<h1>🐼 Xiaomo — 15 тестов произношения</h1>'
+                  '<p>Проверка тембра и тонов. Это не одобренная озвучка курса; автоматическая проверка не гарантирует верность тонов.</p>'
+                  + ''.join(sections) + '</html>')
+          (root / 'open-to-listen.html').write_text(page, encoding='utf-8')
+          print('PASS: sample-review page and 15 validated MP3 files')
+          PY
+
+      - name: Upload private review pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-go-xiaomo-15-review
+          path: ${{ runner.temp }}/xiaomo-review/
+          if-no-files-found: error
+          retention-days: 7
