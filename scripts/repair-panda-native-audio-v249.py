@@ -13,7 +13,7 @@ OUT=ASSETS/"panda-native-clean-v249"
 OUT.mkdir(exist_ok=True)
 SRC183=ASSETS/"hsk1-human-voice-v183.js"
 text=SRC183.read_text(encoding="utf-8")
-matches=re.findall(r'["\\\']([^"\\\']+)["\\\']\\s*:\\s*["\\\'](data:audio/mpeg;base64,[A-Za-z0-9+/=]+)["\\\']',text)
+matches=re.findall(r"[\"']([^\"']+)[\"']\s*:\s*[\"'](data:audio/mpeg;base64,[A-Za-z0-9+/=]+)[\"']",text)
 human=dict(matches)
 if not human:
     print("Original v183 beginning:",repr(text[:650]),flush=True)
