@@ -9,7 +9,7 @@ const js=fs.readFileSync('assets/hsk1-fifth-v227.js','utf8');
 const css=fs.readFileSync('assets/panda-go-approved-lessons-v231.css','utf8');
 const data=fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8');
 assert(html.includes('hsk1-fifth-v227.js?v=240'));
-assert(html.includes('panda-lesson-audio-v240.js?v=240'));
+assert(html.includes('panda-lesson-audio-v240.js?v=244'));
 assert(html.includes('panda-go-approved-lessons-v231.css?v=237'));
 assert(!html.includes('lesson3-approved-panda'),'Wrong screenshot mosaic must never return');
 assert(css.includes('lesson5-scene-v233.webp'),'Approved illustrated calendar scene required');
