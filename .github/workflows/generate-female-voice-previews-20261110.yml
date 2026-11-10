@@ -1,0 +1,53 @@
+name: Generate Xiaomo and Xiaohan Mandarin voice previews
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/generate-female-voice-previews-20261110.yml"
+      - "scripts/generate_female_voice_previews_20261110.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mandarin-female-voice-preview-20261110
+  cancel-in-progress: false
+
+jobs:
+  create-previews:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Mandarin preview engine and verify tool
+        run: |
+          python -m pip install --disable-pip-version-check edge-tts==7.3.1
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Record two same-text samples at 85 percent
+        run: python scripts/generate_female_voice_previews_20261110.py
+      - name: Commit two validated preview MP3 files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/voice-previews-20261110/
+          if ! git diff --cached --quiet; then
+            git commit -m "Add Xiaomo and Xiaohan Mandarin trial MP3s at 85 percent"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: panda-go-female-voice-previews
+          path: assets/voice-previews-20261110/
+          retention-days: 7
+          if-no-files-found: warn
