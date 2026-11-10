@@ -8,7 +8,7 @@ assert(helper.includes('audio/wav'),'Safe microphone normalization must produce 
 assert(helper.includes('getUrl()!==currentUrl'),'Older mic take must never replace newer recording');
 assert(helper.includes('Math.min(4,'),'Microphone gain must be capped');
 const lesson4=read('assets/hsk1-fourth-v220.js');
-assert(lesson4.includes('fileFor=word=>window.PandaOwnerAudio?.lookup(word)||fileMap()[word]||ownerMap[word]||nativeMap()[word]'),'Use latest approved owner voice first');
+assert(lesson4.includes('fileFor=word=>window.PandaCleanAudioV249?.lookup(word)||window.PandaOwnerAudio?.lookup(word)||fileMap()[word]||ownerMap[word]||nativeMap()[word]'),'Use restored native MP3 first, approved original as fallback');
 assert(!lesson4.includes('Для 星期天 нужна цельная запись'),'Outdated Sunday notice must be removed');
 assert(read('assets/panda-owner-l4-native-v221.js').includes('"星期天": "009"'));
 const numbers=read('assets/hsk1-third-v213.js');
