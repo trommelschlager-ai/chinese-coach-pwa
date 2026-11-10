@@ -13,10 +13,12 @@ OUT=ASSETS/"panda-native-clean-v249"
 OUT.mkdir(exist_ok=True)
 SRC183=ASSETS/"hsk1-human-voice-v183.js"
 text=SRC183.read_text(encoding="utf-8")
-m=re.search(r"const nativeClips\s*=\s*(\{[\s\S]*?\})\s*;",text)
-if not m:
-    raise RuntimeError("Original human v183 nativeClips dictionary missing")
-human=json.loads(m.group(1))
+matches=re.findall(r'["\\\']([^"\\\']+)["\\\']\\s*:\\s*["\\\'](data:audio/mpeg;base64,[A-Za-z0-9+/=]+)["\\\']',text)
+human=dict(matches)
+if not human:
+    print("Original v183 beginning:",repr(text[:650]),flush=True)
+    raise RuntimeError("Original human v183 audio map not matched")
+print("Original v183 human sample keys:",list(human)[:50],flush=True)
 
 # Lesson 3 first number; lesson 4 weekday expressions; lesson 5 summary;
 # lesson 7 weather dialogue. No clips are invented or assembled.
