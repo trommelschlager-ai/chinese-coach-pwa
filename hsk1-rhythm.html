@@ -20,7 +20,10 @@ h1{margin:5px 0 4px;font-size:clamp(25px,6.7vw,34px);line-height:1.16}
 .subtitle{margin:0;font-size:12px;color:#fbe5ff}
 .count{margin-top:10px;font-weight:850;font-size:13px;color:#ffeedb}
 .study{flex:1;display:flex;flex-direction:column;justify-content:center}
-.flash{position:relative;border:2px solid #e4c49d;border-radius:26px;background:linear-gradient(150deg,#fffbff,#fff6fb);min-height:clamp(285px,48svh,435px);width:100%;padding:30px 19px;box-shadow:inset 0 0 0 4px #fff,0 8px 20px #955daa2f;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;overflow-wrap:anywhere;overflow-y:auto;cursor:pointer}
+.flash{position:relative;border:2px solid #e4c49d;border-radius:26px;background:linear-gradient(150deg,#fffbff,#fff6fb);min-height:clamp(285px,48svh,435px);width:100%;padding:24px 19px 18px;box-shadow:inset 0 0 0 4px #fff,0 8px 20px #955daa2f;display:flex;flex-direction:column;align-items:center;text-align:center;overflow-wrap:anywhere;overflow-y:auto;cursor:pointer;touch-action:pan-y}
+.card-body{flex:1;width:100%;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px}
+.flash[aria-expanded="true"] .card-body{justify-content:center}
+.hint{align-self:center;width:100%;margin-top:auto;padding-top:14px;padding-bottom:3px;font-size:12px;color:#a38ba8;line-height:1.4}
 .flash::before,.flash::after{content:"✿";position:absolute;color:#f4bfdc;font-size:24px;pointer-events:none}
 .flash::before{top:11px;left:15px}.flash::after{bottom:11px;right:15px}
 .hanzi{font-weight:850;font-size:clamp(29px,7.7vw,39px);line-height:1.55;color:#52296c}
@@ -29,14 +32,17 @@ h1{margin:5px 0 4px;font-size:clamp(25px,6.7vw,34px);line-height:1.16}
 .words{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:7px;text-align:left}
 .word{border-radius:11px;border:1px solid #efd8e7;background:#ffffffd6;padding:8px 9px;font-size:12px;color:#6c5878;line-height:1.4}
 .word strong{display:block;font-size:16px;color:#663976}
-.hint{font-size:12px;color:#a38ba8;line-height:1.4}
-.controls{display:grid;grid-template-columns:60px minmax(0,1fr) 60px;gap:12px}
-.controls button{height:59px;border-radius:18px;border:1.5px solid #e9b5db;font-size:24px;font-weight:900;box-shadow:0 3px 10px #b778b43a;background:linear-gradient(#fffaff,#f9d9ef);color:#7d3c80}
-.controls #listen{background:linear-gradient(145deg,#fa78bf,#e7439d);border-color:#ffd4ed;color:#fff;font-size:17px;letter-spacing:.1px;box-shadow:0 5px 13px #d1499a52}
-.controls button:active:not(:disabled){transform:translateY(1px)}
+.controls{display:flex;align-items:center;justify-content:center;gap:24px;padding:2px 0 0}
+.controls button{display:grid;place-items:center;width:69px;height:69px;border-radius:50%;border:2px solid #fff6dc;font-weight:900;box-shadow:inset 0 2px 3px #fff8,0 4px 0 #b68a9f,0 7px 17px #a45eae55;transition:transform .12s,box-shadow .12s}
+.controls #listen{color:#fff;background:linear-gradient(145deg,#ffb2de,#fa61b1 52%,#ce2b8f);box-shadow:inset 0 2px 4px #fff9,0 4px 0 #b83383,0 7px 19px #e44caa80}
+.controls #pinyin-btn{font-size:28px;color:#7c3a94;background:linear-gradient(145deg,#fffdfc,#f4ddff 65%,#e8bbf0)}
+.controls #pinyin-btn[aria-pressed="true"]{border-color:#f8d16d;background:linear-gradient(145deg,#ffefc6,#f9c7e9);box-shadow:0 0 0 3px #ffedb599,0 5px 13px #aa64a655}
+.controls #listen svg{height:31px;width:31px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.controls button:active:not(:disabled){transform:scale(.95)}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .note{min-height:19px;margin:0;text-align:center;color:#995179;font-size:12px;line-height:1.45}
-@media(max-height:630px){.frame{gap:9px}.hero{padding:10px 12px}.count{margin-top:5px}.flash{min-height:230px;padding:15px}.controls button{height:51px}}
-@media(max-width:345px){.frame{padding-left:10px;padding-right:10px}.controls{gap:7px;grid-template-columns:51px minmax(0,1fr) 51px}.words{grid-template-columns:1fr}.hanzi{font-size:26px}}
+@media(max-height:630px){.frame{gap:9px}.hero{padding:10px 12px}.count{margin-top:5px}.flash{min-height:230px;padding:14px 15px}.card-body{min-height:170px}.controls button{width:57px;height:57px}}
+@media(max-width:345px){.frame{padding-left:10px;padding-right:10px}.controls{gap:17px}.controls button{width:60px;height:60px}.words{grid-template-columns:1fr}.hanzi{font-size:26px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto;transition:none!important}}
 </style>
 </head>
@@ -49,13 +55,15 @@ h1{margin:5px 0 4px;font-size:clamp(25px,6.7vw,34px);line-height:1.16}
     <div class="count" id="counter" aria-live="polite">1 / 10</div>
   </header>
   <section class="study" aria-label="Карточка китайского предложения">
-    <article class="flash" id="flash" role="button" tabindex="0" aria-expanded="false" aria-label="Показать пиньинь, перевод и разбор"></article>
+    <article class="flash" id="flash" role="button" tabindex="0" aria-expanded="false" aria-label="Показать перевод и разбор слов"></article>
   </section>
-  <nav class="controls" aria-label="Переключение предложений">
-    <button id="prev" type="button" aria-label="Предыдущее предложение">&lt;</button>
-    <button id="listen" type="button">▶ Слушать</button>
-    <button id="next" type="button" aria-label="Следующее предложение">&gt;</button>
+  <nav class="controls" aria-label="Произношение и пиньинь">
+    <button id="listen" type="button" aria-label="Слушать китайскую фразу" title="Слушать">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a5 5 0 0 1 0 6"/><path d="M18 6a9 9 0 0 1 0 12"/></svg>
+    </button>
+    <button id="pinyin-btn" type="button" aria-label="Показать пиньинь" aria-pressed="false" title="Пиньинь">汉</button>
   </nav>
+  <span class="sr-only">Перелистывай карточки свайпом вправо или влево, либо стрелками клавиатуры.</span>
   <p class="note" id="notice" role="status" aria-live="polite"></p>
 </main>
 <script>
@@ -73,25 +81,41 @@ const data=[
  {"zh":"我们很好，你们很好。","py":"Wǒmen hěn hǎo, nǐmen hěn hǎo.","ru":"У нас всё хорошо, у вас всё хорошо.","w":[["我们","мы"],["你们","вы"],["很好","всё хорошо"]]}
 ];
 const $=id=>document.getElementById(id);
-let pos=0,open=false,run=0,sound=null,noticeTimer=0;
+let pos=0,open=false,showPinyin=false,run=0,sound=null,suppressClickUntil=0;
+const speakerIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a5 5 0 0 1 0 6"/><path d="M18 6a9 9 0 0 1 0 12"/></svg>';
 function escapeHTML(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function showNotice(message){$("notice").textContent=message;}
 function render(){
  const entry=data[pos];
  $("counter").textContent=(pos+1)+" / "+data.length;
- $("prev").disabled=pos===0;$("next").disabled=pos===data.length-1;
  $("flash").setAttribute("aria-expanded",String(open));
- $("flash").setAttribute("aria-label",open?"Скрыть перевод":"Показать пиньинь, перевод и разбор");
- const details=open?'<div class="pinyin">'+escapeHTML(entry.py)+'</div><div class="translation">'+escapeHTML(entry.ru)+'</div><div class="words">'+entry.w.map(pair=>'<div class="word"><strong>'+escapeHTML(pair[0])+'</strong>'+escapeHTML(pair[1])+'</div>').join("")+'</div>':'<div class="hint">Нажми на карточку — перевод и разбор</div>';
- $("flash").innerHTML='<div class="hanzi" lang="zh-CN">'+escapeHTML(entry.zh)+'</div>'+details;
+ $("flash").setAttribute("aria-label",open?"Скрыть перевод и разбор":"Показать перевод и разбор");
+ $("pinyin-btn").setAttribute("aria-pressed",String(showPinyin));
+ $("pinyin-btn").setAttribute("aria-label",showPinyin?"Скрыть пиньинь":"Показать пиньинь");
+ const py=showPinyin?'<div class="pinyin">'+escapeHTML(entry.py)+'</div>':'';
+ const details=open?'<div class="translation">'+escapeHTML(entry.ru)+'</div><div class="words">'+entry.w.map(pair=>'<div class="word"><strong>'+escapeHTML(pair[0])+'</strong>'+escapeHTML(pair[1])+'</div>').join("")+'</div>':'';
+ const hint=open?'':'<div class="hint">Нажми на карточку — перевод и разбор</div>';
+ $("flash").innerHTML='<div class="card-body"><div class="hanzi" lang="zh-CN">'+escapeHTML(entry.zh)+'</div>'+py+details+'</div>'+hint;
 }
-function cancel(){run++;if(sound){sound.pause();sound.removeAttribute("src");sound.load();sound=null;}$("listen").textContent="▶ Слушать";}
+function cancel(){run++;if(sound){sound.pause();sound.removeAttribute("src");sound.load();sound=null;}$("listen").innerHTML=speakerIcon;$("listen").setAttribute("aria-label","Слушать китайскую фразу");}
 function move(step){const n=pos+step;if(n<0||n>=data.length)return;cancel();pos=n;open=false;showNotice("");render();}
-$("prev").addEventListener("click",()=>move(-1));
-$("next").addEventListener("click",()=>move(1));
+$("pinyin-btn").addEventListener("click",()=>{showPinyin=!showPinyin;render()});
 function toggle(){open=!open;render();}
-$("flash").addEventListener("click",toggle);
-$("flash").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
+$("flash").addEventListener("click",()=>{if(Date.now()<suppressClickUntil)return;toggle()});
+$("flash").addEventListener("keydown",e=>{
+ if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}
+ if(e.key==="ArrowLeft"){e.preventDefault();move(1);}
+ if(e.key==="ArrowRight"){e.preventDefault();move(-1);}
+});
+let gesture=null;
+$("flash").addEventListener("touchstart",e=>{if(e.touches.length===1)gesture={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});
+$("flash").addEventListener("touchend",e=>{
+ if(!gesture||!e.changedTouches.length)return;
+ const dx=e.changedTouches[0].clientX-gesture.x,dy=e.changedTouches[0].clientY-gesture.y;
+ gesture=null;
+ if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.35){suppressClickUntil=Date.now()+450;move(dx<0?1:-1);}
+},{passive:true});
+$("flash").addEventListener("touchcancel",()=>{gesture=null},{passive:true});
 function audioPath(i,lang){return "./assets/hsk1-rhythm/"+lang+"-"+String(i+1).padStart(2,"0")+".mp3";}
 function playFile(file,token){
  return new Promise(resolve=>{
@@ -105,7 +129,7 @@ function playFile(file,token){
 function delay(ms,token){return new Promise(resolve=>setTimeout(()=>resolve(token===run),ms));}
 async function listen(){
  cancel();const token=run;
- $("listen").textContent="■ Стоп";
+ $("listen").textContent="■";$("listen").setAttribute("aria-label","Остановить прослушивание");
  showNotice("🇨🇳 Слушаем китайский");
  const steps=[
   [audioPath(pos,"zh"),"🇨🇳 Слушаем китайский"],
@@ -123,7 +147,7 @@ async function listen(){
  }
  if(token===run){cancel();showNotice("");}
 }
-$("listen").addEventListener("click",()=>{if($("listen").textContent.includes("Стоп")){cancel();showNotice("");}else listen();});
+$("listen").addEventListener("click",()=>{if($("listen").getAttribute("aria-label")==="Остановить прослушивание"){cancel();showNotice("");}else listen();});
 window.addEventListener("pagehide",cancel);
 render();
 </script>
