@@ -1,5 +1,5 @@
 'use strict';
-/* Panda Go v167: optional native Mandarin playback must not replace the teaching voices or dialogues. */
+/* Panda Go: verify exact licensed human samples and owner-first narration fallback. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
@@ -50,15 +50,15 @@ for(let lesson=1;lesson<=7;lesson++){
   const ordinary=[...d.querySelectorAll('button[data-play]')];
   assert(ordinary.length>0,'Teaching audio missing');
   const first=ordinary[0];first.click();
-  assert.equal(played.at(-1).src,normal.female[first.dataset.play],'Default teaching voice must remain unchanged');
+  assert.equal(played.at(-1).src,human[first.dataset.play]||normal.female[first.dataset.play],'Human reference should take precedence when the exact original phrase exists');
   if(k<w.PANDA_HSK1_FOUNDATIONS[lesson-1].words.length-1)d.getElementById('lesson-next').click();
  }
  assert(counted>0,'Native sample should be reachable in every lesson '+lesson);
- // Dialogue must use the existing original gender-specific mapping, not a native substitute.
+ // Preserve the intentionally separate dialogue role; do not clone a voice.
  const steps=d.querySelector('button[data-step="3"]');
  // Step may be locked during normal progression; the data-role map is verified here.
  assert.equal(Object.keys(w.PANDA_HSK1_VOICES.male).length,14);
  dom.window.close();
 }
 assert(!source.includes('speechSynthesis')&&!source.includes('join('));
-console.log('PASS v167: 59 source-identical genuine Mandarin clips, optional user-triggered 1x playback in all seven HSK1 lessons, unchanged primary female/male narration.');
+console.log('PASS v230: 59 exact original human MP3 samples, human-first fallback for matching text, preserved two-speaker dialogue roles.');
