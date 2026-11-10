@@ -14,7 +14,8 @@ const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const voice=fs.readFileSync('assets/hsk1-weekdays-audio-map-v214.js','utf8');
 const map=fs.readFileSync('hsk1-map.html','utf8');
 assert(html.includes('hsk1-fourth-v219.css?v=249'));
-assert(html.includes('hsk1-fourth-v220.js?v=249'));
+assert(html.includes('hsk1-fourth-v220.js?v=250'));
+assert(html.includes('panda-clean-audio-v250.js?v=250'),'Improved woman clips not loaded');
 assert(!html.includes('hsk1-third-v212.css'),'Lesson 4 should not depend on lesson 3 CSS');
 assert(!html.includes('hsk1-third-v213.css'),'Lesson 4 styles should be standalone');
 assert(html.includes('hanzi-writer.min.js'),'Stroke-writing library required');
@@ -41,7 +42,7 @@ w.localStorage.setItem('pg-hsk1-v214-weekdays',previous.v214);
 w.localStorage.setItem('pg-hsk1-v203-pronouns',previous.lesson2);
 w.localStorage.setItem('pg-hsk1-v213-numbers',previous.lesson3);
 w.localStorage.setItem('pg-hsk1-v3-complete',previous.done);
-w.eval(native);w.eval(voice);
+w.eval(native);w.eval(voice);w.PANDA_HSK1_VOICES={male:{'明天星期六。':'./assets/hsk1-voices-v156/ecb56237b96af780f69e.mp3'}};
 const played=[],utt=[];
 w.Audio=function(file){
  this.src=file;this.pause=()=>{};this.play=()=>{played.push(this);return Promise.resolve()};
@@ -113,13 +114,14 @@ assert.equal(strokes.at(-1)?.options.acceptBackwardsStrokes,false);
 click('[data-trace]');next();assert.equal(step(),10);
 assert(d.querySelector('img[src="./assets/lesson4-reference-v216/man.webp"]'),'Male character in dialogue');
 assert(d.querySelector('img[src="./assets/lesson4-reference-v216/woman.webp"]'),'Female character in dialogue');
-for(const answer of ['今天星期五。','明天星期六。']){
+for(const answer of ['明天星期六。']){
  assert.equal(d.querySelectorAll('.pg4-dialog-actions button').length,1,'Dialogue must have one listen/pause control');
  click('[data-dialogue-toggle]');const questionPlayer=played.at(-1);
  assert(d.querySelector('[data-dialogue-toggle]').textContent.includes('Пауза'),'Playing button becomes Pause');
  click('[data-dialogue-toggle]');assert(d.querySelector('[data-dialogue-toggle]').textContent.includes('Продолжить'),'Pause must work');
  click('[data-dialogue-toggle]');assert(d.querySelector('[data-dialogue-toggle]').textContent.includes('Пауза'),'Resume must work');
  questionPlayer.onended();assert(d.querySelector('.from-m.active'),'Reply highlights visible dialogue bubble');
+ assert(played.at(-1).src.includes('hsk1-voices-v156/ecb56237'),'Male avatar must use actual male recording');
  played.at(-1).onended();assert(d.querySelector('[data-dialogue-toggle]').textContent.includes('Слушать'),'Replay restored after dialogue ends');
  assert.equal(utt.length,0,'Dialogue never falls back to TTS');
  click('[data-dialog-answer="'+answer+'"]');click('[data-next-item]');

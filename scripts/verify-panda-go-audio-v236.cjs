@@ -8,11 +8,11 @@ assert(helper.includes('audio/wav'),'Safe microphone normalization must produce 
 assert(helper.includes('getUrl()!==currentUrl'),'Older mic take must never replace newer recording');
 assert(helper.includes('Math.min(4,'),'Microphone gain must be capped');
 const lesson4=read('assets/hsk1-fourth-v220.js');
-assert(lesson4.includes('fileFor=word=>window.PandaCleanAudioV249?.lookup(word)||window.PandaOwnerAudio?.lookup(word)||fileMap()[word]||ownerMap[word]||nativeMap()[word]'),'Use restored native MP3 first, approved original as fallback');
+assert(lesson4.includes('PandaCleanAudioV250?.lookup(word)')&&lesson4.includes("role==='male'"),'Prefer v250 original woman and explicit male role');
 assert(!lesson4.includes('Для 星期天 нужна цельная запись'),'Outdated Sunday notice must be removed');
 assert(read('assets/panda-owner-l4-native-v221.js').includes('"星期天": "009"'));
 const numbers=read('assets/hsk1-third-v213.js');
-assert(numbers.includes("PANDA_HSK1_VOICES?.female?.['一百']"),'Use fixed recording for one hundred');
+assert(numbers.includes("PandaCleanAudioV250?.lookup('一百')"),'Hundred must use original woman recording');
 assert(read('assets/hsk1-voices-map-v160.js').includes('"一百"'));
 assert(read('assets/panda-go-companion-v231.js').includes('()=>vocab([8,12],!isFamily)'),'Keep family content and mark weather seasons optional');
 for(const [page,source] of [
