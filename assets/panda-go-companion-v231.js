@@ -35,7 +35,7 @@ const titles=isFamily?[
  ['УРОК 7 · HSK1','Погода','Научись описывать погоду и времена года'],
  ['НОВЫЕ СЛОВА','Какая погода?','Погода, холодно, жарко, солнечно'],
  ['НОВЫЕ СЛОВА','Осадки и ветер','Облачно, дождь, снег, ветер'],
- ['НОВЫЕ СЛОВА','Времена года','Весна, лето, осень и зима'],
+ ['ДОПОЛНИТЕЛЬНО','Времена года','Послушай четыре слова — учить их наизусть пока необязательно'],
  ['ПРОИЗНОШЕНИЕ','Тоны погоды','Слушай важные сочетания'],
  ['ПРАВИЛО','Сегодня холодно','今天很冷 — без 是'],
  ['ПРАВИЛО','Дождь и вопрос о погоде','下雨 и 怎么样'],
@@ -123,8 +123,8 @@ function cover(){
  '<p class="cover-caption">'+(isFamily?'11 слов · семья · диалоги и практика':'12 слов · погода · времена года')+'</p>'+
  '<div class="cover-note">🌸 <strong>'+(isFamily?'我的家 · 我有一个妹妹。':'今天天气怎么样？')+'</strong></div>';
 }
-function vocab(slice){return card('<div class="grid two">'+words.slice(...slice).map(word).join('')+'</div>')+
- '<p class="small center">🔊 Нажимай на значок и повторяй слова вслух.</p>'}
+function vocab(slice,optional=false){return card('<div class="grid two">'+words.slice(...slice).map(word).join('')+'</div>')+
+ '<p class="small center">'+(optional?'Дополнительные слова: послушай времена года. Запоминать все четыре сейчас необязательно.':'🔊 Нажимай на значок и повторяй слова вслух.')+'</p>'}
 function tone(){
  const examples=isFamily?['妈','麻','马','骂']:['天气','冷','热','下雨'];
  const meaning=isFamily?['mā · первый','má · второй','mǎ · третий','mà · четвёртый']:['tiānqì · 1-й, 4-й','lěng · третий','rè · четвёртый','xià yǔ · 4-й, 3-й'];
@@ -199,7 +199,7 @@ const screens=[
  cover,
  ()=>vocab([0,4]),
  ()=>vocab([4,8]),
- ()=>vocab([8,12]),
+ ()=>vocab([8,12],!isFamily),
  tone,
  ()=>rule([0,1]),
  ()=>rule([1,4]),
@@ -257,7 +257,7 @@ async function record(){
   media.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
   media.onstop=()=>{
    if(micUrl)URL.revokeObjectURL(micUrl);
-   micUrl=chunks.length?URL.createObjectURL(new Blob(chunks,{type:media.mimeType||'audio/webm'})):null;
+   if(chunks.length){const raw=new Blob(chunks,{type:media.mimeType||'audio/webm'});micUrl=URL.createObjectURL(raw);window.PANDA_MIC_V236?.enhance?.(raw,micUrl,()=>micUrl,url=>{micUrl=url})}else micUrl=null;
    stream?.getTracks().forEach(t=>t.stop());stream=null;
    recorderButtons();say(micUrl?'Запись готова. Послушай свой голос.':'Пустая запись.',micUrl?'good':'bad');
   };
