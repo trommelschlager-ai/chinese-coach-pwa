@@ -1,5 +1,5 @@
 {
-  "version": 235,
+  "version": 236,
   "bytes": 39926025,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -1809,6 +1809,7 @@
     "./assets/family-cover-v234.jpg",
     "./assets/family-cover-v235.webp",
     "./assets/family-people-v235.webp",
-    "./assets/panda-go-approved-lessons-v231.css?v=235"
+    "./assets/panda-go-approved-lessons-v231.css?v=235",
+    "./assets/panda-mic-v236.js?v=236"
   ]
 }
