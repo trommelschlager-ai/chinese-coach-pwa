@@ -10,11 +10,14 @@ vm.runInNewContext(code,ctx);
 const retained='./assets/course-human/cmn-我.mp3',oldImage='./assets/hanzi-paper-v141.png',oldData='./assets/hanzi-data/大.json';
 const oldCache=await cacheAPI.open('chinese-coach-pwa-v48');for(const path of [retained,oldImage,oldData])await oldCache.put(path,await network(path));
 await oldCache.put('./assets/obsolete.js?v=1',new Response('obsolete'));await oldCache.put('./index.html',new Response('obsolete shell'));
-events.activate({waitUntil:p=>pending=p});await pending;assert(!stores.has('chinese-coach-pwa-v48'));
+events.activate({waitUntil:p=>pending=p});await pending;assert(stores.has('chinese-coach-pwa-v48'),'Old media cache is preserved instead of being copied during activation');
 for(const p of [retained,oldImage,oldData,'./assets/panda-go-hero-clean-v174.webp','./assets/hanzi-approved-v141.png'])assert((await cacheAPI.match(p))?.ok,'Required media retained: '+p);
-assert(!await cacheAPI.match('./assets/obsolete.js?v=1'),'Obsolete scripts must not be migrated');
+assert((await cacheAPI.match('./assets/obsolete.js?v=1')),'Legacy cache is preserved without migrating its scripts to the new shell');
+assert(!stores.get(currentCache).has(normalize('./assets/obsolete.js?v=1')),'Stale old JS must not be copied into the new version cache');
 
 const request=async(url,mode)=>{let p;events.fetch({request:{url:normalize(url),method:'GET',mode},respondWith:r=>p=r});return await p};
+await oldCache.put('./assets/lesson-audio-source.js?v=241',new Response('obsolete cached audio UI'));
+assert((await (await request('./assets/lesson-audio-source.js?v=241','cors')).text()).includes('Звук v241'), 'Online script must bypass an old matching cached JS even when it is versioned');
 online=false;assert((await (await request('./','navigate')).text()).includes('const COURSE'));assert((await (await request('./hanzi-lab.html','navigate')).text()).includes('Пишем иероглифы'));assert((await (await request('./hsk1-map.html','navigate')).text()).includes('Карта уроков HSK 1'),'HSK 1 map must remain available offline');assert((await (await request('./hsk1-lesson.html','navigate')).text()).includes('id="lesson-steps"'),'New HSK lessons must be available offline');assert((await (await request('./','navigate')).text()).includes('const COURSE'),'Hanzi navigation must not overwrite cached home');assert.equal((await request('./not-saved.html','navigate')).status,503,'Missing offline route gets a useful response');
 online=true;const download=async()=>{let result;events.message({data:{type:'DOWNLOAD_COURSE'},ports:[{postMessage:m=>{if(m.done)result=m},close(){}}],waitUntil:p=>pending=p});await pending;return result};
 fail='assets/hanzi-data/木.json';let report=await download();assert.equal(report.failed,1,'One broken optional file does not abort all downloads');assert(report.saved>100);fail='';report=await download();assert.equal(report.failed,0,'Retry completes the missing file');assert(report.total>100);
