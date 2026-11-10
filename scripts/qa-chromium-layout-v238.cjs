@@ -59,7 +59,7 @@ async function evaluateLayout(page,lesson,screen,width,height,errors){
   }
   if(document.documentElement.scrollWidth>window.innerWidth+3)issues.push('Horizontal page overflow');
   const counter=document.querySelector('#pg-counter,#pg3-count,#pg5-count');
-  const actualStep=Number(counter?.textContent?.match(/\\d+/)?.[0]);
+  const actualStep=Number(counter?.textContent?.match(/\d+/)?.[0]);
   if(Number.isFinite(actualStep)&&actualStep!==screen)issues.push('Restored screen mismatch: expected '+screen+', found '+actualStep);
   for(const img of document.images){
    const rect=img.getBoundingClientRect();
