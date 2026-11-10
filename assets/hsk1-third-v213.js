@@ -113,7 +113,7 @@ try{
 }catch{}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}};
 let audio=null,requestId=0,tts=null,writer=null,writerId=0;
-const CLEAN=()=>window.PANDA_HSK1_L3_CLEAN_V213||{};
+const CLEAN=()=>window.PANDA_HSK1_L3_CLEAN_V250||{};
 const HUMAN=()=>window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
 function cleanStop(){
  requestId++;
@@ -128,15 +128,10 @@ function inform(message,kind='info'){
 }
 function stopWriter(){writerId++;try{writer?.cancelQuiz?.()}catch{}writer=null}
 function recording(n){
- // Compiled waveforms from the same Yue Tan voice: only when the pack is verified.
  const key=chinese(n);
- const restored=window.PandaCleanAudioV249?.lookup(key);if(restored)return restored;
- const original=window.PandaOwnerAudio?.lookup(key);if(original)return original;
- const list=CLEAN();
- if(n!==100&&list[key])return list[key];
- if(n===100)return window.PANDA_HSK1_NATIVE_HUMAN_V167?.['一百']||window.PANDA_HSK1_VOICES?.female?.['一百']||null;
- if(n<=10)return HUMAN()[key]||null;
- return null;
+ // Entire 0-99 clean original-speaker pack, including compounds with 一.
+ if(n===100)return window.PandaCleanAudioV250?.lookup('一百')||null;
+ return CLEAN()[key]||null;
 }
 function play(n,onEnd){
  cleanStop();
@@ -161,42 +156,14 @@ function play(n,onEnd){
   }catch{finished(false);inform('Не удалось открыть аудио.','error')}
   return;
  }
- // Existing original human fragments are played sequentially while clean pack is unavailable.
- // 一百 must use yì, never the isolated first-tone yī stitched to 百.
- if(n===100){
-  if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){finished(false);inform('Для 一百 пока нет цельной записи.','error');return}
-  try{
-   const u=new SpeechSynthesisUtterance('一百');tts=u;u.lang='zh-CN';u.rate=.83;
-   const zh=(speechSynthesis.getVoices?.()||[]).filter(x=>/^zh/i.test(x.lang||''));
-   u.voice=zh.find(x=>/female|xiaoxiao|tingting/i.test(x.name||''))||zh[0]||null;
-   u.onend=()=>finished(true);
-   u.onerror=()=>{finished(false);inform('Системная озвучка пока недоступна.','error')};
-   speechSynthesis.speak(u);
-   inform('一百: временная системная озвучка, чтобы сохранить правильное yì bǎi.');
-  }catch{finished(false)}
-  return;
- }
- const parts=chinese(n).split('').map(x=>HUMAN()[x]);
- if(parts.some(x=>!x)){finished(false);inform('Для числа пока нет аудиозаписи.','error');return}
- let i=0;
- const nextPart=()=>{
-  if(serial!==requestId)return;
-  if(i===parts.length){finished(true);return}
-  try{
-   const candidate=parts[i++];const player=new Audio(window.PandaAudioLevel?.[candidate]||candidate);audio=player;player.preload='auto';player.preservesPitch=true;
-   player.onended=nextPart;
-   player.onerror=()=>finished(false);
-   const promise=player.play();if(promise?.catch)promise.catch(()=>finished(false));
-  }catch{finished(false)}
- };
- nextPart();
- inform('Число составлено из записей одного голоса; цельная запись будет естественнее.');
+ // Never fall back to noisy older composites or another synthesized voice.
+ finished(false);inform('Не удалось открыть очищенную запись. Обнови страницу урока.','error');
 }
 function audioButton(n,label='▶ Слушать',extra=''){
- const invalid=recording(n)===null&&n>10&&n!==100;
+ const invalid=recording(n)===null&&n!==100;
  return '<button class="pg3-audio" type="button" data-audio="'+n+'" '+extra+
   ' aria-label="'+escape(label)+' — '+escape(pretty(n))+'">'+escape(label)+'</button>'+
-  (n===100?'<small class="pg13-audio-note">'+(recording(100)?'Временная запись yì bǎi':'Системная озвучка yì bǎi')+'</small>':
+  (n===100?'<small class="pg13-audio-note">'+(recording(100)?'Оригинальная запись yì bǎi':'Оригинальная запись не загрузилась')+'</small>':
    invalid?'<small class="pg13-audio-note">Сборка из записей носительницы</small>':'');
 }
 function mainCard(body,classes=''){return '<section class="pg3-card '+classes+'">'+body+'</section>'}
@@ -291,7 +258,7 @@ function generator(){
  '<button type="button" data-generate>Показать →</button></div>'+
  '<div class="pg13-generator-result">'+n+' <span>→</span> <strong lang="zh-Hans">'+chinese(n)+'</strong>'+
  '<small>'+pinyin(n)+'</small></div>'+audioButton(n,'🔊 Слушать число')+
- '<p class="pg3-muted">Число звучит из подготовленных фрагментов одной носительницы. Пиньинь показывает правильные тоны.</p></div>';
+ '<p class="pg3-muted">Число составлено из очищенных фрагментов одного диктора. Пиньинь показывает правильные тоны.</p></div>';
 }
 function compound(){
  return mainCard(heading('Десятки + единицы = любое число 21–99')+
