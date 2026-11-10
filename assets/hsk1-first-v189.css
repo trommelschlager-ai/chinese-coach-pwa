@@ -107,3 +107,10 @@
 .listening-choice{min-height:86px;border:2px solid #ead0f1;border-radius:16px;background:linear-gradient(145deg,#fff8ff,#f2e9fa);font-family:'Noto Sans CJK SC',sans-serif;font-size:clamp(25px,6vw,36px);color:#613789;font-weight:750}
 .listening-choice[aria-pressed=true]{border-color:#d668af;background:#fbe2f6}
 .learning-pair .pair-word{font-size:clamp(24px,6.4vw,34px)}
+
+/* Optional tone-to-pronunciation bridge; lesson content and order unchanged. */
+.pg-pronunciation-inline{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 5px 18px;padding:13px 16px;border:1.5px solid #e2b8e1;border-radius:18px;color:#70488f;text-decoration:none;background:linear-gradient(123deg,#fffafd,#f5dff6 58%,#eee1fd);box-shadow:0 6px 14px #ab86bb40}
+.pg-pronunciation-inline strong{font-size:15px;line-height:1.25;display:inline-block}
+.pg-pronunciation-inline small{display:block;margin-left:25px;margin-top:3px;font-size:11px;color:#936ba5}
+.pg-pronunciation-inline>span:last-child{font-size:25px;font-weight:900}
+.pg-pronunciation-inline:focus-visible{outline:3px solid #9063b9;outline-offset:3px}
