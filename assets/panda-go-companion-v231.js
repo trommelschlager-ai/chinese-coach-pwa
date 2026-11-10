@@ -229,7 +229,7 @@ function refresh(){
  const [k,h,d]=titles[n];label.textContent=k;title.textContent=h;sub.textContent=d;
  document.title='Урок '+lesson+' · '+h+' — Panda Go';
  count.textContent=(n+1)+' из '+TOTAL;bar.style.width=((n+1)/TOTAL*100)+'%';
- stage.innerHTML=screens[n]();say('');
+ stage.innerHTML=screens[n]();window.PandaLessonVisuals?.decorate(stage,lesson,n);say('');
  prev.disabled=n===0;
  next.disabled=(n===9&&state.listen<listening.length)||(n===10&&state.built<builds.length)||(n===13&&!state.quizPassed);
  next.textContent=n===0?'Начать урок →':n===13?'✓ Завершить урок':'Дальше →';

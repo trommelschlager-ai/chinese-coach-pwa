@@ -192,7 +192,7 @@ function refresh(){
  kicker.textContent=label;title.textContent=name;sub.textContent=subtitle;
  counter.textContent=(step+1)+' из '+TOTAL;bar.style.width=((step+1)/TOTAL*100)+'%';
  document.title='Урок 5 · '+name+' — Panda Go';
- app.innerHTML=renderers[step]();say('');
+ app.innerHTML=renderers[step]();window.PandaLessonVisuals?.decorate(app,5,step);say('');
  back.disabled=step===0;forward.disabled=(step===9&&state.listen<questions.length)||
   (step===10&&state.built<builds.length)||(step===13&&!state.quizPassed);
  forward.textContent=step===0?'Начать урок →':step===13?'✓ Завершить урок':'Дальше →';

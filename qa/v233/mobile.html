@@ -1,0 +1,14 @@
+<!doctype html><meta charset="utf-8"><title>Panda Go — mobile QA</title>
+<style>html,body{margin:0;background:#f7eaff}iframe{display:block;border:0}</style><iframe title="Android lesson viewport"></iframe>
+<script>
+(async()=>{
+const q=new URLSearchParams(location.search),lesson=Number(q.get('lesson')||5),step=Number(q.get('step')||0),width=Number(q.get('width')||393),height=Number(q.get('height')||852);
+const names={5:'hsk1-fifth-v227.html',6:'hsk1-family-v231.html',7:'hsk1-weather-v231.html'};
+const iframe=document.querySelector('iframe');iframe.width=width;iframe.height=height;
+const html=await (await fetch('../../'+names[lesson])).text();
+const state={step,maxStep:step,heard:{},listen:0,built:0,chosen:[],used:[],quizPassed:false,done:false};
+const key=lesson===5?'pg-hsk1-l5-v227':'pg-hsk1-l'+lesson+'-v231';
+const isolate='<base href="../../"><script>const store=new Map([['+JSON.stringify(key)+','+JSON.stringify(JSON.stringify(state))+']]);Object.defineProperty(window,"localStorage",{value:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,String(v)),removeItem:k=>store.delete(k),clear:()=>store.clear()}});<\/script>';
+iframe.srcdoc=html.replace('<head>','<head>'+isolate);
+})();
+</script>
