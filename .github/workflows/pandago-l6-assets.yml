@@ -1,0 +1,33 @@
+name: Import approved Panda Go lesson 6 human illustrations
+on:
+  push:
+    paths:
+      - '.github/workflows/pandago-l6-assets.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download source illustrations
+        env:
+          AVATARS: 'https://media.canva.com/v2/image-resize/format:PNG/height:100/quality:100/uri:ifs%3A%2F%2FM%2Fe3884f23-5c2d-4a5b-8a5b-5d02c24e4a17/watermark:F/width:200?csig=AAAAAAAAAAAAAAAAAAAAAHi8aUTYbtz8Byf_E5KctupHOuGshwWYLqDoDKgAJhIf&exp=1794297074&osig=AAAAAAAAAAAAAAAAAAAAAPE3lRqg3LgOOFDES9JpnbPlbGNt9orF69152rTOn6rR&signer=media-rpc&token=AAIAAU0AJGUzODg0ZjIzLTVjMmQtNGE1Yi04YTViLTVkMDJjMjRlNGExNwAAAAABocRwkVCztnIxrSmnYU_Yafc_XwQklKkDNPLLhIuYf4yW6AMUbA&x-canva-quality=thumbnail'
+          COVER: 'https://media.canva.com/v2/image-resize/format:JPG/height:124/quality:75/uri:ifs%3A%2F%2FM%2F040f5084-efb3-4e66-a6b4-58b8c4430efd/watermark:F/width:200?csig=AAAAAAAAAAAAAAAAAAAAAMzJEr193oYH8xLj-2OJd8V5QmkKF41dsvE7NmD_XCN4&exp=1794297702&osig=AAAAAAAAAAAAAAAAAAAAABFK67Y91P3qS__vESwj7H0mKE6iAjvL5Khq4XSKZrgr&signer=media-rpc&token=AAIAAU0AJDA0MGY1MDg0LWVmYjMtNGU2Ni1hNmI0LTU4YjhjNDQzMGVmZAAAAAABocR6JnCm5fMIDyP4J9VrQohPkYuqduFQrbqwB3NyW_V5S4U-dg&x-canva-quality=thumbnail'
+        run: |
+          set -euo pipefail
+          curl -fLsS --retry 3 "$AVATARS" -o assets/family-people-v234.png
+          curl -fLsS --retry 3 "$COVER" -o assets/family-cover-v234.jpg
+          test "$(wc -c < assets/family-people-v234.png)" -gt 4000
+          test "$(wc -c < assets/family-cover-v234.jpg)" -gt 4000
+          file assets/family-people-v234.png | grep -q 'PNG image'
+          file assets/family-cover-v234.jpg | grep -q 'JPEG image'
+      - name: Save images to repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/family-people-v234.png assets/family-cover-v234.jpg
+          git diff --cached --quiet && exit 0
+          git commit -m "Add approved human family artwork for lesson 6"
+          git push
