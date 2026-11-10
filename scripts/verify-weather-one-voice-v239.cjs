@@ -28,7 +28,7 @@ assert(companion.includes("const parts=isFamily?[src]:weatherClips(hz);"),'Playb
 assert(companion.includes("(isFamily?role:'female')"),'Weather dialogue must use female voice even for role A');
 assert(companion.includes("if(role==='male')return mappings.male"),'Family dialogues must keep their approved speaker roles');
 const weatherHtml=get('hsk1-weather-v231.html');
-assert(weatherHtml.includes('panda-go-companion-v231.js?v=240'),'Weather must reload changed player after service worker update');
+assert(weatherHtml.includes('panda-go-companion-v231.js?v=244'),'Weather must reload changed player after service worker update');
 const familyHtml=get('hsk1-family-v231.html');
 assert(familyHtml.includes('panda-go-companion-v231.js'),'Existing family player remains');
 assert(get('assets/lesson-audio-source.js').includes('Временная синтезированная озвучка'),'Synthetic voice must not be labeled human');
