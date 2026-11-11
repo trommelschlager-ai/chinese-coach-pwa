@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8a5abb">
+<meta name="description" content="Panda AI — текстовый репетитор китайского языка и тренажёр тонов HSK 1.">
+<title>Panda AI 老师 — Panda Go</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#37214c;background:#f6eeff}
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 20% 2%,#ffdeec 0,transparent 38%),radial-gradient(ellipse at 95% 30%,#dccaff 0,transparent 45%),#f6eeff}
+button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,textarea:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #7943c2;outline-offset:3px}
+.shell{width:min(100%,780px);padding:17px 14px 48px;margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.back{display:inline-block;color:#6c338d;text-decoration:none;font-weight:800;padding:12px 8px}.small-label{font-size:12px;color:#79558f;font-weight:800;letter-spacing:.06em}
+.hero{display:flex;align-items:center;gap:14px;padding:17px 18px 18px;background:linear-gradient(125deg,#fce2f3,#e4d4ff);border:1px solid #ebc2ff;border-radius:23px;margin-top:8px;box-shadow:0 9px 32px #8a4cb01a}
+.avatar{width:66px;height:66px;display:grid;place-items:center;background:#fff6fb;border:2px solid white;border-radius:22px;font-size:37px;flex:none;box-shadow:0 5px 16px #7239a023}
+h1{font-size:clamp(25px,6vw,32px);margin:1px 0 3px;line-height:1.17}h2{font-size:20px;margin:0 0 12px}.hero p{font-size:13px;line-height:1.4;margin:2px 0;color:#755c87}
+.panel{background:#fff;border:1px solid #e6d7f5;border-radius:22px;margin-top:16px;padding:17px;box-shadow:0 8px 28px #71489610}
+label{display:block;font-size:14px;font-weight:760;margin-bottom:7px}select,textarea,input{width:100%;background:#fff;border:1px solid #cdb5e1;border-radius:13px;padding:12px;color:#3c2550}
+select{min-height:46px}textarea{resize:vertical;min-height:96px;font-size:16px;line-height:1.5}.chat{height:300px;max-height:42dvh;overflow-y:auto;background:linear-gradient(180deg,#fcf9ff,#fff);border:1px solid #f0e6fa;border-radius:17px;margin:14px 0;padding:12px;display:flex;flex-direction:column;gap:10px}
+.bubble{max-width:95%;padding:11px 13px;border-radius:17px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.48;font-size:15px}.bubble.ai{align-self:flex-start;background:#f1e8ff;color:#3e2758;border-top-left-radius:4px}.bubble.user{align-self:flex-end;background:#f9ddec;border-top-right-radius:4px}
+.row{display:flex;gap:9px;align-items:center;justify-content:space-between;flex-wrap:wrap}.primary{border:0;border-radius:13px;background:linear-gradient(120deg,#c85fbd,#8348d1);color:#fff;font-weight:800;min-height:48px;padding:10px 23px;box-shadow:0 6px 16px #8f58c741}
+.secondary{border:1px solid #dac4ed;background:#fff;color:#704398;border-radius:12px;padding:9px 14px;min-height:43px;font-weight:700}.primary:disabled{opacity:.55;cursor:not-allowed}
+.notice{font-size:13px;color:#77598e;line-height:1.5;margin:10px 0}.status{font-size:13px;color:#704398;min-height:22px}.error{color:#a13252}.success{color:#137f59}
+.examples{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}.examples button{padding:9px 10px;border:1px solid #edcde8;border-radius:99px;background:#fef5fb;color:#793f7b;font-size:13px}
+.tone-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tone-grid .wide{grid-column:1/-1}.tone-result{min-height:28px;font-size:14px;line-height:1.5;margin:13px 0 0}
+.links{margin:16px 3px 0;font-size:12px;line-height:1.6;color:#77648b}
+@media(max-width:440px){.shell{padding:11px 10px 30px}.hero{padding:13px}.avatar{height:56px;width:56px;font-size:32px}.panel{padding:13px}.chat{height:290px}.tone-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="shell">
+<div class="top"><a class="back" href="./hsk1-map.html">← К урокам HSK 1</a><span class="small-label">PANDA GO · BETA</span></div>
+<header class="hero"><div class="avatar" aria-hidden="true">🐼</div><div><h1>Panda AI 老师</h1><p>Твой помощник по китайскому: объяснит, исправит ошибку, даст пример и задание.</p></div></header>
+<section class="panel" aria-labelledby="chat-title">
+<h2 id="chat-title">💬 Спроси преподавателя</h2>
+<label for="lesson">Тема вопроса</label>
+<select id="lesson">
+<option value="1">Урок 1 · Звуки и тоны</option>
+<option value="2">Урок 2 · Местоимения</option>
+<option value="3">Урок 3 · Числа 0–100</option>
+<option value="4">Урок 4 · Дни недели</option>
+<option value="5">Урок 5 · Месяцы и даты</option>
+<option value="6">Урок 6 · Семья</option>
+<option value="7">Урок 7 · Погода</option>
+</select>
+<div id="chat-messages" class="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
+<form id="chat-form">
+<label for="question">Напиши вопрос по-русски или по-китайски</label>
+<textarea id="question" maxlength="700" required placeholder="Например: почему 你好 произносится ní hǎo?"></textarea>
+<div class="examples"><button type="button" data-example="Объясни, когда 一 произносится yī, yí и yì.">Тоны 一</button><button type="button" data-example="Проверь: 我是很忙 — правильно ли это?">Проверь фразу</button><button type="button" data-example="Придумай два коротких задания по моему уроку.">Дай упражнение</button></div>
+<div id="turnstile" aria-label="Проверка безопасности"></div>
+<div class="row"><button class="primary" id="send" type="submit" disabled>Спросить панду →</button><button class="secondary" type="button" id="clear">Очистить чат</button></div>
+<p class="status" id="chat-status" role="status" aria-live="polite">Проверка соединения…</p>
+</form>
+<p class="notice">Текстовый AI требует интернет. Ответы могут содержать ошибки: перепроверяй важные правила. История этого чата хранится только до обновления страницы; текст вопроса отправляется AI-сервису.</p>
+</section>
+<section class="panel" aria-labelledby="tone-title">
+<h2 id="tone-title">🎯 Проверка тонов в пиньине</h2>
+<p class="notice">Работает без AI и проверяет <strong>написанные</strong> тоны, а не голос. Вводи слоги с пробелами и диакритикой (nǐ hǎo) или цифрами (ni3 hao3).</p>
+<form id="tone-form">
+<div class="tone-grid"><div><label for="tone-word">Слово или фраза</label><select id="tone-word"></select></div>
+<div><label for="tone-mode">Что проверяем</label><select id="tone-mode"><option value="spoken">Как звучит в речи</option><option value="standard">Словарный пиньинь</option></select></div>
+<div class="wide"><label for="tone-input">Твой пиньинь</label><input id="tone-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Например: ni2 hao3" maxlength="120"/></div></div>
+<div class="row" style="margin-top:11px"><button type="submit" class="primary">Проверить тоны</button><button type="button" class="secondary" id="tone-hint">Показать подсказку</button></div>
+</form>
+<p id="tone-result" class="tone-result" role="status" aria-live="polite"></p>
+</section>
+<p class="links">Panda Go · Учебная бета-версия. Не отправляй в чат личные документы, номера телефонов и пароли. Для проверки звучания голоса используй отдельный тренажёр произношения.</p>
+</main>
+<script src="./assets/panda-ai-config.js"></script>
+<script type="module" src="./assets/panda-ai-chat.mjs"></script>
+</body></html>
