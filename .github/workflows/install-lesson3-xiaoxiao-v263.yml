@@ -1,0 +1,54 @@
+name: Install Panda Go lesson 3 Xiaoxiao audio v263
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/lesson3-audio-import-v263.zip'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: panda-lesson3-audio-v263
+  cancel-in-progress: false
+jobs:
+  publish-number-clips:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+      - name: Unpack user-provided Xiaoxiao numbers
+        shell: bash
+        run: |
+          set -euo pipefail
+          unzip -oq assets/lesson3-audio-import-v263.zip -d .
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('assets/lesson3-xiaoxiao-v263')
+          manifest=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
+          clips=manifest['clips']
+          assert len(clips)==101 and [c['number'] for c in clips]==list(range(101))
+          for c in clips:
+              f=root/c['file']
+              assert f.is_file() and f.stat().st_size>1500,(c['number'],c['file'])
+              assert hashlib.sha256(f.read_bytes()).hexdigest()==c['output_sha256'],f.name
+          assert pathlib.Path('assets/lesson3-xiaoxiao-v263.js').is_file()
+          print('PASS: 101 distinct audio clips 0–100, checksums, one Xiaoxiao source')
+          PY
+      - name: Commit extracted MP3 files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/lesson3-xiaoxiao-v263 assets/lesson3-xiaoxiao-v263.js
+          if git diff --cached --quiet; then
+              echo 'All recordings already installed'
+              exit 0
+          fi
+          git commit -m 'audio: install 101 approved-source Xiaoxiao numbers for lesson 3 v263'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
