@@ -1,0 +1,22 @@
+name: Panda AI text beta QA
+on:
+  push:
+    branches: [feat/panda-ai-text-beta-2026-11-11]
+  pull_request:
+    branches: [main]
+    paths:
+      - "panda-ai.html"
+      - "assets/panda-ai-*.mjs"
+      - "worker/panda-ai/**"
+      - "tests/panda-ai.test.mjs"
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node --test tests/panda-ai.test.mjs
