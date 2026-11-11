@@ -14,6 +14,32 @@
   const voiceInput=document.querySelector('input[name="narrator"][value="'+state.narrator+'"]');
   if(voiceInput)voiceInput.checked=true;
   let corpus=null,player=null,recording=null,stream=null,micUrl=null,chunks=[];
+  // Trainer only: replace recordings atomically after complete manual tone review.
+  // Never mix incomplete Xiaoxiao batches with old voices or touch lesson audio.
+  let xiaoxiaoPackReady=false;
+  const xiaoxiaoDir='./assets/panda-xiaoxiao-trainer-v250/';
+  function activateXiaoxiaoPack(manifest){
+    if(!manifest||manifest.schema!==1||manifest.version!==250||
+       manifest.voice_id!=='voice-093'||manifest.rate!==-15||
+       manifest.complete!==true||manifest.qualityApproved!==true||
+       manifest.unique_mp3!==191||manifest.total_exercises!==203||
+       !Array.isArray(manifest.clips)||manifest.clips.length!==191)return false;
+    const ids=new Set(manifest.clips.map(c=>c.id));
+    if(ids.size!==191||!ids.has('bai'))return false;
+    for(let i=1;i<=190;i++)if(!ids.has('p'+String(i).padStart(3,'0')))return false;
+    for(const clip of manifest.clips)
+      if(clip.file!==clip.id+'.mp3'||!clip.sha256||!/^[a-f0-9]{64}$/.test(clip.sha256))return false;
+    cancelAudio();
+    xiaoxiaoPackReady=true;
+    state.narrator='female';
+    document.querySelectorAll('input[name="narrator"]').forEach(x=>x.checked=x.value==='female');
+    const settings=document.querySelector('.voice-settings');
+    if(settings)settings.style.display='none';
+    const subtitle=document.querySelector('.header-title small');
+    if(subtitle)subtitle.textContent='Произношение · Xiaoxiao −15%';
+    if(corpus)render();
+    return true;
+  }
   const special=[
     ['zi','zì','字','иероглиф','Передний z, необычная i'],
     ['ci','cí','词','слово','Передний c с придыханием'],
@@ -56,12 +82,16 @@
   function audioButtons(){
     return root.querySelectorAll('[data-audio-id],[data-combo]');
   }
-  function clipPath(id){return /^p\d{3}$/.test(id)?'./assets/pinyin-reading-'+(state.narrator==='male'?'v5':'v2')+'/'+id+'.mp3':null}
+  function clipPath(id){
+    if(!/^p\d{3}$/.test(id))return null;
+    return xiaoxiaoPackReady?xiaoxiaoDir+id+'.mp3':
+      './assets/pinyin-reading-'+(state.narrator==='male'?'v5':'v2')+'/'+id+'.mp3';
+  }
   const comboAudio={zi:'p058',ci:'p066',si:'p063',zhi:'p059',chi:'p008',shi:'p067',ji:'p028',qi:'p037',xi:'p056',pai:'p036',mai:'p139',nü:'p051'};
   function comboPath(c){
     if(Object.prototype.hasOwnProperty.call(comboAudio,c))return clipPath(comboAudio[c]);
     // No matching bái in either full adult narrator corpus; retain exact old bái recording.
-    return c==='bai'?'./assets/pinyin-combinations/bai.mp3':null;
+    return c==='bai'?(xiaoxiaoPackReady?xiaoxiaoDir+'bai.mp3':'./assets/pinyin-combinations/bai.mp3'):null;
   }
   function cancelAudio(){
     if(player){try{player.pause();player.currentTime=0}catch{}player=null}
@@ -249,6 +279,7 @@
   root.addEventListener('change',e=>{
     if(e.target.id==='combo-group'){state.comboGroup=e.target.value;state.comboPage=0;render();return}
     if(e.target.name==='narrator'){
+      if(xiaoxiaoPackReady)return;
       state.narrator=e.target.value==='male'?'male':'female';
       try{localStorage.setItem(narratorKey,state.narrator)}catch{}
       cancelAudio();
@@ -283,6 +314,11 @@
   recordReplay.addEventListener('click',()=>{if(micUrl){cancelAudio();const a=new Audio(micUrl);player=a;a.play().catch(()=>{recFeedback.textContent='Не удалось прослушать запись.'})}});
   window.addEventListener('pagehide',()=>{cancelAudio();if(recording?.state==='recording')recording.stop();releaseStream();if(micUrl)URL.revokeObjectURL(micUrl)});
   paintProgress();
+  // A published, QA-approved manifest is the only switch for the 203 trainer buttons.
+  // Missing, failed or unapproved packs preserve all the existing working audio.
+  fetch('./assets/panda-xiaoxiao-trainer-v250/manifest.json?v=250',{cache:'no-store'})
+    .then(r=>{if(!r.ok)throw Error('Xiaoxiao pack unavailable');return r.json()})
+    .then(activateXiaoxiaoPack).catch(()=>{});
   fetch('./assets/pinyin-reading-curriculum.json',{cache:'default'})
     .then(r=>{if(!r.ok)throw Error('curriculum unavailable');return r.json()})
     .then(d=>{
