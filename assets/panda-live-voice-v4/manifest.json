@@ -1,0 +1,40 @@
+{
+  "source": "luvvoice.com-20261111-HaHIIB.mp3",
+  "sourceSha256": "3ede2604070d12dc15533b7e6677e870e5a424b06056ae7a5226f9706a70e7a9",
+  "asrSource": "早上好 中午好 下午好 晚上好",
+  "note": "ASR text check; not an independent acoustic tone assessment. No replacement voice or synthesis.",
+  "clips": [
+    {
+      "text": "早上好！",
+      "file": "p01.mp3",
+      "sourceStart": 0.16,
+      "sourceEnd": 1.3,
+      "decodedSeconds": 1.14,
+      "sha256": "8143164fc3f5c2b320063d116fbc6eee70ab06bf2e6593ab42cfe2358d9f7298"
+    },
+    {
+      "text": "中午好！",
+      "file": "p02.mp3",
+      "sourceStart": 1.75,
+      "sourceEnd": 2.83,
+      "decodedSeconds": 1.08,
+      "sha256": "8cb9d54b9bd51b9c4e768d16b8ddcd40a800ecea8b5c092e8d3787603013e015"
+    },
+    {
+      "text": "下午好！",
+      "file": "p03.mp3",
+      "sourceStart": 3.28,
+      "sourceEnd": 4.44,
+      "decodedSeconds": 1.16,
+      "sha256": "deca973ca1a0e75aaa62507c6f1e70197d12d4e85ec3fd404f91e91eaea9702d"
+    },
+    {
+      "text": "晚上好！",
+      "file": "p04.mp3",
+      "sourceStart": 4.89,
+      "sourceEnd": 6.07,
+      "decodedSeconds": 1.18,
+      "sha256": "9f1b49ae4919a653510240c2cbf2ba37507565ef8c993cbac0bb8845af378400"
+    }
+  ]
+}

@@ -17,7 +17,7 @@ test('Chinese sentence checking, punctuation and branch selection',()=>{
  assert.equal(CONVERSATIONS.length,7);
  assert.deepEqual(missingConversationAudio(CONVERSATIONS[0],key=>key==='你好'?'hello.mp3':null),['你好吗？','我也很好，谢谢！','很好！']);
  assert.deepEqual(missingConversationAudio(CONVERSATIONS[0],lookupPilotAudio),[]);
- assert.equal(Object.keys(PILOT_AUDIO).length,19);
+ assert.equal(Object.keys(PILOT_AUDIO).length,23);
  for(const [phrase,file] of Object.entries(PILOT_AUDIO)){
   assert(fs.statSync(new URL('../'+file,import.meta.url)).size>1000,phrase);
   assert(ENVELOPES[file]?.levels.length>10,phrase);
@@ -50,7 +50,7 @@ test('microphone events, audio lifecycle, retries, cancellation and both branche
   clips.at(-1).playing();clips.at(-1).onended();assert.equal(pose(),'idle');
   el('mic').click();assert.equal(instances.at(-1).lang,'zh-CN');assert.equal(pose(),'listening');
   const stale=instances.at(-1).onresult;
-  instances.at(-1).emit('我很好');assert.equal(pose(),'retry');assert.equal(el('phrase').textContent,'你好！');
+  instances.at(-1).emit('我很好');assert.equal(pose(),'retry');assert(['早上好！','中午好！','下午好！','晚上好！'].includes(el('phrase').textContent));
   el('reset').click();await sleep(1450);assert.equal(pose(),'idle','reset cancels delayed question playback');
   stale({results:[[{transcript:'你好'}]]});assert.equal(el('step').textContent,'1 из 2');
   el('mic').click();instances.at(-1).emit('你好');assert.equal(pose(),'happy');

@@ -83,3 +83,31 @@ test('calendar previews expose fictional conditions before any answer is given',
   finally{dom.window.dispatchEvent(new dom.window.Event('pagehide'));dom.window.close();delete globalThis.window;delete globalThis.document}
  }
 });
+
+test('device-local greetings keep validation, voice coverage and topic boundaries consistent',async()=>{
+ const {GREETINGS,greetingForHour,withLocalGreeting,adjacentConversation}=await import('../assets/panda-live-greetings.mjs');
+ assert.deepEqual([0,4,5,10,11,12,13,17,18,23].map(h=>greetingForHour(h).answer),['晚上好','晚上好','早上好','早上好','中午好','中午好','下午好','下午好','晚上好','晚上好']);
+ for(const hour of [-1,24,NaN])assert.throws(()=>greetingForHour(hour),RangeError);
+ for(const hour of [8,12,15,20])for(const original of CONVERSATIONS){
+  const modified=withLocalGreeting(original,new Date(2026,10,11,hour)),first=modified.lines[0];
+  assert(verifyAnswerFor(modified.lines,0,first.answer).ok);
+  assert(verifyAnswerFor(modified.lines,0,first.pinyin).ok);
+  assert(verifyAnswerFor(modified.lines,0,'你好').ok);
+  assert(!verifyAnswerFor(modified.lines,0,'我很好').ok);
+  assert(!verifyAnswerFor(modified.lines,0,first.answer+first.answer).ok);
+  assert.equal(original.lines[0].panda,'你好！','Do not mutate approved dialogue data');
+  assert.deepEqual(missingConversationAudio(modified,lookupPilotAudio),[]);
+  assert.equal(modified.lines[1],original.lines[1]);
+ }
+ assert.equal(adjacentConversation(CONVERSATIONS,7,1).id,1);
+ assert.equal(adjacentConversation(CONVERSATIONS,1,-1).id,7);
+ const draft={...CONVERSATIONS[0],id:8,status:'draft-test'};
+ assert.equal(adjacentConversation([...CONVERSATIONS,draft],7,1).id,1);
+ assert.equal(adjacentConversation([...CONVERSATIONS,draft],7,1,true).id,8);
+ const manifest=JSON.parse(fs.readFileSync(new URL('../assets/panda-live-voice-v4/manifest.json',import.meta.url),'utf8'));
+ for(const [index,clip] of manifest.clips.entries()){
+  const path=lookupPilotAudio(GREETINGS[index].audioKey),bytes=fs.readFileSync(new URL('../'+path,import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),clip.sha256);
+  assert(Math.abs(ENVELOPES[path].levels.length*.025-clip.decodedSeconds)<.026);
+ }
+});
