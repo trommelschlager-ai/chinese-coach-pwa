@@ -1,0 +1,582 @@
+{
+  "type": "qa81",
+  "voice": "Xiaoxiao",
+  "rate": -20,
+  "trainerOnly": true,
+  "qualityApproved": false,
+  "complete": false,
+  "firstID": "p111",
+  "lastID": "bai",
+  "recordCount": 81,
+  "toneReview": "pending native-speaker check",
+  "previous30And80": "staged separately",
+  "clips": [
+    {
+      "id": "p111",
+      "text": "风",
+      "pinyin": "fēng",
+      "file": "p111.mp3",
+      "git_blob_sha": "cf9e7be1e3b868acc81806e2e960b059fe6d0230"
+    },
+    {
+      "id": "p112",
+      "text": "房",
+      "pinyin": "fáng",
+      "file": "p112.mp3",
+      "git_blob_sha": "08db38b876dc5cc85067ff079949570d9fb77a3e"
+    },
+    {
+      "id": "p113",
+      "text": "分",
+      "pinyin": "fēn",
+      "file": "p113.mp3",
+      "git_blob_sha": "0f719504671af89798eda053d8d658d9d7378604"
+    },
+    {
+      "id": "p114",
+      "text": "放",
+      "pinyin": "fàng",
+      "file": "p114.mp3",
+      "git_blob_sha": "164abdb6257060d74ec6073567428838e787f708"
+    },
+    {
+      "id": "p115",
+      "text": "高",
+      "pinyin": "gāo",
+      "file": "p115.mp3",
+      "git_blob_sha": "4949a348341eb9b58f4b058887ded0ed3f998792"
+    },
+    {
+      "id": "p116",
+      "text": "工",
+      "pinyin": "gōng",
+      "file": "p116.mp3",
+      "git_blob_sha": "33f142fe79b47f8982f777c808e3b0a82f69899c"
+    },
+    {
+      "id": "p117",
+      "text": "贵",
+      "pinyin": "guì",
+      "file": "p117.mp3",
+      "git_blob_sha": "ab0971bc814477b7622f56ce467a73ce2bc3a243"
+    },
+    {
+      "id": "p118",
+      "text": "果",
+      "pinyin": "guǒ",
+      "file": "p118.mp3",
+      "git_blob_sha": "1c75571a20f1dc044d9e31f9c3d15a25e83ece31"
+    },
+    {
+      "id": "p119",
+      "text": "跟",
+      "pinyin": "gēn",
+      "file": "p119.mp3",
+      "git_blob_sha": "8c7181b1e8eb6abb787b4e948ee6aee624147b22"
+    },
+    {
+      "id": "p120",
+      "text": "喝",
+      "pinyin": "hē",
+      "file": "p120.mp3",
+      "git_blob_sha": "4313f969b09aff58b6fd1b067c6e8c30e6a416ae"
+    },
+    {
+      "id": "p121",
+      "text": "海",
+      "pinyin": "hǎi",
+      "file": "p121.mp3",
+      "git_blob_sha": "ee670dd0b0aa2f417ef443b64429e02551812cbe"
+    },
+    {
+      "id": "p122",
+      "text": "红",
+      "pinyin": "hóng",
+      "file": "p122.mp3",
+      "git_blob_sha": "8e1a58e32cbd158276f9da0fb9f97761f34df303"
+    },
+    {
+      "id": "p123",
+      "text": "面",
+      "pinyin": "miàn",
+      "file": "p123.mp3",
+      "git_blob_sha": "10538eebbbd22318e1610fa980e587fae901a1a4"
+    },
+    {
+      "id": "p124",
+      "text": "想",
+      "pinyin": "xiǎng",
+      "file": "p124.mp3",
+      "git_blob_sha": "dcfc731e8af72d3e07f2c6b0bbe6004c5cead55f"
+    },
+    {
+      "id": "p125",
+      "text": "鸟",
+      "pinyin": "niǎo",
+      "file": "p125.mp3",
+      "git_blob_sha": "a44af77615d6d51a27f5ad9cd2650d0442c87334"
+    },
+    {
+      "id": "p126",
+      "text": "写",
+      "pinyin": "xiě",
+      "file": "p126.mp3",
+      "git_blob_sha": "28a4a39dee75f83e6e894e177849fe4e1e101199"
+    },
+    {
+      "id": "p127",
+      "text": "明",
+      "pinyin": "míng",
+      "file": "p127.mp3",
+      "git_blob_sha": "1958933660062016b2afd03a5fa3cecef9edaf32"
+    },
+    {
+      "id": "p128",
+      "text": "九",
+      "pinyin": "jiǔ",
+      "file": "p128.mp3",
+      "git_blob_sha": "ba3fa37585cd25e41337d7e9fab081a2801b6c7a"
+    },
+    {
+      "id": "p129",
+      "text": "见",
+      "pinyin": "jiàn",
+      "file": "p129.mp3",
+      "git_blob_sha": "90fcb13166c08412b0a1f294a15e92ab79de1ee0"
+    },
+    {
+      "id": "p130",
+      "text": "叫",
+      "pinyin": "jiào",
+      "file": "p130.mp3",
+      "git_blob_sha": "b02eda793193a729cd7150c8730629518ef8eea4"
+    },
+    {
+      "id": "p131",
+      "text": "就",
+      "pinyin": "jiù",
+      "file": "p131.mp3",
+      "git_blob_sha": "c45bee1ed67efbd6ad60fdc18db0daa300919f23"
+    },
+    {
+      "id": "p132",
+      "text": "开",
+      "pinyin": "kāi",
+      "file": "p132.mp3",
+      "git_blob_sha": "4ed7cb8b96a9284fa28d51d9f82fe9fa16d59f5a"
+    },
+    {
+      "id": "p133",
+      "text": "口",
+      "pinyin": "kǒu",
+      "file": "p133.mp3",
+      "git_blob_sha": "08fe5aab173c5f7df05177652c267e5af5547b16"
+    },
+    {
+      "id": "p134",
+      "text": "空",
+      "pinyin": "kōng",
+      "file": "p134.mp3",
+      "git_blob_sha": "24058e816eaf0f9e08da437a0d77e169f5d4ed9c"
+    },
+    {
+      "id": "p135",
+      "text": "老",
+      "pinyin": "lǎo",
+      "file": "p135.mp3",
+      "git_blob_sha": "195c3960fddce91dd48a1b2e92b14d823afe8c0d"
+    },
+    {
+      "id": "p136",
+      "text": "里",
+      "pinyin": "lǐ",
+      "file": "p136.mp3",
+      "git_blob_sha": "5b31418146388c3be451e84624559da1426ca356"
+    },
+    {
+      "id": "p137",
+      "text": "路",
+      "pinyin": "lù",
+      "file": "p137.mp3",
+      "git_blob_sha": "e6995f8132622d074186e65ca7416e9b67550105"
+    },
+    {
+      "id": "p138",
+      "text": "米",
+      "pinyin": "mǐ",
+      "file": "p138.mp3",
+      "git_blob_sha": "edf8a30df5d8ccb0e0521d7cc138165ee0c8ea02"
+    },
+    {
+      "id": "p139",
+      "text": "买",
+      "pinyin": "mǎi",
+      "file": "p139.mp3",
+      "git_blob_sha": "ee90fe38ef15da6066dbfffdb81469a408c8baae"
+    },
+    {
+      "id": "p140",
+      "text": "慢",
+      "pinyin": "màn",
+      "file": "p140.mp3",
+      "git_blob_sha": "54b348eca22844b9db9f2fb594f918cec56b0fc1"
+    },
+    {
+      "id": "p141",
+      "text": "没",
+      "pinyin": "méi",
+      "file": "p141.mp3",
+      "git_blob_sha": "f4c6bf1569200d01831d4bcb7f8a36c91e4e26dc"
+    },
+    {
+      "id": "p142",
+      "text": "年",
+      "pinyin": "nián",
+      "file": "p142.mp3",
+      "git_blob_sha": "dd3d8df34934d02a1fc706d31a142cca3193453b"
+    },
+    {
+      "id": "p143",
+      "text": "男",
+      "pinyin": "nán",
+      "file": "p143.mp3",
+      "git_blob_sha": "3401b93875f1305edeaf44e5eb6f917f27f4a857"
+    },
+    {
+      "id": "p144",
+      "text": "能",
+      "pinyin": "néng",
+      "file": "p144.mp3",
+      "git_blob_sha": "66c130faabaaa1702be9959955f61a9313349005"
+    },
+    {
+      "id": "p145",
+      "text": "南",
+      "pinyin": "nán",
+      "file": "p145.mp3",
+      "git_blob_sha": "0012076b7e086a1ec7ae230c47e22088e42ff363"
+    },
+    {
+      "id": "p146",
+      "text": "坡",
+      "pinyin": "pō",
+      "file": "p146.mp3",
+      "git_blob_sha": "e553bc559993beaaa157b5178e0a6cd320cde677"
+    },
+    {
+      "id": "p147",
+      "text": "摸",
+      "pinyin": "mō",
+      "file": "p147.mp3",
+      "git_blob_sha": "24e528e42a39a75b567b0dc7eeb79ce7ba8cd7c1"
+    },
+    {
+      "id": "p148",
+      "text": "佛",
+      "pinyin": "fó",
+      "file": "p148.mp3",
+      "git_blob_sha": "40c2b320a6e712a6e41a21b83e929202397d2506"
+    },
+    {
+      "id": "p149",
+      "text": "中",
+      "pinyin": "zhōng",
+      "file": "p149.mp3",
+      "git_blob_sha": "77890310680613793faec0256d4c206c672536b4"
+    },
+    {
+      "id": "p150",
+      "text": "走",
+      "pinyin": "zǒu",
+      "file": "p150.mp3",
+      "git_blob_sha": "9afec1e1da6c42e39912c067651ee5b6a37aea3e"
+    },
+    {
+      "id": "p151",
+      "text": "手",
+      "pinyin": "shǒu",
+      "file": "p151.mp3",
+      "git_blob_sha": "32b82ffde0102d38b62cadaad39dd335e078b4d3"
+    },
+    {
+      "id": "p152",
+      "text": "怕",
+      "pinyin": "pà",
+      "file": "p152.mp3",
+      "git_blob_sha": "15e260a1405b108d9484657c1fc86bc5be6f0e7e"
+    },
+    {
+      "id": "p153",
+      "text": "票",
+      "pinyin": "piào",
+      "file": "p153.mp3",
+      "git_blob_sha": "b1bd679873856d931e21e7f63adfc05118d7c923"
+    },
+    {
+      "id": "p154",
+      "text": "跑",
+      "pinyin": "pǎo",
+      "file": "p154.mp3",
+      "git_blob_sha": "6ae3d0af179452366b08b1ea4e02dbe79633bf86"
+    },
+    {
+      "id": "p155",
+      "text": "朋",
+      "pinyin": "péng",
+      "file": "p155.mp3",
+      "git_blob_sha": "5d40c5bdd37eb0367c0c3c9b9f40565f9562c6bc"
+    },
+    {
+      "id": "p156",
+      "text": "平",
+      "pinyin": "píng",
+      "file": "p156.mp3",
+      "git_blob_sha": "549fac1302ec04e0127bfc5d54afdecda66ebec2"
+    },
+    {
+      "id": "p157",
+      "text": "钱",
+      "pinyin": "qián",
+      "file": "p157.mp3",
+      "git_blob_sha": "bccea0fcd4a025ed7b6b3fdaf37586ca3a393cc9"
+    },
+    {
+      "id": "p158",
+      "text": "请",
+      "pinyin": "qǐng",
+      "file": "p158.mp3",
+      "git_blob_sha": "6146e128f56138d5ebd1cd6530893a69fe524a77"
+    },
+    {
+      "id": "p159",
+      "text": "起",
+      "pinyin": "qǐ",
+      "file": "p159.mp3",
+      "git_blob_sha": "ef43391fcafdb4fa038a35f6bdef98f31ade8e59"
+    },
+    {
+      "id": "p160",
+      "text": "球",
+      "pinyin": "qiú",
+      "file": "p160.mp3",
+      "git_blob_sha": "2841f4157a2783db2620ff35b106c922178258b6"
+    },
+    {
+      "id": "p161",
+      "text": "热",
+      "pinyin": "rè",
+      "file": "p161.mp3",
+      "git_blob_sha": "e908e511b1d2110d6f1b56a2dfbb72dff4726fb5"
+    },
+    {
+      "id": "p162",
+      "text": "让",
+      "pinyin": "ràng",
+      "file": "p162.mp3",
+      "git_blob_sha": "a1c9c4f8a564fd8a0d9a7d912bc5e4026b307a5d"
+    },
+    {
+      "id": "p163",
+      "text": "容",
+      "pinyin": "róng",
+      "file": "p163.mp3",
+      "git_blob_sha": "ae4d9838c180c945923caa50d40f7bbfd9b17954"
+    },
+    {
+      "id": "p164",
+      "text": "肉",
+      "pinyin": "ròu",
+      "file": "p164.mp3",
+      "git_blob_sha": "aab70f5f68c9f314c61e7763eba8a431e7d3a9d7"
+    },
+    {
+      "id": "p165",
+      "text": "送",
+      "pinyin": "sòng",
+      "file": "p165.mp3",
+      "git_blob_sha": "9fd394cd55854e9dc6a21c663921a8b3892ae085"
+    },
+    {
+      "id": "p166",
+      "text": "素",
+      "pinyin": "sù",
+      "file": "p166.mp3",
+      "git_blob_sha": "78f0af318a5745bae39cff7a2d3d2c37af1a8bc0"
+    },
+    {
+      "id": "p167",
+      "text": "山",
+      "pinyin": "shān",
+      "file": "p167.mp3",
+      "git_blob_sha": "8e9d09cc96d12f1b9050dba9bfe2d339fe23d5d4"
+    },
+    {
+      "id": "p168",
+      "text": "说",
+      "pinyin": "shuō",
+      "file": "p168.mp3",
+      "git_blob_sha": "d9b2096fcb968185388441eca9476fb7c3c522a2"
+    },
+    {
+      "id": "p169",
+      "text": "太",
+      "pinyin": "tài",
+      "file": "p169.mp3",
+      "git_blob_sha": "fcabd5f8a42929a99702d35deb0048b39ab0f461"
+    },
+    {
+      "id": "p170",
+      "text": "同",
+      "pinyin": "tóng",
+      "file": "p170.mp3",
+      "git_blob_sha": "e4435a69d77a0b8d5a28fa5308ed3939a1b72b3d"
+    },
+    {
+      "id": "p171",
+      "text": "土",
+      "pinyin": "tǔ",
+      "file": "p171.mp3",
+      "git_blob_sha": "bd100828a63b48c3ea8150aa5c589cc32dcab3cc"
+    },
+    {
+      "id": "p172",
+      "text": "五",
+      "pinyin": "wǔ",
+      "file": "p172.mp3",
+      "git_blob_sha": "2aa81a21c0960a49f55b5a9b58a707dcb0ba2d03"
+    },
+    {
+      "id": "p173",
+      "text": "瓜",
+      "pinyin": "guā",
+      "file": "p173.mp3",
+      "git_blob_sha": "c01e3c179829b4ca0a8b22c49429eb1b1459e0ec"
+    },
+    {
+      "id": "p174",
+      "text": "外",
+      "pinyin": "wài",
+      "file": "p174.mp3",
+      "git_blob_sha": "0a8a3a9ac7bb95e4776542f6aacc8a6645eab8de"
+    },
+    {
+      "id": "p175",
+      "text": "玩",
+      "pinyin": "wán",
+      "file": "p175.mp3",
+      "git_blob_sha": "4cb71a75cec93a41b89a5e286925be05b3e72f9f"
+    },
+    {
+      "id": "p176",
+      "text": "王",
+      "pinyin": "wáng",
+      "file": "p176.mp3",
+      "git_blob_sha": "331fc6edc00f799431910e41b90f8c074ad97f24"
+    },
+    {
+      "id": "p177",
+      "text": "雪",
+      "pinyin": "xuě",
+      "file": "p177.mp3",
+      "git_blob_sha": "c5c60eca14999d11bb2c192455f0b6737edc2ef7"
+    },
+    {
+      "id": "p178",
+      "text": "卷",
+      "pinyin": "juǎn",
+      "file": "p178.mp3",
+      "git_blob_sha": "4042e8d02001a6124d0f687c3a1e3b10713cd8d5"
+    },
+    {
+      "id": "p179",
+      "text": "群",
+      "pinyin": "qún",
+      "file": "p179.mp3",
+      "git_blob_sha": "fdbca3829f478bf115f825901a32b28b65945090"
+    },
+    {
+      "id": "p180",
+      "text": "问",
+      "pinyin": "wèn",
+      "file": "p180.mp3",
+      "git_blob_sha": "f28125fda59197f23c1177e50b3fb0e8f9417bdc"
+    },
+    {
+      "id": "p181",
+      "text": "晚",
+      "pinyin": "wǎn",
+      "file": "p181.mp3",
+      "git_blob_sha": "bda9497fbd6a79afbcd81104e16dea9fb34a436b"
+    },
+    {
+      "id": "p182",
+      "text": "无",
+      "pinyin": "wú",
+      "file": "p182.mp3",
+      "git_blob_sha": "2e2f02798da2a6e203d85d0740940670427c9801"
+    },
+    {
+      "id": "p183",
+      "text": "学",
+      "pinyin": "xué",
+      "file": "p183.mp3",
+      "git_blob_sha": "e5fe77abf7eebcb0ec51cc729f8f34b6aaa4abda"
+    },
+    {
+      "id": "p184",
+      "text": "羊",
+      "pinyin": "yáng",
+      "file": "p184.mp3",
+      "git_blob_sha": "87be092edcafe1115eb0de22ecb46f2917d0b599"
+    },
+    {
+      "id": "p185",
+      "text": "有",
+      "pinyin": "yǒu",
+      "file": "p185.mp3",
+      "git_blob_sha": "beabaf2826d994462f4c1bc8888b512f1a81129e"
+    },
+    {
+      "id": "p186",
+      "text": "要",
+      "pinyin": "yào",
+      "file": "p186.mp3",
+      "git_blob_sha": "953b233d3aa9b97376dc142fc8fffe51cfae8936"
+    },
+    {
+      "id": "p187",
+      "text": "做",
+      "pinyin": "zuò",
+      "file": "p187.mp3",
+      "git_blob_sha": "63ba5f0a4c50467af0d8b16b7e4a788145a20e3c"
+    },
+    {
+      "id": "p188",
+      "text": "在",
+      "pinyin": "zài",
+      "file": "p188.mp3",
+      "git_blob_sha": "59545816bcb27e87eba0ff9042d9fc415b512d51"
+    },
+    {
+      "id": "p189",
+      "text": "这",
+      "pinyin": "zhè",
+      "file": "p189.mp3",
+      "git_blob_sha": "7ab9627ceffa5eb4d4fa617dc45fbea8f87386f3"
+    },
+    {
+      "id": "p190",
+      "text": "早",
+      "pinyin": "zǎo",
+      "file": "p190.mp3",
+      "git_blob_sha": "d64f5bbe683e0fd034f7e86952c0a0b3407c1313"
+    },
+    {
+      "id": "bai",
+      "text": "白",
+      "pinyin": "bái",
+      "file": "bai.mp3",
+      "git_blob_sha": "961fd9871e294721e80d8c1ae28c3e515a858c5c"
+    }
+  ]
+}
