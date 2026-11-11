@@ -1,0 +1,80 @@
+name: Panda Go - Publish approved Xiaoxiao trainer pack
+
+on:
+  workflow_dispatch:
+    inputs:
+      generation_run_id:
+        description: "GitHub Actions run ID that generated the 191-MP3 Xiaoxiao review artifact"
+        required: true
+        type: string
+      approval:
+        description: "Type I_REVIEWED_ALL_191 only after Mandarin tone QA and licensing review"
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  publish-trainer-only:
+    if: ${{ inputs.approval == 'I_REVIEWED_ALL_191' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download previously generated review files
+        uses: actions/download-artifact@v4
+        with:
+          name: panda-go-xiaoxiao-trainer-191-review
+          run-id: ${{ inputs.generation_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/review
+      - name: Validate all files and isolate the trainer-only update
+        env:
+          REVIEW_DIR: ${{ runner.temp }}/review
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          d=pathlib.Path(os.environ['REVIEW_DIR'])
+          m=json.loads((d/'manifest.json').read_text(encoding='utf-8'))
+          assert m['trainer_only'] is True and m['qualityApproved'] is False
+          assert m['schema']==1 and m['version']==250
+          assert m['voice_id']=='voice-093' and m['rate']==-15 and m['pitch']==0
+          assert m['unique_mp3']==191 and m['total_exercises']==203
+          assert m['complete'] is True and len(m['clips'])==191
+          correct={f'p{i:03d}' for i in range(1,191)}|{'bai'}
+          assert {x['id'] for x in m['clips']}==correct
+          for x in m['clips']:
+              assert x['file']==x['id']+'.mp3'
+              p=d/x['file']
+              assert p.is_file() and p.stat().st_size==x['bytes']
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==x['sha256']
+              subprocess.run(['ffmpeg','-v','error','-xerror','-i',str(p),
+                              '-f','null','-'],check=True)
+          m['qualityApproved']=True
+          m['approval_method']='Manual review of audio artifact and licensed LuvVoice Plus output'
+          (d/'manifest.json').write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('PASS: all 191 reviewed MP3s validated for trainer-only publishing')
+          PY
+          mkdir -p assets/panda-xiaoxiao-trainer-v250
+          cp "${RUNNER_TEMP}/review/"*.mp3 assets/panda-xiaoxiao-trainer-v250/
+          cp "${RUNNER_TEMP}/review/manifest.json" assets/panda-xiaoxiao-trainer-v250/
+      - name: Commit ONLY new trainer audio directory
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- assets/panda-xiaoxiao-trainer-v250/
+          if git diff --cached --quiet; then
+            echo "Identical review pack already published"
+            exit 0
+          fi
+          if git diff --cached --name-only | grep -v '^assets/panda-xiaoxiao-trainer-v250/'; then
+            echo "::error::Unexpected path staged; refusing to publish"
+            exit 1
+          fi
+          git commit -m "audio(trainer): publish reviewed Xiaoxiao 191 recordings for all 203 exercises"
+          git push
