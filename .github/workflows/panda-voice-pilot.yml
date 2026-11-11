@@ -1,0 +1,47 @@
+name: Panda Android voice pilot QA
+on:
+  push:
+    branches:
+      - feat/panda-voice-android-pilot-2026-11-11
+  pull_request:
+    branches: [main]
+    paths:
+      - 'panda-voice-pilot.html'
+      - 'assets/panda-voice-pilot-*.mjs'
+      - 'tests/panda-voice-pilot.test.mjs'
+      - 'scripts/qa-panda-voice-pilot-mobile.mjs'
+permissions:
+  contents: read
+jobs:
+  mobile-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Test pilot response checks and mock microphone
+        run: node --test tests/panda-voice-pilot.test.mjs
+      - name: Install mobile Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify responsive Android voice interaction
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/panda-voice-pilot.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-voice-pilot.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-voice-pilot-mobile.mjs
+      - name: Save Android viewport screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-voice-android-pilot-screenshots
+          path: qa/panda-voice-pilot/
+          if-no-files-found: warn
