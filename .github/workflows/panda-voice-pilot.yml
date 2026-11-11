@@ -6,6 +6,7 @@ on:
       - feat/panda-voice-minimal-2026-11-11
       - feat/panda-lesson1-avatar-dialogue-2026-11-11
       - fix/panda-real-voice-mic-avatar-2026-11-11
+      - feat/panda-exact-mascot-animated-2026-11-11
   pull_request:
     branches: [main]
     paths:
