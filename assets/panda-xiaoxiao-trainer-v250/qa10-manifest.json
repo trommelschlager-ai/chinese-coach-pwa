@@ -1,5 +1,5 @@
 {
-  "stage": "QA preview only",
+  "stage": "Native speaker tone review passed for first 10; commercial use approval and full batch still pending",
   "trainer_only": true,
   "complete": false,
   "qualityApproved": false,
@@ -10,10 +10,7 @@
   "volume": 0,
   "source_file_sha256": "15db745f833a029cd16529299dbe53870cc135bb15ebe578852c19eaa13d5eff",
   "segmentation": "Silence separated, 160ms lead-in, 260ms tail, loudness matched without pitch/speed modification",
-  "requires_review": [
-    "p004 昂 áng",
-    "p005 袄 ǎo"
-  ],
+  "requires_review": [],
   "clips": [
     {
       "id": "p001",
@@ -85,5 +82,23 @@
       "file": "p010.mp3",
       "sha256": "1723524718c8f862aee83edca6ad3e5f579ab67dea8249e2321695e602bddd8a"
     }
-  ]
+  ],
+  "toneReview": {
+    "approved": true,
+    "reviewed_clip_ids": [
+      "p001",
+      "p002",
+      "p003",
+      "p004",
+      "p005",
+      "p006",
+      "p007",
+      "p008",
+      "p009",
+      "p010"
+    ],
+    "review_source": "User reports that Mandarin native speaker confirmed all ten pronunciations and tones",
+    "reviewed_on": "2026-11-11",
+    "outstanding_tone_issues": []
+  }
 }
