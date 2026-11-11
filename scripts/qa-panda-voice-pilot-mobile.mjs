@@ -76,8 +76,47 @@ try{
   report.push({...visual,success:true});
   await context.close();
  }
+ // Every newly enabled conversation, including both branching outcomes.
+ const context=await browser.newContext({viewport:{width:390,height:825},isMobile:true,hasTouch:true});
+ const page=await context.newPage(),errors=[];page.on('pageerror',error=>errors.push(error.message));
+ const scenarios=[
+  {id:2,answers:['你好','我是老师'],final:'我也是老师。'},
+  {id:2,answers:['你好','不是，我是学生'],final:'我是老师。'},
+  {id:3,answers:['你好','我44岁'],final:'我三岁。'},
+  {id:4,answers:['你好','今天星期一'],final:'明天星期二。'},
+  {id:5,answers:['你好','今天是3月5号'],final:'明天三月六号。'},
+  {id:6,answers:['你好','我有两个哥哥'],final:'我也有哥哥。'},
+  {id:6,answers:['你好','我没有哥哥'],final:'我有一个哥哥。'},
+  {id:7,answers:['你好','今天很冷','明天下雨'],final:'谢谢！'}
+ ];
+ for(const [index,scenario] of scenarios.entries()){
+  await page.goto(BASE+'/panda-voice-pilot.html?lesson='+scenario.id,{waitUntil:'load'});
+  await page.locator('html[data-panda-live-ready=true]').waitFor();
+  assert.equal(await page.locator('#lesson-tag').inputValue(),String(scenario.id));
+  assert((await page.locator('#pilot-note').textContent()).includes('единый голос'));
+  for(const answer of scenario.answers){
+   assert(await page.locator('#audio-note').isHidden());
+   await page.locator('#hear').click();
+   await page.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
+   if(await page.locator('#typing').isHidden())await page.locator('#type-toggle').click();
+   const previous=await page.locator('#phrase').textContent();
+   await page.locator('#answer').fill(answer);await page.locator('#send').click();
+   await page.waitForFunction(text=>document.getElementById('phrase').textContent!==text,previous);
+  }
+  assert.equal(await page.locator('#phrase').textContent(),scenario.final);
+  assert(await page.locator('#completed').isVisible());assert(await page.locator('#audio-note').isHidden());
+  await page.locator('#hear').click();await page.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
+  const size=await page.evaluate(()=>({viewportWidth:innerWidth,scrollWidth:document.documentElement.scrollWidth}));
+  assert(size.scrollWidth<=size.viewportWidth+2);
+  await page.screenshot({path:DIR+'/lesson-'+scenario.id+'-'+index+'.png',fullPage:true,animations:'disabled'});
+  report.push({lesson:scenario.id,final:scenario.final,...size,success:true});
+ }
+ const sources=await page.evaluate(async()=>Object.values((await import('./assets/panda-live-audio.mjs')).PILOT_AUDIO));
+ assert.equal(sources.length,19);
+ for(const src of sources){const response=await page.request.get(new URL(src,BASE+'/').href);assert.equal(response.status(),200,src);assert((await response.body()).length>1000,src)}
+ assert.deepEqual(errors,[]);await context.close();
  fs.writeFileSync(DIR+'/qa-report.json',JSON.stringify({
-  note:'Mobile Chromium, simulated speech recognition only. All four uploaded MP3 sources mapped; real playback state checked. Spoken tone acoustics need human QA.',
+  note:'Mobile Chromium, simulated speech recognition only. All 19 MP3 sources checked; all seven conversation topics exercised, including new media playback. Spoken tone acoustics need human QA.',
   results:report
  },null,2)+'\n');
  console.log('Panda conversation mobile Chromium: PASS');

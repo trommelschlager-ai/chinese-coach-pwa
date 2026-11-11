@@ -1,0 +1,86 @@
+[
+  {
+    "phrase": "你是老师吗？",
+    "lessons": [
+      2
+    ]
+  },
+  {
+    "phrase": "我也是老师。",
+    "lessons": [
+      2
+    ]
+  },
+  {
+    "phrase": "我是老师。",
+    "lessons": [
+      2
+    ]
+  },
+  {
+    "phrase": "你几岁？",
+    "lessons": [
+      3
+    ]
+  },
+  {
+    "phrase": "我三岁。",
+    "lessons": [
+      3
+    ]
+  },
+  {
+    "phrase": "今天星期几？",
+    "lessons": [
+      4
+    ]
+  },
+  {
+    "phrase": "明天星期二。",
+    "lessons": [
+      4
+    ]
+  },
+  {
+    "phrase": "今天几月几号？",
+    "lessons": [
+      5
+    ]
+  },
+  {
+    "phrase": "明天三月六号。",
+    "lessons": [
+      5
+    ]
+  },
+  {
+    "phrase": "你有哥哥吗？",
+    "lessons": [
+      6
+    ]
+  },
+  {
+    "phrase": "我也有哥哥。",
+    "lessons": [
+      6
+    ]
+  },
+  {
+    "phrase": "我有一个哥哥。",
+    "lessons": [
+      6
+    ]
+  },
+  {
+    "phrase": "今天天气怎么样？",
+    "lessons": [
+      7
+    ]
+  },
+  {
+    "phrase": "明天天气怎么样？",
+    "lessons": [
+      7
+    ]
+  }
+]

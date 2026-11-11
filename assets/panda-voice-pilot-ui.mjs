@@ -1,9 +1,10 @@
-import {lookupPilotAudio} from './panda-live-audio.mjs?v=live2';
-import {verifyPilotAnswer} from './panda-voice-pilot-engine.mjs?v=live2';
-import {CONVERSATIONS} from './panda-live-lessons.mjs?v=live2';
-import {ENVELOPES} from './panda-live-envelope.mjs?v=live2';
+import {lookupPilotAudio} from './panda-live-audio.mjs?v=live5';
+import {verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live5';
+import {CONVERSATIONS,selectConversation,missingConversationAudio} from './panda-live-lessons.mjs?v=live5';
+import {ENVELOPES} from './panda-live-envelope.mjs?v=live5';
 import {createPandaRig} from './panda-live-rig.mjs';
-const {lines:PILOT_LINES,replies:REPLIES}=CONVERSATIONS[0];
+const conversation=selectConversation(window.location.search);
+const {lines:PILOT_LINES,replies:REPLIES}=conversation;
 const $=id=>document.getElementById(id);
 const rig=createPandaRig($('character'),$('panda-canvas'));
 const state={step:0,done:false,busy:false,active:false,recognition:null,epoch:0,audio:null,typing:false,watchdog:null,transition:null,poseTimer:null};
@@ -30,7 +31,7 @@ function recovery(text){$('voice-recovery').hidden=false;note(text);refresh()}
 function refresh(){
  $('conversation').hidden=state.done;$('completed').hidden=!state.done;
  $('step').textContent=state.done?'Готово':`${state.step+1} из ${PILOT_LINES.length}`;
- $('bar2').classList.toggle('on',state.done||state.step>0);
+ document.querySelectorAll('.bar').forEach((bar,index)=>bar.classList.toggle('on',state.done||index<=state.step));
  $('mic').disabled=state.done||state.busy||!supported();
  $('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';
  $('mic-caption').textContent=state.active?'Слушаю…':supported()?'Ответь голосом':'Ответь текстом';
@@ -71,7 +72,7 @@ function restart(){
 function checkAnswer(raw){
  if(state.done||state.busy)return;
  const input=String(raw||'').trim();stopRecognition();stopAudio();
- const result=verifyPilotAnswer(state.step,input);
+ const result=verifyAnswerFor(PILOT_LINES,state.step,input);
  $('heard').textContent=input?'Ты: '+input:'';
  if(!result.ok){
   brief('retry');note(input?'Не совсем. '+PILOT_LINES[state.step].instruction:'Не расслышала. Повтори ещё раз.');refresh();
@@ -85,7 +86,7 @@ function checkAnswer(raw){
   if(state.step>=PILOT_LINES.length){
    state.done=true;state.branch=result.branch||'short';
    $('final-feedback').textContent=state.branch==='asked-back'?'Ты поддержал разговор по-китайски!':'Ты ответил по-китайски!';
-   try{localStorage.setItem('pg-panda-voice-pilot-v1-last',new Date().toISOString())}catch{}
+   try{localStorage.setItem(conversation.id===1?'pg-panda-voice-pilot-v1-last':`pg-panda-voice-lesson${conversation.id}-last`,new Date().toISOString())}catch{}
   }
   $('answer').value='';$('heard').textContent='';note('');render();
   if(audioFor(current()?.audioKey))play();
@@ -131,6 +132,28 @@ $('reset').addEventListener('click',restart);$('again').addEventListener('click'
 $('character').querySelector('img').addEventListener('error',()=>{note('Изображение Панды не загрузилось. Обнови страницу.');$('mic').disabled=true});
 window.addEventListener('pagehide',event=>{clearTimeout(state.transition);clearTimeout(state.poseTimer);stopRecognition();stopAudio();if(!event.persisted)rig.dispose()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){stopAudio();stopRecognition();refresh()}});
+const picker=$('lesson-tag');picker.replaceChildren();
+for(const lesson of CONVERSATIONS){
+ const option=document.createElement('option');option.value=String(lesson.id);option.textContent=`${lesson.id}. ${lesson.theme}`;
+ option.disabled=lesson.status.startsWith('draft')&&new URLSearchParams(window.location.search).get('preview')!=='1';picker.append(option);
+}
+picker.value=String(conversation.id);
+picker.addEventListener('change',()=>{const url=new URL(window.location.href);url.searchParams.set('lesson',picker.value);url.searchParams.delete('preview');window.location.assign(url.href)});
+const bars=document.querySelector('.bars');bars.replaceChildren();
+for(let index=0;index<PILOT_LINES.length;index++){const bar=document.createElement('i');bar.className='bar';bar.id=`bar${index+1}`;bars.append(bar)}
+if(conversation.id!==1){
+
+ const routes={2:'hsk1-second-v203.html',3:'hsk1-third-v212.html',4:'hsk1-fourth-v214.html',5:'hsk1-fifth-v227.html',6:'hsk1-family-v231.html',7:'hsk1-weather-v231.html'};
+ $('back-link').href='./'+routes[conversation.id];
+ const missing=missingConversationAudio(conversation,lookupPilotAudio);
+ $('pilot-note').textContent=missing.length?`Черновик урока ${conversation.id} · не хватает ${missing.length} записей`:'Тестовая практика · единый голос';
+ if(conversation.context){const context=document.createElement('p');context.className='test-note';context.id='exercise-context';context.textContent=conversation.context;$('pilot-note').after(context)}
+ const vocabulary=$('words');vocabulary.replaceChildren();
+ for(const item of [...(conversation.vocabulary||conversation.newWords),...(conversation.examples||[])]){
+  const p=document.createElement('p');p.textContent=`${item.hanzi} — ${item.pinyin} — ${item.ru}`;vocabulary.append(p);
+ }
+ const note=document.createElement('p');note.textContent='Проверяется распознанный текст, а не правильность произнесённых тонов.'+(missing.length?' Новые записи ещё не подключены.':'');vocabulary.append(note);
+}
 restart();
 
 document.documentElement.dataset.pandaLiveReady='true';

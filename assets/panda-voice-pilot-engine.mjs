@@ -40,14 +40,17 @@ export function normalize(value){
  return String(value??'').toLowerCase().normalize('NFC').trim()
  .replace(/[\s\u3000，。！？!?.,;；:：'"«»\-–—]/g,'');
 }
-export function verifyPilotAnswer(index,text){
- const line=PILOT_LINES[index];
+export function verifyAnswerFor(lines,index,text){
+ const line=lines[index];
  if(!line)return {ok:false,message:'Такой реплики нет в диалоге.'};
  const value=normalize(text);
  if(!value)return {ok:false,message:'Скажи или напиши ответ.'};
  if(line.accepted.some(a=>normalize(a)===value)){
   const selected=line.options.find(opt=>normalize(opt.match)===value);
-  return {ok:true,message:'Верно!',branch:index===1?(selected?'asked-back':'short'):'greeting'};
+  return {ok:true,message:'Верно!',branch:selected?.branch||line.defaultBranch||(index===1?'short':'greeting')};
  }
  return {ok:false,message:'Не совсем. '+line.instruction};
 }
+
+// Backwards-compatible entry point for the published first conversation.
+export function verifyPilotAnswer(index,text){return verifyAnswerFor(PILOT_LINES,index,text)}
