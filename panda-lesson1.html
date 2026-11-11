@@ -38,6 +38,7 @@ textarea{width:100%;min-height:68px;border:1px solid #d9bfe5;border-radius:14px;
 .hidden{display:none!important}.question-links{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.question-links button{padding:8px 10px;font-size:13px;border:1px solid #e9d5ef;background:#fbf4ff;border-radius:99px;color:#6c4391}
 .disclaimer{font-size:12px;line-height:1.5;color:#775e84;margin:15px 3px}
 @media(max-width:440px){.shell{padding:10px 9px 30px}.avatar{width:54px;height:54px;font-size:32px;border-radius:18px}.hero{padding:13px}.box{padding:12px}.topics{grid-template-columns:1fr}.chat{max-height:38dvh}}
+#ask-lesson{width:100%;min-height:44px;border:1px solid #d9bfe5;border-radius:12px;padding:9px;background:white;font:700 15px system-ui;color:#452659}
 </style>
 </head>
 <body>
@@ -57,7 +58,8 @@ textarea{width:100%;min-height:68px;border:1px solid #d9bfe5;border-radius:14px;
 <div class="meter" aria-hidden="true"><i id="progress-fill"></i></div>
 </div>
 <div id="ask-box" class="hidden">
-<p class="tips">Задавай вопросы только по материалу урока 1. Панда отвечает по проверенной базе правил, а не придумывает произвольные ответы.</p>
+<p class="tips">Выбери урок HSK 1. Панда отвечает только на вопросы по проверенным словам, правилам и диалогам этой темы.</p>
+<label for="ask-lesson">По какому уроку спрашиваем?</label><select id="ask-lesson" aria-label="Выбрать урок HSK 1"></select>
 <div class="question-links">
 <button type="button" data-q="Почему 你好 произносится ní hǎo?">Почему ní hǎo?</button>
 <button type="button" data-q="Какой ключ у 好?">Ключ 好</button>
@@ -77,6 +79,7 @@ textarea{width:100%;min-height:68px;border:1px solid #d9bfe5;border-radius:14px;
 <p class="disclaimer">Проверка относится к тексту: она не оценивает произношение твоего голоса. Для аудиозаданий используются уже подготовленные записи урока 1. После первой загрузки тексты тренировки не требуют подключения к платным сервисам. Аудио офлайн доступно при наличии файлов в кэше.</p>
 </main>
 <script src="./assets/owner-audio-v237.js?v=237"></script>
-<script type="module" src="./assets/panda-lesson1-ui.mjs"></script>
+<script src="./assets/hsk1-foundations-data-v152.js?v=188"></script>
+<script type="module" src="./assets/panda-lesson1-ui.mjs?v=259"></script>
 </body>
 </html>

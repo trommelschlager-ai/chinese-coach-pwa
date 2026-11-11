@@ -1,6 +1,15 @@
 import {TOPICS,TASKS,grade,answerLessonQuestion} from './panda-lesson1-engine.mjs';
+import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 const $=id=>document.getElementById(id);
 const chat=$('chat'),answer=$('answer'),topics=$('topics');
+const lessonSelect=$('ask-lesson'),curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
+curriculum.slice(0,7).forEach((topic,i)=>{
+ const o=document.createElement('option');o.value=String(i+1);o.textContent='Урок '+(i+1)+' · '+topic.name;lessonSelect.appendChild(o);
+});
+lessonSelect.addEventListener('change',()=>{
+ if(state.mode==='ask'){chat.replaceChildren();say('ai','🐼 Тема: '+(curriculum[Number(lessonSelect.value)-1]?.name||'первый урок')+'. Спроси о словах, грамматике или диалоге.');}
+});
+
 const state={mode:'practice',topic:'dialog',tasks:[],position:0,correct:0,mistakes:0,attempt:0};
 let audio=null;
 function say(role,text){
@@ -72,11 +81,11 @@ function setMode(mode){
  $('listen-block').classList.add('hidden');
  $('skip').classList.toggle('hidden',!practice);
  $('send').disabled=false;
- $('answer-label').textContent=practice?'Твой ответ':'Твой вопрос по уроку 1';
+ $('answer-label').textContent=practice?'Твой ответ':'Твой вопрос по выбранному уроку';
  answer.placeholder=practice?'Напиши ответ здесь…':'Например: Почему 你好 меняет тон?';
  chat.replaceChildren();
  if(practice)activateTopic(state.topic);
- else{say('ai','🐼 Спроси меня о словах 我, 你, 是, 学生, 你好, ключах и четырёх тонах. Вопросы из других уроков я пока не разбираю.');status('Этот режим работает без интернет-AI и платы за вопросы.');answer.value='';}
+ else{say('ai','🐼 Выбери урок 1–7 и спроси о словах, правилах или диалоге. Посторонние темы я не обсуждаю.');status('Без платных AI API.');answer.value='';}
 }
 $('mode-practice').addEventListener('click',()=>setMode('practice'));
 $('mode-ask').addEventListener('click',()=>setMode('ask'));
@@ -96,7 +105,7 @@ $('chat-form').addEventListener('submit',event=>{
  event.preventDefault();const input=answer.value.trim();if(!input){status('Сначала напиши ответ или вопрос.');return;}
  if(state.mode==='ask'){
   if(input.length>500){status('Слишком длинный вопрос: максимум 500 символов.');return;}
-  say('user',input);say('ai',answerLessonQuestion(input));answer.value='';status('Ответ по подготовленным материалам первого урока.');return;
+  say('user',input);say('ai',lessonSelect.value==='1'?answerLessonQuestion(input):answerCurriculumQuestion(input,Number(lessonSelect.value),curriculum));answer.value='';status('Ответ по подготовленным материалам выбранного урока.');return;
  }
  const task=activeTask();if(!task)return;
  state.attempt++;
