@@ -85,7 +85,7 @@ test('calendar previews expose fictional conditions before any answer is given',
 });
 
 test('device-local greetings keep validation, voice coverage and topic boundaries consistent',async()=>{
- const {GREETINGS,greetingForHour,withLocalGreeting,adjacentConversation}=await import('../assets/panda-live-greetings.mjs');
+ const {GREETINGS,greetingForHour,withLocalGreeting,withPracticeGreeting,adjacentConversation}=await import('../assets/panda-live-greetings.mjs');
  assert.deepEqual([0,4,5,10,11,12,13,17,18,23].map(h=>greetingForHour(h).answer),['晚上好','晚上好','早上好','早上好','中午好','中午好','下午好','下午好','晚上好','晚上好']);
  for(const hour of [-1,24,NaN])assert.throws(()=>greetingForHour(hour),RangeError);
  for(const hour of [8,12,15,20])for(const original of CONVERSATIONS){
@@ -99,6 +99,17 @@ test('device-local greetings keep validation, voice coverage and topic boundarie
   assert.deepEqual(missingConversationAudio(modified,lookupPilotAudio),[]);
   assert.equal(modified.lines[1],original.lines[1]);
  }
+ // Rotating practice must cover every recorded greeting, regardless of clock hour.
+ const rotation=Array.from({length:9},(_,i)=>withPracticeGreeting(CONVERSATIONS[0],i).lines[0]);
+ assert.deepEqual(rotation.map(x=>x.answer),['早上好','中午好','下午好','晚上好','早上好','中午好','下午好','晚上好','早上好']);
+ for(const g of rotation){
+  assert(lookupPilotAudio(g.audioKey),'All practice greetings require existing MP3');
+  assert(verifyAnswerFor([g],0,g.answer).ok);
+  assert(verifyAnswerFor([g],0,'你好').ok);
+  assert(!verifyAnswerFor([g],0,'我很好').ok);
+ }
+ assert.throws(()=>withPracticeGreeting(CONVERSATIONS[0],-1),RangeError);
+ assert.equal(CONVERSATIONS[0].lines[0].panda,'你好！','Do not mutate source dialogue');
  assert.equal(adjacentConversation(CONVERSATIONS,7,1).id,1);
  assert.equal(adjacentConversation(CONVERSATIONS,1,-1).id,7);
  const draft={...CONVERSATIONS[0],id:8,status:'draft-test'};

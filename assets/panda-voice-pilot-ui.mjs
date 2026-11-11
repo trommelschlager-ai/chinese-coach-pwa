@@ -1,11 +1,25 @@
-import {withLocalGreeting,GREETINGS,adjacentConversation} from './panda-live-greetings.mjs?v=live6';
+import {withPracticeGreeting,GREETINGS,adjacentConversation} from './panda-live-greetings.mjs?v=live7';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=live6';
 import {verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation,missingConversationAudio} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
 import {createPandaRig} from './panda-live-rig.mjs';
-const conversation=withLocalGreeting(selectConversation(window.location.search),new window.Date());
-const {lines:PILOT_LINES,replies:REPLIES}=conversation;
+const baseConversation=selectConversation(window.location.search);
+const GREETING_CYCLE_KEY='pg-panda-live-practice-greeting-v1';
+let fallbackGreetingIndex=0;
+function nextGreetingIndex(){
+ const fallback=fallbackGreetingIndex++%GREETINGS.length;
+ try{
+  const raw=window.localStorage.getItem(GREETING_CYCLE_KEY);
+  const number=raw===null?fallback:Number(raw);
+  const index=Number.isInteger(number)&&number>=0?number%GREETINGS.length:fallback;
+  window.localStorage.setItem(GREETING_CYCLE_KEY,String((index+1)%GREETINGS.length));
+  return index;
+ }catch{return fallback}
+}
+let conversation=withPracticeGreeting(baseConversation,nextGreetingIndex());
+let PILOT_LINES=conversation.lines;
+const REPLIES=conversation.replies;
 const $=id=>document.getElementById(id);
 const rig=createPandaRig($('character'),$('panda-canvas'));
 const state={step:0,done:false,busy:false,active:false,recognition:null,epoch:0,audio:null,typing:false,watchdog:null,transition:null,poseTimer:null};
@@ -64,8 +78,12 @@ function play(){
  a.onerror=()=>{if(valid()){stopAudio();note('MP3 не загрузился. Проверь интернет и попробуй ещё раз.')}};
  a.play().catch(error=>{if(valid()){stopAudio();note(`Звук не запустился (${error?.name||'ошибка'}). Нажми динамик ещё раз.`)}});
 }
-function restart(){
+function restart(nextGreeting=false){
  clearTimeout(state.transition);stopAudio();stopRecognition();pose('idle');
+ if(nextGreeting){
+  conversation=withPracticeGreeting(baseConversation,nextGreetingIndex());
+  PILOT_LINES=conversation.lines;
+ }
  Object.assign(state,{step:0,done:false,busy:false,typing:false,branch:'short'});
  $('heard').textContent='';$('answer').value='';$('voice-recovery').hidden=true;note('');render();
  if(!supported())recovery('В этом браузере распознавание недоступно. Открой страницу в Chrome или нажми «Написать».');
@@ -129,7 +147,7 @@ $('hear').addEventListener('click',()=>{clearTimeout(state.transition);play()});
 $('mic').addEventListener('click',startRecognition);
 $('type-toggle').addEventListener('click',()=>{if(state.busy)return;clearTimeout(state.transition);stopRecognition();state.typing=!state.typing;refresh();if(state.typing)$('answer').focus()});
 $('typing').addEventListener('submit',e=>{e.preventDefault();clearTimeout(state.transition);checkAnswer($('answer').value)});
-$('reset').addEventListener('click',restart);$('again').addEventListener('click',restart);
+$('reset').addEventListener('click',()=>restart(true));$('again').addEventListener('click',()=>restart(true));
 $('character').querySelector('img').addEventListener('error',()=>{note('Изображение Панды не загрузилось. Обнови страницу.');$('mic').disabled=true});
 window.addEventListener('pagehide',event=>{clearTimeout(state.transition);clearTimeout(state.poseTimer);stopRecognition();stopAudio();if(!event.persisted)rig.dispose()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){stopAudio();stopRecognition();refresh()}});
@@ -160,7 +178,7 @@ if(conversation.id!==1){
 }
 const greetingHelp=document.createElement('div');
 for(const item of GREETINGS){const p=document.createElement('p');p.textContent=`${item.panda} — ${item.pinyin} — ${item.ru}`;greetingHelp.append(p)}
-const greetingNote=document.createElement('p');greetingNote.textContent='Приветствие выбирается по времени на твоём устройстве. Ответь так же или скажи 你好. Все четыре приветствия записаны тем же голосом из присланного MP3.';greetingHelp.append(greetingNote);$('words').prepend(greetingHelp);
+const greetingNote=document.createElement('p');greetingNote.textContent='Для тренировки приветствия чередуются при новом открытии и после кнопки «Заново»: 早上好 → 中午好 → 下午好 → 晚上好. Это учебный цикл, не текущие часы. Ответь так же или скажи 你好. Все четыре записи сделаны тем же голосом.';greetingHelp.append(greetingNote);$('words').prepend(greetingHelp);
 restart();
 
 document.documentElement.dataset.pandaLiveReady='true';

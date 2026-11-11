@@ -51,7 +51,8 @@ test('microphone events, audio lifecycle, retries, cancellation and both branche
   el('mic').click();assert.equal(instances.at(-1).lang,'zh-CN');assert.equal(pose(),'listening');
   const stale=instances.at(-1).onresult;
   instances.at(-1).emit('我很好');assert.equal(pose(),'retry');assert(['早上好！','中午好！','下午好！','晚上好！'].includes(el('phrase').textContent));
-  el('reset').click();await sleep(1450);assert.equal(pose(),'idle','reset cancels delayed question playback');
+  el('reset').click();assert.equal(el('phrase').textContent,'中午好！','Reset must rotate greeting instead of repeating the same phrase');
+  await sleep(1450);assert.equal(pose(),'idle','reset cancels delayed question playback');
   stale({results:[[{transcript:'你好'}]]});assert.equal(el('step').textContent,'1 из 2');
   el('mic').click();instances.at(-1).emit('你好');assert.equal(pose(),'happy');
   el('type-toggle').click();await sleep(950);assert.equal(el('phrase').textContent,'你好吗？','actions cannot cancel successful progression');
