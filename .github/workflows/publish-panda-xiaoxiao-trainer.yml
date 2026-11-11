@@ -43,7 +43,7 @@ jobs:
           m=json.loads((d/'manifest.json').read_text(encoding='utf-8'))
           assert m['trainer_only'] is True and m['qualityApproved'] is False
           assert m['schema']==1 and m['version']==250
-          assert m['voice_id']=='voice-093' and m['rate']==-15 and m['pitch']==0
+          assert m['voice_id']=='voice-093' and m['rate']==-20 and m['pitch']==0
           assert m['unique_mp3']==191 and m['total_exercises']==203
           assert m['complete'] is True and len(m['clips'])==191
           correct={f'p{i:03d}' for i in range(1,191)}|{'bai'}

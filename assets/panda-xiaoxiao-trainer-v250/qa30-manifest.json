@@ -1,0 +1,229 @@
+{
+  "kind": "Panda Go Xiaoxiao HSK1 trainer QA batch",
+  "trainerOnly": true,
+  "version": 251,
+  "source": "Luvvoice Xiaoxiao −20% from user",
+  "rate": -20,
+  "pitch": 0,
+  "volume": 0,
+  "voiceApproved": true,
+  "recordingsUploaded": 30,
+  "totalUniqueNeeded": 191,
+  "exercisesCoveredByCompleteSet": 203,
+  "complete": false,
+  "qualityApproved": false,
+  "firstTenNativeToneApproved": true,
+  "newTwentyNativeToneApproved": false,
+  "clips": [
+    {
+      "id": "p001",
+      "hanzi": "八",
+      "pinyin": "bā",
+      "filename": "p001.mp3",
+      "toneReview": "native-approved"
+    },
+    {
+      "id": "p002",
+      "hanzi": "爱",
+      "pinyin": "ài",
+      "filename": "p002.mp3",
+      "toneReview": "native-approved"
+    },
+    {
+      "id": "p003",
+      "hanzi": "安",
+      "pinyin": "ān",
+      "filename": "p003.mp3",
+      "toneReview": "native-approved"
+    },
+    {
+      "id": "p004",
+      "hanzi": "昂",
+      "pinyin": "áng",
+      "filename": "p004.mp3",
+      "toneReview": "native-approved"
+    },
+    {
+      "id": "p005",
+      "hanzi": "袄",
+      "pinyin": "ǎo",
+      "filename": "p005.mp3",
+      "toneReview": "native-approved"
+    },
+    {
+      "id": "p006",
+      "hanzi": "包",
+      "pinyin": "bāo",
+      "filename": "p006.mp3",
+      "toneReview": "native-approved"
+    },
+    {
+      "id": "p007",
+      "hanzi": "菜",
+      "pinyin": "cài",
+      "filename": "p007.mp3",
+      "toneReview": "native-approved"
+    },
+    {
+      "id": "p008",
+      "hanzi": "吃",
+      "pinyin": "chī",
+      "filename": "p008.mp3",
+      "toneReview": "native-approved"
+    },
+    {
+      "id": "p009",
+      "hanzi": "大",
+      "pinyin": "dà",
+      "filename": "p009.mp3",
+      "toneReview": "native-approved"
+    },
+    {
+      "id": "p010",
+      "hanzi": "饿",
+      "pinyin": "è",
+      "filename": "p010.mp3",
+      "toneReview": "native-approved"
+    },
+    {
+      "id": "p011",
+      "hanzi": "杯",
+      "pinyin": "bēi",
+      "filename": "p011.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p012",
+      "hanzi": "恩",
+      "pinyin": "ēn",
+      "filename": "p012.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p013",
+      "hanzi": "灯",
+      "pinyin": "dēng",
+      "filename": "p013.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p014",
+      "hanzi": "二",
+      "pinyin": "èr",
+      "filename": "p014.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p015",
+      "hanzi": "饭",
+      "pinyin": "fàn",
+      "filename": "p015.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p016",
+      "hanzi": "哥",
+      "pinyin": "gē",
+      "filename": "p016.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p017",
+      "hanzi": "好",
+      "pinyin": "hǎo",
+      "filename": "p017.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p018",
+      "hanzi": "衣",
+      "pinyin": "yī",
+      "filename": "p018.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p019",
+      "hanzi": "家",
+      "pinyin": "jiā",
+      "filename": "p019.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p020",
+      "hanzi": "天",
+      "pinyin": "tiān",
+      "filename": "p020.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p021",
+      "hanzi": "香",
+      "pinyin": "xiāng",
+      "filename": "p021.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p022",
+      "hanzi": "小",
+      "pinyin": "xiǎo",
+      "filename": "p022.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p023",
+      "hanzi": "谢",
+      "pinyin": "xiè",
+      "filename": "p023.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p024",
+      "hanzi": "新",
+      "pinyin": "xīn",
+      "filename": "p024.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p025",
+      "hanzi": "听",
+      "pinyin": "tīng",
+      "filename": "p025.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p026",
+      "hanzi": "熊",
+      "pinyin": "xióng",
+      "filename": "p026.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p027",
+      "hanzi": "六",
+      "pinyin": "liù",
+      "filename": "p027.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p028",
+      "hanzi": "鸡",
+      "pinyin": "jī",
+      "filename": "p028.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p029",
+      "hanzi": "可",
+      "pinyin": "kě",
+      "filename": "p029.mp3",
+      "toneReview": "awaiting-native-review"
+    },
+    {
+      "id": "p030",
+      "hanzi": "来",
+      "pinyin": "lái",
+      "filename": "p030.mp3",
+      "toneReview": "awaiting-native-review"
+    }
+  ]
+}

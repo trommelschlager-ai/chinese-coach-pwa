@@ -31,9 +31,9 @@ jobs:
           assert d['total_unique_mp3'] == 191
           assert len(d['rows']) == 191
           assert d['voice_id'] == 'voice-093'
-          assert d['rate'] == -15
+          assert d['rate'] == -20
           assert d['rows'][-1]['text'] == '白'
-          print('PASS: 190 Pinyin entries plus 白, Xiaoxiao -15%')
+          print('PASS: 190 Pinyin entries plus 白, Xiaoxiao -20%')
           PY
       - name: Synthesize the entire trainer in private temporary folder
         env:

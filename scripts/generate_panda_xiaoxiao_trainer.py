@@ -21,7 +21,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 CURRICULUM = ROOT / "assets/pinyin-reading-curriculum.json"
 ENDPOINT = "https://luvvoice.com/api/v1/text-to-speech"
 VOICE = "voice-093"
-RATE = -15
+RATE = -20
 
 def plan():
     d = json.loads(CURRICULUM.read_text(encoding="utf-8"))

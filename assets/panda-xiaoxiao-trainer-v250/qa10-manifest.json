@@ -5,7 +5,7 @@
   "qualityApproved": false,
   "voice": "Xiaoxiao",
   "provider": "Luvvoice",
-  "speed": "-15%",
+  "speed": "-20%",
   "pitch": 0,
   "volume": 0,
   "source_file_sha256": "15db745f833a029cd16529299dbe53870cc135bb15ebe578852c19eaa13d5eff",
@@ -100,5 +100,6 @@
     "review_source": "User reports that Mandarin native speaker confirmed all ten pronunciations and tones",
     "reviewed_on": "2026-11-11",
     "outstanding_tone_issues": []
-  }
+  },
+  "rateCorrection": "User corrected originally documented rate from −15% to −20%; no audio signal resampling performed"
 }

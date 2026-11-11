@@ -20,7 +20,7 @@
   const xiaoxiaoDir='./assets/panda-xiaoxiao-trainer-v250/';
   function activateXiaoxiaoPack(manifest){
     if(!manifest||manifest.schema!==1||manifest.version!==250||
-       manifest.voice_id!=='voice-093'||manifest.rate!==-15||
+       manifest.voice_id!=='voice-093'||manifest.rate!==-20||
        manifest.complete!==true||manifest.qualityApproved!==true||
        manifest.unique_mp3!==191||manifest.total_exercises!==203||
        !Array.isArray(manifest.clips)||manifest.clips.length!==191)return false;
@@ -36,7 +36,7 @@
     const settings=document.querySelector('.voice-settings');
     if(settings)settings.style.display='none';
     const subtitle=document.querySelector('.header-title small');
-    if(subtitle)subtitle.textContent='Произношение · Xiaoxiao −15%';
+    if(subtitle)subtitle.textContent='Произношение · Xiaoxiao −20%';
     if(corpus)render();
     return true;
   }
