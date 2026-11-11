@@ -9,11 +9,13 @@ on:
       - "panda-talk.html"
       - "assets/panda-conversation-*.mjs"
       - "tests/panda-conversation-v1.test.mjs"
+      - "scripts/qa-panda-conversation-mobile.mjs"
 permissions:
   contents: read
 jobs:
   speech-dialogues:
     runs-on: ubuntu-latest
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,3 +23,24 @@ jobs:
           node-version: "22"
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: node --test tests/panda-conversation-v1.test.mjs
+      - name: Install browser QA dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify Android-style mobile flow at 360/390/412 px
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/panda-voice-qa.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-talk.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-conversation-mobile.mjs
+      - name: Save mobile browser screenshots and audio check
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-voice-mobile-pilot
+          path: qa/panda-talk-mobile/
+          if-no-files-found: warn
