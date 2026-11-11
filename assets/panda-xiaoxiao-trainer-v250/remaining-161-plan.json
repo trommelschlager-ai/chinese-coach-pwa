@@ -1,0 +1,1232 @@
+{
+  "purpose": "Panda Go trainer only: record remaining Xiaoxiao MP3 files",
+  "version": 1,
+  "approvedInterfaceUnchanged": true,
+  "lessonsUntouched": true,
+  "voice": "LuvVoice Xiaoxiao",
+  "speedPercent": -20,
+  "pitchPercent": 0,
+  "volumePercent": 0,
+  "alreadyPreparedUniqueMP3": 30,
+  "remainingUniqueMP3": 161,
+  "fullTargetUniqueMP3": 191,
+  "exerciseCount": 203,
+  "batchCount": 8,
+  "batches": [
+    {
+      "batch": 1,
+      "title": "Партия 1",
+      "numberOfClips": 20,
+      "ids": [
+        "p031",
+        "p032",
+        "p033",
+        "p034",
+        "p035",
+        "p036",
+        "p037",
+        "p038",
+        "p039",
+        "p040",
+        "p041",
+        "p042",
+        "p043",
+        "p044",
+        "p045",
+        "p046",
+        "p047",
+        "p048",
+        "p049",
+        "p050"
+      ],
+      "text": "妈。你。波。东。欧。拍。七。人。三。书。他。屋。花。快。关。光。翁。水。春。国。",
+      "clips": [
+        {
+          "id": "p031",
+          "hanzi": "妈",
+          "pinyin": "mā",
+          "filename": "p031.mp3"
+        },
+        {
+          "id": "p032",
+          "hanzi": "你",
+          "pinyin": "nǐ",
+          "filename": "p032.mp3"
+        },
+        {
+          "id": "p033",
+          "hanzi": "波",
+          "pinyin": "bō",
+          "filename": "p033.mp3"
+        },
+        {
+          "id": "p034",
+          "hanzi": "东",
+          "pinyin": "dōng",
+          "filename": "p034.mp3"
+        },
+        {
+          "id": "p035",
+          "hanzi": "欧",
+          "pinyin": "ōu",
+          "filename": "p035.mp3"
+        },
+        {
+          "id": "p036",
+          "hanzi": "拍",
+          "pinyin": "pāi",
+          "filename": "p036.mp3"
+        },
+        {
+          "id": "p037",
+          "hanzi": "七",
+          "pinyin": "qī",
+          "filename": "p037.mp3"
+        },
+        {
+          "id": "p038",
+          "hanzi": "人",
+          "pinyin": "rén",
+          "filename": "p038.mp3"
+        },
+        {
+          "id": "p039",
+          "hanzi": "三",
+          "pinyin": "sān",
+          "filename": "p039.mp3"
+        },
+        {
+          "id": "p040",
+          "hanzi": "书",
+          "pinyin": "shū",
+          "filename": "p040.mp3"
+        },
+        {
+          "id": "p041",
+          "hanzi": "他",
+          "pinyin": "tā",
+          "filename": "p041.mp3"
+        },
+        {
+          "id": "p042",
+          "hanzi": "屋",
+          "pinyin": "wū",
+          "filename": "p042.mp3"
+        },
+        {
+          "id": "p043",
+          "hanzi": "花",
+          "pinyin": "huā",
+          "filename": "p043.mp3"
+        },
+        {
+          "id": "p044",
+          "hanzi": "快",
+          "pinyin": "kuài",
+          "filename": "p044.mp3"
+        },
+        {
+          "id": "p045",
+          "hanzi": "关",
+          "pinyin": "guān",
+          "filename": "p045.mp3"
+        },
+        {
+          "id": "p046",
+          "hanzi": "光",
+          "pinyin": "guāng",
+          "filename": "p046.mp3"
+        },
+        {
+          "id": "p047",
+          "hanzi": "翁",
+          "pinyin": "wēng",
+          "filename": "p047.mp3"
+        },
+        {
+          "id": "p048",
+          "hanzi": "水",
+          "pinyin": "shuǐ",
+          "filename": "p048.mp3"
+        },
+        {
+          "id": "p049",
+          "hanzi": "春",
+          "pinyin": "chūn",
+          "filename": "p049.mp3"
+        },
+        {
+          "id": "p050",
+          "hanzi": "国",
+          "pinyin": "guó",
+          "filename": "p050.mp3"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "batch": 2,
+      "title": "Партия 2",
+      "numberOfClips": 20,
+      "ids": [
+        "p051",
+        "p052",
+        "p053",
+        "p054",
+        "p055",
+        "p056",
+        "p057",
+        "p058",
+        "p059",
+        "p060",
+        "p061",
+        "p062",
+        "p063",
+        "p064",
+        "p065",
+        "p066",
+        "p067",
+        "p068",
+        "p069",
+        "p070"
+      ],
+      "text": "女。月。圆。云。我。西。一。字。知。趴。科。次。四。诗。日。词。是。举。去。需。",
+      "clips": [
+        {
+          "id": "p051",
+          "hanzi": "女",
+          "pinyin": "nǚ",
+          "filename": "p051.mp3"
+        },
+        {
+          "id": "p052",
+          "hanzi": "月",
+          "pinyin": "yuè",
+          "filename": "p052.mp3"
+        },
+        {
+          "id": "p053",
+          "hanzi": "圆",
+          "pinyin": "yuán",
+          "filename": "p053.mp3"
+        },
+        {
+          "id": "p054",
+          "hanzi": "云",
+          "pinyin": "yún",
+          "filename": "p054.mp3"
+        },
+        {
+          "id": "p055",
+          "hanzi": "我",
+          "pinyin": "wǒ",
+          "filename": "p055.mp3"
+        },
+        {
+          "id": "p056",
+          "hanzi": "西",
+          "pinyin": "xī",
+          "filename": "p056.mp3"
+        },
+        {
+          "id": "p057",
+          "hanzi": "一",
+          "pinyin": "yī",
+          "filename": "p057.mp3"
+        },
+        {
+          "id": "p058",
+          "hanzi": "字",
+          "pinyin": "zì",
+          "filename": "p058.mp3"
+        },
+        {
+          "id": "p059",
+          "hanzi": "知",
+          "pinyin": "zhī",
+          "filename": "p059.mp3"
+        },
+        {
+          "id": "p060",
+          "hanzi": "趴",
+          "pinyin": "pā",
+          "filename": "p060.mp3"
+        },
+        {
+          "id": "p061",
+          "hanzi": "科",
+          "pinyin": "kē",
+          "filename": "p061.mp3"
+        },
+        {
+          "id": "p062",
+          "hanzi": "次",
+          "pinyin": "cì",
+          "filename": "p062.mp3"
+        },
+        {
+          "id": "p063",
+          "hanzi": "四",
+          "pinyin": "sì",
+          "filename": "p063.mp3"
+        },
+        {
+          "id": "p064",
+          "hanzi": "诗",
+          "pinyin": "shī",
+          "filename": "p064.mp3"
+        },
+        {
+          "id": "p065",
+          "hanzi": "日",
+          "pinyin": "rì",
+          "filename": "p065.mp3"
+        },
+        {
+          "id": "p066",
+          "hanzi": "词",
+          "pinyin": "cí",
+          "filename": "p066.mp3"
+        },
+        {
+          "id": "p067",
+          "hanzi": "是",
+          "pinyin": "shì",
+          "filename": "p067.mp3"
+        },
+        {
+          "id": "p068",
+          "hanzi": "举",
+          "pinyin": "jǔ",
+          "filename": "p068.mp3"
+        },
+        {
+          "id": "p069",
+          "hanzi": "去",
+          "pinyin": "qù",
+          "filename": "p069.mp3"
+        },
+        {
+          "id": "p070",
+          "hanzi": "需",
+          "pinyin": "xū",
+          "filename": "p070.mp3"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "batch": 3,
+      "title": "Партия 3",
+      "numberOfClips": 20,
+      "ids": [
+        "p071",
+        "p072",
+        "p073",
+        "p074",
+        "p075",
+        "p076",
+        "p077",
+        "p078",
+        "p079",
+        "p080",
+        "p081",
+        "p082",
+        "p083",
+        "p084",
+        "p085",
+        "p086",
+        "p087",
+        "p088",
+        "p089",
+        "p090"
+      ],
+      "text": "鱼。绿。牛。对。论。麻。马。骂。吗。你好。很好。不是。不好。一个。一天。妈妈。谢谢。星。西安。先。",
+      "clips": [
+        {
+          "id": "p071",
+          "hanzi": "鱼",
+          "pinyin": "yú",
+          "filename": "p071.mp3"
+        },
+        {
+          "id": "p072",
+          "hanzi": "绿",
+          "pinyin": "lǜ",
+          "filename": "p072.mp3"
+        },
+        {
+          "id": "p073",
+          "hanzi": "牛",
+          "pinyin": "niú",
+          "filename": "p073.mp3"
+        },
+        {
+          "id": "p074",
+          "hanzi": "对",
+          "pinyin": "duì",
+          "filename": "p074.mp3"
+        },
+        {
+          "id": "p075",
+          "hanzi": "论",
+          "pinyin": "lùn",
+          "filename": "p075.mp3"
+        },
+        {
+          "id": "p076",
+          "hanzi": "麻",
+          "pinyin": "má",
+          "filename": "p076.mp3"
+        },
+        {
+          "id": "p077",
+          "hanzi": "马",
+          "pinyin": "mǎ",
+          "filename": "p077.mp3"
+        },
+        {
+          "id": "p078",
+          "hanzi": "骂",
+          "pinyin": "mà",
+          "filename": "p078.mp3"
+        },
+        {
+          "id": "p079",
+          "hanzi": "吗",
+          "pinyin": "ma",
+          "filename": "p079.mp3"
+        },
+        {
+          "id": "p080",
+          "hanzi": "你好",
+          "pinyin": "nǐ hǎo",
+          "filename": "p080.mp3"
+        },
+        {
+          "id": "p081",
+          "hanzi": "很好",
+          "pinyin": "hěn hǎo",
+          "filename": "p081.mp3"
+        },
+        {
+          "id": "p082",
+          "hanzi": "不是",
+          "pinyin": "bú shì",
+          "filename": "p082.mp3"
+        },
+        {
+          "id": "p083",
+          "hanzi": "不好",
+          "pinyin": "bù hǎo",
+          "filename": "p083.mp3"
+        },
+        {
+          "id": "p084",
+          "hanzi": "一个",
+          "pinyin": "yí gè",
+          "filename": "p084.mp3"
+        },
+        {
+          "id": "p085",
+          "hanzi": "一天",
+          "pinyin": "yì tiān",
+          "filename": "p085.mp3"
+        },
+        {
+          "id": "p086",
+          "hanzi": "妈妈",
+          "pinyin": "māma",
+          "filename": "p086.mp3"
+        },
+        {
+          "id": "p087",
+          "hanzi": "谢谢",
+          "pinyin": "xièxie",
+          "filename": "p087.mp3"
+        },
+        {
+          "id": "p088",
+          "hanzi": "星",
+          "pinyin": "xīng",
+          "filename": "p088.mp3"
+        },
+        {
+          "id": "p089",
+          "hanzi": "西安",
+          "pinyin": "Xī'ān",
+          "filename": "p089.mp3"
+        },
+        {
+          "id": "p090",
+          "hanzi": "先",
+          "pinyin": "xiān",
+          "filename": "p090.mp3"
+        }
+      ],
+      "notes": "В этой партии есть сочетания с изменением тонов, нейтральным тоном и многосложными фразами. Проверить особенно внимательно."
+    },
+    {
+      "batch": 4,
+      "title": "Партия 4",
+      "numberOfClips": 20,
+      "ids": [
+        "p091",
+        "p092",
+        "p093",
+        "p094",
+        "p095",
+        "p096",
+        "p097",
+        "p098",
+        "p099",
+        "p100",
+        "p101",
+        "p102",
+        "p103",
+        "p104",
+        "p105",
+        "p106",
+        "p107",
+        "p108",
+        "p109",
+        "p110"
+      ],
+      "text": "哪儿。看。忙。比。不。北。本。表。草。茶。长。多。电。低。额。给。很。冷。耳。飞。",
+      "clips": [
+        {
+          "id": "p091",
+          "hanzi": "哪儿",
+          "pinyin": "nǎr",
+          "filename": "p091.mp3"
+        },
+        {
+          "id": "p092",
+          "hanzi": "看",
+          "pinyin": "kàn",
+          "filename": "p092.mp3"
+        },
+        {
+          "id": "p093",
+          "hanzi": "忙",
+          "pinyin": "máng",
+          "filename": "p093.mp3"
+        },
+        {
+          "id": "p094",
+          "hanzi": "比",
+          "pinyin": "bǐ",
+          "filename": "p094.mp3"
+        },
+        {
+          "id": "p095",
+          "hanzi": "不",
+          "pinyin": "bù",
+          "filename": "p095.mp3"
+        },
+        {
+          "id": "p096",
+          "hanzi": "北",
+          "pinyin": "běi",
+          "filename": "p096.mp3"
+        },
+        {
+          "id": "p097",
+          "hanzi": "本",
+          "pinyin": "běn",
+          "filename": "p097.mp3"
+        },
+        {
+          "id": "p098",
+          "hanzi": "表",
+          "pinyin": "biǎo",
+          "filename": "p098.mp3"
+        },
+        {
+          "id": "p099",
+          "hanzi": "草",
+          "pinyin": "cǎo",
+          "filename": "p099.mp3"
+        },
+        {
+          "id": "p100",
+          "hanzi": "茶",
+          "pinyin": "chá",
+          "filename": "p100.mp3"
+        },
+        {
+          "id": "p101",
+          "hanzi": "长",
+          "pinyin": "cháng",
+          "filename": "p101.mp3"
+        },
+        {
+          "id": "p102",
+          "hanzi": "多",
+          "pinyin": "duō",
+          "filename": "p102.mp3"
+        },
+        {
+          "id": "p103",
+          "hanzi": "电",
+          "pinyin": "diàn",
+          "filename": "p103.mp3"
+        },
+        {
+          "id": "p104",
+          "hanzi": "低",
+          "pinyin": "dī",
+          "filename": "p104.mp3"
+        },
+        {
+          "id": "p105",
+          "hanzi": "额",
+          "pinyin": "é",
+          "filename": "p105.mp3"
+        },
+        {
+          "id": "p106",
+          "hanzi": "给",
+          "pinyin": "gěi",
+          "filename": "p106.mp3"
+        },
+        {
+          "id": "p107",
+          "hanzi": "很",
+          "pinyin": "hěn",
+          "filename": "p107.mp3"
+        },
+        {
+          "id": "p108",
+          "hanzi": "冷",
+          "pinyin": "lěng",
+          "filename": "p108.mp3"
+        },
+        {
+          "id": "p109",
+          "hanzi": "耳",
+          "pinyin": "ěr",
+          "filename": "p109.mp3"
+        },
+        {
+          "id": "p110",
+          "hanzi": "飞",
+          "pinyin": "fēi",
+          "filename": "p110.mp3"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "batch": 5,
+      "title": "Партия 5",
+      "numberOfClips": 20,
+      "ids": [
+        "p111",
+        "p112",
+        "p113",
+        "p114",
+        "p115",
+        "p116",
+        "p117",
+        "p118",
+        "p119",
+        "p120",
+        "p121",
+        "p122",
+        "p123",
+        "p124",
+        "p125",
+        "p126",
+        "p127",
+        "p128",
+        "p129",
+        "p130"
+      ],
+      "text": "风。房。分。放。高。工。贵。果。跟。喝。海。红。面。想。鸟。写。明。九。见。叫。",
+      "clips": [
+        {
+          "id": "p111",
+          "hanzi": "风",
+          "pinyin": "fēng",
+          "filename": "p111.mp3"
+        },
+        {
+          "id": "p112",
+          "hanzi": "房",
+          "pinyin": "fáng",
+          "filename": "p112.mp3"
+        },
+        {
+          "id": "p113",
+          "hanzi": "分",
+          "pinyin": "fēn",
+          "filename": "p113.mp3"
+        },
+        {
+          "id": "p114",
+          "hanzi": "放",
+          "pinyin": "fàng",
+          "filename": "p114.mp3"
+        },
+        {
+          "id": "p115",
+          "hanzi": "高",
+          "pinyin": "gāo",
+          "filename": "p115.mp3"
+        },
+        {
+          "id": "p116",
+          "hanzi": "工",
+          "pinyin": "gōng",
+          "filename": "p116.mp3"
+        },
+        {
+          "id": "p117",
+          "hanzi": "贵",
+          "pinyin": "guì",
+          "filename": "p117.mp3"
+        },
+        {
+          "id": "p118",
+          "hanzi": "果",
+          "pinyin": "guǒ",
+          "filename": "p118.mp3"
+        },
+        {
+          "id": "p119",
+          "hanzi": "跟",
+          "pinyin": "gēn",
+          "filename": "p119.mp3"
+        },
+        {
+          "id": "p120",
+          "hanzi": "喝",
+          "pinyin": "hē",
+          "filename": "p120.mp3"
+        },
+        {
+          "id": "p121",
+          "hanzi": "海",
+          "pinyin": "hǎi",
+          "filename": "p121.mp3"
+        },
+        {
+          "id": "p122",
+          "hanzi": "红",
+          "pinyin": "hóng",
+          "filename": "p122.mp3"
+        },
+        {
+          "id": "p123",
+          "hanzi": "面",
+          "pinyin": "miàn",
+          "filename": "p123.mp3"
+        },
+        {
+          "id": "p124",
+          "hanzi": "想",
+          "pinyin": "xiǎng",
+          "filename": "p124.mp3"
+        },
+        {
+          "id": "p125",
+          "hanzi": "鸟",
+          "pinyin": "niǎo",
+          "filename": "p125.mp3"
+        },
+        {
+          "id": "p126",
+          "hanzi": "写",
+          "pinyin": "xiě",
+          "filename": "p126.mp3"
+        },
+        {
+          "id": "p127",
+          "hanzi": "明",
+          "pinyin": "míng",
+          "filename": "p127.mp3"
+        },
+        {
+          "id": "p128",
+          "hanzi": "九",
+          "pinyin": "jiǔ",
+          "filename": "p128.mp3"
+        },
+        {
+          "id": "p129",
+          "hanzi": "见",
+          "pinyin": "jiàn",
+          "filename": "p129.mp3"
+        },
+        {
+          "id": "p130",
+          "hanzi": "叫",
+          "pinyin": "jiào",
+          "filename": "p130.mp3"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "batch": 6,
+      "title": "Партия 6",
+      "numberOfClips": 20,
+      "ids": [
+        "p131",
+        "p132",
+        "p133",
+        "p134",
+        "p135",
+        "p136",
+        "p137",
+        "p138",
+        "p139",
+        "p140",
+        "p141",
+        "p142",
+        "p143",
+        "p144",
+        "p145",
+        "p146",
+        "p147",
+        "p148",
+        "p149",
+        "p150"
+      ],
+      "text": "就。开。口。空。老。里。路。米。买。慢。没。年。男。能。南。坡。摸。佛。中。走。",
+      "clips": [
+        {
+          "id": "p131",
+          "hanzi": "就",
+          "pinyin": "jiù",
+          "filename": "p131.mp3"
+        },
+        {
+          "id": "p132",
+          "hanzi": "开",
+          "pinyin": "kāi",
+          "filename": "p132.mp3"
+        },
+        {
+          "id": "p133",
+          "hanzi": "口",
+          "pinyin": "kǒu",
+          "filename": "p133.mp3"
+        },
+        {
+          "id": "p134",
+          "hanzi": "空",
+          "pinyin": "kōng",
+          "filename": "p134.mp3"
+        },
+        {
+          "id": "p135",
+          "hanzi": "老",
+          "pinyin": "lǎo",
+          "filename": "p135.mp3"
+        },
+        {
+          "id": "p136",
+          "hanzi": "里",
+          "pinyin": "lǐ",
+          "filename": "p136.mp3"
+        },
+        {
+          "id": "p137",
+          "hanzi": "路",
+          "pinyin": "lù",
+          "filename": "p137.mp3"
+        },
+        {
+          "id": "p138",
+          "hanzi": "米",
+          "pinyin": "mǐ",
+          "filename": "p138.mp3"
+        },
+        {
+          "id": "p139",
+          "hanzi": "买",
+          "pinyin": "mǎi",
+          "filename": "p139.mp3"
+        },
+        {
+          "id": "p140",
+          "hanzi": "慢",
+          "pinyin": "màn",
+          "filename": "p140.mp3"
+        },
+        {
+          "id": "p141",
+          "hanzi": "没",
+          "pinyin": "méi",
+          "filename": "p141.mp3"
+        },
+        {
+          "id": "p142",
+          "hanzi": "年",
+          "pinyin": "nián",
+          "filename": "p142.mp3"
+        },
+        {
+          "id": "p143",
+          "hanzi": "男",
+          "pinyin": "nán",
+          "filename": "p143.mp3"
+        },
+        {
+          "id": "p144",
+          "hanzi": "能",
+          "pinyin": "néng",
+          "filename": "p144.mp3"
+        },
+        {
+          "id": "p145",
+          "hanzi": "南",
+          "pinyin": "nán",
+          "filename": "p145.mp3"
+        },
+        {
+          "id": "p146",
+          "hanzi": "坡",
+          "pinyin": "pō",
+          "filename": "p146.mp3"
+        },
+        {
+          "id": "p147",
+          "hanzi": "摸",
+          "pinyin": "mō",
+          "filename": "p147.mp3"
+        },
+        {
+          "id": "p148",
+          "hanzi": "佛",
+          "pinyin": "fó",
+          "filename": "p148.mp3"
+        },
+        {
+          "id": "p149",
+          "hanzi": "中",
+          "pinyin": "zhōng",
+          "filename": "p149.mp3"
+        },
+        {
+          "id": "p150",
+          "hanzi": "走",
+          "pinyin": "zǒu",
+          "filename": "p150.mp3"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "batch": 7,
+      "title": "Партия 7",
+      "numberOfClips": 20,
+      "ids": [
+        "p151",
+        "p152",
+        "p153",
+        "p154",
+        "p155",
+        "p156",
+        "p157",
+        "p158",
+        "p159",
+        "p160",
+        "p161",
+        "p162",
+        "p163",
+        "p164",
+        "p165",
+        "p166",
+        "p167",
+        "p168",
+        "p169",
+        "p170"
+      ],
+      "text": "手。怕。票。跑。朋。平。钱。请。起。球。热。让。容。肉。送。素。山。说。太。同。",
+      "clips": [
+        {
+          "id": "p151",
+          "hanzi": "手",
+          "pinyin": "shǒu",
+          "filename": "p151.mp3"
+        },
+        {
+          "id": "p152",
+          "hanzi": "怕",
+          "pinyin": "pà",
+          "filename": "p152.mp3"
+        },
+        {
+          "id": "p153",
+          "hanzi": "票",
+          "pinyin": "piào",
+          "filename": "p153.mp3"
+        },
+        {
+          "id": "p154",
+          "hanzi": "跑",
+          "pinyin": "pǎo",
+          "filename": "p154.mp3"
+        },
+        {
+          "id": "p155",
+          "hanzi": "朋",
+          "pinyin": "péng",
+          "filename": "p155.mp3"
+        },
+        {
+          "id": "p156",
+          "hanzi": "平",
+          "pinyin": "píng",
+          "filename": "p156.mp3"
+        },
+        {
+          "id": "p157",
+          "hanzi": "钱",
+          "pinyin": "qián",
+          "filename": "p157.mp3"
+        },
+        {
+          "id": "p158",
+          "hanzi": "请",
+          "pinyin": "qǐng",
+          "filename": "p158.mp3"
+        },
+        {
+          "id": "p159",
+          "hanzi": "起",
+          "pinyin": "qǐ",
+          "filename": "p159.mp3"
+        },
+        {
+          "id": "p160",
+          "hanzi": "球",
+          "pinyin": "qiú",
+          "filename": "p160.mp3"
+        },
+        {
+          "id": "p161",
+          "hanzi": "热",
+          "pinyin": "rè",
+          "filename": "p161.mp3"
+        },
+        {
+          "id": "p162",
+          "hanzi": "让",
+          "pinyin": "ràng",
+          "filename": "p162.mp3"
+        },
+        {
+          "id": "p163",
+          "hanzi": "容",
+          "pinyin": "róng",
+          "filename": "p163.mp3"
+        },
+        {
+          "id": "p164",
+          "hanzi": "肉",
+          "pinyin": "ròu",
+          "filename": "p164.mp3"
+        },
+        {
+          "id": "p165",
+          "hanzi": "送",
+          "pinyin": "sòng",
+          "filename": "p165.mp3"
+        },
+        {
+          "id": "p166",
+          "hanzi": "素",
+          "pinyin": "sù",
+          "filename": "p166.mp3"
+        },
+        {
+          "id": "p167",
+          "hanzi": "山",
+          "pinyin": "shān",
+          "filename": "p167.mp3"
+        },
+        {
+          "id": "p168",
+          "hanzi": "说",
+          "pinyin": "shuō",
+          "filename": "p168.mp3"
+        },
+        {
+          "id": "p169",
+          "hanzi": "太",
+          "pinyin": "tài",
+          "filename": "p169.mp3"
+        },
+        {
+          "id": "p170",
+          "hanzi": "同",
+          "pinyin": "tóng",
+          "filename": "p170.mp3"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "batch": 8,
+      "title": "Партия 8",
+      "numberOfClips": 21,
+      "ids": [
+        "p171",
+        "p172",
+        "p173",
+        "p174",
+        "p175",
+        "p176",
+        "p177",
+        "p178",
+        "p179",
+        "p180",
+        "p181",
+        "p182",
+        "p183",
+        "p184",
+        "p185",
+        "p186",
+        "p187",
+        "p188",
+        "p189",
+        "p190",
+        "bai"
+      ],
+      "text": "土。五。瓜。外。玩。王。雪。卷。群。问。晚。无。学。羊。有。要。做。在。这。早。白。",
+      "clips": [
+        {
+          "id": "p171",
+          "hanzi": "土",
+          "pinyin": "tǔ",
+          "filename": "p171.mp3"
+        },
+        {
+          "id": "p172",
+          "hanzi": "五",
+          "pinyin": "wǔ",
+          "filename": "p172.mp3"
+        },
+        {
+          "id": "p173",
+          "hanzi": "瓜",
+          "pinyin": "guā",
+          "filename": "p173.mp3"
+        },
+        {
+          "id": "p174",
+          "hanzi": "外",
+          "pinyin": "wài",
+          "filename": "p174.mp3"
+        },
+        {
+          "id": "p175",
+          "hanzi": "玩",
+          "pinyin": "wán",
+          "filename": "p175.mp3"
+        },
+        {
+          "id": "p176",
+          "hanzi": "王",
+          "pinyin": "wáng",
+          "filename": "p176.mp3"
+        },
+        {
+          "id": "p177",
+          "hanzi": "雪",
+          "pinyin": "xuě",
+          "filename": "p177.mp3"
+        },
+        {
+          "id": "p178",
+          "hanzi": "卷",
+          "pinyin": "juǎn",
+          "filename": "p178.mp3"
+        },
+        {
+          "id": "p179",
+          "hanzi": "群",
+          "pinyin": "qún",
+          "filename": "p179.mp3"
+        },
+        {
+          "id": "p180",
+          "hanzi": "问",
+          "pinyin": "wèn",
+          "filename": "p180.mp3"
+        },
+        {
+          "id": "p181",
+          "hanzi": "晚",
+          "pinyin": "wǎn",
+          "filename": "p181.mp3"
+        },
+        {
+          "id": "p182",
+          "hanzi": "无",
+          "pinyin": "wú",
+          "filename": "p182.mp3"
+        },
+        {
+          "id": "p183",
+          "hanzi": "学",
+          "pinyin": "xué",
+          "filename": "p183.mp3"
+        },
+        {
+          "id": "p184",
+          "hanzi": "羊",
+          "pinyin": "yáng",
+          "filename": "p184.mp3"
+        },
+        {
+          "id": "p185",
+          "hanzi": "有",
+          "pinyin": "yǒu",
+          "filename": "p185.mp3"
+        },
+        {
+          "id": "p186",
+          "hanzi": "要",
+          "pinyin": "yào",
+          "filename": "p186.mp3"
+        },
+        {
+          "id": "p187",
+          "hanzi": "做",
+          "pinyin": "zuò",
+          "filename": "p187.mp3"
+        },
+        {
+          "id": "p188",
+          "hanzi": "在",
+          "pinyin": "zài",
+          "filename": "p188.mp3"
+        },
+        {
+          "id": "p189",
+          "hanzi": "这",
+          "pinyin": "zhè",
+          "filename": "p189.mp3"
+        },
+        {
+          "id": "p190",
+          "hanzi": "早",
+          "pinyin": "zǎo",
+          "filename": "p190.mp3"
+        },
+        {
+          "id": "bai",
+          "hanzi": "白",
+          "pinyin": "bái",
+          "filename": "bai.mp3"
+        }
+      ],
+      "notes": "Последнее слово 白 bái — дополнительная запись, отсутствующая в основном наборе 190 слогов."
+    }
+  ]
+}
