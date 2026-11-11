@@ -1,9 +1,10 @@
-import {lookupPilotAudio} from './panda-live-audio.mjs?v=live5';
-import {verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live5';
-import {CONVERSATIONS,selectConversation,missingConversationAudio} from './panda-live-lessons.mjs?v=live5';
-import {ENVELOPES} from './panda-live-envelope.mjs?v=live5';
+import {withLocalGreeting,GREETINGS,adjacentConversation} from './panda-live-greetings.mjs?v=live6';
+import {lookupPilotAudio} from './panda-live-audio.mjs?v=live6';
+import {verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live6';
+import {CONVERSATIONS,selectConversation,missingConversationAudio} from './panda-live-lessons.mjs?v=live6';
+import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
 import {createPandaRig} from './panda-live-rig.mjs';
-const conversation=selectConversation(window.location.search);
+const conversation=withLocalGreeting(selectConversation(window.location.search),new window.Date());
 const {lines:PILOT_LINES,replies:REPLIES}=conversation;
 const $=id=>document.getElementById(id);
 const rig=createPandaRig($('character'),$('panda-canvas'));
@@ -132,13 +133,16 @@ $('reset').addEventListener('click',restart);$('again').addEventListener('click'
 $('character').querySelector('img').addEventListener('error',()=>{note('Изображение Панды не загрузилось. Обнови страницу.');$('mic').disabled=true});
 window.addEventListener('pagehide',event=>{clearTimeout(state.transition);clearTimeout(state.poseTimer);stopRecognition();stopAudio();if(!event.persisted)rig.dispose()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){stopAudio();stopRecognition();refresh()}});
-const picker=$('lesson-tag');picker.replaceChildren();
-for(const lesson of CONVERSATIONS){
- const option=document.createElement('option');option.value=String(lesson.id);option.textContent=`${lesson.id}. ${lesson.theme}`;
- option.disabled=lesson.status.startsWith('draft')&&new URLSearchParams(window.location.search).get('preview')!=='1';picker.append(option);
+$('lesson-tag').textContent=conversation.theme;
+const preview=new URLSearchParams(window.location.search).get('preview')==='1';
+const available=CONVERSATIONS.filter(x=>x.lines.length&&(!x.status.startsWith('draft')||preview));
+$('topic-count').textContent=`${available.findIndex(x=>x.id===conversation.id)+1} / ${available.length}`;
+for(const [id,direction] of [['topic-prev',-1],['topic-next',1]]){
+ const target=adjacentConversation(CONVERSATIONS,conversation.id,direction,preview),url=new URL(window.location.href.startsWith('about:')?'./panda-voice-pilot.html':window.location.href,document.baseURI);
+ url.searchParams.set('lesson',String(target.id));if(!preview)url.searchParams.delete('preview');
+ const link=$(id);link.href=url.href;link.setAttribute('aria-label',`${direction<0?'Предыдущая':'Следующая'} тема: ${target.theme}`);
+ link.addEventListener('click',()=>{clearTimeout(state.transition);stopRecognition();stopAudio()});
 }
-picker.value=String(conversation.id);
-picker.addEventListener('change',()=>{const url=new URL(window.location.href);url.searchParams.set('lesson',picker.value);url.searchParams.delete('preview');window.location.assign(url.href)});
 const bars=document.querySelector('.bars');bars.replaceChildren();
 for(let index=0;index<PILOT_LINES.length;index++){const bar=document.createElement('i');bar.className='bar';bar.id=`bar${index+1}`;bars.append(bar)}
 if(conversation.id!==1){
@@ -154,6 +158,9 @@ if(conversation.id!==1){
  }
  const note=document.createElement('p');note.textContent='Проверяется распознанный текст, а не правильность произнесённых тонов.'+(missing.length?' Новые записи ещё не подключены.':'');vocabulary.append(note);
 }
+const greetingHelp=document.createElement('div');
+for(const item of GREETINGS){const p=document.createElement('p');p.textContent=`${item.panda} — ${item.pinyin} — ${item.ru}`;greetingHelp.append(p)}
+const greetingNote=document.createElement('p');greetingNote.textContent='Приветствие выбирается по времени на твоём устройстве. Ответь так же или скажи 你好. Все четыре приветствия записаны тем же голосом из присланного MP3.';greetingHelp.append(greetingNote);$('words').prepend(greetingHelp);
 restart();
 
 document.documentElement.dataset.pandaLiveReady='true';

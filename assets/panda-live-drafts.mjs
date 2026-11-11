@@ -1,5 +1,5 @@
 // Six-course expansion: topics 3–7 are explicit, audio-gated drafts.
-import {PILOT_LINES} from './panda-voice-pilot-engine.mjs?v=live5';
+import {PILOT_LINES} from './panda-voice-pilot-engine.mjs?v=live6';
 const freeze=Object.freeze;
 function question(panda,pinyin,ru,audioKey,instruction,accepted,defaultBranch,options=[]){
  return freeze({panda,pinyin,ru,audioKey,instruction,accepted:freeze(accepted),defaultBranch,options:freeze(options)});

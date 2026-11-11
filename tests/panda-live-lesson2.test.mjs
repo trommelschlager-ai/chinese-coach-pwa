@@ -28,7 +28,7 @@ test('second conversation supports both roles, rejects unrelated replies, and pl
   try{
    await import(`../assets/panda-voice-pilot-ui.mjs?l2-test=${run}`);
    assert(!el('pilot-note').textContent.includes('не хватает'));
-   assert.equal(el('lesson-tag').value,'2');assert.equal(el('lesson-tag').options.length,7);
+   assert.equal(el('lesson-tag').textContent,'Местоимения и представление');assert.equal(el('topic-count').textContent,'2 / 7');assert(el('topic-next').href.includes('lesson=3'));assert(el('topic-prev').href.includes('lesson=1'));
    assert.equal(el('back-link').getAttribute('href'),'./hsk1-second-v203.html');
    assert(!el('hear').hidden,'Existing hello can be reused');
    el('type-toggle').click();el('answer').value='你好';el('send').click();await pause(950);

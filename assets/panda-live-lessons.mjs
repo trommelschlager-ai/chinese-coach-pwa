@@ -1,8 +1,8 @@
 // Voice-complete conversational pilots; future drafts need explicit preview.
 // A lesson is enabled only after vocabulary, branches and every speaker clip pass QA.
-import {PILOT_LINES,REPLIES,NEW_WORDS} from './panda-voice-pilot-engine.mjs?v=live5';
-import {LESSON2} from './panda-live-lesson2.mjs?v=live5';
-import {DRAFT_CONVERSATIONS} from './panda-live-drafts.mjs?v=live5';
+import {PILOT_LINES,REPLIES,NEW_WORDS} from './panda-voice-pilot-engine.mjs?v=live6';
+import {LESSON2} from './panda-live-lesson2.mjs?v=live6';
+import {DRAFT_CONVERSATIONS} from './panda-live-drafts.mjs?v=live6';
 export const CONVERSATIONS=Object.freeze([
  Object.freeze({id:1,theme:'Основы и приветствие',requiresLesson:1,status:'pilot-audio-complete-device-test-pending',lines:PILOT_LINES,replies:REPLIES,newWords:NEW_WORDS}),
  LESSON2,
