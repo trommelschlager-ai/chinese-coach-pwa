@@ -1,0 +1,74 @@
+name: Panda Go - Generate Xiaoxiao trainer audio (review only)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install audio validation tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Validate the complete 191-file recording plan
+        run: |
+          python -m py_compile scripts/generate_panda_xiaoxiao_trainer.py
+          python scripts/generate_panda_xiaoxiao_trainer.py --dry-run > /tmp/xiaoxiao-plan.json
+          python - <<'PY'
+          import json
+          d = json.load(open('/tmp/xiaoxiao-plan.json', encoding='utf-8'))
+          assert d['total_unique_mp3'] == 191
+          assert len(d['rows']) == 191
+          assert d['voice_id'] == 'voice-093'
+          assert d['rate'] == -15
+          assert d['rows'][-1]['text'] == '白'
+          print('PASS: 190 Pinyin entries plus 白, Xiaoxiao -15%')
+          PY
+      - name: Synthesize the entire trainer in private temporary folder
+        env:
+          LUVVOICE_API_TOKEN: ${{ secrets.LUVVOICE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "$LUVVOICE_API_TOKEN" ]; then
+            echo "::error::Set LUVVOICE_API_TOKEN in Settings > Secrets and variables > Actions. LuvVoice API requires Plus access."
+            exit 1
+          fi
+          python scripts/generate_panda_xiaoxiao_trainer.py --out "$RUNNER_TEMP/xiaoxiao-trainer"
+      - name: Validate every MP3 and inspect manifest
+        env:
+          AUDIO_DIR: ${{ runner.temp }}/xiaoxiao-trainer
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          folder=pathlib.Path(os.environ['AUDIO_DIR'])
+          m=json.loads((folder/'manifest.json').read_text(encoding='utf-8'))
+          assert m['voice_id']=='voice-093' and m['rate']==-15
+          assert m['complete'] is True and m['qualityApproved'] is False
+          assert len(m['clips'])==191
+          assert {c['id'] for c in m['clips']}=={f'p{i:03d}' for i in range(1,191)}|{'bai'}
+          assert len({c['file'] for c in m['clips']})==191
+          for c in m['clips']:
+              p=folder/c['file']
+              assert p.is_file() and p.stat().st_size>900
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==c['sha256']
+              subprocess.run(['ffmpeg','-v','error','-xerror','-i',str(p),'-f','null','-'],check=True)
+          print('PASS: 191 unique valid Xiaoxiao MP3 files. Human tone QA still required.')
+          PY
+      - name: Upload review ZIP (no live changes)
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-go-xiaoxiao-trainer-191-review
+          path: ${{ runner.temp }}/xiaoxiao-trainer/
+          if-no-files-found: error
+          retention-days: 14
