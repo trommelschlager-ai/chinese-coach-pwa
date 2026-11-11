@@ -40,7 +40,7 @@ test('panda illustration, speech bubble and hidden keyboard; no unauthorized voi
  assert(html.includes('id="phrase"'));
  assert(html.includes('id="mic"'));
  assert(html.includes('id="typing" class="typing" hidden'));
- assert(html.includes('Панда проверяет распознанные слова, а не точность тонов.'));
+ assert(html.includes('Тоны голоса Панда пока не оценивает'));
  assert(html.includes('id="audio-note"'));
  assert(!html.includes('id="log"'));
  for(const forbidden of ['api.openai.com','OPENAI_API_KEY','workers.dev','speechSynthesis']){
