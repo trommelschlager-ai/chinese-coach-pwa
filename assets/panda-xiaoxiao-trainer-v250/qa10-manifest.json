@@ -1,0 +1,89 @@
+{
+  "stage": "QA preview only",
+  "trainer_only": true,
+  "complete": false,
+  "qualityApproved": false,
+  "voice": "Xiaoxiao",
+  "provider": "Luvvoice",
+  "speed": "-15%",
+  "pitch": 0,
+  "volume": 0,
+  "source_file_sha256": "15db745f833a029cd16529299dbe53870cc135bb15ebe578852c19eaa13d5eff",
+  "segmentation": "Silence separated, 160ms lead-in, 260ms tail, loudness matched without pitch/speed modification",
+  "requires_review": [
+    "p004 昂 áng",
+    "p005 袄 ǎo"
+  ],
+  "clips": [
+    {
+      "id": "p001",
+      "hanzi": "八",
+      "pinyin": "bā",
+      "file": "p001.mp3",
+      "sha256": "b8879279a2e53f41ddaada2530eae6e89062d3f2f5527546d8d92c910d5783cf"
+    },
+    {
+      "id": "p002",
+      "hanzi": "爱",
+      "pinyin": "ài",
+      "file": "p002.mp3",
+      "sha256": "73c939fdabc3fd71ae3b7cdc0a5ef6cb510f3035991489be76da7ac5710a0618"
+    },
+    {
+      "id": "p003",
+      "hanzi": "安",
+      "pinyin": "ān",
+      "file": "p003.mp3",
+      "sha256": "74fc0500c6f6549df90cd0332893b300dfbe045dfebc31700cf451177c91c398"
+    },
+    {
+      "id": "p004",
+      "hanzi": "昂",
+      "pinyin": "áng",
+      "file": "p004.mp3",
+      "sha256": "e4b4eb823d432f7f0d2ed3d3e8c0453dd7373a69d10523846d9b8110ad2c598a"
+    },
+    {
+      "id": "p005",
+      "hanzi": "袄",
+      "pinyin": "ǎo",
+      "file": "p005.mp3",
+      "sha256": "75af0dd7d506dd6ba008b7c1848b79f2bd8dae495719338a47fbe9acf6948da4"
+    },
+    {
+      "id": "p006",
+      "hanzi": "包",
+      "pinyin": "bāo",
+      "file": "p006.mp3",
+      "sha256": "a8c2e5216b3754bf44c11217786960274e266e97b74c01c379826a82a3b6f2b1"
+    },
+    {
+      "id": "p007",
+      "hanzi": "菜",
+      "pinyin": "cài",
+      "file": "p007.mp3",
+      "sha256": "046b658c84417d43c4976741e102254150004f189fb2d1c651b72e2ef539b290"
+    },
+    {
+      "id": "p008",
+      "hanzi": "吃",
+      "pinyin": "chī",
+      "file": "p008.mp3",
+      "sha256": "b39212e2cf4c8c50a94da62681d13ddbf8b8bfc3c32f443cff4a90045147d76c"
+    },
+    {
+      "id": "p009",
+      "hanzi": "大",
+      "pinyin": "dà",
+      "file": "p009.mp3",
+      "sha256": "dbe22bcf92cb0d9f255543222fb5211bf4a5867d02514d63f1c53f92d01401c0"
+    },
+    {
+      "id": "p010",
+      "hanzi": "饿",
+      "pinyin": "è",
+      "file": "p010.mp3",
+      "sha256": "1723524718c8f862aee83edca6ad3e5f579ab67dea8249e2321695e602bddd8a"
+    }
+  ]
+}
