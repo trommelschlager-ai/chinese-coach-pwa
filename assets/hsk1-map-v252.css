@@ -35,13 +35,6 @@ body{margin:0;min-height:100svh;font-family:Arial,"Noto Sans",system-ui,sans-ser
  color:#fff;font-size:clamp(18px,5.2vw,24px);font-weight:900;font-style:italic;line-height:1.13;text-shadow:0 1px 2px #171137;
 }
 .map-summary,.map-footer{position:absolute!important;width:1px!important;height:1px!important;clip-path:inset(50%)!important;overflow:hidden!important;white-space:nowrap}
-.pg-map-panda{
- position:absolute;z-index:1;pointer-events:none;
- width:clamp(135px,39%,193px);height:auto;
- left:-3%;bottom:clamp(104px,15svh,155px);
- object-fit:contain;object-position:bottom left;
- filter:brightness(1.08) saturate(1.08) drop-shadow(0 5px 5px #674a5d72);
-}
 .map-road{
  position:relative;z-index:2;display:flex;flex-direction:column;gap:8px;
  margin:clamp(22px,4svh,45px) 0 0;padding:0 0 0 clamp(83px,25vw,116px);
@@ -116,7 +109,7 @@ body{margin:0;min-height:100svh;font-family:Arial,"Noto Sans",system-ui,sans-ser
  .caption strong{font-size:12px}
  .pg-topic-art{flex-basis:31px;height:31px}
  .pg-map-actions a{min-height:63px;padding:5px 3px;gap:3px}
- .action-label{font-size:11px}.action-icon{font-size:20px}.pg-map-panda{width:39%;left:-4%}
+ .action-label{font-size:11px}.action-icon{font-size:20px}
 }
 @media(max-height:700px){
  .map-road{gap:7px}
