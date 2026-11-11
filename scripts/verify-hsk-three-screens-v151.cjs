@@ -3,7 +3,12 @@
 const fs=require('node:fs'),assert=require('node:assert/strict'),{JSDOM}=require('jsdom');
 const read=p=>fs.readFileSync(p,'utf8');
 const site=read('index.html'),map=read('hsk1-map.html'),lesson=read('start-chinese.html'),style=read('assets/hsk-approved-three-screens-v151.css'),main=read('assets/panda-v130.js'),guided=read('assets/guided-introduction.js');
-for(const [name,html] of [['index',site],['map',map],['lesson',lesson]])assert(html.includes(name==='lesson'?'hsk-approved-three-screens-v151.css?v=151':'panda-reference-v175.css?v=175'),name+' must use its approved stylesheet');
+assert(site.includes('panda-reference-v175.css?v=175'),'Home must keep the approved reference stylesheet');
+assert(lesson.includes('hsk-approved-three-screens-v151.css?v=151'),'Legacy guided lesson must keep its approved stylesheet');
+assert(map.includes('hsk1-map-v252.css?v=255'),'Beginner map must use its updated approved stylesheet');
+assert(map.includes('class="pg-ai-button"')&&map.includes('href="./panda-lesson1.html"'),'Panda AI must be accessible from the bottom actions');
+assert(map.includes('hsk1-rhythm.html')&&map.includes('hsk1-pronunciation.html'),'Both speech practice routes must remain');
+assert((map.match(/class="node"/g)||[]).length===7,'All seven functional lesson links must remain');
 assert(site.includes('panda-v130.js?v=175'),'Home version must be bumped');
 assert(lesson.includes('guided-introduction.js?v=151'),'Guided script version must be bumped');
 assert(/<progress max="7"/.test(lesson),'Progress consists of seven steps');
