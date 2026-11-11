@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'assets/lesson4-audio-import-v265.zip'
+      - '.github/workflows/install-lesson4-xiaoxiao-v265.yml'
 permissions:
   contents: write
 concurrency:
@@ -40,8 +41,10 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add assets/lesson4-xiaoxiao-v265/ assets/lesson4-xiaoxiao-v265.js
           git add assets/hsk1-fourth-v220.js hsk1-fourth-v214.html hsk1-l4-cards.html
-          git add assets/offline-pack.json sw.js .github/workflows/course-qa.yml
+          git add assets/offline-pack.json sw.js
           git add scripts/install-lesson4-xiaoxiao-v265.cjs scripts/verify-hsk1-lesson4-xiaoxiao-v265.cjs scripts/verify-hsk1-fourth-v216.cjs
+          # The bot token lacks workflows:write; do not include that workflow in the automated commit.
+          git restore .github/workflows/course-qa.yml
           if git diff --cached --quiet; then
             echo 'All files are already installed'
             exit 0
