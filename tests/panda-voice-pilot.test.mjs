@@ -36,7 +36,10 @@ test('Panda accepts natural how-are-you response and branches when student asks 
 test('panda illustration, speech bubble and hidden keyboard; no unauthorized voices or paid API',()=>{
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
  const js=fs.readFileSync(new URL('../assets/panda-voice-pilot-ui.mjs',import.meta.url),'utf8');
- assert(html.includes('lesson3-panda-headphones-v222.svg'));
+ assert(html.includes('src="./assets/panda-go-voice-mascot-exact-v1.webp"'));
+ assert(!html.includes('lesson3-panda-headphones-v222.svg'));
+ assert(js.includes("classList.add('listening')"));
+ assert(js.includes("classList.add('celebrate')"));
  assert(!html.includes('panda-go-panda-only-v173.webp'));
  assert(html.includes('id="voice-recovery"'));
  assert(js.includes('pilot-audio'));

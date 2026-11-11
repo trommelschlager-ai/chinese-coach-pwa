@@ -62,15 +62,15 @@ main{max-width:610px;margin:0 auto;padding:15px 14px 30px}
 @keyframes talk{0%{transform:scale(1)}100%{transform:scale(1.045) rotate(-1.2deg)}}
 @media(prefers-reduced-motion:reduce){.panda-picture,.character.speaking .panda-picture{animation:none!important}}
 @media(max-width:420px){main{padding:10px 10px 24px}.title{font-size:23px;margin:8px 0 13px}.card{padding:13px}.scene{min-height:205px}.character{width:36%}.panda-picture{max-height:171px}.speech{min-height:157px;padding:11px 8px;border-radius:19px}.hanzi{font-size:clamp(26px,7vw,33px)}.mic{height:79px;width:79px}.voice{padding-top:12px}}
-.speech-recovery{font-size:12px;line-height:1.5;text-align:center;margin:9px 5px;color:#79518a;background:#faf3ff;border:1px solid #efdbf9;border-radius:13px;padding:10px}.listen.playing{background:#e2f8ed;color:#277957;box-shadow:0 0 0 4px #e2f8ed}.character{isolation:isolate}.panda-picture{height:auto;object-fit:contain;aspect-ratio:320 / 360}.speech-note{line-height:1.25}
-</style></head>
+.speech-recovery{font-size:12px;line-height:1.5;text-align:center;margin:9px 5px;color:#79518a;background:#faf3ff;border:1px solid #efdbf9;border-radius:13px;padding:10px}.listen.playing{background:#e2f8ed;color:#277957;box-shadow:0 0 0 4px #e2f8ed}.character{isolation:isolate}.panda-picture{height:auto;object-fit:contain;aspect-ratio:160 / 200}.speech-note{line-height:1.25}
+@keyframes pandaListen{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-2deg)}}@keyframes pandaCelebrate{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-9px) scale(1.045)}}.character.listening .panda-picture{animation:pandaListen 1.45s ease-in-out infinite}.character.celebrate .panda-picture{animation:pandaCelebrate .67s ease-in-out 3}.panda-picture{border-radius:18px}.character{overflow:visible}@media(prefers-reduced-motion:reduce){.character.listening .panda-picture,.character.celebrate .panda-picture{animation:none}}</style></head>
 <body><main>
 <div class="top"><a class="back" href="./panda-lesson1.html">← Назад</a><span class="tag">Урок 1 · Диалог</span></div>
 <h1 class="title">Поговори с Пандой 🐼</h1>
 <section class="card" aria-label="Разговорная практика">
  <div class="progress"><span id="step">1 из 2</span><div class="bars" aria-hidden="true"><i id="bar1" class="bar on"></i><i id="bar2" class="bar"></i></div></div>
  <div class="scene">
-  <div class="character" id="character"><img class="panda-picture" src="./assets/lesson3-panda-headphones-v222.svg" alt="Панда — твой собеседник"><span class="panda-face" aria-hidden="true">🐼</span></div>
+  <div class="character" id="character"><img class="panda-picture" src="./assets/panda-go-voice-mascot-exact-v1.webp" alt="Панда — твой собеседник"><span class="panda-face" aria-hidden="true">🐼</span></div>
   <div class="speech" role="group" aria-label="Фраза Панды">
    <span class="label">Панда говорит:</span>
    <strong class="hanzi" id="phrase">你好！</strong>
@@ -104,5 +104,5 @@ main{max-width:610px;margin:0 auto;padding:15px 14px 30px}
  </div>
 </details>
 <script src="./assets/owner-audio-v237.js?v=237"></script>
-<script type="module" src="./assets/panda-voice-pilot-ui.mjs?v=5"></script>
+<script type="module" src="./assets/panda-voice-pilot-ui.mjs?v=6"></script>
 </main></body></html>
