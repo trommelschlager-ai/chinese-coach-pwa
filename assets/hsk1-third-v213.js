@@ -1,10 +1,6 @@
-/* Panda Go HSK1 — lesson 3 v213. Numbers 0–100.
-   Fourteen short screens. Every click/answer reuses the approved visual shell.
-   Sound for 0–99 uses the same licensed Yue Tan recording fragments, clean pack
-   when present. 一百 must be yì bǎi: spoken through explicitly labeled zh-CN TTS,
-   not a false splice of the isolated first-tone yī.
-   Browser-native speech recognition is NOT used to claim tone accuracy.
-*/
+/* Panda Go HSK1 v263 — all 101 complete numbers from Xiaoxiao.
+   Existing 14-screen curriculum and progress are preserved.
+   Tones and commercial Luvvoice usage rights require final review. */
 (()=>{
 'use strict';
 const root=document.getElementById('pg3-stage'),scroll=document.getElementById('pg3-scroll');
@@ -113,8 +109,7 @@ try{
 }catch{}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}};
 let audio=null,requestId=0,tts=null,writer=null,writerId=0;
-const CLEAN=()=>window.PANDA_HSK1_L3_CLEAN_V250||{};
-const HUMAN=()=>window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
+// Numbers use only the new single-voice Xiaoxiao clips.
 function cleanStop(){
  requestId++;
  if(audio){try{audio.pause()}catch{}audio.onended=null;audio.onerror=null;audio=null}
@@ -128,10 +123,8 @@ function inform(message,kind='info'){
 }
 function stopWriter(){writerId++;try{writer?.cancelQuiz?.()}catch{}writer=null}
 function recording(n){
- const key=chinese(n);
- // Entire 0-99 clean original-speaker pack, including compounds with 一.
- if(n===100)return window.PandaCleanAudioV250?.lookup('一百')||null;
- return CLEAN()[key]||null;
+ if(!Number.isInteger(n)||n<0||n>100)return null;
+ return window.PandaLesson3XiaoxiaoV263?.lookup(n)||null;
 }
 function play(n,onEnd){
  cleanStop();
@@ -157,14 +150,14 @@ function play(n,onEnd){
   return;
  }
  // Never fall back to noisy older composites or another synthesized voice.
- finished(false);inform('Не удалось открыть очищенную запись. Обнови страницу урока.','error');
+ finished(false);inform('Запись Xiaoxiao недоступна. Обнови страницу урока.','error');
 }
 function audioButton(n,label='▶ Слушать',extra=''){
- const invalid=recording(n)===null&&n!==100;
+ const invalid=recording(n)===null;
  return '<button class="pg3-audio" type="button" data-audio="'+n+'" '+extra+
   ' aria-label="'+escape(label)+' — '+escape(pretty(n))+'">'+escape(label)+'</button>'+
-  (n===100?'<small class="pg13-audio-note">'+(recording(100)?'Оригинальная запись yì bǎi':'Оригинальная запись не загрузилась')+'</small>':
-   invalid?'<small class="pg13-audio-note">Сборка из записей носительницы</small>':'');
+  (n===100?'<small class="pg13-audio-note">'+(recording(100)?'Xiaoxiao: yì bǎi':'Запись Xiaoxiao недоступна')+'</small>':
+   invalid?'<small class="pg13-audio-note">Аудиозапись недоступна</small>':'');
 }
 function mainCard(body,classes=''){return '<section class="pg3-card '+classes+'">'+body+'</section>'}
 function heading(text){return '<h2 class="pg13-card-heading">'+text+'</h2>'}
@@ -258,7 +251,7 @@ function generator(){
  '<button type="button" data-generate>Показать →</button></div>'+
  '<div class="pg13-generator-result">'+n+' <span>→</span> <strong lang="zh-Hans">'+chinese(n)+'</strong>'+
  '<small>'+pinyin(n)+'</small></div>'+audioButton(n,'🔊 Слушать число')+
- '<p class="pg3-muted">Число составлено из очищенных фрагментов одного диктора. Пиньинь показывает правильные тоны.</p></div>';
+ '<p class="pg3-muted">Каждое число целиком произносит Xiaoxiao. Следи за тонами в пиньине.</p></div>';
 }
 function compound(){
  return mainCard(heading('Десятки + единицы = любое число 21–99')+

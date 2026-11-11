@@ -9,12 +9,13 @@ const html=fs.readFileSync('hsk1-third-v212.html','utf8'),
  js=fs.readFileSync('assets/hsk1-third-v213.js','utf8'),
  css=fs.readFileSync('assets/hsk1-third-v213.css','utf8'),
  map=fs.readFileSync('hsk1-map.html','utf8'),
- native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
-assert(html.includes('hsk1-third-v213.js?v=250'));
+ native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8'),
+ xiaoxiao=fs.readFileSync('assets/lesson3-xiaoxiao-v263.js','utf8');
+assert(html.includes('hsk1-third-v213.js?v=263'));
 assert(html.includes('hsk1-third-v213.css?v=237'));
-assert(html.includes('panda-clean-audio-v250.js?v=250'),'Original speaker must load before lesson 3');
-assert(html.includes('hsk1-numbers-audio-map-v250.js?v=250'),'All number compounds must use rebuilt files');
-assert(fs.existsSync('assets/panda-native-clean-v250/yibai.mp3'),'Original yibai audio file missing');
+assert(html.includes('lesson3-xiaoxiao-v263.js?v=263'),'Xiaoxiao map loaded before lesson 3');
+assert(!html.includes('hsk1-numbers-audio-map-v250.js'),'No old stitched audio map');
+assert(fs.existsSync('assets/lesson3-xiaoxiao-v263/100.mp3'),'Full-number yì bǎi missing');
 assert(map.includes('14 экранов'));
 assert(css.includes('.pg13-study-grid')&&css.includes('.pg13-tens-grid'));
 assert(js.includes("if(n===100)return ['yì','bǎi']"),'100 must be yì bǎi');
@@ -26,16 +27,8 @@ w.localStorage.setItem('pg-hsk1-v212-numbers',JSON.stringify(old));
 w.localStorage.setItem('pg-hsk1-v203-pronouns',JSON.stringify({completed:true,step:11}));
 w.localStorage.setItem('pg-hsk1-v3-complete',JSON.stringify(['foundations','pronouns','numbers']));
 w.eval(native);
-const cleaned={};
-const chinese=n=>{
- const a='零一二三四五六七八九';
- if(n===0)return '零';if(n<10)return a[n];if(n===10)return '十';
- if(n<20)return '十'+a[n%10];
- return a[Math.floor(n/10)]+'十'+(n%10?a[n%10]:'');
-};
-for(let i=0;i<100;i++)cleaned[chinese(i)]='./assets/hsk1-numbers-clean-v250/'+String(i).padStart(3,'0')+'.mp3';
-w.PANDA_HSK1_L3_CLEAN_V250=cleaned;
-w.PandaCleanAudioV250={lookup:x=>x==='一百'?'./assets/panda-native-clean-v250/yibai.mp3':null};
+w.eval(xiaoxiao);
+assert.equal(w.PandaLesson3XiaoxiaoV263.clips.length,101);
 w.Audio=function(src){
  const self=this;
  self.src=src;played.push(self);self.pause=()=>{};
@@ -59,7 +52,7 @@ const hear=n=>{
  click('[data-audio="'+n+'"]');
  const last=played.at(-1);
  assert(last,'No audio created '+n);
- assert.equal(last.src,'./assets/hsk1-numbers-clean-v250/'+String(n).padStart(3,'0')+'.mp3');
+ assert.equal(last.src,'./assets/lesson3-xiaoxiao-v263/'+String(n).padStart(3,'0')+'.mp3');
  if(last.onended)last.onended();
 };
 const advance=()=>click('#pg3-next');
