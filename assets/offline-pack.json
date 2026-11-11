@@ -1,6 +1,6 @@
 {
-  "version": 264,
-  "bytes": 50986088,
+  "version": 265,
+  "bytes": 50992088,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1301,6 +1301,7 @@
     "./assets/panda-live-lesson2.mjs?v=live6",
     "./assets/panda-live-lessons.mjs?v=live6",
     "./assets/panda-live-original.webp",
+    "./assets/panda-live-practice.mjs?v=265",
     "./assets/panda-live-rig.mjs",
     "./assets/panda-mic-v236.js?v=236",
     "./assets/panda-mic-v236.js?v=237",
@@ -1409,8 +1410,8 @@
     "./assets/panda-v130/word-girl.webp",
     "./assets/panda-voice-pilot-engine.mjs?v=live6",
     "./assets/panda-voice-pilot-ui.mjs?v=live6",
-    "./assets/panda-voice-pilot-ui.mjs?v=live7",
-    "./assets/panda-voice-pilot.css?v=live6",
+    "./assets/panda-voice-pilot-ui.mjs?v=live8",
+    "./assets/panda-voice-pilot.css?v=live8",
     "./assets/panda-weather-female-v240.js?v=240",
     "./assets/panda-word-sentences-v148.js?v=148",
     "./assets/panda-xiaoxiao-trainer-v250/p041.mp3",
@@ -2385,6 +2386,7 @@
     "./panda-lesson1.html",
     "./panda-voice-pilot.html",
     "./panda-voice-pilot.html?v=264",
+    "./panda-voice-pilot.html?v=265",
     "./start-chinese.html"
   ]
 }

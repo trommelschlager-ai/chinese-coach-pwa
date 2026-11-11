@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#a46bd4">
 <meta name="description" content="Поговори с Пандой на китайском — разговорная практика семи уроков HSK 1 Panda Go">
 <title>Поговори с Пандой · Panda Go</title>
-<link rel="stylesheet" href="./assets/panda-voice-pilot.css?v=live6"><style>
+<link rel="stylesheet" href="./assets/panda-voice-pilot.css?v=live8"><style>
 .study-links{margin:5px 12px 11px;text-align:center}
 .study-links a{display:inline-flex;align-items:center;justify-content:center;text-align:center;min-height:42px;padding:7px 14px;border:1px solid #cfaae8;border-radius:20px;background:#fff8ff;color:#75429a;font:700 13px/1.3 system-ui;text-decoration:none;box-shadow:0 2px 9px #a66fc52a}
 .study-links a:focus-visible{outline:3px solid #8b48c2;outline-offset:3px}
@@ -15,7 +15,7 @@
 <h1 class="title">Поговори с Пандой 🐼</h1>
 <nav class="topic-nav" aria-label="Выбор темы разговора"><a id="topic-prev" class="topic-arrow" aria-label="Предыдущая тема">‹</a><div class="topic-label" aria-live="polite"><span id="topic-count">1 / 7</span><strong id="lesson-tag">Основы и приветствие</strong></div><a id="topic-next" class="topic-arrow next" aria-label="Следующая тема">›</a></nav>
 <p id="pilot-note" class="test-note">Тестовая практика · единый голос</p>
-<p class="study-links"><a href="./panda-lesson1.html">📚 Спроси Панду по материалам 7 уроков</a></p>
+
 <section class="card" aria-label="Разговорная практика">
  <div class="progress"><span id="step">1 из 2</span><div class="bars" aria-hidden="true"><i id="bar1" class="bar on"></i><i id="bar2" class="bar"></i></div></div>
  <div class="scene">
@@ -25,23 +25,33 @@
    <strong class="hanzi" id="phrase">你好！</strong>
    <span class="pinyin" id="pinyin">Nǐ hǎo!</span>
    <span class="translation" id="translation">Привет!</span>
-   <button class="listen" id="hear" type="button" aria-label="Слушать фразу Панды" title="Слушать фразу">🔊</button>
+   <div class="listen-controls"><button class="listen" id="hear" type="button" aria-label="Слушать фразу Панды" title="Слушать фразу">🔊</button><button class="speed-toggle" id="speed-toggle" type="button" aria-pressed="false" aria-label="Медленное прослушивание">▶ 1×</button></div>
    <span class="speech-note" id="audio-note" hidden>🔇 Запись этой фразы пока недоступна</span>
   </div>
  </div>
   <p class="status" id="status" role="status" aria-atomic="true" aria-live="polite"></p>
  <div id="conversation">
   <div class="heard" id="heard" role="status" aria-live="polite"></div>
+  <details class="answer-variants" id="answer-variants"><summary>🎭 Другие варианты ответа</summary><p class="variant-intro">Каждый вариант проверен для текущего диалога. Выбери один и произнеси самостоятельно.</p><div class="variant-choices" id="variant-choices"></div><p id="variant-hint" role="status"></p></details>
   <div class="voice"><button class="mic" id="mic" type="button" aria-label="Ответить Панде голосом" aria-pressed="false">🎙</button><span class="voice-hint" id="mic-caption">Ответь голосом</span></div>
   <p id="voice-recovery" class="speech-recovery" hidden>Если микрофон сайта не работает, открой страницу в <b>Chrome</b> через меню ⋮ или нажми «Написать» и используй 🎙 на клавиатуре Android.</p>
   <div class="actions"><button id="type-toggle" type="button" class="link" aria-expanded="false" aria-controls="typing">⌨ Написать</button><button id="reset" type="button" class="link">↻ Заново</button></div>
   <form id="typing" class="typing" hidden><label for="answer">Ответ по-китайски</label><textarea id="answer" maxlength="160" placeholder="Напиши ответ…"></textarea><button id="send" type="submit" class="submit">Ответить</button></form>
  </div>
+ <div class="review-strip"><span id="review-count">Ошибок для повторения нет</span><button id="review" type="button" disabled>🔁 Повторить трудное</button></div>
  <div id="completed" class="result" hidden>
   <p class="finish" id="final-feedback">🎉 Отлично!</p>
   <button id="again" class="again" type="button">↻ Ещё раз</button>
  </div>
 </section>
+<section class="knowledge" aria-label="Объяснения Панды по теме урока">
+<button id="knowledge-toggle" type="button" aria-expanded="false" aria-controls="knowledge-panel" class="knowledge-toggle">🧠 Спроси Панду по этому уроку <span aria-hidden="true">⌄</span></button>
+<div id="knowledge-panel" hidden>
+<p class="knowledge-intro">Проверенные слова, правила и диалоги текущего урока. Ответы текстовые и без платных AI API.</p>
+<div id="knowledge-prompts" class="knowledge-prompts"></div>
+<form id="knowledge-form" class="knowledge-form"><label for="knowledge-question">Вопрос по уроку</label><div class="knowledge-field"><input id="knowledge-question" maxlength="260" autocomplete="off" placeholder="Например: Что означает 你好?"><button type="submit">Спросить</button></div></form>
+<div id="knowledge-answer" class="knowledge-answer" role="status" aria-live="polite" hidden></div>
+</div></section>
 <details class="support"><summary>Подсказка и новые слова</summary>
  <div class="words" id="words">
   <p>你好吗？ — Nǐ hǎo ma? — Как дела?</p>
@@ -52,5 +62,6 @@
   <p>Все четыре реплики озвучены одним синтезированным голосом из присланной записи Luvvoice. Распознавание речи зависит от браузера; это тестовая практика.</p>
  </div>
 </details>
-<script type="module" src="./assets/panda-voice-pilot-ui.mjs?v=live7"></script>
+<script src="./assets/hsk1-foundations-data-v152.js?v=188"></script>
+<script type="module" src="./assets/panda-voice-pilot-ui.mjs?v=live8"></script>
 </main></body></html>
