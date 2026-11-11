@@ -1,6 +1,7 @@
-import {verifyPilotAnswer} from './panda-voice-pilot-engine.mjs';
-import {CONVERSATIONS} from './panda-live-lessons.mjs';
-import {ENVELOPES} from './panda-live-envelope.mjs';
+import {lookupPilotAudio} from './panda-live-audio.mjs?v=live2';
+import {verifyPilotAnswer} from './panda-voice-pilot-engine.mjs?v=live2';
+import {CONVERSATIONS} from './panda-live-lessons.mjs?v=live2';
+import {ENVELOPES} from './panda-live-envelope.mjs?v=live2';
 import {createPandaRig} from './panda-live-rig.mjs';
 const {lines:PILOT_LINES,replies:REPLIES}=CONVERSATIONS[0];
 const $=id=>document.getElementById(id);
@@ -8,7 +9,7 @@ const rig=createPandaRig($('character'),$('panda-canvas'));
 const state={step:0,done:false,busy:false,active:false,recognition:null,epoch:0,audio:null,typing:false,watchdog:null,transition:null,poseTimer:null};
 let audioFrame=0;
 const supported=()=>!!(window.SpeechRecognition||window.webkitSpeechRecognition);
-const audioFor=key=>key&&window.PandaOwnerAudio?.lookup(key)||null;
+const audioFor=lookupPilotAudio;
 const current=()=>state.done?REPLIES[state.branch]:PILOT_LINES[state.step];
 function note(text){$('status').textContent=text}
 function pose(value){clearTimeout(state.poseTimer);rig.setState(value)}
@@ -43,7 +44,7 @@ function render(){
 }
 function play(){
  const src=audioFor(current()?.audioKey);
- if(!src){note('Полной записи этой фразы у носительницы пока нет.');return}
+ if(!src){note('Запись этой фразы пока недоступна.');return}
  stopRecognition();stopAudio();refresh();
  const a=new Audio(new URL(src,document.baseURI).href);state.audio=a;a.preload='auto';
  const envelope=ENVELOPES[src];
@@ -74,7 +75,7 @@ function checkAnswer(raw){
  $('heard').textContent=input?'Ты: '+input:'';
  if(!result.ok){
   brief('retry');note(input?'Не совсем. '+PILOT_LINES[state.step].instruction:'Не расслышала. Повтори ещё раз.');refresh();
-  // Repeat only the original question recording; never another voice.
+  // Repeat the exact question clip from the same uploaded voice.
   if(audioFor(current().audioKey))state.transition=setTimeout(()=>{play();note(result.message)},3200);
   return;
  }

@@ -1,0 +1,39 @@
+{
+  "source": "User supplied luvvoice.com-20261111-uTXyb5.mp3",
+  "sourceSha256": "3cad34d7a118ea0017cab9f8c1c2d947062748e56910e6852ddea1e111e47b49",
+  "voice": "Single synthesized voice from uploaded source; exact voice ID unconfirmed",
+  "clips": [
+    {
+      "text": "你好",
+      "file": "hello.mp3",
+      "sourceStart": 0.15,
+      "sourceEnd": 1.02,
+      "decodedSeconds": 0.87,
+      "sha256": "eb7bf6f2f4dd48ee56a5eae1533bf083e34f953dd2d3c7b1e54af3aafae08f7c"
+    },
+    {
+      "text": "你好吗",
+      "file": "how-are-you.mp3",
+      "sourceStart": 1.46,
+      "sourceEnd": 2.5,
+      "decodedSeconds": 1.04,
+      "sha256": "f6ab7da6d4365b2014485c933e2e9f7285f99d96082a4e973e5e6f40966a940a"
+    },
+    {
+      "text": "很好",
+      "file": "good.mp3",
+      "sourceStart": 3.0,
+      "sourceEnd": 3.92,
+      "decodedSeconds": 0.92,
+      "sha256": "6728da7b780676c57b754a831b63f44ae5b057ea78a4aa9c72404ff5953c4915"
+    },
+    {
+      "text": "我也很好谢谢",
+      "file": "me-too-thanks.mp3",
+      "sourceStart": 4.41,
+      "sourceEnd": 6.59,
+      "decodedSeconds": 2.18,
+      "sha256": "27ed92ae658189d29b07722c99769cfcb52b85b743b902513c444078ac7521ac"
+    }
+  ]
+}

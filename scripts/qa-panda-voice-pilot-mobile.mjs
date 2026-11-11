@@ -32,7 +32,7 @@ try{
   }));
   assert(visual.scrollWidth<=width+2,'Horizontal overflow '+JSON.stringify(visual));
   assert(visual.pandaWidth>0,'Panda artwork failed to load');
-  const native=await page.evaluate(()=>window.PandaOwnerAudio?.lookup('你好'));
+  const native=await page.evaluate(async()=>{const m=await import('./assets/panda-live-audio.mjs');return m.lookupPilotAudio('你好')});
   assert(native?.endsWith('.mp3'),'Original native hello missing');
   const response=await page.request.get(new URL(native,BASE+'/').href);
   assert.equal(response.status(),200,'Native clip URL should work');
@@ -40,6 +40,7 @@ try{
   assert.equal(await page.locator('#phrase').textContent(),'你好！');
   assert(await page.locator('#typing').isHidden());
   await page.locator('#hear').click();
+  await page.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
   await page.locator('#mic').click();
   await page.evaluate(()=>{
    const r=window.__pandaTestSpeech.at(-1);
@@ -47,8 +48,9 @@ try{
   });
   await page.waitForFunction(()=>document.getElementById('phrase').textContent==='你好吗？');
   assert.equal(await page.locator('#phrase').textContent(),'你好吗？');
-  assert(await page.locator('#audio-note').isVisible(),'Missing approved audio disclosed');
-  assert(await page.locator('#hear').isDisabled(),'Cannot play unrelated recording');
+  assert(await page.locator('#audio-note').isHidden(),'Uploaded question audio is present');
+  assert(await page.locator('#hear').isEnabled());
+  await page.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
   await page.locator('#mic').click();
   await page.evaluate(()=>{
    const r=window.__pandaTestSpeech.at(-1);
@@ -57,6 +59,7 @@ try{
   await page.waitForFunction(()=>document.getElementById('phrase').textContent==='我也很好，谢谢！');
   assert.equal(await page.locator('#phrase').textContent(),'我也很好，谢谢！');
   assert(await page.locator('#completed').isVisible());
+  await page.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
   await page.screenshot({path:DIR+'/android-'+width+'.png',fullPage:true,animations:'disabled'});
   await page.locator('#again').click();
   await page.locator('#type-toggle').click();
@@ -74,7 +77,7 @@ try{
   await context.close();
  }
  fs.writeFileSync(DIR+'/qa-report.json',JSON.stringify({
-  note:'Mobile Chromium, simulated speech recognition only. Original MP3 source checked. Spoken tone acoustics need human QA.',
+  note:'Mobile Chromium, simulated speech recognition only. All four uploaded MP3 sources mapped; real playback state checked. Spoken tone acoustics need human QA.',
   results:report
  },null,2)+'\n');
  console.log('Panda conversation mobile Chromium: PASS');

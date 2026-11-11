@@ -10,7 +10,7 @@ export const PILOT_LINES=Object.freeze([
   options:Object.freeze([{match:'你好',branch:'greeting'}])
  }),
  Object.freeze({
-  panda:'你好吗？',pinyin:'Nǐ hǎo ma?',ru:'Как дела?',audioKey:'',
+  panda:'你好吗？',pinyin:'Nǐ hǎo ma?',ru:'Как дела?',audioKey:'你好吗',
   instruction:'Скажи «У меня всё хорошо». Можно добавить «А у тебя?»',
   accepted:Object.freeze([
    '我很好','我很好。','wǒ hěn hǎo','wo3 hen3 hao3','wo3hen3hao3',
@@ -26,8 +26,8 @@ export const PILOT_LINES=Object.freeze([
  })
 ]);
 export const REPLIES=Object.freeze({
- 'asked-back':Object.freeze({hanzi:'我也很好，谢谢！',pinyin:'Wǒ yě hěn hǎo, xièxie!',ru:'У меня тоже всё хорошо, спасибо!',audioKey:''}),
- 'short':Object.freeze({hanzi:'很好！',pinyin:'Hěn hǎo!',ru:'Хорошо!',audioKey:''})
+ 'asked-back':Object.freeze({hanzi:'我也很好，谢谢！',pinyin:'Wǒ yě hěn hǎo, xièxie!',ru:'У меня тоже всё хорошо, спасибо!',audioKey:'我也很好，谢谢'}),
+ 'short':Object.freeze({hanzi:'很好！',pinyin:'Hěn hǎo!',ru:'Хорошо!',audioKey:'很好'})
 });
 export const NEW_WORDS=Object.freeze([
  Object.freeze({hanzi:'吗',pinyin:'ma',ru:'частица вопроса'}),
