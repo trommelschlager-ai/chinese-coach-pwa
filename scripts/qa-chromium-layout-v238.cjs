@@ -115,6 +115,38 @@ async function main(){
    }
    await page.close();
   }
+   // HSK1 approved map: actual tap targets and visual reference at phone sizes.
+   const mapPage=await browser.newPage();
+   await mapPage.setBypassServiceWorker(true);
+   for(const [width,height] of [[360,780],[393,780],[430,780]]){
+    await mapPage.setViewport({width,height,deviceScaleFactor:1,isMobile:true,hasTouch:true});
+    await mapPage.goto('http://127.0.0.1:'+port+'/hsk1-map.html',{waitUntil:'networkidle2',timeout:45000});
+    await mapPage.evaluate(()=>document.fonts?.ready);
+    const mapRow=await mapPage.evaluate(({width,height})=>{
+      const issues=[], rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}};
+      const lessons=[...document.querySelectorAll('nav.map-road a.node')];
+      const buttons=[...document.querySelectorAll('nav.pg-map-actions a')];
+      if(lessons.length!==7)issues.push('Expected 7 lesson buttons; got '+lessons.length);
+      if(buttons.length!==3)issues.push('Expected 3 lower practice buttons; got '+buttons.length);
+      if(document.documentElement.scrollWidth>innerWidth+2)issues.push('Horizontal map overflow');
+      for(const item of [...lessons,...buttons]){
+        const r=item.getBoundingClientRect();
+        if(r.width<44||r.height<44)issues.push('Tap target too small: '+(item.getAttribute('aria-label')||item.textContent.trim()));
+        if(r.left<0||r.right>innerWidth+1||r.top<0||r.bottom>innerHeight+2)issues.push('Tap target outside screen: '+(item.getAttribute('aria-label')||item.textContent.trim()));
+        const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+        if(hit!==item&&!item.contains(hit))issues.push('Map item covered: '+(item.getAttribute('aria-label')||item.textContent.trim()));
+      }
+      const ai=document.querySelector('.pg-ai-figure');
+      if(!ai||!ai.naturalWidth)issues.push('Panda AI artwork missing');
+      const first=lessons[0],last=lessons[6];
+      if(first&&last&&rect(first).y>=rect(last).y)issues.push('Seven lessons out of order');
+      const output={lesson:'map',screen:1,width,height,issues,header:rect(document.querySelector('.pg-map-heading')),first:rect(first),last:rect(last),footer:rect(document.querySelector('.pg-map-actions'))};
+      return output;
+    },{width,height});
+    rows.push(mapRow);
+    await mapPage.screenshot({path:path.join(SHOTS,'hsk1-approved-map-'+width+'.png')});
+   }
+   await mapPage.close();
  }finally{await browser.close();await new Promise(r=>server.close(r))}
  const failures=rows.filter(r=>r.issues.length);
  const results={version:238,engine:'headless Chromium (actual rendered DOM, not jsdom)',tested_at:new Date().toISOString(),checks:rows.length,passed:rows.length-failures.length,failed:failures.length,failures,limitations:['Not a physical Android test','Does not assess audio tone or subjective sound quality','All screens checked at 393x780, all covers at 320/360/393/430 and two heights']};
