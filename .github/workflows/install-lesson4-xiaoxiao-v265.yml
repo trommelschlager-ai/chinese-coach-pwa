@@ -1,0 +1,52 @@
+name: Install Panda Go lesson 4 Xiaoxiao audio v265
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/lesson4-audio-import-v265.zip'
+permissions:
+  contents: write
+concurrency:
+  group: panda-go-lesson4-audio-v265
+  cancel-in-progress: false
+jobs:
+  publish-lesson4-audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+      - name: Extract 25 user-provided Xiaoxiao clips
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f assets/lesson4-audio-import-v265.zip
+          unzip -oq assets/lesson4-audio-import-v265.zip -d .
+          test -f scripts/install-lesson4-xiaoxiao-v265.cjs
+          test -f scripts/verify-hsk1-lesson4-xiaoxiao-v265.cjs
+      - name: Install the voice map into the active lesson, flashcards and offline cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/install-lesson4-xiaoxiao-v265.cjs
+          node scripts/verify-hsk1-lesson4-xiaoxiao-v265.cjs
+      - name: Publish the verified updated lesson
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/lesson4-xiaoxiao-v265/ assets/lesson4-xiaoxiao-v265.js
+          git add assets/hsk1-fourth-v220.js hsk1-fourth-v214.html hsk1-l4-cards.html
+          git add assets/offline-pack.json sw.js .github/workflows/course-qa.yml
+          git add scripts/install-lesson4-xiaoxiao-v265.cjs scripts/verify-hsk1-lesson4-xiaoxiao-v265.cjs scripts/verify-hsk1-fourth-v216.cjs
+          if git diff --cached --quiet; then
+            echo 'All files are already installed'
+            exit 0
+          fi
+          git commit -m 'audio: install Xiaoxiao recordings in lesson 4 and its revision cards v265'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
