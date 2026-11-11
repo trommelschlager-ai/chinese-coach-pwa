@@ -51,7 +51,7 @@ const FACTS=Object.freeze({
  '是':'是 — shì — быть, являться. Четвёртый тон.',
  '学生':'学生 — xuésheng — ученик, студент. 学 — второй тон; 生 обычно нейтральный.',
  '你好':'你好 — nǐ hǎo — привет. В речи обычно звучит ní hǎo: первый третий тон меняется на второй.',
- '我是学生':'我是学生。Wǒ shì xuésheng. — Я студент. Порядок: 我 + 是 + 学生.'
+ '我是学生':'我是学生。Wǒ shì xuésheng. — Я студент. Порядок: подлежащее 我 + связка 是 + существительное 学生.'
 });
 export function answerLessonQuestion(question){
  const raw=String(question??'').trim(),low=raw.toLowerCase(),norm=normalizeAnswer(raw);
