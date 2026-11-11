@@ -111,27 +111,40 @@ try{
   await page.screenshot({path:DIR+'/lesson-'+scenario.id+'-'+index+'.png',fullPage:true,animations:'disabled'});
   report.push({lesson:scenario.id,final:scenario.final,...size,success:true});
  }
- // Boundary navigation and each real greeting clip under a controlled device-local clock.
- for(const [hour,phrase] of [[8,'早上好！'],[12,'中午好！'],[15,'下午好！'],[20,'晚上好！']]){
+ // Training should rotate four voice greetings, independently of phone time.
+ for(const hour of [8,12,15,20]){
   const timed=await browser.newContext({viewport:{width:320,height:825},isMobile:true,hasTouch:true});
   await timed.addInitScript(({hour})=>{const OriginalDate=Date;window.Date=class extends OriginalDate{constructor(...args){super(...(args.length?args:[2026,10,11,hour]))}}},{hour});
   const greetingPage=await timed.newPage();greetingPage.on('pageerror',error=>errors.push(error.message));
   await greetingPage.goto(BASE+'/panda-voice-pilot.html');
   await greetingPage.locator('html[data-panda-live-ready=true]').waitFor();
-  assert.equal(await greetingPage.locator('#phrase').textContent(),phrase);
+  assert.equal(await greetingPage.locator('#phrase').textContent(),'早上好！');
   assert.equal(await greetingPage.locator('select').count(),0);
-  await greetingPage.locator('#hear').click();await greetingPage.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
-  await greetingPage.locator('#type-toggle').click();await greetingPage.locator('#answer').fill('我很好');await greetingPage.locator('#send').click();
+  await greetingPage.locator('#hear').click();
+  await greetingPage.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
+  await greetingPage.locator('#type-toggle').click();
+  await greetingPage.locator('#answer').fill('我很好');await greetingPage.locator('#send').click();
   assert.equal(await greetingPage.locator('#step').textContent(),'1 из 2');
-  await greetingPage.locator('#answer').fill(phrase);await greetingPage.locator('#send').click();await greetingPage.waitForFunction(()=>document.querySelector('#phrase').textContent==='你好吗？');
-  await greetingPage.locator('#topic-next').click();await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='2 / 7');
-  assert.equal(await greetingPage.locator('#phrase').textContent(),phrase);
-  await greetingPage.locator('#topic-prev').click();await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='1 / 7');
-  await greetingPage.locator('#topic-prev').click();await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='7 / 7');
-  await greetingPage.locator('#topic-next').click();await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='1 / 7');
-  const size=await greetingPage.evaluate(()=>({viewportWidth:innerWidth,scrollWidth:document.documentElement.scrollWidth}));assert(size.scrollWidth<=size.viewportWidth+2);
+  await greetingPage.locator('#answer').fill('早上好');await greetingPage.locator('#send').click();
+  await greetingPage.waitForFunction(()=>document.querySelector('#phrase').textContent==='你好吗？');
+  await greetingPage.locator('#topic-next').click();
+  await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='2 / 7');
+  assert.equal(await greetingPage.locator('#phrase').textContent(),'中午好！');
+  await greetingPage.locator('#reset').click();
+  assert.equal(await greetingPage.locator('#phrase').textContent(),'下午好！','Reset should rotate too');
+  await greetingPage.locator('#topic-prev').click();
+  await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='1 / 7');
+  assert.equal(await greetingPage.locator('#phrase').textContent(),'晚上好！');
+  await greetingPage.locator('#topic-prev').click();
+  await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='7 / 7');
+  assert.equal(await greetingPage.locator('#phrase').textContent(),'早上好！');
+  await greetingPage.locator('#topic-next').click();
+  await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='1 / 7');
+  assert.equal(await greetingPage.locator('#phrase').textContent(),'中午好！');
+  const size=await greetingPage.evaluate(()=>({viewportWidth:innerWidth,scrollWidth:document.documentElement.scrollWidth}));
+  assert(size.scrollWidth<=size.viewportWidth+2);
   await greetingPage.screenshot({path:DIR+'/greeting-'+hour+'.png',fullPage:true,animations:'disabled'});
-  report.push({hour,phrase,...size,success:true});await timed.close();
+  report.push({hour,rotation:['早上好','中午好','下午好','晚上好'],...size,success:true});await timed.close();
  }
  const sources=await page.evaluate(async()=>Object.values((await import('./assets/panda-live-audio.mjs')).PILOT_AUDIO));
  assert.equal(sources.length,23);
