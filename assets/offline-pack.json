@@ -1,6 +1,6 @@
 {
-  "version": 257,
-  "bytes": 50787255,
+  "version": 258,
+  "bytes": 50866105,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -715,7 +715,7 @@
     "./assets/hsk1-intro-v188.css?v=188",
     "./assets/hsk1-intro-v188.js?v=188",
     "./assets/hsk1-lesson2-audio-v208.js?v=208",
-    "./assets/hsk1-map-v252.css?v=257",
+    "./assets/hsk1-map-v252.css?v=258",
     "./assets/hsk1-native-clean-v198.js?v=198",
     "./assets/hsk1-native-human-map-v167.js?v=167",
     "./assets/hsk1-numbers-audio-map-v213.js?v=213",
