@@ -17,7 +17,7 @@ test('Chinese sentence checking, punctuation and branch selection',()=>{
  assert.equal(CONVERSATIONS.length,7);
  assert.deepEqual(missingConversationAudio(CONVERSATIONS[0],key=>key==='你好'?'hello.mp3':null),['你好吗？','我也很好，谢谢！','很好！']);
  assert.deepEqual(missingConversationAudio(CONVERSATIONS[0],lookupPilotAudio),[]);
- assert.equal(Object.keys(PILOT_AUDIO).length,4);
+ assert.equal(Object.keys(PILOT_AUDIO).length,5);
  for(const [phrase,file] of Object.entries(PILOT_AUDIO)){
   assert(fs.statSync(new URL('../'+file,import.meta.url)).size>1000,phrase);
   assert(ENVELOPES[file]?.levels.length>10,phrase);

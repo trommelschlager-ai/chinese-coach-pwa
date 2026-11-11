@@ -34,6 +34,15 @@
       "sourceEnd": 6.59,
       "decodedSeconds": 2.18,
       "sha256": "27ed92ae658189d29b07722c99769cfcb52b85b743b902513c444078ac7521ac"
+    },
+    {
+      "text": "谢谢",
+      "file": "thanks.mp3",
+      "sourceStart": 5.7,
+      "sourceEnd": 6.59,
+      "decodedSeconds": 0.89,
+      "sha256": "632aed8c43d9e33e405e03779b6815774350f15c95956768be30ab7cae335607",
+      "reuse": "Extracted from the already supplied final phrase; no new synthesis"
     }
   ]
 }

@@ -1,5 +1,5 @@
 // Draft conversation 2. No other speaker is substituted for missing audio.
-import {PILOT_LINES} from './panda-voice-pilot-engine.mjs?v=live3';
+import {PILOT_LINES} from './panda-voice-pilot-engine.mjs?v=live4';
 const answers=[
  ['我是老师','teacher'],['是，我是老师','teacher'],['wǒ shì lǎoshī','teacher'],['wo3 shi4 lao3 shi1','teacher'],
  ['不是，我是学生','student'],['我不是老师，我是学生','student'],['我是学生','student'],

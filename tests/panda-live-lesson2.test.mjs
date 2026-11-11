@@ -11,7 +11,7 @@ test('draft is not exposed by an ordinary lesson URL; explicit preview has three
  assert.equal(selectConversation('?lesson=2').id,1);
  assert.equal(selectConversation('?lesson=2&preview=0').id,1);
  assert.equal(selectConversation('?lesson=999&preview=1').id,1);
- assert.equal(selectConversation('?lesson=3&preview=1').id,1,'Empty course topics are never runnable');
+ assert.equal(selectConversation('?lesson=3').id,1,'Drafts remain hidden without explicit preview');
  const draft=selectConversation('?lesson=2&preview=1');assert.equal(draft.id,2);
  assert.deepEqual(missingConversationAudio(draft,lookupPilotAudio),['你是老师吗？','我也是老师。','我是老师。']);
  for(const text of ['我是老师','是，我是老师。','wǒ shì lǎoshī'])assert.equal(verifyAnswerFor(draft.lines,1,text).branch,'teacher');

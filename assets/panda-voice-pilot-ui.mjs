@@ -1,7 +1,7 @@
-import {lookupPilotAudio} from './panda-live-audio.mjs?v=live2';
-import {verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live3';
-import {selectConversation,missingConversationAudio} from './panda-live-lessons.mjs?v=live3';
-import {ENVELOPES} from './panda-live-envelope.mjs?v=live2';
+import {lookupPilotAudio} from './panda-live-audio.mjs?v=live4';
+import {verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live4';
+import {selectConversation,missingConversationAudio} from './panda-live-lessons.mjs?v=live4';
+import {ENVELOPES} from './panda-live-envelope.mjs?v=live4';
 import {createPandaRig} from './panda-live-rig.mjs';
 const conversation=selectConversation(window.location.search);
 const {lines:PILOT_LINES,replies:REPLIES}=conversation;
@@ -31,7 +31,7 @@ function recovery(text){$('voice-recovery').hidden=false;note(text);refresh()}
 function refresh(){
  $('conversation').hidden=state.done;$('completed').hidden=!state.done;
  $('step').textContent=state.done?'Готово':`${state.step+1} из ${PILOT_LINES.length}`;
- $('bar2').classList.toggle('on',state.done||state.step>0);
+ document.querySelectorAll('.bar').forEach((bar,index)=>bar.classList.toggle('on',state.done||index<=state.step));
  $('mic').disabled=state.done||state.busy||!supported();
  $('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';
  $('mic-caption').textContent=state.active?'Слушаю…':supported()?'Ответь голосом':'Ответь текстом';
@@ -132,16 +132,20 @@ $('reset').addEventListener('click',restart);$('again').addEventListener('click'
 $('character').querySelector('img').addEventListener('error',()=>{note('Изображение Панды не загрузилось. Обнови страницу.');$('mic').disabled=true});
 window.addEventListener('pagehide',event=>{clearTimeout(state.transition);clearTimeout(state.poseTimer);stopRecognition();stopAudio();if(!event.persisted)rig.dispose()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){stopAudio();stopRecognition();refresh()}});
+const bars=document.querySelector('.bars');bars.replaceChildren();
+for(let index=0;index<PILOT_LINES.length;index++){const bar=document.createElement('i');bar.className='bar';bar.id=`bar${index+1}`;bars.append(bar)}
 if(conversation.id!==1){
  $('lesson-tag').textContent=`Урок ${conversation.id} · Диалог`;
- $('back-link').href='./hsk1-second-v203.html';
+ const routes={2:'hsk1-second-v203.html',3:'hsk1-third-v212.html',4:'hsk1-fourth-v214.html',5:'hsk1-fifth-v227.html',6:'hsk1-family-v231.html',7:'hsk1-weather-v231.html'};
+ $('back-link').href='./'+routes[conversation.id];
  const missing=missingConversationAudio(conversation,lookupPilotAudio);
  $('pilot-note').textContent=missing.length?`Черновик урока ${conversation.id} · не хватает ${missing.length} записей`:'Тестовая практика · единый голос';
+ if(conversation.context){const context=document.createElement('p');context.className='test-note';context.id='exercise-context';context.textContent=conversation.context;$('pilot-note').after(context)}
  const vocabulary=$('words');vocabulary.replaceChildren();
  for(const item of [...(conversation.vocabulary||conversation.newWords),...(conversation.examples||[])]){
   const p=document.createElement('p');p.textContent=`${item.hanzi} — ${item.pinyin} — ${item.ru}`;vocabulary.append(p);
  }
- const note=document.createElement('p');note.textContent='Проверяется распознанный текст, а не правильность произнесённых тонов. Новые записи ещё не подключены.';vocabulary.append(note);
+ const note=document.createElement('p');note.textContent='Проверяется распознанный текст, а не правильность произнесённых тонов.'+(missing.length?' Новые записи ещё не подключены.':'');vocabulary.append(note);
 }
 restart();
 

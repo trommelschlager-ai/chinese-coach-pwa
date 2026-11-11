@@ -14,6 +14,7 @@ on:
       - 'assets/panda-voice-pilot*'
       - 'tests/panda-voice-pilot.test.mjs'
       - 'tests/panda-live-lesson2.test.mjs'
+      - 'tests/panda-live-batch.test.mjs'
       - 'scripts/qa-panda-voice-pilot-mobile.mjs'
       - '.github/workflows/panda-voice-pilot.yml'
   pull_request:
@@ -24,6 +25,7 @@ on:
       - 'assets/panda-live-*'
       - 'tests/panda-voice-pilot.test.mjs'
       - 'tests/panda-live-lesson2.test.mjs'
+      - 'tests/panda-live-batch.test.mjs'
       - 'scripts/qa-panda-voice-pilot-mobile.mjs'
 permissions:
   contents: read
@@ -38,7 +40,7 @@ jobs:
           node-version: '22'
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Test pilot response checks and mock microphone
-        run: node --test tests/panda-voice-pilot.test.mjs tests/panda-live-lesson2.test.mjs
+        run: node --test tests/panda-voice-pilot.test.mjs tests/panda-live-lesson2.test.mjs tests/panda-live-batch.test.mjs
       - name: Install mobile Chromium
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
