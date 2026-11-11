@@ -1,5 +1,5 @@
 {
-  "version": 261,
+  "version": 262,
   "bytes": 50986088,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -931,17 +931,17 @@
     "./assets/hsk1-scene-v205/female-im-teacher-normalized.mp3",
     "./assets/hsk1-second-extras-v204.css?v=211",
     "./assets/hsk1-second-extras-v204.css?v=237",
-    "./assets/hsk1-second-extras-v204.js?v=211",
+    "./assets/hsk1-second-extras-v204.js?v=262",
     "./assets/hsk1-second-practice-v211.css?v=211",
     "./assets/hsk1-second-practice-v211.js?v=211",
     "./assets/hsk1-second-practice-v211.js?v=237",
     "./assets/hsk1-second-speaking-v209.css?v=211",
     "./assets/hsk1-second-speaking-v209.js?v=211",
-    "./assets/hsk1-second-speaking-v209.js?v=237",
+    "./assets/hsk1-second-speaking-v209.js?v=262",
     "./assets/hsk1-second-v203.css?v=211",
     "./assets/hsk1-second-v203.css?v=237",
     "./assets/hsk1-second-v203.js?v=211",
-    "./assets/hsk1-second-v203.js?v=237",
+    "./assets/hsk1-second-v203.js?v=262",
     "./assets/hsk1-separate-steps-v178.js?v=179",
     "./assets/hsk1-third-v212.css?v=212",
     "./assets/hsk1-third-v212.css?v=237",
@@ -2251,7 +2251,7 @@
     "./manifest.webmanifest",
     "./panda-lesson1.html",
     "./start-chinese.html",
-    "./assets/panda-lesson2-xiaoxiao-v261.js?v=261",
+    "./assets/panda-lesson2-xiaoxiao-v261.js?v=261&reload=262",
     "./assets/panda-lesson2-xiaoxiao-v261/laoshi.mp3",
     "./assets/panda-lesson2-xiaoxiao-v261/nimen.mp3",
     "./assets/panda-lesson2-xiaoxiao-v261/nin.mp3",
@@ -2265,6 +2265,8 @@
     "./assets/lesson1-xiaoxiao-v260/shi.mp3",
     "./assets/lesson1-xiaoxiao-v260/xuesheng.mp3",
     "./assets/panda-xiaoxiao-trainer-v250/p041.mp3",
-    "./assets/panda-xiaoxiao-trainer-v250/p079.mp3"
+    "./assets/panda-xiaoxiao-trainer-v250/p079.mp3",
+    "./hsk1-second-v203.html?v=262",
+    "./hsk1-second-practice.html?v=262"
   ]
 }
