@@ -1,7 +1,7 @@
 import {SCENES,findScene,validateTurn} from './panda-conversation-v1.mjs';
 const $=id=>document.getElementById(id);
 const chat=$('chat'),reply=$('reply');
-const completionIds={1:'foundations',2:'pronouns',6:'family',7:'weather'};
+const completionIds={1:'foundations',2:'pronouns',3:'numbers',4:'weekdays',5:'dates',6:'family',7:'weather'};
 const state={scene:null,turn:0,started:false,completed:false};
 let audio=null,recognition=null;
 function readJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')??fallback}catch{return fallback}}
@@ -66,6 +66,7 @@ function start(){
  state.started=true;state.completed=false;state.turn=0;
  $('intro').classList.add('hidden');chat.replaceChildren();
  message('panda','Начнём короткий разговор. Отвечай по-китайски; подсказка доступна в любой момент.');
+ if(state.scene.context)message('panda','Ситуация: '+state.scene.context);
  showTurn();
 }
 function lessonName(n){return n===1?'1':String(n)}
