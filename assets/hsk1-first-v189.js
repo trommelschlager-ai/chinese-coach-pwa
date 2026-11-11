@@ -37,7 +37,23 @@
  try{const v=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');if(v&&Number.isInteger(v.step)){const alreadyDone=v.step===13&&(!v.lessonVersion||v.lessonVersion<194);step=alreadyDone?14:Math.min(STEPS-1,Math.max(0,v.step));verified=!!v.verified||v.step>8;listenPassed=!!v.listenPassed||alreadyDone;order=Array.isArray(v.order)?v.order.filter(n=>Number.isInteger(n)&&n>=0&&n<=2).slice(0,3):(verified?[0,1,2]:[]);savedListenTarget=typeof v.listenTarget==='string'?v.listenTarget:null;listenSelected=typeof v.listenSelected==='string'?v.listenSelected:''}}catch{}
  const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const intro=(n,title,sub)=>`${n?`<p class="screen-eyebrow">${esc(n)}</p>`:""}<h1 class="screen-title">${esc(title)}</h1>${sub?`<p class="screen-sub">${sub}</p>`:""}`;
+ // Use one consistent Xiaoxiao voice for all 10 playable strings in Lesson 1.
+ // If a clip is unavailable, show an error instead of silently mixing other voices.
+ const XIAOXIAO_LESSON1=Object.freeze({
+  "我":'./assets/lesson1-xiaoxiao-v260/wo.mp3',
+  "是":'./assets/lesson1-xiaoxiao-v260/shi.mp3',
+  "学生":'./assets/lesson1-xiaoxiao-v260/xuesheng.mp3',
+  "你":'./assets/lesson1-xiaoxiao-v260/ni.mp3',
+  "你好":'./assets/lesson1-xiaoxiao-v260/nihao.mp3',
+  "我是学生":'./assets/lesson1-xiaoxiao-v260/woshixuesheng.mp3',
+  "妈":'./assets/lesson1-xiaoxiao-v260/ma1.mp3',
+  "麻":'./assets/lesson1-xiaoxiao-v260/ma2.mp3',
+  "马":'./assets/lesson1-xiaoxiao-v260/ma3.mp3',
+  "骂":'./assets/lesson1-xiaoxiao-v260/ma4.mp3'
+ });
  const clipCandidates=key=>{
+  const normalized=String(key).replace(/[。！?!？，,\s]/g,'');
+  if(Object.prototype.hasOwnProperty.call(XIAOXIAO_LESSON1,normalized))return [XIAOXIAO_LESSON1[normalized]];
   const vo=window.PANDA_HSK1_VOICES?.female||{};
   const norm=String(key).replace(/[。！?!？，,\s]/g,'');
   const matches=Object.entries(vo).filter(([k,v])=>typeof v==='string'&&k.replace(/[。！?!？，,\s]/g,'')===norm);
@@ -72,7 +88,7 @@
   {hz:'马',py:'mǎ',name:'3-й тон',label:'вниз и вверх',curve:'M11 18 Q43 58 84 17 M72 19 L84 17 L80 29'},
   {hz:'骂',py:'mà',name:'4-й тон',label:'нисходящий',curve:'M12 12 L84 44 M75 32 L84 44 L71 44'}
  ].map((t,i)=>{
-  const source=window.PandaOwnerAudio?.lookup(t.hz)||CLEAN_MA_TONES[t.hz]||window.courseHumanAudio?.[t.hz];
+  const source=getClip(t.hz);
   return `<div class="tone-item">
     <div class="tone-choice">
       <b>${t.py}</b>
@@ -180,7 +196,7 @@
     if('mozPreservesPitch' in item)item.mozPreservesPitch=true;
     if('webkitPreservesPitch' in item)item.webkitPreservesPitch=true;
     const leveled=String(item.src).includes('-clean-v237/');
-    const baseVolume=leveled?1:(tone?softenTone(item):1);
+    const baseVolume=String(item.src).includes('/lesson1-xiaoxiao-v260/')?1:(leveled?1:(tone?softenTone(item):1));
     let endAt=Infinity;
     item.onloadedmetadata=()=>{
      if(Number.isFinite(item.duration)&&item.duration>0){
@@ -270,7 +286,7 @@
   if(btn.hasAttribute('data-radical')){radical=Number(btn.dataset.radical);render();return}
   if(btn.id==='stroke-restart'){const svg=area.querySelector('.writing-animate');if(svg)svg.replaceWith(svg.cloneNode(true));return}
   if(btn.hasAttribute('data-say')){play(clipCandidates(btn.dataset.say),btn.dataset.say);return}
-  if(btn.hasAttribute('data-tone-play')){play([window.PandaOwnerAudio?.lookup(btn.dataset.tonePlay)||CLEAN_MA_TONES[btn.dataset.tonePlay]||window.courseHumanAudio?.[btn.dataset.tonePlay],...clipCandidates(btn.dataset.tonePlay)],btn.dataset.tonePlay,'tone');return}
+  if(btn.hasAttribute('data-tone-play')){play(clipCandidates(btn.dataset.tonePlay),btn.dataset.tonePlay,'tone');return}
   if(btn.hasAttribute('data-listen-answer')){listenSelected=btn.dataset.listenAnswer;if(!listenTarget){listenPassed=true;render();return}listenPassed=listenSelected===listenTarget;render();if(!listenPassed)showMessage('Послушай ещё раз.');return}
   if(btn.hasAttribute('data-add')){const i=Number(btn.dataset.add);if(!order.includes(i)){order.push(i);verified=false;render()}return}
   if(btn.hasAttribute('data-remove')){order.splice(Number(btn.dataset.remove),1);verified=false;render();return}

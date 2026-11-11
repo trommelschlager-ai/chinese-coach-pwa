@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "lesson": 1,
+  "voice": "Xiaoxiao",
+  "provider": "Luvvoice",
+  "rate_percent": -20,
+  "pitch": 0,
+  "volume": 0,
+  "source": "luvvoice.com-20261111-xZqtYp.mp3",
+  "source_duration_seconds": 13.032,
+  "clip_count": 10,
+  "complete": true,
+  "tone_review": "pending native speaker review for this specific batch",
+  "license_review": "Verify commercial-use rights before monetization",
+  "segmentation": "Ten speech segments; gain normalization and small fades, no time/pitch modification",
+  "clips": [
+    {
+      "id": "wo",
+      "hanzi": "我",
+      "pinyin": "wǒ",
+      "file": "wo.mp3",
+      "sha256": "5ad25ed8cf387a7b436f05a8126ca43d7c7e6d82af4d55fbc88cce0d9a366915"
+    },
+    {
+      "id": "shi",
+      "hanzi": "是",
+      "pinyin": "shì",
+      "file": "shi.mp3",
+      "sha256": "fe2ccb6262eab2db13165a9be46fd019d2eb89372531406d3b4d1dfea4f365d8"
+    },
+    {
+      "id": "xuesheng",
+      "hanzi": "学生",
+      "pinyin": "xuésheng",
+      "file": "xuesheng.mp3",
+      "sha256": "e680c2e772770b41da6de22a904ee37ca21ae1fb18f8c4bf0862716c856a23b8"
+    },
+    {
+      "id": "ni",
+      "hanzi": "你",
+      "pinyin": "nǐ",
+      "file": "ni.mp3",
+      "sha256": "b6a0fca9d1d651bc1aa15d6797a48bd74617f64ee1a1a23a201fb414825b21bf"
+    },
+    {
+      "id": "nihao",
+      "hanzi": "你好",
+      "pinyin": "nǐ hǎo",
+      "file": "nihao.mp3",
+      "sha256": "ba203eef6b3e82bb73f4f278f22b9368329541d6906a9f199866e95a83a5694d"
+    },
+    {
+      "id": "woshixuesheng",
+      "hanzi": "我是学生",
+      "pinyin": "wǒ shì xuésheng",
+      "file": "woshixuesheng.mp3",
+      "sha256": "7514ec17a051415644b73b65d12011905ebfcb1fa3ce7f5c66af12196203c1ee"
+    },
+    {
+      "id": "ma1",
+      "hanzi": "妈",
+      "pinyin": "mā",
+      "file": "ma1.mp3",
+      "sha256": "e52e11bf2e0a9e4a66ce1320b29712f352e4facbfbea0f23ab92daabfd60bb33"
+    },
+    {
+      "id": "ma2",
+      "hanzi": "麻",
+      "pinyin": "má",
+      "file": "ma2.mp3",
+      "sha256": "1bca92545aeb647e84453da2f7241d7573ca983fd74ccb538f74d01ae1aa5fe6"
+    },
+    {
+      "id": "ma3",
+      "hanzi": "马",
+      "pinyin": "mǎ",
+      "file": "ma3.mp3",
+      "sha256": "be920ac8d8ec888f97469230798e732040302ea31cb8463d3b726cac042002c0"
+    },
+    {
+      "id": "ma4",
+      "hanzi": "骂",
+      "pinyin": "mà",
+      "file": "ma4.mp3",
+      "sha256": "0ccd3718cdf99a2a45b0882c68dec868f821a756fce9328ec6d61d8aea66e6e3"
+    }
+  ]
+}
