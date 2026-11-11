@@ -26,6 +26,22 @@ export const SCENES=Object.freeze([
    turn('你是学生吗？','Nǐ shì xuésheng ma?','Ты студент?',['我是学生','我是学生。','我不是学生','我不是学生。','wǒ shì xuésheng','wo3 shi4 xue2 sheng5','wǒ bú shì xuésheng','wo3 bu2 shi4 xue2 sheng5'],'我是学生。 / 我不是学生。','Ответь полным предложением: «Я студент» или «Я не студент».',''),
    turn('你是老师吗？','Nǐ shì lǎoshī ma?','Ты учитель?',['我是老师','我不是老师','wǒ shì lǎoshī','wo3 shi4 lao3 shi1','wǒ bú shì lǎoshī','wo3 bu2 shi4 lao3 shi1'],'我是老师。 / 我不是老师。','Ответь: «Я учитель» или «Я не учитель». В 不 перед 是 четвёртого тона произносим bú.','')
   ])}),
+ freeze({id:'numbers',lesson:3,title:'Сколько у тебя?',bonus:false,description:'Числа и счётные слова из урока 3',
+  context:'Представь: ты держишь два предмета, и панда спрашивает, сколько их у тебя.',
+  introduce:freeze([]),turns:freeze([
+   turn('你有几个？','Nǐ yǒu jǐ ge?','Сколько у тебя?',['我有两个','wǒ yǒu liǎng ge','wo3 you3 liang3 ge5'],'我有两个。 Wǒ yǒu liǎng ge.','Ответь: «У меня два».','')
+  ])}),
+ freeze({id:'weekdays',lesson:4,title:'Какой день недели?',bonus:false,description:'Дни недели из урока 4',
+  context:'Представь, что сегодня пятница, а завтра суббота. Это учебный пример, не текущая дата.',
+  introduce:freeze([]),turns:freeze([
+   turn('今天星期几？','Jīntiān xīngqī jǐ?','Какой сегодня день недели?',['今天星期五','今天是星期五','jīntiān xīngqīwǔ','jin1 tian1 xing1 qi1 wu3','jīntiān shì xīngqīwǔ','jin1 tian1 shi4 xing1 qi1 wu3'],'今天是星期五。 Jīntiān shì xīngqīwǔ.','По условию сегодня пятница.','今天星期几'),
+   turn('明天星期几？','Míngtiān xīngqī jǐ?','Какой завтра день недели?',['明天星期六','明天是星期六','míngtiān xīngqīliù','ming2 tian1 xing1 qi1 liu4','míngtiān shì xīngqīliù','ming2 tian1 shi4 xing1 qi1 liu4'],'明天星期六。 Míngtiān xīngqīliù.','После пятницы идёт суббота.','明天星期几')
+  ])}),
+ freeze({id:'dates',lesson:5,title:'Скажи дату',bonus:false,description:'Месяцы и числа из урока 5',
+  context:'Представь, что сегодня 6 ноября. Дата учебная, не сегодняшняя.',
+  introduce:freeze([]),turns:freeze([
+   turn('今天几月几号？','Jīntiān jǐ yuè jǐ hào?','Какое сегодня число?',['今天十一月六号','今天是十一月六号','jīntiān shíyī yuè liù hào','jin1 tian1 shi2 yi1 yue4 liu4 hao4','jīntiān shì shíyī yuè liù hào','jin1 tian1 shi4 shi2 yi1 yue4 liu4 hao4'],'今天十一月六号。 Jīntiān shíyī yuè liù hào.','Скажи: «Сегодня шестое ноября».','')
+  ])}),
  freeze({id:'family',lesson:6,title:'Поговорим о семье',bonus:false,description:'Изученные вопросы из урока 6',
   introduce:freeze([]),turns:freeze([
    turn('这是你妈妈吗？','Zhè shì nǐ māma ma?','Это твоя мама?',['这是我妈妈','这是我妈妈。','zhè shì wǒ māma','zhe4 shi4 wo3 ma1 ma5'],'这是我妈妈。 Zhè shì wǒ māma.','Ответь: «Это моя мама».','这是你妈妈吗'),
