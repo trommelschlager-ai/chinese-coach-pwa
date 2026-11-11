@@ -38,7 +38,7 @@ function prompt(){
 }
 function finish(){
  stopAudio();stopRecognition();done=true;
- add('panda','Отлично! Оба ответа верные. 再见!','', 'Диалог можно повторять сколько угодно раз.');
+ add('panda','Отлично! Обе фразы верные.','', 'Диалог можно повторять сколько угодно раз.');
  try{localStorage.setItem('pg-panda-voice-pilot-v1-last',new Date().toISOString())}catch{}
  refresh();status('Диалог завершён. Ты правильно назвал(а) фразы, но тоны голоса отдельно не проверялись.');
 }
