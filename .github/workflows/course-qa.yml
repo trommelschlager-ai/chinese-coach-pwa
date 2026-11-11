@@ -19,6 +19,7 @@ jobs:
       - run: npm run check:pronunciation
       - run: node scripts/verify-hsk1-fifth-v227.cjs
       - run: node scripts/verify-panda-go-approved-v231.cjs
+      - run: node scripts/verify-hsk1-lesson2-xiaoxiao-v261.cjs
       - run: node scripts/verify-panda-go-audio-v236.cjs
       - run: node scripts/verify-panda-native-real-v246.cjs
       - run: node scripts/verify-panda-audio-v244.cjs

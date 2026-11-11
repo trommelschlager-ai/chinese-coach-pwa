@@ -58,6 +58,7 @@ let heard=false,busy=false,audio=null,recognition=null,speechUtterance=null,atte
 const persist=()=>{try{localStorage.setItem(storageKey(),JSON.stringify(saved))}catch{}};
 const root=()=>document.getElementById('pg2-speaking-root');
 const availableAudio=word=>{
+ const xiaoxiao=window.PandaLesson2XiaoxiaoV261?.lookup(word);if(xiaoxiao)return xiaoxiao;
  const original=window.PandaOwnerAudio?.lookup(word);if(original)return original;
  const unified=window.PANDA_HSK1_L2_ONE_VOICE_V208||{};
  const map=window.PANDA_HSK1_VOICES?.female||{};

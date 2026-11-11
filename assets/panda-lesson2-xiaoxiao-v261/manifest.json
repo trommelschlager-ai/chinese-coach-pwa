@@ -1,0 +1,55 @@
+{
+  "version": 261,
+  "lesson": 2,
+  "voice": "Xiaoxiao",
+  "provider": "Luvvoice",
+  "speechRatePercent": -20,
+  "syntheticVoice": true,
+  "sourceFiles": [
+    "luvvoice.com-20261111-wEouLM.mp3",
+    "luvvoice.com-20261111-EbKbHX.mp3"
+  ],
+  "uniqueAudioPhraseCount": 16,
+  "newAudioFiles": 7,
+  "reusedSameVoiceFiles": 9,
+  "commercialLicenseVerified": false,
+  "nativeToneReview": "pending",
+  "dialoguePolicy": "male_role_preserved",
+  "clips": [
+    {
+      "filename": "laoshi.mp3",
+      "gitBlobSha": "c188cd725313414cf1e275e328a6cbc67e37c1db",
+      "sizeBytes": 8300
+    },
+    {
+      "filename": "nimen.mp3",
+      "gitBlobSha": "4d890933c768c6995a92522c4ff6435af2f15f90",
+      "sizeBytes": 7340
+    },
+    {
+      "filename": "nin.mp3",
+      "gitBlobSha": "9de1c3ef4f40554b49cd5110e5ab160993c3ec32",
+      "sizeBytes": 5996
+    },
+    {
+      "filename": "nishilaoshima.mp3",
+      "gitBlobSha": "8acead01d20278207efa69c788eafcf34a5ab11b",
+      "sizeBytes": 13100
+    },
+    {
+      "filename": "shidewoshilaoshi.mp3",
+      "gitBlobSha": "5e9a98e5c17cd153ad279086ba152737ca20529b",
+      "sizeBytes": 19244
+    },
+    {
+      "filename": "women.mp3",
+      "gitBlobSha": "6bc2830a40268e92da867886906db2bb62c4ee32",
+      "sizeBytes": 7148
+    },
+    {
+      "filename": "woshilaoshi.mp3",
+      "gitBlobSha": "d9b98e6ca698172ab551f006800b58b0a1c4dc5b",
+      "sizeBytes": 11372
+    }
+  ]
+}

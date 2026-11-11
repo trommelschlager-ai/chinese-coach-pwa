@@ -91,6 +91,8 @@ const unified=window.PANDA_HSK1_L2_ONE_VOICE_V208||{};
 const course=window.PANDA_HSK1_VOICES||{};
 function fileFor(hz,role='female'){
  const text=String(hz),key=cleanText(text);
+ const xiaoxiao=role==='female'&&window.PandaLesson2XiaoxiaoV261?.lookup(text);
+ if(xiaoxiao)return xiaoxiao;
  const original=role==='female'&&window.PandaOwnerAudio?.lookup(text);if(original)return original;
  // The animated dialogue on screen 10 retains its two speakers.
  if(state.step===9){
@@ -133,7 +135,7 @@ function playReviewEntry(entry,epoch){
   if(file){
    try{
     player=new Audio(window.PandaAudioLevel?.[file]||file);audio=player;
-    player.preload='auto';player.preservesPitch=true;player.playbackRate=unified[hanzi]?1:.9;
+    player.preload='auto';player.preservesPitch=true;player.playbackRate=window.PandaLesson2XiaoxiaoV261?.lookup(hanzi)?1:(unified[hanzi]?1:.9);
     player.onended=complete;player.onerror=complete;
     const attempt=player.play();
     if(attempt&&typeof attempt.catch==='function')attempt.catch(complete);
@@ -200,7 +202,7 @@ function play(hz,role='female'){
   const a=new Audio(window.PandaAudioLevel?.[file]||file);audio=a;a.preload='auto';
   a.preservesPitch=true;
   // Do not slow already prepared same-speaker recordings: preserve natural pitches and tones.
-  a.playbackRate=unified[hz]||unified[cleanText(hz)]?1:(vocab[cleanText(hz)]?1:0.9);
+  a.playbackRate=window.PandaLesson2XiaoxiaoV261?.lookup(hz)?1:(unified[hz]||unified[cleanText(hz)]?1:(vocab[cleanText(hz)]?1:0.9));
   a.onerror=()=>{if(audio===a)feedback('Запись не загрузилась. Проверь интернет.')};
   a.onended=()=>{if(audio===a)audio=null};
   a.onplaying=()=>{

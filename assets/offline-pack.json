@@ -1,6 +1,6 @@
 {
-  "version": 260,
-  "bytes": 50866105,
+  "version": 261,
+  "bytes": 50986088,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -2250,6 +2250,21 @@
     "./index.html",
     "./manifest.webmanifest",
     "./panda-lesson1.html",
-    "./start-chinese.html"
+    "./start-chinese.html",
+    "./assets/panda-lesson2-xiaoxiao-v261.js?v=261",
+    "./assets/panda-lesson2-xiaoxiao-v261/laoshi.mp3",
+    "./assets/panda-lesson2-xiaoxiao-v261/nimen.mp3",
+    "./assets/panda-lesson2-xiaoxiao-v261/nin.mp3",
+    "./assets/panda-lesson2-xiaoxiao-v261/nishilaoshima.mp3",
+    "./assets/panda-lesson2-xiaoxiao-v261/shidewoshilaoshi.mp3",
+    "./assets/panda-lesson2-xiaoxiao-v261/women.mp3",
+    "./assets/panda-lesson2-xiaoxiao-v261/woshilaoshi.mp3",
+    "./assets/lesson1-xiaoxiao-v260/wo.mp3",
+    "./assets/lesson1-xiaoxiao-v260/ni.mp3",
+    "./assets/lesson1-xiaoxiao-v260/nihao.mp3",
+    "./assets/lesson1-xiaoxiao-v260/shi.mp3",
+    "./assets/lesson1-xiaoxiao-v260/xuesheng.mp3",
+    "./assets/panda-xiaoxiao-trainer-v250/p041.mp3",
+    "./assets/panda-xiaoxiao-trainer-v250/p079.mp3"
   ]
 }
