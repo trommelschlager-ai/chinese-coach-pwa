@@ -1,0 +1,1437 @@
+{
+  "schema": 1,
+  "version": 263,
+  "lesson": 3,
+  "voice": "Xiaoxiao",
+  "provider": "Luvvoice",
+  "rate_percent": -20,
+  "pitch": 0,
+  "volume": 0,
+  "source_files": [
+    "luvvoice.com-20261111-dQrmDQ.mp3",
+    "luvvoice.com-20261111-1DWBvq.mp3",
+    "luvvoice.com-20261111-cthCnW.mp3",
+    "luvvoice.com-20261111-BPkwYj.mp3",
+    "luvvoice.com-20261111-bFUV4t.mp3"
+  ],
+  "clip_count": 101,
+  "commercial_license_verified": false,
+  "native_tone_review": "pending",
+  "segmentation": "21+20+20+20+20 independent voiced segments detected by silence; +/- 135/170ms padding; mono 24kHz 64kbps; 15/20ms fades",
+  "clips": [
+    {
+      "number": 0,
+      "hanzi": "零",
+      "file": "000.mp3",
+      "length_ms": 635,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        290,
+        620
+      ],
+      "output_sha256": "60df91456516171779150b8dcadb5cd88758e58a14f3c0aa15e3185b0d8a374f",
+      "bytes": 5804,
+      "tone_review": "pending"
+    },
+    {
+      "number": 1,
+      "hanzi": "一",
+      "file": "001.mp3",
+      "length_ms": 585,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        1475,
+        1755
+      ],
+      "output_sha256": "fa099c7367ae3f1b873db402890785e362a13af652be6e1ed3d6a5c6e948d634",
+      "bytes": 5420,
+      "tone_review": "pending"
+    },
+    {
+      "number": 2,
+      "hanzi": "二",
+      "file": "002.mp3",
+      "length_ms": 625,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        2640,
+        2960
+      ],
+      "output_sha256": "043222ca8fe3441fd05909f0fc97558db87a019c4853dd53b48a8f05c67bd26d",
+      "bytes": 5804,
+      "tone_review": "pending"
+    },
+    {
+      "number": 3,
+      "hanzi": "三",
+      "file": "003.mp3",
+      "length_ms": 635,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        3895,
+        4225
+      ],
+      "output_sha256": "8fc85f16c274f528d1db675046c45df10c80929a1d50effaa469d259f5b29d7a",
+      "bytes": 5804,
+      "tone_review": "pending"
+    },
+    {
+      "number": 4,
+      "hanzi": "四",
+      "file": "004.mp3",
+      "length_ms": 670,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        5140,
+        5505
+      ],
+      "output_sha256": "ff3ce7ba56e7814e77197b6da6fa458f3bf856e62691b89d3d72d7472dc84f38",
+      "bytes": 5996,
+      "tone_review": "pending"
+    },
+    {
+      "number": 5,
+      "hanzi": "五",
+      "file": "005.mp3",
+      "length_ms": 630,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        6375,
+        6700
+      ],
+      "output_sha256": "21c311703cfb7d9c4e2d3ad09e882d6b6376cd96d49f2c9a50e0a40fae19b5b4",
+      "bytes": 5804,
+      "tone_review": "pending"
+    },
+    {
+      "number": 6,
+      "hanzi": "六",
+      "file": "006.mp3",
+      "length_ms": 620,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        7550,
+        7865
+      ],
+      "output_sha256": "9c5aff93c6a5c9ccbf119f9f009bed0c6abc253aa68a82c3c62c74156a7665da",
+      "bytes": 5612,
+      "tone_review": "pending"
+    },
+    {
+      "number": 7,
+      "hanzi": "七",
+      "file": "007.mp3",
+      "length_ms": 660,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        8760,
+        9115
+      ],
+      "output_sha256": "1b26b4223f53ace6495894b74de6c25c122f6bc93147ecf5bfa3fc0905aa7f4b",
+      "bytes": 5996,
+      "tone_review": "pending"
+    },
+    {
+      "number": 8,
+      "hanzi": "八",
+      "file": "008.mp3",
+      "length_ms": 595,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        9990,
+        10280
+      ],
+      "output_sha256": "ab146fd5cc75e939985551c51d5dde69a7ea4f332ae82f92f110254e17c1ce4f",
+      "bytes": 5420,
+      "tone_review": "pending"
+    },
+    {
+      "number": 9,
+      "hanzi": "九",
+      "file": "009.mp3",
+      "length_ms": 610,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        11170,
+        11475
+      ],
+      "output_sha256": "a065051e517e14a8503a2ad0928333445d6ae47ddc8e4b49502d90b16fb27a56",
+      "bytes": 5612,
+      "tone_review": "pending"
+    },
+    {
+      "number": 10,
+      "hanzi": "十",
+      "file": "010.mp3",
+      "length_ms": 710,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        12375,
+        12780
+      ],
+      "output_sha256": "c7244829f03282ae9424f9e5cd7328162c5840913c051b6b5182b11e865862de",
+      "bytes": 6380,
+      "tone_review": "pending"
+    },
+    {
+      "number": 11,
+      "hanzi": "十一",
+      "file": "011.mp3",
+      "length_ms": 910,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        13675,
+        14280
+      ],
+      "output_sha256": "e378ce48143b7b7e352d519b9c3917b081fb8d23fe9ed1afd1c19aacce3da80b",
+      "bytes": 7916,
+      "tone_review": "pending"
+    },
+    {
+      "number": 12,
+      "hanzi": "十二",
+      "file": "012.mp3",
+      "length_ms": 845,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        15185,
+        15725
+      ],
+      "output_sha256": "ab591b2c47428f522417579aa9f83179afc54fca31540821051ed91ab16f2964",
+      "bytes": 7532,
+      "tone_review": "pending"
+    },
+    {
+      "number": 13,
+      "hanzi": "十三",
+      "file": "013.mp3",
+      "length_ms": 880,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        16630,
+        17205
+      ],
+      "output_sha256": "902d4cae43315f88eafbf00c948f52a3683792678c552a10e930fef74416bde2",
+      "bytes": 7724,
+      "tone_review": "pending"
+    },
+    {
+      "number": 14,
+      "hanzi": "十四",
+      "file": "014.mp3",
+      "length_ms": 930,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        18115,
+        18740
+      ],
+      "output_sha256": "891b3f5453e72c2611ec90fd3d703c298807ee478f25441eeaccb0768bce5606",
+      "bytes": 8108,
+      "tone_review": "pending"
+    },
+    {
+      "number": 15,
+      "hanzi": "十五",
+      "file": "015.mp3",
+      "length_ms": 930,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        19650,
+        20275
+      ],
+      "output_sha256": "01faabf6a6f1f3e72ad139d20cab719f6f429ad0b177a65e34cfa7cd20656d7c",
+      "bytes": 8108,
+      "tone_review": "pending"
+    },
+    {
+      "number": 16,
+      "hanzi": "十六",
+      "file": "016.mp3",
+      "length_ms": 930,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        21170,
+        21795
+      ],
+      "output_sha256": "812e788d51c64bf7e22ab0eb92c800416db38a7e48595d0643cbbeacb9347a3d",
+      "bytes": 8108,
+      "tone_review": "pending"
+    },
+    {
+      "number": 17,
+      "hanzi": "十七",
+      "file": "017.mp3",
+      "length_ms": 945,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        22710,
+        23350
+      ],
+      "output_sha256": "b6c7490b39540b4e1c4878c3dcc91e2bf3bb8d7628d55f416f5fd6bd37c6eaff",
+      "bytes": 8300,
+      "tone_review": "pending"
+    },
+    {
+      "number": 18,
+      "hanzi": "十八",
+      "file": "018.mp3",
+      "length_ms": 860,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        24240,
+        24795
+      ],
+      "output_sha256": "c0d8e52dcadf8158543714e27f32da423f0a28f00260a1e48a366810ef753906",
+      "bytes": 7532,
+      "tone_review": "pending"
+    },
+    {
+      "number": 19,
+      "hanzi": "十九",
+      "file": "019.mp3",
+      "length_ms": 945,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        25705,
+        26345
+      ],
+      "output_sha256": "ced8c7617f0db33f3e4661268d378bfdb0439ae348c125f4ced408c8003d7aae",
+      "bytes": 8300,
+      "tone_review": "pending"
+    },
+    {
+      "number": 20,
+      "hanzi": "二十",
+      "file": "020.mp3",
+      "length_ms": 925,
+      "source_file": "luvvoice.com-20261111-dQrmDQ.mp3",
+      "source_interval_ms": [
+        27235,
+        27855
+      ],
+      "output_sha256": "a9c96d4ada38f76b9b52313fad281ab00a91bb477a569fa1295a317143f48c95",
+      "bytes": 8108,
+      "tone_review": "pending"
+    },
+    {
+      "number": 21,
+      "hanzi": "二十一",
+      "file": "021.mp3",
+      "length_ms": 1005,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        325,
+        1025
+      ],
+      "output_sha256": "6393a874e70bc17461388fdeb723751d1f5ec602ad8408f2731b0e10540d9050",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 22,
+      "hanzi": "二十二",
+      "file": "022.mp3",
+      "length_ms": 980,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        1890,
+        2565
+      ],
+      "output_sha256": "d99a30e4391a6f2a19678c419c5f34444e6d38d3f3b4b9c3ecfa39f85bfe6d8b",
+      "bytes": 8492,
+      "tone_review": "pending"
+    },
+    {
+      "number": 23,
+      "hanzi": "二十三",
+      "file": "023.mp3",
+      "length_ms": 1025,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        3450,
+        4170
+      ],
+      "output_sha256": "6b9af7cebe56672c4322bf46efc8b14195920946200de5e1a148670973f7daa2",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 24,
+      "hanzi": "二十四",
+      "file": "024.mp3",
+      "length_ms": 1060,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        5055,
+        5810
+      ],
+      "output_sha256": "b84d4708d9370962763116da2e3e66c2e6d70d570852817369b2e9302aaca2ca",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 25,
+      "hanzi": "二十五",
+      "file": "025.mp3",
+      "length_ms": 1050,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        6695,
+        7440
+      ],
+      "output_sha256": "399b297ecd6e8239170fd4f8e41da0c2675d1059931bd6fa5956e81cfc3293c4",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 26,
+      "hanzi": "二十六",
+      "file": "026.mp3",
+      "length_ms": 1055,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        8315,
+        9065
+      ],
+      "output_sha256": "252c1db4b331c66db80bf34bb8f2d191923d96d6d75d1c44ec2eb90498ed329c",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 27,
+      "hanzi": "二十七",
+      "file": "027.mp3",
+      "length_ms": 1060,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        9970,
+        10725
+      ],
+      "output_sha256": "d17219a6f7ff54544e8bdf2b31e4352d5f4e5b3ed1cf8b16a96c84a67100ecde",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 28,
+      "hanzi": "二十八",
+      "file": "028.mp3",
+      "length_ms": 975,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        11595,
+        12265
+      ],
+      "output_sha256": "0150217a99b6d487cfd3068ec4446578b9bd4d56b8fcef02fd1161392a6c259e",
+      "bytes": 8492,
+      "tone_review": "pending"
+    },
+    {
+      "number": 29,
+      "hanzi": "二十九",
+      "file": "029.mp3",
+      "length_ms": 1100,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        13150,
+        13945
+      ],
+      "output_sha256": "c57d8b3bf1fad936f9d992d848c884b76689e349290ecc1ef2c195523df17692",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 30,
+      "hanzi": "三十",
+      "file": "030.mp3",
+      "length_ms": 985,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        14865,
+        15545
+      ],
+      "output_sha256": "945da4d2ebaf3394dc457b92fe290c47aecbca34f3560647e93156c6e631252d",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 31,
+      "hanzi": "三十一",
+      "file": "031.mp3",
+      "length_ms": 1055,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        16460,
+        17210
+      ],
+      "output_sha256": "c7e3afaf254c280a015c2d39e9505b9fcd9d28d24de1a5af765fd662924b7f61",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 32,
+      "hanzi": "三十二",
+      "file": "032.mp3",
+      "length_ms": 1015,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        18115,
+        18825
+      ],
+      "output_sha256": "1b9644990ed5dd05012051d99353ad4f60ebc622774449cd46cddf9afc1f8874",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 33,
+      "hanzi": "三十三",
+      "file": "033.mp3",
+      "length_ms": 1075,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        19755,
+        20525
+      ],
+      "output_sha256": "6d3c44cf47deea4ce53e7083fc900982aa0635f1904da8d0a5e04ebe96ce6ae6",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 34,
+      "hanzi": "三十四",
+      "file": "034.mp3",
+      "length_ms": 1090,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        21450,
+        22235
+      ],
+      "output_sha256": "c04795ee9b7f940c18c7d66d6809836e48d1d9e3ff1152eb237146a41665207b",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 35,
+      "hanzi": "三十五",
+      "file": "035.mp3",
+      "length_ms": 1100,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        23160,
+        23955
+      ],
+      "output_sha256": "178908471c0aab319459322cb31ec8bcf4bc3dc099cdac3fc3e76d74535cf9dd",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 36,
+      "hanzi": "三十六",
+      "file": "036.mp3",
+      "length_ms": 1035,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        24865,
+        25595
+      ],
+      "output_sha256": "e90cf1beee745442156d649189adfadb81e1ddd75c67b4fbb5720cd1c10c204a",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 37,
+      "hanzi": "三十七",
+      "file": "037.mp3",
+      "length_ms": 1090,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        26515,
+        27300
+      ],
+      "output_sha256": "bfb11d9cb212a51eed57915d7220d14e1a523eed94d9ae8fb11acf5f98daac81",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 38,
+      "hanzi": "三十八",
+      "file": "038.mp3",
+      "length_ms": 1040,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        28215,
+        28950
+      ],
+      "output_sha256": "cc0d4c6a88e298e1d74e51a86c85d3414060188e7c281401afa37610b8cb9040",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 39,
+      "hanzi": "三十九",
+      "file": "039.mp3",
+      "length_ms": 1120,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        29880,
+        30695
+      ],
+      "output_sha256": "c929aac22977e5ca1d1125ff609f6d8c5d73d5ce70ac70039c21693a0ee3859d",
+      "bytes": 9644,
+      "tone_review": "pending"
+    },
+    {
+      "number": 40,
+      "hanzi": "四十",
+      "file": "040.mp3",
+      "length_ms": 960,
+      "source_file": "luvvoice.com-20261111-1DWBvq.mp3",
+      "source_interval_ms": [
+        31595,
+        32250
+      ],
+      "output_sha256": "d8881632a40318bd337df9fe133114e16c2e616b01533c9cb03e1527194fbff9",
+      "bytes": 8300,
+      "tone_review": "pending"
+    },
+    {
+      "number": 41,
+      "hanzi": "四十一",
+      "file": "041.mp3",
+      "length_ms": 1035,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        350,
+        1080
+      ],
+      "output_sha256": "7a8fe3d7b27ed1f7a13681fa515c8bdc94cd36db521fb37d563033874fd1b85f",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 42,
+      "hanzi": "四十二",
+      "file": "042.mp3",
+      "length_ms": 1030,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        1965,
+        2690
+      ],
+      "output_sha256": "8b09bc1c37593fa832831d7a2f06a163dbd8013d204a68c1525604923833fc1b",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 43,
+      "hanzi": "四十三",
+      "file": "043.mp3",
+      "length_ms": 1080,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        3600,
+        4375
+      ],
+      "output_sha256": "fd749a45429d655c3e2ae4024cb9281841c59fbb400f9b45492f753fc4f16346",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 44,
+      "hanzi": "四十四",
+      "file": "044.mp3",
+      "length_ms": 1125,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        5290,
+        6110
+      ],
+      "output_sha256": "9722722270a111dee3107dad33b7a9cc33f1f97c816ef678551dbed3e5c45321",
+      "bytes": 9644,
+      "tone_review": "pending"
+    },
+    {
+      "number": 45,
+      "hanzi": "四十五",
+      "file": "045.mp3",
+      "length_ms": 1115,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        7020,
+        7830
+      ],
+      "output_sha256": "90fdec5ece89107f103e36df4d2827332844a64e0b292708a4ede791c79cd44e",
+      "bytes": 9644,
+      "tone_review": "pending"
+    },
+    {
+      "number": 46,
+      "hanzi": "四十六",
+      "file": "046.mp3",
+      "length_ms": 1050,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        8730,
+        9475
+      ],
+      "output_sha256": "a900d8c758c25dc61768f6930da8483ed6436ec5e5a469be5abf614e0b72d28e",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 47,
+      "hanzi": "四十七",
+      "file": "047.mp3",
+      "length_ms": 1115,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        10380,
+        11190
+      ],
+      "output_sha256": "62ba2356a5cf5201e74efff6657347f33de0e3698486e7f8fe07afedac118121",
+      "bytes": 9644,
+      "tone_review": "pending"
+    },
+    {
+      "number": 48,
+      "hanzi": "四十八",
+      "file": "048.mp3",
+      "length_ms": 1025,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        12075,
+        12795
+      ],
+      "output_sha256": "0d8bd148a9255f06db591343409f097721280ab4b77ab3c47e6ef3f2c63beae7",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 49,
+      "hanzi": "四十九",
+      "file": "049.mp3",
+      "length_ms": 1080,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        13710,
+        14485
+      ],
+      "output_sha256": "b812e6563ed04252f65ee0a10ad63ae57979aa5110ada8380384d8e946e7961c",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 50,
+      "hanzi": "五十",
+      "file": "050.mp3",
+      "length_ms": 930,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        15340,
+        15965
+      ],
+      "output_sha256": "ff69f2e2539cc7f1e361a277cfa28a1395633e30538d46c73083582cd11169aa",
+      "bytes": 8108,
+      "tone_review": "pending"
+    },
+    {
+      "number": 51,
+      "hanzi": "五十一",
+      "file": "051.mp3",
+      "length_ms": 1000,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        16810,
+        17505
+      ],
+      "output_sha256": "0b9b069af1f5c9e6c347db50255ca0e75162382221744ae969534b5ee45a4a84",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 52,
+      "hanzi": "五十二",
+      "file": "052.mp3",
+      "length_ms": 995,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        18335,
+        19025
+      ],
+      "output_sha256": "c6e5d9f473033c87fabc8a3560866a529a026499753ae5f19f722e5f0dada2b7",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 53,
+      "hanzi": "五十三",
+      "file": "053.mp3",
+      "length_ms": 1000,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        19890,
+        20585
+      ],
+      "output_sha256": "fb283ddaa654a7a2d22bbf16256f58a4a8f412d4505766ac1e7e08762d78e7d3",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 54,
+      "hanzi": "五十四",
+      "file": "054.mp3",
+      "length_ms": 1010,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        21440,
+        22145
+      ],
+      "output_sha256": "b89f1dcf184f96c7c367d7455f775d7e19b8229464ce1541ec72918e4df75292",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 55,
+      "hanzi": "五十五",
+      "file": "055.mp3",
+      "length_ms": 1075,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        23005,
+        23775
+      ],
+      "output_sha256": "0a08d3acc2c9a589b57481565fb50cbbff647490d191a2ef5be94aee84ac9949",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 56,
+      "hanzi": "五十六",
+      "file": "056.mp3",
+      "length_ms": 1035,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        24610,
+        25340
+      ],
+      "output_sha256": "20549b74d803eeda5b205adce78915d2b090c322fc1d8a92ec22c1cb27b959d1",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 57,
+      "hanzi": "五十七",
+      "file": "057.mp3",
+      "length_ms": 1055,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        26195,
+        26945
+      ],
+      "output_sha256": "f9d3ea9faa5ae0709ca94d99c3a2eecfe645f612cffb3f4d0ed954574ebe86b5",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 58,
+      "hanzi": "五十八",
+      "file": "058.mp3",
+      "length_ms": 985,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        27770,
+        28450
+      ],
+      "output_sha256": "e4bc45127fe80224fb3592bfdf638b14c0513338ede09688686daddef6b31cf7",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 59,
+      "hanzi": "五十九",
+      "file": "059.mp3",
+      "length_ms": 1095,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        29310,
+        30100
+      ],
+      "output_sha256": "a66f85207e6ed574a758460aa110e676fe53e7f856cf44f879e996ef89c942f9",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 60,
+      "hanzi": "六十",
+      "file": "060.mp3",
+      "length_ms": 975,
+      "source_file": "luvvoice.com-20261111-cthCnW.mp3",
+      "source_interval_ms": [
+        30965,
+        31635
+      ],
+      "output_sha256": "44ac15fc5aaa8453b4c06219aa27f481779adf658e1e732367dc164e6c0b08f3",
+      "bytes": 8492,
+      "tone_review": "pending"
+    },
+    {
+      "number": 61,
+      "hanzi": "六十一",
+      "file": "061.mp3",
+      "length_ms": 1020,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        320,
+        1035
+      ],
+      "output_sha256": "b5e121a3126233b9a02d65e3bc6daece0dd3625a868b2561260c96547bf0f5b0",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 62,
+      "hanzi": "六十二",
+      "file": "062.mp3",
+      "length_ms": 1025,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        1880,
+        2600
+      ],
+      "output_sha256": "e54d2dbcee28c378eaa39b1267ef88d6521751ccd3b72c21292800fe80dbdeb2",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 63,
+      "hanzi": "六十三",
+      "file": "063.mp3",
+      "length_ms": 1025,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        3470,
+        4190
+      ],
+      "output_sha256": "940983edf0496d49c89b461a967cb1251a5e72b005718fee24e4cf55e8e025e8",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 64,
+      "hanzi": "六十四",
+      "file": "064.mp3",
+      "length_ms": 1070,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        5070,
+        5835
+      ],
+      "output_sha256": "1a3ed18579880c3bfacdc5cf1cf467bab3c01ff1ddbd214ac6117bbbdb595499",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 65,
+      "hanzi": "六十五",
+      "file": "065.mp3",
+      "length_ms": 1100,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        6715,
+        7510
+      ],
+      "output_sha256": "7cfe81f2e28e697d663a944d3f320479f8da47d595de973df8285368812c1e15",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 66,
+      "hanzi": "六十六",
+      "file": "066.mp3",
+      "length_ms": 1065,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        8370,
+        9130
+      ],
+      "output_sha256": "d5aba1f712a345530e3e0d08eef17c4106d09b7425c88c2117aebb91a6a6f09e",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 67,
+      "hanzi": "六十七",
+      "file": "067.mp3",
+      "length_ms": 1070,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        10010,
+        10775
+      ],
+      "output_sha256": "d9406921081c91b9343ca181bf1fc61a03c5819a0b8bffff743777ecca5e80a4",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 68,
+      "hanzi": "六十八",
+      "file": "068.mp3",
+      "length_ms": 995,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        11625,
+        12315
+      ],
+      "output_sha256": "500e269a5703636bc977eb2b22a8bb2caa787d41643a1417d88a2aa771d34c33",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 69,
+      "hanzi": "六十九",
+      "file": "069.mp3",
+      "length_ms": 1085,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        13195,
+        13975
+      ],
+      "output_sha256": "8c3cc80298874f920cea37fdd7bf0ba78823ada030fa6b17addb16e2d3c8c8ce",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 70,
+      "hanzi": "七十",
+      "file": "070.mp3",
+      "length_ms": 985,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        14855,
+        15535
+      ],
+      "output_sha256": "8f791ea6bb132e9c13550ac8f65398909be4285fa86862af671e9b1da1d070cb",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 71,
+      "hanzi": "七十一",
+      "file": "071.mp3",
+      "length_ms": 1030,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        16405,
+        17130
+      ],
+      "output_sha256": "cfbceaf2f661b1e741bd125d3cb3cf293cd752c7dc00203f834229d090ac7946",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 72,
+      "hanzi": "七十二",
+      "file": "072.mp3",
+      "length_ms": 1020,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        17985,
+        18700
+      ],
+      "output_sha256": "ee3ef0fe371ea0a2d155d7ac9bd14f7642423413e66a67782a77c98a0adcb6f0",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 73,
+      "hanzi": "七十三",
+      "file": "073.mp3",
+      "length_ms": 1035,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        19575,
+        20305
+      ],
+      "output_sha256": "7e7d3e424a64a0c2c339a76dfbeb68efffdc2bb974e9046e09d83a28aec05966",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 74,
+      "hanzi": "七十四",
+      "file": "074.mp3",
+      "length_ms": 1055,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        21185,
+        21935
+      ],
+      "output_sha256": "5e15601e69cff8fdfac0531733e06cecc12f767086b353f6377ce2b981cecf1e",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 75,
+      "hanzi": "七十五",
+      "file": "075.mp3",
+      "length_ms": 1085,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        22810,
+        23590
+      ],
+      "output_sha256": "50f07a7a22973c0636d9caae3d217b71aa32023404ab9dd68310dece1fe53840",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 76,
+      "hanzi": "七十六",
+      "file": "076.mp3",
+      "length_ms": 1040,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        24455,
+        25190
+      ],
+      "output_sha256": "17677a06287e6e067f3265985cb21078fa89439c202c01c71f21ff9b0ae18695",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 77,
+      "hanzi": "七十七",
+      "file": "077.mp3",
+      "length_ms": 1070,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        26080,
+        26845
+      ],
+      "output_sha256": "8f25b0d24da76ef6de10e6036462aceab05eeb6a15e178bb097ce82e13639c14",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 78,
+      "hanzi": "七十八",
+      "file": "078.mp3",
+      "length_ms": 1015,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        27705,
+        28415
+      ],
+      "output_sha256": "b282313c92402d5e5a37c7e37c4bb02b9057166aa8fead57c8cd2d8f3e679fef",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 79,
+      "hanzi": "七十九",
+      "file": "079.mp3",
+      "length_ms": 1100,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        29295,
+        30090
+      ],
+      "output_sha256": "82f2e1fd1381eb7e0d998068370241ef58dac669de5524566bcdea9193d08351",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 80,
+      "hanzi": "八十",
+      "file": "080.mp3",
+      "length_ms": 945,
+      "source_file": "luvvoice.com-20261111-BPkwYj.mp3",
+      "source_interval_ms": [
+        30960,
+        31600
+      ],
+      "output_sha256": "e7c65364d17faac18934e48f23487abea0b1963d19102527dd1d036bf02e86c1",
+      "bytes": 8300,
+      "tone_review": "pending"
+    },
+    {
+      "number": 81,
+      "hanzi": "八十一",
+      "file": "081.mp3",
+      "length_ms": 1050,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        305,
+        1050
+      ],
+      "output_sha256": "224c7b5220f485a7b97f8975f8ad61c63cb661b8425e100e912e43519546a4e1",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 82,
+      "hanzi": "八十二",
+      "file": "082.mp3",
+      "length_ms": 1020,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        1885,
+        2600
+      ],
+      "output_sha256": "5d7f84d2a3d1956ef24d148e9d7f78c6bf56b92e70d506250b98f65b24b1e06d",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 83,
+      "hanzi": "八十三",
+      "file": "083.mp3",
+      "length_ms": 1040,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        3465,
+        4200
+      ],
+      "output_sha256": "ca354ce6845a6d999a2bb6d3efd880e53a71d8d5cb4132e21b9d035b269ee671",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 84,
+      "hanzi": "八十四",
+      "file": "084.mp3",
+      "length_ms": 1060,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        5075,
+        5830
+      ],
+      "output_sha256": "f0eb36301803fb74e650a5205cc5690c4ac5b0300b4fd2ab622fe18aafe60a09",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 85,
+      "hanzi": "八十五",
+      "file": "085.mp3",
+      "length_ms": 1070,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        6700,
+        7465
+      ],
+      "output_sha256": "dc2d17132af9dce0cbde145e881903ff3046132d79105e5d6dfbeabd6e65a633",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 86,
+      "hanzi": "八十六",
+      "file": "086.mp3",
+      "length_ms": 1075,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        8325,
+        9095
+      ],
+      "output_sha256": "de9dc7b64a9a88452be6d91f9f893bc98baa29a5f58c3daa64e4763514f34d24",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 87,
+      "hanzi": "八十七",
+      "file": "087.mp3",
+      "length_ms": 1085,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        9965,
+        10745
+      ],
+      "output_sha256": "a0e8c392002d0bd0585d81c76ec3dcc5764c878d26ab1f083bd008582b8587f0",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 88,
+      "hanzi": "八十八",
+      "file": "088.mp3",
+      "length_ms": 1020,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        11590,
+        12305
+      ],
+      "output_sha256": "187bd159eb4dd067b49965e371dc3f4f421b3391585117f0f3959d1f01f10d18",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 89,
+      "hanzi": "八十九",
+      "file": "089.mp3",
+      "length_ms": 1070,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        13185,
+        13950
+      ],
+      "output_sha256": "43099f4fb75c875f7f5852b95430b28136d84c476db3557211fc8a08d50ea27a",
+      "bytes": 9260,
+      "tone_review": "pending"
+    },
+    {
+      "number": 90,
+      "hanzi": "九十",
+      "file": "090.mp3",
+      "length_ms": 925,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        14825,
+        15445
+      ],
+      "output_sha256": "e135a34626675cfe4201509c6208608fd4a6914c9d9a5414d57b2cd614542359",
+      "bytes": 8108,
+      "tone_review": "pending"
+    },
+    {
+      "number": 91,
+      "hanzi": "九十一",
+      "file": "091.mp3",
+      "length_ms": 995,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        16315,
+        17005
+      ],
+      "output_sha256": "c31ec232108bd8759123dd8483f3c6db85ae8d87c98cf327421c25127540a6be",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 92,
+      "hanzi": "九十二",
+      "file": "092.mp3",
+      "length_ms": 995,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        17850,
+        18540
+      ],
+      "output_sha256": "65f25fc147e61c299b2d9d91bd064f0e6a829688ee635e0a1e8c97b4e0b997bc",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 93,
+      "hanzi": "九十三",
+      "file": "093.mp3",
+      "length_ms": 1020,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        19430,
+        20145
+      ],
+      "output_sha256": "e46f5f5f9eb4ce53267dad6c28b0ffc7517b3476963083854b1b0c7c00c12d6b",
+      "bytes": 8876,
+      "tone_review": "pending"
+    },
+    {
+      "number": 94,
+      "hanzi": "九十四",
+      "file": "094.mp3",
+      "length_ms": 1040,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        21020,
+        21755
+      ],
+      "output_sha256": "fde3124675f45e1afb35e543c50cbc797eb10e0a9e6e832519f810471cda7a1f",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 95,
+      "hanzi": "九十五",
+      "file": "095.mp3",
+      "length_ms": 1090,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        22630,
+        23415
+      ],
+      "output_sha256": "d76de4a4a62ab141f657a0a43ddbb7643d546e77ea4978538bec9369b1f0cbd8",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 96,
+      "hanzi": "九十六",
+      "file": "096.mp3",
+      "length_ms": 985,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        24275,
+        24955
+      ],
+      "output_sha256": "768d8551a2f6cf08be5abfdbdc367e47e01f1b4129f278c8962c7b6e3f112789",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 97,
+      "hanzi": "九十七",
+      "file": "097.mp3",
+      "length_ms": 1045,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        25835,
+        26575
+      ],
+      "output_sha256": "bd6cefc3c5ac645de5cb500c64f9185d3a681ac1469c19c490d64b6fecbc7007",
+      "bytes": 9068,
+      "tone_review": "pending"
+    },
+    {
+      "number": 98,
+      "hanzi": "九十八",
+      "file": "098.mp3",
+      "length_ms": 1000,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        27420,
+        28115
+      ],
+      "output_sha256": "60394c6ed30b3ec062c8bd4308c4b44cea9ddf344dcc0cd411d71e68e2e554b1",
+      "bytes": 8684,
+      "tone_review": "pending"
+    },
+    {
+      "number": 99,
+      "hanzi": "九十九",
+      "file": "099.mp3",
+      "length_ms": 1090,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        28995,
+        29780
+      ],
+      "output_sha256": "2821a5ef99eedec3c90defd44d0d1f61724d50bee2e07d916a0b0893a9d09da8",
+      "bytes": 9452,
+      "tone_review": "pending"
+    },
+    {
+      "number": 100,
+      "hanzi": "一百",
+      "file": "100.mp3",
+      "length_ms": 845,
+      "source_file": "luvvoice.com-20261111-bFUV4t.mp3",
+      "source_interval_ms": [
+        30650,
+        31190
+      ],
+      "output_sha256": "74f5ed68799641e8979e4fc5e209ae22c809f0592b4ff58e491093a1fcbb36eb",
+      "bytes": 7532,
+      "tone_review": "pending"
+    }
+  ]
+}
