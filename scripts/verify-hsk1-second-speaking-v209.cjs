@@ -13,8 +13,9 @@ const practice=fs.readFileSync('assets/hsk1-second-practice-v211.js','utf8');
 const voices=fs.readFileSync('assets/hsk1-voices-map-v160.js','utf8');
 const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const unified=fs.readFileSync('assets/hsk1-lesson2-audio-v208.js','utf8');
+const xiaoxiao=fs.readFileSync('assets/panda-lesson2-xiaoxiao-v261.js','utf8');
 assert(practiceHTML.includes('hsk1-second-practice-v211.js?v=237'));
-assert(practiceHTML.includes('hsk1-second-speaking-v209.js?v=237'));
+assert(practiceHTML.includes('hsk1-second-speaking-v209.js?v=262'));
 assert(!lessonHTML.includes('hsk1-second-speaking-v209.js'),'Main lesson must not load microphone checkpoint');
 const click=(d,s)=>{
  const item=d.querySelector(s);
@@ -26,7 +27,7 @@ function make(mode='quick',recognitionSupported=true,oldFull=null){
  const dom=new JSDOM(practiceHTML,{url:'https://example.test/chinese-coach-pwa/hsk1-second-practice.html?mode='+mode,runScripts:'outside-only'});
  const w=dom.window,d=w.document,heard=[],recognitions=[];
  if(oldFull)w.localStorage.setItem('pg-hsk1-v209-speaking-check',JSON.stringify(oldFull));
- w.eval(voices);w.eval(unified);
+ w.eval(voices);w.eval(unified);w.eval(xiaoxiao);
  w.Audio=function(path){this.src=path;heard.push(this);this.pause=()=>{};this.play=()=>{this.onplaying?.();return Promise.resolve()}};
  if(recognitionSupported){
   w.webkitSpeechRecognition=class MockRecognition{
@@ -51,7 +52,7 @@ function say(d,recognitions,transcript){
  const w=l.window,d=l.window.document;
  const done=Array(12).fill(false);done[9]=true;
  w.localStorage.setItem('pg-hsk1-v203-pronouns',JSON.stringify({step:9,done,index:{9:2}}));
- w.eval(native);w.eval(voices);w.eval(unified);
+ w.eval(native);w.eval(voices);w.eval(unified);w.eval(xiaoxiao);
  w.Audio=function(src){this.src=src;this.pause=()=>{};this.play=()=>Promise.resolve()};
  w.eval(extras);w.eval(main);
  assert(d.querySelector('.pg4-scene'),'Resumed finished dialogue screen must never be empty');
@@ -68,7 +69,7 @@ function say(d,recognitions,transcript){
  assert(d.querySelector('[data-speak-next]').disabled,'Cannot skip a word');
  assert(d.querySelector('[data-speak-start]').disabled,'Listen before speaking');
  click(d,'[data-speak-listen]');
- assert.equal(heard[0].src,'./assets/hsk1-voice-unified-v208/wo.mp3');
+ assert.equal(heard[0].src,'./assets/lesson1-xiaoxiao-v260/wo.mp3','Quick trainer must use Xiaoxiao, not the old Yue Tan recording');
  assert(d.querySelector('[data-speak-start]').disabled,'Do not count the playing example as the user');
  heard[0].onended();
  assert(!d.querySelector('[data-speak-start]').disabled,'Microphone unlocked after reference ends');
