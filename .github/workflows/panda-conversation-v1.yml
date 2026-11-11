@@ -1,0 +1,23 @@
+name: Panda conversation v1 QA
+on:
+  push:
+    branches:
+      - feat/panda-conversation-first-2026-11-11
+  pull_request:
+    branches: [main]
+    paths:
+      - "panda-talk.html"
+      - "assets/panda-conversation-*.mjs"
+      - "tests/panda-conversation-v1.test.mjs"
+permissions:
+  contents: read
+jobs:
+  speech-dialogues:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node --test tests/panda-conversation-v1.test.mjs
