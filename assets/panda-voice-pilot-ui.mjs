@@ -1,122 +1,153 @@
-import {PILOT_LINES,verifyPilotAnswer} from './panda-voice-pilot-engine.mjs';
+import {PILOT_LINES,REPLIES,verifyPilotAnswer} from './panda-voice-pilot-engine.mjs';
 const $=id=>document.getElementById(id);
-const state={step:0,done:false,active:false,recognition:null,epoch:0,audio:null,typing:false};
-function note(message){$('status').textContent=message}
-function stopAudio(){try{state.audio?.pause();state.audio.currentTime=0}catch{}state.audio=null}
+const state={step:0,done:false,active:false,recognition:null,epoch:0,audio:null,typing:false,lastAnswer:''};
+function note(text){$('status').textContent=text}
+function stopAudio(){
+ try{state.audio?.pause();state.audio.currentTime=0}catch{}
+ state.audio=null;
+ $('character').classList.remove('speaking');
+}
 function stopRecognition(){
  state.epoch++;
- const old=state.recognition;state.recognition=null;state.active=false;
- if(old){old.onresult=null;old.onerror=null;old.onend=null;
-  try{old.abort?.()}catch{try{old.stop?.()}catch{}}
+ const prev=state.recognition;
+ state.recognition=null;state.active=false;
+ if(prev){
+  prev.onresult=null;prev.onerror=null;prev.onend=null;
+  try{prev.abort?.()}catch{try{prev.stop?.()}catch{}}
  }
 }
 function current(){return PILOT_LINES[state.step]||null}
 function speechSupported(){return !!(window.SpeechRecognition||window.webkitSpeechRecognition)}
+function audioFor(key){return key&&window.PandaOwnerAudio?.lookup(key)||null}
+function setPanda(line){
+ $('phrase').textContent=line.hanzi||line.panda;
+ $('pinyin').textContent=line.pinyin;
+ $('translation').textContent=line.ru;
+ const audio=audioFor(line.audioKey);
+ $('hear').disabled=!audio;
+ $('audio-note').hidden=!!audio;
+}
 function refresh(){
- const line=current(),complete=state.done;
- $('conversation').hidden=complete;$('completed').hidden=!complete;
+ const step=current(),complete=state.done;
+ $('conversation').hidden=complete;
+ $('completed').hidden=!complete;
  $('step').textContent=complete?'Готово':(state.step+1)+' из '+PILOT_LINES.length;
  $('bar1').classList.toggle('on',true);
  $('bar2').classList.toggle('on',complete||state.step>0);
- $('hear').disabled=complete||!window.PandaOwnerAudio?.lookup(line?.audioKey);
+ $('hear').disabled=!audioFor(complete?'':step?.audioKey);
  $('mic').disabled=complete||!speechSupported();
  $('mic').setAttribute('aria-pressed',String(state.active));
  $('mic').textContent=state.active?'■':'🎙';
- $('mic-caption').textContent=state.active?'Слушаю…':speechSupported()?'Нажми и говори':'Используй клавиатуру';
+ $('mic-caption').textContent=state.active?'Слушаю…':speechSupported()?'Ответь голосом':'Ответь текстом';
  $('type-toggle').setAttribute('aria-expanded',String(state.typing));
  $('typing').hidden=!state.typing||complete;
 }
-function showStep(ack=''){
+function showStep(){
  stopAudio();stopRecognition();
  const line=current();
- if(!line){finish();return}
- $('phrase').textContent=line.panda;
- $('pinyin').textContent=line.pinyin;
- $('translation').textContent=line.ru;
- $('heard').textContent=ack;
+ if(!line){finish('short');return}
+ setPanda(line);
+ $('heard').textContent='';
  $('answer').value='';
- note(!speechSupported()?'Микрофон недоступен. Нажми «Написать».':'');
+ note(!speechSupported()?'Микрофон недоступен — нажми «Написать».':'');
  refresh();
 }
-function finish(){
+function finish(branch){
  stopAudio();stopRecognition();
+ const response=REPLIES[branch]||REPLIES.short;
  state.done=true;
+ setPanda(response);
+ $('final-feedback').textContent=branch==='asked-back'?'🎉 Настоящий диалог!':'🎉 Отлично! Ты ответил по-китайски.';
  try{localStorage.setItem('pg-panda-voice-pilot-v1-last',new Date().toISOString())}catch{}
  refresh();
 }
 function restart(){
  stopAudio();stopRecognition();
- state.step=0;state.done=false;state.typing=false;
+ state.step=0;state.done=false;state.typing=false;state.lastAnswer='';
  showStep();
 }
 function checkAnswer(raw){
  if(state.done)return;
- const value=String(raw||'').trim();
- if(!value){note('Ответ не распознан. Попробуй ещё раз.');return}
- const result=verifyPilotAnswer(state.step,value);
+ const input=String(raw||'').trim();
+ if(!input){note('Не расслышала. Повтори ещё раз.');return}
+ const result=verifyPilotAnswer(state.step,input);
  stopRecognition();
  if(!result.ok){
-  $('heard').textContent='👤 '+value;
-  note('Не совсем. Послушай ещё раз и повтори.');
+  $('heard').textContent='👤 '+input;
+  note('Попробуй ещё раз. Подсказка внизу.');
   refresh();return;
  }
- const acknowledged='✅ '+value;
+ state.lastAnswer=input;
  state.step++;
- if(state.step>=PILOT_LINES.length){finish();return}
- showStep(acknowledged);
+ if(state.step>=PILOT_LINES.length){
+  finish(result.branch);
+ }else{
+  showStep();
+ }
 }
 $('hear').addEventListener('click',()=>{
- const key=current()?.audioKey,source=window.PandaOwnerAudio?.lookup(key);
- if(!source){note('Запись сейчас недоступна.');return}
+ const line=state.done?null:current();
+ const src=audioFor(line?.audioKey);
+ if(!src){note('Для этой фразы запись носительницы ещё готовится.');return}
  stopRecognition();refresh();stopAudio();
  try{
-  state.audio=new Audio(source);state.audio.preload='auto';
-  state.audio.play().catch(()=>note('Не удалось включить звук. Попробуй ещё раз.'));
- }catch{note('Не удалось включить звук.')}
+  const a=new Audio(src);a.preload='auto';state.audio=a;
+  a.onplay=()=>$('character').classList.add('speaking');
+  a.onended=()=>{$('character').classList.remove('speaking');if(state.audio===a)state.audio=null};
+  a.onerror=()=>{stopAudio();note('Звук не загрузился. Попробуй ещё раз.')};
+  a.play().catch(()=>{stopAudio();note('Для звука нажми 🔊 ещё раз.')});
+ }catch{stopAudio();note('Не удалось воспроизвести звук.')}
 });
 $('mic').addEventListener('click',()=>{
  if(state.done)return;
  const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!Speech){note('Нажми «Написать» и введи ответ.');return}
+ if(!Speech){note('На этом устройстве нет распознавания речи. Нажми «Написать».');return}
  if(state.active&&state.recognition){
-  try{state.recognition.stop();$('mic').disabled=true;note('Заканчиваю прослушивание…')}
+  try{state.recognition.stop();$('mic').disabled=true;note('Завершаю запись…')}
   catch{stopRecognition();refresh()}
   return;
  }
  stopAudio();stopRecognition();
  const epoch=++state.epoch;
- let recog,heard=false,error=false;
+ let recognition,heard=false,failed=false;
  try{
-  recog=new Speech();
-  recog.lang='zh-CN';recog.continuous=false;recog.interimResults=false;recog.maxAlternatives=1;
- }catch{note('Микрофон недоступен. Ответь текстом.');return}
- state.recognition=recog;state.active=true;refresh();
- const valid=()=>recog===state.recognition&&epoch===state.epoch&&!state.done;
- recog.onresult=event=>{
+  recognition=new Speech();
+  recognition.lang='zh-CN';
+  recognition.continuous=false;
+  recognition.interimResults=false;
+  recognition.maxAlternatives=1;
+ }catch{note('Не удалось включить микрофон. Можно написать ответ.');return}
+ state.recognition=recognition;
+ state.active=true;
+ refresh();
+ const valid=()=>state.recognition===recognition&&state.epoch===epoch&&!state.done;
+ recognition.onresult=event=>{
   if(!valid())return;
-  const transcript=String(event.results?.[0]?.[0]?.transcript||'').trim();
-  heard=true;
-  checkAnswer(transcript);
+  const text=String(event.results?.[0]?.[0]?.transcript||'').trim();
+  heard=!!text;
+  checkAnswer(text);
  };
- recog.onerror=event=>{
+ recognition.onerror=event=>{
   if(!valid())return;
-  error=true;
+  failed=true;
   const errors={
-   'not-allowed':'Разреши доступ к микрофону или нажми «Написать».',
+   'not-allowed':'Разреши микрофон для сайта или нажми «Написать».',
    'network':'Для распознавания нужен интернет. Можно написать ответ.',
-   'no-speech':'Не расслышала. Нажми микрофон ещё раз.',
-   'audio-capture':'Микрофон недоступен. Можно написать ответ.',
-   'service-not-allowed':'Распознавание недоступно. Можно написать ответ.'
+   'no-speech':'Не расслышала. Скажи ещё раз.',
+   'audio-capture':'Микрофон занят или недоступен.',
+   'service-not-allowed':'Распознавание недоступно. Напиши ответ.'
   };
-  note(errors[event?.error]||'Не получилось распознать речь. Попробуй ещё раз.');
+  note(errors[event?.error]||'Не удалось распознать фразу. Повтори.');
  };
- recog.onend=()=>{
+ recognition.onend=()=>{
   if(!valid())return;
-  state.recognition=null;state.active=false;refresh();
-  if(!heard&&!error)note('Не расслышала. Попробуй ещё раз.');
+  state.recognition=null;state.active=false;
+  refresh();
+  if(!heard&&!failed)note('Не расслышала. Попробуй ещё раз.');
  };
  note('Говори по-китайски…');
- try{recog.start()}catch{stopRecognition();refresh();note('Микрофон не запустился. Попробуй «Написать».')}
+ try{recognition.start()}
+ catch{stopRecognition();refresh();note('Микрофон не запустился. Проверь разрешения.')}
 });
 $('type-toggle').addEventListener('click',()=>{
  if(state.done)return;
@@ -127,8 +158,12 @@ $('typing').addEventListener('submit',event=>{
  event.preventDefault();
  const answer=$('answer').value;
  checkAnswer(answer);
- if(!state.done&&state.typing)$('answer').value='';
+ if(!state.done)$('answer').value='';
 });
 $('reset').addEventListener('click',restart);
 $('again').addEventListener('click',restart);
+$('character').querySelector('img').addEventListener('error',event=>{
+ event.currentTarget.hidden=true;
+ $('character').querySelector('.panda-face').style.display='grid';
+});
 restart();
