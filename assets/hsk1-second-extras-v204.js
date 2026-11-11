@@ -130,8 +130,8 @@ function startScene(){
  const run=sceneEpoch;
  const voices=window.PANDA_HSK1_VOICES||{};
  const femaleBalanced='./assets/hsk1-scene-v205/female-im-teacher-normalized.mp3';
- const clips=words.map(w=>w.voice==='female'&&w.hz==='我是老师。'?
-  femaleBalanced:voices[w.voice]?.[w.hz]);
+ const clips=words.map(w=>w.voice==='female'?
+  (window.PandaLesson2XiaoxiaoV261?.lookup(w.hz)||femaleBalanced):voices[w.voice]?.[w.hz]);
  if(clips.some(x=>typeof x!=='string'||!x)){
   setScenePhase('idle','<span>Одна из записей недоступна. Ответь на вопросы ниже.</span>');
   return;

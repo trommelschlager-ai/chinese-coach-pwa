@@ -1,0 +1,20 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const map=fs.readFileSync('assets/panda-lesson2-xiaoxiao-v261.js','utf8');
+const sandbox={window:{}};
+vm.runInNewContext(map,sandbox);
+const voice=sandbox.window.PandaLesson2XiaoxiaoV261;
+const phrases=['我','你','您','他','她','它','我们','你们','你好','是','老师','学生','吗','我是老师。','你是老师吗？','是的，我是老师。'];
+assert.equal(Object.keys(voice.clips).length,16);
+for(const word of phrases){const path=voice.lookup(word);assert(path,'Missing Xiaoxiao '+word);assert(fs.statSync(path.slice(2)).size>1000,'Empty MP3 '+path)}
+assert.equal(voice.lookup('你是老师吗？'),voice.lookup('你是老师吗'));
+const main=fs.readFileSync('assets/hsk1-second-v203.js','utf8');
+const practice=fs.readFileSync('assets/hsk1-second-speaking-v209.js','utf8');
+const extras=fs.readFileSync('assets/hsk1-second-extras-v204.js','utf8');
+assert(main.includes('const xiaoxiao=role'), 'Cards and dialogues must use new audio');
+assert(practice.includes('PandaLesson2XiaoxiaoV261'), 'Speaking and dictionary must use Xiaoxiao');
+assert(extras.includes('PandaLesson2XiaoxiaoV261'), 'Two-role scene must use female Xiaoxiao');
+for(const name of ['hsk1-second-v203.html','hsk1-second-practice.html'])assert(fs.readFileSync(name,'utf8').includes('panda-lesson2-xiaoxiao-v261.js?v=261'),name+' must load map');
+const sw=fs.readFileSync('sw.js','utf8');assert(sw.includes('activeCacheMatch'));
+const pack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));for(const p of Object.values(voice.clips))assert(pack.files.includes(p),p+' offline missing');
+console.log('PASS: lesson 2 — 16 Xiaoxiao audio items across cards, sentence building, exercises, dictionary, and two-speaker scene; files present, tone QA still pending.');
