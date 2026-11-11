@@ -1,0 +1,21 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><title>Panda Live · проверка мобильного экрана</title><style>body{margin:0;background:#f4ebfa;color:#563675;font:14px system-ui}header{padding:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}button,select{font:inherit;padding:8px;border:1px solid #d8bfe6;border-radius:12px;background:white;color:inherit}iframe{display:block;border:0;margin:auto;background:#fbf5ff;height:780px}#result{max-width:700px;margin:auto;padding:8px;white-space:pre-wrap;font-size:12px}</style><header><b>QA · микрофон имитируется, MP3 настоящий</b><select id="width" aria-label="Ширина"><option>320</option><option>360</option><option selected>390</option><option>412</option><option>768</option></select><button id="idle">Idle</button><button id="talk">Talking · MP3</button><button id="listen">Listening · mock</button><button id="happy">Happy</button><button id="retry">Retry</button><button id="audit">Проверить</button></header><iframe title="Мобильный Panda Go" width="390"></iframe><pre id="result"></pre><script>
+const frame=document.querySelector('iframe'),result=document.querySelector('#result');let errors=[];
+fetch('../../panda-voice-pilot.html').then(r=>r.text()).then(html=>{
+ const setup=`<base href="${new URL('../../',location.href)}"><script>window.__speech=[];class MockSpeech{constructor(){window.__speech.push(this)}start(){this.onstart?.()}stop(){this.onend?.()}abort(){this.onend?.()}}window.SpeechRecognition=MockSpeech;window.addEventListener('error',e=>parent.postMessage({error:e.message},'*'));<`+`/script>`;
+ frame.srcdoc=html.replace('<head>','<head>'+setup);
+});
+window.addEventListener('message',e=>{if(e.source===frame.contentWindow&&e.data.error)errors.push(e.data.error)});
+const doc=()=>frame.contentDocument,click=id=>doc().getElementById(id).click();
+const emit=text=>frame.contentWindow.__speech.at(-1).onresult?.({results:[[{transcript:text}]]});
+const reset=()=>click('reset');
+document.querySelector('#width').onchange=e=>frame.width=e.target.value;
+document.querySelector('#idle').onclick=reset;
+document.querySelector('#talk').onclick=()=>{reset();click('hear')};
+document.querySelector('#listen').onclick=()=>{reset();click('mic')};
+document.querySelector('#happy').onclick=()=>{reset();click('mic');emit('你好')};
+document.querySelector('#retry').onclick=()=>{reset();click('mic');emit('再见')};
+document.querySelector('#audit').onclick=()=>{
+ const d=doc(),w=frame.contentWindow,p=d.querySelector('img'),c=d.querySelector('canvas');
+ result.textContent=JSON.stringify({width:w.innerWidth,scrollWidth:d.documentElement.scrollWidth,overflow:d.documentElement.scrollWidth>w.innerWidth,panda:p.naturalWidth,animatedCanvas:!c.hidden,state:d.querySelector('#character').dataset.state,phrase:d.querySelector('#phrase').textContent,mic:d.querySelector('#mic').getAttribute('aria-pressed'),errors},null,2);
+};
+</script></html>

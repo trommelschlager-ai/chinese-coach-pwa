@@ -17,7 +17,7 @@ try{
    window.__pandaTestSpeech=[];
    class FakeSpeech{
     constructor(){window.__pandaTestSpeech.push(this)}
-    start(){this.started=true}
+    start(){this.started=true;this.onstart?.()}
     stop(){this.stopped=true;this.onend?.()}
     abort(){this.aborted=true;this.onend?.()}
    }
@@ -25,7 +25,7 @@ try{
    Object.defineProperty(window,'webkitSpeechRecognition',{configurable:true,writable:true,value:FakeSpeech});
   });
   await page.goto(BASE+'/panda-voice-pilot.html',{waitUntil:'load'});
-  await page.locator('#phrase').waitFor();
+  await page.locator('html[data-panda-live-ready=true]').waitFor();
   const visual=await page.evaluate(()=>({
    viewportWidth:innerWidth,scrollWidth:document.documentElement.scrollWidth,
    pandaWidth:document.querySelector('.panda-picture')?.naturalWidth||0
@@ -45,6 +45,7 @@ try{
    const r=window.__pandaTestSpeech.at(-1);
    r.onresult?.({results:[[{transcript:'你好！'}]]});r.onend?.();
   });
+  await page.waitForFunction(()=>document.getElementById('phrase').textContent==='你好吗？');
   assert.equal(await page.locator('#phrase').textContent(),'你好吗？');
   assert(await page.locator('#audio-note').isVisible(),'Missing approved audio disclosed');
   assert(await page.locator('#hear').isDisabled(),'Cannot play unrelated recording');
@@ -53,6 +54,7 @@ try{
    const r=window.__pandaTestSpeech.at(-1);
    r.onresult?.({results:[[{transcript:'我很好，你呢？'}]]});r.onend?.();
   });
+  await page.waitForFunction(()=>document.getElementById('phrase').textContent==='我也很好，谢谢！');
   assert.equal(await page.locator('#phrase').textContent(),'我也很好，谢谢！');
   assert(await page.locator('#completed').isVisible());
   await page.screenshot({path:DIR+'/android-'+width+'.png',fullPage:true,animations:'disabled'});
@@ -61,9 +63,11 @@ try{
   assert(await page.locator('#typing').isVisible());
   await page.locator('#answer').fill('你好');
   await page.locator('#send').click();
+  await page.waitForFunction(()=>document.getElementById('phrase').textContent==='你好吗？');
   assert.equal(await page.locator('#phrase').textContent(),'你好吗？');
   await page.locator('#answer').fill('我很好');
   await page.locator('#send').click();
+  await page.waitForFunction(()=>document.getElementById('phrase').textContent==='很好！');
   assert.equal(await page.locator('#phrase').textContent(),'很好！');
   assert.deepEqual(errors,[],'Browser script errors');
   report.push({...visual,success:true});

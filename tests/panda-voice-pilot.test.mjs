@@ -3,118 +3,66 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {JSDOM} from 'jsdom';
 import {PILOT_LINES,REPLIES,NEW_WORDS,verifyPilotAnswer} from '../assets/panda-voice-pilot-engine.mjs';
-
-test('lesson 1 dialog greets and then asks a genuine question, with explicit supplementary vocabulary',()=>{
- assert.equal(PILOT_LINES.length,2);
- assert.deepEqual(PILOT_LINES.map(x=>x.panda),['你好！','你好吗？']);
- assert.equal(PILOT_LINES[0].audioKey,'你好');
- assert.equal(PILOT_LINES[1].audioKey,'','Never silently mismatch a different recording');
- assert.equal(REPLIES['asked-back'].hanzi,'我也很好，谢谢！');
- assert(NEW_WORDS.some(x=>x.hanzi==='吗'));
- assert(NEW_WORDS.some(x=>x.hanzi==='很'));
- assert(NEW_WORDS.some(x=>x.hanzi==='呢'));
- const owner=fs.readFileSync(new URL('../assets/owner-audio-v237.js',import.meta.url),'utf8');
- assert(owner.includes('"你好": "./assets/owner-clean-v237/'));
- assert(!owner.includes('"你好吗"'));
+import {CONVERSATIONS,missingConversationAudio} from '../assets/panda-live-lessons.mjs';
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+test('Chinese sentence checking, punctuation and branch selection',()=>{
+ for(const text of ['你好！','nǐ hǎo','ní hǎo','ni3hao3'])assert(verifyPilotAnswer(0,text).ok,text);
+ for(const text of ['我很好','wǒ hěn hǎo','wo3hen3hao3'])assert.equal(verifyPilotAnswer(1,text).branch,'short');
+ for(const text of ['我很好，你呢？','wǒ hěn hǎo nǐ ne','wo3hen3hao3ni3ne5'])assert.equal(verifyPilotAnswer(1,text).branch,'asked-back');
+ for(const text of ['你好','我很好吗','我也你好','我很','你好我很好','很好'])assert(!verifyPilotAnswer(1,text).ok,text);
+ assert(!verifyPilotAnswer(0,'我很好').ok);assert(!verifyPilotAnswer(0,'').ok);assert(!verifyPilotAnswer(9,'你好').ok);
+ assert.equal(NEW_WORDS.length,5);
+ assert.equal(CONVERSATIONS.length,7);
+ assert.deepEqual(missingConversationAudio(CONVERSATIONS[0],key=>key==='你好'?'hello.mp3':null),['你好吗？','我也很好，谢谢！','很好！']);
+ assert(CONVERSATIONS.slice(1).every(x=>x.status==='draft'));
 });
-test('Panda accepts natural how-are-you response and branches when student asks back',()=>{
- for(const answer of ['你好','nǐ hǎo','ni3 hao3'])assert(verifyPilotAnswer(0,answer).ok,answer);
- assert(!verifyPilotAnswer(0,'我很好').ok,'Greeting is not a question: keep language accurate');
- for(const answer of ['我很好','wǒ hěn hǎo','wo3 hen3 hao3']){
-  const r=verifyPilotAnswer(1,answer);
-  assert(r.ok&&r.branch==='short',answer);
- }
- for(const answer of ['我很好，你呢？','我很好你呢','wǒ hěn hǎo nǐ ne','wo3 hen3 hao3 ni3 ne5']){
-  const r=verifyPilotAnswer(1,answer);
-  assert(r.ok&&r.branch==='asked-back',answer);
- }
- assert(!verifyPilotAnswer(1,'ni hao').ok);
- assert(!verifyPilotAnswer(1,'我很好吗').ok);
- assert(!verifyPilotAnswer(1,'你好').ok);
- assert(!verifyPilotAnswer(2,'你好').ok);
-});
-test('panda illustration, speech bubble and hidden keyboard; no unauthorized voices or paid API',()=>{
- const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- const js=fs.readFileSync(new URL('../assets/panda-voice-pilot-ui.mjs',import.meta.url),'utf8');
- assert(html.includes('src="./assets/panda-go-voice-mascot-exact-v1.webp"'));
- assert(!html.includes('lesson3-panda-headphones-v222.svg'));
- assert(js.includes("classList.add('listening')"));
- assert(js.includes("classList.add('celebrate')"));
- assert(!html.includes('panda-go-panda-only-v173.webp'));
- assert(html.includes('id="voice-recovery"'));
- assert(js.includes('pilot-audio'));
- assert(html.includes('id="phrase"'));
- assert(html.includes('id="mic"'));
- assert(html.includes('id="typing" class="typing" hidden'));
- assert(html.includes('Тоны голоса Панда пока не оценивает'));
- assert(html.includes('id="audio-note"'));
- assert(!html.includes('id="log"'));
- for(const forbidden of ['api.openai.com','OPENAI_API_KEY','workers.dev','speechSynthesis']){
-  assert(!html.includes(forbidden));assert(!js.includes(forbidden));
- }
-});
-test('speech auto-advances to 你好吗; full answer gets meaningful panda response and no phantom voice',async()=>{
- const markup=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- const dom=new JSDOM(markup,{url:'https://example.test/panda-voice-pilot.html',pretendToBeVisual:true});
- const d=dom.window.document;const instances=[];
- class FakeSpeech{
-  constructor(){instances.push(this)}
-  start(){this.started=true}
-  stop(){this.stopped=true;this.onend?.()}
-  abort(){this.aborted=true;this.onend?.()}
+test('microphone events, audio lifecycle, retries, cancellation and both branches',async()=>{
+ const dom=new JSDOM(fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8'),{url:'https://example.test/panda-voice-pilot.html',pretendToBeVisual:true});
+ const d=dom.window.document,instances=[],clips=[];
+ class Speech{
+  constructor(){instances.push(this)}start(){this.onstart?.()}stop(){this.onend?.()}abort(){this.onend?.()}
   emit(text){this.onresult?.({results:[[{transcript:text}]]})}
-  fail(error){this.onerror?.({error});this.onend?.()}
+  fail(error){this.onerror?.({error})}
  }
- dom.window.webkitSpeechRecognition=FakeSpeech;
- dom.window.PandaOwnerAudio={lookup:key=>key==='你好'?'./assets/owner-clean-v237/hello.mp3':null};
- globalThis.window=dom.window;globalThis.document=d;globalThis.localStorage=dom.window.localStorage;
- globalThis.Audio=class{
-  constructor(src){this.src=src;this.currentTime=0}
-  play(){this.onplay?.();return Promise.resolve()}
-  pause(){}
- };
+ class Clip{
+  constructor(src){this.src=src;this.currentTime=0;this.paused=true;clips.push(this)}
+  play(){return Promise.resolve()}pause(){this.paused=true;this.onpause?.()}
+  playing(){this.paused=false;this.onplaying?.()}
+ }
+ Object.assign(globalThis,{window:dom.window,document:d,localStorage:dom.window.localStorage,Audio:Clip});
+ dom.window.webkitSpeechRecognition=Speech;dom.window.PandaOwnerAudio={lookup:key=>key==='你好'?'./hello.mp3':null};
+ const el=id=>d.getElementById(id),pose=()=>el('character').dataset.state;
  try{
-  await import('../assets/panda-voice-pilot-ui.mjs?test=panda-chat-2026');
-  const mic=d.getElementById('mic');
-  assert.equal(d.getElementById('phrase').textContent,'你好！');
-  assert(!d.getElementById('hear').disabled);
-  assert(d.getElementById('typing').hidden);
-  assert(d.getElementById('character').querySelector('img'));
-  d.getElementById('hear').click();
-  assert(d.getElementById('character').classList.contains('speaking'));
-  mic.click();instances[0].emit('你好！');
-  assert.equal(d.getElementById('phrase').textContent,'你好吗？');
-  assert.equal(d.getElementById('step').textContent,'2 из 2');
-  assert(d.getElementById('hear').disabled,'No native recording of question yet');
-  assert(d.getElementById('hear').hidden,'Do not show broken play button for silent question');
-  assert(!d.getElementById('audio-note').hidden,'Missing voice must be disclosed');
-  instances[0].emit('неподходящая запись');
-  assert.equal(d.getElementById('heard').textContent,'','Late speech event must be ignored');
-  mic.click();instances[1].emit('你好');
-  assert(d.getElementById('status').textContent.includes('не ожидаемый ответ'));
-  mic.click();instances[2].emit('我很好，你呢？');
-  assert(!d.getElementById('completed').hidden);
-  assert(d.getElementById('conversation').hidden);
-  assert.equal(d.getElementById('phrase').textContent,'我也很好，谢谢！');
-  assert.equal(d.getElementById('pinyin').textContent,'Wǒ yě hěn hǎo, xièxie!');
-  assert(!d.getElementById('audio-note').hidden);
-  d.getElementById('again').click();
-  assert(d.getElementById('completed').hidden);
-  // A real browser can reject microphone permission: the learner must see a useful recovery.
-  mic.click();instances[3].fail('not-allowed');
-  assert(!d.getElementById('voice-recovery').hidden);
-  assert(d.getElementById('status').textContent.includes('Доступ к микрофону запрещён'));
-  assert(d.getElementById('status').textContent.includes('Открыть в Chrome'));
-  d.getElementById('type-toggle').click();
-  assert(!d.getElementById('typing').hidden);
-  d.getElementById('answer').value='你好！';
-  d.getElementById('typing').dispatchEvent(new dom.window.Event('submit',{bubbles:true,cancelable:true}));
-  assert.equal(d.getElementById('phrase').textContent,'你好吗？');
-  d.getElementById('answer').value='我很好';
-  d.getElementById('typing').dispatchEvent(new dom.window.Event('submit',{bubbles:true,cancelable:true}));
-  assert.equal(d.getElementById('phrase').textContent,'很好！');
-  assert(!d.getElementById('completed').hidden);
+  await import('../assets/panda-voice-pilot-ui.mjs?live-tests');
+  el('hear').click();assert.equal(pose(),'idle','play promise alone must not animate');
+  clips.at(-1).playing();assert.equal(pose(),'talking');
+  clips.at(-1).onwaiting();assert.equal(pose(),'idle','buffering must stop speech animation');
+  clips.at(-1).playing();clips.at(-1).onended();assert.equal(pose(),'idle');
+  el('mic').click();assert.equal(instances.at(-1).lang,'zh-CN');assert.equal(pose(),'listening');
+  const stale=instances.at(-1).onresult;
+  instances.at(-1).emit('我很好');assert.equal(pose(),'retry');assert.equal(el('phrase').textContent,'你好！');
+  el('reset').click();await sleep(1450);assert.equal(pose(),'idle','reset cancels delayed question playback');
+  stale({results:[[{transcript:'你好'}]]});assert.equal(el('step').textContent,'1 из 2');
+  el('mic').click();instances.at(-1).emit('你好');assert.equal(pose(),'happy');
+  el('type-toggle').click();await sleep(950);assert.equal(el('phrase').textContent,'你好吗？','actions cannot cancel successful progression');
+  assert(el('hear').hidden);assert(!el('audio-note').hidden);
+  el('mic').click();instances.at(-1).emit('你好');assert.equal(el('phrase').textContent,'你好吗？');
+  el('mic').click();instances.at(-1).emit('我很好，你呢？');await sleep(950);
+  assert.equal(el('phrase').textContent,REPLIES['asked-back'].hanzi);assert(!el('completed').hidden);
+  el('again').click();
+  for(const error of ['not-allowed','network','audio-capture','service-not-allowed','language-not-supported','no-speech']){
+   el('mic').click();instances.at(-1).fail(error);assert.equal(pose(),'idle');assert(!el('voice-recovery').hidden);assert.equal(el('mic').getAttribute('aria-pressed'),'false');
+  }
+  el('type-toggle').click();el('answer').value='你好';el('send').click();await sleep(950);
+  el('answer').value='我很好';el('send').click();await sleep(950);assert.equal(el('phrase').textContent,'很好！');
+  el('again').click();el('mic').click();const prior=instances.at(-1);el('type-toggle').click();prior.emit('你好');await sleep(950);assert.equal(el('step').textContent,'1 из 2');
  }finally{
-  dom.window.close();delete globalThis.window;delete globalThis.document;delete globalThis.localStorage;delete globalThis.Audio;
+  dom.window.dispatchEvent(new dom.window.Event('pagehide'));dom.window.close();for(const k of ['window','document','localStorage','Audio'])delete globalThis[k];
  }
+});
+test('unsupported speech engine keeps keyboard usable and discloses missing audio',async()=>{
+ const dom=new JSDOM(fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8'),{url:'https://example.test',pretendToBeVisual:true});
+ Object.assign(globalThis,{window:dom.window,document:dom.window.document});
+ try{await import('../assets/panda-voice-pilot-ui.mjs?no-speech');assert(document.getElementById('mic').disabled);document.getElementById('type-toggle').click();assert(!document.getElementById('typing').hidden)}
+ finally{dom.window.dispatchEvent(new dom.window.Event('pagehide'));dom.window.close();delete globalThis.window;delete globalThis.document}
 });

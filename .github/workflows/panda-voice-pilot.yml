@@ -2,16 +2,25 @@ name: Panda Android voice pilot QA
 on:
   push:
     branches:
+      - main
       - feat/panda-voice-android-pilot-2026-11-11
       - feat/panda-voice-minimal-2026-11-11
       - feat/panda-lesson1-avatar-dialogue-2026-11-11
       - fix/panda-real-voice-mic-avatar-2026-11-11
       - feat/panda-exact-mascot-animated-2026-11-11
+    paths:
+      - 'panda-voice-pilot.html'
+      - 'assets/panda-live-*'
+      - 'assets/panda-voice-pilot*'
+      - 'tests/panda-voice-pilot.test.mjs'
+      - 'scripts/qa-panda-voice-pilot-mobile.mjs'
+      - '.github/workflows/panda-voice-pilot.yml'
   pull_request:
     branches: [main]
     paths:
       - 'panda-voice-pilot.html'
-      - 'assets/panda-voice-pilot-*.mjs'
+      - 'assets/panda-voice-pilot*'
+      - 'assets/panda-live-*'
       - 'tests/panda-voice-pilot.test.mjs'
       - 'scripts/qa-panda-voice-pilot-mobile.mjs'
 permissions:
