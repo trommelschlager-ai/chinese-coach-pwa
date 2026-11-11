@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
+import {ENVELOPES} from '../assets/panda-live-envelope.mjs';
 import {JSDOM} from 'jsdom';
 import {CONVERSATIONS,selectConversation,missingConversationAudio,pendingVoiceQueue} from '../assets/panda-live-lessons.mjs';
 import {chineseNumber} from '../assets/panda-live-drafts.mjs';
@@ -8,19 +10,26 @@ import {verifyAnswerFor} from '../assets/panda-voice-pilot-engine.mjs';
 import {lookupPilotAudio} from '../assets/panda-live-audio.mjs';
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const check=(id,index,text)=>verifyAnswerFor(CONVERSATIONS[id-1].lines,index,text);
-test('all six drafts are runnable only by explicit preview; voice queue is deduplicated and exact',()=>{
+test('all seven conversations have complete mapped audio and open by normal lesson URLs',()=>{
  assert.equal(CONVERSATIONS.length,7);
  for(let id=2;id<=7;id++){
-  assert.equal(selectConversation('?lesson='+id).id,1);
+  assert.equal(selectConversation('?lesson='+id).id,id);
   assert.equal(selectConversation('?lesson='+id+'&preview=1').id,id);
   assert.equal(CONVERSATIONS[id-1].requiresLesson,id);
  }
- assert.deepEqual(CONVERSATIONS.slice(1).map(x=>missingConversationAudio(x,lookupPilotAudio).length),[3,2,2,2,3,2]);
- const queue=pendingVoiceQueue(lookupPilotAudio);assert.equal(queue.length,14);
- assert.equal(new Set(queue.map(x=>x.phrase)).size,14);
+ assert.deepEqual(CONVERSATIONS.slice(1).map(x=>missingConversationAudio(x,lookupPilotAudio).length),[0,0,0,0,0,0]);
+ const queue=pendingVoiceQueue(lookupPilotAudio);assert.equal(queue.length,0);
+ assert.equal(new Set(queue.map(x=>x.phrase)).size,0);
  assert(!queue.some(x=>['你好！','谢谢！'].includes(x.phrase)));
  const script=fs.readFileSync(new URL('../docs/PANDA-LIVE-BATCH-VOICE.txt',import.meta.url),'utf8').trim().split(/\n\n/);
- assert.deepEqual(script,queue.map(x=>x.phrase));
+ const received=JSON.parse(fs.readFileSync(new URL('../assets/panda-live-voice-v3/manifest.json',import.meta.url),'utf8'));assert.deepEqual(script,received.clips.map(x=>x.text));assert.equal(received.clips.length,14);
+ for(const clip of received.clips){
+  const path=lookupPilotAudio(clip.text);assert(path.endsWith(clip.file));
+  const bytes=fs.readFileSync(new URL('../'+path,import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),clip.sha256,clip.text);
+  assert(Math.abs(ENVELOPES[path].levels.length*.025-clip.decodedSeconds)<.026,clip.text);
+ }
+
  assert.equal(lookupPilotAudio('谢谢！'),'./assets/panda-live-voice-v2/thanks.mp3');
 });
 test('age, weekday, date, family and weather answers follow their own context',()=>{
@@ -53,13 +62,13 @@ test('weather preview renders three turns, advances twice and ends with the alre
   await import('../assets/panda-voice-pilot-ui.mjs?batch-weather');
   assert.equal(d.querySelectorAll('.bar').length,3);assert.equal(el('step').textContent,'1 из 3');
   el('type-toggle').click();el('answer').value='你好';el('send').click();await sleep(950);
-  assert.equal(el('phrase').textContent,'今天天气怎么样？');assert.equal(el('step').textContent,'2 из 3');assert(el('hear').hidden);
+  assert.equal(el('phrase').textContent,'今天天气怎么样？');assert.equal(el('step').textContent,'2 из 3');assert(!el('hear').hidden);assert(el('audio-note').hidden);
   el('answer').value='今天很冷';el('send').click();await sleep(950);
   assert.equal(el('phrase').textContent,'明天天气怎么样？');assert.equal(el('step').textContent,'3 из 3');
   el('answer').value='今天天气很热';el('send').click();assert.equal(el('phrase').textContent,'明天天气怎么样？');
   el('answer').value='明天下雨';el('send').click();await sleep(950);
   assert.equal(el('phrase').textContent,'谢谢！');assert(!el('completed').hidden);assert(!el('hear').hidden);assert(clips.at(-1).src.endsWith('thanks.mp3'));
-  assert.equal(el('character').dataset.state,'happy','Pending play promise alone does not animate talking');
+  assert.notEqual(el('character').dataset.state,'talking','Pending play promise alone does not animate talking');
   assert(dom.window.localStorage.getItem('pg-panda-voice-lesson7-last'));
   assert.equal(dom.window.localStorage.getItem('pg-panda-voice-pilot-v1-last'),null);
  }finally{

@@ -1,7 +1,7 @@
-import {lookupPilotAudio} from './panda-live-audio.mjs?v=live4';
-import {verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live4';
-import {selectConversation,missingConversationAudio} from './panda-live-lessons.mjs?v=live4';
-import {ENVELOPES} from './panda-live-envelope.mjs?v=live4';
+import {lookupPilotAudio} from './panda-live-audio.mjs?v=live5';
+import {verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live5';
+import {CONVERSATIONS,selectConversation,missingConversationAudio} from './panda-live-lessons.mjs?v=live5';
+import {ENVELOPES} from './panda-live-envelope.mjs?v=live5';
 import {createPandaRig} from './panda-live-rig.mjs';
 const conversation=selectConversation(window.location.search);
 const {lines:PILOT_LINES,replies:REPLIES}=conversation;
@@ -132,10 +132,17 @@ $('reset').addEventListener('click',restart);$('again').addEventListener('click'
 $('character').querySelector('img').addEventListener('error',()=>{note('Изображение Панды не загрузилось. Обнови страницу.');$('mic').disabled=true});
 window.addEventListener('pagehide',event=>{clearTimeout(state.transition);clearTimeout(state.poseTimer);stopRecognition();stopAudio();if(!event.persisted)rig.dispose()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){stopAudio();stopRecognition();refresh()}});
+const picker=$('lesson-tag');picker.replaceChildren();
+for(const lesson of CONVERSATIONS){
+ const option=document.createElement('option');option.value=String(lesson.id);option.textContent=`${lesson.id}. ${lesson.theme}`;
+ option.disabled=lesson.status.startsWith('draft')&&new URLSearchParams(window.location.search).get('preview')!=='1';picker.append(option);
+}
+picker.value=String(conversation.id);
+picker.addEventListener('change',()=>{const url=new URL(window.location.href);url.searchParams.set('lesson',picker.value);url.searchParams.delete('preview');window.location.assign(url.href)});
 const bars=document.querySelector('.bars');bars.replaceChildren();
 for(let index=0;index<PILOT_LINES.length;index++){const bar=document.createElement('i');bar.className='bar';bar.id=`bar${index+1}`;bars.append(bar)}
 if(conversation.id!==1){
- $('lesson-tag').textContent=`Урок ${conversation.id} · Диалог`;
+
  const routes={2:'hsk1-second-v203.html',3:'hsk1-third-v212.html',4:'hsk1-fourth-v214.html',5:'hsk1-fifth-v227.html',6:'hsk1-family-v231.html',7:'hsk1-weather-v231.html'};
  $('back-link').href='./'+routes[conversation.id];
  const missing=missingConversationAudio(conversation,lookupPilotAudio);

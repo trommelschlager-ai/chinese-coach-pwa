@@ -17,14 +17,14 @@ test('Chinese sentence checking, punctuation and branch selection',()=>{
  assert.equal(CONVERSATIONS.length,7);
  assert.deepEqual(missingConversationAudio(CONVERSATIONS[0],key=>key==='你好'?'hello.mp3':null),['你好吗？','我也很好，谢谢！','很好！']);
  assert.deepEqual(missingConversationAudio(CONVERSATIONS[0],lookupPilotAudio),[]);
- assert.equal(Object.keys(PILOT_AUDIO).length,5);
+ assert.equal(Object.keys(PILOT_AUDIO).length,19);
  for(const [phrase,file] of Object.entries(PILOT_AUDIO)){
   assert(fs.statSync(new URL('../'+file,import.meta.url)).size>1000,phrase);
   assert(ENVELOPES[file]?.levels.length>10,phrase);
  }
  assert.equal(lookupPilotAudio('你好！'),PILOT_AUDIO['你好']);
  assert.equal(lookupPilotAudio('未知'),null);
- assert(CONVERSATIONS.slice(1).every(x=>x.status.startsWith('draft')));
+ assert(CONVERSATIONS.slice(1).every(x=>x.status==='pilot-audio-complete-device-test-pending'));
 });
 test('microphone events, audio lifecycle, retries, cancellation and both branches',async()=>{
  const dom=new JSDOM(fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8'),{url:'https://example.test/panda-voice-pilot.html',pretendToBeVisual:true});

@@ -1,12 +1,12 @@
 // Six-course expansion: topics 3–7 are explicit, audio-gated drafts.
-import {PILOT_LINES} from './panda-voice-pilot-engine.mjs?v=live4';
+import {PILOT_LINES} from './panda-voice-pilot-engine.mjs?v=live5';
 const freeze=Object.freeze;
 function question(panda,pinyin,ru,audioKey,instruction,accepted,defaultBranch,options=[]){
  return freeze({panda,pinyin,ru,audioKey,instruction,accepted:freeze(accepted),defaultBranch,options:freeze(options)});
 }
 const reply=(hanzi,pinyin,ru,audioKey)=>freeze({hanzi,pinyin,ru,audioKey});
 function draft(id,theme,lines,replies,vocabulary=[],extra={}){
- return freeze({id,theme,requiresLesson:id,status:'draft-missing-audio',lines:freeze([PILOT_LINES[0],...lines]),replies:freeze(replies),newWords:freeze([]),vocabulary:freeze(vocabulary),...extra});
+ return freeze({id,theme,requiresLesson:id,status:'pilot-audio-complete-device-test-pending',lines:freeze([PILOT_LINES[0],...lines]),replies:freeze(replies),newWords:freeze([]),vocabulary:freeze(vocabulary),...extra});
 }
 export function chineseNumber(n){
  if(!Number.isInteger(n)||n<1||n>100)return null;

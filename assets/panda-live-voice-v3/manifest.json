@@ -1,0 +1,161 @@
+{
+  "source": "luvvoice.com-20261111-leFTmr.mp3",
+  "sourceSha256": "2e99e7d6bf58f4cdb25009ee5270891c977c67f3a253355ccd8bc01113d9a531",
+  "voice": "User-supplied Luvvoice batch, requested same voice as previous recording; voice ID absent from MP3",
+  "clips": [
+    {
+      "text": "你是老师吗？",
+      "lessons": [
+        2
+      ],
+      "file": "p01.mp3",
+      "sourceStart": 0.145292,
+      "sourceEnd": 1.625333,
+      "decodedSeconds": 1.4800625,
+      "sha256": "2ab6f8c4ce3929b13b5fc4395508a8631fd27295f17abeb76f84aa199fe5ac11"
+    },
+    {
+      "text": "我也是老师。",
+      "lessons": [
+        2
+      ],
+      "file": "p02.mp3",
+      "sourceStart": 2.121792,
+      "sourceEnd": 3.688167,
+      "decodedSeconds": 1.566375,
+      "sha256": "d3b05eff69d7665d9835cd62eed1761a263d48e48305b2eeb771c39b65f9c160"
+    },
+    {
+      "text": "我是老师。",
+      "lessons": [
+        2
+      ],
+      "file": "p03.mp3",
+      "sourceStart": 4.162667,
+      "sourceEnd": 5.549917,
+      "decodedSeconds": 1.38725,
+      "sha256": "9cb8601178e2deda09f2d38567d7bf1e7d34f436eb0e04c70ea1db2807853a5e"
+    },
+    {
+      "text": "你几岁？",
+      "lessons": [
+        3
+      ],
+      "file": "p04.mp3",
+      "sourceStart": 6.003667,
+      "sourceEnd": 7.211542,
+      "decodedSeconds": 1.207875,
+      "sha256": "4cb431b9623785bcbc30213541c7336d94607ee00797acabafc16d1c8dab4467"
+    },
+    {
+      "text": "我三岁。",
+      "lessons": [
+        3
+      ],
+      "file": "p05.mp3",
+      "sourceStart": 7.694417,
+      "sourceEnd": 8.902875,
+      "decodedSeconds": 1.2085,
+      "sha256": "4b54a23fd989ae70c9e156cf90b99d11eacedc80ae1f9abc2900bd3db930f806"
+    },
+    {
+      "text": "今天星期几？",
+      "lessons": [
+        4
+      ],
+      "file": "p06.mp3",
+      "sourceStart": 9.366792,
+      "sourceEnd": 11.141125,
+      "decodedSeconds": 1.774375,
+      "sha256": "04117f5288a06a7ddd6ff8a5ac2d39ec436605587b6066d82b7545e63dd42782"
+    },
+    {
+      "text": "明天星期二。",
+      "lessons": [
+        4
+      ],
+      "file": "p07.mp3",
+      "sourceStart": 11.569625,
+      "sourceEnd": 13.178792,
+      "decodedSeconds": 1.61,
+      "sha256": "a2f5fa0386fbf97850196ba2168e3e00bff3cf65d162ea2eb191c1a311dce62e"
+    },
+    {
+      "text": "今天几月几号？",
+      "lessons": [
+        5
+      ],
+      "file": "p08.mp3",
+      "sourceStart": 13.636792,
+      "sourceEnd": 15.413583,
+      "decodedSeconds": 1.778,
+      "sha256": "2b85c91d4d747bf875635a506eee5b4e1cbde0675007b8e492cad6816c292aea"
+    },
+    {
+      "text": "明天三月六号。",
+      "lessons": [
+        5
+      ],
+      "file": "p09.mp3",
+      "sourceStart": 15.849667,
+      "sourceEnd": 17.715542,
+      "decodedSeconds": 1.865875,
+      "sha256": "c3d271bf542f44025660780b6669b4a0d49359582474202ad1d6cfe16fb74c7f"
+    },
+    {
+      "text": "你有哥哥吗？",
+      "lessons": [
+        6
+      ],
+      "file": "p10.mp3",
+      "sourceStart": 18.152292,
+      "sourceEnd": 19.557208,
+      "decodedSeconds": 1.4049375,
+      "sha256": "e960f7474626b9e45992d867a47f30c96b20919625ea3649b32f33f5b3c90852"
+    },
+    {
+      "text": "我也有哥哥。",
+      "lessons": [
+        6
+      ],
+      "file": "p11.mp3",
+      "sourceStart": 20.031625,
+      "sourceEnd": 21.544208,
+      "decodedSeconds": 1.514,
+      "sha256": "cf8cef58298920c7d2273817a7be53b7a5c7e721a60d2fabdae07670e9a5258a"
+    },
+    {
+      "text": "我有一个哥哥。",
+      "lessons": [
+        6
+      ],
+      "file": "p12.mp3",
+      "sourceStart": 22.01775,
+      "sourceEnd": 23.59925,
+      "decodedSeconds": 1.5815,
+      "sha256": "33bdbf62e9291f1fe3496fd9b68b6527c948006f4e710c64032540023135a630"
+    },
+    {
+      "text": "今天天气怎么样？",
+      "lessons": [
+        7
+      ],
+      "file": "p13.mp3",
+      "sourceStart": 24.058458,
+      "sourceEnd": 25.907667,
+      "decodedSeconds": 1.85,
+      "sha256": "34fe9f52976e047dd815a86c80b832b4ad78e430fe61c00d945d1dcf5130a532"
+    },
+    {
+      "text": "明天天气怎么样？",
+      "lessons": [
+        7
+      ],
+      "file": "p14.mp3",
+      "sourceStart": 26.333333,
+      "sourceEnd": 28.152583,
+      "decodedSeconds": 1.81925,
+      "sha256": "ebed9dc4e0d3f4d2b99ab48bb4ec5a609c64bed07e33d664e90d9f9478c5be7e"
+    }
+  ]
+}

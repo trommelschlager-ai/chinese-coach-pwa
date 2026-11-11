@@ -1,12 +1,12 @@
 // Draft conversation 2. No other speaker is substituted for missing audio.
-import {PILOT_LINES} from './panda-voice-pilot-engine.mjs?v=live4';
+import {PILOT_LINES} from './panda-voice-pilot-engine.mjs?v=live5';
 const answers=[
  ['我是老师','teacher'],['是，我是老师','teacher'],['wǒ shì lǎoshī','teacher'],['wo3 shi4 lao3 shi1','teacher'],
  ['不是，我是学生','student'],['我不是老师，我是学生','student'],['我是学生','student'],
  ['wǒ shì xuésheng','student'],['bú shì, wǒ shì xuésheng','student'],['bù shì, wǒ shì xuésheng','student']
 ];
 export const LESSON2=Object.freeze({
- id:2,theme:'Местоимения и представление',requiresLesson:2,status:'draft-missing-audio',
+ id:2,theme:'Местоимения и представление',requiresLesson:2,status:'pilot-audio-complete-device-test-pending',
  lines:Object.freeze([
   PILOT_LINES[0],
   Object.freeze({panda:'你是老师吗？',pinyin:'Nǐ shì lǎoshī ma?',ru:'Ты учитель?',audioKey:'你是老师吗',
