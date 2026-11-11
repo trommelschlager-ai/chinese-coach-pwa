@@ -53,7 +53,7 @@ textarea{width:100%;font-size:16px;min-height:73px;padding:11px;border:1px solid
 <p class="fine">Разговоры открываются по мере завершения соответствующих уроков. Дополнительные фразы всегда объясняются перед практикой.</p>
 </section>
 <section class="panel" aria-labelledby="talk-title">
-<h2 id="talk-title">🐼 Диалог с Пандой</h2>
+<h2 id="talk-title">🐼 Диалог с Пандой</h2><p class="fine">Для первого теста выбери «Поздороваться»: здесь уже есть две оригинальные записи носительницы. Нажми «Слушать панду», затем «Говорить», проверь распознанный ответ и отправь его.</p>
 <div class="progress"><span id="turn-count">Выбери диалог</span><span id="done-state"></span></div><div class="meter"><i id="turn-bar"></i></div>
 <div id="intro" class="intro hidden"></div>
 <div id="chat" class="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
@@ -65,8 +65,8 @@ textarea{width:100%;font-size:16px;min-height:73px;padding:11px;border:1px solid
 <form id="reply-form">
 <label for="reply">Твой ответ на китайском</label>
 <textarea id="reply" maxlength="200" required placeholder="Скажи через микрофон или напиши…"></textarea>
-<div class="controls"><button type="button" id="mic" class="btn">🎙 Говорить</button><button type="submit" id="send" class="btn primary">Ответить →</button></div>
-<p id="status" class="status" role="status" aria-live="polite"></p>
+<div class="controls"><button type="button" id="mic" class="btn" aria-pressed="false" aria-label="Начать или остановить распознавание китайской речи">🎙 Говорить</button><button type="submit" id="send" class="btn primary">Ответить →</button></div>
+<p id="status" class="status" role="status" aria-live="polite" aria-atomic="true"></p>
 </form>
 <p class="mic-info">Микрофон использует распознавание речи браузера, если оно доступно. На некоторых телефонах ему нужен интернет, а речь может обрабатываться сервисом браузера. Распознавание слов не оценивает точность тонов. Если точной записи носительницы нет, кнопка звука будет недоступна — голос не подменяется.</p>
 </section>
