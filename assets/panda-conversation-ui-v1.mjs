@@ -3,7 +3,7 @@ const $=id=>document.getElementById(id);
 const chat=$('chat'),reply=$('reply');
 const completionIds={1:'foundations',2:'pronouns',3:'numbers',4:'weekdays',5:'dates',6:'family',7:'weather'};
 const state={scene:null,turn:0,started:false,completed:false};
-let audio=null,recognition=null;
+let audio=null,recognition=null,recognitionEpoch=0,recognitionActive=false;
 function readJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')??fallback}catch{return fallback}}
 function completedLesson(lesson){
  const ids=readJSON('pg-hsk1-v3-complete',[]);
@@ -15,6 +15,27 @@ function completedLesson(lesson){
 function accessible(scene){return scene.id==='hello'||completedLesson(scene.lesson)}
 function status(message){$('status').textContent=message}
 function stopAudio(){try{audio?.pause()}catch{}audio=null}
+function stopRecognition(){
+ recognitionEpoch++;
+ const previous=recognition;
+ recognition=null;recognitionActive=false;
+ if(previous){
+  previous.onresult=null;previous.onerror=null;previous.onend=null;
+  try{previous.abort?.()}catch{try{previous.stop?.()}catch{}}
+ }
+}
+function microphoneError(code){
+ const known={
+  'not-allowed':'Доступ к микрофону запрещён. Разреши его в настройках сайта или напиши ответ.',
+  'service-not-allowed':'Служба распознавания речи недоступна. Используй текстовый ответ.',
+  'audio-capture':'Микрофон не найден или занят другим приложением.',
+  'no-speech':'Я не услышала фразу. Нажми «Говорить» и повтори.',
+  'network':'Для распознавания речи в этом браузере нужен интернет. Текстовый режим доступен.',
+  'language-not-supported':'Браузер не поддерживает распознавание китайского языка.',
+  'aborted':'Распознавание остановлено. Можно попробовать ещё раз.'
+ };
+ return known[String(code)]||'Не удалось распознать речь. Попробуй снова или ответь текстом.';
+}
 function message(role,text,py='',ru=''){
  const el=document.createElement('div');el.className='msg '+role;
  const main=document.createElement('strong');main.textContent=(role==='panda'?'🐼 ':'👤 ')+text;el.append(main);
@@ -35,12 +56,15 @@ function updateControls(){
  const available=canAnswer&&!!audioSource(turn.audio);
  $('reply').disabled=!canAnswer;$('send').disabled=!canAnswer;
  $('hint').disabled=!canAnswer;$('hear').disabled=!available;
- $('mic').disabled=!canAnswer||!(window.SpeechRecognition||window.webkitSpeechRecognition);
+ const supported=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+ $('mic').disabled=!canAnswer||!supported;
+ $('mic').textContent=recognitionActive?'■ Остановить':'🎙 Говорить';
+ $('mic').setAttribute('aria-pressed',String(recognitionActive));
  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition)$('mic').title='Распознавание китайской речи недоступно в этом браузере';
  $('hear').title=available?'Слушать точную запись носительницы':'Для этой фразы ещё нет проверенной записи носительницы';
 }
 function showTurn(){
- stopAudio();const turn=current();
+ stopAudio();stopRecognition();const turn=current();
  if(!turn){finish();return}
  message('panda',turn.panda,turn.pinyin,turn.meaning);
  reply.value='';progress();updateControls();
@@ -53,7 +77,7 @@ function recordScene(){
  try{localStorage.setItem('pg-panda-conversation-v1-completed',JSON.stringify(progress))}catch{}
 }
 function finish(){
- state.completed=true;state.started=false;
+ stopRecognition();state.completed=true;state.started=false;
  const last=state.scene?.turns?.at(-1);
  if(last?.closing)message('panda',last.closing.panda,last.closing.pinyin,last.closing.meaning);
  message('panda','Отлично! Диалог завершён. Повтори его ещё раз, чтобы отвечать увереннее.');
@@ -63,6 +87,7 @@ function finish(){
 }
 function start(){
  if(!state.scene)return;
+ stopRecognition();
  state.started=true;state.completed=false;state.turn=0;
  $('intro').classList.add('hidden');chat.replaceChildren();
  message('panda','Начнём короткий разговор. Отвечай по-китайски; подсказка доступна в любой момент.');
@@ -86,7 +111,7 @@ function renderScenes(){
 }
 function selectScene(id){
  const scene=findScene(id);if(!scene||!accessible(scene)){status('Сначала пройди соответствующий урок.');return}
- stopAudio();state.scene=scene;state.turn=0;state.started=false;state.completed=false;
+ stopAudio();stopRecognition();state.scene=scene;state.turn=0;state.started=false;state.completed=false;
  renderScenes();
  chat.replaceChildren();reply.value='';progress();
  if(scene.introduce.length){
@@ -109,6 +134,7 @@ function selectScene(id){
 function submit(text){
  if(!state.started||state.completed||!current())return;
  const response=String(text??'').trim();if(!response){status('Скажи или введи ответ.');return;}
+ stopRecognition();updateControls();
  const grade=validateTurn(state.scene.id,state.turn,response);
  message('student',response);
  if(!grade.ok){
@@ -133,18 +159,41 @@ $('hear').addEventListener('click',()=>{
 });
 $('mic').addEventListener('click',()=>{
  const Ctor=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!Ctor){status('На этом устройстве распознавание речи недоступно. Отвечай текстом.');return;}
+ if(!Ctor){status('Распознавание китайской речи недоступно. Используй текстовый ответ.');return;}
  if(!state.started||state.completed)return;
- if(recognition){try{recognition.stop()}catch{}recognition=null}
- recognition=new Ctor();
- recognition.lang='zh-CN';recognition.interimResults=false;recognition.maxAlternatives=1;
- $('mic').disabled=true;status('🎙 Слушаю. Говори по-китайски.');
- recognition.onresult=event=>{
-  const transcript=event.results?.[0]?.[0]?.transcript||'';
-  reply.value=transcript;status('Распознано: «'+transcript+'». Проверь текст и нажми «Ответить». Тоны на слух не оценены.');
+ if(recognitionActive&&recognition){
+  try{recognition.stop();status('Заканчиваю прослушивание. Проверь появившийся текст перед отправкой.');$('mic').disabled=true;}
+  catch{stopRecognition();updateControls();status('Прослушивание остановлено.');}
+  return;
+ }
+ stopAudio();
+ stopRecognition();
+ const epoch=++recognitionEpoch;
+ let heard=false,failed=false,instance;
+ try{instance=new Ctor();instance.lang='zh-CN';instance.interimResults=false;instance.continuous=false;instance.maxAlternatives=1;}
+ catch{status('Не удалось включить распознавание речи. Ответь текстом.');return;}
+ recognition=instance;recognitionActive=true;
+ const stillCurrent=()=>recognition===instance&&recognitionEpoch===epoch&&state.started&&!state.completed;
+ instance.onresult=event=>{
+  if(!stillCurrent())return;
+  const transcript=String(event.results?.[0]?.[0]?.transcript||'').trim();
+  if(!transcript){status('Не расслышала фразу. Повтори ещё раз.');return;}
+  heard=true;reply.value=transcript;
+  status('Распознано: «'+transcript+'». Проверь текст, затем нажми «Ответить». Тоны по голосу не проверялись.');
  };
- recognition.onerror=event=>status('Микрофон не распознал фразу ('+String(event.error||'ошибка')+'). Можно ответить текстом.');
- recognition.onend=()=>{recognition=null;updateControls()};
- try{recognition.start()}catch{status('Не удалось включить микрофон. Проверь разрешения.');recognition=null;updateControls();}
+ instance.onerror=event=>{
+  if(!stillCurrent())return;
+  failed=true;status(microphoneError(event?.error));
+ };
+ instance.onend=()=>{
+  if(recognition!==instance||recognitionEpoch!==epoch)return;
+  recognition=null;recognitionActive=false;updateControls();
+  if(!heard&&!failed)status('Запись завершена, но слова не распознаны. Повтори или ответь текстом.');
+ };
+ updateControls();status('🎙 Слушаю. Произнеси фразу по-китайски.');
+ try{instance.start()}catch{
+  stopRecognition();updateControls();
+  status('Не удалось запустить микрофон. Проверь разрешение и попробуй снова.');
+ }
 });
 selectScene('hello');
