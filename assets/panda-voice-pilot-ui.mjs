@@ -1,9 +1,10 @@
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=live2';
-import {verifyPilotAnswer} from './panda-voice-pilot-engine.mjs?v=live2';
-import {CONVERSATIONS} from './panda-live-lessons.mjs?v=live2';
+import {verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live3';
+import {selectConversation,missingConversationAudio} from './panda-live-lessons.mjs?v=live3';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live2';
 import {createPandaRig} from './panda-live-rig.mjs';
-const {lines:PILOT_LINES,replies:REPLIES}=CONVERSATIONS[0];
+const conversation=selectConversation(window.location.search);
+const {lines:PILOT_LINES,replies:REPLIES}=conversation;
 const $=id=>document.getElementById(id);
 const rig=createPandaRig($('character'),$('panda-canvas'));
 const state={step:0,done:false,busy:false,active:false,recognition:null,epoch:0,audio:null,typing:false,watchdog:null,transition:null,poseTimer:null};
@@ -71,7 +72,7 @@ function restart(){
 function checkAnswer(raw){
  if(state.done||state.busy)return;
  const input=String(raw||'').trim();stopRecognition();stopAudio();
- const result=verifyPilotAnswer(state.step,input);
+ const result=verifyAnswerFor(PILOT_LINES,state.step,input);
  $('heard').textContent=input?'Ты: '+input:'';
  if(!result.ok){
   brief('retry');note(input?'Не совсем. '+PILOT_LINES[state.step].instruction:'Не расслышала. Повтори ещё раз.');refresh();
@@ -85,7 +86,7 @@ function checkAnswer(raw){
   if(state.step>=PILOT_LINES.length){
    state.done=true;state.branch=result.branch||'short';
    $('final-feedback').textContent=state.branch==='asked-back'?'Ты поддержал разговор по-китайски!':'Ты ответил по-китайски!';
-   try{localStorage.setItem('pg-panda-voice-pilot-v1-last',new Date().toISOString())}catch{}
+   try{localStorage.setItem(conversation.id===1?'pg-panda-voice-pilot-v1-last':`pg-panda-voice-lesson${conversation.id}-last`,new Date().toISOString())}catch{}
   }
   $('answer').value='';$('heard').textContent='';note('');render();
   if(audioFor(current()?.audioKey))play();
@@ -131,6 +132,17 @@ $('reset').addEventListener('click',restart);$('again').addEventListener('click'
 $('character').querySelector('img').addEventListener('error',()=>{note('Изображение Панды не загрузилось. Обнови страницу.');$('mic').disabled=true});
 window.addEventListener('pagehide',event=>{clearTimeout(state.transition);clearTimeout(state.poseTimer);stopRecognition();stopAudio();if(!event.persisted)rig.dispose()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){stopAudio();stopRecognition();refresh()}});
+if(conversation.id!==1){
+ $('lesson-tag').textContent=`Урок ${conversation.id} · Диалог`;
+ $('back-link').href='./hsk1-second-v203.html';
+ const missing=missingConversationAudio(conversation,lookupPilotAudio);
+ $('pilot-note').textContent=missing.length?`Черновик урока ${conversation.id} · не хватает ${missing.length} записей`:'Тестовая практика · единый голос';
+ const vocabulary=$('words');vocabulary.replaceChildren();
+ for(const item of [...(conversation.vocabulary||conversation.newWords),...(conversation.examples||[])]){
+  const p=document.createElement('p');p.textContent=`${item.hanzi} — ${item.pinyin} — ${item.ru}`;vocabulary.append(p);
+ }
+ const note=document.createElement('p');note.textContent='Проверяется распознанный текст, а не правильность произнесённых тонов. Новые записи ещё не подключены.';vocabulary.append(note);
+}
 restart();
 
 document.documentElement.dataset.pandaLiveReady='true';

@@ -24,7 +24,7 @@ test('Chinese sentence checking, punctuation and branch selection',()=>{
  }
  assert.equal(lookupPilotAudio('你好！'),PILOT_AUDIO['你好']);
  assert.equal(lookupPilotAudio('未知'),null);
- assert(CONVERSATIONS.slice(1).every(x=>x.status==='draft'));
+ assert(CONVERSATIONS.slice(1).every(x=>x.status.startsWith('draft')));
 });
 test('microphone events, audio lifecycle, retries, cancellation and both branches',async()=>{
  const dom=new JSDOM(fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8'),{url:'https://example.test/panda-voice-pilot.html',pretendToBeVisual:true});
