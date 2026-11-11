@@ -9,7 +9,7 @@ body:has(.map-shell){margin:0;background:#8fb7d3;color:#160e26;font-family:Arial
   min-height:max(100svh,760px);height:auto;aspect-ratio:auto;
   margin:0 auto;padding:8px 10px max(26px,env(safe-area-inset-bottom));
   border:0;border-radius:0;overflow:hidden;
-  background:#93c7d5 url("./panda-reference-v175/mountain-stairs.webp") center center/100% 100% no-repeat;
+  background:#93c7d5 url("./panda-reference-v175/mountain-stairs.webp") center bottom/cover no-repeat;
   box-shadow:0 0 30px #223c6760;
 }
 .map-shell::before{
