@@ -1,0 +1,24 @@
+name: Panda AI offline lesson 1 QA
+on:
+  push:
+    branches:
+      - feat/panda-ai-lesson1-free-2026-11-11
+  pull_request:
+    branches: [main]
+    paths:
+      - "panda-lesson1.html"
+      - "assets/panda-lesson1-*.mjs"
+      - "tests/panda-lesson1-*.test.mjs"
+      - "hsk1-map.html"
+permissions:
+  contents: read
+jobs:
+  offline-tutor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node --test tests/panda-lesson1-free.test.mjs tests/panda-lesson1-dom.test.mjs

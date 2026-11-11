@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8155b6">
+<meta name="description" content="Panda AI — бесплатная разговорная практика по первому уроку Panda Go">
+<title>Panda AI · Урок 1 · Panda Go</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#36214c;background:#f8efff}
+*{box-sizing:border-box}body{min-height:100dvh;margin:0;background:radial-gradient(circle at 16% 3%,#ffe4ed 0,transparent 39%),radial-gradient(circle at 94% 18%,#dccdff 0,transparent 40%),#f7efff}
+button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #783ab4;outline-offset:3px}
+.shell{max-width:800px;margin:auto;padding:12px 12px 40px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.back{color:#633588;font-weight:750;text-decoration:none;padding:12px 8px}.flag{color:#865599;font-size:12px;font-weight:800;letter-spacing:.06em}
+.hero{display:flex;align-items:center;gap:14px;border-radius:25px;padding:18px;background:linear-gradient(110deg,#ffe4f1,#e4d7ff);border:1px solid #eed2ff;box-shadow:0 13px 30px #70429918}
+.avatar{height:68px;width:68px;flex:none;border-radius:25px;border:2px solid #fff;display:grid;place-items:center;background:#fffafa;font-size:40px}
+h1{font-size:clamp(24px,6vw,32px);margin:0 0 4px}h2{font-size:20px;margin:0 0 10px}.hero p{margin:0;color:#775989;font-size:13px;line-height:1.5}
+.box{margin-top:14px;border:1px solid #ebd5f2;border-radius:22px;background:#fff;padding:15px;box-shadow:0 7px 25px #71459a13}
+.badge{display:inline-block;font-size:12px;padding:6px 10px;border-radius:99px;background:#f4e8fd;color:#70408a;font-weight:800}
+.tips{color:#765a89;font-size:13px;line-height:1.5;margin:9px 0}
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.mode{min-height:44px;background:#f8f4ff;color:#754395;border:1px solid #e3cef6;border-radius:13px;font-weight:800}
+.mode.active{background:linear-gradient(120deg,#bc72c7,#8c56d2);color:#fff;border-color:transparent}
+.topics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.topic{text-align:left;border:1px solid #ead8f7;border-radius:14px;padding:12px 11px;color:#482a61;background:#fcf9ff;line-height:1.35}
+.topic strong,.topic small{display:block}.topic strong{font-size:14px}.topic small{font-size:12px;color:#806c8d;margin-top:4px}.topic.active{background:#eee1ff;border-color:#ad78df}
+.chat{display:flex;flex-direction:column;gap:10px;min-height:220px;max-height:370px;overflow:auto;padding:12px 10px;border:1px solid #f0e3f8;border-radius:18px;background:linear-gradient(#fff,#fffdff)}
+.bubble{border-radius:17px;padding:10px 12px;max-width:96%;white-space:pre-wrap;line-height:1.55;overflow-wrap:anywhere;font-size:15px}
+.bubble.ai{align-self:flex-start;background:#f1e7ff;border-top-left-radius:4px}.bubble.user{align-self:flex-end;background:#fce3ef;border-top-right-radius:4px}
+.progress-line{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#7b598b;font-size:13px;margin:12px 0 7px}
+.meter{height:6px;background:#f2e5f8;border-radius:99px;overflow:hidden}.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#d779b9,#8955d4);transition:width .25s}
+label{font-size:14px;font-weight:750;display:block;margin:12px 0 6px}
+textarea{width:100%;min-height:68px;border:1px solid #d9bfe5;border-radius:14px;padding:11px;line-height:1.5;font-size:16px;resize:vertical}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}.btn{border:1px solid #ddc4ed;background:white;color:#704191;padding:10px 13px;border-radius:13px;font-weight:780;min-height:44px}
+.btn.primary{background:linear-gradient(120deg,#ca62ae,#8751c8);border:0;color:white;padding:10px 20px}
+.btn:disabled{opacity:.45;cursor:not-allowed}.status{font-size:13px;color:#765587;min-height:21px;margin:8px 0 0}
+.hidden{display:none!important}.question-links{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.question-links button{padding:8px 10px;font-size:13px;border:1px solid #e9d5ef;background:#fbf4ff;border-radius:99px;color:#6c4391}
+.disclaimer{font-size:12px;line-height:1.5;color:#775e84;margin:15px 3px}
+@media(max-width:440px){.shell{padding:10px 9px 30px}.avatar{width:54px;height:54px;font-size:32px;border-radius:18px}.hero{padding:13px}.box{padding:12px}.topics{grid-template-columns:1fr}.chat{max-height:38dvh}}
+</style>
+</head>
+<body>
+<main class="shell">
+<div class="top"><a class="back" href="./hsk1-map.html">← Карта HSK 1</a><span class="flag">PANDA GO · 100% БЕЗ AI API</span></div>
+<header class="hero"><div class="avatar" aria-hidden="true">🐼</div><div><h1>Panda AI 老师</h1><p>Личный помощник по уроку 1. Диалоги, слова, иероглифы и тоны — без платы за ответы.</p></div></header>
+<section class="box" aria-labelledby="title">
+<h2 id="title">Как будем заниматься?</h2>
+<div class="modes" role="group" aria-label="Режим тренировки">
+<button class="mode active" type="button" id="mode-practice" aria-pressed="true">🎯 Панда спрашивает</button>
+<button class="mode" type="button" id="mode-ask" aria-pressed="false">💬 Спроси панду</button>
+</div>
+<div id="practice-box">
+<p class="tips">Выбери тему. Панда задаёт вопросы по первому уроку, принимает несколько вариантов ответа и объясняет ошибки.</p>
+<div id="topics" class="topics" role="group" aria-label="Темы урока 1"></div>
+<div class="progress-line"><span id="question-count">Выбери тему</span><span id="score"></span></div>
+<div class="meter" aria-hidden="true"><i id="progress-fill"></i></div>
+</div>
+<div id="ask-box" class="hidden">
+<p class="tips">Задавай вопросы только по материалу урока 1. Панда отвечает по проверенной базе правил, а не придумывает произвольные ответы.</p>
+<div class="question-links">
+<button type="button" data-q="Почему 你好 произносится ní hǎo?">Почему ní hǎo?</button>
+<button type="button" data-q="Какой ключ у 好?">Ключ 好</button>
+<button type="button" data-q="Сколько тонов в китайском?">Четыре тона</button>
+<button type="button" data-q="Как переводится 学生?">Слово 学生</button>
+</div>
+</div>
+<div id="chat" class="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
+<div id="listen-block" class="actions hidden"><button type="button" class="btn" id="listen">🔊 Слушать оригинальную запись</button></div>
+<form id="chat-form">
+<label id="answer-label" for="answer">Твой ответ</label>
+<textarea id="answer" maxlength="500" placeholder="Напиши ответ здесь…" required></textarea>
+<div class="actions"><button type="submit" class="btn primary" id="send">Ответить →</button><button type="button" class="btn hidden" id="skip">Пропустить</button><button type="button" class="btn" id="restart">Начать заново</button></div>
+<p id="status" class="status" role="status" aria-live="polite"></p>
+</form>
+</section>
+<p class="disclaimer">Проверка относится к тексту: она не оценивает произношение твоего голоса. Для аудиозаданий используются уже подготовленные записи урока 1. После первой загрузки тексты тренировки не требуют подключения к платным сервисам. Аудио офлайн доступно при наличии файлов в кэше.</p>
+</main>
+<script src="./assets/owner-audio-v237.js?v=237"></script>
+<script type="module" src="./assets/panda-lesson1-ui.mjs"></script>
+</body>
+</html>
