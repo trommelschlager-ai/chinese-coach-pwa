@@ -36,7 +36,10 @@ test('Panda accepts natural how-are-you response and branches when student asks 
 test('panda illustration, speech bubble and hidden keyboard; no unauthorized voices or paid API',()=>{
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
  const js=fs.readFileSync(new URL('../assets/panda-voice-pilot-ui.mjs',import.meta.url),'utf8');
- assert(html.includes('panda-go-panda-only-v173.webp'));
+ assert(html.includes('lesson3-panda-headphones-v222.svg'));
+ assert(!html.includes('panda-go-panda-only-v173.webp'));
+ assert(html.includes('id="voice-recovery"'));
+ assert(js.includes('pilot-audio'));
  assert(html.includes('id="phrase"'));
  assert(html.includes('id="mic"'));
  assert(html.includes('id="typing" class="typing" hidden'));
@@ -80,11 +83,12 @@ test('speech auto-advances to 你好吗; full answer gets meaningful panda respo
   assert.equal(d.getElementById('phrase').textContent,'你好吗？');
   assert.equal(d.getElementById('step').textContent,'2 из 2');
   assert(d.getElementById('hear').disabled,'No native recording of question yet');
+  assert(d.getElementById('hear').hidden,'Do not show broken play button for silent question');
   assert(!d.getElementById('audio-note').hidden,'Missing voice must be disclosed');
   instances[0].emit('неподходящая запись');
   assert.equal(d.getElementById('heard').textContent,'','Late speech event must be ignored');
   mic.click();instances[1].emit('你好');
-  assert(d.getElementById('status').textContent.includes('Попробуй ещё раз'));
+  assert(d.getElementById('status').textContent.includes('не ожидаемый ответ'));
   mic.click();instances[2].emit('我很好，你呢？');
   assert(!d.getElementById('completed').hidden);
   assert(d.getElementById('conversation').hidden);
@@ -93,6 +97,11 @@ test('speech auto-advances to 你好吗; full answer gets meaningful panda respo
   assert(!d.getElementById('audio-note').hidden);
   d.getElementById('again').click();
   assert(d.getElementById('completed').hidden);
+  // A real browser can reject microphone permission: the learner must see a useful recovery.
+  mic.click();instances[3].fail('not-allowed');
+  assert(!d.getElementById('voice-recovery').hidden);
+  assert(d.getElementById('status').textContent.includes('Доступ к микрофону запрещён'));
+  assert(d.getElementById('status').textContent.includes('Открыть в Chrome'));
   d.getElementById('type-toggle').click();
   assert(!d.getElementById('typing').hidden);
   d.getElementById('answer').value='你好！';
