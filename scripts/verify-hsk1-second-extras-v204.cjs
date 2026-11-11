@@ -11,7 +11,7 @@ const data=JSON.parse(fs.readFileSync('assets/hanzi-data/他.json','utf8'));
 assert.equal(data.strokes.length,5,'他 must have exactly five authentic strokes');
 assert.equal(data.medians.length,5,'Every stroke needs medians for correct pen tracing');
 assert(html.includes('assets/vendor/hanzi-writer.min.js'),'Use existing local Hanzi Writer');
-assert(html.includes('assets/hsk1-second-extras-v204.js?v=211'));
+assert(html.includes('assets/hsk1-second-extras-v204.js?v=262'));
 assert(html.includes('assets/hsk1-second-extras-v204.css?v=237'));
 assert(style.includes('touch-action:none'),'Finger-writing surface should disable touch scrolling');
 const mk=(step)=>{
@@ -23,6 +23,7 @@ const mk=(step)=>{
  '我们':'./assets/women.mp3','你们':'./assets/nimen.mp3',
  '老师':'./assets/teacher.mp3','吗':'./assets/ma.mp3'};
  w.PANDA_HSK1_VOICES={female:{'我是老师。':'./assets/f.mp3'},male:{'你是老师吗？':'./assets/m.mp3'}};
+ w.PandaLesson2XiaoxiaoV261={lookup:hz=>hz==='我是老师。'?'./assets/panda-lesson2-xiaoxiao-v261/woshilaoshi.mp3':null};
  const instances=[];
  w.Audio=function(file){
   this.src=file;instances.push(this);
@@ -81,8 +82,8 @@ const mk=(step)=>{
  assert(doc.querySelector('[data-scene-caption]').textContent.includes('你是老师吗？'));
  instances[0].onended();
  assert.equal(instances.length,2,'Next play existing female response');
- assert.equal(instances[1].src,'./assets/hsk1-scene-v205/female-im-teacher-normalized.mp3',
-  'Female scene must use balanced amplitude MP3, not quiet original');
+ assert.equal(instances[1].src,'./assets/panda-lesson2-xiaoxiao-v261/woshilaoshi.mp3',
+  'Female scene must use the same new Xiaoxiao voice as all learner examples');
  assert(fs.existsSync('assets/hsk1-scene-v205/female-im-teacher-normalized.mp3'),
   'Normalized female scene clip must exist');
  assert.equal(doc.querySelector('[data-scene-window]').dataset.phase,'2');
