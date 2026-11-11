@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#aa72ce">
+<meta name="description" content="Разговаривай по-китайски с Пандой: короткие сценарии только по изученным урокам, без платных AI-запросов.">
+<title>Поговори с Пандой · Panda Go</title>
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#3b2754;background:#f8f0ff}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 30% 0,#ffe5f3,transparent 38%),radial-gradient(ellipse at 92% 24%,#ded0ff,transparent 44%),#f8f0ff}
+button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid #7438a9;outline-offset:3px}
+.shell{width:min(100%,770px);margin:0 auto;padding:15px 12px 42px}
+.back{color:#734694;text-decoration:none;font-weight:800;display:inline-flex;padding:8px 2px;margin-bottom:10px}
+.hero{display:flex;gap:15px;align-items:center;background:linear-gradient(125deg,#fce0ee,#e8d6ff);border:1px solid #eed2ff;border-radius:23px;padding:17px;box-shadow:0 10px 28px #6a389512}
+.hero .face{flex:none;width:62px;height:62px;display:grid;place-items:center;background:#fff5fc;border-radius:22px;border:2px solid #fff;font-size:37px}
+h1{font-size:clamp(24px,5.7vw,32px);margin:0 0 4px}h2{font-size:20px;margin:0 0 11px}
+.hero p,.fine{font-size:13px;line-height:1.5;margin:0;color:#795f8b}
+.panel{background:#fff;border:1px solid #eedef6;border-radius:22px;padding:16px;margin-top:15px;box-shadow:0 8px 24px #7d549316}
+.scenes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.scene{background:#fcfaff;border:1px solid #e9d8f2;border-radius:16px;text-align:left;padding:13px;color:#48295d;min-height:91px}
+.scene strong,.scene small{display:block}.scene strong{font-size:15px}.scene small{font-size:12px;margin-top:7px;color:#84668f;line-height:1.35}
+.scene.active{background:#f4e7fc;border-color:#b27cdc;box-shadow:inset 0 0 0 1px #b27cdc}
+.scene:disabled{opacity:.55;cursor:not-allowed}
+.chip{display:inline-block;background:#f1e5ff;border-radius:99px;padding:5px 9px;font-size:11px;color:#8051a2;font-weight:800;margin-bottom:9px}
+.intro{background:#fff7fc;border:1px solid #f0d9ec;border-radius:16px;padding:13px;margin:12px 0}
+.intro p{font-size:13px;line-height:1.5;margin:8px 0}.intro .phrase{border-top:1px solid #f0e3f1;padding:10px 0}
+.phrase strong,.phrase span{display:block}.phrase strong{font-size:21px}.phrase span{font-size:13px;margin-top:4px}
+.chat{display:flex;flex-direction:column;gap:10px;background:#fffbff;border:1px solid #f1e6f7;border-radius:17px;padding:12px;margin:12px 0;height:290px;max-height:42dvh;overflow:auto}
+.msg{max-width:94%;padding:11px 13px;border-radius:17px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
+.msg.panda{align-self:flex-start;background:#f0e5ff;border-top-left-radius:4px}.msg.student{align-self:flex-end;background:#fce3ef;border-top-right-radius:4px}
+.msg small{display:block;margin-top:5px;color:#745b85;font-size:13px}
+.mic-info{font-size:12px;line-height:1.5;color:#856a91;margin:8px 0}
+label{display:block;font-size:14px;font-weight:800;margin:9px 0 6px}
+textarea{width:100%;font-size:16px;min-height:73px;padding:11px;border:1px solid #dcc6eb;border-radius:14px;resize:vertical;line-height:1.45}
+.controls{display:flex;gap:9px;flex-wrap:wrap;margin-top:9px}
+.btn{background:#fff;color:#8048a0;border:1px solid #e3c9f3;border-radius:13px;padding:9px 14px;min-height:45px;font-weight:760}
+.btn.primary{background:linear-gradient(120deg,#cd77ba,#8054c9);color:white;border:0}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.status{font-size:13px;color:#8a507a;min-height:24px;margin:9px 0}
+.progress{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#71538b;margin-top:11px}
+.meter{height:6px;background:#f2e4fa;border-radius:9px;margin:8px 0 10px;overflow:hidden}
+.meter i{display:block;width:0;height:100%;background:linear-gradient(90deg,#d678b7,#9560c8);transition:width .2s}
+.fine{margin:13px 2px}
+.hidden{display:none!important}
+@media(max-width:460px){.scenes{grid-template-columns:1fr}.shell{padding:10px 9px 30px}.panel{padding:13px}.hero{padding:14px}.hero .face{width:55px;height:55px;font-size:30px}.scene{min-height:70px}}
+</style></head>
+<body><main class="shell">
+<a class="back" href="./hsk1-map.html">← К урокам HSK 1</a>
+<header class="hero"><div class="face" aria-hidden="true">🐼</div><div><h1>Поговори с Пандой</h1><p>Слушай реплики, отвечай по-китайски и закрепляй пройденные уроки. Без подписки на AI.</p></div></header>
+<section class="panel" aria-labelledby="scene-title">
+<h2 id="scene-title">Выбери разговор</h2>
+<div id="scenes" class="scenes" role="group" aria-label="Тренировка разговоров"></div>
+<p class="fine">Разговоры открываются по мере завершения соответствующих уроков. Дополнительные фразы всегда объясняются перед практикой.</p>
+</section>
+<section class="panel" aria-labelledby="talk-title">
+<h2 id="talk-title">🐼 Диалог с Пандой</h2>
+<div class="progress"><span id="turn-count">Выбери диалог</span><span id="done-state"></span></div><div class="meter"><i id="turn-bar"></i></div>
+<div id="intro" class="intro hidden"></div>
+<div id="chat" class="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
+<div class="controls">
+<button id="hear" class="btn" type="button">🔊 Слушать панду</button>
+<button id="hint" class="btn" type="button">💡 Подсказка</button>
+<button id="repeat" class="btn" type="button">↻ Повторить</button>
+</div>
+<form id="reply-form">
+<label for="reply">Твой ответ на китайском</label>
+<textarea id="reply" maxlength="200" required placeholder="Скажи через микрофон или напиши…"></textarea>
+<div class="controls"><button type="button" id="mic" class="btn">🎙 Говорить</button><button type="submit" id="send" class="btn primary">Ответить →</button></div>
+<p id="status" class="status" role="status" aria-live="polite"></p>
+</form>
+<p class="mic-info">Микрофон использует распознавание речи браузера, если оно доступно. На некоторых телефонах ему нужен интернет, а речь может обрабатываться сервисом браузера. Распознавание слов не оценивает точность тонов. Если точной записи носительницы нет, кнопка звука будет недоступна — голос не подменяется.</p>
+</section>
+<p class="fine">Материалы диалогов и текстовая проверка работают без платного сервера. Для продажи курса отдельно нужен защищённый доступ покупателя: открытая страница GitHub Pages сама по себе не является платёжной защитой.</p>
+</main>
+<script src="./assets/owner-audio-v237.js?v=237"></script>
+<script type="module" src="./assets/panda-conversation-ui-v1.mjs"></script>
+</body></html>
