@@ -26,7 +26,8 @@ try{
     stop(){this.stopped=true;this.onend?.()}
     abort(){this.aborted=true;this.onend?.()}
    }
-   window.webkitSpeechRecognition=MockSpeechRecognition;
+   Object.defineProperty(window,'SpeechRecognition',{configurable:true,writable:true,value:MockSpeechRecognition});
+   Object.defineProperty(window,'webkitSpeechRecognition',{configurable:true,writable:true,value:MockSpeechRecognition});
   });
   await page.goto(BASE+'/panda-talk.html',{waitUntil:'load'});
   await page.locator('[data-scene="hello"]').waitFor();
