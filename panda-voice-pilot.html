@@ -2,59 +2,76 @@
 <html lang="ru"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#8b59c1">
-<meta name="description" content="Panda Go — пробный голосовой диалог по первому уроку на Android.">
-<title>Поговори с Пандой — голосовой тест · Panda Go</title>
+<meta name="theme-color" content="#a96ac8">
+<meta name="description" content="Разговор с Пандой — бесплатная практика китайского по первому уроку.">
+<title>Поговори с Пандой · Panda Go</title>
 <style>
-:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#3c2852;background:#f8efff}
-*{box-sizing:border-box}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 10% 8%,#ffe3f0,transparent 40%),radial-gradient(ellipse at 95% 25%,#e0d3ff,transparent 48%),#f8efff}
-button,textarea{font:inherit}button{cursor:pointer}button:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid #7b40b3;outline-offset:3px}
-main{width:min(100%,630px);margin:auto;padding:16px 13px 45px}
-a.back{display:inline-block;padding:10px 0;text-decoration:none;color:#78509d;font-weight:800}
-header{display:flex;align-items:center;gap:15px;background:linear-gradient(115deg,#ffdfed,#e4d4ff);padding:17px;border:1px solid #ead1ff;border-radius:24px;box-shadow:0 12px 28px #8056a414}
-.panda{font-size:38px;background:#fff6fc;border:2px solid #fff;border-radius:21px;width:65px;height:65px;display:grid;place-items:center;flex:none}
-h1{font-size:clamp(24px,6vw,30px);margin:0 0 4px}h2{font-size:18px;margin:0 0 11px}
-header p,p.info{font-size:13px;color:#775d86;line-height:1.5;margin:0}
-.card{margin-top:16px;background:#fff;border:1px solid #e9d8f4;border-radius:22px;padding:17px;box-shadow:0 8px 28px #7047a111}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.pill{background:#f1e5ff;border-radius:99px;padding:6px 10px;color:#79479d;font-size:12px;font-weight:800}
-.meter{height:8px;border-radius:99px;background:#f1e5f9;overflow:hidden;margin:13px 0}.meter i{height:100%;width:0;display:block;background:linear-gradient(90deg,#dd75b2,#9061d0);transition:width .2s}
-.log{display:flex;flex-direction:column;gap:11px;margin:13px 0;background:#fffbff;border:1px solid #f1e4f5;border-radius:16px;height:286px;overflow:auto;padding:13px}
-.bubble{max-width:95%;padding:12px;border-radius:17px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px}
-.bubble.panda{font-size:16px;display:block;width:auto;height:auto;border:0;background:#f0e5ff;align-self:flex-start;border-top-left-radius:4px}
-.bubble.student{background:#fce1ef;align-self:flex-end;border-top-right-radius:4px}
-.bubble small{display:block;font-size:13px;color:#715c81;margin-top:4px}
-.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
-.btn{background:#fff;color:#76449f;border:1px solid #dec8ef;border-radius:13px;min-height:47px;padding:11px 16px;font-weight:800}
-.btn.main{color:#fff;border:0;background:linear-gradient(120deg,#c973bc,#8252c9);box-shadow:0 6px 14px #8650b12b}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-label{font-size:14px;font-weight:800;display:block;margin:14px 0 7px}
-textarea{width:100%;min-height:77px;border:1px solid #d8bfe8;border-radius:13px;padding:12px;resize:vertical;line-height:1.45;font-size:16px}
-.status{min-height:36px;font-size:13px;color:#704587;margin:13px 0 0;line-height:1.5}
-.info{margin:14px 3px!important}.fine{font-size:12px;line-height:1.55;color:#82688e;margin:14px 3px}
-@media(max-width:390px){main{padding:11px 9px 28px}.card{padding:13px}.panda{width:56px;height:56px;font-size:32px}.log{height:260px}}
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#422b59;background:#faf4ff}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 13% 4%,#ffe4f1,transparent 42%),radial-gradient(ellipse at 90% 27%,#e4d9ff,transparent 49%),#faf4ff}
+button,textarea{font:inherit}button{cursor:pointer}
+button:focus-visible,a:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #7d42b1;outline-offset:3px}
+main{width:min(100%,560px);margin:auto;padding:12px 13px 26px}
+.back{display:inline-block;text-decoration:none;color:#77558c;font-size:14px;font-weight:750;padding:10px 0}
+header{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:21px;background:linear-gradient(110deg,#fce5f4,#e9dcff);border:1px solid #e8d7f5}
+.avatar{font-size:31px;display:grid;place-items:center;width:49px;height:49px;flex:none;border-radius:16px;background:#fffafa}
+h1{margin:0;font-size:23px;line-height:1.2}
+header p{margin:4px 0 0;color:#795f8f;font-size:12px}
+.card{margin-top:13px;padding:15px;border:1px solid #ebdcf3;background:#fff;border-radius:23px;box-shadow:0 11px 30px #8145af13}
+.progress{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:750;color:#8655a3;margin-bottom:14px}
+.bars{display:flex;gap:6px;align-items:center}
+.bar{width:33px;height:6px;border-radius:20px;background:#ebdcf5}
+.bar.on{background:linear-gradient(90deg,#db85bd,#9454cb)}
+.panda-card{position:relative;background:linear-gradient(130deg,#f7edff,#f5e8fc);border:1px solid #e7d6f3;border-radius:21px;text-align:center;padding:29px 15px 23px;min-height:188px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.panda-tag{font-size:13px;font-weight:800;color:#9766a9}
+.hanzi{font-size:clamp(38px,10vw,53px);font-weight:850;letter-spacing:.045em;line-height:1.3;color:#4f286b;text-shadow:0 2px 5px #a5d3f999}
+.pinyin{font-size:17px;color:#805399;font-weight:650}
+.translation{font-size:13px;color:#8d739d;margin-top:5px}
+.speaker{position:absolute;top:10px;right:10px;border:1px solid #e1c8ef;background:#fff9ff;color:#8453a8;border-radius:50%;width:43px;height:43px;font-size:21px;display:grid;place-items:center;box-shadow:0 2px 5px #8e5e9a10}
+.speaker:disabled{opacity:.35}
+.heard{margin:13px auto 0;min-height:27px;font-size:15px;text-align:center;color:#7c5a89;font-weight:650;overflow-wrap:anywhere}
+.voice-box{display:flex;flex-direction:column;align-items:center;padding:11px 0 0}
+.voice-button{width:86px;height:86px;border-radius:50%;border:0;background:linear-gradient(145deg,#d97dc0,#955cd2);box-shadow:0 9px 24px #9a5ac14f;color:white;font-size:33px;display:grid;place-items:center;transition:transform .14s,box-shadow .14s}
+.voice-button:active{transform:scale(.96)}.voice-button[aria-pressed="true"]{background:linear-gradient(145deg,#ac4f9b,#7544bc);box-shadow:0 0 0 6px #eadcf6,0 9px 24px #9a5ac14f}
+.voice-button:disabled{opacity:.48;box-shadow:none}
+.voice-caption{font-size:14px;color:#835e97;margin-top:10px;font-weight:700}
+.feedback{min-height:27px;text-align:center;font-size:13px;line-height:1.45;color:#885a9b;margin:8px 0 0}
+.secondary{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:11px 0 2px}
+.link-button{border:0;background:transparent;color:#805599;text-decoration:underline;text-underline-offset:3px;font-size:13px;font-weight:730;min-height:40px;padding:6px}
+.typing{margin-top:12px;padding-top:12px;border-top:1px solid #f0e6f6}
+.typing label{font-weight:750;font-size:13px;display:block;margin-bottom:7px}
+.typing textarea{width:100%;font-size:16px;min-height:66px;padding:10px;border:1px solid #dac6e9;border-radius:13px;resize:vertical}
+.submit{border:0;border-radius:13px;padding:11px 17px;margin-top:8px;background:linear-gradient(100deg,#bf79c6,#915cce);color:white;font-weight:800;min-height:43px}
+.done{margin:14px 0 8px;text-align:center;color:#68438b;font-weight:800;font-size:23px}
+.done-actions{text-align:center;margin:9px 0}
+.reset-main{border:0;color:#fff;background:linear-gradient(105deg,#cf7abb,#8655ca);padding:13px 24px;border-radius:16px;min-height:49px;font-weight:800}
+details{font-size:12px;color:#8a718f;margin:13px 3px 0;line-height:1.5}
+summary{cursor:pointer;color:#9066a2}
+[hidden]{display:none!important}
+@media(max-width:390px){main{padding:8px 9px 24px}.card{padding:12px}.panda-card{min-height:170px;padding:22px 10px}.voice-button{width:80px;height:80px}.secondary{gap:10px}}
 </style></head>
 <body><main>
-<a class="back" href="./panda-lesson1.html">← Panda AI · Урок 1</a>
-<header><span class="panda" aria-hidden="true">🐼</span><div><h1>Поговори с Пандой</h1><p>Первый голосовой тест · Урок 1 · без AI-платежей</p></div></header>
-<section class="card">
-<div class="row"><span class="pill">Пробный диалог · 2 реплики</span><span id="step" class="pill">1 / 2</span></div>
-<div class="meter" aria-hidden="true"><i id="bar"></i></div>
-<p class="info">Панда говорит, ты слушаешь и отвечаешь. Если браузер не распознаёт китайскую речь, можно вводить текст.</p>
-<div id="log" class="log" role="log" aria-live="polite" aria-relevant="additions"></div>
-<div class="actions"><button id="hear" type="button" class="btn">🔊 Слушать панду</button><button id="hint" type="button" class="btn">💡 Подсказка</button></div>
-<form id="form">
-<label for="answer">Твой ответ по-китайски</label>
-<textarea id="answer" maxlength="160" placeholder="Нажми «Говорить» или напиши ответ…" required></textarea>
-<div class="actions">
-<button id="mic" type="button" class="btn" aria-pressed="false" aria-label="Начать или остановить распознавание китайской речи">🎙 Говорить</button>
-<button id="send" type="submit" class="btn main">Ответить →</button>
-<button id="reset" type="button" class="btn">↻ Ещё раз</button>
+<a class="back" href="./panda-lesson1.html">← Назад</a>
+<header><span class="avatar" aria-hidden="true">🐼</span><div><h1>Поговори с Пандой</h1><p>Урок 1 · Разговорная практика</p></div></header>
+<section class="card" aria-label="Китайский диалог">
+<div class="progress"><span id="step">1 из 2</span><div class="bars" aria-hidden="true"><i id="bar1" class="bar on"></i><i id="bar2" class="bar"></i></div></div>
+<div id="conversation">
+ <div class="panda-card">
+  <span class="panda-tag">🐼 Панда</span>
+  <strong id="phrase" class="hanzi">你好！</strong>
+  <span id="pinyin" class="pinyin">Nǐ hǎo!</span>
+  <span id="translation" class="translation">Привет!</span>
+  <button id="hear" class="speaker" type="button" aria-label="Прослушать фразу Панды" title="Слушать">🔊</button>
+ </div>
+ <div id="heard" class="heard" role="status" aria-live="polite"></div>
+ <div class="voice-box"><button id="mic" class="voice-button" type="button" aria-pressed="false" aria-label="Сказать ответ по-китайски">🎙</button><div id="mic-caption" class="voice-caption">Нажми и говори</div></div>
+ <div id="status" class="feedback" role="status" aria-live="polite" aria-atomic="true"></div>
+ <div class="secondary"><button id="type-toggle" class="link-button" type="button" aria-expanded="false" aria-controls="typing">⌨ Написать</button><button id="reset" class="link-button" type="button">↻ Заново</button></div>
+ <form id="typing" class="typing" hidden><label for="answer">Твой ответ</label><textarea id="answer" maxlength="160" placeholder="Напиши по-китайски"></textarea><button id="send" type="submit" class="submit">Отправить</button></form>
 </div>
-<p id="status" class="status" role="status" aria-live="polite" aria-atomic="true"></p>
-</form>
+<div id="completed" hidden><div class="done">🎉 Отлично!</div><p class="feedback">Две фразы пройдены</p><div class="done-actions"><button id="again" class="reset-main" type="button">↻ Ещё раз</button></div></div>
 </section>
-<p class="fine">Записи Панды — оригинальный голос носительницы из первого урока. Голос ученика не отправляется на сервер Panda Go и не сохраняется приложением, но браузерное распознавание может обращаться к внешнему сервису и требовать интернет. Распознанный текст не доказывает правильность тонов. Доступность микрофона зависит от браузера и разрешений.</p>
+<details><summary>О микрофоне и тонах</summary><p>Браузер может использовать интернет для распознавания речи. Панда проверяет распознанные слова, а не точность тонов. Если микрофон недоступен, можно ответить текстом. Записи Панды — одобренный голос носительницы.</p></details>
 <script src="./assets/owner-audio-v237.js?v=237"></script>
-<script type="module" src="./assets/panda-voice-pilot-ui.mjs"></script>
+<script type="module" src="./assets/panda-voice-pilot-ui.mjs?v=2"></script>
 </main></body></html>
