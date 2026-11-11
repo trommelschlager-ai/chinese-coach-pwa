@@ -105,6 +105,7 @@ test('Android-style microphone capture: recognize, review transcript, stop stale
  }
  dom.window.webkitSpeechRecognition=MockRecognition;
  dom.window.PandaOwnerAudio={lookup:key=>key==='你好'||key==='我是学生'?'./assets/owner-clean-v237/'+key+'.mp3':null};
+ dom.window.localStorage.setItem('pg-hsk1-v3-complete',JSON.stringify(['foundations']));
  globalThis.window=dom.window;globalThis.document=d;globalThis.localStorage=dom.window.localStorage;
  globalThis.Audio=class{constructor(src){this.src=src}pause(){}play(){return Promise.resolve()}};
  try{
