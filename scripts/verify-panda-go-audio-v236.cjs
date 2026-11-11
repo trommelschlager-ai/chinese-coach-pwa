@@ -12,7 +12,8 @@ assert(lesson4.includes('PandaCleanAudioV250?.lookup(word)')&&lesson4.includes("
 assert(!lesson4.includes('Для 星期天 нужна цельная запись'),'Outdated Sunday notice must be removed');
 assert(read('assets/panda-owner-l4-native-v221.js').includes('"星期天": "009"'));
 const numbers=read('assets/hsk1-third-v213.js');
-assert(numbers.includes("PandaCleanAudioV250?.lookup('一百')"),'Hundred must use original woman recording');
+assert(numbers.includes('PandaLesson3XiaoxiaoV263?.lookup(n)'),'Numbers 0–100 must use new Xiaoxiao recordings');
+assert(fs.existsSync('assets/lesson3-xiaoxiao-v263/100.mp3'),'Complete Xiaoxiao yì bǎi file missing');
 assert(read('assets/hsk1-voices-map-v160.js').includes('"一百"'));
 assert(read('assets/panda-go-companion-v231.js').includes('()=>vocab([8,12],!isFamily)'),'Keep family content and mark weather seasons optional');
 for(const [page,source] of [
