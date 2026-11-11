@@ -1,0 +1,110 @@
+/* Panda Go beginner map v252 — standalone screen styles, no legacy CSS overlays */
+*{box-sizing:border-box}
+html{min-height:100%;background:#d3e7fa}
+body{margin:0;min-height:100%;font-family:Arial,"Noto Sans",system-ui,sans-serif;color:#17131b}
+.map-shell{
+ position:relative;isolation:isolate;margin:auto;width:min(100%,470px);
+ height:100svh;min-height:585px;padding:calc(5px + env(safe-area-inset-top)) 12px calc(7px + env(safe-area-inset-bottom));
+ display:flex;flex-direction:column;overflow:hidden;
+ background:#a8d5da url("./panda-reference-v175/mountain-stairs.webp") center /cover no-repeat;
+}
+.back{
+ position:absolute;top:calc(10px + env(safe-area-inset-top));left:12px;z-index:5;
+ display:grid;place-items:center;width:37px;height:37px;text-decoration:none;
+ border:1px solid #fff2ff;border-radius:12px;background:linear-gradient(#a36bd5,#4d287f);
+ box-shadow:0 2px 8px #502b7d66,inset 0 2px 3px #ffffffab;color:#fff;font-size:31px;line-height:1;
+}
+.pg-map-heading{position:relative;z-index:1;flex:none;display:flex;align-items:center;flex-direction:column;gap:6px;padding:2px 32px 8px}
+.pg-map-brand{
+ color:#fff7ee;font-family:Georgia,serif;font-style:italic;font-weight:900;
+ font-size:clamp(33px,9vw,45px);line-height:1;letter-spacing:-1px;white-space:nowrap;
+ -webkit-text-stroke:.5px #7a3744;text-shadow:0 1px 0 #963b30,0 3px 1px #ffb54f,0 4px 7px #1b1557;
+}
+.pg-level-title{
+ width:min(100%,320px);margin:2px 0 0;padding:8px 10px;
+ text-align:center;color:#fff;font-weight:900;font-style:italic;
+ font-size:clamp(17px,5vw,23px);line-height:1.08;
+ border:2px solid #ffe990;border-radius:100px;
+ background:linear-gradient(180deg,#223a81,#07153d 72%,#192660);
+ box-shadow:0 0 0 1px #c59ceb,0 3px 9px #45268799,inset 0 1px 2px #fff8;
+ text-shadow:0 1px 2px #050b2f;
+}
+.map-summary,.map-footer{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.map-road{
+ position:relative;z-index:2;flex:1 1 0;min-height:0;
+ display:flex;flex-direction:column;justify-content:space-evenly;
+ margin:0;padding:7px 1px 5px clamp(81px,25%,115px);gap:6px
+}
+.node{
+ --edge:#a953ef;--deep:#7821bc;
+ position:relative;min-width:0;min-height:0;max-height:76px;flex:1 1 0;
+ display:grid;grid-template-columns:clamp(40px,11vw,52px) minmax(0,1fr) clamp(32px,10vw,44px);
+ align-items:center;gap:3px;width:100%;padding:3px 8px 3px 0;
+ border:2px solid var(--edge);border-radius:999px;text-decoration:none;color:#17131b;
+ background:linear-gradient(170deg,#ffffffee,#fffafff5 60%,#f6eefff2);
+ box-shadow:inset 0 2px 3px #fff,0 1px 1px #fff9,0 3px 8px #432b7470,0 0 8px 1px var(--edge);
+ transition:transform .13s,filter .13s;
+}
+.node::after{content:"";position:absolute;left:16%;right:6%;top:6px;height:20%;border-radius:100px;background:linear-gradient(#fff9,#fff0);pointer-events:none}
+.node[data-num="7"]{--edge:#b357fb;--deep:#802abc}
+.node[data-num="6"]{--edge:#fd4baf;--deep:#bf2079}
+.node[data-num="5"]{--edge:#ff9563;--deep:#d32d41}
+.node[data-num="4"]{--edge:#77e568;--deep:#289b34}
+.node[data-num="3"]{--edge:#45b9ff;--deep:#165fc0}
+.node[data-num="2"]{--edge:#4bdeec;--deep:#048d9e}
+.node[data-num="1"]{--edge:#b85cf5;--deep:#7220a9}
+.circle{
+ position:relative;z-index:2;display:grid;place-items:center;
+ width:clamp(50px,16vw,68px);height:clamp(50px,16vw,68px);
+ aspect-ratio:1;transform:translateX(-18px);border-radius:50%;border:2px solid #ffe79c;
+ color:white;font-size:clamp(26px,7.7vw,36px);font-weight:950;line-height:1;
+ background:radial-gradient(circle at 28% 12%,#fff9,transparent 35%),linear-gradient(150deg,var(--edge),var(--deep));
+ box-shadow:inset 0 2px 3px #ffffffb8,inset 0 -3px 4px #1f0b3740,0 2px 3px #633d6880,0 0 8px var(--edge);
+ text-shadow:0 2px 3px #361d4e88
+}
+.caption{position:relative;z-index:2;display:flex;min-width:0;flex-direction:column;justify-content:center;gap:3px;margin-left:-12px}
+.caption strong{font-size:clamp(11px,3.35vw,16px);font-weight:900;line-height:1.13;color:#111;letter-spacing:-.2px}
+.caption .pg-word{font-size:clamp(10px,2.85vw,13px);line-height:1.15;color:#44344a;font-weight:600;white-space:normal}
+.pg-topic-art{display:grid;place-items:center;justify-self:center;width:clamp(29px,9vw,41px);height:clamp(29px,9vw,41px)}
+.pg-topic-art svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 1px #5d49735c)}
+.pg-topic-art.pg-numbers{font-size:clamp(19px,6.5vw,31px);font-weight:1000;line-height:1;letter-spacing:-1.5px;color:#f9aa0e;-webkit-text-stroke:.65px #b66304;text-shadow:0 2px #f36c00,0 3px 4px #925b53a0}
+.node .arrow{position:absolute;right:4px;bottom:1px;font-size:10px;color:transparent}
+.node.done .arrow{color:#458c57}
+.node.locked{opacity:.86}.node.locked .circle{filter:saturate(.6)}
+.node:focus-visible,.pg-map-actions a:focus-visible,.back:focus-visible{outline:3px solid #2f175a;outline-offset:3px}
+.node:active:not(.locked){transform:scale(.985);filter:brightness(1.04)}
+.pg-map-actions{
+ position:relative;z-index:3;flex:none;display:grid;grid-template-columns:1fr 1fr;
+ gap:9px;margin:3px 0 6px;padding:0 4px;
+}
+.pg-map-actions a{
+ min-height:clamp(58px,8.5svh,74px);display:flex;align-items:center;justify-content:center;
+ gap:5px;padding:6px;border:2px solid var(--edge);border-radius:999px;
+ background:linear-gradient(#fff,#fef9ff 70%,#f4eeff);
+ box-shadow:inset 0 2px 2px #fff,0 0 7px 2px var(--edge),0 3px 5px #61498370;
+ color:#17131b;text-decoration:none;transition:transform .12s
+}
+.pg-map-actions a:first-child{--edge:#f75bdc}
+.pg-map-actions a:last-child{--edge:#ffbe43}
+.pg-map-actions .action-icon{font-size:clamp(22px,6.2vw,31px);line-height:1}
+.pg-map-actions .action-label{font-size:clamp(12px,3.75vw,18px);font-weight:950;line-height:1.08;text-align:center}
+.pg-map-actions a:active{transform:scale(.98)}
+@media(max-width:369px){
+ .map-road{padding-left:clamp(75px,23%,88px);gap:4px}
+ .node{grid-template-columns:37px minmax(0,1fr) 30px;padding-right:4px}
+ .circle{width:52px;height:52px;transform:translateX(-16px)}
+ .caption{margin-left:-10px}
+ .caption strong{font-size:11px}
+ .caption .pg-word{font-size:10px}
+ .pg-topic-art{width:28px;height:28px}
+}
+@media(max-height:700px){
+ .pg-map-heading{gap:4px;padding-bottom:5px}
+ .pg-map-brand{font-size:34px}
+ .pg-level-title{font-size:17px;padding:6px}
+ .map-road{gap:4px;padding-top:4px;padding-bottom:3px}
+ .node{max-height:64px}
+ .circle{width:52px;height:52px;font-size:27px}
+ .pg-map-actions a{min-height:55px}
+}
+@media(prefers-reduced-motion:reduce){.node,.pg-map-actions a{transition:none}}
