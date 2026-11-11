@@ -9,9 +9,11 @@ const homeJs=read('assets/panda-v130.js'),stepsJs=read('assets/hsk1-foundations-
 const css=read('assets/panda-approved-three-screen-v172.css');
 const sw=read('sw.js');
 const pack=JSON.parse(read('assets/offline-pack.json'));
-for(const [pageName,page] of [['home',root],['map',map],['lesson',lesson]])
- assert(page.includes(pageName==='lesson'?'assets/panda-approved-three-screen-v172.css?v=172':'assets/panda-reference-v175.css?v=175'),
-  'Missing visual reference CSS in '+pageName);
+assert(root.includes('assets/panda-reference-v175.css?v=175'),'Home approved stylesheet must remain');
+assert(lesson.includes('assets/panda-approved-three-screen-v172.css?v=172'),'Legacy lesson approved stylesheet must remain');
+assert(map.includes('assets/hsk1-map-v252.css?v=256'),'Map must use its updated approved mobile stylesheet');
+assert(map.includes('href="./panda-lesson1.html"'),'Panda AI must remain accessible as the third practice button');
+assert(map.includes('href="./hsk1-pronunciation.html"')&&map.includes('href="./hsk1-rhythm.html"'),'Both practice routes must remain');
 assert(root.includes('panda-v130.js?v=175'),'Home script cache must refresh');
 assert(lesson.includes('hsk1-foundations-v152.js?v=230'),'Lesson step icons must refresh');
 assert(homeJs.includes('panda-reference-v175/hero.webp'),'Existing approved panda hero must remain');
