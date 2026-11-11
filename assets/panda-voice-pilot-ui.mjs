@@ -15,6 +15,7 @@ function stopAudio(){
  $('hear').classList.remove('playing');
 }
 function stopRecognition(){
+ $('character').classList.remove('listening');
  clearWatchdog();state.epoch++;
  const prev=state.recognition;
  state.recognition=null;state.active=false;
@@ -64,6 +65,7 @@ function showStep(){
 }
 function finish(branch){
  stopAudio();stopRecognition();
+ $('character').classList.add('celebrate');
  const response=REPLIES[branch]||REPLIES.short;
  state.done=true;
  setPanda(response);
@@ -73,6 +75,7 @@ function finish(branch){
 }
 function restart(){
  stopAudio();stopRecognition();
+ $('character').classList.remove('celebrate');
  state.step=0;state.done=false;state.typing=false;state.lastAnswer='';
  state.voiceError='';$('voice-recovery').hidden=true;
  showStep();
@@ -131,6 +134,7 @@ $('mic').addEventListener('click',()=>{
  }catch{recovery('Не удалось создать сеанс распознавания.');return}
  state.recognition=recognition;
  state.active=true;
+ $('character').classList.add('listening');
  $('voice-recovery').hidden=true;
  refresh();
  const valid=()=>state.recognition===recognition&&state.epoch===epoch&&!state.done;
@@ -158,6 +162,7 @@ $('mic').addEventListener('click',()=>{
  recognition.onend=()=>{
   if(!valid())return;
   clearWatchdog();state.recognition=null;state.active=false;
+  $('character').classList.remove('listening');
   refresh();
   if(!heard&&!failed)recovery('Распознавание завершилось без ответа.');
  };
