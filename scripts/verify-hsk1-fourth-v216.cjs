@@ -14,7 +14,7 @@ const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const voice=fs.readFileSync('assets/hsk1-weekdays-audio-map-v214.js','utf8');
 const map=fs.readFileSync('hsk1-map.html','utf8');
 assert(html.includes('hsk1-fourth-v219.css?v=249'));
-assert(html.includes('hsk1-fourth-v220.js?v=250'));
+assert(html.includes('hsk1-fourth-v220.js?v=265'));
 assert(html.includes('panda-clean-audio-v250.js?v=250'),'Improved woman clips not loaded');
 assert(!html.includes('hsk1-third-v212.css'),'Lesson 4 should not depend on lesson 3 CSS');
 assert(!html.includes('hsk1-third-v213.css'),'Lesson 4 styles should be standalone');

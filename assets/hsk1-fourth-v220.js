@@ -147,7 +147,7 @@ const fileMap=()=>window.PANDA_HSK1_L4_VOICE_V214||{};
 const nativeMap=()=>window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
 const fileFor=(word,role='female')=>role==='male'
  ? (window.PANDA_HSK1_VOICES?.male?.[word]||null)
- : (window.PandaCleanAudioV250?.lookup(word)||window.PandaCleanAudioV249?.lookup(word)||window.PandaOwnerAudio?.lookup(word)||fileMap()[word]||ownerMap[word]||nativeMap()[word]||null);
+ : (window.PandaLesson4XiaoxiaoV265?.lookup(word)||window.PandaCleanAudioV250?.lookup(word)||window.PandaCleanAudioV249?.lookup(word)||window.PandaOwnerAudio?.lookup(word)||fileMap()[word]||ownerMap[word]||nativeMap()[word]||null);
 const AUDIO_LEVELS={"./assets/lesson4-owner-review-v217/owner-15.mp3":0.88,"./assets/lesson4-owner-review-v217/owner-21.mp3":0.88,"./assets/lesson4-owner-review-v217/owner-22.mp3":0.88,"./assets/hsk1-weekdays-clean-v214/001.mp3": 0.7834, "./assets/hsk1-weekdays-clean-v214/002.mp3": 0.9661, "./assets/hsk1-weekdays-clean-v214/003.mp3": 0.9716, "./assets/hsk1-weekdays-clean-v214/004.mp3": 0.8861, "./assets/hsk1-weekdays-clean-v214/005.mp3": 0.8008, "./assets/hsk1-weekdays-clean-v214/006.mp3": 1, "./assets/hsk1-weekdays-clean-v214/007.mp3": 0.9258, "./assets/hsk1-weekdays-clean-v214/008.mp3": 0.673, "./assets/hsk1-weekdays-clean-v214/009.mp3": 0.6331, "./assets/hsk1-weekdays-clean-v214/010.mp3": 0.9761, "./assets/hsk1-weekdays-clean-v214/011.mp3": 0.858, "./assets/hsk1-weekdays-clean-v214/012.mp3": 0.8366, "./assets/hsk1-weekdays-clean-v214/013.mp3": 0.7943, "./assets/hsk1-weekdays-clean-v214/014.mp3": 0.8511, "./assets/hsk1-weekdays-clean-v214/015.mp3": 0.9863, "./assets/hsk1-weekdays-clean-v214/016.mp3": 0.874, "./assets/hsk1-weekdays-clean-v214/017.mp3": 0.7825, "./assets/yue-tan-human-v166/094_92611b3bbea1298a77d4.mp3": 0.6434, "./assets/yue-tan-human-v166/050_e2e4b1164ea07e93d0a4.mp3": 0.9539, "./assets/hsk1-voice-corrections-v157/ri-native-yue-tan.mp3": 0.6124};
 let audio=null,epoch=0,dialoguePlayback='idle',writer=null,writerEpoch=0,recorder=null,recStream=null,micBlobURL=null;
 function soundStop(){
@@ -184,7 +184,7 @@ const audioButton=(word,label='▶ Слушать',additional='')=>!fileFor(word
 const compactAudioButton=(word)=>fileFor(word)
  ? '<button type="button" class="pg4-audio-icon" data-play="'+esc(word)+'" aria-label="Прослушать '+esc(word)+'" title="Прослушать фразу"><img src="./assets/vendor/icons/volume-2.svg" alt=""></button>'
  : '<span class="pg4-missing-audio" role="note">🔇 Запись готовится</span>';
-const audioCredits="<details class=\"pg13-credit\"><summary>Об аудио</summary><p>Подключены 22 оригинальные записи китаянки для слов и фраз урока 4. Для отсутствующих в этом наборе фраз используются ранее подготовленные записи Yue Tan / Shtooka (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/us/\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY-SA 3.0 US</a>). Часть исторических файлов собрана из фрагментов. Системная озвучка не используется.</p></details>";
+const audioCredits="<details class=\"pg13-credit\"><summary>Об аудио</summary><p>Все 25 слов и фраз словаря урока 4 записаны единым голосом Xiaoxiao. Мужская реплика в диалоге оставлена отдельной. Резервные записи Yue Tan / Shtooka (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/us/\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY-SA 3.0 US</a>). Часть исторических файлов собрана из фрагментов. Системная озвучка не используется.</p></details>";
 const card=(body,cls='')=>'<section class="pg4-card '+cls+'">'+body+'</section>';
 const h=(title)=>'<h2 class="pg4-card-title">'+title+'</h2>';
 function scrollNew(){viewport.scrollTop=0}
@@ -267,7 +267,7 @@ function grammar(){
  card(h('Свяжем со вторым уроком')+
  '<div class="pg4-model-phrases"><p><strong>今天星期五。</strong> — Сегодня пятница.<br><span class="pg4-pinyin-inline">Jīntiān xīngqī wǔ.</span></p>'+compactAudioButton('今天星期五。')+'<p>'+
  '<strong>今天是星期五。</strong> — Сегодня пятница.<br><span class="pg4-pinyin-inline">Jīntiān shì xīngqī wǔ.</span></p>'+compactAudioButton('今天是星期五。')+'</div>'+
- '<p class="pg4-info">Оба варианта допустимы. Ты уже знаешь 是 (shì).</p><p class="pg4-info">Цельная запись 今天是星期五。 уже получена от приглашённой носительницы.</p>'+
+ '<p class="pg4-info">Оба варианта допустимы. Ты уже знаешь 是 (shì).</p><p class="pg4-info">Цельная запись 今天是星期五。 озвучена тем же голосом Xiaoxiao.</p>'+
  '<p>Какой вопрос написан верно?</p>'+
  choices(['今天星期几吗？','今天星期几？','明天星期几？'],'grammar-answer')+
  (state.grammarPassed?'<p class="pg4-success">✓ Верно! Вопрос 几 не требует 吗.</p>':''));
@@ -314,7 +314,7 @@ function practicalPhrases(){
   ['我星期六有空。','Wǒ xīngqī liù yǒu kòng.','Я свободен в субботу.'],
   ['我们星期六一起去看电影吧！','Wǒmen xīngqī liù yìqǐ qù kàn diànyǐng ba!','Давай в субботу сходим в кино!']
  ];
- return '<details class="pg4-practical"><summary>Полезные фразы для планов</summary><p class="pg4-info">Дополнительно: новые слова 有空 (yǒu kòng) — быть свободным, 一起 (yìqǐ) — вместе, 看电影 (kàn diànyǐng) — смотреть кино. Цельная озвучка ожидается.</p>'+phrases.map(x=>'<div class="pg4-phrase"><strong lang="zh-Hans">'+x[0]+'</strong><span>'+x[1]+'</span><small>'+x[2]+'</small></div>').join('')+'</details>';
+ return '<details class="pg4-practical"><summary>Полезные фразы для планов</summary><p class="pg4-info">Дополнительно: новые слова 有空 (yǒu kòng) — быть свободным, 一起 (yìqǐ) — вместе, 看电影 (kàn diànyǐng) — смотреть кино. Нажми на динамик, чтобы послушать каждую фразу.</p>'+phrases.map(x=>'<div class="pg4-phrase"><strong lang="zh-Hans">'+x[0]+'</strong><span>'+x[1]+'</span><small>'+x[2]+'</small></div>').join('')+'</details>';
 }
 function sentence(){
  const i=state.ix[10]||0;
@@ -353,7 +353,7 @@ function final(){
  '<a href="./hsk1-map.html">К карте HSK1</a></div>')+
  (hardWords.length?card(h('Трудные слова — повтори ещё раз')+hardWords.map(x=>'<div class="pg4-dict-line"><div><strong lang="zh-Hans">'+x.zh+'</strong><span>'+x.py+'</span><small>'+x.ru+'</small></div>'+audioButton(x.zh)+'</div>').join('')):'')+
  card('<details class="pg4-dictionary"><summary>🎧 Весь словарь — '+allWords.length+' слов и фраз</summary>'+
- '<p class="pg4-info">Словарь из 25 слов и фраз. Подключён дополнительный набор из 22 записей китаянки; для некоторых выражений используются резервные образцы.</p>'+
+ '<p class="pg4-info">Все 25 слов и фраз записаны голосом Xiaoxiao.</p>'+
  allWords.map(x=>'<div class="pg4-dict-line"><div><strong lang="zh-Hans">'+esc(x.zh)+'</strong><span>'+esc(x.py)+'</span><small>'+esc(x.ru)+'</small></div>'+
  audioButton(x.zh,'▶')+'</div>').join('')+'</details>')+
  '<button type="button" data-restart class="pg4-restart">↺ Повторить весь урок №4</button>'+audioCredits;

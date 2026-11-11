@@ -1,0 +1,307 @@
+{
+  "version": 265,
+  "lesson": 4,
+  "voice": "Xiaoxiao",
+  "provider": "Luvvoice",
+  "ratePercent": -20,
+  "sourceFiles": [
+    {
+      "filename": "luvvoice.com-20261111-PotNNm.mp3",
+      "sha256": "6d8ee69a8ecce851bfccbc89305245f0b5b8fe3378b8447e19d7710d332f7b53",
+      "durationSeconds": 15.24,
+      "segments": 9
+    },
+    {
+      "filename": "luvvoice.com-20261111-3s5i1Y.mp3",
+      "sha256": "5b870c6f9e1c26bd96b838c69f8a0cb5631bcc68f08f5cc5bdbd051268175a53",
+      "durationSeconds": 13.536,
+      "segments": 8
+    },
+    {
+      "filename": "luvvoice.com-20261111-MbpPu1.mp3",
+      "sha256": "4e7c89f40aacd16d2e723f1f942432246fc6c9a1a904a3efd2694412ee724bc2",
+      "durationSeconds": 18.624,
+      "segments": 8
+    }
+  ],
+  "nativeToneReview": "pending",
+  "commercialLicenseReview": "pending",
+  "sourcePhrases": 25,
+  "clips": [
+    {
+      "index": 0,
+      "text": "星期",
+      "file": "000.mp3",
+      "sourceFile": "luvvoice.com-20261111-PotNNm.mp3",
+      "sourceFromMs": 240,
+      "sourceToMs": 1090,
+      "durationMs": 850,
+      "sha256": "16545868eadd99849e955aee4024b0ca22995c7086968fc95961be80d04341ff",
+      "bytes": 9404
+    },
+    {
+      "index": 1,
+      "text": "星期一",
+      "file": "001.mp3",
+      "sourceFile": "luvvoice.com-20261111-PotNNm.mp3",
+      "sourceFromMs": 1770,
+      "sourceToMs": 2775,
+      "durationMs": 1005,
+      "sha256": "62778ed0cd59d21f00c76e9010f3dd633ae1bd0c96b83fb25b4304f610fd742e",
+      "bytes": 10844
+    },
+    {
+      "index": 2,
+      "text": "星期二",
+      "file": "002.mp3",
+      "sourceFile": "luvvoice.com-20261111-PotNNm.mp3",
+      "sourceFromMs": 3430,
+      "sourceToMs": 4385,
+      "durationMs": 955,
+      "sha256": "f718335c498b82fdf0650d14a22a0a6707c0a2919a5b7a346693b778b9626414",
+      "bytes": 10364
+    },
+    {
+      "index": 3,
+      "text": "星期三",
+      "file": "003.mp3",
+      "sourceFile": "luvvoice.com-20261111-PotNNm.mp3",
+      "sourceFromMs": 5070,
+      "sourceToMs": 6075,
+      "durationMs": 1005,
+      "sha256": "4ff26c3a8905f0cc145af7f305ecf79df1b3adac799d18e0f80bbf88af7994c7",
+      "bytes": 10844
+    },
+    {
+      "index": 4,
+      "text": "星期四",
+      "file": "004.mp3",
+      "sourceFile": "luvvoice.com-20261111-PotNNm.mp3",
+      "sourceFromMs": 6755,
+      "sourceToMs": 7790,
+      "durationMs": 1035,
+      "sha256": "1efae2cf94c91413795de9f9a7e28984b61f1c23555ba8d3be33665a3db90718",
+      "bytes": 11324
+    },
+    {
+      "index": 5,
+      "text": "星期五",
+      "file": "005.mp3",
+      "sourceFile": "luvvoice.com-20261111-PotNNm.mp3",
+      "sourceFromMs": 8475,
+      "sourceToMs": 9520,
+      "durationMs": 1045,
+      "sha256": "cd22c06f0fae55d2448ad48a5337b89632ef05f09373de65335a8a4f776487e7",
+      "bytes": 11324
+    },
+    {
+      "index": 6,
+      "text": "星期六",
+      "file": "006.mp3",
+      "sourceFile": "luvvoice.com-20261111-PotNNm.mp3",
+      "sourceFromMs": 10180,
+      "sourceToMs": 11165,
+      "durationMs": 985,
+      "sha256": "ffbc835a29ede4a4ae3970a457bb6febd8526dd01580cf3667169da1b22112d6",
+      "bytes": 10844
+    },
+    {
+      "index": 7,
+      "text": "星期天",
+      "file": "007.mp3",
+      "sourceFile": "luvvoice.com-20261111-PotNNm.mp3",
+      "sourceFromMs": 11855,
+      "sourceToMs": 12850,
+      "durationMs": 995,
+      "sha256": "4927f008f55eec5def6d2f584646bb658cad160f780898da9899e0a77be6e6fe",
+      "bytes": 10844
+    },
+    {
+      "index": 8,
+      "text": "星期日",
+      "file": "008.mp3",
+      "sourceFile": "luvvoice.com-20261111-PotNNm.mp3",
+      "sourceFromMs": 13530,
+      "sourceToMs": 14545,
+      "durationMs": 1015,
+      "sha256": "c04033b27739c7d8f83c03222aa0ad9dcd9de0bd5b563294ac45359c116f6945",
+      "bytes": 11084
+    },
+    {
+      "index": 9,
+      "text": "今天",
+      "file": "009.mp3",
+      "sourceFile": "luvvoice.com-20261111-3s5i1Y.mp3",
+      "sourceFromMs": 210,
+      "sourceToMs": 1040,
+      "durationMs": 830,
+      "sha256": "baa359f7936f88fd0a888ebc70b7f64a080a8fbd0bad95f7338b17b7e1037dea",
+      "bytes": 9164
+    },
+    {
+      "index": 10,
+      "text": "明天",
+      "file": "010.mp3",
+      "sourceFile": "luvvoice.com-20261111-3s5i1Y.mp3",
+      "sourceFromMs": 1645,
+      "sourceToMs": 2500,
+      "durationMs": 855,
+      "sha256": "020893021d93ea40c63bce8a0b6d722ca556c0c78897f16236361a18cb101047",
+      "bytes": 9404
+    },
+    {
+      "index": 11,
+      "text": "昨天",
+      "file": "011.mp3",
+      "sourceFile": "luvvoice.com-20261111-3s5i1Y.mp3",
+      "sourceFromMs": 3175,
+      "sourceToMs": 3970,
+      "durationMs": 795,
+      "sha256": "050061c5a894a9aed6270b945e083ee07b55033c244438114c44440c776ba036",
+      "bytes": 8924
+    },
+    {
+      "index": 12,
+      "text": "几",
+      "file": "012.mp3",
+      "sourceFile": "luvvoice.com-20261111-3s5i1Y.mp3",
+      "sourceFromMs": 4625,
+      "sourceToMs": 5180,
+      "durationMs": 555,
+      "sha256": "20322c1cd2462fa30e248561177b68d7581cd546b208726af7d2bac4130d9b13",
+      "bytes": 6524
+    },
+    {
+      "index": 13,
+      "text": "日",
+      "file": "013.mp3",
+      "sourceFile": "luvvoice.com-20261111-3s5i1Y.mp3",
+      "sourceFromMs": 5835,
+      "sourceToMs": 6355,
+      "durationMs": 520,
+      "sha256": "63cc25ec2f1f2a396394e3741c83dd4a9ea4be28a66cdc0a425f70be84255bee",
+      "bytes": 6044
+    },
+    {
+      "index": 14,
+      "text": "今天星期几？",
+      "file": "014.mp3",
+      "sourceFile": "luvvoice.com-20261111-3s5i1Y.mp3",
+      "sourceFromMs": 7010,
+      "sourceToMs": 8600,
+      "durationMs": 1590,
+      "sha256": "d0bf0c5b5030b9844eed23082c3e75b8ae1944981334ec4f644211edf5b0d1a3",
+      "bytes": 16844
+    },
+    {
+      "index": 15,
+      "text": "明天星期几？",
+      "file": "015.mp3",
+      "sourceFile": "luvvoice.com-20261111-3s5i1Y.mp3",
+      "sourceFromMs": 9190,
+      "sourceToMs": 10760,
+      "durationMs": 1570,
+      "sha256": "8e5d93e0d0815e6ab400f3a0a104851af2d43bd8669c2e8aeea95d073f150eff",
+      "bytes": 16604
+    },
+    {
+      "index": 16,
+      "text": "今天星期五。",
+      "file": "016.mp3",
+      "sourceFile": "luvvoice.com-20261111-3s5i1Y.mp3",
+      "sourceFromMs": 11385,
+      "sourceToMs": 12855,
+      "durationMs": 1470,
+      "sha256": "2ffa881c7f298420605af893ef177850b45e939f4f18304bd49e9d4fe7bf2931",
+      "bytes": 15644
+    },
+    {
+      "index": 17,
+      "text": "明天星期六。",
+      "file": "017.mp3",
+      "sourceFile": "luvvoice.com-20261111-MbpPu1.mp3",
+      "sourceFromMs": 170,
+      "sourceToMs": 1635,
+      "durationMs": 1465,
+      "sha256": "f81d6d1a17f0b03c83026c769d06f683f4bdb6200f61123d8e61269c8f74f853",
+      "bytes": 15644
+    },
+    {
+      "index": 18,
+      "text": "昨天星期二。",
+      "file": "018.mp3",
+      "sourceFile": "luvvoice.com-20261111-MbpPu1.mp3",
+      "sourceFromMs": 2295,
+      "sourceToMs": 3700,
+      "durationMs": 1405,
+      "sha256": "2c49307cee74f8c3de2d5871e5b53b0f9ad6744c8e162a41fe38b8dceec7dd9f",
+      "bytes": 14924
+    },
+    {
+      "index": 19,
+      "text": "今天星期三。",
+      "file": "019.mp3",
+      "sourceFile": "luvvoice.com-20261111-MbpPu1.mp3",
+      "sourceFromMs": 4335,
+      "sourceToMs": 5780,
+      "durationMs": 1445,
+      "sha256": "e1befe27c043142ca765dd57892ca22a3bbc299f8b61c4806792ff5500add18e",
+      "bytes": 15404
+    },
+    {
+      "index": 20,
+      "text": "今天星期一。",
+      "file": "020.mp3",
+      "sourceFile": "luvvoice.com-20261111-MbpPu1.mp3",
+      "sourceFromMs": 6430,
+      "sourceToMs": 7865,
+      "durationMs": 1435,
+      "sha256": "1f6920b733416c0e35ea35712ac4e8260d10affcd311e6d4922b981362b19091",
+      "bytes": 15164
+    },
+    {
+      "index": 21,
+      "text": "今天是星期五。",
+      "file": "021.mp3",
+      "sourceFile": "luvvoice.com-20261111-MbpPu1.mp3",
+      "sourceFromMs": 8485,
+      "sourceToMs": 10180,
+      "durationMs": 1695,
+      "sha256": "7b542fe852e63062fc3cdc3c2a455636fd57067c72a0eaabc4780eb355bb6816",
+      "bytes": 17804
+    },
+    {
+      "index": 22,
+      "text": "你星期几有空？",
+      "file": "022.mp3",
+      "sourceFile": "luvvoice.com-20261111-MbpPu1.mp3",
+      "sourceFromMs": 10780,
+      "sourceToMs": 12370,
+      "durationMs": 1590,
+      "sha256": "cbb2a850b44f494c6db63aa86ded87e15ccee97be6132ad1531af83a3f126600",
+      "bytes": 16844
+    },
+    {
+      "index": 23,
+      "text": "我星期六有空。",
+      "file": "023.mp3",
+      "sourceFile": "luvvoice.com-20261111-MbpPu1.mp3",
+      "sourceFromMs": 13005,
+      "sourceToMs": 14640,
+      "durationMs": 1635,
+      "sha256": "038f1b0606c00d4e4d7f93e206839b6673ee1728522c44024cf9edf122e98451",
+      "bytes": 17324
+    },
+    {
+      "index": 24,
+      "text": "我们星期六一起去看电影吧！",
+      "file": "024.mp3",
+      "sourceFile": "luvvoice.com-20261111-MbpPu1.mp3",
+      "sourceFromMs": 15255,
+      "sourceToMs": 17915,
+      "durationMs": 2660,
+      "sha256": "963c7f95830508494a285349a1989226eb4605e58ce947a423ece1ecf28d9dfa",
+      "bytes": 27404
+    }
+  ]
+}
