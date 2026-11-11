@@ -29,6 +29,13 @@ w.localStorage.setItem('pg-hsk1-v3-complete',JSON.stringify(['foundations','pron
 w.eval(native);
 w.eval(xiaoxiao);
 assert.equal(w.PandaLesson3XiaoxiaoV263.clips.length,101);
+const chinese=n=>{
+ const a='零一二三四五六七八九';
+ if(n===0)return '零';if(n<10)return a[n];if(n===10)return '十';
+ if(n<20)return '十'+a[n%10];
+ if(n===100)return '一百';
+ return a[Math.floor(n/10)]+'十'+(n%10?a[n%10]:'');
+};
 w.Audio=function(src){
  const self=this;
  self.src=src;played.push(self);self.pause=()=>{};
