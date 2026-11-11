@@ -65,3 +65,65 @@ test('beta page is isolated from existing lessons and wired to the map',()=>{
  assert(map.includes('hsk1-lesson.html?lesson=7'));
  assert(!html.includes('OPENAI_API_KEY'));
 });
+
+test('cloud worker verifies Turnstile, keeps keys server-side and enforces atomic quotas',async()=>{
+ const prevFetch=globalThis.fetch;
+ const quotas=new Map();let upstreamCalls=0,challengeCalls=0,latestRequest=null;
+ const DB={prepare(){return {bind(scope,bucket,limit){return {async first(){
+  const key=scope+':'+bucket,n=quotas.get(key)||0;
+  if(n>=limit)return null;quotas.set(key,n+1);return {hits:n+1};
+ }}}}}};
+ const env={OPENAI_API_KEY:'test-secret-not-for-browser',TURNSTILE_SECRET:'test-turnstile-private',
+  IP_HASH_SALT:'test-salt-for-identity-hashing-do-not-use-in-prod',DB,ALLOWED_ORIGIN:ORIGIN};
+ globalThis.fetch=async(url,options)=>{
+  if(String(url).includes('siteverify')){
+   challengeCalls++;
+   assert.equal(options.method,'POST');
+   assert(!JSON.stringify(options.body).includes(env.OPENAI_API_KEY));
+   return new Response(JSON.stringify({success:true,hostname:'trommelschlager-ai.github.io'}),{status:200});
+  }
+  if(String(url).includes('/v1/responses')){
+   upstreamCalls++;latestRequest=JSON.parse(options.body);
+   assert.equal(options.headers.Authorization,'Bearer '+env.OPENAI_API_KEY);
+   return new Response(JSON.stringify({output:[{type:'message',content:[{type:'output_text',text:'你好 — nǐ hǎo — привет.'}]}]}),{status:200});
+  }
+  throw new Error('Unrecognized upstream');
+ };
+ const userReq=(token)=>new Request('https://panda-go-ai-beta.example/v1/chat',{
+  method:'POST',headers:{Origin:ORIGIN,'Content-Type':'application/json','CF-Connecting-IP':'203.0.113.88'},
+  body:JSON.stringify({lesson:1,question:'Почему 你好 меняет тон?',history:[],turnstileToken:token})
+ });
+ try{
+  for(let i=0;i<4;i++){
+   const response=await worker.fetch(userReq('turnstile-approved-token-'+i),env);
+   assert.equal(response.status,200);
+   assert.equal((await response.json()).answer,'你好 — nǐ hǎo — привет.');
+  }
+  assert.equal(upstreamCalls,4);
+  assert.equal(latestRequest.store,false);
+  assert.equal(latestRequest.max_output_tokens,450);
+  assert(latestRequest.instructions.includes('Текущий урок: 1'));
+  const response=await worker.fetch(userReq('turnstile-approved-token-5'),env);
+  assert.equal(response.status,429);
+  assert.equal(upstreamCalls,4,'Rejected quota must not call paid AI endpoint');
+  assert.equal(challengeCalls,5);
+  assert(!JSON.stringify(await response.json()).includes(env.OPENAI_API_KEY));
+ }finally{globalThis.fetch=prevFetch}
+});
+test('Turnstile hostname mismatch blocks the model before quota checks',async()=>{
+ const prevFetch=globalThis.fetch;let aiCalls=0;
+ globalThis.fetch=async url=>{
+  if(String(url).includes('siteverify'))return new Response(JSON.stringify({success:true,hostname:'attacker.example'}));
+  aiCalls++;return new Response('{}');
+ };
+ try{
+  const env={OPENAI_API_KEY:'secret',TURNSTILE_SECRET:'other-secret',IP_HASH_SALT:'salt',
+   DB:{prepare(){throw new Error('quota not expected')}},ALLOWED_ORIGIN:ORIGIN};
+  const request=new Request('https://panda-go-ai-beta.example/v1/chat',{
+   method:'POST',headers:{Origin:ORIGIN,'Content-Type':'application/json','CF-Connecting-IP':'203.0.113.2'},
+   body:JSON.stringify({lesson:1,question:'你好?',history:[],turnstileToken:'apparently-valid-token'})
+  });
+  const response=await worker.fetch(request,env);
+  assert.equal(response.status,403);assert.equal(aiCalls,0);
+ }finally{globalThis.fetch=prevFetch}
+});
