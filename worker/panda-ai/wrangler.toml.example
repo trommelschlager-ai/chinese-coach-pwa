@@ -1,0 +1,12 @@
+name = "panda-go-ai-beta"
+main = "src/index.mjs"
+compatibility_date = "2026-11-11"
+
+[vars]
+ALLOWED_ORIGIN = "https://trommelschlager-ai.github.io"
+OPENAI_MODEL = "gpt-5.4-mini"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "panda-ai-quota"
+database_id = "REPLACE_WITH_DATABASE_ID"
