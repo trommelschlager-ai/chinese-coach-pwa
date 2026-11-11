@@ -22,5 +22,7 @@ assert(!html.includes('panda-clean-audio-v250.js'));
 assert(js.includes("if(n===100)return ['yì','bǎi']"));
 const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
 for(let n=0;n<=100;n++)assert(offline.files.includes(voice.lookup(n)),'Missing offline '+n);
-assert(fs.readFileSync('sw.js','utf8').includes('v263-lesson3-xiaoxiao'));
+const sw=fs.readFileSync('sw.js','utf8');
+assert(/^const CACHE='chinese-coach-pwa-v[^']+';/m.test(sw),'Versioned PWA cache is required');
+assert(offline.files.includes('./assets/lesson3-xiaoxiao-v263.js?v=263'),'Lesson 3 voice mapping must remain in the offline pack');
 console.log('PASS v263: all 101 real MP3 numbers 0-100 present, checksummed, mapped and offline.');
