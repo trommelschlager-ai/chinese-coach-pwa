@@ -6,7 +6,11 @@ const lessonSelect=$('ask-lesson'),curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
 curriculum.slice(0,7).forEach((topic,i)=>{
  const o=document.createElement('option');o.value=String(i+1);o.textContent='Урок '+(i+1)+' · '+topic.name;lessonSelect.appendChild(o);
 });
+const lesson1Samples=document.querySelector('.question-links');
+const updateSamples=()=>lesson1Samples?.classList.toggle('hidden',lessonSelect.value!=='1');
+updateSamples();
 lessonSelect.addEventListener('change',()=>{
+ updateSamples();
  if(state.mode==='ask'){chat.replaceChildren();say('ai','🐼 Тема: '+(curriculum[Number(lessonSelect.value)-1]?.name||'первый урок')+'. Спроси о словах, грамматике или диалоге.');}
 });
 
@@ -85,7 +89,7 @@ function setMode(mode){
  answer.placeholder=practice?'Напиши ответ здесь…':'Например: Почему 你好 меняет тон?';
  chat.replaceChildren();
  if(practice)activateTopic(state.topic);
- else{say('ai','🐼 Выбери урок 1–7 и спроси о словах, правилах или диалоге. Посторонние темы я не обсуждаю.');status('Без платных AI API.');answer.value='';}
+ else{updateSamples();say('ai','🐼 Выбери урок 1–7 и спроси о словах, правилах или диалоге. Посторонние темы я не обсуждаю.');status('Без платных AI API.');answer.value='';}
 }
 $('mode-practice').addEventListener('click',()=>setMode('practice'));
 $('mode-ask').addEventListener('click',()=>setMode('ask'));

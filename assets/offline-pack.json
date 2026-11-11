@@ -1,5 +1,5 @@
 {
-  "version": 259,
+  "version": 260,
   "bytes": 50866105,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -1177,7 +1177,7 @@
     "./assets/panda-hsk-card-3-v174.webp",
     "./assets/panda-hsk1-mountain-v174.webp",
     "./assets/panda-lesson-audio-v240.js?v=244",
-    "./assets/panda-lesson1-ui.mjs?v=259",
+    "./assets/panda-lesson1-ui.mjs?v=260",
     "./assets/panda-mic-v236.js?v=236",
     "./assets/panda-mic-v236.js?v=237",
     "./assets/panda-native-clean-v249/hao.mp3",
