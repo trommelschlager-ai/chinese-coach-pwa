@@ -1,0 +1,739 @@
+{
+  "version": 1,
+  "stage": "review_only",
+  "trainer_only": true,
+  "qualityApproved": false,
+  "voice": "Xiaoxiao",
+  "provider": "Luvvoice",
+  "rate": -20,
+  "pitch": 0,
+  "volume": 0,
+  "unique_mp3": 80,
+  "source_part": 1,
+  "first_id": "p031",
+  "last_id": "p110",
+  "technicalSegmentationVerified": true,
+  "notes": "80 segments from 97.224 second user's MP3; native speaker tonal verification pending; no lesson changes",
+  "clips": [
+    {
+      "id": "p031",
+      "hanzi": "妈",
+      "pinyin": "mā",
+      "translation": "мама",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "969173cf9d2b46778dbfee940cdb15a3eb60849a"
+    },
+    {
+      "id": "p032",
+      "hanzi": "你",
+      "pinyin": "nǐ",
+      "translation": "ты",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "addf42a595d41bd5d41a76c1747793c0142a838f"
+    },
+    {
+      "id": "p033",
+      "hanzi": "波",
+      "pinyin": "bō",
+      "translation": "волна",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "dc2501e9d3c03b76c91997e0de8f3c287dfafe77"
+    },
+    {
+      "id": "p034",
+      "hanzi": "东",
+      "pinyin": "dōng",
+      "translation": "восток",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "946c2a330a61d88961f8f6ae16175be463013437"
+    },
+    {
+      "id": "p035",
+      "hanzi": "欧",
+      "pinyin": "ōu",
+      "translation": "Европа",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "c3fafc019680018fb9a4948767fbc3c9559130b7"
+    },
+    {
+      "id": "p036",
+      "hanzi": "拍",
+      "pinyin": "pāi",
+      "translation": "хлопать",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "04dcd366de73a6f96fd19093bc97c08f626c66c5"
+    },
+    {
+      "id": "p037",
+      "hanzi": "七",
+      "pinyin": "qī",
+      "translation": "семь",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "04fdc3f6b5d54771f592a740060c426ef65649f2"
+    },
+    {
+      "id": "p038",
+      "hanzi": "人",
+      "pinyin": "rén",
+      "translation": "человек",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "8e44375d039317770f13c984e78bdced06cf2461"
+    },
+    {
+      "id": "p039",
+      "hanzi": "三",
+      "pinyin": "sān",
+      "translation": "три",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "f39e2bd12284f909e8ab32be8402600e318e3906"
+    },
+    {
+      "id": "p040",
+      "hanzi": "书",
+      "pinyin": "shū",
+      "translation": "книга",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "6b543c916c5eab2812656d38997d00d7834fcf4e"
+    },
+    {
+      "id": "p041",
+      "hanzi": "他",
+      "pinyin": "tā",
+      "translation": "он",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "4f12736e93ae6309ad7777a2f98c1d3f1ba705c4"
+    },
+    {
+      "id": "p042",
+      "hanzi": "屋",
+      "pinyin": "wū",
+      "translation": "дом",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "31de955a85a58120f9d57ff447e83aaef978b1f6"
+    },
+    {
+      "id": "p043",
+      "hanzi": "花",
+      "pinyin": "huā",
+      "translation": "цветок",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "28a4dd68285f4111a3ffccf35c9f219730f53035"
+    },
+    {
+      "id": "p044",
+      "hanzi": "快",
+      "pinyin": "kuài",
+      "translation": "быстрый",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "2e95dc38dc8c9daff70b2c270be132f69c872238"
+    },
+    {
+      "id": "p045",
+      "hanzi": "关",
+      "pinyin": "guān",
+      "translation": "закрывать",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "e2e69e9240f48a1f5a044b2293d316a72e9bf665"
+    },
+    {
+      "id": "p046",
+      "hanzi": "光",
+      "pinyin": "guāng",
+      "translation": "свет",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "3f3d7e8f0849f0c0ef9ec5fca2e8bb6a927bf937"
+    },
+    {
+      "id": "p047",
+      "hanzi": "翁",
+      "pinyin": "wēng",
+      "translation": "старец",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "12fbe1307843a8b6cbe4e3d162d1b5a2d98c5086"
+    },
+    {
+      "id": "p048",
+      "hanzi": "水",
+      "pinyin": "shuǐ",
+      "translation": "вода",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "4e967f6e9a39059a81b60cb3b0320aeda5d5df3b"
+    },
+    {
+      "id": "p049",
+      "hanzi": "春",
+      "pinyin": "chūn",
+      "translation": "весна",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "ea91b63960f47de0edd2a186ecb8dd648da5b293"
+    },
+    {
+      "id": "p050",
+      "hanzi": "国",
+      "pinyin": "guó",
+      "translation": "страна",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "1ff1101f2f8fbf8ba4f1ef7dc583d74d826fea6e"
+    },
+    {
+      "id": "p051",
+      "hanzi": "女",
+      "pinyin": "nǚ",
+      "translation": "женщина",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "8a8087bcf075efd114370edde9530e8df44f26d8"
+    },
+    {
+      "id": "p052",
+      "hanzi": "月",
+      "pinyin": "yuè",
+      "translation": "луна",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "98544bc89684ab94b14025ea49426f310edee735"
+    },
+    {
+      "id": "p053",
+      "hanzi": "圆",
+      "pinyin": "yuán",
+      "translation": "круглый",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "7792ddbacb30d57863d52ce6ea616060dd902094"
+    },
+    {
+      "id": "p054",
+      "hanzi": "云",
+      "pinyin": "yún",
+      "translation": "облако",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "5afd80c5cf29b2b4da423368192908c33ffef018"
+    },
+    {
+      "id": "p055",
+      "hanzi": "我",
+      "pinyin": "wǒ",
+      "translation": "я",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "19c6ac44b98e18dc448577804bc107f3649f45e6"
+    },
+    {
+      "id": "p056",
+      "hanzi": "西",
+      "pinyin": "xī",
+      "translation": "запад",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "464c8d09e010cc52bf18389403f7372eea4c3096"
+    },
+    {
+      "id": "p057",
+      "hanzi": "一",
+      "pinyin": "yī",
+      "translation": "один",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "b36e5def024310d7dd25416bb7ef2f8d1a5b3e35"
+    },
+    {
+      "id": "p058",
+      "hanzi": "字",
+      "pinyin": "zì",
+      "translation": "иероглиф",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "57cd4d4693173c6f653c85cf4af625652eebeef1"
+    },
+    {
+      "id": "p059",
+      "hanzi": "知",
+      "pinyin": "zhī",
+      "translation": "знать",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "523d54742cc76fa62c8ca8df89b611e813fba48b"
+    },
+    {
+      "id": "p060",
+      "hanzi": "趴",
+      "pinyin": "pā",
+      "translation": "лежать ничком",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "e94bbdfb9945e9d076cd3f40330bd359427edd00"
+    },
+    {
+      "id": "p061",
+      "hanzi": "科",
+      "pinyin": "kē",
+      "translation": "научная дисциплина",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "9a7ca8cf0cca99dca5dca870b00cb5aaac340d84"
+    },
+    {
+      "id": "p062",
+      "hanzi": "次",
+      "pinyin": "cì",
+      "translation": "раз",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "2ff6ece64e6526bb5f8920676191c2892fd31d60"
+    },
+    {
+      "id": "p063",
+      "hanzi": "四",
+      "pinyin": "sì",
+      "translation": "четыре",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "507af4c31c6849a8e8a2813336be20c663d3e9c3"
+    },
+    {
+      "id": "p064",
+      "hanzi": "诗",
+      "pinyin": "shī",
+      "translation": "стихотворение",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "245e7e53d7737de2518ca1fce66c63ea3d1856eb"
+    },
+    {
+      "id": "p065",
+      "hanzi": "日",
+      "pinyin": "rì",
+      "translation": "день",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "f7803ef4a01ea2807a59286f3547d14b167bdf15"
+    },
+    {
+      "id": "p066",
+      "hanzi": "词",
+      "pinyin": "cí",
+      "translation": "слово",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "9a61684bc5c3637b43ac732d72bf9c79895bdc74"
+    },
+    {
+      "id": "p067",
+      "hanzi": "是",
+      "pinyin": "shì",
+      "translation": "быть",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "0bd074239e0e588ac8ad64bbd7cc16c900643d36"
+    },
+    {
+      "id": "p068",
+      "hanzi": "举",
+      "pinyin": "jǔ",
+      "translation": "поднимать",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "5324391aca96a48524b4d790207781916ac4c027"
+    },
+    {
+      "id": "p069",
+      "hanzi": "去",
+      "pinyin": "qù",
+      "translation": "идти",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "2c0f18e8292a0f01ca7c1a401902d030bc86d500"
+    },
+    {
+      "id": "p070",
+      "hanzi": "需",
+      "pinyin": "xū",
+      "translation": "нуждаться",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "b02be4704e755b839d39f49e0b73887a0886d1ed"
+    },
+    {
+      "id": "p071",
+      "hanzi": "鱼",
+      "pinyin": "yú",
+      "translation": "рыба",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "64129016b0ef8db8939173396c1eacf3e0f35a46"
+    },
+    {
+      "id": "p072",
+      "hanzi": "绿",
+      "pinyin": "lǜ",
+      "translation": "зелёный",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "40e2bea69768cb9825330327be81fe80ba83bdc6"
+    },
+    {
+      "id": "p073",
+      "hanzi": "牛",
+      "pinyin": "niú",
+      "translation": "корова",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "234d58bd5b44587da9cd637a010c9f51ee3985b7"
+    },
+    {
+      "id": "p074",
+      "hanzi": "对",
+      "pinyin": "duì",
+      "translation": "верно",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "eabb5416927def21e473f86663754a2eda05753c"
+    },
+    {
+      "id": "p075",
+      "hanzi": "论",
+      "pinyin": "lùn",
+      "translation": "обсуждать",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "421999263d4329a5db86a631002b341081fb2f72"
+    },
+    {
+      "id": "p076",
+      "hanzi": "麻",
+      "pinyin": "má",
+      "translation": "конопля",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "453946d95cd3a7d0f581cbf5d436f5af4a519735"
+    },
+    {
+      "id": "p077",
+      "hanzi": "马",
+      "pinyin": "mǎ",
+      "translation": "лошадь",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "0ad4f4aa6e16d1e0aad4cd3f93113e94fbf603de"
+    },
+    {
+      "id": "p078",
+      "hanzi": "骂",
+      "pinyin": "mà",
+      "translation": "ругать",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "1cedd761ad124f4a585f4041faea587f3a807bf5"
+    },
+    {
+      "id": "p079",
+      "hanzi": "吗",
+      "pinyin": "ma",
+      "translation": "вопросительная частица",
+      "tone": 0,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "9cf0ea074b3914b1b8299d1b93f6203b1354ef12"
+    },
+    {
+      "id": "p080",
+      "hanzi": "你好",
+      "pinyin": "nǐ hǎo",
+      "translation": "привет",
+      "tone": 0,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "87cd217287b01e070fb407c052a82a6499ce85b3"
+    },
+    {
+      "id": "p081",
+      "hanzi": "很好",
+      "pinyin": "hěn hǎo",
+      "translation": "очень хорошо",
+      "tone": 0,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "a9a21063ae78cc7b3e7ddbc3b01790b544d0f3aa"
+    },
+    {
+      "id": "p082",
+      "hanzi": "不是",
+      "pinyin": "bú shì",
+      "translation": "не является",
+      "tone": 0,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "48faff630a9b852410c0e3ff71deb1620f5e50d2"
+    },
+    {
+      "id": "p083",
+      "hanzi": "不好",
+      "pinyin": "bù hǎo",
+      "translation": "плохо",
+      "tone": 0,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "008d654466a5f8391d24487071f6eb12319bb311"
+    },
+    {
+      "id": "p084",
+      "hanzi": "一个",
+      "pinyin": "yí gè",
+      "translation": "один (счётное слово)",
+      "tone": 0,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "08d6b94752af2adfca1912dbcede085a87518046"
+    },
+    {
+      "id": "p085",
+      "hanzi": "一天",
+      "pinyin": "yì tiān",
+      "translation": "один день",
+      "tone": 0,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "8a3dee8c8a3c79d53ee1ff91e51f0931f3d18b02"
+    },
+    {
+      "id": "p086",
+      "hanzi": "妈妈",
+      "pinyin": "māma",
+      "translation": "мама",
+      "tone": 0,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "8490ed131bf6624353d919bf0b4fb7c5d977fdc5"
+    },
+    {
+      "id": "p087",
+      "hanzi": "谢谢",
+      "pinyin": "xièxie",
+      "translation": "спасибо",
+      "tone": 0,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "466a72a748cd62f4bdf9ea572dea8c62dae52e65"
+    },
+    {
+      "id": "p088",
+      "hanzi": "星",
+      "pinyin": "xīng",
+      "translation": "звезда",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "2179cc591e19a008baf98be7682725f0462c9059"
+    },
+    {
+      "id": "p089",
+      "hanzi": "西安",
+      "pinyin": "Xī'ān",
+      "translation": "Сиань",
+      "tone": 0,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "3d92c1fc830ab68ce29b90cf8067484555cc87fa"
+    },
+    {
+      "id": "p090",
+      "hanzi": "先",
+      "pinyin": "xiān",
+      "translation": "сначала",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "d1662ab322f357828637cc94b09bc67083dcc19f"
+    },
+    {
+      "id": "p091",
+      "hanzi": "哪儿",
+      "pinyin": "nǎr",
+      "translation": "где",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "280d4794093c06058583d79ea75c6ae4deb304ea"
+    },
+    {
+      "id": "p092",
+      "hanzi": "看",
+      "pinyin": "kàn",
+      "translation": "смотреть",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "4c6f32551661efdbea250ea79fda9a1fb103d52f"
+    },
+    {
+      "id": "p093",
+      "hanzi": "忙",
+      "pinyin": "máng",
+      "translation": "занятой",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "34aa6dec73a43222f97f9976e75b80e92a09f8ff"
+    },
+    {
+      "id": "p094",
+      "hanzi": "比",
+      "pinyin": "bǐ",
+      "translation": "сравнивать",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "2909dc552161864569fcff9235cb3e4fb95bc2f6"
+    },
+    {
+      "id": "p095",
+      "hanzi": "不",
+      "pinyin": "bù",
+      "translation": "не",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "92b0a317bc1bd98838597c6e21b775a25b960be3"
+    },
+    {
+      "id": "p096",
+      "hanzi": "北",
+      "pinyin": "běi",
+      "translation": "север",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "89b1a333dfd7d1904f023193b9135c37c97296d5"
+    },
+    {
+      "id": "p097",
+      "hanzi": "本",
+      "pinyin": "běn",
+      "translation": "книга (счётное слово)",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "8345e5d299efb0bb8037a1fae642cd2f781a6e29"
+    },
+    {
+      "id": "p098",
+      "hanzi": "表",
+      "pinyin": "biǎo",
+      "translation": "таблица",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "bc30cb0dd4297516cc345828f1414c913acbd5f0"
+    },
+    {
+      "id": "p099",
+      "hanzi": "草",
+      "pinyin": "cǎo",
+      "translation": "трава",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "f91bc01786c4fe28a7604fdb8c193a4535b07642"
+    },
+    {
+      "id": "p100",
+      "hanzi": "茶",
+      "pinyin": "chá",
+      "translation": "чай",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "2fbb73c1a7c4fed740fb523b6931302a3cbb33b7"
+    },
+    {
+      "id": "p101",
+      "hanzi": "长",
+      "pinyin": "cháng",
+      "translation": "длинный",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "35130bc8f62a1e974a6bfb12b2575079f623a322"
+    },
+    {
+      "id": "p102",
+      "hanzi": "多",
+      "pinyin": "duō",
+      "translation": "много",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "da9702960fa6fc70a1005c28f234c2fb302aec85"
+    },
+    {
+      "id": "p103",
+      "hanzi": "电",
+      "pinyin": "diàn",
+      "translation": "электричество",
+      "tone": 4,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "d2354e84ba6dbe842ba8094b4c4f3e6c32f58909"
+    },
+    {
+      "id": "p104",
+      "hanzi": "低",
+      "pinyin": "dī",
+      "translation": "низкий",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "e861ec90f888acab032fcbf994f66e9710e122c1"
+    },
+    {
+      "id": "p105",
+      "hanzi": "额",
+      "pinyin": "é",
+      "translation": "лоб",
+      "tone": 2,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "1fe5784d08a75c300a0f19d16680f75e157e1c7b"
+    },
+    {
+      "id": "p106",
+      "hanzi": "给",
+      "pinyin": "gěi",
+      "translation": "давать",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "c97c757699b1de418fcbcca536fa95aceba97f88"
+    },
+    {
+      "id": "p107",
+      "hanzi": "很",
+      "pinyin": "hěn",
+      "translation": "очень",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "643dfcfeb3992c5201102aa022ca3d3cc7a42bbf"
+    },
+    {
+      "id": "p108",
+      "hanzi": "冷",
+      "pinyin": "lěng",
+      "translation": "холодный",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "743f291a80bef17cd2c3cb90fe7a6328ca7e9a6a"
+    },
+    {
+      "id": "p109",
+      "hanzi": "耳",
+      "pinyin": "ěr",
+      "translation": "ухо",
+      "tone": 3,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "5085f832dbcfc1048653f7596b12993129748505"
+    },
+    {
+      "id": "p110",
+      "hanzi": "飞",
+      "pinyin": "fēi",
+      "translation": "летать",
+      "tone": 1,
+      "reviewStatus": "awaiting-native-review",
+      "gitBlobSha": "db00612a7151a770c2c7ad4ea3d0780e3610d674"
+    }
+  ]
+}
