@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8b59c1">
+<meta name="description" content="Panda Go — пробный голосовой диалог по первому уроку на Android.">
+<title>Поговори с Пандой — голосовой тест · Panda Go</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#3c2852;background:#f8efff}
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 10% 8%,#ffe3f0,transparent 40%),radial-gradient(ellipse at 95% 25%,#e0d3ff,transparent 48%),#f8efff}
+button,textarea{font:inherit}button{cursor:pointer}button:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid #7b40b3;outline-offset:3px}
+main{width:min(100%,630px);margin:auto;padding:16px 13px 45px}
+a.back{display:inline-block;padding:10px 0;text-decoration:none;color:#78509d;font-weight:800}
+header{display:flex;align-items:center;gap:15px;background:linear-gradient(115deg,#ffdfed,#e4d4ff);padding:17px;border:1px solid #ead1ff;border-radius:24px;box-shadow:0 12px 28px #8056a414}
+.panda{font-size:38px;background:#fff6fc;border:2px solid #fff;border-radius:21px;width:65px;height:65px;display:grid;place-items:center;flex:none}
+h1{font-size:clamp(24px,6vw,30px);margin:0 0 4px}h2{font-size:18px;margin:0 0 11px}
+header p,p.info{font-size:13px;color:#775d86;line-height:1.5;margin:0}
+.card{margin-top:16px;background:#fff;border:1px solid #e9d8f4;border-radius:22px;padding:17px;box-shadow:0 8px 28px #7047a111}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pill{background:#f1e5ff;border-radius:99px;padding:6px 10px;color:#79479d;font-size:12px;font-weight:800}
+.meter{height:8px;border-radius:99px;background:#f1e5f9;overflow:hidden;margin:13px 0}.meter i{height:100%;width:0;display:block;background:linear-gradient(90deg,#dd75b2,#9061d0);transition:width .2s}
+.log{display:flex;flex-direction:column;gap:11px;margin:13px 0;background:#fffbff;border:1px solid #f1e4f5;border-radius:16px;height:286px;overflow:auto;padding:13px}
+.bubble{max-width:95%;padding:12px;border-radius:17px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px}
+.bubble.panda{font-size:16px;display:block;width:auto;height:auto;border:0;background:#f0e5ff;align-self:flex-start;border-top-left-radius:4px}
+.bubble.student{background:#fce1ef;align-self:flex-end;border-top-right-radius:4px}
+.bubble small{display:block;font-size:13px;color:#715c81;margin-top:4px}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.btn{background:#fff;color:#76449f;border:1px solid #dec8ef;border-radius:13px;min-height:47px;padding:11px 16px;font-weight:800}
+.btn.main{color:#fff;border:0;background:linear-gradient(120deg,#c973bc,#8252c9);box-shadow:0 6px 14px #8650b12b}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+label{font-size:14px;font-weight:800;display:block;margin:14px 0 7px}
+textarea{width:100%;min-height:77px;border:1px solid #d8bfe8;border-radius:13px;padding:12px;resize:vertical;line-height:1.45;font-size:16px}
+.status{min-height:36px;font-size:13px;color:#704587;margin:13px 0 0;line-height:1.5}
+.info{margin:14px 3px!important}.fine{font-size:12px;line-height:1.55;color:#82688e;margin:14px 3px}
+@media(max-width:390px){main{padding:11px 9px 28px}.card{padding:13px}.panda{width:56px;height:56px;font-size:32px}.log{height:260px}}
+</style></head>
+<body><main>
+<a class="back" href="./panda-lesson1.html">← Panda AI · Урок 1</a>
+<header><span class="panda" aria-hidden="true">🐼</span><div><h1>Поговори с Пандой</h1><p>Первый голосовой тест · Урок 1 · без AI-платежей</p></div></header>
+<section class="card">
+<div class="row"><span class="pill">Пробный диалог · 2 реплики</span><span id="step" class="pill">1 / 2</span></div>
+<div class="meter" aria-hidden="true"><i id="bar"></i></div>
+<p class="info">Панда говорит, ты слушаешь и отвечаешь. Если браузер не распознаёт китайскую речь, можно вводить текст.</p>
+<div id="log" class="log" role="log" aria-live="polite" aria-relevant="additions"></div>
+<div class="actions"><button id="hear" type="button" class="btn">🔊 Слушать панду</button><button id="hint" type="button" class="btn">💡 Подсказка</button></div>
+<form id="form">
+<label for="answer">Твой ответ по-китайски</label>
+<textarea id="answer" maxlength="160" placeholder="Нажми «Говорить» или напиши ответ…" required></textarea>
+<div class="actions">
+<button id="mic" type="button" class="btn" aria-pressed="false" aria-label="Начать или остановить распознавание китайской речи">🎙 Говорить</button>
+<button id="send" type="submit" class="btn main">Ответить →</button>
+<button id="reset" type="button" class="btn">↻ Ещё раз</button>
+</div>
+<p id="status" class="status" role="status" aria-live="polite" aria-atomic="true"></p>
+</form>
+</section>
+<p class="fine">Записи Панды — оригинальный голос носительницы из первого урока. Голос ученика не отправляется на сервер Panda Go и не сохраняется приложением, но браузерное распознавание может обращаться к внешнему сервису и требовать интернет. Распознанный текст не доказывает правильность тонов. Доступность микрофона зависит от браузера и разрешений.</p>
+<script src="./assets/owner-audio-v237.js?v=237"></script>
+<script type="module" src="./assets/panda-voice-pilot-ui.mjs"></script>
+</main></body></html>
