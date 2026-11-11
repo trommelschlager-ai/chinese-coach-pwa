@@ -6,7 +6,7 @@ const site=read('index.html'),map=read('hsk1-map.html'),lesson=read('start-chine
 assert(site.includes('panda-reference-v175.css?v=175'),'Home must keep the approved reference stylesheet');
 assert(lesson.includes('hsk-approved-three-screens-v151.css?v=151'),'Legacy guided lesson must keep its approved stylesheet');
 assert(map.includes('hsk1-map-v252.css?v=258'),'Beginner map must use its updated approved stylesheet');
-assert(map.includes('class="pg-ai-button"')&&map.includes('href="./panda-lesson1.html"'),'Panda AI must be accessible from the bottom actions');
+assert(map.includes('class="pg-ai-button"')&&map.includes('href="./panda-voice-pilot.html"'),'Panda AI must be accessible from the bottom actions');
 assert(map.includes('hsk1-rhythm.html')&&map.includes('hsk1-pronunciation.html'),'Both speech practice routes must remain');
 assert((map.match(/class="node"/g)||[]).length===7,'All seven functional lesson links must remain');
 assert(site.includes('panda-v130.js?v=175'),'Home version must be bumped');
