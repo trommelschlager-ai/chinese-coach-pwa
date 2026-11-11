@@ -138,7 +138,7 @@ const preview=new URLSearchParams(window.location.search).get('preview')==='1';
 const available=CONVERSATIONS.filter(x=>x.lines.length&&(!x.status.startsWith('draft')||preview));
 $('topic-count').textContent=`${available.findIndex(x=>x.id===conversation.id)+1} / ${available.length}`;
 for(const [id,direction] of [['topic-prev',-1],['topic-next',1]]){
- const target=adjacentConversation(CONVERSATIONS,conversation.id,direction,preview),url=new URL(window.location.href);
+ const target=adjacentConversation(CONVERSATIONS,conversation.id,direction,preview),url=new URL(window.location.href.startsWith('about:')?'./panda-voice-pilot.html':window.location.href,document.baseURI);
  url.searchParams.set('lesson',String(target.id));if(!preview)url.searchParams.delete('preview');
  const link=$(id);link.href=url.href;link.setAttribute('aria-label',`${direction<0?'Предыдущая':'Следующая'} тема: ${target.theme}`);
  link.addEventListener('click',()=>{clearTimeout(state.transition);stopRecognition();stopAudio()});
