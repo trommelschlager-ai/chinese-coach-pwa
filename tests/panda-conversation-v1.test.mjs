@@ -89,3 +89,64 @@ test('Conversation UI switches scenes and checks student replies in a DOM',async
   dom.window.close();delete globalThis.window;delete globalThis.document;delete globalThis.localStorage;delete globalThis.Audio;
  }
 });
+
+test('Android-style microphone capture: recognize, review transcript, stop stale sessions and retry after denied permission',async()=>{
+ const markup=readFileSync(new URL('../panda-talk.html',import.meta.url),'utf8');
+ const dom=new JSDOM(markup,{url:'https://example.test/chinese-coach-pwa/panda-talk.html',pretendToBeVisual:true});
+ const d=dom.window.document;
+ const seen=[];
+ class MockRecognition{
+  constructor(){seen.push(this);this.started=false}
+  start(){this.started=true}
+  stop(){this.stopped=true;this.onend?.()}
+  abort(){this.aborted=true;this.onend?.()}
+  emit(text){this.onresult?.({results:[[{transcript:text}]]})}
+  fail(code){this.onerror?.({error:code});this.onend?.()}
+ }
+ dom.window.webkitSpeechRecognition=MockRecognition;
+ dom.window.PandaOwnerAudio={lookup:key=>key==='你好'||key==='我是学生'?'./assets/owner-clean-v237/'+key+'.mp3':null};
+ globalThis.window=dom.window;globalThis.document=d;globalThis.localStorage=dom.window.localStorage;
+ globalThis.Audio=class{constructor(src){this.src=src}pause(){}play(){return Promise.resolve()}};
+ try{
+  await import('../assets/panda-conversation-ui-v1.mjs?android-voice-test=1');
+  const mic=d.getElementById('mic'),answer=d.getElementById('reply'),form=d.getElementById('reply-form'),status=d.getElementById('status');
+  assert(!mic.disabled,'speech recognizer should be available');
+  assert(!d.getElementById('hear').disabled,'hello must use licensed native source');
+  mic.click();
+  assert.equal(mic.getAttribute('aria-pressed'),'true');
+  assert.equal(seen[0].lang,'zh-CN');
+  assert(seen[0].started);
+  seen[0].emit('你好！');
+  assert.equal(answer.value,'你好！');
+  assert(status.textContent.includes('Тоны по голосу не проверялись'));
+  assert(d.getElementById('chat').textContent.includes('你好！'));
+  seen[0].onend();
+  assert.equal(mic.getAttribute('aria-pressed'),'false');
+  form.dispatchEvent(new dom.window.Event('submit',{bubbles:true,cancelable:true}));
+  assert(d.getElementById('chat').textContent.includes('我是学生'));
+  assert(!d.getElementById('hear').disabled,'second native sentence should be audible');
+  assert.equal(answer.value,'');
+  seen[0].emit('не тот ответ');
+  assert.equal(answer.value,'','old recognizer result must never affect next prompt');
+  mic.click();
+  assert.equal(seen.length,2);
+  seen[1].fail('not-allowed');
+  assert(status.textContent.includes('Доступ к микрофону запрещён'));
+  assert(!mic.disabled,'recovery from permission failure should permit reattempt');
+  answer.value='我是学生';
+  form.dispatchEvent(new dom.window.Event('submit',{bubbles:true,cancelable:true}));
+  assert(d.getElementById('chat').textContent.includes('Диалог завершён'));
+  d.getElementById('repeat').click();
+  mic.click();
+  assert.equal(seen.length,3);
+  const stale=seen[2].onresult;
+  d.querySelector('[data-scene="howareyou"]').click();
+  assert(seen[2].aborted,'changing scene must cancel recording');
+  stale?.({results:[[{transcript:'неподходящая запись'}]]});
+  assert(!answer.value.includes('неподходящая'),'cancelled recording must not overwrite reply');
+  assert(d.getElementById('mic').disabled,'cannot record while reviewing new phrases');
+ }finally{
+  dom.window.close();
+  delete globalThis.window;delete globalThis.document;delete globalThis.localStorage;delete globalThis.Audio;
+ }
+});
