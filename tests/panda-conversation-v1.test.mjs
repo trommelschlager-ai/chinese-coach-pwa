@@ -51,7 +51,7 @@ test('Interface is safe and new mode keeps previously approved screens unchanged
 test('Conversation UI switches scenes and checks student replies in a DOM',async()=>{
  const page=readFileSync(new URL('../panda-talk.html',import.meta.url),'utf8');
  const dom=new JSDOM(page,{url:'https://example.test/chinese-coach-pwa/panda-talk.html',pretendToBeVisual:true});
- globalThis.window=dom.window;globalThis.document=dom.window.document;
+ globalThis.window=dom.window;globalThis.document=dom.window.document;globalThis.localStorage=dom.window.localStorage;
  globalThis.Audio=class {constructor(src){this.src=src}play(){return Promise.resolve()}pause(){}};
  const d=dom.window.document;
  dom.window.localStorage.setItem('pg-hsk1-v3-complete',JSON.stringify(['foundations','pronouns','family','weather']));
@@ -80,6 +80,6 @@ test('Conversation UI switches scenes and checks student replies in a DOM',async
   d.getElementById('reply-form').dispatchEvent(new dom.window.Event('submit',{bubbles:true,cancelable:true}));
   assert(d.getElementById('chat').textContent.includes('我也很好，谢谢'));
  }finally{
-  dom.window.close();delete globalThis.window;delete globalThis.document;delete globalThis.Audio;
+  dom.window.close();delete globalThis.window;delete globalThis.document;delete globalThis.localStorage;delete globalThis.Audio;
  }
 });
