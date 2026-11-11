@@ -10,10 +10,11 @@ const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const voices=fs.readFileSync('assets/hsk1-voices-map-v160.js','utf8');
 const speech=fs.readFileSync('assets/hsk1-second-speaking-v209.js','utf8');
 const oneVoice=fs.readFileSync('assets/hsk1-lesson2-audio-v208.js','utf8');
+const xiaoxiao=fs.readFileSync('assets/panda-lesson2-xiaoxiao-v261.js','utf8');
 assert(html.includes('hsk1-first-v189.css?v=237'),'Keep first lesson approved visual style');
-assert(html.includes('hsk1-second-v203.js?v=237'),'Second lesson JS version');
+assert(html.includes('hsk1-second-v203.js?v=262'),'Second lesson JS version');
 assert(!html.includes('hsk1-second-speaking-v209.js'),'Main lesson must not load optional microphone training');
-assert(fs.readFileSync('hsk1-second-practice.html','utf8').includes('hsk1-second-speaking-v209.js?v=237'),'Dedicated practice loads the trainer');
+assert(fs.readFileSync('hsk1-second-practice.html','utf8').includes('hsk1-second-speaking-v209.js?v=262'),'Dedicated practice loads the trainer');
 assert(html.includes('hsk1-lesson2-audio-v208.js?v=208'),'One-speaker voice map must be loaded first');
 assert(html.includes('hsk1-second-v203.css?v=237'),'Second lesson CSS version');
 assert(map.includes('data-num="2" href="./hsk1-second-v203.html"'),'Map must open new lesson');
@@ -22,7 +23,7 @@ assert(!js.includes('不是'), 'Move negative sentence grammar to later lesson')
 assert(!js.includes('他们'), 'Extra third-person plural moves to future lesson');
 const d=new JSDOM(html,{url:'https://example.test/chinese-coach-pwa/hsk1-second-v203.html',runScripts:'outside-only'});
 const w=d.window,doc=w.document;
-w.eval(native);w.eval(voices);w.eval(oneVoice);w.eval(speech);
+w.eval(native);w.eval(voices);w.eval(oneVoice);w.eval(xiaoxiao);w.eval(speech);
 const lessonWords=['我','你','他','她','我们','你们','老师','吗','学生','是'];
 for(const hz of lessonWords){
  const file=w.PANDA_HSK1_NATIVE_HUMAN_V167[hz];
@@ -65,14 +66,14 @@ assert(!doc.getElementById('pg-content').textContent.includes('Упражнен�
 // step 4: plural
 answer(1);answer(1);
 click('[data-audio="你们"]');
-assert.equal(lastAudio,oneVoiceFiles['你们'],'All regular vocabulary should use same voice');
+assert.equal(lastAudio,w.PandaLesson2XiaoxiaoV261.lookup('你们'),'Vocabulary must play uploaded Xiaoxiao instead of old voice');
 proceed(); // step 5 listening: plural and respectful singular 您
 assert(doc.querySelector('[data-audio="我们"]'),'Must have actual listening sample');
 for(const a of [2,3,0])answer(a);
 assert.equal(step(),6,'Listening drill should auto-advance');
 // step 6 example
 click('[data-audio="我是老师。"]');
-assert.equal(lastAudio,oneVoiceFiles['我是老师。'],'Narration example must use the SAME voice as words');
+assert.equal(lastAudio,w.PandaLesson2XiaoxiaoV261.lookup('我是老师。'),'Narration must play uploaded Xiaoxiao');
 answer(0);proceed(); // step 7 3 builds
 for(let exercise=0;exercise<2;exercise++){
  assert(doc.getElementById('pg-next').disabled,'Cannot skip sentence build');
@@ -82,7 +83,7 @@ for(let exercise=0;exercise<2;exercise++){
 assert.equal(step(),8,'Sentence building should auto-advance without summary card');
 // step 8 particle
 click('[data-audio="你是老师吗？"]');
-assert.equal(lastAudio,oneVoiceFiles['你是老师吗？'],'Non-dialog question narration must use the unified voice');
+assert.equal(lastAudio,w.PandaLesson2XiaoxiaoV261.lookup('你是老师吗？'),'Question must use Xiaoxiao');
 answer(2);proceed(); // step 9 2 questions build
 for(let exercise=0;exercise<1;exercise++){
  for(const i of [0,1,2,3])click('[data-add="'+i+'"]');
@@ -97,7 +98,7 @@ proceed(); // step 11 speak
 assert(doc.getElementById('pg-next').disabled,'Speaking requires listen and confirm');
 assert(doc.querySelector('[data-spoken]').disabled,'Speak confirmation initially disabled');
 click('[data-audio="你是老师吗？"]');
-assert.equal(lastAudio,oneVoiceFiles['你是老师吗？'],'Speaking demo should reuse the unified female voice');
+assert.equal(lastAudio,w.PandaLesson2XiaoxiaoV261.lookup('你是老师吗？'),'Speaking demo must use Xiaoxiao');
 assert(!doc.querySelector('[data-spoken]').disabled,'Real audio playback unlocks speaking confirmation');
 click('[data-spoken]');proceed(); // step 12 final
 assert.equal(step(),12);
