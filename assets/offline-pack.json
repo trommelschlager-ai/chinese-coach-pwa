@@ -1,5 +1,5 @@
 {
-  "version": 298,
+  "version": 300,
   "bytes": 55522260,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2747,7 +2747,11 @@
     "./assets/hsk1-fourth-v220.js?v=296",
     "./assets/hsk1-fifth-v227.js?v=296",
     "./assets/panda-go-companion-v231.js?v=296",
-    "./assets/hsk1-first-v189.js?v=298",
-    "./hsk1-first-v189.html?v=298"
+    "./assets/hsk1-first-v189.js?v=300",
+    "./hsk1-first-v189.html?v=300",
+    "./assets/hsk1-voices-v156/ca2a36b2097b5a6321a2.mp3?v=300",
+    "./assets/dialogue-voices/l1-02-b.mp3?v=300",
+    "./assets/dialogue-voices-v73/l1-02-b.mp3?v=300",
+    "./assets/hsk1-first-v189.css?v=300"
   ]
 }
