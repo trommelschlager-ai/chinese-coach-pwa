@@ -43,7 +43,7 @@
    const noiseCap=floor>0.008?Math.max(1,0.018/floor):6;
    // Conservative gain to avoid magnifying room echoes and trailing reverberation.
    const gain=Math.min(1.35,noiseCap,Math.max(1,0.15/Math.max(0.001,activeRms)),0.9/peak);
-   if(!Number.isFinite(gain)||gain<1.07)return blob;
+   if(!Number.isFinite(gain)||gain<=0)return blob; // Keep a filtered A/B take even when no extra gain is necessary.
    const buffer=new ArrayBuffer(44+n*2),dv=new DataView(buffer);
    const word=(pos,w)=>{for(let i=0;i<w.length;i++)dv.setUint8(pos+i,w.charCodeAt(i))};
    word(0,'RIFF');dv.setUint32(4,36+n*2,true);word(8,'WAVE');word(12,'fmt ');
