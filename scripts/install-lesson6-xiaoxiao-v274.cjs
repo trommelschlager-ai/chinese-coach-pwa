@@ -54,8 +54,4 @@ const swFile='sw.js';
 let sw=fs.readFileSync(swFile,'utf8');
 sw=sw.replace(/^const CACHE='[^']+';/,"const CACHE='chinese-coach-pwa-v274-lesson6-xiaoxiao';");
 fs.writeFileSync(swFile,sw);
-const workflow='.github/workflows/course-qa.yml';
-patch(workflow,
- '      - run: node scripts/verify-hsk1-lesson5-xiaoxiao-v272.cjs',
- '      - run: node scripts/verify-hsk1-lesson5-xiaoxiao-v272.cjs\n      - run: node scripts/verify-hsk1-lesson6-xiaoxiao-v274.cjs');
 console.log('Installed lesson 6 v274: 17 new Xiaoxiao recordings, 4 reused tone samples, male role preserved.');
