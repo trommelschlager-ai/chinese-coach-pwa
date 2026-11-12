@@ -11,6 +11,7 @@ on:
     paths:
       - 'panda-voice-pilot.html'
       - 'assets/panda-live-*'
+      - 'assets/panda-hsk1-*'
       - 'assets/panda-nonstop-*'
       - 'tests/panda-live-*'
       - 'assets/panda-voice-pilot*'
@@ -25,6 +26,7 @@ on:
       - 'panda-voice-pilot.html'
       - 'assets/panda-voice-pilot*'
       - 'assets/panda-live-*'
+      - 'assets/panda-hsk1-*'
       - 'assets/panda-nonstop-*'
       - 'tests/panda-live-*'
       - 'tests/panda-voice-pilot.test.mjs'
