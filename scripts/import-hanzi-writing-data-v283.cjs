@@ -41,5 +41,20 @@ async function fetchChar(ch){
  });
  await Promise.all(workers);
  if(errors.length)throw Error(errors.join('\n'));
+ const packFile='assets/offline-pack.json';
+ const pack=JSON.parse(fs.readFileSync(packFile,'utf8'));
+ pack.version=Math.max(Number(pack.version)||0,285);
+ const required=[
+  './hanzi-writing.html',
+  './assets/hanzi-writing-v283.css?v=283',
+  './assets/hanzi-writing-v283.js?v=283',
+  './assets/hanzi-writing-shortcut-v283.css?v=283',
+  './assets/hanzi-writing-curriculum-v283.json',
+  ...chars.map(ch=>'./assets/hanzi-data/'+ch+'.json')
+ ];
+ pack.files=[...new Set([...pack.files,...required])];
+ fs.writeFileSync(packFile,JSON.stringify(pack,null,2)+'\n');
+ const serviceWorker='sw.js',sw=fs.readFileSync(serviceWorker,'utf8');
+ fs.writeFileSync(serviceWorker,sw.replace(/^const CACHE='[^']+';/,"const CACHE='chinese-coach-pwa-v285-hanzi-studio';"));
  console.log('PASS HanziWriter offline data: '+chars.length+' unique chars, '+copied+' new, '+verified+' already present');
 })().catch(e=>{console.error(e);process.exit(1)});
