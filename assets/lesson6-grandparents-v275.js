@@ -1,4 +1,4 @@
-/* Panda Go v275: 8 user-provided Xiaoxiao recordings. */
+/* Panda Go v275: eight complete Xiaoxiao recordings for grandparents. */
 (()=>{'use strict';
 const clips=Object.freeze({
   "爷爷": "./assets/lesson6-grandparents-v275/000.mp3",
@@ -11,6 +11,6 @@ const clips=Object.freeze({
   "这是我外婆。": "./assets/lesson6-grandparents-v275/007.mp3"
 });
 const norm=s=>String(s??'').normalize('NFC').trim().replace(/[。！？!?，,\s]+/g,'');
-const lookupMap=Object.freeze(Object.fromEntries(Object.entries(clips).map(([k,v])=>[norm(k),v])));
-window.PandaLesson6GrandparentsV275=Object.freeze({clips,lookup(hz){return clips[hz]||lookupMap[norm(hz)]||null}});
+const plain=Object.freeze(Object.fromEntries(Object.entries(clips).map(([k,v])=>[norm(k),v])));
+window.PandaLesson6GrandparentsV275=Object.freeze({clips,lookup(hz){return clips[hz]||plain[norm(hz)]||null}});
 })();

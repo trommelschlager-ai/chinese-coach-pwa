@@ -16,10 +16,22 @@ const count=document.getElementById('pg5-count'),bar=document.getElementById('pg
 if(!stage||!prev||!next||!title)return;
 const KEY='pg-hsk1-l'+lesson+'-v231',LEGACY='pg-hsk1-v3-'+TOPIC,DONE='pg-hsk1-v3-complete';
 const words=topic.words.slice();
+const grandparents=Object.freeze([
+ ['爷爷','yéye','дедушка по отцу','👴'],
+ ['奶奶','nǎinai','бабушка по отцу','👵'],
+ ['外公','wàigōng','дедушка по матери','👴'],
+ ['外婆','wàipó','бабушка по матери','👵']
+]);
+const grandparentExamples=Object.freeze([
+ ['这是我爷爷。','Zhè shì wǒ yéye.','Это мой дедушка по отцу.'],
+ ['这是我奶奶。','Zhè shì wǒ nǎinai.','Это моя бабушка по отцу.'],
+ ['这是我外公。','Zhè shì wǒ wàigōng.','Это мой дедушка по матери.'],
+ ['这是我外婆。','Zhè shì wǒ wàipó.','Это моя бабушка по матери.']
+]);
 const titles=isFamily?[
  ['УРОК 6 · HSK1','Моя семья','Назови родных людей по-китайски'],
- ['НОВЫЕ СЛОВА','Мама, папа, братья и сёстры','Первые четыре слова о семье'],
- ['НОВЫЕ СЛОВА','Сёстры, дом и семья','Продолжаем знакомиться с родственниками'],
+ ['НОВЫЕ СЛОВА','Родители, бабушки и дедушки','Семья по отцовской и материнской линии'],
+ ['НОВЫЕ СЛОВА','Братья, сёстры и семья','Старшие, младшие и слово 家'],
  ['НОВЫЕ СЛОВА','Мой, есть и нет','Научись говорить, кто у тебя есть'],
  ['ПРОИЗНОШЕНИЕ','Четыре тона: mā, má, mǎ, mà','Слушай и различай настоящие китайские тоны'],
  ['ПРАВИЛО','Старший и младший','Возраст родственника важен в китайских словах'],
@@ -116,7 +128,7 @@ function resolve(hz,role='female'){
  if(!isFamily)return weatherClips(hz)[0]||null;
  // Preserve the original male actor: never substitute Xiaoxiao for male role A.
  if(role==='male'){const bare=String(hz).replace(/[。！？!?]\s*$/,'');return mappings.male?.[hz]||mappings.male?.[bare]||null;}
- const newlyRecorded=window.PandaLesson6XiaoxiaoV274?.lookup(hz);
+ const newlyRecorded=window.PandaLesson6GrandparentsV275?.lookup(hz)||window.PandaLesson6XiaoxiaoV274?.lookup(hz);
  if(newlyRecorded)return newlyRecorded;
  const plain=String(hz).replace(/[。！？!?]\s*$/,'');
  const composed=familyOriginalParts(hz,role);if(composed)return composed[0];
@@ -133,7 +145,7 @@ function play(hz,role='female'){
  const src=resolve(hz,role);
  if(!src){say('Для этой фразы пока нет доступной записи.','bad');return}
  stopAudio();const token=serial;
- const lesson6New=isFamily&&role!=='male'&&!!window.PandaLesson6XiaoxiaoV274?.lookup(hz);
+ const lesson6New=isFamily&&role!=='male'&&!!(window.PandaLesson6GrandparentsV275?.lookup(hz)||window.PandaLesson6XiaoxiaoV274?.lookup(hz));
  const parts=isFamily?(lesson6New?[src]:(familyOriginalParts(hz,role)||[src])):weatherClips(hz);
  const button=[...stage.querySelectorAll('[data-play]')].find(x=>x.dataset.play===hz);
  button?.setAttribute('aria-busy','true');
@@ -170,6 +182,19 @@ function cover(){
  '<p class="cover-caption">'+(isFamily?'11 слов · семья · диалоги и практика':'12 слов · погода · времена года')+'</p>'+
  '<div class="cover-note">🌸 <strong>'+(isFamily?'我的家 · 我有一个妹妹。':'今天天气怎么样？')+'</strong></div>';
 }
+function grandparentCards(){
+ return '<h2 class="pg6-grandparents-heading">Бабушки и дедушки</h2>'+
+ '<div class="pg6-grandparents-grid">'+grandparents.map(([hz,py,ru,emoji])=>
+ '<div class="pg6-grandparent-card" data-grandparent="'+esc(hz)+'">'+
+ '<div class="pg6-grandparent-icon" aria-hidden="true">'+emoji+'</div>'+
+ '<strong lang="zh-Hans">'+hz+'</strong><span class="py">'+py+'</span>'+
+ '<span class="ru">'+ru+'</span>'+playBtn(hz)+'</div>').join('')+'</div>';
+}
+function familyParentsAndGrandparents(){
+ return card('<h2>Мама и папа</h2><div class="grid two">'+words.slice(0,2).map(word).join('')+
+ '</div>'+grandparentCards())+
+ '<p class="small center">По-китайски родственников по маминой и папиной линии называют разными словами.</p>';
+}
 function vocab(slice,optional=false){return card('<div class="grid two">'+words.slice(...slice).map(word).join('')+'</div>')+
  '<p class="small center">'+(optional?'Дополнительные слова: послушай времена года. Запоминать все четыре сейчас необязательно.':'🔊 Нажимай на значок и повторяй слова вслух.')+'</p>'}
 function tone(){
@@ -195,7 +220,11 @@ function examples(){
  ['今天天气怎么样？','Jīntiān tiānqì zěnmeyàng?','Какая сегодня погода?']
  ];
  return card('<h2>Слушай короткие фразы</h2>'+a.map(([zh,py,ru])=>
-  '<div class="example"><strong lang="zh-Hans">'+esc(zh)+'</strong><span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span><div class="buttons">'+playBtn(zh)+'</div></div>').join(''));
+  '<div class="example"><strong lang="zh-Hans">'+esc(zh)+'</strong><span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span><div class="buttons">'+playBtn(zh)+'</div></div>').join('')+
+  (isFamily?'<h2 class="pg6-grandparents-heading">Представляем бабушек и дедушек</h2>'+
+  '<div class="pg6-grandparent-examples">'+grandparentExamples.map(([zh,py,ru])=>
+  '<div class="pg6-grandparent-phrase"><div><strong lang="zh-Hans">'+esc(zh)+'</strong>'+
+  '<span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span></div>'+playBtn(zh)+'</div>').join('')+'</div>':''));
 }
 function dialogue(){
  return card('<h2>Послушай разговор</h2><div class="dialogue">'+topic.dialogue.map(([who,zh,py,ru])=>
@@ -239,14 +268,17 @@ function summary(){
  card('<h2>Последняя проверка</h2><p>'+esc(c.question)+'</p><div class="grid">'+c.choices.map((answer,i)=>
  '<button type="button" class="card-choice '+(state.quizPassed&&i===c.correct?'correct':'')+'" data-final="'+i+'"'+(state.quizPassed?' disabled':'')+'>'+esc(answer)+'</button>').join('')+'</div>'+
  (state.quizPassed?'<p class="result good">✓ Верно! Можно завершить урок.</p>':'<p class="small center">Выбери правильный ответ, чтобы завершить урок.</p>'))+
- card('<h2>Повторение</h2><div class="grid two">'+(isFamily?words.slice(0,4):[words[0],words[1],words[5],words[6]]).map(word).join('')+'</div>')+
+ card('<h2>Повторение</h2><div class="grid two">'+(isFamily?words.slice(0,4):[words[0],words[1],words[5],words[6]]).map(word).join('')+
+ '</div>'+(isFamily?'<h2 class="pg6-grandparents-heading">Бабушки и дедушки</h2>'+
+ '<div class="pg6-grandparent-review">'+grandparents.map(([zh,py,ru])=>
+ '<div><b lang="zh-Hans">'+zh+'</b><small>'+py+' · '+ru+'</small>'+playBtn(zh)+'</div>').join('')+'</div>':''))+
  (state.done?'<div class="buttons"><a class="soft primary" style="text-decoration:none;display:grid;place-items:center" href="'+(isFamily?'./hsk1-weather-v231.html':'./hsk1-map.html')+'">'+(isFamily?'К уроку 7 →':'К карте уроков →')+'</a></div>':'');
 }
 const screens=[
  cover,
- ()=>vocab([0,4]),
- ()=>vocab([4,8]),
- ()=>vocab([8,12],!isFamily),
+ ()=>isFamily?familyParentsAndGrandparents():vocab([0,4]),
+ ()=>isFamily?vocab([2,7]):vocab([4,8]),
+ ()=>isFamily?vocab([7,11]):vocab([8,12],!isFamily),
  tone,
  ()=>rule([0,1]),
  ()=>rule([1,4]),

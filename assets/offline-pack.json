@@ -1,5 +1,5 @@
 {
-  "version": 274,
+  "version": 275,
   "bytes": 55302068,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2524,6 +2524,18 @@
     "./assets/lesson1-xiaoxiao-v260/ma1.mp3",
     "./assets/lesson1-xiaoxiao-v260/ma2.mp3",
     "./assets/lesson1-xiaoxiao-v260/ma3.mp3",
-    "./assets/lesson1-xiaoxiao-v260/ma4.mp3"
+    "./assets/lesson1-xiaoxiao-v260/ma4.mp3",
+    "./assets/lesson6-grandparents-v275.js?v=275",
+    "./assets/panda-go-companion-v231.js?v=275",
+    "./assets/panda-go-approved-lessons-v231.css?v=275",
+    "./hsk1-family-v231.html?v=275",
+    "./assets/lesson6-grandparents-v275/000.mp3",
+    "./assets/lesson6-grandparents-v275/001.mp3",
+    "./assets/lesson6-grandparents-v275/002.mp3",
+    "./assets/lesson6-grandparents-v275/003.mp3",
+    "./assets/lesson6-grandparents-v275/004.mp3",
+    "./assets/lesson6-grandparents-v275/005.mp3",
+    "./assets/lesson6-grandparents-v275/006.mp3",
+    "./assets/lesson6-grandparents-v275/007.mp3"
   ]
 }
