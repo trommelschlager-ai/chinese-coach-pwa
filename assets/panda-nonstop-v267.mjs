@@ -1,6 +1,6 @@
 // Panda Go Non-Stop v267 — deterministic, no API requests; only studied/current HSK1.
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
-import {prepareConversation,interpretUtterance,replyToExtraSpeech} from './panda-live-conversation-v266.mjs?v=266';
+import {prepareConversation,interpretUtterance,replyToExtraSpeech} from './panda-live-conversation-v266.mjs?v=270';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=live6';
 export const TOPIC_IDS=['foundations','pronouns','numbers','weekdays','dates','family','weather'];
 const safeJSON=(storage,key)=>{try{return JSON.parse(storage?.getItem(key)||'null')}catch{return null}};
@@ -49,6 +49,10 @@ const QUESTION_RESPONSES={
 export function answerNonStop(input,allowed,currentPrompt,topics=[],date=new Date()){
  const raw=String(input??'').trim(),s=normalize(raw),scope=new Set(allowed||[]);
  if(!raw)return {kind:'empty',message:'Скажи или напиши фразу на китайском.'};
+ const social=replyToExtraSpeech(raw,1,topics);
+ if(social.understood.known && /^(你好[呀啊吗]?|你呢|早上好[呀啊]?|中午好[呀啊]?|下午好[呀啊]?|晚上好[呀啊]?|谢谢)$/.test(s)){
+  return {kind:'question',lesson:1,spoken:social.understood,reply:s==='谢谢'?{hanzi:'不客气！',pinyin:'Bú kèqi!',ru:'Не за что!',audioKey:null}:social.answer};
+ }
  // Do not allow a prompt from a locked chapter.
  if(currentPrompt&&scope.has(currentPrompt.lesson)){
   const match=verifyAnswerFor(currentPrompt.verifiedLines,1,raw);
@@ -66,7 +70,7 @@ export function answerNonStop(input,allowed,currentPrompt,topics=[],date=new Dat
  for(const lesson of allowed||[]){
   if(!scope.has(lesson))continue;
   const spoken=interpretUtterance(raw,lesson,topics);
-  if(spoken.known)return {kind:'statement',lesson,spoken,message:'Панда поняла фразу из изученного материала.'};
+  if(spoken.known)return {kind:'statement',lesson,spoken,message:currentPrompt?.lesson===6&&interpretUtterance(raw,6,topics).known?'Ты рассказал о семье, но это не ответ на текущий вопрос. '+currentPrompt.instruction:'Панда поняла фразу. Можешь задать вопрос или выбрать следующий.'};
  }
  return {kind:'unknown',message:'Эту фразу я пока не знаю в пройденных уроках. Выбери подсказку или спроси по изученной теме.'};
 }

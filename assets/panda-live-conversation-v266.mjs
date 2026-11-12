@@ -17,6 +17,15 @@ const FAMILY=Object.freeze({
 });
 const NUMS=Object.freeze({'一':{n:1,py:'yí'},'两':{n:2,py:'liǎng'},'二':{n:2,py:'liǎng'},'三':{n:3,py:'sān'},'四':{n:4,py:'sì'},'五':{n:5,py:'wǔ'}});
 const GREETINGS=Object.freeze({
+ '你是老师吗':{pinyin:'Nǐ shì lǎoshī ma?',ru:'Ты учитель?'},
+ '你几岁':{pinyin:'Nǐ jǐ suì?',ru:'Сколько тебе лет?'},
+ '你有哥哥吗':{pinyin:'Nǐ yǒu gēge ma?',ru:'У тебя есть старший брат?'},
+ '你好呀':{pinyin:'Nǐ hǎo ya!',ru:'Привет!'},
+ '你好啊':{pinyin:'Nǐ hǎo a!',ru:'Привет!'},
+ '早上好':{pinyin:'Zǎoshang hǎo!',ru:'Доброе утро!'},
+ '中午好':{pinyin:'Zhōngwǔ hǎo!',ru:'Добрый день! (около полудня)'},
+ '下午好':{pinyin:'Xiàwǔ hǎo!',ru:'Добрый день!'},
+ '晚上好':{pinyin:'Wǎnshang hǎo!',ru:'Добрый вечер!'},
  '你好':{pinyin:'Nǐ hǎo!',ru:'Привет!'},
  '你好吗':{pinyin:'Nǐ hǎo ma?',ru:'Как дела?'},
  '你呢':{pinyin:'Nǐ ne?',ru:'А у тебя?'},
@@ -25,7 +34,7 @@ const GREETINGS=Object.freeze({
  '谢谢':{pinyin:'Xièxie!',ru:'Спасибо!'},
  '我也很好谢谢':{pinyin:'Wǒ yě hěn hǎo, xièxie!',ru:'У меня тоже всё хорошо, спасибо!'}
 });
-const normal=s=>normalize(s).replace(/[？。、，！？.!?,\s]/g,'');
+const normal=s=>normalize(s).replace(/^(早上|中午|下午|晚上)好[呀啊]$/,'$1好').replace(/[？。、，！？.!?,\s]/g,'');
 const known=(hanzi,pinyin,translation)=>({known:true,hanzi,pinyin,translation});
 export function weekdayForDate(date=new Date()){
  const i=date.getDay();
@@ -120,13 +129,13 @@ const WEATHER={
 export function interpretUtterance(input,lesson=1,curriculum=[]){
  const raw=String(input||'').trim(),s=normal(raw);
  if(!raw)return {known:false,hanzi:'',translation:null};
- if(GREETINGS[s])return known(raw,GREETINGS[s].pinyin,GREETINGS[s].ru);
+ if(GREETINGS[s]&&(!({'你是老师吗':2,'你几岁':3,'你有哥哥吗':6}[s])||({'你是老师吗':2,'你几岁':3,'你有哥哥吗':6}[s])===lesson))return known(raw,GREETINGS[s].pinyin,GREETINGS[s].ru);
  if(lesson===6){const f=interpretFamily(raw);if(f)return f;}
  if(lesson===7&&WEATHER[s])return known(raw,WEATHER[s][0],WEATHER[s][1]);
  const wd=/^(?:今天(?:是)?)?星期([一二三四五六日天])$/.exec(s);
  if(lesson===4&&wd){
   const day=DAYS.find(x=>x.hanzi===wd[1]||(wd[1]==='天'&&x.hanzi==='日'));
-  if(day)return known(raw,(s.startsWith('今天')?'Jīntiān ':'')+'xīngqī '+day.py+'.','Сегодня '+day.ru+'.');
+  if(day)return known(raw,(s.startsWith('今天')?'Jīntiān '+(s.includes('是')?'shì ':''):'')+'xīngqī '+day.py+'.','Сегодня '+day.ru+'.');
  }
  const word=(curriculum[lesson-1]?.words||[]).find(w=>w[0]===s);
  if(word)return known(raw,word[1],word[2]);
@@ -145,6 +154,8 @@ export function replyToExtraSpeech(input,lesson=1,curriculum=[]){
  const s=normal(input),understood=interpretUtterance(input,lesson,curriculum);
  if(howAreYou(input))return {answer:REPLIES.good,understood};
  if(s==='我很好你呢')return {answer:REPLIES.meToo,understood};
+ if(['早上好','中午好','下午好','晚上好'].includes(s))return {answer:{hanzi:s+'！',pinyin:GREETINGS[s].pinyin,ru:GREETINGS[s].ru,audioKey:s},understood};
+ if(['你好呀','你好啊'].includes(s))return {answer:REPLIES.hello,understood};
  if(s==='你好')return {answer:REPLIES.hello,understood};
  if(s==='谢谢')return {answer:REPLIES.thanks,understood};
  if(understood.known)return {answer:REPLIES.thanks,understood};
