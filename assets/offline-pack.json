@@ -1,5 +1,5 @@
 {
-  "version": 295,
+  "version": 296,
   "bytes": 55532426,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2731,6 +2731,21 @@
     "./assets/hsk1-first-extras-v295.js?v=295",
     "./assets/hsk1-first-v189.js?v=295",
     "./hsk1-first-v189.html?v=295",
-    "./hsk1-pronunciation.html?embedded=1"
+    "./hsk1-pronunciation.html?embedded=1",
+    "./assets/hsk1-finish-buttons-v296.css?v=296",
+    "./assets/hsk1-first-v189.css?v=296",
+    "./hsk1-first-v189.html?v=296",
+    "./hsk1-second-v203.html?v=296",
+    "./hsk1-third-v212.html?v=296",
+    "./hsk1-fourth-v214.html?v=296",
+    "./hsk1-fifth-v227.html?v=296",
+    "./hsk1-family-v231.html?v=296",
+    "./hsk1-weather-v231.html?v=296",
+    "./assets/hsk1-first-v189.js?v=296",
+    "./assets/hsk1-second-v203.js?v=296",
+    "./assets/hsk1-third-v213.js?v=296",
+    "./assets/hsk1-fourth-v220.js?v=296",
+    "./assets/hsk1-fifth-v227.js?v=296",
+    "./assets/panda-go-companion-v231.js?v=296"
   ]
 }
