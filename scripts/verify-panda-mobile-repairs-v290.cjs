@@ -30,5 +30,5 @@ for(const [html,token] of [
 ])assert(read(html).includes(token),html+' has outdated cached script');
 const pack=JSON.parse(read('assets/offline-pack.json'));
 assert(pack.version>=290&&pack.files.includes('./assets/lesson5-male-clean-v290.mp3'));
-assert(read('sw.js').includes('v292-mic-raw-comparison'),'Service worker must refresh');
+assert(/chinese-coach-pwa-v(292-mic-raw-comparison|293-replay-exercises)/.test(read('sw.js')),'Service worker must refresh');
 console.log('PASS Panda Go v290: replayable exercises, audio answer gating, weather art, mic safeguards and repaired male voice.');
