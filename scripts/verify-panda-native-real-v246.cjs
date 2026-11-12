@@ -84,5 +84,5 @@ assert(/panda-go-companion-v231\.js\?v=\d+/.test(weatherHtml),'Latest weather co
 assert(dateHtml.includes('hsk1-fifth-v227.js?v=273'));
 assert(dateHtml.includes('lesson5-xiaoxiao-v272.js?v=272'));
 
-assert(read('assets/lesson-audio-source.js').includes('Звук v246'));
+assert(!read('assets/lesson-audio-source.js').includes('Звук v246'),'Voice/version debug captions must not be shown to learners');
 console.log('PASS Panda Go v246: '+monthNames.length+' native months, '+count[5].unique+' active date phrases ('+count[5].buttons+' buttons), '+count[7].unique+' Xiaoxiao weather phrases ('+count[7].buttons+' buttons). Recovered '+w.PandaNativeRecoveredV246.available+' source clips.');
