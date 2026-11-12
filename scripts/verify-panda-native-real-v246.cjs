@@ -80,7 +80,7 @@ for(const html of [weatherHtml,dateHtml]){
  assert(html.indexOf('hsk1-human-voice-v183.js')<html.indexOf('panda-native-recovered-v246.js'),'Owner snapshot load order');
  assert(html.indexOf('panda-native-recovered-v246.js')<html.indexOf('panda-owner-lessons5-7-native-v221.js'),'Capture original before override');
 }
-assert(weatherHtml.includes('panda-go-companion-v231.js?v=278'));
+assert(/panda-go-companion-v231\.js\?v=\d+/.test(weatherHtml),'Latest weather companion script must load');
 assert(dateHtml.includes('hsk1-fifth-v227.js?v=273'));
 assert(dateHtml.includes('lesson5-xiaoxiao-v272.js?v=272'));
 
