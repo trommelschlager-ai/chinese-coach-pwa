@@ -1,8 +1,9 @@
 import fs from 'node:fs';
 import {JSDOM} from 'jsdom';
 let sequence=0;
-export async function liveDOM(lesson=1,{speech=true}={}){
+export async function liveDOM(lesson=1,{speech=true,completed=[]}={}){
  const dom=new JSDOM(fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8'),{url:`https://example.test/panda-voice-pilot.html?lesson=${lesson}`,pretendToBeVisual:true,runScripts:'outside-only'}),w=dom.window;
+ if(completed.length)w.localStorage.setItem('pg-hsk1-v3-complete',JSON.stringify(completed));
  w.eval(fs.readFileSync(new URL('../assets/hsk1-foundations-data-v152.js',import.meta.url),'utf8'));
  for(const key of ['window','document','location','history','localStorage'])globalThis[key]=key==='window'?w:w[key];
  globalThis.requestAnimationFrame=w.requestAnimationFrame.bind(w);globalThis.cancelAnimationFrame=w.cancelAnimationFrame.bind(w);Object.defineProperty(globalThis,'navigator',{configurable:true,value:w.navigator});Object.defineProperty(w,'isSecureContext',{value:true});

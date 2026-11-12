@@ -70,9 +70,24 @@ try{
   }
   await page.locator('#lesson-select').selectOption('6');await page.locator('#mode-nonstop').click();await send(page,'我有妹妹');assert.equal(await page.locator('#phrase').textContent(),'你有哥哥吗？');assert((await page.locator('#status').textContent()).includes('не ответ'));
   await send(page,'我没有哥哥，我有妹妹');assert((await page.locator('#recent').textContent()).includes('Wǒ méiyǒu gēge, wǒ yǒu mèimei.'));await send(page,'你有哥哥吗');assert.equal(await page.locator('#phrase').textContent(),'我有一个哥哥。');
-  await send(page,'今天天气怎么样');assert((await page.locator('#status').textContent()).includes('пока не знаю'));
+  await send(page,'今天天气怎么样');assert((await page.locator('#status').textContent()).includes('урока 7'));
   for(let i=0;i<12;i++)await send(page,'你好吗？');assert.equal(await page.locator('#recent article').count(),2);await page.locator('#history-open').click();assert(await page.locator('#history-dialog').isVisible());assert((await page.locator('#history article').count())>12);await page.locator('[data-close="history-dialog"]').click();
   await page.locator('#finish').click();assert.equal(await page.locator('#mode-short').getAttribute('aria-pressed'),'true');
+  await page.evaluate(()=>localStorage.setItem('pg-hsk1-v3-complete',JSON.stringify(['foundations','pronouns','numbers','weekdays','dates','family','weather'])));
+  await page.goto(BASE+'/panda-voice-pilot.html?lesson=1');await ready(page);await page.locator('#mode-nonstop').click();
+  for(const [q,answer] of [['今天天气怎么样','今天很冷。'],['你有妹妹吗','我有一个妹妹。'],['你几岁','我三岁。']]){await send(page,q);assert.equal(await page.locator('#phrase').textContent(),answer)}
+  await send(page,'今天星期几');assert((await page.locator('#phrase').textContent()).includes('星期'+dayNames[day]));
+  await send(page,'今天几月几号');assert((await page.locator('#exercise-banner').textContent()).includes('календарю устройства'));
+  await send(page,'今天天气怎么样');await page.waitForFunction(()=>['今天天气怎么样？','明天天气怎么样？'].includes(document.querySelector('#phrase').textContent),null,{timeout:12000});
+  await send(page,'我不有妹妹');assert((await page.locator('#learner-feedback').textContent()).includes('我没有妹妹'));assert((await page.locator('#recent').textContent()).includes('我不有妹妹'));
+  for(const hint of [false,true]){
+   if((await page.locator('#hint').getAttribute('aria-expanded'))!==String(hint))await page.locator('#hint').click();
+   for(const height of [568,640,740,825,915,400,320]){await page.setViewportSize({width,height});const m=await geometry(page);assert(m.controls.every(c=>c.visible),JSON.stringify(m));assert(m.cardOverflow<2,JSON.stringify(m));report.push({mode:'correction',hint,...m})}
+  }
+  await page.setViewportSize({width,height:825});await page.locator('#hint').click();
+  const bubble=await page.locator('.speech').evaluate(el=>{const r=el.getBoundingClientRect(),p=el.querySelector('#phrase').getBoundingClientRect();return {top:r.top,phraseTop:p.top,bottom:r.bottom}});assert(bubble.phraseTop>=bubble.top&&bubble.phraseTop<bubble.bottom,'First Chinese line must remain reachable from the start');
+  await page.screenshot({path:DIR+'/correction-'+width+'.png',fullPage:false,animations:'disabled'});
+
   const sources=await page.evaluate(async()=>Object.values((await import('./assets/panda-live-audio.mjs')).PILOT_AUDIO));
   for(const src of sources){const response=await page.request.get(new URL(src,BASE+'/').href);assert.equal(response.status(),200,src);assert((await response.body()).length>1000,src)}
   await context.close();

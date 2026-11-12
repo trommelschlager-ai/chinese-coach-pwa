@@ -11,6 +11,6 @@ test('service worker refreshes mjs modules and preserves exact offline versions'
  };
  vm.runInNewContext(fs.readFileSync(new URL('../sw.js',import.meta.url),'utf8'),context);
  async function request(version){let answer;listeners.fetch({request:new Request('https://panda.test/assets/panda-live-screen-v270.mjs?v='+version),respondWith:p=>answer=p});return await answer}
- assert.equal(await (await request(270)).text(),'fresh v270');assert.equal(requests,1);assert(writes[0][0].includes('v270-live-screen'));
+ assert.equal(await (await request(270)).text(),'fresh v270');assert.equal(requests,1);const packVersion=JSON.parse(fs.readFileSync(new URL('../assets/offline-pack.json',import.meta.url),'utf8')).version;assert(packVersion>=272);assert(writes[0][0].startsWith('chinese-coach-pwa-v'+packVersion+'-'));
  offline=true;assert.equal(await (await request(270)).text(),'cached v270');assert.equal((await request(271)).status,503,'A different version must not silently load old code');
 });

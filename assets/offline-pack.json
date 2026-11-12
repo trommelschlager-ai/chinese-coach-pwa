@@ -1,6 +1,6 @@
 {
-  "version": 271,
-  "bytes": 55142254,
+  "version": 272,
+  "bytes": 55302068,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -710,6 +710,7 @@
     "./assets/hsk1-fourth-v219.css?v=266",
     "./assets/hsk1-fourth-v219.css?v=268",
     "./assets/hsk1-fourth-v219.css?v=269",
+    "./assets/hsk1-fourth-v219.css?v=271",
     "./assets/hsk1-fourth-v220.js?v=220",
     "./assets/hsk1-fourth-v220.js?v=237",
     "./assets/hsk1-fourth-v220.js?v=250",
@@ -717,6 +718,7 @@
     "./assets/hsk1-fourth-v220.js?v=266",
     "./assets/hsk1-fourth-v220.js?v=268",
     "./assets/hsk1-fourth-v220.js?v=269",
+    "./assets/hsk1-fourth-v220.js?v=271",
     "./assets/hsk1-human-voice-v183.js?v=186",
     "./assets/hsk1-human-voice-v184.js?v=186",
     "./assets/hsk1-intro-v188.css?v=188",
@@ -1340,6 +1342,7 @@
     "./assets/panda-live-audio.mjs?v=live6",
     "./assets/panda-live-conversation-v266.mjs?v=266",
     "./assets/panda-live-conversation-v266.mjs?v=270",
+    "./assets/panda-live-dialogue-v272.mjs?v=272",
     "./assets/panda-live-drafts.mjs?v=live6",
     "./assets/panda-live-envelope.mjs?v=live6",
     "./assets/panda-live-greetings.mjs?v=live6",
@@ -1352,6 +1355,7 @@
     "./assets/panda-live-prompts-v270.mjs?v=270",
     "./assets/panda-live-rig.mjs",
     "./assets/panda-live-screen-v270.mjs?v=270",
+    "./assets/panda-live-screen-v270.mjs?v=272",
     "./assets/panda-live-voice-v2/good.mp3",
     "./assets/panda-live-voice-v2/hello.mp3",
     "./assets/panda-live-voice-v2/how-are-you.mp3",
@@ -1489,6 +1493,7 @@
     "./assets/panda-voice-pilot-ui.mjs?v=live10",
     "./assets/panda-voice-pilot-ui.mjs?v=live6",
     "./assets/panda-voice-pilot.css?v=270",
+    "./assets/panda-voice-pilot.css?v=272",
     "./assets/panda-voice-pilot.css?v=live10",
     "./assets/panda-weather-female-v240.js?v=240",
     "./assets/panda-word-sentences-v148.js?v=148",
@@ -2449,6 +2454,7 @@
     "./hsk1-fourth-v214.html?v=265",
     "./hsk1-fourth-v214.html?v=268",
     "./hsk1-fourth-v214.html?v=269",
+    "./hsk1-fourth-v214.html?v=271",
     "./hsk1-l4-cards.html?v=265",
     "./hsk1-lesson.html",
     "./hsk1-map.html",
@@ -2471,9 +2477,7 @@
     "./panda-voice-pilot.html?v=265",
     "./panda-voice-pilot.html?v=266",
     "./panda-voice-pilot.html?v=267",
-    "./start-chinese.html",
-    "./assets/hsk1-fourth-v219.css?v=271",
-    "./assets/hsk1-fourth-v220.js?v=271",
-    "./hsk1-fourth-v214.html?v=271"
+    "./panda-voice-pilot.html?v=272",
+    "./start-chinese.html"
   ]
 }
