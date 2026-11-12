@@ -1,5 +1,5 @@
 {
-  "version": 273,
+  "version": 274,
   "bytes": 55302068,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2500,6 +2500,30 @@
     "./assets/lesson5-xiaoxiao-v272/015.mp3",
     "./assets/lesson5-xiaoxiao-v272/016.mp3",
     "./assets/hsk1-fifth-v227.js?v=273",
-    "./hsk1-fifth-v227.html?v=273"
+    "./hsk1-fifth-v227.html?v=273",
+    "./assets/lesson6-xiaoxiao-v274.js?v=274",
+    "./assets/panda-go-companion-v231.js?v=274",
+    "./hsk1-family-v231.html?v=274",
+    "./assets/lesson6-xiaoxiao-v274/000.mp3",
+    "./assets/lesson6-xiaoxiao-v274/001.mp3",
+    "./assets/lesson6-xiaoxiao-v274/002.mp3",
+    "./assets/lesson6-xiaoxiao-v274/003.mp3",
+    "./assets/lesson6-xiaoxiao-v274/004.mp3",
+    "./assets/lesson6-xiaoxiao-v274/005.mp3",
+    "./assets/lesson6-xiaoxiao-v274/006.mp3",
+    "./assets/lesson6-xiaoxiao-v274/007.mp3",
+    "./assets/lesson6-xiaoxiao-v274/008.mp3",
+    "./assets/lesson6-xiaoxiao-v274/009.mp3",
+    "./assets/lesson6-xiaoxiao-v274/010.mp3",
+    "./assets/lesson6-xiaoxiao-v274/011.mp3",
+    "./assets/lesson6-xiaoxiao-v274/012.mp3",
+    "./assets/lesson6-xiaoxiao-v274/013.mp3",
+    "./assets/lesson6-xiaoxiao-v274/014.mp3",
+    "./assets/lesson6-xiaoxiao-v274/015.mp3",
+    "./assets/lesson6-xiaoxiao-v274/016.mp3",
+    "./assets/lesson1-xiaoxiao-v260/ma1.mp3",
+    "./assets/lesson1-xiaoxiao-v260/ma2.mp3",
+    "./assets/lesson1-xiaoxiao-v260/ma3.mp3",
+    "./assets/lesson1-xiaoxiao-v260/ma4.mp3"
   ]
 }

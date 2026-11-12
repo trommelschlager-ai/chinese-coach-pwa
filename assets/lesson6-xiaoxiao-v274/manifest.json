@@ -1,0 +1,198 @@
+{
+  "version": 274,
+  "lesson": 6,
+  "voice": "Xiaoxiao",
+  "provider": "Luvvoice Free",
+  "source_files": [
+    "luvvoice.com-20261112-uXkbp7.mp3",
+    "luvvoice.com-20261112-1zXdJ2.mp3",
+    "luvvoice.com-20261112-TjIvgr.mp3"
+  ],
+  "rate_percent": -20,
+  "pitch": 0,
+  "volume": 0,
+  "clips": [
+    {
+      "index": 0,
+      "hanzi": "妈妈",
+      "pinyin": "māma",
+      "file": "000.mp3",
+      "bytes": 13940,
+      "sha256": "579bee10f648bafcc2cf2ea73cd01714cd876f4ec99aa74c67741dd00a1d3243",
+      "duration_ms": 935,
+      "source_batch": 1
+    },
+    {
+      "index": 1,
+      "hanzi": "爸爸",
+      "pinyin": "bàba",
+      "file": "001.mp3",
+      "bytes": 10649,
+      "sha256": "09c1aeac90bc09ada93dde9036aafd079b32da1b7f5ae167f19a4080d566650e",
+      "duration_ms": 690,
+      "source_batch": 1
+    },
+    {
+      "index": 2,
+      "hanzi": "哥哥",
+      "pinyin": "gēge",
+      "file": "002.mp3",
+      "bytes": 11014,
+      "sha256": "faec9b72cc92542a26ec9c9cb8d1637f7ec87e97dc927e8c3ca13a31c7a1c53f",
+      "duration_ms": 725,
+      "source_batch": 1
+    },
+    {
+      "index": 3,
+      "hanzi": "姐姐",
+      "pinyin": "jiějie",
+      "file": "003.mp3",
+      "bytes": 11014,
+      "sha256": "a46db4d5991dc41133c3e49ef91180781085721e7d55f52bfea02dfc7125145a",
+      "duration_ms": 720,
+      "source_batch": 1
+    },
+    {
+      "index": 4,
+      "hanzi": "弟弟",
+      "pinyin": "dìdi",
+      "file": "004.mp3",
+      "bytes": 10649,
+      "sha256": "4e8cdf6ccc4f46955d2c8cdda321848246229a4743348bd94927dc8b79fa4405",
+      "duration_ms": 685,
+      "source_batch": 1
+    },
+    {
+      "index": 5,
+      "hanzi": "妹妹",
+      "pinyin": "mèimei",
+      "file": "005.mp3",
+      "bytes": 11380,
+      "sha256": "e7ef17ebd1bb46b46fa4ea1d04a51f08f8217d994db89e7f64e11674e52eec3c",
+      "duration_ms": 755,
+      "source_batch": 1
+    },
+    {
+      "index": 6,
+      "hanzi": "家",
+      "pinyin": "jiā",
+      "file": "006.mp3",
+      "bytes": 11014,
+      "sha256": "41d5f0ee62d821d4e7c4cc60c0dc315f1d22f1b5f6339ce43eb2d94dd4ca7cc0",
+      "duration_ms": 725,
+      "source_batch": 2
+    },
+    {
+      "index": 7,
+      "hanzi": "我的",
+      "pinyin": "wǒ de",
+      "file": "007.mp3",
+      "bytes": 10283,
+      "sha256": "3333a9ffbe119bb60d5542781ce6492b12778b59b3d8226112967ae3d50c0c37",
+      "duration_ms": 660,
+      "source_batch": 2
+    },
+    {
+      "index": 8,
+      "hanzi": "有",
+      "pinyin": "yǒu",
+      "file": "008.mp3",
+      "bytes": 7723,
+      "sha256": "b00875324df716aac229d7c19269c90078aeb6d74d7fd7de8f2dc8e6261d60d9",
+      "duration_ms": 485,
+      "source_batch": 2
+    },
+    {
+      "index": 9,
+      "hanzi": "没有",
+      "pinyin": "méiyǒu",
+      "file": "009.mp3",
+      "bytes": 11746,
+      "sha256": "bcd9d83f943a61376926e2b81d198815461137b361ffb4d0c41fd50a1ea9a234",
+      "duration_ms": 760,
+      "source_batch": 2
+    },
+    {
+      "index": 10,
+      "hanzi": "一个",
+      "pinyin": "yí ge",
+      "file": "010.mp3",
+      "bytes": 11014,
+      "sha256": "4e574a94ed471443420097c92c9e715f6cc1cb4f46b4ae5d612d25a3dc79ebf8",
+      "duration_ms": 720,
+      "source_batch": 2
+    },
+    {
+      "index": 11,
+      "hanzi": "我有一个妹妹。",
+      "pinyin": "Wǒ yǒu yí ge mèimei.",
+      "file": "011.mp3",
+      "bytes": 23449,
+      "sha256": "68549ad91c2a8f5d9e1d3d84b125722ceda4e8bf8e57e50f62b7e22ac0f8b746",
+      "duration_ms": 1600,
+      "source_batch": 3
+    },
+    {
+      "index": 12,
+      "hanzi": "我的妈妈。",
+      "pinyin": "Wǒ de māma.",
+      "file": "012.mp3",
+      "bytes": 15403,
+      "sha256": "25562d75514611e2e0f26b27001c651ae65b2e00afe8610d702d3aa9222127ac",
+      "duration_ms": 1040,
+      "source_batch": 3
+    },
+    {
+      "index": 13,
+      "hanzi": "我没有哥哥。",
+      "pinyin": "Wǒ méiyǒu gēge.",
+      "file": "013.mp3",
+      "bytes": 19060,
+      "sha256": "c4d17166d7f4b4341a67593402102dc49a9429cb3e7a924a25eb538209c54594",
+      "duration_ms": 1300,
+      "source_batch": 3
+    },
+    {
+      "index": 14,
+      "hanzi": "这是我爸爸。",
+      "pinyin": "Zhè shì wǒ bàba.",
+      "file": "014.mp3",
+      "bytes": 18694,
+      "sha256": "2c8d0fde0866a97686c3c35deed839e24cea7d675ed3321c476b5baf3435b6c7",
+      "duration_ms": 1255,
+      "source_batch": 3
+    },
+    {
+      "index": 15,
+      "hanzi": "是，这是我妈妈。",
+      "pinyin": "Shì, zhè shì wǒ māma.",
+      "file": "015.mp3",
+      "bytes": 28934,
+      "sha256": "1e4dc4ef06eed5d93c59c31b1bdb824b49f12475fb397696a1a85257615c7f14",
+      "duration_ms": 2005,
+      "source_batch": 3
+    },
+    {
+      "index": 16,
+      "hanzi": "有，我有一个妹妹。",
+      "pinyin": "Yǒu, wǒ yǒu yí ge mèimei.",
+      "file": "016.mp3",
+      "bytes": 28569,
+      "sha256": "8252ac738d512ee90eaf0c6815243fa9cd08d0393fcd2920b4c954cca14df0fb",
+      "duration_ms": 1975,
+      "source_batch": 3
+    }
+  ],
+  "comment": "Six surname/kinship words + five core words + six whole-phrase clips; do not split at commas inside dialogue.",
+  "sharedTones": {
+    "妈": "./assets/lesson1-xiaoxiao-v260/ma1.mp3",
+    "麻": "./assets/lesson1-xiaoxiao-v260/ma2.mp3",
+    "马": "./assets/lesson1-xiaoxiao-v260/ma3.mp3",
+    "骂": "./assets/lesson1-xiaoxiao-v260/ma4.mp3"
+  },
+  "maleDialogue": [
+    "这是你妈妈吗？",
+    "你有妹妹吗？"
+  ],
+  "review": "Mandarin tone/prosody review by native speaker still pending"
+}

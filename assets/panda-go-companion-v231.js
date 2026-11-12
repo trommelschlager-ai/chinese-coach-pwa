@@ -114,6 +114,10 @@ function weatherClips(hz){
 }
 function resolve(hz,role='female'){
  if(!isFamily)return weatherClips(hz)[0]||null;
+ // Preserve the original male actor: never substitute Xiaoxiao for male role A.
+ if(role==='male'){const bare=String(hz).replace(/[。！？!?]\s*$/,'');return mappings.male?.[hz]||mappings.male?.[bare]||null;}
+ const newlyRecorded=window.PandaLesson6XiaoxiaoV274?.lookup(hz);
+ if(newlyRecorded)return newlyRecorded;
  const plain=String(hz).replace(/[。！？!?]\s*$/,'');
  const composed=familyOriginalParts(hz,role);if(composed)return composed[0];
  const original=role==='female'&&window.PandaOwnerAudio?.lookup(hz);if(original)return original;
@@ -129,7 +133,8 @@ function play(hz,role='female'){
  const src=resolve(hz,role);
  if(!src){say('Для этой фразы пока нет доступной записи.','bad');return}
  stopAudio();const token=serial;
- const parts=isFamily?(familyOriginalParts(hz,role)||[src]):weatherClips(hz);
+ const lesson6New=isFamily&&role!=='male'&&!!window.PandaLesson6XiaoxiaoV274?.lookup(hz);
+ const parts=isFamily?(lesson6New?[src]:(familyOriginalParts(hz,role)||[src])):weatherClips(hz);
  const button=[...stage.querySelectorAll('[data-play]')].find(x=>x.dataset.play===hz);
  button?.setAttribute('aria-busy','true');
  let index=0;
