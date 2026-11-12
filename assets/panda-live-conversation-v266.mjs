@@ -94,7 +94,7 @@ export function interpretFamily(input){
  const translation=absentRu&&presentRu?absentRu.slice(0,-1)+', но есть '+familyList(present)+'.':absentRu||presentRu;
  const absentPy=absent?'Wǒ méiyǒu '+FAMILY[absent].py:'';
  const havePy=present.length?(absent?'wǒ yǒu ':'Wǒ yǒu ')+present.map(x=>x.py).join(' hé '):'';
- return known(input,absentPy&&havePy?absentPy+', '+havePy+'.':(absentPy||havePy)+'.',translation);
+ return {...known(input,absentPy&&havePy?absentPy+', '+havePy+'.':(absentPy||havePy)+'.',translation),family:{absent,present:present.map(member=>member.name)}};
 }
 export function extendFamilyAnswers(conversation){
  if(conversation.id!==6)return conversation;

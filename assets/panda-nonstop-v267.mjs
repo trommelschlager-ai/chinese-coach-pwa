@@ -1,6 +1,6 @@
 // Panda Go Non-Stop v267 — deterministic, no API requests; only studied/current HSK1.
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
-import {prepareConversation,interpretUtterance,replyToExtraSpeech} from './panda-live-conversation-v266.mjs?v=270';
+import {prepareConversation,interpretUtterance,interpretFamily,replyToExtraSpeech} from './panda-live-conversation-v266.mjs?v=270';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=live6';
 export const TOPIC_IDS=['foundations','pronouns','numbers','weekdays','dates','family','weather'];
 const safeJSON=(storage,key)=>{try{return JSON.parse(storage?.getItem(key)||'null')}catch{return null}};
@@ -55,6 +55,10 @@ export function answerNonStop(input,allowed,currentPrompt,topics=[],date=new Dat
  }
  // Do not allow a prompt from a locked chapter.
  if(currentPrompt&&scope.has(currentPrompt.lesson)){
+  if(currentPrompt.lesson===6){
+   const spoken=interpretFamily(raw),relative=currentPrompt.relative||'哥哥',family=spoken?.family;
+   if(family&&!family.present.includes(family.absent)&&(family.absent===relative||family.present.includes(relative)))return {kind:'answer',lesson:6,spoken,message:'Ответ по смыслу подходит.'};
+  }
   const match=verifyAnswerFor(currentPrompt.verifiedLines,1,raw);
   if(match.ok){
    const spoken=interpretUtterance(raw,currentPrompt.lesson,topics);
