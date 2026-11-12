@@ -12,7 +12,7 @@ const speech=fs.readFileSync('assets/hsk1-second-speaking-v209.js','utf8');
 const oneVoice=fs.readFileSync('assets/hsk1-lesson2-audio-v208.js','utf8');
 const xiaoxiao=fs.readFileSync('assets/panda-lesson2-xiaoxiao-v261.js','utf8');
 assert(html.includes('hsk1-first-v189.css?v=237'),'Keep first lesson approved visual style');
-assert(html.includes('hsk1-second-v203.js?v=262'),'Second lesson JS version');
+assert(html.includes('hsk1-second-v203.js?v=289'),'Second lesson JS version');
 assert(!html.includes('hsk1-second-speaking-v209.js'),'Main lesson must not load optional microphone training');
 assert(fs.readFileSync('hsk1-second-practice.html','utf8').includes('hsk1-second-speaking-v209.js?v=262'),'Dedicated practice loads the trainer');
 assert(html.includes('hsk1-lesson2-audio-v208.js?v=208'),'One-speaker voice map must be loaded first');
@@ -61,7 +61,8 @@ assert(doc.getElementById('pg-next').disabled,'Cannot skip initial review');
 answer(1);proceed(); // step 2: he/she
 answer(1);proceed(); // step 3: distinguish
 for(const a of [2,1])answer(a);
-assert.equal(step(),4,'Completed recognition drill should advance without empty confirmation card');
+assert.equal(step(),3,'Completed recognition should stay visible');assert(doc.querySelector('[data-repeat-step="2"]'));
+proceed();assert.equal(step(),4);
 assert(!doc.getElementById('pg-content').textContent.includes('Упражнение выполнено'),'No giant completed card on step 3');
 // step 4: plural
 answer(1);answer(1);
@@ -70,7 +71,8 @@ assert.equal(lastAudio,w.PandaLesson2XiaoxiaoV261.lookup('你们'),'Vocabulary m
 proceed(); // step 5 listening: plural and respectful singular 您
 assert(doc.querySelector('[data-audio="我们"]'),'Must have actual listening sample');
 for(const a of [2,3,0])answer(a);
-assert.equal(step(),6,'Listening drill should auto-advance');
+assert.equal(step(),5,'Completed listening should remain visible');assert(doc.querySelector('[data-repeat-step="4"]'));
+proceed();assert.equal(step(),6);
 // step 6 example
 click('[data-audio="我是老师。"]');
 assert.equal(lastAudio,w.PandaLesson2XiaoxiaoV261.lookup('我是老师。'),'Narration must play uploaded Xiaoxiao');
@@ -80,7 +82,8 @@ for(let exercise=0;exercise<2;exercise++){
  for(const i of [0,1,2])click('[data-add="'+i+'"]');
  click('[data-check-build]');
 }
-assert.equal(step(),8,'Sentence building should auto-advance without summary card');
+assert.equal(step(),7,'Completed builder should remain visible');assert(doc.querySelector('[data-repeat-step="6"]'));
+proceed();assert.equal(step(),8);
 // step 8 particle
 click('[data-audio="你是老师吗？"]');
 assert.equal(lastAudio,w.PandaLesson2XiaoxiaoV261.lookup('你是老师吗？'),'Question must use Xiaoxiao');
@@ -89,7 +92,8 @@ for(let exercise=0;exercise<1;exercise++){
  for(const i of [0,1,2,3])click('[data-add="'+i+'"]');
  click('[data-check-build]');
 }
-assert.equal(step(),10,'Question-building should auto-advance without summary card');
+assert.equal(step(),9,'Completed question building should remain visible');assert(doc.querySelector('[data-repeat-step="8"]'));
+proceed();assert.equal(step(),10);
 // step 10 conversation
 click('[data-audio="你是老师吗？"]');
 assert.equal(lastAudio,w.PANDA_HSK1_VOICES.male['你是老师吗？'],'Dialogues must retain their separate male voice');

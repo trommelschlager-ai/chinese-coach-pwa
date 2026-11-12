@@ -19,8 +19,8 @@ for(const lesson of [6,7]){
  const topic=lesson===6?'family':'weather';
  const filename=lesson===6?'hsk1-family-v231.html':'hsk1-weather-v231.html';
  const html=fs.readFileSync(filename,'utf8');
- assert(html.includes('panda-go-approved-lessons-v231.css?v='+(lesson===7?'237':'280')));
- assert(html.includes('panda-go-companion-v231.js?v='+(lesson===7?'279':'280')));
+ assert(html.includes('panda-go-approved-lessons-v231.css?v=289));
+ assert(html.includes('panda-go-companion-v231.js?v=289));
  assert(html.includes('owner-audio-v237.js?v=237'));
  assert(html.includes('panda-owner-lessons5-7-native-v221.js?v=221'));
  assert(css.includes('lesson'+lesson+'-scene-v233.webp'));
@@ -61,6 +61,9 @@ for(const lesson of [6,7]){
   click('[data-listen="'+hz+'"]');
  }
  assert(!d.getElementById('pg5-next').disabled,'Four real correct answers needed');
+ assert(d.querySelector('[data-repeat-listen]'),'Replay after completion must be available');
+ click('[data-repeat-listen]');assert(d.querySelector('[data-listen]').disabled);
+ for(const [hz] of currentTopic.listen.items.slice(0,4)){click('[data-play="'+hz+'"]');click('[data-listen="'+hz+'"]')}
  click('#pg5-next');assert.equal(step(),11);
  assert(d.getElementById('pg5-next').disabled,'Builder gate missing');
  for(const build of currentTopic.builds.slice(0,3)){

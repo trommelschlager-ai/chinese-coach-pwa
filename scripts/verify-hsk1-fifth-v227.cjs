@@ -8,7 +8,7 @@ const html=fs.readFileSync('hsk1-fifth-v227.html','utf8');
 const js=fs.readFileSync('assets/hsk1-fifth-v227.js','utf8');
 const css=fs.readFileSync('assets/panda-go-approved-lessons-v231.css','utf8');
 const data=fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8');
-assert(html.includes('hsk1-fifth-v227.js?v=273'));
+assert(html.includes('hsk1-fifth-v227.js?v=289'));
 assert(html.includes('panda-lesson-audio-v240.js?v=248'));
 assert(html.includes('panda-go-approved-lessons-v231.css?v=237'));
 assert(!html.includes('lesson3-approved-panda'),'Wrong screenshot mosaic must never return');
@@ -42,6 +42,10 @@ for(const word of ['四月','十一月','十二月']){
  click('[data-listen="'+word+'"]');
 }
 assert(!d.getElementById('pg5-next').disabled);
+assert(d.querySelector('[data-repeat-listen]'),'Completed listening must show Replay');
+click('[data-repeat-listen]');assert(d.querySelector('[data-listen="四月"]').disabled);
+for(const word of ['四月','十一月','十二月']){click('[data-play="'+word+'"]');click('[data-listen="'+word+'"]')}
+assert(!d.getElementById('pg5-next').disabled);
 click('#pg5-next');assert.equal(steps(),11);
 assert(d.getElementById('pg5-next').disabled,'Builder should gate advance');
 for(const pieces of [['十','一','月'],['十','二','月'],['三','月']]){
@@ -52,6 +56,9 @@ for(const pieces of [['十','一','月'],['十','二','月'],['三','月']]){
  click('[data-build-check]');
 }
 assert(!d.getElementById('pg5-next').disabled);
+assert(d.querySelector('[data-repeat-builder]'),'Completed builder must show Replay');
+click('[data-repeat-builder]');
+for(const pieces of [['十','一','月'],['十','二','月'],['三','月']]){for(const piece of pieces){const opts=[...d.querySelectorAll('[data-tile]')].filter(x=>!x.disabled);const target=opts.find(x=>x.textContent===piece);assert(target);target.click();}click('[data-build-check]');}
 click('#pg5-next');assert.equal(steps(),12); // writing
 assert(d.getElementById('writer'));
 click('#pg5-next');assert.equal(steps(),13); // speaking
