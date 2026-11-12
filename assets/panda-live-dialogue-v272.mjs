@@ -203,6 +203,14 @@ export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],da
   const followup=extension.lesson===6&&turn%2===0?rememberedFamilyFollowup(profile,allowed,[]):null;
   return {...extension,spoken,followup};
  }
+ // Yes/no calendar and weather questions need a truth value. The older
+ // general parser sometimes answered them with just the date/condition.
+ const semanticBoolean=/^(今天|明天|昨天)是星期[一二三四五六天日]吗$/.test(s)
+  ||/^(今天|明天|昨天)(下雨|下雪|冷|热)吗$/.test(s);
+ if(semanticBoolean){
+  const checked=patternQuestion(raw,allowed,date);
+  if(checked)return checked;
+ }
  const q=findQuestion(s);
  if(q){
   if(!allowed.includes(q.topic)||q.requires?.some(n=>!allowed.includes(n)))return {kind:'locked',spoken,lesson:q.topic,message:'Это тема урока '+(q.requires?.find(n=>!allowed.includes(n))||q.topic)+'. Открой этот урок в выборе сверху или вернись к уже пройденным темам.'};
