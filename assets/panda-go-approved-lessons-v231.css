@@ -56,22 +56,48 @@ h1{font-size:30px;line-height:1.12;letter-spacing:-.5px;text-align:center;margin
 }
 
 
-/* Panda Go family v275: four new grandparents; scoped to lesson 6 only. */
-.app[data-lesson="6"] .pg6-grandparents-heading{font-size:17px;line-height:1.3;margin:16px 2px 10px;text-align:center;color:#713991}
+/* Panda Go · family photo cards v276. Scoped to lesson 6; lesson 7 retains its own design. */
+.app[data-lesson="6"] .pg6-grandparents-heading{font-size:19px;line-height:1.25;margin:16px 2px 6px;text-align:center;color:#61338a;font-weight:900}
+.app[data-lesson="6"] .pg6-grandparents-hint{font-size:12px;text-align:center;color:#74598c;margin:0 auto 12px;line-height:1.4}
 .app[data-lesson="6"] .pg6-grandparents-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.app[data-lesson="6"] .pg6-grandparent-card{min-width:0;border:1px solid #e7c6ec;border-radius:18px;padding:10px 6px 12px;background:linear-gradient(160deg,#fffaf8,#fbeafa);display:flex;align-items:center;flex-direction:column;gap:4px;box-shadow:0 3px 8px #bba0c321}
-.app[data-lesson="6"] .pg6-grandparent-icon{font-size:44px;line-height:1.15;width:72px;height:66px;display:grid;place-items:center;background:#ffecf1;border-radius:18px}
-.app[data-lesson="6"] .pg6-grandparent-card:nth-child(3) .pg6-grandparent-icon,.app[data-lesson="6"] .pg6-grandparent-card:nth-child(4) .pg6-grandparent-icon{background:#ebe8fc}
-.app[data-lesson="6"] .pg6-grandparent-card strong{font-family:LessonHanzi,'Noto Sans SC',sans-serif;font-size:29px;color:#693996}
-.app[data-lesson="6"] .pg6-grandparent-card .py{font-size:13px;font-weight:750;color:#7b5193}
-.app[data-lesson="6"] .pg6-grandparent-card .ru{font-size:12px;color:#70577e;text-align:center;min-height:30px;line-height:1.25}
-.app[data-lesson="6"] .pg6-grandparent-card .audio{margin-top:4px}
-.app[data-lesson="6"] .pg6-grandparent-examples{display:grid;gap:9px}
-.app[data-lesson="6"] .pg6-grandparent-phrase{display:grid;grid-template-columns:minmax(0,1fr) 43px;align-items:center;gap:8px;padding:11px;border:1px solid #e9d5ed;border-radius:17px;background:#fffaff}
-.app[data-lesson="6"] .pg6-grandparent-phrase strong{display:block;font-family:LessonHanzi,'Noto Sans SC',sans-serif;font-size:21px;color:#653c90;line-height:1.3}
-.app[data-lesson="6"] .pg6-grandparent-phrase .py,.app[data-lesson="6"] .pg6-grandparent-phrase .ru{display:block;font-size:12px;line-height:1.45;color:#745e86}
-.app[data-lesson="6"] .pg6-grandparent-review{display:grid;gap:8px}
-.app[data-lesson="6"] .pg6-grandparent-review>div{display:grid;grid-template-columns:72px minmax(0,1fr) 42px;align-items:center;gap:6px;border-radius:13px;border:1px solid #e9d5ed;padding:7px;background:#fffaff}
-.app[data-lesson="6"] .pg6-grandparent-review b{font-size:23px;font-family:LessonHanzi,'Noto Sans SC',sans-serif;color:#653c90}
-.app[data-lesson="6"] .pg6-grandparent-review small{font-size:12px;line-height:1.3}
-@media(max-width:365px){.app[data-lesson="6"] .pg6-grandparent-card strong{font-size:26px}.app[data-lesson="6"] .pg6-grandparent-icon{font-size:37px;width:60px;height:59px}.app[data-lesson="6"] .pg6-grandparent-phrase strong{font-size:19px}}
+.app[data-lesson="6"] .pg6-grandparent-card{min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px 11px;background:#fff;border:1.5px solid #e7d5f1;border-radius:20px;box-shadow:0 4px 12px #ad90c529}
+.app[data-lesson="6"] .pg6-grandparent-photo{display:block;width:94px;height:94px;max-width:100%;flex:none;border-radius:16px;border:2px solid #fff;object-fit:cover;object-position:center 34%;background:#f6e9fa;box-shadow:0 3px 10px #80649c30}
+.app[data-lesson="6"] .pg6-grandparent-side{display:block;max-width:100%;font-size:10px;font-weight:850;line-height:1.15;text-align:center;padding:4px 7px;border-radius:999px;background:#f3e9ff;color:#8154ab}
+.app[data-lesson="6"] .pg6-grandparent-card:nth-child(-n+2) .pg6-grandparent-side{background:#fff0f2;color:#c36a89}
+.app[data-lesson="6"] .pg6-grandparent-card strong{font-family:LessonHanzi,'Noto Sans SC',sans-serif;font-size:30px;line-height:1.15;color:#60328e}
+.app[data-lesson="6"] .pg6-grandparent-card .py{font-size:14px;line-height:1.3;font-weight:850;color:#754ca0}
+.app[data-lesson="6"] .pg6-grandparent-card .ru{font-size:12px;line-height:1.3;text-align:center;color:#614f74;min-height:31px}
+.app[data-lesson="6"] .pg6-grandparent-card .audio{margin-top:auto}
+.app[data-lesson="6"] .pg6-grandparent-examples{display:grid;gap:10px}
+.app[data-lesson="6"] .pg6-grandparent-phrase{display:grid;grid-template-columns:60px minmax(0,1fr) 42px;align-items:center;gap:9px;padding:10px;border:1px solid #ead9f1;border-radius:17px;background:#fff;box-shadow:0 3px 9px #af8fc019;min-width:0}
+.app[data-lesson="6"] .pg6-phrase-photo{display:block;width:60px;height:70px;object-fit:cover;object-position:center 34%;border:1.5px solid #f4e8f8;border-radius:13px;background:#f6e9fa}
+.app[data-lesson="6"] .pg6-phrase-copy{min-width:0}
+.app[data-lesson="6"] .pg6-grandparent-phrase strong{display:block;font-family:LessonHanzi,'Noto Sans SC',sans-serif;font-size:21px;color:#5e2e89;line-height:1.32;overflow-wrap:anywhere}
+.app[data-lesson="6"] .pg6-grandparent-phrase .py,.app[data-lesson="6"] .pg6-grandparent-phrase .ru{display:block;font-size:12px;line-height:1.45;color:#725789}
+.app[data-lesson="6"] .pg6-grandparent-review{display:grid;gap:9px}
+.app[data-lesson="6"] .pg6-grandparent-review>div{display:grid;grid-template-columns:53px minmax(0,1fr) 42px;align-items:center;gap:9px;padding:8px;border:1px solid #e7d6ef;border-radius:15px;background:#fff}
+.app[data-lesson="6"] .pg6-review-photo{display:block;width:53px;height:53px;object-fit:cover;object-position:center 34%;border-radius:12px;background:#f8eefa}
+.app[data-lesson="6"] .pg6-review-copy{display:grid;gap:2px;min-width:0}
+.app[data-lesson="6"] .pg6-grandparent-review b{font-size:24px;line-height:1.15;font-family:LessonHanzi,'Noto Sans SC',sans-serif;color:#60328e}
+.app[data-lesson="6"] .pg6-grandparent-review small{font-size:12px;line-height:1.35;color:#655174}
+.app[data-lesson="6"] .audio{border-color:#f5afb9;background:#ffe9ee;color:#d94f7d}
+.app[data-lesson="6"] .footer .soft.primary{border:1.5px solid #975ad3;background:linear-gradient(#ae77e6,#8a49cd);box-shadow:0 3px 0 #6f31b2,0 5px 12px #955bcc45;color:#fff}
+.app[data-lesson="6"] .footer .soft:not(.primary){background:#fff;border:1.5px solid #e1cfeb;color:#292330;box-shadow:0 2px 7px #8d739d20}
+.app[data-lesson="6"] .word{grid-template-columns:minmax(0,1fr) 42px;min-height:95px;padding:9px 10px}
+.app[data-lesson="6"] .word>div{display:grid;grid-template-columns:70px minmax(0,1fr);grid-template-rows:repeat(3,auto);align-items:center;column-gap:11px;min-width:0}
+.app[data-lesson="6"] .word-art{grid-column:1;grid-row:1/4;width:69px;height:69px;border-radius:12px}
+.app[data-lesson="6"] .word strong{font-size:29px;line-height:1.2;grid-column:2;grid-row:1}
+.app[data-lesson="6"] .word .py{font-size:14px;line-height:1.2;grid-column:2;grid-row:2;margin:0}
+.app[data-lesson="6"] .word .ru{font-size:13px;line-height:1.3;grid-column:2;grid-row:3;border-left:0;padding:0}
+@media(max-width:365px){
+ .app[data-lesson="6"] .pg6-grandparents-grid{gap:7px}
+ .app[data-lesson="6"] .pg6-grandparent-card{padding:8px 6px}
+ .app[data-lesson="6"] .pg6-grandparent-photo{width:80px;height:80px}
+ .app[data-lesson="6"] .pg6-grandparent-card strong{font-size:27px}
+ .app[data-lesson="6"] .pg6-grandparent-phrase{grid-template-columns:48px minmax(0,1fr) 38px;gap:7px;padding:7px}
+ .app[data-lesson="6"] .pg6-phrase-photo{width:48px;height:61px}
+ .app[data-lesson="6"] .pg6-grandparent-phrase strong{font-size:19px}
+ .app[data-lesson="6"] .word>div{grid-template-columns:56px minmax(0,1fr);gap:4px 8px}
+ .app[data-lesson="6"] .word-art{width:55px;height:55px}
+ .app[data-lesson="6"] .word strong{font-size:26px}
+}

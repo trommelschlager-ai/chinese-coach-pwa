@@ -17,10 +17,10 @@ if(!stage||!prev||!next||!title)return;
 const KEY='pg-hsk1-l'+lesson+'-v231',LEGACY='pg-hsk1-v3-'+TOPIC,DONE='pg-hsk1-v3-complete';
 const words=topic.words.slice();
 const grandparents=Object.freeze([
- ['爷爷','yéye','дедушка по отцу','👴'],
- ['奶奶','nǎinai','бабушка по отцу','👵'],
- ['外公','wàigōng','дедушка по матери','👴'],
- ['外婆','wàipó','бабушка по матери','👵']
+ ['爷爷','yéye','дедушка по отцу','yeye'],
+ ['奶奶','nǎinai','бабушка по отцу','nainai'],
+ ['外公','wàigōng','дедушка по матери','waigong'],
+ ['外婆','wàipó','бабушка по матери','waipo']
 ]);
 const grandparentExamples=Object.freeze([
  ['这是我爷爷。','Zhè shì wǒ yéye.','Это мой дедушка по отцу.'],
@@ -184,11 +184,13 @@ function cover(){
 }
 function grandparentCards(){
  return '<h2 class="pg6-grandparents-heading">Бабушки и дедушки</h2>'+
- '<div class="pg6-grandparents-grid">'+grandparents.map(([hz,py,ru,emoji])=>
+ '<p class="pg6-grandparents-hint">Слова по папиной и маминой линии отличаются.</p>'+
+ '<div class="pg6-grandparents-grid">'+grandparents.map(([hz,py,ru,slug],i)=>
  '<div class="pg6-grandparent-card" data-grandparent="'+esc(hz)+'">'+
- '<div class="pg6-grandparent-icon" aria-hidden="true">'+emoji+'</div>'+
- '<strong lang="zh-Hans">'+hz+'</strong><span class="py">'+py+'</span>'+
- '<span class="ru">'+ru+'</span>'+playBtn(hz)+'</div>').join('')+'</div>';
+ '<img class="pg6-grandparent-photo" src="./assets/lesson6-photos-v276/'+slug+'.webp" width="390" height="390" loading="eager" decoding="async" alt="Портрет: '+esc(ru)+'">'+
+ '<span class="pg6-grandparent-side">'+(i<2?'По папиной линии':'По маминой линии')+'</span>'+
+ '<strong lang="zh-Hans">'+esc(hz)+'</strong><span class="py">'+esc(py)+'</span>'+
+ '<span class="ru">'+esc(ru)+'</span>'+playBtn(hz)+'</div>').join('')+'</div>';
 }
 function familyParentsAndGrandparents(){
  return card('<h2>Мама и папа</h2><div class="grid two">'+words.slice(0,2).map(word).join('')+
@@ -222,8 +224,10 @@ function examples(){
  return card('<h2>Слушай короткие фразы</h2>'+a.map(([zh,py,ru])=>
   '<div class="example"><strong lang="zh-Hans">'+esc(zh)+'</strong><span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span><div class="buttons">'+playBtn(zh)+'</div></div>').join('')+
   (isFamily?'<h2 class="pg6-grandparents-heading">Представляем бабушек и дедушек</h2>'+
-  '<div class="pg6-grandparent-examples">'+grandparentExamples.map(([zh,py,ru])=>
-  '<div class="pg6-grandparent-phrase"><div><strong lang="zh-Hans">'+esc(zh)+'</strong>'+
+  '<div class="pg6-grandparent-examples">'+grandparentExamples.map(([zh,py,ru],i)=>
+  '<div class="pg6-grandparent-phrase">'+
+  '<img class="pg6-phrase-photo" src="./assets/lesson6-photos-v276/'+grandparents[i][3]+'.webp" width="390" height="390" loading="lazy" decoding="async" alt="'+esc(grandparents[i][2])+'">'+
+  '<div class="pg6-phrase-copy"><strong lang="zh-Hans">'+esc(zh)+'</strong>'+
   '<span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span></div>'+playBtn(zh)+'</div>').join('')+'</div>':''));
 }
 function dialogue(){
@@ -270,8 +274,9 @@ function summary(){
  (state.quizPassed?'<p class="result good">✓ Верно! Можно завершить урок.</p>':'<p class="small center">Выбери правильный ответ, чтобы завершить урок.</p>'))+
  card('<h2>Повторение</h2><div class="grid two">'+(isFamily?words.slice(0,4):[words[0],words[1],words[5],words[6]]).map(word).join('')+
  '</div>'+(isFamily?'<h2 class="pg6-grandparents-heading">Бабушки и дедушки</h2>'+
- '<div class="pg6-grandparent-review">'+grandparents.map(([zh,py,ru])=>
- '<div><b lang="zh-Hans">'+zh+'</b><small>'+py+' · '+ru+'</small>'+playBtn(zh)+'</div>').join('')+'</div>':''))+
+ '<div class="pg6-grandparent-review">'+grandparents.map(([zh,py,ru,slug])=>
+ '<div><img class="pg6-review-photo" src="./assets/lesson6-photos-v276/'+slug+'.webp" width="390" height="390" loading="lazy" decoding="async" alt="'+esc(ru)+'">'+
+ '<span class="pg6-review-copy"><b lang="zh-Hans">'+esc(zh)+'</b><small>'+esc(py)+' · '+esc(ru)+'</small></span>'+playBtn(zh)+'</div>').join('')+'</div>':''))+
  (state.done?'<div class="buttons"><a class="soft primary" style="text-decoration:none;display:grid;place-items:center" href="'+(isFamily?'./hsk1-weather-v231.html':'./hsk1-map.html')+'">'+(isFamily?'К уроку 7 →':'К карте уроков →')+'</a></div>':'');
 }
 const screens=[

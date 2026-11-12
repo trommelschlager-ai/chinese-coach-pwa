@@ -1,5 +1,5 @@
 {
-  "version": 275,
+  "version": 276,
   "bytes": 55302068,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2536,6 +2536,13 @@
     "./assets/lesson6-grandparents-v275/004.mp3",
     "./assets/lesson6-grandparents-v275/005.mp3",
     "./assets/lesson6-grandparents-v275/006.mp3",
-    "./assets/lesson6-grandparents-v275/007.mp3"
+    "./assets/lesson6-grandparents-v275/007.mp3",
+    "./assets/panda-go-approved-lessons-v231.css?v=276",
+    "./assets/panda-go-companion-v231.js?v=276",
+    "./hsk1-family-v231.html?v=276",
+    "./assets/lesson6-photos-v276/yeye.webp",
+    "./assets/lesson6-photos-v276/nainai.webp",
+    "./assets/lesson6-photos-v276/waigong.webp",
+    "./assets/lesson6-photos-v276/waipo.webp"
   ]
 }

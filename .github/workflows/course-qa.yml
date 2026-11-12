@@ -23,6 +23,8 @@ jobs:
       - run: node scripts/verify-hsk1-lesson3-xiaoxiao-v263.cjs
       - run: node scripts/verify-hsk1-lesson4-xiaoxiao-v265.cjs
       - run: node scripts/verify-hsk1-lesson5-xiaoxiao-v272.cjs
+      - run: node scripts/verify-lesson6-grandparents-v275.cjs
+      - run: node scripts/verify-lesson6-photos-v276.cjs
       - run: node scripts/verify-lesson4-visual-v269.cjs
       - run: node scripts/verify-panda-go-audio-v236.cjs
       - run: node scripts/verify-panda-native-real-v246.cjs
