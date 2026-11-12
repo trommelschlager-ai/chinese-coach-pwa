@@ -1,0 +1,258 @@
+{
+  "version": 287,
+  "scope": "Introductory HSK1 — Panda Go course skills, not a certified HSK test",
+  "questions": [
+    {
+      "lesson": 1,
+      "kind": "choice",
+      "prompt": "Как переводится 你好？",
+      "choices": [
+        "Привет!",
+        "Пока!",
+        "Спасибо!"
+      ],
+      "correct": 0,
+      "explain": "你好 — nǐ hǎo — здравствуй, привет."
+    },
+    {
+      "lesson": 1,
+      "kind": "audio",
+      "prompt": "Какое слово ты услышал?",
+      "choices": [
+        "你好",
+        "学生",
+        "老师"
+      ],
+      "correct": 0,
+      "audio": "./assets/lesson1-xiaoxiao-v260/nihao.mp3",
+      "explain": "你好 — nǐ hǎo, в речи обычно ní hǎo."
+    },
+    {
+      "lesson": 1,
+      "kind": "build",
+      "prompt": "Собери «Я студент»",
+      "target": [
+        "我",
+        "是",
+        "学生"
+      ],
+      "explain": "我是学生。— Wǒ shì xuésheng."
+    },
+    {
+      "lesson": 2,
+      "kind": "choice",
+      "prompt": "Какой иероглиф означает «она»?",
+      "choices": [
+        "它",
+        "他",
+        "她"
+      ],
+      "correct": 2,
+      "explain": "她 — она, 他 — он, 它 — оно. Все три произносятся tā."
+    },
+    {
+      "lesson": 2,
+      "kind": "audio",
+      "prompt": "Кто назван в записи?",
+      "choices": [
+        "你们 — вы",
+        "我们 — мы",
+        "他们 — они"
+      ],
+      "correct": 1,
+      "audio": "./assets/panda-lesson2-xiaoxiao-v261/women.mp3",
+      "explain": "我们 — wǒmen — мы."
+    },
+    {
+      "lesson": 2,
+      "kind": "build",
+      "prompt": "Собери «Ты учитель?»",
+      "target": [
+        "你",
+        "是",
+        "老师",
+        "吗"
+      ],
+      "explain": "你是老师吗？— Nǐ shì lǎoshī ma? Частица 吗 стоит в конце."
+    },
+    {
+      "lesson": 3,
+      "kind": "choice",
+      "prompt": "Что означает 三十五?",
+      "choices": [
+        "53",
+        "35",
+        "30"
+      ],
+      "correct": 1,
+      "explain": "三十 (30) + 五 (5) = 35."
+    },
+    {
+      "lesson": 3,
+      "kind": "audio",
+      "prompt": "Какое число прозвучало?",
+      "choices": [
+        "十 — десять",
+        "四 — четыре",
+        "七 — семь"
+      ],
+      "correct": 0,
+      "audio": "./assets/lesson3-xiaoxiao-v263/010.mp3",
+      "explain": "十 shí — десять, второй тон. 四 sì — четыре, четвёртый тон."
+    },
+    {
+      "lesson": 3,
+      "kind": "build",
+      "prompt": "Собери число 67",
+      "target": [
+        "六",
+        "十",
+        "七"
+      ],
+      "explain": "六十七 — liù shí qī — шестьдесят семь."
+    },
+    {
+      "lesson": 4,
+      "kind": "choice",
+      "prompt": "Как правильно сказать «воскресенье»?",
+      "choices": [
+        "星期天 или 星期日",
+        "星期七",
+        "星期六"
+      ],
+      "correct": 0,
+      "explain": "Воскресенье — 星期天 (xīngqī tiān) или 星期日 (xīngqī rì)."
+    },
+    {
+      "lesson": 4,
+      "kind": "audio",
+      "prompt": "Какой день недели прозвучал?",
+      "choices": [
+        "星期五",
+        "星期六",
+        "星期三"
+      ],
+      "correct": 1,
+      "audio": "./assets/lesson4-xiaoxiao-v265/006.mp3",
+      "explain": "星期六 — xīngqī liù — суббота."
+    },
+    {
+      "lesson": 4,
+      "kind": "build",
+      "prompt": "Собери «Завтра суббота»",
+      "target": [
+        "明天",
+        "星期",
+        "六"
+      ],
+      "explain": "明天星期六。— Míngtiān xīngqī liù."
+    },
+    {
+      "lesson": 5,
+      "kind": "choice",
+      "prompt": "В каком порядке пишется дата в китайском?",
+      "choices": [
+        "День → месяц → год",
+        "Год → месяц → день",
+        "Месяц → день → год"
+      ],
+      "correct": 1,
+      "explain": "Порядок: 年 (год), 月 (месяц), 日/号 (день)."
+    },
+    {
+      "lesson": 5,
+      "kind": "audio",
+      "prompt": "Какой месяц прозвучал?",
+      "choices": [
+        "Ноябрь",
+        "Октябрь",
+        "Декабрь"
+      ],
+      "correct": 2,
+      "audio": "./assets/lesson5-xiaoxiao-v272/011.mp3",
+      "explain": "十二月 — shí'èr yuè — декабрь."
+    },
+    {
+      "lesson": 5,
+      "kind": "build",
+      "prompt": "Собери «ноябрь»",
+      "target": [
+        "十",
+        "一",
+        "月"
+      ],
+      "explain": "十一月 — shíyī yuè — ноябрь."
+    },
+    {
+      "lesson": 6,
+      "kind": "choice",
+      "prompt": "Кто такой 外公?",
+      "choices": [
+        "Дедушка по отцу",
+        "Дедушка по матери",
+        "Бабушка по матери"
+      ],
+      "correct": 1,
+      "explain": "外公 — wàigōng — дедушка по матери. 爷爷 — по отцу."
+    },
+    {
+      "lesson": 6,
+      "kind": "audio",
+      "prompt": "Кого назвали в записи?",
+      "choices": [
+        "奶奶 — бабушка по отцу",
+        "爷爷 — дедушка по отцу",
+        "外婆 — бабушка по матери"
+      ],
+      "correct": 0,
+      "audio": "./assets/lesson6-grandparents-v275/001.mp3",
+      "explain": "奶奶 — nǎinai — бабушка по отцу, второй слог нейтральный."
+    },
+    {
+      "lesson": 6,
+      "kind": "build",
+      "prompt": "Собери «У меня нет старшего брата»",
+      "target": [
+        "我",
+        "没有",
+        "哥哥"
+      ],
+      "explain": "我没有哥哥。— Wǒ méiyǒu gēge. Не говорят 不有."
+    },
+    {
+      "lesson": 7,
+      "kind": "choice",
+      "prompt": "Как сказать «Сегодня холодно»?",
+      "choices": [
+        "今天是冷。",
+        "今天很冷。",
+        "今天很下雨。"
+      ],
+      "correct": 1,
+      "explain": "今天很冷。— Jīntiān hěn lěng. Связка 是 здесь не нужна."
+    },
+    {
+      "lesson": 7,
+      "kind": "audio",
+      "prompt": "Что ты услышал?",
+      "choices": [
+        "Идёт снег",
+        "Идёт дождь",
+        "Солнечно"
+      ],
+      "correct": 1,
+      "audio": "./assets/lesson7-xiaoxiao-v277/005.mp3",
+      "explain": "下雨 — xià yǔ — идёт дождь."
+    },
+    {
+      "lesson": 7,
+      "kind": "build",
+      "prompt": "Собери «Сегодня идёт дождь»",
+      "target": [
+        "今天",
+        "下雨"
+      ],
+      "explain": "今天下雨。— Jīntiān xià yǔ."
+    }
+  ]
+}
