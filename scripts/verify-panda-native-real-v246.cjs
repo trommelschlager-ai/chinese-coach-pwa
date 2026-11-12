@@ -31,6 +31,8 @@ const companion=read('assets/panda-go-companion-v231.js');
 const start=companion.indexOf('function weatherClips(hz){'),end=companion.indexOf('function resolve(hz,role=',start);
 assert(start>0&&end>start,'Weather resolver unavailable');
 const weatherFn=vm.runInContext('(()=>{const isFamily=false,mappings=window.PANDA_HSK1_VOICES;'+companion.slice(start,end)+';return weatherClips})()',context);
+// Lesson 5 intentionally uses the newer Xiaoxiao voice map; v246 still audits the archived original recordings.
+vm.runInContext(read('assets/lesson5-xiaoxiao-v272.js'),context,{filename:'lesson5-xiaoxiao-v272.js'});
 const dates=read('assets/hsk1-fifth-v227.js');
 const first=dates.indexOf('function voice(hz,role='),last=dates.indexOf('function play(hz,role=',first);
 assert(first>0&&last>first,'Date resolver unavailable');
@@ -44,8 +46,16 @@ for(const lesson of [5,7]){
   const hz=row.phrase;
   if(seen.has(hz))continue;seen.add(hz);
   if(lesson===5){
-   const file=datesFn(hz,'female');
-   checkApproved(hz,file);
+   const role=row.role==='male'?'male':'female';
+   const file=datesFn(hz,role);
+   assert(file,'Lesson 5 is missing audio for '+hz);
+   if(role==='male'){
+    assert(file.startsWith('./assets/hsk1-voices-v156/'),'Lesson 5 male dialogue must stay male: '+hz+' '+file);
+   }else{
+    assert(file.startsWith('./assets/lesson5-xiaoxiao-v272/')||file.startsWith('./assets/lesson4-xiaoxiao-v265/'),
+      'Lesson 5 must use the new Xiaoxiao voice: '+hz+' '+file);
+   }
+   assert(fs.existsSync(file.replace(/^\\.\\//,'')),'Lesson 5 media missing: '+file);
   }else{
    const clips=weatherFn(hz);
    assert(clips.length===1,'All weather playback must use ONE complete original phrase: '+hz);
@@ -65,6 +75,8 @@ for(const html of [weatherHtml,dateHtml]){
  assert(html.indexOf('panda-native-recovered-v246.js')<html.indexOf('panda-owner-lessons5-7-native-v221.js'),'Capture original before override');
 }
 assert(weatherHtml.includes('panda-go-companion-v231.js?v=249'));
-assert(dateHtml.includes('hsk1-fifth-v227.js?v=249'));
+assert(dateHtml.includes('hsk1-fifth-v227.js?v=273'));
+assert(dateHtml.includes('lesson5-xiaoxiao-v272.js?v=272'));
+
 assert(read('assets/lesson-audio-source.js').includes('Звук v246'));
 console.log('PASS Panda Go v246: '+monthNames.length+' native months, '+count[5].unique+' active date phrases ('+count[5].buttons+' buttons), '+count[7].unique+' original native weather phrases ('+count[7].buttons+' buttons). Recovered '+w.PandaNativeRecoveredV246.available+' source clips.');
