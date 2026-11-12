@@ -150,13 +150,13 @@ function play(n,onEnd){
   return;
  }
  // Never fall back to noisy older composites or another synthesized voice.
- finished(false);inform('Запись Xiaoxiao недоступна. Обнови страницу урока.','error');
+ finished(false);inform('Запись недоступна. Обнови страницу урока.','error');
 }
 function audioButton(n,label='▶ Слушать',extra=''){
  const invalid=recording(n)===null;
  return '<button class="pg3-audio" type="button" data-audio="'+n+'" '+extra+
   ' aria-label="'+escape(label)+' — '+escape(pretty(n))+'">'+escape(label)+'</button>'+
-  (n===100?'<small class="pg13-audio-note">'+(recording(100)?'Xiaoxiao: yì bǎi':'Запись Xiaoxiao недоступна')+'</small>':
+  (n===100?'<small class="pg13-audio-note">'+(recording(100)?'yì bǎi · 4-й + 3-й тон':'Запись недоступна')+'</small>':
    invalid?'<small class="pg13-audio-note">Аудиозапись недоступна</small>':'');
 }
 function mainCard(body,classes=''){return '<section class="pg3-card '+classes+'">'+body+'</section>'}
@@ -251,7 +251,7 @@ function generator(){
  '<button type="button" data-generate>Показать →</button></div>'+
  '<div class="pg13-generator-result">'+n+' <span>→</span> <strong lang="zh-Hans">'+chinese(n)+'</strong>'+
  '<small>'+pinyin(n)+'</small></div>'+audioButton(n,'🔊 Слушать число')+
- '<p class="pg3-muted">Каждое число целиком произносит Xiaoxiao. Следи за тонами в пиньине.</p></div>';
+ '<p class="pg3-muted">Следи за тонами в пиньине.</p></div>';
 }
 function compound(){
  return mainCard(heading('Десятки + единицы = любое число 21–99')+

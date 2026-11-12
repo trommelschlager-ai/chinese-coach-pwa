@@ -1,6 +1,6 @@
 {
-  "version": 281,
-  "bytes": 55455068,
+  "version": 282,
+  "bytes": 55532426,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -2584,6 +2584,14 @@
     "./panda-voice-pilot.html?v=267",
     "./panda-voice-pilot.html?v=272",
     "./panda-voice-pilot.html?v=281",
-    "./start-chinese.html"
+    "./start-chinese.html",
+    "./assets/lesson4-dialog-v282/man.webp",
+    "./assets/lesson4-dialog-v282/woman.webp",
+    "./assets/lesson-audio-source.js?v=282",
+    "./assets/hsk1-fourth-v219.css?v=282",
+    "./assets/hsk1-fourth-v220.js?v=282",
+    "./assets/hsk1-third-v213.js?v=282",
+    "./hsk1-fourth-v214.html?v=282",
+    "./hsk1-third-v212.html?v=282"
   ]
 }

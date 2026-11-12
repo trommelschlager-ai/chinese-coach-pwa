@@ -184,7 +184,7 @@ const audioButton=(word,label='▶ Слушать',additional='')=>!fileFor(word
 const compactAudioButton=(word)=>fileFor(word)
  ? '<button type="button" class="pg4-audio-icon" data-play="'+esc(word)+'" aria-label="Прослушать '+esc(word)+'" title="Прослушать фразу"><img src="./assets/vendor/icons/volume-2.svg" alt=""></button>'
  : '<span class="pg4-missing-audio" role="note">🔇 Запись готовится</span>';
-const audioCredits="<details class=\"pg13-credit\"><summary>Об аудио</summary><p>Все 25 слов и фраз словаря урока 4 записаны единым голосом Xiaoxiao. Мужская реплика в диалоге оставлена отдельной. Резервные записи Yue Tan / Shtooka (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/us/\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY-SA 3.0 US</a>). Часть исторических файлов собрана из фрагментов. Системная озвучка не используется.</p></details>";
+const audioCredits=''; // Audio attribution is available from the separate credits page.
 const card=(body,cls='')=>'<section class="pg4-card '+cls+'">'+body+'</section>';
 const h=(title)=>'<h2 class="pg4-card-title">'+title+'</h2>';
 function scrollNew(){viewport.scrollTop=0}
@@ -267,7 +267,7 @@ function grammar(){
  card(h('Свяжем со вторым уроком')+
  '<div class="pg4-model-phrases"><p><strong>今天星期五。</strong> — Сегодня пятница.<br><span class="pg4-pinyin-inline">Jīntiān xīngqī wǔ.</span></p>'+compactAudioButton('今天星期五。')+'<p>'+
  '<strong>今天是星期五。</strong> — Сегодня пятница.<br><span class="pg4-pinyin-inline">Jīntiān shì xīngqī wǔ.</span></p>'+compactAudioButton('今天是星期五。')+'</div>'+
- '<p class="pg4-info">Оба варианта допустимы. Ты уже знаешь 是 (shì).</p><p class="pg4-info">Цельная запись 今天是星期五。 озвучена тем же голосом Xiaoxiao.</p>'+
+ '<p class="pg4-info">Оба варианта допустимы. Ты уже знаешь 是 (shì).</p>'+
  '<p>Какой вопрос написан верно?</p>'+
  choices(['今天星期几吗？','今天星期几？','明天星期几？'],'grammar-answer')+
  (state.grammarPassed?'<p class="pg4-success">✓ Верно! Вопрос 几 не требует 吗.</p>':''));
@@ -298,8 +298,8 @@ function dialogue(){
  const locked=(state.ix[9]||0)>=DIALOG.length||(state.answered?.step===9&&state.answered.correct);
  return card('<div class="pg4-question-progress">Короткий диалог — вопрос и ответ</div>'+
  '<div class="pg4-people">'+
- '<div><img src="./assets/lesson4-v269/woman.webp" width="240" height="330" loading="eager" decoding="async" alt="Девушка задаёт вопрос"><span>Девушка · вопрос</span></div>'+
- '<div><img src="./assets/lesson4-v269/man.webp" width="240" height="330" loading="eager" decoding="async" alt="Парень отвечает"><span>Парень · ответ</span></div></div>'+
+ '<div><img src="./assets/lesson4-dialog-v282/woman.webp" width="480" height="540" loading="eager" decoding="async" alt="Девушка задаёт вопрос"><span>Девушка · вопрос</span></div>'+
+ '<div><img src="./assets/lesson4-dialog-v282/man.webp" width="480" height="540" loading="eager" decoding="async" alt="Парень отвечает"><span>Парень · ответ</span></div></div>'+
  '<div class="pg4-bubbles">'+
  '<div class="from-f"><span class="pg4-speaker-label">Девушка спрашивает</span><strong lang="zh-Hans">'+d.female+'</strong>'+
  '<span class="pg4-dialog-pinyin">Míngtiān xīngqī jǐ?</span><small>'+GLOSS[d.female]+'</small></div>'+
@@ -355,7 +355,7 @@ function final(){
  '<a href="./hsk1-map.html">К карте HSK1</a></div>')+
  (hardWords.length?card(h('Трудные слова — повтори ещё раз')+hardWords.map(x=>'<div class="pg4-dict-line"><div><strong lang="zh-Hans">'+x.zh+'</strong><span>'+x.py+'</span><small>'+x.ru+'</small></div>'+audioButton(x.zh)+'</div>').join('')):'')+
  card('<details class="pg4-dictionary"><summary>🎧 Весь словарь — '+allWords.length+' слов и фраз</summary>'+
- '<p class="pg4-info">Все 25 слов и фраз записаны голосом Xiaoxiao.</p>'+
+ ''+
  allWords.map(x=>'<div class="pg4-dict-line"><div><strong lang="zh-Hans">'+esc(x.zh)+'</strong><span>'+esc(x.py)+'</span><small>'+esc(x.ru)+'</small></div>'+
  audioButton(x.zh,'▶')+'</div>').join('')+'</details>')+
  '<button type="button" data-restart class="pg4-restart">↺ Повторить весь урок №4</button>'+audioCredits;

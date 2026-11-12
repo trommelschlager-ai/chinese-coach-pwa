@@ -121,7 +121,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{o
 .pg4-write-actions button,.pg4-voice-tools button{border:1px solid #e8d7ee;background:#fff9fe;border-radius:13px;color:#715487;font-weight:850;padding:11px;min-height:44px}
 .pg4-people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;justify-content:center;gap:12px;margin:8px auto 12px}
 .pg4-people>div{display:flex;align-items:center;flex-direction:column;gap:5px;color:#6c527e;font-size:12px;border:1px solid #eadbf1;border-radius:17px;background:#fff9fd;padding:10px 8px;min-width:0}
-.pg4-people img{height:132px;width:100%;max-width:130px;object-fit:contain;object-position:center center;border-radius:14px;border:2px solid #fff;box-shadow:0 3px 10px #9879b125;background:#fdf4f8}
+.pg4-people img{height:149px;width:100%;max-width:144px;object-fit:contain;object-position:center center;border-radius:15px;border:2px solid #fff;box-shadow:0 3px 10px #9879b125;background:#fff3fa}
 
 .pg4-dialog-actions{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:10px auto}
 .pg4-dialog-actions button{min-height:43px;padding:7px 10px;font-size:13px}
@@ -215,7 +215,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{o
 .pg3-nav-main:disabled{opacity:.74}
 .pg3-footer button:not(:disabled):active{transform:translateY(1px)}
 @media(max-width:365px){
- .pg4-people img{height:105px;max-width:105px}
+ .pg4-people img{height:124px;max-width:120px}
  .pg4-people>div{padding:8px 4px}
  .pg4-bubbles>div{min-height:92px;padding:10px 12px}
  .pg4-bubbles strong{font-size:24px}
