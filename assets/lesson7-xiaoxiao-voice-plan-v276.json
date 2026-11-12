@@ -1,9 +1,9 @@
 {
   "lesson": 7,
   "subject": "Погода",
-  "current_version": "Panda Go v275",
+  "current_version": "Panda Go v278",
   "voice_goal": "Xiaoxiao — одна утверждённая озвучка для урока 7",
-  "status": "awaiting_new_audio",
+  "status": "clips_uploaded_and_mapped_pending_live_device_listening",
   "total_unique_audio": 22,
   "reuse": [
     {
@@ -185,5 +185,12 @@
     "Use complete phrases, no fragment splicing",
     "One voice and matched volume, no noise tails",
     "Reuse today/tomorrow from lesson4"
-  ]
+  ],
+  "installation": {
+    "release": "v278",
+    "voiceFiles": 20,
+    "sharedFiles": 2,
+    "path": "assets/lesson7-xiaoxiao-v277",
+    "tests": "scripts/verify-lesson7-xiaoxiao-v278.cjs"
+  }
 }

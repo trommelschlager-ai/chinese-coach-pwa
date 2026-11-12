@@ -107,22 +107,9 @@ function familyOriginalParts(hz,role='female'){
 }
 function weatherClips(hz){
  if(isFamily)return null;
- const restored=window.PandaCleanAudioV249?.lookup(hz);if(restored)return [restored];
- const plain=String(hz).replace(/[。！？!?]\s*$/,'');
- // Priority 1: the already-recorded Chinese woman. v183/v184 originals were
- // ignored by the old v240 player even though we have every lesson-7 phrase.
- const recovered=window.PandaNativeRecoveredV246?.lookup(hz)||window.PandaNativeRecoveredV246?.lookup(plain);
- if(recovered)return [recovered];
- const approved=window.PandaOwnerAudio?.lookup(hz)||window.PandaOwnerAudio?.lookup(plain);
- if(approved)return [approved];
- // v221 records are additional MP3 clips of the same approved woman.
- const female=mappings.female||{};
- const native=female[hz]||female[plain];
- if(typeof native==='string'&&native.startsWith('data:audio/mpeg;base64,'))return [native];
- const extra=window.PANDA_HSK1_OWNER_V200?.[hz]||window.PANDA_HSK1_OWNER_V200?.[plain];
- if(typeof extra==='string')return [extra];
- // Do not silently switch back to the rejected childlike/synthetic voice.
- return [];
+ // Lesson 7: only the approved Xiaoxiao clips. Do not mix earlier voices.
+ const updated=window.PandaLesson7XiaoxiaoV277?.lookup(hz);
+ return updated?[updated]:[];
 }
 function resolve(hz,role='female'){
  if(!isFamily)return weatherClips(hz)[0]||null;
@@ -155,8 +142,8 @@ function play(hz,role='female'){
   const clip=parts[index++];
   if(!clip){audio=null;button?.removeAttribute('aria-busy');return}
   try{
-   const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;a.playbackRate=isFamily?1:0.85; // human weather recordings slowed without shifting pitch
-   if(!isFamily && !clip.includes('panda-native-clean-v249/') && (clip.startsWith('data:audio/')||window.PandaLessonAudioV240?.isPriority?.(hz)))window.PandaLessonAudioV240?.improve?.(a,'weather',hz);
+   const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;const newWeather=!isFamily&&clip.includes('lesson7-xiaoxiao-v277/')||!isFamily&&clip.includes('lesson4-xiaoxiao-v265/');a.playbackRate=(isFamily||newWeather)?1:0.85; // original tempo for Xiaoxiao
+   if(!isFamily && !newWeather && !clip.includes('panda-native-clean-v249/') && (clip.startsWith('data:audio/')||window.PandaLessonAudioV240?.isPriority?.(hz)))window.PandaLessonAudioV240?.improve?.(a,'weather',hz);
    a.onended=()=>{if(token!==serial)return;playNext()};
    a.onerror=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy');say('Аудио не загрузилось. Попробуй снова.','bad')};
    Promise.resolve(a.play()).catch(()=>{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Нажми кнопку звука ещё раз.','bad')}});

@@ -1,0 +1,34 @@
+name: Verify Panda Go Lesson 7 Xiaoxiao v278
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/lesson7-xiaoxiao-v277/**'
+      - 'assets/lesson7-xiaoxiao-v277.js'
+      - 'assets/panda-go-companion-v231.js'
+      - 'hsk1-weather-v231.html'
+      - 'scripts/verify-lesson7-xiaoxiao-v278.cjs'
+      - 'sw.js'
+      - 'assets/offline-pack.json'
+      - '.github/workflows/lesson7-xiaoxiao-v278.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Verify Lesson 7 voice integrity
+        run: node scripts/verify-lesson7-xiaoxiao-v278.cjs
+      - name: Verify existing Lesson 6 and interfaces
+        run: |
+          node scripts/verify-panda-go-approved-v231.cjs
+          node scripts/verify-panda-audio-v244.cjs
+          node scripts/verify-lesson6-grandparents-v275.cjs
