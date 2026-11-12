@@ -46,7 +46,7 @@ try{
   await page.locator('#mode-nonstop').click();
   assert(await page.locator('#nonstop-panel').isVisible());
   assert(await page.locator('#conversation').isHidden());
-  assert((await page.locator('#step').textContent()).includes('Без лимита'));
+  assert((await page.locator('#step').textContent()).includes('без лимита'));
   assert((await page.locator('#nonstop-topics').textContent()).includes('Основы'));
   assert.equal(await page.locator('#phrase').textContent(),'你好吗？');
   await page.locator('#nonstop-hint').click();
