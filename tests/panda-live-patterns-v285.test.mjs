@@ -60,7 +60,7 @@ test('every generated prompt has an intelligible accepted answer and keeps lesso
 });
 test('actual Panda engine understands novel questions and validates their specific answers',()=>{
  const scenarios=[
- ['三十九后面是几？','四十。','四十','三十九'],
+ ['三十八后面是几？','三十九。','三十九','三十八'],
  ['二十一前面是几？','二十。','二十','二十二'],
  ['今天是星期四吗？','是，今天星期四。','是','不是'],
  ['今天是星期一吗？','不是，今天星期四。','不是','是'],
@@ -71,6 +71,9 @@ test('actual Panda engine understands novel questions and validates their specif
  ['明天下雪吗？','明天不下雪。','明天不下雪','明天下雪'],
  ['冬天天气怎么样？','冬天很冷。','冬天很冷','夏天很热']
  ];
+ const arbitrary=answerLive('三十九后面是几？',{allowed,curriculum:course,date});
+ assert.equal(arbitrary.kind,'question','Panda should understand numbers outside the curated quiz list');
+ assert.equal(arbitrary.reply.hanzi,'四十。');
  for(const [question,answer,good,bad] of scenarios){
   const r=answerLive(question,{allowed,curriculum:course,date});
   assert.equal(r.kind,'question','Missing '+question+' '+r.kind);
