@@ -78,6 +78,8 @@ for(const [member,[py,ru]] of Object.entries(MEMBERS)){
 for(const member of ['哥哥','姐姐','弟弟','妹妹']){const py=MEMBERS[member][0],has=['哥哥','妹妹'].includes(member);query(['你有几个'+member],6,'Nǐ yǒu jǐ ge '+py+'?','Сколько у тебя братьев или сестёр: '+MEMBERS[member][1]+'?',()=>line('我'+(has?'有一个':'没有')+member+'。','Wǒ '+(has?'yǒu yí ge ':'méiyǒu ')+py+'.','У меня '+(has?'есть '+MEMBERS[member][1]:'нет '+MEMBERS[member][2])+'.',ROLE));}
 query(['你家有几口人'],6,'Nǐ jiā yǒu jǐ kǒu rén?','Сколько человек в твоей семье?',()=>line('我家有五口人。','Wǒ jiā yǒu wǔ kǒu rén.','В моей семье пять человек.',ROLE));
 for(const member of ['妈妈','爸爸'])query(['这是你'+member+'吗'],6,'Zhè shì nǐ '+MEMBERS[member][0]+' ma?','Это твой родственник: '+MEMBERS[member][1]+'?',()=>line('是，这是我'+member+'。','Shì, zhè shì wǒ '+MEMBERS[member][0]+'.','Да, это '+(member==='妈妈'?'моя мама.':'мой папа.'),'Учебная сценка. Реальную фотографию я не вижу.'));
+// The question and answer are both recorded in the weekday lesson.
+query(['你星期几有空'],4,'Nǐ xīngqī jǐ yǒu kòng?','В какой день недели у тебя есть время?',()=>line('我星期六有空。','Wǒ xīngqī liù yǒu kòng.','Я свободен в субботу.','Учебная ситуация, а не реальное расписание.'));
 function findQuestion(s){return QUERY.find(q=>q.key===s.replace(/[呀啊]$/,''))}
 function grammar(raw,allowed,contextTopic){
  const s=normalize(raw);

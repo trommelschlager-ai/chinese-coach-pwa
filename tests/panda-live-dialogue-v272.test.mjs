@@ -50,7 +50,7 @@ test('follow-up prompts are contextual, valid and calendar-aware across rollover
 });
 test('DOM shows weather answer, scenario, translation of errors and an automatic question',async()=>{
  const f=await liveDOM(1,{completed:['weather']}),{el,send,clips,w}=f;try{
-  el('mode-nonstop').click();send('今天天气怎么样');assert.equal(el('phrase').textContent,'今天很冷。');assert(el('exercise-banner').textContent.includes('не настоящий прогноз'));assert(el('audio-note').hidden===false);assert(el('recent').textContent.includes('какая погода'));
+  el('mode-nonstop').click();send('今天天气怎么样');assert.equal(el('phrase').textContent,'今天很冷。');assert(el('exercise-banner').textContent.includes('не настоящий прогноз'));assert(el('audio-note').hidden===true);assert(el('recent').textContent.includes('какая погода'));
   send('今天是很冷');assert(el('learner-feedback').textContent.includes('Возможный смысл'));assert(el('learner-feedback').textContent.includes('今天很冷'));assert(el('recent').textContent.includes('今天是很冷'));
   send('今天天气怎么样');send('今天天气怎么样');
   // Existing spoken acknowledgements complete before a follow-up; no acoustic scoring.

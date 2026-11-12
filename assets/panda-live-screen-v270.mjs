@@ -1,3 +1,4 @@
+import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=281';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=live6';
@@ -10,13 +11,13 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=272';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=281';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
 const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,recognition=null,epoch=0,watchdog,poseTimer,followupTimer;
-const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null};
+const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null};
 const current=()=>state.display;
 const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson||conversation.id):conversation.id;
 function note(text){$('status').textContent=text||''}
@@ -78,7 +79,7 @@ function render(){
  $('message').placeholder=state.done&&state.mode==='short'?'Спроси Панду или начни заново…':'Напиши по-китайски…';
  const context=line.context||(state.mode==='nonstop'?(state.prompt?.line.context||''):conversation.context||'');
  $('exercise-banner').textContent=conversation.id===5&&state.mode==='short'&&!line.context?'Учебная сценка: '+context:context;$('exercise-banner').hidden=!context;
- const activePrompt=state.followup||state.prompt?.line;const questionExamples=state.followup||nextTopicPrompt(lesson(),state.questions,new Date(),state.profile);
+ const activePrompt=state.followup||state.prompt?.line;const questionExamples=state.followup||pickCoursePrompt(lesson(),curriculum,state.questions,new Date(),state.profile);
  const examples=state.mode==='nonstop'?(state.awaitQuestion?[...(questionExamples?[questionExamples.hanzi]:[]),...extraExamples(lesson())]:[...(activePrompt?.accepted||activePrompt?.verifiedLines?.[1]?.accepted||[]).filter(x=>/[\u3400-\u9fff]/.test(x)).slice(0,2),...(questionExamples?[questionExamples.hanzi]:[])]):state.done?extraExamples(conversation.id):validatedVariants(conversation.id,state.step,conversation.lines);
  $('quick-phrases').replaceChildren();for(const text of examples.filter((text,index,all)=>all.findIndex(x=>normalize(x)===normalize(text))===index).slice(0,3)){const b=document.createElement('button');b.type='button';b.textContent=text;b.addEventListener('click',()=>{$('message').value=text;$('message').focus()});$('quick-phrases').append(b)}
  document.documentElement.dataset.hint=String(state.hint);$('hint').setAttribute('aria-expanded',String(state.hint));$('hint-text').hidden=!state.hint;
@@ -88,19 +89,24 @@ function render(){
 function rotateGreeting(){let index=0;try{index=Number(storage?.getItem('pg-panda-live-practice-greeting-v1'))||0;storage?.setItem('pg-panda-live-practice-greeting-v1',String((index+1)%4))}catch{}return index%4}
 function initLesson(id){
  cancelFollowup();stopAudio();stopRecognition();base=prepareConversation(CONVERSATIONS.find(c=>c.id===id)||CONVERSATIONS[0],new Date());
- conversation=withPracticeGreeting(base,rotateGreeting());state.step=0;state.done=false;state.reviewStep=null;state.prompt=null;state.shortDisplay=null;state.nonstopDisplay=null;state.awaitQuestion=false;state.hint=false;state.topic=base.id;state.turns=0;showLearnerFeedback(null);
+ conversation=withPracticeGreeting(base,rotateGreeting());state.step=0;state.done=false;state.reviewStep=null;state.prompt=null;state.shortDisplay=null;state.nonstopDisplay=null;state.awaitQuestion=false;state.hint=false;state.topic=base.id;state.turns=0;state.askedInTopic=0;showLearnerFeedback(null);
  state.allowed=accessibleLessons(storage,conversation.id);state.profile.hasNumbers=state.allowed.includes(3);state.cursor=Math.max(0,state.allowed.indexOf(conversation.id));$('lesson-select').value=String(conversation.id);
  const routes={1:'panda-lesson1.html',2:'hsk1-second-v203.html',3:'hsk1-third-v212.html',4:'hsk1-fourth-v214.html',5:'hsk1-fifth-v227.html',6:'hsk1-family-v231.html',7:'hsk1-weather-v231.html'};$('back-link').href='./'+routes[conversation.id];
- $('allowed-topics').textContent='Доступны текущий и пройденные уроки: '+state.allowed.map(n=>CONVERSATIONS.find(c=>c.id===n).theme).join(', ')+'.';
+ $('allowed-topics').textContent='Доступны текущий и пройденные уроки: '+state.allowed.map(n=>CONVERSATIONS.find(c=>c.id===n).theme).join(', ')+'. Панда задаёт вопросы из этих уроков, использует их голосовые записи и разбирает слова.';
  $('words').replaceChildren();for(const w of [...(base.vocabulary||base.newWords||[]),...(base.examples||[])]){const p=document.createElement('p');p.textContent=[w.hanzi,w.pinyin,w.ru].join(' — ');$('words').append(p)}
  $('knowledge-answer').textContent='';$('message').value='';note('');
  if(state.mode==='nonstop')askNext();else say(conversation.lines[0],false);
 }
 function askNext(){
  cancelFollowup();stopRecognition();stopAudio();state.awaitQuestion=false;
- const selected=nextTopicPrompt(lesson(),state.questions,new Date(),state.profile);const p=selected?{line:selected}:choosePracticePrompt(CONVERSATIONS,state.allowed,state.questions,new Date(),conversation.id);if(!p){note('Для доступных уроков пока нет проверенных вопросов.');return}
- state.prompt=p;state.topic=p.line.lesson;state.discussed.add(p.line.lesson);state.questions.push(p.line.hanzi);if(state.questions.length>16)state.questions.shift();
- say(p.line);note('Ответь или задай свой вопрос по изученному материалу.');
+ const topics=state.allowed.length?state.allowed:[conversation.id];
+ if(state.askedInTopic>=3&&topics.length>1){state.cursor=(state.cursor+1)%topics.length;state.askedInTopic=0;}
+ const selectedTopic=topics[state.cursor%topics.length];
+ const selected=pickCoursePrompt(selectedTopic,curriculum,state.questions,new Date(),state.profile);
+ const p=selected?{line:selected}:choosePracticePrompt(CONVERSATIONS,state.allowed,state.questions,new Date(),selectedTopic);
+ if(!p){note('Для доступных уроков пока нет проверенных вопросов.');return}
+ state.prompt=p;state.topic=p.line.lesson;state.discussed.add(p.line.lesson);state.questions.push(p.line.hanzi);state.askedInTopic++;if(state.questions.length>50)state.questions.shift();
+ say(p.line);note('Урок '+state.topic+'. Ответь или сам спроси Панду по пройденному материалу.');
 }
 function setMode(mode){if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 function submit(raw){
@@ -112,11 +118,18 @@ function submit(raw){
   if(result.kind==='empty'){note(result.message);return}
   if(result.kind==='correction'){state.topic=result.lesson||lesson();pose('retry');note(result.message);render();return}
   if(result.reply){
-   state.turns++;state.topic=result.lesson||lesson();state.discussed.add(state.topic);if(state.confidence===null||state.confidence>=.65)remember(result.spoken);
+   state.turns++;state.topic=result.lesson||lesson();state.discussed.add(state.topic);if(state.allowed.includes(state.topic))state.cursor=state.allowed.indexOf(state.topic);if(state.confidence===null||state.confidence>=.65)remember(result.spoken);
    state.awaitQuestion=true;if(result.kind==='answer')happy();say(result.reply,true,result.explanation?{explanation:result.explanation}:null);
    if(result.explanation){const row=document.createElement('p');row.textContent=result.explanation;$('learner-feedback').replaceChildren(row);$('learner-feedback').hidden=false;document.documentElement.dataset.feedback='true';}
    let followup=result.followup;
-   if(followup)followup=nextTopicPrompt(state.topic,state.questions.concat(input),new Date(),state.profile)||followup;
+   if(followup){
+     if(state.allowed.length>1&&state.turns%3===0){
+      const currentIndex=state.allowed.indexOf(state.topic);
+      state.cursor=(currentIndex+1)%state.allowed.length;state.askedInTopic=0;
+     }
+     const selected=state.allowed[state.cursor%state.allowed.length]||state.topic;
+     followup=pickCoursePrompt(selected,curriculum,state.questions.concat(input),new Date(),state.profile)||followup;
+    }
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
    note(followup?'Панда продолжит вопросом по этой теме. Можешь ответить или спросить раньше.':result.message||'Продолжай или нажми «Ещё вопрос».');
    if(state.confidence!==null&&state.confidence<.65){cancelFollowup();note('Распознано неуверенно. Проверь текст в истории и повтори при необходимости.');}return;
