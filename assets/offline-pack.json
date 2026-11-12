@@ -1,5 +1,5 @@
 {
-  "version": 291,
+  "version": 292,
   "bytes": 55532426,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2712,6 +2712,14 @@
     "./hsk1-weather-v231.html?v=291",
     "./hsk1-family-v231.html?v=291",
     "./hsk1-fifth-v227.html?v=291",
-    "./hsk1-second-v203.html?v=291"
+    "./hsk1-second-v203.html?v=291",
+    "./assets/panda-mic-v236.js?v=292",
+    "./assets/hsk1-second-v203.js?v=292",
+    "./assets/hsk1-fifth-v227.js?v=292",
+    "./assets/panda-go-companion-v231.js?v=292",
+    "./hsk1-second-v203.html?v=292",
+    "./hsk1-fifth-v227.html?v=292",
+    "./hsk1-family-v231.html?v=292",
+    "./hsk1-weather-v231.html?v=292"
   ]
 }
