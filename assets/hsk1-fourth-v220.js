@@ -479,14 +479,24 @@ function updateDialogueButton(){
 }
 function playConversation(){
  if(state.step!==9)return;
- const d=DIALOG[state.ix[9]];if(!d)return;
+ // The dialogue card always shows DIALOG[0], even when the exercise is complete.
+ // State ix[9] is a completion counter, NOT the index of the visible dialogue.
+ // A finished user must still be able to replay both voices after returning here.
+ const d=DIALOG[0];
+ if(!d){message('Диалог пока недоступен.','error');return}
  const left=stage.querySelector('.from-f'),right=stage.querySelector('.from-m');
  left?.classList.add('active');right?.classList.remove('active');message('');
  play(d.female,ok=>{
   if(!ok){left?.classList.remove('active');dialoguePlayback='idle';updateDialogueButton();return}
   left?.classList.remove('active');right?.classList.add('active');
-  play(d.male,()=>{
+  if(!fileFor(d.male,'male')){
+   message('Мужская реплика временно недоступна.','error');
+   dialoguePlayback='idle';updateDialogueButton();return;
+  }
+  dialoguePlayback='playing';updateDialogueButton();
+  play(d.male,maleOK=>{
    right?.classList.remove('active');dialoguePlayback='idle';updateDialogueButton();
+   if(!maleOK)message('Не удалось воспроизвести мужскую реплику. Нажми «Слушать» ещё раз.','error');
   },'male');
   dialoguePlayback='playing';updateDialogueButton();
  });
