@@ -51,11 +51,21 @@
   "马":'./assets/lesson1-xiaoxiao-v260/ma3.mp3',
   "骂":'./assets/lesson1-xiaoxiao-v260/ma4.mp3'
  });
+ const MALE_HELLO_OPTIONS=Object.freeze({
+  natural:'./assets/hsk1-voices-v156/ca2a36b2097b5a6321a2.mp3?v=300',
+  yunxi:'./assets/dialogue-voices/l1-02-b.mp3?v=300',
+  yunjian:'./assets/dialogue-voices-v73/l1-02-b.mp3?v=300'
+ });
+ const MALE_HELLO_KEY='pg-hsk1-l1-male-v300';
+ let maleVoiceChoice='natural';
+ try{maleVoiceChoice=localStorage.getItem(MALE_HELLO_KEY)||'natural'}catch{}
+ if(!Object.prototype.hasOwnProperty.call(MALE_HELLO_OPTIONS,maleVoiceChoice))maleVoiceChoice='natural';
  const clipCandidates=(key,role='female')=>{
   const normalized=String(key).replace(/[。！?!？，,\s]/g,'');
   if(role==='male'){
-   // Reuse the existing natural Mandarin male greeting from the approved dialogue voice bank; never pitch-shift.
-   if(normalized==='你好')return ['./assets/dialogue-voices/l1-02-b.mp3'];
+   // Start with the unprocessed original; let learners compare three existing real male clips.
+   // Never pitch-shift (that was responsible for the monster-like voice in v297).
+   if(normalized==='你好')return [MALE_HELLO_OPTIONS[maleVoiceChoice]];
    const male=window.PANDA_HSK1_VOICES?.male||{};
    const clip=male[key]||Object.entries(male).find(([k])=>k.replace(/[。！?!？，,\s]/g,'')===normalized)?.[1];
    return clip?[clip]:[];
@@ -114,7 +124,7 @@
  };
  const dialogue=()=>{
   const lines=[['👩','你好！','nǐ hǎo','Привет!'],['👨','你好！','nǐ hǎo','Привет!'],['👩','我是学生。','wǒ shì xuésheng','Я студент.']];
-  return `<div class="sheet"><span class="sheet-label">СЛУШАЙ ЗНАКОМЫЕ СЛОВА</span><div style="margin-top:12px">${lines.map(([em,hz,py,ru])=>`<div class="dialogue-line"><span class="avatar">${em==='👨'?'<img class="pg-dialogue-man" src="./assets/lesson4-dialog-v282/man.webp" alt="Мужчина отвечает" loading="lazy">':em==='👩'?'<img class="pg-dialogue-woman" src="./assets/lesson4-dialog-v282/woman.webp" alt="Девушка говорит" loading="lazy">':em}</span><div class="bubble">${hz}<small>${py} · ${ru}</small><button class="sound-sm" type="button" data-say="${hz}" data-role="${em==='👨'?'male':'female'}" ${getClip(hz,em==='👨'?'male':'female')?'':'disabled'}>▶ Слушать</button></div></div>`).join('')}</div><p id="audio-error" class="audio-error" role="status"></p></div>`;
+  return `<div class="sheet"><span class="sheet-label">СЛУШАЙ ЗНАКОМЫЕ СЛОВА</span><div style="margin-top:12px">${lines.map(([em,hz,py,ru])=>`<div class="dialogue-line"><span class="avatar">${em==='👨'?'<img class="pg-dialogue-man" src="./assets/lesson4-dialog-v282/man.webp" alt="Мужчина отвечает" loading="lazy">':em==='👩'?'<img class="pg-dialogue-woman" src="./assets/lesson4-dialog-v282/woman.webp" alt="Девушка говорит" loading="lazy">':em}</span><div class="bubble">${hz}<small>${py} · ${ru}</small><button class="sound-sm" type="button" data-say="${hz}" data-role="${em==='👨'?'male':'female'}" ${getClip(hz,em==='👨'?'male':'female')?'':'disabled'}>▶ Слушать</button></div></div>`).join('')}</div><details class="pg-male-voice-settings"><summary>🎧 Выбрать мужской голос</summary><div class="pg-male-voice-choices">${[['natural','1'],['yunxi','2'],['yunjian','3']].map(([id,label])=>`<button type="button" data-male-voice="${id}" aria-pressed="${maleVoiceChoice===id}">Голос ${label}</button>`).join('')}</div><p>Нажми вариант, чтобы услышать «你好！». Выбор сохранится.</p></details><p id="audio-error" class="audio-error" role="status"></p></div>`;
  };
  const views=[
   ()=>intro('Знакомство · 1/4','Что такое иероглиф?','')+`<div class="sheet pg-hanzi-intro"><strong class="big-hanzi" lang="zh-Hans">好</strong><p class="pinyin">hǎo</p><p class="translation">Хороший · Хорошо</p><div class="pg-intro-equation" aria-label="女 плюс 子 — компоненты иероглифа 好">
@@ -293,6 +303,15 @@
   const btn=e.target.closest('button');if(!btn||btn.disabled)return;
   if(btn.hasAttribute('data-radical')){radical=Number(btn.dataset.radical);render();return}
   if(btn.id==='stroke-restart'){const svg=area.querySelector('.writing-animate');if(svg)svg.replaceWith(svg.cloneNode(true));return}
+  if(btn.hasAttribute('data-male-voice')){
+   const choice=btn.dataset.maleVoice;
+   if(!Object.prototype.hasOwnProperty.call(MALE_HELLO_OPTIONS,choice))return;
+   maleVoiceChoice=choice;
+   try{localStorage.setItem(MALE_HELLO_KEY,choice)}catch{}
+   area.querySelectorAll('[data-male-voice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.maleVoice===choice)));
+   play([MALE_HELLO_OPTIONS[choice]],'你好！');
+   return;
+  }
   if(btn.hasAttribute('data-say')){play(clipCandidates(btn.dataset.say,btn.dataset.role||'female'),btn.dataset.say);return}
   if(btn.hasAttribute('data-tone-play')){play(clipCandidates(btn.dataset.tonePlay),btn.dataset.tonePlay,'tone');return}
   if(btn.hasAttribute('data-listen-answer')){listenSelected=btn.dataset.listenAnswer;if(!listenTarget){listenPassed=true;render();return}listenPassed=listenSelected===listenTarget;render();if(!listenPassed)showMessage('Послушай ещё раз.');return}
