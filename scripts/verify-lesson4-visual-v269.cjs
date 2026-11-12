@@ -16,7 +16,7 @@ for(const name of ['cover','celebrate','woman','man']){
  assert(pack.files.includes('./'+p),'No offline asset '+name);
  assert(app.includes('./'+p),'Active screen does not use image '+name);
 }
-assert(html.includes('hsk1-fourth-v219.css?v=282')&&html.includes('hsk1-fourth-v220.js?v=282'),'Cache freshness');
+assert(html.includes('hsk1-fourth-v219.css?v=282')&&html.includes('hsk1-fourth-v220.js?v=293'),'Cache freshness');
 assert(css.includes('linear-gradient(180deg,#bb8af0 0%,#9a66df 50%,#8450ca 100%)'),'Next is light lavender');
 assert(css.includes('background:#fff;color:#20202a'),'Back is white with dark text');
 assert(css.includes('linear-gradient(180deg,#ff929e,#f16c83)'),'Listen is light coral');

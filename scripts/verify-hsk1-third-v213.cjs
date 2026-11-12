@@ -11,7 +11,7 @@ const html=fs.readFileSync('hsk1-third-v212.html','utf8'),
  map=fs.readFileSync('hsk1-map.html','utf8'),
  native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8'),
  xiaoxiao=fs.readFileSync('assets/lesson3-xiaoxiao-v263.js','utf8');
-assert(html.includes('hsk1-third-v213.js?v=282'));
+assert(html.includes('hsk1-third-v213.js?v=293'));
 assert(html.includes('hsk1-third-v213.css?v=237'));
 assert(html.includes('lesson3-xiaoxiao-v263.js?v=263'),'Xiaoxiao map loaded before lesson 3');
 assert(!html.includes('hsk1-numbers-audio-map-v250.js'),'No old stitched audio map');

@@ -1,5 +1,5 @@
 {
-  "version": 292,
+  "version": 293,
   "bytes": 55532426,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2720,6 +2720,10 @@
     "./hsk1-second-v203.html?v=292",
     "./hsk1-fifth-v227.html?v=292",
     "./hsk1-family-v231.html?v=292",
-    "./hsk1-weather-v231.html?v=292"
+    "./hsk1-weather-v231.html?v=292",
+    "./assets/hsk1-third-v213.js?v=293",
+    "./assets/hsk1-fourth-v220.js?v=293",
+    "./hsk1-third-v212.html?v=293",
+    "./hsk1-fourth-v214.html?v=293"
   ]
 }

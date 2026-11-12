@@ -23,7 +23,7 @@ for(const who of ['man','woman']){
  assert(offline.files.includes('./'+p),'Portrait not indexed offline '+who);
 }
 assert(css.includes('.pg4-people img{height:149px'),'Portrait size not updated');
-assert(page.includes('hsk1-fourth-v220.js?v=282')&&page.includes('hsk1-fourth-v219.css?v=282'),'Cache version missing');
+assert(page.includes('hsk1-fourth-v220.js?v=293')&&page.includes('hsk1-fourth-v219.css?v=282'),'Cache version missing');
 assert(!js.includes('Все 25 слов и фраз записаны голосом Xiaoxiao.'));
 assert(!js.includes('Цельная запись 今天是星期五。 озвучена тем же голосом Xiaoxiao.'));
 assert(!fs.readFileSync('hsk1-third-v212.html','utf8').includes('Озвучка 0–100: Xiaoxiao'));
