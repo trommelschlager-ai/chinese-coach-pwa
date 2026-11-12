@@ -17,18 +17,18 @@ assert(/listenReady=true;\s*stage\.querySelectorAll\('\[data-listen\]'\)\.forEac
 assert(visual.includes("lesson===7&&Object.prototype.hasOwnProperty.call(weatherIcon,word)"),'Replace stale weather sprites');
 assert(visual.includes("if(lesson!==7&&step>0"),'No old coach scene in Lesson 7');
 const mic=read('assets/panda-mic-v236.js');
-assert(mic.includes('2*Math.PI*85')&&mic.includes('Math.min(4,'),'Gently remove rumble while capping gain');
+assert(mic.includes('2*Math.PI*85')&&mic.includes('Math.min(1.35,'),'Gently remove rumble while capping gain');
 const audio=fs.readFileSync('assets/lesson5-male-clean-v290.mp3');
 assert(audio.length>8000,'No cleaned male speech present');
 assert.equal(audio.subarray(0,3).toString('ascii'),'ID3','Invalid MP3 header');
 assert(l5.includes("hz==='今天几月几号？'?'./assets/lesson5-male-clean-v290.mp3'"),'Noisy phrase should use new recording');
 for(const [html,token] of [
- ['hsk1-second-v203.html','hsk1-second-v203.js?v=291'],
- ['hsk1-fifth-v227.html','hsk1-fifth-v227.js?v=291'],
- ['hsk1-family-v231.html','panda-go-companion-v231.js?v=291'],
- ['hsk1-weather-v231.html','panda-go-companion-v231.js?v=291']
+ ['hsk1-second-v203.html','hsk1-second-v203.js?v=292'],
+ ['hsk1-fifth-v227.html','hsk1-fifth-v227.js?v=292'],
+ ['hsk1-family-v231.html','panda-go-companion-v231.js?v=292'],
+ ['hsk1-weather-v231.html','panda-go-companion-v231.js?v=292']
 ])assert(read(html).includes(token),html+' has outdated cached script');
 const pack=JSON.parse(read('assets/offline-pack.json'));
 assert(pack.version>=290&&pack.files.includes('./assets/lesson5-male-clean-v290.mp3'));
-assert(read('sw.js').includes('v291-replay-male-weather'),'Service worker must refresh');
+assert(read('sw.js').includes('v292-mic-raw-comparison'),'Service worker must refresh');
 console.log('PASS Panda Go v290: replayable exercises, audio answer gating, weather art, mic safeguards and repaired male voice.');

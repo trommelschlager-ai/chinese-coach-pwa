@@ -85,7 +85,7 @@ for(const html of [weatherHtml,dateHtml]){
  assert(html.indexOf('panda-native-recovered-v246.js')<html.indexOf('panda-owner-lessons5-7-native-v221.js'),'Capture original before override');
 }
 assert(/panda-go-companion-v231\.js\?v=\d+/.test(weatherHtml),'Latest weather companion script must load');
-assert(dateHtml.includes('hsk1-fifth-v227.js?v=291'));
+assert(dateHtml.includes('hsk1-fifth-v227.js?v=292'));
 assert(dateHtml.includes('lesson5-xiaoxiao-v272.js?v=272'));
 
 assert(!read('assets/lesson-audio-source.js').includes('Звук v246'),'Voice/version debug captions must not be shown to learners');
