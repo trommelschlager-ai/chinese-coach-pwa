@@ -147,7 +147,7 @@ export function extensionStatement(input,allowed=[1],context=null){
  }
  if(allowed.includes(2)){
   m=/^(是|不是)(他|她|他们)(是)(老师|学生)$/.exec(s);
-  if(m)return {known:true,hanzi:input,pinyin:(m[1]==='是'?'Shì':'Bú shì')+', '+(m[2]==='他们'?'tāmen':'tā')+' shì '+(m[4]==='老师'?'lǎoshī':'xuésheng')+'.',translation:(m[1]==='是'?'Да. ':'Нет. ')+(m[2]==='他'?'Он':m[2]==='她'?'Она':'Они')+' '+(m[1]==='不是'?'не ':'')+(m[4]==='老师'?'учитель.':'студент.'),topic:2};
+  if(m)return {known:true,hanzi:input,pinyin:(m[1]==='是'?'Shì':'Bú shì')+', '+(m[2]==='他们'?'tāmen':'tā')+' shì '+(m[4]==='老师'?'lǎoshī':'xuésheng')+'.',translation:(m[1]==='是'?'Да, ':'Нет, ')+(m[2]==='他'?'он':m[2]==='她'?'она':'они')+' '+(m[4]==='老师'?(m[2]==='他们'?'учителя.':'учитель.'):(m[2]==='她'?'студентка.':m[2]==='他们'?'студенты.':'студент.')),topic:2};
  }
  return null;
 }

@@ -204,7 +204,7 @@ export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],da
   const reply=q.reply(date),followup=turn%2===0?nextTopicPrompt(q.topic,[raw],date,profile):null;
   return {kind:'question',spoken,lesson:q.topic,reply,followup};
  }
- if(allowed.includes(7)&&(/(?:погод|прогноз)/i.test(raw)||/(真实|实际|现在|北京|莫斯科).*(天气|下雨|冷|热)/.test(s)))return {kind:'clarify',spoken,message:'Настоящий прогноз я не получаю. Могу поддержать учебный разговор о погоде: 今天天气怎么样？'};
+ if(!spoken.known&&allowed.includes(7)&&(/(?:погод|прогноз)/i.test(raw)||/(真实|实际|现在|北京|莫斯科).*(天气|下雨|冷|热)/.test(s)))return {kind:'clarify',spoken,message:'Настоящий прогноз я не получаю. Могу поддержать учебный разговор о погоде: 今天天气怎么样？'};
  const old=answerNonStop(raw,allowed,prompt,curriculum,date);
  if(old.kind==='question')return {...old,spoken:spoken.known?spoken:old.spoken,followup:s==='谢谢'?null:turn%3===2?nextTopicPrompt(topic,[],date,profile):null};
  if(!spoken.known){return {kind:'clarify',spoken,message:spoken.words?.length?'Знакомые слова разобраны ниже. Уточни смысл или попробуй предложение из подсказки.':'Точный смысл пока не подтверждён. Попробуй фразу из пройденного урока или уточни вопрос.'}}
