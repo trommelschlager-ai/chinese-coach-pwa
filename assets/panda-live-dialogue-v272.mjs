@@ -215,12 +215,13 @@ export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],da
  if(spoken.family?.absent)futureProfile.family[spoken.family.absent]=false;
  const contextual=active===6?rememberedFamilyFollowup(futureProfile,allowed,[prompt?.hanzi||'']):null;
  const followup=contextual||nextTopicPrompt(active,[],date,futureProfile);
- let reply=answered&&prompt?.intent==='extension'?line('很好！','Hěn hǎo!','Отлично!'):line('谢谢！','Xièxie!','Спасибо!');
- if(active===2&&spoken.fact?.role)reply=line(spoken.fact.role==='老师'&&!spoken.fact.negative?'我也是老师。':'我是老师。',spoken.fact.role==='老师'&&!spoken.fact.negative?'Wǒ yě shì lǎoshī.':'Wǒ shì lǎoshī.',spoken.fact.role==='老师'&&!spoken.fact.negative?'Я тоже учитель.':'Я учитель.',ROLE);
- if(active===3&&spoken.fact?.age)reply=line('我三岁。','Wǒ sān suì.','Мне три года.',ROLE);
- if(active===4&&answered)reply=calendarReply(prompt?.time||'今天','weekday',date);
- if(active===5&&answered)reply=calendarReply(prompt?.time||'今天','date',date);
- if(active===6&&spoken.family)reply=line(normalize(raw).replace(/我/g,'你')+'。',(spoken.pinyin||'').replace(/Wǒ/g,'Nǐ').replace(/wǒ/g,'nǐ'),'Ты сообщил: '+spoken.translation.replace('У меня','У тебя'),'Повторяем смысл твоего ответа.');
- if(active===7&&spoken.fact?.weather)reply=line(normalize(raw)+'。',spoken.pinyin,'Ты сообщил: '+spoken.translation,'Повторяем твоё описание погоды, а не настоящий прогноз.');
+ const isExtensionAnswer=answered&&prompt?.intent==='extension';
+ let reply=isExtensionAnswer?line('很好！','Hěn hǎo!','Отлично!'):line('谢谢！','Xièxie!','Спасибо!');
+ if(!isExtensionAnswer&&active===2&&spoken.fact?.role)reply=line(spoken.fact.role==='老师'&&!spoken.fact.negative?'我也是老师。':'我是老师。',spoken.fact.role==='老师'&&!spoken.fact.negative?'Wǒ yě shì lǎoshī.':'Wǒ shì lǎoshī.',spoken.fact.role==='老师'&&!spoken.fact.negative?'Я тоже учитель.':'Я учитель.',ROLE);
+ if(!isExtensionAnswer&&active===3&&spoken.fact?.age)reply=line('我三岁。','Wǒ sān suì.','Мне три года.',ROLE);
+ if(!isExtensionAnswer&&active===4&&answered)reply=calendarReply(prompt?.time||'今天','weekday',date);
+ if(!isExtensionAnswer&&active===5&&answered)reply=calendarReply(prompt?.time||'今天','date',date);
+ if(!isExtensionAnswer&&active===6&&spoken.family)reply=line(normalize(raw).replace(/我/g,'你')+'。',(spoken.pinyin||'').replace(/Wǒ/g,'Nǐ').replace(/wǒ/g,'nǐ'),'Ты сообщил: '+spoken.translation.replace('У меня','У тебя'),'Повторяем смысл твоего ответа.');
+ if(!isExtensionAnswer&&active===7&&spoken.fact?.weather)reply=line(normalize(raw)+'。',spoken.pinyin,'Ты сообщил: '+spoken.translation,'Повторяем твоё описание погоды, а не настоящий прогноз.');
  return {kind:answered?'answer':'statement',spoken,lesson:active,reply,followup:(answered||turn%2===0)?followup:null,message:answered?'Ответ по смыслу подходит.':offQuestion?'Поняла твою фразу, но это не ответ на предыдущий вопрос. Можно продолжить тему семьи.':'Я поняла твою фразу.'};
 }
