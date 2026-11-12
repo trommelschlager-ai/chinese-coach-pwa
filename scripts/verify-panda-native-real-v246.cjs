@@ -56,7 +56,8 @@ for(const lesson of [5,7]){
     assert(file.startsWith('./assets/lesson5-xiaoxiao-v272/')||file.startsWith('./assets/lesson4-xiaoxiao-v265/'),
       'Lesson 5 must use the new Xiaoxiao voice: '+hz+' '+file);
    }
-   assert(fs.existsSync(file.startsWith('./')?file.slice(2):file),'Lesson 5 media missing: '+file);
+   if(file.startsWith('data:audio/mpeg;base64,')) assert(file.length>1000,'Embedded male narration is empty: '+hz);
+   else assert(fs.existsSync(file.startsWith('./')?file.slice(2):file),'Lesson 5 media missing: '+hz);
   }else{
    const clips=weatherFn(hz);
    assert(clips.length===1,'All weather playback must use ONE complete original phrase: '+hz);
