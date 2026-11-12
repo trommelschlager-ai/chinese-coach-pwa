@@ -43,7 +43,7 @@ for(const zh of phrases)assert.equal(fn(zh)[0],w.PandaLesson7XiaoxiaoV277.lookup
 assert.equal(fn('未知词').length,0,'Old voice must not appear');
 assert(html.indexOf('lesson7-xiaoxiao-v277.js?v=278')>=0);
 assert(html.indexOf('lesson7-xiaoxiao-v277.js?v=278')<html.indexOf((html.match(/panda-go-companion-v231\.js\?v=\d+/)||[])[0]));
-assert(source.includes('a.playbackRate=(isFamily||newWeather)?1:0.85'));
+assert(source.includes("a.playbackRate=(isFamily||newWeather||role==='male')?1:0.85"));
 assert(source.includes('if(!isFamily && !newWeather &&'));
 const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
 assert(offline.version>=278);

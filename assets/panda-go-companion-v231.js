@@ -145,7 +145,7 @@ function play(hz,role='female',onComplete=null){
   const clip=parts[index++];
   if(!clip){audio=null;button?.removeAttribute('aria-busy');onComplete?.(true);return}
   try{
-   const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;const newWeather=!isFamily&&clip.includes('lesson7-xiaoxiao-v277/')||!isFamily&&clip.includes('lesson4-xiaoxiao-v265/');a.playbackRate=(isFamily||newWeather)?1:0.85; // original tempo for Xiaoxiao
+   const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;const newWeather=!isFamily&&clip.includes('lesson7-xiaoxiao-v277/')||!isFamily&&clip.includes('lesson4-xiaoxiao-v265/');a.playbackRate=(isFamily||newWeather||role==='male')?1:0.85; // preserve original tempo for Xiaoxiao and male actor
    if(!isFamily && !newWeather && !clip.includes('panda-native-clean-v249/') && (clip.startsWith('data:audio/')||window.PandaLessonAudioV240?.isPriority?.(hz)))window.PandaLessonAudioV240?.improve?.(a,'weather',hz);
    a.onended=()=>{if(token!==serial)return;playNext()};
    a.onerror=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy');say('Аудио не загрузилось. Попробуй снова.','bad');onComplete?.(false)};

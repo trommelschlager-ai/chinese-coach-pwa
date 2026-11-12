@@ -122,7 +122,7 @@ function monthRule(){return card('<h2 class="center">Месяц = число + �
  '<p class="center">Достаточно запомнить числа от 1 до 12 и слово 月 (yuè) — «месяц».</p>')+
  card('<p>Например: <b>三月</b> — март; <b>十月</b> — октябрь; <b>十二月</b> — декабрь.</p>');}
 function dateRule(){return card('<h2 class="center">年 → 月 → 日 / 号</h2><div class="formula"><span class="part">年</span><b>›</b><span class="part">月</span><b>›</b><span class="part">日</span></div>'+
- example('二零二六年十一月六日','èr líng èr liù nián shíyī yuè liù rì','6 ноября 2026 года')+
+ '<p class="small center">Учебный пример даты (не сегодняшнее число):</p>'+example('二零二六年十一月六日','èr líng èr liù nián shíyī yuè liù rì','6 ноября 2026 года')+
  '<div class="rule-card">Год в китайском читают по цифрам. В записи полных дат сначала идёт год, затем месяц и день.</div>');}
 function sounds(){return card('<h2>Не спутай похожие слова</h2><div class="grid two">'+
  [['四月','sì yuè','апрель'],['十月','shí yuè','октябрь'],['十一月','shíyī yuè','ноябрь'],['十二月',"shí'èr yuè",'декабрь']].map(word).join('')+'</div>')+
@@ -130,7 +130,7 @@ function sounds(){return card('<h2>Не спутай похожие слова</
  card('<p>В <b>月 yuè</b> — четвёртый тон. Слушай также <b>十 shí</b> (второй тон) и <b>四 sì</b> (четвёртый тон).</p>');}
 function conversation(){return card('<h2>Послушай разговор</h2><div class="dialogue">'+topic.dialogue.map(([who,hz,py,ru])=>
  '<div class="bubble"><strong lang="zh-Hans">'+esc(hz)+'</strong><small>'+esc(py)+'</small><span class="ru">'+esc(ru)+'</span>'+audioButton(hz,who==='А'?'male':'female')+'</div>').join('')+'</div>')+
- card('<p class="center">Попробуй самостоятельно ответить на вопрос: <b>今天几月几号？</b></p>');}
+ card('<p class="small center">Дата в диалоге — учебный пример. Попробуй самостоятельно назвать настоящее сегодняшнее число: <b>今天几月几号？</b></p>');}
 function listening(){
  const i=state.listen,done=i>=questions.length,q=questions[Math.min(i,questions.length-1)];
  return card('<h2>Слушай и выбирай</h2><p class="center small">Вопрос '+Math.min(i+1,questions.length)+' из '+questions.length+'</p>'+
