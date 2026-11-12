@@ -2420,6 +2420,10 @@
     "./panda-voice-pilot.html?v=264",
     "./panda-voice-pilot.html?v=265",
     "./panda-voice-pilot.html?v=266",
-    "./start-chinese.html"
+    "./start-chinese.html",
+    "./assets/hsk1-fourth-v219.css?v=266",
+    "./assets/hsk1-fourth-v220.js?v=266",
+    "./assets/lesson4-dialog-v266/woman.svg",
+    "./assets/lesson4-dialog-v266/man.svg"
   ]
 }
