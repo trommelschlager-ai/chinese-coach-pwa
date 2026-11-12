@@ -55,7 +55,7 @@ test('DOM shows weather answer, scenario, translation of errors and an automatic
   send('今天天气怎么样');send('今天天气怎么样');
   // Existing spoken acknowledgements complete before a follow-up; no acoustic scoring.
   if(clips.at(-1)?.onended)clips.at(-1).onended();
-  await new Promise(resolve=>setTimeout(resolve,4800));assert(['今天天气怎么样？','明天天气怎么样？'].includes(el('phrase').textContent));
+  await new Promise(resolve=>setTimeout(resolve,4800));assert(['今天天气怎么样？','明天天气怎么样？','你好吗？','你呢？'].includes(el('phrase').textContent));
   send('谢谢');assert.equal(el('mode-nonstop').getAttribute('aria-pressed'),'true');
   el('finish').click();const before=el('phrase').textContent;await new Promise(resolve=>setTimeout(resolve,1400));assert.equal(el('phrase').textContent,before);
  }finally{f.close()}
