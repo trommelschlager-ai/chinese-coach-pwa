@@ -1,0 +1,47 @@
+name: Install Panda Go lesson 5 Xiaoxiao voice v272
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/lesson5-audio-import-v272.zip'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: panda-go-lesson5-xiaoxiao-v272
+  cancel-in-progress: false
+jobs:
+  install-lesson5:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unpack approved Xiaoxiao phrases
+        run: |
+          set -euo pipefail
+          unzip -oq assets/lesson5-audio-import-v272.zip -d .
+      - name: Patch active lesson 5 and verify 17 clips
+        run: |
+          node scripts/install-lesson5-xiaoxiao-v272.cjs
+          node scripts/verify-hsk1-lesson5-xiaoxiao-v272.cjs
+      - name: Commit verified recording and cache updates
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/lesson5-xiaoxiao-v272 assets/lesson5-xiaoxiao-v272.js
+          git add assets/hsk1-fifth-v227.js hsk1-fifth-v227.html assets/offline-pack.json sw.js scripts/verify-hsk1-fifth-v227.cjs
+          if git diff --cached --quiet; then
+            echo 'Lesson 5 already installed'
+            exit 0
+          fi
+          git commit -m 'audio: apply 17 Xiaoxiao recordings throughout lesson 5 v272'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
