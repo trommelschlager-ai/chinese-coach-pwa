@@ -16,7 +16,7 @@ for(const [hz,n] of Object.entries(map)){
  assert(offline.files.includes('./'+path),'Missing offline '+hz);
  assert(visual.includes("'"+hz+"':'"+n+"'"),'Missing mapping '+hz);
 }
-assert(html.includes('lesson-visuals-v233.js?v=280')&&html.includes('panda-go-approved-lessons-v231.css?v=280'));
+assert(html.includes('lesson-visuals-v233.js?v=289')&&html.includes('panda-go-approved-lessons-v231.css?v=289'));
 assert(css.includes('.word-art.pg6-word-photo'));
 const dom=new JSDOM(html,{url:'https://panda.test/hsk1-family-v231.html',runScripts:'outside-only'});
 const w=dom.window,d=w.document;
