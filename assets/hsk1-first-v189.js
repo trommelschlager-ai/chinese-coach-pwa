@@ -54,8 +54,8 @@
  const clipCandidates=(key,role='female')=>{
   const normalized=String(key).replace(/[。！?!？，,\s]/g,'');
   if(role==='male'){
-   // Dedicated lower-register rendition of the original male narrator's 你好！
-   if(normalized==='你好')return ['./assets/lesson1-hello-male-v297.mp3'];
+   // Reuse the existing natural Mandarin male greeting from the approved dialogue voice bank; never pitch-shift.
+   if(normalized==='你好')return ['./assets/dialogue-voices/l1-02-b.mp3'];
    const male=window.PANDA_HSK1_VOICES?.male||{};
    const clip=male[key]||Object.entries(male).find(([k])=>k.replace(/[。！?!？，,\s]/g,'')===normalized)?.[1];
    return clip?[clip]:[];
