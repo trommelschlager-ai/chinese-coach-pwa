@@ -33,7 +33,8 @@ assert(html.includes('hanzi-writer.min.js')&&html.includes('hanzi-writing-v283.j
 const code=fs.readFileSync('assets/hanzi-writing-v283.js','utf8');
 new Script(code);
 assert(code.includes('HanziWriter.create')&&code.includes('onCorrectStroke')&&code.includes('onComplete'));
-assert(code.includes('localStorage')&&code.includes('touch'));
+assert(code.includes('localStorage')&&code.includes('HanziWriter.create'));
+assert(fs.readFileSync('assets/hanzi-writing-v283.css','utf8').includes('touch-action:none'));
 const map=fs.readFileSync('hsk1-map.html','utf8');
 assert(map.includes('hanzi-writing.html?lesson=1'),'No writing shortcut on the HSK map');
 console.log('PASS Panda Go writing v283: '+all.size+' offline Hanzi, 7 entry points, touch+feedback+progress');
