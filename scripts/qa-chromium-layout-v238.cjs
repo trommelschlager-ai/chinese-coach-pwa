@@ -11,7 +11,7 @@ const ROOT=process.cwd();
 const OUT='qa/v237/browser-results.json';
 const SHOTS='qa/v237/browser-screenshots';
 const LESSONS=[
- {file:'hsk1-first-v189.html',key:'pg-hsk1-v189-lesson1',steps:15},
+ {file:'hsk1-first-v189.html',key:'pg-hsk1-v189-lesson1',steps:16},
  {file:'hsk1-second-v203.html',key:'pg-hsk1-v203-pronouns',steps:12},
  {file:'hsk1-third-v212.html',key:'pg-hsk1-v213-numbers',steps:14},
  {file:'hsk1-fourth-v214.html',key:'pg-hsk1-v215-weekdays',steps:13},
@@ -100,7 +100,7 @@ async function main(){
       for(let screen=1;screen<lesson.steps;screen++){
        errors=[];
        await page.evaluate(({key,step,steps,lessonNumber})=>{
-        const seed={step,maxStep:steps-1,lessonVersion:237,done:lessonNumber===2?Array(steps).fill(false):false,viewed:{1:[],2:[]},completedSpeech:{1:[],2:[]},selected:{1:1,2:6}};
+        const seed={step,maxStep:steps-1,lessonVersion:lessonNumber===1?295:237,done:lessonNumber===2?Array(steps).fill(false):false,viewed:{1:[],2:[]},completedSpeech:{1:[],2:[]},selected:{1:1,2:6}};
         localStorage.setItem(key,JSON.stringify(seed));
        },{key:lesson.key,step:screen,steps:lesson.steps,lessonNumber:l+1});
        await page.reload({waitUntil:'networkidle2',timeout:45000});
