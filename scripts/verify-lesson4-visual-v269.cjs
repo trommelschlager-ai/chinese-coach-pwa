@@ -20,7 +20,7 @@ assert(html.includes('hsk1-fourth-v219.css?v=271')&&html.includes('hsk1-fourth-v
 assert(css.includes('linear-gradient(180deg,#bb8af0 0%,#9a66df 50%,#8450ca 100%)'),'Next is light lavender');
 assert(css.includes('background:#fff;color:#20202a'),'Back is white with dark text');
 assert(css.includes('linear-gradient(180deg,#ff929e,#f16c83)'),'Listen is light coral');
-assert(css.includes('.pg4-people img{height:132px')&&app.includes('class="pg4-people"')===false,'Portraits displayed at readable sizes');
+assert(css.includes('.pg4-people img{height:132px')&&app.includes('class="pg4-people"'),'Portraits displayed at readable sizes');
 assert(app.includes('Míngtiān xīngqī jǐ?')&&app.includes('Míngtiān xīngqī liù.'),'Correct conversational pinyin');
 assert(!app.includes('class="pg4-dialog-portrait"'),'No inline cropped portraits');
 assert(!css.includes('lesson5-lilac-sakura-v225.svg')&&!css.includes("background:url('./lesson4-reference-v216/sakura-left.webp')"),'No background decorations');
