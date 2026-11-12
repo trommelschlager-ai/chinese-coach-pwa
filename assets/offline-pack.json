@@ -1,5 +1,5 @@
 {
-  "version": 285,
+  "version": 286,
   "bytes": 55532426,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2681,6 +2681,11 @@
     "./assets/hanzi-data/很.json",
     "./assets/hanzi-data/怎.json",
     "./assets/hanzi-data/么.json",
-    "./assets/hanzi-data/样.json"
+    "./assets/hanzi-data/样.json",
+    "./assets/panda-hsk1-patterns-v285.mjs?v=285",
+    "./assets/panda-hsk1-questions-v281.mjs?v=285",
+    "./assets/panda-live-dialogue-v272.mjs?v=285",
+    "./assets/panda-live-screen-v270.mjs?v=285",
+    "./panda-voice-pilot.html?v=285"
   ]
 }

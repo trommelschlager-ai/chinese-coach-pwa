@@ -7,6 +7,7 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {chineseNumber} from './panda-live-drafts.mjs?v=live6';
 import {lookupExtendedQuestion,extensionAnswer,extensionStatement,rememberedFamilyFollowup} from './panda-hsk1-extensions-v282.mjs?v=284';
 import {checkedExtensionReply,recognizeApprovedPhrase} from './panda-hsk1-answerbank-v284.mjs?v=284';
+import {patternQuestion,patternStudentAnswer,conversationalFollowup} from './panda-hsk1-patterns-v285.mjs?v=285';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
@@ -150,6 +151,7 @@ export function analyzeLearner(raw,allowed=[1],context=null,curriculum=[],checkE
 }
 function answersPrompt(spoken,raw,prompt){
  if(!prompt)return false;const s=normalize(raw);
+ if(prompt.intent==='pattern')return !!patternStudentAnswer(raw,prompt,[prompt.lesson,...(prompt.requires||[])],new Date(prompt.calendarDate||Date.now()));
  if(prompt.intent==='extension')return prompt.accepted?.some(a=>normalize(a)===s)||false;
  if(prompt.lesson===6&&spoken.family){const f=spoken.family,n=prompt.relative||'哥哥';return !f.present.includes(f.absent)&&(f.absent===n||f.present.includes(n))}
  if(prompt.lesson===2&&normalize(prompt.hanzi||prompt.panda)==='你是老师吗'&&spoken.fact?.role)return spoken.fact.subject==='我'&&(spoken.fact.role==='老师'||spoken.fact.role==='学生'&&!spoken.fact.negative);
@@ -186,8 +188,11 @@ function lessonExplanation(raw,allowed,topic,curriculum){
 export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={}}={}){
  raw=String(raw||'').trim();const s=normalize(raw);if(!raw)return {kind:'empty',message:'Скажи или напиши фразу на китайском.'};
  let spoken=analyzeLearner(raw,allowed,prompt,curriculum);
- if(!spoken.known&&!spoken.correction){
-  spoken=checkedExtensionReply(raw,prompt,allowed,date)||spoken;
+ if(!spoken.correction){
+  // For short answers such as 是/没有, the active lesson question supplies the
+  // missing subject and meaning; otherwise the response isn't safely translatable.
+  spoken=patternStudentAnswer(raw,prompt,allowed,date)||spoken;
+  if(!spoken.known)spoken=checkedExtensionReply(raw,prompt,allowed,date)||spoken;
  }
  const explanation=lessonExplanation(raw,allowed,topic,curriculum);if(explanation)return {...explanation,spoken};
  if(spoken.family?.absent&&spoken.family.present.includes(spoken.family.absent))return {kind:'clarify',spoken:{...spoken,known:false,translation:null},message:'В одной фразе одновременно сказано «есть» и «нет» об одном родственнике. Уточни, какой вариант ты имеешь в виду.'};
@@ -204,6 +209,10 @@ export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],da
   const reply=q.reply(date),followup=turn%2===0?nextTopicPrompt(q.topic,[raw],date,profile):null;
   return {kind:'question',spoken,lesson:q.topic,reply,followup};
  }
+ // Unknown variants of a known grammatical family are handled by the shared
+ // slot engine, but old authored lesson dialogue takes precedence.
+ const patternedQuestion=patternQuestion(raw,allowed,date);
+ if(patternedQuestion)return patternedQuestion;
  if(!spoken.known&&allowed.includes(7)&&(/(?:погод|прогноз)/i.test(raw)||/(真实|实际|现在|北京|莫斯科).*(天气|下雨|冷|热)/.test(s)))return {kind:'clarify',spoken,message:'Настоящий прогноз я не получаю. Могу поддержать учебный разговор о погоде: 今天天气怎么样？'};
  const old=answerNonStop(raw,allowed,prompt,curriculum,date);
  if(old.kind==='question')return {...old,spoken:spoken.known?spoken:old.spoken,followup:s==='谢谢'?null:turn%3===2?nextTopicPrompt(topic,[],date,profile):null};
@@ -213,9 +222,10 @@ export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],da
  const active=spoken.topic||topic,answered=answersPrompt(spoken,raw,prompt);
  const futureProfile={...profile,family:{...profile.family,...Object.fromEntries((spoken.family?.present||[]).map(n=>[n,true]))}};
  if(spoken.family?.absent)futureProfile.family[spoken.family.absent]=false;
- const contextual=active===6?rememberedFamilyFollowup(futureProfile,allowed,[prompt?.hanzi||'']):null;
- const followup=contextual||nextTopicPrompt(active,[],date,futureProfile);
- const isExtensionAnswer=answered&&prompt?.intent==='extension';
+ const contextual=active===6?rememberedFamilyFollowup(futureProfile,allowed,profile.recentQuestions||[prompt?.hanzi||'']):null;
+ const templatedFollowup=conversationalFollowup(spoken,allowed,futureProfile,profile.recentQuestions||[prompt?.hanzi||''],date);
+ const followup=contextual||templatedFollowup||nextTopicPrompt(active,[],date,futureProfile);
+ const isExtensionAnswer=answered&&(prompt?.intent==='extension'||prompt?.intent==='pattern');
  let reply=isExtensionAnswer?line('很好！','Hěn hǎo!','Отлично!'):line('谢谢！','Xièxie!','Спасибо!');
  if(!isExtensionAnswer&&active===2&&spoken.fact?.role)reply=line(spoken.fact.role==='老师'&&!spoken.fact.negative?'我也是老师。':'我是老师。',spoken.fact.role==='老师'&&!spoken.fact.negative?'Wǒ yě shì lǎoshī.':'Wǒ shì lǎoshī.',spoken.fact.role==='老师'&&!spoken.fact.negative?'Я тоже учитель.':'Я учитель.',ROLE);
  if(!isExtensionAnswer&&active===3&&spoken.fact?.age)reply=line('我三岁。','Wǒ sān suì.','Мне три года.',ROLE);

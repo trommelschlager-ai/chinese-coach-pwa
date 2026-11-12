@@ -4,6 +4,7 @@ import {topicPrompts} from './panda-live-dialogue-v272.mjs?v=281';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=281';
 import {normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {extensionPrompts} from './panda-hsk1-extensions-v282.mjs?v=284';
+import {patternPrompts} from './panda-hsk1-patterns-v285.mjs?v=285';
 
 const chinese=s=>String(s??'').trim().replace(/[。！？?！\s]+/g,'');
 const question=s=>/[?？]$/.test(String(s||'').trim());
@@ -36,6 +37,9 @@ export function coursePromptBank(lesson,curriculum=[],date=new Date(),profile={}
  // Supplement existing lesson dialogue questions with verified alternate queries.
  // Questions without a full MP3 remain text-only and explicitly marked by the player.
  for(const extra of extensionPrompts(lesson,date))add(extra);
+ // New validated families combine studied words into many real questions.
+ const unlocked=profile.unlocked||[1,2,3,4,5,6,7];
+ for(const patterned of patternPrompts(lesson,date,unlocked))add(patterned);
  // Revisit every taught word that has its own complete MP3. This is a listening
  // and spoken-repetition prompt, NOT a fabricated Chinese question recording.
  for(const item of t.words||[]){
