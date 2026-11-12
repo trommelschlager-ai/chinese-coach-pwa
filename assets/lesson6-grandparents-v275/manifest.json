@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "lesson": 6,
+  "version": 275,
+  "voice": "Xiaoxiao",
+  "rate_percent": -20,
+  "source": "luvvoice.com-20261112-RpJhKr.mp3",
+  "duration_seconds": 13.944,
+  "tone_review": "pending independent native-speaker verification",
+  "clips": [
+    {
+      "index": 0,
+      "hanzi": "爷爷",
+      "pinyin": "yéye",
+      "ru": "Дедушка по отцу",
+      "file": "000.mp3",
+      "bytes": 14156,
+      "duration": 1.09,
+      "sha256": "6972e116dc480c9583a6875f78aa193732cbda5f04c2762996da86d878944704"
+    },
+    {
+      "index": 1,
+      "hanzi": "奶奶",
+      "pinyin": "nǎinai",
+      "ru": "Бабушка по отцу",
+      "file": "001.mp3",
+      "bytes": 14156,
+      "duration": 1.1,
+      "sha256": "9c70ff3e7b9818de794c52146b6725260ac5c91e51bed1d3dcf6402c99198047"
+    },
+    {
+      "index": 2,
+      "hanzi": "外公",
+      "pinyin": "wàigōng",
+      "ru": "Дедушка по матери",
+      "file": "002.mp3",
+      "bytes": 14156,
+      "duration": 1.09,
+      "sha256": "efedafc2fd7ed9f7e66c420e4b75bf30e2015693f5855860aac1203cb5e213ae"
+    },
+    {
+      "index": 3,
+      "hanzi": "外婆",
+      "pinyin": "wàipó",
+      "ru": "Бабушка по матери",
+      "file": "003.mp3",
+      "bytes": 15020,
+      "duration": 1.16,
+      "sha256": "9ef6ded480263dfe9f2b74304c1a81e24cb3cff551c4de83c1afc9d3ea4dac64"
+    },
+    {
+      "index": 4,
+      "hanzi": "这是我爷爷。",
+      "pinyin": "Zhè shì wǒ yéye.",
+      "ru": "Это мой дедушка по отцу.",
+      "file": "004.mp3",
+      "bytes": 21068,
+      "duration": 1.66,
+      "sha256": "a0f9ef983e1d7d32b8bf8715160e2eaf2fb17933bdbd8dade9bb854c45d28904"
+    },
+    {
+      "index": 5,
+      "hanzi": "这是我奶奶。",
+      "pinyin": "Zhè shì wǒ nǎinai.",
+      "ru": "Это моя бабушка по отцу.",
+      "file": "005.mp3",
+      "bytes": 21932,
+      "duration": 1.73,
+      "sha256": "6404706866319e753b1d0ed6adbc7f76d340d000a9c4fe7cbedbc5c24293bf9d"
+    },
+    {
+      "index": 6,
+      "hanzi": "这是我外公。",
+      "pinyin": "Zhè shì wǒ wàigōng.",
+      "ru": "Это мой дедушка по матери.",
+      "file": "006.mp3",
+      "bytes": 21644,
+      "duration": 1.72,
+      "sha256": "26068d82edf56354226d401145339f0545046d8bd75ec5b5bdfa4dde433eed16"
+    },
+    {
+      "index": 7,
+      "hanzi": "这是我外婆。",
+      "pinyin": "Zhè shì wǒ wàipó.",
+      "ru": "Это моя бабушка по матери.",
+      "file": "007.mp3",
+      "bytes": 21932,
+      "duration": 1.75,
+      "sha256": "37ab3a1d041e27e16867c5e320603edad86316c482e4e1049d73f032d21e2387"
+    }
+  ]
+}
