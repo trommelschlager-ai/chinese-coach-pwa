@@ -14,7 +14,8 @@ for(const [page,key,step,start,stop,replay,next,prev] of cases){
  }
  const tick=()=>new Promise(r=>setTimeout(r,5));
  if(page.includes('second')){d.querySelector('[data-audio]')?.click();await tick()}
- d.querySelector(start).click();await tick();d.querySelector(stop).click();await tick();
+ // Echo protection waits 180ms before arming microphone; allow the async capture to start.
+ d.querySelector(start).click();await new Promise(resolve=>setTimeout(resolve,240));d.querySelector(stop).click();await tick();
  const before=d.querySelector(replay);assert(before&&!before.hidden&&!before.disabled,page+' must expose the captured take');
  if(page.includes('second')){d.querySelector('[data-spoken]')?.click()}
  if(page.includes('fourth')){d.querySelector(prev).click();await tick();d.querySelector(next).click();await tick()}else{const forward=d.querySelector(next);assert(!forward.disabled,page+' speaking should allow navigation');forward.click();await tick();d.querySelector(prev).click();await tick()}
