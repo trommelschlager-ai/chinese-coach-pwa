@@ -81,7 +81,7 @@ try{
  }
 }catch{}
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let audio=null,serial=0,writer=null,media=null,stream=null,micUrl=null,chunks=[];
+let audio=null,serial=0,writer=null,media=null,stream=null,micUrl=null,chunks=[],listenReady=false;
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}}
 function done(){
  state.done=true;state.quizPassed=true;save();
@@ -112,7 +112,10 @@ function weatherClips(hz){
  return updated?[updated]:[];
 }
 function resolve(hz,role='female'){
- if(!isFamily)return weatherClips(hz)[0]||null;
+ if(!isFamily){
+  if(role==='male'){const plain=String(hz).replace(/[。！？!?]\s*$/,'');return mappings.male?.[hz]||mappings.male?.[plain]||null;}
+  return weatherClips(hz)[0]||null;
+ }
  // Preserve the original male actor: never substitute Xiaoxiao for male role A.
  if(role==='male'){const bare=String(hz).replace(/[。！？!?]\s*$/,'');return mappings.male?.[hz]||mappings.male?.[bare]||null;}
  const newlyRecorded=window.PandaLesson6GrandparentsV275?.lookup(hz)||window.PandaLesson6XiaoxiaoV274?.lookup(hz);
@@ -128,32 +131,32 @@ function resolve(hz,role='female'){
   (window.courseNaturalAudio||{})[hz]||(window.courseNaturalAudio||{})[plain]||
   (window.courseHumanAudio||{})[hz]||null;
 }
-function play(hz,role='female'){
+function play(hz,role='female',onComplete=null){
  const src=resolve(hz,role);
- if(!src){say('Для этой фразы пока нет доступной записи.','bad');return}
+ if(!src){say('Для этой фразы пока нет доступной записи.','bad');onComplete?.(false);return}
  stopAudio();const token=serial;
  const lesson6New=isFamily&&role!=='male'&&!!(window.PandaLesson6GrandparentsV275?.lookup(hz)||window.PandaLesson6XiaoxiaoV274?.lookup(hz));
- const parts=isFamily?(lesson6New?[src]:(familyOriginalParts(hz,role)||[src])):weatherClips(hz);
+ const parts=isFamily?(lesson6New?[src]:(familyOriginalParts(hz,role)||[src])):(role==='male'?[src]:weatherClips(hz));
  const button=[...stage.querySelectorAll('[data-play]')].find(x=>x.dataset.play===hz);
  button?.setAttribute('aria-busy','true');
  let index=0;
  function playNext(){
   if(token!==serial)return;
   const clip=parts[index++];
-  if(!clip){audio=null;button?.removeAttribute('aria-busy');return}
+  if(!clip){audio=null;button?.removeAttribute('aria-busy');onComplete?.(true);return}
   try{
    const a=new Audio(window.PandaAudioLevel?.[clip]||clip);audio=a;a.preload='auto';a.preservesPitch=true;const newWeather=!isFamily&&clip.includes('lesson7-xiaoxiao-v277/')||!isFamily&&clip.includes('lesson4-xiaoxiao-v265/');a.playbackRate=(isFamily||newWeather)?1:0.85; // original tempo for Xiaoxiao
    if(!isFamily && !newWeather && !clip.includes('panda-native-clean-v249/') && (clip.startsWith('data:audio/')||window.PandaLessonAudioV240?.isPriority?.(hz)))window.PandaLessonAudioV240?.improve?.(a,'weather',hz);
    a.onended=()=>{if(token!==serial)return;playNext()};
-   a.onerror=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy');say('Аудио не загрузилось. Попробуй снова.','bad')};
-   Promise.resolve(a.play()).catch(()=>{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Нажми кнопку звука ещё раз.','bad')}});
-  }catch{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Не удалось включить звук.','bad')}}
+   a.onerror=()=>{if(token!==serial)return;audio=null;button?.removeAttribute('aria-busy');say('Аудио не загрузилось. Попробуй снова.','bad');onComplete?.(false)};
+   Promise.resolve(a.play()).catch(()=>{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Нажми кнопку звука ещё раз.','bad');onComplete?.(false)}});
+  }catch{if(token===serial){audio=null;button?.removeAttribute('aria-busy');say('Не удалось включить звук.','bad');onComplete?.(false)}}
  }
  playNext();
 }
 function playBtn(hz,role='female'){
  const available=!!resolve(hz,role);
- return '<button type="button" class="audio" data-play="'+esc(hz)+'" data-role="'+(isFamily?role:'female')+'"'+(!available?' disabled title="Запись пока отсутствует"':'')+' aria-label="'+(available?'Слушать ':'Нет записи: ')+esc(hz)+'">🔊</button>';
+ return '<button type="button" class="audio" data-play="'+esc(hz)+'" data-role="'+role+'"'+(!available?' disabled title="Запись пока отсутствует"':'')+' aria-label="'+(available?'Слушать ':'Нет записи: ')+esc(hz)+'">🔊</button>';
 }
 const symbols=isFamily?{'妈妈':'👩','爸爸':'👨','哥哥':'👦','姐姐':'👩‍🎓','弟弟':'🧒','妹妹':'👧','家':'🏠','我的':'💗','有':'✅','没有':'❌','一个':'☝️'}:{'天气':'🌤️','冷':'❄️','热':'☀️','晴':'🌞','阴':'☁️','下雨':'🌧️','下雪':'🌨️','风':'💨','春天':'🌸','夏天':'🌻','秋天':'🍁','冬天':'⛄'};
 function word(w){
@@ -230,8 +233,8 @@ function listen(){
  const choices=listening.map(([zh,ru])=>[zh,ru]);
  return card('<h2>Слушай и выбирай</h2><p class="small center">Задание '+Math.min(i+1,listening.length)+' из '+listening.length+'</p>'+
  '<div class="buttons">'+playBtn(item[0])+'</div>'+
- '<div class="grid two">'+choices.map(([zh,ru])=>'<button type="button" class="card-choice" data-listen="'+esc(zh)+'"'+(finished?' disabled':'')+'><strong lang="zh-Hans">'+esc(zh)+'</strong><small>'+esc(ru)+'</small></button>').join('')+'</div>'+
- (finished?'<p class="result good">✓ Все ответы верны. Нажми «Дальше».</p>':'<p class="small center">Нажми на китайское слово, которое услышал.</p>'));
+ '<div class="grid two">'+choices.map(([zh,ru])=>'<button type="button" class="card-choice" data-listen="'+esc(zh)+'"'+(finished||!listenReady?' disabled':'')+'><strong lang="zh-Hans">'+esc(zh)+'</strong><small>'+esc(ru)+'</small></button>').join('')+'</div>'+
+ (finished?'<p class="result good">✓ Все ответы верны. Нажми «Дальше».</p>':'<p class="small center" id="pg67-listen-hint">'+(listenReady?'Запись завершена. Выбери слово.':'Дослушай запись, затем выбери слово.')+'</p>'));
 }
 function builder(){
  const i=state.built,finished=i>=builds.length,rule=builds[Math.min(i,builds.length-1)];
@@ -240,7 +243,7 @@ function builder(){
  const chosen=state.chosen;
  return card('<h2>'+esc(rule.prompt)+'</h2><p class="small center">Фраза '+Math.min(i+1,builds.length)+' из '+builds.length+'</p>'+
  '<div class="assemble">'+pieces.map((_,j)=>'<div class="unit" style="display:grid;place-items:center">'+esc(chosen[j]||'＿')+'</div>').join('')+'</div>'+
- '<div class="assemble">'+pieces.map((z,j)=>'<button type="button" class="unit" data-piece="'+j+'"'+(finished||state.used.includes(j)?' disabled':'')+'>'+esc(z)+'</button>').join('')+'</div>'+
+ '<div class="assemble">'+pieces.map((_,j)=>{const idx=(j+Math.ceil(pieces.length/2))%pieces.length;return '<button type="button" class="unit" data-piece="'+idx+'"'+(finished||state.used.includes(idx)?' disabled':'')+'>'+esc(pieces[idx])+'</button>'}).join('')+'</div>'+
  (finished?'<div class="buttons"><button type="button" class="soft primary" data-repeat-builder>↻ Пройти заново</button></div>':'<div class="buttons"><button type="button" class="soft" data-clear>Сброс</button><button type="button" class="soft primary" data-check>Проверить</button></div>')+
  (finished?'<p class="result good">✓ Ты составил три предложения! Можешь повторить, не теряя прогресс урока.</p>':'<p class="small center">Нажми на слова в правильном порядке.</p>'));
 }
@@ -300,7 +303,7 @@ function prepareWriter(){
 }
 function refresh(){
  if(media?.state==='recording')media.stop();
- stopAudio();stopWriter();const n=state.step;
+ stopAudio();stopWriter();listenReady=false;const n=state.step;
  shell.dataset.step=String(n);state.maxStep=Math.max(state.maxStep,n);
  const [k,h,d]=titles[n];label.textContent=k;title.textContent=h;sub.textContent=d;
  document.title='Урок '+lesson+' · '+h+' — Panda Go';
@@ -342,9 +345,22 @@ async function record(){
 }
 stage.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b||b.disabled)return;
- if(b.hasAttribute('data-play')){play(b.dataset.play,b.dataset.role||'female');return}
+ if(b.hasAttribute('data-play')){
+  const question=state.step===9&&listening[state.listen]?.[0]===b.dataset.play;
+  if(question){
+   listenReady=false;stage.querySelectorAll('[data-listen]').forEach(el=>el.disabled=true);
+   const hint=stage.querySelector('#pg67-listen-hint');if(hint)hint.textContent='Слушай до конца…';
+   play(b.dataset.play,b.dataset.role||'female',ok=>{
+    if(!ok||state.step!==9||listening[state.listen]?.[0]!==b.dataset.play)return;
+    listenReady=true;stage.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
+    const h=stage.querySelector('#pg67-listen-hint');if(h)h.textContent='Запись завершена. Выбери слово.';
+   });
+  }else play(b.dataset.play,b.dataset.role||'female');
+  return;
+ }
  if(b.hasAttribute('data-listen')){
   const item=listening[state.listen];
+  if(!listenReady)return;
   if(item&&b.dataset.listen===item[0]){state.listen++;save();refresh();say('✓ Верно!','good')}
   else say('Пока неверно. Прослушай ещё раз.','bad');
   return;

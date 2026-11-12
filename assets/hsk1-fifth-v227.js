@@ -57,7 +57,7 @@ try{
  }
 }catch{}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let audio=null,playId=0,writer=null,writerId=0,stream=null,recorder=null,micUrl=null,recordParts=[];
+let audio=null,playId=0,writer=null,writerId=0,stream=null,recorder=null,micUrl=null,recordParts=[],listenReady=false;
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}}
 function markDone(){
  state.done=true;state.quizPassed=true;save();
@@ -85,8 +85,8 @@ function voice(hz,role='female'){
   window.PandaOwnerAudio?.lookup(hz)||
   window.PANDA_HSK1_VOICES?.female?.[hz]||null;
 }
-function play(hz,role='female'){
- const path=voice(hz,role);if(!path){say('Для этой фразы пока нет проверенной записи.','bad');return}
+function play(hz,role='female',onComplete=null){
+ const path=voice(hz,role);if(!path){say('Для этой фразы пока нет проверенной записи.','bad');onComplete?.(false);return}
  stopAudio();const serial=playId;
  try{
   const a=new Audio(window.PandaAudioLevel?.[path]||path);audio=a;a.preload='auto';
@@ -96,10 +96,10 @@ function play(hz,role='female'){
   if(!path.includes('panda-native-clean-v249/')&&(path.startsWith('data:audio/')||window.PandaLessonAudioV240?.isPriority?.(hz)))window.PandaLessonAudioV240?.improve?.(a,'dates',hz);
   const pressed=[...app.querySelectorAll('[data-play]')].find(el=>el.dataset.play===hz);
   pressed?.setAttribute('aria-busy','true');
-  a.onended=()=>{if(serial!==playId)return;audio=null;pressed?.removeAttribute('aria-busy')};
-  a.onerror=()=>{if(serial!==playId)return;audio=null;pressed?.removeAttribute('aria-busy');say('Ошибка загрузки аудио. Проверь интернет.','bad')};
-  Promise.resolve(a.play()).catch(()=>{if(serial===playId){audio=null;pressed?.removeAttribute('aria-busy');say('Нажми «Слушать» ещё раз.','bad')}});
- }catch{say('Не удалось воспроизвести запись.','bad')}
+  a.onended=()=>{if(serial!==playId)return;audio=null;pressed?.removeAttribute('aria-busy');onComplete?.(true)};
+  a.onerror=()=>{if(serial!==playId)return;audio=null;pressed?.removeAttribute('aria-busy');say('Ошибка загрузки аудио. Проверь интернет.','bad');onComplete?.(false)};
+  Promise.resolve(a.play()).catch(()=>{if(serial===playId){audio=null;pressed?.removeAttribute('aria-busy');say('Нажми «Слушать» ещё раз.','bad');onComplete?.(false)}});
+ }catch{say('Не удалось воспроизвести запись.','bad');onComplete?.(false)}
 }
 function audioButton(hz,role='female'){
  const exists=!!voice(hz,role);
@@ -110,7 +110,7 @@ function word(w){return '<div class="word"><div><strong lang="zh-Hans">'+esc(w[0
 function card(body,extra=''){return '<section class="card '+extra+'">'+body+'</section>'}
 function example(hz,py,ru){return '<div class="example"><strong lang="zh-Hans">'+esc(hz)+'</strong><span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span><div class="buttons">'+audioButton(hz)+'</div></div>'}
 function intro(){return '<div class="intro"><div class="intro-copy"><span class="pg5-kicker">HSK1 · УРОК 5</span><strong>Месяцы, год и даты</strong><p>Научись читать календарь и называть числа на китайском!</p></div><div class="intro-art" role="img" aria-label="Панда Panda Go в фиолетовых наушниках"></div></div>'+
- '<div class="cover-milestones"><div><strong>一月</strong><small>yī yuè · январь</small></div><div><strong>五月</strong><small>wǔ yuè · май</small></div><div><strong>十二月</strong><small>shíèr yuè · декабрь</small></div></div>'+
+ '<div class="cover-milestones"><div><strong>一月</strong><small>yī yuè · январь</small></div><div><strong>五月</strong><small>wǔ yuè · май</small></div><div><strong>十二月</strong><small>shí'èr yuè · декабрь</small></div></div>'+
  '<p class="cover-caption">12 месяцев · порядок даты · разговор и практика</p>'+
  '<div class="cover-note">🌸 <strong>年 · 月 · 日 · 号</strong> — год, месяц и число</div>';}
 function groupWords(group){return card('<div class="grid two">'+group.map(word).join('')+'</div>')+
@@ -125,7 +125,7 @@ function dateRule(){return card('<h2 class="center">年 → 月 → 日 / 号</h
  example('二零二六年十一月六日','èr líng èr liù nián shíyī yuè liù rì','6 ноября 2026 года')+
  '<div class="rule-card">Год в китайском читают по цифрам. В записи полных дат сначала идёт год, затем месяц и день.</div>');}
 function sounds(){return card('<h2>Не спутай похожие слова</h2><div class="grid two">'+
- [['四月','sì yuè','апрель'],['十月','shí yuè','октябрь'],['十一月','shíyī yuè','ноябрь'],['十二月','shíèr yuè','декабрь']].map(word).join('')+'</div>')+
+ [['四月','sì yuè','апрель'],['十月','shí yuè','октябрь'],['十一月','shíyī yuè','ноябрь'],['十二月',"shí'èr yuè",'декабрь']].map(word).join('')+'</div>')+
  card('<h2>Ещё два полезных слова</h2><div class="grid two">'+topic.words.slice(16,18).map(word).join('')+'</div>')+
  card('<p>В <b>月 yuè</b> — четвёртый тон. Слушай также <b>十 shí</b> (второй тон) и <b>四 sì</b> (четвёртый тон).</p>');}
 function conversation(){return card('<h2>Послушай разговор</h2><div class="dialogue">'+topic.dialogue.map(([who,hz,py,ru])=>
@@ -135,8 +135,8 @@ function listening(){
  const i=state.listen,done=i>=questions.length,q=questions[Math.min(i,questions.length-1)];
  return card('<h2>Слушай и выбирай</h2><p class="center small">Вопрос '+Math.min(i+1,questions.length)+' из '+questions.length+'</p>'+
  '<div class="buttons">'+audioButton(q.sound)+'</div><div class="grid three">'+q.choices.map(z=>
- '<button type="button" class="card-choice" data-listen="'+esc(z)+'"'+(done?' disabled':'')+'><strong>'+esc(z)+'</strong></button>').join('')+'</div>'+
- (done?'<p class="result good">✓ Три ответа верны. Нажми «Дальше».</p>':'<p class="small center">Сначала прослушай, затем выбери китайское слово.</p>'));}
+ '<button type="button" class="card-choice" data-listen="'+esc(z)+'"'+(done||!listenReady?' disabled':'')+'><strong>'+esc(z)+'</strong></button>').join('')+'</div>'+
+ (done?'<p class="result good">✓ Три ответа верны. Нажми «Дальше».</p>':'<p class="small center" id="pg5-listen-hint">'+(listenReady?'Запись завершена. Выбери слово.':'Дослушай запись, затем выбери китайское слово.')+'</p>'));}
 function builder(){
  const i=state.built,done=i>=builds.length,b=builds[Math.min(i,builds.length-1)];
  const pool=b.parts.concat(['四']);
@@ -185,7 +185,7 @@ function prepareWriter(){
 }
 function refresh(){
  if(recorder?.state==='recording')recorder.stop();
- stopAudio();stopWriter();const step=state.step;
+ stopAudio();stopWriter();listenReady=false;const step=state.step;
  document.querySelector('.app')?.setAttribute('data-step',String(step));
  state.maxStep=Math.max(state.maxStep,step);
  const [label,name,subtitle]=titles[step];
@@ -232,9 +232,21 @@ async function recordStart(){
 function recordStop(){if(recorder?.state==='recording')recorder.stop()}
 app.addEventListener('click',event=>{
  const b=event.target.closest('button');if(!b||b.disabled)return;
- if(b.hasAttribute('data-play')){play(b.dataset.play,b.dataset.role||'female');return}
+ if(b.hasAttribute('data-play')){
+  const question=state.step===9&&questions[state.listen]?.sound===b.dataset.play;
+  if(question){
+   listenReady=false;app.querySelectorAll('[data-listen]').forEach(el=>el.disabled=true);
+   const hint=app.querySelector('#pg5-listen-hint');if(hint)hint.textContent='Слушай до конца…';
+   play(b.dataset.play,b.dataset.role||'female',ok=>{
+    if(!ok||state.step!==9||questions[state.listen]?.sound!==b.dataset.play)return;
+    listenReady=true;app.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
+    const h=app.querySelector('#pg5-listen-hint');if(h)h.textContent='Запись завершена. Выбери слово.';
+   });
+  }else play(b.dataset.play,b.dataset.role||'female');
+  return;
+ }
  if(b.hasAttribute('data-listen')){
-  const i=state.listen;if(i>=questions.length)return;
+  const i=state.listen;if(i>=questions.length||!listenReady)return;
   if(b.dataset.listen===questions[i].correct){state.listen++;save();refresh();say(questions[i].hint,'good')}
   else say('Пока неверно. Послушай запись ещё раз.','bad');return;
  }

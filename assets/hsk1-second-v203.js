@@ -239,13 +239,14 @@ function questionBlock(step){
  '<button type="button" data-answer="'+i+'">'+escapeHtml(answer)+'</button>').join('')+'</div>'+
  '<p class="pg3-feedback" data-feedback role="status"></p></div>';
 }
+function replayDrill(step){return '<div class="sheet pg3-replay"><p>Это упражнение уже выполнено. Можно повторить его, не теряя прогресс.</p><button type="button" class="pg3-main" data-repeat-step="'+step+'">↻ Повторить упражнение</button></div>'}
 function practiceSheet(step){
  const sequence=prompts[step]||[];
- return index(step)>=sequence.length?'':'<div class="sheet">'+questionBlock(step)+'</div>';
+ return index(step)>=sequence.length?replayDrill(step):'<div class="sheet">'+questionBlock(step)+'</div>';
 }
 function buildSheet(step){
  const sequence=builds[step]||[];
- return index(step)>=sequence.length?'':'<div class="sheet">'+buildBlock(step)+'</div>';
+ return index(step)>=sequence.length?replayDrill(step):'<div class="sheet">'+buildBlock(step)+'</div>';
 }
 function buildBlock(step){
  const seq=builds[step],pos=index(step);
@@ -358,11 +359,8 @@ function safeStopMic(){
  stream=null;recorder=null;micBusy=false;
 }
 const AUTO_ADVANCE_DRILLS=new Set([2,4,6,8]);
-function skipCompletedDrills(){
- while(state.step>=0&&state.step<TOTAL-1&&AUTO_ADVANCE_DRILLS.has(state.step)&&state.done[state.step])state.step++;
-}
 function render(){
- skipCompletedDrills();
+ // Keep completed steps visible so all activities can be replayed.
  if(state.step!==11||!state.completed)window.PG2_SPEAKING?.cleanup?.();
  stopReview();
  window.PG2_EXTRAS?.beforeRender?.();
@@ -429,7 +427,7 @@ function finish(){
 back.addEventListener('click',()=>{
  if(state.step>0){
   state.step--;
-  while(state.step>0&&AUTO_ADVANCE_DRILLS.has(state.step)&&state.done[state.step])state.step--;
+  // Do not skip finished steps while navigating backwards.
   state.selected=[];render();
  }
 });
@@ -437,6 +435,11 @@ next.addEventListener('click',advance);
 area.addEventListener('click',async ev=>{
  const btn=ev.target.closest('button');
  if(!btn||btn.disabled)return;
+ if(btn.hasAttribute('data-repeat-step')){
+  const s=Number(btn.dataset.repeatStep);
+  if(state.step!==s||![2,4,6,8].includes(s))return;
+  state.index[s]=0;state.done[s]=false;state.selected=[];save();render();return;
+ }
  if(btn.hasAttribute('data-dialogue-again')){state.index[9]=0;state.done[9]=false;render();return}
  if(btn.hasAttribute('data-review-all')){playReviewAll();return}
  if(btn.hasAttribute('data-review-stop')){stopReview();btn.disabled=true;return}
