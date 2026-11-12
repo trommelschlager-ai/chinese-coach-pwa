@@ -111,6 +111,7 @@ const page='hsk1-family-v231.html';
 change(page, '<script src="./assets/panda-go-companion-v231.js?v=274"></script>', '<script src="./assets/lesson6-grandparents-v275.js?v=275"></script>\n<script src="./assets/panda-go-companion-v231.js?v=275"></script>');
 change(page, './assets/panda-go-approved-lessons-v231.css?v=237', './assets/panda-go-approved-lessons-v231.css?v=275');
 change('scripts/verify-panda-go-approved-v231.cjs', "assert(html.includes('panda-go-companion-v231.js?v='+(lesson===7?'249':'274')));", "assert(html.includes('panda-go-companion-v231.js?v='+(lesson===7?'249':'275')));");
+change('scripts/verify-panda-go-approved-v231.cjs', "assert(html.includes('panda-go-approved-lessons-v231.css?v='+'237'));", "assert(html.includes('panda-go-approved-lessons-v231.css?v='+(lesson===7?'237':'275')));");
 const packFile='assets/offline-pack.json';
 const pack=JSON.parse(fs.readFileSync(packFile,'utf8'));
 pack.version=Math.max(275,Number(pack.version||0));
