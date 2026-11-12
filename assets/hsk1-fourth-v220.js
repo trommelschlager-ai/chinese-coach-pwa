@@ -298,8 +298,8 @@ function dialogue(){
  const locked=(state.ix[9]||0)>=DIALOG.length||(state.answered?.step===9&&state.answered.correct);
  return card('<div class="pg4-question-progress">Короткий диалог — вопрос и ответ</div>'+
  '<div class="pg4-people">'+
- '<div><img src="./assets/lesson4-reference-v216/woman.webp" alt="Девушка — женский голос"><span>Девушка · вопрос</span></div>'+
- '<div><img src="./assets/lesson4-reference-v216/man.webp" alt="Парень — мужской голос"><span>Парень · ответ</span></div></div>'+
+ '<div><img src="./assets/lesson4-dialog-v266/woman.svg" alt="Девушка — женский голос"><span>Девушка · вопрос</span></div>'+
+ '<div><img src="./assets/lesson4-dialog-v266/man.svg" alt="Парень — мужской голос"><span>Парень · ответ</span></div></div>'+
  '<div class="pg4-bubbles"><div class="from-f"><strong lang="zh-Hans">'+d.female+'</strong>'+
  '<small>'+GLOSS[d.female]+'</small></div>'+
  '<div class="from-m" id="pg4-male-preview"><strong lang="zh-Hans">'+d.male+'</strong><small>'+GLOSS[d.male]+'</small></div></div>'+
