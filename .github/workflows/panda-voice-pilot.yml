@@ -11,6 +11,8 @@ on:
     paths:
       - 'panda-voice-pilot.html'
       - 'assets/panda-live-*'
+      - 'assets/panda-nonstop-*'
+      - 'tests/panda-live-*'
       - 'assets/panda-voice-pilot*'
       - 'tests/panda-voice-pilot.test.mjs'
       - 'tests/panda-live-lesson2.test.mjs'
@@ -23,6 +25,8 @@ on:
       - 'panda-voice-pilot.html'
       - 'assets/panda-voice-pilot*'
       - 'assets/panda-live-*'
+      - 'assets/panda-nonstop-*'
+      - 'tests/panda-live-*'
       - 'tests/panda-voice-pilot.test.mjs'
       - 'tests/panda-live-lesson2.test.mjs'
       - 'tests/panda-live-batch.test.mjs'
@@ -40,7 +44,7 @@ jobs:
           node-version: '22'
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Test pilot response checks and mock microphone
-        run: node --test tests/panda-voice-pilot.test.mjs tests/panda-live-lesson2.test.mjs tests/panda-live-batch.test.mjs tests/panda-live-study-v265.test.mjs tests/panda-live-conversation-v266.test.mjs tests/panda-nonstop-v267.test.mjs
+        run: npm run check:panda-screen
       - name: Install mobile Chromium
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1

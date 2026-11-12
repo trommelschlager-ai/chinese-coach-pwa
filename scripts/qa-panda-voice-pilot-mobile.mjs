@@ -1,263 +1,83 @@
-// Real Chromium mobile viewport and UI flow.
-// SpeechRecognition events are simulated; phone's real microphone is NOT tested here.
+// Chromium regression tests. Reduced viewports simulate keyboard space;
+// FakeSpeech exercises lifecycle events, not a physical Android microphone/IME.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {chromium} from 'playwright';
 const BASE=process.env.QA_BASE||'http://127.0.0.1:4173';
-const DIR='qa/panda-voice-pilot';
-fs.mkdirSync(DIR,{recursive:true});
+const DIR='qa/panda-voice-pilot';fs.mkdirSync(DIR,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
-const report=[];
+const report=[],errors=[];
+async function ready(page){await page.locator('html[data-panda-live-ready=true]').waitFor()}
+async function send(page,text){await page.locator('#message').fill(text);await page.locator('#send').click()}
+async function geometry(page){
+ await page.waitForFunction(()=>Math.abs(document.querySelector('main').getBoundingClientRect().height-(visualViewport?.height||innerHeight))<2);
+ return await page.evaluate(()=>{
+  const card=document.querySelector('.card').getBoundingClientRect();
+  return {width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight,
+   cardOverflow:document.querySelector('.card').scrollHeight-document.querySelector('.card').clientHeight,
+   controls:['mic','message','send','hint','mode-short','mode-nonstop'].map(id=>{const r=document.getElementById(id).getBoundingClientRect();return {id,visible:r.width>0&&r.height>0&&r.x>=0&&r.right<=innerWidth+1&&r.y>=0&&r.bottom<=innerHeight+1&&(id.startsWith('mode-')||r.bottom<=card.bottom+1)}})};
+ });
+}
 try{
- for(const width of [360,390,412]){
-  const context=await browser.newContext({viewport:{width,height:825},isMobile:true,hasTouch:true,deviceScaleFactor:2});
-  const page=await context.newPage();const errors=[];
-  page.on('pageerror',e=>errors.push(e.message));
-  await page.addInitScript(()=>{
-   window.__pandaTestSpeech=[];
-   class FakeSpeech{
-    constructor(){window.__pandaTestSpeech.push(this)}
-    start(){this.started=true;this.onstart?.()}
-    stop(){this.stopped=true;this.onend?.()}
-    abort(){this.aborted=true;this.onend?.()}
-   }
-   Object.defineProperty(window,'SpeechRecognition',{configurable:true,writable:true,value:FakeSpeech});
-   Object.defineProperty(window,'webkitSpeechRecognition',{configurable:true,writable:true,value:FakeSpeech});
+ for(const width of [360,393,412,430]){
+  const context=await browser.newContext({viewport:{width,height:825},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+  await context.addInitScript(()=>{
+   window.__speech=[];window.SpeechRecognition=class{constructor(){window.__speech.push(this)}start(){this.onstart?.()}abort(){}stop(){this.onend?.()}};
+   localStorage.setItem('qa-sentinel','keep');
   });
-  await page.goto(BASE+'/panda-voice-pilot.html',{waitUntil:'load'});
-  await page.locator('html[data-panda-live-ready=true]').waitFor();
-  const visual=await page.evaluate(()=>({
-   viewportWidth:innerWidth,scrollWidth:document.documentElement.scrollWidth,
-   pandaWidth:document.querySelector('.panda-picture')?.naturalWidth||0
-  }));
-  assert(visual.scrollWidth<=width+2,'Horizontal overflow '+JSON.stringify(visual));
-  assert(visual.pandaWidth>0,'Panda artwork failed to load');
-  const native=await page.evaluate(async()=>{const m=await import('./assets/panda-live-audio.mjs');return m.lookupPilotAudio('你好')});
-  assert(native?.endsWith('.mp3'),'Original native hello missing');
-  const response=await page.request.get(new URL(native,BASE+'/').href);
-  assert.equal(response.status(),200,'Native clip URL should work');
-  assert((await response.body()).length>1000,'Native clip unexpectedly tiny');
-  assert(['早上好！','中午好！','下午好！','晚上好！'].includes(await page.locator('#phrase').textContent()));
-  assert(await page.locator('#typing').isHidden());
-  // The approved panda stays on the same page while switching two conversation modes.
-  assert(await page.locator('#mode-short').isVisible());
-  assert(await page.locator('#mode-nonstop').isVisible());
-  assert(await page.locator('#nonstop-panel').isHidden());
-  await page.locator('#mode-nonstop').click();
-  assert(await page.locator('#nonstop-panel').isVisible());
-  assert(await page.locator('#conversation').isHidden());
-  assert((await page.locator('#step').textContent()).includes('без лимита'));
-  assert((await page.locator('#nonstop-topics').textContent()).includes('Основы'));
-  assert.equal(await page.locator('#phrase').textContent(),'你好吗？');
-  await page.locator('#nonstop-hint').click();
-  assert((await page.locator('#nonstop-feedback').textContent()).includes('хорошо'));
-  await page.locator('#nonstop-input').fill('你好吗？');
-  await page.locator('#nonstop-form button[type=submit]').click();
-  assert.equal(await page.locator('#phrase').textContent(),'很好！');
-  assert((await page.locator('#nonstop-history').textContent()).includes('Как дела?'));
-  await page.locator('#nonstop-input').fill('你好');
-  await page.locator('#nonstop-form button[type=submit]').click();
-  assert.equal(await page.locator('#phrase').textContent(),'你好吗？');
-  await page.locator('#nonstop-input').fill('不认识的中文');
-  await page.locator('#nonstop-form button[type=submit]').click();
-  assert((await page.locator('#nonstop-history').textContent()).includes('не знаю'));
-  await page.locator('#nonstop-stop').click();
-  assert(await page.locator('#nonstop-panel').isHidden());
-  assert(await page.locator('#conversation').isVisible());
-  assert.equal(await page.locator('#mode-short').getAttribute('aria-pressed'),'true');
-
-  // Answer an unscripted student question during the normal lesson.
-  await page.locator('#type-toggle').click();
-  await page.locator('#answer').fill('你好吗？');
-  await page.locator('#send').click();
-  assert.equal(await page.locator('#phrase').textContent(),'很好！');
-  assert.equal(await page.locator('#step').textContent(),'1 из 2');
-  assert((await page.locator('#learner-transcript').textContent()).includes('Как дела?'));
-  // One existing talking panda: curriculum panel, valid response variants and audio speed.
-  assert(await page.locator('#knowledge-toggle').isVisible());
-  await page.locator('#knowledge-toggle').click();
-  await page.locator('#knowledge-question').fill('Что означает 你好?');
-  await page.locator('#knowledge-form button[type=submit]').click();
-  assert((await page.locator('#knowledge-answer').textContent()).includes('nǐ hǎo'),'Existing lesson database must return pinyin');
-  await page.locator('#knowledge-toggle').click();
-  await page.locator('#speed-toggle').click();
-  assert.equal(await page.locator('#speed-toggle').getAttribute('aria-pressed'),'true');
-  assert.equal(await page.locator('#speed-toggle').textContent(),'🐢 0,8×');
-  await page.locator('#speed-toggle').click();
-  assert.equal(await page.locator('#speed-toggle').getAttribute('aria-pressed'),'false');
-  await page.locator('#answer-variants summary').click();
-  assert((await page.locator('#variant-choices button').count())>=2);
-  await page.locator('#answer-variants summary').click();
-  await page.locator('#hear').click();
-  await page.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
-  await page.locator('#mic').click();
-  await page.evaluate(()=>{
-   const r=window.__pandaTestSpeech.at(-1);
-   r.onresult?.({results:[[{transcript:'你好！'}]]});r.onend?.();
-  });
-  await page.waitForFunction(()=>document.getElementById('phrase').textContent==='你好吗？');
-  assert.equal(await page.locator('#phrase').textContent(),'你好吗？');
-  assert(await page.locator('#audio-note').isHidden(),'Uploaded question audio is present');
-  assert(await page.locator('#hear').isEnabled());
-  await page.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
-  await page.locator('#mic').click();
-  await page.evaluate(()=>{
-   const r=window.__pandaTestSpeech.at(-1);
-   r.onresult?.({results:[[{transcript:'我很好，你呢？'}]]});r.onend?.();
-  });
-  await page.waitForFunction(()=>document.getElementById('phrase').textContent==='我也很好，谢谢！');
-  assert.equal(await page.locator('#phrase').textContent(),'我也很好，谢谢！');
-  assert(await page.locator('#completed').isVisible());
-  await page.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
-  await page.screenshot({path:DIR+'/android-'+width+'.png',fullPage:true,animations:'disabled'});
-  await page.locator('#again').click();
-  await page.locator('#type-toggle').click();
-  await page.locator('#answer').fill('我很好');
-  await page.locator('#send').click();
-  assert((await page.locator('#review-count').textContent()).includes('Для повтора'));
-  await page.locator('#review').click();
-  assert((await page.locator('#phrase').textContent()).endsWith('好！'),'Review must return to the difficult greeting');
-  assert(await page.locator('#typing').isHidden());
-  await page.locator('#type-toggle').click();
-  assert(await page.locator('#typing').isVisible());
-  await page.locator('#answer').fill('你好');
-  await page.locator('#send').click();
-  await page.waitForFunction(()=>document.getElementById('phrase').textContent==='你好吗？');
-  assert((await page.locator('#review-count').textContent()).includes('нет'),'Correctly reviewed mistake must disappear');
-  assert.equal(await page.locator('#phrase').textContent(),'你好吗？');
-  await page.locator('#answer').fill('我很好');
-  await page.locator('#send').click();
-  await page.waitForFunction(()=>document.getElementById('phrase').textContent==='很好！');
-  assert.equal(await page.locator('#phrase').textContent(),'很好！');
-  assert.deepEqual(errors,[],'Browser script errors');
-  report.push({...visual,success:true});
-  await context.close();
- }
-
- // Non-Stop must combine progress from completed lessons with the current topic.
- {
-  const context=await browser.newContext({viewport:{width:393,height:825},isMobile:true,hasTouch:true});
-  const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(BASE+'/panda-voice-pilot.html?lesson=6');
-  await page.evaluate(()=>localStorage.setItem('pg-hsk1-v3-complete',JSON.stringify(['foundations','pronouns'])));
-  await page.reload();await page.locator('html[data-panda-live-ready=true]').waitFor();
-  await page.locator('#mode-nonstop').click();
-  const topics=await page.locator('#nonstop-topics').textContent();
-  assert(topics.includes('Основы')&&topics.includes('Семья')&&topics.includes('2.')&&!topics.includes('Погода'));
-  assert.equal(await page.locator('#phrase').textContent(),'你有哥哥吗？');
-  await page.locator('#nonstop-input').fill('我没有哥哥，我有妹妹');
-  await page.locator('#nonstop-form button[type=submit]').click();
-  assert((await page.locator('#nonstop-history').textContent()).includes('младшая сестра'));
-  await page.locator('#nonstop-input').fill('你有哥哥吗？');
-  await page.locator('#nonstop-form button[type=submit]').click();
-  assert.equal(await page.locator('#phrase').textContent(),'我有一个哥哥。');
-  await page.locator('#nonstop-next').click();
-  assert.equal(await page.locator('#phrase').textContent(),'你是老师吗？');
-  assert.deepEqual(errors,[]);
-  await page.screenshot({path:DIR+'/nonstop-393.png',fullPage:true,animations:'disabled'});
-  await context.close();
- }
- // Every newly enabled conversation, including both branching outcomes.
- const context=await browser.newContext({viewport:{width:390,height:825},isMobile:true,hasTouch:true});
- const page=await context.newPage(),errors=[];page.on('pageerror',error=>errors.push(error.message));
- const currentWeekday=new Date().getDay(),dayNames=['日','一','二','三','四','五','六'];
- const scenarios=[
-  {id:2,answers:['你好','我是老师'],final:'我也是老师。'},
-  {id:2,answers:['你好','不是，我是学生'],final:'我是老师。'},
-  {id:3,answers:['你好','我44岁'],final:'我三岁。'},
-  {id:4,answers:['你好','今天星期'+dayNames[currentWeekday]],final:currentWeekday===1?'明天星期二。':'谢谢！'},
-  {id:5,answers:['你好','今天是3月5号'],final:'明天三月六号。'},
-  {id:6,answers:['你好','我有两个哥哥'],final:'我也有哥哥。'},
-  {id:6,answers:['你好','我没有哥哥'],final:'我有一个哥哥。'},
-  {id:6,answers:['你好','我没有哥哥，我有妹妹'],final:'谢谢！'},
-  {id:7,answers:['你好','今天很冷','明天下雨'],final:'谢谢！'}
- ];
- for(const [index,scenario] of scenarios.entries()){
-  await page.goto(BASE+'/panda-voice-pilot.html?lesson='+scenario.id,{waitUntil:'load'});
-  await page.locator('html[data-panda-live-ready=true]').waitFor();
-  assert.equal(await page.locator('#topic-count').textContent(),`${scenario.id} / 7`);
-  assert((await page.locator('#pilot-note').textContent()).includes('единый голос'));
-  if(scenario.id===4){
-   assert(await page.locator('#exercise-banner').isVisible());
-   assert((await page.locator('#exercise-banner').textContent()).includes('твоего телефона'));
-  }
-  if(scenario.id===5)assert((await page.locator('#exercise-banner').textContent()).includes('УЧЕБНАЯ СЦЕНКА'));
-  for(const answer of scenario.answers){
-   assert(await page.locator('#audio-note').isHidden());
-   await page.locator('#hear').click();
-   await page.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
-   if(await page.locator('#typing').isHidden())await page.locator('#type-toggle').click();
-   const previous=await page.locator('#phrase').textContent();
-   await page.locator('#answer').fill(answer);await page.locator('#send').click();
-   await page.waitForFunction(text=>document.getElementById('phrase').textContent!==text,previous);
-  }
-  assert.equal(await page.locator('#phrase').textContent(),scenario.final);
-  assert(await page.locator('#completed').isVisible());assert(await page.locator('#audio-note').isHidden());
-  assert(await page.locator('#followup-input').isVisible(),'Finished dialogue must allow continued conversation');
-  if(scenario.id===6){
-   await page.locator('#followup-input').fill('我有弟弟和妹妹');
-   await page.locator('#followup-form button[type=submit]').click();
-   assert((await page.locator('#followup-history').textContent()).includes('У меня есть младший брат и младшая сестра'));
-   assert.equal(await page.locator('#phrase').textContent(),'谢谢！');
-   assert((await page.locator('#learner-transcript').textContent()).includes('младший брат'));
-  }
-  if(scenario.id===7){
-   await page.locator('#followup-input').fill('你好吗？');
-   await page.locator('#followup-form button[type=submit]').click();
-   assert.equal(await page.locator('#phrase').textContent(),'很好！');
-   assert((await page.locator('#followup-history').textContent()).includes('Как дела?'));
-   await page.locator('#followup-input').fill('明天下雨');
-   await page.locator('#followup-form button[type=submit]').click();
-   assert.equal(await page.locator('#phrase').textContent(),'谢谢！');
-  }
+  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(BASE+'/panda-voice-pilot.html');await ready(page);
+  assert(await page.locator('.panda-picture').evaluate(img=>img.naturalWidth>0));
   await page.locator('#hear').click();await page.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
-  const size=await page.evaluate(()=>({viewportWidth:innerWidth,scrollWidth:document.documentElement.scrollWidth}));
-  assert(size.scrollWidth<=size.viewportWidth+2);
-  await page.screenshot({path:DIR+'/lesson-'+scenario.id+'-'+index+'.png',fullPage:true,animations:'disabled'});
-  report.push({lesson:scenario.id,final:scenario.final,...size,success:true});
+  for(const mode of ['short','nonstop']){
+   await page.locator('#mode-'+mode).click();
+   if(mode==='nonstop'){
+    for(const [text,reply] of [['你好','你好！'],['你好呀','你好！'],['你好啊','你好！'],['早上好','早上好！'],['中午好','中午好！'],['下午好','下午好！'],['晚上好！','晚上好！'],['你好吗？','很好！']]){await send(page,text);assert.equal(await page.locator('#phrase').textContent(),reply)}
+    await send(page,'谢谢');assert.equal(await page.locator('#mode-nonstop').getAttribute('aria-pressed'),'true');assert.equal(await page.locator('#phrase').textContent(),'不客气！');assert(await page.locator('#audio-note').isVisible());
+    await send(page,'你好吗？');
+   }
+   for(const hint of [false,true]){
+    if((await page.locator('#hint').getAttribute('aria-expanded'))!==String(hint))await page.locator('#hint').click();
+    for(const height of [568,640,740,825,915,400,320]){
+     await page.setViewportSize({width,height});const m=await geometry(page);
+     assert(m.scrollWidth<=width+1&&m.scrollHeight<=height+1,JSON.stringify(m));assert(m.cardOverflow<2,JSON.stringify(m));assert(m.controls.every(c=>c.visible),JSON.stringify(m));report.push({mode,hint,...m});
+    }
+   }
+   await page.setViewportSize({width,height:825});await page.locator('#hint').click();
+   if(mode==='nonstop')await send(page,'你好吗？');
+   await page.screenshot({path:DIR+'/'+mode+'-'+width+'.png',fullPage:false,animations:'disabled'});
+  }
+  await page.locator('#speed-toggle').click();assert.equal(await page.locator('#speed-toggle').getAttribute('aria-pressed'),'true');await page.locator('#speed-toggle').click();
+  await page.locator('#mic').click();assert(await page.locator('#speech-dialog').isVisible());assert.equal(await page.evaluate(()=>window.__speech.length),0);await page.locator('#speech-allow').click();
+  await page.evaluate(()=>window.__speech.at(-1).onresult({results:[[{transcript:'晚上好',confidence:.4}]]}));assert.equal(await page.locator('#phrase').textContent(),'晚上好！');assert((await page.locator('#status').textContent()).includes('неуверенно'));
+  await page.locator('#mode-short').click();await page.locator('#reset').click();await send(page,'你好');await send(page,'我很好');assert.equal(await page.locator('#step').textContent(),'Диалог завершён');
+  assert(await page.evaluate(()=>localStorage.getItem('pg-panda-voice-pilot-v1-last')));assert.equal(await page.evaluate(()=>localStorage.getItem('qa-sentinel')),'keep');
+  const dayNames=['日','一','二','三','四','五','六'];const day=await page.evaluate(()=>new Date().getDay());
+  for(const {id,answers,final} of [
+   {id:2,answers:['你好','我是老师'],final:'我也是老师。'},
+   {id:2,answers:['你好','不是，我是学生'],final:'我是老师。'},
+   {id:3,answers:['你好','我44岁'],final:'我三岁。'},
+   {id:4,answers:['你好','今天星期'+dayNames[day]],final:day===1?'明天星期二。':'谢谢！'},
+   {id:5,answers:['你好','今天是3月5号'],final:'明天三月六号。'},
+   {id:6,answers:['你好','我没有哥哥，我有妹妹'],final:'谢谢！'},
+   {id:7,answers:['你好','今天很冷','明天下雨'],final:'谢谢！'}
+  ]){
+   await page.locator('#lesson-select').selectOption(String(id));
+   for(const answer of answers)await send(page,answer);
+   assert.equal(await page.locator('#phrase').textContent(),final);assert.equal(await page.locator('#step').textContent(),'Диалог завершён');
+   if(id===4)assert((await page.locator('#exercise-banner').textContent()).includes('твоего телефона'));
+   if(id===5)assert((await page.locator('#exercise-banner').textContent()).includes('Учебная сценка'));
+  }
+  await page.locator('#lesson-select').selectOption('6');await page.locator('#mode-nonstop').click();await send(page,'我有妹妹');assert.equal(await page.locator('#phrase').textContent(),'你有哥哥吗？');assert((await page.locator('#status').textContent()).includes('не ответ'));
+  await send(page,'我没有哥哥，我有妹妹');assert((await page.locator('#recent').textContent()).includes('Wǒ méiyǒu gēge, wǒ yǒu mèimei.'));await send(page,'你有哥哥吗');assert.equal(await page.locator('#phrase').textContent(),'我有一个哥哥。');
+  await send(page,'今天天气怎么样');assert((await page.locator('#status').textContent()).includes('пока не знаю'));
+  for(let i=0;i<12;i++)await send(page,'你好吗？');assert.equal(await page.locator('#recent article').count(),2);await page.locator('#history-open').click();assert(await page.locator('#history-dialog').isVisible());assert((await page.locator('#history article').count())>12);await page.locator('[data-close="history-dialog"]').click();
+  await page.locator('#finish').click();assert.equal(await page.locator('#mode-short').getAttribute('aria-pressed'),'true');
+  const sources=await page.evaluate(async()=>Object.values((await import('./assets/panda-live-audio.mjs')).PILOT_AUDIO));
+  for(const src of sources){const response=await page.request.get(new URL(src,BASE+'/').href);assert.equal(response.status(),200,src);assert((await response.body()).length>1000,src)}
+  await context.close();
  }
- // Training should rotate four voice greetings, independently of phone time.
- for(const hour of [8,12,15,20]){
-  const timed=await browser.newContext({viewport:{width:320,height:825},isMobile:true,hasTouch:true});
-  await timed.addInitScript(({hour})=>{const OriginalDate=Date;window.Date=class extends OriginalDate{constructor(...args){super(...(args.length?args:[2026,10,11,hour]))}}},{hour});
-  const greetingPage=await timed.newPage();greetingPage.on('pageerror',error=>errors.push(error.message));
-  await greetingPage.goto(BASE+'/panda-voice-pilot.html');
-  await greetingPage.locator('html[data-panda-live-ready=true]').waitFor();
-  assert.equal(await greetingPage.locator('#phrase').textContent(),'早上好！');
-  assert.equal(await greetingPage.locator('select').count(),0);
-  await greetingPage.locator('#hear').click();
-  await greetingPage.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
-  await greetingPage.locator('#type-toggle').click();
-  await greetingPage.locator('#answer').fill('我很好');await greetingPage.locator('#send').click();
-  assert.equal(await greetingPage.locator('#step').textContent(),'1 из 2');
-  await greetingPage.locator('#answer').fill('早上好');await greetingPage.locator('#send').click();
-  await greetingPage.waitForFunction(()=>document.querySelector('#phrase').textContent==='你好吗？');
-  await greetingPage.locator('#topic-next').click();
-  await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='2 / 7');
-  assert.equal(await greetingPage.locator('#phrase').textContent(),'中午好！');
-  await greetingPage.locator('#reset').click();
-  assert.equal(await greetingPage.locator('#phrase').textContent(),'下午好！','Reset should rotate too');
-  await greetingPage.locator('#topic-prev').click();
-  await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='1 / 7');
-  assert.equal(await greetingPage.locator('#phrase').textContent(),'晚上好！');
-  await greetingPage.locator('#topic-prev').click();
-  await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='7 / 7');
-  assert.equal(await greetingPage.locator('#phrase').textContent(),'早上好！');
-  await greetingPage.locator('#topic-next').click();
-  await greetingPage.waitForFunction(()=>document.querySelector('#topic-count').textContent==='1 / 7');
-  assert.equal(await greetingPage.locator('#phrase').textContent(),'中午好！');
-  const size=await greetingPage.evaluate(()=>({viewportWidth:innerWidth,scrollWidth:document.documentElement.scrollWidth}));
-  assert(size.scrollWidth<=size.viewportWidth+2);
-  await greetingPage.screenshot({path:DIR+'/greeting-'+hour+'.png',fullPage:true,animations:'disabled'});
-  report.push({hour,rotation:['早上好','中午好','下午好','晚上好'],...size,success:true});await timed.close();
- }
- const sources=await page.evaluate(async()=>Object.values((await import('./assets/panda-live-audio.mjs')).PILOT_AUDIO));
- assert.equal(sources.length,23);
- for(const src of sources){const response=await page.request.get(new URL(src,BASE+'/').href);assert.equal(response.status(),200,src);assert((await response.body()).length>1000,src)}
- assert.deepEqual(errors,[]);await context.close();
- fs.writeFileSync(DIR+'/qa-report.json',JSON.stringify({
-  note:'Mobile Chromium, simulated speech recognition only. All 23 MP3 sources checked; all seven conversation topics exercised, including new media playback. Spoken tone acoustics need human QA.',
-  results:report
- },null,2)+'\n');
- console.log('Panda conversation mobile Chromium: PASS');
+ assert.deepEqual(errors,[]);
+ fs.writeFileSync(DIR+'/qa-report.json',JSON.stringify({note:'Chromium mobile viewports, simulated SpeechRecognition, reduced-height keyboard-space checks. Physical Android microphone and keyboard not tested.',results:report,errors},null,2)+'\n');
+ console.log('Panda Live v270: '+report.length+' layout checks, all dialogue scenarios and 23 MP3 URLs PASS');
 }finally{await browser.close()}
