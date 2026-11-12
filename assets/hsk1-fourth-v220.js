@@ -191,7 +191,7 @@ function scrollNew(){viewport.scrollTop=0}
 function progressText(){const n=state.step+1;pageCount.textContent=n+' / '+TOTAL;progress.setAttribute('aria-valuenow',String(n));progress.setAttribute('aria-valuemax',String(TOTAL));fill.style.width=(n/TOTAL*100)+'%'}
 function intro(){
  // The approved Panda Go panda and lesson artwork remain unchanged.
- return '<div class="pg4-cover"><img src="./assets/lesson4-reference-v216/hero.webp" alt="Панда в наушниках у озера с китайской пагодой"><div><b>Урок 4</b><h2>Дни недели</h2><span lang="zh-Hans">星期 · xīngqī</span></div></div>';
+ return '<div class="pg4-cover"><img src="./assets/lesson4-v268/cover.webp" alt="Панда в наушниках у озера с китайской пагодой"><div><b>Урок 4</b><h2>Дни недели</h2><span lang="zh-Hans">星期 · xīngqī</span></div></div>';
 }
 function study(step){
  const list=step===1?DAYS.slice(0,3):DAYS.slice(3,6);
@@ -298,8 +298,8 @@ function dialogue(){
  const locked=(state.ix[9]||0)>=DIALOG.length||(state.answered?.step===9&&state.answered.correct);
  return card('<div class="pg4-question-progress">Короткий диалог — вопрос и ответ</div>'+
  '<div class="pg4-people">'+
- '<div><img src="./assets/lesson4-dialog-v266/woman.svg" alt="Девушка — женский голос"><span>Девушка · вопрос</span></div>'+
- '<div><img src="./assets/lesson4-dialog-v266/man.svg" alt="Парень — мужской голос"><span>Парень · ответ</span></div></div>'+
+ '<div><img src="./assets/lesson4-v268/woman.webp" alt="Девушка — женский голос"><span>Девушка · вопрос</span></div>'+
+ '<div><img src="./assets/lesson4-v268/man.webp" alt="Парень — мужской голос"><span>Парень · ответ</span></div></div>'+
  '<div class="pg4-bubbles"><div class="from-f"><strong lang="zh-Hans">'+d.female+'</strong>'+
  '<small>'+GLOSS[d.female]+'</small></div>'+
  '<div class="from-m" id="pg4-male-preview"><strong lang="zh-Hans">'+d.male+'</strong><small>'+GLOSS[d.male]+'</small></div></div>'+
@@ -339,7 +339,7 @@ function final(){
  const hard=new Set(Object.keys(state.wrong).filter(k=>k.startsWith('4-')).map(k=>LISTEN[Number(k.split('-')[1])]?.audio));
  missed.forEach(x=>hard.add(x.audio||x.right));
  const hardWords=allWords.filter(w=>hard.has(w.zh));
- return '<div class="pg4-final-top"><img src="./assets/lesson4-reference-v216/celebrate.webp" alt="Панда Panda Go поздравляет">'+
+ return '<div class="pg4-final-top"><img src="./assets/lesson4-v268/celebrate.webp" alt="Панда Panda Go поздравляет">'+
  '<div>'+
  '<p>Ты изучил дни недели и вопросы о вчера, сегодня и завтра.</p></div></div>'+
  card('<div class="pg4-final-score"><strong>'+score()+' / '+EXAM.length+'</strong><span>с первой попытки · '+percent+'%</span></div>'+

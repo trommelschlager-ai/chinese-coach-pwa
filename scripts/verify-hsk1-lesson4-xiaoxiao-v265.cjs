@@ -29,7 +29,7 @@ const html=fs.readFileSync('hsk1-fourth-v214.html','utf8');
 const script=fs.readFileSync('assets/hsk1-fourth-v220.js','utf8');
 const cards=fs.readFileSync('hsk1-l4-cards.html','utf8');
 assert(html.includes('lesson4-xiaoxiao-v265.js?v=265'));
-assert(html.indexOf('lesson4-xiaoxiao-v265.js?v=265')<html.indexOf('hsk1-fourth-v220.js?v=266'), 'Map must load before lesson');
+assert(html.indexOf('lesson4-xiaoxiao-v265.js?v=265')<html.indexOf('hsk1-fourth-v220.js?v=268'), 'Map must load before lesson');
 assert(script.includes('PandaLesson4XiaoxiaoV265?.lookup(word)||window.PandaCleanAudioV250'), 'Female voice must prefer Xiaoxiao');
 assert(script.includes("role==='male'"),'Male dialogue source must be preserved');
 assert(cards.includes('lesson4-xiaoxiao-v265.js?v=265')&&cards.includes('PandaLesson4XiaoxiaoV265?.lookup(word)||owner[word]'), 'All 25 revision cards must use Xiaoxiao');
@@ -37,5 +37,5 @@ const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
 assert(offline.version>=265,'Offline pack version must not be older than the 25 Xiaoxiao recordings');
 for(const phrase of expected){assert(offline.files.includes(voice.lookup(phrase)),`Missing offline ${phrase}`)}
 assert(/^const CACHE='chinese-coach-pwa-v\d+[^']*';/m.test(fs.readFileSync('sw.js','utf8')),'Versioned cache required');
-assert(fs.existsSync('assets/lesson4-dialog-v266/woman.svg')&&fs.existsSync('assets/lesson4-dialog-v266/man.svg'),'Sharp dialogue portraits missing');
+assert(fs.existsSync('assets/lesson4-v268/woman.webp')&&fs.existsSync('assets/lesson4-v268/man.webp'),'Sharp dialogue portraits missing');
 console.log('PASS: 25/25 Xiaoxiao lesson-4 audio files, hashes, active page, card review, male dialogue preserved, offline pack');

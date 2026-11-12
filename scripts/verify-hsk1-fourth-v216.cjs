@@ -14,8 +14,8 @@ const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const voice=fs.readFileSync('assets/hsk1-weekdays-audio-map-v214.js','utf8');
 const xiaoxiao=fs.readFileSync('assets/lesson4-xiaoxiao-v265.js','utf8');
 const map=fs.readFileSync('hsk1-map.html','utf8');
-assert(html.includes('hsk1-fourth-v219.css?v=266'));
-assert(html.includes('hsk1-fourth-v220.js?v=266'));
+assert(html.includes('hsk1-fourth-v219.css?v=268'));
+assert(html.includes('hsk1-fourth-v220.js?v=268'));
 assert(html.includes('panda-clean-audio-v250.js?v=250'),'Improved woman clips not loaded');
 assert(!html.includes('hsk1-third-v212.css'),'Lesson 4 should not depend on lesson 3 CSS');
 assert(!html.includes('hsk1-third-v213.css'),'Lesson 4 styles should be standalone');
@@ -73,7 +73,7 @@ const play=(word)=>{
 };
 const next=()=>click('#pg3-next');
 assert.equal(step(),1,'Old lesson completion should not skip new curriculum');
-assert(d.querySelector('img[src="./assets/lesson4-reference-v216/hero.webp"]'),'Approved raster mascot');
+assert(d.querySelector('img[src="./assets/lesson4-v268/cover.webp"]'),'Approved raster mascot');
 assert(d.querySelector('.pg4-cover h2')?.textContent.includes('Дни недели'),'Approved intro must introduce weekdays');
 next();assert.equal(step(),2);
 for(const word of ['星期一','星期二','星期三']){
@@ -113,8 +113,8 @@ assert.equal(step(),9);
 assert.equal(strokes.at(-1)?.character,'日');
 assert.equal(strokes.at(-1)?.options.acceptBackwardsStrokes,false);
 click('[data-trace]');next();assert.equal(step(),10);
-assert(d.querySelector('img[src="./assets/lesson4-dialog-v266/man.svg"]'),'Male character in dialogue');
-assert(d.querySelector('img[src="./assets/lesson4-dialog-v266/woman.svg"]'),'Female character in dialogue');
+assert(d.querySelector('img[src="./assets/lesson4-v268/man.webp"]'),'Male character in dialogue');
+assert(d.querySelector('img[src="./assets/lesson4-v268/woman.webp"]'),'Female character in dialogue');
 for(const answer of ['明天星期六。']){
  assert.equal(d.querySelectorAll('.pg4-dialog-actions button').length,1,'Dialogue must have one listen/pause control');
  click('[data-dialogue-toggle]');const questionPlayer=played.at(-1);
