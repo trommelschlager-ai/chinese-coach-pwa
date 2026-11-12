@@ -105,3 +105,7 @@ h1{font-size:30px;line-height:1.12;letter-spacing:-.5px;text-align:center;margin
 /* Family vocabulary v280: approved photo cards for 有、没有、一个 only. */
 .app[data-lesson="6"] .word-art.pg6-word-photo{display:block;width:69px;height:69px;max-width:100%;grid-column:1;grid-row:1/4;object-fit:cover;object-position:center;border:1px solid #ead6ee;border-radius:14px;background:#fff6fc;box-shadow:0 2px 7px #926bab25;image-rendering:auto}
 @media(max-width:365px){.app[data-lesson="6"] .word-art.pg6-word-photo{width:55px;height:55px}}
+
+/* v289: clean weather symbols replace cached blurry lesson7 sprite art. */
+.app[data-lesson="7"] .word-art.pg7-weather-icon{display:grid;place-items:center;width:60px;height:60px;border:1px solid #e6d3f3;border-radius:16px;background:linear-gradient(145deg,#fffaff,#f1e5ff);font-size:34px;line-height:1;box-shadow:0 2px 7px #8e6ba021}
+@media(max-width:365px){.app[data-lesson="7"] .word-art.pg7-weather-icon{width:50px;height:50px;font-size:29px}}

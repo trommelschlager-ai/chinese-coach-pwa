@@ -234,7 +234,7 @@ function listen(){
  return card('<h2>Слушай и выбирай</h2><p class="small center">Задание '+Math.min(i+1,listening.length)+' из '+listening.length+'</p>'+
  '<div class="buttons">'+playBtn(item[0])+'</div>'+
  '<div class="grid two">'+choices.map(([zh,ru])=>'<button type="button" class="card-choice" data-listen="'+esc(zh)+'"'+(finished||!listenReady?' disabled':'')+'><strong lang="zh-Hans">'+esc(zh)+'</strong><small>'+esc(ru)+'</small></button>').join('')+'</div>'+
- (finished?'<p class="result good">✓ Все ответы верны. Нажми «Дальше».</p>':'<p class="small center" id="pg67-listen-hint">'+(listenReady?'Запись завершена. Выбери слово.':'Дослушай запись, затем выбери слово.')+'</p>'));
+ (finished?'<p class="result good">✓ Все ответы верны! Можешь пройти снова.</p><div class="buttons"><button class="soft primary" type="button" data-repeat-listen>↻ Пройти заново</button></div>':'<p class="small center" id="pg67-listen-hint">'+(listenReady?'Выбирай ответ, можно переслушать.':'Нажми 🔊, чтобы включить звук и открыть ответы.')+'</p>'));
 }
 function builder(){
  const i=state.built,finished=i>=builds.length,rule=builds[Math.min(i,builds.length-1)];
@@ -348,16 +348,14 @@ stage.addEventListener('click',e=>{
  if(b.hasAttribute('data-play')){
   const question=state.step===9&&listening[state.listen]?.[0]===b.dataset.play;
   if(question){
-   listenReady=false;stage.querySelectorAll('[data-listen]').forEach(el=>el.disabled=true);
-   const hint=stage.querySelector('#pg67-listen-hint');if(hint)hint.textContent='Слушай до конца…';
-   play(b.dataset.play,b.dataset.role||'female',ok=>{
-    if(!ok||state.step!==9||listening[state.listen]?.[0]!==b.dataset.play)return;
-    listenReady=true;stage.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
-    const h=stage.querySelector('#pg67-listen-hint');if(h)h.textContent='Запись завершена. Выбери слово.';
-   });
+   listenReady=true;
+   stage.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
+   const h=stage.querySelector('#pg67-listen-hint');if(h)h.textContent='Слушай и выбирай. Можно переслушать.';
+   play(b.dataset.play,b.dataset.role||'female');
   }else play(b.dataset.play,b.dataset.role||'female');
   return;
  }
+ if(b.hasAttribute('data-repeat-listen')){state.listen=0;listenReady=false;save();refresh();say('Аудирование начато заново.','good');return}
  if(b.hasAttribute('data-listen')){
   const item=listening[state.listen];
   if(!listenReady)return;
