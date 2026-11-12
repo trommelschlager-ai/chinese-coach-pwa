@@ -109,7 +109,7 @@ test('question bank includes new templates but cannot ask number questions in a 
  assert(full.some(x=>x.family==='relative-count'));
  assert(!partial.some(x=>x.family==='relative-count'));
  assert(!partial.some(x=>x.family==='relative-age'));
- assert(partial.some(x=>x.family==='relative-exists'));
+ assert(partial.some(x=>key(x.hanzi)===key('你有哥哥吗？')),'Existing lesson question must remain available');
  const week=coursePromptBank(4,course,date,{unlocked:allowed});
  assert(week.some(x=>x.family==='weekday-yesno'));
 });

@@ -172,9 +172,22 @@ export function patternPrompts(lesson,date=new Date(),allowed=[1,2,3,4,5,6,7]){
  return createBank(date).filter(p=>p.lesson===lesson&&p.requires.every(n=>allowed.includes(n)))
  .map(p=>({...p,verifiedLines:[{},p]}));
 }
+function findPattern(input,date){
+ const key=cn(input),existing=createBank(date).find(x=>cn(x.hanzi)===key);
+ if(existing)return existing;
+ // Any number from 0 to 100 is valid, not only the numbers sampled in a quiz.
+ const match=/^([零一二三四五六七八九十百\d]+)(后面|前面)是几$/.exec(key);
+ if(!match)return null;
+ const n=NUM_BY_ZH.get(match[1])??(/^\d+$/.test(match[1])?Number(match[1]):null);
+ if(!Number.isInteger(n)||n<0||n>100||match[2]==='后面'&&n===100||match[2]==='前面'&&n===0)return null;
+ const next=match[2]==='后面'?n+1:n-1;
+ return say(zhNum(n)+match[2]+'是几？',pyNum(n)+' '+(match[2]==='后面'?'hòumiàn':'qiánmiàn')+' shì jǐ?',
+   'Какое число '+(match[2]==='后面'?'после ':'перед ')+n+'?',3,
+   statement(zhNum(next)+'。',pyNum(next)+'.',String(next)),
+   [zhNum(next),String(next)],{family:match[2]==='后面'?'next-number':'previous-number'});
+}
 export function patternQuestion(input,allowed=[1],date=new Date()){
- const key=cn(input);
- const p=createBank(date).find(x=>cn(x.hanzi)===key);
+ const p=findPattern(input,date);
  if(!p)return null;
  if(!allowed.includes(p.lesson)||p.requires.some(n=>!allowed.includes(n)))
   return {kind:'locked',lesson:p.lesson,message:'Сначала пройди урок '+[p.lesson,...p.requires].find(n=>!allowed.includes(n))+'.'};
@@ -185,7 +198,7 @@ export function patternQuestion(input,allowed=[1],date=new Date()){
 const parseRole=(value)=>{const m=/^(我)(?:是|不是)(老师|学生)$/.exec(value);return m?m[2]:null};
 export function patternStudentAnswer(input,prompt,allowed=[1],date=new Date()){
  if(!prompt||prompt.intent!=='pattern'||!allowed.includes(prompt.lesson)||prompt.requires?.some(n=>!allowed.includes(n)))return null;
- const target=createBank(new Date(prompt.calendarDate||date)).find(p=>cn(p.hanzi)===cn(prompt.hanzi));
+ const target=findPattern(prompt.hanzi,new Date(prompt.calendarDate||date));
  if(!target)return null;
  const s=cn(input),accepted=prompt.accepted?.some(x=>cn(x)===s)||false;
  if(!accepted)return null;
