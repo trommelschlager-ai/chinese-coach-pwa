@@ -174,7 +174,7 @@ assert(d.querySelector('.pg4-final-score')?.textContent.includes('8 / 10'));
 assert(d.querySelector('.pg4-mistakes')?.textContent.includes('Что повторить: 2'));
 assert(d.getElementById('pg3-stage').textContent.includes('Прошлый результат версии v214: 5 из 7'));
 assert(d.querySelector('.pg4-dictionary')&&d.querySelectorAll('.pg4-dict-line').length>=15);
-assert(d.querySelector('a[href="./hsk1-lesson.html?lesson=5"]'));
+assert(d.querySelector('a.pg-end-next[href="./hsk1-fifth-v227.html"]'),'Fourth lesson must link directly to the fifth');
 const saved=JSON.parse(w.localStorage.getItem('pg-hsk1-v215-weekdays'));
 assert.equal(saved.done,true);
 assert.equal(saved.legacyScore,5);
