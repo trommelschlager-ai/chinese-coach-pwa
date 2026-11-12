@@ -12,6 +12,7 @@ const app=fs.readFileSync('assets/hsk1-fourth-v220.js','utf8');
 const css=fs.readFileSync('assets/hsk1-fourth-v219.css','utf8');
 const native=fs.readFileSync('assets/hsk1-native-human-map-v167.js','utf8');
 const voice=fs.readFileSync('assets/hsk1-weekdays-audio-map-v214.js','utf8');
+const xiaoxiao=fs.readFileSync('assets/lesson4-xiaoxiao-v265.js','utf8');
 const map=fs.readFileSync('hsk1-map.html','utf8');
 assert(html.includes('hsk1-fourth-v219.css?v=266'));
 assert(html.includes('hsk1-fourth-v220.js?v=266'));
@@ -42,7 +43,7 @@ w.localStorage.setItem('pg-hsk1-v214-weekdays',previous.v214);
 w.localStorage.setItem('pg-hsk1-v203-pronouns',previous.lesson2);
 w.localStorage.setItem('pg-hsk1-v213-numbers',previous.lesson3);
 w.localStorage.setItem('pg-hsk1-v3-complete',previous.done);
-w.eval(native);w.eval(voice);w.PANDA_HSK1_VOICES={male:{'明天星期六。':'./assets/hsk1-voices-v156/ecb56237b96af780f69e.mp3'}};
+w.eval(native);w.eval(voice);w.eval(xiaoxiao);w.PANDA_HSK1_VOICES={male:{'明天星期六。':'./assets/hsk1-voices-v156/ecb56237b96af780f69e.mp3'}};
 const played=[],utt=[];
 w.Audio=function(file){
  this.src=file;this.pause=()=>{};this.play=()=>{played.push(this);return Promise.resolve()};
