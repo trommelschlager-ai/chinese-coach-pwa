@@ -124,7 +124,16 @@ for(const answer of ['明天星期六。']){
  assert(played.at(-1).src.includes('hsk1-voices-v156/ecb56237'),'Male avatar must use actual male recording');
  played.at(-1).onended();assert(d.querySelector('[data-dialogue-toggle]').textContent.includes('Слушать'),'Replay restored after dialogue ends');
  assert.equal(utt.length,0,'Dialogue never falls back to TTS');
- click('[data-dialog-answer="'+answer+'"]');click('[data-next-item]');
+ click('[data-dialog-answer="'+answer+'"]');
+ // Regression: previously the completed counter was incorrectly used as dialogue index.
+ const beforeReplay=played.length;
+ click('[data-dialogue-toggle]');
+ assert.equal(played.length,beforeReplay+1,'Completed dialogue must restart the female question');
+ assert.equal(played.at(-1).src,'./assets/lesson4-xiaoxiao-v265/015.mp3','Replay must use Xiaoxiao');
+ played.at(-1).onended();
+ assert(played.at(-1).src.includes('hsk1-voices-v156/ecb56237'),'Replay must continue with the male voice');
+ played.at(-1).onended();
+ click('[data-next-item]');
 }
 assert.equal(step(),11);
 const targets=[['今天','星期','五'],['明天','星期','六'],['昨天','星期','二']];
