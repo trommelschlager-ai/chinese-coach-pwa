@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f8eeff">
+<meta name="description" content="Panda Go HSK1: интерактивное написание иероглифов. Черты, демонстрация, письмо пальцем и проверка для уроков 1–7.">
+<title>✍️ Пишем иероглифы — Panda Go</title>
+<link rel="stylesheet" href="./assets/hanzi-writing-v283.css?v=283">
+</head>
+<body>
+<main class="writing-shell" aria-label="Panda Go: тренажёр написания иероглифов">
+ <header class="writing-header">
+  <a id="writing-back" class="writing-back" href="./hsk1-map.html" aria-label="Вернуться к уроку">‹</a>
+  <div class="writing-brand">Panda <b>Go</b><small>✍️ Тренажёр иероглифов</small></div>
+  <span id="writing-progress" class="writing-progress" aria-label="Освоенные иероглифы">0 / 0</span>
+ </header>
+ <section class="writing-main">
+  <h1>Учимся писать 汉字</h1>
+  <p class="writing-intro">Выбери иероглиф, посмотри порядок черт и напиши пальцем. Ошибки можно исправлять.</p>
+  <nav id="writing-tabs" class="writing-tabs" aria-label="Выбор урока" role="tablist"></nav>
+  <div class="writing-lesson-title"><strong id="writing-lesson-name">Урок 1</strong><span id="writing-lesson-count">Освоено 0 из 0</span></div>
+  <div id="writing-characters" class="writing-characters" role="group" aria-label="Иероглифы урока"></div>
+  <div class="writing-card">
+   <div class="writing-character-meta">
+    <b id="writing-selected-hanzi" class="writing-selected-hanzi" lang="zh-Hans">一</b>
+    <div class="writing-detail"><span id="writing-pinyin" class="writing-pinyin">yī</span><span id="writing-meaning" class="writing-meaning">один</span><small id="writing-strokes"></small></div>
+   </div>
+   <div class="writing-canvas-frame"><div id="writing-canvas" class="writing-canvas" aria-label="Поле для письма иероглифа пальцем"></div></div>
+   <p id="writing-status" class="writing-status" role="status" aria-live="polite">Подготавливаем иероглифы…</p>
+   <div class="writing-actions">
+    <button id="writing-demo" class="demo" type="button">▶ Показать черты</button>
+    <button id="writing-write" class="main" type="button">✍️ Писать</button>
+    <button id="writing-reset" type="button">↺ Сброс</button>
+    <button id="writing-next" class="main" type="button">Следующий →</button>
+   </div>
+  </div>
+  <p class="writing-hint">Правильный порядок черт важнее скорости. При ошибке тренажёр подскажет направление.</p>
+  <footer class="writing-footer"><span>Прогресс письма хранится отдельно от уроков.</span><a href="./hsk1-map.html">Карта HSK 1</a></footer>
+ </section>
+</main>
+<script src="./assets/vendor/hanzi-writer.min.js"></script>
+<script src="./assets/hanzi-writing-v283.js?v=283"></script>
+<noscript>Для тренировки написания иероглифов необходимо включить JavaScript.</noscript>
+</body>
+</html>
