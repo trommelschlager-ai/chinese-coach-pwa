@@ -76,7 +76,7 @@ assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('found
 assert(!d.querySelector('.lesson-step'),'Old seven-step bulky UI must not mount in the new lesson');assert(map.includes('16 экранов'),'First map must show the 16 actual screens');
 assert(!js.includes('speechSynthesis'),'No cloned or invented speaker voice');assert(page.includes('hsk1-native-clean-v198.js?v=198'),'Owner recording overlay is loaded after all older voices');assert(js.includes('const XIAOXIAO_LESSON1=Object.freeze('),'Lesson 1 must use approved Xiaoxiao source map');assert(js.includes('const realHuman='),'Use licensed real human fallback');assert(js.includes('autoGainControl:true'),'Automatic mic gain');assert(js.includes('async function levelRecording(blob)'),'Normalize recorded volume');assert(js.includes('decodeAudioData'),'Web Audio normalization fallback');
 for(const removed of ['Оригинальная запись носительницы','Временный учебный голос','Оценка произношения не автоматическая','Никакой автоматической оценки','Сначала послушай носительницу'])assert(!js.includes(removed),'Redundant status copy returned: '+removed);
-assert(page.includes('hsk1-first-v189.js?v=295'),'New JS query bust');
+assert(page.includes('hsk1-first-v189.js?v=297'),'New JS query bust');
 const xiaoxiaoClips=[
  ['我','wo'],['是','shi'],['学生','xuesheng'],['你','ni'],['你好','nihao'],
  ['我是学生','woshixuesheng'],['妈','ma1'],['麻','ma2'],['马','ma3'],['骂','ma4']

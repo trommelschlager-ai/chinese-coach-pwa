@@ -12,7 +12,7 @@ const speech=fs.readFileSync('assets/hsk1-second-speaking-v209.js','utf8');
 const oneVoice=fs.readFileSync('assets/hsk1-lesson2-audio-v208.js','utf8');
 const xiaoxiao=fs.readFileSync('assets/panda-lesson2-xiaoxiao-v261.js','utf8');
 assert(html.includes('hsk1-first-v189.css?v=237'),'Keep first lesson approved visual style');
-assert(html.includes('hsk1-second-v203.js?v=294'),'Second lesson JS version');
+assert(html.includes('hsk1-second-v203.js?v=296'),'Second lesson JS version');
 assert(!html.includes('hsk1-second-speaking-v209.js'),'Main lesson must not load optional microphone training');
 assert(fs.readFileSync('hsk1-second-practice.html','utf8').includes('hsk1-second-speaking-v209.js?v=262'),'Dedicated practice loads the trainer');
 assert(html.includes('hsk1-lesson2-audio-v208.js?v=208'),'One-speaker voice map must be loaded first');
