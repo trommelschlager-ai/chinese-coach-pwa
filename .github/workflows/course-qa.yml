@@ -29,6 +29,7 @@ jobs:
       - run: node scripts/verify-lesson4-visual-v269.cjs
       - run: node scripts/verify-panda-lesson4-voice-labels-v282.cjs
       - run: node scripts/verify-panda-go-audio-v236.cjs
+      - run: node scripts/verify-mic-raw-v292.cjs
       - run: node scripts/verify-panda-mobile-repairs-v290.cjs
       - run: node scripts/verify-lesson7-opening-male-v291.cjs
       - run: node scripts/verify-hsk1-full-restart-v291.cjs
