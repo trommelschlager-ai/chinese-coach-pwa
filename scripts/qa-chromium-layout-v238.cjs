@@ -86,11 +86,11 @@ async function main(){
    await page.setBypassServiceWorker(true);
    let errors=[];
    page.on('pageerror',e=>errors.push(e.message));
-   for(const [width,height] of [[320,568],[320,780],[360,568],[360,780],[393,568],[393,780],[430,568],[430,780]]){
+   for(const [width,height] of [[320,568],[320,780],[360,568],[360,780],[393,568],[393,780],[412,568],[412,780],[430,568],[430,780]]){
     await page.setViewport({width,height,deviceScaleFactor:1,isMobile:true,hasTouch:true});
     try{
      // The preceding 393px pass restores the last screen; clear only the QA tab's state.
-     if(width===430&&height===568)await page.evaluate(key=>localStorage.removeItem(key),lesson.key);
+     if((width===412||width===430)&&height===568)await page.evaluate(key=>localStorage.removeItem(key),lesson.key);
      await page.goto('http://127.0.0.1:'+port+'/'+lesson.file,{waitUntil:'networkidle2',timeout:45000});
      await page.evaluate(()=>document.fonts?.ready);
      let row=await evaluateLayout(page,l+1,1,width,height,errors);
@@ -118,7 +118,7 @@ async function main(){
    // HSK1 approved map: actual tap targets and visual reference at phone sizes.
    const mapPage=await browser.newPage();
    await mapPage.setBypassServiceWorker(true);
-   for(const [width,height] of [[360,780],[393,780],[430,780]]){
+   for(const [width,height] of [[360,780],[393,780],[412,780],[430,780]]){
     await mapPage.setViewport({width,height,deviceScaleFactor:1,isMobile:true,hasTouch:true});
     await mapPage.goto('http://127.0.0.1:'+port+'/hsk1-map.html',{waitUntil:'networkidle2',timeout:45000});
     await mapPage.evaluate(()=>document.fonts?.ready);
@@ -147,9 +147,34 @@ async function main(){
     await mapPage.screenshot({path:path.join(SHOTS,'hsk1-approved-map-'+width+'.png')});
    }
    await mapPage.close();
+   // Verify final HSK1 diagnostic at all supported Android viewport widths.
+   const examPage=await browser.newPage();await examPage.setBypassServiceWorker(true);
+   for(const [width,height] of [[360,780],[393,780],[412,780],[430,780]]){
+    await examPage.setViewport({width,height,deviceScaleFactor:1,isMobile:true,hasTouch:true});
+    await examPage.goto('http://127.0.0.1:'+port+'/hsk1-diagnostic.html',{waitUntil:'networkidle2',timeout:45000});
+    await examPage.waitForSelector('.pg-exam-card',{timeout:15000});
+    const examRow=await examPage.evaluate(({width,height})=>{
+     const issues=[];
+     if(document.documentElement.scrollWidth>innerWidth+1)issues.push('Horizontal diagnostic overflow');
+     const buttons=[...document.querySelectorAll('#pg-exam-body button,#pg-exam-next,#pg-exam-prev')];
+     if(!buttons.length)issues.push('Diagnostic buttons missing');
+     for(const button of buttons){
+      const r=button.getBoundingClientRect();
+      if(r.height<44)issues.push('Diagnostic tap target too short: '+button.textContent);
+      if(r.left<0||r.right>innerWidth+1)issues.push('Diagnostic button outside viewport: '+button.textContent);
+     }
+     if(!document.getElementById('pg-exam-next').disabled)issues.push('Diagnostic must lock until answered');
+     const foot=document.querySelector('.pg-exam-footer')?.getBoundingClientRect();
+     if(!foot||foot.bottom>innerHeight+2)issues.push('Diagnostic footer off screen');
+     return {lesson:'diagnostic',screen:1,width,height,issues};
+    },{width,height});
+    rows.push(examRow);
+    if(width===393)await examPage.screenshot({path:path.join(SHOTS,'hsk1-diagnostic-393.png')});
+   }
+   await examPage.close();
  }finally{await browser.close();await new Promise(r=>server.close(r))}
  const failures=rows.filter(r=>r.issues.length);
- const results={version:238,engine:'headless Chromium (actual rendered DOM, not jsdom)',tested_at:new Date().toISOString(),checks:rows.length,passed:rows.length-failures.length,failed:failures.length,failures,limitations:['Not a physical Android test','Does not assess audio tone or subjective sound quality','All screens checked at 393x780, all covers at 320/360/393/430 and two heights']};
+ const results={version:238,engine:'headless Chromium (actual rendered DOM, not jsdom)',tested_at:new Date().toISOString(),checks:rows.length,passed:rows.length-failures.length,failed:failures.length,failures,limitations:['Not a physical Android test','Does not assess audio tone or subjective sound quality','All screens checked at 393x780, all covers at 320/360/393/412/430 and two heights; diagnostic checked at four widths']};
  fs.writeFileSync(OUT,JSON.stringify(results,null,2)+'\n');
  console.log('PANDA GO browser QA:',rows.length,'checks,',failures.length,'failures');
  for(const r of failures.slice(0,35))console.log(JSON.stringify(r));
