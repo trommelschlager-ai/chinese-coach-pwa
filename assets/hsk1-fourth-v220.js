@@ -274,7 +274,7 @@ function grammar(){
 }
 function calendar(){
  const i=state.ix[7]||0;
- if(i>=CALENDAR.length)return ''; // Completed questions redirect to handwriting in screen().
+ if(i>=CALENDAR.length)return card(h('✓ Календарь пройден')+'<p class="pg4-info">Можешь повторить ситуации или перейти дальше.</p><button type="button" class="pg4-audio" data-repeat="7">↺ Повторить ситуации</button>');
  const data=CALENDAR[i],today=DAYS[data.today-1];
  return card('<div class="pg4-question-progress">Ситуация '+(i+1)+' из '+CALENDAR.length+'</div>'+
  h('Сегодня — '+today.ru)+
@@ -308,7 +308,7 @@ function dialogue(){
  '<div class="pg4-dialog-actions"><button type="button" class="pg4-audio" data-dialogue-toggle aria-pressed="false">▶ Слушать</button></div>'+
  '<p class="pg4-info">Девушка спрашивает, парень отвечает. Послушай и повтори.</p>'+
  '<p class="pg4-info">Выбери правильный ответ:</p>'+
- choices(d.choices,'dialog-answer',false,locked)+displayFeedback());
+ choices(d.choices,'dialog-answer',false,locked)+displayFeedback()+((state.ix[9]||0)>=DIALOG.length?'<button type="button" class="pg4-audio" data-repeat="9">↺ Повторить диалог</button>':''));
 }
 function practicalPhrases(){
  const phrases=[
@@ -320,7 +320,7 @@ function practicalPhrases(){
 }
 function sentence(){
  const i=state.ix[10]||0;
- if(i>=BUILDS.length)return ''; // Completed questions redirect to the exam in screen().
+ if(i>=BUILDS.length)return card(h('✓ Все предложения собраны')+'<p class="pg4-info">Повторение не изменяет результат первой попытки.</p><button type="button" class="pg4-audio" data-repeat="10">↺ Собрать заново</button>');
  const d=BUILDS[i];const locked=state.answered?.step===10&&state.answered.correct;
  return card('<div class="pg4-question-progress">Фраза '+(i+1)+' из '+BUILDS.length+'</div>'+
  h(d.prompt)+
@@ -387,12 +387,7 @@ function complete(){
  save();
 }
 function screen(keep=false){
- // Skip empty completion-only screens, preserving the listening exams and saved results.
- const completedPage=n=>(n===4&&state.ix[4]>=LISTEN.length)||
- (n===7&&state.ix[7]>=CALENDAR.length)||
- (n===10&&state.ix[10]>=BUILDS.length)||
- (n===11&&state.ix[11]>=examSet().length);
- while(state.step<12&&completedPage(state.step)){state.step++;keep=false}
+ // Completed exercises remain visible, rather than automatically skipping them.
  const pos=viewport.scrollTop;
  soundStop();writerStop();if(!keep)micStop(true);
  const s=state.step;if(s===12&&!state.done)complete();
@@ -668,14 +663,7 @@ stage.addEventListener('click',ev=>{
 });
 back.addEventListener('click',()=>{
  if(state.step===0){location.href='./hsk1-map.html';return}
- let previous=state.step-1;
- // On back navigation skip all previously completed exercise placeholders.
- const completedPage=n=>(n===4&&state.ix[4]>=LISTEN.length)||
- (n===7&&state.ix[7]>=CALENDAR.length)||
- (n===10&&state.ix[10]>=BUILDS.length)||
- (n===11&&state.ix[11]>=examSet().length);
- while(previous>0&&completedPage(previous))previous--;
- state.step=previous;state.answered=null;state.listenReady=false;state.tiles=[];state.used=[];screen()
+ state.step--;state.answered=null;state.listenReady=false;state.tiles=[];state.used=[];screen()
 });
 forward.addEventListener('click',nextScreen);
 window.addEventListener('pagehide',()=>{soundStop();writerStop();micStop()});
