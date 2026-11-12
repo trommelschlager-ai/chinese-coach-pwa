@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'assets/lesson6-audio-import-v274.zip'
+      - 'scripts/install-lesson6-xiaoxiao-v274.cjs'
 permissions:
   contents: write
 concurrency:
@@ -39,7 +40,6 @@ jobs:
           git add assets/offline-pack.json sw.js
           git add scripts/verify-panda-go-approved-v231.cjs scripts/verify-panda-audio-v244.cjs
           git add scripts/install-lesson6-xiaoxiao-v274.cjs scripts/verify-hsk1-lesson6-xiaoxiao-v274.cjs
-          git add .github/workflows/course-qa.yml
           if git diff --cached --quiet; then
             echo 'Already installed'
             exit 0
