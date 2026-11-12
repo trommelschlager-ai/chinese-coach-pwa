@@ -19,7 +19,7 @@ const dom=new JSDOM(html,{url:'https://panda.test/hsk1-fifth-v227.html',runScrip
 const w=dom.window,d=w.document;
 w.eval(data);
 w.PANDA_HSK1_VOICES={female:Object.fromEntries(['四月','十一月','十二月'].map(x=>[x,'./assets/recordings/'+encodeURIComponent(x)+'.mp3'])),male:{}};
-w.Audio=function(file){this.src=file;this.pause=()=>{};this.play=()=>Promise.resolve();};
+w.Audio=function(file){this.src=file;this.pause=()=>{};this.play=()=>{this.onended?.();return Promise.resolve()};};
 w.HanziWriter={create:()=>({cancelQuiz(){},pauseAnimation(){},animateCharacter(){},quiz(){}})};
 w.eval(js);
 const steps=()=>Number(d.getElementById('pg5-count').textContent.split(' ')[0]);
@@ -37,6 +37,8 @@ assert.equal(d.querySelectorAll('.bubble').length,3,'Original date dialogue must
 click('#pg5-next');assert.equal(steps(),10);
 assert(d.getElementById('pg5-next').disabled,'Listening step must wait for answers');
 for(const word of ['四月','十一月','十二月']){
+ assert(d.querySelector('[data-listen="'+word+'"]').disabled,'Answer must be blocked before audio finishes');
+ click('[data-play="'+word+'"]');
  click('[data-listen="'+word+'"]');
 }
 assert(!d.getElementById('pg5-next').disabled);

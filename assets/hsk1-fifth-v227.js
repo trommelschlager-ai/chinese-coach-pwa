@@ -110,7 +110,7 @@ function word(w){return '<div class="word"><div><strong lang="zh-Hans">'+esc(w[0
 function card(body,extra=''){return '<section class="card '+extra+'">'+body+'</section>'}
 function example(hz,py,ru){return '<div class="example"><strong lang="zh-Hans">'+esc(hz)+'</strong><span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span><div class="buttons">'+audioButton(hz)+'</div></div>'}
 function intro(){return '<div class="intro"><div class="intro-copy"><span class="pg5-kicker">HSK1 · УРОК 5</span><strong>Месяцы, год и даты</strong><p>Научись читать календарь и называть числа на китайском!</p></div><div class="intro-art" role="img" aria-label="Панда Panda Go в фиолетовых наушниках"></div></div>'+
- '<div class="cover-milestones"><div><strong>一月</strong><small>yī yuè · январь</small></div><div><strong>五月</strong><small>wǔ yuè · май</small></div><div><strong>十二月</strong><small>shí'èr yuè · декабрь</small></div></div>'+
+ '<div class="cover-milestones"><div><strong>一月</strong><small>yī yuè · январь</small></div><div><strong>五月</strong><small>wǔ yuè · май</small></div><div><strong>十二月</strong><small>shí\'èr yuè · декабрь</small></div></div>'+
  '<p class="cover-caption">12 месяцев · порядок даты · разговор и практика</p>'+
  '<div class="cover-note">🌸 <strong>年 · 月 · 日 · 号</strong> — год, месяц и число</div>';}
 function groupWords(group){return card('<div class="grid two">'+group.map(word).join('')+'</div>')+

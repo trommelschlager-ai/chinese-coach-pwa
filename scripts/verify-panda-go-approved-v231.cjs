@@ -32,7 +32,7 @@ for(const lesson of [6,7]){
   male:new Proxy({}, {get(_,p){return './assets/sample/'+String(p)+'.mp3'}})
  };
  w.PANDA_HSK1_NATIVE_HUMAN_V167={};
- w.Audio=function(src){this.src=src;this.pause=()=>{};this.play=()=>Promise.resolve()};
+ w.Audio=function(src){this.src=src;this.pause=()=>{};this.play=()=>{this.onended?.();return Promise.resolve()}};
  w.HanziWriter={create:()=>({cancelQuiz(){},pauseAnimation(){},animateCharacter(){},quiz(){}})};
  const legacy='pg-hsk1-v3-'+topic;
  const legacyContent=JSON.stringify({step:4,maxStep:4,completed:false});
@@ -54,7 +54,11 @@ for(const lesson of [6,7]){
  click('#pg5-next');assert.equal(step(),10);
  assert(d.getElementById('pg5-next').disabled,'Listening must block progress');
  const currentTopic=w.PANDA_HSK1_FOUNDATIONS.find(x=>x.id===topic);
- for(const [hz] of currentTopic.listen.items.slice(0,4))click('[data-listen="'+hz+'"]');
+ for(const [hz] of currentTopic.listen.items.slice(0,4)){
+  assert(d.querySelector('[data-listen="'+hz+'"]').disabled,'Listening choice must be blocked before playback');
+  click('[data-play="'+hz+'"]');
+  click('[data-listen="'+hz+'"]');
+ }
  assert(!d.getElementById('pg5-next').disabled,'Four real correct answers needed');
  click('#pg5-next');assert.equal(step(),11);
  assert(d.getElementById('pg5-next').disabled,'Builder gate missing');
