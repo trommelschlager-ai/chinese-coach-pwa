@@ -70,7 +70,7 @@ for(const lesson of [5,7]){
  }
  count[lesson]={buttons:rows.length,unique:seen.size};
 }
-assert(companion.includes('a.playbackRate=(isFamily||newWeather)?1:0.85'),'Xiaoxiao must retain natural voice tempo');
+assert(companion.includes("a.playbackRate=(isFamily||newWeather||role==='male')?1:0.85"),'Xiaoxiao and male dialogue must retain natural voice tempo');
 assert(!companion.slice(start,end).includes('hsk1-voices-v160'),'Do not silently switch weather back to synthetic v160');
 const weatherHtml=read('hsk1-weather-v231.html'),dateHtml=read('hsk1-fifth-v227.html');
 for(const html of [weatherHtml,dateHtml]){
