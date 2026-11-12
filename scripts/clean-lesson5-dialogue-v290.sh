@@ -3,7 +3,10 @@ set -euo pipefail
 source_mp3='assets/hsk1-voices-v160/2a2ee3f1d20f421b6211.mp3'
 clean_mp3='assets/lesson5-male-clean-v290.mp3'
 test -s "$source_mp3"
-command -v ffmpeg >/dev/null || { echo "ffmpeg is required"; exit 1; }
+if ! command -v ffmpeg >/dev/null; then
+  sudo apt-get update -qq
+  sudo apt-get install -y -qq ffmpeg
+fi
 ffmpeg -nostdin -hide_banner -loglevel error -y -i "$source_mp3" \
   -af "highpass=f=85,afftdn=nf=-43,loudnorm=I=-19:TP=-2:LRA=10" \
   -ar 44100 -ac 1 -codec:a libmp3lame -q:a 3 "$clean_mp3"
