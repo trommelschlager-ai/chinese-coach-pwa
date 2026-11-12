@@ -23,7 +23,7 @@ const gain=read('assets/panda-lesson-audio-v240.js');new vm.Script(gain);
 assert(gain.includes('source.connect(hp);hp.connect(lp);lp.connect(presence);presence.connect(compressor);'),'Rumble/hiss filters must precede compressor');
 assert(gain.includes('compressor.connect(gain);gain.connect(limiter);limiter.connect(ctx.destination);'),'Loudness limiter must follow gain');
 for(const hanzi of ['今天','几','明天七号','明天下雨吗','明天下雨'])assert(gain.includes("'"+hanzi+"'"),'Missing focused processing for '+hanzi);
-assert(read('assets/lesson-audio-source.js').includes("lessonNumber==='5'||lessonNumber==='7'"),'Remove voice/version debug text from lessons 5 and 7');
+assert(!read('assets/lesson-audio-source.js').includes("document.addEventListener('click'"),'Source/debug captions must be removed from all seven lessons');
 assert(read('hsk1-fifth-v227.html').includes('panda-lesson-audio-v240.js?v=248'));
 const queue=JSON.parse(read('qa/v244/audio-recording-queue.json'));
 assert(queue.totalFlaggedUniqueActivePhrases===63);

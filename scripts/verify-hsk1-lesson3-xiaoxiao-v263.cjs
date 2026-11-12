@@ -15,7 +15,7 @@ for(let n=0;n<=100;n++){
 assert.equal(voice.lookup(101),null);
 const html=fs.readFileSync('hsk1-third-v212.html','utf8');
 const js=fs.readFileSync('assets/hsk1-third-v213.js','utf8');
-assert(html.includes('lesson3-xiaoxiao-v263.js?v=263')&&html.includes('hsk1-third-v213.js?v=263'));
+assert(html.includes('lesson3-xiaoxiao-v263.js?v=263')&&html.includes('hsk1-third-v213.js?v=282'));
 assert(js.includes('PandaLesson3XiaoxiaoV263?.lookup(n)'));
 assert(!js.includes('PANDA_HSK1_L3_CLEAN_V250'));
 assert(!html.includes('panda-clean-audio-v250.js'));
