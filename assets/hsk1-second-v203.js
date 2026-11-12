@@ -491,7 +491,10 @@ area.addEventListener('click',async ev=>{
   }
   try{
    safeStopMic();const take=++micEpoch;
-   stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}});
+   stopAudio();
+   await new Promise(resolve=>setTimeout(resolve,180));
+   if(state.step!==10||take!==micEpoch)return;
+   stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:{ideal:true},noiseSuppression:{ideal:true},autoGainControl:{ideal:true},channelCount:{ideal:1}}});
    const formats=['audio/webm;codecs=opus','audio/mp4','audio/webm'];
    const mime=formats.find(m=>MediaRecorder.isTypeSupported(m));
    recorder=new MediaRecorder(stream,mime?{mimeType:mime}:undefined);

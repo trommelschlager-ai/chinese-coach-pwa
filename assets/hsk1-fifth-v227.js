@@ -86,6 +86,7 @@ function voice(hz,role='female'){
   window.PANDA_HSK1_VOICES?.female?.[hz]||null;
 }
 function play(hz,role='female',onComplete=null){
+ if(recorder?.state==='recording'){say('Останови запись перед прослушиванием образца.','bad');onComplete?.(false);return}
  const path=voice(hz,role);if(!path){say('Для этой фразы пока нет проверенной записи.','bad');onComplete?.(false);return}
  stopAudio();const serial=playId;
  try{
@@ -155,7 +156,7 @@ function speaking(){
  const speech=topic.speech;
  return card('<div class="speech-card"><h2>Повтори дату вслух</h2><strong lang="zh-Hans">'+esc(speech.hz)+'</strong><p>'+esc(speech.py)+'</p><p>'+esc(speech.ru)+'</p>'+
  '<div class="buttons">'+audioButton(speech.hz)+'<button class="soft" data-record-start type="button">🎙 Записать себя</button><button class="soft" type="button" data-record-stop disabled>■ Стоп</button><button class="soft" type="button" data-record-play disabled>▶ Мой голос</button></div>'+
- '<p class="small">Сравни своё произношение с образцом. Автоматической проверки тонов здесь нет.</p></div>')+
+ '<p class="small">Перед записью образец отключается, чтобы избежать эха. Если оно осталось, воспользуйся наушниками. Автоматической проверки тонов пока нет.</p></div>')+
  card('<p class="center">Скажи также: <b>今天几月几号？</b> — Какое сегодня число?</p>');}
 function summary(){
  const q=topic.quiz;
@@ -164,7 +165,7 @@ function summary(){
  '<button type="button" class="card-choice '+(state.quizPassed&&i===q.correct?'correct':'')+'" data-final="'+i+'"'+(state.quizPassed?' disabled':'')+'>'+esc(c)+'</button>').join('')+'</div>'+
  (state.quizPassed?'<p class="result good">✓ Верно! Урок 5 завершён.</p>':'<p class="small">Выбери правильный ответ, чтобы завершить урок.</p>'))+
  card('<h2>Повтори четыре важных слова</h2><div class="grid two">'+keywords.map(word).join('')+'</div>')+
- (state.done?'<div class="buttons"><a class="soft primary" style="text-decoration:none;display:grid;place-items:center" href="./hsk1-lesson.html?lesson=6">К уроку 6 →</a></div>':'');
+ (state.done?'<div class="buttons"><button type="button" class="soft primary" data-restart-lesson>↻ Пройти весь урок заново</button><a class="soft" style="text-decoration:none;display:grid;place-items:center" href="./hsk1-lesson.html?lesson=6">К уроку 6 →</a></div>':'');
 }
 const renderers=[intro,()=>groupWords(monthGroups[0]),()=>groupWords(monthGroups[1]),()=>groupWords(monthGroups[2]),basicTerms,monthRule,dateRule,sounds,conversation,listening,builder,writing,speaking,summary];
 function stopWriter(){++writerId;try{writer?.cancelQuiz?.();writer?.pauseAnimation?.()}catch{}writer=null}
@@ -217,8 +218,11 @@ async function recordStart(){
  if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){say('Запись не поддерживается этим браузером.','bad');return}
  try{
   if(recorder&&recorder.state==='recording')return;
+  stopAudio();
+  await new Promise(resolve=>setTimeout(resolve,180));
+  if(state.step!==12)return;
   if(micUrl){URL.revokeObjectURL(micUrl);micUrl=null}
-  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}});recordParts=[];
+  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:{ideal:true},noiseSuppression:{ideal:true},autoGainControl:{ideal:true},channelCount:{ideal:1}}});recordParts=[];
   recorder=new MediaRecorder(stream);
   recorder.ondataavailable=e=>{if(e.data?.size)recordParts.push(e.data)};
   recorder.onstop=()=>{
@@ -242,7 +246,12 @@ app.addEventListener('click',event=>{
   }else play(b.dataset.play,b.dataset.role||'female');
   return;
  }
- if(b.hasAttribute('data-repeat-listen')){state.listen=0;listenReady=false;save();refresh();say('Аудирование начато заново.','good');return}
+ if(b.hasAttribute('data-restart-lesson')){
+   stopAudio();stopWriter();if(recorder?.state==='recording')recorder.stop();
+   if(micUrl){URL.revokeObjectURL(micUrl);micUrl=null}
+   state=defaultState();save();refresh();return;
+  }
+  if(b.hasAttribute('data-repeat-listen')){state.listen=0;listenReady=false;save();refresh();say('Аудирование начато заново.','good');return}
   if(b.hasAttribute('data-repeat-builder')){state.built=0;clearBuilder();refresh();say('Собери месяцы заново.','good');return}
   if(b.hasAttribute('data-listen')){
   const i=state.listen;if(i>=questions.length||!listenReady)return;

@@ -132,6 +132,7 @@ function resolve(hz,role='female'){
   (window.courseHumanAudio||{})[hz]||null;
 }
 function play(hz,role='female',onComplete=null){
+ if(media?.state==='recording'){say('Останови запись перед прослушиванием образца.','bad');onComplete?.(false);return}
  const src=resolve(hz,role);
  if(!src){say('Для этой фразы пока нет доступной записи.','bad');onComplete?.(false);return}
  stopAudio();const token=serial;
@@ -257,7 +258,7 @@ function speaking(){
  const z=topic.speech;
  return card('<h2>Повтори вслух</h2><div class="speech-card"><strong lang="zh-Hans">'+esc(z.hz)+'</strong><p>'+esc(z.py)+'</p><p>'+esc(z.ru)+'</p></div>'+
  '<div class="buttons">'+playBtn(z.hz)+'<button type="button" class="soft" data-record>🎙 Записать</button><button type="button" class="soft" data-stop disabled>■ Стоп</button><button type="button" class="soft" data-replay disabled>▶ Мой голос</button></div>'+
- '<p class="small center">Сравни тон и ритм с носительницей самостоятельно. Автоматическая оценка произношения здесь не проводится.</p>')+
+ '<p class="small center">Во время записи образец останавливается, чтобы уменьшить эхо. Если эхо остаётся, надень наушники. Автоматической проверки тонов здесь нет.</p>')+
  card('<div class="rule-card">'+esc(z.tip||'Повтори фразу вслух.')+'</div>');
 }
 function summary(){
@@ -271,7 +272,7 @@ function summary(){
  '<div class="pg6-grandparent-review">'+grandparents.map(([zh,py,ru,slug])=>
  '<div><img class="pg6-review-photo" src="'+grandparentPhoto(slug)+'" width="390" height="390" loading="lazy" decoding="async" alt="'+esc(ru)+'">'+
  '<span class="pg6-review-copy"><b lang="zh-Hans">'+esc(zh)+'</b><small>'+esc(py)+' · '+esc(ru)+'</small></span>'+playBtn(zh)+'</div>').join('')+'</div>':''))+
- (state.done?'<div class="buttons"><a class="soft primary" style="text-decoration:none;display:grid;place-items:center" href="'+(isFamily?'./hsk1-weather-v231.html':'./hsk1-map.html')+'">'+(isFamily?'К уроку 7 →':'К карте уроков →')+'</a></div>':'');
+ (state.done?'<div class="buttons"><button type="button" class="soft primary" data-restart-lesson>↻ Пройти весь урок заново</button><a class="soft" style="text-decoration:none;display:grid;place-items:center" href="'+(isFamily?'./hsk1-weather-v231.html':'./hsk1-map.html')+'">'+(isFamily?'К уроку 7 →':'К карте уроков →')+'</a></div>':'');
 }
 const screens=[
  cover,
@@ -331,7 +332,10 @@ async function record(){
  if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){say('Микрофон не поддерживается этим браузером.','bad');return}
  try{
   if(media?.state==='recording')return;
-  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+  stopAudio();
+  await new Promise(resolve=>setTimeout(resolve,180));
+  if(state.step!==12)return;
+  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:{ideal:true},noiseSuppression:{ideal:true},autoGainControl:{ideal:true},channelCount:{ideal:1}}});
   chunks=[];media=new MediaRecorder(stream);
   media.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
   media.onstop=()=>{
@@ -354,6 +358,12 @@ stage.addEventListener('click',e=>{
    play(b.dataset.play,b.dataset.role||'female');
   }else play(b.dataset.play,b.dataset.role||'female');
   return;
+ }
+ if(b.hasAttribute('data-restart-lesson')){
+  // Keep achievements in pg-hsk1-v3-complete and start a fresh local attempt.
+  stopAudio();stopWriter();if(media?.state==='recording')media.stop();
+  if(micUrl){URL.revokeObjectURL(micUrl);micUrl=null}
+  state=defaultState();save();refresh();return;
  }
  if(b.hasAttribute('data-repeat-listen')){state.listen=0;listenReady=false;save();refresh();say('Аудирование начато заново.','good');return}
  if(b.hasAttribute('data-listen')){
