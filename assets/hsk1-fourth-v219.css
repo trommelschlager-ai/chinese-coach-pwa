@@ -208,7 +208,8 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{o
 .pg4-bubbles>div{position:relative;max-width:100%;min-height:130px;display:flex;flex-direction:column;justify-content:center}
 .pg4-bubbles .from-f{padding-left:90px}.pg4-bubbles .from-m{padding-right:90px}
 .pg4-bubbles .from-f:before,.pg4-bubbles .from-m:after{content:"";position:absolute;top:5px;width:76px;height:115px;background-position:center;background-size:cover;border-radius:18px}
-.pg4-bubbles .from-f:before{left:5px;background-image:url('./lesson4-reference-v216/woman.webp')}.pg4-bubbles .from-m:after{right:5px;background-image:url('./lesson4-reference-v216/man.webp')}
+.pg4-bubbles .from-f:before{left:5px;background-image:url('./lesson4-dialog-v266/woman.svg')}.pg4-bubbles .from-m:after{right:5px;background-image:url('./lesson4-dialog-v266/man.svg')}
+.pg4-bubbles .from-f:before,.pg4-bubbles .from-m:after{border:2px solid #fff;box-shadow:0 3px 8px #6c397528;background-position:center 12%;background-repeat:no-repeat}
 .pg4-bubbles small{font-size:14px;line-height:1.5;color:#654936}.pg4-bubbles strong{font-size:25px;line-height:1.4}
 @media(max-width:365px){.pg4-bubbles .from-f{padding-left:72px}.pg4-bubbles .from-m{padding-right:72px}.pg4-bubbles .from-f:before,.pg4-bubbles .from-m:after{width:58px;height:100px}.pg4-bubbles strong{font-size:22px}.pg4-bubbles small{font-size:13px}}
 
