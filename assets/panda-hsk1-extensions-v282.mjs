@@ -56,9 +56,9 @@ add(4,['星期一后面是星期几'],'星期一后面是星期几？','Xīngqī
 add(4,['你星期几去看电影'],'你星期几去看电影？','Nǐ xīngqī jǐ qù kàn diànyǐng?','В какой день идёшь в кино?',
  constant('我星期六去看电影。','Wǒ xīngqīliù qù kàn diànyǐng.','В субботу иду в кино.',role),['我星期六去看电影'],{auto:false});
 // Lesson 5 — correct real calendar, fictitious birthday explicitly marked.
-add(5,['现在是几月','现在几月'],'现在是几月？','Xiànzài shì jǐ yuè?','Какой сейчас месяц?',
+add(5,['现在是几月'],'现在是几月？','Xiànzài shì jǐ yuè?','Какой сейчас месяц?',
  ({date})=>{const m=date.getMonth()+1;return reply('现在是'+num(m)+'月。','Xiànzài shì '+pyNum(m)+' yuè.','Сейчас '+months[m-1]+'.','По календарю устройства.')},
- [],{auto:false});
+ [],{auto:true});
 add(5,['你的生日是几月几号','你生日是几月几号'],'你的生日是几月几号？','Nǐ de shēngrì shì jǐ yuè jǐ hào?','Когда твой день рождения?',
  constant('我的生日是三月六号。','Wǒ de shēngrì shì sān yuè liù hào.','День рождения учебной Панды — 6 марта.',role),['我的生日是三月六号'],{auto:false});
 add(5,['这个月有多少天'],'这个月有多少天？','Zhège yuè yǒu duōshao tiān?','Сколько дней в этом месяце?',
