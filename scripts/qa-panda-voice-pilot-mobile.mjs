@@ -78,7 +78,7 @@ try{
   for(const [q,answer] of [['今天天气怎么样','今天很冷。'],['你有妹妹吗','我有一个妹妹。'],['你几岁','我三岁。']]){await send(page,q);assert.equal(await page.locator('#phrase').textContent(),answer)}
   await send(page,'今天星期几');assert((await page.locator('#phrase').textContent()).includes('星期'+dayNames[day]));
   await send(page,'今天几月几号');assert((await page.locator('#exercise-banner').textContent()).includes('календарю устройства'));
-  await send(page,'今天天气怎么样');await page.waitForFunction(()=>['今天天气怎么样？','明天天气怎么样？'].includes(document.querySelector('#phrase').textContent),null,{timeout:12000});
+  await send(page,'今天天气怎么样');if(!(await page.locator('#status').textContent()).includes('Панда продолжит'))await send(page,'今天天气怎么样');await page.waitForFunction(()=>['今天天气怎么样？','明天天气怎么样？'].includes(document.querySelector('#phrase').textContent),null,{timeout:12000});
   await send(page,'我不有妹妹');assert((await page.locator('#learner-feedback').textContent()).includes('我没有妹妹'));assert((await page.locator('#recent').textContent()).includes('我不有妹妹'));
   for(const hint of [false,true]){
    if((await page.locator('#hint').getAttribute('aria-expanded'))!==String(hint))await page.locator('#hint').click();
