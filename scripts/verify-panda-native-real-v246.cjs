@@ -28,6 +28,8 @@ function checkApproved(hz,src){
 const monthNames='一月 二月 三月 四月 五月 六月 七月 八月 九月 十月 十一月 十二月'.split(' ');
 for(const name of monthNames)checkApproved(name,native(name));
 const companion=read('assets/panda-go-companion-v231.js');
+// Lesson 7 was upgraded from archived native samples to Xiaoxiao-only v278.
+vm.runInContext(read('assets/lesson7-xiaoxiao-v277.js'),context,{filename:'lesson7-xiaoxiao-v277.js'});
 const start=companion.indexOf('function weatherClips(hz){'),end=companion.indexOf('function resolve(hz,role=',start);
 assert(start>0&&end>start,'Weather resolver unavailable');
 const weatherFn=vm.runInContext('(()=>{const isFamily=false,mappings=window.PANDA_HSK1_VOICES;'+companion.slice(start,end)+';return weatherClips})()',context);
@@ -61,12 +63,14 @@ for(const lesson of [5,7]){
   }else{
    const clips=weatherFn(hz);
    assert(clips.length===1,'All weather playback must use ONE complete original phrase: '+hz);
-   checkApproved(hz,clips[0]);
+   assert(clips[0].startsWith('./assets/lesson7-xiaoxiao-v277/')||clips[0].startsWith('./assets/lesson4-xiaoxiao-v265/'),
+     'Weather voice must be Xiaoxiao v278: '+hz);
+   assert(fs.existsSync(clips[0].slice(2)),'Missing Xiaoxiao weather file: '+clips[0]);
   }
  }
  count[lesson]={buttons:rows.length,unique:seen.size};
 }
-assert(companion.includes('a.playbackRate=isFamily?1:0.85'),'Natural speaker speed must remain gentle');
+assert(companion.includes('a.playbackRate=(isFamily||newWeather)?1:0.85'),'Xiaoxiao must retain natural voice tempo');
 assert(!companion.slice(start,end).includes('hsk1-voices-v160'),'Do not silently switch weather back to synthetic v160');
 const weatherHtml=read('hsk1-weather-v231.html'),dateHtml=read('hsk1-fifth-v227.html');
 for(const html of [weatherHtml,dateHtml]){
@@ -76,9 +80,9 @@ for(const html of [weatherHtml,dateHtml]){
  assert(html.indexOf('hsk1-human-voice-v183.js')<html.indexOf('panda-native-recovered-v246.js'),'Owner snapshot load order');
  assert(html.indexOf('panda-native-recovered-v246.js')<html.indexOf('panda-owner-lessons5-7-native-v221.js'),'Capture original before override');
 }
-assert(weatherHtml.includes('panda-go-companion-v231.js?v=249'));
+assert(weatherHtml.includes('panda-go-companion-v231.js?v=278'));
 assert(dateHtml.includes('hsk1-fifth-v227.js?v=273'));
 assert(dateHtml.includes('lesson5-xiaoxiao-v272.js?v=272'));
 
 assert(read('assets/lesson-audio-source.js').includes('Звук v246'));
-console.log('PASS Panda Go v246: '+monthNames.length+' native months, '+count[5].unique+' active date phrases ('+count[5].buttons+' buttons), '+count[7].unique+' original native weather phrases ('+count[7].buttons+' buttons). Recovered '+w.PandaNativeRecoveredV246.available+' source clips.');
+console.log('PASS Panda Go v246: '+monthNames.length+' native months, '+count[5].unique+' active date phrases ('+count[5].buttons+' buttons), '+count[7].unique+' Xiaoxiao weather phrases ('+count[7].buttons+' buttons). Recovered '+w.PandaNativeRecoveredV246.available+' source clips.');
