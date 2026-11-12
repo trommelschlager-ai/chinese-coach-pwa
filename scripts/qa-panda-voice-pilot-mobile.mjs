@@ -39,6 +39,13 @@ try{
   assert((await response.body()).length>1000,'Native clip unexpectedly tiny');
   assert(['早上好！','中午好！','下午好！','晚上好！'].includes(await page.locator('#phrase').textContent()));
   assert(await page.locator('#typing').isHidden());
+  // Answer an unscripted student question during the normal lesson.
+  await page.locator('#type-toggle').click();
+  await page.locator('#answer').fill('你好吗？');
+  await page.locator('#send').click();
+  assert.equal(await page.locator('#phrase').textContent(),'很好！');
+  assert.equal(await page.locator('#step').textContent(),'1 из 2');
+  assert((await page.locator('#learner-transcript').textContent()).includes('Как дела?'));
   // One existing talking panda: curriculum panel, valid response variants and audio speed.
   assert(await page.locator('#knowledge-toggle').isVisible());
   await page.locator('#knowledge-toggle').click();
@@ -102,14 +109,16 @@ try{
  // Every newly enabled conversation, including both branching outcomes.
  const context=await browser.newContext({viewport:{width:390,height:825},isMobile:true,hasTouch:true});
  const page=await context.newPage(),errors=[];page.on('pageerror',error=>errors.push(error.message));
+ const currentWeekday=new Date().getDay(),dayNames=['日','一','二','三','四','五','六'];
  const scenarios=[
   {id:2,answers:['你好','我是老师'],final:'我也是老师。'},
   {id:2,answers:['你好','不是，我是学生'],final:'我是老师。'},
   {id:3,answers:['你好','我44岁'],final:'我三岁。'},
-  {id:4,answers:['你好','今天星期一'],final:'明天星期二。'},
+  {id:4,answers:['你好','今天星期'+dayNames[currentWeekday]],final:currentWeekday===1?'明天星期二。':'谢谢！'},
   {id:5,answers:['你好','今天是3月5号'],final:'明天三月六号。'},
   {id:6,answers:['你好','我有两个哥哥'],final:'我也有哥哥。'},
   {id:6,answers:['你好','我没有哥哥'],final:'我有一个哥哥。'},
+  {id:6,answers:['你好','我没有哥哥，我有妹妹'],final:'谢谢！'},
   {id:7,answers:['你好','今天很冷','明天下雨'],final:'谢谢！'}
  ];
  for(const [index,scenario] of scenarios.entries()){
@@ -117,6 +126,11 @@ try{
   await page.locator('html[data-panda-live-ready=true]').waitFor();
   assert.equal(await page.locator('#topic-count').textContent(),`${scenario.id} / 7`);
   assert((await page.locator('#pilot-note').textContent()).includes('единый голос'));
+  if(scenario.id===4){
+   assert(await page.locator('#exercise-banner').isVisible());
+   assert((await page.locator('#exercise-banner').textContent()).includes('твоего телефона'));
+  }
+  if(scenario.id===5)assert((await page.locator('#exercise-banner').textContent()).includes('УЧЕБНАЯ СЦЕНКА'));
   for(const answer of scenario.answers){
    assert(await page.locator('#audio-note').isHidden());
    await page.locator('#hear').click();
@@ -128,6 +142,23 @@ try{
   }
   assert.equal(await page.locator('#phrase').textContent(),scenario.final);
   assert(await page.locator('#completed').isVisible());assert(await page.locator('#audio-note').isHidden());
+  assert(await page.locator('#followup-input').isVisible(),'Finished dialogue must allow continued conversation');
+  if(scenario.id===6){
+   await page.locator('#followup-input').fill('我有弟弟和妹妹');
+   await page.locator('#followup-form button[type=submit]').click();
+   assert((await page.locator('#followup-history').textContent()).includes('У меня есть младший брат и младшая сестра'));
+   assert.equal(await page.locator('#phrase').textContent(),'谢谢！');
+   assert((await page.locator('#learner-transcript').textContent()).includes('младший брат'));
+  }
+  if(scenario.id===7){
+   await page.locator('#followup-input').fill('你好吗？');
+   await page.locator('#followup-form button[type=submit]').click();
+   assert.equal(await page.locator('#phrase').textContent(),'很好！');
+   assert((await page.locator('#followup-history').textContent()).includes('Как дела?'));
+   await page.locator('#followup-input').fill('明天下雨');
+   await page.locator('#followup-form button[type=submit]').click();
+   assert.equal(await page.locator('#phrase').textContent(),'谢谢！');
+  }
   await page.locator('#hear').click();await page.waitForFunction(()=>document.querySelector('#character').dataset.state==='talking');
   const size=await page.evaluate(()=>({viewportWidth:innerWidth,scrollWidth:document.documentElement.scrollWidth}));
   assert(size.scrollWidth<=size.viewportWidth+2);

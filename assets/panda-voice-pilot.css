@@ -109,3 +109,31 @@ main{max-width:700px;margin:0 auto;padding:15px 14px 30px}
 .knowledge-answer{margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:280px;overflow-y:auto;padding:12px;border:1px solid #eddaee;border-radius:16px;background:#fff;color:#39224f;font-size:13px;line-height:1.7}
 .knowledge-answer::before{content:"🐼 Панда объясняет";display:block;font-weight:900;color:#824db0;margin-bottom:7px}
 @media(max-width:370px){.review-strip{font-size:11px;padding:7px}.review-strip button{font-size:11px;padding:5px}.knowledge-field button{padding:8px;font-size:12px}}
+
+/* v266 — learner transcript, real weekday, continued lesson conversation */
+.exercise-banner{margin:0 0 10px;padding:11px 13px;background:linear-gradient(120deg,#eae4ff,#fff5e8);border:1px solid #a976d1;border-left:5px solid #9561c8;border-radius:14px;color:#54366d;font-size:14px;font-weight:760;line-height:1.5;text-align:left}
+.learner-transcript{margin:12px 0 8px;display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto}
+.learner-item{padding:9px 12px;background:#f5ecfb;border-radius:14px;border:1px solid #e1c5f2;color:#64398c;text-align:left;overflow-wrap:anywhere}
+.learner-item strong{display:block;font-size:13px;color:#442163;line-height:1.5}
+.learner-item .learner-pinyin{display:block;color:#765493;font-size:12px;margin:2px 0}
+.learner-item .learner-ru{display:block;color:#402653;font-size:13px;margin:2px 0}
+.learner-item .unverified{font-style:italic;color:#9e6997}
+.followup{border:1px solid #e3c9ef;border-radius:22px;background:linear-gradient(170deg,#fff,#faf0ff);padding:13px;margin:18px auto 3px;text-align:left}
+.followup h2{font-size:18px;text-align:center;color:#653382;margin:0 0 8px}
+.followup>p{color:#795a8d;font-size:12px;line-height:1.5;margin:5px 0 10px}
+.followup-suggestions{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:10px}
+.followup-suggestions button{min-height:39px;border:1px solid #d9bce7;background:#fff;color:#613582;border-radius:13px;padding:7px 11px;font-size:13px;font-weight:800}
+.followup-history{display:flex;flex-direction:column;gap:8px;margin:7px 0;max-height:190px;overflow-y:auto}
+.followup-history article{padding:9px 11px;background:#f5eafd;border-radius:14px;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.followup-history article strong{display:block;color:#683598}
+.followup-history article span{display:block;color:#453052;white-space:pre-wrap}
+.followup-controls{display:flex;gap:8px;align-items:flex-end;margin-top:12px}
+#followup-mic{flex:none;border:0;border-radius:13px;background:linear-gradient(125deg,#c378d7,#8846bc);color:#fff;padding:10px 12px;min-height:45px;font-size:13px;font-weight:850}
+#followup-mic[aria-pressed=true]{background:#7033ae}
+#followup-mic:disabled{opacity:.5}
+#followup-form{flex:1;min-width:0}
+#followup-form label{display:block;font-size:12px;font-weight:700;color:#76518e;text-align:left;margin-bottom:4px}
+#followup-form>div{display:flex;min-width:0;gap:4px}
+#followup-input{flex:1;width:100%;min-width:0;height:44px;padding:9px;border:1px solid #dcc3ed;border-radius:12px;font-size:15px}
+#followup-form button{min-height:44px;min-width:43px;border:0;border-radius:12px;background:#8e53c1;color:white;font-size:20px;font-weight:800}
+@media(max-width:390px){.followup{padding:10px}.followup-controls{gap:5px}#followup-mic{padding:10px 7px;font-size:12px}#followup-form label{font-size:11px}}

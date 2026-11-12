@@ -12,8 +12,10 @@ export const PRACTICE_VARIANTS=Object.freeze({
  7:[['你好','早上好','中午好','下午好','晚上好'],['今天很冷','今天天气很热','今天下雨','今天阴天'],['明天下雨','明天很冷','明天天气很好']]
 });
 export function validatedVariants(lesson,step,lines){
- const proposed=PRACTICE_VARIANTS[lesson]?.[step]||[];
- return proposed.filter(value=>verifyAnswerFor(lines,step,value).ok);
+ const base=PRACTICE_VARIANTS[lesson]?.[step]||[];
+ const proposed=lesson===4&&step===1?lines[step]?.accepted?.slice(0,4)||base:
+  lesson===6&&step===1?[...base,'我没有哥哥我有妹妹','我有哥哥和妹妹','我没有哥哥我有弟弟']:base;
+ return [...new Set(proposed)].filter(value=>verifyAnswerFor(lines,step,value).ok);
 }
 export function readMistakes(storage){
  try{

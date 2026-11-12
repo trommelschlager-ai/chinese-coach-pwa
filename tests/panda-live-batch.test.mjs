@@ -75,12 +75,15 @@ test('weather preview renders three turns, advances twice and ends with the alre
   dom.window.dispatchEvent(new dom.window.Event('pagehide'));dom.window.close();for(const key of ['window','document','localStorage','Audio'])delete globalThis[key];
  }
 });
-test('calendar previews expose fictional conditions before any answer is given',async()=>{
- for(const [id,context] of [[4,'понедельник'],[5,'5 марта']]){
+test('calendar teaching uses real weekday and labels fictional date',async()=>{
+ for(const [id,context] of [[4,'твоего телефона'],[5,'УЧЕБНАЯ СЦЕНКА']]){
   const dom=new JSDOM(fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8'),{url:`https://example.test/panda-voice-pilot.html?lesson=${id}&preview=1`,pretendToBeVisual:true});
   Object.assign(globalThis,{window:dom.window,document:dom.window.document});
-  try{await import(`../assets/panda-voice-pilot-ui.mjs?calendar-${id}`);assert(document.getElementById('exercise-context').textContent.includes(context))}
-  finally{dom.window.dispatchEvent(new dom.window.Event('pagehide'));dom.window.close();delete globalThis.window;delete globalThis.document}
+  try{
+   await import(`../assets/panda-voice-pilot-ui.mjs?calendar-${id}`);
+   const banner=document.getElementById('exercise-banner');
+   assert(!banner.hidden);assert(banner.textContent.includes(context));
+  }finally{dom.window.dispatchEvent(new dom.window.Event('pagehide'));dom.window.close();delete globalThis.window;delete globalThis.document}
  }
 });
 
