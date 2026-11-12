@@ -298,11 +298,13 @@ function dialogue(){
  const locked=(state.ix[9]||0)>=DIALOG.length||(state.answered?.step===9&&state.answered.correct);
  return card('<div class="pg4-question-progress">Короткий диалог — вопрос и ответ</div>'+
  '<div class="pg4-people">'+
- '<div><img src="./assets/lesson4-v269/woman.webp" alt="Девушка — женский голос"><span>Девушка · вопрос</span></div>'+
- '<div><img src="./assets/lesson4-v269/man.webp" alt="Парень — мужской голос"><span>Парень · ответ</span></div></div>'+
- '<div class="pg4-bubbles"><div class="from-f"><img class="pg4-dialog-portrait" src="./assets/lesson4-v269/woman.webp" width="240" height="330" loading="eager" decoding="async" alt="Девушка"><strong lang="zh-Hans">'+d.female+'</strong>'+
- '<small>'+GLOSS[d.female]+'</small></div>'+
- '<div class="from-m" id="pg4-male-preview"><img class="pg4-dialog-portrait" src="./assets/lesson4-v269/man.webp" width="240" height="330" loading="eager" decoding="async" alt="Парень"><strong lang="zh-Hans">'+d.male+'</strong><small>'+GLOSS[d.male]+'</small></div></div>'+
+ '<div><img src="./assets/lesson4-v269/woman.webp" width="240" height="330" loading="eager" decoding="async" alt="Девушка задаёт вопрос"><span>Девушка · вопрос</span></div>'+
+ '<div><img src="./assets/lesson4-v269/man.webp" width="240" height="330" loading="eager" decoding="async" alt="Парень отвечает"><span>Парень · ответ</span></div></div>'+
+ '<div class="pg4-bubbles">'+
+ '<div class="from-f"><span class="pg4-speaker-label">Девушка спрашивает</span><strong lang="zh-Hans">'+d.female+'</strong>'+
+ '<span class="pg4-dialog-pinyin">Míngtiān xīngqī jǐ?</span><small>'+GLOSS[d.female]+'</small></div>'+
+ '<div class="from-m" id="pg4-male-preview"><span class="pg4-speaker-label">Парень отвечает</span><strong lang="zh-Hans">'+d.male+'</strong>'+
+ '<span class="pg4-dialog-pinyin">Míngtiān xīngqī liù.</span><small>'+GLOSS[d.male]+'</small></div></div>'+
  '<div class="pg4-dialog-actions"><button type="button" class="pg4-audio" data-dialogue-toggle aria-pressed="false">▶ Слушать</button></div>'+
  '<p class="pg4-info">Девушка спрашивает, парень отвечает. Послушай и повтори.</p>'+
  '<p class="pg4-info">Выбери правильный ответ:</p>'+

@@ -1,5 +1,5 @@
 {
-  "version": 270,
+  "version": 271,
   "bytes": 55142254,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2471,6 +2471,9 @@
     "./panda-voice-pilot.html?v=265",
     "./panda-voice-pilot.html?v=266",
     "./panda-voice-pilot.html?v=267",
-    "./start-chinese.html"
+    "./start-chinese.html",
+    "./assets/hsk1-fourth-v219.css?v=271",
+    "./assets/hsk1-fourth-v220.js?v=271",
+    "./hsk1-fourth-v214.html?v=271"
   ]
 }
