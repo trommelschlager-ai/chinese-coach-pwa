@@ -1,0 +1,58 @@
+/* Panda Go — unified Hanzi handwriting studio v283. Isolated from seven lesson designs. */
+:root{color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#ebe3f7}
+body{font:500 15px/1.4 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#40304f}
+button,a{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.48;cursor:not-allowed}
+button:focus-visible,a:focus-visible{outline:3px solid #9c52e8;outline-offset:3px}
+.writing-shell{width:min(100%,500px);min-height:100svh;margin:auto;background:linear-gradient(170deg,#fff9fe 0%,#f8efff 60%,#fdf7fc 100%);display:flex;flex-direction:column;box-shadow:0 0 34px #8969a427}
+.writing-header{flex:none;display:grid;grid-template-columns:43px minmax(0,1fr) auto;gap:10px;align-items:center;padding:calc(10px + env(safe-area-inset-top)) 14px 11px;background:#faf2ff;border-bottom:1px solid #e9d7f0}
+.writing-back{display:grid;place-items:center;min-height:42px;width:42px;background:#fff;border:1px solid #e6d7ed;border-radius:14px;text-decoration:none;color:#673697;font-size:29px}
+.writing-brand{font-weight:950;line-height:1.13;letter-spacing:-.5px;font-size:20px;color:#5c278e;white-space:nowrap}
+.writing-brand b{color:#e355a0}
+.writing-brand small{display:block;font-weight:650;font-size:11px;letter-spacing:0;color:#916da3;margin-top:4px}
+.writing-progress{font-size:12px;font-weight:900;color:#663494;border:1px solid #e8cfef;background:#fff;border-radius:13px;padding:8px 9px;white-space:nowrap}
+.writing-main{padding:12px 15px max(18px,env(safe-area-inset-bottom));min-height:0;flex:1}
+.writing-main h1{margin:2px 0 4px;text-align:center;font-size:clamp(22px,6.1vw,29px);line-height:1.17;font-weight:950;color:#60358b}
+.writing-intro{margin:0 auto 12px;text-align:center;color:#796385;font-size:12px;max-width:330px}
+.writing-tabs{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:2px 0 8px;overscroll-behavior-inline:contain}
+.writing-tabs::-webkit-scrollbar,.writing-characters::-webkit-scrollbar{display:none}
+.writing-tab{flex:none;border-radius:14px;border:1px solid #e3c8ea;background:#fff;padding:9px 13px;font-weight:900;font-size:13px;color:#765188;white-space:nowrap}
+.writing-tab[aria-selected="true"]{color:#fff;background:linear-gradient(135deg,#b37ee8,#8045c8);border-color:#9860d5;box-shadow:0 2px 7px #a879db40}
+.writing-lesson-title{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:6px 0 8px}
+.writing-lesson-title strong{font-size:15px;color:#55347f}
+.writing-lesson-title span{font-size:11px;font-weight:850;color:#815c9b}
+.writing-characters{display:flex;gap:8px;overflow:auto;scrollbar-width:none;scroll-snap-type:x proximity;padding:2px 0 9px}
+.writing-char-btn{flex:0 0 51px;min-height:54px;position:relative;border:1.4px solid #dfc3e9;background:#fff;border-radius:15px;font-weight:900;color:#673d8f;font-size:27px;box-shadow:0 2px 6px #bfa1d329;scroll-snap-align:center}
+.writing-char-btn[aria-selected="true"]{background:#f1dcff;border:2px solid #8b46d5;color:#562388}
+.writing-char-btn.done:after{content:"✓";position:absolute;right:3px;top:2px;font:900 11px system-ui;color:#39813c}
+.writing-card{border:1.5px solid #ecd7ef;background:#fff;border-radius:25px;padding:12px 14px 13px;box-shadow:0 6px 18px #9475b224}
+.writing-character-meta{display:flex;align-items:center;justify-content:center;gap:13px;min-height:58px}
+.writing-selected-hanzi{font-size:47px;line-height:1.15;font-weight:750;color:#532c86}
+.writing-detail{display:flex;flex-direction:column;gap:2px;max-width:190px;min-width:0}
+.writing-pinyin{font-size:16px;font-weight:850;color:#9b4eb6}
+.writing-meaning{font-size:12px;color:#77617c;overflow-wrap:anywhere}
+.writing-canvas-frame{position:relative;margin:8px auto 8px;width:min(71vw,272px);height:min(71vw,272px);display:grid;place-items:center;background:linear-gradient(to right,transparent calc(50% - .5px),#f1dff4 50%,transparent calc(50% + .5px)),linear-gradient(to bottom,transparent calc(50% - .5px),#f1dff4 50%,transparent calc(50% + .5px)),#fffaff;border:2px solid #e6c8ef;border-radius:18px;overflow:hidden;box-shadow:inset 0 2px 10px #bf96d614}
+.writing-canvas{width:100%;height:100%;display:grid;place-items:center;touch-action:none}
+.writing-canvas svg{touch-action:none;max-width:100%;max-height:100%}
+.writing-status{min-height:35px;display:grid;place-items:center;text-align:center;margin:0;color:#6d4a83;font-size:12px;font-weight:700;padding:2px 6px}
+.writing-status.success{color:#257346}
+.writing-status.error{color:#b33752}
+.writing-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:11px 0}
+.writing-actions button{min-height:47px;border-radius:17px;border:1.5px solid #d9b9e9;background:#fff;color:#61358a;font-weight:900;box-shadow:0 2px 5px #ac8bb326}
+.writing-actions button.main{color:#fff;background:linear-gradient(160deg,#a66be7,#7d3bc2);border-color:#9158ce;box-shadow:0 3px 0 #63309a,0 5px 12px #8952c43d}
+.writing-actions button.demo{background:#ffe4ea;border-color:#f0a3b6;color:#a74365}
+.writing-hint{margin:7px 6px 0;text-align:center;color:#856991;font-size:12px}
+.writing-footer{display:flex;justify-content:space-between;gap:8px;margin:10px 2px 0;color:#896e9a;font-size:11px}
+.writing-footer a{color:#7a42b3}
+@media(max-width:365px){
+ .writing-main{padding:9px 11px 15px}
+ .writing-header{padding-left:11px;padding-right:11px;gap:7px}
+ .writing-card{padding:8px 10px}
+ .writing-canvas-frame{width:min(68vw,242px);height:min(68vw,242px)}
+ .writing-actions button{min-height:44px}
+ .writing-character-meta{min-height:49px}
+}
+@media(min-width:600px){.writing-shell{min-height:100vh}}
