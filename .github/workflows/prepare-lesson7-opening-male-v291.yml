@@ -30,7 +30,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/lesson7-opening-male-v291.mp3 assets/lesson7-opening-male-v291.js assets/offline-pack.json sw.js hsk1-weather-v231.html hsk1-family-v231.html hsk1-fifth-v227.html hsk1-second-v203.html scripts/verify-hsk1-fifth-v227.cjs scripts/verify-hsk1-lesson5-xiaoxiao-v272.cjs scripts/verify-panda-native-real-v246.cjs scripts/verify-hsk1-second-v203.cjs scripts/verify-panda-go-approved-v231.cjs scripts/verify-lesson6-photos-v276.cjs scripts/verify-lesson7-opening-male-v291.cjs scripts/verify-panda-mobile-repairs-v290.cjs .github/workflows/course-qa.yml
+          git add assets/lesson7-opening-male-v291.mp3 assets/lesson7-opening-male-v291.js assets/offline-pack.json sw.js hsk1-weather-v231.html hsk1-family-v231.html hsk1-fifth-v227.html hsk1-second-v203.html scripts/verify-hsk1-fifth-v227.cjs scripts/verify-hsk1-lesson5-xiaoxiao-v272.cjs scripts/verify-panda-native-real-v246.cjs scripts/verify-hsk1-second-v203.cjs scripts/verify-panda-go-approved-v231.cjs scripts/verify-lesson6-photos-v276.cjs scripts/verify-lesson7-opening-male-v291.cjs scripts/verify-panda-mobile-repairs-v290.cjs
           if git diff --cached --quiet; then echo 'Already ready'; exit 0; fi
           git commit -m 'audio: dedicated deeper male weather opening and repeatable HSK1 v291'
           git fetch origin main

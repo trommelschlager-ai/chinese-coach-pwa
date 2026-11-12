@@ -70,13 +70,7 @@ const pack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
 assert(pack.version>=291&&pack.files.includes('./assets/lesson7-opening-male-v291.mp3'));
 console.log('PASS weather dialogue A: dedicated male MP3, voice mapping, script order, offline download and female B preserved');
 """,encoding='utf8')
-workflow=Path('.github/workflows/course-qa.yml')
-s=workflow.read_text(encoding='utf8')
-line='      - run: node scripts/verify-panda-mobile-repairs-v290.cjs'
-if 'verify-lesson7-opening-male-v291.cjs' not in s:
-    assert line in s
-    s=s.replace(line,line+'\n      - run: node scripts/verify-lesson7-opening-male-v291.cjs')
-    workflow.write_text(s,encoding='utf8')
+# CI workflow is updated separately by the connected GitHub editor with workflows permission.
 p=Path('assets/offline-pack.json')
 pack=json.loads(p.read_text('utf8'))
 pack['version']=max(int(pack.get('version',0)),291)
