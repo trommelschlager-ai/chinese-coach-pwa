@@ -40,4 +40,5 @@ jobs:
       - run: node scripts/verify-hanzi.cjs
       - run: node scripts/verify-hanzi-writing-v283.cjs
       - run: node scripts/verify-hanzi-writing-interactions-v283.cjs
+      - run: node scripts/verify-hsk1-diagnostic-v287.cjs
       - run: node scripts/verify-launch.cjs
