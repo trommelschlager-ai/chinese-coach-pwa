@@ -1,0 +1,50 @@
+name: Install Panda Go lesson 6 Xiaoxiao voice v274
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/lesson6-audio-import-v274.zip'
+permissions:
+  contents: write
+concurrency:
+  group: panda-go-lesson6-xiaoxiao-v274
+  cancel-in-progress: false
+jobs:
+  install-lesson6:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unpack seventeen voice clips
+        run: |
+          set -euo pipefail
+          unzip -oq assets/lesson6-audio-import-v274.zip -d .
+      - name: Install and verify new lesson 6 voice
+        run: |
+          node scripts/install-lesson6-xiaoxiao-v274.cjs
+          node scripts/verify-hsk1-lesson6-xiaoxiao-v274.cjs
+      - name: Commit installed audio and player changes
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/lesson6-xiaoxiao-v274 assets/lesson6-xiaoxiao-v274.js
+          git add assets/panda-go-companion-v231.js hsk1-family-v231.html
+          git add assets/offline-pack.json sw.js
+          git add scripts/verify-panda-go-approved-v231.cjs scripts/verify-panda-audio-v244.cjs
+          git add scripts/install-lesson6-xiaoxiao-v274.cjs scripts/verify-hsk1-lesson6-xiaoxiao-v274.cjs
+          git add .github/workflows/course-qa.yml
+          if git diff --cached --quiet; then
+            echo 'Already installed'
+            exit 0
+          fi
+          git commit -m 'audio: install 17 Xiaoxiao family recordings and preserve dialogue roles v274'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
