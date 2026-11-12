@@ -1,0 +1,12 @@
+/* Panda Go HSK1 v296 · unified three-action completion navigation.
+   Repeat pink, next light violet, back to lessons light blue. */
+.pg-lesson-complete-actions{display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;align-items:stretch!important;gap:10px!important;width:min(100%,430px);max-width:100%;margin:18px auto 10px!important}
+.pg-lesson-complete-actions :is(button,a){appearance:none;box-sizing:border-box;display:flex!important;align-items:center;justify-content:center;text-align:center!important;width:100%;min-width:0;min-height:53px;padding:13px 15px!important;border:1.5px solid transparent!important;border-radius:15px!important;font:800 clamp(14px,3.8vw,16px)/1.3 system-ui,sans-serif!important;text-decoration:none!important;text-shadow:none!important;white-space:normal;cursor:pointer;transition:filter .15s ease,transform .15s ease}
+.pg-lesson-complete-actions :is(button,a):is(:hover,:focus-visible){filter:saturate(1.12) brightness(.985)}
+.pg-lesson-complete-actions :is(button,a):focus-visible{outline:3px solid #7059c6;outline-offset:3px}
+.pg-lesson-complete-actions :is(button,a):active{transform:translateY(1px)}
+.pg-lesson-complete-actions .pg-end-repeat{background:linear-gradient(180deg,#ffe3f0,#f6bfd9)!important;border-color:#e9a8c8!important;color:#813158!important;box-shadow:0 3px 8px #d59ab533!important}
+.pg-lesson-complete-actions .pg-end-next{background:linear-gradient(180deg,#f0e8ff,#dec9f9)!important;border-color:#cdb4ed!important;color:#633f8e!important;box-shadow:0 3px 8px #b9a0df2e!important}
+.pg-lesson-complete-actions .pg-end-back{background:linear-gradient(180deg,#e8f7ff,#cfeaff)!important;border-color:#b3d8f4!important;color:#305f80!important;box-shadow:0 3px 8px #98c6e438!important}
+.pg-lesson-complete-actions :is(button,a):disabled{opacity:.48;cursor:not-allowed}
+.pg4-review-link{display:block;text-align:center;margin:7px auto 13px;font-size:13px;color:#77539e;text-decoration:underline}
