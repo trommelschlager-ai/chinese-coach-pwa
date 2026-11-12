@@ -25,6 +25,8 @@ jobs:
       - name: Install TTS and MP3 validation
         run: |
           python -m pip install --disable-pip-version-check 'edge-tts==7.3.1'
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
           command -v ffprobe
       - name: Create three pitch-unmodified natural adult male voices
         run: |
