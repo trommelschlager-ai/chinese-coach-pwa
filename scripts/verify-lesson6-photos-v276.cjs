@@ -45,7 +45,22 @@ card.querySelector('[data-play]').click();
 assert.equal(sounds.at(-1),w.PandaLesson6GrandparentsV275.lookup('爷爷'));
 for(let i=0;i<6;i++)next();
 assert.equal(d.querySelectorAll('.pg6-phrase-photo').length,4,'4 photos in example phrases');
-for(let i=0;i<6;i++)next();
+next(); // dialogue
+next(); // listening
+const topic=w.PANDA_HSK1_FOUNDATIONS.find(x=>x.id==='family');
+for(const [hz] of topic.listen.items.slice(0,4)){
+ const btn=d.querySelector('[data-listen="'+hz+'"]');assert(btn,'Missing listening choice '+hz);btn.click();
+}
+next(); // sentence builder
+for(const build of topic.builds.slice(0,3)){
+ for(let i=0;i<build.target.length;i++){
+  const piece=d.querySelector('[data-piece="'+i+'"]');assert(piece,'Missing sentence piece');piece.click();
+ }
+ d.querySelector('[data-check]').click();
+}
+next(); // character
+next(); // speaking
+next(); // final recap
 assert.equal(d.querySelectorAll('.pg6-review-photo').length,4,'4 photos in review');
 dom.window.close();
 console.log('PASS lesson 6 v276: 4 high-res portrait assets, live cards, examples and recap, Xiaoxiao intact');
