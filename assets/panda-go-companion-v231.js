@@ -182,12 +182,16 @@ function cover(){
  '<p class="cover-caption">'+(isFamily?'11 слов · семья · диалоги и практика':'12 слов · погода · времена года')+'</p>'+
  '<div class="cover-note">🌸 <strong>'+(isFamily?'我的家 · 我有一个妹妹。':'今天天气怎么样？')+'</strong></div>';
 }
+// Keep paternal portraits from v276, but load the corrected maternal portraits from v277.
+function grandparentPhoto(slug){
+ return './assets/lesson6-photos-'+((slug==='waigong'||slug==='waipo')?'v277':'v276')+'/'+slug+'.webp';
+}
 function grandparentCards(){
  return '<h2 class="pg6-grandparents-heading">Бабушки и дедушки</h2>'+
  '<p class="pg6-grandparents-hint">Слова по папиной и маминой линии отличаются.</p>'+
  '<div class="pg6-grandparents-grid">'+grandparents.map(([hz,py,ru,slug],i)=>
  '<div class="pg6-grandparent-card" data-grandparent="'+esc(hz)+'">'+
- '<img class="pg6-grandparent-photo" src="./assets/lesson6-photos-v276/'+slug+'.webp" width="390" height="390" loading="eager" decoding="async" alt="Портрет: '+esc(ru)+'">'+
+ '<img class="pg6-grandparent-photo" src="'+grandparentPhoto(slug)+'" width="390" height="390" loading="eager" decoding="async" alt="Портрет: '+esc(ru)+'">'+
  '<span class="pg6-grandparent-side">'+(i<2?'По папиной линии':'По маминой линии')+'</span>'+
  '<strong lang="zh-Hans">'+esc(hz)+'</strong><span class="py">'+esc(py)+'</span>'+
  '<span class="ru">'+esc(ru)+'</span>'+playBtn(hz)+'</div>').join('')+'</div>';
@@ -226,7 +230,7 @@ function examples(){
   (isFamily?'<h2 class="pg6-grandparents-heading">Представляем бабушек и дедушек</h2>'+
   '<div class="pg6-grandparent-examples">'+grandparentExamples.map(([zh,py,ru],i)=>
   '<div class="pg6-grandparent-phrase">'+
-  '<img class="pg6-phrase-photo" src="./assets/lesson6-photos-v276/'+grandparents[i][3]+'.webp" width="390" height="390" loading="lazy" decoding="async" alt="'+esc(grandparents[i][2])+'">'+
+  '<img class="pg6-phrase-photo" src="'+grandparentPhoto(grandparents[i][3])+'" width="390" height="390" loading="lazy" decoding="async" alt="'+esc(grandparents[i][2])+'">'+
   '<div class="pg6-phrase-copy"><strong lang="zh-Hans">'+esc(zh)+'</strong>'+
   '<span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span></div>'+playBtn(zh)+'</div>').join('')+'</div>':''));
 }
@@ -275,7 +279,7 @@ function summary(){
  card('<h2>Повторение</h2><div class="grid two">'+(isFamily?words.slice(0,4):[words[0],words[1],words[5],words[6]]).map(word).join('')+
  '</div>'+(isFamily?'<h2 class="pg6-grandparents-heading">Бабушки и дедушки</h2>'+
  '<div class="pg6-grandparent-review">'+grandparents.map(([zh,py,ru,slug])=>
- '<div><img class="pg6-review-photo" src="./assets/lesson6-photos-v276/'+slug+'.webp" width="390" height="390" loading="lazy" decoding="async" alt="'+esc(ru)+'">'+
+ '<div><img class="pg6-review-photo" src="'+grandparentPhoto(slug)+'" width="390" height="390" loading="lazy" decoding="async" alt="'+esc(ru)+'">'+
  '<span class="pg6-review-copy"><b lang="zh-Hans">'+esc(zh)+'</b><small>'+esc(py)+' · '+esc(ru)+'</small></span>'+playBtn(zh)+'</div>').join('')+'</div>':''))+
  (state.done?'<div class="buttons"><a class="soft primary" style="text-decoration:none;display:grid;place-items:center" href="'+(isFamily?'./hsk1-weather-v231.html':'./hsk1-map.html')+'">'+(isFamily?'К уроку 7 →':'К карте уроков →')+'</a></div>':'');
 }

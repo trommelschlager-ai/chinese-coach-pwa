@@ -1,5 +1,5 @@
 {
-  "version": 276,
+  "version": 277,
   "bytes": 55302068,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2543,6 +2543,11 @@
     "./assets/lesson6-photos-v276/yeye.webp",
     "./assets/lesson6-photos-v276/nainai.webp",
     "./assets/lesson6-photos-v276/waigong.webp",
-    "./assets/lesson6-photos-v276/waipo.webp"
+    "./assets/lesson6-photos-v276/waipo.webp",
+    "./assets/lesson6-photos-v277/waigong.webp",
+    "./assets/lesson6-photos-v277/waipo.webp",
+    "./assets/panda-go-companion-v231.js?v=277",
+    "./assets/panda-go-approved-lessons-v231.css?v=277",
+    "./hsk1-family-v231.html?v=277"
   ]
 }

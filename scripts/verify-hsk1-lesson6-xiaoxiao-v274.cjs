@@ -24,8 +24,8 @@ for(const [word,file] of Object.entries(manifest.sharedTones)){
 assert.equal(map.lookup('是，这是我妈妈'),map.lookup('是，这是我妈妈。'),'Sentence punctuation must be normalized');
 const code=fs.readFileSync('assets/panda-go-companion-v231.js','utf8');
 const html=fs.readFileSync('hsk1-family-v231.html','utf8');
-assert(html.includes('lesson6-xiaoxiao-v274.js?v=274')&&html.includes('panda-go-companion-v231.js?v=274'));
-assert(html.indexOf('lesson6-xiaoxiao-v274.js?v=274')<html.indexOf('panda-go-companion-v231.js?v=274'));
+assert(html.includes('lesson6-xiaoxiao-v274.js?v=274')&&html.includes('panda-go-companion-v231.js?v=277'));
+assert(html.indexOf('lesson6-xiaoxiao-v274.js?v=274')<html.indexOf('panda-go-companion-v231.js?v=277'));
 assert(code.includes('window.PandaLesson6XiaoxiaoV274?.lookup(hz)'));
 assert(code.includes("if(role==='male')")&&code.includes("mappings.male?.[hz]"),'Keep male actor');
 assert(code.includes('lesson6New?[src]:(familyOriginalParts(hz,role)||[src])'),'Avoid old stitched audio over new whole sentence');
