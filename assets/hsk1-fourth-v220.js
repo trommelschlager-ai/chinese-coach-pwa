@@ -351,14 +351,13 @@ function final(){
  '<small>Твой ответ: '+esc(x.record.given)+'</small><small>Правильно: '+esc(x.right)+'</small></div>').join('')+
  '<button type="button" data-review-mistakes>↺ Повторить мои ошибки</button></div>':
  '<p class="pg4-success">✓ Все ответы с первой попытки. Отлично!</p>')+
- '<div class="pg4-final-nav"><a href="./hsk1-l4-cards.html">🎴 Повторить карточки урока 4 →</a><a href="./hsk1-lesson.html?lesson=5">Перейти к уроку №5 →</a>'+
- '<a href="./hsk1-map.html">К карте HSK1</a></div>')+
+ '<a class="pg4-review-link" href="./hsk1-l4-cards.html">🎴 Повторить карточки урока 4 →</a>')+
  (hardWords.length?card(h('Трудные слова — повтори ещё раз')+hardWords.map(x=>'<div class="pg4-dict-line"><div><strong lang="zh-Hans">'+x.zh+'</strong><span>'+x.py+'</span><small>'+x.ru+'</small></div>'+audioButton(x.zh)+'</div>').join('')):'')+
  card('<details class="pg4-dictionary"><summary>🎧 Весь словарь — '+allWords.length+' слов и фраз</summary>'+
  ''+
  allWords.map(x=>'<div class="pg4-dict-line"><div><strong lang="zh-Hans">'+esc(x.zh)+'</strong><span>'+esc(x.py)+'</span><small>'+esc(x.ru)+'</small></div>'+
  audioButton(x.zh,'▶')+'</div>').join('')+'</details>')+
- '<button type="button" data-restart class="pg4-restart">↺ Повторить весь урок №4</button>'+audioCredits;
+ '<div class="pg-lesson-complete-actions"><button type="button" class="pg-end-repeat" data-restart>↻ Повторить урок</button><a class="pg-end-next" href="./hsk1-fifth-v227.html">Следующий урок →</a><a class="pg-end-back" href="./hsk1-map.html">Назад к Урокам</a></div>'+audioCredits;
 }
 const screens=[intro,()=>study(1),()=>study(2),sunday,()=>quiz(4,LISTEN,'audio'),timeWords,grammar,calendar,handwriting,dialogue,sentence,()=>quiz(11,examSet(),'exam'),final];
 function examSet(){return state.reviewMode?state.reviewIndices.map(i=>EXAM[i]):EXAM}
@@ -398,7 +397,7 @@ function screen(keep=false){
  document.querySelector('.pg4-app').dataset.step=String(s);
  stage.innerHTML=screens[s]();message();
  back.disabled=false;back.textContent=s===0?'← Карта':'← Назад';forward.hidden=false;forward.disabled=!ready();
- forward.textContent=s===12?'К карте HSK1 →':s===0?'Начать →':s===11?'Завершить →':'Дальше →';
+ forward.textContent=s===12?'Назад к Урокам →':s===0?'Начать →':s===11?'Завершить →':'Дальше →';
  if(s===8)initWriter();
  save();viewport.scrollTop=keep?pos:0;
 }

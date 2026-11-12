@@ -165,7 +165,7 @@ function summary(){
  '<button type="button" class="card-choice '+(state.quizPassed&&i===q.correct?'correct':'')+'" data-final="'+i+'"'+(state.quizPassed?' disabled':'')+'>'+esc(c)+'</button>').join('')+'</div>'+
  (state.quizPassed?'<p class="result good">✓ Верно! Урок 5 завершён.</p>':'<p class="small">Выбери правильный ответ, чтобы завершить урок.</p>'))+
  card('<h2>Повтори четыре важных слова</h2><div class="grid two">'+keywords.map(word).join('')+'</div>')+
- (state.done?'<div class="buttons"><button type="button" class="soft primary" data-restart-lesson>↻ Пройти весь урок заново</button><a class="soft" style="text-decoration:none;display:grid;place-items:center" href="./hsk1-lesson.html?lesson=6">К уроку 6 →</a></div>':'');
+ (state.done?'<div class="pg-lesson-complete-actions"><button type="button" class="pg-end-repeat" data-restart-lesson>↻ Повторить урок</button><a class="pg-end-next" href="./hsk1-family-v231.html">Следующий урок →</a><a class="pg-end-back" href="./hsk1-map.html">Назад к Урокам</a></div>':'');
 }
 const renderers=[intro,()=>groupWords(monthGroups[0]),()=>groupWords(monthGroups[1]),()=>groupWords(monthGroups[2]),basicTerms,monthRule,dateRule,sounds,conversation,listening,builder,writing,speaking,summary];
 function stopWriter(){++writerId;try{writer?.cancelQuiz?.();writer?.pauseAnimation?.()}catch{}writer=null}

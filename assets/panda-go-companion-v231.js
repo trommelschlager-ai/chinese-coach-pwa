@@ -272,7 +272,7 @@ function summary(){
  '<div class="pg6-grandparent-review">'+grandparents.map(([zh,py,ru,slug])=>
  '<div><img class="pg6-review-photo" src="'+grandparentPhoto(slug)+'" width="390" height="390" loading="lazy" decoding="async" alt="'+esc(ru)+'">'+
  '<span class="pg6-review-copy"><b lang="zh-Hans">'+esc(zh)+'</b><small>'+esc(py)+' · '+esc(ru)+'</small></span>'+playBtn(zh)+'</div>').join('')+'</div>':''))+
- (state.done?'<div class="buttons"><button type="button" class="soft primary" data-restart-lesson>↻ Пройти весь урок заново</button><a class="soft" style="text-decoration:none;display:grid;place-items:center" href="'+(isFamily?'./hsk1-weather-v231.html':'./hsk1-map.html')+'">'+(isFamily?'К уроку 7 →':'К карте уроков →')+'</a></div>':'');
+ (state.done?'<div class="pg-lesson-complete-actions"><button type="button" class="pg-end-repeat" data-restart-lesson>↻ Повторить урок</button><a class="pg-end-next" href="'+(isFamily?'./hsk1-weather-v231.html':'./hsk1-diagnostic.html')+'">'+(isFamily?'Следующий урок →':'Итоговый тест HSK 1 →')+'</a><a class="pg-end-back" href="./hsk1-map.html">Назад к Урокам</a></div>':'');
 }
 const screens=[
  cover,

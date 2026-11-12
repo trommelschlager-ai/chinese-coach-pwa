@@ -281,9 +281,9 @@ function renderFinal(){
    '<a class="pg11-primary" href="./hsk1-second-practice.html?mode=quick">🎤 Быстрая практика · 6 слов</a>'+
    '<a href="./hsk1-second-practice.html?mode=listen">🎧 Словарь и прослушивание</a>'+
    '<a href="./hsk1-second-practice.html?mode=full">🗣 Полная тренировка · 16 пунктов</a>'+
-   '<a href="./hsk1-lesson.html?lesson=3">Следующий урок · HSK1 →</a>'+
+
    '</div><p class="pg11-reminder">💡 Завтра повтори слова ещё раз — это поможет лучше их запомнить.</p>'+
-   '<div class="pg3-finish"><button data-restart>↻ Пройти урок заново</button><a href="./hsk1-map.html">К карте HSK1</a></div></div>';
+   '<div class="pg-lesson-complete-actions"><button type="button" class="pg-end-repeat" data-restart>↻ Повторить урок</button><a class="pg-end-next" href="./hsk1-third-v212.html">Следующий урок →</a><a class="pg-end-back" href="./hsk1-map.html">Назад к Урокам</a></div></div>';
  }
  if(index(11)>=5&&(!state.finalWrong.length||state.reviewIndex>=state.finalWrong.length)){
   state.done[11]=true;
