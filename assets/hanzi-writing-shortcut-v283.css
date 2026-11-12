@@ -1,0 +1,9 @@
+/* Shared unobtrusive entry to handwriting studio: Panda Go HSK1 lessons 1–7. */
+.writing-header-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;min-width:0;margin-left:auto}
+.writing-shortcut{display:grid;place-items:center;flex:0 0 37px;width:37px;height:37px;border-radius:13px;border:1.5px solid #cda8eb;background:linear-gradient(155deg,#fff8fe,#f0e0ff);color:#7e43ad;text-decoration:none;font-size:21px;line-height:1;box-shadow:0 2px 5px #8e60b22c}
+.writing-shortcut:focus-visible{outline:3px solid #8e57d5;outline-offset:2px}
+.pg-header .writing-header-actions{margin-left:auto}
+.pg3-header .writing-header-actions,.header .writing-header-actions{grid-column:3;justify-self:end}
+@media(max-width:365px){.writing-header-actions{gap:4px}.writing-shortcut{width:34px;height:34px;flex-basis:34px;font-size:19px}.pg3-header .writing-header-actions{gap:4px}}
+/* Compact map shortcut does not occupy a road node. */
+.pg-map-writing{position:absolute;top:calc(13px + env(safe-area-inset-top));right:13px;z-index:11;display:grid;place-items:center;width:44px;height:44px;border:2px solid #e4c2fa;border-radius:14px;background:#f7e6ff;color:#6e27a5;text-decoration:none;font-size:22px;box-shadow:0 0 12px #b771e962}
