@@ -70,8 +70,21 @@ click('[data-audio="你们"]');
 assert.equal(lastAudio,w.PandaLesson2XiaoxiaoV261.lookup('你们'),'Vocabulary must play uploaded Xiaoxiao instead of old voice');
 proceed(); // step 5 listening: plural and respectful singular 您
 assert(doc.querySelector('[data-audio="我们"]'),'Must have actual listening sample');
-for(const a of [2,3,0])answer(a);
+for(const [choice,hz] of [[2,'我们'],[3,'你'],[0,'你们']]){
+ assert(doc.querySelector('[data-answer]').disabled,'Listening answers must be locked before Play');
+ click('[data-audio="'+hz+'"]');
+ assert(!doc.querySelector('[data-answer]').disabled,'Listening answer must unlock on Play tap');
+ answer(choice);
+}
 assert.equal(step(),5,'Completed listening should remain visible');assert(doc.querySelector('[data-repeat-step="4"]'));
+click('[data-repeat-step="4"]');assert(doc.querySelector('[data-answer]').disabled,'Replay must relock first audio question');
+for(const [choice,hz] of [[2,'我们'],[3,'你'],[0,'你们']]){
+ assert(doc.querySelector('[data-answer]').disabled,'Listening answers must be locked before Play');
+ click('[data-audio="'+hz+'"]');
+ assert(!doc.querySelector('[data-answer]').disabled,'Listening answer must unlock on Play tap');
+ answer(choice);
+}
+assert(doc.querySelector('[data-repeat-step="4"]'),'Replay remains available');
 proceed();assert.equal(step(),6);
 // step 6 example
 click('[data-audio="我是老师。"]');
