@@ -50,7 +50,8 @@ for(const lesson of [5,7]){
    const file=datesFn(hz,role);
    assert(file,'Lesson 5 is missing audio for '+hz);
    if(role==='male'){
-    assert(file.startsWith('./assets/hsk1-voices-v156/'),'Lesson 5 male dialogue must stay male: '+hz+' '+file);
+    assert.equal(file,w.PANDA_HSK1_VOICES.male[hz],'Lesson 5 must preserve the mapped male role for '+hz);
+    assert(file.startsWith('data:audio/mpeg;base64,')||file.startsWith('./assets/hsk1-voices-v156/'),'Unexpected male voice source for '+hz);
    }else{
     assert(file.startsWith('./assets/lesson5-xiaoxiao-v272/')||file.startsWith('./assets/lesson4-xiaoxiao-v265/'),
       'Lesson 5 must use the new Xiaoxiao voice: '+hz+' '+file);
