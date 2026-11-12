@@ -27,11 +27,11 @@ const male=fs.readFileSync('assets/hsk1-voices-map-v160.js','utf8');
 for(const text of manifest.dialogueMale)assert(male.includes('"'+text+'"'),'Missing historical male line '+text);
 const js=fs.readFileSync('assets/hsk1-fifth-v227.js','utf8');
 const html=fs.readFileSync('hsk1-fifth-v227.html','utf8');
-assert(html.includes('lesson5-xiaoxiao-v272.js?v=272')&&html.includes('hsk1-fifth-v227.js?v=289'),'Page must load the new map and script');
-assert(html.indexOf('lesson5-xiaoxiao-v272.js?v=272')<html.indexOf('hsk1-fifth-v227.js?v=289'),'Correct map order');
+assert(html.includes('lesson5-xiaoxiao-v272.js?v=272')&&html.includes('hsk1-fifth-v227.js?v=290'),'Page must load the new map and script');
+assert(html.indexOf('lesson5-xiaoxiao-v272.js?v=272')<html.indexOf('hsk1-fifth-v227.js?v=290'),'Correct map order');
 assert(js.includes('window.PandaLesson5XiaoxiaoV272?.lookup(hz)'),'Use current narrator as priority');
 assert(js.includes("path.includes('lesson5-xiaoxiao-v272/')||path.includes('lesson4-xiaoxiao-v265/')"),'Avoid second slowdown of recorded Xiaoxiao clips');
-assert(js.includes("if(role==='male')return window.PANDA_HSK1_VOICES?.male?.[hz]||null;"),'Male role must stay male');
+assert(js.includes("if(role==='male')return hz==='今天几月几号？'?'./assets/lesson5-male-clean-v290.mp3'")&&fs.existsSync('assets/lesson5-male-clean-v290.mp3'),'First male question must have cleaned dedicated recording');
 const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
 assert(offline.version>=272);
 for(const phrase of expected){

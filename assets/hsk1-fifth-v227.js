@@ -76,7 +76,7 @@ function stopAudio(){
 }
 function voice(hz,role='female'){
  // Male lines in the date dialogue must never be silently replaced by the female narrator.
- if(role==='male')return window.PANDA_HSK1_VOICES?.male?.[hz]||null;
+ if(role==='male')return hz==='今天几月几号？'?'./assets/lesson5-male-clean-v290.mp3':(window.PANDA_HSK1_VOICES?.male?.[hz]||null);
  const xiaoxiao=window.PandaLesson5XiaoxiaoV272?.lookup(hz);
  if(xiaoxiao)return xiaoxiao;
  // Only for future new words without a Xiaoxiao clip: retain the existing recorded fallback.

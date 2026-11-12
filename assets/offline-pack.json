@@ -1,5 +1,5 @@
 {
-  "version": 289,
+  "version": 290,
   "bytes": 55532426,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2700,6 +2700,9 @@
     "./hsk1-second-v203.html?v=289",
     "./hsk1-fifth-v227.html?v=289",
     "./hsk1-family-v231.html?v=289",
-    "./hsk1-weather-v231.html?v=289"
+    "./hsk1-weather-v231.html?v=289",
+    "./assets/lesson5-male-clean-v290.mp3",
+    "./assets/hsk1-fifth-v227.js?v=290",
+    "./hsk1-fifth-v227.html?v=290"
   ]
 }
