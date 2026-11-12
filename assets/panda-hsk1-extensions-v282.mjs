@@ -25,7 +25,7 @@ const constant=(zh,py,ru,ctx='')=>()=>reply(zh,py,ru,ctx);
 add(1,['你今天怎么样','你今天好吗'],'你今天怎么样？','Nǐ jīntiān zěnmeyàng?','Как у тебя дела сегодня?',
  constant('我今天很好，谢谢！','Wǒ jīntiān hěn hǎo, xièxie!','Сегодня всё хорошо, спасибо!'),['我今天很好','我很好']);
 add(1,['晚上好你好吗','晚上好呀你好吗'],'晚上好！你好吗？','Wǎnshang hǎo! Nǐ hǎo ma?','Добрый вечер! Как дела?',
- constant('晚上好！我很好，谢谢！','Wǎnshang hǎo! Wǒ hěn hǎo, xièxie!','Добрый вечер! Всё хорошо, спасибо!'),['晚上好我很好','晚上好']);
+ constant('晚上好！我很好，谢谢！','Wǎnshang hǎo! Wǒ hěn hǎo, xièxie!','Добрый вечер! Всё хорошо, спасибо!'),['晚上好我很好']);
 add(1,['你好我是学生你呢','你好我是学生你是谁'],'你好！我是学生。你呢？','Nǐ hǎo! Wǒ shì xuésheng. Nǐ ne?','Привет! Я студент. А ты?',
  constant('你好！我是老师。','Nǐ hǎo! Wǒ shì lǎoshī.','Привет! Я учитель.',role),['你好我是学生'],{auto:false});
 // Lesson 2 — actors in the same educational classroom scene.
