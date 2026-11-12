@@ -1,0 +1,229 @@
+{
+  "version": 272,
+  "lesson": 5,
+  "voice": "Xiaoxiao",
+  "ratePercent": -20,
+  "sourceFiles": [
+    {
+      "name": "luvvoice.com-20261112-puOE9g.mp3",
+      "bytes": 108576,
+      "sha256": "01f89089ff15a2501cbab420675565e1e2a3d3c8609d1590d5bc64a42cd510a1",
+      "durationMs": 18096,
+      "expectedPhrases": 12
+    },
+    {
+      "name": "luvvoice.com-20261112-QR4xiG.mp3",
+      "bytes": 22752,
+      "sha256": "34b71a2971bfb9ecd56efda69d1560315ca634906e3248caa4c6dc21cec7de4f",
+      "durationMs": 3792,
+      "expectedPhrases": 3
+    },
+    {
+      "name": "luvvoice.com-20261112-IIe7hy.mp3",
+      "bytes": 35856,
+      "sha256": "f96b885b91b4c148aa48bf0ccddb36039cfbcdff975fe0cc40f83246ecda51b8",
+      "durationMs": 5976,
+      "expectedPhrases": 2
+    }
+  ],
+  "clips": [
+    {
+      "index": 0,
+      "hanzi": "一月",
+      "file": "000.mp3",
+      "bytes": 12716,
+      "sha256": "66a4713b6b4d758aa80b2b2bc59f7ba57f06c92c06c5f6d127b6c6a8b0453a67",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 140,
+      "toMs": 1110,
+      "durationMs": 970
+    },
+    {
+      "index": 1,
+      "hanzi": "二月",
+      "file": "001.mp3",
+      "bytes": 12716,
+      "sha256": "7438851fa72c8d5912e1c866d803637e28a3e44aeae37d9c6def7feaeffe1763",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 1560,
+      "toMs": 2530,
+      "durationMs": 970
+    },
+    {
+      "index": 2,
+      "hanzi": "三月",
+      "file": "002.mp3",
+      "bytes": 13292,
+      "sha256": "6cfc840963cf9b36af82689519951054f3906ab770f6da145d640a712ca39354",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 3010,
+      "toMs": 4025,
+      "durationMs": 1015
+    },
+    {
+      "index": 3,
+      "hanzi": "四月",
+      "file": "003.mp3",
+      "bytes": 13292,
+      "sha256": "16837a02418949f9df5c0d4ba38f4dd692dceecd1018d8f0d63197d7a3c32f2c",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 4485,
+      "toMs": 5495,
+      "durationMs": 1010
+    },
+    {
+      "index": 4,
+      "hanzi": "五月",
+      "file": "004.mp3",
+      "bytes": 12716,
+      "sha256": "8508ff6f5694eb2c99bd8189672b650774b642b51bf5bad51b777f3004c73487",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 5925,
+      "toMs": 6905,
+      "durationMs": 980
+    },
+    {
+      "index": 5,
+      "hanzi": "六月",
+      "file": "005.mp3",
+      "bytes": 13004,
+      "sha256": "c3e898a58a4e7720605d742c297b851d96d15b0b5f62b28603175076cf66dcd1",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 7345,
+      "toMs": 8340,
+      "durationMs": 995
+    },
+    {
+      "index": 6,
+      "hanzi": "七月",
+      "file": "006.mp3",
+      "bytes": 13004,
+      "sha256": "0898fea9afbff84a1371ff898940df235181184c4ef07180180c584c3df2b406",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 8780,
+      "toMs": 9765,
+      "durationMs": 985
+    },
+    {
+      "index": 7,
+      "hanzi": "八月",
+      "file": "007.mp3",
+      "bytes": 13004,
+      "sha256": "874c2ef86e4ded1a15cb58fafbbdcb3add2ffdbf65cde655c0673ed5455d66cf",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 10205,
+      "toMs": 11210,
+      "durationMs": 1005
+    },
+    {
+      "index": 8,
+      "hanzi": "九月",
+      "file": "008.mp3",
+      "bytes": 13292,
+      "sha256": "7d292345803fcf69edd2b02c0c383585038f433cf50ac3ba3dc12eec24a29a2b",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 11655,
+      "toMs": 12670,
+      "durationMs": 1015
+    },
+    {
+      "index": 9,
+      "hanzi": "十月",
+      "file": "009.mp3",
+      "bytes": 13868,
+      "sha256": "8ff1ea7f54107a374e64eb165f86bfae325e1d399e3320b45a5d9029f10bedc9",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 13135,
+      "toMs": 14200,
+      "durationMs": 1065
+    },
+    {
+      "index": 10,
+      "hanzi": "十一月",
+      "file": "010.mp3",
+      "bytes": 15308,
+      "sha256": "e9d239e0b2de3669e36db10f1a83877af8e529674998178408c73dc21f09f5ef",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 14670,
+      "toMs": 15865,
+      "durationMs": 1195
+    },
+    {
+      "index": 11,
+      "hanzi": "十二月",
+      "file": "011.mp3",
+      "bytes": 15308,
+      "sha256": "aa289ae7036e926eff6527962189abb62146ade7896fcd0ed47f5383d6f8c207",
+      "source": "luvvoice.com-20261112-puOE9g.mp3",
+      "fromMs": 16345,
+      "toMs": 17525,
+      "durationMs": 1180
+    },
+    {
+      "index": 12,
+      "hanzi": "年",
+      "file": "012.mp3",
+      "bytes": 11276,
+      "sha256": "59b38e5cdaa5edb2aa904efeed64eee4129cc4ebe492c20760ee4907ca9c8679",
+      "source": "luvvoice.com-20261112-QR4xiG.mp3",
+      "fromMs": 0,
+      "toMs": 845,
+      "durationMs": 845
+    },
+    {
+      "index": 13,
+      "hanzi": "月",
+      "file": "013.mp3",
+      "bytes": 9836,
+      "sha256": "5d87aec2207c1d66ea5e53186ef10e31eefeec7a47e453c195334fc47f397d46",
+      "source": "luvvoice.com-20261112-QR4xiG.mp3",
+      "fromMs": 1305,
+      "toMs": 2045,
+      "durationMs": 740
+    },
+    {
+      "index": 14,
+      "hanzi": "号",
+      "file": "014.mp3",
+      "bytes": 9260,
+      "sha256": "9521e9123370e9c2564fe67a22bdcdfed91455a54e758c0142c0e365ab57d31f",
+      "source": "luvvoice.com-20261112-QR4xiG.mp3",
+      "fromMs": 2530,
+      "toMs": 3220,
+      "durationMs": 690
+    },
+    {
+      "index": 15,
+      "hanzi": "二零二六年十一月六日",
+      "file": "015.mp3",
+      "bytes": 34028,
+      "sha256": "7d94c2b9557b5fe891dd659ef2fe179f8d24b89541b9f63e3baf182c4d5e41e5",
+      "source": "luvvoice.com-20261112-IIe7hy.mp3",
+      "fromMs": 150,
+      "toMs": 2900,
+      "durationMs": 2750
+    },
+    {
+      "index": 16,
+      "hanzi": "今天十一月六号。",
+      "file": "016.mp3",
+      "bytes": 25676,
+      "sha256": "e67b48de5d53e3ea00abacd2653cfd036592b9747a9f1cf89bc05972b477ca36",
+      "source": "luvvoice.com-20261112-IIe7hy.mp3",
+      "fromMs": 3345,
+      "toMs": 5405,
+      "durationMs": 2060
+    }
+  ],
+  "sharedFromLesson4": {
+    "今天": "./assets/lesson4-xiaoxiao-v265/009.mp3",
+    "几": "./assets/lesson4-xiaoxiao-v265/012.mp3",
+    "日": "./assets/lesson4-xiaoxiao-v265/013.mp3"
+  },
+  "dialogueMale": [
+    "今天几月几号？",
+    "明天七号。"
+  ],
+  "toneReview": "pending native listener",
+  "licenseReview": "pending"
+}

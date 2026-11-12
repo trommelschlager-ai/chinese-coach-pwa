@@ -2478,6 +2478,26 @@
     "./panda-voice-pilot.html?v=266",
     "./panda-voice-pilot.html?v=267",
     "./panda-voice-pilot.html?v=272",
-    "./start-chinese.html"
+    "./start-chinese.html",
+    "./assets/lesson5-xiaoxiao-v272.js?v=272",
+    "./assets/hsk1-fifth-v227.js?v=272",
+    "./hsk1-fifth-v227.html?v=272",
+    "./assets/lesson5-xiaoxiao-v272/000.mp3",
+    "./assets/lesson5-xiaoxiao-v272/001.mp3",
+    "./assets/lesson5-xiaoxiao-v272/002.mp3",
+    "./assets/lesson5-xiaoxiao-v272/003.mp3",
+    "./assets/lesson5-xiaoxiao-v272/004.mp3",
+    "./assets/lesson5-xiaoxiao-v272/005.mp3",
+    "./assets/lesson5-xiaoxiao-v272/006.mp3",
+    "./assets/lesson5-xiaoxiao-v272/007.mp3",
+    "./assets/lesson5-xiaoxiao-v272/008.mp3",
+    "./assets/lesson5-xiaoxiao-v272/009.mp3",
+    "./assets/lesson5-xiaoxiao-v272/010.mp3",
+    "./assets/lesson5-xiaoxiao-v272/011.mp3",
+    "./assets/lesson5-xiaoxiao-v272/012.mp3",
+    "./assets/lesson5-xiaoxiao-v272/013.mp3",
+    "./assets/lesson5-xiaoxiao-v272/014.mp3",
+    "./assets/lesson5-xiaoxiao-v272/015.mp3",
+    "./assets/lesson5-xiaoxiao-v272/016.mp3"
   ]
 }

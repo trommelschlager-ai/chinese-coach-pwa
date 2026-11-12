@@ -75,22 +75,15 @@ function stopAudio(){
  app.querySelectorAll('[aria-busy="true"]').forEach(el=>el.removeAttribute('aria-busy'));
 }
 function voice(hz,role='female'){
- const restored=window.PandaCleanAudioV249?.lookup(hz);if(restored)return restored;
- // Native woman first: recovered 36 + 9 archived recordings and cleaned v237 tracks.
- const recovered=window.PandaNativeRecoveredV246?.lookup(hz);
- if(recovered)return recovered;
- const original=window.PandaOwnerAudio?.lookup(hz);if(original)return original;
- const maps=window.PANDA_HSK1_VOICES||{};
- const primary=maps[role]?.[hz]||null;
- const female=maps.female?.[hz]||null;
- // Prioritize the learner-authorized speaker. When not recorded, prefer
- // an exact, original human sample over a different synthetic narrator.
- // Preserve the explicitly assigned male voice for dialogue role A.
- // Dialogue also uses the authorized original female recording; never synthesize a different narrator.
- const owner=typeof female==='string'&&
-   (female.startsWith('data:audio/mpeg;base64,')||female.includes('native-owner-v200/'))?female:null;
- const approved=x=>typeof x==='string'&&(x.startsWith('data:audio/mpeg;base64,')||x.includes('native-owner-v200/'));
- return owner||(approved(primary)?primary:null)||null;
+ // Male lines in the date dialogue must never be silently replaced by the female narrator.
+ if(role==='male')return window.PANDA_HSK1_VOICES?.male?.[hz]||null;
+ const xiaoxiao=window.PandaLesson5XiaoxiaoV272?.lookup(hz);
+ if(xiaoxiao)return xiaoxiao;
+ // Only for future new words without a Xiaoxiao clip: retain the existing recorded fallback.
+ return window.PandaCleanAudioV249?.lookup(hz)||
+  window.PandaNativeRecoveredV246?.lookup(hz)||
+  window.PandaOwnerAudio?.lookup(hz)||
+  window.PANDA_HSK1_VOICES?.female?.[hz]||null;
 }
 function play(hz,role='female'){
  const path=voice(hz,role);if(!path){say('Для этой фразы пока нет проверенной записи.','bad');return}
