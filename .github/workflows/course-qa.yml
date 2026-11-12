@@ -27,6 +27,7 @@ jobs:
       - run: node scripts/verify-lesson6-photos-v276.cjs
       - run: node scripts/verify-lesson6-words-v280.cjs
       - run: node scripts/verify-lesson4-visual-v269.cjs
+      - run: node scripts/verify-panda-lesson4-voice-labels-v282.cjs
       - run: node scripts/verify-panda-go-audio-v236.cjs
       - run: node scripts/verify-panda-native-real-v246.cjs
       - run: node scripts/verify-panda-audio-v244.cjs

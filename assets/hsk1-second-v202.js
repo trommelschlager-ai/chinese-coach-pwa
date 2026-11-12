@@ -141,7 +141,7 @@ function renderListening(){
  const n=state.listenIndex;
  if(n>=4)return heading('ПРАКТИКА','Слух проверен')+
  '<div class="sheet"><h2 class="result-title">✅ Все четыре слова узнаны</h2>'+
- '<p class="mini-desc">Второй урок: одна запись носительницы для каждого слова.</p></div>';
+ '</div>';
  const target=listeningWords[listeningOrder[n]],file=getSound(target);
  return heading('ПРАКТИКА · '+(n+1)+'/4','Проверь слух','Прослушай запись и выбери иероглиф.')+
  '<div class="sheet pg-listening"><span class="sheet-label">СЛУШАЙ И УЗНАВАЙ</span>'+

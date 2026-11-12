@@ -8,7 +8,7 @@ const css=fs.readFileSync('assets/hsk1-fourth-v219.css','utf8');
 const html=fs.readFileSync('hsk1-fourth-v214.html','utf8');
 const pack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
 for(const name of ['cover','celebrate','woman','man']){
- const p=(name==='man'||name==='woman'?'assets/lesson4-dialog-v282/':'assets/lesson4-v269/')+name+'.webp;
+ const p=(name==='man'||name==='woman'?'assets/lesson4-dialog-v282/':'assets/lesson4-v269/')+name+'.webp';
  const b=fs.readFileSync(p);
  assert(b.length>8000,'Missing/empty image '+name);
  assert.equal(b.toString('ascii',0,4),'RIFF');
