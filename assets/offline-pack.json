@@ -1,5 +1,5 @@
 {
-  "version": 286,
+  "version": 288,
   "bytes": 55532426,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2686,6 +2686,10 @@
     "./assets/panda-hsk1-questions-v281.mjs?v=285",
     "./assets/panda-live-dialogue-v272.mjs?v=285",
     "./assets/panda-live-screen-v270.mjs?v=285",
-    "./panda-voice-pilot.html?v=285"
+    "./panda-voice-pilot.html?v=285",
+    "./hsk1-diagnostic.html",
+    "./assets/hsk1-diagnostic-v287.js?v=287",
+    "./assets/hsk1-diagnostic-v287.css?v=287",
+    "./assets/hsk1-diagnostic-v287-data.json"
   ]
 }
