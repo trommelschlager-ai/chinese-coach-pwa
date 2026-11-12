@@ -29,7 +29,7 @@ const html=fs.readFileSync('hsk1-fourth-v214.html','utf8');
 const script=fs.readFileSync('assets/hsk1-fourth-v220.js','utf8');
 const cards=fs.readFileSync('hsk1-l4-cards.html','utf8');
 assert(html.includes('lesson4-xiaoxiao-v265.js?v=265'));
-assert(html.indexOf('lesson4-xiaoxiao-v265.js?v=265')<html.indexOf('hsk1-fourth-v220.js?v=268'), 'Map must load before lesson');
+assert(html.indexOf('lesson4-xiaoxiao-v265.js?v=265')<html.indexOf('hsk1-fourth-v220.js?v=269'), 'Map must load before lesson');
 assert(script.includes('PandaLesson4XiaoxiaoV265?.lookup(word)||window.PandaCleanAudioV250'), 'Female voice must prefer Xiaoxiao');
 assert(script.includes("role==='male'"),'Male dialogue source must be preserved');
 assert(cards.includes('lesson4-xiaoxiao-v265.js?v=265')&&cards.includes('PandaLesson4XiaoxiaoV265?.lookup(word)||owner[word]'), 'All 25 revision cards must use Xiaoxiao');
