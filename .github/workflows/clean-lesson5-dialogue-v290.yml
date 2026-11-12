@@ -1,0 +1,40 @@
+name: Repair noisy male date question in lesson 5 v290
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/clean-lesson5-dialogue-v290.sh'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: panda-l5-date-audio-v290
+  cancel-in-progress: false
+jobs:
+  clean-date-question:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+      - name: Process original male speech without speed or pitch change
+        run: |
+          bash scripts/clean-lesson5-dialogue-v290.sh
+      - name: Check output MP3 and active script
+        run: |
+          test -s assets/lesson5-male-clean-v290.mp3
+          ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 assets/lesson5-male-clean-v290.mp3
+          grep -q 'lesson5-male-clean-v290.mp3' assets/hsk1-fifth-v227.js
+      - name: Commit replacement and versioned PWA metadata
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/lesson5-male-clean-v290.mp3 assets/hsk1-fifth-v227.js hsk1-fifth-v227.html assets/offline-pack.json sw.js scripts/verify-hsk1-fifth-v227.cjs scripts/verify-hsk1-lesson5-xiaoxiao-v272.cjs scripts/verify-panda-native-real-v246.cjs
+          if git diff --cached --quiet; then echo 'Already processed'; exit 0; fi
+          git commit -m 'audio: reduce background noise in first male date question v290'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
