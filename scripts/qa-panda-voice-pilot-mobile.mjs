@@ -68,7 +68,7 @@ try{
    if(id===4)assert((await page.locator('#exercise-banner').textContent()).includes('твоего телефона'));
    if(id===5)assert((await page.locator('#exercise-banner').textContent()).includes('Учебная сценка'));
   }
-  await page.locator('#lesson-select').selectOption('6');await page.locator('#mode-nonstop').click();await send(page,'我有妹妹');assert((await page.locator('#recent').textContent()).includes('младшая сестра'));assert((await page.locator('#status').textContent()).includes('запомнила'));
+  await page.locator('#lesson-select').selectOption('6');await page.locator('#mode-nonstop').click();await send(page,'我有妹妹');assert((await page.locator('#recent').textContent()).includes('младшая сестра'));assert((await page.locator('#status').textContent()).includes('Панда продолжит'));
   await send(page,'我没有哥哥，我有妹妹');assert((await page.locator('#recent').textContent()).includes('Wǒ méiyǒu gēge, wǒ yǒu mèimei.'));await send(page,'你有哥哥吗');assert.equal(await page.locator('#phrase').textContent(),'我有一个哥哥。');
   await send(page,'今天天气怎么样');assert((await page.locator('#status').textContent()).includes('урока 7'));
   for(let i=0;i<12;i++)await send(page,'你好吗？');assert.equal(await page.locator('#recent article').count(),2);await page.locator('#history-open').click();assert(await page.locator('#history-dialog').isVisible());assert((await page.locator('#history article').count())>12);await page.locator('[data-close="history-dialog"]').click();
