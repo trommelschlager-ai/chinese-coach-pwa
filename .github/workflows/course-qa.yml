@@ -38,4 +38,6 @@ jobs:
       - run: node scripts/verify-quality.cjs
       - run: node scripts/verify-offline.cjs
       - run: node scripts/verify-hanzi.cjs
+      - run: node scripts/verify-hanzi-writing-v283.cjs
+      - run: node scripts/verify-hanzi-writing-interactions-v283.cjs
       - run: node scripts/verify-launch.cjs
