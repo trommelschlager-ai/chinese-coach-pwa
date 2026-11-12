@@ -16,7 +16,7 @@ const make=(saved)=>{
  const dom=new JSDOM(html,{url:'https://panda.test/chinese-coach-pwa/hsk1-first-v189.html',runScripts:'outside-only'});
  const w=dom.window;const played=[];
  w.Audio=function(src){this.src=src;this.pause=()=>{};this.play=()=>{played.push(src);return Promise.resolve();}};
- w.PANDA_HSK1_VOICES={female:{'你好！':'./assets/female-hello.mp3'},male:{'你好！':'./assets/dialogue-voices/l1-02-b.mp3'}};
+ w.PANDA_HSK1_VOICES={female:{'你好！':'./assets/female-hello.mp3'},male:{'你好！':'./assets/hsk1-voices-v156/ca2a36b2097b5a6321a2.mp3?v=300'}};
  if(saved)w.localStorage.setItem('pg-hsk1-v189-lesson1',JSON.stringify(saved));
  w.eval(radical);w.eval(extras);w.eval(main);
  return {w,dom,d:w.document,played};
@@ -55,9 +55,14 @@ const make=(saved)=>{
  assert(d.querySelector('.dialogue-line:nth-child(2) img.pg-dialogue-man'),'Second greeting should show actual male portrait');
  assert(d.querySelectorAll('.dialogue-line img.pg-dialogue-woman').length===2,'First and third greeting must show woman rather than a panda');
  male.click();
- assert.equal(played.at(-1),'./assets/dialogue-voices/l1-02-b.mp3','Male 你好 must not use female Xiaoxiao clip');
+ assert.equal(played.at(-1),'./assets/hsk1-voices-v156/ca2a36b2097b5a6321a2.mp3?v=300','Male 你好 must not use female Xiaoxiao clip');
  const female=d.querySelector('.dialogue-line:first-child [data-role="female"]');female.click();
- assert.notEqual(played.at(-1),'./assets/dialogue-voices/l1-02-b.mp3');
+ assert.notEqual(played.at(-1),'./assets/hsk1-voices-v156/ca2a36b2097b5a6321a2.mp3?v=300');
+ const variants=d.querySelectorAll('[data-male-voice]');
+ assert.equal(variants.length,3,'Give three male voice comparisons');
+ variants[1].click();
+ assert.equal(played.at(-1),'./assets/dialogue-voices/l1-02-b.mp3?v=300','Variant 2 should play another male recording');
+ assert.equal(w.localStorage.getItem('pg-hsk1-l1-male-v300'),'yunxi','Remember male voice preference');
  assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v189-lesson1')).lessonVersion,295);
  dom.window.close();
 }
