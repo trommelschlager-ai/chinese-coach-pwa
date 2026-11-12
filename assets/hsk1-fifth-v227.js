@@ -91,7 +91,7 @@ function play(hz,role='female'){
  try{
   const a=new Audio(window.PandaAudioLevel?.[path]||path);audio=a;a.preload='auto';
   a.preservesPitch=true;
-  a.playbackRate=0.86; // slower with preserved pitch for new learners
+  a.playbackRate=(path.includes('lesson5-xiaoxiao-v272/')||path.includes('lesson4-xiaoxiao-v265/'))?1:0.86; // Xiaoxiao was already slowed 20% in Luvvoice; avoid double slowing
   // Owner-clean files are already balanced; gently level only inline originals.
   if(!path.includes('panda-native-clean-v249/')&&(path.startsWith('data:audio/')||window.PandaLessonAudioV240?.isPriority?.(hz)))window.PandaLessonAudioV240?.improve?.(a,'dates',hz);
   const pressed=[...app.querySelectorAll('[data-play]')].find(el=>el.dataset.play===hz);

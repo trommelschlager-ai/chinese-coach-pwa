@@ -1,5 +1,5 @@
 {
-  "version": 272,
+  "version": 273,
   "bytes": 55302068,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2498,6 +2498,8 @@
     "./assets/lesson5-xiaoxiao-v272/013.mp3",
     "./assets/lesson5-xiaoxiao-v272/014.mp3",
     "./assets/lesson5-xiaoxiao-v272/015.mp3",
-    "./assets/lesson5-xiaoxiao-v272/016.mp3"
+    "./assets/lesson5-xiaoxiao-v272/016.mp3",
+    "./assets/hsk1-fifth-v227.js?v=273",
+    "./hsk1-fifth-v227.html?v=273"
   ]
 }
