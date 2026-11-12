@@ -136,7 +136,7 @@ function listening(){
  return card('<h2>Слушай и выбирай</h2><p class="center small">Вопрос '+Math.min(i+1,questions.length)+' из '+questions.length+'</p>'+
  '<div class="buttons">'+audioButton(q.sound)+'</div><div class="grid three">'+q.choices.map(z=>
  '<button type="button" class="card-choice" data-listen="'+esc(z)+'"'+(done||!listenReady?' disabled':'')+'><strong>'+esc(z)+'</strong></button>').join('')+'</div>'+
- (done?'<p class="result good">✓ Три ответа верны. Нажми «Дальше».</p>':'<p class="small center" id="pg5-listen-hint">'+(listenReady?'Запись завершена. Выбери слово.':'Дослушай запись, затем выбери китайское слово.')+'</p>'));}
+ (done?'<p class="result good">✓ Все ответы верны! Можно повторить.</p><div class="buttons"><button class="soft primary" type="button" data-repeat-listen>↻ Пройти заново</button></div>':'<p class="small center" id="pg5-listen-hint">'+(listenReady?'Выбирай ответ, можно переслушать.':'Нажми 🔊, чтобы включить звук и открыть ответы.')+'</p>'));}
 function builder(){
  const i=state.built,done=i>=builds.length,b=builds[Math.min(i,builds.length-1)];
  const pool=b.parts.concat(['四']);
@@ -145,7 +145,7 @@ function builder(){
  '<div class="assemble">'+pool.map((z,j)=>
  '<button type="button" class="unit" data-tile="'+j+'"'+(done||state.used.includes(j)?' disabled':'')+'>'+z+'</button>').join('')+'</div>'+
  '<div class="buttons"><button class="soft" type="button" data-clear>Сброс</button><button class="soft primary" type="button" data-build-check'+(done?' disabled':'')+'>Проверить</button></div>'+
- (done?'<p class="result good">✓ Все три месяца собраны. Дальше — пропись.</p>':'<p class="small center">Нажимай иероглифы в правильном порядке.</p>'));}
+ (done?'<p class="result good">✓ Все три месяца собраны. Можно повторить.</p><div class="buttons"><button class="soft primary" type="button" data-repeat-builder>↻ Собрать заново</button></div>':'<p class="small center">Нажимай иероглифы в правильном порядке.</p>'));}
 function writing(){return card('<h2 class="center">月 — месяц</h2>'+
  '<div class="write-grid"><div id="writer" aria-label="Анимация черт иероглифа 月"></div></div>'+
  '<div class="buttons"><button class="soft" type="button" data-animate>▶ Показать черты</button>'+
@@ -235,17 +235,16 @@ app.addEventListener('click',event=>{
  if(b.hasAttribute('data-play')){
   const question=state.step===9&&questions[state.listen]?.sound===b.dataset.play;
   if(question){
-   listenReady=false;app.querySelectorAll('[data-listen]').forEach(el=>el.disabled=true);
-   const hint=app.querySelector('#pg5-listen-hint');if(hint)hint.textContent='Слушай до конца…';
-   play(b.dataset.play,b.dataset.role||'female',ok=>{
-    if(!ok||state.step!==9||questions[state.listen]?.sound!==b.dataset.play)return;
-    listenReady=true;app.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
-    const h=app.querySelector('#pg5-listen-hint');if(h)h.textContent='Запись завершена. Выбери слово.';
-   });
+   listenReady=true;
+   app.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
+   const h=app.querySelector('#pg5-listen-hint');if(h)h.textContent='Слушай и выбирай. Можно переслушать.';
+   play(b.dataset.play,b.dataset.role||'female');
   }else play(b.dataset.play,b.dataset.role||'female');
   return;
  }
- if(b.hasAttribute('data-listen')){
+ if(b.hasAttribute('data-repeat-listen')){state.listen=0;listenReady=false;save();refresh();say('Аудирование начато заново.','good');return}
+  if(b.hasAttribute('data-repeat-builder')){state.built=0;clearBuilder();refresh();say('Собери месяцы заново.','good');return}
+  if(b.hasAttribute('data-listen')){
   const i=state.listen;if(i>=questions.length||!listenReady)return;
   if(b.dataset.listen===questions[i].correct){state.listen++;save();refresh();say(questions[i].hint,'good')}
   else say('Пока неверно. Послушай запись ещё раз.','bad');return;

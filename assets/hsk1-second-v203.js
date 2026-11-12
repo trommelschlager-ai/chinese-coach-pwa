@@ -394,7 +394,7 @@ function applyAnswer(step,choice){
   state.index[step]=pos+1;
   if(step!==11&&pos+1===seq.length)state.done[step]=true;
   if(step===11&&pos+1===seq.length&&state.finalWrong.length===0)state.done[11]=true;
-  if(step!==11&&AUTO_ADVANCE_DRILLS.has(step)&&state.done[step]){state.step++;state.selected=[]}
+  // Stay on completed task; the student chooses Replay or Next.
   render();return;
  }
  state.attempts[key]=(state.attempts[key]||0)+1;
@@ -409,7 +409,7 @@ function applyBuild(step){
  if(!good){feedback('Проверь порядок: кто + 是 + профессия'+(step===8?' + 吗':'')+'.');return}
  state.index[step]=pos+1;
  state.selected=[];
- if(state.index[step]===builds[step].length){state.done[step]=true;if(AUTO_ADVANCE_DRILLS.has(step)){state.step++;state.selected=[]}}
+ if(state.index[step]===builds[step].length)state.done[step]=true;
  render();
 }
 function finish(){
@@ -491,7 +491,7 @@ area.addEventListener('click',async ev=>{
   }
   try{
    safeStopMic();const take=++micEpoch;
-   stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+   stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}});
    const formats=['audio/webm;codecs=opus','audio/mp4','audio/webm'];
    const mime=formats.find(m=>MediaRecorder.isTypeSupported(m));
    recorder=new MediaRecorder(stream,mime?{mimeType:mime}:undefined);
