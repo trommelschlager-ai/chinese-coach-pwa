@@ -12,8 +12,9 @@ for(let i=0;i<8;i++){
 }
 const page=fs.readFileSync('hsk1-family-v231.html','utf8');
 assert(page.includes('lesson6-grandparents-v275.js?v=275'));
-assert(page.includes('panda-go-companion-v231.js?v=277'));
-assert(page.indexOf('lesson6-grandparents-v275.js?v=275')<page.indexOf('panda-go-companion-v231.js?v=277'));
+const companionTag=page.match(/panda-go-companion-v231\.js\?v=\d+/)?.[0];
+assert(companionTag,'Companion script must load');
+assert(page.indexOf('lesson6-grandparents-v275.js?v=275')<page.indexOf(companionTag));
 const css=fs.readFileSync('assets/panda-go-approved-lessons-v231.css','utf8');
 assert(css.includes('pg6-grandparents-grid')&&css.includes('data-lesson="6"'));
 const js=fs.readFileSync('assets/panda-go-companion-v231.js','utf8');

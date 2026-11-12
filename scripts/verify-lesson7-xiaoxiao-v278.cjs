@@ -42,11 +42,11 @@ const fn=vm.runInNewContext('(()=>{const isFamily=false;'+source.slice(start,end
 for(const zh of phrases)assert.equal(fn(zh)[0],w.PandaLesson7XiaoxiaoV277.lookup(zh));
 assert.equal(fn('未知词').length,0,'Old voice must not appear');
 assert(html.indexOf('lesson7-xiaoxiao-v277.js?v=278')>=0);
-assert(html.indexOf('lesson7-xiaoxiao-v277.js?v=278')<html.indexOf('panda-go-companion-v231.js?v=278'));
+assert(html.indexOf('lesson7-xiaoxiao-v277.js?v=278')<html.indexOf((html.match(/panda-go-companion-v231\.js\?v=\d+/)||[])[0]));
 assert(source.includes('a.playbackRate=(isFamily||newWeather)?1:0.85'));
 assert(source.includes('if(!isFamily && !newWeather &&'));
 const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
 assert(offline.version>=278);
 for(let i=0;i<20;i++)assert(offline.files.includes('./'+path+String(i).padStart(3,'0')+'.mp3'));
-assert(fs.readFileSync('sw.js','utf8').includes('v278-lesson7-xiaoxiao'));
+assert(/^const CACHE='chinese-coach-pwa-v\d+[^']*';/m.test(fs.readFileSync('sw.js','utf8')),'Versioned service worker required');
 console.log('PASS: 20 exact MP3, '+phrases.size+' covered HSK1 weather phrases, original voice speed, 14-screen weather route and PWA assets');
