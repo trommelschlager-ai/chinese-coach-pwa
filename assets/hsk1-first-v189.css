@@ -114,3 +114,46 @@
 .pg-pronunciation-inline small{display:block;margin-left:25px;margin-top:3px;font-size:11px;color:#936ba5}
 .pg-pronunciation-inline>span:last-child{font-size:25px;font-weight:900}
 .pg-pronunciation-inline:focus-visible{outline:3px solid #9063b9;outline-offset:3px}
+
+/* Lesson 1 v295: complete Kangxi key catalog, gentle grammar cards, integrated 203 sound drills. */
+.pg-all-radicals{margin-top:14px!important;padding:15px 12px!important}
+.pg-all-radicals>summary{cursor:pointer;font-weight:850;color:#6c379b;font-size:16px;line-height:1.5}
+.pg-all-radicals>summary small{font-size:11px;color:#8d68a1;font-weight:600;margin-left:4px}
+.pg-all-radicals>p{margin:10px 1px;font-size:13px;line-height:1.6;color:#62496f}
+.pg-all-radicals label{display:block;font-size:12px;font-weight:750;color:#643e83;margin:11px 0 5px}
+#pg-radical-search{display:block;width:100%;min-height:43px;font-size:15px;border:1.5px solid #d8c1e9;border-radius:13px;padding:9px 12px;color:#523267;background:#fffafd}
+.pg-radical-count{font-size:12px;margin:10px 2px 6px;color:#846b94}
+.pg-radical-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.pg-radical-tile{min-width:0;min-height:108px;display:flex;align-items:center;flex-direction:column;gap:2px;background:linear-gradient(150deg,#fffaff,#f0e5fa);border:1.5px solid #eadbf1;border-radius:13px;padding:7px 4px;color:#5c387a}
+.pg-radical-tile>span{font-size:10px;color:#8764a1}
+.pg-radical-tile>b{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;font-size:32px;line-height:1.3}
+.pg-radical-tile>small{font-size:11px;line-height:1.3;max-width:100%;text-align:center;overflow-wrap:anywhere}
+.pg-radical-tile.active{border-color:#9852cb;box-shadow:0 0 0 1px #a96dda inset;background:#f1dbf8}
+.pg-radical-nav{display:flex;gap:10px;align-items:center;justify-content:center;margin:9px 0}
+.pg-radical-nav button{min-width:66px;min-height:40px;border:1px solid #d6b0ed;border-radius:12px;color:#643594;background:#fffaff;font-weight:900}
+.pg-radical-nav strong{font-size:12px;min-width:60px;text-align:center}
+.pg-radical-chosen{display:flex;gap:13px;align-items:center;margin-top:9px;border-radius:15px;padding:12px;background:#f6eaff;border:1px solid #e7d0f5}
+.pg-radical-chosen>strong{font-size:45px;color:#6a3d99;min-width:56px;text-align:center}
+.pg-radical-chosen div{flex:1;font-size:14px}
+.pg-radical-chosen p{margin:5px 0}
+.pg-radical-chosen small{font-size:12px;color:#805f98}
+.pg-shi-grammar{font-size:14px;line-height:1.58;color:#52396b}
+.pg-shi-grammar>p{margin:10px 0}
+.pg-shi-formula{display:grid;grid-template-columns:minmax(0,1fr) 12px minmax(0,1fr) 12px minmax(0,1fr);align-items:center;gap:2px;margin:14px 0}
+.pg-shi-formula>div{min-width:0;text-align:center;border:1px solid #ebd5f4;border-radius:13px;padding:11px 4px;background:#fcf4ff}
+.pg-shi-formula strong{display:block;font-size:34px;line-height:1.3}
+.pg-shi-formula small{display:block;font-size:10px;line-height:1.35;overflow-wrap:anywhere;color:#7a5795}
+.pg-shi-formula em{font-style:normal;color:#9469b0;font-weight:900}
+.pg-shi-example{background:#f9f0ff;border:1px solid #ebd3fa;border-radius:16px;padding:15px;margin:12px 0;text-align:center}
+.pg-shi-example>b{display:block;font-size:30px;color:#5f2b9a}
+.pg-shi-example>span{display:block;color:#905fac;font-weight:750;margin:3px 0 9px}
+.pg-shi-example>p{margin:3px 0;font-size:14px}
+.pg-shi-example>button{margin:12px auto 0;max-width:100%}
+.pg-shi-note{padding:10px 12px;border-left:3px solid #ac79d4;background:#fff8ff;border-radius:4px 12px 12px 4px}
+.pg-pronunciation-embedded{margin:12px 0 16px;padding:12px!important}
+.pg-pronunciation-embedded h2{font-size:19px;color:#653a99;margin:0 0 8px}
+.pg-pronunciation-embedded>p{font-size:13px;line-height:1.5;margin:0 0 9px;color:#765c91}
+.pg-pronunciation-frame{display:block;width:100%;height:clamp(390px,56dvh,580px);border:1px solid #ecd5f5;border-radius:16px;background:#fff;overflow:hidden}
+.pg-pronunciation-embedded .pg-pronunciation-inline{font-size:13px;min-height:44px;margin:8px 0 0}
+.dialogue-line .avatar img.pg-dialogue-man{display:block;width:46px;height:50px;max-width:100%;object-fit:cover;object-position:center 18%;border-radius:12px;border:1px solid #d4b5e9}
+@media(max-width:350px){.pg-radical-grid{gap:5px}.pg-radical-tile{min-height:99px}.pg-pronunciation-frame{height:390px}}

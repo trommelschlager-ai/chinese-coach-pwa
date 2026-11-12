@@ -1,5 +1,5 @@
 {
-  "version": 294,
+  "version": 295,
   "bytes": 55532426,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2726,6 +2726,11 @@
     "./hsk1-third-v212.html?v=293",
     "./hsk1-fourth-v214.html?v=293",
     "./assets/hsk1-second-v203.js?v=294",
-    "./hsk1-second-v203.html?v=294"
+    "./hsk1-second-v203.html?v=294",
+    "./assets/hsk1-radicals-v295.js?v=295",
+    "./assets/hsk1-first-extras-v295.js?v=295",
+    "./assets/hsk1-first-v189.js?v=295",
+    "./hsk1-first-v189.html?v=295",
+    "./hsk1-pronunciation.html?embedded=1"
   ]
 }

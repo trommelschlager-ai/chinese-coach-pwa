@@ -35,6 +35,8 @@ assert(!d.getElementById('stroke-next'),'Manual stroke-by-stroke activation must
 const oldDrawing=d.querySelector('.writing-animate');d.getElementById('stroke-restart').click();assert.notEqual(d.querySelector('.writing-animate'),oldDrawing,'Replay must restart the animation');
 next();assert(d.querySelector('.big-hanzi').textContent==='我','First vocabulary word must be 我');assert(screen().includes('Строение 我'));
 next();assert(d.querySelector('.big-hanzi').textContent==='是');assert(screen().includes('Строение 是'));
+next();assert(screen().includes('Зачем нужно 是?'));assert(screen().includes('我 + 是 + 学生')||screen().includes('Я студент'),'Grammar explanation after 是');
+assert(d.querySelector('.pg-shi-formula')&&d.querySelector('.pg-shi-example'),'Grammar requires three-part example');
 next();assert(screen().includes('Четыре тона'));assert.equal(d.querySelectorAll('.tone-curve').length,4,'Four distinct tone contour diagrams');assert.equal(d.querySelectorAll('[data-tone-pick]').length,0,'No tone guessing in intro');assert(!d.getElementById('pg-next').disabled,'Tone lesson must allow the next step immediately');
 next();assert(d.querySelector('.big-hanzi').textContent==='学生','Student must be studied before being used in a sentence');
 next();assert(screen().includes('Собери предложение'));assert(d.getElementById('pg-next').disabled);
@@ -69,10 +71,10 @@ assert.equal(d.querySelectorAll('.learning-pair').length,3);
 assert.deepEqual([...d.querySelectorAll('.learning-pair .pair-word')].map(x=>x.textContent),['我','是','学生']);
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-foundations')).completed,true,'Legacy completion must be preserved');
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('foundations'),'Unlock lesson 2 on the map');
-assert(!d.querySelector('.lesson-step'),'Old seven-step bulky UI must not mount in the new lesson');assert(map.includes('15 экранов'),'First map must show its actual fifteen screen count');
+assert(!d.querySelector('.lesson-step'),'Old seven-step bulky UI must not mount in the new lesson');assert(map.includes('16 экранов'),'First map must show the 16 actual screens');
 assert(!js.includes('speechSynthesis'),'No cloned or invented speaker voice');assert(page.includes('hsk1-native-clean-v198.js?v=198'),'Owner recording overlay is loaded after all older voices');assert(js.includes('const XIAOXIAO_LESSON1=Object.freeze('),'Lesson 1 must use approved Xiaoxiao source map');assert(js.includes('const realHuman='),'Use licensed real human fallback');assert(js.includes('autoGainControl:true'),'Automatic mic gain');assert(js.includes('async function levelRecording(blob)'),'Normalize recorded volume');assert(js.includes('decodeAudioData'),'Web Audio normalization fallback');
 for(const removed of ['Оригинальная запись носительницы','Временный учебный голос','Оценка произношения не автоматическая','Никакой автоматической оценки','Сначала послушай носительницу'])assert(!js.includes(removed),'Redundant status copy returned: '+removed);
-assert(page.includes('hsk1-first-v189.js?v=260'),'New JS query bust');
+assert(page.includes('hsk1-first-v189.js?v=295'),'New JS query bust');
 const xiaoxiaoClips=[
  ['我','wo'],['是','shi'],['学生','xuesheng'],['你','ni'],['你好','nihao'],
  ['我是学生','woshixuesheng'],['妈','ma1'],['麻','ma2'],['马','ma3'],['骂','ma4']
@@ -91,5 +93,5 @@ assert(js.includes('item.playbackRate=1;'),'Natural speech rate must preserve sy
 assert(js.includes("high.type='highpass'")&&js.includes("low.type='lowpass'")&&js.includes('createDynamicsCompressor'),'Tone source must be gently processed without replacement');
 assert(page.includes('hsk1-first-v189.css?v=242'),'New CSS query bust');
 assert(css.includes('animation-iteration-count:infinite'),'Writing must run continuously');for(let i=1;i<=6;i++)assert(css.includes('@keyframes pgHao'+i),'Missing sequential six-stroke writing frame');assert(!js.includes('pg-wo-writing'),'Old seven-stroke character must be removed');assert(!js.includes('toneChoice'),'Intro tone choices must be absent');
-console.log('PASS v260: 10 Xiaoxiao MP3s, one voice for words, tones, dialogue and listening; original 15 screens and progress retained');
+console.log('PASS v295: original words and tones, full sound trainer, 是 grammar and 16 lesson screens; progress retained');
 w.close();
