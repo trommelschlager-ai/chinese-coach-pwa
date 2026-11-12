@@ -1,5 +1,5 @@
 {
-  "version": 293,
+  "version": 294,
   "bytes": 55532426,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2724,6 +2724,8 @@
     "./assets/hsk1-third-v213.js?v=293",
     "./assets/hsk1-fourth-v220.js?v=293",
     "./hsk1-third-v212.html?v=293",
-    "./hsk1-fourth-v214.html?v=293"
+    "./hsk1-fourth-v214.html?v=293",
+    "./assets/hsk1-second-v203.js?v=294",
+    "./hsk1-second-v203.html?v=294"
   ]
 }
