@@ -1,5 +1,5 @@
 {
-  "version": 268,
+  "version": 269,
   "bytes": 51004088,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2433,6 +2433,13 @@
     "./assets/lesson4-v268/cover.webp",
     "./assets/lesson4-v268/celebrate.webp",
     "./assets/lesson4-v268/woman.webp",
-    "./assets/lesson4-v268/man.webp"
+    "./assets/lesson4-v268/man.webp",
+    "./assets/hsk1-fourth-v219.css?v=269",
+    "./assets/hsk1-fourth-v220.js?v=269",
+    "./hsk1-fourth-v214.html?v=269",
+    "./assets/lesson4-v269/cover.webp",
+    "./assets/lesson4-v269/celebrate.webp",
+    "./assets/lesson4-v269/woman.webp",
+    "./assets/lesson4-v269/man.webp"
   ]
 }
