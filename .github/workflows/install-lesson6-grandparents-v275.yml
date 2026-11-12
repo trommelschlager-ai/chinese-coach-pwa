@@ -2,34 +2,51 @@ name: Install Panda Go lesson 6 grandparents v275
 on:
   push:
     branches: [main]
-    paths: ['assets/lesson6-grandparents-import-v275.zip']
+    paths:
+      - 'assets/lesson6-grandparents-import-v275.zip'
+      - 'scripts/install-lesson6-grandparents-v275.cjs'
 permissions:
   contents: write
 concurrency:
-  group: lesson6-grandparents-v275
+  group: panda-go-lesson6-grandparents-v275
   cancel-in-progress: false
 jobs:
-  unpack:
+  install:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: true
-      - name: Unpack new Xiaoxiao audio
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unpack grandfather and grandmother speech samples
         run: |
           set -euo pipefail
           unzip -oq assets/lesson6-grandparents-import-v275.zip -d .
-          test -f assets/lesson6-grandparents-v275/manifest.json
-          test $(find assets/lesson6-grandparents-v275 -type f -name '*.mp3' | wc -l) -eq 8
-      - name: Commit audio tracks to main
+      - name: Update live lesson and verify voices
+        run: |
+          set -euo pipefail
+          npm ci
+          node scripts/install-lesson6-grandparents-v275.cjs
+          node scripts/verify-lesson6-grandparents-v275.cjs
+          node scripts/verify-panda-go-approved-v231.cjs
+      - name: Commit checked audio and interactive lesson
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/lesson6-grandparents-v275/
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'audio: unpack eight Xiaoxiao grandparent clips v275'
+          git add assets/lesson6-grandparents-v275 assets/lesson6-grandparents-v275.js
+          git add assets/panda-go-companion-v231.js assets/panda-go-approved-lessons-v231.css
+          git add hsk1-family-v231.html sw.js assets/offline-pack.json
+          git add scripts/verify-panda-go-approved-v231.cjs
+          if git diff --cached --quiet; then
+            echo 'Lesson 6 grandparents already installed'
+            exit 0
+          fi
+          git commit -m 'lesson6: add Xiaoxiao grandparents and four family examples v275'
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
