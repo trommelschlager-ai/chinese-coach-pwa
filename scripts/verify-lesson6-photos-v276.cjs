@@ -37,7 +37,7 @@ w.eval(data);w.PANDA_HSK1_VOICES={
  female:new Proxy({}, {get(_,key){return './assets/female/'+String(key)+'.mp3'}})
 };
 let sounds=[];
-w.Audio=function(src){sounds.push(src);this.src=src;this.pause=()=>{};this.play=()=>Promise.resolve()};
+w.Audio=function(src){sounds.push(src);this.src=src;this.pause=()=>{};this.play=()=>{this.onended?.();return Promise.resolve()}};
 w.HanziWriter={create:()=>({cancelQuiz(){},pauseAnimation(){},animateCharacter(){},quiz(){}})};
 w.eval(voice274);w.eval(voice);w.eval(js);
 const next=()=>{const b=d.querySelector('#pg5-next');assert(!b.disabled);b.click()};
@@ -57,7 +57,7 @@ next(); // dialogue
 next(); // listening
 const topic=w.PANDA_HSK1_FOUNDATIONS.find(x=>x.id==='family');
 for(const [hz] of topic.listen.items.slice(0,4)){
- const btn=d.querySelector('[data-listen="'+hz+'"]');assert(btn,'Missing listening choice '+hz);btn.click();
+ const btn=d.querySelector('[data-listen="'+hz+'"]');assert(btn,'Missing listening choice '+hz);assert(btn.disabled,'Choices locked before listening');const listen=d.querySelector('[data-play="'+hz+'"]');assert(listen&&!listen.disabled);listen.click();assert(!btn.disabled);btn.click();
 }
 next(); // sentence builder
 for(const build of topic.builds.slice(0,3)){
