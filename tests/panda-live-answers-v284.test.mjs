@@ -16,7 +16,7 @@ test('29 known Panda questions have student answers, each accepted sample is rec
  for(const q of extendedQuestions()){
   if(!q.accepted.length)continue;
   const prompt={hanzi:q.hanzi,lesson:q.lesson,intent:'extension',accepted:q.accepted,
-   instruction:'Ответь по теме'};
+   options:[],instruction:'Ответь по теме'};
   prompt.verifiedLines=[{},prompt];
   for(const candidate of q.accepted){
    const result=answerLive(candidate,{allowed,topic:q.lesson,prompt,curriculum,date,turn:1,profile:{family:{}}});
