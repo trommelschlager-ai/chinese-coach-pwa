@@ -68,6 +68,7 @@ const defaults=()=>({step:0,done:Array(TOTAL).fill(false),index:{},attempts:{},
  mistakes:[],finalFirstTry:0,finalWrong:[],reviewIndex:0,reviewing:false,
  selected:[],heard:false,spoken:false,completed:false});
 let state=defaults();
+let listenUnlockedKey=''; // only unlock the current listening question after pressing Play
 try{
  const raw=JSON.parse(localStorage.getItem(KEY)||'null');
  if(raw&&typeof raw==='object'){
@@ -236,7 +237,7 @@ function questionBlock(step){
  '<h2>'+escapeHtml(q.q)+'</h2>'+
  (q.sound?audioButton(q.sound,'▶ Послушать запись',q.role||'female'):'')+
  '<div class="pg3-answers">'+q.a.map((answer,i)=>
- '<button type="button" data-answer="'+i+'">'+escapeHtml(answer)+'</button>').join('')+'</div>'+
+ '<button type="button" data-answer="'+i+'"'+(step===4&&listenUnlockedKey!==step+'-'+pos?' disabled':'')+'>'+escapeHtml(answer)+'</button>').join('')+'</div>'+
  '<p class="pg3-feedback" data-feedback role="status"></p></div>';
 }
 function replayDrill(step){return '<div class="sheet pg3-replay"><p>Это упражнение уже выполнено. Можно повторить его, не теряя прогресс.</p><button type="button" class="pg3-main" data-repeat-step="'+step+'">↻ Повторить упражнение</button></div>'}
@@ -387,6 +388,7 @@ function advance(){
 }
 function applyAnswer(step,choice){
  const seq=prompts[step],pos=index(step),q=seq?.[pos];
+ if(step===4&&listenUnlockedKey!==step+'-'+pos)return;
  if(!q)return;
  const key=step+'-'+pos;
  if(choice===q.r){
@@ -438,7 +440,7 @@ area.addEventListener('click',async ev=>{
  if(btn.hasAttribute('data-repeat-step')){
   const s=Number(btn.dataset.repeatStep);
   if(state.step!==s||![2,4,6,8].includes(s))return;
-  state.index[s]=0;state.done[s]=false;state.selected=[];save();render();return;
+  state.index[s]=0;state.done[s]=false;state.selected=[];listenUnlockedKey='';save();render();return;
  }
  if(btn.hasAttribute('data-dialogue-again')){state.index[9]=0;state.done[9]=false;render();return}
  if(btn.hasAttribute('data-review-all')){playReviewAll();return}
@@ -454,7 +456,15 @@ area.addEventListener('click',async ev=>{
   if(epoch===reviewEpoch&&status)status.textContent='✓ Повтори вслух: '+reviewEntries[i][0];
   return;
  }
- if(btn.hasAttribute('data-audio')){play(btn.dataset.audio,btn.dataset.role||'female');return}
+ if(btn.hasAttribute('data-audio')){
+  const step=state.step,pos=index(step),question=prompts[step]?.[pos];
+  if(step===4&&question?.sound===btn.dataset.audio&&fileFor(question.sound,question.role||'female')){
+   // Unlock on an actual Play tap; mobile audio.onended may never fire.
+   listenUnlockedKey=step+'-'+pos;
+   area.querySelectorAll('[data-answer]').forEach(el=>el.disabled=false);
+  }
+  play(btn.dataset.audio,btn.dataset.role||'female');return;
+ }
  if(btn.hasAttribute('data-answer')){applyAnswer(state.step,Number(btn.dataset.answer));return}
  if(btn.hasAttribute('data-add')){
   const current=builds[state.step]?.[index(state.step)];
