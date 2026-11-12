@@ -1,0 +1,35 @@
+name: Install Panda Go lesson 6 grandparents v275
+on:
+  push:
+    branches: [main]
+    paths: ['assets/lesson6-grandparents-import-v275.zip']
+permissions:
+  contents: write
+concurrency:
+  group: lesson6-grandparents-v275
+  cancel-in-progress: false
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Unpack new Xiaoxiao audio
+        run: |
+          set -euo pipefail
+          unzip -oq assets/lesson6-grandparents-import-v275.zip -d .
+          test -f assets/lesson6-grandparents-v275/manifest.json
+          test $(find assets/lesson6-grandparents-v275 -type f -name '*.mp3' | wc -l) -eq 8
+      - name: Commit audio tracks to main
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/lesson6-grandparents-v275/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'audio: unpack eight Xiaoxiao grandparent clips v275'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
