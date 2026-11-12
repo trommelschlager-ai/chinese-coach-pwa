@@ -1,6 +1,6 @@
 {
-  "version": 266,
-  "bytes": 50997088,
+  "version": 267,
+  "bytes": 51004088,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -707,10 +707,12 @@
     "./assets/hsk1-fourth-v219.css?v=229",
     "./assets/hsk1-fourth-v219.css?v=237",
     "./assets/hsk1-fourth-v219.css?v=249",
+    "./assets/hsk1-fourth-v219.css?v=266",
     "./assets/hsk1-fourth-v220.js?v=220",
     "./assets/hsk1-fourth-v220.js?v=237",
     "./assets/hsk1-fourth-v220.js?v=250",
     "./assets/hsk1-fourth-v220.js?v=265",
+    "./assets/hsk1-fourth-v220.js?v=266",
     "./assets/hsk1-human-voice-v183.js?v=186",
     "./assets/hsk1-human-voice-v184.js?v=186",
     "./assets/hsk1-intro-v188.css?v=188",
@@ -1124,6 +1126,8 @@
     "./assets/lesson3-xiaoxiao-v263/098.mp3",
     "./assets/lesson3-xiaoxiao-v263/099.mp3",
     "./assets/lesson3-xiaoxiao-v263/100.mp3",
+    "./assets/lesson4-dialog-v266/man.svg",
+    "./assets/lesson4-dialog-v266/woman.svg",
     "./assets/lesson4-reference-v216/calendar-1.webp",
     "./assets/lesson4-reference-v216/calendar-2.webp",
     "./assets/lesson4-reference-v216/calendar-3.webp",
@@ -1392,6 +1396,7 @@
     "./assets/panda-native-clean-v250/zuotian.mp3",
     "./assets/panda-native-clean-v250/zuotian_xingqi_er.mp3",
     "./assets/panda-native-recovered-v246.js?v=246",
+    "./assets/panda-nonstop-v267.mjs?v=267",
     "./assets/panda-owner-l4-native-v221.js?v=221",
     "./assets/panda-owner-lessons5-7-native-v221.js?v=221",
     "./assets/panda-reference-corrections-v173.css?v=173",
@@ -1439,9 +1444,9 @@
     "./assets/panda-v130/trophy.webp",
     "./assets/panda-v130/word-girl.webp",
     "./assets/panda-voice-pilot-engine.mjs?v=live6",
+    "./assets/panda-voice-pilot-ui.mjs?v=live10",
     "./assets/panda-voice-pilot-ui.mjs?v=live6",
-    "./assets/panda-voice-pilot-ui.mjs?v=live9",
-    "./assets/panda-voice-pilot.css?v=live9",
+    "./assets/panda-voice-pilot.css?v=live10",
     "./assets/panda-weather-female-v240.js?v=240",
     "./assets/panda-word-sentences-v148.js?v=148",
     "./assets/panda-xiaoxiao-trainer-v250/p041.mp3",
@@ -2420,10 +2425,7 @@
     "./panda-voice-pilot.html?v=264",
     "./panda-voice-pilot.html?v=265",
     "./panda-voice-pilot.html?v=266",
-    "./start-chinese.html",
-    "./assets/hsk1-fourth-v219.css?v=266",
-    "./assets/hsk1-fourth-v220.js?v=266",
-    "./assets/lesson4-dialog-v266/woman.svg",
-    "./assets/lesson4-dialog-v266/man.svg"
+    "./panda-voice-pilot.html?v=267",
+    "./start-chinese.html"
   ]
 }

@@ -7,6 +7,7 @@ import {createPandaRig} from './panda-live-rig.mjs';
 import {prepareConversation,interpretUtterance,replyToExtraSpeech,howAreYou,extraExamples} from './panda-live-conversation-v266.mjs?v=266';
 import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
+import {accessibleLessons,nextPrompt,answerNonStop} from './panda-nonstop-v267.mjs?v=267';
 const baseConversation=prepareConversation(selectConversation(window.location.search),new window.Date());
 const GREETING_CYCLE_KEY='pg-panda-live-practice-greeting-v1';
 let fallbackGreetingIndex=0;
@@ -25,13 +26,14 @@ let PILOT_LINES=conversation.lines;
 const REPLIES=conversation.replies;
 const $=id=>document.getElementById(id);
 const rig=createPandaRig($('character'),$('panda-canvas'));
-const state={step:0,done:false,busy:false,active:false,recognition:null,epoch:0,audio:null,typing:false,watchdog:null,transition:null,poseTimer:null,slow:false,reviewStep:null,transientReply:null};
+const state={step:0,done:false,busy:false,active:false,recognition:null,epoch:0,audio:null,typing:false,watchdog:null,transition:null,poseTimer:null,slow:false,reviewStep:null,transientReply:null,mode:'short',nonstopAllowed:[],nonstopCursor:0,nonstopPrompt:null,nonstopDisplay:null};
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
 const storage=(()=>{try{return window.localStorage}catch{return null}})();
 let audioFrame=0;
 const supported=()=>!!(window.SpeechRecognition||window.webkitSpeechRecognition);
 const audioFor=lookupPilotAudio;
-const current=()=>state.transientReply||(state.done?REPLIES[state.branch]:PILOT_LINES[state.step]);
+const current=()=>state.mode==='nonstop'?(state.nonstopDisplay||state.nonstopPrompt?.line||PILOT_LINES[0]):(state.transientReply||(state.done?REPLIES[state.branch]:PILOT_LINES[state.step]));
+const activeLesson=()=>state.mode==='nonstop'?(state.nonstopPrompt?.line?.lesson||conversation.id):conversation.id;
 function note(text){$('status').textContent=text}
 function pose(value){clearTimeout(state.poseTimer);rig.setState(value)}
 function brief(value){pose(value);state.poseTimer=setTimeout(()=>pose('idle'),value==='retry'?2600:1300)}
@@ -65,7 +67,7 @@ function renderVariants(){
   });
   root.appendChild(button);
  }
- $('answer-variants').hidden=!root.children.length;
+ $('answer-variants').hidden=state.mode==='nonstop'||!root.children.length;
 }
 function updateSpeed(){
  $('speed-toggle').setAttribute('aria-pressed',String(state.slow));
@@ -74,7 +76,7 @@ function updateSpeed(){
  if(state.audio)state.audio.playbackRate=state.slow?0.8:1;
 }
 function explainQuestion(question){
- const reply=answerCurriculumQuestion(question,conversation.id,curriculum);
+ const reply=answerCurriculumQuestion(question,activeLesson(),curriculum);
  $('knowledge-answer').textContent=reply;
  $('knowledge-answer').hidden=false;
  if(!state.active&&!state.audio)brief('happy');
@@ -83,7 +85,7 @@ function refreshKnowledgePrompts(){
  $('knowledge-answer').hidden=true;
  $('knowledge-answer').textContent='';
  const list=$('knowledge-prompts');list.replaceChildren();
- const topic=curriculum[conversation.id-1];
+ const topic=curriculum[activeLesson()-1];
  const questions=['Объясни грамматику','Покажи диалог'];
  if(topic?.words?.[0]?.[0])questions.unshift('Что означает '+topic.words[0][0]+'?');
  for(const question of questions){
@@ -144,10 +146,93 @@ function handleFollowup(raw){
  if(audioFor(current()?.audioKey))play();
 }
 
+
+function nonstopEntry(who,hanzi,secondary='',fromLearner=false){
+ const box=$('nonstop-history'),entry=document.createElement('article');entry.className=fromLearner?'from-learner':'from-panda';
+ const label=document.createElement('strong');label.textContent=who;entry.append(label);
+ const message=document.createElement('span');message.textContent=hanzi+(secondary?'\n'+secondary:'');entry.append(message);box.append(entry);
+ while(box.childElementCount>24)box.firstElementChild.remove();
+ box.scrollTop=box.scrollHeight;
+}
+function refreshNonstopTopics(){
+ const root=$('nonstop-topics');root.replaceChildren();
+ for(const id of state.nonstopAllowed){
+  const topic=CONVERSATIONS.find(x=>x.id===id);
+  const badge=document.createElement('span');badge.className=id===activeLesson()?'current':'';
+  badge.textContent=(id===conversation.id?'📖 ':'✓ ')+id+'. '+(topic?.theme||'Урок');
+  root.append(badge);
+ }
+}
+function askNextNonstop(){
+ if(state.mode!=='nonstop')return;
+ clearTimeout(state.transition);stopRecognition();stopAudio();
+ const selected=nextPrompt(CONVERSATIONS,state.nonstopAllowed,state.nonstopCursor,new Date());
+ if(!selected){
+  $('nonstop-feedback').textContent='Нет подтверждённых голосовых вопросов для выбранных уроков.';return;
+ }
+ state.nonstopPrompt=selected;state.nonstopCursor=selected.nextIndex;state.nonstopDisplay=selected.line;
+ refreshNonstopTopics();render();
+ nonstopEntry('🐼 Панда · урок '+selected.line.lesson,selected.line.hanzi,selected.line.pinyin+' — '+selected.line.ru);
+ $('nonstop-feedback').textContent='Отвечай или задавай собственный вопрос из изученного материала.';
+ if(audioFor(current()?.audioKey))play();
+}
+function handleNonstop(raw){
+ const input=String(raw||'').trim();stopRecognition();stopAudio();
+ if(state.mode!=='nonstop')return;
+ const result=answerNonStop(input,state.nonstopAllowed,state.nonstopPrompt?.line,curriculum,new Date());
+ if(result.kind==='empty'){$('nonstop-feedback').textContent=result.message;refresh();return;}
+ $('nonstop-input').value='';
+ if(result.kind==='unknown'){
+  nonstopEntry('🐼 Подсказка',result.message);
+  $('nonstop-feedback').textContent='Не выдумываем ответы вне проверенной базы.';
+  brief('retry');refresh();return;
+ }
+ const understood=result.spoken?.known?result.spoken.translation:'Перевод не подтверждён базой уроков.';
+ nonstopEntry('Ты сказал',input,understood,true);
+ if(result.kind==='question'){
+  state.nonstopDisplay=result.reply;render();
+  nonstopEntry('🐼 Панда',result.reply.hanzi,result.reply.pinyin+' — '+result.reply.ru);
+  $('nonstop-feedback').textContent='Можешь продолжать говорить или перейти к следующему вопросу.';
+  if(audioFor(current()?.audioKey))play();
+  return;
+ }
+ if(result.kind==='answer'||result.kind==='statement'){
+  $('nonstop-feedback').textContent='Хорошо! Продолжаем разговор.';
+  askNextNonstop();return;
+ }
+}
+function setDialogueMode(mode){
+ if(!['short','nonstop'].includes(mode)||state.mode===mode)return;
+ clearTimeout(state.transition);stopAudio();stopRecognition();state.mode=mode;
+ for(const name of ['short','nonstop']){
+  const active=mode===name,button=$('mode-'+name);
+  button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));
+ }
+ if(mode==='nonstop'){
+  state.nonstopAllowed=accessibleLessons(storage,conversation.id);
+  state.nonstopCursor=Math.max(0,state.nonstopAllowed.indexOf(conversation.id));
+  state.nonstopPrompt=null;state.nonstopDisplay=null;
+  $('nonstop-history').replaceChildren();$('nonstop-feedback').textContent='';
+  askNextNonstop();
+ }else{
+  state.nonstopPrompt=null;state.nonstopDisplay=null;
+  restart(false);
+ }
+ render();
+}
+
 function recovery(text){$('voice-recovery').hidden=false;note(text);refresh()}
 function refresh(){
- $('conversation').hidden=state.done;$('completed').hidden=!state.done;
- $('step').textContent=state.done?'Готово':`${state.step+1} из ${PILOT_LINES.length}`;
+ const isNonStop=state.mode==='nonstop';
+ $('conversation').hidden=isNonStop||state.done;
+ $('completed').hidden=isNonStop||!state.done;
+ $('nonstop-panel').hidden=!isNonStop;
+ document.querySelector('.bars').style.display=isNonStop?'none':'';
+ $('nonstop-mic').disabled=!isNonStop||state.busy||!supported();
+ $('nonstop-mic').setAttribute('aria-pressed',String(isNonStop&&state.active));
+ $('nonstop-mic').textContent=isNonStop&&state.active?'■':'🎙';
+
+ $('step').textContent=isNonStop?'∞ Разговор без лимита':(state.done?'Готово':`${state.step+1} из ${PILOT_LINES.length}`);
  document.querySelectorAll('.bar').forEach((bar,index)=>bar.classList.toggle('on',state.done||index<=state.step));
  $('mic').disabled=state.done||state.busy||!supported();
  $('followup-mic').disabled=!state.done||state.busy||!supported();
@@ -230,8 +315,8 @@ function checkAnswer(raw){
  },900);
 }
 function startRecognition(mode='lesson'){
- const followup=mode==='followup';
- if((state.done&&!followup)||state.busy)return;
+ const followup=mode==='followup',nonstop=mode==='nonstop';
+ if((state.done&&!followup&&!nonstop)||state.busy)return;
  if(state.active){try{state.recognition.stop();note('Завершаю распознавание…')}catch{stopRecognition();refresh()}return}
  clearTimeout(state.transition);stopAudio();stopRecognition();
  if(window.isSecureContext===false){recovery('Микрофон требует HTTPS. Открой опубликованную страницу Panda Go.');return}
@@ -240,10 +325,10 @@ function startRecognition(mode='lesson'){
  let r;try{r=new Speech();r.lang='zh-CN';r.continuous=false;r.interimResults=false;r.maxAlternatives=1}
  catch{recovery('Браузер не смог создать сеанс распознавания. Используй «Написать».');return}
  state.recognition=r;const epoch=++state.epoch;state.active=true;let heard=false,failed=false;
- const valid=()=>state.recognition===r&&state.epoch===epoch&&(!state.done||followup);
+ const valid=()=>state.recognition===r&&state.epoch===epoch&&(!state.done||followup||nonstop);
  $('voice-recovery').hidden=true;note('Подключаю микрофон…');refresh();
  r.onstart=()=>{if(valid()){pose('listening');note('Слушаю…')}};
- r.onresult=e=>{if(!valid())return;const text=String(e.results?.[0]?.[0]?.transcript||'').trim();heard=!!text;if(followup)handleFollowup(text);else checkAnswer(text)};
+ r.onresult=e=>{if(!valid())return;const text=String(e.results?.[0]?.[0]?.transcript||'').trim();heard=!!text;if(nonstop)handleNonstop(text);else if(followup)handleFollowup(text);else checkAnswer(text)};
  r.onnomatch=()=>{if(valid()){failed=true;stopRecognition();brief('retry');recovery('Речь не распознана. Повтори или напиши ответ.')}};
  r.onerror=e=>{
   if(!valid())return;failed=true;
@@ -264,6 +349,17 @@ function startRecognition(mode='lesson'){
 }
 
 $('speed-toggle').addEventListener('click',()=>{state.slow=!state.slow;updateSpeed()});
+$('mode-short').addEventListener('click',()=>setDialogueMode('short'));
+$('mode-nonstop').addEventListener('click',()=>setDialogueMode('nonstop'));
+$('nonstop-form').addEventListener('submit',event=>{event.preventDefault();handleNonstop($('nonstop-input').value)});
+$('nonstop-mic').addEventListener('click',()=>startRecognition('nonstop'));
+$('nonstop-next').addEventListener('click',askNextNonstop);
+$('nonstop-hint').addEventListener('click',()=>{
+ if(state.mode!=='nonstop')return;
+ const line=state.nonstopPrompt?.line;
+ $('nonstop-feedback').textContent=line?.instruction||'Выбери изученную тему и попробуй ответить.';
+});
+$('nonstop-stop').addEventListener('click',()=>setDialogueMode('short'));
 $('review').addEventListener('click',()=>{
  const selected=hardestMistake(storage,conversation.id);if(!selected)return;
  restart(false,Math.min(selected.step,PILOT_LINES.length-1));

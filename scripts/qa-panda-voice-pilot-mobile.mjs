@@ -39,6 +39,33 @@ try{
   assert((await response.body()).length>1000,'Native clip unexpectedly tiny');
   assert(['早上好！','中午好！','下午好！','晚上好！'].includes(await page.locator('#phrase').textContent()));
   assert(await page.locator('#typing').isHidden());
+  // The approved panda stays on the same page while switching two conversation modes.
+  assert(await page.locator('#mode-short').isVisible());
+  assert(await page.locator('#mode-nonstop').isVisible());
+  assert(await page.locator('#nonstop-panel').isHidden());
+  await page.locator('#mode-nonstop').click();
+  assert(await page.locator('#nonstop-panel').isVisible());
+  assert(await page.locator('#conversation').isHidden());
+  assert((await page.locator('#step').textContent()).includes('Без лимита'));
+  assert((await page.locator('#nonstop-topics').textContent()).includes('Основы'));
+  assert.equal(await page.locator('#phrase').textContent(),'你好吗？');
+  await page.locator('#nonstop-hint').click();
+  assert((await page.locator('#nonstop-feedback').textContent()).includes('хорошо'));
+  await page.locator('#nonstop-input').fill('你好吗？');
+  await page.locator('#nonstop-form button[type=submit]').click();
+  assert.equal(await page.locator('#phrase').textContent(),'很好！');
+  assert((await page.locator('#nonstop-history').textContent()).includes('Как дела?'));
+  await page.locator('#nonstop-input').fill('你好');
+  await page.locator('#nonstop-form button[type=submit]').click();
+  assert.equal(await page.locator('#phrase').textContent(),'你好吗？');
+  await page.locator('#nonstop-input').fill('不认识的中文');
+  await page.locator('#nonstop-form button[type=submit]').click();
+  assert((await page.locator('#nonstop-history').textContent()).includes('не знаю'));
+  await page.locator('#nonstop-stop').click();
+  assert(await page.locator('#nonstop-panel').isHidden());
+  assert(await page.locator('#conversation').isVisible());
+  assert.equal(await page.locator('#mode-short').getAttribute('aria-pressed'),'true');
+
   // Answer an unscripted student question during the normal lesson.
   await page.locator('#type-toggle').click();
   await page.locator('#answer').fill('你好吗？');
@@ -104,6 +131,30 @@ try{
   assert.equal(await page.locator('#phrase').textContent(),'很好！');
   assert.deepEqual(errors,[],'Browser script errors');
   report.push({...visual,success:true});
+  await context.close();
+ }
+
+ // Non-Stop must combine progress from completed lessons with the current topic.
+ {
+  const context=await browser.newContext({viewport:{width:393,height:825},isMobile:true,hasTouch:true});
+  const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(BASE+'/panda-voice-pilot.html?lesson=6');
+  await page.evaluate(()=>localStorage.setItem('pg-hsk1-v3-complete',JSON.stringify(['foundations','pronouns'])));
+  await page.reload();await page.locator('html[data-panda-live-ready=true]').waitFor();
+  await page.locator('#mode-nonstop').click();
+  const topics=await page.locator('#nonstop-topics').textContent();
+  assert(topics.includes('Основы')&&topics.includes('Семья')&&topics.includes('2.')&&!topics.includes('Погода'));
+  assert.equal(await page.locator('#phrase').textContent(),'你有哥哥吗？');
+  await page.locator('#nonstop-input').fill('我没有哥哥，我有妹妹');
+  await page.locator('#nonstop-form button[type=submit]').click();
+  assert((await page.locator('#nonstop-history').textContent()).includes('младшая сестра'));
+  await page.locator('#nonstop-input').fill('你有哥哥吗？');
+  await page.locator('#nonstop-form button[type=submit]').click();
+  assert.equal(await page.locator('#phrase').textContent(),'我有一个哥哥。');
+  await page.locator('#nonstop-next').click();
+  assert.equal(await page.locator('#phrase').textContent(),'你是老师吗？');
+  assert.deepEqual(errors,[]);
+  await page.screenshot({path:DIR+'/nonstop-393.png',fullPage:true,animations:'disabled'});
   await context.close();
  }
  // Every newly enabled conversation, including both branching outcomes.

@@ -4,9 +4,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#a46bd4">
 <meta name="description" content="Поговори с Пандой на китайском — разговорная практика семи уроков HSK 1 Panda Go">
-<meta name="panda-live-release" content="v266-conversation-extensions">
+<meta name="panda-live-release" content="v267-two-dialog-modes">
 <title>Поговори с Пандой · Panda Go</title>
-<link rel="stylesheet" href="./assets/panda-voice-pilot.css?v=live9"><style>
+<link rel="stylesheet" href="./assets/panda-voice-pilot.css?v=live10"><style>
 .study-links{margin:5px 12px 11px;text-align:center}
 .study-links a{display:inline-flex;align-items:center;justify-content:center;text-align:center;min-height:42px;padding:7px 14px;border:1px solid #cfaae8;border-radius:20px;background:#fff8ff;color:#75429a;font:700 13px/1.3 system-ui;text-decoration:none;box-shadow:0 2px 9px #a66fc52a}
 .study-links a:focus-visible{outline:3px solid #8b48c2;outline-offset:3px}
@@ -14,6 +14,10 @@
 <body><main>
 <div class="top"><a id="back-link" class="back" href="./panda-lesson1.html">← Назад</a></div>
 <h1 class="title">Поговори с Пандой 🐼</h1>
+<div class="dialog-mode-bar" role="group" aria-label="Режим разговора">
+ <button type="button" id="mode-short" class="dialog-mode active" aria-pressed="true">Краткие диалоги</button>
+ <button type="button" id="mode-nonstop" class="dialog-mode" aria-pressed="false">∞ Non-Stop диалоги</button>
+</div>
 <nav class="topic-nav" aria-label="Выбор темы разговора"><a id="topic-prev" class="topic-arrow" aria-label="Предыдущая тема">‹</a><div class="topic-label" aria-live="polite"><span id="topic-count">1 / 7</span><strong id="lesson-tag">Основы и приветствие</strong></div><a id="topic-next" class="topic-arrow next" aria-label="Следующая тема">›</a></nav>
 <p id="pilot-note" class="test-note">Тестовая практика · единый голос</p>
 
@@ -42,6 +46,17 @@
  </div>
   <div id="learner-transcript" class="learner-transcript" role="log" aria-label="Твои ответы и переводы" aria-live="polite" hidden></div>
  <div class="review-strip"><span id="review-count">Ошибок для повторения нет</span><button id="review" type="button" disabled>🔁 Повторить трудное</button></div>
+ <div id="nonstop-panel" class="nonstop-panel" hidden aria-label="Непрерывная практика">
+  <p class="nonstop-caption">🐼 Общаемся по текущему и пройденным урокам HSK 1. Разговор заканчиваешь только ты.</p>
+  <div id="nonstop-topics" class="nonstop-topics" aria-label="Доступные темы"></div>
+  <div id="nonstop-history" class="nonstop-history" role="log" aria-live="polite"></div>
+  <p id="nonstop-feedback" class="nonstop-feedback" role="status"></p>
+  <div class="nonstop-actions"><button type="button" id="nonstop-hint">💡 Подсказка</button><button type="button" id="nonstop-next">Следующий вопрос →</button></div>
+  <div class="nonstop-input-row"><button id="nonstop-mic" type="button" aria-label="Говорить с Пандой" aria-pressed="false">🎙</button>
+   <form id="nonstop-form"><label for="nonstop-input">Твой ответ или вопрос по-китайски</label><div class="nonstop-entry"><input id="nonstop-input" type="text" maxlength="160" autocomplete="off" placeholder="你好！"><button type="submit" aria-label="Отправить">➤</button></div></form>
+  </div>
+  <button id="nonstop-stop" class="nonstop-stop" type="button">Завершить Non-Stop</button>
+ </div>
  <div id="completed" class="result" hidden>
   <p class="finish" id="final-feedback">🎉 Отлично!</p>
   <button id="again" class="again" type="button">↻ Ещё раз</button>
@@ -76,5 +91,5 @@
  </div>
 </details>
 <script src="./assets/hsk1-foundations-data-v152.js?v=188"></script>
-<script type="module" src="./assets/panda-voice-pilot-ui.mjs?v=live9"></script>
+<script type="module" src="./assets/panda-voice-pilot-ui.mjs?v=live10"></script>
 </main></body></html>
