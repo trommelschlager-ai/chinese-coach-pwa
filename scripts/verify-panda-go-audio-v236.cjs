@@ -25,7 +25,7 @@ for(const [page,source] of [
  ['hsk1-weather-v231.html','panda-go-companion-v231.js']
 ]){
  const html=read(page),js=read('assets/'+source);
- assert(/panda-mic-v236\.js\?v=(237|289)/.test(html),page+' missing mic helper');
+ assert(/panda-mic-v236\.js\?v=(237|289|292)/.test(html),page+' missing mic helper');
  assert(html.indexOf('panda-mic-v236.js')<html.indexOf(source),'Mic helper must load before lesson');
  assert(js.includes('PANDA_MIC_V236?.enhance?.'),source+' missing local playback gain');
  new vm.Script(js);
