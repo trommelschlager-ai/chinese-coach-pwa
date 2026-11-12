@@ -3,6 +3,7 @@
 import {topicPrompts} from './panda-live-dialogue-v272.mjs?v=281';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=281';
 import {normalize} from './panda-voice-pilot-engine.mjs?v=live6';
+import {extensionPrompts} from './panda-hsk1-extensions-v282.mjs?v=282';
 
 const chinese=s=>String(s??'').trim().replace(/[。！？?！\s]+/g,'');
 const question=s=>/[?？]$/.test(String(s||'').trim());
@@ -32,6 +33,9 @@ export function coursePromptBank(lesson,curriculum=[],date=new Date(),profile={}
  // The weekday availability question and its answer already have full native-voice clips.
  if(lesson===4)add(prompt('你星期几有空？','Nǐ xīngqī jǐ yǒu kòng?','В какой день недели ты свободен?',4,
   ['我星期六有空。'],'В учебном диалоге ответь: 我星期六有空。'));
+ // Supplement existing lesson dialogue questions with verified alternate queries.
+ // Questions without a full MP3 remain text-only and explicitly marked by the player.
+ for(const extra of extensionPrompts(lesson,date))add(extra);
  // Revisit every taught word that has its own complete MP3. This is a listening
  // and spoken-repetition prompt, NOT a fabricated Chinese question recording.
  for(const item of t.words||[]){

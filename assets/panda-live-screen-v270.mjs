@@ -1,4 +1,4 @@
-import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=281';
+import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=282';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=live6';
@@ -11,7 +11,7 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=281';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=282';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -38,8 +38,21 @@ function play(){
  a.play().catch(()=>{if(valid()){stopAudio();note('Нажми динамик, чтобы включить звук.')}});
 }
 function cancelFollowup(){clearTimeout(followupTimer);state.followup=null}
-function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>16)state.questions.shift();say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
-function remember(spoken){if(spoken?.fact)Object.assign(state.profile,spoken.fact);if(spoken?.family){for(const n of spoken.family.present)state.profile.family[n]=true;if(spoken.family.absent)state.profile.family[spoken.family.absent]=false}}
+function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
+function remember(spoken){
+ if(!spoken?.known)return;
+ if(spoken.fact){
+  Object.assign(state.profile,spoken.fact);
+  if(spoken.fact.relative&&Number.isInteger(spoken.fact.relativeAge)){
+   if(!state.profile.siblingAges)state.profile.siblingAges={};
+   state.profile.siblingAges[spoken.fact.relative]=spoken.fact.relativeAge;
+  }
+ }
+ if(spoken.family){
+  for(const n of spoken.family.present||[])state.profile.family[n]=true;
+  if(spoken.family.absent)state.profile.family[spoken.family.absent]=false;
+ }
+}
 function makeRow(entry,full=false){
  const row=document.createElement('article'),who=document.createElement('strong');who.textContent=entry.who==='you'?'Ты: ':'Панда: ';row.append(who,document.createTextNode(entry.hanzi));
  if(entry.pinyin&&(full||entry.who==='you')){const py=document.createElement('span');py.className='py';py.textContent=entry.pinyin;row.append(py)}
@@ -122,7 +135,7 @@ function submit(raw){
    state.awaitQuestion=true;if(result.kind==='answer')happy();say(result.reply,true,result.explanation?{explanation:result.explanation}:null);
    if(result.explanation){const row=document.createElement('p');row.textContent=result.explanation;$('learner-feedback').replaceChildren(row);$('learner-feedback').hidden=false;document.documentElement.dataset.feedback='true';}
    let followup=result.followup;
-   if(followup){
+   if(followup&&followup.intent!=='relative-age'){
      if(state.allowed.length>1&&state.turns%3===0){
       const currentIndex=state.allowed.indexOf(state.topic);
       state.cursor=(currentIndex+1)%state.allowed.length;state.askedInTopic=0;
@@ -131,7 +144,7 @@ function submit(raw){
      followup=pickCoursePrompt(selected,curriculum,state.questions.concat(input),new Date(),state.profile)||followup;
     }
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
-   note(followup?'Панда продолжит вопросом по этой теме. Можешь ответить или спросить раньше.':result.message||'Продолжай или нажми «Ещё вопрос».');
+   note(followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':followup?'Панда продолжит вопросом по пройденным темам. Можешь ответить или спросить раньше.':result.message||'Продолжай или нажми «Ещё вопрос».');
    if(state.confidence!==null&&state.confidence<.65){cancelFollowup();note('Распознано неуверенно. Проверь текст в истории и повтори при необходимости.');}return;
   }
   note(result.message);render();return;

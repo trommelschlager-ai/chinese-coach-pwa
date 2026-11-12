@@ -68,7 +68,7 @@ try{
    if(id===4)assert((await page.locator('#exercise-banner').textContent()).includes('твоего телефона'));
    if(id===5)assert((await page.locator('#exercise-banner').textContent()).includes('Учебная сценка'));
   }
-  await page.locator('#lesson-select').selectOption('6');await page.locator('#mode-nonstop').click();await send(page,'我有妹妹');assert.equal(await page.locator('#phrase').textContent(),'你有哥哥吗？');assert((await page.locator('#status').textContent()).includes('не ответ'));
+  await page.locator('#lesson-select').selectOption('6');await page.locator('#mode-nonstop').click();await send(page,'我有妹妹');assert((await page.locator('#recent').textContent()).includes('младшая сестра'));assert((await page.locator('#status').textContent()).includes('запомнила'));
   await send(page,'我没有哥哥，我有妹妹');assert((await page.locator('#recent').textContent()).includes('Wǒ méiyǒu gēge, wǒ yǒu mèimei.'));await send(page,'你有哥哥吗');assert.equal(await page.locator('#phrase').textContent(),'我有一个哥哥。');
   await send(page,'今天天气怎么样');assert((await page.locator('#status').textContent()).includes('урока 7'));
   for(let i=0;i<12;i++)await send(page,'你好吗？');assert.equal(await page.locator('#recent article').count(),2);await page.locator('#history-open').click();assert(await page.locator('#history-dialog').isVisible());assert((await page.locator('#history article').count())>12);await page.locator('[data-close="history-dialog"]').click();
@@ -78,7 +78,20 @@ try{
   for(const [q,answer] of [['今天天气怎么样','今天很冷。'],['你有妹妹吗','我有一个妹妹。'],['你几岁','我三岁。']]){await send(page,q);assert.equal(await page.locator('#phrase').textContent(),answer)}
   await send(page,'今天星期几');assert((await page.locator('#phrase').textContent()).includes('星期'+dayNames[day]));
   await send(page,'今天几月几号');assert((await page.locator('#exercise-banner').textContent()).includes('календарю устройства'));
-  await send(page,'今天天气怎么样');if(!(await page.locator('#status').textContent()).includes('Панда продолжит'))await send(page,'今天天气怎么样');await page.waitForFunction(()=>['今天天气怎么样？','明天天气怎么样？'].includes(document.querySelector('#phrase').textContent),null,{timeout:12000});
+  // Additional question and reply pairs across the approved seven-lesson knowledge base.
+  for(const [question,expected] of [
+   ['你有爷爷吗','有，我有爷爷。'],
+   ['这个月有多少天',null],
+   ['十后面是几','十一。'],
+   ['他是学生吗','是，他是学生。'],
+   ['今天下雪吗','今天不下雪。']
+  ]){
+    await send(page,question);
+    if(expected)assert.equal(await page.locator('#phrase').textContent(),expected,question);
+    else assert((await page.locator('#phrase').textContent()).includes('这个月有'),question);
+  }
+  await send(page,'我有妹妹');assert((await page.locator('#status').textContent()).includes('запомнила'));
+  await send(page,'今天天气怎么样');if(!(await page.locator('#status').textContent()).includes('Панда продолжит'))await send(page,'今天天气怎么样');await page.waitForFunction(()=>document.querySelector('#phrase').textContent!=='今天很冷。'&&document.querySelector('#recent').textContent.includes('Панда'),null,{timeout:12000});
   await send(page,'我不有妹妹');assert((await page.locator('#learner-feedback').textContent()).includes('我没有妹妹'));assert((await page.locator('#recent').textContent()).includes('我不有妹妹'));
   for(const hint of [false,true]){
    if((await page.locator('#hint').getAttribute('aria-expanded'))!==String(hint))await page.locator('#hint').click();

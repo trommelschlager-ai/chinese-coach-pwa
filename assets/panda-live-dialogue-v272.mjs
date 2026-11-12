@@ -5,6 +5,7 @@ import {answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=live6';
 import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {chineseNumber} from './panda-live-drafts.mjs?v=live6';
+import {lookupExtendedQuestion,extensionAnswer,extensionStatement,rememberedFamilyFollowup} from './panda-hsk1-extensions-v282.mjs?v=282';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
@@ -123,9 +124,11 @@ function correction(raw,allowed,context,curriculum){
  return {known:false,hanzi:raw,topic:corrected.topic,translation:null,probable:corrected.translation,correction:{hanzi:fixed+'。',pinyin:corrected.pinyin,ru:corrected.translation,why}};
 }
 export function analyzeLearner(raw,allowed=[1],context=null,curriculum=[],checkErrors=true){
- raw=String(raw||'').trim();const s=normalize(raw),q=findQuestion(s);
+ raw=String(raw||'').trim();const s=normalize(raw),q=findQuestion(s),extraQuestion=lookupExtendedQuestion(raw);
+ if(extraQuestion)return known(raw,extraQuestion.pinyin,extraQuestion.ru,extraQuestion.lesson);
  if(q){let py=q.pinyin;if(s.includes('的天气'))py=py.replace(' tiānqì',' de tiānqì');if(s.includes('是星期')||s.includes('是几月')||s.includes('是几号'))py=py.replace(' ',' shì ');if(s==='现在几月')py='Xiànzài jǐ yuè?';if(s==='今年几几年')py='Jīnnián jǐ jǐ nián?';if(s.endsWith('日'))py=py.replace('hào','rì');if(s==='你叫什么')py='Nǐ jiào shénme?';if(/^你(妈妈|爸爸|哥哥|姐姐|弟弟|妹妹)多大$/.test(s))py=py.replace('jǐ suì','duō dà');if(s.startsWith('你多大'))py='Nǐ duō dà'+(s.endsWith('了')?' le':'')+'?';return known(raw,py,q.translation,q.topic)}
  if(checkErrors){const c=correction(raw,allowed,context,curriculum);if(c)return c}
+ const addition=extensionStatement(raw,allowed,context);if(addition)return addition;
  const parsed=grammar(raw,allowed,context);if(parsed)return parsed;
  const order=[context?.lesson,...allowed].filter((n,i,a)=>allowed.includes(n)&&a.indexOf(n)===i);
  for(const topic of order){
@@ -151,6 +154,8 @@ function answersPrompt(spoken,raw,prompt){
  if(prompt.intent==='age')return !!spoken.fact?.age;
  if(prompt.intent==='relative-age')return spoken.fact?.relative===prompt.relative&&!!spoken.fact?.relativeAge;
  if(prompt.intent==='quantity')return spoken.fact?.quantity!==undefined;
+ if(prompt.intent==='repeat')return normalize(prompt.hanzi)===s;
+ if(prompt.intent==='extension'&&prompt.accepted?.some(a=>normalize(a)===s))return true;
  if(prompt.intent==='weather')return spoken.topic===7&&spoken.fact?.weather&&(!/^(今天|明天|昨天)/.test(s)||s.startsWith(prompt.time));
  if(prompt.intent==='date'){
   const expected=calendarReply(prompt.time,'date',new Date(prompt.calendarDate||Date.now()));return [normalize(expected.hanzi),normalize(expected.hanzi).replace(prompt.time,''),normalize(expected.hanzi).replace(prompt.time,prompt.time+'是')].includes(s)||prompt.accepted?.includes(s);
@@ -181,6 +186,12 @@ export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],da
  const explanation=lessonExplanation(raw,allowed,topic,curriculum);if(explanation)return {...explanation,spoken};
  if(spoken.family?.absent&&spoken.family.present.includes(spoken.family.absent))return {kind:'clarify',spoken:{...spoken,known:false,translation:null},message:'В одной фразе одновременно сказано «есть» и «нет» об одном родственнике. Уточни, какой вариант ты имеешь в виду.'};
  if(spoken.correction)return {kind:'correction',spoken,lesson:spoken.topic,message:spoken.correction.why};
+ const extension=extensionAnswer(raw,allowed,date,profile);
+ if(extension){
+  if(extension.kind==='locked')return {...extension,spoken};
+  const followup=extension.lesson===6&&turn%2===0?rememberedFamilyFollowup(profile,allowed,[]):null;
+  return {...extension,spoken,followup};
+ }
  const q=findQuestion(s);
  if(q){
   if(!allowed.includes(q.topic)||q.requires?.some(n=>!allowed.includes(n)))return {kind:'locked',spoken,lesson:q.topic,message:'Это тема урока '+(q.requires?.find(n=>!allowed.includes(n))||q.topic)+'. Открой этот урок в выборе сверху или вернись к уже пройденным темам.'};
@@ -191,9 +202,13 @@ export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],da
  const old=answerNonStop(raw,allowed,prompt,curriculum,date);
  if(old.kind==='question')return {...old,spoken:spoken.known?spoken:old.spoken,followup:s==='谢谢'?null:turn%3===2?nextTopicPrompt(topic,[],date,profile):null};
  if(!spoken.known){return {kind:'clarify',spoken,message:spoken.words?.length?'Знакомые слова разобраны ниже. Уточни смысл или попробуй предложение из подсказки.':'Точный смысл пока не подтверждён. Попробуй фразу из пройденного урока или уточни вопрос.'}}
- if(prompt&&!answersPrompt(spoken,raw,prompt)&&spoken.topic===prompt.lesson){return {kind:'statement',spoken,lesson:spoken.topic,message:'Фраза понятна, но это не ответ на текущий вопрос. '+prompt.instruction}}
+ const offQuestion=prompt&&!answersPrompt(spoken,raw,prompt)&&spoken.topic===prompt.lesson;
+ if(offQuestion&&!spoken.family?.present?.length){return {kind:'statement',spoken,lesson:spoken.topic,message:'Фраза понятна, но это не ответ на текущий вопрос. '+prompt.instruction}}
  const active=spoken.topic||topic,answered=answersPrompt(spoken,raw,prompt);
- const followup=nextTopicPrompt(active,[],date,{...profile,family:{...profile.family,...Object.fromEntries((spoken.family?.present||[]).map(n=>[n,true]))}});
+ const futureProfile={...profile,family:{...profile.family,...Object.fromEntries((spoken.family?.present||[]).map(n=>[n,true]))}};
+ if(spoken.family?.absent)futureProfile.family[spoken.family.absent]=false;
+ const contextual=active===6?rememberedFamilyFollowup(futureProfile,allowed,[prompt?.hanzi||'']):null;
+ const followup=contextual||nextTopicPrompt(active,[],date,futureProfile);
  let reply=line('谢谢！','Xièxie!','Спасибо!');
  if(active===2&&spoken.fact?.role)reply=line(spoken.fact.role==='老师'&&!spoken.fact.negative?'我也是老师。':'我是老师。',spoken.fact.role==='老师'&&!spoken.fact.negative?'Wǒ yě shì lǎoshī.':'Wǒ shì lǎoshī.',spoken.fact.role==='老师'&&!spoken.fact.negative?'Я тоже учитель.':'Я учитель.',ROLE);
  if(active===3&&spoken.fact?.age)reply=line('我三岁。','Wǒ sān suì.','Мне три года.',ROLE);
@@ -201,5 +216,5 @@ export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],da
  if(active===5&&answered)reply=calendarReply(prompt?.time||'今天','date',date);
  if(active===6&&spoken.family)reply=line(normalize(raw).replace(/我/g,'你')+'。',(spoken.pinyin||'').replace(/Wǒ/g,'Nǐ').replace(/wǒ/g,'nǐ'),'Ты сообщил: '+spoken.translation.replace('У меня','У тебя'),'Повторяем смысл твоего ответа.');
  if(active===7&&spoken.fact?.weather)reply=line(normalize(raw)+'。',spoken.pinyin,'Ты сообщил: '+spoken.translation,'Повторяем твоё описание погоды, а не настоящий прогноз.');
- return {kind:answered?'answer':'statement',spoken,lesson:active,reply,followup:(answered||turn%2===0)?followup:null,message:answered?'Ответ по смыслу подходит.':'Я поняла твою фразу.'};
+ return {kind:answered?'answer':'statement',spoken,lesson:active,reply,followup:(answered||turn%2===0)?followup:null,message:answered?'Ответ по смыслу подходит.':offQuestion?'Поняла твою фразу, но это не ответ на предыдущий вопрос. Можно продолжить тему семьи.':'Я поняла твою фразу.'};
 }
