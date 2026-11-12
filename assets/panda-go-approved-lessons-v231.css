@@ -101,3 +101,7 @@ h1{font-size:30px;line-height:1.12;letter-spacing:-.5px;text-align:center;margin
  .app[data-lesson="6"] .word-art{width:55px;height:55px}
  .app[data-lesson="6"] .word strong{font-size:26px}
 }
+
+/* Family vocabulary v280: approved photo cards for 有、没有、一个 only. */
+.app[data-lesson="6"] .word-art.pg6-word-photo{display:block;width:69px;height:69px;max-width:100%;grid-column:1;grid-row:1/4;object-fit:cover;object-position:center;border:1px solid #ead6ee;border-radius:14px;background:#fff6fc;box-shadow:0 2px 7px #926bab25;image-rendering:auto}
+@media(max-width:365px){.app[data-lesson="6"] .word-art.pg6-word-photo{width:55px;height:55px}}

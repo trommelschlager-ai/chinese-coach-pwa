@@ -2,9 +2,11 @@
 (()=>{'use strict';
 const family={'妈妈':0,'爸爸':1,'哥哥':2,'姐姐':3,'弟弟':4,'妹妹':5,'家':6,'我的':7};
 const weather={'天气':0,'晴':0,'热':2,'冷':1,'下雨':3,'下雪':1,'阴':3,'风':3,'春天':0,'夏天':2,'秋天':0,'冬天':1};
+const familyWordPhotos={'有':'you','没有':'meiyou','一个':'yige'};
 const symbols={'家':'house-heart-fill','我的':'heart-fill','有':'check-circle-fill','没有':'x-circle-fill','一个':'1-circle-fill'};
 const weatherSymbols={'阴':'cloud-fill','风':'wind','秋天':'leaf-fill'};
 function art(word,lesson){
+ if(lesson===6&&Object.prototype.hasOwnProperty.call(familyWordPhotos,word))return '<img class="word-art pg6-word-photo" alt="" aria-hidden="true" width="112" height="112" loading="eager" decoding="async" src="./assets/lesson6-words-v280/'+familyWordPhotos[word]+'.webp">';
  if(lesson===7&&word in weatherSymbols)return '<span class="word-art symbol" aria-hidden="true" style="--word-symbol:url(./assets/icon-'+weatherSymbols[word]+'-v233.svg)"></span>';
  if(lesson===7&&word==='春天')return '<span class="word-art flower" aria-hidden="true"></span>';
  if(lesson===6&&word in family)return '<span class="word-art human" aria-hidden="true" style="background-position:'+(family[word]%4/3*100)+'% '+(Math.floor(family[word]/4)*100)+'%"></span>';

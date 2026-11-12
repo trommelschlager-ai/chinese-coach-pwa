@@ -1,5 +1,5 @@
 {
-  "version": 279,
+  "version": 280,
   "bytes": 55455068,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2573,6 +2573,13 @@
     "./panda-voice-pilot.html?v=266",
     "./panda-voice-pilot.html?v=267",
     "./panda-voice-pilot.html?v=272",
-    "./start-chinese.html"
+    "./start-chinese.html",
+    "./assets/lesson6-words-v280/you.webp",
+    "./assets/lesson6-words-v280/meiyou.webp",
+    "./assets/lesson6-words-v280/yige.webp",
+    "./assets/lesson-visuals-v233.js?v=280",
+    "./assets/panda-go-approved-lessons-v231.css?v=280",
+    "./hsk1-family-v231.html?v=280",
+    "./assets/panda-go-companion-v231.js?v=280"
   ]
 }
