@@ -4,6 +4,7 @@
 (function(){
  'use strict';
  if(window.PANDA_MIC_V236)return;
+ const processedByRaw=new Map();
  async function normalize(blob){
   const Context=window.AudioContext||window.webkitAudioContext;
   if(!Context||!blob||!blob.size||blob.size>12000000)return blob;
@@ -40,7 +41,8 @@
    const quiet=levels.filter(x=>x<threshold).sort((a,b)=>a-b);
    const floor=quiet.length?quiet[Math.floor(quiet.length/2)]:0;
    const noiseCap=floor>0.008?Math.max(1,0.018/floor):6;
-   const gain=Math.min(4,noiseCap,Math.max(1,0.19/Math.max(0.001,activeRms)),0.9/peak);
+   // Conservative gain to avoid magnifying room echoes and trailing reverberation.
+   const gain=Math.min(1.35,noiseCap,Math.max(1,0.15/Math.max(0.001,activeRms)),0.9/peak);
    if(!Number.isFinite(gain)||gain<1.07)return blob;
    const buffer=new ArrayBuffer(44+n*2),dv=new DataView(buffer);
    const word=(pos,w)=>{for(let i=0;i<w.length;i++)dv.setUint8(pos+i,w.charCodeAt(i))};
@@ -53,13 +55,20 @@
   }catch{return blob}
   finally{if(ctx)try{await ctx.close()}catch{}}
  }
+ function forget(rawUrl){
+  const previous=processedByRaw.get(rawUrl);
+  if(previous){try{URL.revokeObjectURL(previous)}catch{}processedByRaw.delete(rawUrl)}
+ }
+ function processedUrl(rawUrl){return processedByRaw.get(rawUrl)||null}
  function enhance(blob,currentUrl,getUrl,setUrl){
-  if(!blob||!currentUrl||typeof getUrl!=='function'||typeof setUrl!=='function')return;
+  if(!blob||!currentUrl||typeof getUrl!=='function')return;
+  // Always retain the unmodified microphone take. Processed audio is opt-in.
   Promise.resolve(normalize(blob)).then(improved=>{
    if(!improved||improved===blob||getUrl()!==currentUrl)return;
-   const next=URL.createObjectURL(improved);
-   setUrl(next);URL.revokeObjectURL(currentUrl);
+   const newUrl=URL.createObjectURL(improved);
+   forget(currentUrl);processedByRaw.set(currentUrl,newUrl);
+   if(processedByRaw.size>12)forget(processedByRaw.keys().next().value);
   }).catch(()=>{});
  }
- window.PANDA_MIC_V236=Object.freeze({normalize,enhance});
+ window.PANDA_MIC_V236=Object.freeze({normalize,enhance,processedUrl,forget});
 })();
