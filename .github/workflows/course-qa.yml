@@ -33,6 +33,7 @@ jobs:
       - run: node scripts/verify-panda-mobile-repairs-v290.cjs
       - run: node scripts/verify-lesson7-opening-male-v291.cjs
       - run: node scripts/verify-hsk1-full-restart-v291.cjs
+      - run: node scripts/verify-hsk1-exercise-replay-v293.cjs
       - run: node scripts/verify-panda-native-real-v246.cjs
       - run: node scripts/verify-panda-audio-v244.cjs
       - run: node scripts/verify-lesson-viewport-v237.cjs
