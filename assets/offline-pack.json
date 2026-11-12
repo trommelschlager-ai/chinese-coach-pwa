@@ -1,5 +1,5 @@
 {
-  "version": 296,
+  "version": 297,
   "bytes": 55532426,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2746,6 +2746,9 @@
     "./assets/hsk1-third-v213.js?v=296",
     "./assets/hsk1-fourth-v220.js?v=296",
     "./assets/hsk1-fifth-v227.js?v=296",
-    "./assets/panda-go-companion-v231.js?v=296"
+    "./assets/panda-go-companion-v231.js?v=296",
+    "./assets/lesson1-hello-male-v297.mp3",
+    "./assets/hsk1-first-v189.js?v=297",
+    "./hsk1-first-v189.html?v=297"
   ]
 }
