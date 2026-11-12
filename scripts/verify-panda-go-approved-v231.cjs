@@ -32,6 +32,7 @@ for(const lesson of [6,7]){
   male:new Proxy({}, {get(_,p){return './assets/sample/'+String(p)+'.mp3'}})
  };
  w.PANDA_HSK1_NATIVE_HUMAN_V167={};
+ if(lesson===7)w.eval(fs.readFileSync('assets/lesson7-xiaoxiao-v277.js','utf8'));
  w.Audio=function(src){this.src=src;this.pause=()=>{};this.play=()=>{this.onended?.();return Promise.resolve()}};
  w.HanziWriter={create:()=>({cancelQuiz(){},pauseAnimation(){},animateCharacter(){},quiz(){}})};
  const legacy='pg-hsk1-v3-'+topic;
