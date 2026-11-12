@@ -222,7 +222,7 @@ function conceptCard(n){
 }
 function rulePractice(step,arr){
  const idx=state.phase[step]||0;
- if(idx>=arr.length)return mainCard('<p class="pg13-hint">✓ Правило закреплено.</p><button type="button" data-review-rule="'+step+'">↻ Повторить задания</button>','pg13-mini-practice');
+ if(idx>=arr.length)return mainCard('<p class="pg13-hint">✓ Можно решить вопросы ещё раз.</p><button type="button" data-review-rule="'+step+'">↻ Повторить задания</button>','pg13-mini-practice');
  const obj=arr[idx];
  return mainCard(heading('Попробуй без подсказки: '+obj.n)+
   '<p class="pg3-muted">Как правильно написать число '+obj.n+'?</p>'+
@@ -283,7 +283,7 @@ function builder(){
   '<div class="pg13-tiles">'+pool.map((z,i)=>'<button type="button" data-tile-index="'+i+'"'+(finished||state.used?.includes(i)?' disabled':'')+'>'+z+'</button>').join('')+'</div>'+
   '<div class="pg13-builder-buttons"><button data-clear-build type="button" '+(finished?'disabled':'')+'>↻ Сброс</button>'+
   '<button data-check-build type="button" '+(finished||(state.builder?.length||0)!==correct.length?'disabled':'')+'>Проверить</button></div>'+
-  '<p class="pg3-muted">'+(finished?'✓ Все числа собраны. Можно повторить.':state.wrong['build-'+ix]?'Подсказка: десятки ставим перед единицами.':'Подсказка появится только после ошибки.')+'</p>'+(finished?'<button type="button" data-reset-build>↻ Собрать заново</button>':''));
+  '<p class="pg3-muted">'+(finished?'✓ Готово! Можешь собрать числа ещё раз.':state.wrong['build-'+ix]?'Подсказка: десятки ставим перед единицами.':'Подсказка появится только после ошибки.')+'</p>'+(finished?'<button type="button" data-reset-build>↻ Собрать заново</button>':''));
 }
 function context(){
  const finished=(state.phase[11]||0)>=CONTEXT.length;
