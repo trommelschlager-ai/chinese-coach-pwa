@@ -1,5 +1,5 @@
 {
-  "version": 278,
+  "version": 279,
   "bytes": 55455068,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -1405,6 +1405,7 @@
     "./assets/panda-go-companion-v231.js?v=276",
     "./assets/panda-go-companion-v231.js?v=277",
     "./assets/panda-go-companion-v231.js?v=278",
+    "./assets/panda-go-companion-v231.js?v=279",
     "./assets/panda-go-hero-clean-v174.webp",
     "./assets/panda-go-legacy-atlas-v178.webp",
     "./assets/panda-go-original-details-v178.webp",
@@ -2538,6 +2539,7 @@
     "./hsk1-family-v231.html?v=275",
     "./hsk1-family-v231.html?v=276",
     "./hsk1-family-v231.html?v=277",
+    "./hsk1-family-v231.html?v=279",
     "./hsk1-fifth-v227.html",
     "./hsk1-fifth-v227.html?v=272",
     "./hsk1-fifth-v227.html?v=273",
@@ -2559,6 +2561,7 @@
     "./hsk1-third-v212.html?v=263",
     "./hsk1-weather-v231.html",
     "./hsk1-weather-v231.html?v=278",
+    "./hsk1-weather-v231.html?v=279",
     "./icons/icon-192.png",
     "./icons/icon-512.png",
     "./icons/maskable-512.png",

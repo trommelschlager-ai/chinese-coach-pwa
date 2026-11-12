@@ -20,7 +20,7 @@ for(const lesson of [6,7]){
  const filename=lesson===6?'hsk1-family-v231.html':'hsk1-weather-v231.html';
  const html=fs.readFileSync(filename,'utf8');
  assert(html.includes('panda-go-approved-lessons-v231.css?v='+(lesson===7?'237':'277')));
- assert(html.includes('panda-go-companion-v231.js?v='+(lesson===7?'278':'277')));
+ assert(html.includes('panda-go-companion-v231.js?v=279'));
  assert(html.includes('owner-audio-v237.js?v=237'));
  assert(html.includes('panda-owner-lessons5-7-native-v221.js?v=221'));
  assert(css.includes('lesson'+lesson+'-scene-v233.webp'));
@@ -73,7 +73,23 @@ for(const lesson of [6,7]){
  assert(saved.done&&saved.quizPassed,'Completed lesson state not stored');
  assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes(topic),'Legacy achievement missing');
  assert.equal(w.localStorage.getItem(legacy),legacyContent,'Legacy study progress overwritten');
- for(let n=13;n>=1;n--){click('#pg5-prev');assert.equal(step(),n,'Back navigation broken')}
+ for(let n=13;n>=11;n--){click('#pg5-prev');assert.equal(step(),n,'Back navigation broken')}
+ assert.equal(step(),11,'Return to completed constructor');
+ assert(d.querySelector('[data-repeat-builder]'),'Completed constructor must show replay button');
+ click('[data-repeat-builder]');
+ assert(d.querySelector('[data-piece]')&&!d.querySelector('[data-piece]').disabled,'Constructor words must unlock after restart');
+ assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-l'+lesson+'-v231')).built,0,'Replay resets builder progress');
+ assert(JSON.parse(w.localStorage.getItem('pg-hsk1-l'+lesson+'-v231')).done,'Lesson completion must survive replay');
+ click('[data-piece="0"]');click('[data-clear]');
+ assert(!d.querySelector('[data-piece="0"]').disabled,'Clear should reset current phrase');
+ for(const build of currentTopic.builds.slice(0,3)){
+  for(let i=0;i<build.target.length;i++)click('[data-piece="'+i+'"]');
+  click('[data-check]');
+ }
+ assert(d.querySelector('[data-repeat-builder]'),'Replay should remain available after another completion');
+ assert(!d.getElementById('pg5-next').disabled,'Next should work after repeat');
+ assert(JSON.parse(w.localStorage.getItem('pg-hsk1-l'+lesson+'-v231')).done,'Lesson completion must remain saved');
+ for(let n=10;n>=1;n--){click('#pg5-prev');assert.equal(step(),n,'Back navigation broken')}
  assert(d.querySelector('.intro-art'),'Cover unavailable when reviewing');
  dom.window.close();
  console.log('PASS approved lesson '+lesson+': 14 screens, voice buttons, 4 listens, 3 builders, handwriting, speech, legacy progress.');

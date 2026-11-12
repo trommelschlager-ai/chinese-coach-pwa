@@ -241,8 +241,8 @@ function builder(){
  return card('<h2>'+esc(rule.prompt)+'</h2><p class="small center">Фраза '+Math.min(i+1,builds.length)+' из '+builds.length+'</p>'+
  '<div class="assemble">'+pieces.map((_,j)=>'<div class="unit" style="display:grid;place-items:center">'+esc(chosen[j]||'＿')+'</div>').join('')+'</div>'+
  '<div class="assemble">'+pieces.map((z,j)=>'<button type="button" class="unit" data-piece="'+j+'"'+(finished||state.used.includes(j)?' disabled':'')+'>'+esc(z)+'</button>').join('')+'</div>'+
- '<div class="buttons"><button type="button" class="soft" data-clear>Сброс</button><button type="button" class="soft primary" data-check'+(finished?' disabled':'')+'>Проверить</button></div>'+
- (finished?'<p class="result good">✓ Ты составил три предложения!</p>':'<p class="small center">Нажми на слова в правильном порядке.</p>'));
+ (finished?'<div class="buttons"><button type="button" class="soft primary" data-repeat-builder>↻ Пройти заново</button></div>':'<div class="buttons"><button type="button" class="soft" data-clear>Сброс</button><button type="button" class="soft primary" data-check>Проверить</button></div>')+
+ (finished?'<p class="result good">✓ Ты составил три предложения! Можешь повторить, не теряя прогресс урока.</p>':'<p class="small center">Нажми на слова в правильном порядке.</p>'));
 }
 function writing(){
  const char=isFamily?'家':'天';
@@ -353,6 +353,11 @@ stage.addEventListener('click',e=>{
   const i=Number(b.dataset.piece),pieces=builds[state.built]?.target||[];
   if(!Number.isInteger(i)||state.used.includes(i)||state.chosen.length>=pieces.length)return;
   state.used.push(i);state.chosen.push(pieces[i]);save();refresh();return;
+ }
+ if(b.hasAttribute('data-repeat-builder')){
+  // Repeat all three phrases without deleting course completion or later progress.
+  state.built=0;state.chosen=[];state.used=[];save();refresh();
+  say('Начинаем заново: собери первую фразу.','good');return;
  }
  if(b.hasAttribute('data-clear')){state.chosen=[];state.used=[];save();refresh();return}
  if(b.hasAttribute('data-check')){
