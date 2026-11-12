@@ -1,5 +1,5 @@
 {
-  "version": 283,
+  "version": 284,
   "bytes": 55532426,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2603,6 +2603,12 @@
     "./panda-voice-pilot.html?v=272",
     "./panda-voice-pilot.html?v=281",
     "./panda-voice-pilot.html?v=283",
-    "./start-chinese.html"
+    "./start-chinese.html",
+    "./assets/panda-hsk1-answerbank-v284.mjs?v=284",
+    "./assets/panda-hsk1-extensions-v282.mjs?v=284",
+    "./assets/panda-hsk1-questions-v281.mjs?v=284",
+    "./assets/panda-live-dialogue-v272.mjs?v=284",
+    "./assets/panda-live-screen-v270.mjs?v=284",
+    "./panda-voice-pilot.html?v=284"
   ]
 }

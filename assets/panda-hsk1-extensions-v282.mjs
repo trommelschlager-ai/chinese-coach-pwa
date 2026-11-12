@@ -105,9 +105,13 @@ export function extensionAnswer(input,allowed=[1],date=new Date(),profile={}){
 }
 export function extensionPrompts(lesson,date=new Date()){
  return Q.filter(x=>x.lesson===lesson&&x.auto).map(x=>{
-  const sample=x.accepted[0]||x.response({date}).hanzi;
-  const result={hanzi:x.hanzi,pinyin:x.pinyin,ru:x.ru,lesson:x.lesson,accepted:x.accepted,
-    instruction:'Ответь по теме. Пример: '+sample+'. '+(x.context||''),intent:x.intent||'extension',context:x.context,
+  const modelAnswer=x.response({date}).hanzi;
+  const monthQuestion=lesson===5&&c(x.hanzi)===c('现在是几月');
+  const choices=monthQuestion?[modelAnswer,modelAnswer.replace('现在是','现在'),modelAnswer.replace('现在是','')]:x.accepted;
+  const sample=choices[0]||modelAnswer;
+  const result={hanzi:x.hanzi,pinyin:x.pinyin,ru:x.ru,lesson:x.lesson,accepted:choices,
+    instruction:'Ответь по теме. Пример: '+sample+(x.context?' '+x.context:''),
+    intent:x.intent||'extension',context:x.context,calendarDate:date.toISOString(),
     audioKey:lookupPilotAudio(x.hanzi)?x.hanzi:null,options:[]};
   return {...result,verifiedLines:[{},result]};
  });

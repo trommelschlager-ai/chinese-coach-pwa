@@ -3,7 +3,7 @@
 import {topicPrompts} from './panda-live-dialogue-v272.mjs?v=281';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=281';
 import {normalize} from './panda-voice-pilot-engine.mjs?v=live6';
-import {extensionPrompts} from './panda-hsk1-extensions-v282.mjs?v=282';
+import {extensionPrompts} from './panda-hsk1-extensions-v282.mjs?v=284';
 
 const chinese=s=>String(s??'').trim().replace(/[。！？?！\s]+/g,'');
 const question=s=>/[?？]$/.test(String(s||'').trim());
