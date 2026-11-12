@@ -155,7 +155,7 @@ function writing(){return card('<h2 class="center">月 — месяц</h2>'+
 function speaking(){
  const speech=topic.speech;
  return card('<div class="speech-card"><h2>Повтори дату вслух</h2><strong lang="zh-Hans">'+esc(speech.hz)+'</strong><p>'+esc(speech.py)+'</p><p>'+esc(speech.ru)+'</p>'+
- '<div class="buttons">'+audioButton(speech.hz)+'<button class="soft" data-record-start type="button">🎙 Записать себя</button><button class="soft" type="button" data-record-stop disabled>■ Стоп</button><button class="soft" type="button" data-record-play disabled>▶ Мой голос</button></div>'+
+ '<div class="buttons">'+audioButton(speech.hz)+'<button class="soft" data-record-start type="button">🎙 Записать себя</button><button class="soft" type="button" data-record-stop disabled>■ Стоп</button><button class="soft" type="button" data-record-play disabled>▶ Оригинал</button><button class="soft" type="button" data-record-filter disabled>✨ С фильтром</button></div>'+
  '<p class="small">Перед записью образец отключается, чтобы избежать эха. Если оно осталось, воспользуйся наушниками. Автоматической проверки тонов пока нет.</p></div>')+
  card('<p class="center">Скажи также: <b>今天几月几号？</b> — Какое сегодня число?</p>');}
 function summary(){
@@ -209,10 +209,11 @@ function go(d){
 function clearBuilder(){state.chosen=[];state.used=[];save()}
 function setButtons(){
  if(!app)return;
- const stopping=app.querySelector('[data-record-stop]'),starting=app.querySelector('[data-record-start]'),replay=app.querySelector('[data-record-play]');
+ const stopping=app.querySelector('[data-record-stop]'),starting=app.querySelector('[data-record-start]'),replay=app.querySelector('[data-record-play]'),filtered=app.querySelector('[data-record-filter]');
  if(stopping)stopping.disabled=!recorder||recorder.state!=='recording';
  if(starting)starting.disabled=!!recorder&&recorder.state==='recording';
  if(replay)replay.disabled=!micUrl;
+ if(filtered)filtered.disabled=!micUrl;
 }
 async function recordStart(){
  if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){say('Запись не поддерживается этим браузером.','bad');return}
@@ -278,7 +279,12 @@ app.addEventListener('click',event=>{
  if(b.hasAttribute('data-trace')){try{writer?.quiz?.({onComplete:()=>say('✓ Ты написал 月!','good')})}catch{say('Пропись недоступна.','bad')}return}
  if(b.hasAttribute('data-record-start')){recordStart();return}
  if(b.hasAttribute('data-record-stop')){recordStop();return}
- if(b.hasAttribute('data-record-play')){if(micUrl){stopAudio();try{audio=new Audio(window.PandaAudioLevel?.[micUrl]||micUrl);audio.play().catch(()=>say('Не удалось открыть запись.','bad'))}catch{}}return}
+ if(b.hasAttribute('data-record-filter')){
+  const filtered=micUrl&&window.PANDA_MIC_V236?.processedUrl?.(micUrl);
+  if(!filtered){say('Обработка не готова или не нужна. Послушай оригинал.');return}
+  stopAudio();try{audio=new Audio(filtered);audio.play().catch(()=>say('Обработка не воспроизводится.','bad'))}catch{say('Ошибка обработки.','bad')}return;
+ }
+ if(b.hasAttribute('data-record-play')){if(micUrl){stopAudio();try{audio=new Audio(micUrl);audio.play().catch(()=>say('Не удалось открыть запись.','bad'))}catch{}}return}
  if(b.hasAttribute('data-final')){
   const index=Number(b.dataset.final);
   if(index===topic.quiz.correct){state.quizPassed=true;markDone();refresh();say('✓ Правильно! '+topic.quiz.explain,'good')}

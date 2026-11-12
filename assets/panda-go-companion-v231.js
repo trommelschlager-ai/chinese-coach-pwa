@@ -257,7 +257,7 @@ function writing(){
 function speaking(){
  const z=topic.speech;
  return card('<h2>Повтори вслух</h2><div class="speech-card"><strong lang="zh-Hans">'+esc(z.hz)+'</strong><p>'+esc(z.py)+'</p><p>'+esc(z.ru)+'</p></div>'+
- '<div class="buttons">'+playBtn(z.hz)+'<button type="button" class="soft" data-record>🎙 Записать</button><button type="button" class="soft" data-stop disabled>■ Стоп</button><button type="button" class="soft" data-replay disabled>▶ Мой голос</button></div>'+
+ '<div class="buttons">'+playBtn(z.hz)+'<button type="button" class="soft" data-record>🎙 Записать</button><button type="button" class="soft" data-stop disabled>■ Стоп</button><button type="button" class="soft" data-replay disabled>▶ Оригинал</button><button type="button" class="soft" data-replay-filter disabled>✨ С фильтром</button></div>'+
  '<p class="small center">Во время записи образец останавливается, чтобы уменьшить эхо. Если эхо остаётся, надень наушники. Автоматической проверки тонов здесь нет.</p>')+
  card('<div class="rule-card">'+esc(z.tip||'Повтори фразу вслух.')+'</div>');
 }
@@ -323,10 +323,11 @@ function advance(dir){
  state.step=Math.min(13,Math.max(0,state.step+dir));refresh();
 }
 function recorderButtons(){
- const start=stage.querySelector('[data-record]'),stop=stage.querySelector('[data-stop]'),replay=stage.querySelector('[data-replay]');
+ const start=stage.querySelector('[data-record]'),stop=stage.querySelector('[data-stop]'),replay=stage.querySelector('[data-replay]'),filtered=stage.querySelector('[data-replay-filter]');
  if(start)start.disabled=media?.state==='recording';
  if(stop)stop.disabled=media?.state!=='recording';
  if(replay)replay.disabled=!micUrl;
+ if(filtered)filtered.disabled=!micUrl;
 }
 async function record(){
  if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){say('Микрофон не поддерживается этим браузером.','bad');return}
@@ -395,8 +396,13 @@ stage.addEventListener('click',e=>{
  if(b.hasAttribute('data-write')){try{writer?.quiz?.({onComplete:()=>say('✓ Отлично!','good')})}catch{say('Пропись недоступна.','bad')}return}
  if(b.hasAttribute('data-record')){record();return}
  if(b.hasAttribute('data-stop')){if(media?.state==='recording')media.stop();return}
+ if(b.hasAttribute('data-replay-filter')&&micUrl){
+  const filtered=window.PANDA_MIC_V236?.processedUrl?.(micUrl);
+  if(!filtered){say('Обработка не готова или не нужна. Послушай оригинал.');return}
+  stopAudio();try{audio=new Audio(filtered);audio.play().catch(()=>say('Обработанная запись не воспроизводится.','bad'))}catch{say('Ошибка обработки.','bad')}return;
+ }
  if(b.hasAttribute('data-replay')&&micUrl){
-  stopAudio();try{audio=new Audio(window.PandaAudioLevel?.[micUrl]||micUrl);audio.play().catch(()=>say('Не удалось воспроизвести запись.','bad'))}catch{}return;
+  stopAudio();try{audio=new Audio(micUrl);audio.play().catch(()=>say('Не удалось воспроизвести запись.','bad'))}catch{}return;
  }
  if(b.hasAttribute('data-final')){
   if(Number(b.dataset.final)===topic.quiz.correct){state.quizPassed=true;done();refresh();say('✓ Отлично, правильный ответ!','good')}

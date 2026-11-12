@@ -346,7 +346,7 @@ const screens=[
   '<div class="pg3-recorder">'+
   '<button data-record-start'+(micBusy?' disabled':'')+'>🎙 Записать</button>'+
   '<button data-record-stop'+(micBusy?'':' disabled')+'>■ Стоп</button>'+
-  (recUrl?'<button data-record-play>▶ Мой голос</button>':'')+'</div>'+
+  (recUrl?'<button data-record-play>▶ Оригинал</button><button data-record-filter>✨ С фильтром</button>':'')+'</div>'+
   '<p class="pg3-note">Запись необязательна. Сравнение произношения выполняется на слух — автоматической проверки тонов здесь нет.</p>'+
   '<button class="pg3-main" data-spoken'+(state.heard&&!state.spoken?'':' disabled')+'>'+
   (state.spoken?'✓ Повторил вслух':'Я произнёс фразу ✓')+'</button>'+
@@ -514,8 +514,13 @@ area.addEventListener('click',async ev=>{
  if(btn.hasAttribute('data-record-stop')){
   if(recorder?.state==='recording')recorder.stop();return;
  }
+ if(btn.hasAttribute('data-record-filter')&&recUrl){
+  const filtered=window.PANDA_MIC_V236?.processedUrl?.(recUrl);
+  if(!filtered){feedback('Обработка не готова или не нужна. Послушай оригинал.');return}
+  stopAudio();try{audio=new Audio(filtered);Promise.resolve(audio.play()).catch(()=>feedback('Не удалось воспроизвести обработанную запись.'))}catch{feedback('Обработка недоступна.')}return;
+ }
  if(btn.hasAttribute('data-record-play')&&recUrl){
-  stopAudio();try{audio=new Audio(window.PandaAudioLevel?.[recUrl]||recUrl);Promise.resolve(audio.play()).catch(()=>feedback('Не удалось воспроизвести свою запись.'))}catch{feedback('Запись недоступна.')}return;
+  stopAudio();try{audio=new Audio(recUrl);Promise.resolve(audio.play()).catch(()=>feedback('Не удалось воспроизвести свою запись.'))}catch{feedback('Запись недоступна.')}return;
  }
 });
 window.addEventListener('pagehide',()=>{
