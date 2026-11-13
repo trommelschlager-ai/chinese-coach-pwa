@@ -262,7 +262,7 @@ export function answerLive(raw,options={}){
  }
  const vocabulary=brainQuestion(raw,allowed,curriculum);
  if(vocabulary){
-  if(vocabulary.kind==='question')return {...vocabulary,followup:linkedQuestion(vocabulary.vocabWord,vocabulary.lesson,allowed,date,profile)};
+  if(vocabulary.kind==='explanation')return {...vocabulary,followup:linkedQuestion(vocabulary.vocabWord,vocabulary.lesson,allowed,date,profile)};
   return {...vocabulary,spoken};
  }
  const explanation=lessonExplanation(raw,allowed,topic,curriculum);if(explanation)return {...explanation,spoken};
