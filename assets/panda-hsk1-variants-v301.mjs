@@ -121,6 +121,7 @@ export function learnerAnswerVariant(input,prompt=null){
  }
  return null;
 }
+export function listReviewedQuestionVariants(){return [...alias.entries()].map(([original,data])=>({original,...data}));}
 export const VARIANT_TOPIC_COUNTS=Object.freeze(
  Array.from({length:7},(_,i)=>({lesson:i+1,aliases:[...alias.values()].filter(x=>x.lesson===i+1).length}))
 );
