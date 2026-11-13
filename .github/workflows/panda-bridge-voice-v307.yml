@@ -1,0 +1,54 @@
+name: Prepare Panda Go original voice clips B01–B10
+on:
+  push:
+    branches:
+      - feat/panda-bridge-contextual-sentence-coach-20261113
+    paths:
+      - '.github/workflows/panda-bridge-voice-v307.yml'
+      - 'assets/panda-bridge-voice-v307/source-lv-20261113.mp3'
+      - 'scripts/prepare-panda-bridge-voice-v307.sh'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  split-recording:
+    if: github.ref == 'refs/heads/feat/panda-bridge-contextual-sentence-coach-20261113'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout approved voice recording
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y ffmpeg
+      - name: Cut ten separate audio clips without changing pitch
+        run: bash scripts/prepare-panda-bridge-voice-v307.sh
+      - name: Recalculate offline download package size
+        run: |
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const p='assets/offline-pack.json',data=JSON.parse(fs.readFileSync(p,'utf8'));
+          for(let i=1;i<=10;i++) {
+            const file='./assets/panda-bridge-voice-v307/B'+String(i).padStart(2,'0')+'.mp3';
+            if(!data.files.includes(file))throw Error('Missing offline voice entry: '+file);
+          }
+          data.bytes=data.files.reduce((total,name)=>{
+            const file=decodeURIComponent(name.replace(/^\.\//,'').split('?')[0]);
+            if(!fs.existsSync(file))throw Error('Missing package file: '+file);
+            return total+fs.statSync(file).size;
+          },0);
+          fs.writeFileSync(p,JSON.stringify(data,null,2)+'\n');
+          console.log('Voice-ready offline pack:',data.files.length,'files',data.bytes,'bytes');
+          NODE
+      - name: Validate contextual sentence coaching and exact recorded clips
+        run: |
+          node scripts/verify-panda-hsk2-bridge-v304.cjs
+          node scripts/verify-panda-hsk2-seed-v303.cjs
+      - name: Commit original voice clips to the existing feature branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/panda-bridge-voice-v307/B*.mp3 assets/offline-pack.json
+          if git diff --cached --quiet; then echo 'Clips already committed'; exit 0; fi
+          git commit -m 'assets(panda): add 10 original-voice MP3 dialogue clips'
+          git push origin HEAD:feat/panda-bridge-contextual-sentence-coach-20261113

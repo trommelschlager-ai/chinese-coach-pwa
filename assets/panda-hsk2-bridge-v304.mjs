@@ -9,10 +9,10 @@ const VOCAB=Object.freeze({
 });
 const normalize=value=>String(value??'').normalize('NFC').trim().replace(/[\s\u3000，。！？!?.,;；:：'"«»\-–—]/g,'');
 const line=(hanzi,pinyin,ru,audioKey=null)=>({hanzi,pinyin,ru,audioKey});
-const studyQuestion=()=>({hanzi:'你学习中文吗？',pinyin:'Nǐ xuéxí Zhōngwén ma?',ru:'Ты изучаешь китайский?',lesson:1,intent:'hsk2-bridge-study',isContextual:true,accepted:['我学习中文'],instruction:'Можно ответить: 我学习中文。',audioKey:null});
-const busyQuestion=()=>({hanzi:'你忙吗？',pinyin:'Nǐ máng ma?',ru:'Ты занят?',lesson:1,intent:'hsk2-bridge-busy',isContextual:true,accepted:['我很忙','我不忙'],instruction:'Ответь: 我很忙。 или 我不忙。',audioKey:null});
+const studyQuestion=()=>({hanzi:'你学习中文吗？',pinyin:'Nǐ xuéxí Zhōngwén ma?',ru:'Ты изучаешь китайский?',lesson:1,intent:'hsk2-bridge-study',isContextual:true,accepted:['我学习中文'],instruction:'Можно ответить: 我学习中文。',audioKey:'你学习中文吗'});
+const busyQuestion=()=>({hanzi:'你忙吗？',pinyin:'Nǐ máng ma?',ru:'Ты занят?',lesson:1,intent:'hsk2-bridge-busy',isContextual:true,accepted:['我很忙','我不忙'],instruction:'Ответь: 我很忙。 или 我不忙。',audioKey:'你忙吗'});
 const spoken=(raw,pinyin=null,ru=null)=>({known:true,hanzi:String(raw).trim(),pinyin,translation:ru,topic:1});
-const example=(row)=>line(row[0],row[1],row[2]);
+const example=(row)=>line(row[0],row[1],row[2],row[0]);
 const wordPattern=/^(中文|学习|忙|很)(是什么意思|什么意思|的意思是什么|怎么读|怎么念|怎么发音|的拼音是什么|是几声|的声调是什么|是什么词性|怎么用|怎么造句)$/;
 const sentencePattern=/^用(中文|学习|忙|很)造句$/;
 export const HSK2_BRIDGE_WORDS=Object.freeze(Object.keys(VOCAB));
@@ -40,15 +40,28 @@ export function answerHsk2Bridge(raw,{prompt=null}={}){
    example:{hanzi,pinyin,ru},rule};
   const text=word+' — '+info.pinyin+' — '+info.ru+'. Тоны: '+info.tones+
    '. Пример: '+hanzi+' · '+pinyin+' — '+ru+'.'+(rule?' '+rule:'');
-  return {kind:'explanation',lesson:1,spoken:spoken(input),reply:intent==='example'?example(info.example):line(word,info.pinyin,info.ru),
+  return {kind:'explanation',lesson:1,spoken:spoken(input),reply:intent==='example'?example(info.example):line(word,info.pinyin,info.ru,word),
    explanation:text,wordCard:card,followup:['忙','很'].includes(word)?busyQuestion():studyQuestion()};
  }
  if(s==='我是很忙'||s==='我是忙'||s==='他是很忙'||s==='她是很忙'){
   const subject=s[0],py={我:'Wǒ',他:'Tā',她:'Tā'}[subject],ru={我:'Я занят.',他:'Он занят.',她:'Она занята.'}[subject];
   return {kind:'correction',lesson:1,spoken:{known:false,hanzi:input,pinyin:null,translation:null,probable:ru,topic:1,correction:{hanzi:subject+'很忙。',pinyin:py+' hěn máng.',ru,why:'Перед прилагательным 忙 не ставим 是. Правильно: '+subject+'很忙。'}},message:'Перед прилагательным 忙 не ставим 是. Правильно: '+subject+'很忙。'};
  }
- if(s==='你学习中文吗')return {kind:'question',lesson:1,spoken:spoken(input,'Nǐ xuéxí Zhōngwén ma?','Ты изучаешь китайский?'),reply:line('我学习中文。','Wǒ xuéxí Zhōngwén.','Я изучаю китайский язык.'),followup:busyQuestion()};
- if(s==='你忙吗')return {kind:'question',lesson:1,spoken:spoken(input,'Nǐ máng ma?','Ты занят?'),reply:line('我不忙。','Wǒ bù máng.','Я не занят.'),followup:studyQuestion()};
+ // 学习中文 is a valid verb phrase, not a grammar mistake. In the
+ // first-person learning exercise, gently extend it to a full sentence.
+ if(s==='学习中文'){
+  const complete=line('我学习中文。','Wǒ xuéxí Zhōngwén.','Я изучаю китайский язык.','我学习中文');
+  const suggestion={
+   hanzi:complete.hanzi,pinyin:complete.pinyin,ru:complete.ru,
+   why:'学习中文 — правильное словосочетание. Для полного ответа «Я изучаю китайский» добавь 我.'
+  };
+  return {kind:'guided-answer',lesson:1,
+   spoken:{...spoken(input,'xuéxí Zhōngwén','изучать китайский язык'),suggestion},
+   reply:complete,followup:busyQuestion(),
+   message:'Хорошо! Это словосочетание. Полным предложением: 我学习中文。'};
+ }
+ if(s==='你学习中文吗')return {kind:'question',lesson:1,spoken:spoken(input,'Nǐ xuéxí Zhōngwén ma?','Ты изучаешь китайский?'),reply:line('我学习中文。','Wǒ xuéxí Zhōngwén.','Я изучаю китайский язык.','我学习中文'),followup:busyQuestion()};
+ if(s==='你忙吗')return {kind:'question',lesson:1,spoken:spoken(input,'Nǐ máng ma?','Ты занят?'),reply:line('我不忙。','Wǒ bù máng.','Я не занят.','我不忙'),followup:studyQuestion()};
  if(s==='我学习中文'||s==='你学习中文'||s==='他学习中文'||s==='她学习中文'){
   const subject=s[0],py={我:'Wǒ',你:'Nǐ',他:'Tā',她:'Tā'}[subject],ru={我:'Я изучаю',你:'Ты изучаешь',他:'Он изучает',她:'Она изучает'}[subject]+' китайский язык.';
   return {kind:prompt?.intent==='hsk2-bridge-study'&&subject==='我'?'answer':'statement',lesson:1,spoken:spoken(input,py+' xuéxí Zhōngwén.',ru),reply:line('很好！','Hěn hǎo!','Отлично!','很好'),followup:busyQuestion()};

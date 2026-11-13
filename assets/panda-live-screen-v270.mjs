@@ -1,7 +1,7 @@
-import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=306';
+import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=307';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio} from './panda-live-audio.mjs?v=live6';
+import {lookupPilotAudio} from './panda-live-audio.mjs?v=307';
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
@@ -11,7 +11,7 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=306';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=307';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -74,6 +74,7 @@ function learner(input,spoken){record('you',input,spoken?.known?spoken.pinyin:nu
 function showLearnerFeedback(spoken){
  const root=$('learner-feedback');root.replaceChildren();root.hidden=true;
  if(spoken?.correction){const c=spoken.correction;for(const text of ['Возможный смысл: '+spoken.probable,'Правильно: '+c.hanzi+(c.pinyin?' · '+c.pinyin:''),c.why]){const row=document.createElement('p');row.textContent=text;root.append(row)}root.hidden=false;}
+ else if(spoken?.suggestion){const s=spoken.suggestion;for(const text of ['Полный ответ: '+s.hanzi+' · '+s.pinyin,s.why]){const row=document.createElement('p');row.textContent=text;root.append(row)}root.hidden=false;}
  else if(!spoken?.known&&spoken?.words?.length){const row=document.createElement('p');row.textContent='Знакомые слова: '+spoken.words.map(w=>w.join(' — ')).join('; ')+'. Полный смысл уточни.';root.append(row);root.hidden=false}
  if(!root.hidden&&state.confidence!==null&&state.confidence<.65){const warn=document.createElement('p');warn.textContent='Распознавание неуверенное — проверь исходный текст.';root.append(warn)}
  document.documentElement.dataset.feedback=String(!root.hidden);
@@ -222,7 +223,7 @@ $('lesson-select').addEventListener('change',()=>{const id=Number($('lesson-sele
 function resize(){const v=window.visualViewport;const h=v?.height||window.innerHeight;document.documentElement.style.setProperty('--screen-height',h+'px');document.documentElement.style.setProperty('--screen-top',(v?.offsetTop||0)+'px');document.documentElement.dataset.keyboard=String((window.innerHeight-h>120)||(h<560))}
 window.visualViewport?.addEventListener('resize',resize);window.visualViewport?.addEventListener('scroll',resize);window.addEventListener('resize',resize);document.addEventListener('focusin',resize);document.addEventListener('focusout',resize);
 window.addEventListener('pagehide',e=>{cancelFollowup();stopRecognition();stopAudio();clearTimeout(poseTimer);if(!e.persisted)rig.dispose()});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFollowup();stopRecognition();stopAudio()}});
-if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=306',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
+if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=315',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
 if(window.ResizeObserver){const observer=new window.ResizeObserver(entries=>{document.documentElement.style.setProperty('--scene-height',entries[0].contentRect.height+'px')});observer.observe(document.querySelector('.scene'))}
 initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
 // Try the existing recording; browsers may require the first tap before playback.
