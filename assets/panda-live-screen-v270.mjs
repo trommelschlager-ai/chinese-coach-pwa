@@ -11,7 +11,7 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=319';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=323';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -319,7 +319,7 @@ $('lesson-select').addEventListener('change',()=>{const id=Number($('lesson-sele
 function resize(){const v=window.visualViewport;const h=v?.height||window.innerHeight;document.documentElement.style.setProperty('--screen-height',h+'px');document.documentElement.style.setProperty('--screen-top',(v?.offsetTop||0)+'px');document.documentElement.dataset.keyboard=String((window.innerHeight-h>120)||(h<560))}
 window.visualViewport?.addEventListener('resize',resize);window.visualViewport?.addEventListener('scroll',resize);window.addEventListener('resize',resize);document.addEventListener('focusin',resize);document.addEventListener('focusout',resize);
 window.addEventListener('pagehide',e=>{cancelFollowup();stopRecognition();stopAudio();clearTimeout(poseTimer);if(!e.persisted)rig.dispose()});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFollowup();stopRecognition();stopAudio()}});
-if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=319',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
+if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=323',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
 if(window.ResizeObserver){const observer=new window.ResizeObserver(entries=>{document.documentElement.style.setProperty('--scene-height',entries[0].contentRect.height+'px')});observer.observe(document.querySelector('.scene'))}
 initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
 // Try the existing recording; browsers may require the first tap before playback.
