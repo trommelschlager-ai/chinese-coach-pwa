@@ -9,13 +9,14 @@ assert(map.includes('hsk1-map-v252.css?v=258'),'Beginner map must use its update
 assert(map.includes('class="pg-ai-button"')&&map.includes('href="./panda-voice-pilot.html"'),'Panda AI must be accessible from the bottom actions');
 assert(map.includes('hsk1-rhythm.html')&&map.includes('hsk1-pronunciation.html'),'Both speech practice routes must remain');
 assert((map.match(/class="node"/g)||[]).length===7,'All seven functional lesson links must remain');
-assert(site.includes('panda-v130.js?v=175'),'Home version must be bumped');
+assert(site.includes('panda-v130.js?v=314'),'Home version must be bumped');
 assert(lesson.includes('guided-introduction.js?v=151'),'Guided script version must be bumped');
 assert(/<progress max="7"/.test(lesson),'Progress consists of seven steps');
 assert(lesson.includes('id="lesson-step-list"'),'Guided step list must be visible');
 assert(main.includes('panda-reference-v175/hero.webp'),'Previously approved home art must be retained');
 assert(main.includes('href="./hsk1-map.html"'),'HSK 1 opens the map');
-assert(main.includes('pg-hsk-unavailable'),'Unfinished levels must not act as completed courses');
+assert(main.includes('./hsk2-start.html#map'),'HSK 2 must lead to published course');
+assert(!main.slice(main.indexOf('function home(){'),main.indexOf('function learn(){')).includes('pg-hsk-unavailable'),'Only HSK 1 and 2 visible');
 assert(map.includes('data-num="7" href="./hsk1-lesson.html?lesson=7"'),'Approved seventh topic opens its new lesson');
 assert(style.includes('object-fit:cover')&&!style.includes('image-rendering:pixelated'),'No pixelated or stretched image styling');
 const voice={},voiceScript=read('assets/guided-voice-v1506.js');
