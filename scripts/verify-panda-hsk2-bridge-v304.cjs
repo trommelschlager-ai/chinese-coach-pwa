@@ -95,10 +95,10 @@ const vm=require('node:vm');
   './assets/panda-live-dialogue-v272.mjs?v=319',
   './assets/panda-live-screen-v270.mjs?v=319',
   './assets/panda-hsk1-questions-v281.mjs?v=319',
-  './panda-voice-pilot.html?v=319'
+  './panda-voice-pilot.html?v=323'
  ])assert(offline.files.includes(p),'Offline material missing: '+p);
  const latest={
-  'panda-voice-pilot.html':'319',
+  'panda-voice-pilot.html':'323',
   'assets/panda-live-screen-v270.mjs':'323',
   'assets/panda-live-dialogue-v272.mjs':'319',
   'assets/panda-hsk1-questions-v281.mjs':'319'
