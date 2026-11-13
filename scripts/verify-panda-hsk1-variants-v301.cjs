@@ -12,6 +12,7 @@ const vm=require('node:vm');
  assert.equal(curriculum.length,7);
  const samples=[
   [1,'你怎么样','很好！'],
+  [1,'你还好吗','很好！'],
   [1,'你今天好吗','很好！'],
   [1,'最近好吗','很好！'],
   [1,'那你呢','很好！'],
@@ -44,7 +45,8 @@ const vm=require('node:vm');
   [7,'今天天气怎么样呀','今天很冷。'],
   [7,'今天冷不冷','今天很冷。'],
   [7,'明天会不会下雨呢','明天下雨。'],
-  [7,'冬天的天气怎么样','冬天很冷。']
+  [7,'冬天的天气怎么样','冬天很冷。'],
+  [7,'夏天的天气怎么样','夏天很热。']
  ];
  let passed=0;
  const checks={byLesson:Object.fromEntries(allowed.map(n=>[n,0])),noFakeAudio:0,followups:0};
