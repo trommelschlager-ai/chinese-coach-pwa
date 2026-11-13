@@ -59,7 +59,9 @@ export function answerNonStop(input,allowed,currentPrompt,topics=[],date=new Dat
    const spoken=interpretFamily(raw),relative=currentPrompt.relative||'哥哥',family=spoken?.family;
    if(family&&!family.present.includes(family.absent)&&(family.absent===relative||family.present.includes(relative)))return {kind:'answer',lesson:6,spoken,message:'Ответ по смыслу подходит.'};
   }
-  const match=verifyAnswerFor(currentPrompt.verifiedLines,1,raw);
+  // Variant prompts may carry intent/accepted answers without legacy verifiedLines.
+  // Never throw if an authored follow-up omits that optional legacy structure.
+  const match=currentPrompt.verifiedLines?.[1]?verifyAnswerFor(currentPrompt.verifiedLines,1,raw):{ok:false};
   if(match.ok){
    const spoken=interpretUtterance(raw,currentPrompt.lesson,topics);
    return {kind:'answer',lesson:currentPrompt.lesson,spoken,message:'Отлично! Переходим к следующему вопросу.'};
