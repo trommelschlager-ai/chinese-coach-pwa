@@ -10,6 +10,7 @@ import {checkedExtensionReply,recognizeApprovedPhrase} from './panda-hsk1-answer
 import {patternQuestion,patternStudentAnswer,patternPrompts,conversationalFollowup} from './panda-hsk1-patterns-v285.mjs?v=285';
 import {questionVariant,learnerAnswerVariant} from './panda-hsk1-variants-v301.mjs?v=301';
 import {brainQuestion,interpretBrainSentence} from './panda-brain-hsk1-v302.mjs?v=302';
+import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=304';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
@@ -253,6 +254,8 @@ export function answerLive(raw,options={}){
    return {...resolved,spoken:{...resolved.spoken,hanzi:raw,pinyin:null,variantOf:answerVariant}};
  }
 
+ // Free HSK1→HSK2 bridge only. The unreleased HSK2 seed is NOT available here.
+ const bridge=answerHsk2Bridge(raw,{prompt});if(bridge)return bridge;
  let spoken=analyzeLearner(raw,allowed,prompt,curriculum);
  if(!spoken.correction){
   // For short answers such as 是/没有, the active lesson question supplies the
