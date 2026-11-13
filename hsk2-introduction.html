@@ -143,7 +143,7 @@ function introDialogueScreen(){
  (dialogueFeedback?'<div role="status" class="dialogue-feedback '+(dialogueFeedback.ok?'ok':'err')+'">'+esc(dialogueFeedback.feedback)+'</div>':'')+
  (d.assisted[i]?'<div class="dialogue-feedback">'+esc(q.sample)+' · '+esc(q.samplePy)+' · '+esc(q.ruSample)+'</div>':'')+
  '<div class="dialogue-buttons"><button type="button" class="softbtn" data-dialogue-back '+(i===0?'disabled':'')+'>← Вопрос назад</button><button type="button" class="primary" data-dialogue-forward '+(ready?'':'disabled')+'>'+(i===2?'Закончить разговор ✓':'Следующий вопрос →')+'</button></div>'+
- '<p class="dialogue-note">Проверяем только текст и три учебные конструкции. Это не проверка произношения или тонов. Микрофон, если доступен, использует распознавание браузера и может требовать интернет.</p></div>';
+ '<p class="dialogue-note">Проверяем только текст и три учебные конструкции. Это не проверка произношения или тонов. Если использовать микрофон, распознавание браузера может передавать голос своему сервису и требовать интернет; это не оценка тонов.</p></div>';
 }
 
 function render(){
