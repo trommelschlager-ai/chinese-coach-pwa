@@ -13,7 +13,7 @@ for(const word of ['叫','名字','住','在','工作','医生','老师']){
 }
 for(const q of ['你叫什么名字？','你住在哪儿？','你做什么工作？'])assert(src.includes(q),'question '+q);
 assert(src.includes("我叫安娜。")&&src.includes("Wǒ jiào Ānnà."),'name with exact pinyin');
-assert(src.includes("我住在北京。")&&src.includes("Wǒ zhù zài Běijīng."),'city with exact pinyin');
+assert(src.includes("我住在莫斯科。")&&src.includes("Wǒ zhù zài Mòsīkē."),'city with exact pinyin');
 assert(src.includes("我是医生。")&&src.includes("Wǒ shì yīshēng."),'job with exact pinyin');
 assert(src.includes("const profileReady="),'personalized introduction');
 assert(src.includes('data-field="name"')&&src.includes('data-field="city"'),'editable name/city');
