@@ -83,7 +83,7 @@ function render(){
  $('screen').querySelector('[data-py]').addEventListener('click',()=>{state.showPy=!state.showPy;save();render()});
  $('screen').querySelector('[data-repeat]').addEventListener('click',()=>{state.step=0;state.build=[];save();render()});
  $('screen').querySelector('[data-prev]').addEventListener('click',()=>{if(state.step>0){state.step--;save();render()}});
- $('screen').querySelector('[data-next]').addEventListener('click',()=>{if(disabled)return;if(s.kind==='finish'){state.completed=true;save();location.href='./hsk2-start.html#lesson'}else{state.step++;save();render()}});
+ $('screen').querySelector('[data-next]').addEventListener('click',()=>{if(s.kind==='profile'?!profileReady():disabled)return;if(s.kind==='finish'){state.completed=true;save();location.href='./hsk2-start.html#lesson'}else{state.step++;save();render()}});
  if(s.kind==='profile'){
   $('screen').querySelectorAll('[data-field]').forEach(el=>el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>{state.profile[el.dataset.field]=el.value;save();if(el.dataset.field==='job')render();else profileOutput()}));
   profileOutput();
