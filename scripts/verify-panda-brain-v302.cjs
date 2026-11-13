@@ -42,13 +42,13 @@ const vm=require('node:vm');
   if(entry.audioKey){oldAudio++;assert(lookupPilotAudio(entry.audioKey),'Do not invent audio for '+word)}
   if(entry.example.audioKey)assert(lookupPilotAudio(entry.example.audioKey),'No synthesized sample MP3 '+word);
   const r=brainQuestion(word+'是什么意思？',allowed,curriculum);
-  assert.equal(r?.kind,'question',word+' cannot answer a basic meaning question');
+  assert.equal(r?.kind,'explanation',word+' cannot answer a basic meaning question');
   assert.equal(r.lesson,entry.sourceLessons[0]);
   assert.equal(r.reply.hanzi,word);
   assert.equal(r.reply.pinyin,entry.pinyin);
   assert(r.explanation.includes(entry.category)&&r.explanation.includes(entry.example.hanzi));
   const example=brainQuestion('用'+word+'造句',allowed,curriculum);
-  assert.equal(example?.kind,'question','Cannot make reviewed example for '+word);
+  assert.equal(example?.kind,'explanation','Cannot make reviewed example for '+word);
   assert.equal(example.reply.hanzi,entry.example.hanzi);
   assert.equal(example.reply.pinyin,entry.example.pinyin);
   examples++;allWords++;
@@ -72,7 +72,7 @@ const vm=require('node:vm');
  ];
  for(const [q,lesson,zh,ru] of chinese){
   const r=answerLive(q,{allowed,topic:lesson,curriculum,date,profile:{recentQuestions:[]}});
-  assert.equal(r.kind,'question','Panda failed direct Chinese word question '+q);
+  assert.equal(r.kind,'explanation','Panda failed direct Chinese word question '+q);
   assert.equal(r.lesson,lesson,'Incorrect lesson '+q);
   assert.equal(r.reply.hanzi,zh,'Incorrect Panda answer '+q);
   assert(r.explanation.includes(ru),'Missing meaning/explanation '+q);
@@ -82,11 +82,11 @@ const vm=require('node:vm');
  }
  for(const [q,lesson,zh] of russian){
   const r=answerLive(q,{allowed,topic:lesson,curriculum,date,profile:{}});
-  assert.equal(r.kind,'question',q);
+  assert.equal(r.kind,'explanation',q);
   assert.equal(r.reply.hanzi,zh,q);
  }
  const locked=answerLive('妹妹是什么意思？',{allowed:[1,2],topic:1,curriculum,date,profile:{}});
- assert.equal(locked.kind,'locked','Cannot leak locked lesson family meaning');
+ assert.equal(locked.kind,'clarify','Cannot leak locked lesson family meaning');
  assert(!locked.reply,'No answer from locked chapter');
  const unknown=answerLive('水是什么意思？',{allowed,topic:7,curriculum,date,profile:{}});
  assert.equal(unknown.kind,'clarify','Do not invent words absent from user curriculum');
