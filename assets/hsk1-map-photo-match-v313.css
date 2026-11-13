@@ -1,0 +1,197 @@
+/* Panda Go v313 — strict composition correction against approved photo 2.
+   Only visuals. Native anchors and user data remain untouched. */
+html:has(.map-shell),body:has(.map-shell){overflow:hidden;background:#79baff}
+.map-shell{
+  position:relative;
+  height:100dvh;
+  min-height:0;
+  overflow:hidden;
+  padding:calc(7px + env(safe-area-inset-top,0px)) 7px calc(7px + env(safe-area-inset-bottom,0px));
+}
+.map-shell::before{
+  background-image:url("./panda-reference-v175/mountain-stairs.webp");
+  background-size:147% auto;
+  background-position:left 0 bottom -113px;
+  filter:saturate(1.42) contrast(1.06) brightness(1.065);
+}
+.map-shell::after{background:linear-gradient(180deg,#2684ff30,transparent 35%,transparent 84%,#52215a12)}
+.pg-map-scene{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+.pg-map-scene .pg-photo-pagoda{
+  position:absolute;top:11.8%;right:-5%;width:29%;height:17.5%;
+  object-fit:contain;object-position:top right;
+  opacity:.85;filter:drop-shadow(0 2px 1px #39627549);
+}
+.pg-map-scene .pg-photo-bridge{
+  position:absolute;top:40%;left:-11%;
+  width:40%;height:13%;
+  object-fit:contain;
+  opacity:.87;filter:drop-shadow(0 2px 2px #31326955);
+}
+/* Independent transparent traveller: no rectangular cutout and no duplicate
+   scenery image behind the character. A real illustration, not a UI screenshot. */
+.pg-map-scene .pg-photo-panda{
+  position:absolute;
+  background:url("./panda-explorer-v174.svg") center bottom/contain no-repeat;
+  left:-2.5%;bottom:clamp(88px,13dvh,130px);
+  width:clamp(172px,55%,246px);
+  height:clamp(235px,39dvh,330px);
+  -webkit-mask-image:none;mask-image:none;clip-path:none;
+  filter:drop-shadow(0 6px 4px #3e1d4699);
+}
+.pg-map-heading{
+  position:relative;z-index:7;
+  gap:2px;padding:5px 37px 0;flex:0 0 auto;
+}
+.pg-map-roof{
+  left:50%;top:-18px;transform:translateX(-50%);
+  width:min(89%,325px);height:77px;
+  object-fit:fill;filter:drop-shadow(0 2px 2px #482449aa)
+}
+.pg-map-brand{
+  position:relative;z-index:1;
+  font:italic 950 clamp(40px,12.2vw,56px)/1.13 Georgia,serif;
+  letter-spacing:-1.3px;
+  -webkit-text-stroke:1.8px #9f2a13;
+  color:#ffe176;
+  text-shadow:0 2px #fff4b8,0 4px #fca824,0 6px #ba4212,0 7px 1px #732117,0 8px 5px #29163e;
+}
+.pg-map-brand::before,.pg-map-brand::after{content:none!important}
+.pg-level-title{
+  width:min(79vw,345px);
+  margin:0 auto;padding:6px 10px 8px;
+  border:3px solid #ffe46d;border-radius:999px;
+  font:bold italic clamp(17px,5.05vw,23px)/1.1 Arial,system-ui,sans-serif;
+  white-space:nowrap;
+  color:#fff;
+  text-shadow:0 2px 3px #090849;
+  background:linear-gradient(180deg,#1b6df0 0%,#0738b0 52%,#071a64 100%);
+  box-shadow:inset 0 2px 5px #ffffffb8,0 0 0 1px #efb24c,0 0 8px #bd86f2,0 4px 8px #2c185688;
+}
+.map-road{
+  flex:0 0 auto;
+  z-index:5;
+  position:relative;
+  min-height:0;
+  margin:clamp(14px,2.1dvh,20px) 0 0;
+  padding:0;
+  gap:clamp(6px,.9dvh,10px);
+  justify-content:flex-start;
+}
+.map-road .node{
+  height:clamp(45px,6.2dvh,55px);
+  min-height:0;
+  padding:3px 6px 3px clamp(41px,11vw,55px);
+  gap:3px;
+  border:2.5px solid var(--edge);
+  border-radius:999px;
+  background:linear-gradient(172deg,#fff,#fff 63%,#fff2ff 86%,#eee7ff);
+  box-shadow:inset 0 2px 4px #fff,0 0 0 1px #fff,0 0 7px var(--edge),0 4px 7px #271e5b88;
+}
+.map-road .circle{
+  left:-9px;
+  width:clamp(44px,12vw,53px);height:clamp(44px,12vw,53px);
+  font:bold italic clamp(29px,8vw,38px)/1 Georgia,serif;
+}
+.map-road .caption{display:flex;justify-content:center;flex:1 1 0;min-width:0}
+.map-road .caption strong{
+  font:900 clamp(10px,2.82vw,14px)/1.13 Arial,system-ui,sans-serif;
+  letter-spacing:-.22px;white-space:normal;overflow-wrap:normal;
+}
+.map-road .caption .pg-word{display:none!important}
+.map-road .pg-topic-art{
+  flex:0 0 clamp(23px,7.8vw,36px);
+  width:clamp(23px,7.8vw,36px);height:clamp(23px,7.8vw,36px);
+}
+.map-road .node[data-num="7"]{margin-left:21%;width:51%}
+.map-road .node[data-num="6"]{margin-left:34%;width:50%}
+.map-road .node[data-num="5"]{margin-left:40%;width:51%}
+.map-road .node[data-num="4"]{margin-left:45%;width:51%}
+.map-road .node[data-num="3"]{margin-left:48%;width:51%}
+.map-road .node[data-num="2"]{margin-left:50%;width:49%}
+.map-road .node[data-num="1"]{margin-left:51%;width:48%}
+.map-road .node[data-num="7"]::after,
+.map-road .node[data-num="2"]::after{
+  content:"✦";position:absolute;top:-11px;left:-37px;
+  color:#ffdb37;font-size:26px;line-height:1;
+  text-shadow:0 1px #d36a03,0 0 4px #fff7aa;
+  pointer-events:none;
+}
+.map-road .node[data-num="2"]::after{left:-30px;top:3px;font-size:18px}
+.pg-map-actions{
+  position:absolute!important;
+  z-index:12;
+  left:7px;right:7px;
+  bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;padding:0;margin:0!important;
+}
+.pg-map-actions a{
+  min-height:clamp(66px,9dvh,83px);
+  border-radius:clamp(20px,5vw,30px);
+  border-width:3px;
+  padding:6px 4px;
+  background:linear-gradient(170deg,#fff,#fffdfd 55%,#f4e3ff);
+  box-shadow:inset 0 2px 4px #fff,0 0 0 1px #ffffffc0,0 0 10px 2px var(--glow),0 4px 9px #31195b80;
+}
+.pg-map-actions .action-label{
+  font:950 clamp(11px,3vw,16px)/1.09 Arial,system-ui,sans-serif;
+  text-align:center;
+}
+.pg-map-actions a.pg-ai-button{
+  position:relative;
+  min-height:clamp(66px,9dvh,83px);
+  border:3px solid #f6b9ff;
+  padding:15px 3px 7px;
+  background:linear-gradient(165deg,#bf4dff 0%,#7817cf 50%,#4c078f 100%);
+  box-shadow:inset 0 2px 4px #fffb,0 0 0 1px #ecabff,0 0 11px 3px #b449ff,0 5px 9px #2d145788;
+}
+.pg-map-actions a.pg-ai-button .action-label{
+  color:#fff;font:bold italic clamp(15px,4.2vw,21px)/1.03 Arial,system-ui,sans-serif;
+  margin-top:11px;text-shadow:0 2px 3px #2c0754,0 0 7px #db8dff;
+}
+.pg-ai-button .action-icon{
+  position:absolute;top:-29px;right:6px;
+  width:clamp(55px,16vw,69px);height:clamp(55px,16vw,69px);
+  margin:0;
+}
+.pg-ai-button .action-icon .pg-ai-figure{width:100%;height:100%;object-fit:contain}
+.back,.pg-map-writing{z-index:15}
+@media(max-width:365px){
+ .pg-map-heading{padding:7px 36px 0;gap:2px}
+ .pg-map-roof{top:-17px;height:69px;width:92%}
+ .pg-map-brand{font-size:clamp(36px,11.4vw,43px)}
+ .pg-level-title{width:min(79vw,290px);font-size:clamp(15px,4.55vw,19px);padding:5px 6px 7px}
+ .map-road{margin-top:clamp(10px,1.7dvh,15px);gap:clamp(5px,.75dvh,7px)}
+ .map-road .node{height:clamp(42px,6dvh,47px);padding-left:clamp(39px,11.4vw,44px);padding-right:3px;gap:2px}
+ .map-road .circle{left:-8px;width:clamp(40px,11.6vw,47px);height:clamp(40px,11.6vw,47px);font-size:27px}
+ .map-road .caption strong{font-size:clamp(9.2px,2.8vw,11px);letter-spacing:-.25px}
+ .map-road .pg-topic-art{flex-basis:clamp(20px,7vw,26px);width:clamp(20px,7vw,26px);height:clamp(20px,7vw,26px)}
+ .map-road .node[data-num="7"]{margin-left:19%;width:63%}
+ .map-road .node[data-num="6"]{margin-left:28%;width:64%}
+ .map-road .node[data-num="5"]{margin-left:33%;width:65%}
+ .map-road .node[data-num="4"]{margin-left:38%;width:61%}
+ .map-road .node[data-num="3"]{margin-left:42%;width:57%}
+ .map-road .node[data-num="2"]{margin-left:43%;width:56%}
+ .map-road .node[data-num="1"]{margin-left:43%;width:56%}
+ .pg-map-actions{left:4px;right:4px;gap:4px}
+ .pg-map-actions a{min-height:clamp(62px,9dvh,75px);padding:5px 3px}
+ .pg-map-actions a.pg-ai-button{min-height:clamp(62px,9dvh,75px)}
+ .pg-map-actions .action-label{font-size:clamp(10px,3vw,13px)}
+ .pg-map-actions a.pg-ai-button .action-label{font-size:clamp(14px,3.8vw,17px)}
+ .pg-ai-button .action-icon{top:-23px;right:4px;width:52px;height:52px}
+ .pg-map-scene .pg-photo-panda{left:-4%;width:clamp(152px,56%,196px);height:clamp(224px,37dvh,290px);bottom:clamp(88px,13dvh,112px)}
+}
+@media(max-height:700px){
+ .map-road{margin-top:8px;gap:4px}
+ .map-road .node{height:clamp(38px,6.1dvh,44px)}
+ .map-road .circle{width:clamp(39px,11.4vw,46px);height:clamp(39px,11.4vw,46px)}
+ .pg-map-heading{padding-top:4px}
+ .pg-map-brand{font-size:clamp(34px,10.5vw,44px)}
+ .pg-level-title{font-size:clamp(15px,4.5vw,19px);padding:4px 6px}
+ .pg-map-actions a{min-height:clamp(58px,9dvh,66px)}
+ .pg-map-actions a.pg-ai-button{min-height:clamp(58px,9dvh,66px)}
+}
+@media(max-height:570px){
+ .map-shell{min-height:570px;height:auto;overflow-y:auto}
+ .pg-map-actions{position:relative!important;bottom:auto;left:auto;right:auto;margin-top:auto!important;padding-top:18px}
+}
