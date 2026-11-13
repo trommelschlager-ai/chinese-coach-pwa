@@ -154,7 +154,7 @@ function submit(raw){
  const social=replyToExtraSpeech(input,conversation.id,curriculum);
  if(spoken.correction){pose('retry');note(spoken.correction.why);render();return}
  const question=answerLive(input,{allowed:state.allowed,topic:conversation.id,curriculum,date:new Date(),turn:1,profile:state.profile});
- if(question.kind==='question'&&!(greeting&&state.step===0&&!state.done)){say(question.reply);note(state.done?'Можно продолжить в Non-Stop.':'Теперь вернись к учебному вопросу: '+conversation.lines[state.step].instruction);return}
+ if(['question','explanation'].includes(question.kind)&&!(greeting&&state.step===0&&!state.done)){say(question.reply);note(state.done?'Можно продолжить в Non-Stop.':'Теперь вернись к учебному вопросу: '+conversation.lines[state.step].instruction);return}
  if(question.kind==='locked'){note(question.message);return}
  // Any supported greeting can answer the opening, with the same greeting echoed.
 
