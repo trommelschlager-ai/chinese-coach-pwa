@@ -99,7 +99,7 @@ function render(){
  speech.dataset.length=hanziCount>=10?'verylong':hanziCount>=6?'long':'short';
  const src=lookupPilotAudio(line.audioKey);$('hear').disabled=!src;$('audio-note').hidden=!!src;
  $('hear').parentElement.hidden=!src;
- $('audio-note').textContent='🔇 Запись носительницы готовится';
+ $('audio-note').textContent=line.source==='local-ai'?'🔇 Новый AI-ответ: голосовой записи нет':'🔇 Запись носительницы готовится';
  $('step').textContent=state.mode==='nonstop'?'∞ Разговор без лимита':state.done?'Диалог завершён':`${state.step+1} из ${conversation.lines.length}`;
  $('mode-short').classList.toggle('active',state.mode==='short');$('mode-nonstop').classList.toggle('active',state.mode==='nonstop');
  for(const name of ['short','nonstop'])$('mode-'+name).setAttribute('aria-pressed',String(state.mode===name));
@@ -376,7 +376,7 @@ $('lesson-select').addEventListener('change',()=>{const id=Number($('lesson-sele
 function resize(){const v=window.visualViewport;const h=v?.height||window.innerHeight;document.documentElement.style.setProperty('--screen-height',h+'px');document.documentElement.style.setProperty('--screen-top',(v?.offsetTop||0)+'px');document.documentElement.dataset.keyboard=String((window.innerHeight-h>120)||(h<560))}
 window.visualViewport?.addEventListener('resize',resize);window.visualViewport?.addEventListener('scroll',resize);window.addEventListener('resize',resize);document.addEventListener('focusin',resize);document.addEventListener('focusout',resize);
 window.addEventListener('pagehide',e=>{localTurn++;pandaLocalAi.stop();cancelFollowup();stopRecognition();stopAudio();clearTimeout(poseTimer);if(!e.persisted)rig.dispose()});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFollowup();stopRecognition();stopAudio()}});
-if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=319',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
+if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=322',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
 if(window.ResizeObserver){const observer=new window.ResizeObserver(entries=>{document.documentElement.style.setProperty('--scene-height',entries[0].contentRect.height+'px')});observer.observe(document.querySelector('.scene'))}
 initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
 // Try the existing recording; browsers may require the first tap before playback.
