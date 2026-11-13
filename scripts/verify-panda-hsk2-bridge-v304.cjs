@@ -58,16 +58,27 @@ const vm=require('node:vm');
   assert(!fs.readFileSync(p,'utf8').includes('panda-hsk2-seed-v303.json'),'Draft premium seed leaked into live app: '+p);
  }
  const page=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(page.includes('panda-live-screen-v270.mjs?v=304'));
+ assert(page.includes('panda-live-screen-v270.mjs?v=305'));
+ assert(page.includes('<span class="release">v305</span>'),'Stale v302 release badge must be removed');
  for(const id of ['mode-short','mode-nonstop','mic','history-dialog','speech-dialog'])
   assert(page.includes('id="'+id+'"'),'Existing control deleted: '+id);
  const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
  for(const p of [
   './assets/panda-hsk2-bridge-v304.mjs?v=304',
   './assets/panda-live-dialogue-v272.mjs?v=304',
-  './assets/panda-live-screen-v270.mjs?v=304',
+  './assets/panda-live-screen-v270.mjs?v=305',
   './assets/panda-hsk1-questions-v281.mjs?v=304',
-  './panda-voice-pilot.html?v=304'
+  './panda-voice-pilot.html?v=305'
  ])assert(offline.files.includes(p),'Offline material missing: '+p);
+ const latest={
+  'panda-voice-pilot.html':'305',
+  'assets/panda-live-screen-v270.mjs':'305',
+  'assets/panda-live-dialogue-v272.mjs':'304',
+  'assets/panda-hsk1-questions-v281.mjs':'304'
+ };
+ for(const url of offline.files){
+  const p=url.replace(/^\.\//,'').split('?')[0],version=/[?&]v=([^&]+)/.exec(url)?.[1];
+  if(latest[p]&&version)assert.equal(version,latest[p],'Stale Panda entry: '+url);
+ }
  console.log('PASS Panda AI v304: 4 bridge words, 8 lexical questions, 4 examples, two-way dialogues, old HSK1 regressions, offline paths, no premium leak.');
 })().catch(err=>{console.error(err);process.exitCode=1});
