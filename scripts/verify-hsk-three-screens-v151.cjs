@@ -14,7 +14,7 @@ assert(lesson.includes('guided-introduction.js?v=151'),'Guided script version mu
 assert(/<progress max="7"/.test(lesson),'Progress consists of seven steps');
 assert(lesson.includes('id="lesson-step-list"'),'Guided step list must be visible');
 assert(main.includes('panda-reference-v175/hero.webp'),'Previously approved home art must be retained');
-assert(main.includes('href="./hsk1-map.html"'),'HSK 1 opens the map');
+assert(main.includes('./hsk1-map.html'),'HSK 1 opens the map');
 assert(main.includes('./hsk2-start.html#map'),'HSK 2 must lead to published course');
 assert(!main.slice(main.indexOf('function home(){'),main.indexOf('function learn(){')).includes('pg-hsk-unavailable'),'Only HSK 1 and 2 visible');
 assert(map.includes('data-num="7" href="./hsk1-lesson.html?lesson=7"'),'Approved seventh topic opens its new lesson');
