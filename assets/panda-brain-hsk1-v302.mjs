@@ -36,7 +36,6 @@ for(const [category,words] of CATEGORY_ROWS)for(const word of words.split(' ')){
 }
 const NEUTRAL=new Set(['学生','我们','你们','他们','妈妈','爸爸','哥哥','姐姐','弟弟','妹妹','我的','一个']);
 const TONE_EXPLANATIONS=Object.freeze({
- 你好:'Два третьих тона подряд: обычно произносится ní hǎo, хотя словарная запись nǐ hǎo.',
  一:'Базовая форма yī. Перед 4-м тоном часто yí (一个), перед 1–3-м — yì (一百). В счёте и названиях месяцев встречается словарное yī.',
  一个:'一 здесь произносится yí, 个 — нейтральным тоном: yí ge.',
  是:'Четвёртый тон shì. В отрицании 不是 частица 不 произносится bú перед shì.',
@@ -174,7 +173,7 @@ function parseWordQuery(raw){
  const compact=s.replace(/\s+/g,'').replace(/[？?。！!]+$/g,'').replace(/^(?:请问|请你|请)/,'');
  let m=/^用([\u3400-\u9fff]{1,8})造句$/.exec(compact);
  if(m)return {word:m[1],intent:'example'};
- m=/^([\u3400-\u9fff]{1,8})(是什么意思|什么意思|的意思是什么|怎么读|怎么念|怎么发音|的拼音是什么|是几声|的声调是什么|是什么声调|是什么词|是什么词性|是第几课的词|怎么用|怎么造句)$/.exec(compact);
+ m=/^([\u3400-\u9fff]{1,8}?)(是什么意思|什么意思|的意思是什么|怎么读|怎么念|怎么发音|的拼音是什么|是几声|的声调是什么|是什么声调|是什么词|是什么词性|是第几课的词|怎么用|怎么造句)$/.exec(compact);
  if(m){
   const ending=m[2],intent=/造句|怎么用/.test(ending)?'example':/怎么读|怎么念|发音|拼音|几声|声调/.test(ending)?'tone':/什么词|词性/.test(ending)?'grammar':/第几课/.test(ending)?'lesson':'meaning';
   return {word:m[1],intent};
@@ -226,23 +225,24 @@ export function interpretBrainSentence(raw,allowed=[1],curriculum=[]){
  let m=/^(我|你|他|她|我们|你们|他们)(有|没有)(妈妈|爸爸|哥哥|姐姐|弟弟|妹妹)$/.exec(s);
  if(m&&allowed.includes(6)&&learned(m[1],m[2],m[3])){
   const [pronoun,has,relative]=[SUBJECT[m[1]],m[2]==='有',FAMILY[m[3]]];
-  const ru=m[1]==='我'?'У меня ':m[1]==='你'?'У тебя ':m[1]==='我们'?'У нас ':m[1]==='你们'?'У вас ':m[1]==='他们'?'У них ':m[1]==='он'?'У него ':'У '+(m[1]==='她'?'неё':'него')+' ';
+  const ru=m[1]==='我'?'У меня ':m[1]==='你'?'У тебя ':m[1]==='我们'?'У нас ':m[1]==='你们'?'У вас ':m[1]==='他们'?'У них ':m[1]==='她'?'У неё ':'У него ';
   return composed(raw,pronoun[0]+' '+(has?'yǒu':'méiyǒu')+' '+relative[0]+'.',
     ru+(has?'есть '+relative[1]:'нет '+relative[2])+'.',6,
     m[1]==='我'?{family:{present:has?[m[3]]:[],absent:has?null:m[3]}}:{});
  }
  m=/^我有(一|两|二|三|四|五|六|七|八|九|十)个(哥哥|姐姐|弟弟|妹妹)$/.exec(s);
- if(m&&allowed.includes(3)&&allowed.includes(6)&&learned('我','有',m[3])){
-  const index=m[2]==='两'?2:NUMBER_ZH.indexOf(m[2]);
-  if(index<1||index===2&&m[2]==='二')return null; // 两个, not 二个
+ if(m&&allowed.includes(3)&&allowed.includes(6)&&learned('我','有',m[2])){
+  const index=m[1]==='两'?2:NUMBER_ZH.indexOf(m[1]);
+  if(index<1||index===2&&m[1]==='二')return null; // 两个, not 二个
   const numPy=index===1?'yí':index===2?'liǎng':NUMBER_PY[index];
-  return composed(raw,'Wǒ yǒu '+numPy+' ge '+FAMILY[m[3]][0]+'.',
-   'У меня '+index+' ('+FAMILY[m[3]][1]+').',6,{family:{present:[m[3]],absent:null},fact:{familyCount:index,relative:m[3]}});
+  return composed(raw,'Wǒ yǒu '+numPy+' ge '+FAMILY[m[2]][0]+'.',
+   'У меня '+index+' ('+FAMILY[m[2]][1]+').',6,{family:{present:[m[2]],absent:null},fact:{familyCount:index,relative:m[2]}});
  }
  m=/^(我|你|他|她)?(的)?(妈妈|爸爸|哥哥|姐姐|弟弟|妹妹)是(老师|学生)$/.exec(s);
- if(m&&allowed.includes(2)&&allowed.includes(6)&&learned(m[3],m[4],'是')){
-  const p=m[1]?SUBJECT[m[1]][0].toLowerCase()+' '+(m[2]?'de ':''):'';
-  const who=m[1]==='我'?'Мой/моя':m[1]==='你'?'Твой/твоя':m[1]==='他'?'Его':m[1]==='她'?'Её':'';
+ if(m&&(!m[2]||m[1])&&allowed.includes(2)&&allowed.includes(6)&&learned(m[3],m[4],'是')){
+  const p=m[1]?SUBJECT[m[1]][0]+' '+(m[2]?'de ':''):'';
+  const feminine=/妈妈|姐姐|妹妹/.test(m[3]);
+  const who=m[1]==='我'?(feminine?'Моя':'Мой'):m[1]==='你'?(feminine?'Твоя':'Твой'):m[1]==='他'?'Его':m[1]==='她'?'Её':'';
   const role=m[4]==='老师'?'учитель':'ученик';
   return composed(raw,p+FAMILY[m[3]][0]+' shì '+(m[4]==='老师'?'lǎoshī':'xuésheng')+'.',
    (who?who+' ':'')+FAMILY[m[3]][1]+' — '+role+'.',6);
