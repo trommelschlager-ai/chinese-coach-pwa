@@ -39,7 +39,7 @@ export function answerHsk2Bridge(raw,{prompt=null}={}){
  }
  if(s==='我是很忙'||s==='我是忙'||s==='他是很忙'||s==='她是很忙'){
   const subject=s[0],py={我:'Wǒ',他:'Tā',她:'Tā'}[subject],ru={我:'Я занят.',他:'Он занят.',她:'Она занята.'}[subject];
-  return {kind:'correction',lesson:1,spoken:{known:false,hanzi:input,pinyin:null,translation:null,topic:1,correction:{hanzi:subject+'很忙。',pinyin:py+' hěn máng.',ru,why:'Перед прилагательным 忙 не ставим 是. Правильно: '+subject+'很忙。'}},message:'Перед прилагательным 忙 не ставим 是. Правильно: '+subject+'很忙。'};
+  return {kind:'correction',lesson:1,spoken:{known:false,hanzi:input,pinyin:null,translation:null,probable:ru,topic:1,correction:{hanzi:subject+'很忙。',pinyin:py+' hěn máng.',ru,why:'Перед прилагательным 忙 не ставим 是. Правильно: '+subject+'很忙。'}},message:'Перед прилагательным 忙 не ставим 是. Правильно: '+subject+'很忙。'};
  }
  if(s==='你学习中文吗')return {kind:'question',lesson:1,spoken:spoken(input,'Nǐ xuéxí Zhōngwén ma?','Ты изучаешь китайский?'),reply:line('我学习中文。','Wǒ xuéxí Zhōngwén.','Я изучаю китайский язык.'),followup:busyQuestion()};
  if(s==='你忙吗')return {kind:'question',lesson:1,spoken:spoken(input,'Nǐ máng ma?','Ты занят?'),reply:line('我不忙。','Wǒ bù máng.','Я не занят.'),followup:studyQuestion()};
