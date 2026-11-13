@@ -235,8 +235,14 @@ export function interpretBrainSentence(raw,allowed=[1],curriculum=[]){
   const index=m[1]==='两'?2:NUMBER_ZH.indexOf(m[1]);
   if(index<1||index===2&&m[1]==='二')return null; // 两个, not 二个
   const numPy=index===1?'yí':index===2?'liǎng':NUMBER_PY[index];
+  const forms={
+   哥哥:['старший брат','старших брата','старших братьев'],姐姐:['старшая сестра','старшие сестры','старших сестёр'],
+   弟弟:['младший брат','младших брата','младших братьев'],妹妹:['младшая сестра','младшие сестры','младших сестёр']
+  };
+  const form=index===1?0:index>=2&&index<=4?1:2;
   return composed(raw,'Wǒ yǒu '+numPy+' ge '+FAMILY[m[2]][0]+'.',
-   'У меня '+index+' ('+FAMILY[m[2]][1]+').',6,{family:{present:[m[2]],absent:null},fact:{familyCount:index,relative:m[2]}});
+   'У меня '+index+' '+forms[m[2]][form]+'.',6,
+   {family:{present:[m[2]],absent:null},fact:{familyCount:index,relative:m[2]}});
  }
  m=/^(我|你|他|她)?(的)?(妈妈|爸爸|哥哥|姐姐|弟弟|妹妹)是(老师|学生)$/.exec(s);
  if(m&&(!m[2]||m[1])&&allowed.includes(2)&&allowed.includes(6)&&learned(m[3],m[4],'是')){
