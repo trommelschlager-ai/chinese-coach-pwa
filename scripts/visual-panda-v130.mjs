@@ -14,12 +14,15 @@ async function capture(page,name,size,hanzi=false){
  const screen=page.locator(hanzi?'#pg-hanzi-approved':'#pg130 .pg-screen');
  await screen.waitFor();
  const metrics=await screen.evaluate(el=>{
-  const r=el.getBoundingClientRect();return {width:r.width,height:r.height,scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,scrollHeight:el.scrollHeight,clientHeight:el.clientHeight,font:getComputedStyle(el).fontFamily,
+  const r=el.getBoundingClientRect(),documentRoot=el.ownerDocument.documentElement;return {width:r.width,height:r.height,scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,pageScrollWidth:documentRoot.scrollWidth,pageClientWidth:documentRoot.clientWidth,intentionallyClipped:getComputedStyle(el).overflowX==='hidden',scrollHeight:el.scrollHeight,clientHeight:el.clientHeight,font:getComputedStyle(el).fontFamily,
    missingImages:[...el.querySelectorAll('img')].filter(i=>!i.complete||i.naturalWidth===0).map(i=>i.src),
    heading:el.querySelector('h1')?.textContent,
    actions:[...el.querySelectorAll('button,a')].filter(x=>x.getBoundingClientRect().width&&x.getBoundingClientRect().height).map(x=>{const b=x.getBoundingClientRect();return {text:x.getAttribute('aria-label')||x.textContent.trim(),left:b.left-r.left,right:b.right-r.left,top:b.top-r.top,bottom:b.bottom-r.top}})};
  });
- if(metrics.scrollWidth>metrics.clientWidth+2)report.layoutFailures.push({name,size,kind:'horizontal overflow',metrics});
+ // Photo1 is an approved cover-cropped image: its artboard intentionally exceeds the clipped frame.
+ // Still fail if the actual browser page scrolls horizontally.
+ const clippedCover=name==='01-home'&&metrics.intentionallyClipped&&metrics.pageScrollWidth<=metrics.pageClientWidth+2;
+ if(metrics.scrollWidth>metrics.clientWidth+2&&!clippedCover)report.layoutFailures.push({name,size,kind:'horizontal overflow',metrics});
  if(metrics.missingImages.length)report.layoutFailures.push({name,size,kind:'missing images',metrics});
  if(!hanzi&&metrics.scrollHeight>metrics.clientHeight+2)report.layoutFailures.push({name,size,kind:'vertical overflow',metrics});
  const box=await screen.boundingBox();
