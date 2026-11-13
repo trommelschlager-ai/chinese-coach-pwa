@@ -6,7 +6,7 @@ const vm=require('node:vm');
  const env={window:{}};vm.runInNewContext(fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8'),env);
  const curriculum=env.window.PANDA_HSK1_FOUNDATIONS;
  const {answerLive,analyzeLearner}=await import('../assets/panda-live-dialogue-v272.mjs?v=301');
- const {questionVariant,learnerAnswerVariant,VARIANT_TOPIC_COUNTS}=await import('../assets/panda-hsk1-variants-v301.mjs?v=301');
+ const {questionVariant,learnerAnswerVariant,listReviewedQuestionVariants,VARIANT_TOPIC_COUNTS}=await import('../assets/panda-hsk1-variants-v301.mjs?v=301');
  const {lookupPilotAudio}=await import('../assets/panda-live-audio.mjs?v=live6');
  const allowed=[1,2,3,4,5,6,7],date=new Date(2026,10,13,12,0,0);
  assert.equal(curriculum.length,7);
@@ -62,6 +62,18 @@ const vm=require('node:vm');
   passed++;checks.byLesson[lesson]++;checks.followups++;
  }
  assert(samples.length>=35);
+ // Exhaustively verify every reviewed alternative question instead of assuming
+ // that the alias map alone proves the canonical reply actually works.
+ const corpus=listReviewedQuestionVariants();let corpusPass=0;
+ for(const v of corpus){
+  const result=answerLive(v.original,{allowed,topic:v.lesson,curriculum,date,profile:{recentQuestions:[]}});
+  assert.equal(result.kind,'question','Unanswered reviewed alias '+v.original+' -> '+v.canonical+' ('+(result.message||result.kind)+')');
+  assert.equal(result.lesson,v.lesson,'Wrong topic for '+v.original);
+  assert(result.reply?.hanzi&&result.followup?.lesson===v.lesson,'Missing answer or same-topic followup for '+v.original);
+  assert.equal(result.spoken?.hanzi,v.original,'Keep original text for '+v.original);
+  corpusPass++;
+ }
+ assert(corpus.length>=300,'Expected several hundred supported Chinese question phrasings');
  const locked=answerLive('你有没有妹妹',{allowed:[1,2],topic:1,curriculum,date,profile:{}});
  assert.equal(locked.kind,'locked','Learner must not obtain locked-lesson answers via alias');
  assert(!locked.reply,'Locked topic must have no panda reply');
@@ -92,7 +104,7 @@ const vm=require('node:vm');
  assert(html.includes('panda-live-screen-v270.mjs?v=301'),'Panda conversation page must load new version');
  assert(html.includes('id="mode-short"')&&html.includes('id="mode-nonstop"')&&html.includes('id="mic"'));
  assert(html.includes('id="history-dialog"')&&html.includes('id="speech-dialog"'));
- console.log('PASS Panda HSK1 v301 '+passed+'/'+samples.length+' checked question variants across all 7 lessons; '
+ console.log('PASS Panda HSK1 v301 '+passed+'/'+samples.length+' manually checked examples plus '+corpusPass+'/'+corpus.length+' reviewed alias corpus questions across 7 lessons; '
   +checks.followups+' contextual follow-ups, locked lessons, real weather caution, grammar corrections, original transcript and MP3 mapping preserved; '
   +JSON.stringify({samples:checks.byLesson,aliasCounts:VARIANT_TOPIC_COUNTS}));
 })().catch(error=>{console.error(error);process.exitCode=1});
