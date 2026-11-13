@@ -1,0 +1,166 @@
+/* Panda Go v315 — scenic neon-level selector inspired by approved pink/violet reference.
+ * Decorative artwork complements REAL semantic button links.
+ * v314 layout stays as an untouched fallback, active PWA/course progress unaffected.
+ */
+#pg130 .pg-screen.pg-hsk-page.pg-two-level-home.pg-scenic-home{
+  display:flex;flex-direction:column;position:relative;
+  padding:0!important;min-height:0;height:100dvh;max-height:none;overflow:hidden;
+  isolation:isolate;
+  background:#9c60d7;
+  border:2px solid #f5c88b;
+  border-radius:25px;
+  box-shadow:inset 0 0 0 1px #ffecb7,0 0 24px #f681e783;
+}
+#pg130 .pg-screen.pg-hsk-page.pg-scenic-home::before{
+  content:"";display:block!important;position:absolute;z-index:0;inset:0;pointer-events:none;
+  background:
+    linear-gradient(180deg,#e7b5f022 0%,#edb8fd47 36%,#7642a46b 68%,#74359d0e 100%),
+    url("./panda-v130/landscape.webp") center center/cover no-repeat,
+    linear-gradient(130deg,#f4bfe4,#9c67cc 64%,#387ed7);
+  opacity:1;
+}
+#pg130 .pg-screen.pg-hsk-page.pg-scenic-home::after{
+  content:"";display:block!important;position:absolute;z-index:0;pointer-events:none;
+  inset:36% 0 10%;
+  background:
+    url("./panda-v130/flowers.webp") left bottom/52% auto no-repeat,
+    url("./panda-v130/flowers.webp") right top/52% auto no-repeat,
+    linear-gradient(180deg,transparent 18%,#fe87cf14 54%,#d65beb10);
+  opacity:.76;filter:saturate(1.26);
+}
+#pg130 .pg-scenic-home .pg-hsk-backdrop{
+  z-index:1;display:block;position:relative;
+  flex:0 0 44%;height:44%;min-height:0;max-height:none;overflow:hidden;width:100%;
+  background:linear-gradient(180deg,#f8daf8,#d8a5ec);
+  -webkit-mask-image:linear-gradient(#000 0%,#000 87%,transparent 100%);
+  mask-image:linear-gradient(#000 0%,#000 87%,transparent 100%);
+}
+#pg130 .pg-scenic-home .pg-hsk-backdrop img{
+  display:block;width:100%;height:100%;object-fit:cover;object-position:center 46%;
+  max-width:none;image-rendering:auto;
+  filter:saturate(1.15) contrast(1.035);
+}
+#pg130 .pg-scenic-home .pg-hsk-level-list{
+  position:relative;z-index:3;
+  display:flex;flex:0 0 33%;width:100%;min-height:0;max-width:none;
+  flex-direction:column;justify-content:center;gap:clamp(9px,1.6dvh,16px);
+  margin:-1.5dvh 0 0;
+  padding:clamp(6px,1.3dvh,12px) clamp(12px,3.2vw,18px);
+  background:transparent;
+}
+#pg130 .pg-scenic-home .pg-hsk-level.pg-hsk-choice{
+  position:relative;isolation:isolate;box-sizing:border-box;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(5px,1.7vw,11px);padding:6px 11px 6px 7px;min-width:0;
+  flex:0 0 46%;height:46%;max-height:none;min-height:0;
+  border:3px solid #fff2b8;border-radius:100px;
+  overflow:visible;line-height:1.1;cursor:pointer;text-decoration:none;
+  color:#391058;
+  background:linear-gradient(120deg,#ffdbf1f7 0%,#ffecf7f5 41%,#f6b6eaf8 100%);
+  box-shadow:inset 0 3px 0 #ffffffda,inset 0 -4px 6px #a946aa49,
+    0 4px 0 #b77d4f,0 6px 17px #733581b0,
+    0 0 0 2px #e757d9a0,0 0 17px 5px #ec48d2a0;
+  transition:transform .14s ease,filter .14s ease;
+}
+#pg130 .pg-scenic-home .pg-hsk-level.pg-hsk-choice-violet,
+#pg130 .pg-scenic-home .pg-hsk-level.pg-hsk-choice-blue{
+  background:linear-gradient(118deg,#d5bafaed 0%,#eee1ffed 43%,#bce9fff7 78%,#fbe2ff 100%);
+  border-color:#ffecbc;
+  box-shadow:inset 0 3px 0 #ffffffec,inset 0 -4px 7px #583eb25c,
+    0 4px 0 #9f80bd,0 6px 18px #503ea6b0,
+    0 0 0 2px #5bd6ffbf,0 0 16px 4px #4ac9ffc2;
+}
+#pg130 .pg-scenic-home .pg-hsk-level.pg-hsk-choice::before{
+  content:"";display:block;position:absolute;z-index:-1;pointer-events:none;
+  inset:6px;border-radius:inherit;
+  background:linear-gradient(145deg,#ffffff3b,transparent 50%);
+  box-shadow:inset 0 1px 0 #fff9;
+}
+#pg130 .pg-scenic-home .pg-hsk-level.pg-hsk-choice:active{transform:translateY(2px) scale(.99)}
+#pg130 .pg-scenic-home .pg-hsk-level.pg-hsk-choice:focus-visible{outline:3px solid #4a2589;outline-offset:5px}
+#pg130 .pg-scenic-home .pg-hsk-choice-art{
+  position:relative;display:grid;place-items:center;
+  width:clamp(80px,25vw,118px);flex:0 0 clamp(80px,25vw,118px);
+  height:100%;aspect-ratio:auto;background:none!important;border:0!important;border-radius:0;
+  box-shadow:none!important;overflow:visible;
+  filter:drop-shadow(0 4px 5px #8e399365);
+}
+#pg130 .pg-scenic-home .pg-hsk-illustration{
+  display:block;width:100%;height:100%;max-height:110px;overflow:visible;
+}
+#pg130 .pg-scenic-home .pg-hsk-choice-copy{
+  min-width:0;display:flex;flex:1 1 auto;
+  flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(1px,.35dvh,5px);
+  text-align:center;white-space:normal;
+}
+#pg130 .pg-scenic-home .pg-hsk-choice-copy strong{
+  display:block;font-weight:950;
+  font-size:clamp(19px,5.25vw,27px);letter-spacing:-.6px;
+  color:#321056;line-height:1.04;
+  text-shadow:0 1px 0 #fff,0 0 8px #fff8;
+}
+#pg130 .pg-scenic-home .pg-hsk-choice-copy small{
+  display:block;font-size:clamp(11px,3vw,13px);
+  line-height:1.12;font-weight:850;color:#6b377d;
+  text-shadow:0 1px #fffb;
+}
+#pg130 .pg-scenic-home .pg-hsk-gold-divider{
+  display:block;width:58%;height:6px;max-width:94px;border-radius:50%;
+  background:radial-gradient(ellipse,#ffd776 0%,#f1a93a 35%,transparent 75%);
+  filter:drop-shadow(0 0 2px #f6bd6c);
+}
+#pg130 .pg-scenic-home .pg-hsk-choice-arrow{
+  display:grid;place-items:center;
+  flex:0 0 clamp(41px,11.5vw,53px);width:clamp(41px,11.5vw,53px);height:clamp(41px,11.5vw,53px);
+  border:2.5px solid #ffe6a5;border-radius:50%;
+  background:linear-gradient(155deg,#ee92eb 0%,#bd2cd0 48%,#6a149b 100%);
+  box-shadow:inset 0 2px 0 #fff8,inset 0 -4px 5px #641375b5,0 3px 8px #4e237b8a,0 0 8px 2px #fba4fb;
+  color:#fff;font-size:clamp(37px,10.4vw,46px);font-family:Arial,sans-serif;
+  line-height:.85;text-shadow:0 2px 3px #5b287d;
+}
+#pg130 .pg-scenic-home .pg-hsk-bridge{
+  display:block;position:relative;z-index:1;
+  flex:1 1 auto;min-height:0;width:100%;height:100%;max-height:none;
+  object-fit:cover;object-position:center 70%;margin-top:-1dvh;
+  -webkit-mask-image:linear-gradient(transparent 0%,#000 15%,#000 100%);
+  mask-image:linear-gradient(transparent 0%,#000 15%,#000 100%);
+  filter:saturate(1.27) contrast(1.055);
+  pointer-events:none;
+}
+/* v130 already creates eighteen independently animated sakura petals.
+ * Preserve their previous timing/drift; increase coverage to match this 470px stage. */
+#pg130 .pg-sakura{
+  width:min(100%,470px);
+  height:100dvh;max-height:none;
+  z-index:15;pointer-events:none!important;
+}
+#pg130 .pg-sakura .pg-sakura-petal{pointer-events:none!important}
+@media(max-width:370px){
+ #pg130 .pg-scenic-home .pg-hsk-choice-art{width:76px;flex-basis:76px}
+ #pg130 .pg-scenic-home .pg-hsk-choice-copy strong{font-size:clamp(17px,5.15vw,20px)}
+ #pg130 .pg-scenic-home .pg-hsk-choice-copy small{font-size:10px}
+ #pg130 .pg-scenic-home .pg-hsk-choice-arrow{flex-basis:39px;width:39px;height:39px}
+ #pg130 .pg-scenic-home .pg-hsk-level-list{padding-left:8px;padding-right:8px}
+}
+@media(max-height:740px){
+ #pg130 .pg-scenic-home .pg-hsk-backdrop{flex-basis:38%;height:38%}
+ #pg130 .pg-scenic-home .pg-hsk-level-list{flex-basis:43%;gap:7px;padding:5px 10px}
+ #pg130 .pg-scenic-home .pg-hsk-level.pg-hsk-choice{flex-basis:45%;height:45%}
+ #pg130 .pg-scenic-home .pg-hsk-choice-art{width:clamp(65px,20vw,87px);flex-basis:clamp(65px,20vw,87px)}
+ #pg130 .pg-scenic-home .pg-hsk-choice-copy strong{font-size:clamp(17px,5vw,23px)}
+ #pg130 .pg-scenic-home .pg-hsk-choice-arrow{flex-basis:39px;width:39px;height:39px;font-size:36px}
+}
+@media(max-height:530px){
+ #pg130 .pg-scenic-home .pg-hsk-backdrop{flex-basis:33%;height:33%}
+ #pg130 .pg-scenic-home .pg-hsk-level-list{flex-basis:54%;gap:5px}
+ #pg130 .pg-scenic-home .pg-hsk-level.pg-hsk-choice{padding:3px 6px 3px 4px}
+ #pg130 .pg-scenic-home .pg-hsk-choice-copy strong{font-size:clamp(15px,4vw,20px)}
+ #pg130 .pg-scenic-home .pg-hsk-choice-copy small{font-size:10px}
+ #pg130 .pg-scenic-home .pg-hsk-choice-art{width:60px;flex-basis:60px}
+ #pg130 .pg-scenic-home .pg-hsk-choice-arrow{width:33px;height:33px;flex-basis:33px;font-size:31px}
+}
+@media(prefers-reduced-motion:reduce){
+ #pg130 .pg-scenic-home .pg-hsk-level.pg-hsk-choice{transition:none}
+ #pg130 .pg-sakura{display:none!important}
+}
