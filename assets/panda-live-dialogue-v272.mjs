@@ -12,6 +12,7 @@ import {questionVariant,learnerAnswerVariant} from './panda-hsk1-variants-v301.m
 import {brainQuestion,interpretBrainSentence} from './panda-brain-hsk1-v302.mjs?v=302';
 import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from './panda-sentence-coach-v319.mjs?v=319';
+import {answerBasicConversation} from './panda-basic-conversation-v323.mjs?v=323';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
@@ -237,6 +238,9 @@ function extendQuestion(result,raw,allowed,date,profile){
 export function answerLive(raw,options={}){
  const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={}}=options;
  raw=String(raw||'').trim();const s=normalize(raw);if(!raw)return {kind:'empty',message:'Скажи или напиши фразу на китайском.'};
+ // Social and common-family questions must work before any broad fallback.
+ // Keep our known corrections independent of experimental on-device AI.
+ const basic=answerBasicConversation(raw,allowed);if(basic)return basic;
  // Rewrite only explicit meaning-preserving learner variants. Keep original
  // transcript visible, without claiming a made-up pinyin for the new wording.
  const variant=questionVariant(raw);
