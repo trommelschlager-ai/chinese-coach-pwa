@@ -37,7 +37,7 @@ permissions:
   contents: read
 jobs:
   mobile-pilot:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright 1.56.1 Chromium is unsupported on ubuntu-26.04
     timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
