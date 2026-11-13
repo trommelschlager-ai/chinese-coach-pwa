@@ -1,0 +1,165 @@
+/* Panda Go v309 — approved seven-step HSK 1 map. Presentation only.
+   Real lesson links, completion/lock rules, player and voice data stay in HTML. */
+.map-shell{
+  height:100dvh;
+  min-height:0;
+  padding:calc(10px + env(safe-area-inset-top,0px)) 9px calc(10px + env(safe-area-inset-bottom,0px));
+  overflow:hidden;
+  background:#89c8f6;
+}
+.map-shell::before{
+  background-image:url("./panda-reference-v175/mountain-stairs.webp");
+  background-size:145% auto;
+  background-position:left 0 bottom 0;
+  filter:saturate(1.38) contrast(1.055) brightness(1.04);
+}
+.map-shell::after{
+  background:linear-gradient(180deg,#1363e238 0%,#2673e014 18%,transparent 40%,transparent 80%,#1d074522 100%);
+}
+.pg-map-heading{gap:6px;padding:10px 35px 3px}
+.pg-map-brand{
+  isolation:isolate;
+  font:italic 950 clamp(37px,11.5vw,55px)/1 Georgia,serif;
+  letter-spacing:-1.5px;
+  color:#ffe47b;
+  -webkit-text-stroke:1.35px #a43b17;
+  text-shadow:0 2px #fff2a4,0 4px #e78b00,0 6px #9c2e0c,0 7px 7px #301059,0 0 10px #fff9c8;
+}
+.pg-map-brand::before{
+  content:"";position:absolute;left:50%;top:-21px;z-index:-1;
+  width:clamp(190px,55vw,258px);height:48px;
+  transform:translateX(-50%);
+  background:linear-gradient(180deg,#ffe9a7 0 10%,#a83b14 11% 19%,#e78223 20% 31%,#bb2724 32% 72%,#662241 73% 100%);
+  border:2px solid #fed47a;
+  clip-path:polygon(0 58%,9% 54%,17% 39%,25% 24%,50% 6%,75% 24%,83% 39%,91% 54%,100% 58%,97% 74%,83% 72%,76% 62%,50% 46%,24% 62%,17% 72%,3% 74%);
+  filter:drop-shadow(0 3px 2px #541549);
+  pointer-events:none;
+}
+.pg-map-brand::after{content:none}
+.pg-level-title{
+  width:min(90vw,350px);
+  padding:7px 12px 8px;
+  font-size:clamp(19px,5.5vw,25px);
+  border:3px solid #ffdf55;
+  background:linear-gradient(#1b61e3,#0039ae 47%,#041451 100%);
+  box-shadow:inset 0 2px 4px #fff8,0 0 0 1px #cc8628,0 0 10px 2px #ec79ff,0 5px 8px #2811588c;
+}
+.map-road{
+  position:relative;
+  flex:1 1 auto;
+  display:flex;flex-direction:column;
+  justify-content:flex-start;
+  min-height:0;
+  margin:clamp(17px,3dvh,31px) 0 5px;
+  padding:0 5px 0 0;
+  gap:clamp(5px,.8dvh,8px);
+}
+.map-road .node{
+  flex:0 0 auto;
+  width:55%;
+  height:clamp(47px,6.25dvh,56px);
+  min-height:0;
+  padding:3px 4px 3px clamp(46px,12vw,55px);
+  border:2.2px solid var(--edge);
+  gap:3px;
+  background:linear-gradient(170deg,#fff 0%,#fff 54%,#f9f0ff 85%,#e4d7f1);
+}
+.map-road .circle{
+  left:-9px;
+  width:clamp(45px,12.5vw,55px);
+  height:clamp(45px,12.5vw,55px);
+  font-size:clamp(27px,7.8vw,37px);
+  border-width:2.5px;
+}
+.map-road .caption{
+  flex:1 1 0;min-width:0;gap:0;
+  display:flex;justify-content:center;
+}
+.map-road .caption strong{
+  font-size:clamp(10.8px,2.9vw,14.2px);
+  line-height:1.14;
+  font-weight:950;
+  letter-spacing:-.17px;
+  overflow-wrap:normal;
+}
+.map-road .caption .pg-word{display:none!important}
+.map-road .pg-topic-art{
+  flex:0 0 clamp(24px,7.7vw,34px);
+  width:clamp(24px,7.7vw,34px);
+  height:clamp(24px,7.7vw,34px);
+}
+.map-road .pg-topic-art.pg-numbers{font-size:clamp(18px,5.6vw,27px)}
+/* Stagger the independent lesson buttons like the approved illustration. */
+.map-road .node[data-num="7"]{margin-left:22%;width:69%}
+.map-road .node[data-num="6"]{margin-left:31%;width:65%}
+.map-road .node[data-num="5"]{margin-left:34%;width:65%}
+.map-road .node[data-num="4"]{margin-left:39%;width:61%}
+.map-road .node[data-num="3"]{margin-left:43%;width:57%}
+.map-road .node[data-num="2"]{margin-left:45%;width:55%}
+.map-road .node[data-num="1"]{margin-left:44%;width:56%}
+.pg-map-actions{
+  position:relative;z-index:6;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;
+  margin:0 2px clamp(4px,1.4dvh,12px);
+}
+.pg-map-actions a{
+  min-height:clamp(67px,9dvh,83px);
+  padding:6px 4px;
+  border-width:2.7px;
+  border-radius:clamp(18px,5.3vw,29px);
+}
+.pg-map-actions .action-label{font-size:clamp(11px,3.05vw,15px)}
+.pg-map-actions a.pg-ai-button{
+  --frame:#e7a5ff;--glow:#bd46ff;
+  min-height:clamp(69px,9dvh,85px);
+  padding-top:16px;
+  background:linear-gradient(160deg,#b048f5,#791ace 65%,#490b8a);
+  border-color:#f7baff;
+  box-shadow:inset 0 2px 4px #fff9,0 0 0 1px #ffd6ff,0 0 13px 3px #ac30fa,0 4px 10px #3b195fa8;
+}
+.pg-map-actions a.pg-ai-button .action-label{
+  font-size:clamp(14px,3.7vw,19px);
+  margin-top:9px;
+  text-shadow:0 2px 2px #2a075c,0 0 6px #dca7ff;
+}
+.pg-ai-button .action-icon{top:-20px;right:6px;width:50px;height:50px}
+.pg-ai-button .action-icon .pg-ai-figure{width:52px;height:52px}
+@media(max-width:365px){
+ .map-shell{padding-left:5px;padding-right:5px}
+ .pg-map-heading{padding-top:6px;gap:4px}
+ .pg-map-brand{font-size:34px}
+ .pg-level-title{font-size:17px;padding:6px 8px}
+ .map-road{margin-top:12px;gap:4px;padding-right:2px}
+ .map-road .node{height:clamp(42px,6.35dvh,48px);padding-left:43px;gap:2px}
+ .map-road .circle{width:42px;height:42px;left:-7px;font-size:27px}
+ .map-road .caption strong{font-size:10.4px;letter-spacing:-.25px}
+ .map-road .pg-topic-art{flex-basis:23px;width:23px;height:23px}
+ .map-road .node[data-num="7"]{margin-left:16%;width:82%}
+ .map-road .node[data-num="6"]{margin-left:24%;width:74%}
+ .map-road .node[data-num="5"]{margin-left:27%;width:71%}
+ .map-road .node[data-num="4"]{margin-left:30%;width:68%}
+ .map-road .node[data-num="3"]{margin-left:35%;width:63%}
+ .map-road .node[data-num="2"]{margin-left:37%;width:61%}
+ .map-road .node[data-num="1"]{margin-left:37%;width:61%}
+ .pg-map-actions{gap:4px}
+ .pg-map-actions a{min-height:61px;padding:4px 2px}
+ .pg-map-actions a .action-label{font-size:10.4px}
+ .pg-map-actions a.pg-ai-button .action-label{font-size:14px}
+}
+@media(max-height:690px){
+ .pg-map-heading{padding-top:3px;gap:4px}
+ .pg-map-brand{font-size:clamp(29px,8.8vw,37px)}
+ .pg-map-brand::before{top:-18px;height:39px}
+ .pg-level-title{padding:5px 9px;font-size:clamp(16px,4.5vw,20px)}
+ .map-road{margin-top:9px;gap:3px}
+ .map-road .node{height:clamp(40px,6.5dvh,46px)}
+ .map-road .circle{width:clamp(40px,12vw,47px);height:clamp(40px,12vw,47px)}
+ .pg-map-actions{margin-bottom:2px}
+ .pg-map-actions a{min-height:58px}
+ .pg-map-actions a.pg-ai-button{min-height:60px}
+}
+@media(max-height:555px){
+ .map-shell{height:100dvh;overflow-y:auto;overflow-x:hidden}
+ .map-road{flex:0 0 auto}
+}
