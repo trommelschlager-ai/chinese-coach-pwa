@@ -56,9 +56,9 @@ for(let n=1;n<=4;n++){
  dom.window.close();
 }
 const sw=read('sw.js'),pack=JSON.parse(read('assets/offline-pack.json'));
-for(const url of ['./assets/hsk-approved-three-screens-v151.css?v=151','./assets/guided-introduction.js?v=151','./assets/panda-v130.js?v=175']){
+for(const url of ['./assets/hsk-approved-three-screens-v151.css?v=151','./assets/guided-introduction.js?v=151','./assets/panda-v130.js?v=314']){
  assert(site.includes(url)||lesson.includes(url)||map.includes(url),'Page must request '+url);
  assert(sw.includes(url),'Offline shell must cache '+url);
  assert(pack.files.includes(url),'Offline bundle must include '+url);
 }
-console.log('Panda Go v151: six HSK levels, seven steps in four lessons, MP3 coverage, progress migration, assets and cache verified.');
+console.log('Panda Go v151: two active HSK levels, seven steps in four lessons, MP3 coverage, progress migration, assets and cache verified.');
