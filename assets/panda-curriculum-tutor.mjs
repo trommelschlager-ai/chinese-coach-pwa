@@ -7,7 +7,7 @@ export function answerCurriculumQuestion(question,lesson,curriculum=[]){
  if(q.length>500)return 'Максимум 500 символов в вопросе.';
  if(!Number.isInteger(n)||n<1||n>7||!topic)return 'Выбери урок от 1 до 7.';
  const lexicon=brainQuestion(q,[n],curriculum);
- if(lexicon?.kind==='question')return lexicon.explanation;
+ if(lexicon?.kind==='explanation')return lexicon.explanation;
  const lower=norm(q),words=[...(topic.words||[])].sort((a,b)=>b[0].length-a[0].length);
  if(/диалог|реплик|разговор/u.test(lower))
   return (topic.dialogue||[]).slice(0,4).map(line=>line[1]+' — '+line[2]+' — '+line[3]).join('\n')||'Диалога по теме пока нет.';
