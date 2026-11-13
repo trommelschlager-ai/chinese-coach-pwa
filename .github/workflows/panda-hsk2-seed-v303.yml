@@ -1,0 +1,25 @@
+name: Panda HSK2 preview seed QA
+on:
+  push:
+    branches: [feat/panda-hsk2-seed-v303-2026-11-13]
+    paths:
+      - 'assets/panda-hsk2-seed-v303.json'
+      - 'scripts/verify-panda-hsk2-seed-v303.cjs'
+      - '.github/workflows/panda-hsk2-seed-v303.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'assets/panda-hsk2-seed-v303.json'
+      - 'scripts/verify-panda-hsk2-seed-v303.cjs'
+      - '.github/workflows/panda-hsk2-seed-v303.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/verify-panda-hsk2-seed-v303.cjs
