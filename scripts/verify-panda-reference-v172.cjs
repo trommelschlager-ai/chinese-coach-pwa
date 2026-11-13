@@ -47,9 +47,10 @@ for(const selector of ['#pg130 .pg-hsk-level-list','.map-shell .map-road','.less
 for(const keep of ['panda-reference-v175/hero.webp','approved-panda-lake-v112.webp','panda-v130/landscape.webp','panda-v130/flowers.webp'])
  assert(css.includes(keep)||homeJs.includes(keep),'Approved landscape asset missing '+keep);
 const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
-assert(core.length<=145,'Install must include at most 145 core assets (three new original-speaker clips and their map)');
+assert(core.length<=170,'Install must include at most 170 core assets (three new original-speaker clips and their map)');
 assert(core.includes('./assets/panda-reference-v175.css?v=175'),'Offline style is not in critical assets');
 assert(core.includes('./assets/panda-v130.js?v=314'),'New home must work offline');
+for(const asset of ['./assets/panda-hsk-two-levels-v314.css?v=314','./hsk2-start.html','./hsk2-introduction.html'])assert(core.includes(asset),'HSK 2 offline entry missing '+asset);
 assert(core.includes('./assets/hsk1-foundations-v152.js?v=230'),'Lesson controls must work offline');
 assert(pack.version>=179&&pack.files.includes('./assets/panda-reference-v175.css?v=175')&&
  pack.files.includes('./assets/hsk1-archive-style-v178.css?v=179')&&
