@@ -23,8 +23,8 @@ const freshScript=await (await request('./assets/lesson-audio-source.js?v=246','
 // Legacy Panda is not deleted until every current chat asset was safely cached.
 events.message({data:{type:'PRUNE_PANDA_LEGACY'},waitUntil:p=>pending=p});await pending;
 assert(await oldCache.match(stalePanda),'Must not erase old offline Panda before new code is cached');
-for(const p of ['./panda-voice-pilot.html','./assets/panda-live-screen-v270.mjs?v=307',
- './assets/panda-live-dialogue-v272.mjs?v=307','./assets/panda-hsk1-questions-v281.mjs?v=307']){
+for(const p of ['./panda-voice-pilot.html','./assets/panda-live-screen-v270.mjs?v=319',
+ './assets/panda-live-dialogue-v272.mjs?v=319','./assets/panda-hsk1-questions-v281.mjs?v=319']){
  const response=await request(p,p.endsWith('.html')?'navigate':'cors');
  assert(response.ok,'Current Panda asset is fetchable: '+p);
 }
