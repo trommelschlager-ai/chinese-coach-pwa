@@ -27,7 +27,7 @@ try{
    report.screenshots.push({name,width,height,...m});
   }
   await page.goto(base+'/hsk1-map.html',{waitUntil:'load'});
-  assert.equal(await page.locator('a.node[href*="hsk1-lesson.html"]').count(),7);
+  assert.equal(await page.locator('.map-road a.node').count(),7,'All seven approved HSK 1 route stops must be accessible');
   await capture('01-map');
   await page.goto(base+'/hsk1-lesson.html?lesson=1',{waitUntil:'load'});
   assert.equal(await page.locator('.lesson-step').count(),7);
