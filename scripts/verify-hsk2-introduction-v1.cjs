@@ -23,4 +23,22 @@ assert(src.includes('completed=true')&&src.includes("hsk2-start.html#lesson"),'n
 assert(start.includes('href="./hsk2-introduction.html"'),'map routes to introduction');
 assert(start.includes("location.href='./hsk2-introduction.html'"),'HSK1 review leads to intro');
 assert(!intro.includes('speechSynthesis.speak'),'no unapproved synthetic voice');
+const stepsStart=src.indexOf("const steps=[");
+const stepsEnd=src.indexOf("];",stepsStart);
+const lessons=src.slice(stepsStart,stepsEnd);
+assert(stepsStart>=0 && stepsEnd>stepsStart,'lesson stages missing');
+const wordsAt=lessons.indexOf("kind:'place-words'");
+const structureAt=lessons.indexOf("kind:'structure'");
+assert(wordsAt>=0 && structureAt>wordsAt,'住 and 在 must be explained before the full Moscow sentence');
+assert.equal((lessons.match(/kind:'place-words'/g)||[]).length,1,'place-word introduction must appear once');
+assert.equal((lessons.match(/kind:'structure'/g)||[]).length,1,'complete sentence must appear on the next step');
+assert(src.includes("function placeWordsScreen()"),'separate word explanation screen missing');
+assert(src.includes("function structureScreen()"),'complete sentence screen missing');
+const wordExplanation=src.slice(src.indexOf("function placeWordsScreen()"),src.indexOf("function structureScreen()"));
+assert(wordExplanation.includes("住") && wordExplanation.includes("在"),'both words missing from explanation');
+assert(wordExplanation.includes("zhù · 4-й тон") && wordExplanation.includes("zài · 4-й тон"),'tone descriptions must be accurate');
+assert(!wordExplanation.includes("我住在莫斯科。"),'full sentence must appear only on next screen');
+assert(src.includes("我住在莫斯科。") && src.includes("Wǒ zhù zài Mòsīkē."),'Moscow sentence missing');
+assert(src.includes("s.kind==='place-words'") && src.includes("s.kind==='structure'"),'both screens must render separately');
+
 console.log('HSK 2 self-introduction: lesson, Mandarin text, progression, design and JS syntax OK');
