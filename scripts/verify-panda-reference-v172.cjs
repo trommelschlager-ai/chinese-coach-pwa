@@ -14,7 +14,7 @@ assert(lesson.includes('assets/panda-approved-three-screen-v172.css?v=172'),'Leg
 assert(map.includes('assets/hsk1-map-v252.css?v=258'),'Map must use its updated approved mobile stylesheet');
 assert(map.includes('href="./panda-voice-pilot.html"'),'Panda AI must remain accessible as the third practice button');
 assert(map.includes('href="./hsk1-pronunciation.html"')&&map.includes('href="./hsk1-rhythm.html"'),'Both practice routes must remain');
-assert(root.includes('panda-v130.js?v=175'),'Home script cache must refresh');
+assert(root.includes('panda-v130.js?v=314'),'Home script cache must refresh');
 assert(lesson.includes('hsk1-foundations-v152.js?v=230'),'Lesson step icons must refresh');
 assert(homeJs.includes('panda-reference-v175/hero.webp'),'Existing approved panda hero must remain');
 assert(stepsJs.includes('pg-hsk1-v3-'),'Persisted lesson progress must stay isolated');
@@ -24,10 +24,10 @@ assert(lesson.includes('hsk1-native-human-map-v167.js'),'Existing 59 real voice 
 for(const name of ['fan','lantern','pagoda'])
  assert(homeJs.includes(name+':'),'HSK 4–6 motif '+name+' missing');
 const levelSection=homeJs.slice(homeJs.indexOf('function home(){'),homeJs.indexOf('function learn(){'));
-for(const item of ["['1','brush'","['2','book'","['3','chat'","['4','fan'","['5','lantern'","['6','pagoda'"])
- assert(levelSection.includes(item),'Approved HSK 1–6 order/image missing '+item);
+for(const name of ['Начальный уровень','Продолжающий уровень'])assert(levelSection.includes(name),'Required visible level missing: '+name);
+assert(!levelSection.includes("['3','chat'")&&!levelSection.includes('pg-hsk-unavailable'),'Old HSK3–6 controls must not remain');
 assert(levelSection.includes('href="./hsk1-map.html"'),'HSK1 must open actual map');
-assert(levelSection.includes('pg-hsk-unavailable'),'Future HSK2–6 must not lead to broken pages');
+assert(levelSection.includes('href')===false||levelSection.includes('hsk2-start.html#map'),'HSK 2 must open the actual continuation map');
 const m=new JSDOM(map).window.document;
 assert.equal(m.querySelectorAll('nav.map-road > a.node').length,7,'Map must display seven actual lessons');
 assert.equal(m.querySelectorAll('nav.map-road > a[href^="./hsk1-lesson.html?lesson="]').length,2); assert.equal(m.querySelector('nav.map-road > a[data-num="1"]')?.getAttribute('href'),'./hsk1-first-v189.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="2"]')?.getAttribute('href'),'./hsk1-second-v203.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="3"]')?.getAttribute('href'),'./hsk1-third-v212.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="4"]')?.getAttribute('href'),'./hsk1-fourth-v214.html');
@@ -49,7 +49,7 @@ for(const keep of ['panda-reference-v175/hero.webp','approved-panda-lake-v112.we
 const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
 assert(core.length<=145,'Install must include at most 145 core assets (three new original-speaker clips and their map)');
 assert(core.includes('./assets/panda-reference-v175.css?v=175'),'Offline style is not in critical assets');
-assert(core.includes('./assets/panda-v130.js?v=175'),'New home must work offline');
+assert(core.includes('./assets/panda-v130.js?v=314'),'New home must work offline');
 assert(core.includes('./assets/hsk1-foundations-v152.js?v=230'),'Lesson controls must work offline');
 assert(pack.version>=179&&pack.files.includes('./assets/panda-reference-v175.css?v=175')&&
  pack.files.includes('./assets/hsk1-archive-style-v178.css?v=179')&&
