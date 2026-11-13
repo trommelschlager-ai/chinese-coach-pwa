@@ -49,9 +49,10 @@ export function answerBasicConversation(raw,allowed=[1]){
  const spoken={known:true,hanzi:input,pinyin:questionPinyin(Boolean(de),who,time,ending),
   translation:time==='今天'?'Как сегодня поживает '+relativeLabel+'?':time==='现在'?'Как сейчас поживает '+relativeLabel+'?':translation,
   topic:6};
- if(!allowed.includes(6)){
-  return {kind:'locked',lesson:6,spoken,message:'Вопрос о семье относится к уроку 6. Выбери урок 6, чтобы поговорить о родственниках Панды.'};
- }
+ // Even a new learner may ask a simple social question about Panda's family.
+ // This does not unlock the lesson-six curriculum or the unreviewed HSK2 draft.
+ const lesson=allowed.includes(6)?6:1;
+ spoken.topic=lesson;
  const answer=person.has
   ?makeLine(person.gender+'很好，谢谢！','Tā hěn hǎo, xièxie!','У '+(person.gender==='她'?'неё':'него')+' всё хорошо, спасибо!')
   :makeLine('我没有'+who+'。','Wǒ méiyǒu '+person.py+'.','У меня нет '+person.ruNo+'.');
@@ -59,6 +60,6 @@ export function answerBasicConversation(raw,allowed=[1]){
  const followup={hanzi:'你有'+who+'吗？',pinyin:'Nǐ yǒu '+person.py+' ma?',
   ru:'У тебя есть '+person.ru+'?',lesson:6,intent:'basic-family-v323',isContextual:true,
   accepted:['我有'+who,'我没有'+who],audioKey:lookupPilotAudio('你有'+who+'吗')?'你有'+who+'吗':null};
- return {kind:'question',lesson:6,spoken,reply:answer,followup,
+ return {kind:'question',lesson,spoken,reply:answer,followup:lesson===6?followup:null,
   message:'Ответ Панды основан на её учебной вымышленной семье.'};
 }
