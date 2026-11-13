@@ -31,12 +31,12 @@ html:has(.map-shell),body:has(.map-shell){overflow:hidden;background:#79baff}
    scenery image behind the character. A real illustration, not a UI screenshot. */
 .pg-map-scene .pg-photo-panda{
   position:absolute;
-  background:url("./panda-explorer-v174.svg") center bottom/contain no-repeat;
+  background:url("./panda-reference-cutout-v312.svg") center bottom/contain no-repeat;
   left:-2.5%;bottom:clamp(88px,13dvh,130px);
-  width:clamp(172px,55%,246px);
-  height:clamp(235px,39dvh,330px);
+  width:clamp(185px,58%,248px);
+  height:clamp(258px,40dvh,330px);
   -webkit-mask-image:none;mask-image:none;clip-path:none;
-  filter:drop-shadow(0 6px 4px #3e1d4699);
+  filter:drop-shadow(0 4px 4px #2c174e76);
 }
 .pg-map-heading{
   position:relative;z-index:7;
