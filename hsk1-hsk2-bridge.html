@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8b43b7">
+<meta name="description" content="Panda Go: бесплатное повторение 30 базовых слов HSK 1 перед HSK 2">
+<title>Panda Go · Мостик HSK 1 → HSK 2</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#4c2667;background:#f3e3f5}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;overflow-x:hidden}
+body{display:flex;justify-content:center;background:linear-gradient(170deg,#eee0ff,#ffecf6 55%,#f3def5)}
+button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #6838d3;outline-offset:2px}
+.app{width:min(100%,520px);height:100vh;height:100dvh;min-height:0;display:flex;flex-direction:column;background:linear-gradient(155deg,#f5e2ff,#fff9fc 43%,#f5dbf3);box-shadow:0 8px 30px #6f2a9340;overflow:hidden}
+.head{flex:none;position:relative;padding:calc(10px + env(safe-area-inset-top,0px)) 13px 8px;background:linear-gradient(130deg,#8845bf,#bf75d2 64%,#f1a3d2);color:white;border-bottom:3px solid #ffdf9c}
+.top{display:flex;justify-content:space-between;align-items:center;gap:9px}
+.go-back{font-size:12px;font-weight:800;color:white;text-decoration:none;padding:8px 10px;border:1px solid #f8dbff7f;border-radius:11px;background:#602c9477}
+.small{font-size:11px;opacity:.97}
+h1{font-size:clamp(19px,5.5vw,25px);line-height:1.13;margin:12px 0 3px;text-shadow:0 2px 4px #5e227740}
+.subtitle{font-size:12px;line-height:1.35;margin:0 0 8px;opacity:.97}
+.meter{height:6px;border-radius:99px;background:#57177666;overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffecbd,#fff);transition:width .2s}
+.chips{display:flex;overflow-x:auto;flex:none;gap:6px;padding:9px 10px;scrollbar-width:none;border-bottom:1px solid #efc3db}
+.chips button{flex:0 0 auto;border:1.5px solid #e4b1db;color:#713993;background:white;border-radius:20px;padding:8px 11px;font-size:12px;font-weight:800}
+.chips button[aria-current="step"]{background:linear-gradient(135deg,#9e4cc8,#672da2);border-color:#e5aeff;color:white;box-shadow:0 2px 6px #9c45c85a}
+.chips .done{border-color:#9acdad}
+.main{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:11px 13px 15px}
+.kicker{text-transform:uppercase;letter-spacing:.7px;color:#93619e;font-size:10px;font-weight:900}
+h2{font-size:20px;margin:3px 0 5px;line-height:1.22}
+.lead{font-size:12px;line-height:1.45;color:#82608e;margin:0 0 10px}
+.card{background:linear-gradient(140deg,#fff,#fff6fc);border:2px solid #edcc91;border-radius:23px;padding:14px;box-shadow:0 4px 15px #8f58952e,inset 0 0 0 2px #fff;display:grid;gap:7px;min-height:205px;align-content:center;text-align:center}
+.card .hanzi{font-weight:900;font-size:clamp(47px,12vw,66px);line-height:1.12;color:#612d87}
+.card .pinyin{font-size:19px;color:#9150b0;font-weight:750}
+.card .ru{font-size:16px;color:#3d244f;font-weight:800}
+.card .counter{font-size:11px;color:#9976a6}
+.row{display:flex;gap:7px;align-items:center;justify-content:space-between;margin:9px 0 11px}
+.btn{border:1.5px solid #e5bccc;border-radius:13px;background:#fffafa;color:#6c338b;padding:10px 12px;font-weight:800;font-size:12px}
+.btn:disabled{opacity:.35;cursor:default}
+.btn.primary{color:white;border-color:#ecc3ef;background:linear-gradient(135deg,#d45bba,#7031aa);box-shadow:0 3px 9px #b95aa76c}
+.section{border:1px solid #ecd1e0;border-radius:16px;background:#fffafb;padding:10px 12px;margin-top:9px}
+.section strong{font-size:13px}
+.section p{font-size:12px;line-height:1.48;margin:6px 0 0}
+.example{border-left:3px solid #c180d0;padding-left:9px;margin-top:8px}
+.example .zh{display:block;font-size:19px;font-weight:900}
+.example .py{display:block;font-size:13px;color:#9857b0;font-weight:700;margin:3px 0}
+.example .ru{font-size:12px}
+.notice{font-size:11px;color:#885e98;line-height:1.4;margin:9px 2px}
+.quiz{padding:14px;background:linear-gradient(160deg,#fff,#fff6fd);border:2px solid #e8bf8b;border-radius:18px}
+.quiz .hanzi{font-size:clamp(40px,11vw,57px);font-weight:900;text-align:center;margin:12px 0 7px}
+.quiz .count{font-size:11px;color:#8e60a0;text-align:center}
+.answers{display:grid;gap:8px;margin-top:12px}
+.answers button{background:white;border:1.5px solid #e4bfdf;border-radius:13px;min-height:49px;text-align:left;font-size:15px;font-weight:750;color:#632e84;padding:10px 14px}
+.answers button:hover{background:#fdf0fc}
+.feedback{font-size:13px;min-height:35px;margin-top:12px;font-weight:700;color:#703a93}
+.feedback.good{color:#236c46}
+.feedback.wrong{color:#a83d57}
+.finish{text-align:center;padding:18px 13px;border:2px solid #ebc185;border-radius:22px;background:#fff8fc;box-shadow:0 4px 15px #ab72b830}
+.finish .icon{font-size:50px}
+.finish h2{font-size:22px}
+.finish p{font-size:13px;color:#7b558b;line-height:1.55;margin:10px 0 17px}
+.foot{flex:none;display:flex;gap:8px;padding:9px 12px calc(11px + env(safe-area-inset-bottom,0px));border-top:1px solid #efc6e5;background:#fff8fbeb}
+.foot a,.foot button{flex:1;text-align:center;display:grid;place-items:center;min-height:46px;border-radius:14px;text-decoration:none;font-size:12px;font-weight:850;color:#76429a;border:1.5px solid #e1c1d9;background:white;padding:9px}
+.foot .action{background:linear-gradient(120deg,#be5cca,#7633a8);color:white;border-color:#f4bfff}
+@media(max-height:700px){.head{padding-top:calc(6px + env(safe-area-inset-top,0px))}.head h1{margin:6px 0 2px}.chips{padding:6px 8px}.main{padding-top:7px}.card{min-height:170px;padding:8px}.card .hanzi{font-size:42px}.row{margin:6px 0}.section{padding:8px 10px}}
+@media(min-width:560px){.app{margin:8px auto;border-radius:24px;max-height:940px}}
+</style>
+</head>
+<body>
+<div class="app">
+ <header class="head">
+  <div class="top"><a class="go-back" href="./hsk2-start.html">‹ К карте HSK 2</a><span class="small">🐼 Panda Go · Бесплатно</span></div>
+  <h1>Мостик HSK 1 → HSK 2</h1>
+  <p class="subtitle">30 базовых слов · 6 коротких тем · проверка знаний</p>
+  <div class="meter" role="progressbar" aria-label="Пройденные темы" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" id="meter"><span id="fill"></span></div>
+ </header>
+ <nav class="chips" id="chips" aria-label="Темы обучения"></nav>
+ <main class="main" id="content" aria-live="polite"></main>
+ <footer class="foot"><a href="./hsk2-start.html">К курсу HSK 2</a><button class="action" id="main-action" type="button">Проверить знания</button></footer>
+</div>
+<script>
+(function(){
+'use strict';
+var groups=[
+ {title:'Основы предложения',hint:'Для описания состояния часто используют 很. В 你好 два третьих тона подряд: произношение меняется, хотя словарные тоны сохраняются.',
+  words:[['不','bù','не'],['的','de','частица принадлежности'],['好','hǎo','хороший'],['很','hěn','очень; связка'],['在','zài','находиться; в']],
+  examples:[['我很好。','Wǒ hěn hǎo.','У меня всё хорошо.'],['我不在家。','Wǒ bú zài jiā.','Меня нет дома.']]},
+ {title:'Знакомство и интересы',hint:'喜欢 — нравится, а 爱 — люблю. Слово 中文 означает китайский язык.',
+  words:[['爱','ài','любить'],['朋友','péngyou','друг'],['喜欢','xǐhuan','нравиться'],['中国','Zhōngguó','Китай'],['中文','Zhōngwén','китайский язык']],
+  examples:[['我喜欢中文。','Wǒ xǐhuan Zhōngwén.','Мне нравится китайский язык.'],['我爱中国。','Wǒ ài Zhōngguó.','Я люблю Китай.']]},
+ {title:'Учёба и язык',hint:'Обычный порядок слов: кто → действие → дополнение. Глаголы не меняются по лицам.',
+  words:[['学习','xuéxí','изучать; учиться'],['说','shuō','говорить'],['读','dú','читать'],['写','xiě','писать'],['听','tīng','слушать']],
+  examples:[['我学习中文。','Wǒ xuéxí Zhōngwén.','Я изучаю китайский.'],['我听老师说中文。','Wǒ tīng lǎoshī shuō Zhōngwén.','Я слушаю, как учитель говорит по-китайски.']]},
+ {title:'Еда и напитки',hint:'Хочешь попросить напиток? Используй 想 + 喝. Это простая вежливая формулировка желания.',
+  words:[['吃','chī','есть'],['喝','hē','пить'],['茶','chá','чай'],['水','shuǐ','вода'],['饭','fàn','еда; рис']],
+  examples:[['我喝茶。','Wǒ hē chá.','Я пью чай.'],['我想吃饭。','Wǒ xiǎng chī fàn.','Я хочу поесть.']]},
+ {title:'Работа и город',hint:'在 + место указывает, где человек находится или работает. Слова можно объединять в короткие фразы.',
+  words:[['饭店','fàndiàn','ресторан'],['工作','gōngzuò','работать; работа'],['公司','gōngsī','компания'],['去','qù','идти; ехать'],['来','lái','приходить']],
+  examples:[['我在公司工作。','Wǒ zài gōngsī gōngzuò.','Я работаю в компании.'],['我去饭店。','Wǒ qù fàndiàn.','Я иду в ресторан.']]},
+ {title:'Действия и время',hint:'点 в сочетании с числом обозначает час: 八点 — восемь часов. 别 путать словарный тон 一 с изменением тона внутри фразы.',
+  words:[['看','kàn','смотреть'],['想','xiǎng','хотеть; думать'],['买','mǎi','покупать'],['回','huí','возвращаться'],['点','diǎn','час (во времени)']],
+  examples:[['我八点回家。','Wǒ bā diǎn huí jiā.','Я возвращаюсь домой в восемь.'],['你几点来？','Nǐ jǐ diǎn lái?','Во сколько ты придёшь?']]}
+];
+var KEY='pg-hsk1-hsk2-bridge-v1',state={stage:0,card:0,mode:'study',quizIndex:0,showPinyin:true,completed:[false,false,false,false,false,false],wrong:0};
+try{
+ var saved=JSON.parse(localStorage.getItem(KEY)||'null');
+ if(saved&&typeof saved==='object'){
+  if(Number.isInteger(saved.stage)&&saved.stage>=0&&saved.stage<6)state.stage=saved.stage;
+  if(Number.isInteger(saved.card)&&saved.card>=0&&saved.card<5)state.card=saved.card;
+  if(['study','quiz','done'].includes(saved.mode))state.mode=saved.mode;
+  if(Number.isInteger(saved.quizIndex)&&saved.quizIndex>=0&&saved.quizIndex<=5)state.quizIndex=saved.quizIndex;
+  if(typeof saved.showPinyin==='boolean')state.showPinyin=saved.showPinyin;
+  if(Array.isArray(saved.completed))state.completed=Array.from({length:6},function(_,i){return saved.completed[i]===true});
+  if(Number.isInteger(saved.wrong)&&saved.wrong>=0)state.wrong=saved.wrong;
+ }
+}catch(e){}
+var feedback='',feedbackType='';
+function $ (id){return document.getElementById(id)}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function safe(s){return String(s).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]})}
+function optionData(n){
+ var w=groups[state.stage].words;
+ var options=[{text:w[n][2],correct:true},{text:w[(n+1)%5][2],correct:false},{text:w[(n+3)%5][2],correct:false}];
+ var rotation=n%3;return options.slice(rotation).concat(options.slice(0,rotation));
+}
+function draw(){
+ var g=groups[state.stage],done=state.completed.filter(Boolean).length;
+ $('fill').style.width=(done/6*100)+'%';$('meter').setAttribute('aria-valuenow',String(done));
+ $('chips').innerHTML=groups.map(function(item,i){
+  return '<button type="button" data-action="stage" data-index="'+i+'" aria-current="'+(i===state.stage?'step':'false')+'" class="'+(state.completed[i]?'done':'')+'">'+(state.completed[i]?'✓ ':i+1+'. ')+safe(item.title)+'</button>';
+ }).join('');
+ var main='',button=$('main-action');
+ if(state.mode==='study'){
+  var w=g.words[state.card];
+  main='<div class="kicker">Тема '+(state.stage+1)+' из 6 · слово '+(state.card+1)+' из 5</div><h2>'+safe(g.title)+'</h2><p class="lead">Учимся понимать слово, затем проверяем себя без подсказок.</p>'+
+   '<section class="card"><div class="counter">HSK 3.0 · базовое слово</div><div class="hanzi" lang="zh-Hans">'+safe(w[0])+'</div><div class="pinyin">'+(state.showPinyin?safe(w[1]):'Пиньинь скрыт')+'</div><div class="ru">'+safe(w[2])+'</div></section>'+
+   '<div class="row"><button class="btn" type="button" data-action="prev" '+(state.card===0?'disabled':'')+'>‹ Назад</button>'+
+   '<button class="btn" type="button" data-action="pinyin">'+(state.showPinyin?'Скрыть':'Показать')+' пиньинь</button>'+
+   '<button class="btn primary" type="button" data-action="next" '+(state.card===4?'disabled':'')+'>Дальше ›</button></div>'+
+   '<section class="section"><strong>✏️ Правило</strong><p>'+safe(g.hint)+'</p></section>'+
+   '<section class="section"><strong>💬 Примеры</strong>'+g.examples.map(function(x){return '<div class="example"><span class="zh" lang="zh-Hans">'+safe(x[0])+'</span><span class="py">'+safe(x[1])+'</span><span class="ru">'+safe(x[2])+'</span></div>'}).join('')+'</section>'+
+   '<p class="notice">Озвучивание появится только после проверки утверждённых MP3. Системный голос не используется.</p>';
+  button.textContent='Проверить 5 слов';button.disabled=false;
+ }else if(state.mode==='quiz'){
+  var q=state.quizIndex,w2=g.words[q],opts=optionData(q);
+  main='<div class="kicker">Проверка · тема '+(state.stage+1)+'</div><h2>'+safe(g.title)+'</h2>'+
+   '<p class="lead">Выбери правильный перевод. Ошибка не засчитывается как изученное слово.</p>'+
+   '<section class="quiz"><div class="count">Вопрос '+(q+1)+' из 5</div><div class="hanzi" lang="zh-Hans">'+safe(w2[0])+'</div><div class="answers">'+opts.map(function(o,i){return '<button type="button" data-action="answer" data-index="'+i+'">'+safe(o.text)+'</button>'}).join('')+'</div></section>'+
+   '<div class="feedback '+feedbackType+'" role="status">'+safe(feedback)+'</div>';
+  button.textContent='Вернуться к карточкам';button.disabled=false;
+ }else{
+  main='<section class="finish"><div class="icon">🐼✨</div><h2>Тема пройдена!</h2><p>Пять слов проверены. Результат сохранён только для этого переходного блока. Можно вернуться к карточкам или перейти к следующей теме.</p>'+
+   '<button type="button" class="btn primary" data-action="nextstage">'+(state.stage===5?'К первой теме':'Следующая тема →')+'</button></section>'+
+   '<p class="notice">Пройдено тем: '+done+' из 6. Повторять можно сколько угодно раз.</p>';
+  button.textContent='Повторить карточки';button.disabled=false;
+ }
+ $('content').innerHTML=main;
+}
+function goStage(i){state.stage=i;state.card=0;state.quizIndex=0;state.mode='study';feedback='';feedbackType='';save();draw();$('content').scrollTop=0}
+function action(name,index){
+ if(name==='stage')return goStage(index);
+ if(name==='prev'){state.card=Math.max(0,state.card-1)}
+ if(name==='next'){state.card=Math.min(4,state.card+1)}
+ if(name==='pinyin'){state.showPinyin=!state.showPinyin}
+ if(name==='nextstage')return goStage((state.stage+1)%6);
+ if(name==='answer'){
+  var opts=optionData(state.quizIndex);
+  if(!opts[index])return;
+  if(opts[index].correct){
+   state.quizIndex++;
+   feedback='';feedbackType='';
+   if(state.quizIndex>=5){state.completed[state.stage]=true;state.mode='done'}
+  }else{
+   state.wrong++;feedback='Пока неверно. Посмотри внимательнее и попробуй ещё раз.';feedbackType='wrong';
+  }
+ }
+ save();draw();
+}
+$('chips').addEventListener('click',function(e){var target=e.target.closest('button[data-action="stage"]');if(target)action('stage',Number(target.dataset.index))});
+$('content').addEventListener('click',function(e){var target=e.target.closest('button[data-action]');if(target)action(target.dataset.action,Number(target.dataset.index))});
+$('main-action').addEventListener('click',function(){
+ if(state.mode==='study'){state.mode='quiz';state.quizIndex=0;feedback='';feedbackType=''}
+ else{state.mode='study';state.card=0;feedback='';feedbackType=''}
+ save();draw();$('content').scrollTop=0;
+});
+if(groups.length!==6||groups.some(function(g){return g.words.length!==5||g.examples.length!==2}))throw Error('Bridge data incomplete');
+draw();
+})();
+</script>
+</body></html>
