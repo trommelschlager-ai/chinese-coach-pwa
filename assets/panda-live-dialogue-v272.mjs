@@ -195,9 +195,16 @@ function linkedQuestion(raw,lesson,allowed,date,profile={}){
  if(!allowed.includes(lesson))return null;
  const pool=[...topicPrompts(lesson,date,profile),...patternPrompts(lesson,date,allowed)];
  const recent=new Set((profile.recentQuestions||[]).map(normalize));
- const source=normalize(raw),relation=/哥哥|姐姐|弟弟|妹妹|妈妈|爸爸/.exec(source)?.[0]||'';
+ const source=normalize(raw),relation=/哥哥|姐姐|弟弟|妹妹|妈妈|爸爸|春天|夏天|秋天|冬天/.exec(source)?.[0]||'';
  const isCalendar=[4,5,7].includes(lesson);
  let ranked=pool.filter(x=>!recent.has(normalize(x.hanzi))&&x.requires?.every(n=>allowed.includes(n))!==false);
+ if(lesson===3&&(source.includes('后面')||source.includes('前面'))){
+  const family=source.includes('后面')?'next-number':'previous-number';
+  const peers=ranked.filter(x=>x.family===family);
+  const current=peers.findIndex(x=>normalize(x.hanzi)===source);
+  const next=peers[(current+1+peers.length)%peers.length];
+  if(next)return {...next,isContextual:true};
+ }
  if(isCalendar){
   const next=source.startsWith('今天')?'明天':source.startsWith('明天')?'今天':null;
   if(next){
@@ -216,7 +223,9 @@ function linkedQuestion(raw,lesson,allowed,date,profile={}){
 }
 function extendQuestion(result,raw,allowed,date,profile){
  if(!result||result.kind!=='question'||!allowed.includes(result.lesson))return result;
- return {...result,followup:result.followup||linkedQuestion(raw,result.lesson,allowed,date,profile)};
+ const linked=linkedQuestion(raw,result.lesson,allowed,date,profile);
+ const retain=result.followup?.intent==='relative-age'||result.followup?.isContextual;
+ return {...result,followup:retain?result.followup:(linked||result.followup||null)};
 }
 export function answerLive(raw,options={}){
  const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={}}=options;
