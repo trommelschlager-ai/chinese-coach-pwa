@@ -44,9 +44,10 @@ export function answerBasicConversation(raw,allowed=[1]){
  const m=/^你(的)?(妈妈|爸爸|哥哥|姐姐|弟弟|妹妹)(现在|今天)?(怎么样了|怎么样|还好吗|好吗|好不好)$/.exec(s);
  if(!m)return null;
  const [,de,who,time='',ending]=m,person=RELATIVES[who];
- const translation='Как поживает '+(de?'твой родственник: ':'')+person.ru+'?';
+ const relativeLabel=({妈妈:'твоя мама',爸爸:'твой папа',哥哥:'твой старший брат',姐姐:'твоя старшая сестра',弟弟:'твой младший брат',妹妹:'твоя младшая сестра'})[who];
+ const translation='Как поживает '+relativeLabel+'?';
  const spoken={known:true,hanzi:input,pinyin:questionPinyin(Boolean(de),who,time,ending),
-  translation:time==='今天'?'Как сегодня поживает '+person.ru+'?':time==='现在'?'Как сейчас поживает '+person.ru+'?':translation,
+  translation:time==='今天'?'Как сегодня поживает '+relativeLabel+'?':time==='现在'?'Как сейчас поживает '+relativeLabel+'?':translation,
   topic:6};
  if(!allowed.includes(6)){
   return {kind:'locked',lesson:6,spoken,message:'Вопрос о семье относится к уроку 6. Выбери урок 6, чтобы поговорить о родственниках Панды.'};
