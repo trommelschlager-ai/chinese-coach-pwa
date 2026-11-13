@@ -1,5 +1,5 @@
 {
-  "version": 321,
+  "version": 322,
   "bytes": 58955731,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2751,11 +2751,13 @@
     "./assets/panda-live-voice-bridge-v307/B10.mp3",
     "./assets/panda-hsk-scenic-v315.css?v=315",
     "./panda-voice-pilot.html?v=319",
-    "./assets/panda-live-screen-v270.mjs?v=319",
+    "./assets/panda-live-screen-v270.mjs?v=322",
     "./assets/panda-live-dialogue-v272.mjs?v=319",
     "./assets/panda-hsk1-questions-v281.mjs?v=319",
     "./assets/panda-sentence-coach-v319.mjs?v=319",
     "./assets/panda-home-photo1-v319.css?v=319",
-    "./assets/panda-home-approved-photo1-v319.jpg"
+    "./assets/panda-home-approved-photo1-v319.jpg",
+    "./assets/panda-local-ai-v322.mjs?v=322",
+    "./assets/panda-local-worker-v322.mjs"
   ]
 }

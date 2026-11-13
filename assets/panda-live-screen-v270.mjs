@@ -12,11 +12,14 @@ import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedM
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
 import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=319';
+import {createPandaLocalAi,localAiCapability,shouldRouteToLocalAi} from './panda-local-ai-v322.mjs?v=322';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
 const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,recognition=null,epoch=0,watchdog,poseTimer,followupTimer;
+const pandaLocalAi=createPandaLocalAi();
+let localTurn=0,localBusy=false;
 const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null};
 const current=()=>state.display;
 const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson||conversation.id):conversation.id;
@@ -96,7 +99,7 @@ function render(){
  speech.dataset.length=hanziCount>=10?'verylong':hanziCount>=6?'long':'short';
  const src=lookupPilotAudio(line.audioKey);$('hear').disabled=!src;$('audio-note').hidden=!!src;
  $('hear').parentElement.hidden=!src;
- $('audio-note').textContent='🔇 Запись носительницы готовится';
+ $('audio-note').textContent=line.source==='local-ai'?'🔇 Новый AI-ответ: голосовой записи нет':'🔇 Запись носительницы готовится';
  $('step').textContent=state.mode==='nonstop'?'∞ Разговор без лимита':state.done?'Диалог завершён':`${state.step+1} из ${conversation.lines.length}`;
  $('mode-short').classList.toggle('active',state.mode==='short');$('mode-nonstop').classList.toggle('active',state.mode==='nonstop');
  for(const name of ['short','nonstop'])$('mode-'+name).setAttribute('aria-pressed',String(state.mode===name));
@@ -116,6 +119,7 @@ function render(){
 }
 function rotateGreeting(){let index=0;try{index=Number(storage?.getItem('pg-panda-live-practice-greeting-v1'))||0;storage?.setItem('pg-panda-live-practice-greeting-v1',String((index+1)%4))}catch{}return index%4}
 function initLesson(id){
+ localTurn++;localBusy=false;$('send').disabled=false;
  cancelFollowup();stopAudio();stopRecognition();base=prepareConversation(CONVERSATIONS.find(c=>c.id===id)||CONVERSATIONS[0],new Date());
  conversation=withPracticeGreeting(base,rotateGreeting());state.step=0;state.done=false;state.reviewStep=null;state.prompt=null;state.shortDisplay=null;state.nonstopDisplay=null;state.awaitQuestion=false;state.hint=false;state.topic=base.id;state.turns=0;state.askedInTopic=0;showLearnerFeedback(null);
  state.allowed=accessibleLessons(storage,conversation.id);state.profile.hasNumbers=state.allowed.includes(3);state.cursor=Math.max(0,state.allowed.indexOf(conversation.id));$('lesson-select').value=String(conversation.id);
@@ -126,6 +130,7 @@ function initLesson(id){
  if(state.mode==='nonstop')askNext();else say(conversation.lines[0],false);
 }
 function askNext(){
+ localTurn++;localBusy=false;$('send').disabled=false;
  cancelFollowup();stopRecognition();stopAudio();state.awaitQuestion=false;
  const topics=state.allowed.length?state.allowed:[conversation.id];
  if(state.askedInTopic>=3&&topics.length>1){state.cursor=(state.cursor+1)%topics.length;state.askedInTopic=0;}
@@ -136,9 +141,10 @@ function askNext(){
  state.prompt=p;state.topic=p.line.lesson;state.discussed.add(p.line.lesson);state.questions.push(p.line.hanzi);state.askedInTopic++;if(state.questions.length>50)state.questions.shift();
  say(p.line);note('Урок '+state.topic+'. Ответь или сам спроси Панду по пройденному материалу.');
 }
-function setMode(mode){if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
+function setMode(mode){if(state.mode===mode)return;localTurn++;localBusy=false;$('send').disabled=false;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
+ if(localBusy){note('Локальная Панда ещё отвечает. Можно отключить AI в подсказках.');return}
  cancelFollowup();stopRecognition();stopAudio();$('message').value='';
  if(state.mode==='nonstop'){
   const result=answerLive(input,{allowed:state.allowed,topic:lesson(),prompt:state.awaitQuestion?null:state.prompt?.line,curriculum,date:new Date(),turn:state.turns,profile:{...state.profile,recentQuestions:state.questions.slice(-40)}});
@@ -162,6 +168,24 @@ function submit(raw){
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
    note(followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':followup?'Панда продолжит вопросом по пройденным темам. Можешь ответить или спросить раньше.':result.message||'Продолжай или нажми «Ещё вопрос».');
    if(state.confidence!==null&&state.confidence<.65){cancelFollowup();note('Распознано неуверенно. Проверь текст в истории и повтори при необходимости.');}return;
+  }
+  // Verified Panda Brain takes precedence. The local model is called ONLY for
+  // unknown text, after the learner has explicitly downloaded/activated it.
+  if(shouldRouteToLocalAi(result)&&pandaLocalAi.ready&&(state.confidence===null||state.confidence>=.65)){
+   const turn=++localTurn;localBusy=true;$('send').disabled=true;
+   note('🧠 Локальный AI составляет ответ на телефоне…');
+   const historyForAi=state.history.slice(-8),unlocked=state.allowed.slice();
+   pandaLocalAi.reply(input,historyForAi,unlocked).then(reply=>{
+    if(turn!==localTurn||state.mode!=='nonstop'||!pandaLocalAi.ready)return;
+    state.turns++;state.awaitQuestion=true;
+    say(reply,false);
+    note('🧠 Пробный AI-ответ: проверяй китайский. Для этой новой фразы пока нет проверенной MP3-записи и пиньиня.');
+   }).catch(error=>{
+    if(turn===localTurn)note((result.message||'Панда не смогла проверить фразу.')+' Локальный AI не ответил: '+String(error.message||error).slice(0,120));
+   }).finally(()=>{
+    if(turn===localTurn){localBusy=false;$('send').disabled=false;}
+   });
+   return;
   }
   note(result.message);render();return;
  }
@@ -313,13 +337,46 @@ for(const [button,dialog] of [['history-open','history-dialog'],['study-open','s
  }$(dialog).showModal()});
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.close).close()));
 $('knowledge-form').addEventListener('submit',e=>{e.preventDefault();$('knowledge-answer').textContent=answerCurriculumQuestion($('knowledge-question').value,lesson(),curriculum)});
+// Opt-in feature is hidden inside existing study dialog: no changes to approved
+// mascot, scene, buttons, responsive layout or lesson/audio content.
+function mountPandaLocalAiSettings(){
+ const body=document.querySelector('#study-dialog .study-body');
+ const panel=document.createElement('details');panel.id='panda-local-ai-settings';
+ const summary=document.createElement('summary');summary.textContent='🧠 Локальный AI — эксперимент';
+ const explanation=document.createElement('p');
+ explanation.textContent='Только для режима Non-Stop. Первая загрузка — сотни МБ; нужен Wi-Fi, WebGPU и память телефона. Работает без оплаты за реплики, но новые ответы пока ТОЛЬКО текстом. Распознавание голоса в Chrome может зависеть от интернета. Китайский и тоны AI ещё не проверены носителем.';
+ const start=document.createElement('button');start.type='button';start.id='panda-local-ai-start';start.textContent='Проверить телефон и загрузить AI';
+ const stop=document.createElement('button');stop.type='button';stop.id='panda-local-ai-stop';stop.textContent='Отключить локальный AI';stop.hidden=true;
+ const status=document.createElement('p');status.id='panda-local-ai-status';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+ const capability=localAiCapability();
+ status.textContent=capability.ok?'Локальный AI пока выключен. Обычная Панда работает как раньше.':capability.reason;
+ start.disabled=!capability.ok;
+ start.addEventListener('click',async()=>{
+  start.disabled=true;stop.hidden=false;status.textContent='Проверяю видеоускоритель…';
+  try{
+   await pandaLocalAi.start(message=>{status.textContent=message});
+   if(pandaLocalAi.ready){start.hidden=true;stop.hidden=false;status.textContent='✅ Локальный AI включён. Открой Non-Stop и задай незнакомый вопрос.'}
+  }catch(error){
+   status.textContent='Не удалось запустить AI: '+String(error.message||error).slice(0,190)+'. Обычная Панда продолжает работать.';
+   stop.hidden=true;start.disabled=false;
+  }
+ });
+ stop.addEventListener('click',()=>{
+  localTurn++;localBusy=false;$('send').disabled=false;
+  pandaLocalAi.stop();stop.hidden=true;start.hidden=false;start.disabled=!capability.ok;
+  status.textContent='Локальный AI отключён. Проверенные диалоги работают без изменений.';
+ });
+ panel.append(summary,explanation,start,stop,status);
+ body.append(panel);
+}
+mountPandaLocalAiSettings();
 $('review').addEventListener('click',()=>{const item=hardestMistake(storage,conversation.id);if(!item)return;setMode('short');state.step=Math.min(item.step,conversation.lines.length-1);state.reviewStep=state.step;state.done=false;$('study-dialog').close();say(conversation.lines[state.step]);note('Повтори эту фразу. После верного ответа она исчезнет из списка повторения.')});
 for(const c of CONVERSATIONS.filter(c=>c.lines.length&&!c.status.startsWith('draft'))){const o=document.createElement('option');o.value=c.id;o.textContent=c.id+'. '+c.theme;$('lesson-select').append(o)}
 $('lesson-select').addEventListener('change',()=>{const id=Number($('lesson-select').value);const url=new URL(location.href);url.searchParams.set('lesson',id);history.replaceState(null,'',url);initLesson(id)});
 function resize(){const v=window.visualViewport;const h=v?.height||window.innerHeight;document.documentElement.style.setProperty('--screen-height',h+'px');document.documentElement.style.setProperty('--screen-top',(v?.offsetTop||0)+'px');document.documentElement.dataset.keyboard=String((window.innerHeight-h>120)||(h<560))}
 window.visualViewport?.addEventListener('resize',resize);window.visualViewport?.addEventListener('scroll',resize);window.addEventListener('resize',resize);document.addEventListener('focusin',resize);document.addEventListener('focusout',resize);
-window.addEventListener('pagehide',e=>{cancelFollowup();stopRecognition();stopAudio();clearTimeout(poseTimer);if(!e.persisted)rig.dispose()});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFollowup();stopRecognition();stopAudio()}});
-if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=319',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
+window.addEventListener('pagehide',e=>{localTurn++;pandaLocalAi.stop();cancelFollowup();stopRecognition();stopAudio();clearTimeout(poseTimer);if(!e.persisted)rig.dispose()});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFollowup();stopRecognition();stopAudio()}});
+if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=322',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
 if(window.ResizeObserver){const observer=new window.ResizeObserver(entries=>{document.documentElement.style.setProperty('--scene-height',entries[0].contentRect.height+'px')});observer.observe(document.querySelector('.scene'))}
 initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
 // Try the existing recording; browsers may require the first tap before playback.

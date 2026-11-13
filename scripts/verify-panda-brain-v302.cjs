@@ -121,7 +121,7 @@ const vm=require('node:vm');
  const forecast=answerLive('北京现在天气怎么样',{allowed,topic:7,curriculum,date,profile:{}});
  assert(!forecast.reply,'Do not fake realtime weather');
  const html=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(/panda-live-screen-v270\.mjs\?v=(?:30[24567]|318|319)/.test(html),'Live screen must use v302');
+ assert(/panda-live-screen-v270\.mjs\?v=(?:30[24567]|318|319|322)/.test(html),'Live screen must use v302');
  for(const sel of ['id="mode-short"','id="mode-nonstop"','id="mic"','id="history-dialog"','id="speech-dialog"'])
   assert(html.includes(sel),'Do not break existing layout and controls: '+sel);
  const media=fs.readFileSync('assets/panda-live-audio.mjs','utf8');
