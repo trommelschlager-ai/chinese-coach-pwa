@@ -1,0 +1,27 @@
+/* Panda Go v324: compact clickable voice tiles and accessible speaking test. */
+.pg-sound-card{appearance:none;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;font:inherit;cursor:pointer;text-align:center;position:relative}
+.pg-sound-card:focus-visible{outline:3px solid #993cb9;outline-offset:-4px}
+.pg-sound-card::before{content:"🔊";position:absolute;top:5px;right:7px;font-size:14px;opacity:.8}
+.pg-sound-hint{font-size:10px;color:#73438b;text-align:center;margin:4px 0 0;line-height:1.2}
+.pg-sound-hint[role=status]{min-height:14px}
+.pg-speaking-launch{display:block;width:100%;min-height:39px;border-radius:13px;padding:8px 10px;margin-top:5px;font-size:12px;font-weight:850;color:white;background:linear-gradient(130deg,#c55dcd,#7531a6);border:2px solid #e8b0ec;box-shadow:0 2px 9px #9f45c955;cursor:pointer}
+.pg-speaking-launch:focus-visible{outline:3px solid #5a25a5;outline-offset:2px}
+.pg-speaking-backdrop{position:fixed;inset:0;z-index:99999;background:#160b30b9;display:flex;align-items:center;justify-content:center;padding:calc(12px + env(safe-area-inset-top,0px)) 12px calc(15px + env(safe-area-inset-bottom,0px));overflow:hidden}
+.pg-speaking-panel{width:min(100%,420px);max-height:100%;overflow-y:auto;background:linear-gradient(170deg,#fff,#fcf1fb);border:3px solid #edc18a;border-radius:24px;padding:14px;box-shadow:0 7px 28px #170b2c80;text-align:center;color:#582a77}
+.pg-speaking-panel header{display:flex;justify-content:space-between;align-items:center;gap:5px;font-size:16px}
+.pg-speaking-panel header button{border:1px solid #e8c9de;background:#fff;border-radius:50%;width:32px;height:32px;color:#623478;cursor:pointer}
+.pg-speaking-progress{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0;justify-content:center}
+.pg-speaking-progress span{font-size:11px;border:1px solid #e6c6de;padding:5px 8px;border-radius:50px;background:white}
+.pg-speaking-progress span.active{color:white;background:#9349bb;border-color:#9349bb}
+.pg-speaking-progress span.done{color:#177241;border-color:#72bd8d}
+.pg-speaking-target{font-size:clamp(31px,8vw,46px);font-weight:950;line-height:1.2;margin-top:12px;overflow-wrap:anywhere}
+.pg-speaking-panel p{font-size:13px;line-height:1.36;margin:8px 0}
+.pg-speaking-panel>button[data-mic]{display:block;width:100%;border:2px solid #e9a9e8;background:linear-gradient(110deg,#bb54ce,#6531a1);border-radius:15px;min-height:51px;padding:10px;color:#fff;font-size:16px;font-weight:800;margin:14px 0 7px}
+.pg-speaking-panel>button[data-mic]:disabled{opacity:.5}
+.pg-speaking-panel small{display:block;font-size:10px;line-height:1.35;color:#876597;margin:8px 0}
+.pg-speaking-message{min-height:22px;font-weight:700;font-size:12px;overflow-wrap:anywhere}
+.pg-speaking-panel .exit{width:100%;border:1px solid #d8b8d3;background:#fff;border-radius:12px;color:#6f3c89;padding:9px;font-size:12px;font-weight:800}
+.pg-profile-help{font-size:10.5px;line-height:1.3;color:#805892;margin:3px 0;overflow-wrap:anywhere}
+.pg-profile-help.warning{color:#a03954}
+.pg-profile-translation{display:block;font-size:12px;color:#68398c;font-weight:700;margin:3px 0}
+@media(max-height:700px){.pg-speaking-panel{padding:10px 12px;border-radius:18px}.pg-speaking-target{margin-top:5px}.pg-speaking-progress{margin:7px 0}.pg-speaking-panel p{margin:5px 0}.pg-speaking-panel>button[data-mic]{margin:8px 0 5px;min-height:45px}}
