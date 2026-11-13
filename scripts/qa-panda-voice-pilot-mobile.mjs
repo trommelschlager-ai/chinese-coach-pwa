@@ -78,6 +78,13 @@ try{
   for(const [q,answer] of [['今天天气怎么样','今天很冷。'],['你有妹妹吗','我有一个妹妹。'],['你几岁','我三岁。']]){await send(page,q);assert.equal(await page.locator('#phrase').textContent(),answer)}
   await send(page,'今天星期几');assert((await page.locator('#phrase').textContent()).includes('星期'+dayNames[day]));
   await send(page,'今天几月几号');assert((await page.locator('#exercise-banner').textContent()).includes('календарю устройства'));
+  // v304: HSK 2 bridge in the original Panda chat, no new screen or invented MP3.
+  await send(page,'HSK 2');assert.equal(await page.locator('#phrase').textContent(),'我学习中文。');
+  await send(page,'中文是什么意思？');assert.equal(await page.locator('#phrase').textContent(),'中文');
+  assert((await page.locator('#pinyin').textContent()).includes('Zhōngwén'));
+  assert(await page.locator('#audio-note').isVisible(),'Bridge must not invent MP3');
+  await send(page,'你忙吗？');assert.equal(await page.locator('#phrase').textContent(),'我不忙。');
+  await send(page,'我是忙');assert((await page.locator('#learner-feedback').textContent()).includes('我很忙'));
   // v302: end-to-end text questions use the existing chat, not a new screen.
   await send(page,'妹妹是什么意思？');
   assert.equal(await page.locator('#phrase').textContent(),'妹妹');
