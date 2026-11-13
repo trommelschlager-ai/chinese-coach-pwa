@@ -1,5 +1,7 @@
 name: Panda Go mobile browser QA
 on:
+  push:
+    branches: [fix/panda-v323-family-conversation-live]
   pull_request:
     branches: [main]
   workflow_dispatch:
