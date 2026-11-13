@@ -42,9 +42,11 @@ const profileReady=()=>{const p=state.profile;return !!(String(p.name||'').trim(
 function profileOutput(){
  const n=$('profile-output');if(!n)return;
  const p=state.profile,nm=String(p.name||'').trim(),city=String(p.city||'').trim(),job=String(p.job==='other'?p.other:p.job||'').trim();
+ const jobsRu={'老师':'учитель','医生':'врач','司机':'водитель','学生':'студент','工程师':'инженер'};
+ const citiesRu={'北京':'Пекине','上海':'Шанхае','莫斯科':'Москве'};
  n.innerHTML=example(['我叫'+(nm||'…')+'。','Wǒ jiào …','Меня зовут '+(nm||'…')+'.'])+
-  example(['我住在'+(city||'…')+'。','Wǒ zhù zài …','Я живу в '+(city||'…')+'.'])+
-  example(['我是'+(job||'…')+'。','Wǒ shì …','Я '+(job||'…')+'.']);
+  example(['我住在'+(city||'…')+'。','Wǒ zhù zài …',(citiesRu[city]?'Я живу в '+citiesRu[city]+'.':'Город: '+(city||'…')+'.')])+
+  example(['我是'+(job||'…')+'。','Wǒ shì …',(jobsRu[job]?'Я '+jobsRu[job]+'.':'Профессия: '+(job||'…')+'.')]);
  const next=$('screen').querySelector('[data-next]');if(next)next.disabled=!profileReady();
 }
 function profileForm(){
