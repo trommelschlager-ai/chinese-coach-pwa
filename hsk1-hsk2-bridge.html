@@ -66,6 +66,13 @@ h2{font-size:20px;margin:3px 0 5px;line-height:1.22}
 @media(min-width:560px){.app{margin:8px auto;border-radius:24px;max-height:940px}}
 </style>
 <link rel="stylesheet" href="./assets/hsk1-hsk2-bridge-compact-v323.css?v=323">
+<style>
+/* v324: keep end-of-topic navigation visible above Android bar. */
+.app{position:relative}
+.foot{position:absolute;z-index:20;bottom:0;left:0;right:0;box-shadow:0 -4px 12px #70478225;background:#fff8ff}
+.main{padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+.row .btn.primary{background:linear-gradient(125deg,#ca58bd,#7531ab);color:#fff}
+</style>
 </head>
 <body>
 <div class="app">
@@ -138,7 +145,7 @@ function draw(){
    '<section class="card"><div class="counter">HSK 3.0 · базовое слово</div><div class="hanzi" lang="zh-Hans">'+safe(w[0])+'</div><div class="pinyin">'+(state.showPinyin?safe(w[1]):'Пиньинь скрыт')+'</div><div class="ru">'+safe(w[2])+'</div></section>'+
    '<div class="row"><button class="btn" type="button" data-action="prev" '+(state.card===0?'disabled':'')+'>‹ Назад</button>'+
    '<button class="btn" type="button" data-action="pinyin">'+(state.showPinyin?'Скрыть':'Показать')+' пиньинь</button>'+
-   '<button class="btn primary" type="button" data-action="next" '+(state.card===4?'disabled':'')+'>Дальше ›</button></div>'+
+   '<button class="btn primary" type="button" data-action="next">'+(state.card===4?'К проверке ✓':'Дальше ›')+'</button></div>'+
    '<div class="bridge-tabs" role="tablist" aria-label="Объяснение и примеры">'+
     '<button type="button" role="tab" data-action="detail" data-tab="rule" aria-selected="'+(state.detailTab==='rule')+'">✏️ Правило</button>'+
     '<button type="button" role="tab" data-action="detail" data-tab="examples" aria-selected="'+(state.detailTab==='examples')+'">💬 Примеры</button></div>'+
@@ -158,9 +165,9 @@ function draw(){
   button.textContent='Вернуться к карточкам';button.disabled=false;
  }else{
   main='<section class="finish"><div class="icon">🐼✨</div><h2>Тема пройдена!</h2><p>Пять слов проверены. Результат сохранён только для этого переходного блока. Можно вернуться к карточкам или перейти к следующей теме.</p>'+
-   '<button type="button" class="btn primary" data-action="nextstage">'+(state.stage===5?'К первой теме':'Следующая тема →')+'</button></section>'+
+   '<button type="button" class="btn primary" data-action="nextstage">'+(state.stage===5?'Продолжить HSK 2 →':'Следующая тема →')+'</button></section>'+
    '<p class="notice">Пройдено тем: '+done+' из 6. Повторять можно сколько угодно раз.</p>';
-  button.textContent='Повторить карточки';button.disabled=false;
+  button.textContent=state.stage===5?'К курсу HSK 2':'Повторить карточки';button.disabled=false;
  }
  $('content').innerHTML=main;
 }
@@ -169,9 +176,9 @@ function action(name,index,tab){
  if(name==='stage')return goStage(index);
  if(name==='detail'){state.detailTab=tab==='examples'?'examples':'rule';save();draw();return}
  if(name==='prev'){state.card=Math.max(0,state.card-1)}
- if(name==='next'){state.card=Math.min(4,state.card+1)}
+ if(name==='next'){if(state.card===4){state.mode='quiz';state.quizIndex=0;feedback='';feedbackType=''}else state.card++}
  if(name==='pinyin'){state.showPinyin=!state.showPinyin}
- if(name==='nextstage')return goStage((state.stage+1)%6);
+ if(name==='nextstage'){if(state.stage===5){location.href='./hsk2-start.html#map';return}return goStage(state.stage+1)}
  if(name==='answer'){
   var opts=optionData(state.quizIndex);
   if(!opts[index])return;
@@ -188,6 +195,7 @@ function action(name,index,tab){
 $('chips').addEventListener('click',function(e){var target=e.target.closest('button[data-action="stage"]');if(target)action('stage',Number(target.dataset.index))});
 $('content').addEventListener('click',function(e){var target=e.target.closest('button[data-action]');if(target)action(target.dataset.action,Number(target.dataset.index),target.dataset.tab)});
 $('main-action').addEventListener('click',function(){
+ if(state.mode==='done'&&state.stage===5){location.href='./hsk2-start.html#map';return}
  if(state.mode==='study'){state.mode='quiz';state.quizIndex=0;feedback='';feedbackType=''}
  else{state.mode='study';state.card=0;feedback='';feedbackType=''}
  save();draw();$('content').scrollTop=0;
