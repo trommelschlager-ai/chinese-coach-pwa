@@ -115,20 +115,27 @@ try{
   await send(page,'HSK 2');assert.equal(await page.locator('#phrase').textContent(),'我学习中文。');
   await send(page,'中文是什么意思？');assert.equal(await page.locator('#phrase').textContent(),'中文');
   assert((await page.locator('#pinyin').textContent()).includes('Zhōngwén'));
-  assert(await page.locator('#audio-note').isVisible(),'Bridge must not invent MP3');
-  assert(!(await page.locator('.listen-controls').isVisible()),'No inert speaker buttons without approved recording');
+  assert(!(await page.locator('#audio-note').isVisible()),'Existing B06 recording should be playable');
+  assert(await page.locator('.listen-controls').isVisible(),'Show speaker when B06 recording is available');
   const cardText=await page.locator('#learner-feedback').textContent();
   assert(cardText.includes('Тоны: 1 + 2')&&cardText.includes('我学习中文'),'Missing compact lexical explanation');
   assert(!cardText.includes('我很忙'),'Unrelated rule leaked into 中文 explanation');
   await page.waitForFunction(()=>document.querySelector('#phrase').textContent==='你学习中文吗？',null,{timeout:13000});
   assert(!(await page.locator('#learner-feedback').isVisible()),'Old vocabulary explanation survived new question');
-  assert(await page.locator('#audio-note').isVisible(),'Question has no approved voice recording');
-  assert(!(await page.locator('.listen-controls').isVisible()),'Playback UI must be hidden when recording unavailable');
+  assert(!(await page.locator('#audio-note').isVisible()),'The recorded B01 question should be playable');
+  assert(await page.locator('.listen-controls').isVisible(),'The question must show its real B01 playback controls');
   const speechFit=await page.locator('.speech').evaluate(el=>{
    const b=el.getBoundingClientRect(),e=[...el.querySelectorAll('#phrase,#pinyin,#translation,#audio-note')].filter(x=>!x.hidden).map(x=>x.getBoundingClientRect());
    return {overflow:el.scrollHeight-el.clientHeight,bottom:b.bottom,children:e.map(x=>({top:x.top,bottom:x.bottom}))};
   });
   assert(speechFit.overflow<=2&&speechFit.children.every(x=>x.bottom<=speechFit.bottom+1),JSON.stringify(speechFit));
+  await send(page,'学习中文');assert.equal(await page.locator('#phrase').textContent(),'我学习中文。');
+  assert((await page.locator('#learner-feedback').textContent()).includes('правильное словосочетание'),'Never flag 学习中文 as ungrammatical');
+  assert((await page.locator('#learner-feedback').textContent()).includes('我'),'Teach a full first-person sentence');
+  assert(!(await page.locator('#audio-note').isVisible()),'A real B02 recording must play');
+  assert(await page.locator('#hear').isEnabled(),'B02 recording must enable Listen');
+  const b02=await page.evaluate(async()=>{const mod=await import('./assets/panda-live-audio.mjs?v=307');return mod.lookupPilotAudio('我学习中文')});
+  assert(b02.endsWith('/B02.mp3'),'Wrong voice for corrected sentence');
   await send(page,'你忙吗？');assert.equal(await page.locator('#phrase').textContent(),'我不忙。');
   await send(page,'我是忙');assert((await page.locator('#learner-feedback').textContent()).includes('我很忙'));
 
