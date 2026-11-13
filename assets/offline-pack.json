@@ -1,6 +1,6 @@
 {
-  "version": 316,
-  "bytes": 58448186,
+  "version": 317,
+  "bytes": 58461902,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1560,7 +1560,7 @@
     "./assets/panda-stone-staircase-v174.webp",
     "./assets/panda-v130.css?v=151",
     "./assets/panda-v130.js?v=174",
-    "./assets/panda-v130.js?v=314",
+    "./assets/panda-v130.js?v=315",
     "./assets/panda-v130/book.webp",
     "./assets/panda-v130/books.webp",
     "./assets/panda-v130/brush.webp",
@@ -2752,6 +2752,7 @@
     "./assets/panda-live-voice-bridge-v307/B07.mp3",
     "./assets/panda-live-voice-bridge-v307/B08.mp3",
     "./assets/panda-live-voice-bridge-v307/B09.mp3",
-    "./assets/panda-live-voice-bridge-v307/B10.mp3"
+    "./assets/panda-live-voice-bridge-v307/B10.mp3",
+    "./assets/panda-hsk-scenic-v315.css?v=315"
   ]
 }
