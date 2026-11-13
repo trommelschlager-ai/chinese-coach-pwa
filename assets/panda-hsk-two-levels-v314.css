@@ -1,0 +1,101 @@
+/* Panda Go v314 — two accessible active levels.
+   Keeps the original approved sakura/panda hero, HSK 1 lessons and media intact.
+   The old six-level illustrations contain baked-in labels; do NOT reuse those
+   as backgrounds, so both Russian level names are genuinely readable. */
+#pg130 .pg-screen.pg-hsk-page.pg-two-level-home{
+  display:flex;flex-direction:column;isolation:isolate;
+  width:min(100%,470px);height:100dvh;min-height:0;overflow:hidden;
+  padding:0;border-radius:24px;
+  background:linear-gradient(180deg,#f8d5fa 0%,#ebc7f6 50%,#b98bdf 100%);
+}
+#pg130 .pg-two-level-home .pg-hsk-backdrop{
+  position:relative;display:block;flex:0 1 auto;
+  max-height:52dvh;overflow:hidden;min-height:0;width:100%;
+}
+#pg130 .pg-two-level-home .pg-hsk-backdrop img{
+  display:block;width:100%;height:auto;max-width:100%;
+  object-fit:contain;object-position:center top;
+}
+#pg130 .pg-two-level-home .pg-hsk-level-list{
+  display:flex;flex:1 1 auto;flex-direction:column;justify-content:center;
+  gap:clamp(12px,2.1dvh,20px);margin:0;
+  width:100%;max-width:none;padding:10px clamp(10px,3.8vw,20px);
+  z-index:2;
+}
+#pg130 .pg-two-level-home .pg-hsk-level.pg-hsk-choice{
+  position:relative;display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(8px,2.6vw,14px);box-sizing:border-box;flex:0 0 auto;
+  min-height:clamp(82px,12dvh,108px);height:auto;
+  border:3px solid #ffe4a7;border-radius:30px;
+  padding:9px 12px 9px 9px;overflow:visible;
+  text-decoration:none;color:#4e1a60;line-height:1.15;
+  background:linear-gradient(125deg,#fff0fb 0%,#f2c9f2 48%,#f8d8ff 100%);
+  box-shadow:inset 0 2px 0 #fff9,
+    inset 0 -3px 4px #a83aaa2f,0 4px 0 #b17b48,
+    0 8px 16px #6c287a65,0 0 13px #ffbcf2;
+}
+#pg130 .pg-two-level-home .pg-hsk-level.pg-hsk-choice-violet{
+  background:linear-gradient(115deg,#fff1fd 0%,#dfb7f2 50%,#d5a7f2 100%);
+}
+#pg130 .pg-two-level-home .pg-hsk-level.pg-hsk-choice:focus-visible{
+  outline:3px solid #6a2297;outline-offset:3px;
+}
+#pg130 .pg-two-level-home .pg-hsk-choice-art{
+  position:relative;flex:0 0 clamp(53px,16vw,74px);
+  width:clamp(53px,16vw,74px);aspect-ratio:1;
+  display:grid;place-items:center;
+  border:2px solid #f4d68c;border-radius:22px;
+  background:linear-gradient(135deg,#fff6f1,#fbcfe9);
+  box-shadow:0 1px 7px #8a428a48;
+}
+#pg130 .pg-two-level-home .pg-hsk-choice-svg{
+  width:clamp(40px,13vw,60px);height:clamp(40px,13vw,60px);
+}
+#pg130 .pg-two-level-home .pg-hsk-choice-flower{
+  position:absolute;right:-8px;bottom:-10px;font-size:18px;
+}
+#pg130 .pg-two-level-home .pg-hsk-choice-copy{
+  flex:1 1 auto;min-width:0;
+  display:flex;flex-direction:column;align-items:flex-start;
+  gap:5px;text-align:left;white-space:normal;
+}
+#pg130 .pg-two-level-home .pg-hsk-choice-copy strong{
+  display:block;font-size:clamp(19px,5.35vw,26px);
+  font-weight:900;letter-spacing:-.6px;
+  text-shadow:0 1px #fff,0 0 4px #fff7;
+  line-height:1.05;
+}
+#pg130 .pg-two-level-home .pg-hsk-choice-copy small{
+  font-size:clamp(10px,3.1vw,13px);
+  font-weight:750;color:#654072;line-height:1.2;
+}
+#pg130 .pg-two-level-home .pg-hsk-choice-arrow{
+  flex:0 0 clamp(38px,11vw,51px);
+  width:clamp(38px,11vw,51px);height:clamp(38px,11vw,51px);
+  display:grid;place-items:center;border:2px solid #ffdfa3;border-radius:50%;
+  background:linear-gradient(145deg,#f5a8e9,#ae28bd 75%,#7c1ca3);
+  box-shadow:inset 0 2px 1px #fff9,0 2px 5px #7d328a70;
+  color:white;font-size:40px;line-height:.8;font-weight:600;
+}
+#pg130 .pg-two-level-home .pg-hsk-bridge{
+  flex:0 1 auto;display:block;width:100%;height:auto;
+  max-height:19dvh;margin-top:auto;object-fit:cover;object-position:top;
+  pointer-events:none;
+}
+#pg130 .pg-two-level-home .pg-live-status:empty{display:none}
+@media(max-width:350px){
+ #pg130 .pg-two-level-home .pg-hsk-choice-copy strong{font-size:18px}
+ #pg130 .pg-two-level-home .pg-hsk-choice-copy small{font-size:10px}
+ #pg130 .pg-two-level-home .pg-hsk-choice-art{flex-basis:49px;width:49px}
+ #pg130 .pg-two-level-home .pg-hsk-choice-svg{width:38px;height:38px}
+ #pg130 .pg-two-level-home .pg-hsk-choice-arrow{flex-basis:35px;width:35px;height:35px;font-size:34px}
+}
+@media(max-height:690px){
+ #pg130 .pg-two-level-home .pg-hsk-backdrop{max-height:47dvh}
+ #pg130 .pg-two-level-home .pg-hsk-level-list{gap:9px;padding-top:6px;padding-bottom:6px}
+ #pg130 .pg-two-level-home .pg-hsk-level.pg-hsk-choice{min-height:73px;padding:6px 8px 6px 6px}
+ #pg130 .pg-two-level-home .pg-hsk-bridge{max-height:13dvh}
+}
+@media(prefers-reduced-motion:reduce){
+ #pg130 .pg-two-level-home .pg-hsk-level.pg-hsk-choice{transition:none}
+}
