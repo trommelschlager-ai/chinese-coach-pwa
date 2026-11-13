@@ -85,7 +85,7 @@ try{
  }
 }catch{}
 let audio=null,recorder=null,stream=null,recUrl=null,micBusy=false,recordChunks=[],micEpoch=0;
-let reviewEpoch=0,reviewDelay=0,reviewResume=null;
+let reviewEpoch=0,reviewDelay=0,reviewResume=null,reviewAudioComplete=null;
 const index=s=>Math.max(0,Math.min(50,Number(state.index[s])||0));
 const audioMap=window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
 const unified=window.PANDA_HSK1_L2_ONE_VOICE_V208||{};
@@ -115,44 +115,37 @@ function stopReview(){
  reviewEpoch++;
  if(reviewDelay){clearTimeout(reviewDelay);reviewDelay=0;if(reviewResume){const resolve=reviewResume;reviewResume=null;resolve()}}
  stopAudio();
- try{window.speechSynthesis?.cancel()}catch{}
+ // Ensure a stopped audio clip also settles its pending review promise.
+ if(reviewAudioComplete){const done=reviewAudioComplete;reviewAudioComplete=null;done(false)}
  const status=area.querySelector('[data-review-status]');
  if(status)status.textContent='Повторение остановлено.';
 }
-function nativeOrTTS(text){
- return fileFor(text,'female')||null;
-}
+// Review audio must come from an existing course MP3. Never substitute Android TTS.
 function playReviewEntry(entry,epoch){
  return new Promise(resolve=>{
-  if(epoch!==reviewEpoch){resolve();return}
-  const [hanzi]=entry,file=nativeOrTTS(hanzi);
-  let done=false;
-  const complete=()=>{
-   if(done)return;done=true;
+  if(epoch!==reviewEpoch){resolve(false);return}
+  const [hanzi]=entry,file=fileFor(hanzi,'female');
+  if(!file){resolve(false);return}
+  let player=null,finished=false;
+  const complete=(played=false)=>{
+   if(finished)return;
+   finished=true;
    if(audio===player)audio=null;
-   resolve();
+   if(reviewAudioComplete===complete)reviewAudioComplete=null;
+   resolve(played);
   };
-  let player=null;
-  if(file){
-   try{
-    player=new Audio(window.PandaAudioLevel?.[file]||file);audio=player;
-    player.preload='auto';player.preservesPitch=true;player.playbackRate=window.PandaLesson2XiaoxiaoV261?.lookup(hanzi)?1:(unified[hanzi]?1:.9);
-    player.onended=complete;player.onerror=complete;
-    const attempt=player.play();
-    if(attempt&&typeof attempt.catch==='function')attempt.catch(complete);
-   }catch{complete()}
-  }else if(window.speechSynthesis&&window.SpeechSynthesisUtterance){
-   try{
-    const utterance=new SpeechSynthesisUtterance(hanzi);
-    utterance.lang='zh-CN';utterance.rate=.83;utterance.pitch=1;
-    const voices=window.speechSynthesis.getVoices?.()||[];
-    const chinese=voices.filter(v=>/^zh[-_]/i.test(v.lang||''));
-    const preferred=chinese.find(v=>/female|woman|xiaoxiao|tingting|huihui|meijia|xiaoyi/i.test(v.name||''))||chinese[0];
-    if(preferred)utterance.voice=preferred;
-    utterance.onend=complete;utterance.onerror=complete;
-    window.speechSynthesis.speak(utterance);
-   }catch{complete()}
-  }else{complete()}
+  try{
+   player=new Audio(window.PandaAudioLevel?.[file]||file);
+   audio=player;
+   reviewAudioComplete=complete;
+   player.preload='auto';
+   player.preservesPitch=true;
+   player.playbackRate=window.PandaLesson2XiaoxiaoV261?.lookup(hanzi)?1:(unified[hanzi]?1:.9);
+   player.onended=()=>complete(true);
+   player.onerror=()=>complete(false);
+   const attempt=player.play();
+   if(attempt&&typeof attempt.catch==='function')attempt.catch(()=>complete(false));
+  }catch{complete(false)}
  });
 }
 async function playReviewAll(){
@@ -161,16 +154,21 @@ async function playReviewAll(){
  const status=area.querySelector('[data-review-status]');
  const stopBtn=area.querySelector('[data-review-stop]');
  if(stopBtn)stopBtn.disabled=false;
+ const unavailable=new Set();
  for(let i=0;i<reviewEntries.length;i++){
   for(let repeat=0;repeat<2;repeat++){
    if(epoch!==reviewEpoch)return;
    if(status)status.textContent='Слушаем '+(i+1)+' / '+reviewEntries.length+': '+reviewEntries[i][0]+' · повтор '+(repeat+1)+' из 2';
-   await playReviewEntry(reviewEntries[i],epoch);
+   const played=await playReviewEntry(reviewEntries[i],epoch);
    if(epoch!==reviewEpoch)return;
-   await new Promise(done=>{reviewResume=done;reviewDelay=setTimeout(()=>{reviewDelay=0;reviewResume=null;done()},repeat===0?650:900)});
+   if(!played)unavailable.add(reviewEntries[i][0]);
+   if(played)await new Promise(done=>{reviewResume=done;reviewDelay=setTimeout(()=>{reviewDelay=0;reviewResume=null;done()},repeat===0?650:900)});
+
   }
  }
- if(status)status.textContent='✓ Все слова повторены два раза!';
+ if(status)status.textContent=unavailable.size
+  ?'Не удалось прослушать '+unavailable.size+' записей: '+[...unavailable].join('、')+'. Попробуй снова; системный голос не используется.'
+  :'✓ Все доступные MP3 прослушаны два раза!';
  if(stopBtn)stopBtn.disabled=true;
 }
 function renderReviewList(){
@@ -178,8 +176,8 @@ function renderReviewList(){
   '<p>Тренировка произношения недоступна. Перезагрузи страницу.</p>';
 }
 function audioButton(hz,label='▶ Слушать',role='female'){
- const file=fileFor(hz,role),fallback=hz==='您';
- return '<button class="pg3-audio" data-audio="'+escapeHtml(hz)+'" data-role="'+escapeHtml(role)+'"'+(file||fallback?'':' disabled')+'>'+escapeHtml(label)+'</button>';
+ const file=fileFor(hz,role);
+ return '<button class="pg3-audio" data-audio="'+escapeHtml(hz)+'" data-role="'+escapeHtml(role)+'"'+(file?'':' disabled')+'>'+escapeHtml(label)+'</button>';
 }
 function feedback(message){
  if(announcement)announcement.textContent=message;
@@ -189,12 +187,7 @@ function feedback(message){
 function play(hz,role='female'){
  const file=fileFor(hz,role);
  if(!file){
-  if(hz==='您'){
-   stopReview();
-   const epoch=reviewEpoch;
-   feedback('Слушаем 您: временная системная китайская озвучка.');
-   playReviewEntry([hz],epoch);
-  }else feedback('Запись пока недоступна.');
+  feedback('Для этого слова пока нет проверенной MP3-записи; системный голос не используется.');
   return;
  }
  window.PG2_EXTRAS?.stopScene?.();
