@@ -17,6 +17,7 @@ on:
       - 'assets/panda-nonstop-*'
       - 'tests/panda-live-*'
       - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
+      - 'scripts/verify-panda-sentence-coach-v319.cjs'
       - 'assets/panda-voice-pilot*'
       - 'tests/panda-voice-pilot.test.mjs'
       - 'tests/panda-live-lesson2.test.mjs'
@@ -35,6 +36,7 @@ on:
       - 'assets/panda-nonstop-*'
       - 'tests/panda-live-*'
       - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
+      - 'scripts/verify-panda-sentence-coach-v319.cjs'
       - 'tests/panda-voice-pilot.test.mjs'
       - 'tests/panda-live-lesson2.test.mjs'
       - 'tests/panda-live-batch.test.mjs'
@@ -55,6 +57,8 @@ jobs:
         run: npm run check:panda-screen
       - name: Validate Panda HSK2 preview bridge
         run: node scripts/verify-panda-hsk2-bridge-v304.cjs
+      - name: Validate contextual Panda sentence coach
+        run: node scripts/verify-panda-sentence-coach-v319.cjs
       - name: Install mobile Chromium
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
