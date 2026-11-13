@@ -131,6 +131,16 @@ try{
   assert(speechFit.overflow<=2&&speechFit.children.every(x=>x.bottom<=speechFit.bottom+1),JSON.stringify(speechFit));
   await send(page,'你忙吗？');assert.equal(await page.locator('#phrase').textContent(),'我不忙。');
   await send(page,'我是忙');assert((await page.locator('#learner-feedback').textContent()).includes('我很忙'));
+  await page.locator('#lesson-select').selectOption('1');
+  await page.locator('#mode-nonstop').click();
+  await send(page,'你学习中文吗？');
+  await send(page,'学习中文');
+  assert.equal(await page.locator('#phrase').textContent(),'我学习中文。');
+  assert((await page.locator('#learner-feedback').textContent()).includes('Полный ответ: 我学习中文。'));
+  assert((await page.locator('#learner-feedback').textContent()).includes('правильное словосочетание'));
+  assert(await page.locator('#hear').isEnabled(),'The correction should play the original B02 recording');
+  assert(await page.locator('#audio-note').isHidden(),'B02 recording must exist, not a placeholder');
+
 
   const sources=await page.evaluate(async()=>Object.values((await import('./assets/panda-live-audio.mjs')).PILOT_AUDIO));
   for(const src of sources){const response=await page.request.get(new URL(src,BASE+'/').href);assert.equal(response.status(),200,src);assert((await response.body()).length>1000,src)}
