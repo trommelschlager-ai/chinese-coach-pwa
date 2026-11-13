@@ -46,7 +46,7 @@ const fs=require('node:fs');
    assert(file,'Unknown MP3 was invented for '+raw);
    assert(fs.statSync(file.replace(/^\.\//,'')).size>1000,'Missing audio for '+raw);
   }
-  assert.equal(coachSentence(raw,{allowed:[1]}),lesson===1?coachSentence(raw,{allowed:[1]}):null,'Unlocked topic leak '+raw);
+  assert.equal(coachSentence(raw,{allowed:[1]})?.kind||null,lesson===1?'coaching':null,'Unlocked topic leak '+raw);
  }
  assert.equal(answerLive('很忙',{...base,topic:1}).reply.audioKey,'我很忙');
  assert(lookupPilotAudio('我很忙').endsWith('/B04.mp3'));
