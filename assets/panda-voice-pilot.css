@@ -27,3 +27,35 @@ dialog{border:1px solid #d7b4e8;border-radius:23px;background:#fffaff;color:#593
 /* VisualViewport follows the real visible area when an Android keyboard overlays the layout. */
 :root[data-keyboard=true] main{gap:3px}:root[data-keyboard=true] .title,:root[data-keyboard=true] .mode-description,:root[data-keyboard=true] .footer,:root[data-keyboard=true] .quick-phrases,:root[data-keyboard=true] .recent,:root[data-keyboard=true] .label{display:none}:root[data-keyboard=true] .card{padding:5px 10px;gap:3px}:root[data-keyboard=true] .progress{min-height:24px}:root[data-keyboard=true] .progress .text-button{min-height:24px;padding:2px}:root[data-keyboard=true] .progress{display:none}:root[data-keyboard=true] .scene{min-height:0}:root[data-keyboard=true] .panda-picture{max-height:100px}:root[data-keyboard=true] .speech{padding:4px 7px;border-radius:14px}:root[data-keyboard=true] .hanzi{font-size:21px;margin:1px}:root[data-keyboard=true] .pinyin{font-size:11px}:root[data-keyboard=true] .translation{font-size:10px;margin:1px}:root[data-keyboard=true] .listen-controls{margin:0}:root[data-keyboard=true] .listen,:root[data-keyboard=true] .speed-toggle{min-height:30px}:root[data-keyboard=true] .hint-text{max-height:40px}:root[data-keyboard=true] .exercise-banner{max-height:28px}:root[data-keyboard=true] .status{max-height:28px}:root[data-keyboard=true] .learner-feedback{max-height:42px}:root[data-keyboard=true] .scene{min-height:0}:root[data-keyboard=true][data-feedback=true] .exercise-banner{max-height:16px}:root[data-keyboard=true][data-feedback=true] .mic{height:44px;width:44px}
 @media(prefers-reduced-motion:reduce){.panda-rig,.sparkles{animation:none!important}}
+
+
+/* v318: microphone help is hidden until a recognition error or connection timeout.
+   Keep fallback controls touch-sized and prevent overlays above the message form. */
+#speech-recovery.speech-recovery{
+ flex:none;display:block;max-height:min(25dvh,175px);min-height:0;overflow-y:auto;
+ border:1px solid #e2b0e8;border-radius:13px;padding:7px 9px;
+ background:linear-gradient(115deg,#fff7fe,#f3e6fb);box-shadow:0 2px 8px #913e9a22;
+ font-size:11px;line-height:1.35;color:#5b3473;
+ scrollbar-width:thin;overscroll-behavior:contain;
+}
+#speech-recovery[hidden]{display:none!important}
+#speech-recovery strong{display:block;font-size:12px;color:#732d88;margin-bottom:2px}
+#speech-recovery p{margin:3px 0}
+#speech-recovery .speech-recovery-actions{display:flex;gap:5px;flex-wrap:wrap;margin:5px 0}
+#speech-recovery .speech-recovery-actions button,
+#speech-recovery .speech-recovery-actions a{
+ display:inline-flex;align-items:center;justify-content:center;
+ border:1px solid #c88bda;border-radius:14px;background:#fffaff;
+ font-size:11px;font-weight:750;line-height:1.2;min-height:34px;
+ padding:5px 9px;text-decoration:none;color:#61317d;
+}
+#speech-recovery .speech-recovery-actions button:active,
+#speech-recovery .speech-recovery-actions a:active{background:#ead4fb}
+#speech-check-result{font-weight:700;color:#713d7c}
+:root:has(#speech-recovery:not([hidden])) .recent{display:none}
+:root:has(#speech-recovery:not([hidden])) .scene{max-height:min(25dvh,220px)}
+@media(max-height:680px){
+ #speech-recovery.speech-recovery{max-height:min(29dvh,135px);padding:5px 7px}
+ #speech-recovery .speech-recovery-actions button,
+ #speech-recovery .speech-recovery-actions a{min-height:30px;padding:4px 7px}
+}
