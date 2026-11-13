@@ -7,7 +7,8 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {chineseNumber} from './panda-live-drafts.mjs?v=live6';
 import {lookupExtendedQuestion,extensionAnswer,extensionStatement,rememberedFamilyFollowup} from './panda-hsk1-extensions-v282.mjs?v=284';
 import {checkedExtensionReply,recognizeApprovedPhrase} from './panda-hsk1-answerbank-v284.mjs?v=284';
-import {patternQuestion,patternStudentAnswer,conversationalFollowup} from './panda-hsk1-patterns-v285.mjs?v=285';
+import {patternQuestion,patternStudentAnswer,patternPrompts,conversationalFollowup} from './panda-hsk1-patterns-v285.mjs?v=285';
+import {questionVariant,learnerAnswerVariant} from './panda-hsk1-variants-v301.mjs?v=301';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
@@ -185,8 +186,57 @@ function lessonExplanation(raw,allowed,topic,curriculum){
  }
  return {kind:'clarify',message:'Не нашла проверенного объяснения в пройденных уроках. Укажи слово или выбери нужную тему.'};
 }
-export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={}}={}){
+
+/* v301: follow up with a reviewed question from the same unlocked lesson.
+ * A learner's question is never mistaken for the learner's own answer to it.
+ * Avoid asking today's date/weekday/weather again immediately after giving it.
+ */
+function linkedQuestion(raw,lesson,allowed,date,profile={}){
+ if(!allowed.includes(lesson))return null;
+ const pool=[...topicPrompts(lesson,date,profile),...patternPrompts(lesson,date,allowed)];
+ const recent=new Set((profile.recentQuestions||[]).map(normalize));
+ const source=normalize(raw),relation=/哥哥|姐姐|弟弟|妹妹|妈妈|爸爸/.exec(source)?.[0]||'';
+ const isCalendar=[4,5,7].includes(lesson);
+ let ranked=pool.filter(x=>!recent.has(normalize(x.hanzi))&&x.requires?.every(n=>allowed.includes(n))!==false);
+ if(isCalendar){
+  const next=source.startsWith('今天')?'明天':source.startsWith('明天')?'今天':null;
+  if(next){
+   const day=ranked.filter(x=>normalize(x.hanzi).startsWith(next)&&
+    (lesson===4?/星期几/.test(x.hanzi):lesson===5?/几月几号/.test(x.hanzi):/天气怎么样/.test(x.hanzi)));
+   if(day.length)return {...day[0],isContextual:true};
+  }
+ }
+ ranked=ranked.map((item,index)=>({item,index,score:
+   (relation&&normalize(item.hanzi).includes(relation)?100:0)+
+   (!isCalendar&&normalize(item.hanzi)===source?80:0)+
+   (lesson===3&&source.includes('后面')&&item.family==='next-number'?40:0)+
+   (lesson===6&&item.family==='relative-age'?10:0)
+ })).sort((a,b)=>b.score-a.score||a.index-b.index);
+ return ranked.length?{...ranked[0].item,isContextual:true}:null;
+}
+function extendQuestion(result,raw,allowed,date,profile){
+ if(!result||result.kind!=='question'||!allowed.includes(result.lesson))return result;
+ return {...result,followup:result.followup||linkedQuestion(raw,result.lesson,allowed,date,profile)};
+}
+export function answerLive(raw,options={}){
+ const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={}}=options;
  raw=String(raw||'').trim();const s=normalize(raw);if(!raw)return {kind:'empty',message:'Скажи или напиши фразу на китайском.'};
+ // Rewrite only explicit meaning-preserving learner variants. Keep original
+ // transcript visible, without claiming a made-up pinyin for the new wording.
+ const variant=questionVariant(raw);
+ if(variant&&normalize(variant.canonical)!==s){
+  const resolved=answerLive(variant.canonical,options);
+  if(resolved.kind==='question')return {...resolved,spoken:{...resolved.spoken,known:true,hanzi:raw,pinyin:null,topic:variant.lesson,variantOf:variant.canonical}};
+  if(resolved.kind==='locked')return {...resolved,spoken:{known:false,hanzi:raw,pinyin:null,translation:null,topic:variant.lesson}};
+  return {kind:'clarify',spoken:{known:false,hanzi:raw,translation:null},message:'Пока не нашла проверенного ответа на эту формулировку.'};
+ }
+ const answerVariant=learnerAnswerVariant(raw,prompt);
+ if(answerVariant&&normalize(answerVariant)!==s){
+  const resolved=answerLive(answerVariant,options);
+  if(['answer','statement'].includes(resolved.kind)&&resolved.spoken?.known)
+   return {...resolved,spoken:{...resolved.spoken,hanzi:raw,pinyin:null,variantOf:answerVariant}};
+ }
+
  let spoken=analyzeLearner(raw,allowed,prompt,curriculum);
  if(!spoken.correction){
   // For short answers such as 是/没有, the active lesson question supplies the
@@ -201,7 +251,7 @@ export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],da
  if(extension){
   if(extension.kind==='locked')return {...extension,spoken};
   const followup=extension.lesson===6&&turn%2===0?rememberedFamilyFollowup(profile,allowed,[]):null;
-  return {...extension,spoken,followup};
+  return extendQuestion({...extension,spoken,followup},raw,allowed,date,profile);
  }
  // Yes/no calendar and weather questions need a truth value. The older
  // general parser sometimes answered them with just the date/condition.
@@ -209,21 +259,21 @@ export function answerLive(raw,{allowed=[1],topic=1,prompt=null,curriculum=[],da
   ||/^(今天|明天|昨天)(下雨|下雪|冷|热)吗$/.test(s);
  if(semanticBoolean){
   const checked=patternQuestion(raw,allowed,date);
-  if(checked)return checked;
+  if(checked)return extendQuestion(checked,raw,allowed,date,profile);
  }
  const q=findQuestion(s);
  if(q){
   if(!allowed.includes(q.topic)||q.requires?.some(n=>!allowed.includes(n)))return {kind:'locked',spoken,lesson:q.topic,message:'Это тема урока '+(q.requires?.find(n=>!allowed.includes(n))||q.topic)+'. Открой этот урок в выборе сверху или вернись к уже пройденным темам.'};
   const reply=q.reply(date),followup=turn%2===0?nextTopicPrompt(q.topic,[raw],date,profile):null;
-  return {kind:'question',spoken,lesson:q.topic,reply,followup};
+  return extendQuestion({kind:'question',spoken,lesson:q.topic,reply,followup},raw,allowed,date,profile);
  }
  // Unknown variants of a known grammatical family are handled by the shared
  // slot engine, but old authored lesson dialogue takes precedence.
  const patternedQuestion=patternQuestion(raw,allowed,date);
- if(patternedQuestion)return patternedQuestion;
+ if(patternedQuestion)return extendQuestion(patternedQuestion,raw,allowed,date,profile);
  if(!spoken.known&&allowed.includes(7)&&(/(?:погод|прогноз)/i.test(raw)||/(真实|实际|现在|北京|莫斯科).*(天气|下雨|冷|热)/.test(s)))return {kind:'clarify',spoken,message:'Настоящий прогноз я не получаю. Могу поддержать учебный разговор о погоде: 今天天气怎么样？'};
  const old=answerNonStop(raw,allowed,prompt,curriculum,date);
- if(old.kind==='question')return {...old,spoken:spoken.known?spoken:old.spoken,followup:s==='谢谢'?null:turn%3===2?nextTopicPrompt(topic,[],date,profile):null};
+ if(old.kind==='question')return extendQuestion({...old,spoken:spoken.known?spoken:old.spoken,followup:s==='谢谢'?null:turn%3===2?nextTopicPrompt(topic,[],date,profile):null},raw,allowed,date,profile);
  if(!spoken.known){return {kind:'clarify',spoken,message:spoken.words?.length?'Знакомые слова разобраны ниже. Уточни смысл или попробуй предложение из подсказки.':'Точный смысл пока не подтверждён. Попробуй фразу из пройденного урока или уточни вопрос.'}}
  const offQuestion=prompt&&!answersPrompt(spoken,raw,prompt)&&spoken.topic===prompt.lesson;
  if(offQuestion&&!spoken.family?.present?.length){return {kind:'statement',spoken,lesson:spoken.topic,message:'Фраза понятна, но это не ответ на текущий вопрос. '+prompt.instruction}}
