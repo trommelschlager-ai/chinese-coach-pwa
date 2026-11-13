@@ -1,6 +1,6 @@
 // Panda AI v281: use reviewed questions and recorded vocabulary already taught in HSK 1 lessons 1–7.
 // No paid model, no fabricated recording, no access to locked lessons.
-import {topicPrompts} from './panda-live-dialogue-v272.mjs?v=302';
+import {topicPrompts} from './panda-live-dialogue-v272.mjs?v=304';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=281';
 import {normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {extensionPrompts} from './panda-hsk1-extensions-v282.mjs?v=284';
