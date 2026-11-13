@@ -18,10 +18,17 @@ test('Chinese sentence checking, punctuation and branch selection',()=>{
  assert.equal(CONVERSATIONS.length,7);
  assert.deepEqual(missingConversationAudio(CONVERSATIONS[0],key=>key==='你好'?'hello.mp3':null),['你好吗？','我也很好，谢谢！','很好！']);
  assert.deepEqual(missingConversationAudio(CONVERSATIONS[0],lookupPilotAudio),[]);
- assert.equal(Object.keys(PILOT_AUDIO).length,23);
- for(const [phrase,file] of Object.entries(PILOT_AUDIO)){
-  assert(fs.statSync(new URL('../'+file,import.meta.url)).size>1000,phrase);
-  assert(ENVELOPES[file]?.levels.length>10,phrase);
+ const recorded=Object.entries(PILOT_AUDIO);
+ assert.equal(recorded.length,33,'Keep 23 earlier approved phrases and the new batch of 10');
+ const newBatch=recorded.filter(([,file])=>file.startsWith('./assets/panda-live-voice-bridge-v307/'));
+ assert.equal(newBatch.length,10,'Do not remove original course voices while adding B01–B10');
+ for(const [phrase,file] of recorded){
+  const path=new URL('../'+file,import.meta.url);
+  const data=fs.readFileSync(path);
+  assert(data.length>3000,phrase);
+  if(file.includes('panda-live-voice-bridge-v307/')){
+   assert(data[0]===255&&(data[1]&0xe0)===0xe0,'Bridge clip must be original frame-aligned MPEG: '+phrase);
+  }else assert(ENVELOPES[file]?.levels.length>10,'Original clip envelope must remain: '+phrase);
  }
  assert.equal(lookupPilotAudio('你好！'),PILOT_AUDIO['你好']);
  assert.equal(lookupPilotAudio('未知'),null);
