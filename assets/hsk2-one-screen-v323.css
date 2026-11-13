@@ -1,0 +1,149 @@
+/* Panda Go v323 — one-screen HSK2, all existing lessons. 
+   Controls remain visible; detailed material is paginated or collapsible. */
+html,body{height:100%;max-height:100%;overflow:hidden}
+body{overflow:hidden;align-items:stretch}
+.app{height:100dvh;max-height:100dvh;min-height:0;overflow:hidden}
+.app .scene,.app.structure-page .scene{height:clamp(66px,10dvh,82px);flex:0 0 auto;min-height:0}
+.app .scene .panda,.app.structure-page .scene .panda{width:clamp(66px,10vw,95px);height:clamp(60px,9.5dvh,78px);bottom:-7px}
+.app .brand,.app.structure-page .brand{left:clamp(74px,20vw,105px);right:22px;top:calc(3px + env(safe-area-inset-top,0px));font-size:clamp(18px,5.4vw,24px)}
+.app .brand small{font-size:9.5px;padding:3px 7px;margin-top:1px}
+.app .backlink{left:8px;top:calc(7px + env(safe-area-inset-top,0px));width:30px;height:30px;font-size:23px}
+.app .scene-caption{right:7px;bottom:5px;font-size:9px;padding:3px 6px}
+.app .content{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding:6px 9px 4px;overscroll-behavior:contain}
+.app .content>.banner{flex:none;font-size:clamp(14px,4vw,17px);padding:5px 6px;margin:0 0 5px;min-height:0;border-radius:11px}
+.app .content>.intro{flex:none;font-size:10px;margin:1px 0 5px;line-height:1.2}
+.app .content>.lesson-title{flex:none;margin-bottom:4px}
+.app .lesson-title strong{font-size:clamp(12px,3.3vw,14px)}
+.app .pill{font-size:10px;padding:4px 6px}
+.app .content>.meter{flex:none;height:4px;margin:0 0 5px}
+.app .content>.paper,.app.structure-page .content>.paper{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;margin:0 0 5px;padding:8px 10px;display:flex;flex-direction:column;justify-content:safe center;border-radius:14px}
+.app .content>.toolbar{flex:none;margin:0 0 4px;gap:6px}
+.app .content>.bottom-actions{position:static;flex:none;bottom:auto;padding:0;margin:0 0 3px;background:transparent;z-index:1}
+.app .toolbar{gap:7px;margin:0}
+.app .softbtn{padding:7px 9px;font-size:11px;border-radius:10px;min-height:35px}
+.app .primary{padding:8px 9px;font-size:12px;border-radius:11px;min-height:35px}
+.app .content>.small-caption{display:none}
+.app .nav,.app.structure-page .nav{flex:0 0 auto;min-height:calc(46px + env(safe-area-inset-bottom,0px));padding:3px 6px calc(4px + env(safe-area-inset-bottom,0px))}
+.app .nav a{font-size:9px;gap:0}
+.app .nav a b{font-size:18px}
+.app .paper>.intro{font-size:10.5px;line-height:1.25;margin:0 0 5px}
+.app .paper>.notice,.app .paper .notice{font-size:10px;line-height:1.25;margin:4px 0}
+.app .paper h2{font-size:16px;margin-bottom:5px}
+.app .vocgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;flex:1;min-height:0}
+.app .vocab{padding:5px 4px;gap:2px;min-height:75px;border-radius:11px}
+.app .vocab .hanzi{font-size:clamp(22px,6.6vw,30px);line-height:1.05}
+.app .vocab .py{font-size:11px}
+.app .vocab .ru{font-size:11px}
+.app .examples{gap:5px}
+.app .example{padding:6px 8px;border-radius:10px}
+.app .example b{font-size:clamp(17px,5vw,22px)}
+.app .example .py{font-size:11px;margin:2px 0}
+.app .example .ru{font-size:11px}
+.app .rule{padding:7px 9px;font-size:15px;border-radius:11px;margin-bottom:6px}
+.app .explain{font-size:12px;line-height:1.34}
+.app .explain.spaced{margin-top:6px}
+.app .choices{gap:6px}
+.app .choice{padding:8px 10px;min-height:39px;font-size:13px;border-radius:10px}
+.app .feedback{font-size:11px;line-height:1.3;margin-top:5px;min-height:0}
+.app .builder{min-height:44px;padding:6px;border-radius:11px;gap:5px}
+.app .builder button,.app .tokens button{font-size:17px;min-width:39px;padding:5px 8px}
+.app .tokens{margin:8px 0;gap:5px}
+.app .bubble{padding:5px 8px;margin-bottom:5px;border-radius:10px 10px 10px 3px;max-width:94%;line-height:1.1}
+.app .bubble.right{border-radius:10px 10px 3px 10px}
+.app .bubble b{font-size:clamp(14px,4vw,17px);line-height:1.1}
+.app .bubble em{font-size:10px;margin:2px 0}
+.app .bubble span{font-size:10px;line-height:1.1}
+.app .lesson-read-nav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 0 0}
+.app .lesson-read-nav button{flex:1;min-width:0;font-size:11px;padding:6px 8px}
+.app .lesson-read-nav small{font-size:10px;white-space:nowrap}
+.app .intro-form{gap:5px;margin:3px 0}
+.app .intro-form label{gap:2px;font-size:11px}
+.app .intro-form input,.app .intro-form select{font-size:14px;padding:5px 8px;min-height:35px;border-radius:9px}
+.app details.profile-phrases{border:1px solid #dfb4da;border-radius:11px;background:#fff9fc;margin:5px 0;padding:5px 8px}
+.app details.profile-phrases summary{font-size:12px;font-weight:850;cursor:pointer}
+.app .intro-output{margin:4px 0;gap:4px}
+.app .intro-output .example{padding:4px}
+.app .intro-output .example b{font-size:16px}
+.app .intro-output .example .ru{font-size:10px}
+.app .intro-dialogue{gap:5px}
+.app .intro-dialogue .question{padding:6px 8px;border-radius:11px}
+.app .intro-dialogue .question b{font-size:clamp(17px,4.5vw,21px)}
+.app .intro-dialogue .question .py,.app .intro-dialogue .question small{font-size:10.5px}
+.app .intro-dialogue input{min-height:39px;padding:6px 8px;font-size:16px}
+.app .intro-dialogue .dialogue-buttons{gap:5px}
+.app .intro-dialogue .dialogue-buttons button{min-width:0;flex:1;padding:7px 6px;font-size:11px}
+.app .intro-dialogue .dialogue-feedback{font-size:10.5px;padding:6px;line-height:1.25}
+.app .intro-dialogue .dialogue-note{font-size:9.5px;line-height:1.2}
+.app .hsk2-meaning-first{gap:5px}
+.app .hsk2-meaning-first .meaning-lead{font-size:10.5px;line-height:1.25}
+.app .hsk2-meaning-first .meaning-two{gap:6px}
+.app .hsk2-meaning-first .meaning-tile{gap:2px;padding:6px 5px;border-radius:11px}
+.app .hsk2-meaning-first .meaning-character{font-size:clamp(36px,10vw,50px)}
+.app .hsk2-meaning-first .meaning-pinyin{font-size:12px;padding:1px 6px}
+.app .hsk2-meaning-first .meaning-russian{font-size:15px}
+.app .hsk2-meaning-first .meaning-role{font-size:10px;line-height:1.15}
+.app .hsk2-meaning-first .meaning-connect{padding:5px 8px;border-radius:10px;font-size:11px}
+.app .hsk2-meaning-first .meaning-connect strong{font-size:17px}
+.app .hsk2-meaning-first .meaning-note{font-size:11px;line-height:1.25}
+.app .hsk2-meaning-first .meaning-prompt{font-size:10px;line-height:1.2}
+.app .hsk2-structure{gap:5px}
+.app .hsk2-structure-tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.app .hsk2-structure-tabs button{border:1px solid #deb3dd;border-radius:10px;padding:7px;background:#fff9fc;color:#6e3c8c;font-size:11px;font-weight:800}
+.app .hsk2-structure-tabs button[aria-pressed="true"]{background:linear-gradient(120deg,#af56c7,#8139a6);color:white}
+.app .hsk2-structure[data-view="phrase"] .hsk2-order,
+.app .hsk2-structure[data-view="phrase"] .hsk2-order-note,
+.app .hsk2-structure[data-view="order"] .hsk2-phrase-card,
+.app .hsk2-structure[data-view="order"] .hsk2-word-parts{display:none}
+.app .hsk2-ribbon,.app .hsk2-structure .lesson-note{display:none}
+.app .hsk2-phrase-card{grid-template-columns:70px 1fr;padding:6px;gap:7px}
+.app .hsk2-city-art{min-height:74px;max-height:90px}
+.app .hsk2-city-art svg{max-height:90px}
+.app .hsk2-phrase-main .hanzi{font-size:clamp(18px,5vw,25px)}
+.app .hsk2-phrase-main .pronounce{margin:3px 0;padding:2px 4px;font-size:11px}
+.app .hsk2-phrase-main .translation{font-size:12px}
+.app .hsk2-sound-badge{font-size:10px;padding:2px 6px}
+.app .hsk2-word-parts{gap:4px}
+.app .hsk2-word-part{gap:1px;padding:4px 2px;border-radius:9px}
+.app .hsk2-word-part .symbol{font-size:18px}
+.app .hsk2-word-part .phonetic{font-size:9px;padding:1px 3px}
+.app .hsk2-word-part .meaning{font-size:9px}
+.app .hsk2-word-part .mark{font-size:12px}
+.app .hsk2-order{gap:4px}
+.app .hsk2-order>div{padding:7px 3px}
+.app .hsk2-order strong{font-size:9px}
+.app .hsk2-order b{font-size:17px}
+.app .hsk2-order-note{font-size:11px;padding:6px;line-height:1.25}
+.app .road{gap:4px}
+.app .road-item{min-height:40px;padding:5px 7px;gap:6px}
+.app .road-item strong{font-size:12px}
+.app .road-item small{font-size:10px}
+.app .num{width:29px;height:29px}
+.app .review-row{padding:6px 8px;margin-bottom:5px}
+.app .review-row strong{font-size:12px}
+.app .review-row small{font-size:10px}
+.app .review-row .emoji{font-size:23px}
+.app .content:has(.road){overflow-y:auto}
+.app .content:has(>.paper:nth-of-type(2)){overflow-y:auto}
+@media(max-height:690px){
+ .app .scene,.app.structure-page .scene{height:61px}
+ .app .brand,.app.structure-page .brand{font-size:19px}
+ .app .scene .panda,.app.structure-page .scene .panda{height:58px;width:66px}
+ .app .content>.banner{font-size:13px;padding:4px 6px;margin-bottom:4px}
+ .app .content>.lesson-title{margin-bottom:3px}
+ .app .content>.meter{margin-bottom:3px}
+ .app .content>.paper{padding:6px 8px}
+ .app .vocgrid{gap:4px}
+ .app .vocab{min-height:63px}
+ .app .vocab .hanzi{font-size:22px}
+ .app .bubble{margin-bottom:3px;padding:4px 7px}
+ .app .content>.toolbar{margin-bottom:3px}
+ .app .softbtn,.app .primary{min-height:32px;padding:5px 7px}
+ .app .nav,.app.structure-page .nav{min-height:calc(41px + env(safe-area-inset-bottom,0px))}
+}
+@media(max-height:510px){
+ .app .scene,.app.structure-page .scene{height:52px}
+ .app .scene-caption{display:none}
+ .app .paper>.intro,.app .paper>.notice{display:none}
+ .app .content>.paper{overflow-y:auto}
+}
+@media(min-width:560px){.app{height:min(940px,100dvh);max-height:100dvh;margin:0 auto;border-radius:0}}
