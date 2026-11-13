@@ -93,6 +93,7 @@ function gradeIntroAnswer(index,answer){
   if(/^我叫(.+)$/.test(x)||/^我的名字(?:是|叫)(.+)$/.test(x)||/^我是(.+)$/.test(x)){
    const name=x.replace(/^我叫|^我的名字(?:是|叫)|^我是/,'');
    if(!name||/^(?:什么|谁|名字)$/.test(name))return {ok:false,code:'missing',feedback:'После 我叫 укажи имя. Например: 我叫安娜。'};
+   if(/^(?:医生|老师|学生|司机|工程师|厨师|工人|护士|经理|工作|一名|在)/.test(name))return {ok:false,code:'profession',feedback:'Ты назвал профессию или место, а Панда спросила имя. Начни с 我叫 + имя.'};
    return {ok:true,code:'name',feedback:/[А-Яа-яA-Za-z]/.test(name)?'Строение фразы верное. Имя написано не иероглифами — его китайское произношение и тоны не проверены.':'Хорошо! Ты правильно представился. Имя может быть любым.'};
   }
   return {ok:false,code:'order',feedback:'Для знакомства используй 我叫 + имя. Например: 我叫安娜。'};
@@ -101,6 +102,7 @@ function gradeIntroAnswer(index,answer){
   if(/^我住在(.+)$/.test(x)||/^我住(.+)$/.test(x)){
    const city=x.replace(/^我住在|^我住/,'');
    if(!city||/(什么|哪儿|哪里)$/.test(city))return {ok:false,code:'missing',feedback:'После 住在 укажи город. Например: 我住在莫斯科。'};
+   if(/^(?:工作|医生|老师|学生|什么|是|学习)/.test(city))return {ok:false,code:'not-city',feedback:'После 住在 нужно назвать город или место, где живёшь. Например: 莫斯科。'};
    return {ok:true,code:'city',feedback:x.startsWith('我住在')?'Правильно: 我 + 住在 + название города. Само название города автоматически не проверяется.':'В разговоре тебя поймут. Для учебного образца лучше 我住在 + город.'};
   }
   if(/^我在(.+)$/.test(x))return {ok:false,code:'location',feedback:'我在… означает «я нахожусь…». Чтобы сказать, где живёшь, добавь 住: 我住在莫斯科。'};
@@ -111,9 +113,10 @@ function gradeIntroAnswer(index,answer){
   if(/^我(?:是|是一名|是一位|当)(.+)$/.test(x)){
    const job=x.replace(/^我(?:是一名|是一位|是|当)/,'');
    if(!job||/(什么|谁|吗)$/.test(job))return {ok:false,code:'missing',feedback:'После 我是 назови профессию: 我是医生。'};
+   if(/^(?:在|住|叫|什么|哪儿|莫斯科|北京|上海)/.test(job))return {ok:false,code:'not-job',feedback:'Ты назвал место или другое действие, а нужен ответ о профессии: 我是医生。'};
    return {ok:true,code:'job',feedback:'Основа верная: 我是 + профессия. Само название незнакомой профессии автоматически не проверяется.'};
   }
-  if(/^(?:我)?(?:没|没有|没在)工作$/.test(x)||/^我(?:还在上学|是学生)$/.test(x))return {ok:true,code:'status',feedback:'Хороший ответ! Если сейчас не работаешь или учишься, можно сказать и так.'};
+  if(/^(?:我)?(?:没|没有)工作$/.test(x)||/^我(?:还在上学|是学生)$/.test(x))return {ok:true,code:'status',feedback:'Хороший ответ! Если сейчас не работаешь или учишься, можно сказать и так.'};
   if(/^我在.+工作$/.test(x))return {ok:false,code:'workplace',feedback:'Так ты назвал место работы, а вопрос — о профессии. Скажи 我是医生。 или 我是老师。'};
   return {ok:false,code:'order',feedback:'Профессию называем с 是: 我是医生。 Если не работаешь: 我没有工作。'};
  }
@@ -154,7 +157,7 @@ function render(){
  if(s.kind==='build'){let a=state.build,str=a.map(n=>s.tokens[n]).join(''),ok=str===s.answer.join('');inside='<p class="intro">'+esc(s.question)+'</p><div class="builder">'+(a.length?a.map((n,j)=>'<button type="button" data-remove="'+j+'">'+esc(s.tokens[n])+'</button>').join(''):'<span class="small-caption">Выбирай слова в правильном порядке.</span>')+'</div><div class="tokens">'+s.tokens.map((w,n)=>'<button type="button" data-token="'+n+'" '+(a.includes(n)?'disabled':'')+'>'+esc(w)+'</button>').join('')+'</div><p class="feedback '+(ok?'ok':'')+'">'+(ok?'✓ Верно!':esc(s.why))+'</p>'}
  if(s.kind==='profile')inside=profileForm();
  if(s.kind==='dialogue-practice')inside=introDialogueScreen();
- if(s.kind==='finish')inside='<div style="text-align:center;font-size:35px">🌸 🐼</div><h2 style="text-align:center">'+esc(s.title)+'</h2><p class="explain">'+esc(s.desc)+'</p><p class="notice">Можно повторить любой шаг, а затем продолжить HSK 2.</p>';
+ if(s.kind==='finish'){const trained=introDialogueState().passed.every(Boolean);inside='<div style="text-align:center;font-size:35px">🌸 🐼</div><h2 style="text-align:center">'+esc(trained?s.title:'Знакомство с подсказками пройдено')+'</h2><p class="explain">'+esc(trained?s.desc:'Ты прошёл три вопроса, но часть ответов была с подсказками. Повтори разговор и попробуй ответить самостоятельно.')+'</p><p class="notice">Можно повторить любой шаг, а затем продолжить HSK 2.</p>';}
  const disabled=(s.kind==='quiz'&&answer!==s.answer)||(s.kind==='build'&&state.build.map(n=>s.tokens[n]).join('')!==s.answer.join(''))||(s.kind==='profile'&&!profileReady())||(s.kind==='dialogue-practice'&&!introDialogueState().passed.every(Boolean)&&!introDialogueState().passed.every((v,n)=>v||introDialogueState().assisted[n]));
  $('screen').innerHTML='<div class="banner">Меня зовут · где живу · кем работаю</div>'+
  '<div class="lesson-title"><strong>'+esc(s.title)+'</strong><span class="pill">Шаг '+(i+1)+' из '+steps.length+'</span></div>'+
