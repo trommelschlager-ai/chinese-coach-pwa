@@ -196,7 +196,7 @@ export function brainQuestion(raw,allowed=[1],curriculum=[]){
  const description=summary+(item.toneNote?' '+item.toneNote:'')+
    ' Пример: '+item.example.hanzi+' — '+item.example.pinyin+' — '+item.example.ru;
  const example=request.intent==='example',sentence=example?item.example:null;
- const reply=example?{...sentence,context:'Проверенный учебный пример, не утверждение о реальной погоде или дате.'}:
+ const reply=example?{...sentence,context:sentence.hanzi===item.word?'В уроке есть чтение и значение этого слова; полное проверенное предложение пока не добавлено.':'Проверенный учебный пример, не утверждение о реальной погоде или дате.'}:
   {hanzi:item.word,pinyin:item.pinyin,ru:item.translation,audioKey:item.audioKey,context:
     (request.intent==='tone'?'Тоны: '+tone+'. ':'')+
     'Тип: '+item.category+'. '+(item.toneNote||'')};
