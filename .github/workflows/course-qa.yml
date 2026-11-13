@@ -40,6 +40,7 @@ jobs:
       - run: node scripts/verify-panda-brain-v302.cjs
       - run: node scripts/verify-panda-hsk2-seed-v303.cjs
       - run: node scripts/verify-panda-hsk2-bridge-v304.cjs
+      - run: node scripts/verify-panda-sentence-coach-v319.cjs
       - run: node scripts/verify-panda-native-real-v246.cjs
       - run: node scripts/verify-panda-audio-v244.cjs
       - run: node scripts/verify-lesson-viewport-v237.cjs

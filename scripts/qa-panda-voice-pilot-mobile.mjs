@@ -138,6 +138,16 @@ try{
   assert(b02.endsWith('/B02.mp3'),'Wrong voice for corrected sentence');
   await send(page,'你忙吗？');assert.equal(await page.locator('#phrase').textContent(),'我不忙。');
   await send(page,'我是忙');assert((await page.locator('#learner-feedback').textContent()).includes('我很忙'));
+  // v319: short valid beginner phrases become complete first-person examples.
+  await send(page,'很忙');assert.equal(await page.locator('#phrase').textContent(),'我很忙。');
+  assert((await page.locator('#learner-feedback').textContent()).includes('правильная краткая фраза'));
+  assert(await page.locator('#hear').isEnabled(),'Use existing recorded B04 instead of new TTS');
+  await send(page,'不忙');assert.equal(await page.locator('#phrase').textContent(),'我不忙。');
+  assert(await page.locator('#hear').isEnabled(),'Use existing recorded B05');
+  await send(page,'是学生');assert.equal(await page.locator('#phrase').textContent(),'我是学生。');
+  assert((await page.locator('#learner-feedback').textContent()).includes('добавь 我'));
+  await send(page,'有妹妹');assert.equal(await page.locator('#phrase').textContent(),'我有妹妹。');
+  assert((await page.locator('#learner-feedback').textContent()).includes('Для рассказа о своей семье добавь 我'),'The family phrase needs a contextual first-person hint');
 
   const sources=await page.evaluate(async()=>Object.values((await import('./assets/panda-live-audio.mjs')).PILOT_AUDIO));
   for(const src of sources){const response=await page.request.get(new URL(src,BASE+'/').href);assert.equal(response.status(),200,src);assert((await response.body()).length>1000,src)}
