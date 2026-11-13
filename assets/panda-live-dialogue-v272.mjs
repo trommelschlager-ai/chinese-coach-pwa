@@ -233,7 +233,9 @@ export function answerLive(raw,options={}){
  // Rewrite only explicit meaning-preserving learner variants. Keep original
  // transcript visible, without claiming a made-up pinyin for the new wording.
  const variant=questionVariant(raw);
- if(variant&&normalize(variant.canonical)!==s){
+ // Previously reviewed questions keep their exact authored tone-marked pinyin,
+ // translation and specific reply. Do not downgrade them to an alias fallback.
+ if(variant&&!lookupExtendedQuestion(raw)&&!findQuestion(s)&&!patternQuestion(raw,allowed,date)&&normalize(variant.canonical)!==s){
   const resolved=answerLive(variant.canonical,options);
   if(resolved.kind==='question')return {...resolved,spoken:{...resolved.spoken,known:true,hanzi:raw,pinyin:null,topic:variant.lesson,variantOf:variant.canonical}};
   if(resolved.kind==='locked')return {...resolved,spoken:{known:false,hanzi:raw,pinyin:null,translation:null,topic:variant.lesson}};
