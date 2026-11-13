@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 213" role="img" aria-label="Panda Go">
+<defs>
+<linearGradient id="gold" x1="0" x2=".2" y1="0" y2="1">
+<stop stop-color="#fffde0"/><stop offset=".19" stop-color="#fff27f"/><stop offset=".42" stop-color="#ffca2b"/><stop offset=".7" stop-color="#f59608"/><stop offset=".92" stop-color="#e66b00"/><stop offset="1" stop-color="#b53b00"/></linearGradient>
+<linearGradient id="roof" x1="0" x2="0.1" y1="0" y2="1">
+<stop stop-color="#fff2a0"/><stop offset=".12" stop-color="#e77a28"/><stop offset=".42" stop-color="#a92435"/><stop offset=".84" stop-color="#671a31"/><stop offset="1" stop-color="#38152b"/></linearGradient>
+<linearGradient id="tile" x1="0" x2="0" y1="0" y2="1">
+<stop stop-color="#ffb960"/><stop offset=".45" stop-color="#eb6343"/><stop offset="1" stop-color="#9d1930"/></linearGradient>
+<linearGradient id="wall" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#c12f34"/><stop offset=".56" stop-color="#98222e"/><stop offset="1" stop-color="#57112e"/></linearGradient>
+<filter id="shadow" x="-10%" y="-35%" width="125%" height="170%"><feGaussianBlur stdDeviation="5"/></filter>
+</defs>
+<g opacity=".55" transform="translate(4 8)" filter="url(#shadow)">
+ <path d="M140 91Q242 68 420 60Q596 68 700 91L714 185H128Z" fill="#1b0f2f"/>
+</g>
+<path d="M163 78Q294 65 420 55Q554 65 674 78L690 169H148Z" fill="url(#wall)" stroke="#9f3d24" stroke-width="7"/>
+<path d="M153 97H687M158 119H683M155 141H686M172 168H668" stroke="#fbc964" stroke-width="6" opacity=".72"/>
+<path d="M127 83Q159 86 190 75Q238 58 287 35Q337 14 418 11Q499 14 549 35Q599 59 648 75Q680 85 713 83Q738 72 744 44Q744 97 700 110Q660 110 617 91Q525 52 418 53Q312 52 220 91Q177 110 137 110Q92 97 93 44Q104 72 127 83Z" fill="url(#roof)" stroke="#ffba46" stroke-width="10" stroke-linejoin="round"/>
+<g stroke="#f8b353" stroke-width="6" opacity=".91" fill="none">
+ <path d="M164 87Q247 44 417 35Q588 45 673 87"/>
+ <path d="M190 83Q259 49 418 42Q575 49 650 83"/>
+ <path d="M211 76Q291 54 418 47Q547 54 625 76"/>
+</g>
+<g stroke="#77243b" stroke-width="4.5" opacity=".88">
+ <path d="M248 56L265 86M290 45L304 72M333 33L341 59M374 24L377 56M418 20V53M464 24L459 55M504 33L496 59M547 46L533 72M590 56L573 85"/>
+</g>
+<g stroke="#ffe79e" stroke-width="4" fill="none" stroke-linecap="round"><path d="M102 71Q79 75 79 56M733 71Q760 75 761 56"/><path d="M138 91Q188 92 229 70Q322 31 418 31Q514 31 607 70Q651 93 698 91"/></g>
+<path d="M418 12V-1" stroke="#b35416" stroke-width="8"/><path d="M405 9L418-7L431 9L418 23Z" fill="#ffd964" stroke="#d47906" stroke-width="3"/>
+<circle cx="418" cy="1" r="8" fill="#fff2a6" stroke="#d17f08" stroke-width="3"/>
+<g fill="#ecad20" stroke="#a94e0a" stroke-width="5">
+ <path d="M57 150Q26 130 28 118Q41 110 51 125Q63 109 79 117Q94 131 83 150Q93 165 119 162Q92 184 64 170Q38 181 25 161Q23 150 57 150Z"/>
+ <path d="M781 150Q814 130 812 118Q799 110 789 125Q777 109 761 117Q746 131 757 150Q747 165 721 162Q748 184 776 170Q802 181 815 161Q817 150 781 150Z"/>
+</g>
+<text x="420" y="175" text-anchor="middle" textLength="615" lengthAdjust="spacingAndGlyphs" font-family="Georgia,Times New Roman,serif" font-size="128" font-style="italic" font-weight="900" fill="#50152e" stroke="#581121" stroke-width="18" stroke-linejoin="round" paint-order="stroke">Panda Go</text>
+<text x="420" y="168" text-anchor="middle" textLength="615" lengthAdjust="spacingAndGlyphs" font-family="Georgia,Times New Roman,serif" font-size="128" font-style="italic" font-weight="900" fill="url(#gold)" stroke="#8f290c" stroke-width="10" stroke-linejoin="round" paint-order="stroke">Panda Go</text>
+<text x="420" y="168" text-anchor="middle" textLength="615" lengthAdjust="spacingAndGlyphs" font-family="Georgia,Times New Roman,serif" font-size="128" font-style="italic" font-weight="900" fill="none" stroke="#fff7af" stroke-width="1.2">Panda Go</text>
+<path d="M180 186Q420 204 660 186" fill="none" stroke="#fdbb25" stroke-width="5" stroke-linecap="round"/>
+</svg>
