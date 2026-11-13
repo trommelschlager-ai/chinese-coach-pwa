@@ -78,6 +78,16 @@ try{
   for(const [q,answer] of [['今天天气怎么样','今天很冷。'],['你有妹妹吗','我有一个妹妹。'],['你几岁','我三岁。']]){await send(page,q);assert.equal(await page.locator('#phrase').textContent(),answer)}
   await send(page,'今天星期几');assert((await page.locator('#phrase').textContent()).includes('星期'+dayNames[day]));
   await send(page,'今天几月几号');assert((await page.locator('#exercise-banner').textContent()).includes('календарю устройства'));
+  // v302: end-to-end text questions use the existing chat, not a new screen.
+  await send(page,'妹妹是什么意思？');
+  assert.equal(await page.locator('#phrase').textContent(),'妹妹');
+  assert((await page.locator('#pinyin').textContent()).includes('mèimei'));
+  assert((await page.locator('#learner-feedback').textContent()).includes('существительное'));
+  await send(page,'用春天造句');
+  assert.equal(await page.locator('#phrase').textContent(),'春天天气很好。');
+  assert((await page.locator('#translation').textContent()).includes('Весной'));
+  await send(page,'水是什么意思？');
+  assert((await page.locator('#status').textContent()).includes('пока нет в словаре'));
   // Additional question and reply pairs across the approved seven-lesson knowledge base.
   for(const [question,expected] of [
    ['你有爷爷吗','有，我有爷爷。'],
