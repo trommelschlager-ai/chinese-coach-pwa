@@ -1,6 +1,6 @@
 {
-  "version": 305,
-  "bytes": 58194101,
+  "version": 306,
+  "bytes": 58172770,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1590,9 +1590,6 @@
     "./assets/panda-voice-pilot-engine.mjs?v=live6",
     "./assets/panda-voice-pilot-ui.mjs?v=live10",
     "./assets/panda-voice-pilot-ui.mjs?v=live6",
-    "./assets/panda-voice-pilot.css?v=270",
-    "./assets/panda-voice-pilot.css?v=272",
-    "./assets/panda-voice-pilot.css?v=live10",
     "./assets/panda-weather-female-v240.js?v=240",
     "./assets/panda-word-sentences-v148.js?v=148",
     "./assets/panda-xiaoxiao-trainer-v250/p041.mp3",
@@ -2735,10 +2732,11 @@
     "./assets/panda-brain-hsk1-v302.mjs?v=302",
     "./assets/panda-curriculum-tutor.mjs?v=302",
     "./scripts/verify-panda-brain-v302.cjs",
-    "./assets/panda-hsk2-bridge-v304.mjs?v=304",
-    "./assets/panda-live-dialogue-v272.mjs?v=304",
-    "./assets/panda-hsk1-questions-v281.mjs?v=304",
-    "./panda-voice-pilot.html?v=305",
-    "./assets/panda-live-screen-v270.mjs?v=305"
+    "./panda-voice-pilot.html?v=306",
+    "./assets/panda-live-screen-v270.mjs?v=306",
+    "./assets/panda-live-dialogue-v272.mjs?v=306",
+    "./assets/panda-hsk1-questions-v281.mjs?v=306",
+    "./assets/panda-hsk2-bridge-v304.mjs?v=306",
+    "./assets/panda-voice-pilot.css?v=306"
   ]
 }
