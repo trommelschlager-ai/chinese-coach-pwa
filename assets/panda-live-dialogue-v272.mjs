@@ -9,6 +9,7 @@ import {lookupExtendedQuestion,extensionAnswer,extensionStatement,rememberedFami
 import {checkedExtensionReply,recognizeApprovedPhrase} from './panda-hsk1-answerbank-v284.mjs?v=284';
 import {patternQuestion,patternStudentAnswer,patternPrompts,conversationalFollowup} from './panda-hsk1-patterns-v285.mjs?v=285';
 import {questionVariant,learnerAnswerVariant} from './panda-hsk1-variants-v301.mjs?v=301';
+import {brainQuestion,interpretBrainSentence} from './panda-brain-hsk1-v302.mjs?v=302';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
@@ -141,6 +142,8 @@ export function analyzeLearner(raw,allowed=[1],context=null,curriculum=[],checkE
   if(exact)return known(raw,exact[1],exact[2],topic);
   const original=interpretUtterance(raw,topic,curriculum);if(original.known)return {...original,topic};
  }
+ // v302: compose only teacher-reviewed HSK1 grammatical families using unlocked words.
+ const built=interpretBrainSentence(raw,allowed,curriculum);if(built)return built;
  // Tone checking here concerns written pinyin only, never a microphone recording.
  if(checkErrors&&/[a-z]/i.test(raw)&&!/[\u3400-\u9fff]/.test(raw))for(const topic of allowed){
   const candidates=[...(curriculum[topic-1]?.dialogue||[]).map(x=>[x[1],x[2],x[3]]),...(curriculum[topic-1]?.rules||[]).map(x=>[x[2],x[3],x[4]])];
@@ -198,6 +201,8 @@ function linkedQuestion(raw,lesson,allowed,date,profile={}){
  const source=normalize(raw),relation=/哥哥|姐姐|弟弟|妹妹|妈妈|爸爸|春天|夏天|秋天|冬天/.exec(source)?.[0]||'';
  const isCalendar=[4,5,7].includes(lesson);
  let ranked=pool.filter(x=>!recent.has(normalize(x.hanzi))&&x.requires?.every(n=>allowed.includes(n))!==false);
+ // Vocabulary questions lead to practice involving that exact learned word.
+ if(source.length>1){const related=ranked.find(x=>normalize(x.hanzi).includes(source));if(related)return {...related,isContextual:true}}
  if(lesson===3&&(source.includes('后面')||source.includes('前面'))){
   const family=source.includes('后面')?'next-number':'previous-number';
   const peers=ranked.filter(x=>x.family===family);
@@ -255,6 +260,11 @@ export function answerLive(raw,options={}){
   spoken=patternStudentAnswer(raw,prompt,allowed,date)||spoken;
   if(!spoken.known)spoken=checkedExtensionReply(raw,prompt,allowed,date)||spoken;
  }
+ const vocabulary=brainQuestion(raw,allowed,curriculum);
+ if(vocabulary){
+  if(vocabulary.kind==='question')return {...vocabulary,followup:linkedQuestion(vocabulary.vocabWord,vocabulary.lesson,allowed,date,profile)};
+  return {...vocabulary,spoken};
+ }
  const explanation=lessonExplanation(raw,allowed,topic,curriculum);if(explanation)return {...explanation,spoken};
  if(spoken.family?.absent&&spoken.family.present.includes(spoken.family.absent))return {kind:'clarify',spoken:{...spoken,known:false,translation:null},message:'В одной фразе одновременно сказано «есть» и «нет» об одном родственнике. Уточни, какой вариант ты имеешь в виду.'};
  if(spoken.correction)return {kind:'correction',spoken,lesson:spoken.topic,message:spoken.correction.why};
@@ -287,7 +297,7 @@ export function answerLive(raw,options={}){
  if(old.kind==='question')return extendQuestion({...old,spoken:spoken.known?spoken:old.spoken,followup:s==='谢谢'?null:turn%3===2?nextTopicPrompt(topic,[],date,profile):null},raw,allowed,date,profile);
  if(!spoken.known){return {kind:'clarify',spoken,message:spoken.words?.length?'Знакомые слова разобраны ниже. Уточни смысл или попробуй предложение из подсказки.':'Точный смысл пока не подтверждён. Попробуй фразу из пройденного урока или уточни вопрос.'}}
  const offQuestion=prompt&&!answersPrompt(spoken,raw,prompt)&&spoken.topic===prompt.lesson;
- if(offQuestion&&!spoken.family?.present?.length){return {kind:'statement',spoken,lesson:spoken.topic,message:'Фраза понятна, но это не ответ на текущий вопрос. '+prompt.instruction}}
+ if(offQuestion&&!spoken.brainComposed&&!spoken.family?.present?.length){return {kind:'statement',spoken,lesson:spoken.topic,message:'Фраза понятна, но это не ответ на текущий вопрос. '+prompt.instruction}}
  const active=spoken.topic||topic,answered=answersPrompt(spoken,raw,prompt);
  const futureProfile={...profile,family:{...profile.family,...Object.fromEntries((spoken.family?.present||[]).map(n=>[n,true]))}};
  if(spoken.family?.absent)futureProfile.family[spoken.family.absent]=false;
