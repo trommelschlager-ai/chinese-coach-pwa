@@ -23,7 +23,7 @@ assert(audio.length>8000,'No cleaned male speech present');
 assert.equal(audio.subarray(0,3).toString('ascii'),'ID3','Invalid MP3 header');
 assert(l5.includes("hz==='今天几月几号？'?'./assets/lesson5-male-clean-v290.mp3'"),'Noisy phrase should use new recording');
 for(const [html,token] of [
- ['hsk1-second-v203.html','hsk1-second-v203.js?v=296'],
+ ['hsk1-second-v203.html','hsk1-second-v203.js?v=322'],
  ['hsk1-fifth-v227.html','hsk1-fifth-v227.js?v=296'],
  ['hsk1-family-v231.html','panda-go-companion-v231.js?v=296'],
  ['hsk1-weather-v231.html','panda-go-companion-v231.js?v=296']
