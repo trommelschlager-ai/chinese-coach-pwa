@@ -147,7 +147,7 @@ try{
   await send(page,'是学生');assert.equal(await page.locator('#phrase').textContent(),'我是学生。');
   assert((await page.locator('#learner-feedback').textContent()).includes('добавь 我'));
   await send(page,'有妹妹');assert.equal(await page.locator('#phrase').textContent(),'我有妹妹。');
-  assert((await page.locator('#learner-feedback').textContent()).includes('Не будем придумывать количество'));
+  assert((await page.locator('#learner-feedback').textContent()).includes('Для рассказа о своей семье добавь 我'),'The family phrase needs a contextual first-person hint');
 
   const sources=await page.evaluate(async()=>Object.values((await import('./assets/panda-live-audio.mjs')).PILOT_AUDIO));
   for(const src of sources){const response=await page.request.get(new URL(src,BASE+'/').href);assert.equal(response.status(),200,src);assert((await response.body()).length>1000,src)}
