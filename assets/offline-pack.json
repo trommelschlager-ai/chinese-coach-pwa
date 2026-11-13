@@ -1,5 +1,5 @@
 {
-  "version": 300,
+  "version": 301,
   "bytes": 55522260,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2752,6 +2752,12 @@
     "./assets/hsk1-voices-v156/ca2a36b2097b5a6321a2.mp3?v=300",
     "./assets/dialogue-voices/l1-02-b.mp3?v=300",
     "./assets/dialogue-voices-v73/l1-02-b.mp3?v=300",
-    "./assets/hsk1-first-v189.css?v=300"
+    "./assets/hsk1-first-v189.css?v=300",
+    "./assets/panda-hsk1-variants-v301.mjs?v=301",
+    "./assets/panda-live-dialogue-v272.mjs?v=301",
+    "./assets/panda-live-screen-v270.mjs?v=301",
+    "./assets/panda-hsk1-questions-v281.mjs?v=301",
+    "./panda-voice-pilot.html?v=301",
+    "./scripts/verify-panda-hsk1-variants-v301.cjs"
   ]
 }
