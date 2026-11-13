@@ -27,7 +27,7 @@ const levelSection=homeJs.slice(homeJs.indexOf('function home(){'),homeJs.indexO
 for(const name of ['Начальный уровень','Продолжающий уровень'])assert(levelSection.includes(name),'Required visible level missing: '+name);
 assert(!levelSection.includes("['3','chat'")&&!levelSection.includes('pg-hsk-unavailable'),'Old HSK3–6 controls must not remain');
 assert(levelSection.includes('href="./hsk1-map.html"'),'HSK1 must open actual map');
-assert(levelSection.includes('href')===false||levelSection.includes('hsk2-start.html#map'),'HSK 2 must open the actual continuation map');
+assert(levelSection.includes('./hsk2-start.html#map'),'HSK 2 must open the actual continuation map');
 const m=new JSDOM(map).window.document;
 assert.equal(m.querySelectorAll('nav.map-road > a.node').length,7,'Map must display seven actual lessons');
 assert.equal(m.querySelectorAll('nav.map-road > a[href^="./hsk1-lesson.html?lesson="]').length,2); assert.equal(m.querySelector('nav.map-road > a[data-num="1"]')?.getAttribute('href'),'./hsk1-first-v189.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="2"]')?.getAttribute('href'),'./hsk1-second-v203.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="3"]')?.getAttribute('href'),'./hsk1-third-v212.html'); assert.equal(m.querySelector('nav.map-road > a[data-num="4"]')?.getAttribute('href'),'./hsk1-fourth-v214.html');
