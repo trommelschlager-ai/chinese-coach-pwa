@@ -1,0 +1,135 @@
+/* Panda Go v308 — compact approved home, screenshot-led correction.
+   Presentation only: all lesson routes, audio, locks and progress live in hsk1-map.html. */
+
+/* Keep the colourful staircase and the original travelling panda visible.
+   The lesson road ends BEFORE the large panda's face and backpack. */
+.map-road{
+  flex:1 1 auto;
+  justify-content:flex-start;
+  gap:clamp(4px,.6svh,6px);
+  margin:clamp(16px,2.8svh,23px) 0 0;
+  padding-left:clamp(116px,31vw,139px);
+  padding-right:5px;
+}
+.map-road .node{
+  flex:none;
+  min-height:43px;
+  height:clamp(43px,5.9svh,49px);
+  padding:3px 5px 3px clamp(47px,12.7vw,56px);
+  gap:3px;
+  border-width:2px;
+}
+.map-road .circle{
+  width:clamp(43px,12.3vw,51px);
+  height:clamp(43px,12.3vw,51px);
+  left:-8px;
+  font-size:clamp(26px,7.3vw,33px);
+  border-width:2px;
+}
+.map-road .caption{gap:2px;min-width:0}
+.map-road .caption strong{
+  font-size:clamp(10.8px,3.05vw,14px);
+  line-height:1.08;
+  letter-spacing:-.2px;
+}
+.map-road .caption .pg-word{
+  font-size:clamp(10px,2.82vw,12.5px);
+  line-height:1.08;
+  font-weight:650;
+}
+.map-road .pg-topic-art{
+  flex-basis:clamp(24px,7.9vw,34px);
+  width:clamp(24px,7.9vw,34px);
+  height:clamp(24px,7.9vw,34px);
+}
+.map-road .pg-topic-art.pg-numbers{font-size:clamp(18px,5.8vw,27px)}
+/* Subtle stepping; do not push the lower number circles over the panda's face. */
+.map-road .node[data-num="7"]{margin-left:-12px;width:calc(100% + 12px)}
+.map-road .node[data-num="6"]{margin-left:-7px;width:calc(100% + 7px)}
+.map-road .node[data-num="5"]{margin-left:-3px;width:calc(100% + 3px)}
+.map-road .node[data-num="4"]{margin-left:0;width:100%}
+.map-road .node[data-num="3"]{margin-left:3px;width:calc(100% - 3px)}
+.map-road .node[data-num="2"]{margin-left:6px;width:calc(100% - 6px)}
+.map-road .node[data-num="1"]{margin-left:6px;width:calc(100% - 6px)}
+
+/* Give Panda AI its own readable line and perch its illustration at upper right.
+   Icon and text must never occupy the same layer/space on small phones. */
+.pg-map-actions a.pg-ai-button{
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:visible;
+  min-height:clamp(68px,9svh,82px);
+  padding:18px 5px 9px;
+  border-color:#ffd2ff;
+  background:linear-gradient(165deg,#ae55ef 0%,#812dd7 49%,#50118c 100%);
+}
+.pg-ai-button .action-icon{
+  position:absolute;
+  z-index:2;
+  width:51px;height:49px;
+  top:-22px;right:7px;left:auto;
+  margin:0;
+  pointer-events:none;
+}
+.pg-ai-button .action-icon .pg-ai-figure{
+  display:block;
+  width:51px;height:51px;
+  object-fit:contain;
+  filter:drop-shadow(0 1px 3px #57137e);
+}
+.pg-map-actions a.pg-ai-button .action-label{
+  display:block;
+  align-self:center;
+  position:relative;
+  z-index:1;
+  white-space:nowrap;
+  margin-top:9px;
+  font:italic 950 clamp(14px,3.7vw,18px)/1.12 Arial,system-ui,sans-serif;
+  letter-spacing:-.25px;
+  color:#fff;
+  text-shadow:0 2px 3px #2e0b65;
+}
+.pg-map-actions a.pg-ai-button::before{left:9px;bottom:12px}
+.pg-map-actions a.pg-ai-button::after{right:9px;bottom:12px}
+@media(max-width:365px){
+  .map-road{
+    padding-left:clamp(106px,30vw,116px);
+    margin-top:13px;
+    gap:4px;
+  }
+  .map-road .node{
+    height:43px;min-height:43px;
+    padding-left:46px;padding-right:4px;
+    gap:2px;
+  }
+  .map-road .circle{width:43px;height:43px;font-size:27px;left:-8px}
+  .map-road .caption strong{font-size:10.8px}
+  .map-road .caption .pg-word{font-size:9.7px}
+  .map-road .pg-topic-art{width:24px;height:24px;flex-basis:24px}
+  .pg-map-actions a.pg-ai-button .action-label{font-size:14px}
+  .pg-ai-button .action-icon{width:45px;height:45px;right:5px;top:-17px}
+  .pg-ai-button .action-icon .pg-ai-figure{width:45px;height:45px}
+}
+@media(max-height:735px){
+  .map-road{margin-top:clamp(8px,2svh,15px);gap:4px;margin-bottom:0}
+  .map-road .node{height:43px;min-height:43px}
+  .map-road .circle{height:43px;width:43px;font-size:27px}
+  .pg-map-actions{margin-bottom:4px}
+}
+@media(max-height:650px){
+  .pg-map-heading{gap:3px;padding-bottom:0}
+  .pg-map-brand{font-size:clamp(28px,8.4vw,35px)}
+  .pg-level-title{padding:5px 9px;font-size:clamp(15px,4.4vw,18px)}
+  .map-road{gap:3px;margin-top:8px}
+  .map-road .node{height:41px;min-height:41px}
+  .map-road .circle{height:41px;width:41px}
+  .pg-map-actions a{min-height:61px}
+}
+@media(max-height:565px){
+  .map-shell{overflow-y:auto}
+  .map-road{flex:0 0 auto}
+}
