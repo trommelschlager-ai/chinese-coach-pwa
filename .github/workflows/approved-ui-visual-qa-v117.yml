@@ -32,10 +32,11 @@ jobs:
           curl -fsS http://127.0.0.1:4173/index.html >/dev/null || { cat /tmp/vite-v117.log; exit 1; }
           node scripts/visual-panda-v130.mjs
           node scripts/visual-mobile-v119.mjs
+          # v322 tests the CURRENT two-level home, all seven real HSK1 routes,
+          # and the existing Panda AI + opt-in local settings on 3 phone widths.
+          # Retired v171/v172/v174 visual snapshots assert the former 6-level
+          # home and the removed single-file lessons; keep them as archive only.
           node scripts/visual-hsk1-v152.mjs
-          node scripts/visual-hsk1-v171.mjs
-          node scripts/visual-panda-reference-v172.mjs
-          node scripts/visual-panda-reference-v174.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
