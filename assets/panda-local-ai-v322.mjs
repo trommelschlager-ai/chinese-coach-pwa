@@ -50,7 +50,7 @@ export function parseLocalTutorReply(raw) {
  if(!HANZI.test(hanzi) || hanzi.length>75 || !ru || ru.length>180 || /[<>]/.test(hanzi+ru))
   throw new Error('AI выдал неполный или слишком длинный ответ.');
  // No invented MP3, acoustic assessment or unverified pinyin.
- return {hanzi,pinyin:'',ru:'AI-перевод (проверь): '+ru,audioKey:null};
+ return {hanzi,pinyin:'',ru:'AI-перевод (проверь): '+ru,audioKey:null,source:'local-ai'};
 }
 
 export function createPandaLocalAi({
