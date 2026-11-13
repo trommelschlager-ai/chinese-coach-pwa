@@ -176,6 +176,7 @@ function profileForm(){
  '<label>Кем работаешь?<select data-field="job">'+choices.map(([v,t])=>'<option value="'+v+'" '+(v===job?'selected':'')+'>'+t+'</option>').join('')+'</select></label>'+
  (job==='other'?'<label>Профессия по-китайски<input data-field="other" maxlength="40" autocomplete="off" placeholder="Например, 厨师" value="'+esc(p.other||'')+'"></label>':'')+
  '</div><div class="intro-output" id="profile-output" aria-live="polite"></div>'+
+ '<p id="audio-status" role="status" class="audio-status" aria-live="polite"></p>'+ 
  '<p class="notice">Имена и города можно писать латиницей, пока не знаешь китайскую запись. Тоны для них автоматически не выдумываются. Эти данные сохраняются только в браузере на устройстве.</p>';
 }
 
@@ -275,7 +276,7 @@ function placeWordsScreen(){
  '<div class="meaning-connect"><strong lang="zh-Hans">住 + 在 → 住在</strong><span class="py">zhù + zài → zhù zài</span><span>Вместе: <b>«жить в определённом месте»</b></span></div>'+
  '<p class="meaning-note"><b>Порядок:</b> сначала действие <b lang="zh-Hans">住</b> (жить), за ним <b lang="zh-Hans">在</b> (указание места), а после — город. Оба слова произносятся с <b>4-м, падающим тоном</b>.</p>'+
  
- '<p class="meaning-prompt">Следующий экран: собираем полную фразу о Москве →</p>'+
+ '<p class="meaning-prompt">🔇 Аудио для 住 и 在 ещё записывается. Далее — собираем фразу →</p>'+
  '</div>';
 }
 
@@ -328,7 +329,6 @@ function render(){
  '<div class="bottom-actions"><div class="toolbar"><button class="softbtn" data-prev type="button" '+(i===0?'disabled':'')+'>← Назад</button><button class="primary" data-next type="button" '+(disabled?'disabled':'')+'>'+(s.kind==='finish'?'К основам грамматики →':s.kind==='dialogue-practice'?'К итогам →':'Дальше →')+'</button></div></div>'+
  '<p class="small-caption">Озвучку подключим после проверки тонов и записи носителя.</p>';
  $('screen').classList.toggle('hiddenpy',!state.showPy);
- $('screen').querySelectorAll('[data-audio]').forEach(btn=>btn.addEventListener('click',()=>playApprovedAudio(btn.dataset.audio)));
  $('screen').querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{state.answers[i]=Number(b.dataset.answer);save();render()}));
  $('screen').querySelectorAll('[data-token]').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.token);if(!state.build.includes(n))state.build.push(n);save();render()}));
  $('screen').querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',()=>{state.build.splice(Number(b.dataset.remove),1);save();render()}));
@@ -379,6 +379,10 @@ $('scene-sub').textContent='HSK 2 · Учимся представляться';
 $('scene-caption').textContent='Имя · город · работа';
 document.querySelector('.backlink').href='./hsk2-start.html#map';
 document.querySelectorAll('.nav a').forEach(a=>{const h=a.getAttribute('href');a.href='./hsk2-start.html'+h});
+$('screen').addEventListener('click',event=>{
+ const btn=event.target&&event.target.closest&&event.target.closest('[data-audio]');
+ if(btn&&$('screen').contains(btn))playApprovedAudio(btn.dataset.audio);
+});
 render();
 })();
 </script></body></html>
