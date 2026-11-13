@@ -14,10 +14,11 @@ assert(lesson.includes('assets/panda-approved-three-screen-v172.css?v=172'),'Leg
 assert(map.includes('assets/hsk1-map-v252.css?v=258'),'Map must use its updated approved mobile stylesheet');
 assert(map.includes('href="./panda-voice-pilot.html"'),'Panda AI must remain accessible as the third practice button');
 assert(map.includes('href="./hsk1-pronunciation.html"')&&map.includes('href="./hsk1-rhythm.html"'),'Both practice routes must remain');
-assert(root.includes('panda-v130.js?v=315'),'Home script cache must refresh');
+assert(root.includes('panda-v130.js?v=319'),'Home script cache must refresh');
 assert(root.includes('panda-hsk-scenic-v315.css?v=315'),'Approved scenic home CSS missing');
+assert(root.includes('panda-home-photo1-v319.css?v=319'),'Exact photo1 CSS must load');
 assert(lesson.includes('hsk1-foundations-v152.js?v=230'),'Lesson step icons must refresh');
-assert(homeJs.includes('panda-reference-v175/hero.webp'),'Existing approved panda hero must remain');
+assert(homeJs.includes('panda-home-approved-photo1-v319.jpg'),'Existing approved panda hero must remain');
 assert(stepsJs.includes('pg-hsk1-v3-'),'Persisted lesson progress must stay isolated');
 assert(stepsJs.includes('FEMALE_SPEED_KEY'),'Lesson audio speed must remain working');
 assert(lesson.includes('hsk1-voices-map-v160.js'),'Do not alter the female and male voice assignments');
@@ -45,13 +46,14 @@ assert(stepsJs.includes("['Новые слова','你好']")&&stepsJs.includes(
 for(const selector of ['#pg130 .pg-hsk-level-list','.map-shell .map-road','.lesson-shell .lesson-step.active',
  '.lesson-shell .lesson-line .lesson-hanzi','.lesson-shell .lesson-progress::after'])
  assert(css.includes(selector),'Approved design lacks '+selector);
-for(const keep of ['panda-reference-v175/hero.webp','approved-panda-lake-v112.webp','panda-v130/landscape.webp','panda-v130/flowers.webp'])
+for(const keep of ['panda-home-approved-photo1-v319.jpg','approved-panda-lake-v112.webp','panda-v130/landscape.webp','panda-v130/flowers.webp'])
  assert(css.includes(keep)||homeJs.includes(keep),'Approved landscape asset missing '+keep);
 const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
 assert(core.length<=170,'Install must include at most 170 core assets (three new original-speaker clips and their map)');
 assert(core.includes('./assets/panda-reference-v175.css?v=175'),'Offline style is not in critical assets');
-assert(core.includes('./assets/panda-v130.js?v=315'),'New home must work offline');
+assert(core.includes('./assets/panda-v130.js?v=319'),'New home must work offline');
 assert(core.includes('./assets/panda-hsk-scenic-v315.css?v=315'),'Scenic CSS must work offline');
+for(const f of ['./assets/panda-home-photo1-v319.css?v=319','./assets/panda-home-approved-photo1-v319.jpg'])assert(core.includes(f),'Approved photo1 not cached: '+f);
 for(const asset of ['./assets/panda-hsk-two-levels-v314.css?v=314','./hsk2-start.html','./hsk2-introduction.html'])assert(core.includes(asset),'HSK 2 offline entry missing '+asset);
 assert(core.includes('./assets/hsk1-foundations-v152.js?v=230'),'Lesson controls must work offline');
 assert(pack.version>=179&&pack.files.includes('./assets/panda-reference-v175.css?v=175')&&
