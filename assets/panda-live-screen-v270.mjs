@@ -1,4 +1,4 @@
-import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=304';
+import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=306';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=live6';
@@ -11,7 +11,7 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=304';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=306';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -38,7 +38,7 @@ function play(){
  a.play().catch(()=>{if(valid()){stopAudio();note('Нажми динамик, чтобы включить звук.')}});
 }
 function cancelFollowup(){clearTimeout(followupTimer);state.followup=null}
-function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
+function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();showLearnerFeedback(null);say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
 function remember(spoken){
  if(!spoken?.known)return;
  if(spoken.fact){
@@ -78,10 +78,25 @@ function showLearnerFeedback(spoken){
  if(!root.hidden&&state.confidence!==null&&state.confidence<.65){const warn=document.createElement('p');warn.textContent='Распознавание неуверенное — проверь исходный текст.';root.append(warn)}
  document.documentElement.dataset.feedback=String(!root.hidden);
 }
+function showWordCard(card){
+ const root=$('learner-feedback');root.replaceChildren();
+ const wrap=document.createElement('div');wrap.className='word-card';
+ const tones=document.createElement('p');tones.className='word-card-tones';tones.textContent='Тоны: '+card.tones;
+ const zh=document.createElement('p');zh.className='word-card-example';zh.textContent='Пример: '+card.example.hanzi;
+ const py=document.createElement('p');py.className='word-card-translation';py.textContent=card.example.pinyin+' — '+card.example.ru;
+ wrap.append(tones,zh,py);
+ if(card.rule){const rule=document.createElement('p');rule.className='word-card-rule';rule.textContent=card.rule;wrap.append(rule)}
+ root.append(wrap);root.hidden=false;document.documentElement.dataset.feedback='true';
+}
 function refreshReview(){const list=readMistakes(storage).filter(x=>x.lesson===conversation.id);$('review-count').textContent=list.length?'Для повторения: '+list.length+' фраз':'Ошибок для повторения нет';$('review').disabled=!list.length}
 function render(){
- const line=current();$('phrase').textContent=line.hanzi||line.panda;$('pinyin').textContent=line.pinyin||'';$('translation').textContent=line.ru||'';document.querySelector('.speech').scrollTop=0;
+ const line=current(),text=String(line.hanzi||line.panda||'');
+ $('phrase').textContent=text;$('pinyin').textContent=line.pinyin||'';$('translation').textContent=line.ru||'';
+ const speech=document.querySelector('.speech'),hanziCount=Array.from(text.replace(/[，。！？?!\s]/g,'')).length;
+ speech.dataset.length=hanziCount>=10?'verylong':hanziCount>=6?'long':'short';
  const src=lookupPilotAudio(line.audioKey);$('hear').disabled=!src;$('audio-note').hidden=!!src;
+ $('hear').parentElement.hidden=!src;
+ $('audio-note').textContent='🔇 Запись носительницы готовится';
  $('step').textContent=state.mode==='nonstop'?'∞ Разговор без лимита':state.done?'Диалог завершён':`${state.step+1} из ${conversation.lines.length}`;
  $('mode-short').classList.toggle('active',state.mode==='short');$('mode-nonstop').classList.toggle('active',state.mode==='nonstop');
  for(const name of ['short','nonstop'])$('mode-'+name).setAttribute('aria-pressed',String(state.mode===name));
@@ -133,7 +148,8 @@ function submit(raw){
   if(result.reply){
    state.turns++;state.topic=result.lesson||lesson();state.discussed.add(state.topic);if(state.allowed.includes(state.topic))state.cursor=state.allowed.indexOf(state.topic);if(state.confidence===null||state.confidence>=.65){remember(result.spoken);state.profile.followupOffset=(state.profile.followupOffset||0)+1;}
    state.awaitQuestion=true;if(result.kind==='answer')happy();say(result.reply,true,result.explanation?{explanation:result.explanation}:null);
-   if(result.explanation){const row=document.createElement('p');row.textContent=result.explanation;$('learner-feedback').replaceChildren(row);$('learner-feedback').hidden=false;document.documentElement.dataset.feedback='true';}
+   if(result.wordCard)showWordCard(result.wordCard);
+    else if(result.explanation){const row=document.createElement('p');row.textContent=result.explanation;$('learner-feedback').replaceChildren(row);$('learner-feedback').hidden=false;document.documentElement.dataset.feedback='true';}
    let followup=result.followup;
    if(followup&&followup.intent!=='relative-age'&&!followup.isContextual){
      if(state.allowed.length>1&&state.turns%3===0){
@@ -206,7 +222,7 @@ $('lesson-select').addEventListener('change',()=>{const id=Number($('lesson-sele
 function resize(){const v=window.visualViewport;const h=v?.height||window.innerHeight;document.documentElement.style.setProperty('--screen-height',h+'px');document.documentElement.style.setProperty('--screen-top',(v?.offsetTop||0)+'px');document.documentElement.dataset.keyboard=String((window.innerHeight-h>120)||(h<560))}
 window.visualViewport?.addEventListener('resize',resize);window.visualViewport?.addEventListener('scroll',resize);window.addEventListener('resize',resize);document.addEventListener('focusin',resize);document.addEventListener('focusout',resize);
 window.addEventListener('pagehide',e=>{cancelFollowup();stopRecognition();stopAudio();clearTimeout(poseTimer);if(!e.persisted)rig.dispose()});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFollowup();stopRecognition();stopAudio()}});
-if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=305',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
+if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=306',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
 if(window.ResizeObserver){const observer=new window.ResizeObserver(entries=>{document.documentElement.style.setProperty('--scene-height',entries[0].contentRect.height+'px')});observer.observe(document.querySelector('.scene'))}
 initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
 // Try the existing recording; browsers may require the first tap before playback.
