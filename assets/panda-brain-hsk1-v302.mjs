@@ -190,7 +190,7 @@ export function brainQuestion(raw,allowed=[1],curriculum=[]){
  const item=brainLexicon(curriculum).get(request.word);
  if(!item)return {kind:'clarify',message:'Слова «'+request.word+'» пока нет в словаре семи уроков HSK 1. Я не буду придумывать перевод или тоны.',topic:null};
  const lesson=item.sourceLessons.find(n=>allowed.includes(n));
- if(!lesson)return {kind:'locked',lesson:item.sourceLessons[0],message:'Это слово откроется в уроке '+item.sourceLessons[0]+'. Сначала пройди его.'};
+ if(!lesson)return {kind:'clarify',lesson:item.sourceLessons[0],message:'Это слово появится после открытия урока '+item.sourceLessons[0]+'. Пока не могу объяснять слова закрытых уроков.'};
  const tone=item.tones.map(n=>n===0?'нейтральный':n+'-й').join(' + ');
  const summary=item.word+' · '+item.pinyin+' · '+item.translation+'. Часть речи: '+item.category+'. Урок '+lesson+'.';
  const description=summary+(item.toneNote?' '+item.toneNote:'')+
@@ -200,7 +200,7 @@ export function brainQuestion(raw,allowed=[1],curriculum=[]){
   {hanzi:item.word,pinyin:item.pinyin,ru:item.translation,audioKey:item.audioKey,context:
     (request.intent==='tone'?'Тоны: '+tone+'. ':'')+
     'Тип: '+item.category+'. '+(item.toneNote||'')};
- return {kind:'question',lesson,reply,spoken:{known:true,hanzi:String(raw).trim(),pinyin:null,
+ return {kind:'explanation',lesson,reply,spoken:{known:true,hanzi:String(raw).trim(),pinyin:null,
   translation:'Вопрос о слове '+item.word+'.',topic:lesson},explanation:description,
   vocabWord:item.word,vocabIntent:request.intent};
 }
