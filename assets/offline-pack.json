@@ -1,6 +1,6 @@
 {
   "version": 319,
-  "bytes": 58478790,
+  "bytes": 58955731,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -1560,7 +1560,7 @@
     "./assets/panda-stone-staircase-v174.webp",
     "./assets/panda-v130.css?v=151",
     "./assets/panda-v130.js?v=174",
-    "./assets/panda-v130.js?v=315",
+    "./assets/panda-v130.js?v=319",
     "./assets/panda-v130/book.webp",
     "./assets/panda-v130/books.webp",
     "./assets/panda-v130/brush.webp",
@@ -2754,6 +2754,8 @@
     "./assets/panda-live-screen-v270.mjs?v=319",
     "./assets/panda-live-dialogue-v272.mjs?v=319",
     "./assets/panda-hsk1-questions-v281.mjs?v=319",
-    "./assets/panda-sentence-coach-v319.mjs?v=319"
+    "./assets/panda-sentence-coach-v319.mjs?v=319",
+    "./assets/panda-home-photo1-v319.css?v=319",
+    "./assets/panda-home-approved-photo1-v319.jpg"
   ]
 }
