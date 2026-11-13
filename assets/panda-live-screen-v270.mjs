@@ -187,21 +187,118 @@ function submit(raw){
  }
  if(!state.done){noteMistake(storage,conversation.id,state.step);pose('retry');state.display=conversation.lines[state.step];render();note('Пока не подходит. '+conversation.lines[state.step].instruction)}else note(social.help||'Попробуй фразу из этого урока.');
 }
+// Browser speech recognition is not the same as permission to use the microphone.
+// Some in-app browsers expose SpeechRecognition but never call onstart/onerror.
+function showMicRecovery(message){
+ note(message);
+ $('speech-recovery-message').textContent=message;
+ $('speech-check-result').textContent='';
+ $('speech-recovery').hidden=false;
+}
+function hideMicRecovery(){
+ $('speech-recovery').hidden=true;
+ $('speech-check-result').textContent='';
+}
+function shareableSpeechUrl(){
+ const link=new URL('panda-voice-pilot.html',document.baseURI);
+ const params=new URLSearchParams(location.search);
+ if(params.has('lesson'))link.searchParams.set('lesson',params.get('lesson'));
+ return link.href;
+}
+async function inspectMicPermission(){
+ const target=$('speech-check-result');
+ target.textContent='Проверяю доступ (браузер может запросить разрешение)…';
+ if(!window.isSecureContext){target.textContent='Микрофон доступен только через HTTPS. Открой ссылку в Chrome.';return}
+ if(!navigator.mediaDevices?.getUserMedia){
+  target.textContent='Этот браузер не умеет проверять микрофон. Открой страницу непосредственно в Chrome.';return;
+ }
+ let stream=null;
+ try{
+  // Diagnostic only; no audio is stored or uploaded by Panda Go.
+  stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  target.textContent='✅ Микрофон разрешён и доступен. Если Панда не распознаёт речь, попробуй Chrome: браузерная служба распознавания может быть недоступна.';
+ }catch(e){
+  const key=String(e?.name||'');
+  target.textContent=key==='NotAllowedError'||key==='PermissionDeniedError'
+   ?'⛔ Микрофон запрещён. Android: разреши микрофон для Chrome. Chrome: Настройки сайтов → Микрофон → Разрешить для Panda Go.'
+   :key==='NotFoundError'||key==='DevicesNotFoundError'
+    ?'Микрофон не найден. Проверь настройки Android и подключённую гарнитуру.'
+    :'Не удалось проверить микрофон ('+(key||'неизвестная ошибка')+'). Попробуй напрямую в Chrome.';
+ }finally{
+  try{stream?.getTracks().forEach(track=>track.stop())}catch{}
+ }
+}
+async function copySpeechUrl(){
+ const target=$('speech-check-result'),value=shareableSpeechUrl();
+ try{
+  if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(value);
+  else{
+   const input=document.createElement('textarea');input.value=value;input.setAttribute('readonly','');input.style.position='fixed';input.style.opacity='0';document.body.append(input);input.select();
+   const copied=document.execCommand?.('copy');input.remove();if(!copied)throw Error('clipboard unavailable');
+  }
+  target.textContent='✅ Ссылка скопирована. Открой Chrome и вставь её в адресную строку.';
+ }catch{
+  target.textContent='Браузер запретил копирование. Используй кнопку «Открыть страницу» или скопируй адрес сайта вручную.';
+ }
+}
+$('speech-check').addEventListener('click',inspectMicPermission);
+$('speech-copy').addEventListener('click',copySpeechUrl);
+$('speech-chrome').href=shareableSpeechUrl();
+
 function startRecognition(){
- if(state.active){try{recognition.stop()}catch{stopRecognition()}return}
+ if(state.active){stopRecognition();note('Микрофон остановлен.');return}
  const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!Speech){note('Распознавание недоступно. Используй поле ввода или микрофон клавиатуры Android.');return}
+ if(!Speech){showMicRecovery('Распознавание китайской речи в этом браузере недоступно. Открой ссылку в Chrome или отвечай текстом.');return}
  if(!state.speechConsent){$('speech-dialog').showModal();return}
- if(!window.isSecureContext){note('Для микрофона требуется HTTPS.');return}
+ if(window.isSecureContext===false){showMicRecovery('Для микрофона нужен HTTPS. Открой опубликованный Panda Go в Chrome.');return}
  cancelFollowup();stopAudio();stopRecognition();let r;
- try{r=new Speech();r.lang='zh-CN';r.continuous=false;r.interimResults=false;r.maxAlternatives=1}catch{note('Микрофон не запустился. Ответь текстом.');return}
- recognition=r;const token=++epoch;state.active=true;let heard=false,failed=false;const valid=()=>recognition===r&&epoch===token;updateMic();note('Подключаю микрофон…');
- r.onstart=()=>{if(valid()){pose('listening');note('Слушаю…')}};
- r.onresult=e=>{if(!valid())return;const a=e.results?.[0]?.[0];state.confidence=typeof a?.confidence==='number'&&a.confidence>0?a.confidence:null;const text=String(a?.transcript||'').trim();heard=!!text;submit(text);if(state.confidence!==null&&state.confidence<.65)note('Распознано неуверенно. Проверь текст и повтори при необходимости.');state.confidence=null};
- r.onerror=e=>{if(!valid())return;failed=true;stopRecognition();note(({'not-allowed':'Разреши микрофон в настройках сайта.','network':'Служба распознавания недоступна. Ответь текстом.','no-speech':'Не расслышала. Повтори ближе к микрофону.','audio-capture':'Микрофон занят или недоступен.'})[e.error]||'Распознавание не удалось. Попробуй текстовый ответ.')};
- r.onnomatch=()=>{if(valid()){failed=true;stopRecognition();note('Речь не распознана. Повтори или напиши ответ.')}};
- r.onend=()=>{if(valid()){stopRecognition();if(!heard&&!failed)note('Не расслышала. Повтори или напиши ответ.')}};
- try{r.start();watchdog=setTimeout(()=>{if(valid()){stopRecognition();note('Служба распознавания не ответила. Попробуй текстовый ответ.')}},16000)}catch{stopRecognition();note('Микрофон не запустился. Проверь разрешение сайта.')}
+ try{
+  r=new Speech();r.lang='zh-CN';r.continuous=false;r.interimResults=false;r.maxAlternatives=1;
+ }catch{showMicRecovery('Браузер не смог создать сеанс распознавания. Открой ссылку в Chrome.');return}
+ recognition=r;const token=++epoch;state.active=true;
+ let heard=false,failed=false,started=false,audioStarted=false;
+ const valid=()=>recognition===r&&epoch===token;
+ const fail=(message)=>{if(!valid())return;failed=true;stopRecognition();showMicRecovery(message)};
+ hideMicRecovery();updateMic();note('Подключаю микрофон…');
+ r.onstart=()=>{
+  if(!valid())return;
+  started=true;pose('listening');note('Распознавание запущено. Говори по-китайски…');
+  clearTimeout(watchdog);
+  watchdog=setTimeout(()=>{if(valid())fail(audioStarted
+   ?'Микрофон подключён, но речь не распознана. Попробуй говорить ближе или открой в Chrome.'
+   :'Служба распознавания запустилась, но не получила звук с микрофона. Проверь разрешение или открой в Chrome.');},16000);
+ };
+ r.onaudiostart=()=>{if(valid()){audioStarted=true;note('🎙 Микрофон активен. Говори по-китайски…')}};
+ r.onspeechstart=()=>{if(valid())note('🎙 Слышу речь, распознаю китайский…')};
+ r.onresult=e=>{
+  if(!valid())return;
+  const a=e.results?.[0]?.[0];const text=String(a?.transcript||'').trim();
+  if(!text){fail('Браузер вернул пустой ответ. Попробуй ещё раз в Chrome или напиши фразу.');return}
+  heard=true;state.confidence=typeof a?.confidence==='number'&&a.confidence>0?a.confidence:null;
+  submit(text);
+  if(state.confidence!==null&&state.confidence<.65)note('Распознано неуверенно. Проверь текст и повтори при необходимости.');
+  state.confidence=null;
+ };
+ r.onerror=e=>{
+  if(!valid())return;
+  const reasons={
+   'not-allowed':'Доступ к микрофону запрещён. Разреши микрофон для сайта в Chrome и в настройках Android.',
+   'service-not-allowed':'Браузер запретил службу распознавания. Открой страницу напрямую в Chrome.',
+   'network':'Служба распознавания речи не отвечает через эту сеть. Проверь интернет или используй текст.',
+   'no-speech':'Не расслышала китайскую речь. Повтори поближе к микрофону.',
+   'audio-capture':'Микрофон занят или недоступен. Проверь разрешение в Android и Chrome.',
+   'language-not-supported':'Этот браузер не поддерживает распознавание китайского zh-CN.',
+   'aborted':'Распознавание неожиданно прервалось. Попробуй ещё раз.'
+  };
+  fail(reasons[e?.error]||'Ошибка распознавания. Открой Panda Go напрямую в Chrome или используй текст.');
+ };
+ r.onnomatch=()=>fail('Речь не распознана. Попробуй ещё раз или напиши ответ по-китайски.');
+ r.onend=()=>{if(valid()&&!heard&&!failed)fail(started?'Распознавание завершилось без результата. Попробуй Chrome или текст.':'Браузер не подключил службу распознавания. Открой ссылку напрямую в Chrome.')};
+ // Start watchdog BEFORE r.start(): some implementations fire onstart synchronously.
+ watchdog=setTimeout(()=>fail('Браузер не подключил распознавание за 7 секунд. Если ссылка открыта внутри мессенджера, выбери ⋮ → Открыть в браузере → Chrome.'),7000);
+ try{r.start()}catch{
+  fail('Не удалось запустить распознавание. Проверь разрешения или открой Panda Go напрямую в Chrome.');
+ }
 }
 $('message-form').addEventListener('submit',e=>{e.preventDefault();state.confidence=null;submit($('message').value)});
 $('mic').addEventListener('click',startRecognition);$('speech-allow').addEventListener('click',()=>{state.speechConsent=true;$('speech-dialog').close();startRecognition()});
@@ -222,7 +319,7 @@ $('lesson-select').addEventListener('change',()=>{const id=Number($('lesson-sele
 function resize(){const v=window.visualViewport;const h=v?.height||window.innerHeight;document.documentElement.style.setProperty('--screen-height',h+'px');document.documentElement.style.setProperty('--screen-top',(v?.offsetTop||0)+'px');document.documentElement.dataset.keyboard=String((window.innerHeight-h>120)||(h<560))}
 window.visualViewport?.addEventListener('resize',resize);window.visualViewport?.addEventListener('scroll',resize);window.addEventListener('resize',resize);document.addEventListener('focusin',resize);document.addEventListener('focusout',resize);
 window.addEventListener('pagehide',e=>{cancelFollowup();stopRecognition();stopAudio();clearTimeout(poseTimer);if(!e.persisted)rig.dispose()});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFollowup();stopRecognition();stopAudio()}});
-if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=315',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
+if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=318',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
 if(window.ResizeObserver){const observer=new window.ResizeObserver(entries=>{document.documentElement.style.setProperty('--scene-height',entries[0].contentRect.height+'px')});observer.observe(document.querySelector('.scene'))}
 initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
 // Try the existing recording; browsers may require the first tap before playback.
