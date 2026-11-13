@@ -92,7 +92,7 @@ const vm=require('node:vm');
  const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
  for(const p of [
   './assets/panda-hsk2-bridge-v304.mjs?v=307',
-  './assets/panda-live-dialogue-v272.mjs?v=319',
+  './assets/panda-live-dialogue-v272.mjs?v=323',
   './assets/panda-live-screen-v270.mjs?v=319',
   './assets/panda-hsk1-questions-v281.mjs?v=319',
   './panda-voice-pilot.html?v=323'
@@ -100,7 +100,7 @@ const vm=require('node:vm');
  const latest={
   'panda-voice-pilot.html':'323',
   'assets/panda-live-screen-v270.mjs':'323',
-  'assets/panda-live-dialogue-v272.mjs':'319',
+  'assets/panda-live-dialogue-v272.mjs':'323',
   'assets/panda-hsk1-questions-v281.mjs':'319'
  };
  for(const url of offline.files){
