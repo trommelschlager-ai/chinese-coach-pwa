@@ -9,11 +9,11 @@ assert(map.includes('hsk1-map-v252.css?v=258'),'Beginner map must use its update
 assert(map.includes('class="pg-ai-button"')&&map.includes('href="./panda-voice-pilot.html"'),'Panda AI must be accessible from the bottom actions');
 assert(map.includes('hsk1-rhythm.html')&&map.includes('hsk1-pronunciation.html'),'Both speech practice routes must remain');
 assert((map.match(/class="node"/g)||[]).length===7,'All seven functional lesson links must remain');
-assert(site.includes('panda-v130.js?v=315'),'Home version must be bumped');
+assert(site.includes('panda-v130.js?v=319'),'Home version must be bumped');
 assert(lesson.includes('guided-introduction.js?v=151'),'Guided script version must be bumped');
 assert(/<progress max="7"/.test(lesson),'Progress consists of seven steps');
 assert(lesson.includes('id="lesson-step-list"'),'Guided step list must be visible');
-assert(main.includes('panda-reference-v175/hero.webp'),'Previously approved home art must be retained');
+assert(main.includes('panda-home-approved-photo1-v319.jpg'),'Previously approved home art must be retained');
 assert(main.includes('./hsk1-map.html'),'HSK 1 opens the map');
 assert(main.includes('./hsk2-start.html#map'),'HSK 2 must lead to published course');
 assert(!main.slice(main.indexOf('function home(){'),main.indexOf('function learn(){')).includes('pg-hsk-unavailable'),'Only HSK 1 and 2 visible');
@@ -56,7 +56,7 @@ for(let n=1;n<=4;n++){
  dom.window.close();
 }
 const sw=read('sw.js'),pack=JSON.parse(read('assets/offline-pack.json'));
-for(const url of ['./assets/hsk-approved-three-screens-v151.css?v=151','./assets/guided-introduction.js?v=151','./assets/panda-v130.js?v=315']){
+for(const url of ['./assets/hsk-approved-three-screens-v151.css?v=151','./assets/guided-introduction.js?v=151','./assets/panda-v130.js?v=319']){
  assert(site.includes(url)||lesson.includes(url)||map.includes(url),'Page must request '+url);
  assert(sw.includes(url),'Offline shell must cache '+url);
  assert(pack.files.includes(url),'Offline bundle must include '+url);
