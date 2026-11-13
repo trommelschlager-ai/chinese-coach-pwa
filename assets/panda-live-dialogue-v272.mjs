@@ -10,7 +10,7 @@ import {checkedExtensionReply,recognizeApprovedPhrase} from './panda-hsk1-answer
 import {patternQuestion,patternStudentAnswer,patternPrompts,conversationalFollowup} from './panda-hsk1-patterns-v285.mjs?v=285';
 import {questionVariant,learnerAnswerVariant} from './panda-hsk1-variants-v301.mjs?v=301';
 import {brainQuestion,interpretBrainSentence} from './panda-brain-hsk1-v302.mjs?v=302';
-import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=304';
+import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=306';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);

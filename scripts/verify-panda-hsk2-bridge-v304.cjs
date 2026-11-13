@@ -6,8 +6,8 @@ const vm=require('node:vm');
 (async()=>{
  const sandbox={window:{}};vm.runInNewContext(fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8'),sandbox);
  const curriculum=sandbox.window.PANDA_HSK1_FOUNDATIONS,allowed=[1,2,3,4,5,6,7];
- const {answerHsk2Bridge,HSK2_BRIDGE_WORDS}=await import('../assets/panda-hsk2-bridge-v304.mjs?v=304');
- const {answerLive}=await import('../assets/panda-live-dialogue-v272.mjs?v=304');
+ const {answerHsk2Bridge,HSK2_BRIDGE_WORDS}=await import('../assets/panda-hsk2-bridge-v304.mjs?v=306');
+ const {answerLive}=await import('../assets/panda-live-dialogue-v272.mjs?v=306');
  const {lookupPilotAudio}=await import('../assets/panda-live-audio.mjs?v=live6');
  const opts={allowed,topic:1,curriculum,date:new Date(2026,10,13),profile:{}};
  assert.deepEqual(HSK2_BRIDGE_WORDS,['中文','学习','忙','很']);
@@ -19,6 +19,9 @@ const vm=require('node:vm');
    assert.equal(r.reply.pinyin,py);assert(r.explanation.includes('Тоны:'));
    assert(r.followup&&r.followup.isContextual,'Missing contextual follow-up');
    assert.equal(r.reply.audioKey,null,'Do not fabricate sound for '+word);
+   assert.equal(r.wordCard?.hanzi,word,'No structured word card');
+   assert(r.wordCard?.example?.pinyin&&r.wordCard?.tones,'Missing sample or tones');
+   if(['中文','学习'].includes(word))assert(!r.explanation.includes('我很忙'),'Unrelated grammar in '+word);
    assert(r.spoken.known,'Question lost');
   }
   const example=answerLive('用'+word+'造句',opts);
@@ -58,27 +61,30 @@ const vm=require('node:vm');
   assert(!fs.readFileSync(p,'utf8').includes('panda-hsk2-seed-v303.json'),'Draft premium seed leaked into live app: '+p);
  }
  const page=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(page.includes('panda-live-screen-v270.mjs?v=305'));
- assert(page.includes('<span class="release">v305</span>'),'Stale v302 release badge must be removed');
+ assert(page.includes('panda-live-screen-v270.mjs?v=306'));
+ assert(page.includes('panda-voice-pilot.css?v=306'));
+ assert(page.includes('Запись носительницы готовится'));
+ assert(fs.readFileSync('assets/panda-voice-pilot.css','utf8').includes('max-height:100%;overflow:hidden'),'Speech still scrolls');
+ assert(page.includes('<span class="release">v306</span>'),'Stale v302 release badge must be removed');
  for(const id of ['mode-short','mode-nonstop','mic','history-dialog','speech-dialog'])
   assert(page.includes('id="'+id+'"'),'Existing control deleted: '+id);
  const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
  for(const p of [
-  './assets/panda-hsk2-bridge-v304.mjs?v=304',
-  './assets/panda-live-dialogue-v272.mjs?v=304',
-  './assets/panda-live-screen-v270.mjs?v=305',
-  './assets/panda-hsk1-questions-v281.mjs?v=304',
-  './panda-voice-pilot.html?v=305'
+  './assets/panda-hsk2-bridge-v304.mjs?v=306',
+  './assets/panda-live-dialogue-v272.mjs?v=306',
+  './assets/panda-live-screen-v270.mjs?v=306',
+  './assets/panda-hsk1-questions-v281.mjs?v=306',
+  './panda-voice-pilot.html?v=306'
  ])assert(offline.files.includes(p),'Offline material missing: '+p);
  const latest={
-  'panda-voice-pilot.html':'305',
-  'assets/panda-live-screen-v270.mjs':'305',
-  'assets/panda-live-dialogue-v272.mjs':'304',
-  'assets/panda-hsk1-questions-v281.mjs':'304'
+  'panda-voice-pilot.html':'306',
+  'assets/panda-live-screen-v270.mjs':'306',
+  'assets/panda-live-dialogue-v272.mjs':'306',
+  'assets/panda-hsk1-questions-v281.mjs':'306'
  };
  for(const url of offline.files){
   const p=url.replace(/^\.\//,'').split('?')[0],version=/[?&]v=([^&]+)/.exec(url)?.[1];
   if(latest[p]&&version)assert.equal(version,latest[p],'Stale Panda entry: '+url);
  }
- console.log('PASS Panda AI v304: 4 bridge words, 8 lexical questions, 4 examples, two-way dialogues, old HSK1 regressions, offline paths, no premium leak.');
+ console.log('PASS Panda AI v306: 4 bridge words, 8 lexical questions, 4 examples, two-way dialogues, old HSK1 regressions, offline paths, no premium leak.');
 })().catch(err=>{console.error(err);process.exitCode=1});

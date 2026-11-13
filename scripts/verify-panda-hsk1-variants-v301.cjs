@@ -101,7 +101,7 @@ const vm=require('node:vm');
  assert(mediaBefore.includes('lookupHsk1Voice'));
  assert(!/fetch\(/.test(fs.readFileSync('assets/panda-hsk1-variants-v301.mjs','utf8')),'Variant expansion must remain local/offline');
  const html=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(/panda-live-screen-v270\.mjs\?v=30[245]/.test(html),'Panda conversation page must load new version');
+ assert(/panda-live-screen-v270\.mjs\?v=30[2456]/.test(html),'Panda conversation page must load new version');
  assert(html.includes('id="mode-short"')&&html.includes('id="mode-nonstop"')&&html.includes('id="mic"'));
  assert(html.includes('id="history-dialog"')&&html.includes('id="speech-dialog"'));
  console.log('PASS Panda HSK1 v301 '+passed+'/'+samples.length+' manually checked examples plus '+corpusPass+'/'+corpus.length+' reviewed alias corpus questions across 7 lessons; '

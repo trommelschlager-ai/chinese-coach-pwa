@@ -34,8 +34,14 @@ export function answerHsk2Bridge(raw,{prompt=null}={}){
  }
  if(word){
   const info=VOCAB[word],[hanzi,pinyin,ru]=info.example;
-  const text=word+' — '+info.pinyin+' — '+info.ru+'. '+info.pos+'. Тоны: '+info.tones+'. Пример: '+hanzi+' — '+pinyin+' — '+ru+' Правило: в 我很忙 не нужна связка 是.';
-  return {kind:'explanation',lesson:1,spoken:spoken(input),reply:intent==='example'?example(info.example):line(word,info.pinyin,info.ru),explanation:text,followup:['忙','很'].includes(word)?busyQuestion():studyQuestion()};
+  // Give a short, word-specific teaching note. Do not attach the 忙 grammar rule to 中文 or 学习.
+  const rule=word==='忙'?'Прилагательное: 我很忙, без 是.':word==='很'?'Перед прилагательным 很 часто не усиливает значение.':null;
+  const card={hanzi:word,pinyin:info.pinyin,ru:info.ru,pos:info.pos,tones:info.tones,
+   example:{hanzi,pinyin,ru},rule};
+  const text=word+' — '+info.pinyin+' — '+info.ru+'. Тоны: '+info.tones+
+   '. Пример: '+hanzi+' · '+pinyin+' — '+ru+'.'+(rule?' '+rule:'');
+  return {kind:'explanation',lesson:1,spoken:spoken(input),reply:intent==='example'?example(info.example):line(word,info.pinyin,info.ru),
+   explanation:text,wordCard:card,followup:['忙','很'].includes(word)?busyQuestion():studyQuestion()};
  }
  if(s==='我是很忙'||s==='我是忙'||s==='他是很忙'||s==='她是很忙'){
   const subject=s[0],py={我:'Wǒ',他:'Tā',她:'Tā'}[subject],ru={我:'Я занят.',他:'Он занят.',她:'Она занята.'}[subject];
