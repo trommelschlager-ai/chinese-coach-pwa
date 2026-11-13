@@ -58,16 +58,16 @@ const vm=require('node:vm');
   assert(!fs.readFileSync(p,'utf8').includes('panda-hsk2-seed-v303.json'),'Draft premium seed leaked into live app: '+p);
  }
  const page=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(page.includes('panda-live-screen-v270.mjs?v=304'));
+ assert(page.includes('panda-live-screen-v270.mjs?v=305'));
  for(const id of ['mode-short','mode-nonstop','mic','history-dialog','speech-dialog'])
   assert(page.includes('id="'+id+'"'),'Existing control deleted: '+id);
  const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
  for(const p of [
   './assets/panda-hsk2-bridge-v304.mjs?v=304',
   './assets/panda-live-dialogue-v272.mjs?v=304',
-  './assets/panda-live-screen-v270.mjs?v=304',
+  './assets/panda-live-screen-v270.mjs?v=305',
   './assets/panda-hsk1-questions-v281.mjs?v=304',
-  './panda-voice-pilot.html?v=304'
+  './panda-voice-pilot.html?v=305'
  ])assert(offline.files.includes(p),'Offline material missing: '+p);
  console.log('PASS Panda AI v304: 4 bridge words, 8 lexical questions, 4 examples, two-way dialogues, old HSK1 regressions, offline paths, no premium leak.');
 })().catch(err=>{console.error(err);process.exitCode=1});
