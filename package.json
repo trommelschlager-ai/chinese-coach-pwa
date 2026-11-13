@@ -9,7 +9,8 @@
     "check:panda-live-conversation": "node --test tests/panda-live-conversation-v266.test.mjs",
     "check:panda-nonstop": "node --test tests/panda-nonstop-v267.test.mjs",
     "check:panda-screen": "node --test tests/panda-live-*.test.mjs tests/panda-nonstop-v267.test.mjs tests/panda-voice-pilot.test.mjs",
-    "check:lesson7-xiaoxiao": "node scripts/verify-lesson7-xiaoxiao-v278.cjs"
+    "check:lesson7-xiaoxiao": "node scripts/verify-lesson7-xiaoxiao-v278.cjs",
+    "check:hsk2-intro": "node scripts/verify-hsk2-introduction-v1.cjs && node scripts/verify-hsk2-self-dialogue-v1.cjs && node scripts/verify-hsk2-audio-reuse-v1.cjs"
   },
   "devDependencies": {
     "vite": "7.1.12",

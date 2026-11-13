@@ -1,0 +1,44 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'..');
+const read=name=>fs.readFileSync(path.join(root,name),'utf8');
+const intro=read('hsk2-introduction.html'),start=read('hsk2-start.html');
+const src=(intro.match(/<script>([\s\S]*?)<\/script>/)||[])[1];
+assert(src,'intro script');
+new vm.Script(src);
+assert((intro.match(/data:image\/webp;base64,/g)||[]).length===2,'approved backgrounds remain');
+assert(intro.includes('--lilac:#d9a7ed'),'approved palette');
+for(const word of ['叫','名字','住','在','工作','医生','老师']){
+ assert(src.includes(word),'required word '+word);
+}
+for(const q of ['你叫什么名字？','你住在哪儿？','你做什么工作？'])assert(src.includes(q),'question '+q);
+assert(src.includes("我叫安娜。")&&src.includes("Wǒ jiào Ānnà."),'name with exact pinyin');
+assert(src.includes("我住在莫斯科。")&&src.includes("Wǒ zhù zài Mòsīkē."),'city with exact pinyin');
+assert(src.includes("我是医生。")&&src.includes("Wǒ shì yīshēng."),'job with exact pinyin');
+assert(src.includes("const profileReady="),'personalized introduction');
+assert(src.includes('data-field="name"')&&src.includes('data-field="city"'),'editable name/city');
+assert(src.includes("if(s.kind==='profile'?!profileReady():disabled)"),'profile next gate responds to field changes');
+assert(src.includes('data-answer')&&src.includes('data-token'),'interactive exercises');
+assert(src.includes('completed=true')&&src.includes("hsk2-start.html#lesson"),'next lesson transition');
+assert(start.includes('href="./hsk2-introduction.html"'),'map routes to introduction');
+assert(start.includes("location.href='./hsk2-introduction.html'"),'HSK1 review leads to intro');
+assert(!intro.includes('speechSynthesis.speak'),'no unapproved synthetic voice');
+const stepsStart=src.indexOf("const steps=[");
+const stepsEnd=src.indexOf("];",stepsStart);
+const lessons=src.slice(stepsStart,stepsEnd);
+assert(stepsStart>=0 && stepsEnd>stepsStart,'lesson stages missing');
+const wordsAt=lessons.indexOf("kind:'place-words'");
+const structureAt=lessons.indexOf("kind:'structure'");
+assert(wordsAt>=0 && structureAt>wordsAt,'住 and 在 must be explained before the full Moscow sentence');
+assert.equal((lessons.match(/kind:'place-words'/g)||[]).length,1,'place-word introduction must appear once');
+assert.equal((lessons.match(/kind:'structure'/g)||[]).length,1,'complete sentence must appear on the next step');
+assert(src.includes("function placeWordsScreen()"),'separate word explanation screen missing');
+assert(src.includes("function structureScreen()"),'complete sentence screen missing');
+const wordExplanation=src.slice(src.indexOf("function placeWordsScreen()"),src.indexOf("function structureScreen()"));
+assert(wordExplanation.includes("住") && wordExplanation.includes("在"),'both words missing from explanation');
+assert(wordExplanation.includes("zhù · 4-й тон") && wordExplanation.includes("zài · 4-й тон"),'tone descriptions must be accurate');
+assert(!wordExplanation.includes("我住在莫斯科。"),'full sentence must appear only on next screen');
+assert(src.includes("我住在莫斯科。") && src.includes("Wǒ zhù zài Mòsīkē."),'Moscow sentence missing');
+assert(src.includes("s.kind==='place-words'") && src.includes("s.kind==='structure'"),'both screens must render separately');
+
+console.log('HSK 2 self-introduction: lesson, Mandarin text, progression, design and JS syntax OK');
