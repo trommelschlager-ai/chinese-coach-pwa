@@ -47,9 +47,9 @@ try{
   await guided.screenshot({path:`${OUT}/01a-hsk-map-${width}.png`,fullPage:true,animations:'disabled'});
   await guided.close();
   // HSK 1 opens the guided map; advanced levels are visible but not fake-playable.
-  assert.equal(await page.locator('#pg130 .pg-hsk-level').count(),6);
+  assert.equal(await page.locator('#pg130 .pg-hsk-level').count(),2,'Approved home has HSK 1 and HSK 2 hotspots');
   assert.equal(await page.locator('#pg130 .pg-hsk-level[href="./hsk1-map.html"]').count(),1);
-  assert.equal(await page.locator('#pg130 .pg-hsk-unavailable').count(),5);
+  assert.equal(await page.locator('#pg130 .pg-hsk-level[href="./hsk2-start.html#map"]').count(),1,'HSK 2 has its own entry');
   assert.equal(await page.locator('#pg130 .pg-hsk-backdrop img').count(),1);
   await page.evaluate(()=>window.__panda130.show('learn'));await ready(page);
   await capture(page,'02-learn',size);
