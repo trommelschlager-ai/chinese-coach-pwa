@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 275 340">
+<defs>
+<linearGradient id="p" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#fff29a"/><stop offset=".35" stop-color="#d54524"/><stop offset="1" stop-color="#85142d"/></linearGradient>
+<linearGradient id="col" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ed7334"/><stop offset="1" stop-color="#921633"/></linearGradient>
+<filter id="f"><feGaussianBlur stdDeviation="3"/></filter>
+</defs>
+<ellipse cx="140" cy="330" rx="110" ry="9" fill="#234f42" opacity=".25" filter="url(#f)"/>
+<path d="M50 289H225L245 318H30Z" fill="#e7c38d" stroke="#9e6e3d" stroke-width="4"/>
+<path d="M68 141H207V291H68Z" fill="#e4d6b1" opacity=".6"/>
+<path d="M71 143H87V294H71ZM116 143H131V294H116ZM158 143H173V294H158ZM203 143H218V294H203Z" fill="url(#col)" stroke="#ffd36b" stroke-width="3"/>
+<path d="M74 145H216V160H74Z" fill="#f5ac45"/><path d="M73 208H216V219H73Z" fill="#bd4930"/>
+<path d="M34 145Q90 145 122 105Q136 85 140 70Q144 85 158 105Q190 145 245 145Q253 141 259 128Q248 167 217 166Q172 150 140 128Q108 150 63 166Q32 167 21 128Q27 141 34 145Z" fill="url(#p)" stroke="#fdd672" stroke-width="6"/>
+<path d="M39 144Q88 149 140 115Q192 149 241 144" fill="none" stroke="#7d182b" stroke-width="7"/>
+<path d="M83 94Q118 93 140 55Q162 93 197 94Q206 89 214 78Q209 112 190 111Q161 102 140 91Q119 102 90 111Q71 112 66 78Q74 89 83 94Z" fill="url(#p)" stroke="#ffd975" stroke-width="5"/>
+<path d="M140 53V29" stroke="#b24b1a" stroke-width="5"/><path d="M128 32L140 13L152 32Z" fill="#ffd05c"/><circle cx="140" cy="13" r="7" fill="#ffbd37"/>
+<path d="M22 305Q135 286 255 303" fill="none" stroke="#f6dfa8" stroke-width="9"/>
+<path d="M10 327Q141 316 268 326" fill="none" stroke="#ac834f" stroke-width="6"/>
+</svg>
