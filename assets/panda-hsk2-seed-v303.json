@@ -1,0 +1,636 @@
+{
+  "schemaVersion": 303,
+  "project": "Panda Go · Panda Brain HSK 2 early seed",
+  "state": "draft_content_only_not_enabled",
+  "targetStandard": "HSK 3.0 exam syllabus 2025, rollout 2026",
+  "sourceReview": {
+    "list": "https://chill-chinese.com/blog/new-hsk-2/",
+    "officialRecheckRequired": true
+  },
+  "safeguards": {
+    "neverImportToLiveHsk1": true,
+    "doNotClaimOfficialFullCoverage": true,
+    "doNotAutoPlayWithoutRecordedAudio": true,
+    "preserveExistingVoices": true,
+    "paidCourseAccessMustBeImplementedSeparately": true,
+    "note": "This is staged curriculum data, not an AI model, ASR engine, entitlement control or released HSK2 course."
+  },
+  "targetNewLevel2Vocabulary": 200,
+  "bridgingWords": 4,
+  "preliminaryLevel2Words": 36,
+  "sections": [
+    {
+      "id": 1,
+      "title": "Слова → предложения",
+      "kind": "hsk1_bridge",
+      "vocabulary": [
+        {
+          "hanzi": "中文",
+          "pinyin": "Zhōngwén",
+          "ru": "китайский язык",
+          "pos": "существительное",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "学习",
+          "pinyin": "xuéxí",
+          "ru": "учиться, изучать",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "忙",
+          "pinyin": "máng",
+          "ru": "занятый",
+          "pos": "прилагательное",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "很",
+          "pinyin": "hěn",
+          "ru": "перед прилагательным, часто без усиления смысла",
+          "pos": "наречие",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        }
+      ],
+      "grammar": [
+        {
+          "pattern": "Подлежащее + глагол + дополнение",
+          "explanation": "Базовый порядок простого предложения.",
+          "example": {
+            "hanzi": "我学习中文。",
+            "pinyin": "Wǒ xuéxí Zhōngwén.",
+            "ru": "Я изучаю китайский язык.",
+            "audioKey": null
+          }
+        },
+        {
+          "pattern": "Подлежащее + 很 + прилагательное",
+          "explanation": "В нейтральном описании состояния 很 часто не означает сильное «очень». Не вставляем 是.",
+          "example": {
+            "hanzi": "我很忙。",
+            "pinyin": "Wǒ hěn máng.",
+            "ru": "Я занят.",
+            "audioKey": null
+          }
+        }
+      ],
+      "dialogue": [
+        {
+          "hanzi": "你学习中文吗？",
+          "pinyin": "Nǐ xuéxí Zhōngwén ma?",
+          "ru": "Ты изучаешь китайский?",
+          "audioKey": null
+        },
+        {
+          "hanzi": "我学习中文。",
+          "pinyin": "Wǒ xuéxí Zhōngwén.",
+          "ru": "Я изучаю китайский.",
+          "audioKey": null
+        }
+      ],
+      "question": {
+        "hanzi": "你忙吗？",
+        "pinyin": "Nǐ máng ma?",
+        "ru": "Ты занят?",
+        "audioKey": null
+      }
+    },
+    {
+      "id": 2,
+      "title": "Вопросы и общение",
+      "kind": "hsk2_candidate",
+      "vocabulary": [
+        {
+          "hanzi": "爱好",
+          "pinyin": "àihào",
+          "ru": "увлечение, хобби",
+          "pos": "существительное",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "帮忙",
+          "pinyin": "bāngmáng",
+          "ru": "помогать",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "告诉",
+          "pinyin": "gàosu",
+          "ru": "сообщать, рассказывать кому-либо",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "懂",
+          "pinyin": "dǒng",
+          "ru": "понимать",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "错",
+          "pinyin": "cuò",
+          "ru": "неправильный, ошибка",
+          "pos": "прилагательное",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "为什么",
+          "pinyin": "wèishénme",
+          "ru": "почему",
+          "pos": "вопросительное слово",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        }
+      ],
+      "grammar": [
+        {
+          "pattern": "为什么 + вопрос?",
+          "explanation": "Спрашиваем причину; в ответе можно использовать 因为, которое подробно изучается позднее.",
+          "example": {
+            "hanzi": "你为什么学习中文？",
+            "pinyin": "Nǐ wèishénme xuéxí Zhōngwén?",
+            "ru": "Почему ты изучаешь китайский?",
+            "audioKey": null
+          }
+        }
+      ],
+      "dialogue": [
+        {
+          "hanzi": "你有什么爱好？",
+          "pinyin": "Nǐ yǒu shénme àihào?",
+          "ru": "Какие у тебя увлечения?",
+          "audioKey": null
+        },
+        {
+          "hanzi": "我喜欢学习中文。",
+          "pinyin": "Wǒ xǐhuan xuéxí Zhōngwén.",
+          "ru": "Мне нравится изучать китайский.",
+          "audioKey": null
+        }
+      ],
+      "question": {
+        "hanzi": "你能帮忙吗？",
+        "pinyin": "Nǐ néng bāngmáng ma?",
+        "ru": "Можешь помочь?",
+        "audioKey": null
+      }
+    },
+    {
+      "id": 3,
+      "title": "Время, место и дорога",
+      "kind": "hsk2_candidate",
+      "vocabulary": [
+        {
+          "hanzi": "从",
+          "pinyin": "cóng",
+          "ru": "от, из, начиная с",
+          "pos": "предлог",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "车站",
+          "pinyin": "chēzhàn",
+          "ru": "остановка, станция",
+          "pos": "существительное",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "地铁",
+          "pinyin": "dìtiě",
+          "ru": "метро",
+          "pos": "существительное",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "近",
+          "pinyin": "jìn",
+          "ru": "близко",
+          "pos": "прилагательное",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "离",
+          "pinyin": "lí",
+          "ru": "от (расстояние)",
+          "pos": "предлог",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "旁边",
+          "pinyin": "pángbiān",
+          "ru": "рядом, сбоку",
+          "pos": "существительное местоположения",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        }
+      ],
+      "grammar": [
+        {
+          "pattern": "A + 离 + B + 近/远",
+          "explanation": "Описываем расстояние между местами. 远 — далеко.",
+          "example": {
+            "hanzi": "学校离车站很近。",
+            "pinyin": "Xuéxiào lí chēzhàn hěn jìn.",
+            "ru": "Школа находится близко к остановке.",
+            "audioKey": null
+          }
+        }
+      ],
+      "dialogue": [
+        {
+          "hanzi": "车站在哪儿？",
+          "pinyin": "Chēzhàn zài nǎr?",
+          "ru": "Где остановка?",
+          "audioKey": null
+        },
+        {
+          "hanzi": "车站在学校旁边。",
+          "pinyin": "Chēzhàn zài xuéxiào pángbiān.",
+          "ru": "Остановка рядом со школой.",
+          "audioKey": null
+        }
+      ],
+      "question": {
+        "hanzi": "你坐地铁吗？",
+        "pinyin": "Nǐ zuò dìtiě ma?",
+        "ru": "Ты ездишь на метро?",
+        "audioKey": null
+      }
+    },
+    {
+      "id": 4,
+      "title": "Действие и привычки",
+      "kind": "hsk2_candidate",
+      "vocabulary": [
+        {
+          "hanzi": "正",
+          "pinyin": "zhèng",
+          "ru": "прямо сейчас (действие)",
+          "pos": "наречие",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "着",
+          "pinyin": "zhe",
+          "ru": "частица продолжающегося состояния",
+          "pos": "частица",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "走路",
+          "pinyin": "zǒulù",
+          "ru": "ходить пешком",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "上网",
+          "pinyin": "shàngwǎng",
+          "ru": "пользоваться интернетом",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "跑步",
+          "pinyin": "pǎobù",
+          "ru": "бегать, заниматься бегом",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "经常",
+          "pinyin": "jīngcháng",
+          "ru": "часто, регулярно",
+          "pos": "наречие",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        }
+      ],
+      "grammar": [
+        {
+          "pattern": "正 + действие + 呢",
+          "explanation": "Указывает на действие, происходящее сейчас. Частица 着 описывает длительное состояние и не заменяет этот шаблон автоматически.",
+          "example": {
+            "hanzi": "他正走路呢。",
+            "pinyin": "Tā zhèng zǒulù ne.",
+            "ru": "Он сейчас идёт пешком.",
+            "audioKey": null
+          }
+        }
+      ],
+      "dialogue": [
+        {
+          "hanzi": "你经常跑步吗？",
+          "pinyin": "Nǐ jīngcháng pǎobù ma?",
+          "ru": "Ты часто бегаешь?",
+          "audioKey": null
+        },
+        {
+          "hanzi": "我经常跑步。",
+          "pinyin": "Wǒ jīngcháng pǎobù.",
+          "ru": "Я часто бегаю.",
+          "audioKey": null
+        }
+      ],
+      "question": {
+        "hanzi": "你经常上网吗？",
+        "pinyin": "Nǐ jīngcháng shàngwǎng ma?",
+        "ru": "Ты часто пользуешься интернетом?",
+        "audioKey": null
+      }
+    },
+    {
+      "id": 5,
+      "title": "Опыт и прошлые события",
+      "kind": "hsk2_candidate",
+      "vocabulary": [
+        {
+          "hanzi": "过",
+          "pinyin": "guo",
+          "ru": "частица пережитого опыта (после глагола)",
+          "pos": "аспектная частица",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "已经",
+          "pinyin": "yǐjīng",
+          "ru": "уже",
+          "pos": "наречие",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "记得",
+          "pinyin": "jìde",
+          "ru": "помнить",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "忘",
+          "pinyin": "wàng",
+          "ru": "забывать",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "回来",
+          "pinyin": "huílái",
+          "ru": "возвращаться сюда",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "出国",
+          "pinyin": "chūguó",
+          "ru": "уезжать за границу",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        }
+      ],
+      "grammar": [
+        {
+          "pattern": "Глагол + 过 + объект",
+          "explanation": "Частица 过 после глагола выражает жизненный опыт; это не универсальный показатель любого прошедшего события.",
+          "example": {
+            "hanzi": "我去过中国。",
+            "pinyin": "Wǒ qù guo Zhōngguó.",
+            "ru": "Я бывал в Китае.",
+            "audioKey": null
+          }
+        }
+      ],
+      "dialogue": [
+        {
+          "hanzi": "你去过中国吗？",
+          "pinyin": "Nǐ qù guo Zhōngguó ma?",
+          "ru": "Ты бывал в Китае?",
+          "audioKey": null
+        },
+        {
+          "hanzi": "我去过中国。",
+          "pinyin": "Wǒ qù guo Zhōngguó.",
+          "ru": "Я бывал в Китае.",
+          "audioKey": null
+        }
+      ],
+      "question": {
+        "hanzi": "你记得这个词吗？",
+        "pinyin": "Nǐ jìde zhège cí ma?",
+        "ru": "Ты помнишь это слово?",
+        "audioKey": null
+      }
+    },
+    {
+      "id": 6,
+      "title": "Планы и будущее",
+      "kind": "hsk2_candidate",
+      "vocabulary": [
+        {
+          "hanzi": "准备",
+          "pinyin": "zhǔnbèi",
+          "ru": "готовиться, собираться что-то сделать",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "快要",
+          "pinyin": "kuàiyào",
+          "ru": "вот-вот, скоро",
+          "pos": "наречие",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "希望",
+          "pinyin": "xīwàng",
+          "ru": "надеяться, хотеть",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "可能",
+          "pinyin": "kěnéng",
+          "ru": "возможно",
+          "pos": "модальное слово",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "一起",
+          "pinyin": "yìqǐ",
+          "ru": "вместе",
+          "pos": "наречие",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "开始",
+          "pinyin": "kāishǐ",
+          "ru": "начинать",
+          "pos": "глагол",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        }
+      ],
+      "grammar": [
+        {
+          "pattern": "准备 + действие",
+          "explanation": "О намерении или подготовке к действию; не все будущие действия требуют 准备.",
+          "example": {
+            "hanzi": "我准备明天学习。",
+            "pinyin": "Wǒ zhǔnbèi míngtiān xuéxí.",
+            "ru": "Я собираюсь завтра заниматься.",
+            "audioKey": null
+          }
+        }
+      ],
+      "dialogue": [
+        {
+          "hanzi": "你准备做什么？",
+          "pinyin": "Nǐ zhǔnbèi zuò shénme?",
+          "ru": "Что ты собираешься делать?",
+          "audioKey": null
+        },
+        {
+          "hanzi": "我准备学习中文。",
+          "pinyin": "Wǒ zhǔnbèi xuéxí Zhōngwén.",
+          "ru": "Я собираюсь изучать китайский.",
+          "audioKey": null
+        }
+      ],
+      "question": {
+        "hanzi": "你希望和谁一起学习？",
+        "pinyin": "Nǐ xīwàng hé shéi yìqǐ xuéxí?",
+        "ru": "С кем ты хотел бы учиться?",
+        "audioKey": null
+      }
+    },
+    {
+      "id": 7,
+      "title": "Связки и сравнения",
+      "kind": "hsk2_candidate",
+      "vocabulary": [
+        {
+          "hanzi": "因为",
+          "pinyin": "yīnwèi",
+          "ru": "потому что, из-за",
+          "pos": "союз",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "所以",
+          "pinyin": "suǒyǐ",
+          "ru": "поэтому",
+          "pos": "союз",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "比",
+          "pinyin": "bǐ",
+          "ru": "по сравнению с",
+          "pos": "предлог",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "虽然",
+          "pinyin": "suīrán",
+          "ru": "хотя",
+          "pos": "союз",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "但是",
+          "pinyin": "dànshì",
+          "ru": "но, однако",
+          "pos": "союз",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        },
+        {
+          "hanzi": "最",
+          "pinyin": "zuì",
+          "ru": "самый, наиболее",
+          "pos": "наречие",
+          "audioKey": null,
+          "reviewStatus": "preliminary"
+        }
+      ],
+      "grammar": [
+        {
+          "pattern": "因为 + причина，所以 + следствие",
+          "explanation": "Связываем причину и следствие; 不/没 не подменяют эти союзы.",
+          "example": {
+            "hanzi": "因为下雨，所以我不出去。",
+            "pinyin": "Yīnwèi xià yǔ, suǒyǐ wǒ bù chūqù.",
+            "ru": "Поскольку идёт дождь, я не выхожу.",
+            "audioKey": null
+          }
+        },
+        {
+          "pattern": "A + 比 + B + прилагательное",
+          "explanation": "Сравниваем два объекта без 是 перед прилагательным.",
+          "example": {
+            "hanzi": "今天比昨天冷。",
+            "pinyin": "Jīntiān bǐ zuótiān lěng.",
+            "ru": "Сегодня холоднее, чем вчера (учебный пример, не прогноз).",
+            "audioKey": null
+          }
+        }
+      ],
+      "dialogue": [
+        {
+          "hanzi": "你为什么学习中文？",
+          "pinyin": "Nǐ wèishénme xuéxí Zhōngwén?",
+          "ru": "Почему ты изучаешь китайский?",
+          "audioKey": null
+        },
+        {
+          "hanzi": "因为我喜欢中文。",
+          "pinyin": "Yīnwèi wǒ xǐhuan Zhōngwén.",
+          "ru": "Потому что мне нравится китайский язык.",
+          "audioKey": null
+        }
+      ],
+      "question": {
+        "hanzi": "你最喜欢什么？",
+        "pinyin": "Nǐ zuì xǐhuan shénme?",
+        "ru": "Что тебе нравится больше всего?",
+        "audioKey": null
+      }
+    }
+  ]
+}

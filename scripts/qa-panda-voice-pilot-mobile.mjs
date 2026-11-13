@@ -111,6 +111,14 @@ try{
   const bubble=await page.locator('.speech').evaluate(el=>{const r=el.getBoundingClientRect(),p=el.querySelector('#phrase').getBoundingClientRect();return {top:r.top,phraseTop:p.top,bottom:r.bottom}});assert(bubble.phraseTop>=bubble.top&&bubble.phraseTop<bubble.bottom,'First Chinese line must remain reachable from the start');
   await page.screenshot({path:DIR+'/correction-'+width+'.png',fullPage:false,animations:'disabled'});
 
+  // v304: HSK 2 bridge in the original Panda chat, no new screen or invented MP3.
+  await send(page,'HSK 2');assert.equal(await page.locator('#phrase').textContent(),'我学习中文。');
+  await send(page,'中文是什么意思？');assert.equal(await page.locator('#phrase').textContent(),'中文');
+  assert((await page.locator('#pinyin').textContent()).includes('Zhōngwén'));
+  assert(await page.locator('#audio-note').isVisible(),'Bridge must not invent MP3');
+  await send(page,'你忙吗？');assert.equal(await page.locator('#phrase').textContent(),'我不忙。');
+  await send(page,'我是忙');assert((await page.locator('#learner-feedback').textContent()).includes('我很忙'));
+
   const sources=await page.evaluate(async()=>Object.values((await import('./assets/panda-live-audio.mjs')).PILOT_AUDIO));
   for(const src of sources){const response=await page.request.get(new URL(src,BASE+'/').href);assert.equal(response.status(),200,src);assert((await response.body()).length>1000,src)}
   await context.close();

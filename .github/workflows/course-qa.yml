@@ -38,6 +38,8 @@ jobs:
       - run: node scripts/verify-hsk1-finish-avatars-v297.cjs
       - run: node scripts/verify-panda-hsk1-variants-v301.cjs
       - run: node scripts/verify-panda-brain-v302.cjs
+      - run: node scripts/verify-panda-hsk2-seed-v303.cjs
+      - run: node scripts/verify-panda-hsk2-bridge-v304.cjs
       - run: node scripts/verify-panda-native-real-v246.cjs
       - run: node scripts/verify-panda-audio-v244.cjs
       - run: node scripts/verify-lesson-viewport-v237.cjs

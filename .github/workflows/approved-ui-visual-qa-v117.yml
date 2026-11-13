@@ -7,7 +7,7 @@ permissions:
   contents: read
 jobs:
   screenshot-audit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright 1.56.1 requires supported Ubuntu
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -50,7 +50,7 @@ jobs:
           if-no-files-found: warn
   hanzi-focused:
     needs: hanzi-phrase-audio
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Keep Chromium installation supported
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4

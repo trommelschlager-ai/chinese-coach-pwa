@@ -13,8 +13,10 @@ on:
       - 'assets/panda-live-*'
       - 'assets/panda-hsk1-*'
       - 'assets/panda-brain-*'
+      - 'assets/panda-hsk2-*'
       - 'assets/panda-nonstop-*'
       - 'tests/panda-live-*'
+      - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
       - 'assets/panda-voice-pilot*'
       - 'tests/panda-voice-pilot.test.mjs'
       - 'tests/panda-live-lesson2.test.mjs'
@@ -29,8 +31,10 @@ on:
       - 'assets/panda-live-*'
       - 'assets/panda-hsk1-*'
       - 'assets/panda-brain-*'
+      - 'assets/panda-hsk2-*'
       - 'assets/panda-nonstop-*'
       - 'tests/panda-live-*'
+      - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
       - 'tests/panda-voice-pilot.test.mjs'
       - 'tests/panda-live-lesson2.test.mjs'
       - 'tests/panda-live-batch.test.mjs'
@@ -49,6 +53,8 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Test pilot response checks and mock microphone
         run: npm run check:panda-screen
+      - name: Validate Panda HSK2 preview bridge
+        run: node scripts/verify-panda-hsk2-bridge-v304.cjs
       - name: Install mobile Chromium
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1

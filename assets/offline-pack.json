@@ -1,6 +1,6 @@
 {
-  "version": 302,
-  "bytes": 55522260,
+  "version": 304,
+  "bytes": 58775273,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -2765,6 +2765,11 @@
     "./assets/panda-hsk1-questions-v281.mjs?v=302",
     "./assets/panda-curriculum-tutor.mjs?v=302",
     "./panda-voice-pilot.html?v=302",
-    "./scripts/verify-panda-brain-v302.cjs"
+    "./scripts/verify-panda-brain-v302.cjs",
+    "./assets/panda-hsk2-bridge-v304.mjs?v=304",
+    "./assets/panda-live-dialogue-v272.mjs?v=304",
+    "./assets/panda-live-screen-v270.mjs?v=304",
+    "./assets/panda-hsk1-questions-v281.mjs?v=304",
+    "./panda-voice-pilot.html?v=304"
   ]
 }
