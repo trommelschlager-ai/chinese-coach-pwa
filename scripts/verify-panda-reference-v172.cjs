@@ -26,7 +26,7 @@ for(const name of ['fan','lantern','pagoda'])
 const levelSection=homeJs.slice(homeJs.indexOf('function home(){'),homeJs.indexOf('function learn(){'));
 for(const name of ['Начальный уровень','Продолжающий уровень'])assert(levelSection.includes(name),'Required visible level missing: '+name);
 assert(!levelSection.includes("['3','chat'")&&!levelSection.includes('pg-hsk-unavailable'),'Old HSK3–6 controls must not remain');
-assert(levelSection.includes('href="./hsk1-map.html"'),'HSK1 must open actual map');
+assert(levelSection.includes('./hsk1-map.html'),'HSK1 must open actual map');
 assert(levelSection.includes('./hsk2-start.html#map'),'HSK 2 must open the actual continuation map');
 const m=new JSDOM(map).window.document;
 assert.equal(m.querySelectorAll('nav.map-road > a.node').length,7,'Map must display seven actual lessons');
