@@ -1,0 +1,18 @@
+'use strict';
+const fs=require('node:fs'),assert=require('node:assert/strict'),vm=require('node:vm'),path=require('node:path');
+const root=path.resolve(__dirname,'..');
+const lesson=fs.readFileSync(path.join(root,'hsk2-lesson1.html'),'utf8');
+const map=fs.readFileSync(path.join(root,'hsk2-map.html'),'utf8');
+const match=lesson.match(/<script type="application\/json" id="lesson-data">([\s\S]*?)<\/script>/);
+assert(match,'HSK2 data missing');
+const data=JSON.parse(match[1]);
+assert.equal(data.vocabulary.length,6);
+assert.equal(data.dialogue.length,4);
+for(const e of [...data.vocabulary,...data.examples,...data.dialogue]) assert(e.hanzi&&e.pinyin&&e.ru);
+assert(lesson.includes('localStorage.setItem(key'),'HSK2 local progress missing');
+assert(lesson.includes('hidden-pinyin'),'Pinyin toggle missing');
+assert(map.includes('href="./hsk2-lesson1.html"'),'Link to first HSK2 lesson missing');
+assert(map.includes('СКОРО'),'Unfinished lessons should not be shown as ready');
+const scripts=[...lesson.matchAll(/<script(?: [^>]*)?>([\s\S]*?)<\/script>/g)].map(x=>x[1]).filter(x=>x.includes('(()=>{'));
+for(const s of scripts)new vm.Script(s);
+console.log('HSK2 v1: data, pinyin, exercises, progress, map and JS syntax passed.');
