@@ -111,11 +111,24 @@ try{
   const bubble=await page.locator('.speech').evaluate(el=>{const r=el.getBoundingClientRect(),p=el.querySelector('#phrase').getBoundingClientRect();return {top:r.top,phraseTop:p.top,bottom:r.bottom}});assert(bubble.phraseTop>=bubble.top&&bubble.phraseTop<bubble.bottom,'First Chinese line must remain reachable from the start');
   await page.screenshot({path:DIR+'/correction-'+width+'.png',fullPage:false,animations:'disabled'});
 
-  // v304: HSK 2 bridge in the original Panda chat, no new screen or invented MP3.
+  // v306: explanatory card must be short, word-specific and never overlap the next prompt.
   await send(page,'HSK 2');assert.equal(await page.locator('#phrase').textContent(),'我学习中文。');
   await send(page,'中文是什么意思？');assert.equal(await page.locator('#phrase').textContent(),'中文');
   assert((await page.locator('#pinyin').textContent()).includes('Zhōngwén'));
   assert(await page.locator('#audio-note').isVisible(),'Bridge must not invent MP3');
+  assert(!(await page.locator('.listen-controls').isVisible()),'No inert speaker buttons without approved recording');
+  const cardText=await page.locator('#learner-feedback').textContent();
+  assert(cardText.includes('Тоны: 1 + 2')&&cardText.includes('我学习中文'),'Missing compact lexical explanation');
+  assert(!cardText.includes('我很忙'),'Unrelated rule leaked into 中文 explanation');
+  await page.waitForFunction(()=>document.querySelector('#phrase').textContent==='你学习中文吗？',null,{timeout:13000});
+  assert(!(await page.locator('#learner-feedback').isVisible()),'Old vocabulary explanation survived new question');
+  assert(await page.locator('#audio-note').isVisible(),'Question has no approved voice recording');
+  assert(!(await page.locator('.listen-controls').isVisible()),'Playback UI must be hidden when recording unavailable');
+  const speechFit=await page.locator('.speech').evaluate(el=>{
+   const b=el.getBoundingClientRect(),e=[...el.querySelectorAll('#phrase,#pinyin,#translation,#audio-note')].filter(x=>!x.hidden).map(x=>x.getBoundingClientRect());
+   return {overflow:el.scrollHeight-el.clientHeight,bottom:b.bottom,children:e.map(x=>({top:x.top,bottom:x.bottom}))};
+  });
+  assert(speechFit.overflow<=2&&speechFit.children.every(x=>x.bottom<=speechFit.bottom+1),JSON.stringify(speechFit));
   await send(page,'你忙吗？');assert.equal(await page.locator('#phrase').textContent(),'我不忙。');
   await send(page,'我是忙');assert((await page.locator('#learner-feedback').textContent()).includes('我很忙'));
 
