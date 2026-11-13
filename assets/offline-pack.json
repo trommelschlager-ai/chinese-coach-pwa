@@ -1,6 +1,6 @@
 {
-  "version": 318,
-  "bytes": 58471695,
+  "version": 319,
+  "bytes": 58478790,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -2737,10 +2737,6 @@
     "./hsk2-introduction.html",
     "./hsk2-map.html",
     "./hsk2-lesson1.html",
-    "./panda-voice-pilot.html?v=318",
-    "./assets/panda-live-screen-v270.mjs?v=318",
-    "./assets/panda-live-dialogue-v272.mjs?v=307",
-    "./assets/panda-hsk1-questions-v281.mjs?v=307",
     "./assets/panda-hsk2-bridge-v304.mjs?v=307",
     "./assets/panda-live-audio.mjs?v=307",
     "./assets/panda-live-voice-bridge-v307/B01.mp3",
@@ -2753,6 +2749,11 @@
     "./assets/panda-live-voice-bridge-v307/B08.mp3",
     "./assets/panda-live-voice-bridge-v307/B09.mp3",
     "./assets/panda-live-voice-bridge-v307/B10.mp3",
-    "./assets/panda-hsk-scenic-v315.css?v=315"
+    "./assets/panda-hsk-scenic-v315.css?v=315",
+    "./panda-voice-pilot.html?v=319",
+    "./assets/panda-live-screen-v270.mjs?v=319",
+    "./assets/panda-live-dialogue-v272.mjs?v=319",
+    "./assets/panda-hsk1-questions-v281.mjs?v=319",
+    "./assets/panda-sentence-coach-v319.mjs?v=319"
   ]
 }
