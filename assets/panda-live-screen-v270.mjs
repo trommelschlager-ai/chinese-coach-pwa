@@ -85,7 +85,7 @@ function render(){
  $('step').textContent=state.mode==='nonstop'?'∞ Разговор без лимита':state.done?'Диалог завершён':`${state.step+1} из ${conversation.lines.length}`;
  $('mode-short').classList.toggle('active',state.mode==='short');$('mode-nonstop').classList.toggle('active',state.mode==='nonstop');
  for(const name of ['short','nonstop'])$('mode-'+name).setAttribute('aria-pressed',String(state.mode===name));
- $('mode-description').textContent=state.mode==='nonstop'?'Отвечай и спрашивай по пройденным темам HSK 1':'Панда спрашивает — ты отвечаешь по уроку';
+ $('mode-description').textContent=state.mode==='nonstop'?'Отвечай по HSK 1 и вводным словам HSK 2':'Панда спрашивает — ты отвечаешь по уроку';
  const bars=document.querySelector('.bars');bars.replaceChildren();bars.hidden=state.mode==='nonstop';
  for(let i=0;i<conversation.lines.length;i++){const b=document.createElement('i');b.className='bar'+(state.done||i<=state.step?' on':'');bars.append(b)}
  $('finish').hidden=state.mode!=='nonstop';$('next').hidden=state.mode!=='nonstop';
