@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 160">
+<defs>
+<linearGradient id="roof" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#fff1a4"/><stop offset=".16" stop-color="#ed9a2a"/><stop offset=".47" stop-color="#bc3126"/><stop offset=".75" stop-color="#8e1533"/><stop offset="1" stop-color="#511329"/></linearGradient>
+<linearGradient id="trim" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff6af"/><stop offset=".55" stop-color="#ffb934"/><stop offset="1" stop-color="#cb5b05"/></linearGradient>
+<linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#bd3c29"/><stop offset="1" stop-color="#7b1327"/></linearGradient>
+<filter id="shade" x="-20%" y="-20%" width="140%" height="155%"><feGaussianBlur stdDeviation="4"/></filter>
+</defs>
+<path d="M85 135Q290 150 495 135L492 152H88Z" fill="#321018" opacity=".6" filter="url(#shade)"/>
+<path d="M124 61Q188 37 290 27Q392 38 456 61L470 122H110Z" fill="url(#wall)" stroke="#ffcd65" stroke-width="5"/>
+<path d="M80 92Q110 92 136 83Q177 72 202 52Q258 12 290 20Q322 12 378 52Q403 72 444 83Q470 92 500 92Q514 84 524 60Q523 110 488 113Q443 107 410 87Q350 59 290 59Q230 59 170 87Q137 107 92 113Q57 110 56 60Q66 84 80 92Z" fill="url(#roof)" stroke="#f7b945" stroke-width="7" stroke-linejoin="round"/>
+<path d="M63 77Q68 97 92 100Q132 94 167 77Q235 39 290 39Q345 39 413 77Q448 94 488 100Q512 97 517 77" fill="none" stroke="#fff0a0" stroke-width="5" stroke-linecap="round"/>
+<path d="M170 86Q215 54 290 49Q365 54 410 86" fill="none" stroke="#54152a" stroke-width="6"/>
+<path d="M290 21V4" stroke="#a83f07" stroke-width="8"/><path d="M272 12Q290-6 308 12L290 25Z" fill="url(#trim)" stroke="#a44d07" stroke-width="3"/>
+<circle cx="290" cy="4" r="8" fill="#ffcd4d" stroke="#b55d03" stroke-width="2"/>
+<path d="M56 61Q48 57 44 45Q52 50 62 49M524 61Q532 57 536 45Q528 50 518 49" fill="#ffd65a" stroke="#bd6313" stroke-width="4"/>
+<path d="M106 121Q290 139 474 121" fill="none" stroke="#f3a83a" stroke-width="4"/>
+<path d="M127 121V144M164 123V146M203 127V148M241 130V149M339 130V149M377 127V148M416 123V146M453 121V144" stroke="#ec9c3e" stroke-width="6"/>
+<path d="M102 146H478" stroke="#fdcd6d" stroke-width="7" stroke-linecap="round"/>
+</svg>
