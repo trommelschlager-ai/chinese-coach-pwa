@@ -18,7 +18,7 @@ const vm=require('node:vm');
  assert.deepEqual(Array.from(cov.byLesson),[9,12,12,12,18,11,12]);
  assert.deepEqual(Array.from(lex.get('学生').sourceLessons),[1,2]);
  const toneWords={
-  '你好':[3,3],'一个':[2,0],'学生':[2,0],'妹妹':[4,0],
+  '你好':[3,3],'一个':[2,0],'学生':[2,0],'妹妹':[4,0],'吗':[0],
   '妈妈':[1,0],'我的':[3,0],'星期一':[1,1,1],
   '二月':[4,4],'没有':[2,3]
  };
@@ -31,7 +31,7 @@ const vm=require('node:vm');
  let allWords=0,examples=0,oldAudio=0;
  for(const [word,entry] of lex){
   assert(entry.word===word,'Lexicon word key mismatch '+word);
-  assert(entry.pinyin&&/[\u00e0-\u01dc]/.test(entry.pinyin),'Source pinyin missing accents: '+word);
+  assert(entry.pinyin&&(/[\u00e0-\u01dc]/.test(entry.pinyin)||word==='吗'&&entry.pinyin==='ma'),'Source pinyin missing tones: '+word);
   assert(entry.translation&&entry.category&&entry.tones.length,'Incomplete word metadata '+word);
   assert(entry.example.hanzi.includes(word),'Example does not use target word '+word);
   assert(entry.example.pinyin&&entry.example.ru,'Example lacks tone pinyin or Russian '+word);
