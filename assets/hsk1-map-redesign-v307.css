@@ -1,0 +1,149 @@
+/* Panda Go HSK1 map v307 — approved second concept, visual-only overrides.
+   Keep all lesson hrefs, completion, lock rules, audio and progress untouched. */
+.map-shell{
+  min-height:0;
+  height:100svh;
+  padding:calc(9px + env(safe-area-inset-top)) 9px calc(8px + env(safe-area-inset-bottom));
+  background:#83bce9;
+}
+/* The original image already contains the complete traveller panda.
+   Scale and align it so her hat, backpack and feet sit above the dock. */
+.map-shell::before{
+  background-image:url("./panda-reference-v175/mountain-stairs.webp");
+  background-size:147% auto;
+  background-position:left -5px bottom 2px;
+  filter:saturate(1.34) contrast(1.04) brightness(1.045);
+}
+.map-shell::after{
+  background:linear-gradient(180deg,#296de64f 0%,#6aa9ff14 18%,transparent 39%,transparent 75%,#240f6a12 100%);
+}
+.pg-map-heading{gap:6px;padding:1px 40px 2px}
+.pg-map-brand{
+  font-size:clamp(35px,10vw,48px);
+  letter-spacing:-1.3px;
+  text-shadow:0 2px #f1a900,0 4px #982b19,0 5px 8px #1c104a,0 0 8px #ffeedf;
+}
+.pg-level-title{
+  width:min(91vw,340px);
+  padding:7px 12px;
+  font-size:clamp(17px,5.2vw,23px);
+  border-color:#ffe179;
+  box-shadow:inset 0 2px 4px #fffb,0 0 0 1px #f29c5e,0 0 10px 2px #d978ff,0 4px 9px #2514627a;
+}
+.map-road{
+  flex:1 1 auto;
+  justify-content:center;
+  padding:0 7px 0 clamp(125px,32.3vw,147px);
+  margin:clamp(10px,2.1svh,19px) 0 clamp(13px,2svh,20px);
+  gap:clamp(6px,1.12svh,10px);
+}
+.node{
+  height:clamp(50px,7.25svh,63px);
+  min-height:47px;
+  padding:4px 5px 4px clamp(49px,13vw,60px);
+  gap:4px;
+  border-width:2.5px;
+  box-shadow:inset 0 2px 4px #fff,0 0 0 1px #fff9,0 0 6px 1px var(--edge),0 4px 8px #35215c78;
+}
+.node[data-num="7"]{margin-left:-18px;width:calc(100% + 18px)}
+.node[data-num="6"]{margin-left:-11px;width:calc(100% + 11px)}
+.node[data-num="5"]{margin-left:-5px;width:calc(100% + 5px)}
+.node[data-num="4"]{margin-left:0;width:100%}
+.node[data-num="3"]{margin-left:6px;width:calc(100% - 6px)}
+.node[data-num="2"]{margin-left:10px;width:calc(100% - 10px)}
+.node[data-num="1"]{margin-left:3px;width:calc(100% - 3px)}
+.circle{
+  left:-12px;
+  width:clamp(53px,14.6vw,65px);
+  height:clamp(53px,14.6vw,65px);
+  font-size:clamp(29px,7.8vw,38px);
+}
+.caption{gap:3px}
+.caption strong{font-size:clamp(11px,3.24vw,15px);line-height:1.12;letter-spacing:-.25px}
+.caption .pg-word{font-size:clamp(10px,2.94vw,13px);font-weight:650}
+.pg-topic-art{
+  flex-basis:clamp(26px,8.5vw,39px);
+  width:clamp(26px,8.5vw,39px);height:clamp(26px,8.5vw,39px);
+}
+.pg-map-actions{
+  position:relative;z-index:6;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;
+  margin:0 1px clamp(3px,1.4svh,11px);
+}
+.pg-map-actions a{
+  min-height:clamp(69px,9svh,84px);
+  gap:5px;
+  padding:7px 5px;
+  border-radius:clamp(19px,5.3vw,28px);
+  box-shadow:inset 0 3px 3px #fff,0 0 0 1px #fffd,0 0 7px 2px var(--glow),0 3px 9px #2b17576f;
+}
+.pg-map-actions .action-label{
+  font-size:clamp(11px,3.15vw,15px);
+  line-height:1.08;
+  letter-spacing:-.23px;
+}
+.pg-map-actions a.pg-ai-button{
+  --frame:#e7a0ff;--glow:#b23aff;
+  overflow:visible;
+  flex-direction:column;
+  justify-content:center;
+  gap:0;
+  padding:11px 2px 7px;
+  border:2.5px solid #f8c9ff;
+  background:linear-gradient(175deg,#9f40ef 0%,#7c23d2 47%,#51118f 100%);
+  box-shadow:inset 0 2px 3px #fff8,inset 0 -3px 5px #34005e,0 0 0 1px #ffc4f5,0 0 11px 3px #a945f2,0 4px 9px #3f1a5b9c;
+}
+.pg-ai-button .action-icon{
+  position:relative;
+  width:65px;height:54px;
+  margin-top:-29px;
+  filter:drop-shadow(0 2px 3px #4e0e7c9c);
+}
+.pg-ai-button .action-icon .pg-ai-figure{
+  width:67px;height:64px;
+  object-fit:contain;object-position:center bottom;
+  filter:drop-shadow(0 0 4px #9c54ef);
+}
+.pg-map-actions a.pg-ai-button .action-label{
+  color:#fffaff;
+  font-size:clamp(15px,3.84vw,19px);
+  font-weight:950;
+  letter-spacing:-.1px;
+  text-shadow:0 2px 2px #29005c,0 0 4px #db8fff;
+}
+.pg-map-actions a.pg-ai-button::before,.pg-map-actions a.pg-ai-button::after{
+  content:"✦";position:absolute;z-index:1;
+  color:#fff0a7;font-size:12px;text-shadow:0 0 5px #fff;
+}
+.pg-map-actions a.pg-ai-button::before{left:9px;bottom:14px}
+.pg-map-actions a.pg-ai-button::after{right:9px;bottom:14px}
+@media(max-width:365px){
+  .map-road{padding-left:111px;gap:5px;margin-top:10px;margin-bottom:10px}
+  .node{height:51px;min-height:47px;padding-left:49px;gap:3px}
+  .circle{width:52px;height:52px;font-size:29px}
+  .caption strong{font-size:11.25px}.caption .pg-word{font-size:10px}
+  .pg-topic-art{flex-basis:25px;width:25px;height:25px}
+  .pg-map-actions{gap:5px}
+  .pg-map-actions a{min-height:67px}
+  .pg-map-actions a .action-label{font-size:10.5px}
+  .pg-map-actions a.pg-ai-button .action-label{font-size:14px}
+}
+@media(max-height:735px){
+  .pg-map-heading{gap:4px}
+  .pg-map-brand{font-size:35px}
+  .pg-level-title{padding:6px 9px;font-size:17px}
+  .map-road{margin:7px 0 10px;gap:5px}
+  .node{height:clamp(46px,7.1svh,55px);min-height:45px}
+  .circle{height:clamp(49px,14vw,57px);width:clamp(49px,14vw,57px);font-size:28px}
+  .pg-map-actions a{min-height:64px}
+  .pg-map-actions{margin-bottom:1px}
+}
+@media(max-height:600px){
+  .map-shell{height:100svh;overflow-y:auto}
+  .map-road{flex:0 0 auto}
+  .pg-map-actions{flex:0 0 auto}
+}
+@media(prefers-reduced-motion:reduce){
+  .pg-map-actions a,.node{transition:none}
+}
