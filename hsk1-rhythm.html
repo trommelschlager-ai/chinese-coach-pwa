@@ -51,6 +51,105 @@ h1{margin:0;font-size:clamp(20px,5.7vw,27px);line-height:1.15;letter-spacing:-.3
 @media(max-height:690px){.frame{gap:10px;padding-top:calc(9px + env(safe-area-inset-top,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}.hero{padding:12px 15px}.hero-top{margin-bottom:7px}.progress{margin-top:9px}.flash{padding:15px 14px}.card-body{gap:9px}.controls button{width:56px;height:56px}.note{bottom:calc(79px + env(safe-area-inset-bottom,0px))}}
 @media(max-width:345px){.frame{padding-left:10px;padding-right:10px}.hero{padding-left:13px;padding-right:13px}.hanzi{font-size:28px}.words{grid-template-columns:1fr}.controls{gap:22px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+
+/* v309: fit the entire core exercise within the Android visual viewport.
+   Reveal/details may scroll INSIDE the card only, preserving visible controls. */
+html,body{height:100%;min-height:0;overscroll-behavior-y:contain}
+.frame{
+  width:min(100%,480px);
+  height:100vh;height:100dvh;min-height:0;
+  padding:calc(10px + env(safe-area-inset-top,0px)) clamp(10px,3.3vw,17px)
+          max(22px,calc(18px + env(safe-area-inset-bottom,0px)));
+  gap:clamp(10px,1.4dvh,14px);
+  grid-template-rows:auto minmax(0,1fr) auto;
+}
+.hero{padding:10px 15px 11px;border-radius:22px}
+.hero-top{margin-bottom:5px}
+.brand{font-size:12px}
+.level{font-size:11px;padding:4px 9px}
+h1{font-size:clamp(19px,5.25vw,25px);line-height:1.16}
+.count{font-size:12px}
+.progress{margin-top:9px;height:5px}
+.study{min-height:0;display:flex;align-items:center;justify-content:center}
+.flash{
+  flex:none;
+  height:min(100%,clamp(235px,38dvh,340px));
+  padding:17px clamp(13px,4vw,21px) 12px;
+  border-radius:27px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  touch-action:pan-y;
+  scrollbar-width:thin;
+}
+.flash[aria-expanded="true"]{height:min(100%,clamp(270px,53dvh,420px))}
+.card-body{flex:1 0 auto;gap:8px;justify-content:center}
+.flash[aria-expanded="true"] .card-body{
+  flex:0 0 auto;justify-content:flex-start;gap:10px;padding:6px 0;
+}
+.hanzi{font-size:clamp(28px,7.6vw,41px);line-height:1.42}
+.pinyin{font-size:clamp(13px,3.5vw,17px)}
+.translation{font-size:clamp(13px,3.5vw,16px);padding-top:10px}
+.words{gap:6px}
+.word{padding:6px 8px;font-size:11.5px}
+.word strong{font-size:14px}
+.hint{margin-top:0;padding-top:9px;padding-bottom:0;font-size:11.5px}
+.controls{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:clamp(5px,2vw,10px);
+  justify-items:center;align-items:center;
+  width:min(100%,360px);margin:0 auto;padding:4px 0 2px;
+}
+.controls button{
+  width:clamp(44px,12vw,57px);
+  height:clamp(44px,12vw,57px);
+  font-size:25px;
+  touch-action:manipulation;
+}
+.controls #pinyin-btn{font-size:24px}
+.controls #prev,.controls #next{
+  color:#6e2c89;
+  background:linear-gradient(145deg,#ffffff,#f4deff);
+  font-size:33px;font-weight:850;line-height:1;
+}
+.controls #translation-btn{
+  color:#6c377f;
+  background:linear-gradient(145deg,#fffdfc,#ffecf5);
+  font-size:15px;font-weight:900;
+}
+.controls #translation-btn[aria-pressed="true"]{
+  background:linear-gradient(145deg,#fff2cc,#f6d3ee);border-color:#ecc78a;
+}
+.controls #listen svg{width:27px;height:27px}
+.note{bottom:calc(88px + env(safe-area-inset-bottom,0px));left:17px;right:17px}
+@media(max-width:345px){
+ .frame{padding-left:10px;padding-right:10px}
+ .hero{padding:9px 12px 10px}
+ .hero-top{margin-bottom:4px}
+ .progress{margin-top:7px}
+ .flash{padding:14px 12px 11px}
+ .flash[aria-expanded="true"] .card-body{gap:7px}
+ .words{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .word{padding:5px 6px;font-size:10.5px}
+ .word strong{font-size:13px}
+ .controls{gap:4px}
+ .controls button{width:44px;height:44px}
+ .controls #pinyin-btn{font-size:21px}
+ .note{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+}
+@media(max-height:690px){
+ .frame{gap:8px;padding-top:calc(7px + env(safe-area-inset-top,0px))}
+ .hero{padding:8px 12px 9px}
+ .hero-top{margin-bottom:4px}
+ .progress{margin-top:7px}
+ .flash{height:min(100%,clamp(210px,36dvh,275px))}
+ .flash[aria-expanded="true"]{height:min(100%,clamp(245px,50dvh,340px))}
+ .controls button{width:clamp(43px,11vw,51px);height:clamp(43px,11vw,51px)}
+}
+@media(max-height:530px){
+ .frame{min-height:480px;height:auto}
+ body{overflow-y:auto}
+}
 </style>
 </head>
 <body>
@@ -63,11 +162,14 @@ h1{margin:0;font-size:clamp(20px,5.7vw,27px);line-height:1.15;letter-spacing:-.3
   <section class="study" aria-label="Карточка китайского предложения">
     <article class="flash" id="flash" role="button" tabindex="0" aria-expanded="false" aria-label="Показать перевод и разбор слов"></article>
   </section>
-  <nav class="controls" aria-label="Произношение и пиньинь">
+  <nav class="controls" aria-label="Управление упражнениями">
+    <button id="prev" type="button" aria-label="Предыдущее предложение" title="Назад">‹</button>
     <button id="listen" type="button" aria-label="Слушать китайскую фразу" title="Слушать">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a5 5 0 0 1 0 6"/><path d="M18 6a9 9 0 0 1 0 12"/></svg>
     </button>
     <button id="pinyin-btn" type="button" aria-label="Показать пиньинь" aria-pressed="false" title="Пиньинь">汉</button>
+    <button id="translation-btn" type="button" aria-label="Показать перевод и разбор" aria-pressed="false" title="Перевод и разбор">RU</button>
+    <button id="next" type="button" aria-label="Следующее предложение" title="Дальше">›</button>
   </nav>
   <span class="sr-only">Перелистывай карточки свайпом вправо или влево, либо стрелками клавиатуры.</span>
   <p class="note" id="notice" role="status" aria-live="polite"></p>
@@ -88,6 +190,8 @@ const data=[
 ];
 const $=id=>document.getElementById(id);
 let pos=0,open=false,showPinyin=false,run=0,sound=null,suppressClickUntil=0;
+// Keep rhythm progress separate from all HSK1 and HSK2 lesson progress keys.
+try{const saved=Number(localStorage.getItem("pg-hsk1-rhythm-v309-pos"));if(Number.isInteger(saved)&&saved>=0&&saved<data.length)pos=saved;}catch{}
 const speakerIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a5 5 0 0 1 0 6"/><path d="M18 6a9 9 0 0 1 0 12"/></svg>';
 function escapeHTML(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function showNotice(message){$("notice").textContent=message;}
@@ -98,6 +202,10 @@ function render(){
  $("flash").setAttribute("aria-expanded",String(open));
  $("flash").setAttribute("aria-label",open?"Скрыть перевод и разбор":"Показать перевод и разбор");
  $("pinyin-btn").setAttribute("aria-pressed",String(showPinyin));
+ $("translation-btn").setAttribute("aria-pressed",String(open));
+ $("translation-btn").setAttribute("aria-label",open?"Скрыть перевод и разбор":"Показать перевод и разбор");
+ $("prev").disabled=pos===0;
+ $("next").disabled=pos===data.length-1;
  $("pinyin-btn").setAttribute("aria-label",showPinyin?"Скрыть пиньинь":"Показать пиньинь");
  const py=showPinyin?'<div class="pinyin">'+escapeHTML(entry.py)+'</div>':'';
  const details=open?'<div class="translation">'+escapeHTML(entry.ru)+'</div><div class="words">'+entry.w.map(pair=>'<div class="word"><strong>'+escapeHTML(pair[0])+'</strong>'+escapeHTML(pair[1])+'</div>').join("")+'</div>':'';
@@ -105,9 +213,12 @@ function render(){
  $("flash").innerHTML='<div class="card-body"><div class="hanzi" lang="zh-CN">'+escapeHTML(entry.zh)+'</div>'+py+details+'</div>'+hint;
 }
 function cancel(){run++;if(sound){sound.pause();sound.removeAttribute("src");sound.load();sound=null;}$("listen").innerHTML=speakerIcon;$("listen").setAttribute("aria-label","Слушать китайскую фразу");}
-function move(step){const n=pos+step;if(n<0||n>=data.length)return;cancel();pos=n;open=false;showNotice("");render();}
+function move(step){const n=pos+step;if(n<0||n>=data.length)return;cancel();pos=n;open=false;showNotice("");try{localStorage.setItem("pg-hsk1-rhythm-v309-pos",String(pos));}catch{}render();$("flash").scrollTop=0;}
 $("pinyin-btn").addEventListener("click",()=>{showPinyin=!showPinyin;render()});
-function toggle(){open=!open;render();}
+function toggle(){open=!open;render();$("flash").scrollTop=0;}
+$("translation-btn").addEventListener("click",toggle);
+$("prev").addEventListener("click",()=>move(-1));
+$("next").addEventListener("click",()=>move(1));
 $("flash").addEventListener("click",()=>{if(Date.now()<suppressClickUntil)return;toggle()});
 $("flash").addEventListener("keydown",e=>{
  if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}
