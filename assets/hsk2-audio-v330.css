@@ -17,3 +17,10 @@
 .hsk2-clip[data-hsk2-example-for]{background:#fff3f9;border-color:#cca5d7;color:#74478d}
 .hsk2-clip[data-hsk2-example-for]:focus-visible{outline:3px solid #7131a5;outline-offset:2px}
 @media(max-height:700px){.pg-hsk2-sample-indicator{font-size:9px}}
+
+/* v334: missing solo-word audio must never look like an active speaker. */
+.app .vocab.pg-sound-card.pg-no-audio{cursor:default;opacity:1;user-select:text}
+.app .vocab.pg-sound-card.pg-no-audio::before{content:none!important;display:none!important}
+.app .pg-hsk2-audio-absent{display:block;font-size:11px;color:#9c729d;line-height:1.25;margin-top:4px}
+.app .hsk2-missing-audio{display:inline-block;font-size:11px;font-weight:600;color:#947398}
+.app .vocab.pg-sound-card:not(.pg-no-audio):focus-visible{outline:3px solid #7131a5;outline-offset:2px}
