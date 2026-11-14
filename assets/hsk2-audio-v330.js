@@ -136,7 +136,7 @@ function play(phrase,report){
   };
   const seekToStart=()=>{
    if(active!==a||ready||a.readyState<1)return;
-   try{a.currentTime=clip.start;checkSeek()}catch{}
+   try{a.currentTime=clip.start}catch{}
   };
   a.onerror=fail;
   a.onloadedmetadata=seekToStart;
