@@ -25,7 +25,7 @@ events.message({data:{type:'PRUNE_PANDA_LEGACY'},waitUntil:p=>pending=p});await 
 assert(await oldCache.match(stalePanda),'Must not erase old offline Panda before new code is cached');
 // v345: verify the ACTUAL Panda-current manifest, not stale hard-coded v326/v319 URLs.
 // Legacy files may be pruned only after every latest script, style and picture is cached.
-const currentMatch=code.match(/const PANDA_CURRENT=(\\[[\\s\\S]*?\\]);/);
+const currentMatch=code.match(/const PANDA_CURRENT=(\[[\s\S]*?\]);/);
 assert(currentMatch,'Service worker must declare its current Panda asset manifest');
 const currentPanda=vm.runInNewContext(currentMatch[1]);
 for(const p of currentPanda){
