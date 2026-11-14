@@ -74,10 +74,10 @@ function fixedResults(id,words,count){
  function persist(){save(key,{signature,results:data})}
  return {data,persist,reset(){data.forEach(arr=>arr.splice(0));persist()},key};
 }
-function mountFinal(node,items){
+function mountFinal(node,items,practiceId='lesson1-final-5'){
  if(!node)return;
  const words=items.map(x=>({zh:String(x[0]),py:String(x[1]),ru:String(x[2])}));
- const progress=fixedResults('lesson1-final-5',words,5);
+ const progress=fixedResults(practiceId,words,5);
  let active=false,rec=null,info='';
  const totals=()=>score(progress.data.flat());
  function draw(){
