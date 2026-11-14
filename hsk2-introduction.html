@@ -336,7 +336,7 @@ function render(){
  state.step=Math.max(0,Math.min(steps.length-1,Number(state.step)||0));
  const i=state.step,s=steps[i],answer=state.answers[i];let inside='';
  $('app').classList.toggle('structure-page',s.kind==='structure'||s.kind==='place-words');
- if(s.kind==='words')inside='<p class="intro">Новые слова: иероглифы, пиньинь и перевод.</p><div class="vocgrid">'+s.items.map(word).join('')+'</div><p id="audio-status" class="audio-status" role="status" aria-live="polite"></p><p class="notice">🔊 Доступны только совпадающие записи утверждённой носительницы. Остальные MP3 требуют записи.</p>';
+ if(s.kind==='words')inside='<p class="intro">Новые слова: иероглифы, пиньинь и перевод.</p><div class="vocgrid">'+s.items.map(word).join('')+'</div><p id="audio-status" class="audio-status" role="status" aria-live="polite"></p><p class="notice">🔊 Воспроизводятся только точно совпадающие MP3 из присланного пакета Luvvoice. Другой голос не подставляется.</p>';
  if(s.kind==='place-words')inside=placeWordsScreen();
  if(s.kind==='structure')inside=structureScreen();
  if(s.kind==='rule')inside='<div class="rule">'+esc(s.formula)+'</div>'+example(s.example)+(s.title==='Назови профессию'?example(['我是老师。','Wǒ shì lǎoshī.','Я учитель.']):'')+'<p class="explain spaced">'+esc(s.why)+'</p><p id="audio-status" class="audio-status" role="status" aria-live="polite"></p>';
@@ -362,7 +362,7 @@ function render(){
  '<section class="paper" aria-label="Урок самопрезентации">'+inside+'</section>'+
  '<div class="toolbar"><button class="softbtn" data-py type="button">'+(state.showPy?'Скрыть пиньинь':'Показать пиньинь')+'</button><button class="softbtn" data-repeat type="button">↻ Повторить</button></div>'+
  '<div class="bottom-actions"><div class="toolbar"><button class="softbtn" data-prev type="button" '+(i===0?'disabled':'')+'>← Назад</button><button class="primary" data-next type="button" '+(disabled?'disabled':'')+'>'+(s.kind==='finish'?'К карте HSK 2 →':s.kind==='dialogue-practice'?'К итогам →':'Дальше →')+'</button></div></div>'+
- '<p class="small-caption">Озвучка: проверенные записи носительницы, без смешения голосов.</p>';
+ '<p class="small-caption">Озвучка: присланные MP3 Luvvoice; при отсутствии точного файла звук не подменяется.</p>';
  $('screen').classList.toggle('hiddenpy',!state.showPy);
  $('screen').querySelectorAll('[data-pg-drill]').forEach(b=>b.addEventListener('click',()=>speechPhrase(b.dataset.pgDrill)));
  $('screen').querySelectorAll('[data-structure-tab]').forEach(b=>b.addEventListener('click',()=>{state.structureTab=b.dataset.structureTab==='order'?'order':'phrase';save();render()}));
