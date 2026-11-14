@@ -187,6 +187,8 @@ let state={step:0,answers:{},build:[],showPy:true,completed:false,readDialoguePa
 try{const x=JSON.parse(localStorage.getItem(key)||'null');if(x&&typeof x==='object')state={...state,...x,answers:x.answers||{},build:Array.isArray(x.build)?x.build:[],dialogue:{index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[],...(x.dialogue||{})},profile:{name:'',city:'',job:'',age:'',other:'',...(x.profile||{})}}}catch{}
 // On first launch of the revised lesson, show the listening example even for earlier in-progress sessions.
 try{if(!localStorage.getItem('pg-hsk2-intro-v337-shown')){state.step=0;localStorage.setItem('pg-hsk2-intro-v337-shown','1')}}catch{}
+// Clear only stale three-question conversation progress; preserve course step and other work.
+try{if(!localStorage.getItem('pg-hsk2-live-five-v340')){state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[]};localStorage.setItem('pg-hsk2-live-five-v340','1')}}catch{}
 const save=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch{}};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -398,7 +400,7 @@ function introDialogueScreen(){
  '<div class="pg-talk-actions"><button type="button" class="primary" data-dialogue-mic>🎤 Сказать</button><button type="button" class="softbtn" data-dialogue-check '+(d.passed[i]?'disabled':'')+'>✓ Проверить</button></div>'+
  (dialogueFeedback?'<p class="pg-talk-feedback '+(dialogueFeedback.ok?'ok':'')+'" role="status">'+esc(dialogueFeedback.feedback)+'</p>':'')+
  (d.hints[i]?'<div class="pg-talk-hint"><strong>'+esc(q.sample)+'</strong><span class="py">'+esc(q.samplePy)+'</span><span>'+esc(q.ruSample)+'</span></div>':'')+
- '<div class="pg-talk-options"><button type="button" data-dialogue-hint>💡 Подсказка</button><button type="button" data-dialogue-skip>Пропустить</button></div>'+
+ '<div class="pg-talk-options"><button type="button" data-dialogue-hint>💡 Подсказка</button><button type="button" data-dialogue-skip '+(d.passed[i]?'disabled':'')+'>Пропустить</button></div>'+
  '<div class="pg-talk-actions"><button type="button" class="softbtn" data-dialogue-back '+(i===0?'disabled':'')+'>← Назад</button><button type="button" class="primary" data-dialogue-forward '+(ready?'':'disabled')+'>'+(i===4?'Завершить ✓':'Следующий вопрос →')+'</button></div>'+
  '<p class="pg-talk-notice">Распознавание браузера может использовать интернет и передавать голос сервису. Тоны не оцениваются автоматически.</p><p id="audio-status" class="audio-status" role="status"></p></div>';
 }
@@ -459,6 +461,7 @@ function structureScreen(){
 }
 
 function render(){
+ stopIntroMic();
  stopApprovedAudio();
  state.step=Math.max(0,Math.min(steps.length-1,Number(state.step)||0));
  const i=state.step,s=steps[i],answer=state.answers[i];let inside='';
