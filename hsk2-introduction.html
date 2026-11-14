@@ -81,9 +81,26 @@
 .audio-status{font-size:12px;min-height:16px;color:#6a3d7b;margin:5px 0;text-align:center;line-height:1.3}
 .audio-status.warn{color:#a43858}
 @media(max-height:700px){.audio-clip-button{padding:4px 7px;min-height:28px;font-size:11px}}
+
+/* v336: compact HSK2 practice with outlined Chinese character squares. */
+.app .paper .vocab .hanzi-squares{display:flex;justify-content:center;align-items:center;gap:5px;flex-wrap:wrap;font-size:inherit;line-height:1}
+.app .paper .vocab .hz-square{display:grid;place-items:center;width:clamp(46px,13vw,67px);height:clamp(46px,13vw,67px);border:1.5px solid #e3b577;border-radius:12px;background:linear-gradient(135deg,#fff,#f6ddf7);box-shadow:inset 0 1px #fff,0 2px 5px #a564a32c;color:#58246f;font:850 clamp(27px,7vw,37px)/1 "Noto Serif SC","Songti SC","SimSun",serif}
+.model-lines{display:grid;gap:7px;max-height:min(61svh,610px);overflow-y:auto;overscroll-behavior:contain;padding:1px 3px}
+.model-line{display:grid;gap:2px;background:#f7e8fa;border:1px solid #e3c3e6;border-radius:14px;padding:9px 11px;justify-items:start;width:96%}
+.model-line.reply{background:#fff0f5;margin-left:auto}
+.model-line .model-who{font-size:10px;font-weight:850;color:#825795}
+.model-line strong{font:850 clamp(21px,5.8vw,26px)/1.2 "Noto Serif SC","Songti SC","SimSun",serif;color:#50226e}
+.model-line .py{font-size:13px;font-weight:700;color:#815299}
+.model-line>span:not(.py){font-size:12px;color:#664771}
+.model-line .audio-clip-button{justify-self:end;margin-top:-3px}
+.profile-phrases{border:1px solid #e7bfa8;border-radius:13px;background:#fff9fc;padding:8px;margin-top:9px}
+.profile-phrases>strong{display:block;text-align:center;font-size:13px}
+.profile-optional{margin:8px 0;padding:8px;border:1px solid #e6c6dc;border-radius:11px}
+.profile-optional label{display:grid;gap:4px;margin:6px 0;font-size:12px}
+.profile-optional input{width:100%;font:inherit;padding:8px;border:1px solid #ddb2d3;border-radius:9px}
 </style><link rel="stylesheet" href="./assets/hsk2-one-screen-v323.css?v=323"><link rel="stylesheet" href="./assets/hsk2-speaking-v324.css?v=324"><link rel="stylesheet" href="./assets/hsk2-five-attempts-banner-v326.css?v=326"><link rel="stylesheet" href="./assets/hsk2-compact-refinement-v328.css?v=328"><link rel="stylesheet" href="./assets/hsk2-fixes-v329.css?v=329"><link rel="stylesheet" href="./assets/hsk2-audio-v330.css?v=335"></head><body><div class="app" id="app"><header class="scene"><span class="petals" aria-hidden="true">🌸</span><a class="backlink" href="#map" aria-label="Назад к карте">‹</a><img class="panda" src="./assets/hsk2-panda-new-v328.svg" alt=""><div class="brand">Panda Go<small id="scene-sub">HSK 2 · Начальный плюс</small></div><span class="scene-caption" id="scene-caption">Слова → грамматика → практика</span></header><main class="content" id="screen" tabindex="-1"></main><nav class="nav" aria-label="Навигация"><a href="#map" id="nav-map"><b>⌂</b>Главная</a><a href="#review" id="nav-review"><b>▤</b>Повторение</a><a href="#lesson" id="nav-lesson"><b>◫</b>Урок 1</a><a href="#progress" id="nav-progress"><b>◴</b>Прогресс</a></nav></div>
 <script src="./assets/hsk2-speaking-v326.js?v=332"></script>
-<script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=335"></script>
+<script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=336"></script>
 <script>
 (()=>{
 'use strict';
@@ -94,29 +111,35 @@ const WORDS=[
  ['工作','gōngzuò','работать; работа'],['做','zuò','делать'],['医生','yīshēng','врач'],['老师','lǎoshī','учитель · повторение HSK 1']
 ];
 const steps=[
- {kind:'words',title:'Как меня зовут?',items:WORDS.slice(0,4)},
- {kind:'rule',title:'Назови своё имя',formula:'我 + 叫 + ИМЯ',example:['我叫安娜。','Wǒ jiào Ānnà.','Меня зовут Анна.'],why:'叫 (jiào) — «зваться». Имена других стран необязательно переводить на китайский.'},
- {kind:'place-words',title:'Сначала разбираем 住 и 在'},
- {kind:'structure',title:'Как построить фразу о городе',formula:'我 + 住在 + ГОРОД'},
- {kind:'words',title:'Кем я работаю?',items:WORDS.slice(8,12)},
- {kind:'rule',title:'Назови профессию',formula:'我 + 是 + ПРОФЕССИЯ',example:['我是医生。','Wǒ shì yīshēng.','Я врач.'],why:'Для профессии-существительного используем 是. «Я работаю в Москве»: 我在莫斯科工作。'},
- {kind:'examples',title:'Три фразы о себе',items:[['我叫安娜。','Wǒ jiào Ānnà.','Меня зовут Анна.'],['我住在莫斯科。','Wǒ zhù zài Mòsīkē.','Я живу в Москве.'],['我是医生。','Wǒ shì yīshēng.','Я врач.']]},
- {kind:'dialogue',title:'Вопросы при знакомстве',items:[
+ {kind:'model-dialogue',title:'Послушай пример знакомства',items:[
+ ['A','你好！','Nǐ hǎo!','Привет!'],
+ ['B','你好！','Nǐ hǎo!','Привет!'],
  ['A','你叫什么名字？','Nǐ jiào shénme míngzi?','Как тебя зовут?'],
- ['B','我叫安娜。','Wǒ jiào Ānnà.','Меня зовут Анна.'],
+ ['B','我叫熊猫。','Wǒ jiào Xióngmāo.','Меня зовут Панда.'],
+ ['B','我是熊猫老师。','Wǒ shì Xióngmāo lǎoshī.','Я учитель Панда.'],
+ ['A','你今年多大了？','Nǐ jīnnián duō dà le?','Сколько тебе лет?'],
+ ['B','我今年三岁了。','Wǒ jīnnián sān suì le.','Мне три года.'],
  ['A','你住在哪儿？','Nǐ zhù zài nǎr?','Где ты живёшь?'],
- ['B','我住在莫斯科。','Wǒ zhù zài Mòsīkē.','Я живу в Москве.'],
- ['A','你做什么工作？','Nǐ zuò shénme gōngzuò?','Кем ты работаешь?'],
- ['B','我是医生。','Wǒ shì yīshēng.','Я врач.']]},
- {kind:'quiz',title:'Проверяем понимание',question:'Как перевести 我住在莫斯科。?',choices:['Меня зовут Москва.','Я работаю в Москве.','Я живу в Москве.'],answer:2,why:'我 (я) + 住在 (живу в) + 莫斯科 (Москва).'},
- {kind:'build',title:'Собери предложение',question:'«Я живу в Москве»',tokens:['莫斯科','住在','我'],answer:['我','住在','莫斯科'],why:'Кто + 住在 + где живёт.'},
- {kind:'profile',title:'Теперь расскажи о себе'},
- {kind:'dialogue-practice',title:'Поговори с Пандой'},
- {kind:'finish',title:'Ты умеешь представляться!',desc:'Ты научился говорить, как тебя зовут, где ты живёшь и кем работаешь. Переходи к построению новых предложений.'}
+ ['B','我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.']]},
+ {kind:'words',title:'Как меня зовут?',items:WORDS.slice(0,4)},
+ {kind:'rule',title:'Говорим своё имя',formula:'我 + 叫 + ИМЯ',example:['我叫熊猫。','Wǒ jiào Xióngmāo.','Меня зовут Панда.'],why:'Можешь назвать любое имя. Необязательно выбирать его из списка.'},
+ {kind:'rule',title:'Где я живу',formula:'我 + 住在 + МЕСТО',example:['我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.'],why:'住在 (zhù zài) — жить в каком-то месте. Оба слога с 4-м тоном.'},
+ {kind:'words',title:'Кто я по профессии?',items:WORDS.slice(8,12)},
+ {kind:'rule',title:'Моя профессия',formula:'我 + 是 + ПРОФЕССИЯ',example:['我是熊猫老师。','Wǒ shì Xióngmāo lǎoshī.','Я учитель Панда.'],why:'Для профессии используем 是. Например, 我是医生 — «Я врач».'},
+ {kind:'examples',title:'Пять фраз для знакомства',items:[
+ ['你好！','Nǐ hǎo!','Привет!'],
+ ['我叫熊猫。','Wǒ jiào Xióngmāo.','Меня зовут Панда.'],
+ ['我是熊猫老师。','Wǒ shì Xióngmāo lǎoshī.','Я учитель Панда.'],
+ ['我今年三岁了。','Wǒ jīnnián sān suì le.','Мне три года.'],
+ ['我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.']]},
+ {kind:'profile',title:'Теперь ты: коротко о себе'},
+ {kind:'finish',title:'Ты умеешь знакомиться!',desc:'Пять фраз: 你好 / 我叫… / 我是… / 我今年…岁 / 我住在…. Повтори их вслух, затем переходи к следующему уроку.'}
 ];
 const key='pg-hsk2-introduction-v1';
-let state={step:0,answers:{},build:[],showPy:true,completed:false,readDialoguePair:0,structureTab:'phrase',dialogue:{index:0,passed:[false,false,false],assisted:[false,false,false],completed:false},profile:{name:'',city:'',job:'老师',other:''}};
-try{const x=JSON.parse(localStorage.getItem(key)||'null');if(x&&typeof x==='object')state={...state,...x,answers:x.answers||{},build:Array.isArray(x.build)?x.build:[],dialogue:{index:0,passed:[false,false,false],assisted:[false,false,false],completed:false,...(x.dialogue||{})},profile:{name:'',city:'',job:'老师',other:'',...(x.profile||{})}}}catch{}
+let state={step:0,answers:{},build:[],showPy:true,completed:false,readDialoguePair:0,structureTab:'phrase',dialogue:{index:0,passed:[false,false,false],assisted:[false,false,false],completed:false},profile:{name:'',city:'',job:'',age:'',other:''}};
+try{const x=JSON.parse(localStorage.getItem(key)||'null');if(x&&typeof x==='object')state={...state,...x,answers:x.answers||{},build:Array.isArray(x.build)?x.build:[],dialogue:{index:0,passed:[false,false,false],assisted:[false,false,false],completed:false,...(x.dialogue||{})},profile:{name:'',city:'',job:'',age:'',other:'',...(x.profile||{})}}}catch{}
+// On first launch of the revised lesson, show the listening example even for earlier in-progress sessions.
+try{if(!localStorage.getItem('pg-hsk2-intro-v336-shown')){if(!state.completed)state.step=0;localStorage.setItem('pg-hsk2-intro-v336-shown','1')}}catch{}
 const save=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch{}};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -138,11 +161,11 @@ function playApprovedAudio(phrase){
 const clipButton=phrase=>matchingAudio(phrase)?'<button class="audio-clip-button" type="button" data-audio="'+esc(phrase)+'" aria-label="Слушать точную запись: '+esc(phrase)+'">🔊 Слушать</button>':'';
 const word=([zh,py,ru])=>{
  const exact=!!matchingAudio(zh),sample=exact?null:window.PandaHsk2AudioV330?.sentenceFor(zh);
- const sentence=sample?'<div class="hsk2-word-phrase"><span class="hsk2-word-phrase-label">🎧 Пример с этим словом</span>'+
+ const sentence=sample?'<div class="hsk2-word-phrase"><span class="hsk2-word-phrase-label">🎧 Предложение целиком — не звук одного слова</span>'+
   '<strong lang="zh-Hans">'+esc(sample.zh)+'</strong><span class="py">'+esc(sample.pinyin)+'</span>'+
   '<span class="ru">'+esc(sample.ru)+'</span>'+clipButton(sample.zh)+'</div>':
-  '<span class="hsk2-missing-audio">🔇 Нет MP3 слова</span>';
- return '<article class="vocab"><div lang="zh-Hans" class="hanzi">'+esc(zh)+'</div>'+
+  '<span class="hsk2-missing-audio">Для этого слова отдельной записи пока нет</span>';
+ return '<article class="vocab"><div lang="zh-Hans" class="hanzi hanzi-squares">'+Array.from(zh).map(c=>'<span class="hz-square">'+esc(c)+'</span>').join('')+'</div>'+
   '<div class="py">'+esc(py)+'</div><div class="ru">'+esc(ru)+'</div>'+
   (exact?clipButton(zh):sentence)+'</article>';
 };
@@ -158,37 +181,53 @@ function convertedProfile(){
  return {name,city,job:svc.mapProfile('job',p.job==='other'?p.other:p.job)};
 }
 // Any nonempty city or name is accepted; translations are never fabricated.
-const profileReady=()=>{const p=state.profile;return !!(p.name?.trim()&&p.city?.trim()&&(p.job==='other'?p.other?.trim():p.job?.trim()))};
+const profileReady=()=>{const p=state.profile,n=Number(p.age);return !!(p.name?.trim()&&p.city?.trim()&&p.job?.trim()&&Number.isInteger(n)&&n>=1&&n<=99)};
+
+function ageInChinese(value){
+ const n=Number(value);if(!Number.isInteger(n)||n<1||n>99)return null;
+ const zh=['零','一','二','三','四','五','六','七','八','九'];
+ const py=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
+ if(n===2)return {zh:'两',py:'liǎng'};
+ if(n<10)return {zh:zh[n],py:py[n]};
+ const tens=Math.floor(n/10),ones=n%10;
+ return {zh:(tens===1?'':zh[tens])+'十'+(ones?zh[ones]:''),
+ py:(tens===1?'':py[tens]+' ')+'shí'+(ones?' '+py[ones]:'')};
+}
 function profileOutput(){
- const target=$('profile-output');if(!target)return;
- const p=state.profile,m=convertedProfile(),raw=[p.name||'',p.city||'',p.job==='other'?p.other:(p.job||'')];
+ const el=$('profile-output');if(!el)return;
+ const p=state.profile,m=convertedProfile(),age=ageInChinese(p.age);
+ const blocks=[
+ ['你好！','Nǐ hǎo!','Привет!'],
+ ['我叫'+(m.name.zh||'……')+'。','Wǒ jiào'+(m.name.py?' '+m.name.py:' …'),'Меня зовут '+(p.name||'…')+'.'],
+ ['我是'+(m.job.zh||'……')+'。','Wǒ shì'+(m.job.py?' '+m.job.py:' …'),'Я по профессии '+(p.job||'…')+'.'],
+ ['我今年'+(age?.zh||'……')+'岁。','Wǒ jīnnián '+(age?.py||'…')+' suì.','Мне '+(p.age||'…')+' лет.'],
+ ['我住在'+(m.city.zh||'……')+'。','Wǒ zhù zài'+(m.city.py?' '+m.city.py:' …'),'Я живу в '+(p.city||'…')+'.']
+ ];
+ el.innerHTML=blocks.map(example).join('');
  const hints=[];
- if(raw[0].trim()&&!m.name.zh)hints.push('Имя не переведено. Это не мешает продолжить урок.');
- if(raw[1].trim()&&!m.city.zh)hints.push('Город не переведён. Ты можешь перейти дальше с любым городом.');
- if(raw[2].trim()&&!m.job.zh)hints.push('Профессия пока без китайского перевода.');
- const phrase=(prefix,pyPrefix,word,ru)=>example([prefix+(word.zh||'…')+(word.zh?'。':''),pyPrefix+(word.py?' '+word.py:' …'),ru]);
- target.innerHTML=phrase('我叫','Wǒ jiào',m.name,'Меня зовут '+(p.name||'…')+'.')+
-  phrase('我住在','Wǒ zhù zài',m.city,'Я живу в городе '+(p.city||'…')+'.')+
-  phrase('我是','Wǒ shì',m.job,'Моя профессия: '+(p.job==='other'?p.other:p.job||'…')+'.');
+ if(p.name?.trim()&&!m.name.zh)hints.push('Имя не переведено на китайский — можешь указать иероглифы ниже.');
+ if(p.city?.trim()&&!m.city.zh)hints.push('Незнакомый город не переводим автоматически.');
+ if(p.job?.trim()&&!m.job.zh)hints.push('Незнакомую профессию не переводим автоматически.');
  const status=$('profile-conversion-status');
- if(status){status.textContent=hints.length?'Можно продолжить! '+hints.join(' '):'✓ Китайские предложения составлены. Проверяй собственные названия у носителя.';status.classList.toggle('warning',hints.length>0)}
- const details=target.closest('details');if(details&&profileReady())details.open=true;
+ if(status){status.textContent=hints.length?hints.join(' '):'✓ Фразы составлены. Звук доступен только для точных записанных примеров.';status.classList.toggle('warning',hints.length>0)}
  const next=$('screen').querySelector('[data-next]');if(next)next.disabled=!profileReady();
 }
 function profileForm(){
- const p=state.profile,job=p.job||'老师',choices=[['老师','Учитель'],['医生','Врач'],['司机','Водитель'],['学生','Ученик / студент'],['工程师','Инженер'],['other','Другая профессия']];
- return '<p class="intro">Введи имя, город и профессию на русском или китайском. Известные названия подставятся автоматически.</p><div class="intro-form">'+
- '<label>Как тебя зовут?<input data-field="name" maxlength="40" autocomplete="off" placeholder="Иван / 伊万" value="'+esc(p.name||'')+'"></label>'+
- '<label>Где ты живёшь?<input data-field="city" maxlength="40" autocomplete="off" placeholder="Калуга / 卡卢加" value="'+esc(p.city||'')+'"></label>'+
- '<label>Кем работаешь?<select data-field="job">'+choices.map(([v,t])=>'<option value="'+v+'" '+(v===job?'selected':'')+'>'+t+'</option>').join('')+'</select></label>'+
- (job==='other'?'<label>Название профессии на русском или китайском<input data-field="other" maxlength="40" autocomplete="off" placeholder="Лётчик / 飞行员" value="'+esc(p.other||'')+'"></label>':'')+
- '</div><details class="profile-optional"><summary>✏️ Знаешь написание имени или города иероглифами?</summary>'+
- '<label>Имя иероглифами (необязательно)<input data-field="nameZh" maxlength="30" value="'+esc(p.nameZh||'')+'" placeholder="Например: 安娜"></label>'+
- '<label>Город иероглифами (необязательно)<input data-field="cityZh" maxlength="30" value="'+esc(p.cityZh||'')+'" placeholder="Например: 莫斯科"></label>'+
+ const p=state.profile;
+ return '<p class="intro">Пример ты уже услышал. Теперь назови себя: любое имя и любой город разрешены.</p>'+
+ '<div class="intro-form">'+
+ '<label>Как тебя зовут?<input data-field="name" maxlength="50" autocomplete="off" placeholder="Лёха / 李华" value="'+esc(p.name||'')+'"></label>'+
+ '<label>Кто ты по профессии?<input data-field="job" list="pg-job-options" maxlength="50" autocomplete="off" placeholder="Врач / 医生 / 学生" value="'+esc(p.job||'')+'"></label>'+
+ '<datalist id="pg-job-options"><option value="Врач"><option value="Учитель"><option value="Студент"><option value="医生"><option value="老师"><option value="学生"></datalist>'+
+ '<label>Сколько тебе лет?<input data-field="age" type="number" inputmode="numeric" min="1" max="99" placeholder="25" value="'+esc(p.age||'')+'"></label>'+
+ '<label>Где ты живёшь?<input data-field="city" maxlength="70" autocomplete="off" placeholder="Владимир / 北京" value="'+esc(p.city||'')+'"></label>'+
+ '</div><details class="profile-optional"><summary>✏️ Знаешь своё имя или город иероглифами?</summary>'+
+ '<label>Имя иероглифами (необязательно)<input data-field="nameZh" maxlength="30" value="'+esc(p.nameZh||'')+'" placeholder="Например: 李华"></label>'+
+ '<label>Город иероглифами (необязательно)<input data-field="cityZh" maxlength="30" value="'+esc(p.cityZh||'')+'" placeholder="Например: 北京"></label>'+
  '</details><p id="profile-conversion-status" class="pg-profile-help" role="status"></p>'+
- '<details class="profile-phrases"><summary>Мои 3 предложения ▾</summary><div class="intro-output" id="profile-output" aria-live="polite"></div></details>'+
+ '<div class="profile-phrases"><strong>Мой рассказ</strong><div class="intro-output" id="profile-output" aria-live="polite"></div></div>'+
  '<p id="audio-status" role="status" class="audio-status" aria-live="polite"></p>'+
- '<p class="notice">Любой город и имя допустимы. Неизвестные названия не переводим автоматически, но они не блокируют урок. Данные сохраняются только в браузере.</p>';
+ '<p class="notice">Имена и города не ограничены списком. Для незнакомых названий китайское написание не выдумываем. Данные сохраняются только в браузере.</p>';
 }
 function speechPhrase(kind){
  const p=convertedProfile(),isName=kind==='name';
@@ -329,6 +368,8 @@ function render(){
  state.step=Math.max(0,Math.min(steps.length-1,Number(state.step)||0));
  const i=state.step,s=steps[i],answer=state.answers[i];let inside='';
  $('app').classList.toggle('structure-page',s.kind==='structure'||s.kind==='place-words');
+ if(s.kind==='model-dialogue')inside='<p class="intro">Нажимай «Слушать» у каждой реплики, следи за иероглифами и повторяй вслух.</p>'+
+ '<div class="model-lines">'+s.items.map(([who,zh,py,ru])=>'<article class="model-line '+(who==='B'?'reply':'')+'"><small class="model-who">'+(who==='A'?'Ученик':'Панда')+'</small><strong lang="zh-Hans">'+esc(zh)+'</strong><span class="py">'+esc(py)+'</span><span>'+esc(ru)+'</span>'+clipButton(zh)+'</article>').join('')+'</div><p id="audio-status" class="audio-status" role="status"></p>';
  if(s.kind==='words')inside='<p class="intro">Новые слова: иероглифы, пиньинь и перевод.</p><div class="vocgrid">'+s.items.map(word).join('')+'</div><p id="audio-status" class="audio-status" role="status" aria-live="polite"></p><p class="notice">🔊 Воспроизводятся только точно совпадающие MP3 из присланного пакета Luvvoice. Другой голос не подставляется.</p>';
  if(s.kind==='place-words')inside=placeWordsScreen();
  if(s.kind==='structure')inside=structureScreen();
@@ -347,9 +388,9 @@ function render(){
  if(s.kind==='build'){let a=state.build,str=a.map(n=>s.tokens[n]).join(''),ok=str===s.answer.join('');inside='<p class="intro">'+esc(s.question)+'</p><div class="builder">'+(a.length?a.map((n,j)=>'<button type="button" data-remove="'+j+'">'+esc(s.tokens[n])+'</button>').join(''):'<span class="small-caption">Выбирай слова в правильном порядке.</span>')+'</div><div class="tokens">'+s.tokens.map((w,n)=>'<button type="button" data-token="'+n+'" '+(a.includes(n)?'disabled':'')+'>'+esc(w)+'</button>').join('')+'</div><p class="feedback '+(ok?'ok':'')+'">'+(ok?'✓ Верно!':esc(s.why))+'</p>'}
  if(s.kind==='profile')inside=profileForm();
  if(s.kind==='dialogue-practice')inside=introDialogueScreen();
- if(s.kind==='finish'){const trained=introDialogueState().passed.every(Boolean);inside='<div style="text-align:center;font-size:35px">🌸 🐼</div><h2 style="text-align:center">'+esc(trained?s.title:'Знакомство с подсказками пройдено')+'</h2><p class="explain">'+esc(trained?s.desc:'Ты прошёл три вопроса, но часть ответов была с подсказками. Повтори разговор и попробуй ответить самостоятельно.')+'</p><p class="notice">Можно повторить любой шаг, а затем продолжить HSK 2.</p>';}
+ if(s.kind==='finish')inside='<div style="text-align:center;font-size:35px">🌸 🐼</div><h2 style="text-align:center">'+esc(s.title)+'</h2><p class="explain">'+esc(s.desc)+'</p><p class="notice">Ты можешь повторить любой шаг.</p>';
  const disabled=(s.kind==='quiz'&&answer==null)||(s.kind==='build'&&state.build.map(n=>s.tokens[n]).join('')!==s.answer.join(''))||(s.kind==='profile'&&!profileReady())||(s.kind==='dialogue-practice'&&!introDialogueState().passed.every(Boolean)&&!introDialogueState().passed.every((v,n)=>v||introDialogueState().assisted[n]));
- $('screen').innerHTML='<div class="banner">Меня зовут · где живу · кем работаю</div>'+
+ $('screen').innerHTML='<div class="banner">Имя · профессия · возраст · город</div>'+
  '<div class="lesson-title"><strong>'+esc(s.title)+'</strong><span class="pill">Шаг '+(i+1)+' из '+steps.length+'</span></div>'+
  '<div class="meter"><i style="width:'+(i+1)*100/steps.length+'%"></i></div>'+
  '<section class="paper" aria-label="Урок самопрезентации">'+inside+'</section>'+
@@ -402,12 +443,12 @@ function render(){
   });
  }
  if(s.kind==='profile'){
-  $('screen').querySelectorAll('[data-field]').forEach(el=>el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>{state.profile[el.dataset.field]=el.value;save();if(el.dataset.field==='job')render();else profileOutput()}));
+  $('screen').querySelectorAll('[data-field]').forEach(el=>el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>{state.profile[el.dataset.field]=el.value;save();profileOutput()}));
   profileOutput();
  }
 }
 $('scene-sub').textContent='HSK 2 · Учимся представляться';
-$('scene-caption').textContent='Имя · город · работа';
+$('scene-caption').textContent='Имя · возраст · город';
 document.querySelector('.backlink').href='./hsk2-start.html#map';
 document.querySelectorAll('.nav a').forEach(a=>{const h=a.getAttribute('href');a.href='./hsk2-start.html'+h});
 $('screen').addEventListener('click',event=>{
