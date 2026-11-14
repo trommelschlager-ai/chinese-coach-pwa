@@ -18,6 +18,24 @@ const rows=[
 ];
 const normalize=s=>String(s||'').replace(/[。？！!?，,\s]/g,'');
 const segments=new Map(rows.map(([zh,start,end])=>[normalize(zh),{url:original,start,end,source:'user-lv-20261113-B01-B10'}]));
+const day14='./assets/hsk2-user-voice/20261114-W6Okix.mp3';
+const day14Rows=[
+ ['你从哪里来',0.08,1.71],
+ ['你住在哪儿',2.06,3.51],
+ ['你是哪里人',3.85,5.46],
+ ['你学习中文吗',5.81,7.63],
+ ['你为什么学习中文',8.01,10.14],
+ ['你学中文多久了',10.48,12.54],
+ ['你喜欢学中文吗',12.91,14.92],
+ ['你会说中文吗',15.29,17.11],
+ ['你会说一点中文吗',17.47,19.66],
+ ['我们继续练习吧',20.02,21.96]
+];
+// Keep the previously checked B01 clip on duplicate text; use the new file for other questions.
+for(const [zh,start,end] of day14Rows){
+ const key=normalize(zh);
+ if(!segments.has(key))segments.set(key,{url:day14,start,end,source:'user-lv-20261114-W6Okix'});
+}
 let active=null;
 function stop(){
  const a=active;if(!a)return;
@@ -77,6 +95,6 @@ function bind(root=document){
   });
  });
 }
-window.PandaHsk2AudioV331=Object.freeze({lookup,play,button,bind,normalize,stop,segments:Object.freeze(rows.map(x=>x[0]))});
+window.PandaHsk2AudioV331=Object.freeze({lookup,play,button,bind,normalize,stop,segments:Object.freeze([...segments.keys()])});
 window.PandaHsk2AudioV330=window.PandaHsk2AudioV331;
 })();
