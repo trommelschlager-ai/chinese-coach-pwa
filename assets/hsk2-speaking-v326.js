@@ -28,7 +28,7 @@ const speechAvailable=()=>!!SR();
 const clipMap={}; // v331: previous owner voice removed; user-supplied Luvvoice MP3 only.
 let audio=null;
 function play(zh,report=()=>{}){
- if(window.PandaHsk2AudioV331)return window.PandaHsk2AudioV331.play(zh,report);
+ if(window.PandaHsk2AudioV331)return window.PandaHsk2AudioV331.playBest(zh,report);
  const src=clipMap[zh];
  if(!src){report('Для «'+zh+'» пока нет проверенной MP3-записи. Другой голос не включаем.');return false}
  try{audio?.pause();audio=new Audio(src);audio.preservesPitch=true;audio.playbackRate=.9;
