@@ -1,10 +1,10 @@
-/* Panda AI v346. Clean responsive user-approved screen.
+/* Panda AI reference structure under review.
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
 import './panda-live-screen-v270.mjs?v=336';
 import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=336';
 const bridge=window.PandaApprovedBridge337;
 if (!bridge) {
-  console.error('Panda AI v346: conversation engine unavailable; keeping original screen');
+  console.error('Panda AI: conversation engine unavailable; keeping original screen');
 } else {
   const ns='http://www.w3.org/2000/svg';
   const icons={
@@ -39,11 +39,11 @@ if (!bridge) {
       <img class="pg346-panda" src="./assets/panda-reference-character.webp" alt="Панда с открытыми глазами, цветком, фиолетовыми наушниками и шарфом" decoding="async" draggable="false">
       <img class="pg346-sakura" src="./assets/panda-sakura-v346.svg?v=346" alt="" aria-hidden="true" decoding="async" draggable="false">
       <div class="pg346-speech" aria-label="Текущая фраза Панды" aria-live="polite">
-        <strong class="pg346-main-zh">你好！</strong>
+        <div class="pg346-speech-text"><strong class="pg346-main-zh">你好！</strong>
         <span class="pg346-main-py">Nǐ hǎo!</span>
-        <span class="pg346-main-ru">Привет!</span>
+        <span class="pg346-main-ru">Привет!</span></div>
         <div class="pg346-speech-controls"><button id="pg346-hear" type="button" aria-label="Слушать">🔊</button><button id="pg346-speed" type="button" aria-label="Изменить скорость">1× ▾</button><button id="pg346-play" type="button" aria-label="Воспроизвести ещё раз">▶</button></div>
-        <button type="button" class="pg346-repeat" id="pg346-repeat">↻ Повтори</button>
+        
       </div>
       <div class="pg346-waves" aria-hidden="true"><i></i><i></i><i></i></div><div class="pg346-petals" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="pg346-live" id="pg346-live" data-active="false" aria-live="polite"></div>
       <div class="pg346-feedback" id="pg346-feedback" hidden aria-live="polite"></div>
@@ -63,6 +63,9 @@ if (!bridge) {
   // Dialogs must remain visible even though the legacy main is kept for its engine.
   document.querySelectorAll('main > dialog').forEach(dialog=>document.body.append(dialog));
   document.body.append(stage);document.body.classList.add('panda-clean-ready');const support=document.querySelector('main');support.setAttribute('aria-hidden','true');support.inert=true;
+  const scene=stage.querySelector('.pg346-scene');
+  function fitMascot(){const r=scene.getBoundingClientRect();if(!r.width||!r.height)return;const width=Math.min(r.width*.6,r.height*.97*560/706),height=width*706/560,top=Math.max(12,r.height*.98-height*.93);stage.style.setProperty('--mascot-width',width+'px');stage.style.setProperty('--speech-top',top+'px');stage.style.setProperty('--speech-height',Math.max(90,r.height-top-Math.min(r.width*.24,108)-r.height*.06-16)+'px')}
+  const sceneObserver=window.ResizeObserver?new ResizeObserver(fitMascot):null;sceneObserver?.observe(scene);window.addEventListener('resize',fitMascot);fitMascot();window.addEventListener('pagehide',()=>{sceneObserver?.disconnect();window.removeEventListener('resize',fitMascot)});
   let lastRows='',lastPhrase='',lastTopics='',lastFeedback='',showPy=true,showRu=true,historyAudio=null;
   const stopHistoryAudio=()=>{if(historyAudio){historyAudio.pause();historyAudio=null;}};
   function clipFor(entry){return lookupPandaVoiceClip(entry?.hanzi||entry?.panda)||lookupPandaVoiceClip(entry?.audioKey)}
@@ -77,7 +80,7 @@ if (!bridge) {
   function renderTopics(s){const options=[...document.querySelectorAll('#lesson-select option')].filter(o=>s.allowed.includes(Number(o.value)));const key=options.map(o=>o.value+o.textContent).join('|')+'|'+s.topic;if(key===lastTopics)return;lastTopics=key;const grid=$('.pg346-topic-list');grid.replaceChildren();for(const option of options){const id=Number(option.value);const b=el('button','',option.textContent);b.type='button';b.setAttribute('aria-current',String(id===s.topic));b.addEventListener('click',()=>{if(bridge.chooseTopic(id)){closeTopics();sync()}});grid.append(b)}}
   function renderFeedback(s){const last=s.history.slice().reverse().find(x=>x.who==='you');const wrong=last?.analysis?.correction,unknown=last&&!last.ru&&!last.analysis?.probable;const root=$('#pg346-feedback');const active=!!wrong||!!unknown;const key=[last?.hanzi,wrong?.hanzi,s.feedback,active].join('|');if(key===lastFeedback)return;lastFeedback=key;root.hidden=!active;root.replaceChildren();if(!active)return;root.append(el('strong','',`Ты сказал: ${last.hanzi}`));if(wrong){root.append(el('p','',`✅ Правильно: ${wrong.hanzi}${wrong.pinyin?' · '+wrong.pinyin:''}`));if(wrong.ru)root.append(el('p','',wrong.ru));if(wrong.why)root.append(el('p','',wrong.why))}else{root.append(el('p','',last.analysis?.probable||'Полный смысл не подтверждён. Попробуй уточнить'))}}
   function sync(){const s=bridge.snapshot();stage.dataset.listening=String(s.active);stage.dataset.speaking=String(s.pose==='talking');$('#pg346-mic').setAttribute('aria-pressed',String(s.active));$('#pg346-short').setAttribute('aria-pressed',String(s.mode==='short'));$('#pg346-nonstop').setAttribute('aria-pressed',String(s.mode==='nonstop'));
-    const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable}
+    const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable}
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
     renderFeedback(s);renderTopics(s);for(const [target,original] of [['pg-next','next'],['pg-finish','finish']])$('#'+target).hidden=document.getElementById(original).hidden;
     const warning=$('#pg346-status'),problem=/(микрофон|распознаван|разреши|доступ|Chrome|запись не|запись пока|звуковой файл)/i.test(s.status||'');
@@ -93,7 +96,7 @@ if (!bridge) {
   $('#pg346-short').addEventListener('click',()=>{stopHistoryAudio();bridge.setMode('short');sync()});$('#pg346-nonstop').addEventListener('click',()=>{stopHistoryAudio();bridge.setMode('nonstop');sync()});
   $('#pg346-py').addEventListener('click',()=>toggle('py'));
   $('#pg346-history').addEventListener('click',()=>{stopHistoryAudio();document.getElementById('history-open')?.click()});
-  $('#pg346-hear').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-play').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-repeat').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-speed').addEventListener('click',()=>{bridge.toggleSpeed();sync()});
+  $('#pg346-hear').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-play').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-speed').addEventListener('click',()=>{bridge.toggleSpeed();sync()});
   for(const [target,original] of [['pg-help','study-open'],['pg-questions','ask-panda-open'],['pg-reset','reset'],['pg-next','next'],['pg-finish','finish']])$('#'+target).addEventListener('click',()=>{document.getElementById(original)?.click();closeTopics();sync()});
   $('#pg-hint').addEventListener('click',()=>{document.getElementById('hint').click();const content=$('#pg-hint-content');content.textContent=document.getElementById('hint-text').textContent;content.hidden=document.getElementById('hint-text').hidden});
   const micHelp=document.createElement('dialog');micHelp.id='pg-microphone-help';const heading=document.createElement('header');heading.innerHTML='<h2>Помощь с микрофоном</h2><button type="button" aria-label="Закрыть">×</button>';heading.querySelector('button').addEventListener('click',()=>micHelp.close());micHelp.append(heading);const recovery=document.getElementById('speech-recovery');micHelp.append(recovery);document.body.append(micHelp);
