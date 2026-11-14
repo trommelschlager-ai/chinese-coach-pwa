@@ -145,9 +145,13 @@
 .pg-talk-result{text-align:center}.pg-talk-result .softbtn{min-height:44px;width:100%}
 .app .content>.paper:has(.pg-talk),.app .content>.paper:has(.pg-talk-start){justify-content:flex-start!important;align-items:stretch!important}
 @media(max-height:700px){.pg-talk{gap:5px}.pg-talk-bubble{padding:7px}.pg-talk #intro-answer{min-height:39px;padding:7px}.pg-talk-actions button{min-height:38px}}
+
+.pg-brain-memory{font-size:12px;background:#fff7fb;border:1px solid #dfb9dd;border-radius:12px;padding:8px;color:#6e398a;line-height:1.45}
+.pg-brain-memory b{color:#54236f}
+.pg-brain-confirm{width:100%;font-size:12px;min-height:42px;white-space:normal}
 </style><link rel="stylesheet" href="./assets/hsk2-one-screen-v323.css?v=323"><link rel="stylesheet" href="./assets/hsk2-speaking-v324.css?v=324"><link rel="stylesheet" href="./assets/hsk2-five-attempts-banner-v326.css?v=326"><link rel="stylesheet" href="./assets/hsk2-compact-refinement-v328.css?v=328"><link rel="stylesheet" href="./assets/hsk2-fixes-v329.css?v=329"><link rel="stylesheet" href="./assets/hsk2-audio-v330.css?v=339"></head><body><div class="app" id="app"><header class="scene"><span class="petals" aria-hidden="true">🌸</span><a class="backlink" href="#map" aria-label="Назад к карте">‹</a><img class="panda" src="./assets/hsk2-panda-new-v328.svg" alt=""><div class="brand">Panda Go<small id="scene-sub">HSK 2 · Начальный плюс</small></div><span class="scene-caption" id="scene-caption">Слова → грамматика → практика</span></header><main class="content" id="screen" tabindex="-1"></main><nav class="nav" aria-label="Навигация"><a href="#map" id="nav-map"><b>⌂</b>Главная</a><a href="#review" id="nav-review"><b>▤</b>Повторение</a><a href="#lesson" id="nav-lesson"><b>◫</b>Урок 1</a><a href="#progress" id="nav-progress"><b>◴</b>Прогресс</a></nav></div>
 <script src="./assets/hsk2-speaking-v326.js?v=332"></script>
-<script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=339"></script>
+<script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=339"></script><script src="./assets/panda-brain-v341.js?v=341"></script>
 <script>
 (()=>{
 'use strict';
@@ -188,7 +192,7 @@ try{const x=JSON.parse(localStorage.getItem(key)||'null');if(x&&typeof x==='obje
 // On first launch of the revised lesson, show the listening example even for earlier in-progress sessions.
 try{if(!localStorage.getItem('pg-hsk2-intro-v337-shown')){state.step=0;localStorage.setItem('pg-hsk2-intro-v337-shown','1')}}catch{}
 // Clear only stale three-question conversation progress; preserve course step and other work.
-try{if(!localStorage.getItem('pg-hsk2-live-five-v340')){state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[]};localStorage.setItem('pg-hsk2-live-five-v340','1')}}catch{}
+try{if(!localStorage.getItem('pg-hsk2-live-five-v340')){state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[],facts:{},selfConfirmed:{}};localStorage.setItem('pg-hsk2-live-five-v340','1')}}catch{}
 const save=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch{}};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -388,17 +392,19 @@ let activeIntroMic=null;
 function stopIntroMic(){if(activeIntroMic){try{activeIntroMic.abort()}catch{}activeIntroMic=null}}
 function introDialogueState(){
  const d=state.dialogue||{},expand=a=>Array.from({length:5},(_,i)=>!!(Array.isArray(a)&&a[i]));
- return {index:Math.max(0,Math.min(4,Number(d.index)||0)),started:!!d.started,passed:expand(d.passed),skipped:expand(d.skipped),hints:expand(d.hints),completed:!!d.completed,transcripts:Array.isArray(d.transcripts)?d.transcripts.slice(0,5):[]};
+ return {index:Math.max(0,Math.min(4,Number(d.index)||0)),started:!!d.started,passed:expand(d.passed),skipped:expand(d.skipped),hints:expand(d.hints),completed:!!d.completed,transcripts:Array.isArray(d.transcripts)?d.transcripts.slice(0,5):[],facts:d.facts&&typeof d.facts==='object'?d.facts:{},selfConfirmed:d.selfConfirmed&&typeof d.selfConfirmed==='object'?d.selfConfirmed:{}};
 }
 function introDialogueScreen(){
  const d=introDialogueState(),i=d.index,q=PANDA_INTRO_QUESTIONS[i],ready=!!(d.passed[i]||d.skipped[i]);
  if(!d.started)return '<div class="pg-talk-start"><div aria-hidden="true" class="pg-talk-panda">🐼🎧</div><h2>Поговорим с Пандой!</h2><p>Пять вопросов о тебе. Отвечай голосом или текстом. Если не знаешь ответ, используй подсказку.</p><button type="button" class="primary" data-dialogue-start>🎤 Начать разговор</button><p class="pg-talk-notice">Микрофон лучше работает в Chrome. Тоны пока не оцениваются.</p></div><p id="audio-status" class="audio-status" role="status"></p>';
  return '<div class="pg-talk"><div class="pg-talk-count">Вопрос '+(i+1)+' из 5 <span>✓ '+d.passed.filter(Boolean).length+' ответов</span></div>'+
+ (Object.keys(d.facts).length?'<p class="pg-brain-memory">🧠 Панда запомнила: '+Object.entries(d.facts).filter(([key])=>key!=='workplace').map(([key,value])=>esc(({name:'имя',job:'профессия',age:'возраст',city:'город'})[key]||key)+': <b>'+esc(value)+'</b>').join(' · ')+'</p>':'')+
  '<div class="pg-talk-q"><span class="pg-talk-face">🐼</span><div class="pg-talk-bubble"><small>Панда спрашивает</small><strong lang="zh-Hans">'+esc(q.zh)+'</strong><span class="py">'+esc(q.py)+'</span><span>'+esc(q.ru)+'</span>'+
  (matchingAudio(q.audio)?clipButton(q.audio):'<small>Точной записи вопроса пока нет</small>')+'</div></div>'+
  '<label class="pg-talk-label" for="intro-answer">Твой ответ по-китайски</label><input id="intro-answer" type="text" maxlength="90" lang="zh-CN" autocomplete="off" spellcheck="false" placeholder="Например: '+esc(q.sample)+'" value="'+esc(dialogueDraft)+'" '+(d.passed[i]?'readonly':'')+'>'+
  '<div class="pg-talk-actions"><button type="button" class="primary" data-dialogue-mic>🎤 Сказать</button><button type="button" class="softbtn" data-dialogue-check '+(d.passed[i]?'disabled':'')+'>✓ Проверить</button></div>'+
  (dialogueFeedback?'<p class="pg-talk-feedback '+(dialogueFeedback.ok?'ok':'')+'" role="status">'+esc(dialogueFeedback.feedback)+'</p>':'')+
+ (dialogueFeedback?.uncertain?'<button type="button" class="softbtn pg-brain-confirm" data-dialogue-confirm>Да, это моя профессия (значение не проверено)</button>':'')+
  (d.hints[i]?'<div class="pg-talk-hint"><strong>'+esc(q.sample)+'</strong><span class="py">'+esc(q.samplePy)+'</span><span>'+esc(q.ruSample)+'</span></div>':'')+
  '<div class="pg-talk-options"><button type="button" data-dialogue-hint>💡 Подсказка</button><button type="button" data-dialogue-skip '+(d.passed[i]?'disabled':'')+'>Пропустить</button></div>'+
  '<div class="pg-talk-actions"><button type="button" class="softbtn" data-dialogue-back '+(i===0?'disabled':'')+'>← Назад</button><button type="button" class="primary" data-dialogue-forward '+(ready?'':'disabled')+'>'+(i===4?'Завершить ✓':'Следующий вопрос →')+'</button></div>'+
@@ -503,7 +509,7 @@ function render(){
  $('screen').querySelectorAll('[data-token]').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.token);if(!state.build.includes(n))state.build.push(n);save();render()}));
  $('screen').querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',()=>{state.build.splice(Number(b.dataset.remove),1);save();render()}));
  $('screen').querySelector('[data-py]').addEventListener('click',()=>{state.showPy=!state.showPy;save();render()});
- $('screen').querySelector('[data-repeat]').addEventListener('click',()=>{state.step=0;state.build=[];state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[]};dialogueDraft='';dialogueFeedback=null;save();render()});
+ $('screen').querySelector('[data-repeat]').addEventListener('click',()=>{state.step=0;state.build=[];state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[],facts:{},selfConfirmed:{}};dialogueDraft='';dialogueFeedback=null;save();render()});
  $('screen').querySelector('[data-prev]').addEventListener('click',()=>{if(state.step>0){state.step--;save();render()}});
  $('screen').querySelector('[data-next]').addEventListener('click',()=>{if(s.kind==='profile'?!profileReady():disabled)return;if(s.kind==='finish'){state.completed=true;save();location.href='./hsk2-start.html#map'}else{state.step++;save();render()}});
  if(s.kind==='dialogue-practice'){
@@ -514,8 +520,24 @@ function render(){
    const input=$('intro-answer');
    input.addEventListener('input',()=>{dialogueDraft=input.value});
    const check=raw=>{
-    dialogueDraft=String(raw||'').trim();dialogueFeedback=gradeIntroAnswer(d.index,dialogueDraft);
-    if(dialogueFeedback.ok){state.dialogue.passed=[...d.passed];state.dialogue.passed[d.index]=true;state.dialogue.transcripts=[...d.transcripts];state.dialogue.transcripts[d.index]=dialogueDraft;save()}
+    dialogueDraft=String(raw||'').trim();
+    const brain=window.PandaBrainV341;
+    if(!brain){dialogueFeedback={ok:false,feedback:'Panda Brain не загрузился. Обнови страницу в Chrome.'};render();return}
+    const result=brain.assess(d.index,dialogueDraft);
+    dialogueFeedback={ok:result.ok,uncertain:!!result.uncertain,feedback:result.feedback,matched:result.matched};
+    if(result.ok){
+     const passed=[...d.passed],transcripts=[...d.transcripts];
+     passed[d.index]=true;transcripts[d.index]=dialogueDraft;
+     for(const f of result.facts||[]){
+      const i=brain.slots.indexOf(f.kind);
+      if(i>=0&&f.status==='valid'){passed[i]=true;transcripts[i]=dialogueDraft}
+     }
+     state.dialogue.passed=passed;state.dialogue.transcripts=transcripts;
+     state.dialogue.facts={...d.facts,...brain.memory(result.facts)};
+     save();
+     const extra=(result.facts||[]).filter(f=>brain.slots.indexOf(f.kind)!==d.index);
+     if(extra.length)dialogueFeedback.feedback+=' Запомнила также: '+extra.map(f=>({name:'имя',job:'профессию',age:'возраст',city:'город'})[f.kind]||f.kind).join(', ')+'.';
+    }
     render();
    };
    input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();check(input.value)}});
@@ -523,11 +545,24 @@ function render(){
    $('screen').querySelector('[data-dialogue-hint]').addEventListener('click',()=>{state.dialogue.hints=[...d.hints];state.dialogue.hints[d.index]=!d.hints[d.index];save();render()});
    const advance=()=>{
     stopIntroMic();
-    if(d.index<4){state.dialogue.index=d.index+1;dialogueDraft=d.transcripts[d.index+1]||'';dialogueFeedback=null;save();render();if(matchingAudio(PANDA_INTRO_QUESTIONS[d.index+1].audio))playApprovedAudio(PANDA_INTRO_QUESTIONS[d.index+1].audio)}
+    const brain=window.PandaBrainV341;
+    const next=brain?brain.nextPending(d.index,state.dialogue.passed||d.passed,state.dialogue.skipped||d.skipped):(d.index<4?d.index+1:-1);
+    if(next>=0){state.dialogue.index=next;dialogueDraft=(state.dialogue.transcripts||[])[next]||'';dialogueFeedback=null;save();render();if(matchingAudio(PANDA_INTRO_QUESTIONS[next].audio))playApprovedAudio(PANDA_INTRO_QUESTIONS[next].audio)}
     else{state.dialogue.completed=true;save();state.step++;dialogueDraft='';dialogueFeedback=null;save();render()}
    };
    $('screen').querySelector('[data-dialogue-skip]').addEventListener('click',()=>{state.dialogue.skipped=[...d.skipped];state.dialogue.skipped[d.index]=true;save();advance()});
    $('screen').querySelector('[data-dialogue-forward]').addEventListener('click',()=>{if(d.passed[d.index]||d.skipped[d.index])advance()});
+   const confirm=$('screen').querySelector('[data-dialogue-confirm]');
+   if(confirm)confirm.addEventListener('click',()=>{
+    if(!dialogueFeedback?.uncertain||!dialogueFeedback.matched||d.index!==2)return;
+    const term=dialogueFeedback.matched.value;
+    state.dialogue.passed=[...d.passed];state.dialogue.passed[d.index]=true;
+    state.dialogue.transcripts=[...d.transcripts];state.dialogue.transcripts[d.index]=dialogueDraft;
+    state.dialogue.facts={...d.facts,job:term};
+    state.dialogue.selfConfirmed={...d.selfConfirmed,job:true};
+    dialogueFeedback={ok:true,feedback:'✓ Принято по твоему подтверждению. Значение профессии не проверено.'};
+    save();render();
+   });
    $('screen').querySelector('[data-dialogue-back]').addEventListener('click',()=>{if(d.index>0){stopIntroMic();state.dialogue.index=d.index-1;dialogueDraft=d.transcripts[d.index-1]||'';dialogueFeedback=null;save();render()}});
    const mic=$('screen').querySelector('[data-dialogue-mic]');
    mic.addEventListener('click',()=>{
@@ -545,7 +580,7 @@ function render(){
  }
  if(s.kind==='finish'){
   const button=$('screen').querySelector('[data-dialogue-restart]');
-  if(button)button.addEventListener('click',()=>{stopIntroMic();state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[]};state.step=steps.findIndex(x=>x.kind==='dialogue-practice');dialogueDraft='';dialogueFeedback=null;save();render()});
+  if(button)button.addEventListener('click',()=>{stopIntroMic();state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[],facts:{},selfConfirmed:{}};state.step=steps.findIndex(x=>x.kind==='dialogue-practice');dialogueDraft='';dialogueFeedback=null;save();render()});
  }
  if(s.kind==='profile'){
   $('screen').querySelectorAll('[data-field]').forEach(el=>el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>{state.profile[el.dataset.field]=el.value;save();profileOutput()}));
