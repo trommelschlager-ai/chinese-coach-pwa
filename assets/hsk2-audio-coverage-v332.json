@@ -1,0 +1,715 @@
+{
+  "version": "v332",
+  "date": "2026-11-14",
+  "source": "User uploaded Luvvoice recordings 2026-11-13/14",
+  "originalMp3Files": 11,
+  "segmentedUtterancesDay14": 155,
+  "distinctAvailablePhrases": 159,
+  "curriculumTotal": 87,
+  "exactClipCoverage": 9,
+  "contextualExampleCoverage": 52,
+  "withoutUserClip": 26,
+  "warnings": [
+    "Segments detected by silence and aligned with provided transcripts; detailed human acoustic QA and tones are still pending.",
+    "An example sentence cannot be counted as an isolated-word recording.",
+    "No previous owner, native speaker, or device TTS fallback in HSK2."
+  ],
+  "items": [
+    {
+      "area": "Мостик — Знакомство и интересы",
+      "zh": "中文",
+      "pinyin": "Zhōngwén",
+      "ru": "китайский язык",
+      "status": "exact_user_mp3",
+      "example": null
+    },
+    {
+      "area": "Мостик — Учёба и язык",
+      "zh": "学习",
+      "pinyin": "xuéxí",
+      "ru": "изучать; учиться",
+      "status": "exact_user_mp3",
+      "example": null
+    },
+    {
+      "area": "Урок 1 — слова",
+      "zh": "忙",
+      "pinyin": "máng",
+      "ru": "занят",
+      "status": "exact_user_mp3",
+      "example": null
+    },
+    {
+      "area": "Мостик — Основы предложения",
+      "zh": "很",
+      "pinyin": "hěn",
+      "ru": "очень; связка",
+      "status": "example_sentence_user_mp3",
+      "example": "我很忙"
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "我",
+      "pinyin": "wǒ",
+      "ru": "я · повторение HSK 1",
+      "status": "example_sentence_user_mp3",
+      "example": "我学习中文"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "你",
+      "pinyin": "nǐ",
+      "ru": "ты",
+      "status": "example_sentence_user_mp3",
+      "example": "你忙吗"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "他",
+      "pinyin": "tā",
+      "ru": "он",
+      "status": "example_sentence_user_mp3",
+      "example": "他五岁"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "她",
+      "pinyin": "tā",
+      "ru": "она",
+      "status": "example_sentence_user_mp3",
+      "example": "她一岁"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "是",
+      "pinyin": "shì",
+      "ru": "быть, являться",
+      "status": "example_sentence_user_mp3",
+      "example": "我是熊猫老师"
+    },
+    {
+      "area": "Мостик — Основы предложения",
+      "zh": "不",
+      "pinyin": "bù",
+      "ru": "не",
+      "status": "example_sentence_user_mp3",
+      "example": "我不忙"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "吗",
+      "pinyin": "ma",
+      "ru": "вопросительная частица",
+      "status": "example_sentence_user_mp3",
+      "example": "你忙吗"
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "老师",
+      "pinyin": "lǎoshī",
+      "ru": "учитель · повторение HSK 1",
+      "status": "example_sentence_user_mp3",
+      "example": "我是熊猫老师"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "三",
+      "pinyin": "sān",
+      "ru": "три",
+      "status": "example_sentence_user_mp3",
+      "example": "我有三个朋友"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "十",
+      "pinyin": "shí",
+      "ru": "десять",
+      "status": "example_sentence_user_mp3",
+      "example": "十后面是什么"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "今天",
+      "pinyin": "jīntiān",
+      "ru": "сегодня",
+      "status": "example_sentence_user_mp3",
+      "example": "你今天怎么样"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "星期",
+      "pinyin": "xīngqī",
+      "ru": "неделя; день недели",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "妈妈",
+      "pinyin": "māma",
+      "ru": "мама",
+      "status": "example_sentence_user_mp3",
+      "example": "你妈妈好吗"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "爸爸",
+      "pinyin": "bàba",
+      "ru": "папа",
+      "status": "example_sentence_user_mp3",
+      "example": "你爸爸怎么样"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "天气",
+      "pinyin": "tiānqì",
+      "ru": "погода",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "下雨",
+      "pinyin": "xià yǔ",
+      "ru": "идёт дождь",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "年",
+      "pinyin": "nián",
+      "ru": "год",
+      "status": "example_sentence_user_mp3",
+      "example": "我今年三岁了"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "月",
+      "pinyin": "yuè",
+      "ru": "месяц",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "日",
+      "pinyin": "rì",
+      "ru": "день; дата",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "号",
+      "pinyin": "hào",
+      "ru": "число месяца",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我学习中文",
+      "pinyin": "Wǒ xuéxí Zhōngwén.",
+      "ru": "Я изучаю китайский.",
+      "status": "exact_user_mp3",
+      "example": null
+    },
+    {
+      "area": "Примеры",
+      "zh": "你学习中文",
+      "pinyin": "Nǐ xuéxí Zhōngwén.",
+      "ru": "Ты изучаешь китайский.",
+      "status": "example_sentence_user_mp3",
+      "example": "你学习中文吗"
+    },
+    {
+      "area": "Грамматика",
+      "zh": "他学习中文",
+      "pinyin": "Tā xuéxí Zhōngwén.",
+      "ru": "Он изучает китайский.",
+      "status": "example_sentence_user_mp3",
+      "example": "我学习中文"
+    },
+    {
+      "area": "Урок 1 — диалог",
+      "zh": "我很忙",
+      "pinyin": "Wǒ hěn máng.",
+      "ru": "Я занят.",
+      "status": "exact_user_mp3",
+      "example": null
+    },
+    {
+      "area": "Грамматика",
+      "zh": "你很忙",
+      "pinyin": "Nǐ hěn máng.",
+      "ru": "Ты занят.",
+      "status": "example_sentence_user_mp3",
+      "example": "你忙吗"
+    },
+    {
+      "area": "Примеры",
+      "zh": "他很忙",
+      "pinyin": "Tā hěn máng.",
+      "ru": "Он занят.",
+      "status": "example_sentence_user_mp3",
+      "example": "我很忙"
+    },
+    {
+      "area": "Урок 1 — диалог",
+      "zh": "你学习中文吗",
+      "pinyin": "Nǐ xuéxí Zhōngwén ma?",
+      "ru": "Ты учишь китайский?",
+      "status": "exact_user_mp3",
+      "example": null
+    },
+    {
+      "area": "Урок 1 — диалог",
+      "zh": "你忙吗",
+      "pinyin": "Nǐ máng ma?",
+      "ru": "Ты занят?",
+      "status": "exact_user_mp3",
+      "example": null
+    },
+    {
+      "area": "Примеры",
+      "zh": "我不是老师",
+      "pinyin": "Wǒ bú shì lǎoshī.",
+      "ru": "Я не учитель.",
+      "status": "example_sentence_user_mp3",
+      "example": "不是，我是老师"
+    },
+    {
+      "area": "Примеры",
+      "zh": "你是老师吗",
+      "pinyin": "Nǐ shì lǎoshī ma?",
+      "ru": "Ты учитель?",
+      "status": "example_sentence_user_mp3",
+      "example": "你是学生吗"
+    },
+    {
+      "area": "Примеры",
+      "zh": "今天下雨",
+      "pinyin": "Jīntiān xià yǔ.",
+      "ru": "Сегодня идёт дождь.",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "叫",
+      "pinyin": "jiào",
+      "ru": "зваться, называться",
+      "status": "example_sentence_user_mp3",
+      "example": "我叫熊猫"
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "名字",
+      "pinyin": "míngzi",
+      "ru": "имя",
+      "status": "example_sentence_user_mp3",
+      "example": "你叫什么名字"
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "什么",
+      "pinyin": "shénme",
+      "ru": "что, какой",
+      "status": "example_sentence_user_mp3",
+      "example": "你想学什么"
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "住",
+      "pinyin": "zhù",
+      "ru": "жить",
+      "status": "example_sentence_user_mp3",
+      "example": "我住在中国"
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "在",
+      "pinyin": "zài",
+      "ru": "находиться; в",
+      "status": "example_sentence_user_mp3",
+      "example": "我住在中国"
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "哪儿",
+      "pinyin": "nǎr",
+      "ru": "где (разговорно)",
+      "status": "example_sentence_user_mp3",
+      "example": "你住在哪儿"
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "莫斯科",
+      "pinyin": "Mòsīkē",
+      "ru": "Москва · пример города",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Работа и город",
+      "zh": "工作",
+      "pinyin": "gōngzuò",
+      "ru": "работать; работа",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "做",
+      "pinyin": "zuò",
+      "ru": "делать",
+      "status": "example_sentence_user_mp3",
+      "example": "你早上做什么"
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "医生",
+      "pinyin": "yīshēng",
+      "ru": "врач",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Знакомство — диалог",
+      "zh": "我叫安娜",
+      "pinyin": "Wǒ jiào Ānnà.",
+      "ru": "Меня зовут Анна.",
+      "status": "example_sentence_user_mp3",
+      "example": "我叫熊猫"
+    },
+    {
+      "area": "Знакомство — диалог",
+      "zh": "我是医生",
+      "pinyin": "Wǒ shì yīshēng.",
+      "ru": "Я врач.",
+      "status": "example_sentence_user_mp3",
+      "example": "我是熊猫老师"
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "我住在莫斯科",
+      "pinyin": "Wǒ zhù zài Mòsīkē",
+      "ru": "Я живу в Москве",
+      "status": "example_sentence_user_mp3",
+      "example": "我住在中国"
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "你叫什么名字",
+      "pinyin": "Nǐ jiào shénme míngzi",
+      "ru": "Как тебя зовут?",
+      "status": "exact_user_mp3",
+      "example": null
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "你住在哪儿",
+      "pinyin": "Nǐ zhù zài nǎr",
+      "ru": "Где ты живёшь?",
+      "status": "exact_user_mp3",
+      "example": null
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "你做什么工作",
+      "pinyin": "Nǐ zuò shénme gōngzuò",
+      "ru": "Кем ты работаешь?",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Основы предложения",
+      "zh": "的",
+      "pinyin": "de",
+      "ru": "частица принадлежности",
+      "status": "example_sentence_user_mp3",
+      "example": "我是你的中文学习伙伴"
+    },
+    {
+      "area": "Мостик — Основы предложения",
+      "zh": "好",
+      "pinyin": "hǎo",
+      "ru": "хороший",
+      "status": "example_sentence_user_mp3",
+      "example": "你好"
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我很好",
+      "pinyin": "Wǒ hěn hǎo.",
+      "ru": "У меня всё хорошо.",
+      "status": "example_sentence_user_mp3",
+      "example": "我很好，谢谢"
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我不在家",
+      "pinyin": "Wǒ bú zài jiā.",
+      "ru": "Меня нет дома.",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Знакомство и интересы",
+      "zh": "爱",
+      "pinyin": "ài",
+      "ru": "любить",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Знакомство и интересы",
+      "zh": "朋友",
+      "pinyin": "péngyou",
+      "ru": "друг",
+      "status": "example_sentence_user_mp3",
+      "example": "你有几个朋友"
+    },
+    {
+      "area": "Мостик — Знакомство и интересы",
+      "zh": "喜欢",
+      "pinyin": "xǐhuan",
+      "ru": "нравиться",
+      "status": "example_sentence_user_mp3",
+      "example": "因为我喜欢中文"
+    },
+    {
+      "area": "Мостик — Знакомство и интересы",
+      "zh": "中国",
+      "pinyin": "Zhōngguó",
+      "ru": "Китай",
+      "status": "example_sentence_user_mp3",
+      "example": "我住在中国"
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我喜欢中文",
+      "pinyin": "Wǒ xǐhuan Zhōngwén.",
+      "ru": "Мне нравится китайский язык.",
+      "status": "example_sentence_user_mp3",
+      "example": "因为我喜欢中文"
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我爱中国",
+      "pinyin": "Wǒ ài Zhōngguó.",
+      "ru": "Я люблю Китай.",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Учёба и язык",
+      "zh": "说",
+      "pinyin": "shuō",
+      "ru": "говорить",
+      "status": "example_sentence_user_mp3",
+      "example": "你会说中文吗"
+    },
+    {
+      "area": "Мостик — Учёба и язык",
+      "zh": "读",
+      "pinyin": "dú",
+      "ru": "читать",
+      "status": "example_sentence_user_mp3",
+      "example": "你会读中文吗"
+    },
+    {
+      "area": "Мостик — Учёба и язык",
+      "zh": "写",
+      "pinyin": "xiě",
+      "ru": "писать",
+      "status": "example_sentence_user_mp3",
+      "example": "你会写汉字吗"
+    },
+    {
+      "area": "Мостик — Учёба и язык",
+      "zh": "听",
+      "pinyin": "tīng",
+      "ru": "слушать",
+      "status": "example_sentence_user_mp3",
+      "example": "我晚上听音乐"
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我听老师说中文",
+      "pinyin": "Wǒ tīng lǎoshī shuō Zhōngwén.",
+      "ru": "Я слушаю, как учитель говорит по-китайски.",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Еда и напитки",
+      "zh": "吃",
+      "pinyin": "chī",
+      "ru": "есть",
+      "status": "example_sentence_user_mp3",
+      "example": "你吃饭了吗"
+    },
+    {
+      "area": "Мостик — Еда и напитки",
+      "zh": "喝",
+      "pinyin": "hē",
+      "ru": "пить",
+      "status": "example_sentence_user_mp3",
+      "example": "你每天喝水吗"
+    },
+    {
+      "area": "Мостик — Еда и напитки",
+      "zh": "茶",
+      "pinyin": "chá",
+      "ru": "чай",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Еда и напитки",
+      "zh": "水",
+      "pinyin": "shuǐ",
+      "ru": "вода",
+      "status": "example_sentence_user_mp3",
+      "example": "你每天喝水吗"
+    },
+    {
+      "area": "Мостик — Еда и напитки",
+      "zh": "饭",
+      "pinyin": "fàn",
+      "ru": "еда; рис",
+      "status": "example_sentence_user_mp3",
+      "example": "我中午吃饭"
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我喝茶",
+      "pinyin": "Wǒ hē chá.",
+      "ru": "Я пью чай.",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我想吃饭",
+      "pinyin": "Wǒ xiǎng chī fàn.",
+      "ru": "Я хочу поесть.",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Работа и город",
+      "zh": "饭店",
+      "pinyin": "fàndiàn",
+      "ru": "ресторан",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Работа и город",
+      "zh": "公司",
+      "pinyin": "gōngsī",
+      "ru": "компания",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Работа и город",
+      "zh": "去",
+      "pinyin": "qù",
+      "ru": "идти; ехать",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Работа и город",
+      "zh": "来",
+      "pinyin": "lái",
+      "ru": "приходить",
+      "status": "example_sentence_user_mp3",
+      "example": "你从哪里来"
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我在公司工作",
+      "pinyin": "Wǒ zài gōngsī gōngzuò.",
+      "ru": "Я работаю в компании.",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我去饭店",
+      "pinyin": "Wǒ qù fàndiàn.",
+      "ru": "Я иду в ресторан.",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — Действия и время",
+      "zh": "看",
+      "pinyin": "kàn",
+      "ru": "смотреть",
+      "status": "example_sentence_user_mp3",
+      "example": "我下午看书"
+    },
+    {
+      "area": "Мостик — Действия и время",
+      "zh": "想",
+      "pinyin": "xiǎng",
+      "ru": "хотеть; думать",
+      "status": "example_sentence_user_mp3",
+      "example": "我想学中文"
+    },
+    {
+      "area": "Мостик — Действия и время",
+      "zh": "买",
+      "pinyin": "mǎi",
+      "ru": "покупать",
+      "status": "example_sentence_user_mp3",
+      "example": "你想买几个苹果"
+    },
+    {
+      "area": "Мостик — Действия и время",
+      "zh": "回",
+      "pinyin": "huí",
+      "ru": "возвращаться",
+      "status": "example_sentence_user_mp3",
+      "example": "我回家以后休息"
+    },
+    {
+      "area": "Мостик — Действия и время",
+      "zh": "点",
+      "pinyin": "diǎn",
+      "ru": "час (во времени)",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我八点回家",
+      "pinyin": "Wǒ bā diǎn huí jiā.",
+      "ru": "Я возвращаюсь домой в восемь.",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "你几点来",
+      "pinyin": "Nǐ jǐ diǎn lái?",
+      "ru": "Во сколько ты придёшь?",
+      "status": "not_in_uploaded_recordings",
+      "example": null
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "住在",
+      "pinyin": "zhù zài",
+      "ru": "жить в",
+      "status": "example_sentence_user_mp3",
+      "example": "我住在中国"
+    }
+  ]
+}
