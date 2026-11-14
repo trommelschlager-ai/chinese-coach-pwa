@@ -42,6 +42,7 @@ jobs:
       - run: node scripts/verify-panda-hsk2-bridge-v304.cjs
       - run: node scripts/verify-panda-sentence-coach-v319.cjs
       - run: node --test tests/panda-basic-conversation-v323.test.mjs
+      - run: node --test tests/panda-ask-catalog-v326.test.mjs
       - run: node scripts/verify-panda-native-real-v246.cjs
       - run: node scripts/verify-panda-audio-v244.cjs
       - run: node scripts/verify-lesson-viewport-v237.cjs

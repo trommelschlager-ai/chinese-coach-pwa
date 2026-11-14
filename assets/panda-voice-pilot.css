@@ -59,3 +59,23 @@ dialog{border:1px solid #d7b4e8;border-radius:23px;background:#fffaff;color:#593
  #speech-recovery .speech-recovery-actions button,
  #speech-recovery .speech-recovery-actions a{min-height:30px;padding:4px 7px}
 }
+
+/* v326: question guide is a compact pill in the original Panda card, not a new
+ * row or a second chat screen. The lesson list scrolls inside its dialog only. */
+.progress #step{white-space:nowrap;flex-shrink:1;min-width:0}
+.progress .ask-panda-open{flex:none;margin-left:auto;white-space:nowrap;border:1px solid #d0a4e5;background:linear-gradient(145deg,#fbf1ff,#ead4f8);color:#6d3c90;border-radius:999px;min-height:32px;padding:5px 9px;font-size:11px;font-weight:800;line-height:1.2;box-shadow:0 2px 5px #8e56b424}
+.progress .bars{margin-left:0}
+.progress .text-button{margin-left:0}
+.ask-panda-intro,.ask-panda-disclaimer{font-size:12px;line-height:1.45;color:#77518d;margin:5px 0 10px}
+.ask-panda-disclaimer{font-size:11px;margin:9px 0 0}
+.ask-panda-topics{overflow-y:auto;overscroll-behavior:contain;max-height:min(55dvh,520px);padding:1px 2px 2px;scrollbar-width:thin}
+.ask-panda-topic{border:1px solid #e2c8ee;background:#f8effd;border-radius:15px;margin:0 0 8px;overflow:hidden}
+.ask-panda-topic summary{cursor:pointer;font-size:13px;font-weight:800;padding:12px 11px;line-height:1.2;min-height:44px;color:#6a368e}
+.ask-panda-topic[open] summary{border-bottom:1px solid #e6d4ee}
+.ask-panda-question-list{display:grid;gap:6px;padding:8px}
+.ask-panda-question{display:flex;flex-direction:column;align-items:stretch;gap:2px;width:100%;text-align:left;min-height:64px;padding:9px 12px;border:1px solid #e5cbed;border-radius:14px;background:#fffafd;box-shadow:0 2px 5px #b98cce15}
+.ask-panda-question:active{background:#edd9f8}
+.ask-panda-question .zh{font-size:17px;font-weight:800;line-height:1.25;color:#50216f}
+.ask-panda-question .py{font-size:12px;line-height:1.3;color:#9061aa}
+.ask-panda-question .ru{font-size:12px;line-height:1.35;color:#6d5677}
+@media(max-width:350px){.progress .ask-panda-open span{display:none}.progress .ask-panda-open{padding:5px 8px}.progress{gap:5px}}

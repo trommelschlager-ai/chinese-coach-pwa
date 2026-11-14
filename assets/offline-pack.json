@@ -1,5 +1,5 @@
 {
-  "version": 325,
+  "version": 326,
   "bytes": 58955731,
   "files": [
     "./assets/approved-build-v95.webp",
@@ -2731,7 +2731,7 @@
     "./assets/panda-brain-hsk1-v302.mjs?v=302",
     "./assets/panda-curriculum-tutor.mjs?v=302",
     "./scripts/verify-panda-brain-v302.cjs",
-    "./assets/panda-voice-pilot.css?v=318",
+    "./assets/panda-voice-pilot.css?v=326",
     "./assets/panda-hsk-two-levels-v314.css?v=314",
     "./hsk2-start.html",
     "./hsk2-introduction.html",
@@ -2750,13 +2750,14 @@
     "./assets/panda-live-voice-bridge-v307/B09.mp3",
     "./assets/panda-live-voice-bridge-v307/B10.mp3",
     "./assets/panda-hsk-scenic-v315.css?v=315",
-    "./panda-voice-pilot.html?v=323",
-    "./assets/panda-live-screen-v270.mjs?v=323",
+    "./panda-voice-pilot.html?v=326",
+    "./assets/panda-live-screen-v270.mjs?v=326",
     "./assets/panda-live-dialogue-v272.mjs?v=323",
     "./assets/panda-hsk1-questions-v281.mjs?v=319",
     "./assets/panda-sentence-coach-v319.mjs?v=319",
     "./assets/panda-home-photo1-v319.css?v=319",
     "./assets/panda-home-approved-photo1-v319.jpg",
-    "./assets/panda-basic-conversation-v323.mjs?v=323"
+    "./assets/panda-basic-conversation-v323.mjs?v=323",
+    "./assets/panda-ask-catalog-v326.mjs?v=326"
   ]
 }
