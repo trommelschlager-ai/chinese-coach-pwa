@@ -81,7 +81,7 @@ const fs=require('node:fs');
   './assets/panda-live-dialogue-v272.mjs?v=323',
   './assets/panda-live-screen-v270.mjs?v=326',
   './assets/panda-hsk1-questions-v281.mjs?v=319',
-  './panda-voice-pilot.html?v=323'
+  './panda-voice-pilot.html?v=326'
  ]) assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).files.includes(p),p);
  assert(fs.readFileSync('panda-voice-pilot.html','utf8').includes('<span class="release">v326</span>'));
  console.log('PASS Panda sentence coach v319: 17 safe phrase expansions + 4 contextual weather prompts, audio B02/B04/B05 and old HSK1 preserved.');
