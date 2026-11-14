@@ -61,6 +61,7 @@
 .pg-welcome-tone b{font-size:21px;display:block}
 .pg-welcome-tone small{font-size:10.5px;color:#83588b}
 .pg-welcome-tone:nth-child(1) b{color:#ba388d}.pg-welcome-tone:nth-child(2) b{color:#328c73}.pg-welcome-tone:nth-child(3) b{color:#8759bb}.pg-welcome-tone:nth-child(4) b{color:#bc7239}
+.pg-welcome-themes{padding:9px 11px;border:1px solid #e7c0d7;border-radius:13px;background:#f4ddf5;text-align:center;font-size:12px;line-height:1.45}.pg-welcome-themes b{color:#6d2c89}
 .pg-welcome-honest{font-size:11px;line-height:1.45;color:#765185;margin:6px 2px 0}
 .pg-welcome-review{display:inline-block;padding:7px 10px;margin:0 0 9px;background:#f4e5fb;border:1px solid #e7c1e3;border-radius:11px;text-decoration:none;font-size:12px;font-weight:800}
 @media(max-width:360px){.pg-welcome-goals{gap:5px}.pg-welcome-goal{padding:7px 5px}.pg-welcome-goal strong{font-size:11.5px}.pg-welcome-hero{padding:11px 9px}.pg-welcome-section{padding:10px}}
@@ -148,8 +149,9 @@ function renderWelcome(){
  $('screen').innerHTML=`
  <section class="pg-course-welcome" aria-label="План обучения HSK2">
   <header class="pg-welcome-hero"><span class="pg-welcome-sparkle" aria-hidden="true">🌸</span><div class="pg-welcome-eyebrow">PANDA GO · HSK 2</div>
-   <h1>Твоё новое приключение!</h1><p>Будем учить китайский маленькими шагами — понятно, с грамматикой и практикой.</p>
+   <h1>План изучения HSK2</h1><p>Твоё новое приключение! Китайский маленькими шагами — с грамматикой и практикой.</p>
   </header>
+  <p class="pg-welcome-themes"><b>Что изучим:</b> знакомство · семья · мой день · еда · покупки · город · встречи</p>
   <section class="pg-welcome-section"><h2>🎯 В этом курсе ты научишься</h2>
    <div class="pg-welcome-goals">
     <div class="pg-welcome-goal"><span class="emoji">🗣️</span><div><strong>Говорить по-китайски</strong><small>О себе, друзьях и повседневных делах</small></div></div>
