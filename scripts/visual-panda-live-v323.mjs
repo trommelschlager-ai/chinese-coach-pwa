@@ -23,7 +23,7 @@ try {
   res=await page.goto(base+'/panda-voice-pilot.html?lesson=1',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   await page.waitForFunction(()=>document.documentElement.dataset.pandaLiveReady==='true');
-  assert.match(await page.locator('footer .release').textContent(),/v323/);
+  assert.match(await page.locator('footer .release').textContent(),/v326/);
   await page.locator('#mode-nonstop').click();
   assert.equal(await page.locator('#mode-nonstop').getAttribute('aria-pressed'),'true');
   const entry=page.locator('#message');
