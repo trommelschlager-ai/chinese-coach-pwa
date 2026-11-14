@@ -93,3 +93,9 @@
  .app .vocab .hsk2-word-phrase strong{font-size:14px}
  .app .vocab .hsk2-word-phrase .py,.app .vocab .hsk2-word-phrase .ru{font-size:10px}
 }
+
+/* v336: consistent character squares on all HSK2 vocabulary pages. */
+.app .vocab .hanzi-squares{display:flex!important;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;line-height:1!important;min-height:51px}
+.app .vocab .hanzi-squares .hz-square{display:grid;place-items:center;min-width:clamp(42px,12vw,61px);height:clamp(42px,12vw,61px);padding:2px;border:1.5px solid #e6b679;border-radius:12px;background:linear-gradient(145deg,#fff,#f7e4f7);box-shadow:0 2px 5px #9154a229,inset 0 1px #fff;color:#572773;font:850 clamp(25px,7vw,35px)/1 "Noto Serif SC","Songti SC","SimSun",serif}
+.app .vocab:has(.hanzi-squares){min-width:0}
+@media(max-width:350px){.app .vocab .hanzi-squares .hz-square{min-width:39px;height:39px;font-size:25px}}
