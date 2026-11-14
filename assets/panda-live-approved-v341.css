@@ -88,3 +88,31 @@ body.v337-ready>dialog[open]{display:block;position:fixed;z-index:999;border-rad
 #pg-approved-v337[data-listening=true] .v337-live-badge,#pg-approved-v337[data-speaking=true] .v337-live-badge{display:grid!important}
 @media(max-width:380px){#pg-approved-v337 .v337-row{padding:5px 1%;grid-template-columns:9% minmax(0,43%) minmax(0,1fr) 9%}#pg-approved-v337 .v337-speech{left:56%;width:42%;padding:2% 1.5%}}
 @media(max-height:650px){#pg-approved-v337 .v341-hero{bottom:13%!important}#pg-approved-v337 .v337-speech{height:27%}#pg-approved-v337 .v337-topics{height:10%}#pg-approved-v337 .v337-mode-short,#pg-approved-v337 .v337-mode-nonstop{height:6.5%}}
+
+/* v343 — ratio-safe photographic layer. Do not zoom approved image beyond its
+   original width: zoom previously exposed baked speech outside the live card.
+   Preserve Panda eyes, face, scarf and scenic perspective. */
+#pg-approved-v337 .v341-photo{height:calc(var(--cw)*.66)!important;overflow:hidden!important}
+#pg-approved-v337 .v341-photo-image{
+  left:0!important;top:calc(var(--cw)*-.61)!important;
+  width:100%!important;height:auto!important;max-width:none!important;
+  object-fit:contain!important;clip-path:none!important;
+}
+#pg-approved-v337 .v341-sakura{
+  inset:0!important;background-size:100% auto!important;
+  background-position:0 calc(var(--cw)*-.61)!important;
+}
+#pg-approved-v337 .v341-water{top:calc(var(--cw)*.66 - 3px)!important}
+#pg-approved-v337 .v337-speech{
+  left:56%!important;width:43%!important;
+  top:calc(var(--hero-top) + 2.6%)!important;
+  height:min(25%,calc(var(--cw)*.53))!important;
+  max-height:none!important;z-index:6!important;
+  background:#f1e3fb!important;box-shadow:0 3px 12px #6539a966!important;
+  overflow:hidden!important;
+}
+#pg-approved-v337 .v337-main-zh{font-size:clamp(20px,5.5cqw,32px)!important}
+#pg-approved-v337 .v341-hero{z-index:1!important}
+#pg-approved-v337 .v337-chat{z-index:5!important}
+#pg-approved-v337 .v337-topics{z-index:7!important}
+#pg-approved-v337 .v337-main-ru{max-height:4em!important}
