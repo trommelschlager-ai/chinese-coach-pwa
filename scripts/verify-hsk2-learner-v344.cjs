@@ -26,36 +26,29 @@ function lessonData(html,ending,expression){
  assert.ok(first>=0&&last>first,'Lesson data source found');
  return vm.runInNewContext(js.slice(first,last)+'\n'+expression);
 }
-const introData=lessonData(intro,'const key=', '({WORDS,steps})');
-const introSteps=introData.steps;
-assert.equal(introSteps.length,16);
-assert.equal(introSteps[0].kind,'model-dialogue');
-assert.equal(introSteps[0].items.length,4,'Beginner dialogue is short');
-assert.equal(introSteps[3].kind,'words');
-assert.equal(introSteps[3].title,'Где ты живёшь?');
-assert.deepEqual(Array.from(introSteps[3].items,x=>x[0]),['住','在','哪儿','莫斯科']);
-assert.equal(introSteps[4].kind,'structure');
-assert.equal(introSteps[7].formula,'我 + 今年 + ЧИСЛО + 岁');
-assert.equal(introSteps[9].kind,'listening-quiz');
-assert.equal(introSteps[9].answer,1);
-assert.equal(introSteps[10].kind,'build');
-assert.equal(introSteps[11].kind,'quiz');
-assert.equal(introSteps[12].kind,'guided-practice');
-assert.equal(introSteps[13].kind,'dialogue-practice');
-assert.equal(introSteps[14].kind,'speaking5');
-assert.equal(introSteps[15].kind,'finish');
-assert.ok(intro.includes("s.title==='Говорим своё имя'"),'Name mic attached to displayed title');
-assert.ok(intro.includes("state.introLayoutVersion!==344"),'Legacy progress migration installed');
-assert.ok(intro.includes("state.introLayoutVersion!==345"),'Journey progress migration installed');
-assert.ok(intro.includes("answer!==s.answer"),'Cannot proceed after a wrong lesson answer');
-assert.ok(intro.includes("journey-intro-final-five-v345"),'Speaking attempt progress isolated by lesson');
-assert.ok(intro.includes("aria-label=\"Прослушать вопрос по-китайски\""),'Listening test button is accessible');
-checked+=20;
+const lessonJs=inline(intro).at(-1);
+const lessonSpec=vm.runInNewContext(lessonJs.slice(lessonJs.indexOf('const KEY='),lessonJs.indexOf('const cleanState='))+
+ '\n({TOTAL,WORDS,MODEL,TOKENS})');
+assert.equal(lessonSpec.TOTAL,4,'First lesson has four screens');
+assert.equal(lessonSpec.WORDS.length,3,'Keep the beginner vocabulary small');
+assert.deepEqual(Array.from(lessonSpec.WORDS,w=>w.zh),['叫','名字','什么']);
+assert.equal(lessonSpec.MODEL.answer,'我叫米沙。');
+assert.equal(lessonSpec.MODEL.aPy,'Wǒ jiào Mǐshā.');
+assert.equal(lessonSpec.MODEL.question,'你叫什么名字？');
+assert(!intro.includes('很高兴认识你'),'Unexplained sentence excluded from first lesson');
+assert(!intro.includes('我叫安东'),'Old student example excluded');
+for(const marker of ['renderPlan','renderGrammar','renderTest','renderDialogue','什'+'么 (shénme)','data-audio','data-reveal','data-mic','canAdvance','py-hidden']){
+ assert(intro.includes(marker),'Required new lesson functionality: '+marker);
+}
+assert(intro.includes('Точной записи пока нет')&&intro.includes('имени Миша отдельной записи'),'Never synthesize missing Misha MP3');
+checked+=22;
 const startData=lessonData(start,'const stateKey=', '({WORDS,REVIEW,sections,JOURNEY,reviewStages,lessonStages})');
 assert.equal(startData.JOURNEY.length,10);
 for(const [i,entry] of startData.JOURNEY.entries()){assert.ok(entry[2].trim(),`Missing lesson ${i+1} grammar`);assert.ok(entry[1].trim(),`Missing lesson ${i+1} title`)}
 assert.ok(start.includes('journey-map-active'),'Map scroll compatibility fix required');
 assert.ok(start.includes('hsk2-introduction.html'),'First lesson must open actual course');
+assert(start.includes('pg-hsk2-introduction-v2'),'Map must use current intro progress');
+assert(start.includes('introCount/4*100'),'Map displays four stages');
 checked+=23;
 assert.equal(startData.reviewStages.length,8);
 assert.equal(startData.lessonStages.length,9);
