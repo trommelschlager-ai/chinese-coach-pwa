@@ -82,7 +82,8 @@ const vm=require('node:vm');
   assert(!fs.readFileSync(p,'utf8').includes('panda-hsk2-seed-v303.json'),'Draft premium seed leaked into live app: '+p);
  }
  const page=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(/panda-live-screen-v270\.mjs\?v=(?:326|33[6-9])/.test(page),'Panda screen script must be versioned');
+ assert(page.includes('panda-ai-view.mjs?v=348'),'Versioned Panda presentation entry missing');
+ assert(fs.readFileSync('assets/panda-ai-view.mjs','utf8').includes("import './panda-live-screen-v270.mjs?v=336'"),'Versioned conversation engine dependency missing');
  assert(page.includes('panda-voice-pilot.css?v=326'));
  assert(page.includes('Запись носительницы готовится'));
  assert(fs.readFileSync('assets/panda-voice-pilot.css','utf8').includes('max-height:100%;overflow:hidden'),'Speech still scrolls');

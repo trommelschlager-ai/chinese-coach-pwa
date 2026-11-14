@@ -11,6 +11,10 @@ on:
       - feat/panda-exact-mascot-animated-2026-11-11
     paths:
       - 'panda-voice-pilot.html'
+      - 'assets/panda-ai*'
+      - 'assets/panda-reference-*'
+      - 'tests/panda-reference-view.test.mjs'
+      - 'scripts/qa-panda-reference.mjs'
       - 'assets/panda-live-*'
       - 'assets/panda-hsk1-*'
       - 'assets/panda-brain-*'
@@ -29,6 +33,10 @@ on:
     branches: [main]
     paths:
       - 'panda-voice-pilot.html'
+      - 'assets/panda-ai*'
+      - 'assets/panda-reference-*'
+      - 'tests/panda-reference-view.test.mjs'
+      - 'scripts/qa-panda-reference.mjs'
       - 'assets/panda-voice-pilot*'
       - 'assets/panda-live-*'
       - 'assets/panda-hsk1-*'
@@ -55,7 +63,9 @@ jobs:
           node-version: '22'
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Test pilot response checks and mock microphone
-        run: npm run check:panda-screen
+        run: |
+          npm run check:panda-screen
+          node --test tests/panda-reference-view.test.mjs
       - name: Validate Panda HSK2 preview bridge
         run: node scripts/verify-panda-hsk2-bridge-v304.cjs
       - name: Validate contextual Panda sentence coach
@@ -73,11 +83,11 @@ jobs:
             if curl -fsS http://127.0.0.1:4173/panda-voice-pilot.html >/dev/null; then break; fi
             sleep 1
           done
-          node scripts/qa-panda-voice-pilot-mobile.mjs
+          node scripts/qa-panda-reference.mjs
       - name: Save Android viewport screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: panda-voice-android-pilot-screenshots
-          path: qa/panda-voice-pilot/
+          path: qa/panda-reference/
           if-no-files-found: warn

@@ -1,6 +1,6 @@
 {
-  "version": 347,
-  "bytes": 61805081,
+  "version": 348,
+  "bytes": 63874221,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -2778,6 +2778,11 @@
     "./assets/native-owner-v200/shi.ogg",
     "./assets/native-owner-v200/tianqi.ogg",
     "./hsk2-city-work.html",
-    "./assets/hsk2-speaking-v326.js?v=345"
+    "./assets/hsk2-speaking-v326.js?v=345",
+    "./assets/panda-ai.css?v=348",
+    "./assets/panda-ai-view.mjs?v=348",
+    "./assets/panda-reference-landscape.webp",
+    "./assets/panda-reference-character.webp?v=348",
+    "./assets/panda-reference-sakura.webp"
   ]
 }

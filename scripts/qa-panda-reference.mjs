@@ -43,8 +43,12 @@ try{
   await page.evaluate(()=>{const b=window.PandaApprovedBridge337;b.snapshot=()=>({...window.__snapshot(),current:{hanzi:'这是一个很长的中文句子。'.repeat(12),pinyin:'Zhè shì yí ge hěn cháng de Zhōngwén jùzi.',ru:'Длинный русский перевод предложения. '.repeat(15)},history:[{who:'you',hanzi:'你好。'.repeat(25),pinyin:'Nǐ hǎo. '.repeat(25),ru:'Длинный перевод. '.repeat(30)}]});document.getElementById('status').textContent='qa long'});
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh').textContent.length>100);await check('long');await page.screenshot({path:`${dir}/${width}x${height}-long.png`});
   await page.setViewportSize({width,height:430});await page.locator('#pg346-input').focus();await check('keyboard-space-simulation');await page.screenshot({path:`${dir}/${width}-keyboard-simulation.png`});
+  await page.emulateMedia({reducedMotion:'reduce'});
+  assert.equal(await page.locator('.pg346-sakura').evaluate(e=>getComputedStyle(e).animationName),'none');
+  assert.equal(await page.locator('.pg346-petals').evaluate(e=>getComputedStyle(e).display),'none');
+  assert.equal(await page.locator('.pg346-waves i').first().evaluate(e=>getComputedStyle(e).animationName),'none');
   await context.close();
  }
- assert.deepEqual(errors,[]);fs.writeFileSync(`${dir}/report.json`,JSON.stringify({report,errors,physicalAndroid:false,visualMatch:false,reason:'Clean approved landscape source is missing; draft only.'},null,2));
+ assert.deepEqual(errors,[]);fs.writeFileSync(`${dir}/report.json`,JSON.stringify({report,errors,physicalAndroid:false,visualMatch:'manual-review-required',reason:'Approved clean landscape supplied on 15 November; inspect screenshots.'},null,2));
  console.log(`PASS: ${report.length} geometry checks; history, audio playback, mode, topics, pinyin, speed and mocked microphone. Physical Android and visual match are NOT verified.`);
 }finally{await browser.close()}
