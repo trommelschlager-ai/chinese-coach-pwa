@@ -1,0 +1,70 @@
+/* Panda Go v326: crisp HSK 2 banner and compact five-attempt speaking results.
+   No chopped inline panda photos. The hero and panda are single clean SVG assets. */
+header.scene{
+ background:linear-gradient(90deg,rgba(245,217,250,.55),rgba(233,196,251,.67)),
+            url("./chinese-waterfall-banner.svg") center 40% / cover no-repeat !important;
+ border-bottom:2px solid #f2c7cf;
+}
+header.scene img.panda{
+ width:clamp(77px,19vw,104px)!important;
+ height:clamp(61px,9.5dvh,91px)!important;
+ left:0!important;
+ bottom:-2px!important;
+ object-fit:contain!important;
+ object-position:center bottom!important;
+ filter:drop-shadow(0 2px 3px #632d8255)!important;
+ image-rendering:auto;
+}
+header.scene .brand{z-index:2;text-shadow:0 2px 2px #fff,0 1px 4px #f4ecff}
+header.scene .brand small{backdrop-filter:none;background:#fff8ffdf}
+.pg-final-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:5px;color:#673486}
+.pg-final-head strong{font-size:clamp(12px,3.8vw,16px)}
+.pg-final-head span{font-size:11px;font-weight:800;white-space:nowrap}
+.pg-final-rows{display:grid;grid-template-columns:1fr;gap:7px;margin:4px 0 9px}
+.pg-final-row{min-height:53px;display:grid;grid-template-columns:minmax(77px,92px) minmax(0,1fr) 58px;gap:6px;align-items:center;border:1px solid #e7c4df;background:#fffafd;border-radius:14px;padding:4px 6px}
+.pg-final-word{font:inherit;cursor:pointer;border:1.5px solid #e3abce;border-radius:11px;min-height:43px;padding:3px 2px;color:#683184;background:linear-gradient(#fff,#fae8f9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;box-shadow:0 2px 3px #a864a92d}
+.pg-final-word:before{content:"🎤";position:absolute;transform:translate(-40px,-15px);font-size:10px}
+.pg-final-word b{font-size:clamp(19px,6vw,24px);line-height:1.03}
+.pg-final-word small{font-size:9px;color:#9455a6}
+.pg-final-word:disabled{opacity:.52;cursor:default}
+.pg-final-word:focus-visible{outline:3px solid #8f32b2;outline-offset:2px}
+.pg-final-marks{display:flex;gap:3px;justify-content:center;min-width:0}
+.pg-final-marks span{flex:0 1 25px;min-width:13px;max-width:25px;aspect-ratio:1;display:grid;place-items:center;border-radius:7px;background:#f6eaf8;color:#a992af;border:1px solid #ead7e9;font-size:clamp(10px,3.7vw,17px);font-weight:950}
+.pg-final-marks .ok{background:#dff6e5;color:#168041;border-color:#79c799}
+.pg-final-marks .bad{background:#ffe2e7;color:#bc3554;border-color:#ed91a2}
+.pg-final-row-totals{display:flex;justify-content:flex-end;gap:3px;white-space:nowrap}
+.pg-final-row-totals b{font-size:10px;color:#6f467e}
+.pg-final-row-totals b:first-child{color:#22824a}
+.pg-final-row-totals b:last-child{color:#be3d5a}
+.pg-final-summary{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:5px 0}
+.pg-final-summary span{border:1px solid #e8bbd7;border-radius:12px;background:#fff8fe;text-align:center;font-size:12px;padding:8px 3px;color:#714383}
+.pg-final-summary strong{font-size:20px;vertical-align:middle}
+.pg-final-feedback{font-size:11px;min-height:14px;margin:5px 0;font-weight:700;color:#7e468d;line-height:1.25}
+.pg-final-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.pg-final-foot span{font-size:10px;line-height:1.25;color:#85638c}
+.pg-final-foot button{font:inherit;cursor:pointer;font-weight:750;background:#fff;border:1px solid #d9b4d3;border-radius:10px;padding:7px;font-size:10px;color:#703d8d;flex:none}
+.pg-final-note,.pg-final-warning{font-size:9.5px;line-height:1.25;color:#84618e;margin:5px 0 0}
+.pg-final-warning{color:#a04459}
+.app .paper:has(#pg-hsk2-final){justify-content:flex-start;overflow-y:auto}
+.app .paper:has(#pg-hsk2-final) #pg-hsk2-final{width:100%;margin:auto 0}
+.app .paper:has(#pg-hsk2-final) h2{display:none}
+.app .paper:has(#pg-hsk2-final)>p.explain,.app .paper:has(#pg-hsk2-final)>p.notice{display:none}
+.app .content:has(#pg-hsk2-final) .toolbar [data-pinyin]{visibility:hidden}
+.app .content:has(#pg-hsk2-final) .toolbar [data-restart]{min-height:34px}
+.app .content:has(#pg-hsk2-final) .bottom-actions [data-next]{background:linear-gradient(120deg,#cc55bb,#6d2b9d)}
+@media(max-height:705px){
+ .pg-final-rows{gap:4px;margin:3px 0 5px}
+ .pg-final-row{min-height:45px;padding:2px 4px;grid-template-columns:74px minmax(0,1fr) 52px}
+ .pg-final-word{min-height:39px}
+ .pg-final-word b{font-size:19px}
+ .pg-final-marks{gap:2px}
+ .pg-final-summary span{padding:5px 2px;font-size:11px}
+ .pg-final-summary strong{font-size:17px}
+ .pg-final-note{font-size:8.5px}
+ .pg-final-foot span{font-size:9px}
+}
+@media(max-width:340px){
+ .pg-final-row{grid-template-columns:69px minmax(0,1fr) 48px;gap:3px}
+ .pg-final-marks span{min-width:11px;font-size:11px}
+ .pg-final-row-totals b{font-size:9px}
+}
