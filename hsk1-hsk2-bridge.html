@@ -65,7 +65,7 @@ h2{font-size:20px;margin:3px 0 5px;line-height:1.22}
 @media(max-height:700px){.head{padding-top:calc(6px + env(safe-area-inset-top,0px))}.head h1{margin:6px 0 2px}.chips{padding:6px 8px}.main{padding-top:7px}.card{min-height:170px;padding:8px}.card .hanzi{font-size:42px}.row{margin:6px 0}.section{padding:8px 10px}}
 @media(min-width:560px){.app{margin:8px auto;border-radius:24px;max-height:940px}}
 </style>
-<link rel="stylesheet" href="./assets/hsk1-hsk2-bridge-compact-v323.css?v=323">
+<link rel="stylesheet" href="./assets/hsk1-hsk2-bridge-compact-v323.css?v=323"><link rel="stylesheet" href="./assets/hsk2-audio-v330.css?v=330">
 <style>
 /* v324: keep end-of-topic navigation visible above Android bar. */
 .app{position:relative}
@@ -86,11 +86,12 @@ h2{font-size:20px;margin:3px 0 5px;line-height:1.22}
  <main class="main" id="content" aria-live="polite"></main>
  <footer class="foot"><a href="./hsk2-start.html">К курсу HSK 2</a><button class="action" id="main-action" type="button">Проверить знания</button></footer>
 </div>
+<script src="./assets/owner-audio-v237.js"></script><script src="./assets/hsk2-audio-v330.js?v=330"></script>
 <script>
 (function(){
 'use strict';
 var groups=[
- {title:'Основы предложения',hint:'Для описания состояния часто используют 很. В 你好 два третьих тона подряд: произношение меняется, хотя словарные тоны сохраняются.',
+ {title:'Основы предложения',hint:'Для описания состояния часто используют 很. В 你好 два третьих тона подряд: произносят ní hǎo, хотя словарная запись nǐ hǎo.',
   words:[['不','bù','не'],['的','de','частица принадлежности'],['好','hǎo','хороший'],['很','hěn','очень; связка'],['在','zài','находиться; в']],
   examples:[['我很好。','Wǒ hěn hǎo.','У меня всё хорошо.'],['我不在家。','Wǒ bú zài jiā.','Меня нет дома.']]},
  {title:'Знакомство и интересы',hint:'喜欢 — нравится, а 爱 — люблю. Слово 中文 означает китайский язык.',
@@ -105,7 +106,7 @@ var groups=[
  {title:'Работа и город',hint:'在 + место указывает, где человек находится или работает. Слова можно объединять в короткие фразы.',
   words:[['饭店','fàndiàn','ресторан'],['工作','gōngzuò','работать; работа'],['公司','gōngsī','компания'],['去','qù','идти; ехать'],['来','lái','приходить']],
   examples:[['我在公司工作。','Wǒ zài gōngsī gōngzuò.','Я работаю в компании.'],['我去饭店。','Wǒ qù fàndiàn.','Я иду в ресторан.']]},
- {title:'Действия и время',hint:'点 в сочетании с числом обозначает час: 八点 — восемь часов. 别 путать словарный тон 一 с изменением тона внутри фразы.',
+ {title:'Действия и время',hint:'点 в сочетании с числом обозначает час: 八点 — восемь часов. Не путай словарный тон 一 (yī) с его изменениями в речи.',
   words:[['看','kàn','смотреть'],['想','xiǎng','хотеть; думать'],['买','mǎi','покупать'],['回','huí','возвращаться'],['点','diǎn','час (во времени)']],
   examples:[['我八点回家。','Wǒ bā diǎn huí jiā.','Я возвращаюсь домой в восемь.'],['你几点来？','Nǐ jǐ diǎn lái?','Во сколько ты придёшь?']]}
 ];
@@ -142,7 +143,7 @@ function draw(){
  if(state.mode==='study'){
   var w=g.words[state.card];
   main='<div class="kicker">Тема '+(state.stage+1)+' из 6 · слово '+(state.card+1)+' из 5</div><h2>'+safe(g.title)+'</h2><p class="lead">Учимся понимать слово, затем проверяем себя без подсказок.</p>'+
-   '<section class="card"><div class="counter">HSK 3.0 · базовое слово</div><div class="hanzi" lang="zh-Hans">'+safe(w[0])+'</div><div class="pinyin">'+(state.showPinyin?safe(w[1]):'Пиньинь скрыт')+'</div><div class="ru">'+safe(w[2])+'</div></section>'+
+   '<section class="card"><div class="counter">Базовая лексика</div><div class="hanzi" lang="zh-Hans">'+safe(w[0])+'</div><div class="pinyin">'+(state.showPinyin?safe(w[1]):'Пиньинь скрыт')+'</div><div class="ru">'+safe(w[2])+'</div><div class="audio">'+(window.PandaHsk2AudioV330?.button(w[0],true)||'')+'</div></section>'+
    '<div class="row"><button class="btn" type="button" data-action="prev" '+(state.card===0?'disabled':'')+'>‹ Назад</button>'+
    '<button class="btn" type="button" data-action="pinyin">'+(state.showPinyin?'Скрыть':'Показать')+' пиньинь</button>'+
    '<button class="btn primary" type="button" data-action="next">'+(state.card===4?'К проверке ✓':'Дальше ›')+'</button></div>'+
@@ -152,9 +153,9 @@ function draw(){
    '<section class="bridge-detail" aria-label="'+(state.detailTab==='rule'?'Правило':'Примеры')+'">'+
    (state.detailTab==='rule'
      ?'<div class="rule-title">✏️ Как говорить правильно</div><p class="rule-copy">'+safe(g.hint)+'</p>'
-     :g.examples.map(function(x){return '<div class="example"><span class="zh" lang="zh-Hans">'+safe(x[0])+'</span><span class="py">'+safe(x[1])+'</span><span class="ru">'+safe(x[2])+'</span></div>'}).join(''))+
+     :g.examples.map(function(x){return '<div class="example"><span class="zh" lang="zh-Hans">'+safe(x[0])+'</span><span class="py">'+safe(x[1])+'</span><span class="ru">'+safe(x[2])+'</span>'+(window.PandaHsk2AudioV330?.button(x[0])||'')+'</div>'}).join(''))+
    '</section>'+
-   '<p class="notice">🎧 Проверенные MP3 добавим позже. Системный голос не включается.</p>';
+   '<p class="notice">🔊 Записи есть только для некоторых слов; остальные нужно дозаписать.</p>';
   button.textContent='Проверить 5 слов';button.disabled=false;
  }else if(state.mode==='quiz'){
   var q=state.quizIndex,w2=g.words[q],opts=optionData(q);
@@ -170,6 +171,7 @@ function draw(){
   button.textContent=state.stage===5?'К курсу HSK 2':'Повторить карточки';button.disabled=false;
  }
  $('content').innerHTML=main;
+ window.PandaHsk2AudioV330?.bind($('content'));
 }
 function goStage(i){state.stage=i;state.card=0;state.quizIndex=0;state.mode='study';state.detailTab='rule';feedback='';feedbackType='';save();draw();$('content').scrollTop=0}
 function action(name,index,tab){
