@@ -36,6 +36,25 @@ for(const [zh,start,end] of day14Rows){
  const key=normalize(zh);
  if(!segments.has(key))segments.set(key,{url:day14,start,end,source:'user-lv-20261114-W6Okix'});
 }
+const pandaIntro='./assets/hsk2-user-voice/20261114-APqUx9.mp3';
+const pandaIntroRows=[
+ ['你好',0.08,1.05],
+ ['我叫熊猫',1.43,2.86],
+ ['我今年三岁了',3.24,5.10],
+ ['我是你的中文学习伙伴',5.49,8.10],
+ ['很高兴认识你',8.48,10.35],
+ ['我们一起学中文吧',10.73,13.13],
+ ['我是熊猫',14.82,16.13],
+ ['你叫什么名字',20.68,22.44],
+ ['我三岁了',18.15,19.50],
+ ['你呢',19.53,20.32],
+ ['你今年多大了',22.79,24.57],
+ ['你几岁了',24.94,26.39]
+];
+for(const [zh,start,end] of pandaIntroRows){
+ const key=normalize(zh);
+ if(!segments.has(key))segments.set(key,{url:pandaIntro,start,end,source:'user-lv-20261114-APqUx9'});
+}
 let active=null;
 function stop(){
  const a=active;if(!a)return;
