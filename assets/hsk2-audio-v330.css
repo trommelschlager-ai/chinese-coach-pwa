@@ -55,3 +55,41 @@
  .word-sample-label{font-size:10px}
  .word-sample-pinyin,.word-sample-translation{font-size:10px}
 }
+
+
+/* v335: keep a phrase's exact visible text beside its audio, in HSK2 word tiles. */
+.app .vocab .hsk2-word-phrase,
+.app .vocab .hsk2-word-phrase-label{
+ font-size:11px;line-height:1.25;letter-spacing:0;
+}
+.app .vocab .hsk2-word-phrase{
+ display:grid;gap:2px;justify-items:center;align-content:center;
+ border-top:1px solid #e9c8df;padding:5px 2px 1px;margin-top:4px;
+ color:#71417b;min-width:0;
+}
+.app .vocab .hsk2-word-phrase-label,.app .vocab .hsk2-word-phrase small{
+ font-size:10px;color:#9263a2;font-weight:750;
+}
+.app .vocab .hsk2-word-phrase strong{
+ font-family:system-ui,Arial,sans-serif;font-size:clamp(14px,3.7vw,17px);
+ color:#653184;font-weight:850;line-height:1.18;
+ overflow-wrap:anywhere;
+}
+.app .vocab .hsk2-word-phrase .py,
+.app .vocab .hsk2-word-phrase .ru{
+ font-size:clamp(10px,2.6vw,12px);font-weight:550;
+ line-height:1.22;overflow-wrap:anywhere;color:#6c4578;
+}
+.app .vocab .hsk2-word-phrase .hsk2-clip,
+.app .vocab .hsk2-word-phrase .audio-clip-button{
+ font-size:11px;min-height:29px;line-height:1.2;padding:4px 8px;
+ margin:4px 0 0;border-radius:9px;
+}
+.app .vocab:has(.hsk2-word-phrase){
+ align-content:center;gap:3px;padding:7px 5px;
+}
+@media(max-height:730px){
+ .app .vocab .hsk2-word-phrase{gap:1px;padding:3px 2px 0;margin-top:2px}
+ .app .vocab .hsk2-word-phrase strong{font-size:14px}
+ .app .vocab .hsk2-word-phrase .py,.app .vocab .hsk2-word-phrase .ru{font-size:10px}
+}
