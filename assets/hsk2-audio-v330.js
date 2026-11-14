@@ -66,6 +66,19 @@ for(const entry of (window.PandaUserVoiceIndexV332?.clips||[])){
   source:'user-lv-20261114-'+entry.file
  });
 }
+// v338: 73 exact original Luvvoice utterances from three user-provided recordings.
+// 30 + 25 single words and 18 standalone sentences; indexed against measured silences.
+// v338 supersedes old sentence-only examples for exact matches; no synthetic speech.
+const approvedV338=[{"group":"words_a","file":"20261114-words-a-v338.mp3","zh":"我|你|他|她|是|不|吗|老师|三|十|今天|星期|妈妈|爸爸|天气|下雨|年|月|日|号|叫|名字|什么|住|在|哪儿|莫斯科|工作|做|医生","times":"0.19-0.79,1.31-1.91,2.45-3.05,3.59-4.19,4.73-5.43,5.99-6.57,7.13-7.75,8.31-9.23,9.79-10.49,11.05-11.81,12.35-13.27,13.83-14.79,15.35-16.19,16.75-17.59,18.15-19.11,19.67-20.61,21.13-21.77,22.33-22.97,23.53-24.15,24.73-25.33,25.89-26.51,27.07-27.95,28.49-29.33,29.89-30.49,31.05-31.69,32.21-32.83,33.35-34.47,35.03-35.89,36.45-37.09,37.67-38.55"},{"group":"words_b","file":"20261114-words-b-v338.mp3","zh":"的|好|很|爱|朋友|喜欢|中国|说|读|写|听|吃|喝|茶|水|饭|饭店|公司|去|来|看|想|买|回|点","times":"0.21-0.83,1.37-1.99,2.53-3.19,3.71-4.37,4.93-5.79,6.35-7.31,7.87-8.77,9.31-10.03,10.59-11.21,11.75-12.47,13.03-13.67,14.21-14.87,15.43-16.09,16.63-17.29,17.83-18.55,19.11-19.79,20.35-21.25,21.81-22.71,23.25-23.95,24.49-25.13,25.69-26.31,26.87-27.59,28.13-28.75,29.29-29.93,30.49-31.13"},{"group":"phrases","file":"20261114-phrases-v338.mp3","zh":"我不是老师。|你是老师吗？|今天下雨。|你学习中文。|他学习中文。|你很忙。|他很忙。|我很好。|我不在家。|我喜欢中文。|我爱中国。|我听老师说中文。|我喝茶。|我想吃饭。|我在公司工作。|我去饭店。|我八点回家。|你几点来？","times":"0.19-1.69,2.21-3.59,4.15-5.53,6.03-7.53,8.07-9.61,10.13-11.17,11.73-12.77,13.33-14.39,14.95-16.17,16.71-18.23,18.77-20.11,20.65-22.63,23.15-24.27,24.83-26.11,26.67-28.33,28.87-30.15,30.71-32.17,32.69-33.93"}];
+for(const pack of approvedV338){
+ const wordList=pack.zh.split('|'),boundaries=pack.times.split(',');
+ if(wordList.length!==boundaries.length)throw Error('HSK2 v338 audio index mismatch: '+pack.group);
+ for(let i=0;i<wordList.length;i++){
+  const [start,end]=boundaries[i].split('-').map(Number);
+  if(!Number.isFinite(start)||!Number.isFinite(end)||end<=start)continue;
+  segments.set(normalize(wordList[i]),{url:'./assets/hsk2-user-voice/'+pack.file,start,end,source:'user-lv-v338-'+pack.group});
+ }
+}
 // v335: opt-in COMPLETE sentence examples under otherwise silent single-word cards.
 // A recording may be played only next to that same visible full Chinese sentence.
 // Never use these mappings as a fallback for play(word) or button(word).
