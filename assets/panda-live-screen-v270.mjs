@@ -1,7 +1,7 @@
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=319';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio} from './panda-live-audio.mjs?v=307';
+import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=336';
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
@@ -24,19 +24,32 @@ const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson|
 function note(text){$('status').textContent=text||''}
 function pose(value){clearTimeout(poseTimer);rig.setState(value)}
 function happy(){pose('happy');poseTimer=setTimeout(()=>pose('idle'),1300)}
-function stopAudio(){const a=audio;audio=null;cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);if($('character').dataset.state==='talking')pose('idle')}
+function stopAudio(){const a=audio;audio=null;cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onloadedmetadata=a.ontimeupdate=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);if($('character').dataset.state==='talking')pose('idle')}
 function stopRecognition(){clearTimeout(watchdog);epoch++;const r=recognition;recognition=null;state.active=false;if(r){r.onstart=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
 function play(){
- const src=lookupPilotAudio(current()?.audioKey);if(!src){note('Для этой фразы пока нет записи.');return}
- stopRecognition();stopAudio();const a=new Audio(new URL(src,document.baseURI).href);audio=a;a.playbackRate=state.slow?.8:1;a.preload='auto';if('preservesPitch' in a)a.preservesPitch=true;
- const envelope=ENVELOPES[src],valid=()=>audio===a;
+ const currentLine=current();
+ const part=lookupPandaVoiceClip(currentLine?.hanzi||currentLine?.panda)||lookupPandaVoiceClip(currentLine?.audioKey);
+ if(!part){note('Для этой точной фразы пока нет загруженной MP3-записи.');return}
+ stopRecognition();stopAudio();
+ const src=part.src,begin=Number(part.start)||0,end=Number.isFinite(part.end)?Number(part.end):null;
+ const a=new Audio(new URL(src,document.baseURI).href);audio=a;a.playbackRate=state.slow?.8:1;a.preload='auto';
+ if('preservesPitch' in a)a.preservesPitch=true;
+ const envelope=end===null?ENVELOPES[src]:null,valid=()=>audio===a;
+ const seek=()=>{if(valid()&&begin>0){try{a.currentTime=begin}catch{}}};
+ // Request playback during the user's gesture; the metadata event seeks inside
+ // the ORIGINAL MP3 file before decoding the selected utterance.
+ a.onloadedmetadata=seek;
  const animate=()=>{if(!valid()||a.paused||a.ended)return;rig.setLevel(envelope?envelope.levels[Math.floor(a.currentTime/envelope.binSeconds)]||0:.5+.5*Math.sin(a.currentTime*23));audioFrame=requestAnimationFrame(animate)};
  a.onplaying=()=>{if(valid()){pose('talking');$('hear').classList.add('playing');if($('status').textContent==='Нажми динамик, чтобы включить звук.')note('');animate()}};
  a.onwaiting=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
  a.onpause=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
- a.onended=()=>{if(valid()){stopAudio();if(state.followup)scheduleFollowup(1200)}};a.onerror=()=>{if(valid()){stopAudio();note('Запись не загрузилась. Нажми динамик, чтобы повторить.')}};
- a.play().catch(()=>{if(valid()){stopAudio();note('Нажми динамик, чтобы включить звук.')}});
+ const finished=()=>{if(valid()){stopAudio();if(state.followup)scheduleFollowup(1200)}};
+ a.onended=finished;
+ a.ontimeupdate=()=>{if(valid()&&end!==null&&a.currentTime>=end-.025)finished()};
+ a.onerror=()=>{if(valid()){stopAudio();note('Запись не загрузилась. Нажми динамик ещё раз.')}};
+ seek();
+ a.play().catch(()=>{if(valid()){stopAudio();note('Браузер не включил звук автоматически. Нажми динамик.')}});
 }
 function cancelFollowup(){clearTimeout(followupTimer);state.followup=null}
 function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();showLearnerFeedback(null);say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
@@ -95,9 +108,9 @@ function render(){
  $('phrase').textContent=text;$('pinyin').textContent=line.pinyin||'';$('translation').textContent=line.ru||'';
  const speech=document.querySelector('.speech'),hanziCount=Array.from(text.replace(/[，。！？?!\s]/g,'')).length;
  speech.dataset.length=hanziCount>=10?'verylong':hanziCount>=6?'long':'short';
- const src=lookupPilotAudio(line.audioKey);$('hear').disabled=!src;$('audio-note').hidden=!!src;
- $('hear').parentElement.hidden=!src;
- $('audio-note').textContent='🔇 Запись носительницы готовится';
+ const clip=lookupPandaVoiceClip(line.hanzi||line.panda)||lookupPandaVoiceClip(line.audioKey);$('hear').disabled=!clip;$('audio-note').hidden=!!clip;
+ $('hear').parentElement.hidden=!clip;
+ $('audio-note').textContent='🔇 Для этой точной фразы пока нет MP3';
  $('step').textContent=state.mode==='nonstop'?'∞ Разговор без лимита':state.done?'Диалог завершён':`${state.step+1} из ${conversation.lines.length}`;
  $('mode-short').classList.toggle('active',state.mode==='short');$('mode-nonstop').classList.toggle('active',state.mode==='nonstop');
  for(const name of ['short','nonstop'])$('mode-'+name).setAttribute('aria-pressed',String(state.mode===name));
