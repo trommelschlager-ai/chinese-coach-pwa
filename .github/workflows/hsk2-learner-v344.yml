@@ -9,6 +9,7 @@ on:
       - 'assets/hsk2-*.js'
       - 'assets/panda-brain-v341.js'
       - 'scripts/verify-hsk2-learner-v344.cjs'
+      - 'scripts/verify-hsk2-intro-v349.cjs'
       - 'scripts/verify-hsk2-city-work.cjs'
       - 'scripts/verify-hsk2-welcome-v348.cjs'
       - '.github/workflows/hsk2-learner-v344.yml'
@@ -32,6 +33,8 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Verify first-launch HSK2 course plan
         run: node scripts/verify-hsk2-welcome-v348.cjs
+      - name: Verify new lesson 1 interactive flow
+        run: node scripts/verify-hsk2-intro-v349.cjs
       - name: Verify My City work lesson
         run: node scripts/verify-hsk2-city-work.cjs
       - name: Verify HSK2 learner path
