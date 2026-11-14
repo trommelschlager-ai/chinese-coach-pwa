@@ -162,22 +162,26 @@ const example=([zh,py,ru])=>'<div class="example"><b lang="zh-Hans">'+esc(zh)+'<
 function convertedProfile(){
  const p=state.profile,svc=window.PandaHSK2PracticeV324;
  if(!svc)return {name:{zh:''},city:{zh:''},job:{zh:''}};
- return {name:svc.mapProfile('name',p.name),city:svc.mapProfile('city',p.city),job:svc.mapProfile('job',p.job==='other'?p.other:p.job)};
+ const name=svc.mapProfile('name',p.name),city=svc.mapProfile('city',p.city);
+ if(typeof p.nameZh==='string'&&/^[\u3400-\u9fff·\s]{1,30}$/u.test(p.nameZh.trim())&&p.name.trim()){name.zh=p.nameZh.trim().replace(/\s+/g,'');name.py='';name.known=false}
+ if(typeof p.cityZh==='string'&&/^[\u3400-\u9fff·\s]{1,30}$/u.test(p.cityZh.trim())&&p.city.trim()){city.zh=p.cityZh.trim().replace(/\s+/g,'');city.py='';city.known=false}
+ return {name,city,job:svc.mapProfile('job',p.job==='other'?p.other:p.job)};
 }
-const profileReady=()=>{const t=convertedProfile();return !!(t.name.zh&&t.city.zh&&t.job.zh)};
+// Any nonempty city or name is accepted; translations are never fabricated.
+const profileReady=()=>{const p=state.profile;return !!(p.name?.trim()&&p.city?.trim()&&(p.job==='other'?p.other?.trim():p.job?.trim()))};
 function profileOutput(){
  const target=$('profile-output');if(!target)return;
  const p=state.profile,m=convertedProfile(),raw=[p.name||'',p.city||'',p.job==='other'?p.other:(p.job||'')];
  const hints=[];
- if(raw[0].trim()&&!m.name.zh)hints.push('Имя не найдено. Введи его китайскими иероглифами.');
- if(raw[1].trim()&&!m.city.zh)hints.push('Город не найден. Введи его китайскими иероглифами.');
- if(raw[2].trim()&&!m.job.zh)hints.push('Профессия не найдена. Введи её китайскими иероглифами.');
- const phrase=(prefix,pyPrefix,word,ru)=>example([prefix+(word.zh||'…')+'。',pyPrefix+(word.py?' '+word.py:' …'),ru]);
+ if(raw[0].trim()&&!m.name.zh)hints.push('Имя не переведено. Это не мешает продолжить урок.');
+ if(raw[1].trim()&&!m.city.zh)hints.push('Город не переведён. Ты можешь перейти дальше с любым городом.');
+ if(raw[2].trim()&&!m.job.zh)hints.push('Профессия пока без китайского перевода.');
+ const phrase=(prefix,pyPrefix,word,ru)=>example([prefix+(word.zh||'（название по-китайски）')+(word.zh?'。':''),pyPrefix+(word.py?' '+word.py:' …'),ru]);
  target.innerHTML=phrase('我叫','Wǒ jiào',m.name,'Меня зовут '+(p.name||'…')+'.')+
   phrase('我住在','Wǒ zhù zài',m.city,'Я живу в городе '+(p.city||'…')+'.')+
   phrase('我是','Wǒ shì',m.job,'Моя профессия: '+(p.job==='other'?p.other:p.job||'…')+'.');
  const status=$('profile-conversion-status');
- if(status){status.textContent=hints.length?hints.join(' '):'✓ Китайские предложения готовы. Имена и названия городов — принятые варианты записи, проверяй их у носителя.';status.classList.toggle('warning',hints.length>0)}
+ if(status){status.textContent=hints.length?'Можно продолжить! '+hints.join(' '):'✓ Китайские предложения составлены. Проверяй собственные названия у носителя.';status.classList.toggle('warning',hints.length>0)}
  const details=target.closest('details');if(details&&profileReady())details.open=true;
  const next=$('screen').querySelector('[data-next]');if(next)next.disabled=!profileReady();
 }
@@ -188,18 +192,22 @@ function profileForm(){
  '<label>Где ты живёшь?<input data-field="city" maxlength="40" autocomplete="off" placeholder="Калуга / 卡卢加" value="'+esc(p.city||'')+'"></label>'+
  '<label>Кем работаешь?<select data-field="job">'+choices.map(([v,t])=>'<option value="'+v+'" '+(v===job?'selected':'')+'>'+t+'</option>').join('')+'</select></label>'+
  (job==='other'?'<label>Название профессии на русском или китайском<input data-field="other" maxlength="40" autocomplete="off" placeholder="Лётчик / 飞行员" value="'+esc(p.other||'')+'"></label>':'')+
- '</div><p id="profile-conversion-status" class="pg-profile-help" role="status"></p>'+
+ '</div><details class="profile-optional"><summary>✏️ Знаешь написание имени или города иероглифами?</summary>'+
+ '<label>Имя иероглифами (необязательно)<input data-field="nameZh" maxlength="30" value="'+esc(p.nameZh||'')+'" placeholder="Например: 安娜"></label>'+
+ '<label>Город иероглифами (необязательно)<input data-field="cityZh" maxlength="30" value="'+esc(p.cityZh||'')+'" placeholder="Например: 莫斯科"></label>'+
+ '</details><p id="profile-conversion-status" class="pg-profile-help" role="status"></p>'+
  '<details class="profile-phrases"><summary>Мои 3 предложения ▾</summary><div class="intro-output" id="profile-output" aria-live="polite"></div></details>'+
  '<p id="audio-status" role="status" class="audio-status" aria-live="polite"></p>'+
- '<p class="notice">Словарь переводов ограничен: неизвестное имя, город или профессию нужно ввести иероглифами. Эти данные остаются только в браузере; тоны неизвестных имён не выдумываем.</p>';
+ '<p class="notice">Любой город и имя допустимы. Неизвестные названия не переводим автоматически, но они не блокируют урок. Данные сохраняются только в браузере.</p>';
 }
 function speechPhrase(kind){
  const p=convertedProfile(),isName=kind==='name';
- const example=isName?'我叫安娜':'我住在莫斯科';
- const resolved=isName?p.name.zh:p.city.zh;
- const phrase=resolved?(isName?'我叫':'我住在')+resolved:example;
+ const stem=isName?'我叫':'我住在',resolved=isName?p.name.zh:p.city.zh;
+ const phrase=resolved?stem+resolved:stem;
  const label=isName?'Меня зовут… × 3':'Я живу в… × 3';
- window.PandaHSK2PracticeV324?.open({id:'intro-'+kind,title:label,items:[{zh:phrase,ru:isName?'Назови себя по-китайски':'Скажи, где ты живёшь',targets:[phrase]}]});
+ window.PandaHSK2PracticeV324?.open({id:'intro-'+kind,title:label,
+ items:[{zh:phrase,ru:isName?'Тренируй 我叫. Можно произнести своё имя.':'Тренируй 我住在. Можно назвать свой город.',
+ targets:[stem,phrase]}]});
 }
 const PANDA_INTRO_QUESTIONS=Object.freeze([
  {zh:'你叫什么名字？',py:'Nǐ jiào shénme míngzi?',ru:'Как тебя зовут?',sample:'我叫安娜。',samplePy:'Wǒ jiào Ānnà.',ruSample:'Меня зовут Анна.'},
