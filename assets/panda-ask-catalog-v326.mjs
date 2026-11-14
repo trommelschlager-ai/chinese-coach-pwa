@@ -2,10 +2,10 @@
  * Never advertise a free-form answer, recording, tone grade or locked lesson.
  * Entries are checked against the SAME engine used when the learner submits.
  */
-import {answerLive} from './panda-live-dialogue-v272.mjs?v=326';
+import {answerLive} from './panda-live-dialogue-v272.mjs?v=336';
 
 export const ASK_CANDIDATES=Object.freeze([
- {lesson:1,title:'Основы и приветствие',questions:['你好吗？','你今天怎么样？','你今天好吗？','晚上好！你好吗？','你呢？']},
+ {lesson:1,title:'Основы и приветствие',questions:['你好吗？','你今天怎么样？','你今天好吗？','晚上好！你好吗？','你呢？','你吃饭了吗？','你吃了吗？']},
  {lesson:2,title:'Местоимения и представление',questions:['你叫什么名字？','你是谁？','你是老师吗？','你是学生吗？','他是学生吗？','她是老师吗？']},
  {lesson:3,title:'Числа',questions:['你几岁？','你多大？','你有几个？','十后面是几？','三十加二是多少？']},
  {lesson:4,title:'Дни недели',questions:['今天星期几？','明天星期几？','昨天星期几？','你星期几有空？','你今天有空吗？','你星期天有空吗？']},
