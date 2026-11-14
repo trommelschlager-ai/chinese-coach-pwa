@@ -1,7 +1,12 @@
 {
-  "version": 348,
-  "bytes": 61812756,
+  "version": 349,
+  "bytes": 62225858,
   "files": [
+    "./assets/panda-character-clean-v349.webp",
+    "./assets/panda-live-v346.css?v=349",
+    "./assets/panda-live-v346.mjs?v=349",
+    "./assets/panda-scene-clean-v346.svg?v=346",
+    "./assets/panda-sakura-v346.svg?v=346",
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
     "./assets/approved-cloud-v112.webp",
