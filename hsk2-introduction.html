@@ -139,7 +139,7 @@ const key='pg-hsk2-introduction-v1';
 let state={step:0,answers:{},build:[],showPy:true,completed:false,readDialoguePair:0,structureTab:'phrase',dialogue:{index:0,passed:[false,false,false],assisted:[false,false,false],completed:false},profile:{name:'',city:'',job:'',age:'',other:''}};
 try{const x=JSON.parse(localStorage.getItem(key)||'null');if(x&&typeof x==='object')state={...state,...x,answers:x.answers||{},build:Array.isArray(x.build)?x.build:[],dialogue:{index:0,passed:[false,false,false],assisted:[false,false,false],completed:false,...(x.dialogue||{})},profile:{name:'',city:'',job:'',age:'',other:'',...(x.profile||{})}}}catch{}
 // On first launch of the revised lesson, show the listening example even for earlier in-progress sessions.
-try{if(!localStorage.getItem('pg-hsk2-intro-v336-shown')){if(!state.completed)state.step=0;localStorage.setItem('pg-hsk2-intro-v336-shown','1')}}catch{}
+try{if(!localStorage.getItem('pg-hsk2-intro-v336-shown')){state.step=0;localStorage.setItem('pg-hsk2-intro-v336-shown','1')}}catch{}
 const save=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch{}};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
