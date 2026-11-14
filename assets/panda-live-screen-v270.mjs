@@ -12,6 +12,7 @@ import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedM
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
 import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=323';
+import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=326';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -300,6 +301,40 @@ function startRecognition(){
   fail('Не удалось запустить распознавание. Проверь разрешения или открой Panda Go напрямую в Chrome.');
  }
 }
+// One-tap practice guide. Lessons are selected from actual progress, and every
+// advertised question has been checked against the same answer engine used here.
+function openAskPandaGuide(){
+ cancelFollowup();stopRecognition();stopAudio();
+ const root=$('ask-panda-topics');root.replaceChildren();
+ const groups=availableAskGroups(state.allowed,curriculum,new Date());
+ for(const group of groups){
+  const box=document.createElement('details');box.className='ask-panda-topic';
+  box.open=group.lesson===conversation.id||groups.length===1;
+  const summary=document.createElement('summary');summary.textContent=group.lesson+'. '+group.title+' · '+group.questions.length+' вопросов';
+  const options=document.createElement('div');options.className='ask-panda-question-list';
+  for(const question of group.questions){
+   const b=document.createElement('button');b.type='button';b.className='ask-panda-question';
+   b.setAttribute('aria-label',question.hanzi+' — '+question.ru+'. Вставить вопрос');
+   const zh=document.createElement('strong');zh.className='zh';zh.textContent=question.hanzi;
+   const py=document.createElement('span');py.className='py';py.textContent=question.pinyin;
+   const ru=document.createElement('span');ru.className='ru';ru.textContent=question.ru;
+   b.append(zh,py,ru);
+   b.addEventListener('click',()=>{
+    $('ask-panda-dialog').close();
+    if(state.mode!=='nonstop')setMode('nonstop');
+    cancelFollowup();$('message').value=question.hanzi;
+    $('message').focus();
+    note('Вопрос выбран. Нажми ➤, чтобы отправить, или скажи его сам через 🎙. Это не оценка тонов.');
+   });
+   options.append(b);
+  }
+  box.append(summary,options);root.append(box);
+ }
+ if(!groups.length){const p=document.createElement('p');p.textContent='Пока нет проверенных вопросов для текущего урока.';root.append(p)}
+ $('ask-panda-dialog').showModal();
+}
+$('ask-panda-open').addEventListener('click',openAskPandaGuide);
+
 $('message-form').addEventListener('submit',e=>{e.preventDefault();state.confidence=null;submit($('message').value)});
 $('mic').addEventListener('click',startRecognition);$('speech-allow').addEventListener('click',()=>{state.speechConsent=true;$('speech-dialog').close();startRecognition()});
 $('hear').addEventListener('click',play);$('speed-toggle').addEventListener('click',()=>{state.slow=!state.slow;$('speed-toggle').textContent=state.slow?'🐢 0,8×':'▶ 1×';$('speed-toggle').setAttribute('aria-pressed',String(state.slow));if(audio)audio.playbackRate=state.slow?.8:1});
@@ -319,7 +354,7 @@ $('lesson-select').addEventListener('change',()=>{const id=Number($('lesson-sele
 function resize(){const v=window.visualViewport;const h=v?.height||window.innerHeight;document.documentElement.style.setProperty('--screen-height',h+'px');document.documentElement.style.setProperty('--screen-top',(v?.offsetTop||0)+'px');document.documentElement.dataset.keyboard=String((window.innerHeight-h>120)||(h<560))}
 window.visualViewport?.addEventListener('resize',resize);window.visualViewport?.addEventListener('scroll',resize);window.addEventListener('resize',resize);document.addEventListener('focusin',resize);document.addEventListener('focusout',resize);
 window.addEventListener('pagehide',e=>{cancelFollowup();stopRecognition();stopAudio();clearTimeout(poseTimer);if(!e.persisted)rig.dispose()});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFollowup();stopRecognition();stopAudio()}});
-if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=323',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
+if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=326',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
 if(window.ResizeObserver){const observer=new window.ResizeObserver(entries=>{document.documentElement.style.setProperty('--scene-height',entries[0].contentRect.height+'px')});observer.observe(document.querySelector('.scene'))}
 initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
 // Try the existing recording; browsers may require the first tap before playback.
