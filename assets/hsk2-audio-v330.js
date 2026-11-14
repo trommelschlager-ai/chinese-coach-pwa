@@ -121,24 +121,34 @@ function play(phrase,report){
  if(!clip){report?.('Для «'+phrase+'» нет подтверждённого MP3 в присланных записях.');return false}
  stop();
  try{
-  // Call play() while the learner's click gesture is still active.
-  // Deferring play() until loadedmetadata/seeked can be rejected on Android Chrome.
+  // Android: start play() in the click handler, but keep the source muted
+  // until the seek reaches the correct sentence. Never expose the previous sentence.
   const a=new Audio(clip.url);active=a;
-  a.preload='auto';a.playbackRate=0.9;
-  const fail=()=>{
-   if(active===a){stop();report?.('Аудиозапись не воспроизвелась. Проверь загрузку MP3.')}
+  a.preload='auto';a.playbackRate=.9;
+  let ready=clip.start<=0.05;
+  a.muted=!ready;
+  const fail=()=>{if(active===a){stop();report?.('MP3 не воспроизвёлся. Проверь интернет и попробуй ещё раз.')}};
+  const checkSeek=()=>{
+   if(active!==a||ready||!Number.isFinite(a.currentTime))return;
+   if(Math.abs(a.currentTime-clip.start)<=.17){
+    ready=true;a.muted=false;
+   }
   };
   const seekToStart=()=>{
-   if(active!==a||clip.start<=0.05)return;
-   if(Math.abs(a.currentTime-clip.start)<0.20)return;
-   try{a.currentTime=clip.start}catch{ /* metadata not yet loaded; retry below */ }
+   if(active!==a||ready||a.readyState<1)return;
+   try{a.currentTime=clip.start;checkSeek()}catch{}
   };
   a.onerror=fail;
-  a.onended=()=>{if(active===a){stop();report?.('Запись воспроизведена.')}};
-  a.ontimeupdate=()=>{if(active===a&&a.currentTime>=clip.end){stop();report?.('Запись воспроизведена.')}};
   a.onloadedmetadata=seekToStart;
+  a.onseeked=checkSeek;
+  a.onended=()=>{if(active===a){stop();report?.('Запись воспроизведена.')}};
+  a.ontimeupdate=()=>{
+   if(active!==a)return;
+   if(!ready){if(a.readyState>=1)seekToStart();checkSeek();return}
+   if(a.currentTime>=clip.end){stop();report?.('Запись воспроизведена.')}
+  };
   seekToStart();
-  const task=a.play();
+  const task=a.play(); // Directly within user gesture.
   if(task?.catch)task.catch(fail);
   return true;
  }catch{stop();report?.('Ошибка запуска MP3.');return false}
