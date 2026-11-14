@@ -1869,7 +1869,7 @@ async function updateOfflineBar(){const info=document.getElementById('offlineinf
 window.addEventListener('online',updateOfflineBar);window.addEventListener('offline',updateOfflineBar);
 if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')){
  const hadServiceWorkerController=!!navigator.serviceWorker.controller;
- navigator.serviceWorker.register('./sw.js?v=334',{scope:'./',updateViaCache:'none'}).then(()=>navigator.serviceWorker.ready).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
+ navigator.serviceWorker.register('./sw.js?v=335',{scope:'./',updateViaCache:'none'}).then(()=>navigator.serviceWorker.ready).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
  navigator.serviceWorker.addEventListener('controllerchange',()=>{
   // Replace an already-open cached shell once the new offline version takes control.
   if(hadServiceWorkerController){
