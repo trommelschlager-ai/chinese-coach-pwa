@@ -50,10 +50,15 @@ if(state.lessonLayoutVersion!==328){
 }
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const wordCard=([zh,py,ru])=>{
- const exact=!!window.PandaHsk2AudioV330?.lookup(zh);
+ const api=window.PandaHsk2AudioV330,exact=!!api?.lookup(zh);
  const body='<span lang="zh-Hans" class="hanzi">'+esc(zh)+'</span><span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span>';
  if(exact)return '<button type="button" class="vocab pg-sound-card" data-audio-ready="true" data-sound="'+esc(zh)+'" title="Слушать только '+esc(zh)+'" aria-label="Слушать слово '+esc(zh)+'">'+body+'</button>';
- return '<article class="vocab pg-sound-card pg-no-audio" data-audio-ready="false" aria-label="Нет отдельной записи слова '+esc(zh)+'">'+body+'<span class="pg-hsk2-audio-absent">🔇 Нет MP3 слова</span></article>';
+ const sample=api?.sentenceFor(zh);
+ const demo=sample?'<span class="hsk2-word-phrase"><small>🎧 Пример с этим словом</small>'+
+  '<strong lang="zh-Hans">'+esc(sample.zh)+'</strong><span class="py">'+esc(sample.pinyin)+'</span>'+
+  '<span class="ru">'+esc(sample.ru)+'</span>'+
+  api.button(sample.zh)+'</span>':'<span class="pg-hsk2-audio-absent">🔇 Нет отдельного MP3</span>';
+ return '<article class="vocab pg-sound-card pg-no-audio" data-audio-ready="false" aria-label="Изучение слова '+esc(zh)+'">'+body+demo+'</article>';
 };
 const example=([zh,py,ru])=>`<div class="example"><b lang="zh-Hans">${esc(zh)}</b><span class="py">${esc(py)}</span><span class="ru">${esc(ru)}</span>${window.PandaHsk2AudioV330?.button(zh)||''}</div>`;
 const renderMap=()=>{const rv=state.completedReview?'✓ Пройдено':'Начать';let introDone=false;try{introDone=!!JSON.parse(localStorage.getItem('pg-hsk2-introduction-v1')||'null')?.completed}catch{}$('screen').innerHTML=`<div class="banner">Как будем действовать</div><p class="intro">Закрепляем HSK 1 → проходим 30 базовых слов → готовимся к HSK 2.</p><a class="review-row" href="#review"><span class="emoji">📖</span><span><strong>Сначала — повторение HSK 1</strong><small>20 слов по темам HSK 1, 3 примера, 2 проверки</small></span><span class="arrow">${rv} ›</span></a><a class="review-row" href="./hsk1-hsk2-bridge.html"><span class="emoji">🐼</span><span><strong>Бесплатный мостик HSK 1 → HSK 2</strong><small>30 базовых слов · 6 тем · самостоятельные проверки</small></span><span class="arrow">Открыть ›</span></a><a class="review-row" href="./hsk2-introduction.html"><span class="emoji">👋</span><span><strong>Знакомство: имя, город и работа</strong><small>Слова → три фразы о себе → вопросы → практика</small></span><span class="arrow">${introDone?'✓ Пройдено':'Начать'} ›</span></a><div class="road">${sections.map((s,i)=>i===0?`<a href="#lesson" class="road-item"><span class="num">${i+1}</span><span><strong>${esc(s[0])}</strong><small>${esc(s[1])}</small></span><span class="status">${state.completedLesson?'✓':'НАЧАТЬ'} ›</span></a>`:`<div class="road-item disabled" aria-label="${esc(s[0])} — готовится"><span class="num">${i+1}</span><span><strong>${esc(s[0])}</strong><small>${esc(s[1])}</small></span><span class="status">СКОРО</span></div>`).join('')}</div><p class="footnote">📖 Слова → ✏️ правило → 💬 примеры → 🎯 практика → 🐼 диалог. Это шаги, не дни.</p>`};
