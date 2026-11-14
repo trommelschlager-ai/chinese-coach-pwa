@@ -1,4 +1,4 @@
-/* HSK2 user recordings v331.
+/* HSK2 user recordings v334: exact audio matching only.
    Original Luvvoice file recorded 2026-11-13, B01-B10 in confirmed order.
    Time ranges end in silence; a clip never uses synthetic speech or older speaker clips.
 */
@@ -66,13 +66,9 @@ for(const entry of (window.PandaUserVoiceIndexV332?.clips||[])){
   source:'user-lv-20261114-'+entry.file
  });
 }
-// Curated ENTIRE audible example sentences, never a fabricated solo-word clip.
-// A sample is explicitly labelled «Пример» to avoid misleading learners.
-const sampleMap=Object.freeze({"很":"我很忙","我":"我学习中文","你":"你忙吗","他":"他五岁","她":"她一岁","是":"我是熊猫老师","不":"我不忙","吗":"你忙吗","老师":"我是熊猫老师","三":"我有三个朋友","十":"十后面是什么","今天":"你今天怎么样","妈妈":"你妈妈好吗","爸爸":"你爸爸怎么样","年":"我今年三岁了","你学习中文":"你学习中文吗","他学习中文":"我学习中文","你很忙":"你忙吗","他很忙":"我很忙","我不是老师":"不是，我是老师","你是老师吗":"你是学生吗","叫":"我叫熊猫","名字":"你叫什么名字","什么":"你想学什么","住":"我住在中国","在":"我住在中国","住在":"我住在中国","哪儿":"你住在哪儿","做":"你早上做什么","我叫安娜":"我叫熊猫","我是医生":"我是熊猫老师","我住在莫斯科":"我住在中国","的":"我是你的中文学习伙伴","好":"你好","我很好":"我很好，谢谢","朋友":"你有几个朋友","喜欢":"因为我喜欢中文","中国":"我住在中国","我喜欢中文":"因为我喜欢中文","说":"你会说中文吗","读":"你会读中文吗","写":"你会写汉字吗","听":"我晚上听音乐","吃":"你吃饭了吗","喝":"你每天喝水吗","水":"你每天喝水吗","饭":"我中午吃饭","来":"你从哪里来","看":"我下午看书","想":"我想学中文","买":"你想买几个苹果","回":"我回家以后休息"});
-function exampleFor(word){
- const sample=sampleMap[normalize(word)];
- return sample&&segments.has(normalize(sample))?sample:null;
-}
+// v334: A single-word card NEVER links to a sentence. Only exact utterance
+// matches can be played. Sentence audio is available on sentence cards.
+function exampleFor(){return null}
 let active=null;
 function stop(){
  const a=active;if(!a)return;
@@ -110,20 +106,14 @@ function play(phrase,report){
  }catch{stop();report?.('Ошибка запуска MP3.');return false}
 }
 function playBest(phrase,report){
- if(lookup(phrase))return play(phrase,report);
- const sample=exampleFor(phrase);
- if(!sample)return play(phrase,report);
- report?.('Слушаем пример «'+sample+'», не отдельное слово «'+phrase+'».');
- return play(sample,report);
+ // Compatibility alias: never use a sentence as a fallback for a word.
+ return play(phrase,report);
 }
 const escapeHtml=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 function button(phrase,showMissing=false){
  const exact=!!lookup(phrase);
- if(exact)return '<button class="hsk2-clip" data-hsk2-sound="'+escapeHtml(phrase)+'" type="button">🔊 Слушать</button>';
- const sample=exampleFor(phrase);
- if(sample)return '<button class="hsk2-clip" data-hsk2-sound="'+escapeHtml(sample)+'" data-hsk2-example-for="'+escapeHtml(phrase)+'" title="Пример: '+escapeHtml(sample)+'" type="button">🔊 Пример</button>';
- if(showMissing)return '<span class="hsk2-missing-audio" title="Нет точной записи в присланных MP3">🎧 Нет отдельного MP3</span>';
- return '';
+ if(exact)return '<button class="hsk2-clip" data-hsk2-sound="'+escapeHtml(phrase)+'" type="button" aria-label="Слушать: '+escapeHtml(phrase)+'">🔊 Слушать</button>';
+ return showMissing?'<span class="hsk2-missing-audio" aria-label="Нет отдельной аудиозаписи для '+escapeHtml(phrase)+'">🔇 Нет отдельного MP3</span>':'';
 }
 function bind(root=document){
  root.querySelectorAll('[data-hsk2-sound]').forEach(el=>{
@@ -133,7 +123,7 @@ function bind(root=document){
     const status=root.querySelector('#audio-status')||root.querySelector('.pg-sound-hint')||root.querySelector('.hsk2-clip-status');
     if(status)status.textContent=m;
    };
-   if(el.dataset.hsk2ExampleFor)report('Это пример: '+el.dataset.hsk2Sound+'. Отдельного MP3 для '+el.dataset.hsk2ExampleFor+' нет.');
+
    play(el.dataset.hsk2Sound,report);
   });
  });
