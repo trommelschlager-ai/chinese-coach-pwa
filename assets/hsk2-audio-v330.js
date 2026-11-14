@@ -79,8 +79,8 @@ for(const pack of approvedV338){
   segments.set(normalize(wordList[i]),{url:'./assets/hsk2-user-voice/'+pack.file,start,end,source:'user-lv-v338-'+pack.group});
  }
 }
-// v342: complete user-supplied Luvvoice audio for the HSK2 question about work.
-segments.set(normalize('你做什么工作'),{url:'./assets/hsk2-user-voice/20261114-job-question-v342.mp3',start:0.20,end:1.72,source:'user-lv-20261114-job-question'});
+// v343: verified original user MP3; segment begins 0.20s and ends 1.72s.
+segments.set(normalize('你做什么工作'),{url:'./assets/hsk2-user-voice/20261114-job-question-v343.mp3',start:0.20,end:1.72,source:'user-lv-20261114-job-question'});
 // v335: opt-in COMPLETE sentence examples under otherwise silent single-word cards.
 // A recording may be played only next to that same visible full Chinese sentence.
 // Never use these mappings as a fallback for play(word) or button(word).
