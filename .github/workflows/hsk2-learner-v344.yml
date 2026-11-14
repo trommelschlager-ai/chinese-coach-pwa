@@ -1,0 +1,32 @@
+name: HSK2 learner regression
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'hsk2-*.html'
+      - 'hsk1-hsk2-bridge.html'
+      - 'assets/hsk2-*.js'
+      - 'assets/panda-brain-v341.js'
+      - 'scripts/verify-hsk2-learner-v344.cjs'
+      - '.github/workflows/hsk2-learner-v344.yml'
+      - 'sw.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  learner:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify HSK2 learner path
+        run: node scripts/verify-hsk2-learner-v344.cjs
+      - name: Verify Panda Brain responses
+        run: node tests/panda-brain-v341.test.cjs
