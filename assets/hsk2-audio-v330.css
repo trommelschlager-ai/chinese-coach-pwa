@@ -24,3 +24,34 @@
 .app .pg-hsk2-audio-absent{display:block;font-size:11px;color:#9c729d;line-height:1.25;margin-top:4px}
 .app .hsk2-missing-audio{display:inline-block;font-size:11px;font-weight:600;color:#947398}
 .app .vocab.pg-sound-card:not(.pg-no-audio):focus-visible{outline:3px solid #7131a5;outline-offset:2px}
+
+
+/* v335: recorded sentence, fully written beside its sound; never a word substitute. */
+.word-sentence-sample{
+ flex:0 0 auto;
+ background:linear-gradient(140deg,#fffcff,#f4e5fb);
+ border:1.5px solid #dfb8e5;
+ border-radius:14px;
+ padding:8px 12px;
+ margin:6px 0 3px;
+ text-align:center;
+ display:flex;flex-direction:column;align-items:center;gap:2px;
+ min-width:0;
+}
+.word-sample-label{font-size:11px;font-weight:850;color:#875195;line-height:1.25}
+.word-sample-hanzi{font-size:clamp(18px,5vw,24px);font-weight:900;color:#60267e;line-height:1.18}
+.word-sample-pinyin{font-size:clamp(11px,3vw,13px);font-weight:700;color:#89549a;line-height:1.2}
+.word-sample-translation{font-size:clamp(11px,2.9vw,13px);font-weight:650;color:#573c69;line-height:1.2}
+.word-sentence-sample .hsk2-clip{min-height:34px;font-size:12px;margin-top:4px;padding:7px 16px;border-color:#d3a0da;border-radius:11px}
+.main:has(.word-sentence-sample)>.card{flex:0 1 155px;max-height:155px;min-height:95px}
+@media(max-height:740px){
+ .word-sentence-sample{padding:5px 9px;margin:3px 0;gap:1px}
+ .word-sample-hanzi{font-size:17px}
+ .word-sentence-sample .hsk2-clip{min-height:30px;padding:5px 11px;margin-top:2px}
+ .main:has(.word-sentence-sample)>.card{min-height:75px;max-height:125px}
+}
+@media(max-height:640px){
+ .main:has(.word-sentence-sample){overflow-y:auto;overscroll-behavior:contain}
+ .word-sample-label{font-size:10px}
+ .word-sample-pinyin,.word-sample-translation{font-size:10px}
+}
