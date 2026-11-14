@@ -55,3 +55,36 @@
 @media(prefers-reduced-motion:reduce){#pg-approved-v337 .v341-sakura{animation:none}}
 body.v337-ready>dialog[open]{display:block;position:fixed;z-index:999;border-radius:18px;max-width:min(95vw,560px);max-height:85dvh;overflow:auto}
 #pg-approved-v337 .v341-title{position:absolute;z-index:4;top:11.8%;left:4%;font-size:clamp(14px,4cqw,23px);font-weight:850;white-space:nowrap;color:#35126d;text-shadow:0 1px #def5ff;pointer-events:none}
+
+/* v342 — flexible dialogue rows; photo-size is always proportional, never stretched */
+#pg-approved-v337{--hero-top:32%;--scale:1.35}
+#pg-approved-v337 .v337-chat{height:auto!important;min-height:0!important;max-height:25.5%!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;overflow-x:hidden!important;overflow-y:auto!important;scrollbar-width:thin;gap:5px!important}
+#pg-approved-v337 .v337-row{flex:0 0 auto!important;height:auto!important;min-height:clamp(45px,5.9dvh,65px);max-height:none!important;grid-template-columns:9% minmax(0,45%) minmax(0,1fr) 9%;gap:1%;padding:6px 1.6%;border-radius:24px!important;overflow:visible!important}
+#pg-approved-v337 .v337-zh{max-height:none!important;overflow:visible!important;overflow-wrap:anywhere;line-height:1.1}
+#pg-approved-v337 .v337-py{max-height:none!important;overflow:visible!important;white-space:normal!important;overflow-wrap:anywhere;line-height:1.12}
+#pg-approved-v337 .v337-ru{max-height:none!important;overflow:visible!important;overflow-wrap:anywhere;line-height:1.15}
+#pg-approved-v337 .v341-hero{top:var(--hero-top)!important;bottom:16%!important;height:auto!important}
+#pg-approved-v337 .v341-photo{height:calc(var(--cw)*.65*var(--scale))!important}
+#pg-approved-v337 .v341-photo-image{width:calc(100% * var(--scale))!important;left:-12%!important;top:calc(var(--cw)*-.5845*var(--scale))!important;height:auto!important;object-fit:contain!important}
+#pg-approved-v337 .v341-sakura{background-size:calc(100% * var(--scale)) auto!important;background-position:-12vw calc(var(--cw)*-.5845*var(--scale))!important;clip-path:polygon(0 0,25% 0,25% 25%,15% 55%,0% 97%)}
+#pg-approved-v337 .v341-water{top:calc(var(--cw)*.65*var(--scale) - 3px)!important;background:radial-gradient(ellipse 19% 6% at 25% 45%,#d0faff70,transparent 95%),repeating-linear-gradient(178deg,#b4edfa55 0 1px,#70c9e630 3px,#2eade720 9px,transparent 19px),linear-gradient(180deg,#43b7e9,#7ad2f3)!important}
+#pg-approved-v337 .v341-hero::after{content:"";position:absolute;left:0;right:0;top:0;height:12px;background:linear-gradient(#41b8f1,transparent);pointer-events:none;z-index:3}
+#pg-approved-v337 .v337-speech{top:calc(var(--hero-top) + 2.6%)!important;max-height:29%;overflow:hidden!important}
+#pg-approved-v337 .v337-main-zh{overflow-y:auto;scrollbar-width:thin}
+#pg-approved-v337 .v337-chat-title{display:none!important}
+#pg-approved-v337 .v341-title{white-space:nowrap;z-index:6!important}
+#pg-approved-v337 .v337-topics{top:67.6%}
+#pg-approved-v337 .v337-input-form,#pg-approved-v337 .v337-send{top:82.5%}
+#pg-approved-v337 .v337-mic{top:81.6%}
+#pg-approved-v337 .v337-py-toggle{left:46.5%;width:21%}
+#pg-approved-v337 .v337-ru-toggle{left:69%;width:11%}
+#pg-approved-v337 .v337-history{left:81%;width:17%}
+#pg-approved-v337 .v341-ico{width:1.24em;height:1.24em;flex:none;display:inline-block;vertical-align:middle;stroke:currentColor;fill:none;stroke-linejoin:round;stroke-linecap:round;stroke-width:2.2}
+#pg-approved-v337 .v337-mode-short,#pg-approved-v337 .v337-mode-nonstop{gap:5px!important}
+#pg-approved-v337 .v337-bottom-link .v341-icon{display:flex;align-items:center;justify-content:center}
+#pg-approved-v337 .v337-bottom-link .v341-icon .v341-ico{width:1.3em;height:1.3em}
+#pg-approved-v337 .v337-topics .v341-ico{width:1.7em;height:1.7em;margin-bottom:2px}
+#pg-approved-v337 .v337-live-badge{display:none!important}
+#pg-approved-v337[data-listening=true] .v337-live-badge,#pg-approved-v337[data-speaking=true] .v337-live-badge{display:grid!important}
+@media(max-width:380px){#pg-approved-v337 .v337-row{padding:5px 1%;grid-template-columns:9% minmax(0,43%) minmax(0,1fr) 9%}#pg-approved-v337 .v337-speech{left:56%;width:42%;padding:2% 1.5%}}
+@media(max-height:650px){#pg-approved-v337 .v341-hero{bottom:13%!important}#pg-approved-v337 .v337-speech{height:27%}#pg-approved-v337 .v337-topics{height:10%}#pg-approved-v337 .v337-mode-short,#pg-approved-v337 .v337-mode-nonstop{height:6.5%}}
