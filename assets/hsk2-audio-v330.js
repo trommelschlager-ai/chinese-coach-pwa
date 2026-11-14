@@ -55,6 +55,17 @@ for(const [zh,start,end] of pandaIntroRows){
  const key=normalize(zh);
  if(!segments.has(key))segments.set(key,{url:pandaIntro,start,end,source:'user-lv-20261114-APqUx9'});
 }
+// v332: 155 transcribed phrases from the user's other 10 original MP3 files.
+// Preserve priority of previously checked B01 / W6 / APq clips on duplicate phrases.
+for(const entry of (window.PandaUserVoiceIndexV332?.clips||[])){
+ const phrase=normalize(entry.zh);
+ if(!phrase||segments.has(phrase))continue;
+ if(!(Number.isFinite(entry.start)&&Number.isFinite(entry.end)&&entry.end>entry.start))continue;
+ segments.set(phrase,{
+  url:'./assets/hsk2-user-voice/'+entry.file,start:entry.start,end:entry.end,
+  source:'user-lv-20261114-'+entry.file
+ });
+}
 let active=null;
 function stop(){
  const a=active;if(!a)return;
