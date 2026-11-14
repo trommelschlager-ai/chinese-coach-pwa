@@ -1,630 +1,286 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f5d8ee"><title>Panda Go · HSK 2 · Расскажи о себе</title><style>
-:root{--ink:#4d2366;--muted:#81618b;--lilac:#d9a7ed;--rose:#efbdde;--line:#ebba83;--cream:#fff8fc;--deep:#6d2a91;--success:#216b47;--error:#ae3153;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:var(--ink)}*{box-sizing:border-box}body{margin:0;min-height:100svh;background:#f1dcf2;display:flex;justify-content:center}button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #6234b9;outline-offset:2px}h1,h2,h3,p{margin:0}a{color:inherit}.app{position:relative;width:min(100%,480px);height:100svh;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(#f3c9ee 0%,#f8e8f9 39%,#e2c7ef 100%)}.app:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;background:none center/cover;z-index:0}.app > *{position:relative;z-index:1}.scene{height:150px;flex:none;overflow:hidden;background:linear-gradient(#edb8df82,#e2bcfa65),url('./assets/chinese-waterfall-banner.svg') center 55%/cover;border-bottom:1px solid #d7acc8}.scene:after{content:"🌸";position:absolute;right:8px;top:3px;font-size:24px;opacity:.85}.petals{position:absolute;left:-6px;top:3px;font-size:19px;opacity:.9}.scene .panda{position:absolute;width:137px;height:122px;object-fit:cover;object-position:50% 33%;bottom:-6px;left:0;filter:drop-shadow(0 4px 8px #863f8355)}.brand{position:absolute;top:calc(6px + env(safe-area-inset-top));left:128px;right:32px;font-family:Georgia,serif;font-style:italic;font-size:clamp(25px,7vw,35px);font-weight:900;color:#5b246e;text-shadow:1px 2px #fff6e6;text-align:center;white-space:nowrap}.brand small{display:block;font:700 12px system-ui,sans-serif;letter-spacing:.6px;border:1px solid #efba7b;background:#fff5fcaa;border-radius:24px;padding:5px 8px;margin-top:2px;box-shadow:0 2px 9px #af7d9933}.backlink{position:absolute;left:14px;top:calc(16px + env(safe-area-inset-top));width:32px;height:32px;border-radius:50%;display:grid;place-items:center;text-decoration:none;font-size:26px;border:1px solid #e9bd88;background:#fff4fcbc;color:#633184;z-index:3}.scene-caption{position:absolute;right:12px;bottom:12px;font-size:12px;font-weight:850;background:#fff4f8e9;border:1px solid #f0caa5;padding:6px 11px;border-radius:16px;color:#743e92}.content{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:8px 12px 12px;scrollbar-width:thin;scrollbar-color:#d8a8df transparent}.content::-webkit-scrollbar{width:3px}.content::-webkit-scrollbar-thumb{background:#cca0d9;border-radius:2px}.banner{background:linear-gradient(110deg,#683486,#a65bbb 70%,#622a86);color:white;border:2px solid #f1c785;box-shadow:0 2px 0 #c98cd3,0 4px 8px #aa6aba40,inset 0 1px #edc9f9;border-radius:15px;text-align:center;padding:8px 10px;margin-bottom:9px;font-family:Georgia,serif;font-size:21px;line-height:1.16;font-weight:850}.paper{background:linear-gradient(130deg,#fff8fded,#fbe9f6ee);border:1.5px solid #e6b775;border-radius:17px;padding:11px;box-shadow:0 3px 10px #a377a828,0 0 0 2px #fff8e64b inset;margin-bottom:10px}.paper h2{font-family:Georgia,serif;font-size:18px;margin-bottom:7px;text-align:center}.paper h3{font-family:Georgia,serif;font-size:16px;margin-bottom:6px}.intro{font-size:12px;color:var(--muted);text-align:center;line-height:1.45;margin:0 2px 9px}.mini-path{display:flex;gap:5px;align-items:center;justify-content:space-between;overflow:hidden}.path-part{flex:1;text-align:center;border:1px solid #dfb5d8;border-radius:11px;background:#fff7fdc7;padding:7px 3px;min-width:0;font-size:11px;font-weight:800;line-height:1.22}.path-part b{display:block;font-size:17px;margin-bottom:3px}.path-part:last-child{margin-right:0}.review-row{display:flex;gap:10px;align-items:center;padding:9px 11px;border:1px solid #e6b679;background:#fff9fd;border-radius:16px;margin-bottom:10px;text-decoration:none;box-shadow:0 3px 9px #ab7d9d2c}.review-row .emoji{font-size:29px;flex:none}.review-row strong{display:block;font-size:15px}.review-row small{display:block;font-size:11px;color:var(--muted);margin-top:3px}.review-row .arrow{margin-left:auto;font-size:20px;color:#9353a7}.road{display:grid;gap:6px}.road-item{display:flex;align-items:center;gap:10px;border:1px solid #e8b879;background:#fff7fcf5;border-radius:14px;padding:7px 9px;min-height:49px;box-shadow:0 2px 8px #a070a82c;text-decoration:none;color:var(--ink)}.road-item:nth-child(even){margin-left:12px}.num{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;border:1.5px solid #efc17a;background:linear-gradient(#bd78cb,#70338e);color:white;font-weight:900}.road-item strong{font-size:14px;display:block;line-height:1.2}.road-item small{display:block;font-size:10.5px;color:#966ba2;margin-top:3px}.road-item .status{font-size:10px;margin-left:auto;white-space:nowrap;color:#82538c}.road-item.disabled{opacity:.69}.hint{border:1px solid #e5b87f;background:#fff6f5dd;border-radius:14px;padding:9px;font-size:12px;line-height:1.45;margin-top:10px;text-align:center}.nav{flex:none;display:grid;grid-template-columns:repeat(4,1fr);min-height:62px;padding:4px 8px calc(5px + env(safe-area-inset-bottom));background:#fff2fcda;border-top:1px solid #f6dcf5;backdrop-filter:blur(7px)}.nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;text-decoration:none;color:#59336f;font-size:10px;border-radius:11px}.nav a b{font-size:22px;font-weight:500}.nav a.active{background:#f7dafa;border:1px solid #fff8ff}.lesson-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.lesson-title strong{font-size:15px}.pill{background:#f0d6f8;padding:5px 9px;border-radius:18px;font-size:11px;font-weight:800;color:#753b8b;white-space:nowrap}.meter{height:6px;background:#ead3ef;border-radius:8px;overflow:hidden;margin-bottom:10px}.meter i{display:block;height:100%;background:linear-gradient(90deg,#b963d4,#80359f);border-radius:8px;transition:width .2s}.vocgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.vocab{border:1px solid #e4bf9b;background:#fff9fdf2;border-radius:14px;min-width:0;padding:11px 6px;text-align:center;display:grid;gap:5px;align-content:center;box-shadow:inset 0 1px #fff}.vocab .hanzi{font-size:clamp(27px,7vw,38px);font-weight:850;line-height:1.15;font-family:system-ui,Arial,sans-serif}.vocab .py{font-size:14px;font-weight:700;color:#985dac}.vocab .ru{font-size:12px;line-height:1.25}.notice{margin-top:8px;font-size:11px;line-height:1.4;color:#745a84;text-align:center}.examples{display:grid;gap:6px}.example{border:1px solid #efd2da;background:white;border-radius:12px;padding:9px;text-align:center}.example b{font-size:22px;font-family:system-ui,sans-serif;display:block}.example .py{display:block;font-size:13px;font-weight:650;color:#9251a5;margin:4px 0}.example .ru{font-size:13px}.rule{background:#efd9f7;border:1px solid #e7b982;border-radius:13px;padding:10px;text-align:center;font-size:14px;font-weight:800;margin-bottom:8px}.explain{font-size:13px;line-height:1.55}.explain em{font-style:normal;font-weight:800;color:#7a2995}.choices{display:grid;gap:8px}.choice{background:#fff9fd;border:1px solid #e9c7e3;border-radius:13px;padding:11px 12px;text-align:left;font-weight:700;color:#60377a}.choice.chosen{border-color:#af6ac4;background:#f7e3fa}.choice.correct{border-color:#66b58a;background:#e8f7ee}.choice.wrong{border-color:#d77d97;background:#ffebf1}.feedback{font-size:12px;line-height:1.4;margin-top:9px;min-height:19px}.feedback.ok{color:#216b47}.feedback.err{color:#b12b53}.builder{display:flex;flex-wrap:wrap;gap:8px;min-height:63px;border-radius:14px;border:1.5px dashed #c6a3d8;background:#f8e6fb;padding:11px}.builder button,.tokens button{border:1px solid #d9aada;background:white;color:#71348b;border-radius:9px;padding:9px 10px;font-size:20px;min-width:48px}.tokens{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.tokens button:disabled{visibility:hidden}.bubble{background:#f4e5fa;border-radius:16px 16px 16px 4px;padding:9px 11px;max-width:91%;margin-bottom:9px}.bubble.right{background:#ffe9f3;border-radius:16px 16px 4px 16px;margin-left:auto}.bubble b{display:block;font-size:18px}.bubble em{display:block;font-style:normal;color:#835294;font-size:12px;margin:4px 0}.bubble span{font-size:12px}.toolbar{display:flex;gap:8px;justify-content:space-between;margin-top:10px}.softbtn{border:1px solid #d8b0d5;color:#6e3b87;border-radius:12px;background:#fff5fb;padding:10px 12px;font-weight:750}.primary{border:1.5px solid #e9b578;border-radius:16px;padding:11px 17px;background:linear-gradient(120deg,#b966c5,#703394);color:white;font-size:15px;font-weight:850;box-shadow:0 4px 10px #b074b54a;flex:1}.primary:disabled{opacity:.4}.footnote{color:#825b8d;font-size:11px;text-align:center;margin:9px 0}.spaced{margin-top:12px}.bottom-actions{position:sticky;bottom:-12px;padding:9px 0 7px;background:linear-gradient(transparent,#fae9fa 22%,#fae9fa);z-index:2}.small-caption{color:#82608b;font-size:11px;text-align:center}.plainlink{font-size:12px;font-weight:750;color:#774098}.hiddenpy .py,.hiddenpy .bubble em{visibility:hidden}.badge-success{background:#e6f6eb;color:#276a46;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:750}.badge-muted{font-size:11px;color:#76568a;background:#f7e9fb;padding:4px 8px;border-radius:20px}@media(min-width:560px){.app{height:min(920px,98svh);margin:auto;border:2px solid #d5afe0;border-radius:28px;box-shadow:0 22px 70px #65367e55}}@media(max-height:710px){.scene{height:105px}.scene .panda{width:88px;height:88px;bottom:-13px}.brand{left:105px;font-size:25px}.brand small{font-size:10px}.content{padding-top:6px}.banner{font-size:18px;padding:7px}.road-item{min-height:44px;padding:5px 8px}.num{width:29px;height:29px}.nav{min-height:53px}.paper{padding:8px}.review-row{padding:6px 8px}.scene-caption{font-size:10px}}@media(max-width:350px){.road-item strong{font-size:12px}.vocab .hanzi{font-size:25px}.brand{font-size:22px}.paper h2{font-size:16px}}
-.intro-form{display:grid;gap:8px;margin:7px 0}.intro-form label{display:grid;gap:4px;font-size:12px;font-weight:800}.intro-form input,.intro-form select{font:inherit;font-size:14px;border:1px solid #deb1d3;border-radius:11px;padding:9px 10px;background:#fffafd;color:#4d2366;max-width:100%;width:100%}.intro-output{display:grid;gap:6px;margin:10px 0}.intro-output .example{padding:7px}.intro-output .example b{font-size:clamp(17px,5vw,21px);overflow-wrap:anywhere}.intro-output .example .py{margin:3px 0}.intro-output .example .ru{font-size:12px}
-/* HSK 2: compact guided dialogue, same approved lilac/gold visual language */
-.intro-dialogue{display:grid;gap:8px}
-.intro-dialogue .question{border:1px solid #e5b87d;border-radius:14px;padding:10px 12px;background:#fff9fd}
-.intro-dialogue .question b{font-size:20px;display:block;line-height:1.2}
-.intro-dialogue .question .py{display:block;font-size:12px;margin-top:3px;color:#8b5b9d}
-.intro-dialogue .question small{font-size:12px;color:#62466e}
-.intro-dialogue label{font-size:12px;font-weight:800}
-.intro-dialogue input{width:100%;border:1px solid #d8abd0;border-radius:11px;padding:10px 11px;color:#4d2366;background:#fff;min-height:42px;font-size:16px}
-.intro-dialogue .dialogue-buttons{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
-.intro-dialogue .dialogue-buttons button{flex:1;min-width:94px;line-height:1.15;padding:9px}
-.intro-dialogue .dialogue-feedback{font-size:12px;line-height:1.45;border:1px solid #edc9d9;border-radius:12px;padding:9px;background:#fff9fd;overflow-wrap:anywhere}
-.intro-dialogue .dialogue-feedback.ok{border-color:#a6cfb5;background:#e9f6ed}
-.intro-dialogue .dialogue-feedback.err{border-color:#e4adba;background:#fff0f2}
-.intro-dialogue .question-counter{font-size:11px;font-weight:800;color:#7c558e}
-.intro-dialogue .dialogue-note{font-size:11px;line-height:1.35;color:#825f91}
-@media(max-height:700px){.intro-dialogue{gap:5px}.intro-dialogue .question{padding:7px 10px}.intro-dialogue .question b{font-size:18px}}
-
-/* Approved HSK 2 Moscow reference: educational composition, not a flat screenshot */
-.app.structure-page .scene{height:165px;border-bottom:2px solid #e2b76f}
-.app.structure-page .scene .panda{width:165px;height:145px;object-position:50% 29%;left:2px}
-.app.structure-page .brand{left:145px;top:8px}
-.app.structure-page .scene-caption{right:12px;bottom:9px}
-.hsk2-structure{display:grid;gap:8px}
-.hsk2-phrase-card{display:grid;grid-template-columns:minmax(86px,30%) minmax(0,1fr);align-items:center;gap:10px;padding:10px;border:2px solid #e9b873;border-radius:19px;background:linear-gradient(135deg,#fff4fe,#fffafd 62%,#fbe8f8);box-shadow:0 5px 13px #9655a42b,0 0 0 2px #fff inset}
-.hsk2-city-art{align-self:stretch;min-height:130px;display:grid;place-items:center;border:2px solid #ecc16e;border-radius:14px;background:linear-gradient(#afceee,#ffe3f3 60%,#d4b5f0);overflow:hidden}
-.hsk2-city-art svg{width:100%;height:100%;max-height:152px;object-fit:contain}
-.hsk2-phrase-main{min-width:0;text-align:center}
-.hsk2-phrase-main .hanzi{font-family:'Noto Serif SC','Songti SC','SimSun',serif;font-size:clamp(22px,6.7vw,35px);font-weight:850;line-height:1.25;color:#4b1f62;white-space:nowrap}
-.hsk2-phrase-main .hanzi[lang]{letter-spacing:-.035em}
-.hsk2-phrase-main .pronounce{display:block;border-radius:20px;padding:4px 5px;margin:7px 0 5px;background:linear-gradient(90deg,#f5c8f8,#ead4fb);color:#613576;font-weight:750;font-size:clamp(12px,3.5vw,17px)}
-.hsk2-phrase-main .translation{font-size:clamp(14px,3.7vw,17px);font-weight:750;color:#492762}
-.hsk2-sound-badge{display:inline-flex;align-items:center;justify-content:center;gap:4px;margin:0 auto 4px;border:1.5px solid #f1c17e;border-radius:20px;padding:4px 10px;background:linear-gradient(110deg,#a758be,#7b348f);color:#fff;font-size:11px;box-shadow:0 2px 5px #943ea54d}
-.hsk2-sound-badge[disabled]{opacity:1;cursor:default}
-.hsk2-ribbon{width:max-content;max-width:100%;margin:auto;padding:5px 20px;border:1.5px solid #ffcf86;border-radius:20px;background:linear-gradient(100deg,#80399a,#ac63c5,#793695);color:#fff;font-family:Georgia,serif;font-weight:800;text-align:center;font-size:14px;box-shadow:0 3px 10px #9d51ad57}
-.hsk2-word-parts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.hsk2-word-part{border:1.5px solid #e8bb78;border-radius:14px;padding:7px 3px 8px;text-align:center;background:linear-gradient(135deg,#fffafd,#fae1f5);box-shadow:0 2px 6px #a663a322;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;justify-content:center}
-.hsk2-word-part .symbol{font-family:'Noto Serif SC','Songti SC','SimSun',serif;font-size:clamp(21px,6vw,27px);font-weight:850;color:#4c1c61;line-height:1.15;white-space:nowrap}
-.hsk2-word-part .phonetic{font-size:12px;color:#7e4b90;background:#f2d6fa;border-radius:11px;padding:1px 7px;white-space:nowrap}
-.hsk2-word-part .meaning{font-size:11px;font-weight:800;color:#56366e;line-height:1.2}
-.hsk2-word-part .mark{font-size:16px;line-height:1}
-.hsk2-order{display:grid;grid-template-columns:1fr 1.4fr 1.3fr;gap:6px}
-.hsk2-order > div{border:1px solid #e4adcc;border-radius:13px;background:#fff5fc;padding:7px 4px;text-align:center;min-width:0}
-.hsk2-order > div:nth-child(1){background:#e4f1ff}
-.hsk2-order > div:nth-child(2){background:#ffe7f6}
-.hsk2-order > div:nth-child(3){background:#fff5d8}
-.hsk2-order strong{display:block;font-size:11px;color:#59336f}
-.hsk2-order b{font-size:19px;font-family:'Noto Serif SC','Songti SC','SimSun',serif;color:#572670}
-.hsk2-order-note{background:#f4dcf8;border-left:3px solid #b66cc4;border-radius:9px;padding:6px 9px;font-size:12px;line-height:1.4;color:#5d3873}
-.hsk2-structure .lesson-note{font-size:11px;line-height:1.35;color:#765089;text-align:center}
-.app.structure-page .paper{padding:9px}
-.app.structure-page .toolbar{margin-top:7px}
-.app.structure-page .bottom-actions{padding-top:4px}
-@media(min-height:850px){.app.structure-page .scene{height:185px}.app.structure-page .scene .panda{width:185px;height:167px}.app.structure-page .brand{left:157px}.hsk2-structure{gap:10px}.hsk2-city-art{min-height:150px}}
-@media(max-width:370px){.hsk2-city-art{min-height:105px}.hsk2-phrase-card{gap:6px;padding:7px}.hsk2-word-part .symbol{font-size:21px}.hsk2-word-part .phonetic{font-size:10px}.hsk2-word-part .meaning{font-size:10px}.hsk2-word-parts{gap:4px}.hsk2-ribbon{font-size:13px}}
-@media(max-height:700px){.app.structure-page .scene{height:80px}.app.structure-page .scene .panda{width:81px;height:74px}.app.structure-page .brand{left:91px;font-size:22px}.app.structure-page .nav{min-height:45px}.app.structure-page .paper{padding:7px}.app.structure-page .content{padding:5px 8px}.app.structure-page .banner{font-size:14px;padding:4px}.app.structure-page .lesson-title{margin-bottom:3px}.app.structure-page .hsk2-structure{gap:5px}.app.structure-page .hsk2-phrase-card{padding:6px}.app.structure-page .hsk2-city-art{min-height:85px}.app.structure-page .hsk2-city-art svg{max-height:90px}.app.structure-page .hsk2-word-part{padding:4px 2px}.app.structure-page .hsk2-word-part .meaning{font-size:10px}.app.structure-page .hsk2-ribbon{padding:3px 12px}.app.structure-page .hsk2-order>div{padding:4px 2px}.app.structure-page .hsk2-order-note{padding:4px 7px}.app.structure-page .toolbar{margin-top:4px}.app.structure-page .softbtn{padding:6px 8px}.app.structure-page .primary{padding:7px 12px}.app.structure-page .bottom-actions{padding:2px 0}}
-
-/* Lesson sequence: introduce 住 and 在 separately; combine only on the NEXT screen. */
-.hsk2-meaning-first{display:grid;gap:9px}
-.hsk2-meaning-first .meaning-lead{text-align:center;color:#633a7e;font-size:12px;line-height:1.4;margin:0}
-.hsk2-meaning-first .meaning-two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.hsk2-meaning-first .meaning-tile{border:1.5px solid #e5b773;background:linear-gradient(140deg,#fffaff,#f7e2f6);border-radius:16px;padding:12px 9px;text-align:center;min-width:0;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 3px 7px #9a50b229}
-.hsk2-meaning-first .meaning-character{font-size:clamp(55px,17vw,75px);color:#55226d;font-family:'Noto Serif SC','Songti SC','SimSun',serif;font-weight:800;line-height:1}
-.hsk2-meaning-first .meaning-pinyin{font-size:18px;color:#73408b;background:#f1d7fb;padding:2px 20px;border-radius:12px}
-.hsk2-meaning-first .meaning-russian{font-size:20px;font-weight:850;color:#552d6b}
-.hsk2-meaning-first .meaning-role{font-size:12px;color:#6e527b;line-height:1.35}
-.hsk2-meaning-first .meaning-connect{border:1px solid #efc286;border-radius:15px;padding:9px 11px;text-align:center;background:linear-gradient(120deg,#ffe8f9,#f6eafa);color:#613876}
-.hsk2-meaning-first .meaning-connect strong{font-size:24px;display:block;color:#5d2876;font-family:'Noto Serif SC','Songti SC','SimSun',serif}
-.hsk2-meaning-first .meaning-connect .py{font-size:13px;display:block;margin:3px 0}
-.hsk2-meaning-first .meaning-connect span{font-size:14px}
-.hsk2-meaning-first .meaning-note{font-size:12px;line-height:1.45;color:#5c3b70;padding:8px 10px;border-left:3px solid #b06ac5;border-radius:8px;background:#fff7fe}
-.hsk2-meaning-first .meaning-note b{color:#54266a}
-.hsk2-meaning-first .meaning-prompt{text-align:center;font-size:12px;font-weight:700;color:#75468a}
-@media(max-height:700px){.hsk2-meaning-first{gap:5px}.hsk2-meaning-first .meaning-tile{padding:7px 6px;gap:2px}.hsk2-meaning-first .meaning-character{font-size:48px}.hsk2-meaning-first .meaning-pinyin{font-size:15px}.hsk2-meaning-first .meaning-russian{font-size:17px}.hsk2-meaning-first .meaning-role{font-size:11px}.hsk2-meaning-first .meaning-connect{padding:5px 7px}.hsk2-meaning-first .meaning-note{padding:5px 7px}}
-
-.audio-clip-button{margin:5px auto 0;border:1.5px solid #e9bd7d;border-radius:14px;background:linear-gradient(120deg,#fbe3fa,#f7eafa);padding:6px 9px;font-size:12px;color:#64367d;font-weight:750;min-height:34px}
-.audio-clip-button:focus-visible{outline:3px solid #73409a}
-.audio-status{font-size:12px;min-height:16px;color:#6a3d7b;margin:5px 0;text-align:center;line-height:1.3}
-.audio-status.warn{color:#a43858}
-@media(max-height:700px){.audio-clip-button{padding:4px 7px;min-height:28px;font-size:11px}}
-
-/* v336: compact HSK2 practice with outlined Chinese character squares. */
-.app .paper .vocab .hanzi-squares{display:flex;justify-content:center;align-items:center;gap:5px;flex-wrap:wrap;font-size:inherit;line-height:1}
-.app .paper .vocab .hz-square{display:grid;place-items:center;width:clamp(46px,13vw,67px);height:clamp(46px,13vw,67px);border:1.5px solid #e3b577;border-radius:12px;background:linear-gradient(135deg,#fff,#f6ddf7);box-shadow:inset 0 1px #fff,0 2px 5px #a564a32c;color:#58246f;font:850 clamp(27px,7vw,37px)/1 "Noto Serif SC","Songti SC","SimSun",serif}
-.model-lines{display:grid;gap:7px;max-height:min(61svh,610px);overflow-y:auto;overscroll-behavior:contain;padding:1px 3px}
-.model-line{display:grid;gap:2px;background:#f7e8fa;border:1px solid #e3c3e6;border-radius:14px;padding:9px 11px;justify-items:start;width:96%}
-.model-line.reply{background:#fff0f5;margin-left:auto}
-.model-line .model-who{font-size:10px;font-weight:850;color:#825795}
-.model-line strong{font:850 clamp(21px,5.8vw,26px)/1.2 "Noto Serif SC","Songti SC","SimSun",serif;color:#50226e}
-.model-line .py{font-size:13px;font-weight:700;color:#815299}
-.model-line>span:not(.py){font-size:12px;color:#664771}
-.model-line .audio-clip-button{justify-self:end;margin-top:-3px}
-.profile-phrases{border:1px solid #e7bfa8;border-radius:13px;background:#fff9fc;padding:8px;margin-top:9px}
-.profile-phrases>strong{display:block;text-align:center;font-size:13px}
-.profile-optional{margin:8px 0;padding:8px;border:1px solid #e6c6dc;border-radius:11px}
-.profile-optional label{display:grid;gap:4px;margin:6px 0;font-size:12px}
-.profile-optional input{width:100%;font:inherit;padding:8px;border:1px solid #ddb2d3;border-radius:9px}
-
-/* v337: short spoken self-introduction replaces the old profile form. */
-.pg-intro-practice{display:grid;gap:8px;align-content:start}
-.pg-intro-prompt{display:flex;align-items:center;gap:9px;border:1.5px solid #e9ba8b;border-radius:14px;background:linear-gradient(120deg,#fffaff,#fae5f5);padding:9px;min-height:75px}
-.pg-intro-counter{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:#8539a1;color:#fff;font-size:13px;font-weight:800}
-.pg-intro-text{display:grid;gap:1px;min-width:0;flex:1}
-.pg-intro-text small{font-size:11px;color:#76508d;font-weight:800}
-.pg-intro-text strong{font:850 clamp(20px,5vw,26px)/1.25 "Noto Serif SC","Songti SC","SimSun",serif;color:#512472}
-.pg-intro-text>.py,.pg-intro-text>span:last-child{font-size:11px;line-height:1.25}
-.pg-intro-listen{flex:none;align-self:center}
-.pg-intro-listen .audio-clip-button{font-size:11px;min-height:35px;padding:6px}
-.app .content>.paper:has(.pg-intro-practice){justify-content:flex-start!important}
-@media(max-width:350px){.pg-intro-prompt{gap:5px;padding:6px}.pg-intro-listen .audio-clip-button{padding:4px 5px;font-size:10px}}
-
-/* v340: conversational Panda practice, compact Android layout. */
-.pg-talk-start{display:grid;gap:10px;justify-items:center;text-align:center;padding:15px 5px}
-.pg-talk-start .pg-talk-panda{font-size:65px}
-.pg-talk-start h2{font-size:23px}
-.pg-talk-start p{max-width:350px;font-size:14px;line-height:1.45;color:#7b5789}
-.pg-talk-start .primary{width:100%;min-height:50px;border-radius:20px}
-.pg-talk{display:grid;gap:9px;align-content:start}
-.pg-talk-count{display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:#77498d}
-.pg-talk-count span{font-size:11px;color:#2f855d}
-.pg-talk-q{display:flex;gap:8px;align-items:flex-start}
-.pg-talk-face{display:grid;place-items:center;flex:0 0 41px;width:41px;height:41px;border-radius:50%;background:#ecd0ed;border:1px solid #e5ba86;font-size:26px}
-.pg-talk-bubble{display:grid;gap:2px;flex:1;min-width:0;border-radius:16px;padding:11px;background:#fff8fc;border:1px solid #e6c0d9}
-.pg-talk-bubble strong{font:800 clamp(23px,6vw,29px)/1.2 "Noto Serif SC","Songti SC","SimSun",serif}
-.pg-talk-bubble small{font-size:11px;color:#8a608e}
-.pg-talk-bubble .py{font-size:13px;color:#875798}
-.pg-talk-bubble>span:last-of-type{font-size:13px}
-.pg-talk-bubble .audio-clip-button{justify-self:start;margin-top:5px}
-.pg-talk-label{font-size:13px;font-weight:800;margin-top:3px}
-.pg-talk #intro-answer{width:100%;min-height:45px;padding:10px;border-radius:12px;border:1px solid #d9a7ca;background:white;font-size:17px;color:#54216c}
-.pg-talk-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.pg-talk-actions button{min-height:42px;border-radius:13px;font-size:14px}
-.pg-talk-feedback{font-size:12px;line-height:1.4;padding:8px;border-radius:11px;background:#fff0f2;color:#994664}
-.pg-talk-feedback.ok{background:#ebfff2;color:#237044}
-.pg-talk-options{display:flex;justify-content:space-between}
-.pg-talk-options button{border:0;background:transparent;padding:6px;font-size:12px;color:#86539e}
-.pg-talk-hint{display:grid;gap:3px;border:1px dashed #d8acd5;background:#fff7fc;border-radius:11px;padding:8px}
-.pg-talk-hint strong{font-size:23px}.pg-talk-hint .py,.pg-talk-hint>span:last-child{font-size:12px}
-.pg-talk-notice{font-size:11px;text-align:center;line-height:1.35;color:#85658d}
-.pg-talk-recap{display:grid;gap:7px;margin:12px 0}.pg-talk-recap>div{display:flex;gap:8px;background:#fff7fc;border:1px solid #e6c5e1;border-radius:10px;padding:8px}
-.pg-talk-recap>div b{color:#36835c}.pg-talk-recap>div span{display:grid}.pg-talk-recap small{font-size:12px}
-.pg-talk-result{text-align:center}.pg-talk-result .softbtn{min-height:44px;width:100%}
-.app .content>.paper:has(.pg-talk),.app .content>.paper:has(.pg-talk-start){justify-content:flex-start!important;align-items:stretch!important}
-@media(max-height:700px){.pg-talk{gap:5px}.pg-talk-bubble{padding:7px}.pg-talk #intro-answer{min-height:39px;padding:7px}.pg-talk-actions button{min-height:38px}}
-
-.pg-brain-memory{font-size:12px;background:#fff7fb;border:1px solid #dfb9dd;border-radius:12px;padding:8px;color:#6e398a;line-height:1.45}
-.pg-brain-memory b{color:#54236f}
-.pg-brain-confirm{width:100%;font-size:12px;min-height:42px;white-space:normal}
-
-/* Panda Go Journey lesson 1 v345 — more legible grammar, audio quiz and compact speaking. */
-.journey-speaking-intro{text-align:center;font-size:13px;line-height:1.5;margin:0 0 7px}.journey-speaking-intro b{font-size:16px}.journey-speaking-intro p{margin-top:5px;color:#725083}
-.journey-listen{width:100%;min-height:48px;font-size:16px;margin:5px 0 9px;cursor:pointer}
-.journey-audio-question .intro{font-size:14px;line-height:1.45;margin-bottom:10px}
-.journey-audio-question .choice{min-height:46px;font-size:14px}
-.journey-speaking .pg-final-head{display:flex;gap:8px;align-items:center;justify-content:space-between;font-size:13px;margin:4px 0 8px}
-.journey-speaking .pg-final-row{gap:5px;padding:6px 7px;margin-bottom:6px;min-height:0}
-.journey-speaking .pg-final-word{padding:6px 8px;min-width:78px}
-.journey-speaking .pg-final-word b{font-size:29px}
-.journey-speaking .pg-final-word small{font-size:11px}
-.journey-speaking .pg-final-marks{gap:3px}
-.journey-speaking .pg-final-marks span{width:24px;height:29px;font-size:14px}
-.journey-speaking .pg-final-foot{gap:5px;font-size:11px}
-.journey-speaking .pg-final-note{font-size:11px;line-height:1.35}
-@media(max-width:375px){.journey-speaking .pg-final-word{min-width:62px}.journey-speaking .pg-final-marks span{width:20px;height:25px}}
-</style><link rel="stylesheet" href="./assets/hsk2-one-screen-v323.css?v=323"><link rel="stylesheet" href="./assets/hsk2-speaking-v324.css?v=324"><link rel="stylesheet" href="./assets/hsk2-five-attempts-banner-v326.css?v=326"><link rel="stylesheet" href="./assets/hsk2-compact-refinement-v328.css?v=328"><link rel="stylesheet" href="./assets/hsk2-fixes-v329.css?v=329"><link rel="stylesheet" href="./assets/hsk2-audio-v330.css?v=339"></head><body><div class="app" id="app"><header class="scene"><span class="petals" aria-hidden="true">🌸</span><a class="backlink" href="#map" aria-label="Назад к карте">‹</a><img class="panda" src="./assets/hsk2-panda-new-v328.svg" alt=""><div class="brand">Panda Go<small id="scene-sub">HSK 2 · Начальный плюс</small></div><span class="scene-caption" id="scene-caption">Слова → грамматика → практика</span></header><main class="content" id="screen" tabindex="-1"></main><nav class="nav" aria-label="Навигация"><a href="#map" id="nav-map"><b>⌂</b>Главная</a><a href="#review" id="nav-review"><b>▤</b>Повторение</a><a href="#lesson" id="nav-lesson"><b>◫</b>Урок 1</a><a href="#progress" id="nav-progress"><b>◴</b>Прогресс</a></nav></div>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6d257f">
+<title>Panda Go · HSK2 · Я и моя визитка</title>
+<meta name="description" content="Panda Go HSK2: четыре простых этапа — план, грамматика, проверка и мини-диалог.">
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;--ink:#54206b;--purple:#71268f;--gold:#f7cc75;--soft:#ffe9fc;--muted:#80558e}
+*{box-sizing:border-box}
+body{margin:0;display:flex;justify-content:center;min-height:100svh;background:linear-gradient(130deg,#361457,#8243ac 45%,#f5c6ed)}
+button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.48;cursor:default}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #3754d7;outline-offset:3px}
+.app{width:min(100%,510px);height:100svh;max-height:100svh;display:flex;flex-direction:column;overflow:hidden;position:relative;isolation:isolate;background:linear-gradient(180deg,#ffeaff,#fce5fa 48%,#e8bcfa);color:var(--ink)}
+.app::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;opacity:.14;background:url('./assets/panda-map-scene-hd-v319.webp') center/cover}
+.header{height:88px;flex:none;position:relative;text-align:center;padding:6px 51px 4px;isolation:isolate}
+.header::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,#f9d8fa80,#ffd6f4a8),url('./assets/chinese-waterfall-banner.svg') center 47%/cover;mask-image:linear-gradient(#000 70%,transparent)}
+.header h1{font:italic 900 clamp(27px,7.8vw,38px)/1.05 Georgia,serif;color:#652075;text-shadow:0 2px 0 #fff6e3;margin:4px 0 7px;white-space:nowrap}
+.header .sub{display:block;background:#fff7f9dc;border:1.5px solid #efbc79;border-radius:22px;box-shadow:0 2px 7px #7c419d44;font-size:12px;line-height:1.35;font-weight:800;padding:5px 6px;white-space:nowrap}
+.back{position:absolute;left:12px;top:15px;display:grid;place-items:center;width:39px;height:39px;border-radius:50%;border:1.5px solid #e8b66d;background:#fff5ffde;color:#692d86;text-decoration:none;font-size:24px;z-index:3;box-shadow:0 3px 8px #7d368744}
+.page{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:4px 12px 14px}
+.page::-webkit-scrollbar{width:4px}.page::-webkit-scrollbar-thumb{border-radius:7px;background:#c991d5}
+.screen{display:grid;gap:10px}
+.heading{display:flex;align-items:center;gap:8px;padding:12px 14px;min-height:54px;border:2px solid var(--gold);border-radius:23px;text-align:center;justify-content:center;background:linear-gradient(122deg,#582074,#9e44b3,#63237d);box-shadow:inset 0 1px 4px #edb8ee99,0 5px 0 #df8bdb42,0 8px 17px #782d934a;color:#fff;text-shadow:0 2px 1px #541268a1}
+.heading .name{font:italic 900 clamp(24px,7vw,34px)/1.12 Georgia,serif}
+.step-tag{width:max-content;margin:0 auto;border:1.5px solid #e5b67e;border-radius:18px;background:#fff8ffe6;color:#733485;font-weight:800;padding:4px 12px;font-size:12px}
+.glam{position:relative;border:2px solid #eaba83;border-radius:22px;background:linear-gradient(140deg,#fff7ffff,#fbd2f7f5);box-shadow:0 5px 13px #9f4c9b3b,inset 0 0 0 2px #ffffff73;padding:13px;overflow:hidden}
+.glam::before{content:"✿";position:absolute;right:10px;top:5px;font-size:22px;color:#ed93cb;opacity:.55}
+.glam h2{font:900 19px/1.15 Georgia,serif;margin:0 0 9px;color:#6b2186}
+.intro{font-size:13px;line-height:1.48;color:#754784;margin:0 0 8px}
+.hero{position:relative;min-height:174px;overflow:hidden;display:flex;align-items:center;justify-content:flex-end;border-radius:23px;border:2px solid #f9cb76;background:linear-gradient(115deg,#4e1d78,#8f36a8 62%,#b86ccc);box-shadow:0 6px 18px #8b4399a3,inset 0 1px 10px #fbacff6b;color:white;padding:12px}
+.hero::before{content:"";position:absolute;inset:0;background:url('./assets/panda-map-scene-hd-v319.webp') center/cover;opacity:.25;mix-blend-mode:screen}
+.hero img{position:absolute;left:-10px;bottom:-10px;width:48%;height:100%;object-fit:contain;object-position:left bottom;filter:drop-shadow(0 5px 6px #4812738c)}
+.hero .hero-copy{position:relative;width:58%;min-width:0;text-align:center}
+.hero .hero-copy h2{font:italic 900 clamp(25px,8.2vw,39px)/1.02 Georgia,serif;color:#fff6d7;text-shadow:0 3px 0 #713088,0 0 12px #f1a7dd;margin:0 0 7px}
+.hero .hero-copy p{font-size:12px;line-height:1.45;margin:0;color:#fff4ff}
+.ribbon{width:max-content;max-width:100%;background:linear-gradient(120deg,#8c37a6,#562177);color:#fff8e7;font:italic 850 17px Georgia,serif;border:2px solid #f3c774;border-radius:18px;padding:5px 13px;box-shadow:0 2px 9px #a046a65c;margin:-1px auto 0;text-align:center}
+.features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.feature{display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;gap:3px;background:linear-gradient(150deg,#fff8fc,#f9d6f5);border:1.5px solid #f0b8d9;border-radius:14px;min-height:75px;padding:6px 4px;box-shadow:0 3px 7px #9751a72a}
+.feature .em{font-size:22px;line-height:1.1}.feature span:last-child{font-size:12px;font-weight:800;line-height:1.17}
+.outcomes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.outcome{display:flex;align-items:center;gap:8px;background:linear-gradient(120deg,#fff9ff,#ffedf5);border:1px solid #e5c0e3;border-radius:13px;padding:8px 7px}
+.outcome .em{font-size:24px;flex:none}.outcome strong{font-size:12px;line-height:1.2}
+.tone-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.tone{background:#fff7fa;border:1px solid #f0c9d6;border-radius:12px;text-align:center;padding:6px 2px}
+.tone strong{display:block;font-size:22px}.tone small{font-size:9.5px;font-weight:700;color:#885d90}
+.tone:nth-child(1) strong{color:#b84d8e}.tone:nth-child(2) strong{color:#cb4366}.tone:nth-child(3) strong{color:#7039aa}.tone:nth-child(4) strong{color:#b95c28}
+.grammar-word-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.grammar-word{padding:8px 3px;background:linear-gradient(#fff8ff,#fbe2f4);border:1px solid #e5bfd7;border-radius:13px;text-align:center;min-width:0}
+.hanzi{font-weight:850;font-size:clamp(26px,8vw,36px);line-height:1.2;color:#5c2180}
+.py{font-size:13px;color:#913d9d;font-weight:750;line-height:1.4}
+.ru{font-size:13px;line-height:1.4;color:#60326f}
+.small{font-size:11px;color:#855a8f;line-height:1.42}
+.voice{border:1.5px solid #ecbd76;border-radius:23px;background:linear-gradient(#fffaff,#f9ddf6);color:#6b2b82;padding:7px 12px;min-height:35px;box-shadow:0 2px 5px #a452a62c;font-size:12px;font-weight:850}
+.voice:disabled{cursor:not-allowed;opacity:.58}
+.grammar-word .voice{min-height:30px;margin-top:5px;padding:4px 6px;width:96%}
+.formula{padding:10px 6px;border-radius:13px;background:linear-gradient(110deg,#f2d0f6,#fff5f7);border:1px solid #dca9d2;margin:7px 0}
+.formula-title{font-size:13px;font-weight:850;margin:0 0 7px;color:#79368f}
+.pills{display:flex;flex-wrap:wrap;gap:4px;align-items:center;justify-content:center}
+.pill{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;border-radius:9px;border:1px solid #ebbc84;background:#fff8f6;padding:6px 7px;box-shadow:0 2px 4px #ad71a731}
+.pill b{font-size:22px;color:#602482}.pill small{font-size:10px;color:#81558d}
+.operator{font-size:19px;font-weight:850;color:#ab45ad}
+.translation{padding:6px;text-align:center;color:#58236f;font-size:13px;font-weight:800}
+.definition{border:1px solid #f2d0a2;background:#fff6ef;border-radius:12px;padding:8px 10px;font-size:12px;line-height:1.5}
+.definition b{color:#863390}
+.example{display:flex;align-items:center;gap:9px;background:#fff9fff4;border:1px solid #e4bde0;border-radius:15px;padding:8px 9px}
+.avatar{flex:none;width:45px;height:45px;border-radius:50%;border:2px solid #e4b1cb;background:#edd3f4;display:grid;place-items:center;font-size:24px;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.example-content{flex:1;min-width:0}.example .hanzi{font-size:clamp(21px,6.5vw,27px)}
+.example .voice{flex:none;padding:6px 8px;min-height:37px;font-size:11px}
+.hint{background:#f9edff;border:1px solid #dfb3e5;border-radius:12px;font-size:12px;padding:9px;line-height:1.5}
+.check{display:grid;gap:8px}
+.check-title{font-size:15px;font-weight:850;margin:0 0 7px;line-height:1.2}
+.choices{display:grid;gap:7px}
+.choice{border:1.5px solid #dfa8d8;border-radius:15px;background:#fff7fe;padding:10px 11px;text-align:left;color:#542270;min-height:44px;font-size:13px;font-weight:780}
+.choice.chosen{border-color:#9a4bbc;background:#f7dffc}
+.choice.correct{border:2px solid #61b981;background:#e5f9e7;color:#236b3c}
+.choice.wrong{border:2px solid #df8498;background:#fff0f4;color:#9c2d51}
+.feedback{font-size:12px;min-height:16px;line-height:1.4;margin-top:7px;color:#7b4988}
+.feedback.good{color:#207c46}.feedback.bad{color:#a92a50}
+.play-big{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:44px;border:1.5px solid #dd93e6;border-radius:24px;background:linear-gradient(110deg,#fce3fe,#ecd4fc);font-weight:850;color:#652782;box-shadow:0 2px 5px #9d60a53d}
+.builder-space{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-height:61px;border:1.5px dashed #c886d6;border-radius:14px;background:#f6e3fb;padding:9px}
+.builder-tokens{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tile{background:#fffafb;border:1.5px solid #e5b36f;border-radius:10px;padding:7px 10px;color:#592279;font-weight:900;font-size:24px;min-width:44px;min-height:44px}
+.tile[disabled]{visibility:hidden}
+.mic-row{display:flex;align-items:center;gap:9px}
+.mic-button{width:64px;height:64px;flex:none;border:3px solid #f9cc77;border-radius:50%;background:radial-gradient(#d969ee,#7d2aab);color:white;font-size:30px;box-shadow:0 3px 9px #8e39a75a}
+.mic-status{flex:1;background:#f7eafa;border-radius:13px;padding:10px 11px;min-height:55px;font-size:12px;line-height:1.5}
+.dialogue{display:flex;flex-direction:column;gap:10px}
+.bubble{display:flex;align-items:flex-start;gap:8px}
+.bubble.reply{flex-direction:row-reverse}
+.bubble .face{width:55px;height:55px;border-radius:50%;overflow:hidden;flex:none;border:2px solid #efb975;background:linear-gradient(#e7c3f1,#fff5ff);display:grid;place-items:center;font-size:29px}
+.bubble .face img{width:100%;height:100%;object-fit:cover}
+.bubble .chat{flex:1;min-width:0;padding:10px;background:linear-gradient(#fffaff,#fef1f5);border:1px solid #e4bcda;border-radius:17px;box-shadow:0 3px 7px #b57fbd35}
+.bubble.reply .chat{background:linear-gradient(#f4e4ff,#fff1fc)}
+.bubble .chat .hanzi{font-size:clamp(21px,6.7vw,29px)}
+.bubble .chat .voice{margin-top:7px}
+.remember{display:grid;gap:6px}
+.remember div{display:flex;gap:8px;align-items:center;background:#fff9fa;border-radius:12px;border:1px solid #ead0dd;padding:7px;font-size:12px}
+.remember b{font-size:17px;color:#702a86}
+.reward{border:1px solid #f0ca75;background:#fff7d7;border-radius:14px;text-align:center;padding:11px;font-size:13px;font-weight:850}
+.bottom{display:flex;flex-direction:column;gap:8px;flex:none;border-top:1px solid #e5bcd6;background:linear-gradient(#f9e6f8ee,#eacaf1f9);padding:8px 12px calc(9px + env(safe-area-inset-bottom));box-shadow:0 -3px 10px #91569a2c}
+.secondary-row,.primary-row{display:grid;gap:8px;grid-template-columns:1fr 1fr}
+.primary-row{grid-template-columns:34% 1fr}
+.bottom button{border-radius:15px;min-height:43px;font-weight:850;font-size:14px}
+.secondary{border:1px solid #e3b7d2;background:#fff6fce0;color:#703887}
+.primary{border:2px solid #f4c46b;background:linear-gradient(115deg,#cd5bcc,#7e309e 70%,#5f227c);color:#fff;box-shadow:0 3px 7px #8b4ba160;text-shadow:0 1px 1px #632471}
+#notice{font-size:11px;line-height:1.3;color:#7b558a;min-height:0;text-align:center}
+#notice:empty{display:none}
+.py-hidden .py{display:none}
+@media(max-width:360px){.header{height:78px}.hero{min-height:151px}.hero img{width:45%}.hero .hero-copy h2{font-size:25px}.page{padding:3px 8px 10px}.glam{padding:10px}.outcome{padding:6px}.outcome strong{font-size:11px}.tone strong{font-size:18px}.voice{font-size:11px}.heading{min-height:50px}}
+@media(max-height:740px){.header{height:69px}.header h1{margin:0;font-size:28px}.header .sub{padding:3px 5px}.page{padding-top:2px}.hero{min-height:133px}.hero img{width:44%}.hero .hero-copy h2{font-size:25px}.glam{padding:9px}.feature{min-height:60px}.feature .em{font-size:19px}.feature span:last-child{font-size:11px}.tone{padding:3px}.bottom{gap:5px;padding:5px 10px calc(7px + env(safe-area-inset-bottom))}.bottom button{min-height:38px}.screen{gap:7px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<header class="header">
+ <a class="back" href="./hsk2-start.html#map" aria-label="Назад к карте HSK2">‹</a>
+ <h1>Panda Go</h1><span class="sub">HSK 2 · Урок 1 · Я и моя визитка</span>
+</header>
+<main class="page" id="page" tabindex="-1"><div id="screen" aria-live="off"></div></main>
+<footer class="bottom">
+ <div class="secondary-row"><button type="button" class="secondary" id="toggle-py">Скрыть пиньинь</button><button type="button" class="secondary" id="repeat">↻ Повторить</button></div>
+ <div class="primary-row"><button type="button" class="secondary" id="prev">← Назад</button><button type="button" class="primary" id="next">Дальше →</button></div>
+ <div id="notice" role="status" aria-live="polite"></div>
+</footer>
+</div>
 <script src="./assets/hsk2-speaking-v326.js?v=345"></script>
-<script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=343"></script><script src="./assets/panda-brain-v341.js?v=341"></script>
+<script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script>
+<script src="./assets/hsk2-audio-v330.js?v=343"></script>
 <script>
 (()=>{
 'use strict';
 const $=id=>document.getElementById(id);
+const KEY='pg-hsk2-introduction-v2';
+const OLD='pg-hsk2-introduction-v1';
+const TOTAL=4;
 const WORDS=[
- ['叫','jiào','зваться, называться'],['名字','míngzi','имя'],['什么','shénme','что, какой'],['我','wǒ','я · повторение HSK 1'],
- ['住','zhù','жить, проживать'],['在','zài','в, на; находиться'],['哪儿','nǎr','где (разговорно)'],['莫斯科','Mòsīkē','Москва · пример города'],
- ['工作','gōngzuò','работать; работа'],['做','zuò','делать'],['医生','yīshēng','врач'],['老师','lǎoshī','учитель · повторение HSK 1']
+ {zh:'叫',py:'jiào',ru:'зваться, называться'},
+ {zh:'名字',py:'míngzi',ru:'имя'},
+ {zh:'什么',py:'shénme',ru:'что / какой'}
 ];
-const steps=[
- {kind:'model-dialogue',title:'Сначала послушай короткое знакомство',items:[
- ['A','你好！','Nǐ hǎo!','Привет!'],
- ['B','你好！','Nǐ hǎo!','Привет!'],
- ['A','你叫什么名字？','Nǐ jiào shénme míngzi?','Как тебя зовут?'],
- ['B','我叫熊猫。','Wǒ jiào Xióngmāo.','Меня зовут Панда.']]},
- {kind:'words',title:'Как меня зовут?',items:WORDS.slice(0,4)},
- {kind:'rule',title:'Говорим своё имя',formula:'我 + 叫 + ИМЯ',example:['我叫熊猫。','Wǒ jiào Xióngmāo.','Меня зовут Панда.'],why:'叫 (jiào) — «зваться». После 我叫 назови своё имя. Можно использовать любое имя.'},
- {kind:'words',title:'Где ты живёшь?',items:WORDS.slice(4,8)},
- {kind:'structure',title:'Учимся говорить, где живём'},
- {kind:'words',title:'Кто я по профессии?',items:WORDS.slice(8,12)},
- {kind:'rule',title:'Моя профессия',formula:'我 + 是 + ПРОФЕССИЯ',example:['我是医生。','Wǒ shì yīshēng.','Я врач.'],extra:[['我是老师。','Wǒ shì lǎoshī.','Я учитель.'],['我是熊猫老师。','Wǒ shì Xióngmāo lǎoshī.','Я учитель Панда.']],why:'Для профессии обычно используют 是 (shì). Например, 我是医生 — «Я врач». Если не работаешь: 我没有工作。'},
- {kind:'rule',title:'Сколько мне лет?',formula:'我 + 今年 + ЧИСЛО + 岁',example:['我今年二十五岁。','Wǒ jīnnián èrshíwǔ suì.','Мне 25 лет.'],extra:[['我今年三岁了。','Wǒ jīnnián sān suì le.','Мне три года.']],why:'今年 (jīnnián) — в этом году; 岁 (suì) — счётное слово для возраста. 了 в конце возможно, но необязательно. Например: 我今年二十五岁。'},
- {kind:'examples',title:'Пять фраз для знакомства',items:[
- ['你好！','Nǐ hǎo!','Привет!'],
- ['我叫熊猫。','Wǒ jiào Xióngmāo.','Меня зовут Панда.'],
- ['我是医生。','Wǒ shì yīshēng.','Я врач.'],
- ['我今年三岁了。','Wǒ jīnnián sān suì le.','Мне три года.'],
- ['我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.']]},
- {kind:'listening-quiz',title:'🎧 Послушай и узнай вопрос',audio:'你叫什么名字？',question:'Что спросила Панда?',choices:['Где ты живёшь?','Как тебя зовут?','Кем ты работаешь?'],answer:1,why:'你叫什么名字？ — «Как тебя зовут?»'},
- {kind:'build',title:'🧩 Собери предложение',question:'«Я живу в Пекине»',tokens:['北京','我','在','住'],answer:['我','住','在','北京'],why:'Порядок слов: 我 + 住 + 在 + 北京. Вместе 住在 означает «жить в». '},
- {kind:'quiz',title:'📚 Проверь правило грамматики',question:'Как правильно сказать «Я врач»?',choices:['我叫医生。','我是医生。','我住在医生。'],answer:1,why:'Профессию называем по образцу 我 + 是 + профессия.'},
- {kind:'guided-practice',title:'Твоя очередь: 5 коротких фраз'},
- {kind:'dialogue-practice',title:'Поговори с Пандой · 5 вопросов'},
- {kind:'speaking5',title:'🎤 Произнеси четыре слова · по 5 раз'},
- {kind:'finish',title:'Ты умеешь знакомиться!',desc:'Пять фраз: 你好 / 我叫… / 我是… / 我今年…岁 / 我住在…. Повтори их вслух, затем возвращайся к карте.'}];
-const key='pg-hsk2-introduction-v1';
-let state={step:0,answers:{},build:[],showPy:true,completed:false,readDialoguePair:0,structureTab:'phrase',dialogue:{index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[]},profile:{name:'',city:'',job:'',age:'',other:''}};
-try{const x=JSON.parse(localStorage.getItem(key)||'null');if(x&&typeof x==='object')state={...state,...x,answers:x.answers||{},build:Array.isArray(x.build)?x.build:[],dialogue:{index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[],...(x.dialogue||{})},profile:{name:'',city:'',job:'',age:'',other:'',...(x.profile||{})}}}catch{}
-// On first launch of the revised lesson, show the listening example even for earlier in-progress sessions.
-try{if(!localStorage.getItem('pg-hsk2-intro-v337-shown')){state.step=0;localStorage.setItem('pg-hsk2-intro-v337-shown','1')}}catch{}
-// Clear only stale three-question conversation progress; preserve course step and other work.
-try{if(!localStorage.getItem('pg-hsk2-live-five-v340')){state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[],facts:{},selfConfirmed:{}};localStorage.setItem('pg-hsk2-live-five-v340','1')}}catch{}
-const save=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch{}};
-// v344: retain saved answers and dialogue; revisit new location/age teaching steps once.
-if(state.introLayoutVersion!==344){
- const oldStep=Math.max(0,Math.min(8,Number(state.step)||0));
- state.step=state.completed?11:(oldStep<=2?oldStep:3);
- state.introLayoutVersion=344;
- save();
+const MODEL={question:'你叫什么名字？',qPy:'Nǐ jiào shénme míngzi?',qRu:'Как тебя зовут?',answer:'我叫米沙。',aPy:'Wǒ jiào Mǐshā.',aRu:'Меня зовут Миша.'};
+const TOKENS=['米沙','叫','我','。'];
+const cleanState=()=>({step:0,showPy:true,selected:null,checked:false,heard:false,build:[],mic:'none',recognized:'',dialogueRevealed:false,completed:false});
+let state=cleanState();
+try{const prior=JSON.parse(localStorage.getItem(KEY)||'null');if(prior){state={...state,...prior};state.step=Math.max(0,Math.min(3,Number(state.step)||0));if(!Array.isArray(state.build))state.build=[]}}catch{}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+const audio=phrase=>window.PandaHsk2AudioV330?.lookup(phrase)||null;
+function sound(phrase,small=false){
+ if(!audio(phrase))return '<span class="small">🔇 Точной записи пока нет</span>';
+ return '<button type="button" class="voice" data-audio="'+esc(phrase)+'" aria-label="Слушать запись '+esc(phrase)+'">🔊 '+(small?'Звук':'Слушать')+'</button>';
 }
-// v345: preserve progress and answers; students not yet finished revisit the added listening and grammar checks.
-if(state.introLayoutVersion!==345){if(state.completed){state.step=steps.length-1}else if(state.step>8){state.step=9}state.build=[];state.introLayoutVersion=345;save()}
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-/* Exact HSK1 owner-approved recordings. No phoneme splice or synthetic fallback. */
-// Unified native recording source; do not mix Xiaoxiao with the approved speaker.
-const matchingAudio=phrase=>window.PandaHsk2AudioV330?.lookup(phrase)||null;
-function setAudioStatus(message,isError=false){
- const out=$('audio-status');
- if(out){out.textContent=message;out.classList.toggle('warn',isError)}
+function goAudio(phrase){
+ const p=window.PandaHsk2AudioV330;
+ if(!p?.lookup(phrase)){notice('Для этой фразы нет оригинальной MP3-записи');return false}
+ const started=p.play(phrase,m=>notice(m||''));
+ if(started&&state.step===2&&phrase===MODEL.question){state.heard=true;save()}
+ return started;
 }
-function stopApprovedAudio(){
- window.PandaHsk2AudioV331?.stop();
+function notice(t){$('notice').textContent=t||''}
+function shadePinyin(){ $('app').classList.toggle('py-hidden',!state.showPy);$('toggle-py').textContent=state.showPy?'Скрыть пиньинь':'Показать пиньинь'}
+const header=(name)=>'<div class="heading"><span class="name">'+name+'</span></div><div class="step-tag">Шаг '+(state.step+1)+' из '+TOTAL+'</div>';
+function renderPlan(){
+ return '<section class="screen">'+header('План изучения')+
+ '<div class="hero"><img src="./assets/panda-character-v346.svg" alt="Панда приглашает на урок"><div class="hero-copy"><h2>Начнём знакомство!</h2><p>Узнаем, как спросить имя и назвать себя по-китайски.</p></div></div>'+
+ '<div class="ribbon">🌸 Что будем изучать</div><section class="glam"><div class="features">'+
+ [['👤','Имя'],['❓','Вопросы'],['📚','Грамматика'],['🧩','Фразы'],['🎧','Слух'],['✅','Мини-тест']].map(x=>'<div class="feature"><span class="em">'+x[0]+'</span><span>'+x[1]+'</span></div>').join('')+
+ '</div></section>'+
+ '<div class="ribbon">Ты научишься</div><section class="glam"><div class="outcomes">'+
+ [['💬','Представляться'],['🧩','Строить предложения'],['👂','Понимать вопрос'],['🎵','Слышать тоны']].map(x=>'<div class="outcome"><span class="em">'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('')+
+ '</div></section>'+
+ '<section class="glam"><h2>🎶 Вспомним четыре тона</h2><div class="tone-grid">'+
+ [['mā','1 · ровный'],['má','2 · вверх'],['mǎ','3 · изгиб'],['mà','4 · вниз']].map(x=>'<div class="tone"><strong>'+x[0]+'</strong><small>'+x[1]+'</small></div>').join('')+
+ '</div></section></section>';
 }
-function playApprovedAudio(phrase){
- const player=window.PandaHsk2AudioV331;
- if(!player){setAudioStatus('Аудиоплеер не загружен.',true);return}
- player.play(phrase,m=>setAudioStatus(m,/не удалось|Ошибка|нет подтверждённого/i.test(m)));
+function renderGrammar(){
+ return '<section class="screen">'+header('Краткая грамматика')+
+ '<section class="glam"><h2>📖 Сначала три слова</h2><div class="grammar-word-grid">'+WORDS.map(w=>
+ '<article class="grammar-word"><div class="hanzi" lang="zh-Hans">'+w.zh+'</div><div class="py">'+w.py+'</div><div class="ru">'+w.ru+'</div>'+sound(w.zh,true)+'</article>').join('')+
+ '</div><p class="intro" style="margin-top:9px">你 (nǐ) — «ты», 我 (wǒ) — «я». Их мы уже знаем из HSK1.</p></section>'+
+ '<section class="glam"><h2>📚 Как спросить и сказать имя?</h2>'+
+ '<div class="formula"><p class="formula-title">❓ Как тебя зовут?</p><div class="pills">'+
+ [['你','ты'],['叫','зваться'],['什么','какое'],['名字','имя']].map((x,i)=> (i?'<span class="operator">+</span>':'')+'<span class="pill"><b>'+x[0]+'</b><small>'+x[1]+'</small></span>').join('')+
+ '</div><div class="translation">你叫什么名字？ — Как тебя зовут?</div></div>'+
+ '<div class="formula"><p class="formula-title">💬 Как назвать своё имя?</p><div class="pills">'+
+ [['我','я'],['叫','зваться'],['米沙','Миша']].map((x,i)=>(i?'<span class="operator">+</span>':'')+'<span class="pill"><b>'+x[0]+'</b><small>'+x[1]+'</small></span>').join('')+
+ '</div><div class="translation">我叫米沙。 — Меня зовут Миша.</div></div>'+
+ '<div class="definition">💡 <b>什么 (shénme)</b> — «что / какой». В сочетании <b>什么名字</b> спрашиваем «какое имя?». В ответе имя стоит <b>после 叫</b>.</div></section>'+
+ '<section class="glam"><h2>🎧 Послушай примеры</h2><div style="display:grid;gap:6px">'+
+ '<div class="example"><span class="avatar">🐼</span><div class="example-content"><div class="hanzi">'+MODEL.question+'</div><div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div></div>'+sound(MODEL.question,true)+'</div>'+
+ '<div class="example"><span class="avatar">👦</span><div class="example-content"><div class="hanzi">'+MODEL.answer+'</div><div class="py">'+MODEL.aPy+'</div><div class="ru">'+MODEL.aRu+'</div></div></div>'+
+ '</div><p class="small" style="margin-top:8px">Запись ответа с именем Миша пока отсутствует. Мы не подменяем её другим голосом.</p></section></section>';
 }
-const clipButton=phrase=>matchingAudio(phrase)?'<button class="audio-clip-button" type="button" data-audio="'+esc(phrase)+'" aria-label="Слушать точную запись: '+esc(phrase)+'">🔊 Слушать</button>':'';
-const word=([zh,py,ru])=>{
- const exact=!!matchingAudio(zh),sample=exact?null:window.PandaHsk2AudioV330?.sentenceFor(zh);
- const sentence=sample?'<div class="hsk2-word-phrase"><span class="hsk2-word-phrase-label">🎧 Предложение целиком — не звук одного слова</span>'+
-  '<strong lang="zh-Hans">'+esc(sample.zh)+'</strong><span class="py">'+esc(sample.pinyin)+'</span>'+
-  '<span class="ru">'+esc(sample.ru)+'</span>'+clipButton(sample.zh)+'</div>':
-  '<span class="hsk2-missing-audio">Для этого слова отдельной записи пока нет</span>';
- return '<article class="vocab"><div lang="zh-Hans" class="hanzi hanzi-squares">'+Array.from(zh).map(c=>'<span class="hz-square">'+esc(c)+'</span>').join('')+'</div>'+
-  '<div class="py">'+esc(py)+'</div><div class="ru">'+esc(ru)+'</div>'+
-  (exact?clipButton(zh):sentence)+'</article>';
-};
-const example=([zh,py,ru])=>'<div class="example"><b lang="zh-Hans">'+esc(zh)+'</b><span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span>'+clipButton(zh)+'</div>';
-
-
-function convertedProfile(){
- const p=state.profile,svc=window.PandaHSK2PracticeV324;
- if(!svc)return {name:{zh:''},city:{zh:''},job:{zh:''}};
- const name=svc.mapProfile('name',p.name),city=svc.mapProfile('city',p.city);
- if(typeof p.nameZh==='string'&&/^[\u3400-\u9fff·\s]{1,30}$/u.test(p.nameZh.trim())&&p.name.trim()){name.zh=p.nameZh.trim().replace(/\s+/g,'');name.py='';name.known=false}
- if(typeof p.cityZh==='string'&&/^[\u3400-\u9fff·\s]{1,30}$/u.test(p.cityZh.trim())&&p.city.trim()){city.zh=p.cityZh.trim().replace(/\s+/g,'');city.py='';city.known=false}
- return {name,city,job:svc.mapProfile('job',p.job==='other'?p.other:p.job)};
+function renderTest(){
+ const isRight=state.selected===1;
+ const built=state.build.map(i=>TOKENS[i]).join('');
+ const complete=state.build.length===TOKENS.length;
+ const buildCorrect=built==='我叫米沙。';
+ const msg=state.mic==='pass'?'✓ Браузер распознал слова (точность тонов не проверена).':state.mic==='fail'?'Слова пока не распознаны. Прослушай и повтори.':state.mic==='skip'?'Голосовая проверка пропущена. Можно продолжать.':'Нажми на микрофон или пропусти, если недоступен.';
+ return '<section class="screen">'+header('Проверим себя')+
+ '<section class="glam"><h2>🎧 1. Что спросила Панда?</h2><button type="button" class="play-big" data-audio="'+MODEL.question+'">▶ Слушать вопрос</button>'+
+ '<div class="choices" style="margin-top:9px">'+['Где ты живёшь?','Как тебя зовут?','Кем ты работаешь?'].map((x,i)=>'<button type="button" class="choice '+(state.checked?(i===1?'correct':state.selected===i?'wrong':''):state.selected===i?'chosen':'')+'" data-choice="'+i+'" aria-pressed="'+(state.selected===i)+'">'+x+'</button>').join('')+'</div>'+
+ '<p class="feedback '+(state.checked?(isRight?'good':'bad'):'')+'" role="status">'+(state.checked?(isRight?'✓ Верно! Ты узнал вопрос.':'Пока неверно — послушай ещё раз.'):state.heard?'Выбери перевод и нажми «Проверить».':'Сначала послушай запись.')+'</p>'+
+ '<button type="button" class="voice" data-check '+(state.selected==null||!state.heard?'disabled':'')+'>'+(state.checked?'↻ Проверить снова':'✓ Проверить ответ')+'</button></section>'+
+ '<section class="glam"><h2>🧩 2. Собери ответ «Меня зовут Миша»</h2><div class="builder-space">'+(state.build.length?state.build.map((id,pos)=>'<button type="button" class="tile" data-remove="'+pos+'" aria-label="Убрать '+TOKENS[id]+'">'+TOKENS[id]+'</button>').join(''):'<span class="intro">Нажимай на слова по порядку…</span>')+'</div>'+
+ '<div class="builder-tokens">'+TOKENS.map((x,i)=>'<button type="button" class="tile" data-tile="'+i+'" '+(state.build.includes(i)?'disabled':'')+'>'+x+'</button>').join('')+'</div>'+
+ '<p class="feedback '+(buildCorrect?'good':complete?'bad':'')+'">'+(buildCorrect?'✓ Правильно! 我叫米沙。':complete?'Попробуй поменять порядок: нажимай на лишние слова сверху.':'Подсказка: кто → 叫 → имя.')+'</p></section>'+
+ '<section class="glam"><h2>🎤 3. Скажи по-китайски</h2><div style="text-align:center;margin-bottom:8px"><div class="hanzi">'+MODEL.answer+'</div><div class="py">'+MODEL.aPy+'</div><div class="ru">'+MODEL.aRu+'</div></div>'+
+ '<div class="mic-row"><button type="button" class="mic-button" data-mic aria-label="Сказать фразу" '+(micActive||!window.PandaHSK2PracticeV326?.speechAvailable()?'disabled':'')+'>🎤</button><div class="mic-status" role="status">'+msg+'</div></div>'+
+ '<button type="button" class="voice" data-skip style="margin-top:9px">Пройти без микрофона</button>'+
+ '<p class="small" style="margin-top:8px">Распознавание текста не оценивает китайские тоны. Для тонов сравнивай своё произношение с образцом.</p></section></section>';
 }
-// Any nonempty city or name is accepted; translations are never fabricated.
-const profileReady=()=>{const p=state.profile,n=Number(p.age);return !!(p.name?.trim()&&p.city?.trim()&&p.job?.trim()&&Number.isInteger(n)&&n>=1&&n<=99)};
-
-function ageInChinese(value){
- const n=Number(value);if(!Number.isInteger(n)||n<1||n>99)return null;
- const zh=['零','一','二','三','四','五','六','七','八','九'];
- const py=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
- if(n===2)return {zh:'两',py:'liǎng'};
- if(n<10)return {zh:zh[n],py:py[n]};
- const tens=Math.floor(n/10),ones=n%10;
- return {zh:(tens===1?'':zh[tens])+'十'+(ones?zh[ones]:''),
- py:(tens===1?'':py[tens]+' ')+'shí'+(ones?' '+py[ones]:'')};
+function renderDialogue(){
+ const show=state.dialogueRevealed;
+ return '<section class="screen">'+header('Мини-диалог')+
+ '<section class="glam"><h2>💬 Послушай, повтори и ответь</h2><div class="dialogue">'+
+ '<div class="bubble"><div class="face">🐼</div><article class="chat"><div class="hanzi">'+MODEL.question+'</div><div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div>'+sound(MODEL.question)+'</article></div>'+
+ (show?'<div class="bubble reply"><div class="face">👦</div><article class="chat"><div class="hanzi">'+MODEL.answer+'</div><div class="py">'+MODEL.aPy+'</div><div class="ru">'+MODEL.aRu+'</div><span class="small">Прочитай вслух: для имени Миша отдельной записи пока нет</span></article></div>':
+ '<button type="button" class="play-big" data-reveal>💬 Ответить Панде: «Меня зовут Миша»</button>')+
+ '</div></section>'+
+ (show?'<section class="glam"><h2>🌸 Что запомнить</h2><div class="remember"><div>✅ <b>你叫什么名字？</b><span>Как тебя зовут?</span></div><div>✅ <b>我叫…</b><span>Меня зовут…</span></div></div>'+
+ '<p class="intro" style="margin-top:10px">Ты можешь назвать своё имя вместо Миши. Для этого нужна только конструкция 我叫…</p></section>'+
+ '<div class="reward">⭐ Отличная работа! Ты научился спрашивать имя и представляться.</div>':'<p class="hint">Сначала послушай Панду. Затем покажи ответ и прочитай его вслух.</p>')+'</section>';
 }
-function profileOutput(){
- const el=$('profile-output');if(!el)return;
- const p=state.profile,m=convertedProfile(),age=ageInChinese(p.age);
- const blocks=[
- ['你好！','Nǐ hǎo!','Привет!'],
- ['我叫'+(m.name.zh||'……')+'。','Wǒ jiào'+(m.name.py?' '+m.name.py:' …'),'Меня зовут '+(p.name||'…')+'.'],
- ['我是'+(m.job.zh||'……')+'。','Wǒ shì'+(m.job.py?' '+m.job.py:' …'),'Я по профессии '+(p.job||'…')+'.'],
- ['我今年'+(age?.zh||'……')+'岁。','Wǒ jīnnián '+(age?.py||'…')+' suì.','Мне '+(p.age||'…')+' лет.'],
- ['我住在'+(m.city.zh||'……')+'。','Wǒ zhù zài'+(m.city.py?' '+m.city.py:' …'),'Я живу в '+(p.city||'…')+'.']
- ];
- el.innerHTML=blocks.map(example).join('');
- const hints=[];
- if(p.name?.trim()&&!m.name.zh)hints.push('Имя не переведено на китайский — можешь указать иероглифы ниже.');
- if(p.city?.trim()&&!m.city.zh)hints.push('Незнакомый город не переводим автоматически.');
- if(p.job?.trim()&&!m.job.zh)hints.push('Незнакомую профессию не переводим автоматически.');
- const status=$('profile-conversion-status');
- if(status){status.textContent=hints.length?hints.join(' '):'✓ Фразы составлены. Звук доступен только для точных записанных примеров.';status.classList.toggle('warning',hints.length>0)}
- const next=$('screen').querySelector('[data-next]');if(next)next.disabled=!profileReady();
+let micActive=false;
+function startMic(){
+ const module=window.PandaHSK2PracticeV326;
+ if(micActive||!module?.speechAvailable()){notice('Микрофон недоступен в этом браузере. Нажми «Пройти без микрофона».');return}
+ micActive=true;notice('🎙️ Слушаю…');render();
+ module.recognize(['我叫米沙','我叫米莎'],(ok,msg)=>{
+  micActive=false;
+  if(ok!==null){state.mic=ok?'pass':'fail';state.recognized=msg||'';save()}
+  notice(msg||'');render();
+ });
 }
-/* v337: no profile database, no unknown city/name validation, no mandatory form. */
-function guidedIntroPractice(){
- const cards=[
- ['Поздоровайся','你好！','Nǐ hǎo!','Привет!','你好！'],
- ['Назови имя','我叫……','Wǒ jiào …','Меня зовут…','我叫熊猫。'],
- ['Назови профессию','我是……','Wǒ shì …','Я по профессии…','我是熊猫老师。'],
- ['Назови возраст','我今年……岁。','Wǒ jīnnián … suì.','Мне … лет.','我今年三岁了。'],
- ['Назови город','我住在……','Wǒ zhù zài …','Я живу в…','我住在中国。']
- ];
- return '<p class="intro">Никаких анкет. Прослушай пример каждой фразы и произнеси свой вариант вслух. Любое имя, любой город и любая профессия.</p>'+
- '<div class="pg-intro-practice">'+cards.map(([label,zh,py,ru,heard],i)=>'<article class="pg-intro-prompt">'+
- '<span class="pg-intro-counter">'+(i+1)+'</span><div class="pg-intro-text"><small>'+esc(label)+'</small><strong lang="zh-Hans">'+esc(zh)+'</strong><span class="py">'+esc(py)+'</span><span>'+esc(ru)+'</span></div>'+
- '<div class="pg-intro-listen">'+clipButton(heard)+'</div></article>').join('')+'</div>'+
- '<p class="notice">Пример звучит целиком, как написано в образце. Твоё собственное имя или название города нельзя оценить без распознавания речи; переход дальше свободный.</p>'+
- '<p id="audio-status" role="status" class="audio-status" aria-live="polite"></p>';
+function canAdvance(){
+ if(state.step===2)return state.heard&&state.checked&&state.selected===1&&state.build.map(i=>TOKENS[i]).join('')==='我叫米沙。';
+ if(state.step===3)return state.dialogueRevealed;
+ return true;
 }
-function profileForm(){
- const p=state.profile;
- return '<p class="intro">Пример ты уже услышал. Теперь назови себя: любое имя и любой город разрешены.</p>'+
- '<div class="intro-form">'+
- '<label>Как тебя зовут?<input data-field="name" maxlength="50" autocomplete="off" placeholder="Лёха / 李华" value="'+esc(p.name||'')+'"></label>'+
- '<label>Кто ты по профессии?<input data-field="job" list="pg-job-options" maxlength="50" autocomplete="off" placeholder="Врач / 医生 / 学生" value="'+esc(p.job||'')+'"></label>'+
- '<datalist id="pg-job-options"><option value="Врач"><option value="Учитель"><option value="Студент"><option value="医生"><option value="老师"><option value="学生"></datalist>'+
- '<label>Сколько тебе лет?<input data-field="age" type="number" inputmode="numeric" min="1" max="99" placeholder="25" value="'+esc(p.age||'')+'"></label>'+
- '<label>Где ты живёшь?<input data-field="city" maxlength="70" autocomplete="off" placeholder="Владимир / 北京" value="'+esc(p.city||'')+'"></label>'+
- '</div><details class="profile-optional"><summary>✏️ Знаешь своё имя или город иероглифами?</summary>'+
- '<label>Имя иероглифами (необязательно)<input data-field="nameZh" maxlength="30" value="'+esc(p.nameZh||'')+'" placeholder="Например: 李华"></label>'+
- '<label>Город иероглифами (необязательно)<input data-field="cityZh" maxlength="30" value="'+esc(p.cityZh||'')+'" placeholder="Например: 北京"></label>'+
- '</details><p id="profile-conversion-status" class="pg-profile-help" role="status"></p>'+
- '<div class="profile-phrases"><strong>Мой рассказ</strong><div class="intro-output" id="profile-output" aria-live="polite"></div></div>'+
- '<p id="audio-status" role="status" class="audio-status" aria-live="polite"></p>'+
- '<p class="notice">Имена и города не ограничены списком. Для незнакомых названий китайское написание не выдумываем. Данные сохраняются только в браузере.</p>';
-}
-function speechPhrase(kind){
- const p=convertedProfile(),isName=kind==='name';
- const stem=isName?'我叫':'我住在',resolved=isName?p.name.zh:p.city.zh;
- const phrase=resolved?stem+resolved:stem;
- const label=isName?'Меня зовут… × 3':'Я живу в… × 3';
- window.PandaHSK2PracticeV324?.open({id:'intro-'+kind,title:label,
- items:[{zh:phrase,ru:isName?'Тренируй 我叫. Можно произнести своё имя.':'Тренируй 我住在. Можно назвать свой город.',
- targets:[stem,phrase]}]});
-}
-const PANDA_INTRO_QUESTIONS=Object.freeze([
- {zh:'你好！',py:'Nǐ hǎo!',ru:'Поздоровайся с Пандой',sample:'你好！',samplePy:'Nǐ hǎo!',ruSample:'Привет!',audio:'你好'},
- {zh:'你叫什么名字？',py:'Nǐ jiào shénme míngzi?',ru:'Как тебя зовут?',sample:'我叫彼得。',samplePy:'Wǒ jiào Bǐdé.',ruSample:'Меня зовут Пётр.',audio:'你叫什么名字'},
- {zh:'你做什么工作？',py:'Nǐ zuò shénme gōngzuò?',ru:'Кем ты работаешь?',sample:'我是工人。',samplePy:'Wǒ shì gōngrén.',ruSample:'Я рабочий.',audio:'你做什么工作'},
- {zh:'你今年多大了？',py:'Nǐ jīnnián duō dà le?',ru:'Сколько тебе лет?',sample:'我今年二十五岁。',samplePy:'Wǒ jīnnián èrshíwǔ suì.',ruSample:'Мне 25 лет.',audio:'你今年多大了'},
- {zh:'你住在哪儿？',py:'Nǐ zhù zài nǎr?',ru:'Где ты живёшь?',sample:'我住在北京。',samplePy:'Wǒ zhù zài Běijīng.',ruSample:'Я живу в Пекине.',audio:'你住在哪儿'}
-]);
-function normalizeIntroAnswer(s){return String(s||'').normalize('NFKC').replace(/[。！？!?，,.\s\u200b]/g,'').trim()}
-function gradeIntroAnswerLegacy(index,answer){
- const x=normalizeIntroAnswer(answer);
- if(!x)return {ok:false,code:'empty',feedback:'Напиши ответ по-китайски или воспользуйся подсказкой.'};
- if(x.length>90)return {ok:false,code:'long',feedback:'Ответ слишком длинный. Начни с одной короткой фразы.'};
- if(/(?:什么名字|在哪儿|什么工作|叫啥|你叫什么|你住在|你做什么)/.test(x))return {ok:false,code:'question',feedback:'Это вопрос, а нам нужен твой ответ от первого лица: 我…'};
- if(index===0){
-  if(/^我叫(.+)$/.test(x)||/^我的名字(?:是|叫)(.+)$/.test(x)||/^我是(.+)$/.test(x)){
-   const name=x.replace(/^我叫|^我的名字(?:是|叫)|^我是/,'');
-   if(!name||/^(?:什么|谁|名字)$/.test(name))return {ok:false,code:'missing',feedback:'После 我叫 укажи имя. Например: 我叫安娜。'};
-   if(/^(?:医生|老师|学生|司机|工程师|厨师|工人|护士|经理|工作|一名|在)/.test(name))return {ok:false,code:'profession',feedback:'Ты назвал профессию или место, а Панда спросила имя. Начни с 我叫 + имя.'};
-   return {ok:true,code:'name',feedback:/[А-Яа-яA-Za-z]/.test(name)?'Строение фразы верное. Имя написано не иероглифами — его китайское произношение и тоны не проверены.':'Хорошо! Ты правильно представился. Имя может быть любым.'};
-  }
-  return {ok:false,code:'order',feedback:'Для знакомства используй 我叫 + имя. Например: 我叫安娜。'};
- }
- if(index===1){
-  if(/^我住在(.+)$/.test(x)||/^我住(.+)$/.test(x)){
-   const city=x.replace(/^我住在|^我住/,'');
-   if(!city||/(什么|哪儿|哪里)$/.test(city))return {ok:false,code:'missing',feedback:'После 住在 укажи город. Например: 我住在莫斯科。'};
-   if(/^(?:工作|医生|老师|学生|什么|是|学习)/.test(city))return {ok:false,code:'not-city',feedback:'После 住在 нужно назвать город или место, где живёшь. Например: 莫斯科。'};
-   return {ok:true,code:'city',feedback:x.startsWith('我住在')?'Правильно: 我 + 住在 + название города. Само название города автоматически не проверяется.':'В разговоре тебя поймут. Для учебного образца лучше 我住在 + город.'};
-  }
-  if(/^我在(.+)$/.test(x))return {ok:false,code:'location',feedback:'我在… означает «я нахожусь…». Чтобы сказать, где живёшь, добавь 住: 我住在莫斯科。'};
-  if(x==='莫斯科'||x==='北京'||x==='上海')return {ok:true,code:'short',feedback:'Короткий ответ допустим. Полным предложением: 我住在'+x+'。'};
-  return {ok:false,code:'order',feedback:'Шаблон для города: 我 + 住在 + город. Например: 我住在莫斯科。'};
- }
- if(index===2){
-  if(/^我(?:是|是一名|是一位|当)(.+)$/.test(x)){
-   const job=x.replace(/^我(?:是一名|是一位|是|当)/,'');
-   if(!job||/(什么|谁|吗)$/.test(job))return {ok:false,code:'missing',feedback:'После 我是 назови профессию: 我是医生。'};
-   if(/^(?:在|住|叫|什么|哪儿|莫斯科|北京|上海)/.test(job))return {ok:false,code:'not-job',feedback:'Ты назвал место или другое действие, а нужен ответ о профессии: 我是医生。'};
-   return {ok:true,code:'job',feedback:'Основа верная: 我是 + профессия. Само название незнакомой профессии автоматически не проверяется.'};
-  }
-  if(/^(?:我)?(?:没|没有)工作$/.test(x)||/^我(?:还在上学|是学生)$/.test(x))return {ok:true,code:'status',feedback:'Хороший ответ! Если сейчас не работаешь или учишься, можно сказать и так.'};
-  if(/^我在.+工作$/.test(x))return {ok:false,code:'workplace',feedback:'Так ты назвал место работы, а вопрос — о профессии. Скажи 我是医生。 или 我是老师。'};
-  return {ok:false,code:'order',feedback:'Профессию называем с 是: 我是医生。 Если не работаешь: 我没有工作。'};
- }
- return {ok:false,code:'unknown',feedback:'Не удалось определить вопрос.'};
-}
-function parseIntroAge(text){
- const d={'零':0,'〇':0,'一':1,'二':2,'两':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9};
- if(/^\d{1,3}$/.test(text)){const v=Number(text);return v>=1&&v<=120?v:null}
- if(!/^[零〇一二两三四五六七八九十百]+$/.test(text))return null;
- let n=0,x=text;
- if(x.includes('百')){let p=x.split('百');if(p.length!==2||!(d[p[0]]>=1))return null;n=100*d[p[0]];x=p[1]}
- if(x.includes('十')){let p=x.split('十');if(p.length!==2)return null;let a=p[0]===''?1:d[p[0]],b=p[1]===''?0:d[p[1]];if(!(a>=1)||b===undefined)return null;n+=10*a+b}
- else if(x){x=x.replace(/^零/,'');if(x.length>1||d[x]===undefined)return null;n+=d[x]}
- return n>=1&&n<=120?n:null;
-}
-function gradeIntroAnswer(index,raw){
- const x=normalizeIntroAnswer(raw);
- if(index===0){
-  if(/^(?:你好|您好|你们好|老师好|熊猫你好)(?:呀|啊)?$/.test(x))return {ok:true,code:'greeting',feedback:'✓ Отлично! Ты поздоровался.'};
-  return {ok:false,code:'greeting',feedback:'Поздоровайся: 你好！ Nǐ hǎo!'};
- }
- if(index===1)return gradeIntroAnswerLegacy(0,raw);
- if(index===2){
-  const result=gradeIntroAnswerLegacy(2,raw);
-  if(result.ok)return result;
-  if(/^我在[\u3400-\u9fff]{1,16}工作$/.test(x))return {ok:true,code:'workplace',feedback:'✓ Верно, ты рассказал, где работаешь. Название профессии можно сказать через 我是…'};
-  return result;
- }
- if(index===3){
-  const m=x.match(/^我(?:今年|已经)?([零〇一二两三四五六七八九十百\d]+)岁(?:了)?$/);
-  const years=m?parseIntroAge(m[1]):null;
-  return years!=null?{ok:true,code:'age',feedback:'✓ Правильно! Ты сказал, что тебе '+years+' лет.'}:{ok:false,code:'age',feedback:'Скажи: 我今年二十五岁。 — «Мне 25 лет».'};
- }
- if(index===4)return gradeIntroAnswerLegacy(1,raw);
- return {ok:false,code:'unknown',feedback:'Неизвестный вопрос.'};
-}
-
-// Проверка только текста и грамматики, не произношения и тонов.
-if(typeof window!=='undefined')window.PandaGoHsk2IntroCheck=Object.freeze({gradeIntroAnswer,normalizeIntroAnswer,PANDA_INTRO_QUESTIONS});
-let dialogueDraft='',dialogueFeedback=null;
-let activeIntroMic=null;
-function stopIntroMic(){if(activeIntroMic){try{activeIntroMic.abort()}catch{}activeIntroMic=null}}
-function introDialogueState(){
- const d=state.dialogue||{},expand=a=>Array.from({length:5},(_,i)=>!!(Array.isArray(a)&&a[i]));
- return {index:Math.max(0,Math.min(4,Number(d.index)||0)),started:!!d.started,passed:expand(d.passed),skipped:expand(d.skipped),hints:expand(d.hints),completed:!!d.completed,transcripts:Array.isArray(d.transcripts)?d.transcripts.slice(0,5):[],facts:d.facts&&typeof d.facts==='object'?d.facts:{},selfConfirmed:d.selfConfirmed&&typeof d.selfConfirmed==='object'?d.selfConfirmed:{}};
-}
-function introDialogueScreen(){
- const d=introDialogueState(),i=d.index,q=PANDA_INTRO_QUESTIONS[i],ready=!!(d.passed[i]||d.skipped[i]);
- if(!d.started)return '<div class="pg-talk-start"><div aria-hidden="true" class="pg-talk-panda">🐼🎧</div><h2>Поговорим с Пандой!</h2><p>Пять вопросов о тебе. Отвечай голосом или текстом. Если не знаешь ответ, используй подсказку.</p><button type="button" class="primary" data-dialogue-start>🎤 Начать разговор</button><p class="pg-talk-notice">Микрофон лучше работает в Chrome. Тоны пока не оцениваются.</p></div><p id="audio-status" class="audio-status" role="status"></p>';
- return '<div class="pg-talk"><div class="pg-talk-count">Вопрос '+(i+1)+' из 5 <span>✓ '+d.passed.filter(Boolean).length+' ответов</span></div>'+
- (Object.keys(d.facts).length?'<p class="pg-brain-memory">🧠 Панда запомнила: '+Object.entries(d.facts).filter(([key])=>key!=='workplace').map(([key,value])=>esc(({name:'имя',job:'профессия',age:'возраст',city:'город'})[key]||key)+': <b>'+esc(value)+'</b>').join(' · ')+'</p>':'')+
- '<div class="pg-talk-q"><span class="pg-talk-face">🐼</span><div class="pg-talk-bubble"><small>Панда спрашивает</small><strong lang="zh-Hans">'+esc(q.zh)+'</strong><span class="py">'+esc(q.py)+'</span><span>'+esc(q.ru)+'</span>'+
- (matchingAudio(q.audio)?clipButton(q.audio):'<small>Точной записи вопроса пока нет</small>')+'</div></div>'+
- '<label class="pg-talk-label" for="intro-answer">Твой ответ по-китайски</label><input id="intro-answer" type="text" maxlength="90" lang="zh-CN" autocomplete="off" spellcheck="false" placeholder="Например: '+esc(q.sample)+'" value="'+esc(dialogueDraft)+'" '+(d.passed[i]?'readonly':'')+'>'+
- '<div class="pg-talk-actions"><button type="button" class="primary" data-dialogue-mic>🎤 Сказать</button><button type="button" class="softbtn" data-dialogue-check '+(d.passed[i]?'disabled':'')+'>✓ Проверить</button></div>'+
- (dialogueFeedback?'<p class="pg-talk-feedback '+(dialogueFeedback.ok?'ok':'')+'" role="status">'+esc(dialogueFeedback.feedback)+'</p>':'')+
- (dialogueFeedback?.uncertain?'<button type="button" class="softbtn pg-brain-confirm" data-dialogue-confirm>Да, это моя профессия (значение не проверено)</button>':'')+
- (d.hints[i]?'<div class="pg-talk-hint"><strong>'+esc(q.sample)+'</strong><span class="py">'+esc(q.samplePy)+'</span><span>'+esc(q.ruSample)+'</span></div>':'')+
- '<div class="pg-talk-options"><button type="button" data-dialogue-hint>💡 Подсказка</button><button type="button" data-dialogue-skip '+(d.passed[i]?'disabled':'')+'>Пропустить</button></div>'+
- '<div class="pg-talk-actions"><button type="button" class="softbtn" data-dialogue-back '+(i===0?'disabled':'')+'>← Назад</button><button type="button" class="primary" data-dialogue-forward '+(ready?'':'disabled')+'>'+(i===4?'Завершить ✓':'Следующий вопрос →')+'</button></div>'+
- '<p class="pg-talk-notice">Распознавание браузера может использовать интернет и передавать голос сервису. Тоны не оцениваются автоматически.</p><p id="audio-status" class="audio-status" role="status"></p></div>';
-}
-/* Moscow landmark as local vector illustration: no outside image request and no tracking. */
-function cityIllustration(){
- return '<svg role="img" aria-label="Москва — иллюстрация Красной площади" viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg">'+
- '<defs><linearGradient id="sunlit" x2="0" y2="1"><stop stop-color="#b4d9f6"/><stop offset="1" stop-color="#ffe2ef"/></linearGradient></defs>'+
- '<rect width="140" height="160" fill="url(#sunlit)"/><circle cx="114" cy="21" r="15" fill="#fff3c2"/>'+
- '<path d="M0 131H140V160H0Z" fill="#9cbeaa"/>'+
- '<path d="M8 136V70H33V136ZM54 136V58H79V136ZM91 136V64H119V136Z" fill="#b65457" stroke="#883950" stroke-width="2"/>'+
- '<path d="M20 69C14 49 9 48 20 33C31 48 26 49 20 69Z" fill="#6dc3c7" stroke="#ab7b57" stroke-width="2"/>'+
- '<path d="M66 59C57 44 57 40 65 27C76 40 76 44 66 59Z" fill="#90a5e8" stroke="#965d88" stroke-width="2"/>'+
- '<path d="M105 63C89 47 92 40 106 31C119 41 122 49 105 63Z" fill="#f1bd66" stroke="#9a5776" stroke-width="2"/>'+
- '<path d="M9 72H32M54 60H79M91 66H119" stroke="#fff4cf" stroke-width="4"/>'+
- '<path d="M20 32V18M65 27V14M106 30V16" stroke="#d4a64f" stroke-width="2"/>'+
- '<g fill="#ffe8b5"><rect x="17" y="85" width="7" height="12" rx="3"/><rect x="17" y="106" width="7" height="12" rx="3"/><rect x="64" y="79" width="7" height="13" rx="3"/><rect x="64" y="104" width="7" height="15" rx="3"/><rect x="102" y="82" width="7" height="13" rx="3"/><rect x="102" y="109" width="7" height="11" rx="3"/></g>'+
- '<path d="M0 138Q32 132 68 138T140 138" fill="none" stroke="#fff6eb" stroke-width="4"/>'+
- '</svg>';
-}
-
-function placeWordsScreen(){
- return '<div class="hsk2-meaning-first">'+
- '<p class="meaning-lead">Прежде чем составлять предложение, поймём два слова и их место в фразе.</p>'+
- '<div class="meaning-two">'+
- '<article class="meaning-tile"><span class="meaning-character" lang="zh-Hans">住</span><span class="meaning-pinyin py">zhù · 4-й тон</span><span class="meaning-russian">жить</span><span class="meaning-role">Это действие: что человек делает?</span></article>'+
- '<article class="meaning-tile"><span class="meaning-character" lang="zh-Hans">在</span><span class="meaning-pinyin py">zài · 4-й тон</span><span class="meaning-russian">в / на</span><span class="meaning-role">Здесь указывает место: где живёт?</span></article>'+
- '</div>'+
- '<div class="meaning-connect"><strong lang="zh-Hans">住 + 在 → 住在</strong><span class="py">zhù + zài → zhù zài</span><span>Вместе: <b>«жить в определённом месте»</b></span></div>'+
- '<p class="meaning-note"><b>Порядок:</b> сначала действие <b lang="zh-Hans">住</b> (жить), за ним <b lang="zh-Hans">在</b> (указание места), а после — город. Оба слова произносятся с <b>4-м, падающим тоном</b>.</p>'+
- 
- '<p class="meaning-prompt">🔇 Аудио для 住 и 在 ещё записывается. Далее — собираем фразу →</p>'+
- '</div>';
-}
-
-function structureScreen(){
- const parts=[
-  ['我','wǒ','я','👤'],
-  ['住','zhù','жить','⌂'],
-  ['在','zài','в (место)','📍'],
-  ['莫斯科','Mòsīkē','Москва','🏙️']
- ];
- return '<div class="hsk2-structure" data-view="'+(state.structureTab==='order'?'order':'phrase')+'">'+
- '<div class="hsk2-structure-tabs"><button type="button" data-structure-tab="phrase" aria-pressed="'+(state.structureTab!=='order')+'">🧩 Фраза и слова</button><button type="button" data-structure-tab="order" aria-pressed="'+(state.structureTab==='order')+'">📖 Порядок слов</button></div>'+
- '<div class="hsk2-phrase-card">'+
- '<div class="hsk2-city-art">'+cityIllustration()+'</div>'+
- '<div class="hsk2-phrase-main">'+
- (matchingAudio('我住在莫斯科。')?clipButton('我住在莫斯科。'):'<span class="hsk2-missing-audio">🔇 Для этой фразы пока нет записи</span>')+
- '<div class="hanzi" lang="zh-Hans">我住在莫斯科。</div>'+
- '<span class="pronounce py">Wǒ zhù zài Mòsīkē.</span>'+
- '<div class="translation">Я живу в Москве.</div></div></div>'+
- '<div class="hsk2-ribbon">Из чего состоит предложение</div>'+
- '<div class="hsk2-word-parts">'+parts.map(p=>'<div class="hsk2-word-part"><span class="mark" aria-hidden="true">'+p[3]+'</span><span class="symbol" lang="zh-Hans">'+p[0]+'</span><span class="phonetic py">'+p[1]+'</span><span class="meaning">'+p[2]+'</span></div>').join('')+'</div>'+
- '<div class="hsk2-ribbon">Порядок слов: что за чем?</div>'+
- '<div class="hsk2-order"><div><strong>① КТО?</strong><b lang="zh-Hans">我</b></div><div><strong>② ЧТО ДЕЛАЕТ?</strong><b lang="zh-Hans">住在</b></div><div><strong>③ ГДЕ?</strong><b lang="zh-Hans">莫斯科</b></div></div>'+
- '<p class="hsk2-order-note"><strong>Правило:</strong> сначала <b>кто</b>, затем <b>живёт в (住在)</b>, затем <b>город</b>. Слово <b>住</b> означает «жить», а <b>在</b> здесь указывает место. Вместе <b>住在</b> — «жить в».</p>'+
- '<div class="hsk2-order-note"><strong>🎧 Послушай также:</strong></div>'+example(['我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.'])+
- '<p class="lesson-note">Дальше ты попробуешь сказать, где живёшь сам.</p>'+
- '</div>';
-}
-
 function render(){
- stopIntroMic();
- stopApprovedAudio();
- state.step=Math.max(0,Math.min(steps.length-1,Number(state.step)||0));
- const i=state.step,s=steps[i],answer=state.answers[i];let inside='';
- $('app').classList.toggle('structure-page',s.kind==='structure'||s.kind==='place-words');
- if(s.kind==='model-dialogue')inside='<p class="intro">Послушай четыре короткие реплики. Потом разберём слова и попробуем ответить сами.</p>'+
- '<div class="model-lines">'+s.items.map(([who,zh,py,ru])=>'<article class="model-line '+(who==='B'?'reply':'')+'"><small class="model-who">'+(who==='A'?'Ученик':'Панда')+'</small><strong lang="zh-Hans">'+esc(zh)+'</strong><span class="py">'+esc(py)+'</span><span>'+esc(ru)+'</span>'+clipButton(zh)+'</article>').join('')+'</div><p id="audio-status" class="audio-status" role="status"></p>';
- if(s.kind==='words')inside='<p class="intro">Новые слова: иероглифы, пиньинь и перевод.</p><div class="vocgrid">'+s.items.map(word).join('')+'</div><p id="audio-status" class="audio-status" role="status" aria-live="polite"></p><p class="notice">Нажми 🔊 рядом со словом, послушай и повтори. Если записи пока нет, появится 🔇.</p>';
- if(s.kind==='place-words')inside=placeWordsScreen();
- if(s.kind==='structure')inside=structureScreen();
- if(s.kind==='rule')inside='<div class="rule">'+esc(s.formula)+'</div>'+example(s.example)+(s.extra||[]).map(example).join('')+'<p class="explain spaced">'+esc(s.why)+'</p><p id="audio-status" class="audio-status" role="status" aria-live="polite"></p>';
- if(s.kind==='rule'&&s.title==='Говорим своё имя')inside+='<button type="button" class="pg-speaking-launch" data-pg-drill="name">🎤 Скажи «我叫…» три раза</button>';
- if(s.kind==='structure')inside+='<button type="button" class="pg-speaking-launch" data-pg-drill="city">🎤 Скажи «我住在…» три раза</button>';
- if(s.kind==='examples')inside='<div class="examples">'+s.items.map(example).join('')+'</div>';
- if(s.kind==='dialogue'){
-  state.readDialoguePair=Math.max(0,Math.min(2,Number(state.readDialoguePair)||0));
-  inside='<p class="intro">Прочитай две реплики и перейди к следующей паре.</p>'+
-   s.items.slice(state.readDialoguePair*2,state.readDialoguePair*2+2).map(([who,zh,py,ru])=>'<div class="bubble '+(who==='B'?'right':'')+'"><b lang="zh-Hans">'+esc(zh)+'</b><em class="py">'+esc(py)+'</em><span>'+esc(ru)+'</span>'+clipButton(zh)+'</div>').join('')+
-   '<div class="lesson-read-nav"><button class="softbtn" type="button" data-read-dialogue="prev" '+(state.readDialoguePair===0?'disabled':'')+'>← Раньше</button><small>Реплики '+(state.readDialoguePair*2+1)+'–'+(state.readDialoguePair*2+2)+' из 6</small><button class="softbtn" type="button" data-read-dialogue="next" '+(state.readDialoguePair===2?'disabled':'')+'>Далее →</button></div>'+
-   '<p class="notice">Это учебный диалог. Panda AI подключается отдельно.</p>';
- }
- if(s.kind==='listening-quiz')inside='<div class="journey-audio-question"><p class="intro">Сначала послушай запись. Затем выбери перевод.</p>'+(matchingAudio(s.audio)?'<button type="button" class="primary journey-listen" data-audio="'+esc(s.audio)+'" aria-label="Прослушать вопрос по-китайски">▶ Слушать вопрос</button>':'<p class="notice">Точной записи пока нет. Это задание можно пропустить.</p>')+'<p id="audio-status" role="status" class="audio-status"></p><p class="intro"><b>'+esc(s.question)+'</b></p><div class="choices">'+s.choices.map((v,n)=>'<button type="button" class="choice '+(answer!=null?(n===s.answer?'correct':answer===n?'wrong':''):'')+'" data-answer="'+n+'">'+esc(v)+'</button>').join('')+'</div><p class="feedback '+(answer===s.answer?'ok':'')+'" role="status">'+(answer==null?'Выбери перевод после прослушивания.':(answer===s.answer?'✓ Верно. ':'Пока неверно. ')+esc(s.why))+'</p></div>';
- if(s.kind==='quiz')inside='<p class="intro"><b>'+esc(s.question)+'</b></p><div class="choices">'+s.choices.map((v,n)=>'<button class="choice '+(answer!=null?(n===s.answer?'correct':n===answer?'wrong':''):'')+'" data-answer="'+n+'">'+esc(v)+'</button>').join('')+'</div><div role="status" class="feedback '+(answer===s.answer?'ok':'')+'">'+(answer==null?'Выбери ответ.':(answer===s.answer?'✓ Правильно. ':'Проверь пример. ')+esc(s.why))+'</div>';
- if(s.kind==='build'){let a=state.build,str=a.map(n=>s.tokens[n]).join(''),ok=str===s.answer.join('');inside='<p class="intro">'+esc(s.question)+'</p><div class="builder">'+(a.length?a.map((n,j)=>'<button type="button" data-remove="'+j+'">'+esc(s.tokens[n])+'</button>').join(''):'<span class="small-caption">Выбирай слова в правильном порядке.</span>')+'</div><div class="tokens">'+s.tokens.map((w,n)=>'<button type="button" data-token="'+n+'" '+(a.includes(n)?'disabled':'')+'>'+esc(w)+'</button>').join('')+'</div><p class="feedback '+(ok?'ok':'')+'">'+(ok?'✓ Верно!':esc(s.why))+'</p>'}
- if(s.kind==='guided-practice')inside=guidedIntroPractice();
- if(s.kind==='speaking5')inside='<div class="journey-speaking-intro"><b>Четыре слова, пять попыток для каждого</b><p>Нажми на слово и произнеси его по-китайски. Галочка означает, что браузер распознал текст, но <strong>не подтверждает правильность тонов</strong>.</p></div><div class="journey-speaking" id="journey-speaking"></div>';
- if(s.kind==='dialogue-practice')inside=introDialogueScreen();
- if(s.kind==='finish'){const d=introDialogueState(),correct=d.passed.filter(Boolean).length,skipped=d.skipped.filter(Boolean).length;inside='<div class="pg-talk-result"><div style="text-align:center;font-size:35px">🐼🌸</div><h2 style="text-align:center">Разговор завершён!</h2><p class="explain">Принято ответов: '+correct+' из 5. Пропущено: '+skipped+'.</p><div class="pg-talk-recap">'+PANDA_INTRO_QUESTIONS.map((q,j)=>'<div><b>'+(d.passed[j]?'✓':'○')+'</b><span><strong>'+esc(q.ru)+'</strong><small>'+esc(d.transcripts[j]||'Пропущено')+'</small></span></div>').join('')+'</div><button type="button" class="softbtn" data-dialogue-restart>↻ Повторить разговор</button><p class="pg-talk-notice">Оценка только текста и структуры; тоны не проверялись.</p></div>'}
- const disabled=((s.kind==='quiz'||s.kind==='listening-quiz')&&answer!==s.answer)||(s.kind==='build'&&state.build.map(n=>s.tokens[n]).join('')!==s.answer.join(''))||(s.kind==='dialogue-practice'&&!introDialogueState().completed);
- $('screen').innerHTML='<div class="banner">Я и моя визитка · HSK 2</div>'+
- '<div class="lesson-title"><strong>'+esc(s.title)+'</strong><span class="pill">Шаг '+(i+1)+' из '+steps.length+'</span></div>'+
- '<div class="meter"><i style="width:'+(i+1)*100/steps.length+'%"></i></div>'+
- '<section class="paper" aria-label="Урок самопрезентации">'+inside+'</section>'+
- '<div class="toolbar"><button class="softbtn" data-py type="button">'+(state.showPy?'Скрыть пиньинь':'Показать пиньинь')+'</button><button class="softbtn" data-repeat type="button">↻ Повторить</button></div>'+
- '<div class="bottom-actions"><div class="toolbar"><button class="softbtn" data-prev type="button" '+(i===0?'disabled':'')+'>← Назад</button><button class="primary" data-next type="button" '+(disabled?'disabled':'')+'>'+(s.kind==='finish'?'К карте HSK 2 →':s.kind==='dialogue-practice'?'К итогам →':'Дальше →')+'</button></div></div>'+
- '<p class="small-caption">Слушай образцы и повторяй. Тоны проверяй по пиньиню.</p>';
- $('screen').classList.toggle('hiddenpy',!state.showPy);
- if(s.kind==='speaking5')window.PandaHSK2PracticeV326?.mountFinal($('journey-speaking'),[['叫','jiào','зваться'],['住','zhù','жить'],['工作','gōngzuò','работать'],['医生','yīshēng','врач']],'journey-intro-final-five-v345');
- $('screen').querySelectorAll('[data-pg-drill]').forEach(b=>b.addEventListener('click',()=>speechPhrase(b.dataset.pgDrill)));
- $('screen').querySelectorAll('[data-structure-tab]').forEach(b=>b.addEventListener('click',()=>{state.structureTab=b.dataset.structureTab==='order'?'order':'phrase';save();render()}));
- $('screen').querySelectorAll('[data-read-dialogue]').forEach(b=>b.addEventListener('click',()=>{state.readDialoguePair=Math.max(0,Math.min(2,state.readDialoguePair+(b.dataset.readDialogue==='next'?1:-1)));save();render()}));
- $('screen').querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{state.answers[i]=Number(b.dataset.answer);save();render()}));
- $('screen').querySelectorAll('[data-token]').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.token);if(!state.build.includes(n))state.build.push(n);save();render()}));
- $('screen').querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',()=>{state.build.splice(Number(b.dataset.remove),1);save();render()}));
- $('screen').querySelector('[data-py]').addEventListener('click',()=>{state.showPy=!state.showPy;save();render()});
- $('screen').querySelector('[data-repeat]').addEventListener('click',()=>{state.step=0;state.completed=false;state.answers={};state.build=[];state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[],facts:{},selfConfirmed:{}};dialogueDraft='';dialogueFeedback=null;save();render()});
- $('screen').querySelector('[data-prev]').addEventListener('click',()=>{if(state.step>0){state.step--;save();render()}});
- $('screen').querySelector('[data-next]').addEventListener('click',()=>{if(s.kind==='profile'?!profileReady():disabled)return;if(s.kind==='finish'){state.completed=true;save();location.href='./hsk2-start.html#map'}else{state.step++;save();render()}});
- if(s.kind==='dialogue-practice'){
-  const d=introDialogueState();
-  const begin=$('screen').querySelector('[data-dialogue-start]');
-  if(begin)begin.addEventListener('click',()=>{state.dialogue.started=true;save();render();if(matchingAudio(PANDA_INTRO_QUESTIONS[0].audio))playApprovedAudio(PANDA_INTRO_QUESTIONS[0].audio)});
-  else {
-   const input=$('intro-answer');
-   input.addEventListener('input',()=>{dialogueDraft=input.value});
-   const check=raw=>{
-    dialogueDraft=String(raw||'').trim();
-    const brain=window.PandaBrainV341;
-    if(!brain){dialogueFeedback={ok:false,feedback:'Panda Brain не загрузился. Обнови страницу в Chrome.'};render();return}
-    const result=brain.assess(d.index,dialogueDraft);
-    dialogueFeedback={ok:result.ok,uncertain:!!result.uncertain,feedback:result.feedback,matched:result.matched};
-    if(result.ok){
-     const passed=[...d.passed],transcripts=[...d.transcripts];
-     passed[d.index]=true;transcripts[d.index]=dialogueDraft;
-     for(const f of result.facts||[]){
-      const i=brain.slots.indexOf(f.kind);
-      if(i>=0&&f.status==='valid'){passed[i]=true;transcripts[i]=dialogueDraft}
-     }
-     state.dialogue.passed=passed;state.dialogue.transcripts=transcripts;
-     state.dialogue.facts={...d.facts,...brain.memory(result.facts)};
-     save();
-     const extra=(result.facts||[]).filter(f=>brain.slots.indexOf(f.kind)!==d.index);
-     if(extra.length)dialogueFeedback.feedback+=' Запомнила также: '+extra.map(f=>({name:'имя',job:'профессию',age:'возраст',city:'город'})[f.kind]||f.kind).join(', ')+'.';
-    }
-    render();
-   };
-   input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();check(input.value)}});
-   $('screen').querySelector('[data-dialogue-check]').addEventListener('click',()=>check(input.value));
-   $('screen').querySelector('[data-dialogue-hint]').addEventListener('click',()=>{state.dialogue.hints=[...d.hints];state.dialogue.hints[d.index]=!d.hints[d.index];save();render()});
-   const advance=()=>{
-    stopIntroMic();
-    const brain=window.PandaBrainV341;
-    const next=brain?brain.nextPending(d.index,state.dialogue.passed||d.passed,state.dialogue.skipped||d.skipped):(d.index<4?d.index+1:-1);
-    if(next>=0){state.dialogue.index=next;dialogueDraft=(state.dialogue.transcripts||[])[next]||'';dialogueFeedback=null;save();render();if(matchingAudio(PANDA_INTRO_QUESTIONS[next].audio))playApprovedAudio(PANDA_INTRO_QUESTIONS[next].audio)}
-    else{state.dialogue.completed=true;save();state.step++;dialogueDraft='';dialogueFeedback=null;save();render()}
-   };
-   $('screen').querySelector('[data-dialogue-skip]').addEventListener('click',()=>{state.dialogue.skipped=[...d.skipped];state.dialogue.skipped[d.index]=true;save();advance()});
-   $('screen').querySelector('[data-dialogue-forward]').addEventListener('click',()=>{if(d.passed[d.index]||d.skipped[d.index])advance()});
-   const confirm=$('screen').querySelector('[data-dialogue-confirm]');
-   if(confirm)confirm.addEventListener('click',()=>{
-    if(!dialogueFeedback?.uncertain||!dialogueFeedback.matched||d.index!==2)return;
-    const term=dialogueFeedback.matched.value;
-    state.dialogue.passed=[...d.passed];state.dialogue.passed[d.index]=true;
-    state.dialogue.transcripts=[...d.transcripts];state.dialogue.transcripts[d.index]=dialogueDraft;
-    state.dialogue.facts={...d.facts,job:term};
-    state.dialogue.selfConfirmed={...d.selfConfirmed,job:true};
-    dialogueFeedback={ok:true,feedback:'✓ Принято по твоему подтверждению. Значение профессии не проверено.'};
-    save();render();
-   });
-   $('screen').querySelector('[data-dialogue-back]').addEventListener('click',()=>{if(d.index>0){stopIntroMic();state.dialogue.index=d.index-1;dialogueDraft=d.transcripts[d.index-1]||'';dialogueFeedback=null;save();render()}});
-   const mic=$('screen').querySelector('[data-dialogue-mic]');
-   mic.addEventListener('click',()=>{
-    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-    if(!SR){dialogueFeedback={ok:false,feedback:'Распознавание недоступно. Открой урок в Chrome или введи текст.'};render();return}
-    stopIntroMic();const recog=new SR();activeIntroMic=recog;
-    recog.lang='zh-CN';recog.interimResults=false;recog.maxAlternatives=3;recog.continuous=false;
-    mic.disabled=true;mic.textContent='🎤 Слушаю…';
-    recog.onresult=e=>{if(activeIntroMic!==recog)return;activeIntroMic=null;const heard=e.results?.[0]?.[0]?.transcript;if(typeof heard==='string'&&heard.trim())check(heard);else{dialogueFeedback={ok:false,feedback:'Голос не распознан. Попробуй снова или напиши текст.'};render()}};
-    recog.onerror=e=>{if(activeIntroMic!==recog)return;activeIntroMic=null;dialogueFeedback={ok:false,feedback:(e.error==='not-allowed'||e.error==='service-not-allowed')?'Разреши доступ к микрофону в Chrome или напиши ответ.':'Не удалось распознать речь. Попробуй ещё раз или введи текст.'};render()};
-    recog.onend=()=>{if(activeIntroMic!==recog)return;activeIntroMic=null;mic.disabled=false;mic.textContent='🎤 Сказать'};
-    try{recog.start()}catch{activeIntroMic=null;dialogueFeedback={ok:false,feedback:'Микрофон не запустился. Напиши ответ.'};render()}
-   });
-  }
- }
- if(s.kind==='finish'){
-  const button=$('screen').querySelector('[data-dialogue-restart]');
-  if(button)button.addEventListener('click',()=>{stopIntroMic();state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[],facts:{},selfConfirmed:{}};state.step=steps.findIndex(x=>x.kind==='dialogue-practice');dialogueDraft='';dialogueFeedback=null;save();render()});
- }
- if(s.kind==='profile'){
-  $('screen').querySelectorAll('[data-field]').forEach(el=>el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>{state.profile[el.dataset.field]=el.value;save();profileOutput()}));
-  profileOutput();
- }
+ const views=[renderPlan,renderGrammar,renderTest,renderDialogue];
+ $('screen').innerHTML=views[state.step]();
+ shadePinyin();
+ $('prev').disabled=state.step===0;
+ $('next').disabled=!canAdvance();
+ $('next').textContent=state.step===0?'Начать урок →':state.step===3?'Завершить урок ✓':'Дальше →';
+ $('repeat').textContent=state.step===0?'↻ План заново':'↻ Повторить';
 }
-$('scene-sub').textContent='HSK 2 · Урок 1 · Я и моя визитка';
-$('scene-caption').textContent='Слова · грамматика · тест';
-document.querySelector('.backlink').href='./hsk2-start.html#map';
-document.querySelectorAll('.nav a').forEach(a=>{const h=a.getAttribute('href');a.href='./hsk2-start.html'+h});
 $('screen').addEventListener('click',event=>{
- const btn=event.target&&event.target.closest&&event.target.closest('[data-audio]');
- if(btn&&$('screen').contains(btn))playApprovedAudio(btn.dataset.audio);
+ const b=event.target.closest('button');if(!b)return;
+ if(b.dataset.audio){goAudio(b.dataset.audio);render();return}
+ if(b.hasAttribute('data-choice')){state.selected=Number(b.dataset.choice);state.checked=false;save();render();return}
+ if(b.hasAttribute('data-check')){state.checked=true;save();render();return}
+ if(b.hasAttribute('data-tile')){const id=Number(b.dataset.tile);if(!state.build.includes(id))state.build.push(id);save();render();return}
+ if(b.hasAttribute('data-remove')){state.build.splice(Number(b.dataset.remove),1);save();render();return}
+ if(b.hasAttribute('data-mic')){startMic();return}
+ if(b.hasAttribute('data-skip')){state.mic='skip';save();render();return}
+ if(b.hasAttribute('data-reveal')){state.dialogueRevealed=true;save();render();return}
+});
+$('toggle-py').addEventListener('click',()=>{state.showPy=!state.showPy;save();shadePinyin()});
+$('prev').addEventListener('click',()=>{if(state.step>0){window.PandaHsk2AudioV330?.stop();state.step--;save();notice('');render();$('page').scrollTop=0}});
+$('next').addEventListener('click',()=>{
+ if(!canAdvance())return;
+ window.PandaHsk2AudioV330?.stop();
+ if(state.step===TOTAL-1){
+  state.completed=true;save();
+  location.href='./hsk2-start.html#map';return;
+ }
+ state.step++;save();notice('');render();$('page').scrollTop=0;
+});
+$('repeat').addEventListener('click',()=>{
+ window.PandaHsk2AudioV330?.stop();
+ if(state.step===2){state.selected=null;state.checked=false;state.heard=false;state.build=[];state.mic='none'}
+ if(state.step===3)state.dialogueRevealed=false;
+ if(state.step===0)state.step=0;
+ save();notice('Задание готово к повторению');render();$('page').scrollTop=0;
 });
 render();
 })();
-</script></body></html>
+</script>
+</body>
+</html>
