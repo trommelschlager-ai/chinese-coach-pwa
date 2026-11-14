@@ -1,0 +1,705 @@
+{
+  "version": "v330",
+  "updated": "2026-11-14",
+  "total": 87,
+  "available": 12,
+  "pending": 75,
+  "items": [
+    {
+      "area": "Мостик — Знакомство и интересы",
+      "zh": "中文",
+      "pinyin": "Zhōngwén",
+      "ru": "китайский язык",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Учёба и язык",
+      "zh": "学习",
+      "pinyin": "xuéxí",
+      "ru": "изучать; учиться",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Урок 1 — слова",
+      "zh": "忙",
+      "pinyin": "máng",
+      "ru": "занят",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Основы предложения",
+      "zh": "很",
+      "pinyin": "hěn",
+      "ru": "очень; связка",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/2ddeccad2b8bf7e6.mp3"
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "我",
+      "pinyin": "wǒ",
+      "ru": "я · повторение HSK 1",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/dd11a8f5911624cd.mp3"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "你",
+      "pinyin": "nǐ",
+      "ru": "ты",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/b53d4897df0f7b46.mp3"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "他",
+      "pinyin": "tā",
+      "ru": "он",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "她",
+      "pinyin": "tā",
+      "ru": "она",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "是",
+      "pinyin": "shì",
+      "ru": "быть, являться",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/857d5b8153843fc2.mp3"
+    },
+    {
+      "area": "Мостик — Основы предложения",
+      "zh": "不",
+      "pinyin": "bù",
+      "ru": "не",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "吗",
+      "pinyin": "ma",
+      "ru": "вопросительная частица",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "老师",
+      "pinyin": "lǎoshī",
+      "ru": "учитель · повторение HSK 1",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "三",
+      "pinyin": "sān",
+      "ru": "три",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "十",
+      "pinyin": "shí",
+      "ru": "десять",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "今天",
+      "pinyin": "jīntiān",
+      "ru": "сегодня",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "星期",
+      "pinyin": "xīngqī",
+      "ru": "неделя; день недели",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/5c55908bf6e93067.mp3"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "妈妈",
+      "pinyin": "māma",
+      "ru": "мама",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/2d034b9ed277bb0d.mp3"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "爸爸",
+      "pinyin": "bàba",
+      "ru": "папа",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/22a50f8a2497116d.mp3"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "天气",
+      "pinyin": "tiānqì",
+      "ru": "погода",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/5535eb8d225614ed.mp3"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "下雨",
+      "pinyin": "xià yǔ",
+      "ru": "идёт дождь",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "年",
+      "pinyin": "nián",
+      "ru": "год",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/f7a81d33ad2fd572.mp3"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "月",
+      "pinyin": "yuè",
+      "ru": "месяц",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/cb265750b2a6cf8a.mp3"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "日",
+      "pinyin": "rì",
+      "ru": "день; дата",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/f7bb63978bb8686d.mp3"
+    },
+    {
+      "area": "Повторение HSK1",
+      "zh": "号",
+      "pinyin": "hào",
+      "ru": "число месяца",
+      "status": "existing-approved",
+      "source": "./assets/owner-clean-v237/494674d90c5cdb0e.mp3"
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我学习中文",
+      "pinyin": "Wǒ xuéxí Zhōngwén.",
+      "ru": "Я изучаю китайский.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Примеры",
+      "zh": "你学习中文",
+      "pinyin": "Nǐ xuéxí Zhōngwén.",
+      "ru": "Ты изучаешь китайский.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Грамматика",
+      "zh": "他学习中文",
+      "pinyin": "Tā xuéxí Zhōngwén.",
+      "ru": "Он изучает китайский.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Урок 1 — диалог",
+      "zh": "我很忙",
+      "pinyin": "Wǒ hěn máng.",
+      "ru": "Я занят.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Грамматика",
+      "zh": "你很忙",
+      "pinyin": "Nǐ hěn máng.",
+      "ru": "Ты занят.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Примеры",
+      "zh": "他很忙",
+      "pinyin": "Tā hěn máng.",
+      "ru": "Он занят.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Урок 1 — диалог",
+      "zh": "你学习中文吗",
+      "pinyin": "Nǐ xuéxí Zhōngwén ma?",
+      "ru": "Ты учишь китайский?",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Урок 1 — диалог",
+      "zh": "你忙吗",
+      "pinyin": "Nǐ máng ma?",
+      "ru": "Ты занят?",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Примеры",
+      "zh": "我不是老师",
+      "pinyin": "Wǒ bú shì lǎoshī.",
+      "ru": "Я не учитель.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Примеры",
+      "zh": "你是老师吗",
+      "pinyin": "Nǐ shì lǎoshī ma?",
+      "ru": "Ты учитель?",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Примеры",
+      "zh": "今天下雨",
+      "pinyin": "Jīntiān xià yǔ.",
+      "ru": "Сегодня идёт дождь.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "叫",
+      "pinyin": "jiào",
+      "ru": "зваться, называться",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "名字",
+      "pinyin": "míngzi",
+      "ru": "имя",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "什么",
+      "pinyin": "shénme",
+      "ru": "что, какой",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "住",
+      "pinyin": "zhù",
+      "ru": "жить",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "在",
+      "pinyin": "zài",
+      "ru": "находиться; в",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "哪儿",
+      "pinyin": "nǎr",
+      "ru": "где (разговорно)",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "莫斯科",
+      "pinyin": "Mòsīkē",
+      "ru": "Москва · пример города",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Работа и город",
+      "zh": "工作",
+      "pinyin": "gōngzuò",
+      "ru": "работать; работа",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "做",
+      "pinyin": "zuò",
+      "ru": "делать",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Знакомство — слова",
+      "zh": "医生",
+      "pinyin": "yīshēng",
+      "ru": "врач",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Знакомство — диалог",
+      "zh": "我叫安娜",
+      "pinyin": "Wǒ jiào Ānnà.",
+      "ru": "Меня зовут Анна.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Знакомство — диалог",
+      "zh": "我是医生",
+      "pinyin": "Wǒ shì yīshēng.",
+      "ru": "Я врач.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "我住在莫斯科",
+      "pinyin": "Wǒ zhù zài Mòsīkē",
+      "ru": "Я живу в Москве",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "你叫什么名字",
+      "pinyin": "Nǐ jiào shénme míngzi",
+      "ru": "Как тебя зовут?",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "你住在哪儿",
+      "pinyin": "Nǐ zhù zài nǎr",
+      "ru": "Где ты живёшь?",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "你做什么工作",
+      "pinyin": "Nǐ zuò shénme gōngzuò",
+      "ru": "Кем ты работаешь?",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Основы предложения",
+      "zh": "的",
+      "pinyin": "de",
+      "ru": "частица принадлежности",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Основы предложения",
+      "zh": "好",
+      "pinyin": "hǎo",
+      "ru": "хороший",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我很好",
+      "pinyin": "Wǒ hěn hǎo.",
+      "ru": "У меня всё хорошо.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我不在家",
+      "pinyin": "Wǒ bú zài jiā.",
+      "ru": "Меня нет дома.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Знакомство и интересы",
+      "zh": "爱",
+      "pinyin": "ài",
+      "ru": "любить",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Знакомство и интересы",
+      "zh": "朋友",
+      "pinyin": "péngyou",
+      "ru": "друг",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Знакомство и интересы",
+      "zh": "喜欢",
+      "pinyin": "xǐhuan",
+      "ru": "нравиться",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Знакомство и интересы",
+      "zh": "中国",
+      "pinyin": "Zhōngguó",
+      "ru": "Китай",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我喜欢中文",
+      "pinyin": "Wǒ xǐhuan Zhōngwén.",
+      "ru": "Мне нравится китайский язык.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我爱中国",
+      "pinyin": "Wǒ ài Zhōngguó.",
+      "ru": "Я люблю Китай.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Учёба и язык",
+      "zh": "说",
+      "pinyin": "shuō",
+      "ru": "говорить",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Учёба и язык",
+      "zh": "读",
+      "pinyin": "dú",
+      "ru": "читать",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Учёба и язык",
+      "zh": "写",
+      "pinyin": "xiě",
+      "ru": "писать",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Учёба и язык",
+      "zh": "听",
+      "pinyin": "tīng",
+      "ru": "слушать",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我听老师说中文",
+      "pinyin": "Wǒ tīng lǎoshī shuō Zhōngwén.",
+      "ru": "Я слушаю, как учитель говорит по-китайски.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Еда и напитки",
+      "zh": "吃",
+      "pinyin": "chī",
+      "ru": "есть",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Еда и напитки",
+      "zh": "喝",
+      "pinyin": "hē",
+      "ru": "пить",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Еда и напитки",
+      "zh": "茶",
+      "pinyin": "chá",
+      "ru": "чай",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Еда и напитки",
+      "zh": "水",
+      "pinyin": "shuǐ",
+      "ru": "вода",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Еда и напитки",
+      "zh": "饭",
+      "pinyin": "fàn",
+      "ru": "еда; рис",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我喝茶",
+      "pinyin": "Wǒ hē chá.",
+      "ru": "Я пью чай.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我想吃饭",
+      "pinyin": "Wǒ xiǎng chī fàn.",
+      "ru": "Я хочу поесть.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Работа и город",
+      "zh": "饭店",
+      "pinyin": "fàndiàn",
+      "ru": "ресторан",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Работа и город",
+      "zh": "公司",
+      "pinyin": "gōngsī",
+      "ru": "компания",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Работа и город",
+      "zh": "去",
+      "pinyin": "qù",
+      "ru": "идти; ехать",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Работа и город",
+      "zh": "来",
+      "pinyin": "lái",
+      "ru": "приходить",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我在公司工作",
+      "pinyin": "Wǒ zài gōngsī gōngzuò.",
+      "ru": "Я работаю в компании.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我去饭店",
+      "pinyin": "Wǒ qù fàndiàn.",
+      "ru": "Я иду в ресторан.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Действия и время",
+      "zh": "看",
+      "pinyin": "kàn",
+      "ru": "смотреть",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Действия и время",
+      "zh": "想",
+      "pinyin": "xiǎng",
+      "ru": "хотеть; думать",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Действия и время",
+      "zh": "买",
+      "pinyin": "mǎi",
+      "ru": "покупать",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Действия и время",
+      "zh": "回",
+      "pinyin": "huí",
+      "ru": "возвращаться",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — Действия и время",
+      "zh": "点",
+      "pinyin": "diǎn",
+      "ru": "час (во времени)",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "我八点回家",
+      "pinyin": "Wǒ bā diǎn huí jiā.",
+      "ru": "Я возвращаюсь домой в восемь.",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Мостик — примеры",
+      "zh": "你几点来",
+      "pinyin": "Nǐ jǐ diǎn lái?",
+      "ru": "Во сколько ты придёшь?",
+      "status": "needs-native-MP3",
+      "source": ""
+    },
+    {
+      "area": "Разговорная практика",
+      "zh": "住在",
+      "pinyin": "zhù zài",
+      "ru": "жить в",
+      "status": "needs-native-MP3",
+      "source": ""
+    }
+  ]
+}
