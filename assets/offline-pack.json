@@ -1,6 +1,6 @@
 {
-  "version": 345,
-  "bytes": 61766655,
+  "version": 346,
+  "bytes": 61805081,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -2776,6 +2776,8 @@
     "./assets/hsk2-user-voice/B01-B10-20261113.mp3",
     "./assets/native-owner-v200/wo.ogg",
     "./assets/native-owner-v200/shi.ogg",
-    "./assets/native-owner-v200/tianqi.ogg"
+    "./assets/native-owner-v200/tianqi.ogg",
+    "./hsk2-city-work.html",
+    "./assets/hsk2-speaking-v326.js?v=345"
   ]
 }
