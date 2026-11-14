@@ -122,7 +122,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 
 /* Exact HSK1 owner-approved recordings. No phoneme splice or synthetic fallback. */
 // Unified native recording source; do not mix Xiaoxiao with the approved speaker.
-const matchingAudio=phrase=>window.PandaHsk2AudioV331?.lookup(phrase)||null;
+const matchingAudio=phrase=>{const a=window.PandaHsk2AudioV331;return a?.lookup(phrase)||a?.exampleFor(phrase)||null;};
 function setAudioStatus(message,isError=false){
  const out=$('audio-status');
  if(out){out.textContent=message;out.classList.toggle('warn',isError)}
@@ -133,9 +133,9 @@ function stopApprovedAudio(){
 function playApprovedAudio(phrase){
  const player=window.PandaHsk2AudioV331;
  if(!player){setAudioStatus('Аудиоплеер не загружен.',true);return}
- player.play(phrase,m=>setAudioStatus(m,/не удалось|Ошибка|нет подтверждённого/i.test(m)));
+ player.playBest(phrase,m=>setAudioStatus(m,/не удалось|Ошибка|нет подтверждённого/i.test(m)));
 }
-const clipButton=phrase=>matchingAudio(phrase)?'<button class="audio-clip-button" type="button" data-audio="'+esc(phrase)+'" aria-label="Слушать: '+esc(phrase)+'">🔊 Слушать</button>':'';
+const clipButton=phrase=>matchingAudio(phrase)?'<button class="audio-clip-button" type="button" data-audio="'+esc(phrase)+'" aria-label="Слушать '+(window.PandaHsk2AudioV331?.lookup(phrase)?'точную запись: ':'пример для: ')+esc(phrase)+'">'+(window.PandaHsk2AudioV331?.lookup(phrase)?'🔊 Слушать':'🔊 Пример')+'</button>':'';
 
 const word=([zh,py,ru])=>'<article class="vocab"><div lang="zh-Hans" class="hanzi">'+esc(zh)+'</div><div class="py">'+esc(py)+'</div><div class="ru">'+esc(ru)+'</div>'+clipButton(zh)+'</article>';
 const example=([zh,py,ru])=>'<div class="example"><b lang="zh-Hans">'+esc(zh)+'</b><span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span>'+clipButton(zh)+'</div>';
