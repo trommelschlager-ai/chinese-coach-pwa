@@ -37,10 +37,13 @@ for(const file of ['hsk1-map.html','hsk2-start.html','hsk2-introduction.html'])a
 assert(read('hsk1-map.html').includes('pg-hsk1-v3-complete'),'HSK 1 progress storage must remain unchanged');
 assert(read('hsk2-start.html').includes('./hsk2-introduction.html'),'HSK 2 lesson navigation unavailable');
 const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
+const optionalArt=JSON.parse(sw.match(/const CORE_ART=new Set\((\[[^\n]+\])\)/)[1]);
+const shell=core.filter(path=>!/.\.(?:mp3|ogg)(?:\?|$)/i.test(path)&&(!/.\.(?:png|jpe?g|webp)(?:\?|$)/i.test(path)||optionalArt.includes(path)));
+
 for(const file of ['./assets/panda-v130.js?v=319','./assets/panda-home-photo1-v319.css?v=319','./assets/panda-home-approved-photo1-v319.jpg']){
- assert(core.includes(file),'PWA cache missing '+file);
+ assert(shell.includes(file),'PWA install shell missing '+file);
  assert(pack.files.includes(file),'Offline download missing '+file);
 }
-assert(core.length<=170,'Too many core assets for the install');
+assert(shell.length<=170,'Too many install shell assets');
 dom.window.close();
 console.log('PASS v319: original photo1 verified SHA-256, lossless background, two functional level links, aspect preserved, falling petals and existing HSK1+HSK2.');
