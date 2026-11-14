@@ -37,7 +37,7 @@ function recognize(expected,done){
  if(!SR()){done(null,'Этот браузер не поддерживает распознавание китайской речи.');return null}
  const r=new (SR())();let settled=false;
  function finish(result,message){if(settled)return;settled=true;done(result,message)}
- r.lang='zh-CN';r.interimResults=false;r.maxAlternatives=3;r.continuous=false;
+ r.lang='zh-CN';r.interimResults=false;r.maxAlternatives=5;r.continuous=false;
  r.onresult=ev=>{
    const alt=Array.from(ev.results?.[0]||[]).map(x=>x.transcript).filter(Boolean);
    const ok=alt.some(x=>match(x,expected));
@@ -118,9 +118,14 @@ function open({id,title,items}={}){
    '<p class="pg-speaking-progress">'+progress.data[idx].map(v=>v?'✓':'✕').join('  ')+'</p>'+
    '<button type="button" data-mic '+(active||!speechAvailable()?'disabled':'')+'>'+(active?'🎙️ Слушаю…':'🎙️ Нажми и произнеси')+'</button>')+
    '<p class="pg-speaking-message" role="status">'+e(info)+'</p>'+
-   '<small>Три попытки всего, не три подряд. Ошибки не блокируют переход. Распознавание речи не оценивает тоны.</small>'+
+   '<small>Три попытки всего, не три подряд. Проверяется китайский текст, а не тоны. Если распознавание ошиблось, можно повторить тест.</small>'+
+   '<button class="exit" data-restart-mic type="button">↻ Пройти тест заново</button>'+ 
    '<button class="exit" data-close type="button">Вернуться в урок</button></section>';
   modal.querySelectorAll('[data-close]').forEach(x=>x.addEventListener('click',close));
+  modal.querySelector('[data-restart-mic]')?.addEventListener('click',()=>{
+   if(active){try{rec?.abort()}catch{}rec=null;active=false}
+   progress.reset();info='Предыдущие три попытки сброшены. Начни заново.';draw();
+  });
   modal.querySelector('[data-mic]')?.addEventListener('click',()=>{
    if(active||next()<0)return;
    active=true;info='🎙️ Слушаю…';draw();
