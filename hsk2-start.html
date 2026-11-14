@@ -30,7 +30,42 @@
 .city-pilot{display:flex;align-items:center;gap:11px;text-decoration:none;margin:9px 0 15px;padding:13px;border:2px solid #e9be7a;border-radius:17px;background:linear-gradient(110deg,#652882,#a554ba);color:white;box-shadow:0 4px 13px #784e9860}.city-pilot .city-icon{font-size:26px;flex:none}.city-pilot span:last-child{display:flex;flex-direction:column;gap:4px}.city-pilot b{font-size:15px}.city-pilot small{font-size:12px;line-height:1.3}.city-pilot strong{font-size:12px;color:#ffe69a}
 /* Ensure the journey map scrolls: the legacy one-screen stylesheet hides scrolling on lessons. */
 .app .content.journey-map-active{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:thin;overscroll-behavior:contain;padding:9px 11px 24px}
-</style><link rel="stylesheet" href="./assets/hsk2-one-screen-v323.css?v=323"><link rel="stylesheet" href="./assets/hsk2-speaking-v324.css?v=324"><link rel="stylesheet" href="./assets/hsk2-five-attempts-banner-v326.css?v=326"><link rel="stylesheet" href="./assets/hsk2-compact-refinement-v328.css?v=328"><link rel="stylesheet" href="./assets/hsk2-fixes-v329.css?v=329"><link rel="stylesheet" href="./assets/hsk2-audio-v330.css?v=339"></head><body><div class="app" id="app"><header class="scene"><span class="petals" aria-hidden="true">🌸</span><a class="backlink" href="#map" aria-label="Назад к карте">‹</a><img class="panda" src="./assets/hsk2-panda-new-v328.svg" alt=""><div class="brand">Panda Go<small id="scene-sub">HSK 2 · Начальный плюс</small></div><span class="scene-caption" id="scene-caption">Слова → грамматика → практика</span></header><main class="content" id="screen" tabindex="-1"></main><nav class="nav" aria-label="Навигация"><a href="#map" id="nav-map"><b>⌂</b>Карта</a><a href="#review" id="nav-review"><b>▤</b>Повторение</a><a href="#lesson" id="nav-lesson"><b>◫</b>Тренажёр</a><a href="#progress" id="nav-progress"><b>◴</b>Прогресс</a></nav></div>
+
+/* HSK2 v348 — learner-first course promise and study roadmap */
+.app.welcome-view .scene{height:108px!important}
+.app.welcome-view .nav{display:none!important}
+.app.welcome-view .content{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;padding:9px 12px 15px!important;overscroll-behavior:contain;scrollbar-width:thin}
+.course-welcome-footer[hidden]{display:none!important}
+.course-welcome-footer{display:flex;flex-direction:column;gap:4px;align-items:center;flex:none;padding:9px 13px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(#fff6fdbb,#f6d7ec);border-top:1px solid #e8c7db}
+.course-welcome-footer button{width:100%;min-height:52px;border:2px solid #e6bd80;border-radius:18px;background:linear-gradient(115deg,#c75bc8,#793196);color:#fff;font-size:17px;font-weight:900;box-shadow:0 3px 11px #8d43a25c}
+.course-welcome-footer small{font-size:11px;color:#765181;text-align:center}
+.pg-course-welcome{display:flex;flex-direction:column;gap:10px;color:#56316b}
+.pg-welcome-hero{position:relative;overflow:hidden;border:2px solid #e5b77c;border-radius:20px;background:linear-gradient(125deg,#67328f,#a65ac3);color:white;text-align:center;padding:15px 12px 12px;box-shadow:0 5px 14px #9654af51}
+.pg-welcome-hero .pg-welcome-sparkle{position:absolute;right:9px;top:6px;font-size:29px}
+.pg-welcome-hero .pg-welcome-eyebrow{font-size:12px;color:#f6d1ff;letter-spacing:.08em;font-weight:800}
+.pg-welcome-hero h1{font:900 clamp(23px,6vw,28px)/1.1 Georgia,serif;margin:5px 0 4px}
+.pg-welcome-hero p{font-size:13px;line-height:1.45}
+.pg-welcome-section{border:1.5px solid #ebc39c;background:linear-gradient(140deg,#fffafd,#fbedf6);border-radius:16px;padding:11px 12px;box-shadow:0 3px 12px #b682c329}
+.pg-welcome-section h2{font-size:16px;margin:0 0 9px;color:#682b85}
+.pg-welcome-goals{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.pg-welcome-goal{background:#f6e8fc;border:1px solid #e6cce8;border-radius:12px;padding:9px 7px;display:flex;gap:6px;align-items:flex-start}
+.pg-welcome-goal .emoji{font-size:20px;line-height:1.2}
+.pg-welcome-goal strong{display:block;font-size:12px;line-height:1.3}
+.pg-welcome-goal small{display:block;margin-top:4px;font-size:11px;line-height:1.3;color:#80588b}
+.pg-welcome-plan{display:grid;grid-template-columns:1fr;gap:5px}
+.pg-welcome-plan-step{display:flex;align-items:center;gap:8px;background:#f7edfb;border:1px solid #ecdced;border-radius:11px;padding:7px 9px}
+.pg-welcome-plan-step .num{display:grid;place-items:center;width:27px;height:27px;flex:none;border-radius:9px;background:linear-gradient(135deg,#aa58c3,#79338f);color:white;font-size:13px;font-weight:900}
+.pg-welcome-plan-step span:last-child{font-size:12px;line-height:1.35}
+.pg-welcome-tones{display:flex;align-items:center;justify-content:space-around;gap:5px;background:#f6e3f6;border-radius:12px;padding:9px 6px;margin-top:7px}
+.pg-welcome-tone{text-align:center;flex:1}
+.pg-welcome-tone b{font-size:21px;display:block}
+.pg-welcome-tone small{font-size:10.5px;color:#83588b}
+.pg-welcome-tone:nth-child(1) b{color:#ba388d}.pg-welcome-tone:nth-child(2) b{color:#328c73}.pg-welcome-tone:nth-child(3) b{color:#8759bb}.pg-welcome-tone:nth-child(4) b{color:#bc7239}
+.pg-welcome-honest{font-size:11px;line-height:1.45;color:#765185;margin:6px 2px 0}
+.pg-welcome-review{display:inline-block;padding:7px 10px;margin:0 0 9px;background:#f4e5fb;border:1px solid #e7c1e3;border-radius:11px;text-decoration:none;font-size:12px;font-weight:800}
+@media(max-width:360px){.pg-welcome-goals{gap:5px}.pg-welcome-goal{padding:7px 5px}.pg-welcome-goal strong{font-size:11.5px}.pg-welcome-hero{padding:11px 9px}.pg-welcome-section{padding:10px}}
+@media(max-height:720px){.app.welcome-view .scene{height:83px!important}.pg-welcome-hero{padding:10px}.pg-welcome-plan-step{padding:5px 7px}.pg-course-welcome-footer{padding-top:5px;padding-bottom:calc(7px + env(safe-area-inset-bottom))}}
+</style><link rel="stylesheet" href="./assets/hsk2-one-screen-v323.css?v=323"><link rel="stylesheet" href="./assets/hsk2-speaking-v324.css?v=324"><link rel="stylesheet" href="./assets/hsk2-five-attempts-banner-v326.css?v=326"><link rel="stylesheet" href="./assets/hsk2-compact-refinement-v328.css?v=328"><link rel="stylesheet" href="./assets/hsk2-fixes-v329.css?v=329"><link rel="stylesheet" href="./assets/hsk2-audio-v330.css?v=339"></head><body><div class="app" id="app"><header class="scene"><span class="petals" aria-hidden="true">🌸</span><a class="backlink" href="#map" aria-label="Назад к карте">‹</a><img class="panda" src="./assets/hsk2-panda-new-v328.svg" alt=""><div class="brand">Panda Go<small id="scene-sub">HSK 2 · Начальный плюс</small></div><span class="scene-caption" id="scene-caption">Слова → грамматика → практика</span></header><main class="content" id="screen" tabindex="-1"></main><div class="course-welcome-footer" id="course-welcome-footer" hidden><button type="button" id="course-welcome-start">🐼 Начать приключение →</button><small>План всегда можно открыть снова с карты HSK2</small></div><nav class="nav" aria-label="Навигация"><a href="#map" id="nav-map"><b>⌂</b>Карта</a><a href="#review" id="nav-review"><b>▤</b>Повторение</a><a href="#lesson" id="nav-lesson"><b>◫</b>Тренажёр</a><a href="#progress" id="nav-progress"><b>◴</b>Прогресс</a></nav></div>
 <script src="./assets/hsk2-speaking-v326.js?v=332"></script>
 <script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=343"></script>
 <script>
@@ -102,6 +137,48 @@ const wordCard=([zh,py,ru])=>{
  return '<article class="vocab pg-sound-card pg-no-audio" data-audio-ready="false" aria-label="Изучение слова '+esc(zh)+'">'+body+demo+'</article>';
 };
 const example=([zh,py,ru])=>`<div class="example"><b lang="zh-Hans">${esc(zh)}</b><span class="py">${esc(py)}</span><span class="ru">${esc(ru)}</span>${window.PandaHsk2AudioV330?.button(zh)||''}</div>`;
+
+const WELCOME_KEY='pg-hsk2-course-welcome-v1';
+let welcomeSeenThisTab=false;
+function welcomeSeen(){if(welcomeSeenThisTab)return true;try{return localStorage.getItem(WELCOME_KEY)==='1'}catch{return false}}
+function finishWelcome(){welcomeSeenThisTab=true;try{localStorage.setItem(WELCOME_KEY,'1')}catch{}
+ if(location.hash==='#map'||!location.hash){location.hash='#map';show()}else location.hash='#map';
+}
+function renderWelcome(){
+ $('screen').innerHTML=`
+ <section class="pg-course-welcome" aria-label="План обучения HSK2">
+  <header class="pg-welcome-hero"><span class="pg-welcome-sparkle" aria-hidden="true">🌸</span><div class="pg-welcome-eyebrow">PANDA GO · HSK 2</div>
+   <h1>Твоё новое приключение!</h1><p>Будем учить китайский маленькими шагами — понятно, с грамматикой и практикой.</p>
+  </header>
+  <section class="pg-welcome-section"><h2>🎯 В этом курсе ты научишься</h2>
+   <div class="pg-welcome-goals">
+    <div class="pg-welcome-goal"><span class="emoji">🗣️</span><div><strong>Говорить по-китайски</strong><small>О себе, друзьях и повседневных делах</small></div></div>
+    <div class="pg-welcome-goal"><span class="emoji">👂</span><div><strong>Понимать на слух</strong><small>Простые вопросы и ответы</small></div></div>
+    <div class="pg-welcome-goal"><span class="emoji">🧩</span><div><strong>Строить предложения</strong><small>Из знакомых слов по правилам</small></div></div>
+    <div class="pg-welcome-goal"><span class="emoji">🎵</span><div><strong>Различать тоны</strong><small>Слушать, повторять и сравнивать</small></div></div>
+   </div>
+  </section>
+  <section class="pg-welcome-section"><h2>📚 Как мы будем учиться</h2>
+   <div class="pg-welcome-plan">
+    <div class="pg-welcome-plan-step"><span class="num">1</span><span><strong>Слова:</strong> сначала 2–3 новых слова за микроурок</span></div>
+    <div class="pg-welcome-plan-step"><span class="num">2</span><span><strong>Грамматика:</strong> одно простое правило с примерами</span></div>
+    <div class="pg-welcome-plan-step"><span class="num">3</span><span><strong>Тоны и слух:</strong> слушаем записи и повторяем</span></div>
+    <div class="pg-welcome-plan-step"><span class="num">4</span><span><strong>Предложения:</strong> собираем фразы из слов</span></div>
+    <div class="pg-welcome-plan-step"><span class="num">5</span><span><strong>Разговор и тест:</strong> отвечаем Панде и повторяем ошибки</span></div>
+   </div>
+  </section>
+  <section class="pg-welcome-section"><h2>🎶 Четыре тона китайского языка</h2><p class="muted">Один слог может звучать по-разному:</p>
+   <div class="pg-welcome-tones">
+    <span class="pg-welcome-tone"><b>mā</b><small>1 · ровный</small></span>
+    <span class="pg-welcome-tone"><b>má</b><small>2 · вверх</small></span>
+    <span class="pg-welcome-tone"><b>mǎ</b><small>3 · вниз-вверх</small></span>
+    <span class="pg-welcome-tone"><b>mà</b><small>4 · вниз</small></span>
+   </div>
+   <p class="pg-welcome-honest">🐼 Учимся слышать и произносить тоны. Микрофон пока проверяет распознанные слова, а не точность тонов.</p>
+  </section>
+ </section>`;
+}
+
 const renderMap=()=>{
  let introDone=false;
  try{introDone=!!JSON.parse(localStorage.getItem('pg-hsk2-introduction-v1')||'null')?.completed}catch{}
@@ -113,6 +190,7 @@ const renderMap=()=>{
   <span class="journey-principle">📚 Грамматика в каждом уроке</span>
  </section>
  <a class="city-pilot" href="./hsk2-city-work.html" aria-label="Открыть лёгкий игровой урок с двумя словами"><span class="city-icon">🎮 🐼</span><span><b>Мой город · игровой урок 3</b><small>Всего 2 слова · 1 правило · короткий тест</small><strong>▶ Открыть пробный урок</strong></span></a>
+ <a href="#welcome" class="pg-welcome-review">📖 Посмотреть план обучения HSK2</a>
  <div class="journey-road" aria-label="Карта десяти уроков">
   ${JOURNEY.map(([icon,title,grammar,goal,sample],i)=>i===0?`
    <a class="journey-card is-ready" href="./hsk2-introduction.html" aria-label="Урок 1: ${esc(title)}. Начать урок">
@@ -131,7 +209,7 @@ const renderMap=()=>{
 };
 
 function renderProgress(){let introData={};try{introData=JSON.parse(localStorage.getItem('pg-hsk2-introduction-v1')||'null')||{}}catch{}const introCount=introData.completed?16:Math.max(0,Math.min(16,Number(introData.step)||0));const reviewDone=state.completedReview?reviewStages.length:Math.min(reviewStages.length,Math.max(0,state.review));const lessonDone=state.completedLesson?lessonStages.length:Math.min(lessonStages.length,Math.max(0,state.lesson));const a=reviewDone*100/reviewStages.length,b=lessonDone*100/lessonStages.length;$('screen').innerHTML=`<div class="banner">Мой прогресс HSK 2</div><div class="paper"><h2>📖 Повторение HSK 1</h2><div class="lesson-title"><strong>${state.completedReview?'Завершено':'В процессе'}</strong><span class="pill">${reviewDone} из ${reviewStages.length}</span></div><div class="meter"><i style="width:${a}%"></i></div><a class="plainlink" href="#review">Открыть повторение →</a></div><div class="paper"><h2>🌸 Базовый тренажёр · перед HSK 2</h2><div class="lesson-title"><strong>${state.completedLesson?'Завершено':'В процессе'}</strong><span class="pill">${lessonDone} из ${lessonStages.length}</span></div><div class="meter"><i style="width:${b}%"></i></div><a class="plainlink" href="#lesson">Продолжить урок →</a></div><div class="paper"><h2>🌸 Урок 1 · Я и моя визитка</h2><div class="lesson-title"><strong>${introData.completed?'Завершено':'В процессе'}</strong><span class="pill">${introCount} из 16</span></div><div class="meter"><i style="width:${introCount/16*100}%"></i></div><a class="plainlink" href="./hsk2-introduction.html">Продолжить знакомство →</a></div><div class="paper"><h2>🎮 Мой город · урок 3</h2><p class="explain">Упрощённый игровой урок: два новых слова, одно правило, короткий диалог и тесты.</p><a class="plainlink" href="./hsk2-city-work.html">Открыть пробный урок →</a></div><p class="intro">Повторение HSK 1 и тренажёр сохраняются отдельно от учебных уроков HSK 2.</p>`}
-function setTitle(view){$('scene-sub').textContent=view==='map'?'HSK 2 · Panda Go Journey':view==='review'?'HSK 2 · Повторение HSK 1':view==='progress'?'HSK 2 · Мой прогресс':'HSK 2 · Урок 1';$('scene-caption').textContent=view==='map'?'10 уроков · грамматика в каждом':view==='review'?'Вспоминаем базу':view==='progress'?'Твои достижения':'Сначала слова, потом фразы';for(let link of document.querySelectorAll('.nav a'))link.classList.toggle('active',link.getAttribute('href')==='#'+view)}
+function setTitle(view){$('scene-sub').textContent=view==='welcome'?'HSK 2 · Твой план обучения':view==='map'?'HSK 2 · Panda Go Journey':view==='review'?'HSK 2 · Повторение HSK 1':view==='progress'?'HSK 2 · Мой прогресс':'HSK 2 · Урок 1';$('scene-caption').textContent=view==='welcome'?'Сначала узнаем, чему научимся':view==='map'?'10 уроков · грамматика в каждом':view==='review'?'Вспоминаем базу':view==='progress'?'Твои достижения':'Сначала слова, потом фразы';for(let link of document.querySelectorAll('.nav a'))link.classList.toggle('active',link.getAttribute('href')==='#'+view)}
 function stagePage(view){const isReview=view==='review',idx=isReview?'review':'lesson',stages=isReview?reviewStages:lessonStages;state[idx]=Math.min(Math.max(0,Number(state[idx])||0),stages.length-1);const i=state[idx],s=stages[i],code=view+':'+i,answered=state.answers[code];let inside='';
  if(s.kind==='words')inside=`<p class="intro">${isReview?'Вспомни чтение, тон и значение.':'Четыре слова — затем проверим, что запомнилось.'}</p><div class="vocgrid">${s.items.map(wordCard).join('')}</div><p class="pg-sound-hint" role="status">Отдельное слово звучит только при наличии MP3. Иначе слушай явно подписанное полное предложение. Оценка тонов пока не автоматическая.</p>`;
  if(s.kind==='examples')inside=`<p class="intro">Все фразы составлены из уже изученных слов.</p><div class="examples">${s.items.map(example).join('')}</div>${isReview?'<p class="notice">В 不是 звук 不 меняется на bú перед четвёртым тоном.</p>':''}`;
@@ -173,7 +251,7 @@ function stagePage(view){const isReview=view==='review',idx=isReview?'review':'l
  $('screen').querySelector('[data-prev]').addEventListener('click',()=>{if(state[idx]>0){state[idx]--;save();stagePage(view)}});
  $('screen').querySelector('[data-next]').addEventListener('click',()=>{if(nextBlocked)return;if(s.kind==='finish'){if(isReview){state.completedReview=true;save();location.href='./hsk2-introduction.html'}else{state.completedLesson=true;save();location.hash='#map'}}else if(isReview&&i===stages.length-1){state.completedReview=true;save();location.href='./hsk2-introduction.html'}else{state[idx]++;save();stagePage(view)}});
 }
-function show(){let view=(location.hash||'#map').slice(1);if(!['map','review','lesson','progress'].includes(view))view='map';setTitle(view);document.querySelector('.backlink').href=view==='map'?'./index.html#panda/home':'#map';$('screen').classList.remove('hiddenpy');$('screen').classList.toggle('journey-map-active',view==='map');view==='map'?renderMap():view==='progress'?renderProgress():stagePage(view);$('screen').scrollTop=0;}
-window.addEventListener('hashchange',show);show();
+function show(){let view=(location.hash||'#map').slice(1);if(!['welcome','map','review','lesson','progress'].includes(view))view='map';if(view==='map'&&!welcomeSeen())view='welcome';setTitle(view);document.querySelector('.backlink').href=view==='map'||view==='welcome'?'./index.html#panda/home':'#map';$('app').classList.toggle('welcome-view',view==='welcome');$('course-welcome-footer').hidden=view!=='welcome';$('screen').classList.remove('hiddenpy');$('screen').classList.toggle('journey-map-active',view==='map');view==='welcome'?renderWelcome():view==='map'?renderMap():view==='progress'?renderProgress():stagePage(view);$('screen').scrollTop=0;}
+$('course-welcome-start').addEventListener('click',finishWelcome);window.addEventListener('hashchange',show);show();
 })();
 </script></body></html>
