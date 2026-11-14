@@ -48,7 +48,7 @@ export function answerBasicConversation(raw,allowed=[1]){
  if(mealResponse){
   const [,notYet='',food='']=mealResponse;
   // "我吃" alone is an unfinished statement: don't mark it as a full answer.
-  if(!notYet&&!s.endsWith('了'))return null;
+  if((!notYet&&!s.endsWith('了'))||(notYet&&s.endsWith('了')))return null;
   const isNo=!!notYet;
   const spoken={known:true,hanzi:input,topic:1,
    pinyin:isNo?'Wǒ hái '+(notYet==='还没'?'méi':'méiyǒu')+' chī'+(food?' fàn':'')+'.':
