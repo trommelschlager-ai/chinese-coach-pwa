@@ -176,6 +176,18 @@ var WORD_EXAMPLES={
  '回':['我八点回家。','Wǒ bā diǎn huí jiā.','Я возвращаюсь домой в восемь.'],
  '点':['你几点来？','Nǐ jǐ diǎn lái?','Во сколько ты придёшь?']
 };
+function renderAudibleExample(word){
+ var clip=window.PandaHsk2AudioV330?.sentenceFor(word);
+ if(!clip)return '';
+ // A visible sentence, tone-marked pinyin and translation accompany the
+ // sentence recording; NEVER make the word itself play this clip.
+ return '<section class="word-sentence-sample" aria-label="Озвученный пример слова '+safe(word)+'">'+
+  '<div class="word-sample-label">🎧 Записанный пример с этим словом</div>'+
+  '<div class="word-sample-hanzi" lang="zh-Hans">'+safe(clip.zh)+'</div>'+
+  '<div class="word-sample-pinyin">'+safe(clip.pinyin)+'</div>'+
+  '<div class="word-sample-translation">'+safe(clip.ru)+'</div>'+
+  (window.PandaHsk2AudioV330?.button(clip.zh)||'')+'</section>';
+}
 function examplesForWord(word,group){
  var primary=WORD_EXAMPLES[word],list=primary?[primary]:[];
  group.examples.forEach(function(example){
@@ -216,7 +228,7 @@ function draw(){
  if(state.mode==='study'){
   var w=g.words[state.card];
   main='<div class="kicker">Тема '+(state.stage+1)+' из 6 · слово '+(state.card+1)+' из 5</div><h2>'+safe(g.title)+'</h2><p class="lead">Учимся понимать слово, затем проверяем себя без подсказок.</p>'+
-   '<section class="card"><div class="counter">Базовая лексика</div><div class="hanzi" lang="zh-Hans">'+safe(w[0])+'</div><div class="pinyin">'+(state.showPinyin?safe(w[1]):'Пиньинь скрыт')+'</div><div class="ru">'+safe(w[2])+'</div><div class="audio">'+(window.PandaHsk2AudioV330?.button(w[0],true)||'')+'</div></section>'+
+   '<section class="card"><div class="counter">Базовая лексика</div><div class="hanzi" lang="zh-Hans">'+safe(w[0])+'</div><div class="pinyin">'+(state.showPinyin?safe(w[1]):'Пиньинь скрыт')+'</div><div class="ru">'+safe(w[2])+'</div><div class="audio">'+(window.PandaHsk2AudioV330?.button(w[0],true)||'')+'</div></section>'+renderAudibleExample(w[0])+
    '<div class="row"><button class="btn" type="button" data-action="prev" '+(state.card===0?'disabled':'')+'>‹ Назад</button>'+
    '<button class="btn" type="button" data-action="pinyin">'+(state.showPinyin?'Скрыть':'Показать')+' пиньинь</button>'+
    '<button class="btn primary" type="button" data-action="next">'+(state.card===4?'К проверке ✓':'Дальше ›')+'</button></div>'+
@@ -228,7 +240,7 @@ function draw(){
      ?'<div class="rule-title">✏️ Как говорить правильно</div><p class="rule-copy">'+safe(WORD_RULES[w[0]]||g.hint)+'</p>'
      :examplesForWord(w[0],g).map(function(x){return '<div class="example"><span class="zh" lang="zh-Hans">'+safe(x[0])+'</span><span class="py">'+safe(x[1])+'</span><span class="ru">'+safe(x[2])+'</span>'+(window.PandaHsk2AudioV330?.button(x[0])||'')+'</div>'}).join(''))+
    '</section>'+
-   '<p class="notice">🔊 Звук слова есть только при наличии записи именно этого слова. Для фраз используйте вкладку «Примеры».</p>';
+   '<p class="notice">🔊 Если запись отдельного слова отсутствует, слушай показанное предложение. Текст всегда совпадает с аудио.</p>';
   button.textContent='Проверить 5 слов';button.disabled=false;
  }else if(state.mode==='quiz'){
   var q=state.quizIndex,w2=g.words[q],opts=optionData(q);
