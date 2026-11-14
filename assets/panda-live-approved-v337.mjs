@@ -7,7 +7,7 @@ else{
  const stage=document.createElement('section');stage.id='pg-approved-v337';stage.setAttribute('aria-label','Panda AI — разговорная практика');stage.dataset.showPy='true';stage.dataset.showRu='true';stage.dataset.listening='false';stage.dataset.speaking='false';
  stage.innerHTML=`
   <img class="v337-art" src="./assets/panda-live-approved-v337.webp?v=337" alt="" aria-hidden="true" decoding="async" draggable="false">
-  <div class="v337-petals" aria-hidden="true"></div><div class="v337-wave" aria-hidden="true"></div>
+  <div class="v337-sakura-sway" aria-hidden="true"></div><div class="v337-petals" aria-hidden="true"></div><div class="v337-wave" aria-hidden="true"></div>
   <a class="v337-hit v337-back" href="./panda-lesson1.html" aria-label="Назад к уроку"></a>
   <button class="v337-hit v337-mode-short" type="button" aria-label="Краткие диалоги"></button>
   <button class="v337-hit v337-mode-nonstop" type="button" aria-label="Non-Stop диалоги"></button>
