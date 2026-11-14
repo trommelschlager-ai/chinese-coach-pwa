@@ -70,6 +70,15 @@ for(const entry of (window.PandaUserVoiceIndexV332?.clips||[])){
 // A recording may be played only next to that same visible full Chinese sentence.
 // Never use these mappings as a fallback for play(word) or button(word).
 const wordSentences=Object.freeze({
+ '我':['我学习中文。','Wǒ xuéxí Zhōngwén.','Я изучаю китайский.'],
+ '叫':['我叫熊猫。','Wǒ jiào Xióngmāo.','Меня зовут Панда.'],
+ '名字':['你叫什么名字？','Nǐ jiào shénme míngzi?','Как тебя зовут?'],
+ '什么':['你想学什么？','Nǐ xiǎng xué shénme?','Что ты хочешь изучать?'],
+ '住':['我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.'],
+ '住在':['我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.'],
+ '哪儿':['你住在哪儿？','Nǐ zhù zài nǎr?','Где ты живёшь?'],
+ '做':['你早上做什么？','Nǐ zǎoshang zuò shénme?','Что ты делаешь утром?'],
+ '老师':['我是熊猫老师。','Wǒ shì Xióngmāo lǎoshī.','Я учитель Панда.'],
  '不':['我不忙。','Wǒ bù máng.','Я не занят.'],
  '的':['我是你的中文学习伙伴。','Wǒ shì nǐ de Zhōngwén xuéxí huǒbàn.','Я твой помощник в изучении китайского.'],
  '好':['你好！','Nǐ hǎo!','Привет!'],
