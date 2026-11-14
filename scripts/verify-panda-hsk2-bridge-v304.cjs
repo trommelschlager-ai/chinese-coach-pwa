@@ -82,11 +82,11 @@ const vm=require('node:vm');
   assert(!fs.readFileSync(p,'utf8').includes('panda-hsk2-seed-v303.json'),'Draft premium seed leaked into live app: '+p);
  }
  const page=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(page.includes('panda-live-screen-v270.mjs?v=326'));
+ assert(/panda-live-screen-v270\.mjs\?v=(?:326|33[6-9])/.test(page),'Panda screen script must be versioned');
  assert(page.includes('panda-voice-pilot.css?v=326'));
  assert(page.includes('Запись носительницы готовится'));
  assert(fs.readFileSync('assets/panda-voice-pilot.css','utf8').includes('max-height:100%;overflow:hidden'),'Speech still scrolls');
- assert(page.includes('<span class="release">v326</span>'),'Stale v302 release badge must be removed');
+ assert(/<span class="release">v(?:326|33[6-9])<\/span>/.test(page),'Panda release badge missing');
  for(const id of ['mode-short','mode-nonstop','mic','history-dialog','speech-dialog'])
   assert(page.includes('id="'+id+'"'),'Existing control deleted: '+id);
  const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));

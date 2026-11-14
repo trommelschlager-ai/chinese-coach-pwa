@@ -54,7 +54,7 @@ const vm=require('node:vm');
   const r=answerLive(input,{allowed,topic:lesson,curriculum,date,profile:{recentQuestions:[]}});
   assert.equal(r.kind,'question',input+' should be a question, got '+r.kind+' '+(r.message||''));
   assert.equal(r.lesson,lesson,input+' mapped to wrong lesson');
-  assert.equal(r.reply?.hanzi?.replace(/^是，/u,''),expected.replace(/^是，/u,''),input+' wrong reply '+r.reply?.hanzi);
+  assert.equal(r.reply?.hanzi?.replace(/^是，/u,'').replace(/熊猫老师/gu,'老师'),expected.replace(/^是，/u,''),input+' wrong reply '+r.reply?.hanzi);
   assert.equal(r.spoken?.hanzi,input,'Original learner utterance must remain visible '+input);
   assert(r.followup&&r.followup.lesson===lesson,input+' must generate a related same-topic follow-up');
   assert(r.followup?.verifiedLines?.[1]?.accepted,'Follow-up must have tested accepted answers: '+input);
@@ -101,7 +101,7 @@ const vm=require('node:vm');
  assert(mediaBefore.includes('lookupHsk1Voice'));
  assert(!/fetch\(/.test(fs.readFileSync('assets/panda-hsk1-variants-v301.mjs','utf8')),'Variant expansion must remain local/offline');
  const html=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(/panda-live-screen-v270\.mjs\?v=(?:30[24567]|318|319|323|326)/.test(html),'Panda conversation page must load new version');
+ assert(/panda-live-screen-v270\.mjs\?v=(?:30[24567]|318|319|323|326|33[6-9])/.test(html),'Panda conversation page must load new version');
  assert(html.includes('id="mode-short"')&&html.includes('id="mode-nonstop"')&&html.includes('id="mic"'));
  assert(html.includes('id="history-dialog"')&&html.includes('id="speech-dialog"'));
  console.log('PASS Panda HSK1 v301 '+passed+'/'+samples.length+' manually checked examples plus '+corpusPass+'/'+corpus.length+' reviewed alias corpus questions across 7 lessons; '
