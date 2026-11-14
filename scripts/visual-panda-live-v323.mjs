@@ -26,6 +26,17 @@ try {
   assert.match(await page.locator('footer .release').textContent(),/v326/);
   await page.locator('#mode-nonstop').click();
   assert.equal(await page.locator('#mode-nonstop').getAttribute('aria-pressed'),'true');
+  // The compact guide opens without changing the original page height.
+  await page.locator('#ask-panda-open').click();
+  assert(await page.locator('#ask-panda-dialog').isVisible());
+  assert.equal(await page.locator('#ask-panda-topics .ask-panda-topic').count(),1,'Only lesson 1 is available to a fresh learner');
+  const hello=page.locator('#ask-panda-topics .ask-panda-question').filter({hasText:'你好吗？'}).first();
+  assert(await hello.isVisible(),'Verified beginner question should be suggested');
+  assert.match(await hello.textContent(),/Nǐ hǎo ma/);
+  await hello.click();
+  assert(!(await page.locator('#ask-panda-dialog').isVisible()));
+  assert.equal(await page.locator('#message').inputValue(),'你好吗？');
+  assert.equal(await page.locator('#mode-nonstop').getAttribute('aria-pressed'),'true');
   const entry=page.locator('#message');
   await entry.fill('你姐姐怎么样？');
   await page.locator('#send').click();
@@ -41,6 +52,22 @@ try {
   assert.match(await page.locator('#status').textContent(),/повторено/);
   summary.results.push({width,case:'duplicate-jintian',feedback:await page.locator('#learner-feedback').textContent()});
   await page.screenshot({path:out+'/correction-'+width+'.png',animations:'disabled'});
+  // Completing all seven lessons should show all topics, including the recent
+  // family-wellbeing regression. Choosing an item fills chat but doesn't auto-send.
+  await page.evaluate(()=>localStorage.setItem('pg-hsk1-v3-complete',JSON.stringify(['foundations','pronouns','numbers','weekdays','dates','family','weather'])));
+  await page.reload({waitUntil:'load'});
+  await page.waitForFunction(()=>document.documentElement.dataset.pandaLiveReady==='true');
+  await page.locator('#ask-panda-open').click();
+  assert.equal(await page.locator('#ask-panda-topics .ask-panda-topic').count(),7,'All completed lessons must appear');
+  const familyTopic=page.locator('#ask-panda-topics .ask-panda-topic').nth(5);
+  await familyTopic.locator('summary').click();
+  const sister=familyTopic.locator('.ask-panda-question').filter({hasText:'你姐姐怎么样？'});
+  assert.equal(await sister.count(),1);
+  assert.match(await sister.textContent(),/Nǐ jiějie zěnmeyàng/);
+  await sister.click();
+  assert.equal(await page.locator('#message').inputValue(),'你姐姐怎么样？');
+  assert.equal(await page.locator('#mode-nonstop').getAttribute('aria-pressed'),'true');
+  await page.screenshot({path:out+'/ask-guide-'+width+'.png',animations:'disabled'});
   const nav=await page.evaluate(()=>({viewport:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
   assert(nav.scroll<=nav.viewport+2,'Panda AI page must not scroll horizontally');
   summary.screens.push({width,height,nav});
@@ -48,6 +75,6 @@ try {
  }
  assert.deepEqual(summary.errors,[],'Browser runtime errors in Panda AI');
  summary.result='passed';
- console.log('PASS Panda v323: family wellbeing and today repetition; approved two-level home and seven lessons; 360/390/412 px.');
+ console.log('PASS Panda v326: verified lesson question guide, HSK1 progress gating and family dialogue at 360/390/412px.');
 } catch(error){summary.result='failed';summary.failure=String(error.stack||error);throw error}
 finally{fs.writeFileSync(out+'/report.json',JSON.stringify(summary,null,2));await browser.close()}
