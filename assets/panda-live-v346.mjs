@@ -46,6 +46,7 @@ if (!bridge) {
       </div>
       <div class="pg346-live" id="pg346-live" data-active="false" aria-live="polite"></div>
       <div class="pg346-feedback" id="pg346-feedback" hidden aria-live="polite"></div>
+      <div class="pg346-status" id="pg346-status" hidden role="status" aria-live="polite"></div>
       <button id="pg346-topics-btn" type="button" class="pg346-all-topics" aria-label="Все темы — выбрать урок" aria-expanded="false" aria-controls="pg346-topics">${icon('layers')}<span>Все<br>темы</span></button>
       <div class="pg346-topic-menu" id="pg346-topics" hidden><div class="pg346-topic-menu-title">Все темы HSK 1 <button id="pg346-topics-close" type="button" aria-label="Закрыть">×</button></div><div class="pg346-topic-list"></div></div>
     </section>
@@ -78,7 +79,10 @@ if (!bridge) {
   function sync(){const s=bridge.snapshot();stage.dataset.listening=String(s.active);$('#pg346-mic').setAttribute('aria-pressed',String(s.active));$('#pg346-short').setAttribute('aria-pressed',String(s.mode==='short'));$('#pg346-nonstop').setAttribute('aria-pressed',String(s.mode==='nonstop'));
     const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable}
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
-    renderFeedback(s);renderTopics(s);const live=$('#pg346-live');live.dataset.active=String(s.active||s.pose==='talking');live.textContent=s.active?'🎙 Слушаю…':s.pose==='talking'?'🔊 Панда говорит':'';
+    renderFeedback(s);renderTopics(s);
+    const warning=$('#pg346-status'),problem=/(микрофон|распознаван|разреши|доступ|Chrome|запись не|запись пока|звуковой файл)/i.test(s.status||'');
+    warning.hidden=!problem;warning.textContent=problem?s.status:'';
+    const live=$('#pg346-live');live.dataset.active=String(s.active||s.pose==='talking');live.textContent=s.active?'🎙 Слушаю…':s.pose==='talking'?'🔊 Панда говорит':'';
     const back=document.getElementById('back-link');if(back)$('a.pg346-back').href=back.href;
   }
   function closeTopics(){$('#pg346-topics').hidden=true;$('#pg346-topics-btn').setAttribute('aria-expanded','false')}
