@@ -31,6 +31,33 @@ const getCorrection=(raw,correct,pinyin,ru,why)=>({
 export function answerBasicConversation(raw,allowed=[1]){
  const input=String(raw??'').trim(),s=normalizeText(input);
  if(!input||input.length>160)return null;
+ // v336: everyday meal check-in. This is a complete question, even if the
+ // current Non-Stop prompt happens to be about weather or another topic.
+ if(/^你吃(饭)?了(吗|没有)$/.test(s)){
+  const includesMeal=s.includes('饭');
+  const spoken={known:true,hanzi:input,
+   pinyin:includesMeal?(s.endsWith('没有')?'Nǐ chī fàn le méiyǒu?':'Nǐ chī fàn le ma?'):(s.endsWith('没有')?'Nǐ chī le méiyǒu?':'Nǐ chī le ma?'),
+   translation:'Ты уже поел?',topic:1};
+  const reply=makeLine('吃了，谢谢。','Chī le, xièxie.','Да, поела, спасибо.');
+  const followup={hanzi:'你呢？',pinyin:'Nǐ ne?',ru:'А ты?',lesson:1,intent:'meal-checkin',
+   isContextual:true,accepted:['我吃了','我吃饭了','我还没吃','我还没吃饭','我还没有吃','我还没有吃饭']};
+  return {kind:'question',lesson:1,spoken,reply,followup,
+   message:'Повседневный учебный диалог о еде; ответ вымышленного персонажа.'};
+ }
+ const mealResponse=/^我(还没|还没有)?吃(饭)?了?$/.exec(s);
+ if(mealResponse){
+  const [,notYet='',food='']=mealResponse;
+  // "我吃" alone is an unfinished statement: don't mark it as a full answer.
+  if(!notYet&&!s.endsWith('了'))return null;
+  const isNo=!!notYet;
+  const spoken={known:true,hanzi:input,topic:1,
+   pinyin:isNo?'Wǒ hái '+(notYet==='还没'?'méi':'méiyǒu')+' chī'+(food?' fàn':'')+'.':
+    'Wǒ chī'+(food?' fàn':'')+' le.',
+   translation:isNo?'Я ещё не ел.':'Я уже поел.'};
+  return {kind:'statement',lesson:1,spoken,
+   reply:makeLine('好的，我明白了。','Hǎo de, wǒ míngbai le.','Хорошо, я поняла.'),
+   followup:null};
+ }
  // A doubled 今天 occurs in speech recognition. Do not treat it as a valid
  // question, nor claim that acoustic tones were actually checked.
  if(/^(?:你)?今天今天(?:怎么样|好吗)$/.test(s)){
