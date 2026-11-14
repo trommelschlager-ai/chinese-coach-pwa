@@ -172,7 +172,7 @@ const steps=[
  {kind:'words',title:'Где ты живёшь?',items:WORDS.slice(4,8)},
  {kind:'structure',title:'Учимся говорить, где живём'},
  {kind:'words',title:'Кто я по профессии?',items:WORDS.slice(8,12)},
- {kind:'rule',title:'Моя профессия',formula:'我 + 是 + ПРОФЕССИЯ',example:['我是医生。','Wǒ shì yīshēng.','Я врач.'],extra:[['我是老师。','Wǒ shì lǎoshī.','Я учитель.']],why:'Для профессии обычно используют 是 (shì). Например, 我是医生 — «Я врач». Если не работаешь: 我没有工作。'},
+ {kind:'rule',title:'Моя профессия',formula:'我 + 是 + ПРОФЕССИЯ',example:['我是医生。','Wǒ shì yīshēng.','Я врач.'],extra:[['我是老师。','Wǒ shì lǎoshī.','Я учитель.'],['我是熊猫老师。','Wǒ shì Xióngmāo lǎoshī.','Я учитель Панда.']],why:'Для профессии обычно используют 是 (shì). Например, 我是医生 — «Я врач». Если не работаешь: 我没有工作。'},
  {kind:'rule',title:'Сколько мне лет?',formula:'我 + 今年 + ЧИСЛО + 岁',example:['我今年二十五岁。','Wǒ jīnnián èrshíwǔ suì.','Мне 25 лет.'],extra:[['我今年三岁了。','Wǒ jīnnián sān suì le.','Мне три года.']],why:'今年 (jīnnián) — в этом году; 岁 (suì) — счётное слово для возраста. 了 в конце возможно, но необязательно. Например: 我今年二十五岁。'},
  {kind:'examples',title:'Пять фраз для знакомства',items:[
  ['你好！','Nǐ hǎo!','Привет!'],
@@ -466,7 +466,8 @@ function structureScreen(){
  '<div class="hsk2-ribbon">Порядок слов: что за чем?</div>'+
  '<div class="hsk2-order"><div><strong>① КТО?</strong><b lang="zh-Hans">我</b></div><div><strong>② ЧТО ДЕЛАЕТ?</strong><b lang="zh-Hans">住在</b></div><div><strong>③ ГДЕ?</strong><b lang="zh-Hans">莫斯科</b></div></div>'+
  '<p class="hsk2-order-note"><strong>Правило:</strong> сначала <b>кто</b>, затем <b>живёт в (住在)</b>, затем <b>город</b>. Слово <b>住</b> означает «жить», а <b>在</b> здесь указывает место. Вместе <b>住在</b> — «жить в».</p>'+
- '<p class="lesson-note">Дальше соберём эту фразу самостоятельно из знакомых слов.</p>'+
+ '<div class="hsk2-order-note"><strong>🎧 Послушай также:</strong></div>'+example(['我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.'])+
+ '<p class="lesson-note">Дальше ты попробуешь сказать, где живёшь сам.</p>'+
  '</div>';
 }
 
