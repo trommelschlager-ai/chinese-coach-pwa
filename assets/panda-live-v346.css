@@ -88,3 +88,22 @@ body.panda-clean-ready>dialog button {cursor:pointer}
 
 /* Long utterances scroll inside their speech card and never cover topic selection. */
 #pg346 .pg346-speech{top:7%;max-height:57%;justify-content:flex-start}
+
+/* v349: clean complete mascot and approved continuous lake background. */
+#pg346{background:#53b8f3 url('./panda-lake-background-v349.png') center center/cover no-repeat}
+#pg346 .pg346-header,#pg346 .pg346-history,#pg346 .pg346-scene{background:transparent}
+#pg346 .pg346-sakura{display:none}
+#pg346 .pg346-panda{left:0;bottom:1%;width:min(67%,315px);max-height:98%;object-fit:contain}
+#pg346 .pg346-composer{background:linear-gradient(transparent,#b6d9ffb8)}
+
+/* v350: keep controls usable in the space left by the mobile keyboard. */
+#pg346 .pg346-panda{left:0;width:min(60%,300px)}
+#pg346 .pg346-input{font-size:max(16px,3.3vw)}
+#pg346 .pg346-nav{padding-bottom:max(4px,env(safe-area-inset-bottom,0px))}
+:root[data-keyboard=true] #pg346 .pg346-scene{min-height:0}
+:root[data-keyboard=true] #pg346 .pg346-speech{top:3%;max-height:94%}
+:root[data-keyboard=true] #pg346 .pg346-all-topics{width:56px;right:auto;left:2%;bottom:3%;font-size:10px}
+:root[data-keyboard=true] #pg346 .pg346-all-topics svg{width:20px;height:20px}
+:root[data-keyboard=true] #pg346 .pg346-mode{height:38px;min-height:38px}
+:root[data-keyboard=true] #pg346 .pg346-tools{min-height:36px}
+:root[data-keyboard=true] #pg346 .pg346-topic-menu{bottom:2%;right:2%;max-height:96%}

@@ -35,7 +35,7 @@ if (!bridge) {
     </header>
     <div class="pg346-history" id="pg346-rows" aria-label="Последние три реплики" aria-live="polite"></div>
     <section class="pg346-scene" aria-label="Панда в китайском пейзаже">
-      <img class="pg346-panda" src="./assets/panda-character-v346.svg?v=346" alt="Панда с открытыми глазами, цветком, фиолетовыми наушниками и шарфом" decoding="async" draggable="false">
+      <img class="pg346-panda" src="./assets/panda-character-v349.png?v=349" alt="Панда с открытыми глазами, цветком, фиолетовыми наушниками и шарфом" decoding="async" draggable="false">
       <img class="pg346-sakura" src="./assets/panda-sakura-v346.svg?v=346" alt="" aria-hidden="true" decoding="async" draggable="false">
       <div class="pg346-speech" aria-label="Текущая фраза Панды" aria-live="polite">
         <strong class="pg346-main-zh">你好！</strong>
@@ -67,12 +67,14 @@ if (!bridge) {
   function clipFor(entry){return lookupPandaVoiceClip(entry?.hanzi||entry?.panda)||lookupPandaVoiceClip(entry?.audioKey)}
   function playHistory(entry){const part=clipFor(entry);if(!part){bridge.note('🔇 Для этой фразы нет MP3-записи');return}stopHistoryAudio();bridge.stopPlayback();const a=new Audio(new URL(part.src,document.baseURI).href);historyAudio=a;a.playbackRate=bridge.snapshot().slow?.8:1;const start=Number(part.start)||0,end=Number.isFinite(part.end)?Number(part.end):null;a.onloadedmetadata=()=>{if(historyAudio===a)try{a.currentTime=start}catch{}};a.ontimeupdate=()=>{if(historyAudio===a&&end!==null&&a.currentTime>=end-.025)stopHistoryAudio()};a.onended=()=>{if(historyAudio===a)historyAudio=null};a.onerror=()=>{if(historyAudio===a){stopHistoryAudio();bridge.note('Звуковой файл не загрузился')}};a.play().catch(()=>{if(historyAudio===a){stopHistoryAudio();bridge.note('Браузер заблокировал звук. Нажми динамик ещё раз')}})}
   function renderRows(rows){const root=$('#pg346-rows');root.replaceChildren();for(const e of rows.slice(-3)){
-    const row=el('article','pg346-row');const av=el('span','pg346-avatar');if(e.who==='you')av.textContent='👤';else{const img=document.createElement('img');img.src='./assets/panda-character-v346.svg?v=346';img.alt='Панда';av.append(img)}
+    const row=el('article','pg346-row');const av=el('span','pg346-avatar');if(e.who==='you')av.textContent='👤';else{const img=document.createElement('img');img.src='./assets/panda-character-v349.png?v=349';img.alt='Панда';av.append(img)}
     const text=el('div','pg346-text');text.append(el('div','pg346-zh',e.hanzi||''),el('div','pg346-py',e.pinyin||''));
     const translation=el('div','pg346-ru',e.ru||e.analysis?.probable||'Перевод пока не подтверждён');
     const sound=el('button','pg346-row-audio','🔊');sound.type='button';sound.disabled=!clipFor(e);sound.setAttribute('aria-label',sound.disabled?'Для этой фразы нет MP3':'Слушать эту реплику');sound.addEventListener('click',()=>playHistory(e));
     row.append(av,text,translation,sound);root.append(row);
-  }}
+  }
+  root.scrollTop=root.scrollHeight;
+  }
   const topicsFallback=['Основы и приветствие','Местоимения','Числа и время','Дни недели','Месяцы и даты','Семья','Погода'];
   function renderTopics(s){const key=s.allowed.join(',')+'|'+s.topic;if(key===lastTopics)return;lastTopics=key;const grid=$('.pg346-topic-list');grid.replaceChildren();const options=new Map([...document.querySelectorAll('#lesson-select option')].map(o=>[Number(o.value),o.textContent.replace(/^\d+\.\s*/,'')]));for(let id=1;id<=7;id++){const b=el('button','',`${id}. ${options.get(id)||topicsFallback[id-1]}`);b.type='button';b.disabled=!s.allowed.includes(id);b.setAttribute('aria-current',String(id===s.topic));if(b.disabled)b.title='Сначала пройди урок '+id;b.addEventListener('click',()=>{if(bridge.chooseTopic(id)){closeTopics();sync()}});grid.append(b)}}
   function renderFeedback(s){const last=s.history.slice().reverse().find(x=>x.who==='you');const wrong=last?.analysis?.correction,unknown=last&&!last.ru&&!last.analysis?.probable;const root=$('#pg346-feedback');const active=!!wrong||!!unknown;const key=[last?.hanzi,wrong?.hanzi,s.feedback,active].join('|');if(key===lastFeedback)return;lastFeedback=key;root.hidden=!active;root.replaceChildren();if(!active)return;root.append(el('strong','',`Ты сказал: ${last.hanzi}`));if(wrong){root.append(el('p','',`✅ Правильно: ${wrong.hanzi}${wrong.pinyin?' · '+wrong.pinyin:''}`));if(wrong.ru)root.append(el('p','',wrong.ru));if(wrong.why)root.append(el('p','',wrong.why))}else{root.append(el('p','',last.analysis?.probable||'Полный смысл не подтверждён. Попробуй уточнить'))}}
@@ -85,7 +87,7 @@ if (!bridge) {
     const live=$('#pg346-live');live.dataset.active=String(s.active||s.pose==='talking');live.textContent=s.active?'🎙 Слушаю…':s.pose==='talking'?'🔊 Панда говорит':'';
     const back=document.getElementById('back-link');if(back)$('a.pg346-back').href=back.href;
   }
-  function closeTopics(){$('#pg346-topics').hidden=true;$('#pg346-topics-btn').setAttribute('aria-expanded','false')}
+  function closeTopics(){const wasOpen=!$('#pg346-topics').hidden;$('#pg346-topics').hidden=true;$('#pg346-topics-btn').setAttribute('aria-expanded','false');if(wasOpen)$('#pg346-topics-btn').focus({preventScroll:true})}
   function toggleTopics(){const pop=$('#pg346-topics');pop.hidden=!pop.hidden;$('#pg346-topics-btn').setAttribute('aria-expanded',String(!pop.hidden));if(!pop.hidden){renderTopics(bridge.snapshot());$('#pg346-topics-close').focus()}}
   function send(){const inp=$('#pg346-input');const value=inp.value.trim();if(!value){inp.focus();return}stopHistoryAudio();inp.value='';bridge.send(value);sync()}
   function toggle(which){if(which==='py'){showPy=!showPy;stage.dataset.py=String(showPy);$('#pg346-py').setAttribute('aria-pressed',String(showPy))}else{showRu=!showRu;stage.dataset.ru=String(showRu);$('#pg346-ru').setAttribute('aria-pressed',String(showRu))}}
@@ -97,5 +99,23 @@ if (!bridge) {
   $('#pg346-topics-btn').addEventListener('click',toggleTopics);$('#pg346-topics-close').addEventListener('click',closeTopics);stage.addEventListener('click',e=>{if(!$('#pg346-topics').hidden&&!e.target.closest('#pg346-topics,#pg346-topics-btn'))closeTopics()});stage.addEventListener('keydown',e=>{if(e.key==='Escape')closeTopics()});
   const core=document.querySelector('main');if(core){let pending=false;new MutationObserver(()=>{if(!pending&&!document.hidden){pending=true;requestAnimationFrame(()=>{pending=false;sync()})}}).observe(core,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-state','aria-pressed','disabled']})}
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stopHistoryAudio();else sync()});window.addEventListener('pagehide',stopHistoryAudio);
-  sync();document.documentElement.dataset.pandaCleanVersion='346';
+  // Track the available viewport on Android, including keyboards that resize
+  // innerHeight itself (where innerHeight - visualViewport.height stays zero).
+  let fullHeight=window.innerHeight;
+  function fitViewport(){
+    const viewport=window.visualViewport,height=viewport?.height||window.innerHeight;
+    const typing=stage.contains(document.activeElement)&&document.activeElement.matches('input,textarea');
+    if(!typing)fullHeight=window.innerHeight;
+    const keyboard=height<560||(typing&&fullHeight-height>120);
+    document.documentElement.style.setProperty('--screen-height',height+'px');
+    document.documentElement.style.setProperty('--screen-top',(viewport?.offsetTop||0)+'px');
+    document.documentElement.dataset.keyboard=String(keyboard);
+    if(!keyboard)$('#pg346-rows').scrollTop=$('#pg346-rows').scrollHeight;
+  }
+  window.visualViewport?.addEventListener('resize',fitViewport);
+  window.visualViewport?.addEventListener('scroll',fitViewport);
+  window.addEventListener('resize',fitViewport);
+  document.addEventListener('focusin',fitViewport);
+  document.addEventListener('focusout',()=>requestAnimationFrame(fitViewport));
+  fitViewport();sync();document.documentElement.dataset.pandaCleanVersion='350';
 }
