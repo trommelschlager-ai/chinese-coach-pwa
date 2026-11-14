@@ -53,9 +53,9 @@ export function topicPrompts(topic,date=new Date(),profile={}){
 export function nextTopicPrompt(topic,recent=[],date=new Date(),profile={}){const pool=topicPrompts(topic,date,profile);return pool.find(p=>!recent.includes(p.hanzi))||[...pool].sort((a,b)=>recent.lastIndexOf(a.hanzi)-recent.lastIndexOf(b.hanzi))[0]||null}
 const QUERY=[];
 function query(keys,topic,pinyin,translation,reply){for(const key of keys)QUERY.push({key,topic,pinyin,translation,reply})}
-query(['你叫什么名字','你叫什么'],2,'Nǐ jiào shénme míngzi?','Как тебя зовут?',()=>line('我叫Panda。','Wǒ jiào Panda.','Меня зовут Panda.','Имя учебного персонажа.'));
-query(['你是谁'],2,'Nǐ shì shéi?','Кто ты?',()=>line('我是老师。','Wǒ shì lǎoshī.','Я учитель.',ROLE));
-query(['你是老师吗'],2,'Nǐ shì lǎoshī ma?','Ты учитель?',()=>line('我是老师。','Wǒ shì lǎoshī.','Я учитель.',ROLE));
+query(['你叫什么名字','你叫什么'],2,'Nǐ jiào shénme míngzi?','Как тебя зовут?',()=>line('我叫熊猫。','Wǒ jiào Xióngmāo.','Меня зовут Панда.','Имя учебного персонажа.'));
+query(['你是谁'],2,'Nǐ shì shéi?','Кто ты?',()=>line('我是熊猫老师。','Wǒ shì Xióngmāo lǎoshī.','Я учитель Панда.',ROLE));
+query(['你是老师吗'],2,'Nǐ shì lǎoshī ma?','Ты учитель?',()=>line('是，我是老师。','Shì, wǒ shì lǎoshī.','Да, я учитель.',ROLE));
 query(['你是学生吗'],2,'Nǐ shì xuésheng ma?','Ты студент?',()=>line('不是，我是老师。','Bú shì, wǒ shì lǎoshī.','Нет, я учитель.',ROLE));
 query(['你几岁','你多大','你多大了'],3,'Nǐ jǐ suì?','Сколько тебе лет?',()=>line('我三岁。','Wǒ sān suì.','Мне три года.',ROLE));
 query(['你有几个'],3,'Nǐ yǒu jǐ ge?','Сколько у тебя?',()=>line('我有两个。','Wǒ yǒu liǎng ge.','У меня два.','Учебная сценка: считаем предметы.'));
