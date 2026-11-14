@@ -25,9 +25,10 @@ function load(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch{re
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{memory[k]=v}}
 function SR(){return W.SpeechRecognition||W.webkitSpeechRecognition}
 const speechAvailable=()=>!!SR();
-const clipMap={'很':'./assets/owner-clean-v237/2ddeccad2b8bf7e6.mp3'};
+const clipMap={}; // v331: previous owner voice removed; user-supplied Luvvoice MP3 only.
 let audio=null;
 function play(zh,report=()=>{}){
+ if(window.PandaHsk2AudioV331)return window.PandaHsk2AudioV331.play(zh,report);
  const src=clipMap[zh];
  if(!src){report('Для «'+zh+'» пока нет проверенной MP3-записи. Другой голос не включаем.');return false}
  try{audio?.pause();audio=new Audio(src);audio.preservesPitch=true;audio.playbackRate=.9;
