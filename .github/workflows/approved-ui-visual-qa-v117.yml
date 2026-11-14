@@ -1,5 +1,7 @@
 name: Panda Go mobile browser QA
 on:
+  push:
+    branches: [fix/panda-v323-family-conversation-live]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -30,23 +32,18 @@ jobs:
             sleep 1
           done
           curl -fsS http://127.0.0.1:4173/index.html >/dev/null || { cat /tmp/vite-v117.log; exit 1; }
-          node scripts/visual-panda-v130.mjs
+          # The retired visual suites below target an obsolete six-level
+          # home / single-file HSK1 pages. Validate the current approved home,
+          # seven actual lesson routes, and Panda AI screenshot regression.
+          node scripts/visual-panda-live-v323.mjs
           node scripts/visual-mobile-v119.mjs
-          node scripts/visual-hsk1-v152.mjs
-          node scripts/visual-hsk1-v171.mjs
-          node scripts/visual-panda-reference-v172.mjs
-          node scripts/visual-panda-reference-v174.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: chinese-coach-mobile-v130-screenshots
           path: |
-            qa/v130/browser/
+            qa/panda-live-v323/
             qa/v119/
-            qa/hsk1-v152/
-            qa/hsk1-v171/
-            qa/panda-v172/
-            qa/panda-v174/
           if-no-files-found: warn
   hanzi-focused:
     needs: hanzi-phrase-audio

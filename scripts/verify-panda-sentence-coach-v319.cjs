@@ -78,11 +78,11 @@ const fs=require('node:fs');
  assert.equal(coachSentence('下雨',{allowed:base.allowed,prompt:{...weatherPrompt,time:'明天',hanzi:'明天天气怎么样？'}}),null);
  for(const p of [
   './assets/panda-sentence-coach-v319.mjs?v=319',
-  './assets/panda-live-dialogue-v272.mjs?v=319',
-  './assets/panda-live-screen-v270.mjs?v=319',
+  './assets/panda-live-dialogue-v272.mjs?v=323',
+  './assets/panda-live-screen-v270.mjs?v=323',
   './assets/panda-hsk1-questions-v281.mjs?v=319',
-  './panda-voice-pilot.html?v=319'
+  './panda-voice-pilot.html?v=323'
  ]) assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).files.includes(p),p);
- assert(fs.readFileSync('panda-voice-pilot.html','utf8').includes('<span class="release">v319</span>'));
+ assert(fs.readFileSync('panda-voice-pilot.html','utf8').includes('<span class="release">v323</span>'));
  console.log('PASS Panda sentence coach v319: 17 safe phrase expansions + 4 contextual weather prompts, audio B02/B04/B05 and old HSK1 preserved.');
 })().catch(err=>{console.error(err);process.exitCode=1});

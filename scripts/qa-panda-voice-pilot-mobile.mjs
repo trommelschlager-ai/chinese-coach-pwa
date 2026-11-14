@@ -76,7 +76,7 @@ try{
   await page.evaluate(()=>localStorage.setItem('pg-hsk1-v3-complete',JSON.stringify(['foundations','pronouns','numbers','weekdays','dates','family','weather'])));
   await page.goto(BASE+'/panda-voice-pilot.html?lesson=1');await ready(page);await page.locator('#mode-nonstop').click();
   for(const [q,answer] of [['今天天气怎么样','今天很冷。'],['你有妹妹吗','我有一个妹妹。'],['你几岁','我三岁。']]){await send(page,q);assert.equal(await page.locator('#phrase').textContent(),answer)}
-  await send(page,'今天星期几');assert((await page.locator('#phrase').textContent()).includes('星期'+dayNames[day]));
+  const dayBefore=await page.evaluate(()=>new Date().getDay());await send(page,'今天星期几');const pageDayText=await page.locator('#phrase').textContent();const dayAfter=await page.evaluate(()=>new Date().getDay());assert([dayBefore,dayAfter].some(d=>(pageDayText||'').includes('星期'+dayNames[d])));
   await send(page,'今天几月几号');assert((await page.locator('#exercise-banner').textContent()).includes('календарю устройства'));
   // v302: end-to-end text questions use the existing chat, not a new screen.
   await send(page,'妹妹是什么意思？');
