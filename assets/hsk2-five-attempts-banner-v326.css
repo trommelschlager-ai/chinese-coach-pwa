@@ -22,8 +22,8 @@ header.scene .brand small{backdrop-filter:none;background:#fff8ffdf}
 .pg-final-head span{font-size:11px;font-weight:800;white-space:nowrap}
 .pg-final-rows{display:grid;grid-template-columns:1fr;gap:7px;margin:4px 0 9px}
 .pg-final-row{min-height:53px;display:grid;grid-template-columns:minmax(77px,92px) minmax(0,1fr) 58px;gap:6px;align-items:center;border:1px solid #e7c4df;background:#fffafd;border-radius:14px;padding:4px 6px}
-.pg-final-word{font:inherit;cursor:pointer;border:1.5px solid #e3abce;border-radius:11px;min-height:43px;padding:3px 2px;color:#683184;background:linear-gradient(#fff,#fae8f9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;box-shadow:0 2px 3px #a864a92d}
-.pg-final-word:before{content:"🎤";position:absolute;transform:translate(-40px,-15px);font-size:10px}
+.pg-final-word{position:relative;font:inherit;cursor:pointer;border:1.5px solid #e3abce;border-radius:11px;min-height:43px;padding:3px 2px;color:#683184;background:linear-gradient(#fff,#fae8f9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;box-shadow:0 2px 3px #a864a92d}
+.pg-final-word:before{content:"🎤";position:absolute;top:2px;right:3px;font-size:9px}
 .pg-final-word b{font-size:clamp(19px,6vw,24px);line-height:1.03}
 .pg-final-word small{font-size:9px;color:#9455a6}
 .pg-final-word:disabled{opacity:.52;cursor:default}
