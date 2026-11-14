@@ -83,3 +83,5 @@ body.panda-clean-ready>dialog button {cursor:pointer}
 #pg346 .pg346-panda{width:min(73%,335px);max-height:97%;left:-2.5%}
 #pg346 .pg346-panda{width:min(68%,315px);left:-3.2%}
 #pg346 .pg346-speech{width:41%;right:1.5%}
+
+#pg346 .pg346-status{position:absolute;z-index:11;bottom:16%;left:2.5%;width:94%;max-height:30%;overflow:auto;border:1px solid #ebbbff;border-radius:14px;background:#fff7fff3;box-shadow:0 2px 9px #4f258b66;padding:9px 11px;color:#5b207f;font-size:clamp(11px,2.9vw,15px);line-height:1.3}
