@@ -16,7 +16,7 @@ import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=336';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
-const rig=createPandaRig($('character'),$('panda-canvas'));
+const rig=document.documentElement.dataset.pandaPresentation==='reference' ? {setState:value=>{$('character').dataset.state=value},setLevel:()=>{},dispose:()=>{}} : createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,recognition=null,epoch=0,watchdog,poseTimer,followupTimer;
 const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null};
 const current=()=>state.display;

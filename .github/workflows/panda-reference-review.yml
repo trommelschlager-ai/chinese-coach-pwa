@@ -1,0 +1,30 @@
+name: Panda reference structure review
+on:
+  push:
+    branches: [fix/panda-ai-reference-structure]
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node --test tests/panda-reference-view.test.mjs tests/panda-live-dialogue-v272.test.mjs tests/panda-live-mic-recovery-v318.test.mjs tests/panda-nonstop-v267.test.mjs tests/panda-brain-v341.test.cjs
+      - run: npm install --no-save --no-package-lock playwright@1.56.1 && npx playwright install --with-deps chromium
+      - run: |
+          node scripts/dev-static.cjs &
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-voice-pilot.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-reference.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: panda-reference-mobile-review
+          path: qa/panda-reference
