@@ -149,6 +149,22 @@
 .pg-brain-memory{font-size:12px;background:#fff7fb;border:1px solid #dfb9dd;border-radius:12px;padding:8px;color:#6e398a;line-height:1.45}
 .pg-brain-memory b{color:#54236f}
 .pg-brain-confirm{width:100%;font-size:12px;min-height:42px;white-space:normal}
+
+/* Panda Go Journey lesson 1 v345 — more legible grammar, audio quiz and compact speaking. */
+.journey-speaking-intro{text-align:center;font-size:13px;line-height:1.5;margin:0 0 7px}.journey-speaking-intro b{font-size:16px}.journey-speaking-intro p{margin-top:5px;color:#725083}
+.journey-listen{width:100%;min-height:48px;font-size:16px;margin:5px 0 9px;cursor:pointer}
+.journey-audio-question .intro{font-size:14px;line-height:1.45;margin-bottom:10px}
+.journey-audio-question .choice{min-height:46px;font-size:14px}
+.journey-speaking .pg-final-head{display:flex;gap:8px;align-items:center;justify-content:space-between;font-size:13px;margin:4px 0 8px}
+.journey-speaking .pg-final-row{gap:5px;padding:6px 7px;margin-bottom:6px;min-height:0}
+.journey-speaking .pg-final-word{padding:6px 8px;min-width:78px}
+.journey-speaking .pg-final-word b{font-size:29px}
+.journey-speaking .pg-final-word small{font-size:11px}
+.journey-speaking .pg-final-marks{gap:3px}
+.journey-speaking .pg-final-marks span{width:24px;height:29px;font-size:14px}
+.journey-speaking .pg-final-foot{gap:5px;font-size:11px}
+.journey-speaking .pg-final-note{font-size:11px;line-height:1.35}
+@media(max-width:375px){.journey-speaking .pg-final-word{min-width:62px}.journey-speaking .pg-final-marks span{width:20px;height:25px}}
 </style><link rel="stylesheet" href="./assets/hsk2-one-screen-v323.css?v=323"><link rel="stylesheet" href="./assets/hsk2-speaking-v324.css?v=324"><link rel="stylesheet" href="./assets/hsk2-five-attempts-banner-v326.css?v=326"><link rel="stylesheet" href="./assets/hsk2-compact-refinement-v328.css?v=328"><link rel="stylesheet" href="./assets/hsk2-fixes-v329.css?v=329"><link rel="stylesheet" href="./assets/hsk2-audio-v330.css?v=339"></head><body><div class="app" id="app"><header class="scene"><span class="petals" aria-hidden="true">🌸</span><a class="backlink" href="#map" aria-label="Назад к карте">‹</a><img class="panda" src="./assets/hsk2-panda-new-v328.svg" alt=""><div class="brand">Panda Go<small id="scene-sub">HSK 2 · Начальный плюс</small></div><span class="scene-caption" id="scene-caption">Слова → грамматика → практика</span></header><main class="content" id="screen" tabindex="-1"></main><nav class="nav" aria-label="Навигация"><a href="#map" id="nav-map"><b>⌂</b>Главная</a><a href="#review" id="nav-review"><b>▤</b>Повторение</a><a href="#lesson" id="nav-lesson"><b>◫</b>Урок 1</a><a href="#progress" id="nav-progress"><b>◴</b>Прогресс</a></nav></div>
 <script src="./assets/hsk2-speaking-v326.js?v=332"></script>
 <script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=343"></script><script src="./assets/panda-brain-v341.js?v=341"></script>
@@ -180,8 +196,12 @@ const steps=[
  ['我是医生。','Wǒ shì yīshēng.','Я врач.'],
  ['我今年三岁了。','Wǒ jīnnián sān suì le.','Мне три года.'],
  ['我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.']]},
+ {kind:'listening-quiz',title:'🎧 Послушай и узнай вопрос',audio:'你叫什么名字？',question:'Что спросила Панда?',choices:['Где ты живёшь?','Как тебя зовут?','Кем ты работаешь?'],answer:1,why:'你叫什么名字？ — «Как тебя зовут?»'},
+ {kind:'build',title:'🧩 Собери предложение',question:'«Я живу в Пекине»',tokens:['北京','我','在','住'],answer:['我','住','在','北京'],why:'Порядок слов: 我 + 住 + 在 + 北京. Вместе 住在 означает «жить в». '},
+ {kind:'quiz',title:'📚 Проверь правило грамматики',question:'Как правильно сказать «Я врач»?',choices:['我叫医生。','我是医生。','我住在医生。'],answer:1,why:'Профессию называем по образцу 我 + 是 + профессия.'},
  {kind:'guided-practice',title:'Твоя очередь: 5 коротких фраз'},
  {kind:'dialogue-practice',title:'Поговори с Пандой · 5 вопросов'},
+ {kind:'speaking5',title:'🎤 Произнеси четыре слова · по 5 раз'},
  {kind:'finish',title:'Ты умеешь знакомиться!',desc:'Пять фраз: 你好 / 我叫… / 我是… / 我今年…岁 / 我住在…. Повтори их вслух, затем возвращайся к карте.'}];
 const key='pg-hsk2-introduction-v1';
 let state={step:0,answers:{},build:[],showPy:true,completed:false,readDialoguePair:0,structureTab:'phrase',dialogue:{index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[]},profile:{name:'',city:'',job:'',age:'',other:''}};
@@ -198,6 +218,8 @@ if(state.introLayoutVersion!==344){
  state.introLayoutVersion=344;
  save();
 }
+// v345: preserve progress and answers; students not yet finished revisit the added listening and grammar checks.
+if(state.introLayoutVersion!==345){if(state.completed){state.step=steps.length-1}else if(state.step>8){state.step=9}state.build=[];state.introLayoutVersion=345;save()}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* Exact HSK1 owner-approved recordings. No phoneme splice or synthetic fallback. */
@@ -493,13 +515,15 @@ function render(){
    '<div class="lesson-read-nav"><button class="softbtn" type="button" data-read-dialogue="prev" '+(state.readDialoguePair===0?'disabled':'')+'>← Раньше</button><small>Реплики '+(state.readDialoguePair*2+1)+'–'+(state.readDialoguePair*2+2)+' из 6</small><button class="softbtn" type="button" data-read-dialogue="next" '+(state.readDialoguePair===2?'disabled':'')+'>Далее →</button></div>'+
    '<p class="notice">Это учебный диалог. Panda AI подключается отдельно.</p>';
  }
+ if(s.kind==='listening-quiz')inside='<div class="journey-audio-question"><p class="intro">Сначала послушай запись. Затем выбери перевод.</p>'+(matchingAudio(s.audio)?'<button type="button" class="primary journey-listen" data-audio="'+esc(s.audio)+'" aria-label="Прослушать вопрос по-китайски">▶ Слушать вопрос</button>':'<p class="notice">Точной записи пока нет. Это задание можно пропустить.</p>')+'<p id="audio-status" role="status" class="audio-status"></p><p class="intro"><b>'+esc(s.question)+'</b></p><div class="choices">'+s.choices.map((v,n)=>'<button type="button" class="choice '+(answer!=null?(n===s.answer?'correct':answer===n?'wrong':''):'')+'" data-answer="'+n+'">'+esc(v)+'</button>').join('')+'</div><p class="feedback '+(answer===s.answer?'ok':'')+'" role="status">'+(answer==null?'Выбери перевод после прослушивания.':(answer===s.answer?'✓ Верно. ':'Пока неверно. ')+esc(s.why))+'</p></div>';
  if(s.kind==='quiz')inside='<p class="intro"><b>'+esc(s.question)+'</b></p><div class="choices">'+s.choices.map((v,n)=>'<button class="choice '+(answer!=null?(n===s.answer?'correct':n===answer?'wrong':''):'')+'" data-answer="'+n+'">'+esc(v)+'</button>').join('')+'</div><div role="status" class="feedback '+(answer===s.answer?'ok':'')+'">'+(answer==null?'Выбери ответ.':(answer===s.answer?'✓ Правильно. ':'Проверь пример. ')+esc(s.why))+'</div>';
  if(s.kind==='build'){let a=state.build,str=a.map(n=>s.tokens[n]).join(''),ok=str===s.answer.join('');inside='<p class="intro">'+esc(s.question)+'</p><div class="builder">'+(a.length?a.map((n,j)=>'<button type="button" data-remove="'+j+'">'+esc(s.tokens[n])+'</button>').join(''):'<span class="small-caption">Выбирай слова в правильном порядке.</span>')+'</div><div class="tokens">'+s.tokens.map((w,n)=>'<button type="button" data-token="'+n+'" '+(a.includes(n)?'disabled':'')+'>'+esc(w)+'</button>').join('')+'</div><p class="feedback '+(ok?'ok':'')+'">'+(ok?'✓ Верно!':esc(s.why))+'</p>'}
  if(s.kind==='guided-practice')inside=guidedIntroPractice();
+ if(s.kind==='speaking5')inside='<div class="journey-speaking-intro"><b>Четыре слова, пять попыток для каждого</b><p>Нажми на слово и произнеси его по-китайски. Галочка означает, что браузер распознал текст, но <strong>не подтверждает правильность тонов</strong>.</p></div><div class="journey-speaking" id="journey-speaking"></div>';
  if(s.kind==='dialogue-practice')inside=introDialogueScreen();
  if(s.kind==='finish'){const d=introDialogueState(),correct=d.passed.filter(Boolean).length,skipped=d.skipped.filter(Boolean).length;inside='<div class="pg-talk-result"><div style="text-align:center;font-size:35px">🐼🌸</div><h2 style="text-align:center">Разговор завершён!</h2><p class="explain">Принято ответов: '+correct+' из 5. Пропущено: '+skipped+'.</p><div class="pg-talk-recap">'+PANDA_INTRO_QUESTIONS.map((q,j)=>'<div><b>'+(d.passed[j]?'✓':'○')+'</b><span><strong>'+esc(q.ru)+'</strong><small>'+esc(d.transcripts[j]||'Пропущено')+'</small></span></div>').join('')+'</div><button type="button" class="softbtn" data-dialogue-restart>↻ Повторить разговор</button><p class="pg-talk-notice">Оценка только текста и структуры; тоны не проверялись.</p></div>'}
- const disabled=(s.kind==='quiz'&&answer==null)||(s.kind==='build'&&state.build.map(n=>s.tokens[n]).join('')!==s.answer.join(''))||(s.kind==='dialogue-practice'&&!introDialogueState().completed);
- $('screen').innerHTML='<div class="banner">Имя · профессия · возраст · город</div>'+
+ const disabled=((s.kind==='quiz'||s.kind==='listening-quiz')&&answer!==s.answer)||(s.kind==='build'&&state.build.map(n=>s.tokens[n]).join('')!==s.answer.join(''))||(s.kind==='dialogue-practice'&&!introDialogueState().completed);
+ $('screen').innerHTML='<div class="banner">Я и моя визитка · HSK 2</div>'+
  '<div class="lesson-title"><strong>'+esc(s.title)+'</strong><span class="pill">Шаг '+(i+1)+' из '+steps.length+'</span></div>'+
  '<div class="meter"><i style="width:'+(i+1)*100/steps.length+'%"></i></div>'+
  '<section class="paper" aria-label="Урок самопрезентации">'+inside+'</section>'+
@@ -507,6 +531,7 @@ function render(){
  '<div class="bottom-actions"><div class="toolbar"><button class="softbtn" data-prev type="button" '+(i===0?'disabled':'')+'>← Назад</button><button class="primary" data-next type="button" '+(disabled?'disabled':'')+'>'+(s.kind==='finish'?'К карте HSK 2 →':s.kind==='dialogue-practice'?'К итогам →':'Дальше →')+'</button></div></div>'+
  '<p class="small-caption">Слушай образцы и повторяй. Тоны проверяй по пиньиню.</p>';
  $('screen').classList.toggle('hiddenpy',!state.showPy);
+ if(s.kind==='speaking5')window.PandaHSK2PracticeV326?.mountFinal($('journey-speaking'),[['叫','jiào','зваться'],['住','zhù','жить'],['工作','gōngzuò','работать'],['医生','yīshēng','врач']],'journey-intro-final-five-v345');
  $('screen').querySelectorAll('[data-pg-drill]').forEach(b=>b.addEventListener('click',()=>speechPhrase(b.dataset.pgDrill)));
  $('screen').querySelectorAll('[data-structure-tab]').forEach(b=>b.addEventListener('click',()=>{state.structureTab=b.dataset.structureTab==='order'?'order':'phrase';save();render()}));
  $('screen').querySelectorAll('[data-read-dialogue]').forEach(b=>b.addEventListener('click',()=>{state.readDialoguePair=Math.max(0,Math.min(2,state.readDialoguePair+(b.dataset.readDialogue==='next'?1:-1)));save();render()}));
@@ -514,7 +539,7 @@ function render(){
  $('screen').querySelectorAll('[data-token]').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.token);if(!state.build.includes(n))state.build.push(n);save();render()}));
  $('screen').querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',()=>{state.build.splice(Number(b.dataset.remove),1);save();render()}));
  $('screen').querySelector('[data-py]').addEventListener('click',()=>{state.showPy=!state.showPy;save();render()});
- $('screen').querySelector('[data-repeat]').addEventListener('click',()=>{state.step=0;state.build=[];state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[],facts:{},selfConfirmed:{}};dialogueDraft='';dialogueFeedback=null;save();render()});
+ $('screen').querySelector('[data-repeat]').addEventListener('click',()=>{state.step=0;state.completed=false;state.answers={};state.build=[];state.dialogue={index:0,started:false,passed:[false,false,false,false,false],skipped:[false,false,false,false,false],hints:[false,false,false,false,false],completed:false,transcripts:[],facts:{},selfConfirmed:{}};dialogueDraft='';dialogueFeedback=null;save();render()});
  $('screen').querySelector('[data-prev]').addEventListener('click',()=>{if(state.step>0){state.step--;save();render()}});
  $('screen').querySelector('[data-next]').addEventListener('click',()=>{if(s.kind==='profile'?!profileReady():disabled)return;if(s.kind==='finish'){state.completed=true;save();location.href='./hsk2-start.html#map'}else{state.step++;save();render()}});
  if(s.kind==='dialogue-practice'){
@@ -592,8 +617,8 @@ function render(){
   profileOutput();
  }
 }
-$('scene-sub').textContent='HSK 2 · Учимся представляться';
-$('scene-caption').textContent='Имя · возраст · город';
+$('scene-sub').textContent='HSK 2 · Урок 1 · Я и моя визитка';
+$('scene-caption').textContent='Слова · грамматика · тест';
 document.querySelector('.backlink').href='./hsk2-start.html#map';
 document.querySelectorAll('.nav a').forEach(a=>{const h=a.getAttribute('href');a.href='./hsk2-start.html'+h});
 $('screen').addEventListener('click',event=>{
