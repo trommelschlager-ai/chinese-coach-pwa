@@ -176,7 +176,7 @@ function profileOutput(){
  if(raw[0].trim()&&!m.name.zh)hints.push('Имя не переведено. Это не мешает продолжить урок.');
  if(raw[1].trim()&&!m.city.zh)hints.push('Город не переведён. Ты можешь перейти дальше с любым городом.');
  if(raw[2].trim()&&!m.job.zh)hints.push('Профессия пока без китайского перевода.');
- const phrase=(prefix,pyPrefix,word,ru)=>example([prefix+(word.zh||'（название по-китайски）')+(word.zh?'。':''),pyPrefix+(word.py?' '+word.py:' …'),ru]);
+ const phrase=(prefix,pyPrefix,word,ru)=>example([prefix+(word.zh||'…')+(word.zh?'。':''),pyPrefix+(word.py?' '+word.py:' …'),ru]);
  target.innerHTML=phrase('我叫','Wǒ jiào',m.name,'Меня зовут '+(p.name||'…')+'.')+
   phrase('我住在','Wǒ zhù zài',m.city,'Я живу в городе '+(p.city||'…')+'.')+
   phrase('我是','Wǒ shì',m.job,'Моя профессия: '+(p.job==='other'?p.other:p.job||'…')+'.');
