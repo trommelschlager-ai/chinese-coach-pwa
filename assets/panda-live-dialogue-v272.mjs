@@ -12,7 +12,7 @@ import {questionVariant,learnerAnswerVariant} from './panda-hsk1-variants-v301.m
 import {brainQuestion,interpretBrainSentence} from './panda-brain-hsk1-v302.mjs?v=302';
 import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from './panda-sentence-coach-v319.mjs?v=319';
-import {answerBasicConversation} from './panda-basic-conversation-v323.mjs?v=323';
+import {answerBasicConversation} from './panda-basic-conversation-v323.mjs?v=336';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
