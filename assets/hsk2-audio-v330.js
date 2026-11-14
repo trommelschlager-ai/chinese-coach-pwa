@@ -66,8 +66,37 @@ for(const entry of (window.PandaUserVoiceIndexV332?.clips||[])){
   source:'user-lv-20261114-'+entry.file
  });
 }
-// v334: A single-word card NEVER links to a sentence. Only exact utterance
-// matches can be played. Sentence audio is available on sentence cards.
+// v335: opt-in COMPLETE sentence examples under otherwise silent single-word cards.
+// A recording may be played only next to that same visible full Chinese sentence.
+// Never use these mappings as a fallback for play(word) or button(word).
+const wordSentences=Object.freeze({
+ '不':['我不忙。','Wǒ bù máng.','Я не занят.'],
+ '的':['我是你的中文学习伙伴。','Wǒ shì nǐ de Zhōngwén xuéxí huǒbàn.','Я твой помощник в изучении китайского.'],
+ '好':['你好！','Nǐ hǎo!','Привет!'],
+ '很':['我很忙。','Wǒ hěn máng.','Я занят.'],
+ '在':['我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.'],
+ '朋友':['我有三个朋友。','Wǒ yǒu sān ge péngyou.','У меня три друга.'],
+ '喜欢':['因为我喜欢中文。','Yīnwèi wǒ xǐhuan Zhōngwén.','Потому что мне нравится китайский.'],
+ '中国':['我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.'],
+ '说':['你会说中文吗？','Nǐ huì shuō Zhōngwén ma?','Ты умеешь говорить по-китайски?'],
+ '读':['你会读中文吗？','Nǐ huì dú Zhōngwén ma?','Ты умеешь читать по-китайски?'],
+ '写':['你会写汉字吗？','Nǐ huì xiě Hànzì ma?','Ты умеешь писать иероглифы?'],
+ '听':['我晚上听音乐。','Wǒ wǎnshang tīng yīnyuè.','Вечером я слушаю музыку.'],
+ '吃':['我中午吃饭。','Wǒ zhōngwǔ chī fàn.','Я обедаю.'],
+ '喝':['你每天喝水吗？','Nǐ měitiān hē shuǐ ma?','Ты каждый день пьёшь воду?'],
+ '水':['你每天喝水吗？','Nǐ měitiān hē shuǐ ma?','Ты каждый день пьёшь воду?'],
+ '饭':['我中午吃饭。','Wǒ zhōngwǔ chī fàn.','Я обедаю.'],
+ '来':['你从哪里来？','Nǐ cóng nǎlǐ lái?','Откуда ты приехал?'],
+ '看':['我下午看书。','Wǒ xiàwǔ kàn shū.','Днём я читаю книгу.'],
+ '想':['我想学中文。','Wǒ xiǎng xué Zhōngwén.','Я хочу изучать китайский.'],
+ '买':['我想买两个苹果。','Wǒ xiǎng mǎi liǎng ge píngguǒ.','Я хочу купить два яблока.'],
+ '回':['我回家以后休息。','Wǒ huí jiā yǐhòu xiūxi.','Я отдыхаю после возвращения домой.']
+});
+function sentenceFor(word){
+ const entry=wordSentences[normalize(word)];
+ if(!entry||!segments.has(normalize(entry[0])))return null;
+ return {zh:entry[0],pinyin:entry[1],ru:entry[2]};
+}
 function exampleFor(){return null}
 let active=null;
 function stop(){
@@ -128,6 +157,6 @@ function bind(root=document){
   });
  });
 }
-window.PandaHsk2AudioV331=Object.freeze({lookup,play,playBest,exampleFor,button,bind,normalize,stop,segments:Object.freeze([...segments.keys()])});
+window.PandaHsk2AudioV331=Object.freeze({lookup,play,playBest,exampleFor,sentenceFor,button,bind,normalize,stop,segments:Object.freeze([...segments.keys()])});
 window.PandaHsk2AudioV330=window.PandaHsk2AudioV331;
 })();
