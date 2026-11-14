@@ -136,7 +136,16 @@ function playApprovedAudio(phrase){
  player.play(phrase,m=>setAudioStatus(m,/не удалось|Ошибка|нет подтверждённого/i.test(m)));
 }
 const clipButton=phrase=>matchingAudio(phrase)?'<button class="audio-clip-button" type="button" data-audio="'+esc(phrase)+'" aria-label="Слушать точную запись: '+esc(phrase)+'">🔊 Слушать</button>':'';
-const word=([zh,py,ru])=>'<article class="vocab"><div lang="zh-Hans" class="hanzi">'+esc(zh)+'</div><div class="py">'+esc(py)+'</div><div class="ru">'+esc(ru)+'</div>'+(matchingAudio(zh)?clipButton(zh):'<span class="hsk2-missing-audio">🔇 Нет отдельного MP3</span>')+'</article>';
+const word=([zh,py,ru])=>{
+ const exact=!!matchingAudio(zh),sample=exact?null:window.PandaHsk2AudioV330?.sentenceFor(zh);
+ const sentence=sample?'<div class="hsk2-word-phrase"><span class="hsk2-word-phrase-label">🎧 Пример с этим словом</span>'+
+  '<strong lang="zh-Hans">'+esc(sample.zh)+'</strong><span class="py">'+esc(sample.pinyin)+'</span>'+
+  '<span class="ru">'+esc(sample.ru)+'</span>'+clipButton(sample.zh)+'</div>':
+  '<span class="hsk2-missing-audio">🔇 Нет MP3 слова</span>';
+ return '<article class="vocab"><div lang="zh-Hans" class="hanzi">'+esc(zh)+'</div>'+
+  '<div class="py">'+esc(py)+'</div><div class="ru">'+esc(ru)+'</div>'+
+  (exact?clipButton(zh):sentence)+'</article>';
+};
 const example=([zh,py,ru])=>'<div class="example"><b lang="zh-Hans">'+esc(zh)+'</b><span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span>'+clipButton(zh)+'</div>';
 
 
