@@ -9,6 +9,7 @@ on:
       - 'assets/hsk2-*.js'
       - 'assets/panda-brain-v341.js'
       - 'scripts/verify-hsk2-learner-v344.cjs'
+      - 'scripts/verify-hsk2-city-work.cjs'
       - '.github/workflows/hsk2-learner-v344.yml'
       - 'sw.js'
   workflow_dispatch:
@@ -26,6 +27,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install test dependencies
+        run: npm ci --ignore-scripts
+      - name: Verify My City work lesson
+        run: node scripts/verify-hsk2-city-work.cjs
       - name: Verify HSK2 learner path
         run: node scripts/verify-hsk2-learner-v344.cjs
       - name: Verify Panda Brain responses
