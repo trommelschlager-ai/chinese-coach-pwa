@@ -1,0 +1,14 @@
+/* Panda Go v329 — accessible profile entries and microphone practice controls. */
+.app .paper .profile-optional{margin:7px 0;padding:8px 10px;background:#fff9ff;border:1px solid #e7c5de;border-radius:11px;flex:0 0 auto}
+.app .paper .profile-optional summary{font-size:12px;font-weight:800;color:#743b91;line-height:1.35;cursor:pointer}
+.app .paper .profile-optional label{font-size:11px;display:block;margin:7px 0 0;color:#55336a;font-weight:700}
+.app .paper .profile-optional input{display:block;width:100%;min-height:38px;margin:3px 0 0;border:1px solid #e0b9d4;border-radius:10px;padding:7px 10px;color:#582879;background:white;font-size:14px}
+.app .paper .pg-profile-help{font-size:clamp(11px,3.1vw,13px);line-height:1.4;padding:7px 8px;border-radius:10px;background:#f7e8fd;color:#663184}
+.app .paper .pg-profile-help.warning{background:#fff0fa;color:#87436c}
+.app .paper .profile-phrases{max-height:220px;overflow-y:auto;scrollbar-width:thin}
+.pg-speaking-panel .exit{min-height:43px;margin-top:8px;cursor:pointer}
+.pg-speaking-panel [data-restart-mic]{background:linear-gradient(110deg,#a450bf,#7135a1);color:white;border-color:#deb6f1;font-weight:850}
+.pg-speaking-panel [data-restart-mic]:focus-visible{outline:3px solid #5a2492;outline-offset:2px}
+.app .content .bottom-actions .primary{opacity:1}
+.app .content .bottom-actions .primary:disabled{opacity:.52}
+@media(max-height:670px){.app .paper .profile-phrases{max-height:150px}.app .paper .profile-optional{padding:6px 8px}}
