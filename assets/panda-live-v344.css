@@ -1,0 +1,91 @@
+/* v344 — composition hotfix: artwork is photographic source, NOT full-screen background. */
+#pg-approved-v337{--hero-end:79%;--panda-zoom:1.35}
+#pg-approved-v337 .v341-hero{
+  top:var(--hero-top,32%)!important;
+  bottom:14.5%!important;
+  overflow:hidden!important;
+  background:linear-gradient(180deg,#64bdf0 0%,#8dd3ee 26%,#39b9e9 49%,#1da9e4 85%,#8bd6f1 100%)!important;
+}
+#pg-approved-v337 .v341-water{
+  z-index:0;inset:0!important;
+  background:radial-gradient(ellipse 80% 25% at 74% 76%,#d9efffaa,transparent 75%),
+    repeating-linear-gradient(179deg,transparent 0 13px,#e2faff43 14px 15px,transparent 18px 29px),
+    linear-gradient(180deg, #a2e5ef, #31b8ea 56%,#0b9de2 84%,#85d5ef)!important;
+}
+#pg-approved-v337 .v341-photo{
+  height:100%!important;width:100%!important;z-index:2;overflow:visible!important;
+}
+#pg-approved-v337 .v341-photo-image{
+  width:calc(100% * var(--panda-zoom))!important;
+  height:auto!important;
+  left:-3%!important;
+  top:calc(var(--cw)*-.5845*var(--panda-zoom))!important;
+  object-fit:contain!important;
+  clip-path:polygon(0 0,65% 0,65% 100%,0 100%)!important;
+}
+#pg-approved-v337 .v341-sakura{
+  width:100%!important;height:100%!important;z-index:3;
+  background-size:calc(100% * var(--panda-zoom)) auto!important;
+  background-position:-3vw calc(var(--cw)*-.5845*var(--panda-zoom))!important;
+  clip-path:polygon(0 0,24% 0,18% 70%,0 97%)!important;
+}
+/* Hide the former full-art footer and baked speech, keep DOM version only. */
+#pg-approved-v337 .v337-speech{
+  top:calc(var(--hero-top,32%) + 2.7%)!important;
+  left:55.5%!important;width:42.7%!important;
+  height:auto!important;min-height:15%!important;max-height:29%!important;
+  padding:2% 1.7%!important;z-index:6!important;
+  background:linear-gradient(135deg,#f8eaff,#efdcfb)!important;
+  box-shadow:0 3px 14px #36168b4a,0 0 0 2px #fff9!important;
+}
+#pg-approved-v337 .v337-main-zh{font-size:clamp(19px,5.4cqw,31px)!important;max-height:5.5em!important}
+#pg-approved-v337 .v337-topics{top:65%!important;height:min(15%,134px)!important}
+#pg-approved-v337 .v337-input-form,#pg-approved-v337 .v337-send{top:82.2%!important}
+#pg-approved-v337 .v337-mic{top:81.4%!important}
+#pg-approved-v337 .v337-chat-title{display:none!important}
+#pg-approved-v337 .v341-title{font-size:clamp(12px,3.55cqw,19px)!important;top:12.3%!important;left:3%!important}
+#pg-approved-v337 .v337-py-toggle{left:44.5%!important;width:22%!important}
+#pg-approved-v337 .v337-ru-toggle{left:68%!important;width:10%!important}
+#pg-approved-v337 .v337-history{left:79.5%!important;width:18.5%!important}
+@media(max-height:720px){#pg-approved-v337{--panda-zoom:1.28}#pg-approved-v337 .v337-topics{top:65.5%!important}}
+/* Source-only clipping: never show baked speech, history, feedback or topics. */
+#pg-approved-v337 .v341-photo-image{
+  z-index:2!important;
+  clip-path:polygon(
+    37% 34%,43% 33.3%,47.5% 34.2%,50.7% 36.8%,51.5% 39.2%,54.5% 42%,
+    56.2% 45%,58.3% 49.8%,59.6% 54%,56.7% 57.5%,53.9% 59%,55.9% 63.6%,
+    60.4% 66.3%,60.6% 69.6%,56.5% 70.3%,50.5% 70.3%,46% 69.5%,40% 70.5%,
+    30% 70.5%,24% 69.5%,17% 70.2%,13.3% 68.5%,13.5% 64%,11.5% 61.5%,
+    11.2% 57.3%,9.2% 55%,8.1% 51.6%,8.5% 48.2%,7.6% 45%,7.4% 42%,
+    8% 40.4%,11.2% 39%,15.8% 39%,20% 39.4%,23% 37%,28% 35%,32% 34.5%
+  )!important;
+}
+#pg-approved-v337 .v344-scenery{position:absolute;display:block;object-fit:contain!important;pointer-events:none;width:calc(100% * var(--panda-zoom))!important;height:auto!important;left:-3%!important;top:calc(var(--cw)*-.5845*var(--panda-zoom))!important;max-width:none!important;z-index:1}
+#pg-approved-v337 .v344-scenery.mountains{clip-path:polygon(57% 34%,100% 34%,100% 38.5%,57% 38.5%)}
+#pg-approved-v337 .v344-scenery.bridge{clip-path:polygon(56% 60.8%,100% 60.8%,100% 69.3%,56% 69.3%)}
+/* Feather the isolated photographic character into the original blue lake. */
+#pg-approved-v337 .v341-photo-image{
+  clip-path:none!important;
+  -webkit-mask-image:radial-gradient(ellipse 43% 25% at 32% 52%,#000 55%,#000 71%,transparent 99%)!important;
+  mask-image:radial-gradient(ellipse 43% 25% at 32% 52%,#000 55%,#000 71%,transparent 99%)!important;
+}
+#pg-approved-v337 .v341-photo-image{
+  clip-path:polygon(37% 34%,43% 33.3%,47.5% 34.2%,50.7% 36.8%,51.5% 39.2%,54.5% 42%,56.2% 45%,58.3% 49.8%,59.6% 54%,56.7% 57.5%,53.9% 59%,55.9% 63.6%,60.4% 66.3%,60.6% 69.1%,56.5% 69.9%,50.5% 69.9%,46% 69.5%,40% 69.8%,30% 69.8%,24% 69.5%,17% 69.8%,13.3% 68.5%,13.5% 64%,11.5% 61.5%,11.2% 57.3%,9.2% 55%,8.1% 51.6%,8.5% 48.2%,7.6% 45%,7.4% 42%,8% 40.4%,11.2% 39%,15.8% 39%,20% 39.4%,23% 37%,28% 35%,32% 34.5%)!important;
+  -webkit-mask-image:radial-gradient(ellipse 44% 26% at 30% 51%,#000 67%,transparent 95%)!important;
+  mask-image:radial-gradient(ellipse 44% 26% at 30% 51%,#000 67%,transparent 95%)!important;
+}
+#pg-approved-v337 .v341-photo-image.v344-isolated{clip-path:none!important;mask-image:none!important;-webkit-mask-image:none!important}
+#pg-approved-v337 .v344-scenery.mountains{mask-image:linear-gradient(to bottom,transparent 33%,#000 35%,#000 37%,transparent 39%)!important;-webkit-mask-image:linear-gradient(to bottom,transparent 33%,#000 35%,#000 37%,transparent 39%)!important}
+#pg-approved-v337 .v344-scenery.bridge{mask-image:linear-gradient(to bottom,transparent 60%,#000 62%,#000 68%,transparent 70%)!important;-webkit-mask-image:linear-gradient(to bottom,transparent 60%,#000 62%,#000 68%,transparent 70%)!important}
+#pg-approved-v337 .v344-scenery.mountains{display:none!important}
+#pg-approved-v337 .v344-scenery.bridge{display:none!important}
+#pg-approved-v337 .v344-bridge-native{position:absolute;z-index:3;left:51%;top:40%;width:48%;height:auto;max-width:none;pointer-events:none;object-fit:contain;opacity:.98}
+#pg-approved-v337 .v337-topics{top:69.2%!important;height:min(12.2%,113px)!important}
+#pg-approved-v337{--panda-zoom:1.28!important}
+#pg-approved-v337 .v344-bridge-native{z-index:1!important}
+#pg-approved-v337 .v341-photo-image,#pg-approved-v337 .v344-scenery{left:-7%!important}
+#pg-approved-v337 .v341-sakura{
+  -webkit-mask-image:radial-gradient(ellipse 35% 80% at 0 24%,black 48%,transparent 98%)!important;
+  mask-image:radial-gradient(ellipse 35% 80% at 0 24%,black 48%,transparent 98%)!important;
+}
+#pg-approved-v337 .v341-sakura{height:calc(var(--cw)*.80)!important;max-height:66%!important}
