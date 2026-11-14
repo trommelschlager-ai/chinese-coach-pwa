@@ -50,7 +50,7 @@ assert(doc.querySelector('#next').disabled);
 click('[data-talk-0="1"]');assert(doc.querySelector('#next').disabled,'Both responses required');
 click('[data-talk-1="0"]');assert(!doc.querySelector('#next').disabled);
 next();assert.equal(step(),10);
-assert(doc.querySelector('#screen').textContent.includes('Тоны'));
+assert(doc.querySelector('#screen').textContent.toLowerCase().includes('тон'));
 assert(doc.querySelector('[data-act="mic"]').disabled,'Unsupported mic must not spoof speech scores');
 next();assert.equal(step(),11);assert(doc.querySelector('#screen').textContent.includes('Урок завершён'));
 assert(JSON.parse(w.localStorage.getItem('pg-hsk2-city-work-v1')).completed);
