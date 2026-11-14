@@ -122,34 +122,18 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 
 /* Exact HSK1 owner-approved recordings. No phoneme splice or synthetic fallback. */
 // Unified native recording source; do not mix Xiaoxiao with the approved speaker.
-const matchingAudio=phrase=>window.PandaHsk2AudioV330?.lookup(phrase)||null;
-const LIVE_AUDIO_BASE='https://trommelschlager-ai.github.io/chinese-coach-pwa/';
-function approvedAudioUrl(phrase){
- const src=matchingAudio(phrase);
- if(!src)return null;
- return location.hostname==='trommelschlager-ai.github.io'?'./'+src:LIVE_AUDIO_BASE+src;
-}
-let playingApprovedAudio=null;
-function stopApprovedAudio(){
- if(!playingApprovedAudio)return;
- try{playingApprovedAudio.pause();playingApprovedAudio.currentTime=0}catch{}
- playingApprovedAudio=null;
-}
+const matchingAudio=phrase=>window.PandaHsk2AudioV331?.lookup(phrase)||null;
 function setAudioStatus(message,isError=false){
- const out=$('audio-status');if(out){out.textContent=message;out.classList.toggle('warn',isError)}
+ const out=$('audio-status');
+ if(out){out.textContent=message;out.classList.toggle('warn',isError)}
+}
+function stopApprovedAudio(){
+ window.PandaHsk2AudioV331?.stop();
 }
 function playApprovedAudio(phrase){
- const url=approvedAudioUrl(phrase);
- if(!url){setAudioStatus('Для этой фразы пока нет проверенной аудиозаписи.',true);return}
- stopApprovedAudio();
- let audio;
- try{audio=new Audio(url)}catch{setAudioStatus('Не удалось запустить аудиоплеер.',true);return}
- playingApprovedAudio=audio;audio.preload='none';
- audio.addEventListener('ended',()=>{if(playingApprovedAudio===audio){playingApprovedAudio=null;setAudioStatus('Запись воспроизведена.')}},{once:true});
- audio.addEventListener('error',()=>{if(playingApprovedAudio===audio){playingApprovedAudio=null;setAudioStatus('Запись не загрузилась. Проверь интернет.',true)}},{once:true});
- setAudioStatus('Загружается запись HSK 1…');
- try{const pending=audio.play();if(pending&&pending.catch)pending.catch(()=>{if(playingApprovedAudio===audio){playingApprovedAudio=null;setAudioStatus('Chrome не разрешил включить звук. Нажми 🔊 ещё раз.',true)}})}
- catch{if(playingApprovedAudio===audio){playingApprovedAudio=null;setAudioStatus('Ошибка аудио. Нажми ещё раз.',true)}}
+ const player=window.PandaHsk2AudioV331;
+ if(!player){setAudioStatus('Аудиоплеер не загружен.',true);return}
+ player.play(phrase,m=>setAudioStatus(m,/не удалось|Ошибка|нет подтверждённого/i.test(m)));
 }
 const clipButton=phrase=>matchingAudio(phrase)?'<button class="audio-clip-button" type="button" data-audio="'+esc(phrase)+'" aria-label="Слушать: '+esc(phrase)+'">🔊 Слушать</button>':'';
 
