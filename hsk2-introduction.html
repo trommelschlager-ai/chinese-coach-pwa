@@ -81,8 +81,9 @@
 .audio-status{font-size:12px;min-height:16px;color:#6a3d7b;margin:5px 0;text-align:center;line-height:1.3}
 .audio-status.warn{color:#a43858}
 @media(max-height:700px){.audio-clip-button{padding:4px 7px;min-height:28px;font-size:11px}}
-</style><link rel="stylesheet" href="./assets/hsk2-one-screen-v323.css?v=323"><link rel="stylesheet" href="./assets/hsk2-speaking-v324.css?v=324"><link rel="stylesheet" href="./assets/hsk2-five-attempts-banner-v326.css?v=326"><link rel="stylesheet" href="./assets/hsk2-compact-refinement-v328.css?v=328"><link rel="stylesheet" href="./assets/hsk2-fixes-v329.css?v=329"></head><body><div class="app" id="app"><header class="scene"><span class="petals" aria-hidden="true">🌸</span><a class="backlink" href="#map" aria-label="Назад к карте">‹</a><img class="panda" src="./assets/hsk2-panda-new-v328.svg" alt=""><div class="brand">Panda Go<small id="scene-sub">HSK 2 · Начальный плюс</small></div><span class="scene-caption" id="scene-caption">Слова → грамматика → практика</span></header><main class="content" id="screen" tabindex="-1"></main><nav class="nav" aria-label="Навигация"><a href="#map" id="nav-map"><b>⌂</b>Главная</a><a href="#review" id="nav-review"><b>▤</b>Повторение</a><a href="#lesson" id="nav-lesson"><b>◫</b>Урок 1</a><a href="#progress" id="nav-progress"><b>◴</b>Прогресс</a></nav></div>
+</style><link rel="stylesheet" href="./assets/hsk2-one-screen-v323.css?v=323"><link rel="stylesheet" href="./assets/hsk2-speaking-v324.css?v=324"><link rel="stylesheet" href="./assets/hsk2-five-attempts-banner-v326.css?v=326"><link rel="stylesheet" href="./assets/hsk2-compact-refinement-v328.css?v=328"><link rel="stylesheet" href="./assets/hsk2-fixes-v329.css?v=329"><link rel="stylesheet" href="./assets/hsk2-audio-v330.css?v=330"></head><body><div class="app" id="app"><header class="scene"><span class="petals" aria-hidden="true">🌸</span><a class="backlink" href="#map" aria-label="Назад к карте">‹</a><img class="panda" src="./assets/hsk2-panda-new-v328.svg" alt=""><div class="brand">Panda Go<small id="scene-sub">HSK 2 · Начальный плюс</small></div><span class="scene-caption" id="scene-caption">Слова → грамматика → практика</span></header><main class="content" id="screen" tabindex="-1"></main><nav class="nav" aria-label="Навигация"><a href="#map" id="nav-map"><b>⌂</b>Главная</a><a href="#review" id="nav-review"><b>▤</b>Повторение</a><a href="#lesson" id="nav-lesson"><b>◫</b>Урок 1</a><a href="#progress" id="nav-progress"><b>◴</b>Прогресс</a></nav></div>
 <script src="./assets/hsk2-speaking-v326.js?v=329"></script>
+<script src="./assets/owner-audio-v237.js"></script><script src="./assets/hsk2-audio-v330.js?v=330"></script>
 <script>
 (()=>{
 'use strict';
@@ -120,13 +121,9 @@ const save=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch{}};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* Exact HSK1 owner-approved recordings. No phoneme splice or synthetic fallback. */
-const APPROVED_HSK2_REUSE=Object.freeze({
- '我':'assets/lesson1-xiaoxiao-v260/wo.mp3',
- '老师':'assets/panda-lesson2-xiaoxiao-v261/laoshi.mp3',
- '我是老师':'assets/panda-lesson2-xiaoxiao-v261/woshilaoshi.mp3'
-});
+// Unified native recording source; do not mix Xiaoxiao with the approved speaker.
+const matchingAudio=phrase=>window.PandaHsk2AudioV330?.lookup(phrase)||null;
 const LIVE_AUDIO_BASE='https://trommelschlager-ai.github.io/chinese-coach-pwa/';
-const matchingAudio=phrase=>APPROVED_HSK2_REUSE[String(phrase||'').replace(/[。！？?!，,\s]/g,'')]||null;
 function approvedAudioUrl(phrase){
  const src=matchingAudio(phrase);
  if(!src)return null;
@@ -339,7 +336,7 @@ function render(){
  state.step=Math.max(0,Math.min(steps.length-1,Number(state.step)||0));
  const i=state.step,s=steps[i],answer=state.answers[i];let inside='';
  $('app').classList.toggle('structure-page',s.kind==='structure'||s.kind==='place-words');
- if(s.kind==='words')inside='<p class="intro">Новые слова: иероглифы, пиньинь и перевод.</p><div class="vocgrid">'+s.items.map(word).join('')+'</div><p id="audio-status" class="audio-status" role="status" aria-live="polite"></p><p class="notice">🔊 Только для точных MP3 из HSK 1. На тестовом сайте нужен интернет. Остальные записи ещё готовятся.</p>';
+ if(s.kind==='words')inside='<p class="intro">Новые слова: иероглифы, пиньинь и перевод.</p><div class="vocgrid">'+s.items.map(word).join('')+'</div><p id="audio-status" class="audio-status" role="status" aria-live="polite"></p><p class="notice">🔊 Доступны только совпадающие записи утверждённой носительницы. Остальные MP3 требуют записи.</p>';
  if(s.kind==='place-words')inside=placeWordsScreen();
  if(s.kind==='structure')inside=structureScreen();
  if(s.kind==='rule')inside='<div class="rule">'+esc(s.formula)+'</div>'+example(s.example)+(s.title==='Назови профессию'?example(['我是老师。','Wǒ shì lǎoshī.','Я учитель.']):'')+'<p class="explain spaced">'+esc(s.why)+'</p><p id="audio-status" class="audio-status" role="status" aria-live="polite"></p>';
@@ -349,7 +346,7 @@ function render(){
  if(s.kind==='dialogue'){
   state.readDialoguePair=Math.max(0,Math.min(2,Number(state.readDialoguePair)||0));
   inside='<p class="intro">Прочитай две реплики и перейди к следующей паре.</p>'+
-   s.items.slice(state.readDialoguePair*2,state.readDialoguePair*2+2).map(([who,zh,py,ru])=>'<div class="bubble '+(who==='B'?'right':'')+'"><b lang="zh-Hans">'+esc(zh)+'</b><em class="py">'+esc(py)+'</em><span>'+esc(ru)+'</span></div>').join('')+
+   s.items.slice(state.readDialoguePair*2,state.readDialoguePair*2+2).map(([who,zh,py,ru])=>'<div class="bubble '+(who==='B'?'right':'')+'"><b lang="zh-Hans">'+esc(zh)+'</b><em class="py">'+esc(py)+'</em><span>'+esc(ru)+'</span>'+clipButton(zh)+'</div>').join('')+
    '<div class="lesson-read-nav"><button class="softbtn" type="button" data-read-dialogue="prev" '+(state.readDialoguePair===0?'disabled':'')+'>← Раньше</button><small>Реплики '+(state.readDialoguePair*2+1)+'–'+(state.readDialoguePair*2+2)+' из 6</small><button class="softbtn" type="button" data-read-dialogue="next" '+(state.readDialoguePair===2?'disabled':'')+'>Далее →</button></div>'+
    '<p class="notice">Это учебный диалог. Panda AI подключается отдельно.</p>';
  }
@@ -358,14 +355,14 @@ function render(){
  if(s.kind==='profile')inside=profileForm();
  if(s.kind==='dialogue-practice')inside=introDialogueScreen();
  if(s.kind==='finish'){const trained=introDialogueState().passed.every(Boolean);inside='<div style="text-align:center;font-size:35px">🌸 🐼</div><h2 style="text-align:center">'+esc(trained?s.title:'Знакомство с подсказками пройдено')+'</h2><p class="explain">'+esc(trained?s.desc:'Ты прошёл три вопроса, но часть ответов была с подсказками. Повтори разговор и попробуй ответить самостоятельно.')+'</p><p class="notice">Можно повторить любой шаг, а затем продолжить HSK 2.</p>';}
- const disabled=(s.kind==='quiz'&&answer!==s.answer)||(s.kind==='build'&&state.build.map(n=>s.tokens[n]).join('')!==s.answer.join(''))||(s.kind==='profile'&&!profileReady())||(s.kind==='dialogue-practice'&&!introDialogueState().passed.every(Boolean)&&!introDialogueState().passed.every((v,n)=>v||introDialogueState().assisted[n]));
+ const disabled=(s.kind==='quiz'&&answer==null)||(s.kind==='build'&&state.build.map(n=>s.tokens[n]).join('')!==s.answer.join(''))||(s.kind==='profile'&&!profileReady())||(s.kind==='dialogue-practice'&&!introDialogueState().passed.every(Boolean)&&!introDialogueState().passed.every((v,n)=>v||introDialogueState().assisted[n]));
  $('screen').innerHTML='<div class="banner">Меня зовут · где живу · кем работаю</div>'+
  '<div class="lesson-title"><strong>'+esc(s.title)+'</strong><span class="pill">Шаг '+(i+1)+' из '+steps.length+'</span></div>'+
  '<div class="meter"><i style="width:'+(i+1)*100/steps.length+'%"></i></div>'+
  '<section class="paper" aria-label="Урок самопрезентации">'+inside+'</section>'+
  '<div class="toolbar"><button class="softbtn" data-py type="button">'+(state.showPy?'Скрыть пиньинь':'Показать пиньинь')+'</button><button class="softbtn" data-repeat type="button">↻ Повторить</button></div>'+
- '<div class="bottom-actions"><div class="toolbar"><button class="softbtn" data-prev type="button" '+(i===0?'disabled':'')+'>← Назад</button><button class="primary" data-next type="button" '+(disabled?'disabled':'')+'>'+(s.kind==='finish'?'К основам грамматики →':s.kind==='dialogue-practice'?'К итогам →':'Дальше →')+'</button></div></div>'+
- '<p class="small-caption">Озвучку подключим после проверки тонов и записи носителя.</p>';
+ '<div class="bottom-actions"><div class="toolbar"><button class="softbtn" data-prev type="button" '+(i===0?'disabled':'')+'>← Назад</button><button class="primary" data-next type="button" '+(disabled?'disabled':'')+'>'+(s.kind==='finish'?'К карте HSK 2 →':s.kind==='dialogue-practice'?'К итогам →':'Дальше →')+'</button></div></div>'+
+ '<p class="small-caption">Озвучка: проверенные записи носительницы, без смешения голосов.</p>';
  $('screen').classList.toggle('hiddenpy',!state.showPy);
  $('screen').querySelectorAll('[data-pg-drill]').forEach(b=>b.addEventListener('click',()=>speechPhrase(b.dataset.pgDrill)));
  $('screen').querySelectorAll('[data-structure-tab]').forEach(b=>b.addEventListener('click',()=>{state.structureTab=b.dataset.structureTab==='order'?'order':'phrase';save();render()}));
@@ -376,7 +373,7 @@ function render(){
  $('screen').querySelector('[data-py]').addEventListener('click',()=>{state.showPy=!state.showPy;save();render()});
  $('screen').querySelector('[data-repeat]').addEventListener('click',()=>{state.step=0;state.build=[];state.dialogue={index:0,passed:[false,false,false],assisted:[false,false,false],completed:false};dialogueDraft='';dialogueFeedback=null;save();render()});
  $('screen').querySelector('[data-prev]').addEventListener('click',()=>{if(state.step>0){state.step--;save();render()}});
- $('screen').querySelector('[data-next]').addEventListener('click',()=>{if(s.kind==='profile'?!profileReady():disabled)return;if(s.kind==='finish'){state.completed=true;save();location.href='./hsk2-start.html#lesson'}else{state.step++;save();render()}});
+ $('screen').querySelector('[data-next]').addEventListener('click',()=>{if(s.kind==='profile'?!profileReady():disabled)return;if(s.kind==='finish'){state.completed=true;save();location.href='./hsk2-start.html#map'}else{state.step++;save();render()}});
  if(s.kind==='dialogue-practice'){
   const d=introDialogueState();
   const input=$('intro-answer');
