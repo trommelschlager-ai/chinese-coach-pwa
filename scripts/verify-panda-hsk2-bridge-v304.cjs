@@ -93,7 +93,7 @@ const vm=require('node:vm');
  for(const p of [
   './assets/panda-hsk2-bridge-v304.mjs?v=307',
   './assets/panda-live-dialogue-v272.mjs?v=323',
-  './assets/panda-live-screen-v270.mjs?v=323',
+  './assets/panda-live-screen-v270.mjs?v=326',
   './assets/panda-hsk1-questions-v281.mjs?v=319',
   './panda-voice-pilot.html?v=323'
  ])assert(offline.files.includes(p),'Offline material missing: '+p);
