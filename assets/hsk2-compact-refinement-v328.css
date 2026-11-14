@@ -81,3 +81,20 @@
  .app .pg-double-question h3{font-size:14px}
  .app .pg-double-choices .choice{font-size:13px}
 }
+
+/* New single-piece illustrated mascot; never tile or duplicate it. */
+header.scene img.panda{
+ width:clamp(87px,23vw,118px)!important;
+ height:clamp(69px,11dvh,98px)!important;
+ left:1px!important;
+ bottom:-4px!important;
+ object-fit:contain!important;
+ object-position:center bottom!important;
+ filter:drop-shadow(0 2px 3px #5b27795e)!important;
+}
+/* A speaker icon means an actual approved MP3 is available. */
+.app .pg-sound-card[data-audio-ready="false"]::before{content:"🎙️";opacity:.42}
+.app .pg-sound-card[data-audio-ready="true"]::before{content:"🔊";opacity:1}
+@media(max-width:340px){
+ header.scene img.panda{width:85px!important;height:73px!important}
+}
