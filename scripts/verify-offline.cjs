@@ -23,8 +23,12 @@ const freshScript=await (await request('./assets/lesson-audio-source.js?v=246','
 // Legacy Panda is not deleted until every current chat asset was safely cached.
 events.message({data:{type:'PRUNE_PANDA_LEGACY'},waitUntil:p=>pending=p});await pending;
 assert(await oldCache.match(stalePanda),'Must not erase old offline Panda before new code is cached');
-for(const p of ['./panda-voice-pilot.html','./assets/panda-live-screen-v270.mjs?v=326',
- './assets/panda-live-dialogue-v272.mjs?v=319','./assets/panda-hsk1-questions-v281.mjs?v=319']){
+// v345: verify the ACTUAL Panda-current manifest, not stale hard-coded v326/v319 URLs.
+// Legacy files may be pruned only after every latest script, style and picture is cached.
+const currentMatch=code.match(/const PANDA_CURRENT=(\\[[\\s\\S]*?\\]);/);
+assert(currentMatch,'Service worker must declare its current Panda asset manifest');
+const currentPanda=vm.runInNewContext(currentMatch[1]);
+for(const p of currentPanda){
  const response=await request(p,p.endsWith('.html')?'navigate':'cors');
  assert(response.ok,'Current Panda asset is fetchable: '+p);
 }
