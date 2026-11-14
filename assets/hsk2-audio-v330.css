@@ -9,3 +9,11 @@
 .app .paper .example .hsk2-clip{margin:3px 0 0}
 .app .paper .bubble .hsk2-clip{min-height:29px;margin:3px 0}
 .app .hsk2-word-parts .hsk2-clip{font-size:9px;padding:3px 5px}
+
+/* v332: distinguish exact MP3 from an audio sample of an entire sentence. */
+.pg-hsk2-sample-indicator{display:block;font-size:10px;line-height:1.12;font-weight:800;color:#784292;margin-top:2px}
+.app .vocab.pg-sound-card{position:relative}
+.app .vocab.pg-sound-card .pg-hsk2-sample-indicator{background:#f6e8fa;border-radius:7px;padding:2px 6px}
+.hsk2-clip[data-hsk2-example-for]{background:#fff3f9;border-color:#cca5d7;color:#74478d}
+.hsk2-clip[data-hsk2-example-for]:focus-visible{outline:3px solid #7131a5;outline-offset:2px}
+@media(max-height:700px){.pg-hsk2-sample-indicator{font-size:9px}}
