@@ -98,9 +98,22 @@
 .profile-optional{margin:8px 0;padding:8px;border:1px solid #e6c6dc;border-radius:11px}
 .profile-optional label{display:grid;gap:4px;margin:6px 0;font-size:12px}
 .profile-optional input{width:100%;font:inherit;padding:8px;border:1px solid #ddb2d3;border-radius:9px}
+
+/* v337: short spoken self-introduction replaces the old profile form. */
+.pg-intro-practice{display:grid;gap:8px;align-content:start}
+.pg-intro-prompt{display:flex;align-items:center;gap:9px;border:1.5px solid #e9ba8b;border-radius:14px;background:linear-gradient(120deg,#fffaff,#fae5f5);padding:9px;min-height:75px}
+.pg-intro-counter{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:#8539a1;color:#fff;font-size:13px;font-weight:800}
+.pg-intro-text{display:grid;gap:1px;min-width:0;flex:1}
+.pg-intro-text small{font-size:11px;color:#76508d;font-weight:800}
+.pg-intro-text strong{font:850 clamp(20px,5vw,26px)/1.25 "Noto Serif SC","Songti SC","SimSun",serif;color:#512472}
+.pg-intro-text>.py,.pg-intro-text>span:last-child{font-size:11px;line-height:1.25}
+.pg-intro-listen{flex:none;align-self:center}
+.pg-intro-listen .audio-clip-button{font-size:11px;min-height:35px;padding:6px}
+.app .content>.paper:has(.pg-intro-practice){justify-content:flex-start!important}
+@media(max-width:350px){.pg-intro-prompt{gap:5px;padding:6px}.pg-intro-listen .audio-clip-button{padding:4px 5px;font-size:10px}}
 </style><link rel="stylesheet" href="./assets/hsk2-one-screen-v323.css?v=323"><link rel="stylesheet" href="./assets/hsk2-speaking-v324.css?v=324"><link rel="stylesheet" href="./assets/hsk2-five-attempts-banner-v326.css?v=326"><link rel="stylesheet" href="./assets/hsk2-compact-refinement-v328.css?v=328"><link rel="stylesheet" href="./assets/hsk2-fixes-v329.css?v=329"><link rel="stylesheet" href="./assets/hsk2-audio-v330.css?v=335"></head><body><div class="app" id="app"><header class="scene"><span class="petals" aria-hidden="true">🌸</span><a class="backlink" href="#map" aria-label="Назад к карте">‹</a><img class="panda" src="./assets/hsk2-panda-new-v328.svg" alt=""><div class="brand">Panda Go<small id="scene-sub">HSK 2 · Начальный плюс</small></div><span class="scene-caption" id="scene-caption">Слова → грамматика → практика</span></header><main class="content" id="screen" tabindex="-1"></main><nav class="nav" aria-label="Навигация"><a href="#map" id="nav-map"><b>⌂</b>Главная</a><a href="#review" id="nav-review"><b>▤</b>Повторение</a><a href="#lesson" id="nav-lesson"><b>◫</b>Урок 1</a><a href="#progress" id="nav-progress"><b>◴</b>Прогресс</a></nav></div>
 <script src="./assets/hsk2-speaking-v326.js?v=332"></script>
-<script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=336"></script>
+<script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=337"></script>
 <script>
 (()=>{
 'use strict';
@@ -132,14 +145,14 @@ const steps=[
  ['我是熊猫老师。','Wǒ shì Xióngmāo lǎoshī.','Я учитель Панда.'],
  ['我今年三岁了。','Wǒ jīnnián sān suì le.','Мне три года.'],
  ['我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.']]},
- {kind:'profile',title:'Теперь ты: коротко о себе'},
+ {kind:'guided-practice',title:'Теперь ты: представься за 5 фраз'},
  {kind:'finish',title:'Ты умеешь знакомиться!',desc:'Пять фраз: 你好 / 我叫… / 我是… / 我今年…岁 / 我住在…. Повтори их вслух, затем переходи к следующему уроку.'}
 ];
 const key='pg-hsk2-introduction-v1';
 let state={step:0,answers:{},build:[],showPy:true,completed:false,readDialoguePair:0,structureTab:'phrase',dialogue:{index:0,passed:[false,false,false],assisted:[false,false,false],completed:false},profile:{name:'',city:'',job:'',age:'',other:''}};
 try{const x=JSON.parse(localStorage.getItem(key)||'null');if(x&&typeof x==='object')state={...state,...x,answers:x.answers||{},build:Array.isArray(x.build)?x.build:[],dialogue:{index:0,passed:[false,false,false],assisted:[false,false,false],completed:false,...(x.dialogue||{})},profile:{name:'',city:'',job:'',age:'',other:'',...(x.profile||{})}}}catch{}
 // On first launch of the revised lesson, show the listening example even for earlier in-progress sessions.
-try{if(!localStorage.getItem('pg-hsk2-intro-v336-shown')){state.step=0;localStorage.setItem('pg-hsk2-intro-v336-shown','1')}}catch{}
+try{if(!localStorage.getItem('pg-hsk2-intro-v337-shown')){state.step=0;localStorage.setItem('pg-hsk2-intro-v337-shown','1')}}catch{}
 const save=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch{}};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -211,6 +224,22 @@ function profileOutput(){
  const status=$('profile-conversion-status');
  if(status){status.textContent=hints.length?hints.join(' '):'✓ Фразы составлены. Звук доступен только для точных записанных примеров.';status.classList.toggle('warning',hints.length>0)}
  const next=$('screen').querySelector('[data-next]');if(next)next.disabled=!profileReady();
+}
+/* v337: no profile database, no unknown city/name validation, no mandatory form. */
+function guidedIntroPractice(){
+ const cards=[
+ ['Поздоровайся','你好！','Nǐ hǎo!','Привет!','你好！'],
+ ['Назови имя','我叫……','Wǒ jiào …','Меня зовут…','我叫熊猫。'],
+ ['Назови профессию','我是……','Wǒ shì …','Я по профессии…','我是熊猫老师。'],
+ ['Назови возраст','我今年……岁。','Wǒ jīnnián … suì.','Мне … лет.','我今年三岁了。'],
+ ['Назови город','我住在……','Wǒ zhù zài …','Я живу в…','我住在中国。']
+ ];
+ return '<p class="intro">Никаких анкет. Прослушай пример каждой фразы и произнеси свой вариант вслух. Любое имя, любой город и любая профессия.</p>'+
+ '<div class="pg-intro-practice">'+cards.map(([label,zh,py,ru,heard],i)=>'<article class="pg-intro-prompt">'+
+ '<span class="pg-intro-counter">'+(i+1)+'</span><div class="pg-intro-text"><small>'+esc(label)+'</small><strong lang="zh-Hans">'+esc(zh)+'</strong><span class="py">'+esc(py)+'</span><span>'+esc(ru)+'</span></div>'+
+ '<div class="pg-intro-listen">'+clipButton(heard)+'</div></article>').join('')+'</div>'+
+ '<p class="notice">Пример звучит целиком, как написано в образце. Твоё собственное имя или название города нельзя оценить без распознавания речи; переход дальше свободный.</p>'+
+ '<p id="audio-status" role="status" class="audio-status" aria-live="polite"></p>';
 }
 function profileForm(){
  const p=state.profile;
@@ -386,10 +415,10 @@ function render(){
  }
  if(s.kind==='quiz')inside='<p class="intro"><b>'+esc(s.question)+'</b></p><div class="choices">'+s.choices.map((v,n)=>'<button class="choice '+(answer!=null?(n===s.answer?'correct':n===answer?'wrong':''):'')+'" data-answer="'+n+'">'+esc(v)+'</button>').join('')+'</div><div role="status" class="feedback '+(answer===s.answer?'ok':'')+'">'+(answer==null?'Выбери ответ.':(answer===s.answer?'✓ Правильно. ':'Проверь пример. ')+esc(s.why))+'</div>';
  if(s.kind==='build'){let a=state.build,str=a.map(n=>s.tokens[n]).join(''),ok=str===s.answer.join('');inside='<p class="intro">'+esc(s.question)+'</p><div class="builder">'+(a.length?a.map((n,j)=>'<button type="button" data-remove="'+j+'">'+esc(s.tokens[n])+'</button>').join(''):'<span class="small-caption">Выбирай слова в правильном порядке.</span>')+'</div><div class="tokens">'+s.tokens.map((w,n)=>'<button type="button" data-token="'+n+'" '+(a.includes(n)?'disabled':'')+'>'+esc(w)+'</button>').join('')+'</div><p class="feedback '+(ok?'ok':'')+'">'+(ok?'✓ Верно!':esc(s.why))+'</p>'}
- if(s.kind==='profile')inside=profileForm();
+ if(s.kind==='guided-practice')inside=guidedIntroPractice();
  if(s.kind==='dialogue-practice')inside=introDialogueScreen();
  if(s.kind==='finish')inside='<div style="text-align:center;font-size:35px">🌸 🐼</div><h2 style="text-align:center">'+esc(s.title)+'</h2><p class="explain">'+esc(s.desc)+'</p><p class="notice">Ты можешь повторить любой шаг.</p>';
- const disabled=(s.kind==='quiz'&&answer==null)||(s.kind==='build'&&state.build.map(n=>s.tokens[n]).join('')!==s.answer.join(''))||(s.kind==='profile'&&!profileReady())||(s.kind==='dialogue-practice'&&!introDialogueState().passed.every(Boolean)&&!introDialogueState().passed.every((v,n)=>v||introDialogueState().assisted[n]));
+ const disabled=(s.kind==='quiz'&&answer==null)||(s.kind==='build'&&state.build.map(n=>s.tokens[n]).join('')!==s.answer.join(''))||(s.kind==='dialogue-practice'&&!introDialogueState().passed.every(Boolean)&&!introDialogueState().passed.every((v,n)=>v||introDialogueState().assisted[n]));
  $('screen').innerHTML='<div class="banner">Имя · профессия · возраст · город</div>'+
  '<div class="lesson-title"><strong>'+esc(s.title)+'</strong><span class="pill">Шаг '+(i+1)+' из '+steps.length+'</span></div>'+
  '<div class="meter"><i style="width:'+(i+1)*100/steps.length+'%"></i></div>'+
