@@ -1,6 +1,6 @@
 {
-  "version": 326,
-  "bytes": 58955731,
+  "version": 345,
+  "bytes": 61766655,
   "files": [
     "./assets/approved-build-v95.webp",
     "./assets/approved-choose-v95.webp",
@@ -2758,6 +2758,24 @@
     "./assets/panda-home-photo1-v319.css?v=319",
     "./assets/panda-home-approved-photo1-v319.jpg",
     "./assets/panda-basic-conversation-v323.mjs?v=323",
-    "./assets/panda-ask-catalog-v326.mjs?v=326"
+    "./assets/panda-ask-catalog-v326.mjs?v=326",
+    "./assets/hsk2-user-voice/20261114-words-a-v338.mp3",
+    "./assets/hsk2-user-voice/20261114-job-question-v343.mp3",
+    "./assets/hsk2-user-voice/20261114-words-b-v338.mp3",
+    "./assets/hsk2-user-voice/20261114-phrases-v338.mp3",
+    "./assets/hsk2-user-voice/20261114-47SW44.mp3",
+    "./assets/hsk2-user-voice/20261114-7JVWfV.mp3",
+    "./assets/hsk2-user-voice/20261114-APqUx9.mp3",
+    "./assets/hsk2-user-voice/20261114-BWLSNa.mp3",
+    "./assets/hsk2-user-voice/20261114-FMAH9S.mp3",
+    "./assets/hsk2-user-voice/20261114-K0Uh5q.mp3",
+    "./assets/hsk2-user-voice/20261114-M7EwcW.mp3",
+    "./assets/hsk2-user-voice/20261114-W6Okix.mp3",
+    "./assets/hsk2-user-voice/20261114-bsPFJr.mp3",
+    "./assets/hsk2-user-voice/20261114-d9kQmz.mp3",
+    "./assets/hsk2-user-voice/B01-B10-20261113.mp3",
+    "./assets/native-owner-v200/wo.ogg",
+    "./assets/native-owner-v200/shi.ogg",
+    "./assets/native-owner-v200/tianqi.ogg"
   ]
 }
