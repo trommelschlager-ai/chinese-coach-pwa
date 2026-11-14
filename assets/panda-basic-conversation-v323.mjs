@@ -68,6 +68,29 @@ export function answerBasicConversation(raw,allowed=[1]){
   return getCorrection(input,'今天天气怎么样？','Jīntiān tiānqì zěnmeyàng?','Какая сегодня погода?',
    '今天 повторено дважды. Правильно: 今天天气怎么样？');
  }
+ // v336: these everyday introductory questions and their replies have
+ // EXACT written Luvvoice clips in the user's November corpus.
+ const DAILY={
+  '你住在哪儿':['Nǐ zhù zài nǎr?','Где ты живёшь?','我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.','Учебная сценка: Панда — вымышленный персонаж.'],
+  '你住在哪里':['Nǐ zhù zài nǎlǐ?','Где ты живёшь?','我住在中国。','Wǒ zhù zài Zhōngguó.','Я живу в Китае.','Учебная сценка: Панда — вымышленный персонаж.'],
+  '你会说中文吗':['Nǐ huì shuō Zhōngwén ma?','Ты умеешь говорить по-китайски?','会，我会说中文。','Huì, wǒ huì shuō Zhōngwén.','Да, я умею говорить по-китайски.'],
+  '你为什么学习中文':['Nǐ wèishénme xuéxí Zhōngwén?','Почему ты изучаешь китайский?','因为我喜欢中文。','Yīnwèi wǒ xǐhuan Zhōngwén.','Потому что мне нравится китайский язык.'],
+  '你每天学习吗':['Nǐ měitiān xuéxí ma?','Ты учишься каждый день?','是，我每天学习。','Shì, wǒ měitiān xuéxí.','Да, я занимаюсь каждый день.'],
+  '你累吗':['Nǐ lèi ma?','Ты устал?','我不累。','Wǒ bú lèi.','Я не устала.'],
+  '你开心吗':['Nǐ kāixīn ma?','Ты рад?','我很开心。','Wǒ hěn kāixīn.','Я очень рада.'],
+  '你高兴吗':['Nǐ gāoxìng ma?','Ты рад?','我很高兴。','Wǒ hěn gāoxìng.','Я рада.'],
+  '你现在有空吗':['Nǐ xiànzài yǒu kòng ma?','У тебя сейчас есть время?','有，我现在有空。','Yǒu, wǒ xiànzài yǒu kòng.','Да, сейчас я свободна.']
+ };
+ const daily=DAILY[s];
+ if(daily){
+  const [pinyin,translation,response,responsePy,responseRu,context]=daily;
+  const reply=makeLine(response,responsePy,responseRu);
+  if(context)reply.context=context;
+  return {kind:'question',lesson:1,
+   spoken:{known:true,hanzi:input,pinyin,translation,topic:1},
+   reply,followup:{hanzi:'你呢？',pinyin:'Nǐ ne?',ru:'А ты?',lesson:1,intent:'daily-checkin',
+    isContextual:true,accepted:[]}};
+ }
  const m=/^你(的)?(妈妈|爸爸|哥哥|姐姐|弟弟|妹妹)(现在|今天)?(怎么样了|怎么样|还好吗|好吗|好不好)$/.exec(s);
  if(!m)return null;
  const [,de,who,time='',ending]=m,person=RELATIVES[who];
