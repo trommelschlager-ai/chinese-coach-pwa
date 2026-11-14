@@ -87,29 +87,25 @@ function play(phrase,report){
  if(!clip){report?.('Для «'+phrase+'» нет подтверждённого MP3 в присланных записях.');return false}
  stop();
  try{
+  // Call play() while the learner's click gesture is still active.
+  // Deferring play() until loadedmetadata/seeked can be rejected on Android Chrome.
   const a=new Audio(clip.url);active=a;
   a.preload='auto';a.playbackRate=0.9;
-  let started=false;
   const fail=()=>{
    if(active===a){stop();report?.('Аудиозапись не воспроизвелась. Проверь загрузку MP3.')}
   };
+  const seekToStart=()=>{
+   if(active!==a||clip.start<=0.05)return;
+   if(Math.abs(a.currentTime-clip.start)<0.20)return;
+   try{a.currentTime=clip.start}catch{ /* metadata not yet loaded; retry below */ }
+  };
   a.onerror=fail;
-  a.onended=()=>{if(active===a){stop();report?.('Запись воспроизведена.')}}
+  a.onended=()=>{if(active===a){stop();report?.('Запись воспроизведена.')}};
   a.ontimeupdate=()=>{if(active===a&&a.currentTime>=clip.end){stop();report?.('Запись воспроизведена.')}};
-  const start=()=>{
-   if(active!==a||started)return;started=true;
-   const task=a.play();
-   if(task?.catch)task.catch(fail);
-  };
-  a.onloadedmetadata=()=>{
-   if(active!==a)return;
-   if(clip.start>0.05){
-    a.addEventListener('seeked',start,{once:true});
-    try{a.currentTime=clip.start}catch{fail()}
-   }else start();
-  };
-  if(a.readyState>=1)a.onloadedmetadata();
-  a.load?.();
+  a.onloadedmetadata=seekToStart;
+  seekToStart();
+  const task=a.play();
+  if(task?.catch)task.catch(fail);
   return true;
  }catch{stop();report?.('Ошибка запуска MP3.');return false}
 }
