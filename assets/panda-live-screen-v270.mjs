@@ -369,6 +369,33 @@ window.visualViewport?.addEventListener('resize',resize);window.visualViewport?.
 window.addEventListener('pagehide',e=>{cancelFollowup();stopRecognition();stopAudio();clearTimeout(poseTimer);if(!e.persisted)rig.dispose()});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFollowup();stopRecognition();stopAudio()}});
 if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=326',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
 if(window.ResizeObserver){const observer=new window.ResizeObserver(entries=>{document.documentElement.style.setProperty('--scene-height',entries[0].contentRect.height+'px')});observer.observe(document.querySelector('.scene'))}
+
+// v337: Bridge for the approved artwork layer; retain the existing dialogue,
+// user-audio, speech-recognition, vocabulary and progress logic unchanged.
+window.PandaApprovedBridge337={
+ snapshot:()=>{
+  const line=current()||{};
+  return {history:state.history.slice(-3).map(e=>({...e})),current:{...line},
+   allowed:[...state.allowed],topic:lesson(),mode:state.mode,
+   slow:state.slow,active:state.active,pose:$('character').dataset.state,
+   feedback:$('learner-feedback').hidden?'':$('learner-feedback').textContent,
+   status:$('status').textContent,audioAvailable:!$('hear').disabled};
+ },
+ chooseTopic:id=>{
+  id=Number(id);
+  if(!state.allowed.includes(id))return false;
+  cancelFollowup();stopAudio();stopRecognition();
+  state.cursor=state.allowed.indexOf(id);state.askedInTopic=0;state.topic=id;
+  if(state.mode!=='nonstop')setMode('nonstop');else askNext();
+  note('Урок '+id+'. Ответь на вопрос Панды.');
+  return true;
+ },
+ play:()=>play(),stopPlayback:()=>stopAudio(),
+ toggleSpeed:()=>$('speed-toggle').click(),
+ setMode:mode=>{if(mode==='short'||mode==='nonstop')setMode(mode)},
+ send:value=>submit(value),mic:()=>startRecognition(),note:text=>note(text)
+};
+
 initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
 // Try the existing recording; browsers may require the first tap before playback.
 play();
