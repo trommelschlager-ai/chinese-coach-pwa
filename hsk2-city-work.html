@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#4d216b">
-<meta name="description" content="Panda Go HSK2 — Мой город: урок 3 «Работа и профессия» с грамматикой, диалогами и тестами">
-<title>Panda Go · Мой город · Работа и профессия</title>
+<meta name="description" content="Panda Go HSK2 — Мой город: упрощённый урок «Моя первая фраза о работе» с двумя словами и одним правилом">
+<title>Panda Go · Мой город · Простая фраза о работе</title>
 <style>
 :root{font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#4f2869;background:#e9d6f1;--deep:#572176;--purple:#8d3faf;--lilac:#f0dcfa;--gold:#eac37c;--pink:#ffdeef}
 *{box-sizing:border-box}body{margin:0;min-height:100svh;display:flex;justify-content:center;background:linear-gradient(155deg,#dcbcf0,#fbe4f2 55%,#d7b7ee)}button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #5020c3;outline-offset:3px}
@@ -62,7 +62,7 @@
 <header class="scene">
  <a class="back" href="./hsk2-start.html#map" aria-label="Вернуться к карте HSK2">← Карта</a>
  <img class="scene-panda" src="./assets/hsk2-panda-new-v328.svg" alt="">
- <div class="scene-copy"><h1 class="brand">Panda Go</h1><p>🎮 Мой город · HSK2 · Урок 3</p><span class="scene-pill">Работа и профессия</span></div>
+ <div class="scene-copy"><h1 class="brand">Panda Go</h1><p>🎮 Мой город · HSK2 · Урок 3</p><span class="scene-pill">Моя первая фраза · 2 слова</span></div>
 </header>
 <main class="content" id="main" tabindex="-1">
  <div class="step-head"><h1 id="step-title"></h1><span class="step-number" id="step-counter"></span></div>
@@ -79,80 +79,81 @@
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
-const STEPS=['Миссия в городе','Слушай диалог','Новые слова','Грамматика: 在','Грамматика: 会','Проверь понимание','Собери предложение','Аудирование','Разговор с Пандой','Тест: 5 попыток','Результат и награда'];
-const WORDS=[
- ['工作','gōngzuò','работа; работать'],
- ['公司','gōngsī','компания'],
- ['做','zuò','делать'],
- ['医生','yīshēng','врач'],
- ['老师','lǎoshī','учитель · повторение'],
- ['在','zài','в; находиться · повторение']
+const KEY='pg-hsk2-city-work-easy-v2';
+const STEPS=[
+ 'Привет, мой город!','Всего два новых слова','Одно правило грамматики',
+ 'Короткий разговор','Проверь два слова','Составь предложение',
+ 'Послушай и выбери','Пять попыток','Урок завершён!'
 ];
-const LINES=[
- ['Панда','你做什么工作？','Nǐ zuò shénme gōngzuò?','Кем ты работаешь?','你做什么工作',false],
- ['Ученик','我在公司工作。','Wǒ zài gōngsī gōngzuò.','Я работаю в компании.','我在公司工作',true],
- ['Панда','你会说中文吗？','Nǐ huì shuō Zhōngwén ma?','Ты умеешь говорить по-китайски?','你会说中文吗',false],
- ['Ученик','会，我会说中文。','Huì, wǒ huì shuō Zhōngwén.','Да, я умею говорить по-китайски.','会我会说中文',true]
-];
-const TALK=[
- {zh:'你做什么工作？',py:'Nǐ zuò shénme gōngzuò?',ru:'Кем ты работаешь?',audio:'你做什么工作',choices:[['我在公司工作。','Я работаю в компании.',true],['我是医生。','Я врач.',true],['我喜欢茶。','Мне нравится чай.',false]]},
- {zh:'你会说中文吗？',py:'Nǐ huì shuō Zhōngwén ma?',ru:'Ты умеешь говорить по-китайски?',audio:'你会说中文吗',choices:[['会，我会说中文。','Да, умею.',true],['不会，我不会说中文。','Нет, не умею.',true],['我在公司工作。','Я работаю в компании.',false]]}
-];
-const QUIZ={question:'Что означает 我在公司工作。?',choices:['Я учитель.','Я работаю в компании.','Я хочу пить чай.'],answer:1};
-const LISTEN={audio:'你会说中文吗',choices:['Где ты работаешь?','Сколько тебе лет?','Ты умеешь говорить по-китайски?'],answer:2};
-const TOKENS=['公司','我','工作','在'];
-const FINAL=WORDS.slice(0,4);
-const KEY='pg-hsk2-city-work-v1';
-const fresh=()=>({step:0,quiz:null,build:[],builderCorrect:false,listen:null,listened:false,talk:[null,null],speakerIndex:0,speakerAttempts:[[],[],[],[]],micSkipped:false,mistakes:0,completed:false});
+const WORDS=[['公司','gōngsī','компания'],['工作','gōngzuò','работать; работа']];
+const BUILD=['公司','工作','我','在'], CORRECT='我在公司工作';
+const fresh=()=>({step:0,choice:null,build:[],heard:false,listening:null,mic:[],skipMic:false,mistakes:0,done:false});
 let state=fresh();
-try{const old=JSON.parse(localStorage.getItem(KEY)||'null');if(old&&typeof old==='object'){state={...state,...old};if(!Array.isArray(state.build))state.build=[];if(!Array.isArray(state.talk)||state.talk.length!==2)state.talk=[null,null];if(!Array.isArray(state.speakerAttempts)||state.speakerAttempts.length!==4)state.speakerAttempts=[[],[],[],[]];state.step=Math.max(0,Math.min(STEPS.length-1,Number(state.step)||0));}}catch{}
+try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'){state={...state,...data};state.step=Math.max(0,Math.min(8,Number(state.step)||0));if(!Array.isArray(state.build))state.build=[];if(!Array.isArray(state.mic))state.mic=[];}}catch{}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const approved=zh=>Boolean(window.PandaHsk2AudioV330&&window.PandaHsk2AudioV330.lookup(zh));
-const sound=(zh,label)=>approved(zh)?'<button type="button" class="voice" data-play="'+esc(zh)+'" aria-label="Слушать: '+esc(label||zh)+'">🔊 '+esc(label||'Слушать')+'</button>':'<span class="voice warn" role="note">🔇 Нет точной MP3</span>';
-const block=(zh,py,ru,audio)=>'<article class="example"><strong lang="zh-Hans" class="zh">'+esc(zh)+'</strong><span class="py">'+esc(py)+'</span><span class="translation">'+esc(ru)+'</span>'+sound(audio||zh,'Слушать')+'</article>';
-function play(zh){const svc=window.PandaHsk2AudioV330;if(!svc){$('audio-status').textContent='Аудиомодуль ещё не загрузился.';return}const exists=svc.lookup(zh);if(!exists){$('audio-status').textContent='Для этой фразы нет проверенной MP3-записи.';return}if(state.step===7){state.listened=true;save()}$('audio-status').textContent='🎧 Воспроизводится запись.';svc.play(zh,msg=>{$('audio-status').textContent=msg||''});}
-function choiceButtons(arr,selected,attr,correctSet){return '<div class="choices">'+arr.map((entry,i)=>{const label=Array.isArray(entry)?entry[0]+' — '+entry[1]:entry;const isCorrect=correctSet.includes(i);return '<button type="button" class="choice '+(selected===i?'chosen '+(isCorrect?'correct':'wrong'):'')+'" '+attr+'="'+i+'" aria-pressed="'+(selected===i)+'">'+esc(label)+'</button>'}).join('')+'</div>'}
-function speakStatus(){const tries=state.speakerAttempts.flat(),pass=tries.filter(x=>x===true).length,fail=tries.filter(x=>x===false).length;return '✓ '+pass+' · ✕ '+fail+' из 20 попыток';}
-function nextAllowed(){const s=state.step;if(s===5)return state.quiz===QUIZ.answer;if(s===6)return Boolean(state.builderCorrect);if(s===7)return state.listened&&state.listen===LISTEN.answer;if(s===8)return state.talk.every((v,i)=>v!=null&&TALK[i].choices[v]&&TALK[i].choices[v][2]);if(s===9)return state.micSkipped||state.speakerAttempts.every(arr=>Array.isArray(arr)&&arr.length>=5);return true}
+const sound=zh=>window.PandaHsk2AudioV330?.lookup(zh)
+ ?'<button class="voice" type="button" data-play="'+esc(zh)+'" aria-label="Прослушать '+esc(zh)+'">🔊 Слушать</button>'
+ :'<span class="muted small">🔇 Запись пока отсутствует</span>';
+const example=(zh,py,ru)=>'<article class="example"><b class="zh" lang="zh-Hans">'+esc(zh)+'</b><span class="py">'+esc(py)+'</span><span class="translation">'+esc(ru)+'</span>'+sound(zh)+'</article>';
+const line=(who,zh,py,ru,reply)=>'<article class="bubble '+(reply?'answer':'')+'"><span class="speaker">'+esc(who)+'</span><div class="zh" lang="zh-Hans">'+esc(zh)+'</div><div class="py">'+esc(py)+'</div><div class="translation">'+esc(ru)+'</div>'+sound(zh)+'</article>';
+const choices=(items,value,attr,answer)=>'<div class="choices">'+items.map((txt,i)=>'<button type="button" class="choice '+(value===i?(i===answer?'chosen correct':'chosen wrong'):'')+'" '+attr+'="'+i+'">'+esc(txt)+'</button>').join('')+'</div>';
+const progressMessage=()=>{const good=state.mic.filter(x=>x===true).length,bad=state.mic.filter(x=>x===false).length;return 'Распознано: '+good+' · Не распознано: '+bad;};
+const canNext=()=>{
+ if(state.step===4)return state.choice===1;
+ if(state.step===5)return state.build.map(i=>BUILD[i]).join('')===CORRECT;
+ if(state.step===6)return state.heard&&state.listening===0;
+ if(state.step===7)return state.skipMic||state.mic.length===5;
+ return true;
+};
+let recBusy=false,speechInfo='';
 function render(){
- const s=state.step;const hasSpeech=Boolean(window.PandaHSK2PracticeV326?.speechAvailable());
- $('step-title').textContent=STEPS[s];$('step-counter').textContent=(s+1)+' из '+STEPS.length;
- $('progress').style.width=((s+1)/STEPS.length*100)+'%';$('audio-status').textContent='';
+ const n=state.step;
+ $('step-title').textContent=STEPS[n];
+ $('step-counter').textContent=(n+1)+' из 9';
+ $('progress').style.width=((n+1)/9*100)+'%';
+ $('audio-status').textContent='';
  let body='';
- if(s===0)body='<section class="paper"><div class="hero-icon">🐼 ☕ 🏙️</div><h2 class="bigcenter">Твоя первая работа</h2><p class="muted bigcenter">Ты приехал в китайский город. Панда предлагает познакомиться с профессиями и научиться говорить, где ты работаешь.</p><div class="rail"><span>🎧 Диалог</span><span>📖 6 слов</span><span>📚 2 правила</span><span>🧩 Задания</span><span>🎤 Тест</span></div><p class="tip">Начнём с простого. Не нужно знать деловой китайский: сначала всего два коротких правила.</p></section>';
- if(s===1)body='<section class="paper"><h2>☕ Встреча в кафе</h2><p class="muted">Слушай каждую реплику и повторяй за записью.</p><div class="dialogue">'+LINES.map(([who,zh,py,ru,audio,reply])=>'<article class="bubble '+(reply?'answer':'')+'"><span class="speaker">'+esc(who)+'</span><div class="zh" lang="zh-Hans">'+esc(zh)+'</div><div class="py">'+esc(py)+'</div><div class="translation">'+esc(ru)+'</div>'+sound(audio)+'</article>').join('')+'</div></section>';
- if(s===2)body='<section class="paper"><h2>📖 Шесть слов для разговора</h2><p class="muted">Нажимай 🔊 и повторяй. Новые слова и знакомые повторения собраны вместе.</p><div class="wordgrid">'+WORDS.map(([zh,py,ru])=>'<article class="word"><strong class="zh" lang="zh-Hans">'+esc(zh)+'</strong><span class="py">'+esc(py)+'</span><span class="translation">'+esc(ru)+'</span>'+sound(zh)+'</article>').join('')+'</div></section>';
- if(s===3)body='<section class="paper"><h2>📚 Где ты работаешь?</h2><div class="formula">我 + 在 + МЕСТО + 工作</div><p class="tip"><strong>在 zài</strong> указывает место действия. В китайском «в компании» ставится перед словом «работать».</p>'+block('我在公司工作。','Wǒ zài gōngsī gōngzuò.','Я работаю в компании.','我在公司工作')+'<p class="muted"><b>Разбор:</b> 我 — я · 在公司 — в компании · 工作 — работаю.</p><p class="hint">🎵 Рабочие тоны: zài (4-й), gōng (1-й), zuò (4-й).</p></section>';
- if(s===4)body='<section class="paper"><h2>📚 Что ты умеешь делать?</h2><div class="formula">会 + ГЛАГОЛ</div><p class="tip"><strong>会 huì</strong> означает умение, которому человек научился. Вопрос создаём с 吗 (ma). Отрицание — <b>不会 bú huì</b>.</p>'+block('你会说中文吗？','Nǐ huì shuō Zhōngwén ma?','Ты умеешь говорить по-китайски?','你会说中文吗')+block('会，我会说中文。','Huì, wǒ huì shuō Zhōngwén.','Да, я умею говорить по-китайски.','会我会说中文')+'<div class="example"><strong class="zh" lang="zh-Hans">我不会做饭。</strong><span class="py">Wǒ bú huì zuò fàn.</span><span class="translation">Я не умею готовить еду.</span><span class="muted small">Для этого примера отдельная запись пока отсутствует.</span></div><p class="hint">🎵 不 (bù) перед 会 (huì) меняется на второй тон: <b>bú huì</b>.</p></section>';
- if(s===5)body='<section class="paper"><h2>✅ Выбери верный перевод</h2><div class="example"><strong class="zh" lang="zh-Hans">我在公司工作。</strong><span class="py">Wǒ zài gōngsī gōngzuò.</span>'+sound('我在公司工作')+'</div>'+choiceButtons(QUIZ.choices,state.quiz,'data-quiz',[QUIZ.answer])+'<p class="feedback '+(state.quiz===QUIZ.answer?'good':state.quiz!=null?'bad':'')+'" role="status">'+(state.quiz==null?'Вспомни правило: 我 + 在 + место + 工作.':state.quiz===QUIZ.answer?'✓ Правильно! 在公司 — в компании.':'✕ Пока не так. Перечитай грамматику и попробуй ещё раз.')+'</p></section>';
- if(s===6){const text=state.build.map(i=>TOKENS[i]).join('');const all=state.build.length===TOKENS.length;body='<section class="paper"><h2>🧩 Собери фразу</h2><p class="muted">«Я работаю в компании»</p><div class="builder">'+(state.build.length?state.build.map((n,i)=>'<button type="button" class="token" data-remove="'+i+'" aria-label="Убрать '+esc(TOKENS[n])+'">'+esc(TOKENS[n])+'</button>').join(''):'<span class="muted">Нажимай на слова в нужном порядке…</span>')+'</div><div class="tokens">'+TOKENS.map((t,i)=>'<button type="button" class="token" data-token="'+i+'" '+(state.build.includes(i)?'disabled':'')+'>'+esc(t)+'</button>').join('')+'</div><p class="feedback '+(state.builderCorrect?'good':all?'bad':'')+'" role="status">'+(state.builderCorrect?'✓ Отлично! 我在公司工作。':all?'✕ Проверь порядок. Нажми на слово в верхней строке, чтобы убрать.':'Подсказка: кто → где → что делает.')+'</p><p class="hint">Грамматика: 在公司 ставим перед 工作.</p></section>';}
- if(s===7)body='<section class="paper"><h2>🎧 Что ты услышал?</h2><p class="muted">Нажми на кнопку записи, затем выбери перевод.</p><div class="bigcenter">'+sound(LISTEN.audio,'▶ Слушать вопрос')+'</div><p class="hint">'+(state.listened?'✓ Запись запущена. Выбирай перевод.':'Сначала включи аудио.')+'</p>'+choiceButtons(LISTEN.choices,state.listen,'data-listen',[LISTEN.answer])+'<p class="feedback '+(state.listen===LISTEN.answer&&state.listened?'good':state.listen!=null?'bad':'')+'" role="status">'+(state.listen==null?'Выбери вариант после прослушивания.':state.listen===LISTEN.answer?'✓ Верно! 你会说中文吗？':'✕ Не совсем. Послушай вопрос ещё раз.')+'</p></section>';
- if(s===8)body='<section class="paper"><h2>🐼 Ответь Панде</h2><p class="muted">Это учебный диалог с готовыми вариантами, не открытый чат Panda AI. Некоторые вопросы имеют несколько правильных ответов.</p>'+TALK.map((q,i)=>'<section class="talk-question"><b>Вопрос '+(i+1)+'</b><div class="zh" lang="zh-Hans">'+esc(q.zh)+'</div><div class="py">'+esc(q.py)+'</div><div class="translation">'+esc(q.ru)+'</div>'+sound(q.audio,'Слушать Панду')+'</section>'+choiceButtons(q.choices,state.talk[i],'data-talk-'+i,q.choices.map((c,j)=>c[2]?j:-1).filter(j=>j>=0))+'<p class="feedback '+(state.talk[i]!=null&&q.choices[state.talk[i]][2]?'good':'')+'">'+(state.talk[i]==null?'Выбери ответ, который подходит по смыслу.':q.choices[state.talk[i]][2]?'✓ Подходящий ответ!':'✕ Этот ответ не относится к вопросу.')+'</p>').join('')+'</section>';
- if(s===9){const i=Math.min(3,Math.max(0,state.speakerIndex)),word=FINAL[i],tries=state.speakerAttempts[i]||[];body='<section class="paper"><h2>🎤 Повтори по пять раз</h2><p class="muted">Слово '+(i+1)+' из 4. На каждом слове — пять попыток. Галочка означает распознанный текст, <b>не оценку тонов</b>.</p><div class="speaking-card"><strong class="zh" lang="zh-Hans">'+esc(word[0])+'</strong><div class="py">'+esc(word[1])+'</div><div class="translation">'+esc(word[2])+'</div>'+sound(word[0],'Послушать образец')+'<div class="marks">'+Array.from({length:5},(_,j)=>'<span class="'+(tries[j]===true?'ok':tries[j]===false?'no':'')+'">'+(tries[j]===true?'✓':tries[j]===false?'✕':'·')+'</span>').join('')+'</div><p class="muted">Попыток '+tries.length+'/5</p></div><div class="controls"><button class="primary" data-act="mic" '+(!hasSpeech||tries.length>=5?'disabled':'')+'>🎤 Произнести</button><button class="secondary" data-act="speak-prev" '+(i===0?'disabled':'')+'>← Слово</button><button class="secondary" data-act="speak-next" '+(i===3?'disabled':'')+'>Следующее →</button></div><div class="bigcenter" style="margin-top:8px"><button class="secondary" data-act="skip-mic">Нет микрофона — перейти без оценки речи</button></div><p class="hint">'+(hasSpeech?'Распознавание может ошибаться и не определяет тоны.':'Микрофонное распознавание недоступно: прослушай образцы и повтори самостоятельно.')+'</p><p class="feedback" id="mic-feedback" role="status">'+esc(speechInfo)+'</p><div class="bigcenter"><span class="badge">'+speakStatus()+'</span></div></section>';}
- if(s===10){const stars=state.mistakes===0?3:state.mistakes<=2?2:1;body='<section class="paper"><div class="hero-icon">🏆 🐼 🌸</div><h2 class="bigcenter">Урок завершён!</h2><p class="bigcenter"><span style="font-size:32px;color:#bb8d20">'+('★'.repeat(stars)+'☆'.repeat(3-stars))+'</span></p><div class="reward"><strong>+200 🪙 · +50 XP</strong><p class="small">Демонстрационные награды этого урока. Единая игровая экономика ещё не подключена.</p></div><p class="bigcenter success">✓ Слова · ✓ Грамматика · ✓ Конструктор · ✓ Аудирование · ✓ Диалог</p><p class="muted bigcenter">Ошибок при проверках: '+state.mistakes+'. '+(state.micSkipped?'Микрофон пропущен. ':speakStatus()+'. ')+'Тоны не оценивались.</p><div class="controls"><button class="secondary" data-act="restart">↻ Пройти урок заново</button><a class="primary" style="text-decoration:none;display:grid;place-items:center" href="./hsk2-start.html#map">К карте HSK2 →</a></div></section>';}
+ if(n===0)body='<section class="paper"><div class="hero-icon">🐼 🏙️</div><h2 class="bigcenter">Моя первая фраза о работе</h2><p class="bigcenter muted">Панда покажет, как сказать всего одно простое предложение.</p><div class="rail"><span>📖 2 слова</span><span>📚 1 правило</span><span>🧩 2 задания</span><span>🎧 Слушай</span><span>🎤 5 раз</span></div><p class="tip">Не нужно учить профессии, 会 или 能. Сегодня только: <b>Я работаю в компании.</b></p></section>';
+ if(n===1)body='<section class="paper"><h2>📖 Выучи два слова</h2><div class="wordgrid">'+WORDS.map(w=>'<article class="word"><b class="zh" lang="zh-Hans">'+esc(w[0])+'</b><span class="py">'+esc(w[1])+'</span><span class="translation">'+esc(w[2])+'</span>'+sound(w[0])+'</article>').join('')+'</div><p class="hint">我 (wǒ) — «я» и 在 (zài) — «в» ты уже встречал в HSK1. Здесь мы просто повторим их.</p></section>';
+ if(n===2)body='<section class="paper"><h2>📚 Всего одно правило</h2><div class="formula">我 + 在 + 公司 + 工作</div><p class="tip">В китайском <b>место работы ставится перед словом «работать»</b>. Сначала говорим <b>где</b>, потом <b>что делаем</b>.</p>'+example('我在公司工作。','Wǒ zài gōngsī gōngzuò.','Я работаю в компании.')+'<p class="hint">🎵 Тоны: wǒ (3), zài (4), gōng (1), sī (1), gōng (1), zuò (4).</p></section>';
+ if(n===3)body='<section class="paper"><h2>💬 Диалог из двух фраз</h2><p class="muted">Пока просто послушай вопрос. Запомнить нужно только ответ.</p><div class="dialogue">'+line('Панда','你做什么工作？','Nǐ zuò shénme gōngzuò?','Кем ты работаешь?',false)+line('Ученик','我在公司工作。','Wǒ zài gōngsī gōngzuò.','Я работаю в компании.',true)+'</div><p class="hint">Вопрос пока не учим наизусть — он пригодится позже.</p></section>';
+ if(n===4)body='<section class="paper"><h2>✅ Выбери перевод</h2><div class="bigcenter"><strong class="zh">公司</strong><div class="py">gōngsī</div>'+sound('公司')+'</div>'+choices(['Работать','Компания','Учитель'],state.choice,'data-quiz',1)+'<p class="feedback '+(state.choice===1?'good':state.choice!==null?'bad':'')+'" role="status">'+(state.choice===null?'Выбери один ответ.':state.choice===1?'✓ Верно! 公司 — компания.':'✕ Попробуй ещё раз.')+'</p></section>';
+ if(n===5){const built=state.build.map(i=>BUILD[i]).join('');body='<section class="paper"><h2>🧩 Собери одну фразу</h2><p class="muted">«Я работаю в компании»</p><div class="builder">'+(state.build.length?state.build.map((id,i)=>'<button type="button" class="token" data-remove="'+i+'">'+esc(BUILD[id])+'</button>').join(''):'<span class="muted">Нажимай на слова по порядку…</span>')+'</div><div class="tokens">'+BUILD.map((t,i)=>'<button type="button" class="token" data-token="'+i+'" '+(state.build.includes(i)?'disabled':'')+'>'+esc(t)+'</button>').join('')+'</div><p class="feedback '+(built===CORRECT?'good':state.build.length===4?'bad':'')+'">'+(built===CORRECT?'✓ Отлично! 我在公司工作。':state.build.length===4?'✕ Порядок неверный. Убери слово нажатием.':'Подсказка: я → в компании → работаю.')+'</p></section>';}
+ if(n===6)body='<section class="paper"><h2>🎧 Послушай предложение</h2><p class="muted">Нажми 🔊 и выбери, что сказала Панда.</p><div class="bigcenter">'+sound('我在公司工作')+'</div>'+choices(['Я работаю в компании.','Я не работаю.','Я люблю чай.'],state.listening,'data-listening',0)+'<p class="feedback '+(state.heard&&state.listening===0?'good':state.listening!==null?'bad':'')+'">'+(state.heard&&state.listening===0?'✓ Правильно!':state.listening!==null?'✕ Слушай ещё раз.':'Сначала включи аудио.')+'</p></section>';
+ if(n===7)body='<section class="paper"><h2>🎤 Повтори одно слово 5 раз</h2><div class="speaking-card"><b lang="zh-Hans" class="zh">工作</b><div class="py">gōngzuò</div><div class="translation">работать</div>'+sound('工作')+'<div class="marks">'+Array.from({length:5},(_,i)=>'<span class="'+(state.mic[i]===true?'ok':state.mic[i]===false?'no':'')+'">'+(state.mic[i]===true?'✓':state.mic[i]===false?'✕':'·')+'</span>').join('')+'</div><span class="badge">'+state.mic.length+' из 5</span></div><div class="controls"><button type="button" class="primary" data-mic '+(recBusy||state.mic.length>=5||!window.PandaHSK2PracticeV326?.speechAvailable()?'disabled':'')+'>🎤 Произнести</button><button type="button" class="secondary" data-skip-mic>Пройти без микрофона</button></div><p class="feedback" role="status">'+esc(speechInfo)+'</p><p class="hint">'+progressMessage()+'. Проверяется распознанное слово, <b>не точность тонов</b>. Если микрофон недоступен, слушай образец и повторяй самостоятельно.</p></section>';
+ if(n===8)body='<section class="paper"><div class="hero-icon">🐼 🌟</div><h2 class="bigcenter">Первый шаг сделан!</h2><p class="bigcenter"><b>Ты освоил два слова и одно правило.</b></p><div class="reward"><strong>★</strong><p>Новая звезда за урок «Мой город»</p></div><p class="muted bigcenter">Слова: 公司, 工作. Предложение: 我在公司工作。</p><p class="muted bigcenter">'+(state.skipMic?'Устная проверка пропущена.':progressMessage()+'.')+' Тоны автоматически не оценивались.</p><div class="controls"><button type="button" class="secondary" data-restart>↻ Повторить урок</button><a href="./hsk2-start.html#map" class="primary" style="text-decoration:none;display:grid;place-items:center">К карте →</a></div></section>';
  $('screen').innerHTML=body;
- $('prev').disabled=s===0;$('next').disabled=!nextAllowed();$('next').textContent=s===10?'К карте HSK2 →':s===9?'Завершить урок →':'Дальше →';
+ $('prev').disabled=n===0;
+ $('next').disabled=!canNext();
+ $('next').textContent=n===8?'К карте →':n===7?'Завершить →':'Дальше →';
 }
-let busy=false,speechInfo='';
-function startMic(){if(busy)return;const app=window.PandaHSK2PracticeV326;if(!app?.speechAvailable()){speechInfo='Микрофон недоступен. Можно повторить по образцу.';render();return}const i=state.speakerIndex,arr=state.speakerAttempts[i];if(arr.length>=5)return;busy=true;speechInfo='🎙️ Слушаю…';render();app.recognize([FINAL[i][0]],(ok,msg)=>{busy=false;if(ok!==null){state.speakerAttempts[i].push(ok);save()}speechInfo=msg||'';render()});}
-function chooseAnswer(slot,i,correct){if(i<0)return;state[slot]=i;if(!correct)state.mistakes++;save();render();}
+function voice(phrase){const svc=window.PandaHsk2AudioV330;if(!svc?.lookup(phrase)){ $('audio-status').textContent='Для этой записи нет MP3.';return}
+ const ok=svc.play(phrase,m=>{$('audio-status').textContent=m||''});if(ok&&state.step===6){state.heard=true;save();$('next').disabled=!canNext();}
+}
+function startMic(){if(recBusy||state.mic.length>=5)return;const api=window.PandaHSK2PracticeV326;if(!api?.speechAvailable()){speechInfo='Микрофон недоступен.';render();return}
+ recBusy=true;speechInfo='🎙️ Слушаю…';render();
+ api.recognize(['工作'],(ok,msg)=>{recBusy=false;speechInfo=msg||'';if(ok!==null){state.mic.push(ok);save()}render()});
+}
 $('screen').addEventListener('click',e=>{
  const el=e.target.closest('button');if(!el||!$('screen').contains(el))return;
- if(el.dataset.play){play(el.dataset.play);if(state.step===7)render();return}
- if(el.hasAttribute('data-quiz')){const n=Number(el.dataset.quiz);chooseAnswer('quiz',n,n===QUIZ.answer);return}
- if(el.hasAttribute('data-token')){const n=Number(el.dataset.token);if(!state.build.includes(n)){state.build.push(n);state.builderCorrect=state.build.map(j=>TOKENS[j]).join('')==='我在公司工作';if(state.build.length===TOKENS.length&&!state.builderCorrect)state.mistakes++;save();render()}return}
- if(el.hasAttribute('data-remove')){state.build.splice(Number(el.dataset.remove),1);state.builderCorrect=false;save();render();return}
- if(el.hasAttribute('data-listen')){const n=Number(el.dataset.listen);chooseAnswer('listen',n,n===LISTEN.answer);return}
- for(let k=0;k<2;k++)if(el.hasAttribute('data-talk-'+k)){const n=Number(el.getAttribute('data-talk-'+k));state.talk[k]=n;if(!TALK[k].choices[n][2])state.mistakes++;save();render();return}
- if(el.dataset.act==='mic'){startMic();return}
- if(el.dataset.act==='skip-mic'){state.micSkipped=true;speechInfo='Тест с микрофоном пропущен. Речь не оценивалась.';save();render();return}
- if(el.dataset.act==='speak-next'){state.speakerIndex=Math.min(3,state.speakerIndex+1);speechInfo='';save();render();return}
- if(el.dataset.act==='speak-prev'){state.speakerIndex=Math.max(0,state.speakerIndex-1);speechInfo='';save();render();return}
- if(el.dataset.act==='restart'){state=fresh();speechInfo='';save();render();$('main').scrollTop=0}
+ if(el.dataset.play){voice(el.dataset.play);return}
+ if(el.hasAttribute('data-quiz')){state.choice=Number(el.dataset.quiz);if(state.choice!==1)state.mistakes++;save();render();return}
+ if(el.hasAttribute('data-token')){const i=Number(el.dataset.token);if(!state.build.includes(i))state.build.push(i);save();render();return}
+ if(el.hasAttribute('data-remove')){state.build.splice(Number(el.dataset.remove),1);save();render();return}
+ if(el.hasAttribute('data-listening')){state.listening=Number(el.dataset.listening);if(state.listening!==0)state.mistakes++;save();render();return}
+ if(el.hasAttribute('data-mic')){startMic();return}
+ if(el.hasAttribute('data-skip-mic')){state.skipMic=true;speechInfo='Устная проверка пропущена';save();render();return}
+ if(el.hasAttribute('data-restart')){state=fresh();speechInfo='';save();render();$('main').scrollTop=0}
 });
-$('prev').addEventListener('click',()=>{if(state.step===0)return;state.step--;save();render();$('main').scrollTop=0;});
-$('next').addEventListener('click',()=>{if(!nextAllowed())return;if(state.step===10){location.href='./hsk2-start.html#map';return}state.step++;if(state.step===10)state.completed=true;save();render();$('main').scrollTop=0;});
+$('prev').addEventListener('click',()=>{if(!state.step)return;state.step--;save();render();$('main').scrollTop=0});
+$('next').addEventListener('click',()=>{
+ if(!canNext())return;
+ if(state.step===8){location.href='./hsk2-start.html#map';return}
+ state.step++;
+ if(state.step===8)state.done=true;
+ save();render();$('main').scrollTop=0;
+});
 render();
 })();
 </script>
