@@ -5,7 +5,20 @@
 const W=window;
 const e=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const normalize=x=>String(x??'').normalize('NFKC').replace(/[，。！？、,.!?;；：:\s"'“”‘’()\[\]{}\-—·]/g,'');
-const match=(spoken,targets)=>!!normalize(spoken)&&targets.some(x=>normalize(spoken)===normalize(x));
+const match=(spoken,targets)=>{
+ const heard=normalize(spoken);if(!heard||!Array.isArray(targets))return false;
+ return targets.some(x=>{
+   const wanted=normalize(x);
+   if(heard===wanted)return true;
+   // In these two grammar drills the pupil practises the construction,
+   // not a fixed arbitrary personal name or city.
+   if((wanted==='我叫'||wanted==='我住在')&&heard.startsWith(wanted)){
+     const suffix=heard.slice(wanted.length);
+     return /^[\u3400-\u9fff]{1,14}$/u.test(suffix);
+   }
+   return false;
+ });
+};
 const StoragePrefix='pg-hsk2-speaking-v326:';
 const memory={};
 function load(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}}
