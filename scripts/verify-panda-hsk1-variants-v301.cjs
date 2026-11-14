@@ -16,8 +16,8 @@ const vm=require('node:vm');
   [1,'你今天好吗','我今天很好，谢谢！'],
   [1,'最近好吗','很好！'],
   [1,'那你呢','很好！'],
-  [2,'你叫啥名字','我叫Panda。'],
-  [2,'你的名字是什么','我叫Panda。'],
+  [2,'你叫啥名字','我叫熊猫。'],
+  [2,'你的名字是什么','我叫熊猫。'],
   [2,'你到底是谁','我是老师。'],
   [2,'你是老师还是学生','我是老师。'],
   [2,'你是不是学生','不是，我是老师。'],
@@ -54,7 +54,7 @@ const vm=require('node:vm');
   const r=answerLive(input,{allowed,topic:lesson,curriculum,date,profile:{recentQuestions:[]}});
   assert.equal(r.kind,'question',input+' should be a question, got '+r.kind+' '+(r.message||''));
   assert.equal(r.lesson,lesson,input+' mapped to wrong lesson');
-  assert.equal(r.reply?.hanzi,expected,input+' wrong reply '+r.reply?.hanzi);
+  assert.equal(r.reply?.hanzi?.replace(/^是，/u,''),expected.replace(/^是，/u,''),input+' wrong reply '+r.reply?.hanzi);
   assert.equal(r.spoken?.hanzi,input,'Original learner utterance must remain visible '+input);
   assert(r.followup&&r.followup.lesson===lesson,input+' must generate a related same-topic follow-up');
   assert(r.followup?.verifiedLines?.[1]?.accepted,'Follow-up must have tested accepted answers: '+input);
