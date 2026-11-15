@@ -1,0 +1,2732 @@
+[
+  {
+    "zh": "你学中文吗",
+    "src": "./assets/panda-voice-clips-v365/p001.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "学，我每天学中文",
+    "src": "./assets/panda-voice-clips-v365/p002.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你为什么学中文",
+    "src": "./assets/panda-voice-clips-v365/p003.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你喜欢汉字吗",
+    "src": "./assets/panda-voice-clips-v365/p004.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "喜欢，我喜欢汉字",
+    "src": "./assets/panda-voice-clips-v365/p005.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你会写汉字吗",
+    "src": "./assets/panda-voice-clips-v365/p006.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "会写一点",
+    "src": "./assets/panda-voice-clips-v365/p007.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你觉得中文难吗",
+    "src": "./assets/panda-voice-clips-v365/p008.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "有一点难",
+    "src": "./assets/panda-voice-clips-v365/p009.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你每天学习吗",
+    "src": "./assets/panda-voice-clips-v365/p010.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "是，我每天学习",
+    "src": "./assets/panda-voice-clips-v365/p011.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你想学什么",
+    "src": "./assets/panda-voice-clips-v365/p012.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我想学中文",
+    "src": "./assets/panda-voice-clips-v365/p013.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你会读中文吗",
+    "src": "./assets/panda-voice-clips-v365/p014.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我会读一点中文",
+    "src": "./assets/panda-voice-clips-v365/p015.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "可以，我再说一遍",
+    "src": "./assets/panda-voice-clips-v365/p016.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你能说慢一点吗",
+    "src": "./assets/panda-voice-clips-v365/p017.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "可以，我说慢一点",
+    "src": "./assets/panda-voice-clips-v365/p018.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你早上做什么",
+    "src": "./assets/panda-voice-clips-v365/p019.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我早上吃早饭",
+    "src": "./assets/panda-voice-clips-v365/p020.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你起床以后做什么",
+    "src": "./assets/panda-voice-clips-v365/p021.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我起床以后洗脸",
+    "src": "./assets/panda-voice-clips-v365/p022.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你每天喝水吗",
+    "src": "./assets/panda-voice-clips-v365/p023.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "是，我每天喝水",
+    "src": "./assets/panda-voice-clips-v365/p024.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你上午做什么",
+    "src": "./assets/panda-voice-clips-v365/p025.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我上午学习中文",
+    "src": "./assets/panda-voice-clips-v365/p026.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你中午做什么",
+    "src": "./assets/panda-voice-clips-v365/p027.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我中午吃饭",
+    "src": "./assets/panda-voice-clips-v365/p028.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你下午做什么",
+    "src": "./assets/panda-voice-clips-v365/p029.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我下午看书",
+    "src": "./assets/panda-voice-clips-v365/p030.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你晚上做什么",
+    "src": "./assets/panda-voice-clips-v365/p031.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我晚上听音乐",
+    "src": "./assets/panda-voice-clips-v365/p032.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你每天运动吗",
+    "src": "./assets/panda-voice-clips-v365/p033.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "是，我每天运动",
+    "src": "./assets/panda-voice-clips-v365/p034.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你回家以后做什么",
+    "src": "./assets/panda-voice-clips-v365/p035.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我回家以后休息",
+    "src": "./assets/panda-voice-clips-v365/p036.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你今天做什么",
+    "src": "./assets/panda-voice-clips-v365/p037.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我今天教中文",
+    "src": "./assets/panda-voice-clips-v365/p038.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你好",
+    "src": "./assets/panda-voice-clips-v365/p039.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我叫熊猫",
+    "src": "./assets/panda-voice-clips-v365/p040.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我今年三岁了",
+    "src": "./assets/panda-voice-clips-v365/p041.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我是你的中文学习伙伴",
+    "src": "./assets/panda-voice-clips-v365/p042.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "很高兴认识你",
+    "src": "./assets/panda-voice-clips-v365/p043.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我们一起学中文吧",
+    "src": "./assets/panda-voice-clips-v365/p044.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我是熊猫",
+    "src": "./assets/panda-voice-clips-v365/p046.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你叫什么名字",
+    "src": "./assets/panda-voice-clips-v365/p047.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我三岁了",
+    "src": "./assets/panda-voice-clips-v365/p048.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你呢",
+    "src": "./assets/panda-voice-clips-v365/p049.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你今年多大了",
+    "src": "./assets/panda-voice-clips-v365/p051.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你几岁了",
+    "src": "./assets/panda-voice-clips-v365/p052.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我很好，谢谢",
+    "src": "./assets/panda-voice-clips-v365/p053.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你今天怎么样",
+    "src": "./assets/panda-voice-clips-v365/p055.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我很好，你呢",
+    "src": "./assets/panda-voice-clips-v365/p056.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你吃饭了吗",
+    "src": "./assets/panda-voice-clips-v365/p057.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "吃了，谢谢",
+    "src": "./assets/panda-voice-clips-v365/p058.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "好久不见",
+    "src": "./assets/panda-voice-clips-v365/p059.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "再见",
+    "src": "./assets/panda-voice-clips-v365/p060.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "明天见",
+    "src": "./assets/panda-voice-clips-v365/p062.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你有几个朋友",
+    "src": "./assets/panda-voice-clips-v365/p063.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我有三个朋友",
+    "src": "./assets/panda-voice-clips-v365/p064.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你有几本书",
+    "src": "./assets/panda-voice-clips-v365/p065.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我有两本书",
+    "src": "./assets/panda-voice-clips-v365/p066.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你有几支笔",
+    "src": "./assets/panda-voice-clips-v365/p067.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我有一支笔",
+    "src": "./assets/panda-voice-clips-v365/p068.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你想买几个苹果",
+    "src": "./assets/panda-voice-clips-v365/p069.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我想买两个苹果",
+    "src": "./assets/panda-voice-clips-v365/p070.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你有几杯水",
+    "src": "./assets/panda-voice-clips-v365/p071.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我有一杯水",
+    "src": "./assets/panda-voice-clips-v365/p072.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你每天学几个汉字",
+    "src": "./assets/panda-voice-clips-v365/p073.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我每天学五个汉字",
+    "src": "./assets/panda-voice-clips-v365/p074.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你会数到十吗",
+    "src": "./assets/panda-voice-clips-v365/p075.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "会，我会数到十",
+    "src": "./assets/panda-voice-clips-v365/p076.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "十后面是什么",
+    "src": "./assets/panda-voice-clips-v365/p077.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "十后面是十一",
+    "src": "./assets/panda-voice-clips-v365/p078.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你最喜欢哪个数字",
+    "src": "./assets/panda-voice-clips-v365/p079.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我最喜欢八",
+    "src": "./assets/panda-voice-clips-v365/p080.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你是谁",
+    "src": "./assets/panda-voice-clips-v365/p081.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我是熊猫老师",
+    "src": "./assets/panda-voice-clips-v365/p082.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "是，我是老师",
+    "src": "./assets/panda-voice-clips-v365/p083.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你是学生吗",
+    "src": "./assets/panda-voice-clips-v365/p084.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "不是，我是老师",
+    "src": "./assets/panda-voice-clips-v365/p085.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你住在哪里",
+    "src": "./assets/panda-voice-clips-v365/p086.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我住在中国",
+    "src": "./assets/panda-voice-clips-v365/p087.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "会，我会说中文",
+    "src": "./assets/panda-voice-clips-v365/p088.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你会说俄语吗",
+    "src": "./assets/panda-voice-clips-v365/p089.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我会说一点俄语",
+    "src": "./assets/panda-voice-clips-v365/p090.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你会说英语吗",
+    "src": "./assets/panda-voice-clips-v365/p091.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我会说一点英语",
+    "src": "./assets/panda-voice-clips-v365/p092.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你喜欢教中文吗",
+    "src": "./assets/panda-voice-clips-v365/p093.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "喜欢，我很喜欢教中文",
+    "src": "./assets/panda-voice-clips-v365/p094.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我可以叫你熊猫吗",
+    "src": "./assets/panda-voice-clips-v365/p095.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "可以，你可以叫我熊猫",
+    "src": "./assets/panda-voice-clips-v365/p096.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "有，我有一个哥哥",
+    "src": "./assets/panda-voice-clips-v365/p097.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你有姐姐吗",
+    "src": "./assets/panda-voice-clips-v365/p098.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "没有，我没有姐姐",
+    "src": "./assets/panda-voice-clips-v365/p099.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你有弟弟吗",
+    "src": "./assets/panda-voice-clips-v365/p100.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "没有，我没有弟弟",
+    "src": "./assets/panda-voice-clips-v365/p101.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你妈妈好吗",
+    "src": "./assets/panda-voice-clips-v365/p102.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "她很好，谢谢",
+    "src": "./assets/panda-voice-clips-v365/p103.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你爸爸怎么样",
+    "src": "./assets/panda-voice-clips-v365/p104.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "他很好，谢谢",
+    "src": "./assets/panda-voice-clips-v365/p105.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你姐姐怎么样",
+    "src": "./assets/panda-voice-clips-v365/p106.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我没有姐姐",
+    "src": "./assets/panda-voice-clips-v365/p107.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你哥哥几岁",
+    "src": "./assets/panda-voice-clips-v365/p108.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "他五岁",
+    "src": "./assets/panda-voice-clips-v365/p109.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你妹妹几岁",
+    "src": "./assets/panda-voice-clips-v365/p110.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "她一岁",
+    "src": "./assets/panda-voice-clips-v365/p111.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你家有几口人",
+    "src": "./assets/panda-voice-clips-v365/p112.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我家有五口人",
+    "src": "./assets/panda-voice-clips-v365/p113.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你从哪里来",
+    "src": "./assets/panda-voice-clips-v365/p114.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你住在哪儿",
+    "src": "./assets/panda-voice-clips-v365/p115.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你是哪里人",
+    "src": "./assets/panda-voice-clips-v365/p116.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你学习中文吗",
+    "src": "./assets/panda-voice-clips-v365/p117.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你为什么学习中文",
+    "src": "./assets/panda-voice-clips-v365/p118.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你学中文多久了",
+    "src": "./assets/panda-voice-clips-v365/p119.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你喜欢学中文吗",
+    "src": "./assets/panda-voice-clips-v365/p120.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你会说中文吗",
+    "src": "./assets/panda-voice-clips-v365/p121.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你会说一点中文吗",
+    "src": "./assets/panda-voice-clips-v365/p122.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我们继续练习吧",
+    "src": "./assets/panda-voice-clips-v365/p123.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "谢谢你告诉我",
+    "src": "./assets/panda-voice-clips-v365/p124.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "好的，我明白了",
+    "src": "./assets/panda-voice-clips-v365/p125.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你能再说一遍吗",
+    "src": "./assets/panda-voice-clips-v365/p126.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "没关系，我们慢慢来",
+    "src": "./assets/panda-voice-clips-v365/p127.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我再说一遍",
+    "src": "./assets/panda-voice-clips-v365/p128.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你想聊什么",
+    "src": "./assets/panda-voice-clips-v365/p129.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你想练习什么",
+    "src": "./assets/panda-voice-clips-v365/p130.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我们先练习简单的问题吧",
+    "src": "./assets/panda-voice-clips-v365/p131.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你还有问题吗",
+    "src": "./assets/panda-voice-clips-v365/p132.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我们换个话题吧",
+    "src": "./assets/panda-voice-clips-v365/p133.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "今天我们练习得很开心",
+    "src": "./assets/panda-voice-clips-v365/p134.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "谢谢你",
+    "src": "./assets/panda-voice-clips-v365/p135.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "下次见",
+    "src": "./assets/panda-voice-clips-v365/p136.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我现在不忙",
+    "src": "./assets/panda-voice-clips-v365/p137.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你累吗",
+    "src": "./assets/panda-voice-clips-v365/p138.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我不累",
+    "src": "./assets/panda-voice-clips-v365/p139.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你开心吗",
+    "src": "./assets/panda-voice-clips-v365/p140.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我很开心",
+    "src": "./assets/panda-voice-clips-v365/p141.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你高兴吗",
+    "src": "./assets/panda-voice-clips-v365/p142.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我很高兴",
+    "src": "./assets/panda-voice-clips-v365/p143.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你现在有空吗",
+    "src": "./assets/panda-voice-clips-v365/p144.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "有，我现在有空",
+    "src": "./assets/panda-voice-clips-v365/p145.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你怎么了",
+    "src": "./assets/panda-voice-clips-v365/p146.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我没事，谢谢",
+    "src": "./assets/panda-voice-clips-v365/p147.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你想休息吗",
+    "src": "./assets/panda-voice-clips-v365/p148.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我想休息一下",
+    "src": "./assets/panda-voice-clips-v365/p149.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你今天心情怎么样",
+    "src": "./assets/panda-voice-clips-v365/p150.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我今天心情很好",
+    "src": "./assets/panda-voice-clips-v365/p151.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你冷吗",
+    "src": "./assets/panda-voice-clips-v365/p152.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "我不冷",
+    "src": "./assets/panda-voice-clips-v365/p153.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "你需要帮助吗",
+    "src": "./assets/panda-voice-clips-v365/p154.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "谢谢，我不需要帮助",
+    "src": "./assets/panda-voice-clips-v365/p155.mp3",
+    "start": 0,
+    "end": null,
+    "source": "user-luvvoice-nov14-cut"
+  },
+  {
+    "zh": "早上好",
+    "src": "./assets/panda-live-voice-v4/p01.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "中午好",
+    "src": "./assets/panda-live-voice-v4/p02.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "下午好",
+    "src": "./assets/panda-live-voice-v4/p03.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "晚上好",
+    "src": "./assets/panda-live-voice-v4/p04.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "你好吗",
+    "src": "./assets/panda-live-voice-v2/how-are-you.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "很好",
+    "src": "./assets/panda-live-voice-v2/good.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我也很好谢谢",
+    "src": "./assets/panda-live-voice-v2/me-too-thanks.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "谢谢",
+    "src": "./assets/panda-live-voice-v2/thanks.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "你是老师吗",
+    "src": "./assets/panda-live-voice-v3/p01.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我也是老师",
+    "src": "./assets/panda-live-voice-v3/p02.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我是老师",
+    "src": "./assets/panda-live-voice-v3/p03.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "你几岁",
+    "src": "./assets/panda-live-voice-v3/p04.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我三岁",
+    "src": "./assets/panda-live-voice-v3/p05.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "今天星期几",
+    "src": "./assets/panda-live-voice-v3/p06.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "明天星期二",
+    "src": "./assets/panda-live-voice-v3/p07.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "今天几月几号",
+    "src": "./assets/panda-live-voice-v3/p08.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "明天三月六号",
+    "src": "./assets/panda-live-voice-v3/p09.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "你有哥哥吗",
+    "src": "./assets/panda-live-voice-v3/p10.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我也有哥哥",
+    "src": "./assets/panda-live-voice-v3/p11.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我有一个哥哥",
+    "src": "./assets/panda-live-voice-v3/p12.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "今天天气怎么样",
+    "src": "./assets/panda-live-voice-v3/p13.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "明天天气怎么样",
+    "src": "./assets/panda-live-voice-v3/p14.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我学习中文",
+    "src": "./assets/panda-live-voice-bridge-v307/B02.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "你忙吗",
+    "src": "./assets/panda-live-voice-bridge-v307/B03.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我很忙",
+    "src": "./assets/panda-live-voice-bridge-v307/B04.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我不忙",
+    "src": "./assets/panda-live-voice-bridge-v307/B05.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "中文",
+    "src": "./assets/panda-live-voice-bridge-v307/B06.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "学习",
+    "src": "./assets/panda-live-voice-bridge-v307/B07.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "忙",
+    "src": "./assets/panda-live-voice-bridge-v307/B08.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "你做什么工作",
+    "src": "./assets/hsk2-user-voice/20261114-job-question-v343.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "因为我喜欢中文",
+    "src": "./assets/panda-live-voice-bridge-v307/B10.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我",
+    "src": "./assets/lesson1-xiaoxiao-v260/wo.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "你",
+    "src": "./assets/lesson1-xiaoxiao-v260/ni.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "您",
+    "src": "./assets/panda-lesson2-xiaoxiao-v261/nin.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "他",
+    "src": "./assets/panda-xiaoxiao-trainer-v250/p041.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "她",
+    "src": "./assets/panda-xiaoxiao-trainer-v250/p041.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "它",
+    "src": "./assets/panda-xiaoxiao-trainer-v250/p041.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我们",
+    "src": "./assets/panda-lesson2-xiaoxiao-v261/women.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "你们",
+    "src": "./assets/panda-lesson2-xiaoxiao-v261/nimen.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "是",
+    "src": "./assets/lesson1-xiaoxiao-v260/shi.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "老师",
+    "src": "./assets/panda-lesson2-xiaoxiao-v261/laoshi.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "学生",
+    "src": "./assets/lesson1-xiaoxiao-v260/xuesheng.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "吗",
+    "src": "./assets/panda-xiaoxiao-trainer-v250/p079.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "是的我是老师",
+    "src": "./assets/panda-lesson2-xiaoxiao-v261/shidewoshilaoshi.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "星期",
+    "src": "./assets/lesson4-xiaoxiao-v265/000.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "星期一",
+    "src": "./assets/lesson4-xiaoxiao-v265/001.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "星期二",
+    "src": "./assets/lesson4-xiaoxiao-v265/002.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "星期三",
+    "src": "./assets/lesson4-xiaoxiao-v265/003.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "星期四",
+    "src": "./assets/lesson4-xiaoxiao-v265/004.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "星期五",
+    "src": "./assets/lesson4-xiaoxiao-v265/005.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "星期六",
+    "src": "./assets/lesson4-xiaoxiao-v265/006.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "星期天",
+    "src": "./assets/lesson4-xiaoxiao-v265/007.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "星期日",
+    "src": "./assets/lesson4-xiaoxiao-v265/008.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "今天",
+    "src": "./assets/lesson4-xiaoxiao-v265/009.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "明天",
+    "src": "./assets/lesson4-xiaoxiao-v265/010.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "昨天",
+    "src": "./assets/lesson4-xiaoxiao-v265/011.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "几",
+    "src": "./assets/lesson4-xiaoxiao-v265/012.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "日",
+    "src": "./assets/lesson4-xiaoxiao-v265/013.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "明天星期几",
+    "src": "./assets/lesson4-xiaoxiao-v265/015.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "今天星期五",
+    "src": "./assets/lesson4-xiaoxiao-v265/016.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "明天星期六",
+    "src": "./assets/lesson4-xiaoxiao-v265/017.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "昨天星期二",
+    "src": "./assets/lesson4-xiaoxiao-v265/018.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "今天星期三",
+    "src": "./assets/lesson4-xiaoxiao-v265/019.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "今天星期一",
+    "src": "./assets/lesson4-xiaoxiao-v265/020.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "今天是星期五",
+    "src": "./assets/lesson4-xiaoxiao-v265/021.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "你星期几有空",
+    "src": "./assets/lesson4-xiaoxiao-v265/022.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我星期六有空",
+    "src": "./assets/lesson4-xiaoxiao-v265/023.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我们星期六一起去看电影吧",
+    "src": "./assets/lesson4-xiaoxiao-v265/024.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "一月",
+    "src": "./assets/lesson5-xiaoxiao-v272/000.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二月",
+    "src": "./assets/lesson5-xiaoxiao-v272/001.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三月",
+    "src": "./assets/lesson5-xiaoxiao-v272/002.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四月",
+    "src": "./assets/lesson5-xiaoxiao-v272/003.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五月",
+    "src": "./assets/lesson5-xiaoxiao-v272/004.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六月",
+    "src": "./assets/lesson5-xiaoxiao-v272/005.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七月",
+    "src": "./assets/lesson5-xiaoxiao-v272/006.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八月",
+    "src": "./assets/lesson5-xiaoxiao-v272/007.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九月",
+    "src": "./assets/lesson5-xiaoxiao-v272/008.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十月",
+    "src": "./assets/lesson5-xiaoxiao-v272/009.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十一月",
+    "src": "./assets/lesson5-xiaoxiao-v272/010.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十二月",
+    "src": "./assets/lesson5-xiaoxiao-v272/011.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "年",
+    "src": "./assets/lesson5-xiaoxiao-v272/012.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "月",
+    "src": "./assets/lesson5-xiaoxiao-v272/013.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "号",
+    "src": "./assets/lesson5-xiaoxiao-v272/014.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二零二六年十一月六日",
+    "src": "./assets/lesson5-xiaoxiao-v272/015.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "今天十一月六号",
+    "src": "./assets/lesson5-xiaoxiao-v272/016.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "妈妈",
+    "src": "./assets/lesson6-xiaoxiao-v274/000.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "爸爸",
+    "src": "./assets/lesson6-xiaoxiao-v274/001.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "哥哥",
+    "src": "./assets/lesson6-xiaoxiao-v274/002.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "姐姐",
+    "src": "./assets/lesson6-xiaoxiao-v274/003.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "弟弟",
+    "src": "./assets/lesson6-xiaoxiao-v274/004.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "妹妹",
+    "src": "./assets/lesson6-xiaoxiao-v274/005.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "家",
+    "src": "./assets/lesson6-xiaoxiao-v274/006.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我的",
+    "src": "./assets/lesson6-xiaoxiao-v274/007.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "有",
+    "src": "./assets/lesson6-xiaoxiao-v274/008.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "没有",
+    "src": "./assets/lesson6-xiaoxiao-v274/009.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "一个",
+    "src": "./assets/lesson6-xiaoxiao-v274/010.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我有一个妹妹",
+    "src": "./assets/lesson6-xiaoxiao-v274/011.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我的妈妈",
+    "src": "./assets/lesson6-xiaoxiao-v274/012.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我没有哥哥",
+    "src": "./assets/lesson6-xiaoxiao-v274/013.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "这是我爸爸",
+    "src": "./assets/lesson6-xiaoxiao-v274/014.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "是这是我妈妈",
+    "src": "./assets/lesson6-xiaoxiao-v274/015.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "有我有一个妹妹",
+    "src": "./assets/lesson6-xiaoxiao-v274/016.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "妈",
+    "src": "./assets/lesson1-xiaoxiao-v260/ma1.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "麻",
+    "src": "./assets/lesson1-xiaoxiao-v260/ma2.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "马",
+    "src": "./assets/lesson1-xiaoxiao-v260/ma3.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "骂",
+    "src": "./assets/lesson1-xiaoxiao-v260/ma4.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "爷爷",
+    "src": "./assets/lesson6-grandparents-v275/000.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "奶奶",
+    "src": "./assets/lesson6-grandparents-v275/001.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "外公",
+    "src": "./assets/lesson6-grandparents-v275/002.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "外婆",
+    "src": "./assets/lesson6-grandparents-v275/003.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "这是我爷爷",
+    "src": "./assets/lesson6-grandparents-v275/004.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "这是我奶奶",
+    "src": "./assets/lesson6-grandparents-v275/005.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "这是我外公",
+    "src": "./assets/lesson6-grandparents-v275/006.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "这是我外婆",
+    "src": "./assets/lesson6-grandparents-v275/007.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "天气",
+    "src": "./assets/lesson7-xiaoxiao-v277/000.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "冷",
+    "src": "./assets/lesson7-xiaoxiao-v277/001.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "热",
+    "src": "./assets/lesson7-xiaoxiao-v277/002.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "晴",
+    "src": "./assets/lesson7-xiaoxiao-v277/003.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "阴",
+    "src": "./assets/lesson7-xiaoxiao-v277/004.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "下雨",
+    "src": "./assets/lesson7-xiaoxiao-v277/005.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "下雪",
+    "src": "./assets/lesson7-xiaoxiao-v277/006.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "风",
+    "src": "./assets/lesson7-xiaoxiao-v277/007.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "春天",
+    "src": "./assets/lesson7-xiaoxiao-v277/008.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "夏天",
+    "src": "./assets/lesson7-xiaoxiao-v277/009.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "秋天",
+    "src": "./assets/lesson7-xiaoxiao-v277/010.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "冬天",
+    "src": "./assets/lesson7-xiaoxiao-v277/011.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "现在",
+    "src": "./assets/lesson7-xiaoxiao-v277/012.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "很",
+    "src": "./assets/lesson7-xiaoxiao-v277/013.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "今天很冷",
+    "src": "./assets/lesson7-xiaoxiao-v277/014.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "今天下雨",
+    "src": "./assets/lesson7-xiaoxiao-v277/015.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "冬天很冷",
+    "src": "./assets/lesson7-xiaoxiao-v277/017.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "明天下雨吗",
+    "src": "./assets/lesson7-xiaoxiao-v277/018.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "明天下雨",
+    "src": "./assets/lesson7-xiaoxiao-v277/019.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "我是学生",
+    "src": "./assets/owner-clean-v237/044df5ff04779c7b.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "明天七号",
+    "src": "./assets/owner-clean-v237/a80d9cb627ef1bf3.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "这是你妈妈吗",
+    "src": "./assets/owner-clean-v237/94d9718740b33604.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "这是我妈妈",
+    "src": "./assets/owner-clean-v237/0dff0d3381199549.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "你有妹妹吗",
+    "src": "./assets/owner-clean-v237/3925dab27ef249c3.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "零",
+    "src": "./assets/lesson3-xiaoxiao-v263/000.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "一",
+    "src": "./assets/lesson3-xiaoxiao-v263/001.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二",
+    "src": "./assets/lesson3-xiaoxiao-v263/002.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三",
+    "src": "./assets/lesson3-xiaoxiao-v263/003.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四",
+    "src": "./assets/lesson3-xiaoxiao-v263/004.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五",
+    "src": "./assets/lesson3-xiaoxiao-v263/005.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六",
+    "src": "./assets/lesson3-xiaoxiao-v263/006.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七",
+    "src": "./assets/lesson3-xiaoxiao-v263/007.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八",
+    "src": "./assets/lesson3-xiaoxiao-v263/008.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九",
+    "src": "./assets/lesson3-xiaoxiao-v263/009.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十",
+    "src": "./assets/lesson3-xiaoxiao-v263/010.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十一",
+    "src": "./assets/lesson3-xiaoxiao-v263/011.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十二",
+    "src": "./assets/lesson3-xiaoxiao-v263/012.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十三",
+    "src": "./assets/lesson3-xiaoxiao-v263/013.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十四",
+    "src": "./assets/lesson3-xiaoxiao-v263/014.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十五",
+    "src": "./assets/lesson3-xiaoxiao-v263/015.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十六",
+    "src": "./assets/lesson3-xiaoxiao-v263/016.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十七",
+    "src": "./assets/lesson3-xiaoxiao-v263/017.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十八",
+    "src": "./assets/lesson3-xiaoxiao-v263/018.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "十九",
+    "src": "./assets/lesson3-xiaoxiao-v263/019.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二十",
+    "src": "./assets/lesson3-xiaoxiao-v263/020.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二十一",
+    "src": "./assets/lesson3-xiaoxiao-v263/021.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二十二",
+    "src": "./assets/lesson3-xiaoxiao-v263/022.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二十三",
+    "src": "./assets/lesson3-xiaoxiao-v263/023.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二十四",
+    "src": "./assets/lesson3-xiaoxiao-v263/024.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二十五",
+    "src": "./assets/lesson3-xiaoxiao-v263/025.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二十六",
+    "src": "./assets/lesson3-xiaoxiao-v263/026.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二十七",
+    "src": "./assets/lesson3-xiaoxiao-v263/027.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二十八",
+    "src": "./assets/lesson3-xiaoxiao-v263/028.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "二十九",
+    "src": "./assets/lesson3-xiaoxiao-v263/029.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三十",
+    "src": "./assets/lesson3-xiaoxiao-v263/030.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三十一",
+    "src": "./assets/lesson3-xiaoxiao-v263/031.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三十二",
+    "src": "./assets/lesson3-xiaoxiao-v263/032.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三十三",
+    "src": "./assets/lesson3-xiaoxiao-v263/033.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三十四",
+    "src": "./assets/lesson3-xiaoxiao-v263/034.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三十五",
+    "src": "./assets/lesson3-xiaoxiao-v263/035.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三十六",
+    "src": "./assets/lesson3-xiaoxiao-v263/036.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三十七",
+    "src": "./assets/lesson3-xiaoxiao-v263/037.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三十八",
+    "src": "./assets/lesson3-xiaoxiao-v263/038.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "三十九",
+    "src": "./assets/lesson3-xiaoxiao-v263/039.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四十",
+    "src": "./assets/lesson3-xiaoxiao-v263/040.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四十一",
+    "src": "./assets/lesson3-xiaoxiao-v263/041.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四十二",
+    "src": "./assets/lesson3-xiaoxiao-v263/042.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四十三",
+    "src": "./assets/lesson3-xiaoxiao-v263/043.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四十四",
+    "src": "./assets/lesson3-xiaoxiao-v263/044.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四十五",
+    "src": "./assets/lesson3-xiaoxiao-v263/045.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四十六",
+    "src": "./assets/lesson3-xiaoxiao-v263/046.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四十七",
+    "src": "./assets/lesson3-xiaoxiao-v263/047.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四十八",
+    "src": "./assets/lesson3-xiaoxiao-v263/048.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "四十九",
+    "src": "./assets/lesson3-xiaoxiao-v263/049.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五十",
+    "src": "./assets/lesson3-xiaoxiao-v263/050.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五十一",
+    "src": "./assets/lesson3-xiaoxiao-v263/051.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五十二",
+    "src": "./assets/lesson3-xiaoxiao-v263/052.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五十三",
+    "src": "./assets/lesson3-xiaoxiao-v263/053.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五十四",
+    "src": "./assets/lesson3-xiaoxiao-v263/054.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五十五",
+    "src": "./assets/lesson3-xiaoxiao-v263/055.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五十六",
+    "src": "./assets/lesson3-xiaoxiao-v263/056.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五十七",
+    "src": "./assets/lesson3-xiaoxiao-v263/057.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五十八",
+    "src": "./assets/lesson3-xiaoxiao-v263/058.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "五十九",
+    "src": "./assets/lesson3-xiaoxiao-v263/059.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六十",
+    "src": "./assets/lesson3-xiaoxiao-v263/060.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六十一",
+    "src": "./assets/lesson3-xiaoxiao-v263/061.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六十二",
+    "src": "./assets/lesson3-xiaoxiao-v263/062.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六十三",
+    "src": "./assets/lesson3-xiaoxiao-v263/063.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六十四",
+    "src": "./assets/lesson3-xiaoxiao-v263/064.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六十五",
+    "src": "./assets/lesson3-xiaoxiao-v263/065.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六十六",
+    "src": "./assets/lesson3-xiaoxiao-v263/066.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六十七",
+    "src": "./assets/lesson3-xiaoxiao-v263/067.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六十八",
+    "src": "./assets/lesson3-xiaoxiao-v263/068.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "六十九",
+    "src": "./assets/lesson3-xiaoxiao-v263/069.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七十",
+    "src": "./assets/lesson3-xiaoxiao-v263/070.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七十一",
+    "src": "./assets/lesson3-xiaoxiao-v263/071.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七十二",
+    "src": "./assets/lesson3-xiaoxiao-v263/072.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七十三",
+    "src": "./assets/lesson3-xiaoxiao-v263/073.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七十四",
+    "src": "./assets/lesson3-xiaoxiao-v263/074.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七十五",
+    "src": "./assets/lesson3-xiaoxiao-v263/075.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七十六",
+    "src": "./assets/lesson3-xiaoxiao-v263/076.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七十七",
+    "src": "./assets/lesson3-xiaoxiao-v263/077.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七十八",
+    "src": "./assets/lesson3-xiaoxiao-v263/078.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "七十九",
+    "src": "./assets/lesson3-xiaoxiao-v263/079.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八十",
+    "src": "./assets/lesson3-xiaoxiao-v263/080.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八十一",
+    "src": "./assets/lesson3-xiaoxiao-v263/081.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八十二",
+    "src": "./assets/lesson3-xiaoxiao-v263/082.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八十三",
+    "src": "./assets/lesson3-xiaoxiao-v263/083.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八十四",
+    "src": "./assets/lesson3-xiaoxiao-v263/084.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八十五",
+    "src": "./assets/lesson3-xiaoxiao-v263/085.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八十六",
+    "src": "./assets/lesson3-xiaoxiao-v263/086.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八十七",
+    "src": "./assets/lesson3-xiaoxiao-v263/087.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八十八",
+    "src": "./assets/lesson3-xiaoxiao-v263/088.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "八十九",
+    "src": "./assets/lesson3-xiaoxiao-v263/089.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九十",
+    "src": "./assets/lesson3-xiaoxiao-v263/090.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九十一",
+    "src": "./assets/lesson3-xiaoxiao-v263/091.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九十二",
+    "src": "./assets/lesson3-xiaoxiao-v263/092.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九十三",
+    "src": "./assets/lesson3-xiaoxiao-v263/093.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九十四",
+    "src": "./assets/lesson3-xiaoxiao-v263/094.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九十五",
+    "src": "./assets/lesson3-xiaoxiao-v263/095.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九十六",
+    "src": "./assets/lesson3-xiaoxiao-v263/096.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九十七",
+    "src": "./assets/lesson3-xiaoxiao-v263/097.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九十八",
+    "src": "./assets/lesson3-xiaoxiao-v263/098.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "九十九",
+    "src": "./assets/lesson3-xiaoxiao-v263/099.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  },
+  {
+    "zh": "一百",
+    "src": "./assets/lesson3-xiaoxiao-v263/100.mp3",
+    "start": 0,
+    "end": null,
+    "source": "prior-verified"
+  }
+]

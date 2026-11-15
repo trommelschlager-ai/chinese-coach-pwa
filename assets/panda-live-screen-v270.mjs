@@ -1,7 +1,7 @@
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=319';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=358';
+import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=365';
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
@@ -28,8 +28,8 @@ function happy(){pose('happy');poseTimer=setTimeout(()=>pose('idle'),1300)}
 function stopAudio(){const a=audio;audio=null;cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onloadedmetadata=a.ontimeupdate=a.onseeked=a.oncanplay=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
 function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;if(r){r.onstart=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
-function play(){
- const currentLine=current();
+function play(entry=null){
+ const currentLine=entry||current();
  const part=lookupPandaVoiceClip(currentLine?.hanzi||currentLine?.panda)||lookupPandaVoiceClip(currentLine?.audioKey);
  if(!part){note('Для этой точной фразы пока нет загруженной MP3-записи.');return}
  stopRecognition();stopAudio();
@@ -37,35 +37,16 @@ function play(){
  const a=new Audio(new URL(src,document.baseURI).href);audio=a;a.playbackRate=state.slow?.8:1;a.preload='auto';
  if('preservesPitch' in a)a.preservesPitch=true;
  const envelope=end===null?ENVELOPES[src]:null,valid=()=>audio===a;
- // A combined user MP3 starts with a different phrase. NEVER let its opening
- // audio escape before the browser finishes seeking to the indexed clip.
- // Start playback within the user gesture (Android requirement), but keep it
- // muted until onseeked confirms the correct start time.
- let clipReady=begin<=0,seekRequested=false;
- if(!clipReady)a.muted=true;
- const unmuteWhenReady=()=>{
-   if(!valid()||clipReady||a.seeking||Math.abs(a.currentTime-begin)>.13)return;
-   clipReady=true;a.muted=false;
- };
- const seek=()=>{
-   if(!valid()||clipReady||seekRequested||a.readyState<1)return;
-   seekRequested=true;
-   try{a.currentTime=begin}catch{
-     seekRequested=false;note('Не удалось перейти к нужному фрагменту MP3.');stopAudio();
-   }
- };
- a.onloadedmetadata=seek;
- a.onseeked=unmuteWhenReady;
- a.oncanplay=unmuteWhenReady;
+ // Every indexed phrase is now its own MP3; playback starts at zero.
+ a.muted=false;a.volume=1;
  const animate=()=>{if(!valid()||a.paused||a.ended)return;pandaVisualAudioLevel=Math.max(0,Math.min(1,envelope?envelope.levels[Math.floor(a.currentTime/envelope.binSeconds)]||0:.5+.5*Math.sin(a.currentTime*23)));rig.setLevel(pandaVisualAudioLevel);audioFrame=requestAnimationFrame(animate)};
  a.onplaying=()=>{if(valid()){pose('talking');$('hear').classList.add('playing');if($('status').textContent==='Нажми динамик, чтобы включить звук.')note('');animate()}};
  a.onwaiting=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
  a.onpause=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
- const finished=()=>{if(valid()){stopAudio();if(state.followup)scheduleFollowup(1200)}};
+ const finished=()=>{if(valid()){stopAudio();if(!entry&&state.followup)scheduleFollowup(1200)}};
  a.onended=finished;
  a.ontimeupdate=()=>{if(valid()&&end!==null&&a.currentTime>=end-.025)finished()};
  a.onerror=()=>{if(valid()){stopAudio();note('Запись не загрузилась. Нажми динамик ещё раз.')}};
- seek();
  a.play().catch(()=>{if(valid()){stopAudio();note('Браузер не включил звук автоматически. Нажми динамик.')}});
 }
 function cancelFollowup(){clearTimeout(followupTimer);state.followup=null}
@@ -422,7 +403,7 @@ window.PandaApprovedBridge337={
   note('Урок '+id+'. Ответь на вопрос Панды.');
   return true;
  },
- play:()=>play(),stopPlayback:()=>stopAudio(),
+ play:()=>play(),playEntry:entry=>{cancelFollowup();play(entry)},stopPlayback:()=>stopAudio(),
  getAudioLevel:()=>audio&&!audio.paused&&!audio.ended?pandaVisualAudioLevel:null,
  toggleSpeed:()=>$('speed-toggle').click(),
  setMode:mode=>{if(mode==='short'||mode==='nonstop')setMode(mode)},

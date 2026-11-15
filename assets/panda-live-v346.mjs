@@ -1,6 +1,6 @@
 /* Panda AI v346. Clean responsive user-approved screen.
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
-import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=358';
+import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=365';
 import {createPandaMouth} from './panda-live-face-v354.mjs?v=354';
 const bridge=window.PandaApprovedBridge337;
 if (!bridge) {
@@ -90,7 +90,9 @@ if (!bridge) {
   let lastSpeechSignalId=0,effectTimer=0,headsetResult='idle',assessmentUntil=0,assessmentText='';
   const stopHistoryAudio=()=>{if(historyAudio){const previous=historyAudio;historyAudio=null;previous.pause();}};
   function clipFor(entry){return lookupPandaVoiceClip(entry?.hanzi||entry?.panda)||lookupPandaVoiceClip(entry?.audioKey)}
-  function playHistory(entry){const part=clipFor(entry);if(!part){bridge.note('🔇 Для этой фразы нет MP3-записи');return}stopHistoryAudio();bridge.stopPlayback();const a=new Audio(new URL(part.src,document.baseURI).href);historyAudio=a;a.playbackRate=bridge.snapshot().slow?.8:1;const start=Number(part.start)||0,end=Number.isFinite(part.end)?Number(part.end):null;if(start>0)a.muted=true;let seekRequested=false;const unmute=()=>{if(historyAudio===a&&a.muted&&!a.seeking&&Math.abs(a.currentTime-start)<.13)a.muted=false};a.onloadedmetadata=()=>{if(historyAudio!==a||start<=0||seekRequested)return;seekRequested=true;try{a.currentTime=start}catch{stopHistoryAudio();bridge.note('Не удалось найти начало фразы в MP3')}};a.onseeked=unmute;a.oncanplay=unmute;a.ontimeupdate=()=>{if(historyAudio===a&&end!==null&&a.currentTime>=end-.025)stopHistoryAudio()};a.onplaying=()=>{if(historyAudio===a)sync()};a.onpause=()=>{if(historyAudio===a)sync()};a.onended=()=>{if(historyAudio===a){historyAudio=null;sync()}};a.onerror=()=>{if(historyAudio===a){stopHistoryAudio();bridge.note('Звуковой файл не загрузился')}};a.play().catch(()=>{if(historyAudio===a){stopHistoryAudio();bridge.note('Браузер заблокировал звук. Нажми динамик ещё раз')}})}
+  // History shares the main player: stops recognition, pending replies and prior audio.
+  function playHistory(entry){stopHistoryAudio();bridge.playEntry(entry);sync()}
+
   function renderRows(rows){const root=$('#pg346-rows');root.replaceChildren();for(const e of rows.slice(-3)){
     const row=el('article','pg346-row');const av=el('span','pg346-avatar');if(e.who==='you')av.textContent='👤';else{const img=document.createElement('img');img.src='./assets/panda-character-clean-v349.webp?v=349';img.alt='Панда';av.append(img)}
     const text=el('div','pg346-text');text.append(el('div','pg346-zh',e.hanzi||''),el('div','pg346-py',e.pinyin||''));
@@ -127,7 +129,7 @@ if (!bridge) {
     const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable;$('#pg357-audio-note').hidden=!!s.audioAvailable}
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
     renderFeedback(s);renderTopics(s);
-    const warning=$('#pg346-status'),problem=/(микрофон|распознаван|разреши|доступ|Chrome|запись не|запись пока|звуковой файл)/i.test(s.status||'');
+    const warning=$('#pg346-status'),problem=/(микрофон|распознаван|разреши|доступ|Chrome|запись не|запись пока|звуковой файл|браузер.*звук|mp3|фрагмент)/i.test(s.status||'');
     warning.hidden=!problem;warning.textContent=problem?s.status:'';
     const live=$('#pg346-live');const showingAssessment=Date.now()<assessmentUntil;
     live.classList.toggle('pg352-assessment',!s.active&&!pandaSpeaking&&showingAssessment);
@@ -147,5 +149,5 @@ if (!bridge) {
   $('#pg346-topics-btn').addEventListener('click',toggleTopics);$('#pg346-topics-close').addEventListener('click',closeTopics);stage.addEventListener('click',e=>{if(!$('#pg346-topics').hidden&&!e.target.closest('#pg346-topics,#pg346-topics-btn'))closeTopics()});stage.addEventListener('keydown',e=>{if(e.key==='Escape')closeTopics()});
   const core=document.querySelector('main');if(core){let pending=false;new MutationObserver(()=>{if(!pending&&!document.hidden){pending=true;requestAnimationFrame(()=>{pending=false;sync()})}}).observe(core,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-state','aria-pressed','disabled']})}
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stopHistoryAudio();liveMouth.setTalking(false)}else sync()});window.addEventListener('pagehide',()=>{stopHistoryAudio();liveMouth.dispose()});
-  sync();document.documentElement.dataset.pandaCleanVersion='364';document.documentElement.classList.remove('panda-booting');document.documentElement.dataset.pandaUiReady='true';
+  sync();document.documentElement.dataset.pandaCleanVersion='365';document.documentElement.classList.remove('panda-booting');document.documentElement.dataset.pandaUiReady='true';
 }

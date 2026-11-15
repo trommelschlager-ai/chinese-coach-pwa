@@ -1,0 +1,18 @@
+/* Feet rest on the top face of the existing 600x207 stone, around source y=110.
+   Character art, size and horizontal placement are untouched. */
+#pg346 .pg346-scene{--pg-seat-width:min(86vw,464.4px)}
+#pg346 .pg352-mascot{bottom:calc(var(--pg-seat-width) * .162 - 1.25%)!important}
+#pg346 .pg364-ground-shadow{display:none}
+/* Anchor contact shadows to the fixed feet rather than an unrelated viewport %. */
+#pg346 .pg352-mascot::before{
+ content:"";position:absolute;left:14%;bottom:-1.2%;width:79%;height:5%;
+ z-index:-1;pointer-events:none;border-radius:50%;filter:blur(2px);
+ background:radial-gradient(ellipse at 23% 50%,#17231c70,transparent 42%),
+ radial-gradient(ellipse at 80% 50%,#17231c70,transparent 40%),
+ radial-gradient(ellipse at 50% 40%,#26352c80,transparent 69%);
+ transform:none;animation:none;
+}
+@media(max-height:720px){#pg346 .pg346-scene{--pg-seat-width:min(82vw,442.8px)}}
+@media(max-height:590px){#pg346 .pg346-scene{--pg-seat-width:min(74vw,399.6px)}}
+:root[data-keyboard=true] #pg346 .pg346-scene{--pg-seat-width:min(56vw,302.4px)}
+:root[data-keyboard=true] #pg346 .pg352-mascot{bottom:calc(var(--pg-seat-width) * .162)!important}

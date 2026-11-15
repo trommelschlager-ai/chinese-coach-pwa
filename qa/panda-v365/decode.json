@@ -1,0 +1,2330 @@
+[
+  {
+    "src": "./assets/hsk2-user-voice/20261114-job-question-v343.mp3",
+    "duration": 2.4,
+    "rmsDb": -19.3,
+    "peak": 0.5227
+  },
+  {
+    "src": "./assets/lesson1-xiaoxiao-v260/ma1.mp3",
+    "duration": 0.684,
+    "rmsDb": -19.45,
+    "peak": 0.6029
+  },
+  {
+    "src": "./assets/lesson1-xiaoxiao-v260/ma2.mp3",
+    "duration": 0.706,
+    "rmsDb": -19.44,
+    "peak": 0.6444
+  },
+  {
+    "src": "./assets/lesson1-xiaoxiao-v260/ma3.mp3",
+    "duration": 0.712,
+    "rmsDb": -19.44,
+    "peak": 0.6619
+  },
+  {
+    "src": "./assets/lesson1-xiaoxiao-v260/ma4.mp3",
+    "duration": 0.736,
+    "rmsDb": -19.44,
+    "peak": 0.5566
+  },
+  {
+    "src": "./assets/lesson1-xiaoxiao-v260/ni.mp3",
+    "duration": 0.718,
+    "rmsDb": -19.44,
+    "peak": 0.3834
+  },
+  {
+    "src": "./assets/lesson1-xiaoxiao-v260/shi.mp3",
+    "duration": 0.778,
+    "rmsDb": -19.5,
+    "peak": 0.5804
+  },
+  {
+    "src": "./assets/lesson1-xiaoxiao-v260/wo.mp3",
+    "duration": 0.708,
+    "rmsDb": -19.45,
+    "peak": 0.4846
+  },
+  {
+    "src": "./assets/lesson1-xiaoxiao-v260/xuesheng.mp3",
+    "duration": 0.996,
+    "rmsDb": -19.53,
+    "peak": 0.544
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/000.mp3",
+    "duration": 0.635,
+    "rmsDb": -17.45,
+    "peak": 0.4879
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/001.mp3",
+    "duration": 0.585,
+    "rmsDb": -21.73,
+    "peak": 0.2612
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/002.mp3",
+    "duration": 0.626,
+    "rmsDb": -20.09,
+    "peak": 0.4423
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/003.mp3",
+    "duration": 0.635,
+    "rmsDb": -20.8,
+    "peak": 0.4693
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/004.mp3",
+    "duration": 0.67,
+    "rmsDb": -24.36,
+    "peak": 0.3126
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/005.mp3",
+    "duration": 0.63,
+    "rmsDb": -18.06,
+    "peak": 0.4281
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/006.mp3",
+    "duration": 0.62,
+    "rmsDb": -18.07,
+    "peak": 0.6501
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/007.mp3",
+    "duration": 0.66,
+    "rmsDb": -22.64,
+    "peak": 0.2735
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/008.mp3",
+    "duration": 0.595,
+    "rmsDb": -19.37,
+    "peak": 0.5009
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/009.mp3",
+    "duration": 0.61,
+    "rmsDb": -20.56,
+    "peak": 0.563
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/010.mp3",
+    "duration": 0.71,
+    "rmsDb": -20.15,
+    "peak": 0.5318
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/011.mp3",
+    "duration": 0.91,
+    "rmsDb": -20.51,
+    "peak": 0.5181
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/012.mp3",
+    "duration": 0.845,
+    "rmsDb": -19.59,
+    "peak": 0.4898
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/013.mp3",
+    "duration": 0.88,
+    "rmsDb": -20.44,
+    "peak": 0.5004
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/014.mp3",
+    "duration": 0.93,
+    "rmsDb": -21.34,
+    "peak": 0.4768
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/015.mp3",
+    "duration": 0.93,
+    "rmsDb": -18.61,
+    "peak": 0.594
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/016.mp3",
+    "duration": 0.93,
+    "rmsDb": -18.41,
+    "peak": 0.566
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/017.mp3",
+    "duration": 0.945,
+    "rmsDb": -21.14,
+    "peak": 0.4603
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/018.mp3",
+    "duration": 0.86,
+    "rmsDb": -19.37,
+    "peak": 0.5047
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/019.mp3",
+    "duration": 0.945,
+    "rmsDb": -19.86,
+    "peak": 0.707
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/020.mp3",
+    "duration": 0.925,
+    "rmsDb": -20.57,
+    "peak": 0.4968
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/021.mp3",
+    "duration": 1.005,
+    "rmsDb": -21.22,
+    "peak": 0.4618
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/022.mp3",
+    "duration": 0.98,
+    "rmsDb": -19.94,
+    "peak": 0.3867
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/023.mp3",
+    "duration": 1.025,
+    "rmsDb": -20.67,
+    "peak": 0.4488
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/024.mp3",
+    "duration": 1.06,
+    "rmsDb": -22.47,
+    "peak": 0.4259
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/025.mp3",
+    "duration": 1.05,
+    "rmsDb": -19.32,
+    "peak": 0.416
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/026.mp3",
+    "duration": 1.055,
+    "rmsDb": -19.07,
+    "peak": 0.5163
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/027.mp3",
+    "duration": 1.06,
+    "rmsDb": -21.86,
+    "peak": 0.4858
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/028.mp3",
+    "duration": 0.975,
+    "rmsDb": -19.99,
+    "peak": 0.5153
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/029.mp3",
+    "duration": 1.1,
+    "rmsDb": -20.13,
+    "peak": 0.5052
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/030.mp3",
+    "duration": 0.986,
+    "rmsDb": -20.53,
+    "peak": 0.5012
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/031.mp3",
+    "duration": 1.055,
+    "rmsDb": -21.13,
+    "peak": 0.4903
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/032.mp3",
+    "duration": 1.015,
+    "rmsDb": -19.2,
+    "peak": 0.4478
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/033.mp3",
+    "duration": 1.075,
+    "rmsDb": -20.79,
+    "peak": 0.4778
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/034.mp3",
+    "duration": 1.09,
+    "rmsDb": -22.21,
+    "peak": 0.4853
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/035.mp3",
+    "duration": 1.1,
+    "rmsDb": -19.58,
+    "peak": 0.5028
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/036.mp3",
+    "duration": 1.035,
+    "rmsDb": -18.78,
+    "peak": 0.6013
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/037.mp3",
+    "duration": 1.09,
+    "rmsDb": -22.18,
+    "peak": 0.5001
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/038.mp3",
+    "duration": 1.04,
+    "rmsDb": -19.3,
+    "peak": 0.6075
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/039.mp3",
+    "duration": 1.12,
+    "rmsDb": -20.18,
+    "peak": 0.5054
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/040.mp3",
+    "duration": 0.96,
+    "rmsDb": -20.72,
+    "peak": 0.4698
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/041.mp3",
+    "duration": 1.035,
+    "rmsDb": -21.51,
+    "peak": 0.3833
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/042.mp3",
+    "duration": 1.03,
+    "rmsDb": -19.62,
+    "peak": 0.4395
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/043.mp3",
+    "duration": 1.08,
+    "rmsDb": -20.7,
+    "peak": 0.4817
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/044.mp3",
+    "duration": 1.125,
+    "rmsDb": -21.86,
+    "peak": 0.41
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/045.mp3",
+    "duration": 1.115,
+    "rmsDb": -19.47,
+    "peak": 0.5013
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/046.mp3",
+    "duration": 1.05,
+    "rmsDb": -19.0,
+    "peak": 0.6179
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/047.mp3",
+    "duration": 1.115,
+    "rmsDb": -22.11,
+    "peak": 0.3856
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/048.mp3",
+    "duration": 1.025,
+    "rmsDb": -19.82,
+    "peak": 0.5851
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/049.mp3",
+    "duration": 1.08,
+    "rmsDb": -20.27,
+    "peak": 0.5061
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/050.mp3",
+    "duration": 0.93,
+    "rmsDb": -19.69,
+    "peak": 0.4118
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/051.mp3",
+    "duration": 1.0,
+    "rmsDb": -20.78,
+    "peak": 0.3793
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/052.mp3",
+    "duration": 0.995,
+    "rmsDb": -18.84,
+    "peak": 0.4712
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/053.mp3",
+    "duration": 1.0,
+    "rmsDb": -19.1,
+    "peak": 0.6376
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/054.mp3",
+    "duration": 1.01,
+    "rmsDb": -21.7,
+    "peak": 0.388
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/055.mp3",
+    "duration": 1.075,
+    "rmsDb": -18.42,
+    "peak": 0.4153
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/056.mp3",
+    "duration": 1.035,
+    "rmsDb": -18.39,
+    "peak": 0.6047
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/057.mp3",
+    "duration": 1.055,
+    "rmsDb": -21.28,
+    "peak": 0.3592
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/058.mp3",
+    "duration": 0.986,
+    "rmsDb": -19.55,
+    "peak": 0.5027
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/059.mp3",
+    "duration": 1.095,
+    "rmsDb": -19.29,
+    "peak": 0.6678
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/060.mp3",
+    "duration": 0.975,
+    "rmsDb": -19.25,
+    "peak": 0.4598
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/061.mp3",
+    "duration": 1.02,
+    "rmsDb": -20.11,
+    "peak": 0.4769
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/062.mp3",
+    "duration": 1.025,
+    "rmsDb": -19.09,
+    "peak": 0.4574
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/063.mp3",
+    "duration": 1.025,
+    "rmsDb": -20.0,
+    "peak": 0.4615
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/064.mp3",
+    "duration": 1.07,
+    "rmsDb": -20.91,
+    "peak": 0.4814
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/065.mp3",
+    "duration": 1.1,
+    "rmsDb": -18.73,
+    "peak": 0.4894
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/066.mp3",
+    "duration": 1.065,
+    "rmsDb": -18.51,
+    "peak": 0.5398
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/067.mp3",
+    "duration": 1.07,
+    "rmsDb": -20.71,
+    "peak": 0.4889
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/068.mp3",
+    "duration": 0.995,
+    "rmsDb": -18.85,
+    "peak": 0.5459
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/069.mp3",
+    "duration": 1.085,
+    "rmsDb": -19.38,
+    "peak": 0.5335
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/070.mp3",
+    "duration": 0.986,
+    "rmsDb": -20.1,
+    "peak": 0.4959
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/071.mp3",
+    "duration": 1.03,
+    "rmsDb": -20.74,
+    "peak": 0.4207
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/072.mp3",
+    "duration": 1.02,
+    "rmsDb": -19.21,
+    "peak": 0.4459
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/073.mp3",
+    "duration": 1.035,
+    "rmsDb": -20.72,
+    "peak": 0.5125
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/074.mp3",
+    "duration": 1.055,
+    "rmsDb": -21.8,
+    "peak": 0.3907
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/075.mp3",
+    "duration": 1.085,
+    "rmsDb": -19.03,
+    "peak": 0.43
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/076.mp3",
+    "duration": 1.04,
+    "rmsDb": -18.61,
+    "peak": 0.6223
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/077.mp3",
+    "duration": 1.07,
+    "rmsDb": -21.95,
+    "peak": 0.3486
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/078.mp3",
+    "duration": 1.015,
+    "rmsDb": -19.31,
+    "peak": 0.612
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/079.mp3",
+    "duration": 1.1,
+    "rmsDb": -19.91,
+    "peak": 0.5158
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/080.mp3",
+    "duration": 0.945,
+    "rmsDb": -20.19,
+    "peak": 0.4589
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/081.mp3",
+    "duration": 1.05,
+    "rmsDb": -21.33,
+    "peak": 0.3799
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/082.mp3",
+    "duration": 1.02,
+    "rmsDb": -19.1,
+    "peak": 0.4592
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/083.mp3",
+    "duration": 1.04,
+    "rmsDb": -20.18,
+    "peak": 0.5108
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/084.mp3",
+    "duration": 1.06,
+    "rmsDb": -22.13,
+    "peak": 0.4092
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/085.mp3",
+    "duration": 1.07,
+    "rmsDb": -19.59,
+    "peak": 0.4284
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/086.mp3",
+    "duration": 1.075,
+    "rmsDb": -19.0,
+    "peak": 0.5246
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/087.mp3",
+    "duration": 1.085,
+    "rmsDb": -21.79,
+    "peak": 0.4137
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/088.mp3",
+    "duration": 1.02,
+    "rmsDb": -19.5,
+    "peak": 0.491
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/089.mp3",
+    "duration": 1.07,
+    "rmsDb": -20.07,
+    "peak": 0.4911
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/090.mp3",
+    "duration": 0.925,
+    "rmsDb": -20.46,
+    "peak": 0.4968
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/091.mp3",
+    "duration": 0.995,
+    "rmsDb": -21.37,
+    "peak": 0.4832
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/092.mp3",
+    "duration": 0.995,
+    "rmsDb": -19.33,
+    "peak": 0.4987
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/093.mp3",
+    "duration": 1.02,
+    "rmsDb": -19.6,
+    "peak": 0.6068
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/094.mp3",
+    "duration": 1.04,
+    "rmsDb": -22.13,
+    "peak": 0.4845
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/095.mp3",
+    "duration": 1.09,
+    "rmsDb": -18.85,
+    "peak": 0.5595
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/096.mp3",
+    "duration": 0.986,
+    "rmsDb": -19.12,
+    "peak": 0.5557
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/097.mp3",
+    "duration": 1.045,
+    "rmsDb": -22.06,
+    "peak": 0.4893
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/098.mp3",
+    "duration": 1.0,
+    "rmsDb": -19.98,
+    "peak": 0.4952
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/099.mp3",
+    "duration": 1.09,
+    "rmsDb": -19.32,
+    "peak": 0.6323
+  },
+  {
+    "src": "./assets/lesson3-xiaoxiao-v263/100.mp3",
+    "duration": 0.845,
+    "rmsDb": -19.95,
+    "peak": 0.5818
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/000.mp3",
+    "duration": 0.85,
+    "rmsDb": -22.72,
+    "peak": 0.2669
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/001.mp3",
+    "duration": 1.005,
+    "rmsDb": -21.44,
+    "peak": 0.2803
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/002.mp3",
+    "duration": 0.955,
+    "rmsDb": -18.5,
+    "peak": 0.5212
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/003.mp3",
+    "duration": 1.005,
+    "rmsDb": -19.31,
+    "peak": 0.6923
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/004.mp3",
+    "duration": 1.035,
+    "rmsDb": -21.9,
+    "peak": 0.3392
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/005.mp3",
+    "duration": 1.045,
+    "rmsDb": -19.42,
+    "peak": 0.3913
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/006.mp3",
+    "duration": 0.986,
+    "rmsDb": -17.84,
+    "peak": 0.7043
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/007.mp3",
+    "duration": 0.995,
+    "rmsDb": -21.58,
+    "peak": 0.4989
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/008.mp3",
+    "duration": 1.015,
+    "rmsDb": -19.48,
+    "peak": 0.4585
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/009.mp3",
+    "duration": 0.83,
+    "rmsDb": -20.11,
+    "peak": 0.6099
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/010.mp3",
+    "duration": 0.855,
+    "rmsDb": -18.16,
+    "peak": 0.4434
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/011.mp3",
+    "duration": 0.795,
+    "rmsDb": -20.26,
+    "peak": 0.483
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/012.mp3",
+    "duration": 0.555,
+    "rmsDb": -20.98,
+    "peak": 0.317
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/013.mp3",
+    "duration": 0.52,
+    "rmsDb": -19.07,
+    "peak": 0.4076
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/015.mp3",
+    "duration": 1.57,
+    "rmsDb": -19.14,
+    "peak": 0.4606
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/016.mp3",
+    "duration": 1.47,
+    "rmsDb": -20.68,
+    "peak": 0.3454
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/017.mp3",
+    "duration": 1.466,
+    "rmsDb": -17.3,
+    "peak": 0.6563
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/018.mp3",
+    "duration": 1.405,
+    "rmsDb": -19.06,
+    "peak": 0.535
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/019.mp3",
+    "duration": 1.445,
+    "rmsDb": -20.76,
+    "peak": 0.5008
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/020.mp3",
+    "duration": 1.435,
+    "rmsDb": -21.26,
+    "peak": 0.3695
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/021.mp3",
+    "duration": 1.695,
+    "rmsDb": -20.77,
+    "peak": 0.4222
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/022.mp3",
+    "duration": 1.59,
+    "rmsDb": -18.62,
+    "peak": 0.4952
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/023.mp3",
+    "duration": 1.635,
+    "rmsDb": -18.54,
+    "peak": 0.4858
+  },
+  {
+    "src": "./assets/lesson4-xiaoxiao-v265/024.mp3",
+    "duration": 2.66,
+    "rmsDb": -18.89,
+    "peak": 0.5831
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/000.mp3",
+    "duration": 0.97,
+    "rmsDb": -17.83,
+    "peak": 0.5412
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/001.mp3",
+    "duration": 0.97,
+    "rmsDb": -20.04,
+    "peak": 0.4786
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/002.mp3",
+    "duration": 1.015,
+    "rmsDb": -20.3,
+    "peak": 0.5309
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/003.mp3",
+    "duration": 1.01,
+    "rmsDb": -19.6,
+    "peak": 0.6409
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/004.mp3",
+    "duration": 0.98,
+    "rmsDb": -19.43,
+    "peak": 0.514
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/005.mp3",
+    "duration": 0.995,
+    "rmsDb": -18.32,
+    "peak": 0.6079
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/006.mp3",
+    "duration": 0.986,
+    "rmsDb": -18.29,
+    "peak": 0.6295
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/007.mp3",
+    "duration": 1.005,
+    "rmsDb": -19.4,
+    "peak": 0.5083
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/008.mp3",
+    "duration": 1.015,
+    "rmsDb": -19.94,
+    "peak": 0.5787
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/009.mp3",
+    "duration": 1.065,
+    "rmsDb": -20.27,
+    "peak": 0.4907
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/010.mp3",
+    "duration": 1.195,
+    "rmsDb": -19.31,
+    "peak": 0.4961
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/011.mp3",
+    "duration": 1.18,
+    "rmsDb": -19.77,
+    "peak": 0.5512
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/012.mp3",
+    "duration": 0.845,
+    "rmsDb": -18.7,
+    "peak": 0.5429
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/013.mp3",
+    "duration": 0.74,
+    "rmsDb": -19.2,
+    "peak": 0.5206
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/014.mp3",
+    "duration": 0.69,
+    "rmsDb": -21.34,
+    "peak": 0.5123
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/015.mp3",
+    "duration": 2.75,
+    "rmsDb": -18.43,
+    "peak": 0.4463
+  },
+  {
+    "src": "./assets/lesson5-xiaoxiao-v272/016.mp3",
+    "duration": 2.06,
+    "rmsDb": -20.3,
+    "peak": 0.4231
+  },
+  {
+    "src": "./assets/lesson6-grandparents-v275/000.mp3",
+    "duration": 1.09,
+    "rmsDb": -19.65,
+    "peak": 0.4593
+  },
+  {
+    "src": "./assets/lesson6-grandparents-v275/001.mp3",
+    "duration": 1.1,
+    "rmsDb": -19.64,
+    "peak": 0.5826
+  },
+  {
+    "src": "./assets/lesson6-grandparents-v275/002.mp3",
+    "duration": 1.09,
+    "rmsDb": -19.65,
+    "peak": 0.5384
+  },
+  {
+    "src": "./assets/lesson6-grandparents-v275/003.mp3",
+    "duration": 1.16,
+    "rmsDb": -19.65,
+    "peak": 0.5963
+  },
+  {
+    "src": "./assets/lesson6-grandparents-v275/004.mp3",
+    "duration": 1.66,
+    "rmsDb": -19.67,
+    "peak": 0.5075
+  },
+  {
+    "src": "./assets/lesson6-grandparents-v275/005.mp3",
+    "duration": 1.73,
+    "rmsDb": -19.66,
+    "peak": 0.5109
+  },
+  {
+    "src": "./assets/lesson6-grandparents-v275/006.mp3",
+    "duration": 1.72,
+    "rmsDb": -19.66,
+    "peak": 0.468
+  },
+  {
+    "src": "./assets/lesson6-grandparents-v275/007.mp3",
+    "duration": 1.75,
+    "rmsDb": -19.66,
+    "peak": 0.4902
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/000.mp3",
+    "duration": 0.935,
+    "rmsDb": -20.97,
+    "peak": 0.4195
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/001.mp3",
+    "duration": 0.69,
+    "rmsDb": -18.23,
+    "peak": 0.6636
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/002.mp3",
+    "duration": 0.725,
+    "rmsDb": -18.42,
+    "peak": 0.5383
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/003.mp3",
+    "duration": 0.72,
+    "rmsDb": -19.75,
+    "peak": 0.4901
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/004.mp3",
+    "duration": 0.685,
+    "rmsDb": -19.86,
+    "peak": 0.3184
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/005.mp3",
+    "duration": 0.755,
+    "rmsDb": -16.55,
+    "peak": 0.6012
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/006.mp3",
+    "duration": 0.725,
+    "rmsDb": -21.2,
+    "peak": 0.5106
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/007.mp3",
+    "duration": 0.66,
+    "rmsDb": -18.49,
+    "peak": 0.5227
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/008.mp3",
+    "duration": 0.485,
+    "rmsDb": -17.86,
+    "peak": 0.6439
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/009.mp3",
+    "duration": 0.76,
+    "rmsDb": -16.82,
+    "peak": 0.5149
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/010.mp3",
+    "duration": 0.72,
+    "rmsDb": -19.19,
+    "peak": 0.5354
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/011.mp3",
+    "duration": 1.6,
+    "rmsDb": -17.87,
+    "peak": 0.5757
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/012.mp3",
+    "duration": 1.04,
+    "rmsDb": -18.68,
+    "peak": 0.4718
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/013.mp3",
+    "duration": 1.3,
+    "rmsDb": -16.91,
+    "peak": 0.5517
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/014.mp3",
+    "duration": 1.255,
+    "rmsDb": -18.68,
+    "peak": 0.5619
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/015.mp3",
+    "duration": 2.005,
+    "rmsDb": -19.66,
+    "peak": 0.4564
+  },
+  {
+    "src": "./assets/lesson6-xiaoxiao-v274/016.mp3",
+    "duration": 1.975,
+    "rmsDb": -18.15,
+    "peak": 0.6155
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/000.mp3",
+    "duration": 0.802,
+    "rmsDb": -19.94,
+    "peak": 0.4726
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/001.mp3",
+    "duration": 0.53,
+    "rmsDb": -19.45,
+    "peak": 0.5292
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/002.mp3",
+    "duration": 0.513,
+    "rmsDb": -19.45,
+    "peak": 0.4816
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/003.mp3",
+    "duration": 0.566,
+    "rmsDb": -19.63,
+    "peak": 0.3953
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/004.mp3",
+    "duration": 0.458,
+    "rmsDb": -19.48,
+    "peak": 0.3356
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/005.mp3",
+    "duration": 0.787,
+    "rmsDb": -19.57,
+    "peak": 0.5882
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/006.mp3",
+    "duration": 0.797,
+    "rmsDb": -19.78,
+    "peak": 0.569
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/007.mp3",
+    "duration": 0.411,
+    "rmsDb": -19.46,
+    "peak": 0.503
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/008.mp3",
+    "duration": 0.831,
+    "rmsDb": -19.5,
+    "peak": 0.6157
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/009.mp3",
+    "duration": 0.832,
+    "rmsDb": -19.57,
+    "peak": 0.5635
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/010.mp3",
+    "duration": 0.82,
+    "rmsDb": -19.53,
+    "peak": 0.5407
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/011.mp3",
+    "duration": 0.796,
+    "rmsDb": -19.48,
+    "peak": 0.5853
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/012.mp3",
+    "duration": 0.756,
+    "rmsDb": -19.6,
+    "peak": 0.6618
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/013.mp3",
+    "duration": 0.484,
+    "rmsDb": -19.47,
+    "peak": 0.5542
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/014.mp3",
+    "duration": 1.172,
+    "rmsDb": -19.47,
+    "peak": 0.4019
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/015.mp3",
+    "duration": 1.23,
+    "rmsDb": -19.62,
+    "peak": 0.5879
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/017.mp3",
+    "duration": 1.217,
+    "rmsDb": -19.46,
+    "peak": 0.448
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/018.mp3",
+    "duration": 1.346,
+    "rmsDb": -19.5,
+    "peak": 0.4979
+  },
+  {
+    "src": "./assets/lesson7-xiaoxiao-v277/019.mp3",
+    "duration": 1.269,
+    "rmsDb": -19.52,
+    "peak": 0.4486
+  },
+  {
+    "src": "./assets/owner-clean-v237/044df5ff04779c7b.mp3",
+    "duration": 1.635,
+    "rmsDb": -18.51,
+    "peak": 0.5933
+  },
+  {
+    "src": "./assets/owner-clean-v237/0dff0d3381199549.mp3",
+    "duration": 1.3500625,
+    "rmsDb": -18.62,
+    "peak": 0.6531
+  },
+  {
+    "src": "./assets/owner-clean-v237/3925dab27ef249c3.mp3",
+    "duration": 1.3500625,
+    "rmsDb": -18.37,
+    "peak": 0.4205
+  },
+  {
+    "src": "./assets/owner-clean-v237/94d9718740b33604.mp3",
+    "duration": 2.1100625,
+    "rmsDb": -18.66,
+    "peak": 0.5877
+  },
+  {
+    "src": "./assets/owner-clean-v237/a80d9cb627ef1bf3.mp3",
+    "duration": 1.491125,
+    "rmsDb": -18.44,
+    "peak": 0.6376
+  },
+  {
+    "src": "./assets/panda-lesson2-xiaoxiao-v261/laoshi.mp3",
+    "duration": 0.955,
+    "rmsDb": -20.38,
+    "peak": 0.5352
+  },
+  {
+    "src": "./assets/panda-lesson2-xiaoxiao-v261/nimen.mp3",
+    "duration": 0.83,
+    "rmsDb": -16.43,
+    "peak": 0.5604
+  },
+  {
+    "src": "./assets/panda-lesson2-xiaoxiao-v261/nin.mp3",
+    "duration": 0.655,
+    "rmsDb": -16.26,
+    "peak": 0.5339
+  },
+  {
+    "src": "./assets/panda-lesson2-xiaoxiao-v261/shidewoshilaoshi.mp3",
+    "duration": 2.31,
+    "rmsDb": -20.9,
+    "peak": 0.5704
+  },
+  {
+    "src": "./assets/panda-lesson2-xiaoxiao-v261/women.mp3",
+    "duration": 0.795,
+    "rmsDb": -17.11,
+    "peak": 0.5608
+  },
+  {
+    "src": "./assets/panda-live-voice-bridge-v307/B02.mp3",
+    "duration": 1.68,
+    "rmsDb": -19.93,
+    "peak": 0.5299
+  },
+  {
+    "src": "./assets/panda-live-voice-bridge-v307/B03.mp3",
+    "duration": 1.224,
+    "rmsDb": -16.9,
+    "peak": 0.6299
+  },
+  {
+    "src": "./assets/panda-live-voice-bridge-v307/B04.mp3",
+    "duration": 1.224,
+    "rmsDb": -18.95,
+    "peak": 0.5017
+  },
+  {
+    "src": "./assets/panda-live-voice-bridge-v307/B05.mp3",
+    "duration": 1.2,
+    "rmsDb": -17.83,
+    "peak": 0.6535
+  },
+  {
+    "src": "./assets/panda-live-voice-bridge-v307/B06.mp3",
+    "duration": 1.056,
+    "rmsDb": -19.4,
+    "peak": 0.607
+  },
+  {
+    "src": "./assets/panda-live-voice-bridge-v307/B07.mp3",
+    "duration": 1.176,
+    "rmsDb": -21.32,
+    "peak": 0.5461
+  },
+  {
+    "src": "./assets/panda-live-voice-bridge-v307/B08.mp3",
+    "duration": 0.744,
+    "rmsDb": -18.56,
+    "peak": 0.731
+  },
+  {
+    "src": "./assets/panda-live-voice-bridge-v307/B10.mp3",
+    "duration": 2.352,
+    "rmsDb": -19.46,
+    "peak": 0.5234
+  },
+  {
+    "src": "./assets/panda-live-voice-v2/good.mp3",
+    "duration": 0.92,
+    "rmsDb": -20.54,
+    "peak": 0.4691
+  },
+  {
+    "src": "./assets/panda-live-voice-v2/how-are-you.mp3",
+    "duration": 1.04,
+    "rmsDb": -19.06,
+    "peak": 0.5858
+  },
+  {
+    "src": "./assets/panda-live-voice-v2/me-too-thanks.mp3",
+    "duration": 2.18,
+    "rmsDb": -20.55,
+    "peak": 0.5286
+  },
+  {
+    "src": "./assets/panda-live-voice-v2/thanks.mp3",
+    "duration": 0.89,
+    "rmsDb": -22.63,
+    "peak": 0.4999
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p01.mp3",
+    "duration": 1.4800625,
+    "rmsDb": -20.17,
+    "peak": 0.5047
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p02.mp3",
+    "duration": 1.566375,
+    "rmsDb": -19.5,
+    "peak": 0.5004
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p03.mp3",
+    "duration": 1.38725,
+    "rmsDb": -19.95,
+    "peak": 0.4699
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p04.mp3",
+    "duration": 1.207875,
+    "rmsDb": -20.68,
+    "peak": 0.5322
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p05.mp3",
+    "duration": 1.2085,
+    "rmsDb": -20.73,
+    "peak": 0.523
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p06.mp3",
+    "duration": 1.774375,
+    "rmsDb": -22.22,
+    "peak": 0.3265
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p07.mp3",
+    "duration": 1.61,
+    "rmsDb": -18.01,
+    "peak": 0.5599
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p08.mp3",
+    "duration": 1.778,
+    "rmsDb": -21.87,
+    "peak": 0.4683
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p09.mp3",
+    "duration": 1.865875,
+    "rmsDb": -18.81,
+    "peak": 0.4598
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p10.mp3",
+    "duration": 1.4049375,
+    "rmsDb": -18.87,
+    "peak": 0.4656
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p11.mp3",
+    "duration": 1.514,
+    "rmsDb": -18.36,
+    "peak": 0.4865
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p12.mp3",
+    "duration": 1.5815,
+    "rmsDb": -18.4,
+    "peak": 0.5565
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p13.mp3",
+    "duration": 1.85,
+    "rmsDb": -20.59,
+    "peak": 0.4689
+  },
+  {
+    "src": "./assets/panda-live-voice-v3/p14.mp3",
+    "duration": 1.81925,
+    "rmsDb": -18.92,
+    "peak": 0.4589
+  },
+  {
+    "src": "./assets/panda-live-voice-v4/p01.mp3",
+    "duration": 1.14,
+    "rmsDb": -21.4,
+    "peak": 0.5065
+  },
+  {
+    "src": "./assets/panda-live-voice-v4/p02.mp3",
+    "duration": 1.08,
+    "rmsDb": -21.03,
+    "peak": 0.5188
+  },
+  {
+    "src": "./assets/panda-live-voice-v4/p03.mp3",
+    "duration": 1.16,
+    "rmsDb": -21.18,
+    "peak": 0.4947
+  },
+  {
+    "src": "./assets/panda-live-voice-v4/p04.mp3",
+    "duration": 1.18,
+    "rmsDb": -20.2,
+    "peak": 0.5055
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p001.mp3",
+    "duration": 1.5,
+    "rmsDb": -17.18,
+    "peak": 0.6196
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p002.mp3",
+    "duration": 2.47,
+    "rmsDb": -19.92,
+    "peak": 0.6307
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p003.mp3",
+    "duration": 1.84,
+    "rmsDb": -17.31,
+    "peak": 0.5384
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p004.mp3",
+    "duration": 1.72,
+    "rmsDb": -20.34,
+    "peak": 0.5095
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p005.mp3",
+    "duration": 2.47,
+    "rmsDb": -21.31,
+    "peak": 0.5502
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p006.mp3",
+    "duration": 1.74,
+    "rmsDb": -19.54,
+    "peak": 0.5671
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p007.mp3",
+    "duration": 1.32,
+    "rmsDb": -20.06,
+    "peak": 0.5498
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p008.mp3",
+    "duration": 1.93,
+    "rmsDb": -17.47,
+    "peak": 0.5897
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p009.mp3",
+    "duration": 1.35,
+    "rmsDb": -18.31,
+    "peak": 0.5961
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p010.mp3",
+    "duration": 1.76,
+    "rmsDb": -19.87,
+    "peak": 0.4813
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p011.mp3",
+    "duration": 2.38,
+    "rmsDb": -20.66,
+    "peak": 0.616
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p012.mp3",
+    "duration": 1.45,
+    "rmsDb": -18.45,
+    "peak": 0.5238
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p013.mp3",
+    "duration": 1.57,
+    "rmsDb": -18.72,
+    "peak": 0.5401
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p014.mp3",
+    "duration": 1.69,
+    "rmsDb": -17.56,
+    "peak": 0.5669
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p015.mp3",
+    "duration": 1.89,
+    "rmsDb": -17.84,
+    "peak": 0.5082
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p016.mp3",
+    "duration": 2.23,
+    "rmsDb": -18.99,
+    "peak": 0.7072
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p017.mp3",
+    "duration": 1.73,
+    "rmsDb": -17.43,
+    "peak": 0.6588
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p018.mp3",
+    "duration": 2.23,
+    "rmsDb": -19.72,
+    "peak": 0.5855
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p019.mp3",
+    "duration": 1.68,
+    "rmsDb": -18.92,
+    "peak": 0.5592
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p020.mp3",
+    "duration": 1.75,
+    "rmsDb": -19.25,
+    "peak": 0.5872
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p021.mp3",
+    "duration": 2.11,
+    "rmsDb": -19.97,
+    "peak": 0.45
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p022.mp3",
+    "duration": 2.07,
+    "rmsDb": -19.48,
+    "peak": 0.5482
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p023.mp3",
+    "duration": 1.83,
+    "rmsDb": -18.88,
+    "peak": 0.6717
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p024.mp3",
+    "duration": 2.33,
+    "rmsDb": -19.95,
+    "peak": 0.6317
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p025.mp3",
+    "duration": 1.6,
+    "rmsDb": -18.18,
+    "peak": 0.6933
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p026.mp3",
+    "duration": 1.97,
+    "rmsDb": -18.82,
+    "peak": 0.595
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p027.mp3",
+    "duration": 1.66,
+    "rmsDb": -18.19,
+    "peak": 0.4942
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p028.mp3",
+    "duration": 1.5,
+    "rmsDb": -18.4,
+    "peak": 0.8703
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p029.mp3",
+    "duration": 1.62,
+    "rmsDb": -18.25,
+    "peak": 0.5792
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p030.mp3",
+    "duration": 1.49,
+    "rmsDb": -19.58,
+    "peak": 0.5303
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p031.mp3",
+    "duration": 1.67,
+    "rmsDb": -18.29,
+    "peak": 0.5608
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p032.mp3",
+    "duration": 1.73,
+    "rmsDb": -18.62,
+    "peak": 0.6242
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p033.mp3",
+    "duration": 1.7,
+    "rmsDb": -18.45,
+    "peak": 0.5756
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p034.mp3",
+    "duration": 2.24,
+    "rmsDb": -19.69,
+    "peak": 0.6252
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p035.mp3",
+    "duration": 2.06,
+    "rmsDb": -18.66,
+    "peak": 0.5767
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p036.mp3",
+    "duration": 1.96,
+    "rmsDb": -19.36,
+    "peak": 0.5422
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p037.mp3",
+    "duration": 1.7,
+    "rmsDb": -18.77,
+    "peak": 0.4998
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p038.mp3",
+    "duration": 1.81,
+    "rmsDb": -18.71,
+    "peak": 0.5753
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p039.mp3",
+    "duration": 0.87,
+    "rmsDb": -18.84,
+    "peak": 0.6346
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p040.mp3",
+    "duration": 1.35,
+    "rmsDb": -18.39,
+    "peak": 0.479
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p041.mp3",
+    "duration": 1.76,
+    "rmsDb": -18.64,
+    "peak": 0.5303
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p042.mp3",
+    "duration": 2.52,
+    "rmsDb": -18.45,
+    "peak": 0.6303
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p043.mp3",
+    "duration": 1.77,
+    "rmsDb": -19.68,
+    "peak": 0.4897
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p044.mp3",
+    "duration": 2.3,
+    "rmsDb": -18.31,
+    "peak": 0.5509
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p046.mp3",
+    "duration": 1.24,
+    "rmsDb": -18.33,
+    "peak": 0.5105
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p047.mp3",
+    "duration": 1.58,
+    "rmsDb": -18.8,
+    "peak": 0.4386
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p048.mp3",
+    "duration": 1.28,
+    "rmsDb": -18.91,
+    "peak": 0.5535
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p049.mp3",
+    "duration": 0.76,
+    "rmsDb": -18.39,
+    "peak": 0.4934
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p051.mp3",
+    "duration": 1.69,
+    "rmsDb": -17.96,
+    "peak": 0.6922
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p052.mp3",
+    "duration": 1.35,
+    "rmsDb": -19.15,
+    "peak": 0.552
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p053.mp3",
+    "duration": 2.0,
+    "rmsDb": -20.78,
+    "peak": 0.5548
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p055.mp3",
+    "duration": 1.6,
+    "rmsDb": -18.54,
+    "peak": 0.5327
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p056.mp3",
+    "duration": 1.87,
+    "rmsDb": -19.55,
+    "peak": 0.5694
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p057.mp3",
+    "duration": 1.43,
+    "rmsDb": -17.22,
+    "peak": 0.7447
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p058.mp3",
+    "duration": 1.78,
+    "rmsDb": -19.99,
+    "peak": 0.6167
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p059.mp3",
+    "duration": 1.38,
+    "rmsDb": -19.32,
+    "peak": 0.5801
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p060.mp3",
+    "duration": 0.9,
+    "rmsDb": -20.14,
+    "peak": 0.523
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p062.mp3",
+    "duration": 1.18,
+    "rmsDb": -17.97,
+    "peak": 0.4833
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p063.mp3",
+    "duration": 1.58,
+    "rmsDb": -18.57,
+    "peak": 0.4727
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p064.mp3",
+    "duration": 1.72,
+    "rmsDb": -17.91,
+    "peak": 0.5573
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p065.mp3",
+    "duration": 1.51,
+    "rmsDb": -19.08,
+    "peak": 0.6128
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p066.mp3",
+    "duration": 1.54,
+    "rmsDb": -17.99,
+    "peak": 0.5562
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p067.mp3",
+    "duration": 1.52,
+    "rmsDb": -19.13,
+    "peak": 0.4135
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p068.mp3",
+    "duration": 1.47,
+    "rmsDb": -17.95,
+    "peak": 0.5894
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p069.mp3",
+    "duration": 1.92,
+    "rmsDb": -18.41,
+    "peak": 0.5559
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p070.mp3",
+    "duration": 1.94,
+    "rmsDb": -17.64,
+    "peak": 0.5848
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p071.mp3",
+    "duration": 1.6,
+    "rmsDb": -18.46,
+    "peak": 0.6598
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p072.mp3",
+    "duration": 1.52,
+    "rmsDb": -18.01,
+    "peak": 0.5422
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p073.mp3",
+    "duration": 2.19,
+    "rmsDb": -19.65,
+    "peak": 0.5684
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p074.mp3",
+    "duration": 2.19,
+    "rmsDb": -18.79,
+    "peak": 0.6861
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p075.mp3",
+    "duration": 1.76,
+    "rmsDb": -18.58,
+    "peak": 0.5222
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p076.mp3",
+    "duration": 2.27,
+    "rmsDb": -18.88,
+    "peak": 0.6691
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p077.mp3",
+    "duration": 1.71,
+    "rmsDb": -19.78,
+    "peak": 0.5314
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p078.mp3",
+    "duration": 1.86,
+    "rmsDb": -19.07,
+    "peak": 0.534
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p079.mp3",
+    "duration": 2.21,
+    "rmsDb": -19.09,
+    "peak": 0.5118
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p080.mp3",
+    "duration": 1.52,
+    "rmsDb": -19.16,
+    "peak": 0.5113
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p081.mp3",
+    "duration": 1.17,
+    "rmsDb": -18.44,
+    "peak": 0.58
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p082.mp3",
+    "duration": 1.8,
+    "rmsDb": -18.66,
+    "peak": 0.4716
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p083.mp3",
+    "duration": 2.1,
+    "rmsDb": -20.94,
+    "peak": 0.5317
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p084.mp3",
+    "duration": 1.51,
+    "rmsDb": -19.11,
+    "peak": 0.4802
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p085.mp3",
+    "duration": 2.22,
+    "rmsDb": -20.5,
+    "peak": 0.5696
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p086.mp3",
+    "duration": 1.52,
+    "rmsDb": -17.5,
+    "peak": 0.5024
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p087.mp3",
+    "duration": 1.63,
+    "rmsDb": -18.49,
+    "peak": 0.5131
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p088.mp3",
+    "duration": 2.19,
+    "rmsDb": -18.73,
+    "peak": 0.6416
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p089.mp3",
+    "duration": 1.72,
+    "rmsDb": -17.85,
+    "peak": 0.5392
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p090.mp3",
+    "duration": 1.91,
+    "rmsDb": -18.75,
+    "peak": 0.4897
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p091.mp3",
+    "duration": 1.72,
+    "rmsDb": -19.28,
+    "peak": 0.4471
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p092.mp3",
+    "duration": 1.93,
+    "rmsDb": -19.26,
+    "peak": 0.5645
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p093.mp3",
+    "duration": 1.94,
+    "rmsDb": -18.25,
+    "peak": 0.5291
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p094.mp3",
+    "duration": 2.94,
+    "rmsDb": -19.62,
+    "peak": 0.5274
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p095.mp3",
+    "duration": 1.99,
+    "rmsDb": -18.3,
+    "peak": 0.5255
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p096.mp3",
+    "duration": 2.59,
+    "rmsDb": -19.3,
+    "peak": 0.5106
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p097.mp3",
+    "duration": 2.2,
+    "rmsDb": -18.45,
+    "peak": 0.6804
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p098.mp3",
+    "duration": 1.4,
+    "rmsDb": -18.67,
+    "peak": 0.5084
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p099.mp3",
+    "duration": 2.36,
+    "rmsDb": -18.13,
+    "peak": 0.5298
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p100.mp3",
+    "duration": 1.37,
+    "rmsDb": -17.73,
+    "peak": 0.5573
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p101.mp3",
+    "duration": 2.27,
+    "rmsDb": -18.38,
+    "peak": 0.5517
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p102.mp3",
+    "duration": 1.46,
+    "rmsDb": -17.95,
+    "peak": 0.454
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p103.mp3",
+    "duration": 2.01,
+    "rmsDb": -21.18,
+    "peak": 0.5217
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p104.mp3",
+    "duration": 1.54,
+    "rmsDb": -18.02,
+    "peak": 0.65
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p105.mp3",
+    "duration": 2.02,
+    "rmsDb": -21.16,
+    "peak": 0.5211
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p106.mp3",
+    "duration": 1.57,
+    "rmsDb": -18.73,
+    "peak": 0.5598
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p107.mp3",
+    "duration": 1.46,
+    "rmsDb": -17.65,
+    "peak": 0.5429
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p108.mp3",
+    "duration": 1.57,
+    "rmsDb": -18.6,
+    "peak": 0.5557
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p109.mp3",
+    "duration": 1.16,
+    "rmsDb": -20.17,
+    "peak": 0.5275
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p110.mp3",
+    "duration": 1.56,
+    "rmsDb": -17.5,
+    "peak": 0.5631
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p111.mp3",
+    "duration": 1.12,
+    "rmsDb": -20.57,
+    "peak": 0.5493
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p112.mp3",
+    "duration": 1.79,
+    "rmsDb": -18.22,
+    "peak": 0.5149
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p113.mp3",
+    "duration": 1.71,
+    "rmsDb": -18.67,
+    "peak": 0.5081
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p114.mp3",
+    "duration": 1.54,
+    "rmsDb": -19.13,
+    "peak": 0.5039
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p115.mp3",
+    "duration": 1.35,
+    "rmsDb": -17.14,
+    "peak": 0.5909
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p116.mp3",
+    "duration": 1.51,
+    "rmsDb": -18.32,
+    "peak": 0.5274
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p117.mp3",
+    "duration": 1.72,
+    "rmsDb": -18.18,
+    "peak": 0.5993
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p118.mp3",
+    "duration": 2.04,
+    "rmsDb": -17.54,
+    "peak": 0.5298
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p119.mp3",
+    "duration": 1.97,
+    "rmsDb": -18.22,
+    "peak": 0.5386
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p120.mp3",
+    "duration": 1.92,
+    "rmsDb": -18.36,
+    "peak": 0.5792
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p121.mp3",
+    "duration": 1.72,
+    "rmsDb": -17.84,
+    "peak": 0.5367
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p122.mp3",
+    "duration": 2.09,
+    "rmsDb": -17.66,
+    "peak": 0.5621
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p123.mp3",
+    "duration": 1.8,
+    "rmsDb": -18.1,
+    "peak": 0.5032
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p124.mp3",
+    "duration": 1.7,
+    "rmsDb": -18.63,
+    "peak": 0.5303
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p125.mp3",
+    "duration": 2.11,
+    "rmsDb": -18.78,
+    "peak": 0.543
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p126.mp3",
+    "duration": 1.78,
+    "rmsDb": -16.73,
+    "peak": 0.6002
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p127.mp3",
+    "duration": 2.64,
+    "rmsDb": -18.68,
+    "peak": 0.5442
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p128.mp3",
+    "duration": 1.46,
+    "rmsDb": -17.94,
+    "peak": 0.6246
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p129.mp3",
+    "duration": 1.46,
+    "rmsDb": -17.96,
+    "peak": 0.5248
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p130.mp3",
+    "duration": 1.66,
+    "rmsDb": -18.57,
+    "peak": 0.5215
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p131.mp3",
+    "duration": 2.67,
+    "rmsDb": -18.63,
+    "peak": 0.6147
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p132.mp3",
+    "duration": 1.57,
+    "rmsDb": -18.52,
+    "peak": 0.5377
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p133.mp3",
+    "duration": 1.74,
+    "rmsDb": -18.32,
+    "peak": 0.7085
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p134.mp3",
+    "duration": 2.73,
+    "rmsDb": -19.24,
+    "peak": 0.5702
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p135.mp3",
+    "duration": 1.15,
+    "rmsDb": -19.15,
+    "peak": 0.5205
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p136.mp3",
+    "duration": 1.24,
+    "rmsDb": -20.72,
+    "peak": 0.5779
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p137.mp3",
+    "duration": 1.57,
+    "rmsDb": -17.65,
+    "peak": 0.5507
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p138.mp3",
+    "duration": 1.15,
+    "rmsDb": -17.08,
+    "peak": 0.5223
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p139.mp3",
+    "duration": 1.1,
+    "rmsDb": -17.68,
+    "peak": 0.6268
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p140.mp3",
+    "duration": 1.26,
+    "rmsDb": -20.45,
+    "peak": 0.4197
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p141.mp3",
+    "duration": 1.35,
+    "rmsDb": -21.13,
+    "peak": 0.4832
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p142.mp3",
+    "duration": 1.28,
+    "rmsDb": -19.69,
+    "peak": 0.4687
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p143.mp3",
+    "duration": 1.34,
+    "rmsDb": -20.14,
+    "peak": 0.485
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p144.mp3",
+    "duration": 1.72,
+    "rmsDb": -17.82,
+    "peak": 0.5974
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p145.mp3",
+    "duration": 2.2,
+    "rmsDb": -19.34,
+    "peak": 0.6045
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p146.mp3",
+    "duration": 1.15,
+    "rmsDb": -19.19,
+    "peak": 0.4726
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p147.mp3",
+    "duration": 2.04,
+    "rmsDb": -19.06,
+    "peak": 0.5296
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p148.mp3",
+    "duration": 1.46,
+    "rmsDb": -18.66,
+    "peak": 0.5362
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p149.mp3",
+    "duration": 1.63,
+    "rmsDb": -20.16,
+    "peak": 0.5391
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p150.mp3",
+    "duration": 1.99,
+    "rmsDb": -18.99,
+    "peak": 0.5008
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p151.mp3",
+    "duration": 2.06,
+    "rmsDb": -19.47,
+    "peak": 0.5372
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p152.mp3",
+    "duration": 1.08,
+    "rmsDb": -18.36,
+    "peak": 0.4932
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p153.mp3",
+    "duration": 1.08,
+    "rmsDb": -17.36,
+    "peak": 0.5446
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p154.mp3",
+    "duration": 1.6,
+    "rmsDb": -17.81,
+    "peak": 0.5745
+  },
+  {
+    "src": "./assets/panda-voice-clips-v365/p155.mp3",
+    "duration": 2.5,
+    "rmsDb": -18.84,
+    "peak": 0.6985
+  },
+  {
+    "src": "./assets/panda-xiaoxiao-trainer-v250/p041.mp3",
+    "duration": 0.675,
+    "rmsDb": -20.92,
+    "peak": 0.5399
+  },
+  {
+    "src": "./assets/panda-xiaoxiao-trainer-v250/p079.mp3",
+    "duration": 0.705,
+    "rmsDb": -20.88,
+    "peak": 0.4682
+  }
+]

@@ -29,7 +29,8 @@ test('mouth activity follows the playing pose, not a cosmetic timer alone',()=>{
   assert.match(face,/if\(!talking\)/);
   assert.match(layer,/liveMouth\.setTalking\(!s\.active&&pandaSpeaking\)/);
   assert.match(css,/#pg346\[data-pose=talking\] \.pg352-mascot/);
-  assert.match(layer,/a\.onplaying=\(\)=>\{if\(historyAudio===a\)sync\(\)\}/);
+  assert.match(layer,/bridge\.playEntry\(entry\)/);
+  assert.match(engine,/a\.onplaying=.*pose\('talking'\)/);
 });
 
 test('headphones show listening, conservative correction, and green only after genuine tone validation',()=>{
