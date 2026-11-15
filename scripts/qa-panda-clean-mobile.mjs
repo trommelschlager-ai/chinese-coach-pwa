@@ -28,6 +28,13 @@ export async function verifyCleanMobile(browser,base,dir){
   assert(placement.bubbleLeft>=placement.eyeRight-8,'Speech bubble must not conceal Panda eyes: '+JSON.stringify(placement));
   assert(placement.sceneBottom-placement.mascotBottom<65,'Panda must rest near the lake stone shoreline: '+JSON.stringify(placement));
   assert(Number(placement.glow)>.5,'Headset purple glow must be on while idle');
+  if(width===360){
+    const ledge=await page.locator('.pg346-scene').evaluate(el=>{
+      const s=getComputedStyle(el,'::before');return {content:s.content,bottom:s.bottom,background:s.backgroundImage}
+    });
+    assert(ledge.content!=='none'&&ledge.background.includes('panda-live-approved-v337.webp'),'Original stone platform is missing');
+    assert(parseFloat(ledge.bottom)<0,'Stone must extend below the feet, not float above them');
+  }
   await page.screenshot({path:dir+'/welcome-'+width+'.png',animations:'disabled'});
   const mouthSignature=()=>page.evaluate(()=>{
     const c=document.querySelector('.pg353-face-canvas'),ctx=c.getContext('2d',{willReadFrequently:true});
@@ -66,6 +73,8 @@ export async function verifyCleanMobile(browser,base,dir){
   assert.equal(await page.evaluate(()=>window.__speech.length),0);await page.locator('#speech-allow').click();
   await page.waitForFunction(()=>document.querySelector('#pg346').dataset.pose==='listening');
   assert.equal(await page.locator('#pg346').getAttribute('data-headphones'),'listening','Listening switches headset to blue');
+  await page.evaluate(()=>{const r=window.__speech.at(-1);r.onspeechstart?.();r.onspeechend?.()});
+  await page.waitForFunction(()=>document.querySelector('#status').textContent.includes('Речь закончилась'));
   await page.evaluate(()=>window.__speech.at(-1).onresult({results:[[{transcript:'晚上好',confidence:.95}]]}));
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh').textContent==='晚上好！');
   assert.notEqual(await page.locator('#pg346').getAttribute('data-headphones'),'correct','ASR text is not acoustic proof of tones');
