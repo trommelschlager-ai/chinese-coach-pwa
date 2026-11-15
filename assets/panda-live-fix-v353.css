@@ -4,8 +4,8 @@
 #pg346 .pg352-rocks{display:none!important}
 #pg346 .pg346-scene{isolation:isolate}
 #pg346 .pg352-mascot{
-  width:min(82%,calc(var(--screen-height,100dvh)*.42))!important;
-  left:-3%!important;top:auto!important;bottom:5%!important;
+  width:min(82%,calc(var(--screen-height,100dvh)*.38))!important;
+  left:-3%!important;top:auto!important;bottom:2%!important;
   transform-origin:50% 97%;
   max-height:96%;
 }
@@ -70,7 +70,7 @@
 /* Speech control stays playable; show disabled state without implying a recording exists. */
 #pg346 .pg346-speech-controls button:disabled{opacity:.58}
 @media(max-width:365px){
-  #pg346 .pg352-mascot{left:-4%!important;width:min(84%,calc(var(--screen-height,100dvh)*.42))!important}
+  #pg346 .pg352-mascot{left:-4%!important;width:min(84%,calc(var(--screen-height,100dvh)*.38))!important}
   #pg346 .pg346-speech{right:.9%!important;width:36%!important;padding:7px 5px!important}
   #pg346 .pg346-main-zh{font-size:clamp(20px,5.4vw,30px)}
 }
