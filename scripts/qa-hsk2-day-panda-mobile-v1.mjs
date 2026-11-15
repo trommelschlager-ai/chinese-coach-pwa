@@ -9,18 +9,15 @@ try{
  const context=await browser.newContext({viewport:{width:393,height:852},deviceScaleFactor:1,isMobile:true,hasTouch:true,locale:'ru-RU'});
  const page=await context.newPage();
  page.on('pageerror',error=>errors.push(error.message));
- await page.goto(base+'/hsk2-start.html#map',{waitUntil:'domcontentloaded'});
- if(await page.locator('#course-welcome-start').isVisible())await page.locator('#course-welcome-start').click();
- await page.locator('.content.journey-map-active .journey-head h1').waitFor({state:'visible',timeout:12000});
- assert.match(await page.locator('.journey-head h1').innerText(),/Китайский \+ Легко/);
- const headBox=await page.locator('.journey-head').boundingBox();
- const titleBox=await page.locator('.journey-head h1').boundingBox();
- assert.ok(headBox&&titleBox,'Map title must be measurable');
- assert.ok(titleBox.y>=headBox.y-3&&titleBox.y+titleBox.height<=headBox.y+headBox.height+3,'Map heading must fit its own panel');
- assert.equal(await page.locator('.journey-card').count(),10,'All ten map topics visible');
+ await page.goto(base+'/hsk2-life-course.html?view=map',{waitUntil:'domcontentloaded'});
+ await page.locator('.approved-map-screen img[src$="/course-map.png"]').waitFor({state:'visible',timeout:12000});
+ assert.equal(await page.locator('.poster-map-card[data-topic]').count(),10,'Exact approved map has 10 real links');
  fs.mkdirSync('qa/panda-voice-pilot',{recursive:true});
  await page.screenshot({path:'qa/panda-voice-pilot/hsk2-course-map-android.png',fullPage:false});
  await page.goto(base+'/hsk2-life-course.html?start=1',{waitUntil:'domcontentloaded'});
+ await page.locator('.day-visual-start img[src$="/day-lesson.png"]').waitFor({state:'visible',timeout:12000});
+ await page.screenshot({path:'qa/panda-voice-pilot/hsk2-day-art-android.png',fullPage:false});
+ await page.locator('[data-day-show-words]').first().click();
  await page.locator('.day-title').waitFor({state:'visible',timeout:12000});
  assert.match(await page.locator('.day-title').innerText(),/Мой распорядок дня/);
  assert.equal(await page.locator('.day-vword').count(),7);
@@ -29,8 +26,7 @@ try{
  assert.ok(footerBox&&contentBox,'Navigation and content must each have a box');
  assert.ok(footerBox.y>=contentBox.y+contentBox.height-2,'Fixed navigation must never overlap Chinese study content');
  assert.equal(await page.locator('#day-fixed-actions [data-day-next]').count(),1);
- assert.equal(await page.locator('.day-audio-pending').count()>0,true,'Missing MP3 must be clearly explained, not shown as a broken button');
-
+ assert.ok(await page.locator('.day-audio-pending').count()>0,'Missing MP3 must be clearly explained');
  fs.mkdirSync('qa/panda-voice-pilot',{recursive:true});
  await page.screenshot({path:'qa/panda-voice-pilot/hsk2-day-lesson-android.png',fullPage:false});
  for(let i=0;i<3;i++)await page.locator('[data-day-next]').click();
