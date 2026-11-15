@@ -1,15 +1,20 @@
-/* Panda Go v371: exact HD approved map and strict new-path sequential locks.
+/* Panda Go v372: five separable HD approved illustration layers and strict new-path sequential locks.
    Historical HSK1 progress is NEVER deleted, but old completions cannot
    automatically bypass the new seven-step gate. */
 'use strict';
 const fs=require('node:fs'),assert=require('node:assert/strict'),{JSDOM}=require('jsdom');
 const html=fs.readFileSync('hsk1-map.html','utf8');
-const css=fs.readFileSync('assets/hsk1-approved-exact-v371.css','utf8');
+const css=fs.readFileSync('assets/hsk1-layered-v372.css','utf8');
 const gates=fs.readFileSync('assets/panda-go-hsk1-path-v371.js','utf8');
 const ids=['foundations','pronouns','numbers','weekdays','dates','family','weather'];
-assert(html.includes('panda-go-hsk1-approved-v371.png'),'Original full-resolution illustration missing');
-assert(html.includes('hsk1-approved-exact-v371.css?v=371'),'Approved map styles missing');
-assert(css.includes('top:-11.913%'),'Fake browser toolbar must be cropped');
+const layers=['background','header','ribbons','panda','actions'];
+for(const layer of layers){
+ assert(html.includes('hsk1-v371-'+layer+'.webp'),'HD illustration layer missing: '+layer);
+ assert(fs.statSync('assets/hsk1-v371-'+layer+'.webp').size>20000,'HD layer too small: '+layer);
+}
+assert(html.includes('hsk1-layered-v372.css?v=372'),'Responsive separated-layer map styles missing');
+for(const selector of ['pg-layer-header','pg-layer-ribbons','pg-layer-panda','pg-layer-actions'])assert(css.includes(selector),'Separate layer positioning missing: '+selector);
+assert(!html.includes('class="pg-approved-art"'),'Old blurry flattened PNG must not be visible');
 assert(css.includes('node.locked')&&css.includes('pg-gate'),'Lock graphics and status missing');
 const cases=[
   [{},0],
@@ -61,6 +66,14 @@ assert.equal(test.PandaGoPathV371.markComplete(1),true,'Repeating completed less
 test.close();
 const sw=fs.readFileSync('sw.js','utf8'),core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
 assert(core.length<=170,'Offline app shell budget must remain below 170 entries');
-for(const entry of ['./assets/panda-go-hsk1-approved-v371.png','./assets/hsk1-approved-exact-v371.css?v=371','./assets/panda-go-hsk1-path-v371.js?v=371','./hsk2-start.html','./hsk2-introduction.html'])assert(core.includes(entry),'Offline file missing '+entry);
+for(const entry of [...layers.map(x=>'./assets/hsk1-v371-'+x+'.webp'),'./assets/hsk1-layered-v372.css?v=372','./hsk2-start.html','./hsk2-introduction.html'])assert(core.includes(entry),'Offline file missing '+entry);
 for(const entry of core)assert(fs.existsSync(entry.split('?')[0]),'Offline file missing on disk '+entry);
-console.log('PASS v371: exact HD illustration, 7 sequential gates, locked taps, repeated lessons and legacy progress preserved.');
+for(const [file,index] of [
+ ['assets/hsk1-first-v189.js',1],['assets/hsk1-second-v203.js',2],['assets/hsk1-third-v213.js',3],
+ ['assets/hsk1-fourth-v214.js',4],['assets/hsk1-fifth-v227.js',5]
+]){
+ const source=fs.readFileSync(file,'utf8');
+ assert(source.includes("pg-hsk1-path-v371"),'Lesson '+index+' must update sequential progression when completed');
+}
+assert(fs.readFileSync('assets/hsk1-foundations-v152.js','utf8').includes('unlockPathIfLastScreen'),'Lessons 6 and 7 must also unlock progression');
+console.log('PASS v372: 5 HD layers, 7 sequential gates and per-lesson completion hooks, locked taps and preserved progress.');
