@@ -376,7 +376,7 @@ $('ask-panda-open').addEventListener('click',openAskPandaGuide);
 
 $('message-form').addEventListener('submit',e=>{e.preventDefault();state.confidence=null;submit($('message').value)});
 $('mic').addEventListener('click',startRecognition);$('speech-allow').addEventListener('click',()=>{state.speechConsent=true;$('speech-dialog').close();startRecognition()});
-$('hear').addEventListener('click',play);$('speed-toggle').addEventListener('click',()=>{state.slow=!state.slow;$('speed-toggle').textContent=state.slow?'🐢 0,8×':'▶ 1×';$('speed-toggle').setAttribute('aria-pressed',String(state.slow));if(audio)audio.playbackRate=state.slow?.8:1});
+$('hear').addEventListener('click',()=>play());$('speed-toggle').addEventListener('click',()=>{state.slow=!state.slow;$('speed-toggle').textContent=state.slow?'🐢 0,8×':'▶ 1×';$('speed-toggle').setAttribute('aria-pressed',String(state.slow));if(audio)audio.playbackRate=state.slow?.8:1});
 $('mode-short').addEventListener('click',()=>setMode('short'));$('mode-nonstop').addEventListener('click',()=>setMode('nonstop'));
 $('next').addEventListener('click',askNext);$('finish').addEventListener('click',()=>{cancelFollowup();stopAudio();stopRecognition();state.prompt=null;setMode('short');note('Non-Stop завершён. История осталась в этой вкладке.');});
 $('reset').addEventListener('click',()=>initLesson(conversation.id));$('hint').addEventListener('click',()=>{state.hint=!state.hint;render()});
