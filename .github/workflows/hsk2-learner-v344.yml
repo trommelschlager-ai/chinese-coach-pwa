@@ -19,6 +19,9 @@ on:
       - 'assets/hsk2-life-course-app-v1.js'
       - 'assets/hsk2-life-course-v1.css'
       - 'tests/hsk2-life-course-v1.test.cjs'
+      - 'assets/hsk2-life-approved-welcome-v2.css'
+      - 'assets/hsk2-life-landing-approved-v1/**'
+      - 'tests/hsk2-life-approved-welcome-v2.test.cjs'
       - 'assets/bastian-three-screens-v6.css'
       - 'assets/hsk2-one-screen-map-v6.css'
       - 'tests/hsk2-bastian-exact-v5.test.cjs'
@@ -59,6 +62,8 @@ jobs:
         run: node tests/hsk2-bastian-visual-contract-v4.test.cjs
       - name: Verify exact Bastian reference and interactive hotspots
         run: node tests/hsk2-bastian-exact-v5.test.cjs
+      - name: Verify exact approved seven-part welcome poster
+        run: node tests/hsk2-life-approved-welcome-v2.test.cjs
       - name: Verify complete ten-theme life course
         run: node tests/hsk2-life-course-v1.test.cjs
       - name: Verify three compact Android screens
