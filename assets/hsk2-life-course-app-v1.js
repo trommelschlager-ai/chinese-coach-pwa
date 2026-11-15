@@ -155,7 +155,7 @@ function viewLesson(){
 }
 function viewDone(){
  var t=chosen(),sc=current(),number=id();
- if(state.topic===0)return '<section class="done day-done"><div class="day-done-head"><h1>🏆 Мини-урок '+(state.mini+1)+' пройден!</h1><p>Ты изучил слова, правило и выполнил тест.</p></div>'+
+ if(state.topic===0)return '<section class="done day-done"><div class="day-done-mascot"><img src="./assets/hsk2-panda-new-v328.svg" alt="Панда Panda Go поздравляет с завершением" draggable="false"></div><div class="day-done-head"><h1>🏆 Мини-урок '+(state.mini+1)+' пройден!</h1><p>Ты изучил слова, правило и выполнил тест.</p></div>'+
  '<div class="day-done-line">'+phrase(sc[2],sc[3],sc[4])+(rec(sc[2])?'':'<span class="day-audio-note">🔇 Запись этой фразы ещё не добавлена</span>')+'</div>'+
  dayAIBlock(state.mini)+
  '<div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий урок →</button></div>'+
