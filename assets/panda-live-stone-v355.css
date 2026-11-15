@@ -16,3 +16,20 @@
 @media(max-height:720px){#pg346 .pg346-scene::before{width:78%;bottom:-1.5%}}
 @media(max-height:590px){#pg346 .pg346-scene::before{width:63%;bottom:-1.5%}}
 :root[data-keyboard=true] #pg346 .pg346-scene::before{width:55%;bottom:-1%}
+
+/* v359-photo-artifact-mask: cover baked-in pink paw pixels in the old
+   cropped screenshot. This remains BEHIND the actual, animated Panda. */
+#pg346 .pg346-scene::after{
+  content:"";position:absolute;z-index:1;left:10%;bottom:1%;
+  width:62%;height:clamp(15px,3.2dvh,26px);
+  pointer-events:none;transform:perspective(180px) rotateX(5deg);
+  background:
+    radial-gradient(ellipse at 9% 32%,#7aab51 0 3%,transparent 7%),
+    radial-gradient(ellipse at 85% 28%,#9ccd70 0 3%,transparent 8%),
+    repeating-linear-gradient(115deg,transparent 0 23px,#7c8f8a6e 24px 25px,transparent 26px 45px),
+    linear-gradient(180deg,#ebe5d5 0%,#c7cbb9 37%,#a5b4a8 67%,#739b9d 100%);
+  clip-path:polygon(0 37%,6% 9%,19% 17%,31% 2%,53% 11%,69% 5%,82% 3%,96% 17%,100% 43%,99% 73%,91% 94%,48% 100%,12% 91%,0 69%);
+  filter:drop-shadow(0 2px 2px #305b6470);
+}
+@media(max-height:720px){#pg346 .pg346-scene::after{left:8%;width:59%;height:19px}}
+:root[data-keyboard=true] #pg346 .pg346-scene::after{left:4%;width:49%;height:13px}
