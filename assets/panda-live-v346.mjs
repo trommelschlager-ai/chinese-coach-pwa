@@ -80,6 +80,13 @@ if (!bridge) {
   // Dialogs must remain visible even though the legacy main is kept for its engine.
   document.querySelectorAll('main > dialog').forEach(dialog=>document.body.append(dialog));
   document.body.append(stage);document.body.classList.add('panda-clean-ready');
+  // Course 2 deep-link: reuse the REAL Panda AI voice/text/chat UI, not a mock.
+  if(new URLSearchParams(location.search).get('practice')==='day'){
+    const title=stage.querySelector('.pg346-title');
+    if(title)title.textContent='🌅 Мой день · Panda AI';
+    const back=stage.querySelector('.pg346-back');
+    if(back){back.href='./hsk2-life-course.html?topic=0';back.textContent='← К уроку';}
+  }
   let historyAudio=null;
   const liveMouth=createPandaMouth($('.pg352-mascot'),()=>{
     if(historyAudio&&!historyAudio.paused&&!historyAudio.ended)
