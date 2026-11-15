@@ -1,0 +1,79 @@
+/* Panda Go - Course 2, first micro-lesson: approved luminous violet/gold language UI */
+.day-pilot{--gold:#ffd77c;--purple:#742098;color:#4f1b70;padding:1px 0 6px}
+.day-pilot .day-title{background:linear-gradient(120deg,#74218fdc,#ad59c5e0),url('./bastian-night-city-v4.svg') center 20%/cover;color:#fff;border:2px solid #f6d386;box-shadow:0 4px 13px #64248570;border-radius:18px;padding:10px 9px;margin-bottom:9px;text-align:center}
+.day-pilot .day-label{font-size:10px;letter-spacing:.5px;color:#ffedb1;font-weight:850}
+.day-pilot .day-title h1{color:#fff2ba;text-shadow:0 2px #612278,0 0 7px #bf72d2;font:bold 21px/1.15 system-ui;margin:5px 0}
+.day-pilot .day-title p{font-size:11px;margin:3px 0 10px;color:#f8e2ff}
+.day-stages{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.day-stages span{border-radius:25px;flex:1;min-width:0;border:1px solid #f0caeb;background:#f7e2ff;color:#793c8f;font-weight:800;font-size:9px;padding:5px 1px;white-space:nowrap}
+.day-stages span b{display:block;font-size:11px}
+.day-stages span.current{background:linear-gradient(#ffeeb7,#ffbd55);border-color:#fff5d3;color:#58206e;box-shadow:0 0 6px #fff0ae}
+.day-stages span.passed{background:#e9d5fa;color:#5d287b}
+.day-card{position:relative;border:1.5px solid #edc084;border-radius:19px;background:linear-gradient(135deg,#fffaff,#f7e5fb 70%,#f2d7f7);box-shadow:0 3px 10px #6e338b30,inset 0 1px #fff;margin-bottom:10px;padding:11px}
+.day-card h2{color:#622187;font-size:clamp(16px,4.3vw,20px);margin-bottom:8px}
+.day-card>p{font-size:13px;line-height:1.5;color:#714783;margin:6px 0}
+.day-focus{background:linear-gradient(145deg,#fff6dfff,#f8dffb)}
+.day-topline{display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:#803e92}
+.day-headword{text-align:center;font-size:clamp(55px,14vw,85px);font-weight:900;color:#551677;line-height:1.05;text-shadow:0 1px white}
+.day-headpy{text-align:center;color:#7d308e;font-size:22px;font-weight:850}
+.day-meaning{margin:7px auto 10px;border:1px solid #ebbf73;background:#ffe8a8;border-radius:99px;text-align:center;font-weight:900;font-size:15px;max-width:320px;padding:7px}
+.day-focus>.audio{margin:0 auto}
+.day-chars{display:flex;justify-content:center;align-items:stretch;gap:4px;flex-wrap:wrap}
+.day-char{flex:1;min-width:83px;max-width:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:15px;border:1.5px solid #dda9d8;padding:8px 4px;background:#fff5ff}
+.day-char .day-glyph{font-size:44px;font-weight:900;color:#62218d}
+.day-char b{font-size:13px;color:#8c3996}
+.day-char>span:last-child{font-size:11px;text-align:center;line-height:1.3;color:#744d79}
+.day-plus{display:grid;place-items:center;color:#9a39b4;font-size:27px;font-weight:900}
+.day-tip{background:#fff0c9;border:1px solid #eebf7e;border-radius:12px;padding:9px;font-size:12px;line-height:1.45;color:#6e376f;margin-top:10px}
+.day-vocab{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.day-vword{display:flex;flex-direction:column;gap:2px;align-items:flex-start;min-height:75px;text-align:left;border:1px solid #e6c2e2;border-radius:12px;background:linear-gradient(#fff,#fbeffa);padding:8px;color:#64227e}
+.day-vword.picked{background:#fff0c8;border:2px solid #c985e3;box-shadow:0 0 9px #d09cdf}
+.day-vword strong{font-size:22px}.day-vword small{font-size:12px;color:#8b4598}.day-vword span{font-size:11px}
+.day-line{position:relative;padding:9px 42px 9px 10px;margin:7px 0;border:1px solid #e5c9e6;background:#fffafe;border-radius:13px;line-height:1.4}
+.day-hanzi{font-size:22px;font-weight:900;color:#5d1d81;line-height:1.25}
+.day-py{font-size:12px;color:#9345a1;font-weight:800;margin-top:3px}
+.day-ru{font-size:13px;color:#6e4379;margin-top:4px}
+.day-line .audio{position:absolute;right:5px;top:9px}
+.day-dialogue{display:flex;align-items:flex-start;gap:7px;margin:5px 0}
+.day-dialogue>b{flex:none;font-size:21px}
+.day-dialogue .day-line{flex:1;min-width:0;margin:0}
+.day-hint{font-size:12px!important;line-height:1.4;color:#75537b!important}
+.day-formula{display:flex;gap:3px;align-items:stretch;justify-content:center;flex-wrap:wrap;margin:12px 0 7px}
+.day-formula>span{border-radius:12px;border:1px solid #e6bd94;background:#fff5de;padding:7px 5px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:49px;flex:1}
+.day-formula b{font-size:clamp(18px,5vw,26px);white-space:nowrap;color:#642482}
+.day-formula small{font-size:10px;color:#8a5788;text-align:center}.day-formula i{font-style:normal;display:grid;place-items:center;font-size:14px;font-weight:900;color:#a955b3}
+.day-question{border:1px solid #e0b8e3;border-radius:13px;background:#fff8ff;padding:10px;margin-bottom:10px}
+.day-question>strong{font-size:10px;color:#8a3ca1}.day-question>p{font-size:14px;font-weight:900;margin:7px 0}
+.day-options{display:grid;gap:6px}
+.day-option{background:#fff;border:1px solid #d5b7dc;border-radius:12px;padding:10px 11px;text-align:left;font-size:13px;color:#63317d}
+.day-option.good,.day-feedback.good{background:#ddf6df;border-color:#76bb7e;color:#255e32}
+.day-option.bad,.day-feedback.bad{background:#ffecf0;border-color:#dfa9b6;color:#9b3859}
+.day-feedback{font-size:12px;font-weight:800;padding:6px 9px;border-radius:10px;margin-top:7px}
+.day-build,.day-tokens{display:flex;flex-wrap:wrap;gap:5px;min-height:54px;align-items:center;border:2px dashed #d5a5dc;background:#fff9ff;border-radius:13px;padding:8px;margin:7px 0;font-size:12px;color:#9966a0}
+.day-build button,.day-tokens button{border:1px solid #dcb7e5;background:#f5ddf9;border-radius:10px;padding:6px 11px;color:#61237f;font-size:18px;font-weight:900}
+.day-tokens{border:1px solid #ebd5eb}.day-tokens button:disabled{opacity:.35}
+.day-wordchoice{display:flex;gap:5px;overflow-x:auto;padding:3px 1px 9px}
+.day-wordchoice button{flex:none;border:1px solid #daa8e0;border-radius:10px;background:#fff5fa;color:#69238b;font-size:15px;font-weight:900;padding:7px;min-width:50px}
+.day-wordchoice button small{display:block;font-size:10px;font-weight:700}
+.day-wordchoice button.picked{background:#ffebad;border:2px solid #c48ddd}
+.day-speechhero{border:1.5px solid #e7c187;border-radius:14px;background:#fffcff;padding:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px}
+.day-speechhero>div{font-size:43px;font-weight:900;color:#612082}.day-speechhero>strong{font-size:17px;color:#8e369c}.day-speechhero>span{font-size:12px}
+.day-attempts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:12px}
+.day-attempts div{display:flex;gap:5px;align-items:center;flex-direction:column;border:1px solid #dbb5e0;background:#fff4fd;color:#8a4d98;border-radius:13px;padding:7px 2px;font-size:19px}
+.day-attempts div b{font-size:11px}.day-attempts .heard{background:#e1f9e2;border-color:#75c587;color:#278543}.day-attempts .not-heard{background:#ffebed;border-color:#e89cac;color:#c43a58}
+.day-record{display:block;width:100%;margin:8px auto;max-width:350px}
+.day-consent{border:1px solid #d2a4d3;border-radius:14px;padding:10px;background:#fff5fc}
+.day-consent>p{font-size:12px;line-height:1.5;margin-bottom:7px}.day-consent button{margin-right:5px;margin-bottom:5px}
+.day-bottom{display:flex;gap:8px;position:sticky;bottom:-10px;padding:10px 0 9px;background:linear-gradient(transparent,#f2d4f8 18%)}
+.day-bottom button{flex:1;min-width:0;font-size:14px;box-shadow:0 2px 8px #652b8a33}
+.day-ai-panel{background:linear-gradient(140deg,#61208d,#9a47b7);color:#fff;border:2px solid #f2ce8d;border-radius:19px;padding:14px;margin:10px 0;box-shadow:0 6px 18px #65237b50;text-align:left}
+.day-ai-panel h2{font-size:21px;color:#ffe19b;margin-bottom:7px}
+.day-ai-panel p{font-size:13px;line-height:1.45}
+.day-ai-panel .day-ai-examples{border-radius:12px;background:#fff3fc19;padding:8px;margin:9px 0;font-size:13px}
+.day-ai-panel a{display:block;background:linear-gradient(#ffeaae,#ffc15f);border:2px solid #fff1d2;border-radius:16px;text-align:center;color:#60207c;text-decoration:none;padding:12px;font-size:15px;font-weight:950;margin-top:11px}
+@media(max-width:360px){
+.day-stages span{font-size:8px}
+.day-formula>span{min-width:41px;padding:5px 3px}
+.day-formula b{font-size:17px}
+.day-char{min-width:70px}
+}
