@@ -270,3 +270,109 @@
 @media(prefers-reduced-motion:reduce){
  .app.hsk2-premium *{transition:none!important;animation:none!important}
 }
+
+/* Shared skin for HSK2 roadmap and the existing My City practice lesson. */
+.app.hsk2-premium-map{background:linear-gradient(#ffe4fa,#f6d2f5 58%,#e6b0e7)}
+.app.hsk2-premium-map::before{
+ opacity:.48;background:linear-gradient(#f9dcf8c5,#f2bfea9a),url('./panda-map-scene-hd-v319.webp') center/cover
+}
+.app.hsk2-premium-map .scene{
+ border-bottom:2px solid #e6bc83;
+ background:linear-gradient(#f4c8f277,#f2d3ed94),url('./chinese-waterfall-banner.svg') center/cover
+}
+.app.hsk2-premium-map .scene .brand{color:#682080;text-shadow:0 2px #fff6e3}
+.app.hsk2-premium-map .journey-head{
+ border:2px solid #f3c77b;border-radius:25px;
+ background:radial-gradient(ellipse at 50% 0%,#b966cc,#72278d);
+ color:#fff8f5;box-shadow:inset 0 2px 6px #edb4f8b1,0 6px 13px #8e3b8d63;
+ padding:15px 10px
+}
+.app.hsk2-premium-map .journey-head h1{font:italic 900 25px Georgia,serif;color:#fff0d7;text-shadow:0 2px #5e1c73}
+.app.hsk2-premium-map .journey-head p{color:#fff0f8;font-weight:650}
+.app.hsk2-premium-map .journey-principle{background:#f7d4f6;border-color:#ffd891;color:#71338a}
+.app.hsk2-premium-map .journey-card{
+ border:2px solid #f2c985;border-radius:23px;
+ background:linear-gradient(125deg,#fff9ff,#fbd9f6);
+ box-shadow:inset 0 2px 3px #fff,0 5px 13px #9b55954b;
+}
+.app.hsk2-premium-map .journey-card .journey-grammar{
+ background:linear-gradient(110deg,#f4dbfa,#fff5f4);
+ border:1px solid #e4c4e1;
+}
+.app.hsk2-premium-map .pg-welcome-hero{
+ border:2px solid #f6c97f;border-radius:31px;
+ background:radial-gradient(ellipse at 50% 0%,#bf73d7,#74258c 80%);
+ box-shadow:inset 0 2px 8px #ffc0f0b0,0 7px 18px #87338b75;
+}
+.app.hsk2-premium-map .pg-welcome-hero h1{color:#fff1db;font:italic 900 27px Georgia,serif;text-shadow:0 2px #551468}
+.app.hsk2-premium-map .pg-welcome-section,
+.app.hsk2-premium-map .journey-features{
+ border:2px solid #f1c482;border-radius:24px;
+ background:linear-gradient(130deg,#fff7ff,#fbd9f5);
+ box-shadow:inset 0 2px 3px #fff,0 4px 9px #a766ae48;
+}
+.app.hsk2-premium-map .pg-welcome-goal{border:1.5px solid #eabddc;border-radius:16px;background:linear-gradient(#fffaff,#f1d7f8)}
+.app.hsk2-premium-map .pg-welcome-plan-step{border-color:#e7bfdb;background:#fceafc}
+.app.hsk2-premium-map .pg-welcome-tone{border:1px solid #e7bbd7;border-radius:11px;padding:7px 2px;background:#fff6fb}
+.app.hsk2-premium-map .course-welcome-footer button{
+ border:2px solid #ffd47b;
+ background:linear-gradient(110deg,#cf62c5,#872b9e);
+ box-shadow:inset 0 1px 6px #ffb2e7aa,0 5px 12px #8a349c78;
+ border-radius:26px;
+}
+.app.hsk2-premium-city{background:linear-gradient(180deg,#fbe1fc,#f6d2f7,#ddb1eb)}
+.app.hsk2-premium-city::before{opacity:.45;background:linear-gradient(#f4d0f7b9,#f5d9f9ac),url('./panda-map-scene-hd-v319.webp') center /cover}
+.app.hsk2-premium-city .scene{
+ height:125px;border-bottom:2px solid #f0c77d;
+ background:linear-gradient(110deg,#692b87be,#a552b5c2),url('./panda-map-scene-hd-v319.webp') center/cover
+}
+.app.hsk2-premium-city .scene .scene-panda{width:110px;height:115px;bottom:-6px}
+.app.hsk2-premium-city .scene .brand{
+ font:italic 900 clamp(28px,7vw,36px)/1 Georgia,serif;
+ color:#fff1d7;text-shadow:0 2px #54216d
+}
+.app.hsk2-premium-city .scene .scene-pill{border-color:#f4c777;box-shadow:0 3px 6px #5c1c6b5c}
+.app.hsk2-premium-city .paper{
+ border:2px solid #f2c780;border-radius:26px;
+ background:linear-gradient(140deg,#fffaff,#f8d8f7);
+ box-shadow:inset 0 2px 3px #fff,0 6px 12px #8f459454;
+}
+.app.hsk2-premium-city .paper h2{font:italic 900 22px Georgia,serif;color:#722889;text-shadow:0 1px #fff8ef}
+.app.hsk2-premium-city .step-head h1{
+ font:italic 900 clamp(18px,5.4vw,24px) Georgia,serif;color:#732c8d;
+}
+.app.hsk2-premium-city .step-number{
+ border:1px solid #e8bf7b;border-radius:18px;background:#fff8fc;padding:5px 9px
+}
+.app.hsk2-premium-city .progress{height:8px;background:#f0d2f0}
+.app.hsk2-premium-city .progress>i{background:linear-gradient(90deg,#d76ac1,#7d2a9d)}
+.app.hsk2-premium-city .word,.app.hsk2-premium-city .choice{
+ border:1.5px solid #e7b9d8;border-radius:18px;
+ background:linear-gradient(#fffaff,#fce7f9);
+ box-shadow:inset 0 2px 2px #fff,0 3px 8px #a05ea646
+}
+.app.hsk2-premium-city .word .zh{
+ border:1.5px solid #ebc78c;border-radius:12px;background:#fff9fc;
+ padding:5px 10px;box-shadow:0 2px 5px #aa62b34a
+}
+.app.hsk2-premium-city .formula{
+ background:linear-gradient(120deg,#7a258e,#ae52c0);
+ border:2px solid #ffda89;border-radius:22px;
+ box-shadow:inset 0 2px 5px #f4b1e0,0 5px 10px #a148a17a
+}
+.app.hsk2-premium-city .actions{
+ background:linear-gradient(#f9dbf7,#e9bbec);
+ border-top:1px solid #e4b8d3;box-shadow:0 -4px 13px #ac6aac5a
+}
+.app.hsk2-premium-city .actions .primary{
+ border:2px solid #f5d282;border-radius:22px;
+ background:linear-gradient(115deg,#ce62ca,#6e248c);
+ box-shadow:inset 0 2px 5px #e9a8e9a8,0 4px 10px #8c429851;
+ font-size:16px
+}
+.app.hsk2-premium-city .actions .secondary{background:#fff7fc;border-color:#e5b8d7;border-radius:18px}
+@media(max-width:360px){
+ .app.hsk2-premium-city .scene{height:105px}
+ .app.hsk2-premium-city .scene .scene-panda{width:88px;height:98px}
+ .app.hsk2-premium-map .journey-head h1{font-size:22px}
+}
