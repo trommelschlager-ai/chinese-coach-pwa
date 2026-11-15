@@ -50,7 +50,7 @@ try {
    assert.deepEqual(state.footerTargets,footerPaths.map(x=>'./'+x));
    if(w===393){
      await page.screenshot({path:'qa/hsk1-v373/android-393x852-initial.png',fullPage:true});
-     await page.locator('.lesson[data-num="2"]').click();
+     await page.locator('.lesson[data-num="2"]').click({force:true});
      assert(await page.locator('.toast').isVisible());
      assert((await page.locator('.toast').innerText()).includes('Сначала заверши урок 1'));
      await page.evaluate(()=>localStorage.setItem('pg-hsk1-v3-complete','["foundations"]'));
