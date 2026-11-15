@@ -1,0 +1,30 @@
+name: Import approved illustration preview
+on:
+  push:
+    paths:
+      - .github/workflows/import-approved-illustration-v370.yml
+jobs:
+  test-asset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download and inspect 3 variants of approved art
+        env:
+          BASE: "https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2F6fd49500-7d0c-4988-97f5-1f74444baead/watermark:F/width:112?csig=AAAAAAAAAAAAAAAAAAAAALirQ9aj982uiYUTXPCayQrJpVzOUQibldF3TVckSgNE&exp=1794782320&osig=AAAAAAAAAAAAAAAAAAAAABzlLUTugM_XKTuLB3AdcjRA-QwrJCDzT2sJzSxYhgmW&signer=media-rpc&token=AAIAAU0AJDZmZDQ5NTAwLTdkMGMtNDk4OC05N2Y1LTFmNzQ0NDRiYWVhZAAAAAABoeFc1YCex5pKo7G90KS2sUe-PIqKZH9ERigZ1t5XxZ6iYPFgNg&x-canva-quality=thumbnail"
+        run: |
+          set +e
+          python - <<'PY'
+          import os
+          u=os.environ["BASE"]
+          with open("/tmp/asset-urls.txt","w") as f:
+            for label,link in [
+              ("thumb",u),
+              ("original",u.replace("height:200/quality:100","height:1672/quality:100").replace("width:112?","width:941?")),
+              ("medium",u.replace("height:200/quality:100","height:900/quality:90").replace("width:112?","width:507?")),
+            ]:
+              f.write(label+" "+link+"\n")
+          PY
+          while read -r name url; do
+            code=$(curl --silent --show-error --location --max-time 35 -w '%{http_code}' -o "/tmp/$name.png" "$url")
+            echo "variant:$name code:$code bytes:$(wc -c < /tmp/$name.png)"
+            file "/tmp/$name.png" | cut -c1-220
+          done < /tmp/asset-urls.txt
