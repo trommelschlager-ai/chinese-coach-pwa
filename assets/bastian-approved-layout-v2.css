@@ -1,0 +1,187 @@
+/* Panda Go · Bastian · approved reference layout v2.
+   All visual proportions follow the accepted 864x1536 screenshot.
+   Real HTML buttons, live cards and learning stages are preserved. */
+.app{
+  container-type:inline-size;
+  width:min(100%,864px);
+  padding:0 1.3% 1.2%;
+  background:
+    linear-gradient(180deg,#31086144 0%,#4c157d7a 50%,#2b0b55a6 100%),
+    url('./panda-map-scene-hd-v319.webp') center center / cover no-repeat,
+    #48126e;
+  box-shadow:0 0 38px #140827;
+}
+.app:before{background:none!important}
+.app:after{
+  content:"🌸";
+  top:1.2cqw;right:1.4cqw;font-size:5.4cqw;
+  text-shadow:0 0 7px #efa9e1;
+}
+.header{height:20cqw;min-height:0;padding:0 6cqw 0}
+.logo{
+  display:block;margin:0;padding-top:.7cqw;
+  font-size:7.7cqw;line-height:1.06;
+  color:#ffdfa0;text-shadow:0 .35cqw #722f83,0 0 1cqw #fa8cda;
+  letter-spacing:.1cqw;
+}
+.logo sup{font-size:2.7cqw;line-height:1;top:-.3em;position:relative}
+.back{
+  top:2cqw;left:.4cqw;width:8.8cqw;height:8.8cqw;
+  border-radius:2.5cqw;border:.34cqw solid #ffc77d;
+  font-size:5.4cqw;box-shadow:0 .5cqw 1.3cqw #240b48;
+}
+.lesson-badge{
+  margin:.2cqw auto 0;padding:.65cqw 5.2cqw;
+  border-width:.34cqw;font-size:3.2cqw;line-height:1.25;
+  border-radius:6cqw;box-shadow:0 .4cqw 1.2cqw #9b4da8;
+}
+.level{
+  margin:.6cqw auto 0;padding:.25cqw 3.1cqw;
+  border-width:.3cqw;border-radius:4cqw;
+  font-size:2.65cqw;line-height:1.2;
+}
+.hero{
+  display:grid;grid-template-columns:42% 58%;
+  height:73cqw;min-height:0;gap:0;margin:0;
+  align-items:stretch;
+}
+.portrait{
+  margin-top:-10.5cqw;
+  height:calc(100% + 10.5cqw);
+  min-height:0;min-width:0;
+  overflow:hidden;border:0;border-radius:0;box-shadow:none;
+  background:transparent;
+  -webkit-mask-image:linear-gradient(90deg,#000 0%,#000 90%,transparent 100%);
+  mask-image:linear-gradient(90deg,#000 0%,#000 90%,transparent 100%);
+}
+.portrait:after{display:none}
+.portrait img{
+  width:100%;height:100%;object-fit:cover;object-position:center top;
+  filter:saturate(1.06) contrast(1.04);
+}
+.portrait-fallback{opacity:.2;font-size:11cqw}
+.cards{grid-template-rows:repeat(4,minmax(0,1fr));gap:1.15cqw;min-height:0}
+.phrase{
+  min-height:0;max-height:none;
+  border:.28cqw solid #f4cc8d;border-radius:2.8cqw;
+  padding:.65cqw .65cqw .65cqw .7cqw;gap:.65cqw;
+  box-shadow:0 .35cqw 1.2cqw #2b0e5080,inset 0 1px #fff;
+  background:linear-gradient(135deg,#fff8fffa,#f0ccfaed);
+}
+.number{
+  width:4.7cqw;height:4.7cqw;top:.8cqw;left:.8cqw;
+  border:.25cqw solid #fff0c6;font-size:2.9cqw;
+}
+.emoji{
+  flex:0 0 11.2cqw;width:11.2cqw;height:10cqw;
+  margin:1.2cqw 0 0;display:grid;place-items:center;
+  font-size:6.5cqw;line-height:1.05;
+  background:radial-gradient(circle,#f2bdf1 2%,#e8b6fa66 65%,transparent 72%);
+}
+.phrase-body{overflow:hidden;flex:1;min-width:0}
+.phrase .hz{
+  font-size:3.2cqw;line-height:1.12;letter-spacing:-.04cqw;
+  white-space:nowrap;font-weight:900;
+}
+.phrase .py{font-size:1.84cqw;margin-top:.7cqw;line-height:1.22;white-space:nowrap}
+.phrase .ru{font-size:1.86cqw;margin-top:.85cqw;line-height:1.2;white-space:nowrap}
+.phrase .play{
+  width:6.4cqw;height:6.4cqw;min-width:6.4cqw;
+  border:.28cqw solid #ffdd8b;
+  font-size:3.1cqw;
+  box-shadow:0 0 0 .28cqw #e3a7ef,0 .3cqw .65cqw #64257c;
+}
+.phrase .play[disabled]{opacity:.58;filter:grayscale(.1)}
+.duo{
+  margin-top:2.3cqw;
+  display:grid;grid-template-columns:53% 47%;
+  height:49.5cqw;gap:.85cqw;
+}
+.section{
+  height:100%;min-height:0;overflow:hidden;
+  padding:1cqw .8cqw .65cqw;
+  border:.3cqw solid #ecca91;border-radius:2.6cqw;
+  box-shadow:0 0 .65cqw #ef83ff,inset 0 1px #fff;
+}
+.section h2{
+  font-size:3.3cqw;line-height:1.15;margin:0 0 1cqw;
+  white-space:nowrap;text-align:center;
+}
+.section .line{
+  height:6.55cqw;min-height:0;padding:.35cqw .75cqw;gap:.55cqw;
+  margin:.35cqw 0;border:.16cqw solid #edd0ec;border-radius:1.55cqw;
+}
+.section .lineicon{
+  height:4.5cqw;width:4.5cqw;flex:0 0 4.5cqw;
+  font-size:2.7cqw;line-height:1;display:grid;place-items:center;
+  border-radius:1.2cqw;
+}
+.section .line-content{font-size:2.15cqw;line-height:1.18;overflow:hidden}
+.section .line-content strong{
+  display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden
+}
+.section .line-content small{
+  font-size:1.67cqw;line-height:1.15;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis
+}
+.section:nth-child(2) .line{height:9.8cqw;margin:.65cqw 0}
+.section:nth-child(2) .line-content{font-size:2.6cqw}
+.section:nth-child(2) .line-content small{font-size:2cqw}
+.section .tone{
+  margin-left:auto;padding:.45cqw .75cqw;
+  border-radius:1.1cqw;font-size:2.1cqw;flex:none;
+}
+.section .tone-audio{
+  cursor:pointer;color:#fff;background:linear-gradient(#b961ce,#792797);
+  border:.2cqw solid #e8a5f1;border-radius:50%;font-weight:800;
+}
+.section .tone-audio:disabled{cursor:default;opacity:.5}
+.flow{
+  height:29.2cqw;margin-top:1.65cqw;padding:.65cqw 1.4cqw 1.1cqw;
+  border-radius:3cqw;border:.25cqw solid #efcd9f;
+  box-shadow:0 0 .6cqw #e585f8;
+}
+.flow h2{
+  font-size:3.7cqw;line-height:1.1;
+  text-shadow:0 .3cqw #491351;
+}
+.steps{margin-top:1cqw;gap:.7cqw;height:12.5cqw}
+.step{
+  height:12.1cqw;min-height:0;padding:.2cqw .3cqw;
+  border:.2cqw solid #eab4fa;border-radius:2.4cqw;
+  font-size:2.1cqw;line-height:1.05;display:block;
+}
+.step .stepnumber{
+  height:3cqw;width:3cqw;font-size:2.2cqw;
+  margin-bottom:0;vertical-align:middle;
+}
+.step .stepicon{font-size:4.7cqw;line-height:1.2;margin:.1cqw 0}
+.gold-button{
+  min-height:0;height:7.5cqw;width:70%;margin:.8cqw auto 0;
+  border:.3cqw solid #ffefba;border-radius:5cqw;
+  font-size:3.3cqw;line-height:1;
+  box-shadow:0 .4cqw 1.1cqw #250934,0 0 1.2cqw #ee93cc;
+}
+.copy{font-size:1.7cqw;margin:1cqw 0 .4cqw}
+.practice{
+  padding:3cqw 2.5cqw 7cqw;
+  min-height:70dvh;max-width:750px;
+}
+.practice-panel{padding:18px}
+.practice .hz{font-size:clamp(25px,5cqw,35px);white-space:normal}
+.practice .py{font-size:clamp(13px,2.6cqw,18px)}
+.practice .ru{font-size:clamp(12px,2.5cqw,17px)}
+.practice .level{font-size:14px;padding:5px 15px}
+.practice .gold-button{height:auto;min-height:46px;font-size:17px;width:auto;padding:0 15px}
+.practice .play{width:38px;height:38px;font-size:18px}
+.practice .word .hz{font-size:26px}
+.practice .word .py{font-size:14px}
+.practice .word .ru{font-size:13px}
+@supports not (width:1cqw){
+  .header{height:20vw}.hero{height:73vw}.duo{height:49.5vw}.flow{height:29vw}
+}
+@media(min-width:865px){
+  .header{height:173px}.hero{height:630px}.duo{height:427px}.flow{height:252px}
+  .portrait{margin-top:-91px;height:calc(100% + 91px)}
+}
+@media(prefers-reduced-motion:reduce){.gold-button:active{transform:none}}
