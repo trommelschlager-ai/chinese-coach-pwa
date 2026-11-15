@@ -11,8 +11,10 @@ const plan=fs.readFileSync(path.join(root,'assets/hsk2-one-screen-map-v6.css'),'
 assert.match(bastian,/bastian-approved-reference-v5\.jpg/,'Must retain untouched approved screenshot');
 assert.match(bastian,/bastian-three-screens-v6\.css/,'Full-height and audio layout stylesheet must load');
 assert.match(map,/hsk2-one-screen-map-v6\.css/,'HSK2 map compact stylesheet must load');
-assert.match(poster,/\.approved-screen\{[\s\S]*?height:100dvh!important/,'Full-height poster must use the device viewport');
-assert.match(poster,/object-fit:fill!important/,'Poster and clickable hotspots must scale together');
+assert.match(poster,/#poster:not\(\[hidden\]\)\{[\s\S]*?height:100dvh!important/,'Poster viewport must use the device height');
+assert.match(poster,/aspect-ratio:864\/1536!important/,'Poster must preserve approved aspect ratio');
+assert.match(poster,/object-fit:contain!important/,'Image and hotspots must retain natural proportions');
+assert.doesNotMatch(poster,/object-fit:fill!important/,'Never stretch approved Bastian artwork');
 assert.match(poster,/\.word-grid\{[\s\S]*?repeat\(2,minmax\(0,1fr\)\)/,'Audio words must have two columns');
 assert.match(poster,/grid-template-rows:repeat\(5,minmax\(0,1fr\)\)/,'Audio words must have five rows');
 assert.match(plan,/\.journey-road\{[\s\S]*?repeat\(2,minmax\(0,1fr\)\)/,'Course plan must have two columns');
