@@ -11,6 +11,8 @@ on:
       - 'scripts/verify-hsk2-learner-v344.cjs'
       - 'scripts/verify-hsk2-intro-v349.cjs'
       - 'scripts/verify-hsk2-city-work.cjs'
+      - 'tests/hsk2-city-marks.test.cjs'
+      - 'assets/marks-city-avatar-v1.svg'
       - 'scripts/verify-hsk2-welcome-v348.cjs'
       - '.github/workflows/hsk2-learner-v344.yml'
       - 'sw.js'
@@ -37,6 +39,8 @@ jobs:
         run: node scripts/verify-hsk2-intro-v349.cjs
       - name: Verify My City work lesson
         run: node scripts/verify-hsk2-city-work.cjs
+      - name: Verify Course 2 Marks gameplay
+        run: node tests/hsk2-city-marks.test.cjs
       - name: Verify HSK2 learner path
         run: node scripts/verify-hsk2-learner-v344.cjs
       - name: Verify Panda Brain responses
