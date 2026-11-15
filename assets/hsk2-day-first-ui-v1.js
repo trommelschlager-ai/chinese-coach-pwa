@@ -26,7 +26,7 @@ function ready(state){
 function render(state,ctx){
  if(!state.day)state.day=makeState();
  const d=state.day,step=state.stage,word=day.words[d.selected];
- let html='<section class="day-pilot"><div class="day-title"><span class="day-label">PANDA GO · КИТАЙСКИЙ + ЛЕГКО</span><h1>🌅 Урок 1 · Мой распорядок дня</h1><p>Мини-урок 1 из 3 · учимся говорить о своём утре</p><div class="day-stages">'+names.map((n,i)=>'<span class="'+(i===step?'current':i<step?'passed':'')+'"><b>'+(i+1)+'</b>'+n+'</span>').join('')+'</div></div>';
+ let html='<section class="day-pilot"><div class="day-title"><img class="day-panda" src="./assets/hsk2-panda-new-v328.svg" alt="Панда Panda Go" draggable="false"><span class="day-label">PANDA GO · КИТАЙСКИЙ + ЛЕГКО</span><h1>🌅 Урок 1 · Мой распорядок дня</h1><p>Мини-урок 1 из 3 · учимся говорить о своём утре</p><div class="day-stages">'+names.map((n,i)=>'<span class="'+(i===step?'current':i<step?'passed':'')+'"><b>'+(i+1)+'</b>'+n+'</span>').join('')+'</div></div>';
  if(step===0){
   html+='<div class="day-card day-focus"><div class="day-topline"><span>① Разбираем слово</span><span>7 слов</span></div><div class="day-headword" lang="zh-Hans">'+esc(word.zh)+'</div><div class="day-headpy">'+esc(word.py)+'</div><div class="day-meaning">'+esc(word.ru)+'</div>'+ctx.sound(word.zh)+'</div>'+
   '<div class="day-card"><h2>Из чего состоит '+esc(word.zh)+'?</h2><div class="day-chars">'+word.chars.map(ch=>'<div class="day-char"><span class="day-glyph" lang="zh-Hans">'+esc(ch[0])+'</span><b>'+esc(ch[1])+'</b><span>'+esc(ch[2])+'</span></div>').join('<span class="day-plus">+</span>')+'</div><div class="day-tip">💡 '+esc(word.tip)+'</div></div>'+
