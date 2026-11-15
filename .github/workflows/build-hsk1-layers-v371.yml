@@ -18,7 +18,7 @@ jobs:
           URL_HEADER: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/dcaa7797-789b-48bd-bf5c-edfc3d585a84.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNGJjYTY0ZTNjZDM1MWQ0NCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NDg4MDA5OX0.Y1C-c1aFoh1c0tJNtLoi14kAJT-06uYwiW1rneK_YZ8"
           URL_RIBBONS: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/3571d4e7-5f7a-45bc-936a-19313c6c9e9b.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNDQyZDAxZDY0ZDhjNDk3ZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NDkxMDY3OH0.DAhfMFQ0hkKuxXQ5PrhhAXd8D5m3XfnxeJYXQcP_qi0"
           URL_PANDA: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/76f83ff5-0ad2-4a77-87cd-fd941d070f0c.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiZGZhMmI4Njc0YTBiMmYzMiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NDkzNjgwN30.PZKdAwZH2zWW_KCP9Nlm3LwwDPQd2nFWhG0a3KFjcjg"
-          URL_ACTIONS: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/3e0b04dc-45b8-483b-992b-0a681dcddb32.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMDRiM2RmN2FlMTUzYTMzZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsImV4cCI6MTc5NDg4NzQxOH0.XcJRph8Bvxji_xd9Rh9ly258NMTqE"
+          URL_ACTIONS: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/3e0b04dc-45b8-483b-992b-0a681dcddb32.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMDRiM2RmN2FlMTUzYTMzZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsImV4cCI6MTc5NDg4NzQxOH0.XcJRph8Bvxji_xdDtXbe8B4YDXxSd9Rh9ly258NMTqE"
         run: |
           set -eu
           python -m pip install -q pillow
@@ -47,4 +47,4 @@ jobs:
           git config user.name "Panda Go Artwork Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/hsk1-v371-*.webp
-          git diff --cached --quiet || (git commit -m "assets(hsk1): preserve five approved high-resolution editable menu layers" && git push)
+          git diff --cached --quiet || (git commit -m "assets(hsk1): preserve five approved high-resolution editable menu layers" && git pull --rebase origin main && git push origin HEAD:main)
