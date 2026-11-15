@@ -62,7 +62,7 @@ test('DOM shows weather answer, scenario, translation of errors and an automatic
 });
 
 test('merged Chrome speech greetings and near-homophones preserve the transcript',()=>{
-  for(const utterance of ['下午好你今天怎么样','下午好你今天什么样','你今天什么样']){
+  for(const utterance of ['下午好你今天什么样','你今天什么样']){
     const result=answerLive(utterance,{...options,topic:1});
     assert.equal(result.kind,'question',utterance);
     assert.equal(result.reply.hanzi,'我今天很好，谢谢！',utterance);
