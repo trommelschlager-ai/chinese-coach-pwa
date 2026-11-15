@@ -24,7 +24,7 @@ const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
 let micActivatedAt=0; // Guard the first seconds of a new recording against accidental second taps.
-const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false};
+const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false};
 const current=()=>state.display;
 const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson||conversation.id):conversation.id;
 function note(text){$('status').textContent=text||''}
@@ -152,16 +152,16 @@ function askNext(){
   state.prompt={line:prompt};state.topic=1;state.questions.push(prompt.hanzi);
   say(prompt,false);note('Мой день · вопрос '+(state.dayStep+1)+' из '+dailyQuestions(state.dayMini).length+'. Ответь голосом или текстом.');return;
  }
- const topics=state.allowed.length?state.allowed:[conversation.id];
- if(state.askedInTopic>=3&&topics.length>1){state.cursor=(state.cursor+1)%topics.length;state.askedInTopic=0;}
- const selectedTopic=topics[state.cursor%topics.length];
+ const topics=state.lockedTopic&&state.allowed.includes(state.lockedTopic)?[state.lockedTopic]:(state.allowed.length?state.allowed:[conversation.id]);
+ if(!state.lockedTopic&&state.askedInTopic>=3&&topics.length>1){state.cursor=(state.cursor+1)%topics.length;state.askedInTopic=0;}
+ const selectedTopic=state.lockedTopic||topics[state.cursor%topics.length];
  const selected=pickCoursePrompt(selectedTopic,curriculum,state.questions,new Date(),{...state.profile,unlocked:state.allowed});
  const p=selected?{line:selected}:choosePracticePrompt(CONVERSATIONS,state.allowed,state.questions,new Date(),selectedTopic);
  if(!p){note('Для доступных уроков пока нет проверенных вопросов.');return}
  state.prompt=p;state.topic=p.line.lesson;state.discussed.add(p.line.lesson);state.questions.push(p.line.hanzi);state.askedInTopic++;if(state.questions.length>50)state.questions.shift();
  say(p.line);note('Урок '+state.topic+'. Ответь или сам спроси Панду по пройденному материалу.');
 }
-function setMode(mode){if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
+function setMode(mode){if(mode==='short')state.lockedTopic=null;if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();$('message').value='';
@@ -184,7 +184,11 @@ function submit(raw){
    if(result.wordCard)showWordCard(result.wordCard);
     else if(result.explanation){const row=document.createElement('p');row.textContent=result.explanation;$('learner-feedback').replaceChildren(row);$('learner-feedback').hidden=false;document.documentElement.dataset.feedback='true';}
    let followup=result.followup;
-   if(followup&&followup.intent!=='relative-age'&&!followup.isContextual){
+   if(followup&&state.lockedTopic&&state.allowed.includes(state.lockedTopic)){
+     // Keep the discussion within the learner-selected topic.
+     followup=pickCoursePrompt(state.lockedTopic,curriculum,state.questions.concat(input),new Date(),{...state.profile,unlocked:state.allowed})||(followup.lesson===state.lockedTopic?followup:null);
+   }
+   else if(followup&&followup.intent!=='relative-age'&&!followup.isContextual){
      if(state.allowed.length>1&&state.turns%3===0){
       const currentIndex=state.allowed.indexOf(state.topic);
       state.cursor=(currentIndex+1)%state.allowed.length;state.askedInTopic=0;
@@ -435,10 +439,34 @@ window.PandaApprovedBridge337={
   if(!state.allowed.includes(id))return false;
   cancelFollowup();stopAudio();stopRecognition();
   state.cursor=state.allowed.indexOf(id);state.askedInTopic=0;state.topic=id;
-  if(state.mode!=='nonstop')setMode('nonstop');else askNext();
-  note('Урок '+id+'. Ответь на вопрос Панды.');
+  // Selecting a topic opens its question catalogue. Do NOT choose or speak
+  // an arbitrary first prompt until the learner selects one.
+  state.mode='nonstop';state.lockedTopic=id;state.prompt=null;state.awaitQuestion=true;state.hint=false;
+  render();note('Тема выбрана. Выбери вопрос из списка.');
   return true;
  },
+ topicQuestions:id=>{
+  id=Number(id);
+  if(!state.allowed.includes(id))return [];
+  return availableAskGroups(state.allowed,curriculum,new Date()).find(g=>g.lesson===id)?.questions||[];
+ },
+ startTopicQuestion:(id,text)=>{
+  id=Number(id);
+  if(!state.allowed.includes(id))return false;
+  const question=availableAskGroups(state.allowed,curriculum,new Date())
+    .find(g=>g.lesson===id)?.questions.find(q=>normalize(q.hanzi)===normalize(text));
+  if(!question)return false;
+  cancelFollowup();stopAudio();stopRecognition();
+  state.cursor=state.allowed.indexOf(id);state.askedInTopic=0;state.topic=id;
+  state.mode='nonstop';state.lockedTopic=id;state.awaitQuestion=false;state.hint=false;
+  const line={hanzi:question.hanzi,pinyin:question.pinyin,ru:question.ru,lesson:id,audioKey:question.hanzi};
+  state.prompt={line};state.questions.push(question.hanzi);
+  if(state.questions.length>50)state.questions.shift();
+  say(line,true);
+  note('Тема '+id+'. Панда задаёт выбранный вопрос. Ответь или продолжай разговор на эту тему.');
+  return true;
+ },
+
  play:()=>play(),playEntry:entry=>{cancelFollowup();play(entry)},stopPlayback:()=>stopAudio(),
  getAudioLevel:()=>audio&&!audio.paused&&!audio.ended?pandaVisualAudioLevel:null,
  toggleSpeed:()=>$('speed-toggle').click(),
