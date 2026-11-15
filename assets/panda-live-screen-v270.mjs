@@ -12,7 +12,7 @@ import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedM
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
 import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=360';
-import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=336';
+import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=374';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=2';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
