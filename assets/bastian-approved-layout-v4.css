@@ -1,0 +1,159 @@
+/* Approved Bastian lesson v4: mobile-first nocturnal layout, no daytime
+   mountain image, no detached wallpaper and no tiny type.
+   Keeps every phrase, quiz stage and real audio hook in the DOM. */
+:root{color-scheme:light}
+html,body{background:#200538;overscroll-behavior-y:contain}
+body{background:linear-gradient(#2b074b,#240638)!important}
+.app{
+ background:linear-gradient(180deg,#3c0b6999,#55147a35 30%,#23064ba0 75%,#19042f66),
+ url('./bastian-night-city-v4.svg') center top /100% 100% no-repeat,
+ #310955!important;
+ padding:1.3cqw 1.2cqw 2.3cqw;
+ min-height:100dvh;
+}
+.app:before{display:none!important}
+.app:after{display:none!important}
+.header{height:20cqw;min-height:0;padding:0 6cqw}
+.logo{
+ margin:0;
+ font-size:7.65cqw;line-height:1.05;white-space:nowrap;
+ color:#ffe4a2;text-shadow:0 .4cqw #7c2774,0 0 1.4cqw #e866f6;
+}
+.logo sup{font-size:2.6cqw}
+.lesson-badge{
+ font-size:3.25cqw;line-height:1.2;
+ margin:.45cqw auto .1cqw;
+ padding:.55cqw 5cqw;
+ background:linear-gradient(#fff0a4,#f7b63e);
+ border:.35cqw solid #ffeca8;
+ box-shadow:0 0 1.4cqw #fab5dd;
+}
+.level{font-size:2.85cqw;padding:.35cqw 2.6cqw}
+.back{top:1.6cqw;left:1cqw;width:8.6cqw;height:8.6cqw}
+.hero{height:84cqw;min-height:0;grid-template-columns:42% 58%;gap:0;margin-top:0}
+.portrait{
+ min-height:0;
+ height:calc(100% + 11cqw);
+ margin-top:-11cqw;
+ background:none;
+ border:0;box-shadow:none;border-radius:0;
+ overflow:hidden;
+ -webkit-mask-image:linear-gradient(90deg,#000 0%,#000 94%,transparent 100%);
+ mask-image:linear-gradient(90deg,#000 0%,#000 94%,transparent 100%);
+}
+.portrait img{object-position:50% top;filter:saturate(1.09) contrast(1.10);image-rendering:auto}
+.cards{gap:1.25cqw}
+.phrase{
+ border:.35cqw solid #ffcd92;
+ border-radius:2.65cqw;
+ padding:.7cqw .65cqw .7cqw .7cqw;
+ gap:.5cqw;
+ background:linear-gradient(135deg,#fff8fff8,#f6d5fafa);
+ box-shadow:0 .25cqw .8cqw #3a0b5988,0 0 .7cqw #e994dedd;
+}
+.phrase .number{
+ width:5.35cqw;height:5.35cqw;
+ font-size:3.2cqw;top:.7cqw;left:.6cqw;
+ background:linear-gradient(#ffeaa1,#ffb92f);
+ border:.3cqw solid #fff0be;box-shadow:0 .25cqw .5cqw #ab567f;
+}
+.phrase .emoji{
+ width:11.5cqw;flex:0 0 11.5cqw;height:10cqw;
+ margin:.6cqw 0 0;font-size:6.4cqw;
+ background:radial-gradient(circle at center,#e3b1f6,#e9c5f359 68%,transparent 70%);
+}
+.phrase-body{min-width:0}
+.phrase .hz{
+ font-size:3.7cqw;line-height:1.25;letter-spacing:-.06cqw;
+ color:#200b32;white-space:normal;overflow-wrap:anywhere;
+}
+.phrase .py{font-size:2.03cqw;line-height:1.2;margin-top:.6cqw;color:#702e91;white-space:normal}
+.phrase .ru{font-size:2.03cqw;line-height:1.2;margin-top:.65cqw;color:#3e244d;white-space:normal}
+.phrase .play{
+ width:6.5cqw;height:6.5cqw;min-width:6.5cqw;
+ font-size:3cqw;opacity:1;box-shadow:0 0 0 .28cqw #f5b5eb,0 0 .8cqw #ad5ec0;
+ background:linear-gradient(#ba5bd2,#702795);
+}
+.phrase .play[disabled]{opacity:.7;filter:none}
+.duo{
+ grid-template-columns:53% 47%;
+ height:60cqw;margin-top:1.7cqw;gap:.85cqw;
+}
+.section{
+ background:linear-gradient(165deg,#752aab,#51147a);
+ border:.3cqw solid #f3cc91;
+ border-radius:2.9cqw;
+ padding:.7cqw;
+ box-shadow:0 0 1cqw #e381ef7d,inset 0 1px #ffe1ff;
+}
+.section h2{font-size:3.2cqw;line-height:1.2;letter-spacing:-.06cqw;margin:.4cqw 0 .85cqw}
+.section .line{
+ height:8.45cqw;min-height:0;padding:.65cqw .7cqw;
+ margin:.65cqw 0;gap:.7cqw;
+ border:.16cqw solid #eac4ed;border-radius:1.5cqw;
+ background:linear-gradient(#fffaff,#edd0f8);
+}
+.section .lineicon{height:5.0cqw;width:5cqw;flex:0 0 5cqw;font-size:3cqw}
+.section .line-content{font-size:2.22cqw;line-height:1.15;flex:1;min-width:0}
+.section .line-content strong{white-space:normal;overflow:visible;text-overflow:clip;max-height:2.5em}
+.section .line-content small{
+ display:block;white-space:normal;overflow:visible;text-overflow:clip;
+ font-size:1.92cqw;line-height:1.13;max-height:2.5em;margin-top:.22cqw
+}
+.section:nth-child(2) .line{height:11.85cqw;margin:.55cqw 0}
+.section:nth-child(2) .line-content{font-size:2.55cqw}
+.section:nth-child(2) .line-content small{font-size:2cqw}
+.section .tone{font-size:2.25cqw;padding:.55cqw .65cqw;white-space:nowrap}
+.section .tone-audio{min-width:4.5cqw;min-height:4.5cqw;border-radius:50%}
+.flow{
+ height:37cqw;
+ margin-top:1.9cqw;
+ padding:1.1cqw 1.2cqw .75cqw;
+ border:.32cqw solid #ffdba5;
+ border-radius:3.1cqw;
+ background:linear-gradient(155deg,#6824a8e8,#421163ee);
+ box-shadow:0 0 1.3cqw #c26fe6bb;
+}
+.flow h2{font-size:3.8cqw}
+.steps{height:16.4cqw;gap:1cqw;margin-top:1.2cqw}
+.step{
+ height:15.3cqw;min-height:0;
+ display:block;position:relative;
+ padding:.4cqw .3cqw;border-radius:2.6cqw;
+ font-size:2.25cqw;line-height:1.12;
+ border:.25cqw solid #f7c7ff;
+ background:linear-gradient(#a15ac5,#63248d);
+ box-shadow:0 .4cqw .7cqw #270a45;
+}
+.step .stepnumber{
+ position:absolute;top:-.9cqw;left:0;
+ width:3.9cqw;height:3.9cqw;
+ font-size:2.45cqw;background:#ffcee8;
+ border:.2cqw solid #fff0c9
+}
+.step .stepicon{display:block;font-size:5.8cqw;line-height:1.25;margin:.8cqw 0 .2cqw}
+.step.active{
+ border-color:#ffdc75;
+ box-shadow:0 0 1.6cqw #f5ba39;
+ background:linear-gradient(#ac52ca,#742a8f)
+}
+.gold-button{
+ width:74%;height:9cqw;min-height:0;
+ margin:1.1cqw auto 0;
+ font-size:3.7cqw;
+ border:.4cqw solid #ffe4a2;
+ border-radius:6cqw;
+ color:#54206d;
+ background:linear-gradient(#fff1b3 0%,#ffd46c 46%,#f3a132 100%);
+ box-shadow:0 0 1.3cqw #ffd277,0 .3cqw .7cqw #260b46;
+}
+.copy{font-size:1.95cqw;margin:1.5cqw 0}
+@media(min-width:865px){
+ .header{height:173px}.hero{height:726px}.duo{height:518px}.flow{height:320px}
+ .portrait{margin-top:-95px;height:calc(100% + 95px)}
+}
+@media(max-width:380px){
+ .phrase .hz{font-size:3.55cqw}
+ .phrase .py,.phrase .ru{font-size:1.95cqw}
+}
+@media(prefers-reduced-motion:reduce){.step,.gold-button{transition:none}}
