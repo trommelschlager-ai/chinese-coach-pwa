@@ -17,7 +17,7 @@ const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
 const rig=createPandaRig($('character'),$('panda-canvas'));
-let conversation,base,audio=null,audioFrame=0,recognition=null,epoch=0,watchdog,speechEndTimer,poseTimer,followupTimer;
+let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
 const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null,speechSignal:null};
 const current=()=>state.display;
@@ -25,13 +25,13 @@ const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson|
 function note(text){$('status').textContent=text||''}
 function pose(value){clearTimeout(poseTimer);rig.setState(value)}
 function happy(){pose('happy');poseTimer=setTimeout(()=>pose('idle'),1300)}
-function stopAudio(){const a=audio;audio=null;cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onloadedmetadata=a.ontimeupdate=a.onseeked=a.oncanplay=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
-function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;if(r){r.onstart=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
+function stopAudio(){const a=audio;audio=null;clearTimeout(audioBufferTimer);cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onstalled=a.onloadedmetadata=a.ontimeupdate=a.onseeked=a.oncanplay=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
+function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;if(r){r.onstart=r.onaudiostart=r.onspeechstart=r.onspeechend=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
 function play(entry=null){
  const currentLine=entry||current();
  const part=lookupPandaVoiceClip(currentLine?.hanzi||currentLine?.panda)||lookupPandaVoiceClip(currentLine?.audioKey);
- if(!part){note('Для этой точной фразы пока нет загруженной MP3-записи.');return}
+ if(!part){stopAudio();note('Для этой точной фразы пока нет загруженной MP3-записи.');return}
  stopRecognition();stopAudio();
  const src=part.src,begin=Number(part.start)||0,end=Number.isFinite(part.end)?Number(part.end):null;
  const a=new Audio(new URL(src,document.baseURI).href);audio=a;a.playbackRate=state.slow?.8:1;a.preload='auto';
@@ -40,8 +40,10 @@ function play(entry=null){
  // Every indexed phrase is now its own MP3; playback starts at zero.
  a.muted=false;a.volume=1;
  const animate=()=>{if(!valid()||a.paused||a.ended)return;pandaVisualAudioLevel=Math.max(0,Math.min(1,envelope?envelope.levels[Math.floor(a.currentTime/envelope.binSeconds)]||0:.5+.5*Math.sin(a.currentTime*23)));rig.setLevel(pandaVisualAudioLevel);audioFrame=requestAnimationFrame(animate)};
- a.onplaying=()=>{if(valid()){pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти)/.test($('status').textContent))note('');animate()}};
- a.onwaiting=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
+ a.onplaying=()=>{if(valid()){clearTimeout(audioBufferTimer);pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти|Загрузка аудио)/.test($('status').textContent))note('');animate()}};
+ const waitForAudio=()=>{if(!valid())return;cancelAnimationFrame(audioFrame);pose('idle');note('Загрузка аудио задерживается…');clearTimeout(audioBufferTimer);audioBufferTimer=setTimeout(()=>{if(valid()){stopAudio();note('Аудио не загрузилось за 10 секунд. Нажми 🔊 ещё раз или проверь интернет.')}},10000)};
+ a.onwaiting=waitForAudio;
+ a.onstalled=waitForAudio;
  a.onpause=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
  const finished=()=>{if(valid()){stopAudio();if(!entry&&state.followup)scheduleFollowup(1200)}};
  a.onended=finished;
@@ -287,10 +289,18 @@ function startRecognition(){
  r.onspeechend=()=>{if(!valid()||heard)return;note('⏳ Речь закончилась. Распознаю китайскую фразу…');clearTimeout(speechEndTimer);speechEndTimer=setTimeout(()=>{if(valid()&&!heard){try{r.stop()}catch{fail('Не удалось завершить распознавание. Попробуй написать фразу или повтори ещё раз.')}}},1100)};
  r.onresult=e=>{
   if(!valid())return;
-  clearTimeout(speechEndTimer);
+  clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);
   const a=e.results?.[0]?.[0];const text=String(a?.transcript||'').trim();
   if(!text){fail('Браузер вернул пустой ответ. Попробуй ещё раз в Chrome или напиши фразу.');return}
-  heard=true;state.confidence=typeof a?.confidence==='number'&&a.confidence>0?a.confidence:null;
+  heard=true;const confidence=typeof a?.confidence==='number'&&a.confidence>0?a.confidence:null;
+  if(confidence!==null&&confidence<.65){
+   // The ASR transcript is uncertain: the learner must approve it before any dialogue update.
+   stopRecognition();state.confidence=null;$('message').value=text;
+   state.speechSignal={id:(state.speechSignal?.id||0)+1,kind:'uncertain',text,confidence,contentVerified:false,toneVerified:false};
+   note('Распознано неуверенно: '+text+'. Исправь текст и нажми ➤ или повтори через 🎙.');
+   $('message').focus();return;
+  }
+  state.confidence=confidence;
   submit(text);
   // ASR returns text and optional confidence, never a validated acoustic tone score.
   const latestLearner=[...state.history].reverse().find(turn=>turn.who==='you'&&turn.hanzi===text);
@@ -320,7 +330,10 @@ function startRecognition(){
   fail(reasons[e?.error]||'Ошибка распознавания. Открой Panda Go напрямую в Chrome или используй текст.');
  };
  r.onnomatch=()=>fail('Речь не распознана. Попробуй ещё раз или напиши ответ по-китайски.');
- r.onend=()=>{if(valid()&&!heard&&!failed)fail(started?'Распознавание завершилось без результата. Попробуй Chrome или текст.':'Браузер не подключил службу распознавания. Открой ссылку напрямую в Chrome.')};
+ r.onend=()=>{if(!valid()||heard||failed)return;clearTimeout(watchdog);clearTimeout(speechEndTimer);note('⏳ Завершаю распознавание…');
+  // Some mobile implementations deliver the final transcript after the end event.
+  recognitionEndTimer=setTimeout(()=>{if(valid()&&!heard&&!failed)fail(started?'Распознавание завершилось без результата. Попробуй Chrome или текст.':'Браузер не подключил службу распознавания. Открой ссылку напрямую в Chrome.')},1200);
+ };
  // Start watchdog BEFORE r.start(): some implementations fire onstart synchronously.
  watchdog=setTimeout(()=>fail('Браузер не подключил распознавание за 7 секунд. Если ссылка открыта внутри мессенджера, выбери ⋮ → Открыть в браузере → Chrome.'),7000);
  try{r.start()}catch{
