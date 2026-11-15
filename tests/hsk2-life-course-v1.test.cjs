@@ -85,6 +85,14 @@ assert.match(doc.querySelector('#screen').textContent,/10 из 10/);
 click('[data-exam-finish]');
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,30);
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).examPassed,true);
+
+click('[data-nav="tones"]');
+assert.equal(doc.querySelectorAll('.tone-card').length,4,'All four tones must be explained');
+assert.match(doc.querySelector('.tone-rules').textContent,/ní hǎo/,'Third-tone sandhi explanation required');
+assert.match(doc.querySelector('.tone-rules').textContent,/bú shì/,'不 sandhi explanation required');
+click('[data-tone-answer="4"]');
+assert.match(doc.querySelector('.tones').textContent,/Верно, четвёртый тон/);
+assert.ok(doc.querySelector('[data-nav="tones"]'),'Tone navigation missing');
 assert.deepEqual(warnings,[],'Builders must match all lesson sentences');
 assert.deepEqual(errors,[],'No browser JS errors');
 console.log('PASS: Panda Go course · 10 themes · 200 words · 30 mini-lessons completed · 60 quizzes · 30 builders · final 10/10 · local storage');
