@@ -1,6 +1,7 @@
 /* Panda AI v346. Clean responsive user-approved screen.
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
-import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=365';
+import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=366';
+import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {createPandaMouth} from './panda-live-face-v354.mjs?v=354';
 const bridge=window.PandaApprovedBridge337;
 if (!bridge) {
@@ -66,7 +67,16 @@ if (!bridge) {
       <div class="pg346-feedback" id="pg346-feedback" hidden aria-live="polite"></div>
       <div class="pg346-status" id="pg346-status" hidden role="status" aria-live="polite"></div>
       <button id="pg346-topics-btn" type="button" class="pg346-all-topics" aria-label="Все темы — выбрать урок" aria-expanded="false" aria-controls="pg346-topics">${icon('layers')}<span>Все<br>темы</span></button>
-      <div class="pg346-topic-menu" id="pg346-topics" hidden><div class="pg346-topic-menu-title">Все темы <button id="pg346-topics-close" type="button" aria-label="Закрыть">×</button></div><div class="pg346-topic-list"></div></div>
+      <div class="pg346-topic-menu" id="pg346-topics" hidden>
+  <div class="pg346-topic-menu-title">
+   <button class="pg374-back" id="pg374-topics-back" type="button" hidden aria-label="Назад к списку тем">‹</button>
+   <span id="pg374-topics-title">Все темы</span>
+   <button id="pg346-topics-close" type="button" aria-label="Закрыть">×</button>
+  </div>
+  <p class="pg374-tip" id="pg374-topics-tip">Выбери тему, затем вопрос для разговора.</p>
+  <div class="pg346-topic-list"></div>
+  <div class="pg374-topic-details" id="pg374-topic-details" hidden></div>
+ </div>
     </section>
     <div class="pg346-composer"><form class="pg346-form" id="pg346-form"><input id="pg346-input" class="pg346-input" name="message" maxlength="160" autocomplete="off" placeholder="Напиши по-китайски…" enterkeyhint="send" aria-label="Напиши по-китайски"></form><button class="pg346-send" id="pg346-send" type="button" aria-label="Отправить">${icon('send')}</button><button class="pg346-mic" id="pg346-mic" type="button" aria-label="Ответить голосом" aria-pressed="false">${icon('mic')}</button></div>
     <nav class="pg346-nav" aria-label="Разделы Panda Go">
@@ -107,8 +117,84 @@ if (!bridge) {
     const sound=el('button','pg346-row-audio','🔊');sound.type='button';sound.disabled=!clipFor(e);sound.setAttribute('aria-label',sound.disabled?'Для этой фразы нет MP3':'Слушать эту реплику');sound.addEventListener('click',()=>playHistory(e));
     row.append(av,text,translation,sound);root.append(row);
   }}
-  const topicsFallback=['Приветствия','Учёба','Время','Дни недели','Даты','Семья','Погода'];
-  function renderTopics(s){const key=s.allowed.join(',')+'|'+s.topic;if(key===lastTopics)return;lastTopics=key;const grid=$('.pg346-topic-list');grid.replaceChildren();const options=new Map([...document.querySelectorAll('#lesson-select option')].map(o=>[Number(o.value),o.textContent.replace(/^\d+\.\s*/,'')]));for(const id of [7,6,4,3,2,5,1]){const b=el('button','',topicsFallback[id-1]);b.type='button';b.disabled=!s.allowed.includes(id);b.setAttribute('aria-current',String(id===s.topic));if(b.disabled)b.title='Сначала пройди урок '+id;b.addEventListener('click',()=>{if(bridge.chooseTopic(id)){closeTopics();sync()}});grid.append(b)}}
+  const topicsFallback=['Приветствия','Учёба и знакомство','Числа','Дни недели','Даты','Семья','Погода'];
+  // All ten 14 November Luvvoice source files are available for audio practice.
+  // Only answer-engine-verified entries appear as conversational questions.
+  const corpusTopicByFile=Object.freeze({
+   '20261114-BWLSNa.mp3':1,'20261114-bsPFJr.mp3':1,'20261114-d9kQmz.mp3':1,
+   '20261114-APqUx9.mp3':2,'20261114-W6Okix.mp3':2,'20261114-47SW44.mp3':2,
+   '20261114-K0Uh5q.mp3':2,'20261114-FMAH9S.mp3':3,
+   '20261114-M7EwcW.mp3':6,'20261114-7JVWfV.mp3':8
+  });
+  let catalogueTopic=null;
+  function renderTopics(s){
+   const key=s.allowed.join(',')+'|'+s.topic;
+   if(key===lastTopics)return;lastTopics=key;
+   const grid=$('.pg346-topic-list');grid.replaceChildren();
+   for(const id of [7,6,4,3,2,5,1]){
+    const name=topicsFallback[id-1],count=bridge.topicQuestions(id).length;
+    const audioCount=PANDA_CLIPS.filter(c=>corpusTopicByFile[c.file]===id).length;
+    const b=el('button','',name);b.type='button';
+    b.disabled=!s.allowed.includes(id);b.setAttribute('aria-current',String(id===s.topic));
+    b.setAttribute('aria-label',name+', '+count+' вопросов'+(audioCount?', '+audioCount+' аудиофраз':''));
+    if(b.disabled)b.title='Сначала пройди урок '+id;
+    b.addEventListener('click',()=>showTopicDetails(id));
+    grid.append(b);
+   }
+   // HSK2 "My day" recordings can be studied as audio here without
+   // wrongly claiming that HSK2 free-form dialogue is unlocked.
+   const day=el('button','pg374-day-entry','🎧 Мой день · '+PANDA_CLIPS.filter(c=>corpusTopicByFile[c.file]===8).length+' записей');
+   day.type='button';day.addEventListener('click',()=>showTopicDetails(8));
+   grid.append(day);
+  }
+  function showTopicDetails(id){
+   catalogueTopic=id;
+   const detail=$('#pg374-topic-details');detail.replaceChildren();detail.hidden=false;
+   $('.pg346-topic-list').hidden=true;$('#pg374-topics-back').hidden=false;
+   $('#pg374-topics-title').textContent=id===8?'Мой день · записи':topicsFallback[id-1];
+   $('#pg374-topics-tip').textContent=id===8
+     ?'Эти записи можно прослушивать. Разговорный сценарий HSK2 запускается из урока «Мой день».'
+     :'Выбери вопрос — Панда начнёт разговор именно с него. Ниже также доступны загруженные аудиофразы.';
+   if(id!==8){
+    const questions=bridge.topicQuestions(id);
+    detail.append(el('h3','pg374-section-title','💬 Вопросы для разговора · '+questions.length));
+    if(!questions.length)detail.append(el('p','pg374-muted','Проверенных вопросов по этой теме пока нет.'));
+    for(const q of questions){
+     const btn=el('button','pg374-question');btn.type='button';
+     btn.append(el('strong','pg374-zh',q.hanzi),el('span','pg374-py',q.pinyin),el('span','pg374-ru',q.ru));
+     btn.append(el('small','pg374-hint',q.hasReplyAudio?'🔊 Панда задаст вопрос':'🔇 Вопрос пока без MP3'));
+     btn.addEventListener('click',()=>{
+      if(bridge.startTopicQuestion(id,q.hanzi)){
+       stopHistoryAudio();closeTopics();$('#pg346-input').value='';sync();
+      }
+     });
+     detail.append(btn);
+    }
+   }
+   const audioPhrases=PANDA_CLIPS.filter(c=>corpusTopicByFile[c.file]===id);
+   if(audioPhrases.length){
+    const section=document.createElement('details');section.className='pg374-audio-section';
+    const summary=el('summary','','🎧 Загруженные аудиофразы · '+audioPhrases.length);
+    const description=el('p','pg374-muted','Нажми фразу, чтобы прослушать. Это аудиопрактика, а не обещание свободного ответа Панды.');
+    section.append(summary,description);
+    for(const clip of audioPhrases){
+     const btn=el('button','pg374-audio-phrase','▶  '+clip.zh);btn.type='button';
+     btn.setAttribute('aria-label','Прослушать '+clip.zh);
+     btn.addEventListener('click',()=>{stopHistoryAudio();bridge.playEntry({hanzi:clip.zh});sync()});
+     section.append(btn);
+    }
+    detail.append(section);
+    if(id===8)section.open=true;
+   }
+   detail.scrollTop=0;$('#pg346-topics').scrollTop=0;
+  }
+  function showTopicList(){
+   catalogueTopic=null;$('#pg374-topic-details').replaceChildren();$('#pg374-topic-details').hidden=true;
+   $('.pg346-topic-list').hidden=false;$('#pg374-topics-back').hidden=true;
+   $('#pg374-topics-title').textContent='Все темы';
+   $('#pg374-topics-tip').textContent='Выбери тему, затем вопрос для разговора.';
+   $('#pg346-topics').scrollTop=0;
+  }
   function renderFeedback(s){const last=s.history.slice().reverse().find(x=>x.who==='you');const wrong=last?.analysis?.correction,unknown=last&&!last.ru&&!last.analysis?.probable;const root=$('#pg346-feedback');const active=!!wrong||!!unknown;const key=[last?.hanzi,wrong?.hanzi,s.feedback,active].join('|');if(key===lastFeedback)return;lastFeedback=key;root.hidden=!active;root.replaceChildren();if(!active)return;root.append(el('strong','',`Ты сказал: ${last.hanzi}`));if(wrong){root.append(el('p','',`✅ Правильно: ${wrong.hanzi}${wrong.pinyin?' · '+wrong.pinyin:''}`));if(wrong.ru)root.append(el('p','',wrong.ru));if(wrong.why)root.append(el('p','',wrong.why))}else{root.append(el('p','',last.analysis?.probable||'Полный смысл не подтверждён. Попробуй уточнить'))}}
   function ingestSpeechSignal(signal,previousSnapshot){
     if(!signal||signal.id===lastSpeechSignalId)return;
@@ -148,8 +234,8 @@ if (!bridge) {
     live.textContent=s.active?(/Речь закончилась|Завершаю распознавание/.test(s.status||'')?'⏳ Распознаю речь…':'🎙 Слушаю китайскую речь…'):pandaSpeaking?'🔊 Панда говорит':showingAssessment?assessmentText:'';
     const back=document.getElementById('back-link');if(back)$('a.pg346-back').href=back.href;
   }
-  function closeTopics(){$('#pg346-topics').hidden=true;$('#pg346-topics-btn').setAttribute('aria-expanded','false')}
-  function toggleTopics(){const pop=$('#pg346-topics');pop.hidden=!pop.hidden;$('#pg346-topics-btn').setAttribute('aria-expanded',String(!pop.hidden));if(!pop.hidden){renderTopics(bridge.snapshot());$('#pg346-topics-close').focus()}}
+  function closeTopics(){$('#pg346-topics').hidden=true;$('#pg346-topics-btn').setAttribute('aria-expanded','false');showTopicList()}
+  function toggleTopics(){const pop=$('#pg346-topics');pop.hidden=!pop.hidden;$('#pg346-topics-btn').setAttribute('aria-expanded',String(!pop.hidden));if(!pop.hidden){showTopicList();renderTopics(bridge.snapshot());$('#pg346-topics-close').focus()}}
   function send(){const inp=$('#pg346-input');const value=inp.value.trim();if(!value){inp.focus();return}stopHistoryAudio();closeTopics();inp.value='';bridge.send(value);sync()}
   function toggle(which){if(which==='py'){showPy=!showPy;stage.dataset.py=String(showPy);$('#pg346-py').setAttribute('aria-pressed',String(showPy))}else{showRu=!showRu;stage.dataset.ru=String(showRu);$('#pg346-ru').setAttribute('aria-pressed',String(showRu))}}
   $('#pg346-form').addEventListener('submit',e=>{e.preventDefault();send()});$('#pg346-send').addEventListener('click',send);$('#pg346-mic').addEventListener('click',()=>{stopHistoryAudio();bridge.mic();sync()});
@@ -157,7 +243,7 @@ if (!bridge) {
   $('#pg346-py').addEventListener('click',()=>toggle('py'));$('#pg346-ru').addEventListener('click',()=>toggle('ru'));
   $('#pg346-history').addEventListener('click',()=>{stopHistoryAudio();document.getElementById('history-open')?.click()});
   $('#pg346-hear').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-play').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-repeat').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-speed').addEventListener('click',()=>{bridge.toggleSpeed();sync()});
-  $('#pg346-topics-btn').addEventListener('click',toggleTopics);$('#pg346-topics-close').addEventListener('click',closeTopics);stage.addEventListener('click',e=>{if(!$('#pg346-topics').hidden&&!e.target.closest('#pg346-topics,#pg346-topics-btn'))closeTopics()});stage.addEventListener('keydown',e=>{if(e.key==='Escape')closeTopics()});
+  $('#pg346-topics-btn').addEventListener('click',toggleTopics);$('#pg346-topics-close').addEventListener('click',closeTopics);$('#pg374-topics-back').addEventListener('click',showTopicList);stage.addEventListener('click',e=>{if(!$('#pg346-topics').hidden&&!e.target.closest('#pg346-topics,#pg346-topics-btn'))closeTopics()});stage.addEventListener('keydown',e=>{if(e.key==='Escape')closeTopics()});
   const core=document.querySelector('main');if(core){let pending=false;new MutationObserver(()=>{if(!pending&&!document.hidden){pending=true;requestAnimationFrame(()=>{pending=false;sync()})}}).observe(core,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-state','aria-pressed','disabled']})}
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stopHistoryAudio();liveMouth.setTalking(false)}else sync()});window.addEventListener('pagehide',()=>{stopHistoryAudio();liveMouth.dispose()});
   sync();document.documentElement.dataset.pandaCleanVersion='365';document.documentElement.classList.remove('panda-booting');document.documentElement.dataset.pandaUiReady='true';
