@@ -83,7 +83,7 @@ if (!bridge) {
   // Course 2 deep-link: reuse the REAL Panda AI voice/text/chat UI, not a mock.
   if(new URLSearchParams(location.search).get('practice')==='day'){
     const title=stage.querySelector('.pg346-title');
-    if(title)title.textContent='🌅 Мой день · Panda AI';
+    if(title)title.textContent='🌅 Мой день';
     const back=stage.querySelector('.pg346-back');
     if(back){back.href='./hsk2-life-course.html?topic=0';back.textContent='← К уроку';}
   }
