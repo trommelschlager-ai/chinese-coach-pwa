@@ -55,7 +55,7 @@ export function createPandaMouth(mascot){
     }
     // Slower and subtler under reduced motion; never turn actual speech off.
     const seconds=now/1000;
-    const motion=reduced?.matches?.() ? .5+.5*Math.sin(seconds*11) :
+    const motion=reduced?.matches ? .5+.5*Math.sin(seconds*11) :
       .5+.29*Math.sin(seconds*19)+.21*Math.sin(seconds*12.3);
     const scale=.20+.78*Math.max(0,Math.min(1,motion));
     if(Math.abs(scale-lastScale)>.035){paintMouth(scale);lastScale=scale}
