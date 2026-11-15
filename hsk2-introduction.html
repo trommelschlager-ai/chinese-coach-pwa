@@ -114,6 +114,7 @@ button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.48;cursor:d
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 <link rel="stylesheet" href="./assets/hsk2-premium-v352.css?v=353">
+<link rel="stylesheet" href="./assets/hsk2-lesson1-fidelity-v356.css?v=356">
 </head>
 <body>
 <div class="app hsk2-premium" id="app">
@@ -166,7 +167,7 @@ function notice(t){$('notice').textContent=t||''}
 function shadePinyin(){ $('app').classList.toggle('py-hidden',!state.showPy);$('toggle-py').textContent=state.showPy?'Скрыть пиньинь':'Показать пиньинь'}
 const header=(name)=>'<div class="heading">'+(state.step>0?'<img class="heading-panda" src="./assets/hsk2-panda-new-v328.svg" alt="">':'')+'<span class="name">'+name+'</span></div><div class="step-tag">Шаг '+(state.step+1)+' из '+TOTAL+'</div>';
 function renderPlan(){
- const topics=[['👤','имя'],['❓','вопрос'],['📖','грамматика'],['🧩','фразы'],['🎧','тоны'],['✅','мини-тест']];
+ const topics=[['👤','имя'],['❓','вопрос'],['📖','правило'],['🧩','фразы'],['🎧','тоны'],['✅','мини-тест']];
  const skills=[
  ['💬','Говорить о себе','Назвать своё имя по-китайски'],
  ['🧩','Строить предложения','Собрать фразу из слов'],
