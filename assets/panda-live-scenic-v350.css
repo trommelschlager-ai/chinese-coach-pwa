@@ -70,3 +70,9 @@ body.panda-clean-ready{background:#168ee0}
 #pg346 .pg346-topic-menu{left:9%;width:58%;max-height:36.5%;scrollbar-width:none}
 #pg346 .pg346-topic-menu::-webkit-scrollbar{display:none}
 :root[data-keyboard=true] #pg346 .pg346-panda{width:44%;left:1.5%;top:3%}
+
+/* v367: keep translation literal; show a separate, compact dialogue guide. */
+#pg346 .pg350-welcome{display:block;margin:6px 0 0;padding:5px 7px;border-top:1px solid #c39acb;border-radius:8px;background:#f5e7f9aa;font-size:clamp(11px,3vw,14px);line-height:1.2;font-weight:500}
+#pg346 .pg350-welcome strong{display:block;font-size:.91em;font-weight:750;color:#68158b}
+#pg346 .pg350-welcome span{display:block}
+#pg346[data-welcome=false] .pg350-welcome,:root[data-keyboard=true] #pg346 .pg350-welcome{display:none}
