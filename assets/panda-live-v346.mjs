@@ -1,6 +1,7 @@
 /* Panda AI v346. Clean responsive user-approved screen.
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
 import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=336';
+import {createPandaMouth} from './panda-live-face-v353.mjs?v=353';
 const bridge=window.PandaApprovedBridge337;
 if (!bridge) {
   console.error('Panda AI v346: conversation engine unavailable; keeping original screen');
@@ -49,7 +50,7 @@ if (!bridge) {
         <ellipse cx="24" cy="129" rx="17" ry="7" fill="url(#pg352-moss)"/><ellipse cx="542" cy="124" rx="22" ry="7" fill="url(#pg352-moss)"/>
         <circle cx="25" cy="110" r="6" fill="#fff2eb"/><circle cx="25" cy="110" r="2" fill="#ecb74d"/><circle cx="566" cy="104" r="5" fill="#fbe8f8"/><circle cx="566" cy="104" r="2" fill="#eca953"/>
       </svg>
-      <div class="pg352-mascot"><img class="pg346-panda" src="./assets/panda-character-clean-v349.webp?v=349" alt="Панда с открытыми глазами, цветком, фиолетовыми наушниками и шарфом" decoding="async" draggable="false"><img class="pg352-mouth" src="./assets/panda-character-clean-v349.webp?v=349" alt="" aria-hidden="true" decoding="async" draggable="false"><svg class="pg352-ear-effects" viewBox="0 0 1200 1320" preserveAspectRatio="none" aria-hidden="true" focusable="false"><ellipse cx="214" cy="515" rx="113" ry="149" transform="rotate(11 214 515)"/><ellipse cx="992" cy="413" rx="79" ry="135" transform="rotate(11 992 413)"/></svg></div>
+      <div class="pg352-mascot"><img class="pg346-panda" src="./assets/panda-character-clean-v349.webp?v=349" alt="Панда с открытыми глазами, цветком, фиолетовыми наушниками и шарфом" decoding="async" draggable="false"><canvas class="pg353-face-canvas" aria-hidden="true"></canvas><svg class="pg352-ear-effects" viewBox="0 0 1200 1320" preserveAspectRatio="none" aria-hidden="true" focusable="false"><ellipse cx="214" cy="515" rx="113" ry="149" transform="rotate(11 214 515)"/><ellipse cx="992" cy="413" rx="79" ry="135" transform="rotate(11 992 413)"/></svg></div>
       <img class="pg346-sakura" src="./assets/panda-sakura-v346.svg?v=346" alt="" aria-hidden="true" decoding="async" draggable="false">
       <div class="pg346-speech" aria-label="Текущая фраза Панды" aria-live="polite">
         <strong class="pg346-main-zh">你好！</strong>
@@ -76,6 +77,7 @@ if (!bridge) {
   // Dialogs must remain visible even though the legacy main is kept for its engine.
   document.querySelectorAll('main > dialog').forEach(dialog=>document.body.append(dialog));
   document.body.append(stage);document.body.classList.add('panda-clean-ready');
+  const liveMouth=createPandaMouth($('.pg352-mascot'));
   let lastRows='',lastPhrase='',lastTopics='',lastFeedback='',showPy=true,showRu=true,historyAudio=null;
   let lastSpeechSignalId=0,effectTimer=0,headsetResult='idle',assessmentUntil=0,assessmentText='';
   const stopHistoryAudio=()=>{if(historyAudio){const previous=historyAudio;historyAudio=null;previous.pause();}};
@@ -112,6 +114,7 @@ if (!bridge) {
     const pandaSpeaking=historySpeaking||s.pose==='talking';
     stage.dataset.listening=String(s.active);stage.dataset.welcome=String(s.history.length<=1);
     stage.dataset.pose=s.active?'listening':pandaSpeaking?'talking':'idle';
+    liveMouth.setTalking(!s.active&&pandaSpeaking);
     stage.dataset.headphones=s.active?'listening':headsetResult;$('#pg346-mic').setAttribute('aria-pressed',String(s.active));$('#pg346-short').setAttribute('aria-pressed',String(s.mode==='short'));$('#pg346-nonstop').setAttribute('aria-pressed',String(s.mode==='nonstop'));
     const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable}
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
@@ -135,6 +138,6 @@ if (!bridge) {
   $('#pg346-hear').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-play').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-repeat').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-speed').addEventListener('click',()=>{bridge.toggleSpeed();sync()});
   $('#pg346-topics-btn').addEventListener('click',toggleTopics);$('#pg346-topics-close').addEventListener('click',closeTopics);stage.addEventListener('click',e=>{if(!$('#pg346-topics').hidden&&!e.target.closest('#pg346-topics,#pg346-topics-btn'))closeTopics()});stage.addEventListener('keydown',e=>{if(e.key==='Escape')closeTopics()});
   const core=document.querySelector('main');if(core){let pending=false;new MutationObserver(()=>{if(!pending&&!document.hidden){pending=true;requestAnimationFrame(()=>{pending=false;sync()})}}).observe(core,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-state','aria-pressed','disabled']})}
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)stopHistoryAudio();else sync()});window.addEventListener('pagehide',stopHistoryAudio);
-  sync();document.documentElement.dataset.pandaCleanVersion='352';
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){stopHistoryAudio();liveMouth.setTalking(false)}else sync()});window.addEventListener('pagehide',()=>{stopHistoryAudio();liveMouth.dispose()});
+  sync();document.documentElement.dataset.pandaCleanVersion='353';
 }
