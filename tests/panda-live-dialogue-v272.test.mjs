@@ -82,3 +82,15 @@ test('recorded job question is connected to speech and a genuine Panda answer',(
  assert.match(lookupPilotAudio('你做什么工作'),/20261114-job-question-v343\.mp3$/);
  assert(lookupPilotAudio(q.reply.hanzi),'Panda job answer must have a true existing MP3 recording');
 });
+
+test('Android ASR confusion is clarified rather than silently accepted',()=>{
+ const result=answerLive('你有棒棒吗',{...options,topic:6});
+ assert.equal(result.kind,'clarify');
+ assert.equal(result.spoken.hanzi,'你有棒棒吗');
+ assert.equal(result.spoken.known,false);
+ assert.equal(result.spoken.translation,null);
+ assert.match(result.spoken.probable,/你有姐姐吗/);
+ const exact=answerLive('你有姐姐吗',{...options,topic:6});
+ assert.equal(exact.kind,'question');
+ assert(exact.reply);
+});
