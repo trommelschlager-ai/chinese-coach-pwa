@@ -1,0 +1,35 @@
+name: Panda Go HSK1 v377 soft shadows QA
+on:
+  push:
+    branches:
+      - review/hsk1-v377-soft-shadows-2026-11-16
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mobile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install Chromium
+        run: |
+          npm ci
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Test 5 mobile screens, press effects, shadows and saved progress
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/v377-server.log 2>&1 &
+          for i in $(seq 1 40); do if curl -fsS http://127.0.0.1:4173/hsk1-map.html >/dev/null; then break; fi; sleep 1; done
+          node scripts/verify-hsk1-v373.mjs
+          node scripts/verify-hsk1-v377.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: PandaGo-v377-Android-preview
+          path: qa/hsk1-v377/
+          if-no-files-found: warn
