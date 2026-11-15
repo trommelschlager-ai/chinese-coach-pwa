@@ -25,6 +25,16 @@ let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=nul
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
 let micActivatedAt=0; // Guard the first seconds of a new recording against accidental second taps.
 const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false};
+// Cache verified question groups while the same HSK lessons are unlocked.
+let cachedAskGroupsKey='',cachedAskGroups=[];
+function topicCatalogGroups(){
+ const key=state.allowed.join(',')+'|'+new Date().toDateString();
+ if(key!==cachedAskGroupsKey){
+  cachedAskGroups=availableAskGroups(state.allowed,curriculum,new Date());
+  cachedAskGroupsKey=key;
+ }
+ return cachedAskGroups;
+}
 const current=()=>state.display;
 const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson||conversation.id):conversation.id;
 function note(text){$('status').textContent=text||''}
@@ -187,7 +197,7 @@ function submit(raw){
    if(followup&&state.lockedTopic&&state.allowed.includes(state.lockedTopic)&&followup.lesson!==state.lockedTopic){
      // Preserve contextual questions from the chosen topic. If the generic
      // engine suggests a different topic, use a verified question here instead.
-     const pool=availableAskGroups(state.allowed,curriculum,new Date()).find(g=>g.lesson===state.lockedTopic)?.questions||[];
+     const pool=topicCatalogGroups().find(g=>g.lesson===state.lockedTopic)?.questions||[];
      const q=pool.find(item=>!state.questions.some(seen=>normalize(seen)===normalize(item.hanzi)))||pool[0];
      followup=q?{hanzi:q.hanzi,pinyin:q.pinyin,ru:q.ru,lesson:state.lockedTopic,audioKey:q.hanzi,accepted:[]}:null;
    }
@@ -375,7 +385,7 @@ function startRecognition(){
 function openAskPandaGuide(){
  cancelFollowup();stopRecognition();stopAudio();
  const root=$('ask-panda-topics');root.replaceChildren();
- const groups=availableAskGroups(state.allowed,curriculum,new Date());
+ const groups=topicCatalogGroups();
  for(const group of groups){
   const box=document.createElement('details');box.className='ask-panda-topic';
   box.open=group.lesson===conversation.id||groups.length===1;
@@ -451,12 +461,12 @@ window.PandaApprovedBridge337={
  topicQuestions:id=>{
   id=Number(id);
   if(!state.allowed.includes(id))return [];
-  return availableAskGroups(state.allowed,curriculum,new Date()).find(g=>g.lesson===id)?.questions||[];
+  return topicCatalogGroups().find(g=>g.lesson===id)?.questions||[];
  },
  startTopicQuestion:(id,text)=>{
   id=Number(id);
   if(!state.allowed.includes(id))return false;
-  const question=availableAskGroups(state.allowed,curriculum,new Date())
+  const question=topicCatalogGroups()
     .find(g=>g.lesson===id)?.questions.find(q=>normalize(q.hanzi)===normalize(text));
   if(!question)return false;
   cancelFollowup();stopAudio();stopRecognition();
