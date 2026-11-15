@@ -13,6 +13,9 @@ on:
       - 'scripts/verify-hsk2-city-work.cjs'
       - 'tests/hsk2-city-marks.test.cjs'
       - 'tests/hsk2-bastian-intro.test.cjs'
+      - 'tests/hsk2-bastian-visual-contract-v4.test.cjs'
+      - 'assets/bastian-approved-layout-v4.css'
+      - 'assets/bastian-night-city-v4.svg'
       - 'assets/bastian-approved-v1.avif'
       - 'assets/marks-city-avatar-v1.svg'
       - 'scripts/verify-hsk2-welcome-v348.cjs'
@@ -41,6 +44,8 @@ jobs:
         run: node scripts/verify-hsk2-intro-v349.cjs
       - name: Verify My City work lesson
         run: node scripts/verify-hsk2-city-work.cjs
+      - name: Verify approved Bastian night-city layout
+        run: node tests/hsk2-bastian-visual-contract-v4.test.cjs
       - name: Verify approved Bastian introduction
         run: node tests/hsk2-bastian-intro.test.cjs
       - name: Verify archived city prototype
