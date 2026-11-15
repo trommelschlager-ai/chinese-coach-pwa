@@ -151,7 +151,10 @@
   ()=>intro('','Отлично, первые шаги сделаны!','')+`<div class="sheet"><p class="result-title">Ты уже умеешь</p><div class="learning-pairs">${[['我','wǒ','я'],['是','shì','быть'],['学生','xuésheng','студент']].map(([hz,py,ru])=>`<div class="learning-pair"><b class="pair-word">${hz}</b><small>${py}</small><small>${ru}</small></div>`).join('')}</div><div class="rule" style="margin-top:15px"><b>我是学生。</b><div class="mini-desc">Я студент.</div></div><div class="pg-lesson-complete-actions"><button type="button" class="pg-end-repeat" id="repeat-course">↻ Повторить урок</button><a class="pg-end-next" href="./hsk1-second-v203.html">Следующий урок →</a><a class="pg-end-back" href="./hsk1-map.html">Назад к Урокам</a></div></div>`
  ];
  function save(){try{localStorage.setItem(PROGRESS_KEY,JSON.stringify({step,order,verified,listenPassed,listenTarget,listenSelected,lessonVersion:295,updatedAt:Date.now()}))}catch{}}
- function markComplete(){try{const prev=JSON.parse(localStorage.getItem(LEGACY_KEY)||'{}')||{};if(!prev.completed)localStorage.setItem(LEGACY_KEY,JSON.stringify({...prev,completed:true,maxStep:6,step:6}));let ids=JSON.parse(localStorage.getItem(COMPLETE_KEY)||'[]');if(!Array.isArray(ids))ids=[];if(!ids.includes('foundations')){ids.push('foundations');localStorage.setItem(COMPLETE_KEY,JSON.stringify(ids))}}catch{};window.PandaGoPathV371?.markComplete(1);}
+ function markComplete(){
+ /* Unlock only the next lesson in the new HSK1 sequence. */
+ try{const k='pg-hsk1-path-v371';const v=Number(localStorage.getItem(k)||'0');if(v===0)localStorage.setItem(k,'1');}catch{}
+ try{const prev=JSON.parse(localStorage.getItem(LEGACY_KEY)||'{}')||{};if(!prev.completed)localStorage.setItem(LEGACY_KEY,JSON.stringify({...prev,completed:true,maxStep:6,step:6}));let ids=JSON.parse(localStorage.getItem(COMPLETE_KEY)||'[]');if(!Array.isArray(ids))ids=[];if(!ids.includes('foundations')){ids.push('foundations');localStorage.setItem(COMPLETE_KEY,JSON.stringify(ids))}}catch{};window.PandaGoPathV371?.markComplete(1);}
 
  // Audio correction v199: preserve native recordings, separate word endings and soften tone samples.
  let playbackEpoch=0,recordEpoch=0,playbackFrame=0,toneContext=null,toneNodes=[];
