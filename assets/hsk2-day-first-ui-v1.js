@@ -7,7 +7,7 @@
 const day=window.PandaGoDay1V1;
 if(!day)return;
 let recognizer=null,recording=false;
-const names=['Слово','Примеры','Грамматика','Тест','Произношение'];
+const names=['Слово','Примеры','Правило','Тест','Речь'];
 const normalize=s=>String(s||'').replace(/[，。？！!?.,\s]/g,'');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const makeState=()=>({selected:2,quiz:[null,null],build:[],attempts:day.words.map(()=>[]),speechWord:2,permission:false,showConsent:false,speechInfo:'',working:false});
