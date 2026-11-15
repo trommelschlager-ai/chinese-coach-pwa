@@ -71,3 +71,20 @@ h1,h2,h3,p{margin:0}.panel{border:1.5px solid #e9bb82;border-radius:20px;padding
 @media(max-width:350px){.topic-title b{font-size:12px}.topic-icon{width:27px;font-size:23px}.topic-card{gap:4px;padding:8px 5px}.word-card{padding:7px}.word-card .han{font-size:21px}}
 @media(max-height:670px){.header{min-height:58px;padding:4px 7px}.brand h1{font-size:27px}.bottom button{min-height:42px}.intro-hero{padding:10px}.intro-hero h1{font-size:33px}.word-card{min-height:90px}.word-grid{gap:6px}.word-card .han{font-size:21px}.topic-card{min-height:64px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Tone practice complements the 30 short micro lessons. */
+.bottom{grid-template-columns:repeat(5,minmax(0,1fr))}
+.bottom button{font-size:10px;min-width:0}
+.tones>.panel>h1{color:#5c247f;font-size:24px;margin:5px 0 8px}
+.tones>.panel>p{font-size:13px;color:#764980;line-height:1.45}
+.tone-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0 13px}
+.tone-card{border:1.5px solid #e4bb88;border-radius:16px;background:linear-gradient(#fffaff,#f0dafa);padding:11px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 3px 7px #71309133}
+.tone-number{align-self:flex-start;background:#8a38a3;color:white;border-radius:11px;padding:3px 8px;font-weight:900;font-size:12px}
+.tone-pinyin{font-size:35px;color:#6f278a;font-weight:900}
+.tone-card>b{font-size:13px;color:#53217a}
+.tone-card>span{font-size:12px;color:#775782}
+.tone-card .tone-line{font-size:27px;font-weight:1000;color:#ae55c7}
+.tone-rule{background:#fff8fd;border:1px solid #ead4e9;border-radius:12px;padding:10px 11px;margin-top:7px}
+.tone-rule>b{display:block;color:#632787;font-size:14px;margin-bottom:5px}
+.tone-rule>span{font-size:12px;color:#74537b;line-height:1.45}
+.tone-answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:9px}
