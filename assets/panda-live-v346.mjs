@@ -50,6 +50,7 @@ if (!bridge) {
         <ellipse cx="24" cy="129" rx="17" ry="7" fill="url(#pg352-moss)"/><ellipse cx="542" cy="124" rx="22" ry="7" fill="url(#pg352-moss)"/>
         <circle cx="25" cy="110" r="6" fill="#fff2eb"/><circle cx="25" cy="110" r="2" fill="#ecb74d"/><circle cx="566" cy="104" r="5" fill="#fbe8f8"/><circle cx="566" cy="104" r="2" fill="#eca953"/>
       </svg>
+      <div class="pg364-ground-shadow" aria-hidden="true"></div>
       <div class="pg352-mascot"><img class="pg346-panda" src="./assets/panda-character-clean-v349.webp?v=349" alt="Панда с открытыми глазами, цветком, фиолетовыми наушниками и шарфом" decoding="async" draggable="false"><canvas class="pg353-face-canvas" aria-hidden="true"></canvas><svg class="pg352-ear-effects" viewBox="0 0 1200 1320" preserveAspectRatio="none" aria-hidden="true" focusable="false"><ellipse cx="214" cy="515" rx="113" ry="149" transform="rotate(11 214 515)"/><ellipse cx="992" cy="413" rx="79" ry="135" transform="rotate(11 992 413)"/></svg></div>
       <img class="pg346-sakura" src="./assets/panda-sakura-v346.svg?v=346" alt="" aria-hidden="true" decoding="async" draggable="false">
       <div class="pg354-petals" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -146,5 +147,5 @@ if (!bridge) {
   $('#pg346-topics-btn').addEventListener('click',toggleTopics);$('#pg346-topics-close').addEventListener('click',closeTopics);stage.addEventListener('click',e=>{if(!$('#pg346-topics').hidden&&!e.target.closest('#pg346-topics,#pg346-topics-btn'))closeTopics()});stage.addEventListener('keydown',e=>{if(e.key==='Escape')closeTopics()});
   const core=document.querySelector('main');if(core){let pending=false;new MutationObserver(()=>{if(!pending&&!document.hidden){pending=true;requestAnimationFrame(()=>{pending=false;sync()})}}).observe(core,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-state','aria-pressed','disabled']})}
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stopHistoryAudio();liveMouth.setTalking(false)}else sync()});window.addEventListener('pagehide',()=>{stopHistoryAudio();liveMouth.dispose()});
-  sync();document.documentElement.dataset.pandaCleanVersion='354';
+  sync();document.documentElement.dataset.pandaCleanVersion='364';document.documentElement.classList.remove('panda-booting');document.documentElement.dataset.pandaUiReady='true';
 }
