@@ -69,16 +69,25 @@ function selection(q,options,selected,type,answer){
  (selected!==null?'<p class="feedback '+(selected===answer?'good':'bad')+'">'+(selected===answer?'✓ Правильно':'✕ Попробуй другой вариант')+'</p>':'')+'</div>';
 }
 function viewWelcome(){
- return '<section class="intro"><div class="intro-hero"><div class="intro-overline">PANDA GO · ПРАКТИЧЕСКИЙ КУРС HSK 2+</div><img src="./assets/hsk2-panda-new-v328.svg" alt="Панда Panda Go" class="intro-panda"><h1>Моя жизнь<br>на китайском</h1><p>От знакомых слов — к настоящим разговорам.</p><div class="stat-grid"><span><strong>10</strong> тем</span><span><strong>30</strong> мини-уроков</span><span><strong>200</strong> слов и выражений</span></div></div>'+
- '<div class="panel"><h2>Что ты освоишь?</h2><div class="benefits">'+
- '<p>📖 <b>Слова:</b> распорядок дня, работа, хобби, город, транспорт, кафе, покупки и планы.</p>'+
- '<p>🎓 <b>Грамматика:</b> порядок слов, конструкции 在、从…到…、比、了、过、如果…就… и другие.</p>'+
- '<p>🎧 <b>Тоны:</b> пиньинь, четыре тона и упражнения на внимательное слушание.</p>'+
- '<p>💬 <b>Общение:</b> короткие диалоги, выбор правильного ответа и сборка предложений.</p>'+
- '<p>🏆 <b>Проверка:</b> задания, повторение трудных слов и итоговый тест.</p>'+
- '</div><p class="honest">Каждая тема состоит из трёх небольших занятий. Примерное время — 10–15 минут на одно. Аудио доступно только для тех слов и фраз, для которых загружены точные MP3. Автоматическая проверка тонов микрофоном пока не реализована.</p></div>'+
- '<div class="panel"><h2>Что важно перед покупкой</h2><p class="honest">Эта версия программы открыта для тестирования. Оплата не подключена. Материал предназначен для повседневного общения и не заявлен как полная экзаменационная подготовка к HSK 3.0. Проверка соответствия официальному списку и полная профессиональная озвучка — отдельные этапы.</p></div>'+
- '<div class="button-row"><button class="primary" data-view="map">📚 Посмотреть 10 тем</button><button class="secondary" data-start="0">▶ Начать с первого урока</button></div></section>';
+ var parts=[
+  ['01_header_panda.png',220],
+  ['02_course_and_ai.png',130],
+  ['03_proverb.png',130],
+  ['04_course_numbers.png',158],
+  ['05_grammar_tests_speech.png',446],
+  ['06_outcomes.png',221],
+  ['07_actions_and_lake.png',231]
+ ];
+ return '<section class="approved-welcome" aria-label="Китайский плюс легко, презентация второго курса">'+
+ '<div class="approved-poster" role="group" aria-label="Утверждённый дизайн Panda Go: семь фрагментов без растяжения">'+
+ parts.map(function(part,i){
+  return '<img src="./assets/hsk2-life-landing-approved-v1/'+part[0]+'" width="1024" height="'+part[1]+'" class="approved-slice" alt="" draggable="false" decoding="async" loading="eager">';
+ }).join('')+
+ '<button type="button" class="approved-hotspot approved-program" data-view="map" aria-label="Посмотреть программу: все 10 тем"></button>'+
+ '<button type="button" class="approved-hotspot approved-start" data-start="0" aria-label="Начать курс: первый мини-урок Мой распорядок дня"></button>'+
+ '<a class="approved-hotspot approved-ai-top" href="./panda-voice-pilot.html" aria-label="Открыть Панда AI и разговорную практику"></a>'+
+ '<a class="approved-hotspot approved-ai-card" href="./panda-voice-pilot.html" aria-label="Открыть Панда AI"></a>'+
+ '</div><span class="visually-hidden">Китайский плюс легко: 10 тем, 30 мини-уроков, 200+ слов и выражений. Не бойся говорить с ошибками. Бойся никогда не заговорить. Грамматика, тесты, практика произношения и разговоры с Панда AI.</span></section>';
 }
 function viewMap(){
  return '<section class="map"><div class="map-head"><h1>🗺️ Все 10 тем</h1><p>Моя жизнь на китайском · 30 коротких уроков</p><div class="meter"><i style="width:'+perc()+'%"></i></div><p class="small">'+state.completed.length+' из 30 мини-уроков завершено</p></div><div class="topic-grid">'+topics.map(function(t,i){
@@ -196,6 +205,7 @@ function updateNav(){
 function render(){
  var html=state.view==='welcome'?viewWelcome():state.view==='map'?viewMap():state.view==='topic'?viewTopic():state.view==='lesson'?viewLesson():state.view==='done'?viewDone():state.view==='review'?viewReview():state.view==='tones'?viewTones():viewExam();
  screen.innerHTML=html;
+ document.getElementById('app').classList.toggle('show-approved-welcome',state.view==='welcome');
  updateNav();
  screen.scrollTop=0;
  if(status)status.textContent='';
@@ -266,6 +276,7 @@ if(toggle)toggle.addEventListener('click',function(){state.showPy=!state.showPy;
 /* Allow direct links from the ten cards on the existing HSK2 course map. */
 try {
  var params=new URLSearchParams(window.location.search);
+ if(params.get('start')==='1') {state.view='lesson';state.topic=0;state.mini=0;state.stage=0;}
  var requested=params.get('topic');
  if(requested!==null&&/^(?:[0-9])$/.test(requested)){
   state.topic=Number(requested);
