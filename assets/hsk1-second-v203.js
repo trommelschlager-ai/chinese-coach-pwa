@@ -418,6 +418,7 @@ function finish(){
   localStorage.setItem(COMPLETE,JSON.stringify(list));
  }catch{}
  render();
+  window.PandaGoPathV371?.markComplete(2);
 }
 back.addEventListener('click',()=>{
  if(state.step>0){
