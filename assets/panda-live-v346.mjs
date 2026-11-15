@@ -19,7 +19,7 @@ if (!bridge) {
     layers:'<path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/>'
   };
   function icon(name){return `<svg viewBox="0 0 24 24" xmlns="${ns}" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round" stroke-linecap="round">${icons[name]||icons.chat}</svg>`}
-  const stage=document.createElement('section');stage.id='pg346';stage.dataset.py='true';stage.dataset.ru='true';stage.dataset.listening='false';stage.setAttribute('aria-label','Pоговори с Пандой — Panda AI');
+  const stage=document.createElement('section');stage.id='pg346';stage.dataset.py='true';stage.dataset.ru='true';stage.dataset.listening='false';stage.dataset.headphones='idle';stage.setAttribute('aria-label','Pоговори с Пандой — Panda AI');
   stage.innerHTML=`
     <header class="pg346-header">
       <a class="pg346-back" href="./panda-lesson1.html" aria-label="Назад к уроку">← Назад</a>
@@ -35,7 +35,21 @@ if (!bridge) {
     </header>
     <div class="pg346-history" id="pg346-rows" aria-label="Последние три реплики" aria-live="polite"></div>
     <section class="pg346-scene" aria-label="Панда в китайском пейзаже">
-      <img class="pg346-panda" src="./assets/panda-character-clean-v349.webp?v=349" alt="Панда с открытыми глазами, цветком, фиолетовыми наушниками и шарфом" decoding="async" draggable="false">
+      <svg class="pg352-rocks" viewBox="0 0 620 170" aria-hidden="true" focusable="false">
+        <defs><linearGradient id="pg352-rock-side" x1="0" y1="0" x2=".1" y2="1"><stop stop-color="#eee8d9"/><stop offset=".5" stop-color="#b7baaa"/><stop offset="1" stop-color="#729998"/></linearGradient><linearGradient id="pg352-rock-top" x1="0" y1="0" x2=".5" y2="1"><stop stop-color="#fff6df"/><stop offset=".55" stop-color="#dfdbc9"/><stop offset="1" stop-color="#afbbac"/></linearGradient><radialGradient id="pg352-moss"><stop stop-color="#9ce55a"/><stop offset="1" stop-color="#387f35"/></radialGradient></defs>
+        <ellipse cx="300" cy="139" rx="295" ry="27" fill="#0064a2" opacity=".21"/>
+        <path d="M47 87C83 58 130 59 177 49C226 23 268 36 303 34C359 22 391 42 435 44C493 39 541 55 575 76L583 105C573 132 515 141 447 136L246 143C149 143 91 131 51 113Z" fill="url(#pg352-rock-side)" stroke="#819b93" stroke-width="3"/>
+        <path d="M47 86C94 60 133 61 177 51C228 33 272 40 303 37C351 28 388 43 434 47C496 45 548 59 575 77C569 100 510 117 452 113L240 116C159 115 87 110 47 86Z" fill="url(#pg352-rock-top)" stroke="#fff4df" stroke-width="3"/>
+        <path d="M80 93L102 112L115 131M155 58L170 82L165 113M238 40L251 78L242 114M320 37L315 78L333 115M417 44L414 83L429 114M510 58L496 96L517 124M559 78L550 103L557 126" fill="none" stroke="#829a94" stroke-width="4" opacity=".64"/>
+        <path d="M99 84L125 81M191 66L215 71M276 55L305 59M360 64L393 63M451 86L481 82" stroke="#fffaf0" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+        <path d="M5 120C31 103 55 97 82 101C122 92 155 104 186 121L176 147C125 168 55 167 12 150Z" fill="url(#pg352-rock-side)" stroke="#9eaa9c" stroke-width="3"/>
+        <path d="M5 120C53 99 116 94 183 120C149 142 43 139 5 120Z" fill="url(#pg352-rock-top)" stroke="#fff6e6" stroke-width="3"/>
+        <path d="M49 107L61 135M101 102L111 137M146 110L154 140" fill="none" stroke="#90a399" stroke-width="3" opacity=".7"/>
+        <path d="M19 139Q14 113 6 103M20 139Q30 104 39 107M22 139Q40 115 50 119M531 125Q527 101 519 92M537 125Q544 93 556 95M540 130Q562 102 581 109" fill="none" stroke="#3b8a3d" stroke-width="5" stroke-linecap="round"/>
+        <ellipse cx="24" cy="129" rx="17" ry="7" fill="url(#pg352-moss)"/><ellipse cx="542" cy="124" rx="22" ry="7" fill="url(#pg352-moss)"/>
+        <circle cx="25" cy="110" r="6" fill="#fff2eb"/><circle cx="25" cy="110" r="2" fill="#ecb74d"/><circle cx="566" cy="104" r="5" fill="#fbe8f8"/><circle cx="566" cy="104" r="2" fill="#eca953"/>
+      </svg>
+      <div class="pg352-mascot"><img class="pg346-panda" src="./assets/panda-character-clean-v349.webp?v=349" alt="Панда с открытыми глазами, цветком, фиолетовыми наушниками и шарфом" decoding="async" draggable="false"><img class="pg352-mouth" src="./assets/panda-character-clean-v349.webp?v=349" alt="" aria-hidden="true" decoding="async" draggable="false"><svg class="pg352-ear-effects" viewBox="0 0 1200 1320" preserveAspectRatio="none" aria-hidden="true" focusable="false"><ellipse cx="214" cy="515" rx="113" ry="149" transform="rotate(11 214 515)"/><ellipse cx="992" cy="413" rx="79" ry="135" transform="rotate(11 992 413)"/></svg></div>
       <img class="pg346-sakura" src="./assets/panda-sakura-v346.svg?v=346" alt="" aria-hidden="true" decoding="async" draggable="false">
       <div class="pg346-speech" aria-label="Текущая фраза Панды" aria-live="polite">
         <strong class="pg346-main-zh">你好！</strong>
@@ -47,8 +61,8 @@ if (!bridge) {
       <div class="pg346-live" id="pg346-live" data-active="false" aria-live="polite"></div>
       <div class="pg346-feedback" id="pg346-feedback" hidden aria-live="polite"></div>
       <div class="pg346-status" id="pg346-status" hidden role="status" aria-live="polite"></div>
-      <button id="pg346-topics-btn" type="button" class="pg346-all-topics" aria-label="Все темы — выбрать урок" aria-expanded="true" aria-controls="pg346-topics">${icon('layers')}<span>Все<br>темы</span></button>
-      <div class="pg346-topic-menu" id="pg346-topics"><div class="pg346-topic-menu-title">Все темы <button id="pg346-topics-close" type="button" aria-label="Закрыть">×</button></div><div class="pg346-topic-list"></div></div>
+      <button id="pg346-topics-btn" type="button" class="pg346-all-topics" aria-label="Все темы — выбрать урок" aria-expanded="false" aria-controls="pg346-topics">${icon('layers')}<span>Все<br>темы</span></button>
+      <div class="pg346-topic-menu" id="pg346-topics" hidden><div class="pg346-topic-menu-title">Все темы <button id="pg346-topics-close" type="button" aria-label="Закрыть">×</button></div><div class="pg346-topic-list"></div></div>
     </section>
     <div class="pg346-composer"><form class="pg346-form" id="pg346-form"><input id="pg346-input" class="pg346-input" name="message" maxlength="160" autocomplete="off" placeholder="Напиши по-китайски…" enterkeyhint="send" aria-label="Напиши по-китайски"></form><button class="pg346-send" id="pg346-send" type="button" aria-label="Отправить">${icon('send')}</button><button class="pg346-mic" id="pg346-mic" type="button" aria-label="Ответить голосом" aria-pressed="false">${icon('mic')}</button></div>
     <nav class="pg346-nav" aria-label="Разделы Panda Go">
@@ -63,9 +77,10 @@ if (!bridge) {
   document.querySelectorAll('main > dialog').forEach(dialog=>document.body.append(dialog));
   document.body.append(stage);document.body.classList.add('panda-clean-ready');
   let lastRows='',lastPhrase='',lastTopics='',lastFeedback='',showPy=true,showRu=true,historyAudio=null;
-  const stopHistoryAudio=()=>{if(historyAudio){historyAudio.pause();historyAudio=null;}};
+  let lastSpeechSignalId=0,effectTimer=0,headsetResult='idle',assessmentUntil=0,assessmentText='';
+  const stopHistoryAudio=()=>{if(historyAudio){const previous=historyAudio;historyAudio=null;previous.pause();}};
   function clipFor(entry){return lookupPandaVoiceClip(entry?.hanzi||entry?.panda)||lookupPandaVoiceClip(entry?.audioKey)}
-  function playHistory(entry){const part=clipFor(entry);if(!part){bridge.note('🔇 Для этой фразы нет MP3-записи');return}stopHistoryAudio();bridge.stopPlayback();const a=new Audio(new URL(part.src,document.baseURI).href);historyAudio=a;a.playbackRate=bridge.snapshot().slow?.8:1;const start=Number(part.start)||0,end=Number.isFinite(part.end)?Number(part.end):null;a.onloadedmetadata=()=>{if(historyAudio===a)try{a.currentTime=start}catch{}};a.ontimeupdate=()=>{if(historyAudio===a&&end!==null&&a.currentTime>=end-.025)stopHistoryAudio()};a.onended=()=>{if(historyAudio===a)historyAudio=null};a.onerror=()=>{if(historyAudio===a){stopHistoryAudio();bridge.note('Звуковой файл не загрузился')}};a.play().catch(()=>{if(historyAudio===a){stopHistoryAudio();bridge.note('Браузер заблокировал звук. Нажми динамик ещё раз')}})}
+  function playHistory(entry){const part=clipFor(entry);if(!part){bridge.note('🔇 Для этой фразы нет MP3-записи');return}stopHistoryAudio();bridge.stopPlayback();const a=new Audio(new URL(part.src,document.baseURI).href);historyAudio=a;a.playbackRate=bridge.snapshot().slow?.8:1;const start=Number(part.start)||0,end=Number.isFinite(part.end)?Number(part.end):null;a.onloadedmetadata=()=>{if(historyAudio===a)try{a.currentTime=start}catch{}};a.ontimeupdate=()=>{if(historyAudio===a&&end!==null&&a.currentTime>=end-.025)stopHistoryAudio()};a.onplaying=()=>{if(historyAudio===a)sync()};a.onpause=()=>{if(historyAudio===a)sync()};a.onended=()=>{if(historyAudio===a){historyAudio=null;sync()}};a.onerror=()=>{if(historyAudio===a){stopHistoryAudio();bridge.note('Звуковой файл не загрузился')}};a.play().catch(()=>{if(historyAudio===a){stopHistoryAudio();bridge.note('Браузер заблокировал звук. Нажми динамик ещё раз')}})}
   function renderRows(rows){const root=$('#pg346-rows');root.replaceChildren();for(const e of rows.slice(-3)){
     const row=el('article','pg346-row');const av=el('span','pg346-avatar');if(e.who==='you')av.textContent='👤';else{const img=document.createElement('img');img.src='./assets/panda-character-clean-v349.webp?v=349';img.alt='Панда';av.append(img)}
     const text=el('div','pg346-text');text.append(el('div','pg346-zh',e.hanzi||''),el('div','pg346-py',e.pinyin||''));
@@ -76,13 +91,37 @@ if (!bridge) {
   const topicsFallback=['Приветствия','Учёба','Время','Дни недели','Даты','Семья','Погода'];
   function renderTopics(s){const key=s.allowed.join(',')+'|'+s.topic;if(key===lastTopics)return;lastTopics=key;const grid=$('.pg346-topic-list');grid.replaceChildren();const options=new Map([...document.querySelectorAll('#lesson-select option')].map(o=>[Number(o.value),o.textContent.replace(/^\d+\.\s*/,'')]));for(const id of [7,6,4,3,2,5,1]){const b=el('button','',topicsFallback[id-1]);b.type='button';b.disabled=!s.allowed.includes(id);b.setAttribute('aria-current',String(id===s.topic));if(b.disabled)b.title='Сначала пройди урок '+id;b.addEventListener('click',()=>{if(bridge.chooseTopic(id)){closeTopics();sync()}});grid.append(b)}}
   function renderFeedback(s){const last=s.history.slice().reverse().find(x=>x.who==='you');const wrong=last?.analysis?.correction,unknown=last&&!last.ru&&!last.analysis?.probable;const root=$('#pg346-feedback');const active=!!wrong||!!unknown;const key=[last?.hanzi,wrong?.hanzi,s.feedback,active].join('|');if(key===lastFeedback)return;lastFeedback=key;root.hidden=!active;root.replaceChildren();if(!active)return;root.append(el('strong','',`Ты сказал: ${last.hanzi}`));if(wrong){root.append(el('p','',`✅ Правильно: ${wrong.hanzi}${wrong.pinyin?' · '+wrong.pinyin:''}`));if(wrong.ru)root.append(el('p','',wrong.ru));if(wrong.why)root.append(el('p','',wrong.why))}else{root.append(el('p','',last.analysis?.probable||'Полный смысл не подтверждён. Попробуй уточнить'))}}
-  function sync(){const s=bridge.snapshot();stage.dataset.listening=String(s.active);stage.dataset.welcome=String(s.history.length<=1);stage.dataset.pose=s.active?'listening':s.pose==='talking'?'talking':'idle';$('#pg346-mic').setAttribute('aria-pressed',String(s.active));$('#pg346-short').setAttribute('aria-pressed',String(s.mode==='short'));$('#pg346-nonstop').setAttribute('aria-pressed',String(s.mode==='nonstop'));
+  function ingestSpeechSignal(signal,previousSnapshot){
+    if(!signal||signal.id===lastSpeechSignalId)return;
+    lastSpeechSignalId=signal.id;clearTimeout(effectTimer);
+    // A browser ASR transcript is NOT acoustic tone assessment; never award green for text alone.
+    const tonesChecked=signal.kind==='verified-tones'&&signal.toneVerified===true&&signal.contentVerified===true&&signal.confidence>=.85;
+    if(tonesChecked){headsetResult='correct';assessmentText='✅ 太棒了！ Произношение и тоны проверены.';}
+    else if(signal.kind==='content-error'&&signal.confidence>=.85){
+      headsetResult='error';assessmentText='再说一遍！ Повтори ещё раз. Тоны не проверены.';
+      // If the corrected phrase has an existing clip, replay only that approved recording.
+      if(signal.correctionHanzi&&clipFor({hanzi:signal.correctionHanzi})&&previousSnapshot.pose!=='talking')playHistory({hanzi:signal.correctionHanzi});
+    }else{headsetResult='idle';assessmentText=signal.kind==='uncertain'
+      ?'Речь распознана неуверенно. Повтори ещё раз.'
+      :'Фраза распознана по тексту. Китайские тоны не проверены.';}
+    assessmentUntil=Date.now()+2300;
+    effectTimer=setTimeout(()=>{headsetResult='idle';assessmentUntil=0;sync()},2300);
+  }
+  function sync(){const s=bridge.snapshot();ingestSpeechSignal(s.speechSignal,s);
+    const historySpeaking=!!(historyAudio&&!historyAudio.paused&&!historyAudio.ended);
+    const pandaSpeaking=historySpeaking||s.pose==='talking';
+    stage.dataset.listening=String(s.active);stage.dataset.welcome=String(s.history.length<=1);
+    stage.dataset.pose=s.active?'listening':pandaSpeaking?'talking':'idle';
+    stage.dataset.headphones=s.active?'listening':headsetResult;$('#pg346-mic').setAttribute('aria-pressed',String(s.active));$('#pg346-short').setAttribute('aria-pressed',String(s.mode==='short'));$('#pg346-nonstop').setAttribute('aria-pressed',String(s.mode==='nonstop'));
     const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable}
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
     renderFeedback(s);renderTopics(s);
     const warning=$('#pg346-status'),problem=/(микрофон|распознаван|разреши|доступ|Chrome|запись не|запись пока|звуковой файл)/i.test(s.status||'');
     warning.hidden=!problem;warning.textContent=problem?s.status:'';
-    const live=$('#pg346-live');live.dataset.active=String(s.active||s.pose==='talking');live.textContent=s.active?'🎙 Слушаю…':s.pose==='talking'?'🔊 Панда говорит':'';
+    const live=$('#pg346-live');const showingAssessment=Date.now()<assessmentUntil;
+    live.classList.toggle('pg352-assessment',!s.active&&!pandaSpeaking&&showingAssessment);
+    live.dataset.active=String(s.active||pandaSpeaking||showingAssessment);
+    live.textContent=s.active?'🎙 Слушаю…':pandaSpeaking?'🔊 Панда говорит':showingAssessment?assessmentText:'';
     const back=document.getElementById('back-link');if(back)$('a.pg346-back').href=back.href;
   }
   function closeTopics(){$('#pg346-topics').hidden=true;$('#pg346-topics-btn').setAttribute('aria-expanded','false')}
@@ -97,5 +136,5 @@ if (!bridge) {
   $('#pg346-topics-btn').addEventListener('click',toggleTopics);$('#pg346-topics-close').addEventListener('click',closeTopics);stage.addEventListener('click',e=>{if(!$('#pg346-topics').hidden&&!e.target.closest('#pg346-topics,#pg346-topics-btn'))closeTopics()});stage.addEventListener('keydown',e=>{if(e.key==='Escape')closeTopics()});
   const core=document.querySelector('main');if(core){let pending=false;new MutationObserver(()=>{if(!pending&&!document.hidden){pending=true;requestAnimationFrame(()=>{pending=false;sync()})}}).observe(core,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-state','aria-pressed','disabled']})}
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stopHistoryAudio();else sync()});window.addEventListener('pagehide',stopHistoryAudio);
-  sync();document.documentElement.dataset.pandaCleanVersion='350';
+  sync();document.documentElement.dataset.pandaCleanVersion='352';
 }

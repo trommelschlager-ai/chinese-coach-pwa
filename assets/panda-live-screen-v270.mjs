@@ -18,7 +18,7 @@ const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
 const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,recognition=null,epoch=0,watchdog,poseTimer,followupTimer;
-const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null};
+const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null,speechSignal:null};
 const current=()=>state.display;
 const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson||conversation.id):conversation.id;
 function note(text){$('status').textContent=text||''}
@@ -290,7 +290,18 @@ function startRecognition(){
   if(!text){fail('Браузер вернул пустой ответ. Попробуй ещё раз в Chrome или напиши фразу.');return}
   heard=true;state.confidence=typeof a?.confidence==='number'&&a.confidence>0?a.confidence:null;
   submit(text);
-  if(state.confidence!==null&&state.confidence<.65)note('Распознано неуверенно. Проверь текст и повтори при необходимости.');
+  // ASR returns text and optional confidence, never a validated acoustic tone score.
+  const latestLearner=[...state.history].reverse().find(turn=>turn.who==='you'&&turn.hanzi===text);
+  const correctionHanzi=latestLearner?.analysis?.correction?.hanzi||null;
+  const reliable=state.confidence!==null&&state.confidence>=.85;
+  const kind=state.confidence!==null&&state.confidence<.65?'uncertain'
+    :correctionHanzi&&reliable?'content-error':'text-only';
+  state.speechSignal={
+    id:(state.speechSignal?.id||0)+1,kind,text,confidence:state.confidence,
+    correctionHanzi:kind==='content-error'?correctionHanzi:null,
+    contentVerified:false,toneVerified:false
+  };
+  if(kind==='uncertain')note('Распознано неуверенно. Проверь текст и повтори при необходимости.');
   state.confidence=null;
  };
  r.onerror=e=>{
@@ -379,7 +390,7 @@ window.PandaApprovedBridge337={
    allowed:[...state.allowed],topic:lesson(),mode:state.mode,
    slow:state.slow,active:state.active,pose:$('character').dataset.state,
    feedback:$('learner-feedback').hidden?'':$('learner-feedback').textContent,
-   status:$('status').textContent,audioAvailable:!$('hear').disabled};
+   status:$('status').textContent,audioAvailable:!$('hear').disabled,speechSignal:state.speechSignal};
  },
  chooseTopic:id=>{
   id=Number(id);

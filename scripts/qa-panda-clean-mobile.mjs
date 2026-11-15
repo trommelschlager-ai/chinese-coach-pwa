@@ -30,8 +30,10 @@ export async function verifyCleanMobile(browser,base,dir){
   await page.locator('#pg346-mic').click();assert(await page.locator('#speech-dialog').isVisible());
   assert.equal(await page.evaluate(()=>window.__speech.length),0);await page.locator('#speech-allow').click();
   await page.waitForFunction(()=>document.querySelector('#pg346').dataset.pose==='listening');
+  assert.equal(await page.locator('#pg346').getAttribute('data-headphones'),'listening','Listening switches headset to blue');
   await page.evaluate(()=>window.__speech.at(-1).onresult({results:[[{transcript:'晚上好',confidence:.95}]]}));
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh').textContent==='晚上好！');
+  assert.notEqual(await page.locator('#pg346').getAttribute('data-headphones'),'correct','ASR text is not acoustic proof of tones');
   for(const height of [568,640,740,825,915,400,320]){
    await page.setViewportSize({width,height});
    await page.waitForFunction(()=>Math.abs(document.querySelector('#pg346').getBoundingClientRect().height-(visualViewport?.height||innerHeight))<2);

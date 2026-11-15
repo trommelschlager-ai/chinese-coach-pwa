@@ -1,0 +1,81 @@
+/* Panda AI v352 — presentation-only mascot effects.
+   The approved scenic background and the existing speech/audio engine remain unchanged. */
+#pg346 .pg346-scene{isolation:isolate}
+#pg346 .pg352-rocks{
+  position:absolute;z-index:1;left:0%;bottom:7%;width:69%;height:auto;
+  overflow:visible;pointer-events:none;filter:drop-shadow(0 7px 6px #164f7455)
+}
+#pg346 .pg352-mascot{
+  position:absolute;z-index:2;left:3.5%;bottom:18.5%;width:min(70%,calc(var(--screen-height,100dvh) * .34));height:auto;
+  transform-origin:50% 95%;animation:pg349-idle 5s ease-in-out infinite;
+  pointer-events:none;will-change:transform
+}
+#pg346 .pg352-mascot .pg346-panda{
+  position:relative!important;display:block;width:100%!important;height:auto!important;
+  max-width:none!important;max-height:none!important;left:auto!important;right:auto!important;
+  top:auto!important;bottom:auto!important;object-fit:contain!important;
+  transform:none!important;animation:none!important;filter:drop-shadow(0 5px 5px #27578248)
+}
+/* The mouth layer uses the exact same approved transparent mascot image.
+   Only a feathered lip-sized region moves: eyes, scarf, flower and face remain untouched. */
+#pg346 .pg352-mouth{
+  display:block;position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;opacity:0;transform-origin:60.5% 42.3%;
+  clip-path:ellipse(7.3% 5.5% at 60.5% 42.3%);
+  -webkit-mask-image:radial-gradient(ellipse 11.5% 8.2% at 60.5% 42.3%,#000 37%,transparent 65%);
+  mask-image:radial-gradient(ellipse 11.5% 8.2% at 60.5% 42.3%,#000 37%,transparent 65%);
+  will-change:transform
+}
+#pg346[data-pose=talking] .pg352-mouth{
+  opacity:1;animation:pg352-mouth 340ms ease-in-out infinite alternate
+}
+@keyframes pg352-mouth{
+  0%{transform:scaleY(.87)}
+  45%{transform:scaleY(1.06)}
+  100%{transform:scaleY(.95)}
+}
+#pg346[data-pose=listening] .pg352-mascot{animation:pg349-listening 2.8s ease-in-out infinite}
+#pg346[data-pose=talking] .pg352-mascot{animation:pg349-talking 1s ease-in-out infinite}
+/* Headset cups are colorized locally; the character's other purple accessories never change. */
+#pg346 .pg352-ear-effects{
+  position:absolute;inset:0;width:100%;height:100%;opacity:0;
+  overflow:visible;mix-blend-mode:screen;--headset-glow:#ca3cfb;
+  filter:drop-shadow(0 0 5px var(--headset-glow)) drop-shadow(0 0 10px var(--headset-glow));
+  transition:opacity .2s ease,color .2s ease;pointer-events:none
+}
+#pg346 .pg352-ear-effects ellipse{
+  fill:var(--headset-glow);fill-opacity:.18;stroke:var(--headset-glow);
+  stroke-opacity:.88;stroke-width:12
+}
+#pg346[data-headphones=listening] .pg352-ear-effects{
+  --headset-glow:#19bfff;opacity:1;animation:pg352-headphones-pulse 1.3s ease-in-out infinite
+}
+#pg346[data-headphones=correct] .pg352-ear-effects{
+  --headset-glow:#24fa6e;opacity:1
+}
+#pg346[data-headphones=error] .pg352-ear-effects{
+  --headset-glow:#ff4665;opacity:.88;animation:pg352-headphones-error 1.1s ease-in-out infinite
+}
+@keyframes pg352-headphones-pulse{0%,100%{opacity:.63;filter:drop-shadow(0 0 4px #24bfff)}50%{opacity:1;filter:drop-shadow(0 0 14px #00baff) drop-shadow(0 0 16px #009eff)}}
+@keyframes pg352-headphones-error{0%,100%{opacity:.6}50%{opacity:1}}
+/* Reuse the existing spoken/listening status capsule; avoid a new permanent panel. */
+#pg346 .pg346-live{max-width:60%;text-align:center}
+#pg346 .pg346-live.pg352-assessment{left:3%;bottom:2%;font-size:clamp(10px,2.45vw,13px);line-height:1.15}
+#pg346[data-headphones=error] .pg346-live.pg352-assessment{background:linear-gradient(120deg,#a62c63,#8f1768)}
+#pg346[data-headphones=correct] .pg346-live.pg352-assessment{background:linear-gradient(120deg,#26b66b,#11884e)}
+@media(max-height:720px){
+  #pg346 .pg352-mascot{width:min(64%,calc(var(--screen-height,100dvh) * .34));bottom:16%}
+  #pg346 .pg352-rocks{width:66%;bottom:6%}
+}
+@media(max-height:590px){
+  #pg346 .pg352-mascot{width:min(54%,calc(var(--screen-height,100dvh) * .34));bottom:12%}
+  #pg346 .pg352-rocks{width:59%;bottom:3%}
+}
+:root[data-keyboard=true] #pg346 .pg352-mascot{width:min(44%,calc(var(--screen-height,100dvh) * .34));left:1.5%;bottom:10%}
+:root[data-keyboard=true] #pg346 .pg352-rocks{width:47%;bottom:1%}
+@media(prefers-reduced-motion:reduce){
+  #pg346 .pg352-mascot,#pg346 .pg352-mouth,#pg346 .pg352-ear-effects{
+    animation:none!important;will-change:auto
+  }
+  #pg346[data-pose=talking] .pg352-mouth{opacity:0}
+}
