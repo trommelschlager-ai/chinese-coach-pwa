@@ -134,7 +134,8 @@ async function main(){
         if(r.width<44||r.height<44)issues.push('Tap target too small: '+(item.getAttribute('aria-label')||item.textContent.trim()));
         if(r.left<0||r.right>innerWidth+1||r.top<0||r.bottom>innerHeight+2)issues.push('Tap target outside screen: '+(item.getAttribute('aria-label')||item.textContent.trim()));
         const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
-        if(hit!==item&&!item.contains(hit))issues.push('Map item covered: '+(item.getAttribute('aria-label')||item.textContent.trim()));
+        // Inert (locked) lessons intentionally do not participate in hit testing.
+        if(hit!==item&&!item.contains(hit)&&!item.classList.contains('locked'))issues.push('Map item covered: '+(item.getAttribute('aria-label')||item.textContent.trim()));
       }
       const ai=document.querySelector('.pg-ai-figure');
       if(!ai||!ai.naturalWidth)issues.push('Panda AI artwork missing');
