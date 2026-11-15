@@ -7,6 +7,8 @@ const root=path.resolve(__dirname,'..');
 const html=fs.readFileSync(path.join(root,'hsk2-life-course.html'),'utf8');
 const data=fs.readFileSync(path.join(root,'assets/hsk2-life-course-data-v1.js'),'utf8');
 const app=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'utf8');
+const dayData=fs.readFileSync(path.join(root,'assets/hsk2-day-first-data-v1.js'),'utf8');
+const dayUI=fs.readFileSync(path.join(root,'assets/hsk2-day-first-ui-v1.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'assets/hsk2-life-course-v1.css'),'utf8');
 const errors=[],warnings=[];
 const vc=new VirtualConsole();
@@ -16,7 +18,7 @@ vc.on('warn',s=>warnings.push(String(s)));
 const dom=new JSDOM(html,{url:'https://example.org/hsk2-life-course.html',runScripts:'dangerously',virtualConsole:vc,beforeParse(w){w.scrollTo=()=>{}}});
 const w=dom.window,doc=w.document;
 w.PandaHsk2AudioV330={lookup:()=>null,play:()=>false};
-w.eval(data);w.eval(app);
+w.eval(data);w.eval(dayData);w.eval(dayUI);w.eval(app);
 const topics=w.PandaLifeCourseV1.topics;
 function $(selector){return doc.querySelector(selector)}
 function click(selector){const b=$(selector);assert.ok(b,'Missing '+selector);assert.ok(!b.disabled,'Disabled '+selector);b.click()}
@@ -32,7 +34,31 @@ assert.equal(doc.querySelectorAll('[data-topic]').length,10);
 click('[data-topic="0"]');
 assert.equal(doc.querySelectorAll('[data-mini]').length,4);
 click('[data-mini="0"]');
-for(let lesson=0;lesson<30;lesson++){
+assert.equal(doc.querySelectorAll('.day-vword').length,7,'Day one must contain seven studied words');
+assert.ok(doc.querySelector('.day-headword').textContent.includes('起床'),'The first focused word is 起床');
+assert.ok(doc.querySelector('.day-chars').textContent.includes('chuáng'),'Correct second-tone pinyin');
+click('[data-day-word="3"]');
+assert.ok(doc.querySelector('.day-tip').textContent.includes('第三')===false,'Tones shown in Russian without false characters');
+click('[data-day-next]'); // 2: examples
+assert.equal(doc.querySelectorAll('.day-dialogue').length,4);
+click('[data-day-next]'); // 3: grammar
+assert.ok(doc.querySelector('.day-formula').textContent.includes('七点'));
+assert.ok(doc.querySelector('.day-tip').textContent.includes('měitiān'));
+click('[data-day-next]'); // 4: test
+assert.equal(doc.querySelectorAll('.day-question').length,2);
+click('[data-day-quiz="0:1"]');
+click('[data-day-quiz="1:0"]');
+for(const k of [0,1,2,3])click('[data-day-token="'+k+'"]');
+assert.ok(!doc.querySelector('[data-day-next]').disabled,'Quiz and builder must pass');
+click('[data-day-next]'); // 5: five-time speech practice
+assert.equal(doc.querySelectorAll('.day-attempts>div').length,5);
+assert.match(doc.querySelector('.day-card').textContent,/не оценивает/);
+click('[data-day-next]'); // finish, microphone must be optional
+assert.match(doc.querySelector('#screen').textContent,/Мини-урок пройден!/);
+assert.match(doc.querySelector('.day-ai-panel a').getAttribute('href'),/practice=day&mini=0/);
+assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,1);
+click('[data-next-mini]'); // old lessons unchanged
+for(let lesson=1;lesson<30;lesson++){
  const t=Math.floor(lesson/3),m=lesson%3,scene=topics[t].scenes[m];
  const expectedWords=m===2?6:7;
  assert.equal(doc.querySelectorAll('.word-card').length,expectedWords,'Mini '+lesson+' word count');
