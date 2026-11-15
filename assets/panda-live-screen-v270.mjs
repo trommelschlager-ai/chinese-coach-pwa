@@ -11,7 +11,7 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=358';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=360';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=336';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
@@ -284,7 +284,7 @@ function startRecognition(){
  if(window.isSecureContext===false){showMicRecovery('Для микрофона нужен HTTPS. Открой опубликованный Panda Go в Chrome.');return}
  cancelFollowup();stopAudio();stopRecognition();let r;
  try{
-  r=new Speech();r.lang='zh-CN';r.continuous=false;r.interimResults=false;r.maxAlternatives=1;
+  r=new Speech();r.lang='zh-CN';r.continuous=false;r.interimResults=false;r.maxAlternatives=3;
  }catch{showMicRecovery('Браузер не смог создать сеанс распознавания. Открой ссылку в Chrome.');return}
  recognition=r;const token=++epoch;state.active=true;
  let heard=false,failed=false,started=false,audioStarted=false;
