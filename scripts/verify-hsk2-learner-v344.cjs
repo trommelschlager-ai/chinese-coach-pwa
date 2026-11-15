@@ -12,6 +12,15 @@ const get=file=>fs.readFileSync(path.join(root,file),'utf8');
 const intro=get('hsk2-introduction.html');
 const start=get('hsk2-start.html');
 const bridge=get('hsk1-hsk2-bridge.html');
+const city=get('hsk2-city-work.html');
+const sharedSkin=get('assets/hsk2-premium-v352.css');
+for(const [name,doc] of [['Lesson 1',intro],['HSK2 Journey',start],['My City',city]]){
+ assert(doc.includes('hsk2-premium-v352.css'),'Premium stylesheet missing: '+name);
+}
+for(const rule of ['.poster-lead','.vocabulary-grid','.poster-plaque','.app.hsk2-premium-map','.app.hsk2-premium-city','.bubble .chat']){
+ assert(sharedSkin.includes(rule),'Shared premium design missing: '+rule);
+}
+
 const inline=html=>[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 let checked=0;
 for(const [name,html] of [['HSK2 map',start],['Self-introduction',intro],['HSK1-HSK2 bridge',bridge]]){
