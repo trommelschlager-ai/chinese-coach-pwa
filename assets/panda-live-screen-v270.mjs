@@ -13,13 +13,17 @@ import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
 import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=360';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=336';
+import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=1';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
+const dayParams=new URLSearchParams(location.search);
+const dayLaunch=dayParams.get('practice')==='day';
+const dayMini=Math.min(2,Math.max(0,Number(dayParams.get('mini'))||0));
 const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
-const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null,speechSignal:null};
+const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false};
 const current=()=>state.display;
 const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson||conversation.id):conversation.id;
 function note(text){$('status').textContent=text||''}
@@ -111,21 +115,21 @@ function render(){
  const clip=lookupPandaVoiceClip(line.hanzi||line.panda)||lookupPandaVoiceClip(line.audioKey);$('hear').disabled=!clip;$('audio-note').hidden=!!clip;
  $('hear').parentElement.hidden=!clip;
  $('audio-note').textContent='🔇 Для этой точной фразы пока нет MP3';
- $('step').textContent=state.mode==='nonstop'?'∞ Разговор без лимита':state.done?'Диалог завершён':`${state.step+1} из ${conversation.lines.length}`;
+ $('step').textContent=state.dayMode?'Мой день · '+(state.dayDone?'готово':(state.dayStep+1)+' из '+dailyQuestions(state.dayMini).length):state.mode==='nonstop'?'∞ Разговор без лимита':state.done?'Диалог завершён':`${state.step+1} из ${conversation.lines.length}`;
  $('mode-short').classList.toggle('active',state.mode==='short');$('mode-nonstop').classList.toggle('active',state.mode==='nonstop');
  for(const name of ['short','nonstop'])$('mode-'+name).setAttribute('aria-pressed',String(state.mode===name));
- $('mode-description').textContent=state.mode==='nonstop'?'Отвечай по HSK 1 и вводным словам HSK 2':'Панда спрашивает — ты отвечаешь по уроку';
+ $('mode-description').textContent=state.dayMode?'Мой день: вопросы только по изученным словам. Проверяем содержание ответа, а не тоны.':state.mode==='nonstop'?'Отвечай по HSK 1 и вводным словам HSK 2':'Панда спрашивает — ты отвечаешь по уроку';
  const bars=document.querySelector('.bars');bars.replaceChildren();bars.hidden=state.mode==='nonstop';
  for(let i=0;i<conversation.lines.length;i++){const b=document.createElement('i');b.className='bar'+(state.done||i<=state.step?' on':'');bars.append(b)}
  $('finish').hidden=state.mode!=='nonstop';$('next').hidden=state.mode!=='nonstop';
  $('message').placeholder=state.done&&state.mode==='short'?'Спроси Панду или начни заново…':'Напиши по-китайски…';
  const context=line.context||(state.mode==='nonstop'?(state.prompt?.line.context||''):conversation.context||'');
  $('exercise-banner').textContent=conversation.id===5&&state.mode==='short'&&!line.context?'Учебная сценка: '+context:context;$('exercise-banner').hidden=!context;
- const activePrompt=state.followup||state.prompt?.line;const questionExamples=state.followup||pickCoursePrompt(lesson(),curriculum,state.questions,new Date(),{...state.profile,unlocked:state.allowed});
- const examples=state.mode==='nonstop'?(state.awaitQuestion?[...(questionExamples?[questionExamples.hanzi]:[]),...extraExamples(lesson())]:[...(activePrompt?.accepted||activePrompt?.verifiedLines?.[1]?.accepted||[]).filter(x=>/[\u3400-\u9fff]/.test(x)).slice(0,2),...(questionExamples?[questionExamples.hanzi]:[])]):state.done?extraExamples(conversation.id):validatedVariants(conversation.id,state.step,conversation.lines);
+ const activePrompt=state.followup||state.prompt?.line;const questionExamples=state.dayMode?null:state.followup||pickCoursePrompt(lesson(),curriculum,state.questions,new Date(),{...state.profile,unlocked:state.allowed});
+ const examples=state.dayMode?(state.dayDone?[]:[String(state.prompt?.line?.hint||'').replace(/^Попробуй:\s*/,'')]):state.mode==='nonstop'?(state.awaitQuestion?[...(questionExamples?[questionExamples.hanzi]:[]),...extraExamples(lesson())]:[...(activePrompt?.accepted||activePrompt?.verifiedLines?.[1]?.accepted||[]).filter(x=>/[\u3400-\u9fff]/.test(x)).slice(0,2),...(questionExamples?[questionExamples.hanzi]:[])]):state.done?extraExamples(conversation.id):validatedVariants(conversation.id,state.step,conversation.lines);
  $('quick-phrases').replaceChildren();for(const text of examples.filter((text,index,all)=>all.findIndex(x=>normalize(x)===normalize(text))===index).slice(0,3)){const b=document.createElement('button');b.type='button';b.textContent=text;b.addEventListener('click',()=>{$('message').value=text;$('message').focus()});$('quick-phrases').append(b)}
  document.documentElement.dataset.hint=String(state.hint);$('hint').setAttribute('aria-expanded',String(state.hint));$('hint-text').hidden=!state.hint;
- if(state.hint)$('hint-text').textContent=state.mode==='nonstop'?(state.awaitQuestion?'Можно спросить: '+(questionExamples?.hanzi||'你好吗？')+' — '+(questionExamples?.ru||'Как дела?'):(activePrompt?.instruction||'Выбери короткую фразу по текущей теме.')):state.done?'Нажми «Заново» для нового диалога или задай вопрос.':conversation.lines[state.step].instruction;
+ if(state.hint)$('hint-text').textContent=state.dayMode?(state.prompt?.line?.hint||'Говори по теме Мой день.'):state.mode==='nonstop'?(state.awaitQuestion?'Можно спросить: '+(questionExamples?.hanzi||'你好吗？')+' — '+(questionExamples?.ru||'Как дела?'):(activePrompt?.instruction||'Выбери короткую фразу по текущей теме.')):state.done?'Нажми «Заново» для нового диалога или задай вопрос.':conversation.lines[state.step].instruction;
  refreshReview();updateMic();
 }
 function rotateGreeting(){let index=0;try{index=Number(storage?.getItem('pg-panda-live-practice-greeting-v1'))||0;storage?.setItem('pg-panda-live-practice-greeting-v1',String((index+1)%4))}catch{}return index%4}
@@ -137,10 +141,16 @@ function initLesson(id){
  $('allowed-topics').textContent='Доступны текущий и пройденные уроки: '+state.allowed.map(n=>CONVERSATIONS.find(c=>c.id===n).theme).join(', ')+'. Панда задаёт вопросы из этих уроков, использует их голосовые записи и разбирает слова.';
  $('words').replaceChildren();for(const w of [...(base.vocabulary||base.newWords||[]),...(base.examples||[])]){const p=document.createElement('p');p.textContent=[w.hanzi,w.pinyin,w.ru].join(' — ');$('words').append(p)}
  $('knowledge-answer').textContent='';$('message').value='';note('');
- if(state.mode==='nonstop')askNext();else say(conversation.lines[0],false);
+ if(state.dayMode){state.mode='nonstop';state.dayStep=0;state.dayDone=false;$('back-link').href='./hsk2-life-course.html?topic=0';$('allowed-topics').textContent='Практика Мой день: вопросы ограничены словами, которые ученик уже прошёл в курсе 2.';askNext();}else if(state.mode==='nonstop')askNext();else say(conversation.lines[0],false);
 }
 function askNext(){
  cancelFollowup();stopRecognition();stopAudio();state.awaitQuestion=false;
+ if(state.dayMode){
+  const prompt=dailyQuestions(state.dayMini)[state.dayStep];
+  if(!prompt){state.dayDone=true;state.prompt=null;say(dailyFinal,false);note('Все вопросы по теме Мой день пройдены. Это проверка смысла, а не тонов. Нажми «Назад», чтобы вернуться в курс.');return;}
+  state.prompt={line:prompt};state.topic=1;state.questions.push(prompt.hanzi);
+  say(prompt,false);note('Мой день · вопрос '+(state.dayStep+1)+' из '+dailyQuestions(state.dayMini).length+'. Ответь голосом или текстом.');return;
+ }
  const topics=state.allowed.length?state.allowed:[conversation.id];
  if(state.askedInTopic>=3&&topics.length>1){state.cursor=(state.cursor+1)%topics.length;state.askedInTopic=0;}
  const selectedTopic=topics[state.cursor%topics.length];
@@ -150,10 +160,18 @@ function askNext(){
  state.prompt=p;state.topic=p.line.lesson;state.discussed.add(p.line.lesson);state.questions.push(p.line.hanzi);state.askedInTopic++;if(state.questions.length>50)state.questions.shift();
  say(p.line);note('Урок '+state.topic+'. Ответь или сам спроси Панду по пройденному материалу.');
 }
-function setMode(mode){if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
+function setMode(mode){if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();$('message').value='';
+ if(state.dayMode){
+  if(state.dayDone){note('Тренировка завершена. Вернись к уроку или выбери обычные диалоги.');return;}
+  const checked=checkDayAnswer(input,state.dayStep,state.dayMini);
+  learner(input,checked.spoken);
+  if(checked.ok){state.dayStep++;happy();if(state.dayStep>=dailyQuestions(state.dayMini).length){askNext()}else{askNext();note('Ответ по теме принят. Следующий вопрос. Тоны не оценивались.')}}
+  else{pose('retry');note(checked.message);render();}
+  return;
+ }
  if(state.mode==='nonstop'){
   const result=answerLive(input,{allowed:state.allowed,topic:lesson(),prompt:state.awaitQuestion?null:state.prompt?.line,curriculum,date:new Date(),turn:state.turns,profile:{...state.profile,recentQuestions:state.questions.slice(-40)}});
   learner(input,result.spoken||analyzeLearner(input,state.allowed,state.prompt?.line,curriculum));
@@ -378,7 +396,7 @@ $('message-form').addEventListener('submit',e=>{e.preventDefault();state.confide
 $('mic').addEventListener('click',startRecognition);$('speech-allow').addEventListener('click',()=>{state.speechConsent=true;$('speech-dialog').close();startRecognition()});
 $('hear').addEventListener('click',()=>play());$('speed-toggle').addEventListener('click',()=>{state.slow=!state.slow;$('speed-toggle').textContent=state.slow?'🐢 0,8×':'▶ 1×';$('speed-toggle').setAttribute('aria-pressed',String(state.slow));if(audio)audio.playbackRate=state.slow?.8:1});
 $('mode-short').addEventListener('click',()=>setMode('short'));$('mode-nonstop').addEventListener('click',()=>setMode('nonstop'));
-$('next').addEventListener('click',askNext);$('finish').addEventListener('click',()=>{cancelFollowup();stopAudio();stopRecognition();state.prompt=null;setMode('short');note('Non-Stop завершён. История осталась в этой вкладке.');});
+$('next').addEventListener('click',askNext);$('finish').addEventListener('click',()=>{if(state.dayMode){location.href='./hsk2-life-course.html?topic=0';return;}cancelFollowup();stopAudio();stopRecognition();state.prompt=null;setMode('short');note('Non-Stop завершён. История осталась в этой вкладке.');});
 $('reset').addEventListener('click',()=>initLesson(conversation.id));$('hint').addEventListener('click',()=>{state.hint=!state.hint;render()});
 for(const [button,dialog] of [['history-open','history-dialog'],['study-open','study-dialog']])$(button).addEventListener('click',()=>{stopRecognition();stopAudio();if(dialog==='study-dialog'){
  const studyTopic=lesson(),studyBase=CONVERSATIONS.find(c=>c.id===studyTopic);$('words').replaceChildren();const seenWords=new Set();for(const [zh,py,ru] of [...(curriculum[studyTopic-1]?.words||[]),...(studyBase?.examples||[]).map(w=>[w.hanzi,w.pinyin,w.ru])]){if(seenWords.has(zh))continue;seenWords.add(zh);const row=document.createElement('p');row.textContent=[zh,py,ru].join(' — ');$('words').append(row)}
