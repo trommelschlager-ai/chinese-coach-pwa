@@ -85,7 +85,7 @@ try {
   const page=await context.newPage();
   await page.goto('http://127.0.0.1:4173/hsk1-map.html');
   assert.equal(await page.locator('.lesson.locked').count(),6);
-  await page.locator('.lesson[data-num="2"]').click();
+  await page.locator('.lesson[data-num="2"]').click({force:true});
   assert(await page.locator('.toast').isVisible());
   await page.evaluate(()=>localStorage.setItem('pg-hsk1-v3-complete','["foundations"]'));
   for(let done=0;done<=7;done++){
