@@ -141,3 +141,82 @@ body:has(#poster:not([hidden])){display:flex;justify-content:center;background:#
  #practice.word-stage .practice-text.word-grid-intro{font-size:10px}
  #practice .word-grid .word .hz{font-size:clamp(17px,2.8vh,24px)!important}
 }
+
+/* Finished practice screens: common violet/gold aesthetics, no tiny type.
+   Words retain the 2x5 grid; grammar and phonetics show grouped cards. */
+#practice{
+ background:linear-gradient(180deg,#541b80dc,#3e115dd6),
+   url('./bastian-night-city-v4.svg') center top /cover!important;
+}
+#practice>.practice-panel{
+ border:2px solid #f0c680!important;
+ border-radius:20px!important;
+ background:linear-gradient(145deg,#fff9ff,#f1d7f9)!important;
+ box-shadow:0 7px 20px #280a4a6b;
+}
+#practice .progress{border-radius:20px;overflow:hidden}
+#practice .progress b{background:linear-gradient(90deg,#ffbb61,#a847d0)!important}
+#practice .word:not(.word-grid .word){
+ border:1.5px solid #e9bf88;
+ background:linear-gradient(130deg,#fffaff,#f9eafa);
+ box-shadow:0 2px 6px #7d428d30;
+}
+#practice .practice-phrase-grid,
+#practice .practice-grammar-grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:9px;
+ margin:10px 0;
+}
+#practice .practice-phrase-grid .word,
+#practice .practice-grammar-grid .example{
+ min-width:0;
+ margin:0!important;
+ padding:12px 9px;
+ border:1.5px solid #e3b67a!important;
+ border-radius:15px!important;
+ background:linear-gradient(140deg,#fffaff,#f3ddf8);
+ box-shadow:0 3px 8px #6b347c33;
+}
+#practice .practice-phrase-grid .hz,
+#practice .practice-grammar-grid .hz{
+ font-size:clamp(19px,4.4vw,27px)!important;
+ white-space:normal!important;
+ overflow-wrap:anywhere;
+ line-height:1.22;
+}
+#practice .practice-phrase-grid .py,
+#practice .practice-grammar-grid .practice-text{font-size:clamp(11px,2.7vw,14px)!important}
+#practice .practice-phrase-grid .ru{font-size:clamp(11px,2.8vw,14px)!important}
+#practice .example{
+ border:1px solid #e5c1e4;
+ background:#fff7fc;
+ border-radius:13px;
+ padding:11px;
+}
+#practice .q{
+ border:1.5px solid #e3b67a;
+ background:#fffaff;
+ border-radius:14px;
+ padding:12px;
+ margin:10px 0;
+}
+#practice .q p{
+ color:#461664;
+ font-size:clamp(17px,4.3vw,24px);
+}
+#practice .answer{
+ border:1.5px solid #d3b0df;
+ background:linear-gradient(#fff9ff,#f6eafb);
+ min-height:46px;
+}
+#practice .answer.correct{background:#e5f7e9;border-color:#7ac991}
+#practice .answer.wrong{background:#ffe8ee;border-color:#e18b9f}
+#practice .navig .gold-button{
+ color:#54236a;
+ background:linear-gradient(#fff0af,#ffbf57)!important;
+}
+@media(max-width:355px){
+ #practice .practice-phrase-grid{gap:6px}
+ #practice .practice-phrase-grid .word{padding:8px 5px}
+}
