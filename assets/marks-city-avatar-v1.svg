@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 280" role="img" aria-labelledby="title desc">
+<title id="title">Маркс — персонаж курса Panda Go</title><desc id="desc">Улыбающийся мальчик с тёмными волосами в фиолетовой куртке и рюкзаком</desc>
+<defs>
+<radialGradient id="halo" cx="50%" cy="42%" r="65%"><stop stop-color="#fff7c7"/><stop offset=".42" stop-color="#f5b7ef"/><stop offset="1" stop-color="#8944b5" stop-opacity="0"/></radialGradient>
+<linearGradient id="hood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a54cbb"/><stop offset=".5" stop-color="#6b268a"/><stop offset="1" stop-color="#4d125f"/></linearGradient>
+<linearGradient id="skin" x1="0" y1="0" x2=".65" y2="1"><stop stop-color="#ffe1bb"/><stop offset=".58" stop-color="#f6be97"/><stop offset="1" stop-color="#e59a82"/></linearGradient>
+<linearGradient id="hair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#523044"/><stop offset=".6" stop-color="#2d2033"/><stop offset="1" stop-color="#1a1732"/></linearGradient>
+<filter id="shadow"><feDropShadow dx="0" dy="7" stdDeviation="5" flood-color="#3a1852" flood-opacity=".42"/></filter>
+</defs>
+<ellipse cx="130" cy="140" rx="121" ry="133" fill="url(#halo)" />
+<g filter="url(#shadow)">
+<path d="M28 278c0-42 16-68 46-83l30-12h52l32 10c31 14 45 39 45 85Z" fill="#3c264e"/>
+<path d="M31 278c0-41 21-69 65-78l34 8 37-9c44 9 63 37 63 79Z" fill="url(#hood)" stroke="#d8a2e5" stroke-width="4"/>
+<path d="M79 200 59 223l14 55h32l-10-79m82-2 21 25-8 56h-34l8-78" fill="#a15bc7" stroke="#57206f" stroke-width="3"/>
+<path d="M104 192v22c8 18 46 21 58-1v-24Z" fill="url(#skin)" stroke="#cc917a" stroke-width="2"/>
+<path d="M109 217 130 249l21-32" fill="#fff4d6" stroke="#d5a9a0" stroke-width="3"/>
+<path d="M87 209 128 257l-14 21h-9L75 217m106-8-48 50 13 19h11l30-58" fill="#782c97" stroke="#d39ce2" stroke-width="3"/>
+<path d="M57 214 41 269m165-54 12 56" fill="none" stroke="#d5b4ee" stroke-width="11" stroke-linecap="round"/>
+<rect x="183" y="221" width="17" height="34" rx="6" fill="#ffd17c" stroke="#8e5d4c" stroke-width="3"/>
+<path d="M71 104c-7 26-1 63 12 84 11 19 27 27 48 28 28 0 44-12 55-34 12-25 15-49 5-79-18-38-96-45-120 1Z" fill="url(#skin)" stroke="#ce937d" stroke-width="3"/>
+<ellipse cx="74" cy="153" rx="10" ry="17" fill="#eab094" stroke="#cb9186" stroke-width="2"/>
+<ellipse cx="192" cy="150" rx="10" ry="17" fill="#eab094" stroke="#cb9186" stroke-width="2"/>
+<path d="M65 142c-11-34-8-65 15-82 18-22 57-26 78-13 26 2 45 24 41 49 10 17 0 39-5 46l-5-25-9-26c-19 8-42 7-56 2-19 17-45 20-54 14Z" fill="url(#hair)" stroke="#251b2c" stroke-width="4"/>
+<path d="M78 90c17-31 47-35 70-24m-28-12c21-11 51 5 53 30m-85 10c-1-10 11-26 26-30" fill="none" stroke="#78536a" stroke-width="6" stroke-linecap="round"/>
+<path d="M97 131c8-6 21-7 29-1m17-1c10-7 22-5 29 1" stroke="#4b293f" stroke-width="5" fill="none" stroke-linecap="round"/>
+<ellipse cx="111" cy="145" rx="8" ry="10" fill="#332437"/><ellipse cx="155" cy="145" rx="8" ry="10" fill="#332437"/>
+<circle cx="114" cy="141" r="2.8" fill="white"/><circle cx="158" cy="141" r="2.8" fill="white"/>
+<path d="M128 153q-5 12 3 14" fill="none" stroke="#d89580" stroke-width="3" stroke-linecap="round"/>
+<path d="M115 178q17 16 35-1" fill="none" stroke="#9a5656" stroke-width="3.7" stroke-linecap="round"/>
+<ellipse cx="96" cy="167" rx="10" ry="5" fill="#f28d91" opacity=".4"/><ellipse cx="166" cy="167" rx="10" ry="5" fill="#f28d91" opacity=".4"/>
+</g>
+<g fill="#fff4cd"><path d="m222 51 4 9 9 4-9 4-4 9-4-9-9-4 9-4z"/><circle cx="35" cy="91" r="4"/><circle cx="208" cy="103" r="3"/></g>
+</svg>
