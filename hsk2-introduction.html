@@ -114,7 +114,7 @@ button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.48;cursor:d
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 <link rel="stylesheet" href="./assets/hsk2-premium-v352.css?v=353">
-<link rel="stylesheet" href="./assets/hsk2-lesson1-fidelity-v356.css?v=356">
+<link rel="stylesheet" href="./assets/hsk2-lesson1-fidelity-v356.css?v=357">
 </head>
 <body>
 <div class="app hsk2-premium" id="app">
@@ -165,7 +165,7 @@ function goAudio(phrase){
 }
 function notice(t){$('notice').textContent=t||''}
 function shadePinyin(){ $('app').classList.toggle('py-hidden',!state.showPy);$('toggle-py').textContent=state.showPy?'Скрыть пиньинь':'Показать пиньинь'}
-const header=(name)=>'<div class="heading">'+(state.step>0?'<img class="heading-panda" src="./assets/hsk2-panda-new-v328.svg" alt="">':'')+'<span class="name">'+name+'</span></div><div class="step-tag">Шаг '+(state.step+1)+' из '+TOTAL+'</div>';
+const header=(name)=>'<div class="heading">'+(state.step>0?'<img class="heading-panda" src="./assets/hsk2-approved-panda-v357.svg" alt="">':'')+'<span class="name">'+name+'</span></div><div class="step-tag">Шаг '+(state.step+1)+' из '+TOTAL+'</div>';
 function renderPlan(){
  const topics=[['👤','имя'],['❓','вопрос'],['📖','правило'],['🧩','фразы'],['🎧','тоны'],['✅','мини-тест']];
  const skills=[
@@ -175,7 +175,7 @@ function renderPlan(){
  ['🎧','Слушать и различать тоны','Повторять за записью']
  ];
  return '<section class="screen screen--plan">'+
- '<div class="poster-lead wow-plan-hero"><img class="poster-panda" src="./assets/hsk2-panda-new-v328.svg" alt="Панда приглашает на урок">'+
+ '<div class="poster-lead wow-plan-hero"><img class="poster-panda" src="./assets/hsk2-approved-panda-v357.svg" alt="Панда приглашает на урок">'+
  '<div class="poster-content"><div class="poster-plaque" role="heading" aria-level="2">План<br> изучения</div>'+
  '<p>В этом уроке ты научишься <b>представляться</b>, говорить <b>своё имя</b>, строить <b>простые предложения</b> и понимать <b>короткие вопросы</b>.</p></div>'+
  '<div class="wow-wave" aria-hidden="true"></div></div>'+
@@ -191,7 +191,7 @@ function renderWords(){
  const all=[...WORDS,{zh:'我',py:'wǒ',ru:'я · повторение HSK1'}];
  const icons=['📣','🪪','❓','👤'];
  return '<section class="screen screen--words">'+
- '<div class="poster-lead lesson-hero"><img class="poster-panda" src="./assets/hsk2-panda-new-v328.svg" alt="Панда объясняет новые слова">'+
+ '<div class="poster-lead lesson-hero"><img class="poster-panda" src="./assets/hsk2-approved-panda-v357.svg" alt="Панда объясняет новые слова">'+
  '<div class="poster-content"><div class="poster-plaque">Как тебя зовут?</div><p>Сначала слова, затем простая фраза.</p></div></div>'+
  '<div class="poster-scroll word-scroll">Сначала слова, потом фраза</div><div class="step-tag">Шаг 2 из '+TOTAL+'</div>'+
  '<section class="glam"><div class="vocabulary-grid">'+all.map((w,i)=>
@@ -241,7 +241,7 @@ function renderDialogue(){
  const show=state.dialogueRevealed;
  return '<section class="screen screen--dialogue">'+header('Мини-диалог')+
  '<section class="glam"><h2>💬 Послушай, повтори и ответь</h2><div class="dialogue">'+
- '<div class="bubble"><div class="face"><img src="./assets/hsk2-panda-new-v328.svg" alt="Панда"></div><article class="chat"><div class="hanzi">'+MODEL.question+'</div><div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div>'+sound(MODEL.question)+'</article></div>'+
+ '<div class="bubble"><div class="face"><img src="./assets/hsk2-approved-panda-v357.svg" alt="Панда"></div><article class="chat"><div class="hanzi">'+MODEL.question+'</div><div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div>'+sound(MODEL.question)+'</article></div>'+
  (show?'<div class="bubble reply"><div class="face"><img src="./assets/hsk2-misha-avatar-v353.svg" alt="Миша"></div><article class="chat"><div class="hanzi">'+MODEL.answer+'</div><div class="py">'+MODEL.aPy+'</div><div class="ru">'+MODEL.aRu+'</div><span class="small">Прочитай вслух: для имени Миша отдельной записи пока нет</span></article></div>':
  '<button type="button" class="play-big" data-reveal>💬 Ответить Панде: «Меня зовут Миша»</button>')+
  '</div></section>'+
