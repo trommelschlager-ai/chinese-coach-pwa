@@ -135,3 +135,9 @@
  .day-pilot .day-title{padding-left:58px!important}
  .day-pilot .day-title h1{font-size:18px}
 }
+
+/* v4: preserve the approved character and use empty vertical space meaningfully. */
+.day-done-mascot{height:clamp(65px,12svh,112px);display:flex;align-items:flex-end;justify-content:center;overflow:visible}
+.day-done-mascot img{height:100%;max-width:150px;width:auto;object-fit:contain;filter:drop-shadow(0 3px 5px #69298850)}
+.day-pilot .day-stages span{white-space:nowrap;overflow:visible;text-overflow:clip;font-size:clamp(9px,2.15vw,11px)}
+@media(max-height:650px){.day-done-mascot{height:55px}}
