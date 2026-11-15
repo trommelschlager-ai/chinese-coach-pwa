@@ -342,6 +342,7 @@ function markComplete(){
   localStorage.setItem(DONE,JSON.stringify(previous));
  }catch{}
  save();
+  window.PandaGoPathV371?.markComplete(3);
 }
 function refreshScreen(keepScroll=false){
  const top=scroll.scrollTop;
