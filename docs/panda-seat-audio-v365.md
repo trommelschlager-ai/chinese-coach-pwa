@@ -1,35 +1,55 @@
-# Panda AI: seating and audio diagnosis, 15 November 2026
+# Panda AI — диагностика и исправления v365
 
-Base: `ebc68f6c5556a3553779c6af86892af556b7c6db`.
-Backup: `backup/panda-seat-audio-20261115`.
+Дата: 15 ноября 2026 года. Исходный коммит: `ebc68f6c5556a3553779c6af86892af556b7c6db`.
+Резервная ветка: `backup/panda-seat-audio-20261115`.
 
-## Confirmed code defects
+## Найденные дефекты
 
-1. Both main and history players previously called `play()` on a long recording while muted, then unmuted only if a seek event arrived within 0.13 seconds of the desired start. Playback continued during that check. A delayed event could leave `muted=true` for the entire phrase; there was no recovery or timeout. The two independently implemented players also duplicated cancellation logic.
-2. History playback stopped the main audio but did not abort active speech recognition or pending follow-up replies. An automatic follow-up could interrupt or overlap history playback.
-3. The service worker attempted `Cache.put()` for every successful HTTP response. A partial MP3 response (206) is successful but cannot be stored by Cache.put; the rejected promise could fail an intercepted media request. Range requests now pass directly to the browser; only full 200 responses are cached.
+1. **Запись могла остаться выключенной.** Основной проигрыватель и история запускали длинный MP3 с `muted=true`. Звук включался только при событии перемотки в пределах 0,13 с от нужной позиции. При позднем событии проверка не проходила; восстановления не было. В Panda AI этот путь заменён отдельными файлами, начинающимися с нулевой позиции и `muted=false`.
+2. **Неточная остановка фрагментов.** Остановка по `timeupdate` могла запаздывать. В исходных метках найдены два промежутка между фразами короче 250 мс, минимальный — 50 мс. Теперь каждая нарезанная фраза заканчивается собственным событием `ended`, без захвата следующего фрагмента.
+3. **Конфликт истории и диалога.** История имела отдельный проигрыватель и не отменяла микрофон и ожидающие дополнительные вопросы. Она переведена на общий проигрыватель с отменой предыдущего воспроизведения, распознавания и ожидающего вопроса. Устаревшие события не могут остановить новую запись.
+4. **Ошибка кэширования частичного MP3.** Service Worker вызывал `Cache.put()` для успешных ответов, включая HTTP 206. Такие ответы нельзя сохранять этим методом. Запросы Range теперь обслуживает браузер; в кэш записываются только полные ответы 200.
+5. **Зависшее предупреждение.** После успешного повторного запуска могла оставаться надпись об отказе автоматического воспроизведения. При событии `playing` соответствующее старое предупреждение очищается.
 
-## Changes
+Это подтверждённые дефекты кода. Без журнала событий с конкретного телефона нельзя утверждать, какой из них вызвал каждый ранее замеченный пользователем случай.
 
-- `assets/panda-live-audio.mjs`, `panda-voice-clips-v365.{mjs,json}` and 155 MP3 files: exact source ranges from the existing index become standalone recordings. No synthesis or replacement phrase. Original source MP3 files and index remain intact. Index lookups start at zero and use the native ended event instead of timeupdate clipping.
-- `assets/panda-live-screen-v270.mjs`: no muted seek path; shared main/history playback, stale-event cancellation, explicit volume and mute reset.
-- `assets/panda-live-v346.mjs`: history delegates to that same player. Conversation engine and knowledge modules unchanged.
-- `assets/panda-live-contact-v365.css`: fixed body; feet align with the existing stone's top face; contact shadow is anchored to the feet. Character image, proportions, face canvas, headset effects, blinking, sakura and landscape remain unchanged.
-- `panda-voice-pilot.html`, `sw.js`, `assets/offline-pack.json`: versioned loading, offline inventory and media-cache handling.
-- Build, audit and regression scripts, tests and CI workflow accompany the change.
+## Изменения внешнего вида
 
-## Local verification
+Положение лап рассчитано относительно верхней поверхности существующего камня. Мягкая контактная тень закреплена под телом и лапами. Тело неподвижно во всех состояниях. Изображение персонажа, лицо, глаза, шарф, цветок, наушники, пропорции и пейзаж не изменены. Сохранены существующие движения рта, моргание и эффекты сакуры/наушников.
 
-- 70 automated tests passed, zero failures (`npm run check:panda-screen`).
-- HSK2 bridge and sentence coach verification passed.
-- 390 exact phrase mappings, 388 unique available MP3 files.
-- All 388 files fully decoded by FFmpeg without decoding errors; non-silent RMS and peak verified. Total decoded duration: 519.9 seconds.
-- All 155 indexed ranges fall within their original recording's duration.
-- All generated clips have first/last 40 ms below -35 dBFS. This is a technical boundary check, not a transcript certification.
-- Dedicated regression checks: every indexed phrase starts unmuted at zero; history/main cancellation; stale callbacks; 0.8x/1x; microphone cancellation; repeat after stop; service worker bypass for Range.
+## Изменённые файлы
 
-## Limits and publication gate
+- `assets/panda-live-audio.mjs`: поиск точной записи.
+- `assets/panda-live-screen-v270.mjs`: общий проигрыватель и обработка ошибок.
+- `assets/panda-live-v346.mjs`: история использует общий проигрыватель.
+- `assets/panda-live-contact-v365.css`: посадка и тень.
+- `assets/panda-voice-clips-v365.mjs`, `.json` и каталог из 155 MP3: нарезка существующих записей по исходным меткам. Синтез не применялся; исходные MP3 сохранены.
+- `panda-voice-pilot.html`, `sw.js`, `assets/offline-pack.json`: подключение версии, кэширование и офлайн-список.
+- Скрипты сборки/аудита, регрессионные тесты и `.github/workflows/panda-seat-audio-v365.yml`.
 
-Physical Android Chrome, actual microphone recognition, screen locking and device audio output are not available in this environment. Chromium's mobile viewport is not a physical Android test. Full phrase-by-phrase listening/transcript and tone validation has not been completed; v332 itself describes its source alignments as candidates. No claim that all possible audio problems are solved follows from technical checks alone.
+Модули разговорного интеллекта, знания HSK 1–2 и правила проверки ответов не редактировались.
 
-Browser playback, responsive screenshots and publication status are recorded after the branch CI finishes. The production branch must remain unchanged until the required browser checks pass and the screenshots have been reviewed.
+## Результаты проверок
+
+- 71 автоматический тест прошёл локально, ошибок нет.
+- Проверки HSK2 bridge и sentence coach прошли.
+- Проверены 390 точных текстовых ключей и 388 уникальных подключённых MP3.
+- Все 388 MP3 полностью декодированы FFmpeg, содержат ненулевой звук, ошибок декодирования нет. Суммарная длительность — 519,9 с.
+- Все 155 исходных диапазонов находятся внутри соответствующих MP3. В первых и последних 40 мс нарезанных файлов уровень ниже −35 dBFS.
+- Финальный успешный браузерный прогон: декодированы 388 файлов; выполнены 776 полных воспроизведений на скоростях 0,8×/1×; ошибок JavaScript нет.
+- Проверены последовательности из шести вопросов в каждом из двух режимов, повторы, быстрое переключение истории/основной записи, отсутствие наложений, восстановление воспроизведения после имитации скрытия страницы.
+- Геометрия проверена на ширинах 360, 393, 412 и 430 px: горизонтальной прокрутки нет, тело неподвижно, положение лап совпадает с рассчитанной поверхностью камня. Скриншоты просмотрены.
+- Финальный прогон после исправления зависшего предупреждения завершён успешно: https://github.com/trommelschlager-ai/chinese-coach-pwa/actions/runs/43681733814 . В CI также прошёл 71 тест. Итоговый скриншот посадки просмотрен; предупреждение после успешного запуска отсутствует.
+
+## Оставшиеся ограничения
+
+**不客气！** («Не за что!») не имеет подключённой утверждённой записи в текущей аудиокарте Panda AI. Для него показано явное уведомление, кнопка звука отключена. В репозитории найден старый синтезированный preview этой фразы; он не подключался, чтобы не подменять утверждённый голос.
+
+Реальное устройство Android Chrome, фактическая блокировка экрана, аппаратный микрофон и динамик недоступны. Мобильный размер Chromium и имитация событий страницы не являются реальным Android-тестом. При скрытии страницы воспроизведение намеренно останавливается; непрерывное прослушивание при заблокированном экране не заявляется.
+
+Полная прослушка всех фраз с проверкой текста и тонов не завершена. Использованы существующие метки v332, которые в исходном индексе названы предварительными. Проверка границ по уровню сигнала не заменяет смысловую проверку записи. Поэтому исправление перечисленных технических дефектов не означает, что подтверждено отсутствие любых возможных проблем со звуком.
+
+## Технические источники
+
+- HTML Standard: периодичность `timeupdate`: https://html.spec.whatwg.org/multipage/media.html
+- Service Workers: отказ `Cache.put()` для HTTP 206: https://w3c.github.io/ServiceWorker/spec/service_worker/#cache-put
