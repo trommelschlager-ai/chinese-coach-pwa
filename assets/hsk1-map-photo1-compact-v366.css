@@ -19,8 +19,8 @@ html,body{height:100%;min-height:0;overflow:hidden}
   object-fit:contain;transform:translateX(-50%);
 }
 .pg-level-title{
-  position:absolute;top:12.7%;left:17%;right:auto;
-  width:66%;height:4.85%;min-height:35px;max-height:49px;
+  position:absolute;top:12.7dvh;left:17%;right:auto;
+  width:66%;height:4.85dvh;min-height:35px;max-height:49px;
   margin:0;padding:1px 5px 3px;
   font-size:clamp(17px,4.7vw,24px);line-height:1;
   border-width:3px;
@@ -112,7 +112,7 @@ html,body{height:100%;min-height:0;overflow:hidden}
 }
 @media(max-width:365px){
   .pg-map-roof{width:84%}
-  .pg-level-title{top:12.65%;left:13%;width:74%;font-size:clamp(15px,4.6vw,18px)}
+  .pg-level-title{top:12.65dvh;left:13%;width:74%;font-size:clamp(15px,4.6vw,18px)}
   .map-road{top:20%;height:50.5%}
   .map-road .node{padding-left:clamp(34px,10.4vw,41px);padding-right:4px;gap:2px}
   .map-road .node .circle{width:clamp(38px,11.3vw,45px);height:clamp(38px,11.3vw,45px);font-size:27px}
