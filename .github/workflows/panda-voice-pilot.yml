@@ -26,6 +26,7 @@ on:
       - 'tests/panda-live-lesson2.test.mjs'
       - 'tests/panda-live-batch.test.mjs'
       - 'scripts/qa-panda-voice-pilot-mobile.mjs'
+      - 'scripts/qa-hsk2-day-panda-mobile-v1.mjs'
       - '.github/workflows/panda-voice-pilot.yml'
   pull_request:
     branches: [main]
@@ -45,6 +46,7 @@ on:
       - 'tests/panda-live-lesson2.test.mjs'
       - 'tests/panda-live-batch.test.mjs'
       - 'scripts/qa-panda-voice-pilot-mobile.mjs'
+      - 'scripts/qa-hsk2-day-panda-mobile-v1.mjs'
 permissions:
   contents: read
 jobs:
@@ -79,6 +81,7 @@ jobs:
             sleep 1
           done
           node scripts/qa-panda-voice-pilot-mobile.mjs
+          node scripts/qa-hsk2-day-panda-mobile-v1.mjs
       - name: Save Android viewport screenshots
         if: always()
         uses: actions/upload-artifact@v4
