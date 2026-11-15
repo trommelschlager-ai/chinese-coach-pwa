@@ -20,9 +20,24 @@ self.addEventListener('fetch',event=>{
  // Local preview must reflect edits before a production version is published.
  if(['localhost','127.0.0.1','terminal.local'].includes(url.hostname))return;
  if(req.method!=='GET'||url.origin!==self.location.origin||!url.pathname.startsWith(scope.pathname))return;
- // Partial media responses cannot be cached with Cache.put (206). Let Chrome
- // handle Range requests natively; cache only complete successful responses.
- if(req.headers.has('range'))return;
+ // Never Cache.put a partial response. Keep downloaded MP3 playable offline:
+ // on network failure, serve the requested bytes from a cached complete file.
+ if(req.headers.has('range')){
+  event.respondWith(network(req).catch(async()=>{
+   const cached=await activeCacheMatch(new Request(req.url));
+   if(!cached||cached.status!==200)return new Response('',{status:503});
+   const bytes=await cached.arrayBuffer(),size=bytes.byteLength;
+   const match=/^bytes=(\d*)-(\d*)$/.exec(req.headers.get('range'));
+   const invalid=()=>new Response('',{status:416,headers:{'Content-Range':'bytes */'+size}});
+   if(!match||(!match[1]&&!match[2]))return invalid();
+   const start=match[1]?Number(match[1]):Math.max(0,size-Number(match[2]));
+   const end=match[1]&&match[2]?Math.min(size-1,Number(match[2])):size-1;
+   if(!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start>end||start>=size)return invalid();
+   const headers=new Headers(cached.headers);headers.delete('Content-Encoding');headers.set('Content-Range',`bytes ${start}-${end}/${size}`);
+   headers.set('Content-Length',String(end-start+1));headers.set('Accept-Ranges','bytes');
+   return new Response(bytes.slice(start,end+1),{status:206,headers});
+  }));return;
+ }
  const isHome=url.pathname===scope.pathname||url.pathname===scope.pathname+'index.html';
  const key=req.mode==='navigate'&&isHome?'./index.html':req;
  async function fetchAndSave(){const response=await network(req,req.mode==='navigate'?3500:12000);if(response.ok&&response.status===200){const cache=await caches.open(CACHE);await cache.put(key,response.clone())}return response}

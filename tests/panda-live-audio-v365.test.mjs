@@ -22,10 +22,13 @@ test('history, repeat and mic share cancellation; stale callbacks cannot stop ne
  b.stopPlayback();b.play();assert.equal(f.clips.at(-1).muted,false);
  }finally{f.close()}
 });
-test('service worker leaves Range media requests to the browser and never caches partial 206',async()=>{
- const vm=await import('node:vm');const listeners={};let intercepted=false;
- vm.runInNewContext(fs.readFileSync('sw.js','utf8'),{Request,Response,URL,AbortController,setTimeout,clearTimeout,self:{location:{origin:'https://panda.test'},registration:{scope:'https://panda.test/'},addEventListener:(n,f)=>listeners[n]=f}});
- listeners.fetch({request:new Request('https://panda.test/assets/sample.mp3',{headers:{Range:'bytes=0-'}}),respondWith:()=>intercepted=true});assert.equal(intercepted,false);
+test('online Range bypasses caching; offline ranges use a full cached MP3',async()=>{
+ const vm=await import('node:vm');const listeners={};let online=true,writes=0;
+ vm.runInNewContext(fs.readFileSync('sw.js','utf8'),{Request,Response,Headers,URL,AbortController,setTimeout,clearTimeout,fetch:async()=>{if(!online)throw Error('offline');return new Response('network bytes',{status:206})},caches:{open:async()=>({match:async()=>new Response('0123456789',{headers:{'Content-Type':'audio/mpeg'}}),put:async()=>writes++})},self:{location:{origin:'https://panda.test'},registration:{scope:'https://panda.test/'},addEventListener:(n,f)=>listeners[n]=f}});
+ const request=async range=>{let result;listeners.fetch({request:new Request('https://panda.test/assets/sample.mp3',{headers:{Range:range}}),respondWith:r=>result=r});return await result};
+ assert.equal(await (await request('bytes=2-4')).text(),'network bytes');assert.equal(writes,0);online=false;
+ let r=await request('bytes=2-4');assert.equal(r.status,206);assert.equal(await r.text(),'234');assert.equal(r.headers.get('Content-Range'),'bytes 2-4/10');
+ assert.equal(await (await request('bytes=7-')).text(),'789');assert.equal(await (await request('bytes=-3')).text(),'789');assert.equal((await request('bytes=20-')).status,416);assert.equal(writes,0);
 });
 
 test('successful replay clears the earlier autoplay warning',async()=>{
