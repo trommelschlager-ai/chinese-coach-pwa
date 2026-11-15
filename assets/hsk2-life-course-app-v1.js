@@ -243,5 +243,14 @@ document.addEventListener('click',function(e){
 });
 var toggle=document.getElementById('toggle-pinyin');
 if(toggle)toggle.addEventListener('click',function(){state.showPy=!state.showPy;render()});
+/* Allow direct links from the ten cards on the existing HSK2 course map. */
+try {
+ var params=new URLSearchParams(window.location.search);
+ var requested=params.get('topic');
+ if(requested!==null&&/^(?:[0-9])$/.test(requested)){
+  state.topic=Number(requested);
+  state.view='topic';
+ }
+}catch(e){}
 render();
 })();
