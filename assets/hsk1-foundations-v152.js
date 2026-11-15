@@ -461,10 +461,15 @@ function goNext(){
  }
  if(state.step===4&&!state.buildPassed){feedback('Сначала правильно собери фразу.');return;}
  if(state.step===5&&!state.spoken){feedback('Сначала проговори фразу и подтверди повторение.');return;}
+ function unlockPathIfLastScreen(){
+  const n=topic.id==='family'?6:topic.id==='weather'?7:0;
+  if(!n)return;
+  try{const k='pg-hsk1-path-v371';const step=Number(localStorage.getItem(k)||'0');if(step===n-1)localStorage.setItem(k,String(n));}catch{}
+ }
  if(state.step===6){
-  if(state.completed){location.href='./hsk1-map.html';return;}
+  if(state.completed){unlockPathIfLastScreen();location.href='./hsk1-map.html';return;}
   if(!state.quizPassed){feedback('Ответь на все вопросы итоговой проверки.');return;}
-  state.completed=true;save();render();return;
+  state.completed=true;unlockPathIfLastScreen();save();render();return;
  }
  state.step+=1;state.maxStep=Math.max(state.maxStep,state.step);save();render();openStudy();
 }
