@@ -141,6 +141,25 @@ function viewDone(){
  var t=chosen(),sc=current(),number=id();
  return '<section class="done"><div class="reward-icon">🏆</div><h1>Мини-урок пройден!</h1><p>Ты разобрал слова, грамматику и правильно собрал предложение.</p><div class="panel">'+phrase(sc[2],sc[3],sc[4])+'</div><p class="honest">Запоминание и произношение нужно закреплять повторениями. Эта отметка показывает выполнение заданий, а не официальный экзаменационный результат.</p><div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий мини-урок →</button></div><button class="text-link" data-view="map">Вернуться к десяти темам</button></section>';
 }
+function viewTones(){
+ var toneCards=[
+ ['mā','1-й тон','Высокий ровный','↗','—'],
+ ['má','2-й тон','Поднимается вверх','↗','↗'],
+ ['mǎ','3-й тон','Низкий с подъёмом','⤴','∨'],
+ ['mà','4-й тон','Резко падает','↘','↘']
+ ];
+ return '<section class="tones"><div class="panel"><div class="eyebrow">ПРОИЗНОШЕНИЕ</div><h1>🎧 Китайские тоны</h1><p>Тон меняет значение слова. Сначала посмотри на направление голоса, потом сравни с правильными аудиозаписями в мини-уроках.</p></div>'+
+ '<div class="tone-grid">'+toneCards.map(function(t,i){return '<div class="tone-card"><span class="tone-number">'+(i+1)+'</span><span class="tone-pinyin">'+t[0]+'</span><b>'+t[1]+'</b><span>'+t[2]+'</span><span class="tone-line">'+t[4]+'</span></div>'}).join('')+'</div>'+
+ '<div class="panel tone-rules"><h2>Три важных изменения тона</h2>'+
+ '<div class="tone-rule"><b>1. Два третьих тона</b><span>你好: пишем nǐ hǎo, но произносим ní hǎo.</span></div>'+
+ '<div class="tone-rule"><b>2. 不 перед четвёртым</b><span>不是: произносим bú shì, хотя 不 отдельно — bù.</span></div>'+
+ '<div class="tone-rule"><b>3. 一 меняет тон</b><span>一个: yí ge; 一杯: yì bēi. Пиньинь читаем по контексту.</span></div></div>'+
+ '<div class="panel"><h2>🎯 Мини-проверка</h2><p>Какой тон у zhù (住)?</p><div class="tone-answers">'+[1,2,3,4].map(function(n){
+ return '<button class="option'+(state.toneAnswer===n?(n===4?' correct':' wrong'):'')+'" data-tone-answer="'+n+'">'+n+'-й тон</button>';
+ }).join('')+'</div>'+(state.toneAnswer?'<p class="feedback '+(state.toneAnswer===4?'good':'bad')+'">'+(state.toneAnswer===4?'✓ Верно, четвёртый тон резко падает.':'Это четвёртый тон. Попробуй выбрать снова.')+'</p>':'')+'</div>'+
+ '<div class="tip-box">Приложение пока не измеряет тон твоего голоса. Даже если распознавание речи определило слово, это не означает, что произношение тона было правильным.</div>'+
+ '<div class="button-row"><button class="secondary" data-view="map">🗺️ К темам</button><button class="primary" data-start="0">▶ К первому уроку</button></div></section>';
+}
 function viewReview(){
  var list=[];
  topics.forEach(function(t){t.words.forEach(function(w){if(state.difficult.includes(w[0]))list.push(w)})});
@@ -175,7 +194,7 @@ function updateNav(){
  if(counter)counter.textContent=state.completed.length+'/30';
 }
 function render(){
- var html=state.view==='welcome'?viewWelcome():state.view==='map'?viewMap():state.view==='topic'?viewTopic():state.view==='lesson'?viewLesson():state.view==='done'?viewDone():state.view==='review'?viewReview():viewExam();
+ var html=state.view==='welcome'?viewWelcome():state.view==='map'?viewMap():state.view==='topic'?viewTopic():state.view==='lesson'?viewLesson():state.view==='done'?viewDone():state.view==='review'?viewReview():state.view==='tones'?viewTones():viewExam();
  screen.innerHTML=html;
  updateNav();
  screen.scrollTop=0;
@@ -206,6 +225,7 @@ document.addEventListener('click',function(e){
   return;
  }
  if(b.dataset.nav){go(b.dataset.nav);return}
+ if(b.dataset.toneAnswer!==undefined){state.toneAnswer=Number(b.dataset.toneAnswer);render();return}
  if(b.dataset.view){go(b.dataset.view);return}
  if(b.dataset.start!==undefined){enter(0,0);return}
  if(b.dataset.topic!==undefined){state.topic=Number(b.dataset.topic);go('topic');return}
