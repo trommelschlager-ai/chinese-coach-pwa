@@ -1,0 +1,50 @@
+name: Build approved Panda Go image layers v371
+on:
+  push:
+    paths:
+      - ".github/workflows/build-hsk1-layers-v371.yml"
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download original approved layers, crop and save high-resolution WebP
+        env:
+          URL_BACKGROUND: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/2cc028c7-b923-4519-969d-5d44aa3467c1.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMTY2MTA0ZTdhZDhkYjZkMyIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NDkyMjU5OX0.dg8R5jpK8qJfhR4tVEYoSfMVsW-3aN8MEIXsyMfbvvE"
+          URL_HEADER: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/dcaa7797-789b-48bd-bf5c-edfc3d585a84.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNGJjYTY0ZTNjZDM1MWQ0NCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NDg4MDA5OX0.Y1C-c1aFoh1c0tJNtLoi14kAJT-06uYwiW1rneK_YZ8"
+          URL_RIBBONS: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/3571d4e7-5f7a-45bc-936a-19313c6c9e9b.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNDQyZDAxZDY0ZDhjNDk3ZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NDkxMDY3OH0.DAhfMFQ0hkKuxXQ5PrhhAXd8D5m3XfnxeJYXQcP_qi0"
+          URL_PANDA: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/76f83ff5-0ad2-4a77-87cd-fd941d070f0c.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiZGZhMmI4Njc0YTBiMmYzMiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NDkzNjgwN30.PZKdAwZH2zWW_KCP9Nlm3LwwDPQd2nFWhG0a3KFjcjg"
+          URL_ACTIONS: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/3e0b04dc-45b8-483b-992b-0a681dcddb32.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMDRiM2RmN2FlMTUzYTMzZCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsImV4cCI6MTc5NDg4NzQxOH0.XcJRph8Bvxji_xd9Rh9ly258NMTqE"
+        run: |
+          set -eu
+          python -m pip install -q pillow
+          mkdir -p /tmp/panda-layers assets
+          python - <<'PY'
+          from urllib.request import urlopen,Request
+          from PIL import Image
+          import os,io,pathlib
+          sources=['background','header','ribbons','panda','actions']
+          target=pathlib.Path('assets')
+          for name in sources:
+              url=os.environ['URL_'+name.upper()]
+              data=urlopen(Request(url,headers={'User-Agent':'PandaGo/1.0'}),timeout=40).read()
+              im=Image.open(io.BytesIO(data)).convert('RGBA')
+              if name!='background':
+                  a=im.getchannel('A').point(lambda v: 255 if v>30 else 0)
+                  box=a.getbbox()
+                  if not box:raise ValueError('Empty layer '+name)
+                  pad=5
+                  im=im.crop((max(0,box[0]-pad),max(0,box[1]-pad),min(im.width,box[2]+pad),min(im.height,box[3]+pad)))
+              out=target/('hsk1-v371-'+name+'.webp')
+              im.save(out,'WEBP',quality=94,method=6,exact=True)
+              print(name, im.size, out.stat().st_size,flush=True)
+              assert out.stat().st_size>10000
+          PY
+          git config user.name "Panda Go Artwork Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk1-v371-*.webp
+          git diff --cached --quiet || (git commit -m "assets(hsk1): preserve five approved high-resolution editable menu layers" && git push)
