@@ -5,7 +5,7 @@ const base=process.env.QA_BASE||'http://127.0.0.1:4173';
 const dir='qa/panda-v365';fs.mkdirSync(dir,{recursive:true});
 const inventory=JSON.parse(fs.readFileSync(dir+'/inventory.json'));
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
-const errors=[],report={physicalAndroid:false,inventory:inventory.length,files:new Set(inventory.map(e=>e.src)).size,playback:[],layouts:[]};
+const errors=[],report={physicalAndroid:false,inventory:inventory.length,files:new Set(inventory.map(e=>e.src)).size,playback:[],layouts:[],unrecordedResponses:[]};
 try{
  const p=await browser.newPage({viewport:{width:393,height:825},isMobile:true,hasTouch:true});p.on('pageerror',e=>errors.push(e.message));
  await p.addInitScript(()=>{
@@ -34,23 +34,27 @@ try{
    });}};await Promise.all(Array.from({length:16},work));return results;
   },{entries:[...new Map(inventory.map(e=>[e.src,e])).values()],speed});report.playback.push(...results);
  }
+ fs.writeFileSync(dir+'/browser-report.json',JSON.stringify(report,null,2));
+ await p.screenshot({path:dir+'/initial-seated.png'});
  // Exercise the application player repeatedly after cancellation, history and modes.
  await p.evaluate(()=>{window.__audio=[]});
  for(const mode of ['short','nonstop']){
   await p.locator(mode==='short'?'#pg346-short':'#pg346-nonstop').click();
   for(const q of ['你好','你好吗','谢谢','你做什么工作','你为什么学习中文','你有哥哥吗']){
    await p.locator('#pg346-input').fill(q);await p.locator('#pg346-send').click();
-   await p.locator('#pg346-hear').click();await p.waitForTimeout(180);
+   const playable=await p.locator('#pg346-hear').isEnabled();
+   if(playable){await p.locator('#pg346-hear').click();await p.waitForTimeout(180)}
+   else{assert(await p.locator('#pg357-audio-note').isVisible(),'Missing recording must be explicit');report.unrecordedResponses.push({mode,q,response:await p.locator('.pg346-main-zh').textContent()})}
    const row=p.locator('.pg346-row-audio:not([disabled])').last();if(await row.count())await row.click();
-   await p.locator('#pg346-speed').click();await p.locator('#pg346-play').click();await p.waitForTimeout(180);
+   await p.locator('#pg346-speed').click();if(playable){await p.locator('#pg346-play').click();await p.waitForTimeout(180)}
    assert(await p.evaluate(()=>window.__audio.filter(a=>!a.paused&&!a.ended).length<=1),'No overlapping players');
    assert(await p.evaluate(()=>window.__audio.every(a=>!a.muted)),'No audio left muted');
   }
  }
  await p.locator('#pg346-short').click();
  // Simulate lifecycle cancellation separately; physical Android lock remains untested.
- await p.evaluate(()=>{document.dispatchEvent(new Event('visibilitychange'));window.PandaApprovedBridge337.stopPlayback()});
- await p.locator('#pg346-play').click();await p.waitForFunction(()=>window.PandaApprovedBridge337.snapshot().pose==='talking');
+ await p.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'));Object.defineProperty(document,'hidden',{configurable:true,value:false});document.dispatchEvent(new Event('visibilitychange'))});
+ await p.locator('.pg346-row-audio:not([disabled])').last().click();await p.waitForFunction(()=>window.PandaApprovedBridge337.snapshot().pose==='talking');
  for(const width of [360,393,412,430]){
   await p.setViewportSize({width,height:825});await p.waitForTimeout(250);
   const before=await p.locator('.pg352-mascot').boundingBox();await p.waitForTimeout(400);const after=await p.locator('.pg352-mascot').boundingBox();assert.deepEqual(before,after,'Body must be fixed');
