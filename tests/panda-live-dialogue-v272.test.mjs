@@ -60,3 +60,14 @@ test('DOM shows weather answer, scenario, translation of errors and an automatic
   el('finish').click();const before=el('phrase').textContent;await new Promise(resolve=>setTimeout(resolve,1400));assert.equal(el('phrase').textContent,before);
  }finally{f.close()}
 });
+
+test('merged Chrome speech greetings and near-homophones preserve the transcript',()=>{
+  for(const utterance of ['下午好你今天怎么样','下午好你今天什么样','你今天什么样']){
+    const result=answerLive(utterance,{...options,topic:1});
+    assert.equal(result.kind,'question',utterance);
+    assert.equal(result.reply.hanzi,'我今天很好，谢谢！',utterance);
+    assert.equal(result.spoken.hanzi,utterance,'Never silently replace the learner transcript');
+    assert.equal(result.spoken.known,false,'An ASR guess cannot count as a verified translation');
+    assert.match(result.spoken.probable,/你今天怎么样/);
+  }
+});
