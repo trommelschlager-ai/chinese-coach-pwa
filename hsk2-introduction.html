@@ -23,6 +23,7 @@ button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.48;cursor:d
 .screen{display:grid;gap:10px}
 .heading{display:flex;align-items:center;gap:8px;padding:12px 14px;min-height:54px;border:2px solid var(--gold);border-radius:23px;text-align:center;justify-content:center;background:linear-gradient(122deg,#582074,#9e44b3,#63237d);box-shadow:inset 0 1px 4px #edb8ee99,0 5px 0 #df8bdb42,0 8px 17px #782d934a;color:#fff;text-shadow:0 2px 1px #541268a1}
 .heading .name{font:italic 900 clamp(24px,7vw,34px)/1.12 Georgia,serif}
+.heading{position:relative}.heading-panda{position:absolute;left:-6px;bottom:-6px;width:66px;height:65px;object-fit:contain;filter:drop-shadow(0 4px 4px #481e786f)}.heading:has(.heading-panda){padding-left:62px}
 .step-tag{width:max-content;margin:0 auto;border:1.5px solid #e5b67e;border-radius:18px;background:#fff8ffe6;color:#733485;font-weight:800;padding:4px 12px;font-size:12px}
 .glam{position:relative;border:2px solid #eaba83;border-radius:22px;background:linear-gradient(140deg,#fff7ffff,#fbd2f7f5);box-shadow:0 5px 13px #9f4c9b3b,inset 0 0 0 2px #ffffff73;padding:13px;overflow:hidden}
 .glam::before{content:"✿";position:absolute;right:10px;top:5px;font-size:22px;color:#ed93cb;opacity:.55}
@@ -162,10 +163,10 @@ function goAudio(phrase){
 }
 function notice(t){$('notice').textContent=t||''}
 function shadePinyin(){ $('app').classList.toggle('py-hidden',!state.showPy);$('toggle-py').textContent=state.showPy?'Скрыть пиньинь':'Показать пиньинь'}
-const header=(name)=>'<div class="heading"><span class="name">'+name+'</span></div><div class="step-tag">Шаг '+(state.step+1)+' из '+TOTAL+'</div>';
+const header=(name)=>'<div class="heading">'+(state.step>0?'<img class="heading-panda" src="./assets/hsk2-panda-new-v328.svg" alt="">':'')+'<span class="name">'+name+'</span></div><div class="step-tag">Шаг '+(state.step+1)+' из '+TOTAL+'</div>';
 function renderPlan(){
  return '<section class="screen">'+header('План изучения')+
- '<div class="hero"><img src="./assets/panda-character-v346.svg" alt="Панда приглашает на урок"><div class="hero-copy"><h2>Начнём знакомство!</h2><p>Узнаем, как спросить имя и назвать себя по-китайски.</p></div></div>'+
+ '<div class="hero"><img src="./assets/hsk2-panda-new-v328.svg" alt="Панда приглашает на урок"><div class="hero-copy"><h2>Начнём знакомство!</h2><p>Узнаем, как спросить имя и назвать себя по-китайски.</p></div></div>'+
  '<div class="ribbon">🌸 Что будем изучать</div><section class="glam"><div class="features">'+
  [['👤','Имя'],['❓','Вопросы'],['📚','Грамматика'],['🧩','Фразы'],['🎧','Слух'],['✅','Мини-тест']].map(x=>'<div class="feature"><span class="em">'+x[0]+'</span><span>'+x[1]+'</span></div>').join('')+
  '</div></section>'+
@@ -217,7 +218,7 @@ function renderDialogue(){
  const show=state.dialogueRevealed;
  return '<section class="screen">'+header('Мини-диалог')+
  '<section class="glam"><h2>💬 Послушай, повтори и ответь</h2><div class="dialogue">'+
- '<div class="bubble"><div class="face">🐼</div><article class="chat"><div class="hanzi">'+MODEL.question+'</div><div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div>'+sound(MODEL.question)+'</article></div>'+
+ '<div class="bubble"><div class="face"><img src="./assets/hsk2-panda-new-v328.svg" alt="Панда"></div><article class="chat"><div class="hanzi">'+MODEL.question+'</div><div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div>'+sound(MODEL.question)+'</article></div>'+
  (show?'<div class="bubble reply"><div class="face">👦</div><article class="chat"><div class="hanzi">'+MODEL.answer+'</div><div class="py">'+MODEL.aPy+'</div><div class="ru">'+MODEL.aRu+'</div><span class="small">Прочитай вслух: для имени Миша отдельной записи пока нет</span></article></div>':
  '<button type="button" class="play-big" data-reveal>💬 Ответить Панде: «Меня зовут Миша»</button>')+
  '</div></section>'+
