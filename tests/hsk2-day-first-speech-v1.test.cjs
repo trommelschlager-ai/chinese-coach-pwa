@@ -18,9 +18,10 @@ class FakeSpeechRecognition{
 }
 w.SpeechRecognition=FakeSpeechRecognition;
 w.PandaHsk2AudioV330={lookup:()=>null,play:()=>false};
-for(const f of ['assets/hsk2-life-course-data-v1.js','assets/hsk2-day-first-data-v1.js','assets/hsk2-day-first-ui-v1.js','assets/hsk2-life-course-app-v1.js'])w.eval(fs.readFileSync(path.join(root,f),'utf8'));
+for(const f of ['assets/hsk2-life-course-data-v1.js','assets/hsk2-day-first-data-v1.js','assets/hsk2-day-topic-one-v391.js','assets/hsk2-day-first-ui-v1.js','assets/hsk2-life-course-app-v1.js'])w.eval(fs.readFileSync(path.join(root,f),'utf8'));
 function click(sel){const el=doc.querySelector(sel);assert.ok(el,'missing '+sel);assert.equal(el.disabled,false,'disabled '+sel);el.click()}
 click('.approved-start');
+click('[data-day-show-words]');
 click('[data-day-next]');click('[data-day-next]');click('[data-day-next]');
 click('[data-day-quiz="0:1"]');click('[data-day-quiz="1:0"]');
 for(let i=0;i<4;i++)click('[data-day-token="'+i+'"]');
