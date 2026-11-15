@@ -124,6 +124,25 @@ async function main(){
     await mapPage.evaluate(()=>document.fonts?.ready);
     const mapRow=await mapPage.evaluate(({width,height})=>{
       const issues=[], rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}};
+      // v373: verify exact approved artboard and its transparent hot zones.
+      // Legacy map verification is retained below.
+      if(document.querySelector('.artboard')){
+        const lessons=[...document.querySelectorAll('.hotspots .lesson')];
+        const buttons=[...document.querySelectorAll('.hotspots .footer-link')];
+        const image=document.querySelector('img.approved');
+        if(lessons.length!==7)issues.push('Expected 7 v373 lesson links');
+        if(buttons.length!==3)issues.push('Expected 3 v373 practice links');
+        if(!image?.naturalWidth||image.naturalWidth!==694||image.naturalHeight!==1536)issues.push('Approved v373 art missing or wrong size');
+        if(document.documentElement.scrollWidth>innerWidth+2||document.documentElement.scrollHeight>innerHeight+2)issues.push('v373 map overflow');
+        for(const item of [...lessons,...buttons]){
+          const r=item.getBoundingClientRect();
+          if(r.height<44||r.width<44)issues.push('v373 touch zone too small: '+item.getAttribute('aria-label'));
+          if(r.left<0||r.right>innerWidth+1||r.top<0||r.bottom>innerHeight+2)issues.push('v373 touch zone clipped: '+item.getAttribute('aria-label'));
+          const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+          if(hit!==item&&!item.contains(hit))issues.push('v373 touch zone covered: '+item.getAttribute('aria-label'));
+        }
+        return {lesson:'map',version:'v373',screen:1,width,height,issues,artboard:rect(document.querySelector('.artboard')),first:lessons[0]&&rect(lessons[0]),last:lessons[6]&&rect(lessons[6])};
+      }
       const lessons=[...document.querySelectorAll('nav.map-road a.node')];
       const buttons=[...document.querySelectorAll('nav.pg-map-actions a')];
       if(lessons.length!==7)issues.push('Expected 7 lesson buttons; got '+lessons.length);
