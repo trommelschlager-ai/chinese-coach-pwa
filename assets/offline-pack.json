@@ -1,6 +1,6 @@
 {
-  "version": 365,
-  "bytes": 62734080,
+  "version": 373,
+  "bytes": 64679587,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -2948,6 +2948,7 @@
     "./assets/panda-voice-clips-v365/p147.mp3",
     "./assets/panda-voice-clips-v365/p154.mp3",
     "./assets/panda-voice-clips-v365/p118.mp3",
-    "./assets/panda-voice-clips-v365/p040.mp3"
+    "./assets/panda-voice-clips-v365/p040.mp3",
+    "./assets/hsk1-approved-v373.png"
   ]
 }
