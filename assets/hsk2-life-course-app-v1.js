@@ -33,7 +33,7 @@ var state={view:'welcome',topic:0,mini:0,stage:0,showPy:true,completed:[],diffic
 var dayUI=window.PandaGoDayFirstUIV1;
 function dayPilot(){return state.topic===0&&state.mini===0&&!!dayUI;}
 function dayCoachingLink(mini){return './panda-voice-pilot.html?practice=day&mini='+Math.max(0,Math.min(2,Number(mini)||0))+'&from=hsk2-life-course';}
-function dayAIBlock(mini){return '<section class="day-ai-panel"><h2>🐼 Практика с Panda AI · Мой день</h2><p>Теперь Панда задаст тебе вопросы по пройденному материалу. Отвечай по-китайски голосом или текстом.</p><div class="day-ai-examples">Пример: <strong lang="zh-Hans">你每天几点起床？</strong><br>Nǐ měitiān jǐ diǎn qǐchuáng? — Во сколько ты каждый день встаёшь?</div><p>Панда проверяет смысл ответа и распознанный текст, <b>не точность тонов</b>. Для вопросов без MP3 доступен текст.</p><a href="'+dayCoachingLink(mini)+'" aria-label="Открыть разговорную практику Мой день с Panda AI">Начать диалог с Пандой AI →</a></section>';}
+function dayAIBlock(mini){return '<section class="day-ai-panel"><h2>🐼 Поговори с Пандой AI</h2><p>Потренируй то, что уже изучил: Панда задаст вопросы, а ты ответишь голосом или текстом.</p><div class="day-ai-examples"><strong lang="zh-Hans">你每天几点起床？</strong><br>Во сколько ты каждый день встаёшь?</div><a href="'+dayCoachingLink(mini)+'" aria-label="Открыть разговорную практику Мой день с Panda AI">🎙 Начать практику →</a><p class="day-ai-note">Проверяется смысл ответа; точность тонов пока не оценивается.</p></section>';}
 
 try{
  var saved=JSON.parse(localStorage.getItem(KEY)||'null');
