@@ -9,6 +9,7 @@ const data=fs.readFileSync(path.join(root,'assets/hsk2-life-course-data-v1.js'),
 const app=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'utf8');
 const dayData=fs.readFileSync(path.join(root,'assets/hsk2-day-first-data-v1.js'),'utf8');
 const dayUI=fs.readFileSync(path.join(root,'assets/hsk2-day-first-ui-v1.js'),'utf8');
+const fullDay=fs.readFileSync(path.join(root,'assets/hsk2-day-topic-one-v391.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'assets/hsk2-life-course-v1.css'),'utf8');
 const errors=[],warnings=[];
 const vc=new VirtualConsole();
@@ -18,7 +19,7 @@ vc.on('warn',s=>warnings.push(String(s)));
 const dom=new JSDOM(html,{url:'https://example.org/hsk2-life-course.html',runScripts:'dangerously',virtualConsole:vc,beforeParse(w){w.scrollTo=()=>{}}});
 const w=dom.window,doc=w.document;
 w.PandaHsk2AudioV330={lookup:()=>null,play:()=>false};
-w.eval(data);w.eval(dayData);w.eval(dayUI);w.eval(app);
+w.eval(data);w.eval(dayData);w.eval(fullDay);w.eval(dayUI);w.eval(app);
 const topics=w.PandaLifeCourseV1.topics;
 function $(selector){return doc.querySelector(selector)}
 function click(selector){const b=$(selector);assert.ok(b,'Missing '+selector);assert.ok(!b.disabled,'Disabled '+selector);b.click()}
@@ -27,13 +28,15 @@ assert.equal(topics.length,10);
 assert.equal(topics.flatMap(t=>t.words).length,200);
 assert.equal(new Set(topics.flatMap(t=>t.words.map(row=>row[0]))).size,200);
 assert.ok(topics.every(t=>t.words.length===20&&t.scenes.length===3&&t.scenes.every(s=>s.length===11)));
-assert.match(doc.querySelector('#screen').textContent,/30/);
+assert.match(doc.querySelector('img[src$="course-welcome.png"]').getAttribute('alt'),/30/);
 assert.match(css,/topic-grid/);
 click('[data-view="map"]');
 assert.equal(doc.querySelectorAll('[data-topic]').length,10);
 click('[data-topic="0"]');
 assert.equal(doc.querySelectorAll('[data-mini]').length,4);
 click('[data-mini="0"]');
+assert.ok(doc.querySelector('.day-visual-start'),'Approved first lesson artwork is present');
+click('[data-day-show-words]');
 assert.equal(doc.querySelectorAll('.day-vword').length,7,'Day one must contain seven studied words');
 assert.ok(doc.querySelector('.day-headword').textContent.includes('起床'),'The first focused word is 起床');
 assert.ok(doc.querySelector('.day-chars').textContent.includes('chuáng'),'Correct second-tone pinyin');
@@ -57,8 +60,32 @@ click('[data-day-next]'); // finish, microphone must be optional
 assert.match(doc.querySelector('#screen').textContent,/Мини-урок(?: \d+)? пройден!/);
 assert.match(doc.querySelector('.day-ai-panel a').getAttribute('href'),/practice=day&mini=0/);
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,1);
-click('[data-next-mini]'); // old lessons unchanged
-for(let lesson=1;lesson<30;lesson++){
+click('[data-next-mini]'); // second mini-lesson uses same real 5-stage learning system
+const dayTopics=w.PandaGoDayModulesV391;
+assert.equal(dayTopics.length,3);
+assert.equal(dayTopics[1].words.length,7);
+assert.equal(doc.querySelectorAll('.day-vword').length,7);
+for(let i=0;i<3;i++)click('[data-day-next]');
+assert.match(doc.querySelector('.day-formula')?.textContent||doc.querySelector('.day-card').textContent,/先/); // currently quiz step
+click('[data-day-quiz="0:1"]');click('[data-day-quiz="1:0"]');
+for(let i=0;i<5;i++)click('[data-day-token="'+i+'"]');
+assert.equal(doc.querySelector('[data-day-next]').disabled,false,'Second mini builder complete');
+click('[data-day-next]'); // speech
+assert.equal(doc.querySelectorAll('.day-attempts>div').length,5);
+click('[data-day-next]'); // done
+assert.match(doc.querySelector('.day-ai-panel a').getAttribute('href'),/mini=1/);
+assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,2);
+click('[data-next-mini]'); // third mini
+assert.equal(doc.querySelectorAll('.day-vword').length,6);
+for(let i=0;i<3;i++)click('[data-day-next]');
+click('[data-day-quiz="0:0"]');click('[data-day-quiz="1:0"]');
+for(let i=0;i<4;i++)click('[data-day-token="'+i+'"]');
+assert.equal(doc.querySelector('[data-day-next]').disabled,false,'Third mini builder complete');
+click('[data-day-next]');click('[data-day-next]');
+assert.match(doc.querySelector('.day-ai-panel a').getAttribute('href'),/mini=2/);
+assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,3);
+click('[data-next-mini]'); // Other nine themes unaffected
+for(let lesson=3;lesson<30;lesson++){
  const t=Math.floor(lesson/3),m=lesson%3,scene=topics[t].scenes[m];
  const expectedWords=m===2?6:7;
  assert.equal(doc.querySelectorAll('.word-card').length,expectedWords,'Mini '+lesson+' word count');
