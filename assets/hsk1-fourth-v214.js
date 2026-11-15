@@ -339,6 +339,7 @@ function ready(){
 }
 function done(){
  state.done=true;
+ try{const k='pg-hsk1-path-v371';const v=Number(localStorage.getItem(k)||'0');if(v===3)localStorage.setItem(k,'4');}catch{}
  try{
   const saved=JSON.parse(localStorage.getItem(DONE)||'[]');
   const list=Array.isArray(saved)?saved:[];
