@@ -82,3 +82,7 @@
    font-size:16px!important;
  }
 }
+
+/* No secondary miniature subtitle on the two-column Android map. */
+#app.hsk2-premium-map:has(.journey-map-active) .scene .brand{top:15px!important}
+#app.hsk2-premium-map:has(.journey-map-active) .scene .brand small{display:none!important}
