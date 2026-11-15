@@ -1,6 +1,6 @@
 /* Panda Go - Course 2, first micro-lesson: approved luminous violet/gold language UI */
 .day-pilot{--gold:#ffd77c;--purple:#742098;color:#4f1b70;padding:1px 0 6px}
-.day-pilot .day-title{background:linear-gradient(120deg,#74218fdc,#ad59c5e0),url('./bastian-night-city-v4.svg') center 20%/cover;color:#fff;border:2px solid #f6d386;box-shadow:0 4px 13px #64248570;border-radius:18px;padding:10px 9px;margin-bottom:9px;text-align:center}
+.day-pilot .day-title{position:relative;padding-left:76px!important;min-height:95px;background:linear-gradient(120deg,#74218fdc,#ad59c5e0),url('./bastian-night-city-v4.svg') center 20%/cover;color:#fff;border:2px solid #f6d386;box-shadow:0 4px 13px #64248570;border-radius:18px;padding:10px 9px;margin-bottom:9px;text-align:center}
 .day-pilot .day-label{font-size:10px;letter-spacing:.5px;color:#ffedb1;font-weight:850}
 .day-pilot .day-title h1{color:#fff2ba;text-shadow:0 2px #612278,0 0 7px #bf72d2;font:bold 21px/1.15 system-ui;margin:5px 0}
 .day-pilot .day-title p{font-size:11px;margin:3px 0 10px;color:#f8e2ff}
@@ -76,4 +76,14 @@
 .day-formula>span{min-width:41px;padding:5px 3px}
 .day-formula b{font-size:17px}
 .day-char{min-width:70px}
+}
+
+.day-pilot .day-panda{
+ position:absolute;left:4px;bottom:5px;width:68px;height:77px;
+ object-fit:contain;filter:drop-shadow(0 2px 4px #49156c9c);
+ pointer-events:none;
+}
+@media(max-width:350px){
+ .day-pilot .day-title{padding-left:58px!important}
+ .day-pilot .day-panda{width:55px;height:67px}
 }
