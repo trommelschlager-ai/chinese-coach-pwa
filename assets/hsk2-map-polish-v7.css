@@ -1,0 +1,114 @@
+/* Panda Go HSK2 map v7: legible ten-topic mobile course map.
+   Built lessons stay linked; planned lessons remain visibly locked. */
+#app.hsk2-premium-map:has(.journey-map-active){
+ background:linear-gradient(180deg,#f9e7fbd8,#f1d3f7e8),url('./bastian-night-city-v4.svg') center /cover;
+}
+#app.hsk2-premium-map:has(.journey-map-active) .scene{
+ border-bottom:2px solid #e6b66e;
+ background:linear-gradient(105deg,#531580de,#832ca4d1),url('./bastian-night-city-v4.svg') center 12%/cover;
+ box-shadow:0 3px 12px #67287a51;
+}
+#app.hsk2-premium-map:has(.journey-map-active) .brand{
+ color:#ffdc8e!important;
+ text-shadow:0 2px #541166,0 0 9px #d07dde!important;
+}
+#app.hsk2-premium-map:has(.journey-map-active) .brand small{color:#ffebff!important}
+#app .content.journey-map-active{
+ grid-template-rows:clamp(31px,5svh,42px) clamp(58px,8svh,76px) 24px minmax(0,1fr)!important;
+ row-gap:clamp(5px,.8svh,9px)!important;
+ padding:7px 8px 10px!important;
+}
+.journey-map-active .journey-head{
+ border:1.5px solid #efbe7c;
+ border-radius:14px;
+ background:linear-gradient(105deg,#6e228e,#9842b2);
+ box-shadow:0 2px 9px #8d42a35e;
+}
+.journey-map-active .journey-head-art{color:#ffe7a4}
+.journey-map-active .journey-head h1{
+ color:#fff1bc!important;
+ font-size:clamp(16px,2.5svh,21px)!important;
+ text-shadow:0 1px 3px #4e155f;
+}
+.journey-map-active>.city-pilot{
+ border:1.5px solid #e5b76e!important;
+ box-shadow:0 2px 8px #7e3b9c57!important;
+ background:linear-gradient(130deg,#78309f,#a151b7)!important;
+ color:#fff8ff!important;
+}
+.journey-map-active>.city-pilot b{color:#fff5ff!important}
+.journey-map-active>.city-pilot strong{color:#ffe7a2!important}
+.journey-map-active>.city-pilot[href*="bastian"]{
+ background:linear-gradient(120deg,#fff2cf,#f4d8f9)!important;
+}
+.journey-map-active>.city-pilot[href*="bastian"] b,
+.journey-map-active>.city-pilot[href*="bastian"] strong,
+.journey-map-active>.city-pilot[href*="bastian"]{color:#5a236d!important}
+.journey-map-active>.pg-welcome-review{
+ border:1px solid #d7a4db!important;
+ color:#68267e!important;
+ background:#fff5fced!important;
+ font-weight:850;
+ padding:3px 8px!important;
+}
+.journey-map-active .journey-road{
+ grid-auto-flow:row;gap:clamp(5px,.85svh,10px)!important;
+}
+.journey-map-active .journey-card{
+ border:1.7px solid #e7bb80;
+ border-radius:14px!important;
+ background:linear-gradient(145deg,#fffaff,#f6ddf5 80%)!important;
+ box-shadow:0 2px 7px #8b41a04a!important;
+ padding:clamp(6px,1svh,9px)!important;
+ gap:6px;
+}
+.journey-map-active .journey-card.is-ready{
+ background:linear-gradient(145deg,#fff5d3,#ffe6fb 80%)!important;
+ border-color:#d6a465!important;
+}
+.journey-map-active .journey-card.is-planned{filter:none;opacity:1}
+.journey-map-active .journey-num{
+ width:22px;height:22px;
+ border:1px solid #f1db9f;
+ border-radius:9px;
+ background:linear-gradient(135deg,#ffcf7e,#8f419f)!important;
+ color:white;font-size:12px;
+ text-shadow:0 1px #653478;
+}
+.journey-map-active .journey-art{
+ flex-basis:clamp(23px,3.8svh,32px)!important;
+ font-size:clamp(21px,3.2svh,27px)!important;
+}
+.journey-map-active .journey-copy{
+ gap:clamp(3px,.5svh,5px);
+}
+.journey-map-active .journey-copy strong{
+ color:#542072!important;
+ font-size:clamp(11px,1.9svh,14px)!important;
+ line-height:1.16!important;
+}
+.journey-map-active .journey-grammar{
+ display:-webkit-box!important;
+ border:1px solid #e6cae7!important;
+ border-radius:8px!important;
+ background:#f3e1fb!important;
+ padding:3px 5px!important;
+ font-size:clamp(10px,1.55svh,12px)!important;
+ line-height:1.12!important;
+ -webkit-line-clamp:2;
+}
+.journey-map-active .journey-grammar [lang]{color:#632381!important}
+.journey-map-active .journey-preview{
+ bottom:auto;top:calc(100% + 2px);
+ background:#fff9ff!important;box-shadow:0 6px 15px #58267666;
+}
+@media(max-height:720px){
+ #app .content.journey-map-active{
+   grid-template-rows:30px 56px 23px minmax(0,1fr)!important;
+   gap:4px!important;
+   padding:5px 6px 8px!important;
+ }
+ .journey-map-active .journey-card{padding:5px!important}
+ .journey-map-active .journey-copy strong{font-size:clamp(10.5px,1.7svh,13px)!important}
+ .journey-map-active .journey-grammar{font-size:10px!important;padding:2px 3px!important}
+}
