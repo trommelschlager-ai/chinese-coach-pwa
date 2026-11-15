@@ -241,8 +241,8 @@ export function answerLive(raw,options={}){
  // Chrome zh-CN can join a greeting and a simple question without punctuation,
  // or transcribe 怎么样 as 什么样. Resolve only this narrow HSK1 ambiguity.
  // Preserve the original recognized words for the learner and never score tones.
- const joined=s.match(/^(你好|早上好|中午好|下午好|晚上好)(你今天怎么样|你今天什么样|你怎么样|你好吗)$/u);
- const likely=s==='你今天什么样'?'你今天怎么样':joined?.[2]==='你今天什么样'?'你今天怎么样':joined?.[2];
+ const joined=s.match(/^(你好|早上好|中午好|下午好|晚上好)(你今天什么样)$/u);
+ const likely=s==='你今天什么样'||joined?'你今天怎么样':null;
  if(likely&&likely!==s){
    const resolved=answerLive(likely,options);
    if(resolved.kind==='question')return {...resolved,
