@@ -113,7 +113,7 @@ button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.48;cursor:d
 @media(max-height:740px){.header{height:69px}.header h1{margin:0;font-size:28px}.header .sub{padding:3px 5px}.page{padding-top:2px}.hero{min-height:133px}.hero img{width:44%}.hero .hero-copy h2{font-size:25px}.glam{padding:9px}.feature{min-height:60px}.feature .em{font-size:19px}.feature span:last-child{font-size:11px}.tone{padding:3px}.bottom{gap:5px;padding:5px 10px calc(7px + env(safe-area-inset-bottom))}.bottom button{min-height:38px}.screen{gap:7px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
-<link rel="stylesheet" href="./assets/hsk2-premium-v352.css?v=352">
+<link rel="stylesheet" href="./assets/hsk2-premium-v352.css?v=353">
 </head>
 <body>
 <div class="app hsk2-premium" id="app">
@@ -214,7 +214,7 @@ function renderGrammar(){
  '<div class="definition">💡 <b>什么 (shénme)</b> — «что / какой». В сочетании <b>什么名字</b> спрашиваем «какое имя?». В ответе имя стоит <b>после 叫</b>.</div></section>'+
  '<section class="glam"><h2>🎧 Послушай примеры</h2><div style="display:grid;gap:6px">'+
  '<div class="example"><span class="avatar">🐼</span><div class="example-content"><div class="hanzi">'+MODEL.question+'</div><div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div></div>'+sound(MODEL.question,true)+'</div>'+
- '<div class="example"><span class="avatar">👦</span><div class="example-content"><div class="hanzi">'+MODEL.answer+'</div><div class="py">'+MODEL.aPy+'</div><div class="ru">'+MODEL.aRu+'</div></div></div>'+
+ '<div class="example"><span class="avatar"><img src="./assets/hsk2-misha-avatar-v353.svg" alt="Миша"></span><div class="example-content"><div class="hanzi">'+MODEL.answer+'</div><div class="py">'+MODEL.aPy+'</div><div class="ru">'+MODEL.aRu+'</div></div></div>'+
  '</div><p class="small" style="margin-top:8px">Запись ответа с именем Миша пока отсутствует. Мы не подменяем её другим голосом.</p></section></section>';
 }
 function renderTest(){
@@ -241,7 +241,7 @@ function renderDialogue(){
  return '<section class="screen screen--dialogue">'+header('Мини-диалог')+
  '<section class="glam"><h2>💬 Послушай, повтори и ответь</h2><div class="dialogue">'+
  '<div class="bubble"><div class="face"><img src="./assets/hsk2-panda-new-v328.svg" alt="Панда"></div><article class="chat"><div class="hanzi">'+MODEL.question+'</div><div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div>'+sound(MODEL.question)+'</article></div>'+
- (show?'<div class="bubble reply"><div class="face">👦</div><article class="chat"><div class="hanzi">'+MODEL.answer+'</div><div class="py">'+MODEL.aPy+'</div><div class="ru">'+MODEL.aRu+'</div><span class="small">Прочитай вслух: для имени Миша отдельной записи пока нет</span></article></div>':
+ (show?'<div class="bubble reply"><div class="face"><img src="./assets/hsk2-misha-avatar-v353.svg" alt="Миша"></div><article class="chat"><div class="hanzi">'+MODEL.answer+'</div><div class="py">'+MODEL.aPy+'</div><div class="ru">'+MODEL.aRu+'</div><span class="small">Прочитай вслух: для имени Миша отдельной записи пока нет</span></article></div>':
  '<button type="button" class="play-big" data-reveal>💬 Ответить Панде: «Меня зовут Миша»</button>')+
  '</div></section>'+
  (show?'<section class="glam"><h2>🌸 Что запомнить</h2><div class="remember"><div>✅ <b>你叫什么名字？</b><span>Как тебя зовут?</span></div><div>✅ <b>我叫…</b><span>Меня зовут…</span></div></div>'+
