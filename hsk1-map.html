@@ -1,116 +1,98 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#a74ac2">
-<meta name="panda-go-approved-map" content="v372-separated-crisp-layers">
-<meta name="legacy-map-stylesheet" content="assets/hsk1-map-v252.css?v=258">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#a044b0">
+<meta name="panda-go-approved-map" content="v373-exact-approved-art">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
-<link rel="preload" as="image" type="image/webp" href="./assets/hsk1-v371-background.webp">
-<link rel="stylesheet" href="./assets/hsk1-layered-v372.css?v=372">
+<link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
+<style>
+:root{color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,system-ui,sans-serif;background:#5f367d}
+body{display:grid;place-items:center}
+.artboard{position:relative;isolation:isolate;width:min(100vw,45.1768dvh);height:min(100dvh,221.3523vw);overflow:hidden;margin:auto;touch-action:manipulation;background:#6447ab;box-shadow:0 0 24px #26063770}
+.approved{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.hotspots{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hotspots a{pointer-events:auto;position:absolute;display:block;text-decoration:none;cursor:pointer;background:transparent;outline-offset:2px;-webkit-tap-highlight-color:transparent}
+.hotspots a:focus-visible{outline:3px solid white;border-radius:22px;box-shadow:0 0 0 5px #ba2dcd}
+.lesson{left:var(--x);top:var(--y);width:var(--w);height:var(--h);border-radius:999px}
+.lesson.locked{cursor:not-allowed}
+.lesson .gate{position:absolute;right:8.5%;top:50%;transform:translateY(-50%);width:9.5%;aspect-ratio:1;min-width:28px;border:2px solid #ffdf64;border-radius:50%;display:none;place-items:center;color:#13532b;background:linear-gradient(140deg,#dfffc7,#43c873 70%,#20914f);font-size:clamp(13px,3.8vw,23px);box-shadow:0 2px 8px #38105399, inset 0 2px 4px #fff}
+.lesson.done:not([data-num="1"]) .gate,.lesson.current:not([data-num="1"]) .gate{display:grid}
+.lesson.current .gate{background:linear-gradient(150deg,#fff6ae,#f4c44d);color:#6d4602}
+.lesson[data-num="2"] .gate{right:9.5%}
+.lesson[data-num="7"] .gate{right:7.5%}
+.top-link{top:4.6%;height:6.9%;width:14%;border-radius:18px}
+.top-link.back{left:1%}.top-link.write{right:1%}
+.footer-link{top:83.6%;height:8.2%;border-radius:24px}
+.footer-link.rhythm{left:1%;width:33%}.footer-link.trainer{left:34.1%;width:32%}.footer-link.ai{left:66.3%;width:32.7%}
+.toast{position:absolute;z-index:10;left:7%;right:7%;top:21%;padding:11px 15px;text-align:center;color:white;border:2px solid #ffe189;border-radius:15px;background:#4b156ce9;font:700 clamp(11px,2.9vw,15px)/1.35 Arial,sans-serif;box-shadow:0 5px 18px #290c5588}
+.toast[hidden]{display:none!important}
+@media (max-height:650px){.toast{top:17%}}
+</style>
 </head>
 <body>
-<main class="map-shell">
-<img class="pg-layer pg-layer-bg" src="./assets/hsk1-v371-background.webp" alt="" aria-hidden="true" fetchpriority="high" width="941" height="1672">
-<img class="pg-layer pg-layer-header" src="./assets/hsk1-v371-header.webp" alt="" aria-hidden="true">
-<img class="pg-layer pg-layer-ribbons" src="./assets/hsk1-v371-ribbons.webp" alt="" aria-hidden="true">
-<img class="pg-layer pg-layer-panda" src="./assets/hsk1-v371-panda.webp" alt="" aria-hidden="true">
-<img class="pg-layer pg-layer-actions" src="./assets/hsk1-v371-actions.webp" alt="" aria-hidden="true">
-<a class="back" href="./index.html#panda/home" aria-label="Назад к выбору уровня" title="Назад">‹</a>
-<a class="pg-map-writing" href="./hanzi-writing.html?lesson=1" aria-label="Написание иероглифов" title="Писать иероглифы">✍</a>
-<header class="pg-map-heading">
-  <div class="pg-map-brand">Panda Go</div>
-  <h1 class="pg-level-title">HSK 1 · Начальный уровень</h1>
-</header>
-<section class="map-summary" aria-label="Прогресс HSK 1">
-  <div class="meta"><strong>Твой путь к китайскому</strong><span id="progress-label">0 из 7 уроков</span></div>
-  <div class="meter"><i id="progress-fill"></i></div>
-</section>
-<nav class="map-road" aria-label="Карта уроков HSK 1">
-<a class="node" data-num="7" href="./hsk1-lesson.html?lesson=7" aria-label="Урок 7. Погода"><span class="circle">7</span><span class="caption"><strong>Погода</strong><span class="pg-word">天气 · tiānqì</span><span class="pg-hidden-status" data-status="7" hidden></span></span><span class="pg-topic-art" aria-hidden="true"></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="6" href="./hsk1-lesson.html?lesson=6" aria-label="Урок 6. Моя семья"><span class="circle">6</span><span class="caption"><strong>Моя семья</strong><span class="pg-word">家人 · jiārén</span><span class="pg-hidden-status" data-status="6" hidden></span></span><span class="pg-topic-art" aria-hidden="true"></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="5" href="./hsk1-fifth-v227.html" aria-label="Урок 5. Месяцы и даты"><span class="circle">5</span><span class="caption"><strong>Месяцы и даты</strong><span class="pg-word">日期 · rìqī</span><span class="pg-hidden-status" data-status="5" hidden></span></span><span class="pg-topic-art" aria-hidden="true"></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="4" href="./hsk1-fourth-v214.html" aria-label="Урок 4. Дни недели"><span class="circle">4</span><span class="caption"><strong>Дни недели</strong><span class="pg-word">星期 · xīngqī</span><span class="pg-hidden-status" data-status="4" hidden></span></span><span class="pg-topic-art" aria-hidden="true"></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="3" data-course-length="14 экранов" href="./hsk1-third-v212.html" aria-label="Урок 3. Числа и их строение"><span class="circle">3</span><span class="caption"><strong>Числа</strong><span class="pg-word">数字 · shùzì</span><span class="pg-hidden-status" data-status="3" hidden></span></span><span class="pg-topic-art" aria-hidden="true"></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="2" href="./hsk1-second-v203.html" aria-label="Урок 2. Личные местоимения"><span class="circle">2</span><span class="caption"><strong>Местоимения</strong><span class="pg-word">代词 · dàicí</span><span class="pg-hidden-status" data-status="2" hidden></span></span><span class="pg-topic-art" aria-hidden="true"></span><span class="arrow" aria-hidden="true">›</span></a>
-<a class="node" data-num="1" href="./hsk1-first-v189.html" aria-label="Урок 1. Базовое знакомство"><span class="circle">1</span><span class="caption"><strong>Знакомство</strong><span class="pg-word">你好 · nǐ hǎo</span><span class="pg-hidden-status" data-status="1" hidden>16 экранов · знакомство</span></span><span class="pg-topic-art" aria-hidden="true"></span><span class="arrow" aria-hidden="true">›</span></a>
+<main class="artboard" aria-label="Panda Go — уроки HSK 1">
+<img class="approved" src="./assets/hsk1-approved-v373.png" alt="Panda Go, начальный уровень HSK 1. Семь цветных уроков, панда в китайском костюме на фоне заката." width="843" height="1866" fetchpriority="high">
+<nav class="hotspots" aria-label="Уроки HSK 1">
+<a class="top-link back" href="./index.html#panda/home" aria-label="Назад к выбору уровня"></a>
+<a class="top-link write" href="./hanzi-writing.html?lesson=1" aria-label="Написание иероглифов"></a>
+<a class="lesson" data-num="7" style="--x:27.3%;--y:24.65%;--w:68%;--h:7.2%" href="./hsk1-lesson.html?lesson=7" aria-label="Урок 7. Погода"><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="6" style="--x:29.0%;--y:31.95%;--w:68%;--h:7.15%" href="./hsk1-lesson.html?lesson=6" aria-label="Урок 6. Моя семья"><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="5" style="--x:31.5%;--y:39.03%;--w:66%;--h:7.15%" href="./hsk1-fifth-v227.html" aria-label="Урок 5. Месяцы и даты"><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="4" style="--x:32.7%;--y:46.22%;--w:65%;--h:7.1%" href="./hsk1-fourth-v214.html" aria-label="Урок 4. Дни недели"><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="3" style="--x:36.0%;--y:53.38%;--w:61%;--h:7.1%" href="./hsk1-third-v212.html" aria-label="Урок 3. Числа"><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="2" style="--x:36.5%;--y:60.53%;--w:62%;--h:7.05%" href="./hsk1-second-v203.html" aria-label="Урок 2. Местоимения"><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="1" style="--x:35.3%;--y:67.7%;--w:63%;--h:7.1%" href="./hsk1-first-v189.html" aria-label="Урок 1. Знакомство"><span class="gate" aria-hidden="true"></span></a>
+<a class="footer-link rhythm" href="./hsk1-rhythm.html" aria-label="Китайский в ритме"></a>
+<a class="footer-link trainer" href="./hsk1-pronunciation.html" aria-label="Тренажёр"></a>
+<a class="footer-link ai" href="./panda-voice-pilot.html" aria-label="Panda AI"></a>
 </nav>
-<nav class="pg-map-actions" aria-label="Практика китайского">
-<a class="pg-rhythm-button" href="./hsk1-rhythm.html" aria-label="Китайский в ритме"><span class="action-icon" aria-hidden="true">🎧</span><span class="action-label">Китайский в ритме</span></a>
-<a class="pg-trainer-button" href="./hsk1-pronunciation.html" aria-label="Тренажёр"><span class="action-icon" aria-hidden="true">🎯</span><span class="action-label">Тренажёр</span></a>
-<a class="pg-ai-button" href="./panda-voice-pilot.html" aria-label="Panda AI: поговори с Пандой"><span class="action-icon" aria-hidden="true"><img class="pg-ai-figure" src="./assets/panda-ai-photo-v310.svg?v=310" alt=""></span><span class="action-label">Panda AI</span></a>
-</nav>
-<p class="map-footer"><a href="./hsk1-diagnostic.html">Итоговая проверка — 21 задание</a> · <a href="./audio-credits.html">Источники аудио</a></p>
-<div class="pg-toast" id="pg-lock-toast" role="status" aria-live="polite" hidden></div>
+<div class="toast" role="status" aria-live="polite" hidden></div>
 </main>
 <script>
-/* Strict course sequence v371. Prior lesson progress is kept, but cannot
-   silently unlock new lessons from earlier layout sessions. */
 (function(){
- 'use strict';
- const TOTAL=7,KEY='pg-hsk1-path-v371';
- let unlockedThrough=0;
- try{
-   const value=Number(localStorage.getItem(KEY)||0);
-   unlockedThrough=Number.isInteger(value)?Math.min(TOTAL,Math.max(0,value)):0;
- }catch{}
- // The historical record remains readable. It is deliberately NOT cleared or
- // used to skip sequential locks in the newly approved course map.
- let historical=[];
- try{
-   historical=JSON.parse(localStorage.getItem('pg-hsk1-v3-complete')||'[]');
-   if(!Array.isArray(historical))historical=[];
- }catch{historical=[]}
- const frontier=Math.min(TOTAL,unlockedThrough+1);
- const items=[...document.querySelectorAll('.map-road a.node')];
- for(const node of items){
-   const n=Number(node.dataset.num);
-   const locked=n>frontier;
-   const done=n<=unlockedThrough;
-   node.classList.toggle('locked',locked);
-   node.classList.toggle('done',done);
-   node.classList.toggle('current',n===frontier&&!done);
-   node.setAttribute('aria-disabled',String(locked));
-   if(locked){node.setAttribute('title','Сначала пройди урок '+(n-1));node.setAttribute('tabindex','-1')}
-   else {node.removeAttribute('title');node.removeAttribute('tabindex')}
-   let gate=node.querySelector('.pg-gate');
-   if(!gate){
-     gate=document.createElement('span');
-     gate.className='pg-gate';
-     gate.setAttribute('aria-hidden','true');
-     node.appendChild(gate);
-   }
-   gate.textContent=locked?'🔒':done?'✓':'▶';
-   const progress=node.querySelector('[data-status]');
-   if(progress)progress.textContent=done?'Пройдено':locked?'Закрыто':'Можно начинать';
- }
- const label=document.getElementById('progress-label');
- const bar=document.getElementById('progress-fill');
- if(label)label.textContent=unlockedThrough+' из 7 уроков';
- if(bar)bar.style.width=(unlockedThrough/7*100)+'%';
- const toast=document.getElementById('pg-lock-toast');
- let toastTimer=0;
- function notice(n){
-   if(!toast)return;
-   toast.textContent='🔒 Сначала заверши урок '+(n-1)+', потом откроется урок '+n+'.';
-   toast.hidden=false;
-   clearTimeout(toastTimer);
-   toastTimer=setTimeout(()=>{toast.hidden=true},2800);
- }
- document.querySelector('.map-road').addEventListener('click',event=>{
-   const blocked=event.target.closest('a.node.locked');
-   if(!blocked)return;
-   event.preventDefault();
-   event.stopPropagation();
-   notice(Number(blocked.dataset.num));
- });
- document.querySelector('.map-road').addEventListener('keydown',event=>{
-   const blocked=event.target.closest('a.node.locked');
-   if(blocked&&(event.key==='Enter'||event.key===' ')){
-     event.preventDefault();notice(Number(blocked.dataset.num));
-   }
- });
+  'use strict';
+  const KEY='pg-hsk1-path-v371', IDS=['foundations','pronouns','numbers','weekdays','dates','family','weather'];
+  let completed=0;
+  try{const v=Number(localStorage.getItem(KEY)||'0');if(Number.isInteger(v))completed=Math.min(7,Math.max(0,v))}catch{}
+  // The existing course progress key is authoritative; no old progress is erased.
+  const toast=document.querySelector('.toast');
+  let timer=0;
+  const lessons=Array.from(document.querySelectorAll('.lesson'));
+  function paint(){
+    const next=Math.min(7,completed+1);
+    for(const a of lessons){
+      const num=Number(a.dataset.num), locked=num>next,done=num<=completed;
+      a.classList.toggle('locked',locked);
+      a.classList.toggle('done',done);
+      a.classList.toggle('current',!done&&!locked);
+      a.setAttribute('aria-disabled',String(locked));
+      a.querySelector('.gate').textContent=done?'✓':'🔓';
+      a.setAttribute('aria-label',a.getAttribute('aria-label').replace(/ · (?:закрыт|доступен|пройден)$/,'')+(locked?' · закрыт':done?' · пройден':' · доступен'));
+      if(locked)a.setAttribute('title','Сначала пройди урок '+(num-1));else a.removeAttribute('title');
+    }
+  }
+  function deny(num){
+    toast.textContent='🔒 Сначала заверши урок '+(num-1)+', затем откроется урок '+num+'.';
+    toast.hidden=false;
+    clearTimeout(timer);timer=setTimeout(()=>toast.hidden=true,2600);
+  }
+  document.querySelector('.hotspots').addEventListener('click',e=>{
+    const a=e.target.closest('a.lesson.locked');
+    if(!a)return;
+    e.preventDefault();e.stopPropagation();deny(Number(a.dataset.num));
+  });
+  document.querySelector('.hotspots').addEventListener('keydown',e=>{
+    const a=e.target.closest('a.lesson.locked');
+    if(a&&(e.key==='Enter'||e.key===' ')){e.preventDefault();deny(Number(a.dataset.num))}
+  });
+  function refresh(){try{const v=Number(localStorage.getItem(KEY)||'0');if(Number.isInteger(v))completed=Math.min(7,Math.max(0,v))}catch{}paint()}
+  window.addEventListener('pageshow',refresh);
+  window.addEventListener('storage',refresh);
+  paint();
 })();
 </script>
 </body>
