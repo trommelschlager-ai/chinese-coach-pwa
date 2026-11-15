@@ -5,20 +5,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
-<meta name="panda-go-mobile-fix" content="v375-corrected-css-and-safe-layering">
+<meta name="panda-go-mobile-fix" content="v376-no-duplicate-edges-press-feedback">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
 :root{color-scheme:light}
 *,*::before,*::after{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100dvh;overflow:hidden;font-family:Arial,system-ui,sans-serif;background:#5f367d}
-body{display:grid;place-items:center;position:relative;background:#5f367d url("./assets/hsk1-approved-v373.png") center center/cover no-repeat}
-/* Background is painted on body, never as a composited overlay over the approved art. */
+html,body{margin:0;width:100%;height:100dvh;overflow:hidden;font-family:Arial,system-ui,sans-serif;background:linear-gradient(180deg,#a854c8 0%,#8b5bdd 18%,#5e73e8 46%,#2f72d8 74%,#1561c5 100%)}
+body{display:grid;place-items:center;position:relative}
+/* Do not repeat/crop the approved image to fill side gutters. There is only one bitmap. */
 .artboard{position:relative;isolation:isolate;width:min(100vw,45.1768dvh);height:min(100dvh,221.3523vw);overflow:hidden;margin:auto;touch-action:manipulation;background:#6447ab;box-shadow:0 0 10px #26063750;z-index:1}
 .approved{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .hotspots{position:absolute;inset:0;z-index:2;pointer-events:none}
 .hotspots a{pointer-events:auto;position:absolute;display:block;text-decoration:none;cursor:pointer;background:transparent;outline-offset:2px;-webkit-tap-highlight-color:transparent}
 .hotspots a:focus-visible{outline:3px solid white;border-radius:22px;box-shadow:0 0 0 5px #ba2dcd}
+/* The ribbon/button artwork stays inside the approved PNG. These transparent
+   hit-areas only add a restrained shadow and a temporary light/tap overlay. */
+.hotspots a{transition:filter 130ms ease,box-shadow 130ms ease;isolation:isolate}
+.top-link,.lesson,.footer-link{
+  box-shadow:0 4px 10px rgba(35,4,73,.14),inset 0 1px 2px rgba(255,255,255,.05);
+}
+.hotspots a::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.06));
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.6),inset 0 3px 10px rgba(255,255,255,.12);
+  opacity:0;transition:opacity 115ms ease;
+}
+.hotspots a:active::after,.hotspots a.is-pressed::after{opacity:1}
+.hotspots a:active,.hotspots a.is-pressed{
+  filter:brightness(1.08);
+  box-shadow:0 2px 5px rgba(35,4,73,.22),inset 0 2px 7px rgba(48,10,80,.22);
+}
+.hotspots a.locked:active::after,.hotspots a.locked.is-pressed::after{
+  background:rgba(255,208,91,.21);
+  box-shadow:inset 0 0 0 2px rgba(255,224,100,.67);
+}
+@media(prefers-reduced-motion:reduce){.hotspots a,.hotspots a::after{transition:none}}
+
 .lesson{left:var(--x);top:var(--y);width:var(--w);height:var(--h);border-radius:999px}
 .lesson.locked{cursor:not-allowed}
 .lesson .gate{position:absolute;right:var(--gate-right,8%);top:var(--gate-top,50%);transform:translateY(-50%);width:15%;aspect-ratio:1;border:2px solid #ffec7d;border-radius:50%;display:none;place-items:center;color:#134d29;background:linear-gradient(150deg,#f8ffca 0%,#74e587 36%,#24b65b 76%,#087b45 100%);font:700 clamp(14px,3.7vw,22px)/1 Arial,system-ui,sans-serif;text-shadow:0 1px 1px #fff9;box-shadow:0 2px 9px #38105399, inset 0 1px 5px #fff;z-index:3}
@@ -41,7 +64,7 @@ body{display:grid;place-items:center;position:relative;background:#5f367d url(".
 </head>
 <body>
 <main class="artboard" aria-label="Panda Go — уроки HSK 1">
-<img class="approved" src="./assets/hsk1-approved-v373.png" alt="Panda Go, начальный уровень HSK 1. Семь цветных уроков, панда в китайском костюме на фоне заката." width="843" height="1866" fetchpriority="high">
+<img class="approved" src="./assets/hsk1-approved-v373.png" alt="Panda Go, начальный уровень HSK 1. Семь цветных уроков, панда в китайском костюме на фоне заката." width="694" height="1536" fetchpriority="high">
 <nav class="hotspots" aria-label="Уроки HSK 1">
 <a class="top-link back" href="./index.html#panda/home" aria-label="Назад к выбору уровня"></a>
 <a class="top-link write" href="./hanzi-writing.html?lesson=1" aria-label="Написание иероглифов"></a>
@@ -96,6 +119,34 @@ body{display:grid;place-items:center;position:relative;background:#5f367d url(".
     if(a&&(e.key==='Enter'||e.key===' ')){e.preventDefault();deny(Number(a.dataset.num))}
   });
   function refresh(){try{const v=Number(localStorage.getItem(KEY)||'0');if(Number.isInteger(v))completed=Math.min(7,Math.max(0,v))}catch{}paint()}
+  // Short, perceptible mobile touch response, including on locked lessons.
+  // Delay same-tab navigation a fraction of a second so the pupil can SEE it.
+  const links=Array.from(document.querySelectorAll('.hotspots a'));
+  let navigating=false;
+  for(const a of links){
+    let release=0;
+    function mark(){clearTimeout(release);a.classList.add('is-pressed')}
+    function unmark(delay=155){clearTimeout(release);release=setTimeout(()=>a.classList.remove('is-pressed'),delay)}
+    a.addEventListener('pointerdown',mark,{passive:true});
+    a.addEventListener('pointerup',()=>unmark());
+    a.addEventListener('pointercancel',()=>unmark(0));
+    a.addEventListener('pointerleave',()=>unmark());
+    a.addEventListener('blur',()=>unmark(0));
+    a.addEventListener('click',e=>{
+      if(a.classList.contains('locked')){
+        // The existing lock handler above blocks navigation and shows a toast.
+        mark();unmark(230);return;
+      }
+      if(e.defaultPrevented||e.button!==0||e.ctrlKey||e.metaKey||e.altKey||e.shiftKey||a.target==='_blank')return;
+      e.preventDefault();
+      if(navigating)return;
+      navigating=true;
+      mark();
+      const destination=a.href;
+      setTimeout(()=>{window.location.assign(destination)},165);
+    });
+  }
+  window.addEventListener('pageshow',()=>{navigating=false;for(const a of links)a.classList.remove('is-pressed')});
   window.addEventListener('pageshow',refresh);
   window.addEventListener('focus',refresh);
   window.addEventListener('storage',refresh);
