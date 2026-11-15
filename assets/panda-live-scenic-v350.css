@@ -1,0 +1,58 @@
+/* The supplied lake artwork is one continuous background beneath every panel. */
+body.panda-clean-ready{background:#168ee0}
+#pg346{background:#168ee0 url('./panda-landscape-v350.webp') center center/cover no-repeat;padding:0 2.5%;max-width:540px}
+#pg346 .pg346-header{height:15.8%;padding:1% 0 0;background:none;display:flex;flex-direction:column}
+#pg346 .pg346-back{min-height:0;height:25%;font-size:clamp(13px,3.7vw,20px)}
+#pg346 .pg346-modes{margin:0;gap:2%;height:45%;align-items:center}
+#pg346 .pg346-mode{height:80%;font-size:clamp(12px,3.5vw,19px);font-weight:730;padding:0 4px;gap:5px;border:1.5px solid #fff;box-shadow:0 0 8px #fff8,0 3px 9px #5b2b9b44}
+#pg346 .pg346-mode[aria-pressed=true]{box-shadow:0 0 3px 2px #ffc7ff,0 0 15px 3px #e24fff}
+#pg346 .pg346-tools{height:30%;min-height:0;margin:0;gap:3%;grid-template-columns:minmax(0,1fr) auto auto}
+#pg346 .pg346-title{font-size:clamp(13px,3.8vw,20px);letter-spacing:-.5px;gap:5px}
+#pg346 .pg346-toggle,#pg346 .pg346-history-btn{height:clamp(25px,3.8dvh,35px);padding:0 8px;font-size:clamp(10px,2.75vw,15px);border-color:#f6d5ff;box-shadow:0 2px 8px #8c58c280,0 0 8px #fff7}
+#pg346 .pg346-ru-toggle{display:none}
+#pg346 .pg346-toggle:after{width:19px;height:12px;border:3px solid #bb11df;background:#fff;box-shadow:0 0 5px #b81ce7}
+#pg346 .pg346-toggle[aria-pressed=true]:after{background:#fff}
+#pg346 .pg346-history{flex:0 0 19.5%;max-height:none;min-height:0;padding:1.1% 0 0;gap:4%;background:none;overflow:hidden}
+#pg346 .pg346-row{min-height:0;height:29.5%;padding:3px 5px;gap:5px;border:1.5px solid #fff;border-radius:999px;box-shadow:0 0 9px #ebbeff,0 3px 8px #396ba966;grid-template-columns:clamp(32px,10vw,50px) minmax(0,1.08fr) minmax(0,1fr) clamp(28px,8vw,40px)}
+#pg346 .pg346-avatar{border:1px solid #fff;box-shadow:0 0 4px #d83bfa;background:#f9e9ff}
+#pg346 .pg346-avatar img{object-fit:cover;object-position:center top;height:145%;width:145%;transform:translateY(9%)}
+#pg346 .pg346-zh{font-size:clamp(13px,3.8vw,21px);line-height:1.1}
+#pg346 .pg346-py{font-size:clamp(9px,2.65vw,14px);color:#51435e}
+#pg346 .pg346-ru{font-size:clamp(11px,3.1vw,17px);line-height:1.15;color:#7316a4}
+#pg346 .pg346-row-audio{color:#a907e3;box-shadow:0 2px 7px #9e7be0}
+#pg346 .pg346-scene{flex:1 1 0;min-height:0;overflow:visible;background:none;margin:0 -2.63%}
+#pg346 .pg346-sakura{display:none}
+#pg346 .pg346-panda{width:56%;max-width:320px;max-height:79%;height:auto;left:1.5%;top:3%;bottom:auto;object-fit:contain;object-position:top;filter:drop-shadow(0 3px 4px #3343a54d)}
+#pg346 .pg346-speech{right:3.7%;top:4%;width:44%;max-height:53%;padding:9px 10px;border:1.5px solid #fff;border-radius:30px;background:linear-gradient(130deg,#fff6ff,#e9d6ff);box-shadow:0 0 10px #eedbff,0 4px 9px #4667a84a;text-align:left;justify-content:flex-start;overflow:auto}
+#pg346 .pg346-main-zh{font-size:clamp(22px,6vw,34px);line-height:1.1}
+#pg346 .pg346-main-py{font-size:clamp(10px,2.7vw,14px);line-height:1.12}
+#pg346 .pg346-main-ru{font-size:clamp(12px,3.4vw,18px);line-height:1.15;margin-top:4px}
+#pg346 .pg350-welcome{font-size:clamp(12px,3.4vw,18px);line-height:1.13;font-weight:730;margin:0}
+#pg346[data-welcome=false] .pg350-welcome{display:none}
+#pg346 .pg346-speech-controls{justify-content:space-between;gap:5px;margin-top:7px}
+#pg346 .pg346-speech-controls button{min-height:28px;min-width:30px;font-size:clamp(13px,3.5vw,20px);border-color:#f7edff;box-shadow:0 3px 8px #9062b958}
+#pg346 .pg346-repeat{display:none}
+#pg346 .pg346-all-topics{right:6%;bottom:5%;width:22%;max-width:115px;border:2px solid #fff;box-shadow:0 0 6px 3px #ffe2ff,0 0 18px 5px #ea4cff;font-size:clamp(14px,4vw,22px);gap:3px}
+#pg346 .pg346-all-topics svg{width:35%;height:auto}
+#pg346 .pg346-topic-menu{left:8%;right:auto;bottom:0;width:61%;max-height:43%;padding:7px 9px;border:2px solid #fff;border-radius:24px;background:linear-gradient(120deg,#fff1fff5,#e5c5fbf5);box-shadow:0 0 7px 2px #fff9,0 0 16px 3px #dc62ff;backdrop-filter:none}
+#pg346 .pg346-topic-menu-title{font-size:clamp(14px,3.8vw,21px);margin-bottom:5px;color:#4f177c}
+#pg346 .pg346-topic-menu-title button{width:22px;height:22px;font-size:17px;background:#f9ecff;box-shadow:0 2px 6px #9763c65e}
+#pg346 .pg346-topic-list{gap:4px}
+#pg346 .pg346-topic-list button{min-height:24px;padding:4px 2px;font-size:clamp(10px,2.8vw,15px);line-height:1;border:1px solid #fff;box-shadow:0 2px 5px #a373bc60;background:linear-gradient(#fff5ff,#ead8fc)}
+#pg346 .pg346-topic-list button[aria-current=true]{background:linear-gradient(#d34cf6,#aa0fd5);color:#fff}
+#pg346 .pg346-topic-list button:disabled{opacity:.55}
+#pg346 .pg346-composer{height:9%;min-height:0;background:none;padding:2% 1% 1%;gap:8px;grid-template-columns:minmax(0,1fr) 12% 17%}
+#pg346 .pg346-input{height:clamp(37px,5.6dvh,53px);padding:0 12px;font-size:clamp(13px,3.6vw,20px);border:1.5px solid #fff;box-shadow:0 2px 9px #a35cda,0 0 9px #fff8;background:#f9effff5}
+#pg346 .pg346-send,#pg346 .pg346-mic{box-shadow:0 0 5px 2px #ffc5ff,0 0 15px 3px #df50ff}
+#pg346 .pg346-nav{height:9.7%;padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));margin:1% 0 1.5%;border:2px solid #fff;border-radius:23px;box-shadow:0 0 9px #fff,0 5px 15px #8f57ca;background:linear-gradient(130deg,#fff6ff,#e7d7fc)}
+#pg346 .pg346-nav a{font-size:clamp(10px,2.9vw,16px);gap:3px}
+#pg346 .pg346-nav a[aria-current=page]{border:1px solid #ffddff;box-shadow:0 0 10px #e86bff;background:linear-gradient(135deg,#e830f6,#a206d8)}
+#pg346 .pg346-nav svg{width:clamp(24px,6.5vw,37px);height:clamp(24px,6.5vw,37px)}
+:root[data-keyboard=true] #pg346 .pg346-header{height:29%;min-height:95px}
+:root[data-keyboard=true] #pg346 .pg346-history,:root[data-keyboard=true] #pg346 .pg346-nav{display:none}
+:root[data-keyboard=true] #pg346 .pg346-composer{height:22%;min-height:52px}
+:root[data-keyboard=true] #pg346 .pg346-panda{width:44%;max-height:90%}
+:root[data-keyboard=true] #pg346 .pg346-speech{max-height:83%;top:3%}
+:root[data-keyboard=true] #pg346 .pg350-welcome,:root[data-keyboard=true] #pg346 .pg346-topic-menu{display:none}
+:root[data-keyboard=true] #pg346 .pg346-all-topics{width:17%;right:47%;bottom:8%}
+@media(max-width:365px){#pg346 .pg346-title{font-size:12px;letter-spacing:-.3px}#pg346 .pg346-toggle,#pg346 .pg346-history-btn{padding:0 5px}#pg346 .pg346-tools{gap:2%}}
