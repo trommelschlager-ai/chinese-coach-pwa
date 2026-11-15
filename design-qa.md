@@ -1,3 +1,51 @@
+# Panda AI scenic layout QA
+
+final result: passed
+
+Scope: restore the supplied continuous landscape and the approved mobile composition while retaining the real conversation engine.
+
+## Evidence
+
+- Source visual truth: `/workspace/scratch/a35ed0633324/upload/02-35749.png` (864 × 1536).
+- Supplied clean background: `Cherry Blossom Lake Garden.png`; optimized delivery asset `assets/panda-landscape-v350.webp`.
+- Browser-rendered implementation: `/workspace/shared/panda-ai-scenic.jpg` (540 × 936, app-only crop from a 1363 × 936 browser viewport).
+- Combined comparison: `/workspace/scratch/a35ed0633324/panda-design-comparison.jpg`.
+- Density normalization: source status bar excluded, remaining content resized to 540 × 936; implementation captured at 1 CSS pixel per image pixel.
+- State: topic panel open; three real conversation messages. The reference contains an illustrative conversation plus introductory speech simultaneously. The implementation displays the actual current utterance, so wording and speech-card height differ intentionally.
+
+## Comparison history
+
+1. P1: detached scenery over blue fill. Replaced with the supplied full landscape under header, history, character, input and navigation.
+2. P2: opening speech overflowed. Reduced introductory copy typography, removed duplicate introductory pinyin from the speech card and enlarged available speech space. Final browser measurement: speech overflow 0 px.
+3. P2: microphone exceeded the 412 × 320 viewport by 2.6 px. Capped its keyboard-state size at 54 px. Mobile Chromium regression subsequently passed.
+4. P2: percentage outer padding compressed the app on desktop. Bounded padding to the app width and matched the character footprint to the reference.
+5. P2: seven real topic buttons introduced a scrollbar. Increased the topic panel allowance and fitted the rows. Final browser measurement: topic overflow 0 px.
+
+## Required fidelity surfaces
+
+- Typography: bold purple hierarchy, readable Chinese, separate toned pinyin and Russian translation; no clipped opening copy.
+- Spacing: three compact history rows, character left, speech right, topics lower left, input and rounded navigation at the bottom. Entire portrait screen fits without page scrolling.
+- Colors: vivid supplied landscape; pale lilac controls, purple text and magenta active controls with bright borders.
+- Image quality: original clean character and supplied landscape, preserved proportions and transparent mascot edges. No scenery fragments remain.
+- Content: real transcript, verified audio and actual curriculum topics. Locked topics remain locked; the mock's illustrative Plan button is not mapped to an unrelated lesson. Generic learner avatar retained because the learner's gender/portrait is not known.
+
+## Verification
+
+- 58 existing conversation, audio, microphone and cache tests passed.
+- Mobile Chromium QA: 4 widths × 7 heights, simulated speech lifecycle, playback animation, text submission, pinyin, topics, history and reduced motion passed.
+- Live browser: playback enters talking animation; opening and closing topics works; sending 你好 produces a real reply and three history rows.
+- Console: no application error observed; browser-extension metadata warnings excluded.
+- Physical Android microphone not tested.
+
+## Follow-up polish
+
+P3: decorative topic icons and the user avatar are not pixel-identical to the illustrative mock. Standard existing controls remain in use; no fictional conversation entries are inserted.
+
+
+---
+
+# Earlier design QA
+
 # Panda Go lessons 5–7 — v233 design QA
 
 final result: passed
