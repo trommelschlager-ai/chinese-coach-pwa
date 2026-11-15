@@ -15,7 +15,7 @@ const FAMILY=Object.freeze({
   弟弟:{py:'dìdi',ru:'младший брат',no:'младшего брата',few:'младших брата',many:'младших братьев',gender:'m'},
   妹妹:{py:'mèimei',ru:'младшая сестра',no:'младшей сестры',few:'младшие сестры',many:'младших сестёр',gender:'f'}
 });
-const NUMS=Object.freeze({'一':{n:1,py:'yí'},'两':{n:2,py:'liǎng'},'二':{n:2,py:'liǎng'},'三':{n:3,py:'sān'},'四':{n:4,py:'sì'},'五':{n:5,py:'wǔ'}});
+const NUMS=Object.freeze({'一':{n:1,py:'yí'},'两':{n:2,py:'liǎng'},'二':{n:2,py:'èr'},'三':{n:3,py:'sān'},'四':{n:4,py:'sì'},'五':{n:5,py:'wǔ'}});
 const GREETINGS=Object.freeze({
  '你是老师吗':{pinyin:'Nǐ shì lǎoshī ma?',ru:'Ты учитель?'},
  '你几岁':{pinyin:'Nǐ jǐ suì?',ru:'Сколько тебе лет?'},
