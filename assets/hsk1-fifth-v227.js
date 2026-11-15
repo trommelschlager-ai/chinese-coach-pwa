@@ -67,6 +67,7 @@ function markDone(){
   if(!all.includes('dates'))all.push('dates');
   localStorage.setItem(OLD_DONE,JSON.stringify(all));
  }catch{}
+  window.PandaGoPathV371?.markComplete(5);
 }
 function say(message,kind=''){notice.textContent=message;notice.className='result '+kind;notice.hidden=!message}
 function stopAudio(){
