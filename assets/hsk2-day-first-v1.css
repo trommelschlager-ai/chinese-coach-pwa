@@ -87,3 +87,22 @@
  .day-pilot .day-title{padding-left:58px!important}
  .day-pilot .day-panda{width:55px;height:67px}
 }
+
+/* The last screen must show the AI practice button above the fold on Android. */
+.day-done{text-align:left!important;padding-top:6px}
+.day-done-head{text-align:center;border:1.5px solid #efc281;border-radius:16px;background:linear-gradient(135deg,#743095,#a150b5);padding:10px;color:#fff}
+.day-done-head h1{font-size:22px;color:#ffebba;text-shadow:0 1px #54186d;margin:0 0 3px}
+.day-done-head p{color:#fff2ff;font-size:12px;line-height:1.25;margin:0}
+.day-done-line{margin:9px 0;background:#fff8fc;border:1.5px solid #e7bc7f;border-radius:13px;padding:7px 10px}
+.day-done-line .phrase{padding:6px 40px 6px 0}
+.day-done-line .phrase .han{font-size:21px}
+.day-done-line .phrase .py{margin-top:2px}
+.day-done-line .phrase .meaning{margin-top:2px}
+.day-done .day-ai-panel{margin:8px 0;padding:11px 12px}
+.day-done .day-ai-panel h2{font-size:18px;margin-bottom:4px}
+.day-done .day-ai-panel p{font-size:12px;line-height:1.28}
+.day-done .day-ai-examples{margin:6px 0;padding:7px}
+.day-done .day-ai-panel a{margin-top:7px;padding:10px;font-size:15px}
+.day-done .day-ai-note{font-size:10px!important;color:#ffdfec;margin-top:6px}
+.day-done>.button-row{margin-top:7px}
+.day-done>.honest{margin:5px 3px;font-size:10px;line-height:1.3}
