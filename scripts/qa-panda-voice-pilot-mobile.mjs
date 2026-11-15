@@ -6,6 +6,17 @@ import {chromium} from 'playwright';
 const BASE=process.env.QA_BASE||'http://127.0.0.1:4173';
 const DIR='qa/panda-voice-pilot';fs.mkdirSync(DIR,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+// The clean screen keeps the legacy DOM only as the conversation engine.
+// Exercise visible controls rather than clicking that hidden backing DOM.
+const probe=await browser.newPage();
+await probe.goto(BASE+'/panda-voice-pilot.html');
+await probe.locator('html[data-panda-live-ready=true]').waitFor();
+const clean=await probe.locator('#pg346').count();await probe.close();
+if(clean){
+ try{await (await import('./qa-panda-clean-mobile.mjs')).verifyCleanMobile(browser,BASE,DIR)}
+ finally{await browser.close()}
+ process.exit(0);
+}
 const report=[],errors=[];
 async function ready(page){await page.locator('html[data-panda-live-ready=true]').waitFor()}
 async function send(page,text){await page.locator('#message').fill(text);await page.locator('#send').click()}
