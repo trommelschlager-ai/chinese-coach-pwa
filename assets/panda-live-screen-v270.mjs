@@ -23,6 +23,7 @@ const dayMini=Math.min(2,Math.max(0,Number(dayParams.get('mini'))||0));
 const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
+let micActivatedAt=0; // Guard the first seconds of a new recording against accidental second taps.
 const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false};
 const current=()=>state.display;
 const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson||conversation.id):conversation.id;
@@ -30,7 +31,7 @@ function note(text){$('status').textContent=text||''}
 function pose(value){clearTimeout(poseTimer);rig.setState(value)}
 function happy(){pose('happy');poseTimer=setTimeout(()=>pose('idle'),1300)}
 function stopAudio(){const a=audio;audio=null;clearTimeout(audioBufferTimer);cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onstalled=a.onloadedmetadata=a.ontimeupdate=a.onseeked=a.oncanplay=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
-function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;if(r){r.onstart=r.onaudiostart=r.onspeechstart=r.onspeechend=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
+function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;micActivatedAt=0;if(r){r.onstart=r.onaudiostart=r.onspeechstart=r.onspeechend=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
 function play(entry=null){
  const currentLine=entry||current();
@@ -278,7 +279,11 @@ $('speech-copy').addEventListener('click',copySpeechUrl);
 $('speech-chrome').href=shareableSpeechUrl();
 
 function startRecognition(){
- if(state.active){stopRecognition();note('Микрофон остановлен.');return}
+ if(state.active){
+   // A second tap immediately after Android permission or microphone activation is usually accidental.
+   if(Date.now()-micActivatedAt<2800){note('🎙 Микрофон уже включён. Говори по-китайски…');return}
+   stopRecognition();note('Микрофон остановлен по нажатию. Нажми 🎙, чтобы говорить снова.');return
+  }
  const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!Speech){showMicRecovery('Распознавание китайской речи в этом браузере недоступно. Открой ссылку в Chrome или отвечай текстом.');return}
  if(!state.speechConsent){$('speech-dialog').showModal();return}
@@ -287,7 +292,7 @@ function startRecognition(){
  try{
   r=new Speech();r.lang='zh-CN';r.continuous=false;r.interimResults=false;r.maxAlternatives=3;
  }catch{showMicRecovery('Браузер не смог создать сеанс распознавания. Открой ссылку в Chrome.');return}
- recognition=r;const token=++epoch;state.active=true;
+ recognition=r;const token=++epoch;state.active=true;micActivatedAt=Date.now();
  let heard=false,failed=false,started=false,audioStarted=false;
  const valid=()=>recognition===r&&epoch===token;
  const fail=(message)=>{if(!valid())return;failed=true;stopRecognition();showMicRecovery(message)};
