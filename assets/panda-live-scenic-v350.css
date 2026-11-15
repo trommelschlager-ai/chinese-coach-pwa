@@ -65,3 +65,8 @@ body.panda-clean-ready{background:#168ee0}
 #pg346 .pg346-topic-menu-title{font-size:clamp(14px,3.6vw,19px);margin-bottom:4px}
 #pg346 .pg346-topic-list button{min-height:22px;padding:3px 2px;font-size:clamp(10px,2.8vw,14px)}
 :root[data-keyboard=true] #pg346 .pg346-mic{width:54px;max-width:100%;height:54px;max-height:54px;justify-self:center}
+/* Match the reference mascot footprint and fit all seven real topic buttons. */
+#pg346 .pg346-panda{width:46%;left:7%;top:1%}
+#pg346 .pg346-topic-menu{left:9%;width:58%;max-height:36.5%;scrollbar-width:none}
+#pg346 .pg346-topic-menu::-webkit-scrollbar{display:none}
+:root[data-keyboard=true] #pg346 .pg346-panda{width:44%;left:1.5%;top:3%}
