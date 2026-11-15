@@ -335,6 +335,7 @@ function ready(){
 }
 function markComplete(){
  state.done=true;
+ try{const k='pg-hsk1-path-v371';const v=Number(localStorage.getItem(k)||'0');if(v===2)localStorage.setItem(k,'3');}catch{}
  try{
   let previous=JSON.parse(localStorage.getItem(DONE)||'[]');
   if(!Array.isArray(previous))previous=[];
