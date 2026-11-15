@@ -63,7 +63,13 @@ try {
          assert.equal(await target.evaluate(a=>a.classList.contains('done')),i<=n);
        }
        assert.equal(await page.evaluate(()=>localStorage.getItem('pg-hsk1-v3-complete')),'["foundations"]','Historical progress got erased');
-       if(n===1)await page.screenshot({path:'qa/hsk1-v373/android-393x852-lesson2-unlocked.png',fullPage:true});
+       if(n===1){
+         const gate=await page.locator('.lesson[data-num="2"] .gate').boundingBox();
+         const frame=await page.locator('.artboard').boundingBox();
+         const relativeX=(gate.x+gate.width/2-frame.x)/frame.width;
+         assert(relativeX>0.87&&relativeX<0.91,'Unlock icon must cover old lock, x='+relativeX);
+         await page.screenshot({path:'qa/hsk1-v373/android-393x852-lesson2-unlocked.png',fullPage:true});
+       }
      }
    }
    console.log('PASS viewport '+w+'x'+h+'; image, no scroll, 7 touch zones, six locks, 3 footer routes');
