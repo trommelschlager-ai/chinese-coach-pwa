@@ -238,6 +238,16 @@ function extendQuestion(result,raw,allowed,date,profile){
 export function answerLive(raw,options={}){
  const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={}}=options;
  raw=String(raw||'').trim();const s=normalize(raw);if(!raw)return {kind:'empty',message:'Скажи или напиши фразу на китайском.'};
+ // Introductory HSK2 employment question already recorded by the user.
+ // This is a genuine answer, not a transcript-based pronunciation score.
+ if(s==='你做什么工作'){
+   return {kind:'question',lesson:1,
+     spoken:{known:true,hanzi:raw,pinyin:'Nǐ zuò shénme gōngzuò?',translation:'Кем ты работаешь?',topic:1},
+     reply:line('我是老师。','Wǒ shì lǎoshī.','Я преподаватель.'),
+     followup:null,
+     message:'Панда ответила на вопрос о работе.'};
+ }
+
  // Chrome zh-CN can join a greeting and a simple question without punctuation,
  // or transcribe 怎么样 as 什么样. Resolve only this narrow HSK1 ambiguity.
  // Preserve the original recognized words for the learner and never score tones.
