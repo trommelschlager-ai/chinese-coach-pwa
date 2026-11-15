@@ -153,3 +153,22 @@
  background:radial-gradient(ellipse at 50% 0%,#f8d7fb,#ad68cb)!important;
 }
 @media (min-width:551px){.approved-stage{border-radius:6px}}
+
+/* v392: avoid a misleading blank purple screen while large approved PNGs decode. */
+.approved-stage .approved-art:not(.ready):not(.failed) .approved-hotspot{pointer-events:none!important}
+.approved-stage .approved-art.failed::after{
+ content:"Не удалось загрузить изображение. Обнови страницу.";
+ display:block;position:absolute;z-index:20;
+ top:40%;left:9%;width:82%;line-height:1.4;
+ color:#fff5d5;background:#602184;border:2px solid #f8ca74;
+ border-radius:14px;padding:15px;text-align:center;font-size:15px;font-weight:900;
+}
+.approved-stage .approved-art:not(.ready):not(.failed)::before{
+ content:"🐼 Открываем Panda Go…";
+ display:block;position:absolute;z-index:4;left:10%;width:80%;top:43%;
+ padding:18px 7px;
+ color:#fff5d5;text-align:center;font-size:18px;line-height:1.2;font-weight:900;
+ background:#6c288ed9;border:2px solid #f9d981;border-radius:22px;
+ box-shadow:0 2px 15px #32115180;
+}
+.approved-stage .approved-art.ready::before{display:none}
