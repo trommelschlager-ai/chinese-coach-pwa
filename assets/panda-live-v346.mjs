@@ -57,7 +57,7 @@ if (!bridge) {
       <div class="pg346-speech" aria-label="Текущая фраза Панды" aria-live="polite">
         <strong class="pg346-main-zh">你好！</strong>
         <span class="pg346-main-py">Nǐ hǎo!</span>
-        <span class="pg346-main-ru">Привет!</span><p class="pg350-welcome">Я твой помощник по китайскому языку. Давай поговорим? Выбери тему или напиши свой вопрос.</p>
+        <span class="pg346-main-ru">Привет!</span><aside class="pg350-welcome" role="note" aria-label="Подсказка для начала разговора"><strong>🐼 Начало диалога</strong><span>Выбери тему или задай вопрос по-китайски.</span></aside>
         <div class="pg346-speech-controls"><button id="pg346-hear" type="button" aria-label="Слушать">🔊</button><button id="pg346-speed" type="button" aria-label="Изменить скорость">1× ▾</button><button id="pg346-play" type="button" aria-label="Воспроизвести ещё раз">▶</button></div>
         <button type="button" class="pg346-repeat" id="pg346-repeat">↻ Повтори</button>
         <small class="pg357-audio-note" id="pg357-audio-note" hidden>🔇 Для этой фразы нет точной MP3-записи.</small>
@@ -113,6 +113,10 @@ if (!bridge) {
   function ingestSpeechSignal(signal,previousSnapshot){
     if(!signal||signal.id===lastSpeechSignalId)return;
     lastSpeechSignalId=signal.id;clearTimeout(effectTimer);
+    if(signal.kind==='uncertain'&&signal.text){
+      // The active visible composer, not the hidden legacy input, must receive the editable transcript.
+      const visibleInput=$('#pg346-input');visibleInput.value=signal.text;visibleInput.focus();
+    }
     // A browser ASR transcript is NOT acoustic tone assessment; never award green for text alone.
     const tonesChecked=signal.kind==='verified-tones'&&signal.toneVerified===true&&signal.contentVerified===true&&signal.confidence>=.85;
     if(tonesChecked){headsetResult='correct';assessmentText='✅ 太棒了！ Произношение и тоны проверены.';}
@@ -132,16 +136,16 @@ if (!bridge) {
     stage.dataset.listening=String(s.active);stage.dataset.welcome=String(s.history.length<=1);
     stage.dataset.pose=s.active?'listening':pandaSpeaking?'talking':'idle';
     liveMouth.setTalking(!s.active&&pandaSpeaking);
-    stage.dataset.headphones=s.active?'listening':headsetResult;$('#pg346-mic').setAttribute('aria-pressed',String(s.active));$('#pg346-short').setAttribute('aria-pressed',String(s.mode==='short'));$('#pg346-nonstop').setAttribute('aria-pressed',String(s.mode==='nonstop'));
+    stage.dataset.headphones=s.active?'listening':headsetResult;$('#pg346-mic').setAttribute('aria-pressed',String(s.active));$('#pg346-mic').setAttribute('aria-label',s.active?'Микрофон включён. Говори по-китайски.':'Ответить Панде голосом');$('#pg346-short').setAttribute('aria-pressed',String(s.mode==='short'));$('#pg346-nonstop').setAttribute('aria-pressed',String(s.mode==='nonstop'));
     const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable;$('#pg357-audio-note').hidden=!!s.audioAvailable}
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
     renderFeedback(s);renderTopics(s);
-    const warning=$('#pg346-status'),problem=/(микрофон|распознаван|разреши|доступ|Chrome|запись не|запись пока|звуковой файл|браузер.*звук|mp3|фрагмент)/i.test(s.status||'');
+    const warning=$('#pg346-status'),problem=/(микрофон|распознаван|распознано|неуверенно|исправь текст|разреши|доступ|Chrome|запись не|запись пока|звуковой файл|браузер.*звук|mp3|фрагмент)/i.test(s.status||'');
     warning.hidden=!problem;warning.textContent=problem?s.status:'';
     const live=$('#pg346-live');const showingAssessment=Date.now()<assessmentUntil;
     live.classList.toggle('pg352-assessment',!s.active&&!pandaSpeaking&&showingAssessment);
     live.dataset.active=String(s.active||pandaSpeaking||showingAssessment);
-    live.textContent=s.active?(String(s.status||'').includes('Речь закончилась')?'⏳ Распознаю речь…':'🎙 Слушаю…'):pandaSpeaking?'🔊 Панда говорит':showingAssessment?assessmentText:'';
+    live.textContent=s.active?(/Речь закончилась|Завершаю распознавание/.test(s.status||'')?'⏳ Распознаю речь…':'🎙 Слушаю китайскую речь…'):pandaSpeaking?'🔊 Панда говорит':showingAssessment?assessmentText:'';
     const back=document.getElementById('back-link');if(back)$('a.pg346-back').href=back.href;
   }
   function closeTopics(){$('#pg346-topics').hidden=true;$('#pg346-topics-btn').setAttribute('aria-expanded','false')}
