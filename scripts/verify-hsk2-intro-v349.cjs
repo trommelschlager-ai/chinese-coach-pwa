@@ -51,7 +51,7 @@ click('[data-reveal]');assert(output().includes('我叫米沙。'));
 assert(output().includes('Что запомнить'));
 assert(!output().includes('认识你'),'No surprise new words');
 click('#toggle-py');assert(doc.querySelector('#app').classList.contains('py-hidden'));
-const stored=JSON.parse(w.localStorage.getItem('pg-hsk2-introduction-v2'));
+const stored=JSON.parse(w.localStorage.getItem('pg-hsk2-introduction-v3'));
 assert(stored.dialogueRevealed&&stored.step===4);
 console.log('PASS: premium plan -> four word cards -> 3 explained words and grammar -> listening/graded choice/builder/optional mic -> interactive mini-dialogue; Misha correct, unlearned phrase absent.');
 dom.window.close();
