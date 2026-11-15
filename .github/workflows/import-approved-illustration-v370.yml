@@ -7,24 +7,21 @@ jobs:
   test-asset:
     runs-on: ubuntu-latest
     steps:
-      - name: Download and inspect 3 variants of approved art
+      - name: Package exact approved source preview as WebP
         env:
-          BASE: "https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2F6fd49500-7d0c-4988-97f5-1f74444baead/watermark:F/width:112?csig=AAAAAAAAAAAAAAAAAAAAALirQ9aj982uiYUTXPCayQrJpVzOUQibldF3TVckSgNE&exp=1794782320&osig=AAAAAAAAAAAAAAAAAAAAABzlLUTugM_XKTuLB3AdcjRA-QwrJCDzT2sJzSxYhgmW&signer=media-rpc&token=AAIAAU0AJDZmZDQ5NTAwLTdkMGMtNDk4OC05N2Y1LTFmNzQ0NDRiYWVhZAAAAAABoeFc1YCex5pKo7G90KS2sUe-PIqKZH9ERigZ1t5XxZ6iYPFgNg&x-canva-quality=thumbnail"
+          SOURCE: "https://media.canva.com/v2/document-image/hash:-2015321024/height:596/id:DAHbAU_FYUg/type:B/width:335?brand=BAF96kU1tvQ&csig=AAAAAAAAAAAAAAAAAAAAAMQX3u0c2QdF6-4uAadVG43N3EBQ3LG5_DjMjfkmTYVj&exp=1794771068&fallback=https%3A%2F%2Fs3.amazonaws.com%2Fdocument-export.canva.com%2F_FYUg%2FDAHbAU_FYUg%2F1%2Fthumbnail%2F0001.png%3FX-Amz-Algorithm%3DAWS4-HMAC-SHA256%26X-Amz-Credential%3DAKIAQYCGKMUHW27RK5IK%252F20261114%252Fus-east-1%252Fs3%252Faws4_request%26X-Amz-Date%3D20261114T201843Z%26X-Amz-Expires%3D85126%26X-Amz-Signature%3D4dfcab122112e96e1ebcba641124acbd95c85845db5395c43f97cc025cb1c450%26X-Amz-SignedHeaders%3Dhost%26response-expires%3DSun%252C%252015%2520Nov%25202026%252019%253A57%253A29%2520GMT&osig=AAAAAAAAAAAAAAAAAAAAABKNH2NLTy3htik7kvyT2rhzRvEsFRnMpYSMZY21JBj2&page=1&signed=brand%2Cfallback%2Cpage%2Cversion&signer=document-rpc&version=1"
         run: |
-          set +e
+          set -eu
+          curl --fail --location --retry 2 --silent --show-error --max-time 40 -o /tmp/approved.png "$SOURCE"
+          file /tmp/approved.png
+          python -m pip install --quiet pillow
           python - <<'PY'
-          import os
-          u=os.environ["BASE"]
-          with open("/tmp/asset-urls.txt","w") as f:
-            for label,link in [
-              ("thumb",u),
-              ("original",u.replace("height:200/quality:100","height:1672/quality:100").replace("width:112?","width:941?")),
-              ("medium",u.replace("height:200/quality:100","height:900/quality:90").replace("width:112?","width:507?")),
-            ]:
-              f.write(label+" "+link+"\n")
+          from PIL import Image
+          im=Image.open("/tmp/approved.png").convert("RGB")
+          print("dimensions", im.size)
+          im.save("/tmp/approved.webp","WEBP",quality=83,method=6)
+          print("bytes",__import__("os").path.getsize("/tmp/approved.webp"))
           PY
-          while read -r name url; do
-            code=$(curl --silent --show-error --location --max-time 35 -w '%{http_code}' -o "/tmp/$name.png" "$url")
-            echo "variant:$name code:$code bytes:$(wc -c < /tmp/$name.png)"
-            file "/tmp/$name.png" | cut -c1-220
-          done < /tmp/asset-urls.txt
+          echo IMAGEBEGIN
+          base64 -w 3000 /tmp/approved.webp | while IFS= read -r line; do echo "IMAGECHUNK:$line"; done
+          echo IMAGEEND
