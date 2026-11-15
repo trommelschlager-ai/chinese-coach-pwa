@@ -1,6 +1,6 @@
 {
-  "version": 351,
-  "bytes": 62624224,
+  "version": 352,
+  "bytes": 62642084,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -2785,6 +2785,7 @@
     "./hsk2-city-work.html",
     "./assets/hsk2-speaking-v326.js?v=345",
     "./assets/panda-live-scenic-v350.css?v=352",
-    "./assets/panda-landscape-v350.webp"
+    "./assets/panda-landscape-v350.webp",
+    "./assets/hsk2-premium-v352.css?v=352"
   ]
 }
