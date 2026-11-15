@@ -31,7 +31,7 @@ if(mistakes.length)console.warn('Panda Go course QA:',mistakes.join('; '));
 var KEY='pg-hsk2-life-course-v1';
 var state={view:'welcome',topic:0,mini:0,stage:0,showPy:true,completed:[],difficult:[],quizWord:null,quizSentence:null,build:[],finalAnswers:{},examPassed:false};
 var dayUI=window.PandaGoDayFirstUIV1;
-function dayPilot(){return state.topic===0&&state.mini===0&&!!dayUI;}
+function dayPilot(){return state.topic===0&&!!dayUI;}
 function dayCoachingLink(mini){return './panda-voice-pilot.html?practice=day&mini='+Math.max(0,Math.min(2,Number(mini)||0))+'&from=hsk2-life-course';}
 function dayAIBlock(mini){return '<section class="day-ai-panel"><h2>🐼 Поговори с Пандой AI</h2><p>Потренируй то, что уже изучил: Панда задаст вопросы, а ты ответишь голосом или текстом.</p><div class="day-ai-examples"><strong lang="zh-Hans">你每天几点起床？</strong><br>Во сколько ты каждый день встаёшь?</div><a href="'+dayCoachingLink(mini)+'" aria-label="Открыть разговорную практику Мой день с Panda AI">🎙 Начать практику →</a><p class="day-ai-note">Проверяется смысл ответа; точность тонов пока не оценивается.</p></section>';}
 
@@ -75,31 +75,27 @@ function selection(q,options,selected,type,answer){
  (selected!==null?'<p class="feedback '+(selected===answer?'good':'bad')+'">'+(selected===answer?'✓ Правильно':'✕ Попробуй другой вариант')+'</p>':'')+'</div>';
 }
 function viewWelcome(){
- var parts=[
-  ['01_header_panda.png',220],
-  ['02_course_and_ai.png',130],
-  ['03_proverb.png',130],
-  ['04_course_numbers.png',158],
-  ['05_grammar_tests_speech.png',446],
-  ['06_outcomes.png',221],
-  ['07_actions_and_lake.png',231]
- ];
- return '<section class="approved-welcome" aria-label="Китайский плюс легко, презентация второго курса">'+
- '<div class="approved-poster" role="group" aria-label="Утверждённый дизайн Panda Go: семь фрагментов без растяжения">'+
- parts.map(function(part,i){
-  return '<img src="./assets/hsk2-life-landing-approved-v1/'+part[0]+'" width="1024" height="'+part[1]+'" class="approved-slice" alt="" draggable="false" decoding="async" loading="eager">';
- }).join('')+
- '<button type="button" class="approved-hotspot approved-program" data-view="map" aria-label="Посмотреть программу: все 10 тем"></button>'+
- '<button type="button" class="approved-hotspot approved-start" data-start="0" aria-label="Начать курс: первый мини-урок Мой распорядок дня"></button>'+
- '<a class="approved-hotspot approved-ai-top" href="./panda-voice-pilot.html" aria-label="Открыть Панда AI и разговорную практику"></a>'+
- '<a class="approved-hotspot approved-ai-card" href="./panda-voice-pilot.html" aria-label="Открыть Панда AI"></a>'+
- '</div><span class="visually-hidden">Китайский плюс легко: 10 тем, 30 мини-уроков, 200+ слов и выражений. Не бойся говорить с ошибками. Бойся никогда не заговорить. Грамматика, тесты, практика произношения и разговоры с Панда AI.</span></section>';
+ return '<section class="approved-stage approved-welcome-screen" style="--approved-image:url(./assets/approved-course-v390/course-welcome.png)" aria-label="Китайский плюс легко · утверждённый приветственный экран"><div class="approved-art">'+
+ '<img src="./assets/approved-course-v390/course-welcome.png" alt="Panda Go Китайский + Легко. 10 тем, 30 коротких уроков, грамматика, тесты, произношение и Панда AI. Не бойся говорить с ошибками. Бойся никогда не заговорить." width="941" height="1672" decoding="async" draggable="false">'+
+ '<button class="approved-hotspot approved-program poster-welcome-program" data-view="map" aria-label="Посмотреть программу: десять тем"></button>'+
+ '<button class="approved-hotspot approved-start poster-welcome-start" data-start="0" aria-label="Начать первый мини-урок Мой распорядок дня"></button>'+
+ '<a class="approved-hotspot approved-ai-top poster-welcome-ai" href="./panda-voice-pilot.html" aria-label="Открыть Панда AI"></a>'+
+ '</div></section>';
 }
 function viewMap(){
- return '<section class="map"><div class="map-head"><h1>🗺️ Все 10 тем</h1><p>Моя жизнь на китайском · 30 коротких уроков</p><div class="meter"><i style="width:'+perc()+'%"></i></div><p class="small">'+state.completed.length+' из 30 мини-уроков завершено</p></div><div class="topic-grid">'+topics.map(function(t,i){
-  var n=[0,1,2].filter(function(m){return state.completed.includes(i*3+m)}).length;
-  return '<button type="button" data-topic="'+i+'" class="topic-card"><span class="topic-icon">'+t.icon+'</span><span class="topic-title"><b>'+(i+1)+'. '+E(t.name)+'</b><small lang="zh-Hans">'+E(t.cn)+'</small></span><span class="topic-count">'+n+'/3</span></button>';
- }).join('')+'</div><p class="small map-foot">Все 10 тем доступны для ознакомления. Ты можешь выбирать любую тему и повторять уроки без ограничений.</p></section>';
+ const counts=topics.map(function(t,i){return [0,1,2].filter(function(m){return state.completed.includes(i*3+m)}).length});
+ return '<section class="approved-stage approved-map-screen" style="--approved-image:url(./assets/approved-course-v390/course-map.png)" aria-label="Карта курса: десять тем, 30 мини-уроков"><div class="approved-art">'+
+ '<img src="./assets/approved-course-v390/course-map.png" alt="Panda Go: десять жизненных тем — мой распорядок дня, работа, хобби, город, транспорт, кафе, покупки, встречи, опыт, планы. Все темы открываются по нажатию." width="941" height="1672" decoding="async" draggable="false">'+
+ '<button class="approved-hotspot poster-map-back" type="button" data-view="welcome" aria-label="Назад на главную страницу курса"></button>'+
+ topics.map(function(t,i){var row=Math.floor(i/2),col=i%2;return '<button class="approved-hotspot poster-map-card topic-card row'+row+' col'+col+'" type="button" data-topic="'+i+'" aria-label="Тема '+(i+1)+': '+E(t.name)+', '+counts[i]+' из трёх мини-уроков завершено"></button>';}).join('')+
+ '<button class="approved-hotspot poster-map-nav start" type="button" data-view="welcome" aria-label="На старт"></button>'+
+ '<button class="approved-hotspot poster-map-nav map" type="button" data-view="map" aria-label="Карта тем"></button>'+
+ '<a class="approved-hotspot poster-map-nav ai" href="./panda-voice-pilot.html" aria-label="Панда AI"></a>'+
+ '<button class="approved-hotspot poster-map-nav review" type="button" data-view="review" aria-label="Повторение слов"></button>'+
+ '<button class="approved-hotspot poster-map-nav exam" type="button" data-view="exam" aria-label="Итоговый тест"></button>'+
+ '<span class="poster-count poster-counter" aria-label="Завершено '+state.completed.length+' из 30 мини-уроков">'+state.completed.length+'/30</span>'+
+ counts.map(function(n,i){var row=Math.floor(i/2),col=i%2;return n?'<span class="poster-count poster-topic-count row'+row+' col'+col+'" aria-label="Пройдено '+n+' из 3">'+n+'/3</span>':''}).join('')+
+ '</div></section>';
 }
 function viewTopic(){
  var t=chosen();var completed=[0,1,2].filter(function(m){return state.completed.includes(state.topic*3+m)}).length;
@@ -219,20 +215,25 @@ function render(){
  screen.innerHTML=html;
  var app=document.getElementById('app');
  app.classList.toggle('show-approved-welcome',state.view==='welcome');
+ app.classList.toggle('approved-welcome-v390',state.view==='welcome');
+ app.classList.toggle('approved-map-v390',state.view==='map');
  var isDayLesson=state.view==='lesson'&&dayPilot(),isDayDone=state.view==='done'&&state.topic===0;
  app.classList.toggle('day-lesson-active',isDayLesson);
+ var isDayArt=isDayLesson&&!!screen.querySelector('.day-visual-start');
+ app.classList.toggle('day-visual-v390',isDayArt);
  app.classList.toggle('day-done-active',isDayDone);
  var footer=document.getElementById('day-fixed-actions');
  if(footer){
   footer.replaceChildren();
-  footer.hidden=!isDayLesson;
-  if(isDayLesson){
+  footer.hidden=!isDayLesson||isDayArt;
+  if(isDayLesson&&!isDayArt){
    var nav=screen.querySelector('.day-bottom');
    if(nav)footer.appendChild(nav);
   }
  }
  updateNav();
  screen.scrollTop=0;
+ if(window.PandaGoApprovedV391)window.requestAnimationFrame(function(){window.PandaGoApprovedV391.fit()});
  if(status)status.textContent='';
  store();
 }
@@ -240,7 +241,7 @@ function go(v){if(state.view==='lesson'&&v!=='lesson'&&dayUI)dayUI.cancel();stat
 function enter(t,m){
  if(dayUI)dayUI.cancel();
  state.topic=t;state.mini=m;state.stage=0;state.quizWord=null;state.quizSentence=null;state.build=[];
- state.day=t===0&&m===0&&dayUI?dayUI.makeState():null;
+ state.day=t===0&&dayUI?dayUI.makeState(m):null;
  go('lesson');
 }
 function next(){
@@ -305,7 +306,8 @@ if(toggle)toggle.addEventListener('click',function(){state.showPy=!state.showPy;
 /* Allow direct links from the ten cards on the existing HSK2 course map. */
 try {
  var params=new URLSearchParams(window.location.search);
- if(params.get('start')==='1') {state.view='lesson';state.topic=0;state.mini=0;state.stage=0;state.day=dayUI?dayUI.makeState():null;}
+ if(params.get('start')==='1') {state.view='lesson';state.topic=0;state.mini=0;state.stage=0;state.day=dayUI?dayUI.makeState(0):null;}
+ if(params.get('view')==='map')state.view='map';
  var requested=params.get('topic');
  if(requested!==null&&/^(?:[0-9])$/.test(requested)){
   state.topic=Number(requested);
