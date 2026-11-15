@@ -60,7 +60,8 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 let audio=null,playId=0,writer=null,writerId=0,stream=null,recorder=null,micUrl=null,recordParts=[],listenReady=false;
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}}
 function markDone(){
- state.done=true;state.quizPassed=true;save();
+ state.done=true;
+ try{const k='pg-hsk1-path-v371';const v=Number(localStorage.getItem(k)||'0');if(v===4)localStorage.setItem(k,'5');}catch{}state.quizPassed=true;save();
  try{
   const old=JSON.parse(localStorage.getItem(OLD_DONE)||'[]');
   const all=Array.isArray(old)?old:[];
