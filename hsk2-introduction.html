@@ -113,9 +113,10 @@ button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.48;cursor:d
 @media(max-height:740px){.header{height:69px}.header h1{margin:0;font-size:28px}.header .sub{padding:3px 5px}.page{padding-top:2px}.hero{min-height:133px}.hero img{width:44%}.hero .hero-copy h2{font-size:25px}.glam{padding:9px}.feature{min-height:60px}.feature .em{font-size:19px}.feature span:last-child{font-size:11px}.tone{padding:3px}.bottom{gap:5px;padding:5px 10px calc(7px + env(safe-area-inset-bottom))}.bottom button{min-height:38px}.screen{gap:7px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<link rel="stylesheet" href="./assets/hsk2-premium-v352.css?v=352">
 </head>
 <body>
-<div class="app" id="app">
+<div class="app hsk2-premium" id="app">
 <header class="header">
  <a class="back" href="./hsk2-start.html#map" aria-label="Назад к карте HSK2">‹</a>
  <h1>Panda Go</h1><span class="sub">HSK 2 · Урок 1 · Я и моя визитка</span>
@@ -134,9 +135,9 @@ button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.48;cursor:d
 (()=>{
 'use strict';
 const $=id=>document.getElementById(id);
-const KEY='pg-hsk2-introduction-v2';
+const KEY='pg-hsk2-introduction-v3';
 const OLD='pg-hsk2-introduction-v1';
-const TOTAL=4;
+const TOTAL=5;
 const WORDS=[
  {zh:'叫',py:'jiào',ru:'зваться, называться'},
  {zh:'名字',py:'míngzi',ru:'имя'},
@@ -146,7 +147,7 @@ const MODEL={question:'你叫什么名字？',qPy:'Nǐ jiào shénme míngzi?',q
 const TOKENS=['米沙','叫','我','。'];
 const cleanState=()=>({step:0,showPy:true,selected:null,checked:false,heard:false,build:[],mic:'none',recognized:'',dialogueRevealed:false,completed:false});
 let state=cleanState();
-try{const prior=JSON.parse(localStorage.getItem(KEY)||'null');if(prior){state={...state,...prior};state.step=Math.max(0,Math.min(3,Number(state.step)||0));if(!Array.isArray(state.build))state.build=[]}}catch{}
+try{const prior=JSON.parse(localStorage.getItem(KEY)||'null');if(prior){state={...state,...prior};state.step=Math.max(0,Math.min(4,Number(state.step)||0));if(!Array.isArray(state.build))state.build=[]}}catch{}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const audio=phrase=>window.PandaHsk2AudioV330?.lookup(phrase)||null;
@@ -158,30 +159,46 @@ function goAudio(phrase){
  const p=window.PandaHsk2AudioV330;
  if(!p?.lookup(phrase)){notice('Для этой фразы нет оригинальной MP3-записи');return false}
  const started=p.play(phrase,m=>notice(m||''));
- if(started&&state.step===2&&phrase===MODEL.question){state.heard=true;save()}
+ if(started&&state.step===3&&phrase===MODEL.question){state.heard=true;save()}
  return started;
 }
 function notice(t){$('notice').textContent=t||''}
 function shadePinyin(){ $('app').classList.toggle('py-hidden',!state.showPy);$('toggle-py').textContent=state.showPy?'Скрыть пиньинь':'Показать пиньинь'}
 const header=(name)=>'<div class="heading">'+(state.step>0?'<img class="heading-panda" src="./assets/hsk2-panda-new-v328.svg" alt="">':'')+'<span class="name">'+name+'</span></div><div class="step-tag">Шаг '+(state.step+1)+' из '+TOTAL+'</div>';
 function renderPlan(){
- return '<section class="screen">'+header('План изучения')+
- '<div class="hero"><img src="./assets/hsk2-panda-new-v328.svg" alt="Панда приглашает на урок"><div class="hero-copy"><h2>Начнём знакомство!</h2><p>Узнаем, как спросить имя и назвать себя по-китайски.</p></div></div>'+
- '<div class="ribbon">🌸 Что будем изучать</div><section class="glam"><div class="features">'+
- [['👤','Имя'],['❓','Вопросы'],['📚','Грамматика'],['🧩','Фразы'],['🎧','Слух'],['✅','Мини-тест']].map(x=>'<div class="feature"><span class="em">'+x[0]+'</span><span>'+x[1]+'</span></div>').join('')+
+ return '<section class="screen screen--plan">'+
+ '<div class="poster-lead"><img class="poster-panda" src="./assets/hsk2-panda-new-v328.svg" alt="Радостная Панда в китайском костюме"><div class="poster-content">'+
+ '<div class="poster-plaque">План изучения</div>'+
+ '<p>В этом уроке ты научишься <b>называть своё имя</b>, задавать простой вопрос, строить фразы и различать китайские тоны.</p></div></div>'+
+ '<div class="poster-scroll">✿ Что будем изучать ✿</div>'+
+ '<section class="glam"><div class="features">'+
+ [['👤','имя'],['📍','город'],['❓','вопрос'],['📖','правило'],['🎧','тоны'],['✅','тест']].map(x=>'<div class="feature"><span class="em">'+x[0]+'</span><span>'+x[1]+'</span></div>').join('')+
  '</div></section>'+
  '<div class="ribbon">Ты научишься</div><section class="glam"><div class="outcomes">'+
- [['💬','Представляться'],['🧩','Строить предложения'],['👂','Понимать вопрос'],['🎵','Слышать тоны']].map(x=>'<div class="outcome"><span class="em">'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('')+
+ [['🗣️','Говорить о себе'],['🧩','Строить предложения'],['💬','Понимать вопросы'],['🎧','Слышать и различать тоны']].map(x=>'<div class="outcome"><span class="em">'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('')+
  '</div></section>'+
- '<section class="glam"><h2>🎶 Вспомним четыре тона</h2><div class="tone-grid">'+
+ '<section class="glam"><h2>🎵 Четыре тона китайского языка</h2><div class="tone-grid">'+
  [['mā','1 · ровный'],['má','2 · вверх'],['mǎ','3 · изгиб'],['mà','4 · вниз']].map(x=>'<div class="tone"><strong>'+x[0]+'</strong><small>'+x[1]+'</small></div>').join('')+
- '</div></section></section>';
+ '</div><p class="small" style="text-align:center;margin-top:8px">🎤 Тренируем слух и повторяем. Обычный микрофон не оценивает правильность тонов.</p></section></section>';
+}
+function renderWords(){
+ const all=[...WORDS,{zh:'我',py:'wǒ',ru:'я · повторение HSK1'}];
+ const icons=['📣','🪪','❓','👤'];
+ return '<section class="screen screen--words">'+
+ '<div class="poster-lead lesson-hero"><img class="poster-panda" src="./assets/hsk2-panda-new-v328.svg" alt="Панда объясняет новые слова">'+
+ '<div class="poster-content"><div class="poster-plaque">Как тебя зовут?</div><p>Сначала слова, затем простая фраза.</p></div></div>'+
+ '<div class="step-tag">Шаг 2 из '+TOTAL+'</div>'+
+ '<section class="glam"><div class="vocabulary-grid">'+all.map((w,i)=>
+ '<article class="vocab-premium"><span class="symbol" aria-hidden="true">'+icons[i]+'</span>'+
+ '<div class="hanzi" lang="zh-Hans">'+w.zh+'</div><div class="py">'+w.py+'</div>'+
+ '<div class="ru">'+w.ru+'</div>'+sound(w.zh)+'</article>').join('')+'</div></section>'+
+ '<div class="mini-scroll"><div class="hanzi" lang="zh-Hans">'+MODEL.question+'</div>'+
+ '<div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div>'+sound(MODEL.question)+'</div>'+
+ '<p class="intro">🐾 Прослушай слова, повтори их вслух и переходи к грамматике.</p></section>';
 }
 function renderGrammar(){
- return '<section class="screen">'+header('Краткая грамматика')+
- '<section class="glam"><h2>📖 Сначала три слова</h2><div class="grammar-word-grid">'+WORDS.map(w=>
- '<article class="grammar-word"><div class="hanzi" lang="zh-Hans">'+w.zh+'</div><div class="py">'+w.py+'</div><div class="ru">'+w.ru+'</div>'+sound(w.zh,true)+'</article>').join('')+
- '</div><p class="intro" style="margin-top:9px">你 (nǐ) — «ты», 我 (wǒ) — «я». Их мы уже знаем из HSK1.</p></section>'+
+ return '<section class="screen screen--grammar">'+header('Краткая грамматика')+
+ '<div class="poster-scroll">📖 Одно правило — два примера</div>'+
  '<section class="glam"><h2>📚 Как спросить и сказать имя?</h2>'+
  '<div class="formula"><p class="formula-title">❓ Как тебя зовут?</p><div class="pills">'+
  [['你','ты'],['叫','зваться'],['什么','какое'],['名字','имя']].map((x,i)=> (i?'<span class="operator">+</span>':'')+'<span class="pill"><b>'+x[0]+'</b><small>'+x[1]+'</small></span>').join('')+
@@ -201,7 +218,7 @@ function renderTest(){
  const complete=state.build.length===TOKENS.length;
  const buildCorrect=built==='我叫米沙。';
  const msg=state.mic==='pass'?'✓ Браузер распознал слова (точность тонов не проверена).':state.mic==='fail'?'Слова пока не распознаны. Прослушай и повтори.':state.mic==='skip'?'Голосовая проверка пропущена. Можно продолжать.':'Нажми на микрофон или пропусти, если недоступен.';
- return '<section class="screen">'+header('Проверим себя')+
+ return '<section class="screen screen--test">'+header('Проверим себя')+
  '<section class="glam"><h2>🎧 1. Что спросила Панда?</h2><button type="button" class="play-big" data-audio="'+MODEL.question+'">▶ Слушать вопрос</button>'+
  '<div class="choices" style="margin-top:9px">'+['Где ты живёшь?','Как тебя зовут?','Кем ты работаешь?'].map((x,i)=>'<button type="button" class="choice '+(state.checked?(i===1?'correct':state.selected===i?'wrong':''):state.selected===i?'chosen':'')+'" data-choice="'+i+'" aria-pressed="'+(state.selected===i)+'">'+x+'</button>').join('')+'</div>'+
  '<p class="feedback '+(state.checked?(isRight?'good':'bad'):'')+'" role="status">'+(state.checked?(isRight?'✓ Верно! Ты узнал вопрос.':'Пока неверно — послушай ещё раз.'):state.heard?'Выбери перевод и нажми «Проверить».':'Сначала послушай запись.')+'</p>'+
@@ -216,7 +233,7 @@ function renderTest(){
 }
 function renderDialogue(){
  const show=state.dialogueRevealed;
- return '<section class="screen">'+header('Мини-диалог')+
+ return '<section class="screen screen--dialogue">'+header('Мини-диалог')+
  '<section class="glam"><h2>💬 Послушай, повтори и ответь</h2><div class="dialogue">'+
  '<div class="bubble"><div class="face"><img src="./assets/hsk2-panda-new-v328.svg" alt="Панда"></div><article class="chat"><div class="hanzi">'+MODEL.question+'</div><div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div>'+sound(MODEL.question)+'</article></div>'+
  (show?'<div class="bubble reply"><div class="face">👦</div><article class="chat"><div class="hanzi">'+MODEL.answer+'</div><div class="py">'+MODEL.aPy+'</div><div class="ru">'+MODEL.aRu+'</div><span class="small">Прочитай вслух: для имени Миша отдельной записи пока нет</span></article></div>':
@@ -238,17 +255,17 @@ function startMic(){
  });
 }
 function canAdvance(){
- if(state.step===2)return state.heard&&state.checked&&state.selected===1&&state.build.map(i=>TOKENS[i]).join('')==='我叫米沙。';
- if(state.step===3)return state.dialogueRevealed;
+ if(state.step===3)return state.heard&&state.checked&&state.selected===1&&state.build.map(i=>TOKENS[i]).join('')==='我叫米沙。';
+ if(state.step===4)return state.dialogueRevealed;
  return true;
 }
 function render(){
- const views=[renderPlan,renderGrammar,renderTest,renderDialogue];
+ const views=[renderPlan,renderWords,renderGrammar,renderTest,renderDialogue];
  $('screen').innerHTML=views[state.step]();
  shadePinyin();
  $('prev').disabled=state.step===0;
  $('next').disabled=!canAdvance();
- $('next').textContent=state.step===0?'Начать урок →':state.step===3?'Завершить урок ✓':'Дальше →';
+ $('next').textContent=state.step===0?'🐼 Начать урок →':state.step===1?'К грамматике →':state.step===4?'Завершить урок ✓':'Дальше →';
  $('repeat').textContent=state.step===0?'↻ План заново':'↻ Повторить';
 }
 $('screen').addEventListener('click',event=>{
@@ -275,8 +292,8 @@ $('next').addEventListener('click',()=>{
 });
 $('repeat').addEventListener('click',()=>{
  window.PandaHsk2AudioV330?.stop();
- if(state.step===2){state.selected=null;state.checked=false;state.heard=false;state.build=[];state.mic='none'}
- if(state.step===3)state.dialogueRevealed=false;
+ if(state.step===3){state.selected=null;state.checked=false;state.heard=false;state.build=[];state.mic='none'}
+ if(state.step===4)state.dialogueRevealed=false;
  if(state.step===0)state.step=0;
  save();notice('Задание готово к повторению');render();$('page').scrollTop=0;
 });
