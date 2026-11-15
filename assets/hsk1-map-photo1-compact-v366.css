@@ -1,0 +1,148 @@
+/* Panda Go HSK1 map — 2026-11-15: restore the approved PHOTO 1 proportions.
+   Visual-only overrides of the v319 map; lesson links, state and audio are intact.
+   Keep everything inside one Android viewport, including all three bottom links. */
+html,body{height:100%;min-height:0;overflow:hidden}
+.map-shell{
+  position:relative;height:100dvh;min-height:0;max-height:100dvh;
+  padding:0;overflow:hidden;overscroll-behavior:none;
+  background:#3b9df1;
+}
+.map-shell::before{
+  background-image:url("./panda-map-scene-hd-v319.webp");
+  background-position:center center;
+  background-size:cover;
+}
+.pg-map-heading{top:0;left:0;right:0;height:19%;padding:0;pointer-events:none}
+.pg-map-roof{
+  position:absolute;top:.4%;left:50%;width:79%;max-width:365px;
+  height:auto;max-height:100%;aspect-ratio:840 / 213;
+  object-fit:contain;transform:translateX(-50%);
+}
+.pg-level-title{
+  position:absolute;top:12.7%;left:17%;right:auto;
+  width:66%;height:4.85%;min-height:35px;max-height:49px;
+  margin:0;padding:1px 5px 3px;
+  font-size:clamp(17px,4.7vw,24px);line-height:1;
+  border-width:3px;
+}
+/* Keep the writing and back controls inside the safe top inset. */
+.back,.pg-map-writing{top:calc(10px + env(safe-area-inset-top,0px))!important}
+.pg-map-scene{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3}
+.pg-photo-panda{
+  position:absolute;
+  top:50.5%;bottom:auto;left:-1.5%;
+  width:51%;height:36.5%;
+  background-image:url("./panda-map-traveller-hd-v319.webp");
+  background-position:center bottom;background-size:contain;background-repeat:no-repeat;
+  filter:drop-shadow(0 5px 6px #21164066);
+}
+/* Seven native clickable lessons, arranged stepwise like photo 1. */
+.map-road{
+  position:absolute;z-index:6;top:20%;left:0;right:0;
+  width:100%;height:50.8%;
+  margin:0;padding:0;display:block;overflow:visible;
+}
+.map-road .node{
+  position:absolute;display:flex;align-items:center;
+  height:clamp(39px,5.85dvh,54px);min-height:0;max-height:none;
+  padding:3px 7px 3px clamp(37px,10.6vw,51px);
+  border-width:2.5px;gap:3px;
+}
+.map-road .node .circle{
+  left:-7px;width:clamp(41px,11.4vw,53px);height:clamp(41px,11.4vw,53px);
+  font-size:clamp(27px,7.3vw,37px);border-width:2.5px;
+}
+.map-road .node .caption{
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  flex:1 1 0;min-width:0;gap:2px;padding:0;margin:0;
+}
+.map-road .node .caption strong{
+  display:block;max-width:100%;
+  font:900 clamp(9.4px,2.72vw,13px)/1.08 Arial,system-ui,sans-serif;
+  letter-spacing:-.26px;white-space:nowrap;overflow:visible;
+}
+.map-road .node .caption .pg-word{
+  display:block!important;
+  color:#28213a;font:650 clamp(9.4px,2.63vw,12.6px)/1.1 "Panda Hanzi","Noto Sans CJK SC","Microsoft Yahei",Arial,sans-serif;
+  letter-spacing:0;white-space:nowrap;
+}
+.map-road .node .pg-topic-art{
+  flex:0 0 clamp(22px,6.9vw,33px);
+  width:clamp(22px,6.9vw,33px);height:clamp(22px,6.9vw,33px);
+}
+.map-road .node[data-num="7"]{top:0;left:21%;width:47.5%}
+.map-road .node[data-num="6"]{top:14%;left:34%;width:50%}
+.map-road .node[data-num="5"]{top:28%;left:39%;width:52%}
+.map-road .node[data-num="4"]{top:42%;left:42%;width:52%}
+.map-road .node[data-num="3"]{top:56%;left:47.5%;width:49.5%}
+.map-road .node[data-num="2"]{top:70%;left:50.5%;width:47.5%}
+.map-road .node[data-num="1"]{top:84%;left:51%;width:47%}
+/* Bring the real, functional links back inside the screen. */
+.pg-map-actions{
+  position:absolute!important;z-index:14;
+  top:86.8%;bottom:auto!important;left:2.5%;right:2.5%;
+  width:auto;height:9.6%;min-height:66px;max-height:106px;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(5px,1.45vw,9px);margin:0!important;padding:0;
+}
+.pg-map-actions a{
+  height:100%;min-height:0;max-height:none;
+  display:flex;flex-direction:row;align-items:center;justify-content:center;
+  padding:5px 3px;gap:clamp(3px,1vw,7px);
+  border-width:3px;border-radius:clamp(19px,5.2vw,31px);
+}
+.pg-map-actions a .action-icon{
+  flex:none;font-size:clamp(22px,6.7vw,34px);
+}
+.pg-map-actions a .action-label{
+  flex:none;font:900 clamp(10px,3vw,15px)/1.08 Arial,system-ui,sans-serif;
+  letter-spacing:-.25px;text-align:center;
+}
+.pg-map-actions a.pg-ai-button{
+  display:flex;flex-direction:column;gap:0;
+  padding:15px 2px 5px;
+}
+.pg-map-actions a.pg-ai-button .action-label{
+  margin-top:15px;
+  font:italic 950 clamp(14px,4.2vw,21px)/1 Arial,system-ui,sans-serif;
+}
+.pg-ai-button .action-icon{
+  position:absolute;z-index:2;top:-34px;right:4px;
+  width:clamp(53px,16.5vw,80px);height:clamp(53px,16.5vw,80px);
+}
+@media(max-width:365px){
+  .pg-map-roof{width:84%}
+  .pg-level-title{top:12.65%;left:13%;width:74%;font-size:clamp(15px,4.6vw,18px)}
+  .map-road{top:20%;height:50.5%}
+  .map-road .node{padding-left:clamp(34px,10.4vw,41px);padding-right:4px;gap:2px}
+  .map-road .node .circle{width:clamp(38px,11.3vw,45px);height:clamp(38px,11.3vw,45px);font-size:27px}
+  .map-road .node .caption strong{font-size:clamp(8.7px,2.66vw,10px);letter-spacing:-.34px}
+  .map-road .node .caption .pg-word{font-size:clamp(8.6px,2.62vw,10px)}
+  .map-road .node .pg-topic-art{flex-basis:clamp(19px,6.4vw,25px);width:clamp(19px,6.4vw,25px);height:clamp(19px,6.4vw,25px)}
+  .map-road .node[data-num="7"]{left:19%;width:61%}
+  .map-road .node[data-num="6"]{left:29%;width:63%}
+  .map-road .node[data-num="5"]{left:34%;width:64%}
+  .map-road .node[data-num="4"]{left:39%;width:59%}
+  .map-road .node[data-num="3"]{left:42%;width:56%}
+  .map-road .node[data-num="2"],.map-road .node[data-num="1"]{left:44%;width:54%}
+  .pg-map-actions{left:1.5%;right:1.5%;gap:4px}
+  .pg-map-actions a .action-label{font-size:clamp(9px,2.8vw,11px)}
+  .pg-map-actions a.pg-ai-button .action-label{font-size:clamp(13px,3.8vw,16px)}
+  .pg-ai-button .action-icon{top:-27px;right:2px;width:54px;height:54px}
+}
+@media(max-height:700px){
+  .pg-level-title{min-height:30px}
+  .map-road .node{height:clamp(35px,5.8dvh,43px)}
+  .map-road .node .circle{width:clamp(37px,11.2vw,46px);height:clamp(37px,11.2vw,46px)}
+  .pg-map-actions{min-height:58px}
+  .pg-photo-panda{top:50%;height:36%}
+}
+@media(max-height:540px){
+  html,body{height:100%;overflow:hidden}
+  .map-shell{height:100dvh;min-height:0;overflow:hidden}
+  .pg-map-actions{top:84%;height:12%;min-height:48px}
+  .map-road{top:19%;height:49%}
+  .map-road .node{height:clamp(28px,5.7dvh,37px)}
+  .map-road .node .circle{height:clamp(30px,6.1dvh,38px);width:clamp(30px,6.1dvh,38px)}
+}
+@media(prefers-reduced-motion:reduce){.map-road .node,.pg-map-actions a{transition:none}}
