@@ -40,5 +40,5 @@ export function checkDayAnswer(input,idx,mini=0){
  };
 }
 export const dailyFinal=Object.freeze({
- hanzi:'做得好！',pinyin:'Zuò de hǎo!',ru:'Отличная работа! Ты закончил тренировку по теме «Мой день».',lesson:1,audioKey:null
+ hanzi:'做得好！',pinyin:'Zuò de hǎo!',ru:'Молодец! Тренировка «Мой день» завершена.',lesson:1,audioKey:null
 });
