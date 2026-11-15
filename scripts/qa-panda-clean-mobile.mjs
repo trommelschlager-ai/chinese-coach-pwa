@@ -15,9 +15,33 @@ export async function verifyCleanMobile(browser,base,dir){
   await page.waitForFunction(()=>document.querySelector('.pg346-panda').naturalWidth>0);
   assert.match(await page.locator('.pg346-panda').getAttribute('src'),/panda-character-clean-v349\.webp/);
   assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
+  assert.equal(await page.locator('.pg352-rocks').isVisible(),false,'The flat faux-stone slab must not cover the natural scenery');
+  await page.waitForFunction(()=>document.querySelector('.pg352-mascot').dataset.faceReady==='true');
+  assert(await page.locator('.pg353-face-canvas').isVisible(),'Approved mascot canvas is rendered');
+  const placement=await page.evaluate(()=>{
+    const mascot=document.querySelector('.pg352-mascot').getBoundingClientRect();
+    const bubble=document.querySelector('.pg346-speech').getBoundingClientRect();
+    const scene=document.querySelector('.pg346-scene').getBoundingClientRect();
+    const glow=getComputedStyle(document.querySelector('.pg352-ear-effects'));
+    return {eyeRight:mascot.left+mascot.width*.72,bubbleLeft:bubble.left,mascotBottom:mascot.bottom,sceneBottom:scene.bottom,glow:glow.opacity};
+  });
+  assert(placement.bubbleLeft>=placement.eyeRight-8,'Speech bubble must not conceal Panda eyes: '+JSON.stringify(placement));
+  assert(placement.sceneBottom-placement.mascotBottom<65,'Panda must rest near the lake stone shoreline: '+JSON.stringify(placement));
+  assert(Number(placement.glow)>.5,'Headset purple glow must be on while idle');
   await page.screenshot({path:dir+'/welcome-'+width+'.png',animations:'disabled'});
+  const mouthSignature=()=>page.evaluate(()=>{
+    const c=document.querySelector('.pg353-face-canvas'),ctx=c.getContext('2d',{willReadFrequently:true});
+    const x=Math.floor(c.width*.60),y=Math.floor(c.height*.38),w=Math.floor(c.width*.10),h=Math.floor(c.height*.08);
+    const arr=ctx.getImageData(x,y,w,h).data;let hash=2166136261;
+    for(let i=0;i<arr.length;i+=7)hash=Math.imul(hash^arr[i],16777619)>>>0;
+    return hash;
+  });
+  const mouthIdle=await mouthSignature();
   await page.locator('#pg346-hear').click();
   await page.waitForFunction(()=>document.querySelector('#pg346').dataset.pose==='talking');
+  await page.waitForTimeout(130);
+  const mouthTalking=await mouthSignature();
+  assert.notEqual(mouthIdle,mouthTalking,'Mouth pixels must visibly change when MP3 is playing');
   await page.locator('#pg346-nonstop').click();
   for(const [question,answer] of [['你好','你好！'],['你好吗','很好！'],['今天天气怎么样','今天很冷。']]){
    await page.locator('#pg346-input').fill(question);await page.locator('#pg346-send').click();
