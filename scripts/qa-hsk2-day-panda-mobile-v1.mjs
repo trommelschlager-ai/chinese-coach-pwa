@@ -10,6 +10,7 @@ try{
  const page=await context.newPage();
  page.on('pageerror',error=>errors.push(error.message));
  await page.goto(base+'/hsk2-start.html#map',{waitUntil:'domcontentloaded'});
+ if(await page.locator('#course-welcome-start').isVisible())await page.locator('#course-welcome-start').click();
  await page.locator('.content.journey-map-active .journey-head h1').waitFor({state:'visible',timeout:12000});
  assert.match(await page.locator('.journey-head h1').innerText(),/Китайский \+ Легко/);
  const headBox=await page.locator('.journey-head').boundingBox();
