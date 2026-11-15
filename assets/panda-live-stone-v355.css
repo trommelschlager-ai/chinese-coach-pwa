@@ -1,35 +1,21 @@
-/* v355 — stone shoreline from the user-approved image; panda and scene unchanged.
-   The original screenshot is not used as the page background: only a clipped
-   narrow stone lip is visible below the independently animated character. */
+/* v360 — independent natural rock asset, not a crop of an old UI screenshot.
+ * This is physically behind the Panda's feet and cannot contain any duplicate paws,
+ * buttons, text or rectangle from the legacy approved mockup. */
+#pg346 .pg346-scene{isolation:isolate}
 #pg346 .pg346-scene::before {
- content:"";position:absolute;z-index:1;left:-1.5%;bottom:-1.7%;
- width:83%;aspect-ratio:670 / 84;pointer-events:none;
- background-image:url('./panda-live-approved-v337.webp');
- background-repeat:no-repeat;background-size:130% auto;
- background-position:left 68.7%;
- clip-path:polygon(0 47%,3% 19%,7.5% 7%,15.3% 3%,21.5% 4%,25.5% 28%,28% 50%,82.5% 50%,87.3% 13%,92% 6%,96% 22%,99% 41%,100% 78%,93% 87%,75% 95%,34% 91%,15% 91%,0 73%);
- -webkit-mask-image:radial-gradient(ellipse 89% 108% at 50% 51%,#000 76%,transparent 99%);
- mask-image:radial-gradient(ellipse 89% 108% at 50% 51%,#000 76%,transparent 99%);
- filter:drop-shadow(0 2px 2px #246a7566);
+  content:"";position:absolute;z-index:1;pointer-events:none;
+  left:-3.5%;bottom:-.8%;
+  width:78%;height:clamp(66px,10.5dvh,104px);
+  background:url('./panda-natural-stone-v360.svg?v=360') center bottom/100% 100% no-repeat;
+  aspect-ratio:auto;clip-path:none;-webkit-mask:none;mask:none;
+  filter:drop-shadow(0 3px 3px #1c556375);
 }
+#pg346 .pg346-scene::after{content:none!important}
 #pg346 .pg352-mascot{z-index:2}
-@media(max-height:720px){#pg346 .pg346-scene::before{width:78%;bottom:-1.5%}}
-@media(max-height:590px){#pg346 .pg346-scene::before{width:63%;bottom:-1.5%}}
-:root[data-keyboard=true] #pg346 .pg346-scene::before{width:55%;bottom:-1%}
-
-/* v359-photo-artifact-mask: cover baked-in pink paw pixels in the old
-   cropped screenshot. This remains BEHIND the actual, animated Panda. */
-#pg346 .pg346-scene::after{
-  content:"";position:absolute;z-index:1;left:10%;bottom:1%;
-  width:62%;height:clamp(15px,3.2dvh,26px);
-  pointer-events:none;transform:perspective(180px) rotateX(5deg);
-  background:
-    radial-gradient(ellipse at 9% 32%,#7aab51 0 3%,transparent 7%),
-    radial-gradient(ellipse at 85% 28%,#9ccd70 0 3%,transparent 8%),
-    repeating-linear-gradient(115deg,transparent 0 23px,#7c8f8a6e 24px 25px,transparent 26px 45px),
-    linear-gradient(180deg,#ebe5d5 0%,#c7cbb9 37%,#a5b4a8 67%,#739b9d 100%);
-  clip-path:polygon(0 37%,6% 9%,19% 17%,31% 2%,53% 11%,69% 5%,82% 3%,96% 17%,100% 43%,99% 73%,91% 94%,48% 100%,12% 91%,0 69%);
-  filter:drop-shadow(0 2px 2px #305b6470);
+@media(max-height:720px){
+  #pg346 .pg346-scene::before{width:74%;height:clamp(50px,10dvh,80px);bottom:-.8%}
 }
-@media(max-height:720px){#pg346 .pg346-scene::after{left:8%;width:59%;height:19px}}
-:root[data-keyboard=true] #pg346 .pg346-scene::after{left:4%;width:49%;height:13px}
+@media(max-height:590px){
+  #pg346 .pg346-scene::before{width:66%;height:clamp(37px,9dvh,61px)}
+}
+:root[data-keyboard=true] #pg346 .pg346-scene::before{width:52%;height:clamp(28px,8dvh,49px)}
