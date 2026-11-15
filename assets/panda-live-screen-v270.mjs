@@ -40,7 +40,7 @@ function play(entry=null){
  // Every indexed phrase is now its own MP3; playback starts at zero.
  a.muted=false;a.volume=1;
  const animate=()=>{if(!valid()||a.paused||a.ended)return;pandaVisualAudioLevel=Math.max(0,Math.min(1,envelope?envelope.levels[Math.floor(a.currentTime/envelope.binSeconds)]||0:.5+.5*Math.sin(a.currentTime*23)));rig.setLevel(pandaVisualAudioLevel);audioFrame=requestAnimationFrame(animate)};
- a.onplaying=()=>{if(valid()){pose('talking');$('hear').classList.add('playing');if($('status').textContent==='Нажми динамик, чтобы включить звук.')note('');animate()}};
+ a.onplaying=()=>{if(valid()){pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти)/.test($('status').textContent))note('');animate()}};
  a.onwaiting=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
  a.onpause=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
  const finished=()=>{if(valid()){stopAudio();if(!entry&&state.followup)scheduleFollowup(1200)}};

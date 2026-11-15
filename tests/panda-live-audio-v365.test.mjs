@@ -27,3 +27,7 @@ test('service worker leaves Range media requests to the browser and never caches
  vm.runInNewContext(fs.readFileSync('sw.js','utf8'),{Request,Response,URL,AbortController,setTimeout,clearTimeout,self:{location:{origin:'https://panda.test'},registration:{scope:'https://panda.test/'},addEventListener:(n,f)=>listeners[n]=f}});
  listeners.fetch({request:new Request('https://panda.test/assets/sample.mp3',{headers:{Range:'bytes=0-'}}),respondWith:()=>intercepted=true});assert.equal(intercepted,false);
 });
+
+test('successful replay clears the earlier autoplay warning',async()=>{
+ const f=await liveDOM();try{const b=f.w.PandaApprovedBridge337;b.note('Браузер не включил звук автоматически. Нажми динамик.');b.play();f.clips.at(-1).playing();assert.equal(b.snapshot().status,'')}finally{f.close()}
+});

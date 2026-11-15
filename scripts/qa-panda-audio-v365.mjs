@@ -35,6 +35,8 @@ try{
   },{entries:[...new Map(inventory.map(e=>[e.src,e])).values()],speed});report.playback.push(...results);
  }
  fs.writeFileSync(dir+'/browser-report.json',JSON.stringify(report,null,2));
+ await p.locator('#pg346-hear').click();await p.waitForFunction(()=>window.PandaApprovedBridge337.snapshot().pose==='talking');
+ assert(!/Браузер не включил звук/.test(await p.locator('#pg346-status').textContent()),'Successful playback must clear autoplay error');
  await p.screenshot({path:dir+'/initial-seated.png'});
  // Exercise the application player repeatedly after cancellation, history and modes.
  await p.evaluate(()=>{window.__audio=[]});
