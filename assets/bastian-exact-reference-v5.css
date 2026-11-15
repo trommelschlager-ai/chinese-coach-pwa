@@ -1,0 +1,109 @@
+/* Panda Go · HSK2 Bastian exact approved reference v5.
+   A single untouched approved screenshot is the visual source of truth.
+   Transparent semantic hit areas retain functional navigation and lesson flow.
+   No regenerated face, clothing, or city background. */
+html,body{margin:0!important;max-width:100%;background:#22073c!important;overflow-x:hidden}
+body{display:flex;justify-content:center}
+.app{
+ width:min(100%,864px)!important;
+ max-width:min(100vw,calc(100dvh * .5625));
+ padding:0!important;
+ margin:0 auto!important;
+ background:#240643!important;
+ min-height:0!important;
+ box-shadow:none!important;
+ overflow:visible!important;
+ container-type:normal!important;
+}
+.app::before,.app::after{display:none!important}
+.header{display:none!important}
+#poster>.hero,#poster>.duo,#poster>.flow,#poster>.copy{display:none!important}
+#poster{margin:0;padding:0;line-height:0}
+#poster[hidden],#practice[hidden]{display:none!important}
+.approved-screen{
+ position:relative;
+ display:block;
+ width:100%;
+ aspect-ratio:864/1536;
+ overflow:hidden;
+ isolation:isolate;
+ background:#2c0c5c;
+}
+.approved-screen>img{
+ display:block;
+ width:100%;
+ height:100%;
+ object-fit:contain;
+ pointer-events:none;
+ user-select:none;
+ -webkit-user-select:none;
+ -webkit-user-drag:none;
+}
+.screen-hotspot{
+ position:absolute;
+ z-index:1;
+ display:block;
+ padding:0;
+ margin:0;
+ border:0;
+ background:transparent;
+ color:transparent;
+ text-decoration:none;
+ cursor:pointer;
+ border-radius:12px;
+ touch-action:manipulation;
+ -webkit-tap-highlight-color:transparent;
+}
+.screen-hotspot:focus-visible{
+ outline:3px solid #fff0a5;
+ outline-offset:-3px;
+ background:#f9db7e35;
+}
+.screen-hotspot:active{background:#f0b2e522}
+.screen-toast{
+ position:absolute;z-index:3;
+ left:8%;right:8%;bottom:11%;
+ background:#3e1465f0;color:#fff7ff;
+ padding:10px 13px;
+ border:2px solid #f6cf88;
+ border-radius:13px;
+ text-align:center;
+ font:700 clamp(12px,2.5vw,17px)/1.45 system-ui,sans-serif;
+ box-shadow:0 3px 15px #1c084caa;
+ pointer-events:none;
+}
+.screen-toast[hidden]{display:none!important}
+#practice{
+ position:relative;
+ margin:0 auto;
+ padding:clamp(12px,3vw,26px)!important;
+ min-height:100dvh;
+ background:linear-gradient(#521376,#350c61) center/cover;
+ line-height:normal;
+}
+#practice>.practice-panel{
+ background:linear-gradient(160deg,#fff8ff,#edd5f7);
+ box-shadow:0 7px 24px #190730a8;
+ padding:clamp(13px,3vw,22px);
+}
+#practice .gold-button{
+ font-size:17px!important;
+ height:auto!important;
+ min-height:47px!important;
+ width:auto!important;
+ padding:9px 17px;
+}
+#practice .level{
+ display:inline-block;
+ margin:0!important;
+ font-size:14px!important;
+ padding:4px 18px;
+}
+#practice .hz{white-space:normal}
+#practice .play{
+ width:39px!important;height:39px!important;
+ min-width:39px!important;font-size:17px!important;
+}
+#practice .pinyin-toggle{min-height:39px}
+#practice .answer{min-height:48px}
+@media(prefers-reduced-motion:reduce){.screen-hotspot:active{transition:none}}
