@@ -179,14 +179,17 @@ function submit(raw){
   if(result.kind==='empty'){note(result.message);return}
   if(result.kind==='correction'){state.topic=result.lesson||lesson();pose('retry');note(result.message);render();return}
   if(result.reply){
-   state.turns++;state.topic=result.lesson||lesson();state.discussed.add(state.topic);if(state.allowed.includes(state.topic))state.cursor=state.allowed.indexOf(state.topic);if(state.confidence===null||state.confidence>=.65){remember(result.spoken);state.profile.followupOffset=(state.profile.followupOffset||0)+1;}
+   state.turns++;state.topic=state.lockedTopic&&state.allowed.includes(state.lockedTopic)?state.lockedTopic:(result.lesson||lesson());state.discussed.add(state.topic);if(state.allowed.includes(state.topic))state.cursor=state.allowed.indexOf(state.topic);if(state.confidence===null||state.confidence>=.65){remember(result.spoken);state.profile.followupOffset=(state.profile.followupOffset||0)+1;}
    state.awaitQuestion=true;if(result.kind==='answer')happy();say(result.reply,true,result.explanation?{explanation:result.explanation}:null);
    if(result.wordCard)showWordCard(result.wordCard);
     else if(result.explanation){const row=document.createElement('p');row.textContent=result.explanation;$('learner-feedback').replaceChildren(row);$('learner-feedback').hidden=false;document.documentElement.dataset.feedback='true';}
    let followup=result.followup;
-   if(followup&&state.lockedTopic&&state.allowed.includes(state.lockedTopic)){
-     // Keep the discussion within the learner-selected topic.
-     followup=pickCoursePrompt(state.lockedTopic,curriculum,state.questions.concat(input),new Date(),{...state.profile,unlocked:state.allowed})||(followup.lesson===state.lockedTopic?followup:null);
+   if(followup&&state.lockedTopic&&state.allowed.includes(state.lockedTopic)&&followup.lesson!==state.lockedTopic){
+     // Preserve contextual questions from the chosen topic. If the generic
+     // engine suggests a different topic, use a verified question here instead.
+     const pool=availableAskGroups(state.allowed,curriculum,new Date()).find(g=>g.lesson===state.lockedTopic)?.questions||[];
+     const q=pool.find(item=>!state.questions.some(seen=>normalize(seen)===normalize(item.hanzi)))||pool[0];
+     followup=q?{hanzi:q.hanzi,pinyin:q.pinyin,ru:q.ru,lesson:state.lockedTopic,audioKey:q.hanzi,accepted:[]}:null;
    }
    else if(followup&&followup.intent!=='relative-age'&&!followup.isContextual){
      if(state.allowed.length>1&&state.turns%3===0){
