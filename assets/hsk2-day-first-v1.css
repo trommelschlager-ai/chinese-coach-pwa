@@ -106,3 +106,32 @@
 .day-done .day-ai-note{font-size:10px!important;color:#ffdfec;margin-top:6px}
 .day-done>.button-row{margin-top:7px}
 .day-done>.honest{margin:5px 3px;font-size:10px;line-height:1.3}
+
+/* v3: separate lesson action bar from scrolling content. No overlapping characters. */
+#app.day-lesson-active>.bottom,
+#app.day-done-active>.bottom{display:none!important}
+#day-fixed-actions[hidden]{display:none!important}
+#day-fixed-actions{flex:none;position:relative;z-index:6;width:100%;border-top:1.5px solid #f3cc8a;background:linear-gradient(110deg,#fbe6fc,#f6d5fa);box-shadow:0 -4px 12px #7e2b8740;padding:7px 10px calc(7px + env(safe-area-inset-bottom))}
+#day-fixed-actions>.day-bottom{display:flex;position:static!important;bottom:auto!important;gap:9px;width:100%;margin:0;padding:0;background:none!important}
+#day-fixed-actions>.day-bottom button{min-height:49px;line-height:1.15;font-size:14px;font-weight:900}
+#app.day-lesson-active #screen{padding-bottom:12px!important}
+#app.day-done-active #screen{display:flex;flex-direction:column;min-height:0;padding:12px 10px calc(12px + env(safe-area-inset-bottom))}
+#app.day-done-active #screen>.day-done{width:100%;margin:auto 0;min-width:0}
+#app.day-done-active .day-done-head{padding:11px 7px}
+#app.day-done-active .day-done-head h1{font-size:clamp(19px,5.2vw,24px);line-height:1.17}
+.day-audio-pending{display:inline-flex;align-items:center;justify-content:center;border:1px solid #e7c4d8;border-radius:10px;background:#fcf0fb;color:#805d8a;font-size:11px;font-weight:800;min-height:28px;padding:5px 8px;margin:4px auto 0}
+.day-focus>.day-audio-pending{display:table;width:max-content}
+.day-line .day-audio-pending{position:static;margin-top:5px;max-width:100%}
+.day-line:has(.day-audio-pending){padding-right:10px}
+.day-done-line .audio.unavailable{display:none}
+.day-done-line .day-audio-note{display:block;margin-top:5px;font-size:11px;color:#8a528e}
+.day-done .day-ai-panel a{box-shadow:inset 0 1px #fff9d0,0 3px 8px #4013544f}
+.day-pilot .day-title .day-stages{gap:3px}
+.day-pilot .day-stages span{font-size:clamp(8px,2.15vw,10px);overflow:hidden;text-overflow:ellipsis}
+.day-pilot .day-title h1{font-size:clamp(19px,5.5vw,23px);line-height:1.13}
+@media(max-width:370px){
+ #day-fixed-actions{padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
+ #day-fixed-actions>.day-bottom button{min-height:45px;font-size:13px}
+ .day-pilot .day-title{padding-left:58px!important}
+ .day-pilot .day-title h1{font-size:18px}
+}
