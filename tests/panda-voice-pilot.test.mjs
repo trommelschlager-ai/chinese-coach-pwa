@@ -19,7 +19,8 @@ test('Chinese sentence checking, punctuation and branch selection',()=>{
  assert.deepEqual(missingConversationAudio(CONVERSATIONS[0],key=>key==='你好'?'hello.mp3':null),['你好吗？','我也很好，谢谢！','很好！']);
  assert.deepEqual(missingConversationAudio(CONVERSATIONS[0],lookupPilotAudio),[]);
  const recorded=Object.entries(PILOT_AUDIO);
- assert.equal(recorded.length,33,'Keep 23 earlier approved phrases and the new batch of 10');
+ assert.equal(recorded.length,34,'Keep the approved 33 clips plus the recovered user job-question MP3');
+ assert.match(PILOT_AUDIO['你做什么工作']||'',/20261114-job-question-v343\.mp3$/);
  const newBatch=recorded.filter(([,file])=>file.startsWith('./assets/panda-live-voice-bridge-v307/'));
  assert.equal(newBatch.length,10,'Do not remove original course voices while adding B01–B10');
  for(const [phrase,file] of recorded){
@@ -28,6 +29,8 @@ test('Chinese sentence checking, punctuation and branch selection',()=>{
   assert(data.length>3000,phrase);
   if(file.includes('panda-live-voice-bridge-v307/')){
    assert(data[0]===255&&(data[1]&0xe0)===0xe0,'Bridge clip must be original frame-aligned MPEG: '+phrase);
+  }else if(file.includes('hsk2-user-voice/20261114-job-question-v343.mp3')){
+   assert.equal(phrase,'你做什么工作','Only the verified uploaded job question may use this source without a legacy envelope');
   }else assert(ENVELOPES[file]?.levels.length>10,'Original clip envelope must remain: '+phrase);
  }
  assert.equal(lookupPilotAudio('你好！'),PILOT_AUDIO['你好']);
