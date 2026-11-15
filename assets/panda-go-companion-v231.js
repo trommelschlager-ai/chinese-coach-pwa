@@ -90,6 +90,7 @@ function done(){
   if(!arr.includes(TOPIC))arr.push(TOPIC);
   localStorage.setItem(DONE,JSON.stringify(arr));
  }catch{}
+  window.PandaGoPathV371?.markComplete(lesson);
 }
 function say(message,kind=''){notice.textContent=message;notice.className='result '+kind;notice.hidden=!message}
 function stopAudio(){serial++;try{audio?.pause();audio.currentTime=0}catch{}audio=null;stage.querySelectorAll('[aria-busy]').forEach(b=>b.removeAttribute('aria-busy'))}
