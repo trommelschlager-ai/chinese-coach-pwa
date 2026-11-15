@@ -13,7 +13,7 @@
 }
 /* Slightly lift the current panda so its feet physically meet the stone.
    No scaling, restyling or modification of the approved character. */
-#pg346 .pg352-mascot{z-index:2;bottom:clamp(32px,6dvh,58px)!important}
+#pg346 .pg352-mascot{z-index:2;bottom:clamp(8px,2.2dvh,23px)!important}
 /* Only the stone's front lip overlaps the feet, adding real seated depth. */
 #pg346 .pg346-scene::after{
  content:"";position:absolute;left:-4%;bottom:-1.25%;
