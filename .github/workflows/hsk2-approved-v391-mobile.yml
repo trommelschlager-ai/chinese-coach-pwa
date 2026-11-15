@@ -1,0 +1,48 @@
+name: Panda Go HSK2 exact design Android QA v391
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'hsk2-life-course.html'
+      - 'assets/hsk2-life-course-app-v1.js'
+      - 'assets/hsk2-day-first-ui-v1.js'
+      - 'assets/hsk2-day-topic-one-v391.js'
+      - 'assets/approved-course-v390/**'
+      - 'scripts/qa-hsk2-approved-course-v391.mjs'
+      - '.github/workflows/hsk2-approved-v391-mobile.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-course:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Install Chromium for Android screenshots
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Test entire first topic in mobile viewports
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/pandago-hsk2-v391.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/hsk2-life-course.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-hsk2-approved-course-v391.mjs
+      - name: Upload visual screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-hsk2-approved-v391-android
+          path: qa/hsk2-approved-v391/
+          if-no-files-found: warn
