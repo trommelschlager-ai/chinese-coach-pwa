@@ -1,0 +1,272 @@
+/* Panda Go HSK2 premium v352. Approved visual language: violet+gold, sakura,
+   mountainous Chinese backdrop, generous Hanzi and interactive glossy cards.
+   Source media remain separate from functional HTML/text/controls. */
+.app.hsk2-premium{
+ --ink:#5b246f;--gold:#ffd778;--pink:#ffe1fb;--purple:#7b288f;
+ background:
+ radial-gradient(ellipse 95% 40% at 50% 15%,#ffe7fbba,transparent),
+ linear-gradient(180deg,#f9d4f9 0%,#f8d2f6 45%,#c989db 100%);
+}
+.app.hsk2-premium::before{
+ opacity:.5;background:
+ linear-gradient(180deg,#f7caffc9 0%,#fae8fbae 55%,#f1b7e5bb 100%),
+ url('./panda-map-scene-hd-v319.webp') center /cover;
+}
+.app.hsk2-premium::after{
+ content:"";position:absolute;inset:0 0 auto;z-index:0;height:49%;
+ background:url('./panda-sakura-v346.svg') left top/52px auto no-repeat;
+ pointer-events:none;opacity:.8;
+}
+.app.hsk2-premium > *{z-index:1}
+.app.hsk2-premium .header{
+ height:76px;background:linear-gradient(180deg,#fce1fcaa,#eec0f999);
+ padding-top:3px;
+}
+.app.hsk2-premium .header::before{
+ background:
+ linear-gradient(0deg,#f4cae8b8,#ffe8fcb1),
+ url('./chinese-waterfall-banner.svg') center/cover;
+}
+.app.hsk2-premium .header h1{font:italic 900 clamp(29px,8vw,38px)/1 Georgia,serif;color:#6c2585;text-shadow:0 2px 2px #fff6e4;margin:2px 0 5px}
+.app.hsk2-premium .header .sub{background:#fff7fbe8;border-color:#f2c57b;box-shadow:0 2px 7px #8e46a853;font-size:11px}
+.app.hsk2-premium .page{padding:5px 10px 17px;scrollbar-width:thin}
+.app.hsk2-premium .screen{gap:9px;padding:0 0 13px}
+.app.hsk2-premium .bottom{
+ border-top:1px solid #d69fc7;background:linear-gradient(#f7d0f9f9,#f5cbf9fb);
+ box-shadow:0 -4px 15px #913a9966;gap:7px;
+ padding:7px 12px calc(9px + env(safe-area-inset-bottom));
+}
+.app.hsk2-premium .bottom button{font-size:14px;min-height:44px}
+.app.hsk2-premium .bottom .primary{
+ border:2px solid #ffdd7e;
+ border-radius:22px;
+ background:linear-gradient(120deg,#e26bd6,#9031aa 55%,#642181);
+ box-shadow:inset 0 2px 5px #ffbdf4aa,0 3px 0 #e0a357,0 4px 14px #832b8f85;
+ font-size:17px;
+}
+.app.hsk2-premium .bottom .secondary{background:linear-gradient(#fff9fc,#fbe5fa);border-color:#e6b0d2}
+.app.hsk2-premium .poster-lead{
+ position:relative;min-height:232px;
+ border-radius:23px;border:2px solid #fbd482;
+ overflow:hidden;isolation:isolate;
+ background:radial-gradient(ellipse at 55% 15%,#ef91f26b,transparent 60%),linear-gradient(145deg,#d093ef,#9c57c4 51%,#7a309d);
+ box-shadow:0 5px 18px #8f329e75,inset 0 0 0 2px #ffebfc80;
+}
+.app.hsk2-premium .poster-lead::before{
+ content:"";inset:0;position:absolute;z-index:-1;
+ opacity:.37;background:url('./panda-map-scene-hd-v319.webp') center 52%/cover;
+}
+.app.hsk2-premium .poster-lead::after{
+ content:"✿";position:absolute;right:10px;top:2px;color:#ffc8e4;text-shadow:0 3px 7px #d73c95;font-size:32px;pointer-events:none;
+}
+.app.hsk2-premium .poster-panda{
+ position:absolute;left:-12px;bottom:-10px;
+ width:43%;height:98%;object-fit:contain;object-position:left bottom;
+ filter:drop-shadow(0 5px 10px #3d164f73);
+}
+.app.hsk2-premium .poster-content{
+ position:relative;margin:19px 10px 8px 41%;
+ color:#fff;font-size:13px;line-height:1.45;
+}
+.app.hsk2-premium .poster-plaque{
+ font:italic 900 clamp(29px,8vw,39px)/1.07 Georgia,serif;
+ letter-spacing:-.015em;text-align:center;color:#fff7df;
+ border:2px solid #fbd37b;border-radius:43% 28% 31% 18% / 20% 26% 25% 29%;
+ padding:12px 7px;min-height:91px;
+ background:radial-gradient(ellipse at 60% 0%,#a842c5,#722180 70%);
+ text-shadow:0 2px 0 #4e1465,0 0 8px #fbd8d7;
+ box-shadow:inset 0 0 0 2px #dda2ca87,inset 0 3px 10px #e698e8,0 7px 15px #4318565d;
+}
+.app.hsk2-premium .poster-content p{margin:9px 5px 0;text-align:center;font-size:12px;color:#fff4f6;font-weight:600;line-height:1.48}
+.app.hsk2-premium .poster-scroll{
+ width:fit-content;max-width:100%;position:relative;margin:4px auto 0;padding:8px 21px;
+ border:2px solid #f1ca73;border-radius:38px;
+ background:linear-gradient(100deg,#fff7ed,#fff4fc 45%,#f2d9ef);
+ color:#702884;box-shadow:0 3px 12px #7f389652;
+ font:italic 900 clamp(16px,4.8vw,22px)/1.12 Georgia,serif;
+ text-align:center;
+}
+.app.hsk2-premium .poster-scroll::before,
+.app.hsk2-premium .poster-scroll::after{
+ content:"✧";position:absolute;top:50%;transform:translateY(-50%);color:#c88b34;font-size:20px;
+}
+.app.hsk2-premium .poster-scroll::before{left:4px}
+.app.hsk2-premium .poster-scroll::after{right:4px}
+.app.hsk2-premium .glam{
+ border:2px solid #f2cb95;border-radius:26px;
+ background:linear-gradient(135deg,#fff4fded 0%,#f8d5f5f3 90%);
+ box-shadow:inset 0 2px 3px #fff,0 5px 13px #8c3b9345;
+ padding:12px;
+}
+.app.hsk2-premium .glam h2{
+ font:italic 900 21px/1.12 Georgia,serif;color:#762d89;
+ text-align:center;margin-bottom:12px;
+ text-shadow:0 1px #fff8ec;
+}
+.app.hsk2-premium .ribbon{
+ background:linear-gradient(110deg,#7b2b97,#a03eb1 47%,#6c207e);
+ border:2px solid #ffd487;border-radius:50% 25% / 22% 19%;
+ box-shadow:inset 0 1px 5px #f2d5fc9c,0 4px 9px #7c2e8f5c;
+ padding:7px 21px;
+ font:italic 900 clamp(17px,5vw,22px)/1 Georgia,serif;
+ color:#fff4ec;text-shadow:0 1px #4d1857;
+}
+.app.hsk2-premium .features{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+.app.hsk2-premium .feature{
+ border:1.5px solid #e4b0cf;border-radius:18px;min-height:74px;
+ background:linear-gradient(140deg,#fff7ff,#f9d1f1);
+ box-shadow:inset 0 2px 2px #fff,0 3px 5px #a25ca542;
+ gap:5px;padding:6px 2px
+}
+.app.hsk2-premium .feature .em{font-size:24px;filter:drop-shadow(0 2px 2px #be78bc80)}
+.app.hsk2-premium .feature span:last-child{font-size:clamp(8px,2.6vw,11px);font-weight:850}
+.app.hsk2-premium .outcomes{gap:8px}
+.app.hsk2-premium .outcome{
+ min-height:91px;gap:9px;padding:10px 8px;
+ background:linear-gradient(135deg,#fff9ffff,#fce4f1ee);
+ border:1.5px solid #e9b7d8;border-radius:20px;
+ box-shadow:inset 0 2px 4px #fff,0 4px 6px #9b49903b
+}
+.app.hsk2-premium .outcome .em{font-size:32px;filter:drop-shadow(0 2px 3px #9f59a1b3)}
+.app.hsk2-premium .outcome strong{font-size:clamp(11px,3.8vw,15px);line-height:1.3}
+.app.hsk2-premium .tone-grid{gap:7px}
+.app.hsk2-premium .tone{
+ min-height:74px;border:1.5px solid #ecc2cf;border-radius:15px;
+ background:linear-gradient(#fff9f0,#ffedeb);padding:9px 4px;
+ box-shadow:inset 0 1px 2px #fff,0 3px 6px #aa6b953f
+}
+.app.hsk2-premium .tone strong{font-size:26px}
+.app.hsk2-premium .tone small{display:block;margin-top:4px}
+.app.hsk2-premium .tone small::before{content:"";display:block;margin:4px auto;width:62%;height:4px;border-radius:6px;background:linear-gradient(100deg,#f68ac2,#be3e9d)}
+.app.hsk2-premium .lesson-hero{min-height:200px}
+.app.hsk2-premium .lesson-hero .poster-content{margin-top:25px}
+.app.hsk2-premium .lesson-hero .poster-content p{font-size:13px}
+.app.hsk2-premium .vocabulary-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px
+}
+.app.hsk2-premium .vocab-premium{
+ position:relative;min-height:182px;padding:13px 7px 9px;border-radius:24px;
+ border:2px solid #f1bfd5;background:linear-gradient(145deg,#fffaff,#f6caef);
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+ text-align:center;box-shadow:inset 0 3px 3px #fff,0 3px 9px #ac68a44a;
+}
+.app.hsk2-premium .vocab-premium::after{content:"〰";position:absolute;right:8px;bottom:0;color:#dbadd4;font-size:26px;opacity:.6}
+.app.hsk2-premium .vocab-premium .hanzi{
+ font-size:clamp(34px,9vw,49px);background:linear-gradient(#fff,#ffedf8);
+ border:2px solid #e9c47a;border-radius:16px;min-width:68px;padding:7px 12px;
+ text-shadow:0 2px 3px #e7a3e4;box-shadow:0 3px 6px #9f4b9953;
+}
+.app.hsk2-premium .vocab-premium .py{font-size:17px;font-weight:850}
+.app.hsk2-premium .vocab-premium .ru{font-size:13px;line-height:1.35}
+.app.hsk2-premium .vocab-premium .symbol{
+ position:absolute;right:9px;top:24px;font-size:25px;
+ filter:drop-shadow(0 3px 3px #9c519d7c);
+}
+.app.hsk2-premium .vocab-premium .voice{margin-top:3px;min-width:75%}
+.app.hsk2-premium .mini-scroll{
+ background:linear-gradient(112deg,#fff2dc,#fff7fc,#ffe8e0);
+ border:2px solid #e5b774;border-radius:30px;
+ padding:12px 10px;text-align:center;box-shadow:0 4px 10px #aa6d974a;
+}
+.app.hsk2-premium .mini-scroll .hanzi{font-size:clamp(23px,6.5vw,33px)}
+.app.hsk2-premium .mini-scroll .ru{font-weight:750}
+.app.hsk2-premium .mini-scroll .voice{margin-top:6px}
+.app.hsk2-premium .heading{
+ min-height:100px;border:2px solid #f6ce74;border-radius:50% 25% / 31% 25%;
+ margin:4px 0 0;
+ background:radial-gradient(ellipse at 55% 0%,#ac50c0,#722281 70%);
+ box-shadow:inset 0 0 0 2px #e9b5e0,inset 0 4px 8px #d870d999,0 5px 12px #7432887b;
+ padding:13px 12px 13px 100px;
+}
+.app.hsk2-premium .heading .name{
+ font:italic 900 clamp(27px,7.8vw,37px)/1.02 Georgia,serif;
+ color:#fff5dc;text-shadow:0 3px 1px #4e195d,0 0 8px #e2afd7;
+}
+.app.hsk2-premium .heading-panda{
+ width:115px;height:126px;left:-9px;bottom:-13px;filter:drop-shadow(0 5px 5px #602b76b3)
+}
+.app.hsk2-premium .step-tag{
+ border:2px solid #f0bf72;background:linear-gradient(#fffaff,#f7e1f7);
+ border-radius:25px;box-shadow:0 3px 6px #94599b52;
+ padding:5px 15px;margin:0 auto;font-size:12px
+}
+.app.hsk2-premium .formula{
+ background:linear-gradient(120deg,#f4d8f7,#fff4fc);border:1.5px solid #e6b0d4;
+ box-shadow:inset 0 2px 2px #fff,0 3px 5px #b271b02e;border-radius:18px;padding:13px 8px
+}
+.app.hsk2-premium .pill{
+ background:linear-gradient(180deg,#fffaff,#fff1e7);
+ border:1.5px solid #e8c384;border-radius:13px;box-shadow:0 3px 7px #b87eb74f;
+ padding:7px 9px
+}
+.app.hsk2-premium .pill b{font-size:clamp(20px,5.7vw,29px)}
+.app.hsk2-premium .definition{background:#fff4dfee;border:1.5px solid #e9c38b}
+.app.hsk2-premium .example{
+ border:1.5px solid #ecc7dc;border-radius:20px;
+ background:linear-gradient(#fffafc,#fceafa);
+ box-shadow:inset 0 1px 3px #fff,0 3px 9px #b467b43a
+}
+.app.hsk2-premium .example .voice{flex:none}
+.app.hsk2-premium .play-big{
+ border:2px solid #dfa0ed;border-radius:24px;
+ background:linear-gradient(110deg,#fce7ff,#e5c3f9);color:#672080;
+ box-shadow:inset 0 1px 2px #fff,0 4px 7px #a757b24f;
+ font-size:15px;min-height:47px
+}
+.app.hsk2-premium .choice{
+ min-height:51px;border:1.5px solid #d9a2d7;border-radius:28px;
+ background:linear-gradient(#fffaff,#fbe6f9);font-size:15px;
+ box-shadow:inset 0 1px 3px #fff,0 2px 5px #ad76af40;
+ padding:10px 18px
+}
+.app.hsk2-premium .choice.correct{
+ border-color:#5bbd71;background:linear-gradient(#f8fff6,#c6f1d0);
+ box-shadow:0 0 8px #4bbc5d7d
+}
+.app.hsk2-premium .builder-space{border:2px dashed #b867d0;background:#f6dcfa;min-height:68px}
+.app.hsk2-premium .tile{
+ border:1.5px solid #e4c187;border-radius:16px;
+ background:linear-gradient(#fffaff,#fff0f2);font-size:25px;min-height:48px;
+ box-shadow:0 2px 5px #b878a248
+}
+.app.hsk2-premium .mic-button{
+ width:76px;height:76px;border:4px solid #ffd579;
+ box-shadow:inset 0 2px 9px #f4b1f4,0 0 16px #b85fcc91;
+}
+.app.hsk2-premium .bubble .face{width:67px;height:67px;background:#f7dded}
+.app.hsk2-premium .bubble .chat{
+ border:1.5px solid #e8c28c;border-radius:26px;
+ background:linear-gradient(120deg,#fff9ee,#ffeef9);padding:15px 11px;
+ box-shadow:0 4px 10px #a655ac5c
+}
+.app.hsk2-premium .bubble.reply .chat{background:linear-gradient(120deg,#f1dcff,#ffe4fa)}
+.app.hsk2-premium .bubble .chat .hanzi{font-size:clamp(21px,6vw,29px)}
+.app.hsk2-premium .ribbon, .app.hsk2-premium .step-tag,.app.hsk2-premium .poster-scroll,.app.hsk2-premium .heading,.app.hsk2-premium .voice,.app.hsk2-premium .primary{transform:translateZ(0)}
+@media(max-width:370px){
+ .app.hsk2-premium .page{padding-left:7px;padding-right:7px}
+ .app.hsk2-premium .poster-lead{min-height:185px}
+ .app.hsk2-premium .poster-panda{width:44%}
+ .app.hsk2-premium .poster-content{margin:12px 7px 5px 42%}
+ .app.hsk2-premium .poster-plaque{font-size:26px;min-height:78px;padding:10px 4px}
+ .app.hsk2-premium .outcome .em{font-size:25px}
+ .app.hsk2-premium .features{gap:3px}
+ .app.hsk2-premium .feature{padding:5px 1px;min-height:64px}
+ .app.hsk2-premium .feature .em{font-size:19px}
+ .app.hsk2-premium .feature span:last-child{font-size:8.2px}
+ .app.hsk2-premium .heading{min-height:83px;padding-left:86px}
+ .app.hsk2-premium .heading-panda{width:92px;height:105px}
+ .app.hsk2-premium .heading .name{font-size:26px}
+ .app.hsk2-premium .vocab-premium{min-height:160px}
+ .app.hsk2-premium .vocab-premium .symbol{font-size:20px;right:4px}
+}
+@media(max-height:710px){
+ .app.hsk2-premium .header{height:67px}
+ .app.hsk2-premium .poster-lead{min-height:173px}
+ .app.hsk2-premium .feature{min-height:56px}
+ .app.hsk2-premium .vocab-premium{min-height:150px}
+ .app.hsk2-premium .bottom button{min-height:40px}
+ .app.hsk2-premium .bottom{gap:5px;padding-top:6px}
+}
+@media(prefers-reduced-motion:reduce){
+ .app.hsk2-premium *{transition:none!important;animation:none!important}
+}
