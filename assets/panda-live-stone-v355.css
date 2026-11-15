@@ -1,21 +1,36 @@
-/* v360 — independent natural rock asset, not a crop of an old UI screenshot.
- * This is physically behind the Panda's feet and cannot contain any duplicate paws,
- * buttons, text or rectangle from the legacy approved mockup. */
+/* Panda AI v361 — EXACT approved mossy stone graphic.
+   Only the stone placement changes. The existing mascot, animation,
+   speech/audio modules, sky and scenery remain untouched. */
 #pg346 .pg346-scene{isolation:isolate}
-#pg346 .pg346-scene::before {
-  content:"";position:absolute;z-index:1;pointer-events:none;
-  left:-3.5%;bottom:-.8%;
-  width:78%;height:clamp(66px,10.5dvh,104px);
-  background:url('./panda-natural-stone-v360.svg?v=360') center bottom/100% 100% no-repeat;
-  aspect-ratio:auto;clip-path:none;-webkit-mask:none;mask:none;
-  filter:drop-shadow(0 3px 3px #1c556375);
+/* The real transparent stone platform sits behind the character. */
+#pg346 .pg346-scene::before{
+ content:"";position:absolute;left:-4%;bottom:-1.25%;
+ width:86%;aspect-ratio:600 / 207;height:auto;z-index:1;
+ pointer-events:none;
+ background:url('./panda-exact-stone-v361.webp?v=361') center bottom/contain no-repeat;
+ clip-path:none;mask:none;-webkit-mask:none;
+ filter:drop-shadow(0 4px 4px #28516b6b);
 }
-#pg346 .pg346-scene::after{content:none!important}
-#pg346 .pg352-mascot{z-index:2}
+/* Slightly lift the current panda so its feet physically meet the stone.
+   No scaling, restyling or modification of the approved character. */
+#pg346 .pg352-mascot{z-index:2;bottom:clamp(32px,6dvh,58px)!important}
+/* Only the stone's front lip overlaps the feet, adding real seated depth. */
+#pg346 .pg346-scene::after{
+ content:"";position:absolute;left:-4%;bottom:-1.25%;
+ width:86%;aspect-ratio:600 / 207;height:auto;z-index:3;
+ pointer-events:none;
+ background:url('./panda-exact-stone-v361.webp?v=361') center bottom/contain no-repeat;
+ clip-path:inset(72% 0 0 0);
+ filter:drop-shadow(0 2px 2px #3156684d);
+}
 @media(max-height:720px){
-  #pg346 .pg346-scene::before{width:74%;height:clamp(50px,10dvh,80px);bottom:-.8%}
+ #pg346 .pg352-mascot{bottom:clamp(19px,4.8dvh,37px)!important}
+ #pg346 .pg346-scene::before,#pg346 .pg346-scene::after{width:82%;left:-3%}
 }
 @media(max-height:590px){
-  #pg346 .pg346-scene::before{width:66%;height:clamp(37px,9dvh,61px)}
+ #pg346 .pg352-mascot{bottom:17px!important}
+ #pg346 .pg346-scene::before,#pg346 .pg346-scene::after{width:74%;left:-2%}
 }
-:root[data-keyboard=true] #pg346 .pg346-scene::before{width:52%;height:clamp(28px,8dvh,49px)}
+:root[data-keyboard=true] #pg346 .pg352-mascot{bottom:8px!important}
+:root[data-keyboard=true] #pg346 .pg346-scene::before,
+:root[data-keyboard=true] #pg346 .pg346-scene::after{width:56%;left:-1%;bottom:0}
