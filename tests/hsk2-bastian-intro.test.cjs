@@ -23,9 +23,9 @@ for(const value of ['你好，我叫巴斯蒂安。','我二十五岁。','我�
 assert.ok($('img[src="./assets/bastian-approved-v1.avif"]'),'Must use approved reference portrait, not a substitute');
 assert.match(doc.querySelector('.section').textContent,/我叫/);
 assert.match(doc.querySelectorAll('.section')[1].textContent,/4-й тон/);
-assert.equal($('practice').hidden,true);
+assert.equal($('#practice').hidden,true);
 click('#start');
-assert.equal($('practice').hidden,false);
+assert.equal($('#practice').hidden,false);
 assert.match($('#step-title').textContent,/Слова/);
 assert.equal(doc.querySelectorAll('.word').length,10);
 click('#next');
