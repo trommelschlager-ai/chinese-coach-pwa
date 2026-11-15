@@ -38,8 +38,9 @@ export async function verifyCleanMobile(browser,base,dir){
   });
   const mouthIdle=await mouthSignature();
   await page.locator('#pg346-hear').click();
-  await page.waitForFunction(()=>document.querySelector('#pg346').dataset.pose==='talking');
-  await page.waitForTimeout(130);
+  await page.waitForFunction(()=>document.querySelector('#pg346').dataset.pose==='talking'&&
+    document.querySelector('.pg352-mascot').dataset.lips==='moving'&&
+    Number(document.querySelector('.pg352-mascot').dataset.mouthFrame)>0);
   const mouthTalking=await mouthSignature();
   assert.notEqual(mouthIdle,mouthTalking,'Mouth pixels must visibly change when MP3 is playing');
   await page.locator('#pg346-nonstop').click();
