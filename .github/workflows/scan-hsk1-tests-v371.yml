@@ -1,0 +1,12 @@
+name: Find stale HSK1 test URLs
+on:
+  push:
+    paths: [.github/workflows/scan-hsk1-tests-v371.yml]
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print exact old script references remaining in tests
+        run: |
+          grep -RInE 'hsk1-first-v189\.js\?v=300|hsk1-second-v203\.js\?v=322|hsk1-third-v213\.js\?v=296|hsk1-fourth-v220\.js\?v=296|hsk1-fifth-v227\.js\?v=296|panda-go-companion-v231\.js\?v=296' scripts || true
