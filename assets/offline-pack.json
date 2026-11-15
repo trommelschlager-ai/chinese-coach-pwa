@@ -1,6 +1,6 @@
 {
-  "version": 356,
-  "bytes": 62708559,
+  "version": 357,
+  "bytes": 62734080,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -2789,6 +2789,8 @@
     "./assets/hsk2-premium-v352.css?v=353",
     "./assets/hsk2-approved-scene-v353.svg",
     "./assets/hsk2-misha-avatar-v353.svg",
-    "./assets/hsk2-lesson1-fidelity-v356.css?v=356"
+    "./assets/hsk2-lesson1-fidelity-v356.css?v=357",
+    "./assets/hsk2-approved-panda-v357.svg",
+    "./assets/hsk2-approved-panda-face-v357.svg"
   ]
 }
