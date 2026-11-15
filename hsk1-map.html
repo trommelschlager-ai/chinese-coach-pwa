@@ -19,9 +19,11 @@ body{display:grid;place-items:center}
 .hotspots a:focus-visible{outline:3px solid white;border-radius:22px;box-shadow:0 0 0 5px #ba2dcd}
 .lesson{left:var(--x);top:var(--y);width:var(--w);height:var(--h);border-radius:999px}
 .lesson.locked{cursor:not-allowed}
-.lesson .gate{position:absolute;right:3%;top:50%;transform:translateY(-50%);width:9.5%;aspect-ratio:1;min-width:28px;border:2px solid #ffdf64;border-radius:50%;display:none;place-items:center;color:#13532b;background:linear-gradient(140deg,#dfffc7,#43c873 70%,#20914f);font-size:clamp(13px,3.8vw,23px);box-shadow:0 2px 8px #38105399, inset 0 2px 4px #fff}
+.lesson .gate{position:absolute;right:8.5%;top:50%;transform:translateY(-50%);width:9.5%;aspect-ratio:1;min-width:28px;border:2px solid #ffdf64;border-radius:50%;display:none;place-items:center;color:#13532b;background:linear-gradient(140deg,#dfffc7,#43c873 70%,#20914f);font-size:clamp(13px,3.8vw,23px);box-shadow:0 2px 8px #38105399, inset 0 2px 4px #fff}
 .lesson.done:not([data-num="1"]) .gate,.lesson.current:not([data-num="1"]) .gate{display:grid}
 .lesson.current .gate{background:linear-gradient(150deg,#fff6ae,#f4c44d);color:#6d4602}
+.lesson[data-num="2"] .gate{right:9.5%}
+.lesson[data-num="7"] .gate{right:7.5%}
 .top-link{top:4.6%;height:6.9%;width:14%;border-radius:18px}
 .top-link.back{left:1%}.top-link.write{right:1%}
 .footer-link{top:83.6%;height:8.2%;border-radius:24px}
