@@ -1,0 +1,14 @@
+name: Verify public approved artwork endpoint
+on:
+  push:
+    paths:
+      - .github/workflows/hsk1-public-artwork-check.yml
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check unsigned image source
+        run: |
+          code=$(curl --location --silent --show-error --max-time 30 -w '%{http_code}' -o /tmp/art.png "https://d2jqrm6oza8nb6.cloudfront.net/datasets/e40e4613-eb65-4fbd-8ea1-4693e4805f6c.png")
+          echo "status:$code bytes:$(wc -c < /tmp/art.png)"
+          file /tmp/art.png
