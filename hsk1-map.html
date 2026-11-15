@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
-<meta name="panda-go-mobile-fix" content="v376-no-duplicate-edges-press-feedback">
+<meta name="panda-go-mobile-fix" content="v377-soft-button-shadows">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
@@ -22,8 +22,15 @@ body{display:grid;place-items:center;position:relative}
 /* The ribbon/button artwork stays inside the approved PNG. These transparent
    hit-areas only add a restrained shadow and a temporary light/tap overlay. */
 .hotspots a{transition:filter 130ms ease,box-shadow 130ms ease;isolation:isolate}
-.top-link,.lesson,.footer-link{
-  box-shadow:0 4px 10px rgba(35,4,73,.14),inset 0 1px 2px rgba(255,255,255,.05);
+/* v377: soft elevation, separately tuned to the approved button shapes. */
+.top-link{
+  box-shadow:0 7px 14px rgba(37,5,73,.36),0 2px 5px rgba(22,2,48,.22),inset 0 1px 2px rgba(255,255,255,.12);
+}
+.lesson{
+  box-shadow:0 7px 13px rgba(37,5,73,.30),0 3px 6px rgba(22,2,48,.18),inset 0 1px 2px rgba(255,255,255,.09);
+}
+.footer-link{
+  box-shadow:0 8px 16px rgba(27,5,65,.37),0 3px 6px rgba(15,4,40,.21),inset 0 1px 3px rgba(255,255,255,.11);
 }
 .hotspots a::after{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
@@ -44,7 +51,7 @@ body{display:grid;place-items:center;position:relative}
 
 .lesson{left:var(--x);top:var(--y);width:var(--w);height:var(--h);border-radius:999px}
 .lesson.locked{cursor:not-allowed}
-.lesson .gate{position:absolute;right:var(--gate-right,8%);top:var(--gate-top,50%);transform:translateY(-50%);width:15%;aspect-ratio:1;border:2px solid #ffec7d;border-radius:50%;display:none;place-items:center;color:#134d29;background:linear-gradient(150deg,#f8ffca 0%,#74e587 36%,#24b65b 76%,#087b45 100%);font:700 clamp(14px,3.7vw,22px)/1 Arial,system-ui,sans-serif;text-shadow:0 1px 1px #fff9;box-shadow:0 2px 9px #38105399, inset 0 1px 5px #fff;z-index:3}
+.lesson .gate{position:absolute;right:var(--gate-right,8%);top:var(--gate-top,50%);transform:translateY(-50%);width:15%;aspect-ratio:1;border:2px solid #ffec7d;border-radius:50%;display:none;place-items:center;color:#134d29;background:linear-gradient(150deg,#f8ffca 0%,#74e587 36%,#24b65b 76%,#087b45 100%);font:700 clamp(14px,3.7vw,22px)/1 Arial,system-ui,sans-serif;text-shadow:0 1px 1px #fff9;box-shadow:0 6px 13px rgba(36,5,70,.38),0 2px 5px rgba(29,6,58,.25),inset 0 1px 5px #fff;z-index:3}
 .lesson.done:not([data-num="1"]) .gate,.lesson.current:not([data-num="1"]) .gate{display:grid}
 .lesson.current .gate{background:linear-gradient(145deg,#fffcc8 0%,#ffe481 42%,#e9ac29 100%);color:#6d4602}
 .lesson[data-num="2"] .gate{--gate-right:8.5%;--gate-top:47%}
