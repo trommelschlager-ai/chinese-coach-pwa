@@ -104,4 +104,4 @@ function next(state,api){
  state.stage=Math.min(4,step+1);api.render();
 }
 window.PandaGoDayFirstUIV1=Object.freeze({makeState,render,handle,next,cancel});
-})();\n
+})();
