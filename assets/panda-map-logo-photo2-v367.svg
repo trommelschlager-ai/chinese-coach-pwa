@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 250" role="img" aria-label="Panda Go">
+<defs>
+ <linearGradient id="gold" x1=".15" x2=".65" y1="0" y2="1"><stop stop-color="#fffdec"/><stop offset=".20" stop-color="#fff6a6"/><stop offset=".43" stop-color="#ffd43c"/><stop offset=".7" stop-color="#efa018"/><stop offset=".9" stop-color="#dc6713"/><stop offset="1" stop-color="#92340d"/></linearGradient>
+ <linearGradient id="tile" x1=".1" x2=".25" y1="0" y2="1"><stop stop-color="#ffe792"/><stop offset=".12" stop-color="#ed8f3c"/><stop offset=".47" stop-color="#bf3840"/><stop offset=".79" stop-color="#801e39"/><stop offset="1" stop-color="#4b122f"/></linearGradient>
+ <linearGradient id="wall" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#b91f34"/><stop offset=".55" stop-color="#872038"/><stop offset="1" stop-color="#3e102e"/></linearGradient>
+ <filter id="shadow" x="-20%" y="-30%" width="140%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+</defs>
+<g transform="translate(1 6)" fill="#1e1238" opacity=".5" filter="url(#shadow)">
+ <path d="M108 120Q192 98 420 72Q638 98 727 120L695 210H140Z"/>
+</g>
+<!-- Antique red pagoda wall and layered golden trims -->
+<path d="M145 106Q278 88 420 79Q573 88 690 107L701 204Q555 219 420 221Q269 218 131 205Z" fill="url(#wall)" stroke="#f6af3c" stroke-width="7"/>
+<path d="M150 128Q421 144 691 127M145 156Q420 169 695 156M152 187Q422 199 687 187" fill="none" stroke="#fbd170" stroke-width="6" opacity=".65"/>
+<!-- Distinctive elevated curved Chinese roof, upturned eaves and gold ridge -->
+<path d="M116 96Q164 105 225 81Q318 37 418 24Q519 37 613 81Q676 104 722 95Q753 82 759 48Q764 118 714 132Q667 130 624 108Q515 60 419 62Q315 60 213 108Q166 130 120 132Q73 114 81 47Q88 81 116 96Z" fill="url(#tile)" stroke="#f9b848" stroke-width="10" stroke-linejoin="round"/>
+<path d="M94 88Q111 119 167 112Q235 96 287 65Q353 30 418 26Q486 30 552 65Q609 96 670 112Q725 120 746 89" fill="none" stroke="#fff09d" stroke-width="5" stroke-linecap="round"/>
+<path d="M183 100Q294 47 417 42Q546 47 658 100M216 94Q305 54 418 50Q535 54 628 94" fill="none" stroke="#ec9037" stroke-width="4"/>
+<g fill="none" stroke="#6d1b34" stroke-width="4.5" opacity=".8">
+ <path d="M235 81l14 20M269 68l12 23M303 56l11 22M341 43l7 22M376 34l3 28M460 34l-3 28M497 43l-7 22M535 56l-11 22M569 68l-12 23M603 81l-14 20"/>
+</g>
+<path d="M417 21V-1" stroke="#a65218" stroke-width="7"/>
+<path d="M404 12L419-3L434 12L419 28Z" fill="#ffdb67" stroke="#a05213" stroke-width="3"/>
+<circle cx="418" cy="0" r="7" fill="#fff5a3" stroke="#ce821b" stroke-width="3"/>
+<!-- Gold cloud ornaments at both ends -->
+<g stroke="#bd6414" stroke-width="4" fill="#f5bc3d">
+ <path d="M92 172Q64 149 48 161Q27 166 36 180Q12 173 12 189Q17 201 43 197Q61 209 83 197L116 198Q96 187 92 172Z"/>
+ <path d="M745 172Q771 149 790 161Q810 166 801 180Q824 173 825 189Q820 201 796 197Q778 209 756 197L723 198Q745 187 745 172Z"/>
+</g>
+<!-- Embossed high-contrast gold lettering -->
+<text x="420" y="210" text-anchor="middle" textLength="632" lengthAdjust="spacingAndGlyphs" font-family="Georgia,'Times New Roman',serif" font-size="127" font-style="italic" font-weight="900" fill="#3a0d2b" stroke="#450d27" stroke-width="22" stroke-linejoin="round" paint-order="stroke">Panda Go</text>
+<text x="420" y="203" text-anchor="middle" textLength="632" lengthAdjust="spacingAndGlyphs" font-family="Georgia,'Times New Roman',serif" font-size="127" font-style="italic" font-weight="900" fill="url(#gold)" stroke="#9a2b13" stroke-width="10" stroke-linejoin="round" paint-order="stroke">Panda Go</text>
+<text x="420" y="203" text-anchor="middle" textLength="632" lengthAdjust="spacingAndGlyphs" font-family="Georgia,'Times New Roman',serif" font-size="127" font-style="italic" font-weight="900" fill="none" stroke="#ffed9a" stroke-width="1.5">Panda Go</text>
+<path d="M184 226Q419 241 655 226" fill="none" stroke="#fdcc4c" stroke-width="6" stroke-linecap="round"/>
+</svg>
