@@ -1,0 +1,61 @@
+/* Panda AI v354: subtle sakura, microphone and verified-state visuals.
+   Portrait, landscape and all established controls stay untouched. */
+#pg346 .pg346-scene{isolation:isolate}
+#pg346 .pg346-sakura{
+  display:block!important;
+  position:absolute!important;
+  left:-.2%!important;top:4%!important;
+  width:clamp(24px,8%,50px)!important;height:87%!important;
+  object-fit:fill!important;opacity:.55;
+  z-index:2;pointer-events:none;
+  transform-origin:0% 42%;
+  animation:pg354-sakura-sway 8.5s ease-in-out infinite alternate!important;
+  will-change:transform;
+  filter:drop-shadow(0 0 2px #ffc7ed5a);
+}
+@keyframes pg354-sakura-sway{
+  from{transform:rotate(-.65deg) translateX(-1px)}
+  to{transform:rotate(.65deg) translateX(1px)}
+}
+#pg346 .pg354-petals{
+  position:absolute;inset:0;z-index:3;overflow:hidden;
+  pointer-events:none;
+}
+#pg346 .pg354-petals i{
+  position:absolute;left:var(--x);top:var(--y);
+  width:var(--w);height:calc(var(--w)*.68);
+  border-radius:85% 0 75% 0;
+  background:radial-gradient(circle at 27% 20%,#fff 0%,#ffe3f5 42%,#ffa9d2 100%);
+  filter:drop-shadow(0 1px 1px #8e37932d);
+  opacity:.7;
+  transform:rotate(20deg);
+  animation:pg354-fall var(--duration) ease-in-out var(--delay) infinite;
+}
+#pg346 .pg354-petals i:nth-child(1){--x:3%;--y:5%;--w:7px;--duration:9s;--delay:-2s}
+#pg346 .pg354-petals i:nth-child(2){--x:9%;--y:16%;--w:6px;--duration:11s;--delay:-5s}
+#pg346 .pg354-petals i:nth-child(3){--x:14%;--y:24%;--w:5px;--duration:13s;--delay:-7s}
+#pg346 .pg354-petals i:nth-child(4){--x:5%;--y:40%;--w:8px;--duration:12s;--delay:-8s}
+#pg346 .pg354-petals i:nth-child(5){--x:17%;--y:9%;--w:6px;--duration:10s;--delay:-3s}
+#pg346 .pg354-petals i:nth-child(6){--x:1%;--y:32%;--w:5px;--duration:14s;--delay:-11s}
+@keyframes pg354-fall{
+  0%{transform:translate(0,-3px) rotate(12deg);opacity:0}
+  12%{opacity:.7}
+  78%{opacity:.7}
+  100%{transform:translate(26px,100px) rotate(170deg);opacity:0}
+}
+#pg346[data-listening=true] .pg346-mic{
+  animation:pg354-mic-glow 1.35s ease-in-out infinite;
+}
+@keyframes pg354-mic-glow{
+  0%,100%{box-shadow:0 0 5px 2px #ffc5ff,0 0 15px 3px #cf36ff}
+  50%{box-shadow:0 0 8px 5px #ffffff,0 0 20px 9px #24c7ff}
+}
+/* Green is rendered ONLY for verified acoustic tones AND content.
+   Text-only speech recognition always remains purple/blue. */
+#pg346[data-headphones=idle] .pg352-ear-effects{--headset-glow:#da35ff}
+#pg346[data-headphones=listening] .pg352-ear-effects{--headset-glow:#12caff}
+@media(prefers-reduced-motion:reduce){
+  #pg346 .pg346-sakura,#pg346 .pg354-petals i,
+  #pg346[data-listening=true] .pg346-mic{animation:none!important;will-change:auto!important}
+  #pg346 .pg354-petals i{opacity:.25}
+}
