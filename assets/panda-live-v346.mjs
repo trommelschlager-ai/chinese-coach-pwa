@@ -146,16 +146,20 @@ if (!bridge) {
    const day=el('button','pg374-day-entry','🎧 Мой день · '+PANDA_CLIPS.filter(c=>corpusTopicByFile[c.file]===8).length+' записей');
    day.type='button';day.addEventListener('click',()=>showTopicDetails(8));
    grid.append(day);
+   const allAudio=el('button','pg374-day-entry','🎧 Все записи · '+PANDA_CLIPS.length);
+   allAudio.type='button';allAudio.addEventListener('click',()=>showTopicDetails(9));grid.append(allAudio);
   }
   function showTopicDetails(id){
    catalogueTopic=id;
    const detail=$('#pg374-topic-details');detail.replaceChildren();detail.hidden=false;
    $('.pg346-topic-list').hidden=true;$('#pg374-topics-back').hidden=false;
-   $('#pg374-topics-title').textContent=id===8?'Мой день · записи':topicsFallback[id-1];
-   $('#pg374-topics-tip').textContent=id===8
+   $('#pg374-topics-title').textContent=id===9?'Все записи · '+PANDA_CLIPS.length:id===8?'Мой день · записи':topicsFallback[id-1];
+   $('#pg374-topics-tip').textContent=id===9
+     ?'Все 155 аудиофрагментов из 10 исходных MP3. Нажми запись для прослушивания; вопросы для разговора выбираются в темах выше.'
+     :id===8
      ?'Эти записи можно прослушивать. Разговорный сценарий HSK2 запускается из урока «Мой день».'
      :'Выбери вопрос — Панда начнёт разговор именно с него. Ниже также доступны загруженные аудиофразы.';
-   if(id!==8){
+   if(id!==8&&id!==9){
     const questions=bridge.topicQuestions(id);
     detail.append(el('h3','pg374-section-title','💬 Вопросы для разговора · '+questions.length));
     if(!questions.length)detail.append(el('p','pg374-muted','Проверенных вопросов по этой теме пока нет.'));
@@ -171,7 +175,7 @@ if (!bridge) {
      detail.append(btn);
     }
    }
-   const audioPhrases=PANDA_CLIPS.filter(c=>corpusTopicByFile[c.file]===id);
+   const audioPhrases=id===9?PANDA_CLIPS:PANDA_CLIPS.filter(c=>corpusTopicByFile[c.file]===id);
    if(audioPhrases.length){
     const section=document.createElement('details');section.className='pg374-audio-section';
     const summary=el('summary','','🎧 Загруженные аудиофразы · '+audioPhrases.length);
@@ -184,7 +188,7 @@ if (!bridge) {
      section.append(btn);
     }
     detail.append(section);
-    if(id===8)section.open=true;
+    if(id===8||id===9)section.open=true;
    }
    detail.scrollTop=0;$('#pg346-topics').scrollTop=0;
   }
