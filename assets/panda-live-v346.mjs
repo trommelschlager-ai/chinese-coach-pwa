@@ -1,7 +1,7 @@
 /* Panda AI v346. Clean responsive user-approved screen.
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
 import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=336';
-import {createPandaMouth} from './panda-live-face-v353.mjs?v=353';
+import {createPandaMouth} from './panda-live-face-v354.mjs?v=354';
 const bridge=window.PandaApprovedBridge337;
 if (!bridge) {
   console.error('Panda AI v346: conversation engine unavailable; keeping original screen');
@@ -52,6 +52,7 @@ if (!bridge) {
       </svg>
       <div class="pg352-mascot"><img class="pg346-panda" src="./assets/panda-character-clean-v349.webp?v=349" alt="Панда с открытыми глазами, цветком, фиолетовыми наушниками и шарфом" decoding="async" draggable="false"><canvas class="pg353-face-canvas" aria-hidden="true"></canvas><svg class="pg352-ear-effects" viewBox="0 0 1200 1320" preserveAspectRatio="none" aria-hidden="true" focusable="false"><ellipse cx="214" cy="515" rx="113" ry="149" transform="rotate(11 214 515)"/><ellipse cx="992" cy="413" rx="79" ry="135" transform="rotate(11 992 413)"/></svg></div>
       <img class="pg346-sakura" src="./assets/panda-sakura-v346.svg?v=346" alt="" aria-hidden="true" decoding="async" draggable="false">
+      <div class="pg354-petals" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <div class="pg346-speech" aria-label="Текущая фраза Панды" aria-live="polite">
         <strong class="pg346-main-zh">你好！</strong>
         <span class="pg346-main-py">Nǐ hǎo!</span>
@@ -77,8 +78,13 @@ if (!bridge) {
   // Dialogs must remain visible even though the legacy main is kept for its engine.
   document.querySelectorAll('main > dialog').forEach(dialog=>document.body.append(dialog));
   document.body.append(stage);document.body.classList.add('panda-clean-ready');
-  const liveMouth=createPandaMouth($('.pg352-mascot'));
-  let lastRows='',lastPhrase='',lastTopics='',lastFeedback='',showPy=true,showRu=true,historyAudio=null;
+  let historyAudio=null;
+  const liveMouth=createPandaMouth($('.pg352-mascot'),()=>{
+    if(historyAudio&&!historyAudio.paused&&!historyAudio.ended)
+      return .45+.33*Math.sin(historyAudio.currentTime*19)+.2*Math.sin(historyAudio.currentTime*12);
+    return bridge.getAudioLevel?.() ?? NaN;
+  });
+  let lastRows='',lastPhrase='',lastTopics='',lastFeedback='',showPy=true,showRu=true;
   let lastSpeechSignalId=0,effectTimer=0,headsetResult='idle',assessmentUntil=0,assessmentText='';
   const stopHistoryAudio=()=>{if(historyAudio){const previous=historyAudio;historyAudio=null;previous.pause();}};
   function clipFor(entry){return lookupPandaVoiceClip(entry?.hanzi||entry?.panda)||lookupPandaVoiceClip(entry?.audioKey)}
@@ -139,5 +145,5 @@ if (!bridge) {
   $('#pg346-topics-btn').addEventListener('click',toggleTopics);$('#pg346-topics-close').addEventListener('click',closeTopics);stage.addEventListener('click',e=>{if(!$('#pg346-topics').hidden&&!e.target.closest('#pg346-topics,#pg346-topics-btn'))closeTopics()});stage.addEventListener('keydown',e=>{if(e.key==='Escape')closeTopics()});
   const core=document.querySelector('main');if(core){let pending=false;new MutationObserver(()=>{if(!pending&&!document.hidden){pending=true;requestAnimationFrame(()=>{pending=false;sync()})}}).observe(core,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-state','aria-pressed','disabled']})}
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stopHistoryAudio();liveMouth.setTalking(false)}else sync()});window.addEventListener('pagehide',()=>{stopHistoryAudio();liveMouth.dispose()});
-  sync();document.documentElement.dataset.pandaCleanVersion='353';
+  sync();document.documentElement.dataset.pandaCleanVersion='354';
 }
