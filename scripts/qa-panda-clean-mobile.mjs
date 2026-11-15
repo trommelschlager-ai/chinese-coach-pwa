@@ -12,6 +12,13 @@ export async function verifyCleanMobile(browser,base,dir){
   });
   const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base+'/panda-voice-pilot.html');await page.locator('#pg346').waitFor();
+  await page.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true');
+  assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('panda-booting')),false,'Startup must not expose the old Panda screen');
+  assert.equal(await page.locator('body>main').evaluate(el=>getComputedStyle(el).visibility),'hidden','Legacy engine UI should remain visually hidden');
+  const planted=await page.locator('.pg352-mascot').evaluate(el=>({animation:getComputedStyle(el).animationName,transform:getComputedStyle(el).transform}));
+  assert.equal(planted.animation,'none','Panda body must NOT bob or rotate on the stone');
+  assert.equal(planted.transform,'none','Panda body must remain planted on its stone');
+  assert(await page.locator('.pg364-ground-shadow').count()===1,'Fixed contact shadow required underneath the Panda');
   await page.waitForFunction(()=>document.querySelector('.pg346-panda').naturalWidth>0);
   assert.match(await page.locator('.pg346-panda').getAttribute('src'),/panda-character-clean-v349\.webp/);
   assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
