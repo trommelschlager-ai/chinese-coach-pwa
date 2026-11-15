@@ -5,25 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
+<meta name="panda-go-mobile-fix" content="v374-side-fill-and-lock-overlay">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
 :root{color-scheme:light}
 *,*::before,*::after{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,system-ui,sans-serif;background:#5f367d}
-body{display:grid;place-items:center}
-.artboard{position:relative;isolation:isolate;width:min(100vw,45.1768dvh);height:min(100dvh,221.3523vw);overflow:hidden;margin:auto;touch-action:manipulation;background:#6447ab;box-shadow:0 0 24px #26063770}
+body{display:grid;place-items:center;position:relative}
+/* Fill aspect-ratio side gaps from the same approved art; the central artwork is untouched. */
+body::before{content:"";position:fixed;inset:-30px;z-index:0;pointer-events:none;background:url("./assets/hsk1-approved-v373.png") center center/cover no-repeat;filter:blur(21px) brightness(.70) saturate(.95);transform:scale(1.04)}
+.artboard{position:relative;isolation:isolate;width:min(100vw,45.1768dvh);height:min(100dvh,221.3523vw);overflow:hidden;margin:auto;touch-action:manipulation;background:#6447ab;box-shadow:0 0 10px #26063750
 .approved{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .hotspots{position:absolute;inset:0;z-index:2;pointer-events:none}
 .hotspots a{pointer-events:auto;position:absolute;display:block;text-decoration:none;cursor:pointer;background:transparent;outline-offset:2px;-webkit-tap-highlight-color:transparent}
 .hotspots a:focus-visible{outline:3px solid white;border-radius:22px;box-shadow:0 0 0 5px #ba2dcd}
 .lesson{left:var(--x);top:var(--y);width:var(--w);height:var(--h);border-radius:999px}
 .lesson.locked{cursor:not-allowed}
-.lesson .gate{position:absolute;right:8.5%;top:50%;transform:translateY(-50%);width:9.5%;aspect-ratio:1;min-width:28px;border:2px solid #ffdf64;border-radius:50%;display:none;place-items:center;color:#13532b;background:linear-gradient(140deg,#dfffc7,#43c873 70%,#20914f);font-size:clamp(13px,3.8vw,23px);box-shadow:0 2px 8px #38105399, inset 0 2px 4px #fff}
+.lesson .gate{position:absolute;right:var(--gate-right,8%);top:var(--gate-top,50%);transform:translateY(-50%);width:15%;aspect-ratio:1;border:2px solid #ffec7d;border-radius:50%;display:none;place-items:center;color:#134d29;background:linear-gradient(150deg,#f8ffca 0%,#74e587 36%,#24b65b 76%,#087b45 100%);font:700 clamp(14px,3.7vw,22px)/1 Arial,system-ui,sans-serif;text-shadow:0 1px 1px #fff9;box-shadow:0 2px 9px #38105399, inset 0 1px 5px #fff;z-index:3}
 .lesson.done:not([data-num="1"]) .gate,.lesson.current:not([data-num="1"]) .gate{display:grid}
-.lesson.current .gate{background:linear-gradient(150deg,#fff6ae,#f4c44d);color:#6d4602}
-.lesson[data-num="2"] .gate{right:9.5%}
-.lesson[data-num="7"] .gate{right:7.5%}
+.lesson.current .gate{background:linear-gradient(145deg,#fffcc8 0%,#ffe481 42%,#e9ac29 100%);color:#6d4602}
+.lesson[data-num="2"] .gate{--gate-right:8.5%;--gate-top:47%}
+.lesson[data-num="3"] .gate{--gate-right:6.7%;--gate-top:47%}
+.lesson[data-num="4"] .gate{--gate-right:8%;--gate-top:48%}
+.lesson[data-num="5"] .gate{--gate-right:8%;--gate-top:48%}
+.lesson[data-num="6"] .gate{--gate-right:7%;--gate-top:48%}
+.lesson[data-num="7"] .gate{--gate-right:5.3%;--gate-top:48%}
 .top-link{top:4.6%;height:6.9%;width:14%;border-radius:18px}
 .top-link.back{left:1%}.top-link.write{right:1%}
 .footer-link{top:83.6%;height:8.2%;border-radius:24px}
@@ -70,7 +77,7 @@ body{display:grid;place-items:center}
       a.classList.toggle('done',done);
       a.classList.toggle('current',!done&&!locked);
       a.setAttribute('aria-disabled',String(locked));
-      a.querySelector('.gate').textContent=done?'✓':'🔓';
+      a.querySelector('.gate').textContent=done?'✓':'▶';
       a.setAttribute('aria-label',a.getAttribute('aria-label').replace(/ · (?:закрыт|доступен|пройден)$/,'')+(locked?' · закрыт':done?' · пройден':' · доступен'));
       if(locked)a.setAttribute('title','Сначала пройди урок '+(num-1));else a.removeAttribute('title');
     }
@@ -91,6 +98,7 @@ body{display:grid;place-items:center}
   });
   function refresh(){try{const v=Number(localStorage.getItem(KEY)||'0');if(Number.isInteger(v))completed=Math.min(7,Math.max(0,v))}catch{}paint()}
   window.addEventListener('pageshow',refresh);
+  window.addEventListener('focus',refresh);
   window.addEventListener('storage',refresh);
   paint();
 })();
