@@ -25,7 +25,7 @@ const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson|
 function note(text){$('status').textContent=text||''}
 function pose(value){clearTimeout(poseTimer);rig.setState(value)}
 function happy(){pose('happy');poseTimer=setTimeout(()=>pose('idle'),1300)}
-function stopAudio(){const a=audio;audio=null;cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onloadedmetadata=a.ontimeupdate=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
+function stopAudio(){const a=audio;audio=null;cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onloadedmetadata=a.ontimeupdate=a.onseeked=a.oncanplay=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
 function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;if(r){r.onstart=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
 function play(){
@@ -37,10 +37,26 @@ function play(){
  const a=new Audio(new URL(src,document.baseURI).href);audio=a;a.playbackRate=state.slow?.8:1;a.preload='auto';
  if('preservesPitch' in a)a.preservesPitch=true;
  const envelope=end===null?ENVELOPES[src]:null,valid=()=>audio===a;
- const seek=()=>{if(valid()&&begin>0){try{a.currentTime=begin}catch{}}};
- // Request playback during the user's gesture; the metadata event seeks inside
- // the ORIGINAL MP3 file before decoding the selected utterance.
+ // A combined user MP3 starts with a different phrase. NEVER let its opening
+ // audio escape before the browser finishes seeking to the indexed clip.
+ // Start playback within the user gesture (Android requirement), but keep it
+ // muted until onseeked confirms the correct start time.
+ let clipReady=begin<=0,seekRequested=false;
+ if(!clipReady)a.muted=true;
+ const unmuteWhenReady=()=>{
+   if(!valid()||clipReady||a.seeking||Math.abs(a.currentTime-begin)>.13)return;
+   clipReady=true;a.muted=false;
+ };
+ const seek=()=>{
+   if(!valid()||clipReady||seekRequested||a.readyState<1)return;
+   seekRequested=true;
+   try{a.currentTime=begin}catch{
+     seekRequested=false;note('Не удалось перейти к нужному фрагменту MP3.');stopAudio();
+   }
+ };
  a.onloadedmetadata=seek;
+ a.onseeked=unmuteWhenReady;
+ a.oncanplay=unmuteWhenReady;
  const animate=()=>{if(!valid()||a.paused||a.ended)return;pandaVisualAudioLevel=Math.max(0,Math.min(1,envelope?envelope.levels[Math.floor(a.currentTime/envelope.binSeconds)]||0:.5+.5*Math.sin(a.currentTime*23)));rig.setLevel(pandaVisualAudioLevel);audioFrame=requestAnimationFrame(animate)};
  a.onplaying=()=>{if(valid()){pose('talking');$('hear').classList.add('playing');if($('status').textContent==='Нажми динамик, чтобы включить звук.')note('');animate()}};
  a.onwaiting=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
