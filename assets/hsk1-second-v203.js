@@ -409,6 +409,7 @@ function applyBuild(step){
 }
 function finish(){
  if(!state.done[11])return;
+ try{const k='pg-hsk1-path-v371';const v=Number(localStorage.getItem(k)||'0');if(v===1)localStorage.setItem(k,'2');}catch{}
  state.completed=true;save();
  // Preserve old lesson history and unlock HSK1 lesson 3 for the existing map.
  try{
