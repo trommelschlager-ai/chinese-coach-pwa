@@ -29,7 +29,7 @@ function lessonData(html,ending,expression){
 const lessonJs=inline(intro).at(-1);
 const lessonSpec=vm.runInNewContext(lessonJs.slice(lessonJs.indexOf('const KEY='),lessonJs.indexOf('const cleanState='))+
  '\n({TOTAL,WORDS,MODEL,TOKENS})');
-assert.equal(lessonSpec.TOTAL,4,'First lesson has four screens');
+assert.equal(lessonSpec.TOTAL,5,'First lesson has five screens');
 assert.equal(lessonSpec.WORDS.length,3,'Keep the beginner vocabulary small');
 assert.deepEqual(Array.from(lessonSpec.WORDS,w=>w.zh),['叫','名字','什么']);
 assert.equal(lessonSpec.MODEL.answer,'我叫米沙。');
@@ -37,18 +37,19 @@ assert.equal(lessonSpec.MODEL.aPy,'Wǒ jiào Mǐshā.');
 assert.equal(lessonSpec.MODEL.question,'你叫什么名字？');
 assert(!intro.includes('很高兴认识你'),'Unexplained sentence excluded from first lesson');
 assert(!intro.includes('我叫安东'),'Old student example excluded');
-for(const marker of ['renderPlan','renderGrammar','renderTest','renderDialogue','什'+'么 (shénme)','data-audio','data-reveal','data-mic','canAdvance','py-hidden']){
+for(const marker of ['renderPlan','renderWords','renderGrammar','renderTest','renderDialogue','什'+'么 (shénme)','data-audio','data-reveal','data-mic','canAdvance','py-hidden']){
  assert(intro.includes(marker),'Required new lesson functionality: '+marker);
 }
 assert(intro.includes('Точной записи пока нет')&&intro.includes('имени Миша отдельной записи'),'Never synthesize missing Misha MP3');
-checked+=22;
+assert(intro.includes('hsk2-premium-v352.css'),'Lesson must load approved premium design');
+checked+=23;
 const startData=lessonData(start,'const stateKey=', '({WORDS,REVIEW,sections,JOURNEY,reviewStages,lessonStages})');
 assert.equal(startData.JOURNEY.length,10);
 for(const [i,entry] of startData.JOURNEY.entries()){assert.ok(entry[2].trim(),`Missing lesson ${i+1} grammar`);assert.ok(entry[1].trim(),`Missing lesson ${i+1} title`)}
 assert.ok(start.includes('journey-map-active'),'Map scroll compatibility fix required');
 assert.ok(start.includes('hsk2-introduction.html'),'First lesson must open actual course');
-assert(start.includes('pg-hsk2-introduction-v2'),'Map must use current intro progress');
-assert(start.includes('introCount/4*100'),'Map displays four stages');
+assert(start.includes('pg-hsk2-introduction-v3'),'Map must use current intro progress');
+assert(start.includes('introCount/5*100'),'Map displays five stages');
 checked+=23;
 assert.equal(startData.reviewStages.length,8);
 assert.equal(startData.lessonStages.length,9);
