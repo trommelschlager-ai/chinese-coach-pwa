@@ -275,6 +275,7 @@ html,body{overflow:hidden!important}
 }
 .map-road .node.locked{
   cursor:not-allowed;
+  pointer-events:none!important;
   filter:saturate(.73) brightness(.93)!important;
 }
 .map-road .node.locked .circle{filter:saturate(.65)}
@@ -397,10 +398,9 @@ html,body{overflow:hidden!important}
    node.classList.toggle('locked',locked);
    node.classList.toggle('current',!locked&&!finished&&n===frontier);
    node.setAttribute('aria-disabled',String(locked));
-   // A genuine gate: a locked card cannot be opened even by long-pressing its link.
-   if(!node.dataset.target)node.dataset.target=node.getAttribute('href')||'';
-   if(locked)node.removeAttribute('href');
-   else if(node.dataset.target)node.setAttribute('href',node.dataset.target);
+   // Keep the original URL for accessibility and regression tests,
+   // but make locked cards truly inert to mouse, keyboard and touch in Chrome.
+   node.toggleAttribute('inert',locked);
    let gate=node.querySelector('.pg-gate');
    if(!gate){gate=document.createElement('span');gate.className='pg-gate';gate.setAttribute('aria-hidden','true');node.appendChild(gate)}
    gate.textContent=locked?'🔒':finished?'✓':'▶';
