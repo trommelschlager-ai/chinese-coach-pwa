@@ -1,7 +1,7 @@
 /* Feet rest on the top face of the existing 600x207 stone, around source y=110.
    Character art, size and horizontal placement are untouched. */
-#pg346 .pg346-scene{--pg-seat-width:min(86vw,464.4px)}
-#pg346 .pg352-mascot{bottom:calc(var(--pg-seat-width) * .162 - 1.25%)!important}
+#pg346 .pg346-scene{container-type:size;--pg-seat-width:min(86vw,464.4px);--pg-seat-bottom:calc(var(--pg-seat-width) * .162 - 1.25cqh)}
+#pg346 .pg352-mascot{bottom:var(--pg-seat-bottom)!important;max-width:calc((100cqh - var(--pg-seat-bottom) - 2px) * .92043)!important}
 #pg346 .pg364-ground-shadow{display:none}
 /* Anchor contact shadows to the fixed feet rather than an unrelated viewport %. */
 #pg346 .pg352-mascot::before{
@@ -14,5 +14,5 @@
 }
 @media(max-height:720px){#pg346 .pg346-scene{--pg-seat-width:min(82vw,442.8px)}}
 @media(max-height:590px){#pg346 .pg346-scene{--pg-seat-width:min(74vw,399.6px)}}
-:root[data-keyboard=true] #pg346 .pg346-scene{--pg-seat-width:min(56vw,302.4px)}
-:root[data-keyboard=true] #pg346 .pg352-mascot{bottom:calc(var(--pg-seat-width) * .162)!important}
+:root[data-keyboard=true] #pg346 .pg346-scene{--pg-seat-width:min(56vw,302.4px);--pg-seat-bottom:calc(var(--pg-seat-width) * .162)}
+:root[data-keyboard=true] #pg346 .pg352-mascot{bottom:var(--pg-seat-bottom)!important}

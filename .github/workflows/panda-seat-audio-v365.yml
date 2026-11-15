@@ -21,8 +21,11 @@ jobs:
       - run: |
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/panda-server.log 2>&1 &
           node scripts/qa-panda-audio-v365.mjs
+          node scripts/qa-panda-voice-pilot-mobile.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: panda-seat-audio-v365
-          path: qa/panda-v365/
+          path: |
+            qa/panda-v365/
+            qa/panda-voice-pilot/
