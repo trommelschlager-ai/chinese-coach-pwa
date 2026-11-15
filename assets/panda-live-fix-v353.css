@@ -1,0 +1,96 @@
+/* Panda AI v353 — source-image-preserving mobile composition and visible effects.
+   The screenshot-proven SVG stone slab was flat: stage Panda directly over the
+   NATURAL, photographed stone riverbank already in the approved scenic artwork. */
+#pg346 .pg352-rocks{display:none!important}
+#pg346 .pg346-scene{isolation:isolate}
+#pg346 .pg352-mascot{
+  width:min(82%,calc(var(--screen-height,100dvh)*.42))!important;
+  left:-3%!important;top:auto!important;bottom:5%!important;
+  transform-origin:50% 97%;
+  max-height:96%;
+}
+#pg346 .pg352-mascot .pg346-panda{
+  width:100%!important;height:auto!important;max-height:100%!important;
+  object-fit:contain;
+}
+#pg346 .pg352-mascot[data-face-ready=true] .pg346-panda{opacity:0}
+#pg346 .pg352-mascot .pg352-mouth{display:none!important}
+#pg346 .pg353-face-canvas{
+  position:absolute;inset:0;width:100%;height:100%;
+  display:block;object-fit:contain;z-index:1;pointer-events:none;
+}
+#pg346 .pg352-mascot:not([data-face-ready=true]) .pg353-face-canvas{display:none}
+#pg346 .pg346-speech{
+  width:35%!important;right:1.5%!important;top:2%!important;
+  max-height:68%!important;padding:8px 8px!important;
+  z-index:4;overflow-y:auto;scrollbar-width:none;
+}
+#pg346 .pg346-speech::-webkit-scrollbar{display:none}
+#pg346 .pg346-main-zh{font-size:clamp(20px,5.55vw,32px);line-height:1.08}
+#pg346 .pg346-main-ru{font-size:clamp(12px,3.1vw,17px);line-height:1.13}
+#pg346 .pg350-welcome{font-size:clamp(11px,3vw,16px);line-height:1.13}
+#pg346 .pg346-speech-controls{margin-top:6px}
+#pg346 .pg346-speech-controls button{min-width:28px;padding:3px 5px}
+
+/* The headset is actively luminous in all states, not dark at idle. */
+#pg346 .pg352-ear-effects{
+  z-index:3;opacity:.78;mix-blend-mode:screen;
+  --headset-glow:#df35ff;
+  filter:drop-shadow(0 0 7px var(--headset-glow)) drop-shadow(0 0 12px var(--headset-glow));
+  transition:opacity .12s linear,filter .12s linear;
+}
+#pg346 .pg352-ear-effects ellipse{
+  fill:var(--headset-glow);fill-opacity:.28;
+  stroke:var(--headset-glow);stroke-width:20;stroke-opacity:.98;
+}
+#pg346[data-headphones=idle] .pg352-ear-effects{
+  opacity:.78;animation:pg353-purple-halo 3.3s ease-in-out infinite
+}
+#pg346[data-headphones=listening] .pg352-ear-effects{
+  --headset-glow:#12caff;opacity:1;
+  animation:pg353-blue-halo .85s ease-in-out infinite
+}
+#pg346[data-headphones=correct] .pg352-ear-effects{
+  --headset-glow:#1bff5d;opacity:1;
+  animation:pg353-green-halo .45s ease-in-out infinite alternate
+}
+#pg346[data-headphones=error] .pg352-ear-effects{
+  --headset-glow:#ff3155;opacity:.96;
+  animation:pg353-red-halo 1s ease-in-out infinite
+}
+@keyframes pg353-purple-halo{
+  0%,100%{opacity:.57}50%{opacity:.95}
+}
+@keyframes pg353-blue-halo{
+  0%,100%{opacity:.65;filter:drop-shadow(0 0 5px #1ecbff)}
+  50%{opacity:1;filter:drop-shadow(0 0 14px #00aeff) drop-shadow(0 0 20px #1bd4ff)}
+}
+@keyframes pg353-green-halo{from{opacity:.72}to{opacity:1;filter:drop-shadow(0 0 18px #22ff73)}}
+@keyframes pg353-red-halo{0%,100%{opacity:.7}50%{opacity:1}}
+/* Speech control stays playable; show disabled state without implying a recording exists. */
+#pg346 .pg346-speech-controls button:disabled{opacity:.58}
+@media(max-width:365px){
+  #pg346 .pg352-mascot{left:-4%!important;width:min(84%,calc(var(--screen-height,100dvh)*.42))!important}
+  #pg346 .pg346-speech{right:.9%!important;width:36%!important;padding:7px 5px!important}
+  #pg346 .pg346-main-zh{font-size:clamp(20px,5.4vw,30px)}
+}
+@media(max-height:720px){
+  #pg346 .pg352-mascot{width:min(72%,calc(var(--screen-height,100dvh)*.39))!important;bottom:3%!important}
+  #pg346 .pg346-speech{max-height:73%!important}
+}
+@media(max-height:590px){
+  #pg346 .pg352-mascot{width:min(51%,calc(var(--screen-height,100dvh)*.34))!important;bottom:2%!important}
+  #pg346 .pg346-speech{max-height:80%!important}
+}
+:root[data-keyboard=true] #pg346 .pg352-mascot{
+  width:min(46%,calc(var(--screen-height,100dvh)*.37))!important;
+  left:1%!important;bottom:5%!important
+}
+:root[data-keyboard=true] #pg346 .pg346-speech{
+  top:3%!important;right:2%!important;width:48%!important;max-height:80%!important
+}
+@media(prefers-reduced-motion:reduce){
+  #pg346 .pg352-ear-effects{animation:none!important;opacity:.8}
+  #pg346[data-headphones=listening] .pg352-ear-effects{opacity:1}
+  #pg346 .pg352-mascot{animation:none!important}
+}
