@@ -34,7 +34,8 @@ const petals=js.slice(js.indexOf('function petalMarkup(){'),js.indexOf('// Keep 
 assert(petals.includes('length:18')&&petals.includes('pg-sakura-petal'),'Original falling petals removed');
 assert(css.includes('#pg130 .pg-sakura')&&css.includes('pointer-events:none!important'),'Petals must never block navigation');
 for(const file of ['hsk1-map.html','hsk2-start.html','hsk2-introduction.html'])assert(fs.existsSync(file),'Level page missing: '+file);
-assert(read('hsk1-map.html').includes('pg-hsk1-v3-complete'),'HSK 1 progress storage must remain unchanged');
+const hsk1Map=read('hsk1-map.html');
+assert(hsk1Map.includes('pg-hsk1-v3-complete')||(hsk1Map.includes('pg-hsk1-path-v371')&&!hsk1Map.includes('localStorage.clear(')&&!hsk1Map.includes("removeItem('pg-hsk1-v3-complete'")),'HSK 1 progress must remain saved without wiping historical data');
 assert(read('hsk2-start.html').includes('./hsk2-introduction.html'),'HSK 2 lesson navigation unavailable');
 const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
 const optionalArt=JSON.parse(sw.match(/const CORE_ART=new Set\((\[[^\n]+\])\)/)[1]);
