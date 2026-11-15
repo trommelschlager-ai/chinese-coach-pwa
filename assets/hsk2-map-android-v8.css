@@ -1,0 +1,84 @@
+/* Panda Go HSK2 map v8 · correct narrow Android headline overflow.
+   Overrides only map mode. Keep approved palette and all 10 active links. */
+#app.hsk2-premium-map:has(.journey-map-active) .scene .brand{
+  left:76px!important;right:17px!important;
+  top:4px!important;
+  font-size:clamp(23px,6vw,29px)!important;
+  line-height:1.08!important;
+  max-width:calc(100% - 93px)!important;
+  min-width:0!important;
+}
+#app.hsk2-premium-map:has(.journey-map-active) .scene .brand small{
+  display:block!important;
+  position:static!important;
+  transform:none!important;
+  height:auto!important;
+  max-width:100%!important;
+  margin:2px 0 0!important;
+  padding:3px 5px!important;
+  font:700 10px/1.35 system-ui,sans-serif!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis;
+  white-space:nowrap!important;
+}
+#app.hsk2-premium-map .content.journey-map-active{
+  grid-template-rows:clamp(44px,6.4svh,56px) clamp(58px,8svh,75px) 24px minmax(0,1fr)!important;
+  min-width:0;
+  row-gap:clamp(4px,.65svh,8px)!important;
+}
+#app.hsk2-premium-map .journey-map-active .journey-head{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  justify-content:center!important;
+  align-items:center!important;
+  min-height:0!important;
+  height:100%!important;
+  max-width:100%!important;
+  padding:4px 7px!important;
+  margin:0!important;
+  overflow:hidden!important;
+}
+#app.hsk2-premium-map .journey-map-active .journey-head-art{
+  display:inline-block!important;
+  font-size:15px!important;
+  line-height:1!important;
+  flex:none;
+}
+#app.hsk2-premium-map .journey-map-active .journey-head h1{
+  flex:0 1 auto;
+  min-width:0;
+  max-width:100%;
+  font:italic 900 clamp(17px,4.6vw,21px)/1.14 Georgia,serif!important;
+  letter-spacing:-.015em;
+  margin:0!important;
+  overflow-wrap:normal!important;
+  white-space:normal!important;
+  text-overflow:clip!important;
+  text-align:center;
+}
+#app.hsk2-premium-map .journey-map-active .journey-head>p,
+#app.hsk2-premium-map .journey-map-active .journey-principle{display:none!important}
+#app.hsk2-premium-map .journey-map-active>.city-pilot{
+  min-height:0;
+  overflow:hidden;
+}
+#app.hsk2-premium-map .journey-map-active .journey-road{
+  min-height:0;
+}
+@media(max-height:700px){
+ #app.hsk2-premium-map .content.journey-map-active{
+   grid-template-rows:41px 53px 22px minmax(0,1fr)!important;
+   row-gap:4px!important;
+ }
+ #app.hsk2-premium-map .journey-map-active .journey-head h1{
+   font-size:16px!important;
+ }
+}
+@media(max-width:360px){
+ #app.hsk2-premium-map .journey-map-active .journey-head-art{
+   font-size:13px!important;
+ }
+ #app.hsk2-premium-map .journey-map-active .journey-head h1{
+   font-size:16px!important;
+ }
+}
