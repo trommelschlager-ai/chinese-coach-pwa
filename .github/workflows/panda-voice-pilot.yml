@@ -15,6 +15,7 @@ on:
       - 'assets/panda-hsk1-*'
       - 'assets/panda-brain-*'
       - 'assets/panda-hsk2-*'
+      - 'tests/panda-hsk2-day-chat-v1.test.mjs'
       - 'assets/panda-nonstop-*'
       - 'tests/panda-live-*'
       - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
@@ -56,6 +57,8 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Test pilot response checks and mock microphone
         run: npm run check:panda-screen
+      - name: Verify Panda AI My Day lesson-linked dialogue
+        run: node tests/panda-hsk2-day-chat-v1.test.mjs
       - name: Validate Panda HSK2 preview bridge
         run: node scripts/verify-panda-hsk2-bridge-v304.cjs
       - name: Validate contextual Panda sentence coach
