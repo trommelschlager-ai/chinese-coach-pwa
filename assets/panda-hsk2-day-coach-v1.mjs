@@ -34,7 +34,7 @@ export function checkDayAnswer(input,idx,mini=0){
  return {
   ok,
   spoken:{known:false,hanzi:String(input),pinyin:null,translation:null,topic:1,
-    probable:ok?'Ответ соответствует учебной конструкции. Это не оценка произношения и тонов.':'Ответ не соответствует вопросу о распорядке дня.'},
+    probable:ok?'Ответ по теме. Тоны не проверялись.':'Это не ответ на вопрос о распорядке дня.'},
   message:ok?'Ответ подходит по смыслу! Это не проверка тонов.':'Пока не подходит. '+question.hint,
   hint:question.hint
  };
