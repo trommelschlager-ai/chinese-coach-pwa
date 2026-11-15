@@ -32,7 +32,7 @@ export async function verifyCleanMobile(browser,base,dir){
     const ledge=await page.locator('.pg346-scene').evaluate(el=>{
       const s=getComputedStyle(el,'::before');return {content:s.content,bottom:s.bottom,background:s.backgroundImage}
     });
-    assert(ledge.content!=='none'&&ledge.background.includes('panda-live-approved-v337.webp'),'Original stone platform is missing');
+    assert(ledge.content!=='none'&&ledge.background.includes('panda-natural-stone-v360.svg'),'Independent natural stone platform is missing');
     assert(parseFloat(ledge.bottom)<0,'Stone must extend below the feet, not float above them');
   }
   await page.screenshot({path:dir+'/welcome-'+width+'.png',animations:'disabled'});
