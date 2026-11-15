@@ -42,6 +42,7 @@ export function createPandaMouth(mascot){
       }
     }
     ctx.putImageData(output,0,0);
+    mascot.dataset.mouthFrame=String((Number(mascot.dataset.mouthFrame)||0)+1);
   }
   function tick(now){
     if(!alive)return;
@@ -82,7 +83,14 @@ export function createPandaMouth(mascot){
   }
   if(picture.complete)load();else picture.addEventListener('load',load,{once:true});
   return {
-    setTalking(value){talking=Boolean(value);if(!talking&&active&&lastScale!==1){paintMouth(1);lastScale=1}},
+    setTalking(value){
+      const next=Boolean(value);
+      if(next===talking)return;
+      talking=next;mascot.dataset.lips=talking?'moving':'rest';
+      if(!active)return;
+      if(talking){paintMouth(.28);lastScale=.28;}
+      else if(lastScale!==1){paintMouth(1);lastScale=1;}
+    },
     dispose(){alive=false;cancelAnimationFrame(raf)}
   };
 }
