@@ -1,5 +1,5 @@
 // Panda Go: visible approved Panda AI/mobile-layout smoke test.
-// Legacy conversation markup is deliberately hidden under the approved v352 screen.
+// Legacy conversation markup is deliberately hidden under the approved v353 screen.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {chromium} from 'playwright';
@@ -26,16 +26,17 @@ try{
   assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
   assert.equal(await page.locator('#pg346-topics').isVisible(),false,'Do not cover Panda with open topic menu');
   assert(await page.locator('.pg352-mascot .pg346-panda').isVisible());
-  assert(await page.locator('.pg352-rocks').isVisible());
+  assert.equal(await page.locator('.pg352-rocks').isVisible(),false,'The approved lake already contains natural stones');
+  await page.waitForFunction(()=>document.querySelector('.pg352-mascot').dataset.faceReady==='true');
   const dims=await page.evaluate(()=>{
    const rect=selector=>{const r=document.querySelector(selector).getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom}};
    return {viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth,
-     scene:rect('.pg346-scene'),mascot:rect('.pg352-mascot'),rocks:rect('.pg352-rocks'),
+     scene:rect('.pg346-scene'),mascot:rect('.pg352-mascot'),
      composer:rect('.pg346-composer'),nav:rect('.pg346-nav')};
   });
   assert(dims.scrollWidth<=dims.viewport+2,'No horizontal scrolling');
   assert(dims.mascot.top>=dims.scene.top-6&&dims.mascot.bottom<=dims.scene.bottom+5,'Entire Panda remains in scene');
-  assert(dims.rocks.top>=dims.scene.top-6,'Stone platform remains inside scene');
+  assert(dims.mascot.bottom>=dims.scene.bottom-40,'Panda feet must be near the real rock bank');
   assert(dims.composer.bottom<=dims.nav.top+6,'Composer stays above navigation');
   await page.screenshot({path:out+'/approved-scene-'+width+'.png',animations:'disabled'});
   await page.locator('#pg346-nonstop').click();
