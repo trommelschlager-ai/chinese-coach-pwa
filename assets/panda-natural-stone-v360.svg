@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 190" preserveAspectRatio="none">
+<defs>
+ <linearGradient id="edge" x1="0" y1="0" x2=".06" y2="1"><stop stop-color="#e7e2cf"/><stop offset=".22" stop-color="#c8c7b6"/><stop offset=".6" stop-color="#9baaa4"/><stop offset="1" stop-color="#6d898a"/></linearGradient>
+ <linearGradient id="top" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e9e9d6"/><stop offset=".53" stop-color="#c8cbbc"/><stop offset="1" stop-color="#b5bbb1"/></linearGradient>
+ <linearGradient id="moss" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#afcf6e"/><stop offset="1" stop-color="#397c61"/></linearGradient>
+ <filter id="shadow" x="-20%" y="-40%" width="140%" height="170%"><feGaussianBlur stdDeviation="9"/></filter>
+ <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".026 .13" numOctaves="2" result="n" seed="7"/><feColorMatrix in="n" type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".1"/></feComponentTransfer></filter>
+</defs>
+<ellipse cx="371" cy="164" rx="337" ry="22" fill="#245a6e" opacity=".37" filter="url(#shadow)"/>
+<!-- Solid limestone shelf, with all depth below the Panda's front paws -->
+<path d="M9 98 L40 76 L83 59 L130 57 L166 42 L220 48 L269 35 L319 40 L363 34 L414 39 L466 47 L515 42 L562 58 L611 49 L659 66 L698 65 L734 83 L749 103 L742 137 L719 146 L690 162 L647 159 L606 174 L549 171 L506 181 L440 177 L394 186 L338 181 L281 180 L237 173 L179 181 L132 167 L81 161 L42 148 L18 143Z" fill="url(#edge)" stroke="#d5ddcb" stroke-width="3"/>
+<!-- Wide irregular top, deliberately extending beyond both feet -->
+<path d="M9 98 L40 76 L83 59 L130 57 L166 42 L220 48 L269 35 L319 40 L363 34 L414 39 L466 47 L515 42 L562 58 L611 49 L659 66 L698 65 L734 83 L749 103 L718 119 L663 111 L620 127 L553 122 L494 135 L448 126 L388 141 L328 134 L276 146 L221 134 L169 145 L122 129 L67 127 L25 116Z" fill="url(#top)" stroke="#edf1df" stroke-width="2.4"/>
+<path d="M25 116 L67 127 L122 129 L169 145 L221 134 L276 146 L328 134 L388 141 L448 126 L494 135 L553 122 L620 127 L663 111 L718 119" fill="none" stroke="#8c9f97" stroke-width="4" opacity=".58"/>
+<!-- Curved stone seams, not straight rectangular slabs -->
+<g fill="none" stroke="#738e89" stroke-width="2.1" opacity=".62">
+<path d="M116 60L130 95 113 127M166 44L192 86 172 143M269 36L286 91 277 147M357 38L363 92 388 140M461 47L449 89 449 129M563 59L553 93 558 121M662 65L642 92 663 112"/>
+<path d="M43 77L83 96 131 96 192 87 252 105 286 91 361 92 413 103 450 90 516 106 564 92 643 92 708 83"/>
+</g>
+<!-- Rock faces, fine fissures and moss, muted photographic tones -->
+<g fill="none" stroke="#5b7778" stroke-width="2" opacity=".54">
+<path d="M46 147L82 154 103 147M183 173L194 151M235 174L255 150M330 184L348 144M415 180L423 150M535 172L562 127M625 169L640 128M702 152L721 119"/>
+</g>
+<g fill="url(#moss)" opacity=".86">
+ <path d="M37 90Q63 69 102 68L95 79 69 78 52 98Z"/>
+ <path d="M151 56Q171 45 190 53L179 65 166 59Z"/>
+ <path d="M523 51Q544 47 569 59L556 68 533 61Z"/>
+ <path d="M670 74Q695 62 724 84L710 93 690 81Z"/>
+ <path d="M56 129Q74 139 95 137L84 145 60 137Z"/>
+ <path d="M649 142L676 132 690 149 662 158Z"/>
+</g>
+<g opacity=".65" fill="#f4f4df">
+ <ellipse cx="217" cy="70" rx="21" ry="4"/><ellipse cx="345" cy="55" rx="28" ry="5"/><ellipse cx="477" cy="79" rx="18" ry="4"/>
+</g>
+<path d="M9 98 L40 76 L83 59 L130 57 L166 42 L220 48 L269 35 L319 40 L363 34 L414 39 L466 47 L515 42 L562 58 L611 49 L659 66 L698 65 L734 83 L749 103 L742 137 L719 146 L690 162 L647 159 L606 174 L549 171 L506 181 L440 177 L394 186 L338 181 L281 180 L237 173 L179 181 L132 167 L81 161 L42 148 L18 143Z" filter="url(#grain)" opacity=".22"/>
+</svg>
