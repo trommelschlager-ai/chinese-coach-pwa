@@ -239,6 +239,14 @@ function extendQuestion(result,raw,allowed,date,profile){
 export function answerLive(raw,options={}){
  const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={}}=options;
  raw=String(raw||'').trim();const s=normalize(raw);if(!raw)return {kind:'empty',message:'Скажи или напиши фразу на китайском.'};
+ // Android ASR can mishear the sibling question as a different phrase.
+ // Do not silently turn this into a verified translation or tone score.
+ if(s==='你有棒棒吗'||s==='你有棒吗'){
+  return {kind:'clarify',
+   spoken:{known:false,hanzi:raw,pinyin:null,translation:null,
+    probable:'Возможно, ты спросил: 你有姐姐吗？ — У тебя есть старшая сестра?'},
+   message:'Распознавание может ошибаться. Если хотел спросить 你有姐姐吗？, повтори или напиши эту фразу.'};
+ }
  // Introductory HSK2 employment question already recorded by the user.
  // This is a genuine answer, not a transcript-based pronunciation score.
  if(s==='你做什么工作'){
