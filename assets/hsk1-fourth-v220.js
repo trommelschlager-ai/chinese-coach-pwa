@@ -384,6 +384,7 @@ function complete(){
   localStorage.setItem(DONE,JSON.stringify(arr));
  }catch{}
  save();
+ window.PandaGoPathV371?.markComplete(4);
 }
 function screen(keep=false){
  // Completed exercises remain visible, rather than automatically skipping them.
