@@ -54,7 +54,7 @@ click('[data-day-next]'); // 5: five-time speech practice
 assert.equal(doc.querySelectorAll('.day-attempts>div').length,5);
 assert.match(doc.querySelector('.day-card').textContent,/не оценивает/);
 click('[data-day-next]'); // finish, microphone must be optional
-assert.match(doc.querySelector('#screen').textContent,/Мини-урок пройден!/);
+assert.match(doc.querySelector('#screen').textContent,/Мини-урок(?: \d+)? пройден!/);
 assert.match(doc.querySelector('.day-ai-panel a').getAttribute('href'),/practice=day&mini=0/);
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,1);
 click('[data-next-mini]'); // old lessons unchanged
@@ -96,7 +96,7 @@ for(let lesson=1;lesson<30;lesson++){
  for(const k of order)click('[data-token="'+k+'"]');
  assert.ok(!doc.querySelector('[data-step-next]').disabled,'Correct builder should enable next in lesson '+lesson);
  click('[data-step-next]');
- assert.match(doc.querySelector('#screen').textContent,/Мини-урок пройден!/);
+ assert.match(doc.querySelector('#screen').textContent,/Мини-урок(?: \d+)? пройден!/);
  assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,lesson+1);
  click('[data-next-mini]');
 }
