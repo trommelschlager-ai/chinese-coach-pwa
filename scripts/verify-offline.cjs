@@ -17,7 +17,7 @@ for(const p of [retained,oldImage,oldData,'./assets/panda-go-hero-clean-v174.web
 assert((await cacheAPI.match('./assets/obsolete.js?v=1')),'Legacy cache is preserved without migrating its scripts to the new shell');
 assert(!stores.get(currentCache).has(normalize('./assets/obsolete.js?v=1')),'Stale old JS must not be copied into the new version cache');
 
-const request=async(url,mode)=>{let p;events.fetch({request:{url:normalize(url),method:'GET',mode},respondWith:r=>p=r});return await p};
+const request=async(url,mode)=>{let p;events.fetch({request:{url:normalize(url),method:'GET',headers:new Headers(),mode},respondWith:r=>p=r});return await p};
 await oldCache.put('./assets/lesson-audio-source.js?v=246',new Response('obsolete cached audio UI'));
 const freshScript=await (await request('./assets/lesson-audio-source.js?v=246','cors')).text();assert.equal(freshScript,fs.readFileSync('assets/lesson-audio-source.js','utf8'),'Versioned online script must bypass cached obsolete content');
 // Legacy Panda is not deleted until every current chat asset was safely cached.
