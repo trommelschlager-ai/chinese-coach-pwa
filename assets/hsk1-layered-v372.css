@@ -1,0 +1,45 @@
+/* Panda Go HSK1 v372: five independent full-quality illustration layers.
+   Coordinates are percentages of the 941×1672 approved mobile artboard.
+   All lessons and three footer buttons remain native, keyboard-accessible links. */
+:root{color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#432372}
+body{display:flex;justify-content:center;align-items:center;font-family:Arial,system-ui,sans-serif}
+.map-shell{position:relative;isolation:isolate;width:min(100vw,480px);height:100dvh;min-height:0;max-height:100dvh;margin:0 auto;overflow:hidden;background:#3d8df2;touch-action:manipulation}
+.pg-layer{position:absolute;display:block;object-fit:fill;pointer-events:none;user-select:none;-webkit-user-drag:none;image-rendering:auto}
+.pg-layer-bg{inset:0;width:100%;height:100%;z-index:0}
+.pg-layer-header{left:.425%;top:1.56%;width:99.15%;height:19.68%;z-index:2}
+.pg-layer-ribbons{left:20.72%;top:24.7%;width:78.11%;height:57.06%;z-index:3}
+.pg-layer-panda{left:-2.87%;top:49.64%;width:33.37%;height:28.71%;z-index:4}
+.pg-layer-actions{left:.319%;top:81.94%;width:99.36%;height:14.71%;z-index:5}
+.pg-map-heading{position:absolute;inset:0 0 auto;height:22%;z-index:1;pointer-events:none}
+.pg-level-title,.pg-map-brand,.map-footer,.map-summary{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.back,.pg-map-writing{position:absolute;z-index:15;top:3.5%;height:6.2%;width:12.2%;display:block;text-decoration:none;color:transparent;background:transparent;border:0;outline-offset:1px;-webkit-tap-highlight-color:transparent}
+.back{left:1.2%}.pg-map-writing{right:1.2%}
+.back:focus-visible,.pg-map-writing:focus-visible{outline:3px solid white;border-radius:22%}
+.map-road,.pg-map-actions{position:absolute;inset:0;z-index:8;pointer-events:none}
+.map-road .node,.pg-map-actions a{position:absolute;display:block;pointer-events:auto;text-decoration:none;cursor:pointer;background:transparent;margin:0;padding:0;border:0;border-radius:28px;-webkit-tap-highlight-color:transparent}
+.map-road .node{left:22%;width:75%;height:7.6%}
+.map-road .node[data-num="7"]{top:24.7%}
+.map-road .node[data-num="6"]{top:32.9%}
+.map-road .node[data-num="5"]{top:41.05%}
+.map-road .node[data-num="4"]{top:49.2%}
+.map-road .node[data-num="3"]{top:57.35%}
+.map-road .node[data-num="2"]{top:65.5%}
+.map-road .node[data-num="1"]{top:73.65%}
+.map-road .node .circle,.map-road .node .caption,.map-road .node .pg-topic-art,.map-road .node .arrow{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;clip-path:inset(50%);pointer-events:none}
+.map-road .node:focus-visible,.pg-map-actions a:focus-visible{outline:3px solid white;outline-offset:2px;box-shadow:0 0 0 6px #dd42eeaa}
+.map-road .node.locked{cursor:not-allowed}
+.map-road .node .pg-gate{position:absolute;right:7.2%;top:50%;transform:translateY(-50%);z-index:9;width:clamp(38px,9vw,54px);height:clamp(38px,9vw,54px);display:grid;place-items:center;border-radius:15px;border:3px solid #ffdf7a;background:linear-gradient(155deg,#ecfff5,#36bb72);box-shadow:0 2px 7px #3b185da1,inset 0 2px 5px #fff;pointer-events:none;font:bold 24px/1 Arial,system-ui,sans-serif;color:#115a2e;text-shadow:0 1px white}
+.map-road .node.locked .pg-gate{display:none}
+.map-road .node.current[data-num="1"] .pg-gate{display:none}
+.map-road .node.current .pg-gate{background:linear-gradient(145deg,#f9ffa3,#f7bf3a);color:#815100}
+.map-road .node.done .pg-gate{background:linear-gradient(145deg,#b8ffd0,#32c66a);color:#075f2b}
+.pg-map-actions a{top:87.45%;height:8.55%;border-radius:24px}
+.pg-map-actions .pg-rhythm-button{left:1.3%;width:31.7%}
+.pg-map-actions .pg-trainer-button{left:33.3%;width:32.1%}
+.pg-map-actions .pg-ai-button{left:65.1%;width:33.5%}
+.pg-map-actions a .action-icon,.pg-map-actions a .action-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);opacity:0;pointer-events:none}
+.pg-toast{position:absolute;z-index:30;left:8%;right:8%;top:19%;padding:11px 13px;border:2px solid #ffe28e;border-radius:14px;background:#35126be8;color:#fff;text-align:center;font:700 13px/1.4 Arial,system-ui,sans-serif;box-shadow:0 5px 17px #16072c70}
+.pg-toast[hidden]{display:none}
+@media(min-width:481px){body{background:linear-gradient(160deg,#9b5baf,#51337b)}.map-shell{box-shadow:0 0 22px #24093f7a}}
