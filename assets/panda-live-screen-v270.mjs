@@ -17,7 +17,7 @@ const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
 const rig=createPandaRig($('character'),$('panda-canvas'));
-let conversation,base,audio=null,audioFrame=0,recognition=null,epoch=0,watchdog,poseTimer,followupTimer;
+let conversation,base,audio=null,audioFrame=0,recognition=null,epoch=0,watchdog,speechEndTimer,poseTimer,followupTimer;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
 const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,turns:0,profile:{family:{}},followup:null,speechSignal:null};
 const current=()=>state.display;
@@ -26,7 +26,7 @@ function note(text){$('status').textContent=text||''}
 function pose(value){clearTimeout(poseTimer);rig.setState(value)}
 function happy(){pose('happy');poseTimer=setTimeout(()=>pose('idle'),1300)}
 function stopAudio(){const a=audio;audio=null;cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onloadedmetadata=a.ontimeupdate=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
-function stopRecognition(){clearTimeout(watchdog);epoch++;const r=recognition;recognition=null;state.active=false;if(r){r.onstart=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
+function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;if(r){r.onstart=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
 function play(){
  const currentLine=current();
@@ -284,9 +284,13 @@ function startRecognition(){
    :'Служба распознавания запустилась, но не получила звук с микрофона. Проверь разрешение или открой в Chrome.');},16000);
  };
  r.onaudiostart=()=>{if(valid()){audioStarted=true;note('🎙 Микрофон активен. Говори по-китайски…')}};
- r.onspeechstart=()=>{if(valid())note('🎙 Слышу речь, распознаю китайский…')};
+ r.onspeechstart=()=>{if(valid()){clearTimeout(speechEndTimer);note('🎙 Слышу речь, распознаю китайский…')}};
+ // Request final transcription when Android Chrome detects the end of actual speech.
+ // r.stop() finalizes audio; unlike abort() it can still deliver the final result.
+ r.onspeechend=()=>{if(!valid()||heard)return;note('⏳ Речь закончилась. Распознаю китайскую фразу…');clearTimeout(speechEndTimer);speechEndTimer=setTimeout(()=>{if(valid()&&!heard){try{r.stop()}catch{fail('Не удалось завершить распознавание. Попробуй написать фразу или повтори ещё раз.')}}},1100)};
  r.onresult=e=>{
   if(!valid())return;
+  clearTimeout(speechEndTimer);
   const a=e.results?.[0]?.[0];const text=String(a?.transcript||'').trim();
   if(!text){fail('Браузер вернул пустой ответ. Попробуй ещё раз в Chrome или напиши фразу.');return}
   heard=true;state.confidence=typeof a?.confidence==='number'&&a.confidence>0?a.confidence:null;
