@@ -1,0 +1,18 @@
+/* v355 — stone shoreline from the user-approved image; panda and scene unchanged.
+   The original screenshot is not used as the page background: only a clipped
+   narrow stone lip is visible below the independently animated character. */
+#pg346 .pg346-scene::before {
+ content:"";position:absolute;z-index:1;left:-0.5%;bottom:3.5%;
+ width:76%;aspect-ratio:670 / 68;pointer-events:none;
+ background-image:url('./panda-live-approved-v337.webp');
+ background-repeat:no-repeat;background-size:130% auto;
+ background-position:left 80.2%;
+ clip-path:polygon(0 47%,3% 19%,7.5% 7%,15.3% 3%,21.5% 4%,25.5% 28%,28% 50%,82.5% 50%,87.3% 13%,92% 6%,96% 22%,99% 41%,100% 78%,93% 87%,75% 95%,34% 91%,15% 91%,0 73%);
+ -webkit-mask-image:radial-gradient(ellipse 89% 108% at 50% 51%,#000 76%,transparent 99%);
+ mask-image:radial-gradient(ellipse 89% 108% at 50% 51%,#000 76%,transparent 99%);
+ filter:drop-shadow(0 2px 2px #246a7566);
+}
+#pg346 .pg352-mascot{z-index:2}
+@media(max-height:720px){#pg346 .pg346-scene::before{width:71%;bottom:2%}}
+@media(max-height:590px){#pg346 .pg346-scene::before{width:56%;bottom:1%}}
+:root[data-keyboard=true] #pg346 .pg346-scene::before{width:52%;bottom:1%}
