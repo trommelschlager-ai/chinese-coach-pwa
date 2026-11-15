@@ -1,0 +1,155 @@
+/* Panda Go v390-391 · exact approved image screens and functional overlays.
+  All original character art remains PNG — no CSS redrawing, aspect ratios fixed.
+  Transparent hotspots sit in the image's original pixel coordinate system. */
+#app.approved-welcome-v390 .header,
+#app.approved-map-v390 .header,
+#app.day-visual-v390 .header,
+#app.approved-welcome-v390>.bottom,
+#app.approved-map-v390>.bottom,
+#app.day-visual-v390>.bottom,
+#app.day-visual-v390>#day-fixed-actions{display:none!important}
+#app.approved-welcome-v390 #screen,
+#app.approved-map-v390 #screen,
+#app.day-visual-v390 #screen{
+ display:block!important;
+ flex:1 1 auto!important;
+ height:100%!important;
+ min-height:0!important;
+ padding:0!important;
+ overflow:hidden!important;
+ background:#552090!important;
+}
+.approved-stage{
+ display:block;position:relative;isolation:isolate;
+ width:100%;height:100%;min-height:100%;
+ overflow:hidden;
+ background:#6d2497;
+}
+.approved-stage::before{
+ content:"";position:absolute;inset:-30px;pointer-events:none;
+ z-index:0;
+ background-image:var(--approved-image);
+ background-size:cover;background-position:center;
+ filter:blur(15px) saturate(1.05) brightness(.85);
+ opacity:.92;
+}
+.approved-art{
+ position:absolute;top:50%;left:50%;z-index:1;
+ transform:translate(-50%,-50%);
+ width:100%;aspect-ratio:941 / 1672;
+ display:block;line-height:0;
+ box-shadow:0 0 20px #280b3d77;
+}
+.approved-art>img{
+ display:block;width:100%;height:100%;object-fit:fill;
+ pointer-events:none;user-select:none;-webkit-user-select:none;
+ border:none;
+}
+.approved-art .approved-hotspot{
+ position:absolute;
+ padding:0;margin:0;
+ border:0;background:transparent;
+ appearance:none;-webkit-appearance:none;
+ cursor:pointer;z-index:4;
+ border-radius:17%;
+ min-height:0;
+}
+.approved-art .approved-hotspot:focus-visible{
+ outline:3px solid #fff2b0!important;
+ outline-offset:-2px;
+ background:#fff7a73a;
+}
+.approved-art .approved-hotspot:active{background:#fff5a74a;box-shadow:inset 0 0 13px #fff7b4a6}
+.approved-art .poster-count{
+ position:absolute;z-index:3;
+ color:#fffdf9;background:linear-gradient(135deg,#b332b8,#5c1380);
+ border:1px solid #ffdd88;border-radius:20px;
+ font-size:clamp(9px,2.9vw,15px);line-height:1.1;font-weight:900;
+ display:grid;place-items:center;
+ box-shadow:0 2px 7px #40115c6c;
+ pointer-events:none;
+}
+.approved-art .poster-counter{
+ top:3.3%;right:3.5%;width:13.3%;height:3.15%;
+ border-radius:22px;
+}
+.approved-art .poster-topic-count{
+ width:8.5%;height:2.45%;
+}
+.approved-art .poster-topic-count.col0{left:38.4%}
+.approved-art .poster-topic-count.col1{left:87.6%}
+.approved-art .poster-topic-count.row0{top:35.0%}
+.approved-art .poster-topic-count.row1{top:46.0%}
+.approved-art .poster-topic-count.row2{top:57.0%}
+.approved-art .poster-topic-count.row3{top:68.0%}
+.approved-art .poster-topic-count.row4{top:79.0%}
+.approved-art .poster-welcome-program{left:6%;top:80.0%;width:39%;height:8.3%}
+.approved-art .poster-welcome-start{left:47%;top:80%;width:48%;height:8.3%}
+.approved-art .poster-welcome-ai{left:62%;top:15.5%;width:36%;height:8%}
+.approved-art .poster-map-back{left:2.7%;top:1.6%;width:10%;height:6.9%}
+.approved-art .poster-map-card{width:47.5%;height:10.0%}
+.approved-art .poster-map-card.col0{left:1.1%}
+.approved-art .poster-map-card.col1{left:50.5%}
+.approved-art .poster-map-card.row0{top:28.5%}
+.approved-art .poster-map-card.row1{top:39.7%}
+.approved-art .poster-map-card.row2{top:50.7%}
+.approved-art .poster-map-card.row3{top:61.9%}
+.approved-art .poster-map-card.row4{top:72.7%}
+.approved-art .poster-map-nav{top:89.0%;height:9.5%}
+.approved-art .poster-map-nav.start{left:1.3%;width:18%}
+.approved-art .poster-map-nav.map{left:21%;width:18.5%}
+.approved-art .poster-map-nav.ai{left:40%;width:19%}
+.approved-art .poster-map-nav.review{left:59%;width:20%}
+.approved-art .poster-map-nav.exam{left:79.5%;width:19%}
+.approved-art .art-back{left:2%;top:18.5%;width:14%;height:6.3%}
+.approved-art .art-next{left:49.5%;top:88.5%;width:48%;height:7.7%}
+.approved-art .art-words{left:9%;top:88.5%;width:38%;height:7.7%}
+.approved-art .art-sound{left:76.2%;top:28.4%;width:14%;height:11%}
+.approved-art .art-audio-note{
+ position:absolute;top:26%;left:34%;width:61%;
+ z-index:6;background:#fff3fb;border:2px solid #d595da;
+ border-radius:12px;line-height:1.35;
+ color:#6d227f;font-weight:900;font-size:clamp(11px,3vw,16px);
+ box-shadow:0 5px 12px #4e176e88;padding:12px;text-align:center;
+}
+#app.approved-map-v390 .poster-topic-count{font-variant-numeric:tabular-nums}
+/* Continue the approved violet/gold style through actual learning stages. */
+#app.day-lesson-active:not(.day-visual-v390) #screen{
+ background:radial-gradient(ellipse at 50% 0%,#ffddfa,#f1d2f7 58%,#a55ccc)!important;
+}
+.day-pilot .day-title{
+ border:2px solid #f6c96e!important;
+ background:linear-gradient(120deg,#581376ef,#a246b5e9),url('./approved-course-v390/day-lesson.png') center 13%/cover!important;
+ box-shadow:0 4px 11px #5b167f6a,0 0 0 2px #fff6e866!important;
+}
+.day-pilot .day-card{
+ border:2px solid #edbc77;
+ box-shadow:0 3px 12px #742c9966,0 0 0 1px #fff8ffff;
+ background:linear-gradient(130deg,#fff8ff,#f4d6fa 80%);
+}
+.day-pilot .day-card h2{
+ border-bottom:1px solid #e9bee3;
+ padding-bottom:5px;
+}
+.day-pilot .day-option:not(.good):not(.bad){
+ background:linear-gradient(#fffaff,#fae3ff);
+ border-color:#dca7dc;
+}
+.day-pilot .day-vword{
+ box-shadow:0 2px 5px #7c399c22;
+ background:linear-gradient(#fffaff,#f7ddfa);
+}
+#day-fixed-actions{
+ border-top:2px solid #f7cf7a!important;
+ background:linear-gradient(120deg,#f7d1f7,#d9a1ed)!important;
+}
+#day-fixed-actions .primary{
+ color:#5a1773;
+ border:2px solid #ffe79b;
+ background:linear-gradient(#fff9a0,#ffbe42);
+ box-shadow:0 2px 7px #6e1e8855;
+}
+#app.day-done-active #screen{
+ background:radial-gradient(ellipse at 50% 0%,#f8d7fb,#ad68cb)!important;
+}
+@media (min-width:551px){.approved-stage{border-radius:6px}}
