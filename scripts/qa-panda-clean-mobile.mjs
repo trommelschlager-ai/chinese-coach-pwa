@@ -43,6 +43,16 @@ export async function verifyCleanMobile(browser,base,dir){
     Number(document.querySelector('.pg352-mascot').dataset.mouthFrame)>0);
   const mouthTalking=await mouthSignature();
   assert.notEqual(mouthIdle,mouthTalking,'Mouth pixels must visibly change when MP3 is playing');
+  if(width===360){
+    // Natural blink must occur with no replacement character art or extra face layer.
+    const previousBlink=await page.locator('.pg352-mascot').evaluate(el=>Number(el.dataset.blinkCount)||0);
+    await page.waitForFunction(count=>
+      Number(document.querySelector('.pg352-mascot').dataset.blinkCount||0)>count,
+      previousBlink,{timeout:10000});
+    assert(await page.locator('.pg346-sakura').isVisible(),'Sakura animation should be a separate visible overlay');
+    const sakuraAnimation=await page.locator('.pg346-sakura').evaluate(el=>getComputedStyle(el).animationName);
+    assert.match(sakuraAnimation,/pg354-sakura-sway/,'Branches should sway softly without moving the entire scene');
+  }
   await page.locator('#pg346-nonstop').click();
   for(const [question,answer] of [['你好','你好！'],['你好吗','很好！'],['今天天气怎么样','今天很冷。']]){
    await page.locator('#pg346-input').fill(question);await page.locator('#pg346-send').click();
@@ -76,6 +86,7 @@ export async function verifyCleanMobile(browser,base,dir){
   await page.screenshot({path:dir+'/clean-'+width+'.png',animations:'disabled'});
   await page.emulateMedia({reducedMotion:'reduce'});
   assert.equal(await page.locator('.pg346-panda').evaluate(el=>getComputedStyle(el).animationName),'none');
+  assert.equal(await page.locator('.pg346-sakura').evaluate(el=>getComputedStyle(el).animationName),'none','Respect reduced motion for cherry blossoms');
   await context.close();
  }
  assert.deepEqual(errors,[]);
