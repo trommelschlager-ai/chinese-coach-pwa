@@ -154,8 +154,12 @@ function viewLesson(){
 }
 function viewDone(){
  var t=chosen(),sc=current(),number=id();
- var dayDetails=state.topic===0?(dayPilot()?'<p class="honest">Первое занятие завершено. Пять произнесений каждого слова доступны для повторения; результат распознавания не является оценкой тонов.</p>':'')+dayAIBlock(state.mini):'';
- return '<section class="done"><div class="reward-icon">🏆</div><h1>Мини-урок пройден!</h1><p>Ты разобрал слова, грамматику и правильно собрал предложение.</p><div class="panel">'+phrase(sc[2],sc[3],sc[4])+'</div><p class="honest">Запоминание и произношение нужно закреплять повторениями. Эта отметка показывает выполнение заданий, а не официальный экзаменационный результат.</p>'+dayDetails+'<div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий мини-урок →</button></div><button class="text-link" data-view="map">Вернуться к десяти темам</button></section>';
+ if(state.topic===0)return '<section class="done day-done"><div class="day-done-head"><h1>🏆 Мини-урок '+(state.mini+1)+' пройден!</h1><p>Ты изучил слова, правило и выполнил тест.</p></div>'+
+ '<div class="day-done-line">'+phrase(sc[2],sc[3],sc[4])+'</div>'+
+ dayAIBlock(state.mini)+
+ '<div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий урок →</button></div>'+
+ '<p class="honest">Проверка слов по голосу показывает распознанный текст, не точность тонов.</p></section>';
+ return '<section class="done"><div class="reward-icon">🏆</div><h1>Мини-урок пройден!</h1><p>Ты разобрал слова, грамматику и правильно собрал предложение.</p><div class="panel">'+phrase(sc[2],sc[3],sc[4])+'</div><p class="honest">Запоминание и произношение нужно закреплять повторениями. Эта отметка показывает выполнение заданий, а не официальный экзаменационный результат.</p><div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий мини-урок →</button></div><button class="text-link" data-view="map">Вернуться к десяти темам</button></section>';
 }
 function viewTones(){
  var toneCards=[
