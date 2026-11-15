@@ -13,6 +13,9 @@ on:
       - 'scripts/verify-hsk2-city-work.cjs'
       - 'tests/hsk2-city-marks.test.cjs'
       - 'tests/hsk2-bastian-intro.test.cjs'
+      - 'tests/hsk2-three-screens-v6.test.cjs'
+      - 'assets/bastian-three-screens-v6.css'
+      - 'assets/hsk2-one-screen-map-v6.css'
       - 'tests/hsk2-bastian-exact-v5.test.cjs'
       - 'assets/bastian-exact-reference-v5.css'
       - 'assets/bastian-approved-reference-v5.jpg'
@@ -51,6 +54,8 @@ jobs:
         run: node tests/hsk2-bastian-visual-contract-v4.test.cjs
       - name: Verify exact Bastian reference and interactive hotspots
         run: node tests/hsk2-bastian-exact-v5.test.cjs
+      - name: Verify three compact Android screens
+        run: node tests/hsk2-three-screens-v6.test.cjs
       - name: Verify approved Bastian introduction
         run: node tests/hsk2-bastian-intro.test.cjs
       - name: Verify archived city prototype
