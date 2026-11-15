@@ -5,17 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
-<meta name="panda-go-mobile-fix" content="v374-side-fill-and-lock-overlay">
+<meta name="panda-go-mobile-fix" content="v375-corrected-css-and-safe-layering">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
 :root{color-scheme:light}
 *,*::before,*::after{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,system-ui,sans-serif;background:#5f367d}
-body{display:grid;place-items:center;position:relative}
-/* Fill aspect-ratio side gaps from the same approved art; the central artwork is untouched. */
-body::before{content:"";position:fixed;inset:-30px;z-index:0;pointer-events:none;background:url("./assets/hsk1-approved-v373.png") center center/cover no-repeat;filter:blur(21px) brightness(.70) saturate(.95);transform:scale(1.04)}
-.artboard{position:relative;isolation:isolate;width:min(100vw,45.1768dvh);height:min(100dvh,221.3523vw);overflow:hidden;margin:auto;touch-action:manipulation;background:#6447ab;box-shadow:0 0 10px #26063750
+html,body{margin:0;width:100%;height:100dvh;overflow:hidden;font-family:Arial,system-ui,sans-serif;background:#5f367d}
+body{display:grid;place-items:center;position:relative;background:#5f367d url("./assets/hsk1-approved-v373.png") center center/cover no-repeat}
+/* Background is painted on body, never as a composited overlay over the approved art. */
+.artboard{position:relative;isolation:isolate;width:min(100vw,45.1768dvh);height:min(100dvh,221.3523vw);overflow:hidden;margin:auto;touch-action:manipulation;background:#6447ab;box-shadow:0 0 10px #26063750;z-index:1}
 .approved{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .hotspots{position:absolute;inset:0;z-index:2;pointer-events:none}
 .hotspots a{pointer-events:auto;position:absolute;display:block;text-decoration:none;cursor:pointer;background:transparent;outline-offset:2px;-webkit-tap-highlight-color:transparent}
