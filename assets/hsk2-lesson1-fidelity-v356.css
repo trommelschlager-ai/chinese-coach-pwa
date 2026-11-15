@@ -1,0 +1,226 @@
+/* HSK2 Lesson 1 fidelity reset v356.
+ * This file loads last and overrides prior experimental styles with one consistent
+ * scenic, five-screen theme. Text, audio and tests remain real DOM controls.
+ */
+#app.hsk2-premium{
+  --gold:#f9d588;--ink:#64227e;
+  background:
+    linear-gradient(180deg,rgba(251,222,248,.78),rgba(242,199,236,.66) 32%,rgba(244,194,242,.74) 74%,rgba(192,115,207,.77)),
+    url('./panda-reference-v175/mountain-stairs.webp') center 24%/cover no-repeat !important;
+  isolation:isolate;
+}
+#app.hsk2-premium::before{
+  z-index:0!important;opacity:.7!important;
+  background:linear-gradient(180deg,#ffedf8bd 0%,#f0c5f085 65%,#c788d88c 100%)!important;
+}
+#app.hsk2-premium::after{
+  content:"";display:block!important;position:absolute;inset:0 0 auto;z-index:0;
+  width:100%;height:98px;pointer-events:none;opacity:.9;
+  background:url('./panda-sakura-v346.svg') left top/95px auto no-repeat!important;
+}
+#app.hsk2-premium>.header,
+#app.hsk2-premium>.page,
+#app.hsk2-premium>.bottom{z-index:1;position:relative}
+#app.hsk2-premium .header{
+  height:69px;flex:none;
+  background:linear-gradient(180deg,#ffe9f6df,#fbd6f4be)!important;
+}
+#app.hsk2-premium .header::before{
+  background:linear-gradient(#ffe1f8b9,#fbe6f6bb)!important;
+}
+#app.hsk2-premium .header h1{
+  font:italic 900 clamp(29px,9vw,41px)/1 Georgia,serif;
+  color:#702484;letter-spacing:.01em;
+  text-shadow:0 1px #fff,0 2px 3px #c472bc,0 3px 9px #e6b5dc
+}
+#app.hsk2-premium .header .sub{
+  font-size:11px;line-height:1.2;font-weight:850;
+  background:linear-gradient(110deg,#fff9fd,#fff0f7);
+  border:1.5px solid #e9bc7b;box-shadow:0 3px 7px #a5659752
+}
+#app.hsk2-premium .page{
+  flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+  scrollbar-width:thin;padding:5px 11px 15px!important;
+}
+#app.hsk2-premium .screen{gap:7px;padding:0 0 18px}
+#app.hsk2-premium .poster-lead.wow-plan-hero{
+  min-height:184px;height:184px;
+  position:relative;overflow:visible;margin:0 0 5px;
+  isolation:isolate;background:transparent!important;border:0!important;box-shadow:none!important;
+}
+#app.hsk2-premium .poster-lead.wow-plan-hero::before{
+  content:"";position:absolute;inset:3px -8px 0;
+  z-index:-1;opacity:1;
+  background:radial-gradient(ellipse 65% 62% at 52% 85%,rgba(255,165,236,.9),transparent 90%),
+   linear-gradient(0deg,rgba(148,54,162,.62),rgba(251,187,234,.25) 50%,transparent 100%)!important;
+  border-radius:54% 49% 0 0;
+}
+#app.hsk2-premium .wow-plan-hero .poster-panda{
+ position:absolute;left:-9px;bottom:-5px;
+ width:46%;height:188px;max-width:none;z-index:3;
+ object-fit:contain;object-position:left bottom;
+ filter:saturate(1.22) contrast(1.12) drop-shadow(0 5px 8px #6424769e);
+}
+#app.hsk2-premium .wow-plan-hero .poster-content{
+ position:absolute;right:-2px;top:1px;width:65%;height:auto;
+ margin:0;padding:0;z-index:2;display:flex;flex-direction:column;gap:6px;
+}
+#app.hsk2-premium .wow-plan-hero .poster-plaque{
+ display:flex;align-items:center;justify-content:center;
+ min-height:94px;height:auto;line-height:1.02;
+ border:3px solid #ffdf90;
+ border-radius:39% 25% 30% 25%/32% 28% 32% 32%;
+ background:radial-gradient(ellipse at 55% 0%,#bf65c8 0%,#8b299a 48%,#62217c 100%)!important;
+ box-shadow:inset 0 0 0 2px #f0b1e9c6,inset 0 4px 14px #fa9de8ab,
+ 0 2px 0 #bf8b40,0 4px 12px #93348ea6;
+ padding:6px 8px;
+ color:#fff5dd;font:italic 900 clamp(29px,8.5vw,42px)/.96 Georgia,serif;
+ text-shadow:0 2px 1px #521263,0 0 5px #ffdafc;
+}
+#app.hsk2-premium .wow-plan-hero .poster-content p{
+ position:relative;display:block;max-width:100%;margin:0;
+ font:500 clamp(10px,2.85vw,13px)/1.31 system-ui,sans-serif;
+ text-align:center;color:#fff3f4;
+ text-shadow:0 2px 3px #6d3271,0 0 7px #7b3b83;
+ padding:4px 2px 2px;letter-spacing:-.01em;
+}
+#app.hsk2-premium .wow-plan-hero .wow-wave{
+ bottom:-8px;height:17px;border-top:3px solid #fff2a3;
+ border-radius:50% 50% 0 0;box-shadow:0 -3px 10px #ffe8a5ab;
+ background:linear-gradient(180deg,#fbc6f4a8,transparent);
+}
+#app.hsk2-premium .poster-scroll{
+ margin:5px auto -3px;min-height:37px;
+ background:linear-gradient(100deg,#fef0f8,#fff9fa 47%,#f9d9ee)!important;
+ border:2px solid #ecc486;border-radius:25px;
+ padding:7px 24px 5px;font:italic 900 clamp(16px,5.3vw,22px)/1 Georgia,serif;
+ box-shadow:0 3px 9px #ab569a6c,inset 0 1px 2px #fff;
+ text-align:center;color:#752384
+}
+#app.hsk2-premium .ribbon{
+ margin:1px auto -2px;padding:7px 28px;
+ font:italic 900 clamp(17px,5.1vw,22px)/1 Georgia,serif;
+ border:2px solid #f0cb84;border-radius:33px;
+ background:linear-gradient(105deg,#782491,#b052bf 55%,#6e2080)!important;
+ color:#fff8e3;box-shadow:0 3px 9px #7d2e85a9,inset 0 2px 4px #e7a6e3;
+ text-shadow:0 1px 3px #501769
+}
+#app.hsk2-premium .screen--plan .glam{
+ border:2px solid #f0c890;border-radius:25px;
+ background:linear-gradient(115deg,#ffe7f9f2,#f6ceeef4,#ffe5f4f5)!important;
+ box-shadow:inset 0 2px 4px #fff,0 4px 12px #ac56a466;
+}
+#app.hsk2-premium .screen--plan .wow-topics{padding:8px 8px 9px}
+#app.hsk2-premium .screen--plan .features{
+ display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;
+}
+#app.hsk2-premium .screen--plan .feature{
+ display:flex;flex-direction:column;justify-content:center;align-items:center;
+ gap:5px;padding:6px 1px;min-height:65px;
+ border:1px solid #edbad7;border-radius:18px;
+ background:linear-gradient(150deg,#fffaff,#f9d7f4);
+ box-shadow:inset 0 2px 4px #fff,0 3px 6px #a75ca64c;
+}
+#app.hsk2-premium .screen--plan .feature .em{
+ font-size:clamp(19px,6vw,28px);filter:drop-shadow(0 2px 2px #b660bc6c)
+}
+#app.hsk2-premium .screen--plan .feature span:last-child{
+ font:850 clamp(7.5px,2.55vw,11px)/1.1 system-ui,sans-serif;
+ letter-spacing:-.035em;
+ max-width:100%;text-align:center;overflow-wrap:normal;word-break:normal;
+}
+#app.hsk2-premium .screen--plan .outcomes{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+}
+#app.hsk2-premium .screen--plan .wow-skills{padding:10px}
+#app.hsk2-premium .screen--plan .outcome{
+ min-height:75px;padding:8px 9px;gap:7px;
+ border:1.5px solid #e3b8da;border-radius:20px;
+ background:linear-gradient(135deg,#fff9ff,#ffedf4)!important;
+ box-shadow:inset 0 2px 3px #fff,0 4px 8px #aa5c9f4a;
+}
+#app.hsk2-premium .screen--plan .outcome .em{
+ font-size:26px;filter:drop-shadow(0 2px 3px #ac61b191)
+}
+#app.hsk2-premium .screen--plan .outcome strong{
+ display:block;color:#65247c;font:800 clamp(11px,3.35vw,14px)/1.15 system-ui,sans-serif;
+}
+#app.hsk2-premium .screen--plan .outcome small{
+ display:block;margin-top:4px;color:#7c4d83;
+ font:500 clamp(9px,2.8vw,11px)/1.2 system-ui,sans-serif
+}
+#app.hsk2-premium .screen--plan .wow-tones{
+ padding:9px 13px 8px;margin:1px 0 4px;
+ border:2px solid #e4b77f;border-radius:25px;
+ background:linear-gradient(110deg,#fff2e3f5,#fff7fcf5,#f9e2ecf5)!important;
+ box-shadow:inset 0 2px 4px #fff,0 4px 12px #b569965f;
+}
+#app.hsk2-premium .screen--plan .wow-tones h2{
+ font:italic 900 clamp(13px,3.65vw,17px)/1.1 Georgia,serif;
+ text-align:center;color:#772d83;margin:0 0 7px
+}
+#app.hsk2-premium .screen--plan .tone-grid{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;
+}
+#app.hsk2-premium .screen--plan .tone{
+ min-height:58px;border:1px solid #e7c1bf;border-radius:13px;
+ background:linear-gradient(#fffdfa,#fff0ef);padding:4px 3px;
+}
+#app.hsk2-premium .screen--plan .tone strong{
+ display:block;font-size:clamp(19px,6.5vw,28px);line-height:1.1
+}
+#app.hsk2-premium .screen--plan .tone-arrow{font-size:17px;line-height:1}
+#app.hsk2-premium .screen--plan .tone small{font-size:9px;line-height:1.15}
+#app.hsk2-premium .screen--plan .wow-tones p{font-size:9px}
+#app.hsk2-premium .bottom{
+ background:linear-gradient(#fbe0f9f7,#e8b8edfc);
+ border-top:1px solid #e4b1df;
+ box-shadow:0 -4px 12px #a961a36c
+}
+#app.hsk2-premium .bottom .primary{
+ border:2px solid #ffe185;
+ background:linear-gradient(108deg,#d35fd6,#8a289f 65%,#661b84);
+ border-radius:30px;box-shadow:0 0 11px #eab0e8,0 4px 10px #9a459b;
+ text-shadow:0 1px 2px #52146c
+}
+#app.hsk2-premium .screen--words .poster-lead.lesson-hero{
+ background:radial-gradient(ellipse at 60% 60%,#f9bae6b6,transparent 74%)!important
+}
+#app.hsk2-premium .screen--words .poster-plaque{
+ color:#fff5db;background:linear-gradient(110deg,#9a42b0,#6c227c)!important;
+ border:3px solid #f2c47a;
+ box-shadow:0 5px 13px #963c9d7a,inset 0 3px 11px #e3a9e9;
+}
+#app.hsk2-premium .screen--words .vocab-premium{
+ min-height:146px;background:linear-gradient(145deg,#fff9fc,#f8cceb);
+ border:2px solid #eebfda;border-radius:24px;
+ box-shadow:inset 0 2px 4px white,0 4px 10px #a4569952
+}
+#app.hsk2-premium .screen--words .vocab-premium .hanzi{
+ background:linear-gradient(#fff,#ffecf9);
+ border:2px solid #e8bc72;border-radius:15px;
+ box-shadow:0 2px 6px #a661a55b
+}
+#app.hsk2-premium .screen--words .vocab-premium .symbol{
+ filter:drop-shadow(0 3px 3px #9f56ac9e)
+}
+#app.hsk2-premium .mini-scroll{
+ border:2px solid #efbd6f;border-radius:21px;
+ background:linear-gradient(115deg,#ffe8cb,#fff9f5,#ffdddf)!important;
+ box-shadow:0 4px 11px #a6689357
+}
+@media(max-height:740px){
+ #app.hsk2-premium .wow-plan-hero .poster-panda{height:159px}
+ #app.hsk2-premium .poster-lead.wow-plan-hero{height:155px;min-height:155px}
+ #app.hsk2-premium .wow-plan-hero .poster-content{height:auto}
+ #app.hsk2-premium .wow-plan-hero .poster-plaque{min-height:79px;font-size:29px}
+ #app.hsk2-premium .wow-plan-hero .poster-content p{font-size:10px;line-height:1.2}
+ #app.hsk2-premium .screen--plan .feature{min-height:57px}
+ #app.hsk2-premium .screen--plan .outcome{min-height:66px;padding:7px}
+ #app.hsk2-premium .screen--plan .tone{min-height:52px}
+}
+@media(max-width:350px){
+ #app.hsk2-premium .screen--plan .feature span:last-child{font-size:7.3px}
+ #app.hsk2-premium .wow-plan-hero .poster-plaque{font-size:27px}
+ #app.hsk2-premium .screen--plan .outcome .em{font-size:23px}
+}
