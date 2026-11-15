@@ -54,6 +54,7 @@ function chosen(){return topics[state.topic]}
 function current(){return chosen().scenes[state.mini]}
 function words(t,m){return topics[t].words.slice(m===0?0:m===1?7:14,m===0?7:m===1?14:20)}
 function rec(zh){return !!(window.PandaHsk2AudioV330&&window.PandaHsk2AudioV330.lookup(zh))}
+function daySound(zh){return rec(zh)?sound(zh):'<span class="day-audio-pending" role="note">🔇 MP3 ещё нет</span>'}
 function sound(zh){return rec(zh)?'<button class="audio" type="button" data-sound="'+E(zh)+'" aria-label="Прослушать '+E(zh)+'">🔊</button>':'<span class="audio unavailable" title="Для этой фразы пока нет отдельного проверенного MP3" aria-label="Нет MP3">🔇</span>'}
 function phrase(zh,py,ru){return '<div class="phrase"><span class="han" lang="zh-Hans">'+E(zh)+'</span>'+(state.showPy?'<span class="py">'+E(py)+'</span>':'')+'<span class="meaning">'+E(ru)+'</span>'+sound(zh)+'</div>'}
 function wordCard(w){
@@ -109,7 +110,7 @@ function viewTopic(){
  }).join('')+'</div><div class="tip-box"><b>Как учиться без перегрузки</b><p>Изучи слова, послушай пример, прочитай правило и ответь на вопросы. Не торопись: следующая тема никуда не исчезнет.</p></div><div class="button-row"><button class="secondary" data-view="map">← К карте</button><button class="primary" data-mini="'+(completed<3?completed:0)+'">▶ '+(completed?'Продолжить / повторить':'Начать тему')+'</button></div></section>';
 }
 function viewLesson(){
- if(dayPilot())return dayUI.render(state,{sound:sound});
+ if(dayPilot())return dayUI.render(state,{sound:daySound});
  var t=chosen(), sc=current(), step=state.stage, ws=words(state.topic,state.mini), idx=id();
  var html='<section class="lesson"><div class="lesson-head"><div class="eyebrow">ТЕМА '+(state.topic+1)+' / 10 · МИНИ-УРОК '+(state.mini+1)+' / 3</div><h1>'+t.icon+' '+E(t.name)+'</h1><p>'+E(sc[0])+'</p><div class="step-meter"><i style="width:'+((step+1)*25)+'%"></i></div><div class="step-labels"><span>Слова</span><span>Правило</span><span>Проверка</span><span>Собери</span></div></div>';
  if(step===0){
@@ -155,7 +156,7 @@ function viewLesson(){
 function viewDone(){
  var t=chosen(),sc=current(),number=id();
  if(state.topic===0)return '<section class="done day-done"><div class="day-done-head"><h1>🏆 Мини-урок '+(state.mini+1)+' пройден!</h1><p>Ты изучил слова, правило и выполнил тест.</p></div>'+
- '<div class="day-done-line">'+phrase(sc[2],sc[3],sc[4])+'</div>'+
+ '<div class="day-done-line">'+phrase(sc[2],sc[3],sc[4])+(rec(sc[2])?'':'<span class="day-audio-note">🔇 Запись этой фразы ещё не добавлена</span>')+'</div>'+
  dayAIBlock(state.mini)+
  '<div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий урок →</button></div>'+
  '<p class="honest">Проверка слов по голосу показывает распознанный текст, не точность тонов.</p></section>';
@@ -216,7 +217,20 @@ function updateNav(){
 function render(){
  var html=state.view==='welcome'?viewWelcome():state.view==='map'?viewMap():state.view==='topic'?viewTopic():state.view==='lesson'?viewLesson():state.view==='done'?viewDone():state.view==='review'?viewReview():state.view==='tones'?viewTones():viewExam();
  screen.innerHTML=html;
- document.getElementById('app').classList.toggle('show-approved-welcome',state.view==='welcome');
+ var app=document.getElementById('app');
+ app.classList.toggle('show-approved-welcome',state.view==='welcome');
+ var isDayLesson=state.view==='lesson'&&dayPilot(),isDayDone=state.view==='done'&&state.topic===0;
+ app.classList.toggle('day-lesson-active',isDayLesson);
+ app.classList.toggle('day-done-active',isDayDone);
+ var footer=document.getElementById('day-fixed-actions');
+ if(footer){
+  footer.replaceChildren();
+  footer.hidden=!isDayLesson;
+  if(isDayLesson){
+   var nav=screen.querySelector('.day-bottom');
+   if(nav)footer.appendChild(nav);
+  }
+ }
  updateNav();
  screen.scrollTop=0;
  if(status)status.textContent='';
