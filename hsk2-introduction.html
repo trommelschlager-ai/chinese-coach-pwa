@@ -241,7 +241,7 @@ function renderDialogue(){
  const show=state.dialogueRevealed;
  return '<section class="screen screen--dialogue">'+header('Мини-диалог')+
  '<section class="glam"><h2>💬 Послушай, повтори и ответь</h2><div class="dialogue">'+
- '<div class="bubble"><div class="face"><img src="./assets/hsk2-approved-panda-v357.svg" alt="Панда"></div><article class="chat"><div class="hanzi">'+MODEL.question+'</div><div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div>'+sound(MODEL.question)+'</article></div>'+
+ '<div class="bubble"><div class="face"><img src="./assets/hsk2-approved-panda-face-v357.svg" alt="Панда"></div><article class="chat"><div class="hanzi">'+MODEL.question+'</div><div class="py">'+MODEL.qPy+'</div><div class="ru">'+MODEL.qRu+'</div>'+sound(MODEL.question)+'</article></div>'+
  (show?'<div class="bubble reply"><div class="face"><img src="./assets/hsk2-misha-avatar-v353.svg" alt="Миша"></div><article class="chat"><div class="hanzi">'+MODEL.answer+'</div><div class="py">'+MODEL.aPy+'</div><div class="ru">'+MODEL.aRu+'</div><span class="small">Прочитай вслух: для имени Миша отдельной записи пока нет</span></article></div>':
  '<button type="button" class="play-big" data-reveal>💬 Ответить Панде: «Меня зовут Миша»</button>')+
  '</div></section>'+
