@@ -29,8 +29,8 @@ body::before{
 .pg-map-heading{top:0;left:0;right:0;height:19%;padding:0;margin:0;pointer-events:none;z-index:7}
 .pg-map-roof{
   position:absolute;top:-4%;left:50%;
-  width:77%;max-width:none;height:auto;max-height:none;
-  aspect-ratio:840 / 246;object-fit:contain;transform:translateX(-50%);
+  width:71%;max-width:none;height:auto;max-height:none;
+  aspect-ratio:840 / 250;object-fit:contain;transform:translateX(-50%);
   filter:drop-shadow(0 4px 5px #37144788);
 }
 .pg-map-brand{display:none!important}
