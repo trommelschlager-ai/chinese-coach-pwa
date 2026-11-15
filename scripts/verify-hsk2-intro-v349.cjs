@@ -23,7 +23,7 @@ const click=q=>{const b=doc.querySelector(q);assert(b,'Missing element: '+q);ass
 const step=()=>JSON.parse(w.localStorage.getItem('pg-hsk2-introduction-v3')).step;
 const output=()=>doc.querySelector('#screen').textContent;
 assert(output().includes('План изучения'),'First screen must be study plan');
-assert(output().includes('Четыре тона китайского языка'),'Tone example on plan');
+assert(output().includes('Познакомимся с тонами китайского языка'),'Tone example on plan');
 click('#next');assert.equal(step(),1);assert(output().includes('Как тебя зовут?'));
 assert.equal(doc.querySelectorAll('.vocab-premium').length,4);
 assert(doc.querySelector('.poster-lead'),'Premium scenic hero should exist');
