@@ -238,6 +238,20 @@ function extendQuestion(result,raw,allowed,date,profile){
 export function answerLive(raw,options={}){
  const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={}}=options;
  raw=String(raw||'').trim();const s=normalize(raw);if(!raw)return {kind:'empty',message:'Скажи или напиши фразу на китайском.'};
+ // Chrome zh-CN can join a greeting and a simple question without punctuation,
+ // or transcribe 怎么样 as 什么样. Resolve only this narrow HSK1 ambiguity.
+ // Preserve the original recognized words for the learner and never score tones.
+ const joined=s.match(/^(你好|早上好|中午好|下午好|晚上好)(你今天怎么样|你今天什么样|你怎么样|你好吗)$/u);
+ const likely=s==='你今天什么样'?'你今天怎么样':joined?.[2]==='你今天什么样'?'你今天怎么样':joined?.[2];
+ if(likely&&likely!==s){
+   const resolved=answerLive(likely,options);
+   if(resolved.kind==='question')return {...resolved,
+     spoken:{...resolved.spoken,known:false,hanzi:raw,pinyin:null,translation:null,
+       probable:'Возможно, ты имел в виду: '+likely+' — '+(resolved.spoken?.translation||'Как дела сегодня?'),
+       variantOf:likely},
+     message:'Возможно, браузер распознал вопрос неточно. Проверь исходную фразу в истории.'};
+   if(resolved.kind==='locked')return {...resolved,spoken:{known:false,hanzi:raw,translation:null,probable:'Возможно: '+likely}};
+ }
  // Social and common-family questions must work before any broad fallback.
  // Keep our known corrections independent of experimental on-device AI.
  const basic=answerBasicConversation(raw,allowed);if(basic)return basic;
