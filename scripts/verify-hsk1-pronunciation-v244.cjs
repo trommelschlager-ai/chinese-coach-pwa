@@ -29,7 +29,8 @@ for(const [unit,[id,py,hz]] of Object.entries(exact)){
 assert(fs.existsSync('assets/pinyin-combinations/bai.mp3'),'bái fallback audio must remain');
 const map=fs.readFileSync('hsk1-map.html','utf8');
 assert(map.includes('href="./hsk1-pronunciation.html"'));
-assert.equal((map.match(/class="node(?: current)?"/g)||[]).length,7);
+const mapLinks=(map.match(/class="node(?: current)?"/g)||[]).length+(map.match(/class="lesson"/g)||[]).length;
+assert.equal(mapLinks,7,'HSK1 map must link to seven lessons across approved layouts');
 const l1=fs.readFileSync('assets/hsk1-first-v189.js','utf8');
 assert(l1.includes('PANDA_HSK1_LESSON1_EXTRAS_V295?.toneSection'),'Lesson1 must embed the complete sound library');
 const bridge=fs.readFileSync('assets/hsk1-first-extras-v295.js','utf8');
