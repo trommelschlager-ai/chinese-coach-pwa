@@ -14,6 +14,8 @@ export async function verifyCleanMobile(browser,base,dir){
   await page.goto(base+'/panda-voice-pilot.html');await page.locator('#pg346').waitFor();
   await page.waitForFunction(()=>document.querySelector('.pg346-panda').naturalWidth>0);
   assert.match(await page.locator('.pg346-panda').getAttribute('src'),/panda-character-clean-v349\.webp/);
+  assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
+  await page.screenshot({path:dir+'/welcome-'+width+'.png',animations:'disabled'});
   await page.locator('#pg346-hear').click();
   await page.waitForFunction(()=>document.querySelector('#pg346').dataset.pose==='talking');
   await page.locator('#pg346-nonstop').click();
