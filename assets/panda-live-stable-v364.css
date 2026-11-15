@@ -1,0 +1,33 @@
+/* Panda AI v364 — prevent old legacy UI flash, stabilize Panda on stone. */
+#pg346 .pg352-mascot,
+#pg346[data-pose="idle"] .pg352-mascot,
+#pg346[data-pose="listening"] .pg352-mascot,
+#pg346[data-pose="talking"] .pg352-mascot,
+#pg346[data-pose="happy"] .pg352-mascot{
+ animation:none!important;transform:none!important;
+ will-change:auto!important;
+}
+/* Only facial expression and illuminated headphones move. The body rests on rock. */
+#pg346 .pg346-scene{isolation:isolate}
+#pg346 .pg346-scene::before{z-index:1}
+#pg346 .pg364-ground-shadow{
+ position:absolute;z-index:2;left:10%;bottom:6.4%;
+ width:52%;height:clamp(12px,2.3dvh,25px);
+ background:radial-gradient(ellipse at 52% 50%,rgba(28,40,41,.58) 0%,rgba(34,54,49,.32) 49%,transparent 77%);
+ filter:blur(5px);border-radius:50%;pointer-events:none;
+ transform:none!important;animation:none!important;
+}
+#pg346 .pg352-mascot{z-index:3!important}
+#pg346 .pg346-scene::after{z-index:4!important}
+@media(max-height:720px){
+ #pg346 .pg364-ground-shadow{bottom:5%;left:10%;width:49%;height:12px}
+}
+@media(max-height:590px){
+ #pg346 .pg364-ground-shadow{bottom:3.5%;left:8%;width:45%;height:10px}
+}
+:root[data-keyboard=true] #pg346 .pg364-ground-shadow{
+ bottom:3%;left:6%;width:44%;height:9px
+}
+@media(prefers-reduced-motion:reduce){
+ #pg346 .pg352-mascot,#pg346 .pg364-ground-shadow{animation:none!important}
+}
