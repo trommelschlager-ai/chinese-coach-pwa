@@ -166,20 +166,25 @@ function notice(t){$('notice').textContent=t||''}
 function shadePinyin(){ $('app').classList.toggle('py-hidden',!state.showPy);$('toggle-py').textContent=state.showPy?'Скрыть пиньинь':'Показать пиньинь'}
 const header=(name)=>'<div class="heading">'+(state.step>0?'<img class="heading-panda" src="./assets/hsk2-panda-new-v328.svg" alt="">':'')+'<span class="name">'+name+'</span></div><div class="step-tag">Шаг '+(state.step+1)+' из '+TOTAL+'</div>';
 function renderPlan(){
+ const topics=[['👤','имя'],['❓','вопрос'],['📖','грамматика'],['🧩','фразы'],['🎧','тоны'],['✅','мини-тест']];
+ const skills=[
+ ['💬','Говорить о себе','Назвать своё имя по-китайски'],
+ ['🧩','Строить предложения','Собрать фразу из слов'],
+ ['❔','Понимать вопросы','Узнать вопрос о своём имени'],
+ ['🎧','Слушать и различать тоны','Повторять за записью']
+ ];
  return '<section class="screen screen--plan">'+
- '<div class="poster-lead"><img class="poster-panda" src="./assets/hsk2-panda-new-v328.svg" alt="Радостная Панда в китайском костюме"><div class="poster-content">'+
- '<div class="poster-plaque">План изучения</div>'+
- '<p>В этом уроке ты научишься <b>называть своё имя</b>, задавать простой вопрос, строить фразы и различать китайские тоны.</p></div></div>'+
- '<div class="poster-scroll">✿ Что будем изучать ✿</div>'+
- '<section class="glam"><div class="features">'+
- [['👤','имя'],['📍','город'],['❓','вопрос'],['📖','правило'],['🎧','тоны'],['✅','тест']].map(x=>'<div class="feature"><span class="em">'+x[0]+'</span><span>'+x[1]+'</span></div>').join('')+
- '</div></section>'+
- '<div class="ribbon">Ты научишься</div><section class="glam"><div class="outcomes">'+
- [['🗣️','Говорить о себе'],['🧩','Строить предложения'],['💬','Понимать вопросы'],['🎧','Слышать и различать тоны']].map(x=>'<div class="outcome"><span class="em">'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join('')+
- '</div></section>'+
- '<section class="glam"><h2>🎵 Четыре тона китайского языка</h2><div class="tone-grid">'+
- [['mā','1 · ровный'],['má','2 · вверх'],['mǎ','3 · изгиб'],['mà','4 · вниз']].map(x=>'<div class="tone"><strong>'+x[0]+'</strong><small>'+x[1]+'</small></div>').join('')+
- '</div><p class="small" style="text-align:center;margin-top:8px">🎤 Тренируем слух и повторяем. Обычный микрофон не оценивает правильность тонов.</p></section></section>';
+ '<div class="poster-lead wow-plan-hero"><img class="poster-panda" src="./assets/hsk2-panda-new-v328.svg" alt="Панда приглашает на урок">'+
+ '<div class="poster-content"><div class="poster-plaque">План<br>изучения</div>'+
+ '<p>В этом уроке ты научишься <b>представляться</b>, говорить <b>своё имя</b>, строить <b>простые предложения</b> и понимать <b>короткие вопросы</b>.</p></div>'+
+ '<div class="wow-wave" aria-hidden="true"></div></div>'+
+ '<div class="poster-scroll">Что будем изучать</div>'+
+ '<section class="glam wow-topics"><div class="features">'+topics.map(x=>'<div class="feature"><span class="em">'+x[0]+'</span><span>'+x[1]+'</span></div>').join('')+'</div></section>'+
+ '<div class="ribbon wow-skill-ribbon">Ты научишься</div>'+
+ '<section class="glam wow-skills"><div class="outcomes">'+skills.map(x=>'<div class="outcome"><span class="em">'+x[0]+'</span><span class="outcome-copy"><strong>'+x[1]+'</strong><small>'+x[2]+'</small></span></div>').join('')+'</div></section>'+
+ '<section class="glam wow-tones"><h2>Познакомимся с тонами китайского языка</h2><div class="tone-grid">'+
+ [['mā','1 · ровный','─'],['má','2 · вверх','↗'],['mǎ','3 · изгиб','⌄'],['mà','4 · вниз','↘']].map(x=>'<div class="tone"><strong>'+x[0]+'</strong><span class="tone-arrow">'+x[2]+'</span><small>'+x[1]+'</small></div>').join('')+
+ '</div><p class="small" style="text-align:center;margin:6px 0 0">Слушай запись и повторяй. Микрофон пока не проверяет точность тонов.</p></section></section>';
 }
 function renderWords(){
  const all=[...WORDS,{zh:'我',py:'wǒ',ru:'я · повторение HSK1'}];
@@ -187,7 +192,7 @@ function renderWords(){
  return '<section class="screen screen--words">'+
  '<div class="poster-lead lesson-hero"><img class="poster-panda" src="./assets/hsk2-panda-new-v328.svg" alt="Панда объясняет новые слова">'+
  '<div class="poster-content"><div class="poster-plaque">Как тебя зовут?</div><p>Сначала слова, затем простая фраза.</p></div></div>'+
- '<div class="step-tag">Шаг 2 из '+TOTAL+'</div>'+
+ '<div class="poster-scroll word-scroll">Сначала слова, потом фраза</div><div class="step-tag">Шаг 2 из '+TOTAL+'</div>'+
  '<section class="glam"><div class="vocabulary-grid">'+all.map((w,i)=>
  '<article class="vocab-premium"><span class="symbol" aria-hidden="true">'+icons[i]+'</span>'+
  '<div class="hanzi" lang="zh-Hans">'+w.zh+'</div><div class="py">'+w.py+'</div>'+
