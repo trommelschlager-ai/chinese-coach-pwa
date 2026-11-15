@@ -156,7 +156,7 @@ body:has(#poster:not([hidden])){display:flex;justify-content:center;background:#
 }
 #practice .progress{border-radius:20px;overflow:hidden}
 #practice .progress b{background:linear-gradient(90deg,#ffbb61,#a847d0)!important}
-#practice .word:not(.word-grid .word){
+#practice:not(.word-stage) .word{
  border:1.5px solid #e9bf88;
  background:linear-gradient(130deg,#fffaff,#f9eafa);
  box-shadow:0 2px 6px #7d428d30;
