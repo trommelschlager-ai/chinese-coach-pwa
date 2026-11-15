@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 256" role="img" aria-label="Panda Go">
+<defs>
+ <linearGradient id="letter" x1=".17" y1="0" x2=".65" y2="1"><stop stop-color="#fffdeb"/><stop offset=".25" stop-color="#ffef8d"/><stop offset=".48" stop-color="#ffcf2b"/><stop offset=".75" stop-color="#ec8715"/><stop offset="1" stop-color="#b44110"/></linearGradient>
+ <linearGradient id="roof" x1="0" y1="0" x2=".4" y2="1"><stop stop-color="#ffe184"/><stop offset=".26" stop-color="#f07832"/><stop offset=".58" stop-color="#b82e38"/><stop offset=".85" stop-color="#791937"/><stop offset="1" stop-color="#400c29"/></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#bd2937"/><stop offset=".5" stop-color="#9a1e30"/><stop offset="1" stop-color="#490e26"/></linearGradient>
+ <filter id="drop" x="-30%" y="-20%" width="160%" height="165%"><feGaussianBlur stdDeviation="5"/></filter>
+</defs>
+<!-- Pagoda at center: two upward-curved tiers, ridge ornaments and small gold spire -->
+<g opacity=".45" filter="url(#drop)" fill="#1b1135" transform="translate(4 6)"><path d="M168 107Q265 42 420 30Q575 42 672 107L669 184H170Z"/></g>
+<path d="M229 91Q420 67 607 91L598 165H235Z" fill="url(#red)" stroke="#e3a950" stroke-width="6"/>
+<path d="M236 114H602M237 136H602M238 158H601" fill="none" stroke="#efb14b" stroke-width="5" opacity=".65"/>
+<path d="M199 88Q218 92 247 76Q315 35 418 29Q520 36 588 76Q620 93 638 85Q653 79 654 58Q662 102 630 107Q603 107 564 91Q484 61 419 60Q346 61 272 91Q226 110 207 106Q178 101 185 57Q186 79 199 88Z" fill="url(#roof)" stroke="#f7bd51" stroke-width="8" stroke-linejoin="round"/>
+<path d="M210 87Q240 97 269 83Q331 43 418 36Q505 43 570 83Q599 96 631 84" fill="none" stroke="#ffe98c" stroke-width="4"/>
+<path d="M418 29V7" stroke="#a8561d" stroke-width="7"/><path d="M405 15L418-3L431 15L418 28Z" fill="#ffd65f" stroke="#a85513" stroke-width="3"/><circle cx="418" cy="2" r="6" fill="#fff5bb"/>
+<!-- Lower pagoda roof visibly separate from upper tier -->
+<path d="M133 136Q186 147 239 132Q320 107 419 99Q524 107 602 132Q659 149 706 135Q733 127 740 108Q743 155 704 164Q661 162 608 148Q518 122 419 121Q320 123 231 148Q174 165 135 163Q99 155 104 108Q111 126 133 136Z" fill="url(#roof)" stroke="#ffbc47" stroke-width="8" stroke-linejoin="round"/>
+<path d="M135 138Q184 157 232 139Q321 115 418 109Q525 115 605 139Q650 155 703 139" fill="none" stroke="#ffe989" stroke-width="5"/>
+<g fill="#ffc151" stroke="#d68b17" stroke-width="3"><circle cx="118" cy="151" r="8"/><circle cx="723" cy="151" r="8"/></g>
+<!-- Decorative stylized Chinese clouds -->
+<g fill="#f8c044" stroke="#b86417" stroke-width="5">
+<path d="M87 209Q59 184 45 201Q20 194 23 215Q29 233 54 223Q79 238 112 218Q91 219 87 209Z"/>
+<path d="M754 209Q781 184 795 201Q820 194 817 215Q811 233 785 223Q763 238 730 218Q751 219 754 209Z"/>
+</g>
+<!-- Gold beveled name, larger than the pagoda but without a wooden text board -->
+<text x="420" y="230" text-anchor="middle" textLength="666" lengthAdjust="spacingAndGlyphs" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-weight="900" font-size="137" fill="#4c0826" stroke="#4c0826" stroke-width="22" stroke-linejoin="round" paint-order="stroke">Panda Go</text>
+<text x="420" y="223" text-anchor="middle" textLength="666" lengthAdjust="spacingAndGlyphs" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-weight="900" font-size="137" fill="url(#letter)" stroke="#9e2a0f" stroke-width="11" stroke-linejoin="round" paint-order="stroke">Panda Go</text>
+<text x="420" y="223" text-anchor="middle" textLength="666" lengthAdjust="spacingAndGlyphs" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-weight="900" font-size="137" fill="none" stroke="#fff2a1" stroke-width="1">Panda Go</text>
+<path d="M160 239Q417 250 678 239" fill="none" stroke="#f5ae27" stroke-width="5" stroke-linecap="round"/>
+</svg>
