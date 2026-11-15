@@ -99,3 +99,10 @@ body.panda-clean-ready>dialog button {cursor:pointer}
 #pg346 .pg346-avatar img{width:100%;height:100%;object-fit:cover;object-position:50% 8%;transform:none}
 @media(max-height:600px){#pg346 .pg346-scene{min-height:90px}#pg346 .pg346-history{max-height:19dvh}#pg346 .pg346-nav{height:58px}}
 @media(prefers-reduced-motion:reduce){#pg346 .pg346-panda{animation:none!important;will-change:auto}}
+
+/* v357: a missing exact voice recording must be stated, never implied playable. */
+#pg346 .pg357-audio-note{
+ display:block;margin:4px 0 0;font-size:clamp(9px,2.4vw,12px);
+ color:#794d91;line-height:1.2;text-align:center;
+}
+#pg346 .pg357-audio-note[hidden]{display:none!important}
