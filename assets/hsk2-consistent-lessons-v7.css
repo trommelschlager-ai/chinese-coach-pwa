@@ -1,0 +1,176 @@
+/* Panda Go · HSK2 visual consistency v7
+   Only existing lesson screens: "Я и моя визитка" and "Мой город".
+   Approved lesson content and interaction logic stay untouched. */
+
+.app.hsk2-premium,
+.app.hsk2-premium-city {
+  --deep:#642080;
+  --gold:#f3ca75;
+  --text:#55216e;
+  color:var(--text);
+  background:
+    linear-gradient(180deg,#fceafaeb 0%,#f6dbf6e6 55%,#e7b3eddd 100%),
+    url('./bastian-night-city-v4.svg') center center /cover no-repeat,
+    #f5d6f4;
+}
+.app.hsk2-premium::before,
+.app.hsk2-premium-city::before {
+  opacity:.08;
+  background:url('./bastian-night-city-v4.svg') center/cover;
+}
+.app.hsk2-premium .header,
+.app.hsk2-premium-city .scene {
+  flex:none;
+  background:
+    linear-gradient(110deg,#521678eb,#872fa6dc),
+    url('./bastian-night-city-v4.svg') center 12%/cover;
+  border-bottom:2px solid #f2c47b;
+  box-shadow:0 3px 12px #5e247050;
+}
+.app.hsk2-premium .header::before {
+  background:linear-gradient(0deg,#46126133,#51137d33),
+    url('./bastian-night-city-v4.svg') center/cover;
+  opacity:.9;
+}
+.app.hsk2-premium .header h1,
+.app.hsk2-premium-city .brand {
+  color:#ffe4a2!important;
+  font:italic 900 clamp(25px,7vw,34px)/1.08 Georgia,serif;
+  letter-spacing:.02em;
+  text-shadow:0 2px 2px #471362,0 0 8px #d78dcb;
+}
+.app.hsk2-premium .header .sub,
+.app.hsk2-premium-city .scene-pill {
+  color:#65247d!important;
+  font-size:clamp(10px,2.7vw,13px);
+  background:linear-gradient(90deg,#fff6ddeb,#ffe5f6ec)!important;
+  border:1.5px solid #f8d290!important;
+  box-shadow:0 2px 8px #42175938;
+}
+.app.hsk2-premium .back,
+.app.hsk2-premium-city .back {
+  color:white!important;
+  background:linear-gradient(125deg,#ae57c8,#5e218d)!important;
+  border:2px solid #ffdf95!important;
+  box-shadow:0 2px 8px #39124d66;
+}
+.app.hsk2-premium .page,
+.app.hsk2-premium-city .content {
+  flex:1;min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:clamp(7px,1.5vh,13px) clamp(9px,2.5vw,15px) 15px;
+  scrollbar-width:thin;
+}
+.app.hsk2-premium .screen,
+.app.hsk2-premium-city #screen{
+  gap:clamp(6px,1vh,11px);
+}
+.app.hsk2-premium .heading,
+.app.hsk2-premium-city .step-head {
+  border:2px solid #efc484;
+  border-radius:18px;
+  color:#fff8dd;
+  background:linear-gradient(118deg,#5e1f87,#a94abe 70%,#7c2a9c);
+  box-shadow:inset 0 1px #ffd4f7,0 3px 9px #59227b54;
+  padding:10px 12px;
+}
+.app.hsk2-premium-city .step-head {
+  margin-bottom:8px;
+  min-height:49px;
+}
+.app.hsk2-premium-city .step-head h1{
+  font-size:clamp(17px,4vw,21px);
+  font-weight:900;
+  color:white;
+}
+.app.hsk2-premium-city .step-head .step-number {
+  border:1px solid #f6d194;
+  background:#ffedf5;
+  border-radius:100px;
+  color:#67257a;
+  padding:4px 8px;
+}
+.app.hsk2-premium-city .progress {
+  border:1px solid #dba8d8;
+  background:#f2d4f4;
+  height:10px;
+  border-radius:90px;
+}
+.app.hsk2-premium-city .progress>i {background:linear-gradient(90deg,#f3b963,#a740c5)}
+.app.hsk2-premium .glam,
+.app.hsk2-premium .vocab-premium,
+.app.hsk2-premium .formula,
+.app.hsk2-premium .grammar-word,
+.app.hsk2-premium .vocab-card,
+.app.hsk2-premium .bubble,
+.app.hsk2-premium .mini-scroll,
+.app.hsk2-premium .poster-scroll,
+.app.hsk2-premium-city .paper,
+.app.hsk2-premium-city .word,
+.app.hsk2-premium-city .example,
+.app.hsk2-premium-city .bubble{
+  border:1.5px solid #e5b87d;
+  background:linear-gradient(145deg,#fffaff 0%,#f7e2f8 100%);
+  border-radius:17px;
+  box-shadow:0 4px 12px #86469e22,inset 0 1px white;
+}
+.app.hsk2-premium-city .paper{
+  min-height:0;
+  padding:clamp(11px,2.8vw,16px);
+  margin-bottom:9px;
+}
+.app.hsk2-premium-city .paper h2,
+.app.hsk2-premium .formula-title{color:#612483}
+.app.hsk2-premium-city .wordgrid{gap:8px}
+.app.hsk2-premium-city .word{padding:9px 6px}
+.app.hsk2-premium-city .word .zh{font-size:clamp(25px,6vw,32px)}
+.app.hsk2-premium-city .bubble{max-width:95%;padding:11px 13px}
+.app.hsk2-premium .voice,
+.app.hsk2-premium-city .voice {
+  min-height:40px;border:1.5px solid #d39bd9;
+  border-radius:14px;
+  background:linear-gradient(#fffaff,#f1dafb);
+  color:#71328e;
+  box-shadow:0 2px 5px #70278b36;
+  font-size:clamp(11px,2.5vw,14px);
+  font-weight:850;
+}
+.app.hsk2-premium button:focus-visible,
+.app.hsk2-premium-city button:focus-visible,
+.app.hsk2-premium a:focus-visible,
+.app.hsk2-premium-city a:focus-visible{
+  outline:3px solid #b054cd;outline-offset:2px;
+}
+.app.hsk2-premium .bottom,
+.app.hsk2-premium-city .actions {
+  flex:none;
+  background:linear-gradient(180deg,#fbecf8ef,#f2d4f5);
+  border-top:1.5px solid #dbabd5;
+  box-shadow:0 -4px 12px #6b297c31;
+  padding-top:7px;
+}
+.app.hsk2-premium .bottom .primary,
+.app.hsk2-premium-city .actions .primary {
+  min-height:45px;
+  color:white;
+  border:2px solid #ffdb8b;
+  border-radius:15px;
+  background:linear-gradient(130deg,#b34dcb,#67228f);
+  box-shadow:0 3px 8px #6c26836b;
+  font-weight:900;
+}
+.app.hsk2-premium .bottom .secondary,
+.app.hsk2-premium-city .actions .secondary {
+  min-height:41px;
+  background:linear-gradient(#fff9fd,#f4e4fb);
+  color:#642581;
+  border:1.5px solid #caa5d8;
+}
+@media(max-height:690px){
+  .app.hsk2-premium .header {height:65px!important}
+  .app.hsk2-premium-city .scene{height:90px!important}
+  .app.hsk2-premium-city .scene-panda{height:75px;width:75px}
+  .app.hsk2-premium-city .scene-copy{left:79px;top:8px}
+  .app.hsk2-premium .page,.app.hsk2-premium-city .content{padding-top:5px}
+}
