@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#a74ac2">
-<meta name="panda-go-approved-map" content="v370-approved-exact-sunset-ribbons">
+<meta name="panda-go-approved-map" content="v371-final-locked-hd-layout">
 <meta name="legacy-map-stylesheet" content="assets/hsk1-map-v252.css?v=258">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
-<link rel="preload" as="image" type="image/webp" href="./assets/panda-go-hsk1-approved-v370.webp">
-<link rel="stylesheet" href="./assets/hsk1-approved-exact-v370.css?v=370">
+<link rel="preload" as="image" type="image/png" href="./assets/panda-go-hsk1-approved-v371.png">
+<link rel="stylesheet" href="./assets/hsk1-approved-exact-v371.css?v=371">
 </head>
 <body>
 <main class="map-shell">
-<img class="pg-approved-art" src="./assets/panda-go-hsk1-approved-v370.webp" alt="" aria-hidden="true" fetchpriority="high" decoding="sync" width="941" height="1672">
+<img class="pg-approved-art" src="./assets/panda-go-hsk1-approved-v371.png" alt="" aria-hidden="true" fetchpriority="high" decoding="sync" width="941" height="1672">
 <a class="back" href="./index.html#panda/home" aria-label="Назад к выбору уровня" title="Назад">‹</a>
 <a class="pg-map-writing" href="./hanzi-writing.html?lesson=1" aria-label="Написание иероглифов" title="Писать иероглифы">✍</a>
 <header class="pg-map-heading">
@@ -41,87 +41,72 @@
 <div class="pg-toast" id="pg-lock-toast" role="status" aria-live="polite" hidden></div>
 </main>
 <script>
-(() => {
- const topicIds=['foundations','pronouns','numbers','weekdays','dates','family','weather'];
- let completed=[];
- try{completed=JSON.parse(localStorage.getItem('pg-hsk1-v3-complete')||'[]');if(!Array.isArray(completed))completed=[]}catch{completed=[]}
- let done=0,firstUnfinished=0;
- for(let i=0;i<topicIds.length;i++){
-   const n=i+1,id=topicIds[i];let state={};
-   try{state=JSON.parse(localStorage.getItem('pg-hsk1-v3-'+id)||'{}')||{}}catch{}
-   let refreshed={};
-   if(n===2)try{refreshed=JSON.parse(localStorage.getItem('pg-hsk1-v203-pronouns')||'{}')||{}}catch{}
-   if(n===3)try{refreshed=JSON.parse(localStorage.getItem('pg-hsk1-v213-numbers')||'{}')||{}}catch{}
-   if(n===5)try{refreshed=JSON.parse(localStorage.getItem('pg-hsk1-l5-v227')||'{}')||{}}catch{}
-   if(n===6||n===7)try{refreshed=JSON.parse(localStorage.getItem('pg-hsk1-l'+n+'-v231')||'{}')||{}}catch{}
-    if(n===4)try{
-      const updated=JSON.parse(localStorage.getItem('pg-hsk1-v215-weekdays')||'null');
-      const original=JSON.parse(localStorage.getItem('pg-hsk1-v214-weekdays')||'{}')||{};
-      refreshed=updated&&typeof updated==='object'?Object.assign({},updated,{done:updated.done===true||updated.legacyDone===true||original.done===true}):original;
-    }catch{}
-   const finished=completed.includes(id)||state.completed===true||((n===2&&refreshed.completed===true)||((n>=3&&n<=7)&&refreshed.done===true));
-   if(finished)done++;else if(!firstUnfinished)firstUnfinished=n;
-   const label=document.querySelector('[data-status="'+n+'"]');
-   if(label){
-     let introPosition=null;
-     if(n===1)try{
-       const v=JSON.parse(localStorage.getItem('pg-hsk1-v189-lesson1')||'null');
-       if(v&&Number.isInteger(v.step))
-         introPosition=v.step===13&&v.lessonVersion!==194?14:Math.min(14,Math.max(0,v.step));
-     }catch{}
-     label.textContent=finished?'✓ Пройден · повторить':
-       n===1?(introPosition>0?'Продолжить · экран '+(introPosition+1)+' из 16':'16 экранов · начать'):
-       n===2?(Number.isInteger(refreshed.step)&&refreshed.step>0?'Продолжить · экран '+(refreshed.step+1)+' из 12':'12 экранов · начать'):
-       n===3?(Number.isInteger(refreshed.step)&&refreshed.step>0?'Продолжить · экран '+(refreshed.step+1)+' из 14':'14 экранов · от 0 до 100'):
-        n===4?(Number.isInteger(refreshed.step)&&refreshed.step>0?'Продолжить · экран '+(refreshed.step+1)+' из 13':'13 экранов · дни недели'):
-       n===5?(Number.isInteger(refreshed.step)&&refreshed.step>0?'Продолжить · экран '+(refreshed.step+1)+' из 14':'14 экранов · месяцы и даты'):
-       (n===6||n===7)?(Number.isInteger(refreshed.step)&&refreshed.step>0?'Продолжить · экран '+(refreshed.step+1)+' из 14':'14 экранов · '+(n===6?'моя семья':'погода')):
-       state.maxStep>0?'Продолжить · шаг '+(Number(state.step||0)+1)+' из 7':'7 шагов · начать';
-   }
-   const node=document.querySelector('.node[data-num="'+n+'"]');
-   if(node){
-     node.classList.toggle('current',!finished&&firstUnfinished===n);
-     node.classList.toggle('done',finished);
-     if(finished)node.querySelector('.arrow').textContent='✓';
-   }
- }
- // One-by-one unlock order: lesson 1 first; then 2, 3, 4, 5, 6 and 7.
- // Preserve all local lesson completion/progress records.
- const frontier=firstUnfinished||7;
- document.querySelectorAll('.map-road a.node').forEach(node=>{
-   const n=Number(node.dataset.num),id=topicIds[n-1],finished=completed.includes(id)||node.classList.contains('done');
-   const locked=n>frontier; // Strict order: every prerequisite must be completed, including lesson 4.
+/* Strict course sequence v371. Prior lesson progress is kept, but cannot
+   silently unlock new lessons from earlier layout sessions. */
+(function(){
+ 'use strict';
+ const TOTAL=7,KEY='pg-hsk1-path-v371';
+ let unlockedThrough=0;
+ try{
+   const value=Number(localStorage.getItem(KEY)||0);
+   unlockedThrough=Number.isInteger(value)?Math.min(TOTAL,Math.max(0,value)):0;
+ }catch{}
+ // The historical record remains readable. It is deliberately NOT cleared or
+ // used to skip sequential locks in the newly approved course map.
+ let historical=[];
+ try{
+   historical=JSON.parse(localStorage.getItem('pg-hsk1-v3-complete')||'[]');
+   if(!Array.isArray(historical))historical=[];
+ }catch{historical=[]}
+ const frontier=Math.min(TOTAL,unlockedThrough+1);
+ const items=[...document.querySelectorAll('.map-road a.node')];
+ for(const node of items){
+   const n=Number(node.dataset.num);
+   const locked=n>frontier;
+   const done=n<=unlockedThrough;
    node.classList.toggle('locked',locked);
-   node.classList.toggle('current',!locked&&!finished&&n===frontier);
+   node.classList.toggle('done',done);
+   node.classList.toggle('current',n===frontier&&!done);
    node.setAttribute('aria-disabled',String(locked));
-   // Keep the original URL for accessibility and regression tests,
-   // but make locked cards truly inert to mouse, keyboard and touch in Chrome.
-   node.removeAttribute('inert'); // Allow a polite lock explanation on tap; navigation remains blocked.
+   if(locked){node.setAttribute('title','Сначала пройди урок '+(n-1));node.setAttribute('tabindex','-1')}
+   else {node.removeAttribute('title');node.removeAttribute('tabindex')}
    let gate=node.querySelector('.pg-gate');
-   if(!gate){gate=document.createElement('span');gate.className='pg-gate';gate.setAttribute('aria-hidden','true');node.appendChild(gate)}
-   gate.textContent=locked?'🔒':finished?'✓':'🔓';
-   if(locked){
-     node.setAttribute('tabindex','-1');
-     node.querySelector('.circle').classList.add('locked-icon');node.querySelector('.arrow').textContent='🔒';
-     node.setAttribute('title','Сначала заверши предыдущий урок');
-   }else{
-     node.removeAttribute('tabindex');
-     node.removeAttribute('title');
-     if(!finished)node.querySelector('.arrow').textContent='›';
+   if(!gate){
+     gate=document.createElement('span');
+     gate.className='pg-gate';
+     gate.setAttribute('aria-hidden','true');
+     node.appendChild(gate);
    }
- });
+   gate.textContent=locked?'🔒':done?'✓':'▶';
+   const progress=node.querySelector('[data-status]');
+   if(progress)progress.textContent=done?'Пройдено':locked?'Закрыто':'Можно начинать';
+ }
+ const label=document.getElementById('progress-label');
+ const bar=document.getElementById('progress-fill');
+ if(label)label.textContent=unlockedThrough+' из 7 уроков';
+ if(bar)bar.style.width=(unlockedThrough/7*100)+'%';
+ const toast=document.getElementById('pg-lock-toast');
+ let toastTimer=0;
+ function notice(n){
+   if(!toast)return;
+   toast.textContent='🔒 Сначала заверши урок '+(n-1)+', потом откроется урок '+n+'.';
+   toast.hidden=false;
+   clearTimeout(toastTimer);
+   toastTimer=setTimeout(()=>{toast.hidden=true},2800);
+ }
  document.querySelector('.map-road').addEventListener('click',event=>{
-   const stop=event.target.closest('a.node.locked');
-   if(stop){
-     event.preventDefault();
-     event.stopPropagation();
-   const message=document.getElementById('pg-lock-toast');
-   if(message){message.textContent='🔒 Сначала заверши урок '+(Number(stop.dataset.num)-1)+', затем откроется этот урок.';message.hidden=false;clearTimeout(window.pgLockTimer);window.pgLockTimer=setTimeout(()=>message.hidden=true,3200);}
+   const blocked=event.target.closest('a.node.locked');
+   if(!blocked)return;
+   event.preventDefault();
+   event.stopPropagation();
+   notice(Number(blocked.dataset.num));
+ });
+ document.querySelector('.map-road').addEventListener('keydown',event=>{
+   const blocked=event.target.closest('a.node.locked');
+   if(blocked&&(event.key==='Enter'||event.key===' ')){
+     event.preventDefault();notice(Number(blocked.dataset.num));
    }
  });
- const label=document.getElementById('progress-label'),bar=document.getElementById('progress-fill');
- if(label)label.textContent=done+' из 7 уроков';
- if(bar)bar.style.width=(done/7*100)+'%';
 })();
 </script>
 </body>
