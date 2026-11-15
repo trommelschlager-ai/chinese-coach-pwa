@@ -15,13 +15,13 @@ for(const [styleClass,label,expected] of [
 }
 assert(style.includes('flex-direction:column'),'Completion buttons must be stacked');
 const pages=[
-['hsk1-first-v189.html','hsk1-first-v189.js?v=300','assets/hsk1-first-v189.js','./hsk1-second-v203.html'],
-['hsk1-second-v203.html','hsk1-second-v203.js?v=322','assets/hsk1-second-v203.js','./hsk1-third-v212.html'],
-['hsk1-third-v212.html','hsk1-third-v213.js?v=296','assets/hsk1-third-v213.js','./hsk1-fourth-v214.html'],
-['hsk1-fourth-v214.html','hsk1-fourth-v220.js?v=296','assets/hsk1-fourth-v220.js','./hsk1-fifth-v227.html'],
-['hsk1-fifth-v227.html','hsk1-fifth-v227.js?v=296','assets/hsk1-fifth-v227.js','./hsk1-family-v231.html'],
-['hsk1-family-v231.html','panda-go-companion-v231.js?v=296','assets/panda-go-companion-v231.js','./hsk1-weather-v231.html'],
-['hsk1-weather-v231.html','panda-go-companion-v231.js?v=296','assets/panda-go-companion-v231.js','./hsk1-diagnostic.html']
+['hsk1-first-v189.html','hsk1-first-v189.js?v=371','assets/hsk1-first-v189.js','./hsk1-second-v203.html'],
+['hsk1-second-v203.html','hsk1-second-v203.js?v=371','assets/hsk1-second-v203.js','./hsk1-third-v212.html'],
+['hsk1-third-v212.html','hsk1-third-v213.js?v=371','assets/hsk1-third-v213.js','./hsk1-fourth-v214.html'],
+['hsk1-fourth-v214.html','hsk1-fourth-v220.js?v=371','assets/hsk1-fourth-v220.js','./hsk1-fifth-v227.html'],
+['hsk1-fifth-v227.html','hsk1-fifth-v227.js?v=371','assets/hsk1-fifth-v227.js','./hsk1-family-v231.html'],
+['hsk1-family-v231.html','panda-go-companion-v231.js?v=371','assets/panda-go-companion-v231.js','./hsk1-weather-v231.html'],
+['hsk1-weather-v231.html','panda-go-companion-v231.js?v=371','assets/panda-go-companion-v231.js','./hsk1-diagnostic.html']
 ];
 for(const [page,version,codePath,next] of pages){
  const html=read(page),js=read(codePath);
