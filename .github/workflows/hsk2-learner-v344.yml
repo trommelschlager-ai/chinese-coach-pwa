@@ -19,6 +19,10 @@ on:
       - 'assets/hsk2-life-course-app-v1.js'
       - 'assets/hsk2-life-course-v1.css'
       - 'tests/hsk2-life-course-v1.test.cjs'
+      - 'assets/hsk2-day-first-data-v1.js'
+      - 'assets/hsk2-day-first-ui-v1.js'
+      - 'assets/hsk2-day-first-v1.css'
+      - 'tests/hsk2-day-first-speech-v1.test.cjs'
       - 'assets/hsk2-life-approved-welcome-v2.css'
       - 'assets/hsk2-life-landing-approved-v1/**'
       - 'tests/hsk2-life-approved-welcome-v2.test.cjs'
@@ -64,6 +68,8 @@ jobs:
         run: node tests/hsk2-bastian-exact-v5.test.cjs
       - name: Verify exact approved seven-part welcome poster
         run: node tests/hsk2-life-approved-welcome-v2.test.cjs
+      - name: Verify first lesson five-time voice practice
+        run: node tests/hsk2-day-first-speech-v1.test.cjs
       - name: Verify complete ten-theme life course
         run: node tests/hsk2-life-course-v1.test.cjs
       - name: Verify three compact Android screens
