@@ -61,8 +61,8 @@ if (!bridge) {
       <div class="pg346-live" id="pg346-live" data-active="false" aria-live="polite"></div>
       <div class="pg346-feedback" id="pg346-feedback" hidden aria-live="polite"></div>
       <div class="pg346-status" id="pg346-status" hidden role="status" aria-live="polite"></div>
-      <button id="pg346-topics-btn" type="button" class="pg346-all-topics" aria-label="Все темы — выбрать урок" aria-expanded="true" aria-controls="pg346-topics">${icon('layers')}<span>Все<br>темы</span></button>
-      <div class="pg346-topic-menu" id="pg346-topics"><div class="pg346-topic-menu-title">Все темы <button id="pg346-topics-close" type="button" aria-label="Закрыть">×</button></div><div class="pg346-topic-list"></div></div>
+      <button id="pg346-topics-btn" type="button" class="pg346-all-topics" aria-label="Все темы — выбрать урок" aria-expanded="false" aria-controls="pg346-topics">${icon('layers')}<span>Все<br>темы</span></button>
+      <div class="pg346-topic-menu" id="pg346-topics" hidden><div class="pg346-topic-menu-title">Все темы <button id="pg346-topics-close" type="button" aria-label="Закрыть">×</button></div><div class="pg346-topic-list"></div></div>
     </section>
     <div class="pg346-composer"><form class="pg346-form" id="pg346-form"><input id="pg346-input" class="pg346-input" name="message" maxlength="160" autocomplete="off" placeholder="Напиши по-китайски…" enterkeyhint="send" aria-label="Напиши по-китайски"></form><button class="pg346-send" id="pg346-send" type="button" aria-label="Отправить">${icon('send')}</button><button class="pg346-mic" id="pg346-mic" type="button" aria-label="Ответить голосом" aria-pressed="false">${icon('mic')}</button></div>
     <nav class="pg346-nav" aria-label="Разделы Panda Go">
