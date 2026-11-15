@@ -4,7 +4,7 @@
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
-    "./assets/panda-live-v346.mjs?v=350",
+    "./assets/panda-live-v346.mjs?v=351",
     "./assets/panda-scene-clean-v346.svg?v=346",
     "./assets/panda-sakura-v346.svg?v=346",
     "./assets/approved-build-v95.webp",
@@ -2784,7 +2784,7 @@
     "./assets/native-owner-v200/tianqi.ogg",
     "./hsk2-city-work.html",
     "./assets/hsk2-speaking-v326.js?v=345",
-    "./assets/panda-live-scenic-v350.css?v=350",
+    "./assets/panda-live-scenic-v350.css?v=351",
     "./assets/panda-landscape-v350.webp"
   ]
 }
