@@ -1,0 +1,98 @@
+/* Panda Go HSK1 v371: visual artwork is EXACT approved 941x1672 original.
+   The top 178px is only a fake phone/browser toolbar and is cropped by CSS.
+   Lesson and practice areas stay real semantic links, not a screenshot-only demo. */
+:root{color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden}
+body{background:#662f8e;display:flex;align-items:center;justify-content:center;font-family:Arial,system-ui,sans-serif}
+.map-shell{
+ position:relative;isolation:isolate;overflow:hidden;
+ height:100dvh;max-height:100dvh;min-height:0;
+ width:min(100vw,490px);margin:0 auto;
+ background:linear-gradient(180deg,#fa86d0,#2569bf);
+ touch-action:manipulation;overscroll-behavior:none;
+}
+.pg-approved-art{
+ position:absolute;z-index:0;left:0;top:-11.913%;width:100%;height:111.913%;
+ object-fit:fill;pointer-events:none;user-select:none;
+ -webkit-user-select:none;-webkit-user-drag:none;image-rendering:auto;
+}
+.pg-map-heading,.map-summary,.map-footer{
+ position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;pointer-events:none;
+}
+.back,.pg-map-writing{
+ position:absolute;z-index:8;top:3.5%;height:5.8%;width:11%;border:0;
+ padding:0!important;margin:0!important;box-shadow:none!important;
+ background:transparent!important;color:transparent!important;font-size:0!important;
+ border-radius:23px;text-decoration:none;
+}
+.back{left:2.8%}.pg-map-writing{right:4.7%}
+.back:focus-visible,.pg-map-writing:focus-visible,.map-road .node:focus-visible,.pg-map-actions a:focus-visible{
+ outline:3px solid #fff!important;outline-offset:2px!important;
+}
+.map-road,.pg-map-actions{position:absolute;inset:0;z-index:5;pointer-events:none}
+.map-road .node,.pg-map-actions a{
+ display:block!important;position:absolute!important;
+ border:0!important;border-radius:25px!important;
+ margin:0!important;padding:0!important;
+ background:transparent!important;box-shadow:none!important;filter:none!important;
+ transform:none!important;transition:none!important;
+ text-decoration:none!important;cursor:pointer;
+ min-height:0!important;max-height:none!important;
+ overflow:visible!important;pointer-events:auto!important;
+ -webkit-tap-highlight-color:transparent;
+}
+/* Original ribbon geometry after cropping away its fake 178px browser header. */
+.map-road .node{height:8.1%!important}
+.map-road .node[data-num="7"]{top:24.6%!important;left:24.1%!important;width:66%!important}
+.map-road .node[data-num="6"]{top:32.7%!important;left:28.7%!important;width:67%!important}
+.map-road .node[data-num="5"]{top:40.6%!important;left:28.7%!important;width:68.2%!important}
+.map-road .node[data-num="4"]{top:48.5%!important;left:30.2%!important;width:67.4%!important}
+.map-road .node[data-num="3"]{top:56.2%!important;left:34%!important;width:63.2%!important}
+.map-road .node[data-num="2"]{top:63.6%!important;left:34.7%!important;width:63.1%!important}
+.map-road .node[data-num="1"]{top:71.1%!important;left:33%!important;width:62.4%!important}
+.map-road .node::before,.map-road .node::after{content:none!important}
+.map-road .node .circle,.map-road .node .caption,.map-road .node .pg-topic-art,.map-road .node .arrow{
+ position:absolute!important;width:1px!important;height:1px!important;
+ opacity:0!important;overflow:hidden!important;clip-path:inset(50%)!important;
+ pointer-events:none!important;
+}
+/* Locks 2–7 are ALREADY DRAWN in the user's approved art. No duplicated emojis.
+   When a lesson unlocks, replace its painted lock with a glossy round open/play badge. */
+.map-road .node .pg-gate{display:none!important}
+.map-road .node[data-num]:not([data-num="1"]):not(.locked) .pg-gate{
+ display:grid!important;position:absolute!important;z-index:7;
+ width:clamp(37px,9.5vw,49px)!important;height:clamp(37px,9.5vw,49px)!important;
+ top:50%!important;right:-1%!important;left:auto!important;
+ transform:translateY(-50%)!important;
+ place-items:center;border-radius:50%!important;
+ font-size:clamp(20px,5vw,28px)!important;line-height:1!important;
+ color:#fff!important;
+ background:linear-gradient(155deg,#a7ff6b,#13b64e 55%,#08733e)!important;
+ border:3px solid #f9d46a!important;
+ text-shadow:0 2px 2px #165e26!important;
+ box-shadow:0 3px 7px #3f0e5099,inset 0 2px 3px #ffffff99,0 0 9px #9bff59!important;
+ clip-path:none!important;opacity:1!important;pointer-events:none!important;
+}
+.map-road .node.done .pg-gate{background:linear-gradient(140deg,#9df6d0,#10a886 57%,#057059)!important}
+.map-road .node.locked{cursor:not-allowed!important}
+.map-road .node:active:not(.locked){background:#ffffff1b!important}
+.pg-map-actions a{top:87.1%!important;height:8.6%!important;min-height:0!important}
+.pg-map-actions .pg-rhythm-button{left:3%!important;width:30.8%!important}
+.pg-map-actions .pg-trainer-button{left:35.2%!important;width:29.7%!important}
+.pg-map-actions .pg-ai-button{left:66.6%!important;width:30.9%!important}
+.pg-map-actions a .action-icon,.pg-map-actions a .action-label{
+ display:block!important;position:absolute!important;
+ width:1px!important;height:1px!important;
+ opacity:0!important;overflow:hidden!important;clip-path:inset(50%)!important;pointer-events:none!important;
+}
+.pg-toast{
+ position:absolute;z-index:30;left:10%;right:10%;top:19%;
+ padding:12px 14px;border-radius:17px;
+ font:700 13px/1.35 Arial,system-ui,sans-serif;color:#fff;text-align:center;
+ background:#440b7bdf;border:2px solid #ffd676;
+ box-shadow:0 6px 20px #160725a3;
+}
+.pg-toast[hidden]{display:none!important}
+@media(min-width:491px){.map-shell{box-shadow:0 0 25px #15083399}}
+@media(max-height:550px){.pg-toast{top:15%;padding:8px}}
