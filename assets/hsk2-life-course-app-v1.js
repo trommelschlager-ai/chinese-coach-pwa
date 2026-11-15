@@ -30,6 +30,11 @@ for(var ti=0;ti<10;ti++)for(var mi=0;mi<3;mi++){
 if(mistakes.length)console.warn('Panda Go course QA:',mistakes.join('; '));
 var KEY='pg-hsk2-life-course-v1';
 var state={view:'welcome',topic:0,mini:0,stage:0,showPy:true,completed:[],difficult:[],quizWord:null,quizSentence:null,build:[],finalAnswers:{},examPassed:false};
+var dayUI=window.PandaGoDayFirstUIV1;
+function dayPilot(){return state.topic===0&&state.mini===0&&!!dayUI;}
+function dayCoachingLink(mini){return './panda-voice-pilot.html?practice=day&mini='+Math.max(0,Math.min(2,Number(mini)||0))+'&from=hsk2-life-course';}
+function dayAIBlock(mini){return '<section class="day-ai-panel"><h2>🐼 Практика с Panda AI · Мой день</h2><p>Теперь Панда задаст тебе вопросы по пройденному материалу. Отвечай по-китайски голосом или текстом.</p><div class="day-ai-examples">Пример: <strong lang="zh-Hans">你每天几点起床？</strong><br>Nǐ měitiān jǐ diǎn qǐchuáng? — Во сколько ты каждый день встаёшь?</div><p>Панда проверяет смысл ответа и распознанный текст, <b>не точность тонов</b>. Для вопросов без MP3 доступен текст.</p><a href="'+dayCoachingLink(mini)+'" aria-label="Открыть разговорную практику Мой день с Panda AI">Начать диалог с Пандой AI →</a></section>';}
+
 try{
  var saved=JSON.parse(localStorage.getItem(KEY)||'null');
  if(saved&&Array.isArray(saved.completed)){
@@ -104,6 +109,7 @@ function viewTopic(){
  }).join('')+'</div><div class="tip-box"><b>Как учиться без перегрузки</b><p>Изучи слова, послушай пример, прочитай правило и ответь на вопросы. Не торопись: следующая тема никуда не исчезнет.</p></div><div class="button-row"><button class="secondary" data-view="map">← К карте</button><button class="primary" data-mini="'+(completed<3?completed:0)+'">▶ '+(completed?'Продолжить / повторить':'Начать тему')+'</button></div></section>';
 }
 function viewLesson(){
+ if(dayPilot())return dayUI.render(state,{sound:sound});
  var t=chosen(), sc=current(), step=state.stage, ws=words(state.topic,state.mini), idx=id();
  var html='<section class="lesson"><div class="lesson-head"><div class="eyebrow">ТЕМА '+(state.topic+1)+' / 10 · МИНИ-УРОК '+(state.mini+1)+' / 3</div><h1>'+t.icon+' '+E(t.name)+'</h1><p>'+E(sc[0])+'</p><div class="step-meter"><i style="width:'+((step+1)*25)+'%"></i></div><div class="step-labels"><span>Слова</span><span>Правило</span><span>Проверка</span><span>Собери</span></div></div>';
  if(step===0){
@@ -148,7 +154,8 @@ function viewLesson(){
 }
 function viewDone(){
  var t=chosen(),sc=current(),number=id();
- return '<section class="done"><div class="reward-icon">🏆</div><h1>Мини-урок пройден!</h1><p>Ты разобрал слова, грамматику и правильно собрал предложение.</p><div class="panel">'+phrase(sc[2],sc[3],sc[4])+'</div><p class="honest">Запоминание и произношение нужно закреплять повторениями. Эта отметка показывает выполнение заданий, а не официальный экзаменационный результат.</p><div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий мини-урок →</button></div><button class="text-link" data-view="map">Вернуться к десяти темам</button></section>';
+ var dayDetails=state.topic===0?(dayPilot()?'<p class="honest">Первое занятие завершено. Пять произнесений каждого слова доступны для повторения; результат распознавания не является оценкой тонов.</p>':'')+dayAIBlock(state.mini):'';
+ return '<section class="done"><div class="reward-icon">🏆</div><h1>Мини-урок пройден!</h1><p>Ты разобрал слова, грамматику и правильно собрал предложение.</p><div class="panel">'+phrase(sc[2],sc[3],sc[4])+'</div><p class="honest">Запоминание и произношение нужно закреплять повторениями. Эта отметка показывает выполнение заданий, а не официальный экзаменационный результат.</p>'+dayDetails+'<div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий мини-урок →</button></div><button class="text-link" data-view="map">Вернуться к десяти темам</button></section>';
 }
 function viewTones(){
  var toneCards=[
@@ -211,12 +218,15 @@ function render(){
  if(status)status.textContent='';
  store();
 }
-function go(v){state.view=v;render()}
+function go(v){if(state.view==='lesson'&&v!=='lesson'&&dayUI)dayUI.cancel();state.view=v;render()}
 function enter(t,m){
+ if(dayUI)dayUI.cancel();
  state.topic=t;state.mini=m;state.stage=0;state.quizWord=null;state.quizSentence=null;state.build=[];
+ state.day=t===0&&m===0&&dayUI?dayUI.makeState():null;
  go('lesson');
 }
 function next(){
+ if(dayPilot())return dayUI.next(state,{render:render,go:go,complete:function(){if(!state.completed.includes(id()))state.completed.push(id());go('done')}});
  if(state.stage===2){
   var ws=words(state.topic,state.mini),q=ws[Math.min(2,ws.length-1)],idx=id();
   if(state.quizWord!==shuffledIndices(3,idx+2).indexOf(0)||state.quizSentence!==shuffledIndices(3,idx+7).indexOf(0))return;
@@ -234,6 +244,7 @@ document.addEventListener('click',function(e){
   if(window.PandaHsk2AudioV330)window.PandaHsk2AudioV330.play(b.dataset.sound,function(msg){if(status)status.textContent=msg});
   return;
  }
+ if(state.view==='lesson'&&dayPilot()&&dayUI.handle(b,state,{render:render,go:go,complete:function(){if(!state.completed.includes(id()))state.completed.push(id());go('done')}}))return;
  if(b.dataset.nav){go(b.dataset.nav);return}
  if(b.dataset.toneAnswer!==undefined){state.toneAnswer=Number(b.dataset.toneAnswer);render();return}
  if(b.dataset.view){go(b.dataset.view);return}
@@ -276,7 +287,7 @@ if(toggle)toggle.addEventListener('click',function(){state.showPy=!state.showPy;
 /* Allow direct links from the ten cards on the existing HSK2 course map. */
 try {
  var params=new URLSearchParams(window.location.search);
- if(params.get('start')==='1') {state.view='lesson';state.topic=0;state.mini=0;state.stage=0;}
+ if(params.get('start')==='1') {state.view='lesson';state.topic=0;state.mini=0;state.stage=0;state.day=dayUI?dayUI.makeState():null;}
  var requested=params.get('topic');
  if(requested!==null&&/^(?:[0-9])$/.test(requested)){
   state.topic=Number(requested);
