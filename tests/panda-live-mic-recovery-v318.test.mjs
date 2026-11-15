@@ -65,3 +65,50 @@ test('microphone diagnostic stops all live tracks and identifies browser STT sep
   assert.equal(el('speech-recovery').hidden,true,'Recovery should stay hidden on successful recognition start');
  }
 });
+
+
+test('uncertain Mandarin transcript is editable and does not advance the lesson',async()=>{
+ const {w,el,sessions,send,close}=await liveDOM(1);
+ try{
+  const bridge=w.PandaApprovedBridge337;
+  const before=bridge.snapshot().history.length;
+  el('mic').click();el('speech-allow').click();
+  sessions[0].emit('你好',.32);
+  assert.equal(el('message').value,'你好');
+  assert.equal(el('mic').getAttribute('aria-pressed'),'false');
+  assert.equal(bridge.snapshot().history.length,before,'No automatic response to uncertain transcript');
+  assert.equal(bridge.snapshot().speechSignal.kind,'uncertain');
+  assert.equal(bridge.snapshot().speechSignal.toneVerified,false);
+  send('你好');
+  assert(bridge.snapshot().history.length>before,'User can confirm the corrected transcript');
+ }finally{close()}
+});
+
+test('late final ASR result after browser end is accepted without false recovery',async()=>{
+ const {w,el,sessions,close}=await liveDOM(1);
+ try{
+  el('mic').click();el('speech-allow').click();
+  const session=sessions[0],before=w.PandaApprovedBridge337.snapshot().history.length;
+  session.onend();
+  assert.equal(el('speech-recovery').hidden,true,'Do not report failure before final transcript arrives');
+  session.emit('你好',.92);
+  assert(w.PandaApprovedBridge337.snapshot().history.length>before);
+  assert.equal(el('speech-recovery').hidden,true);
+  assert.equal(el('mic').getAttribute('aria-pressed'),'false');
+ }finally{close()}
+});
+
+test('browser end without any transcript exits listening after grace period',async()=>{
+ const {el,sessions,close}=await liveDOM(1);
+ const original=globalThis.setTimeout;let expire;
+ try{
+  el('mic').click();el('speech-allow').click();
+  globalThis.setTimeout=(fn,ms,...args)=>ms===1200?(expire=fn,original(()=>{},700000)):original(fn,ms,...args);
+  sessions[0].onend();
+  assert(expire,'Final transcription grace timer must exist');
+  assert.equal(el('speech-recovery').hidden,true);
+  expire();
+  assert.equal(el('speech-recovery').hidden,false);
+  assert.equal(el('mic').getAttribute('aria-pressed'),'false');
+ }finally{globalThis.setTimeout=original;close()}
+});
