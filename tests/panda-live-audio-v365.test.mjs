@@ -46,7 +46,7 @@ test('missing recording stops earlier voice rather than playing wrong Chinese se
   bridge.playEntry({hanzi:'这句话尚未录音'});
   assert.equal(first.paused,true);
   assert.equal(bridge.snapshot().pose==='talking',false);
-  assert.match(bridge.snapshot().status,/没有.*MP3/);
+  assert.match(bridge.snapshot().status,/нет загруженной MP3/);
  }finally{f.close()}
 });
 
