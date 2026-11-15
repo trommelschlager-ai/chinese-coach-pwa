@@ -66,7 +66,7 @@ assert.equal(dayTopics.length,3);
 assert.equal(dayTopics[1].words.length,7);
 assert.equal(doc.querySelectorAll('.day-vword').length,7);
 for(let i=0;i<3;i++)click('[data-day-next]');
-assert.match(doc.querySelector('.day-formula')?.textContent||doc.querySelector('.day-card').textContent,/先/); // currently quiz step
+assert.equal(doc.querySelectorAll('.day-question').length,2,'Second mini-lesson has quiz questions');
 click('[data-day-quiz="0:1"]');click('[data-day-quiz="1:0"]');
 for(let i=0;i<5;i++)click('[data-day-token="'+i+'"]');
 assert.equal(doc.querySelector('[data-day-next]').disabled,false,'Second mini builder complete');
