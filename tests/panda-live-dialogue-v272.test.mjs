@@ -1,5 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
 import {answerLive,analyzeLearner,topicPrompts,calendarReply,nextTopicPrompt} from '../assets/panda-live-dialogue-v272.mjs';
+import {lookupPilotAudio} from '../assets/panda-live-audio.mjs';
 import {liveDOM} from './panda-live-dom-fixture.mjs';
 const c={window:{}};vm.runInNewContext(fs.readFileSync(new URL('../assets/hsk1-foundations-data-v152.js',import.meta.url),'utf8'),c);const curriculum=c.window.PANDA_HSK1_FOUNDATIONS;
 const date=new Date(2026,10,12,12),allowed=[1,2,3,4,5,6,7],options={allowed,curriculum,date};
@@ -70,4 +71,14 @@ test('merged Chrome speech greetings and near-homophones preserve the transcript
     assert.equal(result.spoken.known,false,'An ASR guess cannot count as a verified translation');
     assert.match(result.spoken.probable,/你今天怎么样/);
   }
+});
+
+test('recorded job question is connected to speech and a genuine Panda answer',()=>{
+ const q=answerLive('你做什么工作？',{...options,topic:1,allowed:[1]});
+ assert.equal(q.kind,'question');
+ assert.equal(q.spoken.pinyin,'Nǐ zuò shénme gōngzuò?');
+ assert.equal(q.reply.hanzi,'我是老师。');
+ assert.equal(q.reply.pinyin,'Wǒ shì lǎoshī.');
+ assert.match(lookupPilotAudio('你做什么工作'),/20261114-job-question-v343\.mp3$/);
+ assert(lookupPilotAudio(q.reply.hanzi),'Panda job answer must have a true existing MP3 recording');
 });
