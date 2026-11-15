@@ -1,0 +1,133 @@
+/* Panda Go HSK2 · 2026-11-15 · three mobile-screen refinements.
+   Keep the approved Bastian screenshot as the only visual source. */
+
+/* 1. Bastian opening screen: the screenshot AND its transparent hit areas fill
+   the phone viewport. No black/violet unused strip beneath the gold CTA. */
+html:has(#poster:not([hidden])),
+body:has(#poster:not([hidden])) {
+  height:100%; min-height:100%; overflow:hidden!important;
+}
+body:has(#poster:not([hidden])){width:100%;display:block}
+.app:has(#poster:not([hidden])){
+  width:100%!important;
+  max-width:min(100vw,864px)!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  overflow:hidden!important;
+  margin:0 auto!important;
+}
+#poster:not([hidden]){height:100%;width:100%}
+#poster .approved-screen{
+  height:100dvh!important;
+  min-height:100dvh!important;
+  width:100%!important;
+  aspect-ratio:auto!important;
+}
+#poster .approved-screen>img{
+  display:block;
+  width:100%!important;
+  height:100%!important;
+  object-fit:fill!important;
+  object-position:center top;
+}
+/* 3. Words: 10 audio cards in a true 2 × 5 mobile grid. The phonetic
+   transcription still appears when the learner enables pinyin. */
+#practice.word-stage{
+  height:100dvh!important;
+  min-height:0!important;
+  padding:8px 8px calc(8px + env(safe-area-inset-bottom))!important;
+  display:flex;flex-direction:column;overflow:hidden!important;
+}
+#practice.word-stage>.practice-panel{
+  flex:1;
+  height:100%;
+  max-height:100%;
+  min-height:0;
+  margin:0!important;
+  padding:clamp(8px,1.9vh,15px)!important;
+  display:flex;
+  flex-direction:column;
+  gap:clamp(3px,.6vh,7px);
+  overflow:hidden!important;
+}
+#practice.word-stage .level{font-size:clamp(11px,1.55vh,14px)!important;line-height:1.1}
+#practice.word-stage #step-title{
+  font-size:clamp(17px,2.6vh,24px)!important;
+  margin:1px 0!important;line-height:1.16;
+}
+#practice.word-stage .progress{
+  margin:2px 0 4px!important; height:7px!important;flex:none;
+}
+#practice.word-stage #step-content{
+  flex:1;min-height:0;display:flex;flex-direction:column;
+  overflow:hidden;
+}
+#practice.word-stage .practice-text.word-grid-intro{
+  font-size:clamp(10px,1.5vh,13px)!important;
+  line-height:1.22;flex:none;margin:0 0 5px;
+}
+#practice .word-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:repeat(5,minmax(0,1fr));
+  gap:clamp(4px,.75vh,8px);
+  flex:1;min-height:0;
+}
+#practice .word-grid .word{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) clamp(27px,4.1vh,38px);
+  grid-template-rows:minmax(0,auto) auto auto;
+  align-content:center;align-items:center;
+  gap:0 clamp(3px,.7vw,8px);
+  min-height:0;height:100%;
+  overflow:hidden;
+  padding:clamp(4px,.72vh,8px)!important;
+  margin:0!important;
+  border-radius:12px;
+  box-shadow:0 1px 3px #7a418633;
+}
+#practice .word-grid .word .hz{
+  grid-column:1;grid-row:1;
+  font-size:clamp(19px,3.25vh,31px)!important;
+  white-space:nowrap!important;
+  line-height:1.05!important;
+  min-width:0;
+}
+#practice .word-grid .word .py{
+  grid-column:1;grid-row:2;
+  font-size:clamp(10px,1.45vh,12px)!important;
+  line-height:1.14;margin:2px 0 0!important;
+  white-space:normal!important;
+}
+#practice .word-grid .word .ru{
+  grid-column:1;grid-row:3;
+  font-size:clamp(10px,1.55vh,13px)!important;
+  line-height:1.16;margin:2px 0 0!important;
+  overflow-wrap:anywhere;
+}
+#practice .word-grid .word .play{
+  grid-column:2;grid-row:1/4;
+  width:clamp(27px,4.1vh,38px)!important;
+  min-width:clamp(27px,4.1vh,38px)!important;
+  height:clamp(27px,4.1vh,38px)!important;
+  font-size:clamp(13px,2vh,17px)!important;
+  align-self:center;
+}
+#practice.word-stage .pinyin-toggle{
+  flex:none;min-height:30px!important;
+  padding:5px 9px;font-size:12px;
+  margin:2px 0!important;
+}
+#practice.word-stage .navig{flex:none;gap:7px}
+#practice.word-stage .navig button{
+  min-height:37px!important;padding:6px!important;
+  border-radius:13px;font-size:clamp(12px,1.8vh,16px)!important;
+}
+#practice.word-stage .save-note{
+  flex:none;margin:0;font-size:10px;line-height:1.2;
+}
+@media(max-height:670px){
+ #practice.word-stage .save-note{display:none}
+ #practice.word-stage .practice-text.word-grid-intro{font-size:10px}
+ #practice .word-grid .word .hz{font-size:clamp(17px,2.8vh,24px)!important}
+}
