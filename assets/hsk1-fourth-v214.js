@@ -346,6 +346,7 @@ function done(){
   localStorage.setItem(DONE,JSON.stringify(list));
  }catch{}
  save();
+  window.PandaGoPathV371?.markComplete(4);
 }
 function render(preserve=false){
  const pos=scroll.scrollTop;
