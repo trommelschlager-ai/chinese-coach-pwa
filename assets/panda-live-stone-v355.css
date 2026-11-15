@@ -2,8 +2,8 @@
    The original screenshot is not used as the page background: only a clipped
    narrow stone lip is visible below the independently animated character. */
 #pg346 .pg346-scene::before {
- content:"";position:absolute;z-index:1;left:-0.5%;bottom:3.5%;
- width:76%;aspect-ratio:670 / 68;pointer-events:none;
+ content:"";position:absolute;z-index:1;left:-1.5%;bottom:-1.7%;
+ width:83%;aspect-ratio:670 / 84;pointer-events:none;
  background-image:url('./panda-live-approved-v337.webp');
  background-repeat:no-repeat;background-size:130% auto;
  background-position:left 68.7%;
@@ -13,6 +13,6 @@
  filter:drop-shadow(0 2px 2px #246a7566);
 }
 #pg346 .pg352-mascot{z-index:2}
-@media(max-height:720px){#pg346 .pg346-scene::before{width:71%;bottom:2%}}
-@media(max-height:590px){#pg346 .pg346-scene::before{width:56%;bottom:1%}}
-:root[data-keyboard=true] #pg346 .pg346-scene::before{width:52%;bottom:1%}
+@media(max-height:720px){#pg346 .pg346-scene::before{width:78%;bottom:-1.5%}}
+@media(max-height:590px){#pg346 .pg346-scene::before{width:63%;bottom:-1.5%}}
+:root[data-keyboard=true] #pg346 .pg346-scene::before{width:55%;bottom:-1%}
