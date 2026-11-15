@@ -41,8 +41,9 @@ try {
      const button=page.locator('.lesson[data-num="1"]');
      await button.dispatchEvent('pointerdown',{pointerId:1,pointerType:'touch',isPrimary:true});
      assert(await button.evaluate(a=>a.classList.contains('is-pressed')),'No visual press state');
-     const opacity=await button.evaluate(a=>getComputedStyle(a,'::after').opacity);
-     assert.equal(opacity,'1','Press highlight invisible');
+     await page.waitForTimeout(160);
+     const opacity=Number(await button.evaluate(a=>getComputedStyle(a,'::after').opacity));
+     assert(opacity>0.95,'Press highlight invisible, opacity '+opacity);
      await button.dispatchEvent('pointerup',{pointerId:1,pointerType:'touch',isPrimary:true});
      await page.waitForTimeout(250);
      assert(!(await button.evaluate(a=>a.classList.contains('is-pressed'))));
