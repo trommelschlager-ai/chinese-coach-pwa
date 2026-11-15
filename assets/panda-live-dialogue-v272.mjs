@@ -1,5 +1,6 @@
 // Reviewed HSK1 rules only. No network, inferred forecast, or acoustic scoring.
 import {normalize,verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live6';
+import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=358';
 import {interpretUtterance,interpretFamily,weekdayForDate} from './panda-live-conversation-v266.mjs?v=270';
 import {answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=358';
@@ -327,6 +328,10 @@ export function answerLive(raw,options={}){
  const patternedQuestion=patternQuestion(raw,allowed,date);
  if(patternedQuestion)return extendQuestion(patternedQuestion,raw,allowed,date,profile);
  if(!spoken.known&&allowed.includes(7)&&(/(?:погод|прогноз)/i.test(raw)||/(真实|实际|现在|北京|莫斯科).*(天气|下雨|冷|热)/.test(s)))return {kind:'clarify',spoken,message:'Настоящий прогноз я не получаю. Могу поддержать учебный разговор о погоде: 今天天气怎么样？'};
+ // User-recorded, explicitly paired beginner questions with native MP3s.
+ // Apply only when established HSK rules above have no answer.
+ const recorded=recordedPandaAnswer(raw,allowed);
+ if(recorded)return recorded;
  const old=answerNonStop(raw,allowed,prompt,curriculum,date);
  if(old.kind==='question')return extendQuestion({...old,spoken:spoken.known?spoken:old.spoken,followup:s==='谢谢'?null:turn%3===2?nextTopicPrompt(topic,[],date,profile):null},raw,allowed,date,profile);
  if(!spoken.known){return {kind:'clarify',spoken,message:spoken.words?.length?'Знакомые слова разобраны ниже. Уточни смысл или попробуй предложение из подсказки.':'Точный смысл пока не подтверждён. Попробуй фразу из пройденного урока или уточни вопрос.'}}
