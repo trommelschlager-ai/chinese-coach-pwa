@@ -34,3 +34,34 @@ test('online Range bypasses caching; offline ranges use a full cached MP3',async
 test('successful replay clears the earlier autoplay warning',async()=>{
  const f=await liveDOM();try{const b=f.w.PandaApprovedBridge337;b.note('Браузер не включил звук автоматически. Нажми динамик.');b.play();f.clips.at(-1).playing();assert.equal(b.snapshot().status,'')}finally{f.close()}
 });
+
+
+test('missing recording stops earlier voice rather than playing wrong Chinese sentence',async()=>{
+ const f=await liveDOM();
+ try{
+  const bridge=f.w.PandaApprovedBridge337;
+  bridge.playEntry({hanzi:'你好'});
+  const first=f.clips.at(-1);first.playing();
+  assert.equal(bridge.snapshot().pose,'talking');
+  bridge.playEntry({hanzi:'这句话尚未录音'});
+  assert.equal(first.paused,true);
+  assert.equal(bridge.snapshot().pose==='talking',false);
+  assert.match(bridge.snapshot().status,/没有.*MP3/);
+ }finally{f.close()}
+});
+
+test('stalled audio stops after bounded wait and reports how to retry',async()=>{
+ const f=await liveDOM();
+ const original=globalThis.setTimeout;let expire;
+ try{
+  const bridge=f.w.PandaApprovedBridge337;
+  bridge.playEntry({hanzi:'你好'});
+  const audio=f.clips.at(-1);audio.playing();
+  globalThis.setTimeout=(fn,ms,...args)=>ms===10000?(expire=fn,original(()=>{},700000)):original(fn,ms,...args);
+  audio.onwaiting();
+  assert(expire,'A stalled MP3 must have a watchdog');
+  expire();
+  assert(audio.paused);
+  assert.match(bridge.snapshot().status,/10 секунд/);
+ }finally{globalThis.setTimeout=original;f.close()}
+});
