@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - review/hsk1-v373-exact-art-2026-11-16
+      - review/hsk1-v374-mobile-chrome-2026-11-16
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,6 +31,7 @@ jobs:
           done
           curl -fsS http://127.0.0.1:4173/assets/hsk1-approved-v373.png > /dev/null
           node scripts/verify-hsk1-v373.mjs
+          node scripts/verify-hsk1-v374.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
