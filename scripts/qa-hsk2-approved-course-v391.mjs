@@ -14,7 +14,8 @@ try{
   const tag=width+'x'+height;
   await page.goto(base+'/hsk2-life-course.html?v=391',{waitUntil:'domcontentloaded'});
   await page.locator('.approved-welcome-screen .approved-art.ready').waitFor({state:'visible',timeout:25000});
-  const ext=await page.locator('.approved-welcome-screen').evaluate(n=>{const b=getComputedStyle(n,'::before');return {filter:b.filter,size:b.backgroundSize}});
+  const ext=await page.locator('.approved-welcome-screen').evaluate(n=>{const b=getComputedStyle(n,'::before');const r=n.getBoundingClientRect();const root=document.querySelector('#screen').getBoundingClientRect();return {filter:b.filter,size:b.backgroundSize,display:b.display,img:b.backgroundImage,opacity:b.opacity,rect:{y:r.y,h:r.height},screen:{y:root.y,h:root.height}}});
+  console.log('POSTER RECT '+tag,JSON.stringify(ext));
   assert.equal(ext.filter,'none','No blurred empty-space continuation');
   assert.match(ext.size,/100% 100%/,'Decorative scene covers full phone without duplicating poster elements');
   const art=await page.locator('.approved-art').boundingBox();
