@@ -14,7 +14,8 @@
 @media(max-width:355px){.emoji{width:24px;font-size:21px}.play{height:25px;width:25px}.hz{font-size:12px}.line-content small{font-size:8px}.section h2{font-size:13px}}
 </style><link rel="stylesheet" href="./assets/bastian-approved-layout-v2.css?v=2"><link rel="stylesheet" href="./assets/bastian-approved-layout-v4.css?v=4"><link rel="stylesheet" href="./assets/bastian-exact-reference-v5.css?v=5"><link rel="stylesheet" href="./assets/bastian-three-screens-v6.css?v=8"><link rel="stylesheet" href="./assets/bastian-two-screen-v393.css?v=393"><link rel="stylesheet" href="./assets/panda-mobile-v394.css?v=394">
 <link rel="stylesheet" href="./assets/pandago-art-fullscreen-tap-v395.css?v=396">
-<link rel="stylesheet" href="./assets/bastian-fullscreen-reflow-v396.css?v=397"></head><body><div class="app" id="app">
+<link rel="stylesheet" href="./assets/bastian-fullscreen-reflow-v396.css?v=397">
+<link rel="stylesheet" href="./assets/bastian-voice-five-v397.css?v=397"></head><body><div class="app" id="app">
 <header class="header"><a class="back" href="./hsk2-life-course.html?view=map" aria-label="Назад к курсу HSK 2">←</a><div class="logo">Panda Go<sup>🐾</sup></div><div class="lesson-badge">Урок 1 · Знакомство</div><span class="level">HSK 2</span></header>
 <div class="poster" id="poster"><div class="approved-screen" id="bastian-approved-screen" aria-label="Урок 1 · Знакомство с Бастианом">
 <img src="./assets/bastian-approved-reference-v5.jpg" width="864" height="1536" alt="Panda Go. Урок 1 — Знакомство. Бастиан в фиолетовой куртке на фоне ночного китайского города. Четыре фразы: привет, меня зовут Бастиан; мне 25 лет; я живу в Москве; я инженер. Слова, пиньинь, грамматика и практика.">
@@ -47,7 +48,8 @@
 </section></div>
 <section class="flow"><h2>🚩 Ход урока</h2><div class="steps"><div class="step active"><span class="stepnumber">1</span><span class="stepicon">📖</span>Слова</div><div class="step"><span class="stepnumber">2</span><span class="stepicon">🎧</span>Пиньинь</div><div class="step"><span class="stepnumber">3</span><span class="stepicon">🎓</span>Грамматика</div><div class="step"><span class="stepnumber">4</span><span class="stepicon">🎯</span>Практика</div></div><button class="gold-button" id="start-legacy" type="button">Начать практику ›</button></section><p class="copy">Panda Go · HSK 2 · Персонаж Бастиан</p></div>
 <div class="practice" id="practice" hidden><section class="practice-panel"><div class="level" style="margin:0">HSK 2 · Знакомство</div><h2 id="step-title">Слова и предложения</h2><div class="progress"><b id="meter"></b></div><div id="step-content"></div><button class="pinyin-toggle" id="toggle-py" type="button">汉 Скрыть пиньинь</button><div class="navig"><button type="button" class="sub-button" id="prev">‹ Назад</button><button type="button" class="gold-button" style="margin:0;min-height:45px;font-size:17px" id="next">Дальше ›</button></div><p class="save-note" id="save-note">Твой прогресс хранится на этом устройстве</p></section></div>
-</div><script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=343"></script><script>
+</div><script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=343"></script>
+<script src="./assets/bastian-voice-five-v397.js?v=397"></script><script>
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
@@ -92,15 +94,15 @@ function wordBlock(w){return '<div class="word"><div class="hz" lang="zh-Hans">'
 function phraseBlock(p){return '<div class="word"><div class="hz" lang="zh-Hans">'+esc(p.zh)+'</div>'+(state.showPy?'<div class="py">'+esc(p.py)+'</div>':'')+'<div class="ru">'+esc(p.ru)+'</div>'+audio(p.zh)+'</div>'}
 function stage(){
 const step=state.step;
-$('poster').hidden=true;$('practice').hidden=false;$('practice').classList.toggle('word-stage',step===0);
-$('step-title').textContent=['1 · Слова','2 · Пиньинь и тоны','3 · Грамматика','4 · Практика','Отлично!'][step];
+$('poster').hidden=true;$('practice').hidden=false;$('practice').classList.toggle('word-stage',step===0);$('practice').classList.toggle('voice-stage',step===1);
+$('step-title').textContent=['1 · Слова','2 · Произношение 5 раз','3 · Грамматика','4 · Практика','Отлично!'][step];
 $('meter').style.width=((step+1)/5*100)+'%';
 $('toggle-py').hidden=step===4;$('toggle-py').textContent=state.showPy?'汉 Скрыть пиньинь':'汉 Показать пиньинь';
 $('prev').textContent=step===0?'‹ К уроку':'‹ Назад';
-$('next').textContent=step===3?'Проверить ›':step===4?'На главную':'Дальше ›';
+$('next').textContent=step===1?'Дальше ›':step===3?'Проверить ›':step===4?'На главную':'Дальше ›';
 let html='';
 if(step===0)html='<p class="practice-text word-grid-intro">10 слов из речи Бастиана · нажимай ▶, читай и повторяй.</p><div class="word-grid" aria-label="Все десять слов и их озвучка">'+WORDS.map(wordBlock).join('')+'</div>';
-if(step===1)html='<p class="practice-text">Произнеси четыре предложения медленно, следи за высотой каждого тона.</p><div class="practice-phrase-grid">'+PHRASES.map(phraseBlock).join('')+'</div><div class="example"><b>Обязательные тоны:</b><p>zhù — четвёртый ↘, zài — четвёртый ↘, suì — четвёртый ↘, gōngchéngshī — 1–2–1.</p></div><div class="example"><b>Смена третьего тона:</b><p>你好: nǐ hǎo → ní hǎo. Перед другим третьим тоном первый слог произносится как второй тон.</p></div><div class="example"><b>Имя:</b><p>巴斯蒂安 — Bā sī dì ān (1–1–4–1). Тоны важно произносить без пропусков.</p></div>';
+if(step===1)html=window.PandaBastianVoice397.render(state,WORDS,state.showPy,ready);
 if(step===2)html='<p class="practice-text">Четыре небольших правила — только то, что нужно для знакомства.</p>'+
 '<div class="practice-grammar-grid">'+[['我叫 + имя','我叫巴斯蒂安。','Я зовусь Бастиан. Глагол 叫 используется для имени.'],
 ['我 + возраст + 岁','我二十五岁。','В китайском при назывании возраста не нужен глагол «есть».'],
@@ -110,14 +112,15 @@ if(step===3)html='<p class="practice-text">Выбери правильный п�
 PHRASES.map((p,i)=>{const options=[p.ru,PHRASES[(i+1)%4].ru,PHRASES[(i+2)%4].ru],order=[1,0,2].map(k=>options[k]);let selected=state.selected[i];return '<section class="q"><p lang="zh-Hans">'+esc(p.zh)+'</p>'+(state.showPy?'<small>'+esc(p.py)+'</small>':'')+order.map((v,j)=>'<button type="button" class="answer '+(selected===j?(v===p.ru?'correct':'wrong'):'')+'" data-answer="'+i+':'+j+'">'+esc(v)+'</button>').join('')+(selected!=null?'<span class="'+(order[selected]===p.ru?'feedback good':'feedback')+'">'+(order[selected]===p.ru?'✓ Верно':'✕ Попробуй ещё раз')+'</span>':'')+'</section>'}).join('');
 if(step===4)html='<div class="done">🏆<p>Урок «Знакомство» пройден!</p></div>'+PHRASES.map(phraseBlock).join('')+'<p class="practice-text">Повтори сам: как тебя зовут, сколько тебе лет, где ты живёшь и кем работаешь?</p><button type="button" class="sub-button finish" id="restart">↻ Повторить урок</button>';
 $('step-content').innerHTML=html;
-$('next').disabled=step===3&&!PHRASES.every((p,i)=>{const order=[PHRASES[(i+1)%4].ru,p.ru,PHRASES[(i+2)%4].ru];return state.selected[i]!=null&&order[state.selected[i]]===p.ru});
+$('next').disabled=(step===1&&!window.PandaBastianVoice397.total(state).canNext)||(step===3&&!PHRASES.every((p,i)=>{const order=[PHRASES[(i+1)%4].ru,p.ru,PHRASES[(i+2)%4].ru];return state.selected[i]!=null&&order[state.selected[i]]===p.ru}));
 save();window.scrollTo({top:0,behavior:'instant'});
 }
 $('start').addEventListener('click',()=>{state.step=0;stage()});
-$('prev').addEventListener('click',()=>{if(state.step===0){$('practice').hidden=true;$('poster').hidden=false;window.scrollTo({top:0,behavior:'instant'});return}state.step--;stage()});
-$('next').addEventListener('click',()=>{if(state.step===4){$('practice').hidden=true;$('poster').hidden=false;window.scrollTo({top:0,behavior:'instant'});return}if(state.step===3&&$('next').disabled)return;state.step++;if(state.step===4)state.complete=true;stage()});
+$('prev').addEventListener('click',()=>{if(state.step===1)window.PandaBastianVoice397.cancel();if(state.step===0){$('practice').hidden=true;$('poster').hidden=false;window.scrollTo({top:0,behavior:'instant'});return}state.step--;stage()});
+$('next').addEventListener('click',()=>{if(state.step===4){$('practice').hidden=true;$('poster').hidden=false;window.scrollTo({top:0,behavior:'instant'});return}if((state.step===3||state.step===1)&&$('next').disabled)return;if(state.step===1)window.PandaBastianVoice397.cancel();state.step++;if(state.step===4)state.complete=true;stage()});
 $('toggle-py').addEventListener('click',()=>{state.showPy=!state.showPy;stage()});
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+if(state.step===1&&window.PandaBastianVoice397.handle(b,state,WORDS,stage,zh=>{if(!ready(zh)){notify('Запись для этого слова пока недоступна.');return}window.PandaHsk2AudioV330?.play(zh,notify)}))return;
 if(b.dataset.audioRef!==undefined){
  const p=PHRASES[Number(b.dataset.audioRef)];
  if(!p)return;
@@ -136,7 +139,7 @@ if(b.dataset.stepLink!==undefined){
 }
 if(b.dataset.play){window.PandaHsk2AudioV330?.play(b.dataset.play);return}
 if(b.dataset.answer){const [i,j]=b.dataset.answer.split(':').map(Number);state.selected[i]=j;stage();return}
-if(b.id==='restart'){state={step:0,showPy:true,selected:{},complete:false};stage();}
+if(b.id==='restart'){window.PandaBastianVoice397.cancel();state={step:0,showPy:true,selected:{},complete:false};stage();}
 });
 })();
 </script><script src="./assets/bastian-split-v394.js?v=394"></script>
