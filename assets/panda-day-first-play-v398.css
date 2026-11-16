@@ -1,0 +1,16 @@
+/* Guided "Мой день" launches with the existing exact MP3.
+   Android may block page-load autoplay: keep one obvious, accessible user-tap replay button. */
+body:has(.pg398-day-listen) .pg398-day-listen{
+ display:flex!important;align-items:center;justify-content:center;gap:5px;
+ width:100%!important;min-height:37px!important;
+ padding:6px 9px!important;margin:7px 0 0!important;
+ border:2px solid #ffdfa0!important;border-radius:16px!important;
+ background:linear-gradient(180deg,#ffedac,#ffc45a)!important;
+ color:#591b76!important;font-weight:900!important;
+ font-size:clamp(12px,3vw,15px)!important;
+ box-shadow:0 4px 10px #621d8860,inset 0 1px #fff9e3!important;
+}
+body:has(.pg398-day-listen) .pg398-day-listen:active{
+ transform:scale(.98)!important;
+ box-shadow:inset 0 2px 8px #9f5d9355,0 0 0 3px #ffe7a4!important;
+}
