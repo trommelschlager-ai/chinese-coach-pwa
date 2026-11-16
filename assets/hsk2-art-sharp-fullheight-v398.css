@@ -1,0 +1,57 @@
+/* Panda Go v398: sharp edge-to-edge artwork continuation.
+ * Keep central approved 941×1672 painting and overlays in original proportions.
+ * The decorative extension is full-height; NEVER blur or stretch character/text.
+ */
+#app.approved-welcome-v390 .approved-stage,
+#app.approved-map-v390 .approved-stage,
+#app.day-visual-v390 .approved-stage{
+ background:#631e97!important;overflow:hidden!important;isolation:isolate!important;
+}
+#app.approved-welcome-v390 .approved-stage::before,
+#app.approved-map-v390 .approved-stage::before,
+#app.day-visual-v390 .approved-stage::before{
+ content:""!important;display:block!important;
+ position:absolute!important;inset:0!important;z-index:0!important;
+ pointer-events:none!important;
+ background-image:var(--approved-image)!important;
+ background-size:100% 100%!important;
+ background-position:center center!important;
+ background-repeat:no-repeat!important;
+ filter:none!important;opacity:1!important;
+ transform:none!important;
+}
+/* Keep the exact approved illustration centered and undistorted. */
+#app.approved-welcome-v390 .approved-art,
+#app.approved-map-v390 .approved-art,
+#app.day-visual-v390 .approved-art{
+ width:100%!important;height:auto!important;
+ aspect-ratio:941 / 1672!important;
+ max-height:100%!important;
+ box-shadow:0 0 0 1px #fff4e54f!important;
+ position:absolute!important;left:50%!important;top:50%!important;
+ transform:translate(-50%,-50%)!important;
+}
+#app.approved-welcome-v390 .approved-art>img,
+#app.approved-map-v390 .approved-art>img,
+#app.day-visual-v390 .approved-art>img{
+ width:100%!important;height:100%!important;object-fit:contain!important;
+}
+/* The poster itself is unchanged; scene behind it is allowed to extend,
+   and colorful top/bottom filler is no longer a blurry patch. */
+#app.approved-welcome-v390 .approved-stage::after,
+#app.approved-map-v390 .approved-stage::after,
+#app.day-visual-v390 .approved-stage::after{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+ background:linear-gradient(180deg,#ffddf216 0%,transparent 17%,transparent 81%,#bc5fdc13 100%);
+}
+#app .approved-art .approved-hotspot:focus-visible{outline:3px solid #ffe7a8!important;outline-offset:-3px!important}
+#app.day-visual-v390 .art-audio-note{
+ position:absolute;top:29%;left:32%;width:64%;z-index:8;
+ display:flex;flex-direction:column;gap:4px;
+ padding:7px!important;line-height:1.12;font-size:clamp(10px,2.7vw,13px)!important;
+}
+#app.day-visual-v390 .art-audio-note span{font-size:clamp(13px,3.1vw,16px);font-weight:900;color:#65217a}
+#app.day-visual-v390 .art-audio-note small{font-size:10px}
+#app.day-visual-v390 .art-audio-note .day-recorded-example{width:100%;gap:3px}
+#app.day-visual-v390 .art-audio-note .day-recorded-example>span{display:none}
+#app.day-visual-v390 .art-audio-note .day-recorded-example button{font-size:11px}
