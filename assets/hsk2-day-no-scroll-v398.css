@@ -1,0 +1,151 @@
+/* Panda Go v398 · No scroll-jumping in My Day steps 1 & 5.
+   Keep actual Chinese characters, word explanations, quiz and learner speech state. */
+#app.day-stage-0 #screen,#app.day-stage-4 #screen{
+ overflow:hidden!important;padding:5px 7px 5px!important;
+ display:flex;flex-direction:column;min-height:0;
+}
+#app.day-stage-0 .day-pilot,#app.day-stage-4 .day-pilot{
+ height:100%;min-height:0;width:100%;
+ display:flex;flex-direction:column;gap:5px;padding:0;
+}
+#app.day-stage-0 .day-title,#app.day-stage-4 .day-title{
+ flex:none;min-height:0!important;height:clamp(91px,13dvh,118px)!important;
+ margin:0!important;padding:7px 8px 5px 60px!important;
+}
+#app.day-stage-0 .day-approved-banner,#app.day-stage-4 .day-approved-banner{display:none!important}
+#app.day-stage-0 .day-title h1,#app.day-stage-4 .day-title h1{
+ font-size:clamp(17px,4.6vw,21px)!important;margin:1px 0!important;
+}
+#app.day-stage-0 .day-label,#app.day-stage-4 .day-label{font-size:9px}
+#app.day-stage-0 .day-title p,#app.day-stage-4 .day-title p{
+ font-size:10px!important;margin:1px 0 5px!important;line-height:1.1;
+}
+#app.day-stage-0 .day-stages,#app.day-stage-4 .day-stages{gap:3px}
+#app.day-stage-0 .day-stages span,#app.day-stage-4 .day-stages span{
+ padding:3px 1px!important;font-size:clamp(8px,2.2vw,10px)!important;line-height:1.05;
+}
+#app.day-stage-0 .day-stages span b,#app.day-stage-4 .day-stages span b{font-size:10px}
+#app.day-stage-0 .day-card,#app.day-stage-4 .day-card{
+ border-radius:14px!important;padding:clamp(4px,.7dvh,8px)!important;
+ margin:0!important;min-height:0;
+}
+#app.day-stage-0 .day-card h2,#app.day-stage-4 .day-card h2{
+ font-size:clamp(13px,3.55vw,17px)!important;line-height:1.1;
+ padding:0 0 2px!important;margin:0 0 3px!important;
+}
+
+/* Step one — 7 selectable words + focused meaning + complete component breakdown */
+#app.day-stage-0 .day-quicklist{flex:1.35;display:flex;flex-direction:column;min-height:0}
+#app.day-stage-0 .day-vocab{
+ flex:1;min-height:0;
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ grid-template-rows:repeat(4,minmax(0,1fr));gap:4px;
+}
+#app.day-stage-0 .day-vword{
+ min-height:0!important;height:100%;overflow:hidden;
+ padding:4px 7px!important;gap:1px;justify-content:center;
+ border-radius:9px!important;
+ display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;
+}
+#app.day-stage-0 .day-vword strong{font-size:clamp(15px,4vw,21px);line-height:1.06}
+#app.day-stage-0 .day-vword small{
+ font-size:clamp(9px,2.45vw,11px);line-height:1.05;
+ grid-column:2;grid-row:1;max-width:75px;overflow:hidden;text-overflow:ellipsis;
+}
+#app.day-stage-0 .day-vword span{
+ font-size:clamp(9px,2.4vw,11px);line-height:1.1;
+ grid-column:1/-1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#app.day-stage-0 .day-focus{flex:.8;min-height:0;display:flex;flex-direction:column;align-items:center;gap:1px}
+#app.day-stage-0 .day-topline{align-self:stretch;font-size:clamp(10px,2.65vw,12px)}
+#app.day-stage-0 .day-headword{font-size:clamp(26px,5.7dvh,46px)!important;line-height:.98;margin:0}
+#app.day-stage-0 .day-headpy{font-size:clamp(12px,3vw,16px)!important;line-height:1.05}
+#app.day-stage-0 .day-meaning{font-size:clamp(11px,2.9vw,13px)!important;
+ margin:1px auto!important;padding:3px 9px!important;line-height:1.1!important;max-width:95%}
+#app.day-stage-0 .day-focus .audio{min-height:28px;padding:3px 9px}
+#app.day-stage-0 .day-breakdown{flex:1;min-height:0;display:flex;flex-direction:column}
+#app.day-stage-0 .day-chars{flex:1;min-height:0;gap:3px;align-items:stretch;flex-wrap:nowrap}
+#app.day-stage-0 .day-char{
+ min-height:0!important;min-width:0!important;flex:1;max-width:none;
+ padding:3px!important;border-radius:9px;gap:0;overflow:hidden;
+}
+#app.day-stage-0 .day-char .day-glyph{font-size:clamp(18px,3.8dvh,30px)!important;line-height:1.03}
+#app.day-stage-0 .day-char b{font-size:clamp(9px,2.45vw,11px)!important}
+#app.day-stage-0 .day-char>span:last-child{font-size:clamp(9px,2.2vw,11px)!important;line-height:1.06}
+#app.day-stage-0 .day-plus{font-size:20px;flex:none}
+#app.day-stage-0 .day-tip{
+ flex:none;margin:3px 0 0!important;padding:3px 6px!important;
+ border-radius:8px;font-size:clamp(10px,2.45vw,12px)!important;line-height:1.18!important;
+ max-height:clamp(28px,4.3dvh,39px);overflow:auto;
+}
+
+/* Clear truthful contextual samples: the Chinese sentence is shown alongside its recording. */
+.day-recorded-example{
+ display:flex;align-items:center;justify-content:center;gap:3px 6px;flex-wrap:wrap;
+ font-size:clamp(10px,2.5vw,12px);line-height:1.1;width:100%;
+}
+.day-recorded-example>span{font-weight:800;color:#7b388d}
+.day-recorded-example button{
+ border:1.5px solid #e7b774;border-radius:20px;
+ background:linear-gradient(#fff7d6,#ffe0a5);color:#68288a;
+ padding:3px 8px;font-size:clamp(11px,2.7vw,13px);font-weight:900;
+ min-height:28px;max-width:100%;
+}
+.day-recorded-example small{display:none}
+/* If MP3 exists for the word itself, its own play button is retained unchanged. */
+#app.day-stage-0 .day-recorded-example>span{display:none}
+#app.day-stage-0 .day-recorded-example button{font-size:11px;min-height:24px;padding:2px 7px}
+
+/* Step five — word chips, one selected word, microphone and five results in one viewport */
+#app.day-stage-4 .day-speech-card{flex:1;display:flex;flex-direction:column;gap:3px;overflow:hidden}
+#app.day-stage-4 .day-speech-card>.day-hint{flex:none;margin:0!important;font-size:clamp(10px,2.6vw,12px);line-height:1.13}
+#app.day-stage-4 .day-wordchoice{
+ flex:none;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));
+ grid-template-rows:repeat(2,minmax(38px,1fr));
+ gap:4px!important;overflow:visible!important;padding:0!important;
+}
+#app.day-stage-4 .day-wordchoice button{
+ min-width:0!important;min-height:39px!important;padding:3px 1px!important;
+ font-size:clamp(13px,3.6vw,18px)!important;line-height:1.05;white-space:nowrap;
+ border-radius:10px!important;
+}
+#app.day-stage-4 .day-wordchoice button small{font-size:10px}
+#app.day-stage-4 .day-speechhero{
+ flex:1;min-height:0!important;padding:5px!important;gap:2px!important;overflow:hidden;
+}
+#app.day-stage-4 .day-speechhero>div{font-size:clamp(28px,5.7dvh,44px)!important;line-height:1.08}
+#app.day-stage-4 .day-speechhero>strong{font-size:clamp(12px,3vw,16px)!important}
+#app.day-stage-4 .day-speechhero>span{font-size:clamp(10px,2.6vw,12px)!important}
+#app.day-stage-4 .day-speechhero .audio{min-height:28px}
+#app.day-stage-4 .day-attempts{flex:none;gap:4px;margin:1px 0!important}
+#app.day-stage-4 .day-attempts div{
+ padding:3px 1px!important;border-radius:9px;gap:0;
+ font-size:clamp(14px,3.5vw,18px);line-height:1.08;
+}
+#app.day-stage-4 .day-attempts div b{font-size:10px}
+#app.day-stage-4 .day-record{flex:none;min-height:clamp(36px,5dvh,45px)!important;margin:1px auto!important}
+#app.day-stage-4 .day-speech-card>.day-feedback{flex:none;line-height:1.12!important;margin:0!important;font-size:11px!important}
+#app.day-stage-4 .day-speech-card>.day-hint:last-child{font-size:10px!important}
+#app.day-stage-4 .day-speech-card>.day-hint:has(+ .day-record){font-size:11px}
+/* Keep recorded text available, but avoid its taking space from microphone. */
+#app.day-stage-4 .day-speech-card>p:nth-last-child(2):not(.day-feedback){font-size:11px;margin:0}
+#app.day-stage-4 .day-consent{
+ position:absolute;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));
+ background:#fff7e7;z-index:12;box-shadow:0 0 0 500px #35104455,0 4px 22px #37134e99;
+}
+#app.day-stage-4 #screen{position:relative}
+/* For extremely short viewports, only the explanation area scrolls; never the whole lesson. */
+@media(max-height:690px){
+ #app.day-stage-0 .day-title,#app.day-stage-4 .day-title{height:85px!important}
+ #app.day-stage-0 .day-quicklist{flex:1.5}
+ #app.day-stage-0 .day-breakdown{flex:.85}
+ #app.day-stage-0 .day-focus{flex:.7}
+ #app.day-stage-0 .day-tip{display:none}
+ #app.day-stage-4 .day-speech-card>.day-hint:last-child{display:none}
+ #app.day-stage-4 .day-speechhero{flex:.7}
+}
+/* Taps visibly illuminate selected vocabulary and current recording. */
+#app.day-stage-0 .day-vword:active,#app.day-stage-4 .day-wordchoice button:active{
+ box-shadow:inset 0 0 0 2px #ffe7a1,0 0 11px #ecb944!important;
+ filter:brightness(1.05);
+}
