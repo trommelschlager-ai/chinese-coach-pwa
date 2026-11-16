@@ -5,10 +5,13 @@ import {dailyQuestions,checkDayAnswer,dailyFinal} from '../assets/panda-hsk2-day
 assert.equal(dailyQuestions(0).length,3,'First micro-lesson unlocks 3 reviewed prompts');
 assert.equal(dailyQuestions(1).length,4,'Second micro-lesson unlocks 4');
 assert.equal(dailyQuestions(2).length,5,'Third unlocks all day questions');
+const pandaCutRegistry=fs.readFileSync(new URL('../assets/panda-voice-clips-v365.mjs',import.meta.url),'utf8');
+const recordedHanzi=new Set([...pandaCutRegistry.matchAll(/"zh": "([^"]+)"/g)].map(m=>m[1].replace(/[。？！，、,.!?\s]/g,'')));
 for(const mini of [0,1,2])for(const q of dailyQuestions(mini)){
  assert.equal(typeof q.hanzi,'string');
  assert.ok(q.pinyin&&q.ru&&q.hint&&q.pattern instanceof RegExp);
  assert.ok(['你早上做什么？','你起床以后做什么？','你上午做什么？','你今天做什么？','你晚上做什么？'].includes(q.hanzi),'Every guided question has an exact recorded MP3');
+ assert.ok(recordedHanzi.has(q.hanzi.replace(/[。？！，、,.!?\s]/g,'')),'The displayed question must be recorded: '+q.hanzi);
 }
 const good=[
  ['我每天七点十分起床。',0],['我每天早上七点半起床。',0],['我每天7点30分起床',0],['我每天两点起床',0],
