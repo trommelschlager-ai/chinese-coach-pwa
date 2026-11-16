@@ -14,6 +14,7 @@ import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
 import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=409';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=409';
+import {chooseAudibleFollowup} from './panda-audible-followup-v412.mjs?v=412';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
@@ -272,7 +273,14 @@ function submit(raw){
      const selected=state.allowed[state.cursor%state.allowed.length]||state.topic;
      followup=pickCoursePrompt(selected,curriculum,state.questions.concat(input),new Date(),{...state.profile,unlocked:state.allowed})||followup;
     }
+   // v412: an automatic question must have its own exact Panda MP3.
+   // Manual/free-form questions stay text-only when no recording exists.
+   const plannedFollowup=followup;
+   followup=chooseAudibleFollowup(followup,topicCatalogGroups(),
+     [...state.questions.slice(-12),...state.history.slice(-8).map(h=>h.hanzi)],
+     lookupPandaVoiceClip,input);
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
+   else if(plannedFollowup){render();}
    note(completedCalendarRound?closingSummary:
     followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
     followup?'Панда продолжит вопросом по пройденным темам. Можешь ответить или спросить раньше.':
