@@ -1604,6 +1604,7 @@ body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .foc
 <link rel="stylesheet" href="./assets/panda-hsk-scenic-v315.css?v=315">
 <link rel="stylesheet" href="./assets/panda-home-photo1-v319.css?v=319">
 <link rel="stylesheet" href="./assets/panda-mobile-cleanup-v378.css?v=378">
+<link rel="stylesheet" href="./assets/panda-v393-polish.css?v=393">
 <style id="pg-mobile-shell-fix-v378">
 /* Do not flash the retired woman intro; the new Panda home is activated by panda-v130.js. */
 body.pg130-loading>.shell,body.pg130-loading>#launch-entry{visibility:hidden!important}
@@ -1880,7 +1881,7 @@ async function updateOfflineBar(){const info=document.getElementById('offlineinf
 window.addEventListener('online',updateOfflineBar);window.addEventListener('offline',updateOfflineBar);
 if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')){
  const hadServiceWorkerController=!!navigator.serviceWorker.controller;
- navigator.serviceWorker.register('./sw.js?v=378',{scope:'./',updateViaCache:'none'}).then(()=>navigator.serviceWorker.ready).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
+ navigator.serviceWorker.register('./sw.js?v=393',{scope:'./',updateViaCache:'none'}).then(()=>navigator.serviceWorker.ready).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
  navigator.serviceWorker.addEventListener('controllerchange',()=>{
   // Replace an already-open cached shell once the new offline version takes control.
   if(hadServiceWorkerController){
@@ -2574,6 +2575,6 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
 <script src="./assets/dialogue-player-v144.js?v=148"></script>
 <script src="./assets/panda-word-sentences-v148.js?v=148"></script>
 <script src="./assets/assemble-alive-v149.js?v=378"></script>
-<script src="./assets/panda-v130.js?v=378"></script>
+<script src="./assets/panda-v130.js?v=393"></script>
 </body>
 </html>
