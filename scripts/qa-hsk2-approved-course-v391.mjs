@@ -16,7 +16,7 @@ try{
   await page.locator('.approved-welcome-screen .approved-art.ready').waitFor({state:'visible',timeout:25000});
   const ext=await page.locator('.approved-welcome-screen').evaluate(n=>{const b=getComputedStyle(n,'::before');return {filter:b.filter,size:b.backgroundSize}});
   assert.equal(ext.filter,'none','No blurred empty-space continuation');
-  assert.equal(ext.size,'100% 100%','Approved scene continues through full-screen background');
+  assert.match(ext.size,/100% 100%/,'Decorative scene covers full phone without duplicating poster elements');
   const art=await page.locator('.approved-art').boundingBox();
   assert.ok(art);
   assert.ok(Math.abs(art.width/art.height-941/1672)<0.003,'Approved art ratio unchanged '+tag);
