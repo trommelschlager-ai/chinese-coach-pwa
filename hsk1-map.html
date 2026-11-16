@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
 <meta name="panda-go-mobile-fix" content="v377-soft-button-shadows">
@@ -13,8 +13,14 @@
 *,*::before,*::after{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100dvh;overflow:hidden;font-family:Arial,system-ui,sans-serif;background:linear-gradient(180deg,#a854c8 0%,#8b5bdd 18%,#5e73e8 46%,#2f72d8 74%,#1561c5 100%)}
 body{display:grid;place-items:center;position:relative}
-/* Do not repeat/crop the approved image to fill side gutters. There is only one bitmap. */
+/* One approved bitmap only. On portrait Android, fill the complete viewport;
+   hotspots stay in the SAME coordinate space as the bitmap. No cloned gutters. */
 .artboard{position:relative;isolation:isolate;width:min(100vw,45.1768dvh);height:min(100dvh,221.3523vw);overflow:hidden;margin:auto;touch-action:manipulation;background:#6447ab;box-shadow:0 0 10px #26063750;z-index:1}
+@media(orientation:portrait) and (min-aspect-ratio:37/100) and (max-aspect-ratio:69/100){
+ html,body{width:100vw;max-width:100vw;height:100dvh;overflow:hidden}
+ body{display:block}
+ .artboard{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;box-shadow:none}
+}
 .approved{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .hotspots{position:absolute;inset:0;z-index:2;pointer-events:none}
 .hotspots a{pointer-events:auto;position:absolute;display:block;text-decoration:none;cursor:pointer;background:transparent;outline-offset:2px;-webkit-tap-highlight-color:transparent}
