@@ -89,3 +89,15 @@ jobs:
           name: panda-voice-android-pilot-screenshots
           path: qa/panda-voice-pilot/
           if-no-files-found: warn
+
+  hsk2-day-answer-regression:
+    name: HSK2 My Day answer rules
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify HSK2 My Day accepted and rejected responses
+        run: node tests/panda-hsk2-day-chat-v1.test.mjs
