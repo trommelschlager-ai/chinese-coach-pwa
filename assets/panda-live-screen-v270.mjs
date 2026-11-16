@@ -222,6 +222,19 @@ function submit(raw){
    if(result.wordCard)showWordCard(result.wordCard);
     else if(result.explanation){const row=document.createElement('p');row.textContent=result.explanation;$('learner-feedback').replaceChildren(row);$('learner-feedback').hidden=false;document.documentElement.dataset.feedback='true';}
    let followup=result.followup;
+   // Respect the learner's actual calendar topic and previously asked questions.
+   // The generic question picker can otherwise jump from today's weekday to a
+   // tomorrow-weekday variant, or alternate today's date/weekday indefinitely.
+   if(result.spoken?.calendarLiteral&&!state.lockedTopic){
+    const otherLesson=result.spoken.topic===4?5:4;
+    const nextCalendar=otherLesson===5?'今天几月几号':'今天星期几';
+    const askedRecently=state.questions.slice(-8).some(q=>normalize(q)===nextCalendar);
+    const candidate=state.allowed.includes(otherLesson)&&!askedRecently?
+     nextTopicPrompt(otherLesson,[],new Date(),state.profile):null;
+    followup=candidate&&normalize(candidate.hanzi)===nextCalendar
+     &&lookupPandaVoiceClip(candidate.hanzi)?
+     {...candidate,isContextual:true,audioKey:candidate.hanzi}:null;
+   }
    if(followup&&state.lockedTopic&&state.allowed.includes(state.lockedTopic)&&followup.lesson!==state.lockedTopic){
      // Preserve contextual questions from the chosen topic. If the generic
      // engine suggests a different topic, use a verified question here instead.
