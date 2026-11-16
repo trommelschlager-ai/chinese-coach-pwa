@@ -48,6 +48,8 @@ try{
    state.view='lesson';
    state.topic=resume.topic;state.mini=resume.mini;
    state.stage=Number.isInteger(resume.stage)?Math.max(0,Math.min(resume.topic===0?4:3,resume.stage)):0;
+    // Remap existing progress to the five-step v413 lesson order.
+    if(resume.topic===0&&!resume.stepOrderV413)state.stage=({0:0,1:4,2:1,3:3,4:2})[state.stage]??0;
    state.quizWord=[0,1,2].includes(resume.quizWord)?resume.quizWord:null;
    state.quizSentence=[0,1,2].includes(resume.quizSentence)?resume.quizSentence:null;
    var tokenCount=builders[state.topic*3+state.mini].length;
@@ -78,7 +80,7 @@ function store(){
    attempts:state.day.attempts,poster:state.day.poster
   }:null;
   var resume=state.view==='lesson'?{
-   topic:state.topic,mini:state.mini,stage:state.stage,quizWord:state.quizWord,
+   topic:state.topic,mini:state.mini,stage:state.stage,stepOrderV413:true,quizWord:state.quizWord,
    quizSentence:state.quizSentence,build:state.build,day:day
   }:null;
   localStorage.setItem(KEY,JSON.stringify({
@@ -94,8 +96,24 @@ function chosen(){return topics[state.topic]}
 function current(){return chosen().scenes[state.mini]}
 function words(t,m){return topics[t].words.slice(m===0?0:m===1?7:14,m===0?7:m===1?14:20)}
 function rec(zh){return !!(window.PandaHsk2AudioV330&&window.PandaHsk2AudioV330.lookup(zh))}
-function daySound(zh){return rec(zh)?sound(zh):'<span class="day-audio-pending" role="note">🔇 MP3 ещё нет</span>'}
-function sound(zh){return rec(zh)?'<button class="audio" type="button" data-sound="'+E(zh)+'" aria-label="Прослушать '+E(zh)+'">🔊</button>':'<span class="audio unavailable" title="Для этой фразы пока нет отдельного проверенного MP3" aria-label="Нет MP3">🔇</span>'}
+function deviceVoiceAvailable(){return !!window.speechSynthesis&&typeof window.SpeechSynthesisUtterance==='function'}
+function deviceSound(zh){
+ if(!deviceVoiceAvailable()){if(status)status.textContent='Голос устройства недоступен в этом браузере.';return false}
+ try{
+  window.PandaHsk2AudioV330?.stop?.();
+  const synth=window.speechSynthesis,u=new window.SpeechSynthesisUtterance(zh);
+  u.lang='zh-CN';u.rate=0.88;u.pitch=1;
+  const voices=synth.getVoices?.()||[];
+  u.voice=voices.find(v=>/^zh[-_]CN/i.test(v.lang))||voices.find(v=>/^zh[-_]/i.test(v.lang))||null;
+  synth.cancel();synth.speak(u);return true;
+ }catch(e){if(status)status.textContent='Голос устройства не запустился.';return false}
+}
+function daySound(zh){return sound(zh)}
+function sound(zh){
+ if(rec(zh))return '<button class="audio" type="button" data-sound="'+E(zh)+'" aria-label="Прослушать настоящий MP3: '+E(zh)+'">🔊</button>';
+ if(deviceVoiceAvailable())return '<button class="audio device-voice" type="button" data-device-sound="'+E(zh)+'" title="Синтезированное произношение на этом устройстве — не MP3 носительницы" aria-label="Озвучить голосом устройства: '+E(zh)+'">🔉 <small>голос устройства</small></button>';
+ return '<span class="audio unavailable" title="Для этой фразы нет MP3 и голос устройства недоступен" aria-label="Озвучка недоступна">🔇</span>';
+}
 function phrase(zh,py,ru){return '<div class="phrase"><span class="han" lang="zh-Hans">'+E(zh)+'</span>'+(state.showPy?'<span class="py">'+E(py)+'</span>':'')+'<span class="meaning">'+E(ru)+'</span>'+sound(zh)+'</div>'}
 function wordCard(w){
  var flagged=state.difficult.includes(w[0]);
@@ -156,7 +174,7 @@ function viewLesson(){
  if(step===0){
   html+='<div class="stage-title"><h2>📖 Слова и выражения</h2><span>'+ws.length+' слов</span></div>'+
    '<div class="word-grid">'+ws.map(wordCard).join('')+'</div>'+
-   '<p class="hint">🔊 Только подтверждённые MP3. Если рядом стоит 🔇, запись ещё не добавлена. Нажми ☆, чтобы оставить слово на повторение.</p>';
+   '<p class="hint">🔊 — подтверждённый MP3; 🔉 — синтезированный голос устройства (это не запись носительницы). Нажми ☆, чтобы оставить слово на повторение.</p>';
  }
  if(step===1){
   html+='<div class="panel gram"><div class="eyebrow">ОДНО ПРАВИЛО</div><h2>'+E(sc[0])+'</h2><p>'+E(sc[1])+'</p><div class="example">'+phrase(sc[2],sc[3],sc[4])+'</div></div>'+
@@ -275,7 +293,7 @@ function render(){
  app.classList.toggle('day-visual-v390',isDayArt);
  app.classList.toggle('day-done-active',isDayDone);
  app.classList.toggle('day-stage-0',isDayLesson&&!isDayArt&&state.stage===0);
- app.classList.toggle('day-stage-4',isDayLesson&&!isDayArt&&state.stage===4);
+ app.classList.toggle('day-stage-2',isDayLesson&&!isDayArt&&state.stage===2);
  var footer=document.getElementById('day-fixed-actions');
  if(footer){
   footer.replaceChildren();
@@ -320,10 +338,12 @@ function next(){
 document.addEventListener('click',function(e){
  var b=e.target.closest('button');if(!b)return;
  if(b.dataset.sound!==undefined){
+  window.speechSynthesis?.cancel?.();
   if(window.PandaHsk2AudioV330)window.PandaHsk2AudioV330.play(b.dataset.sound,function(msg){if(status)status.textContent=msg});
   return;
  }
- if(state.view==='lesson'&&dayPilot()&&dayUI.handle(b,state,{render:render,go:go,complete:function(){if(!state.completed.includes(id()))state.completed.push(id());go('done')}}))return;
+ if(b.dataset.deviceSound!==undefined){deviceSound(b.dataset.deviceSound);return}
+ if(state.view==='lesson'&&dayPilot()&&dayUI.handle(b,state,{render:render,go:go,deviceSound:deviceSound,complete:function(){if(!state.completed.includes(id()))state.completed.push(id());go('done')}}))return;
  if(b.dataset.nav){go(b.dataset.nav);return}
  if(b.dataset.toneAnswer!==undefined){state.toneAnswer=Number(b.dataset.toneAnswer);render();return}
  if(b.dataset.view){go(b.dataset.view);return}
