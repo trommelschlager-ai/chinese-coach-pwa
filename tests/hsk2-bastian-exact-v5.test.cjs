@@ -27,7 +27,7 @@ assert.equal(doc.querySelectorAll('[data-term]').length,4,'Four pronunciation ho
 assert.equal(doc.querySelectorAll('[data-step-link="0"],[data-step-link="1"],[data-step-link="2"],[data-step-link="3"]').length,5,'All study stages and grammar hotspot required');
 assert.equal($('#practice').hidden,true);
 click('[data-audio-ref="0"]');assert.match($('#screen-toast').textContent,/нет подтверждённой MP3/,'Missing audio must not be faked');
-click('[data-step-link="1"]');assert.equal($('#practice').hidden,false);assert.match($('#step-title').textContent,/Пиньинь/);
+click('[data-step-link="1"]');assert.equal($('#practice').hidden,false);assert.match($('#step-title').textContent,/Произношение 5 раз/,'Stage 2 now teaches five spoken attempts rather than the retired pinyin screen');
 click('#prev');assert.match($('#step-title').textContent,/Слова/);
 click('#prev');assert.equal($('#practice').hidden,true);
 click('#start');assert.equal($('#practice').hidden,false);assert.match($('#step-title').textContent,/Слова/);
