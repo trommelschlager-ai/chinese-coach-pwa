@@ -115,13 +115,20 @@ test('accepted active date completes calendar round even without spoken.calendar
 
 test('Short and Non-Stop screen paths retain progress and skip unavailable acknowledgement audio',()=>{
  const source=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
- assert(source.includes("const playReply=!result.spoken?.calendarLiteral||!!lookupPandaVoiceClip(result.reply.hanzi)"));
+ assert(source.includes("const playReply=completedCalendarRound?false:"),'Completion is text-first without forcing a different recorded voice');
+ assert(source.includes("lookupPandaVoiceClip(closingReply.hanzi)"),'Other answers still use only verified exact audio');
  assert(source.includes("if(question.spoken?.calendarLiteral&&question.reply)"));
  assert(source.includes("const result=verifyAnswerFor(conversation.lines,state.step,input)"));
  assert(source.indexOf("if(question.spoken?.calendarLiteral&&question.reply)") >
    source.indexOf("const result=verifyAnswerFor(conversation.lines,state.step,input)"));
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- assert(html.includes('panda-live-screen-v270.mjs?v=405'));
+ assert(html.includes('panda-live-screen-v270.mjs?v=406'));
+});
+
+test('the approved panda chat visibly renders the calendar-completion message',()=>{
+ const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
+ assert(ui.includes("e.analysis?.kind==='calendar-complete'"),'A chat-row completion is visible without covering the Panda');
+ assert(ui.includes("translation.append(el('div','pg406-finish',e.analysis.summary))"));
 });
 
 test('the UI does not overwrite the reviewed calendar follow-up with an unrelated greeting',()=>{
@@ -159,8 +166,15 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
   assert.equal(el('phrase').textContent,'今天几月几号？',
    'After weekday answer, Panda should ask for the date once');
   send('今天是十一月十六号。');
+  assert.equal(el('phrase').textContent,'很好！',
+   'The Panda should visibly close the lesson instead of echoing the date');
   assert.match(el('status').textContent,/Мы повторили день недели и дату/,
    'End the finished calendar mini-dialogue instead of looping');
+  assert.match(el('recent').textContent,/Мы повторили день недели и дату/,
+   'The completed-round message must appear in conversation history, not just hidden status');
+  const ending=dom.w.PandaApprovedBridge337.snapshot().history.at(-1);
+  assert.equal(ending?.analysis?.kind,'calendar-complete');
+  assert.equal(ending?.hanzi,'很好！');
   const finalPhrase=el('phrase').textContent;
   await new Promise(resolve=>setTimeout(resolve,4950));
   assert.equal(el('phrase').textContent,finalPhrase,

@@ -122,6 +122,9 @@ if (!bridge) {
     const row=el('article','pg346-row');const av=el('span','pg346-avatar');if(e.who==='you')av.textContent='👤';else{const img=document.createElement('img');img.src='./assets/panda-character-clean-v349.webp?v=349';img.alt='Панда';av.append(img)}
     const text=el('div','pg346-text');text.append(el('div','pg346-zh',e.hanzi||''),el('div','pg346-py',e.pinyin||''));
     const translation=el('div','pg346-ru',e.ru||e.analysis?.probable||'Перевод пока не подтверждён');
+    if(e.analysis?.kind==='calendar-complete'&&e.analysis.summary){
+     translation.append(el('div','pg406-finish',e.analysis.summary));
+    }
     const sound=el('button','pg346-row-audio','🔊');sound.type='button';sound.disabled=!clipFor(e);sound.setAttribute('aria-label',sound.disabled?'Для этой фразы нет MP3':'Слушать эту реплику');sound.addEventListener('click',()=>playHistory(e));
     row.append(av,text,translation,sound);root.append(row);
   }}

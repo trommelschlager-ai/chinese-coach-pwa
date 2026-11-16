@@ -98,6 +98,7 @@ function makeRow(entry,full=false){
  if(entry.pinyin&&(full||entry.who==='you')){const py=document.createElement('span');py.className='py';py.textContent=entry.pinyin;row.append(py)}
  const ru=document.createElement('span');ru.className='ru';ru.textContent=(full?'Перевод: ':' — ')+(entry.ru||(entry.analysis?.probable?'Возможный смысл: '+entry.analysis.probable:'Точный перевод пока не подтверждён'));row.append(ru);
  if(full&&entry.analysis?.explanation){const detail=document.createElement('p');detail.textContent=entry.analysis.explanation;row.append(detail)}
+ if(entry.analysis?.kind==='calendar-complete'&&entry.analysis.summary){const detail=document.createElement('p');detail.textContent=entry.analysis.summary;row.append(detail)}
  if(full&&entry.analysis?.correction){const c=entry.analysis.correction;const detail=document.createElement('p');detail.textContent='Правильно: '+c.hanzi+' '+(c.pinyin||'')+' — '+c.ru+' '+c.why;row.append(detail)}
  if(full&&entry.analysis?.kind==='correction-response'){const detail=document.createElement('p');detail.textContent='Предполагаемый смысл: '+entry.analysis.probable+' · Ошибка: '+entry.analysis.original+' · '+entry.analysis.why;row.append(detail)}
  if(full&&entry.analysis?.words?.length){const detail=document.createElement('p');detail.textContent='Знакомые слова: '+entry.analysis.words.map(w=>w.join(' — ')).join('; ');row.append(detail)}
@@ -215,11 +216,22 @@ function submit(raw){
   if(result.kind==='empty'){note(result.message);return}
   if(result.kind==='correction'){recordCorrection(input,result.spoken);pose('retry');note(result.message);render();return}
   if(result.reply){
+   // Decide completion before drawing Panda's reply. The translated learner
+   // date already appears in chat, so the Panda can acknowledge the exercise.
+   const completedCalendarRound=isCalendarRoundFinished({
+    input,resultKind:result.kind,spoken:result.spoken,prompt:activePrompt,questions:state.questions
+   });
+   const closingReply=completedCalendarRound?
+    {hanzi:'很好！',pinyin:'Hěn hǎo!',ru:'Отлично!'}:result.reply;
+   const closingSummary='Мы повторили день недели и дату. Выбери другую тему или задай свой вопрос.';
    state.turns++;state.topic=state.lockedTopic&&state.allowed.includes(state.lockedTopic)?state.lockedTopic:(result.lesson||lesson());state.discussed.add(state.topic);if(state.allowed.includes(state.topic))state.cursor=state.allowed.indexOf(state.topic);if(state.confidence===null||state.confidence>=.65){remember(result.spoken);state.profile.followupOffset=(state.profile.followupOffset||0)+1;}
    state.awaitQuestion=true;if(result.kind==='answer')happy();
    // Do not attempt nonexistent MP3 or switch Panda to a different voice.
-   const playReply=!result.spoken?.calendarLiteral||!!lookupPandaVoiceClip(result.reply.hanzi);
-   say(result.reply,playReply,result.explanation?{explanation:result.explanation}:null);
+   const playReply=completedCalendarRound?false:
+    (!result.spoken?.calendarLiteral||!!lookupPandaVoiceClip(closingReply.hanzi));
+   say(closingReply,playReply,completedCalendarRound?
+    {kind:'calendar-complete',summary:closingSummary}:
+    result.explanation?{explanation:result.explanation}:null);
    if(result.wordCard)showWordCard(result.wordCard);
     else if(result.explanation){const row=document.createElement('p');row.textContent=result.explanation;$('learner-feedback').replaceChildren(row);$('learner-feedback').hidden=false;document.documentElement.dataset.feedback='true';}
    let followup=result.followup;
@@ -236,9 +248,6 @@ function submit(raw){
      &&lookupPandaVoiceClip(candidate.hanzi)?
      {...candidate,isContextual:true,audioKey:candidate.hanzi}:null;
    }
-   const completedCalendarRound=isCalendarRoundFinished({
-    input,resultKind:result.kind,spoken:result.spoken,prompt:activePrompt,questions:state.questions
-   });
    if(completedCalendarRound){followup=null;}
    else if(followup&&state.lockedTopic&&state.allowed.includes(state.lockedTopic)&&followup.lesson!==state.lockedTopic){
      // Preserve contextual questions from the chosen topic. If the generic
@@ -256,7 +265,7 @@ function submit(raw){
      followup=pickCoursePrompt(selected,curriculum,state.questions.concat(input),new Date(),{...state.profile,unlocked:state.allowed})||followup;
     }
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
-   note(completedCalendarRound?'Мы повторили день недели и дату. Молодец! Выбери другую тему или задай свой вопрос.':
+   note(completedCalendarRound?closingSummary:
     followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
     followup?'Панда продолжит вопросом по пройденным темам. Можешь ответить или спросить раньше.':
     result.message||'Продолжай или нажми «Ещё вопрос».');
