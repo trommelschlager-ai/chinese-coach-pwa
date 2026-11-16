@@ -286,13 +286,16 @@ export function answerLive(raw,options={}){
   // objectively true. Ask a different calendar question only if unlocked.
   const otherLesson=calendarLiteral.topic===4?5:4;
   const questionKey=otherLesson===5?'今天几月几号':'今天星期几';
-  const followup=!prompt&&allowed.includes(otherLesson)?
+  // Non-Stop permits the learner to change topic from an unrelated pending
+  // question such as 你好吗. Never bypass lesson access when pivoting.
+  const followup=allowed.includes(otherLesson)?
    (topicPrompts(otherLesson,date,profile).find(q=>normalize(q.hanzi)===questionKey)||null):null;
   const contextualFollowup=followup?{...followup,isContextual:true,audioKey:followup.hanzi}:null;
+  const nextTopicName=otherLesson===4?'«Дни недели»':'«Даты»';
   return {kind:'statement',spoken:calendarLiteral,lesson:topic,
    reply:calendarAcknowledgement(calendarLiteral),followup:contextualFollowup,
    message:followup?'Панда поняла фразу и продолжит вопросом по пройденному уроку.':
-    'Панда повторила твою фразу. Это перевод текста, а не проверка тонов.'};
+    'Панда поняла фразу. Чтобы она задала следующий календарный вопрос, сначала открой тему '+nextTopicName+'. Тоны голоса не проверялись.'};
  }
  // Rewrite only explicit meaning-preserving learner variants. Keep original
  // transcript visible, without claiming a made-up pinyin for the new wording.
