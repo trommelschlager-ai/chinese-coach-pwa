@@ -287,10 +287,10 @@ function render(){
  // The old unconditional scrollTop=0 caused every vocabulary tap to jump.
  screen.scrollTop=rememberedY;
  lastPaintKey=paintKey;
- if(preserve)window.requestAnimationFrame(function(){
+ if(preserve&&typeof window.requestAnimationFrame==='function')window.requestAnimationFrame(function(){
   if(lastPaintKey===paintKey && Math.abs(screen.scrollTop-rememberedY)>1)screen.scrollTop=rememberedY;
  });
- if(window.PandaGoApprovedV391)window.requestAnimationFrame(function(){window.PandaGoApprovedV391.fit()});
+ if(window.PandaGoApprovedV391&&typeof window.requestAnimationFrame==='function')window.requestAnimationFrame(function(){window.PandaGoApprovedV391.fit()});
  if(status)status.textContent='';
  store();
 }
