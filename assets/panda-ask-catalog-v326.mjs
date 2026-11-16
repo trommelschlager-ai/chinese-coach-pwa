@@ -2,7 +2,7 @@
  * Never advertise a free-form answer, recording, tone grade or locked lesson.
  * Entries are checked against the SAME engine used when the learner submits.
  */
-import {answerLive} from './panda-live-dialogue-v272.mjs?v=401';
+import {answerLive} from './panda-live-dialogue-v272.mjs?v=402';
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=366';
 
