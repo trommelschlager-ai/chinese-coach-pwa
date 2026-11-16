@@ -13,7 +13,7 @@ import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
 import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=360';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=374';
-import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=2';
+import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=3';
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
 const $=id=>document.getElementById(id);

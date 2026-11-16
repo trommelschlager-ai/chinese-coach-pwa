@@ -9,6 +9,10 @@ for(const mini of [0,1,2])for(const q of dailyQuestions(mini)){
  assert.equal(q.audioKey,null,'Never pretend audio exists');
 }
 const good=[
+ ['我每天七点十分起床。',0],['我每天早上七点半起床。',0],['我每天7点30分起床',0],['我每天两点起床',0],
+ ['我每天早上洗脸。',1],['我每天早上不洗脸',1],
+ ['我每天早上吃早饭。',2],['我每天早上不吃早饭。',2],
+ ['我晚上听音乐。',4],['我晚上经常看电视。',4],['我晚上学习中文',4],
  ['我每天七点起床。',0],['我早上六点起床。',0],['七点起床',0],
  ['我早上洗脸。',1],['我不洗脸',1],
  ['我早上吃早饭。',2],['不吃早饭',2],
@@ -22,6 +26,8 @@ for(const [utterance,idx] of good){
  assert.equal(x.spoken.pinyin,null,'Do not fabricate pinyin for variable learner replies');
 }
 const bad=[
+ ['我每天25点起床',0],['我今天二十五点起床',0],['我早上七点六十分起床',0],
+ ['我今天刷牙',1],['我晚上听音乐',0],
  ['我每天刷牙。',0],
  ['我吃早饭',1],
  ['我洗脸',2],
