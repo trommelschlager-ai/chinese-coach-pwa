@@ -75,16 +75,17 @@ function render(state,ctx){
  }
  if(step===4){
   const attempts=d.attempts[d.speechWord],passed=attempts.filter(a=>a.match).length,total=d.attempts.reduce((n,a)=>n+a.length,0);
+  const dayAction=(!window.SpeechRecognition&&!window.webkitSpeechRecognition)?
+  '<div class="day-tip">🎙 Для проверки речи нужен Chrome с доступом к микрофону.</div>':
+  attempts.length<5?'<button type="button" class="primary day-record" data-day-record'+(recording?' disabled':'')+'>'+(recording?'🎙 Слушаю…':'🎙 Нажми и произнеси')+'</button>':'<p class="day-tip">✓ Пять попыток зафиксированы. Выбери следующее слово.</p>';
   html+='<div class="day-card day-speech-card"><h2>⑤ Произнеси каждое слово 5 раз</h2><p class="day-hint">Выбери слово, послушай пример и произнеси его пять раз.</p>'+
   '<div class="day-wordchoice">'+day.words.map((w,i)=>'<button type="button" data-day-speech-word="'+i+'" class="'+(i===d.speechWord?'picked':'')+'">'+esc(w.zh)+' <small>'+d.attempts[i].length+'/5</small></button>').join('')+'</div>'+
-  '<div class="day-speechhero"><div lang="zh-Hans">'+esc(day.words[d.speechWord].zh)+'</div><strong>'+esc(day.words[d.speechWord].py)+'</strong><span>'+esc(day.words[d.speechWord].ru)+'</span>'+audioExample(day.words[d.speechWord].zh,ctx)+'</div>'+
+  '<div class="day-speechhero"><div lang="zh-Hans">'+esc(day.words[d.speechWord].zh)+'</div><strong>'+esc(day.words[d.speechWord].py)+'</strong><span>'+esc(day.words[d.speechWord].ru)+'</span>'+audioExample(day.words[d.speechWord].zh,ctx)+dayAction+'</div>'+
   '<div class="day-attempts">'+[0,1,2,3,4].map(i=>'<div class="'+(attempts[i]?(attempts[i].match?'heard':'not-heard'):'')+'"><b>'+(i+1)+'</b><span>'+(attempts[i]?(attempts[i].match?'✓':'×'):'🎙')+'</span></div>').join('')+'</div>'+
   '<p class="day-feedback">'+attempts.length+'/5 попыток · '+passed+' распознано как нужное слово</p>'+
   '<p class="day-hint">Распознанный текст: '+(attempts.length?'<b lang="zh-Hans">'+esc(attempts[attempts.length-1].said)+'</b>':'—')+'</p>'+
   (d.speechInfo?'<p class="day-feedback bad">'+esc(d.speechInfo)+'</p>':'')+
-  ((!window.SpeechRecognition&&!window.webkitSpeechRecognition)?
-  '<div class="day-tip">🎙 В этом браузере нет доступного распознавания. Открой страницу в Chrome на Android или продолжи урок без оценки речи.</div>':
-  attempts.length<5?'<button type="button" class="primary day-record" data-day-record'+(recording?' disabled':'')+'>'+(recording?'🎙 Слушаю…':'🎙 Нажми и произнеси')+'</button>':'<p class="day-tip">✓ Пять попыток зафиксированы. Выбери следующее слово.</p>')+
+
   (d.showConsent?'<div class="day-consent"><p>Распознавание выполняет браузер и может передавать аудио сторонней службе. Panda Go не сохраняет запись голоса. Разрешить распознавание?</p><button type="button" data-day-consent class="primary">Разрешить и говорить</button><button type="button" data-day-cancel-consent class="secondary">Отмена</button></div>':'')+
   '<p class="day-hint">'+total+' из 35 попыток сделано. Можешь повторять постепенно: микрофон не обязателен для завершения урока.</p></div>';
  }
