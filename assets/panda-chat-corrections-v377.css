@@ -1,0 +1,6 @@
+/* Panda AI v377 correction feedback; scoped to the existing approved chat. */
+#pg346 .pg346-feedback .pg377-error {color:#a92543;font-weight:800}
+#pg346 .pg346-feedback .pg377-correct {color:#176e43;font-weight:850}
+#pg346 .pg346-feedback .pg377-pinyin {font-style:italic;color:#62438f}
+#pg346 .pg346-feedback .pg377-meaning {font-weight:650}
+#pg346 .pg346-feedback .pg377-explanation {font-size:0.94em}

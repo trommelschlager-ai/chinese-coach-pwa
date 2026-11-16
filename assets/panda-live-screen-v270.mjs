@@ -15,6 +15,7 @@ import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=374';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=2';
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
+import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -89,6 +90,7 @@ function makeRow(entry,full=false){
  const ru=document.createElement('span');ru.className='ru';ru.textContent=(full?'Перевод: ':' — ')+(entry.ru||(entry.analysis?.probable?'Возможный смысл: '+entry.analysis.probable:'Точный перевод пока не подтверждён'));row.append(ru);
  if(full&&entry.analysis?.explanation){const detail=document.createElement('p');detail.textContent=entry.analysis.explanation;row.append(detail)}
  if(full&&entry.analysis?.correction){const c=entry.analysis.correction;const detail=document.createElement('p');detail.textContent='Правильно: '+c.hanzi+' '+(c.pinyin||'')+' — '+c.ru+' '+c.why;row.append(detail)}
+ if(full&&entry.analysis?.kind==='correction-response'){const detail=document.createElement('p');detail.textContent='Предполагаемый смысл: '+entry.analysis.probable+' · Ошибка: '+entry.analysis.original+' · '+entry.analysis.why;row.append(detail)}
  if(full&&entry.analysis?.words?.length){const detail=document.createElement('p');detail.textContent='Знакомые слова: '+entry.analysis.words.map(w=>w.join(' — ')).join('; ');row.append(detail)}
  if(full&&entry.confidence!==null&&entry.confidence<.65){const warn=document.createElement('p');warn.textContent='Распознавание неуверенное — проверь текст.';row.append(warn)}
  return row;
@@ -101,9 +103,13 @@ function refreshHistory(){
 function record(who,hanzi,pinyin,ru,analysis=null){state.history.push({who,hanzi,pinyin,ru,analysis,confidence:who==='you'?state.confidence:null});if(state.history.length>100)state.history.shift();refreshHistory()}
 function say(line,autoplay=true,analysis=null){state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);if(autoplay)play()}
 function learner(input,spoken){record('you',input,spoken?.known?spoken.pinyin:null,spoken?.known?spoken.translation:null,spoken);showLearnerFeedback(spoken);state.answers.push(input);if(state.answers.length>16)state.answers.shift()}
+function recordCorrection(input,spoken){
+ const c=spoken?.correction;if(!c)return;
+ record('panda',c.hanzi,c.pinyin,c.ru,{kind:'correction-response',original:input,probable:spoken.probable||c.ru,why:c.why});
+}
 function showLearnerFeedback(spoken){
  const root=$('learner-feedback');root.replaceChildren();root.hidden=true;
- if(spoken?.correction){const c=spoken.correction;for(const text of ['Возможный смысл: '+spoken.probable,'Правильно: '+c.hanzi+(c.pinyin?' · '+c.pinyin:''),c.why]){const row=document.createElement('p');row.textContent=text;root.append(row)}root.hidden=false;}
+ if(spoken?.correction){const c=spoken.correction;for(const text of ['Предполагаемый смысл: '+(spoken.probable||c.ru),'❌ '+spoken.hanzi,'✅ '+c.hanzi,c.pinyin||'',c.ru||'',c.why].filter(Boolean)){const row=document.createElement('p');row.textContent=text;root.append(row)}root.hidden=false;}
  else if(!spoken?.known&&spoken?.words?.length){const row=document.createElement('p');row.textContent='Знакомые слова: '+spoken.words.map(w=>w.join(' — ')).join('; ')+'. Полный смысл уточни.';root.append(row);root.hidden=false}
  if(!root.hidden&&state.confidence!==null&&state.confidence<.65){const warn=document.createElement('p');warn.textContent='Распознавание неуверенное — проверь исходный текст.';root.append(warn)}
  document.documentElement.dataset.feedback=String(!root.hidden);
@@ -186,11 +192,11 @@ function submit(raw){
  }
  if(state.mode==='nonstop'){
   const activePrompt=state.awaitQuestion?null:state.prompt?.line;
-   const rawResult=interpretWorkReply(input,{prompt:activePrompt})||answerLive(input,{allowed:state.allowed,topic:lesson(),prompt:activePrompt,curriculum,date:new Date(),turn:state.turns,profile:{...state.profile,recentQuestions:state.questions.slice(-40)}});
+   const rawResult=correctCommonPhrase(input)||interpretWorkReply(input,{prompt:activePrompt})||answerLive(input,{allowed:state.allowed,topic:lesson(),prompt:activePrompt,curriculum,date:new Date(),turn:state.turns,profile:{...state.profile,recentQuestions:state.questions.slice(-40)}});
    const result=addPersonalFollowup(rawResult,{allowed:state.allowed,recentQuestions:state.questions.slice(-40)});
   learner(input,result.spoken||analyzeLearner(input,state.allowed,state.prompt?.line,curriculum));
   if(result.kind==='empty'){note(result.message);return}
-  if(result.kind==='correction'){state.topic=result.lesson||lesson();pose('retry');note(result.message);render();return}
+  if(result.kind==='correction'){recordCorrection(input,result.spoken);pose('retry');note(result.message);render();return}
   if(result.reply){
    state.turns++;state.topic=state.lockedTopic&&state.allowed.includes(state.lockedTopic)?state.lockedTopic:(result.lesson||lesson());state.discussed.add(state.topic);if(state.allowed.includes(state.topic))state.cursor=state.allowed.indexOf(state.topic);if(state.confidence===null||state.confidence>=.65){remember(result.spoken);state.profile.followupOffset=(state.profile.followupOffset||0)+1;}
    state.awaitQuestion=true;if(result.kind==='answer')happy();say(result.reply,true,result.explanation?{explanation:result.explanation}:null);
@@ -218,10 +224,10 @@ function submit(raw){
   }
   note(result.message);render();return;
  }
- const spoken=analyzeLearner(input,[1,conversation.id],conversation.lines[state.step],curriculum);learner(input,spoken);
+ const spoken=correctCommonPhrase(input)?.spoken||analyzeLearner(input,[1,conversation.id],conversation.lines[state.step],curriculum);learner(input,spoken);
  const greeting=/^(你好[呀啊]?|早上好[呀啊]?|中午好[呀啊]?|下午好[呀啊]?|晚上好[呀啊]?)$/.test(normalize(input));
  const social=replyToExtraSpeech(input,conversation.id,curriculum);
- if(spoken.correction){pose('retry');note(spoken.correction.why);render();return}
+ if(spoken.correction){recordCorrection(input,spoken);pose('retry');note(spoken.correction.why);render();return}
  const question=answerLive(input,{allowed:state.allowed,topic:conversation.id,curriculum,date:new Date(),turn:1,profile:state.profile});
  if(['question','explanation'].includes(question.kind)&&!(greeting&&state.step===0&&!state.done)){say(question.reply);note(state.done?'Можно продолжить в Non-Stop.':'Теперь вернись к учебному вопросу: '+conversation.lines[state.step].instruction);return}
  if(question.kind==='locked'){note(question.message);return}
