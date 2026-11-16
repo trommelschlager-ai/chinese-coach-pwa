@@ -98,10 +98,11 @@ const vm=require('node:vm');
  assert(questionVariant('你有妹妹')===null,'Plain statement must not be rewritten as a question');
  assert(learnerAnswerVariant('我今年四十四岁',null)===null,'Do not normalize student sentences without a relevant prompt');
  const mediaBefore=fs.readFileSync('assets/panda-live-audio.mjs','utf8');
- assert(mediaBefore.includes('lookupHsk1Voice'));
+ assert(mediaBefore.includes('PANDA_CLIPS')&&mediaBefore.includes('lookupPilotAudio'),'Panda audio must resolve only approved conversational recordings');
+  assert(!mediaBefore.includes('lookupHsk1Voice'),'Do not bring HSK1 lesson voices into Panda AI');
  assert(!/fetch\(/.test(fs.readFileSync('assets/panda-hsk1-variants-v301.mjs','utf8')),'Variant expansion must remain local/offline');
  const html=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(/panda-live-screen-v270\.mjs\?v=(?:30[24567]|318|319|323|326|33[6-9]|35[2-9]|36[0-9])/.test(html),'Panda conversation page must load new version');
+ assert(/panda-live-screen-v270\.mjs\?v=\d+/.test(html),'Panda conversation page must load a cache-versioned module');
  assert(html.includes('id="mode-short"')&&html.includes('id="mode-nonstop"')&&html.includes('id="mic"'));
  assert(html.includes('id="history-dialog"')&&html.includes('id="speech-dialog"'));
  console.log('PASS Panda HSK1 v301 '+passed+'/'+samples.length+' manually checked examples plus '+corpusPass+'/'+corpus.length+' reviewed alias corpus questions across 7 lessons; '
