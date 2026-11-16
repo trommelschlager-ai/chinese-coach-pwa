@@ -282,7 +282,9 @@ function submit(raw){
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
    else if(plannedFollowup){render();}
    note(completedCalendarRound?closingSummary:
-    followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
+    plannedFollowup?.intent==='relative-age'?
+      (followup?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
+       'Панда запомнила твою реплику о семье. Озвученного уточняющего вопроса пока нет; можешь спросить сама или выбрать другую тему.'):
     followup?'Панда продолжит вопросом по пройденным темам. Можешь ответить или спросить раньше.':
     result.message||'Продолжай или нажми «Ещё вопрос».');
    if(state.confidence!==null&&state.confidence<.65){cancelFollowup();note('Распознано неуверенно. Проверь текст в истории и повтори при необходимости.');}return;
