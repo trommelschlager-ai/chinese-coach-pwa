@@ -1,0 +1,112 @@
+/* Panda Go v378 — focused Android game polish; approved Panda/HSK artworks unchanged. */
+#pg130 .pg-route-games,
+#pg130 .pg-route-alive{
+ width:100%!important;max-width:none!important;max-height:none!important;
+ height:100dvh!important;min-height:0!important;
+ margin:0!important;border:0!important;border-radius:0!important;
+ padding:max(12px,env(safe-area-inset-top)) clamp(12px,3.2vw,19px) max(14px,env(safe-area-inset-bottom))!important;
+ overflow-x:hidden!important;
+ box-shadow:inset 0 0 0 2px #ffdaffb5, inset 0 0 22px #fff9!important;
+ background:linear-gradient(180deg,#c893ed 0%,#e9c1f2 42%,#e8bde8 75%,#c8a2e9 100%)!important;
+}
+#pg130 .pg-route-games .pg-heading{
+ flex:0 0 auto!important;
+ min-height:clamp(85px,15dvh,132px)!important;
+ padding:8px 13px 11px!important;
+ margin:0 0 8px!important;
+ text-align:center;
+ align-items:center;
+ justify-content:center;
+}
+#pg130 .pg-route-games .pg-heading h1{
+ font-size:clamp(22px,5.6vw,29px)!important;
+ line-height:1.06;letter-spacing:-.4px;
+ text-shadow:0 2px 0 #fff7;
+}
+#pg130 .pg-route-games .pg-heading p{
+ font-size:clamp(12px,3.3vw,15px)!important;
+ margin-top:5px;color:#61347a;
+}
+#pg130 .pg-route-games .pg-heading>.pg-icon{
+ width:clamp(32px,8vw,45px);height:clamp(32px,8vw,45px);
+ max-width:none!important;margin:0 auto 5px!important;
+ filter:drop-shadow(0 3px 4px #873da266);
+}
+#pg130 .pg-route-games .pg-menu{
+ position:relative;z-index:2;
+ flex:1 1 auto!important;min-height:0!important;
+ display:grid!important;grid-template-rows:repeat(5,minmax(0,1fr))!important;
+ align-content:stretch!important;gap:clamp(7px,1.6dvh,13px)!important;
+ margin:0!important;padding:3px 0 clamp(6px,1.3dvh,12px)!important;
+}
+#pg130 .pg-route-games .pg-card{
+ min-height:0!important;max-height:none!important;
+ width:100%;height:100%;
+ display:grid;grid-template-columns:clamp(50px,15vw,67px) minmax(0,1fr) clamp(20px,5vw,28px);
+ gap:clamp(8px,2.5vw,14px);
+ padding:clamp(7px,1.5dvh,14px) clamp(11px,3.4vw,18px)!important;
+ border-radius:clamp(17px,4vw,23px)!important;
+ border:2px solid #ffebff!important;
+ background:linear-gradient(135deg,#fff8ff 0%,#f2ddff 58%,#e7c4fa 100%)!important;
+ box-shadow:inset 0 2px 2px #fff,0 4px 0 #b481d0,0 8px 15px #7139903d!important;
+ color:#3a1457!important;
+ transition:transform .12s ease,filter .12s ease,box-shadow .12s ease;
+}
+#pg130 .pg-route-games .pg-card:active{
+ transform:translateY(3px) scale(.987);filter:brightness(1.04);
+ box-shadow:inset 0 2px 5px #ac7ac275,0 2px 4px #71399052!important;
+}
+#pg130 .pg-route-games .pg-card>.pg-icon{
+ width:clamp(48px,13.8vw,65px)!important;
+ height:clamp(48px,13.8vw,65px)!important;
+ object-fit:contain;filter:drop-shadow(0 2px 3px #a45fbe5b);
+ padding:4px!important;border-radius:16px;
+ background:radial-gradient(circle at 32% 22%,#fff,#f6deff 65%,#d8a9ed);
+ border:1px solid #efcfff;
+}
+#pg130 .pg-route-games .pg-card strong{font-size:clamp(17px,4.9vw,23px)!important;line-height:1.13!important;letter-spacing:-.3px!important}
+#pg130 .pg-route-games .pg-card small{font-size:clamp(11px,3.3vw,15px)!important;line-height:1.24!important;color:#6e4a84}
+#pg130 .pg-route-games .pg-chevron{font-size:clamp(25px,7vw,34px)!important;line-height:1!important;color:#a32dbf}
+#pg130 .pg-route-games::after{
+ height:clamp(46px,9dvh,85px)!important;
+ background-size:cover!important;opacity:.63;z-index:0;
+}
+#pg130 .pg-route-alive .pg-heading{
+ min-height:clamp(48px,8dvh,65px)!important;
+ padding:4px 43px 9px!important;margin:0!important;
+}
+#pg130 .pg-route-alive .pg-heading h1{font-size:clamp(21px,5.3vw,28px)!important}
+#pg130 .pg-route-alive .ac-game{gap:clamp(5px,.9dvh,9px);flex:1;min-height:0;z-index:1}
+#pg130 .pg-route-alive .ac-scene{width:100%;aspect-ratio:600/300;max-height:clamp(118px,25dvh,210px)!important;border-radius:19px}
+#pg130 .pg-route-alive .ac-task{padding:0 0 2px!important}
+#pg130 .pg-route-alive .ac-task h2{font-size:clamp(19px,5.3vw,24px)!important;margin-top:2px}
+#pg130 .pg-route-alive .ac-answer,
+#pg130 .pg-route-alive .ac-bank{
+ min-height:clamp(49px,10dvh,86px)!important;max-height:15dvh;
+ padding:clamp(5px,1dvh,9px)!important;gap:5px;
+ border-radius:17px;flex:0 1 auto;
+}
+#pg130 .pg-route-alive .ac-answer{background:#fff9fd!important;border:2px solid #e5bce7!important}
+#pg130 .pg-route-alive .ac-bank{background:#f9effcee!important;border:1.5px dashed #d9acd9!important}
+#pg130 .pg-route-alive .ac-placeholder{font-size:clamp(12px,3.4vw,15px);color:#806289}
+#pg130 .pg-route-alive .ac-token{
+ min-height:clamp(42px,8dvh,58px)!important;
+ padding:4px clamp(7px,2.3vw,11px)!important;
+ box-shadow:0 3px 0 #cbb0d8!important;background:#fffaff!important;
+}
+#pg130 .pg-route-alive .ac-token b{font-size:clamp(22px,6vw,30px)}
+#pg130 .pg-route-alive .ac-message{min-height:clamp(23px,4dvh,34px);font-size:clamp(11px,3vw,13px);line-height:1.3}
+#pg130 .pg-route-alive .ac-tools{margin-top:auto;gap:7px}
+#pg130 .pg-route-alive .ac-tools button{min-height:clamp(38px,6dvh,49px);font-size:clamp(11px,3.2vw,15px)}
+#pg130 .pg-route-alive .ac-check{min-height:clamp(47px,7dvh,56px)!important;margin-bottom:4px}
+@media(max-height:650px){
+ #pg130 .pg-route-games .pg-heading{min-height:74px!important;margin-bottom:4px!important}
+ #pg130 .pg-route-games .pg-menu{gap:6px!important}
+ #pg130 .pg-route-games .pg-card{padding:5px 10px!important}
+ #pg130 .pg-route-alive{overflow-y:auto!important}
+ #pg130 .pg-route-alive .ac-game{min-height:480px}
+ #pg130 .pg-route-alive .ac-scene{max-height:145px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #pg130 .pg-route-games .pg-card{transition:none!important}
+}
