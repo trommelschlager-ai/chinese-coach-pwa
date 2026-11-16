@@ -57,7 +57,9 @@ try{
   summary.results.push({width,case:'short Mandarin dialogue',reply:await page.locator('.pg346-main-zh').textContent()});
   await page.locator('#pg346-topics-btn').click();
   assert(await page.locator('#pg346-topics').isVisible(),'Topic list opens only when tapped');
-  assert.equal(await page.locator('#pg346-topics .pg346-topic-list button').count(),7,'All seven topic entries retained');
+  const topics=await page.locator('#pg346-topics .pg346-topic-list button').allTextContents();
+  assert(topics.length>=7,'All seven original topics retained; extra HSK2 practice topics may be added');
+  assert.equal(new Set(topics.map(s=>s.trim())).size,topics.length,'Visible topic entries must remain distinct');
   await page.locator('#pg346-topics-close').click();
   assert(!(await page.locator('#pg346-topics').isVisible()));
   await page.locator('#pg346-history').click();
