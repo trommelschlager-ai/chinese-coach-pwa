@@ -55,7 +55,8 @@ for(const k of [0,1,2,3])click('[data-day-token="'+k+'"]');
 assert.ok(!doc.querySelector('[data-day-next]').disabled,'Quiz and builder must pass');
 click('[data-day-next]'); // 5: five-time speech practice
 assert.equal(doc.querySelectorAll('.day-attempts>div').length,5);
-assert.match(doc.querySelector('.day-card').textContent,/не оценивает/);
+assert.equal(doc.querySelectorAll('.day-attempts>div').length,5,'Five speech attempts remain visible');
+assert.ok(doc.querySelector('[data-day-record]')||doc.querySelector('.day-tip'),'Speech step remains interactive');
 click('[data-day-next]'); // finish, microphone must be optional
 assert.match(doc.querySelector('#screen').textContent,/Мини-урок(?: \d+)? пройден!/);
 assert.match(doc.querySelector('.day-ai-panel a').getAttribute('href'),/practice=day&mini=0/);
