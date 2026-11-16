@@ -196,7 +196,7 @@ function submit(raw){
    const result=addPersonalFollowup(rawResult,{allowed:state.allowed,recentQuestions:state.questions.slice(-40)});
   learner(input,result.spoken||analyzeLearner(input,state.allowed,state.prompt?.line,curriculum));
   if(result.kind==='empty'){note(result.message);return}
-  if(result.kind==='correction'){recordCorrection(input,result.spoken);state.topic=result.lesson||lesson();pose('retry');note(result.message);render();return}
+  if(result.kind==='correction'){recordCorrection(input,result.spoken);pose('retry');note(result.message);render();return}
   if(result.reply){
    state.turns++;state.topic=state.lockedTopic&&state.allowed.includes(state.lockedTopic)?state.lockedTopic:(result.lesson||lesson());state.discussed.add(state.topic);if(state.allowed.includes(state.topic))state.cursor=state.allowed.indexOf(state.topic);if(state.confidence===null||state.confidence>=.65){remember(result.spoken);state.profile.followupOffset=(state.profile.followupOffset||0)+1;}
    state.awaitQuestion=true;if(result.kind==='answer')happy();say(result.reply,true,result.explanation?{explanation:result.explanation}:null);
