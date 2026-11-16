@@ -77,7 +77,7 @@ try{
   await page.locator('.bs394-page:not([hidden]) .bs394-next').click();
   const slice=await page.locator('.bs394-page:not([hidden]) .bs394-slice').boundingBox();assert.ok(slice.width>100,'Second slice has real width');
   await page.screenshot({path:'qa/hsk2-approved-v391/bastian-2-'+tag+'.png'});
-  await page.locator('.bs394-page:not([hidden]) [data-step-link="0"]').click();
+  await page.locator('.bs394-page:not([hidden]) [aria-label="Начать практику"]').click();
   assert.ok(await page.locator('#practice').isVisible());
   await page.goto(base+'/index.html#panda/training');
   await page.waitForURL(/#panda\/home$/);
