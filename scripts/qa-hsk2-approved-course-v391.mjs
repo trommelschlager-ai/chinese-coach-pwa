@@ -13,7 +13,7 @@ try{
   page.on('pageerror',error=>errors.push(width+': '+error.message));
   const tag=width+'x'+height;
   await page.goto(base+'/hsk2-life-course.html?v=391',{waitUntil:'domcontentloaded'});
-  await page.locator('.approved-welcome-screen img[src$="/course-welcome.png"]').waitFor({state:'visible',timeout:20000});
+  await page.locator('.approved-welcome-screen .approved-art.ready').waitFor({state:'visible',timeout:25000});
   const art=await page.locator('.approved-art').boundingBox();
   assert.ok(art);
   assert.ok(Math.abs(art.width/art.height-941/1672)<0.003,'Approved art ratio unchanged '+tag);
@@ -23,11 +23,12 @@ try{
   await page.screenshot({path:'qa/hsk2-approved-v391/welcome-'+tag+'.png',fullPage:false});
   await page.locator('.approved-program').click();
   assert.equal(await page.locator('.poster-map-card[data-topic]').count(),10);
+  await page.locator('.approved-map-screen .approved-art.ready').waitFor({state:'visible',timeout:25000});
   await page.screenshot({path:'qa/hsk2-approved-v391/map-'+tag+'.png',fullPage:false});
   await page.locator('.poster-map-card[data-topic="0"]').click();
   assert.match(await page.locator('.topic h1').innerText(),/распорядок дня/);
   await page.locator('[data-mini="0"]').first().click();
-  await page.locator('.day-visual-start img[src$="/day-lesson.png"]').waitFor();
+  await page.locator('.day-visual-start .approved-art.ready').waitFor({state:'visible',timeout:25000});
   await page.screenshot({path:'qa/hsk2-approved-v391/art-'+tag+'.png',fullPage:false});
   await page.locator('.art-next').click();
   assert.equal(await page.locator('.day-vword').count(),7);
