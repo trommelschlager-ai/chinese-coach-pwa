@@ -175,3 +175,15 @@ body:has(#poster:not([hidden])){background:#461273!important}
 #poster .bs394-page .bs394-bar :is(a,button):focus-visible{
  outline:3px solid #fff1ad!important;outline-offset:2px!important;
 }
+
+/* v396: explicit image URLs relative to THIS CSS file. A CSS-variable URL
+   defined in HTML can resolve at a different base and leave a flat purple gap. */
+#app.approved-welcome-v390 .approved-stage::before{
+ background-image:url('./approved-course-v390/course-welcome.png')!important;
+}
+#app.approved-map-v390 .approved-stage::before{
+ background-image:url('./approved-course-v390/course-map.png')!important;
+}
+#app.day-visual-v390 .approved-stage::before{
+ background-image:url('./approved-course-v390/day-lesson.png')!important;
+}
