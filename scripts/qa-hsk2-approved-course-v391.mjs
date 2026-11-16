@@ -14,6 +14,9 @@ try{
   const tag=width+'x'+height;
   await page.goto(base+'/hsk2-life-course.html?v=391',{waitUntil:'domcontentloaded'});
   await page.locator('.approved-welcome-screen .approved-art.ready').waitFor({state:'visible',timeout:25000});
+  const ext=await page.locator('.approved-welcome-screen').evaluate(n=>{const b=getComputedStyle(n,'::before');return {filter:b.filter,size:b.backgroundSize}});
+  assert.equal(ext.filter,'none','No blurred empty-space continuation');
+  assert.equal(ext.size,'100% 100%','Original poster's surroundings fill the full-screen background');
   const art=await page.locator('.approved-art').boundingBox();
   assert.ok(art);
   assert.ok(Math.abs(art.width/art.height-941/1672)<0.003,'Approved art ratio unchanged '+tag);
@@ -35,6 +38,12 @@ try{
   await page.screenshot({path:'qa/hsk2-approved-v391/art-'+tag+'.png',fullPage:false});
   await page.locator('.art-next').click();
   assert.equal(await page.locator('.day-vword').count(),7);
+  const wordBounds=await page.locator('.day-quicklist,.day-focus,.day-breakdown').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height}}));
+  assert.equal(wordBounds.length,3,'One-screen word, chosen word and explanation are all present');
+  assert.ok(wordBounds.every(b=>b.height>25&&b.top>=0&&b.bottom<=height+1),'First lesson vocabulary and explanation fit the visible phone '+tag);
+  assert.ok(wordBounds[0].top<wordBounds[1].top&&wordBounds[1].top<wordBounds[2].top,'Pick the word before reading it');
+  const surface=await page.locator('.day-quicklist').evaluate(n=>getComputedStyle(n).display);
+  assert.equal(surface,'flex');
   await page.screenshot({path:'qa/hsk2-approved-v391/words-'+tag+'.png',fullPage:false});
   for(let i=0;i<3;i++)await page.locator('[data-day-next]').click();
   await page.locator('[data-day-quiz="0:1"]').click();
@@ -43,6 +52,10 @@ try{
   assert.equal(await page.locator('[data-day-next]').isDisabled(),false);
   await page.locator('[data-day-next]').click();
   assert.equal(await page.locator('.day-attempts>div').count(),5);
+  assert.equal(await page.locator('.day-wordchoice button').count(),7,'All words selectable on same speech page');
+  const voiceArea=await page.locator('.day-wordchoice,.day-speechhero,.day-attempts,.day-record').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height}}));
+  assert.ok(voiceArea.every(b=>b.height>20&&b.top>=0&&b.bottom<=height+1),'Speech controls and every word fit without page scrolling '+tag);
+  await page.screenshot({path:'qa/hsk2-approved-v391/speech-'+tag+'.png',fullPage:false});
   await page.locator('[data-day-next]').click();
   assert.match(await page.locator('.day-ai-panel a').getAttribute('href'),/practice=day&mini=0/);
   await page.screenshot({path:'qa/hsk2-approved-v391/ai-'+tag+'.png',fullPage:false});
