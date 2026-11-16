@@ -121,11 +121,11 @@ const vm=require('node:vm');
  const forecast=answerLive('北京现在天气怎么样',{allowed,topic:7,curriculum,date,profile:{}});
  assert(!forecast.reply,'Do not fake realtime weather');
  const html=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(/panda-live-screen-v270\.mjs\?v=(?:30[24567]|318|319|323|326|33[6-9]|35[2-9]|36[0-9])/.test(html),'Live screen must use v302');
+ assert(/panda-live-screen-v270\.mjs\?v=\d+/.test(html),'Live screen must load its current versioned module');
  for(const sel of ['id="mode-short"','id="mode-nonstop"','id="mic"','id="history-dialog"','id="speech-dialog"'])
   assert(html.includes(sel),'Do not break existing layout and controls: '+sel);
  const media=fs.readFileSync('assets/panda-live-audio.mjs','utf8');
- assert(media.includes('lookupHsk1Voice'),'Keep existing approved voices');
+ assert(media.includes('PANDA_CLIPS')&&media.includes('lookupPilotAudio'),'Keep approved Panda narrator without mixing in HSK1 lesson voices');
  const brain=fs.readFileSync('assets/panda-brain-hsk1-v302.mjs','utf8');
  assert(!/\bfetch\s*\(|speechSynthesis|new Audio\s*\(|openai|api[_-]?key/i.test(brain),'Brain must not invent audio or use external APIs');
  console.log('PASS Panda Brain v302: '+cov.entries+' source vocabulary entries / '+cov.unique+' unique words, '+

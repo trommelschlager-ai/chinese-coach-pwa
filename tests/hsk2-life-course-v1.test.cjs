@@ -18,7 +18,8 @@ vc.on('error',s=>errors.push(String(s)));
 vc.on('warn',s=>warnings.push(String(s)));
 const dom=new JSDOM(html,{url:'https://example.org/hsk2-life-course.html',runScripts:'dangerously',virtualConsole:vc,beforeParse(w){w.scrollTo=()=>{}}});
 const w=dom.window,doc=w.document;
-w.PandaHsk2AudioV330={lookup:()=>null,play:()=>false};
+let stoppedAudio=0;
+w.PandaHsk2AudioV330={lookup:()=>null,play:()=>false,stop:()=>{stoppedAudio++}};
 w.eval(data);w.eval(dayData);w.eval(fullDay);w.eval(dayUI);w.eval(app);
 const topics=w.PandaLifeCourseV1.topics;
 function $(selector){return doc.querySelector(selector)}
@@ -41,7 +42,26 @@ assert.equal(doc.querySelectorAll('.day-vword').length,7,'Day one must contain s
 assert.ok(doc.querySelector('.day-headword').textContent.includes('起床'),'The first focused word is 起床');
 assert.ok(doc.querySelector('.day-chars').textContent.includes('chuáng'),'Correct second-tone pinyin');
 click('[data-day-word="3"]');
+assert.ok(doc.querySelector('[data-day-word="3"].picked'),
+ 'Word click must update visible selected state, selected='+[...doc.querySelectorAll('.day-vword.picked')].map(x=>x.dataset.dayWord).join(','));
+assert.ok(stoppedAudio>=1,'Changing the selected word stops previous audio');
 assert.ok(doc.querySelector('.day-tip').textContent.includes('第三')===false,'Tones shown in Russian without false characters');
+// A browser reload must preserve the unfinished, genuinely selected mini-lesson state.
+const savedMidLesson=w.localStorage.getItem('pg-hsk2-life-course-v1');
+const parsedMidLesson=JSON.parse(savedMidLesson);
+assert.equal(parsedMidLesson.resume?.day?.selected,3,'The selected vocabulary index must be written to local storage');
+assert.equal(parsedMidLesson.resume?.day?.poster,false,'The intro poster should be dismissed before saving');
+const reloadDom=new JSDOM(html,{url:'https://example.org/hsk2-life-course.html',runScripts:'dangerously',beforeParse(win){win.scrollTo=()=>{}}});
+const reloaded=reloadDom.window;
+reloaded.localStorage.setItem('pg-hsk2-life-course-v1',savedMidLesson);
+reloaded.PandaHsk2AudioV330={lookup:()=>null,play:()=>false,stop:()=>{}};
+reloaded.eval(data);reloaded.eval(dayData);reloaded.eval(fullDay);reloaded.eval(dayUI);reloaded.eval(app);
+assert.ok(reloaded.document.querySelector('.day-pilot'),'Reload resumes an unfinished HSK2 lesson');
+assert.ok(reloaded.document.querySelector('[data-day-word="3"].picked'),
+ 'The last studied word is restored; screen='+reloaded.document.querySelector('#screen')?.textContent.slice(0,100)+
+ ' activeButtons='+[...reloaded.document.querySelectorAll('[data-day-word]')].map(x=>x.dataset.dayWord+':'+x.className).join('|')+
+ ' state='+JSON.stringify(JSON.parse(reloaded.localStorage.getItem('pg-hsk2-life-course-v1'))?.resume?.day));
+reloadDom.window.close();
 click('[data-day-next]'); // 2: examples
 assert.equal(doc.querySelectorAll('.day-dialogue').length,4);
 click('[data-day-next]'); // 3: grammar

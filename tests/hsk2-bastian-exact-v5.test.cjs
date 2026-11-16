@@ -15,6 +15,8 @@ assert.match(css,/approved-screen>img/,'The approved image must remain visible a
 assert.match(css,/#poster>\.hero/,'Old low-resolution illustration and duplicate cards must be hidden');
 const issues=[],vc=new VirtualConsole();vc.on('jsdomError',e=>issues.push(e.message));
 const dom=new JSDOM(html,{url:'https://example.test/hsk2-bastian-intro.html',runScripts:'dangerously',virtualConsole:vc,beforeParse(w){w.scrollTo=()=>{}}});
+dom.window.eval(fs.readFileSync(path.join(root,'assets/bastian-voice-five-v397.js'),'utf8'));
+assert(dom.window.PandaBastianVoice397?.render,'Load the actual five-attempt voice module before testing stage navigation');
 const doc=dom.window.document;
 const $=sel=>doc.querySelector(sel);
 function click(sel){const b=$(sel);assert.ok(b,'Missing '+sel);assert.equal(b.disabled,false,'Disabled '+sel);b.click()}
@@ -27,7 +29,7 @@ assert.equal(doc.querySelectorAll('[data-term]').length,4,'Four pronunciation ho
 assert.equal(doc.querySelectorAll('[data-step-link="0"],[data-step-link="1"],[data-step-link="2"],[data-step-link="3"]').length,5,'All study stages and grammar hotspot required');
 assert.equal($('#practice').hidden,true);
 click('[data-audio-ref="0"]');assert.match($('#screen-toast').textContent,/нет подтверждённой MP3/,'Missing audio must not be faked');
-click('[data-step-link="1"]');assert.equal($('#practice').hidden,false);assert.match($('#step-title').textContent,/Пиньинь/);
+click('[data-step-link="1"]');assert.equal($('#practice').hidden,false);assert.match($('#step-title').textContent,/Произношение 5 раз/,'Stage 2 now teaches five spoken attempts rather than the retired pinyin screen');
 click('#prev');assert.match($('#step-title').textContent,/Слова/);
 click('#prev');assert.equal($('#practice').hidden,true);
 click('#start');assert.equal($('#practice').hidden,false);assert.match($('#step-title').textContent,/Слова/);

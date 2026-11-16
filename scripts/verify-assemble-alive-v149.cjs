@@ -14,4 +14,4 @@ for(let i=0;i<6;i++){
 }
 assert.equal(JSON.parse(w.localStorage.getItem('panda-go-alive-cafe-v1')).completed,6);assert(q('[data-ac-prompt]').textContent.includes('шесть'));click('[data-ac-check]');assert.equal(q('[data-ac-count]').textContent,'1 / 6');assert(q('[data-ac-check]').disabled);
 for(const hz of ['我','喝','茶','咖啡','想','水','不'])assert(fs.existsSync(w.courseHumanAudio[hz].replace('./','')),'Local MP3 for '+hz);
-const shell=fs.readFileSync('assets/panda-v130.js','utf8');assert(shell.includes("'puzzle','alive'"));assert(shell.includes("current==='alive'"));w.close();console.log('Alive café: errors, editing, pinyin, 6 scenes, local audio, completion and restart OK.');
+const shell=fs.readFileSync('assets/panda-v130.js','utf8');assert(shell.includes("function aliveCafe()")&&shell.includes("window.PandaAliveCafe.mount"),'Modern Panda shell must preserve alive cafe and its real puzzle markup');assert(shell.includes("current==='alive'"));w.close();console.log('Alive café: errors, editing, pinyin, 6 scenes, local audio, completion and restart OK.');

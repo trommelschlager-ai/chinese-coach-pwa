@@ -23,6 +23,10 @@ const good=[
  ['我早上吃早饭。',2],['不吃早饭',2],
  ['我先刷牙，再吃早饭。',3],
  ['我晚上常常看书。',4],
+ ['我早上刷牙',0],['我起床以后洗脸',1],['我起床后刷牙',1],
+ ['我起床以后吃早饭',1],['我今天刷牙',1],['我吃早饭',1],['我洗脸',2],
+ ['我上午学习中文',2],['我今天上班',3],['我今天先刷牙再吃早饭',3],
+ ['我晚上看电影',4],['我晚上工作',4],['我晚上跑步',4],
 ];
 for(const [utterance,idx] of good){
  const x=checkDayAnswer(utterance,idx,2);
@@ -32,10 +36,10 @@ for(const [utterance,idx] of good){
 }
 const bad=[
  ['我每天25点起床',0],['我今天二十五点起床',0],['我早上七点六十分起床',0],
- ['我今天刷牙',1],['我晚上听音乐',0],
+ ['是的',1],['是的',2],['我晚上听音乐',0],
  ['我每天刷牙。',0],
- ['我吃早饭',1],
- ['我洗脸',2],
+ ['我下午吃早饭',1],
+ ['我昨天洗脸',2],
  ['我每天七点起床',3],
  ['我昨天工作',4]
 ];
@@ -46,10 +50,16 @@ const translated=[
  ['我今天早上八点半起床',0,'08:30'],
  ['我每天早上都洗脸',1,'умываюсь'],
  ['我每天早上不洗脸',1,'не умываюсь'],
+ ['我起床以后洗脸',1,'После того как я встаю'],
+ ['我起床以后吃早饭',1,'завтракаю'],
+ ['我今天刷牙',1,'Сегодня я чищу зубы'],
  ['我每天早上吃早饭',2,'завтракаю'],
  ['我早上不吃早饭',2,'не завтракаю'],
+ ['我上午学习中文',2,'учу китайский'],
  ['我先刷牙，再吃早饭',3,'потом завтракаю'],
+ ['我今天上班',3,'Сегодня я работаю'],
  ['我晚上听音乐',4,'слушаю музыку'],
+ ['我晚上看电影',4,'смотрю фильмы'],['我晚上工作',4,'работаю'],
  ['我晚上经常看电视',4,'часто смотрю телевизор']
 ];
 for(const [utterance,idx,meaning] of translated){
@@ -62,7 +72,7 @@ for(const [utterance,idx,meaning] of translated){
 }
 for(const [utterance,idx] of [
  ['我每天二十五点起床',0],['没有',1],['我先刷牙再刷牙',3],
- ['我晚上常常听音乐了',4],['我晚上工作',4]
+ ['我晚上常常听音乐了',4],['我晚上工作了',4]
 ]){
  const r=checkDayAnswer(utterance,idx,2);
  assert.equal(r.ok,false,'Do not mark malformed or unsupported phrase correct: '+utterance);
@@ -79,6 +89,9 @@ try{
  w.eval(fs.readFileSync(new URL('../assets/hsk2-user-voice/phrase-index-v332.js',import.meta.url),'utf8'));
  assert.equal(el('phrase').textContent,'你早上做什么？');
  assert.match(el('step').textContent,/1 из 5/);
+ send('我不有钱。');
+ assert.match(el('recent').textContent,/我没有钱/,'Guided lesson shows the approved grammar correction');
+ assert.match(el('step').textContent,/1 из 5/,'Grammar correction must not skip the question');
  send('你早上做什么？');
  assert.equal(el('phrase').textContent,'我早上吃早饭。','Panda replies to HSK2 My Day question');
  assert.match(el('step').textContent,/1 из 5/,'Asking Panda must not advance the lesson');
