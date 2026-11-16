@@ -237,8 +237,19 @@ function submit(raw){
      const selected=state.allowed[state.cursor%state.allowed.length]||state.topic;
      followup=pickCoursePrompt(selected,curriculum,state.questions.concat(input),new Date(),{...state.profile,unlocked:state.allowed})||followup;
     }
+   // A calendar mini-dialogue has only two fixed questions with approved MP3.
+   // Never alternate 今天星期几 and 今天几月几号 indefinitely after both were asked.
+   // Use the actual displayed-question history, not user sentences.
+   const recentCalendarQuestions=state.questions.slice(-8).map(normalize);
+   const completedCalendarRound=!!result.spoken?.calendarLiteral
+     &&recentCalendarQuestions.includes('今天星期几')
+     &&recentCalendarQuestions.includes('今天几月几号');
+   if(completedCalendarRound)followup=null;
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
-   note(followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':followup?'Панда продолжит вопросом по пройденным темам. Можешь ответить или спросить раньше.':result.message||'Продолжай или нажми «Ещё вопрос».');
+   note(completedCalendarRound?'Мы повторили день недели и дату. Молодец! Выбери другую тему или задай свой вопрос.':
+    followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
+    followup?'Панда продолжит вопросом по пройденным темам. Можешь ответить или спросить раньше.':
+    result.message||'Продолжай или нажми «Ещё вопрос».');
    if(state.confidence!==null&&state.confidence<.65){cancelFollowup();note('Распознано неуверенно. Проверь текст в истории и повтори при необходимости.');}return;
   }
   note(result.message);render();return;
