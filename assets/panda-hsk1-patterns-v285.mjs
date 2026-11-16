@@ -201,7 +201,7 @@ const parseRole=(value)=>{const m=/^(我)(?:是|不是)(老师|学生)$/.exec(va
 function calendarAnswerLiteral(s,prompt){
  const w=/^(是|不是)?(今天|明天|昨天)?(是)?(星期[一二三四五六日天])$/.exec(s);
  if(w&&prompt.family.startsWith('weekday')){
-  const day=weekdays.find(x=>x.zh===w[4])||(w[4]==='星期日'?weekdays[0]:null);
+  const day=weekdays.find(x=>x.zh===w[4])||(w[4]==='星期日'?{...weekdays[0],zh:'星期日',py:'xīngqīrì'}:null);
   const time=timeList.find(x=>x.zh===w[2]);
   if(!day||w[3]&&!time)return null;
   let py=[time?.py?.toLowerCase(),w[3]?'shì':null,day.py].filter(Boolean).join(' ');
