@@ -73,6 +73,24 @@ body{display:grid;place-items:center;position:relative}
 .toast{position:absolute;z-index:10;left:7%;right:7%;top:21%;padding:11px 15px;text-align:center;color:white;border:2px solid #ffe189;border-radius:15px;background:#4b156ce9;font:700 clamp(11px,2.9vw,15px)/1.35 Arial,sans-serif;box-shadow:0 5px 18px #290c5588}
 .toast[hidden]{display:none!important}
 @media (max-height:650px){.toast{top:17%}}
+/* v393: never shadow large transparent ribbon hotspots — they painted as
+   long purple strips and could invalidate Android GPU bitmap tiles.
+   The approved image already contains the correct ribbon shadows. */
+.hotspots a,
+.hotspots a.is-pressed,
+.hotspots a:active{box-shadow:none!important;filter:none!important;transform:none!important;will-change:auto!important;background:transparent!important}
+.hotspots a::after{display:none!important}
+.hotspots .lesson::before,.hotspots .footer-link::before,.hotspots .top-link::before{
+ content:"";position:absolute;pointer-events:none;right:7%;top:20%;width:13%;height:62%;
+ border-radius:50%;opacity:0;background:rgba(255,251,255,.16);
+ box-shadow:0 5px 13px rgba(32,6,59,.36),inset 0 2px 7px rgba(255,255,255,.2);
+ transition:opacity .11s ease;
+}
+.hotspots .lesson:active::before,.hotspots .lesson.is-pressed::before,
+.hotspots .footer-link:active::before,.hotspots .footer-link.is-pressed::before,
+.hotspots .top-link:active::before,.hotspots .top-link.is-pressed::before{opacity:1}
+.hotspots .footer-link::before,.hotspots .top-link::before{left:25%;right:auto;width:50%}
+@media(prefers-reduced-motion:reduce){.hotspots a::before{transition:none!important}}
 </style>
 </head>
 <body>
