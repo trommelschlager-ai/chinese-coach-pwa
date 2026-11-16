@@ -42,7 +42,7 @@ test('Non-Stop asks another, already-unlocked calendar question with an existing
  assert(lookupPandaVoiceClip(november.followup.hanzi),'Today-weekday question must have a real MP3');
  for(const result of [monday,november]){
   assert.equal(result.followup?.isContextual,true,'Calendar follow-up must bypass generic course prompt replacement');
-  assert.equal(result.followup?.intent,'calendar-context');
+  assert(['weekday','date'].includes(result.followup?.intent),'Preserve original calendar validation intent');
   assert.equal(result.followup?.audioKey,result.followup?.hanzi);
  }
 
