@@ -264,7 +264,7 @@ function submit(raw){
  if(question.spoken?.calendarLiteral&&question.reply){
   say(question.reply,!!lookupPandaVoiceClip(question.reply.hanzi));
   note(state.done?'Календарная фраза понятна. Можешь продолжить в Non-Stop.':
-   'Календарная фраза понятна. Вернись к учебному вопросу для продолжения короткого диалога.');
+   'Календарная фраза понятна. Теперь ответь на учебный вопрос: '+conversation.lines[state.step]?.hanzi);
   return;
  }
  // Answer greetings and genuine learner questions without marking them wrong.
