@@ -32,8 +32,8 @@ var KEY='pg-hsk2-life-course-v1';
 var state={view:'welcome',topic:0,mini:0,stage:0,showPy:true,completed:[],difficult:[],quizWord:null,quizSentence:null,build:[],finalAnswers:{},examPassed:false};
 var dayUI=window.PandaGoDayFirstUIV1;
 function dayPilot(){return state.topic===0&&!!dayUI;}
-function dayCoachingLink(mini){return './panda-voice-pilot.html?practice=day&mini='+Math.max(0,Math.min(2,Number(mini)||0))+'&from=hsk2-life-course';}
-function dayAIBlock(mini){return '<section class="day-ai-panel"><h2>🐼 Поговори с Пандой AI</h2><p>Потренируй то, что уже изучил: Панда задаст вопросы, а ты ответишь голосом или текстом.</p><div class="day-ai-examples"><strong lang="zh-Hans">你每天几点起床？</strong><br>Во сколько ты каждый день встаёшь?</div><a href="'+dayCoachingLink(mini)+'" aria-label="Открыть разговорную практику Мой день с Panda AI">🎙 Начать практику →</a></section>';}
+function dayCoachingLink(mini){return './panda-voice-pilot.html?practice=day&mini='+Math.max(0,Math.min(2,Number(mini)||0))+'&from=hsk2-life-course&start=audio';}
+function dayAIBlock(mini){return '<section class="day-ai-panel"><h2>🐼 Поговори с Пандой AI</h2><p>Потренируй то, что уже изучил: Панда задаст вопросы, а ты ответишь голосом или текстом.</p><div class="day-ai-examples"><strong lang="zh-Hans">你早上做什么？</strong><br>Что ты делаешь утром?</div><a href="'+dayCoachingLink(mini)+'" aria-label="Открыть разговорную практику Мой день с Panda AI">🎙 Начать практику →</a></section>';}
 
 try{
  var saved=JSON.parse(localStorage.getItem(KEY)||'null');
@@ -223,6 +223,8 @@ function render(){
  var isDayArt=isDayLesson&&!!screen.querySelector('.day-visual-start');
  app.classList.toggle('day-visual-v390',isDayArt);
  app.classList.toggle('day-done-active',isDayDone);
+ app.classList.toggle('day-stage-0',isDayLesson&&!isDayArt&&state.stage===0);
+ app.classList.toggle('day-stage-4',isDayLesson&&!isDayArt&&state.stage===4);
  var footer=document.getElementById('day-fixed-actions');
  if(footer){
   footer.replaceChildren();
