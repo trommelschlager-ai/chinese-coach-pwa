@@ -210,8 +210,9 @@ if (!bridge) {
   function renderFeedback(s){
     const last=s.history.slice().reverse().find(x=>x.who==='you');
     const wrong=last?.analysis?.correction;
-    const unknown=last&&!last.ru&&!last.analysis?.probable;
-    const root=$('#pg346-feedback'),active=!!wrong||!!unknown;
+    // Reviewed grammar feedback stays; generic unknown-text notification
+    // stays in the history instead of appearing next to ALL TOPICS.
+    const root=$('#pg346-feedback'),active=!!wrong;
     const key=[last?.hanzi,wrong?.hanzi,wrong?.why,s.feedback,active].join('|');
     if(key===lastFeedback)return;
     lastFeedback=key;root.hidden=!active;root.replaceChildren();
@@ -224,8 +225,6 @@ if (!bridge) {
       if(wrong.pinyin)root.append(el('p','pg377-pinyin',wrong.pinyin));
       if(wrong.ru)root.append(el('p','pg377-translation','Перевод: '+wrong.ru));
       if(wrong.why)root.append(el('p','pg377-explanation','Объяснение: '+wrong.why));
-    }else{
-      root.append(el('p','',last.analysis?.probable||'Не могу уверенно определить смысл. Уточни предложение.'));
     }
   }
   function ingestSpeechSignal(signal,previousSnapshot){
