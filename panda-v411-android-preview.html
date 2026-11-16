@@ -13,8 +13,14 @@
    key:i=>keys()[i]??null
  };
  Object.defineProperty(isolated,'length',{get:()=>keys().length});
+ // QA ONLY: all seven HSK 1 chapters are available in this isolated session
+ // so testing lesson-4 audio is not blocked by the user's real progress.
+ isolated.setItem('pg-hsk1-v3-complete',JSON.stringify([
+   'foundations','pronouns','numbers','weekdays','dates','family','weather'
+ ]));
  Object.defineProperty(window,'localStorage',{configurable:true,value:isolated});
  window.__PANDA_V411_QA=true;
+ window.__PANDA_V411_QA_ALL_LESSONS=true;
 })();
 </script><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
