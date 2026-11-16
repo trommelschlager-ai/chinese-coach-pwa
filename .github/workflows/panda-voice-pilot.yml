@@ -14,6 +14,8 @@ on:
       - 'assets/panda-live-*'
       - 'assets/panda-mic-help-*'
       - 'tests/panda-mic-visible-*'
+      - 'tests/panda-hello-followup-*'
+      - 'tests/panda-calendar-*'
       - 'assets/panda-hsk1-*'
       - 'assets/panda-brain-*'
       - 'assets/panda-hsk2-*'
@@ -38,6 +40,8 @@ on:
       - 'assets/panda-live-*'
       - 'assets/panda-mic-help-*'
       - 'tests/panda-mic-visible-*'
+      - 'tests/panda-hello-followup-*'
+      - 'tests/panda-calendar-*'
       - 'assets/panda-hsk1-*'
       - 'assets/panda-brain-*'
       - 'assets/panda-hsk2-*'
@@ -162,4 +166,18 @@ jobs:
           name: panda-visible-mic-recovery-qa
           path: qa/panda-voice-pilot/
           if-no-files-found: warn
+
+  greeting-reciprocity:
+    name: Non-Stop greeting and microphone follow-up
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install UI simulation dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify 你好 speech goes to approved 你好吗 recording, not 你呢
+        run: node --test tests/panda-hello-followup-v408.test.mjs
 
