@@ -19,7 +19,7 @@ try{
   assert.equal(await page.locator('#pg130 .pg-hsk-level').count(),2,'HSK 1 and HSK 2 on approved home');
   res=await page.goto(base+'/hsk1-map.html',{waitUntil:'load'});
   assert.equal(res?.status(),200);
-  assert.equal(await page.locator('.map-road a.node').count(),7,'Seven lesson entries');
+  assert.equal(await page.locator('.hotspots a.lesson').count(),7,'Seven approved lesson hotspots');
   res=await page.goto(base+'/panda-voice-pilot.html?lesson=1',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   await page.locator('#pg346').waitFor();
