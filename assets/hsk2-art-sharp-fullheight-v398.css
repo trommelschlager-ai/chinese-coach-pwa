@@ -60,3 +60,12 @@
 #app.day-visual-v390 .approved-stage::before{
  background-image:url('./approved-course-v390/day-lesson.png')!important;
 }
+
+/* Explicit URLs relative to THIS CSS file; inline CSS custom-property URLs can
+   otherwise resolve against an unexpected document origin on GitHub Pages. */
+#app.approved-welcome-v390 .approved-stage::before{
+ background-image:url('./approved-course-v390/course-welcome.png')!important;
+}
+#app.approved-map-v390 .approved-stage::before{
+ background-image:url('./approved-course-v390/course-map.png')!important;
+}
