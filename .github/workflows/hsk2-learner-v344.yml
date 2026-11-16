@@ -58,6 +58,23 @@ permissions:
   contents: read
 
 jobs:
+  life-course-core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Check audio text coverage
+        run: node scripts/qa-hsk2-life-audio-v407.cjs
+      - name: Check complete 30-mini-lesson navigation and reload
+        run: node tests/hsk2-life-course-v1.test.cjs
+      - name: Check microphone consent and five genuine attempts
+        run: node tests/hsk2-day-first-speech-v1.test.cjs
+      - name: Check Mandarin guided Panda answers
+        run: node --test tests/panda-hsk2-day-chat-v1.test.mjs
   learner:
     runs-on: ubuntu-latest
     steps:
