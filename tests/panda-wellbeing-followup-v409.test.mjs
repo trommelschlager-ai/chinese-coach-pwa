@@ -50,6 +50,9 @@ test('Android-style microphone conversation: 你好 → 你好吗 → 我很好 
   el('mic').click();el('speech-allow').click();
   sessions[0].emit('你好',.96);
   assert.equal(el('phrase').textContent,'你好！');
+  const firstAudio=page.clips.at(-1);
+  assert(firstAudio,'Greeting uses a recorded Panda MP3');
+  firstAudio.onended?.(); // Mock browser must signal that the first MP3 ended.
   await new Promise(resolve=>setTimeout(resolve,4850));
   assert.equal(el('phrase').textContent,'你好吗？');
   el('mic').click();
