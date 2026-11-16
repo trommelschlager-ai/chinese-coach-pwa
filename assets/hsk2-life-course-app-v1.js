@@ -115,11 +115,14 @@ function selection(q,options,selected,type,answer){
  (selected!==null?'<p class="feedback '+(selected===answer?'good':'bad')+'">'+(selected===answer?'✓ Правильно':'✕ Попробуй другой вариант')+'</p>':'')+'</div>';
 }
 function viewWelcome(){
- return '<section class="approved-stage approved-welcome-screen" style="--approved-image:url(./assets/approved-course-v390/course-welcome.png)" aria-label="Китайский плюс легко · утверждённый приветственный экран"><div class="approved-art">'+
- '<img src="./assets/approved-course-v390/course-welcome.png" alt="Panda Go Китайский + Легко. 10 тем, 30 коротких уроков, грамматика, тесты, произношение и Панда AI. Не бойся говорить с ошибками. Бойся никогда не заговорить." width="941" height="1672" decoding="async" draggable="false">'+
- '<button class="approved-hotspot approved-program poster-welcome-program" data-view="map" aria-label="Посмотреть программу: десять тем"></button>'+
- '<button class="approved-hotspot approved-start poster-welcome-start" data-start="0" aria-label="Начать первый мини-урок Мой распорядок дня"></button>'+
- '<a class="approved-hotspot approved-ai-top poster-welcome-ai" href="./panda-voice-pilot.html" aria-label="Открыть Панда AI"></a>'+
+ // Approved 842×1867 full-height illustration, uncut and unaltered.
+ // Interactive controls remain accessible DOM hotspots on the original image plane.
+ return '<section class="approved-stage approved-welcome-screen" style="--approved-image:url(./assets/hsk2-life-approved-fullscreen-v412.png)" aria-label="Panda Go Китайский плюс Легко · курс 2"><div class="approved-art">'+
+ '<img src="./assets/hsk2-life-approved-fullscreen-v412.png" alt="Panda Go Китайский + Легко. 10 тем, 30 мини-уроков, 200+ слов и выражений. Грамматика, тесты, произношение 5 раз, общение с Panda AI. Кнопки: Посмотреть программу, Начать курс." width="842" height="1867" fetchpriority="high" decoding="async" draggable="false">'+
+ '<button type="button" class="approved-hotspot approved-program poster-welcome-program" data-view="map" aria-label="Посмотреть программу: десять тем и 30 мини-уроков"></button>'+
+ '<button type="button" class="approved-hotspot approved-start poster-welcome-start" data-start="0" aria-label="Начать курс: первый мини-урок Мой распорядок дня"></button>'+
+ '<a class="approved-hotspot approved-ai-top poster-welcome-ai" href="./panda-voice-pilot.html" aria-label="Открыть Panda AI: разговорная практика"></a>'+
+ '<a class="approved-hotspot poster-welcome-ai-card" href="./panda-voice-pilot.html" aria-label="Открыть Panda AI через карточку"></a>'+
  '</div></section>';
 }
 function viewMap(){

@@ -29,7 +29,7 @@ assert.equal(topics.length,10);
 assert.equal(topics.flatMap(t=>t.words).length,200);
 assert.equal(new Set(topics.flatMap(t=>t.words.map(row=>row[0]))).size,200);
 assert.ok(topics.every(t=>t.words.length===20&&t.scenes.length===3&&t.scenes.every(s=>s.length===11)));
-assert.match(doc.querySelector('img[src$="course-welcome.png"]').getAttribute('alt'),/30/);
+assert.match(doc.querySelector('img[src$="hsk2-life-approved-fullscreen-v412.png"]').getAttribute('alt'),/30/);
 assert.match(css,/topic-grid/);
 click('[data-view="map"]');
 assert.equal(doc.querySelectorAll('[data-topic]').length,10);

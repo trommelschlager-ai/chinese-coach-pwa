@@ -17,8 +17,18 @@ async function visibleArt(page,selector,tag){
   return {h:box.height,background:bg.backgroundImage,display:bg.display,artH:art.height,artW:art.width};
  });
  assert.ok(result.h>400,tag+' should be a full screen container');
- assert.ok(result.background.includes('url('),'Approved scenic extension should be visible on '+tag);
- assert.notEqual(result.display,'none','Scenic extension must not be hidden '+tag);
+ if(selector==='.approved-welcome-screen'){
+  // The new full-height artwork has no separate sky/lake filler and no seams.
+  assert.equal(result.display,'none','No duplicate scenic bands around v412 welcome '+tag);
+  const covers=await page.locator(selector).evaluate(node=>{
+   const art=node.querySelector('.approved-art').getBoundingClientRect(),stage=node.getBoundingClientRect();
+   return art.left<=stage.left+1&&art.top<=stage.top+1&&art.right>=stage.right-1&&art.bottom>=stage.bottom-1;
+  });
+  assert.ok(covers,'Single approved poster covers the entire mobile welcome '+tag);
+ }else{
+  assert.ok(result.background.includes('url('),'Map and lesson scenic extensions preserved '+tag);
+  assert.notEqual(result.display,'none','Map and lesson scenic extension remains visible '+tag);
+ }
  assert.ok(result.artW>0&&result.artH>0,'Original artwork remains visible '+tag);
  return result;
 }

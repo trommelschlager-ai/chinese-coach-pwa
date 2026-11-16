@@ -13,7 +13,8 @@ const appJs=fs.readFileSync('assets/hsk2-life-course-app-v1.js','utf8');
 assert.match(old,/location\.replace\(['"]\.\/hsk2-life-course\.html\?view=map['"]\)/,
  'Legacy HSK2 map entry must redirect to the current life-course map');
 assert.match(page,/Моя жизнь на китайском/,'Current course title must stay visible');
-assert.match(page,/course-welcome\.png/,'Approved illustrated welcome must remain');
+assert.match(page,/hsk2-life-approved-fullscreen-v412\.png/,'The current approved full-height artwork must load');
+assert.match(page,/hsk2-life-welcome-v412\.css\?v=412/,'Welcome full-bleed stylesheet must be last');
 assert.match(page,/course-map\.png/,'Approved illustrated roadmap must remain');
 assert.match(page,/hsk2-life-course-app-v1\.js\?v=\d+/,'Course controller must be cache-versioned');
 assert.match(appJs,/view:'welcome'/,'First visit starts with approved welcome view');

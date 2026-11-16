@@ -1,0 +1,24 @@
+'use strict';
+// The latest user's 842x1867 picture is a fixed asset, not seven stacked strips.
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'..');
+const file=fs.readFileSync(path.join(root,'assets/hsk2-life-approved-fullscreen-v412.png'));
+const expected='83ecabfa8fcc8055929dff7f6c32296d315ff7db';
+const actual=crypto.createHash('sha1').update(Buffer.from('blob '+file.length+'\0')).update(file).digest('hex');
+assert.equal(actual,expected,'Do not replace approved artwork');
+assert.equal(file.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
+assert.equal(file.readUInt32BE(16),842);
+assert.equal(file.readUInt32BE(20),1867);
+const html=fs.readFileSync(path.join(root,'hsk2-life-course.html'),'utf8');
+const css=fs.readFileSync(path.join(root,'assets/hsk2-life-welcome-v412.css'),'utf8');
+const app=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'utf8');
+assert(html.includes('hsk2-life-welcome-v412.css?v=412'));
+assert(html.includes('hsk2-life-course-app-v1.js?v=412'));
+assert(html.includes('hsk2-life-approved-fullscreen-v412.png'));
+assert(css.includes('aspect-ratio:842 / 1867'));
+assert(css.includes('width:max(100%,45.09909dvh)'));
+for(const marker of ['poster-welcome-program','poster-welcome-start','poster-welcome-ai','poster-welcome-ai-card'])assert(app.includes(marker));
+const pack=JSON.parse(fs.readFileSync(path.join(root,'assets/offline-pack.json'),'utf8'));
+assert(pack.files.includes('./assets/hsk2-life-approved-fullscreen-v412.png'));
+assert(pack.files.includes('./assets/hsk2-life-welcome-v412.css?v=412'));
+console.log('PASS HSK2 v412: original bitmap checksum, exact aspect, seamless viewport and 4 HTML controls');
