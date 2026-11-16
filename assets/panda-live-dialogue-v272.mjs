@@ -287,9 +287,10 @@ export function answerLive(raw,options={}){
   const otherLesson=calendarLiteral.topic===4?5:4;
   const questionKey=otherLesson===5?'今天几月几号':'今天星期几';
   const followup=!prompt&&allowed.includes(otherLesson)?
-   topicPrompts(otherLesson,date,profile).find(q=>normalize(q.hanzi)===questionKey)||null:null;
+   (topicPrompts(otherLesson,date,profile).find(q=>normalize(q.hanzi)===questionKey)||null):null;
+  const contextualFollowup=followup?{...followup,isContextual:true,audioKey:followup.hanzi}:null;
   return {kind:'statement',spoken:calendarLiteral,lesson:topic,
-   reply:calendarAcknowledgement(calendarLiteral),followup,
+   reply:calendarAcknowledgement(calendarLiteral),followup:contextualFollowup,
    message:followup?'Панда поняла фразу и продолжит вопросом по пройденному уроку.':
     'Панда повторила твою фразу. Это перевод текста, а не проверка тонов.'};
  }

@@ -40,6 +40,12 @@ test('Non-Stop asks another, already-unlocked calendar question with an existing
  assert.equal(november.followup?.hanzi,'今天星期几？');
  assert.equal(november.followup.lesson,4);
  assert(lookupPandaVoiceClip(november.followup.hanzi),'Today-weekday question must have a real MP3');
+ for(const result of [monday,november]){
+  assert.equal(result.followup?.isContextual,true,'Calendar follow-up must bypass generic course prompt replacement');
+  assert(['weekday','date'].includes(result.followup?.intent),'Preserve original calendar validation intent');
+  assert.equal(result.followup?.audioKey,result.followup?.hanzi);
+ }
+
 });
 
 test('Locked and unrelated topics do not trigger calendar questions',()=>{
@@ -70,5 +76,17 @@ test('Short and Non-Stop screen paths retain progress and skip unavailable ackno
  assert(source.indexOf("if(question.spoken?.calendarLiteral&&question.reply)") >
    source.indexOf("const result=verifyAnswerFor(conversation.lines,state.step,input)"));
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- assert(html.includes('panda-live-screen-v270.mjs?v=401'));
+ assert(html.includes('panda-live-screen-v270.mjs?v=402'));
+});
+
+test('the UI does not overwrite the reviewed calendar follow-up with an unrelated greeting',()=>{
+ const source=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
+ assert(source.includes("else if(followup&&followup.intent!=='relative-age'&&!followup.isContextual)"));
+ const november=free('11月16号',[1,4,5]);
+ const followup=november.followup;
+ assert(followup?.isContextual,'The calendar question is explicitly contextual');
+ // This is the exact condition used by the existing on-screen follow-up router.
+ const replacesWithGeneric=followup.intent!=='relative-age'&&!followup.isContextual;
+ assert.equal(replacesWithGeneric,false,'Never replace 今天星期几？ with 你今天怎么样？');
+ assert.equal(followup.hanzi,'今天星期几？');
 });

@@ -66,5 +66,5 @@ test('the duplicate unknown-meaning bubble is absent but reviewed grammar correc
  assert(ui.includes("'pg377-correct'"),'Preserve grammar corrections');
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
  assert(html.includes('panda-live-v346.mjs?v=400'));
- assert(html.includes('panda-live-screen-v270.mjs?v=401'));
+ assert.match(html,/panda-live-screen-v270\.mjs\?v=\d+/,'Versioned Panda script is loaded');
 });
