@@ -17,7 +17,7 @@ assert(main.includes('panda-home-approved-photo1-v319.jpg'),'Previously approved
 assert(main.includes('./hsk1-map.html'),'HSK 1 opens the map');
 assert(main.includes('./hsk2-life-course.html?view=map'),'HSK 2 must lead to current 10-theme course');
 assert(!main.slice(main.indexOf('function home(){'),main.indexOf('function learn(){')).includes('pg-hsk-unavailable'),'Only HSK 1 and 2 visible');
-assert(map.includes('data-num="7" href="./hsk1-lesson.html?lesson=7"'),'Approved seventh topic opens its new lesson');
+assert(/class="lesson" data-num="7"[^>]*href="\.\/hsk1-lesson\.html\?lesson=7"/.test(map),'Approved seventh topic opens the correct HSK1 lesson');
 assert(style.includes('object-fit:cover')&&!style.includes('image-rendering:pixelated'),'No pixelated or stretched image styling');
 const voice={},voiceScript=read('assets/guided-voice-v1506.js');
 const vm=require('node:vm');vm.runInNewContext(voiceScript,{window:voice});
