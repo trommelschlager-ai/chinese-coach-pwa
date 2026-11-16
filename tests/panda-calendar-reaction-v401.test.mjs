@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {analyzeCalendarLiteral,calendarAcknowledgement} from '../assets/panda-calendar-literal-v383.mjs';
+import {analyzeCalendarLiteral,calendarAcknowledgement,isCalendarRoundFinished} from '../assets/panda-calendar-literal-v383.mjs';
 import {answerLive} from '../assets/panda-live-dialogue-v272.mjs';
 import {lookupPandaVoiceClip} from '../assets/panda-live-audio.mjs';
 import {patternPrompts} from '../assets/panda-hsk1-patterns-v285.mjs';
@@ -74,6 +74,43 @@ test('An active weekday lesson still grades correct and wrong answers instead of
  assert.equal(correct.kind,'answer');
  const wrong=free('星期二',all,prompt);
  assert.notEqual(wrong.kind,'answer','False weekday should not pass');
+});
+
+
+test('accepted active date completes calendar round even without spoken.calendarLiteral',()=>{
+ const datePrompt=patternPrompts(5,date,all).find(x=>x.hanzi==='今天几月几号？');
+ assert(datePrompt,'Prompted date check is available');
+ const validDate=answerLive('今天是十一月十六号。',{
+  allowed:all,topic:5,prompt:datePrompt,curriculum:[],date,turn:2
+ });
+ assert.equal(validDate.kind,'answer','Correct date is an accepted answer to current prompt');
+ assert.notEqual(validDate.spoken?.calendarLiteral,true,
+  'Actual prompted responses use a different answer engine than standalone calendar lookups');
+ const questionHistory=['你好吗？','今天星期几？','今天几月几号？'];
+ assert.equal(isCalendarRoundFinished({
+  input:'今天是十一月十六号。',resultKind:validDate.kind,
+  spoken:validDate.spoken,prompt:datePrompt,questions:questionHistory
+ }),true,'End the loop even if the separate answer engine omitted calendarLiteral');
+ assert.equal(isCalendarRoundFinished({
+  input:'今天是十一月十六号。',resultKind:'statement',
+  spoken:validDate.spoken,prompt:datePrompt,questions:questionHistory
+ }),false,'A non-answer must not automatically complete the lesson');
+ assert.equal(isCalendarRoundFinished({
+  input:'今天是十一月十六号。',resultKind:'answer',
+  spoken:validDate.spoken,prompt:datePrompt,questions:['今天几月几号？']
+ }),false,'The other calendar question was never asked');
+ assert.equal(isCalendarRoundFinished({
+  input:'今天是十一月十六号。',resultKind:'answer',
+  spoken:validDate.spoken,prompt:null,questions:questionHistory
+ }),false,'Free vocabulary lookups cannot complete an active two-question round');
+ const wrongDate=answerLive('今天是十一月十五号。',{
+  allowed:all,topic:5,prompt:datePrompt,curriculum:[],date,turn:2
+ });
+ assert.notEqual(wrongDate.kind,'answer','Incorrect current date must not pass');
+ assert.equal(isCalendarRoundFinished({
+  input:'今天是十一月十五号。',resultKind:wrongDate.kind,
+  spoken:wrongDate.spoken,prompt:datePrompt,questions:questionHistory
+ }),false);
 });
 
 test('Short and Non-Stop screen paths retain progress and skip unavailable acknowledgement audio',()=>{
