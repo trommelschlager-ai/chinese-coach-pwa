@@ -26,7 +26,38 @@ function message(text){const el=get('[data-ac-message]');if(el)el.textContent=te
 function load(){stop();selected=[];solved=false;done=false;bank=tasks[index].parts.map((hz,id)=>({hz,id}));for(let i=bank.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[bank[i],bank[j]]=[bank[j],bank[i]]}if(bank.every((t,i)=>t.id===i))bank.push(bank.shift());get('.ac-scene').dataset.act='idle';get('.ac-scene').dataset.drink=tasks[index].drink;get('.ac-scene').setAttribute('aria-label','Панда ждёт твой ответ');draw()}
 function token(t,where){return `<button type="button" class="ac-token" data-ac="${where}" data-id="${t.id}" lang="zh-Hans" ${solved?'disabled':''}><b>${t.hz}</b><small ${py?'':'hidden'}>${words[t.hz]}</small></button>`}
 function draw(){const q=tasks[index];get('[data-ac-count]').textContent=`${index+1} / ${tasks.length}`;get('[data-ac-meter]').style.width=`${completed.size/tasks.length*100}%`;get('[data-ac-prompt]').textContent=done?'Все шесть сцен ожили!':q.ru;get('[data-ac-answer]').innerHTML=selected.length?selected.map(t=>token(t,'return')).join(''):'<span class="ac-placeholder">Нажимай слова в нужном порядке</span>';get('[data-ac-bank]').innerHTML=bank.map(t=>token(t,'add')).join('');get('[data-ac-py]').setAttribute('aria-pressed',String(py));get('[data-ac-py]').textContent=py?'Скрыть пиньинь':'Пиньинь';get('[data-ac-check]').disabled=!solved&&bank.length>0;get('[data-ac-check]').textContent=done?'Сыграть ещё раз ↻':solved?(index===tasks.length-1?'Завершить ✓':'Дальше →'):'Проверить';get('[data-ac-reset]').disabled=solved||!selected.length;get('[data-ac-listen]').disabled=!solved;message(done?'Отлично! Ты собрал фразы с 喝, 想 и 不想.':solved?q.note:'Собери фразу — и сцена оживёт.');}
-function listen(){if(!solved)return;stop();window.dispatchEvent(new Event('learning-audio-stop'));const id=playId;let n=0;function next(){if(id!==playId||!host?.isConnected)return;host.querySelectorAll('.ac-speaking').forEach(e=>e.classList.remove('ac-speaking'));if(n>=tasks[index].parts.length)return;const hz=tasks[index].parts[n],file=window.courseHumanAudio?.[hz];if(!file){message('Для этого слова нет записи.');return}get('[data-ac-answer]').children[n]?.classList.add('ac-speaking');n++;clip=new Audio(file);clip.onended=next;clip.onerror=()=>{stop();message('Не удалось загрузить звук. Нажми «По словам» ещё раз.')};Promise.resolve(clip.play()).catch(()=>{if(id===playId){stop();message('Звук не включился. Нажми «По словам» ещё раз.')}})}next()}
+function listen(){
+ if(!solved)return;
+ stop();
+ // Stop any voice left by other modes before starting the café scene.
+ window.dispatchEvent(new Event('learning-audio-stop'));
+ const task=tasks[index],parts=[...task.parts];
+ const missing=parts.filter(hz=>!window.courseHumanAudio?.[hz]);
+ if(missing.length){message('Нет проверенной записи слов: '+missing.join('、')+'. Озвучивание недоступно.');return}
+ // All games now share the same Yue Tan word-player, with trimmed silences.
+ // Do not switch to an unrelated voice or a guessed sentence recording.
+ if(typeof window.__pandaGameSpeech130==='function'){
+  const answer=get('[data-ac-answer]');
+  answer?.classList.add('ac-speaking');
+  Promise.resolve(window.__pandaGameSpeech130(parts,parts.join(''))).finally(()=>{
+   if(host?.isConnected)answer?.classList.remove('ac-speaking');
+  });
+  return;
+ }
+ // Fallback uses exactly the same verified courseHumanAudio speaker.
+ const id=playId;let n=0;
+ function next(){
+  if(id!==playId||!host?.isConnected)return;
+  host.querySelectorAll('.ac-speaking').forEach(e=>e.classList.remove('ac-speaking'));
+  if(n>=parts.length)return;
+  const hz=parts[n],file=window.courseHumanAudio[hz];
+  get('[data-ac-answer]').children[n]?.classList.add('ac-speaking');
+  n++;clip=new Audio(file);clip.onended=next;
+  clip.onerror=()=>{stop();message('Запись '+hz+' недоступна. Нажми «По словам» ещё раз.')};
+  Promise.resolve(clip.play()).catch(()=>{if(id===playId){stop();message('Звук не включился. Нажми «По словам» ещё раз.')}});
+ }
+ next();
+}
 function click(e){const b=e.target.closest('[data-ac]');if(!b||b.disabled)return;const a=b.dataset.ac;if(a==='py'){py=!py;draw();return}if(a==='listen'){listen();return}if(a==='reset'){load();return}if(a==='add'||a==='return'){if(solved)return;stop();const from=a==='add'?bank:selected,to=a==='add'?selected:bank;const i=from.findIndex(t=>t.id===Number(b.dataset.id));if(i>=0)to.push(from.splice(i,1)[0]);draw();return}if(a==='check'){if(done){index=0;completed.clear();load();return}if(solved){if(index===tasks.length-1){done=true;draw();try{localStorage.setItem('panda-go-alive-cafe-v1',JSON.stringify({completed:6,at:new Date().toISOString()}))}catch{message('Игра завершена. Сохранить результат не удалось.')}}else{index++;load()}return}if(bank.length)return;if(selected.map(t=>t.hz).join('')!==tasks[index].parts.join('')){message(selected[0]?.hz!=='我'?'Начни с 我 — кто выполняет действие?':'Проверь порядок: 我 → (不) → 想 → 喝 → напиток.');get('[data-ac-answer]').classList.remove('ac-error');void get('[data-ac-answer]').offsetWidth;get('[data-ac-answer]').classList.add('ac-error');return}solved=true;completed.add(index);get('.ac-scene').dataset.act=tasks[index].act;get('.ac-scene').setAttribute('aria-label',({sip:'Панда поднимает чашку и пьёт',order:'Панда поднимает лапу и заказывает напиток',refuse:'Панда отодвигает кофе и качает головой'})[tasks[index].act]);draw();listen()}}
 function mount(el){stop();host=el;index=0;completed=new Set();host.innerHTML=`<div class="ac-top"><span>Кафе · 咖啡馆</span><span data-ac-count></span></div><div class="ac-meter"><i data-ac-meter></i></div><div class="ac-scene">${scene}</div><div class="ac-task"><span>СОБЕРИ ПО-КИТАЙСКИ</span><h2 data-ac-prompt></h2></div><div class="ac-answer" data-ac-answer aria-label="Твоё предложение"></div><div class="ac-bank" data-ac-bank aria-label="Доступные слова"></div><p class="ac-message" data-ac-message role="status" aria-live="polite"></p><div class="ac-tools"><button data-ac="reset" data-ac-reset aria-label="Очистить ответ">↻</button><button data-ac="py" data-ac-py aria-pressed="false">Пиньинь</button><button data-ac="listen" data-ac-listen>🔊 По словам</button></div><button class="ac-check" data-ac="check" data-ac-check>Проверить</button>`;host.addEventListener('click',click);load()}
 window.addEventListener('learning-audio-stop',stop);window.addEventListener('pagehide',stop);window.PandaAliveCafe={mount,stop};
