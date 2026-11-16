@@ -115,7 +115,8 @@ test('accepted active date completes calendar round even without spoken.calendar
 
 test('Short and Non-Stop screen paths retain progress and skip unavailable acknowledgement audio',()=>{
  const source=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
- assert(source.includes("const playReply=!result.spoken?.calendarLiteral||!!lookupPandaVoiceClip(result.reply.hanzi)"));
+ assert(source.includes("const playReply=completedCalendarRound?false:"),'Completion is text-first without forcing a different recorded voice');
+ assert(source.includes("lookupPandaVoiceClip(closingReply.hanzi)"),'Other answers still use only verified exact audio');
  assert(source.includes("if(question.spoken?.calendarLiteral&&question.reply)"));
  assert(source.includes("const result=verifyAnswerFor(conversation.lines,state.step,input)"));
  assert(source.indexOf("if(question.spoken?.calendarLiteral&&question.reply)") >
