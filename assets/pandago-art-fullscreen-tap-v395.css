@@ -162,3 +162,16 @@ body:has(#poster:not([hidden])){background:#461273!important}
  .pg395-pulse{animation:none;opacity:0}
  #app .approved-stage .approved-hotspot{transition:none!important}
 }
+
+/* The first-day poster is not a map/welcome: continue ITS own lake/flower art. */
+#app.day-visual-v390 .approved-stage::before{
+ background-image:url('./approved-course-v390/day-lesson.png')!important;
+}
+/* High contrast shade behind floating navigation is limited to decoration only. */
+#poster .bs394-page .bs394-bar,
+#poster .bs394-page .bs394-next{isolation:isolate}
+/* Preserve readable interactive focus for direct keyboard navigation. */
+#poster .bs394-page .bs394-next:focus-visible,
+#poster .bs394-page .bs394-bar :is(a,button):focus-visible{
+ outline:3px solid #fff1ad!important;outline-offset:2px!important;
+}
