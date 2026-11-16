@@ -56,10 +56,10 @@ try{
    if(resume.topic===0&&dayUI){
     var d=dayUI.makeState(resume.mini),prior=resume.day;
     if(prior&&typeof prior==='object'){
-     d.selected=Number.isInteger(prior.selected)?Math.max(0,Math.min(d.wordsLength||d.attempts.length-1,prior.selected)):d.selected;
+     d.selected=Number.isInteger(prior.selected)?Math.max(0,Math.min(d.attempts.length-1,prior.selected)):d.selected;
      d.speechWord=Number.isInteger(prior.speechWord)?Math.max(0,Math.min(d.attempts.length-1,prior.speechWord)):d.speechWord;
      d.quiz=Array.isArray(prior.quiz)?[0,1].map(function(i){return [0,1,2].includes(prior.quiz[i])?prior.quiz[i]:null}):d.quiz;
-     d.build=Array.isArray(prior.build)?[...new Set(prior.build.filter(function(n){return Number.isInteger(n)&&n>=0&&n<7}))]:d.build;
+     d.build=Array.isArray(prior.build)?[...new Set(prior.build.filter(function(n){return Number.isInteger(n)&&n>=0&&n<(window.PandaGoDayModulesV391?.[state.mini]?.builder.length||4)}))]:d.build;
      d.attempts=d.attempts.map(function(_,i){return Array.isArray(prior.attempts?.[i])?
       prior.attempts[i].slice(0,5).filter(function(v){return v&&typeof v.said==='string'&&typeof v.match==='boolean'}).map(function(v){return {said:v.said.slice(0,80),match:v.match}}):[]});
      d.poster=!!prior.poster;
