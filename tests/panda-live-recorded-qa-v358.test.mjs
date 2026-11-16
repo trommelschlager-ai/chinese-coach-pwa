@@ -46,6 +46,8 @@ test('recorded beginner questions receive authored rather than generic Panda ans
 });
 
 test('HSK1 weather and HSK2 My Day recorded questions never collide',()=>{
+ globalThis.window={PandaUserVoiceIndexV332:env.window.PandaUserVoiceIndexV332};
+ try{
  const day=RECORDED_PANDA_QA.filter(x=>x[7]==='hsk2-day');
  assert.equal(day.length,10,'Exactly ten user-recorded questions belong to HSK2 My Day');
  assert(day.every(x=>x[6]===1),'My Day is HSK2 topic 1, not HSK1 weather lesson 7');
@@ -72,4 +74,5 @@ test('HSK1 weather and HSK2 My Day recorded questions never collide',()=>{
  assert.equal(recordedPandaAnswer('你冷吗',[1,2,3,4,5,6,7]).kind,'question');
  assert.equal(recordedPandaAnswer('你冷吗',[1]).kind,'locked');
  assert.equal(recordedPandaAnswer('你冷吗',[1],{course:'hsk2-day'}),null);
+ }finally{delete globalThis.window}
 });
