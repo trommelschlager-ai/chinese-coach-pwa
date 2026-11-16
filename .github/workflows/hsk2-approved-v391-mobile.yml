@@ -54,6 +54,12 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Regression: HSK2 day v413 stage order, microphone, MP3 and progress
+        run: |
+          node tests/hsk2-day-v413.test.cjs
+          node tests/hsk2-day-first-speech-v1.test.cjs
+          node tests/hsk2-life-course-v1.test.cjs
+          node tests/hsk2-life-fullscreen-v412.test.cjs
       - name: Install Chromium for Android screenshots
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
