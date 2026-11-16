@@ -14,7 +14,7 @@ import {brainQuestion,interpretBrainSentence} from './panda-brain-hsk1-v302.mjs?
 import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from './panda-sentence-coach-v319.mjs?v=319';
 import {answerBasicConversation} from './panda-basic-conversation-v323.mjs?v=336';
-import {analyzeCalendarLiteral} from './panda-calendar-literal-v383.mjs?v=400';
+import {analyzeCalendarLiteral,calendarAcknowledgement} from './panda-calendar-literal-v383.mjs?v=401';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
@@ -282,8 +282,16 @@ export function answerLive(raw,options={}){
  // Free vocabulary lookup must not count as an answer to another lesson.
  const calendarLiteral=analyzeCalendarLiteral(raw);
  if(calendarLiteral&&(!prompt||prompt.lesson!==calendarLiteral.topic)){
-  return {kind:'statement',spoken:calendarLiteral,lesson:topic,reply:null,
-   followup:null,message:'Перевод показан в чате. Это распознанный текст, а не проверка тонов.'};
+  // React to the actual utterance without confirming whether the date/day is
+  // objectively true. Ask a different calendar question only if unlocked.
+  const otherLesson=calendarLiteral.topic===4?5:4;
+  const questionKey=otherLesson===5?'今天几月几号':'今天星期几';
+  const followup=!prompt&&allowed.includes(otherLesson)?
+   topicPrompts(otherLesson,date,profile).find(q=>normalize(q.hanzi)===questionKey)||null:null;
+  return {kind:'statement',spoken:calendarLiteral,lesson:topic,
+   reply:calendarAcknowledgement(calendarLiteral),followup,
+   message:followup?'Панда поняла фразу и продолжит вопросом по пройденному уроку.':
+    'Панда повторила твою фразу. Это перевод текста, а не проверка тонов.'};
  }
  // Rewrite only explicit meaning-preserving learner variants. Keep original
  // transcript visible, without claiming a made-up pinyin for the new wording.

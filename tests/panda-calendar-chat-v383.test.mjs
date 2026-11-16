@@ -38,7 +38,7 @@ test('free and short chat can translate known calendar text without unlocking le
   assert.equal(free.spoken?.pinyin,pinyin);
   assert.equal(free.spoken?.translation,translation);
   assert.equal(free.lesson,1,'Free translation must not unlock HSK1 chapter '+topic);
-  assert.equal(free.reply,null,'Do not invent a Panda audio reply');
+  assert.equal(free.reply?.hanzi,'你说：“'+raw+'。”','Panda acknowledges the exact learner utterance');
   assert.equal(free.followup,null,'Do not ask locked questions');
  }
 });
@@ -66,5 +66,5 @@ test('the duplicate unknown-meaning bubble is absent but reviewed grammar correc
  assert(ui.includes("'pg377-correct'"),'Preserve grammar corrections');
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
  assert(html.includes('panda-live-v346.mjs?v=400'));
- assert(html.includes('panda-live-screen-v270.mjs?v=400'));
+ assert(html.includes('panda-live-screen-v270.mjs?v=401'));
 });

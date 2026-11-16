@@ -59,3 +59,20 @@ export function analyzeCalendarLiteral(raw){
   return {known:true,hanzi:value,pinyin:py,translation:ru,topic:5,
     calendarLiteral:true};
 }
+
+/* Mirror the learner's own words rather than declaring a possibly incorrect
+ * calendar fact true. This is text feedback; audio requires an exact MP3.
+ */
+export function calendarAcknowledgement(spoken){
+ if(!spoken?.calendarLiteral||!spoken?.known||!spoken?.pinyin)return null;
+ const raw=normalize(spoken.hanzi);
+ const saidPinyin=String(spoken.pinyin).replace(/[.。!?]+$/u,'');
+ const meaning=String(spoken.translation||'').replace(/[.。]+$/u,'');
+ if(!raw||!saidPinyin||!meaning)return null;
+ return {
+  hanzi:'你说：“'+raw+'。”',
+  pinyin:'Nǐ shuō: '+saidPinyin+'.',
+  ru:'Ты сказал(а): «'+meaning+'».',
+  audioKey:null
+ };
+}
