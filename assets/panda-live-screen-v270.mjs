@@ -11,7 +11,8 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=360';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=381';
+import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=374';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=4';
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
@@ -184,6 +185,14 @@ function submit(raw){
  cancelFollowup();stopRecognition();stopAudio();$('message').value='';
  if(state.dayMode){
   if(state.dayDone){note('Тренировка завершена. Вернись к уроку или выбери обычные диалоги.');return;}
+  // A learner may ask one of the recorded HSK2 questions. Answer it in the
+  // HSK2 context without advancing the current five-step practice prompt.
+  const dayQA=recordedPandaAnswer(input,[1],{course:'hsk2-day'});
+  if(dayQA?.kind==='question'){
+   learner(input,dayQA.spoken);say(dayQA.reply,true);
+   note('Ответила на вопрос по HSK2 «Мой день». Для возврата к текущему заданию нажми «Далее».');
+   return;
+  }
   const checked=checkDayAnswer(input,state.dayStep,state.dayMini);
   learner(input,checked.spoken);
   if(checked.ok){state.dayStep++;happy();if(state.dayStep>=dailyQuestions(state.dayMini).length){askNext()}else{askNext();note('Ответ по теме принят. Следующий вопрос. Тоны не оценивались.')}}
