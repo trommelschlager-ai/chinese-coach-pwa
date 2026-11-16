@@ -80,7 +80,7 @@ try{
   await page.locator('.bs394-page:not([hidden]) [data-step-link="0"]').click();
   assert.ok(await page.locator('#practice').isVisible());
   await page.goto(base+'/index.html#panda/training');
-  await page.waitForURL('**/#panda/home');
+  await page.waitForURL(/#panda\/home$/);
   await ctx.close();
  }
 }finally{await browser.close()}
