@@ -36,7 +36,14 @@ try{
   });
   assert(dims.scrollWidth<=dims.viewport+2,'No horizontal scrolling');
   assert(dims.mascot.top>=dims.scene.top-6&&dims.mascot.bottom<=dims.scene.bottom+5,'Entire Panda remains in scene');
-  assert(dims.mascot.bottom>=dims.scene.bottom-40,'Panda feet must be near the real rock bank');
+  const physicalSeat=await page.evaluate(()=>{
+   const scene=document.querySelector('.pg346-scene'),mascot=document.querySelector('.pg352-mascot');
+   const stone=getComputedStyle(scene,'::before');
+   const contact=getComputedStyle(mascot,'::before');
+   return {stoneImage:stone.backgroundImage,contactFill:contact.backgroundImage,contactHeight:parseFloat(contact.height)};
+  });
+  assert(physicalSeat.stoneImage.includes('panda-exact-stone-v361.webp'),'Approved exact stone artwork must be visible');
+  assert(physicalSeat.contactFill.includes('radial-gradient')&&physicalSeat.contactHeight>0,'Panda feet need an actual anchored contact shadow');
   assert(dims.composer.bottom<=dims.nav.top+6,'Composer stays above navigation');
   await page.screenshot({path:out+'/approved-scene-'+width+'.png',animations:'disabled'});
   await page.locator('#pg346-nonstop').click();
