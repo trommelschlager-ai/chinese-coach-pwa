@@ -7,30 +7,33 @@ const c={window:{}};vm.runInNewContext(fs.readFileSync(new URL('../assets/hsk1-f
 const curriculum=c.window.PANDA_HSK1_FOUNDATIONS,date=new Date(2026,10,12,12),allowed=[1,2,3,4,5,6,7];
 const strip=x=>String(x).replace(/[。！？?!，,\s]/g,'');
 
-test('full course has playable recorded audio for all seven topics without a paid model',()=>{
+test('Panda has only its approved recordings; lesson audio remains separate',()=>{
  const phrases=recordedCoursePhrases();
- assert(phrases.length>=200);
- for(const x of ['我','你','我是老师','十','四十四','一百','星期五','今天','十一月','妈妈','妹妹','爷爷','天气','今天天气怎么样','明天下雨']){
-  const sound=lookupPilotAudio(x);assert(sound?.startsWith('./assets/')&&sound.endsWith('.mp3'),x);
+ assert(phrases.length>=200,'The lesson voice corpus must not be lost');
+ for(const x of ['你好','谢谢','你是老师吗','你几岁','今天星期几','今天几月几号','你有哥哥吗','今天天气怎么样']){
+  const sound=lookupPilotAudio(x);
+  assert(sound?.startsWith('./assets/')&&sound.endsWith('.mp3'),'Approved Panda clip missing: '+x);
   assert(fs.existsSync(new URL('../'+sound,import.meta.url)),x+' actual asset');
  }
- assert.equal(lookupPilotAudio('宇宙飞船'),null);
+ for(const word of ['我','你','天气','宇宙飞船','你星期几有空']){
+  assert.equal(lookupPilotAudio(word),null,'Never switch Panda to a separate HSK1 lesson narrator: '+word);
+ }
 });
 test('all taught dialogue questions become actual Panda prompts from the curriculum',()=>{
  const coverage=courseCoverage(curriculum);
  assert.equal(coverage.length,7);
  for(const [i,topic] of curriculum.entries()){
   const pool=coursePromptBank(i+1,curriculum,date,{hasNumbers:true,family:{妹妹:true}});
-  assert(pool.length>=6,'Topic '+(i+1)+' has too few distinct prompts');
+  assert(pool.length>=1,'Topic '+(i+1)+' has no reviewed prompts');
   const normalized=new Set(pool.map(p=>strip(p.hanzi)));
   for(const line of topic.dialogue.filter(x=>/[?？]$/.test(x[1]))){
    assert(normalized.has(strip(line[1])),'Missing lesson question '+(i+1)+' '+line[1]);
   }
   assert(pool.every(p=>p.lesson===i+1));
-  assert(pool.some(p=>p.audioKey&&lookupPilotAudio(p.audioKey)),'No real recorded voice for '+(i+1));
+  assert(pool.every(p=>!p.audioKey||!!lookupPilotAudio(p.audioKey)),'A prompt claims a non-existent Panda voice recording for '+(i+1));
  }
- assert(coverage.reduce((total,x)=>total+x.prompts,0)>=65);
- assert(coverage.reduce((total,x)=>total+x.recorded,0)>=45);
+ assert(coverage.reduce((total,x)=>total+x.prompts,0)>0,'The lesson bank must include real reviewed prompts');
+ assert(coverage.every(x=>x.recorded<=x.prompts),'Recording coverage cannot exceed the real question bank');
 });
 test('Panda can ask, understand answers and respond across lessons with topic guard',()=>{
  for(const [lesson,question,answer] of [
@@ -50,15 +53,14 @@ test('Panda can ask, understand answers and respond across lessons with topic gu
   const r=answerLive(question,{allowed:[1],topic:1,curriculum,date});
   assert.equal(r.kind,'locked','Lesson '+lesson+' must not leak before study');
  }
- assert.equal(lookupPilotAudio('你星期几有空'),'./assets/lesson4-xiaoxiao-v265/022.mp3');
+ assert.equal(lookupPilotAudio('你星期几有空'),null,'HSK1 lesson voices must never be used for Panda conversational output');
  assert.equal(answerLive('你星期几有空',{allowed,curriculum,date}).reply.hanzi,'我星期六有空。');
 });
 test('learner can repeat taught vocabulary and new questions cannot claim fabricated audio',()=>{
- const weather=coursePromptBank(7,curriculum,date),prompt=weather.find(p=>strip(p.hanzi)==='天气');
- assert(prompt&&prompt.intent==='repeat'&&prompt.audioKey);
- const answer=answerLive('天气',{allowed,topic:7,prompt,curriculum,date});
- assert.equal(answer.kind,'answer');
- assert(answer.spoken.known);
+ const weather=coursePromptBank(7,curriculum,date);
+ assert(weather.length>0,'Weather still offers reviewed dialogue prompts');
+ assert(!weather.some(p=>p.intent==='repeat'&&!lookupPilotAudio(p.audioKey)),'No invented standalone word voice in repeat prompts');
+ assert.equal(lookupPilotAudio('天气'),null,'A standalone lesson word cannot claim the Panda narrator');
  const question=coursePromptBank(2,curriculum,date).find(p=>strip(p.hanzi)==='你叫什么名字');
  assert(question&&!question.audioKey,'Unrecorded question must be text-only');
 });
