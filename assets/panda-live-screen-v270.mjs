@@ -194,6 +194,9 @@ function submit(raw){
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
  if(state.dayMode){
   if(state.dayDone){note('Тренировка завершена. Вернись к уроку или выбери обычные диалоги.');return;}
+   // Keep reviewed grammar corrections available inside the HSK2 day dialogue.
+   const correction=correctCommonPhrase(input);
+   if(correction){learner(input,correction.spoken);recordCorrection(input,correction.spoken);pose('retry');note(correction.message);render();return;}
   // A learner may ask one of the recorded HSK2 questions. Answer it in the
   // HSK2 context without advancing the current five-step practice prompt.
   const dayQA=recordedPandaAnswer(input,[1],{course:'hsk2-day'});
