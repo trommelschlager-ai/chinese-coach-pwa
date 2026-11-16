@@ -56,7 +56,14 @@ test('Locked and unrelated topics do not trigger calendar questions',()=>{
  assert.equal(limited.followup,null,'Must not ask unavailable lesson 5');
  const pending={lesson:1,hanzi:'你好吗？',intent:'intro',accepted:['我很好']};
  const offTopic=free('星期一',[1,4,5],pending);
- assert.equal(offTopic.followup,null,'Do not replace the pending greeting question');
+ assert.equal(offTopic.followup?.hanzi,'今天几月几号？',
+  'In Non-Stop a deliberate calendar statement may change an unrelated greeting topic');
+ assert.equal(offTopic.followup?.isContextual,true);
+ const interruptedDate=free('11月16号',[1,4,5],pending);
+ assert.equal(interruptedDate.followup?.hanzi,'今天星期几？');
+ const notUnlocked=free('11月16号',[1],pending);
+ assert.equal(notUnlocked.followup,null,'A calendar switch must not unlock lessons');
+ assert.match(notUnlocked.message,/«Дни недели»/,'Explain why the requested calendar flow cannot continue');
 });
 
 test('An active weekday lesson still grades correct and wrong answers instead of acknowledging blindly',()=>{
