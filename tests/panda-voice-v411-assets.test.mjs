@@ -50,3 +50,17 @@ test('Existing approved Panda clips remain available and no fake fallback',()=>{
  }
  assert.equal(lookupPandaVoiceClip('这不是录音的句子。'),null);
 });
+
+// The visible speech buttons in history used an older module import cache key.
+// Keep them on the same exact v411 audio source as the main Panda player.
+test('visible history and main Panda player use the same v411 audio module',()=>{
+ const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
+ const screen=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
+ assert(ui.includes("import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=411';"),'History must load v411 voice, not stale v366');
+ assert(screen.includes("import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=411';"),'Main player must load v411 voice');
+ assert(ui.includes('sound.disabled=!clipFor(e)'),'Keep history disabled only when exact audio really is missing');
+ const reply=lookupPandaVoiceClip('我星期六有空。');
+ assert.equal(reply?.src,'./assets/panda-voice-clips-v411/p160.mp3');
+ assert.equal(reply?.source,'user-luvvoice-nov16-cut');
+ assert(fs.existsSync(new URL('../'+reply.src,import.meta.url)),'History clip p160 missing');
+});
