@@ -6,6 +6,14 @@ on:
       - 'hsk2-life-course.html'
       - 'assets/hsk2-life-course-app-v1.js'
       - 'assets/hsk2-day-first-ui-v1.js'
+      - 'assets/hsk2-day-no-scroll-v398.css'
+      - 'assets/hsk2-art-sharp-fullheight-v398.css'
+      - 'assets/panda-hsk2-day-coach-v1.mjs'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'assets/panda-live-v346.mjs'
+      - 'panda-voice-pilot.html'
+      - 'assets/panda-day-first-play-v398.css'
+      - 'tests/panda-hsk2-day-chat-v1.test.mjs'
       - 'assets/hsk2-day-topic-one-v391.js'
       - 'assets/approved-course-v390/**'
       - 'hsk2-bastian-intro.html'
@@ -48,6 +56,7 @@ jobs:
             if curl -fsS http://127.0.0.1:4173/hsk2-life-course.html >/dev/null; then break; fi
             sleep 1
           done
+          node --test tests/panda-hsk2-day-chat-v1.test.mjs
           node scripts/qa-hsk2-approved-course-v391.mjs
           node tests/hsk2-bastian-voice-five-v397.test.cjs
           node scripts/qa-pandago-fullscreen-v395.mjs
