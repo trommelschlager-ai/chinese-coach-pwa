@@ -175,7 +175,7 @@ function askNext(){
   const prompt=dailyQuestions(state.dayMini)[state.dayStep];
   if(!prompt){state.dayDone=true;state.prompt=null;say(dailyFinal,false);note('Все вопросы по теме Мой день пройдены. Это проверка смысла, а не тонов. Нажми «Назад», чтобы вернуться в курс.');return;}
   state.prompt={line:prompt};state.topic=1;state.questions.push(prompt.hanzi);
-  say(prompt,false);note('Мой день · вопрос '+(state.dayStep+1)+' из '+dailyQuestions(state.dayMini).length+'. Ответь голосом или текстом.');return;
+  say(prompt,document.documentElement.dataset.pandaLiveReady==='true');note('Мой день · вопрос '+(state.dayStep+1)+' из '+dailyQuestions(state.dayMini).length+'. Ответь голосом или текстом.');return;
  }
  const topics=state.lockedTopic&&state.allowed.includes(state.lockedTopic)?[state.lockedTopic]:(state.allowed.length?state.allowed:[conversation.id]);
  if(!state.lockedTopic&&state.askedInTopic>=3&&topics.length>1){state.cursor=(state.cursor+1)%topics.length;state.askedInTopic=0;}
