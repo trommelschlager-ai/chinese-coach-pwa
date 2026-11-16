@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4d216b">
+<meta name="description" content="Panda Go HSK2 — Мой город: упрощённый урок «Моя первая фраза о работе» с двумя словами и одним правилом">
+<title>Panda Go · Мой город · Простая фраза о работе</title>
+<style>
+:root{font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#4f2869;background:#e9d6f1;--deep:#572176;--purple:#8d3faf;--lilac:#f0dcfa;--gold:#eac37c;--pink:#ffdeef}
+*{box-sizing:border-box}body{margin:0;min-height:100svh;display:flex;justify-content:center;background:linear-gradient(155deg,#dcbcf0,#fbe4f2 55%,#d7b7ee)}button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #5020c3;outline-offset:3px}
+.app{width:min(100%,500px);height:100svh;display:flex;flex-direction:column;overflow:hidden;background:linear-gradient(165deg,#f4def7,#fff5fc 51%,#e8ccf3);position:relative}
+.scene{height:122px;flex:none;position:relative;color:white;border-bottom:2px solid #dbab79;overflow:hidden;background:linear-gradient(100deg,#3b155dc9,#7b2b97bb),url('./assets/chinese-waterfall-banner.svg') center 52%/cover}
+.scene::after{content:'🌸';position:absolute;right:13px;top:12px;font-size:27px}
+.back{position:absolute;top:calc(12px + env(safe-area-inset-top));left:12px;background:#fff5ffe8;border:1px solid var(--gold);border-radius:30px;text-decoration:none;color:var(--deep);font-weight:800;font-size:14px;padding:9px 12px;z-index:3}
+.scene-panda{position:absolute;width:96px;height:101px;left:4px;bottom:-5px;object-fit:cover;object-position:top center;filter:drop-shadow(0 3px 5px #2c124a70)}
+.scene-copy{position:absolute;left:102px;right:18px;top:calc(16px + env(safe-area-inset-top));text-align:center;text-shadow:0 1px 4px #281342}.brand{font:italic 900 27px Georgia,serif;margin:0 0 3px}.scene-copy p{font-size:11px;font-weight:800;margin:3px 0}.scene-pill{display:inline-block;background:#fff3f5e8;border:1px solid var(--gold);border-radius:17px;color:var(--deep);text-shadow:none;padding:3px 9px;font-size:11px}
+.content{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px 14px 24px;scrollbar-width:thin}
+.step-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.step-head h1{font-size:17px;line-height:1.2;margin:0}.step-number{font-size:12px;color:#82558d;white-space:nowrap;font-weight:700}
+.progress{height:7px;background:#d7b7e6;border-radius:10px;overflow:hidden;margin-bottom:11px}.progress>i{display:block;background:linear-gradient(90deg,#df78c4,#70298d);height:100%;transition:width .2s}
+.paper{background:linear-gradient(145deg,#fffaff,#faeaf7);border:2px solid #eac18a;border-radius:20px;padding:15px 14px;box-shadow:0 6px 16px #9c70ab26;margin-bottom:12px;min-height:160px}
+.paper h2{font-size:20px;color:#5f267d;margin:0 0 12px;line-height:1.25}.paper p{line-height:1.5}.muted{color:#835b91;font-size:13px}.small{font-size:12px}.hero-icon{text-align:center;font-size:57px;line-height:1.4}.bigcenter{text-align:center}
+.primary,.secondary{border-radius:15px;min-height:45px;font-weight:800;padding:10px 12px;border:1.5px solid #d9a5c5}
+.primary{color:white;background:linear-gradient(120deg,#c35ac8,#732d99);border-color:var(--gold);box-shadow:0 3px 9px #8837ab45}
+.secondary{color:#703486;background:#fff7fd}
+.actions{position:relative;flex:none;padding:8px 12px calc(9px + env(safe-area-inset-bottom));background:linear-gradient(#faeafb,#f6def3);border-top:1px solid #deb7df;display:grid;grid-template-columns:110px 1fr;gap:10px}
+.actions .primary{min-width:0}.actions button{font-size:14px}
+.rail{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:13px}.rail span{font-size:11px;border-radius:14px;background:#e9cdf5;padding:4px 8px;font-weight:750}
+.dialogue{display:flex;flex-direction:column;gap:9px}.bubble{border-radius:15px 15px 15px 4px;background:#f0daf9;padding:11px;max-width:94%;border:1px solid #e5b8dd}.bubble.answer{background:#ffe7f2;border-radius:15px 15px 4px 15px;align-self:flex-end}
+.speaker{font-size:11px;font-weight:850;color:#825393}.zh{font-size:27px;font-weight:850;line-height:1.3;color:#4b2369}.py{font-size:15px;color:#9760a4;line-height:1.35}.translation{font-size:14px;line-height:1.4}.voice{min-height:38px;border:1px solid #d9a4da;border-radius:12px;padding:6px 10px;background:#fbf4fd;color:#743394;font-weight:750;margin-top:7px;font-size:12px}
+.voice.warn{background:#f6eff6;color:#76637b}.wordgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.word{background:#fffaff;border:1px solid #e1bee4;border-radius:15px;padding:10px 7px;display:flex;flex-direction:column;text-align:center;gap:3px}
+.word .zh{font-size:27px}.word .voice{align-self:center}
+.formula{background:linear-gradient(100deg,#7f35a8,#a05abe);color:white;border:1.5px solid #edce9c;border-radius:14px;padding:12px;text-align:center;font-size:19px;font-weight:850;margin:5px 0 12px;overflow-wrap:anywhere}
+.tip{font-size:14px;line-height:1.5;border-left:4px solid #a460bb;background:#f3e1f9;padding:9px 10px;border-radius:0 12px 12px 0;margin-bottom:12px}
+.example{background:white;border:1px solid #ead3e7;border-radius:13px;padding:11px;margin-bottom:8px;text-align:center;display:flex;align-items:center;flex-direction:column;gap:4px}
+.example .zh{font-size:23px}.example .py{font-size:14px}
+.choices{display:grid;gap:9px}.choice{width:100%;min-height:48px;text-align:left;border:1px solid #e1c4e5;border-radius:13px;background:#fffaff;color:#582b74;padding:11px 12px;font-weight:750;font-size:14px}
+.choice.chosen{background:#f5d7f6;border-color:#9a53ae}.choice.correct{background:#e8f7ee;border-color:#74b78e}.choice.wrong{background:#fff0f3;border-color:#d893a6}
+.feedback{min-height:30px;margin-top:10px;font-size:13px;line-height:1.45;color:#7d477f}.feedback.good{color:#237047}.feedback.bad{color:#af3854}
+.builder{min-height:78px;padding:10px;display:flex;flex-wrap:wrap;gap:6px;align-content:start;background:#f4e1fa;border:1.5px dashed #ba88ca;border-radius:12px;margin:8px 0}
+.token{min-height:43px;border:1px solid #d4a3d9;background:#fffaff;color:#5b2a74;border-radius:11px;padding:8px 11px;font-size:20px;font-weight:800}
+.token:disabled{visibility:hidden}.tokens{display:flex;flex-wrap:wrap;gap:8px}
+.talk-question{background:#edd6f7;padding:12px;border-radius:15px;margin-bottom:8px}
+.talk-question .zh{font-size:22px}.talk-question .py{font-size:13px}
+.talk-question b{font-size:12px;color:#713a8e}
+.speaking-card{text-align:center;background:#fff8fd;border:1px solid #e8cae0;border-radius:15px;padding:13px 6px;margin-bottom:11px}
+.speaking-card .zh{font-size:43px}
+.marks{display:flex;justify-content:center;gap:7px;margin:12px 0}.marks span{display:grid;place-items:center;border:1px solid #debedd;background:#f4e9f8;color:#a784a9;width:37px;height:36px;border-radius:11px;font-weight:800}
+.marks span.ok{color:#187144;background:#e5f7eb}.marks span.no{color:#ae334f;background:#ffebf2}
+.hint{font-size:12px;color:#81678b;line-height:1.45;margin:8px 0}.badge{display:inline-block;padding:5px 10px;background:#f7e1fa;border:1px solid #ecc590;border-radius:22px;font-weight:850;font-size:12px}
+.reward{background:#f8e5fb;border-radius:15px;text-align:center;padding:12px}.reward strong{font-size:28px;color:#722c93}.success{color:#22754d}
+.controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:13px}.controls button{min-height:42px}
+.status{font-size:12px;line-height:1.4;color:#775985;min-height:16px;margin:9px 0}
+@media(max-height:700px){.scene{height:92px}.scene-panda{width:74px;height:76px}.scene-copy{left:78px;top:10px}.brand{font-size:23px}.scene-copy p{font-size:10px}.content{padding-top:7px}.paper{min-height:120px}.actions{padding-top:6px}}
+@media(max-width:360px){.content{padding:8px 10px 18px}.paper{padding:11px}.wordgrid{gap:6px}.zh{font-size:24px}.word .zh{font-size:23px}.scene-copy p{font-size:10px}.actions{grid-template-columns:98px 1fr}}
+@media(min-width:560px){.app{height:min(940px,98svh);margin:auto;border-radius:24px;border:2px solid #d4a8df;box-shadow:0 18px 60px #66317944}}
+@media(prefers-reduced-motion:reduce){.progress>i{transition:none}}
+</style>
+<link rel="stylesheet" href="./assets/hsk2-premium-v352.css?v=353"><link rel="stylesheet" href="./assets/hsk2-consistent-lessons-v7.css?v=7">
+</head>
+<body>
+<div class="app hsk2-premium-city">
+<header class="scene">
+ <a class="back" href="./hsk2-start.html#map" aria-label="Вернуться к карте HSK2">← Карта</a>
+ <img class="scene-panda" src="./assets/hsk2-panda-new-v328.svg" alt="">
+ <div class="scene-copy"><h1 class="brand">Panda Go</h1><p>🎮 Мой город · HSK2 · Урок 3</p><span class="scene-pill">Моя первая фраза · 2 слова</span></div>
+</header>
+<main class="content" id="main" tabindex="-1">
+ <div class="step-head"><h1 id="step-title"></h1><span class="step-number" id="step-counter"></span></div>
+ <div class="progress" aria-label="Прогресс урока"><i id="progress"></i></div>
+ <div id="screen"></div>
+ <p class="status" id="audio-status" role="status" aria-live="polite"></p>
+</main>
+<div class="actions"><button id="prev" type="button" class="secondary">← Назад</button><button id="next" type="button" class="primary">Дальше →</button></div>
+</div>
+<script src="./assets/hsk2-speaking-v326.js?v=345"></script>
+<script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script>
+<script src="./assets/hsk2-audio-v330.js?v=343"></script>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const KEY='pg-hsk2-city-work-easy-v2';
+const STEPS=[
+ 'Привет, мой город!','Всего два новых слова','Одно правило грамматики',
+ 'Короткий разговор','Проверь два слова','Составь предложение',
+ 'Послушай и выбери','Пять попыток','Урок завершён!'
+];
+const WORDS=[['公司','gōngsī','компания'],['工作','gōngzuò','работать; работа']];
+const BUILD=['公司','工作','我','在'], CORRECT='我在公司工作';
+const fresh=()=>({step:0,choice:null,build:[],heard:false,listening:null,mic:[],skipMic:false,mistakes:0,done:false});
+let state=fresh();
+try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'){state={...state,...data};state.step=Math.max(0,Math.min(8,Number(state.step)||0));if(!Array.isArray(state.build))state.build=[];if(!Array.isArray(state.mic))state.mic=[];}}catch{}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sound=zh=>window.PandaHsk2AudioV330?.lookup(zh)
+ ?'<button class="voice" type="button" data-play="'+esc(zh)+'" aria-label="Прослушать '+esc(zh)+'">🔊 Слушать</button>'
+ :'<span class="muted small">🔇 Запись пока отсутствует</span>';
+const example=(zh,py,ru)=>'<article class="example"><b class="zh" lang="zh-Hans">'+esc(zh)+'</b><span class="py">'+esc(py)+'</span><span class="translation">'+esc(ru)+'</span>'+sound(zh)+'</article>';
+const line=(who,zh,py,ru,reply)=>'<article class="bubble '+(reply?'answer':'')+'"><span class="speaker">'+esc(who)+'</span><div class="zh" lang="zh-Hans">'+esc(zh)+'</div><div class="py">'+esc(py)+'</div><div class="translation">'+esc(ru)+'</div>'+sound(zh)+'</article>';
+const choices=(items,value,attr,answer)=>'<div class="choices">'+items.map((txt,i)=>'<button type="button" class="choice '+(value===i?(i===answer?'chosen correct':'chosen wrong'):'')+'" '+attr+'="'+i+'">'+esc(txt)+'</button>').join('')+'</div>';
+const progressMessage=()=>{const good=state.mic.filter(x=>x===true).length,bad=state.mic.filter(x=>x===false).length;return 'Распознано: '+good+' · Не распознано: '+bad;};
+const canNext=()=>{
+ if(state.step===4)return state.choice===1;
+ if(state.step===5)return state.build.map(i=>BUILD[i]).join('')===CORRECT;
+ if(state.step===6)return state.heard&&state.listening===0;
+ if(state.step===7)return state.skipMic||state.mic.length===5;
+ return true;
+};
+let recBusy=false,speechInfo='';
+function render(){
+ const n=state.step;
+ $('step-title').textContent=STEPS[n];
+ $('step-counter').textContent=(n+1)+' из 9';
+ $('progress').style.width=((n+1)/9*100)+'%';
+ $('audio-status').textContent='';
+ let body='';
+ if(n===0)body='<section class="paper"><div class="hero-icon">🐼 🏙️</div><h2 class="bigcenter">Моя первая фраза о работе</h2><p class="bigcenter muted">Панда покажет, как сказать всего одно простое предложение.</p><div class="rail"><span>📖 2 слова</span><span>📚 1 правило</span><span>🧩 2 задания</span><span>🎧 Слушай</span><span>🎤 5 раз</span></div><p class="tip">Не нужно учить профессии, 会 или 能. Сегодня только: <b>Я работаю в компании.</b></p></section>';
+ if(n===1)body='<section class="paper"><h2>📖 Выучи два слова</h2><div class="wordgrid">'+WORDS.map(w=>'<article class="word"><b class="zh" lang="zh-Hans">'+esc(w[0])+'</b><span class="py">'+esc(w[1])+'</span><span class="translation">'+esc(w[2])+'</span>'+sound(w[0])+'</article>').join('')+'</div><p class="hint">我 (wǒ) — «я» и 在 (zài) — «в» ты уже встречал в HSK1. Здесь мы просто повторим их.</p></section>';
+ if(n===2)body='<section class="paper"><h2>📚 Всего одно правило</h2><div class="formula">我 + 在 + 公司 + 工作</div><p class="tip">В китайском <b>место работы ставится перед словом «работать»</b>. Сначала говорим <b>где</b>, потом <b>что делаем</b>.</p>'+example('我在公司工作。','Wǒ zài gōngsī gōngzuò.','Я работаю в компании.')+'<p class="hint">🎵 Тоны: wǒ (3), zài (4), gōng (1), sī (1), gōng (1), zuò (4).</p></section>';
+ if(n===3)body='<section class="paper"><h2>💬 Диалог из двух фраз</h2><p class="muted">Пока просто послушай вопрос. Запомнить нужно только ответ.</p><div class="dialogue">'+line('Панда','你做什么工作？','Nǐ zuò shénme gōngzuò?','Кем ты работаешь?',false)+line('Ученик','我在公司工作。','Wǒ zài gōngsī gōngzuò.','Я работаю в компании.',true)+'</div><p class="hint">Вопрос пока не учим наизусть — он пригодится позже.</p></section>';
+ if(n===4)body='<section class="paper"><h2>✅ Выбери перевод</h2><div class="bigcenter"><strong class="zh">公司</strong><div class="py">gōngsī</div>'+sound('公司')+'</div>'+choices(['Работать','Компания','Учитель'],state.choice,'data-quiz',1)+'<p class="feedback '+(state.choice===1?'good':state.choice!==null?'bad':'')+'" role="status">'+(state.choice===null?'Выбери один ответ.':state.choice===1?'✓ Верно! 公司 — компания.':'✕ Попробуй ещё раз.')+'</p></section>';
+ if(n===5){const built=state.build.map(i=>BUILD[i]).join('');body='<section class="paper"><h2>🧩 Собери одну фразу</h2><p class="muted">«Я работаю в компании»</p><div class="builder">'+(state.build.length?state.build.map((id,i)=>'<button type="button" class="token" data-remove="'+i+'">'+esc(BUILD[id])+'</button>').join(''):'<span class="muted">Нажимай на слова по порядку…</span>')+'</div><div class="tokens">'+BUILD.map((t,i)=>'<button type="button" class="token" data-token="'+i+'" '+(state.build.includes(i)?'disabled':'')+'>'+esc(t)+'</button>').join('')+'</div><p class="feedback '+(built===CORRECT?'good':state.build.length===4?'bad':'')+'">'+(built===CORRECT?'✓ Отлично! 我在公司工作。':state.build.length===4?'✕ Порядок неверный. Убери слово нажатием.':'Подсказка: я → в компании → работаю.')+'</p></section>';}
+ if(n===6)body='<section class="paper"><h2>🎧 Послушай предложение</h2><p class="muted">Нажми 🔊 и выбери, что сказала Панда.</p><div class="bigcenter">'+sound('我在公司工作')+'</div>'+choices(['Я работаю в компании.','Я не работаю.','Я люблю чай.'],state.listening,'data-listening',0)+'<p class="feedback '+(state.heard&&state.listening===0?'good':state.listening!==null?'bad':'')+'">'+(state.heard&&state.listening===0?'✓ Правильно!':state.listening!==null?'✕ Слушай ещё раз.':'Сначала включи аудио.')+'</p></section>';
+ if(n===7)body='<section class="paper"><h2>🎤 Повтори одно слово 5 раз</h2><div class="speaking-card"><b lang="zh-Hans" class="zh">工作</b><div class="py">gōngzuò</div><div class="translation">работать</div>'+sound('工作')+'<div class="marks">'+Array.from({length:5},(_,i)=>'<span class="'+(state.mic[i]===true?'ok':state.mic[i]===false?'no':'')+'">'+(state.mic[i]===true?'✓':state.mic[i]===false?'✕':'·')+'</span>').join('')+'</div><span class="badge">'+state.mic.length+' из 5</span></div><div class="controls"><button type="button" class="primary" data-mic '+(recBusy||state.mic.length>=5||!window.PandaHSK2PracticeV326?.speechAvailable()?'disabled':'')+'>🎤 Произнести</button><button type="button" class="secondary" data-skip-mic>Пройти без микрофона</button></div><p class="feedback" role="status">'+esc(speechInfo)+'</p><p class="hint">'+progressMessage()+'. Проверяется распознанное слово, <b>не точность тонов</b>. Если микрофон недоступен, слушай образец и повторяй самостоятельно.</p></section>';
+ if(n===8)body='<section class="paper"><div class="hero-icon">🐼 🌟</div><h2 class="bigcenter">Первый шаг сделан!</h2><p class="bigcenter"><b>Ты освоил два слова и одно правило.</b></p><div class="reward"><strong>★</strong><p>Новая звезда за урок «Мой город»</p></div><p class="muted bigcenter">Слова: 公司, 工作. Предложение: 我在公司工作。</p><p class="muted bigcenter">'+(state.skipMic?'Устная проверка пропущена.':progressMessage()+'.')+' Тоны автоматически не оценивались.</p><div class="controls"><button type="button" class="secondary" data-restart>↻ Повторить урок</button><a href="./hsk2-start.html#map" class="primary" style="text-decoration:none;display:grid;place-items:center">К карте →</a></div></section>';
+ $('screen').innerHTML=body;
+ $('prev').disabled=n===0;
+ $('next').disabled=!canNext();
+ $('next').textContent=n===8?'К карте →':n===7?'Завершить →':'Дальше →';
+}
+function voice(phrase){const svc=window.PandaHsk2AudioV330;if(!svc?.lookup(phrase)){ $('audio-status').textContent='Для этой записи нет MP3.';return}
+ const ok=svc.play(phrase,m=>{$('audio-status').textContent=m||''});if(ok&&state.step===6){state.heard=true;save();$('next').disabled=!canNext();}
+}
+function startMic(){if(recBusy||state.mic.length>=5)return;const api=window.PandaHSK2PracticeV326;if(!api?.speechAvailable()){speechInfo='Микрофон недоступен.';render();return}
+ recBusy=true;speechInfo='🎙️ Слушаю…';render();
+ api.recognize(['工作'],(ok,msg)=>{recBusy=false;speechInfo=msg||'';if(ok!==null){state.mic.push(ok);save()}render()});
+}
+$('screen').addEventListener('click',e=>{
+ const el=e.target.closest('button');if(!el||!$('screen').contains(el))return;
+ if(el.dataset.play){voice(el.dataset.play);return}
+ if(el.hasAttribute('data-quiz')){state.choice=Number(el.dataset.quiz);if(state.choice!==1)state.mistakes++;save();render();return}
+ if(el.hasAttribute('data-token')){const i=Number(el.dataset.token);if(!state.build.includes(i))state.build.push(i);save();render();return}
+ if(el.hasAttribute('data-remove')){state.build.splice(Number(el.dataset.remove),1);save();render();return}
+ if(el.hasAttribute('data-listening')){state.listening=Number(el.dataset.listening);if(state.listening!==0)state.mistakes++;save();render();return}
+ if(el.hasAttribute('data-mic')){startMic();return}
+ if(el.hasAttribute('data-skip-mic')){state.skipMic=true;speechInfo='Устная проверка пропущена';save();render();return}
+ if(el.hasAttribute('data-restart')){state=fresh();speechInfo='';save();render();$('main').scrollTop=0}
+});
+$('prev').addEventListener('click',()=>{if(!state.step)return;state.step--;save();render();$('main').scrollTop=0});
+$('next').addEventListener('click',()=>{
+ if(!canNext())return;
+ if(state.step===8){location.href='./hsk2-start.html#map';return}
+ state.step++;
+ if(state.step===8)state.done=true;
+ save();render();$('main').scrollTop=0;
+});
+render();
+})();
+</script>
+</body>
+</html>
