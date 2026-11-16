@@ -36,7 +36,7 @@
    // presence modestly; percentage hotspots stay on the same parent.
    const scale=Math.min(frame.clientWidth*1.00/ORIGINAL_WIDTH,frame.clientHeight*0.99/ORIGINAL_HEIGHT);
    art.style.width=Math.min(frame.clientWidth,ORIGINAL_WIDTH*scale*0.985)+'px';
-   art.style.height=Math.min(frame.clientHeight,ORIGINAL_HEIGHT*scale*1.11)+'px';
+   art.style.height=Math.min(frame.clientHeight,ORIGINAL_HEIGHT*scale*1.17)+'px';
   });
  }
  window.addEventListener('resize',function(){requestAnimationFrame(fit)},{passive:true});
