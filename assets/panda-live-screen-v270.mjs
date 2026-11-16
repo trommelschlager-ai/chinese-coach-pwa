@@ -98,6 +98,7 @@ function makeRow(entry,full=false){
  if(entry.pinyin&&(full||entry.who==='you')){const py=document.createElement('span');py.className='py';py.textContent=entry.pinyin;row.append(py)}
  const ru=document.createElement('span');ru.className='ru';ru.textContent=(full?'Перевод: ':' — ')+(entry.ru||(entry.analysis?.probable?'Возможный смысл: '+entry.analysis.probable:'Точный перевод пока не подтверждён'));row.append(ru);
  if(full&&entry.analysis?.explanation){const detail=document.createElement('p');detail.textContent=entry.analysis.explanation;row.append(detail)}
+ if(entry.analysis?.kind==='calendar-complete'&&entry.analysis.summary){const detail=document.createElement('p');detail.textContent=entry.analysis.summary;row.append(detail)}
  if(full&&entry.analysis?.correction){const c=entry.analysis.correction;const detail=document.createElement('p');detail.textContent='Правильно: '+c.hanzi+' '+(c.pinyin||'')+' — '+c.ru+' '+c.why;row.append(detail)}
  if(full&&entry.analysis?.kind==='correction-response'){const detail=document.createElement('p');detail.textContent='Предполагаемый смысл: '+entry.analysis.probable+' · Ошибка: '+entry.analysis.original+' · '+entry.analysis.why;row.append(detail)}
  if(full&&entry.analysis?.words?.length){const detail=document.createElement('p');detail.textContent='Знакомые слова: '+entry.analysis.words.map(w=>w.join(' — ')).join('; ');row.append(detail)}
