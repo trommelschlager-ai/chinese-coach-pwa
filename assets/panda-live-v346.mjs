@@ -96,6 +96,14 @@ if (!bridge) {
     if(title)title.textContent='🌅 Мой день';
     const back=stage.querySelector('.pg346-back');
     if(back){back.href='./hsk2-life-course.html?topic=0';back.textContent='← К уроку';}
+    // The first play on a new page may be blocked by Android autoplay policy.
+    // A prominent real button provides the required user gesture for that SAME recorded line.
+    const dayListen=stage.querySelector('#pg346-repeat');
+    if(dayListen){
+      dayListen.textContent='🔊 Слушать вопрос Панды';
+      dayListen.setAttribute('aria-label','Нажми, чтобы Панда произнесла текущий вопрос');
+      dayListen.classList.add('pg398-day-listen');
+    }
   }
   let historyAudio=null;
   const liveMouth=createPandaMouth($('.pg352-mascot'),()=>{
