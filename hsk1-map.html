@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
-<meta name="panda-go-mobile-fix" content="v397-rounded-pressed-art-shadow">
+<meta name="panda-go-mobile-fix" content="v398-clean-pill-press-feedback">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
@@ -73,83 +73,67 @@ body{display:grid;place-items:center;position:relative}
 .toast{position:absolute;z-index:10;left:7%;right:7%;top:21%;padding:11px 15px;text-align:center;color:white;border:2px solid #ffe189;border-radius:15px;background:#4b156ce9;font:700 clamp(11px,2.9vw,15px)/1.35 Arial,sans-serif;box-shadow:0 5px 18px #290c5588}
 .toast[hidden]{display:none!important}
 @media (max-height:650px){.toast{top:17%}}
-/* v397: press the APPROVED ribbon face, not a rectangular transparent
-   hotspot. The bitmap is NEVER modified. Edges feather instead of doubling,
-   and each press takes the full numbered badge and rounded ribbon with it. */
+/* v398: clean tactile feedback for the single, approved v373 bitmap.
+   Keep the original artwork absolutely stationary and untouched.
+   NEVER duplicate/crop/slide the image: that made doubled edges and dark
+   misaligned ribbons in v396/v397. The PNG already contains button shadows.
+   On touch, softly shade the existing pill itself without painting new art. */
 .hotspots a{
- box-shadow:none!important;
- filter:none!important;
- transform:none!important;
- translate:none!important;
- background:transparent!important;
- touch-action:manipulation;
- user-select:none;
- -webkit-user-select:none;
- isolation:isolate;
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:none!important;
+  transform:none!important;
+  translate:none!important;
+  isolation:isolate;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  -webkit-user-select:none;
 }
-.hotspots a::before{
- content:"";
- display:block;
- position:absolute;
- pointer-events:none;
- left:9%;
- right:8%;
- bottom:-1%;
- height:13%;
- border-radius:50%;
- background:radial-gradient(ellipse at center,rgba(28,5,57,.58) 0%,rgba(28,5,57,.29) 50%,transparent 80%);
- filter:blur(3px);
- opacity:.68;
- transition:opacity 115ms ease,transform 130ms ease;
- transform:translateY(0) scaleX(1);
-}
-.hotspots .footer-link::before{left:8%;right:8%;bottom:0;height:12%;opacity:.72}
-.hotspots .top-link::before{left:10%;right:10%;bottom:1%;height:11%;opacity:.7}
+.hotspots a::before{content:none!important;display:none!important}
 .hotspots a::after{
- content:"";
- display:block;
- position:absolute;
- inset:0;
- pointer-events:none;
- border-radius:inherit;
- box-shadow:none!important; /* remove v377 inset white border around clipped art */
- background-image:url("./assets/hsk1-approved-v373.png");
- background-color:transparent!important;
- background-repeat:no-repeat;
- background-size:var(--press-art-w) var(--press-art-h);
- background-position:var(--press-art-x) var(--press-art-y);
- clip-path:inset(0 0 12% 0 round 999px);
- -webkit-mask-image:radial-gradient(ellipse 60% 68% at 50% 48%,#000 77%,transparent 100%);
- mask-image:radial-gradient(ellipse 60% 68% at 50% 48%,#000 77%,transparent 100%);
- opacity:0;
- filter:brightness(.78) saturate(1.05);
- transform:translateY(0);
- transition:opacity 50ms linear,transform 130ms ease-out;
-}
-.hotspots .footer-link::after{
- clip-path:inset(6% 0 10% 0 round 999px);
- -webkit-mask-image:radial-gradient(ellipse 63% 77% at center,#000 78%,transparent 100%);
- mask-image:radial-gradient(ellipse 63% 77% at center,#000 78%,transparent 100%);
- filter:brightness(.82) saturate(1.06);
+  content:"";
+  display:block!important;
+  pointer-events:none;
+  position:absolute;
+  inset:8% 1% 10% 1%;
+  border-radius:inherit;
+  border:0!important;
+  box-shadow:none!important;
+  background:radial-gradient(ellipse 75% 95% at 50% 50%,
+    rgba(23,4,48,.30) 0%,rgba(23,4,48,.08) 73%,transparent 100%);
+  background-image:radial-gradient(ellipse 75% 95% at 50% 50%,
+    rgba(23,4,48,.30) 0%,rgba(23,4,48,.08) 73%,transparent 100%)!important;
+  background-size:auto!important;
+  background-position:center!important;
+  clip-path:inset(4% 1% 8% 1% round 999px);
+  -webkit-mask-image:radial-gradient(ellipse 70% 76% at center,#000 70%,transparent 100%);
+  mask-image:radial-gradient(ellipse 70% 76% at center,#000 70%,transparent 100%);
+  -webkit-backdrop-filter:brightness(.85);
+  backdrop-filter:brightness(.85);
+  opacity:0;
+  transform:none!important;
+  transition:opacity 110ms ease-out;
 }
 .hotspots .top-link::after{
- clip-path:inset(4% 4% 7% 4% round 18px);
- -webkit-mask-image:radial-gradient(ellipse 68% 78% at center,#000 72%,transparent 100%);
- mask-image:radial-gradient(ellipse 68% 78% at center,#000 72%,transparent 100%);
- filter:brightness(.82);
+  inset:9% 9% 12% 9%;
+  clip-path:inset(2% 2% 4% 2% round 17px);
+}
+.hotspots .footer-link::after{
+  inset:9% 2% 11% 2%;
+  clip-path:inset(2% 1% 5% 1% round 999px);
 }
 .hotspots a:active::after,
-.hotspots a.is-pressed::after{
- opacity:1;
- transform:translateY(3px);
-}
-.hotspots a:active::before,
-.hotspots a.is-pressed::before{
- opacity:.27;
- transform:translateY(-1px) scaleX(.95);
+.hotspots a.is-pressed::after{opacity:1}
+.hotspots a.locked:active::after,
+.hotspots a.locked.is-pressed::after{
+  background:radial-gradient(ellipse 75% 95% at center,
+     rgba(127,76,6,.23),rgba(127,76,6,.07) 73%,transparent 100%)!important;
+  background-image:radial-gradient(ellipse 75% 95% at center,
+     rgba(127,76,6,.23),rgba(127,76,6,.07) 73%,transparent 100%)!important;
 }
 @media(prefers-reduced-motion:reduce){
- .hotspots a::before,.hotspots a::after{transition:none!important}
+  .hotspots a::after{transition:none!important}
 }
 </style>
 <link rel="stylesheet" href="./assets/panda-mobile-v394.css?v=394"></head>
@@ -214,22 +198,6 @@ body{display:grid;place-items:center;position:relative}
   // Delay same-tab navigation a fraction of a second so the pupil can SEE it.
   const links=Array.from(document.querySelectorAll('.hotspots a'));
   let navigating=false;
-  // Keep the temporarily duplicated APPROVED bitmap registered to the
-  // same pixel coordinate space as the map for all Android viewports.
-  const artboard=document.querySelector('.artboard');
-  function alignPressedArtwork(){
-    const board=artboard.getBoundingClientRect();
-    for(const link of links){
-      const area=link.getBoundingClientRect();
-      link.style.setProperty('--press-art-w',board.width+'px');
-      link.style.setProperty('--press-art-h',board.height+'px');
-      link.style.setProperty('--press-art-x',(board.left-area.left)+'px');
-      link.style.setProperty('--press-art-y',(board.top-area.top)+'px');
-    }
-  }
-  alignPressedArtwork();
-  if(typeof ResizeObserver!=='undefined')new ResizeObserver(alignPressedArtwork).observe(artboard);
-  window.addEventListener('resize',alignPressedArtwork,{passive:true});
   for(const a of links){
     let release=0;
     function mark(){clearTimeout(release);a.classList.add('is-pressed')}
