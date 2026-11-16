@@ -111,7 +111,12 @@ function refreshHistory(){
  $('history-count').textContent=String(state.history.length);
 }
 function record(who,hanzi,pinyin,ru,analysis=null){state.history.push({who,hanzi,pinyin,ru,analysis,confidence:who==='you'?state.confidence:null});if(state.history.length>100)state.history.shift();refreshHistory()}
-function say(line,autoplay=true,analysis=null){state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);if(autoplay)play()}
+function say(line,autoplay=true,analysis=null){
+ state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);
+ // Text-only is a valid learning response, not an audio failure. Show the
+ // existing 🔇 caption, but never attempt playback without an exact MP3.
+ if(autoplay&&(lookupPandaVoiceClip(line.hanzi||line.panda)||lookupPandaVoiceClip(line.audioKey)))play();
+}
 function learner(input,spoken){record('you',input,spoken?.known?spoken.pinyin:null,spoken?.known?spoken.translation:null,spoken);showLearnerFeedback(spoken);state.answers.push(input);if(state.answers.length>16)state.answers.shift()}
 function recordCorrection(input,spoken){
  const c=spoken?.correction;if(!c)return;
