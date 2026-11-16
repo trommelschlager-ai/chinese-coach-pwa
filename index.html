@@ -1603,6 +1603,7 @@ body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .foc
 <link rel="stylesheet" href="./assets/panda-hsk-two-levels-v314.css?v=314">
 <link rel="stylesheet" href="./assets/panda-hsk-scenic-v315.css?v=315">
 <link rel="stylesheet" href="./assets/panda-home-photo1-v319.css?v=319">
+<link rel="stylesheet" href="./assets/panda-mobile-cleanup-v378.css?v=378">
 <style id="pg-mobile-shell-fix-v378">
 /* Do not flash the retired woman intro; the new Panda home is activated by panda-v130.js. */
 body.pg130-loading>.shell,body.pg130-loading>#launch-entry{visibility:hidden!important}
@@ -2523,10 +2524,10 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   document.body.classList.remove('launch-active');
  }
  window.showLaunchMenu=()=>show('menu');
- window.showLaunchCover=()=>show('cover');
+ window.showLaunchCover=()=>window.__panda130?.show('home')||show('menu');
  window.exitLaunch=exit;
  document.getElementById('launch-start').onclick=startWithSakura;
- document.getElementById('launch-back').onclick=()=>show('cover');
+ document.getElementById('launch-back').onclick=()=>show('menu');
  document.getElementById('launch-all').onclick=()=>{
   exit();if(window.openLearningTopics)window.openLearningTopics('course');else openCourseLesson(1,0);
  };
@@ -2572,7 +2573,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
 <script src="./assets/word-examples-v144.js?v=145"></script>
 <script src="./assets/dialogue-player-v144.js?v=148"></script>
 <script src="./assets/panda-word-sentences-v148.js?v=148"></script>
-<script src="./assets/assemble-alive-v149.js?v=1"></script>
-<script src="./assets/panda-v130.js?v=319"></script>
+<script src="./assets/assemble-alive-v149.js?v=378"></script>
+<script src="./assets/panda-v130.js?v=378"></script>
 </body>
 </html>
