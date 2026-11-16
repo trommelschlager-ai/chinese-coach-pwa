@@ -104,7 +104,7 @@ try{
   // game.html now redirects into the approved Panda training route.
   const game=await context.newPage();
   await game.goto(BASE+'/game.html',{waitUntil:'load'});
-  await game.waitForURL(/#panda\/training/);
+  await game.waitForURL(/#panda\/home/);
   await game.locator('#pg130:not([hidden]) .pg-screen').waitFor();
   assert.equal(await game.evaluate(()=>typeof window.__panda130?.show),'function','Panda training router is available');
   await screenshot(game,'05-panda-training',size);
