@@ -22,7 +22,7 @@
 .day-title .day-panda,.day-title .day-label,.day-title>h1{display:none!important}
 .day-title>p{padding:8px;margin:0!important}
 .day-title .day-stages{padding:0 7px 10px}
-#app.day-lesson-active:not(.day-visual-v390) #screen{background:linear-gradient(#7730a649,#63218c66),url('./approved-course-v390/course-map.png') center/cover fixed!important}
+#app.day-lesson-active:not(.day-visual-v390) #screen{background:radial-gradient(ellipse at top,#c25ee6,#7834a8 65%,#54217e)!important}
 .day-pilot .day-card{border:2px solid #ffda8b!important;box-shadow:0 0 0 2px #c878db,0 0 12px #f2b6ff9c!important;background:linear-gradient(120deg,#fff6ffff,#f2d1faff)!important}
 .day-pilot .day-card h2{color:#72268d;border-bottom:1px solid #dca6df}
 .day-pilot .day-meaning,.day-pilot .day-tip{border:1px solid #edbf78;background:linear-gradient(#fff3b9,#ffe3a1);border-radius:18px}

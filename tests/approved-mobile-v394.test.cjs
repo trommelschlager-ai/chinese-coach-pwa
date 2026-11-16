@@ -14,7 +14,8 @@ assert.deepEqual(played,['你好，我叫巴斯蒂安。','我二十五岁。','
 d.querySelector('.bs394-page .bs394-next').click();assert.equal(d.querySelectorAll('.bs394-page')[1].hidden,false);
 for(const term of ['住','在','岁','工程师'])d.querySelector('.bs394-page [data-term="'+term+'"]').click();
 assert.deepEqual(played.slice(-4),['住','在','岁','工程师']);
-d.querySelectorAll('.bs394-next')[1].click();assert.equal(d.querySelector('#practice').hidden,false);
+assert.equal(d.querySelectorAll('#start').length,1,'Cloned art must not duplicate start id');
+d.querySelector('.bs394-page [data-step-link="0"]').click();assert.equal(d.querySelector('#practice').hidden,false);
 assert.equal(d.querySelectorAll('.word').length,10);
 assert.deepEqual(errors,[]);
 // Exercise fit using actual image dimensions and realistic available viewports.

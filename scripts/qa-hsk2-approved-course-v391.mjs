@@ -17,7 +17,7 @@ try{
   const art=await page.locator('.approved-art').boundingBox();
   assert.ok(art);
   assert.ok(Math.abs(art.width/art.height-941/1672)<0.003,'Approved art ratio unchanged '+tag);
-  assert.ok(art.y>=-40&&art.y<=70,'Poster must fill tall phone, not leave giant empty margin: '+tag);
+  assert.ok(art.y>=0&&art.y+art.height<=height+1,'Entire original poster stays inside viewport '+tag);
   const img=await page.locator('.approved-welcome-screen img').evaluate(e=>({w:e.naturalWidth,h:e.naturalHeight}));
   assert.deepEqual(img,{w:941,h:1672},'Original approved PNG '+tag);
   await page.screenshot({path:'qa/hsk2-approved-v391/welcome-'+tag+'.png',fullPage:false});
@@ -25,6 +25,9 @@ try{
   assert.equal(await page.locator('.poster-map-card[data-topic]').count(),10);
   await page.locator('.approved-map-screen .approved-art.ready').waitFor({state:'visible',timeout:25000});
   await page.screenshot({path:'qa/hsk2-approved-v391/map-'+tag+'.png',fullPage:false});
+  for(const hit of await page.locator('.poster-map-card,.poster-map-nav').all()){
+   const box=await hit.boundingBox();assert.ok(box&&box.x>=0&&box.y>=0&&box.x+box.width<=width+1&&box.y+box.height<=height+1,'Map hit fully visible '+tag);
+  }
   await page.locator('.poster-map-card[data-topic="0"]').click();
   assert.match(await page.locator('.topic h1').innerText(),/распорядок дня/);
   await page.locator('[data-mini="0"]').first().click();
@@ -68,6 +71,16 @@ try{
   assert.match(await page.locator('.lesson-head').innerText(),/Моя работа и учёба/,'Legacy next topic intact');
   assert.deepEqual(errors,[],'No JS page errors '+tag);
   console.log('PASS mobile '+tag+': 3 exact images, map 10 topics, 3×5-step mini-lessons, 20 words, tests, Panda AI links, intact next topic');
+  await page.goto(base+'/hsk2-bastian-intro.html');
+  await page.locator('.bs394-page:not([hidden]) img').waitFor();
+  await page.screenshot({path:'qa/hsk2-approved-v391/bastian-1-'+tag+'.png'});
+  await page.locator('.bs394-page:not([hidden]) .bs394-next').click();
+  const slice=await page.locator('.bs394-page:not([hidden]) .bs394-slice').boundingBox();assert.ok(slice.width>100,'Second slice has real width');
+  await page.screenshot({path:'qa/hsk2-approved-v391/bastian-2-'+tag+'.png'});
+  await page.locator('.bs394-page:not([hidden]) [data-step-link="0"]').click();
+  assert.ok(await page.locator('#practice').isVisible());
+  await page.goto(base+'/index.html#panda/training');
+  await page.waitForURL('**/#panda/home');
   await ctx.close();
  }
 }finally{await browser.close()}

@@ -10,7 +10,7 @@ for(let i=0;i<2;i++){
  const slice=document.createElement('div');slice.className='bs394-slice';slice.style.aspectRatio='864 / '+(cuts[i+1]-cuts[i]);
  const plane=document.createElement('div');plane.className='bs394-plane';plane.style.height=(1536/(cuts[i+1]-cuts[i])*100)+'%';plane.style.top=(-cuts[i]/(cuts[i+1]-cuts[i])*100)+'%';
  const img=source.querySelector('img').cloneNode(true);plane.append(img);
- source.querySelectorAll('.screen-hotspot').forEach(hit=>{const y=parseFloat(hit.style.top)*1536/100;if(y>=cuts[i]&&y<cuts[i+1])plane.append(hit.cloneNode(true))});
+ source.querySelectorAll('.screen-hotspot').forEach(hit=>{const y=parseFloat(hit.style.top)*1536/100;if(y>=cuts[i]&&y<cuts[i+1]){const copy=hit.cloneNode(true);if(copy.id==='start'){copy.removeAttribute('id');copy.dataset.stepLink='0';}plane.append(copy)}});
  slice.append(plane);page.append(bar,slice);
  const next=document.createElement('button');next.className='bs394-next';next.textContent=i?'Начать практику →':'Дальше · разбор и тоны →';next.type='button';next.addEventListener('click',()=>i?document.getElementById('start').click():show(1));page.append(next);
  poster.append(page);pages.push(page);
