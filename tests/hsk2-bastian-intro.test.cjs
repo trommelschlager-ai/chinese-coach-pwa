@@ -13,6 +13,7 @@ const dom=new JSDOM(html,{
  virtualConsole:vc,
  beforeParse(win){win.scrollTo=()=>{}}
 });
+dom.window.eval(fs.readFileSync(path.join(root,'assets/bastian-voice-five-v397.js'),'utf8'));
 const doc=dom.window.document,$=sel=>doc.querySelector(sel);
 const click=sel=>{const b=$(sel);assert.ok(b,'Missing: '+sel);assert.equal(b.disabled,false,'Disabled: '+sel);b.click()};
 assert.match(doc.title,/Бастианом/);
@@ -29,8 +30,16 @@ assert.equal($('#practice').hidden,false);
 assert.match($('#step-title').textContent,/Слова/);
 assert.equal(doc.querySelectorAll('.word').length,10);
 click('#next');
-assert.match($('#step-title').textContent,/Пиньинь/);
-assert.match($('#step-content').textContent,/nǐ hǎo → ní hǎo/);
+assert.match($('#step-title').textContent,/Произношение 5 раз/);
+assert.equal($('#practice').classList.contains('voice-stage'),true);
+assert.equal(doc.querySelectorAll('.pg397-tile').length,10);
+assert.equal(doc.querySelectorAll('.pg397-dot.ok,.pg397-dot.bad').length,0,'No fabricated attempt results');
+assert.equal($('#next').disabled,true,'All words require five attempts or explicit skip');
+assert.equal($('#toggle-py').hidden,false,'Pinyin control present on step 2');
+click('#toggle-py');assert.equal(doc.querySelectorAll('.pg397-pinyin').length,0);
+click('#toggle-py');assert.equal(doc.querySelectorAll('.pg397-pinyin').length,10);
+click('[data-voice-skip]');click('[data-voice-skip-confirm]');
+assert.equal($('#next').disabled,false,'Explicit microphone skip allows continuing');
 click('#next');
 assert.match($('#step-title').textContent,/Грамматика/);
 assert.match($('#step-content').textContent,/住在/);
