@@ -100,7 +100,7 @@ test('the UI does not overwrite the reviewed calendar follow-up with an unrelate
 });
 
 test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗 when calendar topic is open',async()=>{
- const dom=await liveDOM(1,{completed:[4,5]});
+ const dom=await liveDOM(1,{completed:['weekdays','dates']});
  try{
   const {el,send,w}=dom;
   el('mode-nonstop').click();
