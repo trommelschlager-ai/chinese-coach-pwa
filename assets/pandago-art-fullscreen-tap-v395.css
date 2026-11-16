@@ -1,0 +1,164 @@
+/* Panda Go v395 · full-viewport scenic extension and reliable touch feedback.
+   The approved art pixels/character/Chinese text remain intact: no stretch.
+   Horizontal Bastian halves cannot fill a portrait viewport without cropping. */
+:root{--pg395-press:#fff1a5}
+
+/* BASTIAN, TWO APPROVED HALVES — the scene now fills the *entire* phone. */
+body:has(#poster:not([hidden])){background:#461273!important}
+#poster:not([hidden]){
+ width:100%!important;height:100dvh!important;min-height:100dvh!important;
+ margin:0!important;padding:0!important;background:#551676!important;
+ overflow:hidden!important;
+}
+#poster .bs394-page{
+ position:relative!important;isolation:isolate!important;
+ box-sizing:border-box!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ width:100%!important;height:100%!important;min-height:0!important;
+ margin:0!important;padding:0!important;gap:0!important;
+ background:
+   linear-gradient(180deg,rgba(54,12,106,.30),rgba(104,32,164,.18) 40%,rgba(57,15,110,.38)),
+   url('./bastian-night-city-v4.svg') center center/cover no-repeat,
+   linear-gradient(150deg,#7833af,#371064 60%,#661d93)!important;
+}
+#poster .bs394-page[hidden]{display:none!important}
+#poster .bs394-page::before{
+ content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background:
+   radial-gradient(ellipse at 50% 46%,rgba(255,199,253,.33),transparent 52%),
+   linear-gradient(180deg,rgba(47,12,78,.08),rgba(122,38,174,.22) 52%,rgba(49,11,89,.18));
+}
+#poster .bs394-page .bs394-slice{
+ position:relative!important;z-index:1;
+ flex:none!important;
+ max-width:100%!important;
+ margin:0!important;
+ border:0!important;
+ box-shadow:0 0 0 1px rgba(255,221,157,.30),0 9px 32px rgba(39,4,70,.50);
+ /* Inline JS maintains the original 864px coordinate plane and aspect ratio. */
+}
+#poster .bs394-page .bs394-bar{
+ position:absolute!important;top:calc(10px + env(safe-area-inset-top));left:10px;right:10px;
+ z-index:9!important;width:auto!important;
+ height:clamp(40px,5.8dvh,54px)!important;
+ gap:8px;pointer-events:none;
+}
+#poster .bs394-page .bs394-bar>a,
+#poster .bs394-page .bs394-bar>button{
+ pointer-events:auto;min-height:44px;
+ background:linear-gradient(#ab51e1,#63219c)!important;
+ border:2px solid #ffdf9b!important;
+ box-shadow:0 4px 13px #27044390,inset 0 1px #fff7!important;
+ border-radius:18px!important;
+ padding:9px 16px!important;color:#fff!important;
+}
+#poster .bs394-page .bs394-bar>span{
+ margin-left:auto;background:#431172c9;border:1px solid #f5d48a;
+ padding:5px 14px;border-radius:18px;color:#fff5c8!important;
+ text-shadow:0 1px 3px #2b063b;
+}
+#poster .bs394-page .bs394-next{
+ position:absolute!important;
+ left:clamp(10px,3vw,20px);right:clamp(10px,3vw,20px);
+ bottom:calc(12px + env(safe-area-inset-bottom));
+ width:auto!important;margin:0!important;
+ min-height:clamp(52px,7dvh,67px)!important;z-index:9!important;
+ font-size:clamp(16px,4.4vw,21px)!important;
+ background:linear-gradient(180deg,#fff3b0,#ffc34d)!important;
+ color:#5c207a!important;
+ border:2px solid #ffefc2!important;
+ border-radius:24px!important;
+ box-shadow:0 4px 0 #a64c9e,0 8px 18px #28054570!important;
+}
+#poster .bs394-plane .screen-hotspot{
+ cursor:pointer!important;
+ -webkit-tap-highlight-color:transparent;
+ border-radius:14px!important;
+}
+#poster .bs394-plane .screen-hotspot:focus-visible{
+ outline:3px solid #ffe39a!important;outline-offset:-3px!important;
+ background:rgba(255,226,120,.20)!important;
+}
+/* Core lesson practice still uses its existing readable interactive cards. */
+
+/* ALL THREE APPROVED COURSE PNGs: fill uncovered top/bottom with a continuation
+   of the exact scene, NOT a flat purple block. Keep all content visible. */
+#app.approved-welcome-v390 .approved-stage,
+#app.approved-map-v390 .approved-stage,
+#app.day-visual-v390 .approved-stage{
+ background:#67248f!important;
+ isolation:isolate!important;
+}
+#app.approved-welcome-v390 .approved-stage::before,
+#app.approved-map-v390 .approved-stage::before,
+#app.day-visual-v390 .approved-stage::before{
+ display:block!important;
+ content:"";position:absolute!important;inset:-12px!important;
+ z-index:0!important;pointer-events:none!important;
+ background-image:var(--approved-image, url('./approved-course-v390/course-welcome.png'))!important;
+ background-size:cover!important;
+ background-position:center center!important;
+ background-repeat:no-repeat!important;
+ filter:blur(6px) saturate(1.22) brightness(.87)!important;
+ opacity:1!important;
+}
+#app.approved-welcome-v390 .approved-art,
+#app.approved-map-v390 .approved-art,
+#app.day-visual-v390 .approved-art{
+ z-index:1!important;box-shadow:0 0 0 1px #fce2c249!important;
+}
+#app .approved-art>img{object-fit:contain!important}
+
+/* A visible active surface even for PNG-embedded, transparent hotspots.
+   The gold inset frame follows the actual clickable coordinates. */
+#app .approved-stage .approved-art .approved-hotspot:not(:disabled):active,
+#app .approved-stage .approved-art .approved-hotspot.pg395-active,
+#poster .bs394-plane .screen-hotspot:not(:disabled):active,
+#poster .bs394-plane .screen-hotspot.pg395-active{
+ background:rgba(255,229,136,.27)!important;
+ box-shadow:inset 0 0 0 3px #ffe792,inset 0 0 24px #fff4c4,0 0 18px #ffe6a6!important;
+ outline:2px solid rgba(255,248,209,.85)!important;
+ outline-offset:-2px!important;
+ backdrop-filter:brightness(1.2)!important;
+ -webkit-backdrop-filter:brightness(1.2)!important;
+ filter:brightness(1.15)!important;
+ opacity:1!important;
+ transform:scale(.985)!important;
+ transition:transform .08s, background-color .08s,box-shadow .08s!important;
+}
+#poster .bs394-page .bs394-next:active,
+#poster .bs394-page .bs394-next.pg395-active,
+#poster .bs394-page .bs394-bar :is(button,a):active,
+#poster .bs394-page .bs394-bar :is(button,a).pg395-active{
+ color:#42155d!important;
+ background:linear-gradient(#ffe294,#ffad32)!important;
+ box-shadow:inset 0 3px 9px #7d348f8a,0 0 0 3px #fff1b5,0 0 20px #ffd26e!important;
+ filter:brightness(1.09)!important;
+ transform:translateY(2px) scale(.99)!important;
+}
+#app .approved-stage .approved-hotspot:focus-visible{
+ outline:3px solid #ffeb9f!important;
+ outline-offset:-2px!important;
+ box-shadow:inset 0 0 0 3px #fff9c9!important;
+}
+
+/* The feedback halo lives outside the rerendered page, so it remains visible
+   during instant navigation even when the clicked hotspot disappears. */
+.pg395-pulse{
+ position:fixed;left:0;top:0;z-index:2147483640;pointer-events:none;
+ width:40px;height:40px;border-radius:50%;
+ transform:translate(-50%,-50%) scale(.75);
+ border:3px solid rgba(255,247,187,.98);
+ background:radial-gradient(circle,rgba(255,255,235,.65),rgba(255,198,68,.22) 70%,transparent);
+ box-shadow:0 0 20px rgba(255,238,140,.9),inset 0 0 12px #fff;
+ animation:pg395-pulse .48s ease-out forwards;
+}
+@keyframes pg395-pulse{
+ 0%{opacity:.95;transform:translate(-50%,-50%) scale(.5)}
+ 45%{opacity:.90;transform:translate(-50%,-50%) scale(1.15)}
+ 100%{opacity:0;transform:translate(-50%,-50%) scale(1.7)}
+}
+@media(prefers-reduced-motion:reduce){
+ .pg395-pulse{animation:none;opacity:0}
+ #app .approved-stage .approved-hotspot{transition:none!important}
+}
