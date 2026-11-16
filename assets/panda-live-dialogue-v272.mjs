@@ -288,6 +288,23 @@ export function answerLive(raw,options={}){
    followup:greetingFollowup?{...greetingFollowup,isContextual:true,audioKey:'你好吗'}:null,
    message:'Панда поздоровалась и спросит, как у тебя дела. Тоны произношения не оценивались.'};
  }
+ // The learner is ANSWERING the active 你好吗？ ('How are you?') prompt.
+ // Do not reply with an unrelated 谢谢! or ask 你呢? again after '我很好'.
+ // 你呢? is appropriate only if the learner explicitly asks back.
+ const wellbeingPrompt=normalize(prompt?.hanzi||prompt?.panda||'')==='你好吗';
+ if(wellbeingPrompt&&allowed.includes(1)&&(s==='我很好'||s==='我很好你呢')){
+  const askedBack=s==='我很好你呢';
+  return {kind:'answer',lesson:1,
+   spoken:{known:true,hanzi:raw,
+    pinyin:askedBack?'Wǒ hěn hǎo, nǐ ne?':'Wǒ hěn hǎo.',
+    translation:askedBack?'У меня всё хорошо, а у тебя?':'У меня всё хорошо.',
+    topic:1,matchedPrompt:true},
+   reply:askedBack
+    ?line('我也很好，谢谢！','Wǒ yě hěn hǎo, xièxie!','У меня тоже всё хорошо, спасибо!')
+    :line('很好！','Hěn hǎo!','Отлично!'),
+   followup:null,
+   message:askedBack?'Панда ответила на твой встречный вопрос.':'Ответ принят. Можешь задать следующий вопрос или выбрать другую тему.'};
+ }
  // Social and common-family questions must work before any broad fallback.
  // Keep our known corrections independent of experimental on-device AI.
  const basic=answerBasicConversation(raw,allowed);if(basic)return basic;
