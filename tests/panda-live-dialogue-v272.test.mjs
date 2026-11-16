@@ -41,7 +41,7 @@ test('errors retain the original and label probable meaning, correction and writ
  assert(!analyzeLearner('我妹妹不',allowed,null,curriculum).correction);
 });
 test('follow-up prompts are contextual, valid and calendar-aware across rollover',()=>{
- for(const topic of allowed){const prompts=topicPrompts(topic,date,{hasNumbers:true,family:{妹妹:true}});assert(prompts.length);const p=prompts[0];const sample=p.accepted[0];const r=answerLive(sample,{...options,topic,prompt:p});assert(r.reply||r.kind==='question',topic+': '+sample);if(r.kind!=='question')assert(r.followup,topic+': '+sample)}
+ for(const topic of allowed){const prompts=topicPrompts(topic,date,{hasNumbers:true,family:{妹妹:true}});assert(prompts.length);const p=prompts[0];const sample=p.accepted[0];const r=answerLive(sample,{...options,topic,prompt:p});assert(r.reply||r.kind==='question',topic+': '+sample);if(r.kind==='answer')assert(r.followup,topic+': '+sample);else assert(['statement','question'].includes(r.kind),'Reviewed sample must be understood: '+sample)}
  const teacher=topicPrompts(2,date)[0];assert(!answerLive('他是老师',{...options,prompt:teacher,topic:2}).reply);assert.equal(answerLive('我没有哥哥，我有哥哥',options).kind,'clarify');
  const p=topicPrompts(6,date)[0];const sibling=answerLive('我有妹妹',{...options,topic:6,prompt:p,profile:{family:{},hasNumbers:true}});assert.equal(sibling.kind,'statement');assert.equal(sibling.followup?.hanzi,'你妹妹几岁？');
  const reply=answerLive('我有妹妹',{...options,topic:6,profile:{hasNumbers:true}});assert.equal(reply.followup.hanzi,'你妹妹几岁？');
