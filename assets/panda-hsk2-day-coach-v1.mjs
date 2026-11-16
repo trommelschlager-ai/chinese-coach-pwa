@@ -27,19 +27,19 @@ function validWakeClock(s){
 // Questions use exact, existing user-recorded MP3 phrases. Answer patterns stay tied to each lesson step.
 const ALL=Object.freeze([
  at('你早上做什么？','Nǐ zǎoshang zuò shénme?','Что ты делаешь утром?',
-  /^(?:我)?(?:每天|今天)?(?:早上|上午)?[零〇一二两三四五六七八九十\d]{1,3}点(?:半|一刻|三刻|[零〇一二两三四五六七八九十\d]{1,3}(?:分)?)?起床$/u,
+   /^(?:(?:我)?(?:每天|今天)?(?:早上|上午)?[零〇一二两三四五六七八九十\d]{1,3}点(?:半|一刻|三刻|[零〇一二两三四五六七八九十\d]{1,3}(?:分)?)?起床|(?:我)?(?:每天|今天)?(?:早上|上午)(?:都|常常)?(?:不)?(?:刷牙|洗脸|吃早饭|跑步|学习中文))$/u,
   'Попробуй: 我每天七点起床。'),
  at('你起床以后做什么？','Nǐ qǐchuáng yǐhòu zuò shénme?','Что ты делаешь после того, как встаёшь?',
-  /^(?:是的|是|对|不|(?:我)?(?:每天)?(?:早上)?(?:都)?(?:不)?洗脸)$/u,
+   /^(?:我)?(?:每天)?(?:早上)?(?:起床(?:以|之)后)?(?:都)?(?:不)?(?:洗脸|刷牙)$/u,
   'Попробуй: 我早上洗脸。'),
  at('你上午做什么？','Nǐ shàngwǔ zuò shénme?','Что ты делаешь в первой половине дня?',
-  /^(?:是的|是|对|不|(?:我)?(?:每天)?(?:早上)?(?:都)?(?:不)?吃早饭)$/u,
+   /^(?:我)?(?:每天)?(?:早上|上午)?(?:起床以后)?(?:都)?(?:不)?(?:吃早饭|洗脸|刷牙|学习中文)$/u,
   'Попробуй: 我早上吃早饭。'),
  at('你今天做什么？','Nǐ jīntiān zuò shénme?','Что ты делаешь сегодня?',
-  /^(?:我)?(?:早上)?先(?:刷牙|洗脸|吃早饭)(?:再(?:刷牙|洗脸|吃早饭|去上班))?$/u,
+   /^(?:我)?(?:今天)?(?:早上)?(?:先(?:刷牙|洗脸|吃早饭)(?:再(?:刷牙|洗脸|吃早饭|去上班))?|(?:上班|休息|学习中文|看书|做饭))$/u,
   'Попробуй: 我先刷牙，再吃早饭。'),
  at('你晚上做什么？','Nǐ wǎnshang zuò shénme?','Что ты делаешь вечером?',
-  /^(?:我)?(?:晚上)?(?:常常|经常|通常)?(?:看书|休息|睡觉|吃晚饭|听音乐|看电视|学习中文|学中文|做饭|运动)$/u,
+   /^(?:我)?(?:晚上)?(?:常常|经常|通常)?(?:看书|看电影|休息|睡觉|吃晚饭|听音乐|看电视|学习中文|学中文|做饭|运动)$/u,
   'Попробуй: 我晚上常常看书。')
 ]);
 export function dailyQuestions(mini=0){
@@ -50,7 +50,7 @@ export function checkDayAnswer(input,idx,mini=0){
  const question=dailyQuestions(mini)[idx],said=norm(input);
  if(!question)return {ok:false,message:'Вопрос не найден.'};
  if(!said)return {ok:false,message:'Скажи или напиши ответ на китайском.'};
- const patternMatches=question.pattern.test(said)&&(idx!==0||validWakeClock(said));
+  const patternMatches=question.pattern.test(said)&&(idx!==0||!said.endsWith('起床')||validWakeClock(said));
  const translation=patternMatches?translateReviewedDayAnswer(said,idx):null;
  const ok=!!translation;
  return {
