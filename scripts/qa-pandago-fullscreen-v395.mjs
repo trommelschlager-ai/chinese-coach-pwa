@@ -41,7 +41,7 @@ try{
   assert.equal(await page.locator('.bs394-page:not([hidden]) .bs396-crop').count(),3,'Page one contains original header, face and four phrase cards');
   assert.ok((await page.locator('.bs396-layout').first().boundingBox()).height>450,'Portrait reflow fills available screen space');
   assert.equal(await page.locator('.bs394-page:not([hidden])').count(),1);
-  const bastianBg=await page.locator('.bs394-page:not([hidden])').evaluate(n=>getComputedStyle(n).backgroundImage);
+  const bastianBg=await page.locator('.bs394-page:not([hidden])').evaluate(n=>getComputedStyle(n,'::before').backgroundImage);
   assert.match(bastianBg,/bastian-approved-reference-v5/,'Portrait layout uses original approved Bastian background');
   await tapFeedback(page,'.bs394-page:not([hidden]) .bs394-next','Bastian page 1');
   await page.screenshot({path:'qa/pandago-fullscreen-v395/bastian1-'+tag+'.png',fullPage:false});
