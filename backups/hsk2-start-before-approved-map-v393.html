@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#f5d8ee"><title>HSK 2 · Сначала база · Panda Go</title><style>
+:root{--ink:#4d2366;--muted:#81618b;--lilac:#d9a7ed;--rose:#efbdde;--line:#ebba83;--cream:#fff8fc;--deep:#6d2a91;--success:#216b47;--error:#ae3153;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:var(--ink)}*{box-sizing:border-box}body{margin:0;min-height:100svh;background:#f1dcf2;display:flex;justify-content:center}button,a{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #6234b9;outline-offset:2px}h1,h2,h3,p{margin:0}a{color:inherit}.app{position:relative;width:min(100%,480px);height:100svh;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(#f3c9ee 0%,#f8e8f9 39%,#e2c7ef 100%)}.app:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;background:none center/cover;z-index:0}.app > *{position:relative;z-index:1}.scene{height:150px;flex:none;overflow:hidden;background:linear-gradient(#edb8df82,#e2bcfa65),url('./assets/chinese-waterfall-banner.svg') center 55%/cover;border-bottom:1px solid #d7acc8}.scene:after{content:"🌸";position:absolute;right:8px;top:3px;font-size:24px;opacity:.85}.petals{position:absolute;left:-6px;top:3px;font-size:19px;opacity:.9}.scene .panda{position:absolute;width:137px;height:122px;object-fit:cover;object-position:50% 33%;bottom:-6px;left:0;filter:drop-shadow(0 4px 8px #863f8355)}.brand{position:absolute;top:calc(6px + env(safe-area-inset-top));left:128px;right:32px;font-family:Georgia,serif;font-style:italic;font-size:clamp(25px,7vw,35px);font-weight:900;color:#5b246e;text-shadow:1px 2px #fff6e6;text-align:center;white-space:nowrap}.brand small{display:block;font:700 12px system-ui,sans-serif;letter-spacing:.6px;border:1px solid #efba7b;background:#fff5fcaa;border-radius:24px;padding:5px 8px;margin-top:2px;box-shadow:0 2px 9px #af7d9933}.backlink{position:absolute;left:14px;top:calc(16px + env(safe-area-inset-top));width:32px;height:32px;border-radius:50%;display:grid;place-items:center;text-decoration:none;font-size:26px;border:1px solid #e9bd88;background:#fff4fcbc;color:#633184;z-index:3}.scene-caption{position:absolute;right:12px;bottom:12px;font-size:12px;font-weight:850;background:#fff4f8e9;border:1px solid #f0caa5;padding:6px 11px;border-radius:16px;color:#743e92}.content{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:8px 12px 12px;scrollbar-width:thin;scrollbar-color:#d8a8df transparent}.content::-webkit-scrollbar{width:3px}.content::-webkit-scrollbar-thumb{background:#cca0d9;border-radius:2px}.banner{background:linear-gradient(110deg,#683486,#a65bbb 70%,#622a86);color:white;border:2px solid #f1c785;box-shadow:0 2px 0 #c98cd3,0 4px 8px #aa6aba40,inset 0 1px #edc9f9;border-radius:15px;text-align:center;padding:8px 10px;margin-bottom:9px;font-family:Georgia,serif;font-size:21px;line-height:1.16;font-weight:850}.paper{background:linear-gradient(130deg,#fff8fded,#fbe9f6ee);border:1.5px solid #e6b775;border-radius:17px;padding:11px;box-shadow:0 3px 10px #a377a828,0 0 0 2px #fff8e64b inset;margin-bottom:10px}.paper h2{font-family:Georgia,serif;font-size:18px;margin-bottom:7px;text-align:center}.paper h3{font-family:Georgia,serif;font-size:16px;margin-bottom:6px}.intro{font-size:12px;color:var(--muted);text-align:center;line-height:1.45;margin:0 2px 9px}.mini-path{display:flex;gap:5px;align-items:center;justify-content:space-between;overflow:hidden}.path-part{flex:1;text-align:center;border:1px solid #dfb5d8;border-radius:11px;background:#fff7fdc7;padding:7px 3px;min-width:0;font-size:11px;font-weight:800;line-height:1.22}.path-part b{display:block;font-size:17px;margin-bottom:3px}.path-part:last-child{margin-right:0}.review-row{display:flex;gap:10px;align-items:center;padding:9px 11px;border:1px solid #e6b679;background:#fff9fd;border-radius:16px;margin-bottom:10px;text-decoration:none;box-shadow:0 3px 9px #ab7d9d2c}.review-row .emoji{font-size:29px;flex:none}.review-row strong{display:block;font-size:15px}.review-row small{display:block;font-size:11px;color:var(--muted);margin-top:3px}.review-row .arrow{margin-left:auto;font-size:20px;color:#9353a7}.road{display:grid;gap:6px}.road-item{display:flex;align-items:center;gap:10px;border:1px solid #e8b879;background:#fff7fcf5;border-radius:14px;padding:7px 9px;min-height:49px;box-shadow:0 2px 8px #a070a82c;text-decoration:none;color:var(--ink)}.road-item:nth-child(even){margin-left:12px}.num{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;border:1.5px solid #efc17a;background:linear-gradient(#bd78cb,#70338e);color:white;font-weight:900}.road-item strong{font-size:14px;display:block;line-height:1.2}.road-item small{display:block;font-size:10.5px;color:#966ba2;margin-top:3px}.road-item .status{font-size:10px;margin-left:auto;white-space:nowrap;color:#82538c}.road-item.disabled{opacity:.69}.hint{border:1px solid #e5b87f;background:#fff6f5dd;border-radius:14px;padding:9px;font-size:12px;line-height:1.45;margin-top:10px;text-align:center}.nav{flex:none;display:grid;grid-template-columns:repeat(4,1fr);min-height:62px;padding:4px 8px calc(5px + env(safe-area-inset-bottom));background:#fff2fcda;border-top:1px solid #f6dcf5;backdrop-filter:blur(7px)}.nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;text-decoration:none;color:#59336f;font-size:10px;border-radius:11px}.nav a b{font-size:22px;font-weight:500}.nav a.active{background:#f7dafa;border:1px solid #fff8ff}.lesson-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.lesson-title strong{font-size:15px}.pill{background:#f0d6f8;padding:5px 9px;border-radius:18px;font-size:11px;font-weight:800;color:#753b8b;white-space:nowrap}.meter{height:6px;background:#ead3ef;border-radius:8px;overflow:hidden;margin-bottom:10px}.meter i{display:block;height:100%;background:linear-gradient(90deg,#b963d4,#80359f);border-radius:8px;transition:width .2s}.vocgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.vocab{border:1px solid #e4bf9b;background:#fff9fdf2;border-radius:14px;min-width:0;padding:11px 6px;text-align:center;display:grid;gap:5px;align-content:center;box-shadow:inset 0 1px #fff}.vocab .hanzi{font-size:clamp(27px,7vw,38px);font-weight:850;line-height:1.15;font-family:system-ui,Arial,sans-serif}.vocab .py{font-size:14px;font-weight:700;color:#985dac}.vocab .ru{font-size:12px;line-height:1.25}.notice{margin-top:8px;font-size:11px;line-height:1.4;color:#745a84;text-align:center}.examples{display:grid;gap:6px}.example{border:1px solid #efd2da;background:white;border-radius:12px;padding:9px;text-align:center}.example b{font-size:22px;font-family:system-ui,sans-serif;display:block}.example .py{display:block;font-size:13px;font-weight:650;color:#9251a5;margin:4px 0}.example .ru{font-size:13px}.rule{background:#efd9f7;border:1px solid #e7b982;border-radius:13px;padding:10px;text-align:center;font-size:14px;font-weight:800;margin-bottom:8px}.explain{font-size:13px;line-height:1.55}.explain em{font-style:normal;font-weight:800;color:#7a2995}.choices{display:grid;gap:8px}.choice{background:#fff9fd;border:1px solid #e9c7e3;border-radius:13px;padding:11px 12px;text-align:left;font-weight:700;color:#60377a}.choice.chosen{border-color:#af6ac4;background:#f7e3fa}.choice.correct{border-color:#66b58a;background:#e8f7ee}.choice.wrong{border-color:#d77d97;background:#ffebf1}.feedback{font-size:12px;line-height:1.4;margin-top:9px;min-height:19px}.feedback.ok{color:#216b47}.feedback.err{color:#b12b53}.builder{display:flex;flex-wrap:wrap;gap:8px;min-height:63px;border-radius:14px;border:1.5px dashed #c6a3d8;background:#f8e6fb;padding:11px}.builder button,.tokens button{border:1px solid #d9aada;background:white;color:#71348b;border-radius:9px;padding:9px 10px;font-size:20px;min-width:48px}.tokens{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.tokens button:disabled{visibility:hidden}.bubble{background:#f4e5fa;border-radius:16px 16px 16px 4px;padding:9px 11px;max-width:91%;margin-bottom:9px}.bubble.right{background:#ffe9f3;border-radius:16px 16px 4px 16px;margin-left:auto}.bubble b{display:block;font-size:18px}.bubble em{display:block;font-style:normal;color:#835294;font-size:12px;margin:4px 0}.bubble span{font-size:12px}.toolbar{display:flex;gap:8px;justify-content:space-between;margin-top:10px}.softbtn{border:1px solid #d8b0d5;color:#6e3b87;border-radius:12px;background:#fff5fb;padding:10px 12px;font-weight:750}.primary{border:1.5px solid #e9b578;border-radius:16px;padding:11px 17px;background:linear-gradient(120deg,#b966c5,#703394);color:white;font-size:15px;font-weight:850;box-shadow:0 4px 10px #b074b54a;flex:1}.primary:disabled{opacity:.4}.footnote{color:#825b8d;font-size:11px;text-align:center;margin:9px 0}.spaced{margin-top:12px}.bottom-actions{position:sticky;bottom:-12px;padding:9px 0 7px;background:linear-gradient(transparent,#fae9fa 22%,#fae9fa);z-index:2}.small-caption{color:#82608b;font-size:11px;text-align:center}.plainlink{font-size:12px;font-weight:750;color:#774098}.hiddenpy .py,.hiddenpy .bubble em{visibility:hidden}.badge-success{background:#e6f6eb;color:#276a46;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:750}.badge-muted{font-size:11px;color:#76568a;background:#f7e9fb;padding:4px 8px;border-radius:20px}@media(min-width:560px){.app{height:min(920px,98svh);margin:auto;border:2px solid #d5afe0;border-radius:28px;box-shadow:0 22px 70px #65367e55}}@media(max-height:710px){.scene{height:105px}.scene .panda{width:88px;height:88px;bottom:-13px}.brand{left:105px;font-size:25px}.brand small{font-size:10px}.content{padding-top:6px}.banner{font-size:18px;padding:7px}.road-item{min-height:44px;padding:5px 8px}.num{width:29px;height:29px}.nav{min-height:53px}.paper{padding:8px}.review-row{padding:6px 8px}.scene-caption{font-size:10px}}@media(max-width:350px){.road-item strong{font-size:12px}.vocab .hanzi{font-size:25px}.brand{font-size:22px}.paper h2{font-size:16px}}
+
+/* Panda Go Journey v345: compact alternating roadmap; grammar always visible. */
+.journey-head{text-align:center;background:linear-gradient(130deg,#fff8ff,#f2d9f8);border:1.5px solid #ecc58d;border-radius:19px;padding:12px 9px 11px;margin:0 0 13px;box-shadow:0 4px 14px #8d49a026}
+.journey-head-art{display:block;font-size:24px;line-height:1.1}.journey-head h1{font:900 clamp(17px,5.5vw,23px)/1.2 Georgia,serif;color:#682783}
+.journey-head p{font-size:12px;margin:5px 0;color:#734582}.journey-principle{display:inline-block;border-radius:22px;background:#f6e5fb;border:1px solid #e9bed0;padding:5px 10px;font-size:12px;font-weight:800}
+.journey-road{position:relative;display:flex;flex-direction:column;gap:15px;padding:6px 0 12px;isolation:isolate}
+.journey-road::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 15px);width:30px;border:2px dashed #fff9fa;border-radius:50px;background:linear-gradient(90deg,#ddbbf1,#a67cd2,#e1b6ee);box-shadow:0 0 0 2px #b98dcd88}
+.journey-card{width:91%;max-width:410px;display:flex;align-items:center;position:relative;min-width:0;gap:7px;background:linear-gradient(145deg,#fffdfd,#ffeefb 78%);border:2px solid #e8bb80;border-radius:19px;box-shadow:0 4px 0 #e0a6d94c,0 7px 15px #9561ac3c;color:#4d2366;text-decoration:none;padding:10px 11px;min-height:116px}
+.journey-card:nth-child(odd){align-self:flex-start}.journey-card:nth-child(even){align-self:flex-end}
+.journey-card.is-ready{border-color:#b979cc;box-shadow:0 0 0 2px #fff1d5,0 5px 14px #a24abb4d}
+.journey-card summary{list-style:none;display:flex;align-items:center;gap:7px;width:100%;cursor:pointer}.journey-card summary::-webkit-details-marker{display:none}
+.journey-num{position:absolute;top:-10px;left:8px;display:grid;place-items:center;background:linear-gradient(140deg,#be73d2,#70348d);color:#fff;border:1px solid #efcd9e;border-radius:9px;font-size:15px;font-weight:900;width:29px;height:30px;box-shadow:0 2px 5px #8d4e9f4f}
+.journey-art{flex:0 0 58px;text-align:center;font-size:36px;filter:drop-shadow(0 2px 3px #ad6a9c45)}
+.journey-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px}.journey-copy strong{font-size:clamp(14px,4vw,17px);line-height:1.2;font-weight:850}
+.journey-copy small{color:#80538a;font-size:11px;line-height:1.3}
+.journey-grammar{display:block;border:1px solid #ecd0f6;border-radius:10px;background:#eed8f9ba;padding:5px 6px;font-size:clamp(11px,3.2vw,13px);line-height:1.36;overflow-wrap:anywhere}
+.journey-grammar b{color:#722a95}.journey-grammar [lang]{font-weight:750;color:#52206c}
+.journey-state{color:#7b6485;font-size:10.5px;font-weight:750}.journey-state.is-open{color:#663080;font-size:12px}
+.journey-card.is-planned{display:block;padding:0}.journey-card.is-planned summary{min-height:112px;padding:10px 9px}
+.journey-preview{padding:0 12px 11px;border-top:1px solid #eac9e7;margin-top:2px}.journey-preview b{display:block;font-size:12px;margin:9px 0 3px}
+.journey-preview p{font-size:13px;line-height:1.45}.journey-preview small{display:block;font-size:11px;color:#80538a;margin-top:5px}
+.journey-features{background:linear-gradient(135deg,#fff8fe,#f1d3fa);border:2px solid #dfb17d;border-radius:17px;padding:11px;margin-top:8px;text-align:center}
+.journey-features b{font-size:15px}.journey-features p{font-size:12px;line-height:1.7;margin-top:5px}
+.journey-prepare{display:flex;flex-wrap:wrap;gap:7px;align-items:center;padding:11px 3px}.journey-prepare strong{width:100%;font-size:13px}
+.journey-prepare a{background:#fff7fc;border:1px solid #ddb9df;border-radius:11px;font-size:11px;font-weight:700;padding:8px 9px;text-decoration:none}
+@media(max-width:375px){.journey-card{width:96%;padding:8px;gap:4px}.journey-art{flex-basis:45px;font-size:28px}.journey-grammar{font-size:11px}.journey-card.is-planned summary{padding:8px 6px}}
+.city-pilot{display:flex;align-items:center;gap:11px;text-decoration:none;margin:9px 0 15px;padding:13px;border:2px solid #e9be7a;border-radius:17px;background:linear-gradient(110deg,#652882,#a554ba);color:white;box-shadow:0 4px 13px #784e9860}.city-pilot .city-icon{font-size:26px;flex:none}.city-pilot span:last-child{display:flex;flex-direction:column;gap:4px}.city-pilot b{font-size:15px}.city-pilot small{font-size:12px;line-height:1.3}.city-pilot strong{font-size:12px;color:#ffe69a}
+/* Ensure the journey map scrolls: the legacy one-screen stylesheet hides scrolling on lessons. */
+.app .content.journey-map-active{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:thin;overscroll-behavior:contain;padding:9px 11px 24px}
+
+/* HSK2 v348 — learner-first course promise and study roadmap */
+.app.welcome-view .scene{height:108px!important}
+.app.welcome-view .nav{display:none!important}
+.app.welcome-view .content{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;padding:9px 12px 15px!important;overscroll-behavior:contain;scrollbar-width:thin}
+.course-welcome-footer[hidden]{display:none!important}
+.course-welcome-footer{display:flex;flex-direction:column;gap:4px;align-items:center;flex:none;padding:9px 13px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(#fff6fdbb,#f6d7ec);border-top:1px solid #e8c7db}
+.course-welcome-footer button{width:100%;min-height:52px;border:2px solid #e6bd80;border-radius:18px;background:linear-gradient(115deg,#c75bc8,#793196);color:#fff;font-size:17px;font-weight:900;box-shadow:0 3px 11px #8d43a25c}
+.course-welcome-footer small{font-size:11px;color:#765181;text-align:center}
+.pg-course-welcome{display:flex;flex-direction:column;gap:10px;color:#56316b}
+.pg-welcome-hero{position:relative;overflow:hidden;border:2px solid #e5b77c;border-radius:20px;background:linear-gradient(125deg,#67328f,#a65ac3);color:white;text-align:center;padding:15px 12px 12px;box-shadow:0 5px 14px #9654af51}
+.pg-welcome-hero .pg-welcome-sparkle{position:absolute;right:9px;top:6px;font-size:29px}
+.pg-welcome-hero .pg-welcome-eyebrow{font-size:12px;color:#f6d1ff;letter-spacing:.08em;font-weight:800}
+.pg-welcome-hero h1{font:900 clamp(23px,6vw,28px)/1.1 Georgia,serif;margin:5px 0 4px}
+.pg-welcome-hero p{font-size:13px;line-height:1.45}
+.pg-welcome-section{border:1.5px solid #ebc39c;background:linear-gradient(140deg,#fffafd,#fbedf6);border-radius:16px;padding:11px 12px;box-shadow:0 3px 12px #b682c329}
+.pg-welcome-section h2{font-size:16px;margin:0 0 9px;color:#682b85}
+.pg-welcome-goals{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.pg-welcome-goal{background:#f6e8fc;border:1px solid #e6cce8;border-radius:12px;padding:9px 7px;display:flex;gap:6px;align-items:flex-start}
+.pg-welcome-goal .emoji{font-size:20px;line-height:1.2}
+.pg-welcome-goal strong{display:block;font-size:12px;line-height:1.3}
+.pg-welcome-goal small{display:block;margin-top:4px;font-size:11px;line-height:1.3;color:#80588b}
+.pg-welcome-plan{display:grid;grid-template-columns:1fr;gap:5px}
+.pg-welcome-plan-step{display:flex;align-items:center;gap:8px;background:#f7edfb;border:1px solid #ecdced;border-radius:11px;padding:7px 9px}
+.pg-welcome-plan-step .num{display:grid;place-items:center;width:27px;height:27px;flex:none;border-radius:9px;background:linear-gradient(135deg,#aa58c3,#79338f);color:white;font-size:13px;font-weight:900}
+.pg-welcome-plan-step span:last-child{font-size:12px;line-height:1.35}
+.pg-welcome-tones{display:flex;align-items:center;justify-content:space-around;gap:5px;background:#f6e3f6;border-radius:12px;padding:9px 6px;margin-top:7px}
+.pg-welcome-tone{text-align:center;flex:1}
+.pg-welcome-tone b{font-size:21px;display:block}
+.pg-welcome-tone small{font-size:10.5px;color:#83588b}
+.pg-welcome-tone:nth-child(1) b{color:#ba388d}.pg-welcome-tone:nth-child(2) b{color:#328c73}.pg-welcome-tone:nth-child(3) b{color:#8759bb}.pg-welcome-tone:nth-child(4) b{color:#bc7239}
+.pg-welcome-themes{padding:9px 11px;border:1px solid #e7c0d7;border-radius:13px;background:#f4ddf5;text-align:center;font-size:12px;line-height:1.45}.pg-welcome-themes b{color:#6d2c89}
+.pg-welcome-honest{font-size:11px;line-height:1.45;color:#765185;margin:6px 2px 0}
+.pg-welcome-review{display:inline-block;padding:7px 10px;margin:0 0 9px;background:#f4e5fb;border:1px solid #e7c1e3;border-radius:11px;text-decoration:none;font-size:12px;font-weight:800}
+@media(max-width:360px){.pg-welcome-goals{gap:5px}.pg-welcome-goal{padding:7px 5px}.pg-welcome-goal strong{font-size:11.5px}.pg-welcome-hero{padding:11px 9px}.pg-welcome-section{padding:10px}}
+@media(max-height:720px){.app.welcome-view .scene{height:83px!important}.pg-welcome-hero{padding:10px}.pg-welcome-plan-step{padding:5px 7px}.pg-course-welcome-footer{padding-top:5px;padding-bottom:calc(7px + env(safe-area-inset-bottom))}}
+</style><link rel="stylesheet" href="./assets/hsk2-one-screen-v323.css?v=323"><link rel="stylesheet" href="./assets/hsk2-speaking-v324.css?v=324"><link rel="stylesheet" href="./assets/hsk2-five-attempts-banner-v326.css?v=326"><link rel="stylesheet" href="./assets/hsk2-compact-refinement-v328.css?v=328"><link rel="stylesheet" href="./assets/hsk2-fixes-v329.css?v=329"><link rel="stylesheet" href="./assets/hsk2-audio-v330.css?v=339"><link rel="stylesheet" href="./assets/hsk2-premium-v352.css?v=353"><link rel="stylesheet" href="./assets/hsk2-one-screen-map-v6.css?v=6"><link rel="stylesheet" href="./assets/hsk2-map-polish-v7.css?v=7"><link rel="stylesheet" href="./assets/hsk2-map-android-v8.css?v=9"></head><body><div class="app hsk2-premium-map" id="app"><header class="scene"><span class="petals" aria-hidden="true">🌸</span><a class="backlink" href="#map" aria-label="Назад к карте">‹</a><img class="panda" src="./assets/hsk2-panda-new-v328.svg" alt=""><div class="brand">Panda Go<small id="scene-sub">HSK 2 · Начальный плюс</small></div><span class="scene-caption" id="scene-caption">Слова → грамматика → практика</span></header><main class="content" id="screen" tabindex="-1"></main><div class="course-welcome-footer" id="course-welcome-footer" hidden><button type="button" id="course-welcome-start">🐼 Начать приключение →</button><small>План всегда можно открыть снова с карты HSK2</small></div><nav class="nav" aria-label="Навигация"><a href="#map" id="nav-map"><b>⌂</b>Карта</a><a href="#review" id="nav-review"><b>▤</b>Повторение</a><a href="#lesson" id="nav-lesson"><b>◫</b>Тренажёр</a><a href="#progress" id="nav-progress"><b>◴</b>Прогресс</a></nav></div>
+<script src="./assets/hsk2-speaking-v326.js?v=332"></script>
+<script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=343"></script>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);const WORDS=[
+ ['中文','Zhōngwén','китайский язык'],['学习','xuéxí','учиться, изучать'],['忙','máng','занят'],['很','hěn','очень; связка перед прилагательным']];
+const REVIEW=[['我','wǒ','я'],['你','nǐ','ты'],['他','tā','он'],['她','tā','она'],['是','shì','быть, являться'],['不','bù','не'],['吗','ma','вопросительная частица'],['老师','lǎoshī','учитель'],['三','sān','три'],['十','shí','десять'],['今天','jīntiān','сегодня'],['星期','xīngqī','неделя; день недели'],['妈妈','māma','мама'],['爸爸','bàba','папа'],['天气','tiānqì','погода'],['下雨','xià yǔ','идёт дождь'],['年','nián','год'],['月','yuè','месяц'],['日','rì','день; дата'],['号','hào','число месяца']];
+const sections=[['Слова → предложения','中文 · 学习 · 忙','ready'],['Глаголы и вопросы','不 · 没 · 吗','soon'],['Время и место','现在 · 在','soon'],['Действие сейчас','正在 · 进行','soon'],['Прошлое и опыт','了 · 过','soon'],['Планы и будущее','要 · 会 · 打算','soon'],['Связки и сравнения','因为 · 所以 · 比','soon']];
+const JOURNEY=[["🌅","Мой распорядок дня","每天 / 先…再… / 常常","Расскажу о своём обычном дне.","我每天七点起床。"],["💼","Моя работа и учёба","在…工作 / 会 / 不会","Смогу говорить о работе и своих навыках.","我在公司工作。"],["🎸","Моё хобби","喜欢 / 周末 / 觉得","Расскажу об интересах и выходных.","我喜欢听音乐。"],["🏙️","Мой город","在 / 旁边 / 离","Научусь объяснять расположение мест.","银行在学校旁边。"],["🚇","Транспорт и дорога","坐 / 从…到… / 需要","Смогу спрашивать и объяснять маршрут.","我坐地铁去上班。"],["🍜","В кафе и ресторане","想要 / 杯 / 碗 / 还要","Сделаю заказ и попрошу счёт.","请给我一杯茶。"],["🛍️","Покупки и цены","多少钱 / 太…了 / 比","Смогу спросить цену и сравнить товары.","这个比那个便宜。"],["🤝","Друзья и встречи","星期 / 什么时候 / 吧","Научусь приглашать и договариваться.","我们星期六见面吧。"],["📸","Вчера и мой опыт","了 / 没有 / 过","Расскажу, что делал и где бывал.","我昨天看了电影。"],["🎯","Мои планы и будущее","打算 / 因为…所以… / 如果…就…","Расскажу о будущих планах.","我打算下个月去上海。"]];
+const reviewStages=[
+ {kind:'words',title:'Повторяем местоимения',items:REVIEW.slice(0,4)},
+ {kind:'words',title:'Слова для предложений',items:REVIEW.slice(4,8)},
+ {kind:'words',title:'Числа и дни недели',items:REVIEW.slice(8,12)},
+ {kind:'words',title:'Семья и погода',items:REVIEW.slice(12,16)},
+ {kind:'words',title:'Год, месяц, дата',items:REVIEW.slice(16,20)},
+ {kind:'examples',title:'Три знакомые фразы',items:[['我不是老师。','Wǒ bú shì lǎoshī.','Я не учитель.'],['你是老师吗？','Nǐ shì lǎoshī ma?','Ты учитель?'],['今天下雨。','Jīntiān xià yǔ.','Сегодня идёт дождь.']]},
+ {kind:'quiz',title:'Проверь себя',question:'Что означает 你是老师吗？',choices:['Ты учитель?','Ты ученик.','Ты сегодня занят?'],answer:0,why:'吗 (ma) превращает утверждение в общий вопрос.'},
+ {kind:'quiz',title:'Проверь себя',question:'Как читается 不是 в речи?',choices:['bù shì','bú shì','bǔ shì'],answer:1,why:'Перед четвёртым тоном 不 меняется на второй: bú shì.'}];
+const lessonStages=[
+ {kind:'words',title:'Четыре слова урока',items:WORDS},
+ {kind:'doublequiz',title:'Проверяем два слова',items:[
+  {question:'Что означает 学习 (xuéxí)?',choices:['учиться, изучать','учитель','сегодня'],answer:0,why:'学习 (xuéxí) — изучать, учиться.'},
+  {question:'Как переводится 忙 (máng)?',choices:['мама','занят','работать'],answer:1,why:'忙 — «быть занятым». У него второй тон: máng.'}
+ ]},
+ {kind:'rule',title:'Основа предложения',formula:'КТО + ГЛАГОЛ + ЧТО',why:'В простом предложении действие обычно стоит после подлежащего. Китайский глагол не меняется по лицам.',example:['我学习中文。','Wǒ xuéxí Zhōngwén.','Я изучаю китайский.'],extra:[['你学习中文。','Nǐ xuéxí Zhōngwén.','Ты изучаешь китайский.'],['他学习中文。','Tā xuéxí Zhōngwén.','Он изучает китайский.']]},
+ {kind:'rule',title:'Как описать состояние',formula:'КТО + 很 + ПРИЛАГАТЕЛЬНОЕ',why:'В простом описании состояния перед 忙 не ставят 是. 很 часто не требует сильного ударения на «очень».',example:['我很忙。','Wǒ hěn máng.','Я занят.'],extra:[['你很忙。','Nǐ hěn máng.','Ты занят.'],['他很忙。','Tā hěn máng.','Он занят.']]},
+ {kind:'examples',title:'Три простых примера',items:[['我学习中文。','Wǒ xuéxí Zhōngwén.','Я изучаю китайский.'],['你学习中文。','Nǐ xuéxí Zhōngwén.','Ты изучаешь китайский.'],['他很忙。','Tā hěn máng.','Он занят.']]},
+ {kind:'build',title:'Собери предложение',question:'«Я изучаю китайский»',tokens:['中文','我','学习'],answer:['我','学习','中文'],why:'В китайском: кто + действие + что.'},
+ {kind:'quiz',title:'Выбери перевод',question:'Что значит 我很忙。?',choices:['Я занят.','Я учитель.','Я изучаю китайский.'],answer:0,why:'很忙 (hěn máng) — быть занятым.'},
+ {kind:'dialogue',title:'Мини-диалог',items:[['A','你学习中文吗？','Nǐ xuéxí Zhōngwén ma?','Ты учишь китайский?'],['B','我学习中文。','Wǒ xuéxí Zhōngwén.','Я учу китайский.'],['A','你忙吗？','Nǐ máng ma?','Ты занят?'],['B','我很忙。','Wǒ hěn máng.','Я занят.']]},
+ {kind:'finish',title:'Первый микроурок завершён',desc:'Слова, два правила, три примера, конструктор и мини-диалог. Всё можно повторить.'}];
+const stateKey='pg-hsk2-approved-v1-state';let state={review:0,lesson:0,completedReview:false,completedLesson:false,answers:{},build:[],showPy:true};
+try{const previous=JSON.parse(localStorage.getItem(stateKey)||'null');if(previous&&typeof previous==='object')state={...state,...previous,answers:previous.answers||{},build:Array.isArray(previous.build)?previous.build:[]}}catch{}
+const save=()=>{try{localStorage.setItem(stateKey,JSON.stringify(state))}catch{}};
+// v329: old review end screen was step 9. Fold saved position back to final question.
+if(Number(state.review)>7){state.review=7;save();}
+// v328: migrate saved indices and answers from 10 screens to 9 exactly once.
+if(state.lessonLayoutVersion!==328){
+ const oldStep=Math.max(0,Math.min(9,Number(state.lesson)||0));
+ state.lesson=oldStep<=1?oldStep:oldStep-1;
+ if(oldStep===2)state.lesson=1;
+ if(state.answers['lesson:1']!==undefined)state.answers['lesson:1:a']=state.answers['lesson:1'];
+ if(state.answers['lesson:2']!==undefined)state.answers['lesson:1:b']=state.answers['lesson:2'];
+ if(state.answers['lesson:7']!==undefined)state.answers['lesson:6']=state.answers['lesson:7'];
+ state.lessonLayoutVersion=328;save();
+}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const wordCard=([zh,py,ru])=>{
+ const api=window.PandaHsk2AudioV330,exact=!!api?.lookup(zh);
+ const body='<span lang="zh-Hans" class="hanzi hanzi-squares">'+Array.from(zh).map(ch=>'<span class="hz-square">'+esc(ch)+'</span>').join('')+'</span><span class="py">'+esc(py)+'</span><span class="ru">'+esc(ru)+'</span>';
+ if(exact)return '<button type="button" class="vocab pg-sound-card" data-audio-ready="true" data-sound="'+esc(zh)+'" title="Слушать только '+esc(zh)+'" aria-label="Слушать слово '+esc(zh)+'">'+body+'</button>';
+ const sample=api?.sentenceFor(zh);
+ const demo=sample?'<span class="hsk2-word-phrase"><small>🎧 Предложение целиком — не звук слова</small>'+
+  '<strong lang="zh-Hans">'+esc(sample.zh)+'</strong><span class="py">'+esc(sample.pinyin)+'</span>'+
+  '<span class="ru">'+esc(sample.ru)+'</span>'+
+  api.button(sample.zh)+'</span>':'<span class="pg-hsk2-audio-absent">Отдельной записи слова пока нет</span>';
+ return '<article class="vocab pg-sound-card pg-no-audio" data-audio-ready="false" aria-label="Изучение слова '+esc(zh)+'">'+body+demo+'</article>';
+};
+const example=([zh,py,ru])=>`<div class="example"><b lang="zh-Hans">${esc(zh)}</b><span class="py">${esc(py)}</span><span class="ru">${esc(ru)}</span>${window.PandaHsk2AudioV330?.button(zh)||''}</div>`;
+
+const WELCOME_KEY='pg-hsk2-course-welcome-v1';
+let welcomeSeenThisTab=false;
+function welcomeSeen(){if(welcomeSeenThisTab)return true;try{return localStorage.getItem(WELCOME_KEY)==='1'}catch{return false}}
+function finishWelcome(){welcomeSeenThisTab=true;try{localStorage.setItem(WELCOME_KEY,'1')}catch{}
+ if(location.hash==='#map'||!location.hash){location.hash='#map';show()}else location.hash='#map';
+}
+function renderWelcome(){
+ $('screen').innerHTML=`
+ <section class="pg-course-welcome" aria-label="План обучения HSK2">
+  <header class="pg-welcome-hero"><span class="pg-welcome-sparkle" aria-hidden="true">🌸</span><div class="pg-welcome-eyebrow">PANDA GO · HSK 2</div>
+   <h1>План изучения HSK2</h1><p>Твоё новое приключение! Китайский маленькими шагами — с грамматикой и практикой.</p>
+  </header>
+  <p class="pg-welcome-themes"><b>Что изучим:</b> знакомство · семья · мой день · еда · покупки · город · встречи</p>
+  <section class="pg-welcome-section"><h2>🎯 В этом курсе ты научишься</h2>
+   <div class="pg-welcome-goals">
+    <div class="pg-welcome-goal"><span class="emoji">🗣️</span><div><strong>Говорить по-китайски</strong><small>О себе, друзьях и повседневных делах</small></div></div>
+    <div class="pg-welcome-goal"><span class="emoji">👂</span><div><strong>Понимать на слух</strong><small>Простые вопросы и ответы</small></div></div>
+    <div class="pg-welcome-goal"><span class="emoji">🧩</span><div><strong>Строить предложения</strong><small>Из знакомых слов по правилам</small></div></div>
+    <div class="pg-welcome-goal"><span class="emoji">🎵</span><div><strong>Различать тоны</strong><small>Слушать, повторять и сравнивать</small></div></div>
+   </div>
+  </section>
+  <section class="pg-welcome-section"><h2>📚 Как мы будем учиться</h2>
+   <div class="pg-welcome-plan">
+    <div class="pg-welcome-plan-step"><span class="num">1</span><span><strong>Слова:</strong> сначала 2–3 новых слова за микроурок</span></div>
+    <div class="pg-welcome-plan-step"><span class="num">2</span><span><strong>Грамматика:</strong> одно простое правило с примерами</span></div>
+    <div class="pg-welcome-plan-step"><span class="num">3</span><span><strong>Тоны и слух:</strong> слушаем записи и повторяем</span></div>
+    <div class="pg-welcome-plan-step"><span class="num">4</span><span><strong>Предложения:</strong> собираем фразы из слов</span></div>
+    <div class="pg-welcome-plan-step"><span class="num">5</span><span><strong>Разговор и тест:</strong> отвечаем Панде и повторяем ошибки</span></div>
+   </div>
+  </section>
+  <section class="pg-welcome-section"><h2>🎶 Четыре тона китайского языка</h2><p class="muted">Один слог может звучать по-разному:</p>
+   <div class="pg-welcome-tones">
+    <span class="pg-welcome-tone"><b>mā</b><small>1 · ровный</small></span>
+    <span class="pg-welcome-tone"><b>má</b><small>2 · вверх</small></span>
+    <span class="pg-welcome-tone"><b>mǎ</b><small>3 · вниз-вверх</small></span>
+    <span class="pg-welcome-tone"><b>mà</b><small>4 · вниз</small></span>
+   </div>
+   <p class="pg-welcome-honest">🐼 Учимся слышать и произносить тоны. Микрофон пока проверяет распознанные слова, а не точность тонов.</p>
+  </section>
+ </section>`;
+}
+
+const renderMap=()=>{
+ let introDone=false;
+ try{introDone=!!JSON.parse(localStorage.getItem('pg-hsk2-introduction-v3')||'null')?.completed}catch{}
+ $('screen').innerHTML=`
+ <section class="journey-head">
+  <span class="journey-head-art" aria-hidden="true">🌸 🐼</span>
+  <h1>Китайский + Легко</h1>
+  <p>10 тем и 30 мини-уроков для повседневного общения</p>
+  <span class="journey-principle">📚 Грамматика в каждом уроке</span>
+ </section>
+ <a class="city-pilot" href="./hsk2-life-course.html" aria-label="Открыть полный разговорный курс 2: Моя жизнь на китайском"><span class="city-icon">🐼 📚</span><span><b>Моя жизнь на китайском</b><small>10 тем · 30 мини-уроков · 200 слов</small><strong>▶ Открыть курс 2</strong></span></a>
+ <a class="city-pilot" href="./hsk2-bastian-intro.html" aria-label="Курс 2 Урок 1 Знакомство с Бастианом" style="background:linear-gradient(115deg,#fff4d5,#f8d8f2);border-color:#e7b16d"><span class="city-icon">🏙️ 👦</span><span><b>Бастиан · повторение знакомства</b><small>Дополнительный урок · 4 знакомые фразы</small><strong>▶ Начать урок</strong></span></a>
+ <a href="#welcome" class="pg-welcome-review">📖 Посмотреть план обучения HSK2</a>
+ <div class="journey-road" aria-label="Карта десяти уроков">
+  ${JOURNEY.map(([icon,title,grammar,goal,sample],i)=>`
+   <a class="journey-card is-ready" href="./hsk2-life-course.html?topic=${i}" aria-label="Тема ${i+1}: ${esc(title)}. Открыть 3 мини-урока">
+    <span class="journey-num">${i+1}</span><span class="journey-art" aria-hidden="true">${icon}</span>
+    <span class="journey-copy"><strong>${esc(title)}</strong><small>${esc(goal)}</small><span class="journey-grammar"><b>Грамматика:</b> <span lang="zh-Hans">${esc(grammar)}</span></span><span class="journey-state is-open">▶ 3 мини-урока</span></span>
+   </a>`).join("")}
+ </div>
+ <section class="journey-features"><b>🌸 В каждом готовом уроке</b><p>📖 Слова · 📚 Грамматика · 🎧 Аудирование · 🧩 Конструктор · 🐼 Разговор · 🎤 Тест</p></section>
+ <section class="journey-prepare"><strong>Нужно вспомнить HSK 1?</strong><a href="#review">📖 Повторить 20 слов</a><a href="./hsk1-hsk2-bridge.html">🐼 База: 30 слов и проверки</a><a href="#lesson">💬 Слова → предложения · тренажёр</a></section>
+ <p class="footnote">Все 10 тем и 30 мини-уроков доступны в новом разговорном курсе. Отдельные MP3 ещё нужно дополнять.</p>`;
+};
+
+function renderProgress(){let introData={};try{introData=JSON.parse(localStorage.getItem('pg-hsk2-introduction-v3')||'null')||{}}catch{}const introCount=introData.completed?5:Math.max(0,Math.min(5,(Number(introData.step)||0)+1));const reviewDone=state.completedReview?reviewStages.length:Math.min(reviewStages.length,Math.max(0,state.review));const lessonDone=state.completedLesson?lessonStages.length:Math.min(lessonStages.length,Math.max(0,state.lesson));const a=reviewDone*100/reviewStages.length,b=lessonDone*100/lessonStages.length;$('screen').innerHTML=`<div class="banner">Мой прогресс HSK 2</div><div class="paper"><h2>📖 Повторение HSK 1</h2><div class="lesson-title"><strong>${state.completedReview?'Завершено':'В процессе'}</strong><span class="pill">${reviewDone} из ${reviewStages.length}</span></div><div class="meter"><i style="width:${a}%"></i></div><a class="plainlink" href="#review">Открыть повторение →</a></div><div class="paper"><h2>🌸 Базовый тренажёр · перед HSK 2</h2><div class="lesson-title"><strong>${state.completedLesson?'Завершено':'В процессе'}</strong><span class="pill">${lessonDone} из ${lessonStages.length}</span></div><div class="meter"><i style="width:${b}%"></i></div><a class="plainlink" href="#lesson">Продолжить урок →</a></div><div class="paper"><h2>🌸 Урок 1 · Я и моя визитка</h2><div class="lesson-title"><strong>${introData.completed?'Завершено':'В процессе'}</strong><span class="pill">${introCount} из 5</span></div><div class="meter"><i style="width:${introCount/5*100}%"></i></div><a class="plainlink" href="./hsk2-introduction.html">Продолжить знакомство →</a></div><div class="paper"><h2>🎮 Мой город · урок 3</h2><p class="explain">Упрощённый игровой урок: два новых слова, одно правило, короткий диалог и тесты.</p><a class="plainlink" href="./hsk2-city-work.html">Открыть пробный урок →</a></div><p class="intro">Повторение HSK 1 и тренажёр сохраняются отдельно от учебных уроков HSK 2.</p>`}
+function setTitle(view){$('scene-sub').textContent=view==='welcome'?'HSK 2 · Твой план обучения':view==='map'?'10 тем · 30 уроков':view==='review'?'HSK 2 · Повторение HSK 1':view==='progress'?'HSK 2 · Мой прогресс':'HSK 2 · Урок 1';$('scene-caption').textContent=view==='welcome'?'Сначала узнаем, чему научимся':view==='map'?'10 уроков · грамматика в каждом':view==='review'?'Вспоминаем базу':view==='progress'?'Твои достижения':'Сначала слова, потом фразы';for(let link of document.querySelectorAll('.nav a'))link.classList.toggle('active',link.getAttribute('href')==='#'+view)}
+function stagePage(view){const isReview=view==='review',idx=isReview?'review':'lesson',stages=isReview?reviewStages:lessonStages;state[idx]=Math.min(Math.max(0,Number(state[idx])||0),stages.length-1);const i=state[idx],s=stages[i],code=view+':'+i,answered=state.answers[code];let inside='';
+ if(s.kind==='words')inside=`<p class="intro">${isReview?'Вспомни чтение, тон и значение.':'Четыре слова — затем проверим, что запомнилось.'}</p><div class="vocgrid">${s.items.map(wordCard).join('')}</div><p class="pg-sound-hint" role="status">Отдельное слово звучит только при наличии MP3. Иначе слушай явно подписанное полное предложение. Оценка тонов пока не автоматическая.</p>`;
+ if(s.kind==='examples')inside=`<p class="intro">Все фразы составлены из уже изученных слов.</p><div class="examples">${s.items.map(example).join('')}</div>${isReview?'<p class="notice">В 不是 звук 不 меняется на bú перед четвёртым тоном.</p>':''}`;
+ if(s.kind==='rule')inside=`<div class="rule">${esc(s.formula)}</div><div class="pg-rule-examples">${example(s.example)}${(s.extra||[]).map(example).join('')}</div><p class="explain spaced">${esc(s.why)}</p>`;
+ if(s.kind==='doublequiz')inside=`<div class="pg-double-quiz">${s.items.map((q,j)=>{
+  const choice=state.answers[code+':'+(j?'b':'a')];
+  return `<section class="pg-double-question" aria-label="Вопрос ${j+1}"><h3>${j+1}. ${esc(q.question)}</h3><div class="pg-double-choices">${q.choices.map((label,n)=>`<button type="button" class="choice ${choice!=null?(n===q.answer?'correct':choice===n?'wrong':''):''}" data-double-question="${j}" data-double-answer="${n}" aria-pressed="${choice===n}">${esc(label)}</button>`).join('')}</div><p class="feedback ${choice==null?'':choice===q.answer?'ok':'err'}" role="status">${choice==null?'Выбери вариант.':(choice===q.answer?'✓ Верно. ':'✕ Ошибка. ')+esc(q.why)}</p></section>`;
+ }).join('')}</div>`;
+ if(s.kind==='quiz')inside=`<p class="intro"><b>${esc(s.question)}</b></p><div class="choices">${s.choices.map((choice,n)=>`<button type="button" class="choice ${answered!=null?(n===s.answer?'correct':answered===n?'wrong':''):''}" data-choose="${n}" aria-pressed="${answered===n}">${esc(choice)}</button>`).join('')}</div><div class="feedback ${answered==null?'':answered===s.answer?'ok':'err'}" role="status">${answered==null?'Выбери верный ответ.':(answered===s.answer?'✓ Верно. ':'Не совсем. ')+esc(s.why)+(isReview?' Теперь можешь перейти дальше.':'')}</div>`;
+ if(s.kind==='build'){const selected=state.build||[],text=selected.map(n=>s.tokens[n]).join(''),ok=text===s.answer.join('');inside=`<p class="intro">${esc(s.question)}</p><div class="builder">${selected.length?selected.map((n,k)=>`<button data-remove="${k}" type="button">${esc(s.tokens[n])}</button>`).join(''):'<span class="small-caption">Нажимай на слова в нужном порядке…</span>'}</div><div class="tokens">${s.tokens.map((token,n)=>`<button type="button" data-token="${n}" ${selected.includes(n)?'disabled':''}>${esc(token)}</button>`).join('')}</div><div class="feedback ${selected.length===s.tokens.length?(ok?'ok':'err'):''}" role="status">${selected.length===s.tokens.length?(ok?'✓ Правильно!':'Порядок неверный. Нажми на слово выше, чтобы убрать его.'):'Подсказка: кто → действие → что.'}</div><p class="notice">${esc(s.why)}</p>`;}
+ if(s.kind==='dialogue')inside=`<p class="intro">Прочитай сначала с пиньинем, потом попробуй без подсказки.</p>${s.items.map(([who,zh,py,ru])=>`<div class="bubble ${who==='B'?'right':''}"><b lang="zh-Hans">${esc(zh)}</b><em class="py">${esc(py)}</em><span>${esc(ru)}</span></div>`).join('')}<p class="notice">Разговор с живой Panda AI будет подключён отдельно. Здесь учебный диалог, не ИИ-чат.</p>`;
+ if(s.kind==='finish')inside=isReview?`<div style="text-align:center;font-size:39px">🌸 🐼</div><h2 style="text-align:center;margin:10px 0">${esc(s.title)}</h2><p class="explain" style="text-align:center">${esc(s.desc)}</p><p class="notice">Теперь можно перейти к знакомству.</p>`:`<div id="pg-hsk2-final"></div>`;
+ const pyToggle=`<button class="softbtn" data-pinyin type="button" aria-pressed="${state.showPy}">${state.showPy?'Скрыть пиньинь':'Показать пиньинь'}</button>`;
+ const nextBlocked=(s.kind==='doublequiz'&&s.items.some((q,j)=>state.answers[code+':'+(j?'b':'a')]!==q.answer))||
+  (s.kind==='quiz'&&answered!==s.answer)||
+  (s.kind==='build'&&(state.build||[]).map(n=>s.tokens[n]).join('')!==s.answer.join(''));
+ $('screen').innerHTML=`<div class="banner">${isReview?'Краткое повторение HSK 1':'Сначала слова → потом фразы'}</div><div class="lesson-title"><strong>${esc(s.title)}</strong><span class="pill">Шаг ${i+1} из ${stages.length}</span></div><div class="meter"><i style="width:${(state[isReview?'completedReview':'completedLesson']?100:i/stages.length*100)}%"></i></div><section class="paper" aria-label="Учебный экран">${inside}</section>${!isReview&&i===0?'<button class="pg-speaking-launch" type="button" data-start-speech>🎤 Тест: 4 слова × 3 попытки (с результатом)</button>':''}<div class="toolbar">${pyToggle}<button class="softbtn" data-restart type="button">↻ Повторить</button></div><div class="bottom-actions"><div class="toolbar"><button class="softbtn" data-prev type="button" ${i===0?'disabled':''}>← Назад</button><button class="primary" data-next type="button" ${nextBlocked?'disabled':''}>${s.kind==='finish'?(isReview?'Учимся представляться':'К карте HSK 2 →'):(isReview&&i===stages.length-1?'К знакомству →':'Дальше →')}</button></div></div><p class="small-caption">Прослушай слово или пример, затем повтори вслух.</p>`;
+ $('screen').querySelectorAll('[data-sound]').forEach(b=>b.addEventListener('click',()=>{
+   const report=msg=>{const node=$('screen').querySelector('.pg-sound-hint');if(node)node.textContent=msg};
+   window.PandaHsk2AudioV330?.play(b.dataset.sound,report);
+ }));
+ if(!isReview&&s.kind==='finish')window.PandaHSK2PracticeV326?.mountFinal($('pg-hsk2-final'),WORDS);
+ const test=$('screen').querySelector('[data-start-speech]');
+ if(test)test.addEventListener('click',()=>window.PandaHSK2PracticeV324?.open({
+   id:'hsk2-lesson-1-four-words',title:'Четыре слова × 3 раза',
+   items:WORDS.map(([zh,py,ru])=>({zh,ru,targets:[zh]}))
+ }));
+ window.PandaHsk2AudioV330?.bind($('screen'));
+ $('screen').classList.toggle('hiddenpy',!state.showPy);
+ $('screen').querySelectorAll('[data-double-answer]').forEach(b=>b.addEventListener('click',()=>{
+  state.answers[code+':'+(Number(b.dataset.doubleQuestion)===0?'a':'b')]=Number(b.dataset.doubleAnswer);
+  save();stagePage(view);
+ }));
+ $('screen').querySelectorAll('[data-choose]').forEach(b=>b.addEventListener('click',()=>{state.answers[code]=Number(b.dataset.choose);save();stagePage(view)}));
+ $('screen').querySelectorAll('[data-token]').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.token);if(!state.build.includes(n))state.build.push(n);save();stagePage(view)}));
+ $('screen').querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',()=>{state.build.splice(Number(b.dataset.remove),1);save();stagePage(view)}));
+ $('screen').querySelector('[data-pinyin]').addEventListener('click',()=>{state.showPy=!state.showPy;save();stagePage(view)});
+ $('screen').querySelector('[data-restart]').addEventListener('click',()=>{state[idx]=0;for(const key of Object.keys(state.answers))if(key.startsWith(view+':'))delete state.answers[key];if(isReview)state.completedReview=false;else{state.completedLesson=false;state.build=[]}save();stagePage(view)});
+ $('screen').querySelector('[data-prev]').addEventListener('click',()=>{if(state[idx]>0){state[idx]--;save();stagePage(view)}});
+ $('screen').querySelector('[data-next]').addEventListener('click',()=>{if(nextBlocked)return;if(s.kind==='finish'){if(isReview){state.completedReview=true;save();location.href='./hsk2-introduction.html'}else{state.completedLesson=true;save();location.hash='#map'}}else if(isReview&&i===stages.length-1){state.completedReview=true;save();location.href='./hsk2-introduction.html'}else{state[idx]++;save();stagePage(view)}});
+}
+function show(){let view=(location.hash||'#map').slice(1);if(!['welcome','map','review','lesson','progress'].includes(view))view='map';if(view==='map'&&!welcomeSeen())view='welcome';setTitle(view);document.querySelector('.backlink').href=view==='map'||view==='welcome'?'./index.html#panda/home':'#map';$('app').classList.toggle('welcome-view',view==='welcome');$('course-welcome-footer').hidden=view!=='welcome';$('screen').classList.remove('hiddenpy');$('screen').classList.toggle('journey-map-active',view==='map');view==='welcome'?renderWelcome():view==='map'?renderMap():view==='progress'?renderProgress():stagePage(view);$('screen').scrollTop=0;}
+$('course-welcome-start').addEventListener('click',finishWelcome);window.addEventListener('hashchange',show);show();
+})();
+</script></body></html>
