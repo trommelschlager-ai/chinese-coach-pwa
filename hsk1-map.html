@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
-<meta name="panda-go-mobile-fix" content="v400-no-oval-press-feedback">
+<meta name="panda-go-mobile-fix" content="v401-hsk2-inspired-half-second-press">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
@@ -73,80 +73,60 @@ body{display:grid;place-items:center;position:relative}
 .toast{position:absolute;z-index:10;left:7%;right:7%;top:21%;padding:11px 15px;text-align:center;color:white;border:2px solid #ffe189;border-radius:15px;background:#4b156ce9;font:700 clamp(11px,2.9vw,15px)/1.35 Arial,sans-serif;box-shadow:0 5px 18px #290c5588}
 .toast[hidden]{display:none!important}
 @media (max-height:650px){.toast{top:17%}}
-/* v400: remove the incorrect giant oval. The approved v373 map is a
-   single, unmodified bitmap; overlays must never pretend to be the whole ribbon.
-   Give the existing round action medallion a small pressed-light response. */
-.hotspots a{
+/* v401: reproduce the bright pressed-card feel of Panda Go course 2.
+   The approved HSK1 v373 bitmap stays still and unchanged. Only pixels
+   within the selected painted button are brightened through an SVG mask.
+   Unlike v395-v400, no synthetic white capsule, duplicated shifted text,
+   mismatched outlines or artificial rectangular shadows are rendered. */
+.hotspots a,
+.hotspots a:active,
+.hotspots a.is-pressed{
   background:transparent!important;
   box-shadow:none!important;
   filter:none!important;
   transform:none!important;
   translate:none!important;
   touch-action:manipulation;
-  isolation:isolate;
   -webkit-tap-highlight-color:transparent;
 }
-.hotspots a:active,.hotspots a.is-pressed{
-  background:transparent!important;
-  box-shadow:none!important;
-  filter:none!important;
-  transform:none!important;
-  translate:none!important;
-}
-.hotspots a::before{content:none!important;display:none!important}
-.hotspots a::after{
-  content:""!important;
-  display:block!important;
+.hotspots a::before,.hotspots a::after{content:none!important;display:none!important}
+.press-art{
+  display:block;
   position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+  overflow:hidden;
   pointer-events:none;
-  margin:0;
+}
+.press-art .press-image{
   opacity:0;
-  border:0!important;
-  box-shadow:none!important;
-  transition:opacity .08s linear,transform .12s ease-out;
+  filter:brightness(1.36) saturate(1.14);
+  transition:opacity 95ms ease-in-out;
 }
-/* Confine feedback to the green circular check inside every lesson.
-   Never outline the broad irregular ribbon with a white capsule. */
-.hotspots .lesson::after{
-  inset:auto;
-  top:22%;right:5.6%;width:12.5%;height:56%;
-  border-radius:50%;
-  background:radial-gradient(circle at 36% 29%,rgba(255,255,255,.36),rgba(255,255,255,.04) 52%,rgba(31,11,72,.20) 78%,transparent 100%)!important;
-  transform:translateY(0) scale(1);
-}
-.hotspots .lesson:active::after,.hotspots .lesson.is-pressed::after{
-  opacity:1;
-  transform:translateY(2px) scale(.94);
-}
-/* Original footer is oval with painted-in shadow: only contained glow. */
-.hotspots .footer-link::after{
-  inset:17% 7% 20% 7%;
-  border-radius:999px;
-  background:radial-gradient(ellipse 74% 85% at 50% 42%,rgba(255,255,255,.22),rgba(255,255,255,.06) 70%,transparent 100%)!important;
-  transform:translateY(0) scale(1);
-}
-.hotspots .footer-link:active::after,.hotspots .footer-link.is-pressed::after{
-  opacity:1;
-  transform:translateY(2px) scale(.98);
-}
-.hotspots .top-link::after{
-  inset:15% 14%;
-  border-radius:18px;
-  background:radial-gradient(ellipse at center,rgba(255,255,255,.29),rgba(255,255,255,.03) 74%,transparent 100%)!important;
-  transform:translateY(0) scale(1);
-}
-.hotspots .top-link:active::after,.hotspots .top-link.is-pressed::after{
-  opacity:1;
-  transform:translateY(2px) scale(.95);
-}
+.press-art.active .press-image{opacity:1}
 @media(prefers-reduced-motion:reduce){
-  .hotspots a::after{transition:none!important}
+  .press-art .press-image{transition:none!important}
 }
 </style>
 <link rel="stylesheet" href="./assets/panda-mobile-v394.css?v=394"></head>
 <body>
 <main class="artboard" aria-label="Panda Go — уроки HSK 1">
 <img class="approved" src="./assets/hsk1-approved-v373.png" alt="Panda Go, начальный уровень HSK 1. Семь цветных уроков, панда в китайском костюме на фоне заката." width="694" height="1536" fetchpriority="high">
+<!-- The sole v373 bitmap is reused as an aligned, feather-masked light layer.
+     The drawing itself, screen positions, and all hotspots stay unchanged. -->
+<svg class="press-art" viewBox="0 0 694 1536" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="pressFeather" x="-12%" y="-20%" width="124%" height="140%">
+      <feGaussianBlur stdDeviation="3.5"/>
+    </filter>
+    <mask id="pressMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536">
+      <path id="pressShape" fill="#fff" filter="url(#pressFeather)" d=""/>
+    </mask>
+  </defs>
+  <image class="press-image" href="./assets/hsk1-approved-v373.png" x="0" y="0" width="694" height="1536" preserveAspectRatio="none" mask="url(#pressMask)"/>
+</svg>
 <nav class="hotspots" aria-label="Уроки HSK 1">
 <a class="top-link back" href="./index.html#panda/home" aria-label="Назад к выбору уровня"></a>
 <a class="top-link write" href="./hanzi-writing.html?lesson=1" aria-label="Написание иероглифов"></a>
@@ -201,34 +181,80 @@ body{display:grid;place-items:center;position:relative}
     if(a&&(e.key==='Enter'||e.key===' ')){e.preventDefault();deny(Number(a.dataset.num))}
   });
   function refresh(){try{const v=Number(localStorage.getItem(KEY)||'0');if(Number.isInteger(v))completed=Math.min(7,Math.max(0,v))}catch{}paint()}
-  // Short, perceptible mobile touch response, including on locked lessons.
-  // Delay same-tab navigation a fraction of a second so the pupil can SEE it.
+  // Half-second press feedback: the selected card lights up immediately,
+  // then navigation starts 500ms after the click (touch or keyboard).
   const links=Array.from(document.querySelectorAll('.hotspots a'));
-  let navigating=false;
-  for(const a of links){
-    let release=0;
-    function mark(){clearTimeout(release);a.classList.add('is-pressed')}
-    function unmark(delay=155){clearTimeout(release);release=setTimeout(()=>a.classList.remove('is-pressed'),delay)}
-    a.addEventListener('pointerdown',mark,{passive:true});
-    a.addEventListener('pointerup',()=>unmark());
-    a.addEventListener('pointercancel',()=>unmark(0));
-    a.addEventListener('pointerleave',()=>unmark());
-    a.addEventListener('blur',()=>unmark(0));
-    a.addEventListener('click',e=>{
-      if(a.classList.contains('locked')){
-        // The existing lock handler above blocks navigation and shows a toast.
-        mark();unmark(230);return;
+  const board=document.querySelector('.artboard');
+  const pressArt=document.querySelector('.press-art');
+  const pressShape=document.getElementById('pressShape');
+  const PRESS_MS=500;
+  let pressed=null,releaseTimer=0,navigating=false;
+
+  function roundRectPath(x,y,w,h){
+    const r=Math.min(w/2,h/2);
+    return [
+      'M',x+r,y,'H',x+w-r,
+      'Q',x+w,y,x+w,y+r,
+      'V',y+h-r,'Q',x+w,y+h,x+w-r,y+h,
+      'H',x+r,'Q',x,y+h,x,y+h-r,
+      'V',y+r,'Q',x,y,x+r,y,'Z'
+    ].join(' ');
+  }
+  function showPress(link){
+    if(navigating&&pressed&&pressed!==link)return;
+    clearTimeout(releaseTimer);
+    if(pressed&&pressed!==link)pressed.classList.remove('is-pressed');
+    const rect=link.getBoundingClientRect(), art=board.getBoundingClientRect();
+    if(!art.width||!art.height)return;
+    const x=(rect.left-art.left)*694/art.width;
+    const y=(rect.top-art.top)*1536/art.height;
+    const w=rect.width*694/art.width, h=rect.height*1536/art.height;
+    const isLesson=link.classList.contains('lesson');
+    const insetX=isLesson?w*.027:w*.055;
+    const insetY=isLesson?h*.105:h*.11;
+    pressShape.setAttribute('d',roundRectPath(
+      x+insetX,y+insetY,w-2*insetX,h-2*insetY));
+    link.classList.add('is-pressed');
+    pressed=link;
+    pressArt.classList.add('active');
+  }
+  function releasePress(link,ms=PRESS_MS){
+    clearTimeout(releaseTimer);
+    releaseTimer=setTimeout(()=>{
+      if(pressed!==link)return;
+      link.classList.remove('is-pressed');
+      pressed=null;
+      pressArt.classList.remove('active');
+    },ms);
+  }
+  for(const link of links){
+    link.addEventListener('pointerdown',()=>showPress(link),{passive:true});
+    link.addEventListener('pointerup',()=>releasePress(link),{passive:true});
+    link.addEventListener('pointercancel',()=>releasePress(link,0),{passive:true});
+    link.addEventListener('pointerleave',()=>{if(!navigating)releasePress(link,120)},{passive:true});
+    link.addEventListener('blur',()=>{if(!navigating)releasePress(link,0)});
+    link.addEventListener('click',event=>{
+      if(link.classList.contains('locked')){
+        showPress(link);releasePress(link,PRESS_MS);
+        // The original map handler still displays the lesson-lock explanation.
+        return;
       }
-      if(e.defaultPrevented||e.button!==0||e.ctrlKey||e.metaKey||e.altKey||e.shiftKey||a.target==='_blank')return;
-      e.preventDefault();
+      if(event.defaultPrevented||event.button!==0||event.ctrlKey||event.metaKey||
+         event.altKey||event.shiftKey||link.target==='_blank')return;
+      event.preventDefault();
       if(navigating)return;
+      showPress(link);
       navigating=true;
-      mark();
-      const destination=a.href;
-      setTimeout(()=>{window.location.assign(destination)},165);
+      const destination=link.href;
+      setTimeout(()=>{window.location.assign(destination)},PRESS_MS);
     });
   }
-  window.addEventListener('pageshow',()=>{navigating=false;for(const a of links)a.classList.remove('is-pressed')});
+  window.addEventListener('pageshow',()=>{
+    navigating=false;
+    clearTimeout(releaseTimer);
+    for(const link of links)link.classList.remove('is-pressed');
+    pressed=null;pressArt.classList.remove('active');
+  });
   window.addEventListener('pageshow',refresh);
   window.addEventListener('focus',refresh);
   window.addEventListener('storage',refresh);
