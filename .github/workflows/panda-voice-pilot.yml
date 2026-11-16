@@ -117,3 +117,5 @@ jobs:
           node-version: '22'
       - name: Verify tone-marked pinyin matches only the learner's written answer
         run: node --test tests/panda-calendar-pinyin-v382.test.mjs
+      - name: Verify standalone calendar free-chat and the removed redundant message bubble
+        run: node --test tests/panda-calendar-chat-v383.test.mjs
