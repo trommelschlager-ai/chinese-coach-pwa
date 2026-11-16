@@ -33,7 +33,7 @@ var state={view:'welcome',topic:0,mini:0,stage:0,showPy:true,completed:[],diffic
 var dayUI=window.PandaGoDayFirstUIV1;
 function dayPilot(){return state.topic===0&&!!dayUI;}
 function dayCoachingLink(mini){return './panda-voice-pilot.html?practice=day&mini='+Math.max(0,Math.min(2,Number(mini)||0))+'&from=hsk2-life-course';}
-function dayAIBlock(mini){return '<section class="day-ai-panel"><h2>🐼 Поговори с Пандой AI</h2><p>Потренируй то, что уже изучил: Панда задаст вопросы, а ты ответишь голосом или текстом.</p><div class="day-ai-examples"><strong lang="zh-Hans">你每天几点起床？</strong><br>Во сколько ты каждый день встаёшь?</div><a href="'+dayCoachingLink(mini)+'" aria-label="Открыть разговорную практику Мой день с Panda AI">🎙 Начать практику →</a><p class="day-ai-note">Проверяется смысл ответа; точность тонов пока не оценивается.</p></section>';}
+function dayAIBlock(mini){return '<section class="day-ai-panel"><h2>🐼 Поговори с Пандой AI</h2><p>Потренируй то, что уже изучил: Панда задаст вопросы, а ты ответишь голосом или текстом.</p><div class="day-ai-examples"><strong lang="zh-Hans">你每天几点起床？</strong><br>Во сколько ты каждый день встаёшь?</div><a href="'+dayCoachingLink(mini)+'" aria-label="Открыть разговорную практику Мой день с Panda AI">🎙 Начать практику →</a></section>';}
 
 try{
  var saved=JSON.parse(localStorage.getItem(KEY)||'null');
@@ -156,7 +156,7 @@ function viewDone(){
  '<div class="day-done-line">'+phrase(sc[2],sc[3],sc[4])+(rec(sc[2])?'':'<span class="day-audio-note">🔇 Запись этой фразы ещё не добавлена</span>')+'</div>'+
  dayAIBlock(state.mini)+
  '<div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий урок →</button></div>'+
- '<p class="honest">Проверка слов по голосу показывает распознанный текст, не точность тонов.</p></section>';
+ '</section>';
  return '<section class="done"><div class="reward-icon">🏆</div><h1>Мини-урок пройден!</h1><p>Ты разобрал слова, грамматику и правильно собрал предложение.</p><div class="panel">'+phrase(sc[2],sc[3],sc[4])+'</div><p class="honest">Запоминание и произношение нужно закреплять повторениями. Эта отметка показывает выполнение заданий, а не официальный экзаменационный результат.</p><div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий мини-урок →</button></div><button class="text-link" data-view="map">Вернуться к десяти темам</button></section>';
 }
 function viewTones(){
