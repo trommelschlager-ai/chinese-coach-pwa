@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('index.html','utf8');
-assert(html.includes('src="./assets/approved-home-v36.png"'),'Approved welcome cover source must be kept');
+assert(html.includes('assets/approved-home-v36.png'),'Archived welcome artwork source must remain in CSS without reviving the retired intro screen');
 assert(html.includes('src="./assets/lessons-backdrop.webp"'),'Approved five-card menu image must be kept');
 assert(fs.existsSync('hanzi-lab.html'),'Hanzi writing trainer must exist');
 assert(!html.includes("if(what==='cover')startPetals()"),'Cover should not create petals on entry');
