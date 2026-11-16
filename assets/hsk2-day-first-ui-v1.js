@@ -16,6 +16,28 @@ function cancel(){if(recognizer){const r=recognizer;recognizer=null;r.onresult=r
 function textLine(v,ctx){
  return '<div class="day-line"><div class="day-hanzi" lang="zh-Hans">'+esc(v[0])+'</div><div class="day-py">'+esc(v[1])+'</div><div class="day-ru">'+esc(v[2])+'</div>'+ctx.sound(v[0])+'</div>';
 }
+// Exact full-sentence recordings already provided by the course author.
+ // A sample is labelled as a SENTENCE; never claim it is a recording of the isolated word.
+ const recordedContexts=Object.freeze({
+ '每天':['我每天学中文','Wǒ měitiān xué Zhōngwén.','Я каждый день учу китайский.'],
+ '早上':['我早上吃早饭','Wǒ zǎoshang chī zǎofàn.','Я завтракаю утром.'],
+ '起床':['我起床以后洗脸','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма я умываюсь.'],
+ '洗脸':['我起床以后洗脸','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма я умываюсь.'],
+ '吃早饭':['我早上吃早饭','Wǒ zǎoshang chī zǎofàn.','Я завтракаю утром.'],
+ '中午':['我中午吃饭','Wǒ zhōngwǔ chī fàn.','Я обедаю в полдень.'],
+ '下午':['我下午看书','Wǒ xiàwǔ kàn shū.','Днём я читаю книгу.'],
+ '晚上':['我晚上听音乐','Wǒ wǎnshang tīng yīnyuè.','Вечером я слушаю музыку.'],
+ '以后':['我回家以后休息','Wǒ huí jiā yǐhòu xiūxi.','Я отдыхаю после возвращения домой.']
+ });
+ function audioExample(zh,ctx){
+  const voice=window.PandaHsk2AudioV330;
+  if(voice?.lookup(zh))return ctx.sound(zh);
+  const example=recordedContexts[zh];
+  if(example&&voice?.lookup(example[0])){
+   return '<div class="day-recorded-example"><span>🔊 Запись предложения:</span><button type="button" data-sound="'+esc(example[0])+'" aria-label="Слушать пример '+esc(example[0])+'">▶ '+esc(example[0])+'</button><small>'+esc(example[2])+'</small></div>';
+  }
+  return '<span class="day-audio-pending">🔇 Отдельной MP3-записи ещё нет</span>';
+ }
 function nav(state){
  let step=state.stage;
  return '<div class="day-bottom"><button type="button" class="secondary" data-day-prev>← '+(step===0?'К теме':'Назад')+'</button><button type="button" class="primary" data-day-next'+(step===3&&!ready(state)?' disabled':'')+'>'+(step===4?'Завершить урок ✓':'Дальше →')+'</button></div>';
@@ -28,13 +50,13 @@ function render(state,ctx){
  if(!state.day)state.day=makeState(state.mini);
  const day=getDay(state),d=state.day,step=state.stage,word=day.words[d.selected];
  if(step===0&&state.mini===0&&d.poster){
-  return '<section class="approved-stage day-visual-start" aria-label="Утверждённый дизайн: первый урок Мой день"><div class="approved-art"><img src="./assets/approved-course-v390/day-lesson.png" width="941" height="1672" draggable="false" alt="Иллюстрация первого урока: Панда, слово 起床, подробный разбор 起 + 床 и пять этапов обучения"><button class="approved-hotspot art-back" type="button" data-day-prev aria-label="Назад к теме"></button><button class="approved-hotspot art-words" type="button" data-day-show-words aria-label="Перейти к разбору семи слов"></button><button class="approved-hotspot art-next" type="button" data-day-show-words aria-label="Начать пошаговый разбор слов"></button><button class="approved-hotspot art-sound" type="button" data-sound="起床" aria-label="Прослушать 起床"></button>'+(d.showAudioNote?'<p class="art-audio-note" role="status">🔇 Для 起床 пока нет подтверждённой записи MP3.</p>':'')+'</div></section>';
+  return '<section class="approved-stage day-visual-start" aria-label="Утверждённый дизайн: первый урок Мой день"><div class="approved-art"><img src="./assets/approved-course-v390/day-lesson.png" width="941" height="1672" draggable="false" alt="Иллюстрация первого урока: Панда, слово 起床, подробный разбор 起 + 床 и пять этапов обучения"><button class="approved-hotspot art-back" type="button" data-day-prev aria-label="Назад к теме"></button><button class="approved-hotspot art-words" type="button" data-day-show-words aria-label="Перейти к разбору семи слов"></button><button class="approved-hotspot art-next" type="button" data-day-show-words aria-label="Начать пошаговый разбор слов"></button><button class="approved-hotspot art-sound" type="button" data-day-poster-audio aria-label="Прослушать пример с 起床"></button>'+(d.showAudioNote?'<p class="art-audio-note" role="status">🔇 Для 起床 пока нет подтверждённой записи MP3.</p>':'')+'</div></section>';
  }
  let html='<section class="day-pilot"><div class="day-title"><div class="day-approved-banner"><img src="./assets/approved-course-v390/day-lesson.png" alt="Panda Go · Мой распорядок дня" width="941" height="1672"></div><img class="day-panda" src="./assets/hsk2-panda-new-v328.svg" alt="Панда Panda Go" draggable="false"><span class="day-label">PANDA GO · КИТАЙСКИЙ + ЛЕГКО</span><h1>🌅 Урок 1 · Мой распорядок дня</h1><p>Мини-урок '+(state.mini+1)+' из 3 · '+esc(day.name||'учимся говорить о своём утре')+'</p><div class="day-stages">'+names.map((n,i)=>'<span class="'+(i===step?'current':i<step?'passed':'')+'"><b>'+(i+1)+'</b>'+n+'</span>').join('')+'</div></div>';
  if(step===0){
-  html+='<div class="day-card day-focus"><div class="day-topline"><span>① Разбираем слово</span><span>'+day.words.length+' слов</span></div><div class="day-headword" lang="zh-Hans">'+esc(word.zh)+'</div><div class="day-headpy">'+esc(word.py)+'</div><div class="day-meaning">'+esc(word.ru)+'</div>'+ctx.sound(word.zh)+'</div>'+
-  '<div class="day-card"><h2>Из чего состоит '+esc(word.zh)+'?</h2><div class="day-chars">'+word.chars.map(ch=>'<div class="day-char"><span class="day-glyph" lang="zh-Hans">'+esc(ch[0])+'</span><b>'+esc(ch[1])+'</b><span>'+esc(ch[2])+'</span></div>').join('<span class="day-plus">+</span>')+'</div><div class="day-tip">💡 '+esc(word.tip)+'</div></div>'+
-  '<div class="day-card"><h2>📖 Слова этого мини-урока</h2><div class="day-vocab">'+day.words.map((w,i)=>'<button type="button" class="day-vword'+(i===d.selected?' picked':'')+'" data-day-word="'+i+'"><strong lang="zh-Hans">'+esc(w.zh)+'</strong><small>'+esc(w.py)+'</small><span>'+esc(w.ru)+'</span></button>').join('')+'</div></div>';
+  html+='<div class="day-card day-quicklist"><h2>🗂 Выбери слово · '+day.words.length+' слов</h2><div class="day-vocab">'+day.words.map((w,i)=>'<button type="button" class="day-vword'+(i===d.selected?' picked':'')+'" data-day-word="'+i+'"><strong lang="zh-Hans">'+esc(w.zh)+'</strong><small>'+esc(w.py)+'</small><span>'+esc(w.ru)+'</span></button>').join('')+'</div></div>'+
+  '<div class="day-card day-focus"><div class="day-topline"><span>① Разбираем выбранное слово</span><span>'+(d.selected+1)+'/'+day.words.length+'</span></div><div class="day-headword" lang="zh-Hans">'+esc(word.zh)+'</div><div class="day-headpy">'+esc(word.py)+'</div><div class="day-meaning">'+esc(word.ru)+'</div>'+audioExample(word.zh,ctx)+'</div>'+
+  '<div class="day-card day-breakdown"><h2>Из чего состоит '+esc(word.zh)+'?</h2><div class="day-chars">'+word.chars.map(ch=>'<div class="day-char"><span class="day-glyph" lang="zh-Hans">'+esc(ch[0])+'</span><b>'+esc(ch[1])+'</b><span>'+esc(ch[2])+'</span></div>').join('<span class="day-plus">+</span>')+'</div><div class="day-tip">💡 '+esc(word.tip)+'</div></div>';
  }
  if(step===1){
   html+='<div class="day-card"><h2>② Полезные примеры</h2><p class="day-hint">Прослушай доступные MP3 и прочитай предложения с пиньинем.</p>'+day.examples.map(x=>textLine(x,ctx)).join('')+'</div>'+
@@ -53,9 +75,9 @@ function render(state,ctx){
  }
  if(step===4){
   const attempts=d.attempts[d.speechWord],passed=attempts.filter(a=>a.match).length,total=d.attempts.reduce((n,a)=>n+a.length,0);
-  html+='<div class="day-card"><h2>⑤ Произнеси каждое слово 5 раз</h2><p class="day-hint">Проверяем, какое слово распознал браузер. <b>Точность тонов алгоритм не оценивает.</b></p>'+
+  html+='<div class="day-card day-speech-card"><h2>⑤ Произнеси каждое слово 5 раз</h2><p class="day-hint">Выбери слово, послушай пример и произнеси его пять раз.</p>'+
   '<div class="day-wordchoice">'+day.words.map((w,i)=>'<button type="button" data-day-speech-word="'+i+'" class="'+(i===d.speechWord?'picked':'')+'">'+esc(w.zh)+' <small>'+d.attempts[i].length+'/5</small></button>').join('')+'</div>'+
-  '<div class="day-speechhero"><div lang="zh-Hans">'+esc(day.words[d.speechWord].zh)+'</div><strong>'+esc(day.words[d.speechWord].py)+'</strong><span>'+esc(day.words[d.speechWord].ru)+'</span>'+ctx.sound(day.words[d.speechWord].zh)+'</div>'+
+  '<div class="day-speechhero"><div lang="zh-Hans">'+esc(day.words[d.speechWord].zh)+'</div><strong>'+esc(day.words[d.speechWord].py)+'</strong><span>'+esc(day.words[d.speechWord].ru)+'</span>'+audioExample(day.words[d.speechWord].zh,ctx)+'</div>'+
   '<div class="day-attempts">'+[0,1,2,3,4].map(i=>'<div class="'+(attempts[i]?(attempts[i].match?'heard':'not-heard'):'')+'"><b>'+(i+1)+'</b><span>'+(attempts[i]?(attempts[i].match?'✓':'×'):'🎙')+'</span></div>').join('')+'</div>'+
   '<p class="day-feedback">'+attempts.length+'/5 попыток · '+passed+' распознано как нужное слово</p>'+
   '<p class="day-hint">Распознанный текст: '+(attempts.length?'<b lang="zh-Hans">'+esc(attempts[attempts.length-1].said)+'</b>':'—')+'</p>'+
@@ -82,7 +104,7 @@ function recognize(state,render){
   if(!said){d.speechInfo='Браузер вернул пустую расшифровку.';return}
   got=true;
   const expected=normalize(day.words[idx].zh),match=normalize(said)===expected;
-  d.attempts[idx].push({said,match});d.speechInfo=match?'':'Распознано другое слово. Это проверка текста, не акустики тонов.';
+  d.attempts[idx].push({said,match});d.speechInfo=match?'':'Распознано другое слово.';
  };
  r.onerror=e=>{if(recognizer!==r)return;d.speechInfo='Микрофон: '+String(e.error||'ошибка распознавания')+'. Можно продолжить без него.';};
  r.onend=()=>{if(recognizer!==r)return;recognizer=null;recording=false;if(!got&&!d.speechInfo)d.speechInfo='Речь не распознана. Попробуй ещё раз.';if(state.view==='lesson'&&state.stage===4)render()};
