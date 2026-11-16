@@ -215,7 +215,10 @@ function submit(raw){
   if(result.kind==='correction'){recordCorrection(input,result.spoken);pose('retry');note(result.message);render();return}
   if(result.reply){
    state.turns++;state.topic=state.lockedTopic&&state.allowed.includes(state.lockedTopic)?state.lockedTopic:(result.lesson||lesson());state.discussed.add(state.topic);if(state.allowed.includes(state.topic))state.cursor=state.allowed.indexOf(state.topic);if(state.confidence===null||state.confidence>=.65){remember(result.spoken);state.profile.followupOffset=(state.profile.followupOffset||0)+1;}
-   state.awaitQuestion=true;if(result.kind==='answer')happy();say(result.reply,true,result.explanation?{explanation:result.explanation}:null);
+   state.awaitQuestion=true;if(result.kind==='answer')happy();
+   // Do not attempt nonexistent MP3 or switch Panda to a different voice.
+   const playReply=!result.spoken?.calendarLiteral||!!lookupPandaVoiceClip(result.reply.hanzi);
+   say(result.reply,playReply,result.explanation?{explanation:result.explanation}:null);
    if(result.wordCard)showWordCard(result.wordCard);
     else if(result.explanation){const row=document.createElement('p');row.textContent=result.explanation;$('learner-feedback').replaceChildren(row);$('learner-feedback').hidden=false;document.documentElement.dataset.feedback='true';}
    let followup=result.followup;
@@ -255,6 +258,14 @@ function submit(raw){
   state.step++;happy();
   if(state.step>=conversation.lines.length){state.done=true;state.shortReply=conversation.replies[result.branch||'short']||conversation.replies.short||Object.values(conversation.replies)[0];try{storage?.setItem(conversation.id===1?'pg-panda-voice-pilot-v1-last':`pg-panda-voice-lesson${conversation.id}-last`,new Date().toISOString())}catch{}say(state.shortReply);note('Краткий диалог завершён. Можешь продолжить в Non-Stop.');}
   else{say(conversation.lines[state.step]);note('Ответ по смыслу подходит. '+conversation.lines[state.step].instruction)}return;
+ }
+ // An independent calendar phrase may be discussed without counting it as
+ // the required short-dialog answer or advancing the lesson.
+ if(question.spoken?.calendarLiteral&&question.reply){
+  say(question.reply,!!lookupPandaVoiceClip(question.reply.hanzi));
+  note(state.done?'Календарная фраза понятна. Можешь продолжить в Non-Stop.':
+   'Календарная фраза понятна. Вернись к учебному вопросу для продолжения короткого диалога.');
+  return;
  }
  // Answer greetings and genuine learner questions without marking them wrong.
  if(social.answer&&(['你好吗','你呢','谢谢'].includes(normalize(input))||greeting||state.done)){
