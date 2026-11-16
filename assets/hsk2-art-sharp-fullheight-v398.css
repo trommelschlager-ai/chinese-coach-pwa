@@ -89,3 +89,22 @@
 #app.day-visual-v390 .approved-art{
  box-shadow:0 0 10px 2px rgba(250,202,245,.34)!important;
 }
+
+/* Final safety layer: the scene is on the actual 100dvh APP backdrop, not only
+   on the center poster element. This covers any gap if the poster is letterboxed. */
+#app.approved-welcome-v390,
+#app.approved-map-v390,
+#app.day-visual-v390{
+ background-color:#762eab!important;
+ background-image:
+  linear-gradient(180deg,rgba(117,39,165,.25),rgba(242,175,238,.10) 48%,rgba(92,31,147,.24)),
+  url('./hsk2-approved-scene-v353.svg')!important;
+ background-repeat:no-repeat!important;
+ background-position:center center!important;
+ background-size:cover!important;
+}
+#app.approved-welcome-v390 #screen,
+#app.approved-map-v390 #screen,
+#app.day-visual-v390 #screen{
+ background:transparent!important;
+}
