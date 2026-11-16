@@ -104,3 +104,21 @@
  #poster .bs396-grammar,#poster .bs396-phonetics{width:68%}
  #poster .bs396-steps{width:87%}
 }
+
+/* v396.1 — never display both slides: explicit [hidden] outranks flex rules.
+   Scenic underlay softly extends the approved art without duplicate readable text. */
+#poster.bs396-ready .bs394-page[hidden]{display:none!important}
+#poster.bs396-ready .bs394-page{
+ background:linear-gradient(160deg,#70228a,#4b126d 55%,#2d0b58)!important;
+}
+#poster.bs396-ready .bs394-page::before{
+ display:block!important;
+ content:"";position:absolute;inset:-14px!important;
+ background:
+  linear-gradient(180deg,#4a0d7f60,#6d319b4e 48%,#3e0e6179),
+  url('./bastian-approved-reference-v5.jpg') center center/cover no-repeat!important;
+ filter:blur(15px) brightness(.72) saturate(1.2)!important;
+ opacity:.89!important;
+ z-index:-1!important;
+ pointer-events:none!important;
+}
