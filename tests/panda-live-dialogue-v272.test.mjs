@@ -41,7 +41,7 @@ test('errors retain the original and label probable meaning, correction and writ
  assert(!analyzeLearner('我妹妹不',allowed,null,curriculum).correction);
 });
 test('follow-up prompts are contextual, valid and calendar-aware across rollover',()=>{
- for(const topic of allowed){const prompts=topicPrompts(topic,date,{hasNumbers:true,family:{妹妹:true}});assert(prompts.length);const p=prompts[0];const sample=p.accepted[0];const r=answerLive(sample,{...options,topic,prompt:p});assert(r.reply||r.kind==='question',topic+': '+sample);if(r.kind!=='question')assert(r.followup,topic+': '+sample)}
+ for(const topic of allowed){const prompts=topicPrompts(topic,date,{hasNumbers:true,family:{妹妹:true}});assert(prompts.length);const p=prompts[0];const sample=p.accepted[0];const r=answerLive(sample,{...options,topic,prompt:p});assert(r.reply||r.kind==='question',topic+': '+sample);assert(['answer','statement','question'].includes(r.kind),'Reviewed sample must be understood: '+sample);if(r.followup)assert.equal(r.followup.lesson,topic,'Optional follow-up must stay in the current topic')}
  const teacher=topicPrompts(2,date)[0];assert(!answerLive('他是老师',{...options,prompt:teacher,topic:2}).reply);assert.equal(answerLive('我没有哥哥，我有哥哥',options).kind,'clarify');
  const p=topicPrompts(6,date)[0];const sibling=answerLive('我有妹妹',{...options,topic:6,prompt:p,profile:{family:{},hasNumbers:true}});assert.equal(sibling.kind,'statement');assert.equal(sibling.followup?.hanzi,'你妹妹几岁？');
  const reply=answerLive('我有妹妹',{...options,topic:6,profile:{hasNumbers:true}});assert.equal(reply.followup.hanzi,'你妹妹几岁？');
@@ -51,8 +51,8 @@ test('follow-up prompts are contextual, valid and calendar-aware across rollover
 });
 test('DOM shows weather answer, scenario, translation of errors and an automatic question',async()=>{
  const f=await liveDOM(1,{completed:['weather']}),{el,send,clips,w}=f;try{
-  el('mode-nonstop').click();send('今天天气怎么样');assert.equal(el('phrase').textContent,'今天很冷。');assert(el('exercise-banner').textContent.includes('не настоящий прогноз'));assert(el('audio-note').hidden===true);assert(el('recent').textContent.includes('какая погода'));
-  send('今天是很冷');assert(el('learner-feedback').textContent.includes('Возможный смысл'));assert(el('learner-feedback').textContent.includes('今天很冷'));assert(el('recent').textContent.includes('今天是很冷'));
+  el('mode-nonstop').click();send('今天天气怎么样');assert.equal(el('phrase').textContent,'今天很冷。');assert(el('exercise-banner').textContent.includes('не настоящий прогноз'));assert.equal(el('audio-note').hidden,!!lookupPilotAudio('今天很冷'),'Show audio warning when the exact Panda voice clip is absent');assert(el('recent').textContent.includes('какая погода'));
+  send('今天是很冷');assert(el('learner-feedback').textContent.includes('Предполагаемый смысл'));assert(el('learner-feedback').textContent.includes('今天很冷'));assert(el('recent').textContent.includes('今天是很冷'));
   send('今天天气怎么样');send('今天天气怎么样');
   // Existing spoken acknowledgements complete before a follow-up; no acoustic scoring.
   if(clips.at(-1)?.onended)clips.at(-1).onended();

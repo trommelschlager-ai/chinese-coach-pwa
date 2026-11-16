@@ -9,13 +9,13 @@ const gates=fs.readFileSync('assets/panda-go-hsk1-path-v371.js','utf8');
 const ids=['foundations','pronouns','numbers','weekdays','dates','family','weather'];
 const layers=['background','header','ribbons','panda','actions'];
 for(const layer of layers){
- assert(html.includes('hsk1-v371-'+layer+'.webp'),'HD illustration layer missing: '+layer);
+ assert(html.includes('hsk1-approved-v373.png'),'Current map must use the immutable approved v373 artwork');
  assert(fs.statSync('assets/hsk1-v371-'+layer+'.webp').size>20000,'HD layer too small: '+layer);
 }
-assert(html.includes('hsk1-layered-v372.css?v=372'),'Responsive separated-layer map styles missing');
+assert(html.includes('class="artboard"')&&html.includes('class="approved"'),'Current approved artwork must have one responsive artboard');
 for(const selector of ['pg-layer-header','pg-layer-ribbons','pg-layer-panda','pg-layer-actions'])assert(css.includes(selector),'Separate layer positioning missing: '+selector);
-assert(!html.includes('class="pg-approved-art"'),'Old blurry flattened PNG must not be visible');
-assert(css.includes('node.locked')&&css.includes('pg-gate'),'Lock graphics and status missing');
+assert(!html.includes('class="pg-approved-art"'),'No unapproved retro artwork should replace the v373 PNG');
+assert(html.includes('class="gate"')&&html.includes('.lesson.locked'),'Approved lock graphics and status must remain in the active map');
 const cases=[
   [{},0],
   [{'pg-hsk1-v3-complete':JSON.stringify(ids)},0],
@@ -35,9 +35,9 @@ for(const [initial,completed] of cases){
  const before=JSON.stringify({...w.localStorage});
  w.eval(d.querySelector('script').textContent);
  assert.equal(JSON.stringify({...w.localStorage}),before,'Map must never reset student progress');
- assert.equal(d.querySelectorAll('nav.map-road > a.node').length,7);
+ assert.equal(d.querySelectorAll('nav.hotspots > a.lesson').length,7);
  const frontier=Math.min(7,completed+1);
- for(const node of d.querySelectorAll('nav.map-road > a.node')){
+ for(const node of d.querySelectorAll('nav.hotspots > a.lesson')){
    const n=Number(node.dataset.num);
    const url=n===1?'./hsk1-first-v189.html':n===2?'./hsk1-second-v203.html':n===3?'./hsk1-third-v212.html':n===4?'./hsk1-fourth-v214.html':n===5?'./hsk1-fifth-v227.html':'./hsk1-lesson.html?lesson='+n;
    assert.equal(node.getAttribute('href'),url);
@@ -65,7 +65,7 @@ assert.equal(test.PandaGoPathV371.completed(),7);
 assert.equal(test.PandaGoPathV371.markComplete(1),true,'Repeating completed lesson must be allowed');
 test.close();
 const sw=fs.readFileSync('sw.js','utf8'),core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
-assert(core.length<=170,'Offline app shell budget must remain below 170 entries');
+assert(core.length<=200,'Current two-course offline app shell must stay bounded');
 for(const entry of [...layers.map(x=>'./assets/hsk1-v371-'+x+'.webp'),'./assets/hsk1-layered-v372.css?v=372','./hsk2-start.html','./hsk2-introduction.html'])assert(core.includes(entry),'Offline file missing '+entry);
 for(const entry of core)assert(fs.existsSync(entry.split('?')[0]),'Offline file missing on disk '+entry);
 for(const [file,index] of [

@@ -13,7 +13,7 @@ for(const q of data.questions){
  if(q.kind==='choice')assert(q.correct>=0&&q.correct<q.choices.length);
  if(q.kind==='build')assert(q.target.length>=2);
 }
-assert(fs.readFileSync('hsk1-map.html','utf8').includes('hsk1-diagnostic.html'));
+const approvedMap=fs.readFileSync('hsk1-map.html','utf8');assert(approvedMap.includes('hsk1-approved-v373.png')&&approvedMap.includes('href="./hsk1-pronunciation.html"'),'Approved v373 map preserves its three footer tools instead of adding an extra diagnostic hotspot');assert(html.includes('hsk1-diagnostic-v287.js'),'Diagnostic remains directly available at its own URL');
 const pack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
 for(const path of ['./hsk1-diagnostic.html','./assets/hsk1-diagnostic-v287.js?v=287','./assets/hsk1-diagnostic-v287.css?v=287','./assets/hsk1-diagnostic-v287-data.json',...data.questions.filter(q=>q.audio).map(q=>q.audio)])assert(pack.files.includes(path),'not in offline '+path);
 const dom=new JSDOM(html,{url:'https://panda.test/hsk1-diagnostic.html',runScripts:'outside-only'});

@@ -1,46 +1,29 @@
-/* Run: node scripts/verify-hsk2-welcome-v348.cjs
- * Verify the actual beginner HSK2 onboarding route and first-screen content.
- * This structural interaction test does not replace checking Android rendering.
+/* Panda Go HSK2: validate the currently approved entry and 10-theme welcome route.
+ * The old #map DOM controller is legacy; it now redirects to the real life course.
+ * This test does not claim Android visual or audio-tone validation.
  */
 'use strict';
 const fs=require('node:fs');
 const assert=require('node:assert/strict');
-const {JSDOM}=require('jsdom');
-const html=fs.readFileSync('hsk2-start.html','utf8');
-const inline=html.match(/<script>([\s\S]*?)<\/script>/);
-assert(inline,'HSK2 entry must have script');
-new Function(inline[1]);
-const build=seen=>{
- const dom=new JSDOM(html,{url:'https://panda-go.example/hsk2-start.html#map',runScripts:'outside-only'});
- const w=dom.window;
- if(seen)w.localStorage.setItem('pg-hsk2-course-welcome-v1','1');
- w.eval(inline[1]);
- return dom;
-};
-let dom=build(false);
-let d=dom.window.document;
-const screen=()=>d.querySelector('#screen');
-assert(d.querySelector('.app.welcome-view'),'First visit to #map must show course study plan');
-assert.equal(d.querySelector('#course-welcome-footer').hidden,false);
-assert(screen().textContent.includes('В этом курсе ты научишься'));
-for(const goal of ['Говорить по-китайски','Понимать на слух','Строить предложения','Различать тоны'])assert(screen().textContent.includes(goal),goal);
-for(const step of ['2–3 новых слова','Грамматика','Тоны и слух','Предложения','Разговор и тест'])assert(screen().textContent.includes(step),step);
-for(const tone of ['mā','má','mǎ','mà'])assert(screen().textContent.includes(tone),'Missing tone '+tone);
-assert(screen().textContent.includes('не точность тонов'),'No false acoustic-tone promise');
-assert.equal(d.querySelectorAll('.pg-welcome-goal').length,4);
-assert.equal(d.querySelectorAll('.pg-welcome-plan-step').length,5);
-d.querySelector('#course-welcome-start').click();
-assert.equal(dom.window.localStorage.getItem('pg-hsk2-course-welcome-v1'),'1');
-assert(!d.querySelector('.app.welcome-view'),'Starting the course must reveal the map');
-assert(d.querySelector('.journey-road'),'Course map should be visible');
-assert(d.querySelector('#course-welcome-footer').hidden,'Introduction button hidden after starting');
-assert(d.querySelector('a[href="#welcome"]'),'Course plan must remain available from map');
-dom.window.location.hash='#welcome';
-dom.window.dispatchEvent(new dom.window.Event('hashchange'));
-assert(d.querySelector('.app.welcome-view'),'Course plan must be reopenable');
-dom.window.close();
-dom=build(true);d=dom.window.document;
-assert(!d.querySelector('.app.welcome-view'),'Returning student should go directly to the map');
-assert(d.querySelector('.journey-road'),'Returning student should see journey roadmap');
-dom.window.close();
-console.log('PASS HSK2 welcome: first-launch plan, 4 outcomes, 5 learning stages, correct tone labels, honest mic note, start CTA, map navigation, revisiting and saved preference.');
+const vm=require('node:vm');
+const old=fs.readFileSync('hsk2-start.html','utf8');
+const page=fs.readFileSync('hsk2-life-course.html','utf8');
+const courseJs=fs.readFileSync('assets/hsk2-life-course-data-v1.js','utf8');
+const appJs=fs.readFileSync('assets/hsk2-life-course-app-v1.js','utf8');
+assert.match(old,/location\.replace\(['"]\.\/hsk2-life-course\.html\?view=map['"]\)/,
+ 'Legacy HSK2 map entry must redirect to the current life-course map');
+assert.match(page,/Моя жизнь на китайском/,'Current course title must stay visible');
+assert.match(page,/hsk2-life-approved-fullscreen-v412\.png/,'The current approved full-height artwork must load');
+assert.match(page,/hsk2-life-welcome-v412\.css\?v=412/,'Welcome full-bleed stylesheet must be last');
+assert.match(page,/course-map\.png/,'Approved illustrated roadmap must remain');
+assert.match(page,/hsk2-life-course-app-v1\.js\?v=\d+/,'Course controller must be cache-versioned');
+assert.match(appJs,/view:'welcome'/,'First visit starts with approved welcome view');
+assert.match(appJs,/\bfunction store\(/,'Course progress must persist locally');
+const ctx={window:{}};
+vm.runInNewContext(courseJs,ctx);
+const topics=ctx.window.PandaLifeCourseV1.topics;
+assert.equal(topics.length,10);
+assert.equal(topics.reduce((n,t)=>n+t.scenes.length,0),30);
+assert.equal(topics.reduce((n,t)=>n+t.words.length,0),200);
+assert(topics.every(t=>t.words.length===20&&t.scenes.length===3));
+console.log('PASS: legacy #map redirects to approved life-course welcome, 10 themes, 30 mini-lessons and 200 vocabulary entries.');

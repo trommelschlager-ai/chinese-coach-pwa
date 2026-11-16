@@ -115,7 +115,7 @@ function handle(button,state,api){
  const day=getDay(state),d=state.day||makeState(state.mini),key=button.dataset;
  if(key.dayShowWords!==undefined){d.poster=false;api.render();return true}
  if(key.dayPosterAudio!==undefined){d.showAudioNote=true;api.render();return true}
- if(key.dayWord!==undefined){d.selected=Number(key.dayWord);api.render();return true}
+ if(key.dayWord!==undefined){window.PandaHsk2AudioV330?.stop?.();d.selected=Number(key.dayWord);api.render();return true}
  if(key.dayPrev!==undefined){cancel();if(state.stage===0)api.go('topic');else{state.stage--;api.render()}return true}
  if(key.dayNext!==undefined){next(state,api);return true}
  if(key.dayQuiz!==undefined){const [q,a]=key.dayQuiz.split(':').map(Number);d.quiz[q]=a;api.render();return true}

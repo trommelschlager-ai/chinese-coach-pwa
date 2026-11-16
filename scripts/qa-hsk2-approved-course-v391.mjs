@@ -14,28 +14,28 @@ try{
   const tag=width+'x'+height;
   await page.goto(base+'/hsk2-life-course.html?v=391',{waitUntil:'domcontentloaded'});
   await page.locator('.approved-welcome-screen .approved-art.ready').waitFor({state:'visible',timeout:25000});
-  const ext=await page.locator('.approved-welcome-screen').evaluate(n=>{const b=getComputedStyle(n,'::before');const r=n.getBoundingClientRect();const root=document.querySelector('#screen').getBoundingClientRect();return {filter:b.filter,size:b.backgroundSize,display:b.display,img:b.backgroundImage,opacity:b.opacity,rect:{y:r.y,h:r.height},screen:{y:root.y,h:root.height}}});
-  console.log('POSTER RECT '+tag,JSON.stringify(ext));
-  const outer=await page.locator('#app').evaluate(n=>({image:getComputedStyle(n).backgroundImage,screen:getComputedStyle(n.querySelector('#screen')).backgroundColor}));
-  assert.match(outer.image,/hsk2-approved-scene-v353/,'Full-height app backdrop must be scenic, not flat purple');
-  assert.equal(outer.screen,'rgba(0, 0, 0, 0)','Screen must be transparent over the full-height scene');
-  assert.equal(ext.filter,'none','No blurred empty-space continuation');
-  assert.match(ext.size,/100% 100%/,'Decorative extension fits its exact letterbox region');
-  const margins=await page.locator('.approved-welcome-screen').evaluate(node=>({
-   top:parseFloat(getComputedStyle(node,'::before').height),
-   bottom:parseFloat(getComputedStyle(node,'::after').height),
-   topImage:getComputedStyle(node,'::before').backgroundImage,
-   bottomImage:getComputedStyle(node,'::after').backgroundImage
-  }));
-  assert.ok(margins.top>=12&&margins.bottom>=12,'Both phone gaps contain real scenery '+tag);
-  assert.match(margins.topImage,/sky-extension-v403/,'Sharp sky fills the full upper gap');
-  assert.match(margins.bottomImage,/lake-extension-v403/,'Sharp lake fills the full lower gap');
-  const art=await page.locator('.approved-art').boundingBox();
-  assert.ok(art);
-  assert.ok(Math.abs(art.width/art.height-941/1672)<0.003,'Approved art ratio unchanged '+tag);
-  assert.ok(art.y>=0&&art.y+art.height<=height+1,'Entire original poster stays inside viewport '+tag);
-  const img=await page.locator('.approved-welcome-screen img').evaluate(e=>({w:e.naturalWidth,h:e.naturalHeight}));
-  assert.deepEqual(img,{w:941,h:1672},'Original approved PNG '+tag);
+  // NEW user-approved poster 842×1867 replaces the old 941×1672
+  // artwork AND its decorative sky/lake letterboxes.
+  const picture=await page.locator('.approved-welcome-screen').evaluate(node=>{
+   const stage=node.getBoundingClientRect(),art=node.querySelector('.approved-art').getBoundingClientRect(),image=node.querySelector('img');
+   return {stage:{x:stage.x,y:stage.y,w:stage.width,h:stage.height},
+    art:{x:art.x,y:art.y,w:art.width,h:art.height},
+    image:{width:image.naturalWidth,height:image.naturalHeight},
+    before:getComputedStyle(node,'::before').display,
+    after:getComputedStyle(node,'::after').display};
+  });
+  assert.deepEqual(picture.image,{width:842,height:1867},'Exact new 842×1867 PNG '+tag);
+  assert.equal(picture.before,'none','No duplicate sky or strip at the top '+tag);
+  assert.equal(picture.after,'none','No duplicate lake or strip at the bottom '+tag);
+  assert.ok(Math.abs(picture.art.w/picture.art.h-842/1867)<0.002,'No stretching of illustrated objects '+tag);
+  assert.ok(picture.stage.y>=-0.5&&picture.stage.y+picture.stage.h>=height-0.5,'Full-height welcome stage '+tag);
+  assert.ok(picture.art.x<=0.5&&picture.art.y<=0.5&&picture.art.x+picture.art.w>=width-0.5&&picture.art.y+picture.art.h>=height-0.5,
+   'One continuous full-screen image, no upper/lower blank regions '+tag+' '+JSON.stringify(picture));
+  for(const selector of ['.approved-program','.approved-start','.poster-welcome-ai','.poster-welcome-ai-card']){
+   const hit=await page.locator('.approved-welcome-screen '+selector).boundingBox();
+   assert.ok(hit&&hit.width>=35&&hit.height>=30&&hit.x>=-1&&hit.y>=-1&&hit.x+hit.width<=width+1&&hit.y+hit.height<=height+1,
+    'Clickable hotspot inside visible artwork '+tag+' '+selector);
+  }
   await page.screenshot({path:'qa/hsk2-approved-v391/welcome-'+tag+'.png',fullPage:false});
   await page.locator('.approved-program').click();
   assert.equal(await page.locator('.poster-map-card[data-topic]').count(),10);

@@ -42,12 +42,39 @@ on:
       - 'scripts/verify-hsk2-welcome-v348.cjs'
       - '.github/workflows/hsk2-learner-v344.yml'
       - 'sw.js'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hsk2-life-course.html'
+      - 'assets/hsk2-life-course-*.js'
+      - 'assets/hsk2-day-first-ui-v1.js'
+      - 'tests/hsk2-life-course-v1.test.cjs'
+      - 'tests/hsk2-day-first-speech-v1.test.cjs'
+      - 'scripts/qa-hsk2-life-audio-v407.cjs'
+      - '.github/workflows/hsk2-learner-v344.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
+  life-course-core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Check audio text coverage
+        run: node scripts/qa-hsk2-life-audio-v407.cjs
+      - name: Check complete 30-mini-lesson navigation and reload
+        run: node tests/hsk2-life-course-v1.test.cjs
+      - name: Check microphone consent and five genuine attempts
+        run: node tests/hsk2-day-first-speech-v1.test.cjs
+      - name: Check Mandarin guided Panda answers
+        run: node --test tests/panda-hsk2-day-chat-v1.test.mjs
   learner:
     runs-on: ubuntu-latest
     steps:
@@ -59,6 +86,8 @@ jobs:
           node-version: '22'
       - name: Install test dependencies
         run: npm ci --ignore-scripts
+      - name: Verify exact HSK2 audio coverage without fabricated clips
+        run: node scripts/qa-hsk2-life-audio-v407.cjs
       - name: Verify first-launch HSK2 course plan
         run: node scripts/verify-hsk2-welcome-v348.cjs
       - name: Verify new lesson 1 interactive flow

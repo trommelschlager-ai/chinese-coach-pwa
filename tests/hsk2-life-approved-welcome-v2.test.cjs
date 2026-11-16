@@ -31,8 +31,8 @@ const w=dom.window,d=w.document;
 w.PandaHsk2AudioV330={lookup:()=>null,play:()=>false};
 for(const f of ['hsk2-life-course-data-v1.js','hsk2-day-first-data-v1.js','hsk2-day-topic-one-v391.js','hsk2-day-first-ui-v1.js','hsk2-life-course-app-v1.js'])w.eval(fs.readFileSync(path.join(root,'assets',f),'utf8'));
 function click(selector){const element=d.querySelector(selector);assert.ok(element,'Missing '+selector);assert.equal(element.disabled,false);element.click()}
-assert.equal(d.querySelectorAll('img[src$="/course-welcome.png"]').length,1);
-assert.equal(d.querySelectorAll('.approved-program,.approved-start,.approved-ai-top').length,3);
+assert.equal(d.querySelectorAll('img[src$="/hsk2-life-approved-fullscreen-v412.png"]').length,1);
+assert.equal(d.querySelectorAll('.approved-program,.approved-start,.approved-ai-top,.poster-welcome-ai-card').length,4);
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,0);
 click('.approved-program');
 assert.equal(d.querySelectorAll('.poster-map-card[data-topic]').length,10);

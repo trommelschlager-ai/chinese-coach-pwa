@@ -39,14 +39,54 @@ try{
  var saved=JSON.parse(localStorage.getItem(KEY)||'null');
  if(saved&&Array.isArray(saved.completed)){
   state.completed=saved.completed.filter(function(v){return Number.isInteger(v)&&v>=0&&v<30});
-  state.difficult=Array.isArray(saved.difficult)?saved.difficult:[];
+  state.difficult=Array.isArray(saved.difficult)?saved.difficult.filter(function(v){return typeof v==='string'}):[];
   state.showPy=saved.showPy!==false;
   state.examPassed=!!saved.examPassed;
+  var resume=saved.resume;
+  if(resume&&typeof resume==='object'&&Number.isInteger(resume.topic)&&resume.topic>=0&&resume.topic<10
+   &&Number.isInteger(resume.mini)&&resume.mini>=0&&resume.mini<3){
+   state.view='lesson';
+   state.topic=resume.topic;state.mini=resume.mini;
+   state.stage=Number.isInteger(resume.stage)?Math.max(0,Math.min(resume.topic===0?4:3,resume.stage)):0;
+   state.quizWord=[0,1,2].includes(resume.quizWord)?resume.quizWord:null;
+   state.quizSentence=[0,1,2].includes(resume.quizSentence)?resume.quizSentence:null;
+   var tokenCount=builders[state.topic*3+state.mini].length;
+   state.build=Array.isArray(resume.build)?
+    [...new Set(resume.build.filter(function(n){return Number.isInteger(n)&&n>=0&&n<tokenCount}))]:[];
+   if(resume.topic===0&&dayUI){
+    var d=dayUI.makeState(resume.mini),prior=resume.day;
+    if(prior&&typeof prior==='object'){
+     d.selected=Number.isInteger(prior.selected)?Math.max(0,Math.min(d.attempts.length-1,prior.selected)):d.selected;
+     d.speechWord=Number.isInteger(prior.speechWord)?Math.max(0,Math.min(d.attempts.length-1,prior.speechWord)):d.speechWord;
+     d.quiz=Array.isArray(prior.quiz)?[0,1].map(function(i){return [0,1,2].includes(prior.quiz[i])?prior.quiz[i]:null}):d.quiz;
+     d.build=Array.isArray(prior.build)?[...new Set(prior.build.filter(function(n){return Number.isInteger(n)&&n>=0&&n<(window.PandaGoDayModulesV391?.[state.mini]?.builder.length||4)}))]:d.build;
+     d.attempts=d.attempts.map(function(_,i){return Array.isArray(prior.attempts?.[i])?
+      prior.attempts[i].slice(0,5).filter(function(v){return v&&typeof v.said==='string'&&typeof v.match==='boolean'}).map(function(v){return {said:v.said.slice(0,80),match:v.match}}):[]});
+     d.poster=!!prior.poster;
+    }
+    state.day=d;
+   }
+  }
  }
 }catch(e){}
 var screen=document.getElementById('screen');
 var status=document.getElementById('message');
-function store(){try{localStorage.setItem(KEY,JSON.stringify({completed:state.completed,difficult:state.difficult,showPy:state.showPy,examPassed:state.examPassed}))}catch(e){}}
+function store(){
+ try{
+  var day=state.topic===0&&state.day?{
+   selected:state.day.selected,speechWord:state.day.speechWord,quiz:state.day.quiz,build:state.day.build,
+   attempts:state.day.attempts,poster:state.day.poster
+  }:null;
+  var resume=state.view==='lesson'?{
+   topic:state.topic,mini:state.mini,stage:state.stage,quizWord:state.quizWord,
+   quizSentence:state.quizSentence,build:state.build,day:day
+  }:null;
+  localStorage.setItem(KEY,JSON.stringify({
+   completed:state.completed,difficult:state.difficult,showPy:state.showPy,
+   examPassed:state.examPassed,resume:resume
+  }));
+ }catch(e){}
+}
 function E(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function perc(){return Math.round(state.completed.length/30*100)}
 function id(){return state.topic*3+state.mini}
@@ -75,11 +115,14 @@ function selection(q,options,selected,type,answer){
  (selected!==null?'<p class="feedback '+(selected===answer?'good':'bad')+'">'+(selected===answer?'✓ Правильно':'✕ Попробуй другой вариант')+'</p>':'')+'</div>';
 }
 function viewWelcome(){
- return '<section class="approved-stage approved-welcome-screen" style="--approved-image:url(./assets/approved-course-v390/course-welcome.png)" aria-label="Китайский плюс легко · утверждённый приветственный экран"><div class="approved-art">'+
- '<img src="./assets/approved-course-v390/course-welcome.png" alt="Panda Go Китайский + Легко. 10 тем, 30 коротких уроков, грамматика, тесты, произношение и Панда AI. Не бойся говорить с ошибками. Бойся никогда не заговорить." width="941" height="1672" decoding="async" draggable="false">'+
- '<button class="approved-hotspot approved-program poster-welcome-program" data-view="map" aria-label="Посмотреть программу: десять тем"></button>'+
- '<button class="approved-hotspot approved-start poster-welcome-start" data-start="0" aria-label="Начать первый мини-урок Мой распорядок дня"></button>'+
- '<a class="approved-hotspot approved-ai-top poster-welcome-ai" href="./panda-voice-pilot.html" aria-label="Открыть Панда AI"></a>'+
+ // Approved 842×1867 full-height illustration, uncut and unaltered.
+ // Interactive controls remain accessible DOM hotspots on the original image plane.
+ return '<section class="approved-stage approved-welcome-screen" style="--approved-image:url(./assets/hsk2-life-approved-fullscreen-v412.png)" aria-label="Panda Go Китайский плюс Легко · курс 2"><div class="approved-art">'+
+ '<img src="./assets/hsk2-life-approved-fullscreen-v412.png" alt="Panda Go Китайский + Легко. 10 тем, 30 мини-уроков, 200+ слов и выражений. Грамматика, тесты, произношение 5 раз, общение с Panda AI. Кнопки: Посмотреть программу, Начать курс." width="842" height="1867" fetchpriority="high" decoding="async" draggable="false">'+
+ '<button type="button" class="approved-hotspot approved-program poster-welcome-program" data-view="map" aria-label="Посмотреть программу: десять тем и 30 мини-уроков"></button>'+
+ '<button type="button" class="approved-hotspot approved-start poster-welcome-start" data-start="0" aria-label="Начать курс: первый мини-урок Мой распорядок дня"></button>'+
+ '<a class="approved-hotspot approved-ai-top poster-welcome-ai" href="./panda-voice-pilot.html" aria-label="Открыть Panda AI: разговорная практика"></a>'+
+ '<a class="approved-hotspot poster-welcome-ai-card" href="./panda-voice-pilot.html" aria-label="Открыть Panda AI через карточку"></a>'+
  '</div></section>';
 }
 function viewMap(){
@@ -217,6 +260,8 @@ function render(){
  // Reset only when the learner really changes page / lesson / step.
  var paintKey=[state.view,state.topic,state.mini,state.stage,state.day&&state.day.poster?'poster':'content'].join(':');
  var preserve=paintKey===lastPaintKey;
+  // A navigation step must silence the previous lesson's clip before repainting.
+  if(lastPaintKey!==null&&!preserve)window.PandaHsk2AudioV330?.stop?.();
  var rememberedY=preserve?screen.scrollTop:0;
  var html=state.view==='welcome'?viewWelcome():state.view==='map'?viewMap():state.view==='topic'?viewTopic():state.view==='lesson'?viewLesson():state.view==='done'?viewDone():state.view==='review'?viewReview():state.view==='tones'?viewTones():viewExam();
  screen.innerHTML=html;
@@ -245,10 +290,10 @@ function render(){
  // The old unconditional scrollTop=0 caused every vocabulary tap to jump.
  screen.scrollTop=rememberedY;
  lastPaintKey=paintKey;
- if(preserve)window.requestAnimationFrame(function(){
+ if(preserve&&typeof window.requestAnimationFrame==='function')window.requestAnimationFrame(function(){
   if(lastPaintKey===paintKey && Math.abs(screen.scrollTop-rememberedY)>1)screen.scrollTop=rememberedY;
  });
- if(window.PandaGoApprovedV391)window.requestAnimationFrame(function(){window.PandaGoApprovedV391.fit()});
+ if(window.PandaGoApprovedV391&&typeof window.requestAnimationFrame==='function')window.requestAnimationFrame(function(){window.PandaGoApprovedV391.fit()});
  if(status)status.textContent='';
  store();
 }

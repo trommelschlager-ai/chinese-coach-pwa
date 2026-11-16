@@ -19,7 +19,7 @@ try{
   assert.equal(await page.locator('#pg130 .pg-hsk-level').count(),2,'HSK 1 and HSK 2 on approved home');
   res=await page.goto(base+'/hsk1-map.html',{waitUntil:'load'});
   assert.equal(res?.status(),200);
-  assert.equal(await page.locator('.map-road a.node').count(),7,'Seven lesson entries');
+  assert.equal(await page.locator('.hotspots a.lesson').count(),7,'Seven approved lesson hotspots');
   res=await page.goto(base+'/panda-voice-pilot.html?lesson=1',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   await page.locator('#pg346').waitFor();
@@ -36,7 +36,14 @@ try{
   });
   assert(dims.scrollWidth<=dims.viewport+2,'No horizontal scrolling');
   assert(dims.mascot.top>=dims.scene.top-6&&dims.mascot.bottom<=dims.scene.bottom+5,'Entire Panda remains in scene');
-  assert(dims.mascot.bottom>=dims.scene.bottom-40,'Panda feet must be near the real rock bank');
+  const physicalSeat=await page.evaluate(()=>{
+   const scene=document.querySelector('.pg346-scene'),mascot=document.querySelector('.pg352-mascot');
+   const stone=getComputedStyle(scene,'::before');
+   const contact=getComputedStyle(mascot,'::before');
+   return {stoneImage:stone.backgroundImage,contactFill:contact.backgroundImage,contactHeight:parseFloat(contact.height)};
+  });
+  assert(physicalSeat.stoneImage.includes('panda-exact-stone-v361.webp'),'Approved exact stone artwork must be visible');
+  assert(physicalSeat.contactFill.includes('radial-gradient')&&physicalSeat.contactHeight>0,'Panda feet need an actual anchored contact shadow');
   assert(dims.composer.bottom<=dims.nav.top+6,'Composer stays above navigation');
   await page.screenshot({path:out+'/approved-scene-'+width+'.png',animations:'disabled'});
   await page.locator('#pg346-nonstop').click();
@@ -50,7 +57,9 @@ try{
   summary.results.push({width,case:'short Mandarin dialogue',reply:await page.locator('.pg346-main-zh').textContent()});
   await page.locator('#pg346-topics-btn').click();
   assert(await page.locator('#pg346-topics').isVisible(),'Topic list opens only when tapped');
-  assert.equal(await page.locator('#pg346-topics .pg346-topic-list button').count(),7,'All seven topic entries retained');
+  const topics=await page.locator('#pg346-topics .pg346-topic-list button').allTextContents();
+  assert(topics.length>=7,'All seven original topics retained; extra HSK2 practice topics may be added');
+  assert.equal(new Set(topics.map(s=>s.trim())).size,topics.length,'Visible topic entries must remain distinct');
   await page.locator('#pg346-topics-close').click();
   assert(!(await page.locator('#pg346-topics').isVisible()));
   await page.locator('#pg346-history').click();

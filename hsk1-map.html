@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
-<meta name="panda-go-mobile-fix" content="v395-tactile-button-feedback">
+<meta name="panda-go-mobile-fix" content="v402-strong-color-half-second-press">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
@@ -73,99 +73,60 @@ body{display:grid;place-items:center;position:relative}
 .toast{position:absolute;z-index:10;left:7%;right:7%;top:21%;padding:11px 15px;text-align:center;color:white;border:2px solid #ffe189;border-radius:15px;background:#4b156ce9;font:700 clamp(11px,2.9vw,15px)/1.35 Arial,sans-serif;box-shadow:0 5px 18px #290c5588}
 .toast[hidden]{display:none!important}
 @media (max-height:650px){.toast{top:17%}}
-/* v395: tactile feedback over the ORIGINAL v373 bitmap.
-   The approved artwork supplies the main ribbon/button contours and shadows.
-   Never shadow the full rectangular hotspot: that produces purple strips on
-   Android. A small feathered elliptical contact shadow stays inside the art. */
-.hotspots a {
-  box-shadow:none!important;
-  filter:none!important;
-  background:transparent!important;
-  translate:0 0!important; /* neutralize the global mobile :active translate */
-  transform:translateY(0);
-  transition:transform 130ms ease;
-  touch-action:manipulation;
-  user-select:none;
-  -webkit-user-select:none;
-}
-.hotspots a::before {
-  content:"";
-  display:block;
-  position:absolute;
-  z-index:0;
-  pointer-events:none;
-  left:15%;
-  right:12%;
-  bottom:0;
-  height:7%;
-  border-radius:50%;
-  background:rgba(32,5,63,.27);
-  filter:blur(4px);
-  opacity:.48;
-  transform:translateY(0) scaleX(1);
-  transition:opacity 130ms ease,transform 130ms ease;
-}
-.hotspots .top-link::before {
-  left:13%;
-  right:13%;
-  bottom:0;
-  height:10%;
-  opacity:.55;
-}
-.hotspots .footer-link::before {
-  left:12%;
-  right:12%;
-  bottom:-1%;
-  height:9%;
-  opacity:.57;
-}
-.hotspots a::after {
-  content:"";
-  display:block;
-  position:absolute;
-  z-index:1;
-  pointer-events:none;
-  inset:9% 5%;
-  border-radius:inherit;
-  opacity:0;
-  background:radial-gradient(ellipse 75% 69% at 49% 43%,
-    rgba(255,255,255,.27) 0%,
-    rgba(255,255,255,.13) 43%,
-    rgba(55,9,86,.10) 76%,
-    transparent 100%);
-  box-shadow:inset 0 3px 8px rgba(41,8,74,.19),inset 0 -1px 4px rgba(255,255,255,.12);
-  transform:translateY(0);
-  transition:opacity 115ms ease,transform 130ms ease;
-}
+/* v402: amplify the pressed-card color, preserving the v401 shape and timing.
+   The approved HSK1 v373 bitmap stays still and unchanged. Only pixels
+   within the selected painted button are brightened through an SVG mask.
+   Unlike v395-v400, no synthetic white capsule, duplicated shifted text,
+   mismatched outlines or artificial rectangular shadows are rendered. */
+.hotspots a,
 .hotspots a:active,
-.hotspots a.is-pressed {
-  transform:translateY(2px)!important;
+.hotspots a.is-pressed{
+  background:transparent!important;
   box-shadow:none!important;
   filter:none!important;
-  background:transparent!important;
+  transform:none!important;
+  translate:none!important;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
 }
-.hotspots a:active::before,
-.hotspots a.is-pressed::before {
-  opacity:.22;
-  transform:translateY(-1px) scaleX(.94);
+.hotspots a::before,.hotspots a::after{content:none!important;display:none!important}
+.press-art{
+  display:block;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+  overflow:hidden;
+  pointer-events:none;
 }
-.hotspots a:active::after,
-.hotspots a.is-pressed::after {
-  opacity:1;
-  transform:translateY(1px);
+.press-art .press-image{
+  opacity:0;
+  filter:brightness(1.18) saturate(2.15) contrast(1.22);
+  transition:opacity 65ms ease-in-out;
 }
-.hotspots a.locked:active::after,
-.hotspots a.locked.is-pressed::after {
-  background:radial-gradient(ellipse 70% 65% at center,rgba(255,221,109,.31),rgba(255,210,92,.07) 68%,transparent);
-}
+.press-art.active .press-image{opacity:1}
 @media(prefers-reduced-motion:reduce){
- .hotspots a,.hotspots a::before,.hotspots a::after{transition:none!important}
+  .press-art .press-image{transition:none!important}
 }
 </style>
 <link rel="stylesheet" href="./assets/panda-mobile-v394.css?v=394"></head>
 <body>
 <main class="artboard" aria-label="Panda Go — уроки HSK 1">
 <img class="approved" src="./assets/hsk1-approved-v373.png" alt="Panda Go, начальный уровень HSK 1. Семь цветных уроков, панда в китайском костюме на фоне заката." width="694" height="1536" fetchpriority="high">
+<!-- The sole v373 bitmap is reused as an aligned, feather-masked light layer.
+     The drawing itself, screen positions, and all hotspots stay unchanged. -->
+<svg class="press-art" viewBox="0 0 694 1536" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="pressFeather" x="-12%" y="-20%" width="124%" height="140%">
+      <feGaussianBlur stdDeviation="3.5"/>
+    </filter>
+    <mask id="pressMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536">
+      <path id="pressShape" fill="#fff" filter="url(#pressFeather)" d=""/>
+    </mask>
+  </defs>
+  <image class="press-image" href="./assets/hsk1-approved-v373.png" x="0" y="0" width="694" height="1536" preserveAspectRatio="none" mask="url(#pressMask)"/>
+</svg>
 <nav class="hotspots" aria-label="Уроки HSK 1">
 <a class="top-link back" href="./index.html#panda/home" aria-label="Назад к выбору уровня"></a>
 <a class="top-link write" href="./hanzi-writing.html?lesson=1" aria-label="Написание иероглифов"></a>
@@ -220,34 +181,80 @@ body{display:grid;place-items:center;position:relative}
     if(a&&(e.key==='Enter'||e.key===' ')){e.preventDefault();deny(Number(a.dataset.num))}
   });
   function refresh(){try{const v=Number(localStorage.getItem(KEY)||'0');if(Number.isInteger(v))completed=Math.min(7,Math.max(0,v))}catch{}paint()}
-  // Short, perceptible mobile touch response, including on locked lessons.
-  // Delay same-tab navigation a fraction of a second so the pupil can SEE it.
+  // Half-second press feedback: the selected card lights up immediately,
+  // then navigation starts 500ms after the click (touch or keyboard).
   const links=Array.from(document.querySelectorAll('.hotspots a'));
-  let navigating=false;
-  for(const a of links){
-    let release=0;
-    function mark(){clearTimeout(release);a.classList.add('is-pressed')}
-    function unmark(delay=155){clearTimeout(release);release=setTimeout(()=>a.classList.remove('is-pressed'),delay)}
-    a.addEventListener('pointerdown',mark,{passive:true});
-    a.addEventListener('pointerup',()=>unmark());
-    a.addEventListener('pointercancel',()=>unmark(0));
-    a.addEventListener('pointerleave',()=>unmark());
-    a.addEventListener('blur',()=>unmark(0));
-    a.addEventListener('click',e=>{
-      if(a.classList.contains('locked')){
-        // The existing lock handler above blocks navigation and shows a toast.
-        mark();unmark(230);return;
+  const board=document.querySelector('.artboard');
+  const pressArt=document.querySelector('.press-art');
+  const pressShape=document.getElementById('pressShape');
+  const PRESS_MS=500;
+  let pressed=null,releaseTimer=0,navigating=false;
+
+  function roundRectPath(x,y,w,h){
+    const r=Math.min(w/2,h/2);
+    return [
+      'M',x+r,y,'H',x+w-r,
+      'Q',x+w,y,x+w,y+r,
+      'V',y+h-r,'Q',x+w,y+h,x+w-r,y+h,
+      'H',x+r,'Q',x,y+h,x,y+h-r,
+      'V',y+r,'Q',x,y,x+r,y,'Z'
+    ].join(' ');
+  }
+  function showPress(link){
+    if(navigating&&pressed&&pressed!==link)return;
+    clearTimeout(releaseTimer);
+    if(pressed&&pressed!==link)pressed.classList.remove('is-pressed');
+    const rect=link.getBoundingClientRect(), art=board.getBoundingClientRect();
+    if(!art.width||!art.height)return;
+    const x=(rect.left-art.left)*694/art.width;
+    const y=(rect.top-art.top)*1536/art.height;
+    const w=rect.width*694/art.width, h=rect.height*1536/art.height;
+    const isLesson=link.classList.contains('lesson');
+    const insetX=isLesson?w*.027:w*.055;
+    const insetY=isLesson?h*.105:h*.11;
+    pressShape.setAttribute('d',roundRectPath(
+      x+insetX,y+insetY,w-2*insetX,h-2*insetY));
+    link.classList.add('is-pressed');
+    pressed=link;
+    pressArt.classList.add('active');
+  }
+  function releasePress(link,ms=PRESS_MS){
+    clearTimeout(releaseTimer);
+    releaseTimer=setTimeout(()=>{
+      if(pressed!==link)return;
+      link.classList.remove('is-pressed');
+      pressed=null;
+      pressArt.classList.remove('active');
+    },ms);
+  }
+  for(const link of links){
+    link.addEventListener('pointerdown',()=>showPress(link),{passive:true});
+    link.addEventListener('pointerup',()=>releasePress(link),{passive:true});
+    link.addEventListener('pointercancel',()=>releasePress(link,0),{passive:true});
+    link.addEventListener('pointerleave',()=>{if(!navigating)releasePress(link,120)},{passive:true});
+    link.addEventListener('blur',()=>{if(!navigating)releasePress(link,0)});
+    link.addEventListener('click',event=>{
+      if(link.classList.contains('locked')){
+        showPress(link);releasePress(link,PRESS_MS);
+        // The original map handler still displays the lesson-lock explanation.
+        return;
       }
-      if(e.defaultPrevented||e.button!==0||e.ctrlKey||e.metaKey||e.altKey||e.shiftKey||a.target==='_blank')return;
-      e.preventDefault();
+      if(event.defaultPrevented||event.button!==0||event.ctrlKey||event.metaKey||
+         event.altKey||event.shiftKey||link.target==='_blank')return;
+      event.preventDefault();
       if(navigating)return;
+      showPress(link);
       navigating=true;
-      mark();
-      const destination=a.href;
-      setTimeout(()=>{window.location.assign(destination)},165);
+      const destination=link.href;
+      setTimeout(()=>{window.location.assign(destination)},PRESS_MS);
     });
   }
-  window.addEventListener('pageshow',()=>{navigating=false;for(const a of links)a.classList.remove('is-pressed')});
+  window.addEventListener('pageshow',()=>{
+    navigating=false;
+    clearTimeout(releaseTimer);
+    for(const link of links)link.classList.remove('is-pressed');
+    pressed=null;pressArt.classList.remove('active');
+  });
   window.addEventListener('pageshow',refresh);
   window.addEventListener('focus',refresh);
   window.addEventListener('storage',refresh);
