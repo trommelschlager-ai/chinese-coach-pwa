@@ -76,3 +76,23 @@ export function calendarAcknowledgement(spoken){
   audioKey:null
  };
 }
+
+/**
+ * Completion of the two fixed HSK1 calendar questions. A correctly answered
+ * active date/weekday prompt can be parsed by the pattern engine, whose spoken
+ * record intentionally does NOT have calendarLiteral=true. Do not use that
+ * flag alone to decide whether the round is finished.
+ *
+ * Only end after an accepted response to the currently displayed calendar
+ * question and both questions have appeared in the recent question history.
+ * An unrelated standalone vocabulary lookup never ends a training round.
+ */
+export function isCalendarRoundFinished({input,resultKind,spoken,prompt,questions=[]}={}){
+ const literal=analyzeCalendarLiteral(input);
+ if(!literal||!prompt||literal.topic!==Number(prompt.lesson))return false;
+ if(resultKind!=='answer'&&spoken?.matchedPrompt!==true)return false;
+ const current=normalize(prompt.hanzi||prompt.panda);
+ if(current!=='今天几月几号'&&current!=='今天星期几')return false;
+ const seen=new Set(questions.slice(-12).map(normalize));
+ return seen.has('今天几月几号')&&seen.has('今天星期几');
+}
