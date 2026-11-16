@@ -13,7 +13,7 @@ const html=fs.readFileSync(path.join(root,'hsk2-life-course.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'assets/hsk2-life-welcome-v412.css'),'utf8');
 const app=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'utf8');
 assert(html.includes('hsk2-life-welcome-v412.css?v=412'));
-assert(html.includes('hsk2-life-course-app-v1.js?v=412'));
+assert.match(html,/hsk2-life-course-app-v1\\.js\\?v=413/);
 assert(html.includes('hsk2-life-approved-fullscreen-v412.png'));
 assert(css.includes('aspect-ratio:842 / 1867'));
 assert(css.includes('width:max(100%,45.09909dvh)'));
