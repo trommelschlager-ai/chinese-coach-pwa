@@ -10,6 +10,8 @@ on:
       - 'assets/approved-course-v390/**'
       - 'hsk2-bastian-intro.html'
       - 'assets/bastian-split-v394.js'
+      - 'assets/bastian-fullscreen-reflow-v396.js'
+      - 'assets/bastian-fullscreen-reflow-v396.css'
       - 'assets/pandago-art-fullscreen-tap-v395.css'
       - 'assets/pandago-art-touch-feedback-v395.js'
       - 'scripts/qa-pandago-fullscreen-v395.mjs'
