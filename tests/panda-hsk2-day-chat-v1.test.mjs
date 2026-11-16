@@ -36,5 +36,33 @@ const bad=[
 ];
 for(const [utterance,idx] of bad)assert.equal(checkDayAnswer(utterance,idx,2).ok,false,'reject off-topic '+utterance);
 assert.equal(checkDayAnswer('我先刷牙，再吃早饭。',3,0).ok,false,'Do not ask locked content in the first mini-lesson');
+const translated=[
+ ['我每天七点十分起床',0,'07:10'],
+ ['我今天早上八点半起床',0,'08:30'],
+ ['我每天早上都洗脸',1,'умываюсь'],
+ ['我每天早上不洗脸',1,'не умываюсь'],
+ ['我每天早上吃早饭',2,'завтракаю'],
+ ['我早上不吃早饭',2,'не завтракаю'],
+ ['我先刷牙，再吃早饭',3,'потом завтракаю'],
+ ['我晚上听音乐',4,'слушаю музыку'],
+ ['我晚上经常看电视',4,'часто смотрю телевизор']
+];
+for(const [utterance,idx,meaning] of translated){
+ const r=checkDayAnswer(utterance,idx,2);
+ assert.equal(r.ok,true,'Should accept reviewed phrase: '+utterance);
+ assert.equal(r.spoken.known,true,'Recognized phrase has verified translation');
+ assert(r.spoken.translation.includes(meaning),'Correct Russian translation for '+utterance);
+ assert.equal(r.spoken.probable,null,'Technical status text is not a translation');
+ assert.equal(r.spoken.pinyin,null,'Cannot fabricate pinyin for variable speech');
+}
+for(const [utterance,idx] of [
+ ['我每天二十五点起床',0],['没有',1],['我先刷牙再刷牙',3],
+ ['我晚上常常听音乐了',4],['我晚上工作',4]
+]){
+ const r=checkDayAnswer(utterance,idx,2);
+ assert.equal(r.ok,false,'Do not mark malformed or unsupported phrase correct: '+utterance);
+ assert.equal(r.spoken.translation,null);
+}
+
 assert.ok(dailyFinal.hanzi.includes('好'));
 console.log('PASS: Panda AI daily coaching: 3/4/5 scoped prompts, valid answer variants, off-topic rejection, no acoustic tone scoring.');
