@@ -37,7 +37,9 @@ try{
   page.on('pageerror',err=>errors.push(tag+': '+err.message));
 
   await page.goto(base+'/hsk2-bastian-intro.html?test=v395',{waitUntil:'domcontentloaded'});
-  await page.locator('.bs394-page:not([hidden]) .bs394-slice img').waitFor({state:'visible',timeout:16000});
+  await page.locator('.bs394-page:not([hidden]) .bs396-layout .bs396-phrases img').waitFor({state:'visible',timeout:16000});
+  assert.equal(await page.locator('.bs394-page:not([hidden]) .bs396-crop').count(),3,'Page one contains original header, face and four phrase cards');
+  assert.ok((await page.locator('.bs396-layout').first().boundingBox()).height>450,'Portrait reflow fills available screen space');
   assert.equal(await page.locator('.bs394-page:not([hidden])').count(),1);
   const bastianBg=await page.locator('.bs394-page:not([hidden])').evaluate(n=>getComputedStyle(n).backgroundImage);
   assert.match(bastianBg,/bastian-night-city-v4/,'Original Bastian half remains sharp with full scenic background');
@@ -45,6 +47,8 @@ try{
   await page.screenshot({path:'qa/pandago-fullscreen-v395/bastian1-'+tag+'.png',fullPage:false});
   await page.locator('.bs394-page:not([hidden]) .bs394-next').click();
   assert.match(await page.locator('.bs394-page:not([hidden]) .bs394-bar').innerText(),/2 \/ 2/);
+  assert.equal(await page.locator('.bs394-page:not([hidden]) .bs396-crop').count(),3,'Second page contains grammar, phonetics and lesson progress');
+  assert.equal(await page.locator('.bs394-page:not([hidden]) .bs396-crop [data-term]').count(),4,'All four original tone-audio hotspots preserved');
   await tapFeedback(page,'.bs394-page:not([hidden]) .bs394-next','Bastian page 2');
   await page.screenshot({path:'qa/pandago-fullscreen-v395/bastian2-'+tag+'.png',fullPage:false});
   await page.locator('.bs394-page:not([hidden]) .bs394-next').click();
