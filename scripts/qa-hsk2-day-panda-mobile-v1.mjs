@@ -49,10 +49,10 @@ try{
  await page.goto(base+'/panda-voice-pilot.html?practice=day&mini=0',{waitUntil:'domcontentloaded'});
  await page.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true',{timeout:18000});
  assert.match(await page.locator('.pg346-title').innerText(),/Мой день/);
- await page.locator('.pg346-main-zh').filter({hasText:'你每天几点起床？'}).waitFor({timeout:10000});
+ await page.locator('.pg346-main-zh').filter({hasText:'你早上做什么？'}).waitFor({timeout:10000});
  for(const [answer,nextQuestion] of [
-  ['我每天七点起床。','你早上洗脸吗？'],
-  ['我早上洗脸。','你早上吃早饭吗？'],
+  ['我每天七点起床。','你起床以后做什么？'],
+  ['我早上洗脸。','你上午做什么？'],
   ['我早上吃早饭。','做得好！']
  ]){
   await page.locator('#pg346-input').fill(answer);
