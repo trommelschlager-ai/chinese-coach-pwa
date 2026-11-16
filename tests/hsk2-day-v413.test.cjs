@@ -33,6 +33,10 @@ assert.ok(doc.querySelector('.day-formula').textContent.includes('七点'));
 click('[data-day-next]'); // speech
 assert.ok(doc.querySelector('.day-speech-card'));
 assert.ok(doc.querySelectorAll('.day-attempts>div').length===5);
+const genuine=doc.querySelector('.day-speechhero [data-sound="我起床以后洗脸"]');
+assert.ok(genuine,'An existing full-sentence MP3 is offered as its own labelled example');
+genuine.click();
+assert.equal(humanPlay,1,'Real human MP3 takes priority over device voice for the exact available sample');
 click('[data-day-speech-word="4"]'); // isolated 刷牙 is not in existing MP3 index
 assert.equal(doc.querySelector('.day-speechhero .device-voice')?.dataset.deviceSound,'刷牙');
 click('.day-speechhero .device-voice');
@@ -43,7 +47,7 @@ click('[data-day-quiz="0:1"]');click('[data-day-quiz="1:0"]');
 for(let i=0;i<4;i++)click('[data-day-token="'+i+'"]');
 click('[data-day-next]'); // examples
 assert.equal(doc.querySelectorAll('.day-dialogue').length,4);
-assert.ok(doc.querySelector('.day-line .audio'),'Available original MP3 is still displayed');
+assert.ok(doc.querySelectorAll('.day-line .audio').length>=3,'Examples are playable even if individual MP3 files are missing');
 click('[data-day-next]');
 assert.ok(doc.querySelector('.day-ai-panel a'));
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,1);
