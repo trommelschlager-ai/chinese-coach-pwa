@@ -72,12 +72,12 @@ try{
   assert.deepEqual(errors,[],'No JS page errors '+tag);
   console.log('PASS mobile '+tag+': 3 exact images, map 10 topics, 3×5-step mini-lessons, 20 words, tests, Panda AI links, intact next topic');
   await page.goto(base+'/hsk2-bastian-intro.html');
-  await page.locator('.bs394-page:not([hidden]) img').waitFor();
+  await page.locator('.bs394-page:not([hidden]) .bs396-phrases img').waitFor();
   await page.screenshot({path:'qa/hsk2-approved-v391/bastian-1-'+tag+'.png'});
   await page.locator('.bs394-page:not([hidden]) .bs394-next').click();
-  const slice=await page.locator('.bs394-page:not([hidden]) .bs394-slice').boundingBox();assert.ok(slice.width>100,'Second slice has real width');
+  const slice=await page.locator('.bs394-page:not([hidden]) .bs396-grammar').boundingBox();assert.ok(slice.width>100,'Second full-screen grammar art has real width');
   await page.screenshot({path:'qa/hsk2-approved-v391/bastian-2-'+tag+'.png'});
-  await page.locator('.bs394-page:not([hidden]) [aria-label="Начать практику"]').click();
+  await page.locator('.bs394-page:not([hidden]) .bs394-next').click();
   assert.ok(await page.locator('#practice').isVisible());
   await page.goto(base+'/index.html#panda/training');
   await page.waitForURL(/#panda\/home$/);
