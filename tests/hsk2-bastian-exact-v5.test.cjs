@@ -15,6 +15,8 @@ assert.match(css,/approved-screen>img/,'The approved image must remain visible a
 assert.match(css,/#poster>\.hero/,'Old low-resolution illustration and duplicate cards must be hidden');
 const issues=[],vc=new VirtualConsole();vc.on('jsdomError',e=>issues.push(e.message));
 const dom=new JSDOM(html,{url:'https://example.test/hsk2-bastian-intro.html',runScripts:'dangerously',virtualConsole:vc,beforeParse(w){w.scrollTo=()=>{}}});
+dom.window.eval(fs.readFileSync(path.join(root,'assets/bastian-voice-five-v397.js'),'utf8'));
+assert(dom.window.PandaBastianVoice397?.render,'Load the actual five-attempt voice module before testing stage navigation');
 const doc=dom.window.document;
 const $=sel=>doc.querySelector(sel);
 function click(sel){const b=$(sel);assert.ok(b,'Missing '+sel);assert.equal(b.disabled,false,'Disabled '+sel);b.click()}
