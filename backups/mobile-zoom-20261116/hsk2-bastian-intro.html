@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#532078">
+<meta name="description" content="Panda Go · HSK2 · Урок 1 Знакомство с Бастианом. Фразы, грамматика, пиньинь и тоны по шагам.">
+<title>Panda Go · Урок 1 · Знакомство с Бастианом</title>
+<style>
+:root{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#48205f;--purple:#67278f;--deep:#431260;--pink:#f2c1f4;--gold:#ffdf8b;--white:#fff5ff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;overflow-x:hidden}body{background:#321047 url('./assets/panda-map-scene-hd-v319.webp') center center /cover fixed;display:flex;justify-content:center}button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #fff1ad;outline-offset:3px}button:disabled{cursor:default;opacity:.65}h1,h2,h3,p{margin:0}.app{width:min(100%,940px);min-height:100dvh;background:radial-gradient(circle at 50% 4%,#9b40cda0,transparent 45%),linear-gradient(160deg,#3c146eee,#5d168cea 32%,#46156df2 80%,#2c105df8);box-shadow:0 0 35px #080211;position:relative;padding:9px 12px 22px;overflow:hidden}.app:before{content:"";position:absolute;inset:0;background-image:url('./assets/chinese-waterfall-banner.svg');background-position:center top;background-size:100% auto;background-repeat:no-repeat;opacity:.33;pointer-events:none}.app:after{content:"🌸";position:absolute;top:5px;right:9px;color:white;font-size:33px;opacity:.92;pointer-events:none}.app> *{position:relative;z-index:1}
+.header{position:relative;text-align:center;min-height:164px;padding:0 32px}.back{position:absolute;left:0;top:9px;display:grid;place-items:center;width:48px;height:48px;background:linear-gradient(#a25dd2,#561c8c);border:2px solid #ffdb9f;border-radius:17px;box-shadow:0 5px 9px #200b47;color:white;font-size:31px;font-weight:900;text-decoration:none}.logo{font:italic 900 clamp(36px,7vw,64px) Georgia,serif;line-height:1;color:#ffda84;text-shadow:2px 3px #802970,0 0 11px #f8ace5;margin-top:4px}.level{display:table;margin:5px auto 2px;border-radius:50px;border:2px solid #e9a9f5;background:linear-gradient(135deg,#542080,#7020af);padding:5px 24px;color:#fff;font-size:17px;font-weight:900;box-shadow:0 0 13px #e587fb}.lesson-badge{display:table;margin:6px auto 0;padding:6px 38px;background:linear-gradient(#fff1b8,#ffca5b);border:2px solid #f8e1ae;border-radius:50px;color:#441648;font-size:clamp(18px,3.5vw,26px);font-weight:900;box-shadow:0 2px 11px #f9aee8}
+.hero{display:grid;grid-template-columns:42% minmax(0,58%);gap:10px;margin-top:0;min-height:490px}.portrait{position:relative;border-radius:20px;min-height:450px;background:radial-gradient(ellipse at 50% 25%,#d87db66c,transparent 80%),url('./assets/chinese-waterfall-banner.svg') center/cover;overflow:hidden;box-shadow:0 1px 0 #db8ee4}.portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}.portrait .portrait-fallback{position:absolute;inset:0;display:grid;place-items:center;font-size:80px;color:white}.portrait img:not([src=""]){z-index:1}.portrait:after{content:"";position:absolute;inset:0;border:1px solid #e4b69f3d;border-radius:20px;pointer-events:none}.cards{display:grid;grid-template-rows:repeat(4,minmax(0,1fr));gap:9px}.phrase{position:relative;display:flex;align-items:center;gap:8px;padding:9px 10px 9px 13px;background:linear-gradient(145deg,#fff7ffeF,#f1cefbf9);border:2px solid #f2c68a;border-radius:22px;box-shadow:0 2px 10px #240c4b77,inset 0 1px #fff;color:#52206b;min-height:111px}.number{position:absolute;top:8px;left:7px;display:grid;place-items:center;width:31px;height:31px;border-radius:50%;font-weight:1000;font-size:19px;background:linear-gradient(#fff2b6,#f5ac38);border:2px solid #fff0c0;color:#5b286a;box-shadow:0 2px 4px #9e5794}.emoji{flex:none;width:73px;align-self:center;text-align:center;font-size:43px;margin-left:0;filter:drop-shadow(1px 2px #ba8caf)}.phrase-body{min-width:0;flex:1}.hz{font-weight:900;color:#300e46;font-size:clamp(18px,3.25vw,28px);line-height:1.26;letter-spacing:.01em}.py{font-size:clamp(10px,1.65vw,15px);color:#6c2a95;font-weight:800;margin-top:5px;line-height:1.25}.ru{font-size:clamp(10px,1.5vw,14px);line-height:1.25;margin-top:5px;color:#59386a}.play{flex:none;background:linear-gradient(135deg,#a240c2,#59218a);color:white;border:2px solid #ffdc94;border-radius:50%;width:45px;height:45px;font-size:20px;box-shadow:0 0 0 2px #edb9ec,0 2px 7px #602672}.play[disabled]{opacity:.55;filter:grayscale(.35)}.caption-note{background:#fce2eb;color:#6d3470;border-radius:10px;margin-top:6px;padding:7px;font-size:10px}
+.duo{display:grid;grid-template-columns:1.12fr 1fr;gap:10px;margin-top:11px}.section{min-width:0;background:linear-gradient(#7028a6,#4b146f);border-radius:21px;border:2px solid #e7bb83;box-shadow:inset 0 1px #edb4fa,0 2px 12px #240b40;padding:10px}.section h2{color:white;text-shadow:0 2px 3px #3e1149;font-size:clamp(16px,2.4vw,24px);line-height:1.2;margin:0 0 8px}.line{display:flex;align-items:center;gap:8px;min-height:52px;border-radius:12px;border:1px solid #f0d7e8;background:linear-gradient(#fffbff,#efcef9);padding:7px 9px;margin:5px 0;color:#52246c;box-shadow:inset 0 2px #fff}.line .lineicon{flex:none;width:35px;height:35px;border-radius:13px;background:#eac4f7;display:grid;place-items:center;font-size:22px}.line-content{min-width:0;font-size:clamp(11px,1.5vw,14px);line-height:1.33}.line-content strong{font-weight:850}.line-content small{display:block;font-size:clamp(9px,1.28vw,12px)}.line .tone{margin-left:auto;color:#932aab;background:#ffe7f9;border:1px solid #dea1e2;border-radius:10px;padding:4px 8px;white-space:nowrap;font-weight:800;font-size:12px}.tone-row .lineicon{font-size:17px;font-weight:900}.tone-row .line-content{flex:1}
+.flow{margin-top:12px;border:2px solid #e9bf80;border-radius:22px;padding:11px 12px;background:linear-gradient(#762ca4,#481266);color:white}.flow h2{font-size:22px;text-align:center;text-shadow:0 2px 3px #36103d}.steps{display:flex;align-items:center;justify-content:space-around;gap:4px;margin-top:11px}.step{flex:1;border-radius:18px;border:1px solid #eab4fa;background:linear-gradient(#8e47b5,#642391);padding:7px 2px;min-height:85px;color:#fff;text-align:center;font-weight:850;font-size:clamp(10px,1.7vw,15px);box-shadow:0 2px 8px #3c1158}.step .stepicon{display:block;font-size:31px}.step .stepnumber{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;color:#662178;background:#ffceec;font-size:14px;margin-bottom:3px}.step.active{box-shadow:0 0 11px #ffdd8b;border-color:#ffe39f}.gold-button{display:block;margin:12px auto 0;width:min(90%,470px);min-height:57px;background:linear-gradient(#fff1b4 0%,#ffdb66 50%,#ffa72d 100%);border:3px solid #fff1c1;color:#6b277e;border-radius:50px;font-size:clamp(18px,3vw,27px);font-weight:1000;box-shadow:0 3px 12px #170c30,0 0 15px #efb2dd;text-shadow:0 1px #fff}.gold-button:active{transform:scale(.99)}.copy{color:#fff1ec;text-align:center;font-size:11px;margin:10px 0 0}
+.practice[hidden],.poster[hidden]{display:none!important}.practice{max-width:720px;margin:0 auto}.practice-panel{background:linear-gradient(#fff6ff,#f1d4fd);border:2px solid #f7cf8d;border-radius:22px;padding:20px;margin:12px auto;color:#51206d;box-shadow:0 6px 18px #210b3c}.practice-panel h2{font-size:23px;margin:7px 0 10px}.progress{height:10px;background:#dbb0e4;border-radius:30px;overflow:hidden;margin:12px 0}.progress b{display:block;height:100%;background:linear-gradient(90deg,#f9af54,#b55bd9);border-radius:30px;transition:width .2s}.practice-text{color:#664378;line-height:1.52;font-size:15px}.word{padding:12px;background:#fffaff;border:1px solid #dbb7e5;border-radius:15px;margin:8px 0}.word .hz{font-size:29px}.answer{display:block;width:100%;border:1px solid #ce9ede;border-radius:12px;padding:13px;margin:7px 0;color:#562571;background:#fff;font-weight:850;text-align:left}.answer.correct{background:#dcf7e6;border-color:#68af7e}.answer.wrong{background:#ffe6e9;border-color:#e88b99}.navig{display:flex;gap:10px}.navig button{flex:1}.sub-button{min-height:46px;border:2px solid #cda9df;border-radius:14px;background:#fff7ff;color:#652a80;font-weight:900}.status{font-size:13px;margin-top:9px;color:#6d2d7a;font-weight:800}.pinyin-toggle{border:1px solid #bc8bda;border-radius:12px;background:#fff;color:#772b92;padding:8px 12px;margin:6px 0;font-weight:900}.example{margin:9px 0;padding:13px;background:#fff;border-radius:13px;border:1px solid #e6c8f3}.q{border-bottom:1px solid #d9b8e2;padding:11px 0}.q:last-child{border:0}.q p{font-size:15px;font-weight:850;margin-bottom:6px}.q small{color:#754985}.chosen{border:2px solid #f0bb6e;background:#fff6e2}.feedback{color:#a13750;font-weight:850;font-size:13px}.good{color:#24643b}.done{text-align:center;padding:20px;font-size:22px;font-weight:850}.finish{display:block;margin:12px auto 0}.save-note{color:#765082;font-size:12px}
+@media(max-width:600px){.app{padding:8px 7px 18px}.header{min-height:125px;padding:0 28px}.back{width:37px;height:37px;font-size:24px}.logo{font-size:39px}.level{font-size:12px;padding:3px 20px}.lesson-badge{font-size:16px;padding:5px 20px}.hero{grid-template-columns:42% minmax(0,58%);gap:4px;min-height:410px}.portrait{min-height:407px;border-radius:12px}.cards{gap:6px}.phrase{padding:5px 4px 5px 6px;border-radius:15px;min-height:94px;gap:3px}.number{height:22px;width:22px;font-size:13px;left:3px;top:3px}.emoji{width:33px;font-size:26px}.hz{font-size:clamp(12px,4vw,17px)}.py{font-size:clamp(9px,2.5vw,11px)}.ru{font-size:clamp(8px,2.25vw,11px)}.play{height:28px;width:28px;font-size:13px;border-width:1px}.caption-note{padding:3px;font-size:8px}.duo{gap:5px}.section{padding:5px;border-radius:15px}.section h2{font-size:15px}.line{padding:4px;gap:3px;min-height:47px;margin:4px 0}.line .lineicon{height:22px;width:23px;border-radius:8px;font-size:14px}.line-content{font-size:10px}.line-content small{font-size:9px}.line .tone{padding:2px;font-size:9px}.flow{padding:8px 5px}.flow h2{font-size:18px}.steps{gap:3px}.step{min-height:70px;font-size:10px;padding:4px 0}.step .stepicon{font-size:24px}.step .stepnumber{width:18px;height:18px;font-size:11px}.gold-button{min-height:49px;font-size:20px}.practice-panel{padding:14px}.practice-panel h2{font-size:19px}.practice-text{font-size:13px}}
+@media(max-width:355px){.emoji{width:24px;font-size:21px}.play{height:25px;width:25px}.hz{font-size:12px}.line-content small{font-size:8px}.section h2{font-size:13px}}
+</style><link rel="stylesheet" href="./assets/bastian-approved-layout-v2.css?v=2"><link rel="stylesheet" href="./assets/bastian-approved-layout-v4.css?v=4"><link rel="stylesheet" href="./assets/bastian-exact-reference-v5.css?v=5"><link rel="stylesheet" href="./assets/bastian-three-screens-v6.css?v=8"></head><body><div class="app" id="app">
+<header class="header"><a class="back" href="./hsk2-start.html#map" aria-label="Назад к курсу HSK 2">←</a><div class="logo">Panda Go<sup>🐾</sup></div><div class="lesson-badge">Урок 1 · Знакомство</div><span class="level">HSK 2</span></header>
+<div class="poster" id="poster"><div class="approved-screen" id="bastian-approved-screen" aria-label="Урок 1 · Знакомство с Бастианом">
+<img src="./assets/bastian-approved-reference-v5.jpg" width="864" height="1536" alt="Panda Go. Урок 1 — Знакомство. Бастиан в фиолетовой куртке на фоне ночного китайского города. Четыре фразы: привет, меня зовут Бастиан; мне 25 лет; я живу в Москве; я инженер. Слова, пиньинь, грамматика и практика.">
+<a class="screen-hotspot" href="./hsk2-start.html#map" aria-label="Назад к карте HSK 2" style="left:1.5%;top:0.8%;width:11%;height:6%"></a>
+<button type="button" class="screen-hotspot" data-audio-ref="0" aria-label="Прослушать фразу 1" style="left:90.4%;top:13.5%;width:8.3%;height:5.3%"></button>
+<button type="button" class="screen-hotspot" data-audio-ref="1" aria-label="Прослушать фразу 2" style="left:90.4%;top:22.9%;width:8.3%;height:5.3%"></button>
+<button type="button" class="screen-hotspot" data-audio-ref="2" aria-label="Прослушать фразу 3" style="left:90.4%;top:32.2%;width:8.3%;height:5.3%"></button>
+<button type="button" class="screen-hotspot" data-audio-ref="3" aria-label="Прослушать фразу 4" style="left:90.4%;top:41.4%;width:8.3%;height:5.3%"></button>
+<button type="button" class="screen-hotspot" data-term="住" aria-label="Произношение слова 住" style="left:58%;top:59%;width:39%;height:4.6%"></button>
+<button type="button" class="screen-hotspot" data-term="在" aria-label="Произношение слова 在" style="left:58%;top:64%;width:39%;height:4.6%"></button>
+<button type="button" class="screen-hotspot" data-term="岁" aria-label="Произношение слова 岁" style="left:58%;top:69.3%;width:39%;height:4.6%"></button>
+<button type="button" class="screen-hotspot" data-term="工程师" aria-label="Произношение слова 工程师" style="left:58%;top:74.4%;width:39%;height:4.6%"></button>
+<button type="button" class="screen-hotspot" data-step-link="0" aria-label="Открыть слова" style="left:8.7%;top:84.5%;width:17%;height:7.4%"></button>
+<button type="button" class="screen-hotspot" data-step-link="1" aria-label="Открыть пиньинь" style="left:30.4%;top:84.5%;width:17%;height:7.4%"></button>
+<button type="button" class="screen-hotspot" data-step-link="2" aria-label="Открыть грамматику" style="left:52.7%;top:84.5%;width:17%;height:7.4%"></button>
+<button type="button" class="screen-hotspot" data-step-link="3" aria-label="Открыть практику" style="left:76.4%;top:84.5%;width:17%;height:7.4%"></button>
+<button type="button" class="screen-hotspot" data-step-link="2" aria-label="Разобрать грамматику по шагам" style="left:3%;top:53.2%;width:49%;height:28.8%"></button>
+<button type="button" class="screen-hotspot" id="start" aria-label="Начать практику" style="left:26.5%;top:93.2%;width:47%;height:5.6%"></button>
+<div class="screen-toast" id="screen-toast" role="status" aria-live="polite" hidden></div>
+</div><div class="hero"><div class="portrait" aria-label="Бастиан на фоне китайского города"><div class="portrait-fallback" aria-hidden="true">👨🏻</div><img src="./assets/bastian-approved-v1.avif" alt="Бастиан. Утверждённый портрет с наушниками и фиолетовой курткой"></div><div class="cards" id="cards"></div></div>
+<div class="duo"><section class="section"><h2>📖 Разбор по шагам</h2><div class="line"><span class="lineicon">👤</span><div class="line-content"><strong>我叫 + имя = меня зовут...</strong><small>我叫巴斯蒂安。 — Меня зовут Бастиан.</small></div></div>
+<div class="line"><span class="lineicon">🎂</span><div class="line-content"><strong>二十五岁 = 25 лет</strong><small>我二十五岁。 — Мне 25 лет.</small></div></div>
+<div class="line"><span class="lineicon">🏠</span><div class="line-content"><strong>住在 + место = жить в...</strong><small>我住在莫斯科。 — Я живу в Москве.</small></div></div>
+<div class="line"><span class="lineicon">☷</span><div class="line-content"><strong>是 + профессия = быть...</strong><small>我是工程师。 — Я инженер.</small></div></div>
+<div class="line"><span class="lineicon">⚙️</span><div class="line-content"><strong>工程师 = инженер</strong></div></div><div class="line"><span class="lineicon">🏰</span><div class="line-content"><strong>莫斯科 = Москва</strong></div></div></section>
+<section class="section"><h2>🎧 Фонетика</h2><div class="line tone-row"><button class="lineicon tone-audio" data-play="住" type="button" aria-label="Прослушать 住">🔊</button><div class="line-content"><strong>zhù — 4-й тон</strong><small>住 — жить</small></div><span class="tone">zhù ↘</span></div>
+<div class="line tone-row"><button class="lineicon tone-audio" data-play="在" type="button" aria-label="Прослушать 在">🔊</button><div class="line-content"><strong>zài — 4-й тон</strong><small>在 — в, находиться</small></div><span class="tone">zài ↘</span></div>
+<div class="line tone-row"><button class="lineicon tone-audio" data-play="岁" type="button" aria-label="Прослушать 岁">🔊</button><div class="line-content"><strong>suì — 4-й тон</strong><small>岁 — лет (возраст)</small></div><span class="tone">suì ↘</span></div>
+<div class="line tone-row"><button class="lineicon tone-audio" data-play="工程师" type="button" aria-label="Прослушать 工程师">🔊</button><div class="line-content"><strong>gōngchéngshī — 1–2–1</strong><small>工程师 — инженер</small></div><span class="tone">工程师</span></div>
+</section></div>
+<section class="flow"><h2>🚩 Ход урока</h2><div class="steps"><div class="step active"><span class="stepnumber">1</span><span class="stepicon">📖</span>Слова</div><div class="step"><span class="stepnumber">2</span><span class="stepicon">🎧</span>Пиньинь</div><div class="step"><span class="stepnumber">3</span><span class="stepicon">🎓</span>Грамматика</div><div class="step"><span class="stepnumber">4</span><span class="stepicon">🎯</span>Практика</div></div><button class="gold-button" id="start-legacy" type="button">Начать практику ›</button></section><p class="copy">Panda Go · HSK 2 · Персонаж Бастиан</p></div>
+<div class="practice" id="practice" hidden><section class="practice-panel"><div class="level" style="margin:0">HSK 2 · Знакомство</div><h2 id="step-title">Слова и предложения</h2><div class="progress"><b id="meter"></b></div><div id="step-content"></div><button class="pinyin-toggle" id="toggle-py" type="button">汉 Скрыть пиньинь</button><div class="navig"><button type="button" class="sub-button" id="prev">‹ Назад</button><button type="button" class="gold-button" style="margin:0;min-height:45px;font-size:17px" id="next">Дальше ›</button></div><p class="save-note" id="save-note">Твой прогресс хранится на этом устройстве</p></section></div>
+</div><script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=332"></script><script src="./assets/hsk2-audio-v330.js?v=343"></script><script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const PHRASES=[
+{zh:'你好，我叫巴斯蒂安。',py:"Nǐ hǎo, wǒ jiào Bāsīdì'ān.",ru:'Привет, меня зовут Бастиан.',icon:'👋'},
+{zh:'我二十五岁。',py:'Wǒ èrshíwǔ suì.',ru:'Мне 25 лет.',icon:'🎂'},
+{zh:'我住在莫斯科。',py:'Wǒ zhù zài Mòsīkē.',ru:'Я живу в Москве.',icon:'🏰'},
+{zh:'我是工程师。',py:'Wǒ shì gōngchéngshī.',ru:'Я инженер.',icon:'💻'}
+];
+const WORDS=[
+['你好','nǐ hǎo','привет'],
+['我','wǒ','я'],
+['叫','jiào','зваться'],
+['巴斯蒂安',"Bāsīdì'ān",'Бастиан (имя)'],
+['二十五','èrshíwǔ','25'],
+['岁','suì','лет (возраст)'],
+['住在','zhù zài','жить в'],
+['莫斯科','Mòsīkē','Москва'],
+['是','shì','быть, являться'],
+['工程师','gōngchéngshī','инженер']
+];
+const KEY='pg-bastian-intro-v1';
+let state={step:0,showPy:true,selected:{},complete:false};
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Number.isInteger(saved.step))state=Object.assign(state,saved)}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function esc(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function ready(zh){return !!window.PandaHsk2AudioV330?.lookup(zh)}
+let toastTimer=null;
+function notify(message){
+ const box=$('screen-toast');if(!box)return;
+ box.textContent=message;box.hidden=false;
+ if(toastTimer)clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>{box.hidden=true},4400);
+}
+function audio(zh){return ready(zh)?'<button class="play" data-play="'+esc(zh)+'" type="button" aria-label="Слушать '+esc(zh)+'">▶</button>':'<button class="play" type="button" disabled title="Для этой фразы ещё не загружена подтверждённая запись" aria-label="MP3 пока нет">▶</button>'}
+function row(p,n){return '<article class="phrase"><span class="number">'+(n+1)+'</span><span class="emoji">'+p.icon+'</span><div class="phrase-body"><div class="hz" lang="zh-Hans">'+esc(p.zh)+'</div><div class="py">'+esc(p.py)+'</div><div class="ru">🇷🇺 '+esc(p.ru)+'</div></div>'+audio(p.zh)+'</article>'}
+$('cards').innerHTML=PHRASES.map(row).join('');
+document.querySelectorAll('.tone-audio').forEach(b=>{
+  if(!ready(b.dataset.play)){b.disabled=true;b.title='Для этого слова ещё нет подтверждённой MP3-записи'}
+});
+function wordBlock(w){return '<div class="word"><div class="hz" lang="zh-Hans">'+esc(w[0])+'</div>'+(state.showPy?'<div class="py">'+esc(w[1])+'</div>':'')+'<div class="ru">'+esc(w[2])+'</div>'+audio(w[0])+'</div>'}
+function phraseBlock(p){return '<div class="word"><div class="hz" lang="zh-Hans">'+esc(p.zh)+'</div>'+(state.showPy?'<div class="py">'+esc(p.py)+'</div>':'')+'<div class="ru">'+esc(p.ru)+'</div>'+audio(p.zh)+'</div>'}
+function stage(){
+const step=state.step;
+$('poster').hidden=true;$('practice').hidden=false;$('practice').classList.toggle('word-stage',step===0);
+$('step-title').textContent=['1 · Слова','2 · Пиньинь и тоны','3 · Грамматика','4 · Практика','Отлично!'][step];
+$('meter').style.width=((step+1)/5*100)+'%';
+$('toggle-py').hidden=step===4;$('toggle-py').textContent=state.showPy?'汉 Скрыть пиньинь':'汉 Показать пиньинь';
+$('prev').textContent=step===0?'‹ К уроку':'‹ Назад';
+$('next').textContent=step===3?'Проверить ›':step===4?'На главную':'Дальше ›';
+let html='';
+if(step===0)html='<p class="practice-text word-grid-intro">10 слов из речи Бастиана · нажимай ▶, читай и повторяй.</p><div class="word-grid" aria-label="Все десять слов и их озвучка">'+WORDS.map(wordBlock).join('')+'</div>';
+if(step===1)html='<p class="practice-text">Произнеси четыре предложения медленно, следи за высотой каждого тона.</p><div class="practice-phrase-grid">'+PHRASES.map(phraseBlock).join('')+'</div><div class="example"><b>Обязательные тоны:</b><p>zhù — четвёртый ↘, zài — четвёртый ↘, suì — четвёртый ↘, gōngchéngshī — 1–2–1.</p></div><div class="example"><b>Смена третьего тона:</b><p>你好: nǐ hǎo → ní hǎo. Перед другим третьим тоном первый слог произносится как второй тон.</p></div><div class="example"><b>Имя:</b><p>巴斯蒂安 — Bā sī dì ān (1–1–4–1). Тоны важно произносить без пропусков.</p></div>';
+if(step===2)html='<p class="practice-text">Четыре небольших правила — только то, что нужно для знакомства.</p>'+
+'<div class="practice-grammar-grid">'+[['我叫 + имя','我叫巴斯蒂安。','Я зовусь Бастиан. Глагол 叫 используется для имени.'],
+['我 + возраст + 岁','我二十五岁。','В китайском при назывании возраста не нужен глагол «есть».'],
+['我住在 + город','我住在莫斯科。','住 — жить, 在 — в/на; после них ставим место.'],
+['我是 + профессия','我是工程师。','Слово 是 связывает человека и его профессию.']].map(g=>'<div class="example"><strong>'+esc(g[0])+'</strong><div class="hz" lang="zh-Hans">'+esc(g[1])+'</div><p class="practice-text">'+esc(g[2])+'</p></div>').join('')+'</div>';
+if(step===3)html='<p class="practice-text">Выбери правильный перевод каждой фразы. Продолжить можно только после четырёх правильных ответов.</p>'+
+PHRASES.map((p,i)=>{const options=[p.ru,PHRASES[(i+1)%4].ru,PHRASES[(i+2)%4].ru],order=[1,0,2].map(k=>options[k]);let selected=state.selected[i];return '<section class="q"><p lang="zh-Hans">'+esc(p.zh)+'</p>'+(state.showPy?'<small>'+esc(p.py)+'</small>':'')+order.map((v,j)=>'<button type="button" class="answer '+(selected===j?(v===p.ru?'correct':'wrong'):'')+'" data-answer="'+i+':'+j+'">'+esc(v)+'</button>').join('')+(selected!=null?'<span class="'+(order[selected]===p.ru?'feedback good':'feedback')+'">'+(order[selected]===p.ru?'✓ Верно':'✕ Попробуй ещё раз')+'</span>':'')+'</section>'}).join('');
+if(step===4)html='<div class="done">🏆<p>Урок «Знакомство» пройден!</p></div>'+PHRASES.map(phraseBlock).join('')+'<p class="practice-text">Повтори сам: как тебя зовут, сколько тебе лет, где ты живёшь и кем работаешь?</p><button type="button" class="sub-button finish" id="restart">↻ Повторить урок</button>';
+$('step-content').innerHTML=html;
+$('next').disabled=step===3&&!PHRASES.every((p,i)=>{const order=[PHRASES[(i+1)%4].ru,p.ru,PHRASES[(i+2)%4].ru];return state.selected[i]!=null&&order[state.selected[i]]===p.ru});
+save();window.scrollTo({top:0,behavior:'instant'});
+}
+$('start').addEventListener('click',()=>{state.step=0;stage()});
+$('prev').addEventListener('click',()=>{if(state.step===0){$('practice').hidden=true;$('poster').hidden=false;window.scrollTo({top:0,behavior:'instant'});return}state.step--;stage()});
+$('next').addEventListener('click',()=>{if(state.step===4){$('practice').hidden=true;$('poster').hidden=false;window.scrollTo({top:0,behavior:'instant'});return}if(state.step===3&&$('next').disabled)return;state.step++;if(state.step===4)state.complete=true;stage()});
+$('toggle-py').addEventListener('click',()=>{state.showPy=!state.showPy;stage()});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+if(b.dataset.audioRef!==undefined){
+ const p=PHRASES[Number(b.dataset.audioRef)];
+ if(!p)return;
+ if(!ready(p.zh)){notify('Для этой фразы пока нет подтверждённой MP3-записи. Китайский текст, пиньинь и перевод доступны в уроке.');return}
+ window.PandaHsk2AudioV330?.play(p.zh,msg=>{if(msg&&/не воспроизв|нет подтвержд/.test(msg))notify(msg)});
+ return;
+}
+if(b.dataset.term!==undefined){
+ const term=b.dataset.term;
+ if(!ready(term)){notify('Отдельная запись «'+term+'» пока не загружена. Тоны и разбор доступны в разделе «Пиньинь».');return}
+ window.PandaHsk2AudioV330?.play(term);
+ return;
+}
+if(b.dataset.stepLink!==undefined){
+ state.step=Number(b.dataset.stepLink);stage();return;
+}
+if(b.dataset.play){window.PandaHsk2AudioV330?.play(b.dataset.play);return}
+if(b.dataset.answer){const [i,j]=b.dataset.answer.split(':').map(Number);state.selected[i]=j;stage();return}
+if(b.id==='restart'){state={step:0,showPy:true,selected:{},complete:false};stage();}
+});
+})();
+</script></body></html>
