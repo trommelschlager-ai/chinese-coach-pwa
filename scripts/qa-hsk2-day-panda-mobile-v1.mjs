@@ -27,22 +27,26 @@ try{
  assert.ok(footerBox.y>=contentBox.y+contentBox.height-2,'Fixed navigation must never overlap Chinese study content');
  assert.equal(await page.locator('#day-fixed-actions [data-day-next]').count(),1);
  const pendingAudio=await page.locator('.day-audio-pending').count();
-  const recordedExample=await page.locator('.day-recorded-example').count();
-  assert.ok(pendingAudio+recordedExample>0,'Absent standalone word MP3 must either show an honest warning or a separately labelled recorded SENTENCE');
-  if(recordedExample){
-    const example=page.locator('.day-recorded-example').first();
-    assert.match(await example.textContent(),/Запись предложения/,'A recorded sentence must be explicitly labelled in the source');
-    assert.match(await example.locator('button[data-sound]').getAttribute('aria-label'),/Слушать пример/,'Playback must announce a sentence example to screen readers');
-  }
+ const recordedExample=await page.locator('.day-recorded-example').count();
+ const deviceVoice=await page.locator('.day-focus .device-voice').count();
+ assert.ok(pendingAudio+recordedExample+deviceVoice>0,'An unrecorded isolated word must have an honest fallback');
+ if(deviceVoice)assert.match(await page.locator('.day-focus .device-voice').getAttribute('aria-label'),/голосом устройства/);
+ if(recordedExample){
+  const example=page.locator('.day-recorded-example').first();
+  assert.match(await example.textContent(),/Запись предложения/);
+  assert.match(await example.locator('button[data-sound]').getAttribute('aria-label'),/Слушать пример/);
+ }
  fs.mkdirSync('qa/panda-voice-pilot',{recursive:true});
  await page.screenshot({path:'qa/panda-voice-pilot/hsk2-day-lesson-android.png',fullPage:false});
- for(let i=0;i<3;i++)await page.locator('[data-day-next]').click();
+ for(let i=0;i<2;i++)await page.locator('[data-day-next]').click(); // grammar, speech
+ assert.match(await page.locator('.day-card').first().innerText(),/Произнеси каждое слово 5 раз/);
+ await page.locator('[data-day-next]').click(); // test
  await page.locator('[data-day-quiz="0:1"]').click();
  await page.locator('[data-day-quiz="1:0"]').click();
  for(const k of [0,1,2,3])await page.locator('[data-day-token="'+k+'"]').click();
- await page.locator('[data-day-next]').click();
- assert.match(await page.locator('.day-card').first().innerText(),/Произнеси каждое слово 5 раз/);
- await page.locator('[data-day-next]').click();
+ await page.locator('[data-day-next]').click(); // examples
+ assert.match(await page.locator('.day-card').first().innerText(),/Полезные примеры/);
+ await page.locator('[data-day-next]').click(); // done
  const link=page.locator('.day-ai-panel a');
  assert.match(await link.getAttribute('href'),/practice=day&mini=0/);
  await page.screenshot({path:'qa/panda-voice-pilot/hsk2-day-done-android.png',fullPage:false});
