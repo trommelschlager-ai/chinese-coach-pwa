@@ -84,7 +84,7 @@ test('Short and Non-Stop screen paths retain progress and skip unavailable ackno
  assert(source.indexOf("if(question.spoken?.calendarLiteral&&question.reply)") >
    source.indexOf("const result=verifyAnswerFor(conversation.lines,state.step,input)"));
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- assert(html.includes('panda-live-screen-v270.mjs?v=402'));
+ assert(html.includes('panda-live-screen-v270.mjs?v=403'));
 });
 
 test('the UI does not overwrite the reviewed calendar follow-up with an unrelated greeting',()=>{
