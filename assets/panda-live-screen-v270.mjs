@@ -17,6 +17,7 @@ import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=403';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
+import {isCalendarRoundFinished} from './panda-calendar-literal-v383.mjs?v=405';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -235,7 +236,11 @@ function submit(raw){
      &&lookupPandaVoiceClip(candidate.hanzi)?
      {...candidate,isContextual:true,audioKey:candidate.hanzi}:null;
    }
-   if(followup&&state.lockedTopic&&state.allowed.includes(state.lockedTopic)&&followup.lesson!==state.lockedTopic){
+   const completedCalendarRound=isCalendarRoundFinished({
+    input,resultKind:result.kind,spoken:result.spoken,prompt:activePrompt,questions:state.questions
+   });
+   if(completedCalendarRound){followup=null;}
+   else if(followup&&state.lockedTopic&&state.allowed.includes(state.lockedTopic)&&followup.lesson!==state.lockedTopic){
      // Preserve contextual questions from the chosen topic. If the generic
      // engine suggests a different topic, use a verified question here instead.
      const pool=topicCatalogGroups().find(g=>g.lesson===state.lockedTopic)?.questions||[];
@@ -250,14 +255,6 @@ function submit(raw){
      const selected=state.allowed[state.cursor%state.allowed.length]||state.topic;
      followup=pickCoursePrompt(selected,curriculum,state.questions.concat(input),new Date(),{...state.profile,unlocked:state.allowed})||followup;
     }
-   // A calendar mini-dialogue has only two fixed questions with approved MP3.
-   // Never alternate 今天星期几 and 今天几月几号 indefinitely after both were asked.
-   // Use the actual displayed-question history, not user sentences.
-   const recentCalendarQuestions=state.questions.slice(-8).map(normalize);
-   const completedCalendarRound=!!result.spoken?.calendarLiteral
-     &&recentCalendarQuestions.includes('今天星期几')
-     &&recentCalendarQuestions.includes('今天几月几号');
-   if(completedCalendarRound)followup=null;
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
    note(completedCalendarRound?'Мы повторили день недели и дату. Молодец! Выбери другую тему или задай свой вопрос.':
     followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
