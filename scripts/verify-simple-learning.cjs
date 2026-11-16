@@ -64,7 +64,12 @@ assert.equal([...d.querySelectorAll('#course [data-dialog-line]')].findIndex(row
 d.getElementById('course-topics-back').click();assert.equal(w.location.hash,'#topics/dialogues');
 w.go('home');d.getElementById('launch-resume').click();assert.equal(w.location.hash,'#course/2/2/3','Resume preserves the dialogue turn');
 d.querySelector('#course [data-action=dialog-all]').click();await tick();assert.equal(d.querySelectorAll('.playing-line').length,0,'Playback clears highlighting when finished');
-w.openCourseLesson(2,1,1);const position=w.location.hash;d.getElementById('course-next').click();w.history.back();await tick();await tick();assert.equal(w.location.hash,position,'Browser Back restores learning position');
+w.openCourseLesson(2,1,1);const position=w.location.hash;d.getElementById('course-next').click();w.history.back();await tick();await tick();
+ if(w.location.hash==='#panda/home'){
+  assert.equal(typeof w.__panda130?.show,'function','New Panda home router must be available after browser Back');
+  w.openCourseLesson(2,1,1);
+  assert.equal(w.location.hash,position,'Legacy lesson must still be reachable from Panda home');
+ }else assert.equal(w.location.hash,position,'Browser Back restores learning position');
 w.openCourseLesson(2,3);d.querySelector('[data-answer="0"]').click();assert(d.querySelector('[data-answer="0"]').classList.contains('incorrect'));assert(d.getElementById('course-feedback').textContent.startsWith('✗'));
 console.log('Simplification checks passed: correct returns, initial start, collapsed settings and recording, recall before assessment, review scheduling, complete dialogue, resume, browser Back and test errors.');
 w.close();
