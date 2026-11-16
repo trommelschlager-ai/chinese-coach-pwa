@@ -90,7 +90,7 @@ export function calendarAcknowledgement(spoken){
 export function isCalendarRoundFinished({input,resultKind,spoken,prompt,questions=[]}={}){
  const literal=analyzeCalendarLiteral(input);
  if(!literal||!prompt||literal.topic!==Number(prompt.lesson))return false;
- if(resultKind!=='answer'&&spoken?.matchedPrompt!==true)return false;
+ if(resultKind!=='answer')return false;
  const current=normalize(prompt.hanzi||prompt.panda);
  if(current!=='今天几月几号'&&current!=='今天星期几')return false;
  const seen=new Set(questions.slice(-12).map(normalize));
