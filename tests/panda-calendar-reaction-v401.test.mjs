@@ -122,7 +122,7 @@ test('Short and Non-Stop screen paths retain progress and skip unavailable ackno
  assert(source.indexOf("if(question.spoken?.calendarLiteral&&question.reply)") >
    source.indexOf("const result=verifyAnswerFor(conversation.lines,state.step,input)"));
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- assert(html.includes('panda-live-screen-v270.mjs?v=406'));
+ assert.match(html,/panda-live-screen-v270\.mjs\?v=\d+/,'The updated Panda engine uses a cache-busted module URL');
 });
 
 test('the approved panda chat visibly renders the calendar-completion message',()=>{

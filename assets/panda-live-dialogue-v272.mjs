@@ -276,6 +276,35 @@ export function answerLive(raw,options={}){
      message:'Возможно, браузер распознал вопрос неточно. Проверь исходную фразу в истории.'};
    if(resolved.kind==='locked')return {...resolved,spoken:{known:false,hanzi:raw,translation:null,probable:'Возможно: '+likely}};
  }
+ // An initial 你好 is a GREETING, not an answer about the learner's
+ // wellbeing. 你呢？ (Nǐ ne?, 'And you?') is only contextual after
+ // somebody has already said how they are. Never ask it straight after 你好.
+ // The greeting and the next question both have EXACT approved Panda MP3.
+ if(s==='你好'&&allowed.includes(1)){
+  const greetingFollowup=topicPrompts(1,date,profile).find(q=>normalize(q.hanzi)==='你好吗')||null;
+  return {kind:'question',lesson:1,
+   spoken:{known:true,hanzi:raw,pinyin:'Nǐ hǎo!',translation:'Привет!',topic:1},
+   reply:line('你好！','Nǐ hǎo!','Привет!'),
+   followup:greetingFollowup?{...greetingFollowup,isContextual:true,audioKey:'你好吗'}:null,
+   message:'Панда поздоровалась и спросит, как у тебя дела. Тоны произношения не оценивались.'};
+ }
+ // The learner is ANSWERING the active 你好吗？ ('How are you?') prompt.
+ // Do not reply with an unrelated 谢谢! or ask 你呢? again after '我很好'.
+ // 你呢? is appropriate only if the learner explicitly asks back.
+ const wellbeingPrompt=normalize(prompt?.hanzi||prompt?.panda||'')==='你好吗';
+ if(wellbeingPrompt&&allowed.includes(1)&&(s==='我很好'||s==='我很好你呢')){
+  const askedBack=s==='我很好你呢';
+  return {kind:'answer',lesson:1,
+   spoken:{known:true,hanzi:raw,
+    pinyin:askedBack?'Wǒ hěn hǎo, nǐ ne?':'Wǒ hěn hǎo.',
+    translation:askedBack?'У меня всё хорошо, а у тебя?':'У меня всё хорошо.',
+    topic:1,matchedPrompt:true},
+   reply:askedBack
+    ?line('我也很好，谢谢！','Wǒ yě hěn hǎo, xièxie!','У меня тоже всё хорошо, спасибо!')
+    :line('很好！','Hěn hǎo!','Отлично!'),
+   followup:null,
+   message:askedBack?'Панда ответила на твой встречный вопрос.':'Ответ принят. Можешь задать следующий вопрос или выбрать другую тему.'};
+ }
  // Social and common-family questions must work before any broad fallback.
  // Keep our known corrections independent of experimental on-device AI.
  const basic=answerBasicConversation(raw,allowed);if(basic)return basic;

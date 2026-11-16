@@ -1,4 +1,4 @@
-import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=403';
+import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
 import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=366';
@@ -11,9 +11,9 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=403';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=409';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
-import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=403';
+import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=409';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
@@ -111,7 +111,12 @@ function refreshHistory(){
  $('history-count').textContent=String(state.history.length);
 }
 function record(who,hanzi,pinyin,ru,analysis=null){state.history.push({who,hanzi,pinyin,ru,analysis,confidence:who==='you'?state.confidence:null});if(state.history.length>100)state.history.shift();refreshHistory()}
-function say(line,autoplay=true,analysis=null){state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);if(autoplay)play()}
+function say(line,autoplay=true,analysis=null){
+ state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);
+ // Text-only is a valid learning response, not an audio failure. Show the
+ // existing 🔇 caption, but never attempt playback without an exact MP3.
+ if(autoplay&&(lookupPandaVoiceClip(line.hanzi||line.panda)||lookupPandaVoiceClip(line.audioKey)))play();
+}
 function learner(input,spoken){record('you',input,spoken?.known?spoken.pinyin:null,spoken?.known?spoken.translation:null,spoken);showLearnerFeedback(spoken);state.answers.push(input);if(state.answers.length>16)state.answers.shift()}
 function recordCorrection(input,spoken){
  const c=spoken?.correction;if(!c)return;
@@ -194,9 +199,9 @@ function submit(raw){
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
  if(state.dayMode){
   if(state.dayDone){note('Тренировка завершена. Вернись к уроку или выбери обычные диалоги.');return;}
-   // Keep reviewed grammar corrections available inside the HSK2 day dialogue.
-   const correction=correctCommonPhrase(input);
-   if(correction){learner(input,correction.spoken);recordCorrection(input,correction.spoken);pose('retry');note(correction.message);render();return;}
+  // Keep reviewed grammar corrections available inside the HSK2 day dialogue.
+  const correction=correctCommonPhrase(input);
+  if(correction){learner(input,correction.spoken);recordCorrection(input,correction.spoken);pose('retry');note(correction.message);render();return;}
   // A learner may ask one of the recorded HSK2 questions. Answer it in the
   // HSK2 context without advancing the current five-step practice prompt.
   const dayQA=recordedPandaAnswer(input,[1],{course:'hsk2-day'});

@@ -90,6 +90,34 @@ if (!bridge) {
   // Dialogs must remain visible even though the legacy main is kept for its engine.
   document.querySelectorAll('main > dialog').forEach(dialog=>document.body.append(dialog));
   document.body.append(stage);document.body.classList.add('panda-clean-ready');
+
+  // The legacy microphone recovery controls were hidden with the legacy <main>.
+  // Reuse their existing handlers in a real, accessible modal, only after STT
+  // fails. Never alter the approved mascot, landscape or regular chat layout.
+  const micRecovery=document.getElementById('speech-recovery');
+  const micHelp=document.createElement('dialog');
+  micHelp.id='pg407-mic-help';
+  micHelp.setAttribute('aria-label','Помощь с распознаванием речи');
+  const micHelpTitle=el('strong','pg407-mic-title','🎙 Помощь с микрофоном');
+  const micClose=el('button','pg407-mic-close','Закрыть');
+  micClose.type='button';
+  micClose.setAttribute('aria-label','Закрыть помощь с микрофоном');
+  const micHelpHeader=el('div','pg407-mic-head');
+  micHelpHeader.append(micHelpTitle,micClose);
+  micHelp.append(micHelpHeader);
+  if(micRecovery)micHelp.append(micRecovery);
+  document.body.append(micHelp);
+  micClose.addEventListener('click',()=>micHelp.close());
+  micHelp.addEventListener('click',event=>{
+    if(event.target===micHelp)micHelp.close();
+  });
+  const micHelpBtn=el('button','pg407-help-button','Помощь с микрофоном');
+  micHelpBtn.type='button';
+  micHelpBtn.setAttribute('aria-label','Открыть помощь с микрофоном и ссылку на Chrome');
+  micHelpBtn.addEventListener('click',()=>{
+    if(!micRecovery?.hidden&&!micHelp.open)micHelp.showModal();
+  });
+
   // Course 2 deep-link: reuse the REAL Panda AI voice/text/chat UI, not a mock.
   if(new URLSearchParams(location.search).get('practice')==='day'){
     const title=stage.querySelector('.pg346-title');
@@ -261,7 +289,11 @@ if (!bridge) {
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
     renderFeedback(s);renderTopics(s);
     const warning=$('#pg346-status'),problem=/(микрофон|распознаван|распознано|неуверенно|исправь текст|разреши|доступ|Chrome|запись не|запись пока|звуковой файл|браузер.*звук|mp3|фрагмент)/i.test(s.status||'');
-    warning.hidden=!problem;warning.textContent=problem?s.status:'';
+    const needsMicHelp=!!micRecovery&&!micRecovery.hidden;
+    warning.hidden=!problem;
+    warning.textContent=problem?s.status:'';
+    if(problem&&needsMicHelp)warning.append(micHelpBtn);
+    if(!needsMicHelp&&micHelp.open)micHelp.close();
     const live=$('#pg346-live');const showingAssessment=Date.now()<assessmentUntil;
     live.classList.toggle('pg352-assessment',!s.active&&!pandaSpeaking&&showingAssessment);
     live.dataset.active=String(s.active||pandaSpeaking||showingAssessment);
