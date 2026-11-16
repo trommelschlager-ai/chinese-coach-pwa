@@ -55,3 +55,8 @@
 #app.day-visual-v390 .art-audio-note .day-recorded-example{width:100%;gap:3px}
 #app.day-visual-v390 .art-audio-note .day-recorded-example>span{display:none}
 #app.day-visual-v390 .art-audio-note .day-recorded-example button{font-size:11px}
+
+/* Day lesson has no inline --approved-image variable; supply its exact approved PNG. */
+#app.day-visual-v390 .approved-stage::before{
+ background-image:url('./approved-course-v390/day-lesson.png')!important;
+}
