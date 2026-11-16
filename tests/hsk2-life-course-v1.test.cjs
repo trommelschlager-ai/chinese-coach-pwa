@@ -42,6 +42,8 @@ assert.equal(doc.querySelectorAll('.day-vword').length,7,'Day one must contain s
 assert.ok(doc.querySelector('.day-headword').textContent.includes('起床'),'The first focused word is 起床');
 assert.ok(doc.querySelector('.day-chars').textContent.includes('chuáng'),'Correct second-tone pinyin');
 click('[data-day-word="3"]');
+assert.ok(doc.querySelector('[data-day-word="3"].picked'),
+ 'Word click must update visible selected state, selected='+[...doc.querySelectorAll('.day-vword.picked')].map(x=>x.dataset.dayWord).join(','));
 assert.ok(stoppedAudio>=1,'Changing the selected word stops previous audio');
 assert.ok(doc.querySelector('.day-tip').textContent.includes('第三')===false,'Tones shown in Russian without false characters');
 // A browser reload must preserve the unfinished, genuinely selected mini-lesson state.
