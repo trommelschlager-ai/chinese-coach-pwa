@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#34246c">
+<meta name="robots" content="noindex,nofollow">
+<title>Panda AI v411 · Проверка Android</title>
+<style>
+:root{color-scheme:light;--dark:#30225f;--muted:#60577e;--border:#e7ddf0;--pink:#b635aa}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(162deg,#281552,#683c97 280px,#f4f0fb 550px);color:var(--dark);font:15px/1.48 system-ui,-apple-system,sans-serif}
+main{width:min(100% - 24px,620px);margin:auto;padding:24px 0 40px}
+header{color:white;padding:10px 5px 25px}
+header h1{font-size:clamp(25px,6vw,34px);line-height:1.14;margin:5px 0 11px}
+header p{max-width:520px;opacity:.91;margin:0}
+.flag{letter-spacing:.07em;text-transform:uppercase;font-size:11px;font-weight:800;color:#edd9ff}
+.section{background:#fff;border:1px solid #f8edff;border-radius:19px;margin:0 0 16px;padding:18px;box-shadow:0 10px 28px #3a17651c}
+h2{font-size:19px;line-height:1.25;margin:0 0 10px}
+p{margin:8px 0}
+.hint{color:var(--muted);font-size:13px}
+summary{cursor:pointer;font-weight:700}
+.track{border:1px solid var(--border);border-radius:15px;padding:13px;margin:11px 0;background:#fcfaff}
+.trow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+.file{font-size:12px;font-weight:850;color:#7c418f}
+.result{font-size:12px;color:#6f6786}
+.hanzi{font-size:24px;font-weight:800;line-height:1.2}
+.pinyin{font-size:14px;color:#7e3b86;margin-top:4px}
+.trans{font-size:13px;color:#4e426d;margin:3px 0 12px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+button,.actionlink{cursor:pointer;border:1px solid #d7bee7;border-radius:11px;padding:9px 12px;font:700 13px system-ui,sans-serif;background:#f8ecfb;color:#55266e;min-height:41px}
+button:active,.actionlink:active{transform:translateY(2px);filter:brightness(.9)}
+button:focus-visible,.actionlink:focus-visible{outline:3px solid #fa92e8;outline-offset:2px}
+button.listen{background:linear-gradient(135deg,#9236ad,#6824a0);color:#fff;border-color:#7731aa;min-width:105px}
+button.yes.active{background:#dcf6e4;border-color:#5aae7d;color:#17683b}
+button.no.active{background:#ffe2e3;border-color:#dc8387;color:#9b292e}
+button.primary,.actionlink{display:inline-block;text-decoration:none;background:linear-gradient(135deg,#a63db3,#6631a0);color:white;border-color:#672e97}
+button.block,.actionlink.block{display:block;width:100%;text-align:center;font-size:15px;padding:12px 15px}
+#mic-status,#play-state{padding:10px 12px;border-radius:11px;margin-top:10px;background:#f2edf8;font-size:14px;min-height:40px}
+#result-text{white-space:pre-wrap;background:#f7f1fb;border:1px solid var(--border);border-radius:12px;padding:12px;font:13px/1.55 ui-monospace,monospace;min-height:78px}
+.meta{font-size:11px;color:#706887;word-break:break-word}
+footer{color:#f4eaff;font-size:12px;text-align:center;margin-top:15px}
+</style></head>
+<body><main>
+<header><div class="flag">Panda Go · Android QA · staging v411</div><h1>🐼 Проверка голоса Panda AI</h1><p>Отдельная тестовая страница для реального телефона. Она не изменяет рабочие уроки и не объединяет PR №112.</p></header>
+<section class="section"><h2>1. Прослушай 10 MP3</h2><p class="hint">Нажимай «Слушать», затем отмечай, звучит ли фраза полностью, без тишины, обрывов и подмены. Если тон неправильный, отметь «Проблема» и напиши номер файла.</p>
+<div id="play-state" role="status" aria-live="polite">Выбери запись для проверки.</div><div class="track" data-name="p156.mp3"><div class="trow"><span class="file">p156.mp3</span><span class="result" id="state156">Не проверено</span></div><div class="hanzi">我很好。</div><div class="pinyin">Wǒ hěn hǎo.</div><div class="trans">У меня всё хорошо.</div><div class="actions"><button class="listen" data-src="https://cdn.jsdelivr.net/gh/trommelschlager-ai/chinese-coach-pwa@257639c9137a28703967b98993a4032215e279f3/assets/panda-voice-clips-v411/p156.mp3" data-num="156" type="button">▶ Слушать</button><button class="yes" data-mark="ok" data-num="156" type="button">✓ Нормально</button><button class="no" data-mark="bad" data-num="156" type="button">✕ Проблема</button></div></div>
+<div class="track" data-name="p157.mp3"><div class="trow"><span class="file">p157.mp3</span><span class="result" id="state157">Не проверено</span></div><div class="hanzi">我有两个。</div><div class="pinyin">Wǒ yǒu liǎng ge.</div><div class="trans">У меня два.</div><div class="actions"><button class="listen" data-src="https://cdn.jsdelivr.net/gh/trommelschlager-ai/chinese-coach-pwa@257639c9137a28703967b98993a4032215e279f3/assets/panda-voice-clips-v411/p157.mp3" data-num="157" type="button">▶ Слушать</button><button class="yes" data-mark="ok" data-num="157" type="button">✓ Нормально</button><button class="no" data-mark="bad" data-num="157" type="button">✕ Проблема</button></div></div>
+<div class="track" data-name="p158.mp3"><div class="trow"><span class="file">p158.mp3</span><span class="result" id="state158">Не проверено</span></div><div class="hanzi">今天很冷。</div><div class="pinyin">Jīntiān hěn lěng.</div><div class="trans">Сегодня холодно.</div><div class="actions"><button class="listen" data-src="https://cdn.jsdelivr.net/gh/trommelschlager-ai/chinese-coach-pwa@257639c9137a28703967b98993a4032215e279f3/assets/panda-voice-clips-v411/p158.mp3" data-num="158" type="button">▶ Слушать</button><button class="yes" data-mark="ok" data-num="158" type="button">✓ Нормально</button><button class="no" data-mark="bad" data-num="158" type="button">✕ Проблема</button></div></div>
+<div class="track" data-name="p159.mp3"><div class="trow"><span class="file">p159.mp3</span><span class="result" id="state159">Не проверено</span></div><div class="hanzi">明天下雨。</div><div class="pinyin">Míngtiān xià yǔ.</div><div class="trans">Завтра будет дождь.</div><div class="actions"><button class="listen" data-src="https://cdn.jsdelivr.net/gh/trommelschlager-ai/chinese-coach-pwa@257639c9137a28703967b98993a4032215e279f3/assets/panda-voice-clips-v411/p159.mp3" data-num="159" type="button">▶ Слушать</button><button class="yes" data-mark="ok" data-num="159" type="button">✓ Нормально</button><button class="no" data-mark="bad" data-num="159" type="button">✕ Проблема</button></div></div>
+<div class="track" data-name="p160.mp3"><div class="trow"><span class="file">p160.mp3</span><span class="result" id="state160">Не проверено</span></div><div class="hanzi">我星期六有空。</div><div class="pinyin">Wǒ xīngqīliù yǒu kòng.</div><div class="trans">Я свободен в субботу.</div><div class="actions"><button class="listen" data-src="https://cdn.jsdelivr.net/gh/trommelschlager-ai/chinese-coach-pwa@257639c9137a28703967b98993a4032215e279f3/assets/panda-voice-clips-v411/p160.mp3" data-num="160" type="button">▶ Слушать</button><button class="yes" data-mark="ok" data-num="160" type="button">✓ Нормально</button><button class="no" data-mark="bad" data-num="160" type="button">✕ Проблема</button></div></div>
+<div class="track" data-name="p161.mp3"><div class="trow"><span class="file">p161.mp3</span><span class="result" id="state161">Не проверено</span></div><div class="hanzi">我有一个妹妹。</div><div class="pinyin">Wǒ yǒu yí ge mèimei.</div><div class="trans">У меня есть младшая сестра.</div><div class="actions"><button class="listen" data-src="https://cdn.jsdelivr.net/gh/trommelschlager-ai/chinese-coach-pwa@257639c9137a28703967b98993a4032215e279f3/assets/panda-voice-clips-v411/p161.mp3" data-num="161" type="button">▶ Слушать</button><button class="yes" data-mark="ok" data-num="161" type="button">✓ Нормально</button><button class="no" data-mark="bad" data-num="161" type="button">✕ Проблема</button></div></div>
+<div class="track" data-name="p162.mp3"><div class="trow"><span class="file">p162.mp3</span><span class="result" id="state162">Не проверено</span></div><div class="hanzi">我没有哥哥。</div><div class="pinyin">Wǒ méiyǒu gēge.</div><div class="trans">У меня нет старшего брата.</div><div class="actions"><button class="listen" data-src="https://cdn.jsdelivr.net/gh/trommelschlager-ai/chinese-coach-pwa@257639c9137a28703967b98993a4032215e279f3/assets/panda-voice-clips-v411/p162.mp3" data-num="162" type="button">▶ Слушать</button><button class="yes" data-mark="ok" data-num="162" type="button">✓ Нормально</button><button class="no" data-mark="bad" data-num="162" type="button">✕ Проблема</button></div></div>
+<div class="track" data-name="p163.mp3"><div class="trow"><span class="file">p163.mp3</span><span class="result" id="state163">Не проверено</span></div><div class="hanzi">你星期几有空？</div><div class="pinyin">Nǐ xīngqī jǐ yǒu kòng?</div><div class="trans">В какой день недели ты свободен?</div><div class="actions"><button class="listen" data-src="https://cdn.jsdelivr.net/gh/trommelschlager-ai/chinese-coach-pwa@257639c9137a28703967b98993a4032215e279f3/assets/panda-voice-clips-v411/p163.mp3" data-num="163" type="button">▶ Слушать</button><button class="yes" data-mark="ok" data-num="163" type="button">✓ Нормально</button><button class="no" data-mark="bad" data-num="163" type="button">✕ Проблема</button></div></div>
+<div class="track" data-name="p164.mp3"><div class="trow"><span class="file">p164.mp3</span><span class="result" id="state164">Не проверено</span></div><div class="hanzi">你今天有空吗？</div><div class="pinyin">Nǐ jīntiān yǒu kòng ma?</div><div class="trans">Ты сегодня свободен?</div><div class="actions"><button class="listen" data-src="https://cdn.jsdelivr.net/gh/trommelschlager-ai/chinese-coach-pwa@257639c9137a28703967b98993a4032215e279f3/assets/panda-voice-clips-v411/p164.mp3" data-num="164" type="button">▶ Слушать</button><button class="yes" data-mark="ok" data-num="164" type="button">✓ Нормально</button><button class="no" data-mark="bad" data-num="164" type="button">✕ Проблема</button></div></div>
+<div class="track" data-name="p165.mp3"><div class="trow"><span class="file">p165.mp3</span><span class="result" id="state165">Не проверено</span></div><div class="hanzi">你有妹妹吗？</div><div class="pinyin">Nǐ yǒu mèimei ma?</div><div class="trans">У тебя есть младшая сестра?</div><div class="actions"><button class="listen" data-src="https://cdn.jsdelivr.net/gh/trommelschlager-ai/chinese-coach-pwa@257639c9137a28703967b98993a4032215e279f3/assets/panda-voice-clips-v411/p165.mp3" data-num="165" type="button">▶ Слушать</button><button class="yes" data-mark="ok" data-num="165" type="button">✓ Нормально</button><button class="no" data-mark="bad" data-num="165" type="button">✕ Проблема</button></div></div>
+<p class="hint">Это оригинальные MP3 из staging-коммита 257639c. Записи загружаются по HTTPS, напрямую по их именам. Автоматическое распознавание не доказывает правильность тонов.</p></section>
+<section class="section"><h2>2. Проверь микрофон 🎤</h2><p>Открой страницу именно в <b>Chrome на Android</b>. Нажми кнопку и скажи сначала <b>你好</b>, затем попробуй <b>我很好</b>.</p><button type="button" class="primary block" id="mic">🎙 Начать распознавание китайского</button><div id="mic-status" role="status" aria-live="polite">Микрофон ещё не проверен.</div><p class="hint">Распознавание выполняет браузер и может отправлять звук внешней службе. Это проверка полученного текста, <b>не измерение точности тонов</b>. Записи микрофона не сохраняются этой страницей.</p></section>
+<section class="section"><h2>3. Проверь диалоги Panda AI</h2><p>Открой предварительный просмотр <b>действительного интерфейса из staging v411</b>. Проверь режимы «Краткие диалоги» и «Non-Stop», ответ голосом и текстом, а также воспроизведение новой фразы.</p>
+<a class="actionlink block" href="./panda-v411-android-preview.html" target="_blank" rel="noopener">🐼 Открыть Panda AI v411 — тест</a>
+<p class="hint">Предпросмотр загружает код и картинки из закреплённого GitHub-коммита через CDN. Это не опубликованная основная версия. Учебные отметки предпросмотра отделены от основного приложения; при ошибке загрузки сообщи, что именно показывает Chrome.</p>
+</section>
+<section class="section"><h2>4. Сохрани результат</h2><p class="hint">Отмеченные ответы останутся в этой вкладке. Скопируй отчёт и отправь мне в чат, чтобы я исправил только обнаруженные проблемы.</p>
+<button type="button" class="primary block" id="copy">📋 Скопировать отчёт проверки</button><pre id="result-text" role="status"></pre></section>
+<footer>Panda Go · Тестовая страница · PR #112 остаётся черновиком</footer>
+</main>
+<script>
+const results=Array.from({length:10},(_,i)=>({name:'p'+(156+i)+'.mp3',state:sessionStorage.getItem('pandaV411QA-p'+(156+i))||'unchecked'}));
+let activeAudio=null;
+function label(result){return result==='ok'?'✓ ОК':result==='bad'?'✕ Проблема':'Не проверено'}
+function update(){
+ for(const r of results){
+  const n=r.name.slice(1,4),status=document.getElementById('state'+n);
+  status.textContent=label(r.state);
+  status.style.color=r.state==='ok'?'#167245':r.state==='bad'?'#ad2830':'#6f6786';
+  for(const b of document.querySelectorAll('[data-mark][data-num="'+n+'"]'))b.classList.toggle('active',b.dataset.mark===r.state);
+ }
+ document.getElementById('result-text').textContent='Panda AI v411 — тест Android\n'+results.map(r=>r.name+': '+label(r.state)).join('\n')+'\nМикрофон: '+document.getElementById('mic-status').textContent;
+}
+for(const b of document.querySelectorAll('[data-mark]'))b.addEventListener('click',()=>{
+ const r=results.find(r=>r.name==='p'+b.dataset.num+'.mp3');r.state=b.dataset.mark;
+ sessionStorage.setItem('pandaV411QA-p'+b.dataset.num,r.state);update();
+});
+for(const b of document.querySelectorAll('.listen'))b.addEventListener('click',async()=>{
+ if(activeAudio){activeAudio.pause();activeAudio=null}
+ const n=b.dataset.num,info=document.getElementById('play-state');
+ info.textContent='Загрузка p'+n+'.mp3…';
+ try{
+  const player=new Audio(b.dataset.src);activeAudio=player;player.preload='auto';
+  player.onplaying=()=>{info.textContent='▶ Воспроизводится p'+n+'.mp3'};
+  player.onended=()=>{info.textContent='✓ Воспроизведение p'+n+'.mp3 завершено';activeAudio=null};
+  player.onerror=()=>{info.textContent='✕ Ошибка загрузки p'+n+'.mp3. Проверь интернет и сообщи номер.'};
+  await player.play();
+ }catch(err){info.textContent='✕ Не удалось включить p'+n+'.mp3: '+(err?.message||'ошибка браузера')}
+});
+const micStatus=document.getElementById('mic-status'),mic=document.getElementById('mic');
+mic.onclick=()=>{
+ const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!Speech){micStatus.textContent='Браузер не поддерживает распознавание. Проверь в обычном Chrome.';update();return}
+ let recognition;
+ try{recognition=new Speech();recognition.lang='zh-CN';recognition.interimResults=false;recognition.maxAlternatives=1;
+ recognition.onstart=()=>{micStatus.textContent='🎙 Говори по-китайски…';update()};
+ recognition.onresult=e=>{micStatus.textContent='Распознано: '+e.results[0][0].transcript+' (тоны не оценены)';update()};
+ recognition.onerror=e=>{micStatus.textContent='Ошибка микрофона: '+e.error+' — проверь разрешение Chrome';update()};
+ recognition.onend=()=>{if(micStatus.textContent.startsWith('🎙')){micStatus.textContent='Распознавание завершилось без текста';update()}};
+ recognition.start();
+ }catch(err){micStatus.textContent='Не удалось запустить микрофон: '+(err?.message||'ошибка');update()}
+};
+document.getElementById('copy').onclick=async()=>{
+ update();const report=document.getElementById('result-text').textContent;
+ try{await navigator.clipboard.writeText(report);document.getElementById('copy').textContent='✓ Отчёт скопирован'}
+ catch{const field=document.createElement('textarea');field.value=report;document.body.append(field);field.select();document.execCommand('copy');field.remove();document.getElementById('copy').textContent='✓ Отчёт готов к вставке'}
+};
+update();
+</script></body></html>
