@@ -14,6 +14,7 @@ import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
 import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=360';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=374';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=2';
+import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -184,7 +185,9 @@ function submit(raw){
   return;
  }
  if(state.mode==='nonstop'){
-  const result=answerLive(input,{allowed:state.allowed,topic:lesson(),prompt:state.awaitQuestion?null:state.prompt?.line,curriculum,date:new Date(),turn:state.turns,profile:{...state.profile,recentQuestions:state.questions.slice(-40)}});
+  const activePrompt=state.awaitQuestion?null:state.prompt?.line;
+   const rawResult=interpretWorkReply(input,{prompt:activePrompt})||answerLive(input,{allowed:state.allowed,topic:lesson(),prompt:activePrompt,curriculum,date:new Date(),turn:state.turns,profile:{...state.profile,recentQuestions:state.questions.slice(-40)}});
+   const result=addPersonalFollowup(rawResult,{allowed:state.allowed,recentQuestions:state.questions.slice(-40)});
   learner(input,result.spoken||analyzeLearner(input,state.allowed,state.prompt?.line,curriculum));
   if(result.kind==='empty'){note(result.message);return}
   if(result.kind==='correction'){state.topic=result.lesson||lesson();pose('retry');note(result.message);render();return}
