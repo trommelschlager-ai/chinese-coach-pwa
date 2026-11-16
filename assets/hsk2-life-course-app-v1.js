@@ -217,6 +217,8 @@ function render(){
  // Reset only when the learner really changes page / lesson / step.
  var paintKey=[state.view,state.topic,state.mini,state.stage,state.day&&state.day.poster?'poster':'content'].join(':');
  var preserve=paintKey===lastPaintKey;
+  // A navigation step must silence the previous lesson's clip before repainting.
+  if(lastPaintKey!==null&&!preserve)window.PandaHsk2AudioV330?.stop?.();
  var rememberedY=preserve?screen.scrollTop:0;
  var html=state.view==='welcome'?viewWelcome():state.view==='map'?viewMap():state.view==='topic'?viewTopic():state.view==='lesson'?viewLesson():state.view==='done'?viewDone():state.view==='review'?viewReview():state.view==='tones'?viewTones():viewExam();
  screen.innerHTML=html;
