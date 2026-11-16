@@ -12,6 +12,8 @@ on:
     paths:
       - 'panda-voice-pilot.html'
       - 'assets/panda-live-*'
+      - 'assets/panda-mic-help-*'
+      - 'tests/panda-mic-visible-*'
       - 'assets/panda-hsk1-*'
       - 'assets/panda-brain-*'
       - 'assets/panda-hsk2-*'
@@ -34,6 +36,8 @@ on:
       - 'panda-voice-pilot.html'
       - 'assets/panda-voice-pilot*'
       - 'assets/panda-live-*'
+      - 'assets/panda-mic-help-*'
+      - 'tests/panda-mic-visible-*'
       - 'assets/panda-hsk1-*'
       - 'assets/panda-brain-*'
       - 'assets/panda-hsk2-*'
@@ -123,3 +127,39 @@ jobs:
         run: node --test tests/panda-calendar-chat-v383.test.mjs
       - name: Verify responsive calendar replies, correct follow-up questions and audio honesty
         run: node --test tests/panda-calendar-reaction-v401.test.mjs
+
+  approved-mic-recovery:
+    name: Approved mobile microphone recovery and exact audio
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install test dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify microphone lifecycle, fallback and approved audio index
+        run: node --test tests/panda-mic-visible-v407.test.mjs tests/panda-live-mic-recovery-v318.test.mjs tests/panda-live-first-tap-v367.test.mjs tests/panda-live-audio-v365.test.mjs
+      - name: Install mobile Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify visible recovery controls on Android-sized Chrome
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/panda-voice-recovery.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-voice-pilot.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-voice-pilot-mobile.mjs
+      - name: Save mock Android recovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-visible-mic-recovery-qa
+          path: qa/panda-voice-pilot/
+          if-no-files-found: warn
+

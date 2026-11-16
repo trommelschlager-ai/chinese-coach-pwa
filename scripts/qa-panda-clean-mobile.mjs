@@ -85,6 +85,32 @@ export async function verifyCleanMobile(browser,base,dir){
   await page.evaluate(()=>window.__speech.at(-1).onresult({results:[[{transcript:'晚上好',confidence:.95}]]}));
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh').textContent==='晚上好！');
   assert.notEqual(await page.locator('#pg346').getAttribute('data-headphones'),'correct','ASR text is not acoustic proof of tones');
+
+  // Microphone errors must be actionable on the *approved* Panda screen.
+  // The diagnostic lived inside the hidden legacy <main> before v407.
+  await page.locator('#pg346-mic').click();
+  await page.evaluate(()=>window.__speech.at(-1).onerror({error:'not-allowed'}));
+  await page.locator('#pg346 .pg407-help-button').waitFor({state:'visible'});
+  assert.match(await page.locator('#pg346-status').textContent(),/запрещён/);
+  await page.locator('#pg346 .pg407-help-button').click();
+  assert(await page.locator('#pg407-mic-help').isVisible(),'Recovery must be visible on approved UI');
+  assert(await page.locator('#speech-recovery').isVisible(),'Existing recovery actions must not remain inside hidden main');
+  assert.match(await page.locator('#speech-chrome').getAttribute('href'),/panda-voice-pilot\.html/);
+  await page.evaluate(()=>{
+    window.__micDiagnosticStops=0;
+    Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{
+      getUserMedia:async()=>({getTracks:()=>[{stop(){window.__micDiagnosticStops++}}]})
+    }});
+  });
+  await page.locator('#speech-check').click();
+  await page.waitForFunction(()=>document.querySelector('#speech-check-result').textContent.includes('Микрофон разрешён'));
+  assert.equal(await page.evaluate(()=>window.__micDiagnosticStops),1,'Diagnostic must release the actual microphone track');
+  await page.locator('.pg407-mic-close').click();
+  assert.equal(await page.locator('#pg407-mic-help').isVisible(),false);
+  await page.locator('#pg346-input').fill('你好');
+  await page.locator('#pg346-send').click();
+  await page.waitForFunction(()=>document.querySelector('.pg346-main-zh').textContent==='你好！');
+
   for(const height of [568,640,740,825,915,400,320]){
    await page.setViewportSize({width,height});
    await page.waitForFunction(()=>Math.abs(document.querySelector('#pg346').getBoundingClientRect().height-(visualViewport?.height||innerHeight))<2);
