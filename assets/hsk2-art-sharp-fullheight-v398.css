@@ -108,3 +108,13 @@
 #app.day-visual-v390 #screen{
  background:transparent!important;
 }
+
+/* v402 actual paint surface. ::before was still behind the opaque stage fill
+   in some Android Chromium compositions. Paint scenic extension on the STAGE. */
+#app.approved-welcome-v390 .approved-stage,
+#app.approved-map-v390 .approved-stage,
+#app.day-visual-v390 .approved-stage{
+ background:
+  linear-gradient(180deg,rgba(113,26,155,.15),rgba(225,137,211,.08) 55%,rgba(88,29,143,.23)),
+  url('./hsk2-approved-scene-v353.svg') center center / cover no-repeat!important;
+}
