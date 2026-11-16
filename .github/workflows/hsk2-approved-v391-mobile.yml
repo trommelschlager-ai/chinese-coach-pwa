@@ -8,6 +8,11 @@ on:
       - 'assets/hsk2-day-first-ui-v1.js'
       - 'assets/hsk2-day-topic-one-v391.js'
       - 'assets/approved-course-v390/**'
+      - 'hsk2-bastian-intro.html'
+      - 'assets/bastian-split-v394.js'
+      - 'assets/pandago-art-fullscreen-tap-v395.css'
+      - 'assets/pandago-art-touch-feedback-v395.js'
+      - 'scripts/qa-pandago-fullscreen-v395.mjs'
       - 'scripts/qa-hsk2-approved-course-v391.mjs'
       - '.github/workflows/hsk2-approved-v391-mobile.yml'
   workflow_dispatch:
@@ -39,10 +44,13 @@ jobs:
             sleep 1
           done
           node scripts/qa-hsk2-approved-course-v391.mjs
+          node scripts/qa-pandago-fullscreen-v395.mjs
       - name: Upload visual screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: panda-hsk2-approved-v391-android
-          path: qa/hsk2-approved-v391/
+          path: |
+            qa/hsk2-approved-v391/
+            qa/pandago-fullscreen-v395/
           if-no-files-found: warn
