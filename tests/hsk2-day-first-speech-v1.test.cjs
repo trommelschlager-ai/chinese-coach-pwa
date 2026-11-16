@@ -22,10 +22,8 @@ for(const f of ['assets/hsk2-life-course-data-v1.js','assets/hsk2-day-first-data
 function click(sel){const el=doc.querySelector(sel);assert.ok(el,'missing '+sel);assert.equal(el.disabled,false,'disabled '+sel);el.click()}
 click('.approved-start');
 click('[data-day-show-words]');
-click('[data-day-next]');click('[data-day-next]');click('[data-day-next]');
-click('[data-day-quiz="0:1"]');click('[data-day-quiz="1:0"]');
-for(let i=0;i<4;i++)click('[data-day-token="'+i+'"]');
-click('[data-day-next]');
+click('[data-day-next]'); // 2: grammar
+click('[data-day-next]'); // 3: speech
 assert.equal(doc.querySelectorAll('.day-attempts .heard').length,0,'No fake results before recording');
 click('[data-day-record]');
 assert.ok(doc.querySelector('.day-consent'),'Consent prompt required before mic starts');
@@ -48,7 +46,12 @@ assert.equal(doc.querySelectorAll('.day-attempts .heard').length,0);
 click('[data-day-record]');latest.fail('not-allowed');
 assert.match(doc.querySelector('.day-card').textContent,/not-allowed/);
 assert.equal(doc.querySelectorAll('.day-attempts .heard,.day-attempts .not-heard').length,0,'Failed permission is not a scored attempt');
-click('[data-day-next]');
+click('[data-day-next]'); // 4: test
+click('[data-day-quiz="0:1"]');click('[data-day-quiz="1:0"]');
+for(let i=0;i<4;i++)click('[data-day-token="'+i+'"]');
+click('[data-day-next]'); // 5: examples
+assert.equal(doc.querySelectorAll('.day-dialogue').length,4);
+click('[data-day-next]'); // complete
 assert.ok(doc.querySelector('.day-ai-panel a').getAttribute('href').includes('practice=day&mini=0'));
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,1);
 assert.deepEqual(errors,[]);
