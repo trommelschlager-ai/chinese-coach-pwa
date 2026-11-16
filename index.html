@@ -2524,7 +2524,7 @@ document.getElementById('tone-refresh').addEventListener('click',async ()=>{
   document.body.classList.remove('launch-active');
  }
  window.showLaunchMenu=()=>show('menu');
- window.showLaunchCover=()=>window.__panda130?.show('home')||show('menu');
+ window.showLaunchCover=()=>{if(window.__panda130)window.__panda130.show('home');else show('menu')};
  window.exitLaunch=exit;
  document.getElementById('launch-start').onclick=startWithSakura;
  document.getElementById('launch-back').onclick=()=>show('menu');
