@@ -95,7 +95,7 @@ function createBank(date=new Date()){
      (yes?'Shì, ':'Bú shì, ')+t.py.toLowerCase()+' '+actual.py+'.',
      (yes?'Да. ':'Нет. ')+t.ru[0].toUpperCase()+t.ru.slice(1)+' '+actual.ru+'.','По календарю устройства.');
    add(say(t.zh+'是'+day.zh+'吗？',t.py+' shì '+day.py+' ma?',t.ru+' '+day.ru+'?',4,answer,
-     [yes?'是':'不是',yes?t.zh+actual.zh:'不是'+t.zh+day.zh],
+     [yes?'是':'不是',t.zh+actual.zh,t.zh+'是'+actual.zh],
      {family:'weekday-yesno',context:'По календарю устройства.',calendarDate:date.toISOString()}));
   }
  }
@@ -196,6 +196,34 @@ export function patternQuestion(input,allowed=[1],date=new Date()){
   reply:makeAnswer(p,date)};
 }
 const parseRole=(value)=>{const m=/^(我)(?:是|不是)(老师|学生)$/.exec(value);return m?m[2]:null};
+// Only the Chinese characters actually written by the student may appear in
+// the returned pinyin. The target question supplies meaning, never extra words.
+function calendarAnswerLiteral(s,prompt){
+ const w=/^(是|不是)?(今天|明天|昨天)?(是)?(星期[一二三四五六日天])$/.exec(s);
+ if(w&&prompt.family.startsWith('weekday')){
+  const day=weekdays.find(x=>x.zh===w[4])||(w[4]==='星期日'?weekdays[0]:null);
+  const time=timeList.find(x=>x.zh===w[2]);
+  if(!day||w[3]&&!time)return null;
+  let py=[time?.py?.toLowerCase(),w[3]?'shì':null,day.py].filter(Boolean).join(' ');
+  if(w[1])py=(w[1]==='是'?'shì':'bú shì')+', '+py;
+  py=py[0].toUpperCase()+py.slice(1)+'.';
+  const ru=(time?time.ru[0].toUpperCase()+time.ru.slice(1)+' ':'')+
+   (time?day.ru:day.ru[0].toUpperCase()+day.ru.slice(1))+'.';
+  return {pinyin:py,translation:(w[1]?(w[1]==='是'?'Да. ':'Нет. '):'')+ru};
+ }
+ const d=/^(今天|明天|昨天)?(是)?([零〇一二两三四五六七八九十百\d]+)月([零〇一二两三四五六七八九十百\d]+)号$/.exec(s);
+ if(d&&prompt.family==='date-wh'){
+  const month=NUM_BY_ZH.get(d[3])??(/^\d+$/.test(d[3])?Number(d[3]):null);
+  const day=NUM_BY_ZH.get(d[4])??(/^\d+$/.test(d[4])?Number(d[4]):null);
+  if(!Number.isInteger(month)||!Number.isInteger(day)||month<1||month>12||day<1||day>31||d[2]&&!d[1])return null;
+  const time=timeList.find(x=>x.zh===d[1]);
+  let py=[time?.py?.toLowerCase(),d[2]?'shì':null,pyNum(month),'yuè',pyNum(day),'hào'].filter(Boolean).join(' ');
+  py=py[0].toUpperCase()+py.slice(1)+'.';
+  const ru=(time?time.ru[0].toUpperCase()+time.ru.slice(1)+' ':'')+day+'.'+String(month).padStart(2,'0')+'.';
+  return {pinyin:py,translation:ru};
+ }
+ return null;
+}
 export function patternStudentAnswer(input,prompt,allowed=[1],date=new Date()){
  if(!prompt||prompt.intent!=='pattern'||!allowed.includes(prompt.lesson)||prompt.requires?.some(n=>!allowed.includes(n)))return null;
  const target=findPattern(prompt.hanzi,new Date(prompt.calendarDate||date));
@@ -212,8 +240,10 @@ export function patternStudentAnswer(input,prompt,allowed=[1],date=new Date()){
    family:prompt.family==='relative-exists'?{present:s==='有'?[prompt.lessonName]:[],absent:s==='没有'?prompt.lessonName:null}:undefined};
  }
  const matching=target;
- if(prompt.family==='weekday-yesno'||prompt.family==='weekday-wh'||prompt.family==='date-wh')
-  return {known:true,hanzi:String(input).trim(),pinyin:matching.answer.pinyin,translation:matching.answer.ru,topic:prompt.lesson,matchedPrompt:true};
+ if(prompt.family==='weekday-yesno'||prompt.family==='weekday-wh'||prompt.family==='date-wh'){
+  const literal=calendarAnswerLiteral(s,prompt);
+  return literal?{known:true,hanzi:String(input).trim(),...literal,topic:prompt.lesson,matchedPrompt:true}:null;
+ }
  if(prompt.family==='next-number'||prompt.family==='previous-number'){
   const n=NUM_BY_ZH.get(s)??(/^\d+$/.test(s)?Number(s):null);
   return Number.isInteger(n)?{known:true,hanzi:String(input).trim(),pinyin:pyNum(n)+'.',translation:String(n),topic:3,matchedPrompt:true}:null;
