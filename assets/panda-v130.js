@@ -55,7 +55,7 @@ function tabs(labels,active,action){return `<div class="pg-tabs" role="tablist">
 function progress(n,total){return `<div class="pg-progressline"><div class="pg-meter" role="progressbar" aria-label="Прогресс" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${n}"><span style="width:${100*n/total}%"></span></div><span>${n}/${total}</span></div>`}
 function pagination(i,total,action){return `<div class="pg-pagination pg-surface"><button class="pg-round" data-action="${action}" data-value="-1" aria-label="Предыдущая карточка"${i===0?' disabled':''}>‹</button><span>${i+1}/${total}</span><button class="pg-round" data-action="${action}" data-value="1" aria-label="Следующая карточка"${i===total-1?' disabled':''}>›</button></div>`}
 function wave(action='listen'){return `<div class="pg-wave"><button class="pg-play" data-action="${action}" aria-label="Прослушать">▶</button><span class="pg-wave-bars" aria-hidden="true">${Array.from({length:29},(_,i)=>`<i style="--h:${7+((i*17+5)%28)}px"></i>`).join('')}</span></div>`}
-function show(route,replace=false){if(route==='games')route='training';stop();root.hidden=false;document.body.classList.remove('launch-active','focus-mode','pg130-loading');document.body.classList.add('pg130-active');current=route;render();const hash='#panda/'+route;if(location.hash!==hash){if(replace)history.replaceState({panda:route},'',hash);else history.pushState({panda:route},'',hash)}root.querySelector('.pg-screen').scrollTop=0;const focus=root.querySelector('h1');if(focus){focus.tabIndex=-1;focus.focus({preventScroll:true})}}
+function show(route,replace=false){if(['games','training'].includes(route)){route='home';replace=true;}stop();root.hidden=false;document.body.classList.remove('launch-active','focus-mode','pg130-loading');document.body.classList.add('pg130-active');current=route;render();const hash='#panda/'+route;if(location.hash!==hash){if(replace)history.replaceState({panda:route},'',hash);else history.pushState({panda:route},'',hash)}root.querySelector('.pg-screen').scrollTop=0;const focus=root.querySelector('h1');if(focus){focus.tabIndex=-1;focus.focus({preventScroll:true})}}
 /* Animated Sakura is part of the active Panda Go shell, not the retired launcher. */
 function petalMarkup(){
  return '<div class="pg-sakura" aria-hidden="true">'
@@ -72,7 +72,7 @@ function frame(content,cls=''){
  if(!screen){root.innerHTML='<section class="pg-screen"></section>'+petalMarkup();screen=root.querySelector('.pg-screen')}
  const sameRoute=screen.dataset.route===current,scroll=screen.scrollTop;
  screen.dataset.route=current;screen.className=`pg-screen ${cls} pg-route-${current}`;
- screen.setAttribute('aria-label',({alive:'Собери и оживи',home:'Главная',learn:'Учиться',training:'Тренироваться',games:'Игровая практика',words:'Базовые слова',tones:'Звуки и тоны',dialogues:'Диалоги',settings:'Настройки',practice:'Практика',quiz:'Тест',build:'Собери фразу',listen:'Слушай и выбирай',choose:'Выбери ответ',result:'Результат',progress:'Мой прогресс'})[current]||'Занятие');
+ screen.setAttribute('aria-label',({alive:'Собери и оживи',home:'Главная',learn:'Учиться',games:'Игровая практика',words:'Базовые слова',tones:'Звуки и тоны',dialogues:'Диалоги',settings:'Настройки',practice:'Практика',quiz:'Тест',build:'Собери фразу',listen:'Слушай и выбирай',choose:'Выбери ответ',result:'Результат',progress:'Мой прогресс'})[current]||'Занятие');
  // Reuse matching image elements, so a token tap cannot reload the portrait.
  const images=[...screen.querySelectorAll('img')];
  const template=document.createElement('template');template.innerHTML=content;
@@ -104,7 +104,7 @@ function home(){
  'pg-home pg-hsk-page pg-photo1-home');
 }
 function learn(){frame(heading('Учиться','book','home','Основы китайского шаг за шагом')+`<nav class="pg-menu">${card('Звуки и тоны','Произношение и правила чтения','headphones','tones')}${card('Базовые слова','Самые нужные слова','books','words')}${card('Иероглифы','Письмо и порядок черт','brush','hanzi')}${card('Диалоги','Готовые фразы для общения','chat','dialogues')}</nav><div class="pg-approved-go-footer">${primary('Дальше Go →','learn-go')}</div>`)}
-function training(){frame(heading('Тренироваться','controller','home','Выбери упражнение')+`<nav class="pg-menu pg393-training-options">${card('Практика','Вопросы по темам','target','practice')}${card('Тест','Проверь себя','clipboard','quiz')}${card('Собери и оживи','Панда в кафе','puzzle','alive')}${card('Собери фразу','Порядок слов','puzzle','build')}${card('Слушай и выбирай','Аудирование','headphones','listen')}${card('Выбери ответ','Вопросы и ответы','check','choose')}${card('Быстрый тест','На скорость','lightning','quick')}</nav>`,'pg-training pg393-training')}
+function training(){show('home',true)}
 function aliveCafe(){frame(heading('Собери и оживи','puzzle','training','',true)+'<div class="ac-game"></div>','pg-alive');window.PandaAliveCafe.mount(root.querySelector('.ac-game'))}
 function games(){training()}
 const wordFilters=[['all','Все'],['g07','Люди'],['g06','Место'],['g05','Действия'],['g09','Еда']];

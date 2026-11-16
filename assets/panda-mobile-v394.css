@@ -1,0 +1,35 @@
+/* Approved imagery remains unchanged. Insets belong outside the art plane. */
+#app .approved-stage::before{display:none!important}
+#app .approved-stage .approved-art{max-width:none!important;max-height:none!important;box-shadow:none!important}
+#app .approved-stage .approved-art>img{object-fit:contain!important}
+#app.approved-map-v390,#app.approved-welcome-v390,#app.day-visual-v390{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#poster:not([hidden]){display:block!important;height:100dvh!important;overflow:hidden!important;background:#401367!important;padding:0!important}
+#poster:not([hidden])>*:not(.bs394-page){display:none!important}
+#poster::before,#poster::after{display:none!important}
+#poster .bs394-page{display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:100%;padding:calc(6px + env(safe-area-inset-top)) 0 calc(8px + env(safe-area-inset-bottom));gap:6px}
+#poster .bs394-page[hidden]{display:none!important}
+.bs394-bar{display:flex;align-items:center;justify-content:space-between;width:calc(100% - 20px);height:40px;flex:none;color:#ffe6a4;font-weight:bold}
+.bs394-bar a,.bs394-bar button{border:1px solid #f5cd86;border-radius:14px;background:#70248d;color:white;padding:8px 12px;text-decoration:none;font:inherit}
+.bs394-slice{position:relative;overflow:hidden;flex:none}
+.bs394-plane{position:absolute;left:0;width:100%}
+.bs394-plane>img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:contain!important}
+.bs394-plane .screen-hotspot{position:absolute!important;display:block!important;border:0!important;background:transparent!important;padding:0;min-height:0!important;border-radius:22px;z-index:2}
+.bs394-next{width:calc(100% - 24px);min-height:48px;flex:none;border:2px solid #ffe7ac;border-radius:24px;background:linear-gradient(#fff0a4,#ffbd41);color:#551775;font:900 17px system-ui;box-shadow:0 4px 10px #21073570}
+/* Reuse the approved lesson's scenic header, including the exact approved Panda. */
+.day-approved-banner{position:relative;width:100%;aspect-ratio:941/338;overflow:hidden;border-radius:18px 18px 0 0}
+.day-approved-banner img{position:absolute;top:0;left:0;width:100%;height:auto}
+#app.day-lesson-active:not(.day-visual-v390) .day-title{padding:0!important;background:#5c1882!important;overflow:hidden}
+.day-title .day-panda,.day-title .day-label,.day-title>h1{display:none!important}
+.day-title>p{padding:8px;margin:0!important}
+.day-title .day-stages{padding:0 7px 10px}
+#app.day-lesson-active:not(.day-visual-v390) #screen{background:linear-gradient(#7730a649,#63218c66),url('./approved-course-v390/course-map.png') center/cover fixed!important}
+.day-pilot .day-card{border:2px solid #ffda8b!important;box-shadow:0 0 0 2px #c878db,0 0 12px #f2b6ff9c!important;background:linear-gradient(120deg,#fff6ffff,#f2d1faff)!important}
+.day-pilot .day-card h2{color:#72268d;border-bottom:1px solid #dca6df}
+.day-pilot .day-meaning,.day-pilot .day-tip{border:1px solid #edbf78;background:linear-gradient(#fff3b9,#ffe3a1);border-radius:18px}
+/* Actual button surfaces; no rectangular overlay layers or animated stripes. */
+:where(button,a[href],[role=button]){-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:where(button,a[href],[role=button]):not(:disabled):active{translate:0 2px;filter:brightness(.9);box-shadow:0 3px 9px #26063765!important}
+#app .approved-art .approved-hotspot:active,.bs394-plane .screen-hotspot:active{transform:none!important;translate:0 2px;background:transparent!important;box-shadow:0 4px 10px #26063780,inset 0 0 16px #ffffff55!important;backdrop-filter:brightness(.82);-webkit-backdrop-filter:brightness(.82)}
+@media(prefers-reduced-motion:no-preference){:where(button,a[href]){transition:translate .1s ease,filter .1s ease,box-shadow .1s ease}}
+.bs394-page{line-height:1.3}
+#app button:not(:disabled):active{transform:none!important}

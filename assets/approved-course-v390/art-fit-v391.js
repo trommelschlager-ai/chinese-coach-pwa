@@ -32,11 +32,10 @@
      img.addEventListener('error',function(){if(img.isConnected){art.classList.add('failed');frame.setAttribute('aria-label','Изображение не загружено. Обнови страницу.')}},{once:true});
     }
    }
-   // Narrow the approved artwork to stop side clipping. Expand its vertical
-   // presence modestly; percentage hotspots stay on the same parent.
-   const scale=Math.min(frame.clientWidth*1.00/ORIGINAL_WIDTH,frame.clientHeight*0.99/ORIGINAL_HEIGHT);
-   art.style.width=Math.min(frame.clientWidth,ORIGINAL_WIDTH*scale*0.985)+'px';
-   art.style.height=Math.min(frame.clientHeight,ORIGINAL_HEIGHT*scale*1.17)+'px';
+   const width=img?.naturalWidth||ORIGINAL_WIDTH,height=img?.naturalHeight||ORIGINAL_HEIGHT;
+   const scale=Math.min(frame.clientWidth/width,frame.clientHeight/height);
+   art.style.width=(width*scale)+'px';
+   art.style.height=(height*scale)+'px';
   });
  }
  window.addEventListener('resize',function(){requestAnimationFrame(fit)},{passive:true});
