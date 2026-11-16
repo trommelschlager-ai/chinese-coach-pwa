@@ -10,17 +10,17 @@ const RECORDED = [
  ['你想学什么','Nǐ xiǎng xué shénme?','Что ты хочешь изучать?','我想学中文','Wǒ xiǎng xué Zhōngwén.','Я хочу изучать китайский.',1],
  ['你会读中文吗','Nǐ huì dú Zhōngwén ma?','Ты умеешь читать по-китайски?','我会读一点中文','Wǒ huì dú yìdiǎn Zhōngwén.','Я немного умею читать по-китайски.',1],
  ['你能说慢一点吗','Nǐ néng shuō màn yìdiǎn ma?','Можешь говорить чуть медленнее?','可以，我说慢一点','Kěyǐ, wǒ shuō màn yìdiǎn.','Да, буду говорить помедленнее.',1],
- // My day (lesson 7 review)
- ['你早上做什么','Nǐ zǎoshang zuò shénme?','Что ты делаешь утром?','我早上吃早饭','Wǒ zǎoshang chī zǎofàn.','Утром я завтракаю.',7],
- ['你起床以后做什么','Nǐ qǐchuáng yǐhòu zuò shénme?','Что делаешь после того, как встаёшь?','我起床以后洗脸','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма я умываюсь.',7],
- ['你每天喝水吗','Nǐ měitiān hē shuǐ ma?','Ты каждый день пьёшь воду?','是，我每天喝水','Shì, wǒ měitiān hē shuǐ.','Да, каждый день пью воду.',7],
- ['你上午做什么','Nǐ shàngwǔ zuò shénme?','Что ты делаешь до обеда?','我上午学习中文','Wǒ shàngwǔ xuéxí Zhōngwén.','До обеда я учу китайский.',7],
- ['你中午做什么','Nǐ zhōngwǔ zuò shénme?','Что ты делаешь в полдень?','我中午吃饭','Wǒ zhōngwǔ chīfàn.','В полдень я ем.',7],
- ['你下午做什么','Nǐ xiàwǔ zuò shénme?','Что ты делаешь после обеда?','我下午看书','Wǒ xiàwǔ kàn shū.','После обеда я читаю.',7],
- ['你晚上做什么','Nǐ wǎnshang zuò shénme?','Что ты делаешь вечером?','我晚上听音乐','Wǒ wǎnshang tīng yīnyuè.','Вечером я слушаю музыку.',7],
- ['你每天运动吗','Nǐ měitiān yùndòng ma?','Ты тренируешься каждый день?','是，我每天运动','Shì, wǒ měitiān yùndòng.','Да, каждый день занимаюсь спортом.',7],
- ['你回家以后做什么','Nǐ huí jiā yǐhòu zuò shénme?','Что делаешь после возвращения домой?','我回家以后休息','Wǒ huí jiā yǐhòu xiūxi.','Вернувшись домой, я отдыхаю.',7],
- ['你今天做什么','Nǐ jīntiān zuò shénme?','Что ты делаешь сегодня?','我今天教中文','Wǒ jīntiān jiāo Zhōngwén.','Сегодня я преподаю китайский.',7],
+ // HSK2 topic 1 — My Day: never treat these questions as HSK1 lesson 7 (Weather)
+ ['你早上做什么','Nǐ zǎoshang zuò shénme?','Что ты делаешь утром?','我早上吃早饭','Wǒ zǎoshang chī zǎofàn.','Утром я завтракаю.',1,'hsk2-day'],
+ ['你起床以后做什么','Nǐ qǐchuáng yǐhòu zuò shénme?','Что делаешь после того, как встаёшь?','我起床以后洗脸','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма я умываюсь.',1,'hsk2-day'],
+ ['你每天喝水吗','Nǐ měitiān hē shuǐ ma?','Ты каждый день пьёшь воду?','是，我每天喝水','Shì, wǒ měitiān hē shuǐ.','Да, каждый день пью воду.',1,'hsk2-day'],
+ ['你上午做什么','Nǐ shàngwǔ zuò shénme?','Что ты делаешь до обеда?','我上午学习中文','Wǒ shàngwǔ xuéxí Zhōngwén.','До обеда я учу китайский.',1,'hsk2-day'],
+ ['你中午做什么','Nǐ zhōngwǔ zuò shénme?','Что ты делаешь в полдень?','我中午吃饭','Wǒ zhōngwǔ chīfàn.','В полдень я ем.',1,'hsk2-day'],
+ ['你下午做什么','Nǐ xiàwǔ zuò shénme?','Что ты делаешь после обеда?','我下午看书','Wǒ xiàwǔ kàn shū.','После обеда я читаю.',1,'hsk2-day'],
+ ['你晚上做什么','Nǐ wǎnshang zuò shénme?','Что ты делаешь вечером?','我晚上听音乐','Wǒ wǎnshang tīng yīnyuè.','Вечером я слушаю музыку.',1,'hsk2-day'],
+ ['你每天运动吗','Nǐ měitiān yùndòng ma?','Ты тренируешься каждый день?','是，我每天运动','Shì, wǒ měitiān yùndòng.','Да, каждый день занимаюсь спортом.',1,'hsk2-day'],
+ ['你回家以后做什么','Nǐ huí jiā yǐhòu zuò shénme?','Что делаешь после возвращения домой?','我回家以后休息','Wǒ huí jiā yǐhòu xiūxi.','Вернувшись домой, я отдыхаю.',1,'hsk2-day'],
+ ['你今天做什么','Nǐ jīntiān zuò shénme?','Что ты делаешь сегодня?','我今天教中文','Wǒ jīntiān jiāo Zhōngwén.','Сегодня я преподаю китайский.',1,'hsk2-day'],
  // Numbers
  ['你有几个朋友','Nǐ yǒu jǐ ge péngyou?','Сколько у тебя друзей?','我有三个朋友','Wǒ yǒu sān ge péngyou.','У меня три друга.',3],
  ['你有几本书','Nǐ yǒu jǐ běn shū?','Сколько у тебя книг?','我有两本书','Wǒ yǒu liǎng běn shū.','У меня две книги.',3],
@@ -53,15 +53,26 @@ const RECORDED = [
  ['你需要帮助吗','Nǐ xūyào bāngzhù ma?','Тебе нужна помощь?','谢谢，我不需要帮助','Xièxie, wǒ bù xūyào bāngzhù.','Спасибо, помощь не нужна.',1]
 ];
 const norm=s=>String(s||'').normalize('NFC').replace(/[。！？?!，,\s]/gu,'');
-const table=new Map(RECORDED.map(([question,qpy,qru,answer,apy,aru,lesson])=>[norm(question),{question,qpy,qru,answer,apy,aru,lesson}]));
-export function recordedPandaAnswer(raw,allowed=[1]){
+const table=new Map(RECORDED.map(([question,qpy,qru,answer,apy,aru,lesson,course='hsk1'])=>
+ [norm(question),{question,qpy,qru,answer,apy,aru,lesson,course}]));
+export function recordedCourseScope(raw){return table.get(norm(raw))?.course||null;}
+export function recordedPandaAnswer(raw,allowed=[1],{course='hsk1'}={}){
  const hit=table.get(norm(raw));if(!hit)return null;
- if(!allowed.includes(hit.lesson))return {kind:'locked',lesson:hit.lesson,
+ if(hit.course!==course){
+  // Explicitly keep HSK2 daily-life questions out of the HSK1 weather chapter.
+  if(hit.course==='hsk2-day')return {kind:'clarify',course:'hsk2-day',
+   spoken:{known:false,hanzi:String(raw).trim(),pinyin:null,translation:null,topic:null},
+   message:'Этот вопрос изучается в HSK2 «Мой день», а не в уроке HSK1 «Погода». Открой тренировку Panda AI из HSK2.'};
+  return null;
+ }
+ if(!allowed.includes(hit.lesson))return {kind:'locked',lesson:hit.lesson,course,
    spoken:{known:false,hanzi:raw,translation:null},
-   message:'Этот вопрос изучается в уроке '+hit.lesson+'. Сначала открой соответствующий урок.'};
- return {kind:'question',lesson:hit.lesson,
+   message:course==='hsk2-day'?'Сначала открой первый урок HSK2 «Мой день».':
+     'Этот вопрос изучается в уроке '+hit.lesson+'. Сначала открой соответствующий урок.'};
+ return {kind:'question',lesson:hit.lesson,course,
    spoken:{known:true,hanzi:raw,pinyin:hit.qpy,translation:hit.qru,topic:hit.lesson},
-   reply:{hanzi:hit.answer+'。',pinyin:hit.apy,ru:hit.aru,context:'Ответ из проверенного списка пользовательских MP3'},
+   reply:{hanzi:hit.answer+'。',pinyin:hit.apy,ru:hit.aru,
+    context:'Ответ из проверенного списка пользовательских MP3'},
    followup:null};
 }
 export const RECORDED_PANDA_QA=Object.freeze(RECORDED.map(row=>Object.freeze([...row])));

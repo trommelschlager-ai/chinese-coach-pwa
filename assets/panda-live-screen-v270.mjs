@@ -11,7 +11,8 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=360';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=381';
+import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=374';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=4';
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
@@ -26,7 +27,7 @@ const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
 let micActivatedAt=0; // Guard the first seconds of a new recording against accidental second taps.
-const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false};
+const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
 // Cache verified question groups while the same HSK lessons are unlocked.
 let cachedAskGroupsKey='',cachedAskGroups=[];
 function topicCatalogGroups(){
@@ -62,7 +63,14 @@ function play(entry=null){
  a.onwaiting=waitForAudio;
  a.onstalled=waitForAudio;
  a.onpause=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
- const finished=()=>{if(valid()){stopAudio();if(!entry&&state.followup)scheduleFollowup(1200)}};
+ const finished=()=>{if(valid()){stopAudio();
+   if(state.dayMode&&state.dayResumeStep===state.dayStep&&!state.dayDone){
+    const prompt=state.prompt?.line;state.dayResumeStep=null;
+    if(prompt){state.display=prompt;render();note('Продолжай HSK2 «Мой день»: ответь на учебный вопрос.');}
+    return;
+   }
+   if(!entry&&state.followup)scheduleFollowup(1200);
+  }};
  a.onended=finished;
  a.ontimeupdate=()=>{if(valid()&&end!==null&&a.currentTime>=end-.025)finished()};
  a.onerror=()=>{if(valid()){stopAudio();note('Запись не загрузилась. Нажми динамик ещё раз.')}};
@@ -162,7 +170,7 @@ function initLesson(id){
  if(state.dayMode){state.mode='nonstop';state.dayStep=0;state.dayDone=false;$('back-link').href='./hsk2-life-course.html?topic=0';$('allowed-topics').textContent='Практика Мой день: вопросы ограничены словами, которые ученик уже прошёл в курсе 2.';askNext();}else if(state.mode==='nonstop')askNext();else say(conversation.lines[0],false);
 }
 function askNext(){
- cancelFollowup();stopRecognition();stopAudio();state.awaitQuestion=false;
+ cancelFollowup();stopRecognition();stopAudio();state.awaitQuestion=false;state.dayResumeStep=null;
  if(state.dayMode){
   const prompt=dailyQuestions(state.dayMini)[state.dayStep];
   if(!prompt){state.dayDone=true;state.prompt=null;say(dailyFinal,false);note('Все вопросы по теме Мой день пройдены. Это проверка смысла, а не тонов. Нажми «Назад», чтобы вернуться в курс.');return;}
@@ -181,9 +189,17 @@ function askNext(){
 function setMode(mode){if(mode==='short')state.lockedTopic=null;if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
- cancelFollowup();stopRecognition();stopAudio();$('message').value='';
+ cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
  if(state.dayMode){
   if(state.dayDone){note('Тренировка завершена. Вернись к уроку или выбери обычные диалоги.');return;}
+  // A learner may ask one of the recorded HSK2 questions. Answer it in the
+  // HSK2 context without advancing the current five-step practice prompt.
+  const dayQA=recordedPandaAnswer(input,[1],{course:'hsk2-day'});
+  if(dayQA?.kind==='question'){
+   learner(input,dayQA.spoken);state.dayResumeStep=state.dayStep;say(dayQA.reply,true);
+   note('Это вопрос HSK2 «Мой день». После ответа Панда вернёт текущий вопрос тренировки.');
+   return;
+  }
   const checked=checkDayAnswer(input,state.dayStep,state.dayMini);
   learner(input,checked.spoken);
   if(checked.ok){state.dayStep++;happy();if(state.dayStep>=dailyQuestions(state.dayMini).length){askNext()}else{askNext();note('Ответ по теме принят. Следующий вопрос. Тоны не оценивались.')}}

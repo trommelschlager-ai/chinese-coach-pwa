@@ -1,6 +1,6 @@
 // Reviewed HSK1 rules only. No network, inferred forecast, or acoustic scoring.
 import {normalize,verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live6';
-import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=358';
+import {recordedPandaAnswer,recordedCourseScope} from './panda-recorded-qa-v358.mjs?v=381';
 import {interpretUtterance,interpretFamily,weekdayForDate} from './panda-live-conversation-v266.mjs?v=270';
 import {answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {lookupPilotAudio} from './panda-live-audio.mjs?v=358';
@@ -237,8 +237,10 @@ function extendQuestion(result,raw,allowed,date,profile){
  return {...result,followup:retain?result.followup:(linked||result.followup||null)};
 }
 export function answerLive(raw,options={}){
- const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={}}=options;
+ const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={},course='hsk1'}=options;
  raw=String(raw||'').trim();const s=normalize(raw);if(!raw)return {kind:'empty',message:'Скажи или напиши фразу на китайском.'};
+ // HSK2 daily-life MP3 questions are not HSK1 Weather (chapter 7), even if unlocked.
+ if(recordedCourseScope(raw)==='hsk2-day')return recordedPandaAnswer(raw,course==='hsk2-day'?[1]:allowed,{course});
  // Android ASR can mishear the sibling question as a different phrase.
  // Do not silently turn this into a verified translation or tone score.
  if(s==='你有棒棒吗'||s==='你有棒吗'){
@@ -338,7 +340,7 @@ export function answerLive(raw,options={}){
  if(!spoken.known&&allowed.includes(7)&&(/(?:погод|прогноз)/i.test(raw)||/(真实|实际|现在|北京|莫斯科).*(天气|下雨|冷|热)/.test(s)))return {kind:'clarify',spoken,message:'Настоящий прогноз я не получаю. Могу поддержать учебный разговор о погоде: 今天天气怎么样？'};
  // User-recorded, explicitly paired beginner questions with native MP3s.
  // Apply only when established HSK rules above have no answer.
- const recorded=recordedPandaAnswer(raw,allowed);
+ const recorded=recordedPandaAnswer(raw,allowed,{course});
  if(recorded)return recorded;
  const old=answerNonStop(raw,allowed,prompt,curriculum,date);
  if(old.kind==='question')return extendQuestion({...old,spoken:spoken.known?spoken:old.spoken,followup:s==='谢谢'?null:turn%3===2?nextTopicPrompt(topic,[],date,profile):null},raw,allowed,date,profile);
