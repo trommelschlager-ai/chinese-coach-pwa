@@ -5,6 +5,7 @@ import {analyzeCalendarLiteral,calendarAcknowledgement} from '../assets/panda-ca
 import {answerLive} from '../assets/panda-live-dialogue-v272.mjs';
 import {lookupPandaVoiceClip} from '../assets/panda-live-audio.mjs';
 import {patternPrompts} from '../assets/panda-hsk1-patterns-v285.mjs';
+import {liveDOM} from './panda-live-dom-fixture.mjs';
 
 const date=new Date(2026,10,16,12,0,0);
 const all=[1,2,3,4,5,6,7];
@@ -56,7 +57,14 @@ test('Locked and unrelated topics do not trigger calendar questions',()=>{
  assert.equal(limited.followup,null,'Must not ask unavailable lesson 5');
  const pending={lesson:1,hanzi:'你好吗？',intent:'intro',accepted:['我很好']};
  const offTopic=free('星期一',[1,4,5],pending);
- assert.equal(offTopic.followup,null,'Do not replace the pending greeting question');
+ assert.equal(offTopic.followup?.hanzi,'今天几月几号？',
+  'In Non-Stop a deliberate calendar statement may change an unrelated greeting topic');
+ assert.equal(offTopic.followup?.isContextual,true);
+ const interruptedDate=free('11月16号',[1,4,5],pending);
+ assert.equal(interruptedDate.followup?.hanzi,'今天星期几？');
+ const notUnlocked=free('11月16号',[1],pending);
+ assert.equal(notUnlocked.followup,null,'A calendar switch must not unlock lessons');
+ assert.match(notUnlocked.message,/«Дни недели»/,'Explain why the requested calendar flow cannot continue');
 });
 
 test('An active weekday lesson still grades correct and wrong answers instead of acknowledging blindly',()=>{
@@ -76,7 +84,7 @@ test('Short and Non-Stop screen paths retain progress and skip unavailable ackno
  assert(source.indexOf("if(question.spoken?.calendarLiteral&&question.reply)") >
    source.indexOf("const result=verifyAnswerFor(conversation.lines,state.step,input)"));
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- assert(html.includes('panda-live-screen-v270.mjs?v=402'));
+ assert(html.includes('panda-live-screen-v270.mjs?v=403'));
 });
 
 test('the UI does not overwrite the reviewed calendar follow-up with an unrelated greeting',()=>{
@@ -89,4 +97,23 @@ test('the UI does not overwrite the reviewed calendar follow-up with an unrelate
  const replacesWithGeneric=followup.intent!=='relative-age'&&!followup.isContextual;
  assert.equal(replacesWithGeneric,false,'Never replace 今天星期几？ with 你今天怎么样？');
  assert.equal(followup.hanzi,'今天星期几？');
+});
+
+test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗 when calendar topic is open',async()=>{
+ const dom=await liveDOM(1,{completed:['weekdays','dates']});
+ try{
+  const {el,send,w}=dom;
+  el('mode-nonstop').click();
+  assert.equal(w.PandaApprovedBridge337.snapshot().mode,'nonstop');
+  assert(w.PandaApprovedBridge337.snapshot().allowed.includes(4));
+  assert(w.PandaApprovedBridge337.snapshot().allowed.includes(5));
+  send('11月16号');
+  assert.match(el('recent').textContent,/16\.11/,'Learner date is translated');
+  assert.match(el('status').textContent,/продолжит вопросом/,'Panda scheduled a relevant calendar follow-up');
+  await new Promise(resolve=>setTimeout(resolve,4950));
+  assert.equal(el('phrase').textContent,'今天星期几？',
+   'Calendar question replaces stale greeting prompt in Non-Stop');
+  assert.match(el('translation').textContent,/день недели/);
+  assert.equal(el('hear').disabled,false,'Approved question MP3 is available');
+ }finally{dom.close()}
 });
