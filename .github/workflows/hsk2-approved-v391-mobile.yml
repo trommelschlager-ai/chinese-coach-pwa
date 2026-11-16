@@ -16,6 +16,7 @@ on:
       - 'tests/panda-hsk2-day-chat-v1.test.mjs'
       - 'assets/hsk2-day-topic-one-v391.js'
       - 'assets/approved-course-v390/**'
+      - 'assets/hsk2-edge-fill-v403.css'
       - 'hsk2-bastian-intro.html'
       - 'assets/bastian-voice-five-v397.js'
       - 'assets/bastian-voice-five-v397.css'
@@ -28,6 +29,15 @@ on:
       - 'scripts/qa-pandago-fullscreen-v395.mjs'
       - 'scripts/qa-hsk2-approved-course-v391.mjs'
       - 'scripts/qa-panda-day-voice-v399.mjs'
+      - '.github/workflows/hsk2-approved-v391-mobile.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hsk2-life-course.html'
+      - 'assets/hsk2-life-course-app-v1.js'
+      - 'assets/approved-course-v390/**'
+      - 'assets/hsk2-edge-fill-v403.css'
+      - 'scripts/qa-hsk2-approved-course-v391.mjs'
       - '.github/workflows/hsk2-approved-v391-mobile.yml'
   workflow_dispatch:
 
