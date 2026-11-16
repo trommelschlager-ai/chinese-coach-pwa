@@ -222,6 +222,19 @@ function submit(raw){
    if(result.wordCard)showWordCard(result.wordCard);
     else if(result.explanation){const row=document.createElement('p');row.textContent=result.explanation;$('learner-feedback').replaceChildren(row);$('learner-feedback').hidden=false;document.documentElement.dataset.feedback='true';}
    let followup=result.followup;
+   // Respect the learner's actual calendar topic and previously asked questions.
+   // The generic question picker can otherwise jump from today's weekday to a
+   // tomorrow-weekday variant, or alternate today's date/weekday indefinitely.
+   if(result.spoken?.calendarLiteral&&!state.lockedTopic){
+    const otherLesson=result.spoken.topic===4?5:4;
+    const nextCalendar=otherLesson===5?'今天几月几号':'今天星期几';
+    const askedRecently=state.questions.slice(-8).some(q=>normalize(q)===nextCalendar);
+    const candidate=state.allowed.includes(otherLesson)&&!askedRecently?
+     nextTopicPrompt(otherLesson,[],new Date(),state.profile):null;
+    followup=candidate&&normalize(candidate.hanzi)===nextCalendar
+     &&lookupPandaVoiceClip(candidate.hanzi)?
+     {...candidate,isContextual:true,audioKey:candidate.hanzi}:null;
+   }
    if(followup&&state.lockedTopic&&state.allowed.includes(state.lockedTopic)&&followup.lesson!==state.lockedTopic){
      // Preserve contextual questions from the chosen topic. If the generic
      // engine suggests a different topic, use a verified question here instead.
@@ -237,8 +250,19 @@ function submit(raw){
      const selected=state.allowed[state.cursor%state.allowed.length]||state.topic;
      followup=pickCoursePrompt(selected,curriculum,state.questions.concat(input),new Date(),{...state.profile,unlocked:state.allowed})||followup;
     }
+   // A calendar mini-dialogue has only two fixed questions with approved MP3.
+   // Never alternate 今天星期几 and 今天几月几号 indefinitely after both were asked.
+   // Use the actual displayed-question history, not user sentences.
+   const recentCalendarQuestions=state.questions.slice(-8).map(normalize);
+   const completedCalendarRound=!!result.spoken?.calendarLiteral
+     &&recentCalendarQuestions.includes('今天星期几')
+     &&recentCalendarQuestions.includes('今天几月几号');
+   if(completedCalendarRound)followup=null;
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
-   note(followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':followup?'Панда продолжит вопросом по пройденным темам. Можешь ответить или спросить раньше.':result.message||'Продолжай или нажми «Ещё вопрос».');
+   note(completedCalendarRound?'Мы повторили день недели и дату. Молодец! Выбери другую тему или задай свой вопрос.':
+    followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
+    followup?'Панда продолжит вопросом по пройденным темам. Можешь ответить или спросить раньше.':
+    result.message||'Продолжай или нажми «Ещё вопрос».');
    if(state.confidence!==null&&state.confidence<.65){cancelFollowup();note('Распознано неуверенно. Проверь текст в истории и повтори при необходимости.');}return;
   }
   note(result.message);render();return;

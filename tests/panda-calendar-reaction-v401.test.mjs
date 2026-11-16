@@ -84,7 +84,7 @@ test('Short and Non-Stop screen paths retain progress and skip unavailable ackno
  assert(source.indexOf("if(question.spoken?.calendarLiteral&&question.reply)") >
    source.indexOf("const result=verifyAnswerFor(conversation.lines,state.step,input)"));
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- assert(html.includes('panda-live-screen-v270.mjs?v=403'));
+ assert(html.includes('panda-live-screen-v270.mjs?v=404'));
 });
 
 test('the UI does not overwrite the reviewed calendar follow-up with an unrelated greeting',()=>{
@@ -115,5 +115,18 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
    'Calendar question replaces stale greeting prompt in Non-Stop');
   assert.match(el('translation').textContent,/день недели/);
   assert.equal(el('hear').disabled,false,'Approved question MP3 is available');
+  // Then answer the weekday and date, as on the user's Android screenshots.
+  // No third repeat of the same two-question loop is permitted.
+  send('今天星期一。');
+  await new Promise(resolve=>setTimeout(resolve,4950));
+  assert.equal(el('phrase').textContent,'今天几月几号？',
+   'After weekday answer, Panda should ask for the date once');
+  send('今天是十一月十六号。');
+  assert.match(el('status').textContent,/Мы повторили день недели и дату/,
+   'End the finished calendar mini-dialogue instead of looping');
+  const finalPhrase=el('phrase').textContent;
+  await new Promise(resolve=>setTimeout(resolve,4950));
+  assert.equal(el('phrase').textContent,finalPhrase,
+   'Do not automatically ask 今天星期几？ again');
  }finally{dom.close()}
 });
