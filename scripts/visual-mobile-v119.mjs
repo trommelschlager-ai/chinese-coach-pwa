@@ -101,19 +101,13 @@ try{
   assert.equal(await page.locator('#pg130 [data-dialog-line]').count(),5);
   await screenshot(page,'04-next-dialogue',size);
 
-  // Keep the retired, independently reachable standalone game healthy.
+  // game.html now redirects into the approved Panda training route.
   const game=await context.newPage();
-  await game.goto(BASE+'/game.html?legacy=1',{waitUntil:'load'});
-  await game.locator('[data-game-mode="build"]').waitFor();
-  await game.locator('.approved-art-image').evaluate(img=>img.decode());
-  const hero=await game.locator('.approved-art-image').boundingBox();
-  assert(Math.abs(hero.width/hero.height-864/1536)<.015,
-   'Legacy approved game art must preserve 864:1536 aspect ratio');
-  const hot=game.locator('.approved-hit-build');
-  await hot.dispatchEvent('pointerdown',{bubbles:true});
-  assert(await hot.evaluate(el=>el.classList.contains('is-pressed')),'Button presses give tactile feedback');
-  await hot.dispatchEvent('pointerup',{bubbles:true});
-  await screenshot(game,'05-legacy-game',size);
+  await game.goto(BASE+'/game.html',{waitUntil:'load'});
+  await game.waitForURL(/#panda\/training/);
+  await game.locator('#pg130:not([hidden]) .pg-screen').waitFor();
+  assert.equal(await game.evaluate(()=>typeof window.__panda130?.show),'function','Panda training router is available');
+  await screenshot(game,'05-panda-training',size);
   await game.close();
 
   // Standalone Hanzi must use the approved raster and an operable SVG writer.
