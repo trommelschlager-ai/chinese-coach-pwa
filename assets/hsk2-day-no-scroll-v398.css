@@ -1,35 +1,35 @@
-/* Panda Go v398 · No scroll-jumping in My Day steps 1 & 5.
+/* Panda Go v398 · No scroll-jumping in My Day steps 1 & 3.
    Keep actual Chinese characters, word explanations, quiz and learner speech state. */
-#app.day-stage-0 #screen,#app.day-stage-4 #screen{
+#app.day-stage-0 #screen,#app.day-stage-2 #screen{
  overflow:hidden!important;padding:5px 7px 5px!important;
  display:flex;flex-direction:column;min-height:0;
 }
-#app.day-stage-0 .day-pilot,#app.day-stage-4 .day-pilot{
+#app.day-stage-0 .day-pilot,#app.day-stage-2 .day-pilot{
  height:100%;min-height:0;width:100%;
  display:flex;flex-direction:column;gap:5px;padding:0;
 }
-#app.day-stage-0 .day-title,#app.day-stage-4 .day-title{
+#app.day-stage-0 .day-title,#app.day-stage-2 .day-title{
  flex:none;min-height:0!important;height:clamp(91px,13dvh,118px)!important;
  margin:0!important;padding:7px 8px 5px 60px!important;
 }
-#app.day-stage-0 .day-approved-banner,#app.day-stage-4 .day-approved-banner{display:none!important}
-#app.day-stage-0 .day-title h1,#app.day-stage-4 .day-title h1{
+#app.day-stage-0 .day-approved-banner,#app.day-stage-2 .day-approved-banner{display:none!important}
+#app.day-stage-0 .day-title h1,#app.day-stage-2 .day-title h1{
  font-size:clamp(17px,4.6vw,21px)!important;margin:1px 0!important;
 }
-#app.day-stage-0 .day-label,#app.day-stage-4 .day-label{font-size:9px}
-#app.day-stage-0 .day-title p,#app.day-stage-4 .day-title p{
+#app.day-stage-0 .day-label,#app.day-stage-2 .day-label{font-size:9px}
+#app.day-stage-0 .day-title p,#app.day-stage-2 .day-title p{
  font-size:10px!important;margin:1px 0 5px!important;line-height:1.1;
 }
-#app.day-stage-0 .day-stages,#app.day-stage-4 .day-stages{gap:3px}
-#app.day-stage-0 .day-stages span,#app.day-stage-4 .day-stages span{
+#app.day-stage-0 .day-stages,#app.day-stage-2 .day-stages{gap:3px}
+#app.day-stage-0 .day-stages span,#app.day-stage-2 .day-stages span{
  padding:3px 1px!important;font-size:clamp(8px,2.2vw,10px)!important;line-height:1.05;
 }
-#app.day-stage-0 .day-stages span b,#app.day-stage-4 .day-stages span b{font-size:10px}
-#app.day-stage-0 .day-card,#app.day-stage-4 .day-card{
+#app.day-stage-0 .day-stages span b,#app.day-stage-2 .day-stages span b{font-size:10px}
+#app.day-stage-0 .day-card,#app.day-stage-2 .day-card{
  border-radius:14px!important;padding:clamp(4px,.7dvh,8px)!important;
  margin:0!important;min-height:0;
 }
-#app.day-stage-0 .day-card h2,#app.day-stage-4 .day-card h2{
+#app.day-stage-0 .day-card h2,#app.day-stage-2 .day-card h2{
  font-size:clamp(13px,3.55vw,17px)!important;line-height:1.1;
  padding:0 0 2px!important;margin:0 0 3px!important;
 }
@@ -96,56 +96,56 @@
 #app.day-stage-0 .day-recorded-example>span{display:none}
 #app.day-stage-0 .day-recorded-example button{font-size:11px;min-height:24px;padding:2px 7px}
 
-/* Step five — word chips, one selected word, microphone and five results in one viewport */
-#app.day-stage-4 .day-speech-card{flex:1;display:flex;flex-direction:column;gap:3px;overflow:hidden}
-#app.day-stage-4 .day-speech-card>.day-hint{flex:none;margin:0!important;font-size:clamp(10px,2.6vw,12px);line-height:1.13}
-#app.day-stage-4 .day-wordchoice{
+/* Step three — word chips, one selected word, microphone and five results in one viewport */
+#app.day-stage-2 .day-speech-card{flex:1;display:flex;flex-direction:column;gap:3px;overflow:hidden}
+#app.day-stage-2 .day-speech-card>.day-hint{flex:none;margin:0!important;font-size:clamp(10px,2.6vw,12px);line-height:1.13}
+#app.day-stage-2 .day-wordchoice{
  flex:none;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));
  grid-template-rows:repeat(2,minmax(38px,1fr));
  gap:4px!important;overflow:visible!important;padding:0!important;
 }
-#app.day-stage-4 .day-wordchoice button{
+#app.day-stage-2 .day-wordchoice button{
  min-width:0!important;min-height:39px!important;padding:3px 1px!important;
  font-size:clamp(13px,3.6vw,18px)!important;line-height:1.05;white-space:nowrap;
  border-radius:10px!important;
 }
-#app.day-stage-4 .day-wordchoice button small{font-size:10px}
-#app.day-stage-4 .day-speechhero{
+#app.day-stage-2 .day-wordchoice button small{font-size:10px}
+#app.day-stage-2 .day-speechhero{
  flex:1;min-height:0!important;padding:5px!important;gap:2px!important;overflow:hidden;
 }
-#app.day-stage-4 .day-speechhero>div{font-size:clamp(28px,5.7dvh,44px)!important;line-height:1.08}
-#app.day-stage-4 .day-speechhero>strong{font-size:clamp(12px,3vw,16px)!important}
-#app.day-stage-4 .day-speechhero>span{font-size:clamp(10px,2.6vw,12px)!important}
-#app.day-stage-4 .day-speechhero .audio{min-height:28px}
-#app.day-stage-4 .day-attempts{flex:none;gap:4px;margin:1px 0!important}
-#app.day-stage-4 .day-attempts div{
+#app.day-stage-2 .day-speechhero>div{font-size:clamp(28px,5.7dvh,44px)!important;line-height:1.08}
+#app.day-stage-2 .day-speechhero>strong{font-size:clamp(12px,3vw,16px)!important}
+#app.day-stage-2 .day-speechhero>span{font-size:clamp(10px,2.6vw,12px)!important}
+#app.day-stage-2 .day-speechhero .audio{min-height:28px}
+#app.day-stage-2 .day-attempts{flex:none;gap:4px;margin:1px 0!important}
+#app.day-stage-2 .day-attempts div{
  padding:3px 1px!important;border-radius:9px;gap:0;
  font-size:clamp(14px,3.5vw,18px);line-height:1.08;
 }
-#app.day-stage-4 .day-attempts div b{font-size:10px}
-#app.day-stage-4 .day-record{flex:none;min-height:clamp(36px,5dvh,45px)!important;margin:1px auto!important}
-#app.day-stage-4 .day-speech-card>.day-feedback{flex:none;line-height:1.12!important;margin:0!important;font-size:11px!important}
-#app.day-stage-4 .day-speech-card>.day-hint:last-child{font-size:10px!important}
-#app.day-stage-4 .day-speech-card>.day-hint:has(+ .day-record){font-size:11px}
+#app.day-stage-2 .day-attempts div b{font-size:10px}
+#app.day-stage-2 .day-record{flex:none;min-height:clamp(36px,5dvh,45px)!important;margin:1px auto!important}
+#app.day-stage-2 .day-speech-card>.day-feedback{flex:none;line-height:1.12!important;margin:0!important;font-size:11px!important}
+#app.day-stage-2 .day-speech-card>.day-hint:last-child{font-size:10px!important}
+#app.day-stage-2 .day-speech-card>.day-hint:has(+ .day-record){font-size:11px}
 /* Keep recorded text available, but avoid its taking space from microphone. */
-#app.day-stage-4 .day-speech-card>p:nth-last-child(2):not(.day-feedback){font-size:11px;margin:0}
-#app.day-stage-4 .day-consent{
+#app.day-stage-2 .day-speech-card>p:nth-last-child(2):not(.day-feedback){font-size:11px;margin:0}
+#app.day-stage-2 .day-consent{
  position:absolute;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));
  background:#fff7e7;z-index:12;box-shadow:0 0 0 500px #35104455,0 4px 22px #37134e99;
 }
-#app.day-stage-4 #screen{position:relative}
+#app.day-stage-2 #screen{position:relative}
 /* For extremely short viewports, only the explanation area scrolls; never the whole lesson. */
 @media(max-height:690px){
- #app.day-stage-0 .day-title,#app.day-stage-4 .day-title{height:85px!important}
+ #app.day-stage-0 .day-title,#app.day-stage-2 .day-title{height:85px!important}
  #app.day-stage-0 .day-quicklist{flex:1.5}
  #app.day-stage-0 .day-breakdown{flex:.85}
  #app.day-stage-0 .day-focus{flex:.7}
  #app.day-stage-0 .day-tip{display:none}
- #app.day-stage-4 .day-speech-card>.day-hint:last-child{display:none}
- #app.day-stage-4 .day-speechhero{flex:.7}
+ #app.day-stage-2 .day-speech-card>.day-hint:last-child{display:none}
+ #app.day-stage-2 .day-speechhero{flex:.7}
 }
 /* Taps visibly illuminate selected vocabulary and current recording. */
-#app.day-stage-0 .day-vword:active,#app.day-stage-4 .day-wordchoice button:active{
+#app.day-stage-0 .day-vword:active,#app.day-stage-2 .day-wordchoice button:active{
  box-shadow:inset 0 0 0 2px #ffe7a1,0 0 11px #ecb944!important;
  filter:brightness(1.05);
 }
@@ -160,53 +160,53 @@
  background:linear-gradient(110deg,#621e93eb,#ac4fc0e8),url('./approved-course-v390/day-lesson.png') center 12%/cover!important;
  overflow:hidden!important;
 }
-#app.day-stage-0 .day-title>h1,#app.day-stage-4 .day-title>h1{
+#app.day-stage-0 .day-title>h1,#app.day-stage-2 .day-title>h1{
  display:block!important;font-size:clamp(15px,3.95vw,19px)!important;
  white-space:normal!important;margin:0 0 1px!important;
  line-height:1.05!important;
 }
-#app.day-stage-0 .day-title .day-panda,#app.day-stage-4 .day-title .day-panda{
+#app.day-stage-0 .day-title .day-panda,#app.day-stage-2 .day-title .day-panda{
  display:block!important;position:absolute!important;
  width:clamp(48px,13vw,65px)!important;height:70px!important;
  left:2px!important;bottom:0!important;
  object-fit:contain!important;
 }
-#app.day-stage-0 .day-title .day-label,#app.day-stage-4 .day-title .day-label{display:none!important}
-#app.day-stage-0 .day-title>p,#app.day-stage-4 .day-title>p{
+#app.day-stage-0 .day-title .day-label,#app.day-stage-2 .day-title .day-label{display:none!important}
+#app.day-stage-0 .day-title>p,#app.day-stage-2 .day-title>p{
  margin:0 0 3px!important;padding:0!important;font-size:clamp(9px,2.3vw,11px)!important;
  line-height:1.07!important;white-space:nowrap!important;
 }
-#app.day-stage-0 .day-title .day-stages,#app.day-stage-4 .day-title .day-stages{
+#app.day-stage-0 .day-title .day-stages,#app.day-stage-2 .day-title .day-stages{
  padding:0!important;min-height:24px;display:flex;align-items:stretch;
 }
-#app.day-stage-4 .day-speechhero>.day-recorded-example{
+#app.day-stage-2 .day-speechhero>.day-recorded-example{
  display:flex!important;flex:none!important;
  width:auto!important;max-width:100%!important;
  font-size:11px!important;line-height:1.1!important;
  gap:2px!important;flex-direction:row!important;
  align-items:center!important;
 }
-#app.day-stage-4 .day-speechhero>.day-recorded-example>span,
-#app.day-stage-4 .day-speechhero>.day-recorded-example>small{display:none!important}
-#app.day-stage-4 .day-speechhero>.day-recorded-example button{
+#app.day-stage-2 .day-speechhero>.day-recorded-example>span,
+#app.day-stage-2 .day-speechhero>.day-recorded-example>small{display:none!important}
+#app.day-stage-2 .day-speechhero>.day-recorded-example button{
  display:inline-block!important;font-size:clamp(11px,2.7vw,13px)!important;
  min-height:27px!important;padding:3px 7px!important;
  max-width:100%!important;white-space:normal;
 }
-#app.day-stage-4 .day-speechhero>div:not(.day-recorded-example){
+#app.day-stage-2 .day-speechhero>div:not(.day-recorded-example){
  font-size:clamp(29px,5.6dvh,44px)!important;
 }
 /* Compact users should not be forced to scroll just to hear a sample or tap mic. */
-#app.day-stage-4 .day-speech-card{gap:2px!important}
+#app.day-stage-2 .day-speech-card{gap:2px!important}
 
 /* v402: answer by voice without reaching from the middle word to a footer button. */
-#app.day-stage-4 .day-speechhero{
+#app.day-stage-2 .day-speechhero{
  flex:0 0 auto!important;
  min-height:clamp(167px,23dvh,200px)!important;
  height:auto!important;justify-content:center!important;
  padding:6px 10px!important;
 }
-#app.day-stage-4 .day-speechhero .day-record{
+#app.day-stage-2 .day-speechhero .day-record{
  display:block!important;flex:none!important;
  width:min(95%,300px)!important;
  max-width:300px!important;
@@ -215,16 +215,16 @@
  font-weight:900!important;
  box-shadow:0 3px 8px #7328a24a,inset 0 1px #fff5c9;
 }
-#app.day-stage-4 .day-speechhero .day-record:active{
+#app.day-stage-2 .day-speechhero .day-record:active{
  background:linear-gradient(#ffecaa,#ffc15b)!important;
  box-shadow:inset 0 3px 8px #76269a65,0 0 0 2px #ffe8aa!important;
 }
-#app.day-stage-4 .day-speech-card .day-attempts{
+#app.day-stage-2 .day-speech-card .day-attempts{
  margin-top:clamp(6px,1.2dvh,11px)!important;
 }
 /* A few very short screens can scroll the small card, but controls never overlap
    the permanently visible bottom actions. */
 @media(max-height:710px){
- #app.day-stage-4 .day-speechhero{min-height:145px!important}
- #app.day-stage-4 .day-speechhero>div:not(.day-recorded-example){font-size:29px!important}
+ #app.day-stage-2 .day-speechhero{min-height:145px!important}
+ #app.day-stage-2 .day-speechhero>div:not(.day-recorded-example){font-size:29px!important}
 }
