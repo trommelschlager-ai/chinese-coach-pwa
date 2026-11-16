@@ -26,7 +26,7 @@ const good=[
  ['我早上刷牙',0],['我起床以后洗脸',1],['我起床后刷牙',1],
  ['我起床以后吃早饭',1],['我今天刷牙',1],['我吃早饭',1],['我洗脸',2],
  ['我上午学习中文',2],['我今天上班',3],['我今天先刷牙再吃早饭',3],
- ['我晚上看电影',4],
+ ['我晚上看电影',4],['我晚上工作',4],['我晚上跑步',4],
 ];
 for(const [utterance,idx] of good){
  const x=checkDayAnswer(utterance,idx,2);
@@ -59,7 +59,7 @@ const translated=[
  ['我先刷牙，再吃早饭',3,'потом завтракаю'],
  ['我今天上班',3,'Сегодня я работаю'],
  ['我晚上听音乐',4,'слушаю музыку'],
- ['我晚上看电影',4,'смотрю фильмы'],
+ ['我晚上看电影',4,'смотрю фильмы'],['我晚上工作',4,'работаю'],
  ['我晚上经常看电视',4,'часто смотрю телевизор']
 ];
 for(const [utterance,idx,meaning] of translated){
@@ -72,7 +72,7 @@ for(const [utterance,idx,meaning] of translated){
 }
 for(const [utterance,idx] of [
  ['我每天二十五点起床',0],['没有',1],['我先刷牙再刷牙',3],
- ['我晚上常常听音乐了',4],['我晚上工作',4]
+ ['我晚上常常听音乐了',4],['我晚上工作了',4]
 ]){
  const r=checkDayAnswer(utterance,idx,2);
  assert.equal(r.ok,false,'Do not mark malformed or unsupported phrase correct: '+utterance);
