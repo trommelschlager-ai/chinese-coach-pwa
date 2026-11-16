@@ -29,7 +29,11 @@ try{
  const pendingAudio=await page.locator('.day-audio-pending').count();
   const recordedExample=await page.locator('.day-recorded-example').count();
   assert.ok(pendingAudio+recordedExample>0,'Absent standalone word MP3 must either show an honest warning or a separately labelled recorded SENTENCE');
-  if(recordedExample)assert.match(await page.locator('.day-recorded-example').first().innerText(),/Запись предложения/,'Never present a sentence clip as an isolated word');
+  if(recordedExample){
+    const example=page.locator('.day-recorded-example').first();
+    assert.match(await example.textContent(),/Запись предложения/,'A recorded sentence must be explicitly labelled in the source');
+    assert.match(await example.locator('button[data-sound]').getAttribute('aria-label'),/Слушать пример/,'Playback must announce a sentence example to screen readers');
+  }
  fs.mkdirSync('qa/panda-voice-pilot',{recursive:true});
  await page.screenshot({path:'qa/panda-voice-pilot/hsk2-day-lesson-android.png',fullPage:false});
  for(let i=0;i<3;i++)await page.locator('[data-day-next]').click();
