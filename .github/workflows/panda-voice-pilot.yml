@@ -17,6 +17,9 @@ on:
       - 'tests/panda-hello-followup-*'
       - 'tests/panda-wellbeing-followup-*'
       - 'tests/panda-text-only-audio-*'
+      - 'assets/panda-voice-v411.mjs'
+      - 'assets/panda-voice-clips-v411/**'
+      - 'tests/panda-voice-v411-assets.test.mjs'
       - 'tests/panda-calendar-*'
       - 'assets/panda-hsk1-*'
       - 'assets/panda-brain-*'
@@ -45,6 +48,9 @@ on:
       - 'tests/panda-hello-followup-*'
       - 'tests/panda-wellbeing-followup-*'
       - 'tests/panda-text-only-audio-*'
+      - 'assets/panda-voice-v411.mjs'
+      - 'assets/panda-voice-clips-v411/**'
+      - 'tests/panda-voice-v411-assets.test.mjs'
       - 'tests/panda-calendar-*'
       - 'assets/panda-hsk1-*'
       - 'assets/panda-brain-*'
@@ -199,3 +205,15 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Verify sound safety and preservation of working Non-Stop greetings
         run: node --test tests/panda-text-only-audio-v410.test.mjs
+
+  voice-v411-asset-verification:
+    name: November 16 Panda MP3 exact-phrase file verification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify all 10 newly uploaded MP3s and exact Mandarin lookup
+        run: node --test tests/panda-voice-v411-assets.test.mjs
