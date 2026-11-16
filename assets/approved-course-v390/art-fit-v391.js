@@ -32,9 +32,11 @@
      img.addEventListener('error',function(){if(img.isConnected){art.classList.add('failed');frame.setAttribute('aria-label','Изображение не загружено. Обнови страницу.')}},{once:true});
     }
    }
-   const scale=Math.min(frame.clientWidth*1.12/ORIGINAL_WIDTH,frame.clientHeight*1.02/ORIGINAL_HEIGHT);
-   art.style.width=(ORIGINAL_WIDTH*scale)+'px';
-   art.style.height=(ORIGINAL_HEIGHT*scale)+'px';
+   // Narrow the approved artwork to stop side clipping. Expand its vertical
+   // presence modestly; percentage hotspots stay on the same parent.
+   const scale=Math.min(frame.clientWidth*1.00/ORIGINAL_WIDTH,frame.clientHeight*0.99/ORIGINAL_HEIGHT);
+   art.style.width=Math.min(frame.clientWidth,ORIGINAL_WIDTH*scale*0.985)+'px';
+   art.style.height=Math.min(frame.clientHeight,ORIGINAL_HEIGHT*scale*1.11)+'px';
   });
  }
  window.addEventListener('resize',function(){requestAnimationFrame(fit)},{passive:true});
