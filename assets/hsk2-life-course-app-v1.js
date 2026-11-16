@@ -39,14 +39,54 @@ try{
  var saved=JSON.parse(localStorage.getItem(KEY)||'null');
  if(saved&&Array.isArray(saved.completed)){
   state.completed=saved.completed.filter(function(v){return Number.isInteger(v)&&v>=0&&v<30});
-  state.difficult=Array.isArray(saved.difficult)?saved.difficult:[];
+  state.difficult=Array.isArray(saved.difficult)?saved.difficult.filter(function(v){return typeof v==='string'}):[];
   state.showPy=saved.showPy!==false;
   state.examPassed=!!saved.examPassed;
+  var resume=saved.resume;
+  if(resume&&typeof resume==='object'&&Number.isInteger(resume.topic)&&resume.topic>=0&&resume.topic<10
+   &&Number.isInteger(resume.mini)&&resume.mini>=0&&resume.mini<3){
+   state.view='lesson';
+   state.topic=resume.topic;state.mini=resume.mini;
+   state.stage=Number.isInteger(resume.stage)?Math.max(0,Math.min(resume.topic===0?4:3,resume.stage)):0;
+   state.quizWord=[0,1,2].includes(resume.quizWord)?resume.quizWord:null;
+   state.quizSentence=[0,1,2].includes(resume.quizSentence)?resume.quizSentence:null;
+   var tokenCount=builders[state.topic*3+state.mini].length;
+   state.build=Array.isArray(resume.build)?
+    [...new Set(resume.build.filter(function(n){return Number.isInteger(n)&&n>=0&&n<tokenCount}))]:[];
+   if(resume.topic===0&&dayUI){
+    var d=dayUI.makeState(resume.mini),prior=resume.day;
+    if(prior&&typeof prior==='object'){
+     d.selected=Number.isInteger(prior.selected)?Math.max(0,Math.min(d.wordsLength||d.attempts.length-1,prior.selected)):d.selected;
+     d.speechWord=Number.isInteger(prior.speechWord)?Math.max(0,Math.min(d.attempts.length-1,prior.speechWord)):d.speechWord;
+     d.quiz=Array.isArray(prior.quiz)?[0,1].map(function(i){return [0,1,2].includes(prior.quiz[i])?prior.quiz[i]:null}):d.quiz;
+     d.build=Array.isArray(prior.build)?[...new Set(prior.build.filter(function(n){return Number.isInteger(n)&&n>=0&&n<7}))]:d.build;
+     d.attempts=d.attempts.map(function(_,i){return Array.isArray(prior.attempts?.[i])?
+      prior.attempts[i].slice(0,5).filter(function(v){return v&&typeof v.said==='string'&&typeof v.match==='boolean'}).map(function(v){return {said:v.said.slice(0,80),match:v.match}}):[]});
+     d.poster=!!prior.poster;
+    }
+    state.day=d;
+   }
+  }
  }
 }catch(e){}
 var screen=document.getElementById('screen');
 var status=document.getElementById('message');
-function store(){try{localStorage.setItem(KEY,JSON.stringify({completed:state.completed,difficult:state.difficult,showPy:state.showPy,examPassed:state.examPassed}))}catch(e){}}
+function store(){
+ try{
+  var day=state.topic===0&&state.day?{
+   selected:state.day.selected,speechWord:state.day.speechWord,quiz:state.day.quiz,build:state.day.build,
+   attempts:state.day.attempts,poster:state.day.poster
+  }:null;
+  var resume=state.view==='lesson'?{
+   topic:state.topic,mini:state.mini,stage:state.stage,quizWord:state.quizWord,
+   quizSentence:state.quizSentence,build:state.build,day:day
+  }:null;
+  localStorage.setItem(KEY,JSON.stringify({
+   completed:state.completed,difficult:state.difficult,showPy:state.showPy,
+   examPassed:state.examPassed,resume:resume
+  }));
+ }catch(e){}
+}
 function E(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function perc(){return Math.round(state.completed.length/30*100)}
 function id(){return state.topic*3+state.mini}
