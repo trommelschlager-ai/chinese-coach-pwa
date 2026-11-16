@@ -34,6 +34,7 @@ const dom=new JSDOM(bastian,{
  url:'https://example.test/hsk2-bastian-intro.html',runScripts:'dangerously',virtualConsole:vc,
  beforeParse(w){w.scrollTo=()=>{};}
 });
+dom.window.eval(fs.readFileSync(path.join(root,'assets/bastian-voice-five-v397.js'),'utf8'));
 const doc=dom.window.document;
 const $=sel=>doc.querySelector(sel);
 const click=sel=>{const el=$(sel);assert.ok(el,'Missing '+sel);el.click()};
@@ -47,7 +48,10 @@ assert.equal(grid.querySelectorAll('.word').length,10);
 assert.equal(grid.querySelectorAll('button.play').length,10,'Each word must have its audio control');
 assert.equal(grid.querySelectorAll('.hz').length,10);
 click('#next');
-assert.equal($('#practice').classList.contains('word-stage'),false,'Other teaching stages must scroll normally');
+assert.equal($('#practice').classList.contains('voice-stage'),true,'Second stage is full-screen speech practice');
+assert.equal(doc.querySelectorAll('.pg397-tile').length,10);
+assert.ok($('#step-title').textContent.includes('Произношение 5 раз'));
+assert.equal($('#toggle-py').hidden,false);
 click('#prev');
 assert.equal($('#practice').classList.contains('word-stage'),true);
 click('#prev');
