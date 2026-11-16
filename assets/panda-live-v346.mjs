@@ -199,7 +199,27 @@ if (!bridge) {
    $('#pg374-topics-tip').textContent='Выбери тему, затем вопрос для разговора.';
    $('#pg346-topics').scrollTop=0;
   }
-  function renderFeedback(s){const last=s.history.slice().reverse().find(x=>x.who==='you');const wrong=last?.analysis?.correction,unknown=last&&!last.ru&&!last.analysis?.probable;const root=$('#pg346-feedback');const active=!!wrong||!!unknown;const key=[last?.hanzi,wrong?.hanzi,s.feedback,active].join('|');if(key===lastFeedback)return;lastFeedback=key;root.hidden=!active;root.replaceChildren();if(!active)return;root.append(el('strong','',`Ты сказал: ${last.hanzi}`));if(wrong){root.append(el('p','',`✅ Правильно: ${wrong.hanzi}${wrong.pinyin?' · '+wrong.pinyin:''}`));if(wrong.ru)root.append(el('p','',wrong.ru));if(wrong.why)root.append(el('p','',wrong.why))}else{root.append(el('p','',last.analysis?.probable||'Полный смысл не подтверждён. Попробуй уточнить'))}}
+  function renderFeedback(s){
+    const last=s.history.slice().reverse().find(x=>x.who==='you');
+    const wrong=last?.analysis?.correction;
+    const unknown=last&&!last.ru&&!last.analysis?.probable;
+    const root=$('#pg346-feedback'),active=!!wrong||!!unknown;
+    const key=[last?.hanzi,wrong?.hanzi,wrong?.why,s.feedback,active].join('|');
+    if(key===lastFeedback)return;
+    lastFeedback=key;root.hidden=!active;root.replaceChildren();
+    if(!active)return;
+    root.append(el('strong','', '🐼 Панда:'));
+    if(wrong){
+      root.append(el('p','pg377-meaning','Предполагаемый смысл: '+(last.analysis?.probable||wrong.ru||'смысл уточняется')));
+      root.append(el('p','pg377-error','❌ '+last.hanzi));
+      root.append(el('p','pg377-correct','✅ '+wrong.hanzi));
+      if(wrong.pinyin)root.append(el('p','pg377-pinyin',wrong.pinyin));
+      if(wrong.ru)root.append(el('p','pg377-translation','Перевод: '+wrong.ru));
+      if(wrong.why)root.append(el('p','pg377-explanation','Объяснение: '+wrong.why));
+    }else{
+      root.append(el('p','',last.analysis?.probable||'Не могу уверенно определить смысл. Уточни предложение.'));
+    }
+  }
   function ingestSpeechSignal(signal,previousSnapshot){
     if(!signal||signal.id===lastSpeechSignalId)return;
     lastSpeechSignalId=signal.id;clearTimeout(effectTimer);
