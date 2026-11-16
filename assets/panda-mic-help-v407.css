@@ -1,0 +1,32 @@
+/* v407: recovery controls appear only after speech-recognition failure.
+   No changes to the approved scenery, panda, chat or normal controls. */
+#pg346 .pg407-help-button{
+ display:block;margin-top:7px;min-height:36px;max-width:100%;
+ padding:6px 12px;border:1px solid #ae7ccf;border-radius:14px;
+ background:#fff;color:#552676;font-size:13px;font-weight:750;
+ box-shadow:0 2px 5px #55267630;cursor:pointer;
+}
+#pg346 .pg407-help-button:focus-visible,
+#pg407-mic-help button:focus-visible,
+#pg407-mic-help a:focus-visible{outline:3px solid #7b52db;outline-offset:2px}
+body.panda-clean-ready>#pg407-mic-help[open]{
+ width:min(92vw,480px);max-height:80dvh;overflow-y:auto;
+ padding:14px 14px 18px;z-index:2200;
+}
+#pg407-mic-help .pg407-mic-head{
+ display:flex;justify-content:space-between;align-items:center;gap:8px;
+ margin-bottom:10px;color:#57267d;
+}
+#pg407-mic-help .pg407-mic-title{font-size:16px;line-height:1.3}
+#pg407-mic-help .pg407-mic-close{
+ min-height:40px;padding:6px 12px;border:1px solid #cba7e7;
+ border-radius:12px;background:#fffaff;color:#542574;font-weight:700;
+}
+#pg407-mic-help #speech-recovery.speech-recovery{
+ max-height:none;min-height:0;overflow:visible;
+ font-size:13px;line-height:1.45;
+}
+#pg407-mic-help #speech-recovery .speech-recovery-actions button,
+#pg407-mic-help #speech-recovery .speech-recovery-actions a{
+ min-height:44px;font-size:13px;
+}
