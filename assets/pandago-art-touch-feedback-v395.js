@@ -9,6 +9,7 @@
   '#poster .bs394-bar button',
   '#poster .bs394-bar a',
   '#poster .bs394-plane .screen-hotspot',
+  '#poster .bs396-crop .screen-hotspot',
   '#app .approved-art .approved-hotspot',
   '#app .day-pilot button',
   '#app .day-done button',
