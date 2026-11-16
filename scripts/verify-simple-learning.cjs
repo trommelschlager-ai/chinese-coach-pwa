@@ -16,7 +16,7 @@ assert.equal(d.querySelectorAll('.six-card').length,8);
 assert.equal(d.querySelectorAll('.six-card[data-choice]').length,7);
 assert.equal(d.querySelector('.six-card.six-travel')?.getAttribute('href'),'./travel.html');
 assert.equal(d.querySelectorAll('.six-number').length,0,'Tools should not look like six numbered lessons');
-assert.equal(d.querySelectorAll('#launch-cover img').length,1);
+assert.equal(d.querySelectorAll('#launch-cover .launch-cover-art').length,1,'Approved launch artwork is a CSS-backed layer, not an inline image');
 assert(!d.getElementById('launch-resume').hidden,'A new learner gets a direct start action');
 assert.match(d.getElementById('launch-resume').textContent,/Начать урок 1/,'Start action identifies the first lesson');
 assert(d.getElementById('app-settings').contains(d.getElementById('pronunciation-settings')),'Voice settings have one common home');
