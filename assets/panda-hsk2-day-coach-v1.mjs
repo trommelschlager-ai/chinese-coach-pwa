@@ -5,6 +5,24 @@ const norm=s=>String(s||'').trim().replace(/[，。？！?!,.、\s]/g,'');
 const at=(zh,py,ru,pattern,hint)=>Object.freeze({
  hanzi:zh,pinyin:py,ru,lesson:1,audioKey:null,pattern,hint
 });
+// A regex alone can match impossible clock times (such as 二十五点).
+// Validate hours/minutes after matching the reviewed My Day sentence pattern.
+const CN_NUM=Object.freeze({零:0,〇:0,一:1,二:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9});
+function clockNumber(text){
+ const s=String(text||'');
+ if(/^\\d{1,2}$/.test(s))return Number(s);
+ if(s in CN_NUM)return CN_NUM[s];
+ if(/^[零〇][一二三四五六七八九]$/.test(s))return CN_NUM[s[1]];
+ const m=/^([一二三四五六七八九]?)[十]([一二三四五六七八九]?)$/.exec(s);
+ if(m)return (m[1]?CN_NUM[m[1]]:1)*10+(m[2]?CN_NUM[m[2]]:0);
+ return null;
+}
+function validWakeClock(s){
+ const m=/([零〇一二两三四五六七八九十\\d]{1,3})点(?:半|一刻|三刻|([零〇一二两三四五六七八九十\\d]{1,3})(?:分)?)?起床$/.exec(s);
+ if(!m)return false;
+ const hours=clockNumber(m[1]),minutes=m[2]?clockNumber(m[2]):0;
+ return hours!==null&&hours>=0&&hours<=23&&minutes!==null&&minutes>=0&&minutes<=59;
+}
 const ALL=Object.freeze([
  at('你每天几点起床？','Nǐ měitiān jǐ diǎn qǐchuáng?','Во сколько ты каждый день встаёшь?',
   /^(?:我)?(?:每天|今天)?(?:早上|上午)?[零〇一二两三四五六七八九十\d]{1,3}点(?:半|一刻|三刻|[零〇一二两三四五六七八九十\d]{1,3}(?:分)?)?起床$/u,
@@ -30,7 +48,7 @@ export function checkDayAnswer(input,idx,mini=0){
  const question=dailyQuestions(mini)[idx],said=norm(input);
  if(!question)return {ok:false,message:'Вопрос не найден.'};
  if(!said)return {ok:false,message:'Скажи или напиши ответ на китайском.'};
- const ok=question.pattern.test(said);
+ const ok=question.pattern.test(said)&&(idx!==0||validWakeClock(said));
  return {
   ok,
   spoken:{known:false,hanzi:String(input),pinyin:null,translation:null,topic:1,
