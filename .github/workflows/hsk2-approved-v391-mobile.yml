@@ -27,6 +27,7 @@ on:
       - 'assets/pandago-art-touch-feedback-v395.js'
       - 'scripts/qa-pandago-fullscreen-v395.mjs'
       - 'scripts/qa-hsk2-approved-course-v391.mjs'
+      - 'scripts/qa-panda-day-voice-v399.mjs'
       - '.github/workflows/hsk2-approved-v391-mobile.yml'
   workflow_dispatch:
 
@@ -57,6 +58,7 @@ jobs:
             sleep 1
           done
           node --test tests/panda-hsk2-day-chat-v1.test.mjs
+          node scripts/qa-panda-day-voice-v399.mjs
           node scripts/qa-hsk2-approved-course-v391.mjs
           node tests/hsk2-bastian-voice-five-v397.test.cjs
           node scripts/qa-pandago-fullscreen-v395.mjs
@@ -68,4 +70,5 @@ jobs:
           path: |
             qa/hsk2-approved-v391/
             qa/pandago-fullscreen-v395/
+            qa/panda-day-voice-v399/
           if-no-files-found: warn
