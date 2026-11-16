@@ -20,7 +20,16 @@ try{
   assert.match(outer.image,/hsk2-approved-scene-v353/,'Full-height app backdrop must be scenic, not flat purple');
   assert.equal(outer.screen,'rgba(0, 0, 0, 0)','Screen must be transparent over the full-height scene');
   assert.equal(ext.filter,'none','No blurred empty-space continuation');
-  assert.match(ext.size,/100% 100%/,'Decorative scene covers full phone without duplicating poster elements');
+  assert.match(ext.size,/100% 100%/,'Decorative extension fits its exact letterbox region');
+  const margins=await page.locator('.approved-welcome-screen').evaluate(node=>({
+   top:parseFloat(getComputedStyle(node,'::before').height),
+   bottom:parseFloat(getComputedStyle(node,'::after').height),
+   topImage:getComputedStyle(node,'::before').backgroundImage,
+   bottomImage:getComputedStyle(node,'::after').backgroundImage
+  }));
+  assert.ok(margins.top>=12&&margins.bottom>=12,'Both phone gaps contain real scenery '+tag);
+  assert.match(margins.topImage,/sky-extension-v403/,'Sharp sky fills the full upper gap');
+  assert.match(margins.bottomImage,/lake-extension-v403/,'Sharp lake fills the full lower gap');
   const art=await page.locator('.approved-art').boundingBox();
   assert.ok(art);
   assert.ok(Math.abs(art.width/art.height-941/1672)<0.003,'Approved art ratio unchanged '+tag);
@@ -32,6 +41,16 @@ try{
   assert.equal(await page.locator('.poster-map-card[data-topic]').count(),10);
   await page.locator('.approved-map-screen .approved-art.ready').waitFor({state:'visible',timeout:25000});
   await page.screenshot({path:'qa/hsk2-approved-v391/map-'+tag+'.png',fullPage:false});
+  const mapMargins=await page.locator('.approved-map-screen').evaluate(node=>({
+    top:parseFloat(getComputedStyle(node,'::before').height),
+    bottom:parseFloat(getComputedStyle(node,'::after').height),
+    topImage:getComputedStyle(node,'::before').backgroundImage,
+    bottomImage:getComputedStyle(node,'::after').backgroundImage
+  }));
+  assert.ok(mapMargins.top>=12&&mapMargins.bottom>=12,'Map sky and lake reach phone edges '+tag);
+  assert.match(mapMargins.topImage,/sky-extension-v403/);
+  assert.match(mapMargins.bottomImage,/lake-extension-v403/);
+
   for(const hit of await page.locator('.poster-map-card,.poster-map-nav').all()){
    const box=await hit.boundingBox();assert.ok(box&&box.x>=0&&box.y>=0&&box.x+box.width<=width+1&&box.y+box.height<=height+1,'Map hit fully visible '+tag);
   }
@@ -49,6 +68,21 @@ try{
   const surface=await page.locator('.day-quicklist').evaluate(n=>getComputedStyle(n).display);
   assert.equal(surface,'flex');
   await page.screenshot({path:'qa/hsk2-approved-v391/words-'+tag+'.png',fullPage:false});
+  // Regression: same-screen word taps must never reset the reading position.
+  // Force a tall test-only scroll surface to catch the old unconditional scrollTop=0.
+  const previousY=await page.evaluate(()=>{
+    const sc=document.getElementById('screen');
+    sc.style.setProperty('overflow-y','auto','important');
+    sc.style.setProperty('padding-bottom','1000px','important');
+    sc.scrollTop=115;
+    return sc.scrollTop;
+  });
+  assert.ok(previousY>=80,'Controlled test scroll surface is tall enough');
+  await page.evaluate(()=>document.querySelector('[data-day-word="2"]').click());
+  const laterY=await page.locator('#screen').evaluate(el=>el.scrollTop);
+  assert.ok(Math.abs(laterY-previousY)<=2,'Selecting vocabulary must preserve scrollTop, not jump to top: '+tag);
+  await page.locator('#screen').evaluate(el=>{el.style.removeProperty('overflow-y');el.style.removeProperty('padding-bottom')});
+
   for(let i=0;i<3;i++)await page.locator('[data-day-next]').click();
   await page.locator('[data-day-quiz="0:1"]').click();
   await page.locator('[data-day-quiz="1:0"]').click();
