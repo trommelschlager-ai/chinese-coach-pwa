@@ -14,6 +14,7 @@ import {brainQuestion,interpretBrainSentence} from './panda-brain-hsk1-v302.mjs?
 import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from './panda-sentence-coach-v319.mjs?v=319';
 import {answerBasicConversation} from './panda-basic-conversation-v323.mjs?v=336';
+import {analyzeCalendarLiteral} from './panda-calendar-literal-v383.mjs?v=400';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
@@ -135,6 +136,8 @@ export function analyzeLearner(raw,allowed=[1],context=null,curriculum=[],checkE
  raw=String(raw||'').trim();const s=normalize(raw),q=findQuestion(s),extraQuestion=lookupExtendedQuestion(raw);
  if(extraQuestion)return known(raw,extraQuestion.pinyin,extraQuestion.ru,extraQuestion.lesson);
  if(q){let py=q.pinyin;if(s.includes('的天气'))py=py.replace(' tiānqì',' de tiānqì');if(s.includes('是星期')||s.includes('是几月')||s.includes('是几号'))py=py.replace(' ',' shì ');if(s==='现在几月')py='Xiànzài jǐ yuè?';if(s==='今年几几年')py='Jīnnián jǐ jǐ nián?';if(s.endsWith('日'))py=py.replace('hào','rì');if(s==='你叫什么')py='Nǐ jiào shénme?';if(/^你(妈妈|爸爸|哥哥|姐姐|弟弟|妹妹)多大$/.test(s))py=py.replace('jǐ suì','duō dà');if(s.startsWith('你多大'))py='Nǐ duō dà'+(s.endsWith('了')?' le':'')+'?';return known(raw,py,q.translation,q.topic)}
+ // A known weekday/date can be translated without unlocking its practice lesson.
+ const literal=analyzeCalendarLiteral(raw);if(literal)return literal;
  if(checkErrors){const c=correction(raw,allowed,context,curriculum);if(c)return c}
  const addition=extensionStatement(raw,allowed,context);if(addition)return addition;
  const parsed=grammar(raw,allowed,context);if(parsed)return parsed;
@@ -276,6 +279,12 @@ export function answerLive(raw,options={}){
  // Social and common-family questions must work before any broad fallback.
  // Keep our known corrections independent of experimental on-device AI.
  const basic=answerBasicConversation(raw,allowed);if(basic)return basic;
+ // Free vocabulary lookup must not count as an answer to another lesson.
+ const calendarLiteral=analyzeCalendarLiteral(raw);
+ if(calendarLiteral&&(!prompt||prompt.lesson!==calendarLiteral.topic)){
+  return {kind:'statement',spoken:calendarLiteral,lesson:topic,reply:null,
+   followup:null,message:'Перевод показан в чате. Это распознанный текст, а не проверка тонов.'};
+ }
  // Rewrite only explicit meaning-preserving learner variants. Keep original
  // transcript visible, without claiming a made-up pinyin for the new wording.
  const variant=questionVariant(raw);
