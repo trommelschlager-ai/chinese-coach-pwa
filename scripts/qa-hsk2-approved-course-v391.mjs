@@ -73,7 +73,11 @@ try{
   const previousY=await page.evaluate(()=>{
     const sc=document.getElementById('screen');
     sc.style.setProperty('overflow-y','auto','important');
-    sc.style.setProperty('padding-bottom','1000px','important');
+    // A lasting pseudo-element expands the scroll range across innerHTML rerenders.
+    const style=document.createElement('style');
+    style.id='qa-long-reading';
+    style.textContent='#screen::after{content:"";display:block;flex:0 0 1500px!important;min-height:1500px!important;}';
+    document.head.appendChild(style);
     sc.scrollTop=115;
     return sc.scrollTop;
   });
@@ -81,7 +85,10 @@ try{
   await page.evaluate(()=>document.querySelector('[data-day-word="2"]').click());
   const laterY=await page.locator('#screen').evaluate(el=>el.scrollTop);
   assert.ok(Math.abs(laterY-previousY)<=2,'Selecting vocabulary must preserve scrollTop, not jump to top: '+tag);
-  await page.locator('#screen').evaluate(el=>{el.style.removeProperty('overflow-y');el.style.removeProperty('padding-bottom')});
+  await page.locator('#screen').evaluate(el=>{
+   el.style.removeProperty('overflow-y');
+   document.getElementById('qa-long-reading')?.remove();
+  });
 
   for(let i=0;i<3;i++)await page.locator('[data-day-next]').click();
   await page.locator('[data-day-quiz="0:1"]').click();
