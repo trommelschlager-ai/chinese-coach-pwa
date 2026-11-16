@@ -19,7 +19,7 @@ function textLine(v,ctx){
 // Exact full-sentence recordings already provided by the course author.
  // A sample is labelled as a SENTENCE; never claim it is a recording of the isolated word.
  const recordedContexts=Object.freeze({
- '每天':['我每天学中文','Wǒ měitiān xué Zhōngwén.','Я каждый день учу китайский.'],
+ '每天':['你每天学习吗','Nǐ měitiān xuéxí ma?','Ты занимаешься каждый день?'],
  '早上':['我早上吃早饭','Wǒ zǎoshang chī zǎofàn.','Я завтракаю утром.'],
  '起床':['我起床以后洗脸','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма я умываюсь.'],
  '洗脸':['我起床以后洗脸','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма я умываюсь.'],
