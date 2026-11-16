@@ -3,7 +3,7 @@ import {normalize,verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live6'
 import {recordedPandaAnswer,recordedCourseScope} from './panda-recorded-qa-v358.mjs?v=381';
 import {interpretUtterance,interpretFamily,weekdayForDate} from './panda-live-conversation-v266.mjs?v=270';
 import {answerNonStop} from './panda-nonstop-v267.mjs?v=270';
-import {lookupPilotAudio} from './panda-live-audio.mjs?v=358';
+import {lookupPilotAudio} from './panda-live-audio.mjs?v=411';
 import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {chineseNumber} from './panda-live-drafts.mjs?v=live6';
 import {lookupExtendedQuestion,extensionAnswer,extensionStatement,rememberedFamilyFollowup} from './panda-hsk1-extensions-v282.mjs?v=284';
