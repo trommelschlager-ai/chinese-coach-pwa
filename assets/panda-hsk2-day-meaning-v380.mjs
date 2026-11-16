@@ -21,20 +21,20 @@ const verbs=Object.freeze({
 });
 
 const morningVerbs=Object.freeze({
- 洗脸:'умываюсь',刷牙:'чищу зубы',吃早饭:'завтракаю',
+ 洗脸:'умываюсь',刷牙:'чищу зубы',吃早饭:'завтракаю',上班:'работаю',看书:'читаю',
  学习中文:'учу китайский',跑步:'бегаю'
 });
 function translateMorningAction(s,index){
- const m=/^(?:我)?(每天|今天)?(早上|上午)?(起床(?:以后|之后|后))?(都|常常)?(不)?(洗脸|刷牙|吃早饭|跑步|学习中文)$/.exec(s);
+ const m=/^(?:我)?(每天|今天)?(早上|上午)?(起床(?:以后|之后|后))?(都|常常)?(不)?(洗脸|刷牙|吃早饭|跑步|学习中文|上班|看书)$/.exec(s);
  if(!m)return null;
  const [,period,time,afterWake,frequency,negated,action]=m;
  if(index===0&&!time)return null;
- if(index===1&&(period==='今天'||!['洗脸','刷牙'].includes(action)))return null;
- if(index===2&&(period==='今天'||!['洗脸','刷牙','吃早饭','学习中文'].includes(action)))return null;
- const intro=afterWake?'После того как я встаю, я ':
-   time==='上午'?'В первой половине дня я ':
-   time==='早上'?'По утрам я ':
-   period==='每天'?'Каждый день я ':'Я ';
+ if(index===1&&!['洗脸','刷牙','吃早饭'].includes(action))return null;
+ if(index===2&&!['洗脸','刷牙','吃早饭','学习中文','上班','看书'].includes(action))return null;
+ const intro=afterWake?(period==='今天'?'Сегодня после подъёма я ':'После того как я встаю, я '):
+   time==='上午'?(period==='今天'?'Сегодня в первой половине дня я ':'В первой половине дня я '):
+   time==='早上'?(period==='今天'?'Сегодня утром я ':'По утрам я '):
+   period==='每天'?'Каждый день я ':period==='今天'?'Сегодня я ':'Я ';
  const verb=morningVerbs[action];
  if(!verb)return null;
  const frequencyRu=frequency==='常常'?'часто ':'';
