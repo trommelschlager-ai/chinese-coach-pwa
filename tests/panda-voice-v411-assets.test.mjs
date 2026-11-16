@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {PANDA_V411_VOICE} from '../assets/panda-voice-v411.mjs';
 import {lookupPandaVoiceClip,lookupPilotAudio} from '../assets/panda-live-audio.mjs';
+import {chooseAudibleFollowup} from '../assets/panda-audible-followup-v412.mjs';
+import {availableAskGroups} from '../assets/panda-ask-catalog-v326.mjs';
 
 // SHA-256 hashes of the ten original user-supplied MP3 clips.
 // This catches accidental swaps, mislabeled exports, and corrupt/truncated uploads.
@@ -63,4 +65,28 @@ test('visible history and main Panda player use the same v411 audio module',()=>
  assert.equal(reply?.src,'./assets/panda-voice-clips-v411/p160.mp3');
  assert.equal(reply?.source,'user-luvvoice-nov16-cut');
  assert(fs.existsSync(new URL('../'+reply.src,import.meta.url)),'History clip p160 missing');
+});
+
+test('Non-Stop automatic follow-up stays audible and within the unlocked weekday topic',()=>{
+ const available=availableAskGroups([1,4],[],new Date(2026,10,17));
+ const unrecorded={hanzi:'明天星期几？',pinyin:'Míngtiān xīngqī jǐ?',ru:'Завтра какой день недели?',lesson:4};
+ assert.equal(lookupPandaVoiceClip(unrecorded.hanzi),null,'Never manufacture a tomorrow-weekday recording');
+ const next=chooseAudibleFollowup(unrecorded,available,['你星期几有空？'],lookupPandaVoiceClip,'你星期几有空？');
+ assert(next,'An existing same-topic recorded question must replace a silent automatic follow-up');
+ assert.equal(next.lesson,4);
+ assert.notEqual(next.hanzi,unrecorded.hanzi);
+ assert.notEqual(next.hanzi,'你星期几有空？','Do not echo the just-asked learner question');
+ assert(lookupPandaVoiceClip(next.hanzi)?.src?.endsWith('.mp3'),'Replacement must have a real exact MP3');
+ assert.equal(next.audioKey,next.hanzi);
+ const source=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
+ assert(source.includes('followup=chooseAudibleFollowup('),'Auto follow-up gate must run in the actual Panda engine');
+});
+
+test('Non-Stop audible follow-up safely stops when no recorded candidate remains',()=>{
+ const silent={hanzi:'明天星期几？',lesson:4};
+ const exhausted=[{lesson:4,questions:[{hanzi:'今天星期几？',lesson:4,pinyin:'Jīntiān xīngqī jǐ?',ru:'Сегодня какой день?'}]}];
+ assert.equal(chooseAudibleFollowup(silent,exhausted,['今天星期几？'],lookupPandaVoiceClip),null);
+ const recorded={hanzi:'你星期几有空？',lesson:4,audioKey:'你星期几有空'};
+ assert.equal(chooseAudibleFollowup(recorded,[],[],lookupPandaVoiceClip),recorded,
+   'An already recorded prompt must remain unchanged');
 });
