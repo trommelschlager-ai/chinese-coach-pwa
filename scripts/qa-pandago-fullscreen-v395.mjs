@@ -55,6 +55,28 @@ try{
   await page.screenshot({path:'qa/pandago-fullscreen-v395/bastian2-'+tag+'.png',fullPage:false});
   await page.locator('.bs394-page:not([hidden]) .bs394-next').click();
   assert.equal(await page.locator('#practice').isVisible(),true,'Bastian practice must still work');
+  await page.locator('#next').click(); // after 10 words comes 10x5 speaking
+  assert.match(await page.locator('#step-title').innerText(),/2 · Произношение 5 раз/);
+  assert.equal(await page.locator('.pg397-tile').count(),10,'Ten Bastian words on one screen');
+  assert.equal(await page.locator('.pg397-dot').count(),50,'Five real attempt slots per word');
+  assert.equal(await page.locator('.pg397-dot.ok,.pg397-dot.bad').count(),0,'No false check marks');
+  assert.equal(await page.locator('#toggle-py').isVisible(),true,'Toggle pinyin is visible');
+  assert.equal(await page.locator('.pg397-pinyin').count(),10);
+  await page.locator('#toggle-py').click();
+  assert.equal(await page.locator('.pg397-pinyin').count(),0);
+  await page.locator('#toggle-py').click();
+  assert.equal(await page.locator('.pg397-pinyin').count(),10);
+  assert.equal(await page.locator('#next').isDisabled(),true,'No false completion until 50 attempts or explicit skip');
+  const area=await page.locator('#practice').boundingBox();
+  const tileGrid=await page.locator('.pg397-grid').boundingBox();
+  assert.ok(tileGrid && area && tileGrid.y>=area.y-2 && tileGrid.y+tileGrid.height<=area.y+area.height+3,'Speaking grid remains inside phone viewport');
+  await page.screenshot({path:'qa/pandago-fullscreen-v395/bastian-voice-five-'+tag+'.png',fullPage:false});
+  await page.locator('[data-voice-skip]').click();
+  await page.locator('[data-voice-skip-confirm]').click();
+  assert.equal(await page.locator('#next').isDisabled(),false);
+  await page.locator('#next').click();
+  assert.match(await page.locator('#step-title').innerText(),/Грамматика/);
+
 
   await page.goto(base+'/hsk2-life-course.html?v=395',{waitUntil:'domcontentloaded'});
   await visibleArt(page,'.approved-welcome-screen',tag+' welcome');
