@@ -27,7 +27,7 @@ test('Non-Stop shows unrecorded replies as text instead of an autoplay error',as
   assert.equal(lookupPandaVoiceClip('今天不热。'),null);
   send('今天热吗');
   assert.equal(el('phrase').textContent,'今天不热。');
-  assert.equal(el('pinyin').textContent,'Jīntiān bú rè.');
+  assert.equal(el('pinyin').textContent,'Jīntiān bù rè.');
   assert.equal(clips.length,before,'Must not create a bogus player for an unrecorded reply');
   assert.equal(el('hear').disabled,true);
   assert.equal(el('audio-note').hidden,false,'Learner must still be told the recording is missing');
