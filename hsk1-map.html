@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
-<meta name="panda-go-mobile-fix" content="v398-clean-pill-press-feedback">
+<meta name="panda-go-mobile-fix" content="v399-home-button-press-match">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
@@ -73,11 +73,10 @@ body{display:grid;place-items:center;position:relative}
 .toast{position:absolute;z-index:10;left:7%;right:7%;top:21%;padding:11px 15px;text-align:center;color:white;border:2px solid #ffe189;border-radius:15px;background:#4b156ce9;font:700 clamp(11px,2.9vw,15px)/1.35 Arial,sans-serif;box-shadow:0 5px 18px #290c5588}
 .toast[hidden]{display:none!important}
 @media (max-height:650px){.toast{top:17%}}
-/* v398: clean tactile feedback for the single, approved v373 bitmap.
-   Keep the original artwork absolutely stationary and untouched.
-   NEVER duplicate/crop/slide the image: that made doubled edges and dark
-   misaligned ribbons in v396/v397. The PNG already contains button shadows.
-   On touch, softly shade the existing pill itself without painting new art. */
+/* v399: copy the APPROVED Panda Go HOME button press treatment
+   from assets/panda-home-photo1-v319.css (.pg-photo1-hit:active):
+   a translucent white fill and a 2px warm inset outline. No image crop,
+   dark oval, duplicated ribbon, fake shadows or image movement. */
 .hotspots a{
   background:transparent!important;
   box-shadow:none!important;
@@ -89,51 +88,30 @@ body{display:grid;place-items:center;position:relative}
   -webkit-tap-highlight-color:transparent;
   user-select:none;
   -webkit-user-select:none;
+  transition:background-color 110ms ease, box-shadow 110ms ease!important;
 }
-.hotspots a::before{content:none!important;display:none!important}
-.hotspots a::after{
-  content:"";
-  display:block!important;
-  pointer-events:none;
-  position:absolute;
-  inset:8% 1% 10% 1%;
-  border-radius:inherit;
-  border:0!important;
-  box-shadow:none!important;
-  background:radial-gradient(ellipse 75% 95% at 50% 50%,
-    rgba(23,4,48,.30) 0%,rgba(23,4,48,.08) 73%,transparent 100%);
-  background-image:radial-gradient(ellipse 75% 95% at 50% 50%,
-    rgba(23,4,48,.30) 0%,rgba(23,4,48,.08) 73%,transparent 100%)!important;
-  background-size:auto!important;
-  background-position:center!important;
-  clip-path:inset(4% 1% 8% 1% round 999px);
-  -webkit-mask-image:radial-gradient(ellipse 70% 76% at center,#000 70%,transparent 100%);
-  mask-image:radial-gradient(ellipse 70% 76% at center,#000 70%,transparent 100%);
-  -webkit-backdrop-filter:brightness(.85);
-  backdrop-filter:brightness(.85);
-  opacity:0;
+.hotspots a::before,
+.hotspots a::after {
+  content:none!important;
+  display:none!important;
+}
+/* Match the existing home screen's visual feedback exactly.
+   It must also be visible after pointerup during the short navigation delay. */
+.hotspots a:active,
+.hotspots a.is-pressed {
+  background:#ffffff18!important;
+  box-shadow:inset 0 0 0 2px #fffcdb!important;
+  filter:none!important;
   transform:none!important;
-  transition:opacity 110ms ease-out;
+  translate:none!important;
 }
-.hotspots .top-link::after{
-  inset:9% 9% 12% 9%;
-  clip-path:inset(2% 2% 4% 2% round 17px);
-}
-.hotspots .footer-link::after{
-  inset:9% 2% 11% 2%;
-  clip-path:inset(2% 1% 5% 1% round 999px);
-}
-.hotspots a:active::after,
-.hotspots a.is-pressed::after{opacity:1}
-.hotspots a.locked:active::after,
-.hotspots a.locked.is-pressed::after{
-  background:radial-gradient(ellipse 75% 95% at center,
-     rgba(127,76,6,.23),rgba(127,76,6,.07) 73%,transparent 100%)!important;
-  background-image:radial-gradient(ellipse 75% 95% at center,
-     rgba(127,76,6,.23),rgba(127,76,6,.07) 73%,transparent 100%)!important;
-}
+/* The approved PNG has irregular ornamental borders. Keep the feedback
+   within the approximate oval hotspots rather than making a rectangular tile. */
+.hotspots .lesson{border-radius:999px}
+.hotspots .footer-link{border-radius:999px}
+.hotspots .top-link{border-radius:18px}
 @media(prefers-reduced-motion:reduce){
-  .hotspots a::after{transition:none!important}
+  .hotspots a{transition:none!important}
 }
 </style>
 <link rel="stylesheet" href="./assets/panda-mobile-v394.css?v=394"></head>
