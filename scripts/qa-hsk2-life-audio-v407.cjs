@@ -8,7 +8,7 @@ const w={};
 for(const p of ['assets/hsk2-life-course-data-v1.js','assets/hsk2-user-voice/phrase-index-v332.js','assets/hsk2-audio-v330.js']){
  vm.runInNewContext(fs.readFileSync(path.join(root,p),'utf8'),{window:w},{filename:p});
 }
-const norm=s=>String(s??'').replace(/[。？！!?，,\\s]/g,'');
+const norm=s=>String(s??'').replace(/[。？！!?，,\s]/g,'');
 const topics=w.PandaLifeCourseV1.topics;
 const known=new Set(w.PandaHsk2AudioV330.segments.map(norm));
 assert.equal(topics.length,10);
