@@ -23,3 +23,7 @@
  background:rgba(255,243,255,.06)!important;
 }
 @media(prefers-reduced-motion:reduce){#app .approved-stage .approved-hotspot{transition:none}}
+
+/* Bastian stays reachable without restoring the old unapproved HSK2 topic map. */
+#app .pg393-bastian-shortcut{display:block;padding:12px 15px;margin:12px 0;border-radius:16px;background:linear-gradient(110deg,#fdf3ff,#ecc8f7);border:2px solid #e7be7e;box-shadow:0 5px 9px #5b328437;color:#582276;text-decoration:none;font-size:clamp(13px,3.5vw,17px);font-weight:800;text-align:center}
+#app .pg393-bastian-shortcut:active{transform:translateY(2px);box-shadow:0 2px 4px #5b328455}
