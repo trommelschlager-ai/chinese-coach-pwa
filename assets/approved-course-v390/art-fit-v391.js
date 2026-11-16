@@ -36,6 +36,15 @@
    const scale=Math.min(frame.clientWidth/width,frame.clientHeight/height);
    art.style.width=(width*scale)+'px';
    art.style.height=(height*scale)+'px';
+   // Account for the letterbox created by preserving the exact illustration ratio.
+   // Independent sky/lake decorations fill ONLY the unused upper and lower margins.
+   // Measure the rendered DOM: important legacy CSS may override inline dimensions.
+   const frameBox=frame.getBoundingClientRect();
+   const artBox=art.getBoundingClientRect();
+   const upper=Math.max(0,Math.ceil(artBox.top-frameBox.top)+1);
+   const lower=Math.max(0,Math.ceil(frameBox.bottom-artBox.bottom)+1);
+   frame.style.setProperty('--pg403-top-gap',upper+'px');
+   frame.style.setProperty('--pg403-bottom-gap',lower+'px');
   });
  }
  window.addEventListener('resize',function(){requestAnimationFrame(fit)},{passive:true});
