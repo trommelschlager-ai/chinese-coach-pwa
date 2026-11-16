@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
-<meta name="panda-go-mobile-fix" content="v401-hsk2-inspired-half-second-press">
+<meta name="panda-go-mobile-fix" content="v402-strong-color-half-second-press">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
@@ -73,7 +73,7 @@ body{display:grid;place-items:center;position:relative}
 .toast{position:absolute;z-index:10;left:7%;right:7%;top:21%;padding:11px 15px;text-align:center;color:white;border:2px solid #ffe189;border-radius:15px;background:#4b156ce9;font:700 clamp(11px,2.9vw,15px)/1.35 Arial,sans-serif;box-shadow:0 5px 18px #290c5588}
 .toast[hidden]{display:none!important}
 @media (max-height:650px){.toast{top:17%}}
-/* v401: reproduce the bright pressed-card feel of Panda Go course 2.
+/* v402: amplify the pressed-card color, preserving the v401 shape and timing.
    The approved HSK1 v373 bitmap stays still and unchanged. Only pixels
    within the selected painted button are brightened through an SVG mask.
    Unlike v395-v400, no synthetic white capsule, duplicated shifted text,
@@ -102,8 +102,8 @@ body{display:grid;place-items:center;position:relative}
 }
 .press-art .press-image{
   opacity:0;
-  filter:brightness(1.36) saturate(1.14);
-  transition:opacity 95ms ease-in-out;
+  filter:brightness(1.18) saturate(2.15) contrast(1.22);
+  transition:opacity 65ms ease-in-out;
 }
 .press-art.active .press-image{opacity:1}
 @media(prefers-reduced-motion:reduce){
