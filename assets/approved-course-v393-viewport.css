@@ -1,0 +1,25 @@
+/* v393: portrait HSK2 approved artwork. Top and bottom are part of the same scenic view.
+   Primary PNG remains untouched; interactive areas continue to follow it. */
+#app.approved-welcome-v390,#app.approved-map-v390,#app.day-visual-v390{background:#51228b!important}
+#app .approved-stage{background:linear-gradient(180deg,#5c238d,#9846ae 48%,#4c157f)!important;overflow:hidden!important}
+#app .approved-stage::before{
+ inset:-5px!important;filter:blur(7px) saturate(1.18) brightness(.94)!important;opacity:1!important;
+ background-image:var(--approved-image)!important;
+ background-size:100% 100%!important;background-position:center!important;background-repeat:no-repeat!important;
+}
+#app .approved-stage .approved-art{
+ max-width:100%!important;max-height:100%!important;
+ box-shadow:0 0 14px rgba(35,4,78,.32)!important;border:0!important;
+}
+#app .approved-stage .approved-art>img{width:100%!important;height:100%!important;object-fit:fill!important}
+#app .approved-stage .approved-hotspot{
+ background:transparent!important;
+ transition:box-shadow .13s ease,transform .13s ease;
+ -webkit-tap-highlight-color:transparent;
+}
+#app .approved-stage .approved-hotspot:active{
+ transform:translateY(2px);
+ box-shadow:0 4px 8px rgba(25,4,54,.3),inset 0 0 8px rgba(255,255,255,.12)!important;
+ background:rgba(255,243,255,.06)!important;
+}
+@media(prefers-reduced-motion:reduce){#app .approved-stage .approved-hotspot{transition:none}}
