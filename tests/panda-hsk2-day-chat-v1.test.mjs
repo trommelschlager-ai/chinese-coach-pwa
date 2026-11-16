@@ -8,7 +8,7 @@ assert.equal(dailyQuestions(2).length,5,'Third unlocks all day questions');
 for(const mini of [0,1,2])for(const q of dailyQuestions(mini)){
  assert.equal(typeof q.hanzi,'string');
  assert.ok(q.pinyin&&q.ru&&q.hint&&q.pattern instanceof RegExp);
- assert.equal(q.audioKey,null,'Never pretend audio exists');
+ assert.ok(['你早上做什么？','你起床以后做什么？','你上午做什么？','你今天做什么？','你晚上做什么？'].includes(q.hanzi),'Every guided question has an exact recorded MP3');
 }
 const good=[
  ['我每天七点十分起床。',0],['我每天早上七点半起床。',0],['我每天7点30分起床',0],['我每天两点起床',0],
@@ -74,17 +74,17 @@ const dom=await liveDOM(1,{params:'practice=day&mini=2'});
 try{
  const {w,el,send,clips}=dom;
  w.eval(fs.readFileSync(new URL('../assets/hsk2-user-voice/phrase-index-v332.js',import.meta.url),'utf8'));
- assert.equal(el('phrase').textContent,'你每天几点起床？');
+ assert.equal(el('phrase').textContent,'你早上做什么？');
  assert.match(el('step').textContent,/1 из 5/);
  send('你早上做什么？');
  assert.equal(el('phrase').textContent,'我早上吃早饭。','Panda replies to HSK2 My Day question');
  assert.match(el('step').textContent,/1 из 5/,'Asking Panda must not advance the lesson');
  assert(clips.at(-1),'Recorded MP3 must be scheduled for HSK2 answer');
  clips.at(-1).onended();
- assert.equal(el('phrase').textContent,'你每天几点起床？','Previous practice prompt must return when Panda finishes talking');
+ assert.equal(el('phrase').textContent,'你早上做什么？','Previous practice prompt must return when Panda finishes talking');
  assert.match(el('step').textContent,/1 из 5/);
  send('我每天七点十分起床');
- assert.equal(el('phrase').textContent,'你早上洗脸吗？','Answer after an HSK2 question advances only the current lesson');
+ assert.equal(el('phrase').textContent,'你起床以后做什么？','Answer after an HSK2 question advances only the current lesson');
  assert.match(el('recent').textContent,/07:10/,'Student answer gets a genuine Russian meaning');
 }finally{dom.close()}
 console.log('PASS: HSK2 My Day in-chat learner question uses recorded audio, restores the original question and preserves progress.');
