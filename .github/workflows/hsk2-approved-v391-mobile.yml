@@ -9,6 +9,9 @@ on:
       - 'assets/hsk2-day-topic-one-v391.js'
       - 'assets/approved-course-v390/**'
       - 'hsk2-bastian-intro.html'
+      - 'assets/bastian-voice-five-v397.js'
+      - 'assets/bastian-voice-five-v397.css'
+      - 'tests/hsk2-bastian-voice-five-v397.test.cjs'
       - 'assets/bastian-split-v394.js'
       - 'assets/bastian-fullscreen-reflow-v396.js'
       - 'assets/bastian-fullscreen-reflow-v396.css'
@@ -46,6 +49,7 @@ jobs:
             sleep 1
           done
           node scripts/qa-hsk2-approved-course-v391.mjs
+          node tests/hsk2-bastian-voice-five-v397.test.cjs
           node scripts/qa-pandago-fullscreen-v395.mjs
       - name: Upload visual screenshots
         if: always()
