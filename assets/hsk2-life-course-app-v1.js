@@ -100,6 +100,7 @@ function viewMap(){
 function viewTopic(){
  var t=chosen();var completed=[0,1,2].filter(function(m){return state.completed.includes(state.topic*3+m)}).length;
  return '<section class="topic"><div class="panel topic-banner"><span class="topic-icon large">'+t.icon+'</span><div><div class="eyebrow">ТЕМА '+(state.topic+1)+' ИЗ 10</div><h1>'+E(t.name)+'</h1><p lang="zh-Hans">'+E(t.cn)+'</p><p class="small">'+E(t.goal)+'</p><div class="progress-line">'+completed+' из 3 мини-уроков пройдено</div></div></div>'+
+ (state.topic===0?'<a class="pg393-bastian-shortcut" href="./hsk2-bastian-intro.html">👋 Повторить знакомство с Бастианом · 4 фразы →</a>':'')+
  '<div class="mini-list">'+t.scenes.map(function(sc,i){
   var done=state.completed.includes(state.topic*3+i);
   return '<button class="mini-card" type="button" data-mini="'+i+'"><span class="mini-no">'+(i+1)+'</span><span class="mini-copy"><b>'+E(sc[0])+'</b><small>'+(i===0?'7 новых слов':i===1?'7 новых слов':'6 новых слов')+' · диалог · упражнения</small></span><span class="mini-play">'+(done?'✅':'▶')+'</span></button>';
