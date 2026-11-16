@@ -7,10 +7,10 @@ const at=(zh,py,ru,pattern,hint)=>Object.freeze({
 });
 // A regex alone can match impossible clock times (such as 二十五点).
 // Validate hours/minutes after matching the reviewed My Day sentence pattern.
-const CN_NUM=Object.freeze({零:0,〇:0,一:1,二:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9});
+const CN_NUM=Object.freeze({零:0,〇:0,一:1,二:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9,两:2});
 function clockNumber(text){
  const s=String(text||'');
- if(/^\\d{1,2}$/.test(s))return Number(s);
+ if(/^\d{1,2}$/.test(s))return Number(s);
  if(s in CN_NUM)return CN_NUM[s];
  if(/^[零〇][一二三四五六七八九]$/.test(s))return CN_NUM[s[1]];
  const m=/^([一二三四五六七八九]?)[十]([一二三四五六七八九]?)$/.exec(s);
@@ -18,7 +18,7 @@ function clockNumber(text){
  return null;
 }
 function validWakeClock(s){
- const m=/([零〇一二两三四五六七八九十\\d]{1,3})点(?:半|一刻|三刻|([零〇一二两三四五六七八九十\\d]{1,3})(?:分)?)?起床$/.exec(s);
+ const m=/([零〇一二两三四五六七八九十\d]{1,3})点(?:半|一刻|三刻|([零〇一二两三四五六七八九十\d]{1,3})(?:分)?)?起床$/.exec(s);
  if(!m)return false;
  const hours=clockNumber(m[1]),minutes=m[2]?clockNumber(m[2]):0;
  return hours!==null&&hours>=0&&hours<=23&&minutes!==null&&minutes>=0&&minutes<=59;
