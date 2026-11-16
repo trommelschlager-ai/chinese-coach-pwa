@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <script>window.__pandaRoute130=location.hash.match(/^#panda\/(.+)$/)?.[1]||null;</script>
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#111c30">
 <meta name="description" content="Персональный офлайн-тренажёр китайского: тоны, HSK, тесты и прогресс.">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1603,8 +1603,18 @@ body.focus-mode #course .course-content[data-lesson="2"] .focus-dialog-card .foc
 <link rel="stylesheet" href="./assets/panda-hsk-two-levels-v314.css?v=314">
 <link rel="stylesheet" href="./assets/panda-hsk-scenic-v315.css?v=315">
 <link rel="stylesheet" href="./assets/panda-home-photo1-v319.css?v=319">
+<style id="pg-mobile-shell-fix-v378">
+/* Do not flash the retired woman intro; the new Panda home is activated by panda-v130.js. */
+body.pg130-loading>.shell,body.pg130-loading>#launch-entry{visibility:hidden!important}
+body.pg130-loading{overflow:hidden;background:#6637a8}
+#launch-entry::before{background-image:none!important}
+#launch-entry #launch-cover{display:none!important}
+#launch-entry .retired-intro-image{display:none}
+html,body{max-width:100%;overflow-x:clip}
+html{touch-action:manipulation}
+</style>
 </head>
-<body class="launch-active"><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><div class="launch-cover-art"><img src="./assets/approved-home-v36.png" width="635" height="1536" fetchpriority="high" alt="Мой Китайский. Девушка в розовом платье и кнопка «Начать»."><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></div></section><section id="launch-menu" class="launch-screen six-lessons-menu" hidden>
+<body class="pg130-loading"><div id="launch-entry" aria-label="Выбор занятия"><section id="launch-cover" class="launch-screen"><div class="launch-cover-art"><span aria-hidden="true" class="retired-intro-image"></span><button class="hit-start" id="launch-start" type="button" aria-label="Начать обучение">Начать</button></div></section><section id="launch-menu" class="launch-screen six-lessons-menu" hidden>
 <img class="six-original-scenery" src="./assets/lessons-backdrop.webp" alt="" aria-hidden="true">
 <div class="six-screen-content">
   <header class="six-menu-header" aria-hidden="true">
