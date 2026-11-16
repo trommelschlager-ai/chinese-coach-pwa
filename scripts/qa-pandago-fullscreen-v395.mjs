@@ -47,6 +47,8 @@ try{
   await page.screenshot({path:'qa/pandago-fullscreen-v395/bastian1-'+tag+'.png',fullPage:false});
   await page.locator('.bs394-page:not([hidden]) .bs394-next').click();
   assert.match(await page.locator('.bs394-page:not([hidden]) .bs394-bar').innerText(),/2 \/ 2/);
+  assert.equal(await page.locator('#poster .bs394-page:visible').count(),1,'Only the second Bastian slide may be visible');
+  assert.equal(await page.locator('.bs394-page:not([hidden]) .bs396-grammar').isVisible(),true,'Page 2 must contain grammar, not a duplicate of Page 1');
   assert.equal(await page.locator('.bs394-page:not([hidden]) .bs396-crop').count(),3,'Second page contains grammar, phonetics and lesson progress');
   assert.equal(await page.locator('.bs394-page:not([hidden]) .bs396-crop [data-term]').count(),4,'All four original tone-audio hotspots preserved');
   await tapFeedback(page,'.bs394-page:not([hidden]) .bs394-next','Bastian page 2');
