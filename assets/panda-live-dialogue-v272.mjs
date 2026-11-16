@@ -8,7 +8,7 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {chineseNumber} from './panda-live-drafts.mjs?v=live6';
 import {lookupExtendedQuestion,extensionAnswer,extensionStatement,rememberedFamilyFollowup} from './panda-hsk1-extensions-v282.mjs?v=284';
 import {checkedExtensionReply,recognizeApprovedPhrase} from './panda-hsk1-answerbank-v284.mjs?v=284';
-import {patternQuestion,patternStudentAnswer,patternPrompts,conversationalFollowup} from './panda-hsk1-patterns-v285.mjs?v=285';
+import {patternQuestion,patternStudentAnswer,patternPrompts,conversationalFollowup} from './panda-hsk1-patterns-v285.mjs?v=382';
 import {questionVariant,learnerAnswerVariant} from './panda-hsk1-variants-v301.mjs?v=301';
 import {brainQuestion,interpretBrainSentence} from './panda-brain-hsk1-v302.mjs?v=302';
 import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=307';
