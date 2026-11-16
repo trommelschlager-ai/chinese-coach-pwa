@@ -109,12 +109,14 @@ jobs:
   calendar-answer-pinyin-regression:
     name: HSK1 calendar pinyin exactness
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install browser-fixture dependencies for the calendar conversation test
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Verify tone-marked pinyin matches only the learner's written answer
         run: node --test tests/panda-calendar-pinyin-v382.test.mjs
       - name: Verify standalone calendar free-chat and the removed redundant message bubble
