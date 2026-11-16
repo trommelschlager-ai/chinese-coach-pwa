@@ -211,7 +211,13 @@ function updateNav(){
  var counter=document.getElementById('course-counter');
  if(counter)counter.textContent=state.completed.length+'/30';
 }
+var lastPaintKey=null;
 function render(){
+ // Word choice, quiz taps and pronunciation results must not jump to the top.
+ // Reset only when the learner really changes page / lesson / step.
+ var paintKey=[state.view,state.topic,state.mini,state.stage,state.day&&state.day.poster?'poster':'content'].join(':');
+ var preserve=paintKey===lastPaintKey;
+ var rememberedY=preserve?screen.scrollTop:0;
  var html=state.view==='welcome'?viewWelcome():state.view==='map'?viewMap():state.view==='topic'?viewTopic():state.view==='lesson'?viewLesson():state.view==='done'?viewDone():state.view==='review'?viewReview():state.view==='tones'?viewTones():viewExam();
  screen.innerHTML=html;
  var app=document.getElementById('app');
@@ -235,7 +241,13 @@ function render(){
   }
  }
  updateNav();
- screen.scrollTop=0;
+ // For a rerender on the same step, keep the learner's reading position.
+ // The old unconditional scrollTop=0 caused every vocabulary tap to jump.
+ screen.scrollTop=rememberedY;
+ lastPaintKey=paintKey;
+ if(preserve)window.requestAnimationFrame(function(){
+  if(lastPaintKey===paintKey && Math.abs(screen.scrollTop-rememberedY)>1)screen.scrollTop=rememberedY;
+ });
  if(window.PandaGoApprovedV391)window.requestAnimationFrame(function(){window.PandaGoApprovedV391.fit()});
  if(status)status.textContent='';
  store();
