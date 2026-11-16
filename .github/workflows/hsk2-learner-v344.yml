@@ -13,6 +13,9 @@ on:
       - 'scripts/verify-hsk2-city-work.cjs'
       - 'tests/hsk2-city-marks.test.cjs'
       - 'tests/hsk2-bastian-intro.test.cjs'
+      - 'tests/hsk2-bastian-voice-five-v397.test.cjs'
+      - 'assets/bastian-voice-five-v397.js'
+      - 'assets/bastian-voice-five-v397.css'
       - 'tests/hsk2-three-screens-v6.test.cjs'
       - 'hsk2-life-course.html'
       - 'assets/hsk2-life-course-data-v1.js'
@@ -74,6 +77,8 @@ jobs:
         run: node tests/hsk2-life-course-v1.test.cjs
       - name: Verify three compact Android screens
         run: node tests/hsk2-three-screens-v6.test.cjs
+      - name: Verify Bastian stage-two 50-attempt speech practice
+        run: node tests/hsk2-bastian-voice-five-v397.test.cjs
       - name: Verify approved Bastian introduction
         run: node tests/hsk2-bastian-intro.test.cjs
       - name: Verify archived city prototype
