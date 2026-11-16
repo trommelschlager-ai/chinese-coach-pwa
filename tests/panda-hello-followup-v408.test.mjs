@@ -13,7 +13,7 @@ test('你好 is a greeting, never a premature 你呢 question',()=>{
  for(const raw of ['你好','你好！',' 你好。 ']){
   const a=speak(raw);
   assert.equal(a.kind,'question');
-  assert.equal(a.spoken.hanzi,raw);
+  assert.equal(a.spoken.hanzi,raw.trim(),'Keep the original recognized characters, trimming surrounding whitespace');
   assert.equal(a.spoken.pinyin,'Nǐ hǎo!');
   assert.equal(a.spoken.translation,'Привет!');
   assert.equal(a.reply.hanzi,'你好！');
