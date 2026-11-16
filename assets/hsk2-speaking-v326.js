@@ -94,7 +94,7 @@ function mountFinal(node,items,practiceId='lesson1-final-5'){
    '<div class="pg-final-foot"><span>Нажимай на слово и говори. Каждая попытка засчитывается, ошибки не блокируют следующий урок.</span>'+
    '<button type="button" data-reset-five>↻ Повторить тест</button></div>'+
    (!speechAvailable()?'<p class="pg-final-warning">Микрофонное распознавание в этом браузере недоступно. Переход к следующему уроку всё равно разрешён.</p>':'')+
-   '<p class="pg-final-note">Оценивается распознанный текст, а не точность тонов. Браузер может передавать речь сервису распознавания.</p>';
+   '<p class="pg-final-note">Для распознавания браузер может передавать речь своему сервису.</p>';
   node.querySelectorAll('[data-final-word]').forEach(button=>button.addEventListener('click',()=>{
    const i=Number(button.dataset.finalWord);
    if(active||progress.data[i].length>=5)return;
@@ -132,7 +132,7 @@ function open({id,title,items}={}){
    '<p class="pg-speaking-progress">'+progress.data[idx].map(v=>v?'✓':'✕').join('  ')+'</p>'+
    '<button type="button" data-mic '+(active||!speechAvailable()?'disabled':'')+'>'+(active?'🎙️ Слушаю…':'🎙️ Нажми и произнеси')+'</button>')+
    '<p class="pg-speaking-message" role="status">'+e(info)+'</p>'+
-   '<small>Три попытки всего, не три подряд. Проверяется китайский текст, а не тоны. Если распознавание ошиблось, можно повторить тест.</small>'+
+   '<small>Три попытки всего, не три подряд. Если распознавание ошиблось, можно повторить тест.</small>'+
    '<button class="exit" data-restart-mic type="button">↻ Пройти тест заново</button>'+ 
    '<button class="exit" data-close type="button">Вернуться в урок</button></section>';
   modal.querySelectorAll('[data-close]').forEach(x=>x.addEventListener('click',close));
