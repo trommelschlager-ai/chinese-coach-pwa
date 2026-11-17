@@ -3,7 +3,7 @@ import {normalize,verifyAnswerFor} from './panda-voice-pilot-engine.mjs?v=live6'
 import {recordedPandaAnswer,recordedCourseScope} from './panda-recorded-qa-v358.mjs?v=381';
 import {interpretUtterance,interpretFamily,weekdayForDate} from './panda-live-conversation-v266.mjs?v=270';
 import {answerNonStop} from './panda-nonstop-v267.mjs?v=270';
-import {lookupPilotAudio} from './panda-live-audio.mjs?v=358';
+import {lookupPilotAudio} from './panda-live-audio.mjs?v=411';
 import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {chineseNumber} from './panda-live-drafts.mjs?v=live6';
 import {lookupExtendedQuestion,extensionAnswer,extensionStatement,rememberedFamilyFollowup} from './panda-hsk1-extensions-v282.mjs?v=284';
@@ -15,6 +15,7 @@ import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from './panda-sentence-coach-v319.mjs?v=319';
 import {answerBasicConversation} from './panda-basic-conversation-v323.mjs?v=336';
 import {analyzeCalendarLiteral,calendarAcknowledgement} from './panda-calendar-literal-v383.mjs?v=401';
+import {reviewedYouYouMeiyou} from './panda-youyoumeiyou-v416.mjs?v=416';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
@@ -28,6 +29,13 @@ const WEATHER_CONTEXT='Учебная сценка: сегодня холодн�
 const PERSONAL={我:['wǒ','Я'],你:['nǐ','Ты'],他:['tā','Он'],她:['tā','Она'],它:['tā','Оно'],我们:['wǒmen','Мы'],你们:['nǐmen','Вы'],他们:['tāmen','Они'],她们:['tāmen','Они']};
 const ROLES={老师:['lǎoshī','учитель','учителя'],学生:['xuésheng','студент','студенты'],人:['rén','человек','люди']};
 const MEMBERS={妈妈:['māma','мама','мамы'],爸爸:['bàba','папа','папы'],哥哥:['gēge','старший брат','старшего брата'],姐姐:['jiějie','старшая сестра','старшей сестры'],弟弟:['dìdi','младший брат','младшего брата'],妹妹:['mèimei','младшая сестра','младшей сестры']};
+const RELATIVE_AGE_RU={妈妈:'твоей маме',爸爸:'твоему папе',哥哥:'твоему старшему брату',姐姐:'твоей старшей сестре',弟弟:'твоему младшему брату',妹妹:'твоей младшей сестре'};
+function relativeAgeReplyRu(relative,age){
+ const dative=RELATIVE_AGE_RU[relative]?.replace(/^твоему/,'моему').replace(/^твоей/,'моей');
+ if(!dative)return null;
+ const ending=age%100>=11&&age%100<=14?'лет':age%10===1?'год':age%10>=2&&age%10<=4?'года':'лет';
+ return dative[0].toUpperCase()+dative.slice(1)+' '+age+' '+ending+'.';
+}
 const TIMES={今天:['Jīntiān','Сегодня',0],明天:['Míngtiān','Завтра',1],昨天:['Zuótiān','Вчера',-1]};
 const WEATHER={很冷:['hěn lěng','холодно'],很热:['hěn rè','жарко'],很好:['hěn hǎo','хорошая погода'],下雨:['xià yǔ','идёт дождь'],在下雨:['zài xià yǔ','идёт дождь'],下雪:['xià xuě','идёт снег'],晴天:['qíngtiān','ясно'],阴天:['yīntiān','пасмурно'],有风:['yǒu fēng','ветрено']};
 function localDate(date,offset=0){const d=new Date(date);d.setDate(d.getDate()+offset);return d}
@@ -47,7 +55,7 @@ export function topicPrompts(topic,date=new Date(),profile={}){
  case 3:return [buildPrompt('你几岁？','Nǐ jǐ suì?','Сколько тебе лет?',3,['我二十五岁','我三十岁'],'Можно назвать свой возраст или играть роль.',{intent:'age'}),buildPrompt('你有几个？','Nǐ yǒu jǐ ge?','Сколько у тебя?',3,['我有两个','我有三个'],'Учебная сценка: считаем предметы.',{intent:'quantity'})];
  case 4:return ['今天','明天','昨天'].map(time=>{const r=calendarReply(time,'weekday',date),accepted=[normalize(r.hanzi),normalize(r.hanzi).replace(time,time+'是'),normalize(r.hanzi).replace(time,'')];if(r.hanzi.includes('星期日'))accepted.push(...accepted.map(s=>s.replace('星期日','星期天')));return buildPrompt(time+'星期几？',TIMES[time][0]+' xīngqī jǐ?',TIMES[time][1]+': какой день недели?',4,accepted,r.context,{intent:'weekday',time})});
  case 5:return ['今天','明天'].map(time=>{const r=calendarReply(time,'date',date),d=localDate(date,TIMES[time][2]),a=normalize(r.hanzi);return buildPrompt(time+'几月几号？',TIMES[time][0]+' jǐ yuè jǐ hào?',TIMES[time][1]+': какое число и месяц?',5,[a,a.replace(time,''),time+(d.getMonth()+1)+'月'+d.getDate()+'号'],r.context,{intent:'date',time,calendarDate:date.toISOString()})});
- case 6:{const p=Object.entries(MEMBERS).filter(([n])=>!['妈妈','爸爸'].includes(n)).map(([n,[py,ru]])=>buildPrompt('你有'+n+'吗？','Nǐ yǒu '+py+' ma?','У тебя есть '+ru+'?',6,['我有'+n,'我没有'+n],'',{relative:n}));const present=Object.keys(profile.family||{}).find(n=>profile.family[n]===true);if(present&&profile.hasNumbers)p.unshift(buildPrompt('你'+present+'几岁？','Nǐ '+MEMBERS[present][0]+' jǐ suì?','Сколько лет твоему родственнику: '+MEMBERS[present][1]+'?',6,['我'+present+'二十岁'], '',{intent:'relative-age',relative:present}));return p;}
+ case 6:{const p=Object.entries(MEMBERS).filter(([n])=>!['妈妈','爸爸'].includes(n)).map(([n,[py,ru]])=>buildPrompt('你有'+n+'吗？','Nǐ yǒu '+py+' ma?','У тебя есть '+ru+'?',6,['我有'+n,'我没有'+n],'',{relative:n}));const present=Object.keys(profile.family||{}).find(n=>profile.family[n]===true);if(present&&profile.hasNumbers)p.unshift(buildPrompt('你'+present+'几岁？','Nǐ '+MEMBERS[present][0]+' jǐ suì?','Сколько лет '+RELATIVE_AGE_RU[present]+'?',6,['我'+present+'二十岁'], '',{intent:'relative-age',relative:present}));return p;}
  case 7:return ['今天','明天'].map(time=>buildPrompt(time+'天气怎么样？',TIMES[time][0]+' tiānqì zěnmeyàng?',TIMES[time][1]+': какая погода?',7,[time+'很冷',time+'下雨',time+'很热'], 'Расскажи о погоде у тебя или выбери учебную роль.',{intent:'weather',time}));
  default:return [];
  }
@@ -82,7 +90,7 @@ query(['今年是哪一年','今年几几年'],5,'Jīnnián shì nǎ yì nián?'
 for(const [member,[py,ru]] of Object.entries(MEMBERS))query(['你有'+member+'吗'],6,'Nǐ yǒu '+py+' ma?','У тебя есть '+ru+'?',()=>{const has=['妈妈','爸爸','哥哥','妹妹'].includes(member);return line('我'+(has?'有':'没有')+(has&&!['妈妈','爸爸'].includes(member)?'一个':'')+member+'。','Wǒ '+(has?'yǒu ':'méiyǒu ')+(has&&!['妈妈','爸爸'].includes(member)?'yí ge ':'')+py+'.','У меня '+(has?'есть '+ru:'нет '+MEMBERS[member][2])+'.',ROLE)});
 for(const [member,[py,ru]] of Object.entries(MEMBERS)){
  const has=['妈妈','爸爸','哥哥','妹妹'].includes(member),age={妈妈:30,爸爸:32,哥哥:5,妹妹:1}[member];
- query(['你'+member+'几岁','你'+member+'多大'],6,'Nǐ '+py+' jǐ suì?','Сколько лет твоему родственнику: '+ru+'?',()=>has?line('我'+member+ZH(age)+'岁。','Wǒ '+py+' '+(age===1?'yí':numberPy(age))+' suì.',ru+': '+age+' лет.',ROLE):line('我没有'+member+'。','Wǒ méiyǒu '+py+'.','У меня нет '+MEMBERS[member][2]+'.',ROLE));
+ query(['你'+member+'几岁','你'+member+'多大'],6,'Nǐ '+py+' jǐ suì?','Сколько лет '+RELATIVE_AGE_RU[member]+'?',()=>has?line('我'+member+ZH(age)+'岁。','Wǒ '+py+' '+(age===1?'yí':numberPy(age))+' suì.',relativeAgeReplyRu(member,age),ROLE):line('我没有'+member+'。','Wǒ méiyǒu '+py+'.','У меня нет '+MEMBERS[member][2]+'.',ROLE));
  for(const q of QUERY.slice(-2))q.requires=[3,6];
 }
 for(const member of ['哥哥','姐姐','弟弟','妹妹']){const py=MEMBERS[member][0],has=['哥哥','妹妹'].includes(member);query(['你有几个'+member],6,'Nǐ yǒu jǐ ge '+py+'?','Сколько у тебя братьев или сестёр: '+MEMBERS[member][1]+'?',()=>line('我'+(has?'有一个':'没有')+member+'。','Wǒ '+(has?'yǒu yí ge ':'méiyǒu ')+py+'.','У меня '+(has?'есть '+MEMBERS[member][1]:'нет '+MEMBERS[member][2])+'.',ROLE));}
@@ -235,9 +243,38 @@ function linkedQuestion(raw,lesson,allowed,date,profile={}){
 }
 function extendQuestion(result,raw,allowed,date,profile){
  if(!result||result.kind!=='question'||!allowed.includes(result.lesson))return result;
+ const inputKey=normalize(raw);
+ // Reciprocal age questions are valid in Mandarin, but silently asking
+ // exactly the same question straight back looks like a broken Non-Stop loop.
+ // End this automatic turn rather than invent a differently voiced question.
+ const ageMatch=/^你(哥哥|姐姐|弟弟|妹妹)(?:几岁|多大(?:了)?)$/.exec(inputKey);
+ if(ageMatch){
+   // Continue Non-Stop with a DIFFERENT recorded family question;
+   // keep the already asked age question out of the next turn.
+   const seen=new Set([inputKey,...(profile?.recentQuestions||[]).map(normalize)]);
+   const choices=topicPrompts(6,date,profile).filter(q=>q?.hanzi&&
+      q.verifiedLines?.[1]?.accepted&&!seen.has(normalize(q.hanzi)));
+   const otherRecorded=choices.find(q=>lookupPilotAudio(q.hanzi)&&!normalize(q.hanzi).includes(ageMatch[1]));
+   const different=otherRecorded||choices.find(q=>lookupPilotAudio(q.hanzi))||choices[0]||null;
+   return {...result,followup:different,
+     message:'Панда ответила о возрасте и продолжит другим семейным вопросом.'};
+ }
  const linked=linkedQuestion(raw,result.lesson,allowed,date,profile);
  const retain=result.followup?.intent==='relative-age'||result.followup?.isContextual;
- return {...result,followup:retain?result.followup:(linked||result.followup||null)};
+ const suggested=retain?result.followup:(linked||result.followup||null);
+ // Protect family conversations from immediate repeats. Weather and calendar
+ // retain their existing lesson-specific continuation rules.
+ if(result.lesson===6){
+   const seen=new Set([inputKey,...(profile?.recentQuestions||[]).map(normalize)]);
+   if(suggested&&!seen.has(normalize(suggested.hanzi)))return {...result,followup:suggested};
+   // Existing HSK1 variant lessons require a tested same-topic follow-up.
+   // Prefer an actually recorded alternative; never repeat the same prompt.
+   const alternatives=topicPrompts(6,date,profile).filter(q=>q?.hanzi&&
+      q.verifiedLines?.[1]?.accepted&&!seen.has(normalize(q.hanzi)));
+   const alternative=alternatives.find(q=>lookupPilotAudio(q.hanzi))||alternatives[0]||null;
+   return {...result,followup:alternative};
+ }
+ return {...result,followup:suggested};
 }
 export function answerLive(raw,options={}){
  const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={},course='hsk1'}=options;
@@ -305,6 +342,29 @@ export function answerLive(raw,options={}){
    followup:null,
    message:askedBack?'Панда ответила на твой встречный вопрос.':'Ответ принят. Можешь задать следующий вопрос или выбрать другую тему.'};
  }
+ // The six original reviewed HSK1 family variants keep their existing
+ // exact canonical reply, verified follow-up, and lesson-lock semantics.
+ // 你有没有... is still exposed with its complete correct pinyin and voice.
+ const familyAlias=/^你有没有(哥哥|姐姐|弟弟|妹妹)$/.exec(s);
+ const originalFamilyVariant=familyAlias?questionVariant(raw):null;
+ if(originalFamilyVariant&&originalFamilyVariant.lesson===6&&
+    normalize(originalFamilyVariant.canonical)!==s){
+   const canonical=answerLive(originalFamilyVariant.canonical,options);
+   if(canonical.kind==='question'){
+     const py={哥哥:'gēge',姐姐:'jiějie',弟弟:'dìdi',妹妹:'mèimei'}[familyAlias[1]];
+     const kin={哥哥:'старший брат',姐姐:'старшая сестра',弟弟:'младший брат',妹妹:'младшая сестра'}[familyAlias[1]];
+     return {...canonical,spoken:{...canonical.spoken,hanzi:raw,
+       pinyin:'Nǐ yǒu méiyǒu '+py+'?',translation:'У тебя есть '+kin+'?',
+       topic:6,variantOf:originalFamilyVariant.canonical}};
+   }
+   if(canonical.kind==='locked')return {...canonical,
+     spoken:{known:false,hanzi:raw,pinyin:null,translation:null,topic:6}};
+ }
+ // Reviewed Mandarin A-not-A: 你有没有…？ (family and availability).
+ // Run before general fallback so the exact phrase and tones are preserved.
+ // Also accept 有 / 没有 for a currently active 有—没有 question.
+ const youYouMeiyou=reviewedYouYouMeiyou(raw,{allowed,prompt});
+ if(youYouMeiyou)return youYouMeiyou;
  // Social and common-family questions must work before any broad fallback.
  // Keep our known corrections independent of experimental on-device AI.
  const basic=answerBasicConversation(raw,allowed);if(basic)return basic;

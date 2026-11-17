@@ -1,7 +1,7 @@
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=366';
+import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=411';
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
@@ -14,6 +14,7 @@ import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
 import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=409';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=409';
+import {chooseAudibleFollowup} from './panda-audible-followup-v412.mjs?v=412';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
@@ -26,9 +27,11 @@ const dayLaunch=dayParams.get('practice')==='day';
 const dayMini=Math.min(2,Math.max(0,Number(dayParams.get('mini'))||0));
 const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
+// v423: reuse the same element for Panda clips on Android; never confuse a green sound button with audible playback.
+let voicePlayer=null,playbackSerial=0;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
 let micActivatedAt=0; // Guard the first seconds of a new recording against accidental second taps.
-const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
+const state={audioNeedsTap:false,mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
 // Cache verified question groups while the same HSK lessons are unlocked.
 let cachedAskGroupsKey='',cachedAskGroups=[];
 function topicCatalogGroups(){
@@ -44,7 +47,7 @@ const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson|
 function note(text){$('status').textContent=text||''}
 function pose(value){clearTimeout(poseTimer);rig.setState(value)}
 function happy(){pose('happy');poseTimer=setTimeout(()=>pose('idle'),1300)}
-function stopAudio(){const a=audio;audio=null;clearTimeout(audioBufferTimer);cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onstalled=a.onloadedmetadata=a.ontimeupdate=a.onseeked=a.oncanplay=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
+function stopAudio(){const a=audio;audio=null;playbackSerial++;clearTimeout(audioBufferTimer);cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onstalled=a.onloadedmetadata=a.ontimeupdate=a.onseeked=a.oncanplay=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
 function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;micActivatedAt=0;if(r){r.onstart=r.onaudiostart=r.onspeechstart=r.onspeechend=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
 function play(entry=null){
@@ -53,13 +56,20 @@ function play(entry=null){
  if(!part){stopAudio();note('Для этой точной фразы пока нет загруженной MP3-записи.');return}
  stopRecognition();stopAudio();
  const src=part.src,begin=Number(part.start)||0,end=Number.isFinite(part.end)?Number(part.end):null;
- const a=new Audio(new URL(src,document.baseURI).href);audio=a;a.playbackRate=state.slow?.8:1;a.preload='auto';
+ // A single reusable player is more reliable on mobile Chrome after a mic turn.
+ // A successful button tap can continue unlocking this same media element.
+ const a=voicePlayer||(voicePlayer=new Audio());audio=a;
+ a.preload='auto';a.src=new URL(src,document.baseURI).href;
+ a.playbackRate=state.slow?.8:1;
  if('preservesPitch' in a)a.preservesPitch=true;
- const envelope=end===null?ENVELOPES[src]:null,valid=()=>audio===a;
+ if(begin>0)a.currentTime=begin;
+ const playbackId=++playbackSerial;
+ const envelope=end===null?ENVELOPES[src]:null;
+ const valid=()=>audio===a&&playbackSerial===playbackId;
  // Every indexed phrase is now its own MP3; playback starts at zero.
  a.muted=false;a.volume=1;
  const animate=()=>{if(!valid()||a.paused||a.ended)return;pandaVisualAudioLevel=Math.max(0,Math.min(1,envelope?envelope.levels[Math.floor(a.currentTime/envelope.binSeconds)]||0:.5+.5*Math.sin(a.currentTime*23)));rig.setLevel(pandaVisualAudioLevel);audioFrame=requestAnimationFrame(animate)};
- a.onplaying=()=>{if(valid()){clearTimeout(audioBufferTimer);pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти|Загрузка аудио)/.test($('status').textContent))note('');animate()}};
+ a.onplaying=()=>{if(valid()){state.audioNeedsTap=false;clearTimeout(audioBufferTimer);pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти|Загрузка аудио)/.test($('status').textContent))note('');animate()}};
  const waitForAudio=()=>{if(!valid())return;cancelAnimationFrame(audioFrame);pose('idle');note('Загрузка аудио задерживается…');clearTimeout(audioBufferTimer);audioBufferTimer=setTimeout(()=>{if(valid()){stopAudio();note('Аудио не загрузилось за 10 секунд. Нажми 🔊 ещё раз или проверь интернет.')}},10000)};
  a.onwaiting=waitForAudio;
  a.onstalled=waitForAudio;
@@ -75,7 +85,14 @@ function play(entry=null){
  a.onended=finished;
  a.ontimeupdate=()=>{if(valid()&&end!==null&&a.currentTime>=end-.025)finished()};
  a.onerror=()=>{if(valid()){stopAudio();note('Запись не загрузилась. Нажми динамик ещё раз.')}};
- a.play().catch(()=>{if(valid()){stopAudio();note('Браузер не включил звук автоматически. Нажми динамик.')}});
+ a.play().catch(err=>{if(valid()){
+   const blocked=err?.name==='NotAllowedError'||err?.name==='SecurityError';
+   stopAudio();
+   state.audioNeedsTap=blocked;
+   note(blocked?
+     '🔊 Android заблокировал автозапуск голоса Панды. Нажми динамик возле её ответа.':
+     'Голос не запустился ('+String(err?.name||'ошибка')+'). Нажми 🔊 и попробуй ещё раз.');
+ }});
 }
 function cancelFollowup(){clearTimeout(followupTimer);state.followup=null}
 function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();showLearnerFeedback(null);say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
@@ -112,7 +129,7 @@ function refreshHistory(){
 }
 function record(who,hanzi,pinyin,ru,analysis=null){state.history.push({who,hanzi,pinyin,ru,analysis,confidence:who==='you'?state.confidence:null});if(state.history.length>100)state.history.shift();refreshHistory()}
 function say(line,autoplay=true,analysis=null){
- state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);
+ state.audioNeedsTap=false;state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);
  // Text-only is a valid learning response, not an audio failure. Show the
  // existing 🔇 caption, but never attempt playback without an exact MP3.
  if(autoplay&&(lookupPandaVoiceClip(line.hanzi||line.panda)||lookupPandaVoiceClip(line.audioKey)))play();
@@ -221,6 +238,62 @@ function submit(raw){
    const rawResult=correctCommonPhrase(input)||interpretWorkReply(input,{prompt:activePrompt})||answerLive(input,{allowed:state.allowed,topic:lesson(),prompt:activePrompt,curriculum,date:new Date(),turn:state.turns,profile:{...state.profile,recentQuestions:state.questions.slice(-40)}});
    const result=addPersonalFollowup(rawResult,{allowed:state.allowed,recentQuestions:state.questions.slice(-40)});
   learner(input,result.spoken||analyzeLearner(input,state.allowed,state.prompt?.line,curriculum));
+  // A valid statement about free time does NOT answer "what weekday is it?".
+  // Acknowledge the learner's meaning and repeat the actual question with its
+  // already approved audio; never mark a correct Chinese phrase as a mistake.
+  if(normalize(input)==='我今天有空'&&normalize(activePrompt?.hanzi||activePrompt?.panda||'')==='今天星期几'){
+    // Keep the already asked prompt on screen but do not call say():
+    // say() would add the *same Panda question* to the history a second time.
+    state.awaitQuestion=false;
+    state.display=activePrompt;
+    render();
+    const panel=$('learner-feedback');
+    panel.replaceChildren();
+    const explanation=document.createElement('p');
+    explanation.textContent='✅ 我今天有空 — правильная фраза: «Я сегодня свободен». Но вопрос был 今天星期几？ — «Какой сегодня день недели?». Ответь названием дня недели.';
+    panel.append(explanation);
+    panel.hidden=false;
+    document.documentElement.dataset.feedback='true';
+    note('Фраза правильная, но не отвечает на вопрос Панды. Нажми динамик, чтобы ещё раз услышать вопрос. Тоны здесь не оценивались.');
+    return;
+  }
+  // Reviewed family-topic mismatch: translating a valid learner sentence
+  // isn't the same as answering the currently asked sibling question.
+  // Keep the old question visible without recording a duplicate Panda row.
+  if(result.kind==='clarify'&&result.lesson===6&&result.spoken?.known&&
+     result.message?.startsWith('Ты правильно рассказал о ')&&
+     activePrompt?.lesson===6){
+    state.awaitQuestion=false;
+    state.display=activePrompt;
+    render();
+    const label='✅ '+input+' — '+(result.spoken.translation||'Правильная фраза.')+
+      ' Но вопрос был '+(activePrompt.hanzi||'')+' — '+(activePrompt.ru||'о другом родственнике')+
+      '. Ответь именно на этот вопрос.';
+    const panel=$('learner-feedback');
+    panel.replaceChildren();
+    const explanation=document.createElement('p');
+    explanation.textContent=label;
+    panel.append(explanation);
+    // Opposite statements may be intentional classroom role-play, not
+    // contradictory autobiographical facts. Point out only the contrast.
+    const sibling=normalize(input).match(/(哥哥|姐姐|弟弟|妹妹)$/)?.[1]||null;
+    const polarity=s=>/^没有我没有/.test(normalize(s))?'no':
+      /^有我有/.test(normalize(s))?'yes':null;
+    const currentPolarity=polarity(input);
+    const earlier=sibling&&currentPolarity?state.history.slice(0,-1).reverse().find(row=>
+      row.who==='you'&&normalize(row.hanzi).endsWith(sibling)&&
+      polarity(row.hanzi)&&polarity(row.hanzi)!==currentPolarity):null;
+    if(earlier){
+      const contrast=document.createElement('p');
+      contrast.textContent='Ранее в этом диалоге был противоположный вариант о '+sibling+
+        '. Если тренируешь оба ответа, это нормально — Панда не считает это ошибкой произношения.';
+      panel.append(contrast);
+    }
+    panel.hidden=false;
+    document.documentElement.dataset.feedback='true';
+    note('Фраза понятна, но не отвечает на вопрос о родственнике. Тоны не оценивались.');
+    return;
+  }
   if(result.kind==='empty'){note(result.message);return}
   if(result.kind==='correction'){recordCorrection(input,result.spoken);pose('retry');note(result.message);render();return}
   if(result.reply){
@@ -272,10 +345,25 @@ function submit(raw){
      const selected=state.allowed[state.cursor%state.allowed.length]||state.topic;
      followup=pickCoursePrompt(selected,curriculum,state.questions.concat(input),new Date(),{...state.profile,unlocked:state.allowed})||followup;
     }
+   // v412: an automatic question must have its own exact Panda MP3.
+   // Manual/free-form questions stay text-only when no recording exists.
+   const plannedFollowup=followup;
+   // v412 QA-specific repair: after the recorded weekday-availability
+   // question, only choose an audible same-topic follow-up. Leave EVERY other
+   // established HSK1 / calendar / family flow unchanged.
+   if(/^(?:你星期几有空|你今天有空吗)$/.test(normalize(input)))
+     followup=chooseAudibleFollowup(followup,topicCatalogGroups(),
+       [...state.questions.slice(-12),...state.history.slice(-8).map(h=>h.hanzi)],
+       lookupPandaVoiceClip,input);
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
+   else if(plannedFollowup){render();}
    note(completedCalendarRound?closingSummary:
-    followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
+    plannedFollowup?.intent==='relative-age'?
+      (followup?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
+       'Панда запомнила твою реплику о семье. Озвученного уточняющего вопроса пока нет; можешь задать свой вопрос или выбрать другую тему.'):
     followup?'Панда продолжит вопросом по пройденным темам. Можешь ответить или спросить раньше.':
+    /^(?:你星期几有空|你今天有空吗)$/.test(normalize(input))?
+      'Панда ответила. По этой теме пока нет других новых записанных вопросов; задай свой вопрос или выбери тему.':
     result.message||'Продолжай или нажми «Ещё вопрос».');
    if(state.confidence!==null&&state.confidence<.65){cancelFollowup();note('Распознано неуверенно. Проверь текст в истории и повтори при необходимости.');}return;
   }
@@ -519,7 +607,7 @@ window.PandaApprovedBridge337={
    allowed:[...state.allowed],topic:lesson(),mode:state.mode,
    slow:state.slow,active:state.active,pose:$('character').dataset.state,
    feedback:$('learner-feedback').hidden?'':$('learner-feedback').textContent,
-   status:$('status').textContent,audioAvailable:!$('hear').disabled,speechSignal:state.speechSignal};
+   status:$('status').textContent,audioAvailable:!$('hear').disabled,audioNeedsTap:state.audioNeedsTap,speechSignal:state.speechSignal};
  },
  chooseTopic:id=>{
   id=Number(id);

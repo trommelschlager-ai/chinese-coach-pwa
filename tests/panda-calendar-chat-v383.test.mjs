@@ -61,10 +61,25 @@ test('an active HSK1 calendar exercise still uses context-aware answer validatio
 });
 test('the duplicate unknown-meaning bubble is absent but reviewed grammar corrections remain',()=>{
  const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
- assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong;"));
+ assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong||teachingHint;"));
+ assert(ui.includes("noteText.startsWith('✅ 我今天有空')"),'Only the reviewed off-topic learner statement gets a teaching hint');
+ assert(ui.includes("noteText.includes('Но вопрос был 今天星期几？')"),'Keep the hint specific to the active weekday question');
+ assert(ui.includes("root.append(el('p','pg377-explanation',noteText));"),'Show the approved explanation on the scenic UI');
  assert(!ui.includes('const unknown=last&&!last.ru'),'No generic bubble beside Все темы');
  assert(ui.includes("'pg377-correct'"),'Preserve grammar corrections');
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
  assert.match(html,/panda-live-v346\.mjs\?v=\d+/,'Panda approved UI module is loaded with a versioned URL');
  assert.match(html,/panda-live-screen-v270\.mjs\?v=\d+/,'Versioned Panda script is loaded');
+});
+
+test('Unrecorded Panda question does not trigger microphone-help banner',()=>{
+ const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
+ assert(ui.includes("const noExactClip="),'Status panel must distinguish absent exact MP3 from a microphone failure');
+ assert(ui.includes("problem=!noExactClip&&(micFailure||otherProblem)"),'Missing exact MP3 must not open the large error panel');
+ assert(ui.includes("if(problem&&micFailure&&needsMicHelp)warning.append(micHelpBtn);"),'Help is reserved for actual mic errors');
+ assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong||teachingHint;"),'Reviewed lesson grammar feedback must remain visible');
+ const transcript=answerLive('你今天有没有空？',{allowed:[1,4,6],topic:4});
+ assert.equal(transcript.kind,'question');
+ assert.match(transcript.message,/MP3-записи/);
+ assert.equal(transcript.reply.audioKey,null);
 });

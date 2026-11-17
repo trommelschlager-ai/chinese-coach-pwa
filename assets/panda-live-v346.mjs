@@ -1,6 +1,6 @@
 /* Panda AI v346. Clean responsive user-approved screen.
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
-import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=366';
+import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=411';
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {createPandaMouth} from './panda-live-face-v354.mjs?v=354';
 const bridge=window.PandaApprovedBridge337;
@@ -241,14 +241,27 @@ if (!bridge) {
   function renderFeedback(s){
     const last=s.history.slice().reverse().find(x=>x.who==='you');
     const wrong=last?.analysis?.correction;
-    // Keep grammar corrections visible, but do not overlay a redundant
-    // unknown-meaning bubble beside ВСЕ ТЕМЫ. History retains the message.
-    const root=$('#pg346-feedback'),active=!!wrong;
-    const key=[last?.hanzi,wrong?.hanzi,wrong?.why,s.feedback,active].join('|');
+    // Preserve the intentionally narrow grammar-correction overlay. A valid
+    // phrase that does not answer the active weekday question is a separate,
+    // explicitly reviewed teaching hint, not an unknown-meaning error.
+    const noteText=String(s.feedback||'');
+    const offTopicHint=!wrong&&noteText.startsWith('✅ 我今天有空')&&
+      noteText.includes('Но вопрос был 今天星期几？')&&
+      noteText.includes('Ответь названием дня недели');
+    const siblingHint=!wrong&&noteText.startsWith('✅ ')&&
+      noteText.includes('Но вопрос был 你')&&
+      noteText.includes('Ответь именно на этот вопрос');
+    const teachingHint=offTopicHint||siblingHint;
+    const root=$('#pg346-feedback'),active=!!wrong||teachingHint;
+    const key=[last?.hanzi,wrong?.hanzi,wrong?.why,noteText,active].join('|');
     if(key===lastFeedback)return;
     lastFeedback=key;root.hidden=!active;root.replaceChildren();
     if(!active)return;
-    root.append(el('strong','', '🐼 Панда:'));
+    root.append(el('strong','',teachingHint?'🐼 Панда объясняет:':'🐼 Панда:'));
+    if(teachingHint){
+      root.append(el('p','pg377-explanation',noteText));
+      return;
+    }
     if(wrong){
       root.append(el('p','pg377-meaning','Предполагаемый смысл: '+(last.analysis?.probable||wrong.ru||'смысл уточняется')));
       root.append(el('p','pg377-error','❌ '+last.hanzi));
@@ -285,15 +298,31 @@ if (!bridge) {
     stage.dataset.pose=s.active?'listening':pandaSpeaking?'talking':'idle';
     liveMouth.setTalking(!s.active&&pandaSpeaking);
     stage.dataset.headphones=s.active?'listening':headsetResult;$('#pg346-mic').setAttribute('aria-pressed',String(s.active));$('#pg346-mic').setAttribute('aria-label',s.active?'Микрофон включён. Говори по-китайски.':'Ответить Панде голосом');$('#pg346-short').setAttribute('aria-pressed',String(s.mode==='short'));$('#pg346-nonstop').setAttribute('aria-pressed',String(s.mode==='nonstop'));
-    const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable;$('#pg357-audio-note').hidden=!!s.audioAvailable}
+    const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable;$('#pg357-audio-note').hidden=!!s.audioAvailable&&!s.audioNeedsTap}
+    // Audio clip availability != successful Android autoplay. Keep the existing
+    // speaker button active and show a compact, accessible tap-to-play hint.
+    const audioNote=$('#pg357-audio-note');
+    audioNote.hidden=!!s.audioAvailable&&!s.audioNeedsTap;
+    audioNote.textContent=s.audioNeedsTap?
+      '🔊 Android не запустил голос автоматически. Нажми динамик возле ответа Панды.':
+      '🔇 Для этой фразы нет точной MP3-записи.';
+    audioNote.dataset.needsTap=String(!!s.audioNeedsTap);
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
     renderFeedback(s);renderTopics(s);
-    const warning=$('#pg346-status'),problem=/(микрофон|распознаван|распознано|неуверенно|исправь текст|разреши|доступ|Chrome|запись не|запись пока|звуковой файл|браузер.*звук|mp3|фрагмент)/i.test(s.status||'');
+    // The lesson already marks unrecorded phrases on their speech card.
+    // An informational “no exact MP3 yet” is NOT a microphone failure and
+    // must not open a giant status panel or an unrelated microphone-help button.
+    const warning=$('#pg346-status'),statusText=String(s.status||'');
+    const noExactClip=/(?:нет точной|для этой фразы нет|точной MP3-записи.{0,50}(?:пока )?нет|без точной MP3-записи)/i.test(statusText);
+    const micFailure=/(?:не удалось распозн|не распознана|распознавание завершилось без|не получил[ао]? звук|не подключил.*(?:микрофон|распознав)|доступ к микрофону|разреши микрофон|служба распознавания.*недоступна)/i.test(statusText);
+    const otherProblem=/(?:исправь текст|неуверенно|аудио не загрузилось|загрузка аудио задерживается|браузер не включил звук|звуковой файл|ошибка воспроизведения)/i.test(statusText);
+    const problem=!noExactClip&&(micFailure||otherProblem);
     const needsMicHelp=!!micRecovery&&!micRecovery.hidden;
     warning.hidden=!problem;
-    warning.textContent=problem?s.status:'';
-    if(problem&&needsMicHelp)warning.append(micHelpBtn);
+    warning.textContent=problem?statusText:'';
+    if(problem&&micFailure&&needsMicHelp)warning.append(micHelpBtn);
     if(!needsMicHelp&&micHelp.open)micHelp.close();
+    if(!micFailure&&micHelp.open)micHelp.close();
     const live=$('#pg346-live');const showingAssessment=Date.now()<assessmentUntil;
     live.classList.toggle('pg352-assessment',!s.active&&!pandaSpeaking&&showingAssessment);
     live.dataset.active=String(s.active||pandaSpeaking||showingAssessment);

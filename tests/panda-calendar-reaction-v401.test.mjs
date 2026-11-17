@@ -144,6 +144,18 @@ test('the UI does not overwrite the reviewed calendar follow-up with an unrelate
 });
 
 test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗 when calendar topic is open',async()=>{
+ // This mobile test runs with the real clock. Do not hard-code Monday
+ // 16 November 2026: the day changes on the CI runner at UTC midnight.
+ const today=new Date();
+ const month=today.getMonth()+1,day=today.getDate();
+ const weekday=['日','一','二','三','四','五','六'][today.getDay()];
+ const digits=['零','一','二','三','四','五','六','七','八','九'];
+ const zhNum=n=>n<10?digits[n]:n===10?'十':n<20?'十'+digits[n-10]:
+   n===20?'二十':n<30?'二十'+digits[n-20]:n===30?'三十':'三十'+digits[n-30];
+ const dateInput=month+'月'+day+'号';
+ const dayInput='今天星期'+weekday+'。';
+ const fullDateInput='今天是'+zhNum(month)+'月'+zhNum(day)+'号。';
+ const dateTranslation=new RegExp(day+'\\.'+String(month).padStart(2,'0'));
  const dom=await liveDOM(1,{completed:['weekdays','dates']});
  try{
   const {el,send,w}=dom;
@@ -151,8 +163,8 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
   assert.equal(w.PandaApprovedBridge337.snapshot().mode,'nonstop');
   assert(w.PandaApprovedBridge337.snapshot().allowed.includes(4));
   assert(w.PandaApprovedBridge337.snapshot().allowed.includes(5));
-  send('11月16号');
-  assert.match(el('recent').textContent,/16\.11/,'Learner date is translated');
+  send(dateInput);
+  assert.match(el('recent').textContent,dateTranslation,'Learner date is translated');
   assert.match(el('status').textContent,/продолжит вопросом/,'Panda scheduled a relevant calendar follow-up');
   await new Promise(resolve=>setTimeout(resolve,4950));
   assert.equal(el('phrase').textContent,'今天星期几？',
@@ -161,11 +173,11 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
   assert.equal(el('hear').disabled,false,'Approved question MP3 is available');
   // Then answer the weekday and date, as on the user's Android screenshots.
   // No third repeat of the same two-question loop is permitted.
-  send('今天星期一。');
+  send(dayInput);
   await new Promise(resolve=>setTimeout(resolve,4950));
   assert.equal(el('phrase').textContent,'今天几月几号？',
    'After weekday answer, Panda should ask for the date once');
-  send('今天是十一月十六号。');
+  send(fullDateInput);
   assert.equal(el('phrase').textContent,'很好！',
    'The Panda should visibly close the lesson instead of echoing the date');
   assert.match(el('status').textContent,/Мы повторили день недели и дату/,
@@ -179,5 +191,78 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
   await new Promise(resolve=>setTimeout(resolve,4950));
   assert.equal(el('phrase').textContent,finalPhrase,
    'Do not automatically ask 今天星期几？ again');
+ }finally{dom.close()}
+});
+
+test('Non-Stop: valid free-time phrase does not duplicate the active weekday question',async()=>{
+ const now=new Date();
+ const dom=await liveDOM(1,{completed:['weekdays','dates']});
+ try{
+  const {el,send,w}=dom;
+  el('mode-nonstop').click();
+  // The date statement opens the previously recorded calendar weekday prompt.
+  send((now.getMonth()+1)+'月'+now.getDate()+'号');
+  await new Promise(resolve=>setTimeout(resolve,4950));
+  assert.equal(el('phrase').textContent,'今天星期几？');
+  const historyBefore=w.PandaApprovedBridge337.snapshot().history;
+  // The QA bridge intentionally exposes only the last THREE history rows.
+  // A new learner row displaces the oldest one, so length stays <= 3.
+  const beforePandaCount=historyBefore.filter(h=>h.who==='panda'&&h.hanzi==='今天星期几？').length;
+  assert.equal(historyBefore.at(-1)?.who,'panda');
+  send('我今天有空。');
+  const after=w.PandaApprovedBridge337.snapshot().history;
+  assert.equal(after.length,3,'QA snapshot keeps the last three history rows');
+  assert.equal(after.at(-1)?.who,'you','The latest chat item is the learner, not a duplicate Panda message');
+  assert.equal(after.at(-1)?.who,'you');
+  assert.equal(after.at(-1)?.hanzi,'我今天有空。');
+  assert.equal(el('phrase').textContent,'今天星期几？','The original question stays visible');
+  assert.equal(el('hear').disabled,false,'Learner can replay the existing exact question audio');
+  assert.equal(el('learner-feedback').hidden,false,'Helpful correction must be visible');
+  assert.match(el('learner-feedback').textContent,/我今天有空.*правильная фраза.*Какой сегодня день недели/);
+  assert.equal(w.document.documentElement.dataset.feedback,'true');
+  assert.equal(after.filter(h=>h.who==='panda'&&h.hanzi==='今天星期几？').length,
+    beforePandaCount,'The same question is not inserted into history twice');
+ }finally{dom.close()}
+});
+
+test('Approved scenic Panda shows correct-but-off-topic weekday feedback without generic overlays',()=>{
+ const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
+ const engine=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
+ assert(ui.includes("noteText.startsWith('✅ 我今天有空')"),'Only reviewed valid-phrase correction may show');
+ assert(ui.includes("noteText.includes('Но вопрос был 今天星期几？')"),'Hint must stay attached to the correct weekday prompt');
+ assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong||teachingHint;"),'Scenic overlay must show the lesson hint');
+ assert(ui.includes("root.append(el('p','pg377-explanation',noteText));"),'Scenic UI must display the actual feedback text');
+ assert(ui.includes("if(wrong){"),'Existing grammar corrections remain');
+ assert(engine.includes("panel.hidden=false;"),'Lesson engine must generate visible feedback');
+ assert(engine.includes("state.display=activePrompt;"),'Original question stays on screen');
+ assert(!engine.includes("state.awaitQuestion=false;\n    say(activePrompt);"),'Question must not be recorded twice');
+});
+
+test('Family off-topic answers keep the original older-brother prompt and show a reviewed explanation',async()=>{
+ const dom=await liveDOM(6,{completed:['family']});
+ try{
+  const {w,el,send}=dom,bridge=w.PandaApprovedBridge337;
+  assert.equal(bridge.startTopicQuestion(6,'你有哥哥吗？'),true);
+  assert.equal(el('phrase').textContent,'你有哥哥吗？');
+  send('有，我有一个妹妹。');
+  let state=bridge.snapshot();
+  assert.equal(state.history.at(-1).who,'you');
+  assert.equal(state.history.at(-1).ru,'Да, у меня одна младшая сестра.');
+  assert.equal(el('phrase').textContent,'你有哥哥吗？');
+  assert.match(state.feedback,/Но вопрос был 你有哥哥吗？.*Ответь именно на этот вопрос/);
+  assert.equal(state.history.filter(x=>x.who==='panda'&&x.hanzi==='你有哥哥吗？').length,1,
+    'No duplicate Panda question is recorded');
+  send('没有，我没有妹妹。');
+  state=bridge.snapshot();
+  assert.equal(state.history.at(-1).ru,'Нет, у меня нет младшей сестры.');
+  assert.equal(el('phrase').textContent,'你有哥哥吗？');
+  assert.match(state.feedback,/Ранее в этом диалоге был противоположный вариант о 妹妹/);
+  assert.match(state.feedback,/Если тренируешь оба ответа, это нормально/);
+  assert.equal(state.history.filter(x=>x.who==='panda'&&x.hanzi==='你有哥哥吗？').length,1);
+  const source=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
+  assert(source.includes("const siblingHint=!wrong&&noteText.startsWith('✅ ')"),
+    'Scenic UI must render specific sibling mismatch teaching hints');
+  assert(source.includes("const teachingHint=offTopicHint||siblingHint"),
+    'Keep approved weekday hints working too');
  }finally{dom.close()}
 });
