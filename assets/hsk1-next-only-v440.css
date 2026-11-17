@@ -1,0 +1,26 @@
+/* Only the existing forward footer control in HSK1 lessons 1–7.
+   The component cannot match Back, audio, answers, writing or microphone buttons.
+   Gradient and highlight are copied from lesson 5's original .primary rule. */
+@layer hsk1-next-only {
+ [data-pg-hsk1] :is(#pg-next,#pg3-next,#pg5-next) {
+  background:linear-gradient(#ff86d2,#f550b0 65%,#ec40a5)!important;
+  border-color:#ffafe0!important;border-radius:25px!important;
+  color:#fff!important;text-shadow:0 1px 1px #b93d91!important;
+  box-shadow:0 3px 4px #de79c174,inset 0 1px 2px #ffebff!important;
+  transform:none!important;translate:0 0!important;filter:none!important;
+  transition:translate 100ms ease,filter 100ms ease,box-shadow 100ms ease!important;
+  -webkit-tap-highlight-color:transparent!important;touch-action:manipulation!important;
+ }
+ [data-pg-hsk1] :is(#pg-next,#pg3-next,#pg5-next):not(:disabled):not([aria-disabled="true"]):is(:active,.pg-next-is-pressed) {
+  translate:0 2px!important;transform:none!important;filter:brightness(.9)!important;
+  box-shadow:0 1px 2px #b93d914a,inset 0 2px 5px #8c24544d,inset 0 -1px 1px #ffb4e533!important;
+ }
+ [data-pg-hsk1] :is(#pg-next,#pg3-next,#pg5-next):is(:disabled,[aria-disabled="true"]) {
+  opacity:.42!important;cursor:not-allowed!important;translate:0 0!important;transform:none!important;
+  filter:saturate(.45)!important;box-shadow:0 1px 2px #b78ccc38,inset 0 1px 1px #fff8!important;
+ }
+ [data-pg-hsk1] :is(#pg-next,#pg3-next,#pg5-next):focus-visible {outline:3px solid #8d237c!important;outline-offset:3px!important}
+ @media(prefers-reduced-motion:reduce) {
+  [data-pg-hsk1] :is(#pg-next,#pg3-next,#pg5-next) {transition:none!important}
+ }
+}
