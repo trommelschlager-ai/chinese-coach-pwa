@@ -30,7 +30,7 @@ const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
 let micActivatedAt=0; // Guard the first seconds of a new recording against accidental second taps.
-const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
+const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,pendingAudioReply:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
 // Cache verified question groups while the same HSK lessons are unlocked.
 let cachedAskGroupsKey='',cachedAskGroups=[];
 function topicCatalogGroups(){
@@ -51,6 +51,8 @@ function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);c
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
 function play(entry=null){
  const currentLine=entry||current();
+ const replyKey=normalize(currentLine?.hanzi||currentLine?.panda||'');
+ const resumingMissedReply=!!state.pendingAudioReply&&replyKey===state.pendingAudioReply;
  const part=lookupPandaVoiceClip(currentLine?.hanzi||currentLine?.panda)||lookupPandaVoiceClip(currentLine?.audioKey);
  if(!part){stopAudio();note('Для этой точной фразы пока нет загруженной MP3-записи.');return}
  stopRecognition();stopAudio();
@@ -66,21 +68,25 @@ function play(entry=null){
  a.onwaiting=waitForAudio;
  a.onstalled=waitForAudio;
  a.onpause=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
- const finished=()=>{if(valid()){stopAudio();
+ const finished=()=>{if(valid()){stopAudio();if(resumingMissedReply)state.pendingAudioReply=null;
    if(state.dayMode&&state.dayResumeStep===state.dayStep&&!state.dayDone){
     const prompt=state.prompt?.line;state.dayResumeStep=null;
     if(prompt){state.display=prompt;render();note('Продолжай HSK2 «Мой день»: ответь на учебный вопрос.');}
     return;
    }
-   if(!entry&&state.followup)scheduleFollowup(1200);
+   if((!entry||resumingMissedReply)&&state.followup)scheduleFollowup(1200);
   }};
  a.onended=finished;
  a.ontimeupdate=()=>{if(valid()&&end!==null&&a.currentTime>=end-.025)finished()};
- a.onerror=()=>{if(valid()){stopAudio();note('Запись не загрузилась. Нажми динамик ещё раз.')}};
- a.play().catch(()=>{if(valid()){stopAudio();note('Браузер не включил звук автоматически. Нажми динамик.')}});
+ const failed=message=>{if(!valid())return;stopAudio();
+  if(state.mode==='nonstop'&&state.followup){state.pendingAudioReply=replyKey;clearTimeout(followupTimer);}
+  note(message);
+ };
+ a.onerror=()=>failed('Запись не загрузилась. Нажми 🔊 на реплике Панды, чтобы продолжить.');
+ a.play().catch(()=>failed('Браузер не включил звук автоматически. Нажми 🔊 на реплике Панды, чтобы продолжить.'));
 }
-function cancelFollowup(){clearTimeout(followupTimer);state.followup=null}
-function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();showLearnerFeedback(null);say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
+function cancelFollowup(){clearTimeout(followupTimer);state.followup=null;state.pendingAudioReply=null}
+function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.pendingAudioReply)return;if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();showLearnerFeedback(null);say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
 function remember(spoken){
  if(!spoken?.known)return;
  if(spoken.fact){
