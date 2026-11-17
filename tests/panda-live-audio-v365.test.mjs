@@ -15,7 +15,7 @@ test('all 155 indexed phrases use exact standalone files without runtime mute/se
 test('history, repeat and mic share cancellation; stale callbacks cannot stop newer audio',async()=>{
  const f=await liveDOM();try{
  const b=f.w.PandaApprovedBridge337;b.play();let old=f.clips.at(-1);const stale=old.onended;
- b.playEntry({hanzi:'你好'});const latest=f.clips.at(-1);assert(old.paused);assert.equal(old.onended,null);stale();assert.equal(latest.onended instanceof Function,true);latest.playing();assert.equal(b.snapshot().pose,'talking');
+ b.playEntry({hanzi:'你好'});const latest=f.clips.at(-1);assert.equal(latest,old,'One reusable Panda audio element');assert(old.paused);stale();assert.equal(latest.onended instanceof Function,true);latest.playing();assert.equal(b.snapshot().pose,'talking');
  b.playEntry({hanzi:'谢谢'});assert(latest.paused);assert.equal(f.clips.at(-1).muted,false);
  b.toggleSpeed();b.play();assert.equal(f.clips.at(-1).playbackRate,.8);b.toggleSpeed();b.play();assert.equal(f.clips.at(-1).playbackRate,1);
  f.el('speech-dialog').close();f.el('speech-allow').click();const a=f.clips.at(-1);assert(a.paused);b.playEntry({hanzi:'你好'});assert.equal(b.snapshot().active,false);
@@ -64,4 +64,33 @@ test('stalled audio stops after bounded wait and reports how to retry',async()=>
   assert(audio.paused);
   assert.match(bridge.snapshot().status,/10 секунд/);
  }finally{globalThis.setTimeout=original;f.close()}
+});
+
+test('Panda p173 auto-response uses one audio player and reports Android autoplay restrictions',async()=>{
+ const f=await liveDOM(6,{completed:['family']});
+ try{
+  const bridge=f.w.PandaApprovedBridge337;
+  const questions=bridge.topicQuestions(6);
+  const q=questions.find(x=>x.hanzi==='你哥哥几岁？');
+  assert(q,'Family age question is selectable');
+  assert.equal(bridge.startTopicQuestion(6,q.hanzi),true);
+  const player=f.clips.at(-1);
+  // Simulate Android Chrome refusing automated playback after ASR.
+  player.play=()=>Promise.reject(Object.assign(new Error('user gesture required'),{name:'NotAllowedError'}));
+  bridge.send('你哥哥几岁？');
+  await Promise.resolve();await Promise.resolve();
+  assert(bridge.snapshot().history.some(h=>h.who==='panda'&&h.hanzi==='我哥哥五岁。'));
+  assert.match(player.src,/p173\.mp3$/,'The panda must use the approved exact p173 recording');
+  assert.equal(bridge.snapshot().audioAvailable,true,'MP3 exists even when autoplay is blocked');
+  assert.equal(bridge.snapshot().audioNeedsTap,true,'UI must show a manual playback hint');
+  assert.match(bridge.snapshot().status,/Android заблокировал автозапуск/);
+  const count=f.clips.length;
+  player.play=()=>Promise.resolve();
+  bridge.playEntry({hanzi:'我哥哥五岁。'});
+  player.playing();
+  assert.equal(f.clips.length,count,'Manual replay must reuse the same audio element');
+  assert.equal(bridge.snapshot().audioNeedsTap,false);
+  assert.equal(bridge.snapshot().pose,'talking');
+  assert.equal(bridge.snapshot().audioAvailable,true);
+ }finally{f.close()}
 });
