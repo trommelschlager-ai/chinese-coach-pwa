@@ -34,7 +34,7 @@ assert(v440css.includes('.pg433-petals span'),'Petal animation must be present')
 assert(v440css.includes('pointer-events:none!important'),'Petals and branches cannot block taps');
 assert(JSON.parse(fs.readFileSync(path.join(root,'assets/offline-pack.json'),'utf8')).files.includes('./assets/hsk2-viewport-v440.css?v=440'),'The new styles must be available offline');
 
-assert(html.includes('hsk2-storyboard-v439.js?v=439'));
+assert(html.includes('hsk2-storyboard-v439.js?v=447'));
 const v439Css=fs.readFileSync(path.join(root,'assets/hsk2-responsive-v439.css'),'utf8');
 const v439Js=fs.readFileSync(path.join(root,'assets/hsk2-storyboard-v439.js'),'utf8');
 assert(v439Css.includes('aspect-ratio:9 / 16!important'));
@@ -43,6 +43,10 @@ assert(!v439Css.includes('object-fit:fill'));
 assert(v439Css.includes('pg433-edge-sakura'));
 assert(v439Js.includes('pg433-edge-sakura left'));
 assert(v439Js.includes('data-pg433-next'));
+assert(v439Js.includes('Отдельной записи ещё нет'),'Listening tasks must remain usable without missing MP3');
+assert(v439Js.includes('Микрофон распознаёт текст, но не проверяет точность тонов'),'Speech promise must remain honest');
+assert(v439Js.includes('Пример с настоящей записью'),'Preserve and surface an existing exact recorded sentence');
+assert(!v439Js.includes('Нажми 🔊 и повтори каждое слово вслух'),'Do not invite learner to click missing audio');
 assert(app.includes('hsk2-no-mp3')&&!app.includes('<button class="audio missing-voice"'));
 
 // The v412 artwork remains intact as an archival reference. The active design is v432.
