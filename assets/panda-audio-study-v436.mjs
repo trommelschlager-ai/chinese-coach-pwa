@@ -160,7 +160,7 @@ const ANNOTATIONS=`你学中文吗|Nǐ xué Zhōngwén ma?|Ты учишь ки�
 你需要帮助吗|Nǐ xūyào bāngzhù ma?|Тебе нужна помощь?
 谢谢，我不需要帮助|Xièxie, wǒ bù xūyào bāngzhù.|Спасибо, помощь мне не нужна.`.trim().split('\n').map(row=>row.split('|'));
 export function audioStudyLine436(clip){
- const index=PANDA_CLIPS.indexOf(clip);
+ const index=PANDA_CLIPS.findIndex(item=>item.src===clip?.src&&item.zh===clip?.zh);
  if(index<0||ANNOTATIONS[index]?.[0]!==clip.zh)return {zh:clip.zh,pinyin:null,ru:null};
  const [zh,pinyin,ru]=ANNOTATIONS[index];
  return {zh,pinyin,ru};
