@@ -39,12 +39,12 @@ test('Non-Stop shows unrecorded replies as text instead of an autoplay error',as
   send('今天天气怎么样');
   assert.equal(el('phrase').textContent,'今天很冷。');
   assert.equal(el('pinyin').textContent,'Jīntiān hěn lěng.');
-  assert(clips.length>before,'Exact p158 MP3 should autoplay');
+  assert.match(clips.at(-1).src,/p158\.mp3$/,'Exact p158 MP3 should use the reusable player');
   assert.equal(el('hear').disabled,false);
 
   send('你好');
   assert.equal(el('phrase').textContent,'你好！');
-  assert(clips.length>before,'Exact approved MP3 should still autoplay');
+  assert.match(clips.at(-1).src,/hello\.mp3$/,'Exact approved greeting should use the same player');
   assert.equal(el('hear').disabled,false);
  }finally{screen.close()}
 });
