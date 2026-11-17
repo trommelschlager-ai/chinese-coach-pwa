@@ -33,6 +33,6 @@ test('mobile screen and history load the same current Panda voice mapping',()=>{
  const read=path=>fs.readFileSync(new URL('../'+path,import.meta.url),'utf8');
  assert(read('assets/panda-live-v346.mjs').includes("panda-live-audio.mjs?v=424"));
  assert(read('assets/panda-live-screen-v270.mjs').includes("panda-live-audio.mjs?v=424"));
- assert(read('panda-voice-pilot.html').includes("panda-live-screen-v270.mjs?v=425"));
+ assert(read('panda-voice-pilot.html').includes("panda-live-screen-v270.mjs?v=426"));
  assert(read('panda-voice-pilot.html').includes("panda-live-v346.mjs?v=424"));
 });
