@@ -2,6 +2,7 @@
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
 import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=431';
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
+import {audioStudyLine436} from './panda-audio-study-v436.mjs?v=436';
 import {createPandaMouth} from './panda-live-face-v354.mjs?v=354';
 const bridge=window.PandaApprovedBridge337;
 if (!bridge) {
@@ -200,9 +201,9 @@ if (!bridge) {
    $('.pg346-topic-list').hidden=true;$('#pg374-topics-back').hidden=false;
    $('#pg374-topics-title').textContent=id===9?'Все записи · '+PANDA_CLIPS.length:id===8?'Мой день · записи':topicsFallback[id-1];
    $('#pg374-topics-tip').textContent=id===9
-     ?'Все 155 аудиофрагментов из 10 исходных MP3. Нажми запись для прослушивания; вопросы для разговора выбираются в темах выше.'
+     ?'Все 155 аудиофрагментов из 10 исходных MP3. Нажми запись для прослушивания. Пиньинь и перевод находятся под китайской фразой.'
      :id===8
-     ?'Эти записи можно прослушивать. Разговорный сценарий HSK2 запускается из урока «Мой день».'
+     ?'Нажми запись, посмотри пиньинь и перевод. Практику HSK2 начни из урока «Мой день».'
      :'Выбери вопрос — Панда начнёт разговор именно с него. Ниже также доступны загруженные аудиофразы.';
    if(id!==8&&id!==9){
     const questions=bridge.topicQuestions(id);
@@ -227,8 +228,16 @@ if (!bridge) {
     const description=el('p','pg374-muted','Нажми фразу, чтобы прослушать. Это аудиопрактика, а не обещание свободного ответа Панды.');
     section.append(summary,description);
     for(const clip of audioPhrases){
-     const btn=el('button','pg374-audio-phrase','▶  '+clip.zh);btn.type='button';
-     btn.setAttribute('aria-label','Прослушать '+clip.zh);
+     const annotated=audioStudyLine436(clip);
+     const btn=el('button','pg374-audio-phrase');btn.type='button';
+     const content=el('span','pg436-audio-copy');
+     content.append(
+      el('span','pg436-audio-zh',clip.zh),
+      el('span','pg436-audio-py',annotated.pinyin||'Пиньинь уточняется'),
+      el('span','pg436-audio-ru',annotated.ru||'Перевод уточняется')
+     );
+     btn.append(el('span','pg436-audio-icon','▶'),content);
+     btn.setAttribute('aria-label','Прослушать '+clip.zh+(annotated.ru?' — '+annotated.ru:''));
      btn.addEventListener('click',()=>{stopHistoryAudio();bridge.playEntry({hanzi:clip.zh});sync()});
      section.append(btn);
     }
