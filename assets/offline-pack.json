@@ -1,6 +1,6 @@
 {
-  "version": 436,
-  "bytes": 65823957,
+  "version": 437,
+  "bytes": 65876329,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -3037,6 +3037,9 @@
     "./assets/approved-course-v390/art-fit-v391.js?v=403",
     "./assets/panda-natural-memory-v435.mjs?v=435",
     "./assets/panda-audio-study-v436.mjs?v=436",
-    "./assets/panda-topics-compact-v436.css?v=436"
+    "./assets/panda-topics-compact-v436.css?v=436",
+    "./assets/hsk2-storyboard-v433.js?v=433",
+    "./assets/hsk2-storyboard-v433.css?v=433",
+    "./assets/hsk2-storyboard-v433-avatar.jpg"
   ]
 }

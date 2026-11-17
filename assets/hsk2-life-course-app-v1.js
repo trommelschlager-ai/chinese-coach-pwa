@@ -154,6 +154,7 @@ function viewWelcome(){
  '</div></section>';
 }
 function viewMap(){
+ if(window.PandaGoStoryboardV433)return window.PandaGoStoryboardV433.mapView(topics,state.completed);
  const counts=topics.map(function(t,i){return [0,1,2].filter(function(m){return state.completed.includes(i*3+m)}).length});
  return '<section class="approved-stage approved-map-screen" style="--approved-image:url(./assets/approved-course-v390/course-map.png)" aria-label="Карта курса: десять тем, 30 мини-уроков"><div class="approved-art">'+
  '<img src="./assets/approved-course-v390/course-map.png" alt="Panda Go: десять жизненных тем — мой распорядок дня, работа, хобби, город, транспорт, кафе, покупки, встречи, опыт, планы. Все темы открываются по нажатию." width="941" height="1672" decoding="async" draggable="false">'+
@@ -169,6 +170,7 @@ function viewMap(){
  '</div></section>';
 }
 function viewTopic(){
+ if(window.PandaGoStoryboardV433)return window.PandaGoStoryboardV433.topicView(state,chosen());
  var t=chosen();var completed=[0,1,2].filter(function(m){return state.completed.includes(state.topic*3+m)}).length;
  return '<section class="topic"><div class="panel topic-banner"><span class="topic-icon large">'+t.icon+'</span><div><div class="eyebrow">ТЕМА '+(state.topic+1)+' ИЗ 10</div><h1>'+E(t.name)+'</h1><p lang="zh-Hans">'+E(t.cn)+'</p><p class="small">'+E(t.goal)+'</p><div class="progress-line">'+completed+' из 3 мини-уроков пройдено</div></div></div>'+
  (state.topic===0?'<a class="pg393-bastian-shortcut" href="./hsk2-bastian-intro.html">👋 Повторить знакомство с Бастианом · 4 фразы →</a>':'')+
@@ -222,6 +224,7 @@ function viewLesson(){
  return html;
 }
 function viewDone(){
+ if(state.topic===0&&window.PandaGoStoryboardV433)return window.PandaGoStoryboardV433.done(state,daySound,dayCoachingLink(state.mini));
  var t=chosen(),sc=current(),number=id();
  if(state.topic===0&&state.mini===0&&window.PandaGoExactV415)return window.PandaGoExactV415.renderAI(state,daySound,dayCoachingLink(state.mini));
  if(state.topic===0)return '<section class="done day-done pg414-ai" data-mini="'+state.mini+'">'+
