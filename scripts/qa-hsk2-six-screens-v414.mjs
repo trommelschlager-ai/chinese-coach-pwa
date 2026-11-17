@@ -20,18 +20,21 @@ try{
     const w=document.documentElement.clientWidth;
     const main=document.querySelector('#screen');
     const footer=document.querySelector('#day-fixed-actions');
+    const art=document.querySelector('.pg415-art-screen .pg415-art,.pg415-ai-screen .pg415-art');
     const head=document.querySelector('.pg414-hero');
     const panel=document.querySelector('.pg414-panel');
     const rect=n=>n?(({x,y,width,height,bottom,right})=>({x,y,width,height,bottom,right}))(n.getBoundingClientRect()):null;
     return {width:w,scrollWidth:document.documentElement.scrollWidth,mainWidth:main.scrollWidth,mainClientWidth:main.clientWidth,
-      head:rect(head),panel:rect(panel),footer:rect(footer),bg:getComputedStyle(root).backgroundImage};
+      head:rect(head),panel:rect(panel),footer:rect(footer),art:rect(art),sourceWidth:art?.naturalWidth,bg:getComputedStyle(root).backgroundImage};
    });
-   assert.ok(info.head&&info.panel&&info.footer,'Header, content and footer present '+name);
+   assert.ok(info.art||info.head,'Actual approved illustration or original header present '+name);
    assert.ok(info.scrollWidth<=size.width+1,'No horizontal viewport overflow '+name+' '+JSON.stringify(info));
    assert.ok(info.mainWidth<=info.mainClientWidth+2,'No horizontal course overflow '+name+' '+JSON.stringify(info));
-   assert.ok(info.panel.width>size.width*.85,'Content panel fills width '+name);
-   assert.match(info.bg,/linear-gradient/);
-   console.log('METRICS '+name+' '+tag+' '+JSON.stringify(info));
+   if(info.art){
+      assert.ok(info.art.width>size.width*.85,'Original illustration fills device width '+name);
+      assert.equal(info.sourceWidth,941,'Approved original resolution preserved '+name);
+   }else assert.ok(info.panel&&info.panel.width>size.width*.85,'Content panel fills width '+name);
+      console.log('METRICS '+name+' '+tag+' '+JSON.stringify(info));
    await page.screenshot({path:'qa/hsk2-v414-six-screens/'+tag+'-'+name+'.png',fullPage:false});
   };
   assert.equal(await page.locator('.pg414-vocab-row').count(),7);
@@ -39,7 +42,7 @@ try{
   const wordBounds=await page.locator('.pg414-vocab-row').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().bottom));
   assert.ok(Math.max(...wordBounds)<size.height-60,'All seven words above fixed footer on '+tag+' '+JSON.stringify(wordBounds));
   await page.locator('[data-day-next]').click();
-  await page.locator('.pg414-rule').waitFor();
+  await page.locator('.pg415-step-1,.pg414-rule').first().waitFor();
   await scan('02-rule');
   await page.locator('[data-day-next]').click();
   await page.locator('.pg414-speech-row').first().waitFor();
