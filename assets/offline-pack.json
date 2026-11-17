@@ -1,6 +1,6 @@
 {
-  "version": 424,
-  "bytes": 64769751,
+  "version": 425,
+  "bytes": 64771446,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -2974,7 +2974,7 @@
     "./assets/pandago-art-touch-feedback-v395.js?v=417",
     "./assets/hsk2-lesson1-three-page-v418.css?v=418",
     "./assets/hsk2-panda-return-chat-v419.css?v=419",
-    "./assets/panda-live-screen-v270.mjs?v=424",
+    "./assets/panda-live-screen-v270.mjs?v=425",
     "./assets/panda-live-v346.mjs?v=424",
     "./assets/hsk2-panda-chat-clean-v420.css?v=420",
     "./assets/panda-voice-v411.mjs?v=411",
@@ -2987,6 +2987,7 @@
     "./assets/panda-voice-clips-v411/p162.mp3",
     "./assets/panda-voice-clips-v411/p163.mp3",
     "./assets/panda-voice-clips-v411/p164.mp3",
-    "./assets/panda-voice-clips-v411/p165.mp3"
+    "./assets/panda-voice-clips-v411/p165.mp3",
+    "./assets/panda-nonstop-continuity-v425.mjs?v=425"
   ]
 }
