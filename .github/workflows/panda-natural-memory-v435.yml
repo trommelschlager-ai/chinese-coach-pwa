@@ -1,0 +1,31 @@
+name: Panda Brain v435 natural memory regression
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/panda-natural-memory-v435.mjs'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'tests/panda-natural-memory-v435.test.mjs'
+      - 'panda-voice-pilot.html'
+      - 'sw.js'
+      - 'assets/offline-pack.json'
+      - '.github/workflows/panda-natural-memory-v435.yml'
+  pull_request:
+    paths:
+      - 'assets/panda-natural-memory-v435.mjs'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'tests/panda-natural-memory-v435.test.mjs'
+jobs:
+  memory-consistency:
+    name: Existing MP3 / family correction / no-repeat / Android-like memory
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install test dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Test Panda v435 and existing voice consistency
+        run: node --test tests/panda-natural-memory-v435.test.mjs
