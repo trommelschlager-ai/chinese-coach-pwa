@@ -64,7 +64,8 @@ try{
      d.build=Array.isArray(prior.build)?[...new Set(prior.build.filter(function(n){return Number.isInteger(n)&&n>=0&&n<(window.PandaGoDayModulesV391?.[state.mini]?.builder.length||4)}))]:d.build;
      d.attempts=d.attempts.map(function(_,i){return Array.isArray(prior.attempts?.[i])?
       prior.attempts[i].slice(0,5).filter(function(v){return v&&typeof v.said==='string'&&typeof v.match==='boolean'}).map(function(v){return {said:v.said.slice(0,80),match:v.match}}):[]});
-     d.poster=!!prior.poster;
+     d.poster=false;
+     if(prior.v414&&typeof prior.v414==='object')d.v414={...d.v414,...prior.v414,pairs:Array.isArray(prior.v414.pairs)?prior.v414.pairs.filter(x=>Number.isInteger(x)&&x>=0&&x<3):[]};
     }
     state.day=d;
    }
@@ -77,7 +78,7 @@ function store(){
  try{
   var day=state.topic===0&&state.day?{
    selected:state.day.selected,speechWord:state.day.speechWord,quiz:state.day.quiz,build:state.day.build,
-   attempts:state.day.attempts,poster:state.day.poster
+   attempts:state.day.attempts,poster:false,v414:state.day.v414
   }:null;
   var resume=state.view==='lesson'?{
    topic:state.topic,mini:state.mini,stage:state.stage,stepOrderV413:true,quizWord:state.quizWord,
@@ -213,11 +214,16 @@ function viewLesson(){
 }
 function viewDone(){
  var t=chosen(),sc=current(),number=id();
- if(state.topic===0)return '<section class="done day-done"><div class="day-done-mascot"><img src="./assets/hsk2-panda-new-v328.svg" alt="Панда Panda Go поздравляет с завершением" draggable="false"></div><div class="day-done-head"><h1>🏆 Мини-урок '+(state.mini+1)+' пройден!</h1><p>Ты изучил слова, правило и выполнил тест.</p></div>'+
- '<div class="day-done-line">'+phrase(sc[2],sc[3],sc[4])+(rec(sc[2])?'':'<span class="day-audio-note">🔇 Запись этой фразы ещё не добавлена</span>')+'</div>'+
- dayAIBlock(state.mini)+
- '<div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий урок →</button></div>'+
- '</section>';
+ if(state.topic===0)return '<section class="done day-done pg414-ai">'+
+  '<div class="pg414-ai-header"><h1>Panda Go 🐾</h1><small>Курс 2 · HSK2</small><h2>Урок 1 · Мой распорядок дня</h2><div>💬 Разговорная практика</div></div>'+
+  '<div class="pg414-ai-questions">'+
+   '<div class="pg414-ai-question">'+sound('你几点起床？')+'<strong lang="zh-Hans">你几点起床？</strong><span>Nǐ jǐ diǎn qǐchuáng?</span><small>Во сколько ты встаёшь?</small></div>'+
+   '<div class="pg414-ai-question">'+sound('你早上做什么？')+'<strong lang="zh-Hans">你早上做什么？</strong><span>Nǐ zǎoshang zuò shénme?</span><small>Что ты делаешь утром?</small></div></div>'+
+  '<div class="day-done-mascot"><img src="./assets/hsk2-panda-new-v328.svg" alt="Панда в наушниках готова к разговору"></div>'+
+  '<div class="day-done-head"><h2>🏆 Мини-урок '+(state.mini+1)+' завершён!</h2><p>Готов поговорить? Нажми на микрофон, чтобы открыть настоящую Panda AI с распознаванием речи и вводом текста.</p></div>'+
+  '<div class="day-ai-panel"><h2>🐼 Panda AI — начни разговор</h2><a href="'+dayCoachingLink(state.mini)+'" aria-label="Начать разговор с Panda AI">🎙 Начать разговор с Пандой AI →</a></div>'+
+  '<div class="pg414-ai-actions"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий мини-урок →</button></div>'+
+  '<div class="day-done-line" hidden>'+phrase(sc[2],sc[3],sc[4])+'</div></section>';
  return '<section class="done"><div class="reward-icon">🏆</div><h1>Мини-урок пройден!</h1><p>Ты разобрал слова, грамматику и правильно собрал предложение.</p><div class="panel">'+phrase(sc[2],sc[3],sc[4])+'</div><p class="honest">Запоминание и произношение нужно закреплять повторениями. Эта отметка показывает выполнение заданий, а не официальный экзаменационный результат.</p><div class="button-row"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий мини-урок →</button></div><button class="text-link" data-view="map">Вернуться к десяти темам</button></section>';
 }
 function viewTones(){
