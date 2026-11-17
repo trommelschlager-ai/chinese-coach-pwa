@@ -29,6 +29,8 @@ on:
       - 'tests/panda-nonstop-*'
       - 'assets/panda-family-turn-*'
       - 'tests/panda-family-turn-*'
+      - 'assets/panda-conversation-memory-*'
+      - 'tests/panda-conversation-memory-*'
       - 'sw.js'
       - 'tests/panda-live-*'
       - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
@@ -62,6 +64,8 @@ on:
       - 'tests/panda-nonstop-*'
       - 'assets/panda-family-turn-*'
       - 'tests/panda-family-turn-*'
+      - 'assets/panda-conversation-memory-*'
+      - 'tests/panda-conversation-memory-*'
       - 'sw.js'
       - 'tests/panda-live-*'
       - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
@@ -251,3 +255,17 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Check sibling answer acknowledgment and next family question
         run: node --test tests/panda-family-turn-v426.test.mjs
+
+  panda-brain-memory-v430:
+    name: Reviewed conversation memory and Android-size speech continuity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install existing test dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify memory, sibling age, no-repeat, exact approved MP3 and mobile chat
+        run: node --test tests/panda-conversation-memory-v430.test.mjs
