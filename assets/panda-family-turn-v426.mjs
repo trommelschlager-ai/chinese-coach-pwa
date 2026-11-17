@@ -13,16 +13,22 @@ const ACK=Object.freeze({
  ru:'Хорошо, я поняла.'
 });
 export function continueFamilyAfterAnswer({input,activePrompt,result,allowed=[],questions=[],history=[],catalog=[],lookupAudio}={}){
- if(!allowed.includes(6)||!result?.spoken?.known||result.spoken.topic!==6)return result;
+ if(!allowed.includes(6)||!result?.spoken?.known||!['answer','statement'].includes(result.kind)||!result.reply)return result;
  const utterance=key(input),asked=key(activePrompt?.hanzi||activePrompt?.panda);
  const m=/^我(没有|有)(哥哥|姐姐|弟弟|妹妹)$/.exec(utterance);
- if(!m||!SIBLINGS.includes(m[2])||asked!=='你有'+m[2]+'吗')return result;
- // Never interpret a correction/uncertain recognition as a correct reply.
- if(result.kind==='correction'||result.kind==='clarify'||!result.reply)return result;
+ if(!m||!SIBLINGS.includes(m[2]))return result;
+ // On Android, awaitQuestion may already be true when speech recognition
+ // delivers the final text. The latest ACTUAL Panda question is authoritative.
+ const last=history[history.length-1];
+ const lastAsked=last?.who==='panda'?key(last.hanzi):'';
+ const expected='你有'+m[2]+'吗';
+ if(asked!==expected&&lastAsked!==expected)return result;
+ // Never interpret an unrecognized/corrected utterance as an answer.
+ if(result.spoken.correction)return result;
  // This is an answer to the exact question, not a fresh unrelated statement.
  const spoken=result.spoken;
  if(spoken.family?.absent&&spoken.family.absent!==m[2])return result;
- const heard=new Set([asked,...questions.map(key),...history.map(entry=>key(entry.hanzi))]);
+ const heard=new Set([asked,lastAsked,...questions.map(key),...history.map(entry=>key(entry.hanzi))]);
  const recorded=lookupAudio?.(ACK.hanzi);
  const reply=recorded?{...ACK}:result.reply;
  const familyPool=catalog.find(group=>group.lesson===6)?.questions||[];
@@ -35,7 +41,7 @@ export function continueFamilyAfterAnswer({input,activePrompt,result,allowed=[],
    audioKey:item.hanzi,isContextual:true,accepted:[]};
   break;
  }
- return {...result,kind:'answer',reply,followup,
+ return {...result,kind:'answer',lesson:6,reply,followup,
   message:followup
    ?'Ответ о семье понят. Панда продолжит другим записанным вопросом по семье.'
    :'Ответ понят. Новых записанных вопросов по семье пока нет; можно задать свой.'};
