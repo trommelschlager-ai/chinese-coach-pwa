@@ -15,6 +15,10 @@ try{
  fs.mkdirSync('qa/panda-voice-pilot',{recursive:true});
  await page.screenshot({path:'qa/panda-voice-pilot/hsk2-course-map-android.png',fullPage:false});
  await page.goto(base+'/hsk2-life-course.html?start=1&v=414',{waitUntil:'domcontentloaded'});
+ // v432 approved lesson 1 starts on the user's full-height cover; enter
+ // through its real accessible button instead of bypassing the artwork.
+ await page.locator('.pg432-cover img[src$="/lesson1.jpg"]').waitFor({state:'visible',timeout:12000});
+ await page.locator('[data-pg432-cover-start]').click();
  await page.locator('.pg414-vocab-row').first().waitFor({state:'visible',timeout:12000});
  assert.equal(await page.locator('.pg414-vocab-row').count(),7);
  assert.equal(await page.locator('.pg415-art-screen [data-day-next]').count(),1);
