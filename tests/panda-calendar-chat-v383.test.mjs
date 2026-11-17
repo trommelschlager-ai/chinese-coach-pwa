@@ -61,7 +61,7 @@ test('an active HSK1 calendar exercise still uses context-aware answer validatio
 });
 test('the duplicate unknown-meaning bubble is absent but reviewed grammar corrections remain',()=>{
  const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
- assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong||offTopicHint;"));
+ assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong||teachingHint;"));
  assert(ui.includes("noteText.startsWith('✅ 我今天有空')"),'Only the reviewed off-topic learner statement gets a teaching hint');
  assert(ui.includes("noteText.includes('Но вопрос был 今天星期几？')"),'Keep the hint specific to the active weekday question');
  assert(ui.includes("root.append(el('p','pg377-explanation',noteText));"),'Show the approved explanation on the scenic UI');
@@ -77,7 +77,7 @@ test('Unrecorded Panda question does not trigger microphone-help banner',()=>{
  assert(ui.includes("const noExactClip="),'Status panel must distinguish absent exact MP3 from a microphone failure');
  assert(ui.includes("problem=!noExactClip&&(micFailure||otherProblem)"),'Missing exact MP3 must not open the large error panel');
  assert(ui.includes("if(problem&&micFailure&&needsMicHelp)warning.append(micHelpBtn);"),'Help is reserved for actual mic errors');
- assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong||offTopicHint;"),'Reviewed lesson grammar feedback must remain visible');
+ assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong||teachingHint;"),'Reviewed lesson grammar feedback must remain visible');
  const transcript=answerLive('你有没有妹妹？',{allowed:[1,4,6],topic:6});
  assert.equal(transcript.kind,'question');
  assert.match(transcript.message,/MP3-записи/);
