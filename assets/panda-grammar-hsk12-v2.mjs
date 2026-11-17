@@ -5,10 +5,10 @@
 import {correctPandaGrammarV1} from './panda-grammar-hsk12-v1.mjs?v=1';
 
 const WHO=[
- {h:'我',p:'wǒ',sub:'Я',lo:'я',obj:'меня',dat:'мне',pos:'У меня',live:'живу',want:'хочу',can:'умею',like:'люблю',go:'иду',eat:'ем',learn:'учу',getUp:'встаю',sleep:'ложусь спать',work:'я работаю',buy:'купил(а)'},
- {h:'你',p:'nǐ',sub:'Ты',lo:'ты',obj:'тебя',dat:'тебе',pos:'У тебя',live:'живёшь',want:'хочешь',can:'умеешь',like:'любишь',go:'идёшь',eat:'ешь',learn:'учишь',getUp:'встаёшь',sleep:'ложишься спать',work:'ты работаешь',buy:'купил(а)'},
- {h:'他',p:'tā',sub:'Он',lo:'он',obj:'его',dat:'ему',pos:'У него',live:'живёт',want:'хочет',can:'умеет',like:'любит',go:'идёт',eat:'ест',learn:'учит',getUp:'встаёт',sleep:'ложится спать',work:'он работает',buy:'купил'},
- {h:'她',p:'tā',sub:'Она',lo:'она',obj:'её',dat:'ей',pos:'У неё',live:'живёт',want:'хочет',can:'умеет',like:'любит',go:'идёт',eat:'ест',learn:'учит',getUp:'встаёт',sleep:'ложится спать',work:'она работает',buy:'купила'}
+ {h:'我',p:'wǒ',sub:'Я',lo:'я',obj:'меня',dat:'мне',pos:'У меня',live:'живу',want:'хочу',can:'умею',like:'люблю',go:'иду',eat:'ем',learn:'учу',getUp:'встаю',sleep:'ложусь спать',work:'я работаю',buy:'купил(а)',breakfast:'завтракаю',drank:'выпил(а)'},
+ {h:'你',p:'nǐ',sub:'Ты',lo:'ты',obj:'тебя',dat:'тебе',pos:'У тебя',live:'живёшь',want:'хочешь',can:'умеешь',like:'любишь',go:'идёшь',eat:'ешь',learn:'учишь',getUp:'встаёшь',sleep:'ложишься спать',work:'ты работаешь',buy:'купил(а)',breakfast:'завтракаешь',drank:'выпил(а)'},
+ {h:'他',p:'tā',sub:'Он',lo:'он',obj:'его',dat:'ему',pos:'У него',live:'живёт',want:'хочет',can:'умеет',like:'любит',go:'идёт',eat:'ест',learn:'учит',getUp:'встаёт',sleep:'ложится спать',work:'он работает',buy:'купил',breakfast:'завтракает',drank:'выпил'},
+ {h:'她',p:'tā',sub:'Она',lo:'она',obj:'её',dat:'ей',pos:'У неё',live:'живёт',want:'хочет',can:'умеет',like:'любит',go:'идёт',eat:'ест',learn:'учит',getUp:'встаёт',sleep:'ложится спать',work:'она работает',buy:'купила',breakfast:'завтракает',drank:'выпила'}
 ];
 const L={
  who:WHO,other:WHO,
@@ -95,7 +95,7 @@ add('classifier','P23','{who}有二本书','{who}有两本书。','{who} yǒu li
 add('classifier','P24','{who}有一个书','{who}有一本书。','{who} yǒu yì běn shū.','{who.pos} одна книга.');
 add('classifier','P25','{who}有一个{animal}','{who}有一只{animal}。','{who} yǒu yì zhī {animal}.','{who.pos} {animal.one}.',['who','animal']);
 add('classifier','P26','这里有三个{animal}','这里有三只{animal}。','Zhèlǐ yǒu sān zhī {animal}.','Здесь {animal.three}.',['animal']);
-add('classifier','P27','{who}喝了二杯{drink}','{who}喝了两杯{drink}。','{who} hē le liǎng bēi {drink}.','Две чашки {drink.gen} (выпито: {who.sub}).',['who','drink']);
+add('classifier','P27','{who}喝了二杯{drink}','{who}喝了两杯{drink}。','{who} hē le liǎng bēi {drink}.','{who.sub} {who.drank} две чашки {drink.gen}.',['who','drink']);
 // Seven word-order patterns.
 add('order','P28','{who}住{city}在','{who}住在{city}。','{who} zhù zài {city}.','{who.sub} {who.live} {city.at}.',['who','city']);
 add('order','P29','{who}{city}想去','{who}想去{city}。','{who} xiǎng qù {city}.','{who.sub} {who.want} поехать {city.to}.',['who','city']);
@@ -108,7 +108,7 @@ add('order','P34','{who}吃在{place}饭','{who}在{place}吃饭。','{who} zài
 add('time','P35','{who}起床{hour}点','{who}{hour}点起床。','{who} {hour} diǎn qǐchuáng.','{who.sub} {who.getUp} в {hour.time}.',['who','hour']);
 add('time','P36','{who}睡觉晚上{hour}点','{who}晚上{hour}点睡觉。','{who} wǎnshang {hour} diǎn shuìjiào.','{who.sub} {who.sleep} вечером в {hour.time}.',['who','hour']);
 add('time','P37','{who}去上班{hour}点','{who}{hour}点去上班。','{who} {hour} diǎn qù shàngbān.','{who.sub} {who.go} на работу в {hour.time}.',['who','hour']);
-add('time','P38','{who}吃早饭早上','{who}早上吃早饭。','{who} zǎoshang chī zǎofàn.','{who.sub} завтракает утром.');
+add('time','P38','{who}吃早饭早上','{who}早上吃早饭。','{who} zǎoshang chī zǎofàn.','{who.sub} {who.breakfast} утром.');
 add('time','P39','{who}每天起床{hour}点','{who}每天{hour}点起床。','{who} měitiān {hour} diǎn qǐchuáng.','{who.sub} каждый день {who.getUp} в {hour.time}.',['who','hour']);
 // Comparison, degree, and doing something together.
 add('compare','P40','{who}比{other}很{adj}','{who}比{other}{adj}。','{who} bǐ {other} {adj}.','{who.sub} {adj.comp} {other.obj}.',['who','other','adj']);
