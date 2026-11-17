@@ -169,6 +169,19 @@ function answersPrompt(spoken,raw,prompt){
  // The question catalogue omits prompt.intent; match its exact approved
  // wording instead of rejecting a valid name as off-topic.
  if(prompt.lesson===2&&normalize(prompt.hanzi||prompt.panda||'')==='你叫什么名字'&&spoken.fact?.name)return true;
+ // Catalog questions do not carry the authored intent metadata.
+ // Accept only the EXACT matching day/condition; never guess a schedule or forecast.
+ const catalogAsked=normalize(prompt.hanzi||prompt.panda||'');
+ if(prompt.lesson===4&&spoken.fact?.freeDay){
+  const free=spoken.fact.freeDay;
+  if(catalogAsked==='你星期几有空')return /^星期[一二三四五六日天]$/.test(free);
+  if(catalogAsked==='你今天有空吗')return free==='今天';
+  if(catalogAsked==='你星期天有空吗')return free==='星期天'||free==='星期日';
+ }
+ if(prompt.lesson===7&&spoken.fact?.weather){
+  const match=/^(今天|明天)天气怎么样$/.exec(catalogAsked);
+  if(match)return spoken.fact.time===match[1];
+ }
  if(prompt.intent==='name')return !!spoken.fact?.name;
  if(prompt.intent==='age')return !!spoken.fact?.age;
  if(prompt.intent==='relative-age')return spoken.fact?.relative===prompt.relative&&!!spoken.fact?.relativeAge;
