@@ -11,6 +11,9 @@ on:
       - feat/panda-exact-mascot-animated-2026-11-11
     paths:
       - 'panda-voice-pilot.html'
+      - 'assets/panda-voice-v411.mjs'
+      - 'assets/panda-voice-clips-v411/**'
+      - 'tests/panda-voice-v411-assets.test.mjs'
       - 'assets/panda-live-*'
       - 'assets/panda-mic-help-*'
       - 'tests/panda-mic-visible-*'
@@ -38,6 +41,9 @@ on:
     branches: [main]
     paths:
       - 'panda-voice-pilot.html'
+      - 'assets/panda-voice-v411.mjs'
+      - 'assets/panda-voice-clips-v411/**'
+      - 'tests/panda-voice-v411-assets.test.mjs'
       - 'assets/panda-voice-pilot*'
       - 'assets/panda-live-*'
       - 'assets/panda-mic-help-*'
@@ -199,3 +205,15 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Verify sound safety and preservation of working Non-Stop greetings
         run: node --test tests/panda-text-only-audio-v410.test.mjs
+
+  voice-v411-integrity:
+    name: Original 10 Mandarin MP3 exact phrase validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate user MP3 SHA-256 and exact Panda voice mapping
+        run: node --test tests/panda-voice-v411-assets.test.mjs
