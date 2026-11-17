@@ -33,4 +33,13 @@ jobs:
       - name: Install existing dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Check approved audio, metadata and drawer logic
-        run: node --test tests/panda-audio-drawer-v436.test.mjs
+        run: |
+          node --test \
+            tests/panda-audio-drawer-v436.test.mjs \
+            tests/panda-voice-v411-assets.test.mjs \
+            tests/panda-mic-visible-v407.test.mjs \
+            tests/panda-natural-memory-v435.test.mjs \
+            tests/panda-conversation-memory-v430.test.mjs \
+            tests/panda-topic-memory-v431.test.mjs \
+            tests/panda-family-turn-v426.test.mjs \
+            tests/panda-nonstop-continuity-v425.test.mjs
