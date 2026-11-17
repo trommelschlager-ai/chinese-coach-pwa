@@ -22,7 +22,7 @@ w.SpeechRecognition=SR;
 w.speechSynthesis={cancel(){},speak(){},getVoices(){return [{lang:'zh-CN'}]}};
 w.SpeechSynthesisUtterance=class {constructor(t){this.text=t}};
 w.PandaHsk2AudioV330={lookup:()=>null,play:()=>true,stop(){}};
-for(const f of ['assets/hsk2-life-course-data-v1.js','assets/hsk2-day-first-data-v1.js','assets/hsk2-day-topic-one-v391.js','assets/hsk2-day-first-ui-v1.js','assets/hsk2-six-screens-v414.js','assets/hsk2-life-course-app-v1.js'])
+for(const f of ['assets/hsk2-life-course-data-v1.js','assets/hsk2-day-first-data-v1.js','assets/hsk2-day-topic-one-v391.js','assets/hsk2-day-first-ui-v1.js','assets/hsk2-six-screens-v414.js','assets/hsk2-exact-overlay-v415.js','assets/hsk2-life-course-app-v1.js'])
  w.eval(fs.readFileSync(path.join(root,f),'utf8'));
 function click(selector){
  const el=doc.querySelector(selector);
