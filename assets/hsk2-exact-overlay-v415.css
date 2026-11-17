@@ -234,3 +234,13 @@
  z-index:3!important;
  background:url('./approved-course-v390/lake-extension-v403.svg') center/100% 100% no-repeat!important;
 }
+
+
+/* The earlier rule used "inset:auto" after top:0, which accidentally centered
+   the scenic extensions in the flex layout. Explicit shorthand wins. */
+#app .pg415-art-screen::before,#app .pg415-ai-screen::before{
+ inset:0 0 auto 0!important;
+}
+#app .pg415-art-screen::after,#app .pg415-ai-screen::after{
+ inset:auto 0 0 0!important;
+}
