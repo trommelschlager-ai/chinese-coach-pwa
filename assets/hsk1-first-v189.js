@@ -234,14 +234,10 @@
     '<p class="pg-v415-smallnote">Сравни свою запись с образцом. Тоны автоматически не оцениваются.</p>'+
     '<span class="sr-only" id="record-status" role="status"></span></div></div>',
   ()=>intro('Первые иероглифы','Как пишется 好?','')+
-    '<p class="pg-v415-smallnote">Смотри порядок шести черт, затем попробуй написать пальцем.</p>'+
+    '<p class="pg-v415-smallnote">Смотри порядок шести черт, затем обведи их в этом же окне.</p>'+
     '<div id="pg-v418-writing-demo">'+LEGACY_WRITING_VIEW().replace(/^[\s\S]*?(?=<div class="sheet">)/,'')+'</div>'+
-    '<div class="sheet pg-v418-writing-panel" id="pg-v418-writing-panel" hidden>'+
-    '<p class="pg-v418-pen-intro">✍️ Напиши <b lang="zh-Hans">好</b> пальцем или мышкой</p>'+
-    '<div class="pg-v418-canvas-wrap"><canvas id="pg-v418-ink" width="600" height="600" aria-label="Поле для самостоятельного написания иероглифа 好">Нужен браузер с поддержкой рисования.</canvas></div>'+
-    '<div class="pg-v418-tools"><button id="pg-v418-clear" type="button">↻ Очистить</button></div>'+
-    '<p class="pg-v418-ink-note">Это свободная пропись. Проверки правильности черт здесь нет.</p></div>'+
-    '<button class="pg-v418-write-toggle" type="button" id="pg-v418-write-toggle" aria-controls="pg-v418-writing-panel" aria-expanded="false">✍️ Написать самому</button>'+
+    '<button class="pg-v418-write-toggle" type="button" id="pg-v418-write-toggle" aria-controls="pg-v418-writing-demo" aria-pressed="false">✍️ Написать самому</button>'+
+    '<p id="pg-v419-trace-status" class="pg-v419-trace-status" role="status" aria-live="polite">Нажми «Написать самому» и обводи черты 好 по порядку.</p>'+
     (window.PANDA_HSK1_LESSON1_EXTRAS_V295?.catalogMarkup?.()||'').replace('<details class="sheet pg-all-radicals" open>','<details class="sheet pg-all-radicals">'),
   ()=>intro('','Отлично, урок пройден!','')+
     '<div class="sheet pg-v415-finish"><div class="pg-v415-success">✓</div>'+
@@ -406,69 +402,141 @@
  }
  function stopRecord(){if(recorder&&recorder.state==='recording')recorder.stop();stream?.getTracks()?.forEach(t=>t.stop());stream=null;recording=false}
  function cleanupRecord(){recordEpoch++;stopRecord();if(recordUrl){URL.revokeObjectURL(recordUrl);recordUrl=null}}
- // Interactive handwriting practice for the preview-only Hao screen.
- // Uses local canvas strokes, no remote recognition, uploads, or third-party services.
- function initializeHaoWriting(canvas){
-  if(!canvas||canvas.dataset.inkReady==='yes')return;
-  const ctx=canvas.getContext?.('2d');
-  if(!ctx)return;
-  canvas.dataset.inkReady='yes';
-  let drawing=false;
-  let activePointer=null;
-  const point=e=>{
-   const rect=canvas.getBoundingClientRect();
-   return {x:(e.clientX-rect.left)*canvas.width/Math.max(rect.width,1),
-           y:(e.clientY-rect.top)*canvas.height/Math.max(rect.height,1)};
-  };
-  const finish=e=>{
-   if(!drawing||(activePointer!==null&&e.pointerId!==activePointer))return;
-   drawing=false;
-   ctx.closePath();
-   try{canvas.releasePointerCapture?.(e.pointerId)}catch{}
-   activePointer=null;
-  };
-  canvas.addEventListener('pointerdown',e=>{
-   if(e.pointerType==='mouse'&&e.button!==0)return;
-   e.preventDefault();
-   const p=point(e);
-   drawing=true;activePointer=e.pointerId;
-   ctx.strokeStyle='#6f319f';
-   ctx.lineWidth=21;ctx.lineCap='round';ctx.lineJoin='round';
-   ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x+0.05,p.y+0.05);ctx.stroke();
-   try{canvas.setPointerCapture?.(e.pointerId)}catch{}
-  });
-  canvas.addEventListener('pointermove',e=>{
-   if(!drawing||(activePointer!==null&&activePointer!==e.pointerId))return;
-   e.preventDefault();
-   const p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke();
-  });
-  canvas.addEventListener('pointerup',finish);
-  canvas.addEventListener('pointercancel',finish);
-  canvas.addEventListener('lostpointercapture',()=>{drawing=false;activePointer=null});
+ // Preview-only inline Hanzi Writer quiz, reusing the existing studio's
+ // assets/hanzi-data/好.json and the same stroke validation rules.
+ let haoTraceWriter=null,haoTraceEpoch=0,haoDemoHtml='',haoTracing=false,haoLibraryPromise=null;
+ function releaseHaoTrace(){
+  haoTraceEpoch++;
+  try{haoTraceWriter?.cancelQuiz?.();haoTraceWriter?.pauseAnimation?.()}catch{}
+  haoTraceWriter=null;haoDemoHtml='';haoTracing=false;
  }
- function render(){stopSound();counter.textContent=String(step+1).padStart(2,'0')+' / '+STEPS;progress.setAttribute('aria-valuenow',String(step+1));fill.style.width=(100*(step+1)/STEPS)+'%';area.innerHTML=views[step]();area.scrollTop=0;prev.disabled=step===0;next.hidden=step===STEPS-1;next.textContent=step===STEPS-2?'Завершить урок ✓':!FIRST4_PREVIEW&&step===3?'К первым словам →':'Дальше →';next.disabled=FIRST4_PREVIEW?((step===10&&!verified)||(step===12&&!!listenTarget&&!listenPassed)):((step===9&&!verified)||(step===14&&!!listenTarget&&!listenPassed));if(step===STEPS-1){if(!FIRST4_PREVIEW)markComplete();prev.textContent='← Назад'}save()}
+ function loadHaoLibrary(){
+  if(window.HanziWriter)return Promise.resolve(window.HanziWriter);
+  if(haoLibraryPromise)return haoLibraryPromise;
+  haoLibraryPromise=new Promise((resolve,reject)=>{
+   const script=document.createElement('script');
+   script.src='./assets/vendor/hanzi-writer.min.js';
+   script.onload=()=>window.HanziWriter?resolve(window.HanziWriter):reject(Error('Hanzi Writer unavailable'));
+   script.onerror=()=>reject(Error('Hanzi Writer script failed'));
+   document.head.appendChild(script);
+  }).catch(error=>{haoLibraryPromise=null;throw error});
+  return haoLibraryPromise;
+ }
+ function setHaoTraceStatus(message,kind=''){
+  const element=area.querySelector('#pg-v419-trace-status');
+  if(!element)return;
+  element.textContent=message;
+  element.className='pg-v419-trace-status'+(kind?' '+kind:'');
+ }
+ function startHaoTracing(scene){
+  if(!scene||!window.HanziWriter)return false;
+  const original=haoDemoHtml||scene.innerHTML;
+  haoTraceEpoch++;
+  try{haoTraceWriter?.cancelQuiz?.();haoTraceWriter?.pauseAnimation?.()}catch{}
+  haoTraceWriter=null;haoDemoHtml=original;haoTracing=true;
+  const epoch=haoTraceEpoch;
+  const host=document.createElement('div');
+  host.id='pg-v419-hanzi-tracing';
+  host.setAttribute('aria-label','Обведи шесть черт иероглифа 好 в правильном порядке');
+  scene.replaceChildren(host);
+  const width=Math.max(170,Math.min(245,Math.round(scene.getBoundingClientRect().width||235)-8));
+  try{
+   const writer=window.HanziWriter.create('pg-v419-hanzi-tracing','好',{
+    width,height:width,padding:12,
+    showOutline:true,showCharacter:false,
+    strokeColor:'#7133a5',drawingColor:'#8534b2',outlineColor:'#ddc8eb',
+    highlightColor:'#efb5d3',showHintAfterMisses:2,acceptBackwardsStrokes:false,
+    strokeAnimationSpeed:1,delayBetweenStrokes:280,
+    charDataLoader:(hanzi,onComplete,onError)=>{
+     fetch('./assets/hanzi-data/'+encodeURIComponent(hanzi)+'.json')
+      .then(response=>{if(!response.ok)throw Error('stroke data unavailable');return response.json()})
+      .then(data=>{if(epoch===haoTraceEpoch)onComplete(data)})
+      .catch(error=>{
+       if(epoch!==haoTraceEpoch)return;
+       setHaoTraceStatus('Не удалось загрузить черты. Проверь интернет и нажми «Повторить».','error');
+       onError?.(error);
+      });
+    }
+   });
+   haoTraceWriter=writer;
+   let misses=0;
+   setHaoTraceStatus('Обводи бледные черты в правильном порядке: 0 из 6.');
+   writer.quiz({
+    onCorrectStroke:info=>{
+     if(epoch!==haoTraceEpoch)return;
+     const remaining=Number(info?.strokesRemaining);
+     const written=Number.isFinite(remaining)?Math.max(0,6-remaining):null;
+     setHaoTraceStatus(written===null?'✓ Верно! Продолжай следующую черту.':'✓ Верно: '+written+' из 6 черт. Продолжай.','success');
+    },
+    onMistake:()=>{
+     if(epoch!==haoTraceEpoch)return;
+     misses++;
+     setHaoTraceStatus(misses>=2?'Неправильная черта или направление. Следуй подсказке и попробуй ещё раз.':'Неверно. Обведи нужную черту в правильном направлении.','error');
+    },
+    onComplete:()=>{
+     if(epoch!==haoTraceEpoch)return;
+     let usedHints=misses>=2;
+     try{
+      const key='pg-hanzi-writing-v283';
+      const progress=JSON.parse(localStorage.getItem(key)||'{}');
+      const safe=progress&&typeof progress==='object'&&!Array.isArray(progress)?progress:{};
+      safe['1:好']=true;
+      localStorage.setItem(key,JSON.stringify(safe));
+     }catch{}
+     setHaoTraceStatus(usedHints?'✓ Все 6 черт пройдены с подсказками! Попробуй ещё раз без ошибок.':'✓ Правильно! Все 6 черт написаны по порядку.','success');
+    }
+   });
+   return true;
+  }catch{
+   haoTracing=false;
+   scene.innerHTML=original;
+   setHaoTraceStatus('Тренажёр не запустился. Покажи образец и попробуй снова.','error');
+   return false;
+  }
+ }
+ function render(){releaseHaoTrace();stopSound();counter.textContent=String(step+1).padStart(2,'0')+' / '+STEPS;progress.setAttribute('aria-valuenow',String(step+1));fill.style.width=(100*(step+1)/STEPS)+'%';area.innerHTML=views[step]();area.scrollTop=0;prev.disabled=step===0;next.hidden=step===STEPS-1;next.textContent=step===STEPS-2?'Завершить урок ✓':!FIRST4_PREVIEW&&step===3?'К первым словам →':'Дальше →';next.disabled=FIRST4_PREVIEW?((step===10&&!verified)||(step===12&&!!listenTarget&&!listenPassed)):((step===9&&!verified)||(step===14&&!!listenTarget&&!listenPassed));if(step===STEPS-1){if(!FIRST4_PREVIEW)markComplete();prev.textContent='← Назад'}save()}
  function advance(){if(FIRST4_PREVIEW){if((step===10&&!verified)||(step===12&&listenTarget&&!listenPassed))return}else{if(step===9&&!verified)return;if(step===14&&listenTarget&&!listenPassed)return}if(step<STEPS-1){if(FIRST4_PREVIEW&&step===0)cleanupRecord();else if(step===13)stopRecord();step++;render()}}
  prev.addEventListener('click',()=>{if(step>0){if(step===13)stopRecord();step--;render()}});
  next.addEventListener('click',advance);
  area.addEventListener('click',async e=>{
   const btn=e.target.closest('button');if(!btn||btn.disabled)return;
   if(btn.hasAttribute('data-radical')){radical=Number(btn.dataset.radical);render();return}
-  if(FIRST4_PREVIEW&&btn.id==='pg-v418-write-toggle'){
-   const demo=area.querySelector('#pg-v418-writing-demo'),panel=area.querySelector('#pg-v418-writing-panel');
-   if(!demo||!panel)return;
-   const writing=panel.hidden;
-   panel.hidden=!writing;demo.hidden=writing;
-   btn.textContent=writing?'👁 Посмотреть образец':'✍️ Написать самому';
-   btn.setAttribute('aria-expanded',String(writing));
-   if(writing)initializeHaoWriting(panel.querySelector('#pg-v418-ink'));
+  if(FIRST4_PREVIEW&&step===14&&btn.id==='pg-v418-write-toggle'){
+   const scene=area.querySelector('#pg-v418-writing-demo .writing-scene');
+   if(!scene)return;
+   if(haoTracing){
+    haoTraceEpoch++;
+    try{haoTraceWriter?.cancelQuiz?.();haoTraceWriter?.pauseAnimation?.()}catch{}
+    haoTraceWriter=null;haoTracing=false;
+    scene.innerHTML=haoDemoHtml;
+    btn.textContent='✍️ Написать самому';
+    btn.setAttribute('aria-pressed','false');
+    setHaoTraceStatus('Смотри порядок черт и нажми «Написать самому».');
+   }else{
+    btn.disabled=true;
+    setHaoTraceStatus('Загружаю проверку шести черт…');
+    try{
+     await loadHaoLibrary();
+     if(step!==14||area.querySelector('#pg-v418-write-toggle')!==btn)return;
+     if(startHaoTracing(scene)){
+      btn.textContent='👁 Посмотреть образец';
+      btn.setAttribute('aria-pressed','true');
+     }
+    }catch{setHaoTraceStatus('Тренажёр временно недоступен. Проверь интернет.','error')}
+    finally{btn.disabled=false}
+   }
    return;
   }
-  if(FIRST4_PREVIEW&&btn.id==='pg-v418-clear'){
-   const canvas=area.querySelector('#pg-v418-ink'),ctx=canvas?.getContext?.('2d');
-   if(ctx&&canvas)ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(btn.id==='stroke-restart'){
+   if(FIRST4_PREVIEW&&step===14&&haoTracing){
+    const scene=area.querySelector('#pg-v418-writing-demo .writing-scene');
+    if(scene)startHaoTracing(scene);
+    return;
+   }
+   const svg=area.querySelector('.writing-animate');
+   if(svg)svg.replaceWith(svg.cloneNode(true));
    return;
   }
-  if(btn.id==='stroke-restart'){const svg=area.querySelector('.writing-animate');if(svg)svg.replaceWith(svg.cloneNode(true));return}
   if(btn.hasAttribute('data-male-voice')){
    const choice=btn.dataset.maleVoice;
    if(!Object.prototype.hasOwnProperty.call(MALE_HELLO_OPTIONS,choice))return;
@@ -518,6 +586,6 @@
   if(btn.id==='record-listen'){play(recordUrl);return}
  });
  document.addEventListener('visibilitychange',()=>{if(document.hidden){stopSound();if(recording)stopRecord()}});
- window.addEventListener('pagehide',()=>{stopSound();cleanupRecord()});
+ window.addEventListener('pagehide',()=>{releaseHaoTrace();stopSound();cleanupRecord()});
  render();
 })();
