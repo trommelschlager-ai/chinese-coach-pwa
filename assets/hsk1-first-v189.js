@@ -475,14 +475,9 @@
     },
     onComplete:()=>{
      if(epoch!==haoTraceEpoch)return;
-     let usedHints=misses>=2;
-     try{
-      const key='pg-hanzi-writing-v283';
-      const progress=JSON.parse(localStorage.getItem(key)||'{}');
-      const safe=progress&&typeof progress==='object'&&!Array.isArray(progress)?progress:{};
-      safe['1:好']=true;
-      localStorage.setItem(key,JSON.stringify(safe));
-     }catch{}
+     const usedHints=misses>=2;
+     // Isolate test progress from the published lesson and the separate writing studio.
+     try{localStorage.setItem('pg-hsk1-v419-hao-trace',JSON.stringify({character:'好',completed:true,withHints:usedHints,updatedAt:Date.now()}))}catch{}
      setHaoTraceStatus(usedHints?'✓ Все 6 черт пройдены с подсказками! Попробуй ещё раз без ошибок.':'✓ Правильно! Все 6 черт написаны по порядку.','success');
     }
    });
