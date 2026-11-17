@@ -166,6 +166,9 @@ function answersPrompt(spoken,raw,prompt){
  if(prompt.intent==='extension')return prompt.accepted?.some(a=>normalize(a)===s)||false;
  if(prompt.lesson===6&&spoken.family){const f=spoken.family,asked=/^你有(哥哥|姐姐|弟弟|妹妹)吗$/.exec(normalize(prompt.hanzi||prompt.panda||''));const n=prompt.relative||asked?.[1]||'哥哥';return !f.present.includes(f.absent)&&(f.absent===n||f.present.includes(n))}
  if(prompt.lesson===2&&normalize(prompt.hanzi||prompt.panda)==='你是老师吗'&&spoken.fact?.role)return spoken.fact.subject==='我'&&(spoken.fact.role==='老师'||spoken.fact.role==='学生'&&!spoken.fact.negative);
+ // The question catalogue omits prompt.intent; match its exact approved
+ // wording instead of rejecting a valid name as off-topic.
+ if(prompt.lesson===2&&normalize(prompt.hanzi||prompt.panda||'')==='你叫什么名字'&&spoken.fact?.name)return true;
  if(prompt.intent==='name')return !!spoken.fact?.name;
  if(prompt.intent==='age')return !!spoken.fact?.age;
  if(prompt.intent==='relative-age')return spoken.fact?.relative===prompt.relative&&!!spoken.fact?.relativeAge;
