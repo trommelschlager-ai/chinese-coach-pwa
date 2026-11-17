@@ -164,7 +164,7 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
   assert(w.PandaApprovedBridge337.snapshot().allowed.includes(4));
   assert(w.PandaApprovedBridge337.snapshot().allowed.includes(5));
   send(dateInput);
-  assert.match(el('recent').textContent,/16\.11/,'Learner date is translated');
+  assert.match(el('recent').textContent,dateTranslation,'Learner date is translated');
   assert.match(el('status').textContent,/продолжит вопросом/,'Panda scheduled a relevant calendar follow-up');
   await new Promise(resolve=>setTimeout(resolve,4950));
   assert.equal(el('phrase').textContent,'今天星期几？',
