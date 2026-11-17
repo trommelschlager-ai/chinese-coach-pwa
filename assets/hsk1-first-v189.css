@@ -359,3 +359,41 @@
 #app.pg-v414-preview .pg-v418-write-toggle:focus-visible{outline:3px solid #dfb34a;outline-offset:3px}
 #app.pg-v414-preview .pg-v418-ink-note{text-align:center;font-size:12px;line-height:1.4;color:#806394;margin:9px auto 0}
 @media(max-height:680px){#app.pg-v414-preview .pg-v418-canvas-wrap{width:min(100%,225px)}}
+
+
+/* Panda Go HSK1 v419: inline guided Hao tracing inside the existing demonstration square. */
+#app.pg-v414-preview #pg-v419-hanzi-tracing{
+  width:100%;
+  height:100%;
+  min-height:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+#app.pg-v414-preview #pg-v419-hanzi-tracing svg{
+  display:block;
+  touch-action:none!important;
+  max-width:100%;
+  max-height:100%;
+}
+#app.pg-v414-preview .pg-v419-trace-status{
+  margin:5px auto 13px;
+  max-width:385px;
+  min-height:36px;
+  padding:4px 13px;
+  color:#6d4a87;
+  text-align:center;
+  font-size:13px;
+  line-height:1.4;
+  font-weight:750;
+}
+#app.pg-v414-preview .pg-v419-trace-status.success{color:#217549}
+#app.pg-v414-preview .pg-v419-trace-status.error{color:#ad385f}
+#app.pg-v414-preview .pg-v418-write-toggle[aria-pressed=true]{
+  border-color:#955ccc;
+  background:linear-gradient(180deg,#f0e1ff,#d8b6f4);
+  box-shadow:0 2px 0 #a078c6,0 4px 9px #7141912b;
+}
