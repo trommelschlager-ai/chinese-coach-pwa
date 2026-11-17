@@ -18,9 +18,12 @@ export function reviewedYouYouMeiyou(raw,{allowed=[1],prompt=null}={}){
  const active=normalized(prompt?.hanzi||prompt?.panda||prompt?.line?.hanzi||'');
  // Full learner statements are valid Chinese even when they do not answer the
  // current sibling question. Translate exactly; never fall through to 谢谢！.
- const fullFamily=/^(没有)?我(没有|有)(一个|两个)?(哥哥|姐姐|弟弟|妹妹)$/.exec(s);
+ const fullFamily=/^(没有|有)?我(没有|有)(一个|两个)?(哥哥|姐姐|弟弟|妹妹)$/.exec(s);
  if(fullFamily){
-   const absent=!!fullFamily[1]||fullFamily[2]==='没有';
+   const absent=fullFamily[2]==='没有';
+   const prefix=fullFamily[1]||'';
+   // Do not accept contradictory leading yes/no words as verified meaning.
+   if((prefix==='没有'&&!absent)||(prefix==='有'&&absent))return null;
    const quantity=fullFamily[3]||'';
    const relative=fullFamily[4],r=family[relative];
    if(!allowed.includes(6))return {kind:'locked',lesson:6,message:'Сначала открой урок 6.'};
@@ -28,10 +31,14 @@ export function reviewedYouYouMeiyou(raw,{allowed=[1],prompt=null}={}){
    const asked=promptFamily?.[1]||promptFamily?.[2]||null;
    const different=!!asked&&asked!==relative;
    const subjectPy=absent?'méiyǒu '+r[0]:'yǒu '+(quantity==='一个'?'yí ge ':quantity==='两个'?'liǎng ge ':'')+r[0];
-   const pinyin=(fullFamily[1]?'Méiyǒu, ':'')+'wǒ '+subjectPy+'.';
+   const pinyin=(prefix==='没有'?'Méiyǒu, ':prefix==='有'?'Yǒu, ':'')+'wǒ '+subjectPy+'.';
+   const one={哥哥:'один старший брат',姐姐:'одна старшая сестра',弟弟:'один младший брат',妹妹:'одна младшая сестра'};
+   const two={哥哥:'два старших брата',姐姐:'две старшие сестры',弟弟:'два младших брата',妹妹:'две младшие сестры'};
    const translated=absent?'У меня нет '+r[2]+'.':
-     'У меня '+(quantity==='一个'?'есть один ':quantity==='两个'?'есть два ':'есть ')+r[1]+'.';
-   const meaning=(fullFamily[1]?'Нет, ':'')+translated.charAt(0).toLowerCase()+translated.slice(1);
+     quantity==='一个'?'У меня '+one[relative]+'.':
+     quantity==='两个'?'У меня '+two[relative]+'.':'У меня есть '+r[1]+'.';
+   const meaning=(prefix==='没有'?'Нет, ':prefix==='有'?'Да, ':'')+
+     (prefix?translated.charAt(0).toLowerCase()+translated.slice(1):translated);
    const spoken={known:true,hanzi:original,pinyin:pinyin.replace(/^w/,'W'),translation:meaning,topic:6,
      matchedPrompt:!!asked&&!different,family:{present:absent?[]:[relative],absent:absent?relative:null}};
    if(different)return {kind:'clarify',lesson:6,spoken,followup:null,
