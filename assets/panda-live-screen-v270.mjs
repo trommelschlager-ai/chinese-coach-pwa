@@ -18,6 +18,7 @@ import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
 import {isCalendarRoundFinished} from './panda-calendar-literal-v383.mjs?v=405';
+import {coherentPandaFollowup} from './panda-nonstop-continuity-v425.mjs?v=425';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -277,6 +278,10 @@ function submit(raw){
      const selected=state.allowed[state.cursor%state.allowed.length]||state.topic;
      followup=pickCoursePrompt(selected,curriculum,state.questions.concat(input),new Date(),{...state.profile,unlocked:state.allowed})||followup;
     }
+   // v425: keep a spontaneous learner question on its own topic and avoid echoing it.
+   followup=coherentPandaFollowup({input,result,followup,
+    allowed:state.lockedTopic?[state.lockedTopic]:state.allowed,
+    questions:state.questions.slice(-20),catalog:topicCatalogGroups(),lookupAudio:lookupPandaVoiceClip});
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
    note(completedCalendarRound?closingSummary:
     followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
