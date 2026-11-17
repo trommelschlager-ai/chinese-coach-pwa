@@ -12,7 +12,7 @@ const sectionLabel=document.getElementById('pg3-label'),pageCount=document.getEl
 const progress=document.getElementById('pg3-progress'),fill=document.getElementById('pg3-progress-fill');
 const notice=document.getElementById('pg3-notice');
 if(!stage||!back||!forward)return;
-const VERSION='pg-hsk1-v215-weekdays',PREV_VERSION='pg-hsk1-v214-weekdays',DONE='pg-hsk1-v3-complete',TOTAL=13;
+const VERSION='pg-hsk1-v215-weekdays',PREV_VERSION='pg-hsk1-v214-weekdays',DONE='pg-hsk1-v3-complete',TOTAL=12,LAST_STEP=12;
 const DAYS=[
  {n:1,zh:'星期一',py:'xīngqī yī',ru:'понедельник',short:'Пн',tail:'一'},
  {n:2,zh:'星期二',py:'xīngqī èr',ru:'вторник',short:'Вт',tail:'二'},
@@ -40,7 +40,7 @@ const GLOSS={
 };
 const SECTIONS=[
  ['УРОК 4 · HSK1','Дни недели','Семь дней, одно понятное правило'],
- ['НОВЫЕ СЛОВА','星期 и первые дни','Изучаем понедельник, вторник и среду'],
+ ['НОВЫЕ СЛОВА','Дни недели · Пн—Сб','Прослушай шесть дней по порядку'],
  ['НОВЫЕ СЛОВА','Четверг, пятница, суббота','Послушай каждое слово полностью'],
  ['ГРАММАТИКА','Как сказать «воскресенье»?','Два правильных варианта, не 星期七'],
  ['СЛУХ И ТОНЫ','Узнай семь дней','Сначала дослушай слово, потом отвечай'],
@@ -121,7 +121,7 @@ try{
  if(saved&&typeof saved==='object'){
   state=Object.assign(newState(),saved);
   state.ix=Object.assign(newState().ix,saved.ix||{});
-  state.step=Math.max(0,Math.min(TOTAL-1,Math.floor(Number(state.step)||0)));
+  state.step=Math.max(0,Math.min(LAST_STEP,Math.floor(Number(state.step)||0)));
   for(const k of ['heard','heardTimes','written','tiles','used','sentenceDone','reviewIndices'])if(!Array.isArray(state[k]))state[k]=newState()[k];
   for(const k of ['wrong','examAnswers','reviewAnswers'])if(!state[k]||typeof state[k]!=='object')state[k]={};
   for(const [k,limit] of [[4,LISTEN.length],[7,CALENDAR.length],[9,DIALOG.length],[10,BUILDS.length],[11,EXAM.length]])state.ix[k]=Math.min(limit,Math.max(0,Math.floor(Number(state.ix[k])||0)));
@@ -136,6 +136,8 @@ try{
   }
  }
 }catch{}
+// Page 3 was merged into page 2. Respect progress from earlier versions.
+if(state.step===2)state.step=1;
 const save=()=>{try{localStorage.setItem(VERSION,JSON.stringify(state))}catch{}};
 const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ownerMap=Object.freeze({
@@ -188,21 +190,21 @@ const audioCredits=''; // Audio attribution is available from the separate credi
 const card=(body,cls='')=>'<section class="pg4-card '+cls+'">'+body+'</section>';
 const h=(title)=>'<h2 class="pg4-card-title">'+title+'</h2>';
 function scrollNew(){viewport.scrollTop=0}
-function progressText(){const n=state.step+1;pageCount.textContent=n+' / '+TOTAL;progress.setAttribute('aria-valuenow',String(n));progress.setAttribute('aria-valuemax',String(TOTAL));fill.style.width=(n/TOTAL*100)+'%'}
+function progressText(){const n=state.step>=3?state.step:state.step+1;pageCount.textContent=n+' / '+TOTAL;progress.setAttribute('aria-valuenow',String(n));progress.setAttribute('aria-valuemax',String(TOTAL));fill.style.width=(n/TOTAL*100)+'%'}
 function intro(){
  // The approved Panda Go panda and lesson artwork remain unchanged.
  return '<div class="pg4-cover"><img src="./assets/lesson4-v269/cover.webp" width="960" height="720" loading="eager" decoding="async" fetchpriority="high" alt="Панда в наушниках у озера с китайской пагодой"><div><b>Урок 4</b><h2>Дни недели</h2><span lang="zh-Hans">星期 · xīngqī</span></div></div>';
 }
 function study(step){
- const list=step===1?DAYS.slice(0,3):DAYS.slice(3,6);
- const focused=list.find(x=>x.zh===state.focus)||list[0];
- return card(h(step===1?'星期 + номер дня':'Ещё три дня недели')+
-  (step===1?'<p class="pg4-info">Сначала прослушай основу: '+audioButton('星期','▶ 星期')+'</p>':'')+
-  '<p class="pg4-info" id="pg4-learn-progress">Прослушано '+list.filter(x=>state.heard.includes(x.zh)).length+' из 3</p>'+
+ // Monday–Saturday in a single page. Original calendar assets and recordings preserved.
+ const list=DAYS.slice(0,6),focused=list.find(x=>x.zh===state.focus)||list[0];
+ return card(h('星期 + номер дня')+
+  '<p class="pg4-info pg4-learn-hint">Прослушай основу: '+audioButton('星期','▶ 星期')+'</p>'+
+  '<p class="pg4-info pg4-learn-count" id="pg4-learn-progress">Прослушано '+list.filter(x=>state.heard.includes(x.zh)).length+' из 6</p>'+
   '<div class="pg4-study-grid">'+list.map(x=>
    '<button class="pg4-study '+(state.heard.includes(x.zh)?'heard ':'')+(focused.zh===x.zh?'selected':'')+
-   '" type="button" data-learn="'+x.zh+'"><img class="pg4-calendar-icon" src="./assets/lesson4-reference-v216/calendar-'+x.n+'.webp" alt=""><strong lang="zh-Hans">'+x.zh+'</strong><span>'+x.py+'</span><small>'+x.ru+'</small>'+
-   (state.heard.includes(x.zh)?'<i>✓</i>':'')+'</button>').join('')+'</div>');
+   '" type="button" data-learn="'+x.zh+'" aria-label="'+x.zh+', '+x.ru+', слушать"><img class="pg4-calendar-icon" src="./assets/lesson4-reference-v216/calendar-'+x.n+'.webp" alt=""><strong lang="zh-Hans">'+x.zh+'</strong><span>'+x.py+'</span><small>'+x.ru+'</small>'+
+   (state.heard.includes(x.zh)?'<i aria-hidden="true">✓</i>':'')+'</button>').join('')+'</div>','pg4-combined-days');
 }
 function sunday(){
  return card(h('У воскресенья два названия')+
@@ -368,8 +370,7 @@ const screens=[intro,()=>study(1),()=>study(2),sunday,()=>quiz(4,LISTEN,'audio')
 function examSet(){return state.reviewMode?state.reviewIndices.map(i=>EXAM[i]):EXAM}
 function ready(){
  const step=state.step;
- if(step===1)return DAYS.slice(0,3).every(d=>state.heard.includes(d.zh));
- if(step===2)return DAYS.slice(3,6).every(d=>state.heard.includes(d.zh));
+ if(step===1)return DAYS.slice(0,6).every(d=>state.heard.includes(d.zh));
  if(step===3)return state.sundayPassed;
  if(step===4)return state.ix[4]>=LISTEN.length;
  if(step===5)return TIMES.every(w=>state.heardTimes.includes(w.zh));
@@ -397,7 +398,7 @@ function completedExercise(step){
 }
 function screen(keep=false,direction=1){
  // Skip completed exercise shells on restore and back/forward navigation.
- while(completedExercise(state.step)&&state.step>0&&state.step<TOTAL-1)state.step+=direction;
+ while(completedExercise(state.step)&&state.step>0&&state.step<LAST_STEP)state.step+=direction;
  const pos=viewport.scrollTop;
  soundStop();writerStop();if(!keep)micStop(true);
  const s=state.step;if(s===12&&!state.done)complete();
@@ -415,7 +416,7 @@ function screen(keep=false,direction=1){
 function nextScreen(){
  if(state.step===12){location.href='./hsk1-map.html';return}
  if(!ready()){message('Заверши это задание, затем продолжай.','error');return}
- if(state.step<12){state.step++;state.answered=null;state.listenReady=false;state.tiles=[];state.used=[];screen()}
+ if(state.step<12){state.step=state.step===1?3:state.step+1;state.answered=null;state.listenReady=false;state.tiles=[];state.used=[];screen()}
 }
 function onLearn(word){
  const record=DAYS.find(d=>d.zh===word);if(!record)return;
@@ -428,9 +429,9 @@ function onLearn(word){
   if(!ok)return;
   if(!state.heard.includes(word))state.heard.push(word);
   const el=stage.querySelector('[data-learn="'+word+'"]');if(el)el.classList.add('heard');
-  const list=state.step===1?DAYS.slice(0,3):DAYS.slice(3,6);
+  const list=DAYS.slice(0,6);
   const p=stage.querySelector('#pg4-learn-progress');
-  if(p)p.textContent='Прослушано '+list.filter(x=>state.heard.includes(x.zh)).length+' из 3';
+  if(p)p.textContent='Прослушано '+list.filter(x=>state.heard.includes(x.zh)).length+' из 6';
   forward.disabled=!ready();save();
  });
 }
@@ -675,7 +676,7 @@ stage.addEventListener('click',ev=>{
 });
 back.addEventListener('click',()=>{
  if(state.step===0){location.href='./hsk1-map.html';return}
- state.step--;state.answered=null;state.listenReady=false;state.tiles=[];state.used=[];screen(false,-1)
+ state.step=state.step===3?1:state.step-1;state.answered=null;state.listenReady=false;state.tiles=[];state.used=[];screen(false,-1)
 });
 forward.addEventListener('click',nextScreen);
 window.addEventListener('pagehide',()=>{soundStop();writerStop();micStop()});
