@@ -1,6 +1,6 @@
 {
-  "version": 420,
-  "bytes": 64679587,
+  "version": 424,
+  "bytes": 64769751,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -2742,7 +2742,7 @@
     "./hsk2-map.html",
     "./hsk2-lesson1.html",
     "./assets/panda-hsk2-bridge-v304.mjs?v=307",
-    "./assets/panda-live-audio.mjs?v=365",
+    "./assets/panda-live-audio.mjs?v=424",
     "./assets/panda-live-voice-bridge-v307/B01.mp3",
     "./assets/panda-live-voice-bridge-v307/B02.mp3",
     "./assets/panda-live-voice-bridge-v307/B03.mp3",
@@ -2755,7 +2755,7 @@
     "./assets/panda-live-voice-bridge-v307/B10.mp3",
     "./assets/panda-hsk-scenic-v315.css?v=315",
     "./panda-voice-pilot.html?v=326",
-    "./assets/panda-live-dialogue-v272.mjs?v=323",
+    "./assets/panda-live-dialogue-v272.mjs?v=424",
     "./assets/panda-hsk1-questions-v281.mjs?v=319",
     "./assets/panda-sentence-coach-v319.mjs?v=319",
     "./assets/panda-home-photo1-v319.css?v=319",
@@ -2974,8 +2974,19 @@
     "./assets/pandago-art-touch-feedback-v395.js?v=417",
     "./assets/hsk2-lesson1-three-page-v418.css?v=418",
     "./assets/hsk2-panda-return-chat-v419.css?v=419",
-    "./assets/panda-live-screen-v270.mjs?v=420",
-    "./assets/panda-live-v346.mjs?v=420",
-    "./assets/hsk2-panda-chat-clean-v420.css?v=420"
+    "./assets/panda-live-screen-v270.mjs?v=424",
+    "./assets/panda-live-v346.mjs?v=424",
+    "./assets/hsk2-panda-chat-clean-v420.css?v=420",
+    "./assets/panda-voice-v411.mjs?v=411",
+    "./assets/panda-voice-clips-v411/p156.mp3",
+    "./assets/panda-voice-clips-v411/p157.mp3",
+    "./assets/panda-voice-clips-v411/p158.mp3",
+    "./assets/panda-voice-clips-v411/p159.mp3",
+    "./assets/panda-voice-clips-v411/p160.mp3",
+    "./assets/panda-voice-clips-v411/p161.mp3",
+    "./assets/panda-voice-clips-v411/p162.mp3",
+    "./assets/panda-voice-clips-v411/p163.mp3",
+    "./assets/panda-voice-clips-v411/p164.mp3",
+    "./assets/panda-voice-clips-v411/p165.mp3"
   ]
 }

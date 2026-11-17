@@ -161,11 +161,19 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
   assert.equal(el('hear').disabled,false,'Approved question MP3 is available');
   // Then answer the weekday and date, as on the user's Android screenshots.
   // No third repeat of the same two-question loop is permitted.
-  send('今天星期一。');
+  const clipsBeforeAnswer=dom.clips.length;
+  const now=new Date();
+  const weekday=['日','一','二','三','四','五','六'][now.getDay()];
+  const zhNum=n=>n<10?'零一二三四五六七八九'[n]:n===10?'十':n<20?'十'+'零一二三四五六七八九'[n-10]:n%10===0?'零一二三四五六七八九'[Math.floor(n/10)]+'十':'零一二三四五六七八九'[Math.floor(n/10)]+'十'+'零一二三四五六七八九'[n%10];
+  send('今天星期'+weekday+'。');
+  // Mock Audio does not end automatically. Real recorded replies may be voiced;
+  // fire its completion event so the scheduled next question is not blocked.
+  const latestClip=dom.clips.at(-1);
+  if(dom.clips.length>clipsBeforeAnswer&&typeof latestClip?.onended==='function')latestClip.onended();
   await new Promise(resolve=>setTimeout(resolve,4950));
   assert.equal(el('phrase').textContent,'今天几月几号？',
    'After weekday answer, Panda should ask for the date once');
-  send('今天是十一月十六号。');
+  send('今天是'+zhNum(now.getMonth()+1)+'月'+zhNum(now.getDate())+'号。');
   assert.equal(el('phrase').textContent,'很好！',
    'The Panda should visibly close the lesson instead of echoing the date');
   assert.match(el('status').textContent,/Мы повторили день недели и дату/,

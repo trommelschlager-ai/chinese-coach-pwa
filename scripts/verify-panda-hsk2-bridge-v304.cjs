@@ -92,15 +92,15 @@ const vm=require('node:vm');
  const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
  for(const p of [
   './assets/panda-hsk2-bridge-v304.mjs?v=307',
-  './assets/panda-live-dialogue-v272.mjs?v=323',
-  './assets/panda-live-screen-v270.mjs?v=419',
+  './assets/panda-live-dialogue-v272.mjs?v=424',
+  './assets/panda-live-screen-v270.mjs?v=424',
   './assets/panda-hsk1-questions-v281.mjs?v=319',
   './panda-voice-pilot.html?v=326'
  ])assert(offline.files.includes(p),'Offline material missing: '+p);
  const latest={
   'panda-voice-pilot.html':'326',
-  'assets/panda-live-screen-v270.mjs':'419',
-  'assets/panda-live-dialogue-v272.mjs':'323',
+  'assets/panda-live-screen-v270.mjs':'424',
+  'assets/panda-live-dialogue-v272.mjs':'424',
   'assets/panda-hsk1-questions-v281.mjs':'319'
  };
  for(const url of offline.files){

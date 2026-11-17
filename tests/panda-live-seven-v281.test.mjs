@@ -15,7 +15,7 @@ test('Panda has only its approved recordings; lesson audio remains separate',()=
   assert(sound?.startsWith('./assets/')&&sound.endsWith('.mp3'),'Approved Panda clip missing: '+x);
   assert(fs.existsSync(new URL('../'+sound,import.meta.url)),x+' actual asset');
  }
- for(const word of ['我','你','天气','宇宙飞船','你星期几有空']){
+ for(const word of ['我','你','天气','宇宙飞船']){
   assert.equal(lookupPilotAudio(word),null,'Never switch Panda to a separate HSK1 lesson narrator: '+word);
  }
 });
@@ -53,8 +53,9 @@ test('Panda can ask, understand answers and respond across lessons with topic gu
   const r=answerLive(question,{allowed:[1],topic:1,curriculum,date});
   assert.equal(r.kind,'locked','Lesson '+lesson+' must not leak before study');
  }
- assert.equal(lookupPilotAudio('你星期几有空'),null,'HSK1 lesson voices must never be used for Panda conversational output');
+ assert.equal(lookupPilotAudio('你星期几有空'),'./assets/panda-voice-clips-v411/p163.mp3','Use the exact newly provided Panda recording, not lesson audio');
  assert.equal(answerLive('你星期几有空',{allowed,curriculum,date}).reply.hanzi,'我星期六有空。');
+ assert.equal(lookupPilotAudio('我星期六有空'),'./assets/panda-voice-clips-v411/p160.mp3','Reply must be voiced by the matching approved Panda clip');
 });
 test('learner can repeat taught vocabulary and new questions cannot claim fabricated audio',()=>{
  const weather=coursePromptBank(7,curriculum,date);
