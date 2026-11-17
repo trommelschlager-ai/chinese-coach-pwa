@@ -56,7 +56,11 @@ try{
   await page.locator('.pg346-main-zh').filter({hasText:nextQuestion}).waitFor({timeout:10000});
  }
  const back=await page.locator('.pg346-back').getAttribute('href');
- assert.match(back,/hsk2-life-course\.html\?topic=0/);
+  const returnUrl=new URL(back,base+'/');
+  assert(returnUrl.pathname.endsWith('/hsk2-life-course.html'),'The Panda back link must return to HSK2');
+  assert(returnUrl.searchParams.get('topic')==='0'||
+    (returnUrl.searchParams.get('from')==='hsk2-life-course'&&returnUrl.searchParams.get('return')==='done'&&returnUrl.searchParams.get('mini')==='0'),
+    'Back link must point to the approved HSK2 day page or completed lesson');
  await page.screenshot({path:'qa/panda-voice-pilot/hsk2-day-panda-android.png',fullPage:false});
  assert.deepEqual(errors,[],'No browser JS errors');
  console.log('PASS: Android 393x852: day micro-lesson, grammar/test/voice, completion AI link, three contextual Panda AI prompts, return to course.');
