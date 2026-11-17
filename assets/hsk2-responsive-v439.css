@@ -1,0 +1,74 @@
+/* Panda Go HSK2 v439 — proportional approved artwork, readable first theme, sakura.
+   This override is intentionally loaded AFTER v433; original art and behavior stay intact. */
+#app.approved-welcome-v390,
+#app.approved-welcome-v390 #screen,
+#app.approved-welcome-v390 .approved-welcome-screen{
+  background: radial-gradient(ellipse at 50% 42%,#fff8ff 0,#f9ebfc 55%,#f5dbf7 100%)!important;
+}
+#app.approved-welcome-v390 .approved-welcome-screen{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  position:relative!important;overflow:hidden!important;
+}
+/* Hotspots live inside the 9:16 image plane; never fit an image into a distorted 9:20 phone plane. */
+#app.approved-welcome-v390 .approved-welcome-screen .approved-art{
+  position:relative!important;inset:auto!important;top:auto!important;left:auto!important;
+  flex:none!important;display:block!important;
+  width:min(100%,56.25dvh)!important;height:auto!important;
+  aspect-ratio:9 / 16!important;
+  transform:none!important;overflow:hidden!important;
+  margin:0 auto!important;padding:0!important;
+  border:0!important;border-radius:clamp(12px,3.5vw,21px)!important;
+  box-shadow:0 0 0 1px #eac9d8,0 4px 21px #a7699850!important;
+}
+#app.approved-welcome-v390 .approved-welcome-screen .approved-art>img{
+  display:block!important;width:100%!important;height:100%!important;
+  object-fit:contain!important;object-position:center!important;
+  user-select:none!important;-webkit-user-drag:none!important;
+}
+/* Cover uses the same exact 864×1536 image without reshaping text or panda. */
+#app.day-lesson-active:has(.pg432-cover) #screen,
+#app.day-lesson-active:has(.pg432-cover) .pg432-cover{
+  background:radial-gradient(ellipse at center,#fff8ff,#f4d9f6)!important;
+}
+#app.day-lesson-active:has(.pg432-cover) .pg432-cover{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+}
+#app.day-lesson-active:has(.pg432-cover) .pg432-cover .pg432-cover-art{
+  position:relative!important;inset:auto!important;top:auto!important;left:auto!important;
+  width:min(100%,56.25dvh)!important;height:auto!important;
+  aspect-ratio:9 / 16!important;flex:none!important;
+  display:block!important;margin:0 auto!important;overflow:hidden!important;
+  border-radius:clamp(12px,3.5vw,21px)!important;
+  box-shadow:0 0 0 1px #edc9db,0 4px 20px #a86a9852!important;
+}
+#app.day-lesson-active:has(.pg432-cover) .pg432-cover .pg432-cover-art>img{
+  width:100%!important;height:100%!important;
+  object-fit:contain!important;object-position:center!important;
+  display:block!important;
+}
+/* Any remaining obsolete full-screen artwork uses contain instead of stretch. */
+#app.day-lesson-active .pg415-art{object-fit:contain!important}
+/* Keep the HTML lesson header at an identical size on every stage. */
+#app #pg433 .pg433-header{height:114px!important;min-height:114px!important;max-height:114px!important;padding:7px 8px 6px!important}
+#app #pg433 .pg433-topline{height:45px!important;min-height:45px!important}
+#app #pg433 .pg433-tabs{margin-top:4px!important;height:47px!important}
+#app #pg433 .pg433-tabs button{min-height:47px!important}
+#app #pg433 .pg433-content{scrollbar-width:thin!important;overscroll-behavior:contain!important}
+#app #pg433 .pg433-footer{min-height:67px!important;height:67px!important}
+/* Slightly fuller but still unobtrusive sakura framing; the ornament never intercepts taps. */
+#pg433 .pg433-edge-sakura{position:absolute;z-index:0!important;width:78px;height:112px;background-size:contain;background-repeat:no-repeat;pointer-events:none!important;opacity:.46;filter:drop-shadow(0 2px 2px #b77d8222)}
+#pg433 .pg433-edge-sakura.left{left:-36px;top:34%;transform:rotate(26deg)}
+#pg433 .pg433-edge-sakura.right{right:-39px;bottom:17%;transform:scaleX(-1) rotate(-22deg);opacity:.4}
+#pg433 .pg433-header,#pg433 .pg433-content,#pg433 .pg433-footer{z-index:1!important}
+#pg433 .pg433-sound .hsk2-no-mp3{width:auto!important;min-width:41px!important;max-width:64px!important;display:inline-flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:0;border-radius:12px!important;background:#f9edf0!important;border:1px solid #d4b6c0!important;color:#8c6776!important;font-size:16px!important;line-height:1.05!important;box-shadow:none!important;cursor:default!important;padding:4px 2px!important}
+#pg433 .pg433-sound .hsk2-no-mp3 small{font-size:9px!important;color:#977484!important;white-space:nowrap}
+/* A missing recording is a status, never a fake play button. */
+#pg433 .pg433-sound:has(.hsk2-no-mp3){min-width:45px!important;width:auto!important}
+.pg433-petals span{color:transparent!important;font-size:0!important;width:12px;height:8px;border-radius:90% 0 90% 0;background:linear-gradient(140deg,#f96b92,#c63c71)!important;box-shadow:0 1px 3px #c9557b5e}
+@media(max-height:680px){
+ #app #pg433 .pg433-header{height:107px!important;min-height:107px!important;max-height:107px!important}
+ #app #pg433 .pg433-topline{height:42px!important;min-height:42px!important}
+ #app #pg433 .pg433-tabs{height:44px!important}
+ #app #pg433 .pg433-tabs button{min-height:44px!important}
+}
+@media(prefers-reduced-motion:reduce){.pg433-petals{display:none!important}}

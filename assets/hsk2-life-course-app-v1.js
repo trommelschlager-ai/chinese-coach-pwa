@@ -126,7 +126,7 @@ function daySound(zh){
  // Use only exact indexed MP3 for the first HSK2 topic.
  // No robotic Android speech is silently substituted for missing recordings.
  if(rec(zh))return sound(zh);
- return '<button class="audio missing-voice" type="button" data-missing-sound="'+E(zh)+'" aria-label="Проверенная MP3-запись для '+E(zh)+' пока недоступна">🔇</button>';
+ return '<span class="audio hsk2-no-mp3" role="status" aria-label="Для '+E(zh)+' нет подтверждённого MP3" title="Для этой фразы MP3 ещё не предоставлен">🔇<small>MP3 нет</small></span>';
 }
 function sound(zh){
  if(rec(zh))return '<button class="audio" type="button" data-sound="'+E(zh)+'" aria-label="Прослушать настоящий MP3: '+E(zh)+'">🔊</button>';

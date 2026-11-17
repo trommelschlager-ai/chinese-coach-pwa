@@ -13,7 +13,19 @@ const html=fs.readFileSync(path.join(root,'hsk2-life-course.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'assets/hsk2-life-welcome-v412.css'),'utf8');
 const app=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'utf8');
 assert(html.includes('hsk2-life-welcome-v412.css?v=412'));
-assert(html.includes('hsk2-life-course-app-v1.js?v=438'));
+assert(html.includes('hsk2-life-course-app-v1.js?v=439'));
+assert(html.includes('hsk2-responsive-v439.css?v=439'));
+assert(html.includes('hsk2-storyboard-v439.js?v=439'));
+const v439Css=fs.readFileSync(path.join(root,'assets/hsk2-responsive-v439.css'),'utf8');
+const v439Js=fs.readFileSync(path.join(root,'assets/hsk2-storyboard-v439.js'),'utf8');
+assert(v439Css.includes('aspect-ratio:9 / 16!important'));
+assert(v439Css.includes('object-fit:contain!important'));
+assert(!v439Css.includes('object-fit:fill'));
+assert(v439Css.includes('pg433-edge-sakura'));
+assert(v439Js.includes('pg433-edge-sakura left'));
+assert(v439Js.includes('data-pg433-next'));
+assert(app.includes('hsk2-no-mp3')&&!app.includes('<button class="audio missing-voice"'));
+
 // The v412 artwork remains intact as an archival reference. The active design is v432.
 assert(html.includes('hsk2-approved-20261117/home.jpg'));
 assert(html.includes('hsk2-approved-20261117/lesson1.jpg'));
