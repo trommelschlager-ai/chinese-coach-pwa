@@ -26,7 +26,7 @@ assert(!v440css.includes('object-fit:fill'),'Do not distort panda or approved te
 assert(v440css.includes('.pg433-edge-sakura'),'Keep decorated learning pages');
 assert(v440css.includes('.pg433-petals span'),'Petal animation must be present');
 assert(v440css.includes('pointer-events:none!important'),'Petals and branches cannot block taps');
-assert(pack.files.includes('./assets/hsk2-viewport-v440.css?v=440'),'The new styles must be available offline');
+assert(JSON.parse(fs.readFileSync(path.join(root,'assets/offline-pack.json'),'utf8')).files.includes('./assets/hsk2-viewport-v440.css?v=440'),'The new styles must be available offline');
 
 assert(html.includes('hsk2-storyboard-v439.js?v=439'));
 const v439Css=fs.readFileSync(path.join(root,'assets/hsk2-responsive-v439.css'),'utf8');
