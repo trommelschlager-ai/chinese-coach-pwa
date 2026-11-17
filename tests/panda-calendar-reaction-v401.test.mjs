@@ -230,7 +230,7 @@ test('Approved scenic Panda shows correct-but-off-topic weekday feedback without
  const engine=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
  assert(ui.includes("noteText.startsWith('✅ 我今天有空')"),'Only reviewed valid-phrase correction may show');
  assert(ui.includes("noteText.includes('Но вопрос был 今天星期几？')"),'Hint must stay attached to the correct weekday prompt');
- assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong||offTopicHint;"),'Scenic overlay must show the lesson hint');
+ assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong||teachingHint;"),'Scenic overlay must show the lesson hint');
  assert(ui.includes("root.append(el('p','pg377-explanation',noteText));"),'Scenic UI must display the actual feedback text');
  assert(ui.includes("if(wrong){"),'Existing grammar corrections remain');
  assert(engine.includes("panel.hidden=false;"),'Lesson engine must generate visible feedback');
