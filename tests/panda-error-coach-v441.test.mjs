@@ -67,8 +67,10 @@ test('existing Panda art and MP3 unchanged; short, nonstop and day use same tuto
  assert(screen.includes("explainPandaAnswer441(input,{prompt:activePrompt,confidence:state.confidence})"));
  assert(screen.includes("explainPandaAnswer441(input,{prompt:state.prompt?.line,confidence:state.confidence})"));
  assert(screen.includes("explainPandaAnswer441(input,{prompt:conversation.lines[state.step],confidence:state.confidence})"));
- assert(ui.includes('pg441-title'));
- assert(ui.includes("meaningOnly?'💬 ':'❌ '"));
+ assert(ui.includes('pg445-heading'));
+ assert(ui.includes('pg445-details'));
+ assert(ui.includes('Другой смысл — не ошибка грамматики'));
+ assert(ui.includes('Панда объясняет ошибку'));
  assert(ui.includes('panda-character-clean-v349.webp'));
  assert(!read('assets/panda-error-coach-v441.mjs').includes('new Audio('));
 });
