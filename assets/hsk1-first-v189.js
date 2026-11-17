@@ -74,6 +74,8 @@
    const clip=male[key]||Object.entries(male).find(([k])=>k.replace(/[。！?!？，,\s]/g,'')===normalized)?.[1];
    return clip?[clip]:[];
   }
+  // Test preview: isolated Xiaoxiao recording of 好 (hǎo), no different-voice fallback.
+  if(FIRST4_PREVIEW&&normalized==='好')return ['./assets/panda-xiaoxiao-trainer-v250/p017.mp3'];
   if(Object.prototype.hasOwnProperty.call(XIAOXIAO_LESSON1,normalized))return [XIAOXIAO_LESSON1[normalized]];
   const vo=window.PANDA_HSK1_VOICES?.female||{};
   const norm=String(key).replace(/[。！?!？，,\s]/g,'');
@@ -164,7 +166,12 @@
     '<strong class="big-hanzi" lang="zh-Hans">你好</strong>'+
     '<p class="pinyin">nǐ hǎo</p><p class="translation">Привет! · Здравствуйте!</p>'+
     playBtn('你好','Слушать приветствие')+
-    '<div class="pg-v414-note">🎙 Повтори вслух: <b lang="zh-Hans">你好！</b></div></div>',
+    '<div class="recorder pg-v416-hello-recorder">'+
+    '<button type="button" id="record-start" aria-label="Записать произношение 你好">🎙 Повтори вслух</button>'+
+    '<button type="button" id="record-stop" hidden>■ Стоп</button>'+
+    '<button type="button" id="record-listen" hidden>▶ Прослушать себя</button>'+
+    '<p id="record-status" class="pg-v416-record-status" role="status" aria-live="polite">Произнеси 你好 — nǐ hǎo.</p>'+
+    '</div></div>',
   ()=>intro('Знакомство · 2/4','Первое слово: 你','')+
     word('你','nǐ','ты','<p class="pg-v414-word-foot">Это первое слово в приветствии <b lang="zh-Hans">你好</b>.</p>'),
   ()=>intro('Знакомство · 3/4','Второе слово: 好','')+
@@ -394,7 +401,7 @@
  function stopRecord(){if(recorder&&recorder.state==='recording')recorder.stop();stream?.getTracks()?.forEach(t=>t.stop());stream=null;recording=false}
  function cleanupRecord(){recordEpoch++;stopRecord();if(recordUrl){URL.revokeObjectURL(recordUrl);recordUrl=null}}
  function render(){stopSound();counter.textContent=String(step+1).padStart(2,'0')+' / '+STEPS;progress.setAttribute('aria-valuenow',String(step+1));fill.style.width=(100*(step+1)/STEPS)+'%';area.innerHTML=views[step]();area.scrollTop=0;prev.disabled=step===0;next.hidden=step===STEPS-1;next.textContent=step===STEPS-2?'Завершить урок ✓':!FIRST4_PREVIEW&&step===3?'К первым словам →':'Дальше →';next.disabled=FIRST4_PREVIEW?((step===10&&!verified)||(step===12&&!!listenTarget&&!listenPassed)):((step===9&&!verified)||(step===14&&!!listenTarget&&!listenPassed));if(step===STEPS-1){if(!FIRST4_PREVIEW)markComplete();prev.textContent='← Назад'}save()}
- function advance(){if(FIRST4_PREVIEW){if((step===10&&!verified)||(step===12&&listenTarget&&!listenPassed))return}else{if(step===9&&!verified)return;if(step===14&&listenTarget&&!listenPassed)return}if(step<STEPS-1){if(step===13)stopRecord();step++;render()}}
+ function advance(){if(FIRST4_PREVIEW){if((step===10&&!verified)||(step===12&&listenTarget&&!listenPassed))return}else{if(step===9&&!verified)return;if(step===14&&listenTarget&&!listenPassed)return}if(step<STEPS-1){if(FIRST4_PREVIEW&&step===0)cleanupRecord();else if(step===13)stopRecord();step++;render()}}
  prev.addEventListener('click',()=>{if(step>0){if(step===13)stopRecord();step--;render()}});
  next.addEventListener('click',advance);
  area.addEventListener('click',async e=>{
@@ -418,7 +425,8 @@
   if(btn.id==='verify-answer'){if(buildAnswer()==='我是学生'){verified=true;showMessage('Правильно! Ты собрал первое предложение.')}else{verified=false;showMessage('Порядок неверный: начни со слова 我 («я»).')}render();if(!verified)showMessage('Попробуй ещё раз. Начни со слова 我.');return}
   if(btn.id==='repeat-course'){step=0;radical=0;order=[];verified=false;listenPassed=false;listenSelected='';render();return}
   if(btn.id==='record-start'){
-   if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){showMessage('В этом браузере запись недоступна. Повтори фразу вслух.');return}
+   if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){const m='Микрофон недоступен здесь. Открой урок в Chrome и разреши микрофон.';const status=document.querySelector('#record-status');if(status&&FIRST4_PREVIEW)status.textContent=m;showMessage(FIRST4_PREVIEW?m:'В этом браузере запись недоступна. Повтори фразу вслух.');return}
+   if(FIRST4_PREVIEW)btn.disabled=true;
    try{
     cleanupRecord();
     try{stream=await navigator.mediaDevices.getUserMedia({audio:{
@@ -442,10 +450,10 @@
      if(listen)listen.hidden=false;
      if(status)status.textContent='Запись готова';
     };
-    recorder.start();recording=true;btn.hidden=true;document.querySelector('#record-stop').hidden=false;document.querySelector('#record-status').textContent='Идёт запись';
-   }catch{showMessage('Микрофон не разрешён. Можно просто повторить вслух.')}return
+    recorder.start();recording=true;btn.hidden=true;btn.disabled=false;document.querySelector('#record-stop').hidden=false;document.querySelector('#record-status').textContent=FIRST4_PREVIEW&&step===0?'Идёт запись · произнеси 你好':'Идёт запись';
+   }catch{if(FIRST4_PREVIEW){btn.disabled=false;const status=document.querySelector('#record-status');if(status)status.textContent='Нет доступа к микрофону. Разреши доступ в Chrome и попробуй снова.';}showMessage('Микрофон не разрешён. Можно просто повторить вслух.')}return
   }
-  if(btn.id==='record-stop'){stopRecord();btn.hidden=true;const p=document.querySelector('#record-start');if(p){p.hidden=false;p.textContent='🎙 Записать ещё раз'}document.querySelector('#record-status').textContent='Запись готова';return}
+  if(btn.id==='record-stop'){stopRecord();btn.hidden=true;const p=document.querySelector('#record-start');if(p){p.hidden=false;p.textContent='🎙 Записать ещё раз'}document.querySelector('#record-status').textContent=FIRST4_PREVIEW?'Сохраняем запись…':'Запись готова';return}
   if(btn.id==='record-listen'){play(recordUrl);return}
  });
  document.addEventListener('visibilitychange',()=>{if(document.hidden){stopSound();if(recording)stopRecord()}});
