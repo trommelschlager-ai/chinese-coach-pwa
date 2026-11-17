@@ -66,6 +66,12 @@ try{
   await page.locator('[data-day-next]').click();
   await page.locator('.pg414-ai').waitFor();
   assert.match(await page.locator('.day-ai-panel a').getAttribute('href'),/practice=day&mini=0/);
+  await page.locator('#pg414-ai-input').fill('我每天七点起床');
+  await page.locator('[data-pg414-send]').click();
+  await page.locator('#pg414-ai-feedback').filter({hasText:'Теперь ответь на второй вопрос'}).waitFor({timeout:8000});
+  await page.locator('#pg414-ai-input').fill('我早上洗脸');
+  await page.locator('[data-pg414-send]').click();
+  await page.locator('#pg414-ai-feedback').filter({hasText:'Два ответа подходят'}).waitFor({timeout:8000});
   await page.screenshot({path:'qa/hsk2-v414-six-screens/'+tag+'-06-panda-ai.png',fullPage:false});
   assert.deepEqual(errors,[],'No JS errors on '+tag);
   console.log('PASS HSK2 six actual screens Android '+tag);
