@@ -161,7 +161,12 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
   assert.equal(el('hear').disabled,false,'Approved question MP3 is available');
   // Then answer the weekday and date, as on the user's Android screenshots.
   // No third repeat of the same two-question loop is permitted.
+  const clipsBeforeAnswer=dom.clips.length;
   send('今天星期一。');
+  // Mock Audio does not end automatically. A real v411 reply can now be voiced;
+  // fire its completion event so the scheduled next question is not blocked.
+  const latestClip=dom.clips.at(-1);
+  if(dom.clips.length>clipsBeforeAnswer&&typeof latestClip?.onended==='function')latestClip.onended();
   await new Promise(resolve=>setTimeout(resolve,4950));
   assert.equal(el('phrase').textContent,'今天几月几号？',
    'After weekday answer, Panda should ask for the date once');
