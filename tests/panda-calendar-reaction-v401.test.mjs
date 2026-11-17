@@ -204,11 +204,14 @@ test('Non-Stop: valid free-time phrase does not duplicate the active weekday que
   send((now.getMonth()+1)+'月'+now.getDate()+'号');
   await new Promise(resolve=>setTimeout(resolve,4950));
   assert.equal(el('phrase').textContent,'今天星期几？');
-  const before=w.PandaApprovedBridge337.snapshot().history;
-  assert.equal(before.at(-1)?.who,'panda');
+  const historyBefore=w.PandaApprovedBridge337.snapshot().history;
+  // snapshot().history is a live array, so store immutable counts before send().
+  const beforeCount=historyBefore.length;
+  const beforePandaCount=historyBefore.filter(h=>h.who==='panda'&&h.hanzi==='今天星期几？').length;
+  assert.equal(historyBefore.at(-1)?.who,'panda');
   send('我今天有空。');
   const after=w.PandaApprovedBridge337.snapshot().history;
-  assert.equal(after.length,before.length+1,'A mismatch records the learner only, not a duplicated Panda question');
+  assert.equal(after.length,beforeCount+1,'A mismatch records the learner only, not a duplicated Panda question');
   assert.equal(after.at(-1)?.who,'you');
   assert.equal(after.at(-1)?.hanzi,'我今天有空。');
   assert.equal(el('phrase').textContent,'今天星期几？','The original question stays visible');
@@ -217,7 +220,6 @@ test('Non-Stop: valid free-time phrase does not duplicate the active weekday que
   assert.match(el('learner-feedback').textContent,/我今天有空.*правильная фраза.*Какой сегодня день недели/);
   assert.equal(w.document.documentElement.dataset.feedback,'true');
   assert.equal(after.filter(h=>h.who==='panda'&&h.hanzi==='今天星期几？').length,
-    before.filter(h=>h.who==='panda'&&h.hanzi==='今天星期几？').length,
-    'The same question is not inserted into history twice');
+    beforePandaCount,'The same question is not inserted into history twice');
  }finally{dom.close()}
 });
