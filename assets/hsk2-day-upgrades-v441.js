@@ -114,18 +114,25 @@ function chat(state){const d=state.day;ensure(d);
  return '<section class="pg441-wrap pg441-dialog" aria-label="Живой диалог с Пандой"><button type="button" class="pg441-toggle" data-pg441-dialog aria-expanded="'+!!d.pg441DialogOpen+'"><span>💬 Разговор с Пандой · 3 вопроса</span><span>'+(d.pg441DialogOpen?'Скрыть ▲':'Начать ▶')+'</span></button>'+inside+'</section>';
 }
 function insert(html,markup){const at=html.indexOf('</main>');return at<0?html:html.slice(0,at)+markup+html.slice(at)}
+function redraw(api,toEnd=false){
+ const before=typeof document!=='undefined'?document.querySelector('#pg433-content'):null;
+ const y=before?.scrollTop||0;
+ api.render();
+ const after=typeof document!=='undefined'?document.querySelector('#pg433-content'):null;
+ if(after)after.scrollTop=toEnd?after.scrollHeight:y;
+}
 function submit(state,api,answer){const d=state.day;ensure(d);const question=dialogueSets[state.mini]?.[d.pg441DialogStep];
  if(!question)return true;
  const txt=String(answer||'').trim().slice(0,120);
- if(!checkAnswer(question.kind,txt)){d.pg441Feedback='Попробуй ещё раз. '+question.hint;api.render();return true}
+ if(!checkAnswer(question.kind,txt)){d.pg441Feedback='Попробуй ещё раз. '+question.hint;redraw(api);return true}
  d.pg441DialogHistory.push({who:'student',zh:txt,py:'',ru:''});
  d.pg441DialogHistory.push({who:'panda',zh:responseText(question.kind,txt),py:'',ru:'Ответ понятен. Следующий вопрос ниже.'});
  d.pg441DialogHistory=d.pg441DialogHistory.slice(-12);
- d.pg441DialogStep=Math.min(3,d.pg441DialogStep+1);d.pg441Feedback='';api.render();return true;
+ d.pg441DialogStep=Math.min(3,d.pg441DialogStep+1);d.pg441Feedback='';redraw(api,true);return true;
 }
 function startMic(state,api){
  const d=state.day;const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!Speech){d.pg441Feedback='Распознавание не поддерживается. Напиши ответ вручную.';api.render();return true}
+ if(!Speech){d.pg441Feedback='Распознавание не поддерживается. Напиши ответ вручную.';redraw(api);return true}
  try{
   const r=new Speech();r.lang='zh-CN';r.interimResults=false;r.maxAlternatives=1;
   r.onresult=e=>{const txt=e?.results?.[0]?.[0]?.transcript||'';
@@ -133,6 +140,7 @@ function startMic(state,api){
   };
   r.onerror=e=>{if(!document.querySelector('#pg441-answer'))return;d.pg441Feedback='Не удалось распознать ответ ('+String(e?.error||'ошибка')+'). Напиши его вручную.';api.render()};
   r.start();d.pg441Feedback='Слушаю твой ответ…';const status=document.querySelector('.pg441-feedback');if(status)status.textContent=d.pg441Feedback;
+  const hint=document.querySelector('.pg441-voice small');if(hint)hint.textContent='🎙 Слушаю твой ответ…';
  }catch(e){d.pg441Feedback='Микрофон недоступен. Проверь разрешение Chrome.';api.render()}
  return true;
 }
@@ -149,15 +157,15 @@ window.PandaGoDayFirstUIV1={
  handle(button,state,api){const k=button?.dataset||{},d=state.day;
   if(state.topic!==0||!d)return base.handle(button,state,api);
   ensure(d);
-  if(k.pg441Timeline!==undefined){d.pg441TimelineOpen=!d.pg441TimelineOpen;api.render();return true}
-  if(k.pg441Preset!==undefined){d.pg441Preset=Math.max(0,Math.min(2,Number(k.pg441Preset)||0));api.render();return true}
-  if(k.pg441Dialog!==undefined){d.pg441DialogOpen=!d.pg441DialogOpen;api.render();return true}
+  if(k.pg441Timeline!==undefined){d.pg441TimelineOpen=!d.pg441TimelineOpen;redraw(api);return true}
+  if(k.pg441Preset!==undefined){d.pg441Preset=Math.max(0,Math.min(2,Number(k.pg441Preset)||0));redraw(api);return true}
+  if(k.pg441Dialog!==undefined){d.pg441DialogOpen=!d.pg441DialogOpen;redraw(api);return true}
   if(k.pg441Choice!==undefined)return submit(state,api,k.pg441Choice);
   if(k.pg441Send!==undefined)return submit(state,api,document.querySelector('#pg441-answer')?.value);
-  if(k.pg441Restart!==undefined){d.pg441DialogStep=0;d.pg441DialogHistory=[];d.pg441Feedback='';api.render();return true}
-  if(k.pg441Voice!==undefined){if(!d.pg441Consent){d.pg441AwaitConsent=true;api.render();return true}return startMic(state,api)}
-  if(k.pg441Allow!==undefined){d.pg441Consent=true;d.pg441AwaitConsent=false;api.render();return true}
-  if(k.pg441Deny!==undefined){d.pg441AwaitConsent=false;api.render();return true}
+  if(k.pg441Restart!==undefined){d.pg441DialogStep=0;d.pg441DialogHistory=[];d.pg441Feedback='';redraw(api);return true}
+  if(k.pg441Voice!==undefined){if(!d.pg441Consent){d.pg441AwaitConsent=true;redraw(api);return true}return startMic(state,api)}
+  if(k.pg441Allow!==undefined){d.pg441Consent=true;d.pg441AwaitConsent=false;redraw(api);return startMic(state,api)}
+  if(k.pg441Deny!==undefined){d.pg441AwaitConsent=false;redraw(api);return true}
   return base.handle(button,state,api);
  }
 };

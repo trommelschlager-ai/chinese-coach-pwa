@@ -1,6 +1,6 @@
 {
-  "version": 442,
-  "bytes": 65952370,
+  "version": 443,
+  "bytes": 65952827,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -3054,6 +3054,7 @@
     "./assets/hsk2-day-upgrades-v441.js?v=441",
     "./assets/hsk2-day-upgrades-v441.css?v=441",
     "./assets/hsk2-life-course-app-v1.js?v=442",
-    "./assets/hsk2-day-recording-batch-v441.json"
+    "./assets/hsk2-day-recording-batch-v441.json",
+    "./assets/hsk2-day-upgrades-v441.js?v=443"
   ]
 }

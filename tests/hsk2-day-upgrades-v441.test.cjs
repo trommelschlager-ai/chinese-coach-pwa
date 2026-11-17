@@ -5,7 +5,7 @@ const code=fs.readFileSync(path.join(root,'assets/hsk2-day-upgrades-v441.js'),'u
 const html=fs.readFileSync(path.join(root,'hsk2-life-course.html'),'utf8');
 const app=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'assets/hsk2-day-upgrades-v441.css'),'utf8');
-assert(html.includes('hsk2-day-upgrades-v441.js?v=441'));
+assert(html.includes('hsk2-day-upgrades-v441.js?v=443'));
 assert(html.includes('hsk2-day-upgrades-v441.css?v=441'));
 assert(css.includes('#app #pg433 .pg441-wrap'));
 assert(css.includes('.pg441-history'));

@@ -16,7 +16,7 @@ assert(html.includes('hsk2-life-welcome-v412.css?v=412'));
 assert(html.includes('hsk2-life-course-app-v1.js?v=442'));
 assert(html.includes('hsk2-responsive-v439.css?v=439'));
 assert(html.includes('hsk2-viewport-v440.css?v=440'),'The v440 proportional artwork must still be loaded');
-assert(html.includes('hsk2-day-upgrades-v441.js?v=441'),'New lesson chat must load');
+assert(html.includes('hsk2-day-upgrades-v441.js?v=443'),'New lesson chat must load');
 assert(html.includes('hsk2-day-upgrades-v441.css?v=441'),'Approved coral styling is extended');
 assert(app.includes('pg441DialogHistory')&&app.includes('pg441TimelineOpen'),'Guided chat and timeline must persist');
 
