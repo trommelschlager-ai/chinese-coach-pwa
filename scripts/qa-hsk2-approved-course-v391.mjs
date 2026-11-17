@@ -59,7 +59,7 @@ try{
   await page.locator('[data-mini="0"]').first().click();
   await page.locator('.pg414-vocab-row').first().waitFor({state:'visible',timeout:25000});
   assert.equal(await page.locator('.pg414-vocab-row').count(),7,'First mini-lesson retains all seven words');
-  assert.equal(await page.locator('.pg414-tabs span').count(),5,'Five interactive lesson stages');
+  assert.equal(await page.locator('.pg415-tab').count(),4,'Four clickable tabs plus highlighted current image');
   await page.screenshot({path:'qa/hsk2-approved-v391/art-'+tag+'.png',fullPage:false});
   await page.locator('[data-day-next]').click(); // rule
   assert.equal(await page.locator('.pg414-example-compact').count(),2);
