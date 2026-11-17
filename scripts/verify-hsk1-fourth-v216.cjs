@@ -87,11 +87,11 @@ for(const word of ['星期一','星期二','星期三','星期四','星期五','
  assert(d.getElementById('pg3-next').disabled,'Do not skip until all six day recordings finish');
  played.at(-1).onended();
 }
-next();assert.equal(step(),4);
+next();assert.equal(step(),3);
 assert(d.getElementById('pg3-stage').textContent.includes('星期天'));
 assert(d.getElementById('pg3-stage').textContent.includes('星期日'));
 click('[data-sun-answer="星期七"]');assert(!d.getElementById('pg3-next').disabled);
-next();assert.equal(step(),5);
+next();assert.equal(step(),4);
 const seven=[
  ['星期一','星期一'],['星期二','星期二'],['星期三','星期三'],
  ['星期四','星期四'],['星期五','星期五'],['星期六','星期六'],
@@ -105,18 +105,18 @@ for(let i=0;i<seven.length;i++){
  assert(d.querySelector('.pg4-feedback.correct'),'Correct answer should retain readable feedback');
  click('[data-next-item]');
 }
-assert.equal(step(),6);
+assert.equal(step(),5);
 for(const word of ['今天','明天','昨天']){click('[data-time="'+word+'"]');played.at(-1).onended()}
-next();assert.equal(step(),7);
+next();assert.equal(step(),6);
 assert(d.getElementById('pg3-stage').textContent.includes('今天是星期五。'));
-click('[data-grammar-answer="今天星期几？"]');next();assert.equal(step(),8);
+click('[data-grammar-answer="今天星期几？"]');next();assert.equal(step(),7);
 for(const answer of ['星期天','星期四','星期一','星期五']){
  click('[data-calendar-answer="'+answer+'"]');click('[data-next-item]');
 }
-assert.equal(step(),9);
+assert.equal(step(),8);
 assert.equal(strokes.at(-1)?.character,'日');
 assert.equal(strokes.at(-1)?.options.acceptBackwardsStrokes,false);
-click('[data-trace]');next();assert.equal(step(),10);
+click('[data-trace]');next();assert.equal(step(),9);
 assert(d.querySelector('img[src="./assets/lesson4-dialog-v282/man.webp"]'),'Male character in dialogue');
 assert(d.querySelector('img[src="./assets/lesson4-dialog-v282/woman.webp"]'),'Female character in dialogue');
 for(const answer of ['明天星期六。']){
@@ -140,7 +140,7 @@ for(const answer of ['明天星期六。']){
  played.at(-1).onended();
  click('[data-next-item]');
 }
-assert.equal(step(),11);
+assert.equal(step(),10);
 const targets=[['今天','星期','五'],['明天','星期','六'],['昨天','星期','二']];
 for(const parts of targets){
  for(const x of parts){
@@ -152,7 +152,7 @@ for(const parts of targets){
  assert(d.querySelector('.pg4-feedback.correct'),'Completed sentence must be celebrated before moving');
  click('[data-next-item]');
 }
-assert.equal(step(),12);
+assert.equal(step(),11);
 const answers=[
  '星期一','星期六','星期天 и 星期日','星期四','завтра',
  '今天星期几？','星期一','вчера','星期二','明天星期六。'
@@ -167,7 +167,7 @@ for(let i=0;i<answers.length;i++){
  if(i===3){play('星期四');assert([...d.querySelectorAll('[data-exam-answer]')].every(b=>b.disabled),'Replaying exam audio must preserve locked answers');}
  click('[data-next-item]');
 }
-assert.equal(step(),13);
+assert.equal(step(),12);
 assert(d.querySelector('.pg4-final-score')?.textContent.includes('8 / 10'));
 assert(d.querySelector('.pg4-mistakes')?.textContent.includes('Что повторить: 2'));
 assert(d.getElementById('pg3-stage').textContent.includes('Прошлый результат версии v214: 5 из 7'));
@@ -187,12 +187,12 @@ assert(played.every(p=>p.volume>0&&p.volume<=1),'Per-file levels remain valid');
 assert.equal(utt.length,0,'No system voice is used anywhere in the full lesson');
 assert.equal(d.getElementById('pg3-next').hidden,false,'Result keeps persistent map navigation');
 click('[data-review-mistakes]');
-assert.equal(step(),12);
+assert.equal(step(),11);
 for(const answer of ['星期一','星期四']){
  if(answer==='星期四')play('星期四');
  click('[data-exam-answer="'+answer+'"]');click('[data-next-item]');
 }
-assert.equal(step(),13);
+assert.equal(step(),12);
 assert(d.querySelector('.pg4-final-score')?.textContent.includes('8 / 10'),'Retake must preserve original first-try score');
 click('[data-restart]');assert.equal(step(),1);
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v215-weekdays')).legacyDone,true);
