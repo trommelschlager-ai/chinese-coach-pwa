@@ -1,0 +1,34 @@
+name: Panda Teacher v441 explained mistakes regression
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/panda-error-coach-v441.mjs'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'assets/panda-live-v346.mjs'
+      - 'assets/panda-chat-corrections-v377.css'
+      - 'panda-voice-pilot.html'
+      - 'sw.js'
+      - 'assets/offline-pack.json'
+      - 'tests/panda-error-coach-v441.test.mjs'
+      - '.github/workflows/panda-error-coach-v441.yml'
+  pull_request:
+    paths:
+      - 'assets/panda-error-coach-v441.mjs'
+      - 'tests/panda-error-coach-v441.test.mjs'
+jobs:
+  explanations:
+    name: Mandarin context, grammar, ASR and Android-like retry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Check v441 and existing correction logic
+        run: |
+          node --test tests/panda-error-coach-v441.test.mjs
+          node --test tests/panda-chat-corrections-v377.test.mjs
