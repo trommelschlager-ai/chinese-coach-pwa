@@ -49,14 +49,14 @@ test('follow-up prompts are contextual, valid and calendar-aware across rollover
  assert.equal(calendarReply('明天','date',new Date(2026,11,31)).hanzi,'明天一月一号。');
  assert.equal(calendarReply('昨天','weekday',new Date(2026,10,9)).hanzi,'昨天星期日。');
 });
-test('DOM shows weather answer, scenario, translation of errors and an automatic question',async()=>{
+test('DOM shows weather answer and correction without echoing a repeated learner question',async()=>{
  const f=await liveDOM(1,{completed:['weather']}),{el,send,clips,w}=f;try{
   el('mode-nonstop').click();send('今天天气怎么样');assert.equal(el('phrase').textContent,'今天很冷。');assert(el('exercise-banner').textContent.includes('не настоящий прогноз'));assert.equal(el('audio-note').hidden,!!lookupPilotAudio('今天很冷'),'Show audio warning when the exact Panda voice clip is absent');assert(el('recent').textContent.includes('какая погода'));
   send('今天是很冷');assert(el('learner-feedback').textContent.includes('Предполагаемый смысл'));assert(el('learner-feedback').textContent.includes('今天很冷'));assert(el('recent').textContent.includes('今天是很冷'));
   send('今天天气怎么样');send('今天天气怎么样');
   // Existing spoken acknowledgements complete before a follow-up; no acoustic scoring.
   if(clips.at(-1)?.onended)clips.at(-1).onended();
-  await new Promise(resolve=>setTimeout(resolve,4800));assert(['今天天气怎么样？','明天天气怎么样？','你好吗？','你呢？'].includes(el('phrase').textContent));
+  await new Promise(resolve=>setTimeout(resolve,4800));assert.equal(el('phrase').textContent,'今天很冷。','Repeated student question must not schedule the same question back to them');
   send('谢谢');assert.equal(el('mode-nonstop').getAttribute('aria-pressed'),'true');
   el('finish').click();const before=el('phrase').textContent;await new Promise(resolve=>setTimeout(resolve,1400));assert.equal(el('phrase').textContent,before);
  }finally{f.close()}
