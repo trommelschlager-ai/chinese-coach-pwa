@@ -1,0 +1,28 @@
+name: Panda grammar HSK 1–2 v1 tests
+on:
+  pull_request:
+    paths:
+      - 'assets/panda-grammar-hsk12-v1.mjs'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'tests/panda-grammar-hsk12-v1.test.mjs'
+      - '.github/workflows/panda-grammar-hsk12-v1.yml'
+  push:
+    branches:
+      - 'feature/panda-grammar-hsk12-stage1-20261118'
+permissions:
+  contents: read
+jobs:
+  grammar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test 50 approved corrections and false-positive guards
+        run: node --test tests/panda-grammar-hsk12-v1.test.mjs
+      - name: JavaScript syntax check for live Panda AI
+        run: |
+          node --check assets/panda-grammar-hsk12-v1.mjs
+          node --check assets/panda-live-screen-v270.mjs
