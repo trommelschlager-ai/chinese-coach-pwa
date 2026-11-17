@@ -285,5 +285,5 @@ jobs:
           node-version: '22'
       - name: Install current regression test dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Check 12 introduction, time and weather memory scenarios
+      - name: Check 13 introduction, time and weather memory scenarios
         run: node --test tests/panda-topic-memory-v431.test.mjs
