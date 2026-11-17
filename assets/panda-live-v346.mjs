@@ -259,21 +259,27 @@ if (!bridge) {
   function renderFeedback(s){
     const last=s.history.slice().reverse().find(x=>x.who==='you');
     const wrong=last?.analysis?.correction;
-    // Keep grammar corrections visible, but do not overlay a redundant
-    // unknown-meaning bubble beside ВСЕ ТЕМЫ. History retains the message.
+    // A grammatically valid reply to the wrong question is NOT an error.
+    // For browser ASR, explain only the transcribed text, not spoken tones.
     const root=$('#pg346-feedback'),active=!!wrong;
-    const key=[last?.hanzi,wrong?.hanzi,wrong?.why,s.feedback,active].join('|');
+    const key=[last?.hanzi,wrong?.hanzi,wrong?.why,wrong?.retry,s.feedback,active].join('|');
     if(key===lastFeedback)return;
     lastFeedback=key;root.hidden=!active;root.replaceChildren();
     if(!active)return;
-    root.append(el('strong','', '🐼 Панда:'));
+    const meaningOnly=wrong?.category==='meaning';
+    root.dataset.kind=meaningOnly?'meaning':'grammar';
+    root.append(el('strong','',meaningOnly?'🐼 Панда объясняет смысл':'🐼 Панда исправляет грамматику'));
     if(wrong){
-      root.append(el('p','pg377-meaning','Предполагаемый смысл: '+(last.analysis?.probable||wrong.ru||'смысл уточняется')));
-      root.append(el('p','pg377-error','❌ '+last.hanzi));
-      root.append(el('p','pg377-correct','✅ '+wrong.hanzi));
+      if(wrong.title)root.append(el('p','pg441-title',wrong.title));
+      root.append(el('p','pg377-meaning','Сказано: '+(last.analysis?.probable||wrong.ru||'смысл уточняется')));
+      root.append(el('p',meaningOnly?'pg441-alternative':'pg377-error',(meaningOnly?'💬 ':'❌ ')+last.hanzi));
+      if(wrong.label)root.append(el('p','pg441-label',wrong.label+':'));
+      root.append(el('p','pg377-correct',(meaningOnly?'💡 ':'✅ ')+wrong.hanzi));
       if(wrong.pinyin)root.append(el('p','pg377-pinyin',wrong.pinyin));
       if(wrong.ru)root.append(el('p','pg377-translation','Перевод: '+wrong.ru));
-      if(wrong.why)root.append(el('p','pg377-explanation','Объяснение: '+wrong.why));
+      if(wrong.why)root.append(el('p','pg377-explanation','Почему: '+wrong.why));
+      if(wrong.retry)root.append(el('p','pg441-retry','🎙 '+wrong.retry));
+      if(wrong.uncertain)root.append(el('p','pg441-uncertain','⚠️ Проверь распознанную фразу — браузер мог ослышаться.'));
     }
   }
   function ingestSpeechSignal(signal,previousSnapshot){
