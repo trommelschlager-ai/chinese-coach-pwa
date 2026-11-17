@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
-<meta name="panda-go-mobile-fix" content="v417-visible-soft-tap">
+<meta name="panda-go-mobile-fix" content="v418-press-aligned">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
@@ -148,6 +148,7 @@ body{display:grid;place-items:center;position:relative}
   transition:opacity 120ms ease-out,transform 140ms ease-out!important;
 }
 .hotspots a.lesson::after{inset:12% 2.5% 13% 2.5%!important}
+.hotspots a.lesson[data-num="7"]::after{inset:12% 2% 13% 9%!important}
 .hotspots a.top-link::after{inset:8% 7% 10%!important;border-radius:18px!important}
 .hotspots a.footer-link::after{inset:9% 5% 12%!important;border-radius:22px!important}
 .hotspots a.is-pressed::after,
@@ -260,7 +261,7 @@ body{display:grid;place-items:center;position:relative}
     const y=(rect.top-art.top)*1536/art.height;
     const w=rect.width*694/art.width, h=rect.height*1536/art.height;
     const isLesson=link.classList.contains('lesson');
-    const insetX=isLesson?w*.027:w*.055;
+    const insetX=isLesson?(link.dataset.num==='7'?w*.09:w*.027):w*.055;
     const insetY=isLesson?h*.105:h*.11;
     pressShape.setAttribute('d',roundRectPath(
       x+insetX,y+insetY,w-2*insetX,h-2*insetY));
