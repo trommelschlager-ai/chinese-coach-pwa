@@ -8,6 +8,8 @@ on:
       - 'assets/panda-grammar-hsk12-v2.mjs'
       - 'assets/panda-grammar-hsk12-v1.mjs'
       - 'assets/panda-live-screen-v270.mjs'
+      - 'assets/panda-live-v346.mjs'
+      - 'tests/panda-grammar-feedback-visible-v450.test.mjs'
       - 'tests/panda-grammar-hsk12-v2.test.mjs'
       - '.github/workflows/panda-grammar-hsk12-v2.yml'
 permissions:
@@ -25,6 +27,7 @@ jobs:
         run: |
           node --test tests/panda-grammar-hsk12-v1.test.mjs
           node --test tests/panda-grammar-hsk12-v2.test.mjs
+          node --test tests/panda-grammar-feedback-visible-v450.test.mjs
       - name: Check Panda live module syntax
         run: |
           node --check assets/panda-grammar-hsk12-v1.mjs
