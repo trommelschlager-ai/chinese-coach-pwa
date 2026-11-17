@@ -1,13 +1,16 @@
-name: HSK2 lesson 1 six-screen v414 regression
+name: HSK2 lesson 1 six-screen Android regression
 on:
   push:
-    branches: [feature/hsk2-lesson1-six-screens-v414]
+    branches: [feature/hsk2-lesson1-six-screens-v414, fix/hsk2-lesson1-fullheight-nojump-audio-v416]
   pull_request:
     paths:
       - "hsk2-life-course.html"
       - "assets/hsk2-six-screens-v414.js"
       - "assets/hsk2-six-screens-v414.css"
       - "assets/hsk2-life-course-app-v1.js"
+      - "assets/hsk2-lesson1-android-fixes-v416.css"
+      - "scripts/qa-hsk2-six-screens-v414.mjs"
+      - "sw.js"
       - "tests/hsk2-six-screens-v414.test.cjs"
 jobs:
   functional:
@@ -19,8 +22,10 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Verify the six actual interactive screens
-        run: node tests/hsk2-six-screens-v414.test.cjs
+      - name: Verify six interactive screens and legacy audio honesty
+        run: |
+          node tests/hsk2-six-screens-v414.test.cjs
+          node tests/hsk2-day-v413.test.cjs
       - run: npm install --no-save --no-audit --no-fund playwright
       - run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends fonts-noto-cjk
       - run: npx playwright install chromium
