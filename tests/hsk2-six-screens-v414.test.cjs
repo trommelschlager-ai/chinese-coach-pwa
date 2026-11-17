@@ -5,7 +5,7 @@ const path=require('node:path');
 const {JSDOM,VirtualConsole}=require('jsdom');
 const root=path.join(__dirname,'..');
 const html=fs.readFileSync(path.join(root,'hsk2-life-course.html'),'utf8');
-assert.match(html,/hsk2-six-screens-v414\.js\?v=414/);
+assert.match(html,/hsk2-six-screens-v414\.js\?v=418/);
 assert.match(html,/hsk2-six-screens-v414\.css\?v=414/);
 const vc=new VirtualConsole(),errors=[];
 vc.on('jsdomError',e=>errors.push(e.message));vc.on('error',e=>errors.push(String(e)));
