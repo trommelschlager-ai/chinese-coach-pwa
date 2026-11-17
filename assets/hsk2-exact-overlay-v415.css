@@ -206,3 +206,16 @@
 #app .pg415-graphic .pg415-hit[data-day-prev]:active{
  box-shadow:0 0 17px 4px #ffe9a9e6,inset 0 0 14px #fff3bd!important;
 }
+
+
+/* Hide redundant accessible helper link from visual scene: the approved gold
+   “Дальше” already opens the exact same live Panda AI session. */
+#app.day-done-active .pg415-ai-screen .pg415-accessible-link,
+#app.day-done-active .pg415-ai-screen .pg415-ai-controls{
+ display:none!important;
+}
+#app.day-done-active .pg415-ai-screen #pg414-ai-feedback{
+ white-space:normal!important;overflow:hidden!important;line-height:1.15!important;
+ display:flex!important;align-items:center;justify-content:center!important;
+ padding:2px 5px!important;font-size:clamp(8px,2.4vw,11px)!important;
+}
