@@ -31,6 +31,13 @@ function click(selector){
  el.click();return el;
 }
 function assertStage(index){
+ const art=doc.querySelector('.pg415-art-screen');
+ if(art){
+  assert.ok(art.classList.contains('pg415-step-'+index),'Wrong approved art stage '+index);
+  assert.equal(doc.querySelectorAll('.pg415-tab').length,4);
+  assert.match(doc.querySelector('.pg415-art').getAttribute('src'),new RegExp(['01-words','02-rule','03-speech','04-test','05-examples'][index]));
+  return;
+ }
  const tabs=[...doc.querySelectorAll('.pg414-tabs span')];
  assert.equal(tabs.length,5);
  assert.ok(tabs[index].classList.contains('active'),'Wrong stage '+index);
@@ -63,14 +70,14 @@ for(let mini=0;mini<3;mini++){
  assert.equal(doc.querySelectorAll('.pg414-speech-row').length,wordCount[mini]);
  if(mini===0){
   click('[data-day-speech-mic="2"]');
-  assert.ok(doc.querySelector('.pg414-consent'),'Consent is required');
+  assert.ok(doc.querySelector('.pg415-consent'),'Consent is required');
   assert.equal(starts,0);
   click('[data-day-consent]');
   assert.equal(starts,1);
   current.report('起床');
-  assert.match(doc.querySelector('.pg414-speech-row:nth-child(3) .pg414-speech-status').textContent,/Распознано/);
+  assert.match(doc.querySelector('.pg415-rec-status').textContent,/Распознано/);
   click('[data-day-speech-mic="2"]');current.report('其他');
-  assert.match(doc.querySelector('.pg414-speech-row:nth-child(3) .pg414-speech-status').textContent,/Попробуй снова/);
+  assert.match(doc.querySelector('.pg415-rec-status').textContent,/Повтори ещё/);
  }
  click('[data-day-next]');assertStage(3);
  assert.equal(doc.querySelectorAll('.pg414-test .pg414-question').length,7);
