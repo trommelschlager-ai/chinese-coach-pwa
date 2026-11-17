@@ -82,11 +82,11 @@ for(const [step,selector] of [[4,'[data-repeat="4"]'],[7,'[data-repeat="7"]'],[9
 {
  const {dom,d}=create4(12);
  d.getElementById('pg3-prev').click();
- assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),10,'Back skips finished exam and builder');
+ assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),9,'Back skips finished exam and builder');
  d.getElementById('pg3-prev').click();
- assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),9,'Back reaches writing');
+ assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),8,'Back reaches writing');
  d.getElementById('pg3-prev').click();
- assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),7,'Back skips finished calendar');
+ assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),6,'Back skips finished calendar');
  dom.window.close();
 }
 const numbers=read('assets/hsk1-third-v213.js');
