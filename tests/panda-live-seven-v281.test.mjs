@@ -223,3 +223,21 @@ test('Panda does not echo a learner\'s sibling age question immediately after an
  const noRepeated=answerLive('你有哥哥吗？',options);
  assert(!noRepeated.followup||noRepeated.followup.hanzi!=='你有哥哥吗？','No verbatim echo of a family question');
 });
+
+test('Panda accepts 我哥哥五岁 as a useful answer to 你有哥哥吗 and speaks p175',()=>{
+ const prompt={hanzi:'你有哥哥吗？',lesson:6,relative:'哥哥'};
+ const opts={allowed:[1,2,3,4,5,6],topic:6,curriculum,date,prompt};
+ const response=answerLive('我哥哥五岁。',opts);
+ assert.equal(response.kind,'answer','Age statement implies the learner has an older brother');
+ assert.equal(response.spoken.translation,'Моему старшему брату 5 лет.');
+ assert.equal(response.spoken.pinyin,'Wǒ gēge wǔ suì.');
+ assert.equal(response.reply?.hanzi,'明白了。','Respond naturally, do not remain silent');
+ assert.equal(response.followup,null,'Do not repeat the already answered family question');
+ assert.match(lookupPandaVoiceClip(response.reply.hanzi)?.src||'',/p175\.mp3$/,'Only exact approved 明白了 MP3');
+ const direct=answerLive('我哥哥五岁', {...opts,prompt:null});
+ assert.equal(direct.kind,'statement');
+ assert.equal(direct.reply?.hanzi,'明白了。');
+ const different=answerLive('我哥哥五岁', {...opts,prompt:{hanzi:'你有妹妹吗？',lesson:6}});
+ assert.equal(different.kind,'clarify','An answer about brother must not satisfy a question about sister');
+ assert.equal(different.reply,undefined);
+});
