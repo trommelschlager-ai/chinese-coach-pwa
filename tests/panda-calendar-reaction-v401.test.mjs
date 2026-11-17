@@ -166,8 +166,10 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
   // Mock Audio does not end automatically. A real v411 reply can now be voiced;
   // fire its completion event so the scheduled next question is not blocked.
   const latestClip=dom.clips.at(-1);
+  console.log('CALENDAR_DIAG_BEFORE',JSON.stringify({clips:dom.clips.length,before:clipsBeforeAnswer,src:latestClip?.src,ended:typeof latestClip?.onended,snap:w.PandaApprovedBridge337.snapshot()}));
   if(dom.clips.length>clipsBeforeAnswer&&typeof latestClip?.onended==='function')latestClip.onended();
   await new Promise(resolve=>setTimeout(resolve,4950));
+  console.log('CALENDAR_DIAG_AFTER',JSON.stringify({clips:dom.clips.length,snap:w.PandaApprovedBridge337.snapshot()}));
   assert.equal(el('phrase').textContent,'今天几月几号？',
    'After weekday answer, Panda should ask for the date once');
   send('今天是十一月十六号。');
