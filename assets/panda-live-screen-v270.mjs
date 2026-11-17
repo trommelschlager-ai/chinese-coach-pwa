@@ -276,7 +276,9 @@ function submit(raw){
    // v412: an automatic question must have its own exact Panda MP3.
    // Manual/free-form questions stay text-only when no recording exists.
    const plannedFollowup=followup;
-   followup=chooseAudibleFollowup(followup,topicCatalogGroups(),
+   // Calendar day->date handoff is an explicit reviewed sequence; never
+   // substitute another calendar question or disrupt lesson completion.
+   if(!result.spoken?.calendarLiteral)followup=chooseAudibleFollowup(followup,topicCatalogGroups(),
      [...state.questions.slice(-12),...state.history.slice(-8).map(h=>h.hanzi)],
      lookupPandaVoiceClip,input);
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
