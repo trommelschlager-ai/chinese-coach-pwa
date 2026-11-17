@@ -1,0 +1,32 @@
+name: Panda grammar HSK 1–2 v2 parameterized tests
+on:
+  push:
+    branches:
+      - 'feature/panda-grammar-hsk12-parametric-v2-20261118'
+  pull_request:
+    paths:
+      - 'assets/panda-grammar-hsk12-v2.mjs'
+      - 'assets/panda-grammar-hsk12-v1.mjs'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'tests/panda-grammar-hsk12-v2.test.mjs'
+      - '.github/workflows/panda-grammar-hsk12-v2.yml'
+permissions:
+  contents: read
+jobs:
+  grammar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test approved grammar and false-positive guards
+        run: |
+          node --test tests/panda-grammar-hsk12-v1.test.mjs
+          node --test tests/panda-grammar-hsk12-v2.test.mjs
+      - name: Check Panda live module syntax
+        run: |
+          node --check assets/panda-grammar-hsk12-v1.mjs
+          node --check assets/panda-grammar-hsk12-v2.mjs
+          node --check assets/panda-live-screen-v270.mjs
