@@ -91,7 +91,7 @@ test('low confidence is explicitly uncertain, and no acoustic tone claim',()=>{
  const low=correctPandaGrammarV2('她住广州在',{confidence:.6,prompt:{lesson:2}});
  assert.equal(low.lesson,2);
  assert.equal(low.spoken.correction.uncertain,true);
- assert.match(low.spoken.correction.why,/浏览器 мог ослышаться/);
+ assert.match(low.spoken.correction.why,/браузер мог ослышаться/);
  const high=correctPandaGrammarV2('她住广州在',{confidence:.95});
  assert.equal(high.spoken.correction.uncertain,undefined);
  assert.equal(correctPandaGrammarV2('你好',{confidence:.2}),null);
