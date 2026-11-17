@@ -19,3 +19,5 @@
 [data-pg-hsk1="4"] .pg4-repeat-tools{margin-top:10px}
 [data-pg-hsk1="4"] .pg4-repeat-tools>div{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
 @media(prefers-reduced-motion:reduce){[data-pg-hsk1] [data-pg-control]{transition:none}}
+/* v422: keep former white speaker artwork legible on pale audio buttons. */
+[data-pg-hsk1] [data-pg-control="audio"] :is(img,svg){filter:brightness(0)!important}
