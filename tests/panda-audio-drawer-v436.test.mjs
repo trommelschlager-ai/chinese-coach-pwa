@@ -65,7 +65,7 @@ test('v436 drawer renders each recording as a Chinese+pinyin+Russian play button
  const html=read('panda-voice-pilot.html'),js=read('assets/panda-live-v346.mjs');
  assert(html.includes('panda-topics-compact-v436.css?v=436'));
  assert(html.includes('panda-live-screen-v270.mjs?v=436'));
- assert(html.includes('panda-live-v346.mjs?v=436'));
+ assert(html.includes('panda-live-v346.mjs?v=4361'));
  assert(js.includes("audioStudyLine436(clip)"));
  for(const selector of ['pg436-audio-zh','pg436-audio-py','pg436-audio-ru','pg436-audio-icon'])assert(js.includes(selector));
  assert(js.includes('bridge.playEntry({hanzi:clip.zh})'));
@@ -90,12 +90,12 @@ test('v436 offline pack and install service worker include new study metadata wi
   './assets/panda-audio-study-v436.mjs?v=436',
   './assets/panda-topics-compact-v436.css?v=436',
   './assets/panda-live-screen-v270.mjs?v=436',
-  './assets/panda-live-v346.mjs?v=436',
+  './assets/panda-live-v346.mjs?v=4361',
   './assets/panda-live-audio.mjs?v=436'
  ])assert(offline.files.includes(file),'Missing offline asset '+file);
  for(const c of PANDA_CLIPS)assert(offline.files.some(x=>x.split('?')[0]===c.src),'Missing audio '+c.src);
  const sw=read('sw.js');
- assert(sw.includes('chinese-coach-pwa-v436-audio-drawer'));
+ assert(sw.includes('chinese-coach-pwa-v436-all-recordings'));
  const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
  for(const file of ['./assets/panda-audio-study-v436.mjs?v=436','./assets/panda-topics-compact-v436.css?v=436'])assert(core.includes(file));
  const art=JSON.parse(sw.match(/const CORE_ART=new Set\((\[[^\n]+\])\)/)[1]);
