@@ -118,3 +118,21 @@ test('Android-like voice lesson recognizes a name, acknowledges, then speaks the
   assert(f.clips.at(-1)?.src);
  }finally{f.close()}
 });
+
+
+test('real dialogue engine accepts menu questions with missing intent metadata',()=>{
+ const name=answerLive('我叫小明。',{allowed:unlocked,topic:2,prompt:{hanzi:'你叫什么名字？',lesson:2},date});
+ assert.equal(name.kind,'answer','Name should not be ignored when question came from All Topics');
+ assert.equal(name.spoken.fact.name,'小明');
+ const free=answerLive('我星期六有空。',{allowed:unlocked,topic:4,prompt:{hanzi:'你星期几有空？',lesson:4},date});
+ assert.equal(free.kind,'answer','A named weekday answers the free-time question');
+ assert.equal(free.spoken.fact.freeDay,'星期六');
+ const today=answerLive('我今天有空。',{allowed:unlocked,topic:4,prompt:{hanzi:'你今天有空吗？',lesson:4},date});
+ assert.equal(today.kind,'answer');
+ const weather=answerLive('今天很冷。',{allowed:unlocked,topic:7,prompt:{hanzi:'今天天气怎么样？',lesson:7},date});
+ assert.equal(weather.kind,'answer','Today weather should be accepted only for today');
+ const wrongWeather=answerLive('今天很冷。',{allowed:unlocked,topic:7,prompt:{hanzi:'明天天气怎么样？',lesson:7},date});
+ assert.notEqual(wrongWeather.kind,'answer','Today weather must never answer tomorrow');
+ const wrongDay=answerLive('我今天有空。',{allowed:unlocked,topic:4,prompt:{hanzi:'你星期几有空？',lesson:4},date});
+ assert.notEqual(wrongDay.kind,'answer','Today is not a named day of week');
+});
