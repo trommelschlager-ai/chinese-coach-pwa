@@ -27,9 +27,11 @@ const dayLaunch=dayParams.get('practice')==='day';
 const dayMini=Math.min(2,Math.max(0,Number(dayParams.get('mini'))||0));
 const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
+// v423: reuse the same element for Panda clips on Android; never confuse a green sound button with audible playback.
+let voicePlayer=null,playbackSerial=0;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
 let micActivatedAt=0; // Guard the first seconds of a new recording against accidental second taps.
-const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
+const state={audioNeedsTap:false,mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
 // Cache verified question groups while the same HSK lessons are unlocked.
 let cachedAskGroupsKey='',cachedAskGroups=[];
 function topicCatalogGroups(){
@@ -45,7 +47,7 @@ const lesson=()=>state.mode==='nonstop'?(state.topic||state.prompt?.line.lesson|
 function note(text){$('status').textContent=text||''}
 function pose(value){clearTimeout(poseTimer);rig.setState(value)}
 function happy(){pose('happy');poseTimer=setTimeout(()=>pose('idle'),1300)}
-function stopAudio(){const a=audio;audio=null;clearTimeout(audioBufferTimer);cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onstalled=a.onloadedmetadata=a.ontimeupdate=a.onseeked=a.oncanplay=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
+function stopAudio(){const a=audio;audio=null;playbackSerial++;clearTimeout(audioBufferTimer);cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onstalled=a.onloadedmetadata=a.ontimeupdate=a.onseeked=a.oncanplay=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
 function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;micActivatedAt=0;if(r){r.onstart=r.onaudiostart=r.onspeechstart=r.onspeechend=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
 function play(entry=null){
@@ -54,13 +56,20 @@ function play(entry=null){
  if(!part){stopAudio();note('Для этой точной фразы пока нет загруженной MP3-записи.');return}
  stopRecognition();stopAudio();
  const src=part.src,begin=Number(part.start)||0,end=Number.isFinite(part.end)?Number(part.end):null;
- const a=new Audio(new URL(src,document.baseURI).href);audio=a;a.playbackRate=state.slow?.8:1;a.preload='auto';
+ // A single reusable player is more reliable on mobile Chrome after a mic turn.
+ // A successful button tap can continue unlocking this same media element.
+ const a=voicePlayer||(voicePlayer=new Audio());audio=a;
+ a.preload='auto';a.src=new URL(src,document.baseURI).href;
+ a.playbackRate=state.slow?.8:1;
  if('preservesPitch' in a)a.preservesPitch=true;
- const envelope=end===null?ENVELOPES[src]:null,valid=()=>audio===a;
+ if(begin>0)a.currentTime=begin;
+ const playbackId=++playbackSerial;
+ const envelope=end===null?ENVELOPES[src]:null;
+ const valid=()=>audio===a&&playbackSerial===playbackId;
  // Every indexed phrase is now its own MP3; playback starts at zero.
  a.muted=false;a.volume=1;
  const animate=()=>{if(!valid()||a.paused||a.ended)return;pandaVisualAudioLevel=Math.max(0,Math.min(1,envelope?envelope.levels[Math.floor(a.currentTime/envelope.binSeconds)]||0:.5+.5*Math.sin(a.currentTime*23)));rig.setLevel(pandaVisualAudioLevel);audioFrame=requestAnimationFrame(animate)};
- a.onplaying=()=>{if(valid()){clearTimeout(audioBufferTimer);pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти|Загрузка аудио)/.test($('status').textContent))note('');animate()}};
+ a.onplaying=()=>{if(valid()){state.audioNeedsTap=false;clearTimeout(audioBufferTimer);pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти|Загрузка аудио)/.test($('status').textContent))note('');animate()}};
  const waitForAudio=()=>{if(!valid())return;cancelAnimationFrame(audioFrame);pose('idle');note('Загрузка аудио задерживается…');clearTimeout(audioBufferTimer);audioBufferTimer=setTimeout(()=>{if(valid()){stopAudio();note('Аудио не загрузилось за 10 секунд. Нажми 🔊 ещё раз или проверь интернет.')}},10000)};
  a.onwaiting=waitForAudio;
  a.onstalled=waitForAudio;
@@ -76,7 +85,14 @@ function play(entry=null){
  a.onended=finished;
  a.ontimeupdate=()=>{if(valid()&&end!==null&&a.currentTime>=end-.025)finished()};
  a.onerror=()=>{if(valid()){stopAudio();note('Запись не загрузилась. Нажми динамик ещё раз.')}};
- a.play().catch(()=>{if(valid()){stopAudio();note('Браузер не включил звук автоматически. Нажми динамик.')}});
+ a.play().catch(err=>{if(valid()){
+   const blocked=err?.name==='NotAllowedError'||err?.name==='SecurityError';
+   stopAudio();
+   state.audioNeedsTap=blocked;
+   note(blocked?
+     '🔊 Android заблокировал автозапуск голоса Панды. Нажми динамик возле её ответа.':
+     'Голос не запустился ('+String(err?.name||'ошибка')+'). Нажми 🔊 и попробуй ещё раз.');
+ }});
 }
 function cancelFollowup(){clearTimeout(followupTimer);state.followup=null}
 function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();showLearnerFeedback(null);say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
@@ -113,7 +129,7 @@ function refreshHistory(){
 }
 function record(who,hanzi,pinyin,ru,analysis=null){state.history.push({who,hanzi,pinyin,ru,analysis,confidence:who==='you'?state.confidence:null});if(state.history.length>100)state.history.shift();refreshHistory()}
 function say(line,autoplay=true,analysis=null){
- state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);
+ state.audioNeedsTap=false;state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);
  // Text-only is a valid learning response, not an audio failure. Show the
  // existing 🔇 caption, but never attempt playback without an exact MP3.
  if(autoplay&&(lookupPandaVoiceClip(line.hanzi||line.panda)||lookupPandaVoiceClip(line.audioKey)))play();
@@ -591,7 +607,7 @@ window.PandaApprovedBridge337={
    allowed:[...state.allowed],topic:lesson(),mode:state.mode,
    slow:state.slow,active:state.active,pose:$('character').dataset.state,
    feedback:$('learner-feedback').hidden?'':$('learner-feedback').textContent,
-   status:$('status').textContent,audioAvailable:!$('hear').disabled,speechSignal:state.speechSignal};
+   status:$('status').textContent,audioAvailable:!$('hear').disabled,audioNeedsTap:state.audioNeedsTap,speechSignal:state.speechSignal};
  },
  chooseTopic:id=>{
   id=Number(id);
