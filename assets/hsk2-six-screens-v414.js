@@ -35,7 +35,7 @@ function header(state){
  return '<header class="pg414-hero"><div class="pg414-brand"><b>Panda Go<span>🐾</span></b><small>Курс 2 · Моя жизнь на китайском</small></div>'+
  '<div class="pg414-scroll"><strong>Урок 1 · Мой распорядок дня</strong></div>'+
  '<div class="pg414-miniline">☀️ Мини-урок '+(state.mini+1)+' из 3 · '+esc(day.name||'Начало дня')+'</div>'+
- '<nav class="pg414-tabs" aria-label="Этапы урока">'+groups.map((s,i)=>'<span class="'+(stage===i?'active':i<stage?'passed':'')+'"><b>'+(i+1)+'</b>'+s+'</span>').join('')+'</nav></header>';
+ '<button class="pg414-toggle-py" type="button" data-day-pinyin aria-label="Показать или скрыть пиньинь">拼音</button><nav class="pg414-tabs" aria-label="Этапы урока">'+groups.map((s,i)=>'<span class="'+(stage===i?'active':i<stage?'passed':'')+'"><b>'+(i+1)+'</b>'+s+'</span>').join('')+'</nav></header>';
 }
 function wordBody(state,ctx){
  const m=data(state),list=m.words;
@@ -97,7 +97,7 @@ function testBody(state,ctx){
  const m=data(state),d=state.day,x=extra(state),sc=schemes[state.mini];
  const q0=m.quiz[0],q1=m.quiz[1],firstChoices=choiceButtons(q0.options,d.quiz[0],q0.answer,'quiz-0'),
  secondChoices=choiceButtons(q1.options,d.quiz[1],q1.answer,'quiz-1');
- const pairWords=m.words.slice(0,3),rightOrder=[2,0,1];
+ const pairWords=state.mini===0?[m.words[1],m.words[3],m.words[4]]:m.words.slice(0,3),rightOrder=[2,0,1];
  const bld=m.builder,order=bld.length===5?[2,0,4,1,3]:[2,0,3,1];
  const normalized=norm(d.build.map(i=>bld[i]).join(''))===norm(m.target);
  const filled=[...sc.fillOptions],matched=x.pairs||[];
@@ -106,8 +106,8 @@ function testBody(state,ctx){
   Number(matched.length===3)+Number(x.listen===0)+Number(normalized&&d.build.length===bld.length)+
   Number(x.fill===sc.fillAnswer)+Number(x.truth===sc.truthAnswer);
  return '<section class="pg414-panel pg414-test"><div class="pg414-panel-title"><h2>☑️ Тест · Проверь свои знания!</h2><span class="pg414-progress">'+total+'/7</span></div>'+
- question(1,'Что означает слово?','<div class="pg414-test-flex"><div class="pg414-prompt" lang="zh-Hans">'+esc(m.words[2].zh)+'</div>'+firstChoices+'</div>')+
- question(2,'Выбери правильный перевод.','<div class="pg414-test-flex"><div class="pg414-prompt" lang="zh-Hans">'+esc(m.words[0].zh)+'</div>'+secondChoices+'</div>')+
+ question(1,'Что означает слово?','<div class="pg414-test-flex"><div class="pg414-prompt" lang="zh-Hans">'+esc((m.words.find(w=>q0.question.includes(w.zh))||m.words[2]).zh)+'</div>'+firstChoices+'</div>')+
+ question(2,'Выбери правильный перевод.','<div class="pg414-test-flex"><div class="pg414-prompt" lang="zh-Hans">'+esc(m.target)+'</div>'+secondChoices+'</div>')+
  question(3,'Соотнеси слово и перевод.','<p>Нажми китайское слово, затем его значение.</p><div class="pg414-pairs">'+
   '<div>'+pairWords.map((w,i)=>'<button data-day-pair-left="'+i+'" type="button" class="'+(matched.includes(i)?'correct':x.pairLeft===i?'selected':'')+'">'+esc(w.zh)+'</button>').join('')+'</div>'+
   '<div>'+rightOrder.map(i=>'<button data-day-pair-right="'+i+'" type="button" class="'+(matched.includes(i)?'correct':'')+'">'+esc(pairWords[i].ru)+'</button>').join('')+'</div></div>'+
@@ -176,6 +176,7 @@ function next(state,api){
 }
 function handle(button,state,api){
  const d=state.day||makeState(state.mini),e=extra(state),key=button.dataset,m=data(state);
+ if(key.dayPinyin!==undefined){state.showPy=!state.showPy;api.render();return true}
  if(key.dayPrev!==undefined){cancel();if(state.stage===0)api.go('topic');else{state.stage--;api.render()}return true}
  if(key.dayNext!==undefined){next(state,api);return true}
  if(key.dayRuleChoice!==undefined){e.rule=Number(key.dayRuleChoice);api.render();return true}
