@@ -162,7 +162,7 @@ small{font-size:12px}
     ].join('\n');
     report.classList.add('show');
     status.textContent='Отзыв готов. Теперь скопируй его и отправь пригласившему тебя человеку.';
-    output.scrollIntoView({behavior:'smooth',block:'nearest'});
+    if(typeof output.scrollIntoView==='function')output.scrollIntoView({behavior:'smooth',block:'nearest'});
   });
   document.getElementById('copy').addEventListener('click',async function(){
     if(!output.value)return;
