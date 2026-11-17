@@ -39,7 +39,7 @@ try{
   for(let i=0;i<3;i++){await page.locator('[data-day-pair-left="'+i+'"]').click();await page.locator('[data-day-pair-right="'+i+'"]').click();}
   await page.locator('[data-pg418-test-next]').click();await capture('04-test-2');
   assert.equal(await page.locator('.pg414-question').count(),2);
-  await page.locator('[data-pg418-test-prev]').click();
+  await page.locator('[data-pg418-test-prev]').first().click();
   assert.equal(await page.locator('.pg414-pairs button.correct').count(),6,'Answers lost after navigating backward');
   await page.locator('[data-pg418-test-next]').click();
   await page.locator('[data-day-listen="0"]').click();
