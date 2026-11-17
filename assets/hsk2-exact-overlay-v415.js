@@ -207,7 +207,7 @@ function renderAI(state,sound,link){
  '<div class="pg414-ai-answer pg415-ai-answer" style="'+at(32,1045,870,142)+'">'+
   '<label class="pg415-sr-only" for="pg414-ai-input">Напиши ответ на китайском языке</label>'+
   '<input id="pg414-ai-input" type="text" lang="zh-CN" inputmode="text" autocomplete="off" placeholder=" ">'+
-  '<button class="pg415-ai-submit" type="button" data-pg414-send aria-label="Отправить ответ Панде">➤</button></div>+'
+  '<button class="pg415-ai-submit" type="button" data-pg414-send aria-label="Отправить ответ Панде">➤</button></div>'+
  '<button class="pg415-hit pg415-ai-microphone" style="'+at(335,1194,207,212)+'" type="button" data-pg414-mic aria-label="Начать голосовой ответ"></button>'+
  '<span class="pg415-hit pg415-audio pg415-listen" style="'+at(570,1267,312,111)+'">'+sound('你几点起床？')+'</span>'+
  '<p id="pg414-ai-feedback" class="pg415-ai-feedback" role="status" style="'+at(75,1391,791,39)+'">Ответь на первый вопрос.</p>'+
