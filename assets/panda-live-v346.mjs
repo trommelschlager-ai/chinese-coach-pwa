@@ -248,13 +248,17 @@ if (!bridge) {
     const offTopicHint=!wrong&&noteText.startsWith('✅ 我今天有空')&&
       noteText.includes('Но вопрос был 今天星期几？')&&
       noteText.includes('Ответь названием дня недели');
-    const root=$('#pg346-feedback'),active=!!wrong||offTopicHint;
+    const siblingHint=!wrong&&noteText.startsWith('✅ ')&&
+      noteText.includes('Но вопрос был 你')&&
+      noteText.includes('Ответь именно на этот вопрос');
+    const teachingHint=offTopicHint||siblingHint;
+    const root=$('#pg346-feedback'),active=!!wrong||teachingHint;
     const key=[last?.hanzi,wrong?.hanzi,wrong?.why,noteText,active].join('|');
     if(key===lastFeedback)return;
     lastFeedback=key;root.hidden=!active;root.replaceChildren();
     if(!active)return;
-    root.append(el('strong','',offTopicHint?'🐼 Панда объясняет:':'🐼 Панда:'));
-    if(offTopicHint){
+    root.append(el('strong','',teachingHint?'🐼 Панда объясняет:':'🐼 Панда:'));
+    if(teachingHint){
       root.append(el('p','pg377-explanation',noteText));
       return;
     }
