@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
-<meta name="panda-go-mobile-fix" content="v418-press-aligned">
+<meta name="panda-go-mobile-fix" content="v419-native-footer-press">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
@@ -126,39 +126,26 @@ body{display:grid;place-items:center;position:relative}
   box-shadow:none!important;
 }
 
-/* v417: VISIBLE but gentle Android tap feedback.
-   The actual artwork, lesson targets and links are unchanged.
-   Unlike v415, no permanent shadows or offset silhouettes are drawn. */
-.hotspots a::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  inset:9% 4% 11%!important;
-  border-radius:999px!important;
-  pointer-events:none!important;
-  z-index:3!important;
+/* v419: match the native lesson-footer push feedback.
+   The approved image is already drawn. On touch only the pixels inside
+   the selected lesson ribbon darken, creating a pressed-in appearance.
+   No fake glowing oval, extra side shadow, or displaced artwork. */
+.hotspots a::after,
+.hotspots a:active::after,
+.hotspots a.is-pressed::after{
+  content:none!important;
+  display:none!important;
+  box-shadow:none!important;
+}
+.press-art .press-image{
+  /* The source is the same approved image, clipped to the tapped card. */
+  filter:brightness(.77) saturate(.95) contrast(1.025);
   opacity:0;
-  transform:scale(.985);
-  background:linear-gradient(120deg,
-    rgba(255,255,255,.27) 0%,
-    rgba(255,245,190,.36) 46%,
-    rgba(255,255,255,.23) 100%);
-  box-shadow:inset 0 0 0 2px rgba(255,249,218,.95),
-             inset 0 0 17px rgba(255,255,255,.45)!important;
-  transition:opacity 120ms ease-out,transform 140ms ease-out!important;
+  transition:opacity 105ms ease-out;
 }
-.hotspots a.lesson::after{inset:12% 2.5% 13% 2.5%!important}
-.hotspots a.lesson[data-num="7"]::after{inset:12% 2% 13% 9%!important}
-.hotspots a.top-link::after{inset:8% 7% 10%!important;border-radius:18px!important}
-.hotspots a.footer-link::after{inset:9% 5% 12%!important;border-radius:22px!important}
-.hotspots a.is-pressed::after,
-.hotspots a:active::after{
-  display:block!important;
-  opacity:1!important;
-  transform:scale(1)!important;
-}
+.press-art.active .press-image{opacity:1}
 @media(prefers-reduced-motion:reduce){
-  .hotspots a::after{transition:none!important}
+  .press-art .press-image{transition:none!important}
 }
 
 </style>
@@ -233,12 +220,12 @@ body{display:grid;place-items:center;position:relative}
     if(a&&(e.key==='Enter'||e.key===' ')){e.preventDefault();deny(Number(a.dataset.num))}
   });
   function refresh(){try{const v=Number(localStorage.getItem(KEY)||'0');if(Number.isInteger(v))completed=Math.min(7,Math.max(0,v))}catch{}paint()}
-  // Soft 580ms feedback: a clearly visible inset highlight, then navigation.
+  // Match native lesson footer: a visible pressed-in darken effect, then navigation.
   const links=Array.from(document.querySelectorAll('.hotspots a'));
   const board=document.querySelector('.artboard');
   const pressArt=document.querySelector('.press-art');
   const pressShape=document.getElementById('pressShape');
-  const PRESS_MS=580;
+  const PRESS_MS=500;
   let pressed=null,releaseTimer=0,navigating=false;
 
   function roundRectPath(x,y,w,h){
