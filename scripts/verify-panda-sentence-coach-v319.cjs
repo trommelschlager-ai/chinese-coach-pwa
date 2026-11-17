@@ -78,8 +78,8 @@ const fs=require('node:fs');
  assert.equal(coachSentence('下雨',{allowed:base.allowed,prompt:{...weatherPrompt,time:'明天',hanzi:'明天天气怎么样？'}}),null);
  for(const p of [
   './assets/panda-sentence-coach-v319.mjs?v=319',
-  './assets/panda-live-dialogue-v272.mjs?v=433',
-  './assets/panda-live-screen-v270.mjs?v=432',
+  './assets/panda-live-dialogue-v272.mjs?v=434',
+  './assets/panda-live-screen-v270.mjs?v=433',
   './assets/panda-hsk1-questions-v281.mjs?v=319',
   './panda-voice-pilot.html?v=326'
  ]) assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).files.includes(p),p);
