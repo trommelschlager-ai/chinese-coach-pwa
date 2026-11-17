@@ -103,7 +103,7 @@ test('Panda understands 你有没有 with real HSK1 family grammar and tone-mark
   assert.equal(r.spoken.pinyin,pinyin);
   assert.equal(r.reply.hanzi,reply);
   assert.equal(r.reply.audioKey,null,'No fabricated MP3 for new Panda reply');
-  assert.equal(lookupPandaVoiceClip(question),null,'No invented question audio');
+  assert.match(lookupPandaVoiceClip(question)?.src||'',/^\.\/assets\/panda-voice-clips-v422\/p16[6-9]\.mp3$/,'New v422 binary audio must activate only for the exact recorded question');
  }
 });
 
@@ -141,7 +141,7 @@ test('Panda accepts brief 有/没有 after 你有没有; unlocked lessons are re
  assert.equal(answerLive('你今天有没有空？',{allowed:[1],topic:1,curriculum,date}).kind,'locked');
 });
 
-test('你有没有 questions appear as optional text-only prompts, never as recorded audio',()=>{
+test('你有没有 prompts enable only matching recorded v422 audio, leaving unrecorded time phrases text-only',()=>{
  const groups=availableAskGroups([1,4,6],curriculum,date);
  const family=groups.find(g=>g.lesson===6)?.questions||[];
  const days=groups.find(g=>g.lesson===4)?.questions||[];
@@ -149,7 +149,7 @@ test('你有没有 questions appear as optional text-only prompts, never as reco
  const hasTime=days.find(q=>q.hanzi==='你今天有没有空？');
  assert(hasFamily&&hasTime,'New reviewed questions must appear in the topic catalogue');
  assert.equal(hasFamily.pinyin,'Nǐ yǒu méiyǒu mèimei?');
- assert.equal(hasFamily.hasReplyAudio,false);
+ assert.equal(hasFamily.hasReplyAudio,true,'Family question now has its own authenticated MP3');
  assert.equal(hasTime.hasReplyAudio,false);
  assert(!availableAskGroups([1],curriculum,date).some(g=>g.lesson===4||g.lesson===6));
 });
@@ -161,7 +161,8 @@ test('Panda understands full learner family statements with exact Russian transl
  assert.equal(yes.spoken.translation,'Да, у меня одна младшая сестра.');
  assert.equal(yes.spoken.pinyin,'Yǒu, wǒ yǒu yí ge mèimei.');
  assert.equal(yes.reply.hanzi,'明白了。','Panda should acknowledge naturally, not say 谢谢');
- assert.equal(yes.reply.audioKey,null,'No invented MP3 for the new acknowledgement');
+ assert.equal(yes.reply.audioKey,null,'The dialogue never forges an audioKey');
+ assert.equal(lookupPandaVoiceClip('明白了。')?.src,'./assets/panda-voice-clips-v422/p175.mp3','Real exact acknowledgement recording now exists');
  const no=answerLive('没有，我没有妹妹。',{allowed:[1,6],topic:6,prompt:question,curriculum,date});
  assert.equal(no.kind,'answer');
  assert.equal(no.spoken.known,true);
