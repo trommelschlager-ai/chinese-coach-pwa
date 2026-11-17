@@ -1,5 +1,5 @@
 'use strict';
-/* Panda Go v293: every finished HSK1 exercise must remain visible and replayable.
+/* Panda Go v293: finished HSK1 exercises stay replayable; lesson 4 skips empty completion shells.
  * The existing full-path scripts cover all seven lesson routes; this test adds
  * backwards navigation and post-completion retake edge cases for 3 and 4.
  */
@@ -61,8 +61,11 @@ const create4=(step,completed)=>{
  return {dom,w,d:w.document};
 };
 for(const [step,selector] of [[4,'[data-repeat="4"]'],[7,'[data-repeat="7"]'],[9,'[data-repeat="9"]'],[10,'[data-repeat="10"]'],[11,'[data-repeat="11"]']]){
- const {dom,w,d}=create4(step);
- assert.equal(Number(d.querySelector('#pg3-count').textContent.split('/')[0]),step+1,'Lesson 4 must not auto skip '+step);
+ const restored=create4(step);
+ const expected=({4:6,7:9,9:10,10:13,11:13})[step];
+ assert.equal(Number(restored.d.querySelector('#pg3-count').textContent.split('/')[0]),expected,'Lesson 4 skips only completed empty shells '+step);
+ restored.dom.window.close();
+ const {dom,w,d}=create4(step===9?9:12);
  const control=d.querySelector(selector);
  assert(control,'Lesson 4 finished step '+(step+1)+' cannot repeat: '+selector);
  assert(!control.disabled);
@@ -76,15 +79,15 @@ for(const [step,selector] of [[4,'[data-repeat="4"]'],[7,'[data-repeat="7"]'],[9
 {
  const {dom,d}=create4(12);
  d.getElementById('pg3-prev').click();
- assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),12,'Back must reach finished exam');
+ assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),10,'Back skips finished exam and builder');
  d.getElementById('pg3-prev').click();
- assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),11,'Back must reach finished constructor');
+ assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),9,'Back reaches writing');
  d.getElementById('pg3-prev').click();
- assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),10,'Back must reach finished dialogue');
+ assert.equal(Number(d.getElementById('pg3-count').textContent.split('/')[0]),7,'Back skips finished calendar');
  dom.window.close();
 }
 const numbers=read('assets/hsk1-third-v213.js');
 assert(numbers.includes("pool=[correct.at(-1),n===90?'三':'四',...correct.slice(0,-1)]"),'Number constructor should not display words in correct order');
 const weekdays=read('assets/hsk1-fourth-v220.js');
-assert(!weekdays.includes('while(previous>0&&completedPage(previous))'),'Back must not skip completed steps');
+assert(weekdays.includes('completedExercise(state.step)'),'Completed lesson-4 shells must be skipped');
 console.log('PASS HSK1 v293: 7 entry routes, 8 lesson3 replay states, 5 lesson4 replay states, first-attempt scores and backwards navigation');

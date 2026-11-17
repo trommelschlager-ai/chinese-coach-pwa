@@ -20,6 +20,8 @@ for(const [i,p] of pages.entries()){
  }
  d.defaultView.close();
 }
+const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
+for(const url of ['./assets/hsk1-headers-v421.css?v=421','./assets/hsk1-controls-v421.css?v=421','./assets/hsk1-controls-v421.js?v=421','./assets/hsk1-fourth-v220.js?v=421'])assert(offline.files.includes(url),'Offline update includes '+url);
 // Real dynamic controls acquire colors; their action attributes and disabled flags survive.
 (async()=>{
  const dom=new JSDOM('<body data-pg-hsk1="4"><div id="stage"></div></body>',{runScripts:'outside-only'}),w=dom.window,d=w.document;

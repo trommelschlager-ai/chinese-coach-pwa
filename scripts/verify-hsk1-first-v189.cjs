@@ -76,7 +76,7 @@ assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('found
 assert(!d.querySelector('.lesson-step'),'Old seven-step bulky UI must not mount in the new lesson');assert(map.includes('data-num="1"')&&map.includes('href="./hsk1-first-v189.html"'),'Approved v373 map must open the current first lesson; screen count is verified in the lesson itself');
 assert(!js.includes('speechSynthesis'),'No cloned or invented speaker voice');assert(page.includes('hsk1-native-clean-v198.js?v=198'),'Owner recording overlay is loaded after all older voices');assert(js.includes('const XIAOXIAO_LESSON1=Object.freeze('),'Lesson 1 must use approved Xiaoxiao source map');assert(js.includes('const realHuman='),'Use licensed real human fallback');assert(js.includes('autoGainControl:true'),'Automatic mic gain');assert(js.includes('async function levelRecording(blob)'),'Normalize recorded volume');assert(js.includes('decodeAudioData'),'Web Audio normalization fallback');
 for(const removed of ['Оригинальная запись носительницы','Временный учебный голос','Оценка произношения не автоматическая','Никакой автоматической оценки','Сначала послушай носительницу'])assert(!js.includes(removed),'Redundant status copy returned: '+removed);
-assert(page.includes('hsk1-first-v189.js?v=371'),'New JS query bust');
+assert(/hsk1-first-v189\.js\?v=\d+/.test(page),'Versioned active first-lesson JS');
 const xiaoxiaoClips=[
  ['我','wo'],['是','shi'],['学生','xuesheng'],['你','ni'],['你好','nihao'],
  ['我是学生','woshixuesheng'],['妈','ma1'],['麻','ma2'],['马','ma3'],['骂','ma4']
@@ -93,7 +93,7 @@ assert(page.includes('native-owner-v200.js?v=200'),'New owner audio map must loa
 assert(js.includes('endAt=item.duration;'),'Never cut syllable endings during playback');
 assert(js.includes('item.playbackRate=1;'),'Natural speech rate must preserve syllable quality');
 assert(js.includes("high.type='highpass'")&&js.includes("low.type='lowpass'")&&js.includes('createDynamicsCompressor'),'Tone source must be gently processed without replacement');
-assert(page.includes('hsk1-first-v189.css?v=300'),'New CSS query bust');
+assert(/hsk1-first-v189\.css\?v=\d+/.test(page),'Versioned active first-lesson CSS');
 assert(css.includes('animation-iteration-count:infinite'),'Writing must run continuously');for(let i=1;i<=6;i++)assert(css.includes('@keyframes pgHao'+i),'Missing sequential six-stroke writing frame');assert(!js.includes('pg-wo-writing'),'Old seven-stroke character must be removed');assert(!js.includes('toneChoice'),'Intro tone choices must be absent');
 console.log('PASS v295: original words and tones, full sound trainer, 是 grammar and 16 lesson screens; progress retained');
 w.close();

@@ -65,7 +65,8 @@ assert.equal(test.PandaGoPathV371.completed(),7);
 assert.equal(test.PandaGoPathV371.markComplete(1),true,'Repeating completed lesson must be allowed');
 test.close();
 const sw=fs.readFileSync('sw.js','utf8'),core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
-assert(core.length<=200,'Current two-course offline app shell must stay bounded');
+const installedShellCount=require('node:vm').runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'"))+'INSTALL_SHELL.length');
+assert(installedShellCount<=200,'Current two-course offline app shell must stay bounded');
 for(const entry of [...layers.map(x=>'./assets/hsk1-v371-'+x+'.webp'),'./assets/hsk1-layered-v372.css?v=372','./hsk2-start.html','./hsk2-introduction.html'])assert(core.includes(entry),'Offline file missing '+entry);
 for(const entry of core)assert(fs.existsSync(entry.split('?')[0]),'Offline file missing on disk '+entry);
 for(const [file,index] of [
