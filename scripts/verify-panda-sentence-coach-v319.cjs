@@ -79,7 +79,7 @@ const fs=require('node:fs');
  for(const p of [
   './assets/panda-sentence-coach-v319.mjs?v=319',
   './assets/panda-live-dialogue-v272.mjs?v=434',
-  './assets/panda-live-screen-v270.mjs?v=441',
+  './assets/panda-live-screen-v270.mjs?v=445',
   './assets/panda-hsk1-questions-v281.mjs?v=319',
   './panda-voice-pilot.html?v=326'
  ]) assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).files.includes(p),p);
