@@ -1,7 +1,7 @@
-import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=qa-7fff6cb9';
+import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=qa-fd36ffe7';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from '../panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=qa-7fff6cb9';
+import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=qa-fd36ffe7';
 import {verifyAnswerFor,normalize} from '../panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from '../panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from '../panda-live-envelope.mjs?v=live6';
@@ -11,10 +11,10 @@ import {answerCurriculumQuestion} from '../panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from '../panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from '../panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from '../panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=qa-7fff6cb9';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=qa-fd36ffe7';
 import {recordedPandaAnswer} from '../panda-recorded-qa-v358.mjs?v=381';
-import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=qa-7fff6cb9';
-import {chooseAudibleFollowup} from './panda-audible-followup-v412.mjs?v=qa-7fff6cb9';
+import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=qa-fd36ffe7';
+import {chooseAudibleFollowup} from './panda-audible-followup-v412.mjs?v=qa-fd36ffe7';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from '../panda-hsk2-day-coach-v1.mjs?v=398';
 import {interpretWorkReply,addPersonalFollowup} from '../panda-context-flow-v376.mjs?v=376';
 import {correctCommonPhrase} from '../panda-chat-corrections-v377.mjs?v=377';
@@ -222,6 +222,15 @@ function submit(raw){
    const rawResult=correctCommonPhrase(input)||interpretWorkReply(input,{prompt:activePrompt})||answerLive(input,{allowed:state.allowed,topic:lesson(),prompt:activePrompt,curriculum,date:new Date(),turn:state.turns,profile:{...state.profile,recentQuestions:state.questions.slice(-40)}});
    const result=addPersonalFollowup(rawResult,{allowed:state.allowed,recentQuestions:state.questions.slice(-40)});
   learner(input,result.spoken||analyzeLearner(input,state.allowed,state.prompt?.line,curriculum));
+  // A valid statement about free time does NOT answer "what weekday is it?".
+  // Acknowledge the learner's meaning and repeat the actual question with its
+  // already approved audio; never mark a correct Chinese phrase as a mistake.
+  if(normalize(input)==='我今天有空'&&normalize(activePrompt?.hanzi||activePrompt?.panda||'')==='今天星期几'){
+    state.awaitQuestion=false;
+    say(activePrompt);
+    note('«我今天有空» — правильная фраза: «Я сегодня свободен». Но вопрос был «今天星期几？» — «Какой сегодня день недели?». Ответь названием дня недели. Тоны речи здесь не оценивались.');
+    return;
+  }
   if(result.kind==='empty'){note(result.message);return}
   if(result.kind==='correction'){recordCorrection(input,result.spoken);pose('retry');note(result.message);render();return}
   if(result.reply){
@@ -279,7 +288,7 @@ function submit(raw){
    // v412 QA-specific repair: after the recorded weekday-availability
    // question, only choose an audible same-topic follow-up. Leave EVERY other
    // established HSK1 / calendar / family flow unchanged.
-   if(normalize(input)==='你星期几有空')
+   if(/^(?:你星期几有空|你今天有空吗)$/.test(normalize(input)))
      followup=chooseAudibleFollowup(followup,topicCatalogGroups(),
        [...state.questions.slice(-12),...state.history.slice(-8).map(h=>h.hanzi)],
        lookupPandaVoiceClip,input);
@@ -290,6 +299,8 @@ function submit(raw){
       (followup?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
        'Панда запомнила твою реплику о семье. Озвученного уточняющего вопроса пока нет; можешь задать свой вопрос или выбрать другую тему.'):
     followup?'Панда продолжит вопросом по пройденным темам. Можешь ответить или спросить раньше.':
+    /^(?:你星期几有空|你今天有空吗)$/.test(normalize(input))?
+      'Панда ответила. По этой теме пока нет других новых записанных вопросов; задай свой вопрос или выбери тему.':
     result.message||'Продолжай или нажми «Ещё вопрос».');
    if(state.confidence!==null&&state.confidence<.65){cancelFollowup();note('Распознано неуверенно. Проверь текст в истории и повтори при необходимости.');}return;
   }
