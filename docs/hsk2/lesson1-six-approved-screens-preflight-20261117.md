@@ -19,7 +19,7 @@ Do not modify HSK1, other HSK2 topics, or global Panda AI behavior.
 The attached source images are visible in the task, but their bytes have NOT been copied into this branch. Files named 36257.png through 36262.png must be matched visually before import. No filename-to-screen mapping is asserted here.
 
 ## Source findings
-1. `hsk2-life-course.html` references 14 stylesheets, including a sequence of previous day/viewport/art patches. New visual rules need isolation to topic 0, not another uncontrolled global patch.
+1. `hsk2-life-course.html` references 12 stylesheets, including a sequence of previous day/viewport/art patches. New visual rules need isolation to topic 0, not another uncontrolled global patch.
 2. `assets/hsk2-day-first-ui-v1.js` defines five stage names. Its stage 4 calls completion; Panda AI is a separate link on the completion view in `assets/hsk2-life-course-app-v1.js`.
 3. Current initial word screen is the older `approved-course-v390/day-lesson.png` with transparent hotspot buttons, followed by a different HTML word-detail layout. This does not implement the six newly approved screens.
 4. The speech screen presents one selected word and five attempt slots, not seven independently controlled rows. Both its render and recognize paths stop attempts at five, even if all recognized attempts are wrong. Change retry policy and persisted state together.
