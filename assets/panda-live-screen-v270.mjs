@@ -263,17 +263,6 @@ function submit(raw){
      &&lookupPandaVoiceClip(candidate.hanzi)?
      {...candidate,isContextual:true,audioKey:candidate.hanzi}:null;
    }
-   // Calendar mini-dialogue: after a learner answers today's weekday,
-   // ask today's date exactly once. A generic reply suggestion must not
-   // repeat the weekday question instead of continuing the same dialogue.
-   const completedWeekdayAnswer=normalize(activePrompt?.hanzi||'')==='今天星期几'
-    &&/^(?:今天(?:是)?)?星期[一二三四五六日天]$/.test(normalize(input));
-   if(completedWeekdayAnswer&&state.allowed.includes(5)
-      &&!state.questions.slice(-12).some(q=>normalize(q)==='今天几月几号')
-      &&lookupPandaVoiceClip('今天几月几号')){
-    followup={hanzi:'今天几月几号？',pinyin:'Jīntiān jǐ yuè jǐ hào?',
-     ru:'Сегодня какое число?',lesson:5,audioKey:'今天几月几号',isContextual:true,accepted:[]};
-   }
    if(completedCalendarRound){followup=null;}
    else if(followup&&state.lockedTopic&&state.allowed.includes(state.lockedTopic)&&followup.lesson!==state.lockedTopic){
      // Preserve contextual questions from the chosen topic. If the generic
