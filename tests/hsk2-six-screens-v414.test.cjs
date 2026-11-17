@@ -70,7 +70,7 @@ for(let mini=0;mini<3;mini++){
  assert.equal(doc.querySelectorAll('.pg414-speech-row').length,wordCount[mini]);
  if(mini===0){
   click('[data-day-speech-mic="2"]');
-  assert.ok(doc.querySelector('.pg415-consent'),'Consent is required');
+  assert.ok(doc.querySelector('.pg415-consent'),'Consent is required: status='+starts+' buttons='+doc.querySelectorAll('[data-day-speech-mic]').length+' page='+doc.querySelector('.pg415-art-screen')?.className+' visible='+doc.querySelector('.pg415-consent,.pg414-consent')?.outerHTML.slice(0,80)+' reason='+doc.querySelector('#status')?.textContent);
   assert.equal(starts,0);
   click('[data-day-consent]');
   assert.equal(starts,1);
