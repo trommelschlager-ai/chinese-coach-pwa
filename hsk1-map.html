@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#a044b0">
 <meta name="panda-go-approved-map" content="v373-exact-approved-art">
-<meta name="panda-go-mobile-fix" content="v420-ribbon-physical-press">
+<meta name="panda-go-mobile-fix" content="v421-reference-video-tap">
 <title>Panda Go · HSK 1 · Начальный уровень</title>
 <link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
 <style>
@@ -126,62 +126,39 @@ body{display:grid;place-items:center;position:relative}
   box-shadow:none!important;
 }
 
-/* v419: match the native lesson-footer push feedback.
-   The approved image is already drawn. On touch only the pixels inside
-   the selected lesson ribbon darken, creating a pressed-in appearance.
-   No fake glowing oval, extra side shadow, or displaced artwork. */
-.hotspots a::after,
-.hotspots a:active::after,
-.hotspots a.is-pressed::after{
-  content:none!important;
-  display:none!important;
-  box-shadow:none!important;
-}
-.press-art .press-image{
-  /* The source is the same approved image, clipped to the tapped card. */
-  filter:brightness(.77) saturate(.95) contrast(1.025);
-  opacity:0;
-  transition:opacity 105ms ease-out;
-}
-.press-art.active .press-image{opacity:1}
-@media(prefers-reduced-motion:reduce){
-  .press-art .press-image{transition:none!important}
-}
-
-
-/* v420 — actual moving card overlay from the ORIGINAL bitmap.
-   The image underneath never moves, only the transparent crop above the
-   pressed card. This recreates the native lesson footer's sunk-down motion
-   without bright fake capsules, permanent shadows or side overhang. */
-.hotspots a.lesson::after{
+/* v421: reference-video press matches actual lesson navigation buttons:
+   native 2px movement + brightness(.9), without the v420 0.79 dark flash.
+   No synthetic side shadow or new visual artwork. */
+.hotspots a::after{
   content:""!important;
   display:block!important;
   position:absolute!important;
   inset:0!important;
+  border-radius:inherit!important;
   pointer-events:none!important;
-  z-index:5!important;
+  z-index:4!important;
   opacity:0!important;
-  border-radius:999px!important;
   background-image:url("./assets/hsk1-approved-v373.png")!important;
   background-repeat:no-repeat!important;
   background-size:var(--pg-canvas-width,694px) var(--pg-canvas-height,1536px)!important;
   background-position:var(--pg-crop-x,0px) var(--pg-crop-y,0px)!important;
-  clip-path:inset(10% 2% 12% 2% round 999px);
-  filter:brightness(.79) saturate(.96) contrast(1.04)!important;
-  box-shadow:inset 0 3px 7px rgba(32,6,76,.3)!important;
-  transform:translateY(0) scale(1);
-  transform-origin:center center;
-  transition:opacity 90ms ease-out,transform 140ms ease-out!important;
+  filter:brightness(.9)!important;
+  transform:translateY(0)!important;
+  box-shadow:none!important;
+  transition:opacity 70ms ease-out,transform 115ms ease-out!important;
 }
-.hotspots a.lesson.is-pressed::after,
-.hotspots a.lesson:active::after{
+.hotspots a.lesson::after{clip-path:inset(10% 2% 12% 2% round 999px)}
+.hotspots a.footer-link::after{clip-path:inset(8% 3% 10% 3% round 23px)}
+.hotspots a.top-link::after{clip-path:inset(8% 6% 9% 6% round 18px)}
+.hotspots a.is-pressed::after,
+.hotspots a:active::after{
   content:""!important;
   display:block!important;
   opacity:1!important;
-  transform:translateY(2px) scale(.988)!important;
+  transform:translateY(2px)!important;
 }
 @media(prefers-reduced-motion:reduce){
- .hotspots a.lesson::after{transition:none!important;transform:none!important}
+  .hotspots a::after{transition:none!important;transform:none!important}
 }
 
 </style>
@@ -191,17 +168,7 @@ body{display:grid;place-items:center;position:relative}
 <img class="approved" src="./assets/hsk1-approved-v373.png" alt="Panda Go, начальный уровень HSK 1. Семь цветных уроков, панда в китайском костюме на фоне заката." width="694" height="1536" fetchpriority="high">
 <!-- The sole v373 bitmap is reused as an aligned, feather-masked light layer.
      The drawing itself, screen positions, and all hotspots stay unchanged. -->
-<svg class="press-art" viewBox="0 0 694 1536" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-  <defs>
-    <filter id="pressFeather" x="-12%" y="-20%" width="124%" height="140%">
-      <feGaussianBlur stdDeviation="3.5"/>
-    </filter>
-    <mask id="pressMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536">
-      <path id="pressShape" fill="#fff" filter="url(#pressFeather)" d=""/>
-    </mask>
-  </defs>
-  <image class="press-image" href="./assets/hsk1-approved-v373.png" x="0" y="0" width="694" height="1536" preserveAspectRatio="none" mask="url(#pressMask)"/>
-</svg>
+
 <nav class="hotspots" aria-label="Уроки HSK 1">
 <a class="top-link back" href="./index.html#panda/home" aria-label="Назад к выбору уровня"></a>
 <a class="top-link write" href="./hanzi-writing.html?lesson=1" aria-label="Написание иероглифов"></a>
@@ -259,46 +226,21 @@ body{display:grid;place-items:center;position:relative}
   // v420: use an aligned image crop for a genuinely moving and visibly pressed ribbon.
   const links=Array.from(document.querySelectorAll('.hotspots a'));
   const board=document.querySelector('.artboard');
-  const pressArt=document.querySelector('.press-art');
-  const pressShape=document.getElementById('pressShape');
-  const PRESS_MS=500;
+  const PRESS_MS=210;
   let pressed=null,releaseTimer=0,navigating=false;
-
-  function roundRectPath(x,y,w,h){
-    const r=Math.min(w/2,h/2);
-    return [
-      'M',x+r,y,'H',x+w-r,
-      'Q',x+w,y,x+w,y+r,
-      'V',y+h-r,'Q',x+w,y+h,x+w-r,y+h,
-      'H',x+r,'Q',x,y+h,x,y+h-r,
-      'V',y+r,'Q',x,y,x+r,y,'Z'
-    ].join(' ');
-  }
   function showPress(link){
     if(navigating&&pressed&&pressed!==link)return;
     clearTimeout(releaseTimer);
     if(pressed&&pressed!==link)pressed.classList.remove('is-pressed');
     const rect=link.getBoundingClientRect(), art=board.getBoundingClientRect();
     if(!art.width||!art.height)return;
-    const x=(rect.left-art.left)*694/art.width;
-    const y=(rect.top-art.top)*1536/art.height;
-    const w=rect.width*694/art.width, h=rect.height*1536/art.height;
-    const isLesson=link.classList.contains('lesson');
-    // Reuse the approved bitmap as an accurately aligned crop for the pressed
-    // ribbon. It moves only for 500ms while the underlying artwork is intact.
-    if(isLesson){
-      link.style.setProperty('--pg-canvas-width',art.width+'px');
-      link.style.setProperty('--pg-canvas-height',art.height+'px');
-      link.style.setProperty('--pg-crop-x',-(rect.left-art.left)+'px');
-      link.style.setProperty('--pg-crop-y',-(rect.top-art.top)+'px');
-    }
-    const insetX=isLesson?(link.dataset.num==='7'?w*.09:w*.027):w*.055;
-    const insetY=isLesson?h*.105:h*.11;
-    pressShape.setAttribute('d',roundRectPath(
-      x+insetX,y+insetY,w-2*insetX,h-2*insetY));
+    // Exact source pixels follow the real native footer transform on touch.
+    link.style.setProperty('--pg-canvas-width',art.width+'px');
+    link.style.setProperty('--pg-canvas-height',art.height+'px');
+    link.style.setProperty('--pg-crop-x',-(rect.left-art.left)+'px');
+    link.style.setProperty('--pg-crop-y',-(rect.top-art.top)+'px');
     link.classList.add('is-pressed');
     pressed=link;
-    pressArt.classList.toggle('active',!isLesson);
   }
   function releasePress(link,ms=PRESS_MS){
     clearTimeout(releaseTimer);
@@ -306,12 +248,11 @@ body{display:grid;place-items:center;position:relative}
       if(pressed!==link)return;
       link.classList.remove('is-pressed');
       pressed=null;
-      pressArt.classList.remove('active');
     },ms);
   }
   for(const link of links){
     link.addEventListener('pointerdown',()=>showPress(link),{passive:true});
-    link.addEventListener('pointerup',()=>releasePress(link),{passive:true});
+    link.addEventListener('pointerup',()=>releasePress(link,145),{passive:true});
     link.addEventListener('pointercancel',()=>releasePress(link,0),{passive:true});
     link.addEventListener('pointerleave',()=>{if(!navigating)releasePress(link,120)},{passive:true});
     link.addEventListener('blur',()=>{if(!navigating)releasePress(link,0)});
@@ -335,7 +276,7 @@ body{display:grid;place-items:center;position:relative}
     navigating=false;
     clearTimeout(releaseTimer);
     for(const link of links)link.classList.remove('is-pressed');
-    pressed=null;pressArt.classList.remove('active');
+    pressed=null;
   });
   window.addEventListener('pageshow',refresh);
   window.addEventListener('focus',refresh);
