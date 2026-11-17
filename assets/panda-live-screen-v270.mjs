@@ -276,14 +276,11 @@ function submit(raw){
    // v412: an automatic question must have its own exact Panda MP3.
    // Manual/free-form questions stay text-only when no recording exists.
    const plannedFollowup=followup;
-   // Calendar day->date handoff is an explicit reviewed sequence; never
-   // substitute another calendar question or disrupt lesson completion.
-   // A correct answer to the ACTIVE calendar question is sometimes converted
-   // to a pattern-engine response without spoken.calendarLiteral.
-   const saidCalendar=analyzeCalendarLiteral(input);
-   const activeCalendarAnswer=saidCalendar&&activePrompt&&
-     saidCalendar.topic===Number(activePrompt.lesson)&&result.kind==='answer';
-   if(!result.spoken?.calendarLiteral&&!activeCalendarAnswer)
+   // Keep the previously approved calendar day/date sequence untouched.
+   // Calendar statements can be analyzed as answers OR statements depending
+   // on the active prompt, so checking result.kind or spoken.calendarLiteral
+   // alone is insufficient.
+   if(!analyzeCalendarLiteral(input)&&!result.spoken?.calendarLiteral)
      followup=chooseAudibleFollowup(followup,topicCatalogGroups(),
        [...state.questions.slice(-12),...state.history.slice(-8).map(h=>h.hanzi)],
        lookupPandaVoiceClip,input);
