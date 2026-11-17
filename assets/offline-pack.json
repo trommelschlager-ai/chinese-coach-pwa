@@ -4,7 +4,6 @@
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
-    "./assets/panda-live-v346.mjs?v=365",
     "./assets/panda-scene-clean-v346.svg?v=346",
     "./assets/panda-sakura-v346.svg?v=346",
     "./assets/approved-build-v95.webp",
@@ -2756,7 +2755,6 @@
     "./assets/panda-live-voice-bridge-v307/B10.mp3",
     "./assets/panda-hsk-scenic-v315.css?v=315",
     "./panda-voice-pilot.html?v=326",
-    "./assets/panda-live-screen-v270.mjs?v=365",
     "./assets/panda-live-dialogue-v272.mjs?v=323",
     "./assets/panda-hsk1-questions-v281.mjs?v=319",
     "./assets/panda-sentence-coach-v319.mjs?v=319",
