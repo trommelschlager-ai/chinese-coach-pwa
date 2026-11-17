@@ -210,7 +210,7 @@ function renderAI(state,sound,link){
   '<button class="pg415-ai-submit" type="button" data-pg414-send aria-label="Отправить ответ Панде">➤</button></div>'+
  '<button class="pg415-hit pg415-ai-microphone" style="'+at(335,1194,207,212)+'" type="button" data-pg414-mic aria-label="Начать голосовой ответ"></button>'+
  '<span class="pg415-hit pg415-audio pg415-listen" style="'+at(570,1267,312,111)+'">'+sound('你几点起床？')+'</span>'+
- '<p id="pg414-ai-feedback" class="pg415-ai-feedback" role="status" style="'+at(75,1391,791,39)+'">Ответь на первый вопрос.</p>'+
+ '<p id="pg414-ai-feedback" class="pg419-sr-status" role="status" aria-live="polite">Ответь на первый вопрос.</p>'+
  '<a class="pg415-hit pg415-ai-next" href="'+esc(link)+'" style="'+at(104,1440,729,124)+'" aria-label="Открыть полный диалог с Panda AI"></a>'+
  '<button type="button" class="pg415-hit pg415-ai-back" data-pg419-ai-back style="'+at(29,27,107,108)+'" aria-label="Назад к примерам этого мини-урока"></button>'+
  '</div><div class="day-ai-panel pg415-accessible-link"><a href="'+esc(link)+'">🎙 Открыть полный диалог Panda AI →</a></div>'+
