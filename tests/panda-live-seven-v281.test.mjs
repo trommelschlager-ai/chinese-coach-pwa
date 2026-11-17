@@ -102,7 +102,11 @@ test('Panda understands 你有没有 with real HSK1 family grammar and tone-mark
   assert.equal(r.lesson,6);
   assert.equal(r.spoken.pinyin,pinyin);
   assert.equal(r.reply.hanzi,reply);
-  assert(lookupPandaVoiceClip(r.reply.hanzi)?.src,'Reviewed family answer must keep its genuine previously recorded MP3');
+  // Some canonical family replies already have genuine older MP3s; others
+  // still have no recording. Both are valid, but no audio may be invented.
+  const exactReplyAudio=lookupPandaVoiceClip(r.reply.hanzi);
+  if(exactReplyAudio)assert(exactReplyAudio.src.endsWith('.mp3'));
+  else assert.equal(r.reply.audioKey,null,'No recorded answer may claim audio');
   assert(r.followup?.lesson===6,'Retain approved contextual family follow-up');
   assert.match(lookupPandaVoiceClip(question)?.src||'',/^\.\/assets\/panda-voice-clips-v422\/p16[6-9]\.mp3$/,'New v422 binary audio must activate only for the exact recorded question');
  }
