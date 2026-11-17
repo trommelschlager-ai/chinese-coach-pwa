@@ -3,7 +3,7 @@
    License in repository: assets/hanzi-data/ARPHICPL.TXT */
 (()=>{
  'use strict';
- const FIRST4_PREVIEW=new URLSearchParams(window.location.search).get('preview')==='first4-v414';
+ const FIRST4_PREVIEW=['first4-v414','lesson1-v415'].includes(new URLSearchParams(window.location.search).get('preview'));
  const STEPS=16;
  const PROGRESS_KEY=FIRST4_PREVIEW?'pg-hsk1-v414-first4-preview':'pg-hsk1-v189-lesson1';
  const LEGACY_KEY='pg-hsk1-v3-foundations';
@@ -153,7 +153,10 @@
   ()=>intro('Практика · 3/3','Проверь слух','')+listenMarkup(),
   ()=>intro('','Отлично, первые шаги сделаны!','')+`<div class="sheet"><p class="result-title">Ты уже умеешь</p><div class="learning-pairs">${[['我','wǒ','я'],['是','shì','быть'],['学生','xuésheng','студент']].map(([hz,py,ru])=>`<div class="learning-pair"><b class="pair-word">${hz}</b><small>${py}</small><small>${ru}</small></div>`).join('')}</div><div class="rule" style="margin-top:15px"><b>我是学生。</b><div class="mini-desc">Я студент.</div></div><div class="pg-lesson-complete-actions"><button type="button" class="pg-end-repeat" id="repeat-course">↻ Повторить урок</button><a class="pg-end-next" href="./hsk1-second-v203.html">Следующий урок →</a><a class="pg-end-back" href="./hsk1-map.html">Назад к Урокам</a></div></div>`
  ];
- // v414 preview only: four opening screens; the normal 16-screen course is unchanged.
+ // v414 approved opening (screens 1–4). v415 extends the same opt-in preview
+ // to the full 16-screen path. Main lesson remains unchanged.
+ const LEGACY_WRITING_VIEW=views[3];
+ const LEGACY_SPEECH_VIEW=views[13];
  if(FIRST4_PREVIEW)views.splice(0,4,
   ()=>intro('Знакомство · 1/4','Давай познакомимся!','')+
     '<div class="sheet pg-v414-hero"><span class="pg-v414-label">ПЕРВОЕ ПРИВЕТСТВИЕ</span>'+
@@ -175,6 +178,71 @@
     '<div class="pg-v414-bubble"><strong lang="zh-Hans">你好！</strong><div class="pg-v414-py">nǐ hǎo</div>'+
     '<div class="pg-v414-meaning">Привет!</div><button type="button" data-say="你好！" data-role="male">▶ Слушать</button></div></div>'+
     '<p class="pg-v414-last-note">Повтори за каждым собеседником. Остальные экраны будут обновлены после согласования первых четырёх.</p></div>'
+ );
+
+ // v415 preview screens 5–16: tones, first sentences, practice and result.
+ // Reuse the existing licensed voice mappings, sentence verification, recorder,
+ // listening test and Hao stroke animation without changing the live HSK1 path.
+ if(FIRST4_PREVIEW)views.splice(4,12,
+  ()=>intro('Звуки и тоны · 1/2','Четыре тона','Слушай и повторяй. Тон меняет значение слова.')+
+    '<div class="sheet pg-v415-tones"><div class="tone-list">'+toneCards()+'</div>'+
+    '<p class="pg-v415-smallnote">🎧 Нажимай «Слушать» под каждым тоном и повторяй вслух.</p></div>',
+  ()=>intro('Звуки и тоны · 2/2','Как звучит 你好?','')+
+    '<div class="sheet pg-v415-sandhi"><span class="pg-v414-label">ДВА ТРЕТЬИХ ТОНА</span>'+
+    '<strong class="big-hanzi" lang="zh-Hans">你好</strong>'+
+    '<div class="pg-v415-sandhi-pair"><div><small>Пишем</small><strong>nǐ hǎo</strong></div>'+
+    '<div><small>Произносим</small><strong>ní hǎo</strong></div></div>'+
+    '<p class="pg-v415-explain">Когда подряд идут два третьих тона, первый обычно произносится как второй. В пиньине по-прежнему пишем <b>nǐ hǎo</b>.</p>'+
+    playBtn('你好','Послушать и повторить')+'</div>',
+  ()=>intro('Первые слова · 1/3','Слово: 我','')+
+    word('我','wǒ','я','<p class="pg-v414-word-foot">Скажи вслух трижды: <b lang="zh-Hans">我</b> — wǒ.</p>'),
+  ()=>intro('Первые слова · 2/3','Слово: 是','')+
+    word('是','shì','быть, являться','<p class="pg-v414-word-foot"><b>是</b> связывает человека с профессией или ролью.</p>'),
+  ()=>intro('Первые слова · 3/3','Слово: 学生','')+
+    word('学生','xuésheng','ученик, студент',
+      '<details class="word-structure"><summary>Из чего состоит 学生?</summary>'+
+      '<div class="word-breakdown"><span><b lang="zh-Hans">学</b><small>учиться</small></span>'+
+      '<span><b lang="zh-Hans">生</b><small>жизнь, рождаться</small></span></div>'+
+      '<p>В слове 学生 второй слог обычно нейтральный: xuésheng.</p></details>'),
+  ()=>intro('Первое правило','Как сказать «Я студент»?','')+
+    '<div class="sheet pg-v415-grammar"><span class="pg-v414-label">ПОРЯДОК СЛОВ</span>'+
+    '<div class="pg-v415-formula" lang="zh-Hans"><span>我</span><i>+</i><span>是</span><i>+</i><span>学生</span></div>'+
+    '<p class="pinyin">Wǒ shì xuésheng.</p><p class="translation">Я студент.</p>'+
+    playBtn('我是学生','Слушать предложение')+
+    '<details class="word-structure"><summary>Почему здесь используется 是?</summary>'+
+    '<p>В предложении «Я студент» слово 是 связывает человека с тем, кем он является: 我 + 是 + 学生.</p>'+
+    '<p>Но 是 не ставится перед любым прилагательным: например, «я занят» по-китайски строится иначе.</p></details></div>',
+  ()=>intro('Практика · 1/3','Собери предложение','')+buildMarkup(),
+  ()=>intro('Разговор по-китайски','Разговор из знакомых слов','')+dialogue(),
+  ()=>intro('Практика · 2/3','Проверь слух','')+listenMarkup(),
+  ()=>intro('Практика · 3/3','Скажи сам','')+
+    '<div class="pg-v415-record">'+
+    '<div class="sheet"><strong class="big-hanzi pg-v415-phrase" lang="zh-Hans">我是学生。</strong>'+
+    '<p class="pinyin">Wǒ shì xuésheng.</p><p class="translation">Я студент.</p>'+
+    playBtn('我是学生','Слушать образец')+
+    '<div class="recorder"><button type="button" id="record-start">🎙 Записать себя</button>'+
+    '<button type="button" id="record-stop" hidden>■ Стоп</button>'+
+    '<button type="button" id="record-listen" '+(recordUrl?'':'hidden')+'>▶ Мой голос</button></div>'+
+    '<p class="pg-v415-smallnote">Сравни свою запись с образцом. Тоны автоматически не оцениваются.</p>'+
+    '<span class="sr-only" id="record-status" role="status"></span></div></div>',
+  ()=>intro('Первые иероглифы','Как пишется 好?','')+
+    '<p class="pg-v415-smallnote">Смотри последовательность шести черт.</p>'+
+    LEGACY_WRITING_VIEW().replace(/^[\s\S]*?(?=<div class="sheet">)/,'')+
+    (window.PANDA_HSK1_LESSON1_EXTRAS_V295?.catalogMarkup?.()||'').replace('<details class="sheet pg-all-radicals" open>','<details class="sheet pg-all-radicals">'),
+  ()=>intro('','Отлично, урок пройден!','')+
+    '<div class="sheet pg-v415-finish"><div class="pg-v415-success">✓</div>'+
+    '<p class="result-title">Ты уже умеешь</p>'+
+    '<div class="pg-v415-success-list">'+
+    '<div><span>✓</span> Приветствовать: <b lang="zh-Hans">你好</b></div>'+
+    '<div><span>✓</span> Понимать <b lang="zh-Hans">我、你、是、学生</b></div>'+
+    '<div><span>✓</span> Сказать: <b lang="zh-Hans">我是学生。</b></div>'+
+    '<div><span>✓</span> Различать четыре тона</div>'+
+    '<div><span>✓</span> Увидеть порядок черт <b lang="zh-Hans">好</b></div></div>'+
+    '<p class="pg-v415-smallnote">Это тестовый просмотр. Прогресс основного курса не меняется.</p>'+
+    '<div class="pg-lesson-complete-actions">'+
+    '<button type="button" class="pg-end-repeat" id="repeat-course">↻ Повторить урок</button>'+
+    '<a class="pg-end-back" href="./hsk1-map.html">Вернуться к карте</a>'+
+    '</div></div>'
  );
  function save(){try{localStorage.setItem(PROGRESS_KEY,JSON.stringify({step,order,verified,listenPassed,listenTarget,listenSelected,lessonVersion:295,updatedAt:Date.now()}))}catch{}}
  function markComplete(){
@@ -324,8 +392,8 @@
  }
  function stopRecord(){if(recorder&&recorder.state==='recording')recorder.stop();stream?.getTracks()?.forEach(t=>t.stop());stream=null;recording=false}
  function cleanupRecord(){recordEpoch++;stopRecord();if(recordUrl){URL.revokeObjectURL(recordUrl);recordUrl=null}}
- function render(){stopSound();counter.textContent=String(step+1).padStart(2,'0')+' / '+STEPS;progress.setAttribute('aria-valuenow',String(step+1));fill.style.width=(100*(step+1)/STEPS)+'%';area.innerHTML=views[step]();area.scrollTop=0;prev.disabled=step===0;next.hidden=step===STEPS-1||(FIRST4_PREVIEW&&step===3);next.textContent=step===STEPS-2?'Завершить урок ✓':step===3?'К первым словам →':'Дальше →';next.disabled=(step===9&&!verified)||(step===14&&!!listenTarget&&!listenPassed);if(step===STEPS-1){markComplete();prev.textContent='← Назад'}save()}
- function advance(){if(FIRST4_PREVIEW&&step>=3)return;if(step===9&&!verified)return;if(step===14&&listenTarget&&!listenPassed)return;if(step<STEPS-1){if(step===13)stopRecord();step++;render()}}
+ function render(){stopSound();counter.textContent=String(step+1).padStart(2,'0')+' / '+STEPS;progress.setAttribute('aria-valuenow',String(step+1));fill.style.width=(100*(step+1)/STEPS)+'%';area.innerHTML=views[step]();area.scrollTop=0;prev.disabled=step===0;next.hidden=step===STEPS-1;next.textContent=step===STEPS-2?'Завершить урок ✓':!FIRST4_PREVIEW&&step===3?'К первым словам →':'Дальше →';next.disabled=FIRST4_PREVIEW?((step===10&&!verified)||(step===12&&!!listenTarget&&!listenPassed)):((step===9&&!verified)||(step===14&&!!listenTarget&&!listenPassed));if(step===STEPS-1){if(!FIRST4_PREVIEW)markComplete();prev.textContent='← Назад'}save()}
+ function advance(){if(FIRST4_PREVIEW){if((step===10&&!verified)||(step===12&&listenTarget&&!listenPassed))return}else{if(step===9&&!verified)return;if(step===14&&listenTarget&&!listenPassed)return}if(step<STEPS-1){if(step===13)stopRecord();step++;render()}}
  prev.addEventListener('click',()=>{if(step>0){if(step===13)stopRecord();step--;render()}});
  next.addEventListener('click',advance);
  area.addEventListener('click',async e=>{
