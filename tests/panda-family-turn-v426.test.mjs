@@ -132,3 +132,39 @@ test('Android-like Non-Stop third turn replies and asks a new, voiced family que
   assert(f.clips.at(-1)?.src.includes('p098.mp3'),'Must use existing exact sister question MP3');
  } finally {f.close();}
 });
+
+
+test('Android autoplay rejection pauses Non-Stop until user replays the missed Panda MP3',async()=>{
+ const f=await liveDOM(1,{completed:['family','weekdays']});
+ const AudioCtor=globalThis.Audio,originalPlay=AudioCtor.prototype.play;
+ let rejectOnce=true;
+ AudioCtor.prototype.play=function(){
+  if(rejectOnce&&this.src.includes('/p125.mp3')){
+   rejectOnce=false;return Promise.reject(Object.assign(new Error('autoplay denied'),{name:'NotAllowedError'}));
+  }
+  return originalPlay.call(this);
+ };
+ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+ try{
+  f.el('mode-nonstop').click();
+  f.send('你有妹妹吗？');
+  if(typeof f.clips.at(-1)?.onended==='function')f.clips.at(-1).onended();
+  await pause(4950);
+  assert.equal(f.el('phrase').textContent,'你有哥哥吗？');
+  if(typeof f.clips.at(-1)?.onended==='function')f.clips.at(-1).onended();
+  f.send('我没有哥哥。');
+  await pause(20);
+  assert.equal(f.el('phrase').textContent,'好的，我明白了。');
+  assert.match(f.el('status').textContent,/Браузер не включил звук/);
+  await pause(4950);
+  assert.equal(f.el('phrase').textContent,'好的，我明白了。','Never silently skip a Panda reply that did not play');
+  f.w.PandaApprovedBridge337.playEntry({hanzi:'好的，我明白了。'});
+  assert(f.clips.at(-1)?.src.includes('/p125.mp3'));
+  if(typeof f.clips.at(-1)?.onended==='function')f.clips.at(-1).onended();
+  await pause(4950);
+  assert.equal(f.el('phrase').textContent,'你有姐姐吗？');
+ }finally{
+  AudioCtor.prototype.play=originalPlay;
+  f.close();
+ }
+});
