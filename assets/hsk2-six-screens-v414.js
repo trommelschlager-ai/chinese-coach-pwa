@@ -42,7 +42,7 @@ function wordBody(state,ctx){
  return '<section class="pg414-panel pg414-words"><h2>☀️ '+(state.mini===0?'Начало дня':esc(m.name))+'</h2>'+
  list.map((w,i)=>{
   const emoji=state.mini===0?icons[i]:['💼','🕔','🍽️','🌇','🌙','📘','⏰'][i%7];
-  return '<div class="pg414-vocab-row day-vword" data-idx="'+i+'"><span class="pg414-number">'+(i+1)+'</span>'+
+  return '<div class="pg414-vocab-row" data-idx="'+i+'"><span class="pg414-number">'+(i+1)+'</span>'+
   '<span class="pg414-vocab-art" aria-hidden="true">'+emoji+'</span>'+
   '<span class="pg414-word-main"><strong lang="zh-Hans">'+esc(w.zh)+'</strong></span>'+
   '<span class="pg414-vocab-meta">'+pinyin(null,w.py,state)+'<span>'+esc(w.ru)+'</span></span>'+
