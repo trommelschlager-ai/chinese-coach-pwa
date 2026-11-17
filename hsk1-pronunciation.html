@@ -69,5 +69,13 @@
   </dialog>
 </main>
 <script src="./assets/hsk1-pronunciation-v244.js?v=250" defer></script>
+<script>
+// Reuse the HSK1 control component only inside the lesson's embedded trainer.
+if(document.documentElement.classList.contains('pg-embedded-pronunciation')){
+ document.body.dataset.pgHsk1='embedded';
+ const pinkStyle=document.createElement('link');pinkStyle.rel='stylesheet';pinkStyle.href='./assets/hsk1-pink-controls-v437.css?v=437';document.head.append(pinkStyle);
+ const pinkPress=document.createElement('script');pinkPress.src='./assets/hsk1-press-v437.js?v=437';document.body.append(pinkPress);
+}
+</script>
 </body>
 </html>

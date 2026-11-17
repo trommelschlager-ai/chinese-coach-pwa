@@ -1,0 +1,10 @@
+/* Whole original-art surfaces; the background SVG has matching cutouts.
+   No copy remains underneath a moving card. Gate badges move with their parent. */
+.artboard{background:#451255}
+.hotspots a{overflow:visible;isolation:isolate;transform:none;translate:0 0;filter:none;box-shadow:none;transition:translate 100ms ease,filter 100ms ease;touch-action:manipulation}
+.hotspots a::before,.hotspots a::after{content:none!important;display:none!important}
+.map-button-art{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;filter:contrast(1.075) saturate(1.055) brightness(1.01)}
+.hotspots a:is(:active,.pg-is-pressed){transform:none!important;translate:0 2px!important;filter:brightness(.9)!important;box-shadow:none!important}
+.hotspots a .gate{pointer-events:none}
+.hotspots a:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.hotspots a{transition:none}}

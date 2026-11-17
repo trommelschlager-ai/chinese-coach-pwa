@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#f7edfd">
+<meta name="description" content="Panda Go — чёткие китайские слоги и тоны с прослушиванием и повторением.">
+<title>Тренажёр произношения — Panda Go</title>
+<link rel="stylesheet" href="./assets/hsk1-pronunciation-v244.css?v=244">
+<script>if(new URLSearchParams(location.search).get('embedded')==='1')document.documentElement.classList.add('pg-embedded-pronunciation');</script>
+<style>
+.pg-embedded-pronunciation .topbar,.pg-embedded-pronunciation .footer{display:none!important}
+.pg-embedded-pronunciation .coach{height:100dvh;max-height:100dvh;width:100%;box-shadow:none;border-radius:0}
+.pg-embedded-pronunciation .sections{margin:5px 6px 8px}
+.pg-embedded-pronunciation .trainer-view{padding:0 7px 9px}
+</style>
+</head>
+<body>
+<main class="coach" id="pronunciation-app" data-mode="combos">
+  <header class="topbar">
+    <a class="back" href="./hsk1-map.html" aria-label="Назад к карте уроков">‹</a>
+    <span class="logo-panda" aria-hidden="true"></span>
+    <div class="header-title"><strong>Panda <em>Go</em></strong><small>Тренажёр произношения</small></div>
+    <span class="level">HSK 1</span>
+  </header>
+  <nav class="sections" aria-label="Разделы тренажёра">
+    <button class="section active" data-mode="combos" type="button" aria-pressed="true">Сочетания</button>
+    <button class="section" data-mode="syllables" type="button" aria-pressed="false">Слоги</button>
+    <button class="section" data-mode="tones" type="button" aria-pressed="false">Тоны</button>
+  </nav>
+  <div id="trainer-content" class="trainer-view" aria-live="polite">
+    <p class="loading" role="status">Загружаем звуки…</p>
+  </div>
+  <footer class="footer">
+    <div class="practice-progress" aria-label="Прослушанные записи">
+      <div id="pr-ring" class="progress-ring"><b id="pr-percent">0%</b></div>
+      <span class="progress-label">Прослушано<small id="pr-progress">0 из 203</small></span>
+      <span class="meter" aria-hidden="true"><i id="pr-fill"></i></span>
+    </div>
+    <button class="footer-next" type="button" id="footer-next">🎙 Тренироваться</button>
+  </footer>
+  <dialog class="practice-dialog" id="practice-dialog" aria-labelledby="practice-title">
+    <div class="practice-head">
+      <div><small>🎧 СЛУШАЙ И ПОВТОРЯЙ</small><h2 id="practice-title">Тренировка звука</h2></div>
+      <button class="close-practice" id="practice-close" type="button" aria-label="Закрыть тренировку">✕</button>
+    </div>
+    <div class="practice-target">
+      <strong id="practice-pinyin">zì</strong>
+      <span id="practice-hanzi" lang="zh-Hans">字</span>
+      <small id="practice-translation">иероглиф</small>
+      <button class="practice-sound" id="practice-play" data-combo="zi" type="button">▶ Послушать</button>
+    </div>
+    <div class="voice-settings" aria-label="Выбор голоса диктора">
+      <span>Голос диктора</span>
+      <div class="voice-options" role="group" aria-label="Голос для всех примеров">
+        <label><input type="radio" name="narrator" value="female" checked><span>Женский</span></label>
+        <label><input type="radio" name="narrator" value="male"><span>Мужской</span></label>
+      </div>
+    </div>
+    <p class="practice-explanation">Слушай запись, повторяй и сравнивай. Тоны автоматически не оцениваются.</p>
+    <div class="record-controls">
+      <button class="rec-btn" type="button" id="record-start">● Записать</button>
+      <button class="rec-btn secondary" type="button" id="record-stop" disabled>■ Стоп</button>
+      <button class="rec-btn secondary" type="button" id="record-replay" disabled>▶ Мой голос</button>
+    </div>
+    <p class="feedback" id="rec-feedback" role="status">Запись остаётся на твоём устройстве.</p>
+    <button class="practice-next" type="button" id="practice-next">Следующий звук →</button>
+    <p class="license-note">Используются тестовые синтезированные записи. Перед коммерческим выпуском требуется лицензия. Для bái пока сохранён прежний голос: в доступных полных наборах нет этого слога.</p>
+  </dialog>
+</main>
+<script src="./assets/hsk1-pronunciation-v244.js?v=250" defer></script>
+</body>
+</html>

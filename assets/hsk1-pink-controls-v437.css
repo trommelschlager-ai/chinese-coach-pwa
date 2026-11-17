@@ -1,0 +1,42 @@
+/* HSK1 only. Source: lesson 5 .primary in panda-go-approved-lessons-v231.css.
+   An important layer supersedes historical unlayered !important overrides.
+   Padding, font sizes, grid, widths and heights remain owned by each lesson. */
+@layer hsk1-pink-controls {
+ [data-pg-hsk1] .pg-hsk1-pink {
+  --pg-button-face:linear-gradient(#ff86d2,#f550b0 65%,#ec40a5);
+  --pg-button-ink:#fff;
+  background:var(--pg-button-face)!important;
+  border-color:#ffafe0!important;
+  border-radius:19px!important;
+  color:var(--pg-button-ink)!important;
+  text-shadow:0 1px 1px #b93d91!important;
+  box-shadow:0 3px 4px #de79c174,inset 0 1px 2px #ffebff!important;
+  transform:none!important;translate:0 0!important;filter:none!important;
+  transition:translate 100ms ease,filter 100ms ease,box-shadow 100ms ease!important;
+  -webkit-tap-highlight-color:transparent!important;
+  touch-action:manipulation!important;
+ }
+ [data-pg-hsk1] :is(.footer,.pg-footer,.pg3-footer) .pg-hsk1-pink {border-radius:25px!important}
+ [data-pg-hsk1] .pg-hsk1-pink.pg-hsk1-round {border-radius:50%!important}
+ [data-pg-hsk1] .pg-hsk1-pink :is(strong,small,span,.py,.ru,.pinyin,.hz,.hanzi) {color:inherit!important;text-shadow:inherit!important}
+ [data-pg-hsk1] .pg-hsk1-pink :is(img,svg) {filter:none!important}
+ [data-pg-hsk1] .pg-hsk1-pink:is(.correct,.good,.success,[data-result="correct"]) {
+  --pg-button-face:linear-gradient(#a6edab,#4ebd72 65%,#2c9850);border-color:#75d58b!important;
+ }
+ [data-pg-hsk1] .pg-hsk1-pink:is(.wrong,.incorrect,.bad,.error,[data-result="wrong"]) {
+  --pg-button-face:linear-gradient(#ffacb6,#ed5b72 65%,#ce354e);border-color:#f49aa8!important;
+ }
+ [data-pg-hsk1] .pg-hsk1-pink:is(.selected,.chosen,[aria-pressed="true"]) {outline:2px solid #a71979!important;outline-offset:2px!important}
+ [data-pg-hsk1] .pg-hsk1-pink:not(:disabled):not([aria-disabled="true"]):is(:active,.pg-is-pressed) {
+  translate:0 2px!important;transform:none!important;filter:brightness(.9)!important;
+  box-shadow:0 1px 2px #b93d914a,inset 0 2px 5px #8c24544d,inset 0 -1px 1px #ffb4e533!important;
+ }
+ [data-pg-hsk1] .pg-hsk1-pink:is(:disabled,[aria-disabled="true"]) {
+  opacity:.42!important;cursor:not-allowed!important;translate:0 0!important;transform:none!important;
+  filter:saturate(.45)!important;box-shadow:0 1px 2px #b78ccc38,inset 0 1px 1px #fff8!important;
+ }
+ [data-pg-hsk1] .pg-hsk1-pink:focus-visible {outline:3px solid #8d237c!important;outline-offset:3px!important}
+ @media(prefers-reduced-motion:reduce) {
+  [data-pg-hsk1] .pg-hsk1-pink {transition:none!important}
+ }
+}
