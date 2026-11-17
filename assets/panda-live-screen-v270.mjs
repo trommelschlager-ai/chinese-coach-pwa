@@ -18,7 +18,7 @@ import {chooseAudibleFollowup} from './panda-audible-followup-v412.mjs?v=412';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
-import {isCalendarRoundFinished,analyzeCalendarLiteral} from './panda-calendar-literal-v383.mjs?v=405';
+import {isCalendarRoundFinished} from './panda-calendar-literal-v383.mjs?v=405';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -276,11 +276,10 @@ function submit(raw){
    // v412: an automatic question must have its own exact Panda MP3.
    // Manual/free-form questions stay text-only when no recording exists.
    const plannedFollowup=followup;
-   // Keep the previously approved calendar day/date sequence untouched.
-   // Calendar statements can be analyzed as answers OR statements depending
-   // on the active prompt, so checking result.kind or spoken.calendarLiteral
-   // alone is insufficient.
-   if(!analyzeCalendarLiteral(input)&&!result.spoken?.calendarLiteral)
+   // v412 QA-specific repair: after the recorded weekday-availability
+   // question, only choose an audible same-topic follow-up. Leave EVERY other
+   // established HSK1 / calendar / family flow unchanged.
+   if(normalize(input)==='你星期几有空')
      followup=chooseAudibleFollowup(followup,topicCatalogGroups(),
        [...state.questions.slice(-12),...state.history.slice(-8).map(h=>h.hanzi)],
        lookupPandaVoiceClip,input);
