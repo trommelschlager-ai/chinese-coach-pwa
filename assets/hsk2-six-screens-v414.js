@@ -91,7 +91,7 @@ function speechBody(state,ctx){
 }
 function question(ordinal,title,body){return '<div class="pg414-question day-question"><h3><span>'+ordinal+'</span>'+title+'</h3>'+body+'</div>'}
 function choiceButtons(options,sel,correct,key){
- return '<div class="pg414-choices">'+options.map((x,i)=>'<button type="button" data-day-'+key+'="'+i+'" class="'+(sel===i?(i===correct?'correct':'wrong'):'')+'">'+String.fromCharCode(65+i)+'. '+esc(x)+(sel===i?(i===correct?' ✓':' ×'):'')+'</button>').join('')+'</div>';
+ return '<div class="pg414-choices">'+options.map((x,i)=>'<button type="button" data-day-'+(key.startsWith('quiz-')?'quiz':key)+'="'+(key.startsWith('quiz-')?key.slice(-1)+':'+i:i)+'" class="'+(sel===i?(i===correct?'correct':'wrong'):'')+'">'+String.fromCharCode(65+i)+'. '+esc(x)+(sel===i?(i===correct?' ✓':' ×'):'')+'</button>').join('')+'</div>';
 }
 function testBody(state,ctx){
  const m=data(state),d=state.day,x=extra(state),sc=schemes[state.mini];
@@ -183,8 +183,7 @@ function handle(button,state,api){
  if(key.daySpeechMic!==undefined){cancel();d.speechWord=Number(key.daySpeechMic);if(!d.permission){d.showConsent=true;api.render()}else recognize(state,api.render);return true}
  if(key.dayConsent!==undefined){d.permission=true;d.showConsent=false;recognize(state,api.render);return true}
  if(key.dayCancelConsent!==undefined){d.showConsent=false;api.render();return true}
- if(key.dayQuiz0!==undefined){d.quiz[0]=Number(key.dayQuiz0);api.render();return true}
- if(key.dayQuiz1!==undefined){d.quiz[1]=Number(key.dayQuiz1);api.render();return true}
+ if(key.dayQuiz!==undefined){const [q,a]=key.dayQuiz.split(':').map(Number);d.quiz[q]=a;api.render();return true}
  if(key.dayPairLeft!==undefined){e.pairLeft=Number(key.dayPairLeft);e.wrongPair=false;api.render();return true}
  if(key.dayPairRight!==undefined){
   const choice=Number(key.dayPairRight);
