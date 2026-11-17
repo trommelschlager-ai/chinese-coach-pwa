@@ -42,12 +42,13 @@ export function reviewedYouYouMeiyou(raw,{allowed=[1],prompt=null}={}){
      (prefix?translated.charAt(0).toLowerCase()+translated.slice(1):translated);
    const spoken={known:true,hanzi:original,pinyin:pinyin.replace(/^w/,'W'),translation:meaning,topic:6,
      matchedPrompt:!!asked&&!different,family:{present:absent?[]:[relative],absent:absent?relative:null}};
-   const relationLabel={哥哥:'старшего брата',姐姐:'старшей сестры',弟弟:'младшего брата',妹妹:'младшей сестры'};
+   const relationGenitive={哥哥:'старшего брата',姐姐:'старшей сестры',弟弟:'младшего брата',妹妹:'младшей сестры'};
+   const relationAbout={哥哥:'старшем брате',姐姐:'старшей сестре',弟弟:'младшем брате',妹妹:'младшей сестре'};
    if(promptAge&&(different||!absent))return {kind:'clarify',lesson:6,spoken,followup:null,
-     message:'Ты правильно рассказал о '+relationLabel[relative]+
-       ', но Панда спрашивала о возрасте '+relationLabel[asked]+'. Ответь, сколько ему или ей лет.'};
+     message:'Ты правильно рассказал о '+relationAbout[relative]+
+       ', но Панда спрашивала о возрасте '+relationGenitive[asked]+'. Ответь, сколько ему или ей лет.'};
    if(different)return {kind:'clarify',lesson:6,spoken,followup:null,
-     message:'Ты правильно рассказал о '+relationLabel[relative]+
+     message:'Ты правильно рассказал о '+relationAbout[relative]+
        ', но Панда спрашивала о другом родственнике: '+asked+'. Ответь на вопрос о нём.'};
    return {kind:asked?'answer':'statement',lesson:6,spoken,
      reply:sample('明白了。','Míngbai le.','Понятно.'),
