@@ -17,7 +17,7 @@ test('approved Panda UI exposes real permission and recovery controls only after
  assert(styles.includes('#pg407-mic-help #speech-recovery.speech-recovery'));
  assert(styles.includes('min-height:44px'),'Diagnostic buttons are touch-sized');
  assert(html.includes('panda-mic-help-v407.css?v=407'));
- assert(html.includes('panda-live-v346.mjs?v=407'));
+ assert(html.includes('panda-live-v346.mjs?v=419'));
 });
 
 test('speech failure keeps the learner transcript fallback and provides a direct Chrome route',async()=>{
