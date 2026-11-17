@@ -209,9 +209,12 @@ test('Panda does not echo a learner\'s sibling age question immediately after an
  assert.equal(r.kind,'question');
  assert.equal(r.reply.hanzi,'我哥哥五岁。');
  assert.equal(r.reply.ru,'Моему старшему брату 5 лет.');
- assert.equal(r.followup,null,'No automatic identical question back to learner');
+ assert(r.followup?.lesson===6,'Non-Stop must continue with a reviewed family prompt');
+ assert.notEqual(r.followup?.hanzi,'你哥哥几岁？','Do not immediately echo the age question');
+ assert(r.followup?.verifiedLines?.[1]?.accepted,'Next family question must accept tested answers');
  const alternative=answerLive('你妹妹几岁？',options);
- assert.equal(alternative.followup,null,'Same anti-echo rule for younger sister');
+ assert(alternative.followup?.lesson===6,'Continue another family prompt after asking younger-sister age');
+ assert.notEqual(alternative.followup?.hanzi,'你妹妹几岁？','No duplicate younger-sister age question');
  assert.equal(alternative.reply.ru,'Моей младшей сестре 1 год.');
  const noRepeated=answerLive('你有哥哥吗？',options);
  assert(!noRepeated.followup||noRepeated.followup.hanzi!=='你有哥哥吗？','No verbatim echo of a family question');
