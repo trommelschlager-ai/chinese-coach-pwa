@@ -285,8 +285,12 @@ if (!bridge) {
       el('p','pg445-after','💡 Пример ответа: '+wrong.hanzi)
     );
     if(wrong.pinyin)root.append(el('p','pg445-pinyin',wrong.pinyin));
+    // The actual verified rule must be visible without tapping "Подробнее".
+    // A technical title alone is not an explanation for a learner.
+    const why=String(wrong.why||'').trim();
+    const firstSentence=why.match(/^.*?[.!?](?:\s|$)/u)?.[0]?.trim()||why;
     const shortRule=meaningOnly?'要 (yào) — хотеть; 有 (yǒu) — иметь.':
-      wrong.title||'Смотри правило и попробуй ещё раз.';
+      firstSentence?'Почему: '+firstSentence:(wrong.title||'Правило требует уточнения.');
     root.append(el('p','pg445-brief',shortRule));
     const details=document.createElement('details');details.className='pg445-details';
     const trigger=document.createElement('summary');trigger.textContent='Подробнее — объяснение и перевод';
