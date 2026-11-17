@@ -25,7 +25,7 @@ export function lookupPandaVoiceClip(phrase){
  // v426: these exact Nov 14 user-provided cuts are already in PANDA_CLIPS,
  // but the conversation must work before the optional browser voice index loads.
  // Explicit allowlist only; never infer audio for other Chinese sentences.
- if(['好的我明白了','谢谢你告诉我','你有姐姐吗','你有弟弟吗','你家有几口人'].includes(key)){
+ if(['好的我明白了','谢谢你告诉我','你有姐姐吗','你有弟弟吗','你哥哥几岁','你妹妹几岁','你家有几口人'].includes(key)){
   const cut=PANDA_CLIPS.find(item=>voiceNorm(item.zh)===key);
   if(cut&&/^\.\/assets\/panda-voice-clips-v365\/p\d{3}\.mp3$/.test(cut.src))
    return {src:cut.src,start:0,end:null,source:'user-luvvoice-nov14-cut'};
