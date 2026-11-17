@@ -4,3 +4,12 @@
 #pg346 .pg346-feedback .pg377-pinyin {font-style:italic;color:#62438f}
 #pg346 .pg346-feedback .pg377-meaning {font-weight:650}
 #pg346 .pg346-feedback .pg377-explanation {font-size:0.94em}
+
+/* v441: the lesson feedback distinguishes a meaningful but off-topic answer
+ * from a grammatical mistake; only the feedback card is styled here. */
+#pg346 .pg441-title{font-weight:850;color:#4b2375;font-size:clamp(12px,3vw,16px)}
+#pg346 .pg441-alternative{font-weight:700;color:#593b77}
+#pg346 .pg441-label{font-weight:700;color:#4d2e6c}
+#pg346 .pg441-retry{padding:7px 9px;border-radius:10px;background:#f0e1fa;font-weight:700;color:#5b2982}
+#pg346 .pg441-uncertain{font-size:12px;color:#855500}
+#pg346 .pg346-feedback{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
