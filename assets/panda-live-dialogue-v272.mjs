@@ -458,7 +458,7 @@ export function answerLive(raw,options={}){
  // Family HSK1: 我哥哥五岁 is an *implicit yes* to 你有哥哥吗.
  // Accept the useful answer, speak the existing exact 明白了 MP3 (p175),
  // and do not leave the old question looping forever.
- const familyAge=/^我(哥哥|姐姐|弟弟|妹妹)([一二三四五六七八九十两\\d]+)岁$/.exec(s);
+ const familyAge=/^我(哥哥|姐姐|弟弟|妹妹)([一二三四五六七八九十两0-9]+)岁$/.exec(s);
  const askedFamily=/^你(?:有(哥哥|姐姐|弟弟|妹妹)吗|有没有(哥哥|姐姐|弟弟|妹妹))$/
    .exec(normalize(prompt?.hanzi||prompt?.panda||''));
  const age=familyAge?parseNumber(familyAge[2]):null;
