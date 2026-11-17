@@ -20,7 +20,7 @@ try{
  assert.equal(await page.locator('#day-fixed-actions [data-day-next]').count(),1);
  await page.screenshot({path:'qa/panda-voice-pilot/hsk2-day-lesson-android.png',fullPage:false});
  await page.locator('[data-day-next]').click(); // rule
- assert.equal(await page.locator('.pg414-rule').count(),1);
+ assert.equal(await page.locator('.pg415-step-1,.pg414-rule').count(),1);
  await page.locator('[data-day-next]').click(); // speech
  assert.equal(await page.locator('.pg414-speech-row').count(),7);
  await page.locator('[data-day-next]').click(); // seven-question test
