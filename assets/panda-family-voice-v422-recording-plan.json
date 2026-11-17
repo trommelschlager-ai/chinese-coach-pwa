@@ -1,7 +1,7 @@
 {
   "schema": "panda-go-voice-recording-plan-v1",
   "batch": "family-voice-v422",
-  "status": "AWAITING_USER_APPROVED_VOICE_RECORDING",
+  "status": "ALL_16_BINARY_MP3_SHA_VERIFIED_IN_STAGING",
   "generated_at": "2026-11-17",
   "source_branch": "audio/panda-voice-v411-staging",
   "intended_voice": "Existing approved Panda Mandarin Luvvoice voice only",
@@ -16,112 +16,131 @@
       "hanzi": "你有没有妹妹？",
       "pinyin": "Nǐ yǒu méiyǒu mèimei?",
       "ru": "У тебя есть младшая сестра?",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "f5da8ee7ae32805a390b5f9d7f7ef2864fb24bee36c55aa17e12d15de1e4f6bd"
     },
     {
       "file": "p167.mp3",
       "hanzi": "你有没有哥哥？",
       "pinyin": "Nǐ yǒu méiyǒu gēge?",
       "ru": "У тебя есть старший брат?",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "f675ec5fef56ce6e3ed20499ab4c278c319f80d4bcb10f25a53edbbfb6fe0449"
     },
     {
       "file": "p168.mp3",
       "hanzi": "你有没有姐姐？",
       "pinyin": "Nǐ yǒu méiyǒu jiějie?",
       "ru": "У тебя есть старшая сестра?",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "788df281aa3720686d7cda8c1737610b114ca1bc9e75e192e8d1aa49dcfdcdd7"
     },
     {
       "file": "p169.mp3",
       "hanzi": "你有没有弟弟？",
       "pinyin": "Nǐ yǒu méiyǒu dìdi?",
       "ru": "У тебя есть младший брат?",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "ecbd4d728912d57c28902ba731ae1efbaf197a7b328313fec6a04481d9f0be61"
     },
     {
       "file": "p170.mp3",
       "hanzi": "有，我有一个妹妹。",
       "pinyin": "Yǒu, wǒ yǒu yí ge mèimei.",
       "ru": "Да, у меня есть младшая сестра.",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "4f3ceffeb6e2317546da1a6b69cefc1d3d60edd92719321d72e283b4e0560beb"
     },
     {
       "file": "p171.mp3",
       "hanzi": "没有，我没有妹妹。",
       "pinyin": "Méiyǒu, wǒ méiyǒu mèimei.",
       "ru": "Нет, у меня нет младшей сестры.",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "17e35aec06b52ede6659cdbd2a9fa6cffd64eac7218f243c30031a3f9937d02a"
     },
     {
       "file": "p172.mp3",
       "hanzi": "没有，我没有哥哥。",
       "pinyin": "Méiyǒu, wǒ méiyǒu gēge.",
       "ru": "Нет, у меня нет старшего брата.",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "377bede2a88b7a03889879d5e6e5b570e270979ebd8ef7027153b4037266450c"
     },
     {
       "file": "p173.mp3",
       "hanzi": "我哥哥五岁。",
       "pinyin": "Wǒ gēge wǔ suì.",
       "ru": "Моему старшему брату пять лет.",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "24192ce312616d8b42b53821e94d00b86fc6dcd01fedb93cc08583ef06d9a83b"
     },
     {
       "file": "p174.mp3",
       "hanzi": "我妹妹一岁。",
       "pinyin": "Wǒ mèimei yí suì.",
       "ru": "Моей младшей сестре один год.",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "39c2aa9abe758ab3f3b8c6e9990834fcc51109fa0e59bf2c82f192120f194f2d"
     },
     {
       "file": "p175.mp3",
       "hanzi": "明白了。",
       "pinyin": "Míngbai le.",
       "ru": "Понятно.",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "61e7bc75bbc848d0da07c3e4a6b8e40ade878bf366206696f3bc5130cc13f5bb"
     },
     {
       "file": "p176.mp3",
       "hanzi": "你姐姐几岁？",
       "pinyin": "Nǐ jiějie jǐ suì?",
       "ru": "Сколько лет твоей старшей сестре?",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "357eef9cf9995ed1ebf5e6954734ce817965cbb69904ff412d28121e677db84b"
     },
     {
       "file": "p177.mp3",
       "hanzi": "你弟弟几岁？",
       "pinyin": "Nǐ dìdi jǐ suì?",
       "ru": "Сколько лет твоему младшему брату?",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "bc1878e7e54a38a47d377ba7ccf228190679d64478bcc7026dd4a485243ecefb"
     },
     {
       "file": "p178.mp3",
       "hanzi": "我姐姐五岁。",
       "pinyin": "Wǒ jiějie wǔ suì.",
       "ru": "Моей старшей сестре пять лет.",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "fa3ceae31c59d7b0bdcbbfa0d8d538421493920f88f9c953a612a366c5a46a19"
     },
     {
       "file": "p179.mp3",
       "hanzi": "我弟弟五岁。",
       "pinyin": "Wǒ dìdi wǔ suì.",
       "ru": "Моему младшему брату пять лет.",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "32cfd44f6733bc0f47d42601f73b39e5b8ee5d4c1d60353f11f1988b91ea0102"
     },
     {
       "file": "p180.mp3",
       "hanzi": "你有几个哥哥？",
       "pinyin": "Nǐ yǒu jǐ ge gēge?",
       "ru": "Сколько у тебя старших братьев?",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "88edf27f0d1855b0e8104daf93173d15dae8da22fc37db77f6072d95ab3c28c2"
     },
     {
       "file": "p181.mp3",
       "hanzi": "你有弟弟和妹妹吗？",
       "pinyin": "Nǐ yǒu dìdi hé mèimei ma?",
       "ru": "У тебя есть младший брат и младшая сестра?",
-      "recording_state": "missing"
+      "recording_state": "uploaded_binary_sha256_verified",
+      "sha256": "c7527bb0f9f5e5cb546bb1af6d8bd0a8b6a7b313381b157aa2dfd1bf9fbc55b5"
     }
-  ]
+  ],
+  "verified_folder": "assets/panda-voice-clips-v422/",
+  "verified_commit": "2157621790c839b3607541e088a505dd6c91e96f",
+  "requires_QA_before_PR_merge": true
 }
