@@ -1,0 +1,32 @@
+name: Panda Teacher v441 correction explanations
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/panda-error-coach-v441.mjs'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'assets/panda-live-v346.mjs'
+      - 'assets/panda-chat-corrections-v377.css'
+      - 'tests/panda-error-coach-v441.test.mjs'
+      - 'panda-voice-pilot.html'
+      - '.github/workflows/panda-teacher-v441.yml'
+  pull_request:
+    paths:
+      - 'assets/panda-error-coach-v441.mjs'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'assets/panda-live-v346.mjs'
+      - 'tests/panda-error-coach-v441.test.mjs'
+jobs:
+  contextual-explanations:
+    name: Text meaning, grammar, ASR caution and Android-like retry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install approved existing dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Check ten teaching scenarios and existing MP3 boundary
+        run: node --test tests/panda-error-coach-v441.test.mjs
