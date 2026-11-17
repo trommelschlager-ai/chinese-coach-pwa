@@ -15,6 +15,19 @@ const app=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'u
 assert(html.includes('hsk2-life-welcome-v412.css?v=412'));
 assert(html.includes('hsk2-life-course-app-v1.js?v=439'));
 assert(html.includes('hsk2-responsive-v439.css?v=439'));
+assert(html.includes('hsk2-viewport-v440.css?v=440'),'The final v440 override must load last');
+const v440css=fs.readFileSync(path.join(root,'assets/hsk2-viewport-v440.css'),'utf8');
+const artCover=v440css.match(/width:max\(100%,56\.25dvh\)!important/g)||[];
+assert(artCover.length>=2,'Both approved covers must use proportional fullscreen fitting');
+const aspect=v440css.match(/aspect-ratio:9 \/ 16!important/g)||[];
+assert(aspect.length>=2,'Both approved covers preserve the approved 9:16 image aspect ratio');
+assert(v440css.includes('object-fit:contain!important'),'Never stretch the original bitmap');
+assert(!v440css.includes('object-fit:fill'),'Do not distort panda or approved text');
+assert(v440css.includes('.pg433-edge-sakura'),'Keep decorated learning pages');
+assert(v440css.includes('.pg433-petals span'),'Petal animation must be present');
+assert(v440css.includes('pointer-events:none!important'),'Petals and branches cannot block taps');
+assert(pack.files.includes('./assets/hsk2-viewport-v440.css?v=440'),'The new styles must be available offline');
+
 assert(html.includes('hsk2-storyboard-v439.js?v=439'));
 const v439Css=fs.readFileSync(path.join(root,'assets/hsk2-responsive-v439.css'),'utf8');
 const v439Js=fs.readFileSync(path.join(root,'assets/hsk2-storyboard-v439.js'),'utf8');
