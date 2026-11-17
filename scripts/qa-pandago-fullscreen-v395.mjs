@@ -105,7 +105,7 @@ try{
   assert.equal(await page.locator('#day-fixed-actions [data-day-next]').count(),1,'Real step navigation preserved');
   await page.screenshot({path:'qa/pandago-fullscreen-v395/day-'+tag+'.png',fullPage:false});
   await page.locator('[data-day-next]').click();
-  assert.equal(await page.locator('.pg414-rule').count(),1,'Grammar follows vocabulary');
+  assert.equal(await page.locator('.pg415-step-1,.pg414-rule').count(),1,'Approved grammar artwork follows vocabulary');
   assert.deepEqual(errors,[],'No JS errors: '+tag);
   console.log('PASS '+tag+': Bastian 2 pages, three approved image screens, 5 visible tap highlights, real word practice.');
   await context.close();
