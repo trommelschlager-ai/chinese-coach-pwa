@@ -15,6 +15,7 @@ try{
   await page.goto(base+'/hsk2-life-course.html?start=1&v=414',{waitUntil:'domcontentloaded'});
   await page.locator('.pg414-vocab-row').first().waitFor();
   const scan=async name=>{
+   await page.waitForFunction(()=>{const im=document.querySelector('.pg415-art');return !im||(im.complete&&im.naturalWidth===941)},null,{timeout:16000});
    const info=await page.evaluate(()=>{
     const root=document.getElementById('app');
     const w=document.documentElement.clientWidth;
