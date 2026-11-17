@@ -67,7 +67,7 @@ test('stalled audio stops after bounded wait and reports how to retry',async()=>
 });
 
 test('Panda p173 auto-response uses one audio player and reports Android autoplay restrictions',async()=>{
- const f=await liveDOM(6,{completed:['family']});
+ const f=await liveDOM(6,{completed:['numbers','family']});
  try{
   const bridge=f.w.PandaApprovedBridge337;
   assert.equal(bridge.chooseTopic(6),true,'Family topic must be available');
