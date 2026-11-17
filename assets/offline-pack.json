@@ -1,5 +1,5 @@
 {
-  "version": 440,
+  "version": 441,
   "bytes": 65916770,
   "files": [
     "./assets/panda-character-clean-v349.webp",
@@ -2974,7 +2974,7 @@
     "./assets/pandago-art-touch-feedback-v395.js?v=417",
     "./assets/hsk2-lesson1-three-page-v418.css?v=418",
     "./assets/hsk2-panda-return-chat-v419.css?v=419",
-    "./assets/panda-live-screen-v270.mjs?v=436",
+    "./assets/panda-live-screen-v270.mjs?v=441",
     "./assets/panda-live-v346.mjs?v=4361",
     "./assets/hsk2-panda-chat-clean-v420.css?v=420",
     "./assets/panda-voice-v411.mjs?v=411",
@@ -3017,7 +3017,7 @@
     "./assets/panda-live-stone-v355.css?v=363",
     "./assets/panda-live-stable-v364.css?v=364",
     "./assets/panda-topic-catalog-v374.css?v=374",
-    "./assets/panda-chat-corrections-v377.css?v=377",
+    "./assets/panda-chat-corrections-v377.css?v=441",
     "./assets/panda-day-first-play-v398.css?v=398",
     "./assets/panda-mic-help-v407.css?v=407",
     "./assets/hsk2-user-voice/phrase-index-v332.js?v=336",
@@ -3049,6 +3049,7 @@
     "./assets/hsk2-responsive-v439.css?v=439",
     "./assets/hsk2-storyboard-v439.js?v=439",
     "./assets/hsk2-life-course-app-v1.js?v=439",
-    "./assets/hsk2-viewport-v440.css?v=440"
+    "./assets/hsk2-viewport-v440.css?v=440",
+    "./assets/panda-error-coach-v441.mjs?v=441"
   ]
 }
