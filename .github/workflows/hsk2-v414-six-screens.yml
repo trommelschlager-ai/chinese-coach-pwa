@@ -21,3 +21,17 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Verify the six actual interactive screens
         run: node tests/hsk2-six-screens-v414.test.cjs
+      - run: npx playwright install chromium
+      - name: Verify Android screen sizes and capture six images
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/hsk2-v414.log 2>&1 &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID 2>/dev/null || true" EXIT
+          for i in $(seq 1 25); do if curl -fsS http://127.0.0.1:4173/hsk2-life-course.html >/dev/null; then break; fi; sleep 1; done
+          node scripts/qa-hsk2-six-screens-v414.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: panda-go-hsk2-v414-six-screen-android
+          path: qa/hsk2-v414-six-screens/
+          if-no-files-found: warn
