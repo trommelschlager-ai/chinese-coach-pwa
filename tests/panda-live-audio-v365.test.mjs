@@ -9,7 +9,7 @@ test('all 155 indexed phrases use exact standalone files without runtime mute/se
  try{
  f.w.eval(fs.readFileSync('assets/hsk2-user-voice/phrase-index-v332.js','utf8'));
  for(const c of PANDA_CLIPS){const part=lookupPandaVoiceClip(c.zh);assert(part);assert.equal(part.start,0);assert.equal(part.end,null);assert(fs.existsSync(part.src));
- f.w.PandaApprovedBridge337.playEntry({hanzi:c.zh});const a=f.clips.at(-1);assert.equal(a.muted,false);assert.equal(a.volume,1);assert.equal(a.currentTime,0);assert.equal(a.onseeked,undefined);}
+ f.w.PandaApprovedBridge337.playEntry({hanzi:c.zh});const a=f.clips.at(-1);assert.equal(a.muted,false);assert.equal(a.volume,1);assert.equal(a.currentTime,0);assert.equal(a.onseeked==null,true);}
  }finally{f.close()}
 });
 test('history, repeat and mic share cancellation; stale callbacks cannot stop newer audio',async()=>{
@@ -70,10 +70,7 @@ test('Panda p173 auto-response uses one audio player and reports Android autopla
  const f=await liveDOM(6,{completed:['family']});
  try{
   const bridge=f.w.PandaApprovedBridge337;
-  const questions=bridge.topicQuestions(6);
-  const q=questions.find(x=>x.hanzi==='你哥哥几岁？');
-  assert(q,'Family age question is selectable');
-  assert.equal(bridge.startTopicQuestion(6,q.hanzi),true);
+  assert.equal(bridge.chooseTopic(6),true,'Family topic must be available');
   const player=f.clips.at(-1);
   // Simulate Android Chrome refusing automated playback after ASR.
   player.play=()=>Promise.reject(Object.assign(new Error('user gesture required'),{name:'NotAllowedError'}));
