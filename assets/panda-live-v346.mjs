@@ -2,6 +2,7 @@
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
 import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=436';
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
+import {PANDA_V411_VOICE} from './panda-voice-v411.mjs?v=411';
 import {audioStudyLine436} from './panda-audio-study-v436.mjs?v=436';
 import {createPandaMouth} from './panda-live-face-v354.mjs?v=354';
 const bridge=window.PandaApprovedBridge337;
@@ -192,16 +193,16 @@ if (!bridge) {
    const day=el('button','pg374-day-entry','🎧 Мой день · '+PANDA_CLIPS.filter(c=>corpusTopicByFile[c.file]===8).length+' записей');
    day.type='button';day.addEventListener('click',()=>showTopicDetails(8));
    grid.append(day);
-   const allAudio=el('button','pg374-day-entry','🎧 Все записи · '+PANDA_CLIPS.length);
+   const allAudio=el('button','pg374-day-entry','🎧 Все записи · '+(PANDA_CLIPS.length+PANDA_V411_VOICE.length));
    allAudio.type='button';allAudio.addEventListener('click',()=>showTopicDetails(9));grid.append(allAudio);
   }
   function showTopicDetails(id){
    catalogueTopic=id;
    const detail=$('#pg374-topic-details');detail.replaceChildren();detail.hidden=false;
    $('.pg346-topic-list').hidden=true;$('#pg374-topics-back').hidden=false;
-   $('#pg374-topics-title').textContent=id===9?'Все записи · '+PANDA_CLIPS.length:id===8?'Мой день · записи':topicsFallback[id-1];
+   $('#pg374-topics-title').textContent=id===9?'Все записи · '+(PANDA_CLIPS.length+PANDA_V411_VOICE.length):id===8?'Мой день · записи':topicsFallback[id-1];
    $('#pg374-topics-tip').textContent=id===9
-     ?'Все 155 аудиофрагментов из 10 исходных MP3. Нажми запись для прослушивания. Пиньинь и перевод находятся под китайской фразой.'
+     ?'Все 165 проверенных MP3, включая последние 10 записей v411. Нажми фразу, чтобы прослушать и увидеть пиньинь и перевод.'
      :id===8
      ?'Нажми запись, посмотри пиньинь и перевод. Практику HSK2 начни из урока «Мой день».'
      :'Выбери вопрос — Панда начнёт разговор именно с него. Ниже также доступны загруженные аудиофразы.';
@@ -221,7 +222,7 @@ if (!bridge) {
      detail.append(btn);
     }
    }
-   const audioPhrases=id===9?PANDA_CLIPS:PANDA_CLIPS.filter(c=>corpusTopicByFile[c.file]===id);
+   const audioPhrases=id===9?[...PANDA_CLIPS,...PANDA_V411_VOICE]:PANDA_CLIPS.filter(c=>corpusTopicByFile[c.file]===id);
    if(audioPhrases.length){
     const section=document.createElement('details');section.className='pg374-audio-section';
     const summary=el('summary','','🎧 Загруженные аудиофразы · '+audioPhrases.length);
@@ -229,15 +230,17 @@ if (!bridge) {
     section.append(summary,description);
     for(const clip of audioPhrases){
      const annotated=audioStudyLine436(clip);
+     const annotatedPinyin=annotated.pinyin||clip.pinyin;
+     const annotatedRussian=annotated.ru||clip.ru;
      const btn=el('button','pg374-audio-phrase');btn.type='button';
      const content=el('span','pg436-audio-copy');
      content.append(
       el('span','pg436-audio-zh',clip.zh),
-      el('span','pg436-audio-py',annotated.pinyin||'Пиньинь уточняется'),
-      el('span','pg436-audio-ru',annotated.ru||'Перевод уточняется')
+      el('span','pg436-audio-py',annotatedPinyin||'Пиньинь уточняется'),
+      el('span','pg436-audio-ru',annotatedRussian||'Перевод уточняется')
      );
      btn.append(el('span','pg436-audio-icon','▶'),content);
-     btn.setAttribute('aria-label','Прослушать '+clip.zh+(annotated.ru?' — '+annotated.ru:''));
+     btn.setAttribute('aria-label','Прослушать '+clip.zh+(annotatedRussian?' — '+annotatedRussian:''));
      btn.addEventListener('click',()=>{stopHistoryAudio();bridge.playEntry({hanzi:clip.zh});sync()});
      section.append(btn);
     }
