@@ -21,6 +21,8 @@
   if(!target || typeof target.closest!=='function')return null;
   const el=target.closest(SELECTOR);
   if(!el || el.matches(':disabled') || el.getAttribute('aria-disabled')==='true')return null;
+  // v417: a second yellow pulse obscures buttons drawn in the approved HSK2 poster.
+  if(el.closest('.pg415-art-screen,.pg415-ai-screen'))return null;
   return el;
  }
  function activate(el,x,y){
