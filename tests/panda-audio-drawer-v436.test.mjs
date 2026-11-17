@@ -102,3 +102,17 @@ test('v436 offline pack and install service worker include new study metadata wi
  const shell=core.filter(p=>!/\.(?:mp3|ogg)(?:\?|$)/i.test(p)&&(!/\.(?:png|jpe?g|webp)(?:\?|$)/i.test(p)||art.includes(p)));
  assert(shell.length<=200,'Keep install shell stable');
 });
+
+test('all 165 approved recorded phrases are listed with Chinese, pinyin and Russian captions',()=>{
+ const all=[...PANDA_CLIPS,...PANDA_V411_VOICE];
+ assert.equal(all.length,165);
+ const ui=read('assets/panda-live-v346.mjs');
+ assert(ui.includes('[...PANDA_CLIPS,...PANDA_V411_VOICE]'),'All recordings must appear in the drawer');
+ assert(ui.includes("PANDA_CLIPS.length+PANDA_V411_VOICE.length"),'All recordings count should be displayed');
+ for(const clip of all){
+  const study=audioStudyLine436(clip);
+  const py=study.pinyin||clip.pinyin,ru=study.ru||clip.ru;
+  assert(py&&ru,clip.zh);
+  assert(lookupPandaVoiceClip(clip.zh)?.src,'No approved MP3 for '+clip.zh);
+ }
+});
