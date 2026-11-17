@@ -1,0 +1,38 @@
+name: Panda Go pre-sale HSK1 static integrity
+
+on:
+  pull_request:
+    paths:
+      - 'hsk1*.html'
+      - 'panda-lesson1.html'
+      - 'panda-voice-pilot.html'
+      - 'assets/panda-live-audio.mjs'
+      - 'assets/**'
+      - 'scripts/verify-presale-hsk1-static-v1.cjs'
+      - '.github/workflows/presale-hsk1-static-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hsk1*.html'
+      - 'panda-lesson1.html'
+      - 'panda-voice-pilot.html'
+      - 'assets/panda-live-audio.mjs'
+      - 'assets/**'
+      - 'scripts/verify-presale-hsk1-static-v1.cjs'
+      - '.github/workflows/presale-hsk1-static-v1.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  static-asset-integrity:
+    name: Seven HSK1 lessons and Panda AI local media
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify all linked HSK1 pages and Panda recordings exist
+        run: node --test scripts/verify-presale-hsk1-static-v1.cjs
