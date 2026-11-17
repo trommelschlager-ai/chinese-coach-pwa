@@ -14,7 +14,7 @@ jobs:
           persist-credentials: true
       - name: Fetch exact approved image from user supplied file
         env:
-          APPROVED_IMAGE_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/0c4f7a7d-3693-4f99-8b53-d7a7d0276540.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOWE2MTMwYzZkM2E4YzU2NCIsImJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTA5NDM0Mn0.IdHOTDmzZY_NMzIJjlyY2JC26m8bUbN-8X65Zicz2Js"
+          APPROVED_IMAGE_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/0c4f7a7d-3693-4f99-8b53-d7a7d0276540.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOWE2MTMwYzZkM2E4YzU2NCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTA5NDM0Mn0.IdHOTDmzZY_NMzIJjlyY2JC26m8bUbN-8X65Zicz2Js"
         run: |
           set -euo pipefail
           python -m pip install -q pillow
