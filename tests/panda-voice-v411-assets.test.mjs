@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {PANDA_V411_VOICE} from '../assets/panda-voice-v411.mjs';
+import {PANDA_V422_VOICE} from '../assets/panda-voice-v422.mjs';
 import {lookupPandaVoiceClip,lookupPilotAudio} from '../assets/panda-live-audio.mjs';
 import {chooseAudibleFollowup} from '../assets/panda-audible-followup-v412.mjs';
 import {availableAskGroups} from '../assets/panda-ask-catalog-v326.mjs';
@@ -110,4 +111,32 @@ test('Availability dialog never pivots to an unrelated weekday question after th
  const screen=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
  assert(screen.includes("if(/^(?:你星期几有空|你今天有空吗)$/.test(normalize(input)))"),'Both availability questions must use the guard');
  assert(screen.includes("if(normalize(input)==='我今天有空'&&normalize(activePrompt?.hanzi"),'Incorrect answer to the weekday prompt should get explicit feedback');
+});
+
+const V422_SHA256=Object.freeze(["f5da8ee7ae32805a390b5f9d7f7ef2864fb24bee36c55aa17e12d15de1e4f6bd","f675ec5fef56ce6e3ed20499ab4c278c319f80d4bcb10f25a53edbbfb6fe0449","788df281aa3720686d7cda8c1737610b114ca1bc9e75e192e8d1aa49dcfdcdd7","ecbd4d728912d57c28902ba731ae1efbaf197a7b328313fec6a04481d9f0be61","4f3ceffeb6e2317546da1a6b69cefc1d3d60edd92719321d72e283b4e0560beb","17e35aec06b52ede6659cdbd2a9fa6cffd64eac7218f243c30031a3f9937d02a","377bede2a88b7a03889879d5e6e5b570e270979ebd8ef7027153b4037266450c","24192ce312616d8b42b53821e94d00b86fc6dcd01fedb93cc08583ef06d9a83b","39c2aa9abe758ab3f3b8c6e9990834fcc51109fa0e59bf2c82f192120f194f2d","61e7bc75bbc848d0da07c3e4a6b8e40ade878bf366206696f3bc5130cc13f5bb","357eef9cf9995ed1ebf5e6954734ce817965cbb69904ff412d28121e677db84b","bc1878e7e54a38a47d377ba7ccf228190679d64478bcc7026dd4a485243ecefb","fa3ceae31c59d7b0bdcbbfa0d8d538421493920f88f9c953a612a366c5a46a19","32cfd44f6733bc0f47d42601f73b39e5b8ee5d4c1d60353f11f1988b91ea0102","88edf27f0d1855b0e8104daf93173d15dae8da22fc37db77f6072d95ab3c28c2","c7527bb0f9f5e5cb546bb1af6d8bd0a8b6a7b313381b157aa2dfd1bf9fbc55b5"]);
+test('Nov 17 Panda family v422: all 16 exact recorded MP3 binary files are mapped',()=>{
+ assert.equal(PANDA_V422_VOICE.length,16);
+ const names=new Set();
+ const previous=new Set(PANDA_V411_VOICE.map(x=>x.zh));
+ for(const [i,line] of PANDA_V422_VOICE.entries()){
+  assert(!names.has(line.zh),'Duplicate family phrase: '+line.zh);
+  assert(!previous.has(line.zh),'Do not override an already recorded v411 phrase');
+  names.add(line.zh);
+  assert.equal(line.src,`./assets/panda-voice-clips-v422/p${166+i}.mp3`);
+  const file=new URL('../'+line.src.slice(2),import.meta.url);
+  assert(fs.existsSync(file),'Missing real v422 MP3 bytes: '+line.src);
+  const bytes=fs.readFileSync(file);
+  assert(bytes.length>4500,'Truncated family audio: '+line.src);
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),V422_SHA256[i],'Binary file does not match approved recording for '+line.zh);
+  const clip=lookupPandaVoiceClip(line.zh+'。');
+  assert.equal(clip?.src,line.src,'Exact Panda audio must be active: '+line.zh);
+  assert.equal(clip?.source,'user-luvvoice-nov17-cut');
+  assert.equal(lookupPilotAudio(line.zh),line.src);
+ }
+ const clipLookup=lookupPandaVoiceClip('你有没有妹妹？');
+ assert.equal(clipLookup?.src,'./assets/panda-voice-clips-v422/p166.mp3');
+ assert.equal(lookupPandaVoiceClip('没有，我没有妹妹。')?.src,'./assets/panda-voice-clips-v422/p171.mp3');
+ assert.equal(lookupPandaVoiceClip('我哥哥五岁。')?.src,'./assets/panda-voice-clips-v422/p173.mp3');
+ assert.equal(lookupPandaVoiceClip('明白了。')?.src,'./assets/panda-voice-clips-v422/p175.mp3');
+ assert.notEqual(lookupPandaVoiceClip('你今天有没有空？')?.src,'./assets/panda-voice-clips-v422/p166.mp3','Never substitute an unrelated question recording');
 });
