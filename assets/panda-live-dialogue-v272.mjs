@@ -253,8 +253,13 @@ function extendQuestion(result,raw,allowed,date,profile){
  const linked=linkedQuestion(raw,result.lesson,allowed,date,profile);
  const retain=result.followup?.intent==='relative-age'||result.followup?.isContextual;
  const suggested=retain?result.followup:(linked||result.followup||null);
- const seen=new Set([inputKey,...(profile?.recentQuestions||[]).map(normalize)]);
- return {...result,followup:suggested&&!seen.has(normalize(suggested.hanzi))?suggested:null};
+ // Protect family conversations from immediate repeats. Weather and calendar
+ // retain their existing lesson-specific continuation rules.
+ if(result.lesson===6){
+   const seen=new Set([inputKey,...(profile?.recentQuestions||[]).map(normalize)]);
+   return {...result,followup:suggested&&!seen.has(normalize(suggested.hanzi))?suggested:null};
+ }
+ return {...result,followup:suggested};
 }
 export function answerLive(raw,options={}){
  const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={},course='hsk1'}=options;
