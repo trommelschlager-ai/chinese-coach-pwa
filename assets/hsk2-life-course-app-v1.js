@@ -77,6 +77,18 @@ try{
       d.pg433Preview=typeof prior.pg433Preview==='boolean'?prior.pg433Preview:false;
       d.pgApprovedCover=typeof prior.pgApprovedCover==='boolean'?prior.pgApprovedCover:false;
      }
+     // v442 opt-in timeline and guided Panda replies. Preserve progress on Android reload.
+     if(prior.pg441&&typeof prior.pg441==='object'){
+      const p=prior.pg441;
+      d.pg441TimelineOpen=p.timelineOpen===true;
+      d.pg441Preset=Number.isInteger(p.preset)?Math.max(0,Math.min(2,p.preset)):1;
+      d.pg441DialogOpen=p.dialogOpen===true;
+      d.pg441DialogStep=Number.isInteger(p.dialogStep)?Math.max(0,Math.min(3,p.dialogStep)):0;
+      d.pg441DialogHistory=Array.isArray(p.dialogHistory)?p.dialogHistory.slice(-12)
+       .filter(x=>x&&(x.who==='panda'||x.who==='student')&&typeof x.zh==='string')
+       .map(x=>({who:x.who,zh:x.zh.slice(0,120),py:String(x.py||'').slice(0,100),ru:String(x.ru||'').slice(0,130)})):[];
+      d.pg441Feedback=typeof p.dialogFeedback==='string'?p.dialogFeedback.slice(0,220):'';
+     }
     }
     state.day=d;
    }
@@ -91,6 +103,14 @@ function store(){
    selected:state.day.selected,speechWord:state.day.speechWord,quiz:state.day.quiz,build:state.day.build,
    pg433Page:state.day.pg433Page,pg433HighestStage:state.day.pg433HighestStage,
    pg433Preview:state.day.pg433Preview,pgApprovedCover:state.day.pgApprovedCover,
+   pg441:{
+    timelineOpen:state.day.pg441TimelineOpen===true,
+    preset:state.day.pg441Preset,
+    dialogOpen:state.day.pg441DialogOpen===true,
+    dialogStep:state.day.pg441DialogStep,
+    dialogHistory:Array.isArray(state.day.pg441DialogHistory)?state.day.pg441DialogHistory.slice(-12):[],
+    dialogFeedback:String(state.day.pg441Feedback||'').slice(0,220)
+   },
    attempts:state.day.attempts,poster:false,v414:state.day.v414
   }:null;
   var resume=state.view==='lesson'?{

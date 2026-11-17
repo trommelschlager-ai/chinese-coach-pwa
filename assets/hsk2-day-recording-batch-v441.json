@@ -1,0 +1,428 @@
+{
+  "version": 441,
+  "purpose": "Exact Chinese female speaker batch for HSK2 My Day, pending user-provided voice source.",
+  "do_not_fabricate_audio": true,
+  "do_not_use_device_tts_as_mp3": true,
+  "recording_rules": [
+    "Use the approved speaker only; do not synthesize a replacement without explicit approval.",
+    "One complete word or phrase per MP3, no unrelated audio.",
+    "Read the Chinese naturally, check pinyin tones and neutral tones (早上、晚上).",
+    "Listen to every delivered clip and mark verified before activating playback.",
+    "Keep MP3 silent placeholder until each file actually exists."
+  ],
+  "confirmed_existing_separate_phrase": "我早上吃早饭。",
+  "counts": {
+    "words": 20,
+    "phrases": 23,
+    "total": 43
+  },
+  "items": [
+    {
+      "id": "W01",
+      "zh": "每天",
+      "pinyin": "měitiān",
+      "russian": "каждый день",
+      "path": "assets/hsk2-user-voice/day-v441/W01.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W02",
+      "zh": "早上",
+      "pinyin": "zǎoshang",
+      "russian": "утром",
+      "path": "assets/hsk2-user-voice/day-v441/W02.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W03",
+      "zh": "起床",
+      "pinyin": "qǐchuáng",
+      "russian": "вставать с постели",
+      "path": "assets/hsk2-user-voice/day-v441/W03.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W04",
+      "zh": "洗脸",
+      "pinyin": "xǐliǎn",
+      "russian": "умываться",
+      "path": "assets/hsk2-user-voice/day-v441/W04.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W05",
+      "zh": "刷牙",
+      "pinyin": "shuāyá",
+      "russian": "чистить зубы",
+      "path": "assets/hsk2-user-voice/day-v441/W05.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W06",
+      "zh": "早餐",
+      "pinyin": "zǎocān",
+      "russian": "завтрак",
+      "path": "assets/hsk2-user-voice/day-v441/W06.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W07",
+      "zh": "吃早饭",
+      "pinyin": "chī zǎofàn",
+      "russian": "завтракать",
+      "path": "assets/hsk2-user-voice/day-v441/W07.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W08",
+      "zh": "上班",
+      "pinyin": "shàngbān",
+      "russian": "начинать работу",
+      "path": "assets/hsk2-user-voice/day-v441/W08.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W09",
+      "zh": "下班",
+      "pinyin": "xiàbān",
+      "russian": "заканчивать работу",
+      "path": "assets/hsk2-user-voice/day-v441/W09.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W10",
+      "zh": "中午",
+      "pinyin": "zhōngwǔ",
+      "russian": "в полдень",
+      "path": "assets/hsk2-user-voice/day-v441/W10.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W11",
+      "zh": "午饭",
+      "pinyin": "wǔfàn",
+      "russian": "обед",
+      "path": "assets/hsk2-user-voice/day-v441/W11.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W12",
+      "zh": "下午",
+      "pinyin": "xiàwǔ",
+      "russian": "после полудня",
+      "path": "assets/hsk2-user-voice/day-v441/W12.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W13",
+      "zh": "先",
+      "pinyin": "xiān",
+      "russian": "сначала",
+      "path": "assets/hsk2-user-voice/day-v441/W13.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W14",
+      "zh": "再",
+      "pinyin": "zài",
+      "russian": "затем",
+      "path": "assets/hsk2-user-voice/day-v441/W14.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W15",
+      "zh": "睡觉",
+      "pinyin": "shuìjiào",
+      "russian": "спать; ложиться спать",
+      "path": "assets/hsk2-user-voice/day-v441/W15.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W16",
+      "zh": "以前",
+      "pinyin": "yǐqián",
+      "russian": "раньше; до",
+      "path": "assets/hsk2-user-voice/day-v441/W16.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W17",
+      "zh": "以后",
+      "pinyin": "yǐhòu",
+      "russian": "после",
+      "path": "assets/hsk2-user-voice/day-v441/W17.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W18",
+      "zh": "晚上",
+      "pinyin": "wǎnshang",
+      "russian": "вечером",
+      "path": "assets/hsk2-user-voice/day-v441/W18.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W19",
+      "zh": "晚饭",
+      "pinyin": "wǎnfàn",
+      "russian": "ужин",
+      "path": "assets/hsk2-user-voice/day-v441/W19.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "W20",
+      "zh": "常常",
+      "pinyin": "chángcháng",
+      "russian": "часто",
+      "path": "assets/hsk2-user-voice/day-v441/W20.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S01",
+      "zh": "我六点起床。",
+      "pinyin": "Wǒ liù diǎn qǐchuáng.",
+      "path": "assets/hsk2-user-voice/day-v441/S01.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S02",
+      "zh": "我每天七点起床。",
+      "pinyin": "Wǒ měitiān qī diǎn qǐchuáng.",
+      "path": "assets/hsk2-user-voice/day-v441/S02.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S03",
+      "zh": "我每天刷牙。",
+      "pinyin": "Wǒ měitiān shuāyá.",
+      "path": "assets/hsk2-user-voice/day-v441/S03.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S04",
+      "zh": "我早上洗脸。",
+      "pinyin": "Wǒ zǎoshang xǐliǎn.",
+      "path": "assets/hsk2-user-voice/day-v441/S04.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S05",
+      "zh": "我吃早餐。",
+      "pinyin": "Wǒ chī zǎocān.",
+      "path": "assets/hsk2-user-voice/day-v441/S05.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S06",
+      "zh": "你每天几点起床？",
+      "pinyin": "Nǐ měitiān jǐ diǎn qǐchuáng?",
+      "path": "assets/hsk2-user-voice/day-v441/S06.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S07",
+      "zh": "你早上吃早饭吗？",
+      "pinyin": "Nǐ zǎoshang chī zǎofàn ma?",
+      "path": "assets/hsk2-user-voice/day-v441/S07.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S08",
+      "zh": "我先吃早饭，再去上班。",
+      "pinyin": "Wǒ xiān chī zǎofàn, zài qù shàngbān.",
+      "path": "assets/hsk2-user-voice/day-v441/S08.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S09",
+      "zh": "我下午五点下班。",
+      "pinyin": "Wǒ xiàwǔ wǔ diǎn xiàbān.",
+      "path": "assets/hsk2-user-voice/day-v441/S09.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S10",
+      "zh": "我中午吃午饭。",
+      "pinyin": "Wǒ zhōngwǔ chī wǔfàn.",
+      "path": "assets/hsk2-user-voice/day-v441/S10.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S11",
+      "zh": "我先刷牙，再吃早饭。",
+      "pinyin": "Wǒ xiān shuāyá, zài chī zǎofàn.",
+      "path": "assets/hsk2-user-voice/day-v441/S11.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S12",
+      "zh": "你早上先做什么？",
+      "pinyin": "Nǐ zǎoshang xiān zuò shénme?",
+      "path": "assets/hsk2-user-voice/day-v441/S12.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S13",
+      "zh": "你下午几点下班？",
+      "pinyin": "Nǐ xiàwǔ jǐ diǎn xiàbān?",
+      "path": "assets/hsk2-user-voice/day-v441/S13.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S14",
+      "zh": "我晚上常常看书。",
+      "pinyin": "Wǒ wǎnshang chángcháng kàn shū.",
+      "path": "assets/hsk2-user-voice/day-v441/S14.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S15",
+      "zh": "我下班以后休息。",
+      "pinyin": "Wǒ xiàbān yǐhòu xiūxi.",
+      "path": "assets/hsk2-user-voice/day-v441/S15.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S16",
+      "zh": "我晚上十一点睡觉。",
+      "pinyin": "Wǒ wǎnshang shíyī diǎn shuìjiào.",
+      "path": "assets/hsk2-user-voice/day-v441/S16.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S17",
+      "zh": "你晚上常常做什么？",
+      "pinyin": "Nǐ wǎnshang chángcháng zuò shénme?",
+      "path": "assets/hsk2-user-voice/day-v441/S17.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S18",
+      "zh": "你几点睡觉？",
+      "pinyin": "Nǐ jǐ diǎn shuìjiào?",
+      "path": "assets/hsk2-user-voice/day-v441/S18.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S19",
+      "zh": "你起床以后做什么？",
+      "pinyin": "Nǐ qǐchuáng yǐhòu zuò shénme?",
+      "path": "assets/hsk2-user-voice/day-v441/S19.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S20",
+      "zh": "你每天吃早饭吗？",
+      "pinyin": "Nǐ měitiān chī zǎofàn ma?",
+      "path": "assets/hsk2-user-voice/day-v441/S20.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S21",
+      "zh": "你几点上班？",
+      "pinyin": "Nǐ jǐ diǎn shàngbān?",
+      "path": "assets/hsk2-user-voice/day-v441/S21.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S22",
+      "zh": "你几点下班？",
+      "pinyin": "Nǐ jǐ diǎn xiàbān?",
+      "path": "assets/hsk2-user-voice/day-v441/S22.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    },
+    {
+      "id": "S23",
+      "zh": "你吃晚饭以后做什么？",
+      "pinyin": "Nǐ chī wǎnfàn yǐhòu zuò shénme?",
+      "path": "assets/hsk2-user-voice/day-v441/S23.mp3",
+      "status": "not_recorded",
+      "voice": "approved_user_Chinese_VOICE",
+      "verified": false
+    }
+  ]
+}

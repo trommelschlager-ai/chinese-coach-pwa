@@ -1,0 +1,48 @@
+/* Panda Go HSK2 v441: additions only to existing cream/coral approved lesson. */
+#app #pg433 .pg441-wrap {position:relative;isolation:isolate;z-index:1;margin:17px 1px 16px;padding:10px;border:1px solid #e6bdaf;border-radius:18px;background:linear-gradient(175deg,#fffaf4,#fff0eb);box-shadow:0 3px 10px #a4706d24;max-width:100%;color:#68384a}
+#app #pg433 .pg441-toggle {display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:48px;width:100%;border:1px solid #efb9b2;border-radius:14px;padding:11px 10px;background:linear-gradient(135deg,#fff7f4,#ffe3df);color:#882c56;font-size:15px;font-weight:800;text-align:left;box-shadow:0 3px 0 #e4aaa5}
+#app #pg433 .pg441-toggle span:first-child{flex:1}
+#app #pg433 .pg441-toggle span:last-child{font-size:11px;white-space:nowrap;color:#a95769}
+#app #pg433 .pg441-muted{font-size:12px!important;line-height:1.4!important;color:#825d68!important;margin:13px 3px!important}
+#app #pg433 .pg441-presets {display:flex;gap:7px;margin:8px 2px 12px}
+#app #pg433 .pg441-presets button {flex:1;min-width:0;min-height:40px;padding:7px 4px;border-radius:11px;border:1px solid #e7b1a9;background:#fffdf9;font-size:14px;font-weight:800;color:#885060;box-shadow:0 2px 0 #e7c6bc}
+#app #pg433 .pg441-presets button.active{background:linear-gradient(145deg,#fe98a8,#e94473);color:white;border-color:#da4974;box-shadow:0 2px 0 #b63b65}
+#app #pg433 .pg441-steps {display:flex;flex-direction:column;gap:9px;list-style:none;margin:0 0 4px!important;padding:0 0 0 4px!important}
+#app #pg433 .pg441-steps li {position:relative;display:grid;grid-template-columns:59px minmax(0,1fr) 26px;gap:8px;align-items:center;margin:0;min-height:75px;border-radius:13px;padding:9px 7px;background:#fffdfa;border:1px solid #edd5c8;box-shadow:0 2px 4px #d0a8a13d}
+#app #pg433 .pg441-steps li:not(:last-child):after{content:' ';position:absolute;left:28px;bottom:-11px;height:10px;border-left:2px dashed #d8799a;z-index:3}
+#app #pg433 .pg441-when{display:flex;flex-direction:column;gap:2px;align-items:center;color:#8e4167}
+#app #pg433 .pg441-when strong{font-weight:900;font-size:14px}
+#app #pg433 .pg441-when span{font-size:22px}
+#app #pg433 .pg441-what{min-width:0;display:flex;flex-direction:column;gap:2px}
+#app #pg433 .pg441-what b{font-size:18px!important;line-height:1.4;color:#592d47;overflow-wrap:anywhere}
+#app #pg433 .pg441-what span{font-size:12px;color:#996978;overflow-wrap:anywhere}
+#app #pg433 .pg441-what small{font-size:11px;color:#745f63}
+#app #pg433 .pg441-audio-missing {font-size:17px;opacity:.56;display:inline-flex;align-items:center;justify-content:center;min-width:23px}
+#app #pg433 .pg441-play{border:1px solid #e999ad;border-radius:11px;background:#ffe6f0;min-width:29px;min-height:31px;padding:3px;font-size:17px;box-shadow:0 2px 0 #daa0b3}
+#app #pg433 .pg441-history {display:flex;flex-direction:column;gap:9px;margin:12px 0}
+#app #pg433 .pg441-bubble {width:95%;max-width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:3px;border-radius:14px;padding:11px 11px 10px;border:1px solid #ded3c9;box-shadow:0 2px 4px #a9838e2b}
+#app #pg433 .pg441-bubble.panda {align-self:flex-start;background:#f1f9f6;border-color:#c4dfd6}
+#app #pg433 .pg441-bubble.student{align-self:flex-end;background:#fff0f4;border-color:#eec7d2}
+#app #pg433 .pg441-speaker{font-size:10px;color:#977185;font-weight:800}
+#app #pg433 .pg441-bubble strong{font-size:20px;line-height:1.35;color:#642c4c;overflow-wrap:anywhere}
+#app #pg433 .pg441-bubble .pg441-py{font-size:12px;color:#96647b}
+#app #pg433 .pg441-bubble small{font-size:11px;line-height:1.45;color:#716064}
+#app #pg433 .pg441-bubble .pg441-play{margin-left:auto}
+#app #pg433 .pg441-bubble .pg441-audio-missing{margin-left:auto;font-size:11px}
+#app #pg433 .pg441-suggestions{display:flex;flex-direction:column;gap:7px;margin:13px 0}
+#app #pg433 .pg441-suggestions button{border:1px solid #f3b9b7;background:#fff9f6;color:#7a3659;padding:10px;min-height:42px;border-radius:11px;font-size:16px;font-weight:700;text-align:left;box-shadow:0 2px 0 #e9c3c0}
+#app #pg433 .pg441-answerrow{display:flex;gap:7px;align-items:stretch;width:100%}
+#app #pg433 #pg441-answer{min-width:0;width:100%;flex:1;background:#fff;border:1px solid #ddbcb6;border-radius:11px;padding:9px 9px;font-size:17px;color:#583449;outline-color:#ec8da3}
+#app #pg433 .pg441-send{flex:none;border-radius:11px;border:1px solid #d64779;background:linear-gradient(#fd8598,#e73a70);padding:9px 12px;min-height:45px;font-size:13px;font-weight:850;color:white;box-shadow:0 3px 0 #aa2759}
+#app #pg433 .pg441-voice{display:flex;align-items:center;gap:10px;margin:12px 0 1px}
+#app #pg433 .pg441-voice button{flex:none;border-radius:12px;border:1px solid #e2b49a;background:#fff4e7;color:#8e5f46;padding:9px 11px;font-size:12px;font-weight:800;box-shadow:0 2px 0 #d7b29b}
+#app #pg433 .pg441-voice button:disabled{opacity:.48;box-shadow:none}
+#app #pg433 .pg441-voice small{font-size:10px;color:#8d7a7a;line-height:1.4}
+#app #pg433 .pg441-feedback{margin:10px 0;padding:10px;border-radius:12px;background:#fff0dc;border:1px solid #f2d6b0;font-size:12px;color:#845a3a;line-height:1.4}
+#app #pg433 .pg441-success{border-radius:12px;background:#effaf3;border:1px solid #b5d5c0;padding:12px;font-size:12px;color:#326448;line-height:1.5}
+#app #pg433 .pg441-restart{display:block;width:100%;border:1px solid #e9b4ad;border-radius:12px;background:#ffe9e5;padding:11px 6px;margin:10px 0;font-size:14px;color:#963d60;font-weight:800}
+#app #pg433 .pg441-consent{border:1px solid #f0bd97;background:#fff6e5;border-radius:14px;padding:12px;margin:13px 0;box-shadow:0 3px 10px #ac7d5740}
+#app #pg433 .pg441-consent p{font-size:12px;color:#725440}
+#app #pg433 .pg441-consent button{border:1px solid #d69b88;border-radius:10px;background:#fffdf6;min-height:40px;margin:3px 4px 3px 0;padding:8px 14px;color:#733b52}
+@media(max-width:360px){#app #pg433 .pg441-steps li{grid-template-columns:47px minmax(0,1fr) 25px;gap:5px;padding:7px 5px}#app #pg433 .pg441-what b{font-size:16px!important}#app #pg433 .pg441-toggle{font-size:13px}#app #pg433 .pg441-send{font-size:12px;padding:8px}}
+@media(prefers-reduced-motion:reduce){#app #pg433 .pg441-wrap *{transition:none!important;animation:none!important}}

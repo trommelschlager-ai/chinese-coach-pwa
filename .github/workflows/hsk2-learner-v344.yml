@@ -22,6 +22,7 @@ on:
       - 'assets/hsk2-life-course-app-v1.js'
       - 'assets/hsk2-life-course-v1.css'
       - 'tests/hsk2-life-course-v1.test.cjs'
+      - 'tests/hsk2-day-upgrades-v441.test.cjs'
       - 'assets/hsk2-day-first-data-v1.js'
       - 'assets/hsk2-day-first-ui-v1.js'
       - 'assets/hsk2-day-first-v1.css'
@@ -71,6 +72,8 @@ jobs:
         run: node scripts/qa-hsk2-life-audio-v407.cjs
       - name: Check complete 30-mini-lesson navigation and reload
         run: node tests/hsk2-life-course-v1.test.cjs
+      - name: Check My Day timeline and guided dialogue v442
+        run: node tests/hsk2-day-upgrades-v441.test.cjs
       - name: Check microphone consent and five genuine attempts
         run: node tests/hsk2-day-first-speech-v1.test.cjs
       - name: Check Mandarin guided Panda answers
