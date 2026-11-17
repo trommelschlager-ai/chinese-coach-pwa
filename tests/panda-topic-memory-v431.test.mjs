@@ -99,7 +99,7 @@ test('approval boundaries: existing design, original MP3 and offline v431 unchan
  const screen=read('assets/panda-live-screen-v270.mjs');
  assert(screen.includes('enrichTopics431({'));
  assert(read('assets/panda-live-v346.mjs').includes('panda-character-clean-v349.webp'));
- assert(read('panda-voice-pilot.html').includes('panda-live-screen-v270.mjs?v=433'));
+ assert(read('panda-voice-pilot.html').includes('panda-live-screen-v270.mjs?v=435'));
  const pack=JSON.parse(read('assets/offline-pack.json'));
  assert(pack.files.includes('./assets/panda-topic-memory-v431.mjs?v=431'));
 });
