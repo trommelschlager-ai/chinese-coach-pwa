@@ -3,9 +3,10 @@
    License in repository: assets/hanzi-data/ARPHICPL.TXT */
 (()=>{
  'use strict';
- const FIRST4_PREVIEW=['first4-v414','lesson1-v415'].includes(new URLSearchParams(window.location.search).get('preview'));
+ const PREVIEW_KIND=new URLSearchParams(window.location.search).get('preview');
+ const FIRST4_PREVIEW=['first4-v414','lesson1-v415'].includes(PREVIEW_KIND);
  const STEPS=16;
- const PROGRESS_KEY=FIRST4_PREVIEW?'pg-hsk1-v414-first4-preview':'pg-hsk1-v189-lesson1';
+ const PROGRESS_KEY=FIRST4_PREVIEW?(PREVIEW_KIND==='lesson1-v415'?'pg-hsk1-v415-full-preview':'pg-hsk1-v414-first4-preview'):'pg-hsk1-v189-lesson1';
  const LEGACY_KEY='pg-hsk1-v3-foundations';
  const COMPLETE_KEY='pg-hsk1-v3-complete';
  const app=document.querySelector('#app');
