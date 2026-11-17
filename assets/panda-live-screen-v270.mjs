@@ -17,6 +17,7 @@ import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=436';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
+import {explainPandaAnswer441} from './panda-error-coach-v441.mjs?v=441';
 import {isCalendarRoundFinished} from './panda-calendar-literal-v383.mjs?v=405';
 import {coherentPandaFollowup} from './panda-nonstop-continuity-v425.mjs?v=425';
 import {continueFamilyAfterAnswer} from './panda-family-turn-v426.mjs?v=427';
@@ -207,7 +208,7 @@ function submit(raw){
  if(state.dayMode){
   if(state.dayDone){note('Тренировка завершена. Вернись к уроку или выбери обычные диалоги.');return;}
   // Keep reviewed grammar corrections available inside the HSK2 day dialogue.
-  const correction=correctCommonPhrase(input);
+  const correction=explainPandaAnswer441(input,{prompt:state.prompt?.line,confidence:state.confidence})||correctCommonPhrase(input);
   if(correction){learner(input,correction.spoken);recordCorrection(input,correction.spoken);pose('retry');note(correction.message);render();return;}
   // A learner may ask one of the recorded HSK2 questions. Answer it in the
   // HSK2 context without advancing the current five-step practice prompt.
@@ -225,7 +226,7 @@ function submit(raw){
  }
  if(state.mode==='nonstop'){
   const activePrompt=state.awaitQuestion?null:state.prompt?.line;
-   const rawResult=correctCommonPhrase(input)||interpretWorkReply(input,{prompt:activePrompt})||answerLive(input,{allowed:state.allowed,topic:lesson(),prompt:activePrompt,curriculum,date:new Date(),turn:state.turns,profile:{...state.profile,recentQuestions:state.questions.slice(-40)}});
+   const rawResult=explainPandaAnswer441(input,{prompt:activePrompt,confidence:state.confidence})||correctCommonPhrase(input)||interpretWorkReply(input,{prompt:activePrompt})||answerLive(input,{allowed:state.allowed,topic:lesson(),prompt:activePrompt,curriculum,date:new Date(),turn:state.turns,profile:{...state.profile,recentQuestions:state.questions.slice(-40)}});
    const familyResult=continueFamilyAfterAnswer({
     input,activePrompt,
     result:addPersonalFollowup(rawResult,{allowed:state.allowed,recentQuestions:state.questions.slice(-40)}),
@@ -320,7 +321,7 @@ function submit(raw){
   }
   note(result.message);render();return;
  }
- const spoken=correctCommonPhrase(input)?.spoken||analyzeLearner(input,[1,conversation.id],conversation.lines[state.step],curriculum);learner(input,spoken);
+ const spoken=explainPandaAnswer441(input,{prompt:conversation.lines[state.step],confidence:state.confidence})?.spoken||correctCommonPhrase(input)?.spoken||analyzeLearner(input,[1,conversation.id],conversation.lines[state.step],curriculum);learner(input,spoken);
  const greeting=/^(你好[呀啊]?|早上好[呀啊]?|中午好[呀啊]?|下午好[呀啊]?|晚上好[呀啊]?)$/.test(normalize(input));
  const social=replyToExtraSpeech(input,conversation.id,curriculum);
  if(spoken.correction){recordCorrection(input,spoken);pose('retry');note(spoken.correction.why);render();return}
