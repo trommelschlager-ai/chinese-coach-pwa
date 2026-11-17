@@ -247,9 +247,18 @@ function extendQuestion(result,raw,allowed,date,profile){
  // Reciprocal age questions are valid in Mandarin, but silently asking
  // exactly the same question straight back looks like a broken Non-Stop loop.
  // End this automatic turn rather than invent a differently voiced question.
- if(/^你(?:哥哥|姐姐|弟弟|妹妹)(?:几岁|多大(?:了)?)$/.test(inputKey))
-   return {...result,followup:null,
-     message:'Панда ответила на вопрос о возрасте. Теперь можешь задать другой вопрос.'};
+ const ageMatch=/^你(哥哥|姐姐|弟弟|妹妹)(?:几岁|多大(?:了)?)$/.exec(inputKey);
+ if(ageMatch){
+   // Continue Non-Stop with a DIFFERENT recorded family question;
+   // keep the already asked age question out of the next turn.
+   const seen=new Set([inputKey,...(profile?.recentQuestions||[]).map(normalize)]);
+   const choices=topicPrompts(6,date,profile).filter(q=>q?.hanzi&&
+      q.verifiedLines?.[1]?.accepted&&!seen.has(normalize(q.hanzi)));
+   const otherRecorded=choices.find(q=>lookupPilotAudio(q.hanzi)&&!normalize(q.hanzi).includes(ageMatch[1]));
+   const different=otherRecorded||choices.find(q=>lookupPilotAudio(q.hanzi))||choices[0]||null;
+   return {...result,followup:different,
+     message:'Панда ответила о возрасте и продолжит другим семейным вопросом.'};
+ }
  const linked=linkedQuestion(raw,result.lesson,allowed,date,profile);
  const retain=result.followup?.intent==='relative-age'||result.followup?.isContextual;
  const suggested=retain?result.followup:(linked||result.followup||null);
