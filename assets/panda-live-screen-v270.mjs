@@ -64,7 +64,7 @@ function play(entry=null){
  a.muted=false;a.volume=1;
  const animate=()=>{if(!valid()||a.paused||a.ended)return;pandaVisualAudioLevel=Math.max(0,Math.min(1,envelope?envelope.levels[Math.floor(a.currentTime/envelope.binSeconds)]||0:.5+.5*Math.sin(a.currentTime*23)));rig.setLevel(pandaVisualAudioLevel);audioFrame=requestAnimationFrame(animate)};
  a.onplaying=()=>{if(valid()){clearTimeout(audioBufferTimer);pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти|Загрузка аудио)/.test($('status').textContent))note('');animate()}};
- const waitForAudio=()=>{if(!valid())return;cancelAnimationFrame(audioFrame);pose('idle');note('Загрузка аудио задерживается…');clearTimeout(audioBufferTimer);audioBufferTimer=setTimeout(()=>{if(valid()){stopAudio();note('Аудио не загрузилось за 10 секунд. Нажми 🔊 ещё раз или проверь интернет.')}},10000)};
+ const waitForAudio=()=>{if(!valid())return;cancelAnimationFrame(audioFrame);pose('idle');note('Загрузка аудио задерживается…');clearTimeout(audioBufferTimer);audioBufferTimer=setTimeout(()=>{if(valid())failed('Аудио не загрузилось за 10 секунд. Нажми 🔊 на реплике Панды или проверь интернет.')},10000)};
  a.onwaiting=waitForAudio;
  a.onstalled=waitForAudio;
  a.onpause=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
@@ -576,7 +576,7 @@ window.PandaApprovedBridge337={
   return true;
  },
 
- play:()=>play(),playEntry:entry=>{cancelFollowup();play(entry)},stopPlayback:()=>stopAudio(),
+ play:()=>play(),playEntry:entry=>{const sameBlocked=!!state.pendingAudioReply&&normalize(entry?.hanzi||entry?.panda||'')===state.pendingAudioReply;if(!sameBlocked)cancelFollowup();play(entry)},stopPlayback:()=>stopAudio(),
  getAudioLevel:()=>audio&&!audio.paused&&!audio.ended?pandaVisualAudioLevel:null,
  toggleSpeed:()=>$('speed-toggle').click(),
  setMode:mode=>{if(mode==='short'||mode==='nonstop')setMode(mode)},
