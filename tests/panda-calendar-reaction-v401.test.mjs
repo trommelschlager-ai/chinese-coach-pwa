@@ -144,6 +144,18 @@ test('the UI does not overwrite the reviewed calendar follow-up with an unrelate
 });
 
 test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗 when calendar topic is open',async()=>{
+ // This mobile test runs with the real clock. Do not hard-code Monday
+ // 16 November 2026: the day changes on the CI runner at UTC midnight.
+ const today=new Date();
+ const month=today.getMonth()+1,day=today.getDate();
+ const weekday=['日','一','二','三','四','五','六'][today.getDay()];
+ const digits=['零','一','二','三','四','五','六','七','八','九'];
+ const zhNum=n=>n<10?digits[n]:n===10?'十':n<20?'十'+digits[n-10]:
+   n===20?'二十':n<30?'二十'+digits[n-20]:n===30?'三十':'三十'+digits[n-30];
+ const dateInput=month+'月'+day+'号';
+ const dayInput='今天星期'+weekday+'。';
+ const fullDateInput='今天是'+zhNum(month)+'月'+zhNum(day)+'号。';
+ const dateTranslation=new RegExp(day+'\\.'+String(month).padStart(2,'0'));
  const dom=await liveDOM(1,{completed:['weekdays','dates']});
  try{
   const {el,send,w}=dom;
@@ -151,7 +163,7 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
   assert.equal(w.PandaApprovedBridge337.snapshot().mode,'nonstop');
   assert(w.PandaApprovedBridge337.snapshot().allowed.includes(4));
   assert(w.PandaApprovedBridge337.snapshot().allowed.includes(5));
-  send('11月16号');
+  send(dateInput);
   assert.match(el('recent').textContent,/16\.11/,'Learner date is translated');
   assert.match(el('status').textContent,/продолжит вопросом/,'Panda scheduled a relevant calendar follow-up');
   await new Promise(resolve=>setTimeout(resolve,4950));
@@ -161,11 +173,11 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
   assert.equal(el('hear').disabled,false,'Approved question MP3 is available');
   // Then answer the weekday and date, as on the user's Android screenshots.
   // No third repeat of the same two-question loop is permitted.
-  send('今天星期一。');
+  send(dayInput);
   await new Promise(resolve=>setTimeout(resolve,4950));
   assert.equal(el('phrase').textContent,'今天几月几号？',
    'After weekday answer, Panda should ask for the date once');
-  send('今天是十一月十六号。');
+  send(fullDateInput);
   assert.equal(el('phrase').textContent,'很好！',
    'The Panda should visibly close the lesson instead of echoing the date');
   assert.match(el('status').textContent,/Мы повторили день недели и дату/,
