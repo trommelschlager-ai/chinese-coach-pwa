@@ -226,9 +226,19 @@ function submit(raw){
   // Acknowledge the learner's meaning and repeat the actual question with its
   // already approved audio; never mark a correct Chinese phrase as a mistake.
   if(normalize(input)==='我今天有空'&&normalize(activePrompt?.hanzi||activePrompt?.panda||'')==='今天星期几'){
+    // Keep the already asked prompt on screen but do not call say():
+    // say() would add the *same Panda question* to the history a second time.
     state.awaitQuestion=false;
-    say(activePrompt);
-    note('«我今天有空» — правильная фраза: «Я сегодня свободен». Но вопрос был «今天星期几？» — «Какой сегодня день недели?». Ответь названием дня недели. Тоны речи здесь не оценивались.');
+    state.display=activePrompt;
+    render();
+    const panel=$('learner-feedback');
+    panel.replaceChildren();
+    const explanation=document.createElement('p');
+    explanation.textContent='✅ 我今天有空 — правильная фраза: «Я сегодня свободен». Но вопрос был 今天星期几？ — «Какой сегодня день недели?». Ответь названием дня недели.';
+    panel.append(explanation);
+    panel.hidden=false;
+    document.documentElement.dataset.feedback='true';
+    note('Фраза правильная, но не отвечает на вопрос Панды. Нажми динамик, чтобы ещё раз услышать вопрос. Тоны здесь не оценивались.');
     return;
   }
   if(result.kind==='empty'){note(result.message);return}
