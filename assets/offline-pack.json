@@ -1,10 +1,9 @@
 {
-  "version": 418,
+  "version": 419,
   "bytes": 64679587,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
-    "./assets/panda-live-v346.mjs?v=365",
     "./assets/panda-scene-clean-v346.svg?v=346",
     "./assets/panda-sakura-v346.svg?v=346",
     "./assets/approved-build-v95.webp",
@@ -2756,7 +2755,6 @@
     "./assets/panda-live-voice-bridge-v307/B10.mp3",
     "./assets/panda-hsk-scenic-v315.css?v=315",
     "./panda-voice-pilot.html?v=326",
-    "./assets/panda-live-screen-v270.mjs?v=365",
     "./assets/panda-live-dialogue-v272.mjs?v=323",
     "./assets/panda-hsk1-questions-v281.mjs?v=319",
     "./assets/panda-sentence-coach-v319.mjs?v=319",
@@ -2952,14 +2950,14 @@
     "./assets/hsk1-approved-v373.png",
     "./assets/hsk2-life-approved-fullscreen-v412.png",
     "./assets/hsk2-life-welcome-v412.css?v=412",
-    "./assets/hsk2-life-course-app-v1.js?v=418",
+    "./assets/hsk2-life-course-app-v1.js?v=419",
     "./assets/hsk2-day-first-ui-v1.js?v=413",
     "./assets/hsk2-day-no-scroll-v398.css?v=413",
     "./assets/hsk2-day-scene-v413.css?v=413",
     "./hsk2-life-course.html",
     "./assets/hsk2-six-screens-v414.css?v=414",
     "./assets/hsk2-six-screens-v414.js?v=418",
-    "./assets/hsk2-exact-overlay-v415.js?v=418",
+    "./assets/hsk2-exact-overlay-v415.js?v=419",
     "./assets/hsk2-exact-overlay-v415.css?v=415",
     "./assets/hsk2-approved-v414/01-words.webp",
     "./assets/hsk2-approved-v414/02-rule.webp",
@@ -2974,6 +2972,9 @@
     "./assets/hsk1-controls-v421.js?v=421",
     "./assets/hsk1-fourth-v220.js?v=421",
     "./assets/pandago-art-touch-feedback-v395.js?v=417",
-    "./assets/hsk2-lesson1-three-page-v418.css?v=418"
+    "./assets/hsk2-lesson1-three-page-v418.css?v=418",
+    "./assets/hsk2-panda-return-chat-v419.css?v=419",
+    "./assets/panda-live-screen-v270.mjs?v=419",
+    "./assets/panda-live-v346.mjs?v=419"
   ]
 }

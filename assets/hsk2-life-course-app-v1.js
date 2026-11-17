@@ -32,7 +32,7 @@ var KEY='pg-hsk2-life-course-v1';
 var state={view:'welcome',topic:0,mini:0,stage:0,showPy:true,completed:[],difficult:[],quizWord:null,quizSentence:null,build:[],finalAnswers:{},examPassed:false};
 var dayUI=window.PandaGoDayFirstUIV1;
 function dayPilot(){return state.topic===0&&!!dayUI;}
-function dayCoachingLink(mini){return './panda-voice-pilot.html?practice=day&mini='+Math.max(0,Math.min(2,Number(mini)||0))+'&from=hsk2-life-course&start=audio';}
+function dayCoachingLink(mini){return './panda-voice-pilot.html?practice=day&mini='+Math.max(0,Math.min(2,Number(mini)||0))+'&from=hsk2-life-course&return=done&start=audio';}
 function dayAIBlock(mini){return '<section class="day-ai-panel"><h2>🐼 Поговори с Пандой AI</h2><p>Потренируй то, что уже изучил: Панда задаст вопросы, а ты ответишь голосом или текстом.</p><div class="day-ai-examples"><strong lang="zh-Hans">你早上做什么？</strong><br>Что ты делаешь утром?</div><a href="'+dayCoachingLink(mini)+'" aria-label="Открыть разговорную практику Мой день с Panda AI">🎙 Начать практику →</a></section>';}
 
 try{
@@ -405,6 +405,13 @@ document.addEventListener('click',function(e){
   render();return;
  }
  if(b.dataset.remove!==undefined){state.build.splice(Number(b.dataset.remove),1);render();return}
+ if(b.dataset.pg419AiBack!==undefined){
+  // From the sixth approved screen, go to the immediately preceding
+  // examples step. Do not restart the lesson or go to the topic map.
+  state.view='lesson';state.stage=4;
+  if(!state.day&&dayUI)state.day=dayUI.makeState(state.mini);
+  render();return;
+ }
  if(b.dataset.repeat!==undefined){enter(state.topic,state.mini);return}
  if(b.dataset.nextMini!==undefined){
   if(id()===29)go('exam');else{var k=id()+1;enter(Math.floor(k/3),k%3)}return;
@@ -426,6 +433,15 @@ try {
  var params=new URLSearchParams(window.location.search);
  if(params.get('start')==='1') {state.view='lesson';state.topic=0;state.mini=0;state.stage=0;state.day=dayUI?dayUI.makeState(0):null;}
  if(params.get('view')==='map')state.view='map';
+ // Panda AI -> the exact mini-lesson completion screen the student left.
+ // Query values are fixed and validated; other courses keep their own routing.
+ if(params.get('return')==='done'&&params.get('from')==='hsk2-life-course'){
+  const backMini=params.get('mini');
+  if(backMini!==null&&/^[0-2]$/.test(backMini)){
+   state.view='done';state.topic=0;state.mini=Number(backMini);
+   if(!state.day&&dayUI)state.day=dayUI.makeState(state.mini);
+  }
+ }
  var requested=params.get('topic');
  if(requested!==null&&/^(?:[0-9])$/.test(requested)){
   state.topic=Number(requested);

@@ -101,7 +101,14 @@ for(let mini=0;mini<3;mini++){
  assert.equal(doc.querySelectorAll('.day-dialogue').length,4);
  click('[data-day-next]');
  assert.ok(doc.querySelector('.pg414-ai'));
- assert.ok(doc.querySelector('.day-ai-panel a').getAttribute('href').includes('practice=day&mini='+mini));
+ const pandaLink=doc.querySelector('.pg415-ai-next,.day-ai-panel a');
+ assert.ok(pandaLink,'Panda AI entry link is missing');
+ assert.ok(pandaLink.getAttribute('href').includes('practice=day&mini='+mini));
+ assert.ok(pandaLink.getAttribute('href').includes('return=done'),'Deep return must preserve sixth screen');
+ if(mini===0){
+  assert.equal(doc.querySelector('.pg415-ai-submit')?.textContent,'➤');
+  assert.ok(doc.querySelector('[data-pg419-ai-back]'),'Approved-screen back should target examples');
+ }
  if(mini<2)click('[data-next-mini]');
 }
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,3);

@@ -1,0 +1,45 @@
+name: Panda HSK2 exact return and clean chat v419
+on:
+  push:
+    branches: [fix/hsk2-panda-exact-back-clean-chat-v419]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hsk2-life-course.html'
+      - 'panda-voice-pilot.html'
+      - 'assets/hsk2-life-course-app-v1.js'
+      - 'assets/hsk2-exact-overlay-v415.js'
+      - 'assets/hsk2-panda-return-chat-v419.css'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'assets/panda-live-v346.mjs'
+      - 'scripts/qa-panda-hsk2-back-v419.mjs'
+jobs:
+  android:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Preserve all three mini-lessons
+        run: node tests/hsk2-six-screens-v414.test.cjs
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Test precise back routes and clean inline Panda composer
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/panda-v419.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 25); do
+            if curl -fsS http://127.0.0.1:4173/hsk2-life-course.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-hsk2-back-v419.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: panda-hsk2-v419-android-return
+          path: qa/panda-hsk2-back-v419/
+          if-no-files-found: warn

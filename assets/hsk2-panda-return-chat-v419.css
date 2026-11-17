@@ -1,0 +1,54 @@
+/* Panda Go HSK2 v419 — single clean answer field in the approved 6th screen.
+   Keep the source PNG, Panda mascot and all controls in their approved positions. */
+#app.day-done-active .pg415-ai-screen .pg415-ai-feedback{
+ /* There used to be an extra narrow beige feedback bar across the microphone.
+    Keep accessible aria-live text but remove that duplicate visible row. */
+ position:absolute!important;
+ width:1px!important;height:1px!important;
+ padding:0!important;margin:0!important;border:0!important;
+ overflow:hidden!important;
+ clip-path:inset(50%)!important;white-space:nowrap!important;
+ box-shadow:none!important;background:transparent!important;
+}
+#app.day-done-active .pg415-ai-answer #pg414-ai-input,
+#app.day-done-active .pg415-ai-answer #pg414-ai-input:focus,
+#app.day-done-active .pg415-ai-answer #pg414-ai-input:not(:placeholder-shown){
+ border:none!important;outline:none!important;
+ background:transparent!important;
+ box-shadow:none!important;
+ -webkit-tap-highlight-color:transparent!important;
+}
+#app.day-done-active .pg415-ai-answer .pg415-ai-submit{
+ font-size:clamp(20px,5.5vw,27px)!important;
+ line-height:1!important;
+ font-weight:950!important;
+ display:grid!important;place-items:center!important;
+ -webkit-tap-highlight-color:transparent!important;
+}
+#app.day-done-active .pg415-ai-answer .pg415-ai-submit:focus:not(:focus-visible){
+ outline:0!important;box-shadow:none!important;
+}
+#app.day-done-active .pg415-ai-answer[data-feedback=error] #pg414-ai-input{
+ color:#922d79!important;
+}
+#app.day-done-active .pg415-ai-answer[data-feedback=success] #pg414-ai-input{
+ color:#541775!important;
+}
+/* The approved artwork already renders the Back button: transparent hit area
+   must not add a second visible button or a yellow rectangle. */
+#app.day-done-active .pg415-ai-back{
+ border:0!important;background:transparent!important;
+ box-shadow:none!important;outline:0!important;
+ -webkit-tap-highlight-color:transparent!important;
+}
+
+
+#app .pg415-ai-screen #pg414-ai-feedback.pg419-sr-status{
+ position:absolute!important;
+ width:1px!important;height:1px!important;
+ padding:0!important;margin:0!important;border:0!important;
+ overflow:hidden!important;clip-path:inset(50%)!important;
+ white-space:nowrap!important;
+ opacity:0!important;pointer-events:none!important;
+ box-shadow:none!important;background:transparent!important;
+}

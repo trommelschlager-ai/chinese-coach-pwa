@@ -10,7 +10,18 @@ function elements(){
  return {root,input:root.querySelector('#pg414-ai-input'),feedback:root.querySelector('#pg414-ai-feedback'),questions:[...root.querySelectorAll('.pg414-ai-question')]};
 }
 function message(text,success=false){
- const el=elements();if(!el)return;el.feedback.textContent=text;el.feedback.classList.toggle('success',success);
+ const el=elements();if(!el)return;
+ el.feedback.textContent=text;el.feedback.classList.toggle('success',success);
+ // On the approved scenic screen, feedback stays available to screen readers,
+ // while the duplicate visible beige status row is removed. Use the one
+ // existing composer field for a concise success hint.
+ const scenic=el.root.classList.contains('pg415-ai-screen');
+ if(scenic){
+  const box=el.root.querySelector('.pg415-ai-answer');
+  if(box)box.dataset.feedback=success?'success':'error';
+  if(success)el.input.placeholder=idx>=2?'Ответы приняты':'Ответ принят — следующий вопрос';
+  el.input.title=text;
+ }
 }
 function updateQuestions(){
  const el=elements();if(!el)return;

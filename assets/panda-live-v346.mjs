@@ -118,12 +118,19 @@ if (!bridge) {
     if(!micRecovery?.hidden&&!micHelp.open)micHelp.showModal();
   });
 
+  const dayReturnHref=()=>{
+    const params=new URLSearchParams(location.search);
+    const mini=/^[0-2]$/.test(params.get('mini')||'')?params.get('mini'):'0';
+    return params.get('from')==='hsk2-life-course'?
+      './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini:
+      './hsk2-life-course.html?topic=0';
+  };
   // Course 2 deep-link: reuse the REAL Panda AI voice/text/chat UI, not a mock.
   if(new URLSearchParams(location.search).get('practice')==='day'){
     const title=stage.querySelector('.pg346-title');
     if(title)title.textContent='🌅 Мой день';
     const back=stage.querySelector('.pg346-back');
-    if(back){back.href='./hsk2-life-course.html?topic=0';back.textContent='← К уроку';}
+    if(back){back.href=dayReturnHref();back.textContent='← К уроку';}
     // The first play on a new page may be blocked by Android autoplay policy.
     // A prominent real button provides the required user gesture for that SAME recorded line.
     const dayListen=stage.querySelector('#pg346-repeat');

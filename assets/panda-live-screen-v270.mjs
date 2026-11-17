@@ -166,6 +166,13 @@ function render(){
  refreshReview();updateMic();
 }
 function rotateGreeting(){let index=0;try{index=Number(storage?.getItem('pg-panda-live-practice-greeting-v1'))||0;storage?.setItem('pg-panda-live-practice-greeting-v1',String((index+1)%4))}catch{}return index%4}
+function dayReturnHref(){
+ const params=new URLSearchParams(location.search);
+ const mini=/^[0-2]$/.test(params.get('mini')||'')?params.get('mini'):'0';
+ return params.get('from')==='hsk2-life-course'?
+  './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini:
+  './hsk2-life-course.html?topic=0';
+}
 function initLesson(id){
  cancelFollowup();stopAudio();stopRecognition();base=prepareConversation(CONVERSATIONS.find(c=>c.id===id)||CONVERSATIONS[0],new Date());
  conversation=withPracticeGreeting(base,rotateGreeting());state.step=0;state.done=false;state.reviewStep=null;state.prompt=null;state.shortDisplay=null;state.nonstopDisplay=null;state.awaitQuestion=false;state.hint=false;state.topic=base.id;state.turns=0;state.askedInTopic=0;showLearnerFeedback(null);
@@ -174,7 +181,7 @@ function initLesson(id){
  $('allowed-topics').textContent='Доступны текущий и пройденные уроки: '+state.allowed.map(n=>CONVERSATIONS.find(c=>c.id===n).theme).join(', ')+'. Панда задаёт вопросы из этих уроков, использует их голосовые записи и разбирает слова.';
  $('words').replaceChildren();for(const w of [...(base.vocabulary||base.newWords||[]),...(base.examples||[])]){const p=document.createElement('p');p.textContent=[w.hanzi,w.pinyin,w.ru].join(' — ');$('words').append(p)}
  $('knowledge-answer').textContent='';$('message').value='';note('');
- if(state.dayMode){state.mode='nonstop';state.dayStep=0;state.dayDone=false;$('back-link').href='./hsk2-life-course.html?topic=0';$('allowed-topics').textContent='Практика Мой день: вопросы ограничены словами, которые ученик уже прошёл в курсе 2.';askNext();}else if(state.mode==='nonstop')askNext();else say(conversation.lines[0],false);
+ if(state.dayMode){state.mode='nonstop';state.dayStep=0;state.dayDone=false;$('back-link').href=dayReturnHref();$('allowed-topics').textContent='Практика Мой день: вопросы ограничены словами, которые ученик уже прошёл в курсе 2.';askNext();}else if(state.mode==='nonstop')askNext();else say(conversation.lines[0],false);
 }
 function askNext(){
  cancelFollowup();stopRecognition();stopAudio();state.awaitQuestion=false;state.dayResumeStep=null;
