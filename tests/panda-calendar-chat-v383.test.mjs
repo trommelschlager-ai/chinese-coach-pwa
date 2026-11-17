@@ -71,3 +71,15 @@ test('the duplicate unknown-meaning bubble is absent but reviewed grammar correc
  assert.match(html,/panda-live-v346\.mjs\?v=\d+/,'Panda approved UI module is loaded with a versioned URL');
  assert.match(html,/panda-live-screen-v270\.mjs\?v=\d+/,'Versioned Panda script is loaded');
 });
+
+test('Unrecorded Panda question does not trigger microphone-help banner',()=>{
+ const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
+ assert(ui.includes("const noExactClip="),'Status panel must distinguish absent exact MP3 from a microphone failure');
+ assert(ui.includes("problem=!noExactClip&&(micFailure||otherProblem)"),'Missing exact MP3 must not open the large error panel');
+ assert(ui.includes("if(problem&&micFailure&&needsMicHelp)warning.append(micHelpBtn);"),'Help is reserved for actual mic errors');
+ assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong||offTopicHint;"),'Reviewed lesson grammar feedback must remain visible');
+ const transcript=answerLive('你有没有妹妹？',{allowed:[1,4,6],topic:6});
+ assert.equal(transcript.kind,'question');
+ assert.match(transcript.message,/MP3-записи/);
+ assert.equal(transcript.reply.audioKey,null);
+});
