@@ -1,0 +1,54 @@
+/* Panda Go HSK 2 exact welcome v445; inert until approved 941x1602 artwork exists. */
+#app.approved-welcome-v390 .approved-welcome-screen .approved-art.pg445-enabled {
+ width:min(100%,58.74dvh)!important;
+ height:auto!important;
+ aspect-ratio:941 / 1602!important;
+ position:relative!important;
+ margin:0 auto!important;
+ overflow:hidden!important;
+ box-shadow:none!important;
+ border-radius:0!important;
+}
+#app.approved-welcome-v390 .approved-art.pg445-enabled > img{
+ width:100%!important;height:100%!important;
+ object-fit:contain!important;object-position:center!important;
+ pointer-events:none!important;
+}
+#app.approved-welcome-v390 .approved-art.pg445-enabled :is(
+ .poster-welcome-start,.poster-welcome-program,.poster-welcome-ai,
+ .poster-welcome-ai-card,.pg432-first-card,.pg432-back-home){display:none!important}
+#app.approved-welcome-v390 .approved-art.pg445-enabled .pg445-hotspot{
+ position:absolute!important;
+ z-index:20!important;
+ display:block!important;
+ margin:0!important;
+ padding:0!important;
+ border:0!important;
+ border-radius:14px!important;
+ background:transparent!important;
+ -webkit-tap-highlight-color:transparent!important;
+ cursor:pointer!important;
+ touch-action:manipulation!important;
+ text-decoration:none!important;
+}
+#app.approved-welcome-v390 .approved-art.pg445-enabled .pg445-hotspot:active{
+ background:rgba(160,39,186,.17)!important;
+ box-shadow:inset 0 0 0 2px rgba(141,48,176,.42)!important;
+ transform:scale(.985);
+}
+#app.approved-welcome-v390 .approved-art.pg445-enabled .pg445-hotspot:focus-visible{
+ outline:3px solid #8730c5!important;outline-offset:-3px!important;
+ background:rgba(160,39,186,.08)!important;
+}
+#app .pg445-back{left:3%;top:1.4%;width:12%;height:8%}
+#app .pg445-lessons{left:3.4%;top:61.2%;width:93%;height:8.3%}
+#app .pg445-words{left:4%;top:70.3%;width:22%;height:8.9%}
+#app .pg445-grammar{left:26%;top:70.3%;width:26%;height:8.9%}
+#app .pg445-practice{left:52%;top:70.3%;width:23%;height:8.9%}
+#app .pg445-ai{left:75%;top:70.3%;width:22%;height:8.9%}
+#app .pg445-program{left:20%;top:79.7%;width:61%;height:3.5%}
+#app .pg445-start{left:3.4%;top:83.3%;width:93%;height:7.9%}
+#app .pg445-dialogues{left:4%;top:92.1%;width:29.7%;height:7.8%}
+#app .pg445-audio{left:33.7%;top:92.1%;width:31.9%;height:7.8%}
+#app .pg445-tests{left:65.6%;top:92.1%;width:31%;height:7.8%}
+@media (prefers-reduced-motion:reduce){#app .pg445-hotspot{transition:none!important}}
