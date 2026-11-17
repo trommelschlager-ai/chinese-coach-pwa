@@ -357,6 +357,11 @@ function final(){
  ''+
  allWords.map(x=>'<div class="pg4-dict-line"><div><strong lang="zh-Hans">'+esc(x.zh)+'</strong><span>'+esc(x.py)+'</span><small>'+esc(x.ru)+'</small></div>'+
  audioButton(x.zh,'▶')+'</div>').join('')+'</details>')+
+ '<details class="pg4-repeat-tools"><summary>Повторить упражнения</summary><div>'+
+ '<button type="button" data-repeat="4">Повторить аудирование</button>'+
+ '<button type="button" data-repeat="7">Повторить календарь</button>'+
+ '<button type="button" data-repeat="10">Собрать фразы заново</button>'+
+ '<button type="button" data-repeat="11">Повторить вопросы</button></div></details>'+
  '<div class="pg-lesson-complete-actions"><button type="button" class="pg-end-repeat" data-restart>↻ Повторить урок</button><a class="pg-end-next" href="./hsk1-fifth-v227.html">Следующий урок →</a><a class="pg-end-back" href="./hsk1-map.html">Назад к Урокам</a></div>'+audioCredits;
 }
 const screens=[intro,()=>study(1),()=>study(2),sunday,()=>quiz(4,LISTEN,'audio'),timeWords,grammar,calendar,handwriting,dialogue,sentence,()=>quiz(11,examSet(),'exam'),final];
@@ -386,8 +391,13 @@ function complete(){
  save();
  window.PandaGoPathV371?.markComplete(4);
 }
-function screen(keep=false){
- // Completed exercises remain visible, rather than automatically skipping them.
+function completedExercise(step){
+ const limits={4:LISTEN.length,7:CALENDAR.length,10:BUILDS.length,11:examSet().length};
+ return Object.hasOwn(limits,step)&&state.ix[step]>=limits[step];
+}
+function screen(keep=false,direction=1){
+ // Skip completed exercise shells on restore and back/forward navigation.
+ while(completedExercise(state.step)&&state.step>0&&state.step<TOTAL-1)state.step+=direction;
  const pos=viewport.scrollTop;
  soundStop();writerStop();if(!keep)micStop(true);
  const s=state.step;if(s===12&&!state.done)complete();
@@ -442,6 +452,8 @@ function recordAnswer(right,selected,explain,kind){
 }
 function afterItem(){
  const s=state.step;
+ // Ignore stale/double continuation clicks; original exam scores remain immutable.
+ if(!state.answered||state.answered.step!==s||(!state.answered.correct&&s!==11))return;
  if(s===4||s===7||s===9||s===10||s===11){
   state.ix[s]++;state.answered=null;state.listenReady=false;
   state.tiles=[];state.used=[];
@@ -626,7 +638,7 @@ stage.addEventListener('click',ev=>{
  }
  if(btn.hasAttribute('data-next-item')){afterItem();return}
  if(btn.hasAttribute('data-repeat')){
-  const n=Number(btn.dataset.repeat);state.ix[n]=0;state.answered=null;state.listenReady=false;
+  const n=Number(btn.dataset.repeat);if(![4,7,9,10,11].includes(n))return;state.step=n;state.ix[n]=0;state.answered=null;state.listenReady=false;
   state.tiles=[];state.used=[];screen(true);return;
  }
  if(btn.hasAttribute('data-demo')){
@@ -663,7 +675,7 @@ stage.addEventListener('click',ev=>{
 });
 back.addEventListener('click',()=>{
  if(state.step===0){location.href='./hsk1-map.html';return}
- state.step--;state.answered=null;state.listenReady=false;state.tiles=[];state.used=[];screen()
+ state.step--;state.answered=null;state.listenReady=false;state.tiles=[];state.used=[];screen(false,-1)
 });
 forward.addEventListener('click',nextScreen);
 window.addEventListener('pagehide',()=>{soundStop();writerStop();micStop()});

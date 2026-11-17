@@ -1,0 +1,38 @@
+[
+  {
+    "lesson": 5,
+    "screen": "initial",
+    "equal": true,
+    "buttons": 6
+  },
+  {
+    "lesson": 5,
+    "screen": "vocabulary",
+    "equal": true,
+    "buttons": 6
+  },
+  {
+    "lesson": 6,
+    "screen": "initial",
+    "equal": true,
+    "buttons": 2
+  },
+  {
+    "lesson": 6,
+    "screen": "vocabulary",
+    "equal": true,
+    "buttons": 8
+  },
+  {
+    "lesson": 7,
+    "screen": "initial",
+    "equal": true,
+    "buttons": 2
+  },
+  {
+    "lesson": 7,
+    "screen": "vocabulary",
+    "equal": true,
+    "buttons": 6
+  }
+]
