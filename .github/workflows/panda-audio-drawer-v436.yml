@@ -1,0 +1,36 @@
+name: Panda AI v436 exact audio and compact drawer QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/panda-live-audio.mjs'
+      - 'assets/panda-live-v346.mjs'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'assets/panda-ask-catalog-v326.mjs'
+      - 'assets/panda-audio-study-v436.mjs'
+      - 'assets/panda-topics-compact-v436.css'
+      - 'tests/panda-audio-drawer-v436.test.mjs'
+      - 'panda-voice-pilot.html'
+      - 'sw.js'
+      - 'assets/offline-pack.json'
+      - '.github/workflows/panda-audio-drawer-v436.yml'
+  pull_request:
+    paths:
+      - 'tests/panda-audio-drawer-v436.test.mjs'
+      - 'assets/panda-live-audio.mjs'
+      - 'assets/panda-audio-study-v436.mjs'
+      - 'assets/panda-topics-compact-v436.css'
+jobs:
+  audio-and-mobile-drawer:
+    name: Exact 155 MP3, Mandarin pinyin, compact mobile drawer, offline QA
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install existing dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Check approved audio, metadata and drawer logic
+        run: node --test tests/panda-audio-drawer-v436.test.mjs
