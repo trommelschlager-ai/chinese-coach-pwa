@@ -1,7 +1,7 @@
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=426';
+import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=430';
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
@@ -20,6 +20,7 @@ import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
 import {isCalendarRoundFinished} from './panda-calendar-literal-v383.mjs?v=405';
 import {coherentPandaFollowup} from './panda-nonstop-continuity-v425.mjs?v=425';
 import {continueFamilyAfterAnswer} from './panda-family-turn-v426.mjs?v=427';
+import {enrichConversation430} from './panda-conversation-memory-v430.mjs?v=430';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -232,12 +233,20 @@ function submit(raw){
  if(state.mode==='nonstop'){
   const activePrompt=state.awaitQuestion?null:state.prompt?.line;
    const rawResult=correctCommonPhrase(input)||interpretWorkReply(input,{prompt:activePrompt})||answerLive(input,{allowed:state.allowed,topic:lesson(),prompt:activePrompt,curriculum,date:new Date(),turn:state.turns,profile:{...state.profile,recentQuestions:state.questions.slice(-40)}});
-   const result=continueFamilyAfterAnswer({
+   const familyResult=continueFamilyAfterAnswer({
     input,activePrompt,
     result:addPersonalFollowup(rawResult,{allowed:state.allowed,recentQuestions:state.questions.slice(-40)}),
     allowed:state.allowed,questions:state.questions.slice(-40),
     history:state.history.slice(-60),catalog:topicCatalogGroups(),lookupAudio:lookupPandaVoiceClip
    });
+   // v430: use only known facts from THIS open dialogue, and only reviewed
+   // questions whose exact approved Panda audio exists.
+   const result=state.confidence!==null&&state.confidence<.65?familyResult:
+    enrichConversation430({
+     input,activePrompt,result:familyResult,profile:state.profile,
+     allowed:state.allowed,questions:state.questions.slice(-40),
+     history:state.history.slice(-60),catalog:topicCatalogGroups(),lookupAudio:lookupPandaVoiceClip
+    });
   learner(input,result.spoken||analyzeLearner(input,state.allowed,state.prompt?.line,curriculum));
   if(result.kind==='empty'){note(result.message);return}
   if(result.kind==='correction'){recordCorrection(input,result.spoken);pose('retry');note(result.message);render();return}
