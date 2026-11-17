@@ -219,3 +219,18 @@
  display:flex!important;align-items:center;justify-content:center!important;
  padding:2px 5px!important;font-size:clamp(8px,2.4vw,11px)!important;
 }
+
+
+/* Fill exactly the top and bottom letterbox *gaps*, no duplicates of the poster.
+   941×1672 means image height is 177.683% of viewport width.
+   Use the matching original sky/lake graphics above the image, not an empty strip. */
+#app .pg415-art-screen::before,#app .pg415-ai-screen::before{
+ height:max(0px,calc((100dvh - 177.683vw) / 2 + 2px))!important;
+ z-index:3!important;
+ background:url('./approved-course-v390/sky-extension-v403.svg') center/100% 100% no-repeat!important;
+}
+#app .pg415-art-screen::after,#app .pg415-ai-screen::after{
+ height:max(0px,calc((100dvh - 177.683vw) / 2 + 2px))!important;
+ z-index:3!important;
+ background:url('./approved-course-v390/lake-extension-v403.svg') center/100% 100% no-repeat!important;
+}
