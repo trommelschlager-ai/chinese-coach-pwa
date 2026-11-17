@@ -425,6 +425,15 @@ document.addEventListener('click',function(e){
  if(b.dataset.nav){go(b.dataset.nav);return}
  if(b.dataset.toneAnswer!==undefined){state.toneAnswer=Number(b.dataset.toneAnswer);render();return}
  if(b.dataset.view){go(b.dataset.view);return}
+ if(b.dataset.v445Stage!==undefined){
+  // Exact approved HSK2 home: shortcuts reuse the real first mini-lesson.
+  const stage=Number(b.dataset.v445Stage);
+  if(!Number.isInteger(stage)||stage<0||stage>4)return;
+  enter(0,0);
+  if(state.day)state.day.pgApprovedCover=false;
+  state.stage=stage;
+  render();return;
+ }
  if(b.dataset.start!==undefined){enter(0,0);return}
  if(b.dataset.topic!==undefined){state.topic=Number(b.dataset.topic);go('topic');return}
  if(b.dataset.mini!==undefined){enter(state.topic,Number(b.dataset.mini));return}
