@@ -266,3 +266,15 @@
 #app.pg-v414-preview .dialogue-line .sound-sm:active{translate:0 2px}
 #app.pg-v414-preview .dialogue-line .sound-sm:focus-visible{outline:3px solid #edc458;outline-offset:3px}
 
+
+
+/* Panda Go HSK1 v416: lavender secondary controls and working greeting recorder. Test preview only. */
+#app.pg-v414-preview .pg-footer .secondary{background:linear-gradient(180deg,#f3eaff,#e2cdf9);border:1.5px solid #cba8ec;color:#5e2b8b;box-shadow:0 4px 0 #bea0dd,0 7px 12px #67338c20}
+#app.pg-v414-preview .pg-footer .secondary:not(:disabled):active{transform:translateY(2px)!important;translate:0 2px;box-shadow:0 2px 5px #64358c50!important}
+#app.pg-v414-preview .pg-v416-hello-recorder{display:flex;flex-direction:column;align-items:stretch;gap:9px;margin:16px auto 0;width:100%;max-width:375px}
+#app.pg-v414-preview .pg-v416-hello-recorder button{box-sizing:border-box;width:100%;flex:0 0 auto;min-height:56px;border-radius:26px;border:1.5px solid #caaded;background:linear-gradient(180deg,#f4eaff,#e4d0fb);color:#5c2b88;font-size:16px;font-weight:850;line-height:1.25;box-shadow:0 4px 0 #b698d9,0 8px 16px #7b4aa42b;cursor:pointer;touch-action:manipulation;padding:12px 13px}
+#app.pg-v414-preview .pg-v416-hello-recorder button[hidden]{display:none!important}
+#app.pg-v414-preview .pg-v416-hello-recorder button:focus-visible{outline:3px solid #e8b745;outline-offset:3px}
+#app.pg-v414-preview .pg-v416-hello-recorder button:not(:disabled):active{transform:translateY(2px)!important;translate:0 2px;filter:brightness(.97);box-shadow:0 2px 6px #663a8a42!important}
+#app.pg-v414-preview .pg-v416-hello-recorder #record-stop{background:linear-gradient(180deg,#f7e2f0,#edc7dc);color:#7d2857;border-color:#d99bb9;box-shadow:0 4px 0 #bc8aa4,0 8px 16px #7d365227}
+#app.pg-v414-preview .pg-v416-hello-recorder .pg-v416-record-status{display:block;margin:2px 5px 0;min-height:20px;font-size:13px;line-height:1.35;font-weight:650;text-align:center;color:#75528b}
