@@ -3,19 +3,19 @@ import {normalize,verifyAnswerFor} from '../panda-voice-pilot-engine.mjs?v=live6
 import {recordedPandaAnswer,recordedCourseScope} from '../panda-recorded-qa-v358.mjs?v=381';
 import {interpretUtterance,interpretFamily,weekdayForDate} from '../panda-live-conversation-v266.mjs?v=270';
 import {answerNonStop} from '../panda-nonstop-v267.mjs?v=270';
-import {lookupPilotAudio} from './panda-live-audio.mjs?v=qa-26072cf9';
+import {lookupPilotAudio} from './panda-live-audio.mjs?v=qa-v422';
 import {answerCurriculumQuestion} from '../panda-curriculum-tutor.mjs';
 import {chineseNumber} from '../panda-live-drafts.mjs?v=live6';
 import {lookupExtendedQuestion,extensionAnswer,extensionStatement,rememberedFamilyFollowup} from '../panda-hsk1-extensions-v282.mjs?v=284';
 import {checkedExtensionReply,recognizeApprovedPhrase} from '../panda-hsk1-answerbank-v284.mjs?v=284';
-import {patternQuestion,patternStudentAnswer,patternPrompts,conversationalFollowup} from './panda-hsk1-patterns-v285.mjs?v=qa-26072cf9';
+import {patternQuestion,patternStudentAnswer,patternPrompts,conversationalFollowup} from './panda-hsk1-patterns-v285.mjs?v=qa-v422';
 import {questionVariant,learnerAnswerVariant} from '../panda-hsk1-variants-v301.mjs?v=301';
 import {brainQuestion,interpretBrainSentence} from '../panda-brain-hsk1-v302.mjs?v=302';
 import {answerHsk2Bridge} from '../panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from '../panda-sentence-coach-v319.mjs?v=319';
 import {answerBasicConversation} from '../panda-basic-conversation-v323.mjs?v=336';
 import {analyzeCalendarLiteral,calendarAcknowledgement} from '../panda-calendar-literal-v383.mjs?v=401';
-import {reviewedYouYouMeiyou} from './panda-youyoumeiyou-v416.mjs?v=qa-26072cf9';
+import {reviewedYouYouMeiyou} from './panda-youyoumeiyou-v416.mjs?v=qa-v422';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
@@ -247,9 +247,18 @@ function extendQuestion(result,raw,allowed,date,profile){
  // Reciprocal age questions are valid in Mandarin, but silently asking
  // exactly the same question straight back looks like a broken Non-Stop loop.
  // End this automatic turn rather than invent a differently voiced question.
- if(/^你(?:哥哥|姐姐|弟弟|妹妹)(?:几岁|多大(?:了)?)$/.test(inputKey))
-   return {...result,followup:null,
-     message:'Панда ответила на вопрос о возрасте. Теперь можешь задать другой вопрос.'};
+ const ageMatch=/^你(哥哥|姐姐|弟弟|妹妹)(?:几岁|多大(?:了)?)$/.exec(inputKey);
+ if(ageMatch){
+   // Continue Non-Stop with a DIFFERENT recorded family question;
+   // keep the already asked age question out of the next turn.
+   const seen=new Set([inputKey,...(profile?.recentQuestions||[]).map(normalize)]);
+   const choices=topicPrompts(6,date,profile).filter(q=>q?.hanzi&&
+      q.verifiedLines?.[1]?.accepted&&!seen.has(normalize(q.hanzi)));
+   const otherRecorded=choices.find(q=>lookupPilotAudio(q.hanzi)&&!normalize(q.hanzi).includes(ageMatch[1]));
+   const different=otherRecorded||choices.find(q=>lookupPilotAudio(q.hanzi))||choices[0]||null;
+   return {...result,followup:different,
+     message:'Панда ответила о возрасте и продолжит другим семейным вопросом.'};
+ }
  const linked=linkedQuestion(raw,result.lesson,allowed,date,profile);
  const retain=result.followup?.intent==='relative-age'||result.followup?.isContextual;
  const suggested=retain?result.followup:(linked||result.followup||null);
@@ -257,7 +266,13 @@ function extendQuestion(result,raw,allowed,date,profile){
  // retain their existing lesson-specific continuation rules.
  if(result.lesson===6){
    const seen=new Set([inputKey,...(profile?.recentQuestions||[]).map(normalize)]);
-   return {...result,followup:suggested&&!seen.has(normalize(suggested.hanzi))?suggested:null};
+   if(suggested&&!seen.has(normalize(suggested.hanzi)))return {...result,followup:suggested};
+   // Existing HSK1 variant lessons require a tested same-topic follow-up.
+   // Prefer an actually recorded alternative; never repeat the same prompt.
+   const alternatives=topicPrompts(6,date,profile).filter(q=>q?.hanzi&&
+      q.verifiedLines?.[1]?.accepted&&!seen.has(normalize(q.hanzi)));
+   const alternative=alternatives.find(q=>lookupPilotAudio(q.hanzi))||alternatives[0]||null;
+   return {...result,followup:alternative};
  }
  return {...result,followup:suggested};
 }
@@ -326,6 +341,24 @@ export function answerLive(raw,options={}){
     :line('很好！','Hěn hǎo!','Отлично!'),
    followup:null,
    message:askedBack?'Панда ответила на твой встречный вопрос.':'Ответ принят. Можешь задать следующий вопрос или выбрать другую тему.'};
+ }
+ // The six original reviewed HSK1 family variants keep their existing
+ // exact canonical reply, verified follow-up, and lesson-lock semantics.
+ // 你有没有... is still exposed with its complete correct pinyin and voice.
+ const familyAlias=/^你有没有(哥哥|姐姐|弟弟|妹妹)$/.exec(s);
+ const originalFamilyVariant=familyAlias?questionVariant(raw):null;
+ if(originalFamilyVariant&&originalFamilyVariant.lesson===6&&
+    normalize(originalFamilyVariant.canonical)!==s){
+   const canonical=answerLive(originalFamilyVariant.canonical,options);
+   if(canonical.kind==='question'){
+     const py={哥哥:'gēge',姐姐:'jiějie',弟弟:'dìdi',妹妹:'mèimei'}[familyAlias[1]];
+     const kin={哥哥:'старший брат',姐姐:'старшая сестра',弟弟:'младший брат',妹妹:'младшая сестра'}[familyAlias[1]];
+     return {...canonical,spoken:{...canonical.spoken,hanzi:raw,
+       pinyin:'Nǐ yǒu méiyǒu '+py+'?',translation:'У тебя есть '+kin+'?',
+       topic:6,variantOf:originalFamilyVariant.canonical}};
+   }
+   if(canonical.kind==='locked')return {...canonical,
+     spoken:{known:false,hanzi:raw,pinyin:null,translation:null,topic:6}};
  }
  // Reviewed Mandarin A-not-A: 你有没有…？ (family and availability).
  // Run before general fallback so the exact phrase and tones are preserved.

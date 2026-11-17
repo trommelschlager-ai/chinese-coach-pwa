@@ -1,7 +1,7 @@
-import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=qa-fd36ffe7';
+import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=qa-v422';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from '../panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=qa-fd36ffe7';
+import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-live-audio.mjs?v=qa-v422';
 import {verifyAnswerFor,normalize} from '../panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from '../panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from '../panda-live-envelope.mjs?v=live6';
@@ -11,10 +11,10 @@ import {answerCurriculumQuestion} from '../panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from '../panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from '../panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from '../panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=qa-bd9a9f73';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=qa-v422';
 import {recordedPandaAnswer} from '../panda-recorded-qa-v358.mjs?v=381';
-import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=qa-9d60b9b6';
-import {chooseAudibleFollowup} from './panda-audible-followup-v412.mjs?v=qa-fd36ffe7';
+import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=qa-v422';
+import {chooseAudibleFollowup} from './panda-audible-followup-v412.mjs?v=qa-v422';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from '../panda-hsk2-day-coach-v1.mjs?v=398';
 import {interpretWorkReply,addPersonalFollowup} from '../panda-context-flow-v376.mjs?v=376';
 import {correctCommonPhrase} from '../panda-chat-corrections-v377.mjs?v=377';

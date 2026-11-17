@@ -2,9 +2,9 @@
  * Never advertise a free-form answer, recording, tone grade or locked lesson.
  * Entries are checked against the SAME engine used when the learner submits.
  */
-import {answerLive} from './panda-live-dialogue-v272.mjs?v=qa-9d60b9b6';
+import {answerLive} from './panda-live-dialogue-v272.mjs?v=qa-v422';
 import {PANDA_CLIPS} from '../panda-voice-clips-v365.mjs?v=365';
-import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=qa-9d60b9b6';
+import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=qa-v422';
 
 export const ASK_CANDIDATES=Object.freeze([
  {lesson:1,title:'Основы и приветствие',questions:['你好吗？','你今天怎么样？','你今天好吗？','晚上好！你好吗？','你呢？','你吃饭了吗？','你吃了吗？']},
