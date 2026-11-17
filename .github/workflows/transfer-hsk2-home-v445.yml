@@ -12,46 +12,31 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
-      - name: Fetch original approved no-status-bar picture
+      - name: Fetch exact approved image from user supplied file
         env:
-          CANVA_THUMBNAIL_URL: "https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2Fd40e5043-6387-48e5-87cf-fdd13e41be80/watermark:F/width:117?csig=AAAAAAAAAAAAAAAAAAAAAGDZ_ekn49JSD0jzKfBEPOhu7lZPMXr4-49pQ6pLo9iR&exp=1794968897&osig=AAAAAAAAAAAAAAAAAAAAABtNDPPBA6YqejcSwiAfBOi5ZF55bOzR8AJfAb32WSD-&signer=media-rpc&token=AAIAAU0AJGQ0MGU1MDQzLTYzODctNDhlNS04N2NmLWZkZDEzZTQxYmU4MAAAAAABoex7xegjOnlZjWl5enWTBEwLvf1Kfnd4um5kCOzO935wedeuDg&x-canva-quality=thumbnail"
+          APPROVED_IMAGE_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/0c4f7a7d-3693-4f99-8b53-d7a7d0276540.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOWE2MTMwYzZkM2E4YzU2NCIsImJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTA5NDM0Mn0.IdHOTDmzZY_NMzIJjlyY2JC26m8bUbN-8X65Zicz2Js"
         run: |
           set -euo pipefail
           python -m pip install -q pillow
           python - <<'PY'
-          import io, os, pathlib, urllib.request, urllib.error
+          import io,os,pathlib,urllib.request
           from PIL import Image
-          original=os.environ["CANVA_THUMBNAIL_URL"]
-          candidates=[
-            original.replace("/height:200/","/height:1602/").replace("/width:117?","/width:941?").replace("x-canva-quality=thumbnail","x-canva-quality=medium"),
-            original.replace("/height:200/","/height:1602/").replace("/width:117?","/width:941?"),
-            original.replace("/height:200/","/height:1200/").replace("/width:117?","/width:705?")
-          ]
-          image=None
-          for i,url in enumerate(candidates):
-            try:
-              request=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0"})
-              content=urllib.request.urlopen(request,timeout=45).read()
-              candidate=Image.open(io.BytesIO(content))
-              print("candidate",i,candidate.size,"bytes",len(content))
-              if candidate.width>=900 and candidate.height>=1400:
-                image=candidate.convert("RGB");break
-            except Exception as e: print("candidate",i,"not available:",str(e)[:180])
-          if image is None:
-            raise RuntimeError("Approved full resolution unavailable; refusing to publish thumbnail or modify live page.")
+          data=urllib.request.urlopen(urllib.request.Request(os.environ["APPROVED_IMAGE_URL"],headers={"User-Agent":"PandaGo/1.0"}),timeout=60).read()
+          im=Image.open(io.BytesIO(data))
+          if im.width!=941 or im.height!=1602:
+            raise RuntimeError("Unexpected artwork dimensions "+repr(im.size)+"; refusing to publish!")
           output=pathlib.Path("assets/hsk2-home-v445.webp")
-          output.parent.mkdir(exist_ok=True)
-          image.save(output,"WEBP",quality=94,method=6)
-          print("Approved asset",image.size,"bytes",output.stat().st_size)
+          im.convert("RGB").save(output,"WEBP",quality=95,method=6)
+          print("Approved exact image",im.size,"bytes",output.stat().st_size)
           PY
-      - name: Save approved image to main branch
+      - name: Save verified image to repository
         run: |
           set -e
           git config user.name "Panda Go Artwork Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/hsk2-home-v445.webp
           if ! git diff --cached --quiet; then
-            git commit -m "assets(hsk2): add approved v445 welcome artwork"
+            git commit -m "assets(hsk2): install approved HSK2 welcome picture v445"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
