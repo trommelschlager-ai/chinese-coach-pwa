@@ -22,23 +22,13 @@ export function lookupPandaVoiceClip(phrase){
  if(!key)return null;
  const newClip=PANDA_V411_VOICE.find(entry=>entry.zh===key);
  if(newClip)return {src:newClip.src,start:0,end:null,source:'user-luvvoice-nov16-cut'};
- // v426: these exact Nov 14 user-provided cuts are already in PANDA_CLIPS,
- // but the conversation must work before the optional browser voice index loads.
- // Explicit allowlist only; never infer audio for other Chinese sentences.
- if(['好的我明白了','谢谢你告诉我','你叫什么名字','你有姐姐吗','你有弟弟吗','你哥哥几岁','你妹妹几岁','你家有几口人'].includes(key)){
-  const cut=PANDA_CLIPS.find(item=>voiceNorm(item.zh)===key);
-  if(cut&&/^\.\/assets\/panda-voice-clips-v365\/p\d{3}\.mp3$/.test(cut.src))
-   return {src:cut.src,start:0,end:null,source:'user-luvvoice-nov14-cut'};
- }
- const index=typeof window!=='undefined'?window.PandaUserVoiceIndexV332?.clips:null;
- if(Array.isArray(index)){
-  const clip=index.find(item=>voiceNorm(item.zh)===key);
-  if(clip&&/^[\w.-]+\.mp3$/.test(clip.file)&&Number.isFinite(clip.start)&&Number.isFinite(clip.end)&&clip.end>clip.start){
-   const cut=PANDA_CLIPS.find(c=>c.file===clip.file&&c.start===clip.start&&c.end===clip.end&&voiceNorm(c.zh)===key);
-   // Dedicated files remove runtime seeks and their muted-unmute race.
-   return cut?{src:cut.src,start:0,end:null,source:'user-luvvoice-nov14-cut'}:null;
-  }
- }
+ // v436: all 155 exact, separately-cut approved recordings are already
+ // imported in PANDA_CLIPS. The optional browser voice index can be late,
+ // especially on Android. It must never gate playback of an existing MP3.
+ // Exact normalized Chinese text only: no substring, TTS or alternative voice.
+ const cut=PANDA_CLIPS.find(item=>voiceNorm(item.zh)===key&&
+  /^\.\/assets\/panda-voice-clips-v365\/p\d{3}\.mp3$/.test(item.src));
+ if(cut)return {src:cut.src,start:0,end:null,source:'user-luvvoice-nov14-cut'};
  const old=lookupPilotAudio(phrase);
  return old?{src:old,start:0,end:null,source:'prior-verified'}:null;
 }
