@@ -33,3 +33,4 @@ jobs:
           node --check assets/panda-grammar-hsk12-v1.mjs
           node --check assets/panda-grammar-hsk12-v2.mjs
           node --check assets/panda-live-screen-v270.mjs
+          node --check assets/panda-live-v346.mjs
