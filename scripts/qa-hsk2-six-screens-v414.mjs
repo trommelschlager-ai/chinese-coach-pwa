@@ -16,6 +16,7 @@ try{
   await page.locator('.pg414-vocab-row').first().waitFor();
   const scan=async name=>{
    await page.waitForFunction(()=>{const im=document.querySelector('.pg415-art');return !im||(im.complete&&im.naturalWidth===941)},null,{timeout:16000});
+   await page.locator('.pg415-art').evaluate(async img=>{await img.decode();await new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done))) });
    const info=await page.evaluate(()=>{
     const root=document.getElementById('app');
     const w=document.documentElement.clientWidth;
