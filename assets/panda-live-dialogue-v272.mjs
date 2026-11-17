@@ -164,7 +164,7 @@ function answersPrompt(spoken,raw,prompt){
  if(!prompt)return false;const s=normalize(raw);
  if(prompt.intent==='pattern')return !!patternStudentAnswer(raw,prompt,[prompt.lesson,...(prompt.requires||[])],new Date(prompt.calendarDate||Date.now()));
  if(prompt.intent==='extension')return prompt.accepted?.some(a=>normalize(a)===s)||false;
- if(prompt.lesson===6&&spoken.family){const f=spoken.family,n=prompt.relative||'哥哥';return !f.present.includes(f.absent)&&(f.absent===n||f.present.includes(n))}
+ if(prompt.lesson===6&&spoken.family){const f=spoken.family,asked=/^你有(哥哥|姐姐|弟弟|妹妹)吗$/.exec(normalize(prompt.hanzi||prompt.panda||''));const n=prompt.relative||asked?.[1]||'哥哥';return !f.present.includes(f.absent)&&(f.absent===n||f.present.includes(n))}
  if(prompt.lesson===2&&normalize(prompt.hanzi||prompt.panda)==='你是老师吗'&&spoken.fact?.role)return spoken.fact.subject==='我'&&(spoken.fact.role==='老师'||spoken.fact.role==='学生'&&!spoken.fact.negative);
  if(prompt.intent==='name')return !!spoken.fact?.name;
  if(prompt.intent==='age')return !!spoken.fact?.age;
