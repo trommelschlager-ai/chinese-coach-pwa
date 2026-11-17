@@ -29,19 +29,53 @@ function ensureDay(state){
  if(!state.day)state.day=original.makeState(state.mini);
  const d=state.day; d.v414=d.v414||{};
  d.v414.highest=Number.isInteger(d.v414.highest)?d.v414.highest:0;
+ d.v414.testPage=Number.isInteger(d.v414.testPage)?Math.max(0,Math.min(2,d.v414.testPage)):0;
  return d;
 }
+function partReady(state,page){
+ const d=ensureDay(state),v=d.v414;
+ const m=window.PandaGoDayModulesV391?.[state.mini];
+ if(!m)return false;
+ if(page===0)return d.quiz[0]===m.quiz[0].answer&&d.quiz[1]===m.quiz[1].answer&&v.pairs?.length===3;
+ if(page===1){
+  const norm=x=>String(x||'').replace(/[\s，。？！,.]/g,'');
+  return v.listen===0&&d.build.length===m.builder.length&&norm(d.build.map(i=>m.builder[i]).join(''))===norm(m.target);
+ }
+ return v.fill===0&&v.truth===true; // approved first mini-lesson questions 6 and 7
+}
 function livePanel(state,ctx){
- const parser=document.createElement('template');
- parser.innerHTML=original.render(state,ctx);
- const panel=parser.content.querySelector('.pg414-panel');
- return panel?panel.outerHTML:'<div class="pg415-error">Не удалось показать интерактивный тест</div>';
+ const t=document.createElement('template');
+ t.innerHTML=original.render(state,ctx);
+ const panel=t.content.querySelector('.pg414-test');
+ if(!panel)return '<div class="pg415-error">Не удалось показать интерактивный тест</div>';
+ const page=ensureDay(state).v414.testPage,parts=[[0,1,2],[3,4],[5,6]];
+ Array.from(panel.querySelectorAll('.pg414-question')).forEach((card,i)=>{if(!parts[page].includes(i))card.remove()});
+ const header=panel.querySelector('.pg414-panel-title');
+ if(header){
+  const mark=document.createElement('div');
+  mark.className='pg418-test-step-indicator';
+  mark.setAttribute('aria-label','Страница '+(page+1)+' из трёх');
+  mark.textContent='Страница '+(page+1)+' из 3 · '+['Значения и слова','Слушание и предложение','Закрепление'][page];
+  header.insertAdjacentElement('afterend',mark);
+ }
+ const tip=panel.querySelector('.pg414-info');
+ if(tip)tip.textContent=partReady(state,page)?
+  (page===2?'✓ Тест готов. Нажми «Завершить тест».':'✓ Часть выполнена. Нажми «Дальше».'):
+  ('Сначала правильно выполни задания '+(page+1)+'-й страницы.');
+ panel.classList.add('pg418-test-part','pg418-test-part-'+page);
+ return panel.outerHTML;
 }
 function nav(stage,state){
- const done=stage===3&&!original.ready(state);
- let out=press(23,navY[stage][0],420,133,'data-day-prev','Назад');
- out+=press(451,navY[stage][1],457,133,'data-day-next'+(done?' disabled':''),stage===4?'Завершить урок':'Дальше',done?'pg415-disabled':'');
- out+=press(20,18,108,110,'data-day-prev','Назад');
+ const page=stage===3?ensureDay(state).v414.testPage:0;
+ const blocked=stage===3&&(page<2?!partReady(state,page):!original.ready(state));
+ let out=press(23,navY[stage][0],420,133,stage===3&&page>0?'data-pg418-test-prev':'data-day-prev','Назад');
+ if(stage===3){
+  out+='<button type="button" class="pg415-hit pg418-test-next'+(blocked?' pg415-disabled':'')+'" style="'+at(451,navY[stage][1],457,133)+'" '+
+   (page<2?'data-pg418-test-next':'data-day-next')+(blocked?' disabled':'')+
+   ' aria-label="'+(page<2?'Следующая страница теста':'Завершить тест')+'">'+
+   (page<2?'Дальше →':'Завершить тест ✓')+'</button>';
+ }else out+=press(451,navY[stage][1],457,133,'data-day-next'+(blocked?' disabled':''),stage===4?'Завершить урок':'Дальше',blocked?'pg415-disabled':'');
+ out+=press(20,18,108,110,stage===3&&page>0?'data-pg418-test-prev':'data-day-prev','Назад');
  const xs=[25,213,395,565,739],width=175;
  for(let i=0;i<5;i++){
   if(i===stage)continue;
@@ -63,14 +97,18 @@ function vocabulary(state,ctx){
 function grammar(state,ctx){
  let out='';
  ruleExamples.forEach((zh,i)=>{
-  out+='<span class="pg414-example-compact pg415-example-audio" style="'+at(363, i?974:775,90,100)+'">'+ctx.sound(zh)+'</span>';
+  out+='<span class="pg414-example-compact pg415-example-audio" style="'+at(363,i?974:775,90,100)+'">'+ctx.sound(zh)+'</span>';
  });
  const choice=ensureDay(state).v414.rule;
- out+='<div class="pg415-rule-cover" style="'+at(45,1407,846,100)+'">'+
-  ['我 每天 七点 起床。','我 七点 每天 起床。'].map((s,i)=>
-  '<button type="button" data-day-rule-choice="'+i+'" class="'+(choice===i?(i===0?'pg415-correct':'pg415-wrong'):'')+'">'+
-  (choice===i?(i===0?'✓ ':'× '):'○ ')+s+'</button>').join('')+'</div>';
- if(choice!==null&&choice!==undefined)out+='<div class="pg415-rule-notice" style="'+at(215,1366,580,39)+'">'+(choice===0?'✓ Правильный порядок слов':'× Попробуй ещё раз')+'</div>';
+ // Overlay the original tiny exercise, not the approved header or two example pictures.
+ // Unlike the old implementation this overlay NEVER floats a yellow notice over a word.
+ out+='<div class="pg415-rule-cover pg418-rule-exercise" style="'+at(31,1175,879,337)+'">'+
+  '<h3>🎯 Упражнение</h3><p>Выбери правильный порядок слов</p>'+
+  '<div class="pg418-rule-options">'+
+  ['我 每天 七点 起床。','我 七点 每天 起床。'].map((t,i)=>
+   '<button type="button" data-day-rule-choice="'+i+'" class="'+(choice===i?(i===0?'pg415-correct':'pg415-wrong'):'')+'">'+
+    (choice===i?(i===0?'✓ ':'× '):'○ ')+t+'</button>').join('')+
+  '</div></div>';
  return out;
 }
 function speech(state,ctx){
@@ -126,14 +164,30 @@ function render(state,ctx){
 }
 function next(state,api){
  if(state.mini!==0)return original.next(state,api);
- if(state.stage===3&&!original.ready(state))return;
+ const d=ensureDay(state);
+ if(state.stage===3){
+  if(d.v414.testPage<2){
+   if(!partReady(state,d.v414.testPage))return;
+   d.v414.testPage++;api.render();return;
+  }
+  if(!original.ready(state))return;
+ }
+ if(state.stage===2)d.v414.testPage=0;
  const n=state.stage;
- if(n<4)ensureDay(state).v414.highest=Math.max(state.day.v414.highest,n+1);
+ if(n<4)d.v414.highest=Math.max(d.v414.highest,n+1);
  original.next(state,api);
 }
 function handle(button,state,api){
  if(state.mini!==0)return original.handle(button,state,api);
  const k=button.dataset,d=ensureDay(state);
+ if(k.pg418TestNext!==undefined){
+  if(state.stage===3&&d.v414.testPage<2&&partReady(state,d.v414.testPage)){d.v414.testPage++;api.render()}
+  return true;
+ }
+ if(k.pg418TestPrev!==undefined){
+  if(state.stage===3&&d.v414.testPage>0){d.v414.testPage--;api.render()}
+  return true;
+ }
  if(k.pg415Tab!==undefined){
   const n=Number(k.pg415Tab);
   if(n<=d.v414.highest){original.cancel();state.stage=n;api.render()}
