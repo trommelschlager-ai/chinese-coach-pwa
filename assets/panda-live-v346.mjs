@@ -155,8 +155,15 @@ if (!bridge) {
   function playHistory(entry){stopHistoryAudio();bridge.playEntry(entry);sync()}
 
   function renderRows(rows){const root=$('#pg346-rows');root.replaceChildren();for(const e of rows.slice(-3)){
-    const row=el('article','pg346-row');const av=el('span','pg346-avatar');if(e.who==='you')av.textContent='👤';else{const img=document.createElement('img');img.src='./assets/panda-character-clean-v349.webp?v=349';img.alt='Панда';av.append(img)}
-    const text=el('div','pg346-text');text.append(el('div','pg346-zh',e.hanzi||''),el('div','pg346-py',e.pinyin||''));
+    const example=e.who==='example'||e.analysis?.kind==='correction-response';
+    const row=el('article','pg346-row'+(example?' pg445-example-row':''));
+    const av=el('span','pg346-avatar');
+    if(example){av.textContent='💡';av.setAttribute('aria-label','Учебный пример, а не реплика Панды');}
+    else if(e.who==='you')av.textContent='👤';
+    else{const img=document.createElement('img');img.src='./assets/panda-character-clean-v349.webp?v=349';img.alt='Панда';av.append(img)}
+    const text=el('div','pg346-text');
+    if(example)text.append(el('div','pg445-example-label','Правильный пример · не реплика Панды'));
+    text.append(el('div','pg346-zh',e.hanzi||''),el('div','pg346-py',e.pinyin||''));
     const translation=el('div','pg346-ru',e.ru||e.analysis?.probable||'Перевод пока не подтверждён');
     if(e.analysis?.kind==='calendar-complete'&&e.analysis.summary){
      translation.append(el('div','pg406-finish',e.analysis.summary));
@@ -259,28 +266,37 @@ if (!bridge) {
   function renderFeedback(s){
     const last=s.history.slice().reverse().find(x=>x.who==='you');
     const wrong=last?.analysis?.correction;
-    // A grammatically valid reply to the wrong question is NOT an error.
-    // For browser ASR, explain only the transcribed text, not spoken tones.
+    // A valid answer with a different meaning is not a grammar error.
+    // Audio/ASR gives only a transcript, NOT a reliable tone assessment.
     const root=$('#pg346-feedback'),active=!!wrong;
     const key=[last?.hanzi,wrong?.hanzi,wrong?.why,wrong?.retry,s.feedback,active].join('|');
     if(key===lastFeedback)return;
     lastFeedback=key;root.hidden=!active;root.replaceChildren();
     if(!active)return;
-    const meaningOnly=wrong?.category==='meaning';
+    const meaningOnly=wrong.category==='meaning';
     root.dataset.kind=meaningOnly?'meaning':'grammar';
-    root.append(el('strong','',meaningOnly?'🐼 Панда объясняет смысл':'🐼 Панда исправляет грамматику'));
-    if(wrong){
-      if(wrong.title)root.append(el('p','pg441-title',wrong.title));
-      root.append(el('p','pg377-meaning','Сказано: '+(last.analysis?.probable||wrong.ru||'смысл уточняется')));
-      root.append(el('p',meaningOnly?'pg441-alternative':'pg377-error',(meaningOnly?'💬 ':'❌ ')+last.hanzi));
-      if(wrong.label)root.append(el('p','pg441-label',wrong.label+':'));
-      root.append(el('p','pg377-correct',(meaningOnly?'💡 ':'✅ ')+wrong.hanzi));
-      if(wrong.pinyin)root.append(el('p','pg377-pinyin',wrong.pinyin));
-      if(wrong.ru)root.append(el('p','pg377-translation','Перевод: '+wrong.ru));
-      if(wrong.why)root.append(el('p','pg377-explanation','Почему: '+wrong.why));
-      if(wrong.retry)root.append(el('p','pg441-retry','🎙 '+wrong.retry));
-      if(wrong.uncertain)root.append(el('p','pg441-uncertain','⚠️ Проверь распознанную фразу — браузер мог ослышаться.'));
-    }
+    const heading=el('strong','pg445-heading',
+      meaningOnly?'🐼 Другой смысл — не ошибка грамматики':'🐼 Панда объясняет ошибку');
+    root.append(heading);
+    if(wrong.uncertain)root.append(el('p','pg441-uncertain',
+      '⚠️ Браузер мог ослышаться. Сначала проверь распознанный текст.'));
+    root.append(
+      el('p','pg445-before','💬 '+(last.hanzi||'')),
+      el('p','pg445-after','💡 Пример ответа: '+wrong.hanzi)
+    );
+    if(wrong.pinyin)root.append(el('p','pg445-pinyin',wrong.pinyin));
+    const shortRule=meaningOnly?'要 (yào) — хотеть; 有 (yǒu) — иметь.':
+      wrong.title||'Смотри правило и попробуй ещё раз.';
+    root.append(el('p','pg445-brief',shortRule));
+    const details=document.createElement('details');details.className='pg445-details';
+    const trigger=document.createElement('summary');trigger.textContent='Подробнее — объяснение и перевод';
+    details.append(trigger);
+    if(wrong.label)details.append(el('p','pg445-label',wrong.label));
+    details.append(el('p','pg445-meaning','Сказано: '+(last.analysis?.probable||'Смысл уточняется')));
+    if(wrong.ru)details.append(el('p','pg445-translation','Пример: '+wrong.ru));
+    if(wrong.why)details.append(el('p','pg445-why','Почему: '+wrong.why));
+    if(wrong.retry)details.append(el('p','pg445-retry','🎙 '+wrong.retry));
+    root.append(details);
   }
   function ingestSpeechSignal(signal,previousSnapshot){
     if(!signal||signal.id===lastSpeechSignalId)return;
