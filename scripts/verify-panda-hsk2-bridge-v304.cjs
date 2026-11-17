@@ -99,7 +99,7 @@ const vm=require('node:vm');
  ])assert(offline.files.includes(p),'Offline material missing: '+p);
  const latest={
   'panda-voice-pilot.html':'326',
-  'assets/panda-live-screen-v270.mjs':'424',
+  'assets/panda-live-screen-v270.mjs':'425',
   'assets/panda-live-dialogue-v272.mjs':'424',
   'assets/panda-hsk1-questions-v281.mjs':'319'
  };
