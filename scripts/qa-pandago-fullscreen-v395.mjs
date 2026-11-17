@@ -102,7 +102,7 @@ try{
   await page.locator('.pg414-vocab-row').first().waitFor({state:'visible',timeout:20000});
   assert.equal(await page.locator('.pg414-vocab-row').count(),7,'All seven real interactive day vocabulary rows visible');
   assert.equal(await page.locator('.pg414-vocab-row .audio').count(),7,'Each word has an audio control');
-  assert.equal(await page.locator('#day-fixed-actions [data-day-next]').count(),1,'Real step navigation preserved');
+  assert.equal(await page.locator('.pg415-art-screen [data-day-next]').count(),1,'Real step navigation preserved');
   await page.screenshot({path:'qa/pandago-fullscreen-v395/day-'+tag+'.png',fullPage:false});
   await page.locator('[data-day-next]').click();
   assert.equal(await page.locator('.pg415-step-1,.pg414-rule').count(),1,'Approved grammar artwork follows vocabulary');
