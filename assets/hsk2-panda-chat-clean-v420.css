@@ -1,0 +1,58 @@
+/* Panda Go HSK2 v420 — only the approved sixth Panda AI screen. */
+#app.day-done-active .pg415-ai-screen #pg414-ai-feedback,
+#app.day-done-active .pg415-ai-screen #pg414-ai-feedback.pg419-sr-status{
+ /* Live announcements remain available to screen readers without drawing
+    a second yellow/beige message bar across the microphone or the lake. */
+ position:absolute!important;
+ width:1px!important;height:1px!important;
+ min-width:0!important;min-height:0!important;
+ padding:0!important;margin:-1px!important;border:0!important;
+ overflow:hidden!important;
+ clip:rect(0,0,0,0)!important;clip-path:inset(50%)!important;
+ white-space:nowrap!important;opacity:0!important;
+ background:transparent!important;box-shadow:none!important;
+ pointer-events:none!important;
+}
+#app.day-done-active .pg415-ai-screen .pg415-ai-submit,
+#app.day-done-active .pg415-ai-screen .pg415-ai-answer .pg415-ai-submit {
+ /* Cover the baked-in gold checkmark with a real purple SEND control. */
+ position:absolute!important;z-index:21!important;
+ top:5%!important;right:1.5%!important;
+ width:14%!important;height:90%!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ padding:0!important;
+ border:2px solid #ffe5a4!important;border-radius:999px!important;
+ background:linear-gradient(145deg,#ba51e9,#7b259e 75%)!important;
+ box-shadow:0 2px 7px #5510778a,inset 0 1px 3px #ecb1ff!important;
+ color:#fff!important;opacity:1!important;
+ font-family:system-ui, sans-serif!important;font-size:clamp(19px,5vw,30px)!important;
+ font-weight:950!important;text-shadow:0 1px 2px #43105d!important;
+ -webkit-tap-highlight-color:transparent!important;
+ touch-action:manipulation!important;
+}
+#app.day-done-active .pg415-ai-screen .pg415-ai-submit>span{
+ display:inline-block!important;line-height:1!important;transform:translateX(1px)!important;
+}
+#app.day-done-active .pg415-ai-screen .pg415-ai-submit:active{
+ background:linear-gradient(145deg,#ba51e9,#7b259e 75%)!important;
+ box-shadow:0 2px 7px #5510778a,inset 0 1px 3px #ecb1ff!important;
+ outline:none!important;transform:none!important;
+}
+#app.day-done-active .pg415-ai-screen .pg415-ai-submit:focus-visible{
+ outline:2px solid #fff1be!important;outline-offset:2px!important;
+}
+#app.day-done-active .pg415-ai-screen #pg414-ai-input{
+ /* Keep exactly one text input; its ARIA label announces the target language. */
+ border:0!important;outline:0!important;
+ background:transparent!important;box-shadow:none!important;
+}
+#app.day-done-active .pg415-ai-screen #pg414-ai-input:focus{
+ border:0!important;outline:0!important;box-shadow:none!important;
+}
+/* No persistent audio-warning bar covering the bottom gold Next button.
+   JS clears the informative accessible message shortly after it appears. */
+#app.day-done-active:has(.pg415-ai-screen) #message:not(:empty){
+ max-height:44px!important;overflow:hidden!important;
+ bottom:calc(116px + env(safe-area-inset-bottom))!important;
+ font-size:11px!important;line-height:1.2!important;
+}

@@ -121,9 +121,8 @@ if (!bridge) {
   const dayReturnHref=()=>{
     const params=new URLSearchParams(location.search);
     const mini=/^[0-2]$/.test(params.get('mini')||'')?params.get('mini'):'0';
-    return params.get('from')==='hsk2-life-course'?
-      './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini:
-      './hsk2-life-course.html?topic=0';
+    // Return the pupil to the last HSK2 lesson screen, never the topic map.
+    return './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini+'&v=420';
   };
   // Course 2 deep-link: reuse the REAL Panda AI voice/text/chat UI, not a mock.
   if(new URLSearchParams(location.search).get('practice')==='day'){

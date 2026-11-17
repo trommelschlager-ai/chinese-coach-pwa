@@ -169,9 +169,7 @@ function rotateGreeting(){let index=0;try{index=Number(storage?.getItem('pg-pand
 function dayReturnHref(){
  const params=new URLSearchParams(location.search);
  const mini=/^[0-2]$/.test(params.get('mini')||'')?params.get('mini'):'0';
- return params.get('from')==='hsk2-life-course'?
-  './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini:
-  './hsk2-life-course.html?topic=0';
+ return './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini+'&v=420';
 }
 function initLesson(id){
  cancelFollowup();stopAudio();stopRecognition();base=prepareConversation(CONVERSATIONS.find(c=>c.id===id)||CONVERSATIONS[0],new Date());
@@ -499,7 +497,7 @@ $('message-form').addEventListener('submit',e=>{e.preventDefault();state.confide
 $('mic').addEventListener('click',startRecognition);$('speech-allow').addEventListener('click',()=>{state.speechConsent=true;$('speech-dialog').close();startRecognition()});
 $('hear').addEventListener('click',()=>play());$('speed-toggle').addEventListener('click',()=>{state.slow=!state.slow;$('speed-toggle').textContent=state.slow?'🐢 0,8×':'▶ 1×';$('speed-toggle').setAttribute('aria-pressed',String(state.slow));if(audio)audio.playbackRate=state.slow?.8:1});
 $('mode-short').addEventListener('click',()=>setMode('short'));$('mode-nonstop').addEventListener('click',()=>setMode('nonstop'));
-$('next').addEventListener('click',askNext);$('finish').addEventListener('click',()=>{if(state.dayMode){location.href='./hsk2-life-course.html?topic=0';return;}cancelFollowup();stopAudio();stopRecognition();state.prompt=null;setMode('short');note('Non-Stop завершён. История осталась в этой вкладке.');});
+$('next').addEventListener('click',askNext);$('finish').addEventListener('click',()=>{if(state.dayMode){location.assign(dayReturnHref());return;}cancelFollowup();stopAudio();stopRecognition();state.prompt=null;setMode('short');note('Non-Stop завершён. История осталась в этой вкладке.');});
 $('reset').addEventListener('click',()=>initLesson(conversation.id));$('hint').addEventListener('click',()=>{state.hint=!state.hint;render()});
 for(const [button,dialog] of [['history-open','history-dialog'],['study-open','study-dialog']])$(button).addEventListener('click',()=>{stopRecognition();stopAudio();if(dialog==='study-dialog'){
  const studyTopic=lesson(),studyBase=CONVERSATIONS.find(c=>c.id===studyTopic);$('words').replaceChildren();const seenWords=new Set();for(const [zh,py,ru] of [...(curriculum[studyTopic-1]?.words||[]),...(studyBase?.examples||[]).map(w=>[w.hanzi,w.pinyin,w.ru])]){if(seenWords.has(zh))continue;seenWords.add(zh);const row=document.createElement('p');row.textContent=[zh,py,ru].join(' — ');$('words').append(row)}

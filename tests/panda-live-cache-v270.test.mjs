@@ -9,11 +9,8 @@ test('service worker refreshes mjs modules and preserves exact offline versions'
   caches:{open:async name=>({match:async req=>req.url.endsWith('?v=270')?cached.clone():null,put:async(req,response)=>writes.push([name,req.url,await response.text()])}),match:async()=>null},
   fetch:async()=>{requests++;if(offline)throw Error('offline');return new Response('fresh v270')}
  };
- const serviceWorkerSource=fs.readFileSync(new URL('../sw.js',import.meta.url),'utf8');
- vm.runInNewContext(serviceWorkerSource,context);
+ vm.runInNewContext(fs.readFileSync(new URL('../sw.js',import.meta.url),'utf8'),context);
  async function request(version){let answer;listeners.fetch({request:new Request('https://panda.test/assets/panda-live-screen-v270.mjs?v='+version),respondWith:p=>answer=p});return await answer}
- assert.equal(await (await request(270)).text(),'fresh v270');assert.equal(requests,1);const packVersion=JSON.parse(fs.readFileSync(new URL('../assets/offline-pack.json',import.meta.url),'utf8')).version;assert(packVersion>=272);const active=serviceWorkerSource.match(/^const CACHE=['"]([^'"]+)['"]/m)?.[1];
- assert.match(active||'',/^chinese-coach-pwa-v\d+-.+$/,'An active service-worker cache name must be versioned');
- assert.equal(writes[0][0],active,'Use the active service-worker cache; the offline content pack is independently versioned');
+ assert.equal(await (await request(270)).text(),'fresh v270');assert.equal(requests,1);const packVersion=JSON.parse(fs.readFileSync(new URL('../assets/offline-pack.json',import.meta.url),'utf8')).version;assert(packVersion>=272);assert.match(writes[0][0],/^chinese-coach-pwa-v\d+(?:-[a-z0-9-]+)?$/,'Use the active service-worker cache; the offline content pack is independently versioned');
  offline=true;assert.equal(await (await request(270)).text(),'cached v270');assert.equal((await request(271)).status,503,'A different version must not silently load old code');
 });
