@@ -21,6 +21,7 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Verify the six actual interactive screens
         run: node tests/hsk2-six-screens-v414.test.cjs
+      - run: npm install --no-save --no-audit --no-fund playwright
       - run: npx playwright install chromium
       - name: Verify Android screen sizes and capture six images
         run: |
