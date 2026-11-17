@@ -24,12 +24,16 @@ try{
  await page.locator('[data-day-next]').click(); // speech
  assert.equal(await page.locator('.pg414-speech-row').count(),7);
  await page.locator('[data-day-next]').click(); // seven-question test
- assert.equal(await page.locator('.pg414-question').count(),7);
+ assert.equal(await page.locator('.pg414-question').count(),3);
  await page.locator('[data-day-quiz="0:1"]').click();
  await page.locator('[data-day-quiz="1:0"]').click();
  for(let i=0;i<3;i++){await page.locator('[data-day-pair-left="'+i+'"]').click();await page.locator('[data-day-pair-right="'+i+'"]').click();}
+ await page.locator('[data-pg418-test-next]').click();
+ assert.equal(await page.locator('.pg414-question').count(),2);
  await page.locator('[data-day-listen="0"]').click();
  for(let i=0;i<4;i++)await page.locator('[data-day-token="'+i+'"]').click();
+ await page.locator('[data-pg418-test-next]').click();
+ assert.equal(await page.locator('.pg414-question').count(),2);
  await page.locator('[data-day-fill="0"]').click();
  await page.locator('[data-day-truth="true"]').click();
  assert.match(await page.locator('.pg414-test .pg414-progress').textContent(),/7\/7/);

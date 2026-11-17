@@ -293,7 +293,7 @@ var lastPaintKey=null;
 function render(){
  // Word choice, quiz taps and pronunciation results must not jump to the top.
  // Reset only when the learner really changes page / lesson / step.
- var paintKey=[state.view,state.topic,state.mini,state.stage,state.day&&state.day.poster?'poster':'content'].join(':');
+ var paintKey=[state.view,state.topic,state.mini,state.stage,state.view==='lesson'&&state.topic===0&&state.stage===3?(state.day?.v414?.testPage||0):'',state.day&&state.day.poster?'poster':'content'].join(':');
  var preserve=paintKey===lastPaintKey;
   // A navigation step must silence the previous lesson's clip before repainting.
   if(lastPaintKey!==null&&!preserve)window.PandaHsk2AudioV330?.stop?.();

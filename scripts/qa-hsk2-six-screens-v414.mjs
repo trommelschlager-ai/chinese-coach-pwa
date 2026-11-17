@@ -70,28 +70,32 @@ try{
   await scan('03-speech');
   await page.locator('[data-day-next]').click();
   await page.locator('.pg414-test').waitFor();
-  assert.equal(await page.locator('.pg414-question').count(),7);
+  assert.equal(await page.locator('.pg414-question').count(),3,'Page 1 shows only tasks 1-3');
   await scan('04-test');
   const exam=page.locator('.pg415-live-test');
-  assert.equal(await exam.count(),1,'The seven-question test must have its own scroll container');
-  await exam.evaluate(el=>{el.scrollTop=Math.min(220,el.scrollHeight-el.clientHeight)});
-  const before=await exam.evaluate(el=>el.scrollTop);
-  assert.ok(before>50,'Test has enough content to demonstrate scrolling '+tag);
-  await page.locator('[data-day-quiz="0:1"]').evaluate(el=>el.click());
-  await page.waitForTimeout(80);
-  const after=await exam.evaluate(el=>el.scrollTop);
-  assert.ok(Math.abs(after-before)<=3,'No scrolling back to top after choosing answer '+tag+' before='+before+' after='+after);
-  await page.locator('[data-day-pair-left="0"]').evaluate(el=>el.click());
-  await page.waitForTimeout(60);
-  assert.ok(Math.abs((await exam.evaluate(el=>el.scrollTop))-before)<=3,'Matching pairs must retain the reading position '+tag);
+  assert.equal(await exam.count(),1,'Independent test panel retained');
+  const overflow=await exam.evaluate(el=>el.scrollHeight-el.clientHeight);
+  if(overflow>24){
+   await exam.evaluate(el=>{el.scrollTop=Math.min(70,el.scrollHeight-el.clientHeight)});
+   const before=await exam.evaluate(el=>el.scrollTop);
+   await page.locator('[data-day-quiz="0:1"]').evaluate(el=>el.click());
+   await page.waitForTimeout(70);
+   assert.ok(Math.abs((await exam.evaluate(el=>el.scrollTop))-before)<5,'Answer must not jump page 1 to top '+tag);
+  }
   await page.locator('[data-day-quiz="0:1"]').click();
   await page.locator('[data-day-quiz="1:0"]').click();
   for(let i=0;i<3;i++){
    await page.locator('[data-day-pair-left="'+i+'"]').click();
    await page.locator('[data-day-pair-right="'+i+'"]').click();
   }
+  await page.locator('[data-pg418-test-next]').click();
+  assert.equal(await page.locator('.pg414-question').count(),2,'Page 2 shows tasks 4 and 5');
+  await page.screenshot({path:'qa/hsk2-v414-six-screens/'+tag+'-04-test-2.png',fullPage:false});
   await page.locator('[data-day-listen="0"]').click();
   for(let i=0;i<4;i++)await page.locator('[data-day-token="'+i+'"]').click();
+  await page.locator('[data-pg418-test-next]').click();
+  assert.equal(await page.locator('.pg414-question').count(),2,'Page 3 shows tasks 6 and 7');
+  await page.screenshot({path:'qa/hsk2-v414-six-screens/'+tag+'-04-test-3.png',fullPage:false});
   await page.locator('[data-day-fill="0"]').click();
   await page.locator('[data-day-truth="true"]').click();
   assert.match(await page.locator('.pg414-test .pg414-progress').innerText(),/7\/7/);

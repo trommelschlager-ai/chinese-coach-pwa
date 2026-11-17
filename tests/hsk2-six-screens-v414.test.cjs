@@ -5,7 +5,7 @@ const path=require('node:path');
 const {JSDOM,VirtualConsole}=require('jsdom');
 const root=path.join(__dirname,'..');
 const html=fs.readFileSync(path.join(root,'hsk2-life-course.html'),'utf8');
-assert.match(html,/hsk2-six-screens-v414\.js\?v=414/);
+assert.match(html,/hsk2-six-screens-v414\.js\?v=418/);
 assert.match(html,/hsk2-six-screens-v414\.css\?v=414/);
 const vc=new VirtualConsole(),errors=[];
 vc.on('jsdomError',e=>errors.push(e.message));vc.on('error',e=>errors.push(String(e)));
@@ -44,14 +44,27 @@ function assertStage(index){
 }
 function fullQuiz(mini){
  const src=w.PandaGoDayModulesV391[mini],fill=[0,1,1][mini],truth=[true,true,false][mini];
+ const nextPage=mini===0?'[data-pg418-test-next]':'[data-day-test-next]';
+ const prevPage=mini===0?'[data-pg418-test-prev]':'[data-day-test-prev]';
+ assert.equal(doc.querySelectorAll('.pg414-test .pg414-question').length,3,'Page 1 has three questions');
+ assert.equal(doc.querySelector('[data-day-next]'),null,'Cannot finish without completing test pages');
  click('[data-day-quiz="0:'+src.quiz[0].answer+'"]');
  click('[data-day-quiz="1:'+src.quiz[1].answer+'"]');
  for(let i=0;i<3;i++){click('[data-day-pair-left="'+i+'"]');click('[data-day-pair-right="'+i+'"]')}
+ click(nextPage);
+ assert.equal(doc.querySelectorAll('.pg414-test .pg414-question').length,2,'Page 2 has two questions');
+ click(prevPage);
+ assert.equal(doc.querySelectorAll('.pg414-test .pg414-question').length,3,'Returning to page 1');
+ assert.equal(doc.querySelectorAll('.pg414-pairs button.correct').length,6,'Correct pairs are preserved');
+ click(nextPage);
  click('[data-day-listen="0"]');
  for(let i=0;i<src.builder.length;i++)click('[data-day-token="'+i+'"]');
+ click(nextPage);
+ assert.equal(doc.querySelectorAll('.pg414-test .pg414-question').length,2,'Page 3 has two questions');
  click('[data-day-fill="'+fill+'"]');
  click('[data-day-truth="'+truth+'"]');
  assert.match(doc.querySelector('.pg414-test .pg414-progress').textContent,/7\/7/);
+ assert.ok(doc.querySelector('[data-day-next]')&&!doc.querySelector('[data-day-next]').disabled,'Final next button only after 7/7');
 }
 click('.approved-start');
 const wordCount=[7,7,6];
@@ -80,8 +93,8 @@ for(let mini=0;mini<3;mini++){
   assert.match(doc.querySelector('.pg415-rec-status').textContent,/Повтори ещё/);
  }
  click('[data-day-next]');assertStage(3);
- assert.equal(doc.querySelectorAll('.pg414-test .pg414-question').length,7);
- assert.equal(doc.querySelector('[data-day-next]').disabled,true,'Test must gate completion');
+ assert.equal(doc.querySelectorAll('.pg414-test .pg414-question').length,3);
+ assert.equal(doc.querySelector('[data-day-next]'),null,'Page 1 cannot finish the seven-task test');
  fullQuiz(mini);
  click('[data-day-next]');assertStage(4);
  assert.equal(doc.querySelectorAll('.pg414-example-large').length,3);

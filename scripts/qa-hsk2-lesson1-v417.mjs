@@ -37,18 +37,27 @@ try{
  await page.locator('[data-day-next]').click();await screenshot('3-speech');
  await page.locator('[data-day-next]').click();await screenshot('4-test');
  const box=page.locator('.pg415-live-test');
- const max=await box.evaluate(e=>e.scrollHeight-e.clientHeight);assert.ok(max>150,'Test must scroll inside card');
- await box.evaluate(e=>e.scrollTop=Math.min(245,e.scrollHeight-e.clientHeight));
- assert.ok(await box.evaluate(e=>e.scrollTop)>100);
- await page.locator('[data-day-pair-left="0"]').click();
- assert.ok(await box.evaluate(e=>e.scrollTop)>70,'Pair selection jumps page to top');
- await page.locator('[data-day-pair-right="0"]').click();
- assert.ok(await box.evaluate(e=>e.scrollTop)>70,'Pair answer jumps page to top');
- await page.locator('[data-day-quiz="0:1"]').click();await page.locator('[data-day-quiz="1:0"]').click();
- for(let i=1;i<3;i++){await page.locator('[data-day-pair-left="'+i+'"]').click();await page.locator('[data-day-pair-right="'+i+'"]').click()}
+ const overflow=await box.evaluate(e=>e.scrollHeight-e.clientHeight);
+ if(overflow>24){
+  await box.evaluate(e=>e.scrollTop=Math.min(65,e.scrollHeight-e.clientHeight));
+  const y=await box.evaluate(e=>e.scrollTop);
+  await page.locator('[data-day-quiz="0:1"]').evaluate(el=>el.click());
+  await page.waitForTimeout(80);
+  assert.ok(Math.abs((await box.evaluate(e=>e.scrollTop))-y)<6,'Answer must not reset inner scrolling');
+ }
+ await page.locator('[data-day-quiz="0:1"]').click();
+ await page.locator('[data-day-quiz="1:0"]').click();
+ for(let i=0;i<3;i++){await page.locator('[data-day-pair-left="'+i+'"]').click();await page.locator('[data-day-pair-right="'+i+'"]').click()}
+ await page.locator('[data-pg418-test-next]').click();
+ assert.equal(await page.locator('.pg414-question').count(),2);
+ await screenshot('4-test-2');
  await page.locator('[data-day-listen="0"]').click();
  for(let i=0;i<4;i++)await page.locator('[data-day-token="'+i+'"]').click();
- await page.locator('[data-day-fill="0"]').click();await page.locator('[data-day-truth="true"]').click();
+ await page.locator('[data-pg418-test-next]').click();
+ assert.equal(await page.locator('.pg414-question').count(),2);
+ await screenshot('4-test-3');
+ await page.locator('[data-day-fill="0"]').click();
+ await page.locator('[data-day-truth="true"]').click();
  assert.match(await page.locator('.pg414-test .pg414-progress').innerText(),/7\/7/);
  await page.locator('[data-day-next]').click();await screenshot('5-examples');
  await page.locator('[data-day-next]').click();await screenshot('6-panda-ai','.pg415-ai-screen');

@@ -1,0 +1,43 @@
+name: HSK2 lesson 1 three-page test and readable grammar v418
+on:
+  push:
+    branches: [fix/hsk2-lesson1-test3-rule-v418]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'assets/hsk2-exact-overlay-v415.js'
+      - 'assets/hsk2-six-screens-v414.js'
+      - 'assets/hsk2-life-course-app-v1.js'
+      - 'assets/hsk2-lesson1-three-page-v418.css'
+      - 'hsk2-life-course.html'
+      - 'scripts/qa-hsk2-three-pages-v418.mjs'
+jobs:
+  android:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Three mini-lessons and three-page test regression
+        run: node tests/hsk2-six-screens-v414.test.cjs
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Verify screens and interactions at Android viewport sizes
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/hsk2-v418.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 25); do
+            if curl -fsS http://127.0.0.1:4173/hsk2-life-course.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-hsk2-three-pages-v418.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hsk2-v418-android-three-test-pages
+          path: qa/hsk2-v418/
+          if-no-files-found: warn

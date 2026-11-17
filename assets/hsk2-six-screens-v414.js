@@ -24,7 +24,7 @@ function cancel(){if(recog){try{recog.onresult=recog.onerror=recog.onend=null;re
 function makeState(mini){
  return {selected:0,quiz:[null,null],build:[],attempts:modules[mini||0].words.map(()=>[]),
  speechWord:0,permission:false,showConsent:false,speechInfo:'',working:false,poster:false,
- v414:{pairs:[],pairLeft:null,listen:null,fill:null,truth:null,rule:null,wrongPair:false}};
+ v414:{pairs:[],pairLeft:null,listen:null,fill:null,truth:null,rule:null,wrongPair:false,testPage:0}};
 }
 function data(state){return modules[Math.min(2,Math.max(0,Number(state.mini)||0))]||modules[0]}
 function extra(state){const d=state.day;return d.v414||(d.v414={pairs:[],pairLeft:null,listen:null,fill:null,truth:null,rule:null,wrongPair:false})}
@@ -105,7 +105,7 @@ function testBody(state,ctx){
  const total=Number(d.quiz[0]===q0.answer)+Number(d.quiz[1]===q1.answer)+
   Number(matched.length===3)+Number(x.listen===0)+Number(normalized&&d.build.length===bld.length)+
   Number(x.fill===sc.fillAnswer)+Number(x.truth===sc.truthAnswer);
- return '<section class="pg414-panel pg414-test"><div class="pg414-panel-title"><h2>☑️ Тест · Проверь свои знания!</h2><span class="pg414-progress">'+total+'/7</span></div>'+
+ let markup='<section class="pg414-panel pg414-test"><div class="pg414-panel-title"><h2>☑️ Тест · Проверь свои знания!</h2><span class="pg414-progress">'+total+'/7</span></div>'+
  question(1,'Что означает слово?','<div class="pg414-test-flex"><div class="pg414-prompt" lang="zh-Hans">'+esc((m.words.find(w=>q0.question.includes(w.zh))||m.words[2]).zh)+'</div>'+firstChoices+'</div>')+
  question(2,'Выбери правильный перевод.','<div class="pg414-test-flex"><div class="pg414-prompt" lang="zh-Hans">'+esc(m.target)+'</div>'+secondChoices+'</div>')+
  question(3,'Соотнеси слово и перевод.','<p>Нажми китайское слово, затем его значение.</p><div class="pg414-pairs">'+
@@ -122,6 +122,22 @@ function testBody(state,ctx){
   '<button data-day-truth="true" class="'+(x.truth===true?(sc.truthAnswer?'correct':'wrong'):'')+'">✓ Верно</button>'+
   '<button data-day-truth="false" class="'+(x.truth===false?(!sc.truthAnswer?'correct':'wrong'):'')+'">× Неверно</button></div>')+
  '<div class="pg414-info">'+(total===7?'✓ Все 7 заданий выполнены правильно.':'Ответь правильно на все 7 заданий, чтобы закончить тест.')+'</div></section>';
+ // Mini 1 uses the approved interactive poster; its overlay splits the test itself.
+ if(state.mini===0)return markup;
+ // Other two mini-lessons receive the same 3-page test, preserving all 7 answers.
+ const page=Math.max(0,Math.min(2,Number(x.testPage)||0));
+ const tpl=document.createElement('template');tpl.innerHTML=markup;
+ const panel=tpl.content.querySelector('.pg414-test');
+ const groups=[[0,1,2],[3,4],[5,6]];
+ Array.from(panel.querySelectorAll('.pg414-question')).forEach((q,i)=>{if(!groups[page].includes(i))q.remove()});
+ const header=panel.querySelector('.pg414-panel-title');
+ const marker=document.createElement('div');marker.className='pg418-test-step-indicator';
+ marker.textContent='Страница '+(page+1)+' из 3 · '+['Слова и значения','Аудирование и предложение','Закрепление'][page];
+ header.insertAdjacentElement('afterend',marker);
+ const info=panel.querySelector('.pg414-info');
+ if(info)info.textContent=pageReady(state,page)?'✓ Часть выполнена. Нажми «Дальше».':'Правильно выполни задания этой страницы.';
+ panel.classList.add('pg418-test-part','pg418-test-part-'+page);
+ return panel.outerHTML;
 }
 function examplesBody(state,ctx){
  const m=data(state),examples=state.mini===0?bespoke:m.examples.map((x,i)=>[...x,['☀️','🌆','🌙'][i%3]]);
@@ -133,10 +149,20 @@ function examplesBody(state,ctx){
  '<div><strong lang="zh-Hans">'+esc(zh)+'</strong>'+pinyin(null,py,state)+'<span>'+esc(ru)+'</span></div>'+player(zh,ctx)+'</div>').join('')+
  '</details></section>';
 }
+function pageReady(state,page){
+ const m=data(state),d=state.day,x=extra(state),sc=schemes[state.mini];
+ if(page===0)return d.quiz[0]===m.quiz[0].answer&&d.quiz[1]===m.quiz[1].answer&&x.pairs.length===3;
+ if(page===1)return x.listen===0&&d.build.length===m.builder.length&&norm(d.build.map(i=>m.builder[i]).join(''))===norm(m.target);
+ return x.fill===sc.fillAnswer&&x.truth===sc.truthAnswer;
+}
 function nav(state){
- const d=state.day;const blocked=state.stage===3&&!ready(state);
- return '<div class="day-bottom pg414-bottom"><button type="button" class="secondary" data-day-prev>← '+(state.stage===0?'К теме':'Назад')+'</button>'+
- '<button type="button" class="primary" data-day-next'+(blocked?' disabled':'')+'>'+(state.stage===4?'Завершить урок ✓':'Дальше ➜')+'</button></div>';
+ const d=state.day,page=state.stage===3?Math.max(0,Math.min(2,Number(extra(state).testPage)||0)):0;
+ const blocked=state.stage===3&&(page<2?!pageReady(state,page):!ready(state));
+ const prev=(state.stage===3&&page>0)?'data-day-test-prev':'data-day-prev';
+ const next=(state.stage===3&&page<2)?'data-day-test-next':'data-day-next';
+ const label=state.stage===3?(page<2?'Страница '+(page+2)+' →':'К примерам →'):(state.stage===4?'Завершить урок ✓':'Дальше ➜');
+ return '<div class="day-bottom pg414-bottom"><button type="button" class="secondary" '+prev+'>← '+(state.stage===0?'К теме':'Назад')+'</button>'+
+  '<button type="button" class="primary" '+next+(blocked?' disabled':'')+'>'+label+'</button></div>';
 }
 function ready(state){
  const m=data(state),d=state.day,x=extra(state),sc=schemes[state.mini];
@@ -170,12 +196,30 @@ function recognize(state,render){
  try{r.start();render()}catch(e){cancel();d.speechInfo='Не удалось открыть микрофон. Проверь разрешения Chrome.';render()}
 }
 function next(state,api){
- if(state.stage===3&&!ready(state))return;
+ if(state.stage===3){
+  const v=extra(state);
+  const page=Math.max(0,Math.min(2,Number(v.testPage)||0));
+  if(page<2){
+   if(!pageReady(state,page))return;
+   v.testPage=page+1;api.render();return;
+  }
+  if(!ready(state))return;
+ }
+ if(state.stage===2)extra(state).testPage=0;
  if(state.stage===4){cancel();api.complete();return}
  cancel();state.stage++;api.render();
 }
 function handle(button,state,api){
  const d=state.day||makeState(state.mini),e=extra(state),key=button.dataset,m=data(state);
+ if(key.dayTestNext!==undefined){
+  const page=Math.max(0,Math.min(2,Number(e.testPage)||0));
+  if(state.stage===3&&page<2&&pageReady(state,page)){e.testPage=page+1;api.render()}
+  return true;
+ }
+ if(key.dayTestPrev!==undefined){
+  if(state.stage===3&&Number(e.testPage)>0){e.testPage--;api.render()}
+  return true;
+ }
  if(key.dayPinyin!==undefined){state.showPy=!state.showPy;api.render();return true}
  if(key.dayPrev!==undefined){cancel();if(state.stage===0)api.go('topic');else{state.stage--;api.render()}return true}
  if(key.dayNext!==undefined){next(state,api);return true}
