@@ -87,6 +87,22 @@ test('old questions are excluded; if no new MP3 exists do not hallucinate one',(
  });
  assert.equal(noVoice.followup,null);
 });
+test('new topic question without relative metadata accepts negative answer for all four siblings',()=>{
+ for(const relative of ['哥哥','姐姐','弟弟','妹妹']){
+  const prompt={hanzi:'你有'+relative+'吗？',lesson:6};
+  const input='我没有'+relative+'。';
+  const raw=answerLive(input,{allowed,topic:6,prompt,date,turn:2,profile:{family:{},recentQuestions:[prompt.hanzi]}});
+  assert(raw.reply,'Known sibling answer must not be blocked as off-topic for '+relative);
+  const out=continueFamilyAfterAnswer({
+   input,activePrompt:prompt,result:raw,allowed,
+   questions:[prompt.hanzi],history:[{who:'panda',hanzi:prompt.hanzi}],
+   catalog,lookupAudio:lookupPandaVoiceClip
+  });
+  assert.equal(out.kind,'answer');
+  assert.equal(out.reply.hanzi,'好的，我明白了。');
+  assert.notEqual(out.followup?.hanzi,prompt.hanzi);
+ }
+});
 test('screen and offline course include v426 family logic with approved art intact',()=>{
  const read=path=>fs.readFileSync(new URL('../'+path,import.meta.url),'utf8');
  assert(read('assets/panda-live-screen-v270.mjs').includes('continueFamilyAfterAnswer({'));
