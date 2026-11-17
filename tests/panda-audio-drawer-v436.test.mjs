@@ -63,7 +63,8 @@ test('approved, unlocked conversation questions declare exact sound truthfully',
 });
 test('v436 drawer renders each recording as a Chinese+pinyin+Russian play button',()=>{
  const html=read('panda-voice-pilot.html'),js=read('assets/panda-live-v346.mjs');
- assert(html.includes('panda-topics-compact-v436.css?v=436'));
+ assert(html.includes('panda-topic-catalog-v374.css?v=374'),'The original roomy topic menu stays active');
+ assert(!html.includes('panda-topics-compact-v436.css?v=436'),'Never use the v436 shallow drawer that hides the question cards');
  assert(html.includes('panda-live-screen-v270.mjs?v=436'));
  assert(html.includes('panda-live-v346.mjs?v=4361'));
  assert(js.includes("audioStudyLine436(clip)"));
@@ -73,13 +74,13 @@ test('v436 drawer renders each recording as a Chinese+pinyin+Russian play button
  assert(js.includes("pg374-question"));
  assert(js.includes("panda-character-clean-v349.webp"),'Approved Panda must stay unchanged');
 });
-test('short, internally scrollable drawer preserves scene, panda face and speech',()=>{
- const css=read('assets/panda-topics-compact-v436.css');
- assert.match(css,/max-height:41%/);
- assert.match(css,/overflow:hidden/);
- assert.match(css,/overflow-y:auto/);
- assert.match(css,/\.pg374-topic-details:not\(\[hidden\]\)/);
- assert.match(css,/\.pg346-topic-menu\[hidden\]\{display:none!important\}/);
+test('the original roomy topic list is restored after Android usability feedback',()=>{
+ const css=read('assets/panda-topic-catalog-v374.css');
+ const html=read('panda-voice-pilot.html');
+ assert.match(css,/max-height:min\(68%,560px\)/,'Restore the original taller list');
+ assert.match(css,/overflow-y:auto/,'Questions must be scrollable');
+ assert.match(css,/\.pg374-question/,'Keep selectable question cards');
+ assert(!html.includes('panda-topics-compact-v436.css'),'The shallow v436 override must stay disabled');
  assert(!css.includes('pg352-mascot'),'Do not modify character');
  assert(!css.includes('pg346-speech'),'Do not modify speech bubble');
 });
