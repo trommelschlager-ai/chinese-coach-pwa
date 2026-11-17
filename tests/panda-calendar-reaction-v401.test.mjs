@@ -193,3 +193,31 @@ test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗
    'Do not automatically ask 今天星期几？ again');
  }finally{dom.close()}
 });
+
+test('Non-Stop: valid free-time phrase does not duplicate the active weekday question',async()=>{
+ const now=new Date();
+ const dom=await liveDOM(1,{completed:['weekdays','dates']});
+ try{
+  const {el,send,w}=dom;
+  el('mode-nonstop').click();
+  // The date statement opens the previously recorded calendar weekday prompt.
+  send((now.getMonth()+1)+'月'+now.getDate()+'号');
+  await new Promise(resolve=>setTimeout(resolve,4950));
+  assert.equal(el('phrase').textContent,'今天星期几？');
+  const before=w.PandaApprovedBridge337.snapshot().history;
+  assert.equal(before.at(-1)?.who,'panda');
+  send('我今天有空。');
+  const after=w.PandaApprovedBridge337.snapshot().history;
+  assert.equal(after.length,before.length+1,'A mismatch records the learner only, not a duplicated Panda question');
+  assert.equal(after.at(-1)?.who,'you');
+  assert.equal(after.at(-1)?.hanzi,'我今天有空。');
+  assert.equal(el('phrase').textContent,'今天星期几？','The original question stays visible');
+  assert.equal(el('hear').disabled,false,'Learner can replay the existing exact question audio');
+  assert.equal(el('learner-feedback').hidden,false,'Helpful correction must be visible');
+  assert.match(el('learner-feedback').textContent,/我今天有空.*правильная фраза.*Какой сегодня день недели/);
+  assert.equal(w.document.documentElement.dataset.feedback,'true');
+  assert.equal(after.filter(h=>h.who==='panda'&&h.hanzi==='今天星期几？').length,
+    before.filter(h=>h.who==='panda'&&h.hanzi==='今天星期几？').length,
+    'The same question is not inserted into history twice');
+ }finally{dom.close()}
+});
