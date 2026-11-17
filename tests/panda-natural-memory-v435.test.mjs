@@ -80,7 +80,7 @@ test('replaces an already-known sibling age question with an unanswered sibling 
  const profile={family:{妹妹:true,哥哥:undefined},siblingAges:{妹妹:8}};
  const next=select(original('你妹妹几岁？',6),profile);
  assert(next);
- assert.equal(next?.hanzi,'你有姐姐吗？');
+ assert.equal(next?.hanzi,'你有哥哥吗？');
  assert(lookupPandaVoiceClip(next.hanzi));
 });
 test('does not repeat an old question recorded in conversation history',()=>{
