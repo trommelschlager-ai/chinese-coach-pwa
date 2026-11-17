@@ -45,6 +45,30 @@ test('positive sibling response also progresses; locked or unknown prompt is unc
  });
  assert.notEqual(locked.reply?.hanzi,'好的，我明白了。');
 });
+
+test('Android late recognition after question state reset still advances via last Panda turn',()=>{
+ const transcript='我没有哥哥';
+ const history=[
+  {who:'you',hanzi:'你有妹妹吗？'},
+  {who:'panda',hanzi:'我有一个妹妹。'},
+  {who:'panda',hanzi:'你有哥哥吗？'}
+ ];
+ const result=continueFamilyAfterAnswer({
+  input:transcript,activePrompt:null,
+  result:answerLive(transcript,{allowed,topic:6,turn:2,date,profile:{family:{},recentQuestions:[]}}),
+  allowed,questions:['你有哥哥吗？'],history,catalog,lookupAudio:lookupPandaVoiceClip
+ });
+ assert.equal(result.kind,'answer');
+ assert.equal(result.reply.hanzi,'好的，我明白了。');
+ assert.equal(result.followup?.hanzi,'你有姐姐吗？');
+ const stale=continueFamilyAfterAnswer({...{
+  input:transcript,activePrompt:null,
+  result:answerLive(transcript,{allowed,topic:6,date,profile:{family:{}}}),
+  allowed,questions:['你有哥哥吗？'],history:[...history,{who:'you',hanzi:'你好'}],
+  catalog,lookupAudio:lookupPandaVoiceClip
+ }});
+ assert.notEqual(stale.reply?.hanzi,'好的，我明白了。');
+});
 test('old questions are excluded; if no new MP3 exists do not hallucinate one',()=>{
  const result=make('我没有哥哥。',[
   {hanzi:'你有姐姐吗？',who:'panda'},{hanzi:'你有弟弟吗？',who:'panda'},
@@ -66,11 +90,11 @@ test('old questions are excluded; if no new MP3 exists do not hallucinate one',(
 test('screen and offline course include v426 family logic with approved art intact',()=>{
  const read=path=>fs.readFileSync(new URL('../'+path,import.meta.url),'utf8');
  assert(read('assets/panda-live-screen-v270.mjs').includes('continueFamilyAfterAnswer({'));
- assert(read('panda-voice-pilot.html').includes('panda-live-screen-v270.mjs?v=426'));
+ assert(read('panda-voice-pilot.html').includes('panda-live-screen-v270.mjs?v=427'));
  assert(read('panda-voice-pilot.html').includes('panda-live-v346.mjs?v=426'));
  const pack=JSON.parse(read('assets/offline-pack.json'));
- assert(pack.files.includes('./assets/panda-family-turn-v426.mjs?v=426'));
- assert(pack.files.includes('./assets/panda-live-screen-v270.mjs?v=426'));
+ assert(pack.files.includes('./assets/panda-family-turn-v426.mjs?v=427'));
+ assert(pack.files.includes('./assets/panda-live-screen-v270.mjs?v=427'));
 });
 test('Android-like Non-Stop third turn replies and asks a new, voiced family question',async()=>{
  const f=await liveDOM(1,{completed:['family','weekdays']});
