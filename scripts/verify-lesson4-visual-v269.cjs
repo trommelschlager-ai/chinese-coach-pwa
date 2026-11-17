@@ -16,7 +16,11 @@ for(const name of ['cover','celebrate','woman','man']){
  assert(pack.files.includes('./'+p),'No offline asset '+name);
  assert(app.includes('./'+p),'Active screen does not use image '+name);
 }
-assert(html.includes('hsk1-fourth-v219.css?v=282')&&html.includes('hsk1-fourth-v220.js?v=421'),'Cache freshness');
+const liveCss=html.match(/hsk1-fourth-v219\.css\?v=\d+/)?.[0];
+const liveJs=html.match(/hsk1-fourth-v220\.js\?v=\d+/)?.[0];
+assert(liveCss&&liveJs,'Cache-versioned current lesson 4 styles and controller required');
+assert(pack.files.includes('./assets/'+liveCss)&&pack.files.includes('./assets/'+liveJs),
+ 'The active lesson 4 assets must be cached offline');
 const controls=fs.readFileSync('assets/hsk1-controls-v421.css','utf8');
 assert(html.includes('hsk1-controls-v421.css?v=421'));
 assert(controls.includes('[data-pg-control="primary"]')&&controls.includes('#ffdc67'),'Next is gold');
