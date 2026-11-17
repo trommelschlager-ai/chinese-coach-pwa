@@ -97,7 +97,7 @@ function remember(spoken){
  state.profile=mergePandaFacts435(state.profile,spoken);
 }
 function makeRow(entry,full=false){
- const row=document.createElement('article'),who=document.createElement('strong');who.textContent=entry.who==='you'?'Ты: ':'Панда: ';row.append(who,document.createTextNode(entry.hanzi));
+ const row=document.createElement('article'),who=document.createElement('strong');who.textContent=entry.who==='you'?'Ты: ':entry.who==='example'?'💡 Правильный пример: ':'Панда: ';row.append(who,document.createTextNode(entry.hanzi));
  if(entry.pinyin&&(full||entry.who==='you')){const py=document.createElement('span');py.className='py';py.textContent=entry.pinyin;row.append(py)}
  const ru=document.createElement('span');ru.className='ru';ru.textContent=(full?'Перевод: ':' — ')+(entry.ru||(entry.analysis?.probable?'Возможный смысл: '+entry.analysis.probable:'Точный перевод пока не подтверждён'));row.append(ru);
  if(full&&entry.analysis?.explanation){const detail=document.createElement('p');detail.textContent=entry.analysis.explanation;row.append(detail)}
@@ -123,7 +123,8 @@ function say(line,autoplay=true,analysis=null){
 function learner(input,spoken){record('you',input,spoken?.known?spoken.pinyin:null,spoken?.known?spoken.translation:null,spoken);showLearnerFeedback(spoken);state.answers.push(input);if(state.answers.length>16)state.answers.shift()}
 function recordCorrection(input,spoken){
  const c=spoken?.correction;if(!c)return;
- record('panda',c.hanzi,c.pinyin,c.ru,{kind:'correction-response',original:input,probable:spoken.probable||c.ru,why:c.why});
+ // Keep examples separate from real Panda speech in both dialogue and history.
+ record('example',c.hanzi,c.pinyin,c.ru,{kind:'correction-response',original:input,probable:spoken.probable||c.ru,why:c.why});
 }
 function showLearnerFeedback(spoken){
  const root=$('learner-feedback');root.replaceChildren();root.hidden=true;
