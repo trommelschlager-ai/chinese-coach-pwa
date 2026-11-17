@@ -260,3 +260,9 @@
 #app.pg-v414-preview .pg-v415-finish .pg-end-repeat{background:linear-gradient(#ffec9b,#f7c350)!important;border-color:#e6b53f!important;color:#4e2877!important}
 #app.pg-v414-preview .pg-v415-finish .pg-end-back{background:linear-gradient(#f5eeff,#e8d8fa)!important;border-color:#c4a5e3!important;color:#603487!important}
 @media(max-width:350px){#app.pg-v414-preview .pg-v415-tones .tone-item{min-height:173px}#app.pg-v414-preview .pg-v415-formula span{padding:9px 7px}#app.pg-v414-preview .pg-v415-tones .tone-play{min-width:94px}}
+
+/* v415: consistent blue playback buttons in the reused three-line dialogue. */
+#app.pg-v414-preview .dialogue-line .sound-sm{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #246bbd;color:#fff;background:linear-gradient(180deg,#4a9cf0,#2872d1);border-radius:22px;box-shadow:0 3px 0 #20559d;padding:9px 13px;font-size:13px}
+#app.pg-v414-preview .dialogue-line .sound-sm:active{translate:0 2px}
+#app.pg-v414-preview .dialogue-line .sound-sm:focus-visible{outline:3px solid #edc458;outline-offset:3px}
+
