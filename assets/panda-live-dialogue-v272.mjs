@@ -327,6 +327,24 @@ export function answerLive(raw,options={}){
    followup:null,
    message:askedBack?'Панда ответила на твой встречный вопрос.':'Ответ принят. Можешь задать следующий вопрос или выбрать другую тему.'};
  }
+ // The six original reviewed HSK1 family variants keep their existing
+ // exact canonical reply, verified follow-up, and lesson-lock semantics.
+ // 你有没有... is still exposed with its complete correct pinyin and voice.
+ const familyAlias=/^你有没有(哥哥|姐姐|弟弟|妹妹)$/.exec(s);
+ const originalFamilyVariant=familyAlias?questionVariant(raw):null;
+ if(originalFamilyVariant&&originalFamilyVariant.lesson===6&&
+    normalize(originalFamilyVariant.canonical)!==s){
+   const canonical=answerLive(originalFamilyVariant.canonical,options);
+   if(canonical.kind==='question'){
+     const py={哥哥:'gēge',姐姐:'jiějie',弟弟:'dìdi',妹妹:'mèimei'}[familyAlias[1]];
+     const kin={哥哥:'старший брат',姐姐:'старшая сестра',弟弟:'младший брат',妹妹:'младшая сестра'}[familyAlias[1]];
+     return {...canonical,spoken:{...canonical.spoken,hanzi:raw,
+       pinyin:'Nǐ yǒu méiyǒu '+py+'?',translation:'У тебя есть '+kin+'?',
+       topic:6,variantOf:originalFamilyVariant.canonical}};
+   }
+   if(canonical.kind==='locked')return {...canonical,
+     spoken:{known:false,hanzi:raw,pinyin:null,translation:null,topic:6}};
+ }
  // Reviewed Mandarin A-not-A: 你有没有…？ (family and availability).
  // Run before general fallback so the exact phrase and tones are preserved.
  // Also accept 有 / 没有 for a currently active 有—没有 question.
