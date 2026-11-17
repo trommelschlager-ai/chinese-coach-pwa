@@ -22,6 +22,7 @@ import {coherentPandaFollowup} from './panda-nonstop-continuity-v425.mjs?v=425';
 import {continueFamilyAfterAnswer} from './panda-family-turn-v426.mjs?v=427';
 import {enrichConversation430} from './panda-conversation-memory-v430.mjs?v=430';
 import {enrichTopics431} from './panda-topic-memory-v431.mjs?v=431';
+import {mergePandaFacts435,refineFollowup435} from './panda-natural-memory-v435.mjs?v=435';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -90,18 +91,9 @@ function play(entry=null){
 function cancelFollowup(){clearTimeout(followupTimer);state.followup=null;state.pendingAudioReply=null}
 function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.pendingAudioReply)return;if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();showLearnerFeedback(null);say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
 function remember(spoken){
- if(!spoken?.known)return;
- if(spoken.fact){
-  Object.assign(state.profile,spoken.fact);
-  if(spoken.fact.relative&&Number.isInteger(spoken.fact.relativeAge)){
-   if(!state.profile.siblingAges)state.profile.siblingAges={};
-   state.profile.siblingAges[spoken.fact.relative]=spoken.fact.relativeAge;
-  }
- }
- if(spoken.family){
-  for(const n of spoken.family.present||[])state.profile.family[n]=true;
-  if(spoken.family.absent)state.profile.family[spoken.family.absent]=false;
- }
+ // v435: facts stay only in this open session. A corrected "没有妹妹"
+ // also clears the stale age remembered from an earlier "有妹妹".
+ state.profile=mergePandaFacts435(state.profile,spoken);
 }
 function makeRow(entry,full=false){
  const row=document.createElement('article'),who=document.createElement('strong');who.textContent=entry.who==='you'?'Ты: ':'Панда: ';row.append(who,document.createTextNode(entry.hanzi));
@@ -310,6 +302,15 @@ function submit(raw){
    followup=coherentPandaFollowup({input,result,followup,
     allowed:state.lockedTopic?[state.lockedTopic]:state.allowed,
     questions:state.questions.slice(-20),catalog:topicCatalogGroups(),lookupAudio:lookupPandaVoiceClip});
+   // v435: preserve a useful question but never re-ask a known fact.
+   // Replacement is from the same unlocked topic with an exact existing MP3.
+   if(state.confidence===null||state.confidence>=.65)
+    followup=refineFollowup435({
+     followup,profile:state.profile,
+     allowed:state.lockedTopic?[state.lockedTopic]:state.allowed,
+     questions:state.questions.slice(-40),history:state.history.slice(-60),
+     catalog:topicCatalogGroups(),lookupAudio:lookupPandaVoiceClip
+    });
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
    note(completedCalendarRound?closingSummary:
     followup?.intent==='relative-age'?'Панда запомнила твою реплику о семье и задаст уточняющий вопрос.':
