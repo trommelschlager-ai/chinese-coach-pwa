@@ -22,6 +22,14 @@ export function lookupPandaVoiceClip(phrase){
  if(!key)return null;
  const newClip=PANDA_V411_VOICE.find(entry=>entry.zh===key);
  if(newClip)return {src:newClip.src,start:0,end:null,source:'user-luvvoice-nov16-cut'};
+ // v426: these exact Nov 14 user-provided cuts are already in PANDA_CLIPS,
+ // but the conversation must work before the optional browser voice index loads.
+ // Explicit allowlist only; never infer audio for other Chinese sentences.
+ if(['好的我明白了','你有姐姐吗','你有弟弟吗','你家有几口人'].includes(key)){
+  const cut=PANDA_CLIPS.find(item=>voiceNorm(item.zh)===key);
+  if(cut&&/^\.\/assets\/panda-voice-clips-v365\/p\d{3}\.mp3$/.test(cut.src))
+   return {src:cut.src,start:0,end:null,source:'user-luvvoice-nov14-cut'};
+ }
  const index=typeof window!=='undefined'?window.PandaUserVoiceIndexV332?.clips:null;
  if(Array.isArray(index)){
   const clip=index.find(item=>voiceNorm(item.zh)===key);

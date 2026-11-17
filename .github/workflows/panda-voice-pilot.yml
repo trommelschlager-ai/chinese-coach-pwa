@@ -27,6 +27,8 @@ on:
       - 'tests/panda-hsk2-day-chat-v1.test.mjs'
       - 'assets/panda-nonstop-*'
       - 'tests/panda-nonstop-*'
+      - 'assets/panda-family-turn-*'
+      - 'tests/panda-family-turn-*'
       - 'sw.js'
       - 'tests/panda-live-*'
       - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
@@ -58,6 +60,8 @@ on:
       - 'assets/panda-hsk2-*'
       - 'assets/panda-nonstop-*'
       - 'tests/panda-nonstop-*'
+      - 'assets/panda-family-turn-*'
+      - 'tests/panda-family-turn-*'
       - 'sw.js'
       - 'tests/panda-live-*'
       - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
@@ -233,3 +237,17 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Prevent repeated and off-topic voice questions on Android-sized Non-Stop
         run: node --test tests/panda-nonstop-continuity-v425.test.mjs
+
+  family-third-turn-v426:
+    name: Third-turn family answers stay natural and voiced
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install regression dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Check sibling answer acknowledgment and next family question
+        run: node --test tests/panda-family-turn-v426.test.mjs
