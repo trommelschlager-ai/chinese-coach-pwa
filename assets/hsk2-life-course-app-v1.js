@@ -220,7 +220,7 @@ function viewDone(){
    '<div class="pg414-ai-question">'+sound('你几点起床？')+'<strong lang="zh-Hans">你几点起床？</strong><span>Nǐ jǐ diǎn qǐchuáng?</span><small>Во сколько ты встаёшь?</small></div>'+
    '<div class="pg414-ai-question">'+sound('你早上做什么？')+'<strong lang="zh-Hans">你早上做什么？</strong><span>Nǐ zǎoshang zuò shénme?</span><small>Что ты делаешь утром?</small></div></div>'+
   '<div class="day-done-mascot"><img src="./assets/hsk2-panda-new-v328.svg" alt="Панда в наушниках готова к разговору"></div>'+
-  '<div class="day-done-head"><h2>🏆 Мини-урок '+(state.mini+1)+' завершён!</h2><p>Готов поговорить? Нажми на микрофон, чтобы открыть настоящую Panda AI с распознаванием речи и вводом текста.</p></div>'+
+  '<div class="day-done-head"><h2>🏆 Мини-урок '+(state.mini+1)+' пройден!</h2><p>Готов поговорить? Нажми на микрофон, чтобы открыть настоящую Panda AI с распознаванием речи и вводом текста.</p></div>'+
   '<div class="day-ai-panel"><h2>🐼 Panda AI — начни разговор</h2><a href="'+dayCoachingLink(state.mini)+'" aria-label="Начать разговор с Panda AI">🎙 Начать разговор с Пандой AI →</a></div>'+
   '<div class="pg414-ai-actions"><button class="secondary" data-repeat>↻ Повторить</button><button class="primary" data-next-mini>Следующий мини-урок →</button></div>'+
   '<div class="day-done-line" hidden>'+phrase(sc[2],sc[3],sc[4])+'</div></section>';
