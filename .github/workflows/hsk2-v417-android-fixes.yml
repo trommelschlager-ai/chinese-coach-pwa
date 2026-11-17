@@ -7,7 +7,7 @@ on:
     paths:
       - 'hsk2-life-course.html'
       - 'assets/hsk2-life-course-app-v1.js'
-      - 'assets/hsk2-lesson1-android-fixes-v417.css'
+      - 'assets/hsk2-lesson1-android-fixes-v416.css'
       - 'scripts/qa-hsk2-lesson1-v417.mjs'
   workflow_dispatch:
 jobs:
