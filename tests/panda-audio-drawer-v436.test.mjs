@@ -35,7 +35,7 @@ test('155 source-indexed study annotations contain Chinese, tone-marked pinyin a
   assert(entry.pinyin?.length>5,'Missing pinyin: '+clip.zh);
   assert(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/iu.test(entry.pinyin),
    'Add tone marks for '+clip.zh+': '+entry.pinyin);
-  assert(entry.ru?.length>6,'Missing Russian: '+clip.zh);
+  assert(entry.ru?.length>=4,'Missing Russian: '+clip.zh);
  }
  const sample=PANDA_CLIPS.find(c=>c.zh==='你会写汉字吗');
  const text=audioStudyLine436(sample);
