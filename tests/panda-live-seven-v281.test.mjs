@@ -152,3 +152,28 @@ test('你有没有 questions appear as optional text-only prompts, never as reco
  assert.equal(hasTime.hasReplyAudio,false);
  assert(!availableAskGroups([1],curriculum,date).some(g=>g.lesson===4||g.lesson===6));
 });
+
+test('Panda understands full learner family statements with exact Russian translation',()=>{
+ const question={hanzi:'你有没有妹妹？',lesson:6};
+ const yes=answerLive('有，我有一个妹妹。',{allowed:[1,6],topic:6,prompt:question,curriculum,date});
+ assert.equal(yes.kind,'answer');
+ assert.equal(yes.spoken.translation,'Да, у меня одна младшая сестра.');
+ assert.equal(yes.spoken.pinyin,'Yǒu, wǒ yǒu yí ge mèimei.');
+ assert.equal(yes.reply.hanzi,'明白了。','Panda should acknowledge naturally, not say 谢谢');
+ assert.equal(yes.reply.audioKey,null,'No invented MP3 for the new acknowledgement');
+ const no=answerLive('没有，我没有妹妹。',{allowed:[1,6],topic:6,prompt:question,curriculum,date});
+ assert.equal(no.kind,'answer');
+ assert.equal(no.spoken.known,true);
+ assert.equal(no.spoken.pinyin,'Méiyǒu, wǒ méiyǒu mèimei.');
+ assert.equal(no.spoken.translation,'Нет, у меня нет младшей сестры.');
+ assert.equal(no.reply.hanzi,'明白了。');
+ const other=answerLive('没有，我没有妹妹',{allowed:[1,6],topic:6,prompt:{hanzi:'你有弟弟吗？',lesson:6},curriculum,date});
+ assert.equal(other.kind,'clarify','Sister statement is not an answer about younger brother');
+ assert.equal(other.spoken.translation,'Нет, у меня нет младшей сестры.');
+ assert.match(other.message,/弟弟/);
+ assert.equal(other.reply,undefined,'Do not thank or silently change the question');
+ const bro=answerLive('有，我有一个哥哥。',{allowed:[1,6],topic:6,prompt:{hanzi:'你有没有哥哥？',lesson:6},curriculum,date});
+ assert.equal(bro.spoken.pinyin,'Yǒu, wǒ yǒu yí ge gēge.');
+ assert.equal(bro.spoken.translation,'Да, у меня один старший брат.');
+ assert.equal(answerLive('没有，我没有妹妹。',{allowed:[1],topic:1,curriculum,date}).kind,'locked');
+});
