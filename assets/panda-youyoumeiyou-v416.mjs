@@ -18,7 +18,7 @@ export function reviewedYouYouMeiyou(raw,{allowed=[1],prompt=null}={}){
  const active=normalized(prompt?.hanzi||prompt?.panda||prompt?.line?.hanzi||'');
  // Full learner statements are valid Chinese even when they do not answer the
  // current sibling question. Translate exactly; never fall through to 谢谢！.
- const fullFamily=/^(没有|有)?我(没有|有)(一个|两个)?(哥哥|姐姐|弟弟|妹妹)$/.exec(s);
+ const fullFamily=/^(没有|有)我(没有|有)(一个|两个)?(哥哥|姐姐|弟弟|妹妹)$/.exec(s);
  if(fullFamily){
    const absent=fullFamily[2]==='没有';
    const prefix=fullFamily[1]||'';
