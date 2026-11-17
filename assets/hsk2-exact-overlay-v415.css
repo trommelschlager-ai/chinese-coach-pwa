@@ -172,3 +172,20 @@
  #app .pg415-rule-cover button{font-size:10px}
  #app .pg415-live-test .pg414-panel{padding:7px!important}
 }
+
+
+/* Exact approved art remains unscaled. Fill letterbox with SCENERY ONLY,
+   never flat purple or a duplicate of the Chinese text/Panda. */
+#app .pg415-art-screen::before,#app .pg415-ai-screen::before{
+ content:""!important;position:absolute!important;top:0!important;bottom:auto!important;left:0!important;right:0!important;
+ inset:auto!important;width:100%!important;height:12%!important;z-index:0!important;
+ background:url('./approved-course-v390/sky-extension-v403.svg') center bottom / 100% 100% no-repeat!important;
+ filter:none!important;opacity:1!important;pointer-events:none!important;transform:none!important;
+}
+#app .pg415-art-screen::after,#app .pg415-ai-screen::after{
+ content:""!important;position:absolute!important;bottom:0!important;top:auto!important;left:0!important;right:0!important;
+ width:100%!important;height:12%!important;z-index:0!important;
+ background:url('./approved-course-v390/lake-extension-v403.svg') center top / 100% 100% no-repeat!important;
+ filter:none!important;opacity:1!important;pointer-events:none!important;
+}
+#app .pg415-graphic{z-index:2!important}
