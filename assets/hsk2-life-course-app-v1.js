@@ -377,7 +377,15 @@ document.addEventListener('click',function(e){
  }
  if(b.dataset.missingSound!==undefined){
    window.speechSynthesis?.cancel?.();
-   if(status)status.textContent='Для «'+b.dataset.missingSound+'» пока нет проверенной MP3-записи. Роботизированная озвучка отключена.';
+   if(status){
+    status.textContent='Для «'+b.dataset.missingSound+'» пока нет проверенной MP3-записи. Роботизированная озвучка отключена.';
+    // On the scenic chat screen the warning must never become a permanent beige
+    // strip covering the lesson navigation. Keep its accessible status announcement.
+    if(state.view==='done'&&state.topic===0){
+     const warning=status.textContent;
+     window.setTimeout(function(){if(status.textContent===warning)status.textContent=''},2500);
+    }
+   }
    return;
   }
   if(b.dataset.deviceSound!==undefined){deviceSound(b.dataset.deviceSound);return}
