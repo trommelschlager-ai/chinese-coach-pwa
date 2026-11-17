@@ -13,6 +13,11 @@ try{
   page.on('pageerror',error=>errors.push(error.message));
   await page.goto(root+'/hsk2-life-course.html?from=hsk2-life-course&return=done&mini=0&v=420',{waitUntil:'domcontentloaded'});
   await page.locator('.pg415-ai-screen').waitFor({state:'visible'});
+  await page.locator('.pg415-ai-screen .pg415-art').evaluate(async img=>{
+   await img.decode();
+   if(img.naturalWidth!==941||img.naturalHeight!==1672)throw Error('Approved Panda chat artwork not loaded');
+   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  });
   const composer=page.locator('.pg415-ai-answer');
   assert.equal(await composer.count(),1,'Exactly one answer field');
   assert.equal(await composer.locator('input').count(),1,'Single Chinese input');
@@ -39,7 +44,14 @@ try{
   await page.locator('a.pg346-back').click();
   await page.waitForURL(/hsk2-life-course\.html/,{timeout:20000});
   await page.locator('.pg415-ai-screen').waitFor({state:'visible',timeout:20000});
+  await page.locator('.pg415-ai-screen .pg415-art').evaluate(async img=>{
+   await img.decode();
+   if(img.naturalWidth!==941||img.naturalHeight!==1672)throw Error('Approved Panda chat artwork not loaded');
+   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  });
   assert.equal(await page.locator('.topic').count(),0,'Return must not land on the mini-lesson list');
+  const pixels=await page.locator('.pg415-ai-screen .pg415-art').evaluate(img=>({complete:img.complete,width:img.naturalWidth,height:img.naturalHeight}));
+  assert.equal(pixels.width,941);assert.equal(pixels.height,1672);
   await page.screenshot({path:'qa/hsk2-panda-return-v420/'+label+'-returned-to-same-screen.png',fullPage:false});
   assert.deepEqual(errors,[],'No browser errors '+label);
   await context.close();console.log('PASS precise return + clear answer row/send icon at '+label);
