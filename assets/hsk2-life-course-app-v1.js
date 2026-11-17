@@ -32,7 +32,7 @@ var KEY='pg-hsk2-life-course-v1';
 var state={view:'welcome',topic:0,mini:0,stage:0,showPy:true,completed:[],difficult:[],quizWord:null,quizSentence:null,build:[],finalAnswers:{},examPassed:false};
 var dayUI=window.PandaGoDayFirstUIV1;
 function dayPilot(){return state.topic===0&&!!dayUI;}
-function dayCoachingLink(mini){return './panda-voice-pilot.html?practice=day&mini='+Math.max(0,Math.min(2,Number(mini)||0))+'&from=hsk2-life-course&return=done&start=audio';}
+function dayCoachingLink(mini){return './panda-voice-pilot.html?practice=day&mini='+Math.max(0,Math.min(2,Number(mini)||0))+'&from=hsk2-life-course&return=done&start=audio&origin=lesson1-done';}
 function dayAIBlock(mini){return '<section class="day-ai-panel"><h2>🐼 Поговори с Пандой AI</h2><p>Потренируй то, что уже изучил: Панда задаст вопросы, а ты ответишь голосом или текстом.</p><div class="day-ai-examples"><strong lang="zh-Hans">你早上做什么？</strong><br>Что ты делаешь утром?</div><a href="'+dayCoachingLink(mini)+'" aria-label="Открыть разговорную практику Мой день с Panda AI">🎙 Начать практику →</a></section>';}
 
 try{
@@ -377,7 +377,15 @@ document.addEventListener('click',function(e){
  }
  if(b.dataset.missingSound!==undefined){
    window.speechSynthesis?.cancel?.();
-   if(status)status.textContent='Для «'+b.dataset.missingSound+'» пока нет проверенной MP3-записи. Роботизированная озвучка отключена.';
+   if(status){
+    status.textContent='Для «'+b.dataset.missingSound+'» пока нет проверенной MP3-записи. Роботизированная озвучка отключена.';
+    // On the scenic chat screen the warning must never become a permanent beige
+    // strip covering the lesson navigation. Keep its accessible status announcement.
+    if(state.view==='done'&&state.topic===0){
+     const warning=status.textContent;
+     window.setTimeout(function(){if(status.textContent===warning)status.textContent=''},2500);
+    }
+   }
    return;
   }
   if(b.dataset.deviceSound!==undefined){deviceSound(b.dataset.deviceSound);return}
