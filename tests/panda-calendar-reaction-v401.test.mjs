@@ -224,3 +224,16 @@ test('Non-Stop: valid free-time phrase does not duplicate the active weekday que
     beforePandaCount,'The same question is not inserted into history twice');
  }finally{dom.close()}
 });
+
+test('Approved scenic Panda shows correct-but-off-topic weekday feedback without generic overlays',()=>{
+ const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
+ const engine=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
+ assert(ui.includes("noteText.startsWith('✅ 我今天有空')"),'Only reviewed valid-phrase correction may show');
+ assert(ui.includes("noteText.includes('Но вопрос был 今天星期几？')"),'Hint must stay attached to the correct weekday prompt');
+ assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong||offTopicHint;"),'Scenic overlay must show the lesson hint');
+ assert(ui.includes("root.append(el('p','pg377-explanation',noteText));"),'Scenic UI must display the actual feedback text');
+ assert(ui.includes("if(wrong){"),'Existing grammar corrections remain');
+ assert(engine.includes("panel.hidden=false;"),'Lesson engine must generate visible feedback');
+ assert(engine.includes("state.display=activePrompt;"),'Original question stays on screen');
+ assert(!engine.includes("state.awaitQuestion=false;\n    say(activePrompt);"),'Question must not be recorded twice');
+});
