@@ -200,7 +200,7 @@ assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk1-v215-weekdays')).legacyD
 const resume=new JSDOM(html,{url:'https://resume.test/',runScripts:'outside-only'});
 resume.window.localStorage.setItem('pg-hsk1-v215-weekdays',JSON.stringify({step:5,maxStep:8,heardTimes:['今天'],examAnswers:{0:{correct:false,given:'星期二'}}}));
 resume.window.eval(app);
-assert(resume.window.document.querySelector('#pg3-count').textContent.startsWith('6 /'),'Existing fourth lesson position resumes');
+assert(resume.window.document.querySelector('#pg3-count').textContent.startsWith('5 /'),'Existing fourth lesson position resumes after page consolidation');
 assert.deepEqual(JSON.parse(resume.window.localStorage.getItem('pg-hsk1-v215-weekdays')).heardTimes,['今天']);
 resume.window.close();
 // v421: completed exercise shells are not navigation destinations.
