@@ -16,6 +16,8 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - name: Check offline coverage of current HSK1, Panda AI and HSK2 screens
+        run: node --test tests/offline-active-assets-v434.test.mjs
       - run: npm run check:pronunciation
       - run: node scripts/verify-hsk1-fifth-v227.cjs
       - name: Fetch preserved HSK1 baseline for control-protection checks
