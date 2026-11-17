@@ -200,3 +200,17 @@ test('Family relative-age prompt rejects an answer about a different sibling',()
  const pattern=patternPrompts(6,date,[1,2,3,4,5,6]).find(q=>q.hanzi==='你哥哥几岁？');
  assert.equal(pattern?.ru,'Сколько лет твоему старшему брату?');
 });
+
+test('Panda does not echo a learner\'s sibling age question immediately after answering',()=>{
+ const options={allowed:[1,2,3,4,5,6],topic:6,curriculum,date,turn:0,profile:{family:{哥哥:true},hasNumbers:true,recentQuestions:[]}};
+ const r=answerLive('你哥哥几岁？',options);
+ assert.equal(r.kind,'question');
+ assert.equal(r.reply.hanzi,'我哥哥五岁。');
+ assert.equal(r.reply.ru,'Моему старшему брату 5 лет.');
+ assert.equal(r.followup,null,'No automatic identical question back to learner');
+ const alternative=answerLive('你妹妹几岁？',options);
+ assert.equal(alternative.followup,null,'Same anti-echo rule for younger sister');
+ assert.equal(alternative.reply.ru,'Моей младшей сестре 1 год.');
+ const noRepeated=answerLive('你有哥哥吗？',options);
+ assert(!noRepeated.followup||noRepeated.followup.hanzi!=='你有哥哥吗？','No verbatim echo of a family question');
+});
