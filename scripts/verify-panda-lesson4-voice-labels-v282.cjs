@@ -23,7 +23,11 @@ for(const who of ['man','woman']){
  assert(offline.files.includes('./'+p),'Portrait not indexed offline '+who);
 }
 assert(css.includes('.pg4-people img{height:149px'),'Portrait size not updated');
-assert(page.includes('hsk1-fourth-v220.js?v=421')&&page.includes('hsk1-fourth-v219.css?v=282'),'Cache version missing');
+const liveJs=page.match(/hsk1-fourth-v220\.js\?v=\d+/)?.[0];
+const liveCss=page.match(/hsk1-fourth-v219\.css\?v=\d+/)?.[0];
+assert(liveJs&&liveCss,'Versioned lesson controller and styles required');
+assert(offline.files.includes('./assets/'+liveJs)&&offline.files.includes('./assets/'+liveCss),
+ 'Current lesson must remain available in the offline course');
 assert(!js.includes('Все 25 слов и фраз записаны голосом Xiaoxiao.'));
 assert(!js.includes('Цельная запись 今天是星期五。 озвучена тем же голосом Xiaoxiao.'));
 assert(!fs.readFileSync('hsk1-third-v212.html','utf8').includes('Озвучка 0–100: Xiaoxiao'));
