@@ -65,6 +65,10 @@ try{
      d.attempts=d.attempts.map(function(_,i){return Array.isArray(prior.attempts?.[i])?
       prior.attempts[i].slice(0,5).filter(function(v){return v&&typeof v.said==='string'&&typeof v.match==='boolean'}).map(function(v){return {said:v.said.slice(0,80),match:v.match}}):[]});
      d.poster=false;
+     // Words 先/再 and 晚上/晚饭 moved between mini-lessons in v414.
+     // Old microphone scores at those indices may not be attributed to a different word.
+     if(!resume.wordOrderV414&&resume.mini===1){d.attempts[5]=[];d.attempts[6]=[]}
+     if(!resume.wordOrderV414&&resume.mini===2){d.attempts[3]=[];d.attempts[4]=[]}
      if(prior.v414&&typeof prior.v414==='object')d.v414={...d.v414,...prior.v414,pairs:Array.isArray(prior.v414.pairs)?prior.v414.pairs.filter(x=>Number.isInteger(x)&&x>=0&&x<3):[]};
     }
     state.day=d;
@@ -81,7 +85,7 @@ function store(){
    attempts:state.day.attempts,poster:false,v414:state.day.v414
   }:null;
   var resume=state.view==='lesson'?{
-   topic:state.topic,mini:state.mini,stage:state.stage,stepOrderV413:true,quizWord:state.quizWord,
+   topic:state.topic,mini:state.mini,stage:state.stage,stepOrderV413:true,wordOrderV414:true,quizWord:state.quizWord,
    quizSentence:state.quizSentence,build:state.build,day:day
   }:null;
   localStorage.setItem(KEY,JSON.stringify({
