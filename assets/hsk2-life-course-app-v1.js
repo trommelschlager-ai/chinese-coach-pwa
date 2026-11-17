@@ -214,7 +214,7 @@ function viewLesson(){
 }
 function viewDone(){
  var t=chosen(),sc=current(),number=id();
- if(state.topic===0)return '<section class="done day-done pg414-ai">'+
+ if(state.topic===0)return '<section class="done day-done pg414-ai" data-mini="'+state.mini+'">'+
   '<div class="pg414-ai-header"><h1>Panda Go 🐾</h1><small>Курс 2 · HSK2</small><h2>Урок 1 · Мой распорядок дня</h2><div>💬 Разговорная практика</div></div>'+
   '<div class="pg414-ai-questions">'+
    '<div class="pg414-ai-question">'+sound('你几点起床？')+'<strong lang="zh-Hans">你几点起床？</strong><span>Nǐ jǐ diǎn qǐchuáng?</span><small>Во сколько ты встаёшь?</small></div>'+
