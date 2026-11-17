@@ -146,6 +146,13 @@ const ownerMap=Object.freeze({
  '今天是星期五。':'./assets/lesson4-owner-review-v217/owner-22.mp3'
 });
 const fileMap=()=>window.PANDA_HSK1_L4_VOICE_V214||{};
+// The three -tiān words use existing clean native recordings, not the shorter
+// synthetic clips; the final /n/ must be preserved in learner audio.
+const tianNative=Object.freeze({
+ '今天':'./assets/panda-native-clean-v250/jintian.mp3',
+ '明天':'./assets/panda-native-clean-v250/mingtian.mp3',
+ '昨天':'./assets/panda-native-clean-v250/zuotian.mp3'
+});
 const nativeMap=()=>window.PANDA_HSK1_NATIVE_HUMAN_V167||{};
 const fileFor=(word,role='female')=>role==='male'
  ? (window.PANDA_HSK1_VOICES?.male?.[word]||null)
