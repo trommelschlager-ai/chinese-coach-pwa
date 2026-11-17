@@ -1,5 +1,5 @@
 {
-  "version": 415,
+  "version": 416,
   "bytes": 64679587,
   "files": [
     "./assets/panda-character-clean-v349.webp",
@@ -2960,7 +2960,6 @@
     "./assets/hsk2-six-screens-v414.css?v=414",
     "./assets/hsk2-six-screens-v414.js?v=414",
     "./assets/hsk2-life-course-app-v1.js?v=414",
-    "./assets/hsk2-life-course-app-v1.js?v=415",
     "./assets/hsk2-exact-overlay-v415.js?v=415",
     "./assets/hsk2-exact-overlay-v415.css?v=415",
     "./assets/hsk2-approved-v414/01-words.webp",
@@ -2969,6 +2968,8 @@
     "./assets/hsk2-approved-v414/04-test.webp",
     "./assets/hsk2-approved-v414/05-examples.webp",
     "./assets/hsk2-approved-v414/06-panda-ai.webp",
-    "./assets/hsk2-day-inline-ai-v414.js?v=415"
+    "./assets/hsk2-day-inline-ai-v414.js?v=415",
+    "./assets/hsk2-life-course-app-v1.js?v=416",
+    "./assets/hsk2-lesson1-android-fixes-v416.css?v=416"
   ]
 }

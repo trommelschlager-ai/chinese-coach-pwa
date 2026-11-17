@@ -113,7 +113,12 @@ function deviceSound(zh){
   synth.cancel();synth.speak(u);return true;
  }catch(e){if(status)status.textContent='Голос устройства не запустился.';return false}
 }
-function daySound(zh){return sound(zh)}
+function daySound(zh){
+ // Use only exact indexed MP3 for the first HSK2 topic.
+ // No robotic Android speech is silently substituted for missing recordings.
+ if(rec(zh))return sound(zh);
+ return '<button class="audio missing-voice" type="button" data-missing-sound="'+E(zh)+'" aria-label="Проверенная MP3-запись для '+E(zh)+' пока недоступна">🔇</button>';
+}
 function sound(zh){
  if(rec(zh))return '<button class="audio" type="button" data-sound="'+E(zh)+'" aria-label="Прослушать настоящий MP3: '+E(zh)+'">🔊</button>';
  if(deviceVoiceAvailable())return '<button class="audio device-voice" type="button" data-device-sound="'+E(zh)+'" title="Синтезированное произношение на этом устройстве — не MP3 носительницы" aria-label="Озвучить голосом устройства: '+E(zh)+'">🔉 <small>голос устройства</small></button>';
@@ -218,7 +223,7 @@ function viewLesson(){
 }
 function viewDone(){
  var t=chosen(),sc=current(),number=id();
- if(state.topic===0&&state.mini===0&&window.PandaGoExactV415)return window.PandaGoExactV415.renderAI(state,sound,dayCoachingLink(state.mini));
+ if(state.topic===0&&state.mini===0&&window.PandaGoExactV415)return window.PandaGoExactV415.renderAI(state,daySound,dayCoachingLink(state.mini));
  if(state.topic===0)return '<section class="done day-done pg414-ai" data-mini="'+state.mini+'">'+
   '<div class="pg414-ai-header"><h1>Panda Go 🐾</h1><small>Курс 2 · HSK2</small><h2>Урок 1 · Мой распорядок дня</h2><div>💬 Разговорная практика</div></div>'+
   '<div class="pg414-ai-questions">'+
@@ -293,6 +298,12 @@ function render(){
   // A navigation step must silence the previous lesson's clip before repainting.
   if(lastPaintKey!==null&&!preserve)window.PandaHsk2AudioV330?.stop?.();
  var rememberedY=preserve?screen.scrollTop:0;
+ // The live seven-question test scrolls inside the approved artwork.
+ // Remember its own position, not just the outer screen scrollTop.
+ var examBefore=preserve?screen.querySelector('.pg415-live-test'):null;
+ var dialogueBefore=preserve?screen.querySelector('.pg415-dialogue-panel'):null;
+ var savedExamY=examBefore?examBefore.scrollTop:0;
+ var savedDialogueY=dialogueBefore?dialogueBefore.scrollTop:0;
  var html=state.view==='welcome'?viewWelcome():state.view==='map'?viewMap():state.view==='topic'?viewTopic():state.view==='lesson'?viewLesson():state.view==='done'?viewDone():state.view==='review'?viewReview():state.view==='tones'?viewTones():viewExam();
  screen.innerHTML=html;
  var app=document.getElementById('app');
@@ -319,9 +330,19 @@ function render(){
  // For a rerender on the same step, keep the learner's reading position.
  // The old unconditional scrollTop=0 caused every vocabulary tap to jump.
  screen.scrollTop=rememberedY;
+ function restoreInnerScroll(){
+  if(lastPaintKey!==paintKey)return;
+  var exam=screen.querySelector('.pg415-live-test');
+  var dialogue=screen.querySelector('.pg415-dialogue-panel');
+  if(exam&&preserve)exam.scrollTop=savedExamY;
+  if(dialogue&&preserve)dialogue.scrollTop=savedDialogueY;
+ }
  lastPaintKey=paintKey;
+ restoreInnerScroll();
  if(preserve&&typeof window.requestAnimationFrame==='function')window.requestAnimationFrame(function(){
   if(lastPaintKey===paintKey && Math.abs(screen.scrollTop-rememberedY)>1)screen.scrollTop=rememberedY;
+  restoreInnerScroll();
+  window.requestAnimationFrame(restoreInnerScroll);
  });
  if(window.PandaGoApprovedV391&&typeof window.requestAnimationFrame==='function')window.requestAnimationFrame(function(){window.PandaGoApprovedV391.fit()});
  if(status)status.textContent='';
@@ -354,7 +375,12 @@ document.addEventListener('click',function(e){
   if(window.PandaHsk2AudioV330)window.PandaHsk2AudioV330.play(b.dataset.sound,function(msg){if(status)status.textContent=msg});
   return;
  }
- if(b.dataset.deviceSound!==undefined){deviceSound(b.dataset.deviceSound);return}
+ if(b.dataset.missingSound!==undefined){
+   window.speechSynthesis?.cancel?.();
+   if(status)status.textContent='Для «'+b.dataset.missingSound+'» пока нет проверенной MP3-записи. Роботизированная озвучка отключена.';
+   return;
+  }
+  if(b.dataset.deviceSound!==undefined){deviceSound(b.dataset.deviceSound);return}
  if(state.view==='lesson'&&dayPilot()&&dayUI.handle(b,state,{render:render,go:go,deviceSound:deviceSound,complete:function(){if(!state.completed.includes(id()))state.completed.push(id());go('done')}}))return;
  if(b.dataset.nav){go(b.dataset.nav);return}
  if(b.dataset.toneAnswer!==undefined){state.toneAnswer=Number(b.dataset.toneAnswer);render();return}

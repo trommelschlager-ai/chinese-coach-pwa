@@ -38,9 +38,10 @@ assert.ok(genuine,'An existing full-sentence MP3 is offered as its own labelled 
 genuine.click();
 assert.equal(humanPlay,1,'Real human MP3 takes priority over device voice for the exact available sample');
 click('[data-day-speech-word="4"]'); // isolated 刷牙 is not in existing MP3 index
-assert.equal(doc.querySelector('.day-speechhero .device-voice')?.dataset.deviceSound,'刷牙');
-click('.day-speechhero .device-voice');
-assert.deepEqual(spoken,['起床','刷牙'],'No sentence is falsely labelled as an isolated-word audio');
+assert.equal(doc.querySelector('.day-speechhero .missing-voice')?.dataset.missingSound,'刷牙');
+click('.day-speechhero .missing-voice');
+assert.deepEqual(spoken,['起床'],'Missing standalone word must not use robotic Android voice');
+assert.match(doc.querySelector('#message').textContent,/пока нет проверенной MP3-записи/);
 click('[data-day-next]'); // test
 assert.equal(doc.querySelectorAll('.day-question').length,2);
 click('[data-day-quiz="0:1"]');click('[data-day-quiz="1:0"]');
@@ -52,4 +53,4 @@ click('[data-day-next]');
 assert.ok(doc.querySelector('.day-ai-panel a'));
 assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,1);
 assert.deepEqual(errors,[]);
-console.log('PASS HSK2 v413: direct illustration speech, no popup, reordered stages, exact human MP3 priority, labelled device voice and end-of-lesson progress');
+console.log('PASS HSK2 v413: direct illustration speech, no popup, reordered stages, exact human MP3 priority, no robotic substitute and end-of-lesson progress');
