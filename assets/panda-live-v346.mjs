@@ -309,7 +309,8 @@ if (!bridge) {
     warning.hidden=!problem;
     warning.textContent=problem?statusText:'';
     if(problem&&micFailure&&needsMicHelp)warning.append(micHelpBtn);
-    if((!needsMicHelp||!micFailure)&&micHelp.open)micHelp.close();
+    if(!needsMicHelp&&micHelp.open)micHelp.close();
+    if(!micFailure&&micHelp.open)micHelp.close();
     const live=$('#pg346-live');const showingAssessment=Date.now()<assessmentUntil;
     live.classList.toggle('pg352-assessment',!s.active&&!pandaSpeaking&&showingAssessment);
     live.dataset.active=String(s.active||pandaSpeaking||showingAssessment);
