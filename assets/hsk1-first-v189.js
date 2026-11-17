@@ -3,12 +3,14 @@
    License in repository: assets/hanzi-data/ARPHICPL.TXT */
 (()=>{
  'use strict';
+ const FIRST4_PREVIEW=new URLSearchParams(window.location.search).get('preview')==='first4-v414';
  const STEPS=16;
- const PROGRESS_KEY='pg-hsk1-v189-lesson1';
+ const PROGRESS_KEY=FIRST4_PREVIEW?'pg-hsk1-v414-first4-preview':'pg-hsk1-v189-lesson1';
  const LEGACY_KEY='pg-hsk1-v3-foundations';
  const COMPLETE_KEY='pg-hsk1-v3-complete';
  const app=document.querySelector('#app');
  if(!app)return;
+ if(FIRST4_PREVIEW)app.classList.add('pg-v414-preview');
  const area=document.querySelector('#pg-content'),counter=document.querySelector('#pg-counter'),progress=document.querySelector('#pg-progress'),fill=document.querySelector('#pg-progress-fill');
  const prev=document.querySelector('#pg-back'),next=document.querySelector('#pg-next'),note=document.querySelector('#pg-announcement');
  const radicals=[
@@ -35,6 +37,7 @@
 ];
  let step=0,radical=0,order=[],verified=false,listenPassed=false,listenSelected='',savedListenTarget=null,audio=null,recorder=null,stream=null,recordUrl=null,recording=false,playedAtLeastOnce=false;
  try{const v=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');if(v&&Number.isInteger(v.step)){const alreadyDone=v.step===13&&(!v.lessonVersion||v.lessonVersion<194);const oldStep=alreadyDone?14:Math.min(14,Math.max(0,v.step));step=Number(v.lessonVersion)>=295?Math.min(15,Math.max(0,v.step)):(oldStep>=6?oldStep+1:oldStep);verified=!!v.verified||oldStep>8;listenPassed=!!v.listenPassed||alreadyDone;order=Array.isArray(v.order)?v.order.filter(n=>Number.isInteger(n)&&n>=0&&n<=2).slice(0,3):(verified?[0,1,2]:[]);savedListenTarget=typeof v.listenTarget==='string'?v.listenTarget:null;listenSelected=typeof v.listenSelected==='string'?v.listenSelected:''}}catch{}
+ if(FIRST4_PREVIEW)step=Math.min(3,Math.max(0,step));
  const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const intro=(n,title,sub)=>`${n?`<p class="screen-eyebrow">${esc(n)}</p>`:""}<h1 class="screen-title">${esc(title)}</h1>${sub?`<p class="screen-sub">${sub}</p>`:""}`;
  // Use one consistent Xiaoxiao voice for all 10 playable strings in Lesson 1.
@@ -150,6 +153,29 @@
   ()=>intro('Практика · 3/3','Проверь слух','')+listenMarkup(),
   ()=>intro('','Отлично, первые шаги сделаны!','')+`<div class="sheet"><p class="result-title">Ты уже умеешь</p><div class="learning-pairs">${[['我','wǒ','я'],['是','shì','быть'],['学生','xuésheng','студент']].map(([hz,py,ru])=>`<div class="learning-pair"><b class="pair-word">${hz}</b><small>${py}</small><small>${ru}</small></div>`).join('')}</div><div class="rule" style="margin-top:15px"><b>我是学生。</b><div class="mini-desc">Я студент.</div></div><div class="pg-lesson-complete-actions"><button type="button" class="pg-end-repeat" id="repeat-course">↻ Повторить урок</button><a class="pg-end-next" href="./hsk1-second-v203.html">Следующий урок →</a><a class="pg-end-back" href="./hsk1-map.html">Назад к Урокам</a></div></div>`
  ];
+ // v414 preview only: four opening screens; the normal 16-screen course is unchanged.
+ if(FIRST4_PREVIEW)views.splice(0,4,
+  ()=>intro('Знакомство · 1/4','Давай познакомимся!','')+
+    '<div class="sheet pg-v414-hero"><span class="pg-v414-label">ПЕРВОЕ ПРИВЕТСТВИЕ</span>'+
+    '<strong class="big-hanzi" lang="zh-Hans">你好</strong>'+
+    '<p class="pinyin">nǐ hǎo</p><p class="translation">Привет! · Здравствуйте!</p>'+
+    playBtn('你好','Слушать приветствие')+
+    '<div class="pg-v414-note">🎙 Повтори вслух: <b lang="zh-Hans">你好！</b></div></div>',
+  ()=>intro('Знакомство · 2/4','Первое слово: 你','')+
+    word('你','nǐ','ты','<p class="pg-v414-word-foot">Это первое слово в приветствии <b lang="zh-Hans">你好</b>.</p>'),
+  ()=>intro('Знакомство · 3/4','Второе слово: 好','')+
+    word('好','hǎo','хороший, хорошо',
+      '<div class="pg-v414-partners"><b lang="zh-Hans">女 + 子 = 好</b><small>Иероглиф может состоять из нескольких частей.</small></div>'),
+  ()=>intro('Знакомство · 4/4','Первый мини-диалог','')+
+    '<div class="sheet pg-v414-dialogue"><span class="pg-v414-label">СЛУШАЙ ДВА ГОЛОСА</span>'+
+    '<div class="pg-v414-line"><img class="pg-v414-face" src="./assets/lesson4-dialog-v282/woman.webp" alt="Девушка" loading="lazy">'+
+    '<div class="pg-v414-bubble"><strong lang="zh-Hans">你好！</strong><div class="pg-v414-py">nǐ hǎo</div>'+
+    '<div class="pg-v414-meaning">Привет!</div><button type="button" data-say="你好！" data-role="female">▶ Слушать</button></div></div>'+
+    '<div class="pg-v414-line"><img class="pg-v414-face" src="./assets/lesson4-dialog-v282/man.webp" alt="Мужчина" loading="lazy">'+
+    '<div class="pg-v414-bubble"><strong lang="zh-Hans">你好！</strong><div class="pg-v414-py">nǐ hǎo</div>'+
+    '<div class="pg-v414-meaning">Привет!</div><button type="button" data-say="你好！" data-role="male">▶ Слушать</button></div></div>'+
+    '<p class="pg-v414-last-note">Повтори за каждым собеседником. Остальные экраны будут обновлены после согласования первых четырёх.</p></div>'
+ );
  function save(){try{localStorage.setItem(PROGRESS_KEY,JSON.stringify({step,order,verified,listenPassed,listenTarget,listenSelected,lessonVersion:295,updatedAt:Date.now()}))}catch{}}
  function markComplete(){
  /* Unlock only the next lesson in the new HSK1 sequence. */
@@ -298,8 +324,8 @@
  }
  function stopRecord(){if(recorder&&recorder.state==='recording')recorder.stop();stream?.getTracks()?.forEach(t=>t.stop());stream=null;recording=false}
  function cleanupRecord(){recordEpoch++;stopRecord();if(recordUrl){URL.revokeObjectURL(recordUrl);recordUrl=null}}
- function render(){stopSound();counter.textContent=String(step+1).padStart(2,'0')+' / '+STEPS;progress.setAttribute('aria-valuenow',String(step+1));fill.style.width=(100*(step+1)/STEPS)+'%';area.innerHTML=views[step]();area.scrollTop=0;prev.disabled=step===0;next.hidden=step===STEPS-1;next.textContent=step===STEPS-2?'Завершить урок ✓':step===3?'К первым словам →':'Дальше →';next.disabled=(step===9&&!verified)||(step===14&&!!listenTarget&&!listenPassed);if(step===STEPS-1){markComplete();prev.textContent='← Назад'}save()}
- function advance(){if(step===9&&!verified)return;if(step===14&&listenTarget&&!listenPassed)return;if(step<STEPS-1){if(step===13)stopRecord();step++;render()}}
+ function render(){stopSound();counter.textContent=String(step+1).padStart(2,'0')+' / '+STEPS;progress.setAttribute('aria-valuenow',String(step+1));fill.style.width=(100*(step+1)/STEPS)+'%';area.innerHTML=views[step]();area.scrollTop=0;prev.disabled=step===0;next.hidden=step===STEPS-1||(FIRST4_PREVIEW&&step===3);next.textContent=step===STEPS-2?'Завершить урок ✓':step===3?'К первым словам →':'Дальше →';next.disabled=(step===9&&!verified)||(step===14&&!!listenTarget&&!listenPassed);if(step===STEPS-1){markComplete();prev.textContent='← Назад'}save()}
+ function advance(){if(FIRST4_PREVIEW&&step>=3)return;if(step===9&&!verified)return;if(step===14&&listenTarget&&!listenPassed)return;if(step<STEPS-1){if(step===13)stopRecord();step++;render()}}
  prev.addEventListener('click',()=>{if(step>0){if(step===13)stopRecord();step--;render()}});
  next.addEventListener('click',advance);
  area.addEventListener('click',async e=>{
