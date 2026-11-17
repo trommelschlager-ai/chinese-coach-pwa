@@ -28,7 +28,7 @@ async function submit(){
   idx++;el.input.value='';
   updateQuestions();
   if(idx>=2){
-   message('✓ Два ответа подходят по смыслу. Тоны не оценивались. Можно продолжить разговор с Panda AI!',true);
+   message('✓ Два ответа подходят. Тоны не оценивались.',true);
    el.input.placeholder='Открой полный диалог с Пандой AI';
    el.input.disabled=true;
    const send=el.root.querySelector('[data-pg414-send]');if(send)send.disabled=true;
