@@ -1,5 +1,5 @@
 {
-  "version": 437,
+  "version": 438,
   "bytes": 65876329,
   "files": [
     "./assets/panda-character-clean-v349.webp",
@@ -3040,6 +3040,7 @@
     "./assets/panda-topics-compact-v436.css?v=436",
     "./assets/hsk2-storyboard-v433.js?v=433",
     "./assets/hsk2-storyboard-v433.css?v=433",
-    "./assets/hsk2-storyboard-v433-avatar.jpg"
+    "./assets/hsk2-storyboard-v433-avatar.jpg",
+    "./assets/hsk2-life-course-app-v1.js?v=438"
   ]
 }

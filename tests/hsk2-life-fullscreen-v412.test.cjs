@@ -13,7 +13,7 @@ const html=fs.readFileSync(path.join(root,'hsk2-life-course.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'assets/hsk2-life-welcome-v412.css'),'utf8');
 const app=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'utf8');
 assert(html.includes('hsk2-life-welcome-v412.css?v=412'));
-assert(html.includes('hsk2-life-course-app-v1.js?v=420'));
+assert(html.includes('hsk2-life-course-app-v1.js?v=438'));
 // The v412 artwork remains intact as an archival reference. The active design is v432.
 assert(html.includes('hsk2-approved-20261117/home.jpg'));
 assert(html.includes('hsk2-approved-20261117/lesson1.jpg'));

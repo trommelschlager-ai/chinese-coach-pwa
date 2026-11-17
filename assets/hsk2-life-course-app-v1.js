@@ -70,6 +70,13 @@ try{
      if(!resume.wordOrderV414&&resume.mini===1){d.attempts[5]=[];d.attempts[6]=[]}
      if(!resume.wordOrderV414&&resume.mini===2){d.attempts[3]=[];d.attempts[4]=[]}
      if(prior.v414&&typeof prior.v414==='object')d.v414={...d.v414,...prior.v414,pairs:Array.isArray(prior.v414.pairs)?prior.v414.pairs.filter(x=>Number.isInteger(x)&&x>=0&&x<3):[]};
+     if(window.PandaGoStoryboardV433){
+      const stagePage=[0,2,4,6,10][state.stage]||0;
+      d.pg433Page=Number.isInteger(prior.pg433Page)?Math.max(0,Math.min(11,prior.pg433Page)):stagePage;
+      d.pg433HighestStage=Number.isInteger(prior.pg433HighestStage)?Math.max(0,Math.min(4,prior.pg433HighestStage)):state.stage;
+      d.pg433Preview=typeof prior.pg433Preview==='boolean'?prior.pg433Preview:false;
+      d.pgApprovedCover=typeof prior.pgApprovedCover==='boolean'?prior.pgApprovedCover:false;
+     }
     }
     state.day=d;
    }
@@ -82,6 +89,8 @@ function store(){
  try{
   var day=state.topic===0&&state.day?{
    selected:state.day.selected,speechWord:state.day.speechWord,quiz:state.day.quiz,build:state.day.build,
+   pg433Page:state.day.pg433Page,pg433HighestStage:state.day.pg433HighestStage,
+   pg433Preview:state.day.pg433Preview,pgApprovedCover:state.day.pgApprovedCover,
    attempts:state.day.attempts,poster:false,v414:state.day.v414
   }:null;
   var resume=state.view==='lesson'?{
