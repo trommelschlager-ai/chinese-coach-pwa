@@ -30,6 +30,12 @@ const PERSONAL={我:['wǒ','Я'],你:['nǐ','Ты'],他:['tā','Он'],她:['tā
 const ROLES={老师:['lǎoshī','учитель','учителя'],学生:['xuésheng','студент','студенты'],人:['rén','человек','люди']};
 const MEMBERS={妈妈:['māma','мама','мамы'],爸爸:['bàba','папа','папы'],哥哥:['gēge','старший брат','старшего брата'],姐姐:['jiějie','старшая сестра','старшей сестры'],弟弟:['dìdi','младший брат','младшего брата'],妹妹:['mèimei','младшая сестра','младшей сестры']};
 const RELATIVE_AGE_RU={妈妈:'твоей маме',爸爸:'твоему папе',哥哥:'твоему старшему брату',姐姐:'твоей старшей сестре',弟弟:'твоему младшему брату',妹妹:'твоей младшей сестре'};
+function relativeAgeReplyRu(relative,age){
+ const dative=RELATIVE_AGE_RU[relative]?.replace(/^твоему/,'моему').replace(/^твоей/,'моей');
+ if(!dative)return null;
+ const ending=age%100>=11&&age%100<=14?'лет':age%10===1?'год':age%10>=2&&age%10<=4?'года':'лет';
+ return dative[0].toUpperCase()+dative.slice(1)+' '+age+' '+ending+'.';
+}
 const TIMES={今天:['Jīntiān','Сегодня',0],明天:['Míngtiān','Завтра',1],昨天:['Zuótiān','Вчера',-1]};
 const WEATHER={很冷:['hěn lěng','холодно'],很热:['hěn rè','жарко'],很好:['hěn hǎo','хорошая погода'],下雨:['xià yǔ','идёт дождь'],在下雨:['zài xià yǔ','идёт дождь'],下雪:['xià xuě','идёт снег'],晴天:['qíngtiān','ясно'],阴天:['yīntiān','пасмурно'],有风:['yǒu fēng','ветрено']};
 function localDate(date,offset=0){const d=new Date(date);d.setDate(d.getDate()+offset);return d}
@@ -84,7 +90,7 @@ query(['今年是哪一年','今年几几年'],5,'Jīnnián shì nǎ yì nián?'
 for(const [member,[py,ru]] of Object.entries(MEMBERS))query(['你有'+member+'吗'],6,'Nǐ yǒu '+py+' ma?','У тебя есть '+ru+'?',()=>{const has=['妈妈','爸爸','哥哥','妹妹'].includes(member);return line('我'+(has?'有':'没有')+(has&&!['妈妈','爸爸'].includes(member)?'一个':'')+member+'。','Wǒ '+(has?'yǒu ':'méiyǒu ')+(has&&!['妈妈','爸爸'].includes(member)?'yí ge ':'')+py+'.','У меня '+(has?'есть '+ru:'нет '+MEMBERS[member][2])+'.',ROLE)});
 for(const [member,[py,ru]] of Object.entries(MEMBERS)){
  const has=['妈妈','爸爸','哥哥','妹妹'].includes(member),age={妈妈:30,爸爸:32,哥哥:5,妹妹:1}[member];
- query(['你'+member+'几岁','你'+member+'多大'],6,'Nǐ '+py+' jǐ suì?','Сколько лет '+RELATIVE_AGE_RU[member]+'?',()=>has?line('我'+member+ZH(age)+'岁。','Wǒ '+py+' '+(age===1?'yí':numberPy(age))+' suì.',ru+': '+age+' лет.',ROLE):line('我没有'+member+'。','Wǒ méiyǒu '+py+'.','У меня нет '+MEMBERS[member][2]+'.',ROLE));
+ query(['你'+member+'几岁','你'+member+'多大'],6,'Nǐ '+py+' jǐ suì?','Сколько лет '+RELATIVE_AGE_RU[member]+'?',()=>has?line('我'+member+ZH(age)+'岁。','Wǒ '+py+' '+(age===1?'yí':numberPy(age))+' suì.',relativeAgeReplyRu(member,age),ROLE):line('我没有'+member+'。','Wǒ méiyǒu '+py+'.','У меня нет '+MEMBERS[member][2]+'.',ROLE));
  for(const q of QUERY.slice(-2))q.requires=[3,6];
 }
 for(const member of ['哥哥','姐姐','弟弟','妹妹']){const py=MEMBERS[member][0],has=['哥哥','妹妹'].includes(member);query(['你有几个'+member],6,'Nǐ yǒu jǐ ge '+py+'?','Сколько у тебя братьев или сестёр: '+MEMBERS[member][1]+'?',()=>line('我'+(has?'有一个':'没有')+member+'。','Wǒ '+(has?'yǒu yí ge ':'méiyǒu ')+py+'.','У меня '+(has?'есть '+MEMBERS[member][1]:'нет '+MEMBERS[member][2])+'.',ROLE));}
@@ -237,9 +243,23 @@ function linkedQuestion(raw,lesson,allowed,date,profile={}){
 }
 function extendQuestion(result,raw,allowed,date,profile){
  if(!result||result.kind!=='question'||!allowed.includes(result.lesson))return result;
+ const inputKey=normalize(raw);
+ // Reciprocal age questions are valid in Mandarin, but silently asking
+ // exactly the same question straight back looks like a broken Non-Stop loop.
+ // End this automatic turn rather than invent a differently voiced question.
+ if(/^你(?:哥哥|姐姐|弟弟|妹妹)(?:几岁|多大(?:了)?)$/.test(inputKey))
+   return {...result,followup:null,
+     message:'Панда ответила на вопрос о возрасте. Теперь можешь задать другой вопрос.'};
  const linked=linkedQuestion(raw,result.lesson,allowed,date,profile);
  const retain=result.followup?.intent==='relative-age'||result.followup?.isContextual;
- return {...result,followup:retain?result.followup:(linked||result.followup||null)};
+ const suggested=retain?result.followup:(linked||result.followup||null);
+ // Protect family conversations from immediate repeats. Weather and calendar
+ // retain their existing lesson-specific continuation rules.
+ if(result.lesson===6){
+   const seen=new Set([inputKey,...(profile?.recentQuestions||[]).map(normalize)]);
+   return {...result,followup:suggested&&!seen.has(normalize(suggested.hanzi))?suggested:null};
+ }
+ return {...result,followup:suggested};
 }
 export function answerLive(raw,options={}){
  const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={},course='hsk1'}=options;
