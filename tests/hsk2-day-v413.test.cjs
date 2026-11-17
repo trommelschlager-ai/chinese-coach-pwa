@@ -38,10 +38,11 @@ assert.ok(genuine,'An existing full-sentence MP3 is offered as its own labelled 
 genuine.click();
 assert.equal(humanPlay,1,'Real human MP3 takes priority over device voice for the exact available sample');
 click('[data-day-speech-word="4"]'); // isolated 刷牙 is not in existing MP3 index
-assert.equal(doc.querySelector('.day-speechhero .missing-voice')?.dataset.missingSound,'刷牙');
-click('.day-speechhero .missing-voice');
-assert.deepEqual(spoken,['起床'],'Missing standalone word must not use robotic Android voice');
-assert.match(doc.querySelector('#message').textContent,/пока нет проверенной MP3-записи/);
+const missing=doc.querySelector('.day-speechhero .hsk2-no-mp3');
+assert.ok(missing,'A missing word must show an honest non-interactive MP3 status');
+assert.match(missing.textContent,/MP3 нет/);
+assert.equal(doc.querySelector('.day-speechhero .missing-voice'),null,'Do not display a clickable imitation of recorded audio');
+assert.deepEqual(spoken,['起床'],'Missing standalone word must not trigger robotic Android voice');
 click('[data-day-next]'); // test
 assert.equal(doc.querySelectorAll('.day-question').length,2);
 click('[data-day-quiz="0:1"]');click('[data-day-quiz="1:0"]');
