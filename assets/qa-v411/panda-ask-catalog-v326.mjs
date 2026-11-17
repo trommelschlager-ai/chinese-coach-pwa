@@ -2,17 +2,17 @@
  * Never advertise a free-form answer, recording, tone grade or locked lesson.
  * Entries are checked against the SAME engine used when the learner submits.
  */
-import {answerLive} from './panda-live-dialogue-v272.mjs?v=qa-7fff6cb9';
+import {answerLive} from './panda-live-dialogue-v272.mjs?v=qa-9d60b9b6';
 import {PANDA_CLIPS} from '../panda-voice-clips-v365.mjs?v=365';
-import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=qa-7fff6cb9';
+import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=qa-9d60b9b6';
 
 export const ASK_CANDIDATES=Object.freeze([
  {lesson:1,title:'Основы и приветствие',questions:['你好吗？','你今天怎么样？','你今天好吗？','晚上好！你好吗？','你呢？','你吃饭了吗？','你吃了吗？']},
  {lesson:2,title:'Местоимения и представление',questions:['你叫什么名字？','你是谁？','你是老师吗？','你是学生吗？','他是学生吗？','她是老师吗？']},
  {lesson:3,title:'Числа',questions:['你几岁？','你多大？','你有几个？','十后面是几？','三十加二是多少？']},
- {lesson:4,title:'Дни недели',questions:['今天星期几？','明天星期几？','昨天星期几？','你星期几有空？','你今天有空吗？','你星期天有空吗？']},
+ {lesson:4,title:'Дни недели',questions:['今天星期几？','明天星期几？','昨天星期几？','你星期几有空？','你今天有空吗？','你星期天有空吗？','你有没有空？','你今天有没有空？']},
  {lesson:5,title:'Даты и месяцы',questions:['今天几月几号？','明天几月几号？','现在几月？','今年是哪一年？','这个月有多少天？','下个月是几月？']},
- {lesson:6,title:'Семья',questions:['你有哥哥吗？','你有妹妹吗？','你有几个哥哥？','你姐姐怎么样？','你妹妹几岁？','你家有几口人？','你有弟弟和妹妹吗？']},
+ {lesson:6,title:'Семья',questions:['你有哥哥吗？','你有妹妹吗？','你有没有哥哥？','你有没有妹妹？','你有没有姐姐？','你有没有弟弟？','你有几个哥哥？','你姐姐怎么样？','你妹妹几岁？','你家有几口人？','你有弟弟和妹妹吗？']},
  {lesson:7,title:'Погода',questions:['今天天气怎么样？','明天天气怎么样？','今天下雪吗？','冬天天气怎么样？','夏天天气怎么样？','今天有风吗？']}
 ].map(group=>Object.freeze({...group,questions:Object.freeze([...group.questions])})));
 

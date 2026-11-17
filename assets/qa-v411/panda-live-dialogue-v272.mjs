@@ -3,7 +3,7 @@ import {normalize,verifyAnswerFor} from '../panda-voice-pilot-engine.mjs?v=live6
 import {recordedPandaAnswer,recordedCourseScope} from '../panda-recorded-qa-v358.mjs?v=381';
 import {interpretUtterance,interpretFamily,weekdayForDate} from '../panda-live-conversation-v266.mjs?v=270';
 import {answerNonStop} from '../panda-nonstop-v267.mjs?v=270';
-import {lookupPilotAudio} from './panda-live-audio.mjs?v=qa-7fff6cb9';
+import {lookupPilotAudio} from './panda-live-audio.mjs?v=qa-9d60b9b6';
 import {answerCurriculumQuestion} from '../panda-curriculum-tutor.mjs';
 import {chineseNumber} from '../panda-live-drafts.mjs?v=live6';
 import {lookupExtendedQuestion,extensionAnswer,extensionStatement,rememberedFamilyFollowup} from '../panda-hsk1-extensions-v282.mjs?v=284';
@@ -15,6 +15,7 @@ import {answerHsk2Bridge} from '../panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from '../panda-sentence-coach-v319.mjs?v=319';
 import {answerBasicConversation} from '../panda-basic-conversation-v323.mjs?v=336';
 import {analyzeCalendarLiteral,calendarAcknowledgement} from '../panda-calendar-literal-v383.mjs?v=401';
+import {reviewedYouYouMeiyou} from './panda-youyoumeiyou-v416.mjs?v=qa-9d60b9b6';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
@@ -305,6 +306,11 @@ export function answerLive(raw,options={}){
    followup:null,
    message:askedBack?'Панда ответила на твой встречный вопрос.':'Ответ принят. Можешь задать следующий вопрос или выбрать другую тему.'};
  }
+ // Reviewed Mandarin A-not-A: 你有没有…？ (family and availability).
+ // Run before general fallback so the exact phrase and tones are preserved.
+ // Also accept 有 / 没有 for a currently active 有—没有 question.
+ const youYouMeiyou=reviewedYouYouMeiyou(raw,{allowed,prompt});
+ if(youYouMeiyou)return youYouMeiyou;
  // Social and common-family questions must work before any broad fallback.
  // Keep our known corrections independent of experimental on-device AI.
  const basic=answerBasicConversation(raw,allowed);if(basic)return basic;
