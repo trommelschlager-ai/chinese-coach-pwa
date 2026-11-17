@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru"><head><meta name="robots" content="noindex,nofollow"><base href="https://cdn.jsdelivr.net/gh/trommelschlager-ai/chinese-coach-pwa@7fff6cb98da7ae8f54eb107d2e3583698d7dd9c1/">
+<html lang="ru"><head><meta name="robots" content="noindex,nofollow">
 <script>
 // Keep this Android v411 preview from changing the production course progress.
 (function(){
@@ -21,6 +21,7 @@
  Object.defineProperty(window,'localStorage',{configurable:true,value:isolated});
  window.__PANDA_V411_QA=true;
  window.__PANDA_V411_QA_ALL_LESSONS=true;
+ window.__PANDA_V411_QA_SAME_ORIGIN=true;
 })();
 </script><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
@@ -34,8 +35,10 @@ document.documentElement.classList.add('panda-booting');
 /* Only on a real startup failure show the legacy recovery screen. */
 window.setTimeout(function(){
  if(document.documentElement.classList.contains('panda-booting')){
-  document.documentElement.classList.remove('panda-booting');
-  console.warn('Panda AI: approved UI did not initialize, enabling recovery');
+  document.documentElement.classList.add('panda-booting');
+  console.error('Panda AI QA: approved UI did not initialize; refusing to display legacy UI');
+  document.body.insertAdjacentHTML('afterbegin','<div role="alert" style="position:relative;z-index:99999;margin:18vh auto 0;max-width:360px;padding:22px;border:2px solid #a54ab4;background:white;color:#39205f;border-radius:18px;font:16px/1.5 system-ui"><b>Не удалось загрузить Panda AI v411.</b><p>Это ошибка загрузки тестовой версии. Не используй старый запасной экран для проверки.</p><button type="button" onclick="location.reload()" style="padding:12px 18px;border-radius:12px;background:#af43d3;color:white;border:0">Обновить страницу</button></div>');
+  return;
  }
 },12000);
 </script>
@@ -69,5 +72,5 @@ window.setTimeout(function(){
 <dialog id="history-dialog" aria-labelledby="history-title"><header><h2 id="history-title">История разговора</h2><button data-close="history-dialog" aria-label="Закрыть историю">×</button></header><p>До 100 последних реплик, только в этой вкладке.</p><div id="history" class="history"></div></dialog>
 <dialog id="study-dialog" aria-labelledby="study-title"><header><h2 id="study-title">Помощь по уроку</h2><button data-close="study-dialog" aria-label="Закрыть подсказки">×</button></header><div class="study-body"><p id="allowed-topics"></p><details id="answer-variants"><summary>Варианты ответа</summary><div id="variant-choices" class="quick-phrases"></div></details><p id="review-count"></p><button id="review">Повторить трудное</button><h3>Слова и примеры</h3><div id="words"></div><form id="knowledge-form"><label for="knowledge-question">Спроси по этому уроку</label><div class="knowledge-field"><input id="knowledge-question" maxlength="260" placeholder="Что означает 你好?"><button type="submit">Спросить</button></div></form><p id="knowledge-answer" role="status"></p><p>Проверяется распознанный текст. Точность произношения и акустические тоны не оцениваются. Написанный пиньинь сверяется с учебными вариантами и обозначениями тонов.</p><p>Панда отвечает по пройденным темам HSK 1, разговорным вопросам о еде и вводным словам 中文、学习、忙、很. Непройденные материалы HSK 2 пока закрыты. Если смысл неоднозначен, попросит уточнение. Это не переводчик любых предложений.</p><p>Используются существующие записи Панды и аудио из уроков HSK 1–7. Если записи нет, ответ показан текстом. Приветствия чередуются для тренировки, независимо от времени суток.</p><p>Сообщения остаются в памяти этой вкладки и исчезают после перезагрузки. На устройстве сохраняются только учебные отметки и фразы для повторения.</p></div></dialog>
 <dialog id="speech-dialog" aria-labelledby="speech-title"><header><h2 id="speech-title">Голосовой ответ</h2><button data-close="speech-dialog" aria-label="Закрыть">×</button></header><p>Распознавание речи выполняет браузер. Он может отправлять звук своей внешней службе. Panda Go не записывает и не сохраняет твой голос.</p><p>Продолжить с системным распознаванием? Решение действует только до закрытия страницы.</p><button id="speech-allow" class="primary">Разрешить и говорить</button><button data-close="speech-dialog">Отвечать текстом</button></dialog>
-<script src="./assets/hsk1-foundations-data-v152.js?v=188"></script><script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=336"></script><script type="module" src="./assets/panda-live-screen-v270.mjs?v=411"></script>
-<script type="module" src="./assets/panda-live-v346.mjs?v=407"></script></body></html>
+<script src="./assets/hsk1-foundations-data-v152.js?v=188"></script><script src="./assets/hsk2-user-voice/phrase-index-v332.js?v=336"></script><script type="module" src="./assets/qa-v411/panda-live-screen-v270.mjs?v=qa-7fff6cb9"></script>
+<script type="module" src="./assets/qa-v411/panda-live-v346.mjs?v=qa-7fff6cb9"></script></body></html>
