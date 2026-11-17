@@ -16,6 +16,32 @@ const classroom='Учебная роль Панды, а не сведения о
 export function reviewedYouYouMeiyou(raw,{allowed=[1],prompt=null}={}){
  const original=String(raw||'').trim(),s=normalized(original);
  const active=normalized(prompt?.hanzi||prompt?.panda||prompt?.line?.hanzi||'');
+ // Full learner statements are valid Chinese even when they do not answer the
+ // current sibling question. Translate exactly; never fall through to 谢谢！.
+ const fullFamily=/^(没有)?我(没有|有)(一个|两个)?(哥哥|姐姐|弟弟|妹妹)$/.exec(s);
+ if(fullFamily){
+   const absent=!!fullFamily[1]||fullFamily[2]==='没有';
+   const quantity=fullFamily[3]||'';
+   const relative=fullFamily[4],r=family[relative];
+   if(!allowed.includes(6))return {kind:'locked',lesson:6,message:'Сначала открой урок 6.'};
+   const promptFamily=/^你(?:有没有(哥哥|姐姐|弟弟|妹妹)|有(哥哥|姐姐|弟弟|妹妹)吗)$/.exec(active);
+   const asked=promptFamily?.[1]||promptFamily?.[2]||null;
+   const different=!!asked&&asked!==relative;
+   const subjectPy=absent?'méiyǒu '+r[0]:'yǒu '+(quantity==='一个'?'yí ge ':quantity==='两个'?'liǎng ge ':'')+r[0];
+   const pinyin=(fullFamily[1]?'Méiyǒu, ':'')+'wǒ '+subjectPy+'.';
+   const translated=absent?'У меня нет '+r[2]+'.':
+     'У меня '+(quantity==='一个'?'есть один ':quantity==='两个'?'есть два ':'есть ')+r[1]+'.';
+   const meaning=(fullFamily[1]?'Нет, ':'')+translated.charAt(0).toLowerCase()+translated.slice(1);
+   const spoken={known:true,hanzi:original,pinyin:pinyin.replace(/^w/,'W'),translation:meaning,topic:6,
+     matchedPrompt:!!asked&&!different,family:{present:absent?[]:[relative],absent:absent?relative:null}};
+   if(different)return {kind:'clarify',lesson:6,spoken,followup:null,
+     message:'Ты правильно рассказал о '+(relative==='妹妹'?'младшей сестре':relative==='弟弟'?'младшем брате':relative==='哥哥'?'старшем брате':'старшей сестре')+
+       ', но Панда спрашивала о другом родственнике: '+asked+'. Ответь на вопрос о нём.'};
+   return {kind:asked?'answer':'statement',lesson:6,spoken,
+     reply:sample('明白了。','Míngbai le.','Понятно.'),
+     followup:null,message:'Панда поняла ответ о семье. Точный MP3 для этой реплики пока не записан.'};
+ }
+
  const currentLesson=/^你有没有(哥哥|姐姐|弟弟|妹妹)$/.test(active)?6:
     /^你(?:今天|明天)?有没有(?:空|时间)$/.test(active)?4:null;
  if(currentLesson&&['有','没有'].includes(s)){
