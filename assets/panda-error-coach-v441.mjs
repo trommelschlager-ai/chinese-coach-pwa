@@ -24,7 +24,8 @@ export function explainPandaAnswer441(raw,{prompt=null,confidence=null}={}){
  let output=null;
  if(asked&&desire?.[2]===asked){
   const r=FAMILY[asked];
-  output=detail(input,'meaning','Я хочу, чтобы у меня был '+r.exists+'.',{
+  const copula=asked==='姐姐'||asked==='妹妹'?'была':'был';
+  output=detail(input,'meaning','Я хочу, чтобы у меня '+copula+' '+r.exists+'.',{
    title:'Правильное предложение, но другой смысл',
    hanzi:'我有一个'+asked+'。',pinyin:'Wǒ yǒu yí ge '+r.py+'.',
    ru:'У меня есть '+r.exists+'.',
@@ -50,7 +51,7 @@ export function explainPandaAnswer441(raw,{prompt=null,confidence=null}={}){
   output=detail(input,'grammar','Ты говоришь о двух родственниках.',{
    title:'Два человека: 两个',
    hanzi:'我有两个'+two[1]+'。',pinyin:'Wǒ yǒu liǎng ge '+r.py+'.',
-   ru:'У меня есть два: '+r.two+'.',
+   ru:'У меня есть '+(two[1]==='哥哥'?'два старших брата':two[1]==='弟弟'?'два младших брата':two[1]==='姐姐'?'две старшие сестры':'две младшие сестры')+'.',
    why:'Перед счётным словом 个 для количества два обычно используют 两 (liǎng), а не 二 (èr).',
    retry:'Повтори правильный вариант.'
   });
