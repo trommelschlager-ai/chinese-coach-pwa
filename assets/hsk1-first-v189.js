@@ -38,7 +38,7 @@
 ];
  let step=0,radical=0,order=[],verified=false,listenPassed=false,listenSelected='',savedListenTarget=null,audio=null,recorder=null,stream=null,recordUrl=null,recording=false,playedAtLeastOnce=false;
  try{const v=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');if(v&&Number.isInteger(v.step)){const alreadyDone=v.step===13&&(!v.lessonVersion||v.lessonVersion<194);const oldStep=alreadyDone?14:Math.min(14,Math.max(0,v.step));step=Number(v.lessonVersion)>=295?Math.min(15,Math.max(0,v.step)):(oldStep>=6?oldStep+1:oldStep);verified=!!v.verified||oldStep>8;listenPassed=!!v.listenPassed||alreadyDone;order=Array.isArray(v.order)?v.order.filter(n=>Number.isInteger(n)&&n>=0&&n<=2).slice(0,3):(verified?[0,1,2]:[]);savedListenTarget=typeof v.listenTarget==='string'?v.listenTarget:null;listenSelected=typeof v.listenSelected==='string'?v.listenSelected:''}}catch{}
- if(FIRST4_PREVIEW)step=Math.min(3,Math.max(0,step));
+ if(FIRST4_PREVIEW)step=Math.min(PREVIEW_KIND==='first4-v414'?3:15,Math.max(0,step));
  const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const intro=(n,title,sub)=>`${n?`<p class="screen-eyebrow">${esc(n)}</p>`:""}<h1 class="screen-title">${esc(title)}</h1>${sub?`<p class="screen-sub">${sub}</p>`:""}`;
  // Use one consistent Xiaoxiao voice for all 10 playable strings in Lesson 1.
