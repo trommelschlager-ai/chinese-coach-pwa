@@ -1,0 +1,98 @@
+/* HSK2 exact approved JPG screens · 17 Nov 2026. No image redrawing. */
+#app.approved-welcome-v390{
+ background:#f7e7fa!important;
+}
+#app.approved-welcome-v390 #screen,
+#app.approved-welcome-v390 .approved-welcome-screen{
+ background:linear-gradient(180deg,#fff4ff,#f2d9f6)!important;
+}
+#app.approved-welcome-v390 .approved-welcome-screen .approved-art{
+ position:absolute!important;inset:0!important;
+ width:100%!important;height:100%!important;min-width:0!important;
+ aspect-ratio:auto!important;top:0!important;left:0!important;
+ transform:none!important;overflow:hidden!important;
+ box-shadow:none!important;
+}
+#app.approved-welcome-v390 .approved-welcome-screen .approved-art>img{
+ width:100%!important;height:100%!important;object-fit:fill!important;
+}
+#app.approved-welcome-v390 .approved-welcome-screen .approved-art>img:not([data-pg432-approved]){
+ opacity:0!important;
+}
+#app.approved-welcome-v390 .approved-art .poster-welcome-start{
+ left:3.6%!important;top:90.45%!important;width:92.9%!important;height:8.0%!important;
+}
+#app.approved-welcome-v390 .approved-art .poster-welcome-program{
+ left:21.7%!important;top:86.18%!important;width:56.6%!important;height:3.4%!important;
+}
+#app.approved-welcome-v390 .approved-art .poster-welcome-ai{display:none!important}
+#app.approved-welcome-v390 .approved-art .poster-welcome-ai-card{
+ left:78.8%!important;top:76.8%!important;width:19%!important;height:7.8%!important;
+}
+#app.approved-welcome-v390 .approved-art .pg432-first-card{
+ left:3.8%!important;top:64.7%!important;width:92.4%!important;height:10.2%!important;
+}
+#app.approved-welcome-v390 .approved-art .pg432-back-home{
+ left:3.8%!important;top:1.6%!important;width:11.1%!important;height:6.2%!important;
+}
+#app.approved-welcome-v390 .approved-art .pg432-hit,
+#app.day-lesson-active .pg432-hit{
+ position:absolute!important;z-index:12!important;padding:0!important;
+ border:0!important;border-radius:24px!important;background:transparent!important;
+ -webkit-tap-highlight-color:transparent!important;cursor:pointer!important;
+ touch-action:manipulation!important;
+}
+#app.approved-welcome-v390 .approved-art .pg432-hit:active,
+#app.approved-welcome-v390 .approved-art .approved-hotspot:active,
+#app.day-lesson-active .pg432-hit:active{
+ background:#a844d12c!important;
+ box-shadow:inset 0 0 0 3px #b65bc88a,0 0 13px #8833ba5e!important;
+ transform:scale(.985)!important;
+}
+#app.approved-welcome-v390 .approved-art .pg432-hit:focus-visible,
+#app.approved-welcome-v390 .approved-art .approved-hotspot:focus-visible,
+#app.day-lesson-active .pg432-hit:focus-visible{
+ outline:3px solid #7c21ad!important;outline-offset:-3px!important;
+}
+#app.day-lesson-active:has(.pg432-cover){
+ height:100dvh!important;min-height:0!important;overflow:hidden!important;
+ background:#f7e7fa!important;padding:0!important;
+}
+#app.day-lesson-active:has(.pg432-cover)>.header,
+#app.day-lesson-active:has(.pg432-cover)>.bottom,
+#app.day-lesson-active:has(.pg432-cover)>#message{display:none!important}
+#app.day-lesson-active:has(.pg432-cover) #screen{
+ display:block!important;flex:1 1 auto!important;
+ width:100%!important;height:100%!important;min-height:0!important;
+ padding:0!important;margin:0!important;overflow:hidden!important;
+ background:#f9e8fb!important;
+}
+#app .pg432-cover{
+ position:relative!important;width:100%!important;height:100%!important;min-height:0!important;
+ overflow:hidden!important;padding:0!important;margin:0!important;
+ background:linear-gradient(#fff5fe,#f0d7f9)!important;
+}
+#app .pg432-cover .pg432-cover-art{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ overflow:hidden!important;line-height:0!important;
+}
+#app .pg432-cover .pg432-cover-art>img{
+ width:100%!important;height:100%!important;display:block!important;
+ object-fit:fill!important;object-position:center!important;
+ pointer-events:none!important;user-select:none!important;
+}
+#app .pg432-cover .pg432-cover-back{
+ top:1.5%!important;left:3.8%!important;width:11.5%!important;height:6.5%!important;
+}
+#app .pg432-cover .pg432-cover-start{
+ top:90.1%!important;left:3.4%!important;width:93.2%!important;height:8.7%!important;
+}
+@media(min-width:700px){
+ #app.approved-welcome-v390,#app.day-lesson-active:has(.pg432-cover){
+  max-width:520px!important;margin-left:auto!important;margin-right:auto!important;
+  box-shadow:0 0 35px #6f3a8650!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ #app .pg432-hit{transition:none!important}
+}

@@ -1,6 +1,6 @@
 {
-  "version": 431,
-  "bytes": 64792672,
+  "version": 432,
+  "bytes": 65317009,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -2991,6 +2991,10 @@
     "./assets/panda-nonstop-continuity-v425.mjs?v=425",
     "./assets/panda-family-turn-v426.mjs?v=427",
     "./assets/panda-conversation-memory-v430.mjs?v=430",
-    "./assets/panda-topic-memory-v431.mjs?v=431"
+    "./assets/panda-topic-memory-v431.mjs?v=431",
+    "./assets/hsk2-approved-20261117/home.jpg",
+    "./assets/hsk2-approved-20261117/lesson1.jpg",
+    "./assets/hsk2-approved-20261117.css?v=432",
+    "./assets/hsk2-approved-20261117.js?v=432"
   ]
 }
