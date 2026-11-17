@@ -1,0 +1,82 @@
+/* Panda Go HSK2 lesson 1 · v416.
+   Approved 941x1672 posters and their clickable coordinates fill the Android viewport.
+   Correct answers keep their gold styling; transient taps no longer paint yellow squares. */
+#app.day-lesson-active:has(.pg415-art-screen) #screen,
+#app.day-done-active:has(.pg415-ai-screen) #screen{
+ position:relative!important;
+ display:flex!important;flex-direction:column!important;
+ width:100%!important;height:100%!important;min-height:0!important;
+ padding:0!important;margin:0!important;overflow:hidden!important;
+}
+#app .pg415-art-screen,#app .pg415-ai-screen{
+ width:100%!important;height:100%!important;min-height:0!important;
+ flex:1 1 auto!important;align-items:stretch!important;justify-content:stretch!important;
+ overflow:hidden!important;
+}
+#app .pg415-graphic{
+ aspect-ratio:auto!important;width:100%!important;height:100%!important;
+ max-width:none!important;max-height:none!important;min-width:0!important;min-height:0!important;
+ flex:1 1 auto!important;margin:0!important;border:0!important;
+ overflow:hidden!important;box-shadow:none!important;
+}
+#app .pg415-art{
+ width:100%!important;height:100%!important;max-height:none!important;
+ object-fit:fill!important;transform:none!important;
+ pointer-events:none!important;user-select:none!important;
+}
+#app .pg415-art-screen::before,#app .pg415-art-screen::after,
+#app .pg415-ai-screen::before,#app .pg415-ai-screen::after{display:none!important}
+#app .pg415-art-screen,#app .pg415-ai-screen{background-image:none!important}
+#app .pg415-hit,
+#app .pg415-audio,
+#app .pg415-vocab-audio,
+#app .pg415-example-audio,
+#app .pg415-sample-audio{
+ -webkit-tap-highlight-color:transparent!important;
+ tap-highlight-color:transparent!important;
+ touch-action:manipulation!important;
+}
+#app button.pg415-hit:active,
+#app a.pg415-hit:active,
+#app .pg415-hit:has(.audio:active),
+#app .pg415-audio:active,
+#app .pg415-vocab-audio:active,
+#app .pg415-example-audio:active,
+#app .pg415-sample-audio:active{
+ background:transparent!important;
+ background-color:transparent!important;
+ box-shadow:none!important;
+ filter:none!important;
+ outline:0!important;
+ transform:none!important;
+}
+#app .pg415-hit:focus:not(:focus-visible){
+ outline:none!important;
+ box-shadow:none!important;
+}
+#app .pg415-hit:focus-visible{
+ outline:2px solid #fff4c8!important;outline-offset:1px!important;
+}
+#app .pg415-live-test{
+ overflow-y:auto!important;overflow-x:hidden!important;
+ overflow-anchor:none!important;
+ scroll-behavior:auto!important;
+ overscroll-behavior-y:contain!important;
+ -webkit-overflow-scrolling:touch;
+}
+#app .pg415-live-test button{ -webkit-tap-highlight-color:transparent!important;touch-action:manipulation!important }
+#app.day-lesson-active:has(.pg415-art-screen) #message:not(:empty),
+#app.day-done-active:has(.pg415-ai-screen) #message:not(:empty){
+ position:absolute!important;z-index:90!important;
+ bottom:calc(18px + env(safe-area-inset-bottom))!important;
+ left:6%!important;right:6%!important;max-width:none!important;
+ margin:0!important;padding:10px 12px!important;
+ background:#fff2d9f2!important;color:#5b2075!important;
+ border:1.5px solid #ecc27f!important;border-radius:15px!important;
+ box-shadow:0 3px 11px #49115b70!important;
+ text-align:center!important;font-size:12px!important;font-weight:800!important;
+ line-height:1.3!important;pointer-events:none!important;
+}
+/* The original art is never cut at any aspect ratio: tappable hotspots
+   and the drawing stretch together in the vertical direction only.
+   At narrow phones this is preferable to hiding lesson content offscreen. */
