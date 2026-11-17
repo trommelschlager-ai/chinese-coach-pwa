@@ -31,7 +31,7 @@ export function continueFamilyAfterAnswer({input,activePrompt,result,allowed=[],
   if(heard.has(candidate))continue;
   const item=familyPool.find(q=>key(q.hanzi)===candidate&&q.lesson===6);
   if(!item?.pinyin||!item?.ru||!lookupAudio?.(item.hanzi))continue;
-  followup={hanzi:item.hanzi,pinyin:item.pinyin,ru:item.ru,lesson:6,
+  followup={hanzi:/[?？]$/.test(item.hanzi)?item.hanzi:item.hanzi+'？',pinyin:item.pinyin,ru:item.ru,lesson:6,
    audioKey:item.hanzi,isContextual:true,accepted:[]};
   break;
  }
