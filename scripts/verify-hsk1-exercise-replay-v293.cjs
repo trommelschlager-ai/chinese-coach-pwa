@@ -62,8 +62,11 @@ const create4=(step,completed)=>{
 };
 for(const [step,selector] of [[4,'[data-repeat="4"]'],[7,'[data-repeat="7"]'],[9,'[data-repeat="9"]'],[10,'[data-repeat="10"]'],[11,'[data-repeat="11"]']]){
  const restored=create4(step);
- const expected=({4:6,7:9,9:10,10:13,11:13})[step];
- assert.equal(Number(restored.d.querySelector('#pg3-count').textContent.split('/')[0]),expected,'Lesson 4 skips only completed empty shells '+step);
+ // The current approved lesson has one merged page, and its displayed
+ // counter uses the stage index for steps 3–12. Check the actual stage first.
+ const expectedStage=({4:5,7:8,9:9,10:12,11:12})[step];
+ assert.equal(Number(restored.d.querySelector('.pg4-app').dataset.step),expectedStage,'Lesson 4 skips only completed empty shells '+step);
+ assert.equal(Number(restored.d.querySelector('#pg3-count').textContent.split('/')[0]),expectedStage,'Lesson 4 header counter matches its current merged-page stage '+step);
  restored.dom.window.close();
  const {dom,w,d}=create4(step===9?9:12);
  const control=d.querySelector(selector);
