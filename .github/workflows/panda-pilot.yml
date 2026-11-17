@@ -1,0 +1,28 @@
+name: Panda Go pilot invitation QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pilot.html'
+      - 'tests/panda-pilot-v1.test.mjs'
+      - 'PILOT_LAUNCH_V1.md'
+      - '.github/workflows/panda-pilot.yml'
+  pull_request:
+    paths:
+      - 'pilot.html'
+      - 'tests/panda-pilot-v1.test.mjs'
+      - 'PILOT_LAUNCH_V1.md'
+jobs:
+  pilot-local-feedback:
+    name: Verify trial links and local-only feedback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install existing dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Validate trial page, links and feedback privacy
+        run: node --test tests/panda-pilot-v1.test.mjs
