@@ -237,3 +237,32 @@ test('Approved scenic Panda shows correct-but-off-topic weekday feedback without
  assert(engine.includes("state.display=activePrompt;"),'Original question stays on screen');
  assert(!engine.includes("state.awaitQuestion=false;\n    say(activePrompt);"),'Question must not be recorded twice');
 });
+
+test('Family off-topic answers keep the original older-brother prompt and show a reviewed explanation',async()=>{
+ const dom=await liveDOM(6,{completed:['family']});
+ try{
+  const {w,el,send}=dom,bridge=w.PandaApprovedBridge337;
+  assert.equal(bridge.startTopicQuestion(6,'你有哥哥吗？'),true);
+  assert.equal(el('phrase').textContent,'你有哥哥吗？');
+  send('有，我有一个妹妹。');
+  let state=bridge.snapshot();
+  assert.equal(state.history.at(-1).who,'you');
+  assert.equal(state.history.at(-1).ru,'Да, у меня одна младшая сестра.');
+  assert.equal(el('phrase').textContent,'你有哥哥吗？');
+  assert.match(state.feedback,/Но вопрос был 你有哥哥吗？.*Ответь именно на этот вопрос/);
+  assert.equal(state.history.filter(x=>x.who==='panda'&&x.hanzi==='你有哥哥吗？').length,1,
+    'No duplicate Panda question is recorded');
+  send('没有，我没有妹妹。');
+  state=bridge.snapshot();
+  assert.equal(state.history.at(-1).ru,'Нет, у меня нет младшей сестры.');
+  assert.equal(el('phrase').textContent,'你有哥哥吗？');
+  assert.match(state.feedback,/Ранее в этом диалоге был противоположный вариант о 妹妹/);
+  assert.match(state.feedback,/Если тренируешь оба ответа, это нормально/);
+  assert.equal(state.history.filter(x=>x.who==='panda'&&x.hanzi==='你有哥哥吗？').length,1);
+  const source=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
+  assert(source.includes("const siblingHint=!wrong&&noteText.startsWith('✅ ')"),
+    'Scenic UI must render specific sibling mismatch teaching hints');
+  assert(source.includes("const teachingHint=offTopicHint||siblingHint"),
+    'Keep approved weekday hints working too');
+ }finally{dom.close()}
+});
