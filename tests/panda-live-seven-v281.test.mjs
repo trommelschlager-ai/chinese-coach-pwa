@@ -1,7 +1,8 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
 import {coursePromptBank,pickCoursePrompt,courseCoverage} from '../assets/panda-hsk1-questions-v281.mjs';
 import {recordedCoursePhrases,lookupPilotAudio,lookupPandaVoiceClip} from '../assets/panda-live-audio.mjs';
-import {answerLive,analyzeLearner} from '../assets/panda-live-dialogue-v272.mjs';
+import {answerLive,analyzeLearner,topicPrompts} from '../assets/panda-live-dialogue-v272.mjs';
+import {patternPrompts} from '../assets/panda-hsk1-patterns-v285.mjs';
 import {liveDOM} from './panda-live-dom-fixture.mjs';
 import {reviewedYouYouMeiyou} from '../assets/panda-youyoumeiyou-v416.mjs';
 import {availableAskGroups} from '../assets/panda-ask-catalog-v326.mjs';
@@ -176,4 +177,26 @@ test('Panda understands full learner family statements with exact Russian transl
  assert.equal(bro.spoken.pinyin,'Yǒu, wǒ yǒu yí ge gēge.');
  assert.equal(bro.spoken.translation,'Да, у меня один старший брат.');
  assert.equal(answerLive('没有，我没有妹妹。',{allowed:[1],topic:1,curriculum,date}).kind,'locked');
+});
+
+test('Family relative-age prompt rejects an answer about a different sibling',()=>{
+ const prompt={hanzi:'你哥哥几岁？',pinyin:'Nǐ gēge jǐ suì?',ru:'Сколько лет твоему старшему брату?',lesson:6,intent:'relative-age',relative:'哥哥'};
+ const options={allowed:[1,2,3,4,5,6],topic:6,prompt,curriculum,date};
+ const other=answerLive('没有，我没有妹妹。',options);
+ assert.equal(other.kind,'clarify','No age response because the learner refers to younger sister');
+ assert.equal(other.spoken.translation,'Нет, у меня нет младшей сестры.');
+ assert.match(other.message,/Панда спрашивала о возрасте старшего брата/);
+ assert.equal(other.reply,undefined,'Do not generate 明白了 for an unrelated sibling answer');
+ const notAge=answerLive('有，我有一个哥哥。',options);
+ assert.equal(notAge.kind,'clarify','Existence alone does not answer how old the brother is');
+ assert.match(notAge.message,/о возрасте старшего брата/);
+ const absent=answerLive('没有，我没有哥哥。',options);
+ assert.equal(absent.kind,'answer','No brother is a coherent answer to a mistaken age presupposition');
+ assert.equal(absent.spoken.translation,'Нет, у меня нет старшего брата.');
+ const contextual=topicPrompts(6,date,{family:{哥哥:true},hasNumbers:true});
+ assert.equal(contextual.find(q=>q.hanzi==='你哥哥几岁？')?.ru,'Сколько лет твоему старшему брату?');
+ const direct=answerLive('你哥哥几岁？',{allowed:[1,2,3,4,5,6],topic:6,curriculum,date});
+ assert.equal(direct.spoken.translation,'Сколько лет твоему старшему брату?');
+ const pattern=patternPrompts(6,date,[1,2,3,4,5,6]).find(q=>q.hanzi==='你哥哥几岁？');
+ assert.equal(pattern?.ru,'Сколько лет твоему старшему брату?');
 });
