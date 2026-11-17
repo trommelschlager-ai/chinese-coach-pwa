@@ -13,10 +13,15 @@ export function chooseAudibleFollowup(proposed, groups=[],recent=[],lookup,learn
  const candidates=(group.questions||[]).filter(q=>
    q&&Number(q.lesson)===lesson&&q.hanzi&&q.pinyin&&q.ru&&
    !heard.has(clean(q.hanzi))&&audible(q));
- // When the learner asks about free time, stay with that subject when possible.
- const preferAvailability=clean(learnerInput).includes('有空');
- const picked=(preferAvailability?candidates.find(q=>clean(q.hanzi)==='你今天有空吗'):null)
-   ||candidates.find(q=>q.hasRecordedReply)||candidates[0];
+ // When the learner asks about availability, do NOT jump to an unrelated
+ // weekday question merely because it has MP3. End the automatic chain if
+ // there are no new, recorded availability prompts.
+ const availabilityAsked=/^你(?:星期几|今天)有空(?:吗)?$/.test(clean(learnerInput));
+ const availabilityCandidates=availabilityAsked?
+   candidates.filter(q=>clean(q.hanzi).includes('有空')):candidates;
+ const picked=(availabilityAsked?availabilityCandidates.find(q=>clean(q.hanzi)==='你今天有空吗'):null)
+   ||availabilityCandidates.find(q=>q.hasRecordedReply)
+   ||availabilityCandidates[0];
  if(!picked)return null;
  return {
   hanzi:picked.hanzi,pinyin:picked.pinyin,ru:picked.ru,lesson,
