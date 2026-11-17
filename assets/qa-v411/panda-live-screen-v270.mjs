@@ -11,7 +11,7 @@ import {answerCurriculumQuestion} from '../panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from '../panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from '../panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from '../panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=qa-v422';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=qa-v424';
 import {recordedPandaAnswer} from '../panda-recorded-qa-v358.mjs?v=381';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=qa-v422';
 import {chooseAudibleFollowup} from './panda-audible-followup-v412.mjs?v=qa-v422';

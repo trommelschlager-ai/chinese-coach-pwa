@@ -455,6 +455,35 @@ export function answerLive(raw,options={}){
  const old=answerNonStop(raw,allowed,prompt,curriculum,date);
  if(old.kind==='question')return extendQuestion({...old,spoken:spoken.known?spoken:old.spoken,followup:s==='谢谢'?null:turn%3===2?nextTopicPrompt(topic,[],date,profile):null},raw,allowed,date,profile);
  if(!spoken.known){return {kind:'clarify',spoken,message:spoken.words?.length?'Знакомые слова разобраны ниже. Уточни смысл или попробуй предложение из подсказки.':'Точный смысл пока не подтверждён. Попробуй фразу из пройденного урока или уточни вопрос.'}}
+ // Family HSK1: 我哥哥五岁 is an *implicit yes* to 你有哥哥吗.
+ // Accept the useful answer, speak the existing exact 明白了 MP3 (p175),
+ // and do not leave the old question looping forever.
+ const familyAge=/^我(哥哥|姐姐|弟弟|妹妹)([一二三四五六七八九十两0-9]+)岁$/.exec(s);
+ const askedFamily=/^你(?:有(哥哥|姐姐|弟弟|妹妹)吗|有没有(哥哥|姐姐|弟弟|妹妹))$/
+   .exec(normalize(prompt?.hanzi||prompt?.panda||''));
+ const age=familyAge?parseNumber(familyAge[2]):null;
+ if(spoken.known&&allowed.includes(6)&&familyAge&&Number.isInteger(age)&&age>=1&&age<=120){
+  const relative=familyAge[1],asked=askedFamily?.[1]||askedFamily?.[2]||null;
+  const voiceAge=age===1?'yí':numberPy(age);
+  const familySpoken={...spoken,known:true,topic:6,
+   pinyin:'Wǒ '+MEMBERS[relative][0]+' '+voiceAge+' suì.',
+   translation:relativeAgeReplyRu(relative,age),
+   family:{present:[relative],absent:null},
+   fact:{...(spoken.fact||{}),relative,relativeAge:age}};
+  if(asked&&asked!==relative){
+   return {kind:'clarify',lesson:6,spoken:familySpoken,
+    message:'Ты правильно рассказал о '+({哥哥:'старшем брате',姐姐:'старшей сестре',弟弟:'младшем брате',妹妹:'младшей сестре'}[relative])+
+      ', но Панда спрашивала о другом родственнике: '+asked+'. Ответь на вопрос о нём.'};
+  }
+  const agePrompt=/^你(哥哥|姐姐|弟弟|妹妹)(?:几岁|多大(?:了)?)$/
+    .exec(normalize(prompt?.hanzi||prompt?.panda||''));
+  if(agePrompt&&agePrompt[1]!==relative)return {kind:'clarify',lesson:6,spoken:familySpoken,
+   message:'Ты правильно рассказал о возрасте своего родственника, но Панда спрашивала о другом человеке.'};
+  return {kind:asked||agePrompt?'answer':'statement',lesson:6,spoken:familySpoken,
+   reply:line('明白了。','Míngbai le.','Понятно.'),
+   followup:null,
+   message:'Панда поняла, что у тебя есть '+MEMBERS[relative][1]+', и услышала его возраст. Тоны голоса не оценивались.'};
+ }
  const offQuestion=prompt&&!answersPrompt(spoken,raw,prompt)&&spoken.topic===prompt.lesson;
  if(offQuestion&&!spoken.brainComposed&&!spoken.family?.present?.length){return {kind:'statement',spoken,lesson:spoken.topic,message:'Фраза понятна, но это не ответ на текущий вопрос. '+prompt.instruction}}
  const active=spoken.topic||topic,answered=answersPrompt(spoken,raw,prompt);
