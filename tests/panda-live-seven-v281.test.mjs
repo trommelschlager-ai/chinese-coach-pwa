@@ -3,6 +3,8 @@ import {coursePromptBank,pickCoursePrompt,courseCoverage} from '../assets/panda-
 import {recordedCoursePhrases,lookupPilotAudio,lookupPandaVoiceClip} from '../assets/panda-live-audio.mjs';
 import {answerLive,analyzeLearner} from '../assets/panda-live-dialogue-v272.mjs';
 import {liveDOM} from './panda-live-dom-fixture.mjs';
+import {reviewedYouYouMeiyou} from '../assets/panda-youyoumeiyou-v416.mjs';
+import {availableAskGroups} from '../assets/panda-ask-catalog-v326.mjs';
 const c={window:{}};vm.runInNewContext(fs.readFileSync(new URL('../assets/hsk1-foundations-data-v152.js',import.meta.url),'utf8'),c);
 const curriculum=c.window.PANDA_HSK1_FOUNDATIONS,date=new Date(2026,10,12,12),allowed=[1,2,3,4,5,6,7];
 const strip=x=>String(x).replace(/[。！？?!，,\s]/g,'');
@@ -84,4 +86,69 @@ test('mobile Panda changes topics after three prompts, while keeping same mascot
   assert(el('recent').textContent.includes('晚上好'));
   assert.equal(el('mode-nonstop').getAttribute('aria-pressed'),'true');
  }finally{f.close()}
+});
+
+test('Panda understands 你有没有 with real HSK1 family grammar and tone-marked pinyin',()=>{
+ const questions=[
+  ['你有没有妹妹？','Nǐ yǒu méiyǒu mèimei?','有，我有一个妹妹。'],
+  ['你有没有哥哥？','Nǐ yǒu méiyǒu gēge?','有，我有一个哥哥。'],
+  ['你有没有姐姐？','Nǐ yǒu méiyǒu jiějie?','没有，我没有姐姐。'],
+  ['你有没有弟弟？','Nǐ yǒu méiyǒu dìdi?','没有，我没有弟弟。']
+ ];
+ for(const [question,pinyin,reply] of questions){
+  const r=answerLive(question,{allowed:[1,4,6],topic:6,curriculum,date});
+  assert.equal(r.kind,'question',question);
+  assert.equal(r.lesson,6);
+  assert.equal(r.spoken.pinyin,pinyin);
+  assert.equal(r.reply.hanzi,reply);
+  assert.equal(r.reply.audioKey,null,'No fabricated MP3 for new Panda reply');
+  assert.equal(lookupPandaVoiceClip(question),null,'No invented question audio');
+ }
+});
+
+test('Panda understands 有/没有 for time and corrects the extra 吗',()=>{
+ for(const [input,expected] of [
+  ['你有没有空？','有，我有空。'],
+  ['你今天有没有空？','有，我今天有空。'],
+  ['你明天有没有空？','有，我明天有空。'],
+  ['你有没有时间？','有，我有时间。']
+ ]){
+  const r=answerLive(input,{allowed:[1,4],topic:4,curriculum,date});
+  assert.equal(r.kind,'question');
+  assert.equal(r.lesson,4);
+  assert.equal(r.reply.hanzi,expected,input);
+  assert.equal(r.reply.audioKey,null,'New phrase has no matching MP3');
+ }
+ const wrong=answerLive('你有没有妹妹吗？',{allowed:[1,6],topic:6,curriculum,date});
+ assert.equal(wrong.kind,'correction');
+ assert.equal(wrong.spoken.correction.hanzi,'你有没有妹妹？');
+ assert.match(wrong.spoken.correction.why,/吗/);
+ const incomplete=answerLive('你有没有',{allowed:[1],topic:1,curriculum,date});
+ assert.equal(incomplete.kind,'clarify');
+ assert.match(incomplete.message,/添加|добавь/i);
+});
+
+test('Panda accepts brief 有/没有 after 你有没有; unlocked lessons are respected',()=>{
+ const prompt={hanzi:'你有没有妹妹？',lesson:6,intent:'have-or-not'};
+ for(const [raw,pinyin] of [['有','Yǒu.'],['没有','Méiyǒu.']]){
+  const result=answerLive(raw,{allowed:[1,6],topic:6,prompt,curriculum,date});
+  assert.equal(result.kind,'answer');
+  assert.equal(result.spoken.pinyin,pinyin);
+  assert.equal(result.followup,null);
+ }
+ assert.equal(answerLive('你有没有妹妹？',{allowed:[1],topic:1,curriculum,date}).kind,'locked');
+ assert.equal(answerLive('你今天有没有空？',{allowed:[1],topic:1,curriculum,date}).kind,'locked');
+});
+
+test('你有没有 questions appear as optional text-only prompts, never as recorded audio',()=>{
+ const groups=availableAskGroups([1,4,6],curriculum,date);
+ const family=groups.find(g=>g.lesson===6)?.questions||[];
+ const days=groups.find(g=>g.lesson===4)?.questions||[];
+ const hasFamily=family.find(q=>q.hanzi==='你有没有妹妹？');
+ const hasTime=days.find(q=>q.hanzi==='你今天有没有空？');
+ assert(hasFamily&&hasTime,'New reviewed questions must appear in the topic catalogue');
+ assert.equal(hasFamily.pinyin,'Nǐ yǒu méiyǒu mèimei?');
+ assert.equal(hasFamily.hasReplyAudio,false);
+ assert.equal(hasTime.hasReplyAudio,false);
+ assert(!availableAskGroups([1],curriculum,date).some(g=>g.lesson===4||g.lesson===6));
 });
