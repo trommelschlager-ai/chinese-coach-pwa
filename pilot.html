@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#552a71">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Panda Go: бесплатная пробная проверка курса HSK1, HSK2 и Panda AI.">
+<title>Panda Go · Пробный запуск</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#362748;background:#fcf8fc;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;min-height:100svh;background:linear-gradient(155deg,#fff7f2 0%,#f4e9fa 65%,#eaf6f0 100%);line-height:1.5}
+main{max-width:600px;margin:auto;padding:18px 16px 60px}
+header{text-align:center;padding:21px 8px 14px}
+.panda{font-size:58px;line-height:1.3}
+h1{font-size:29px;margin:2px 0;color:#4d236b;letter-spacing:-.02em}
+.sub{color:#694e7e;margin:4px auto 6px;max-width:440px}
+.pill{display:inline-flex;align-items:center;gap:6px;background:#eee2f4;padding:5px 12px;border-radius:100px;color:#5a3470;font-weight:700;font-size:12px}
+section{background:#fff;border:1px solid #e9dcec;border-radius:20px;padding:18px;margin:15px 0;box-shadow:0 8px 22px rgba(83,42,95,.07)}
+h2{margin:0 0 9px;font-size:19px;color:#4d236b}
+p{margin:5px 0 12px}
+.muted{font-size:13px;color:#705d7a}
+.path{display:grid;gap:12px;margin-top:14px}
+.path article{border:1px solid #eadced;background:#fcfaff;border-radius:16px;padding:14px}
+.path h3{margin:0;font-size:17px}
+.path p{font-size:14px;margin:5px 0 11px;color:#6a5776}
+.path a,.primary{display:block;width:100%;border:0;border-radius:13px;padding:13px 15px;background:#61358a;color:white;text-align:center;font-size:16px;font-weight:700;text-decoration:none;cursor:pointer;min-height:48px}
+.path a:active,.primary:active{transform:translateY(1px);background:#48216b}
+.path article:nth-child(2) a{background:#a45178}
+.path article:nth-child(3) a{background:#22775c}
+:focus-visible{outline:3px solid #db9862;outline-offset:3px}
+.checkrow{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f3edf4;font-size:15px}
+.checkrow:last-child{border-bottom:0}
+.checkrow input{width:20px;height:20px;accent-color:#67368a;flex-shrink:0;margin-top:1px}
+label.field{display:block;margin:13px 0 6px;font-size:14px;font-weight:700}
+select,input[type=text],textarea{width:100%;border:1.5px solid #d7c6dd;background:#fff;border-radius:11px;padding:12px;color:#372643;font:inherit;min-height:46px}
+textarea{resize:vertical;min-height:110px}
+summary{cursor:pointer;font-weight:650;color:#573373}
+.notice{background:#f7f0fb;border:1px solid #e7d9ed;border-radius:12px;padding:12px;font-size:13px}
+#report{display:none;margin-top:13px}
+#report.show{display:block}
+#feedback-status{min-height:1.5em;margin:8px 0;color:#36694a;font-weight:600}
+footer{text-align:center;color:#776c7e;font-size:12px;margin-top:22px}
+small{font-size:12px}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="panda" aria-hidden="true">🐼</div>
+  <span class="pill">БЕСПЛАТНАЯ ПРОБНАЯ ВЕРСИЯ</span>
+  <h1>Panda Go</h1>
+  <p class="sub">Помоги проверить уроки китайского перед первым запуском. Потребуется примерно 10–15 минут.</p>
+</header>
+<section aria-labelledby="start">
+  <h2 id="start">Привет! 👋</h2>
+  <p>Выбери любой раздел, попробуй несколько упражнений и сообщи, что получилось. Это тестирование, оплачивать ничего не нужно.</p>
+  <p class="muted">Можно проверять с телефона. Для голосового разговора разреши микрофон в браузере. На устройствах без распознавания китайской речи используй текстовый ввод.</p>
+  <div class="path">
+    <article>
+      <h3>🇨🇳 HSK 1 · Начальный курс</h3>
+      <p>Открой карту, пройди задания одного урока, послушай три слова и попробуй вернуться назад.</p>
+      <a href="./hsk1-map.html" target="_blank" rel="noopener">Открыть HSK 1</a>
+    </article>
+    <article>
+      <h3>📚 HSK 2 · Продолжающий курс</h3>
+      <p>Открой первый мини-урок, проверь переходы между страницами, китайский текст и озвучку.</p>
+      <a href="./hsk2-life-course.html" target="_blank" rel="noopener">Открыть HSK 2</a>
+    </article>
+    <article>
+      <h3>🐼 Panda AI · Разговорная практика</h3>
+      <p>Задай 2–3 простых вопроса и попробуй ответить голосом или текстом. Панда использует подготовленные учебные ответы.</p>
+      <a href="./panda-voice-pilot.html" target="_blank" rel="noopener">Поговорить с Panda AI</a>
+    </article>
+  </div>
+</section>
+<section aria-labelledby="steps">
+  <h2 id="steps">Что проверить</h2>
+  <p class="muted">Отметь только то, что действительно проверил. Незаполненные пункты — нормально.</p>
+  <div id="tasks">
+    <label class="checkrow"><input type="checkbox" data-task="Карта HSK1 открылась"><span>Открылась карта HSK 1</span></label>
+    <label class="checkrow"><input type="checkbox" data-task="Урок HSK1 пройден"><span>Получилось пройти упражнения одного урока</span></label>
+    <label class="checkrow"><input type="checkbox" data-task="Звук HSK1 работает"><span>Три слова HSK 1 прозвучали правильно</span></label>
+    <label class="checkrow"><input type="checkbox" data-task="Переходы HSK2 работают"><span>В HSK 2 работают переходы между страницами</span></label>
+    <label class="checkrow"><input type="checkbox" data-task="Озвучка HSK2 работает"><span>В HSK 2 работает звук</span></label>
+    <label class="checkrow"><input type="checkbox" data-task="Panda AI ответила текстом"><span>Панда ответила текстом по смыслу</span></label>
+    <label class="checkrow"><input type="checkbox" data-task="Panda AI ответила голосом"><span>Панда произнесла ответ голосом</span></label>
+    <label class="checkrow"><input type="checkbox" data-task="Прогресс сохранился"><span>После возврата мой прогресс сохранился</span></label>
+  </div>
+</section>
+<section aria-labelledby="review">
+  <h2 id="review">Отправить отзыв</h2>
+  <p class="muted">Мы не собираем данные автоматически. Отзыв появится на экране: скопируй его и отправь человеку, который пригласил тебя проверить Panda Go.</p>
+  <form id="feedback-form">
+    <label class="field" for="area">Какой раздел проверял?</label>
+    <select id="area" required>
+      <option value="HSK 1">HSK 1</option>
+      <option value="HSK 2">HSK 2</option>
+      <option value="Panda AI">Panda AI</option>
+      <option value="Все разделы">Все разделы</option>
+    </select>
+    <label class="field" for="rating">Насколько удобно учиться?</label>
+    <select id="rating" required>
+      <option value="Не оценивал">Пока не оценивал</option>
+      <option value="5/5">5/5 — очень удобно</option>
+      <option value="4/5">4/5 — удобно</option>
+      <option value="3/5">3/5 — средне</option>
+      <option value="2/5">2/5 — неудобно</option>
+      <option value="1/5">1/5 — очень неудобно</option>
+    </select>
+    <label class="field" for="issue">Главная проблема</label>
+    <select id="issue">
+      <option value="Проблем не заметил">Проблем не заметил</option>
+      <option value="Не работает звук">Не работает звук</option>
+      <option value="Не работает микрофон">Не работает микрофон</option>
+      <option value="Ошибка китайского или перевода">Ошибка китайского или перевода</option>
+      <option value="Не работают кнопки">Не работают кнопки</option>
+      <option value="Не сохраняется прогресс">Не сохраняется прогресс</option>
+      <option value="Проблема с изображением">Проблема с изображением</option>
+      <option value="Другое">Другое</option>
+    </select>
+    <label class="field" for="device">Телефон и браузер (необязательно)</label>
+    <input id="device" type="text" maxlength="80" placeholder="Например: Android, Chrome">
+    <label class="field" for="detail">Что понравилось и что нужно исправить?</label>
+    <textarea id="detail" maxlength="1400" placeholder="Укажи название урока, китайскую фразу или кнопку. Если ошибка — напиши, как её повторить."></textarea>
+    <div class="notice">Не указывай пароль, телефон, адрес или другие личные данные. Прогресс уроков сохраняется на устройстве, а не в этом отзыве.</div>
+    <button type="submit" class="primary" style="margin-top:13px">Сформировать отзыв</button>
+  </form>
+  <div id="report" aria-live="polite">
+    <label class="field" for="report-text">Готовый текст для отправки</label>
+    <textarea id="report-text" readonly rows="12"></textarea>
+    <button id="copy" class="primary" type="button" style="margin-top:10px">Скопировать отзыв</button>
+    <p id="feedback-status" role="status"></p>
+    <small>После копирования отправь текст в WeChat, Telegram или другой мессенджер человеку, который дал тебе ссылку.</small>
+  </div>
+</section>
+<footer>
+  Panda Go · добровольное бесплатное тестирование · без регистрации и платежей<br>
+  Это страница приглашения, а не закрытая система авторизации.
+</footer>
+</main>
+<script>
+(function(){
+  'use strict';
+  const form=document.getElementById('feedback-form');
+  const report=document.getElementById('report');
+  const output=document.getElementById('report-text');
+  const status=document.getElementById('feedback-status');
+  function val(id){return document.getElementById(id).value.trim();}
+  form.addEventListener('submit',function(event){
+    event.preventDefault();
+    const completed=[...document.querySelectorAll('[data-task]:checked')].map(node=>node.dataset.task);
+    output.value=[
+      'Panda Go — отзыв пробного ученика',
+      'Раздел: '+val('area'),
+      'Удобство: '+val('rating'),
+      'Проблема: '+val('issue'),
+      'Устройство: '+(val('device')||'не указано'),
+      'Проверено ('+completed.length+'/8): '+(completed.join('; ')||'не отмечено'),
+      'Комментарий: '+(val('detail')||'без комментария')
+    ].join('\n');
+    report.classList.add('show');
+    status.textContent='Отзыв готов. Теперь скопируй его и отправь пригласившему тебя человеку.';
+    output.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+  document.getElementById('copy').addEventListener('click',async function(){
+    if(!output.value)return;
+    try{
+      if(!navigator.clipboard?.writeText)throw new Error('clipboard-unavailable');
+      await navigator.clipboard.writeText(output.value);
+      status.textContent='Текст скопирован. Отправь его в удобном мессенджере.';
+    }catch(error){
+      output.focus();output.select();
+      status.textContent='Автоматическое копирование недоступно. Выделенный текст можно скопировать вручную.';
+    }
+  });
+})();
+</script>
+</body>
+</html>
