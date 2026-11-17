@@ -1,0 +1,23 @@
+name: HSK2 lesson 1 six-screen v414 regression
+on:
+  push:
+    branches: [feature/hsk2-lesson1-six-screens-v414]
+  pull_request:
+    paths:
+      - "hsk2-life-course.html"
+      - "assets/hsk2-six-screens-v414.js"
+      - "assets/hsk2-six-screens-v414.css"
+      - "assets/hsk2-life-course-app-v1.js"
+      - "tests/hsk2-six-screens-v414.test.cjs"
+jobs:
+  functional:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify the six actual interactive screens
+        run: node tests/hsk2-six-screens-v414.test.cjs
