@@ -1,0 +1,50 @@
+/* Panda AI v436: compact scrollable topic drawer.
+ * Preserves the approved mascot art, speech card, scenery and controls.
+ * Internal scrolling only; the scene face and speech remain visible above.
+ */
+#pg346 .pg346-topic-menu[hidden]{display:none!important}
+#pg346 .pg346-topic-menu:not([hidden]){
+ position:absolute;left:5%;right:5%;top:auto;bottom:1%;width:90%;
+ max-height:41%;height:auto;min-height:0;
+ display:flex;flex-direction:column;gap:3px;
+ overflow:hidden;overscroll-behavior:contain;
+ padding:9px 10px 10px;
+ box-sizing:border-box;border-radius:19px;
+ background:linear-gradient(155deg,rgba(255,250,255,.97),rgba(235,215,251,.98));
+ border:1.5px solid #efd2ff;box-shadow:0 3px 15px #6a368e4d,0 0 0 1px #fff7;
+ z-index:12;
+}
+#pg346 .pg346-topic-menu-title{flex:none;display:flex;align-items:center;gap:8px;margin:0;font-size:clamp(14px,3.5vw,18px);min-height:30px}
+#pg346 .pg374-tip{flex:none;margin:1px 1px 5px;font-size:clamp(10px,2.7vw,12px);line-height:1.22}
+#pg346 .pg346-topic-list:not([hidden]),#pg346 .pg374-topic-details:not([hidden]){
+ flex:1 1 auto;min-height:0;max-height:none;
+ overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;
+ scrollbar-width:thin;-webkit-overflow-scrolling:touch;
+ padding:2px 3px 10px;
+}
+#pg346 .pg346-topic-list:not([hidden]){display:grid;grid-template-columns:1fr 1fr;align-content:start;gap:7px}
+#pg346 .pg374-topic-details:not([hidden]){display:flex;flex-direction:column;gap:8px}
+#pg346 .pg374-question{min-height:60px;padding:9px 11px}
+#pg346 .pg374-audio-phrase{
+ display:flex;flex-direction:row;align-items:center;gap:10px;
+ width:100%;min-height:61px;margin:5px 0;padding:9px 10px;
+ text-align:left;border:1px solid #ddc4e9;border-radius:14px;
+ background:#fffaff;box-shadow:0 2px 5px #804e9830;
+}
+#pg346 .pg436-audio-icon{
+ display:grid;place-items:center;flex:none;width:32px;height:32px;
+ border-radius:50%;background:#eee2fb;color:#632b8e;
+ font-size:16px;
+}
+#pg346 .pg436-audio-copy{display:flex;flex-direction:column;gap:2px;min-width:0;line-height:1.24}
+#pg346 .pg436-audio-zh{font-weight:800;font-size:clamp(14px,3.6vw,18px);color:#4a1974;overflow-wrap:anywhere}
+#pg346 .pg436-audio-py{font-size:clamp(11px,2.75vw,13px);font-style:italic;color:#845599;overflow-wrap:anywhere}
+#pg346 .pg436-audio-ru{font-size:clamp(11px,2.75vw,14px);color:#5e4473;overflow-wrap:anywhere}
+#pg346 .pg374-audio-section[open]{display:block}
+#pg346 .pg374-audio-section summary{position:sticky;top:0;z-index:1;background:#f9edff;padding:7px 5px;border-radius:8px}
+#pg346 .pg346-topic-menu button:active{transform:scale(.985);filter:brightness(.98)}
+@media(max-height:620px){
+ #pg346 .pg346-topic-menu:not([hidden]){max-height:46%;padding:6px 8px}
+ #pg346 .pg374-audio-phrase{min-height:52px;padding:6px 8px}
+}
+@media(prefers-reduced-motion:reduce){#pg346 .pg346-topic-menu *{scroll-behavior:auto!important;transition:none!important}}
