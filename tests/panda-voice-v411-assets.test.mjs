@@ -90,3 +90,24 @@ test('Non-Stop audible follow-up safely stops when no recorded candidate remains
  assert.equal(chooseAudibleFollowup(recorded,[],[],lookupPandaVoiceClip),recorded,
    'An already recorded prompt must remain unchanged');
 });
+
+test('Availability dialog never pivots to an unrelated weekday question after the reply',()=>{
+ const groups=availableAskGroups([1,4],[],new Date(2026,10,17));
+ const candidates=groups.find(g=>g.lesson===4)?.questions||[];
+ assert(candidates.length>0);
+ const today=lookupPandaVoiceClip('你今天有空吗？');
+ assert.equal(today?.src,'./assets/panda-voice-clips-v411/p164.mp3');
+ const silent={hanzi:'明天星期几？',pinyin:'Míngtiān xīngqī jǐ?',ru:'Завтра какой день?',lesson:4};
+ const second=chooseAudibleFollowup(silent,groups,['你星期几有空？'],lookupPandaVoiceClip,'你星期几有空？');
+ assert.equal(second?.hanzi,'你今天有空吗？','First new same-topic follow-up must be recorded');
+ const exhausted=chooseAudibleFollowup(silent,groups,['你星期几有空？','你今天有空吗？'],lookupPandaVoiceClip,'你今天有空吗？');
+ assert(!exhausted||exhausted.hanzi.includes('有空'),'Do not suddenly ask which weekday tomorrow is');
+ assert.notEqual(exhausted?.hanzi,'明天星期几？');
+ // Even a recorded but unrelated candidate must be rejected when the topic is free time.
+ const recordedWrong={hanzi:'今天星期几？',lesson:4,audioKey:'今天星期几'};
+ const guarded=chooseAudibleFollowup(recordedWrong,groups,['你星期几有空？','你今天有空吗？'],lookupPandaVoiceClip,'你今天有空吗？');
+ assert(!guarded||guarded.hanzi.includes('有空'),'Preselected recorded weekday must not bypass topic matching');
+ const screen=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
+ assert(screen.includes("if(/^(?:你星期几有空|你今天有空吗)$/.test(normalize(input)))"),'Both availability questions must use the guard');
+ assert(screen.includes("if(normalize(input)==='我今天有空'&&normalize(activePrompt?.hanzi"),'Incorrect answer to the weekday prompt should get explicit feedback');
+});
