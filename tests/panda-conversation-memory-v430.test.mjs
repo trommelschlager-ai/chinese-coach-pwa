@@ -86,7 +86,7 @@ test('v430 integrated without changing approved Panda artwork or lesson audio',(
  const screen=read('assets/panda-live-screen-v270.mjs');
  assert(screen.includes('enrichConversation430({'));
  assert(screen.includes('state.profile'));
- assert(read('panda-voice-pilot.html').includes('panda-live-screen-v270.mjs?v=433'));
+ assert(read('panda-voice-pilot.html').includes('panda-live-screen-v270.mjs?v=435'));
  assert(read('assets/offline-pack.json').includes('panda-conversation-memory-v430.mjs?v=430'));
  assert(read('assets/panda-live-v346.mjs').includes('panda-character-clean-v349.webp'));
 });
