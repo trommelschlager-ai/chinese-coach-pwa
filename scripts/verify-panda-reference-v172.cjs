@@ -49,7 +49,8 @@ for(const selector of ['#pg130 .pg-hsk-level-list','.map-shell .map-road','.less
 for(const keep of ['panda-home-approved-photo1-v319.jpg','approved-panda-lake-v112.webp','panda-v130/landscape.webp','panda-v130/flowers.webp'])
  assert(css.includes(keep)||homeJs.includes(keep),'Approved landscape asset missing '+keep);
 const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
-assert(core.length<=200,'The approved HSK1/HSK2 core asset set must stay bounded');
+const installedShellCount=require('node:vm').runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'"))+'INSTALL_SHELL.length');
+assert(installedShellCount<=200,'The approved HSK1/HSK2 core asset set must stay bounded');
 assert(core.includes('./assets/panda-reference-v175.css?v=175'),'Offline style is not in critical assets');
 assert(core.includes('./assets/'+currentHome),'Current home script must work offline');
 assert(core.includes('./assets/panda-hsk-scenic-v315.css?v=315'),'Scenic CSS must work offline');

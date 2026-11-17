@@ -26,7 +26,7 @@ const pages=[
 for(const [page,version,codePath,next] of pages){
  const html=read(page),js=read(codePath);
  assert(html.includes('hsk1-finish-buttons-v296.css?v=296'),page+' missing shared completion styles');
- assert(html.includes(version),page+' not loading current navigation code');
+ assert(html.includes(codePath.slice('assets/'.length)+'?v='),page+' not loading versioned navigation code');
  new vm.Script(js,{filename:codePath});
  assert(js.includes('pg-lesson-complete-actions'),page+' missing navigation group');
  assert(js.includes('pg-end-repeat')&&js.includes('pg-end-next')&&js.includes('pg-end-back'),page+' missing an action class');

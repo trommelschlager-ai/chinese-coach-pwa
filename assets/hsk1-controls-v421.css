@@ -1,0 +1,21 @@
+/* Only explicitly opted-in action controls in lessons 1–4. No card layout changes. */
+:is([data-pg-hsk1="1"],[data-pg-hsk1="2"],[data-pg-hsk1="3"],[data-pg-hsk1="4"]) [data-pg-control]{box-sizing:border-box;border:1px solid #ceb4e6!important;border-radius:18px!important;min-height:44px;padding:10px 15px;font-size:15px;font-weight:800;line-height:1.25;text-decoration:none;touch-action:manipulation;transition:transform .1s,box-shadow .1s,filter .1s}
+[data-pg-hsk1] [data-pg-control="primary"]{background:linear-gradient(#fff5b0,#ffdc67 55%,#efbc37)!important;color:#582d65!important;border-color:#e2b64c!important;text-shadow:0 1px #fff9!important;box-shadow:0 4px 0 #c79836,0 6px 10px #b28d4030,inset 0 1px 2px #fff!important}
+[data-pg-hsk1] [data-pg-control="secondary"]{background:linear-gradient(#fff8ff,#edddfb)!important;color:#62417e!important;border-color:#cdb2e4!important;text-shadow:none!important;box-shadow:0 4px 0 #c2a5d8,0 6px 10px #9b77b333,inset 0 1px 2px #fff!important}
+[data-pg-hsk1] [data-pg-control="audio"]{background:linear-gradient(#f3fcff,#cfeeff)!important;color:#225778!important;border-color:#a4d4ed!important;text-shadow:none!important;box-shadow:0 4px 0 #9fcce3,0 6px 10px #739eb733,inset 0 1px 2px #fff!important}
+[data-pg-hsk1] [data-pg-control]:not(:disabled):active{translate:none!important;transform:translateY(3px)!important;box-shadow:0 1px 0 #a893b2,inset 0 1px 3px #66547722!important;filter:brightness(.98)}
+[data-pg-hsk1] [data-pg-control]:disabled{opacity:.45!important;cursor:not-allowed;transform:none!important;box-shadow:0 1px 2px #9f8cac44!important}
+[data-pg-hsk1] [data-pg-control]:focus-visible{outline:3px solid #9256bf;outline-offset:3px}
+[data-pg-hsk1] :is(.pg-footer,.pg3-footer) [data-pg-control]{min-height:56px;font-size:clamp(15px,4.5vw,19px);white-space:nowrap;padding:10px 12px}
+[data-pg-hsk1] .pg4-audio-icon[data-pg-control]{width:44px;min-width:44px;height:44px;padding:9px}
+[data-pg-hsk1] :is(.pg4-feedback.correct,.pg4-success,.pg3-feedback.correct){color:#27683b;background:#effbee;border-color:#a8cfab}
+[data-pg-hsk1] :is(.pg4-feedback.incorrect,.pg3-feedback.incorrect){color:#a22e40;background:#fff0f1;border-color:#e8a6ae}
+/* Compact only the redundant spacing in lesson 4. The scroll/footer flex layout stays. */
+[data-pg-hsk1="4"] .pg3-section-label{margin:10px auto 8px;padding:5px 15px}
+[data-pg-hsk1="4"] .pg3-title-band{margin:6px 0 10px}
+[data-pg-hsk1="4"] .pg3-title-band h1{margin:6px 0;font-size:clamp(25px,7vw,32px)}
+[data-pg-hsk1="4"] .pg3-title-band p{margin:6px 0 10px}
+[data-pg-hsk1="4"] .pg4-card{margin:8px 0;padding:14px}
+[data-pg-hsk1="4"] .pg4-repeat-tools{margin-top:10px}
+[data-pg-hsk1="4"] .pg4-repeat-tools>div{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+@media(prefers-reduced-motion:reduce){[data-pg-hsk1] [data-pg-control]{transition:none}}

@@ -16,10 +16,12 @@ for(const name of ['cover','celebrate','woman','man']){
  assert(pack.files.includes('./'+p),'No offline asset '+name);
  assert(app.includes('./'+p),'Active screen does not use image '+name);
 }
-assert(html.includes('hsk1-fourth-v219.css?v=282')&&html.includes('hsk1-fourth-v220.js?v=371'),'Cache freshness');
-assert(css.includes('linear-gradient(180deg,#bb8af0 0%,#9a66df 50%,#8450ca 100%)'),'Next is light lavender');
-assert(css.includes('background:#fff;color:#20202a'),'Back is white with dark text');
-assert(css.includes('linear-gradient(180deg,#ff929e,#f16c83)'),'Listen is light coral');
+assert(html.includes('hsk1-fourth-v219.css?v=282')&&html.includes('hsk1-fourth-v220.js?v=421'),'Cache freshness');
+const controls=fs.readFileSync('assets/hsk1-controls-v421.css','utf8');
+assert(html.includes('hsk1-controls-v421.css?v=421'));
+assert(controls.includes('[data-pg-control="primary"]')&&controls.includes('#ffdc67'),'Next is gold');
+assert(controls.includes('[data-pg-control="secondary"]')&&controls.includes('#edddfb'),'Back is pale lilac');
+assert(controls.includes('[data-pg-control="audio"]')&&controls.includes('#cfeeff'),'Listen is pale blue');
 assert(css.includes('.pg4-people img{height:149px')&&app.includes('class="pg4-people"'),'Portraits displayed at readable sizes');
 assert(app.includes('Míngtiān xīngqī jǐ?')&&app.includes('Míngtiān xīngqī liù.'),'Correct conversational pinyin');
 assert(!app.includes('class="pg4-dialog-portrait"'),'No inline cropped portraits');
@@ -27,4 +29,4 @@ assert(!css.includes('lesson5-lilac-sakura-v225.svg')&&!css.includes("background
 assert(!css.includes('lesson4-dialog-v266/woman.svg'),'No old defective images');
 assert(app.includes('PandaLesson4XiaoxiaoV265?.lookup(word)')&&app.includes("role==='male'"),'Voice and dialogue retained');
 assert(pack.version>=271,'Cache version');
-console.log('PASS Panda Go lesson 4 v271: bright purple next, white back, coral listen, unclipped characters and no floral backdrop.');
+console.log('PASS Panda Go lesson 4 v271: gold next, lilac back, blue listen, unclipped characters and no floral backdrop.');

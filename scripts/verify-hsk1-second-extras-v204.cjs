@@ -33,6 +33,7 @@ const mk=(step)=>{
  w.eval(extras);w.eval(script);
  return {w,doc,instances,d};
 };
+(async()=>{
 {
  const {w,doc,d}=mk();
  // The first review, then new words 他 and 她.
@@ -63,10 +64,11 @@ const mk=(step)=>{
  assert.equal(config.acceptBackwardsStrokes,false,'Should enforce authentic stroke direction');
  doc.querySelector('[data-write-practice]').click();
  // Quiz schedules promise microtasks; resolve and check onComplete below.
- (async()=>{await Promise.resolve();await Promise.resolve()})().catch(()=>{});
+ await Promise.resolve();await Promise.resolve();
  // The page still advances after correct semantic answer even if user opts not to write.
  doc.querySelector('[data-answer="1"]').click();
  assert(!doc.querySelector('#pg-next').disabled,'Writing is optional, not a blocker');
+ await new Promise(resolve=>w.setTimeout(resolve,0));
  d.window.close();
 }
 {
@@ -94,6 +96,9 @@ const mk=(step)=>{
  doc.querySelector('[data-scene-play]').click();
  doc.querySelector('[data-scene-stop]').click();
  assert.equal(doc.querySelector('[data-scene-window]').dataset.phase,'idle');
+ await new Promise(resolve=>w.setTimeout(resolve,0));
  d.window.close();
 }
 console.log('PASS lesson 2 v211: authentic 他 tracing and optional 他/她/它 comparison; two-voice scene stays unchanged.');
+
+})().catch(error=>{console.error(error);process.exitCode=1});
