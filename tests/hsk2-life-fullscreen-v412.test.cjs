@@ -14,11 +14,56 @@ const css=fs.readFileSync(path.join(root,'assets/hsk2-life-welcome-v412.css'),'u
 const app=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'utf8');
 assert(html.includes('hsk2-life-welcome-v412.css?v=412'));
 assert(html.includes('hsk2-life-course-app-v1.js?v=420'));
-assert(html.includes('hsk2-life-approved-fullscreen-v412.png'));
+// The v412 artwork remains intact as an archival reference. The active design is v432.
+assert(html.includes('hsk2-approved-20261117/home.jpg'));
+assert(html.includes('hsk2-approved-20261117/lesson1.jpg'));
+assert(html.includes('hsk2-approved-20261117.css?v=432'));
+assert(html.includes('hsk2-approved-20261117.js?v=432'));
+const welcome=fs.readFileSync(path.join(root,'assets/hsk2-approved-20261117/home.jpg'));
+const cover=fs.readFileSync(path.join(root,'assets/hsk2-approved-20261117/lesson1.jpg'));
+const blobSha=b=>crypto.createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
+assert.equal(blobSha(welcome),'57338b70ee0ff0aa93c609ac943752bd8fc9d4ce');
+assert.equal(blobSha(cover),'4c1e530adca77ea7e30834bf7098353493412b34');
+assert.equal(welcome.subarray(0,3).toString('hex'),'ffd8ff');
+assert.equal(cover.subarray(0,3).toString('hex'),'ffd8ff');
 assert(css.includes('aspect-ratio:842 / 1867'));
 assert(css.includes('width:max(100%,45.09909dvh)'));
 for(const marker of ['poster-welcome-program','poster-welcome-start','poster-welcome-ai','poster-welcome-ai-card'])assert(app.includes(marker));
 const pack=JSON.parse(fs.readFileSync(path.join(root,'assets/offline-pack.json'),'utf8'));
 assert(pack.files.includes('./assets/hsk2-life-approved-fullscreen-v412.png'));
 assert(pack.files.includes('./assets/hsk2-life-welcome-v412.css?v=412'));
-console.log('PASS HSK2 v412: original bitmap checksum, exact aspect, seamless viewport and 4 HTML controls');
+const liveJs=fs.readFileSync(path.join(root,'assets/hsk2-approved-20261117.js'),'utf8');
+const liveCss=fs.readFileSync(path.join(root,'assets/hsk2-approved-20261117.css'),'utf8');
+assert(liveJs.includes('pg432CoverStart')&&liveJs.includes('original.render(state,ctx)'));
+assert(liveJs.includes('api.go(\'welcome\')'));
+assert(liveJs.includes('syncHome()'));
+assert(liveCss.includes('.poster-welcome-start')&&liveCss.includes('.pg432-cover-start'));
+for(const asset of ['./assets/hsk2-approved-20261117/home.jpg','./assets/hsk2-approved-20261117/lesson1.jpg',
+                    './assets/hsk2-approved-20261117.css?v=432','./assets/hsk2-approved-20261117.js?v=432'])
+ assert(pack.files.includes(asset),'Offline file missing: '+asset);
+const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
+assert(sw.includes('v432-hsk2-approved-home-lesson1'));
+
+const vm=require('node:vm');
+const wrapper=fs.readFileSync(path.join(root,'assets/hsk2-approved-20261117.js'),'utf8');
+const legacy={makeState:()=>({}),render:()=>'<article id="existing-course">REAL WORDS</article>',handle:()=>false};
+const fakeDoc={readyState:'loading',addEventListener(){}};
+const ctx={window:{PandaGoDayFirstUIV1:legacy},document:fakeDoc};
+vm.runInNewContext(wrapper,ctx);
+const patched=ctx.window.PandaGoDayFirstUIV1;
+const session={topic:0,mini:0,stage:0};
+session.day=patched.makeState(0);
+assert(session.day.pgApprovedCover===true,'First lesson needs approved cover');
+assert(patched.render(session,{}).includes('pg432-cover-start'),'First page shows clickable cover');
+const api={render(){},go(v){this.lastPage=v}};
+const start={dataset:{pg432CoverStart:''}};
+assert(patched.handle(start,session,api)===true);
+assert(session.day.pgApprovedCover===false,'Start opens real exercises');
+assert(patched.render(session,{}).includes('existing-course'),'Original learning module remains active');
+const back={dataset:{dayPrev:''}};
+assert(patched.handle(back,session,api)===true);
+assert(session.day.pgApprovedCover===true,'Back from words returns to cover');
+assert(patched.handle({dataset:{pg432CoverBack:''}},session,api)===true);
+assert(api.lastPage==='welcome','Cover back routes to approved welcome');
+
+console.log('PASS HSK2 v432: approved home/lesson image hashes, unchanged v412 reference, live navigation and offline wiring');

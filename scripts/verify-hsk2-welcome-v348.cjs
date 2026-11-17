@@ -13,8 +13,9 @@ const appJs=fs.readFileSync('assets/hsk2-life-course-app-v1.js','utf8');
 assert.match(old,/location\.replace\(['"]\.\/hsk2-life-course\.html\?view=map['"]\)/,
  'Legacy HSK2 map entry must redirect to the current life-course map');
 assert.match(page,/Моя жизнь на китайском/,'Current course title must stay visible');
-assert.match(page,/hsk2-life-approved-fullscreen-v412\.png/,'The current approved full-height artwork must load');
-assert.match(page,/hsk2-life-welcome-v412\.css\?v=412/,'Welcome full-bleed stylesheet must be last');
+assert(page.includes('hsk2-approved-20261117/home.jpg'),'Approved Nov 17 home poster must preload');
+assert(page.includes('hsk2-approved-20261117/lesson1.jpg'),'Approved lesson 1 poster must preload');
+assert(page.includes('hsk2-approved-20261117.css?v=432'),'New approved artwork stylesheet must load');
 assert.match(page,/course-map\.png/,'Approved illustrated roadmap must remain');
 assert.match(page,/hsk2-life-course-app-v1\.js\?v=\d+/,'Course controller must be cache-versioned');
 assert.match(appJs,/view:'welcome'/,'First visit starts with approved welcome view');
@@ -26,4 +27,4 @@ assert.equal(topics.length,10);
 assert.equal(topics.reduce((n,t)=>n+t.scenes.length,0),30);
 assert.equal(topics.reduce((n,t)=>n+t.words.length,0),200);
 assert(topics.every(t=>t.words.length===20&&t.scenes.length===3));
-console.log('PASS: legacy #map redirects to approved life-course welcome, 10 themes, 30 mini-lessons and 200 vocabulary entries.');
+console.log('PASS HSK2 v432: approved entry to 10 themes, 30 mini-lessons and 200 vocabulary entries.');
