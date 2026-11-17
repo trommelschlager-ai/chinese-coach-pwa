@@ -18,7 +18,7 @@ import {chooseAudibleFollowup} from './panda-audible-followup-v412.mjs?v=412';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
 import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.mjs?v=376';
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
-import {isCalendarRoundFinished} from './panda-calendar-literal-v383.mjs?v=405';
+import {isCalendarRoundFinished,analyzeCalendarLiteral} from './panda-calendar-literal-v383.mjs?v=405';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -278,9 +278,15 @@ function submit(raw){
    const plannedFollowup=followup;
    // Calendar day->date handoff is an explicit reviewed sequence; never
    // substitute another calendar question or disrupt lesson completion.
-   if(!result.spoken?.calendarLiteral)followup=chooseAudibleFollowup(followup,topicCatalogGroups(),
-     [...state.questions.slice(-12),...state.history.slice(-8).map(h=>h.hanzi)],
-     lookupPandaVoiceClip,input);
+   // A correct answer to the ACTIVE calendar question is sometimes converted
+   // to a pattern-engine response without spoken.calendarLiteral.
+   const saidCalendar=analyzeCalendarLiteral(input);
+   const activeCalendarAnswer=saidCalendar&&activePrompt&&
+     saidCalendar.topic===Number(activePrompt.lesson)&&result.kind==='answer';
+   if(!result.spoken?.calendarLiteral&&!activeCalendarAnswer)
+     followup=chooseAudibleFollowup(followup,topicCatalogGroups(),
+       [...state.questions.slice(-12),...state.history.slice(-8).map(h=>h.hanzi)],
+       lookupPandaVoiceClip,input);
    if(followup){state.followup=followup;scheduleFollowup(Math.max(4500,Math.min(7000,(result.reply.pinyin?.length||50)*65)));render();}
    else if(plannedFollowup){render();}
    note(completedCalendarRound?closingSummary:
