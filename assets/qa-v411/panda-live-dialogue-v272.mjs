@@ -15,7 +15,7 @@ import {answerHsk2Bridge} from '../panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from '../panda-sentence-coach-v319.mjs?v=319';
 import {answerBasicConversation} from '../panda-basic-conversation-v323.mjs?v=336';
 import {analyzeCalendarLiteral,calendarAcknowledgement} from '../panda-calendar-literal-v383.mjs?v=401';
-import {reviewedYouYouMeiyou} from './panda-youyoumeiyou-v416.mjs?v=qa-9d60b9b6';
+import {reviewedYouYouMeiyou} from './panda-youyoumeiyou-v416.mjs?v=qa-541615e2';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
 const ZH=n=>n===0?'零':chineseNumber(n);
