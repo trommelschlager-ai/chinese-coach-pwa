@@ -261,3 +261,34 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{o
  .pg4-audio-icon{width:50px;height:50px;min-width:50px;border-radius:16px}
  .pg4-audio-icon img{width:25px;height:25px}
 }
+
+/* HSK1 L4 consolidated weekdays v422: six familiar tiles, one phone screen. */
+.pg4-app[data-step="1"] .pg4-combined-days{padding:10px 12px 12px;margin:7px auto 8px}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-card-title{font-size:20px;margin:0 0 6px}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-learn-hint{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px;margin:2px 0 5px;font-size:12px}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-learn-hint .pg4-audio{min-height:34px;padding:5px 11px;font-size:13px;border-radius:14px}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-learn-count{font-size:12px;margin:0 0 6px}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-study-grid{grid-template-columns:minmax(0,1fr);gap:6px;margin:0}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-study{
+ box-sizing:border-box;display:grid;grid-template-columns:38px minmax(0,1fr) auto;
+ grid-template-rows:auto auto;gap:0 10px;align-content:center;align-items:center;
+ min-height:68px;padding:6px 12px;border-radius:15px;touch-action:manipulation
+}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-calendar-icon{grid-column:1;grid-row:1/3;width:36px;height:36px}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-study strong{grid-column:2;grid-row:1;font-size:clamp(24px,6.8vw,29px);line-height:1.12}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-study span{grid-column:2;grid-row:2;font-size:clamp(13px,3.6vw,15px);line-height:1.15}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-study small{grid-column:3;grid-row:1/3;font-size:clamp(11px,3.2vw,13px);padding:5px 8px;white-space:nowrap}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-study i{right:5px;top:1px;font-size:13px}
+.pg4-app[data-step="1"] .pg4-combined-days .pg4-study:active{transform:translateY(1px);box-shadow:inset 0 2px 4px #d6b68f80}
+@media(max-width:370px){
+ .pg4-app[data-step="1"] .pg4-combined-days{padding:9px 9px 10px}
+ .pg4-app[data-step="1"] .pg4-combined-days .pg4-study{grid-template-columns:32px minmax(0,1fr) auto;gap:0 6px;padding:5px 8px;min-height:64px}
+ .pg4-app[data-step="1"] .pg4-combined-days .pg4-calendar-icon{width:31px;height:31px}
+ .pg4-app[data-step="1"] .pg4-combined-days .pg4-study strong{font-size:24px}
+ .pg4-app[data-step="1"] .pg4-combined-days .pg4-study span{font-size:12px}
+ .pg4-app[data-step="1"] .pg4-combined-days .pg4-study small{font-size:11px;padding:4px}
+}
+@media(max-height:730px){
+ .pg4-app[data-step="1"] .pg4-combined-days .pg4-study{min-height:58px;padding-top:3px;padding-bottom:3px}
+ .pg4-app[data-step="1"] .pg4-combined-days .pg4-study-grid{gap:4px}
+}
