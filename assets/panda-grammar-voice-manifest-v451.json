@@ -1,0 +1,300 @@
+{
+  "version": 451,
+  "source": "user-approved Mandarin Luvvoice; no substitutions",
+  "items": [
+    {
+      "id": 1,
+      "hanzi": "他有两个妹妹。",
+      "pinyin": "Tā yǒu liǎng ge mèimei.",
+      "ru": "У него две младшие сестры.",
+      "file": "g001.mp3"
+    },
+    {
+      "id": 2,
+      "hanzi": "她是不是医生？",
+      "pinyin": "Tā shì bu shì yīshēng?",
+      "ru": "Она врач или нет?",
+      "file": "g002.mp3"
+    },
+    {
+      "id": 3,
+      "hanzi": "你八点起床。",
+      "pinyin": "Nǐ bā diǎn qǐchuáng.",
+      "ru": "Ты встаёшь в восемь.",
+      "file": "g003.mp3"
+    },
+    {
+      "id": 4,
+      "hanzi": "我不是学生。",
+      "pinyin": "Wǒ bú shì xuésheng.",
+      "ru": "Я не ученик.",
+      "file": "g004.mp3"
+    },
+    {
+      "id": 5,
+      "hanzi": "他没有钱。",
+      "pinyin": "Tā méiyǒu qián.",
+      "ru": "У него нет денег.",
+      "file": "g005.mp3"
+    },
+    {
+      "id": 6,
+      "hanzi": "我没去过中国。",
+      "pinyin": "Wǒ méi qù guo Zhōngguó.",
+      "ru": "Я не был в Китае.",
+      "file": "g006.mp3"
+    },
+    {
+      "id": 7,
+      "hanzi": "我没吃饭。",
+      "pinyin": "Wǒ méi chīfàn.",
+      "ru": "Я не ел.",
+      "file": "g007.mp3"
+    },
+    {
+      "id": 8,
+      "hanzi": "我叫小明。",
+      "pinyin": "Wǒ jiào Xiǎomíng.",
+      "ru": "Меня зовут Сяомин.",
+      "file": "g008.mp3"
+    },
+    {
+      "id": 9,
+      "hanzi": "我姓王。",
+      "pinyin": "Wǒ xìng Wáng.",
+      "ru": "Моя фамилия Ван.",
+      "file": "g009.mp3"
+    },
+    {
+      "id": 10,
+      "hanzi": "你多大？",
+      "pinyin": "Nǐ duō dà?",
+      "ru": "Сколько тебе лет?",
+      "file": "g010.mp3"
+    },
+    {
+      "id": 11,
+      "hanzi": "你喜欢什么？",
+      "pinyin": "Nǐ xǐhuan shénme?",
+      "ru": "Что тебе нравится?",
+      "file": "g011.mp3"
+    },
+    {
+      "id": 12,
+      "hanzi": "现在几点？",
+      "pinyin": "Xiànzài jǐ diǎn?",
+      "ru": "Который сейчас час?",
+      "file": "g012.mp3"
+    },
+    {
+      "id": 13,
+      "hanzi": "这是什么？",
+      "pinyin": "Zhè shì shénme?",
+      "ru": "Что это?",
+      "file": "g013.mp3"
+    },
+    {
+      "id": 14,
+      "hanzi": "你有几个哥哥？",
+      "pinyin": "Nǐ yǒu jǐ ge gēge?",
+      "ru": "Сколько у тебя старших братьев?",
+      "file": "g014.mp3"
+    },
+    {
+      "id": 15,
+      "hanzi": "你是不是老师？",
+      "pinyin": "Nǐ shì bu shì lǎoshī?",
+      "ru": "Ты учитель или нет?",
+      "file": "g015.mp3"
+    },
+    {
+      "id": 16,
+      "hanzi": "你有没有哥哥？",
+      "pinyin": "Nǐ yǒu méiyǒu gēge?",
+      "ru": "У тебя есть старший брат?",
+      "file": "g016.mp3"
+    },
+    {
+      "id": 17,
+      "hanzi": "你会不会说中文？",
+      "pinyin": "Nǐ huì bu huì shuō Zhōngwén?",
+      "ru": "Ты умеешь говорить по-китайски?",
+      "file": "g017.mp3"
+    },
+    {
+      "id": 18,
+      "hanzi": "你去不去学校？",
+      "pinyin": "Nǐ qù bu qù xuéxiào?",
+      "ru": "Ты пойдёшь в школу или нет?",
+      "file": "g018.mp3"
+    },
+    {
+      "id": 19,
+      "hanzi": "你想不想喝茶？",
+      "pinyin": "Nǐ xiǎng bu xiǎng hē chá?",
+      "ru": "Хочешь пить чай или нет?",
+      "file": "g019.mp3"
+    },
+    {
+      "id": 20,
+      "hanzi": "我有两个哥哥。",
+      "pinyin": "Wǒ yǒu liǎng ge gēge.",
+      "ru": "У меня два старших брата.",
+      "file": "g020.mp3"
+    },
+    {
+      "id": 21,
+      "hanzi": "我有两个朋友。",
+      "pinyin": "Wǒ yǒu liǎng ge péngyou.",
+      "ru": "У меня два друга.",
+      "file": "g021.mp3"
+    },
+    {
+      "id": 22,
+      "hanzi": "我有一本书。",
+      "pinyin": "Wǒ yǒu yì běn shū.",
+      "ru": "У меня одна книга.",
+      "file": "g022.mp3"
+    },
+    {
+      "id": 23,
+      "hanzi": "我买了一本书。",
+      "pinyin": "Wǒ mǎi le yì běn shū.",
+      "ru": "Я купил одну книгу.",
+      "file": "g023.mp3"
+    },
+    {
+      "id": 24,
+      "hanzi": "这里有三只猫。",
+      "pinyin": "Zhèlǐ yǒu sān zhī māo.",
+      "ru": "Здесь три кошки.",
+      "file": "g024.mp3"
+    },
+    {
+      "id": 25,
+      "hanzi": "我有一只狗。",
+      "pinyin": "Wǒ yǒu yì zhī gǒu.",
+      "ru": "У меня одна собака.",
+      "file": "g025.mp3"
+    },
+    {
+      "id": 26,
+      "hanzi": "我喝了两杯茶。",
+      "pinyin": "Wǒ hē le liǎng bēi chá.",
+      "ru": "Я выпил две чашки чая.",
+      "file": "g026.mp3"
+    },
+    {
+      "id": 27,
+      "hanzi": "我住在北京。",
+      "pinyin": "Wǒ zhù zài Běijīng.",
+      "ru": "Я живу в Пекине.",
+      "file": "g027.mp3"
+    },
+    {
+      "id": 28,
+      "hanzi": "我想去中国。",
+      "pinyin": "Wǒ xiǎng qù Zhōngguó.",
+      "ru": "Я хочу поехать в Китай.",
+      "file": "g028.mp3"
+    },
+    {
+      "id": 29,
+      "hanzi": "我会说中文。",
+      "pinyin": "Wǒ huì shuō Zhōngwén.",
+      "ru": "Я умею говорить по-китайски.",
+      "file": "g029.mp3"
+    },
+    {
+      "id": 30,
+      "hanzi": "我每天学中文。",
+      "pinyin": "Wǒ měitiān xué Zhōngwén.",
+      "ru": "Я каждый день учу китайский.",
+      "file": "g030.mp3"
+    },
+    {
+      "id": 31,
+      "hanzi": "我在学校学中文。",
+      "pinyin": "Wǒ zài xuéxiào xué Zhōngwén.",
+      "ru": "Я изучаю китайский в школе.",
+      "file": "g031.mp3"
+    },
+    {
+      "id": 32,
+      "hanzi": "我在家吃饭。",
+      "pinyin": "Wǒ zài jiā chīfàn.",
+      "ru": "Я ем дома.",
+      "file": "g032.mp3"
+    },
+    {
+      "id": 33,
+      "hanzi": "我七点起床。",
+      "pinyin": "Wǒ qī diǎn qǐchuáng.",
+      "ru": "Я встаю в семь.",
+      "file": "g033.mp3"
+    },
+    {
+      "id": 34,
+      "hanzi": "我晚上十点睡觉。",
+      "pinyin": "Wǒ wǎnshang shí diǎn shuìjiào.",
+      "ru": "Я ложусь спать в десять вечера.",
+      "file": "g034.mp3"
+    },
+    {
+      "id": 35,
+      "hanzi": "我八点去上班。",
+      "pinyin": "Wǒ bā diǎn qù shàngbān.",
+      "ru": "Я иду на работу в восемь.",
+      "file": "g035.mp3"
+    },
+    {
+      "id": 36,
+      "hanzi": "我每天六点起床。",
+      "pinyin": "Wǒ měitiān liù diǎn qǐchuáng.",
+      "ru": "Я каждый день встаю в шесть.",
+      "file": "g036.mp3"
+    },
+    {
+      "id": 37,
+      "hanzi": "我比你高。",
+      "pinyin": "Wǒ bǐ nǐ gāo.",
+      "ru": "Я выше тебя.",
+      "file": "g037.mp3"
+    },
+    {
+      "id": 38,
+      "hanzi": "我比你更高。",
+      "pinyin": "Wǒ bǐ nǐ gèng gāo.",
+      "ru": "Я ещё выше тебя.",
+      "file": "g038.mp3"
+    },
+    {
+      "id": 39,
+      "hanzi": "她很喜欢喝茶。",
+      "pinyin": "Tā hěn xǐhuan hē chá.",
+      "ru": "Она очень любит пить чай.",
+      "file": "g039.mp3"
+    },
+    {
+      "id": 40,
+      "hanzi": "我非常喜欢中国菜。",
+      "pinyin": "Wǒ fēicháng xǐhuan Zhōngguó cài.",
+      "ru": "Я очень люблю китайскую кухню.",
+      "file": "g040.mp3"
+    },
+    {
+      "id": 41,
+      "hanzi": "我和朋友一起去。",
+      "pinyin": "Wǒ hé péngyou yìqǐ qù.",
+      "ru": "Я иду вместе с другом.",
+      "file": "g041.mp3"
+    },
+    {
+      "id": 42,
+      "hanzi": "我跟朋友一起吃饭。",
+      "pinyin": "Wǒ gēn péngyou yìqǐ chīfàn.",
+      "ru": "Я ем вместе с другом.",
+      "file": "g042.mp3"
+    }
+  ]
+}
