@@ -218,6 +218,7 @@ function viewLesson(){
 }
 function viewDone(){
  var t=chosen(),sc=current(),number=id();
+ if(state.topic===0&&state.mini===0&&window.PandaGoExactV415)return window.PandaGoExactV415.renderAI(state,sound,dayCoachingLink(state.mini));
  if(state.topic===0)return '<section class="done day-done pg414-ai" data-mini="'+state.mini+'">'+
   '<div class="pg414-ai-header"><h1>Panda Go 🐾</h1><small>Курс 2 · HSK2</small><h2>Урок 1 · Мой распорядок дня</h2><div>💬 Разговорная практика</div></div>'+
   '<div class="pg414-ai-questions">'+
@@ -300,7 +301,7 @@ function render(){
  app.classList.toggle('approved-map-v390',state.view==='map');
  var isDayLesson=state.view==='lesson'&&dayPilot(),isDayDone=state.view==='done'&&state.topic===0;
  app.classList.toggle('day-lesson-active',isDayLesson);
- var isDayArt=isDayLesson&&!!screen.querySelector('.day-visual-start');
+ var isDayArt=isDayLesson&&!!screen.querySelector('.day-visual-start,.pg415-art-screen');
  app.classList.toggle('day-visual-v390',isDayArt);
  app.classList.toggle('day-done-active',isDayDone);
  app.classList.toggle('day-stage-0',isDayLesson&&!isDayArt&&state.stage===0);
