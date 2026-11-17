@@ -106,11 +106,11 @@ test('new topic question without relative metadata accepts negative answer for a
 test('screen and offline course include v426 family logic with approved art intact',()=>{
  const read=path=>fs.readFileSync(new URL('../'+path,import.meta.url),'utf8');
  assert(read('assets/panda-live-screen-v270.mjs').includes('continueFamilyAfterAnswer({'));
- assert(read('panda-voice-pilot.html').includes('panda-live-screen-v270.mjs?v=441'));
- assert(read('panda-voice-pilot.html').includes('panda-live-v346.mjs?v=4361'));
+ assert(read('panda-voice-pilot.html').includes('panda-live-screen-v270.mjs?v=445'));
+ assert(read('panda-voice-pilot.html').includes('panda-live-v346.mjs?v=445'));
  const pack=JSON.parse(read('assets/offline-pack.json'));
  assert(pack.files.includes('./assets/panda-family-turn-v426.mjs?v=427'));
- assert(pack.files.includes('./assets/panda-live-screen-v270.mjs?v=441'));
+ assert(pack.files.includes('./assets/panda-live-screen-v270.mjs?v=445'));
 });
 test('Android-like Non-Stop third turn replies and asks a new, voiced family question',async()=>{
  const f=await liveDOM(1,{completed:['family','weekdays']});
