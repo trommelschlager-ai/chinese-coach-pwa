@@ -241,14 +241,23 @@ if (!bridge) {
   function renderFeedback(s){
     const last=s.history.slice().reverse().find(x=>x.who==='you');
     const wrong=last?.analysis?.correction;
-    // Keep grammar corrections visible, but do not overlay a redundant
-    // unknown-meaning bubble beside ВСЕ ТЕМЫ. History retains the message.
-    const root=$('#pg346-feedback'),active=!!wrong;
-    const key=[last?.hanzi,wrong?.hanzi,wrong?.why,s.feedback,active].join('|');
+    // Preserve the intentionally narrow grammar-correction overlay. A valid
+    // phrase that does not answer the active weekday question is a separate,
+    // explicitly reviewed teaching hint, not an unknown-meaning error.
+    const noteText=String(s.feedback||'');
+    const offTopicHint=!wrong&&noteText.startsWith('✅ 我今天有空')&&
+      noteText.includes('Но вопрос был 今天星期几？')&&
+      noteText.includes('Ответь названием дня недели');
+    const root=$('#pg346-feedback'),active=!!wrong||offTopicHint;
+    const key=[last?.hanzi,wrong?.hanzi,wrong?.why,noteText,active].join('|');
     if(key===lastFeedback)return;
     lastFeedback=key;root.hidden=!active;root.replaceChildren();
     if(!active)return;
-    root.append(el('strong','', '🐼 Панда:'));
+    root.append(el('strong','',offTopicHint?'🐼 Панда объясняет:':'🐼 Панда:'));
+    if(offTopicHint){
+      root.append(el('p','pg377-explanation',noteText));
+      return;
+    }
     if(wrong){
       root.append(el('p','pg377-meaning','Предполагаемый смысл: '+(last.analysis?.probable||wrong.ru||'смысл уточняется')));
       root.append(el('p','pg377-error','❌ '+last.hanzi));
