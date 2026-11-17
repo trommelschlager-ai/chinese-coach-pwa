@@ -41,3 +41,14 @@
  box-shadow:none!important;outline:0!important;
  -webkit-tap-highlight-color:transparent!important;
 }
+
+
+#app .pg415-ai-screen #pg414-ai-feedback.pg419-sr-status{
+ position:absolute!important;
+ width:1px!important;height:1px!important;
+ padding:0!important;margin:0!important;border:0!important;
+ overflow:hidden!important;clip-path:inset(50%)!important;
+ white-space:nowrap!important;
+ opacity:0!important;pointer-events:none!important;
+ box-shadow:none!important;background:transparent!important;
+}
