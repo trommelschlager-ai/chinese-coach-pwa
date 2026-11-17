@@ -4,7 +4,9 @@ const clean=value=>String(value??'').normalize('NFC').replace(/[。！？?!，,\
 export function chooseAudibleFollowup(proposed, groups=[],recent=[],lookup,learnerInput=''){
  if(!proposed||typeof lookup!=='function')return null;
  const audible=entry=>Boolean(entry&&(lookup(entry.hanzi)||lookup(entry.audioKey)));
- if(audible(proposed))return proposed;
+ const availabilityAsked=/^你(?:星期几|今天)有空(?:吗)?$/.test(clean(learnerInput));
+ // An unrelated recorded question is not a good follow-up either.
+ if(audible(proposed)&&(!availabilityAsked||clean(proposed.hanzi).includes('有空')))return proposed;
  const lesson=Number(proposed.lesson);
  const group=(Array.isArray(groups)?groups:[]).find(g=>g.lesson===lesson);
  if(!group)return null;
@@ -16,7 +18,6 @@ export function chooseAudibleFollowup(proposed, groups=[],recent=[],lookup,learn
  // When the learner asks about availability, do NOT jump to an unrelated
  // weekday question merely because it has MP3. End the automatic chain if
  // there are no new, recorded availability prompts.
- const availabilityAsked=/^你(?:星期几|今天)有空(?:吗)?$/.test(clean(learnerInput));
  const availabilityCandidates=availabilityAsked?
    candidates.filter(q=>clean(q.hanzi).includes('有空')):candidates;
  const picked=(availabilityAsked?availabilityCandidates.find(q=>clean(q.hanzi)==='你今天有空吗'):null)
