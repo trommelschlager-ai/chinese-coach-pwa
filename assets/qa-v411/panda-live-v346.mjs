@@ -298,7 +298,16 @@ if (!bridge) {
     stage.dataset.pose=s.active?'listening':pandaSpeaking?'talking':'idle';
     liveMouth.setTalking(!s.active&&pandaSpeaking);
     stage.dataset.headphones=s.active?'listening':headsetResult;$('#pg346-mic').setAttribute('aria-pressed',String(s.active));$('#pg346-mic').setAttribute('aria-label',s.active?'Микрофон включён. Говори по-китайски.':'Ответить Панде голосом');$('#pg346-short').setAttribute('aria-pressed',String(s.mode==='short'));$('#pg346-nonstop').setAttribute('aria-pressed',String(s.mode==='nonstop'));
-    const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable;$('#pg357-audio-note').hidden=!!s.audioAvailable}
+    const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable;$('#pg357-audio-note').hidden=!!s.audioAvailable&&!s.audioNeedsTap}
+    // Audio clip availability != successful Android autoplay. Keep the existing
+    // speaker button active and show a compact, accessible tap-to-play hint.
+    const audioNote=$('#pg357-audio-note');
+    audioNote.hidden=!!s.audioAvailable&&!s.audioNeedsTap;
+    audioNote.textContent=s.audioNeedsTap?
+      '🔊 Android не запустил голос автоматически. Нажми динамик возле ответа Панды.':
+      '🔇 Для этой фразы нет точной MP3-записи.';
+    audioNote.dataset.needsTap=String(!!s.audioNeedsTap);
+    
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
     renderFeedback(s);renderTopics(s);
     // The lesson already marks unrecorded phrases on their speech card.
