@@ -1,0 +1,42 @@
+name: HSK2 first lesson Android v416 no-jump QA
+on:
+  push:
+    branches: [fix/hsk2-lesson1-fullheight-nojump-audio-v416]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hsk2-life-course.html'
+      - 'assets/hsk2-life-course-app-v1.js'
+      - 'assets/hsk2-lesson1-android-fixes-v416.css'
+      - 'scripts/qa-hsk2-lesson1-v416.mjs'
+  workflow_dispatch:
+jobs:
+  android:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Complete HSK2 three-mini-lesson regression
+        run: node tests/hsk2-six-screens-v414.test.cjs
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Test Android image height, touches, voice and inner scroll
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/hsk2-v416.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 25); do
+            if curl -fsS http://127.0.0.1:4173/hsk2-life-course.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-hsk2-lesson1-v416.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: panda-hsk2-v416-android-6screens
+          path: qa/hsk2-v416/
+          if-no-files-found: warn
