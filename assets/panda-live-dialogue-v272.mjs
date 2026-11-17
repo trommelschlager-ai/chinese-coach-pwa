@@ -257,7 +257,13 @@ function extendQuestion(result,raw,allowed,date,profile){
  // retain their existing lesson-specific continuation rules.
  if(result.lesson===6){
    const seen=new Set([inputKey,...(profile?.recentQuestions||[]).map(normalize)]);
-   return {...result,followup:suggested&&!seen.has(normalize(suggested.hanzi))?suggested:null};
+   if(suggested&&!seen.has(normalize(suggested.hanzi)))return {...result,followup:suggested};
+   // Existing HSK1 variant lessons require a tested same-topic follow-up.
+   // Prefer an actually recorded alternative; never repeat the same prompt.
+   const alternatives=topicPrompts(6,date,profile).filter(q=>q?.hanzi&&
+      q.verifiedLines?.[1]?.accepted&&!seen.has(normalize(q.hanzi)));
+   const alternative=alternatives.find(q=>lookupPilotAudio(q.hanzi))||alternatives[0]||null;
+   return {...result,followup:alternative};
  }
  return {...result,followup:suggested};
 }
