@@ -1,5 +1,5 @@
 {
-  "version": 444,
+  "version": 445,
   "bytes": 65958727,
   "files": [
     "./assets/panda-character-clean-v349.webp",
@@ -2974,8 +2974,8 @@
     "./assets/pandago-art-touch-feedback-v395.js?v=417",
     "./assets/hsk2-lesson1-three-page-v418.css?v=418",
     "./assets/hsk2-panda-return-chat-v419.css?v=419",
-    "./assets/panda-live-screen-v270.mjs?v=441",
-    "./assets/panda-live-v346.mjs?v=4361",
+    "./assets/panda-live-screen-v270.mjs?v=445",
+    "./assets/panda-live-v346.mjs?v=445",
     "./assets/hsk2-panda-chat-clean-v420.css?v=420",
     "./assets/panda-voice-v411.mjs?v=411",
     "./assets/panda-voice-clips-v411/p156.mp3",
@@ -3017,7 +3017,7 @@
     "./assets/panda-live-stone-v355.css?v=363",
     "./assets/panda-live-stable-v364.css?v=364",
     "./assets/panda-topic-catalog-v374.css?v=374",
-    "./assets/panda-chat-corrections-v377.css?v=441",
+    "./assets/panda-chat-corrections-v377.css?v=445",
     "./assets/panda-day-first-play-v398.css?v=398",
     "./assets/panda-mic-help-v407.css?v=407",
     "./assets/hsk2-user-voice/phrase-index-v332.js?v=336",
