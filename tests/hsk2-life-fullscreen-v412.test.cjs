@@ -42,7 +42,8 @@ for(const asset of ['./assets/hsk2-approved-20261117/home.jpg','./assets/hsk2-ap
                     './assets/hsk2-approved-20261117.css?v=432','./assets/hsk2-approved-20261117.js?v=432'])
  assert(pack.files.includes(asset),'Offline file missing: '+asset);
 const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
-assert(sw.includes('v432-hsk2-approved-home-lesson1'));
+const activeCache=Number(sw.match(/^const CACHE='chinese-coach-pwa-v(\d+)-/m)?.[1]);
+assert.equal(activeCache,pack.version,'Active service-worker cache must match the offline-pack version');
 
 const vm=require('node:vm');
 const wrapper=fs.readFileSync(path.join(root,'assets/hsk2-approved-20261117.js'),'utf8');
