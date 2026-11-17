@@ -41,7 +41,7 @@ test('current Panda engine, history, and HTML load v425 with unchanged approved 
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
  assert(screen.includes('followup=coherentPandaFollowup({input,result,followup,'));
  assert(html.includes('panda-live-screen-v270.mjs?v=426'));
- assert(html.includes('panda-live-v346.mjs?v=424'));
+ assert(html.includes('panda-live-v346.mjs?v=426'));
  const offline=JSON.parse(fs.readFileSync(new URL('../assets/offline-pack.json',import.meta.url),'utf8'));
  assert(offline.files.includes('./assets/panda-nonstop-continuity-v425.mjs?v=425'));
  assert(offline.files.includes('./assets/panda-live-screen-v270.mjs?v=426'));
