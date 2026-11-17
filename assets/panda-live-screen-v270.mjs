@@ -21,6 +21,7 @@ import {isCalendarRoundFinished} from './panda-calendar-literal-v383.mjs?v=405';
 import {coherentPandaFollowup} from './panda-nonstop-continuity-v425.mjs?v=425';
 import {continueFamilyAfterAnswer} from './panda-family-turn-v426.mjs?v=427';
 import {enrichConversation430} from './panda-conversation-memory-v430.mjs?v=430';
+import {enrichTopics431} from './panda-topic-memory-v431.mjs?v=431';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -241,9 +242,15 @@ function submit(raw){
    });
    // v430: use only known facts from THIS open dialogue, and only reviewed
    // questions whose exact approved Panda audio exists.
-   const result=state.confidence!==null&&state.confidence<.65?familyResult:
+   const rememberedFamily=state.confidence!==null&&state.confidence<.65?familyResult:
     enrichConversation430({
      input,activePrompt,result:familyResult,profile:state.profile,
+     allowed:state.allowed,questions:state.questions.slice(-40),
+     history:state.history.slice(-60),catalog:topicCatalogGroups(),lookupAudio:lookupPandaVoiceClip
+    });
+   const result=state.confidence!==null&&state.confidence<.65?rememberedFamily:
+    enrichTopics431({
+     input,activePrompt,result:rememberedFamily,profile:state.profile,
      allowed:state.allowed,questions:state.questions.slice(-40),
      history:state.history.slice(-60),catalog:topicCatalogGroups(),lookupAudio:lookupPandaVoiceClip
     });
