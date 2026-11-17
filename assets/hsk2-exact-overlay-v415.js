@@ -106,12 +106,13 @@ function samples(state,ctx){
  }
  out+=press(700,528,200,94,'data-pg415-dialogue','Открыть мини-диалог','pg415-dialogue-toggle');
  out+='<span class="pg415-dialogue-label" style="'+at(705,617,187,42)+'">💬 Диалог</span>';
+ const t=document.createElement('template');t.innerHTML=original.render(state,ctx);
+ const dlg=t.content.querySelector('.pg414-dialogue');
+ const lines=dlg?dlg.innerHTML:'<p>Диалог недоступен</p>';
  if(d.v414.dialogueOpen){
-  const t=document.createElement('template');t.innerHTML=original.render(state,ctx);
-  const dlg=t.content.querySelector('.pg414-dialogue');
   out+='<div class="pg415-dialogue-panel"><button type="button" data-pg415-dialogue class="pg415-close" aria-label="Закрыть диалог">×</button>'+
-  '<h3>💬 Мини-диалог</h3>'+(dlg?dlg.innerHTML:'<p>Диалог недоступен</p>')+'</div>';
- }
+  '<h3>💬 Мини-диалог</h3>'+lines+'</div>';
+ }else out+='<div class="pg415-dialogue-hidden" hidden>'+lines+'</div>';
  return out;
 }
 function render(state,ctx){
