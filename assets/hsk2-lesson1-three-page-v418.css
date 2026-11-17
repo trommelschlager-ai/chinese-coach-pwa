@@ -1,0 +1,170 @@
+/* Panda Go HSK2 · first lesson · v418
+   Original purple-gold artwork remains untouched.
+   Three concise pages for the real seven-question exam; no yellow tap popups.
+   All selectors are scoped to approved HSK2 lesson 1, never HSK1. */
+#app.day-lesson-active:has(.pg415-art-screen),
+#app.day-done-active:has(.pg415-ai-screen){
+ height:100dvh!important;
+ min-height:0!important;
+}
+#app.day-lesson-active:has(.pg415-art-screen) #screen,
+#app.day-done-active:has(.pg415-ai-screen) #screen{
+ flex:1 1 0%!important;
+ height:auto!important;
+ min-height:0!important;
+ max-height:none!important;
+ overflow:hidden!important;
+ margin:0!important;padding:0!important;
+}
+#app .pg415-art-screen,#app .pg415-ai-screen,
+#app .pg415-graphic{
+ height:100%!important;min-height:0!important;
+ max-height:none!important;overflow:hidden!important;
+}
+#app .pg415-art{height:100%!important;object-fit:fill!important}
+#app .pg415-art-screen::before,#app .pg415-art-screen::after,
+#app .pg415-ai-screen::before,#app .pg415-ai-screen::after{
+ content:none!important;display:none!important;
+}
+/* Remove stray yellow-on-click decorations, but keep correct-answer styling. */
+#app .pg415-art-screen .pg415-hit:active,
+#app .pg415-art-screen .pg415-vocab-audio:active,
+#app .pg415-art-screen .pg415-example-audio:active,
+#app .pg415-art-screen .pg415-sample-audio:active,
+#app .pg415-ai-screen .pg415-hit:active{
+ -webkit-tap-highlight-color:transparent!important;
+ background:transparent!important;background-color:transparent!important;
+ outline:0!important;box-shadow:none!important;
+ filter:none!important;transform:none!important;
+}
+#app .pg415-art-screen button:focus:not(:focus-visible),
+#app .pg415-ai-screen button:focus:not(:focus-visible){
+ outline:0!important;box-shadow:none!important;
+}
+#app.day-lesson-active:has(.pg415-art-screen) #message:not(:empty){
+ background:#f9e8fff2!important;
+ border-color:#d59be6!important;
+ color:#6b2084!important;
+}
+/* Make the original lower grammar exercise a readable, higher-positioned panel. */
+#app .pg418-rule-exercise{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:stretch!important;
+ justify-content:center!important;
+ gap:3px!important;
+ padding:clamp(6px,1.5vw,12px)!important;
+ background:linear-gradient(145deg,#fff8ff,#f4dafa)!important;
+ border:2px solid #dcb1eb!important;
+ border-radius:17px!important;
+ box-shadow:0 3px 12px #65217b52!important;
+}
+#app .pg418-rule-exercise h3{
+ margin:0!important;color:#63218a!important;
+ font-size:clamp(12px,3.5vw,18px)!important;
+ line-height:1.12!important;
+}
+#app .pg418-rule-exercise p{
+ margin:0!important;
+ color:#65307b!important;
+ line-height:1.16!important;
+ font-size:clamp(10px,2.9vw,14px)!important;
+}
+#app .pg418-rule-options{
+ display:grid!important;grid-template-columns:1fr!important;
+ gap:clamp(3px,.5vh,7px)!important;flex:1!important;min-height:0!important;
+}
+#app .pg418-rule-options button{
+ min-height:0!important;
+ width:100%!important;
+ padding:5px 10px!important;
+ font-size:clamp(13px,3.8vw,19px)!important;
+ line-height:1.12!important;
+ text-align:center!important;
+ border-radius:13px!important;
+ touch-action:manipulation!important;
+ -webkit-tap-highlight-color:transparent!important;
+}
+#app .pg418-rule-options button:active{
+ transform:none!important;filter:none!important;box-shadow:none!important;
+}
+/* Real exam now shows only 2-3 questions, not 7 squeezed into one panel. */
+#app .pg415-step-3 .pg415-live-test{
+ top:18.9%!important;height:72.9%!important;
+ overflow-x:hidden!important;overflow-y:auto!important;
+ overscroll-behavior:contain!important;
+ scroll-behavior:auto!important;
+}
+#app .pg415-step-3 .pg414-test.pg418-test-part{
+ min-height:100%!important;
+ display:flex!important;flex-direction:column!important;
+ gap:clamp(5px,.8vh,10px)!important;
+ padding:clamp(7px,2.2vw,14px)!important;
+}
+#app .pg415-step-3 .pg418-test-step-indicator{
+ display:block!important;
+ text-align:center!important;
+ background:#f6e2ff!important;
+ color:#6b2488!important;
+ border-radius:12px!important;
+ border:1px solid #dfb2ea!important;
+ padding:5px!important;
+ font-weight:900!important;
+ font-size:clamp(11px,3.2vw,15px)!important;
+}
+#app .pg415-step-3 .pg418-test-part .pg414-question{
+ padding:clamp(5px,1.5vw,10px)!important;
+ margin:0!important;
+ border-radius:14px!important;
+}
+#app .pg415-step-3 .pg418-test-part .pg414-panel-title{align-items:center!important}
+#app .pg415-step-3 .pg418-test-part .pg414-panel-title h2{
+ margin:0!important;padding:1px 0!important;font-size:clamp(14px,3.8vw,20px)!important;
+}
+#app .pg415-step-3 .pg418-test-part .pg414-question h3{
+ margin:3px 0 6px!important;
+ font-size:clamp(13px,3.4vw,17px)!important;
+}
+#app .pg415-step-3 .pg418-test-part .pg414-pairs button{
+ min-height:34px!important;
+ font-size:clamp(13px,3.5vw,17px)!important;
+}
+#app .pg415-step-3 .pg418-test-part .pg414-choices button{
+ min-height:33px!important;
+ padding:clamp(4px,1.5vw,8px)!important;
+}
+#app .pg415-step-3 .pg418-test-part .pg414-info{
+ margin:auto 0 0!important;
+ font-size:clamp(10px,2.8vw,14px)!important;
+ padding:7px!important;
+}
+/* The approved poster says "Завершить тест" at the bottom. On pages 1-2
+   a real gold "Дальше" button replaces it, matching the existing design. */
+#app .pg415-step-3 .pg418-test-next{
+ display:flex!important;
+ justify-content:center!important;
+ align-items:center!important;
+ border:2px solid #ffe9a7!important;
+ border-radius:28px!important;
+ background:linear-gradient(#fff6ac,#ffe34b 55%,#ffc531)!important;
+ color:#652080!important;
+ font-size:clamp(15px,4.5vw,24px)!important;
+ font-weight:950!important;
+ font-style:italic!important;
+ text-shadow:0 1px #fff6c4!important;
+ box-shadow:0 3px 8px #5c218b9e!important;
+}
+#app .pg415-step-3 .pg418-test-next:active{
+ background:linear-gradient(#fff6ac,#ffe34b 55%,#ffc531)!important;
+ box-shadow:0 3px 8px #5c218b9e!important;
+ transform:none!important;
+}
+#app .pg415-step-3 .pg418-test-next:disabled{
+ opacity:.65!important;filter:grayscale(.18)!important;
+}
+@media(max-height:730px){
+ #app .pg418-rule-exercise{padding:4px 6px!important;gap:2px!important}
+ #app .pg418-rule-exercise h3{font-size:12px!important}
+ #app .pg418-rule-exercise p{font-size:10px!important}
+ #app .pg418-rule-options button{font-size:13px!important;padding:3px 5px!important}
+}
