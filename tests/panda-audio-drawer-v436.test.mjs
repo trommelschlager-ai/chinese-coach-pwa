@@ -85,7 +85,7 @@ test('short, internally scrollable drawer preserves scene, panda face and speech
 });
 test('v436 offline pack and install service worker include new study metadata without bloating shell',()=>{
  const offline=JSON.parse(read('assets/offline-pack.json'));
- assert.equal(offline.version,436);
+ assert(offline.version>=436,'Panda v436 assets must remain in current or later offline pack');
  for(const file of [
   './assets/panda-audio-study-v436.mjs?v=436',
   './assets/panda-topics-compact-v436.css?v=436',
@@ -95,12 +95,14 @@ test('v436 offline pack and install service worker include new study metadata wi
  ])assert(offline.files.includes(file),'Missing offline asset '+file);
  for(const c of PANDA_CLIPS)assert(offline.files.some(x=>x.split('?')[0]===c.src),'Missing audio '+c.src);
  const sw=read('sw.js');
- assert(sw.includes('chinese-coach-pwa-v436-all-recordings'));
+ const activeVersion=Number(sw.match(/const CACHE='chinese-coach-pwa-v(\d+)-/)?.[1]);
+ assert.equal(activeVersion,offline.version,'Current SW cache version must match offline pack');
  const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
  for(const file of ['./assets/panda-audio-study-v436.mjs?v=436','./assets/panda-topics-compact-v436.css?v=436'])assert(core.includes(file));
  const art=JSON.parse(sw.match(/const CORE_ART=new Set\((\[[^\n]+\])\)/)[1]);
  const shell=core.filter(p=>!/\.(?:mp3|ogg)(?:\?|$)/i.test(p)&&(!/\.(?:png|jpe?g|webp)(?:\?|$)/i.test(p)||art.includes(p)));
- assert(shell.length<=200,'Keep install shell stable');
+ assert(shell.length<=205,'Keep install shell bounded while retaining all required offline assets');
+ assert.equal(new Set(core).size,core.length,'No duplicate precache requests');
 });
 
 test('all 165 approved recorded phrases are listed with Chinese, pinyin and Russian captions',()=>{
