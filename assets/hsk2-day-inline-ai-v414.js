@@ -29,7 +29,7 @@ async function submit(){
   updateQuestions();
   if(idx>=2){
    message('✓ Два ответа подходят. Тоны не оценивались.',true);
-   el.input.placeholder='Открой полный диалог с Пандой AI';
+   el.input.placeholder=el.root.classList.contains('pg415-ai-screen')?' ':'Открой полный диалог с Пандой AI';
    el.input.disabled=true;
    const send=el.root.querySelector('[data-pg414-send]');if(send)send.disabled=true;
   }else{message('✓ Ответ подходит! Тоны не оценивались. Теперь ответь на второй вопрос.',true)}
