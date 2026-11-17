@@ -91,10 +91,10 @@ test('mobile Panda changes topics after three prompts, while keeping same mascot
 
 test('Panda understands 你有没有 with real HSK1 family grammar and tone-marked pinyin',()=>{
  const questions=[
-  ['你有没有妹妹？','Nǐ yǒu méiyǒu mèimei?','有，我有一个妹妹。'],
-  ['你有没有哥哥？','Nǐ yǒu méiyǒu gēge?','有，我有一个哥哥。'],
-  ['你有没有姐姐？','Nǐ yǒu méiyǒu jiějie?','没有，我没有姐姐。'],
-  ['你有没有弟弟？','Nǐ yǒu méiyǒu dìdi?','没有，我没有弟弟。']
+  ['你有没有妹妹？','Nǐ yǒu méiyǒu mèimei?','我有一个妹妹。'],
+  ['你有没有哥哥？','Nǐ yǒu méiyǒu gēge?','我有一个哥哥。'],
+  ['你有没有姐姐？','Nǐ yǒu méiyǒu jiějie?','我没有姐姐。'],
+  ['你有没有弟弟？','Nǐ yǒu méiyǒu dìdi?','我没有弟弟。']
  ];
  for(const [question,pinyin,reply] of questions){
   const r=answerLive(question,{allowed:[1,4,6],topic:6,curriculum,date});
@@ -102,7 +102,8 @@ test('Panda understands 你有没有 with real HSK1 family grammar and tone-mark
   assert.equal(r.lesson,6);
   assert.equal(r.spoken.pinyin,pinyin);
   assert.equal(r.reply.hanzi,reply);
-  assert.equal(r.reply.audioKey,null,'No fabricated MP3 for new Panda reply');
+  assert(lookupPandaVoiceClip(r.reply.hanzi)?.src,'Reviewed family answer must keep its genuine previously recorded MP3');
+  assert(r.followup?.lesson===6,'Retain approved contextual family follow-up');
   assert.match(lookupPandaVoiceClip(question)?.src||'',/^\.\/assets\/panda-voice-clips-v422\/p16[6-9]\.mp3$/,'New v422 binary audio must activate only for the exact recorded question');
  }
 });
