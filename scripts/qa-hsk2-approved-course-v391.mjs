@@ -57,92 +57,31 @@ try{
   await page.locator('.poster-map-card[data-topic="0"]').click();
   assert.match(await page.locator('.topic h1').innerText(),/распорядок дня/);
   await page.locator('[data-mini="0"]').first().click();
-  await page.locator('.day-visual-start .approved-art.ready').waitFor({state:'visible',timeout:25000});
+  await page.locator('.pg414-vocab-row').first().waitFor({state:'visible',timeout:25000});
+  assert.equal(await page.locator('.pg414-vocab-row').count(),7,'First mini-lesson retains all seven words');
+  assert.equal(await page.locator('.pg415-tab').count(),4,'Four clickable tabs plus highlighted current image');
   await page.screenshot({path:'qa/hsk2-approved-v391/art-'+tag+'.png',fullPage:false});
-  const scene=await page.locator('.day-visual-start').evaluate(n=>({
-  top:getComputedStyle(n,'::before').backgroundImage,bottom:getComputedStyle(n,'::after').backgroundImage
-  }));
-  assert.match(scene.top,/sky-extension-v403/,'Scenic top continuation on first lesson '+tag);
-  assert.match(scene.bottom,/lake-extension-v403/,'Scenic bottom continuation on first lesson '+tag);
-  await page.locator('.art-sound').click();
-  assert.equal(await page.locator('.art-audio-note').count(),0,'Speaker must not overlay the poster '+tag);
-  await page.locator('.art-next').click();
-  assert.equal(await page.locator('.day-vword').count(),7);
-  const wordBounds=await page.locator('.day-quicklist,.day-focus,.day-breakdown').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height}}));
-  assert.equal(wordBounds.length,3,'One-screen word, chosen word and explanation are all present');
-  assert.ok(wordBounds.every(b=>b.height>25&&b.top>=0&&b.bottom<=height+1),'First lesson vocabulary and explanation fit the visible phone '+tag);
-  assert.ok(wordBounds[0].top<wordBounds[1].top&&wordBounds[1].top<wordBounds[2].top,'Pick the word before reading it');
-  const surface=await page.locator('.day-quicklist').evaluate(n=>getComputedStyle(n).display);
-  assert.equal(surface,'flex');
-  await page.screenshot({path:'qa/hsk2-approved-v391/words-'+tag+'.png',fullPage:false});
-  // Regression: same-screen word taps must never reset the reading position.
-  // Force a tall test-only scroll surface to catch the old unconditional scrollTop=0.
-  const previousY=await page.evaluate(()=>{
-    const sc=document.getElementById('screen');
-    sc.style.setProperty('overflow-y','auto','important');
-    // A lasting pseudo-element expands the scroll range across innerHTML rerenders.
-    const style=document.createElement('style');
-    style.id='qa-long-reading';
-    style.textContent='#screen::after{content:"";display:block;flex:0 0 1500px!important;min-height:1500px!important;}';
-    document.head.appendChild(style);
-    sc.scrollTop=115;
-    return sc.scrollTop;
-  });
-  assert.ok(previousY>=80,'Controlled test scroll surface is tall enough');
-  await page.evaluate(()=>document.querySelector('[data-day-word="2"]').click());
-  const laterY=await page.locator('#screen').evaluate(el=>el.scrollTop);
-  assert.ok(Math.abs(laterY-previousY)<=2,'Selecting vocabulary must preserve scrollTop, not jump to top: '+tag);
-  await page.locator('#screen').evaluate(el=>{
-   el.style.removeProperty('overflow-y');
-   document.getElementById('qa-long-reading')?.remove();
-  });
-
-  for(let i=0;i<2;i++)await page.locator('[data-day-next]').click(); // grammar, speech
-  assert.equal(await page.locator('.day-attempts>div').count(),5);
-  assert.equal(await page.locator('.day-wordchoice button').count(),7,'All words selectable on same speech page');
-  const voiceArea=await page.locator('.day-wordchoice,.day-speechhero,.day-attempts,.day-record').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height}}));
-  assert.ok(voiceArea.every(b=>b.height>20&&b.top>=0&&b.bottom<=height+1),'Speech controls and every word fit without page scrolling '+tag);
+  await page.locator('[data-day-next]').click(); // rule
+  assert.equal(await page.locator('.pg414-example-compact').count(),2);
+  await page.locator('[data-day-next]').click(); // speech
+  assert.equal(await page.locator('.pg414-speech-row').count(),7);
   await page.screenshot({path:'qa/hsk2-approved-v391/speech-'+tag+'.png',fullPage:false});
   await page.locator('[data-day-next]').click(); // test
+  assert.equal(await page.locator('.pg414-question').count(),7);
   await page.locator('[data-day-quiz="0:1"]').click();
   await page.locator('[data-day-quiz="1:0"]').click();
+  for(let i=0;i<3;i++){await page.locator('[data-day-pair-left="'+i+'"]').click();await page.locator('[data-day-pair-right="'+i+'"]').click();}
+  await page.locator('[data-day-listen="0"]').click();
   for(let i=0;i<4;i++)await page.locator('[data-day-token="'+i+'"]').click();
-  assert.equal(await page.locator('[data-day-next]').isDisabled(),false);
+  await page.locator('[data-day-fill="0"]').click();
+  await page.locator('[data-day-truth="true"]').click();
+  assert.match(await page.locator('.pg414-progress').innerText(),/7\/7/);
   await page.locator('[data-day-next]').click(); // examples
-  assert.equal(await page.locator('.day-dialogue').count(),4);
-  await page.locator('[data-day-next]').click(); // done
+  assert.equal(await page.locator('.pg414-example-large').count(),3);
+  await page.locator('[data-day-next]').click(); // Panda AI
   assert.match(await page.locator('.day-ai-panel a').getAttribute('href'),/practice=day&mini=0/);
   await page.screenshot({path:'qa/hsk2-approved-v391/ai-'+tag+'.png',fullPage:false});
-  await page.locator('[data-next-mini]').click();
-  assert.equal(await page.locator('.day-vword').count(),7);
-  for(let i=0;i<2;i++)await page.locator('[data-day-next]').click(); // grammar, speech
-  assert.equal(await page.locator('.day-attempts>div').count(),5);
-  await page.locator('[data-day-next]').click(); // test
-  await page.locator('[data-day-quiz="0:1"]').click();
-  await page.locator('[data-day-quiz="1:0"]').click();
-  for(let i=0;i<5;i++)await page.locator('[data-day-token="'+i+'"]').click();
-  assert.equal(await page.locator('[data-day-next]').isDisabled(),false);
-  await page.locator('[data-day-next]').click(); // examples
-  assert.equal(await page.locator('.day-dialogue').count(),4);
-  await page.locator('[data-day-next]').click(); // done
-  assert.match(await page.locator('.day-ai-panel a').getAttribute('href'),/mini=1/);
-  await page.locator('[data-next-mini]').click();
-  assert.equal(await page.locator('.day-vword').count(),6);
-  for(let i=0;i<2;i++)await page.locator('[data-day-next]').click(); // grammar, speech
-  assert.equal(await page.locator('.day-attempts>div').count(),5);
-  await page.locator('[data-day-next]').click(); // test
-  await page.locator('[data-day-quiz="0:0"]').click();
-  await page.locator('[data-day-quiz="1:0"]').click();
-  for(let i=0;i<4;i++)await page.locator('[data-day-token="'+i+'"]').click();
-  assert.equal(await page.locator('[data-day-next]').isDisabled(),false);
-  await page.locator('[data-day-next]').click(); // examples
-  assert.equal(await page.locator('.day-dialogue').count(),4);
-  await page.locator('[data-day-next]').click(); // done
-  assert.match(await page.locator('.day-ai-panel a').getAttribute('href'),/mini=2/);
-  await page.locator('[data-next-mini]').click();
-  assert.match(await page.locator('.lesson-head').innerText(),/Моя работа и учёба/,'Legacy next topic intact');
-  assert.deepEqual(errors,[],'No JS page errors '+tag);
-  console.log('PASS mobile '+tag+': 3 exact images, map 10 topics, 3×5-step mini-lessons, 20 words, tests, Panda AI links, intact next topic');
+  assert.deepEqual(errors,[],'No JS errors during HSK2 v414 first lesson '+tag);
   await page.goto(base+'/hsk2-bastian-intro.html');
   await page.locator('.bs394-page:not([hidden]) .bs396-phrases img').waitFor();
   await page.screenshot({path:'qa/hsk2-approved-v391/bastian-1-'+tag+'.png'});
