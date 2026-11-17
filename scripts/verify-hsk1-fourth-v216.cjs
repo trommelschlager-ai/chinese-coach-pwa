@@ -82,13 +82,11 @@ assert.equal(step(),1,'Old lesson completion should not skip new curriculum');
 assert(d.querySelector('img[src="./assets/lesson4-v269/cover.webp"]'),'Approved raster mascot');
 assert(d.querySelector('.pg4-cover h2')?.textContent.includes('Дни недели'),'Approved intro must introduce weekdays');
 next();assert.equal(step(),2);
-for(const word of ['星期一','星期二','星期三']){
+for(const word of ['星期一','星期二','星期三','星期四','星期五','星期六']){
  click('[data-learn="'+word+'"]');
- assert(d.getElementById('pg3-next').disabled,'Do not skip before all three recordings finish');
+ assert(d.getElementById('pg3-next').disabled,'Do not skip until all six day recordings finish');
  played.at(-1).onended();
 }
-next();assert.equal(step(),3);
-for(const word of ['星期四','星期五','星期六']){click('[data-learn="'+word+'"]');played.at(-1).onended();}
 next();assert.equal(step(),4);
 assert(d.getElementById('pg3-stage').textContent.includes('星期天'));
 assert(d.getElementById('pg3-stage').textContent.includes('星期日'));
