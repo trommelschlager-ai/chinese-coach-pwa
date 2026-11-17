@@ -241,6 +241,43 @@ function submit(raw){
     note('Фраза правильная, но не отвечает на вопрос Панды. Нажми динамик, чтобы ещё раз услышать вопрос. Тоны здесь не оценивались.');
     return;
   }
+  // Reviewed family-topic mismatch: translating a valid learner sentence
+  // isn't the same as answering the currently asked sibling question.
+  // Keep the old question visible without recording a duplicate Panda row.
+  if(result.kind==='clarify'&&result.lesson===6&&result.spoken?.known&&
+     result.message?.startsWith('Ты правильно рассказал о ')&&
+     activePrompt?.lesson===6){
+    state.awaitQuestion=false;
+    state.display=activePrompt;
+    render();
+    const label='✅ '+input+' — '+(result.spoken.translation||'Правильная фраза.')+
+      ' Но вопрос был '+(activePrompt.hanzi||'')+' — '+(activePrompt.ru||'о другом родственнике')+
+      '. Ответь именно на этот вопрос.';
+    const panel=$('learner-feedback');
+    panel.replaceChildren();
+    const explanation=document.createElement('p');
+    explanation.textContent=label;
+    panel.append(explanation);
+    // Opposite statements may be intentional classroom role-play, not
+    // contradictory autobiographical facts. Point out only the contrast.
+    const sibling=normalize(input).match(/(哥哥|姐姐|弟弟|妹妹)$/)?.[1]||null;
+    const polarity=s=>/^没有我没有/.test(normalize(s))?'no':
+      /^有我有/.test(normalize(s))?'yes':null;
+    const currentPolarity=polarity(input);
+    const earlier=sibling&&currentPolarity?state.history.slice(0,-1).reverse().find(row=>
+      row.who==='you'&&normalize(row.hanzi).endsWith(sibling)&&
+      polarity(row.hanzi)&&polarity(row.hanzi)!==currentPolarity):null;
+    if(earlier){
+      const contrast=document.createElement('p');
+      contrast.textContent='Ранее в этом диалоге был противоположный вариант о '+sibling+
+        '. Если тренируешь оба ответа, это нормально — Панда не считает это ошибкой произношения.';
+      panel.append(contrast);
+    }
+    panel.hidden=false;
+    document.documentElement.dataset.feedback='true';
+    note('Фраза понятна, но не отвечает на вопрос о родственнике. Тоны не оценивались.');
+    return;
+  }
   if(result.kind==='empty'){note(result.message);return}
   if(result.kind==='correction'){recordCorrection(input,result.spoken);pose('retry');note(result.message);render();return}
   if(result.reply){
