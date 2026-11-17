@@ -16,8 +16,8 @@ try {
   await page.locator('.pg415-ai-screen').waitFor();
   await page.locator('.pg415-ai-screen .pg415-art').evaluate(async im=>{await im.decode()});
   assert.equal(await page.locator('.pg415-ai-submit').textContent(),'➤','Checkmark should be a send arrow');
-  assert.equal(await page.locator('.pg415-ai-feedback').count(),1,'Keep accessible feedback');
-  const hidden=await page.locator('.pg415-ai-feedback').evaluate(el=>{const r=el.getBoundingClientRect();return r.width<=2&&r.height<=2});
+  assert.equal(await page.locator('#pg414-ai-feedback.pg419-sr-status').count(),1,'Keep accessible feedback');
+  const hidden=await page.locator('#pg414-ai-feedback').evaluate(el=>{const r=el.getBoundingClientRect();return r.width<=2&&r.height<=2});
   assert.ok(hidden,'Redundant beige feedback strip must not be visible');
   await page.screenshot({path:'qa/panda-hsk2-back-v419/'+tag+'-01-panda-sixth-screen.png',fullPage:false});
 
