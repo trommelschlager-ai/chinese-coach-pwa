@@ -37,8 +37,8 @@ function assertStage(index){
 }
 function fullQuiz(mini){
  const src=w.PandaGoDayModulesV391[mini],fill=[0,1,1][mini],truth=[true,true,false][mini];
- click('[data-day-quiz-0="'+src.quiz[0].answer+'"]');
- click('[data-day-quiz-1="'+src.quiz[1].answer+'"]');
+ click('[data-day-quiz="0:'+src.quiz[0].answer+'"]');
+ click('[data-day-quiz="1:'+src.quiz[1].answer+'"]');
  for(let i=0;i<3;i++){click('[data-day-pair-left="'+i+'"]');click('[data-day-pair-right="'+i+'"]')}
  click('[data-day-listen="0"]');
  for(let i=0;i<src.builder.length;i++)click('[data-day-token="'+i+'"]');
