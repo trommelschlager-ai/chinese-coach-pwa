@@ -53,7 +53,7 @@ function vocabulary(state,ctx){
  let out='';
  for(let i=0;i<7;i++){
   out+='<span class="pg414-vocab-row pg415-vocab-audio" style="'+at(777,audioY[i]-51,109,105)+'" aria-label="'+esc(words[i])+'">'+
-    '<span class="pg414-pinyin">'+(state.showPy?py[i]:'')+'</span>'+ctx.sound(words[i])+'</span>';
+    (state.showPy?'<span class="pg414-pinyin">'+py[i]+'</span>':'')+ctx.sound(words[i])+'</span>';
   if(!state.showPy)out+='<span class="pg415-py-mask" style="'+at(509,audioY[i]-41,246,48)+'"></span>';
  }
  out+=press(750,18,185,92,'data-day-pinyin','Показать или скрыть пиньинь','pg415-py-switch');
@@ -80,9 +80,8 @@ function speech(state,ctx){
  if(mastered)out+='<span class="pg415-score" style="'+at(745,478,110,59)+'">'+mastered+'/7</span>';
  for(let i=0;i<7;i++){
   const y=speechY[i],attempts=d.attempts[i],last=attempts[attempts.length-1];
-  out+='<span class="pg414-speech-row pg415-speech-overlay" style="'+at(502,y-48,200,94)+'">'+
-     '<span class="pg415-voicebutton" style="left:0;width:43%">'+ctx.sound(words[i])+'</span>'+
-     press(89,0,104,94,'data-day-speech-mic="'+i+'"','Произнеси '+words[i],'pg415-mic-overlay')+'</span>';
+  out+='<span class="pg414-speech-row pg415-speech-overlay" style="'+at(505,y-48,78,95)+'">'+ctx.sound(words[i])+'</span>'+
+     press(594,y-48,108,95,'data-day-speech-mic="'+i+'"','Произнеси '+words[i],'pg415-mic-overlay');
   if(last){
    out+='<span class="pg415-rec-status '+(last.match?'good':'bad')+'" style="'+at(708,y-40,180,83)+'">'+
    (last.match?'✓ Распознано':'× Повтори ещё')+'</span>';
@@ -128,8 +127,8 @@ function next(state,api){
  if(state.mini!==0)return original.next(state,api);
  if(state.stage===3&&!original.ready(state))return;
  const n=state.stage;
+ if(n<4)ensureDay(state).v414.highest=Math.max(state.day.v414.highest,n+1);
  original.next(state,api);
- if(state.stage>n&&state.day){ensureDay(state).v414.highest=Math.max(state.day.v414.highest,state.stage)}
 }
 function handle(button,state,api){
  if(state.mini!==0)return original.handle(button,state,api);
@@ -144,7 +143,7 @@ function handle(button,state,api){
 }
 function renderAI(state,sound,link){
  const a=root+'06-panda-ai.webp',mini=state.mini;
- const showSound=(x,y,w,h,zh)=>'<span class="pg415-hit pg415-audio" style="'+at(x,y,w,h)+'">'+sound(zh)+'</span>';
+ const showSound=(x,y,w,h,zh)=>'<span class="pg415-hit pg415-audio pg415-bubble-audio" style="position:absolute;left:2%;top:5%;width:17%;height:43%">'+sound(zh)+'</span>';
  return '<section class="done pg414-ai pg415-ai-screen" data-mini="'+mini+'">'+
  '<div class="pg415-graphic">'+
  '<img class="pg415-art" src="'+a+'" width="941" height="1672" alt="Panda Go AI — утверждённый фиолетово-золотой экран практики речи" draggable="false" decoding="async">'+
@@ -152,7 +151,7 @@ function renderAI(state,sound,link){
  '<span class="pg414-ai-question pg415-ai-bubble" style="'+at(335,689,565,254)+'" aria-label="Второй вопрос: что делаешь утром?">'+showSound(20,20,125,118,'你早上做什么？')+'</span>'+
  '<div class="pg414-ai-answer pg415-ai-answer" style="'+at(32,1045,870,142)+'">'+
   '<label class="pg415-sr-only" for="pg414-ai-input">Напиши ответ на китайском языке</label>'+
-  '<input id="pg414-ai-input" type="text" lang="zh-CN" inputmode="text" autocomplete="off" placeholder="Скажи по-китайски…">'+
+  '<input id="pg414-ai-input" type="text" lang="zh-CN" inputmode="text" autocomplete="off" placeholder=" ">'+
   '<button class="pg415-ai-submit" type="button" data-pg414-send aria-label="Проверить ответ">✓</button></div>'+
  '<button class="pg415-hit pg415-ai-microphone" style="'+at(335,1194,207,212)+'" type="button" data-pg414-mic aria-label="Начать голосовой ответ"></button>'+
  '<span class="pg415-hit pg415-audio pg415-listen" style="'+at(570,1267,312,111)+'">'+sound('你几点起床？')+'</span>'+
