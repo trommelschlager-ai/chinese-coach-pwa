@@ -1,0 +1,34 @@
+name: Panda Teacher v445 compact correction UI
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'assets/panda-live-v346.mjs'
+      - 'assets/panda-chat-corrections-v377.css'
+      - 'tests/panda-teacher-compact-v445.test.mjs'
+      - 'tests/panda-error-coach-v441.test.mjs'
+      - 'panda-voice-pilot.html'
+      - 'sw.js'
+      - 'assets/offline-pack.json'
+      - '.github/workflows/panda-teacher-compact-v445.yml'
+  pull_request:
+    paths:
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'assets/panda-live-v346.mjs'
+      - 'assets/panda-chat-corrections-v377.css'
+      - 'tests/panda-teacher-compact-v445.test.mjs'
+jobs:
+  compact-teacher:
+    name: Android-like short explanations and separate correction examples
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install existing test dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify 17 Panda teacher logic, history and version regressions
+        run: node --test tests/panda-error-coach-v441.test.mjs tests/panda-teacher-compact-v445.test.mjs
