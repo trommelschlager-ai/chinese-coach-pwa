@@ -60,11 +60,23 @@ try{
   await page.locator('.pg414-vocab-row').first().waitFor({state:'visible',timeout:25000});
   assert.equal(await page.locator('.pg414-vocab-row').count(),7,'First mini-lesson retains all seven words');
   assert.equal(await page.locator('.pg415-tab').count(),4,'Four clickable tabs plus highlighted current image');
+  // Never accept a blank purple screenshot as a design pass.
+  await page.locator('.pg415-art').first().evaluate(async img=>{
+    await img.decode();
+    if(img.naturalWidth!==941||img.naturalHeight!==1672)throw Error('Approved original artwork not loaded');
+    await new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done)));
+  });
   await page.screenshot({path:'qa/hsk2-approved-v391/art-'+tag+'.png',fullPage:false});
   await page.locator('[data-day-next]').click(); // rule
   assert.equal(await page.locator('.pg414-example-compact').count(),2);
   await page.locator('[data-day-next]').click(); // speech
   assert.equal(await page.locator('.pg414-speech-row').count(),7);
+  // Never accept a blank purple screenshot as a design pass.
+  await page.locator('.pg415-art').first().evaluate(async img=>{
+    await img.decode();
+    if(img.naturalWidth!==941||img.naturalHeight!==1672)throw Error('Approved original artwork not loaded');
+    await new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done)));
+  });
   await page.screenshot({path:'qa/hsk2-approved-v391/speech-'+tag+'.png',fullPage:false});
   await page.locator('[data-day-next]').click(); // test
   assert.equal(await page.locator('.pg414-question').count(),7);
@@ -80,6 +92,12 @@ try{
   assert.equal(await page.locator('.pg414-example-large').count(),3);
   await page.locator('[data-day-next]').click(); // Panda AI
   assert.match(await page.locator('.day-ai-panel a').getAttribute('href'),/practice=day&mini=0/);
+  // Never accept a blank purple screenshot as a design pass.
+  await page.locator('.pg415-art').first().evaluate(async img=>{
+    await img.decode();
+    if(img.naturalWidth!==941||img.naturalHeight!==1672)throw Error('Approved original artwork not loaded');
+    await new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done)));
+  });
   await page.screenshot({path:'qa/hsk2-approved-v391/ai-'+tag+'.png',fullPage:false});
   assert.deepEqual(errors,[],'No JS errors during HSK2 v414 first lesson '+tag);
   await page.goto(base+'/hsk2-bastian-intro.html');
