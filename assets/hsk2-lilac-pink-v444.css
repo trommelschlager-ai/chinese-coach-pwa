@@ -1,0 +1,135 @@
+/* Panda Go HSK2 v444 – approved soft lilac/rose treatment for INNER lessons ONLY.
+ * Never repaint home, Panda image, first-lesson poster, or existing speech/quiz states.
+ * This file loads LAST to override the old cream/coral surface colors.
+ */
+#app.day-lesson-active:has(#pg433),
+#app.day-done-active:has(#pg433),
+#app:has(#pg433)>#screen {
+  background:#f9e9f9!important;
+}
+#app #pg433.pg433-root {
+  background:linear-gradient(180deg,#f9edff 0%,#faedfa 45%,#fff4fc 100%)!important;
+  color:#52294f!important;
+  border-color:#dda9d7!important;
+  box-shadow:inset 0 0 0 1px #fffaff!important;
+}
+#app #pg433 .pg433-header {
+  background:linear-gradient(175deg,#fff2fcf7,#f8e4f9ed)!important;
+  border-bottom:1px solid #e2b8df!important;
+}
+#app #pg433 .pg433-title small{color:#935792!important}
+#app #pg433 .pg433-title strong{color:#7c327e!important}
+#app #pg433 .pg433-pill{
+  color:#793b80!important;background:#f9e3fb!important;
+  border-color:#dfb2e5!important;box-shadow:0 2px 6px #ac79b234!important;
+}
+#app #pg433 .pg433-back{
+  color:#763679!important;background:linear-gradient(#fff8ff,#f7e3f8)!important;
+  border-color:#e0b4e4!important;box-shadow:0 2px 5px #b88dba3f!important;
+}
+#app #pg433 .pg433-tabs button:not(.active){
+  color:#6c536e!important;
+  border:1px solid #dfc1df!important;border-bottom:3px solid #d8b2d9!important;
+  background:linear-gradient(180deg,#fffafd,#f4e5f7)!important;
+  box-shadow:0 2px 4px #b695b649!important;
+}
+#app #pg433 .pg433-tabs button.active{
+  background:linear-gradient(180deg,#ee9bd2,#c45fa9)!important;
+  border:1px solid #ad58a3!important;border-bottom:3px solid #863c87!important;
+  box-shadow:0 3px 7px #a66ba25e!important;
+  color:#fff!important;
+}
+#app #pg433 .pg433-content {
+  background:linear-gradient(180deg,#fbf1ff,#f9ecf9 65%,#fff2fc)!important;
+  scrollbar-color:#d6a2d7 transparent!important;
+}
+#app #pg433 .pg433-content>h2,#app #pg433 .pg433-panel h3{
+  color:#8e3584!important;
+}
+#app #pg433 .pg433-hint{color:#796378!important}
+#app #pg433 .pg433-wordrow,
+#app #pg433 .pg433-panel,
+#app #pg433 .pg433-sentence,
+#app #pg433 .pg433-speechrow,
+#app #pg433 .pg433-chars>div,
+#app #pg433 .pg433-chips>div {
+  background:linear-gradient(150deg,#fffaff,#fbedf9)!important;
+  border-color:#e6c5e1!important;
+  box-shadow:0 3px 10px #b77fa930!important;
+}
+#app #pg433 .pg433-hanzi,#app #pg433 .pg433-wordmain .pg433-hanzi,
+#app #pg433 .pg433-chars b{
+  color:#4f2856!important;
+}
+#app #pg433 .pg433-py,#app #pg433 .pg433-wordmain .pg433-py,
+#app #pg433 .pg433-chars span{color:#9b5aa2!important}
+#app #pg433 .pg433-note{
+  background:#f6e8fc!important;border-color:#e3bde8!important;
+  color:#6c4375!important;
+}
+#app #pg433 .pg433-num,#app #pg433 .pg433-map-no {
+  background:linear-gradient(140deg,#f5a3cf,#cd62b0)!important;
+  box-shadow:0 2px 4px #ae81b662!important;
+}
+#app #pg433 .pg433-option,
+#app #pg433 .pg433-pairs button{
+  background:#fffaff!important;color:#593360!important;
+  border-color:#dfbede!important;box-shadow:0 2px 4px #b98fba49!important;
+}
+/* Preserve green correct and red incorrect indications in quizzes. */
+#app #pg433 .pg433-option.correct{background:#e0f0d5!important;border-color:#92be88!important;color:#2b693d!important}
+#app #pg433 .pg433-option.wrong{background:#ffe4e5!important;border-color:#e89f9d!important;color:#ac3b56!important}
+#app #pg433 .pg433-bubble,
+#app #pg433 .pg433-chat.left .pg433-bubble {background:#f1e7fc!important;border-color:#ddc3eb!important}
+#app #pg433 .pg433-chat.right .pg433-bubble{background:#fce8f5!important;border-color:#eec5dd!important}
+#app #pg433 .pg433-avatar{background:#f9e9fa!important;border-color:#debfe0!important}
+#app #pg433 .pg433-footer{
+  background:linear-gradient(180deg,#fff0fbea,#f6e2f6ef)!important;
+  border-top:1px solid #dfb3dd!important;
+}
+#app #pg433 .pg433-secondary{
+  color:#79467f!important;background:linear-gradient(180deg,#fff9ff,#f1daf8)!important;
+  border-color:#d9acd8!important;
+  box-shadow:0 3px 0 #cca3d0,0 5px 9px #9e73a54d!important;
+}
+#app #pg433 .pg433-primary,
+#app #pg433 .pg441-send{
+  background:linear-gradient(180deg,#f78dcd,#c64daa)!important;
+  border-color:#b741a0!important;color:#fff!important;
+  box-shadow:0 3px 0 #8d327c,0 6px 11px #a677a65c!important;
+}
+#app #pg433 .pg433-counter{color:#995792!important}
+#app #pg433 .pg433-sound button,
+#app #pg433 .pg433-mic,
+#app #pg433 .pg441-play {
+  background:linear-gradient(180deg,#e7a2eb,#b64bc4)!important;
+  border-color:#e9b5f1!important;
+  color:white!important;
+}
+#app #pg433 .pg433-sound .hsk2-no-mp3 {
+  background:#f2e8f3!important;color:#866a88!important;
+  border-color:#dac4df!important;
+}
+#app #pg433 .pg441-wrap{
+  background:linear-gradient(155deg,#fff8ff,#f6e8fb)!important;
+  border-color:#e5bde6!important;
+}
+#app #pg433 .pg441-toggle{
+  background:linear-gradient(145deg,#fff6fe,#f1def8)!important;
+  border-color:#e1b7e1!important;color:#833984!important;
+  box-shadow:0 3px 0 #d9aedb!important;
+}
+#app #pg433 .pg441-steps li{
+  background:#fffaff!important;border-color:#e8c7e9!important;
+}
+#app #pg433 .pg441-presets button.active{
+  background:linear-gradient(145deg,#f2a5db,#be5db3)!important;
+  border-color:#b35ca6!important;box-shadow:0 2px 0 #8c4081!important;
+}
+#app #pg433 .pg441-bubble.panda{background:#f0e9fb!important;border-color:#d9c2e7!important}
+#app #pg433 .pg441-bubble.student{background:#ffedf9!important;border-color:#e8c8e5!important}
+#app #pg433 .pg441-suggestions button{background:#fff6fd!important;color:#6c366b!important;border-color:#e5bfe4!important}
+#app #pg433 .pg441-feedback{background:#f8ebfb!important;color:#693c70!important;border-color:#e0bce7!important}
+/* Decoration is a layer BEHIND content; do not change branch artwork or card positions. */
+#app #pg433 .pg433-edge-sakura{pointer-events:none!important}
+@media (prefers-reduced-motion:reduce){#app #pg433 *{scroll-behavior:auto!important}}

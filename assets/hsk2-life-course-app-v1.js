@@ -473,6 +473,7 @@ try {
  var params=new URLSearchParams(window.location.search);
  if(params.get('start')==='1') {state.view='lesson';state.topic=0;state.mini=0;state.stage=0;state.day=dayUI?dayUI.makeState(0):null;}
  if(params.get('view')==='map')state.view='map';
+ if(params.get('view')==='welcome')state.view='welcome';
  // Panda AI -> the exact mini-lesson completion screen the student left.
  // Query values are fixed and validated; other courses keep their own routing.
  if(params.get('return')==='done'&&params.get('from')==='hsk2-life-course'){

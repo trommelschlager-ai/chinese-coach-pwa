@@ -93,7 +93,7 @@ function home(){
  // v319: the approved original is shown unchanged; links are HTML hotspots.
  const levels=[
  {n:1,name:'Начальный уровень',description:'HSK 1 · Китайский с нуля',url:'./hsk1-map.html'},
- {n:2,name:'Продолжающий уровень',description:'HSK 2 · Знакомство и разговор',url:'./hsk2-life-course.html?view=map'}
+ {n:2,name:'Продолжающий уровень',description:'HSK 2 · Знакомство и разговор',url:'./hsk2-life-course.html?view=welcome'}
  ];
  const artwork='<div class="pg-photo1-stage"><div class="pg-hsk-backdrop">'+
  '<img class="pg-photo1-image" src="./assets/panda-home-approved-photo1-v319.jpg" width="864" height="1536" alt="Panda Go: оригинальная Панда с наушниками, сакура, пагода, две кнопки уровней и мост над озером" fetchpriority="high" decoding="async" draggable="false">'+

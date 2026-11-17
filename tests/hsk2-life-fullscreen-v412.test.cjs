@@ -13,13 +13,15 @@ const html=fs.readFileSync(path.join(root,'hsk2-life-course.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'assets/hsk2-life-welcome-v412.css'),'utf8');
 const app=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'utf8');
 assert(html.includes('hsk2-life-welcome-v412.css?v=412'));
-assert(html.includes('hsk2-life-course-app-v1.js?v=442'));
+assert(html.includes('hsk2-life-course-app-v1.js?v=444'));
 assert(html.includes('hsk2-responsive-v439.css?v=439'));
 assert(html.includes('hsk2-viewport-v440.css?v=440'),'The v440 proportional artwork must still be loaded');
 assert(html.includes('hsk2-day-upgrades-v441.js?v=443'),'New lesson chat must load');
 assert(html.includes('hsk2-day-upgrades-v441.css?v=441'),'Approved coral styling is extended');
 assert(app.includes('pg441DialogHistory')&&app.includes('pg441TimelineOpen'),'Guided chat and timeline must persist');
 
+assert(html.includes('hsk2-lilac-pink-v444.css?v=444'),'HSK2 learner has lilac/pink lesson palette');
+assert(app.includes("params.get('view')==='welcome'"),'HSK2 can enter approved welcome directly');
 const v440css=fs.readFileSync(path.join(root,'assets/hsk2-viewport-v440.css'),'utf8');
 const artCover=v440css.match(/width:max\(100%,56\.25dvh\)!important/g)||[];
 assert(artCover.length>=2,'Both approved covers must use proportional fullscreen fitting');
