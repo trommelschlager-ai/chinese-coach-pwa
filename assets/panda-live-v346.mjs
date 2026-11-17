@@ -297,12 +297,19 @@ if (!bridge) {
     const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable;$('#pg357-audio-note').hidden=!!s.audioAvailable}
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
     renderFeedback(s);renderTopics(s);
-    const warning=$('#pg346-status'),problem=/(микрофон|распознаван|распознано|неуверенно|исправь текст|разреши|доступ|Chrome|запись не|запись пока|звуковой файл|браузер.*звук|mp3|фрагмент)/i.test(s.status||'');
+    // The lesson already marks unrecorded phrases on their speech card.
+    // An informational “no exact MP3 yet” is NOT a microphone failure and
+    // must not open a giant status panel or an unrelated microphone-help button.
+    const warning=$('#pg346-status'),statusText=String(s.status||'');
+    const noExactClip=/(?:нет точной|для этой фразы нет|точной MP3-записи.{0,50}(?:пока )?нет|без точной MP3-записи)/i.test(statusText);
+    const micFailure=/(?:не удалось распозн|не распознана|распознавание завершилось без|не получил[ао]? звук|не подключил.*(?:микрофон|распознав)|доступ к микрофону|разреши микрофон|служба распознавания.*недоступна)/i.test(statusText);
+    const otherProblem=/(?:исправь текст|неуверенно|аудио не загрузилось|загрузка аудио задерживается|браузер не включил звук|звуковой файл|ошибка воспроизведения)/i.test(statusText);
+    const problem=!noExactClip&&(micFailure||otherProblem);
     const needsMicHelp=!!micRecovery&&!micRecovery.hidden;
     warning.hidden=!problem;
-    warning.textContent=problem?s.status:'';
-    if(problem&&needsMicHelp)warning.append(micHelpBtn);
-    if(!needsMicHelp&&micHelp.open)micHelp.close();
+    warning.textContent=problem?statusText:'';
+    if(problem&&micFailure&&needsMicHelp)warning.append(micHelpBtn);
+    if((!needsMicHelp||!micFailure)&&micHelp.open)micHelp.close();
     const live=$('#pg346-live');const showingAssessment=Date.now()<assessmentUntil;
     live.classList.toggle('pg352-assessment',!s.active&&!pandaSpeaking&&showingAssessment);
     live.dataset.active=String(s.active||pandaSpeaking||showingAssessment);
