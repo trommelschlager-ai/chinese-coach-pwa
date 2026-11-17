@@ -26,6 +26,7 @@ on:
       - 'assets/panda-hsk2-*'
       - 'tests/panda-hsk2-day-chat-v1.test.mjs'
       - 'assets/panda-nonstop-*'
+      - 'tests/panda-nonstop-*'
       - 'sw.js'
       - 'tests/panda-live-*'
       - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
@@ -56,6 +57,7 @@ on:
       - 'assets/panda-brain-*'
       - 'assets/panda-hsk2-*'
       - 'assets/panda-nonstop-*'
+      - 'tests/panda-nonstop-*'
       - 'sw.js'
       - 'tests/panda-live-*'
       - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
@@ -217,3 +219,17 @@ jobs:
           node-version: '22'
       - name: Validate user MP3 SHA-256 and exact Panda voice mapping
         run: node --test tests/panda-voice-v411-assets.test.mjs
+
+  nonstop-topic-continuity-v425:
+    name: Voiced Non-Stop family and availability transitions
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install existing test dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Prevent repeated and off-topic voice questions on Android-sized Non-Stop
+        run: node --test tests/panda-nonstop-continuity-v425.test.mjs
