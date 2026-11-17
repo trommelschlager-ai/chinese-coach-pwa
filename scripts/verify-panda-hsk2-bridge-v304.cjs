@@ -92,7 +92,7 @@ const vm=require('node:vm');
  const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
  for(const p of [
   './assets/panda-hsk2-bridge-v304.mjs?v=307',
-  './assets/panda-live-dialogue-v272.mjs?v=424',
+  './assets/panda-live-dialogue-v272.mjs?v=428',
   './assets/panda-live-screen-v270.mjs?v=426',
   './assets/panda-hsk1-questions-v281.mjs?v=319',
   './panda-voice-pilot.html?v=326'
