@@ -19,7 +19,7 @@ import {interpretWorkReply,addPersonalFollowup} from './panda-context-flow-v376.
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
 import {isCalendarRoundFinished} from './panda-calendar-literal-v383.mjs?v=405';
 import {coherentPandaFollowup} from './panda-nonstop-continuity-v425.mjs?v=425';
-import {continueFamilyAfterAnswer} from './panda-family-turn-v426.mjs?v=426';
+import {continueFamilyAfterAnswer} from './panda-family-turn-v426.mjs?v=427';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
