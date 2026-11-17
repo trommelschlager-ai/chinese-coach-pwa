@@ -1,5 +1,5 @@
 {
-  "version": 445,
+  "version": 446,
   "bytes": 65958727,
   "files": [
     "./assets/panda-character-clean-v349.webp",
@@ -2975,6 +2975,7 @@
     "./assets/hsk2-lesson1-three-page-v418.css?v=418",
     "./assets/hsk2-panda-return-chat-v419.css?v=419",
     "./assets/panda-live-screen-v270.mjs?v=445",
+    "./assets/panda-grammar-hsk12-v1.mjs?v=1",
     "./assets/panda-live-v346.mjs?v=445",
     "./assets/hsk2-panda-chat-clean-v420.css?v=420",
     "./assets/panda-voice-v411.mjs?v=411",
