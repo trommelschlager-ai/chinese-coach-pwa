@@ -1,5 +1,5 @@
 {
-  "version": 416,
+  "version": 417,
   "bytes": 64679587,
   "files": [
     "./assets/panda-character-clean-v349.webp",
@@ -2974,6 +2974,7 @@
     "./assets/hsk1-headers-v421.css?v=421",
     "./assets/hsk1-controls-v421.css?v=421",
     "./assets/hsk1-controls-v421.js?v=421",
-    "./assets/hsk1-fourth-v220.js?v=421"
+    "./assets/hsk1-fourth-v220.js?v=421",
+    "./assets/pandago-art-touch-feedback-v395.js?v=417"
   ]
 }
