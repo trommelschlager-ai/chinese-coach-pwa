@@ -35,12 +35,30 @@ try{
    if(info.art){
       assert.ok(info.art.width>size.width*.85,'Original illustration fills device width '+name);
       assert.equal(info.sourceWidth,941,'Approved original resolution preserved '+name);
+      assert.ok(info.art.height>=size.height-3,
+       'The full original drawing AND its touch zones must occupy the phone height '+name+' '+JSON.stringify(info));
+      assert.ok(info.art.width>=size.width-3,
+       'Approved illustration must occupy the full device width '+name+' '+JSON.stringify(info));
    }else assert.ok(info.panel&&info.panel.width>size.width*.85,'Content panel fills width '+name);
       console.log('METRICS '+name+' '+tag+' '+JSON.stringify(info));
    await page.screenshot({path:'qa/hsk2-v414-six-screens/'+tag+'-'+name+'.png',fullPage:false});
   };
   assert.equal(await page.locator('.pg414-vocab-row').count(),7);
   await scan('01-words');
+  // Do not autoplay the low-quality Android synthetic voice when the exact MP3
+  // is missing. Clicking the original speaker should give an honest message,
+  // without replacing the drawing or moving its scroll container.
+  const robotClicks=await page.evaluate(()=>{
+   window.__pg416SpeechCalls=0;
+   if(window.speechSynthesis)window.speechSynthesis.speak=()=>{window.__pg416SpeechCalls++};
+   return window.__pg416SpeechCalls;
+  });
+  assert.equal(robotClicks,0);
+  await page.locator('.pg415-vocab-audio [data-missing-sound]').first().evaluate(el=>el.click());
+  assert.match(await page.locator('#message').innerText(),/пока нет проверенной MP3-записи/);
+  assert.equal(await page.evaluate(()=>window.__pg416SpeechCalls),0,'Robotic voice must not be played');
+  // The toast is overlaid and must never shrink the illustration.
+  assert.ok(await page.locator('.pg415-graphic').evaluate(el=>el.getBoundingClientRect().height>=innerHeight-3));
   const wordBounds=await page.locator('.pg414-vocab-row').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().bottom));
   assert.ok(Math.max(...wordBounds)<size.height-60,'All seven words above fixed footer on '+tag+' '+JSON.stringify(wordBounds));
   await page.locator('[data-day-next]').click();
@@ -54,6 +72,18 @@ try{
   await page.locator('.pg414-test').waitFor();
   assert.equal(await page.locator('.pg414-question').count(),7);
   await scan('04-test');
+  const exam=page.locator('.pg415-live-test');
+  assert.equal(await exam.count(),1,'The seven-question test must have its own scroll container');
+  await exam.evaluate(el=>{el.scrollTop=Math.min(220,el.scrollHeight-el.clientHeight)});
+  const before=await exam.evaluate(el=>el.scrollTop);
+  assert.ok(before>50,'Test has enough content to demonstrate scrolling '+tag);
+  await page.locator('[data-day-quiz="0:1"]').evaluate(el=>el.click());
+  await page.waitForTimeout(80);
+  const after=await exam.evaluate(el=>el.scrollTop);
+  assert.ok(Math.abs(after-before)<=3,'No scrolling back to top after choosing answer '+tag+' before='+before+' after='+after);
+  await page.locator('[data-day-pair-left="0"]').evaluate(el=>el.click());
+  await page.waitForTimeout(60);
+  assert.ok(Math.abs((await exam.evaluate(el=>el.scrollTop))-before)<=3,'Matching pairs must retain the reading position '+tag);
   await page.locator('[data-day-quiz="0:1"]').click();
   await page.locator('[data-day-quiz="1:0"]').click();
   for(let i=0;i<3;i++){
