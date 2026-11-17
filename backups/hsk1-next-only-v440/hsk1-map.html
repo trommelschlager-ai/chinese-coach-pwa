@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#a044b0">
+<meta name="panda-go-approved-map" content="v373-exact-approved-art">
+<meta name="panda-go-mobile-fix" content="v437-detached-whole-card-press">
+<title>Panda Go · HSK 1 · Начальный уровень</title>
+<link rel="preload" href="./assets/hsk1-approved-v373.png" as="image" type="image/png">
+<style>
+:root{color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100dvh;overflow:hidden;font-family:Arial,system-ui,sans-serif;background:linear-gradient(180deg,#a854c8 0%,#8b5bdd 18%,#5e73e8 46%,#2f72d8 74%,#1561c5 100%)}
+body{display:grid;place-items:center;position:relative}
+/* One approved bitmap only. On portrait Android, fill the complete viewport;
+   hotspots stay in the SAME coordinate space as the bitmap. No cloned gutters. */
+.artboard{position:relative;isolation:isolate;width:min(100vw,45.1768dvh);height:min(100dvh,221.3523vw);overflow:hidden;margin:auto;touch-action:manipulation;background:#6447ab;box-shadow:0 0 10px #26063750;z-index:1}
+@media(orientation:portrait) and (min-aspect-ratio:37/100) and (max-aspect-ratio:69/100){
+ html,body{width:100vw;max-width:100vw;height:100dvh;overflow:hidden}
+ body{display:block}
+ .artboard{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;box-shadow:none}
+}
+.approved{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.hotspots{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hotspots a{pointer-events:auto;position:absolute;display:block;text-decoration:none;cursor:pointer;background:transparent;outline-offset:2px;-webkit-tap-highlight-color:transparent}
+.hotspots a:focus-visible{outline:3px solid white;border-radius:22px;box-shadow:0 0 0 5px #ba2dcd}
+.lesson{left:var(--x);top:var(--y);width:var(--w);height:var(--h);border-radius:999px}
+.lesson.locked{cursor:not-allowed}
+.lesson .gate{position:absolute;right:var(--gate-right,8%);top:var(--gate-top,50%);transform:translateY(-50%);width:15%;aspect-ratio:1;border:2px solid #ffec7d;border-radius:50%;display:none;place-items:center;color:#134d29;background:linear-gradient(150deg,#f8ffca 0%,#74e587 36%,#24b65b 76%,#087b45 100%);font:700 clamp(14px,3.7vw,22px)/1 Arial,system-ui,sans-serif;text-shadow:0 1px 1px #fff9;box-shadow:0 6px 13px rgba(36,5,70,.38),0 2px 5px rgba(29,6,58,.25),inset 0 1px 5px #fff;z-index:3}
+.lesson.done:not([data-num="1"]) .gate,.lesson.current:not([data-num="1"]) .gate{display:grid}
+.lesson.current .gate{background:linear-gradient(145deg,#fffcc8 0%,#ffe481 42%,#e9ac29 100%);color:#6d4602}
+.lesson[data-num="2"] .gate{--gate-right:8.5%;--gate-top:47%}
+.lesson[data-num="3"] .gate{--gate-right:6.7%;--gate-top:47%}
+.lesson[data-num="4"] .gate{--gate-right:8%;--gate-top:48%}
+.lesson[data-num="5"] .gate{--gate-right:8%;--gate-top:48%}
+.lesson[data-num="6"] .gate{--gate-right:7%;--gate-top:48%}
+.lesson[data-num="7"] .gate{--gate-right:5.3%;--gate-top:48%}
+.top-link{top:4.6%;height:6.9%;width:14%;border-radius:18px}
+.top-link.back{left:1%}.top-link.write{right:1%}
+.footer-link{top:83.6%;height:8.2%;border-radius:24px}
+.footer-link.rhythm{left:1%;width:33%}.footer-link.trainer{left:34.1%;width:32%}.footer-link.ai{left:66.3%;width:32.7%}
+.toast{position:absolute;z-index:10;left:7%;right:7%;top:21%;padding:11px 15px;text-align:center;color:white;border:2px solid #ffe189;border-radius:15px;background:#4b156ce9;font:700 clamp(11px,2.9vw,15px)/1.35 Arial,sans-serif;box-shadow:0 5px 18px #290c5588}
+.toast[hidden]{display:none!important}
+@media (max-height:650px){.toast{top:17%}}
+.approved{filter:contrast(1.075) saturate(1.055) brightness(1.01)}
+</style>
+<link rel="stylesheet" href="./assets/panda-mobile-v394.css?v=394"><link rel="stylesheet" href="./assets/hsk1-map-press-v437.css?v=437">
+<script defer src="./assets/hsk1-press-v437.js?v=437"></script>
+</head>
+<body data-pg-hsk1-map>
+<main class="artboard" aria-label="Panda Go — уроки HSK 1">
+<svg class="approved" viewBox="0 0 694 1536" preserveAspectRatio="none" aria-hidden="true"><defs><image id="pg-map-source" href="./assets/hsk1-approved-v373.png" width="694" height="1536"/><mask id="pg-map-background" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><rect width="694" height="1536" fill="white"/><path d="M230 421 Q233 407 260 399 Q268 377 291 384 Q311 383 319 398 Q400 404 499 383 Q571 379 621 401 Q652 411 649 447 Q647 474 618 482 Q542 494 453 489 Q365 485 285 501 Q250 505 236 490 Q223 478 229 458 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/><path d="M233 524 Q242 510 265 508 Q271 491 289 493 Q313 493 324 507 Q407 514 515 491 Q585 479 628 501 Q663 519 657 556 Q652 584 622 595 Q548 613 451 604 Q349 592 272 612 Q237 619 229 597 Q227 571 240 552 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/><path d="M229 639 Q235 624 265 619 Q273 603 294 605 Q318 605 328 620 Q424 621 525 603 Q604 595 640 621 Q662 638 651 672 Q646 694 619 705 Q555 732 455 722 Q347 704 276 735 Q240 748 230 728 Q225 693 237 668 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/><path d="M247 753 Q255 737 277 733 Q284 714 304 716 Q328 717 339 733 Q434 736 529 715 Q602 702 639 729 Q665 752 648 784 Q638 807 612 816 Q533 838 447 829 Q350 812 286 834 Q250 842 246 820 Q243 800 254 781 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/><path d="M268 859 Q275 844 295 839 Q302 820 323 821 Q345 821 355 837 Q440 839 530 820 Q600 809 635 831 Q665 851 655 883 Q650 909 625 918 Q543 939 452 929 Q371 918 301 940 Q271 945 265 925 Q263 905 275 886 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/><path d="M266 959 Q275 946 295 944 Q302 927 324 926 Q347 926 359 945 Q438 943 529 925 Q598 911 633 935 Q662 954 655 982 Q651 1012 623 1023 Q544 1046 456 1034 Q372 1022 300 1046 Q271 1050 266 1032 Q259 1015 274 988 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/><path d="M254 1062 Q263 1045 289 1041 Q296 1021 319 1020 Q342 1021 352 1039 Q434 1042 527 1020 Q601 1008 635 1035 Q663 1055 653 1084 Q647 1110 619 1120 Q534 1151 452 1133 L447 1165 L450 1176 L422 1187 L409 1175 L417 1150 L419 1137 Q352 1120 290 1145 Q258 1154 257 1130 Q254 1108 264 1082 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/><path d="M11 97 Q11 76 33 75 L70 74 Q94 75 94 100 L93 129 Q92 154 69 154 L35 154 Q12 155 11 132 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/><path d="M597 96 Q597 73 623 73 L655 73 Q683 73 683 99 L683 130 Q683 155 658 155 L624 155 Q597 154 597 130 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/><path d="M9 1323 Q9 1287 45 1286 L197 1287 Q234 1288 237 1320 L237 1361 Q235 1395 201 1395 L44 1396 Q9 1393 9 1363 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/><path d="M240 1322 Q240 1288 278 1286 L416 1286 Q453 1288 455 1321 L454 1364 Q454 1395 419 1396 L277 1396 Q240 1394 240 1363 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/><path d="M458 1323 Q460 1294 491 1290 L495 1263 L505 1236 L524 1217 L547 1212 L563 1201 L587 1207 L603 1221 L620 1241 L621 1278 Q679 1288 685 1324 L684 1365 Q683 1393 650 1396 L491 1395 Q458 1393 457 1364 Z" fill="black" stroke="black" stroke-width="12" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-map-background)"/></svg>
+<!-- Matching background cutouts and original-art surfaces prevent stationary
+     copies underneath pressed cards. The approved source image is unchanged. -->
+
+<nav class="hotspots" aria-label="Уроки HSK 1">
+<a class="top-link back" href="./index.html#panda/home" aria-label="Назад к выбору уровня"><svg class="map-button-art" viewBox="6.94 70.656 97.16 105.984" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-back" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M11 97 Q11 76 33 75 L70 74 Q94 75 94 100 L93 129 Q92 154 69 154 L35 154 Q12 155 11 132 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-back)"/></svg></a>
+<a class="top-link write" href="./hanzi-writing.html?lesson=1" aria-label="Написание иероглифов"><svg class="map-button-art" viewBox="589.9 70.656 97.16 105.984" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-write" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M597 96 Q597 73 623 73 L655 73 Q683 73 683 99 L683 130 Q683 155 658 155 L624 155 Q597 154 597 130 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-write)"/></svg></a>
+<a class="lesson" data-num="7" style="--x:27.3%;--y:24.65%;--w:68%;--h:7.2%" href="./hsk1-lesson.html?lesson=7" aria-label="Урок 7. Погода"><svg class="map-button-art" viewBox="189.462 378.624 471.92 110.592" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-7" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M230 421 Q233 407 260 399 Q268 377 291 384 Q311 383 319 398 Q400 404 499 383 Q571 379 621 401 Q652 411 649 447 Q647 474 618 482 Q542 494 453 489 Q365 485 285 501 Q250 505 236 490 Q223 478 229 458 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-7)"/></svg><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="6" style="--x:29.0%;--y:31.95%;--w:68%;--h:7.15%" href="./hsk1-lesson.html?lesson=6" aria-label="Урок 6. Моя семья"><svg class="map-button-art" viewBox="201.26 490.752 471.92 109.824" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-6" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M233 524 Q242 510 265 508 Q271 491 289 493 Q313 493 324 507 Q407 514 515 491 Q585 479 628 501 Q663 519 657 556 Q652 584 622 595 Q548 613 451 604 Q349 592 272 612 Q237 619 229 597 Q227 571 240 552 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-6)"/></svg><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="5" style="--x:31.5%;--y:39.03%;--w:66%;--h:7.15%" href="./hsk1-fifth-v227.html" aria-label="Урок 5. Месяцы и даты"><svg class="map-button-art" viewBox="218.61 599.501 458.04 109.824" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-5" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M229 639 Q235 624 265 619 Q273 603 294 605 Q318 605 328 620 Q424 621 525 603 Q604 595 640 621 Q662 638 651 672 Q646 694 619 705 Q555 732 455 722 Q347 704 276 735 Q240 748 230 728 Q225 693 237 668 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-5)"/></svg><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="4" style="--x:32.7%;--y:46.22%;--w:65%;--h:7.1%" href="./hsk1-fourth-v214.html" aria-label="Урок 4. Дни недели"><svg class="map-button-art" viewBox="226.938 709.939 451.1 109.056" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-4" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M247 753 Q255 737 277 733 Q284 714 304 716 Q328 717 339 733 Q434 736 529 715 Q602 702 639 729 Q665 752 648 784 Q638 807 612 816 Q533 838 447 829 Q350 812 286 834 Q250 842 246 820 Q243 800 254 781 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-4)"/></svg><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="3" style="--x:36.0%;--y:53.38%;--w:61%;--h:7.1%" href="./hsk1-third-v212.html" aria-label="Урок 3. Числа"><svg class="map-button-art" viewBox="249.84 819.917 423.34 109.056" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-3" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M268 859 Q275 844 295 839 Q302 820 323 821 Q345 821 355 837 Q440 839 530 820 Q600 809 635 831 Q665 851 655 883 Q650 909 625 918 Q543 939 452 929 Q371 918 301 940 Q271 945 265 925 Q263 905 275 886 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-3)"/></svg><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="2" style="--x:36.5%;--y:60.53%;--w:62%;--h:7.05%" href="./hsk1-second-v203.html" aria-label="Урок 2. Местоимения"><svg class="map-button-art" viewBox="253.31 929.741 430.28 108.288" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-2" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M266 959 Q275 946 295 944 Q302 927 324 926 Q347 926 359 945 Q438 943 529 925 Q598 911 633 935 Q662 954 655 982 Q651 1012 623 1023 Q544 1046 456 1034 Q372 1022 300 1046 Q271 1050 266 1032 Q259 1015 274 988 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-2)"/></svg><span class="gate" aria-hidden="true"></span></a>
+<a class="lesson" data-num="1" style="--x:35.3%;--y:67.7%;--w:63%;--h:7.1%" href="./hsk1-first-v189.html" aria-label="Урок 1. Знакомство"><svg class="map-button-art" viewBox="244.982 1039.87 437.22 109.056" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-1" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M254 1062 Q263 1045 289 1041 Q296 1021 319 1020 Q342 1021 352 1039 Q434 1042 527 1020 Q601 1008 635 1035 Q663 1055 653 1084 Q647 1110 619 1120 Q534 1151 452 1133 L447 1165 L450 1176 L422 1187 L409 1175 L417 1150 L419 1137 Q352 1120 290 1145 Q258 1154 257 1130 Q254 1108 264 1082 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-1)"/></svg><span class="gate" aria-hidden="true"></span></a>
+<a class="footer-link rhythm" href="./hsk1-rhythm.html" aria-label="Китайский в ритме"><svg class="map-button-art" viewBox="6.94 1284.1 229.02 125.952" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-rhythm" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M9 1323 Q9 1287 45 1286 L197 1287 Q234 1288 237 1320 L237 1361 Q235 1395 201 1395 L44 1396 Q9 1393 9 1363 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-rhythm)"/></svg></a>
+<a class="footer-link trainer" href="./hsk1-pronunciation.html" aria-label="Тренажёр"><svg class="map-button-art" viewBox="236.654 1284.1 222.08 125.952" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-trainer" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M240 1322 Q240 1288 278 1286 L416 1286 Q453 1288 455 1321 L454 1364 Q454 1395 419 1396 L277 1396 Q240 1394 240 1363 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-trainer)"/></svg></a>
+<a class="footer-link ai" href="./panda-voice-pilot.html" aria-label="Panda AI"><svg class="map-button-art" viewBox="460.122 1284.1 226.938 125.952" preserveAspectRatio="none" aria-hidden="true"><defs><mask id="pg-cut-ai" maskUnits="userSpaceOnUse" x="0" y="0" width="694" height="1536"><path d="M458 1323 Q460 1294 491 1290 L495 1263 L505 1236 L524 1217 L547 1212 L563 1201 L587 1207 L603 1221 L620 1241 L621 1278 Q679 1288 685 1324 L684 1365 Q683 1393 650 1396 L491 1395 Q458 1393 457 1364 Z" fill="white" stroke="white" stroke-width="14" stroke-linejoin="round"/></mask></defs><use href="#pg-map-source" mask="url(#pg-cut-ai)"/></svg></a>
+</nav>
+<div class="toast" role="status" aria-live="polite" hidden></div>
+</main>
+<script>
+(function(){
+  'use strict';
+  const KEY='pg-hsk1-path-v371', IDS=['foundations','pronouns','numbers','weekdays','dates','family','weather'];
+  let completed=0;
+  try{const v=Number(localStorage.getItem(KEY)||'0');if(Number.isInteger(v))completed=Math.min(7,Math.max(0,v))}catch{}
+  // The existing course progress key is authoritative; no old progress is erased.
+  const toast=document.querySelector('.toast');
+  let timer=0;
+  const lessons=Array.from(document.querySelectorAll('.lesson'));
+  function paint(){
+    const next=Math.min(7,completed+1);
+    for(const a of lessons){
+      const num=Number(a.dataset.num), locked=num>next,done=num<=completed;
+      a.classList.toggle('locked',locked);
+      a.classList.toggle('done',done);
+      a.classList.toggle('current',!done&&!locked);
+      a.setAttribute('aria-disabled',String(locked));
+      a.querySelector('.gate').textContent=done?'✓':'▶';
+      a.setAttribute('aria-label',a.getAttribute('aria-label').replace(/ · (?:закрыт|доступен|пройден)$/,'')+(locked?' · закрыт':done?' · пройден':' · доступен'));
+      if(locked)a.setAttribute('title','Сначала пройди урок '+(num-1));else a.removeAttribute('title');
+    }
+  }
+  function deny(num){
+    toast.textContent='🔒 Сначала заверши урок '+(num-1)+', затем откроется урок '+num+'.';
+    toast.hidden=false;
+    clearTimeout(timer);timer=setTimeout(()=>toast.hidden=true,2600);
+  }
+  document.querySelector('.hotspots').addEventListener('click',e=>{
+    const a=e.target.closest('a.lesson.locked');
+    if(!a)return;
+    e.preventDefault();e.stopPropagation();deny(Number(a.dataset.num));
+  });
+  document.querySelector('.hotspots').addEventListener('keydown',e=>{
+    const a=e.target.closest('a.lesson.locked');
+    if(a&&(e.key==='Enter'||e.key===' ')){e.preventDefault();deny(Number(a.dataset.num))}
+  });
+  function refresh(){try{const v=Number(localStorage.getItem(KEY)||'0');if(Number.isInteger(v))completed=Math.min(7,Math.max(0,v))}catch{}paint()}
+  let navigating=false;
+  document.querySelector('.hotspots').addEventListener('click',event=>{
+    const link=event.target.closest('a');
+    if(!link||link.classList.contains('locked')||event.defaultPrevented||event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+    event.preventDefault();
+    if(navigating)return;
+    navigating=true;
+    setTimeout(()=>location.assign(link.href),180);
+  });
+  window.addEventListener('pageshow',()=>{navigating=false});
+  window.addEventListener('pageshow',refresh);
+  window.addEventListener('focus',refresh);
+  window.addEventListener('storage',refresh);
+  paint();
+})();
+</script>
+</body>
+</html>
