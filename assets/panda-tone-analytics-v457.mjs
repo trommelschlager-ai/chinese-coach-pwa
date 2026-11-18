@@ -3,7 +3,7 @@
  * vowel/consonant quality, lexical identity, or native-like pronunciation.
  * Audio stays in browser memory and is never transmitted by this module.
  */
-export const TONE_LAB_VERSION="v457-pilot";
+export const TONE_LAB_VERSION="v458-short-fragment-guard";
 const median=a=>{if(!a.length)return null;const s=[...a].sort((x,y)=>x-y),k=s.length>>1;return s.length%2?s[k]:(s[k-1]+s[k])/2;};
 export const semitones=(hz,ref)=>12*Math.log2(hz/ref);
 
@@ -57,7 +57,7 @@ export function estimatePitch(samples,rate,{minHz=70,maxHz=550}={}){
 
 export function analyseContour(frames){
  const voiced=(frames||[]).filter(f=>Number.isFinite(f?.hz)&&f.hz>=70&&f.hz<=550&&Number.isFinite(f?.t)).sort((a,b)=>a.t-b.t);
- if(voiced.length<10)return {kind:"insufficient",label:"Недостаточно чистого голоса",reason:"Произнеси один слог чуть протяжнее в тихом помещении.",points:[]};
+ if(voiced.length<10)return {kind:"insufficient",label:"Недостаточно чистого голоса",reason:"Произнеси один слог чуть протяжнее в тихом помещении.",points:[],isToneGrade:false};
  // Keep the longest contiguous voiced run: avoid mixing two attempts / noises.
  let runs=[],run=[];
  for(const point of voiced){
@@ -66,15 +66,21 @@ export function analyseContour(frames){
  }
  if(run.length)runs.push(run);
  const pts=runs.sort((a,b)=>b.length-a.length)[0]||[];
- if(pts.length<10||pts.at(-1).t-pts[0].t<0.25)
-  return {kind:"insufficient",label:"Слишком короткая запись",reason:"Нужен один протяжный слог, примерно 0,5–1,5 секунды.",points:[]};
+ // A 0.34 s voice fragment with 10 f0 samples is NOT enough evidence to describe tone movement.
+ // Require a stable voiced portion, not merely 3 seconds with mostly silence.
+ const MIN_VOICED_S=0.50,MIN_PITCH_FRAMES=16;
+ if(pts.length<MIN_PITCH_FRAMES||pts.at(-1).t-pts[0].t<MIN_VOICED_S)
+  return {kind:"insufficient",label:"Слишком короткий голосовой фрагмент",
+   reason:"Достоверно сравнить движение тона пока нельзя. Произнеси один слог чуть протяжнее (около 0,7–1,2 с).",
+   points:[],stats:{duration:pts.length?+(pts.at(-1).t-pts[0].t).toFixed(2):0,voicedFrames:pts.length},
+   isToneGrade:false};
  // Median filtering removes single octave jumps without manufacturing a melody.
  const medHz=median(pts.map(p=>p.hz));
  let cleaned=pts.filter((p,i)=>{
   const nearby=pts.slice(Math.max(0,i-2),Math.min(pts.length,i+3)).map(x=>x.hz);
   return Math.abs(semitones(p.hz,median(nearby)))<5;
  });
- if(cleaned.length<10)return {kind:"uncertain",label:"Слишком шумная запись",reason:"Попробуй говорить без фоновых звуков.",points:[]};
+ if(cleaned.length<MIN_PITCH_FRAMES)return {kind:"uncertain",label:"Слишком шумная запись",reason:"Стабильных отсчётов мало. Попробуй говорить без фоновых звуков чуть протяжнее.",points:[],isToneGrade:false};
  const smooth=cleaned.map((p,i)=>{
   const nearby=cleaned.slice(Math.max(0,i-1),Math.min(cleaned.length,i+2)).map(x=>x.hz);
   return {t:p.t,hz:median(nearby)};
