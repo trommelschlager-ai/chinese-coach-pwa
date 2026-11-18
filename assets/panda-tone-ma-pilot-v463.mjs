@@ -51,6 +51,16 @@ function plot(points){
   return (i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);
  }).join(' ');
 }
+function toneGuidance(s,result){
+ const kind=result.kind;
+ if(kind==='insufficient'||kind==='uncertain')return result.label+'. '+result.reason;
+ if(s.n===1&&kind==='level')return 'Высота голоса почти ровная — это характерно для первого тона. Это не подтверждение правильности слога.';
+ if(s.n===2&&kind==='rise')return 'Голос повышается — движение похоже на второй тон. Звук самого слога ещё не проверен.';
+ if(s.n===3&&kind==='dip')return 'Виден спад и последующий подъём — возможный вариант третьего тона в изоляции.';
+ if(s.n===3&&kind==='fall')return 'Виден нисходящий/низкий участок: третий тон бывает таким в связной речи; это не ошибка сама по себе.';
+ if(s.n===4&&kind==='fall')return 'Высота голоса снижается — движение похоже на четвёртый тон. Это ещё не оценка произношения.';
+ return result.label+'. Контур отличается от учебной схемы. Повтори слог спокойно; одной кривой недостаточно, чтобы признать тон ошибочным.';
+}
 function controls(recording){
  $('record').textContent=recording?'■ Стоп':'🎙 Произнести';
  $('listen').disabled=recording;
@@ -73,7 +83,7 @@ async function stop(){
  await release();
  const result=analyseContour(frames);
  $('your-path').setAttribute('d',plot(result.points));
- $('result').textContent=result.label+'. '+result.reason;
+ $('result').textContent=toneGuidance(tones[selected],result);
  if(result.kind==='insufficient'){
   $('status').textContent='Не хватило устойчивого голоса. Попробуй ещё раз чуть протяжнее, в тишине.';
  } else {
