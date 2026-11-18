@@ -33,7 +33,7 @@ for(const [wrong,right,rule] of [
 
 test('approved visuals and disabled audio handling remain intact',()=>{
  assert.ok(html.includes('panda-live-v346.mjs?v=453'));
- assert.ok(html.includes('panda-chat-corrections-v377.css?v=453'));
+ assert.ok(html.includes('panda-chat-corrections-v377.css?v=454'));
  assert.ok(render.includes("details.append(el('p','pg445-before'"),'Original phrase remains in Details');
  assert.ok(ui.includes('lookupPandaVoiceClip'));
  assert.ok(ui.includes('sound.disabled=!clipFor(e)'));
