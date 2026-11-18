@@ -1,0 +1,52 @@
+name: HSK2 demo approved panda illustrations v456
+on:
+  push:
+    paths:
+      - .github/workflows/hsk2-v456-panda-illustrations.yml
+permissions:
+  contents: write
+jobs:
+  illustrations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract approved panda artwork
+        env:
+          SOURCE_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/982c7529-939b-467e-99d4-998025fc7b0f.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiOTFmN2E0ZWQ4ZDc5YmU2NSIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTEzNzEzM30.jv4flA1eWQk-JP-ejketcN-xz5HhwBsWJR5q8e46sD4"
+        run: |
+          set -euo pipefail
+          python -m pip install -q pillow
+          python - <<'PY'
+          import os,io,pathlib,urllib.request
+          from PIL import Image
+          raw=urllib.request.urlopen(urllib.request.Request(os.environ['SOURCE_URL'],headers={'User-Agent':'Mozilla/5.0'}),timeout=45).read()
+          im=Image.open(io.BytesIO(raw)).convert('RGB')
+          print('source',im.size,len(raw))
+          if im.size!=(1199,1312): raise SystemExit('Unexpected image resolution; do not publish approximate art')
+          out=pathlib.Path('assets/hsk2-preview-v456')
+          out.mkdir(exist_ok=True)
+          # Original user-approved image: top middle panel holds 6 panda picture thumbnails.
+          boxes=[
+            (400,54,481,133),
+            (400,146,481,225),
+            (400,238,481,317),
+            (400,330,481,409),
+            (400,422,481,501),
+            (400,514,481,593)
+          ]
+          for i,box in enumerate(boxes):
+            tile=im.crop(box).resize((164,164),Image.Resampling.LANCZOS)
+            path=out/f'word-{i+1}.webp'
+            tile.save(path,'WEBP',quality=94,method=6)
+            print(path,path.stat().st_size)
+          PY
+      - name: Save six illustrated cards
+        run: |
+          git config user.name "Panda Go Preview"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk2-preview-v456/*.webp
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: six approved illustrated HSK2 day cards"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
