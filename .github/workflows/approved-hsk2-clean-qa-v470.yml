@@ -1,0 +1,81 @@
+name: HSK2 clean step1 Chrome QA v470
+on:
+  push:
+    paths:
+      - '.github/workflows/approved-hsk2-clean-qa-v470.yml'
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - name: Screenshots and functional check
+        run: |
+          set -euo pipefail
+          google-chrome --version
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/clean-hsk2.log 2>&1 &
+          sleep 2
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const browser=await chromium.launch({headless:true,channel:'chrome',args:['--no-sandbox']});
+          const out='qa/hsk2-clean-v470';
+          fs.mkdirSync(out,{recursive:true});
+          for(const [w,h] of [[390,844],[360,740]]){
+            const p=await browser.newPage({viewport:{width:w,height:h},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+            const failures=[];
+            p.on('pageerror',e=>failures.push(e.message));
+            await p.goto('http://127.0.0.1:4173/preview-hsk2-step1-clean.html',{waitUntil:'networkidle'});
+            const nav=p.locator('.step-nav button');
+            assert.equal(await nav.count(),8,'eight real navigation controls');
+            assert.equal(await p.locator('#next-step').count(),1,'next step button');
+            const loaded=await p.locator('img').evaluateAll(x=>x.every(y=>y.complete&&y.naturalWidth>0));
+            assert(loaded,'Missing approved artwork');
+            const stats=await p.evaluate(()=>{
+              const h=document.querySelector('.top').getBoundingClientRect(),f=document.querySelector('.bottom').getBoundingClientRect(),a=document.querySelector('.art').getBoundingClientRect();
+              return {headerTop:h.top,headerHeight:h.height,footerBottom:f.bottom,bodyArtBottom:a.bottom,bodyAreaHeight:document.querySelector('.main').clientHeight,viewportHeight:innerHeight,horizontalOverflow:document.documentElement.scrollWidth-innerWidth}
+            });
+            assert.equal(Math.round(stats.headerTop),0,'header jumps');
+            assert(Math.abs(stats.footerBottom-h)<=1,'footer leaves viewport');
+            assert(stats.horizontalOverflow<=1,'horizontal overflow');
+            assert(stats.bodyArtBottom<=stats.footerBottom,'art below footer');
+            await p.screenshot({path:`${out}/step1-${w}x${h}.png`});
+            await p.locator('#next-step').click();
+            await p.waitForURL(/step=2/);
+            assert.match(await p.locator('.brandtitle small').textContent(),/Шаг 2/,'next step navigation');
+            assert.equal(failures.length,0,failures.join(','));
+            console.log('PASS',w,h,JSON.stringify(stats));
+            await p.close();
+          }
+          await browser.close();
+          JS
+      - name: Preserve screenshots for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hsk2-clean-step1-chrome
+          path: qa/hsk2-clean-v470/*.png
+          if-no-files-found: warn
+      - name: Commit review images
+        if: success()
+        run: |
+          git config user.name "Panda Go design QA"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add qa/hsk2-clean-v470/
+          if ! git diff --cached --quiet; then
+            git commit -m "qa(hsk2): screenshot approved clean step1 on mobile"
+            for attempt in 1 2 3; do
+              git pull --rebase origin main
+              if git push origin HEAD:main; then exit 0; fi
+              sleep 1
+            done
+            exit 1
+          fi
