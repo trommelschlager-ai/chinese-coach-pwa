@@ -1,6 +1,6 @@
 {
   "version": 455,
-  "bytes": 66910506,
+  "bytes": 66952775,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -3112,6 +3112,7 @@
     "./assets/hsk1-tone-practice-bridge-v463.js?v=463",
     "./panda-tone-ma-practice.html",
     "./assets/panda-tone-ma-pilot-v463.mjs?v=463",
-    "./assets/panda-tone-analytics-v457.mjs?v=462"
+    "./assets/panda-tone-analytics-v457.mjs?v=462",
+    "./assets/hsk2-life-course-app-v1.js?v=445"
   ]
 }
