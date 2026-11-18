@@ -8,18 +8,18 @@
   const css=document.createElement('style');
   css.textContent=[
     '#pq-fab{position:fixed;z-index:999999;top:12px;right:12px;padding:9px 12px;min-height:42px;border:2px solid #fff;border-radius:99px;background:#6046ac;color:#fff;font:700 13px system-ui;box-shadow:0 5px 20px #21103e55;cursor:pointer}',
-    '#pq-modal{box-sizing:border-box;width:min(95vw,500px);max-height:92dvh;overflow:auto;padding:18px;border:1px solid #d9c9f1;border-radius:20px;background:white;color:#302743;font:15px/1.4 system-ui;box-shadow:0 15px 50px #1c103060;z-index:9999999}',
+    '#pq-modal{box-sizing:border-box;width:min(90vw,370px);max-height:70dvh;overflow:auto;padding:15px;border:1px solid #d9c9f1;border-radius:20px;background:white;color:#302743;font:15px/1.4 system-ui;box-shadow:0 15px 50px #1c103060;z-index:9999999}',
     '#pq-modal::backdrop{background:#120b29ae}',
     '#pq-modal *,#pq-modal *::before,#pq-modal *::after{box-sizing:border-box}',
-    '#pq-modal h2{font:750 22px system-ui;margin:0 0 10px}',
-    '#pq-modal .pq-note{background:#fff4e0;color:#634a2a;border-radius:12px;padding:11px;font:13px/1.45 system-ui}',
+    '#pq-modal h2{font:750 18px system-ui;margin:0 0 8px}',
+    '#pq-modal .pq-note{background:#fff4e0;color:#634a2a;border-radius:11px;padding:9px;font:12px/1.35 system-ui}',
     '#pq-modal label{display:block;margin-top:10px;font:700 13px system-ui}',
     '#pq-modal input,#pq-modal textarea{display:block;width:100%;border:1px solid #cbbadc;border-radius:12px;background:white;color:#302743;padding:10px;font:15px system-ui}',
     '#pq-modal textarea{min-height:80px}',
     '#pq-modal button{padding:10px 12px;border:0;border-radius:12px;background:#6046ac;color:white;font:700 14px system-ui;cursor:pointer;margin:8px 6px 4px 0}',
     '#pq-modal .pq-secondary{background:#ede5f7;color:#503581}',
     '#pq-modal .pq-hidden{display:none!important}',
-    '#pq-modal .pq-count{font:800 34px system-ui;margin:8px 0}',
+    '#pq-modal .pq-count{font:800 28px system-ui;margin:7px 0}',
     '#pq-modal .pq-small{font:12px/1.4 system-ui;color:#615875}',
     '#pq-modal .pq-error{color:#ae2434;white-space:pre-wrap}',
     '#pq-modal .pq-answer{white-space:pre-wrap;overflow-wrap:anywhere}',
@@ -27,13 +27,13 @@
   ].join('');
   document.head.appendChild(css);
   const fab=document.createElement('button');
-  fab.type='button';fab.id='pq-fab';fab.textContent='🧪 AI 10→3';
+  fab.type='button';fab.id='pq-fab';fab.textContent='🧪 AI лимит';
   const modal=document.createElement('dialog');
   modal.id='pq-modal';
   modal.innerHTML=[
     '<button type="button" id="pq-close" class="pq-secondary">Закрыть ✕</button>',
-    '<h2>🐼 AI-лимиты: тест</h2>',
-    '<p class="pq-note"><b>Сейчас нет платного AI.</b> Диалоги и голос обычной Панды работают по-прежнему и не тратят квоту. Только кнопка «Тестовый ответ» ниже списывает одно разрешение. Ответ имитируется.</p>',
+    '<h2>🐼 AI-лимит</h2>',
+    '<p class="pq-note">🧪 Тест: обычные голосовые диалоги бесплатны. Только «Тестовый ответ» списывает один ответ. Настоящий платный AI не подключён.</p>',
     '<section id="pq-login">',
     '<label for="pq-email">Почта тестового ученика</label><input id="pq-email" type="email" autocomplete="username">',
     '<label for="pq-password">Тестовый пароль</label><input id="pq-password" type="password" autocomplete="current-password">',
@@ -57,7 +57,7 @@
     token='';get('pq-password').value='';
     get('pq-login').classList.remove('pq-hidden');
     get('pq-panel').classList.add('pq-hidden');
-    get('pq-count').textContent='— / —';
+    get('pq-count').textContent='— / —';fab.textContent='🧪 AI лимит';
   };
   async function call(method,message){
     if(!token)throw Error('Сначала войди в тестовый аккаунт');
@@ -73,10 +73,11 @@
   async function refresh(){
     const q=await call('GET');
     get('pq-count').textContent=q.remaining+' / '+q.limit;
+    fab.textContent='🐼 AI '+q.remaining+'/'+q.limit;
     get('pq-status').textContent=(q.phase==='trial'?'Расширенный доступ, день '+q.trialDay+' из 30':'Базовый доступ')+
       ' · Сброс '+new Date(q.resetsAt).toLocaleString('ru-RU')+(q.testGrant?' · ТЕСТ':'');
   }
-  fab.addEventListener('click',()=>modal.showModal());
+  fab.addEventListener('click',()=>{if(!modal.open){modal.showModal();if(token)refresh().catch(e=>err(e.message||'Ошибка'));}});
   get('pq-close').addEventListener('click',()=>modal.close());
   get('pq-signout').addEventListener('click',()=>{reset();err('')});
   get('pq-signin').addEventListener('click',async()=>{
