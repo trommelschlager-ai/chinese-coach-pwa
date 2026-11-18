@@ -15,8 +15,8 @@ function getEnv(): AppEnv {
   const url = Deno.env.get("SUPABASE_URL") || "";
   const key = Deno.env.get("SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_PUBLISHABLE_KEY") || "";
   const service = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
-  const origin = Deno.env.get("PANDA_ALLOWED_ORIGIN") || "";
-  return { url, key, service, origin, testMode: Deno.env.get("PANDA_TEST_MODE") === "true" };
+  const origin = "https://trommelschlager-ai.github.io"; // fixed browser origin for this isolated pilot
+  return { url, key, service, origin, testMode: true // mock replies only for server-granted test entitlements, never a paid AI call };
 }
 
 function json(data: Record<string, unknown>, code: number, origin = ""): Response {
