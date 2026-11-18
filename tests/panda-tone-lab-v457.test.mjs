@@ -41,7 +41,7 @@ test('Android screenshot: 0.34 s and ten clean f0 samples are insufficient, not 
  const r=analyseContour(short);
  assert.equal(r.kind,'insufficient');
  assert.equal(r.isToneGrade,false);
- assert.match(r.label,/короткий/);
+ assert.match(r.label,/короткий/i);
  assert.equal(r.stats.voicedFrames,10);
  assert.ok(r.stats.duration>=.33&&r.stats.duration<=.36);
 });
@@ -98,7 +98,7 @@ test('short contours and gaps do not get a grade',()=>{
 test('pilot page only uses local Web Audio and never claims verified tones',()=>{
  const html=fs.readFileSync(new URL('../panda-tone-lab.html',import.meta.url),'utf8');
  const ui=fs.readFileSync(new URL('../assets/panda-tone-lab-ui-v457.mjs',import.meta.url),'utf8');
- assert.ok(html.includes('panda-tone-lab-ui-v457.mjs?v=462'));
+ assert.ok(html.includes('panda-tone-lab-ui-v457.mjs?v=463'));
  assert.ok(html.includes('не оценивает правильность китайских тонов'));
  assert.ok(html.includes('panda-voice-pilot.html'));
  assert.ok(ui.includes('getUserMedia('));
@@ -107,7 +107,7 @@ test('pilot page only uses local Web Audio and never claims verified tones',()=>
  assert.ok(ui.includes('analyseContour(frames)'))
  assert.ok(ui.includes('result.kind===\'rise\'&&tone===3'));
  assert.ok(ui.includes('Number.isFinite(s.startToEndSt)'));
- assert.ok(ui.includes('panda-tone-analytics-v457.mjs?v=462'));
+ assert.ok(ui.includes('panda-tone-analytics-v457.mjs?v=463'));
  assert.ok(ui.includes('getTracks().forEach(t=>t.stop())'));
  assert.ok(html.includes('id="copy-trace"'),'Pitch export must be user initiated');
  assert.ok(ui.includes("navigator.clipboard.writeText(JSON.stringify(lastDiagnostic))"));
@@ -132,7 +132,7 @@ test('pilot page only uses local Web Audio and never claims verified tones',()=>
  assert.ok(html.includes('дождись автоматической остановки через 3 секунды'));
  assert.ok(ui.includes('thresholdRms:0.012'));
  assert.ok(ui.includes('s.octaveJumpCount>0'));
- assert.ok(ui.includes('panda-tone-analytics-v457.mjs?v=462'));
+ assert.ok(ui.includes('panda-tone-analytics-v457.mjs?v=463'));
  assert.ok(ui.includes('diagnostic.startedAt'),'Capture duration independent of voiced span');
  assert.ok(!ui.includes('new MediaRecorder('));
 
