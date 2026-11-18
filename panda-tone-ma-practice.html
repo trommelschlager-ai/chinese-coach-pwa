@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7e9ff">
+<title>Panda Go · Тренировка четырёх тонов</title>
+<style>
+:root{font:16px system-ui,-apple-system,"Segoe UI",sans-serif;color:#4a2b6c;background:#f9efff;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 70% 0%,#f8d7f5,#f5ebff 65%,#f8f2ff)}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:focus-visible{outline:3px solid #7345bd;outline-offset:2px}
+button:active:not(:disabled){transform:translateY(2px);filter:brightness(.94)}
+button:disabled{opacity:.52;cursor:not-allowed}
+main{width:min(100%,480px);margin:auto;padding:16px 14px max(20px,env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.kicker{font-size:12px;font-weight:850;letter-spacing:.07em;color:#9954b4}
+.tag{font-weight:850;font-size:12px;background:#ead9ff;border-radius:999px;padding:6px 12px}
+h1{font-size:25px;line-height:1.15;margin:11px 0 6px;color:#672e8d}
+.desc{font-size:13px;line-height:1.5;margin:0 0 12px;color:#745683}
+.tones{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.tone{background:linear-gradient(160deg,#fffefe,#fff4ff);border:2px solid #ead5f4;border-radius:18px;min-width:0;box-shadow:0 5px 15px #8b44ac18;padding:11px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;color:#5c3183}
+.tone[aria-pressed=true]{border-color:#a454c1;background:linear-gradient(145deg,#fff8ed,#f8ddf6);box-shadow:0 0 0 2px #dba5eb76,0 5px 17px #8240ad28}
+.tone strong{font-family:"Noto Sans CJK SC",system-ui,sans-serif;font-size:37px;font-weight:700;line-height:1.16}
+.tone em{font-style:normal;font-weight:800;font-size:15px}
+.tone small{font-size:12px;color:#825899}
+.card{margin-top:12px;background:#fffafeee;border:1px solid #ead4f2;border-radius:20px;padding:14px;box-shadow:0 5px 18px #aa72bf18}
+.card h2{font-size:16px;margin:0 0 9px;color:#63358c}
+.prompt{display:flex;align-items:center;justify-content:center;gap:13px}
+.prompt strong{font-size:32px;font-weight:750}
+.prompt span{font-size:16px;color:#79518e;font-weight:700}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.action{border:0;border-radius:14px;padding:12px 8px;min-height:49px;background:linear-gradient(130deg,#8f5bda,#cc68ba);color:white;font-weight:800;font-size:14px;box-shadow:0 4px 10px #73359a27}
+.action.secondary{color:#663d93;background:#efe2fc;box-shadow:none;border:1px solid #dec9f0}
+.action.next{background:#f8e2f5;color:#733992;box-shadow:none;border:1px solid #ebc2e2;width:100%;margin-top:10px}
+.status{font-size:13px;line-height:1.45;color:#654476;min-height:22px;margin:10px 0 0}
+.result{font-size:13px;color:#715384;line-height:1.5;min-height:26px}
+#graph{display:block;width:100%;height:auto;border-radius:14px;border:1px solid #ecdcf3;background:linear-gradient(#fff,#fdf9ff)}
+.template{fill:none;stroke:#c0abd3;stroke-width:5;stroke-linecap:round;stroke-dasharray:9 8}
+.observed{fill:none;stroke:#7851bd;stroke-width:5;stroke-linecap:round}
+.gridline{stroke:#eadff1;stroke-dasharray:5 6}
+.legend{font-size:11px;color:#826a91;margin:6px 0 0}
+.warning{font-size:12px;line-height:1.55;color:#77538c;margin:8px 0 0}
+.tip{background:#f5e7fd;padding:10px 12px;border-radius:13px;font-size:12px;line-height:1.5;color:#694185;margin:12px 0 0}
+</style>
+</head>
+<body>
+<main>
+<div class="top"><strong class="kicker">PANDA GO · HSK 1</strong><span class="tag">🎙 ТОНЫ · ПИЛОТ</span></div>
+<h1>Учимся произносить тоны</h1>
+<p class="desc">Выбери один слог, послушай оригинальную запись, затем говори сам. Можно тренировать все четыре тона подряд без переходов.</p>
+<div class="tones" role="group" aria-label="Четыре тона mā, má, mǎ, mà">
+<button class="tone" type="button" data-tone="1" aria-pressed="true"><strong>妈</strong><em>mā · 1-й тон</em><small>Ровный →</small></button>
+<button class="tone" type="button" data-tone="2" aria-pressed="false"><strong>麻</strong><em>má · 2-й тон</em><small>Восходящий ↗</small></button>
+<button class="tone" type="button" data-tone="3" aria-pressed="false"><strong>马</strong><em>mǎ · 3-й тон</em><small>Низкий / ↘↗</small></button>
+<button class="tone" type="button" data-tone="4" aria-pressed="false"><strong>骂</strong><em>mà · 4-й тон</em><small>Нисходящий ↘</small></button>
+</div>
+<section class="card" aria-labelledby="practice-title">
+<h2 id="practice-title">1. Послушай и повтори</h2>
+<div class="prompt"><strong id="target-hanzi" lang="zh-Hans">妈</strong><span id="target-pinyin">mā</span></div>
+<div class="row">
+<button id="listen" class="action secondary" type="button">🔊 Слушать образец</button>
+<button id="record" class="action" type="button">🎙 Произнести</button>
+</div>
+<p id="status" class="status" role="status" aria-live="polite">Микрофон включится только после нажатия.</p>
+</section>
+<section class="card" aria-labelledby="graph-title">
+<h2 id="graph-title">2. Посмотри движение голоса</h2>
+<svg id="graph" viewBox="0 0 350 142" role="img" aria-label="Сравнение учебного контура и измеренного движения высоты голоса">
+<path class="gridline" d="M20 35H337 M20 70H337 M20 105H337"/>
+<path id="ref-path" class="template" d="M30 62H332"/>
+<path id="your-path" class="observed" d=""/>
+<text x="8" y="18" fill="#8c739f" font-size="11">Выше ↑</text><text x="8" y="132" fill="#8c739f" font-size="11">Ниже ↓</text>
+</svg>
+<p class="legend">Пунктир — учебная схема; сплошная линия — измеренный голос</p>
+<p id="result" class="result" aria-live="polite">После произношения здесь появится результат наблюдения.</p>
+<button id="next" class="action next" type="button">Следующий тон →</button>
+</section>
+<p class="tip"><b>Важно:</b> это анализ высоты голоса, а не распознавание китайских слов. Нет оценок «верно/неверно» — по одному графику нельзя достоверно проверить китайский тон. Третий тон в речи часто произносится низко, без подъёма.</p>
+<p class="warning">🎧 Лучше пользоваться в тихом месте. Для измерения один слог слегка протяни (около секунды). Звук остаётся в памяти браузера и не отправляется на сервер.</p>
+</main>
+<script type="module" src="./assets/panda-tone-ma-pilot-v463.mjs?v=463"></script>
+</body>
+</html>
