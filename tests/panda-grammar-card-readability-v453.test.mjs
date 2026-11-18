@@ -51,11 +51,11 @@ test('feedback CSS permits compact card to grow inside scene without hard 35% he
 });
 
 test('approved Panda design, auto-speaking grammar and 42 MP3 remain intact',()=>{
- assert.ok(html.includes('panda-chat-corrections-v377.css?v=453'));
+ assert.ok(html.includes('panda-chat-corrections-v377.css?v=454'));
  assert.ok(html.includes('panda-live-v346.mjs?v=453'));
  assert.ok(html.includes('panda-live-screen-v270.mjs?v=452'));
- assert.ok(sw.includes("chinese-coach-pwa-v453-compact-grammar-feedback"));
- assert.equal(pack.version,453);
+ assert.ok(sw.includes("chinese-coach-pwa-v454-feedback-topic-clear"));
+ assert.equal(pack.version,454);
  assert.equal(pack.files.filter(x=>/panda-grammar-voice-v451\/g\d{3}\.mp3/.test(x)).length,42);
  assert.ok(ui.includes('lookupPandaVoiceClip'));
  assert.ok(ui.includes('sound.disabled=!clipFor(e)'));
