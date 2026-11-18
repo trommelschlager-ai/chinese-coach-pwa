@@ -1,0 +1,45 @@
+name: Approved HSK2 clean step 1 art
+on:
+  push:
+    paths: ['.github/workflows/approved-hsk2-clean-art-v470.yml']
+permissions:
+  contents: write
+jobs:
+  art:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Crop approved source artwork
+        env:
+          ART_SOURCE: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/371a1702-39a0-4091-92f2-102962c4d6d8.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiYzhiMGE2ZjgxNTlhOWI0MiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTE0NTA4MH0.JCd4B3GbslmJd3TZYRDL4SR7HAyKO1UfqdOEAGwomos"
+        run: |
+          set -euo pipefail
+          python -m pip install -q pillow
+          python - <<'PY'
+          from PIL import Image
+          import os,urllib.request,io,pathlib
+          src=os.environ['ART_SOURCE']
+          req=urllib.request.Request(src,headers={'User-Agent':'Mozilla/5.0'})
+          im=Image.open(io.BytesIO(urllib.request.urlopen(req,timeout=30).read())).convert('RGB')
+          print('approved collage:',im.size)
+          assert im.size==(1536,1097),'Wrong source image'
+          crops={'top-content':(393,101,731,439),'panda-title':(393,101,731,255),'features':(393,255,731,439),'landscape':(1245,20,1536,490)}
+          dest=pathlib.Path('assets/hsk2-clean-v470');dest.mkdir(parents=True,exist_ok=True)
+          for name,rect in crops.items():
+            art=im.crop(rect)
+            if name=='landscape': art=art.resize((582,940),Image.Resampling.LANCZOS)
+            else: art=art.resize((art.width*2,art.height*2),Image.Resampling.LANCZOS)
+            f=dest/(name+'.webp')
+            art.save(f,'WEBP',quality=91,method=6)
+            print('created',f,art.size)
+          PY
+      - name: Commit approved art
+        run: |
+          git config user.name "Panda Go design"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk2-clean-v470
+          if ! git diff --cached --quiet; then
+            git commit -m "assets(hsk2): original approved clean lesson illustrations"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
