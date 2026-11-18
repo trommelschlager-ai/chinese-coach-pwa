@@ -120,6 +120,32 @@ body.pg-other .hero,body.pg-other #words,body.pg-other .legend,body.pg-other .st
 .pg-note{padding:10px 12px;border-radius:14px;background:#fff0d7;color:#885d32;font-size:12px;line-height:1.4;border:1px solid #edd7a6;margin:10px 0}
 @media (max-width:360px){.pg-panel{padding:13px 11px}.pg-choice{font-size:13px}.pg-cn{font-size:22px}.pg-wordline{gap:5px}}
 
+
+/* v449 — user-approved pixel-artwork for Steps 1 & 3, as an isolated Chrome preview. */
+body.pg-poster-mode .top,body.pg-poster-mode .bottom{display:none!important}
+body.pg-poster-mode .page{padding:0!important;min-height:100dvh;overflow:visible;background:#f9e9fa}
+body.pg-poster-mode #demo-other{margin:0!important;display:block!important}
+.pg-poster{position:relative;width:100%;overflow:hidden;margin:0 auto;max-width:505px;line-height:0;background:#f9e6fa}
+.pg-poster-art{display:block;width:100%;height:auto;aspect-ratio:606 / 1036;object-fit:contain}
+.pg-poster-tap{position:absolute;display:block;border:none;border-radius:14px;background:transparent;cursor:pointer;outline-offset:-3px;-webkit-tap-highlight-color:transparent;line-height:1}
+.pg-poster-tap:active{background:#e12cc128;box-shadow:inset 0 0 0 2px #ec6bc6;transform:scale(.982)}
+.pg-poster-tap:focus-visible{outline:3px solid #6d1aa1;background:#ed8acc30}
+.pg-poster-navigation{top:13.3%;height:6%;width:7.8%;border-radius:50%}
+.pg-poster-first-next{left:8.5%;top:86%;width:83%;height:7.4%;border-radius:44px}
+.pg-poster-testrow{left:4%;width:92%;height:7%;border-radius:16px}
+.pg-poster-testnext{left:8.5%;top:86%;width:83%;height:7.4%;border-radius:44px}
+.pg-poster-aural{position:absolute;bottom:0;left:0;opacity:0;pointer-events:none}
+body.pg-quiz-detail .pg-panel:first-child{background:linear-gradient(180deg,#f2c4fa,#ffeffb 45%,#fff8ff);border:2px solid #d77be7;box-shadow:0 5px 0 #d8a0de,0 12px 26px #af5cbe32}
+body.pg-quiz-detail #demo-other>.pg-panel:first-child h1{font-size:23px;font-weight:900;text-shadow:0 1px #fff;color:#652184}
+body.pg-quiz-detail .pg-panel{border:1px solid #d9a0e4;border-bottom:3px solid #c987df;box-shadow:0 6px 16px #c881c447;background:linear-gradient(165deg,#fffaff,#fff0f9)}
+body.pg-quiz-detail .pg-kicker{background:linear-gradient(#e881ec,#a62bbf);border:1px solid #fbd4ff;box-shadow:0 2px 0 #81219b;color:#fff;text-shadow:0 1px #651475}
+body.pg-quiz-detail .pg-mini-nav button{border-bottom:3px solid #c47ed5;box-shadow:0 3px 7px #b25dc04a}
+body.pg-quiz-detail .pg-mini-nav button.selected{background:linear-gradient(#f172ed,#ba29cb);color:white;border-bottom:3px solid #8f159e}
+body.pg-quiz-detail .pg-choice{font-size:15px;border:1px solid #ddabe8;border-bottom:4px solid #c282d4;box-shadow:0 5px 10px #ad60c333}
+body.pg-quiz-detail .pg-choice:active{transform:translateY(3px)}
+body.pg-quiz-detail .pg-action{border-bottom:5px solid #78118f;box-shadow:0 6px 12px #c15dbd73}
+body.pg-quiz-detail .pg-quiz-decoration{width:68px;height:68px;border:3px solid #fff;border-radius:20px;box-shadow:0 5px 12px #963a9988;object-fit:cover;float:right;margin:0 0 5px 10px}
+
 </style>
 </head>
 <body>
@@ -210,7 +236,7 @@ body.pg-other .hero,body.pg-other #words,body.pg-other .legend,body.pg-other .st
  ];
  const lessonOrder=[0,1,2,3,4,5];
  const mixedOrder=[4,2,0,5,1,3];
- let step=1, q={test:0,i:0,done:false,assembled:[],correct:Array(5).fill(0)},dayOrder=[],dayChecked=false,dialogIndex=0,chatLog=[];
+ let step=1, q={test:0,i:0,done:false,started:false,assembled:[],correct:Array(5).fill(0)},dayOrder=[],dayChecked=false,dialogIndex=0,chatLog=[];
  const norm=s=>String(s||'').replace(/[\s。，？！.,!?]/g,'');
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const nav=document.querySelector('.steps');
@@ -233,26 +259,35 @@ body.pg-other .hero,body.pg-other #words,body.pg-other .legend,body.pg-other .st
  const listen=(zh)=>'<button type="button" class="pg-play" data-say="'+escape(zh)+'" aria-label="Прослушать '+escape(zh)+'">▶</button>';
  const info=(w)=>'<span class="pg-cn" lang="zh-Hans">'+w.zh+'</span><span class="pg-py">'+w.py+'</span><span class="pg-ru">'+w.ru+'</span>';
  const caption=(txt)=>'<span class="pg-kicker">'+txt+'</span>';
- function intro(){
-  return '<div class="pg-panel pg-intro">'+caption('HSK 2 · Тема 1')+
-   '<img src="./assets/hsk2-storyboard-v433-avatar.jpg" alt="Панда в наушниках">'+
-   '<h1>我的一天</h1><span class="pg-py">Wǒ de yì tiān</span><h2>Мой день</h2>'+
-   '<p>Ты научишься рассказывать, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</p>'+
-   '<div class="pg-note">Это интерактивное демо восьми шагов. Настоящий урок пока не изменён.</div></div>'+
-   '<div class="pg-panel"><h2>Тебя ждут</h2><p>📚 6 слов · 🎯 5 мини-тестов · 🧩 грамматика · 🕒 распорядок · 🎙 произношение · 🐼 диалог</p></div>';
+
+ function poster(n){
+  const path=n===1?'./assets/hsk2-preview-v449/step-1-approved.webp':'./assets/hsk2-preview-v449/step-3-approved.webp';
+  const labels=['Вступление','Новые слова','Пять мини-тестов','Грамматика','Практика','Произношение','Фразы и диалог','Результат'];
+  let taps=labels.map((label,i)=>'<button type="button" class="pg-poster-tap pg-poster-navigation" style="left:'+(6.0+i*11.45)+'%" data-jump="'+(i+1)+'" aria-label="Перейти к шагу '+(i+1)+': '+label+'" title="Шаг '+(i+1)+'"></button>').join('');
+  if(n===1){
+    taps+='<button type="button" class="pg-poster-tap pg-poster-first-next" data-poster-next aria-label="Начать урок — новые слова"></button>';
+  }else{
+    const centers=[35.1,43.3,51.5,59.7,67.9];
+    taps+=centers.map((y,i)=>'<button type="button" class="pg-poster-tap pg-poster-testrow" style="top:'+(y-3)+'%" data-start-test="'+i+'" aria-label="Начать тест '+(i+1)+'" title="Тест '+(i+1)+'"></button>').join('');
+    taps+='<button type="button" class="pg-poster-tap pg-poster-testnext" data-start-test="0" aria-label="Начать пять мини-тестов"></button>';
+  }
+  return '<div class="pg-poster"><img class="pg-poster-art" src="'+path+'" alt="Утверждённый красочный макет Panda Go — шаг '+n+'" fetchpriority="high">'+taps+'</div>';
  }
+ function intro(){return poster(1)}
  function wordStep(){
   return '<section class="pg-panel">'+caption('Шаг 2 из 8')+'<h1>Новые слова</h1><p>Нажми ▶, послушай слово и повтори. Озвучка демо — голос браузера.</p>'+
   vocab.map(w=>'<div class="pg-wordline"><span class="pg-emoji">'+w.em+'</span><div>'+info(w)+'</div>'+listen(w.zh)+'</div>').join('')+'</section>';
  }
  function quizHeader(){
-  return '<section class="pg-panel">'+caption('Шаг 3 · 5 видов проверки')+'<h1>Закрепим слова!</h1><p>Каждый из 5 мини-тестов проверяет все 6 слов. Всего 30 упражнений.</p>'+
+  return '<section class="pg-panel">'+caption('Шаг 3 · 5 видов проверки')+'<img class="pg-quiz-decoration" src="./assets/hsk2-storyboard-v433-avatar.jpg" alt="Панда"><h1>Закрепим слова!</h1><p>Каждый из 5 мини-тестов проверяет все 6 слов. Всего 30 упражнений.</p>'+
   '<div class="pg-mini-nav">'+[0,1,2,3,4].map(i=>'<button data-test="'+i+'" type="button" class="'+(q.test===i?'selected':'')+'">Тест '+(i+1)+'</button>').join('')+'</div>'+
   '<div class="pg-spread"><strong>Тест '+(q.test+1)+' · '+Math.min(q.i+1,6)+' / 6</strong><span>'+q.correct[q.test]+' из 6</span></div>'+
+  '<button type="button" class="pg-action secondary" data-back-tests style="margin:4px 0 9px;padding:8px 13px;font-size:12px">← Все пять тестов</button>'+
   '<div class="pg-quiz-progress"><div style="width:'+(q.correct[q.test]/6*100)+'%"></div></div></section>';
  }
  const testNames=['Выбери перевод','Найди картинку','Послушай и выбери','Собери иероглифы','Вспомни слово'];
  function quizStep(){
+  if(!q.started)return poster(3);
   let out=quizHeader();
   if(q.i>=6){
     return out+'<section class="pg-panel"><h2>✅ Тест '+(q.test+1)+' завершён!</h2><p>Ты проверил все шесть слов.</p><button class="pg-action" data-test-next>'+ (q.test===4?'Повторить первый тест':'Следующий мини-тест →')+'</button></section>';
@@ -263,7 +298,7 @@ body.pg-other .hero,body.pg-other #words,body.pg-other .legend,body.pg-other .st
   const rotated=[...options.slice((i+test)%4),...options.slice(0,(i+test)%4)];
   out+='<section class="pg-panel">'+caption('Тест '+(test+1)+' · '+testNames[test])+'<h2>'+(test===0?'Что означает слово?':test===1?'Выбери правильную картинку':test===2?'Что ты услышал?':test===3?'Составь слово по порядку':'Вспомни китайское слово')+'</h2>';
   if(test===0||test===1||test===2||test===4){
-   if(test===0||test===1)out+='<div class="pg-sentence">'+info(w)+'</div>';
+   if(test===0||test===1)out+='<div class="pg-sentence"><span class="pg-cn">'+w.zh+'</span><span class="pg-py">'+w.py+'</span></div>';
    if(test===2)out+='<div class="pg-sentence pg-spread"><strong>Слушай китайское слово</strong>'+listen(w.zh)+'</div>';
    if(test===4)out+='<div class="pg-sentence"><span class="pg-ru">Переведи: '+w.ru+'</span></div>';
    out+='<div class="pg-grid">'+rotated.map(v=>'<button type="button" class="pg-choice'+(q.done&&v.zh===w.zh?' pg-correct':'')+'" data-choice="'+escape(v.zh)+'" '+(q.done?'disabled':'')+'>'+(test===1?'<span style="font-size:30px;display:block">'+v.em+'</span>':test===0?v.ru:v.zh)+'</button>').join('')+'</div>';
@@ -324,6 +359,8 @@ body.pg-other .hero,body.pg-other #words,body.pg-other .legend,body.pg-other .st
  function showStep(n){
   step=Math.max(1,Math.min(8,n));
   document.body.classList.toggle('pg-other',step!==6);
+  document.body.classList.toggle('pg-poster-mode',step===1||(step===3&&!q.started));
+  document.body.classList.toggle('pg-quiz-detail',step===3&&q.started);
   title.textContent='Урок 1 «Мой день» · Шаг '+step+' — '+headings[step-1];
   nav.setAttribute('aria-label','Шаг '+step+' из 8');
   navButtons.forEach((b,i)=>{b.classList.toggle('active',i+1===step);b.setAttribute('aria-current',i+1===step?'step':'false')});
@@ -343,7 +380,11 @@ body.pg-other .hero,body.pg-other #words,body.pg-other .legend,body.pg-other .st
   const b=e.target.closest('button');if(!b)return;
   const d=b.dataset;
   if(d.say!==undefined){audioText(d.say);return}
-  if(d.test!==undefined){q.test=Number(d.test);q.i=q.correct[q.test];q.assembled=[];q.done=false;showStep(3);return}
+  if(d.jump!==undefined){showStep(Number(d.jump));return}
+  if(d.posterNext!==undefined){showStep(2);return}
+  if(d.startTest!==undefined){q.started=true;q.test=Number(d.startTest);q.i=q.correct[q.test];q.done=false;q.assembled=[];showStep(3);return}
+  if(d.backTests!==undefined){q.started=false;showStep(3);return}
+  if(d.test!==undefined){q.started=true;q.test=Number(d.test);q.i=q.correct[q.test];q.assembled=[];q.done=false;showStep(3);return}
   if(d.choice!==undefined){if(q.done)return;const target=vocab[q.i];const box=root.querySelector('#pg-q-feedback');
    if(d.choice===target.zh){q.done=true;q.correct[q.test]=Math.max(q.correct[q.test],q.i+1);showStep(3)}
    else{box.textContent='Пока неверно — попробуй ещё раз.';box.className='pg-feedback';}
@@ -358,7 +399,7 @@ body.pg-other .hero,body.pg-other #words,body.pg-other .legend,body.pg-other .st
    return;
   }
   if(d.qNext!==undefined){q.i++;q.done=false;q.assembled=[];showStep(3);return}
-  if(d.testNext!==undefined){q.test=(q.test+1)%5;q.i=q.correct[q.test];q.done=false;q.assembled=[];showStep(3);return}
+  if(d.testNext!==undefined){q.started=true;q.test=(q.test+1)%5;q.i=q.correct[q.test];q.done=false;q.assembled=[];showStep(3);return}
   if(d.grammar!==undefined){const el=root.querySelector('#pg-grammar-result');el.textContent=d.grammar==='ok'?'✓ Верно! 我每天刷牙。':'Попробуй ещё раз: 每天 обычно ставится перед действием.';el.className='pg-feedback'+(d.grammar==='ok'?' good':'');return}
   if(d.order!==undefined){const i=Number(d.order);if(!dayOrder.includes(i)){dayOrder.push(i);dayChecked=false;showStep(5)}return}
   if(d.orderBack!==undefined){dayOrder.pop();dayChecked=false;showStep(5);return}
