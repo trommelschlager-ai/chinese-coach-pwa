@@ -1,0 +1,24 @@
+name: Panda HSK1 sentence coach current screen QA
+on:
+  push:
+    branches:
+      - 'fix/panda-sentence-coach-qa-current-audio-v455'
+  pull_request:
+    paths:
+      - 'scripts/verify-panda-sentence-coach-v319.cjs'
+      - '.github/workflows/panda-sentence-coach-current-v455.yml'
+permissions:
+  contents: read
+jobs:
+  sentence-coach:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check HSK1 safe sentence coaching against current Panda screen version
+        run: |
+          node scripts/verify-panda-sentence-coach-v319.cjs
+          node scripts/verify-panda-hsk2-bridge-v304.cjs
