@@ -192,33 +192,45 @@ progress::-webkit-progress-value{background:linear-gradient(#a0ed63,#55bb27 65%,
 
 /* Keep the opening illustration and the test hero on single, continuous scenes. */
 body:has(.app[data-view="1"]){background:radial-gradient(ellipse at 50% 15%,#fbe0f9 0,#ecd2f7 75%)}
-.app[data-view="1"]{min-height:min(100svh,630px);display:flex;flex-direction:column}
+.app[data-view="1"],.app[data-view="3"]{container-type:inline-size}
 .app[data-view="1"]::before{background:linear-gradient(180deg,#f9ddfa 0%,#f8d7f5 16%,#ecbdf9 47%,#ffd9f2 79%,#fbc9ef 100%)}
-.app[data-view="1"] .head{padding-bottom:3px;background:linear-gradient(#fae4fc,#f6cff7 80%,#f6cff700)}
-.app[data-view="1"] main{display:flex;flex:1;flex-direction:column;justify-content:center}
-.app[data-view="1"] .intro-hero{position:relative;isolation:isolate;flex:1;min-height:166px;max-height:246px;grid-template-columns:50% 50%;align-items:center;background:none;overflow:visible}
-.app[data-view="1"] .intro-hero::before{content:"";position:absolute;inset:-8px -7px -12px;z-index:-1;background:linear-gradient(90deg,#edb3f479,#f9c6f22e 55%,#f6d0f853),url(assets/hsk2-lesson1-preview/hero-scenery.webp) center 53%/cover;mask-image:linear-gradient(transparent,#000 12%,#000 84%,transparent)}
-.app[data-view="1"] .intro-hero img{width:106%;max-width:none;aspect-ratio:auto;object-fit:contain;align-self:center;margin-left:-2%;border-radius:0;filter:drop-shadow(0 3px 4px #7c307c63)}
-.app[data-view="1"] .intro-hero .cloud{margin-left:-22px;padding-block:24px}
+.app[data-view="1"] .head{padding-top:14px;padding-bottom:2px;background:linear-gradient(#fae4fc,#f6cff7 80%,#f6cff700)}
+.app[data-view="1"] .brand img{width:49px;height:47px}
+.app[data-view="1"] main{padding-inline:12px}
+.app[data-view="1"] .intro-hero{position:relative;isolation:isolate;min-height:43cqw;grid-template-columns:50% 50%;align-items:center;background:none;overflow:visible}
+.app[data-view="1"] .intro-hero::before{content:"";position:absolute;inset:-8px -7px -12px;z-index:-1;background:linear-gradient(90deg,#edb3f479,#f9c6f22e 55%,#f6d0f853),url(assets/hsk2-lesson1-preview/hero-scenery.webp) center 35%/cover;mask-image:linear-gradient(transparent,#000 12%,#000 79%,transparent)}
+.app[data-view="1"] .intro-hero img{width:114%;max-width:none;height:43cqw;aspect-ratio:auto;object-fit:contain;align-self:end;margin-left:-6%;border-radius:0;filter:drop-shadow(0 3px 4px #7c307c63)}
+.app[data-view="1"] .intro-hero .cloud{margin-left:-26px;padding-block:21px}
 .app[data-view="1"] .intro-hero h1{font-size:clamp(30px,9vw,39px)}
-.app[data-view="1"] .features{margin-top:19px;padding-bottom:8px}
-.app[data-view="1"] .feature-grid div{padding-block:6px 8px}
-.app[data-view="1"] .feature-grid img{width:46px;height:38px;mix-blend-mode:normal;filter:drop-shadow(0 2px 1px #a7518e35)}
-.app[data-view="1"] footer{padding-top:6px;padding-bottom:16px}
-.app[data-view="1"] footer .primary{min-height:45px;font-size:clamp(14px,4.5vw,17px)}
+.app[data-view="1"] .features{margin-top:18px;padding-bottom:8px}
+.app[data-view="1"] .feature-grid div{padding-block:4px 6px}
+.app[data-view="1"] .feature-grid img{width:51px;height:43px;mix-blend-mode:normal;filter:drop-shadow(0 2px 1px #a7518e35)}
+.app[data-view="1"] footer{padding-top:3px;padding-bottom:10px}
+.app[data-view="1"] footer .primary{flex:0 1 88%;min-height:40px;font-size:clamp(14px,4.4vw,17px)}
 .app[data-view="1"] .head::after,.app[data-view="3"] .head::after{z-index:0;pointer-events:none;opacity:.66}
 .app[data-view="1"] .head nav,.app[data-view="3"] .head nav{z-index:1}
+.app[data-view="3"]::after{background:url(assets/hsk2-lesson1-preview/sakura.webp) -17px 68px/112px auto no-repeat}
+.app[data-view="3"] main:has(.quiz-hero)::before,.app[data-view="3"] main:has(.quiz-hero)::after{content:"";position:absolute;z-index:-1;pointer-events:none;bottom:0;width:145px;height:83px;background:url(assets/hsk2-lesson1-preview/sakura.webp) left top/contain no-repeat;mask-image:linear-gradient(to right,#000 65%,transparent 94%)}
+.app[data-view="3"] main:has(.quiz-hero)::before{left:-15px;transform:scaleY(-1)}
+.app[data-view="3"] main:has(.quiz-hero)::after{right:-15px;transform:scale(-1)}
 .app[data-view="3"]::before{background:linear-gradient(#dfa7ef 0%,#f4c3ed 26%,#ffdeef 33%,#ffdfef 100%)}
-.app[data-view="3"] .quiz-hero{grid-template-columns:47% 53%;min-height:144px;background:linear-gradient(90deg,#eaa5e975,#f8bfe964 68%,#f5afe87d),url(assets/hsk2-lesson1-preview/hero-scenery.webp) center 53%/cover}
-.app[data-view="3"] .quiz-hero > img:first-child{width:96%;max-height:145px;margin-left:3px;filter:drop-shadow(0 2px 5px #71386d66)}
-.app[data-view="3"] .quiz-hero .hero-message{margin:4px 12px 8px -13px;border-radius:25px 28px 25px 24px}
-.app[data-view="3"] .quiz-hero .hero-message p{padding-right:32px;font-size:12px}
-.app[data-view="3"] .quiz-clipboard{position:absolute;z-index:2;bottom:2px;right:5px;width:48px;pointer-events:none;filter:drop-shadow(0 2px 2px #84297566)}
-.app[data-view="3"] .test-card{background:linear-gradient(160deg,#fffaff,#fff2fa 52%,#ffdef0);border-color:#fff8fc;box-shadow:0 3px 6px #b65c9559,inset 0 1px 2px white}
-.app[data-view="3"] .reward{margin-top:11px}
-.app[data-view="3"] .primary.large{margin-bottom:11px}
+.app[data-view="3"] .quiz-hero{grid-template-columns:43% 57%;min-height:39cqw;background:linear-gradient(90deg,#eaa5e975,#f8bfe964 68%,#f5afe87d),url(assets/hsk2-lesson1-preview/hero-scenery.webp) center 53%/cover}
+.app[data-view="3"] .quiz-hero > img:first-child{width:110%;max-width:none;max-height:39cqw;margin-left:1px;filter:drop-shadow(0 2px 5px #71386d66)}
+.app[data-view="3"] .quiz-hero .hero-message{margin:8px 24px 9px -10px;padding:9px 9px 10px 17px;border-radius:26px 30px 26px 22px}
+.app[data-view="3"] .quiz-hero .tag{display:inline-flex;align-items:center;min-height:24px;gap:4px}
+.app[data-view="3"] .quiz-hero .tag::before{content:"";width:17px;height:17px;background:url(assets/hsk2-lesson1-preview/feature-2.webp) center/contain no-repeat}
+.app[data-view="3"] .quiz-hero .hero-message h1{font-size:clamp(18px,5.85vw,26px);white-space:nowrap}
+.app[data-view="3"] .quiz-hero .hero-message p{max-width:100%;font-size:clamp(12px,3.36vw,14px);font-weight:600}
+.app[data-view="3"] .quiz-clipboard{position:absolute;z-index:2;bottom:0;right:0;width:12cqw;pointer-events:none;filter:drop-shadow(0 2px 2px #84297566)}
+.app[data-view="3"] .test-card{min-height:20.5cqw;grid-template-columns:8cqw 22cqw minmax(0,1fr) 9cqw;gap:2cqw;background:linear-gradient(160deg,#fffaff,#fff2fa 52%,#ffdef0);border-color:#fff8fc;box-shadow:0 3px 6px #b65c9559,inset 0 1px 2px white}
+.app[data-view="3"] .test-card img{height:16cqw}
+.app[data-view="3"] .test-card strong{font-size:clamp(13px,4.2vw,18px)}
+.app[data-view="3"] .test-card small{font-size:clamp(12px,3.45vw,14px)}
+.app[data-view="3"] .reward{min-height:19cqw;margin:15px 4px 13px}
+.app[data-view="3"] .reward img{width:64px}
+.app[data-view="3"] [data-start]{display:block;width:85%;min-height:14cqw;margin:0 auto 24px}
 footer[hidden]{display:none}
-@media(max-height:640px){.app[data-view="1"] .intro-hero{min-height:148px}.app[data-view="1"] .intro-hero img{max-height:171px}.app[data-view="1"] .features{margin-top:23px}}
+
 
 </style>
 </head>
@@ -445,7 +457,7 @@ function hero(kind,step,title,subtitle) {
 
 function quiz() {
   if (state.quizTest !== null) return question();
-  return hero('quiz',3,'Проверь слова!','5 интерактивных тестов, чтобы лучше запомнить новые слова.') +
+  return hero('quiz',3,'Проверь слова!','5 интерактивных тестов,<br>чтобы лучше запомнить<br>новые слова.') +
     '<div class="test-list">' + tests.map((title,i) => {
       const total = correctCount(i);
       return '<button type="button" class="test-card" data-test="' + i + '"><span class="badge">' + (i+1) + '</span>' +
