@@ -1,0 +1,59 @@
+name: Panda tone lab experimental pitch analysis v457
+on:
+  push:
+    branches:
+      - 'feature/panda-tone-lab-pilot-v457-20261118'
+  pull_request:
+    paths:
+      - 'panda-tone-lab.html'
+      - 'assets/panda-tone-analytics-v457.mjs'
+      - 'assets/panda-tone-lab-ui-v457.mjs'
+      - 'tests/panda-tone-lab-v457.test.mjs'
+      - 'scripts/qa-panda-tone-lab-v457.mjs'
+      - '.github/workflows/panda-tone-lab-v457.yml'
+permissions:
+  contents: read
+jobs:
+  pitch-shapes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify synthetic second/third-tone contours without false grading
+        run: node --test tests/panda-tone-lab-v457.test.mjs
+      - name: Check tone lab JS syntax
+        run: |
+          node --check assets/panda-tone-analytics-v457.mjs
+          node --check assets/panda-tone-lab-ui-v457.mjs
+
+  android-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Open page with mock microphone in mobile Chromium
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/panda-tone-lab-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-tone-lab.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-tone-lab-v457.mjs
+      - name: Save mobile screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-tone-lab-android-v457
+          path: qa/panda-tone-lab/android-393x852.png
+          if-no-files-found: warn
