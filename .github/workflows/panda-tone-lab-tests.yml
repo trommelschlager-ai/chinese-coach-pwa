@@ -9,6 +9,7 @@ on:
       - 'tests/panda-tone-audio-roundtrip.test.mjs'
       - 'scripts/audit-panda-audio.cjs'
       - 'scripts/benchmark-panda-tones.mjs'
+      - 'scripts/check-panda-audio-references.cjs'
       - '.github/workflows/panda-tone-lab-tests.yml'
       - 'assets/**/*.mp3'
       - 'assets/**/*.m4a'
@@ -20,8 +21,10 @@ on:
       - 'assets/panda-tone-*'
       - 'panda-tone-lab.html'
       - 'tests/panda-tone-lab.test.mjs'
+      - 'tests/panda-tone-audio-roundtrip.test.mjs'
       - 'scripts/audit-panda-audio.cjs'
       - 'scripts/benchmark-panda-tones.mjs'
+      - 'scripts/check-panda-audio-references.cjs'
       - '.github/workflows/panda-tone-lab-tests.yml'
   schedule:
     - cron: '30 3 * * 1'
@@ -45,6 +48,8 @@ jobs:
         run: |
           command -v ffmpeg
           command -v ffprobe
+      - name: Check audio buttons for missing static MP3 files
+        run: node scripts/check-panda-audio-references.cjs
       - name: Diagnose four existing lesson tone recordings (no grading)
         run: node scripts/benchmark-panda-tones.mjs
       - name: Inventory and decode all repository audio
@@ -57,5 +62,6 @@ jobs:
           path: |
             reports/panda-audio-audit.json
             reports/panda-real-tone-diagnostics.json
+            reports/panda-audio-references.json
           if-no-files-found: warn
           retention-days: 14
