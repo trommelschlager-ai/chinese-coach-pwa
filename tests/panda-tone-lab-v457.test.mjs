@@ -36,6 +36,28 @@ test('classifies synthetic rising, dipping and falling *shapes*, never correctne
  const level=analyseContour(path(()=>175));
  assert.equal(level.kind,'level');
 });
+test('Android screenshot: 0.34 s and ten clean f0 samples are insufficient, not tone 2',()=>{
+ const short=path(p=>140+55*p,10);
+ const r=analyseContour(short);
+ assert.equal(r.kind,'insufficient');
+ assert.equal(r.isToneGrade,false);
+ assert.match(r.label,/короткий/);
+ assert.equal(r.stats.voicedFrames,10);
+ assert.ok(r.stats.duration>=.33&&r.stats.duration<=.36);
+});
+test('even many samples over <0.5 s do not cause false tone determination',()=>{
+ const fast=Array.from({length:24},(_,i)=>({t:i*.017,hz:140+55*i/23}));
+ const r=analyseContour(fast);
+ assert.equal(r.kind,'insufficient');
+ assert.equal(r.isToneGrade,false);
+});
+test('valid longer rising tone-like contour is still described without grading',()=>{
+ const enough=path(p=>145+60*p,25);
+ const r=analyseContour(enough);
+ assert.equal(r.kind,'rise');
+ assert.equal(r.isToneGrade,false);
+ assert.ok(r.stats.duration>=.5);
+});
 test('short contours and gaps do not get a grade',()=>{
  assert.equal(analyseContour(path(p=>140+60*p,5)).kind,'insufficient');
  const separated=[...path(p=>140+30*p,7),...path(p=>180+15*p,7).map(x=>({...x,t:x.t+2}))];
@@ -46,13 +68,16 @@ test('short contours and gaps do not get a grade',()=>{
 test('pilot page only uses local Web Audio and never claims verified tones',()=>{
  const html=fs.readFileSync(new URL('../panda-tone-lab.html',import.meta.url),'utf8');
  const ui=fs.readFileSync(new URL('../assets/panda-tone-lab-ui-v457.mjs',import.meta.url),'utf8');
- assert.ok(html.includes('panda-tone-lab-ui-v457.mjs?v=457'));
+ assert.ok(html.includes('panda-tone-lab-ui-v457.mjs?v=458'));
  assert.ok(html.includes('не оценивает правильность китайских тонов'));
  assert.ok(html.includes('panda-voice-pilot.html'));
  assert.ok(ui.includes('getUserMedia('));
  assert.ok(ui.includes('getFloatTimeDomainData('));
  assert.ok(ui.includes('estimatePitch('));
- assert.ok(ui.includes('analyseContour(frames)'));
+ assert.ok(ui.includes('analyseContour(frames)'))
+ assert.ok(ui.includes('result.kind===\'rise\'&&tone===3'));
+ assert.ok(ui.includes('Number.isFinite(s.startToEndSt)'));
+ assert.ok(ui.includes('panda-tone-analytics-v457.mjs?v=458'));
  assert.ok(ui.includes('getTracks().forEach(t=>t.stop())'));
  for(const banned of ['fetch(', 'XMLHttpRequest','WebSocket','MediaRecorder','SpeechRecognition','localStorage','sessionStorage']){
   assert.ok(!ui.includes(banned),'Pilot unexpectedly uses '+banned);
