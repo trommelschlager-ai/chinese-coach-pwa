@@ -9,7 +9,7 @@
 {
   document.documentElement.classList.add('course-layout');
   for (const stylesheet of ['hsk2-storyboard-v433.css', 'hsk2-lilac-pink-v444.css',
-    'hsk2-lesson-theme-v451.css', 'hsk2-lesson1-word-flow.css?v=1']) {
+    'hsk2-lesson-theme-v451.css', 'hsk2-lesson1-word-flow.css?v=2']) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = './assets/' + stylesheet;
@@ -318,7 +318,7 @@ function mixedDay() {
 function blank() {
   return {
     step:1, quiz:tests.map(() => words.map(() => null)),
-    missed:tests.map(() => words.map(() => false)), quizTest:null, quizIndex:0, quizPicked:[], courseQuizCursor:null,
+    missed:tests.map(() => words.map(() => false)), quizTest:null, quizIndex:0, quizPicked:[], courseQuizCursor:null, courseQuizType:null,
     grammar:[], grammarDone:false, dayOrder:[], dayShuffled:mixedDay(), dayDone:false,
     mic:[], chat:[], toneTab:'words'
   };
@@ -495,10 +495,10 @@ function render(resetScroll = false) {
   if (courseMode) {
     const cursor = state.courseQuizCursor;
     const current = courseQuiz[cursor];
-    const following = courseQuiz[cursor+1];
+    const following = courseQuiz[adjacentCourseTask(1)];
     next.textContent = inQuiz
       ? (!state.quiz[current.type][current.index] ? 'Пропустить →'
-        : !following ? 'К результатам →'
+        : !following ? (state.courseQuizType === null ? 'К результатам →' : 'К тестам →')
         : following.word !== current.word ? 'Следующее слово →' : 'Дальше →')
       : step === 8 ? 'К началу ↻' : step === 3 && cursor === null ? 'Начать тесты →' : 'Дальше →';
   } else {
@@ -508,7 +508,8 @@ function render(resetScroll = false) {
 }
 function intro() {
   if (courseMode) return '<section class="word-flow-cover" aria-label="HSK 2 · Урок 1 · Мой день">' +
-    '<img src="' + decoration + 'course-cover-top.webp" alt="Panda Go · HSK 2 · Урок 1 «Мой день». Научись говорить о своём дне по-китайски. Шесть слов, пять мини-тестов, грамматика, распорядок, произношение и диалог." width="691" height="1067" fetchpriority="high">' +
+    '<div class="word-flow-cover-art"><img src="' + decoration + 'course-cover-top.webp" alt="Panda Go · HSK 2 · Урок 1 «Мой день». Шесть слов, пять мини-тестов, грамматика, распорядок, произношение и диалог." width="691" height="1067" fetchpriority="high">' +
+    '<p class="word-flow-cover-copy">Расскажи о своём распорядке дня.</p></div>' +
     '<a class="word-flow-cover-back" href="./hsk2-life-course.html?view=welcome" aria-label="На главную HSK 2">‹</a>' +
     '<button type="button" class="primary word-flow-cover-start" data-step="2">Начать урок →</button>' +
     '<img src="' + decoration + 'course-cover-scroll.webp" alt="Не бойся говорить с ошибками. Бойся никогда не заговорить!" width="691" height="311">' +
@@ -548,10 +549,14 @@ function quiz() {
       const opening = courseMode ? '<div class="test-card">' : '<button type="button" class="test-card" data-test="' + i + '">';
       const icon = courseMode ? testIcon(i) : art('test-' + (i+1));
       const status = total === 6 ? '✓' : courseMode ? total + '/6' : playIcon;
+      const orbClass = 'orb' + (total === 6 ? ' done' : '');
+      const trigger = courseMode
+        ? '<button type="button" class="' + orbClass + '" data-quiz-type="' + i + '" aria-label="Открыть тест: ' +
+          title + '. Выполнено ' + total + ' из 6">' + status + '</button>'
+        : '<span class="' + orbClass + '" aria-hidden="true">' + status + '</span>';
       return opening + '<span class="badge">' + (i+1) + '</span>' + icon + '<span><strong>Тест ' + (i+1) + ' · ' + title +
-        '</strong><small>' + testHelp[i] + (total && !courseMode ? ' · ' + total + '/6' : '') + '</small></span><span class="orb' +
-        (total === 6 ? ' done' : '') + '"' + (courseMode ? ' aria-label="Выполнено ' + total + ' из 6"' : ' aria-hidden="true"') +
-        '>' + status + '</span>' + (courseMode ? '</div>' : '</button>');
+        '</strong><small>' + testHelp[i] + (total && !courseMode ? ' · ' + total + '/6' : '') + '</small></span>' +
+        trigger + (courseMode ? '</div>' : '</button>');
     }).join('') + '</div><div class="reward panel">' + art('trophy') +
     '<strong>' + (courseMode ? 'Выполняй задания для каждого слова по порядку.' : 'Закрепи слова урока в пяти разных заданиях!') +
     '</strong></div>' + (courseMode
@@ -617,8 +622,10 @@ function question() {
       break;
   }
   const caption = courseMode
-    ? 'Слово ' + (courseQuiz[state.courseQuizCursor].word+1) + ' из ' + words.length +
-      ' · задание ' + (state.courseQuizCursor+1) + ' из ' + courseQuiz.length
+    ? state.courseQuizType === null
+      ? 'Слово ' + (courseQuiz[state.courseQuizCursor].word+1) + ' из ' + words.length +
+        ' · задание ' + (state.courseQuizCursor+1) + ' из ' + courseQuiz.length
+      : 'Задание ' + courseQuiz.slice(0,state.courseQuizCursor+1).filter(task => task.type === t).length + ' из ' + state.quiz[t].length
     : 'Задание ' + (i+1) + ' из 6 · выполнено ' + correctCount(t);
   const controls = courseMode ? '' :
     '<div class="controls"><button type="button" class="soft" data-question="-1"' + (!i ? ' disabled' : '') +
@@ -638,14 +645,14 @@ function tokenButtons(order,selected,key) {
 function grammar() {
   const current = state.grammar.map(i => tokens[i]).join('');
   return '<h1 class="pill-title">📚 Грамматика</h1><div class="cloud rule-cloud">' + hanzi('以后') +
-    '<span class="py">yǐhòu</span><b>после того как…</b></div><p class="grammar-explain hint">Ставим 以后 после первого действия, чтобы сказать, что делаем потом.</p>' +
+    '<span class="py">yǐhòu</span><b>после того как…</b></div><p class="grammar-explain hint">Ставим 以后 после первого действия.</p>' +
     '<article class="panel example"><span class="tag">Пример</span>' + vocabImage(1) + '<div>' +
     hanzi('我起床<em>以后</em>洗脸。') + translate(phrases[2]) + '</div>' + audioButton(phrases[2][0]) + '</article>' +
     '<h2 class="builder-title">Составь предложение</h2><div class="tokens">' + tokenButtons([2,0,3,1,4],state.grammar,'gram') +
     '</div><div class="answer" lang="zh-Hans" data-placeholder="Нажимай на карточки по порядку">' + current + '</div>' +
-    '<div class="controls"><button type="button" class="soft" data-gram-undo>↶ Отменить</button>' +
-    '<button type="button" class="soft" data-gram-clear>Очистить</button></div>' +
-    '<button type="button" class="primary large" data-gram-check>✓ Проверить</button>' + safeStatus() +
+    '<div class="controls grammar-actions"><button type="button" class="soft" data-gram-undo>Отменить</button>' +
+    '<button type="button" class="soft" data-gram-clear>Очистить</button>' +
+    '<button type="button" class="primary" data-gram-check>✓ Проверить</button></div>' + safeStatus() +
     (state.grammarDone && !feedback ? '<p class="feedback good">✓ Предложение собрано верно</p>' : '');
 }
 
@@ -829,9 +836,18 @@ function markQuiz(ok,method) {
   }
 }
 
+function adjacentCourseTask(direction) {
+  const type = state.courseQuizType;
+  for (let index = state.courseQuizCursor + direction; index >= 0 && index < courseQuiz.length; index += direction) {
+    if (type === null || courseQuiz[index].type === type) return index;
+  }
+  return direction === 1 && type === null ? courseQuiz.length : -1;
+}
+
 function showCourseTask(cursor) {
   clearMedia();
   state.courseQuizCursor = cursor < 0 ? null : Math.min(cursor,courseQuiz.length);
+  if (cursor < 0) state.courseQuizType = null;
   state.quizPicked = [];
   heardClip = null;
   feedback = '';
@@ -845,8 +861,15 @@ function startTests() {
     openTest(Math.max(0,tests.findIndex((_,i) => correctCount(i) < words.length)));
     return;
   }
+  state.courseQuizType = null;
   const firstPending = courseQuiz.findIndex(({type,index}) => !state.quiz[type][index]);
   showCourseTask(firstPending < 0 ? 0 : firstPending);
+}
+
+function startCourseType(type) {
+  state.courseQuizType = type;
+  const firstPending = courseQuiz.findIndex(task => task.type === type && !state.quiz[type][task.index]);
+  showCourseTask(firstPending < 0 ? courseQuiz.findIndex(task => task.type === type) : firstPending);
 }
 
 function openTest(test) {
@@ -927,6 +950,7 @@ const actions = {
   step: value => move(Number(value)),
   say: (value,button) => play(value,button),
   test: value => openTest(Number(value)),
+  quizType: value => startCourseType(Number(value)),
   start: startTests,
   question: value => changeQuestion(Number(value)),
   choice: value => {
@@ -971,7 +995,7 @@ app.addEventListener('click',event => {
 
 function previousStep() {
   if (courseMode && state.step === 3 && state.courseQuizCursor !== null) {
-    showCourseTask(state.courseQuizCursor-1);
+    showCourseTask(adjacentCourseTask(-1));
   } else if (state.step === 3 && state.quizTest !== null) {
     openTest(null);
   } else {
@@ -988,7 +1012,7 @@ next.addEventListener('click',() => {
       return;
     }
     if (state.quizTest !== null) {
-      showCourseTask(state.courseQuizCursor+1);
+      showCourseTask(adjacentCourseTask(1));
       return;
     }
   }
