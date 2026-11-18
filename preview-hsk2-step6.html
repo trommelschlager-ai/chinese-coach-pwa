@@ -24,6 +24,48 @@
 @keyframes pulse{from{box-shadow:0 2px 7px #e844b37a}to{box-shadow:0 0 0 5px #f06ab65c}}
 @media(max-width:385px){.brandtitle{font-size:17px}.card{grid-template-columns:minmax(89px,33%) 1fr auto;gap:5px;padding-left:11px;padding-right:8px}.hanzi{font-size:27px}.py{font-size:15px}.tone{width:28px}.ru{font-size:12px}.btn-round{min-width:37px;height:33px}.controls{gap:5px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* DEMO v2: approved light-lilac header and premium tactile 1–8 step buttons.
+   Overrides only the header and navigation; exercise cards, tones and controls remain untouched. */
+.top{
+  color:#54216f;
+  background:linear-gradient(155deg,#fff6fe 0%,#f8dafa 28%,#edbff7 64%,#e2acf3 100%);
+  border-bottom:1px solid #cc87e3;
+  box-shadow:0 6px 17px #b76dcc48,inset 0 2px 1px #fff;
+}
+.brandtitle{color:#642180;text-shadow:0 1px 0 #ffffffd9}
+.brandtitle small{color:#86568f;opacity:1}
+.avatar{border:2px solid white;box-shadow:0 4px 11px #9b4ea74d}
+.pill{color:#79278e;border:1px solid #e6b5ef;background:linear-gradient(#fff,#fff0fd);
+  box-shadow:0 3px 7px #b17fb240,inset 0 1px 1px white}
+.steps{gap:1px;margin-top:15px;padding:2px 0 3px}
+.line{height:4px;min-width:4px;border-radius:99px;box-shadow:0 1px 0 white;
+  background:linear-gradient(180deg,#e2afed,#cb81df)}
+.step{
+  position:relative;isolation:isolate;min-width:0;aspect-ratio:1/1;
+  width:34px;height:34px;max-width:37px;border:2px solid #c97cdf;
+  background:linear-gradient(150deg,#fff 0%,#fff4ff 35%,#efc6fa 100%);
+  box-shadow:0 3px 0 #b76bc9,0 5px 9px #9d55b03d,inset 0 2px 1px #fff;
+  color:#6d218b;font-size:15px;font-weight:900;text-shadow:0 1px white;
+  transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease;
+}
+.step.active{
+  border-color:#fff4c6;background:linear-gradient(155deg,#ff84d8 0%,#eb39b9 48%,#ad17a8 100%);
+  color:#fff;text-shadow:0 1px 2px #711268;
+  box-shadow:0 3px 0 #9e259f,0 4px 12px #d145b595,0 0 0 3px #fff6,
+    inset 0 2px 2px #ffffffb0;
+}
+.step.active::after{
+  content:"";pointer-events:none;position:absolute;inset:-5px;border:1px solid #e964c9;
+  border-radius:50%;box-shadow:0 0 12px #f471d77d;
+}
+@media (max-width:360px){
+  .step{width:29px;height:29px;font-size:13px}
+  .line{min-width:2px}
+  .brandtitle{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.step{transition:none}}
+
 </style>
 </head>
 <body>
