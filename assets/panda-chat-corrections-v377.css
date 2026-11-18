@@ -83,3 +83,20 @@
 :root[data-keyboard=true] #pg346 .pg346-feedback:not([hidden]){
   max-height:calc(100% - 5px);
 }
+
+/* v454: Keep the fixed "Все темы" circular button fully visible.
+ * On mobile the topic control occupies the last 28.5% of scene width;
+ * reserve that space even while the explanation details are expanded.
+ * The card may grow vertically and the details may scroll when needed. */
+#pg346 .pg346-feedback:not([hidden]),
+#pg346 .pg346-feedback:not([hidden]):has(.pg445-details[open]){
+  box-sizing:border-box;
+  left:3%;
+  width:65%;
+  max-width:360px;
+  overflow-wrap:anywhere;
+}
+#pg346 .pg346-feedback:not([hidden]):has(.pg445-details[open]){
+  max-height:calc(98% - 6px);
+  overflow-y:auto;
+}
