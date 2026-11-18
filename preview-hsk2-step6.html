@@ -279,6 +279,7 @@ body.pg-other #demo-other{padding:8px 8px 6px}
 <link rel="stylesheet" href="./assets/hsk2-preview-illustrated-v457.css?v=457">
 <link rel="stylesheet" href="./assets/hsk2-preview-approved-v460.css?v=460">
 <link rel="stylesheet" href="./assets/hsk2-preview-approved-v462.css?v=462">
+<link rel="stylesheet" href="./assets/hsk2-reference-compact-v464.css?v=464">
 </head>
 <body>
 <div class="page">
@@ -524,10 +525,10 @@ body.pg-other #demo-other{padding:8px 8px 6px}
    const views={1:intro,2:wordStep,3:quizStep,4:gramStep,5:practiceStep,7:chatStep,8:finishStep};
    root.innerHTML=views[step]();
    bottomText.textContent=step===8?'↻ В начало демо'
-       :step===3&&!q.started?'▶ Начать тесты'
+       :step===3&&!q.started?'Начать тесты'
        :step===3&&q.started?'← К списку тестов'
-       :step===4?'✓ Проверить предложение'
-       :step===5?'✓ Проверить порядок'
+       :step===4?'Проверить предложение'
+       :step===5?'Проверить порядок'
        :'Дальше: '+headings[step]+' →';
   }
   root.scrollTop=0;
