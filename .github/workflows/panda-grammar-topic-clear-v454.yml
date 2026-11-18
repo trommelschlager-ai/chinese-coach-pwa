@@ -1,0 +1,35 @@
+name: Panda topic button remains accessible v454
+on:
+  push:
+    branches:
+      - 'fix/panda-grammar-topic-button-clear-v454'
+  pull_request:
+    paths:
+      - 'assets/panda-chat-corrections-v377.css'
+      - 'panda-voice-pilot.html'
+      - 'assets/offline-pack.json'
+      - 'sw.js'
+      - 'tests/panda-grammar-topic-clear-v454.test.mjs'
+      - '.github/workflows/panda-grammar-topic-clear-v454.yml'
+permissions:
+  contents: read
+jobs:
+  feedback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check layout and previously approved grammar, sounds and cards
+        run: |
+          node --test tests/panda-grammar-topic-clear-v454.test.mjs
+          node --test tests/panda-grammar-card-readability-v453.test.mjs
+          node --test tests/panda-grammar-feedback-visible-v450.test.mjs
+          node --test tests/panda-grammar-auto-voice-v452.test.mjs
+          node --test tests/panda-grammar-voice-v451.test.mjs
+      - name: Verify existing Panda JS untouched
+        run: |
+          node --check assets/panda-live-v346.mjs
+          node --check assets/panda-live-screen-v270.mjs
