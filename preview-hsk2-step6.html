@@ -210,6 +210,71 @@ body:not(.pg-other) .bottom{z-index:30}
 .pg451-compact .pg-mini-nav button{padding:7px 5px;font-size:12px}
 @media(max-height:730px){.pg451-title{font-size:17px;margin:0 0 5px}.pg451-vrow{min-height:58px;padding:4px 6px}.pg451-vrow .pg451-illustration{height:38px}.pg451-testlist button{min-height:51px;padding:6px}.pg451-rule{padding:7px}.pg451-ordergrid .pg451-illus{font-size:25px}}
 
+
+/* v459 Panda Go approval-inspired makeover. One HTML header, no geometry jumps.
+   Artwork is only from the user's approved picture; buttons remain live. */
+body{background:#ffefff}
+.page{background:radial-gradient(ellipse at 7% 17%,#ffd4f2,transparent 33%),linear-gradient(#f8c9f7,#fee7fa 62%,#e8cbff)}
+.top{background:linear-gradient(145deg,#9b26c2 0%,#c65cdb 45%,#9d32c9 100%)!important;border-bottom:2px solid #f3c17b!important;box-shadow:0 4px 16px #8d2ba570!important;color:white!important}
+.brandtitle{color:white!important;text-shadow:0 2px 3px #63108c8f!important;font-weight:950!important}
+.brandtitle small{color:#ffeefe!important;opacity:1!important}
+.top .pill{background:linear-gradient(#fff6ce,#ffe2a3)!important;border:1px solid #ffc15f!important;color:#731388!important;box-shadow:0 2px 7px #7330656b!important}
+.top .step{background:linear-gradient(#fff8ff,#f0c7ff)!important;border:2px solid #fff5c6!important;color:#73138f!important;box-shadow:0 2px 0 #a541c1,0 3px 7px #48075a66!important}
+.top .step.active{background:linear-gradient(#ff91e9,#d633ac 54%,#a81ea1)!important;border-color:#ffdb76!important;color:white!important;box-shadow:0 2px 0 #79168b,0 0 0 3px #fff3b8a6,0 0 14px #ff9beabb!important}
+.top .line{background:linear-gradient(#ffe3a1,#eb9b6e)!important}
+body.pg-other .bottom{background:linear-gradient(#fff1ffcc,#f8c9ee)!important;box-shadow:0 -6px 15px #ae53c34a!important}
+body.pg-other .bottom .go{border:2px solid #ffc7f1!important;border-bottom:5px solid #5b0b88!important;background:linear-gradient(#ef91ff,#b62cd8 58%,#710b99)!important;box-shadow:0 5px 12px #822d9a72!important;text-shadow:0 2px 3px #5a1262c1}
+body.pg-other .bottom small{color:#9a628e;font-size:10px}
+body.pg-other #demo-other{padding:8px 8px 6px}
+.pg457-scene{min-height:100%;height:auto;position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:space-around;gap:8px;overflow:hidden;padding:12px 10px;background:radial-gradient(ellipse at 10% 7%,#fff7ff 0,transparent 35%),radial-gradient(ellipse at 97% 80%,#efbff8 0,transparent 44%),linear-gradient(145deg,#ffdafa,#fff4ff 51%,#fae3fd);border:2px solid #e5a5e6;border-bottom:4px solid #c375d2;border-radius:25px;box-shadow:0 5px 15px #b05eaa59,inset 0 0 0 3px #fff7f9}
+.pg457-scene::before,.pg457-scene::after{content:"";position:absolute;width:98px;height:98px;pointer-events:none;opacity:.5;z-index:-1;background:radial-gradient(ellipse at 30% 35%,#fff3ff 0 14%,transparent 15%),radial-gradient(ellipse at 60% 30%,#ff7dc4 0 13%,transparent 14%),radial-gradient(ellipse at 72% 56%,#ffb0da 0 16%,transparent 17%),radial-gradient(ellipse at 36% 70%,#e585c9 0 14%,transparent 15%)}
+.pg457-scene::before{left:-29px;top:-32px;transform:rotate(22deg)}.pg457-scene::after{right:-38px;bottom:-33px;transform:rotate(-35deg)}
+.pg457-heading{font-size:clamp(18px,4.7vw,23px);font-weight:950;color:#65168a;line-height:1.2;text-align:center;text-shadow:0 1px #fff;margin:3px 0 6px}
+.pg457-banner{display:flex;gap:10px;align-items:center;background:linear-gradient(145deg,#fff6ff,#ffe8f8);border:1px solid #e6abd7;border-bottom:3px solid #cb83d2;border-radius:18px;padding:9px;box-shadow:0 3px 9px #ac55a339}
+.pg457-banner img{width:31%;max-width:130px;aspect-ratio:1/1;object-fit:cover;border-radius:15px;flex:none;border:2px solid #ffd0f5;box-shadow:0 3px 8px #a93b9e55}
+.pg457-banner strong{font-size:clamp(16px,4.7vw,23px);color:#59117f;line-height:1.13;display:block}
+.pg457-banner .pg-py{color:#d333aa;font-size:13px;margin:4px 0 1px}
+.pg457-banner p{margin:5px 0;font-size:12px;color:#714179;line-height:1.3}
+.pg457-gold{border:2px solid #f6c67a;border-radius:17px;padding:8px;background:linear-gradient(140deg,#fffefa,#fff0fc);box-shadow:0 4px 11px #c28d9347,inset 0 1px white}
+.pg457-gold strong{display:block;font-weight:900;color:#611288;text-align:center;margin-bottom:4px;font-size:14px}
+.pg457-gold p{font-size:12px;line-height:1.45;color:#66316f;text-align:center;margin:4px 0}
+.pg457-ribbon{border:2px solid #eb9fef;border-bottom:4px solid #8615ad;box-shadow:0 3px 8px #a553ad88;border-radius:99px;background:linear-gradient(#e88af2,#ad2ccd 60%,#8620ae);color:white;text-align:center;padding:7px 14px;font-weight:900;font-size:15px;margin:0 16px;text-shadow:0 1px #6c1086}
+.pg457-feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.pg457-feature{padding:10px 3px 7px;text-align:center;background:linear-gradient(160deg,#fffaff,#ffeff9);border:1px solid #e9b1e5;border-bottom:3px solid #cd84cc;border-radius:13px;box-shadow:0 3px 7px #a66aa54a;font-weight:850;font-size:11px;color:#651c82}
+.pg457-feature b{display:block;font-size:25px;line-height:1.1;margin-bottom:5px}
+.pg457-word-list{display:grid;gap:6px;grid-template-rows:repeat(6,minmax(0,1fr));flex:1;min-height:0}
+.pg457-word-card{display:grid;grid-template-columns:clamp(57px,19vw,78px) minmax(0,1fr) 42px;align-items:center;gap:8px;padding:5px 6px;border:1px solid #e6addf;border-bottom:3px solid #c980d6;border-radius:16px;background:linear-gradient(145deg,#fffaff,#fdebf8);box-shadow:0 3px 7px #b772bb4a;min-height:0;overflow:hidden}
+.pg457-word-card img{height:100%;min-height:65px;max-height:82px;width:100%;border-radius:12px;object-fit:cover;object-position:center;border:2px solid #f1c3eb;box-shadow:0 2px 4px #b465b64d}
+.pg457-word-card .pg-cn{font-size:clamp(21px,6.8vw,30px);line-height:1.12}
+.pg457-word-card .pg-py{font-size:clamp(11px,3.3vw,15px);color:#ca248c}
+.pg457-word-card .pg-ru{font-size:clamp(10px,3.1vw,13px);min-height:0;margin-bottom:0;line-height:1.2}
+.pg457-word-card .pg-play{width:40px;height:40px;min-width:40px;min-height:40px;border:2px solid #ffd5a6;border-bottom:4px solid #8311a8;border-radius:50%;background:linear-gradient(#e887fb,#b627d2 60%,#8614ae);color:white;font-size:20px;box-shadow:0 3px 6px #922bb274}
+.pg457-quiz-list{display:grid;gap:7px;flex:1;grid-template-rows:repeat(5,minmax(0,1fr));min-height:0}
+.pg457-quiz-item{display:grid;grid-template-columns:32px 43px minmax(0,1fr) 19px;align-items:center;gap:7px;border:1px solid #e3a2e0;border-bottom:3px solid #b45fc5;border-radius:16px;background:linear-gradient(#fffbff,#ffe7f8);box-shadow:0 3px 8px #a953a947;padding:5px 7px;min-height:0;text-align:left;color:#601581;cursor:pointer}
+.pg457-quiz-item:active{transform:translateY(2px)}
+.pg457-quiz-item strong{font-size:clamp(12px,3.6vw,15px);line-height:1.25;display:block}
+.pg457-quiz-item small{font-size:clamp(10px,2.7vw,12px);display:block;margin-top:2px;color:#805387}
+.pg457-quiz-num{background:linear-gradient(#fa76dc,#b322ba);border-radius:50%;display:grid;place-items:center;border:1px solid #fff0ff;color:white;font-size:14px;font-weight:950;width:30px;height:30px;box-shadow:0 2px 4px #a223b1aa}
+.pg457-quiz-symbol{font-size:29px;line-height:1;display:grid;place-items:center}
+.pg457-quiz-arrow{font-size:26px;font-weight:900;color:#a32bbb;text-align:center}
+.pg457-rule{display:flex;flex-direction:column;justify-content:center;flex:1;border:1px solid #e9aee4;border-bottom:3px solid #c17ec7;border-radius:18px;background:linear-gradient(#fffafa,#fce9f6);box-shadow:0 4px 8px #ab66b545;padding:9px 10px}
+.pg457-rule h3{color:#d62c9d;font-size:22px;text-align:center;margin:0 0 4px}
+.pg457-rule p{font-size:12px;color:#784a80;text-align:center;margin:4px 0}
+.pg457-rule .pg-cn{text-align:center;font-size:21px}.pg457-rule .pg-py{text-align:center;font-size:12px}.pg457-rule .pg-ru{text-align:center;font-size:12px}
+.pg457-rule .pg-play{margin:5px auto 0;display:block;width:35px;height:35px;min-height:35px;min-width:35px;font-size:15px}
+.pg457-practice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:7px;flex:1;min-height:0}
+.pg457-practice-grid button{border:1px solid #dca1e2;border-bottom:3px solid #af67c4;border-radius:16px;background:linear-gradient(#fffafa,#f9e5f7);box-shadow:0 3px 7px #b46dbd59;color:#651881;padding:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0;cursor:pointer}
+.pg457-practice-grid button:disabled{opacity:.48;filter:grayscale(.5);cursor:default}
+.pg457-practice-grid img{width:100%;height:clamp(75px,15dvh,125px);max-height:62%;object-fit:cover;object-position:center;border-radius:12px;border:1px solid #f5c2e9}
+.pg457-practice-grid strong{font-size:clamp(17px,4.6vw,22px);margin-top:3px}
+.pg457-practice-grid small{font-size:11px;color:#b42b94;font-weight:750;line-height:1.2}
+.pg457-practice-tools{display:flex;gap:5px;justify-content:space-between}
+.pg457-practice-tools .pg-action{font-size:12px;min-height:36px;padding:7px 10px;white-space:nowrap;border-radius:17px}
+.pg457-answer{border:2px dashed #cd84c8;border-radius:14px;background:#fff5fc;color:#722283;font-size:12px;padding:8px;min-height:48px}
+.pg457-surface-title{font-size:20px;font-weight:950;color:#68207d;text-align:center;line-height:1.2;margin:2px 0}
+@media(max-height:780px){.pg457-scene{padding:8px;gap:6px}.pg457-word-card{padding:3px 5px}.pg457-word-card img{min-height:51px;max-height:69px}.pg457-banner img{width:27%}.pg457-feature{padding:7px 2px}.pg457-quiz-item{padding:4px 6px}.pg457-practice-grid img{height:clamp(64px,12dvh,85px)}}
+@media(max-height:650px){.pg457-banner img{width:23%}.pg457-feature b{font-size:20px}.pg457-feature{padding:5px 2px}.pg457-gold p{font-size:11px}}
+
 </style>
 <link rel="stylesheet" href="./assets/hsk2-preview-illustrated-v457.css?v=457">
 </head>
@@ -225,8 +290,8 @@ body:not(.pg-other) .bottom{z-index:30}
  <main class="list" id="words" aria-label="Слова для тренировки произношения"></main>
  <section class="legend" aria-label="Четыре китайских тона"><b>Памятка: движение четырёх тонов</b><div class="legend-tones" id="legend"></div><div style="margin-top:8px">Для <b>洗脸 xǐliǎn</b> пишем 3 + 3, но в обычной речи первый слог произносим как 2-й тон.</div></section>
  <p class="status" id="status" aria-live="polite">Это интерактивный макет. Для звука используется голос браузера, не наши MP3.</p>
-</div>
 <div class="bottom"><button class="go" type="button" id="advance"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 4v16l13-8z"/></svg><span>Начать повторение всех 6 слов</span></button><small>Предпросмотр · действующий урок не изменён</small></div>
+</div>
 <script>
 (()=>{'use strict';
  const words=[
@@ -326,37 +391,33 @@ body:not(.pg-other) .bottom{z-index:30}
  const caption=(txt)=>'<span class="pg-kicker">'+txt+'</span>';
 
 
- function poster(n){
-  if(n===1)return intro();
-  return testHome();
- }
 
+ const illustration=(index)=>'./assets/hsk2-preview-v457/word-'+(index+1)+'.webp';
+ function poster(n){return n===1?intro():testHome();}
  function intro(){
-  const blocks=[['📚','6 слов'],['🎯','5 мини-тестов'],['🧩','грамматика'],['🗓️','распорядок'],['🎙️','произношение'],['💬','диалог']];
-  return '<section class="pg451-sakura">'+
-  '<div class="pg457-hero"><div class="pg457-label"><b lang="zh-Hans">我的一天</b><span class="pg-py">Wǒ de yì tiān</span><span class="pg-ru">Мой день</span></div></div>'+
-  '<div class="pg457-ribbon">🌸 На этом уроке ты научишься</div>'+
-  '<p class="pg457-desc">Рассказывать, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</p>'+
-  '<div class="pg457-ribbon">✨ Тебя ждут ✨</div>'+
-  '<div class="pg457-features">'+blocks.map(x=>'<div><em>'+x[0]+'</em>'+x[1]+'</div>').join('')+'</div></section>';
- }
- function pandaImg(i){
-  const asset=[1,2,3,5,6,1][i]||1;
-  return './assets/hsk2-preview-v456/word-'+asset+'.webp';
+  return '<section class="pg457-scene">'+
+   '<div class="pg457-banner"><img src="./assets/hsk2-preview-v457/hero-reading.webp" alt="Панда с книгой в розовых наушниках"><div><strong lang="zh-Hans">我的一天</strong><span class="pg-py">Wǒ de yì tiān</span><strong style="font-size:18px">Мой день</strong><p>Привет! Научимся рассказывать о своём дне по-китайски.</p></div></div>'+
+   '<div class="pg457-gold"><strong>📚 На этом уроке ты научишься</strong><p>Говорить, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</p></div>'+
+   '<h2 class="pg457-ribbon">✨ Тебя ждут ✨</h2>'+
+   '<div class="pg457-feature-grid"><div class="pg457-feature"><b>📚</b>6 слов</div><div class="pg457-feature"><b>🎯</b>5 мини-тестов</div><div class="pg457-feature"><b>📖</b>грамматика</div><div class="pg457-feature"><b>🗓️</b>распорядок</div><div class="pg457-feature"><b>🎙️</b>произношение</div><div class="pg457-feature"><b>💬</b>диалог</div></div>'+
+   '</section>';
  }
  function wordStep(){
-  return '<section class="pg451-sakura"><div class="pg457-title">🌸 Новые слова</div>'+
-  '<div class="pg457-vlist">'+vocab.map((w,i)=>'<div class="pg457-vrow"><img src="'+pandaImg(i)+'" alt="Панда: '+escape(w.ru)+'"><div>'+info(w)+'</div>'+listen(w.zh)+'</div>').join('')+'</div></section>';
+  return '<section class="pg457-scene"><h1 class="pg457-heading">🌸 Новые слова</h1><div class="pg457-word-list">'+
+   vocab.map((w,i)=>'<div class="pg457-word-card"><img loading="eager" src="'+illustration(i)+'" alt="Панда: '+w.ru+'"><div>'+info(w)+'</div>'+listen(w.zh)+'</div>').join('')+
+   '</div></section>';
  }
  function testHome(){
-  const tests=[['📖','Значение слова','Выбери перевод',0],
-    ['🔊','На слух','Послушай и выбери',2],
-    ['🧩','Собери слово','Расставь иероглифы',3],
-    ['📝','Вспомни слово','Найди слово по памяти',4],
-    ['🖼️','Найди картинку','Найди изображение действия',1]];
-  return '<section class="pg451-sakura">'+
-  '<div class="pg457-testhero"><img src="./assets/hsk2-storyboard-v433-avatar.jpg" alt="Панда"><div><b>Проверь слова!</b><p>5 мини-тестов по 6 слов. Всего 30 заданий!</p></div></div>'+
-  '<div class="pg457-testlist">'+tests.map((x,i)=>'<button type="button" data-start-test="'+x[3]+'"><span class="pg451-num">'+(i+1)+'</span><span class="pg457-testsymbol">'+x[0]+'</span><span><strong>Тест '+(i+1)+' · '+x[1]+'</strong><small>'+x[2]+'</small></span><span style="font-size:21px">›</span></button>').join('')+'</div></section>';
+  const tests=[
+   ['📖','Значение слова','Выбери правильный перевод',0],
+   ['🔊','На слух','Слушай и выбирай',2],
+   ['🧩','Собери иероглифы','Составь китайское слово',3],
+   ['📝','Вспомни китайское','Выбери нужное слово',4],
+   ['🎯','Найди картинку','Соотнеси слово и рисунок',1]];
+  return '<section class="pg457-scene">'+
+    '<div class="pg457-banner"><img src="./assets/hsk2-preview-v457/hero-reading.webp" alt="Весёлая Панда"><div><strong style="font-size:19px">Проверь слова!</strong><p>Пять видов заданий. Каждое проверяет все шесть слов.</p></div></div>'+
+    '<div class="pg457-quiz-list">'+tests.map((t,i)=>'<button class="pg457-quiz-item" type="button" data-start-test="'+t[3]+'"><span class="pg457-quiz-num">'+(i+1)+'</span><span class="pg457-quiz-symbol">'+t[0]+'</span><span><strong>Тест '+(i+1)+' · '+t[1]+'</strong><small>'+t[2]+'</small></span><span class="pg457-quiz-arrow">›</span></button>').join('')+'</div>'+
+    '</section>';
  }
  function quizHeader(){
   return '<section class="pg-panel">'+caption('Шаг 3 · 5 видов проверки')+'<img class="pg-quiz-decoration" src="./assets/hsk2-storyboard-v433-avatar.jpg" alt="Панда"><h1>Закрепим слова!</h1><p>Каждый из 5 мини-тестов проверяет все 6 слов. Всего 30 упражнений.</p>'+
@@ -395,22 +456,25 @@ body:not(.pg-other) .bottom{z-index:30}
  }
 
 
+
  function gramStep(){
-  return '<section class="pg451-sakura"><div class="pg457-title">📚 Грамматика</div><div class="pg457-rule">'+
-  '<div class="pg457-rulecard"><h3 lang="zh-Hans">每天</h3><p>měitiān — каждый день</p><span class="pg-cn">我每天七点起床。</span><span class="pg-py">Wǒ měitiān qī diǎn qǐchuáng.</span><span class="pg-ru">Я каждый день встаю в 7 часов.</span>'+listen('我每天七点起床')+'</div>'+
-  '<div class="pg457-rulecard"><h3 lang="zh-Hans">以后</h3><p>yǐhòu — после того как…</p><span class="pg-cn">我起床以后洗脸。</span><span class="pg-py">Wǒ qǐchuáng yǐhòu xǐliǎn.</span><span class="pg-ru">После подъёма я умываюсь.</span>'+listen('我起床以后洗脸')+'</div>'+
-  '<div class="pg457-rulecard"><h3 style="font-size:17px;color:#78238a">🧩 Проверь себя</h3><p>Как сказать: «Я каждый день чищу зубы»?</p><div class="pg-grid"><button class="pg-choice" data-grammar="ok">我每天刷牙。</button><button class="pg-choice" data-grammar="no">我刷牙每天。</button></div><div class="pg-feedback" id="pg-grammar-result" role="status" style="margin:0;padding:5px">Выбери ответ.</div></div>'+
-  '</div></section>';
+  return '<section class="pg457-scene"><h1 class="pg457-surface-title">📖 Грамматика</h1>'+
+   '<div class="pg457-rule"><h3 lang="zh-Hans">每天</h3><p>měitiān — каждый день</p><span class="pg-cn" lang="zh-Hans">我每天七点起床。</span><span class="pg-py">Wǒ měitiān qī diǎn qǐchuáng.</span><span class="pg-ru">Я каждый день встаю в семь часов.</span>'+listen('我每天七点起床')+'</div>'+
+   '<div class="pg457-rule"><h3 lang="zh-Hans">以后</h3><p>yǐhòu — после того как…</p><span class="pg-cn" lang="zh-Hans">我起床以后洗脸。</span><span class="pg-py">Wǒ qǐchuáng yǐhòu xǐliǎn.</span><span class="pg-ru">После того как встаю, я умываюсь.</span>'+listen('我起床以后洗脸')+'</div>'+
+   '<div class="pg457-gold"><strong>🎯 Проверь себя</strong><p>Выбери правильную фразу: «Я каждый день чищу зубы».</p>'+
+   '<div class="pg-grid" style="gap:5px"><button class="pg-choice" data-grammar="ok" style="min-height:39px;padding:5px;font-size:13px">我每天刷牙。</button><button class="pg-choice" data-grammar="no" style="min-height:39px;padding:5px;font-size:13px">我刷牙每天。</button></div>'+
+   '<div class="pg-feedback" id="pg-grammar-result" role="status" style="font-size:11px;padding:6px;margin-top:6px">Выбери ответ.</div></div>'+
+   '</section>';
  }
  function practiceStep(){
-  const names=dayOrder.map(i=>vocab[i].zh);
-  return '<section class="pg451-sakura"><div class="pg457-title">🎯 Мой распорядок</div>'+
-  '<p class="pg457-desc">Расставь действия Панды по порядку.</p>'+
-  '<div class="pg457-ordergrid">'+mixedOrder.map(i=>'<button data-order="'+i+'" '+(dayOrder.includes(i)?'disabled':'')+'><img src="'+pandaImg(i)+'" alt="'+escape(vocab[i].ru)+'"><strong>'+vocab[i].zh+'</strong><small>'+vocab[i].py+'</small></button>').join('')+'</div>'+
-  '<div class="pg457-answer"><b>Твой порядок:</b> '+(names.length?names.join(' → '):'Выбери первое действие')+'</div>'+
-  '<div class="pg457-actions"><button class="pg-action secondary" data-order-back>↶ Отменить</button><button class="pg-action secondary" data-order-reset>Заново</button><button class="pg-action" data-order-check>✓ Проверить</button></div>'+
-  '<div class="pg-feedback'+(dayChecked?' good':'')+'" style="font-size:11px;margin:0;padding:7px" role="status">'+(dayChecked?'✓ Верно!':'От подъёма до сна — все шесть действий.')+'</div>'+
-  '</section>';
+  const chosen=dayOrder.map(i=>vocab[i].zh).join(' → ');
+  return '<section class="pg457-scene"><h1 class="pg457-surface-title">🎯 Мой распорядок</h1>'+
+   '<p style="font-size:12px;text-align:center;color:#75327a;margin:0">Выбирай действия в правильном порядке.</p>'+
+   '<div class="pg457-practice-grid">'+mixedOrder.map(i=>'<button data-order="'+i+'" '+(dayOrder.includes(i)?'disabled':'')+'><img src="'+illustration(i)+'" alt="'+vocab[i].ru+'"><strong>'+vocab[i].zh+'</strong><small>'+vocab[i].py+'</small></button>').join('')+'</div>'+
+   '<div class="pg457-answer"><b>Твой порядок:</b><div>'+ (chosen||'Выбери первое действие')+'</div></div>'+
+   '<div class="pg457-practice-tools"><button class="pg-action secondary" data-order-back>↶ Отменить</button><button class="pg-action secondary" data-order-reset>Сброс</button><button class="pg-action" data-order-check>✓ Проверить</button></div>'+
+   '<div class="pg-feedback'+(dayChecked?' good':'')+'" role="status" style="padding:6px;font-size:11px;margin:0">'+(dayChecked?'✓ Правильный порядок!':'Выбери все шесть действий — от подъёма до сна.')+'</div>'+
+   '</section>';
  }
  const conversations=[
   {q:'你每天几点起床？',py:'Nǐ měitiān jǐ diǎn qǐchuáng?',ru:'Во сколько ты каждый день встаёшь?',answers:[['我每天七点起床。','Я встаю в 7 часов.'],['我每天八点起床。','Я встаю в 8 часов.']]},
