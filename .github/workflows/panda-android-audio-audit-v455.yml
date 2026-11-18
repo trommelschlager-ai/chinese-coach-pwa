@@ -1,0 +1,38 @@
+name: Panda Android voice + 42 MP3 regression audit v455
+on:
+  push:
+    branches:
+      - 'fix/panda-android-audio-qa-v455-20261118'
+  pull_request:
+    paths:
+      - 'tests/panda-*'
+      - 'scripts/verify-panda-hsk2-bridge-v304.cjs'
+      - '.github/workflows/panda-android-audio-audit-v455.yml'
+permissions:
+  contents: read
+jobs:
+  android-audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Exercise existing Panda Android voice + conversation scenarios
+        run: |
+          node scripts/verify-panda-hsk2-bridge-v304.cjs
+          node --test tests/panda-calendar-chat-v383.test.mjs
+          node --test tests/panda-topic-memory-v431.test.mjs
+          node --test tests/panda-family-turn-v426.test.mjs
+          node --test tests/panda-nonstop-continuity-v425.test.mjs
+          node --test tests/panda-conversation-memory-v430.test.mjs
+          node --test tests/panda-voice-v411-assets.test.mjs
+          node --test tests/panda-mic-visible-v407.test.mjs
+      - name: Confirm grammar correction auto voice and all 42 MP3
+        run: |
+          node --test tests/panda-grammar-voice-v451.test.mjs
+          node --test tests/panda-grammar-auto-voice-v452.test.mjs
+          node --test tests/panda-grammar-topic-clear-v454.test.mjs
+          node --check assets/panda-live-screen-v270.mjs
+          node --check assets/panda-live-v346.mjs
