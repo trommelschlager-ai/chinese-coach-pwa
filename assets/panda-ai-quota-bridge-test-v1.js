@@ -7,7 +7,8 @@
   let token='';
   const css=document.createElement('style');
   css.textContent=[
-    '#pq-fab{position:fixed;z-index:999999;top:12px;right:12px;padding:9px 12px;min-height:42px;border:2px solid #fff;border-radius:99px;background:#6046ac;color:#fff;font:700 13px system-ui;box-shadow:0 5px 20px #21103e55;cursor:pointer}',
+    '#pg346 .pg346-scene #pq-fab{position:absolute;z-index:30;top:clamp(12px,2.8dvh,28px);right:3%;width:auto;max-width:46%;min-height:42px;padding:8px 15px;border:2px solid #fff;border-radius:99px;background:linear-gradient(145deg,#6845bb,#573a9e);color:#fff;font:700 13px/1.1 system-ui;box-shadow:0 5px 17px #27104967;cursor:pointer;white-space:nowrap}',
+    '#pq-fab[hidden]{display:none!important}',
     '#pq-modal{box-sizing:border-box;width:min(90vw,370px);max-height:70dvh;overflow:auto;padding:15px;border:1px solid #d9c9f1;border-radius:20px;background:white;color:#302743;font:15px/1.4 system-ui;box-shadow:0 15px 50px #1c103060;z-index:9999999}',
     '#pq-modal::backdrop{background:#120b29ae}',
     '#pq-modal *,#pq-modal *::before,#pq-modal *::after{box-sizing:border-box}',
@@ -27,7 +28,7 @@
   ].join('');
   document.head.appendChild(css);
   const fab=document.createElement('button');
-  fab.type='button';fab.id='pq-fab';fab.textContent='🧪 AI лимит';
+  fab.type='button';fab.id='pq-fab';fab.textContent='🧪 AI лимит';fab.hidden=true;
   const modal=document.createElement('dialog');
   modal.id='pq-modal';
   modal.innerHTML=[
@@ -51,6 +52,21 @@
     '<p class="pq-small">Тестовая система Supabase · без списания денег · оригинальная Panda AI не изменена.</p>'
   ].join('');
   document.body.append(fab,modal);
+  // Place the quota control over the clear sky inside the scene, not on top
+  // of the Non-Stop mode. The approved Panda modules mount #pg346 later.
+  function placeQuotaButton(){
+    const scene=document.querySelector('#pg346 .pg346-scene');
+    if(!scene)return false;
+    scene.appendChild(fab);
+    fab.hidden=false;
+    return true;
+  }
+  if(!placeQuotaButton()){
+    const observer=new MutationObserver(()=>{
+      if(placeQuotaButton())observer.disconnect();
+    });
+    observer.observe(document.body,{childList:true,subtree:true});
+  }
   const get=id=>modal.querySelector('#'+id);
   const err=e=>{get('pq-error').textContent=e||''};
   const reset=()=>{
