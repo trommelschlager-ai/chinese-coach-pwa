@@ -17,29 +17,20 @@ img{display:block;max-width:100%}
 h1,h2,h3,p,figure{margin:0}
 [lang=zh-Hans]{font-family:"Noto Sans CJK SC","Noto Sans SC",system-ui,sans-serif}
 .app{position:relative;isolation:isolate;max-width:440px;margin:auto;overflow:hidden;border:4px double #893bac;border-radius:34px;background:#f6d5f2 url(assets/hsk2-lesson1-preview/reference-sakura.webp) center/100% 100% no-repeat;box-shadow:0 0 0 1px #ffe2ff,inset 0 0 0 2px #fff0fe,inset 0 0 0 4px #da8dea,0 6px 13px #722b8a6b}
-.head{padding:10px 14px 3px}
-.brand,.detail-brand{display:flex;align-items:center;gap:8px}
-.brand img{width:47px;height:43px;object-fit:cover;border-radius:12px;border:2px solid #ffdf9a;box-shadow:0 0 0 1px #f28cd2,0 2px 4px #aa4b91}
-.brand strong{display:block;color:#4c145f;font-size:clamp(16px,4.6vw,20px);line-height:1.12;white-space:nowrap;letter-spacing:-.04em}
-.brand small{display:block;font-size:12px;font-weight:750;margin-top:2px}
-.demo{margin-left:auto;align-self:start;white-space:nowrap;background:linear-gradient(#fffef6,#ffe2a5);border:1px solid #ffdf7f;border-radius:999px;padding:3px 8px;color:#421755;font-size:11px;font-weight:850;box-shadow:0 2px 5px #93587766}
-nav{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));align-items:center;margin-top:5px}
-nav::before{content:"";height:2px;position:absolute;inset-inline:6%;top:50%;background:#c965c4;box-shadow:0 1px 0 #fff0ff}
-.nav-step{position:relative;display:grid;place-items:center;min-width:0;min-height:37px;border:0;padding:0;background:none}
-.nav-step span{display:grid;place-items:center;width:27px;height:27px;border:1px solid #a346ac;border-radius:50%;background:linear-gradient(#fff9ff,#ecc7f7);box-shadow:0 2px 3px #842ba86f;font-weight:850;color:#511768}
-.nav-step[aria-current=step] span{width:32px;height:32px;color:white;border:2px solid #ffd879;background:linear-gradient(#fb68b1,#bf176a 68%,#90166c);box-shadow:0 2px 5px #8e2d8d, inset 0 1px 2px #fff7}
-.detail .head{padding:0 0 4px}
-.detail-brand{display:none}
-.detail .brand{display:none}
-.detail .detail-brand{display:flex;justify-content:center;min-height:47px;position:relative;padding:0 11px 4px 50px;background:linear-gradient(#ae47d6,#78139d 65%,#a534c9);color:white;font-weight:850;font-size:clamp(14px,4.45vw,19px);text-shadow:0 2px 3px #4e0868;box-shadow:inset 0 2px 3px #f6a8ff,0 3px 9px #a833b3}
-.detail-brand .orb{position:absolute;left:12px;top:6px}
-.detail nav{margin:-5px 34px 0;padding:0 5px;border-radius:999px;border:1px solid #fff5ff;background:linear-gradient(#fff7ff,#edc5f8);box-shadow:0 3px 6px #851b9c70}
-.detail .nav-step{min-height:33px}
-.detail .nav-step span{width:24px;height:24px;background:linear-gradient(#e7a6f4,#ca7be7);border-color:#cf9de9}
-.detail .nav-step[aria-current=step] span{width:29px;height:29px;background:linear-gradient(#8a25b1,#4f107e);border:2px solid #ffd551}
+.head{position:relative;z-index:2;padding:env(safe-area-inset-top,0px) 0 6px}
+.lesson-bar{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;min-height:56px;padding:0 7px 4px;background:linear-gradient(#c960e5 0%,#a138c6 25%,#74118f 82%,#9625b1);color:#fff;text-shadow:0 2px 5px #4d075f;box-shadow:inset 0 2px 3px #f4b8ff,0 3px 10px #8533a65c}
+.lesson-bar #detail-back{justify-self:start;width:36px;height:36px}
+.lesson-bar #detail-back:disabled{opacity:1}
+#head-label{text-align:center;font-size:clamp(13px,4.4vw,19px);font-weight:850;white-space:nowrap;font-variant-numeric:tabular-nums}
+#steps{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));align-items:center;margin:-4px max(9px,3.4%) 0;padding:0 5px;border:1px solid #fff5ff;border-radius:999px;background:linear-gradient(#fff9fd,#f7d5f5);box-shadow:0 3px 7px #a13cb960}
+#steps::before{content:"";height:2px;position:absolute;inset-inline:7%;top:50%;background:#c965c4;box-shadow:0 1px 0 #fff0ff}
+.nav-step{position:relative;display:grid;place-items:center;min-width:0;height:38px;border:0;padding:0;background:none;border-radius:999px}
+.nav-step span{display:grid;place-items:center;width:28px;height:28px;border:1px solid #ca92e5;border-radius:50%;background:linear-gradient(#edb3f3,#cf83e8);box-shadow:0 2px 4px #842ba850;font-size:16px;font-weight:850;color:#4b135e}
+.nav-step[aria-current=step] span{color:#fff;border-color:#6e2095;background:linear-gradient(#9136b7,#531074);box-shadow:0 0 0 2px #ffd75e,0 3px 6px #842ba875}
+.head button:not(:disabled):active{transform:none;filter:brightness(.9)}
 main{padding:0 10px 4px}
 footer{padding:5px 15px 12px;display:flex;gap:8px;justify-content:center}
-footer [hidden]{display:none}
+footer #back[hidden]{display:block;visibility:hidden}
 .primary,.orb,.ribbon,.tag{background:var(--gloss);color:white;text-shadow:0 1px 2px #52096d;font-weight:850;box-shadow:0 3px 5px #6e1b8a65,inset 0 2px 3px #f8bdff,inset 0 -3px 4px #570a79aa;border:1px solid #f3cf86}
 .primary,.ribbon,.tag{border-radius:999px}
 .primary{min-height:45px;padding:7px 17px;font-size:16px}
@@ -97,7 +88,6 @@ button[aria-pressed=true].orb{box-shadow:0 0 0 3px #f8c7fb,inset 0 2px 6px #6420
 .day-card.selected{border:2px solid #bb3a99;padding:2px 2px 5px;background:#ffe4f1}
 .position{position:absolute;top:3px;left:3px;display:grid;place-items:center;width:24px;height:24px;border:1px solid #fff4fa;border-radius:50%;background:linear-gradient(#fe79cb,#af126e);color:white;font-weight:900;box-shadow:0 2px 4px #81395788}
 .detail main{padding-inline:5px}
-.detail footer{padding-top:2px}
 .detail-hero{position:relative;min-height:143px;display:grid;grid-template-columns:43% 57%;align-items:end;margin:-1px -5px 7px;background:linear-gradient(transparent,#f8c5ed7a)}
 .detail-hero img{width:100%;max-height:153px;object-fit:contain;object-position:left bottom}
 .hero-message{z-index:1;align-self:center;margin:9px 9px 4px -14px;padding:9px 10px 9px 15px;border:1px solid #fff1fc;border-radius:24px;background:linear-gradient(#fff8fc,#fcdef4);box-shadow:0 5px 9px #b752a65f}
@@ -168,7 +158,7 @@ progress::-webkit-progress-value{background:linear-gradient(#a0ed63,#55bb27 65%,
 .results .all{font-weight:850}
 .compact-footer{min-width:46px}
 @media(max-width:374px){
- .head{padding-inline:8px}.detail nav{margin-inline:22px}main{padding-inline:7px}.test-card{grid-template-columns:25px 58px minmax(0,1fr) 34px;gap:5px}.hero-message{padding-left:14px}.word-row{gap:4px}.tone-row{grid-template-columns:20% minmax(0,1fr) 34px 55px 34px;gap:3px}.tone-row .orb{width:33px;height:33px}
+ main{padding-inline:7px}.test-card{grid-template-columns:25px 58px minmax(0,1fr) 34px;gap:5px}.hero-message{padding-left:14px}.word-row{gap:4px}.tone-row{grid-template-columns:20% minmax(0,1fr) 34px 55px 34px;gap:3px}.tone-row .orb{width:33px;height:33px}
 }
 
 .app[data-view="3"]{container-type:inline-size}
@@ -190,38 +180,26 @@ progress::-webkit-progress-value{background:linear-gradient(#a0ed63,#55bb27 65%,
 
 /* The lesson fills the viewport. Long exercises scroll between the header and navigation. */
 .app{height:100vh;height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
-.head{position:relative;z-index:2;padding-top:max(10px,env(safe-area-inset-top,0px))}
-.detail .head{padding-top:env(safe-area-inset-top,0px)}
 main{min-height:0;overflow:auto;overflow-anchor:none;overscroll-behavior-y:contain;scrollbar-width:none;padding-bottom:12px}
 main::-webkit-scrollbar{display:none}
-footer,.detail footer{position:relative;isolation:isolate;display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;padding:6px 12px calc(7px + env(safe-area-inset-bottom,0px));border-top:1px solid #e3a9de;background:linear-gradient(#ffe8fa,#f4c6ed);box-shadow:0 -3px 9px #aa579635}
+footer{position:relative;isolation:isolate;display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;padding:6px 12px calc(7px + env(safe-area-inset-bottom,0px));border-top:1px solid #e3a9de;background:linear-gradient(#ffe8fa,#f4c6ed);box-shadow:0 -3px 9px #aa579635}
 footer button{width:100%;height:46px;min-height:46px;border-radius:999px;white-space:nowrap}
 footer .primary{padding:3px 8px;font-size:clamp(13px,4vw,17px)}
 footer .soft{font-size:13px;padding:3px 5px}
-footer button:active{box-shadow:inset 0 3px 5px #6c236cac;filter:brightness(.9)}
+footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6c236cac;filter:brightness(.9)}
 
-/* Keep the reference artwork full-screen while the lesson controls stay native. */
-.app[data-view="1"]{display:block;border:0;border-radius:22px}
-.app[data-view="1"] main{position:absolute;inset:0;padding:0;overflow:hidden}
-.welcome-art{width:100%;height:100%;object-fit:fill;pointer-events:none}
+/* Frame just the illustrated welcome content between the shared controls. */
+.app[data-view="1"] main{position:relative;padding:0;overflow:hidden}
+.welcome-art{position:absolute;inset:-26.42% 0 auto;width:100%;height:142.05%;object-fit:fill;pointer-events:none}
 .welcome-copy{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.app[data-view="1"] .head{position:absolute;inset:0;padding:0;pointer-events:none}
-.app[data-view="1"] .brand{display:none}
-.app[data-view="1"] #steps{position:absolute;top:11.9%;left:7.1%;right:0;height:7.4%;margin:0}
-.app[data-view="1"] #steps .nav-step{height:100%;min-height:0;pointer-events:auto;border-radius:50%}
-.app[data-view="1"] #steps .nav-step span,.app[data-view="1"] #steps::before{visibility:hidden}
-.app[data-view="1"] footer{position:absolute;z-index:2;top:89.2%;bottom:2.8%;left:8.9%;right:5.7%;display:block;padding:0;border:0;background:none;box-shadow:none}
-.app[data-view="1"] #next{width:100%;height:100%;min-height:0;color:transparent;background:none;border:0;box-shadow:none;text-shadow:none}
-.app[data-view="1"] #next:active,.app[data-view="1"] .nav-step:active{background:#fff4;box-shadow:inset 0 2px 9px #4d117066;transform:none}
-.app[data-view="1"] #next:focus-visible,.app[data-view="1"] #steps .nav-step:focus-visible{outline-offset:-2px;outline-color:#ffd46a}
 .app[data-view="2"] main{display:flex;flex-direction:column}
 .app[data-view="5"] .day-card img{object-position:center 46%}
 .app[data-view="2"] .word-list{flex:1 0 auto;grid-template-rows:repeat(6,minmax(51px,1fr))}
 .app[data-view="2"] .word-row img{height:clamp(42px,8dvh,75px)}
 .app[data-view="3"] .quiz-hero{min-height:35cqw}
 .app[data-view="3"] .quiz-hero > img:first-child{max-height:35cqw}
-.app[data-view="3"] .test-card{min-height:clamp(62px,9.1dvh,76px)}
-.app[data-view="3"] .test-card img{height:clamp(46px,6.9dvh,61px)}
+.app[data-view="3"] .test-card{min-height:clamp(60px,8.3dvh,75px)}
+.app[data-view="3"] .test-card img{height:clamp(44px,6.3dvh,58px)}
 .app[data-view="3"] .reward{min-height:59px;margin:9px 4px}
 .app[data-view="3"] .reward img{width:53px}
 .app[data-view="3"] [data-start]{min-height:46px;margin:0 auto 4px}
@@ -236,12 +214,10 @@ footer button:active{box-shadow:inset 0 3px 5px #6c236cac;filter:brightness(.9)}
 <body>
 <div class="app" id="app">
   <header class="head">
-    <div class="brand">
-      <img src="assets/hsk2-storyboard-v433-avatar.jpg" alt="Панда в розовых наушниках">
-      <div><strong>Panda Go · HSK 2</strong><small>Урок 1 «Мой день»</small></div>
-      <span class="demo">👑 ДЕМО</span>
+    <div class="lesson-bar">
+      <button type="button" class="orb" id="detail-back" aria-label="Предыдущий шаг">❮</button>
+      <span id="head-label">HSK 2 · Урок 1 · Шаг 1 из 8</span>
     </div>
-    <div class="detail-brand"><button type="button" class="orb" id="detail-back" aria-label="Предыдущий шаг">❮</button><span id="head-label"></span></div>
     <nav id="steps" aria-label="Восемь шагов урока"></nav>
   </header>
   <main id="workspace"></main>
@@ -353,6 +329,11 @@ let heardClip = null;
 const app = document.getElementById('app');
 const workspace = document.getElementById('workspace');
 const nav = document.getElementById('steps');
+const headLabel = document.getElementById('head-label');
+const headBack = document.getElementById('detail-back');
+nav.innerHTML = titles.map((title,i) => '<button type="button" class="nav-step" data-step="' + (i+1) +
+  '" aria-label="Шаг ' + (i+1) + ' · ' + title + '"><span>' + (i+1) + '</span></button>').join('');
+const stepButtons = [...nav.querySelectorAll('.nav-step')];
 const back = document.getElementById('back');
 const next = document.getElementById('next');
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -425,14 +406,18 @@ function render(resetScroll = false) {
   const detailed = step === 3 || step === 6;
   app.classList.toggle('detail',detailed);
   app.dataset.view = step;
-  document.getElementById('head-label').textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
-  nav.innerHTML = titles.map((title,i) => '<button type="button" class="nav-step" data-step="' + (i+1) +
-    '" aria-current="' + (step === i+1 ? 'step' : 'false') + '" aria-label="Шаг ' + (i+1) + ' · ' + title + '"><span>' + (i+1) + '</span></button>').join('');
+  headLabel.textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
+  headBack.disabled = step === 1;
+  stepButtons.forEach((button,index) => {
+    button.setAttribute('aria-current',index+1 === step ? 'step' : 'false');
+  });
   workspace.innerHTML = [intro,newWords,quiz,grammar,day,tones,chat,finish][step-1]();
   back.hidden = step === 1;
   const inQuiz = step === 3 && state.quizTest !== null;
   back.textContent = inQuiz ? '‹ Тесты' : '‹ Назад';
-  back.setAttribute('aria-label',inQuiz ? 'К списку тестов' : 'Предыдущий шаг');
+  const backLabel = inQuiz ? 'К списку тестов' : 'Предыдущий шаг';
+  back.setAttribute('aria-label',backLabel);
+  headBack.setAttribute('aria-label',backLabel);
   next.textContent = step === 1 ? 'Дальше: Новые слова →' : step === 8 ? 'К началу ↻' : titles[step] + ' →';
   if (resetScroll) workspace.scrollTop = 0;
 }
@@ -848,7 +833,7 @@ function previousStep() {
 }
 
 back.addEventListener('click',previousStep);
-document.getElementById('detail-back').addEventListener('click',previousStep);
+headBack.addEventListener('click',previousStep);
 next.addEventListener('click',() => {
   move(state.step === 8 ? 1 : state.step+1);
 });
