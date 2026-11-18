@@ -1,0 +1,4 @@
+# Additional isolated test function. Does not change Panda Go production files.
+# Auth is manually verified via supabase.auth.getUser(jwt) inside the function.
+[functions.panda-ai-pilot]
+verify_jwt = false
