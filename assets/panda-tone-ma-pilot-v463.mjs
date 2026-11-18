@@ -11,12 +11,13 @@ const tones=[
  {n:4,hz:'骂',py:'mà',src:'./assets/lesson1-xiaoxiao-v260/ma4.mp3',reference:'M30 30Q178 45 332 111'}
 ];
 const buttons=[...document.querySelectorAll('[data-tone]')];
-let selected=0,playing=null,stream=null,audioCtx=null,analyser=null,source=null,interval=null,deadline=null,active=false,opening=false,frames=[],counts=null;
+let selected=0,playing=null,stream=null,audioCtx=null,analyser=null,source=null,interval=null,deadline=null,active=false,opening=false,stopping=false,frames=[],counts=null;
 function silencePlayback(){
  if(playing){try{playing.pause();playing.currentTime=0;}catch{}playing=null;}
 }
 function updateTone(index){
- if(active||opening)return;
+ if(active||opening||stopping)return;
+ silencePlayback();
  selected=(index+tones.length)%tones.length;
  const s=tones[selected];
  $('target-hanzi').textContent=s.hz;
@@ -78,9 +79,11 @@ async function release(){
  try{await ctx?.close();}catch{}
 }
 async function stop(){
- if(!active)return;
- active=false;controls(false);
+ if(!active||stopping)return;
+ stopping=true;
+ active=false;$('record').disabled=true;
  await release();
+ controls(false);$('record').disabled=false;stopping=false;
  const result=analyseContour(frames);
  $('your-path').setAttribute('d',plot(result.points));
  $('result').textContent=toneGuidance(tones[selected],result);
@@ -92,7 +95,7 @@ async function stop(){
  frames=[];counts=null;
 }
 async function start(){
- if(opening||active)return;
+ if(opening||active||stopping)return;
  if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){
   $('status').textContent='Микрофон работает только по HTTPS в браузере с поддержкой записи.';
   return;
