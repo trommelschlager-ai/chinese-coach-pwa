@@ -17,8 +17,8 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: npm install --no-save --no-package-lock playwright@1.56.1
       - run: google-chrome --version
-      - name: Install CJK rendering fonts for accurate Chinese screenshots
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk && fc-cache -f
+      - name: Use preinstalled system fonts
+        run: fc-list | head -n 3 || true
       - name: Test fixed navigation, design and actual interactive lesson controls
         run: |
           set -euo pipefail
