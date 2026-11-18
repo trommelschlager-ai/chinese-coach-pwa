@@ -30,6 +30,22 @@ test('short/empty speech is insufficient and cannot be scored', () => {
     assert.equal(result.isToneGrade, false);
   }
 });
+test('short but stable recording shows a partial line without any grade', () => {
+  const sample = contour(u => 185 + 28*u, 12, .028);
+  const result=analyseContour(sample);
+  assert.equal(result.kind, 'insufficient');
+  assert.equal(result.isToneGrade, false);
+  assert.equal(result.points.length, 12);
+  assert.equal(result.stats.previewOnly, true);
+});
+test('short discontinuous recording never paints a misleading connected line', () => {
+  const sample=contour(() => 200, 11, .028);
+  sample[10].t+=.11;
+  const result=analyseContour(sample);
+  assert.equal(result.kind, 'insufficient');
+  assert.equal(result.isToneGrade, false);
+  assert.equal(result.points.length,0);
+});
 test('octave-tracking jumps produce uncertainty, never a false grade', () => {
   const points = contour(() => 190);
   points[18].hz = 380;
