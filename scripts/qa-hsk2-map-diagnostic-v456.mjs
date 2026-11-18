@@ -11,18 +11,18 @@ try{
  await page.goto(base+'/hsk2-life-course.html?view=map',{waitUntil:'networkidle',timeout:30000});
  await page.waitForTimeout(750);
  const state=await page.evaluate(()=>{
-  const map=document.querySelector('.approved-map-screen');
-  const img=document.querySelector('.approved-map-screen img[src$="/course-map.png"]');
+  const map=document.querySelector('.pg433-map');
+  const img=document.querySelector('.pg433-map .pg433-map-card[data-topic="0"]');
   const screen=document.querySelector('#screen');
   const app=document.querySelector('#app');
   const info=el=>{if(!el)return null;const cs=getComputedStyle(el),r=el.getBoundingClientRect();return {tag:el.tagName,cls:el.className,display:cs.display,visibility:cs.visibility,opacity:cs.opacity,rect:{x:r.x,y:r.y,w:r.width,h:r.height},hidden:el.hidden,outer:el.outerHTML.slice(0,450)}};
-  return {url:location.href,ready:document.readyState,body:document.body.className,app:info(app),screen:info(screen),map:info(map),image:info(img),cards:document.querySelectorAll('.poster-map-card[data-topic]').length,mainHtml:screen?.innerHTML.slice(0,900),activeTexts:document.body.innerText.slice(0,850),images:[...document.images].slice(0,9).map(x=>({src:x.getAttribute('src'),complete:x.complete,w:x.naturalWidth,h:x.naturalHeight}))};
+  return {url:location.href,ready:document.readyState,body:document.body.className,app:info(app),screen:info(screen),map:info(map),image:info(img),cards:document.querySelectorAll('.pg433-map .pg433-map-card[data-topic]').length,mainHtml:screen?.innerHTML.slice(0,900),activeTexts:document.body.innerText.slice(0,850),images:[...document.images].slice(0,9).map(x=>({src:x.getAttribute('src'),complete:x.complete,w:x.naturalWidth,h:x.naturalHeight}))};
  });
  fs.mkdirSync('qa/panda-voice-pilot',{recursive:true});
  await page.screenshot({path:'qa/panda-voice-pilot/hsk2-map-diagnostic-v456.png',fullPage:false});
  console.log('PANDA_HSK2_MAP_DIAGNOSTIC_BEGIN');
  console.log(JSON.stringify({...state,errors,failed},null,2));
  console.log('PANDA_HSK2_MAP_DIAGNOSTIC_END');
- if(state.cards!==10||!state.map||!state.image||!(state.image.rect.w>50&&state.image.rect.h>50))process.exitCode=1;
+ if(state.cards!==10||!state.map||!(state.map.rect.w>200&&state.map.rect.h>200)||errors.length)process.exitCode=1;
  await context.close();
 }finally{await browser.close()}
