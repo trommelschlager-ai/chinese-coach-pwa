@@ -76,10 +76,13 @@ const fs=require('node:fs');
   assert.equal(coachSentence(source,{allowed:[1,2,6],prompt:weatherPrompt}),null);
  }
  assert.equal(coachSentence('下雨',{allowed:base.allowed,prompt:{...weatherPrompt,time:'明天',hanzi:'明天天气怎么样？'}}),null);
+ const html=fs.readFileSync('panda-voice-pilot.html','utf8');
+ const activeScreen=html.match(/\.\/assets\/panda-live-screen-v270\.mjs\?v=\d+/)?.[0];
+ assert(activeScreen,'Panda live screen must have an actual versioned HTML import');
  for(const p of [
   './assets/panda-sentence-coach-v319.mjs?v=319',
   './assets/panda-live-dialogue-v272.mjs?v=434',
-  './assets/panda-live-screen-v270.mjs?v=447',
+  activeScreen,
   './assets/panda-hsk1-questions-v281.mjs?v=319',
   './panda-voice-pilot.html?v=326'
  ]) assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).files.includes(p),p);
