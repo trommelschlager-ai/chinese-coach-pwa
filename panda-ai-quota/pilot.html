@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panda AI — проверка лимитов, тест</title>
+<style>
+*{box-sizing:border-box}body{font-family:system-ui,Arial,sans-serif;background:#f9f3ff;color:#25213a;margin:0;padding:20px}.wrap{max-width:560px;margin:auto}.panel{background:white;border:1px solid #e5d6f2;border-radius:20px;padding:20px;margin:14px 0;box-shadow:0 6px 25px #2512400b}h1{font-size:24px;margin:0 0 4px}.small{font-size:13px;color:#675c7b}.note{background:#fff2d5;padding:10px;border-radius:10px}label{display:block;font-weight:650;font-size:13px;margin-top:12px}input,textarea{width:100%;border:1px solid #cbbee0;border-radius:12px;font:inherit;padding:12px;margin-top:4px}textarea{min-height:90px}button{border:0;border-radius:12px;padding:12px 16px;background:#6847b7;color:white;font:700 14px system-ui;cursor:pointer;margin:8px 6px 0 0}button.secondary{background:#e8dcf4;color:#463273}button:disabled{opacity:.5;cursor:default}.count{font-size:36px;font-weight:850}.meter{height:12px;background:#e9e5f2;border-radius:12px;overflow:hidden}.meter>div{height:100%;background:#36a981;width:0;transition:width .2s}#output{white-space:pre-wrap;overflow-wrap:anywhere}#error{color:#9b2222}
+</style></head>
+<body><main class="wrap">
+<div class="panel"><h1>🐼 Panda AI — тест лимитов</h1><div class="small">Изолированная тестовая страница. Panda Go и уроки не изменяются.</div><p class="note">Без отдельного настроенного сервера доступна только демонстрация. Никаких покупок и платных AI-вызовов страница сама не делает.</p></div>
+<section class="panel"><b>Посмотреть правило 10 → 3 без сервера</b><div><button id="day1">День 1</button><button class="secondary" id="day30">День 30</button><button class="secondary" id="day31">День 31</button></div><p id="demo-title"></p><div class="count" id="demo-count"></div><div class="meter"><div id="demo-meter"></div></div><button class="secondary" id="demo-use">Проверить один ответ</button><button class="secondary" id="demo-reset">Сбросить</button></section>
+<section class="panel"><b>Серверный режим (нужна настройка)</b><p class="small">Тестовая Supabase Auth и Cloudflare D1. Пароли не сохраняются в браузере.</p>
+<label>Worker URL<input id="worker" type="url" placeholder="https://....workers.dev"></label>
+<label>Supabase URL<input id="supabase" type="url" placeholder="https://....supabase.co"></label>
+<label>Supabase publishable key<input id="key" placeholder="sb_publishable_..."></label>
+<label>Почта тестового аккаунта<input id="email" type="email" autocomplete="username"></label>
+<label>Пароль тестового аккаунта<input id="password" type="password" autocomplete="current-password"></label>
+<button id="login">Войти</button><button class="secondary" id="logout">Выйти</button><p id="account" class="small"></p></section>
+<section class="panel"><b>Мой реальный серверный лимит</b><p class="small">Эти данные берутся только из Worker; переключатели сверху на них не влияют.</p><div class="count" id="count">—</div><div class="small" id="status">Нужен тестовый аккаунт</div><button id="refresh">Обновить лимит</button><label>Напиши фразу по-китайски<textarea id="message" maxlength="500" placeholder="你好！你今天忙不忙？"></textarea></label><button id="ask">Ответ Panda AI</button><p id="output"></p><p id="error" role="alert"></p></section>
+</main><script>
+(function(){
+ var token='',day=1,used=0;
+ function el(id){return document.getElementById(id)}
+ function fail(s){el('error').textContent=s||''}
+ function demo(){var limit=day<=30?10:3;el('demo-title').textContent='День '+day+': '+limit+' ответов в сутки';el('demo-count').textContent=(limit-used)+' / '+limit;el('demo-meter').style.width=(100*used/limit)+'%';el('demo-use').disabled=used>=limit}
+ for(var d of [1,30,31]){(function(x){el('day'+x).onclick=function(){day=x;used=0;demo()}})(d)}
+ el('demo-use').onclick=function(){used++;demo()};el('demo-reset').onclick=function(){used=0;demo()};demo();
+ function setup(){var worker=el('worker').value.trim().replace(/\/+$/,''),supabase=el('supabase').value.trim().replace(/\/+$/,''),key=el('key').value.trim();if(!worker.startsWith('https://')||!supabase.startsWith('https://')||!key)throw Error('Сначала укажи Worker URL и публичные настройки Supabase');return {worker:worker,supabase:supabase,key:key}}
+ async function api(path,params){var cfg=setup();if(!token)throw Error('Сначала войди в тестовый аккаунт');var res=await fetch(cfg.worker+path,Object.assign({},params||{},{headers:Object.assign({'authorization':'Bearer '+token,'content-type':'application/json'},(params||{}).headers||{})}));var body=await res.json();if(!res.ok)throw Error(body.error||('HTTP '+res.status));return body}
+ async function refresh(){var r=await api('/api/quota');el('count').textContent=r.remaining+' / '+r.limit;el('status').textContent=(r.phase==='trial'?'Расширенный доступ: день '+r.trialDay+' / 30':'Постоянный доступ: 3 ответа')+' · Сброс '+new Date(r.resetsAt).toLocaleString('ru-RU')+(r.testGrant?' · ТЕСТОВЫЙ ДОСТУП':'')}
+ el('login').onclick=async function(){fail('');try{var c=setup(),r=await fetch(c.supabase+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'content-type':'application/json',apikey:c.key},body:JSON.stringify({email:el('email').value,password:el('password').value})});var b=await r.json();if(!r.ok||!b.access_token)throw Error(b.msg||b.error_description||'Не удалось войти');token=b.access_token;el('password').value='';el('account').textContent='Вход выполнен. Токен только в памяти вкладки.';await refresh()}catch(e){fail(e.message)}};
+ el('logout').onclick=function(){token='';el('account').textContent='Выход выполнен';el('count').textContent='—';el('status').textContent='Нужен тестовый аккаунт';fail('')};
+ el('refresh').onclick=async function(){fail('');try{await refresh()}catch(e){fail(e.message)}};
+ el('ask').onclick=async function(){fail('');el('output').textContent='';try{var r=await api('/api/chat',{method:'POST',body:JSON.stringify({message:el('message').value.trim()})});el('output').textContent='🐼 '+r.answer;await refresh()}catch(e){fail(e.message);if(token){try{await refresh()}catch(ignore){}}}};
+})();
+</script></body></html>
