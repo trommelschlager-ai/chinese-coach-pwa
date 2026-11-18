@@ -88,7 +88,7 @@ async function stop(){
    (diagnostic.firstPitchSec!==null?' Высота голоса найдена с '+diagnostic.firstPitchSec.toFixed(2)+' до '+diagnostic.lastPitchSec.toFixed(2)+' с.':'');
   $('result').append(counts);
  }
- $('status').textContent=r.kind==='insufficient'?'Голоса было недостаточно для измерения. Попробуй ещё раз.':'Готово. Это подсказка по контуру, а не оценка тона.';
+ $('status').textContent=r.kind==='insufficient'?(r.points?.length?'Короткий участок голоса измерен, но данных пока мало. Попробуй ещё раз.':'Голоса было недостаточно для измерения. Попробуй ещё раз.'):'Готово. Это подсказка по контуру, а не оценка тона.';
  $('mic-level').textContent='Запись завершена. Уровень сигнала показывается только во время записи.';
  frames=[];
 }
