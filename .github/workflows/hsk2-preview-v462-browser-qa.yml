@@ -1,4 +1,4 @@
-name: Panda Go HSK2 approved v462 mobile preview QA
+name: Panda Go HSK2 approved v464 mobile preview QA
 on:
   push:
     paths:
