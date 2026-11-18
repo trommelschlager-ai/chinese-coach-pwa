@@ -85,7 +85,7 @@ async function stop(){
  $('your-path').setAttribute('d',plot(result.points));
  $('result').textContent=toneGuidance(tones[selected],result);
  if(result.kind==='insufficient'){
-  $('status').textContent='Не хватило устойчивого голоса. Попробуй ещё раз чуть протяжнее, в тишине.';
+  $('status').textContent=result.points?.length?'Короткая кривая видна. Для сравнения тона данных ещё мало — повтори слог чуть протяжнее.':'Не хватило устойчивого голоса. Попробуй ещё раз чуть протяжнее, в тишине.';
  } else {
   $('status').textContent='График получен. Это описание движения голоса, а не оценка правильности.';
  }
