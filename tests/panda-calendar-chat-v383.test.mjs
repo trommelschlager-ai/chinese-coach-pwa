@@ -63,7 +63,7 @@ test('the duplicate unknown-meaning bubble is absent but reviewed grammar correc
  const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
  assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong;"));
  assert(!ui.includes('const unknown=last&&!last.ru'),'No generic bubble beside Все темы');
- assert(ui.includes("'pg377-correct'"),'Preserve grammar corrections');
+ assert(ui.includes("'pg445-after'"),'Preserve grammar corrections');
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
  assert.match(html,/panda-live-v346\.mjs\?v=\d+/,'Panda approved UI module is loaded with a versioned URL');
  assert.match(html,/panda-live-screen-v270\.mjs\?v=\d+/,'Versioned Panda script is loaded');
