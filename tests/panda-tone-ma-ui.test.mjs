@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {JSDOM} from 'jsdom';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url));
@@ -42,4 +43,31 @@ test('new JS files parse in Node without runtime execution',()=>{
   const result=spawnSync(process.execPath,['--check',fileURLToPath(new URL('../'+rel,import.meta.url))],{encoding:'utf8'});
   assert.equal(result.status,0,rel+': '+result.stderr);
  }
+});
+
+test('lesson tone modal opens and closes without replacing the lesson contents',()=>{
+ const dom=new JSDOM('<!doctype html><html><head></head><body><section id="pg-content"><p id="lesson-position">Сохранить шаг</p><div class="tone-list"><button data-tone-play="妈">Слушать</button></div></section></body></html>',{
+  url:'https://example.test/chinese-coach-pwa/hsk1-first-v189.html',
+  runScripts:'outside-only'
+ });
+ try{
+  const {window:w}=dom;
+  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
+  w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'));};
+  w.eval(bridge);
+  const button=w.document.querySelector('[data-panda-tone-cta]');
+  assert(button,'tone trigger added beside existing cards');
+  assert.equal(w.document.querySelectorAll('[data-panda-tone-cta]').length,1);
+  button.click();
+  const modal=w.document.querySelector('dialog.pg-tone-modal');
+  assert(modal.open,'modal opened');
+  const frame=modal.querySelector('iframe');
+  assert(frame);
+  assert(frame.src.endsWith('/panda-tone-ma-practice.html'));
+  assert.equal(frame.allow,'microphone; autoplay');
+  modal.querySelector('.pg-tone-close').click();
+  assert.equal(modal.open,false,'modal closed');
+  assert.equal(modal.querySelector('iframe'),null,'iframe removed after closing to release mic');
+  assert.equal(w.document.querySelector('#lesson-position').textContent,'Сохранить шаг');
+ }finally{dom.window.close();}
 });
