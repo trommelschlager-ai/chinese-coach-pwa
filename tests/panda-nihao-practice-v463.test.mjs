@@ -13,7 +13,7 @@ test('written and spoken Mandarin sandhi correctly distinguish nǐ hǎo and ní 
  assert.ok(ui.includes("hanzi:'你',pinyin:'ní ↗'"));
  assert.ok(ui.includes("hanzi:'好',pinyin:'hǎo · низкий тон'"));
  assert.ok(ui.includes("hanzi:'你好',pinyin:'ní hǎo'"));
- assert.ok(ui.includes('Отдельно 你, это nǐ'),'Never teach isolated 你 as second tone');
+ assert.ok(ui.includes('отдельно 你, это nǐ'),'Never teach isolated 你 as second tone');
 });
 
 test('only exact previously approved Panda clip plays 你好',()=>{
