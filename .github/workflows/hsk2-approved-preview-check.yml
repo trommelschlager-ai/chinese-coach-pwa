@@ -1,0 +1,111 @@
+name: Panda Go HSK2 approved preview visual check
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'preview-hsk2-lesson1-approved.html'
+      - '.github/workflows/hsk2-approved-preview-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated browser test dependencies
+        run: |
+          mkdir -p /tmp/panda-hsk2-test
+          cd /tmp/panda-hsk2-test
+          npm init -y
+          npm install --no-audit --no-fund playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Run local site and check all eight mobile screens
+        env:
+          NODE_PATH: /tmp/panda-hsk2-test/node_modules
+        run: |
+          python3 -m http.server 8099 --bind 127.0.0.1 >/tmp/panda-hsk2-http.log 2>&1 &
+          mkdir -p hsk2-preview-screenshots
+          node <<'NODE'
+          const {chromium}=require('playwright');
+          const fs=require('fs');
+          const path=require('path');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const failures=[],results=[];
+            const url='http://127.0.0.1:8099/preview-hsk2-lesson1-approved.html';
+            const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+            page.on('pageerror',e=>failures.push('JS runtime error: '+e.message));
+            await page.goto(url,{waitUntil:'networkidle'});
+            if(await page.locator('.nav-step').count()!==8)failures.push('Expected exactly eight navigation steps');
+            for(let n=1;n<=8;n++){
+              await page.locator('.nav-step[data-step="'+n+'"]').click();
+              await page.screenshot({path:'hsk2-preview-screenshots/step-'+n+'.png'});
+              const style=await page.addStyleTag({content:'.app{height:auto!important;min-height:100dvh!important;overflow:visible!important}.workspace{flex:none!important;min-height:0!important;overflow:visible!important}.footer{position:relative!important}body{height:auto!important}'});
+              await page.screenshot({path:'hsk2-preview-screenshots/step-'+n+'-full.png',fullPage:true});
+              await style.evaluate(el=>el.remove());
+              const audit=await page.evaluate(()=>{
+                const imgs=[...document.querySelectorAll('img')];
+                const broken=imgs.filter(i=>i.complete&&i.naturalWidth===0).map(i=>i.src);
+                const buttons=[...document.querySelectorAll('button')].length;
+                return {width:innerWidth,documentWidth:document.documentElement.scrollWidth,broken,buttons,textLength:document.querySelector('#workspace').innerText.length};
+              });
+              results.push({step:n,...audit});
+              if(audit.documentWidth>390)failures.push('Step '+n+' horizontal overflow at 390px: '+audit.documentWidth);
+              if(audit.broken.length)failures.push('Step '+n+' broken images: '+audit.broken.join(', '));
+              if(audit.textLength<20)failures.push('Step '+n+' missing text');
+            }
+            // Exercise correctness and persistent progress, without treating microphone recognition as tone analysis.
+            await page.locator('[data-step="3"]').click();
+            await page.locator('[data-test="0"]').click();
+            await page.locator('[data-choice="0"]').click();
+            let p=await page.evaluate(()=>window.PandaGoHSK2Preview.getProgress());
+            if(!p.quiz[0][0])failures.push('First quiz answer not recorded');
+            await page.locator('[data-step="4"]').click();
+            for(const id of [0,1,2,3,4])await page.locator('[data-gram="'+id+'"]').click();
+            await page.locator('[data-gram-check]').click();
+            p=await page.evaluate(()=>window.PandaGoHSK2Preview.getProgress());
+            if(!p.grammarDone)failures.push('Grammar order not accepted');
+            await page.locator('[data-step="5"]').click();
+            for(const id of [0,1,2,3,4,5])await page.locator('[data-day="'+id+'"]').click();
+            await page.locator('[data-day-check]').click();
+            p=await page.evaluate(()=>window.PandaGoHSK2Preview.getProgress());
+            if(!p.dayDone)failures.push('Correct day order not accepted');
+            await page.locator('[data-step="7"]').click();
+            for(let k=0;k<3;k++)await page.locator('[data-chat="0"]').click();
+            p=await page.evaluate(()=>window.PandaGoHSK2Preview.getProgress());
+            if(p.chat.length!==3)failures.push('Dialogue choices not saved');
+            await page.locator('[data-step="8"]').click();
+            const finishText=await page.locator('#workspace').innerText();
+            if(!finishText.includes('1 / 30')||!finishText.includes('3 / 3'))failures.push('Finish page does not reflect recorded results');
+            await page.screenshot({path:'hsk2-preview-screenshots/step-8-progress.png'});
+            await page.reload({waitUntil:'networkidle'});
+            p=await page.evaluate(()=>window.PandaGoHSK2Preview.getProgress());
+            if(p.chat.length!==3||!p.grammarDone||!p.quiz[0][0])failures.push('Progress not retained after reload');
+            for(const width of [360,412]){
+              await page.setViewportSize({width,height:800});
+              for(let n=1;n<=8;n++){
+                await page.locator('[data-step="'+n+'"]').click();
+                const scroll=await page.evaluate(()=>document.documentElement.scrollWidth);
+                if(scroll>width)failures.push('Horizontal overflow '+width+'px step '+n+': '+scroll);
+              }
+            }
+            fs.writeFileSync('hsk2-preview-screenshots/report.json',JSON.stringify({failures,results,checkedWidths:[360,390,412]},null,2));
+            console.log(JSON.stringify({failures,results},null,2));
+            await browser.close();
+            if(failures.length)process.exitCode=1;
+          })().catch(e=>{console.error(e);process.exitCode=1});
+          NODE
+      - name: Upload eight actual screenshots and browser test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-hsk2-eight-step-screenshots
+          path: hsk2-preview-screenshots/
+          retention-days: 30
