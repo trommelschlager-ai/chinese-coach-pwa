@@ -1,6 +1,6 @@
 {
-  "version": 454,
-  "bytes": 66879168,
+  "version": 455,
+  "bytes": 66884439,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -3107,6 +3107,7 @@
     "./assets/panda-grammar-voice-v451/g039.mp3",
     "./assets/panda-grammar-voice-v451/g040.mp3",
     "./assets/panda-grammar-voice-v451/g041.mp3",
-    "./assets/panda-grammar-voice-v451/g042.mp3"
+    "./assets/panda-grammar-voice-v451/g042.mp3",
+    "./assets/hsk2-lesson-theme-v451.css?v=451"
   ]
 }
