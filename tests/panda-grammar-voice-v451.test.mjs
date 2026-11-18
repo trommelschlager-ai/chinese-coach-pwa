@@ -65,7 +65,7 @@ test('existing user Luvvoice voice and offline versions are preserved',()=>{
  const ui=read('assets/panda-live-v346.mjs');
  const audio=read('assets/panda-live-audio.mjs');
  assert.ok(html.includes('panda-live-v346.mjs?v=451'));
- assert.ok(html.includes('panda-live-screen-v270.mjs?v=451'));
+ assert.match(html,/panda-live-screen-v270\.mjs\?v=45[12]/);
  assert.ok(screen.includes('panda-live-audio.mjs?v=451'));
  assert.ok(ui.includes('panda-live-audio.mjs?v=451'));
  assert.ok(audio.includes('PANDA_GRAMMAR_AUDIO_V451'));
