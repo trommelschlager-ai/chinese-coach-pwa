@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#9e2cc9">
 <title>Panda Go · HSK 2 · Мой день</title>
 <style>
@@ -191,7 +191,6 @@ progress::-webkit-progress-value{background:linear-gradient(#a0ed63,#55bb27 65%,
 }
 
 /* Keep the opening illustration and the test hero on single, continuous scenes. */
-body:has(.app[data-view="1"]){background:radial-gradient(ellipse at 50% 15%,#fbe0f9 0,#ecd2f7 75%)}
 .app[data-view="1"],.app[data-view="3"]{container-type:inline-size}
 .app[data-view="1"]::before{background:linear-gradient(180deg,#f9ddfa 0%,#f8d7f5 16%,#ecbdf9 47%,#ffd9f2 79%,#fbc9ef 100%)}
 .app[data-view="1"] .head{padding-top:14px;padding-bottom:2px;background:linear-gradient(#fae4fc,#f6cff7 80%,#f6cff700)}
@@ -205,8 +204,6 @@ body:has(.app[data-view="1"]){background:radial-gradient(ellipse at 50% 15%,#fbe
 .app[data-view="1"] .features{margin-top:18px;padding-bottom:8px}
 .app[data-view="1"] .feature-grid div{padding-block:4px 6px}
 .app[data-view="1"] .feature-grid img{width:51px;height:43px;mix-blend-mode:normal;filter:drop-shadow(0 2px 1px #a7518e35)}
-.app[data-view="1"] footer{padding-top:3px;padding-bottom:10px}
-.app[data-view="1"] footer .primary{flex:0 1 88%;min-height:40px;font-size:clamp(14px,4.4vw,17px)}
 .app[data-view="1"] .head::after,.app[data-view="3"] .head::after{z-index:0;pointer-events:none;opacity:.66}
 .app[data-view="1"] .head nav,.app[data-view="3"] .head nav{z-index:1}
 .app[data-view="3"]::after{background:url(assets/hsk2-lesson1-preview/sakura.webp) -17px 68px/112px auto no-repeat}
@@ -229,7 +226,48 @@ body:has(.app[data-view="1"]){background:radial-gradient(ellipse at 50% 15%,#fbe
 .app[data-view="3"] .reward{min-height:19cqw;margin:15px 4px 13px}
 .app[data-view="3"] .reward img{width:64px}
 .app[data-view="3"] [data-start]{display:block;width:85%;min-height:14cqw;margin:0 auto 24px}
-footer[hidden]{display:none}
+
+/* The lesson fills the viewport. Long exercises scroll between the header and navigation. */
+.app{height:100vh;height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+.app::before{background:linear-gradient(#f7cbf365,#fce2f1c4 50%,#f8c6ed9c),url(assets/hsk2-clean-v470/landscape.webp) center 56%/cover no-repeat}
+.head{position:relative;z-index:2;padding-top:max(10px,env(safe-area-inset-top,0px))}
+.detail .head{padding-top:env(safe-area-inset-top,0px)}
+.head::after{top:calc(65px + env(safe-area-inset-top,0px))}
+.detail .head::after{top:calc(53px + env(safe-area-inset-top,0px))}
+main{min-height:0;overflow:auto;overflow-anchor:none;overscroll-behavior-y:contain;scrollbar-width:none;padding-bottom:12px}
+main::-webkit-scrollbar{display:none}
+footer,.detail footer{position:relative;isolation:isolate;display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;padding:6px 12px calc(7px + env(safe-area-inset-bottom,0px));border-top:1px solid #e3a9de;background:linear-gradient(#ffe8fa,#f4c6ed);box-shadow:0 -3px 9px #aa579635}
+footer::after{opacity:.5}
+footer button{width:100%;height:46px;min-height:46px;border-radius:999px;white-space:nowrap}
+footer .primary{padding:3px 8px;font-size:clamp(13px,4vw,17px)}
+footer .soft{font-size:13px;padding:3px 5px}
+footer button:active{box-shadow:inset 0 3px 5px #6c236cac;filter:brightness(.9)}
+.app[data-view="1"] footer{grid-template-columns:minmax(0,1fr);padding-inline:12%}
+.app[data-view="1"]::before{background:linear-gradient(#fae3fc 6%,#f4c1f447 30%,#fbe0f3cc 78%),url(assets/hsk2-clean-v470/landscape.webp) center 57%/cover}
+.app[data-view="1"] .head{padding-top:max(12px,env(safe-area-inset-top,0px))}
+.app[data-view="1"] main,.app[data-view="2"] main{display:flex;flex-direction:column}
+.app[data-view="1"] .intro-hero{flex:1 0 43cqw;max-height:clamp(165px,43dvh,380px);align-items:end}
+.app[data-view="1"] .intro-hero::before{inset:-5px -8px -16px;background-position:center 56%;mask-image:linear-gradient(transparent,#000 7%,#000 90%,transparent)}
+.app[data-view="1"] .intro-hero img{width:115%;height:clamp(160px,31dvh,267px);object-fit:contain;object-position:center bottom}
+.app[data-view="1"] .intro-hero .cloud{align-self:end;margin-bottom:clamp(21px,7dvh,61px)}
+.app[data-view="1"] .features{flex:1 0 auto;min-height:169px;display:flex;flex-direction:column}
+.app[data-view="1"] .feature-grid{flex:1;grid-template-rows:repeat(2,1fr)}
+.app[data-view="1"] .feature-grid div{display:flex;flex-direction:column;justify-content:center;padding-block:clamp(4px,1.1dvh,11px)}
+.app[data-view="1"] .feature-grid img{width:clamp(48px,15cqw,64px);height:clamp(40px,6dvh,55px)}
+.app[data-view="2"] .word-list{flex:1 0 auto;grid-template-rows:repeat(6,minmax(51px,1fr))}
+.app[data-view="2"] .word-row img{height:clamp(42px,8dvh,75px)}
+.app[data-view="3"] .quiz-hero{min-height:35cqw}
+.app[data-view="3"] .quiz-hero > img:first-child{max-height:35cqw}
+.app[data-view="3"] .test-card{min-height:clamp(62px,9.1dvh,76px)}
+.app[data-view="3"] .test-card img{height:clamp(46px,6.9dvh,61px)}
+.app[data-view="3"] .reward{min-height:59px;margin:9px 4px}
+.app[data-view="3"] .reward img{width:53px}
+.app[data-view="3"] [data-start]{min-height:46px;margin:0 auto 4px}
+.app[data-view="4"] .example,.app[data-view="5"] .practice-grid,.app[data-view="8"] .results{margin-block:clamp(8px,2.1dvh,19px)}
+.app[data-view="4"] .example img{height:clamp(80px,14dvh,123px)}
+.app[data-view="5"] .day-card img{aspect-ratio:1.14}
+@media(max-height:660px){.app[data-view="1"] .intro-hero img{height:43cqw}.app[data-view="1"] .intro-hero .cloud{margin-bottom:10px}}
+
 
 
 </style>
@@ -246,8 +284,8 @@ footer[hidden]{display:none}
     <nav id="steps" aria-label="Восемь шагов урока"></nav>
   </header>
   <main id="workspace"></main>
-  <footer>
-    <button type="button" class="soft compact-footer" id="back" aria-label="Предыдущий шаг">‹</button>
+  <footer aria-label="Переключение шагов">
+    <button type="button" class="soft compact-footer" id="back" aria-label="Предыдущий шаг">‹ Назад</button>
     <button type="button" class="primary" id="next"></button>
   </footer>
 </div>
@@ -425,14 +463,16 @@ function render(resetScroll = false) {
   const detailed = step === 3 || step === 6;
   app.classList.toggle('detail',detailed);
   app.dataset.view = step;
-  next.parentElement.hidden = step === 3 && state.quizTest === null;
   document.getElementById('head-label').textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
   nav.innerHTML = titles.map((title,i) => '<button type="button" class="nav-step" data-step="' + (i+1) +
     '" aria-current="' + (step === i+1 ? 'step' : 'false') + '" aria-label="Шаг ' + (i+1) + ' · ' + title + '"><span>' + (i+1) + '</span></button>').join('');
   workspace.innerHTML = [intro,newWords,quiz,grammar,day,tones,chat,finish][step-1]();
-  back.hidden = detailed || step === 1;
-  next.textContent = step === 1 ? '▷ Дальше: Новые слова →' : step === 8 ? 'К началу ↻' : step === 3 && state.quizTest !== null ? 'К списку тестов' : 'Дальше · ' + titles[step] + ' →';
-  if (resetScroll) window.scrollTo(0,0);
+  back.hidden = step === 1;
+  const inQuiz = step === 3 && state.quizTest !== null;
+  back.textContent = inQuiz ? '‹ Тесты' : '‹ Назад';
+  back.setAttribute('aria-label',inQuiz ? 'К списку тестов' : 'Предыдущий шаг');
+  next.textContent = step === 8 ? 'К началу ↻' : titles[step] + ' →';
+  if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
   const features = ['6 слов','5 мини-тестов','грамматика','распорядок','произношение','диалог'];
@@ -849,8 +889,7 @@ function previousStep() {
 back.addEventListener('click',previousStep);
 document.getElementById('detail-back').addEventListener('click',previousStep);
 next.addEventListener('click',() => {
-  if (state.step === 3 && state.quizTest !== null) openTest(null);
-  else move(state.step === 8 ? 1 : state.step+1);
+  move(state.step === 8 ? 1 : state.step+1);
 });
 
 const fromQuery = Number(new URLSearchParams(location.search).get('step'));
