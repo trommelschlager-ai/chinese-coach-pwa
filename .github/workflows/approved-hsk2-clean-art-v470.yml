@@ -23,7 +23,7 @@ jobs:
           im=Image.open(io.BytesIO(urllib.request.urlopen(req,timeout=30).read())).convert('RGB')
           print('approved collage:',im.size)
           assert im.size==(1536,1097),'Wrong source image'
-          crops={'top-content':(393,101,731,439),'panda-title':(393,101,731,255),'features':(393,255,731,439),'landscape':(1245,20,1536,490)}
+          crops={'top-content':(386,106,741,445),'panda-title':(386,106,741,255),'features':(386,252,741,445),'header':(386,8,742,106),'footer':(386,437,742,486),'landscape':(1270,0,1536,490)}
           dest=pathlib.Path('assets/hsk2-clean-v470');dest.mkdir(parents=True,exist_ok=True)
           for name,rect in crops.items():
             art=im.crop(rect)
