@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#9e2cc9">
 <title>Panda Go · HSK 2 · Мой день</title>
+<script>
+if (new URLSearchParams(location.search).get('layout') === 'course') {
+  document.documentElement.classList.add('course-layout');
+  for (const stylesheet of ['hsk2-storyboard-v433.css', 'hsk2-lilac-pink-v444.css',
+    'hsk2-lesson-theme-v451.css', 'hsk2-lesson1-course-layout.css?v=1']) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = './assets/' + stylesheet;
+    document.head.append(link);
+  }
+}
+</script>
 <style>
 :root{color-scheme:light;--ink:#241039;--purple:#541174;--gold:#f5d184;--rose:#e35caf;--panel:linear-gradient(165deg,#fffaff 10%,#fff2fc 49%,#f7d3ee 100%);--gloss:linear-gradient(180deg,#dc76f3 0%,#b73cde 32%,#8420a8 65%,#580879 98%);font:16px system-ui,sans-serif}
 *,*::before,*::after{box-sizing:border-box}
@@ -271,6 +283,18 @@ const listening = [
   ['我七点起床。',0], ['我起床以后洗脸。',1], ['我早上吃早饭。',3],
   ['我八点去上班。',4], ['我晚上十点睡觉。',5], ['我每天六点起床。',0]
 ];
+const layoutParams = new URLSearchParams(location.search);
+const courseMode = layoutParams.get('layout') === 'course';
+const courseSteps = [1,2,4,6,3,5,7,8];
+const courseSections = [
+  {name:'Слова',steps:[2]},
+  {name:'Правило',steps:[4]},
+  {name:'Речь',steps:[6]},
+  {name:'Тест',steps:[3,5]},
+  {name:'Примеры',steps:[7,8]}
+];
+const courseCover = './hsk2-life-course.html?start=1';
+const stepNumber = step => courseMode ? courseSteps.indexOf(step)+1 : step;
 const titles = ['Вступление','Новые слова','Проверь слова','Грамматика','Мой распорядок','Тренировка тонов','Фразы и диалог','Завершение'];
 const tests = ['Значение слова','По аудио','Собери слово','Заполни фразу','Произнеси'];
 const testHelp = ['Выбери правильный перевод.','Послушай и выбери действие.','Расставь иероглифы по порядку.','Подставь слово в предложение.','Скажи слово в микрофон.'];
@@ -333,11 +357,43 @@ const workspace = document.getElementById('workspace');
 const nav = document.getElementById('steps');
 const headLabel = document.getElementById('head-label');
 const headBack = document.getElementById('detail-back');
-nav.innerHTML = titles.map((title,i) => '<button type="button" class="nav-step" data-step="' + (i+1) +
-  '" aria-label="Шаг ' + (i+1) + ' · ' + title + '"><span>' + (i+1) + '</span></button>').join('');
-const stepButtons = [...nav.querySelectorAll('.nav-step')];
 const back = document.getElementById('back');
 const next = document.getElementById('next');
+let counter;
+if (courseMode) {
+  const frame = document.createElement('div');
+  frame.id = 'pg433';
+  frame.append(...app.children);
+  app.append(frame);
+  nav.removeAttribute('id');
+  nav.className = 'pg433-tabs';
+  nav.setAttribute('aria-label','Разделы урока');
+  const top = headBack.parentElement;
+  top.className = 'pg433-topline';
+  top.parentElement.className = 'pg433-header';
+  headBack.className = 'pg433-back';
+  headBack.textContent = '‹';
+  headLabel.className = 'pg433-title';
+  headLabel.removeAttribute('id');
+  headLabel.innerHTML = '<small>HSK 2 · Тема 1</small><strong>Мой день</strong>';
+  const chapter = document.createElement('span');
+  chapter.className = 'pg433-pill';
+  chapter.textContent = 'Мини-урок 1 · Начало дня';
+  top.append(chapter);
+  nav.innerHTML = courseSections.map(({name,steps},i) =>
+    '<button type="button" data-step="' + steps[0] + '"><b>' + (i+1) + '</b><span>' + name + '</span></button>').join('');
+  workspace.className = 'pg433-content';
+  back.parentElement.className = 'pg433-footer';
+  back.className = 'pg433-secondary';
+  next.className = 'pg433-primary';
+  counter = document.createElement('span');
+  counter.className = 'pg433-counter';
+  back.after(counter);
+} else {
+  nav.innerHTML = titles.map((title,i) => '<button type="button" class="nav-step" data-step="' + (i+1) +
+    '" aria-label="Шаг ' + (i+1) + ' · ' + title + '"><span>' + (i+1) + '</span></button>').join('');
+}
+const stepButtons = [...nav.querySelectorAll('button')];
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const playIcon = '<span class="play" aria-hidden="true"></span>';
 const speaker = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke-linejoin="round"/><path d="M16 8a6 6 0 0 1 0 8m2.5-10a9 9 0 0 1 0 12" stroke-linecap="round"/></svg>';
@@ -398,7 +454,15 @@ function move(step) {
   feedback = '';
   heardClip = null;
   state.step = Math.max(1,Math.min(8,step));
+  if (courseMode && state.step === 1) {
+    location.assign(courseCover);
+    return;
+  }
   if (state.step !== 3) state.quizTest = null;
+  if (courseMode) {
+    layoutParams.set('step',state.step);
+    history.replaceState(null,'','?' + layoutParams);
+  }
   save();
   render(true);
 }
@@ -408,19 +472,27 @@ function render(resetScroll = false) {
   const detailed = step === 3 || step === 6;
   app.classList.toggle('detail',detailed);
   app.dataset.view = step;
-  headLabel.textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
+  if (courseMode) counter.textContent = stepNumber(step) + ' / 8';
+  else headLabel.textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
   headBack.disabled = step === 1;
   stepButtons.forEach((button,index) => {
-    button.setAttribute('aria-current',index+1 === step ? 'step' : 'false');
+    const active = courseMode ? courseSections[index].steps.includes(step) : index+1 === step;
+    button.setAttribute('aria-current',active ? 'step' : 'false');
+    if (courseMode) button.classList.toggle('active',active);
   });
   workspace.innerHTML = [intro,newWords,quiz,grammar,day,tones,chat,finish][step-1]();
   back.hidden = step === 1;
   const inQuiz = step === 3 && state.quizTest !== null;
-  back.textContent = inQuiz ? '‹ Тесты' : '‹ Назад';
+  back.textContent = courseMode ? (inQuiz ? '← Тесты' : '← Назад') : (inQuiz ? '‹ Тесты' : '‹ Назад');
   const backLabel = inQuiz ? 'К списку тестов' : 'Предыдущий шаг';
   back.setAttribute('aria-label',backLabel);
   headBack.setAttribute('aria-label',backLabel);
-  next.textContent = step === 1 ? 'Начать урок' : step === 8 ? 'К началу ↻' : titles[step] + ' →';
+  if (courseMode) {
+    next.textContent = inQuiz ? (state.quizIndex === 5 ? 'К списку →' : 'Дальше →') :
+      (step === 8 ? 'К началу ↻' : 'Дальше →');
+  } else {
+    next.textContent = step === 1 ? 'Начать урок' : step === 8 ? 'К началу ↻' : titles[step] + ' →';
+  }
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
@@ -434,12 +506,12 @@ function newWords() {
   return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' + words.map((word,i) =>
     '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + '<div>' +
     translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh,playIcon) + '</article>').join('') +
-    '</div><p class="hint audio-note">♪ Отдельных записей этих слов пока нет. Записи фраз есть в шагах 3, 6 и 7.</p>' + safeStatus();
+    '</div><p class="hint audio-note">♪ Отдельных записей этих слов пока нет. Записи фраз есть в тестах, тренировке тонов и диалоге.</p>' + safeStatus();
 }
 
 function hero(kind,step,title,subtitle) {
   return '<div class="detail-hero ' + kind + '-hero">' + art(kind + '-panda') +
-    '<div class="hero-message"><span class="tag">Шаг ' + step + '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div>' +
+    '<div class="hero-message"><span class="tag">Шаг ' + stepNumber(step) + '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div>' +
     (kind === 'quiz' ? '<img class="quiz-clipboard" src="' + decoration + 'quiz-clipboard.webp" alt="">' : '') + '</div>';
 }
 
@@ -831,22 +903,31 @@ app.addEventListener('click',event => {
 
 function previousStep() {
   if (state.step === 3 && state.quizTest !== null) openTest(null);
-  else move(state.step-1);
+  else move(courseMode ? courseSteps[courseSteps.indexOf(state.step)-1] : state.step-1);
 }
 
 back.addEventListener('click',previousStep);
 headBack.addEventListener('click',previousStep);
 next.addEventListener('click',() => {
-  move(state.step === 8 ? 1 : state.step+1);
+  if (courseMode && state.step === 3 && state.quizTest !== null) {
+    changeQuestion(1);
+    return;
+  }
+  move(state.step === 8 ? 1 : (courseMode ? courseSteps[courseSteps.indexOf(state.step)+1] : state.step+1));
 });
 
-const fromQuery = Number(new URLSearchParams(location.search).get('step'));
+const fromQuery = Number(layoutParams.get('step'));
 if (Number.isInteger(fromQuery) && fromQuery >= 1 && fromQuery <= 8) {
+  if (!courseMode || state.step !== fromQuery) state.quizTest = null;
   state.step = fromQuery;
-  state.quizTest = null;
 }
-if (!Number.isInteger(state.step) || state.step < 1 || state.step > 8) state.step = 1;
-render(true);
+if (courseMode && fromQuery === 1) {
+  location.replace(courseCover);
+} else {
+  if (!Number.isInteger(state.step) || state.step < 1 || state.step > 8) state.step = 1;
+  if (courseMode && state.step === 1) state.step = 2;
+  render(true);
+}
 
 window.PandaGoHSK2Preview = {
   getProgress: () => JSON.parse(JSON.stringify(state)),

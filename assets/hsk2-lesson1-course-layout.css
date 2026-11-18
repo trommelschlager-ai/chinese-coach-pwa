@@ -1,0 +1,111 @@
+/* The merged lesson shares the first course's navigation and light theme. */
+.course-layout body {
+  background: #fbe8fb;
+}
+
+.course-layout #app {
+  --ink: #4c176b;
+  --panel: linear-gradient(165deg, #fffbff, #fff1fb);
+  --gloss: linear-gradient(#ea83f2, #b92cce 60%, #8c1bab);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.course-layout #pg433 .pg433-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: 105px;
+  height: 65px;
+  background: url("./panda-sakura-v346.svg") right top / contain no-repeat;
+  opacity: .25;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.course-layout #pg433 footer button {
+  width: auto;
+}
+
+.course-layout #pg433 .pg433-footer {
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+}
+
+.course-layout #pg433 .panel,
+.course-layout #pg433 .word-row,
+.course-layout #pg433 .day-card,
+.course-layout #pg433 .test-card,
+.course-layout #pg433 .tone-list,
+.course-layout #pg433 .tone-guide {
+  border-color: #e8b8e9;
+  border-bottom: 3px solid #d29bdc;
+  box-shadow: 0 5px 13px #bd75ba37;
+}
+
+.course-layout #pg433 .pill-title {
+  background: #fff5ff;
+  border: 1px solid #da9ee8;
+  border-radius: 16px;
+  box-shadow: 0 2px 5px #b378ad33;
+  padding: 7px 12px;
+  margin-block: 0 10px;
+  letter-spacing: -.025em;
+}
+
+.course-layout #pg433 .choice-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.course-layout #pg433 .choice,
+.course-layout #pg433 .soft,
+.course-layout #pg433 .token {
+  border-color: #e3afdf;
+  border-bottom: 3px solid #c991d6;
+  color: #662579;
+  min-height: 44px;
+  box-shadow: 0 2px 5px #b378ad33;
+}
+
+.course-layout #pg433 .choice {
+  text-align: left;
+  padding-inline: 14px;
+}
+
+.course-layout #pg433 .hero-message {
+  background: var(--panel);
+}
+
+.course-layout #pg433 .word-row {
+  min-height: 65px;
+}
+
+.course-layout #app[data-view="2"] .word-list {
+  flex: initial;
+}
+
+.course-layout #pg433 .word-row img {
+  height: 54px;
+}
+
+.course-layout #pg433 button.orb {
+  position: relative;
+}
+
+/* A larger tap area around the small sound and microphone controls. */
+.course-layout #pg433 button.orb::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.course-layout #pg433 button[data-question="1"] {
+  display: none;
+}
+
+.course-layout #app #pg433 .pg433-header button:active,
+.course-layout #app #pg433 .pg433-footer button:active {
+  transform: none !important;
+}

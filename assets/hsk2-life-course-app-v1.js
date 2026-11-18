@@ -400,6 +400,9 @@ function next(){
  }
  state.stage=Math.min(3,state.stage+1);render();
 }
+function openMergedDay(step){
+ window.location.assign('./preview-hsk2-lesson1-approved.html?layout=course&step='+step);
+}
 document.addEventListener('click',function(e){
  var b=e.target.closest('button');if(!b)return;
  if(b.dataset.sound!==undefined){
@@ -421,18 +424,18 @@ document.addEventListener('click',function(e){
    return;
   }
   if(b.dataset.deviceSound!==undefined){deviceSound(b.dataset.deviceSound);return}
+ if(b.dataset.pg432CoverStart!==undefined&&state.view==='lesson'&&state.topic===0&&state.mini===0){
+  openMergedDay(2);return;
+ }
  if(state.view==='lesson'&&dayPilot()&&dayUI.handle(b,state,{render:render,go:go,deviceSound:deviceSound,complete:function(){if(!state.completed.includes(id()))state.completed.push(id());go('done')}}))return;
  if(b.dataset.nav){go(b.dataset.nav);return}
  if(b.dataset.toneAnswer!==undefined){state.toneAnswer=Number(b.dataset.toneAnswer);render();return}
  if(b.dataset.view){go(b.dataset.view);return}
  if(b.dataset.v445Stage!==undefined){
-  // Exact approved HSK2 home: shortcuts reuse the real first mini-lesson.
-  const stage=Number(b.dataset.v445Stage);
-  if(!Number.isInteger(stage)||stage<0||stage>4)return;
-  enter(0,0);
-  if(state.day)state.day.pgApprovedCover=false;
-  state.stage=stage;
-  render();return;
+  const sections=[2,4,6,3,7];
+  const step=sections[Number(b.dataset.v445Stage)];
+  if(step)openMergedDay(step);
+  return;
  }
  if(b.dataset.start!==undefined){enter(0,0);return}
  if(b.dataset.topic!==undefined){state.topic=Number(b.dataset.topic);go('topic');return}
