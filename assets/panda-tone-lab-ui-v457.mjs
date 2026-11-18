@@ -1,5 +1,5 @@
 /* Panda Tone Lab v462: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
-import {estimatePitch,analyseContour} from './panda-tone-analytics-v457.mjs?v=462';
+import {estimatePitch,analyseContour} from './panda-tone-analytics-v457.mjs?v=463';
 const $=id=>document.getElementById(id);
 const choices=[...document.querySelectorAll('[data-tone]')];
 let tone=2,stream=null,context=null,source=null,analyser=null,clock=null,deadline=null,active=false,opening=false,frames=[],lastDiagnostic=null,diagnostic=null;
