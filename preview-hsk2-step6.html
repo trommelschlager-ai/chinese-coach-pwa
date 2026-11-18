@@ -604,7 +604,8 @@ body.pg-other #demo-other{padding:8px 8px 6px}
   if(d.chatReset!==undefined){dialogIndex=0;chatLog=[];showStep(7);return}
   if(d.restart!==undefined){showStep(1);return}
  });
- showStep(1);
+ const startStep=Number(new URLSearchParams(location.search).get('step'));
+ showStep(Number.isInteger(startStep)&&startStep>=1&&startStep<=8?startStep:1);
 })();
 
 </script>
