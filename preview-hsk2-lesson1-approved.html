@@ -130,12 +130,80 @@ header{z-index:3;flex:none;position:relative;background:linear-gradient(155deg,#
 @media(max-width:370px){.app{border:0}.workspace{padding:10px 8px 16px}header{padding:8px 9px 10px}.header-label{font-size:14px}.mini-logo{width:32px;height:32px}.back{width:33px;height:33px;font-size:25px}.word-row{grid-template-columns:69px minmax(0,1fr) 40px;gap:6px}.word-row img{height:63px}.tone-row{grid-template-columns:55px minmax(0,1fr) 37px 39px;gap:4px}.tone-row img{width:55px}.tone-row .cn{font-size:19px}.round{width:38px;height:38px}.hero-cloud{right:2%;width:59%}.test-card{grid-template-columns:30px 46px 1fr 16px}.test-card .test-icon{font-size:27px}.example{grid-template-columns:74px 1fr}}
 @media(min-width:520px){body{padding:0 5px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* approved-visual-alignment-v2 */
+/* Faithful mobile scale: compact illustrated scenes, not full-height flat cards. */
+:root{--deep:#571578;--purple:#8e1ab5;--bright:#c847e5;--rose:#dd2a98;--gold:#f3cb82;--ink:#421159;--shadow:0 3px 0 #a44bba,0 7px 15px #8423933d}
+.app{background:linear-gradient(160deg,#e9bcf3bb 0%,#fff1fcd5 43%,#e7bbf7ce 100%),url("./assets/hsk2-approved-scenery-v464.svg") center / 100% 100% no-repeat}
+header{padding:7px 11px 8px;border-radius:0 0 18px 18px;border-bottom:2px solid #e3b262;
+ background:linear-gradient(160deg,#fff1fd 0%,#edc1f2 58%,#e4b3ec 100%);box-shadow:0 4px 9px #76358a55;color:#5b1a79}
+.head-line{min-height:34px;gap:7px}
+.header-label{color:#592076;font-size:clamp(12px,3.45vw,15px);text-shadow:0 1px 0 #fff;text-align:left;letter-spacing:-.2px}
+.mini-logo{order:-2;width:34px;height:34px;border:2px solid #fff3ff;border-radius:12px}
+.back{order:-1;width:29px;height:29px;line-height:21px;font-size:24px;box-shadow:0 2px 4px #8942aa4d;border:1px solid #f7cffd;color:#fff;flex:none}
+.demo-pill{font-size:10px;font-weight:900;color:#893392;background:linear-gradient(#fffce9,#f5d38b);border:1px solid #edbc73;border-radius:18px;padding:4px 6px;box-shadow:0 2px 3px #7f2b7a28;white-space:nowrap}
+.progress-steps{margin:5px 1px 0;padding:5px 5px;background:linear-gradient(#fff9ff,#f7e1fb);border:1px solid #e7b1e4;border-radius:99px;box-shadow:0 2px 5px #7a328c33,inset 0 1px 4px #ab4aaa2d}
+.nav-step{width:clamp(24px,7.4vw,30px);border:1.5px solid #b963c5;border-bottom:2px solid #ab4abd;font-size:12px;background:linear-gradient(#fffaff,#e7b6f1);box-shadow:0 2px 3px #ba68bd4f}
+.nav-step.active{font-size:13px;background:linear-gradient(#fc6ab3,#c820ac);border:2px solid #ffe6aa;box-shadow:0 0 0 2px #9334a6,0 2px 5px #922b9b76}
+.workspace{padding:9px 10px 13px;position:relative}
+.workspace:before,.workspace:after{content:"";position:absolute;pointer-events:none;width:46px;height:400px;opacity:.74;z-index:0;background:url("./assets/panda-sakura-v346.svg") top left / 100% 100% no-repeat}
+.workspace:before{top:0;left:0}.workspace:after{right:0;bottom:0;transform:rotate(180deg)}
+.workspace>.stage{position:relative;z-index:1}
+.footer{padding:8px 13px calc(8px + env(safe-area-inset-bottom));background:linear-gradient(#fce3f8f5,#efc0f4ee);border-top:1px solid #f3c58c;box-shadow:0 -3px 10px #984da530}
+.footer .primary{min-height:45px;padding:9px 10px;font-size:clamp(14px,4.2vw,17px)}
+.footer-note{font-size:9px;margin:3px 0 0}
+.section-title{font-size:clamp(18px,5.3vw,24px);margin:2px 0 9px}
+.pill-title{margin:1px auto 10px;padding:5px 20px;font-size:clamp(16px,4.5vw,21px);box-shadow:0 2px 6px #8a3c9c35}
+.glass{padding:10px;border:2px solid #f5cde9;border-bottom:3px solid #d7a3df;border-radius:20px;box-shadow:0 4px 9px #aa68ab42;background:linear-gradient(145deg,#fffdfcef,#fff2faed)}
+.helper{font-size:11px;line-height:1.35;margin:5px 0 8px}
+.hero-intro{height:clamp(155px,26dvh,208px);border-radius:24px;border:2px solid #ffedf9;outline:2px solid #e9bd71;
+ background:radial-gradient(circle at 90% 13%,#fffafaa8,transparent 25%),linear-gradient(150deg,#e3b5ef,#fcd8f5 55%,#d9a1e6)}
+.hero-intro:after{content:"";position:absolute;pointer-events:none;left:0;bottom:-1px;right:0;height:18%;background:linear-gradient(0deg,#f9d7f4bc,transparent)}
+.hero-intro img{left:0;bottom:0;width:52%;height:100%;object-fit:contain;object-position:left bottom;border-radius:19px;mask-image:linear-gradient(to right,#000 80%,transparent 100%)}
+.hero-cloud{right:3%;top:21%;width:53%;min-height:98px;padding:8px 5px;border-radius:44% 45% 43% 45%;z-index:1}
+.hero-cloud .cn{font-size:clamp(25px,7vw,33px)}.hero-cloud .py{font-size:13px}.hero-cloud .ru{font-size:clamp(16px,5vw,20px)}
+.sparkle{font-size:15px;max-width:220px;padding:5px 12px;margin:-6px auto 5px;border:1px solid #fff0b8}
+.feature-frame{margin-top:11px;padding:9px 7px 6px}
+.feature{min-height:57px;gap:1px;padding:3px 1px;font-size:clamp(10px,2.7vw,12px)}
+.feature .icon-illustration{font-size:19px;filter:drop-shadow(0 2px 2px #9f63a254)}
+.word-list,.test-list,.tone-rows,.phrase-list{gap:7px}
+.word-row{min-height:67px;padding:4px 6px;grid-template-columns:clamp(69px,22vw,92px) minmax(0,1fr) 38px;border-radius:17px;box-shadow:0 3px 7px #99449a42}
+.word-row img{height:59px}.word-row .cn{font-size:clamp(19px,5.5vw,24px)}.word-row .py{font-size:13px}
+.round{width:38px;height:38px;font-size:18px}
+.hero-test{grid-template-columns:38% 1fr;margin-bottom:9px;padding:0;border-radius:22px}
+.hero-test img{height:110px}.hero-test h2{font-size:18px}.hero-test p{font-size:11px}
+.test-card{min-height:62px;padding:5px 7px;grid-template-columns:29px 46px 1fr 18px;gap:7px;border-radius:18px}
+.test-card .circle{width:29px;height:29px;font-size:15px}.test-card .test-icon{font-size:25px;min-height:45px;border-radius:12px}
+.test-card strong{font-size:clamp(13px,3.5vw,16px)}.test-card small{font-size:10px;margin-top:1px}
+.rule{padding:9px 12px 7px;margin-bottom:9px;border-radius:43% 48% 43% 47% / 28% 31% 27% 29%;background:linear-gradient(#fffdf6,#fff0fb);border:2px solid #efd18d;box-shadow:0 3px 9px #a351a34f}
+.rule .cn{font-size:clamp(32px,8.5vw,42px);color:#cd304e}.rule .py{font-size:13px}.rule p{font-size:11px;margin:4px 0 0;line-height:1.33}
+.example{grid-template-columns:77px minmax(0,1fr);gap:7px;margin-bottom:9px;padding:6px}
+.example img{height:72px;border-radius:13px}
+.example .cn{font-size:clamp(15px,4.5vw,19px);white-space:normal;overflow-wrap:anywhere}
+.example .py{font-size:11px}.example .ru{font-size:11px}
+.stage>.glass>h3{text-align:center;font-size:15px}
+.tokens,.answer-box{margin:7px 0;gap:5px;min-height:43px}
+.token{min-width:35px;min-height:34px;font-size:17px;padding:5px 7px;border-radius:19px;box-shadow:0 2px 3px #a057ad4a}
+.answer-box{font-size:17px;padding:7px;border-radius:14px}
+.controls{margin:8px 0 3px;gap:5px}
+.soft{padding:7px 11px;font-size:12px;border-radius:16px}
+.inline-primary{font-size:13px;padding:8px 12px}
+.practice-grid{gap:6px}.day-card{padding:4px 3px 7px;border-radius:15px}
+.day-card img{height:clamp(60px,11dvh,90px);border-radius:10px}
+.day-card .cn{font-size:clamp(14px,4vw,18px)}.day-card .py{font-size:10px}
+.tone-hero img{height:105px}.tone-hero h2{font-size:19px}
+.tone-row{min-height:65px;grid-template-columns:58px minmax(0,1fr) 36px 38px;gap:5px;padding:3px 5px}
+.tone-row img{height:57px;width:58px}.tone-row .cn{font-size:20px}
+.tones-tip{margin:9px 0}.tones-tip h3{font-size:15px;padding:7px}
+.four-tones strong{font-size:25px}.four-tones b{font-size:11px}
+@media (max-width:370px){.workspace{padding:8px 7px 12px}.mini-logo{width:30px;height:30px}.back{width:27px;height:27px}.header-label{font-size:12px}.demo-pill{font-size:9px;padding:3px 5px}.progress-steps{gap:1px}.nav-step{width:25px}.hero-cloud{right:2%;width:56%}.hero-intro img{width:54%}.word-row{grid-template-columns:65px minmax(0,1fr) 36px}.tone-row{grid-template-columns:53px minmax(0,1fr) 34px 34px}}
+
 </style>
 </head>
 <body>
 <div class="app" id="app">
 <header>
- <div class="head-line"><button type="button" class="back" id="back" aria-label="Предыдущий шаг">‹</button><div class="header-label" id="header-label">HSK 2 · Урок 1 · Шаг 1 из 8</div><img class="mini-logo" src="./assets/hsk2-storyboard-v433-avatar.jpg" alt="Panda Go"></div>
+ <div class="head-line"><button type="button" class="back" id="back" aria-label="Предыдущий шаг">‹</button><div class="header-label" id="header-label">HSK 2 · Урок 1 · Шаг 1 из 8</div><img class="mini-logo" src="./assets/hsk2-storyboard-v433-avatar.jpg" alt="Panda Go"><span class="demo-pill">👑 ДЕМО</span></div>
  <nav id="steps" class="progress-steps" aria-label="Навигация: 8 шагов урока"></nav>
 </header>
 <main id="workspace" class="workspace" aria-live="polite"></main>
@@ -191,7 +259,7 @@ function render(scroll){showNav();header.textContent="HSK 2 · Урок 1 · Ш�
 let layout=[intro,words,test,grammar,day,tones,chat,finish][S.step-1]();
 W.innerHTML=layout+htmlMessage();
 let nextText=["Дальше: Новые слова ▶","Дальше: Проверь слова ▶","Дальше: Грамматика ▶","Дальше: Мой распорядок ▶","Дальше: Тренировка тонов ▶","Дальше: Диалог ▶","Дальше: Результаты ▶","Вернуться к началу ↻"][S.step-1];
-next.textContent=S.step===3&&S.quizTest!==null?"К списку тестов ◀":nextText;
+next.textContent=S.step===3&&S.quizTest!==null?"К списку тестов ◀":S.step===4&&!S.grammarDone?"✓ Проверить предложение":S.step===5&&!S.dayDone?"✓ Проверить порядок":nextText;
 if(scroll)W.scrollTop=0;
 }
 function intro(){const fs=[["📚","6 слов"],["🎯","5 мини-тестов"],["🧩","грамматика"],["🗓️","распорядок"],["🎙️","произношение"],["💬","диалог"]];
@@ -261,7 +329,10 @@ if(d.review!==undefined){S.quizTest=null;go(3);return}
 if(d.restart!==undefined){if(window.confirm("Сбросить результаты упражнений этого preview?")){S=blank();storage();go(1)}return}
 });
 back.addEventListener("click",()=>{if(S.step===3&&S.quizTest!==null){S.quizTest=null;storage();render(true)}else go(S.step-1)});
-next.addEventListener("click",()=>{if(S.step===3&&S.quizTest!==null){S.quizTest=null;storage();render(true)}else go(S.step===8?1:S.step+1)});
+next.addEventListener("click",()=>{if(S.step===3&&S.quizTest!==null){S.quizTest=null;storage();render(true)}
+else if(S.step===4&&!S.grammarDone){document.querySelector('[data-gram-check]')?.click()}
+else if(S.step===5&&!S.dayDone){document.querySelector('[data-day-check]')?.click()}
+else go(S.step===8?1:S.step+1)});
 if("speechSynthesis" in window){speechSynthesis.getVoices()}
 if(!Number.isInteger(S.step)||S.step<1||S.step>8)S.step=1;
 const fromQuery=Number(new URLSearchParams(location.search).get("step"));if(Number.isInteger(fromQuery)&&fromQuery>=1&&fromQuery<=8)S.step=fromQuery;
