@@ -124,8 +124,12 @@ function say(line,autoplay=true,analysis=null){
 function learner(input,spoken){record('you',input,spoken?.known?spoken.pinyin:null,spoken?.known?spoken.translation:null,spoken);showLearnerFeedback(spoken);state.answers.push(input);if(state.answers.length>16)state.answers.shift()}
 function recordCorrection(input,spoken){
  const c=spoken?.correction;if(!c)return;
- // Keep examples separate from real Panda speech in both dialogue and history.
+ // Keep the verified model sentence separate from Panda's conversational replies.
  record('example',c.hanzi,c.pinyin,c.ru,{kind:'correction-response',original:input,probable:spoken.probable||c.ru,why:c.why});
+ // v452: read the corrected sentence immediately, not only after tapping 🔊.
+ // Do not speak an unreliable ASR correction or substitute another voice/phrase.
+ const verifiedClip=!c.uncertain&&lookupPandaVoiceClip(c.hanzi);
+ if(verifiedClip)play({hanzi:c.hanzi,audioKey:c.hanzi});
 }
 function showLearnerFeedback(spoken){
  const root=$('learner-feedback');root.replaceChildren();root.hidden=true;
