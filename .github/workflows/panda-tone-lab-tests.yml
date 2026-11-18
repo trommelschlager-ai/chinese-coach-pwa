@@ -7,6 +7,7 @@ on:
       - 'panda-tone-lab.html'
       - 'tests/panda-tone-lab.test.mjs'
       - 'tests/panda-tone-audio-roundtrip.test.mjs'
+      - 'tests/panda-tone-ma-ui.test.mjs'
       - 'scripts/audit-panda-audio.cjs'
       - 'scripts/benchmark-panda-tones.mjs'
       - 'scripts/check-panda-audio-references.cjs'
@@ -22,6 +23,7 @@ on:
       - 'panda-tone-lab.html'
       - 'tests/panda-tone-lab.test.mjs'
       - 'tests/panda-tone-audio-roundtrip.test.mjs'
+      - 'tests/panda-tone-ma-ui.test.mjs'
       - 'scripts/audit-panda-audio.cjs'
       - 'scripts/benchmark-panda-tones.mjs'
       - 'scripts/check-panda-audio-references.cjs'
@@ -47,7 +49,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
       - name: Verify tone math and safe failure handling
-        run: node --test tests/panda-tone-lab.test.mjs tests/panda-tone-audio-roundtrip.test.mjs
+        run: node --test tests/panda-tone-lab.test.mjs tests/panda-tone-audio-roundtrip.test.mjs tests/panda-tone-ma-ui.test.mjs
       - name: Check decoder availability
         run: |
           command -v ffmpeg
