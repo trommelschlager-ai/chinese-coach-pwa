@@ -1,0 +1,56 @@
+name: Panda 你好 sandhi practice v463
+on:
+  push:
+    branches:
+      - 'feature/panda-nihao-practice-v463-20261118'
+  pull_request:
+    paths:
+      - 'panda-nihao-practice.html'
+      - 'assets/panda-nihao-practice-v463.mjs'
+      - 'tests/panda-nihao-practice-v463.test.mjs'
+      - 'scripts/qa-panda-nihao-practice-v463.mjs'
+      - '.github/workflows/panda-nihao-practice-v463.yml'
+permissions:
+  contents: read
+jobs:
+  basics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check sandhi, approved sound, local microphone
+        run: |
+          node --test tests/panda-nihao-practice-v463.test.mjs
+          node --check assets/panda-nihao-practice-v463.mjs
+          node --check scripts/qa-panda-nihao-practice-v463.mjs
+  android-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Mobile Chromium microphone and native reference
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/panda-nihao-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-nihao-practice.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-nihao-practice-v463.mjs
+      - name: Save mobile screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-nihao-practice-v463-android
+          path: qa/panda-nihao/android-393x852.png
+          if-no-files-found: warn
