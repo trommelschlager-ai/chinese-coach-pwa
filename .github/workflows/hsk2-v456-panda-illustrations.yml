@@ -27,15 +27,15 @@ jobs:
           out.mkdir(exist_ok=True)
           # Original user-approved image: top middle panel holds 6 panda picture thumbnails.
           boxes=[
-            (400,54,481,133),
-            (400,146,481,225),
-            (400,238,481,317),
-            (400,330,481,409),
-            (400,422,481,501),
-            (400,514,481,593)
+            (410,56,516,132),
+            (410,137,516,214),
+            (410,221,516,294),
+            (410,303,516,376),
+            (410,384,516,460),
+            (410,477,516,554)
           ]
           for i,box in enumerate(boxes):
-            tile=im.crop(box).resize((164,164),Image.Resampling.LANCZOS)
+            tile=im.crop(box).resize((196,146),Image.Resampling.LANCZOS)
             path=out/f'word-{i+1}.webp'
             tile.save(path,'WEBP',quality=94,method=6)
             print(path,path.stat().st_size)
