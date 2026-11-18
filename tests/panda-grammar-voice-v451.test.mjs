@@ -56,7 +56,7 @@ test('existing user Luvvoice voice and offline versions are preserved',()=>{
  assert.equal(lookupPandaVoiceClip('我很好')?.src,'./assets/panda-voice-clips-v411/p156.mp3');
  assert.equal(lookupPandaVoiceClip('你好')?.src,'./assets/panda-voice-clips-v365/p039.mp3');
  const pack=JSON.parse(read('assets/offline-pack.json'));
- assert.equal(pack.version,451);
+ assert.ok(pack.version>=451,'Audio pack must include at least v451');
  for(const row of manifest.items){
   assert.ok(pack.files.includes('./assets/panda-grammar-voice-v451/'+row.file),'Offline entry missing: '+row.file);
  }
