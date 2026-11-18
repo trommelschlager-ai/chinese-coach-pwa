@@ -1,11 +1,12 @@
-/* Panda Tone Lab v458: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
+/* Panda Tone Lab v459: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
 import {estimatePitch,analyseContour} from './panda-tone-analytics-v457.mjs?v=458';
 const $=id=>document.getElementById(id);
 const choices=[...document.querySelectorAll('[data-tone]')];
-let tone=2,stream=null,context=null,source=null,analyser=null,clock=null,deadline=null,active=false,opening=false,frames=[];
+let tone=2,stream=null,context=null,source=null,analyser=null,clock=null,deadline=null,active=false,opening=false,frames=[],lastDiagnostic=null;
 const template2='M45 175 Q220 152 605 48',template3='M45 90 Q282 207 605 112';
 function choose(n){
  if(active||opening)return;
+ lastDiagnostic=null;$('copy-trace').disabled=true;
  tone=n;for(const b of choices)b.setAttribute('aria-pressed',String(Number(b.dataset.tone)===n));
  $('prompt').textContent=n===2?'Скажи «yú» одним слогом, протянув голос около 0,7–1,2 с.':'Скажи «yǔ» около 0,7–1,2 с: для отдельного 3-го тона попробуй опустить, затем поднять голос.';
  $('ref-path').setAttribute('d',n===2?template2:template3);
@@ -33,7 +34,13 @@ function show(result){
  info.className='result-text';
  let guidance=result.reason;
  if(result.kind==='rise'&&tone===3){
-  guidance='Ты выбрал 3-й тон, а кривая пока только повышается. Повтори yǔ чуть протяжнее: сначала опусти, затем подними голос. Это подсказка, не доказательство ошибки.';
+  guidance='В записи виден подъём, но он может быть только концом 3-го тона. Нельзя заключать, что ты произнёс yǔ неправильно; повтори отдельный слог и сравни несколько попыток.';
+ }else if(result.kind==='fall'&&tone===3){
+  guidance='Панда уловила нисходящий участок yǔ, но подъём не зафиксирован. Низкое/нисходящее произношение 3-го тона тоже встречается; попробуй более протяжный слог и сравни графики. Это не оценка ошибки.';
+ }else if(result.kind==='rise'&&tone===2){
+  guidance='Подъём похож на движение 2-го тона yú, но правильность всего слога по графику не определяется.';
+ }else if(result.kind==='dip'&&tone===3){
+  guidance='Видны снижение и подъём — один из вариантов 3-го тона yǔ в изоляции. Проверка качества самого звука ещё нужна.';
  }else if(result.kind==='dip'&&tone===2){
   guidance='Ты выбрал 2-й тон, но кривая показывает снижение и подъём. Попробуй yú плавно повышающимся голосом. Это не автоматическая оценка тона.';
  }
@@ -60,6 +67,10 @@ async function stop(){
  choices.forEach(b=>b.disabled=false);
  await release();
  const r=analyseContour(frames);
+ const t0=frames.length?frames[0].t:0;
+ lastDiagnostic={tone,syllable:tone===2?'yú':'yǔ',kind:r.kind,stats:r.stats||null,
+  pitchHz:frames.map(x=>({t:+(x.t-t0).toFixed(3),hz:+x.hz.toFixed(1),clarity:+x.clarity.toFixed(2)}))};
+ $('copy-trace').disabled=frames.length===0;
  show(r);
  $('status').textContent=r.kind==='insufficient'?'Голоса было недостаточно для измерения. Попробуй ещё раз.':'Готово. Это подсказка по контуру, а не оценка тона.';
  frames=[];
@@ -79,7 +90,7 @@ $('record').addEventListener('click',async()=>{
   newContext=new AudioCtx();await newContext.resume();
   const reader=newContext.createAnalyser();reader.fftSize=4096;reader.smoothingTimeConstant=0;
   const input=newContext.createMediaStreamSource(newStream);input.connect(reader);
-  stream=newStream;context=newContext;analyser=reader;source=input;active=true;frames=[];
+  stream=newStream;context=newContext;analyser=reader;source=input;active=true;frames=[];lastDiagnostic=null;$('copy-trace').disabled=true;
   const buf=new Float32Array(reader.fftSize),t0=performance.now();
   $('record').disabled=true;$('stop').disabled=false;choices.forEach(b=>b.disabled=true);
   $('status').textContent='Говори один слог протяжно. Микрофон активен (до 3 сек.).';
@@ -87,8 +98,8 @@ $('record').addEventListener('click',async()=>{
    if(!active||!analyser||!context)return;
    analyser.getFloatTimeDomainData(buf);
    const p=estimatePitch(buf,context.sampleRate);
-   if(p&&p.clarity>.78)frames.push({t:(performance.now()-t0)/1000,hz:p.hz});
-  },38);
+   if(p&&p.clarity>.78)frames.push({t:(performance.now()-t0)/1000,hz:p.hz,clarity:p.clarity});
+  },28);
   deadline=setTimeout(stop,3100);
  }catch(error){
   newStream?.getTracks().forEach(t=>t.stop());
@@ -96,6 +107,17 @@ $('record').addEventListener('click',async()=>{
   active=false;$('record').disabled=false;$('stop').disabled=true;
   $('status').textContent=error?.name==='NotAllowedError'?'Разреши микрофон в настройках Chrome и попробуй снова.':'Микрофон недоступен. Попробуй Chrome и закрой другие приложения с записью.';
  }finally{opening=false;}
+});
+// Export pitch/time numbers only, by an explicit user click. Never export raw sound.
+$('copy-trace').addEventListener('click',async()=>{
+ if(!lastDiagnostic)return;
+ try{
+  if(!navigator.clipboard?.writeText)throw new Error('Clipboard not available');
+  await navigator.clipboard.writeText(JSON.stringify(lastDiagnostic));
+  $('status').textContent='Данные высоты голоса скопированы (без звука). Можешь прислать их для диагностики.';
+ }catch{
+  $('status').textContent='Не удалось скопировать автоматически. В Chrome разреши буфер обмена или пришли скриншот.';
+ }
 });
 window.addEventListener('pagehide',()=>{
  clearInterval(clock);clearTimeout(deadline);
