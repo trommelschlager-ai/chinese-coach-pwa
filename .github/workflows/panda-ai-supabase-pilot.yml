@@ -1,0 +1,31 @@
+name: Panda AI free Supabase pilot
+
+on:
+  push:
+    branches:
+      - feature/panda-ai-supabase-free-pilot
+    paths:
+      - "supabase/functions/panda-ai-pilot/**"
+      - ".github/workflows/panda-ai-supabase-pilot.yml"
+  pull_request:
+    paths:
+      - "supabase/functions/panda-ai-pilot/**"
+      - ".github/workflows/panda-ai-supabase-pilot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Verify quota boundary tests
+        run: deno test --no-config supabase/functions/panda-ai-pilot/policy.test.ts
+      - name: Typecheck Supabase Edge Function
+        run: deno check --no-config supabase/functions/panda-ai-pilot/index.ts
