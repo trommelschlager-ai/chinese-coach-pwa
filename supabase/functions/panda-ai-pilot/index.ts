@@ -1,6 +1,7 @@
 // Panda Go / Panda AI Model A: free, Supabase-only pilot.
 // Intentionally no real AI provider, payments, or production keys.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { quotaPolicy as policy } from "./policy.ts";
 
 type AppEnv = {
   url: string;
@@ -31,18 +32,6 @@ function json(data: Record<string, unknown>, code: number, origin = ""): Respons
     headers["access-control-allow-methods"] = "GET,POST,OPTIONS";
   }
   return new Response(JSON.stringify(data), {status:code, headers});
-}
-
-export function policy(purchaseDate: string, now = Date.now()) {
-  const started = Date.parse(purchaseDate);
-  if (!Number.isFinite(started) || started > now) throw Error("Invalid purchase timestamp");
-  const trial = now - started < 30 * 86_400_000;
-  return {
-    phase: trial ? "trial" : "base",
-    limit: trial ? 10 : 3,
-    trialEndsAt: new Date(started + 30 * 86_400_000).toISOString(),
-    trialDay: trial ? Math.floor((now - started) / 86_400_000) + 1 : null,
-  };
 }
 
 function resetAt(now: number): string {
