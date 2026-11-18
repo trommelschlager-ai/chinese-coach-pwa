@@ -9,7 +9,7 @@
 {
   document.documentElement.classList.add('course-layout');
   for (const stylesheet of ['hsk2-storyboard-v433.css', 'hsk2-lilac-pink-v444.css',
-    'hsk2-lesson-theme-v451.css', 'hsk2-lesson1-word-flow.css?v=2']) {
+    'hsk2-lesson-theme-v451.css', 'hsk2-lesson1-word-flow.css?v=3']) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = './assets/' + stylesheet;
@@ -409,6 +409,10 @@ const dayScenes = ['wake','wash','brush','breakfast','work','sleep'];
 const vocabImage = i => courseMode ? art('day-' + dayScenes[i]) : i === 5 ? art('sleep') : '<img src="' + asset + 'word-' + (i+1) + '.webp" alt="">';
 const art = name => '<img src="' + decoration + name + '.webp" alt="">';
 const hanzi = html => '<strong class="cn" lang="zh-Hans">' + html + '</strong>';
+const toneContours = ['M4 5 Q9 4.5 14 5', 'M4 14 Q6.5 8 14 3', 'M4 6 Q8 21 14 7', 'M4 3 Q9 6 14 14'];
+const toneStrokes = values => '<span class="tone-strokes" role="img" aria-label="Тоны: ' + values.join(', ') + '">' +
+  values.map(tone => '<svg viewBox="0 0 18 18" aria-hidden="true"><path d="' + toneContours[tone-1] + '"/></svg>').join('') +
+  '</span>';
 const pitchRow = values => '<div class="tonemarks">' + values.map(v => '<span class="tone-number">' + v + '</span>').join('') + '</div>';
 const translate = item => '<span class="py">' + item[1] + '</span><span class="ru">' + item[2] + '</span>';
 const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' good' : '') + '" role="status">' + escape(feedback) + '</div>';
@@ -509,6 +513,8 @@ function render(resetScroll = false) {
 function intro() {
   if (courseMode) return '<section class="word-flow-cover" aria-label="HSK 2 · Урок 1 · Мой день">' +
     '<div class="word-flow-cover-art"><img src="' + decoration + 'course-cover-top.webp" alt="Panda Go · HSK 2 · Урок 1 «Мой день». Шесть слов, пять мини-тестов, грамматика, распорядок, произношение и диалог." width="691" height="1067" fetchpriority="high">' +
+    '<img class="word-flow-cover-panda" src="' + decoration + 'course-cover-panda-hd.webp" alt="" width="1080" height="521">' +
+    '<span class="word-flow-cover-section" role="heading" aria-level="2" aria-label="Содержание урока"></span>' +
     '<p class="word-flow-cover-copy">Расскажи о своём распорядке дня.</p></div>' +
     '<a class="word-flow-cover-back" href="./hsk2-life-course.html?view=welcome" aria-label="На главную HSK 2">‹</a>' +
     '<button type="button" class="primary word-flow-cover-start" data-step="2">Начать урок →</button>' +
@@ -522,7 +528,7 @@ function intro() {
 
 function newWords() {
   return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' + words.map((word,i) =>
-    '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + '<div>' +
+    '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + toneStrokes(word.tones) + '<div>' +
     translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh,playIcon) + '</article>').join('') +
     '</div><p class="hint audio-note">♪ Отдельных записей этих слов пока нет. Записи фраз есть в тестах, тренировке тонов и диалоге.</p>' + safeStatus();
 }
@@ -694,8 +700,8 @@ function tones() {
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
     '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (6)</button></div>' +
     (wordView ? '<div class="tone-list">' + words.map((word,i) => '<article class="tone-row">' + vocabImage(i) + '<div>' +
-      hanzi(word.zh) + translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh) + '<div>' +
-      pitchRow(word.tones) + wave + '</div>' + micButton(i,'Произнести ' + word.zh,state.mic.includes(i)) + '</article>').join('') + '</div>' : phraseCards()) +
+      hanzi(word.zh) + translate([word.zh,word.py,word.ru]) + '</div><div class="tone-example">' +
+      toneStrokes(word.tones) + pitchRow(word.tones) + wave + '</div>' + audioButton(word.zh) + micButton(i,'Произнести ' + word.zh,state.mic.includes(i)) + '</article>').join('') + '</div>' : phraseCards()) +
     safeStatus() + toneGuide() + '<div class="progress-panel panel">' + art('medal') + '<div><b>Распознавание слов</b>' +
     '<progress max="6" value="' + state.mic.length + '" aria-label="Распознано слов"></progress></div><b>' + state.mic.length +
     ' из 6</b></div><p class="hint audio-note">洗脸 — xǐliǎn (3 + 3). В связной речи первый слог звучит со 2-м тоном. Волна декоративная, оценки тонов нет.</p>' +

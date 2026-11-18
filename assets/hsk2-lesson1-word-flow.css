@@ -161,10 +161,13 @@
 }
 .course-layout #app[data-view="1"] #pg433 .pg433-content {
   padding: 0 !important;
-  overflow: auto;
+  overflow: hidden;
 }
 .word-flow-cover {
+  /* Fit 1,378 px of artwork around the 44 px Start button and 8 px of spacing. */
   position: relative;
+  width: min(100%, calc((100dvh - 52px) * 691 / 1378));
+  margin-inline: auto;
 }
 .word-flow-cover > img {
   width: 100%;
@@ -190,12 +193,13 @@
 .course-layout #pg433 .word-flow-cover-start {
   display: block;
   width: 93.2%;
+  height: 44px;
   min-height: 44px;
-  margin: 0 auto 2%;
-  padding: 2.05% 10px;
-  border: 2px solid #f1a4fc;
-  border-bottom: 4px solid #41106e;
-  background: linear-gradient(#b744f0, #821ad6 55%, #54149a);
+  margin: 2px auto 6px;
+  padding: 3px 10px;
+  border: 2px solid #f5bdff;
+  border-bottom: 4px solid #7131a7;
+  background: linear-gradient(#d087f4, #ad58e2 48%, #8737c8);
   box-shadow: 0 3px 5px #54147555, inset 0 1px 2px #f3b8ff;
   font: 850 clamp(18px, 5.2vw, 29px)/1.2 system-ui, sans-serif;
 }
@@ -293,4 +297,67 @@
   margin: 4px 0 0;
   padding-block: 4px;
   line-height: 1.25;
+}
+
+.word-flow-cover-section {
+  position: absolute;
+  inset: 57.35% 15.3% 37% 15.2%;
+  border-radius: 999px;
+  backdrop-filter: brightness(1.27) saturate(.78);
+}
+
+.word-flow-cover-back::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.course-layout #pg433 .word-row {
+  grid-template-columns: 20% max-content minmax(42px, 15%) minmax(0, 1fr) 37px;
+  gap: 4px;
+}
+.course-layout #pg433 .word-row .cn {
+  font-size: clamp(17px, 5vw, 23px);
+}
+.course-layout #pg433 .word-row .py {
+  overflow-wrap: normal;
+}
+.course-layout #pg433 .tone-row {
+  grid-template-columns: 20% minmax(0, 1fr) minmax(49px, 16%) 36px 36px;
+}
+.course-layout #pg433 .tone-example {
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+}
+.course-layout #pg433 .tone-strokes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  color: #228342;
+}
+.course-layout #pg433 .tone-strokes svg {
+  width: clamp(13px, 4.15vw, 19px);
+  min-width: 0;
+  aspect-ratio: 1;
+  display: block;
+}
+.course-layout #pg433 .tone-strokes path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.word-flow-cover-art .word-flow-cover-panda {
+  position: absolute;
+  inset: 25.96% 0 auto;
+  width: 100%;
+  height: 31.3%;
+  object-fit: cover;
+  mask-image: linear-gradient(transparent, #000 3%, #000 97%, transparent);
 }
