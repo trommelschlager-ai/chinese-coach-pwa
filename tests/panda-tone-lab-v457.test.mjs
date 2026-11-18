@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {estimatePitch,analyseContour,semitones} from '../assets/panda-tone-analytics-v457.mjs';
+import {estimatePitch,analyseContour,semitones,findOctaveDiscontinuities} from '../assets/panda-tone-analytics-v457.mjs';
 
 const sr=48000;
 function wave(hz=160,amp=.25,noise=0){
@@ -58,6 +58,36 @@ test('valid longer rising tone-like contour is still described without grading',
  assert.equal(r.isToneGrade,false);
  assert.ok(r.stats.duration>=.5);
 });
+test('actual user sample detects two sudden octave slips without blaming pronunciation',()=>{
+ const frequencies=[125.2,125.9,127.6,128.6,128.4,125.8,244.6,238.3,234.1,109,94.8,93.2];
+ const times=[0,.028,.056,.084,.112,.140,.168,.196,.224,.253,.336,.364];
+ const sample=times.map((t,i)=>({t,hz:frequencies[i],clarity:.9}));
+ const found=findOctaveDiscontinuities(sample);
+ assert.equal(found.length,2);
+ assert.equal(found[0].toHz,244.6);
+ assert.equal(found[1].toHz,109);
+ const r=analyseContour(sample);
+ assert.equal(r.kind,'insufficient');
+ assert.equal(r.stats.octaveJumpCount,2);
+ assert.match(r.reason,/ошибка измерения/u);
+ assert.equal(r.isToneGrade,false);
+});
+test('long recording with octave slip does not receive a false rise/dip/fall label',()=>{
+ const frames=path(p=>140+45*p,40);
+ for(let i=20;i<24;i++)frames[i].hz*=2;
+ const r=analyseContour(frames);
+ assert.equal(r.kind,'uncertain');
+ assert.ok(r.stats.octaveJumpCount>=2);
+ assert.deepEqual(r.points,[]);
+ assert.equal(r.isToneGrade,false);
+});
+test('smooth gradual rise retains a cautious rising-shape description',()=>{
+ const frames=path(p=>140+50*p,40);
+ assert.equal(findOctaveDiscontinuities(frames).length,0);
+ const r=analyseContour(frames);
+ assert.equal(r.kind,'rise');
+ assert.equal(r.isToneGrade,false);
+});
 test('short contours and gaps do not get a grade',()=>{
  assert.equal(analyseContour(path(p=>140+60*p,5)).kind,'insufficient');
  const separated=[...path(p=>140+30*p,7),...path(p=>180+15*p,7).map(x=>({...x,t:x.t+2}))];
@@ -68,7 +98,7 @@ test('short contours and gaps do not get a grade',()=>{
 test('pilot page only uses local Web Audio and never claims verified tones',()=>{
  const html=fs.readFileSync(new URL('../panda-tone-lab.html',import.meta.url),'utf8');
  const ui=fs.readFileSync(new URL('../assets/panda-tone-lab-ui-v457.mjs',import.meta.url),'utf8');
- assert.ok(html.includes('panda-tone-lab-ui-v457.mjs?v=461'));
+ assert.ok(html.includes('panda-tone-lab-ui-v457.mjs?v=462'));
  assert.ok(html.includes('не оценивает правильность китайских тонов'));
  assert.ok(html.includes('panda-voice-pilot.html'));
  assert.ok(ui.includes('getUserMedia('));
@@ -77,7 +107,7 @@ test('pilot page only uses local Web Audio and never claims verified tones',()=>
  assert.ok(ui.includes('analyseContour(frames)'))
  assert.ok(ui.includes('result.kind===\'rise\'&&tone===3'));
  assert.ok(ui.includes('Number.isFinite(s.startToEndSt)'));
- assert.ok(ui.includes('panda-tone-analytics-v457.mjs?v=458'));
+ assert.ok(ui.includes('panda-tone-analytics-v457.mjs?v=462'));
  assert.ok(ui.includes('getTracks().forEach(t=>t.stop())'));
  assert.ok(html.includes('id="copy-trace"'),'Pitch export must be user initiated');
  assert.ok(ui.includes("navigator.clipboard.writeText(JSON.stringify(lastDiagnostic))"));
@@ -101,6 +131,8 @@ test('pilot page only uses local Web Audio and never claims verified tones',()=>
  assert.ok(html.includes('id="mic-level"'));
  assert.ok(html.includes('дождись автоматической остановки через 3 секунды'));
  assert.ok(ui.includes('thresholdRms:0.012'));
+ assert.ok(ui.includes('s.octaveJumpCount>0'));
+ assert.ok(ui.includes('panda-tone-analytics-v457.mjs?v=462'));
  assert.ok(ui.includes('diagnostic.startedAt'),'Capture duration independent of voiced span');
  assert.ok(!ui.includes('new MediaRecorder('));
 

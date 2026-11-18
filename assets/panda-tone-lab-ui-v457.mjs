@@ -1,5 +1,5 @@
-/* Panda Tone Lab v461: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
-import {estimatePitch,analyseContour} from './panda-tone-analytics-v457.mjs?v=458';
+/* Panda Tone Lab v462: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
+import {estimatePitch,analyseContour} from './panda-tone-analytics-v457.mjs?v=462';
 const $=id=>document.getElementById(id);
 const choices=[...document.querySelectorAll('[data-tone]')];
 let tone=2,stream=null,context=null,source=null,analyser=null,clock=null,deadline=null,active=false,opening=false,frames=[],lastDiagnostic=null,diagnostic=null;
@@ -49,7 +49,7 @@ function show(result){
  const s=result.stats;
  if(s){
   const p=document.createElement('p');p.className='note';
-  p.textContent='Голосовой фрагмент: '+s.duration+' с · чистых отсчётов: '+s.voicedFrames+(Number.isFinite(s.startToEndSt)?' · изменение: '+(s.startToEndSt>0?'+':'')+s.startToEndSt+' полутонов.':'. Данных пока мало.');
+  p.textContent='Голосовой фрагмент: '+s.duration+' с · чистых отсчётов: '+s.voicedFrames+(Number.isFinite(s.startToEndSt)?' · изменение: '+(s.startToEndSt>0?'+':'')+s.startToEndSt+' полутонов.':'. Данных пока мало.')+(s.octaveJumpCount>0?' Возможные ошибки октавы: '+s.octaveJumpCount+'.':'');
   $('result').append(p);
  }
 }
