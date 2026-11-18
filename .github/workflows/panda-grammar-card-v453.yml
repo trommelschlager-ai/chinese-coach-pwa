@@ -1,0 +1,38 @@
+name: Panda grammar card readable v453
+on:
+  push:
+    branches:
+      - 'fix/panda-grammar-card-readability-v453'
+  pull_request:
+    paths:
+      - 'assets/panda-live-v346.mjs'
+      - 'assets/panda-chat-corrections-v377.css'
+      - 'assets/offline-pack.json'
+      - 'panda-voice-pilot.html'
+      - 'sw.js'
+      - 'tests/panda-grammar-card-readability-v453.test.mjs'
+      - 'tests/panda-grammar-feedback-visible-v450.test.mjs'
+      - 'tests/panda-grammar-voice-v451.test.mjs'
+      - '.github/workflows/panda-grammar-card-v453.yml'
+permissions:
+  contents: read
+jobs:
+  readable-feedback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check grammar readability, audio and regression
+        run: |
+          node --test tests/panda-grammar-card-readability-v453.test.mjs
+          node --test tests/panda-grammar-feedback-visible-v450.test.mjs
+          node --test tests/panda-grammar-voice-v451.test.mjs
+          node --test tests/panda-grammar-auto-voice-v452.test.mjs
+          node --test tests/panda-grammar-hsk12-v2.test.mjs
+      - name: Check unchanged Panda JS syntax
+        run: |
+          node --check assets/panda-live-v346.mjs
+          node --check assets/panda-live-screen-v270.mjs
