@@ -278,6 +278,7 @@ body.pg-other #demo-other{padding:8px 8px 6px}
 </style>
 <link rel="stylesheet" href="./assets/hsk2-preview-illustrated-v457.css?v=457">
 <link rel="stylesheet" href="./assets/hsk2-preview-approved-v460.css?v=460">
+<link rel="stylesheet" href="./assets/hsk2-preview-approved-v462.css?v=462">
 </head>
 <body>
 <div class="page">
@@ -397,15 +398,14 @@ body.pg-other #demo-other{padding:8px 8px 6px}
 
  const v460Hero='./assets/hsk2-preview-v457/hero-reading.webp';
  function poster(n){return n===1?intro():testHome()}
+
  function intro(){
   const features=[['📚','6 слов'],['🎯','5 мини-тестов'],['🧩','грамматика'],['🗓️','распорядок'],['🎙️','произношение'],['💬','диалог']];
   return '<section class="v460-stage">'+
-   '<div class="v460-intro"><img class="v460-intro-image" src="'+v460Hero+'" alt="Панда с красной книгой в цветочных наушниках">'+
+   '<div class="v460-intro"><img class="v460-intro-image" src="'+v460Hero+'" alt="Панда в розовых наушниках с красной книгой">'+
    '<div class="v460-cloud"><b lang="zh-Hans">我的一天</b><span class="pg-py">Wǒ de yì tiān</span><span class="pg-ru">Мой день</span></div></div>'+
-   '<h2 class="v460-ribbon">📚 На этом уроке ты научишься</h2>'+
-   '<div class="v460-cloud" style="font-size:clamp(11px,3.2vw,14px);line-height:1.34">Рассказывать, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</div>'+
-   '<div class="v460-feature-frame"><h2 class="v460-ribbon">✨ Тебя ждут ✨</h2>'+
-   '<div class="v460-feature-grid">'+features.map(x=>'<div><i>'+x[0]+'</i>'+x[1]+'</div>').join('')+'</div></div></section>';
+   '<section class="v460-feature-frame"><h2 class="v460-ribbon">✨ Тебя ждут ✨</h2>'+
+   '<div class="v460-feature-grid">'+features.map(x=>'<div><i>'+x[0]+'</i>'+x[1]+'</div>').join('')+'</div></section></section>';
  }
  function wordStep(){
   return '<section class="v460-stage"><h1 class="v460-heading">🌸 Новые слова</h1>'+
@@ -523,12 +523,22 @@ body.pg-other #demo-other{padding:8px 8px 6px}
    root.hidden=false;
    const views={1:intro,2:wordStep,3:quizStep,4:gramStep,5:practiceStep,7:chatStep,8:finishStep};
    root.innerHTML=views[step]();
-   bottomText.textContent=step===8?'↻ В начало демо':'Дальше: '+headings[step]+' →';
+   bottomText.textContent=step===8?'↻ В начало демо'
+       :step===3&&!q.started?'▶ Начать тесты'
+       :step===3&&q.started?'← К списку тестов'
+       :step===4?'✓ Проверить предложение'
+       :step===5?'✓ Проверить порядок'
+       :'Дальше: '+headings[step]+' →';
   }
   root.scrollTop=0;
  }
  bottom.addEventListener('click',e=>{
-   if(step!==6){e.preventDefault();e.stopImmediatePropagation();showStep(step===8?1:step+1)}
+   if(step===6)return;
+   e.preventDefault();e.stopImmediatePropagation();
+   if(step===3){if(!q.started){q.started=true;q.test=0;q.i=q.correct[0];q.done=false;q.assembled=[];}else{q.started=false;}showStep(3);return}
+   if(step===4){root.querySelector('[data-gram-check]')?.click();return}
+   if(step===5){root.querySelector('[data-order-check]')?.click();return}
+   showStep(step===8?1:step+1)
  },true);
  root.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
