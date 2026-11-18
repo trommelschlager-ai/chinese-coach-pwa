@@ -1,0 +1,54 @@
+name: Panda Go tone and audio checks
+
+on:
+  push:
+    paths:
+      - 'assets/panda-tone-*'
+      - 'panda-tone-lab.html'
+      - 'tests/panda-tone-lab.test.mjs'
+      - 'scripts/audit-panda-audio.cjs'
+      - '.github/workflows/panda-tone-lab-tests.yml'
+      - 'assets/**/*.mp3'
+      - 'assets/**/*.m4a'
+      - 'assets/**/*.wav'
+      - 'assets/**/*.ogg'
+      - 'assets/**/*.webm'
+  pull_request:
+    paths:
+      - 'assets/panda-tone-*'
+      - 'panda-tone-lab.html'
+      - 'tests/panda-tone-lab.test.mjs'
+      - 'scripts/audit-panda-audio.cjs'
+      - '.github/workflows/panda-tone-lab-tests.yml'
+  schedule:
+    - cron: '30 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tone-and-audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify tone math and safe failure handling
+        run: node --test tests/panda-tone-lab.test.mjs
+      - name: Check decoder availability
+        run: |
+          command -v ffmpeg
+          command -v ffprobe
+      - name: Inventory and decode all repository audio
+        run: node scripts/audit-panda-audio.cjs --deep
+      - name: Upload machine-readable audio report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-go-audio-audit
+          path: reports/panda-audio-audit.json
+          if-no-files-found: warn
+          retention-days: 14
