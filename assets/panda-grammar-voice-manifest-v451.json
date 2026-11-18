@@ -7,294 +7,464 @@
       "hanzi": "他有两个妹妹。",
       "pinyin": "Tā yǒu liǎng ge mèimei.",
       "ru": "У него две младшие сестры.",
-      "file": "g001.mp3"
+      "file": "g001.mp3",
+      "start_s": 0.12,
+      "end_s": 1.89,
+      "duration_s": 1.824,
+      "sha256": "97ee9a7407ecaef4b2a05911e8100aa62690958af2ba58e9ae59e2cf3f241f2d"
     },
     {
       "id": 2,
       "hanzi": "她是不是医生？",
       "pinyin": "Tā shì bu shì yīshēng?",
       "ru": "Она врач или нет?",
-      "file": "g002.mp3"
+      "file": "g002.mp3",
+      "start_s": 2.28,
+      "end_s": 4.04,
+      "duration_s": 1.824,
+      "sha256": "810c5137ca80a8b9e00a1feaf3921071c287507990599c91b73cc7e1339c6928"
     },
     {
       "id": 3,
       "hanzi": "你八点起床。",
       "pinyin": "Nǐ bā diǎn qǐchuáng.",
       "ru": "Ты встаёшь в восемь.",
-      "file": "g003.mp3"
+      "file": "g003.mp3",
+      "start_s": 4.39,
+      "end_s": 6.09,
+      "duration_s": 1.752,
+      "sha256": "2f403c6e557a1d8b9e4f1113cfb6640b893e502117404d9e74b2ab10b724e039"
     },
     {
       "id": 4,
       "hanzi": "我不是学生。",
       "pinyin": "Wǒ bú shì xuésheng.",
       "ru": "Я не ученик.",
-      "file": "g004.mp3"
+      "file": "g004.mp3",
+      "start_s": 6.45,
+      "end_s": 8.07,
+      "duration_s": 1.68,
+      "sha256": "206c8c0a4776c6fff7cb053ded03ae56f49376151d050248a82687a05e014f40"
     },
     {
       "id": 5,
       "hanzi": "他没有钱。",
       "pinyin": "Tā méiyǒu qián.",
       "ru": "У него нет денег.",
-      "file": "g005.mp3"
+      "file": "g005.mp3",
+      "start_s": 8.44,
+      "end_s": 9.9,
+      "duration_s": 1.512,
+      "sha256": "a57ef6f3152b025e83444f4ea6c5a7c179a7227ca90d69a0313067a995b0fa38"
     },
     {
       "id": 6,
       "hanzi": "我没去过中国。",
       "pinyin": "Wǒ méi qù guo Zhōngguó.",
       "ru": "Я не был в Китае.",
-      "file": "g006.mp3"
+      "file": "g006.mp3",
+      "start_s": 10.27,
+      "end_s": 12.06,
+      "duration_s": 1.848,
+      "sha256": "d52b3cb3bdbad8c968ac473a7a776579505d0d712506c30d9a7db227e871e89f"
     },
     {
       "id": 7,
       "hanzi": "我没吃饭。",
       "pinyin": "Wǒ méi chīfàn.",
       "ru": "Я не ел.",
-      "file": "g007.mp3"
+      "file": "g007.mp3",
+      "start_s": 12.43,
+      "end_s": 13.88,
+      "duration_s": 1.512,
+      "sha256": "98c6e58b7692d946db2c307ff016100d22f98b685ccdaddd92ee9399dab57a02"
     },
     {
       "id": 8,
       "hanzi": "我叫小明。",
       "pinyin": "Wǒ jiào Xiǎomíng.",
       "ru": "Меня зовут Сяомин.",
-      "file": "g008.mp3"
+      "file": "g008.mp3",
+      "start_s": 14.25,
+      "end_s": 15.74,
+      "duration_s": 1.56,
+      "sha256": "59323cf645bef9228223e7d948c903ea6278499ce41e7855455764b893e3e7c9"
     },
     {
       "id": 9,
       "hanzi": "我姓王。",
       "pinyin": "Wǒ xìng Wáng.",
       "ru": "Моя фамилия Ван.",
-      "file": "g009.mp3"
+      "file": "g009.mp3",
+      "start_s": 16.12,
+      "end_s": 17.37,
+      "duration_s": 1.32,
+      "sha256": "239bebe22bceb265b5b3dea83a31dd014135c651e0059f09fc0e90455dd7d424"
     },
     {
       "id": 10,
       "hanzi": "你多大？",
       "pinyin": "Nǐ duō dà?",
       "ru": "Сколько тебе лет?",
-      "file": "g010.mp3"
+      "file": "g010.mp3",
+      "start_s": 17.7,
+      "end_s": 19,
+      "duration_s": 1.368,
+      "sha256": "7d9f0185bf623025f210afd12d4612a07335ae6f57faada8159fff0c15b7c479"
     },
     {
       "id": 11,
       "hanzi": "你喜欢什么？",
       "pinyin": "Nǐ xǐhuan shénme?",
       "ru": "Что тебе нравится?",
-      "file": "g011.mp3"
+      "file": "g011.mp3",
+      "start_s": 19.35,
+      "end_s": 20.89,
+      "duration_s": 1.608,
+      "sha256": "2dc7e97335a00e475d0d0127694e33e5648487c902c38e0b7a9bcffee04e9e5d"
     },
     {
       "id": 12,
       "hanzi": "现在几点？",
       "pinyin": "Xiànzài jǐ diǎn?",
       "ru": "Который сейчас час?",
-      "file": "g012.mp3"
+      "file": "g012.mp3",
+      "start_s": 21.25,
+      "end_s": 22.8,
+      "duration_s": 1.608,
+      "sha256": "a6585a201ca7bcb12226024636f4508884aa8420b019cb2483a6bee6a3c2bc34"
     },
     {
       "id": 13,
       "hanzi": "这是什么？",
       "pinyin": "Zhè shì shénme?",
       "ru": "Что это?",
-      "file": "g013.mp3"
+      "file": "g013.mp3",
+      "start_s": 23.18,
+      "end_s": 24.53,
+      "duration_s": 1.416,
+      "sha256": "7336fda32b1fc15b6be6dd6329a9fdbf4383eec768382d40ccd0a2b839ae1a42"
     },
     {
       "id": 14,
       "hanzi": "你有几个哥哥？",
       "pinyin": "Nǐ yǒu jǐ ge gēge?",
       "ru": "Сколько у тебя старших братьев?",
-      "file": "g014.mp3"
+      "file": "g014.mp3",
+      "start_s": 24.87,
+      "end_s": 26.6,
+      "duration_s": 1.8,
+      "sha256": "3451dbc83ff48d2a3eb7f49d88ddc4b8695c7c9b52264099bf89288e93d1aa34"
     },
     {
       "id": 15,
       "hanzi": "你是不是老师？",
       "pinyin": "Nǐ shì bu shì lǎoshī?",
       "ru": "Ты учитель или нет?",
-      "file": "g015.mp3"
+      "file": "g015.mp3",
+      "start_s": 26.96,
+      "end_s": 28.75,
+      "duration_s": 1.848,
+      "sha256": "e8034ce4668dc803eccab9e87490a53a5c09834e25fc6d9b4805ea3c45b5dce3"
     },
     {
       "id": 16,
       "hanzi": "你有没有哥哥？",
       "pinyin": "Nǐ yǒu méiyǒu gēge?",
       "ru": "У тебя есть старший брат?",
-      "file": "g016.mp3"
+      "file": "g016.mp3",
+      "start_s": 29.09,
+      "end_s": 30.81,
+      "duration_s": 1.776,
+      "sha256": "aa9ec1840edbc2c56f4a1ca9d95264792e3e958ef2746b39f5dca62e48057ac1"
     },
     {
       "id": 17,
       "hanzi": "你会不会说中文？",
       "pinyin": "Nǐ huì bu huì shuō Zhōngwén?",
       "ru": "Ты умеешь говорить по-китайски?",
-      "file": "g017.mp3"
+      "file": "g017.mp3",
+      "start_s": 31.16,
+      "end_s": 33.25,
+      "duration_s": 2.16,
+      "sha256": "5d7c312c4527e477a8ecc8efa126122778d1a33e853c81ad890c785bdec2f497"
     },
     {
       "id": 18,
       "hanzi": "你去不去学校？",
       "pinyin": "Nǐ qù bu qù xuéxiào?",
       "ru": "Ты пойдёшь в школу или нет?",
-      "file": "g018.mp3"
+      "file": "g018.mp3",
+      "start_s": 33.59,
+      "end_s": 35.37,
+      "duration_s": 1.848,
+      "sha256": "563931425a82f986f599d84e089039f016bff867f4922ba3c1b278bf95fa13a4"
     },
     {
       "id": 19,
       "hanzi": "你想不想喝茶？",
       "pinyin": "Nǐ xiǎng bu xiǎng hē chá?",
       "ru": "Хочешь пить чай или нет?",
-      "file": "g019.mp3"
+      "file": "g019.mp3",
+      "start_s": 35.73,
+      "end_s": 37.6,
+      "duration_s": 1.92,
+      "sha256": "45fe6c9ac57cb8415d0256d8d30c6639fe5b8d398d530f71864bf407e2ca23af"
     },
     {
       "id": 20,
       "hanzi": "我有两个哥哥。",
       "pinyin": "Wǒ yǒu liǎng ge gēge.",
       "ru": "У меня два старших брата.",
-      "file": "g020.mp3"
+      "file": "g020.mp3",
+      "start_s": 37.96,
+      "end_s": 39.73,
+      "duration_s": 1.824,
+      "sha256": "8b0e56e3608b7f03132417c2be1d757846f185d669bb7d88272bcd56ab7ba073"
     },
     {
       "id": 21,
       "hanzi": "我有两个朋友。",
       "pinyin": "Wǒ yǒu liǎng ge péngyou.",
       "ru": "У меня два друга.",
-      "file": "g021.mp3"
+      "file": "g021.mp3",
+      "start_s": 40.11,
+      "end_s": 41.84,
+      "duration_s": 1.8,
+      "sha256": "171ffacdf879ed463a848a34077cec4fb5f992001c6aa96dfdaa57588f9f69a4"
     },
     {
       "id": 22,
       "hanzi": "我有一本书。",
       "pinyin": "Wǒ yǒu yì běn shū.",
       "ru": "У меня одна книга.",
-      "file": "g022.mp3"
+      "file": "g022.mp3",
+      "start_s": 42.24,
+      "end_s": 43.81,
+      "duration_s": 1.632,
+      "sha256": "b152513cceb4e22758739a1f2860951cc8871163b688476c1c0630689bc505e2"
     },
     {
       "id": 23,
       "hanzi": "我买了一本书。",
       "pinyin": "Wǒ mǎi le yì běn shū.",
       "ru": "Я купил одну книгу.",
-      "file": "g023.mp3"
+      "file": "g023.mp3",
+      "start_s": 44.19,
+      "end_s": 45.91,
+      "duration_s": 1.776,
+      "sha256": "614ca5c47f6bc77c7f062d17d42fc5485ffbac71bbe28687b78e9a58b1134ae4"
     },
     {
       "id": 24,
       "hanzi": "这里有三只猫。",
       "pinyin": "Zhèlǐ yǒu sān zhī māo.",
       "ru": "Здесь три кошки.",
-      "file": "g024.mp3"
+      "file": "g024.mp3",
+      "start_s": 46.31,
+      "end_s": 48.07,
+      "duration_s": 1.824,
+      "sha256": "66dc77c40a03448c33101945c6d75a903f51ab86e2fd7747ec3d8efe3172b6da"
     },
     {
       "id": 25,
       "hanzi": "我有一只狗。",
       "pinyin": "Wǒ yǒu yì zhī gǒu.",
       "ru": "У меня одна собака.",
-      "file": "g025.mp3"
+      "file": "g025.mp3",
+      "start_s": 48.45,
+      "end_s": 50.02,
+      "duration_s": 1.632,
+      "sha256": "a776edf318ae215ddcc72eb493e7840da8725ed7278d4fea4f7d0f10a93ddd40"
     },
     {
       "id": 26,
       "hanzi": "我喝了两杯茶。",
       "pinyin": "Wǒ hē le liǎng bēi chá.",
       "ru": "Я выпил две чашки чая.",
-      "file": "g026.mp3"
+      "file": "g026.mp3",
+      "start_s": 50.4,
+      "end_s": 52.26,
+      "duration_s": 1.92,
+      "sha256": "bd6517047825992416351c31f6f2acf4dfca8a4bd86917ea85c96daa5b6a7b45"
     },
     {
       "id": 27,
       "hanzi": "我住在北京。",
       "pinyin": "Wǒ zhù zài Běijīng.",
       "ru": "Я живу в Пекине.",
-      "file": "g027.mp3"
+      "file": "g027.mp3",
+      "start_s": 52.62,
+      "end_s": 54.29,
+      "duration_s": 1.728,
+      "sha256": "6286d9a44665b49fb95c392c2597a581c96172eecb6dc3e44bee66d592e6a392"
     },
     {
       "id": 28,
       "hanzi": "我想去中国。",
       "pinyin": "Wǒ xiǎng qù Zhōngguó.",
       "ru": "Я хочу поехать в Китай.",
-      "file": "g028.mp3"
+      "file": "g028.mp3",
+      "start_s": 54.65,
+      "end_s": 56.36,
+      "duration_s": 1.776,
+      "sha256": "90f8246d6b9d99cd03e36cdc9838b4437393d39d63442ed5a9166d98bb45778f"
     },
     {
       "id": 29,
       "hanzi": "我会说中文。",
       "pinyin": "Wǒ huì shuō Zhōngwén.",
       "ru": "Я умею говорить по-китайски.",
-      "file": "g029.mp3"
+      "file": "g029.mp3",
+      "start_s": 56.73,
+      "end_s": 58.41,
+      "duration_s": 1.728,
+      "sha256": "0108dc521622d142ce9d5848d8d20e6b88f77ec6852273bbbf49152d52d86329"
     },
     {
       "id": 30,
       "hanzi": "我每天学中文。",
       "pinyin": "Wǒ měitiān xué Zhōngwén.",
       "ru": "Я каждый день учу китайский.",
-      "file": "g030.mp3"
+      "file": "g030.mp3",
+      "start_s": 58.78,
+      "end_s": 60.69,
+      "duration_s": 1.968,
+      "sha256": "695e07e500cee70e0cc4c57387efbe5c8899cae2fe1aa5916b2f856741616907"
     },
     {
       "id": 31,
       "hanzi": "我在学校学中文。",
       "pinyin": "Wǒ zài xuéxiào xué Zhōngwén.",
       "ru": "Я изучаю китайский в школе.",
-      "file": "g031.mp3"
+      "file": "g031.mp3",
+      "start_s": 61.06,
+      "end_s": 63.21,
+      "duration_s": 2.208,
+      "sha256": "cf8cd66d78eb2b470676efaa3bbd542f1f839a523139ace80319a69501ac66b0"
     },
     {
       "id": 32,
       "hanzi": "我在家吃饭。",
       "pinyin": "Wǒ zài jiā chīfàn.",
       "ru": "Я ем дома.",
-      "file": "g032.mp3"
+      "file": "g032.mp3",
+      "start_s": 63.55,
+      "end_s": 65.21,
+      "duration_s": 1.728,
+      "sha256": "ae3b6fe1feb5bfcbd120dd1b16924f8138654e1ec784494f31b962c4c44c3065"
     },
     {
       "id": 33,
       "hanzi": "我七点起床。",
       "pinyin": "Wǒ qī diǎn qǐchuáng.",
       "ru": "Я встаю в семь.",
-      "file": "g033.mp3"
+      "file": "g033.mp3",
+      "start_s": 65.58,
+      "end_s": 67.31,
+      "duration_s": 1.8,
+      "sha256": "1a6a924cea8c174e23087f70158701b5c04b8f3acf6170da038f3297a290edef"
     },
     {
       "id": 34,
       "hanzi": "我晚上十点睡觉。",
       "pinyin": "Wǒ wǎnshang shí diǎn shuìjiào.",
       "ru": "Я ложусь спать в десять вечера.",
-      "file": "g034.mp3"
+      "file": "g034.mp3",
+      "start_s": 67.68,
+      "end_s": 69.85,
+      "duration_s": 2.232,
+      "sha256": "de2952fcd1c4d37a8df43d023bad11d023dc44dcde6c99b9afbb86fd90151408"
     },
     {
       "id": 35,
       "hanzi": "我八点去上班。",
       "pinyin": "Wǒ bā diǎn qù shàngbān.",
       "ru": "Я иду на работу в восемь.",
-      "file": "g035.mp3"
+      "file": "g035.mp3",
+      "start_s": 70.23,
+      "end_s": 72,
+      "duration_s": 1.824,
+      "sha256": "b4fa0d963f7420f59a3a95dd45eafc0c40b7f209628964604cfd4a3aa46f6a2b"
     },
     {
       "id": 36,
       "hanzi": "我每天六点起床。",
       "pinyin": "Wǒ měitiān liù diǎn qǐchuáng.",
       "ru": "Я каждый день встаю в шесть.",
-      "file": "g036.mp3"
+      "file": "g036.mp3",
+      "start_s": 72.36,
+      "end_s": 74.53,
+      "duration_s": 2.232,
+      "sha256": "a074a955da2ec4da42873c5a250937e93877419a22781d1bda4f58bc919dd27c"
     },
     {
       "id": 37,
       "hanzi": "我比你高。",
       "pinyin": "Wǒ bǐ nǐ gāo.",
       "ru": "Я выше тебя.",
-      "file": "g037.mp3"
+      "file": "g037.mp3",
+      "start_s": 74.89,
+      "end_s": 76.27,
+      "duration_s": 1.44,
+      "sha256": "5b31ad098b9746d3067ea5345bac34f7e81eff3bb6ed3bc8b567a59d815b4efd"
     },
     {
       "id": 38,
       "hanzi": "我比你更高。",
       "pinyin": "Wǒ bǐ nǐ gèng gāo.",
       "ru": "Я ещё выше тебя.",
-      "file": "g038.mp3"
+      "file": "g038.mp3",
+      "start_s": 76.66,
+      "end_s": 78.28,
+      "duration_s": 1.68,
+      "sha256": "c67d1ce267ae854810bbd5080f41fa56b0b6814185b6609449c17d6f4f43ea63"
     },
     {
       "id": 39,
       "hanzi": "她很喜欢喝茶。",
       "pinyin": "Tā hěn xǐhuan hē chá.",
       "ru": "Она очень любит пить чай.",
-      "file": "g039.mp3"
+      "file": "g039.mp3",
+      "start_s": 78.65,
+      "end_s": 80.5,
+      "duration_s": 1.92,
+      "sha256": "3f1f1d0bd398f00c3fbab88738ea5f46c03704f776010e50ad7199928ea3f220"
     },
     {
       "id": 40,
       "hanzi": "我非常喜欢中国菜。",
       "pinyin": "Wǒ fēicháng xǐhuan Zhōngguó cài.",
       "ru": "Я очень люблю китайскую кухню.",
-      "file": "g040.mp3"
+      "file": "g040.mp3",
+      "start_s": 80.87,
+      "end_s": 83.18,
+      "duration_s": 2.376,
+      "sha256": "b64c9377a301372fb3611c516b2389da5404e923c37fb4582fb54863a76957ba"
     },
     {
       "id": 41,
       "hanzi": "我和朋友一起去。",
       "pinyin": "Wǒ hé péngyou yìqǐ qù.",
       "ru": "Я иду вместе с другом.",
-      "file": "g041.mp3"
+      "file": "g041.mp3",
+      "start_s": 83.55,
+      "end_s": 85.56,
+      "duration_s": 2.064,
+      "sha256": "79e1daa95e9b4a5f9982077a258370a0dfe48d35e94a8dad07f73a18a276e0ac"
     },
     {
       "id": 42,
       "hanzi": "我跟朋友一起吃饭。",
       "pinyin": "Wǒ gēn péngyou yìqǐ chīfàn.",
       "ru": "Я ем вместе с другом.",
-      "file": "g042.mp3"
+      "file": "g042.mp3",
+      "start_s": 85.95,
+      "end_s": 88.15,
+      "duration_s": 2.256,
+      "sha256": "9807a7454a7a430ea3e778c127f66c9fc1804f392755d6cfc8c3d6df9dd53f49"
     }
-  ]
+  ],
+  "source_audio": "luvvoice.com-20261117-i8sWsv.mp3",
+  "segmentation": "42 pauses detected with minimum inter-phrase silence >= 0.74 seconds; transcript labels follow user-provided 42-line script. Tone-by-tone acoustic validation pending."
 }

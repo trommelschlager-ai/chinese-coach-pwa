@@ -1,0 +1,36 @@
+name: Panda Grammar Audio v451 exact 42 MP3 QA
+on:
+  push:
+    branches:
+      - 'feature/panda-grammar-audio-42-v451'
+  pull_request:
+    paths:
+      - 'assets/panda-grammar-voice-v451/**'
+      - 'assets/panda-grammar-voice-v451.mjs'
+      - 'assets/panda-grammar-voice-manifest-v451.json'
+      - 'assets/panda-live-audio.mjs'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'assets/panda-live-v346.mjs'
+      - 'assets/offline-pack.json'
+      - 'panda-voice-pilot.html'
+      - 'tests/panda-grammar-voice-v451.test.mjs'
+      - '.github/workflows/panda-grammar-voice-v451.yml'
+permissions:
+  contents: read
+jobs:
+  voice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check 42 MP3 authenticity, mapping and Android load versions
+        run: node --test tests/panda-grammar-voice-v451.test.mjs
+      - name: Check module syntax
+        run: |
+          node --check assets/panda-grammar-voice-v451.mjs
+          node --check assets/panda-live-audio.mjs
+          node --check assets/panda-live-screen-v270.mjs
+          node --check assets/panda-live-v346.mjs
