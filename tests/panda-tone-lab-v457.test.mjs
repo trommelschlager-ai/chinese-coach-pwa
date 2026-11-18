@@ -68,7 +68,7 @@ test('short contours and gaps do not get a grade',()=>{
 test('pilot page only uses local Web Audio and never claims verified tones',()=>{
  const html=fs.readFileSync(new URL('../panda-tone-lab.html',import.meta.url),'utf8');
  const ui=fs.readFileSync(new URL('../assets/panda-tone-lab-ui-v457.mjs',import.meta.url),'utf8');
- assert.ok(html.includes('panda-tone-lab-ui-v457.mjs?v=459'));
+ assert.ok(html.includes('panda-tone-lab-ui-v457.mjs?v=460'));
  assert.ok(html.includes('не оценивает правильность китайских тонов'));
  assert.ok(html.includes('panda-voice-pilot.html'));
  assert.ok(ui.includes('getUserMedia('));
@@ -85,6 +85,15 @@ test('pilot page only uses local Web Audio and never claims verified tones',()=>
  assert.ok(ui.includes("kind==='rise'&&tone===2"),'Second-tone rise must not be graded');
  assert.ok(ui.includes("},28);"),'Use higher temporal sample rate to capture pitch turn');
  assert.ok(ui.includes('hz:+x.hz.toFixed(1)'),'Export f0 values, not audio');
+ assert.ok(ui.includes('diagnostic.totalChecks++'));
+ assert.ok(ui.includes('diagnostic.silence++'));
+ assert.ok(ui.includes('diagnostic.noStablePitch++'));
+ assert.ok(ui.includes('diagnostic.lowClarity++'));
+ assert.ok(ui.includes('capture:diagnostic?'));
+ assert.ok(ui.includes('elapsedSec:+elapsed.toFixed(2)'));
+ assert.ok(ui.includes("!(diagnostic?.totalChecks)"),'Copy diagnostics even when zero F0 points accepted');
+ assert.ok(ui.includes('peakRms:'));
+ assert.ok(ui.includes('diagnostic.startedAt'),'Capture duration independent of voiced span');
  assert.ok(!ui.includes('new MediaRecorder('));
 
  for(const banned of ['fetch(', 'XMLHttpRequest','WebSocket','MediaRecorder','SpeechRecognition','localStorage','sessionStorage']){
