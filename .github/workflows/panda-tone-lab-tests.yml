@@ -42,6 +42,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install audio decoder
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
       - name: Verify tone math and safe failure handling
         run: node --test tests/panda-tone-lab.test.mjs tests/panda-tone-audio-roundtrip.test.mjs
       - name: Check decoder availability
