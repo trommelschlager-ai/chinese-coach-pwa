@@ -1,6 +1,6 @@
 {
   "version": 455,
-  "bytes": 66884439,
+  "bytes": 66906916,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -3108,6 +3108,10 @@
     "./assets/panda-grammar-voice-v451/g040.mp3",
     "./assets/panda-grammar-voice-v451/g041.mp3",
     "./assets/panda-grammar-voice-v451/g042.mp3",
-    "./assets/hsk2-lesson-theme-v451.css?v=451"
+    "./assets/hsk2-lesson-theme-v451.css?v=451",
+    "./assets/hsk1-tone-practice-bridge-v463.js?v=463",
+    "./panda-tone-ma-practice.html",
+    "./assets/panda-tone-ma-pilot-v463.mjs?v=463",
+    "./assets/panda-tone-analytics-v457.mjs?v=462"
   ]
 }
