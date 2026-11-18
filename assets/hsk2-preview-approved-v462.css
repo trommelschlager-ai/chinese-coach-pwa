@@ -124,3 +124,8 @@ body.pg-other .bottom .go{background:linear-gradient(180deg,#f1a1ff 0,#c831dc 35
  .v460-test-list strong{font-size:12px!important}
  .v460-word-card{grid-template-columns:clamp(57px,18vw,68px) minmax(0,1fr) 37px!important}
 }
+
+/* v462 final panda-fit: preserve approved whole character instead of oversized face crop. */
+.v460-intro{flex-basis:36%!important;max-height:248px!important}
+.v460-intro-image{height:clamp(126px,20dvh,177px)!important;min-height:0!important;max-height:100%!important;align-self:center!important;object-position:50% 50%!important;object-fit:cover!important}
+.v460-feature-frame{min-height:0!important}
