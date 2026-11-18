@@ -190,7 +190,9 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 
 /* Frame just the illustrated welcome content between the shared controls. */
 .app[data-view="1"] main{position:relative;padding:0;overflow:hidden}
-.welcome-art{position:absolute;inset:-26.42% 0 auto;width:100%;height:142.05%;object-fit:fill;pointer-events:none}
+.welcome-art{position:absolute;inset:-14.64% 0 auto;width:100%;height:128.97%;object-fit:fill;pointer-events:none}
+.app[data-view="1"] #next{background:linear-gradient(#8d05bd,#480b85);border:2px solid #ffd75d}
+.app[data-view="1"] #next::before{content:"";display:inline-block;margin-right:.6em;border-block:.45em solid transparent;border-left:.68em solid currentColor;vertical-align:-.05em}
 .welcome-copy{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .app[data-view="2"] main{display:flex;flex-direction:column}
 .app[data-view="5"] .day-card img{object-position:center 46%}
@@ -418,14 +420,14 @@ function render(resetScroll = false) {
   const backLabel = inQuiz ? 'К списку тестов' : 'Предыдущий шаг';
   back.setAttribute('aria-label',backLabel);
   headBack.setAttribute('aria-label',backLabel);
-  next.textContent = step === 1 ? 'Дальше: Новые слова →' : step === 8 ? 'К началу ↻' : titles[step] + ' →';
+  next.textContent = step === 1 ? 'Начать урок' : step === 8 ? 'К началу ↻' : titles[step] + ' →';
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  return '<img class="welcome-art" src="assets/hsk2-lesson1-preview/welcome-sharp.webp" width="959" height="1640" alt="" draggable="false">' +
+  return '<img class="welcome-art" src="assets/hsk2-lesson1-preview/welcome-start-lesson.webp" width="959" height="1639" alt="" draggable="false">' +
     '<section class="welcome-copy"><h1><span lang="zh-Hans">我的一天</span> · Wǒ de yì tiān · Мой день</h1>' +
-    '<p>На этом уроке ты научишься рассказывать, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</p>' +
-    '<p>Тебя ждут 6 слов, 5 мини-тестов, грамматика, распорядок, произношение и диалог.</p></section>';
+    '<p>Научиться говорить о том, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</p>' +
+    '<p>6 слов, 5 мини-тестов, грамматика, распорядок, произношение и диалог.</p></section>';
 }
 
 function newWords() {
