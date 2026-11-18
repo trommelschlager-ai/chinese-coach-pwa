@@ -17,7 +17,7 @@ try{
  assert.match(await page.locator('#prompt').innerText(),/yǔ/);
  const status=page.locator('#status');
  await page.locator('#record').click();
- await status.filter({hasText:/Микрофон активен/}).waitFor({timeout:12000});
+ await status.filter({hasText:/Микрофон включён/}).waitFor({timeout:12000});
  assert.equal(await page.locator('#stop').isDisabled(),false);
  await page.waitForTimeout(1700);
  await page.locator('#stop').click();
@@ -34,6 +34,14 @@ try{
  assert.equal(c.totalChecks,c.accepted+c.silence+c.noStablePitch+c.lowClarity,'Every check must have exactly one outcome');
  assert.equal(c.accepted,trace.pitchHz.length,'Accepted F0 points must match exported curve');
  assert.ok(Number.isFinite(c.peakRms));
+ assert.equal(c.thresholdRms,0.012);
+ assert.ok(await page.locator('#mic-level').count()===1);
+ if(c.accepted>0){
+  assert.ok(c.firstPitchSec>=0 && c.lastPitchSec>=c.firstPitchSec);
+  assert.ok(c.lastPitchSec<=c.elapsedSec+.15);
+  assert.ok(c.firstSignalSec<=c.firstPitchSec);
+  assert.ok(c.lastSignalSec>=c.lastPitchSec);
+ }
 
  const title=await page.locator('#result .result-title').innerText();
  assert.ok(title.length>7);

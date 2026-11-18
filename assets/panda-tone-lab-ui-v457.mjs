@@ -1,4 +1,4 @@
-/* Panda Tone Lab v460: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
+/* Panda Tone Lab v461: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
 import {estimatePitch,analyseContour} from './panda-tone-analytics-v457.mjs?v=458';
 const $=id=>document.getElementById(id);
 const choices=[...document.querySelectorAll('[data-tone]')];
@@ -73,7 +73,9 @@ async function stop(){
   capture:diagnostic?{
    elapsedSec:+elapsed.toFixed(2),totalChecks:diagnostic.totalChecks,accepted:diagnostic.accepted,
    silence:diagnostic.silence,noStablePitch:diagnostic.noStablePitch,lowClarity:diagnostic.lowClarity,
-   peakRms:+diagnostic.peakRms.toFixed(4)
+   peakRms:+diagnostic.peakRms.toFixed(4),thresholdRms:0.012,
+   firstSignalSec:diagnostic.firstSignalSec,lastSignalSec:diagnostic.lastSignalSec,
+   firstPitchSec:diagnostic.firstPitchSec,lastPitchSec:diagnostic.lastPitchSec
   }:null,
   pitchHz:frames.map(x=>({t:+(x.t-t0).toFixed(3),hz:+x.hz.toFixed(1),clarity:+x.clarity.toFixed(2)}))};
  $('copy-trace').disabled=!(diagnostic?.totalChecks);
@@ -82,10 +84,12 @@ async function stop(){
   const counts=document.createElement('p');counts.className='note';
   counts.textContent='Из '+diagnostic.totalChecks+' замеров: '+diagnostic.accepted+' точек высоты, '+
    diagnostic.silence+' тихих, '+diagnostic.noStablePitch+' без устойчивой частоты, '+
-   diagnostic.lowClarity+' неуверенных. Длительность записи: '+elapsed.toFixed(2)+' с.';
+   diagnostic.lowClarity+' неуверенных. Длительность записи: '+elapsed.toFixed(2)+' с.'+
+   (diagnostic.firstPitchSec!==null?' Высота голоса найдена с '+diagnostic.firstPitchSec.toFixed(2)+' до '+diagnostic.lastPitchSec.toFixed(2)+' с.':'');
   $('result').append(counts);
  }
  $('status').textContent=r.kind==='insufficient'?'Голоса было недостаточно для измерения. Попробуй ещё раз.':'Готово. Это подсказка по контуру, а не оценка тона.';
+ $('mic-level').textContent='Запись завершена. Уровень сигнала показывается только во время записи.';
  frames=[];
 }
 $('stop').addEventListener('click',stop);
@@ -105,25 +109,35 @@ $('record').addEventListener('click',async()=>{
   const input=newContext.createMediaStreamSource(newStream);input.connect(reader);
   stream=newStream;context=newContext;analyser=reader;source=input;active=true;frames=[];lastDiagnostic=null;$('copy-trace').disabled=true;
   const buf=new Float32Array(reader.fftSize),t0=performance.now();
-  diagnostic={startedAt:t0,totalChecks:0,accepted:0,silence:0,noStablePitch:0,lowClarity:0,peakRms:0};
+  diagnostic={startedAt:t0,totalChecks:0,accepted:0,silence:0,noStablePitch:0,lowClarity:0,peakRms:0,
+  firstSignalSec:null,lastSignalSec:null,firstPitchSec:null,lastPitchSec:null};
   $('record').disabled=true;$('stop').disabled=false;choices.forEach(b=>b.disabled=true);
-  $('status').textContent='Говори один слог протяжно. Микрофон активен (до 3 сек.).';
+  $('status').textContent='Микрофон включён. Говори около секунды и дождись автоматического завершения (3 с).';
+  $('mic-level').textContent='Жду звук…';
   clock=setInterval(()=>{
    if(!active||!analyser||!context)return;
    analyser.getFloatTimeDomainData(buf);
    diagnostic.totalChecks++;
+   const nowSec=(performance.now()-t0)/1000;
    // Independent energy meter lets us separate quiet frames from unstable pitch estimates.
    // No raw sound or waveform is kept, only aggregate counts.
    let energy=0,samples=0;
    for(let i=0;i<buf.length;i+=4){energy+=buf[i]*buf[i];samples++;}
    const rms=Math.sqrt(energy/samples);
    diagnostic.peakRms=Math.max(diagnostic.peakRms,rms);
+   if(diagnostic.totalChecks%5===0){
+    $('mic-level').textContent=rms<.012?'Сигнал тихий: говори ближе к микрофону.':'Сигнал слышен: продолжай произносить слог.';
+   }
    if(rms<.012){diagnostic.silence++;return;}
+   if(diagnostic.firstSignalSec===null)diagnostic.firstSignalSec=+nowSec.toFixed(3);
+   diagnostic.lastSignalSec=+nowSec.toFixed(3);
    const p=estimatePitch(buf,context.sampleRate);
    if(!p){diagnostic.noStablePitch++;return;}
    if(p.clarity<=.78){diagnostic.lowClarity++;return;}
    diagnostic.accepted++;
-   frames.push({t:(performance.now()-t0)/1000,hz:p.hz,clarity:p.clarity});
+   if(diagnostic.firstPitchSec===null)diagnostic.firstPitchSec=+nowSec.toFixed(3);
+   diagnostic.lastPitchSec=+nowSec.toFixed(3);
+   frames.push({t:nowSec,hz:p.hz,clarity:p.clarity});
   },28);
   deadline=setTimeout(stop,3100);
  }catch(error){
@@ -131,6 +145,7 @@ $('record').addEventListener('click',async()=>{
   try{await newContext?.close();}catch{}
   active=false;$('record').disabled=false;$('stop').disabled=true;
   $('status').textContent=error?.name==='NotAllowedError'?'Разреши микрофон в настройках Chrome и попробуй снова.':'Микрофон недоступен. Попробуй Chrome и закрой другие приложения с записью.';
+   $('mic-level').textContent='Нет сигнала с микрофона.';
  }finally{opening=false;}
 });
 // Export pitch/time numbers only, by an explicit user click. Never export raw sound.

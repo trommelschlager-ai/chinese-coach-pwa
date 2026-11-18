@@ -29,7 +29,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #fa9b56;outline-offset:2p
 </style>
 </head>
 <body><main>
-<header><a href="./panda-voice-pilot.html">← Panda AI</a><span class="pill">🎙 ПИЛОТ · v460</span></header>
+<header><a href="./panda-voice-pilot.html">← Panda AI</a><span class="pill">🎙 ПИЛОТ · v461</span></header>
 <h1>Китайские тоны: 2-й и 3-й</h1>
 <p class="subtitle">Учимся видеть движение высоты голоса, а не просто распознавать иероглифы.</p>
 <div class="hero"><img alt="Наша Панда" src="./assets/panda-character-clean-v349.webp?v=349"><div><strong>🐼 Панда слушает контур голоса</strong>Это экспериментальная подсказка по высоте звука. Она пока <b>не оценивает правильность китайских тонов</b>.</div></div>
@@ -38,8 +38,8 @@ button:focus-visible,a:focus-visible{outline:3px solid #fa9b56;outline-offset:2p
 <button class="choice" type="button" data-tone="2" aria-pressed="true"><b lang="zh-Hans">鱼</b><span>yú · 2-й тон ↗</span><small>рыба</small></button>
 <button class="choice" type="button" data-tone="3" aria-pressed="false"><b lang="zh-Hans">雨</b><span>yǔ · 3-й тон ↘↗</span><small>дождь</small></button></div>
 <p class="note" id="prompt">Скажи «yú» одним слогом, протянув голос около 0,7–1,2 с.</p>
-<div class="controls"><button class="action" id="record" type="button">🎙 Записать до 3 сек.</button><button class="action secondary" id="stop" type="button" disabled>■ Стоп</button></div>
-<p class="status" id="status" role="status" aria-live="polite">Микрофон включается только по нажатию.</p></section>
+<div class="controls"><button class="action" id="record" type="button">🎙 Записать (авто 3 сек.)</button><button class="action secondary" id="stop" type="button" disabled>■ Стоп</button></div>
+<p class="status" id="status" role="status" aria-live="polite">Микрофон включается только по нажатию.</p><p class="note" id="mic-level">Уровень сигнала появится во время записи.</p><p class="note">Говори один слог около секунды и дождись автоматической остановки через 3 секунды. Не нажимай «Стоп» сразу после произношения.</p></section>
 <section class="panel"><h2>2. Посмотри кривую высоты голоса</h2>
 <div id="result" aria-live="polite"><div class="result-title">Здесь появится твой контур</div><div class="result-text">Пунктир — упрощённая учебная схема. Сплошная линия появится после записи.</div></div>
 <svg id="graph" viewBox="0 0 640 238" role="img" aria-label="Схема тона и график высоты голоса">
@@ -52,4 +52,4 @@ button:focus-visible,a:focus-visible{outline:3px solid #fa9b56;outline-offset:2p
 <p class="privacy">Измеряется <b>F0 — основная частота голоса</b>. Это не распознавание китайских слов и не подтверждение фонетики. Если запись слишком шумная или короткая, Панда не должна придумывать балл.</p>
 <p class="privacy"><b>Приватность:</b> микрофон обрабатывается на устройстве. Запись не отправляется на сервер и не сохраняется в аккаунт. Потребуются HTTPS, Chrome и разрешение пользователя.</p>
 </section><footer>Экспериментальный тренажёр Panda Go. Основная Panda AI, её дизайн и 42 MP3 работают отдельно.</footer>
-</main><script type="module" src="./assets/panda-tone-lab-ui-v457.mjs?v=460"></script></body></html>
+</main><script type="module" src="./assets/panda-tone-lab-ui-v457.mjs?v=461"></script></body></html>
