@@ -27,6 +27,7 @@ jobs:
             sleep 1
           done
           node scripts/qa-hsk2-map-diagnostic-v456.mjs
+          node scripts/qa-hsk2-day-panda-mobile-v1.mjs
       - name: Keep screenshot
         if: always()
         uses: actions/upload-artifact@v4
