@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Retrieve approved image and make two display-only panels
         env:
-          ART_SOURCE_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/9979a114-0910-46e0-9053-edaf2453c00d.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlYXNoIjoiMjE3NTg0MTY2YzJiZGNlNiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTA1NTI1NH0.CkF8XZREwaV5cSyHWt4MsxKNXHWkF67kNQa2CwQNSPY"
+          ART_SOURCE_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/9979a114-0910-46e0-9053-edaf2453c00d.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiMjE3NTg0MTY2YzJiZGNlNiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTA1NTI1NH0.CkF8XZREwaV5cSyHWt4MsxKNXHWkF67kNQa2CwQNSPY"
         run: |
           set -euo pipefail
           python -m pip install -q pillow
