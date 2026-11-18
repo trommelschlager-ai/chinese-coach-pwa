@@ -192,7 +192,7 @@ async function start(){
   try{await newCtx?.close();}catch{}
   active=false;discardActiveCapture();
   controls(false);
-  $('status').textContent=e?.name='NotAllowedError'
+  $('status').textContent=e?.name==='NotAllowedError'
    ?'Разреши микрофон для этого сайта в Chrome и попробуй снова.'
    :'Микрофон недоступен. Открой в Chrome, закрой другие приложения с записью.';
  }finally{opening=false;}
