@@ -189,6 +189,37 @@ progress::-webkit-progress-value{background:linear-gradient(#a0ed63,#55bb27 65%,
 @media(max-width:374px){
  .head{padding-inline:8px}.detail nav{margin-inline:22px}main{padding-inline:7px}.test-card{grid-template-columns:25px 58px minmax(0,1fr) 34px;gap:5px}.hero-message{padding-left:14px}.word-row{gap:4px}.tone-row{grid-template-columns:20% minmax(0,1fr) 34px 55px 34px;gap:3px}.tone-row .orb{width:33px;height:33px}
 }
+
+/* Keep the opening illustration and the test hero on single, continuous scenes. */
+body:has(.app[data-view="1"]){background:radial-gradient(ellipse at 50% 15%,#fbe0f9 0,#ecd2f7 75%)}
+.app[data-view="1"]{min-height:min(100svh,630px);display:flex;flex-direction:column}
+.app[data-view="1"]::before{background:linear-gradient(180deg,#f9ddfa 0%,#f8d7f5 16%,#ecbdf9 47%,#ffd9f2 79%,#fbc9ef 100%)}
+.app[data-view="1"] .head{padding-bottom:3px;background:linear-gradient(#fae4fc,#f6cff7 80%,#f6cff700)}
+.app[data-view="1"] main{display:flex;flex:1;flex-direction:column;justify-content:center}
+.app[data-view="1"] .intro-hero{position:relative;isolation:isolate;flex:1;min-height:166px;max-height:246px;grid-template-columns:50% 50%;align-items:center;background:none;overflow:visible}
+.app[data-view="1"] .intro-hero::before{content:"";position:absolute;inset:-8px -7px -12px;z-index:-1;background:linear-gradient(90deg,#edb3f479,#f9c6f22e 55%,#f6d0f853),url(assets/hsk2-lesson1-preview/hero-scenery.webp) center 53%/cover;mask-image:linear-gradient(transparent,#000 12%,#000 84%,transparent)}
+.app[data-view="1"] .intro-hero img{width:106%;max-width:none;aspect-ratio:auto;object-fit:contain;align-self:center;margin-left:-2%;border-radius:0;filter:drop-shadow(0 3px 4px #7c307c63)}
+.app[data-view="1"] .intro-hero .cloud{margin-left:-22px;padding-block:24px}
+.app[data-view="1"] .intro-hero h1{font-size:clamp(30px,9vw,39px)}
+.app[data-view="1"] .features{margin-top:19px;padding-bottom:8px}
+.app[data-view="1"] .feature-grid div{padding-block:6px 8px}
+.app[data-view="1"] .feature-grid img{width:46px;height:38px;mix-blend-mode:normal;filter:drop-shadow(0 2px 1px #a7518e35)}
+.app[data-view="1"] footer{padding-top:6px;padding-bottom:16px}
+.app[data-view="1"] footer .primary{min-height:45px;font-size:clamp(14px,4.5vw,17px)}
+.app[data-view="1"] .head::after,.app[data-view="3"] .head::after{z-index:0;pointer-events:none;opacity:.66}
+.app[data-view="1"] .head nav,.app[data-view="3"] .head nav{z-index:1}
+.app[data-view="3"]::before{background:linear-gradient(#dfa7ef 0%,#f4c3ed 26%,#ffdeef 33%,#ffdfef 100%)}
+.app[data-view="3"] .quiz-hero{grid-template-columns:47% 53%;min-height:144px;background:linear-gradient(90deg,#eaa5e975,#f8bfe964 68%,#f5afe87d),url(assets/hsk2-lesson1-preview/hero-scenery.webp) center 53%/cover}
+.app[data-view="3"] .quiz-hero > img:first-child{width:96%;max-height:145px;margin-left:3px;filter:drop-shadow(0 2px 5px #71386d66)}
+.app[data-view="3"] .quiz-hero .hero-message{margin:4px 12px 8px -13px;border-radius:25px 28px 25px 24px}
+.app[data-view="3"] .quiz-hero .hero-message p{padding-right:32px;font-size:12px}
+.app[data-view="3"] .quiz-clipboard{position:absolute;z-index:2;bottom:2px;right:5px;width:48px;pointer-events:none;filter:drop-shadow(0 2px 2px #84297566)}
+.app[data-view="3"] .test-card{background:linear-gradient(160deg,#fffaff,#fff2fa 52%,#ffdef0);border-color:#fff8fc;box-shadow:0 3px 6px #b65c9559,inset 0 1px 2px white}
+.app[data-view="3"] .reward{margin-top:11px}
+.app[data-view="3"] .primary.large{margin-bottom:11px}
+footer[hidden]{display:none}
+@media(max-height:640px){.app[data-view="1"] .intro-hero{min-height:148px}.app[data-view="1"] .intro-hero img{max-height:171px}.app[data-view="1"] .features{margin-top:23px}}
+
 </style>
 </head>
 <body>
@@ -381,17 +412,19 @@ function render(resetScroll = false) {
   const step = state.step;
   const detailed = step === 3 || step === 6;
   app.classList.toggle('detail',detailed);
+  app.dataset.view = step;
+  next.parentElement.hidden = step === 3 && state.quizTest === null;
   document.getElementById('head-label').textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
   nav.innerHTML = titles.map((title,i) => '<button type="button" class="nav-step" data-step="' + (i+1) +
     '" aria-current="' + (step === i+1 ? 'step' : 'false') + '" aria-label="Шаг ' + (i+1) + ' · ' + title + '"><span>' + (i+1) + '</span></button>').join('');
   workspace.innerHTML = [intro,newWords,quiz,grammar,day,tones,chat,finish][step-1]();
   back.hidden = detailed || step === 1;
-  next.textContent = step === 8 ? 'К началу ↻' : step === 3 && state.quizTest !== null ? 'К списку тестов' : 'Дальше · ' + titles[step] + ' →';
+  next.textContent = step === 1 ? '▷ Дальше: Новые слова →' : step === 8 ? 'К началу ↻' : step === 3 && state.quizTest !== null ? 'К списку тестов' : 'Дальше · ' + titles[step] + ' →';
   if (resetScroll) window.scrollTo(0,0);
 }
 function intro() {
   const features = ['6 слов','5 мини-тестов','грамматика','распорядок','произношение','диалог'];
-  return '<div class="intro-hero"><img src="' + asset + 'hero-reading.webp" alt="Панда с красной книгой">' +
+  return '<div class="intro-hero"><img src="' + decoration + 'intro-panda.webp" alt="Панда с красной книгой">' +
     '<div class="cloud"><h1 lang="zh-Hans">我的一天</h1><span class="py">Wǒ de yì tiān</span><b>Мой день</b></div></div>' +
     '<section class="features"><h2 class="ribbon">✦ Тебя ждут ✦</h2><div class="feature-grid">' +
     features.map((label,i) => '<div>' + art('feature-' + (i+1)) + label + '</div>').join('') + '</div></section>';
@@ -406,12 +439,13 @@ function newWords() {
 
 function hero(kind,step,title,subtitle) {
   return '<div class="detail-hero ' + kind + '-hero">' + art(kind + '-panda') +
-    '<div class="hero-message"><span class="tag">Шаг ' + step + '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div></div>';
+    '<div class="hero-message"><span class="tag">Шаг ' + step + '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div>' +
+    (kind === 'quiz' ? '<img class="quiz-clipboard" src="' + decoration + 'quiz-clipboard.webp" alt="">' : '') + '</div>';
 }
 
 function quiz() {
   if (state.quizTest !== null) return question();
-  return hero('quiz',3,'Проверь слова!','Пять интерактивных тестов по словам урока.') +
+  return hero('quiz',3,'Проверь слова!','5 интерактивных тестов, чтобы лучше запомнить новые слова.') +
     '<div class="test-list">' + tests.map((title,i) => {
       const total = correctCount(i);
       return '<button type="button" class="test-card" data-test="' + i + '"><span class="badge">' + (i+1) + '</span>' +
