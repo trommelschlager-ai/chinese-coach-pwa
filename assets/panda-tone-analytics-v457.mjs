@@ -3,9 +3,27 @@
  * vowel/consonant quality, lexical identity, or native-like pronunciation.
  * Audio stays in browser memory and is never transmitted by this module.
  */
-export const TONE_LAB_VERSION="v458-short-fragment-guard";
+export const TONE_LAB_VERSION="v462-octave-jump-safeguard";
 const median=a=>{if(!a.length)return null;const s=[...a].sort((x,y)=>x-y),k=s.length>>1;return s.length%2?s[k]:(s[k-1]+s[k])/2;};
 export const semitones=(hz,ref)=>12*Math.log2(hz/ref);
+
+/* Rapid almost-2x or half-F0 changes are a warning for octave tracking errors.
+ * This heuristic NEVER repairs a frequency or assigns a Mandarin tone.
+ * Natural irregular phonation may also cause them: the verdict stays uncertain.
+ */
+export function findOctaveDiscontinuities(frames){
+ const pts=(frames||[]).filter(p=>Number.isFinite(p?.hz)&&p.hz>0&&Number.isFinite(p?.t)).sort((a,b)=>a.t-b.t);
+ const jumps=[];
+ for(let i=1;i<pts.length;i++){
+  const a=pts[i-1],b=pts[i],dt=b.t-a.t,ratio=b.hz/a.hz;
+  if(dt<=0||dt>0.09)continue;
+  if((ratio>=1.7&&ratio<=2.35)||(ratio>=1/2.35&&ratio<=1/1.7)){
+   jumps.push({t:+b.t.toFixed(3),fromHz:+a.hz.toFixed(1),toHz:+b.hz.toFixed(1)});
+  }
+ }
+ return jumps;
+}
+
 
 export function estimatePitch(samples,rate,{minHz=70,maxHz=550}={}){
  if(!samples||samples.length<1024||!Number.isFinite(rate)||rate<8000)return null;
@@ -66,14 +84,24 @@ export function analyseContour(frames){
  }
  if(run.length)runs.push(run);
  const pts=runs.sort((a,b)=>b.length-a.length)[0]||[];
+ const octaveJumps=findOctaveDiscontinuities(pts);
+ const suspicious=octaveJumps.length;
  // A 0.34 s voice fragment with 10 f0 samples is NOT enough evidence to describe tone movement.
  // Require a stable voiced portion, not merely 3 seconds with mostly silence.
  const MIN_VOICED_S=0.50,MIN_PITCH_FRAMES=16;
  if(pts.length<MIN_PITCH_FRAMES||pts.at(-1).t-pts[0].t<MIN_VOICED_S)
   return {kind:"insufficient",label:"Слишком короткий голосовой фрагмент",
-   reason:"Достоверно сравнить движение тона пока нельзя. Произнеси один слог чуть протяжнее (около 0,7–1,2 с).",
-   points:[],stats:{duration:pts.length?+(pts.at(-1).t-pts[0].t).toFixed(2):0,voicedFrames:pts.length},
+   reason:suspicious
+     ?"Фрагмент короткий и содержит резкие скачки частоты почти вдвое. Это может быть ошибка измерения, а не твоё произношение. Повтори один слог чуть протяжнее."
+     :"Достоверно сравнить движение тона пока нельзя. Произнеси один слог чуть протяжнее (около 0,7–1,2 с).",
+   points:[],stats:{duration:pts.length?+(pts.at(-1).t-pts[0].t).toFixed(2):0,voicedFrames:pts.length,octaveJumpCount:suspicious},
    isToneGrade:false};
+ // Even a long clip must NOT yield a tone-shaped verdict if f0 abruptly doubles/halves.
+ // Preserve raw points in manual diagnostics, but omit misleading plotted points.
+ if(suspicious)return {kind:"uncertain",label:"Возможный сбой отслеживания высоты голоса",
+  reason:"Найдены резкие изменения частоты почти вдвое. Это может быть ошибка октавы в алгоритме. Нельзя судить о тоне по такому графику.",
+  points:[],stats:{duration:+(pts.at(-1).t-pts[0].t).toFixed(2),voicedFrames:pts.length,octaveJumpCount:suspicious},
+  isToneGrade:false};
  // Median filtering removes single octave jumps without manufacturing a melody.
  const medHz=median(pts.map(p=>p.hz));
  let cleaned=pts.filter((p,i)=>{
