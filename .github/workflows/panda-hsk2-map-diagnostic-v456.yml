@@ -1,0 +1,36 @@
+name: Diagnose HSK2 Android map locator v456
+on:
+  push:
+    branches:
+      - 'fix/panda-hsk2-mobile-map-qa-v456'
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Inspect actual HSK2 map DOM on Android viewport
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/panda-map.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/hsk2-life-course.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-hsk2-map-diagnostic-v456.mjs
+      - name: Keep screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-hsk2-map-diagnostic-v456
+          path: qa/panda-voice-pilot/hsk2-map-diagnostic-v456.png
+          if-no-files-found: warn
