@@ -1,0 +1,92 @@
+/* Panda Go HSK2 v451 — approved lilac + sakura lesson polish.
+   Scope: REAL first topic storyboard (#pg433). Do not replace lesson markup,
+   audio, navigation, proficiency scoring or localStorage progress. */
+#app.day-lesson-active:has(#pg433){background:#fbe8fb!important}
+#app:has(#pg433)>#screen{background:#fbe8fb!important}
+#app #pg433{
+  border:0!important;border-radius:0!important;
+  background:radial-gradient(circle at 4% 37%,#ffd0ee 0,transparent 37%),
+  radial-gradient(circle at 98% 77%,#e9c5ff 0,transparent 30%),
+  linear-gradient(180deg,#fbe3fd,#fff3fc 55%,#fce7ff)!important;
+  color:#5d1973!important;
+}
+/* The exact same fixed-size header on every storyboard step. */
+#app #pg433 .pg433-header{
+  position:relative!important;flex:none!important;
+  min-height:114px!important;height:114px!important;max-height:114px!important;
+  padding:7px 8px 6px!important;overflow:hidden!important;
+  background:linear-gradient(155deg,#fff2fd 0%,#ebbbf2 78%,#de9ce7 100%)!important;
+  border-bottom:2px solid #ce7cdc!important;
+  box-shadow:0 4px 12px #b273bd42!important;
+}
+#app #pg433 .pg433-topline{height:45px!important;min-height:45px!important;flex:none!important}
+#app #pg433 .pg433-title small{color:#8e3b93!important}
+#app #pg433 .pg433-title strong{color:#661781!important;font-size:21px!important}
+#app #pg433 .pg433-pill{background:#fff5ff!important;border:1px solid #da9ee8!important;color:#752b83!important}
+#app #pg433 .pg433-back{color:#6d1a88!important;background:linear-gradient(#fff,#f6dcff)!important;border:1px solid #cb8ddd!important;box-shadow:0 3px 7px #a44cb84b!important}
+#app #pg433 .pg433-tabs{height:47px!important;margin-top:4px!important}
+#app #pg433 .pg433-tabs button{
+  min-height:47px!important;border:1px solid #c98bd9!important;border-bottom:3px solid #a961c0!important;
+  background:linear-gradient(155deg,#fff,#f5e4fd)!important;color:#74258e!important;
+  border-radius:12px!important;box-shadow:0 2px 5px #a969b347!important;
+}
+#app #pg433 .pg433-tabs button.active{
+  background:linear-gradient(#ff90df,#d62cbb 53%,#a620b3)!important;
+  border:1px solid #fff4ed!important;border-bottom:3px solid #8b179b!important;
+  color:#fff!important;box-shadow:0 3px 6px #c954b988,0 0 0 2px #fff7f7!important;
+}
+#app #pg433 .pg433-content{
+  background:transparent!important;
+  scrollbar-width:thin!important;
+  scrollbar-color:#e3b0e0 transparent!important;
+  padding:12px 12px 14px!important;
+  overscroll-behavior:contain!important;
+}
+#app #pg433 .pg433-content>h2{color:#742087!important;font-size:21px!important}
+#app #pg433 .pg433-hint{color:#89568a!important}
+#app #pg433 .pg433-panel,#app #pg433 .pg433-sentence,
+#app #pg433 .pg433-speechrow,#app #pg433 .pg433-wordrow{
+  border:1px solid #e8b8e9!important;border-bottom:3px solid #d29bdc!important;
+  background:linear-gradient(165deg,#fffbff,#fff1fb)!important;
+  border-radius:18px!important;box-shadow:0 5px 13px #bd75ba37!important;
+  color:#632478!important;
+}
+#app #pg433 .pg433-wordrow{padding:9px 9px!important;margin-bottom:8px!important;min-height:86px!important}
+#app #pg433 .pg433-wordicon{
+  width:45px!important;height:46px!important;border:1px solid #e5b4e6!important;
+  background:linear-gradient(135deg,#fff2ff,#efd5ff)!important;
+  border-radius:13px!important;display:grid!important;place-items:center!important;
+  box-shadow:0 2px 4px #c178ba36!important;font-size:26px!important;
+}
+#app #pg433 .pg433-hanzi{color:#4c176b!important}
+#app #pg433 .pg433-py{color:#c3299b!important}
+#app #pg433 .pg433-num{background:linear-gradient(#f68fe7,#b629c2)!important}
+#app #pg433 .pg433-panel h3{color:#7c208a!important}
+#app #pg433 .pg433-note{background:#fff3e0!important;border:1px solid #ecd2a6!important}
+#app #pg433 .pg433-sound button,#app #pg433 .pg433-mic{
+  background:linear-gradient(#e884f2,#9822bb)!important;
+  border:2px solid #edb5f9!important;border-bottom:4px solid #7d209b!important;
+  box-shadow:0 3px 6px #b35ec065!important;
+}
+#app #pg433 .pg433-mic{background:linear-gradient(#ff9de0,#df35a6)!important;border-color:#ffc6ec!important;border-bottom-color:#aa2881!important}
+#app #pg433 .pg433-option,#app #pg433 .pg433-pairs button,
+#app #pg433 .pg433-build button,#app #pg433 .pg433-tokens button{
+  background:linear-gradient(#fffaff,#fbe8f9)!important;border:1px solid #e3afdf!important;
+  border-bottom:3px solid #c991d6!important;color:#662579!important;
+  box-shadow:0 2px 5px #b378ad33!important;
+}
+#app #pg433 .pg433-footer{height:67px!important;min-height:67px!important;flex:none!important;
+  background:linear-gradient(180deg,#fae5f9,#f8dbfb)!important;
+  border-top:1px solid #e6b5e7!important;
+}
+#app #pg433 .pg433-footer button:not(:disabled){border-bottom:4px solid #7d168f!important;
+  background:linear-gradient(180deg,#ea83f2,#b92cce 60%,#8c1bab)!important;
+  color:white!important;box-shadow:0 3px 8px #a948ae61!important;
+}
+@media(max-height:680px){
+  #app #pg433 .pg433-header{height:107px!important;min-height:107px!important;max-height:107px!important}
+  #app #pg433 .pg433-topline{height:42px!important;min-height:42px!important}
+  #app #pg433 .pg433-tabs{height:44px!important}
+  #app #pg433 .pg433-tabs button{min-height:44px!important}
+  #app #pg433 .pg433-wordrow{min-height:74px!important;padding:6px!important}
+}
