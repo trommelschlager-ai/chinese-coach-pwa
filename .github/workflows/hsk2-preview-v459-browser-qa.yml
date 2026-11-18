@@ -1,0 +1,78 @@
+name: Panda Go HSK2 v459 Chrome demo layout QA
+on:
+  push:
+    paths: ['.github/workflows/hsk2-preview-v459-browser-qa.yml']
+permissions:
+  contents: write
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Check all eight steps, images, stable header and bottom CTA
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/hsk2preview.log 2>&1 &
+          sleep 2
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright';
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+          const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1.5,isMobile:true,hasTouch:true});
+          const errors=[];
+          page.on('pageerror',err=>errors.push(err.message));
+          await page.goto('http://127.0.0.1:4173/preview-hsk2-step6.html',{waitUntil:'domcontentloaded'});
+          const nav=page.locator('.steps button.step');
+          assert.equal(await nav.count(),8,'8 distinct navigation buttons');
+          const dimensions=[];
+          fs.mkdirSync('qa/hsk2-preview-v459',{recursive:true});
+          for(let step=1;step<=8;step++){
+            await nav.nth(step-1).click();
+            const t=await page.locator('.top').boundingBox();
+            const bottom=await page.locator('.bottom').boundingBox();
+            assert(t && bottom,'header/footer visible, step '+step);
+            assert(Math.abs(t.y)<1,'header jumps at step '+step);
+            assert(bottom.y>=0&&bottom.y+bottom.height<=844+2,'footer not visible step '+step+' '+JSON.stringify(bottom));
+            dimensions.push({step,headerHeight:t.height,footerY:Math.round(bottom.y)});
+            if([1,2,3,4,5].includes(step)){
+              assert(await page.locator('#demo-other .pg457-scene').count()>0,'premium design step '+step);
+              if(step===2){
+                assert.equal(await page.locator('.pg457-word-card').count(),6);
+                assert(await page.locator('.pg457-word-card img').evaluateAll(list=>list.every(im=>im.complete&&im.naturalWidth>0)),'word illustration missing');
+              }
+              if(step===3)assert.equal(await page.locator('.pg457-quiz-item').count(),5);
+              if(step===5)assert.equal(await page.locator('.pg457-practice-grid button').count(),6);
+              if(step===2||step===5)await page.screenshot({path:'qa/hsk2-preview-v459/step-'+step+'.png'});
+            }
+            if(step===6)assert.equal(await page.locator('#words .card').count(),6,'tone practice preserved');
+          }
+          assert.equal(errors.length,0,'JavaScript errors: '+errors.join('; '));
+          console.log('OK all steps',JSON.stringify(dimensions));
+          await browser.close();
+          JS
+      - name: Upload real Android-sized screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hsk2-approved-preview-v459-screenshots
+          path: qa/hsk2-preview-v459/
+          if-no-files-found: warn
+      - name: Publish QA screenshots for review
+        if: success()
+        run: |
+          git config user.name "Panda Go Preview"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add qa/hsk2-preview-v459/*.png
+          if ! git diff --cached --quiet; then
+            git commit -m "qa(hsk2): verify premium step 2 and 5 Chrome UI screenshots"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
