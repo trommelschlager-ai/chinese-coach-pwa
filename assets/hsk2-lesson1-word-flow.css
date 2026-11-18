@@ -1,0 +1,201 @@
+/* The merged lesson shares the first course's navigation and light theme. */
+.course-layout body {
+  background: #fbe8fb;
+}
+
+.course-layout #app {
+  --ink: #4c176b;
+  --panel: linear-gradient(165deg, #fffbff, #fff1fb);
+  --gloss: linear-gradient(#ea83f2, #b92cce 60%, #8c1bab);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.course-layout #pg433 .pg433-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: 105px;
+  height: 65px;
+  background: url("./panda-sakura-v346.svg") right top / contain no-repeat;
+  opacity: .25;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.course-layout #pg433 footer button {
+  width: auto;
+}
+
+.course-layout #pg433 .pg433-footer {
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+}
+
+.course-layout #pg433 .panel,
+.course-layout #pg433 .word-row,
+.course-layout #pg433 .day-card,
+.course-layout #pg433 .test-card,
+.course-layout #pg433 .tone-list,
+.course-layout #pg433 .tone-guide {
+  border-color: #e8b8e9;
+  border-bottom: 3px solid #d29bdc;
+  box-shadow: 0 5px 13px #bd75ba37;
+}
+
+.course-layout #pg433 .pill-title {
+  background: #fff5ff;
+  border: 1px solid #da9ee8;
+  border-radius: 16px;
+  box-shadow: 0 2px 5px #b378ad33;
+  padding: 7px 12px;
+  margin-block: 0 10px;
+  letter-spacing: -.025em;
+}
+
+.course-layout #pg433 .choice-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.course-layout #pg433 .choice,
+.course-layout #pg433 .soft,
+.course-layout #pg433 .token {
+  border-color: #e3afdf;
+  border-bottom: 3px solid #c991d6;
+  color: #662579;
+  min-height: 44px;
+  box-shadow: 0 2px 5px #b378ad33;
+}
+
+.course-layout #pg433 .choice {
+  text-align: left;
+  padding-inline: 14px;
+}
+
+.course-layout #pg433 .hero-message {
+  background: var(--panel);
+}
+
+.course-layout #pg433 .word-row {
+  min-height: 65px;
+}
+
+.course-layout #app[data-view="2"] .word-list {
+  flex: initial;
+}
+
+.course-layout #pg433 .word-row img {
+  height: 54px;
+}
+
+.course-layout #pg433 button.orb {
+  position: relative;
+}
+
+/* A larger tap area around the small sound and microphone controls. */
+.course-layout #pg433 button.orb::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.course-layout #pg433 button[data-question="1"] {
+  display: none;
+}
+
+.course-layout #app #pg433 .pg433-header button:active,
+.course-layout #app #pg433 .pg433-footer button:active {
+  transform: none !important;
+}
+
+.course-layout #pg433 .quiz-type-icon {
+  display: grid;
+  place-items: center;
+  height: 44px;
+  border-radius: 11px;
+  color: #541174;
+  background: linear-gradient(150deg, #fff4ff, #dfb0fa);
+  box-shadow: inset 0 1px 1px #fff, 0 2px 5px #8c46af36;
+  font-size: 20px;
+}
+.course-layout #pg433 .quiz-type-icon svg {
+  width: 27px;
+  height: 27px;
+}
+.course-layout #pg433 .test-card .orb {
+  font-size: 12px;
+}
+.course-layout #pg433 .quiz-review p {
+  margin: 8px 0 14px;
+}
+.course-layout #pg433 .quiz-hero > img:first-child {
+  width: 100%;
+  margin: 0;
+  object-fit: cover;
+  object-position: center;
+  align-self: stretch;
+  max-height: none;
+  border-radius: 15px 0 0 15px;
+}
+.course-layout #pg433 .quiz-hero .hero-message {
+  margin-left: 0;
+}
+.course-layout #pg433 .quiz-hero {
+  margin: 0 0 9px;
+  overflow: hidden;
+  border-radius: 15px;
+}
+.course-layout #pg433 .word-row img,
+.course-layout #pg433 .example img {
+  object-position: center 42%;
+}
+.course-layout #pg433 .pg433-footer #next {
+  white-space: normal;
+}
+
+.course-layout #app[data-view="1"] .pg433-header,
+.course-layout #app[data-view="1"] .pg433-footer {
+  display: none !important;
+}
+.course-layout #app[data-view="1"] #pg433 .pg433-content {
+  padding: 0 !important;
+  overflow: auto;
+}
+.word-flow-cover {
+  position: relative;
+}
+.word-flow-cover > img {
+  width: 100%;
+  height: auto;
+}
+.word-flow-cover-back {
+  position: absolute;
+  top: 0;
+  margin-top: 2.25%;
+  left: 4.3%;
+  width: 8.55%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ebc7f0;
+  border-radius: 50%;
+  background: linear-gradient(#fffaff, #f8e3ff);
+  box-shadow: 0 2px 6px #4c116745;
+  color: #36116a;
+  text-decoration: none;
+  font: 26px/1 system-ui, sans-serif;
+}
+.course-layout #pg433 .word-flow-cover-start {
+  display: block;
+  width: 93.2%;
+  min-height: 44px;
+  margin: 0 auto 2%;
+  padding: 2.05% 10px;
+  border: 2px solid #f1a4fc;
+  border-bottom: 4px solid #41106e;
+  background: linear-gradient(#b744f0, #821ad6 55%, #54149a);
+  box-shadow: 0 3px 5px #54147555, inset 0 1px 2px #f3b8ff;
+  font: 850 clamp(18px, 5.2vw, 29px)/1.2 system-ui, sans-serif;
+}
