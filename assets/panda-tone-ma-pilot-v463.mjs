@@ -11,13 +11,47 @@ const tones=[
  {n:4,hz:'骂',py:'mà',src:'./assets/lesson1-xiaoxiao-v260/ma4.mp3',reference:'M30 30Q178 45 332 111'}
 ];
 const buttons=[...document.querySelectorAll('[data-tone]')];
-let selected=0,playing=null,stream=null,audioCtx=null,analyser=null,source=null,interval=null,deadline=null,active=false,opening=false,stopping=false,frames=[],counts=null;
+let selected=0,playing=null,stream=null,audioCtx=null,analyser=null,source=null,interval=null,deadline=null,active=false,opening=false,stopping=false,frames=[],counts=null,recorder=null,recordedChunks=[],recordedUrl=null,recordedAudio=null;
 function silencePlayback(){
  if(playing){try{playing.pause();playing.currentTime=0;}catch{}playing=null;}
 }
+function discardRecordedAudio(){
+ try{recordedAudio?.pause();}catch{}
+ recordedAudio=null;
+ if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}
+ const replay=$('replay');
+ replay.disabled=true;replay.textContent='🔊 Послушать свой голос';
+ $('recording-message').textContent='После произношения можно прослушать именно свою запись.';
+}
+function discardActiveCapture(){
+ if(recorder?.state==='recording'){try{recorder.stop();}catch{}}
+ recorder=null;recordedChunks=[];
+}
+async function finalizeCapture(){
+ const current=recorder;
+ if(!current)return;
+ if(current.state!=='inactive'){
+  await new Promise(resolve=>{
+   let settled=false,timeout=null;
+   const done=()=>{if(settled)return;settled=true;clearTimeout(timeout);resolve();};
+   current.addEventListener('stop',done,{once:true});
+   timeout=setTimeout(done,1500);
+   try{current.stop();}catch{done();}
+  });
+ }
+ if(recorder!==current)return;
+ recorder=null;
+ const chunks=recordedChunks.splice(0);
+ if(!chunks.length){$('recording-message').textContent='Звук не сохранился. Попробуй записать ещё раз.';return;}
+ const blob=new Blob(chunks,{type:current.mimeType||chunks[0].type||'audio/webm'});
+ if(blob.size<=128){$('recording-message').textContent='Запись получилась пустой. Попробуй ещё раз.';return;}
+ recordedUrl=URL.createObjectURL(blob);
+ $('replay').disabled=false;
+ $('recording-message').textContent='🎧 Твой голос записан. Нажми «Послушать свой голос».';
+}
 function updateTone(index){
  if(active||opening||stopping)return;
- silencePlayback();
+ silencePlayback();discardRecordedAudio();
  selected=(index+tones.length)%tones.length;
  const s=tones[selected];
  $('target-hanzi').textContent=s.hz;
@@ -65,6 +99,7 @@ function toneGuidance(s,result){
 function controls(recording){
  $('record').textContent=recording?'■ Стоп':'🎙 Произнести';
  $('listen').disabled=recording;
+ $('replay').disabled=recording||!recordedUrl;
  $('next').disabled=recording;
  buttons.forEach(b=>b.disabled=recording);
 }
@@ -82,16 +117,23 @@ async function stop(){
  if(!active||stopping)return;
  stopping=true;
  active=false;$('record').disabled=true;
+ clearInterval(interval);clearTimeout(deadline);
+ await finalizeCapture();
  await release();
  controls(false);$('record').disabled=false;stopping=false;
  const result=analyseContour(frames);
  $('your-path').setAttribute('d',plot(result.points));
  $('result').textContent=toneGuidance(tones[selected],result);
  if(result.kind==='insufficient'){
-  $('status').textContent=result.points?.length?'Короткая кривая видна. Для сравнения тона данных ещё мало — повтори слог чуть протяжнее.':'Не хватило устойчивого голоса. Попробуй ещё раз чуть протяжнее, в тишине.';
+  $('status').textContent=counts?.heard
+   ?'Микрофон уловил голос, но высота тона определилась неуверенно. Послушай запись и повтори.'
+   :'Микрофон почти не уловил звук. Послушай запись и проверь доступ к микрофону.';
  } else {
   $('status').textContent='График получен. Это описание движения голоса, а не оценка правильности.';
  }
+ $('mic-level-label').textContent=counts?.heard
+  ?'🎤 Звук был: '+counts.heard+' из '+counts.readings+' замеров; устойчивых точек высоты: '+counts.voiced+'.'
+  :'🎤 Устойчивого звукового сигнала не обнаружено.';
  frames=[];counts=null;
 }
 async function start(){
@@ -100,11 +142,11 @@ async function start(){
   $('status').textContent='Микрофон работает только по HTTPS в браузере с поддержкой записи.';
   return;
  }
- opening=true;controls(true);silencePlayback();
+ opening=true;discardRecordedAudio();controls(true);silencePlayback();
  $('status').textContent='Запрашиваю доступ к микрофону…';
  let newStream=null,newCtx=null;
  try{
-  newStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:false});
+  newStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:true},video:false});
   const AudioCtx=window.AudioContext||window.webkitAudioContext;
   if(!AudioCtx)throw Error('AudioContext unavailable');
   newCtx=new AudioCtx();
@@ -112,7 +154,18 @@ async function start(){
   const reader=newCtx.createAnalyser();reader.fftSize=4096;reader.smoothingTimeConstant=0;
   const input=newCtx.createMediaStreamSource(newStream);input.connect(reader);
   stream=newStream;audioCtx=newCtx;analyser=reader;source=input;
-  active=true;frames=[];counts={readings:0,voiced:0,silent:0};
+  active=true;frames=[];counts={readings:0,voiced:0,silent:0,heard:0,peakRms:0};
+  recorder=null;recordedChunks=[];
+  if(typeof MediaRecorder!=='undefined'){
+   try{
+    const capture=new MediaRecorder(newStream);
+    capture.ondataavailable=e=>{if(e.data?.size>0)recordedChunks.push(e.data);};
+    capture.start();
+    recorder=capture;
+   }catch{$('recording-message').textContent='Прослушивание записи недоступно. График всё ещё работает.';}
+  }else $('recording-message').textContent='Браузер не поддерживает сохранение своего голоса. График доступен.';
+  $('mic-level-fill').style.width='0%';
+  $('mic-level-label').textContent='Жду звук от микрофона…';
   const buffer=new Float32Array(reader.fftSize),t0=performance.now();
   $('status').textContent='Произнеси «'+tones[selected].py+'» около секунды. Запись завершится автоматически.';
   interval=setInterval(()=>{
@@ -120,7 +173,14 @@ async function start(){
    analyser.getFloatTimeDomainData(buffer);
    counts.readings++;
    let sq=0;for(let i=0;i<buffer.length;i+=4)sq+=buffer[i]*buffer[i];
-   if(Math.sqrt(sq/(buffer.length/4))<.012){counts.silent++;return;}
+   const rms=Math.sqrt(sq/(buffer.length/4));
+   counts.peakRms=Math.max(counts.peakRms,rms);
+   if(counts.readings%4===0){
+    $('mic-level-fill').style.width=Math.round(Math.min(100,100*Math.sqrt(rms/.20)))+'%';
+    $('mic-level-label').textContent=rms>=.012?'🎤 Микрофон слышит звук':'🎤 Сигнал слабый — говори ближе к микрофону';
+   }
+   if(rms<.012){counts.silent++;return;}
+   counts.heard++;
    const p=estimatePitch(buffer,audioCtx.sampleRate);
    if(!p||p.clarity<=.78)return;
    counts.voiced++;
@@ -130,7 +190,7 @@ async function start(){
  }catch(e){
   try{newStream?.getTracks().forEach(t=>t.stop());}catch{}
   try{await newCtx?.close();}catch{}
-  active=false;
+  active=false;discardActiveCapture();
   controls(false);
   $('status').textContent=e?.name==='NotAllowedError'
    ?'Разреши микрофон для этого сайта в Chrome и попробуй снова.'
@@ -138,9 +198,31 @@ async function start(){
  }finally{opening=false;}
 }
 $('record').addEventListener('click',()=>{if(active)void stop();else void start();});
-window.addEventListener('message',e=>{
- if(e.origin===location.origin&&e.data==='panda-tone-modal-close'){silencePlayback();void release();}
+$('replay').addEventListener('click',async()=>{
+ if(active||opening||stopping||!recordedUrl)return;
+ if(recordedAudio&&!recordedAudio.paused){
+  recordedAudio.pause();$('replay').textContent='🔊 Послушать свой голос';return;
+ }
+ if(!recordedAudio){
+  recordedAudio=new Audio(recordedUrl);
+  recordedAudio.onended=()=>{$('replay').textContent='🔊 Послушать свой голос';};
+  recordedAudio.onerror=()=>{$('recording-message').textContent='Не удалось воспроизвести запись на этом устройстве.';};
+ }
+ try{
+  recordedAudio.currentTime=0;
+  await recordedAudio.play();
+  $('replay').textContent='■ Остановить мой голос';
+ }catch{$('recording-message').textContent='Не удалось воспроизвести запись. Проверь громкость телефона и попробуй ещё раз.';}
 });
-window.addEventListener('pagehide',()=>{silencePlayback();void release();});
+function shutdown(){
+ silencePlayback();
+ active=false;
+ discardActiveCapture();discardRecordedAudio();
+ void release();
+}
+window.addEventListener('message',e=>{
+ if(e.origin===location.origin&&e.data==='panda-tone-modal-close')shutdown();
+});
+window.addEventListener('pagehide',shutdown);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&active){void stop();}});
 updateTone(0);

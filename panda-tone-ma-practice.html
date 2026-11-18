@@ -35,6 +35,10 @@ h1{font-size:25px;line-height:1.15;margin:11px 0 6px;color:#672e8d}
 .action.secondary{color:#663d93;background:#efe2fc;box-shadow:none;border:1px solid #dec9f0}
 .action.next{background:#f8e2f5;color:#733992;box-shadow:none;border:1px solid #ebc2e2;width:100%;margin-top:10px}
 .status{font-size:13px;line-height:1.45;color:#654476;min-height:22px;margin:10px 0 0}
+.mic-meter{height:10px;background:#efe3f4;border-radius:30px;overflow:hidden;margin-top:11px;border:1px solid #dec9ec}
+.mic-meter span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#a8d2b4,#57b5aa,#7e79d7);border-radius:30px;transition:width .1s}
+.mic-level-label,.recording-message{font-size:12px;color:#705285;line-height:1.4;margin:6px 0 0}
+.replay{width:100%;margin-top:10px;background:linear-gradient(130deg,#f8edf9,#e5dcff);color:#68358e;border:1px solid #d8bfed;box-shadow:0 3px 10px #7c50aa1c}
 .result{font-size:13px;color:#715384;line-height:1.5;min-height:26px}
 #graph{display:block;width:100%;height:auto;border-radius:14px;border:1px solid #ecdcf3;background:linear-gradient(#fff,#fdf9ff)}
 .template{fill:none;stroke:#c0abd3;stroke-width:5;stroke-linecap:round;stroke-dasharray:9 8}
@@ -63,6 +67,10 @@ h1{font-size:25px;line-height:1.15;margin:11px 0 6px;color:#672e8d}
 <button id="listen" class="action secondary" type="button">🔊 Слушать образец</button>
 <button id="record" class="action" type="button">🎙 Произнести</button>
 </div>
+<div class="mic-meter" aria-hidden="true"><span id="mic-level-fill"></span></div>
+<p id="mic-level-label" class="mic-level-label" role="status" aria-live="polite">Уровень микрофона появится во время записи.</p>
+<button id="replay" class="action replay" type="button" disabled>🔊 Послушать свой голос</button>
+<p id="recording-message" class="recording-message" aria-live="polite">После произношения можно прослушать именно свою запись.</p>
 <p id="status" class="status" role="status" aria-live="polite">Микрофон включится только после нажатия.</p>
 </section>
 <section class="card" aria-labelledby="graph-title">
@@ -78,8 +86,8 @@ h1{font-size:25px;line-height:1.15;margin:11px 0 6px;color:#672e8d}
 <button id="next" class="action next" type="button">Следующий тон →</button>
 </section>
 <p class="tip"><b>Важно:</b> это анализ высоты голоса, а не распознавание китайских слов. Нет оценок «верно/неверно» — по одному графику нельзя достоверно проверить китайский тон. Третий тон в речи часто произносится низко, без подъёма.</p>
-<p class="warning">🎧 Лучше пользоваться в тихом месте. Для измерения один слог слегка протяни (около секунды). Звук остаётся в памяти браузера и не отправляется на сервер.</p>
+<p class="warning">🎧 Лучше пользоваться в тихом месте. Для измерения один слог слегка протяни (около секунды). Твой голос временно записывается в памяти браузера для воспроизведения, не отправляется на сервер и удаляется при новой записи, смене тона или закрытии тренажёра.</p>
 </main>
-<script type="module" src="./assets/panda-tone-ma-pilot-v463.mjs?v=463"></script>
+<script type="module" src="./assets/panda-tone-ma-pilot-v463.mjs?v=464"></script>
 </body>
 </html>
