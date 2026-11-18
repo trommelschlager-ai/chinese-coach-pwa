@@ -7,6 +7,7 @@ on:
       - 'fix/panda-tone-lab-measurement-export-v459-20261118'
       - 'fix/panda-tone-lab-voice-diagnostics-v460-20261118'
       - 'fix/panda-tone-lab-voicing-timeline-v461-20261118'
+      - 'fix/panda-tone-octave-jump-v462-20261118'
   pull_request:
     paths:
       - 'panda-tone-lab.html'
