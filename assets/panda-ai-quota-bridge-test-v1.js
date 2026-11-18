@@ -8,8 +8,7 @@
   const css=document.createElement('style');
   css.textContent=[
     '#pg346 #pq-fab{position:absolute;z-index:40;top:var(--pq-top,270px);right:3%;width:auto;max-width:46%;min-height:42px;padding:8px 15px;border:2px solid #fff;border-radius:99px;background:linear-gradient(145deg,#6845bb,#573a9e);color:#fff;font:700 13px/1.1 system-ui;box-shadow:0 5px 17px #27104967;cursor:pointer;white-space:nowrap}',
-    '#pg346 .pq-limit-dock{flex:none;min-height:48px;display:flex;align-items:center;justify-content:flex-end;padding-right:3%;z-index:9;background:linear-gradient(180deg,#43b7ef,#40b6ed)}',
-    '#pg346 .pq-limit-dock #pq-fab{position:static;max-width:46%}',
+    '#pg346 .pg346-header #pq-fab{position:absolute;top:8px;right:12px;max-width:45%;min-height:29px;padding:4px 10px;font-size:11px;line-height:1.05}',
     '#pq-fab[hidden]{display:none!important}',
     '#pq-modal{box-sizing:border-box;width:min(90vw,370px);max-height:70dvh;overflow:auto;padding:15px;border:1px solid #d9c9f1;border-radius:20px;background:white;color:#302743;font:15px/1.4 system-ui;box-shadow:0 15px 50px #1c103060;z-index:9999999}',
     '#pq-modal::backdrop{background:#120b29ae}',
@@ -54,53 +53,53 @@
     '<p class="pq-small">Тестовая система Supabase · без списания денег · оригинальная Panda AI не изменена.</p>'
   ].join('');
   document.body.append(fab,modal);
-  // Anchor the quota button in the real, measured gap between the last
-  // learner history row and the Panda's speech card. On different Android
-  // screens this gap changes; scene-relative positioning previously overlaid
-  // the speech card (see the user's mobile screenshot).
+  // No layout row or solid background: the old pq-limit-dock created
+  // the visible cyan rectangular block on Android.
+  // Place the button in an actual gap, with a compact fallback in the
+  // header's unused Back row, never on the Non-Stop or the Panda speech.
   function placeQuotaButton(){
     const stage=document.getElementById('pg346');
     if(!stage)return false;
     const history=stage.querySelector('.pg346-history');
     const speech=stage.querySelector('.pg346-speech');
-    if(!history||!speech)return false;
-    stage.appendChild(fab);
+    const header=stage.querySelector('.pg346-header');
+    if(!history||!speech||!header)return false;
+    header.appendChild(fab);
     fab.hidden=false;
-    let pending=false,usingDock=false;
+    let pending=false;
     const layout=()=>{
       pending=false;
-      if(usingDock)return;
       const stageRect=stage.getBoundingClientRect();
       const historyRect=history.getBoundingClientRect();
       const speechRect=speech.getBoundingClientRect();
-      const h=Math.max(42,fab.getBoundingClientRect().height);
+      const buttonHeight=42;
       const gap=speechRect.top-historyRect.bottom;
-      if(gap>=h+20){
-        // Center in the free sky, without covering the history or the speech.
-        const center=historyRect.bottom+(gap-h)/2;
-        const top=Math.round(center-stageRect.top);
-        fab.style.setProperty('--pq-top',top+'px');
+      if(gap>=buttonHeight+20){
+        // Right aligned in the open sky between the history and speech card.
+        // The initial DOM measurement can be too early, so keep rechecking.
+        if(fab.parentElement!==stage)stage.appendChild(fab);
+        const top=historyRect.bottom+(gap-buttonHeight)/2-stageRect.top;
+        fab.style.setProperty('--pq-top',Math.round(top)+'px');
       }else{
-        // Extremely short screens: insert a real compact row, never overlap
-        // either the history or the Panda's response card.
-        const dock=document.createElement('div');
-        dock.className='pq-limit-dock';
-        history.insertAdjacentElement('afterend',dock);
-        dock.appendChild(fab);
-        usingDock=true;
+        // On small screens use the free top header row, without adding a
+        // new flex row and without overlaying the mode selector.
+        if(fab.parentElement!==header)header.appendChild(fab);
       }
     };
     const schedule=()=>{
-      if(!pending&&!usingDock){
-        pending=true;
-        requestAnimationFrame(layout);
-      }
+      if(pending)return;
+      pending=true;
+      requestAnimationFrame(layout);
     };
     const ro=typeof ResizeObserver==='function'?new ResizeObserver(schedule):null;
     ro?.observe(stage);ro?.observe(history);ro?.observe(speech);
     window.addEventListener('resize',schedule,{passive:true});
     window.visualViewport?.addEventListener('resize',schedule,{passive:true});
+    // Let Android CSS, history and Panda artwork settle before final placement.
     schedule();
+    setTimeout(schedule,150);
+    setTimeout(schedule,800);
+    setTimeout(schedule,1800);
     return true;
   }
   if(!placeQuotaButton()){
