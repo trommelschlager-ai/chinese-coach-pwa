@@ -68,7 +68,7 @@ test('short contours and gaps do not get a grade',()=>{
 test('pilot page only uses local Web Audio and never claims verified tones',()=>{
  const html=fs.readFileSync(new URL('../panda-tone-lab.html',import.meta.url),'utf8');
  const ui=fs.readFileSync(new URL('../assets/panda-tone-lab-ui-v457.mjs',import.meta.url),'utf8');
- assert.ok(html.includes('panda-tone-lab-ui-v457.mjs?v=458'));
+ assert.ok(html.includes('panda-tone-lab-ui-v457.mjs?v=459'));
  assert.ok(html.includes('не оценивает правильность китайских тонов'));
  assert.ok(html.includes('panda-voice-pilot.html'));
  assert.ok(ui.includes('getUserMedia('));
@@ -79,6 +79,14 @@ test('pilot page only uses local Web Audio and never claims verified tones',()=>
  assert.ok(ui.includes('Number.isFinite(s.startToEndSt)'));
  assert.ok(ui.includes('panda-tone-analytics-v457.mjs?v=458'));
  assert.ok(ui.includes('getTracks().forEach(t=>t.stop())'));
+ assert.ok(html.includes('id="copy-trace"'),'Pitch export must be user initiated');
+ assert.ok(ui.includes("navigator.clipboard.writeText(JSON.stringify(lastDiagnostic))"));
+ assert.ok(ui.includes("kind==='fall'&&tone===3"),'Third-tone fall needs specific cautious guidance');
+ assert.ok(ui.includes("kind==='rise'&&tone===2"),'Second-tone rise must not be graded');
+ assert.ok(ui.includes("},28);"),'Use higher temporal sample rate to capture pitch turn');
+ assert.ok(ui.includes('hz:+x.hz.toFixed(1)'),'Export f0 values, not audio');
+ assert.ok(!ui.includes('new MediaRecorder('));
+
  for(const banned of ['fetch(', 'XMLHttpRequest','WebSocket','MediaRecorder','SpeechRecognition','localStorage','sessionStorage']){
   assert.ok(!ui.includes(banned),'Pilot unexpectedly uses '+banned);
  }

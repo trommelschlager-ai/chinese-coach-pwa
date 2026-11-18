@@ -19,7 +19,7 @@ h1{font-size:clamp(23px,6vw,30px);margin:18px 0 4px}.subtitle{font-size:14px;col
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}.choice{touch-action:manipulation;border:2px solid #ede2fe;border-radius:17px;padding:12px 5px;background:#faf7ff;color:#40265c;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
 .choice[aria-pressed="true"]{border-color:#8651dc;background:#eee2ff;box-shadow:0 0 0 2px #ead7ff}.choice b{font-size:37px;line-height:1.2}.choice span{font-weight:700;font-size:18px}.choice small{font-size:12px;color:#70598c}
 .note{color:#695b7b;font-size:13px;line-height:1.5;margin:12px 0 0}.controls{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-top:13px}
-.action{border:0;border-radius:15px;min-height:49px;padding:10px 12px;background:#6c44bd;color:#fff;font-size:15px;font-weight:700;cursor:pointer}.action.secondary{background:#ebe2f8;color:#503588}.action:disabled{opacity:.42;cursor:not-allowed}
+.action{border:0;border-radius:15px;min-height:49px;padding:10px 12px;background:#6c44bd;color:#fff;font-size:15px;font-weight:700;cursor:pointer}.action.secondary{background:#ebe2f8;color:#503588}.action.trace{background:#f0eafd;color:#60418c;border:1px solid #d8c6f5;width:100%;margin-top:12px;font-size:13px}.action:disabled{opacity:.42;cursor:not-allowed}
 button:focus-visible,a:focus-visible{outline:3px solid #fa9b56;outline-offset:2px}.status{min-height:22px;color:#654e78;font-size:14px;margin:11px 0 0}
 .result-title{font-size:17px;font-weight:750;color:#4b3287;margin-bottom:6px}.result-text{font-size:14px;color:#58486f;line-height:1.5}
 #graph{display:block;width:100%;height:auto;background:linear-gradient(#fbfaff,#fff);border-radius:16px;margin-top:10px;border:1px solid #eee5fb}.gridline{stroke:#e9e1f3;stroke-width:1;stroke-dasharray:4 5}
@@ -29,7 +29,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #fa9b56;outline-offset:2p
 </style>
 </head>
 <body><main>
-<header><a href="./panda-voice-pilot.html">← Panda AI</a><span class="pill">🎙 ПИЛОТ · v458</span></header>
+<header><a href="./panda-voice-pilot.html">← Panda AI</a><span class="pill">🎙 ПИЛОТ · v459</span></header>
 <h1>Китайские тоны: 2-й и 3-й</h1>
 <p class="subtitle">Учимся видеть движение высоты голоса, а не просто распознавать иероглифы.</p>
 <div class="hero"><img alt="Наша Панда" src="./assets/panda-character-clean-v349.webp?v=349"><div><strong>🐼 Панда слушает контур голоса</strong>Это экспериментальная подсказка по высоте звука. Она пока <b>не оценивает правильность китайских тонов</b>.</div></div>
@@ -47,9 +47,9 @@ button:focus-visible,a:focus-visible{outline:3px solid #fa9b56;outline-offset:2p
 <path id="your-path" class="measured" d=""/>
 <text x="35" y="25" fill="#827294" font-size="18">Выше ↑</text><text x="35" y="218" fill="#827294" font-size="18">Ниже ↓</text>
 </svg><div class="legend"><span><i></i> твой голос</span><span class="ref"><i></i> учебная схема</span></div>
-<p class="note">У 3-го тона в живой речи подъём может отсутствовать: он часто звучит низко или слегка нисходяще. Одна кривая не доказывает правильность тона.</p></section>
+<button id="copy-trace" class="action trace" type="button" disabled>📋 Скопировать точки графика (без аудио)</button><p class="note">Если график странный, скопируй измерения и пришли их сюда для разбора. Звук не копируется. У 3-го тона подъём иногда отсутствует; одна кривая не доказывает правильность произношения.</p></section>
 <section class="panel"><h2>3. Что означает результат</h2>
 <p class="privacy">Измеряется <b>F0 — основная частота голоса</b>. Это не распознавание китайских слов и не подтверждение фонетики. Если запись слишком шумная или короткая, Панда не должна придумывать балл.</p>
 <p class="privacy"><b>Приватность:</b> микрофон обрабатывается на устройстве. Запись не отправляется на сервер и не сохраняется в аккаунт. Потребуются HTTPS, Chrome и разрешение пользователя.</p>
 </section><footer>Экспериментальный тренажёр Panda Go. Основная Panda AI, её дизайн и 42 MP3 работают отдельно.</footer>
-</main><script type="module" src="./assets/panda-tone-lab-ui-v457.mjs?v=458"></script></body></html>
+</main><script type="module" src="./assets/panda-tone-lab-ui-v457.mjs?v=459"></script></body></html>
