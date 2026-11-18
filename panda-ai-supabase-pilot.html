@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Panda AI · Проверка доступа 10→3</title>
+<style>
+:root{color-scheme:light;font-family:system-ui,-apple-system,Arial,sans-serif;color:#2c2344;background:#f7f0ff}
+*{box-sizing:border-box}
+body{margin:0;padding:12px 12px 40px;background:linear-gradient(180deg,#efe2ff,#fffaf4)}
+main{max-width:600px;margin:0 auto}
+.card{background:#fff;border:1px solid #e6d3fb;border-radius:24px;padding:20px;margin:12px 0;box-shadow:0 6px 18px #522e7e10}
+h1{font-size:25px;margin:4px 0}h2{font-size:18px;margin:0 0 12px}
+p{line-height:1.5}
+small,.muted{color:#71647d}
+.panda{font-size:56px;text-align:center}
+.notice{border-radius:14px;padding:12px;background:#fff4d9;color:#6d4c27;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+button{font:700 14px system-ui;border:0;border-radius:14px;padding:12px 13px;background:#7053b7;color:white;margin-top:8px;cursor:pointer;min-height:44px}
+button:disabled{opacity:.48}
+button.secondary{background:#f2e9fb;color:#5d4292}
+button.active{background:#31a97b;color:#fff}
+input,textarea{width:100%;border:1px solid #d5c3ed;padding:12px;border-radius:14px;font:inherit;margin-top:5px}
+textarea{min-height:90px;resize:vertical}label{font-size:13px;font-weight:650;display:block;margin-top:12px}
+.big{font-size:38px;font-weight:850;margin:10px 0 4px}
+progress{width:100%;height:14px;accent-color:#38a979}
+#feedback{white-space:pre-wrap;overflow-wrap:anywhere}
+#error{color:#ac2635}
+</style>
+</head><body><main>
+<section class="card"><div class="panda">🐼</div><h1>Panda AI — проверка лимитов</h1><p class="muted">Отдельный тест Panda Go · модель А</p><p class="notice">Здесь нет платного AI и настоящих платежей. Тестовые ответы имитируются. Действующие уроки Panda Go не изменены.</p></section>
+<section class="card"><h2>1. Бесплатная демонстрация</h2><div class="grid"><button id="d1" type="button">День 1</button><button id="d30" type="button" class="secondary">День 30</button><button id="d31" type="button" class="secondary">День 31</button></div>
+<p id="demoLabel" class="muted"></p><div class="big" id="demoValue">10 / 10</div><progress id="demoProgress" max="10" value="10"></progress>
+<button id="take" type="button">Использовать тестовый ответ</button><button id="reset" type="button" class="secondary">Сброс</button>
+</section>
+<section class="card"><h2>2. Настоящий тестовый аккаунт</h2><p class="muted">Этот раздел заработает после подключения бесплатного проекта Supabase и создания тестового пользователя.</p>
+<label>URL Supabase<input id="url" type="url" value="https://vswpftgbpietfqasurgo.supabase.co" placeholder="https://ваш-проект.supabase.co" autocomplete="off"></label>
+<label>Publishable / anon key<input id="key" type="text" value="sb_publishable_pgjflLkwskANFOx-Dj_FIg_BqAZkSE2" placeholder="sb_publishable_..." autocomplete="off"></label>
+<label>Email тестового ученика<input id="email" type="email" autocomplete="username" placeholder="student@example.com"></label>
+<label>Пароль<input id="pass" type="password" autocomplete="current-password"></label>
+<button id="login" type="button">Войти</button><button id="logout" type="button" class="secondary">Выйти</button><p id="loginStatus" class="muted">Нет подключения</p></section>
+<section class="card"><h2>3. Лимит, проверяемый сервером</h2>
+<div class="big" id="realQuota">—</div><p id="realStatus" class="muted">Сначала войди в тестовый аккаунт</p>
+<button id="getQuota" type="button" class="secondary">Обновить лимит</button>
+<label>Фраза на китайском<textarea id="message" maxlength="500" placeholder="你好！"></textarea></label>
+<button id="send" type="button">Отправить тестовый запрос</button>
+<p id="feedback"></p><p id="error" aria-live="polite"></p>
+</section>
+<p class="muted" style="text-align:center;font-size:12px">Panda Go · тестовая разработка · без списаний</p></main>
+<script>
+(function(){
+  const el=id=>document.getElementById(id);
+  let day=1,used=0,token="";
+  const cap=()=>day<=30?10:3;
+  function demo(){
+    const limit=cap();
+    el("demoLabel").textContent=day<=30?"Расширенный период — день "+day+" из 30":"После окончания первых 30 дней";
+    el("demoValue").textContent=(limit-used)+" / "+limit;
+    el("demoProgress").max=limit;el("demoProgress").value=limit-used;
+    el("take").disabled=used>=limit;
+    for(const d of [1,30,31])el("d"+d).className=d===day?"active":"secondary";
+  }
+  [1,30,31].forEach(d=>el("d"+d).onclick=()=>{day=d;used=0;demo()});
+  el("take").onclick=()=>{used=Math.min(cap(),used+1);demo()};
+  el("reset").onclick=()=>{used=0;demo()};demo();
+  const error=(m)=>{el("error").textContent=m||""};
+  function cfg(){
+    const url=el("url").value.trim().replace(/\/+$/,"");
+    const key=el("key").value.trim();
+    if(!/^https:\/\/[a-z0-9.-]+\.supabase\.co$/.test(url)||!key)throw Error("Укажи URL и публичный ключ Supabase");
+    return {url,key};
+  }
+  async function call(method,body){
+    const c=cfg();
+    if(!token)throw Error("Сначала войди в аккаунт");
+    const r=await fetch(c.url+"/functions/v1/panda-ai-pilot",{method,headers:{apikey:c.key,authorization:"Bearer "+token,"content-type":"application/json"},...(body?{body:JSON.stringify(body)}:{})});
+    const data=await r.json();
+    if(!r.ok)throw Error(data.error||("Ошибка сервера "+r.status));
+    return data;
+  }
+  async function getQuota(){
+    const r=await call("GET");
+    el("realQuota").textContent=r.remaining+" / "+r.limit;
+    el("realStatus").textContent=(r.phase==="trial"?"Расширенный доступ · день "+r.trialDay+" / 30":"Базовый доступ")+
+      " · Сброс "+new Date(r.resetsAt).toLocaleString("ru-RU")+(r.testGrant?" · ТЕСТ":"");
+  }
+  el("login").onclick=async()=>{
+    error("");
+    try{
+      const c=cfg();
+      const r=await fetch(c.url+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:c.key,"content-type":"application/json"},body:JSON.stringify({email:el("email").value.trim(),password:el("pass").value})});
+      const data=await r.json();
+      if(!r.ok||!data.access_token)throw Error(data.error_description||"Не удалось войти");
+      token=data.access_token;el("pass").value="";
+      el("loginStatus").textContent="Выполнен вход. Токен хранится только до закрытия вкладки.";
+      await getQuota();
+    }catch(e){error(e.message)}
+  };
+  el("logout").onclick=()=>{token="";el("pass").value="";el("loginStatus").textContent="Выход выполнен";el("realQuota").textContent="—";el("realStatus").textContent="Нет подключения";error("")};
+  el("getQuota").onclick=async()=>{error("");try{await getQuota()}catch(e){error(e.message)}};
+  el("send").onclick=async()=>{
+    error("");el("feedback").textContent="";
+    try{
+      const r=await call("POST",{message:el("message").value.trim()});
+      el("feedback").textContent="🐼 "+r.answer+(r.mock?"\n(Это имитация ответа, не платный AI)":"");
+      await getQuota();
+    }catch(e){error(e.message)}
+  };
+})();
+</script></body></html>
