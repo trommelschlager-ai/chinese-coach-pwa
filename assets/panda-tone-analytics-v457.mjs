@@ -89,13 +89,23 @@ export function analyseContour(frames){
  // A 0.34 s voice fragment with 10 f0 samples is NOT enough evidence to describe tone movement.
  // Require a stable voiced portion, not merely 3 seconds with mostly silence.
  const MIN_VOICED_S=0.50,MIN_PITCH_FRAMES=16;
- if(pts.length<MIN_PITCH_FRAMES||pts.at(-1).t-pts[0].t<MIN_VOICED_S)
-  return {kind:"insufficient",label:"Слишком короткий голосовой фрагмент",
+ if(pts.length<MIN_PITCH_FRAMES||pts.at(-1).t-pts[0].t<MIN_VOICED_S){
+  const duration=pts.length?pts.at(-1).t-pts[0].t:0;
+  // Show *ungraded* pitch dots for some short stable syllables, including natural clips.
+  // Do not join noisy gaps (unvoiced frames) or octave jumps into a fake tone curve.
+  const stableShort=!suspicious&&pts.length>=8&&duration>=.20&&
+   pts.every((p,i)=>i===0||p.t-pts[i-1].t<=.085);
+  const reference=stableShort?median(pts.map(x=>x.hz)):null;
+  const preview=stableShort?pts.map(p=>({t:p.t-pts[0].t,st:semitones(p.hz,reference)})):[];
+  return {kind:"insufficient",label:preview.length?"Короткий участок голоса виден, но для оценки его мало":"Слишком короткий голосовой фрагмент",
    reason:suspicious
      ?"Фрагмент короткий и содержит резкие скачки частоты почти вдвое. Это может быть ошибка измерения, а не твоё произношение. Повтори один слог чуть протяжнее."
-     :"Достоверно сравнить движение тона пока нельзя. Произнеси один слог чуть протяжнее (около 0,7–1,2 с).",
-   points:[],stats:{duration:pts.length?+(pts.at(-1).t-pts[0].t).toFixed(2):0,voicedFrames:pts.length,octaveJumpCount:suspicious},
+     :preview.length
+       ?"Сплошная линия показывает только измеренный короткий участок, не правильность тона. Повтори один слог чуть протяжнее (около 0,7–1,2 с)."
+       :"Достоверно сравнить движение тона пока нельзя. Произнеси один слог чуть протяжнее (около 0,7–1,2 с).",
+   points:preview,stats:{duration:+duration.toFixed(2),voicedFrames:pts.length,octaveJumpCount:suspicious,previewOnly:preview.length>0},
    isToneGrade:false};
+ }
  // Even a long clip must NOT yield a tone-shaped verdict if f0 abruptly doubles/halves.
  // Preserve raw points in manual diagnostics, but omit misleading plotted points.
  if(suspicious)return {kind:"uncertain",label:"Возможный сбой отслеживания высоты голоса",

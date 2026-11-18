@@ -28,14 +28,25 @@ function visit(dir){
 visit(root);
 const referenced=[...matches].map(([file,where])=>({file,exists:fs.existsSync(path.join(root,file)),sources:[...where].sort()})).sort((a,b)=>a.file.localeCompare(b.file));
 const missing=referenced.filter(x=>!x.exists);
+function category(entry){
+ if(entry.sources.some(p=>p.endsWith('.html')||
+  ((p.startsWith('assets/')||!p.includes('/'))&&/\.(?:m?js|cjs)$/i.test(p))))return 'active-or-library-code';
+ if(entry.sources.every(p=>p.startsWith('scripts/')||p.startsWith('tests/')))return 'test-only';
+ if(entry.sources.every(p=>p.endsWith('.json')))return 'manifest-or-planned';
+ return 'needs-review';
+}
+const missingByCategory=Object.groupBy?Object.groupBy(missing,category):missing.reduce((out,x)=>{
+ (out[category(x)]??=[]).push(x);return out;
+},{});
+const missingCategoryCounts=Object.fromEntries(Object.entries(missingByCategory).map(([key,items])=>[key,items.length]));
 const report={
  generatedAt:new Date().toISOString(),sourceFilesScanned:sources,
  uniqueStaticAudioReferences:referenced.length,existingReferences:referenced.length-missing.length,
- missing,limitations:'Advisory static quoted references only; dynamically generated paths and correctness of spoken Mandarin not checked.'
+ missing,missingCategoryCounts,limitations:'Advisory static quoted references only; dynamically generated paths and correctness of spoken Mandarin not checked.'
 };
 fs.mkdirSync(path.join(root,'reports'),{recursive:true});
 fs.writeFileSync(path.join(root,'reports/panda-audio-references.json'),JSON.stringify(report,null,2)+'\n');
-console.log('Static audio references: '+referenced.length+'; existing: '+report.existingReferences+'; missing: '+missing.length);
+console.log('Static audio references: '+referenced.length+'; existing: '+report.existingReferences+'; missing: '+missing.length+'; breakdown: '+JSON.stringify(missingCategoryCounts));
 for(const item of missing.slice(0,30))console.log('MISSING '+item.file+' (used in '+item.sources.slice(0,3).join(', ')+')');
 if(process.env.GITHUB_STEP_SUMMARY)fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
  '\n### Static audio references\n'+report.existingReferences+'/'+referenced.length+' referenced files exist; '+missing.length+' missing (advisory; dynamic paths excluded).\n');

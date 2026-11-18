@@ -1,5 +1,5 @@
 /* Panda Tone Lab v462: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
-import {estimatePitch,analyseContour} from './panda-tone-analytics-v457.mjs?v=462';
+import {estimatePitch,analyseContour} from './panda-tone-analytics-v457.mjs?v=463';
 const $=id=>document.getElementById(id);
 const choices=[...document.querySelectorAll('[data-tone]')];
 let tone=2,stream=null,context=null,source=null,analyser=null,clock=null,deadline=null,active=false,opening=false,frames=[],lastDiagnostic=null,diagnostic=null;
@@ -88,7 +88,7 @@ async function stop(){
    (diagnostic.firstPitchSec!==null?' Высота голоса найдена с '+diagnostic.firstPitchSec.toFixed(2)+' до '+diagnostic.lastPitchSec.toFixed(2)+' с.':'');
   $('result').append(counts);
  }
- $('status').textContent=r.kind==='insufficient'?'Голоса было недостаточно для измерения. Попробуй ещё раз.':'Готово. Это подсказка по контуру, а не оценка тона.';
+ $('status').textContent=r.kind==='insufficient'?(r.points?.length?'Короткий участок голоса измерен, но данных пока мало. Попробуй ещё раз.':'Голоса было недостаточно для измерения. Попробуй ещё раз.'):'Готово. Это подсказка по контуру, а не оценка тона.';
  $('mic-level').textContent='Запись завершена. Уровень сигнала показывается только во время записи.';
  frames=[];
 }

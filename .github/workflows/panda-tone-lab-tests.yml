@@ -7,6 +7,7 @@ on:
       - 'panda-tone-lab.html'
       - 'tests/panda-tone-lab.test.mjs'
       - 'tests/panda-tone-audio-roundtrip.test.mjs'
+      - 'tests/panda-tone-ma-ui.test.mjs'
       - 'scripts/audit-panda-audio.cjs'
       - 'scripts/benchmark-panda-tones.mjs'
       - 'scripts/check-panda-audio-references.cjs'
@@ -22,6 +23,7 @@ on:
       - 'panda-tone-lab.html'
       - 'tests/panda-tone-lab.test.mjs'
       - 'tests/panda-tone-audio-roundtrip.test.mjs'
+      - 'tests/panda-tone-ma-ui.test.mjs'
       - 'scripts/audit-panda-audio.cjs'
       - 'scripts/benchmark-panda-tones.mjs'
       - 'scripts/check-panda-audio-references.cjs'
@@ -29,6 +31,10 @@ on:
   schedule:
     - cron: '30 3 * * 1'
   workflow_dispatch:
+
+concurrency:
+  group: panda-tone-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -42,8 +48,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install audio decoder
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Install test DOM dependencies
+        run: npm ci --ignore-scripts
       - name: Verify tone math and safe failure handling
-        run: node --test tests/panda-tone-lab.test.mjs tests/panda-tone-audio-roundtrip.test.mjs
+        run: node --test tests/panda-tone-lab.test.mjs tests/panda-tone-audio-roundtrip.test.mjs tests/panda-tone-ma-ui.test.mjs
       - name: Check decoder availability
         run: |
           command -v ffmpeg

@@ -1,6 +1,7 @@
 // Panda Go: diagnostic ONLY on four existing lesson-1 Mandarin tone recordings.
 // F0 curves never certify tone, word identity or natural pronunciation.
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
@@ -39,15 +40,26 @@ function extract(samples){
  return {frames,peakRms};
 }
 const mapping=fs.readFileSync(path.join(root,'assets/hsk1-first-v189.js'),'utf8');
+const knownHashes=new Map();
 for(const item of cases){
  const mapped=JSON.stringify(item.hanzi)+":'./"+item.src+"'";
  const filename=path.join(root,item.src);
  if(!mapping.includes(mapped)){report.technicalFailures.push({file:item.src,error:'Lesson audio map differs from diagnostic manifest'});continue;}
  if(!fs.existsSync(filename)){report.technicalFailures.push({file:item.src,error:'Missing MP3'});continue;}
+ const sha=createHash('sha256').update(fs.readFileSync(filename)).digest('hex');
+ if(knownHashes.has(sha)){
+  report.technicalFailures.push({file:item.src,error:'Audio bytes IDENTICAL to another tone sample: '+knownHashes.get(sha)});
+  continue;
+ }
+ knownHashes.set(sha,item.src);
  try{
   const pcm=decode(filename),{frames,peakRms}=extract(pcm),result=analyseContour(frames);
   report.checks.push({
    hanzi:item.hanzi,pinyin:item.pinyin,expectedTone:item.tone,src:item.src,
+   audioSha256:sha,
+   expectedContourHint:({1:'level',2:'rise',3:'dip OR low-falling',4:'fall'})[item.tone],
+   needsHumanReview:item.tone===3? !['dip','fall'].includes(result.kind) :
+     result.kind!==({1:'level',2:'rise',4:'fall'})[item.tone],
    audioDurationSec:+(pcm.length/rate).toFixed(3),pitchFrames:frames.length,
    peakRms:+peakRms.toFixed(4),observedContour:result.kind,
    observation:result.label,explanation:result.reason,
