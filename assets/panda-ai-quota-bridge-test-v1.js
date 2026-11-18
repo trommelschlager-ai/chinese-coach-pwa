@@ -7,7 +7,9 @@
   let token='';
   const css=document.createElement('style');
   css.textContent=[
-    '#pg346 .pg346-scene #pq-fab{position:absolute;z-index:30;top:clamp(12px,2.8dvh,28px);right:3%;width:auto;max-width:46%;min-height:42px;padding:8px 15px;border:2px solid #fff;border-radius:99px;background:linear-gradient(145deg,#6845bb,#573a9e);color:#fff;font:700 13px/1.1 system-ui;box-shadow:0 5px 17px #27104967;cursor:pointer;white-space:nowrap}',
+    '#pg346 #pq-fab{position:absolute;z-index:40;top:var(--pq-top,270px);right:3%;width:auto;max-width:46%;min-height:42px;padding:8px 15px;border:2px solid #fff;border-radius:99px;background:linear-gradient(145deg,#6845bb,#573a9e);color:#fff;font:700 13px/1.1 system-ui;box-shadow:0 5px 17px #27104967;cursor:pointer;white-space:nowrap}',
+    '#pg346 .pq-limit-dock{flex:none;min-height:48px;display:flex;align-items:center;justify-content:flex-end;padding-right:3%;z-index:9;background:linear-gradient(180deg,#43b7ef,#40b6ed)}',
+    '#pg346 .pq-limit-dock #pq-fab{position:static;max-width:46%}',
     '#pq-fab[hidden]{display:none!important}',
     '#pq-modal{box-sizing:border-box;width:min(90vw,370px);max-height:70dvh;overflow:auto;padding:15px;border:1px solid #d9c9f1;border-radius:20px;background:white;color:#302743;font:15px/1.4 system-ui;box-shadow:0 15px 50px #1c103060;z-index:9999999}',
     '#pq-modal::backdrop{background:#120b29ae}',
@@ -52,13 +54,53 @@
     '<p class="pq-small">Тестовая система Supabase · без списания денег · оригинальная Panda AI не изменена.</p>'
   ].join('');
   document.body.append(fab,modal);
-  // Place the quota control over the clear sky inside the scene, not on top
-  // of the Non-Stop mode. The approved Panda modules mount #pg346 later.
+  // Anchor the quota button in the real, measured gap between the last
+  // learner history row and the Panda's speech card. On different Android
+  // screens this gap changes; scene-relative positioning previously overlaid
+  // the speech card (see the user's mobile screenshot).
   function placeQuotaButton(){
-    const scene=document.querySelector('#pg346 .pg346-scene');
-    if(!scene)return false;
-    scene.appendChild(fab);
+    const stage=document.getElementById('pg346');
+    if(!stage)return false;
+    const history=stage.querySelector('.pg346-history');
+    const speech=stage.querySelector('.pg346-speech');
+    if(!history||!speech)return false;
+    stage.appendChild(fab);
     fab.hidden=false;
+    let pending=false,usingDock=false;
+    const layout=()=>{
+      pending=false;
+      if(usingDock)return;
+      const stageRect=stage.getBoundingClientRect();
+      const historyRect=history.getBoundingClientRect();
+      const speechRect=speech.getBoundingClientRect();
+      const h=Math.max(42,fab.getBoundingClientRect().height);
+      const gap=speechRect.top-historyRect.bottom;
+      if(gap>=h+20){
+        // Center in the free sky, without covering the history or the speech.
+        const center=historyRect.bottom+(gap-h)/2;
+        const top=Math.round(center-stageRect.top);
+        fab.style.setProperty('--pq-top',top+'px');
+      }else{
+        // Extremely short screens: insert a real compact row, never overlap
+        // either the history or the Panda's response card.
+        const dock=document.createElement('div');
+        dock.className='pq-limit-dock';
+        history.insertAdjacentElement('afterend',dock);
+        dock.appendChild(fab);
+        usingDock=true;
+      }
+    };
+    const schedule=()=>{
+      if(!pending&&!usingDock){
+        pending=true;
+        requestAnimationFrame(layout);
+      }
+    };
+    const ro=typeof ResizeObserver==='function'?new ResizeObserver(schedule):null;
+    ro?.observe(stage);ro?.observe(history);ro?.observe(speech);
+    window.addEventListener('resize',schedule,{passive:true});
+    window.visualViewport?.addEventListener('resize',schedule,{passive:true});
+    schedule();
     return true;
   }
   if(!placeQuotaButton()){
