@@ -54,7 +54,7 @@ test('wrong sentences cannot play a correct example as though it were the origin
 
 test('existing user Luvvoice voice and offline versions are preserved',()=>{
  assert.equal(lookupPandaVoiceClip('我很好')?.src,'./assets/panda-voice-clips-v411/p156.mp3');
- assert.equal(lookupPandaVoiceClip('你好')?.src,'./assets/panda-live-voice-v2/hello.mp3');
+ assert.equal(lookupPandaVoiceClip('你好')?.src,'./assets/panda-voice-clips-v365/p039.mp3');
  const pack=JSON.parse(read('assets/offline-pack.json'));
  assert.equal(pack.version,451);
  for(const row of manifest.items){
