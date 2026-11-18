@@ -45,3 +45,41 @@
   #pg346 .pg346-feedback:not([hidden]){max-height:32%}
   #pg346 .pg445-details summary{min-height:31px}
 }
+
+/* v453: The closed feedback card must be readable without inner scrolling.
+ * Keep the approved Panda, scenery, speaker controls and composer untouched. */
+#pg346 .pg346-feedback:not([hidden]){
+  left:3%;bottom:3%;
+  width:84%;max-width:430px;
+  max-height:calc(97% - 12px);
+  padding:8px 11px;
+  overflow-x:hidden;overflow-y:auto;
+  overflow-wrap:anywhere;
+}
+#pg346 .pg445-heading{font-size:clamp(12px,3vw,14px);line-height:1.2}
+#pg346 .pg445-after{
+  font-size:clamp(13px,3.4vw,16px);
+  line-height:1.24;margin-top:4px;
+  overflow-wrap:anywhere;
+}
+#pg346 .pg445-brief{
+  font-size:clamp(12px,3vw,14px);
+  line-height:1.31;margin-top:5px;
+  white-space:normal;overflow-wrap:anywhere;
+}
+#pg346 .pg445-details{margin-top:5px;padding-top:3px}
+#pg346 .pg445-details summary{
+  min-height:30px;padding:4px 2px;
+  font-size:clamp(12px,2.9vw,14px);
+  line-height:1.2;
+}
+#pg346 .pg346-feedback:not([hidden]):has(.pg445-details[open]){
+  width:94%;max-width:485px;
+  max-height:calc(98% - 6px);
+}
+@media(max-height:690px){
+  #pg346 .pg346-feedback:not([hidden]){max-height:calc(97% - 8px)}
+}
+:root[data-keyboard=true] #pg346 .pg346-feedback:not([hidden]){
+  max-height:calc(100% - 5px);
+}

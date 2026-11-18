@@ -280,21 +280,31 @@ if (!bridge) {
     root.append(heading);
     if(wrong.uncertain)root.append(el('p','pg441-uncertain',
       '⚠️ Браузер мог ослышаться. Сначала проверь распознанный текст.'));
-    root.append(
-      el('p','pg445-before','💬 '+(last.hanzi||'')),
-      el('p','pg445-after','💡 Пример ответа: '+wrong.hanzi)
-    );
-    if(wrong.pinyin)root.append(el('p','pg445-pinyin',wrong.pinyin));
+    // The learner's original sentence already appears in chat history.
+    // Keep the main card short enough to read WITHOUT scrolling on Android.
+    root.append(el('p','pg445-after',
+      (meaningOnly?'💡 Пример ответа: ':'✅ ')+wrong.hanzi));
     // The actual verified rule must be visible without tapping "Подробнее".
     // A technical title alone is not an explanation for a learner.
     const why=String(wrong.why||'').trim();
-    const firstSentence=why.match(/^.*?[.!?](?:\s|$)/u)?.[0]?.trim()||why;
+    let firstSentence=why.match(/^.*?[.!?](?:\s|$)/u)?.[0]?.trim()||why;
+    // Reviewed short explanations for the two cases that overflowed in Android.
+    // All other grammar rules retain their first verified sentence verbatim.
+    if(!meaningOnly&&!wrong.uncertain){
+      if(/В конструкции A-不-A или 有没有/.test(why))
+        firstSentence='Повтор глагола уже образует вопрос — 吗 не нужна.';
+      else if(/В обычном предложении время действия ставится перед глаголом/.test(why))
+        firstSentence='Время ставят перед действием: сначала часы, затем глагол.';
+    }
     const shortRule=meaningOnly?'要 (yào) — хотеть; 有 (yǒu) — иметь.':
       firstSentence?'Почему: '+firstSentence:(wrong.title||'Правило требует уточнения.');
     root.append(el('p','pg445-brief',shortRule));
     const details=document.createElement('details');details.className='pg445-details';
     const trigger=document.createElement('summary');trigger.textContent='Подробнее — объяснение и перевод';
     details.append(trigger);
+    details.append(el('p','pg445-before',
+      (meaningOnly?'💬 Твой ответ: ':'❌ Твоя фраза: ')+(last.hanzi||'')));
+    if(wrong.pinyin)details.append(el('p','pg445-pinyin','Пиньинь: '+wrong.pinyin));
     if(wrong.label)details.append(el('p','pg445-label',wrong.label));
     details.append(el('p','pg445-meaning','Сказано: '+(last.analysis?.probable||'Смысл уточняется')));
     if(wrong.ru)details.append(el('p','pg445-translation','Пример: '+wrong.ru));

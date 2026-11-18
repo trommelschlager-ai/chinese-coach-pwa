@@ -59,5 +59,5 @@ test('existing Panda player handles playback, not a new voice or microphone requ
  assert.ok(!fn.includes('startRecognition('));
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
  assert.ok(html.includes('panda-live-screen-v270.mjs?v=452'));
- assert.ok(html.includes('panda-live-v346.mjs?v=451'));
+ assert.ok(html.includes('panda-live-v346.mjs?v=453'));
 });
