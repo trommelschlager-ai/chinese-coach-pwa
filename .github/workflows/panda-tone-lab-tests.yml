@@ -6,6 +6,7 @@ on:
       - 'assets/panda-tone-*'
       - 'panda-tone-lab.html'
       - 'tests/panda-tone-lab.test.mjs'
+      - 'tests/panda-tone-audio-roundtrip.test.mjs'
       - 'scripts/audit-panda-audio.cjs'
       - '.github/workflows/panda-tone-lab-tests.yml'
       - 'assets/**/*.mp3'
@@ -37,7 +38,7 @@ jobs:
         with:
           node-version: '22'
       - name: Verify tone math and safe failure handling
-        run: node --test tests/panda-tone-lab.test.mjs
+        run: node --test tests/panda-tone-lab.test.mjs tests/panda-tone-audio-roundtrip.test.mjs
       - name: Check decoder availability
         run: |
           command -v ffmpeg
