@@ -89,3 +89,40 @@ body[data-step="5"] .pg-feedback{font-size:10px!important;padding:4px!important}
  body[data-step="3"] .v460-test-list{grid-template-rows:repeat(5,48px)!important}
  body[data-step="5"] .v460-practice-grid{height:230px!important}
 }
+
+
+/* v465 visual QA: replace empty pastel lower field with visible misty mountains/pagoda. */
+body[data-step="1"] .v460-stage,
+body[data-step="2"] .v460-stage,
+body[data-step="3"] .v460-stage,
+body[data-step="4"] .v460-stage,
+body[data-step="5"] .v460-stage{
+ background:
+   linear-gradient(180deg,rgba(255,245,252,.70) 0%,rgba(255,228,251,.50) 45%,rgba(243,204,253,.18) 100%),
+   url("./hsk2-approved-scenery-v464.svg") center center / 100% 100% no-repeat!important;
+}
+body[data-step="1"] .v460-stage:before,
+body[data-step="2"] .v460-stage:before,
+body[data-step="3"] .v460-stage:before,
+body[data-step="4"] .v460-stage:before,
+body[data-step="5"] .v460-stage:before{
+ opacity:.9!important;width:78px!important;height:220px!important;left:-18px!important;
+}
+body[data-step="1"] .v460-stage:after,
+body[data-step="2"] .v460-stage:after,
+body[data-step="3"] .v460-stage:after,
+body[data-step="4"] .v460-stage:after,
+body[data-step="5"] .v460-stage:after{
+ opacity:.88!important;width:78px!important;height:220px!important;right:-18px!important;
+}
+@media(min-height:760px){
+ body[data-step="1"] .v460-intro{height:clamp(188px,28dvh,235px)!important}
+ body[data-step="1"] .v460-feature-frame{height:clamp(220px,34dvh,258px)!important}
+ body[data-step="2"] .v460-word-list{grid-template-rows:repeat(6,clamp(66px,9.2dvh,79px))!important}
+ body[data-step="3"] .v460-test-list{grid-template-rows:repeat(5,clamp(58px,8.5dvh,73px))!important}
+ body[data-step="3"] .v460-test-hero{height:clamp(125px,18dvh,150px)!important}
+ body[data-step="4"] .v460-rule-main{height:clamp(136px,21dvh,168px)!important}
+ body[data-step="4"] .v460-rule-example{height:clamp(120px,18dvh,145px)!important}
+ body[data-step="4"] .v460-builder{height:clamp(180px,28dvh,217px)!important}
+ body[data-step="5"] .v460-practice-grid{height:clamp(290px,48dvh,360px)!important}
+}
