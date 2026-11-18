@@ -8,6 +8,7 @@ on:
       - 'tests/panda-tone-lab.test.mjs'
       - 'tests/panda-tone-audio-roundtrip.test.mjs'
       - 'scripts/audit-panda-audio.cjs'
+      - 'scripts/benchmark-panda-tones.mjs'
       - '.github/workflows/panda-tone-lab-tests.yml'
       - 'assets/**/*.mp3'
       - 'assets/**/*.m4a'
@@ -20,6 +21,7 @@ on:
       - 'panda-tone-lab.html'
       - 'tests/panda-tone-lab.test.mjs'
       - 'scripts/audit-panda-audio.cjs'
+      - 'scripts/benchmark-panda-tones.mjs'
       - '.github/workflows/panda-tone-lab-tests.yml'
   schedule:
     - cron: '30 3 * * 1'
@@ -43,6 +45,8 @@ jobs:
         run: |
           command -v ffmpeg
           command -v ffprobe
+      - name: Diagnose four existing lesson tone recordings (no grading)
+        run: node scripts/benchmark-panda-tones.mjs
       - name: Inventory and decode all repository audio
         run: node scripts/audit-panda-audio.cjs --deep
       - name: Upload machine-readable audio report
@@ -50,6 +54,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: panda-go-audio-audit
-          path: reports/panda-audio-audit.json
+          path: |
+            reports/panda-audio-audit.json
+            reports/panda-real-tone-diagnostics.json
           if-no-files-found: warn
           retention-days: 14
