@@ -1,0 +1,51 @@
+name: HSK2 preview v457 exact illustrated lesson cards
+on:
+  push:
+    paths:
+      - .github/workflows/hsk2-v457-exact-panda-crops.yml
+permissions:
+  contents: write
+jobs:
+  crop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Crop complete approved Panda scenes
+        run: |
+          set -euo pipefail
+          python -m pip install -q pillow
+          python - <<'PY'
+          import re,json,urllib.request,pathlib,io
+          from PIL import Image
+          source=pathlib.Path('.github/workflows/hsk2-v456-panda-illustrations.yml').read_text()
+          match=re.search(r'(?m)^\s*SOURCE_URL:\s*(.+)\s*$',source)
+          if not match: raise RuntimeError('Approved image source unavailable')
+          address=json.loads(match.group(1))
+          request=urllib.request.Request(address,headers={'User-Agent':'Mozilla/5.0'})
+          image=Image.open(io.BytesIO(urllib.request.urlopen(request,timeout=45).read())).convert('RGB')
+          if image.size!=(1199,1312): raise RuntimeError('Wrong reference image resolution')
+          boxes=[
+            (418,54,529,138),
+            (418,141,529,221),
+            (418,226,529,308),
+            (418,398,529,485),
+            (418,491,529,582),
+            (676,967,773,1070)
+          ]
+          out=pathlib.Path('assets/hsk2-preview-v457');out.mkdir(parents=True,exist_ok=True)
+          for i,box in enumerate(boxes,1):
+            tile=image.crop(box).resize((222,180),Image.Resampling.LANCZOS)
+            fn=out/f'word-{i}.webp'
+            tile.save(fn,'WEBP',quality=95,method=6)
+            print(fn,tile.size,fn.stat().st_size)
+          PY
+      - name: Publish preview art to repository
+        run: |
+          git config user.name "Panda Go Preview"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk2-preview-v457/*.webp
+          if ! git diff --cached --quiet; then
+            git commit -m "assets(hsk2): six complete Panda daily routine illustrations v457"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
