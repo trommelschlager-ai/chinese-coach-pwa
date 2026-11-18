@@ -1,0 +1,64 @@
+name: Add approved HSK2 intro and test preview art
+on:
+  push:
+    paths:
+      - ".github/workflows/transfer-hsk2-approved-previews-v449.yml"
+permissions:
+  contents: write
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve approved image and make two display-only panels
+        env:
+          ART_SOURCE_URL: "https://media.canva.com/v2/image-resize/format:PNG/height:150/quality:100/uri:ifs%3A%2F%2FM%2Fa6ab20f0-4d03-48c2-87f5-b960ffa14549/watermark:F/width:200?csig=AAAAAAAAAAAAAAAAAAAAAJKhLXNxvN7G3ZICjXC4ZH_KY2YXUUyolzoQZtReJkdS&exp=1794979592&osig=AAAAAAAAAAAAAAAAAAAAAGiciGqRE7biZKfbwzFVocDatyO0kzUDj7p3o0_ycJbV&signer=media-rpc&token=AAIAAU0AJGE2YWIyMGYwLTRkMDMtNDhjMi04N2Y1LWI5NjBmZmExNDU0OQAAAAABoe0e90DK8Oce2mLE-qzY1_bDl7CuRN5ATiESd_JDrfaesRhm-A&x-canva-quality=thumbnail"
+        run: |
+          set -euo pipefail
+          python -m pip install -q pillow
+          python - <<'PY'
+          import urllib.request,io,os,pathlib,sys
+          from PIL import Image
+          u=os.environ['ART_SOURCE_URL']
+          candidates=[
+              u.replace('/height:150/','/height:1086/').replace('/width:200?', '/width:1448?').replace('&x-canva-quality=thumbnail',''),
+              u.replace('/height:150/','/height:1086/').replace('/width:200?', '/width:1448?'),
+              u.replace('/height:150/','/height:900/').replace('/width:200?', '/width:1200?'),
+              u,
+          ]
+          original=None
+          for i,src in enumerate(candidates):
+            try:
+              request=urllib.request.Request(src,headers={'User-Agent':'Mozilla/5.0'})
+              data=urllib.request.urlopen(request,timeout=25).read()
+              im=Image.open(io.BytesIO(data))
+              print('Candidate',i,'dims',im.size,'bytes',len(data))
+              if im.width>=1200 and im.height>=900:
+                original=im.convert('RGB')
+                break
+            except Exception as e: print('Candidate',i,'failed:',type(e).__name__,str(e)[:130])
+          if original is None: raise SystemExit('No approved high-resolution image. Keep demo untouched.')
+          w,h=original.size
+          if abs(w/h-1448/1086)>0.02: raise SystemExit('Incorrect source aspect ratio.')
+          sx=w/1448;sy=h/1086
+          crops={'1':(80,12,686,1048),'3':(718,12,1334,1048)}
+          outdir=pathlib.Path('assets/hsk2-preview-v449');outdir.mkdir(parents=True,exist_ok=True)
+          for n,rect in crops.items():
+             bounds=tuple(round(v*(sx if j%2==0 else sy)) for j,v in enumerate(rect))
+             panel=original.crop(bounds)
+             panel.thumbnail((650,1120),Image.Resampling.LANCZOS)
+             dest=outdir/('step-'+n+'-approved.webp')
+             panel.save(dest,format='WEBP',quality=88,method=6)
+             print('saved',dest,panel.size,dest.stat().st_size)
+          PY
+      - name: Commit approved preview image assets
+        run: |
+          set -e
+          git config user.name "Panda Go Preview Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk2-preview-v449/*.webp
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: exact Panda Go HSK2 approved step 1 and 3 preview art"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
