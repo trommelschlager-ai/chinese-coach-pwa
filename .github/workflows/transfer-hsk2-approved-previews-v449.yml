@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Retrieve approved image and make two display-only panels
         env:
-          ART_SOURCE_URL: "https://media.canva.com/v2/image-resize/format:PNG/height:150/quality:100/uri:ifs%3A%2F%2FM%2Fa6ab20f0-4d03-48c2-87f5-b960ffa14549/watermark:F/width:200?csig=AAAAAAAAAAAAAAAAAAAAAJKhLXNxvN7G3ZICjXC4ZH_KY2YXUUyolzoQZtReJkdS&exp=1794979592&osig=AAAAAAAAAAAAAAAAAAAAAGiciGqRE7biZKfbwzFVocDatyO0kzUDj7p3o0_ycJbV&signer=media-rpc&token=AAIAAU0AJGE2YWIyMGYwLTRkMDMtNDhjMi04N2Y1LWI5NjBmZmExNDU0OQAAAAABoe0e90DK8Oce2mLE-qzY1_bDl7CuRN5ATiESd_JDrfaesRhm-A&x-canva-quality=thumbnail"
+          ART_SOURCE_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/9979a114-0910-46e0-9053-edaf2453c00d.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlYXNoIjoiMjE3NTg0MTY2YzJiZGNlNiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5NTA1NTI1NH0.CkF8XZREwaV5cSyHWt4MsxKNXHWkF67kNQa2CwQNSPY"
         run: |
           set -euo pipefail
           python -m pip install -q pillow
