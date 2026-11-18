@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6945aa">
+<title>Panda Go · Тренировка 你好</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#34254e;background:#faf6ff;color-scheme:light}
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% 0%,#e2d2ff,#faf6ff 67%)}
+main{max-width:600px;margin:0 auto;padding:15px 15px max(30px,env(safe-area-inset-bottom))}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top a{background:white;color:#6241a4;border:1px solid #e2d5f9;padding:10px 12px;text-decoration:none;border-radius:15px;font-weight:700;font-size:14px}
+.flag{border-radius:20px;background:#eee3ff;color:#5e368f;font-size:12px;padding:8px 12px;font-weight:750}
+h1{margin:20px 0 6px;font-size:clamp(25px,7vw,33px)}
+.subtitle{font-size:14px;line-height:1.5;color:#6c597f;margin:0 0 17px}
+.panel{background:white;border:1px solid #e8ddf8;border-radius:24px;padding:17px;margin:14px 0;box-shadow:0 10px 27px #6743a017}
+.hero{display:flex;align-items:center;gap:8px}
+.hero img{width:92px;height:116px;object-fit:contain;flex:none}
+.hero-copy{flex:1;text-align:center}
+.hanzi{font-size:clamp(51px,15vw,72px);font-weight:780;line-height:1.1;color:#482276;letter-spacing:3px}
+.pinyin{font-size:21px;font-weight:700;color:#7756af;margin-top:5px}
+.translation{font-size:14px;color:#79678d;margin-top:3px}
+.rule{padding:12px 13px;background:#f3ecff;border-left:4px solid #a77be6;border-radius:12px;margin-top:12px;color:#583f7c;font-size:14px;line-height:1.55}
+h2{font-size:18px;margin:0 0 12px}
+.stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stage{border:2px solid #e9ddf9;border-radius:16px;background:#fcf9ff;color:#47315f;cursor:pointer;padding:11px 5px;min-width:0;min-height:85px}
+.stage[aria-pressed=true]{border-color:#8558cf;background:#f0e7ff;box-shadow:inset 0 0 0 1px #c6a6f6}
+.stage b{display:block;font-size:30px;line-height:1.2}.stage span{font-size:13px;font-weight:800;white-space:nowrap}.stage small{display:block;font-size:11px;color:#79638c;margin-top:4px}
+button{font:inherit;touch-action:manipulation}
+button:focus-visible,a:focus-visible{outline:3px solid #ffb26b;outline-offset:2px}
+.step-hanzi{text-align:center;font-size:57px;font-weight:800;color:#543091;line-height:1.2}
+.step-pinyin{text-align:center;font-size:24px;color:#7d4aaf;font-weight:700}
+#tip{text-align:center;font-size:14px;color:#655373;line-height:1.5;min-height:46px;margin:9px 0}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.action{border:0;border-radius:16px;min-height:50px;padding:10px;background:#7149bd;color:#fff;font-size:14px;font-weight:750;cursor:pointer}
+.action.alt{background:#eee4ff;color:#503088}.action:disabled{opacity:.43;cursor:not-allowed}
+#level,#status{font-size:13px;color:#665079;line-height:1.5;margin:9px 0 0}
+#playback{width:100%;margin-top:12px}
+#playback[hidden]{display:none}
+svg{display:block;width:100%;height:auto;background:linear-gradient(#fbf9ff,#fff);border:1px solid #eee5fa;border-radius:15px;margin-top:9px}
+.gridline{stroke:#e5daf0;stroke-width:1;stroke-dasharray:4 5}
+.example{stroke:#baa6d6;stroke-width:4;fill:none;stroke-dasharray:8 7;stroke-linecap:round}
+.measured{stroke:#7551c5;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#feedback{font-size:14px;color:#503b6d;line-height:1.55;min-height:39px}
+.foot{font-size:12px;color:#725f84;line-height:1.65;margin:12px 4px}
+</style>
+</head>
+<body><main>
+<div class="top"><a href="./panda-tone-lab.html">← Тренажёр тонов</a><span class="flag">🐼 你好 · v463</span></div>
+<h1>Тренировка «Нихао»</h1>
+<p class="subtitle">Послушай Панду, произнеси каждый слог и затем всё приветствие.</p>
+<section class="panel">
+<div class="hero">
+<img src="./assets/panda-character-clean-v349.webp?v=349" alt="Панда">
+<div class="hero-copy"><div class="hanzi" lang="zh-Hans">你好</div><div class="pinyin">nǐ hǎo</div><div class="translation">Привет! · В речи: ní hǎo</div></div>
+</div>
+<div class="rule"><strong>Правило 3 + 3 → 2 + 3.</strong> Оба слога пишутся с третьим тоном, но первый перед вторым третьим произносится как второй: <strong>ní hǎo</strong>.</div>
+<button class="action" id="listen" type="button" style="width:100%;margin-top:12px">🔊 Послушать 你好 (голос Панды)</button>
+<p id="audio-status" role="status" style="font-size:12px;color:#6b567c;min-height:15px;margin:7px 0 0"></p>
+</section>
+<section class="panel">
+<h2>1. Выбери этап</h2>
+<div class="stages" role="group" aria-label="Этапы тренировки">
+<button class="stage" data-stage="0" aria-pressed="true" type="button"><b>你</b><span>ní ↗</span><small>первый слог</small></button>
+<button class="stage" data-stage="1" aria-pressed="false" type="button"><b>好</b><span>hǎo · 3-й</span><small>второй слог</small></button>
+<button class="stage" data-stage="2" aria-pressed="false" type="button"><b>你好</b><span>ní hǎo</span><small>вместе</small></button>
+</div>
+<div class="step-hanzi" id="step-hanzi" lang="zh-Hans">你</div>
+<div class="step-pinyin" id="step-pinyin">ní ↗</div>
+<p id="tip">В составе 你好 произнеси первый слог с плавным подъёмом. Отдельно 你 читается nǐ.</p>
+<div class="actions"><button class="action" id="record" type="button">🎙 Записать</button><button class="action alt" id="stop" type="button" disabled>■ Стоп</button></div>
+<p id="status" role="status" aria-live="polite">Микрофон включается только после нажатия. Запись завершится автоматически через 3 секунды.</p>
+<p id="level">Звук обрабатывается на устройстве.</p>
+<audio id="playback" controls hidden aria-label="Прослушать свою запись"></audio>
+</section>
+<section class="panel">
+<h2>2. Посмотри результат</h2>
+<p id="feedback" aria-live="polite">Нажми «Записать» и произнеси выбранный слог.</p>
+<svg viewBox="0 0 620 230" role="img" aria-label="Учебная схема и измеренный контур высоты голоса">
+<path class="gridline" d="M28 55H590 M28 111H590 M28 169H590"/>
+<path class="example" id="reference" d="M42 178 Q280 159 581 48"/>
+<path class="measured" id="measured" d=""/>
+<text x="30" y="25" font-size="16" fill="#837398">Выше ↑</text><text x="30" y="217" font-size="16" fill="#837398">Ниже ↓</text>
+</svg>
+<p class="foot">Пунктир — упрощённая учебная схема. Сплошная линия — измерение твоего голоса. Для двухсложного 你好 приложение не разделяет тоны автоматически и не выставляет оценок.</p>
+<button class="action alt" type="button" id="copy-data" style="width:100%;font-size:13px" disabled>📋 Скопировать данные измерений (без звука)</button>
+</section>
+<p class="foot">Это отдельная учебная страница. Основная Panda AI и 42 MP3 не меняются. Ваша запись остаётся только в браузере и не отправляется на сервер.</p>
+</main>
+<script type="module" src="./assets/panda-nihao-practice-v463.mjs?v=463"></script>
+</body>
+</html>
