@@ -90,16 +90,19 @@ const vm=require('node:vm');
  for(const id of ['mode-short','mode-nonstop','mic','history-dialog','speech-dialog'])
   assert(page.includes('id="'+id+'"'),'Existing control deleted: '+id);
  const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
+ const activeScreen=page.match(/\.\/assets\/panda-live-screen-v270\.mjs\?v=\d+/)?.[0];
+ assert(activeScreen,'Current Panda live-screen script must be declared in HTML');
+ const activeScreenVersion=activeScreen.split('v=')[1];
  for(const p of [
   './assets/panda-hsk2-bridge-v304.mjs?v=307',
   './assets/panda-live-dialogue-v272.mjs?v=434',
-  './assets/panda-live-screen-v270.mjs?v=447',
+  activeScreen,
   './assets/panda-hsk1-questions-v281.mjs?v=319',
   './panda-voice-pilot.html?v=326'
  ])assert(offline.files.includes(p),'Offline material missing: '+p);
  const latest={
   'panda-voice-pilot.html':'326',
-  'assets/panda-live-screen-v270.mjs':'447',
+  'assets/panda-live-screen-v270.mjs':activeScreenVersion,
   'assets/panda-live-dialogue-v272.mjs':'434',
   'assets/panda-hsk1-questions-v281.mjs':'319'
  };
