@@ -19,6 +19,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install locked browser DOM test dependencies
+        run: npm ci --no-audit --no-fund
       - name: Exercise existing Panda Android voice + conversation scenarios
         run: |
           node scripts/verify-panda-hsk2-bridge-v304.cjs
