@@ -1,5 +1,5 @@
-/* Panda Tone Lab v457: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
-import {estimatePitch,analyseContour} from './panda-tone-analytics-v457.mjs?v=457';
+/* Panda Tone Lab v458: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
+import {estimatePitch,analyseContour} from './panda-tone-analytics-v457.mjs?v=458';
 const $=id=>document.getElementById(id);
 const choices=[...document.querySelectorAll('[data-tone]')];
 let tone=2,stream=null,context=null,source=null,analyser=null,clock=null,deadline=null,active=false,opening=false,frames=[];
@@ -7,7 +7,7 @@ const template2='M45 175 Q220 152 605 48',template3='M45 90 Q282 207 605 112';
 function choose(n){
  if(active||opening)return;
  tone=n;for(const b of choices)b.setAttribute('aria-pressed',String(Number(b.dataset.tone)===n));
- $('prompt').textContent=n===2?'Скажи «yú» одним слогом. Не произноси перевод или длинное предложение.':'Скажи «yǔ» одним слогом. Для отдельного 3-го тона попробуй опустить и затем поднять голос.';
+ $('prompt').textContent=n===2?'Скажи «yú» одним слогом, протянув голос около 0,7–1,2 с.':'Скажи «yǔ» около 0,7–1,2 с: для отдельного 3-го тона попробуй опустить, затем поднять голос.';
  $('ref-path').setAttribute('d',n===2?template2:template3);
  $('your-path').setAttribute('d','');
  $('result').replaceChildren();
@@ -30,12 +30,19 @@ function show(result){
  $('result').replaceChildren();
  const title=document.createElement('div'),info=document.createElement('div');
  title.className='result-title';title.textContent=result.label;
- info.className='result-text';info.textContent=result.reason;
+ info.className='result-text';
+ let guidance=result.reason;
+ if(result.kind==='rise'&&tone===3){
+  guidance='Ты выбрал 3-й тон, а кривая пока только повышается. Повтори yǔ чуть протяжнее: сначала опусти, затем подними голос. Это подсказка, не доказательство ошибки.';
+ }else if(result.kind==='dip'&&tone===2){
+  guidance='Ты выбрал 2-й тон, но кривая показывает снижение и подъём. Попробуй yú плавно повышающимся голосом. Это не автоматическая оценка тона.';
+ }
+ info.textContent=guidance;
  $('result').append(title,info);
  const s=result.stats;
  if(s){
   const p=document.createElement('p');p.className='note';
-  p.textContent='Запись: '+s.duration+' с · чистых отсчётов: '+s.voicedFrames+' · изменение: '+(s.startToEndSt>0?'+':'')+s.startToEndSt+' полутонов.';
+  p.textContent='Голосовой фрагмент: '+s.duration+' с · чистых отсчётов: '+s.voicedFrames+(Number.isFinite(s.startToEndSt)?' · изменение: '+(s.startToEndSt>0?'+':'')+s.startToEndSt+' полутонов.':'. Данных пока мало.');
   $('result').append(p);
  }
 }
