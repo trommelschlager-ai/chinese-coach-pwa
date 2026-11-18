@@ -211,6 +211,7 @@ body:not(.pg-other) .bottom{z-index:30}
 @media(max-height:730px){.pg451-title{font-size:17px;margin:0 0 5px}.pg451-vrow{min-height:58px;padding:4px 6px}.pg451-vrow .pg451-illustration{height:38px}.pg451-testlist button{min-height:51px;padding:6px}.pg451-rule{padding:7px}.pg451-ordergrid .pg451-illus{font-size:25px}}
 
 </style>
+<link rel="stylesheet" href="./assets/hsk2-preview-illustrated-v457.css?v=457">
 </head>
 <body>
 <div class="page">
@@ -329,21 +330,33 @@ body:not(.pg-other) .bottom{z-index:30}
   if(n===1)return intro();
   return testHome();
  }
+
  function intro(){
+  const blocks=[['📚','6 слов'],['🎯','5 мини-тестов'],['🧩','грамматика'],['🗓️','распорядок'],['🎙️','произношение'],['💬','диалог']];
   return '<section class="pg451-sakura">'+
-   '<div class="pg451-hero"><img alt="Панда читает книгу" src="./assets/hsk2-storyboard-v433-avatar.jpg"><div><strong lang="zh-Hans">我的一天</strong><span class="pg-py">Wǒ de yì tiān</span><strong style="font-size:17px">Мой день</strong><p>Привет! Научимся рассказывать о своём дне по-китайски.</p></div></div>'+
-   '<section class="pg451-learn"><h3>📚 На этом уроке ты научишься</h3><p>Говорить, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</p></section>'+
-   '<div class="pg451-title" style="font-size:17px;margin:10px 0 7px"><span>✨ Тебя ждут ✨</span></div>'+
-   '<div class="pg451-features"><div><em>📚</em>6 слов</div><div><em>🎯</em>5 мини-тестов</div><div><em>🧩</em>грамматика</div><div><em>🗓️</em>распорядок</div><div><em>🎙️</em>произношение</div><div><em>💬</em>диалог</div></div></section>';
+  '<div class="pg457-hero"><div class="pg457-label"><b lang="zh-Hans">我的一天</b><span class="pg-py">Wǒ de yì tiān</span><span class="pg-ru">Мой день</span></div></div>'+
+  '<div class="pg457-ribbon">🌸 На этом уроке ты научишься</div>'+
+  '<p class="pg457-desc">Рассказывать, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</p>'+
+  '<div class="pg457-ribbon">✨ Тебя ждут ✨</div>'+
+  '<div class="pg457-features">'+blocks.map(x=>'<div><em>'+x[0]+'</em>'+x[1]+'</div>').join('')+'</div></section>';
+ }
+ function pandaImg(i){
+  const asset=[1,2,3,5,6,1][i]||1;
+  return './assets/hsk2-preview-v456/word-'+asset+'.webp';
  }
  function wordStep(){
-  return '<section class="pg451-sakura"><div class="pg451-title"><span>🌸 Новые слова</span></div>'+
-   '<div class="pg451-vlist">'+vocab.map(w=>'<div class="pg451-vrow"><span class="pg451-illustration">'+w.em+'</span><div>'+info(w)+'</div>'+listen(w.zh)+'</div>').join('')+'</div></section>';
+  return '<section class="pg451-sakura"><div class="pg457-title">🌸 Новые слова</div>'+
+  '<div class="pg457-vlist">'+vocab.map((w,i)=>'<div class="pg457-vrow"><img src="'+pandaImg(i)+'" alt="Панда: '+escape(w.ru)+'"><div>'+info(w)+'</div>'+listen(w.zh)+'</div>').join('')+'</div></section>';
  }
  function testHome(){
-  const tests=[['📖','Значение слова','Выбери правильный перевод'],['🔊','На слух','Послушай и выбери'],['🧩','Собери слово','Расставь иероглифы'],['📝','Заполни фразу','Выбери подходящее слово'],['🎙','Вспомни слово','Закрепи правильный ответ']];
-  return '<section class="pg451-sakura"><div class="pg451-hero"><img alt="Весёлая Панда" src="./assets/hsk2-storyboard-v433-avatar.jpg"><div><strong style="font-size:19px">Проверь слова!</strong><p>5 интерактивных тестов по 6 словам. Всего 30 заданий.</p></div></div>'+
-    '<div class="pg451-testlist">'+tests.map((t,i)=>'<button type="button" data-start-test="'+([0,2,3,4,1][i])+'"><span class="pg451-num">'+(i+1)+'</span><span class="pg451-ico">'+t[0]+'</span><span><strong>Тест '+(i+1)+' · '+t[1]+'</strong><small>'+t[2]+'</small></span><span style="font-size:22px;color:#a42aba">›</span></button>').join('')+'</div></section>';
+  const tests=[['📖','Значение слова','Выбери перевод',0],
+    ['🔊','На слух','Послушай и выбери',2],
+    ['🧩','Собери слово','Расставь иероглифы',3],
+    ['📝','Вспомни слово','Найди слово по памяти',4],
+    ['🖼️','Найди картинку','Найди изображение действия',1]];
+  return '<section class="pg451-sakura">'+
+  '<div class="pg457-testhero"><img src="./assets/hsk2-storyboard-v433-avatar.jpg" alt="Панда"><div><b>Проверь слова!</b><p>5 мини-тестов по 6 слов. Всего 30 заданий!</p></div></div>'+
+  '<div class="pg457-testlist">'+tests.map((x,i)=>'<button type="button" data-start-test="'+x[3]+'"><span class="pg451-num">'+(i+1)+'</span><span class="pg457-testsymbol">'+x[0]+'</span><span><strong>Тест '+(i+1)+' · '+x[1]+'</strong><small>'+x[2]+'</small></span><span style="font-size:21px">›</span></button>').join('')+'</div></section>';
  }
  function quizHeader(){
   return '<section class="pg-panel">'+caption('Шаг 3 · 5 видов проверки')+'<img class="pg-quiz-decoration" src="./assets/hsk2-storyboard-v433-avatar.jpg" alt="Панда"><h1>Закрепим слова!</h1><p>Каждый из 5 мини-тестов проверяет все 6 слов. Всего 30 упражнений.</p>'+
@@ -381,22 +394,23 @@ body:not(.pg-other) .bottom{z-index:30}
   return out+'</section>';
  }
 
+
  function gramStep(){
-  return '<section class="pg451-sakura"><div class="pg451-title">📚 Грамматика</div>'+
-   '<div class="pg451-rule"><h3 lang="zh-Hans">每天</h3><p>měitiān — каждый день</p><span class="pg-cn" lang="zh-Hans">我每天七点起床。</span><span class="pg-py">Wǒ měitiān qī diǎn qǐchuáng.</span><span class="pg-ru">Я каждый день встаю в семь часов.</span></div>'+
-   '<div class="pg451-rule"><h3 lang="zh-Hans">以后</h3><p>yǐhòu — после того как…</p><span class="pg-cn" lang="zh-Hans">我起床以后洗脸。</span><span class="pg-py">Wǒ qǐchuáng yǐhòu xǐliǎn.</span><span class="pg-ru">После того как встаю, я умываюсь.</span></div>'+
-   '<div class="pg451-rule" style="margin-bottom:0"><h3 style="font-size:16px;color:#682080">🧩 Проверь себя</h3><p>«Я каждый день чищу зубы»</p>'+
-   '<div class="pg-grid" style="gap:6px"><button class="pg-choice" data-grammar="ok" style="min-height:42px;padding:6px">我每天刷牙。</button><button class="pg-choice" data-grammar="no" style="min-height:42px;padding:6px">我刷牙每天。</button></div>'+
-   '<div class="pg-feedback" id="pg-grammar-result" role="status" style="padding:6px;font-size:11px;margin-top:5px">Выбери правильный вариант.</div></div></section>';
+  return '<section class="pg451-sakura"><div class="pg457-title">📚 Грамматика</div><div class="pg457-rule">'+
+  '<div class="pg457-rulecard"><h3 lang="zh-Hans">每天</h3><p>měitiān — каждый день</p><span class="pg-cn">我每天七点起床。</span><span class="pg-py">Wǒ měitiān qī diǎn qǐchuáng.</span><span class="pg-ru">Я каждый день встаю в 7 часов.</span>'+listen('我每天七点起床')+'</div>'+
+  '<div class="pg457-rulecard"><h3 lang="zh-Hans">以后</h3><p>yǐhòu — после того как…</p><span class="pg-cn">我起床以后洗脸。</span><span class="pg-py">Wǒ qǐchuáng yǐhòu xǐliǎn.</span><span class="pg-ru">После подъёма я умываюсь.</span>'+listen('我起床以后洗脸')+'</div>'+
+  '<div class="pg457-rulecard"><h3 style="font-size:17px;color:#78238a">🧩 Проверь себя</h3><p>Как сказать: «Я каждый день чищу зубы»?</p><div class="pg-grid"><button class="pg-choice" data-grammar="ok">我每天刷牙。</button><button class="pg-choice" data-grammar="no">我刷牙每天。</button></div><div class="pg-feedback" id="pg-grammar-result" role="status" style="margin:0;padding:5px">Выбери ответ.</div></div>'+
+  '</div></section>';
  }
  function practiceStep(){
   const names=dayOrder.map(i=>vocab[i].zh);
-  return '<section class="pg451-sakura"><div class="pg451-title">🎯 Мой распорядок</div>'+
-  '<p style="font-size:12px;text-align:center;color:#682080;margin:2px 0 9px">Расставь действия Панды по порядку.</p>'+
-  '<div class="pg451-ordergrid">'+mixedOrder.map(i=>'<button data-order="'+i+'" '+(dayOrder.includes(i)?'disabled':'')+'><span class="pg451-illus">'+vocab[i].em+'</span><strong>'+vocab[i].zh+'</strong><small>'+vocab[i].py+'</small></button>').join('')+'</div>'+
-  '<div class="pg451-answer" style="margin-top:8px"><b>Твой порядок:</b><br>'+(names.length?names.join(' → '):'Выбери первое действие')+'</div>'+
-  '<div style="display:flex;gap:5px;justify-content:space-between;flex-wrap:wrap;margin-top:7px"><button class="pg-action secondary" style="font-size:11px;padding:7px" data-order-back>↶ Отменить</button><button class="pg-action secondary" style="font-size:11px;padding:7px" data-order-reset>Сброс</button><button class="pg-action" style="font-size:11px;padding:7px" data-order-check>✓ Проверить</button></div>'+
-  '<div class="pg-feedback'+(dayChecked?' good':'')+'" style="font-size:11px;margin-top:6px" role="status">'+(dayChecked?'✓ Верная последовательность!':'От подъёма до сна — выбери все шесть.')+'</div></section>';
+  return '<section class="pg451-sakura"><div class="pg457-title">🎯 Мой распорядок</div>'+
+  '<p class="pg457-desc">Расставь действия Панды по порядку.</p>'+
+  '<div class="pg457-ordergrid">'+mixedOrder.map(i=>'<button data-order="'+i+'" '+(dayOrder.includes(i)?'disabled':'')+'><img src="'+pandaImg(i)+'" alt="'+escape(vocab[i].ru)+'"><strong>'+vocab[i].zh+'</strong><small>'+vocab[i].py+'</small></button>').join('')+'</div>'+
+  '<div class="pg457-answer"><b>Твой порядок:</b> '+(names.length?names.join(' → '):'Выбери первое действие')+'</div>'+
+  '<div class="pg457-actions"><button class="pg-action secondary" data-order-back>↶ Отменить</button><button class="pg-action secondary" data-order-reset>Заново</button><button class="pg-action" data-order-check>✓ Проверить</button></div>'+
+  '<div class="pg-feedback'+(dayChecked?' good':'')+'" style="font-size:11px;margin:0;padding:7px" role="status">'+(dayChecked?'✓ Верно!':'От подъёма до сна — все шесть действий.')+'</div>'+
+  '</section>';
  }
  const conversations=[
   {q:'你每天几点起床？',py:'Nǐ měitiān jǐ diǎn qǐchuáng?',ru:'Во сколько ты каждый день встаёшь?',answers:[['我每天七点起床。','Я встаю в 7 часов.'],['我每天八点起床。','Я встаю в 8 часов.']]},
@@ -430,6 +444,7 @@ body:not(.pg-other) .bottom{z-index:30}
   document.body.classList.remove('pg-poster-mode');
   document.body.classList.toggle('pg-quiz-detail',step===3&&q.started);
   document.body.classList.toggle('pg451-compact',step===3);
+   document.body.dataset.step=String(step);
   title.textContent='Урок 1 «Мой день» · Шаг '+step+' — '+headings[step-1];
   nav.setAttribute('aria-label','Шаг '+step+' из 8');
   navButtons.forEach((b,i)=>{b.classList.toggle('active',i+1===step);b.setAttribute('aria-current',i+1===step?'step':'false')});
