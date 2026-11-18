@@ -2,343 +2,823 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#9a24bb">
-<title>Panda Go · HSK 2 · Урок 1 «Мой день» · Approved preview</title>
-<meta name="description" content="Изолированный интерактивный предпросмотр восьми шагов урока «Мой день». Основной курс не изменяется.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#9e2cc9">
+<title>Panda Go · HSK 2 · Мой день</title>
 <style>
-:root{--deep:#4a0c6c;--purple:#9f21c5;--bright:#d44ade;--rose:#e347ac;--gold:#f5cf80;--light:#fff5fb;--border:#ecc0ea;--green:#18ad5d;--ink:#3b1357;--muted:#75537f;--shadow:0 4px 0 #a54fba,0 8px 18px #80279548}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0}body{background:#e3b0f2;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans SC","Microsoft YaHei",sans-serif}
-button{font:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-button:active{transform:translateY(2px)!important;filter:saturate(1.15) brightness(.97);box-shadow:0 1px 0 #7e1d9d!important}
-button:focus-visible{outline:3px solid #df4aab;outline-offset:2px}
-button:disabled{opacity:.53;cursor:default}
-.app{margin:auto;max-width:485px;height:100dvh;min-height:450px;position:relative;display:flex;flex-direction:column;overflow:hidden;background:#fbe0f9 url("./assets/hsk2-approved-scenery-v464.svg") center / cover no-repeat;box-shadow:0 0 25px #49205e88;border-left:2px solid #e8acf1;border-right:2px solid #e8acf1}
-.app:before,.app:after{position:absolute;z-index:0;pointer-events:none;content:"";height:180px;width:140px;opacity:.28;background:radial-gradient(circle at 30% 30%,#fffcff 0 8px,#ffabd9 9px 12px,transparent 13px),radial-gradient(circle at 80% 60%,#fff 0 8px,#ffb7d9 9px 11px,transparent 12px);background-size:65px 85px}
-.app:before{top:80px;left:-45px}.app:after{bottom:20px;right:-50px}
-header{z-index:3;flex:none;position:relative;background:linear-gradient(155deg,#b33cdb 0%,#9222c1 35%,#66108d 95%);padding:10px 12px 13px;border-radius:0 0 22px 22px;border-bottom:3px solid #ffdf9c;box-shadow:0 5px 10px #802f8a69;color:#fff}
-.head-line{display:flex;align-items:center;gap:9px}
-.back{width:39px;height:39px;border:2px solid #fbd6ff;background:linear-gradient(#d659fa,#8724bd);border-radius:100%;font-size:29px;font-weight:850;color:white;line-height:28px;flex:none;box-shadow:0 3px 0 #501077,0 4px 7px #3f095d}
-.header-label{flex:1;min-width:0;font-size:clamp(14px,4vw,19px);font-weight:900;text-align:center;white-space:nowrap;text-shadow:0 2px 2px #310b5a;line-height:1.2}
-.mini-logo{width:37px;height:37px;border:2px solid #ffedff;border-radius:11px;object-fit:cover;box-shadow:0 2px 5px #460a65}
-.progress-steps{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px;margin:13px 3px 0;padding:7px 6px;border-radius:40px;background:linear-gradient(#fff7ff,#efbef5);border:2px solid #fbdcfd;box-shadow:inset 0 1px 5px #982cbb5c,0 3px 5px #621d815b}
-.nav-step{border:2px solid #d78bdf;border-bottom:3px solid #bd5bcf;width:100%;max-width:34px;aspect-ratio:1;justify-self:center;border-radius:100%;font-size:14px;font-weight:950;color:#70148d;background:linear-gradient(#fff5ff,#e6a6f0);box-shadow:0 2px 2px #8e45994a;padding:0}
-.nav-step.active{background:linear-gradient(135deg,#c858f5,#a218d6);border:2px solid #ffe583;outline:2px solid #6f168f;color:#fff;box-shadow:0 0 0 3px #fff5c5,0 4px 8px #9a119f;font-size:15px}
-.nav-step.done{background:linear-gradient(#f4dcff,#e9b6ee);border-color:#f3b859}
-.workspace{z-index:1;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:13px 12px 20px;scrollbar-width:thin}
-.workspace::-webkit-scrollbar{width:4px}.workspace::-webkit-scrollbar-thumb{border-radius:4px;background:#d892dc}
-.footer{z-index:3;flex:none;padding:11px 15px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(#ffe5f8e8,#f4bcf0);border-top:2px solid #f5c87d;box-shadow:0 -3px 15px #9e54b742}
-.primary{border:2px solid #fbe0ac;border-bottom:5px solid #62107f;border-radius:30px;background:linear-gradient(#ef8af7 0%,#cc39e0 25%,#9d1ac3 70%,#7910a6);color:#fff;text-shadow:0 2px 2px #590c70;box-shadow:inset 0 2px 3px #fff9,0 4px 7px #64177b61;font-weight:900}
-.footer .primary{width:100%;min-height:49px;padding:10px 12px;font-size:clamp(15px,4.6vw,19px)}
-.footer-note{color:#864b85;font-size:10px;font-weight:700;text-align:center;margin:6px 0 0}
-.section-title{font-size:clamp(21px,6vw,27px);text-align:center;color:#5f1284;text-shadow:0 1px #fff;margin:4px 0 11px;font-weight:950;letter-spacing:-.5px}
-.pill-title{max-width:max-content;margin:4px auto 13px;padding:7px 22px;border:2px solid #f5d289;background:#fff9fbea;color:#66118a;box-shadow:0 2px 6px #8a3c9c40;border-radius:30px;font-weight:950;text-align:center;font-size:20px}
-.stage{position:relative;min-height:100%;padding-bottom:7px}
-.glass{background:linear-gradient(125deg,#fffcffed,#ffeffbeb);border:2px solid #f9d0ed;border-bottom:4px solid #daa0e0;border-radius:23px;box-shadow:0 5px 13px #9d449d4a;padding:12px}
-.hero-intro{position:relative;border:3px solid #ffedf9;outline:2px solid #eec577;background:linear-gradient(115deg,#e9a6f0,#f4cafa);height:clamp(204px,32dvh,295px);border-radius:29px;box-shadow:0 8px 16px #8e43a550;overflow:hidden}
-.hero-intro img{display:block;position:absolute;left:-10px;bottom:-4px;width:58%;height:100%;object-fit:cover;object-position:42% 50%;border-radius:22px}
-.hero-cloud{position:absolute;right:3%;top:19%;width:58%;min-height:123px;background:linear-gradient(#fffcf1,#fff0fc);border:2px solid #ebbc6b;outline:3px solid #fffdf2;border-radius:55px 45px 48px 44px;box-shadow:0 4px 8px #a563aa80;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:12px 7px;text-align:center}
-.hero-cloud .cn{font-size:clamp(28px,8vw,42px);color:#7c1698}
-.hero-cloud .py{font-size:15px}.hero-cloud .ru{font-size:22px;font-weight:950;color:#632086}
-.sparkle{background:linear-gradient(#cc45e6,#851ba8);color:white;border:2px solid #f9e7ad;border-radius:40px;padding:7px 16px;font-weight:900;text-align:center;max-width:250px;margin:-9px auto 8px;position:relative;z-index:1;box-shadow:0 3px 7px #9e409f4d}
-.feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
-.feature{display:flex;flex-direction:column;gap:5px;align-items:center;justify-content:center;text-align:center;min-height:78px;padding:7px 2px;font-size:12px;font-weight:850}
-.feature:not(:nth-child(3n)){border-right:1px solid #ddb4d8}.feature:nth-child(-n+3){border-bottom:1px dashed #d9a2cc}.feature .icon-illustration{font-size:25px}
-.feature-frame{padding:14px 8px 8px;margin-top:15px;border:2px solid #f8ce8b}
-.helper{font-size:12px;line-height:1.5;color:#7e4c87;text-align:center;margin:4px 0 10px}
-.word-list,.test-list,.tone-rows,.phrase-list{display:grid;gap:9px}
-.word-row{display:grid;grid-template-columns:clamp(76px,24vw,100px) minmax(0,1fr) 43px;gap:8px;align-items:center;padding:5px 7px 5px 6px;min-height:78px;background:linear-gradient(100deg,#fffaf9,#fff0fd);border:2px solid #f4cf94;border-radius:23px;box-shadow:0 4px 8px #9e449e57}
-.word-row img{width:100%;height:68px;object-fit:cover;border-radius:15px;border:1px solid #e2bbeb;box-shadow:0 1px 4px #974ea64d}
-.cn{display:block;font-size:clamp(21px,6vw,27px);font-weight:900;line-height:1.12;letter-spacing:.1px;color:#361248}
-.py{display:block;font-size:clamp(12px,3.45vw,15px);color:#672282;font-weight:800;line-height:1.2;margin-top:3px}
-.ru{display:block;font-size:clamp(11px,3vw,13px);color:#492c59;font-weight:690;line-height:1.25;margin-top:3px}
-.round{width:42px;height:42px;display:grid;place-items:center;line-height:1;border-radius:100%;color:white;font-size:21px;border:2px solid #eec2fd;border-bottom:4px solid #5b0e85;box-shadow:0 3px 6px #7c1c9066;background:linear-gradient(#f6b3ff,#b234d2 50%,#8221b0)}
-.round.mic{background:linear-gradient(#97ffa7,#2bd760 50%,#0b9842);border-bottom-color:#096c31}
-.round.recognized{background:linear-gradient(#afffc9,#29be6c)}
-.hero-test{display:grid;grid-template-columns:42% 1fr;gap:9px;align-items:center;margin-bottom:12px;padding:0;overflow:hidden}
-.hero-test img{width:100%;height:147px;object-fit:cover;object-position:center}
-.hero-test h2{margin:0 8px 6px 0;font-size:21px;line-height:1.14;color:#40115f}
-.hero-test p{font-size:12px;margin:0 8px 0 0;color:#6a3a75;line-height:1.4}
-.test-card{min-height:76px;width:100%;display:grid;grid-template-columns:34px 58px 1fr 26px;gap:6px;align-items:center;padding:8px 9px;background:linear-gradient(#fffaff,#ffeefb);border:2px solid #f2c5e6;border-bottom:4px solid #c785d1;border-radius:24px;box-shadow:0 3px 8px #983da15c;color:#321145;text-align:left}
-.test-card .circle{height:34px;width:34px;display:grid;place-items:center;color:#fff;background:linear-gradient(#e785f9,#9e1acb);border:2px solid #e9b6fd;border-radius:100%;font-size:18px;font-weight:900;box-shadow:0 2px 3px #6d1788}
-.test-card .test-icon{font-size:33px;text-align:center;display:grid;place-items:center;background:#f8d4fa;border-radius:15px;min-height:53px}
-.test-card strong{font-size:clamp(13px,3.6vw,17px);display:block;line-height:1.24}
-.test-card small{font-size:11px;display:block;line-height:1.2;color:#65476e;margin-top:3px}
-.arrow{color:#9c24bd;font-size:26px;font-weight:900}
-.test-card.complete .arrow{color:#12994d}
-.quiz-prompt{margin:7px 0 12px;text-align:center;font-size:17px;color:#5d206c;font-weight:850}
-.quiz-word{font-size:35px;font-weight:950;text-align:center;color:#4e115e;margin:6px 0 4px}
-.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:11px 0}
-.choice{min-height:66px;overflow-wrap:anywhere;border:2px solid #edc48d;border-bottom:4px solid #b879c9;background:linear-gradient(#fffaff,#f8defb);border-radius:20px;color:#46145d;font-size:clamp(13px,3.8vw,17px);padding:10px 7px;font-weight:850;box-shadow:0 3px 6px #ab70b64b}
-.choice.selected{background:linear-gradient(#e1fff0,#b9f6d6);border-color:#51c889;color:#195d3e}
-.progressbar{height:15px;position:relative;background:#e9cbec;border:1px solid #cca1cd;border-radius:99px;overflow:hidden;box-shadow:inset 0 2px 5px #974c9c52}
-.progressbar>div{height:100%;background:linear-gradient(#8af97e,#29c954);border-radius:99px;transition:width .3s}
-.controls{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:11px 0 3px}
-.soft{border:2px solid #f2d1a6;border-bottom:3px solid #a55fc0;border-radius:19px;padding:9px 14px;background:linear-gradient(#fffaff,#efcef6);font-size:13px;font-weight:850;color:#65237d;box-shadow:0 2px 4px #9b52a04a}
-.inline-primary{font-size:14px;padding:9px 17px}
-.feedback{background:#fff2dd;border:1px solid #edca98;color:#8c5316;padding:9px 11px;border-radius:14px;line-height:1.4;font-size:12px;min-height:35px;margin-top:10px}
-.feedback.ok{background:#e1fff1;border-color:#64c991;color:#145b3a}
-.feedback.neutral{background:#f5e7fc;color:#754787;border-color:#dfb5e7}
-.tokens,.answer-box{display:flex;gap:7px;flex-wrap:wrap;min-height:52px;justify-content:center;align-items:center;margin:11px 0}
-.token{min-width:43px;min-height:40px;font-size:20px;border-radius:17px;background:linear-gradient(#fffcff,#f3d8f6);border:2px solid #e3b1e7;color:#481163;font-weight:900;padding:6px 10px;box-shadow:0 3px 4px #a057ad4a}
-.answer-box{background:#fff8fd;border:2px dashed #c078d3;padding:9px;border-radius:15px;color:#671a7d;font-size:20px;line-height:1.5}
-.rule{padding:16px 14px;text-align:center;background:linear-gradient(#fff9ef,#ffe6f6);border:2px solid #f3cb8d;border-radius:39px;box-shadow:0 4px 10px #a753a357;margin-bottom:11px}
-.rule .cn{font-size:45px;color:#d1394a}.rule .py{font-size:16px;color:#59156e}.rule p{font-size:13px;margin:8px 0 0;line-height:1.4}
-.example{display:grid;grid-template-columns:90px minmax(0,1fr);gap:10px;align-items:center;margin-bottom:12px}
-.example img{width:100%;height:94px;object-fit:cover;border-radius:16px}
-.example .cn{font-size:20px}
-.practice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:10px 0}
-.day-card{padding:5px 4px 10px;min-width:0;background:linear-gradient(#fffaff,#ffe6f7);border:2px solid #efc897;border-bottom:4px solid #b56cca;border-radius:20px;box-shadow:0 3px 7px #8b3a965c}
-.day-card img{width:100%;height:clamp(68px,14dvh,115px);object-fit:cover;border-radius:13px}
-.day-card .cn{font-size:clamp(16px,4.3vw,20px);margin-top:4px}
-.day-card .py{font-size:11px;overflow-wrap:anywhere}
-.day-card.selected{background:#e3fff1;border-color:#40bf78}
-.day-card:disabled{opacity:.67}
-.day-card .position{display:inline-grid;place-items:center;width:23px;height:23px;background:#a520c8;color:#fff;border-radius:100%;position:relative;margin-top:-13px;font-weight:850}
-.tone-hero{display:grid;grid-template-columns:37% minmax(0,1fr);align-items:center;overflow:hidden;padding:0;margin-bottom:9px}
-.tone-hero img{width:100%;height:130px;object-fit:cover}
-.tone-hero h2{font-size:21px;line-height:1.15;margin:0 4px 7px}
-.tone-hero p{font-size:12px;margin:0 4px 0}
-.tone-row{display:grid;grid-template-columns:64px minmax(0,1fr) 40px 45px;gap:7px;align-items:center;background:#fff8ff;border:2px solid #eed0e7;border-radius:18px;min-height:75px;padding:5px 6px;box-shadow:0 3px 5px #af66b24c}
-.tone-row img{height:62px;width:64px;object-fit:cover;border-radius:11px}
-.tone-row .cn{font-size:22px}.tone-row .py{font-size:12px}
-.tonemarks{font-weight:850;display:flex;gap:4px;margin-top:4px}
-.tonemark{display:grid;place-items:center;border-radius:50%;width:20px;height:20px;color:#fff;background:#8b1db2;font-size:12px}
-.tonemark.sandhi{background:#d62a82}
-.tone-curve{font-size:13px;color:#b130a0;letter-spacing:1px;margin-top:2px}
-.tones-tip{padding:0;overflow:hidden;margin:13px 0}
-.tones-tip h3{font-size:17px;padding:10px 5px;text-align:center;background:linear-gradient(#d548e9,#8812b5);color:#fff;margin:0;text-shadow:0 1px 2px #540d6a}
-.four-tones{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:8px 3px}
-.four-tones div{text-align:center;padding:6px 2px;border-right:1px solid #e8b5e9}
-.four-tones div:last-child{border:0}
-.four-tones b{font-size:12px}.four-tones strong{font-size:30px;color:#bd235a;display:block;margin:4px auto}.four-tones small{font-size:10px;display:block;line-height:1.2}
-.prize{display:flex;align-items:center;gap:10px}.prize .medal{font-size:40px}
-.phrase{display:grid;grid-template-columns:minmax(0,1fr) 42px;align-items:center;gap:8px;margin-bottom:8px}
-.phrase .cn{font-size:19px}.phrase .py{font-size:13px}
-.chat{padding:10px 12px;border:2px solid #e6b5eb;border-radius:20px 20px 20px 4px;background:#fff8ff;margin:9px 19% 9px 0;box-shadow:0 2px 7px #a765a53d}
-.chat.me{background:#e9fff2;border-color:#a0dfb1;border-radius:20px 20px 4px 20px;margin:9px 0 9px 19%}
-.chat b{display:block;color:#a41ca8;font-size:12px;margin-bottom:4px}
-.chat .cn{font-size:18px}
-.trophy{text-align:center;font-size:72px;line-height:1.2;margin:12px 0}
-.stats{display:grid;gap:8px;margin:14px 0}
-.stat{display:flex;justify-content:space-between;gap:8px;font-size:14px;font-weight:800;padding:11px 10px;border:1px solid #f2c8df;background:#fff9fd;border-radius:15px}
-.stat span{color:#6c1a83}
-.hero-finish{display:flex;align-items:center;gap:5px;padding:5px 10px;background:linear-gradient(#ffebfa,#fffbef)}
-.hero-finish img{width:45%;height:125px;object-fit:cover;border-radius:20px}
-.hero-finish h2{font-size:21px;margin:4px;color:#72208b}
-@media(max-width:370px){.app{border:0}.workspace{padding:10px 8px 16px}header{padding:8px 9px 10px}.header-label{font-size:14px}.mini-logo{width:32px;height:32px}.back{width:33px;height:33px;font-size:25px}.word-row{grid-template-columns:69px minmax(0,1fr) 40px;gap:6px}.word-row img{height:63px}.tone-row{grid-template-columns:55px minmax(0,1fr) 37px 39px;gap:4px}.tone-row img{width:55px}.tone-row .cn{font-size:19px}.round{width:38px;height:38px}.hero-cloud{right:2%;width:59%}.test-card{grid-template-columns:30px 46px 1fr 16px}.test-card .test-icon{font-size:27px}.example{grid-template-columns:74px 1fr}}
-@media(min-width:520px){body{padding:0 5px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
-
-/* approved-visual-alignment-v2 */
-/* Faithful mobile scale: compact illustrated scenes, not full-height flat cards. */
-:root{--deep:#571578;--purple:#8e1ab5;--bright:#c847e5;--rose:#dd2a98;--gold:#f3cb82;--ink:#421159;--shadow:0 3px 0 #a44bba,0 7px 15px #8423933d}
-.app{background:linear-gradient(160deg,#e9bcf3bb 0%,#fff1fcd5 43%,#e7bbf7ce 100%),url("./assets/hsk2-approved-scenery-v464.svg") center / 100% 100% no-repeat}
-header{padding:7px 11px 8px;border-radius:0 0 18px 18px;border-bottom:2px solid #e3b262;
- background:linear-gradient(160deg,#fff1fd 0%,#edc1f2 58%,#e4b3ec 100%);box-shadow:0 4px 9px #76358a55;color:#5b1a79}
-.head-line{min-height:34px;gap:7px}
-.header-label{color:#592076;font-size:clamp(12px,3.45vw,15px);text-shadow:0 1px 0 #fff;text-align:left;letter-spacing:-.2px}
-.mini-logo{order:-2;width:34px;height:34px;border:2px solid #fff3ff;border-radius:12px}
-.back{order:-1;width:29px;height:29px;line-height:21px;font-size:24px;box-shadow:0 2px 4px #8942aa4d;border:1px solid #f7cffd;color:#fff;flex:none}
-.demo-pill{font-size:10px;font-weight:900;color:#893392;background:linear-gradient(#fffce9,#f5d38b);border:1px solid #edbc73;border-radius:18px;padding:4px 6px;box-shadow:0 2px 3px #7f2b7a28;white-space:nowrap}
-.progress-steps{margin:5px 1px 0;padding:5px 5px;background:linear-gradient(#fff9ff,#f7e1fb);border:1px solid #e7b1e4;border-radius:99px;box-shadow:0 2px 5px #7a328c33,inset 0 1px 4px #ab4aaa2d}
-.nav-step{width:clamp(24px,7.4vw,30px);border:1.5px solid #b963c5;border-bottom:2px solid #ab4abd;font-size:12px;background:linear-gradient(#fffaff,#e7b6f1);box-shadow:0 2px 3px #ba68bd4f}
-.nav-step.active{font-size:13px;background:linear-gradient(#fc6ab3,#c820ac);border:2px solid #ffe6aa;box-shadow:0 0 0 2px #9334a6,0 2px 5px #922b9b76}
-.workspace{padding:9px 10px 13px;position:relative}
-.workspace:before,.workspace:after{content:"";position:absolute;pointer-events:none;width:46px;height:400px;opacity:.74;z-index:0;background:url("./assets/panda-sakura-v346.svg") top left / 100% 100% no-repeat}
-.workspace:before{top:0;left:0}.workspace:after{right:0;bottom:0;transform:rotate(180deg)}
-.workspace>.stage{position:relative;z-index:1}
-.footer{padding:8px 13px calc(8px + env(safe-area-inset-bottom));background:linear-gradient(#fce3f8f5,#efc0f4ee);border-top:1px solid #f3c58c;box-shadow:0 -3px 10px #984da530}
-.footer .primary{min-height:45px;padding:9px 10px;font-size:clamp(14px,4.2vw,17px)}
-.footer-note{font-size:9px;margin:3px 0 0}
-.section-title{font-size:clamp(18px,5.3vw,24px);margin:2px 0 9px}
-.pill-title{margin:1px auto 10px;padding:5px 20px;font-size:clamp(16px,4.5vw,21px);box-shadow:0 2px 6px #8a3c9c35}
-.glass{padding:10px;border:2px solid #f5cde9;border-bottom:3px solid #d7a3df;border-radius:20px;box-shadow:0 4px 9px #aa68ab42;background:linear-gradient(145deg,#fffdfcef,#fff2faed)}
-.helper{font-size:11px;line-height:1.35;margin:5px 0 8px}
-.hero-intro{height:clamp(155px,26dvh,208px);border-radius:24px;border:2px solid #ffedf9;outline:2px solid #e9bd71;
- background:radial-gradient(circle at 90% 13%,#fffafaa8,transparent 25%),linear-gradient(150deg,#e3b5ef,#fcd8f5 55%,#d9a1e6)}
-.hero-intro:after{content:"";position:absolute;pointer-events:none;left:0;bottom:-1px;right:0;height:18%;background:linear-gradient(0deg,#f9d7f4bc,transparent)}
-.hero-intro img{left:0;bottom:0;width:52%;height:100%;object-fit:contain;object-position:left bottom;border-radius:19px;mask-image:linear-gradient(to right,#000 80%,transparent 100%)}
-.hero-cloud{right:3%;top:21%;width:53%;min-height:98px;padding:8px 5px;border-radius:44% 45% 43% 45%;z-index:1}
-.hero-cloud .cn{font-size:clamp(25px,7vw,33px)}.hero-cloud .py{font-size:13px}.hero-cloud .ru{font-size:clamp(16px,5vw,20px)}
-.sparkle{font-size:15px;max-width:220px;padding:5px 12px;margin:-6px auto 5px;border:1px solid #fff0b8}
-.feature-frame{margin-top:11px;padding:9px 7px 6px}
-.feature{min-height:57px;gap:1px;padding:3px 1px;font-size:clamp(10px,2.7vw,12px)}
-.feature .icon-illustration{font-size:19px;filter:drop-shadow(0 2px 2px #9f63a254)}
-.word-list,.test-list,.tone-rows,.phrase-list{gap:7px}
-.word-row{min-height:67px;padding:4px 6px;grid-template-columns:clamp(69px,22vw,92px) minmax(0,1fr) 38px;border-radius:17px;box-shadow:0 3px 7px #99449a42}
-.word-row img{height:59px}.word-row .cn{font-size:clamp(19px,5.5vw,24px)}.word-row .py{font-size:13px}
-.round{width:38px;height:38px;font-size:18px}
-.hero-test{grid-template-columns:38% 1fr;margin-bottom:9px;padding:0;border-radius:22px}
-.hero-test img{height:110px}.hero-test h2{font-size:18px}.hero-test p{font-size:11px}
-.test-card{min-height:62px;padding:5px 7px;grid-template-columns:29px 46px 1fr 18px;gap:7px;border-radius:18px}
-.test-card .circle{width:29px;height:29px;font-size:15px}.test-card .test-icon{font-size:25px;min-height:45px;border-radius:12px}
-.test-card strong{font-size:clamp(13px,3.5vw,16px)}.test-card small{font-size:10px;margin-top:1px}
-.rule{padding:9px 12px 7px;margin-bottom:9px;border-radius:43% 48% 43% 47% / 28% 31% 27% 29%;background:linear-gradient(#fffdf6,#fff0fb);border:2px solid #efd18d;box-shadow:0 3px 9px #a351a34f}
-.rule .cn{font-size:clamp(32px,8.5vw,42px);color:#cd304e}.rule .py{font-size:13px}.rule p{font-size:11px;margin:4px 0 0;line-height:1.33}
-.example{grid-template-columns:77px minmax(0,1fr);gap:7px;margin-bottom:9px;padding:6px}
-.example img{height:72px;border-radius:13px}
-.example .cn{font-size:clamp(15px,4.5vw,19px);white-space:normal;overflow-wrap:anywhere}
-.example .py{font-size:11px}.example .ru{font-size:11px}
-.stage>.glass>h3{text-align:center;font-size:15px}
-.tokens,.answer-box{margin:7px 0;gap:5px;min-height:43px}
-.token{min-width:35px;min-height:34px;font-size:17px;padding:5px 7px;border-radius:19px;box-shadow:0 2px 3px #a057ad4a}
-.answer-box{font-size:17px;padding:7px;border-radius:14px}
-.controls{margin:8px 0 3px;gap:5px}
-.soft{padding:7px 11px;font-size:12px;border-radius:16px}
-.inline-primary{font-size:13px;padding:8px 12px}
-.practice-grid{gap:6px}.day-card{padding:4px 3px 7px;border-radius:15px}
-.day-card img{height:clamp(60px,11dvh,90px);border-radius:10px}
-.day-card .cn{font-size:clamp(14px,4vw,18px)}.day-card .py{font-size:10px}
-.tone-hero img{height:105px}.tone-hero h2{font-size:19px}
-.tone-row{min-height:65px;grid-template-columns:58px minmax(0,1fr) 36px 38px;gap:5px;padding:3px 5px}
-.tone-row img{height:57px;width:58px}.tone-row .cn{font-size:20px}
-.tones-tip{margin:9px 0}.tones-tip h3{font-size:15px;padding:7px}
-.four-tones strong{font-size:25px}.four-tones b{font-size:11px}
-@media (max-width:370px){.workspace{padding:8px 7px 12px}.mini-logo{width:30px;height:30px}.back{width:27px;height:27px}.header-label{font-size:12px}.demo-pill{font-size:9px;padding:3px 5px}.progress-steps{gap:1px}.nav-step{width:25px}.hero-cloud{right:2%;width:56%}.hero-intro img{width:54%}.word-row{grid-template-columns:65px minmax(0,1fr) 36px}.tone-row{grid-template-columns:53px minmax(0,1fr) 34px 34px}}
-
+:root{color-scheme:light;--ink:#241039;--purple:#541174;--gold:#f5d184;--rose:#e35caf;--panel:linear-gradient(165deg,#fffaff 10%,#fff2fc 49%,#f7d3ee 100%);--gloss:linear-gradient(180deg,#dc76f3 0%,#b73cde 32%,#8420a8 65%,#580879 98%);font:16px system-ui,sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;color:var(--ink);min-height:100dvh;background:linear-gradient(#f1cefa28,#e7bcf252),url(assets/hsk2-clean-v470/landscape.webp) center 63%/cover fixed,#ecd3f7}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:disabled{cursor:default}
+button:focus-visible{outline:3px solid #6423b8;outline-offset:2px}
+button:not(:disabled):active{transform:translateY(2px);filter:brightness(.91)}
+img{display:block;max-width:100%}
+h1,h2,h3,p,figure{margin:0}
+[lang=zh-Hans]{font-family:"Noto Sans CJK SC","Noto Sans SC",system-ui,sans-serif}
+.app{position:relative;isolation:isolate;max-width:440px;margin:auto;overflow:hidden;border:4px double #893bac;border-radius:34px;background:#f9d9f5 url(assets/hsk2-approved-scenery-v464.svg) center top/cover;box-shadow:0 0 0 1px #ffe2ff,inset 0 0 0 2px #fff0fe,inset 0 0 0 4px #da8dea,0 6px 13px #722b8a6b}
+.app::before,.app::after{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none}
+.app::before{background:linear-gradient(#f4c2f552 0,#f9d8f7a3 175px,#ffe7f5ca 57%,#ffc6eeb5),url(assets/hsk2-clean-v470/landscape.webp) center 42px/100% auto no-repeat}
+.app::after{background:url(assets/hsk2-lesson1-preview/sakura.webp) -18px 74px/127px auto no-repeat,url(assets/panda-sakura-v346.svg) right bottom/76px 268px no-repeat;opacity:.85}
+.head::after,footer::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:124px;height:79px;background:url(assets/hsk2-lesson1-preview/sakura.webp) center/contain no-repeat}
+.head::after{right:-14px;top:69px;transform:scaleX(-1)}
+footer::after{left:-10px;bottom:-3px;transform:scaleY(-1)}
+.detail .head::after{top:53px;opacity:.8}
+.head{padding:10px 14px 3px}
+.brand,.detail-brand{display:flex;align-items:center;gap:8px}
+.brand img{width:47px;height:43px;object-fit:cover;border-radius:12px;border:2px solid #ffdf9a;box-shadow:0 0 0 1px #f28cd2,0 2px 4px #aa4b91}
+.brand strong{display:block;color:#4c145f;font-size:clamp(16px,4.6vw,20px);line-height:1.12;white-space:nowrap;letter-spacing:-.04em}
+.brand small{display:block;font-size:12px;font-weight:750;margin-top:2px}
+.demo{margin-left:auto;align-self:start;white-space:nowrap;background:linear-gradient(#fffef6,#ffe2a5);border:1px solid #ffdf7f;border-radius:999px;padding:3px 8px;color:#421755;font-size:11px;font-weight:850;box-shadow:0 2px 5px #93587766}
+nav{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));align-items:center;margin-top:5px}
+nav::before{content:"";height:2px;position:absolute;inset-inline:6%;top:50%;background:#c965c4;box-shadow:0 1px 0 #fff0ff}
+.nav-step{position:relative;display:grid;place-items:center;min-width:0;min-height:37px;border:0;padding:0;background:none}
+.nav-step span{display:grid;place-items:center;width:27px;height:27px;border:1px solid #a346ac;border-radius:50%;background:linear-gradient(#fff9ff,#ecc7f7);box-shadow:0 2px 3px #842ba86f;font-weight:850;color:#511768}
+.nav-step[aria-current=step] span{width:32px;height:32px;color:white;border:2px solid #ffd879;background:linear-gradient(#fb68b1,#bf176a 68%,#90166c);box-shadow:0 2px 5px #8e2d8d, inset 0 1px 2px #fff7}
+.detail .head{padding:0 0 4px}
+.detail-brand{display:none}
+.detail .brand{display:none}
+.detail .detail-brand{display:flex;justify-content:center;min-height:47px;position:relative;padding:0 11px 4px 50px;background:linear-gradient(#ae47d6,#78139d 65%,#a534c9);color:white;font-weight:850;font-size:clamp(14px,4.45vw,19px);text-shadow:0 2px 3px #4e0868;box-shadow:inset 0 2px 3px #f6a8ff,0 3px 9px #a833b3}
+.detail-brand .orb{position:absolute;left:12px;top:6px}
+.detail nav{margin:-5px 34px 0;padding:0 5px;border-radius:999px;border:1px solid #fff5ff;background:linear-gradient(#fff7ff,#edc5f8);box-shadow:0 3px 6px #851b9c70}
+.detail .nav-step{min-height:33px}
+.detail .nav-step span{width:24px;height:24px;background:linear-gradient(#e7a6f4,#ca7be7);border-color:#cf9de9}
+.detail .nav-step[aria-current=step] span{width:29px;height:29px;background:linear-gradient(#8a25b1,#4f107e);border:2px solid #ffd551}
+main{padding:0 10px 4px}
+footer{padding:5px 15px 12px;display:flex;gap:8px;justify-content:center}
+footer [hidden]{display:none}
+.primary,.orb,.ribbon,.tag{background:var(--gloss);color:white;text-shadow:0 1px 2px #52096d;font-weight:850;box-shadow:0 3px 5px #6e1b8a65,inset 0 2px 3px #f8bdff,inset 0 -3px 4px #570a79aa;border:1px solid #f3cf86}
+.primary,.ribbon,.tag{border-radius:999px}
+.primary{min-height:45px;padding:7px 17px;font-size:16px}
+footer .primary{flex:1}
+.primary.large{width:100%;min-height:53px;font-size:22px;border-width:2px;margin-top:4px}
+.orb{border-radius:50%;width:37px;height:37px;flex:none;display:inline-grid;place-items:center;padding:0;background:radial-gradient(ellipse at 40% 8%,#efb7ff,#b748df 43%,#650788 83%);border-color:#eed2ff;font-size:16px}
+.orb:disabled{opacity:.5}
+button.missing{background:radial-gradient(ellipse at 40% 8%,#e6b3ee,#a75bc0 53%,#752b9f);color:white}
+button[aria-pressed=true].orb{box-shadow:0 0 0 3px #f8c7fb,inset 0 2px 6px #642083}
+.play{display:inline-block;width:0;height:0;border-top:.39em solid transparent;border-bottom:.39em solid transparent;border-left:.6em solid currentColor;vertical-align:-.02em;margin:0 .16em;filter:drop-shadow(0 2px 1px #590b78)}
+.orb .play{margin-left:3px}
+.orb.mic.recognized,.orb.done{background:radial-gradient(ellipse at 38% 9%,#c2fd8a,#50cb22 50%,#258c12);box-shadow:0 2px 4px #368b5377,inset 0 1px 3px #edffd0}
+.orb svg{width:19px;height:19px}
+.soft,.token,.choice{background:var(--panel);border:1px solid #d991c9;border-radius:14px;min-height:40px;padding:5px 10px;font-weight:740;box-shadow:0 2px 3px #ae4f9450}
+.soft{color:#5c266e}
+.panel,.word-row,.day-card,.test-card,.tone-list,.tone-guide{background:var(--panel);border:1px solid #efaee0;box-shadow:0 3px 6px #ac4f9460,inset 0 1px 0 white;border-radius:18px}
+.pill-title,.cloud{background:linear-gradient(160deg,#fffafc,#fce2f5);border:2px solid #f3d38a;box-shadow:inset 0 0 0 1px #fff8d9,0 3px 5px #b452a858;color:#4a0a68;text-align:center}
+.pill-title{border-radius:40% 35% 37% 41% / 29% 33% 29% 30%;width:max-content;max-width:100%;margin:4px auto 6px;padding:3px 17px;font-size:clamp(21px,6.25vw,28px);line-height:1.16;font-weight:900;letter-spacing:-.045em}
+.pill-title.day-title{font-size:clamp(17px,5.65vw,24px);padding-inline:9px}
+.intro-hero{display:grid;grid-template-columns:47% 53%;align-items:center;min-height:157px;background:url(assets/hsk2-clean-v470/landscape.webp) center 55%/cover;border-radius:16px;overflow:hidden}
+.intro-hero img{width:100%;object-fit:cover;align-self:end;aspect-ratio:1.08;border-radius:10px 38% 13px 10px}
+.cloud{border:0;box-shadow:none;border-radius:0;background:no-repeat center/100% 100% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 208 122' preserveAspectRatio='none'%3E%3Cpath d='M34 25Q54 6 81 18Q104 0 126 17Q153 8 170 26Q202 27 198 49Q217 62 197 77Q202 99 174 101Q156 120 130 109Q104 124 80 109Q54 121 34 101Q4 101 10 79Q-5 64 10 49Q5 29 34 25Z' fill='%23fff0f9' stroke='%23f4cf81' stroke-width='3'/%3E%3Cpath d='M36 29Q55 11 82 22Q105 5 126 21Q153 12 167 30Q199 32 193 50Q212 64 193 75Q198 95 172 97Q155 115 130 105Q103 120 80 105Q53 116 36 97Q9 98 14 78Q0 63 14 50Q10 33 36 29Z' fill='none' stroke='%23fffced' stroke-width='2'/%3E%3C/svg%3E");filter:drop-shadow(0 3px 3px #ae3f9f78);padding:21px 6px}
+.intro-hero .cloud{margin:0 5px 0 -10px;position:relative}
+.intro-hero h1{font-size:clamp(32px,9.4vw,42px);line-height:1.08;font-weight:900;white-space:nowrap}
+.intro-hero .py{color:#a51a59;font-size:17px;font-weight:800;margin:3px 0}
+.intro-hero b{font-size:22px;line-height:1.05}
+.features{position:relative;margin:22px 0 2px;border:2px solid #f2c875;border-radius:24px;padding:20px 7px 6px;background:linear-gradient(135deg,#fff8eb,#fff2f9 55%,#ffe8f3)}
+.ribbon{position:absolute;top:-18px;left:50%;translate:-50% 0;white-space:nowrap;font-size:19px;padding:2px 16px}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
+.feature-grid div{padding:4px 2px 6px;font-size:clamp(11px,3.4vw,14px);font-weight:800;line-height:1.1}
+.feature-grid div:not(:nth-child(3n)){border-right:1px solid #e2b2ce}
+.feature-grid div:nth-child(-n+3){border-bottom:1px solid #e2b2ce}
+.feature-grid img{width:48px;height:38px;object-fit:contain;margin:0 auto 4px;mix-blend-mode:multiply}
+.word-list{display:grid;gap:4px}
+.word-row{min-height:51px;display:grid;grid-template-columns:28% minmax(0,.75fr) minmax(0,1.25fr) 39px;gap:6px;align-items:center;padding:2px 5px 2px 4px;border-color:#ecc18a;border-radius:16px}
+.word-row img{width:100%;height:46px;object-fit:cover;border-radius:11px}
+.cn{display:block;font-size:23px;font-weight:900;line-height:1.21;letter-spacing:-.04em}
+.word-row .cn{white-space:nowrap;font-size:clamp(17px,5.45vw,24px)}
+.py,.ru{display:block;font-size:13px;line-height:1.2;overflow-wrap:anywhere}
+.py{font-weight:700}
+.hint{font-size:13px;line-height:1.28;text-align:center;color:#492655}
+.audio-note{margin:7px 0 0;font-size:12px}
+.rule-cloud{max-width:265px;margin:2px auto 7px;padding:9px 14px 12px}
+.rule-cloud .cn{font-size:38px;color:#bf1245;line-height:1.13}
+.rule-cloud b{display:block;font-size:15px}
+.grammar-explain{font-weight:700;margin:5px 10px 9px;font-size:15px;line-height:1.14}
+.example{position:relative;display:grid;grid-template-columns:35% minmax(0,1fr) 37px;align-items:center;gap:6px;padding:8px 5px;border-radius:17px;margin-bottom:7px}
+.example img{width:100%;height:80px;object-fit:cover;border-radius:12px}
+.example .cn{font-size:clamp(16px,4.75vw,22px)}
+.example em{color:#c21a52;font-style:normal}
+.example .tag{position:absolute;top:-7px;left:7px;padding:1px 7px}
+.tag{font-size:12px;display:inline-block;padding:3px 9px}
+.builder-title{text-align:center;font-size:17px;margin:4px 0}
+.tokens,.controls{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin:5px 0}
+.token{flex:1 0 0;border-radius:999px;min-width:44px;background:linear-gradient(#fff1fc,#f8c8ea);font-size:17px}
+.token:disabled{opacity:.48}
+.answer{min-height:39px;text-align:center;border:2px dashed #c880be;border-radius:14px;margin-top:6px;display:grid;place-items:center;padding:4px 8px;background:#fff2fa70;font-weight:800;overflow-wrap:anywhere}
+.answer:empty::after{content:attr(data-placeholder);font-weight:550;color:#73507c;font-size:13px}
+.feedback:empty{display:none}
+.feedback{font-size:13px;font-weight:700;text-align:center;background:#fff3e2;border:1px solid #f2bb7d;border-radius:11px;padding:7px 9px;margin:7px 0}
+.feedback.good{color:#1d5721;background:#ecf9e5;border-color:#97d685}
+.practice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:8px 0}
+.day-card{position:relative;padding:3px 3px 6px;text-align:center;overflow:hidden;border-color:#f5c685;border-radius:14px}
+.day-card img{width:100%;aspect-ratio:1.32;object-fit:cover;border-radius:9px}
+.day-card .cn{font-size:21px}
+.day-card .py{font-size:12px}
+.day-card.selected{border:2px solid #bb3a99;padding:2px 2px 5px;background:#ffe4f1}
+.position{position:absolute;top:3px;left:3px;display:grid;place-items:center;width:24px;height:24px;border:1px solid #fff4fa;border-radius:50%;background:linear-gradient(#fe79cb,#af126e);color:white;font-weight:900;box-shadow:0 2px 4px #81395788}
+.detail main{padding-inline:5px}
+.detail footer{padding-top:2px}
+.detail-hero{position:relative;min-height:143px;display:grid;grid-template-columns:43% 57%;align-items:end;margin:-1px -5px 7px;background:url(assets/hsk2-clean-v470/landscape.webp) center 23%/100% auto}
+.detail-hero img{width:100%;max-height:153px;object-fit:contain;object-position:left bottom}
+.hero-message{z-index:1;align-self:center;margin:9px 9px 4px -14px;padding:9px 10px 9px 15px;border:1px solid #fff1fc;border-radius:24px;background:linear-gradient(#fff8fc,#fcdef4);box-shadow:0 5px 9px #b752a65f}
+.hero-message h1{font-size:clamp(20px,5.9vw,26px);line-height:1.05;font-weight:900;letter-spacing:-.065em;margin:4px 0}
+.hero-message p{font-size:13px;font-weight:650;line-height:1.2}
+.test-list{display:grid;gap:7px}
+.test-card{display:grid;grid-template-columns:27px 72px minmax(0,1fr) 36px;align-items:center;gap:7px;min-height:72px;padding:6px 7px;text-align:left;width:100%;border-color:#fff4ff;border-radius:21px}
+.test-card img{width:100%;height:56px;object-fit:cover;border-radius:13px}
+.badge{align-self:start;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;font-weight:850;background:var(--gloss);color:#fff;border:1px solid #f3c7ff;text-shadow:0 1px 2px #521674;box-shadow:0 2px 3px #8328877a}
+.test-card strong{display:block;font-size:clamp(13px,4.15vw,18px);font-weight:900;line-height:1.13;letter-spacing:-.043em}
+.test-card small{display:block;font-size:12px;line-height:1.18;margin-top:3px}
+.test-card .orb{width:34px;height:34px}
+.reward,.progress-panel{display:flex;align-items:center;gap:9px;padding:7px 10px;margin:9px 0 7px}
+.reward{border-color:#ffe3a2;background:linear-gradient(110deg,#fff4cc,#fff9e8,#fff0cf);font-size:16px;line-height:1.18}
+.reward img,.progress-panel img{width:51px;border-radius:14px;mix-blend-mode:multiply}
+.section-panel{padding:14px;text-align:center;margin-top:7px}
+.section-panel h1{font-size:22px}
+.quiz-word{font-size:clamp(26px,8vw,36px);margin:12px 0 5px}
+.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:10px 0}
+.choice{min-height:46px;overflow-wrap:anywhere}
+.choice .ru{font-weight:550}
+.tones-hero{min-height:121px;margin-bottom:3px}
+.tones-hero img{max-height:124px}
+.tones-hero .hero-message h1{font-size:clamp(15px,4.55vw,20px);letter-spacing:-.052em;white-space:nowrap}
+.tones-hero .hero-message p{font-weight:650;font-size:13px}
+.tone-tabs{display:flex;gap:4px;padding:4px;margin:0 4px 7px}
+.tone-tabs button{flex:1;min-height:36px;font-size:13px;padding:4px 6px}
+.tone-list{overflow:hidden;margin-inline:3px}
+.tone-row{display:grid;grid-template-columns:21% minmax(0,1fr) 36px 61px 36px;align-items:center;gap:4px;min-height:49px;padding:2px 4px;background:#fff6fcad}
+.tone-row+ .tone-row{border-top:1px solid #f0d2ec}
+.tone-row img{width:100%;height:44px;object-fit:cover;border-radius:9px}
+.tone-row .cn{font-size:20px;line-height:1.02}
+.tone-row .py,.tone-row .ru{font-size:11px;line-height:1.07}
+.tone-row .orb{width:35px;height:35px}
+.tonemarks{display:flex;gap:2px}
+.tone-number{display:grid;place-items:center;border-radius:50%;width:17px;height:17px;color:white;background:var(--gloss);font-size:11px;font-weight:850;box-shadow:inset 0 1px 1px #f6c4ff}
+.tone-number:nth-child(2){background:linear-gradient(#e3469e,#a01362)}
+.wave{width:100%;height:15px;color:#9631a5;display:block;margin-top:2px}
+.tone-guide{overflow:hidden;margin:8px 3px 6px;border-color:#fbddf8}
+.tone-guide h2{background:var(--gloss);color:#fff;font-size:17px;text-align:center;padding:5px;text-shadow:0 2px 2px #570b7a}
+.tone-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));text-align:center}
+.tone-grid div{background:linear-gradient(#fffaff,#f6e3f5);border-radius:9px;padding:6px 2px;font-size:11px;line-height:1.08}
+.tone-grid strong{display:block;font-size:20px;color:#a41240}
+.tone-grid svg{width:44px;height:16px;display:block;margin:4px auto 0}
+.progress-panel{justify-content:space-between;margin:7px 3px}
+.progress-panel div{flex:1;min-width:0}
+.progress-panel b{font-size:14px}
+progress{display:block;width:100%;height:13px;margin-top:4px;appearance:none;border:1px solid #bd91c7;border-radius:999px;background:#e9d6ed;overflow:hidden}
+progress::-webkit-progress-bar{background:#e9d6ed}
+progress::-webkit-progress-value{background:linear-gradient(#a0ed63,#55bb27 65%,#3e9c23);border-radius:999px}
+.phrases{display:grid;gap:6px}
+.phrase,.chat-bubble{padding:8px 10px}
+.phrase{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.phrase .cn,.chat-bubble .cn{font-size:20px}
+.chat-bubble.me{margin:4px 0 8px 14%;background:linear-gradient(#f4ebff,#ebd4fa)}
+.dialogue{margin-top:11px}
+.dialogue h2{font-size:20px;margin:4px 0}
+.dialogue .chat-role{display:block;font-size:13px;font-weight:850;color:#692980;margin-bottom:2px}
+.final-hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:7px;text-align:center;padding:8px;margin-bottom:7px}
+.final-hero img{width:100%;border-radius:14px}
+.final-hero h1{line-height:1.06;font-size:26px}
+.final-hero .award{width:63px;margin:4px auto}
+.results{padding:8px 10px}
+.results h2{font-size:17px;margin-bottom:4px}
+.results dl{margin:0}
+.results dl div{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:5px 2px;border-bottom:1px solid #f0cde5;font-size:13px}
+.results dd{margin:0;text-align:right;font-weight:800}
+.results .all{font-weight:850}
+.compact-footer{min-width:46px}
+@media(max-width:374px){
+ .head{padding-inline:8px}.detail nav{margin-inline:22px}main{padding-inline:7px}.test-card{grid-template-columns:25px 58px minmax(0,1fr) 34px;gap:5px}.hero-message{padding-left:14px}.word-row{gap:4px}.tone-row{grid-template-columns:20% minmax(0,1fr) 34px 55px 34px;gap:3px}.tone-row .orb{width:33px;height:33px}
+}
 </style>
 </head>
 <body>
 <div class="app" id="app">
-<header>
- <div class="head-line"><button type="button" class="back" id="back" aria-label="Предыдущий шаг">‹</button><div class="header-label" id="header-label">HSK 2 · Урок 1 · Шаг 1 из 8</div><img class="mini-logo" src="./assets/hsk2-storyboard-v433-avatar.jpg" alt="Panda Go"><span class="demo-pill">👑 ДЕМО</span></div>
- <nav id="steps" class="progress-steps" aria-label="Навигация: 8 шагов урока"></nav>
-</header>
-<main id="workspace" class="workspace" aria-live="polite"></main>
-<div class="footer"><button type="button" class="primary" id="next">Дальше: Новые слова ▶</button><div class="footer-note">Отдельная preview-версия · действующий урок не изменён</div></div>
+  <header class="head">
+    <div class="brand">
+      <img src="assets/hsk2-storyboard-v433-avatar.jpg" alt="Панда в розовых наушниках">
+      <div><strong>Panda Go · HSK 2</strong><small>Урок 1 «Мой день»</small></div>
+      <span class="demo">👑 ДЕМО</span>
+    </div>
+    <div class="detail-brand"><button type="button" class="orb" id="detail-back" aria-label="Предыдущий шаг">❮</button><span id="head-label"></span></div>
+    <nav id="steps" aria-label="Восемь шагов урока"></nav>
+  </header>
+  <main id="workspace"></main>
+  <footer>
+    <button type="button" class="soft compact-footer" id="back" aria-label="Предыдущий шаг">‹</button>
+    <button type="button" class="primary" id="next"></button>
+  </footer>
 </div>
 <script>
-(function(){"use strict";
-const assets="./assets/hsk2-preview-v457/";
-const avatar="./assets/hsk2-storyboard-v433-avatar.jpg";
-const vocab=[
-{zh:"起床",py:"qǐchuáng",ru:"вставать с постели",tones:[3,2]},
-{zh:"洗脸",py:"xǐliǎn",ru:"умываться",tones:[3,3],spoken:[2,3]},
-{zh:"刷牙",py:"shuāyá",ru:"чистить зубы",tones:[1,2]},
-{zh:"吃早饭",py:"chī zǎofàn",ru:"завтракать",tones:[1,3,4]},
-{zh:"去上班",py:"qù shàngbān",ru:"идти на работу",tones:[4,4,1]},
-{zh:"睡觉",py:"shuìjiào",ru:"ложиться спать",tones:[4,4]}
+'use strict';
+
+const asset = 'assets/hsk2-preview-v457/';
+const decoration = 'assets/hsk2-lesson1-preview/';
+const words = [
+  {zh:'起床', py:'qǐchuáng', ru:'вставать с постели', tones:[3,2], fill:'我每天七点____。', hint:'Я каждый день встаю в семь.'},
+  {zh:'洗脸', py:'xǐliǎn', ru:'умываться', tones:[3,3], fill:'我起床以后____。', hint:'После того как встаю, я умываюсь.'},
+  {zh:'刷牙', py:'shuāyá', ru:'чистить зубы', tones:[1,2], fill:'我每天早上____。', hint:'Я чищу зубы каждое утро.'},
+  {zh:'吃早饭', py:'chī zǎofàn', ru:'завтракать', tones:[1,3,4], fill:'我早上____。', hint:'Я завтракаю утром.'},
+  {zh:'去上班', py:'qù shàngbān', ru:'идти на работу', tones:[4,4,1], fill:'我八点____。', hint:'Я иду на работу в восемь.'},
+  {zh:'睡觉', py:'shuìjiào', ru:'спать, ложиться спать', tones:[4,4], fill:'我晚上十点____。', hint:'Я ложусь спать в десять вечера.'}
 ];
-const phrases=[
-{zh:"你每天几点起床？",py:"Nǐ měitiān jǐ diǎn qǐchuáng?",ru:"Во сколько ты каждый день встаёшь?"},
-{zh:"我每天七点起床。",py:"Wǒ měitiān qī diǎn qǐchuáng.",ru:"Я каждый день встаю в семь часов."},
-{zh:"我起床以后洗脸。",py:"Wǒ qǐchuáng yǐhòu xǐliǎn.",ru:"После того как встаю, я умываюсь."},
-{zh:"我早上吃早饭。",py:"Wǒ zǎoshang chī zǎofàn.",ru:"Утром я завтракаю."}
+
+const phrases = [
+  ['你每天几点起床？','Nǐ měitiān jǐ diǎn qǐchuáng?','Во сколько ты каждый день встаёшь?'],
+  ['我每天七点起床。','Wǒ měitiān qī diǎn qǐchuáng.','Я каждый день встаю в семь часов.'],
+  ['我起床以后洗脸。','Wǒ qǐchuáng yǐhòu xǐliǎn.','После того как я встаю, я умываюсь.'],
+  ['我早上吃早饭。','Wǒ zǎoshang chī zǎofàn.','Утром я завтракаю.'],
+  ['我八点去上班。','Wǒ bā diǎn qù shàngbān.','Я иду на работу в восемь.'],
+  ['我晚上十点睡觉。','Wǒ wǎnshang shí diǎn shuìjiào.','Я ложусь спать в десять вечера.']
 ];
-const dialogue=[
-{q:"你每天几点起床？",py:"Nǐ měitiān jǐ diǎn qǐchuáng?",ru:"Во сколько ты каждый день встаёшь?",answers:[["我每天七点起床。","В семь часов"],["我每天八点起床。","В восемь часов"]]},
-{q:"你早上做什么？",py:"Nǐ zǎoshang zuò shénme?",ru:"Что ты делаешь утром?",answers:[["我早上洗脸。","Умываюсь"],["我早上吃早饭。","Завтракаю"]]},
-{q:"你几点睡觉？",py:"Nǐ jǐ diǎn shuìjiào?",ru:"Во сколько ты ложишься спать?",answers:[["我晚上十点睡觉。","В десять"],["我晚上十一点睡觉。","В одиннадцать"]]}
+
+const dialogue = [
+  {prompt:phrases[0], answers:[[phrases[1][0],'В семь часов'],['我每天八点起床。','В восемь часов']]},
+  {prompt:['你早上做什么？','Nǐ zǎoshang zuò shénme?','Что ты делаешь утром?'], answers:[['我早上洗脸。','Умываюсь'],[phrases[3][0],'Завтракаю']]},
+  {prompt:['你起床以后做什么？','Nǐ qǐchuáng yǐhòu zuò shénme?','Что ты делаешь после подъёма?'], answers:[[phrases[2][0],'Умываюсь'],['我起床以后刷牙。','Чищу зубы']]}
 ];
-const titles=["Вступление","Новые слова","Проверь слова","Грамматика","Мой распорядок","Тренировка тонов","Фразы и диалог","Завершение"];
-const testTitles=["Значение слова","По аудио","Собери слово","Заполни фразу","Произнеси"];
-const testIcons=["📖","🔊","🧩","📝","🎙️"];
-const key="panda-go-hsk2-lesson1-approved-preview-v1";
-const blank=()=>({step:1,quiz:Array.from({length:5},()=>Array(6).fill(null)),mistakes:0,quizTest:null,quizIndex:0,quizPicked:[],quizWrong:false,grammar:[],grammarDone:false,dayOrder:[],dayShuffled:shuffle([0,1,2,3,4,5]),dayDone:false,mic:[],chat:[],wordSeen:[],audioNotice:""});
-function shuffle(a){let b=a.slice();for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
-let S;
-try{let old=JSON.parse(localStorage.getItem(key));S=old&&Array.isArray(old.quiz)&&old.quiz.length===5?Object.assign(blank(),old):blank()}catch(e){S=blank()}
-let alertText="",alertGood=false,recognition=null;
-const W=document.getElementById("workspace"),nav=document.getElementById("steps"),next=document.getElementById("next"),back=document.getElementById("back"),header=document.getElementById("header-label");
-const img=(i)=>assets+"word-"+(i+1)+".webp";
-const escape=(s)=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const sayBtn=(text,small)=>'<button type="button" class="round" data-say="'+escape(text)+'" aria-label="Прослушать '+escape(text)+'" title="Голос браузера, не запись носительницы">'+(small||"🔊")+'</button>';
-const mark=(v)=>'<span class="tonemark'+(v===3?" sandhi":"")+'">'+v+'</span>';
-const showMessage=(v,ok)=>{alertText=v;alertGood=!!ok;render(false)};
-const htmlMessage=()=>alertText?'<div class="feedback'+(alertGood?" ok":"")+'" role="status">'+escape(alertText)+'</div>':"";
-const storage=()=>{try{localStorage.setItem(key,JSON.stringify(S))}catch(e){}};
-function recordDone(t,i,reason){if(!S.quiz[t][i])S.quiz[t][i]={correctFirst:!S.quizWrong,method:reason};S.quizWrong=false;S.quizPicked=[];S.mistakes=Math.max(0,S.mistakes);alertText="Верно! Ответ засчитан.";alertGood=true;storage();render(false)}
-function quizCount(){return S.quiz.flat().filter(Boolean).length}
-function tonesCount(){return S.mic.length}
-function quizSuccess(t){return S.quiz[t].filter(Boolean).length}
-function showNav(){nav.innerHTML=titles.map((label,i)=>'<button type="button" class="nav-step'+(S.step===i+1?" active":"")+'" data-step="'+(i+1)+'" aria-current="'+(S.step===i+1?"step":"false")+'" aria-label="Шаг '+(i+1)+': '+label+'">'+(i+1)+'</button>').join("")}
-function go(n){if(recognition){try{recognition.abort()}catch(e){}recognition=null}S.step=Math.max(1,Math.min(8,n));alertText="";storage();render(true)}
-function render(scroll){showNav();header.textContent="HSK 2 · Урок 1 · Шаг "+S.step+" из 8";back.disabled=S.step===1;
-let layout=[intro,words,test,grammar,day,tones,chat,finish][S.step-1]();
-W.innerHTML=layout+htmlMessage();
-let nextText=["Дальше: Новые слова ▶","Дальше: Проверь слова ▶","Дальше: Грамматика ▶","Дальше: Мой распорядок ▶","Дальше: Тренировка тонов ▶","Дальше: Диалог ▶","Дальше: Результаты ▶","Вернуться к началу ↻"][S.step-1];
-next.textContent=S.step===3&&S.quizTest!==null?"К списку тестов ◀":S.step===4&&!S.grammarDone?"✓ Проверить предложение":S.step===5&&!S.dayDone?"✓ Проверить порядок":nextText;
-if(scroll)W.scrollTop=0;
+
+const normalize = text => text.replace(/[\p{P}\s]/gu, '');
+const clips = new Map([
+  ['你早上做什么','p019'], ['我早上吃早饭','p020'],
+  ['你起床以后做什么','p021'], ['我起床以后洗脸','p022']
+].map(([text,id]) => [text, 'assets/panda-voice-clips-v365/' + id + '.mp3']));
+for (const [text,id] of [
+  ['我七点起床','g033'], ['我晚上十点睡觉','g034'],
+  ['我八点去上班','g035'], ['我每天六点起床','g036']
+]) clips.set(text, 'assets/panda-grammar-voice-v451/' + id + '.mp3');
+
+const listening = [
+  ['我七点起床。',0], ['我起床以后洗脸。',1], ['我早上吃早饭。',3],
+  ['我八点去上班。',4], ['我晚上十点睡觉。',5], ['我每天六点起床。',0]
+];
+const titles = ['Вступление','Новые слова','Проверь слова','Грамматика','Мой распорядок','Тренировка тонов','Фразы и диалог','Завершение'];
+const tests = ['Значение слова','По аудио','Собери слово','Заполни фразу','Произнеси'];
+const testHelp = ['Выбери правильный перевод.','Послушай и выбери действие.','Расставь иероглифы по порядку.','Подставь слово в предложение.','Скажи слово в микрофон.'];
+const tokens = ['我','起床','以后','洗脸','。'];
+const key = 'panda-go-hsk2-lesson1-approved-preview-v2';
+const previousKey = 'panda-go-hsk2-lesson1-approved-preview-v1';
+
+function mixedDay() {
+  const order = [0,1,2,3,4,5];
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [order[i],order[j]] = [order[j],order[i]];
+  }
+  if (order.every((item,i) => item === i)) order.push(order.shift());
+  return order;
 }
-function intro(){const fs=[["📚","6 слов"],["🎯","5 мини-тестов"],["🧩","грамматика"],["🗓️","распорядок"],["🎙️","произношение"],["💬","диалог"]];
-return '<section class="stage"><div class="hero-intro"><img src="'+assets+'hero-reading.webp" alt="Панда с красной книгой"><div class="hero-cloud"><strong class="cn" lang="zh">我的一天</strong><span class="py">Wǒ de yì tiān</span><b class="ru">Мой день</b></div></div><section class="glass feature-frame"><h2 class="sparkle">✦ Тебя ждут ✦</h2><div class="feature-grid">'+fs.map(x=>'<div class="feature"><span class="icon-illustration">'+x[0]+'</span>'+x[1]+'</div>').join("")+'</div></section><p class="helper">6 слов, 5 видов проверки, грамматика 以后, распорядок дня, произношение и мини-диалог.</p></section>'}
-function words(){return '<section class="stage"><h1 class="pill-title">🌸 Новые слова</h1><div class="word-list">'+vocab.map((v,i)=>'<article class="word-row"><img src="'+img(i)+'" alt="Панда: '+v.ru+'"><div><strong class="cn" lang="zh">'+v.zh+'</strong><span class="py">'+v.py+'</span><span class="ru">'+v.ru+'</span></div>'+sayBtn(v.zh)+'</article>').join("")+'</div><p class="helper">🔊 Озвучка в preview: голос браузера, пока проверенные MP3 не подключены.</p></section>'}
-function test(){if(S.quizTest===null){return '<section class="stage"><article class="glass hero-test"><img src="'+assets+'hero-reading.webp" alt="Панда готова к тестам"><div><h2>🎯 Проверь слова!</h2><p>Пять настоящих мини-тестов по шести словам.</p></div></article><div class="test-list">'+testTitles.map((t,i)=>'<button class="test-card'+(quizSuccess(i)===6?" complete":"")+'" data-test="'+i+'"><span class="circle">'+(i+1)+'</span><span class="test-icon">'+testIcons[i]+'</span><span><strong>Тест '+(i+1)+' · '+t+'</strong><small>'+quizSuccess(i)+'/6 выполнено</small></span><span class="arrow">'+(quizSuccess(i)===6?"✓":"▶")+'</span></button>').join("")+'</div><div class="glass" style="margin-top:14px;text-align:center"><b>Общий прогресс: '+quizCount()+' из 30</b><div class="progressbar" style="margin-top:9px"><div style="width:'+(100*quizCount()/30)+'%"></div></div></div></section>'}
-const t=S.quizTest,i=S.quizIndex,v=vocab[i],already=S.quiz[t][i];
-const headerBlock='<div class="glass"><h2 class="section-title" style="font-size:19px;margin:0">Тест '+(t+1)+' · '+testTitles[t]+'</h2><p class="helper">Слово '+(i+1)+' из 6 · завершено '+quizSuccess(t)+'/6</p><div class="progressbar"><div style="width:'+(100*quizSuccess(t)/6)+'%"></div></div></div>';
-let prompt="",buttons="";
-if(t===0){prompt='<div class="quiz-prompt">Выбери правильный перевод</div><div class="quiz-word" lang="zh">'+v.zh+'</div><p class="helper">'+v.py+'</p>';buttons=choices(i,t,"ru")}
-if(t===1){prompt='<div class="quiz-prompt">Прослушай и выбери иероглифы</div><div style="display:flex;justify-content:center;margin:10px">'+sayBtn(v.zh)+'</div><p class="helper">Используется обозначенный голос браузера.</p>';buttons=choices(i,t,"zh")}
-if(t===2){let chars=[...v.zh],order=chars.map((_,j)=>j).reverse();prompt='<div class="quiz-prompt">Собери слово: '+v.ru+'</div><p class="helper">'+v.py+'</p><div class="answer-box">'+(S.quizPicked.map(k=>chars[k]).join("")||"Нажимай на иероглифы")+'</div>';buttons='<div class="tokens">'+order.map(k=>'<button class="token" data-letter="'+k+'" '+(S.quizPicked.includes(k)?"disabled":"")+'>'+chars[k]+'</button>').join("")+'</div><div class="controls"><button class="soft" data-clear-letter>Очистить</button><button class="primary inline-primary" data-check-letter>✓ Проверить</button></div>'}
-if(t===3){prompt='<div class="quiz-prompt">Заполни пропуск</div><div class="quiz-word" lang="zh" style="font-size:28px">我每天 ____ 。</div><p class="helper">Подставь слово: '+v.ru+'</p>';buttons=choices(i,t,"zh")}
-if(t===4){prompt='<div class="quiz-prompt">Произнеси в микрофон</div><div class="quiz-word" lang="zh">'+v.zh+'</div><p class="helper">'+v.py+'</p><div style="display:flex;justify-content:center;gap:15px;margin:15px">'+sayBtn(v.zh)+'<button class="round mic" data-mic="quiz" aria-label="Произнести в микрофон">🎙</button></div><p class="helper">Проверяется только распознанный текст, не точность тонов.</p>'}
-if(already){buttons='<div class="feedback ok">✓ Слово выполнено · '+(already.correctFirst?"с первой попытки":"после исправления")+'</div>'}
-return '<section class="stage">'+headerBlock+'<article class="glass" style="margin-top:11px">'+prompt+buttons+'</article><div class="controls"><button class="soft" data-quiz-prev>‹ Назад</button><button class="soft" data-quiz-home>Все тесты</button><button class="primary inline-primary" data-quiz-next>'+(i===5?"Завершить тест":"Следующее ▶")+'</button></div><p class="helper">Ответы сохраняются при переходах между экранами.</p></section>'}
-function choices(i,t,field){let opts=[0,1,2,3].map(k=>(i+k)%6);opts=opts.slice((i+t)%4).concat(opts.slice(0,(i+t)%4));return '<div class="choice-grid">'+opts.map(k=>'<button type="button" class="choice" data-choice="'+k+'">'+(field==="ru"?vocab[k].ru:vocab[k].zh)+'</button>').join("")+'</div>'}
-const grammTokens=["我","起床","以后","洗脸","。"],grammShuffled=[2,0,3,1,4];
-function grammar(){return '<section class="stage"><h1 class="pill-title">📚 Грамматика</h1><div class="rule"><b class="cn" lang="zh">以后</b><span class="py">yǐhòu — после того как</span><p>Ставим 以后 после первого действия, чтобы сказать, что делаем потом.</p></div><div class="glass example"><img src="'+img(1)+'" alt="Панда умывается"><div><b class="cn" lang="zh">我起床以后洗脸。</b><span class="py">Wǒ qǐchuáng yǐhòu xǐliǎn.</span><span class="ru">После того как я встаю, я умываюсь.</span></div></div><div class="glass"><h3 style="text-align:center;margin:3px 0 10px">🧩 Составь предложение</h3><div class="tokens">'+grammShuffled.map(i=>'<button type="button" class="token" data-gram="'+i+'" '+(S.grammar.includes(i)?"disabled":"")+'>'+grammTokens[i]+'</button>').join("")+'</div><div class="answer-box">'+(S.grammar.map(i=>grammTokens[i]).join("")||"Выбирай слова по порядку")+'</div><div class="controls"><button class="soft" data-gram-undo>↶ Отменить</button><button class="soft" data-gram-clear>Очистить</button><button class="primary inline-primary" data-gram-check>✓ Проверить</button></div><p class="helper">Схема: 我 + 起床 + 以后 + 洗脸 + 。</p>'+(S.grammarDone?'<div class="feedback ok">✓ Грамматика выполнена</div>':"")+'</div></section>'}
-function day(){return '<section class="stage"><h1 class="pill-title">🎯 Мой распорядок</h1><p class="helper">Нажимай на карточки в порядке дня Панды — от подъёма до сна.</p><div class="practice-grid">'+S.dayShuffled.map(i=>'<button class="day-card'+(S.dayOrder.includes(i)?" selected":"")+'" data-day="'+i+'" '+(S.dayOrder.includes(i)?"disabled":"")+'><img src="'+img(i)+'" alt="'+vocab[i].ru+'"><strong class="cn" lang="zh">'+vocab[i].zh+'</strong><span class="py">'+vocab[i].py+'</span>'+(S.dayOrder.includes(i)?'<span class="position">'+(S.dayOrder.indexOf(i)+1)+'</span>':"")+'</button>').join("")+'</div><div class="glass" style="margin-top:11px"><b>Твой порядок:</b><div class="answer-box" style="font-size:13px;min-height:53px">'+(S.dayOrder.map(i=>vocab[i].zh).join(" → ")||"Выбери первое действие")+'</div><div class="controls"><button class="soft" data-day-undo>↶ Отменить</button><button class="soft" data-day-reset>Сброс</button><button class="primary inline-primary" data-day-check>✓ Проверить</button></div>'+(S.dayDone?'<div class="feedback ok">✓ Порядок всех шести действий верный!</div>':"")+'</div></section>'}
-function tones(){return '<section class="stage"><article class="glass tone-hero"><img src="'+assets+'hero-reading.webp" alt="Панда в розовых наушниках"><div><h2>🎙 Тренировка тонов</h2><p>Слушай и повторяй слова урока.</p></div></article><div class="tone-rows">'+vocab.map((v,i)=>'<article class="tone-row"><img src="'+img(i)+'" alt="Панда: '+v.ru+'"><div><strong class="cn" lang="zh">'+v.zh+'</strong><span class="py">'+v.py+'</span><div class="tonemarks">'+v.tones.map(mark).join("")+'</div><div class="tone-curve">'+(v.spoken?"В речи: 2 → 3":"▂▅▃▇▂▅")+'</div></div>'+sayBtn(v.zh)+'<button type="button" class="round mic'+(S.mic.includes(i)?" recognized":"")+'" data-mic="'+i+'" aria-label="Произнести '+v.zh+'">🎙</button></article>').join("")+'</div><article class="glass tones-tip"><h3>Подсказка: 4 тона в китайском</h3><div class="four-tones"><div><b>1-й</b><strong>ā</strong><small>ровный</small></div><div><b>2-й</b><strong>á</strong><small>восходящий</small></div><div><b>3-й</b><strong>ǎ</strong><small>низкий, затем вверх</small></div><div><b>4-й</b><strong>à</strong><small>резко падающий</small></div></div></article><div class="glass prize"><span class="medal">🏅</span><div style="flex:1"><b>Распознано слов: '+S.mic.length+' из 6</b><div class="progressbar" style="margin-top:6px"><div style="width:'+(S.mic.length/6*100)+'%"></div></div></div></div><p class="helper">洗脸 пишется 3 + 3; в обычной речи первый слог звучит как 2-й тон. Распознавание текста не проверяет контур тона.</p></section>'}
-function chat(){const i=S.chat.length;return '<section class="stage"><h1 class="pill-title">💬 Фразы и диалог</h1><div class="phrase-list">'+phrases.map(p=>'<article class="glass phrase"><div><strong class="cn" lang="zh">'+p.zh+'</strong><span class="py">'+p.py+'</span><span class="ru">'+p.ru+'</span></div>'+sayBtn(p.zh)+'</article>').join("")+'</div><h2 class="section-title" style="font-size:20px;margin-top:14px">Разговор с Пандой</h2><p class="helper">Учебный сценарий с выбором ответов — не свободный AI-диалог.</p>'+S.chat.map((r,j)=>'<div class="chat"><b>Панда</b><strong class="cn" lang="zh">'+dialogue[j].q+'</strong></div><div class="chat me"><b>Ты</b><strong class="cn" lang="zh">'+r+'</strong></div>').join("")+(i<3?'<div class="chat"><b>Панда '+sayBtn(dialogue[i].q,'▶')+'</b><strong class="cn" lang="zh">'+dialogue[i].q+'</strong><span class="py">'+dialogue[i].py+'</span><span class="ru">'+dialogue[i].ru+'</span></div><div class="choice-grid">'+dialogue[i].answers.map((a,j)=>'<button class="choice" data-chat="'+j+'">'+a[0]+'<span class="ru">'+a[1]+'</span></button>').join("")+'</div><div class="controls"><button class="soft" data-dialogue-mic>🎙 Ответить голосом</button></div>':'<div class="feedback ok">✓ Ты ответил на три вопроса Панды.</div>')+'<div class="controls"><button class="soft" data-chat-reset>Повторить диалог</button></div><p class="helper">Интеграция Panda AI — отдельный будущий этап, существующий Panda AI не изменён.</p></section>'}
-function finish(){let qq=quizCount(),correctFirst=S.quiz.flat().filter(x=>x&&x.correctFirst).length,all=qq===30&&S.grammarDone&&S.dayDone&&S.chat.length===3;
-return '<section class="stage"><div class="glass hero-finish"><img src="'+assets+'hero-reading.webp" alt="Панда поздравляет с завершением"><div><h2>'+(all?"Поздравляем!":"Твой прогресс")+'</h2><p class="helper" style="text-align:left">HSK 2 · Мой день</p></div></div><div class="trophy">'+(all?"🏆":"🏅")+'</div><h1 class="section-title">'+(all?"Основные задания выполнены!":"Что уже получилось")+'</h1><div class="glass"><div class="stats"><div class="stat">Мини-тесты <span>'+qq+' / 30</span></div><div class="stat">С первой попытки <span>'+correctFirst+' / '+qq+'</span></div><div class="stat">Грамматика 以后 <span>'+(S.grammarDone?"✓ Выполнено":"Не выполнено")+'</span></div><div class="stat">Распорядок <span>'+(S.dayDone?"✓ Выполнено":"Не выполнено")+'</span></div><div class="stat">Распознано слов <span>'+tonesCount()+' / 6</span></div><div class="stat">Ответы в диалоге <span>'+S.chat.length+' / 3</span></div></div><p class="helper">'+(all?"Результаты получены из выполненных заданий.":"Здесь показаны только фактические результаты. Можно вернуться к любому шагу.")+'</p><div class="controls"><button class="soft" data-review>Вернуться к тестам</button><button class="soft" data-restart>Сбросить результаты</button></div></div></section>'}
-function playChinese(text){alertText="Демо: проигрывается голос браузера, не MP3 носительницы.";alertGood=false;
-if(!("speechSynthesis" in window)){showMessage("Нет MP3 для «"+text+"», и браузер не поддерживает озвучивание.",false);return}
-try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="zh-CN";u.rate=.78;const vv=speechSynthesis.getVoices();u.voice=vv.find(v=>/^zh[-_]CN/i.test(v.lang))||vv.find(v=>/^zh[-_]/i.test(v.lang))||null;u.onerror=()=>{showMessage("Не удалось воспроизвести голос браузера. Проверенный MP3 не найден.",false)};speechSynthesis.speak(u);showMessage("Демо: голос браузера для «"+text+"». Проверенная MP3-запись не подключена.",false)}catch(e){showMessage("Невозможно воспроизвести звук: "+e.message,false)}
+
+function blank() {
+  return {
+    step:1, quiz:tests.map(() => words.map(() => null)),
+    missed:tests.map(() => words.map(() => false)), quizTest:null, quizIndex:0, quizPicked:[],
+    grammar:[], grammarDone:false, dayOrder:[], dayShuffled:mixedDay(), dayDone:false,
+    mic:[], chat:[], toneTab:'words'
+  };
 }
-function micChinese(expected,callback){const Rec=window.SpeechRecognition||window.webkitSpeechRecognition;
-if(!Rec){showMessage("Распознавание речи недоступно в этом браузере. Попробуй Chrome на Android по HTTPS.",false);return}
-if(recognition){try{recognition.abort()}catch(e){}}
-try{const r=new Rec();recognition=r;r.lang="zh-CN";r.continuous=false;r.interimResults=false;r.maxAlternatives=1;
-r.onresult=e=>{let heard=e.results[0][0].transcript||"";let norm=s=>s.replace(/[\s。，？！.,!?]/g,"");let ok=norm(heard)===norm(expected);recognition=null;if(ok)callback(heard);else showMessage("Распознано: "+heard+". Ожидалось: "+expected+". Попробуй ещё раз. Тоны не оценивались.",false)};
-r.onerror=e=>{recognition=null;showMessage("Микрофон: "+e.error+". Для распознавания дай разрешение браузеру.",false)};
-r.onend=()=>{if(recognition===r)recognition=null};
-r.start();showMessage("🎙 Слушаю: произнеси «"+expected+"». Распознавание текста ≠ проверка тонов. Браузер может отправлять аудио на обработку.",false)
-}catch(e){showMessage("Микрофон не запустился: "+e.message,false)}
+
+function restore() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(key));
+    if (saved) return Object.assign(blank(),saved);
+    const previous = JSON.parse(localStorage.getItem(previousKey));
+    if (!previous) return blank();
+    const next = blank();
+    for (const field of ['step','grammar','grammarDone','dayOrder','dayShuffled','dayDone','mic']) {
+      if (Object.hasOwn(previous,field)) next[field] = previous[field];
+    }
+    // Listening prompts and dialogue questions changed in this version.
+    for (const index of [0,2,3,4]) {
+      if (Array.isArray(previous.quiz?.[index]) && previous.quiz[index].length === words.length) {
+        next.quiz[index] = previous.quiz[index];
+      }
+    }
+    if (dialogue[0].answers.some(([answer]) => answer === previous.chat?.[0])) {
+      next.chat = previous.chat.slice(0,2);
+    }
+    return next;
+  } catch {
+    return blank();
+  }
 }
-document.addEventListener("click",function(e){
-const b=e.target.closest("button");if(!b)return;const d=b.dataset;
-if(d.step){go(Number(d.step));return}
-if(d.say){playChinese(d.say);return}
-if(d.test!==undefined){S.quizTest=Number(d.test);S.quizIndex=S.quiz[S.quizTest].findIndex(v=>!v);if(S.quizIndex<0)S.quizIndex=0;S.quizWrong=false;S.quizPicked=[];storage();render(true);return}
-if(d.quizHome!==undefined){S.quizTest=null;alertText="";storage();render(true);return}
-if(d.quizPrev!==undefined){S.quizIndex=Math.max(0,S.quizIndex-1);S.quizPicked=[];alertText="";storage();render(false);return}
-if(d.quizNext!==undefined){if(S.quizIndex<5){S.quizIndex++;S.quizPicked=[];S.quizWrong=false;alertText="";storage();render(false)}else{S.quizTest=null;storage();render(true)}return}
-if(d.choice!==undefined){let t=S.quizTest,i=S.quizIndex,k=Number(d.choice);if(S.quiz[t][i])return;if(k===i){recordDone(t,i,"choice")}else{S.quizWrong=true;S.mistakes++;showMessage("Пока неверно. Попробуй ещё раз — ответ не засчитан.",false)}return}
-if(d.letter!==undefined){const i=Number(d.letter);if(!S.quizPicked.includes(i)){S.quizPicked.push(i);storage();render(false)}return}
-if(d.clearLetter!==undefined){S.quizPicked=[];storage();render(false);return}
-if(d.checkLetter!==undefined){let i=S.quizIndex;if(S.quizPicked.map(k=>[...vocab[i].zh][k]).join("")===vocab[i].zh){recordDone(2,i,"assemble")}else{S.quizWrong=true;S.mistakes++;showMessage("Порядок иероглифов неправильный. Очисти и повтори.",false)}return}
-if(d.gram!==undefined){let k=Number(d.gram);if(!S.grammar.includes(k)){S.grammar.push(k);S.grammarDone=false;storage();render(false)}return}
-if(d.gramUndo!==undefined){S.grammar.pop();S.grammarDone=false;storage();render(false);return}
-if(d.gramClear!==undefined){S.grammar=[];S.grammarDone=false;storage();render(false);return}
-if(d.gramCheck!==undefined){S.grammarDone=S.grammar.join(",")==="0,1,2,3,4";storage();showMessage(S.grammarDone?"✓ Отлично! После 起床 ставим 以后, затем 洗脸.":"Порядок неверный. Сначала 我起床, затем 以后, потом 洗脸。",S.grammarDone);return}
-if(d.day!==undefined){const k=Number(d.day);if(!S.dayOrder.includes(k)){S.dayOrder.push(k);S.dayDone=false;storage();render(false)}return}
-if(d.dayUndo!==undefined){S.dayOrder.pop();S.dayDone=false;storage();render(false);return}
-if(d.dayReset!==undefined){S.dayOrder=[];S.dayDone=false;S.dayShuffled=shuffle([0,1,2,3,4,5]);storage();render(false);return}
-if(d.dayCheck!==undefined){S.dayDone=S.dayOrder.length===6&&S.dayOrder.every((v,i)=>v===i);storage();showMessage(S.dayDone?"✓ Верно! Так проходит день Панды.":"Порядок не совпадает с распорядком Панды. Проверь все шесть действий.",S.dayDone);return}
-if(d.mic!==undefined){const i=Number(d.mic);
-if(d.mic==="quiz"){const t=S.quizTest,j=S.quizIndex;micChinese(vocab[j].zh,heard=>{recordDone(t,j,"speech-recognition");showMessage("✓ Браузер распознал: "+heard+". Точность тонов не проверялась.",true)})}
-else{micChinese(vocab[i].zh,heard=>{if(!S.mic.includes(i))S.mic.push(i);storage();showMessage("✓ Распознано: "+heard+". Это не оценка произношения тонов.",true)})}return}
-if(d.chat!==undefined){let i=S.chat.length;if(i>=3)return;S.chat.push(dialogue[i].answers[Number(d.chat)][0]);storage();alertText="";render(false);return}
-if(d.dialogueMic!==undefined){let i=S.chat.length;if(i>=3)return;const acceptable=dialogue[i].answers.map(a=>a[0]);const Rec=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Rec){showMessage("Голосовой ответ недоступен в этом браузере.",false);return}
-try{let r=new Rec();recognition=r;r.lang="zh-CN";r.onresult=e=>{const heard=e.results[0][0].transcript||"";const norm=x=>x.replace(/[\s。，？！.,!?]/g,"");let matched=acceptable.find(a=>norm(a)===norm(heard));recognition=null;if(matched){S.chat.push(matched);storage();showMessage("✓ Распознано: "+heard+". Тоны не оценивались.",true)}else showMessage("Распознано: "+heard+". Выбери или произнеси один из предложенных ответов.",false)};r.onerror=e=>showMessage("Ошибка микрофона: "+e.error,false);r.start();showMessage("🎙 Ответь на китайском. Это сценарная проверка текста, не Panda AI.",false)}catch(e){showMessage("Не удалось открыть микрофон.",false)}return}
-if(d.chatReset!==undefined){S.chat=[];storage();render(false);return}
-if(d.review!==undefined){S.quizTest=null;go(3);return}
-if(d.restart!==undefined){if(window.confirm("Сбросить результаты упражнений этого preview?")){S=blank();storage();go(1)}return}
+
+let state = restore();
+let audio = null;
+let speech = null;
+let feedback = '';
+let positive = false;
+let heardClip = null;
+const app = document.getElementById('app');
+const workspace = document.getElementById('workspace');
+const nav = document.getElementById('steps');
+const back = document.getElementById('back');
+const next = document.getElementById('next');
+const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const playIcon = '<span class="play" aria-hidden="true"></span>';
+const speaker = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke-linejoin="round"/><path d="M16 8a6 6 0 0 1 0 8m2.5-10a9 9 0 0 1 0 12" stroke-linecap="round"/></svg>';
+const microphone = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5 11v1a7 7 0 0 0 14 0v-1M12 19v3m-3 0h6"/></svg>';
+const wave = '<svg class="wave" viewBox="0 0 70 18" aria-hidden="true"><path d="M2 8v2m4-3v4m4-5v6m4-8v10m4-7v4m4-7v10m4-13v16m4-12v8m4-6v4m4-7v10m4-8v6m4-5v4m4-7v10m4-13v16m4-11v6m4-8v10m4-7v4" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>';
+const scope = () => state.step + ':' + state.quizTest + ':' + state.quizIndex;
+const correctCount = index => state.quiz[index].filter(Boolean).length;
+const quizCount = () => state.quiz.flat().filter(Boolean).length;
+const vocabImage = i => i === 5 ? art('sleep') : '<img src="' + asset + 'word-' + (i+1) + '.webp" alt="">';
+const art = name => '<img src="' + decoration + name + '.webp" alt="">';
+const hanzi = html => '<strong class="cn" lang="zh-Hans">' + html + '</strong>';
+const pitchRow = values => '<div class="tonemarks">' + values.map(v => '<span class="tone-number">' + v + '</span>').join('') + '</div>';
+const translate = item => '<span class="py">' + item[1] + '</span><span class="ru">' + item[2] + '</span>';
+const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' good' : '') + '" role="status">' + escape(feedback) + '</div>';
+
+function audioButton(text, icon = speaker, blind = false) {
+  const available = clips.has(normalize(text));
+  const label = blind ? 'Прослушать запись' : available ? 'Прослушать ' + text : 'Для «' + text + '» отдельной записи нет';
+  return '<button type="button" class="orb' + (available ? '' : ' missing') + '" data-say="' +
+    escape(text) + '" aria-label="' + escape(label) + '" title="' + escape(label) + '">' + (available ? icon : '<span aria-hidden="true">♪</span>') + '</button>';
+}
+
+function micButton(id, label, recognized = false) {
+  return '<button type="button" class="orb mic' + (recognized ? ' recognized' : '') + '" data-mic="' + id +
+    '" aria-label="' + escape(label) + '">' + microphone + '</button>';
+}
+
+function save() {
+  try { localStorage.setItem(key,JSON.stringify(state)); } catch {}
+}
+
+function setStatus(message, good = false) {
+  feedback = message;
+  positive = good;
+  const box = document.getElementById('feedback');
+  if (box) {
+    box.classList.toggle('good',good);
+    box.textContent = message;
+  }
+}
+
+function clearMedia() {
+  if (audio) {
+    audio.pause();
+    audio = null;
+    workspace.querySelector('[data-say][aria-pressed=true]')?.removeAttribute('aria-pressed');
+  }
+  if (speech) {
+    const current = speech;
+    speech = null;
+    current.abort();
+  }
+}
+
+function move(step) {
+  clearMedia();
+  feedback = '';
+  heardClip = null;
+  state.step = Math.max(1,Math.min(8,step));
+  if (state.step !== 3) state.quizTest = null;
+  save();
+  render(true);
+}
+
+function render(resetScroll = false) {
+  const step = state.step;
+  const detailed = step === 3 || step === 6;
+  app.classList.toggle('detail',detailed);
+  document.getElementById('head-label').textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
+  nav.innerHTML = titles.map((title,i) => '<button type="button" class="nav-step" data-step="' + (i+1) +
+    '" aria-current="' + (step === i+1 ? 'step' : 'false') + '" aria-label="Шаг ' + (i+1) + ' · ' + title + '"><span>' + (i+1) + '</span></button>').join('');
+  workspace.innerHTML = [intro,newWords,quiz,grammar,day,tones,chat,finish][step-1]();
+  back.hidden = detailed || step === 1;
+  next.textContent = step === 8 ? 'К началу ↻' : step === 3 && state.quizTest !== null ? 'К списку тестов' : 'Дальше · ' + titles[step] + ' →';
+  if (resetScroll) window.scrollTo(0,0);
+}
+function intro() {
+  const features = ['6 слов','5 мини-тестов','грамматика','распорядок','произношение','диалог'];
+  return '<div class="intro-hero"><img src="' + asset + 'hero-reading.webp" alt="Панда с красной книгой">' +
+    '<div class="cloud"><h1 lang="zh-Hans">我的一天</h1><span class="py">Wǒ de yì tiān</span><b>Мой день</b></div></div>' +
+    '<section class="features"><h2 class="ribbon">✦ Тебя ждут ✦</h2><div class="feature-grid">' +
+    features.map((label,i) => '<div>' + art('feature-' + (i+1)) + label + '</div>').join('') + '</div></section>';
+}
+
+function newWords() {
+  return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' + words.map((word,i) =>
+    '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + '<div>' +
+    translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh,playIcon) + '</article>').join('') +
+    '</div><p class="hint audio-note">♪ Отдельных записей этих слов пока нет. Записи фраз есть в шагах 3, 6 и 7.</p>' + safeStatus();
+}
+
+function hero(kind,step,title,subtitle) {
+  return '<div class="detail-hero ' + kind + '-hero">' + art(kind + '-panda') +
+    '<div class="hero-message"><span class="tag">Шаг ' + step + '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div></div>';
+}
+
+function quiz() {
+  if (state.quizTest !== null) return question();
+  return hero('quiz',3,'Проверь слова!','Пять интерактивных тестов по словам урока.') +
+    '<div class="test-list">' + tests.map((title,i) => {
+      const total = correctCount(i);
+      return '<button type="button" class="test-card" data-test="' + i + '"><span class="badge">' + (i+1) + '</span>' +
+        art('test-' + (i+1)) + '<span><strong>Тест ' + (i+1) + ' · ' + title +
+        '</strong><small>' + testHelp[i] + (total ? ' · ' + total + '/6' : '') + '</small></span><span class="orb' +
+        (total === 6 ? ' done' : '') + '" aria-hidden="true">' + (total === 6 ? '✓' : playIcon) + '</span></button>';
+    }).join('') + '</div><div class="reward panel">' + art('trophy') +
+    '<strong>Закрепи слова урока в пяти разных заданиях!</strong></div><button type="button" class="primary large" data-start>Начать тесты ' + playIcon + '</button>';
+}
+
+function choices(correct,category,seed,locked) {
+  const ids = [0,1,2,3].map(offset => (correct+offset)%words.length);
+  for (let i=0; i<seed%4; i++) ids.push(ids.shift());
+  return '<div class="choice-grid">' + ids.map(id => '<button type="button" class="choice" data-choice="' + id +
+    '"' + (category === 'zh' ? ' lang="zh-Hans"' : '') + (locked ? ' disabled' : '') + '>' +
+    words[id][category] + '</button>').join('') + '</div>';
+}
+
+function question() {
+  const t = state.quizTest;
+  const i = state.quizIndex;
+  const word = words[i];
+  const done = state.quiz[t][i];
+  let content;
+  switch (t) {
+    case 0:
+      content = '<div class="quiz-word" lang="zh-Hans">' + word.zh + '</div><p class="py">' + word.py + '</p>' +
+        (done ? '' : choices(i,'ru',i,false));
+      break;
+    case 1: {
+      const [clip,answer] = listening[i];
+      content = '<p class="hint">Какое действие звучит в конце фразы?</p><div class="controls">' +
+        audioButton(clip,speaker,true) + '</div>' + (done ? '' : choices(answer,'zh',i+1,heardClip !== scope()));
+      break;
+    }
+    case 2: {
+      const chars = [...word.zh];
+      const order = chars.map((_,j) => (j+1)%chars.length);
+      const current = state.quizPicked.map(j => chars[j]).join('');
+      content = '<div class="quiz-word">' + word.ru + '</div><p class="py">' + word.py + '</p>' +
+        (done ? '' : '<div class="answer" lang="zh-Hans" data-placeholder="Нажимай на иероглифы">' + current + '</div>' +
+          '<div class="tokens">' + order.map(j => '<button type="button" class="token" lang="zh-Hans" data-letter="' + j + '"' +
+          (state.quizPicked.includes(j) ? ' disabled' : '') + '>' + chars[j] + '</button>').join('') + '</div>' +
+          '<div class="controls"><button type="button" class="soft" data-letter-clear>Очистить</button><button type="button" class="primary" data-letter-check>Проверить</button></div>');
+      break;
+    }
+    case 3:
+      content = '<div class="quiz-word" lang="zh-Hans">' + word.fill + '</div><p class="hint">' + word.hint + '</p>' +
+        (done ? '' : choices(i,'zh',i+3,false));
+      break;
+    case 4:
+      content = '<div class="quiz-word" lang="zh-Hans">' + word.zh + '</div><p class="py">' + word.py + '</p>' +
+        (done ? '' : '<div class="controls">' + micButton('quiz','Произнести ' + word.zh) + '</div>') +
+        '<p class="hint">Проверяем, распознано ли слово. Тоны здесь не оцениваются.</p>';
+      break;
+  }
+  return '<article class="panel section-panel"><h1>Тест ' + (t+1) + ' · ' + tests[t] + '</h1><p class="hint">Задание ' +
+    (i+1) + ' из 6 · выполнено ' + correctCount(t) + '</p>' + content + safeStatus() +
+    (done && !feedback ? '<div class="feedback good">✓ ' + (t === 4 ? 'Слово распознано' : 'Ответ засчитан') + '</div>' : '') +
+    '<div class="controls"><button type="button" class="soft" data-question="-1"' + (!i ? ' disabled' : '') +
+    '>‹ Предыдущее</button><button type="button" class="primary" data-question="1">' +
+    (i === 5 ? 'К списку' : 'Следующее →') + '</button></div></article>';
+}
+
+function tokenButtons(order,selected,key) {
+  return order.map(i => '<button type="button" class="token" lang="zh-Hans" data-' + key + '="' + i +
+    '"' + (selected.includes(i) ? ' disabled' : '') + '>' + tokens[i] + '</button>').join('');
+}
+
+function grammar() {
+  const current = state.grammar.map(i => tokens[i]).join('');
+  return '<h1 class="pill-title">📚 Грамматика</h1><div class="cloud rule-cloud">' + hanzi('以后') +
+    '<span class="py">yǐhòu</span><b>после того как…</b></div><p class="grammar-explain hint">Ставим 以后 после первого действия, чтобы сказать, что делаем потом.</p>' +
+    '<article class="panel example"><span class="tag">Пример</span>' + vocabImage(1) + '<div>' +
+    hanzi('我起床<em>以后</em>洗脸。') + translate(phrases[2]) + '</div>' + audioButton(phrases[2][0]) + '</article>' +
+    '<h2 class="builder-title">Составь предложение</h2><div class="tokens">' + tokenButtons([2,0,3,1,4],state.grammar,'gram') +
+    '</div><div class="answer" lang="zh-Hans" data-placeholder="Нажимай на карточки по порядку">' + current + '</div>' +
+    '<div class="controls"><button type="button" class="soft" data-gram-undo>↶ Отменить</button>' +
+    '<button type="button" class="soft" data-gram-clear>Очистить</button></div>' +
+    '<button type="button" class="primary large" data-gram-check>✓ Проверить</button>' + safeStatus() +
+    (state.grammarDone && !feedback ? '<p class="feedback good">✓ Предложение собрано верно</p>' : '');
+}
+
+function day() {
+  return '<h1 class="pill-title day-title">🎯 Практика · Мой распорядок</h1><p class="hint">Расположи действия по порядку.</p>' +
+    '<div class="practice-grid">' + state.dayShuffled.map(i => {
+      const position = state.dayOrder.indexOf(i);
+      return '<button type="button" class="day-card' + (position >= 0 ? ' selected' : '') + '" data-day="' + i + '"' +
+        (position >= 0 ? ' disabled' : '') + ' aria-label="' + words[i].ru + '">' + vocabImage(i) + hanzi(words[i].zh) +
+        '<span class="py">' + words[i].py + '</span>' + (position >= 0 ? '<span class="position">' + (position+1) + '</span>' : '') + '</button>';
+    }).join('') + '</div><div class="answer" lang="zh-Hans" data-placeholder="Выбери первое действие">' +
+    state.dayOrder.map(i => words[i].zh).join(' → ') + '</div><div class="controls"><button type="button" class="soft" data-day-undo>↶ Отменить</button>' +
+    '<button type="button" class="soft" data-day-reset>Сброс</button></div><button type="button" class="primary large" data-day-check>' + playIcon + ' Проверить порядок</button>' +
+    safeStatus() + (state.dayDone && !feedback ? '<p class="feedback good">✓ Все шесть действий по порядку</p>' : '');
+}
+
+function phraseCards() {
+  return '<div class="phrases">' + phrases.map(item => '<article class="phrase panel"><div>' + hanzi(item[0]) +
+    translate(item) + '</div>' + audioButton(item[0]) + '</article>').join('') + '</div>';
+}
+
+function toneGuide() {
+  const samples = [
+    ['ā','высокий, ровный','M3 9h39'],
+    ['á','идёт вверх','M3 14 41 3m-7 0h7l-4 6'],
+    ['ǎ','низкий, затем вверх в изоляции','M3 4q18 23 38-1m-7 2 7-2-2 7'],
+    ['à','резко падает','M3 3l38 12m-7-1 7 1-4-5']
+  ];
+  return '<section class="tone-guide"><h2>Подсказка · 4 тона в китайском</h2><div class="tone-grid">' +
+    samples.map(([sample,name,path],i) => '<div><b>' + (i+1) + '-й тон</b><svg viewBox="0 0 45 18" aria-hidden="true">' +
+    '<path d="' + path + '" stroke="#af183e" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg><strong>' +
+    sample + '</strong>' + name + '</div>').join('') + '</div></section>';
+}
+
+function tones() {
+  const wordView = state.toneTab === 'words';
+  return hero('tones',6,'Тренировка тонов','Повтори слова урока. Микрофон распознаёт речь.') +
+    '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
+    '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
+    '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (6)</button></div>' +
+    (wordView ? '<div class="tone-list">' + words.map((word,i) => '<article class="tone-row">' + vocabImage(i) + '<div>' +
+      hanzi(word.zh) + translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh) + '<div>' +
+      pitchRow(word.tones) + wave + '</div>' + micButton(i,'Произнести ' + word.zh,state.mic.includes(i)) + '</article>').join('') + '</div>' : phraseCards()) +
+    safeStatus() + toneGuide() + '<div class="progress-panel panel">' + art('medal') + '<div><b>Распознавание слов</b>' +
+    '<progress max="6" value="' + state.mic.length + '" aria-label="Распознано слов"></progress></div><b>' + state.mic.length +
+    ' из 6</b></div><p class="hint audio-note">洗脸 — xǐliǎn (3 + 3). В связной речи первый слог звучит со 2-м тоном. Волна декоративная, оценки тонов нет.</p>' +
+    (wordView ? '<p class="hint audio-note">♪ Отдельных MP3 для шести слов пока нет.</p>' : '');
+}
+
+function bubble(role,item) {
+  return '<article class="panel chat-bubble' + (role === 'Ты' ? ' me' : '') + '"><b class="chat-role">' + role + '</b>' +
+    '<div class="phrase"><div>' + hanzi(item[0]) + (item.length === 3 ? translate(item) : '<span class="ru">' + item[1] + '</span>') +
+    '</div>' + audioButton(item[0]) + '</div></article>';
+}
+
+function chat() {
+  const i = state.chat.length;
+  const exchange = dialogue[i];
+  return '<h1 class="pill-title">💬 Фразы и диалог</h1>' + phraseCards() + '<p class="hint audio-note">♪ Для некоторых фраз точной записи пока нет.</p>' +
+    '<section class="dialogue"><h2>Разговор с Пандой</h2><p class="hint">Учебный сценарий. Выбери или произнеси один из ответов.</p>' +
+    state.chat.map((reply,j) => bubble('Панда',dialogue[j].prompt) + bubble('Ты',dialogue[j].answers.find(a => a[0] === reply) ?? [reply,''])).join('') +
+    (exchange ? bubble('Панда',exchange.prompt) + '<div class="choice-grid">' + exchange.answers.map(([answer,translation],j) =>
+      '<button type="button" class="choice" data-chat="' + j + '"><span lang="zh-Hans">' + answer + '</span><span class="ru">' +
+      translation + '</span></button>').join('') + '</div><div class="controls"><button type="button" class="soft" data-mic="chat">🎙 Ответить голосом</button></div>' :
+      '<p class="feedback good">✓ Ты ответил на все три вопроса.</p>') + safeStatus() +
+    (i ? '<div class="controls"><button type="button" class="soft" data-chat-reset>Начать диалог заново</button></div>' : '') + '</section>';
+}
+
+function finish() {
+  const completed = quizCount() === 30 && state.grammarDone && state.dayDone && state.mic.length === 6 && state.chat.length === 3;
+  const result = (label,value,className='') => '<div class="' + className + '"><dt>' + label + '</dt><dd>' + value + '</dd></div>';
+  return '<div class="final-hero panel"><img src="' + asset + 'hero-reading.webp" alt="Панда с красной книгой"><div>' +
+    '<img class="award" src="' + decoration + (completed ? 'trophy' : 'medal') + '.webp" alt=""><h1>' + (completed ? 'Урок пройден!' : 'Твой прогресс') +
+    '</h1><p class="hint">Урок 1 «Мой день»</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
+    result('Все мини-тесты',quizCount() + ' / 30','all') + tests.map((test,i) => result(test,correctCount(i) + ' / 6')).join('') +
+    result('Грамматика 以后',state.grammarDone ? '✓ Выполнено' : 'Ожидает проверки') +
+    result('Распорядок',state.dayDone ? '✓ Выполнено' : 'Ожидает проверки') + result('Распознано слов',state.mic.length + ' / 6') +
+    result('Ответы в диалоге',state.chat.length + ' / 3') + '</dl><div class="controls"><button type="button" class="soft" data-step="3">Вернуться к тестам</button></div></section>';
+}
+async function play(text,button) {
+  const clip = clips.get(normalize(text));
+  if (!clip) {
+    setStatus('Отдельной записи для «' + text + '» пока нет.');
+    return;
+  }
+  clearMedia();
+  const player = new Audio(clip);
+  audio = player;
+  const origin = scope();
+  button.setAttribute('aria-pressed','true');
+  const failure = () => {
+    if (audio !== player || origin !== scope()) return;
+    audio = null;
+    button.removeAttribute('aria-pressed');
+    setStatus('Запись не загрузилась. Попробуй прослушать ещё раз.');
+  };
+  player.addEventListener('error',failure,{once:true});
+  player.addEventListener('ended',() => {
+    if (audio !== player || origin !== scope()) return;
+    audio = null;
+    button.removeAttribute('aria-pressed');
+    if (state.step === 3 && state.quizTest === 1) {
+      heardClip = origin;
+      for (const choice of workspace.querySelectorAll('[data-choice]')) choice.disabled = false;
+      setStatus('Выбери действие, которое прозвучало в конце.',true);
+    } else {
+      setStatus('');
+    }
+  },{once:true});
+  try {
+    await player.play();
+    if (audio === player && origin === scope()) setStatus('Запись воспроизводится.',true);
+  } catch {
+    failure();
+  }
+}
+
+function recognize(allowed,onMatch,onMiss) {
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!Recognition || !window.isSecureContext) {
+    setStatus('Распознавание недоступно. Открой урок по HTTPS в браузере с поддержкой китайского распознавания речи.');
+    return;
+  }
+  clearMedia();
+  let instance;
+  try {
+    instance = new Recognition();
+    speech = instance;
+    instance.lang = 'zh-CN';
+    instance.continuous = false;
+    instance.interimResults = false;
+    instance.maxAlternatives = 3;
+    instance.onresult = event => {
+      if (speech !== instance) return;
+      speech = null;
+      const alternatives = Array.from(event.results[event.resultIndex || 0], item => item.transcript);
+      const match = allowed.find(text => alternatives.some(heard => normalize(heard) === normalize(text)));
+      if (match) onMatch(match);
+      else {
+        if (onMiss) onMiss();
+        setStatus('Распознано «' + (alternatives[0] || '…') + '». Попробуй ещё раз. Тоны не оценивались.');
+      }
+    };
+    instance.onerror = event => {
+      if (speech !== instance) return;
+      speech = null;
+      const errors = {
+        'not-allowed':'Разреши доступ к микрофону в настройках браузера и попробуй снова.',
+        'audio-capture':'Браузер не нашёл доступный микрофон.',
+        network:'Сервис распознавания речи недоступен. Проверь соединение и попробуй снова.',
+        'no-speech':'Браузер не распознал речь. Попробуй ещё раз.'
+      };
+      setStatus(errors[event.error] || 'Распознавание речи недоступно. Попробуй ещё раз.');
+    };
+    instance.onend = () => {
+      if (speech !== instance) return;
+      speech = null;
+      setStatus('Речь не распознана. Попробуй ещё раз.');
+    };
+    instance.start();
+    setStatus('Слушаю…');
+  } catch {
+    if (speech === instance) speech = null;
+    setStatus('Микрофон не запустился. Проверь разрешение и попробуй снова.');
+  }
+}
+
+function markQuiz(ok,method) {
+  const t = state.quizTest;
+  const i = state.quizIndex;
+  if (state.quiz[t][i]) return;
+  if (ok) {
+    state.quiz[t][i] = {correctFirst:!state.missed[t][i],method};
+    save();
+    setStatus(method === 'speech' ? '✓ Слово распознано. Тоны не оценивались.' : '✓ Верно. Ответ засчитан.',true);
+    render();
+  } else {
+    state.missed[t][i] = true;
+    save();
+    setStatus('Пока неверно. Попробуй ещё раз.');
+  }
+}
+
+function openTest(test) {
+  clearMedia();
+  state.quizTest = test;
+  state.quizIndex = test === null ? 0 : Math.max(0,state.quiz[test].findIndex(result => !result));
+  state.quizPicked = [];
+  heardClip = null;
+  feedback = '';
+  save();
+  render(true);
+}
+
+function changeQuestion(direction) {
+  const index = state.quizIndex + direction;
+  if (index >= words.length) {
+    openTest(null);
+    return;
+  }
+  if (index < 0) return;
+  clearMedia();
+  state.quizIndex = index;
+  state.quizPicked = [];
+  heardClip = null;
+  feedback = '';
+  save();
+  render(true);
+}
+
+function update() {
+  feedback = '';
+  save();
+  render();
+}
+
+function onMic(id) {
+  if (id === 'chat') {
+    const row = dialogue[state.chat.length];
+    if (!row) return;
+    recognize(row.answers.map(a => a[0]),answer => {
+      state.chat.push(answer);
+      save();
+      setStatus('✓ Ответ распознан.',true);
+      render();
+      followDialogue();
+    });
+  } else if (id === 'quiz') {
+    recognize([words[state.quizIndex].zh],() => markQuiz(true,'speech'),() => {
+      state.missed[state.quizTest][state.quizIndex] = true;
+      save();
+    });
+  } else {
+    const index = Number(id);
+    recognize([words[index].zh],match => {
+      if (!state.mic.includes(index)) state.mic.push(index);
+      save();
+      setStatus('✓ Распознано «' + match + '». Тоны не оценивались.',true);
+      render();
+    });
+  }
+}
+
+function followDialogue() {
+  const target = workspace.querySelector('.dialogue .chat-bubble:last-of-type');
+  if (target) target.scrollIntoView({block:'nearest'});
+}
+
+function checkOrder(part,length,success,failure) {
+  const order = part === 'grammar' ? state.grammar : state.dayOrder;
+  const ok = order.length === length && order.every((value,i) => value === i);
+  state[part + 'Done'] = ok;
+  save();
+  setStatus(ok ? success : failure,ok);
+  render();
+}
+
+const actions = {
+  step: value => move(Number(value)),
+  say: (value,button) => play(value,button),
+  test: value => openTest(Number(value)),
+  start: () => openTest(Math.max(0,tests.findIndex((_,i) => correctCount(i) < 6))),
+  question: value => changeQuestion(Number(value)),
+  choice: value => {
+    const correct = state.quizTest === 1 ? listening[state.quizIndex][1] : state.quizIndex;
+    markQuiz(Number(value) === correct,'choice');
+  },
+  letter: value => { state.quizPicked.push(Number(value)); update(); },
+  letterClear: () => { state.quizPicked = []; update(); },
+  letterCheck: () => {
+    const target = words[state.quizIndex].zh;
+    markQuiz(state.quizPicked.map(i => [...target][i]).join('') === target,'assemble');
+  },
+  gram: value => { state.grammar.push(Number(value)); state.grammarDone = false; update(); },
+  gramUndo: () => { state.grammar.pop(); state.grammarDone = false; update(); },
+  gramClear: () => { state.grammar = []; state.grammarDone = false; update(); },
+  gramCheck: () => checkOrder('grammar',5,'✓ Верно. После 起床 ставим 以后, затем 洗脸。','Проверь порядок. Сначала подлежащее и первое действие, затем 以后 и второе действие.'),
+  day: value => { state.dayOrder.push(Number(value)); state.dayDone = false; update(); },
+  dayUndo: () => { state.dayOrder.pop(); state.dayDone = false; update(); },
+  dayReset: () => { state.dayOrder = []; state.dayShuffled = mixedDay(); state.dayDone = false; update(); },
+  dayCheck: () => checkOrder('day',6,'✓ Все шесть действий по порядку.','Проверь все шесть действий, от подъёма до сна.'),
+  toneTab: value => { clearMedia(); state.toneTab = value; update(); },
+  mic: value => onMic(value),
+  chat: value => {
+    clearMedia();
+    state.chat.push(dialogue[state.chat.length].answers[Number(value)][0]);
+    update();
+    followDialogue();
+  },
+  chatReset: () => { clearMedia(); state.chat = []; update(); }
+};
+
+app.addEventListener('click',event => {
+  const button = event.target.closest('button');
+  if (!button || button.disabled) return;
+  for (const [action,value] of Object.entries(button.dataset)) {
+    if (Object.hasOwn(actions,action)) {
+      actions[action](value,button);
+      break;
+    }
+  }
 });
-back.addEventListener("click",()=>{if(S.step===3&&S.quizTest!==null){S.quizTest=null;storage();render(true)}else go(S.step-1)});
-next.addEventListener("click",()=>{if(S.step===3&&S.quizTest!==null){S.quizTest=null;storage();render(true)}
-else if(S.step===4&&!S.grammarDone){document.querySelector('[data-gram-check]')?.click()}
-else if(S.step===5&&!S.dayDone){document.querySelector('[data-day-check]')?.click()}
-else go(S.step===8?1:S.step+1)});
-if("speechSynthesis" in window){speechSynthesis.getVoices()}
-if(!Number.isInteger(S.step)||S.step<1||S.step>8)S.step=1;
-const fromQuery=Number(new URLSearchParams(location.search).get("step"));if(Number.isInteger(fromQuery)&&fromQuery>=1&&fromQuery<=8)S.step=fromQuery;
+
+function previousStep() {
+  if (state.step === 3 && state.quizTest !== null) openTest(null);
+  else move(state.step-1);
+}
+
+back.addEventListener('click',previousStep);
+document.getElementById('detail-back').addEventListener('click',previousStep);
+next.addEventListener('click',() => {
+  if (state.step === 3 && state.quizTest !== null) openTest(null);
+  else move(state.step === 8 ? 1 : state.step+1);
+});
+
+const fromQuery = Number(new URLSearchParams(location.search).get('step'));
+if (Number.isInteger(fromQuery) && fromQuery >= 1 && fromQuery <= 8) {
+  state.step = fromQuery;
+  state.quizTest = null;
+}
+if (!Number.isInteger(state.step) || state.step < 1 || state.step > 8) state.step = 1;
 render(true);
-window.PandaGoHSK2Preview={getProgress:()=>JSON.parse(JSON.stringify(S)),goToStep:go};
-})();
+
+window.PandaGoHSK2Preview = {
+  getProgress: () => JSON.parse(JSON.stringify(state)),
+  goToStep: move
+};
 </script>
 </body>
 </html>
