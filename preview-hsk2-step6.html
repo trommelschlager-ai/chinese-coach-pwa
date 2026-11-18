@@ -424,7 +424,7 @@ body.pg-other #demo-other{padding:8px 8px 6px}
   '<button type="button" class="pg-action secondary" data-back-tests style="margin:4px 0 9px;padding:8px 13px;font-size:12px">← Все пять тестов</button>'+
   '<div class="pg-quiz-progress"><div style="width:'+(q.correct[q.test]/6*100)+'%"></div></div></section>';
  }
- const testNames=['Выбери перевод','Найди картинку','Послушай и выбери','Собери иероглифы','Вспомни слово'];
+ const testNames=['Выбери перевод','Произнеси в микрофон','Послушай и выбери','Собери иероглифы','Заполни фразу'];
  function quizStep(){
   if(!q.started)return testHome();
   let out=quizHeader();
@@ -435,12 +435,16 @@ body.pg-other #demo-other{padding:8px 8px 6px}
   const options=([w,...others]).sort((a,b)=>(vocab.indexOf(a)*7+i*3)%11-(vocab.indexOf(b)*7+i*3)%11);
   // Shift the correct item to different places without randomizing while reviewing designs.
   const rotated=[...options.slice((i+test)%4),...options.slice(0,(i+test)%4)];
-  out+='<section class="pg-panel">'+caption('Тест '+(test+1)+' · '+testNames[test])+'<h2>'+(test===0?'Что означает слово?':test===1?'Выбери правильную картинку':test===2?'Что ты услышал?':test===3?'Составь слово по порядку':'Вспомни китайское слово')+'</h2>';
-  if(test===0||test===1||test===2||test===4){
-   if(test===0||test===1)out+='<div class="pg-sentence"><span class="pg-cn">'+w.zh+'</span><span class="pg-py">'+w.py+'</span></div>';
-   if(test===2)out+='<div class="pg-sentence pg-spread"><strong>Слушай китайское слово</strong>'+listen(w.zh)+'</div>';
-   if(test===4)out+='<div class="pg-sentence"><span class="pg-ru">Переведи: '+w.ru+'</span></div>';
-   out+='<div class="pg-grid">'+rotated.map(v=>'<button type="button" class="pg-choice'+(q.done&&v.zh===w.zh?' pg-correct':'')+'" data-choice="'+escape(v.zh)+'" '+(q.done?'disabled':'')+'>'+(test===1?'<span style="font-size:30px;display:block">'+v.em+'</span>':test===0?v.ru:v.zh)+'</button>').join('')+'</div>';
+  out+='<section class="pg-panel">'+caption('Тест '+(test+1)+' · '+testNames[test])+'<h2>'+(test===0?'Что означает слово?':test===1?'Произнеси китайское слово':test===2?'Что ты услышал?':test===3?'Составь слово по порядку' :'Заполни пропуск')+'</h2>';
+  if(test===1){
+    out+='<div class="pg-sentence" style="text-align:center"><span class="pg-cn" style="font-size:35px">'+w.zh+'</span><span class="pg-py">'+w.py+'</span><span class="pg-ru">'+w.ru+'</span></div>'+
+     '<div class="v460-cloud"><p>Нажми кнопку, произнеси слово на китайском.</p><button type="button" class="pg-action" data-quiz-mic>🎙 Произнести</button>'+
+     '<p style="font-size:11px;margin-top:6px">Распознавание проверяет текст, но не точность тонов.</p></div>';
+  }else if(test===0||test===2||test===4){
+    if(test===0)out+='<div class="pg-sentence"><span class="pg-cn">'+w.zh+'</span><span class="pg-py">'+w.py+'</span></div>';
+    if(test===2)out+='<div class="pg-sentence pg-spread"><strong>Прослушай слово</strong>'+listen(w.zh)+'</div>';
+    if(test===4)out+='<div class="pg-sentence"><span class="pg-cn" lang="zh-Hans">我每天 ____ 。</span><span class="pg-ru">Вставь слово: '+w.ru+'</span></div>';
+    out+='<div class="pg-grid">'+rotated.map(v=>'<button type="button" class="pg-choice'+(q.done&&v.zh===w.zh?' pg-correct':'')+'" data-choice="'+escape(v.zh)+'" '+(q.done?'disabled':'')+'>'+(test===0?v.ru:v.zh)+'</button>').join('')+'</div>';
   }else{
    const chars=[...w.zh],scrambled=chars.slice(1).concat(chars[0]);
    out+='<div class="pg-sentence"><span class="pg-ru">'+w.ru+'</span><span class="pg-py">'+w.py+'</span></div>';
@@ -530,6 +534,26 @@ body.pg-other #demo-other{padding:8px 8px 6px}
   const b=e.target.closest('button');if(!b)return;
   const d=b.dataset;
   if(d.say!==undefined){audioText(d.say);return}
+
+  if(d.quizMic!==undefined){
+    const Rec=window.SpeechRecognition||window.webkitSpeechRecognition,feedback=root.querySelector('#pg-q-feedback');
+    if(!Rec){if(feedback)feedback.textContent='Этот браузер не поддерживает распознавание китайской речи. Можно продолжить в Chrome на Android.';return}
+    const expected=vocab[q.i].zh;const R=new Rec();
+    R.lang='zh-CN';R.continuous=false;R.interimResults=false;R.maxAlternatives=1;
+    R.onresult=(event)=>{
+      const heard=event.results?.[0]?.[0]?.transcript||'';
+      const cleaned=s=>s.replace(/[\s。，？！.,!?]/g,'');
+      const ok=cleaned(heard)===cleaned(expected);
+      if(ok){q.done=true;q.correct[q.test]=Math.max(q.correct[q.test],q.i+1);showStep(3);
+       const status=root.querySelector('#pg-q-feedback');
+       if(status)status.textContent='✓ Распознано: '+heard+'. Точность тонов НЕ проверялась.';}
+      else if(feedback){feedback.textContent='Распознано: '+heard+'. Ожидалось: '+expected+'. Попробуй ещё раз.';}
+    };
+    R.onerror=e=>{if(feedback)feedback.textContent='Микрофон: '+e.error+'. Для демо разреши доступ в Chrome.'};
+    if(feedback)feedback.textContent='🎙 Слушаю... Произнеси '+expected+'. Аудио может обрабатываться сервисом браузера.';
+    try{R.start()}catch(e){if(feedback)feedback.textContent='Не удалось включить микрофон.'}
+    return;
+  }
   if(d.gramToken!==undefined){const k=Number(d.gramToken);
    if(k>=0&&k<5&&!v460Assembled.includes(k)){v460Assembled.push(k);showStep(4)}return}
   if(d.gramReset!==undefined){v460Assembled=[];showStep(4);return}
