@@ -5,6 +5,7 @@ on:
       - 'feature/panda-tone-lab-pilot-v457-20261118'
       - 'fix/panda-tone-lab-short-utterances-v458-20261118'
       - 'fix/panda-tone-lab-measurement-export-v459-20261118'
+      - 'fix/panda-tone-lab-voice-diagnostics-v460-20261118'
   pull_request:
     paths:
       - 'panda-tone-lab.html'

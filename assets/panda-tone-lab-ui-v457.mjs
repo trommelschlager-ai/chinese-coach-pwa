@@ -1,8 +1,8 @@
-/* Panda Tone Lab v459: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
+/* Panda Tone Lab v460: browser-only F0 monitoring, NO speech uploads, no ASR or scoring. */
 import {estimatePitch,analyseContour} from './panda-tone-analytics-v457.mjs?v=458';
 const $=id=>document.getElementById(id);
 const choices=[...document.querySelectorAll('[data-tone]')];
-let tone=2,stream=null,context=null,source=null,analyser=null,clock=null,deadline=null,active=false,opening=false,frames=[],lastDiagnostic=null;
+let tone=2,stream=null,context=null,source=null,analyser=null,clock=null,deadline=null,active=false,opening=false,frames=[],lastDiagnostic=null,diagnostic=null;
 const template2='M45 175 Q220 152 605 48',template3='M45 90 Q282 207 605 112';
 function choose(n){
  if(active||opening)return;
@@ -65,13 +65,26 @@ async function stop(){
  if(!active)return;
  active=false;$('record').disabled=false;$('stop').disabled=true;
  choices.forEach(b=>b.disabled=false);
+ const elapsed=diagnostic?Math.max(0,(performance.now()-diagnostic.startedAt)/1000):0;
  await release();
  const r=analyseContour(frames);
  const t0=frames.length?frames[0].t:0;
  lastDiagnostic={tone,syllable:tone===2?'yú':'yǔ',kind:r.kind,stats:r.stats||null,
+  capture:diagnostic?{
+   elapsedSec:+elapsed.toFixed(2),totalChecks:diagnostic.totalChecks,accepted:diagnostic.accepted,
+   silence:diagnostic.silence,noStablePitch:diagnostic.noStablePitch,lowClarity:diagnostic.lowClarity,
+   peakRms:+diagnostic.peakRms.toFixed(4)
+  }:null,
   pitchHz:frames.map(x=>({t:+(x.t-t0).toFixed(3),hz:+x.hz.toFixed(1),clarity:+x.clarity.toFixed(2)}))};
- $('copy-trace').disabled=frames.length===0;
+ $('copy-trace').disabled=!(diagnostic?.totalChecks);
  show(r);
+ if(r.kind==='insufficient'&&diagnostic?.totalChecks){
+  const counts=document.createElement('p');counts.className='note';
+  counts.textContent='Из '+diagnostic.totalChecks+' замеров: '+diagnostic.accepted+' точек высоты, '+
+   diagnostic.silence+' тихих, '+diagnostic.noStablePitch+' без устойчивой частоты, '+
+   diagnostic.lowClarity+' неуверенных. Длительность записи: '+elapsed.toFixed(2)+' с.';
+  $('result').append(counts);
+ }
  $('status').textContent=r.kind==='insufficient'?'Голоса было недостаточно для измерения. Попробуй ещё раз.':'Готово. Это подсказка по контуру, а не оценка тона.';
  frames=[];
 }
@@ -92,13 +105,25 @@ $('record').addEventListener('click',async()=>{
   const input=newContext.createMediaStreamSource(newStream);input.connect(reader);
   stream=newStream;context=newContext;analyser=reader;source=input;active=true;frames=[];lastDiagnostic=null;$('copy-trace').disabled=true;
   const buf=new Float32Array(reader.fftSize),t0=performance.now();
+  diagnostic={startedAt:t0,totalChecks:0,accepted:0,silence:0,noStablePitch:0,lowClarity:0,peakRms:0};
   $('record').disabled=true;$('stop').disabled=false;choices.forEach(b=>b.disabled=true);
   $('status').textContent='Говори один слог протяжно. Микрофон активен (до 3 сек.).';
   clock=setInterval(()=>{
    if(!active||!analyser||!context)return;
    analyser.getFloatTimeDomainData(buf);
+   diagnostic.totalChecks++;
+   // Independent energy meter lets us separate quiet frames from unstable pitch estimates.
+   // No raw sound or waveform is kept, only aggregate counts.
+   let energy=0,samples=0;
+   for(let i=0;i<buf.length;i+=4){energy+=buf[i]*buf[i];samples++;}
+   const rms=Math.sqrt(energy/samples);
+   diagnostic.peakRms=Math.max(diagnostic.peakRms,rms);
+   if(rms<.012){diagnostic.silence++;return;}
    const p=estimatePitch(buf,context.sampleRate);
-   if(p&&p.clarity>.78)frames.push({t:(performance.now()-t0)/1000,hz:p.hz,clarity:p.clarity});
+   if(!p){diagnostic.noStablePitch++;return;}
+   if(p.clarity<=.78){diagnostic.lowClarity++;return;}
+   diagnostic.accepted++;
+   frames.push({t:(performance.now()-t0)/1000,hz:p.hz,clarity:p.clarity});
   },28);
   deadline=setTimeout(stop,3100);
  }catch(error){
