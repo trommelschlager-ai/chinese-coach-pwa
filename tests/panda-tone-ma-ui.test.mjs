@@ -23,7 +23,7 @@ test('existing lesson audio sources are used in an opt-in tone modal',()=>{
  }
  assert(lesson.includes('hsk1-tone-practice-bridge-v463.js'));
  assert(bridge.includes('MutationObserver'));
- assert(bridge.includes("iframe.src='./panda-tone-ma-practice.html'"));
+ assert(bridge.includes("frame.src='./panda-tone-ma-practice.html'"));
  assert(bridge.includes("frame.allow='microphone; autoplay'"));
 });
 test('browser mic resources are explicitly released and there is no automatic tone grading',()=>{
