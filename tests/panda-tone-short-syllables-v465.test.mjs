@@ -78,7 +78,7 @@ test('published page uses post-record analysis rather than only setInterval samp
  const page=fs.readFileSync(new URL('../panda-tone-ma-practice.html',import.meta.url),'utf8');
  const trainer=fs.readFileSync(new URL('../assets/panda-tone-ma-pilot-v463.mjs',import.meta.url),'utf8');
  assert(trainer.includes('analyseRecordedBlob(blob'));
- assert(trainer.includes('offline?.frames?.length>frames.length'));
+ assert(trainer.includes('offline?.available?offline.frames:frames'));
  assert(trainer.includes('hasAudibleSignal'));
  assert(trainer.includes('MediaRecorder'));
  assert(trainer.includes('decode')||trainer.includes('analyseRecordedBlob'));
