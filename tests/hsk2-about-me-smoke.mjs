@@ -100,6 +100,22 @@ try {
     }
   }
   check(errors.length===0,'Page JavaScript errors: '+errors.join('; '));
+  // Capture the unchanged approved reference at identical width and four corresponding lesson steps.
+  // The reference is given its own isolated localStorage fixture; user-facing progress is untouched.
+  const refProgress={
+    step:2, quiz:Array.from({length:5},()=>Array.from({length:6},()=>({correctFirst:true,method:'choice'}))),
+    missed:Array.from({length:5},()=>Array(6).fill(false)), grammar:[0,1,2,3,4],grammarDone:true,
+    dayOrder:[0,1,2,3,4,5],dayShuffled:[0,1,2,3,4,5],dayDone:true,
+    mic:[0,1,2,3,4,5],heardWords:[0,1,2,3,4,5],chat:[],unlockedSection:4,courseQuizCursor:null
+  };
+  await page.evaluate(value=>localStorage.setItem('panda-go-hsk2-lesson1-word-flow-review-v1',JSON.stringify(value)),refProgress);
+  await page.setViewportSize({width:393,height:873});
+  for(const [step,name] of [[2,'words'],[4,'grammar'],[6,'tones'],[7,'dialogue']]){
+    await page.goto('http://127.0.0.1:'+port+'/hsk2-lesson1.html?step='+step,{waitUntil:'load'});
+    await page.locator('.pg433-content').waitFor();
+    if(name==='dialogue') await page.locator('.dialogue').scrollIntoViewIfNeeded();
+    await page.screenshot({path:output+'/reference-'+name+'-393.png',animations:'disabled'});
+  }
   console.log('PASS: 30/30 tasks, 5 tabs, 8 steps, story, persistence, SVGs, tones, mobile 360/393/412');
 } finally {
   await browser?.close();
