@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f8ebff">
+<title>Panda Go · Тренировка четырёх тонов</title>
+<style>
+:root{font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;color:#492861;background:#fcf5ff;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;background:linear-gradient(160deg,#f7e5ff,#fdf6ff 55%,#ffeff8)}
+main{max-width:540px;margin:auto;padding:17px 14px 28px;display:grid;gap:12px}
+h1{font-size:22px;line-height:1.2;margin:3px 0 1px;color:#602d83}
+h2{font-size:17px;margin:0;color:#572675}
+p{margin:0}
+.eyebrow{font-size:11px;font-weight:850;letter-spacing:1px;color:#8b519c}
+.intro,.note{color:#694f77;font-size:13px;line-height:1.5}
+.card{background:#fffafd;border:1px solid #e8cbef;border-radius:20px;padding:15px;box-shadow:0 5px 15px #af83bf1b;display:grid;gap:11px}
+.track{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.count{font-size:12px;font-weight:750;color:#85549f;background:#f4e7fa;border-radius:20px;padding:5px 10px;white-space:nowrap}
+button,.go{font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;border:1px solid #d4b2e2;border-radius:14px;min-height:46px;padding:11px;background:#f8e9fd;color:#562d7a;box-shadow:0 3px 0 #cfaddb6b;-webkit-tap-highlight-color:transparent;text-align:center;touch-action:manipulation}
+button:active:not(:disabled),.go:active{transform:translateY(2px);box-shadow:0 1px 0 #cfaddb6b}
+button:focus-visible,.go:focus-visible{outline:3px solid #8850d2;outline-offset:3px}
+button:disabled{cursor:default;opacity:.58;box-shadow:none}
+.primary{border-color:#8d45b3;background:linear-gradient(160deg,#c66ae1,#8325af);color:#fff;box-shadow:0 3px 0 #642786}
+.answers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.answers button{padding:9px 1px;min-height:65px;font-size:13px}
+.answers strong{font-size:21px;display:block;line-height:1.15}
+.answers button.correct{border-color:#6aa47d;background:#e1f7e8;color:#23543a}
+.answers button.wrong{border-color:#d98b8b;background:#fff0ed;color:#974a44}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.feedback{min-height:48px;border-radius:12px;background:#f8efff;border:1px solid #edd9f3;padding:9px 11px;font-size:13px;color:#613e73}
+.feedback:empty{display:none}
+.progress{height:7px;border-radius:12px;background:#f0dcf8;overflow:hidden}
+.progress span{display:block;height:100%;width:0%;background:#b969d7;transition:width .2s}
+.go{display:block;text-decoration:none}
+.hint{font-size:12px;color:#785f84}
+.tag{display:inline-block;color:#8141a1;background:#f6e6ff;padding:3px 9px;border-radius:10px;font:800 11px system-ui}
+@media(max-width:355px){main{padding:10px 10px 22px}.card{padding:12px}.answers button{font-size:12px}.answers strong{font-size:19px}}
+@media(prefers-reduced-motion:reduce){.progress span{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<div class="eyebrow">🐼 PANDA GO · HSK 1</div>
+<h1>Тренировка четырёх тонов</h1>
+<p class="intro">Три коротких шага: слушай, узнавай направление и повторяй своим голосом. Тесты не мешают прохождению урока.</p>
+<section class="card" aria-labelledby="listen-title">
+ <div class="track"><h2 id="listen-title">1. Угадай тон на слух</h2><span class="count" id="hear-count">0 / 8</span></div>
+ <p class="hint">Звучат оригинальные записи урока. Выбери номер услышанного тона.</p>
+ <div class="progress" role="progressbar" aria-label="Прогресс проверки на слух" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0" id="hear-progress"><span id="hear-progress-fill"></span></div>
+ <button id="hear-play" class="primary" type="button">▶ Слушать слово</button>
+ <div class="answers" role="group" aria-label="Выбор услышанного тона">
+  <button type="button" data-hear="0"><strong>1-й</strong>→</button>
+  <button type="button" data-hear="1"><strong>2-й</strong>↗</button>
+  <button type="button" data-hear="2"><strong>3-й</strong>↘↗</button>
+  <button type="button" data-hear="3"><strong>4-й</strong>↘</button>
+ </div>
+ <p id="hear-feedback" class="feedback" role="status" aria-live="polite">Нажми «Слушать слово», затем выбери тон.</p>
+ <div class="row"><button id="hear-next" type="button" disabled>Следующий звук →</button><button id="hear-restart" type="button">↻ Начать заново</button></div>
+</section>
+<section class="card" aria-labelledby="shape-title">
+ <div class="track"><h2 id="shape-title">2. Узнай направление</h2><span id="shape-count" class="count">0 / 4</span></div>
+ <p class="hint">Посмотри на пиньинь и выбери его учебную тоновую линию.</p>
+ <div style="text-align:center;font-size:38px;font-weight:800;line-height:1.1" id="shape-prompt" lang="zh-Latn-pinyin">mā</div>
+ <div class="answers" role="group" aria-label="Направление тона">
+  <button type="button" data-shape="0"><strong>→</strong>Ровно</button>
+  <button type="button" data-shape="1"><strong>↗</strong>Вверх</button>
+  <button type="button" data-shape="2"><strong>↘↗</strong>Вниз-вверх</button>
+  <button type="button" data-shape="3"><strong>↘</strong>Вниз</button>
+ </div>
+ <p id="shape-feedback" class="feedback" role="status" aria-live="polite">Выбери подходящее направление.</p>
+ <div class="row"><button id="shape-next" type="button" disabled>Следующий тон →</button><button id="shape-restart" type="button">↻ Повторить</button></div>
+</section>
+<section class="card" aria-labelledby="voice-title">
+ <div class="track"><h2 id="voice-title">3. Произнеси сам</h2><span class="tag">Без оценок</span></div>
+ <p class="intro">Послушай оригинал, запиши <b>mā · má · mǎ · mà</b> обычным голосом, затем прослушай себя и посмотри движение высоты.</p>
+ <a class="go primary" href="./panda-tone-ma-practice.html?v=468">🎙 Открыть тренировку голоса</a>
+ <p class="note">Важно: микрофон показывает движение высоты, но пока не подтверждает правильность китайского произношения. Не нужно растягивать слог.</p>
+</section>
+</main>
+<script type="module" src="./assets/panda-tone-exercises-v469.mjs?v=469"></script>
+</body>
+</html>
