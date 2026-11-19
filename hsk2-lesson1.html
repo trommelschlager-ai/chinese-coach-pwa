@@ -809,22 +809,44 @@ function toneGuide() {
 
 function tones() {
   const wordView = state.toneTab === 'words';
-  return hero('tones',6,'Тренировка тонов','Повтори слова урока. Микрофон распознаёт речь.') +
+  return hero('tones',6,'Тренировка тонов','Слушай, повторяй и сравнивай произношение. Автоматической оценки тонов нет.') +
+    '<div class="practice-modes panel"><button type="button" class="' + (state.practiceMode === 'mic' ? 'primary' : 'soft') +
+    '" data-practice-mode="mic">🎙 Микрофон</button><button type="button" class="' +
+    (state.practiceMode === 'self' ? 'primary' : 'soft') +
+    '" data-practice-mode="self">🗣 Самопроверка</button></div>' +
     '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
     '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (6)</button></div>' +
     (wordView ? '<div class="tone-list">' + words.map((word,i) => '<article class="tone-row">' + vocabImage(i) + '<div>' +
       hanzi(word.zh) + translate([word.zh,word.py,word.ru]) + '</div><div class="tone-example">' +
-      toneStrokes(word.tones) + pitchRow(word.tones) + wave + '</div>' + audioButton(word.zh) + micButton(i,'Произнести ' + word.zh,state.mic.includes(i)) + '</article>').join('') + '</div>' : phraseCards()) +
-    safeStatus() + toneGuide() + '<div class="progress-panel panel">' + art('medal') + '<div><b>Распознавание слов</b>' +
-    '<progress max="6" value="' + state.mic.length + '" aria-label="Распознано слов"></progress></div><b>' + state.mic.length +
-    ' из 6</b></div><p class="hint audio-note">洗脸 — xǐliǎn (3 + 3). В связной речи первый слог звучит со 2-м тоном. Волна декоративная, оценки тонов нет.</p>' +
+      toneStrokes(word.tones) + pitchRow(word.tones) + wave + '</div>' + audioButton(word.zh) +
+      (state.practiceMode === 'self'
+        ? '<button type="button" class="orb mic' + (state.selfSpoken.includes(i) ? ' recognized' : '') +
+          '" data-self-spoken="' + i + '" aria-label="Я повторил и сравнил ' + word.zh +
+          '" title="Самостоятельная проверка; тоны не оцениваются">' +
+          (state.selfSpoken.includes(i) ? '✓' : '●') + '</button>'
+        : micButton(i,'Произнести ' + word.zh,state.mic.includes(i))) + '</article>').join('') + '</div>' : phraseCards()) +
+    safeStatus() + toneGuide() + '<div class="progress-panel panel">' + art('medal') + '<div><b>Практика произношения</b>' +
+    '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
+    ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
+    '. Тоны автоматически не оцениваются. 洗脸 — xǐliǎn (3 + 3) в речи звучит как 2 + 3.</p>' +
     (wordView ? '<p class="hint audio-note">🔊 Для всех шести слов доступны отдельные записи.</p>' : '');
 }
 
+const replyPinyin = new Map([
+  ['我每天七点起床', 'Wǒ měitiān qī diǎn qǐchuáng.'],
+  ['我每天八点起床', 'Wǒ měitiān bā diǎn qǐchuáng.'],
+  ['我早上洗脸', 'Wǒ zǎoshang xǐliǎn.'],
+  ['我早上吃早饭', 'Wǒ zǎoshang chī zǎofàn.'],
+  ['我起床以后洗脸', 'Wǒ qǐchuáng yǐhòu xǐliǎn.'],
+  ['我起床以后刷牙', 'Wǒ qǐchuáng yǐhòu shuāyá.']
+]);
 function bubble(role,item) {
+  const reading = item.length === 3 ? translate(item)
+    : '<span class="py">' + (replyPinyin.get(normalize(item[0])) || '') +
+      '</span><span class="ru">' + escape(item[1]) + '</span>';
   return '<article class="panel chat-bubble' + (role === 'Ты' ? ' me' : '') + '"><b class="chat-role">' + role + '</b>' +
-    '<div class="phrase"><div>' + hanzi(item[0]) + (item.length === 3 ? translate(item) : '<span class="ru">' + item[1] + '</span>') +
+    '<div class="phrase"><div>' + hanzi(item[0]) + reading +
     '</div>' + audioButton(item[0]) + '</div></article>';
 }
 
@@ -842,7 +864,8 @@ function chat() {
 }
 
 function finish() {
-  const completed = quizCount() === 30 && state.grammarDone && state.dayDone && state.mic.length === 6 && state.chat.length === 3;
+  const completed = state.heardWords.length === 6 && quizCount() === 30 && state.grammarDone &&
+    state.dayDone && speechDone() && state.chat.length === 3;
   if (completed) {
     save();
     try {
@@ -855,9 +878,13 @@ function finish() {
   return '<div class="final-hero panel"><img src="' + asset + 'hero-reading.webp" alt="Панда с красной книгой"><div>' +
     '<img class="award" src="' + decoration + (completed ? 'trophy' : 'medal') + '.webp" alt=""><h1>' + (completed ? 'Урок пройден!' : 'Твой прогресс') +
     '</h1><p class="hint">Урок 1 «Мой день»</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
+    result('Прослушаны слова',state.heardWords.length + ' / 6') +
     result('Все мини-тесты',quizCount() + ' / 30','all') + tests.map((test,i) => result(test,correctCount(i) + ' / 6')).join('') +
     result('Грамматика 以后',state.grammarDone ? '✓ Выполнено' : 'Ожидает проверки') +
-    result('Распорядок',state.dayDone ? '✓ Выполнено' : 'Ожидает проверки') + result('Распознано слов',state.mic.length + ' / 6') +
+    result('Распорядок',state.dayDone ? '✓ Выполнено' : 'Ожидает проверки') +
+    result('Практика речи',speechCount() + ' / 6') +
+    result('Распознано микрофоном',state.mic.length + ' / 6') +
+    result('Отмечено самостоятельно',state.selfSpoken.length + ' слов; ' + selfQuizCount() + ' тестов (без оценки тонов)') +
     result('Ответы в диалоге',state.chat.length + ' / 3') + '</dl><div class="controls"><button type="button" class="soft" data-step="3">Вернуться к тестам</button><a class="soft lesson-map-link" href="./hsk2-life-course.html?topic=0">К теме HSK 2</a></div></section>';
 }
 async function play(text,button) {
