@@ -76,7 +76,7 @@ test('Android-like microphone capture can be replayed locally even if F0 estimat
   assert.equal(replay.disabled,true,'No stale playback before first attempt');
   record.click();
   await new Promise(resolve=>setTimeout(resolve,130));
-  assert.match(document.getElementById('mic-level-label').textContent,/Микрофон слышит звук/);
+  assert.match(document.getElementById('mic-level-label').textContent,/Микрофон получает звук/);
   record.click();
   await new Promise(resolve=>setTimeout(resolve,35));
   assert.equal(observed.recorderStopped,1);
