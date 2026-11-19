@@ -558,6 +558,47 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
  #app #pg433 .about-cover-brand{font-size:23px}
 }
 
+
+/* Approved single-image 3D cover and true audio-status buttons. */
+.course-layout #app[data-view="1"] #pg433 .pg433-content{padding:0!important;overflow:hidden!important}
+#app #pg433 .about-approved-cover{position:relative;display:block;width:100%;height:100%;min-height:0;overflow:hidden;background:#f4d4ef}
+#app #pg433 .about-approved-cover-image{display:block;width:100%;height:100%;object-fit:fill;user-select:none;-webkit-user-drag:none}
+#app #pg433 .about-approved-cover-back,#app #pg433 .about-approved-cover-start{
+  position:absolute;display:block;background:transparent;border:0;cursor:pointer;z-index:3;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;border-radius:999px}
+#app #pg433 .about-approved-cover-back{left:2%;top:1%;width:11%;height:6.9%}
+#app #pg433 .about-approved-cover-start{left:17%;top:74.5%;width:67%;height:9%}
+#app #pg433 .about-approved-cover-back:active,#app #pg433 .about-approved-cover-start:active{
+  background:#fff3;box-shadow:inset 0 0 0 3px #fffbefdd!important;transform:scale(.988)!important}
+#app #pg433 .about-approved-cover-back:focus-visible,#app #pg433 .about-approved-cover-start:focus-visible{outline:3px solid #64288a}
+#app #pg433 .word-row{position:relative}
+#app #pg433 .word-row > .about-word-actions{
+  grid-column:3!important;grid-row:2!important;display:flex!important;align-items:center!important;
+  justify-content:space-between!important;gap:3px!important;width:70px!important;min-width:0!important;align-self:center!important}
+#app #pg433 .word-row > .about-word-actions .orb{
+  width:32px!important;min-width:32px!important;height:34px!important;border-radius:13px!important;
+  padding:5px!important;margin:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
+#app #pg433 .word-row > .about-word-actions .orb svg{width:23px!important;height:23px!important}
+#app #pg433 .word-row > .about-word-actions button.about-learn{
+  display:grid!important;place-items:center!important;grid-column:auto!important;grid-row:auto!important;
+  width:34px!important;min-width:34px!important;min-height:34px!important;margin:0!important;
+  border-radius:12px!important;font-size:17px!important;padding:0!important}
+#app #pg433 button.about-audio-pending{
+  opacity:.77!important;color:#75307d!important;cursor:not-allowed!important;filter:none!important;
+  background:linear-gradient(#fff2fd,#dfb5dc)!important;border:1.5px solid #d7aed4!important;
+  box-shadow:inset 0 1px #fff,0 2px 3px #a771a763!important}
+#app #pg433 button.about-audio-pending:disabled{transform:none!important}
+#app #pg433 .tone-row button.about-audio-pending{width:35px!important;height:35px!important}
+#app #pg433 .about-phrase button.about-audio-pending{width:35px!important;height:35px!important}
+@media(max-width:365px){
+ #app #pg433 .word-row > .about-word-actions{width:59px!important;gap:2px!important}
+ #app #pg433 .word-row > .about-word-actions .orb{width:29px!important;min-width:29px!important;padding:4px!important}
+ #app #pg433 .word-row > .about-word-actions button.about-learn{min-width:28px!important;width:28px!important}
+}
+@media(max-height:600px){
+ .course-layout #app[data-view="1"] #pg433 .pg433-content{overflow-y:auto!important}
+ #app #pg433 .about-approved-cover{height:100%;min-height:570px}
+}
 </style>
 </head>
 <body>
@@ -814,11 +855,12 @@ const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' go
 
 function audioButton(text, icon = speaker, blind = false) {
   const available = clips.has(normalize(text));
-  if (!available) return '<span class="orb missing about-audio-pending" role="note" title="Озвучка готовится" aria-label="Аудиозапись для ' +
-    escape(text) + ' готовится">♪</span>';
-  const label = blind ? 'Прослушать запись' : 'Прослушать ' + text;
-  return '<button type="button" class="orb" data-say="' +
-    escape(text) + '" aria-label="' + escape(label) + '">' + icon + '</button>';
+  const label = available ? (blind ? 'Прослушать запись' : 'Прослушать ' + text)
+    : 'Аудио пока не записано: ' + text;
+  return '<button type="button" class="orb' + (available ? '' : ' missing about-audio-pending') +
+    '" ' + (available ? 'data-say="' + escape(text) + '"' : 'disabled aria-disabled="true"') +
+    ' aria-label="' + escape(label) + '" title="' + escape(label) + '">' +
+    icon + '</button>';
 }
 
 const recognitionAvailable = () => Boolean(window.SpeechRecognition || window.webkitSpeechRecognition) && window.isSecureContext;
@@ -946,21 +988,12 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  const coverNames = ['6 слов', '30 заданий', 'Грамматика', 'Рассказ', 'Произношение', 'Диалог'];
-  const coverImages = [0,3,1,2,5,4];
-  return '<section class="about-cover-3d" aria-label="Panda Go · HSK 2 · Урок О себе">' +
-    '<div class="about-cover-top"><span class="about-cover-brand">Panda <b>Go</b> · HSK 2</span><span class="about-cover-kicker">Урок 2 · Знакомство</span></div>' +
-    '<div class="about-cover-main"><div class="about-cover-figure">' + vocabImage(0,'about-cover-panda') +
-    '</div><div class="about-cover-cloud"><span lang="zh-Hans" class="about-cover-zh">自我介绍</span>' +
-    '<span class="about-cover-pinyin">Zìwǒ jièshào</span><strong>О себе</strong></div></div>' +
-    '<div class="about-cover-description"><h2>Содержание урока</h2>' +
-    '<p>Научись рассказывать, как тебя зовут, откуда ты родом, где живёшь, работаешь и чем увлекаешься.</p></div>' +
-    '<div class="about-cover-features">' + coverNames.map((name,i) =>
-      '<div class="about-cover-feature">' + vocabImage(coverImages[i],'about-cover-feature-photo') +
-      '<span>' + name + '</span></div>').join('') + '</div>' +
-    '<p class="about-cover-quote">«Один выученный язык может изменить всю твою жизнь»</p>' +
-    '<button type="button" class="about-cover-go" data-step="2">▶ Начать урок</button>' +
-    '<a class="about-cover-return" href="./hsk2-life-course.html?view=welcome" aria-label="Вернуться к курсу HSK 2">‹ К курсу</a>' +
+  return '<section class="about-approved-cover" aria-label="Panda Go · HSK 2 · О себе. Утверждённая 3D-обложка">' +
+    '<img class="about-approved-cover-image" src="./assets/hsk2-about-me/cover-about-me-approved-v4.avif?v=20261120v4" ' +
+      'width="1024" height="1536" alt="Панда за столом с ноутбуком и книгами. Урок О себе: 自我介绍. Слова, мини-тесты, грамматика, рассказ, произношение, диалог. Один выученный язык может изменить всю твою жизнь." ' +
+      'fetchpriority="high" draggable="false">' +
+    '<a class="about-approved-cover-back" href="./hsk2-life-course.html?view=welcome" aria-label="Вернуться к курсу HSK 2"></a>' +
+    '<button class="about-approved-cover-start" type="button" data-step="2" aria-label="Начать урок О себе"></button>' +
     '</section>';
 }
 function newWords() {
@@ -968,9 +1001,10 @@ function newWords() {
     words.map((word,i) =>
       '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + '<div class="tone-pair">' + toneStrokes(word.tones) + pitchRow(word.tones) + '</div>' +
       '<div>' + translate([word.zh,word.py,word.ru]) + '</div>' +
+      '<div class="about-word-actions">' + audioButton(word.zh,speaker) +
       '<button type="button" class="about-learn' + (state.heardWords.includes(i) ? ' learned' : '') +
       '" data-learn="' + i + '" aria-label="Отметить изученным: ' + word.zh + '">' +
-      (state.heardWords.includes(i) ? '✓' : 'Изучил') + '</button></article>'
+      '✓</button></div></article>'
     ).join('') + '</div>' +
     '<p class="hint audio-note">Изучено ' + state.heardWords.length +
     ' из 6 выражений. Прочитай, повтори и нажми «Изучил» на каждой карточке.</p>' +
