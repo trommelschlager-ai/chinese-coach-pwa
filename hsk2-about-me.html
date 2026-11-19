@@ -789,13 +789,12 @@ function newWords() {
 }
 
 function hero(kind,step,title,subtitle) {
-  const stageImage = kind === 'tones' ? 'tones' : 'quiz';
+  const image = kind === 'tones' ? 'tones' : 'quiz';
   return '<div class="detail-hero ' + kind + '-hero">' +
-    '<img src="./assets/hsk2-about-me/panda-' + stageImage + '.svg" alt="Панда: ' + (kind === 'tones' ? 'говорим и тренируем тоны' : 'решаем тесты') + '">' +
-    '<div class="hero-message"><span class="tag">Шаг ' + stepNumber(step) + '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div>' +
-    (kind === 'quiz' ? '<img class="quiz-clipboard" src="./assets/hsk2-about-me/illustration-study.svg" alt="">' : '') + '</div>';
+    stageImage(image,'about-hero-photo') +
+    '<div class="hero-message"><span class="tag">Шаг ' + stepNumber(step) +
+    '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div></div>';
 }
-
 function quiz() {
   if (state.quizTest !== null) return question();
   if (courseMode && state.courseQuizCursor === courseQuiz.length) {
@@ -823,7 +822,7 @@ function quiz() {
       return opening + '<span class="badge">' + (i+1) + '</span>' + icon + '<span><strong>Тест ' + (i+1) + ' · ' + title +
         '</strong><small>' + testHelp[i] + (total && !courseMode ? ' · ' + total + '/6' : '') + '</small>' + retry + '</span>' +
         trigger + (courseMode ? '</div>' : '</button>');
-    }).join('') + '</div><div class="reward panel"><img src="./assets/hsk2-about-me/panda-finish.svg" alt="" loading="lazy">' +
+    }).join('') + '</div><div class="reward panel">' + stageImage('quiz','about-reward-photo') +
     '<strong>' + (courseMode ? 'Выполняй задания для каждого слова по порядку.' : 'Закрепи слова урока в пяти разных заданиях!') +
     '</strong></div>' + (courseMode
       ? (quizCount() === 30
@@ -902,7 +901,7 @@ function question() {
     '>‹ Предыдущее</button><button type="button" class="primary" data-question="1">' +
     (i === 5 ? 'К списку' : 'Следующее →') + '</button></div>';
   return '<article class="panel section-panel"><h1 tabindex="-1">Тест ' + (t+1) + ' · ' + tests[t] + '</h1><p class="hint">' +
-    caption + '</p>' + content + safeStatus() +
+    caption + '</p>' + vocabImage(i,'about-quiz-photo') + content + safeStatus() +
     (done && !feedback ? '<div class="feedback good">✓ ' +
       (t === 4 ? (done.method === 'self' ? 'Самостоятельно повторено; тоны не проверялись' : 'Слово распознано; тоны не проверялись') : 'Ответ засчитан') + '</div>' : '') +
     controls + '</article>';
@@ -919,7 +918,7 @@ function grammar() {
     '<div class="cloud rule-cloud">' + hanzi('现在') + '<span class="py">xiànzài</span>' +
     '<b>сейчас, в настоящее время</b></div>' +
     '<p class="grammar-explain hint">Время обычно ставится после подлежащего и перед действием: 我 + 现在 + 住在 + город.</p>' +
-    '<article class="panel example"><span class="tag">Пример</span>' + vocabImage(2) + '<div>' +
+    '<article class="panel example"><span class="tag">Пример</span>' + stageImage('grammar','about-grammar-photo') + '<div>' +
       hanzi('我<em>现在</em>住在莫斯科。') + translate(phrases[2]) + '</div></article>' +
     '<h2 class="builder-title">Составь предложение</h2><div class="tokens">' +
       tokenButtons([2,0,3,1,4],state.grammar,'gram') + '</div>' +
@@ -995,7 +994,7 @@ function tones() {
           (state.selfSpoken.includes(i) ? '✓' : '●') + '</button>'
         : micButton(i,'Произнести ' + word.zh,state.mic.includes(i))) + '</article>').join('') + '</div>' :
       '<details class="phrase-review panel"><summary>💬 Открыть 6 фраз для повторения</summary>' + phraseCards() + '</details>') +
-    safeStatus() + toneGuide() + '<div class="progress-panel panel"><img src="./assets/hsk2-about-me/panda-tones.svg" alt="" loading="lazy"><div><b>Практика произношения</b>' +
+    safeStatus() + toneGuide() + '<div class="progress-panel panel">' + stageImage('tones','about-progress-photo') + '<div><b>Практика произношения</b>' +
     '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
     ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
     '. Тоны автоматически не оцениваются. Записи утверждённым голосом готовятся.</p>';
@@ -1022,14 +1021,14 @@ function pandaAiShortcut() {
   // Existing HSK1 introductory chat only, not a new HSK2 About Me voice conversation.
   return '<a class="panda-ai-shortcut" href="./panda-voice-pilot.html?lesson=1&amp;from=hsk2-about-me" ' +
     'aria-label="Панда AI: базовые вопросы для знакомства">' +
-    '<img src="./assets/hsk2-about-me/panda-dialogue.svg" alt="" loading="lazy">' +
+    stageImage('dialogue','about-chat-photo') +
     '<span class="panda-ai-shortcut-copy"><strong>🐼 Поговорить с Пандой AI</strong>' +
     '<small>Базовое знакомство (HSK 1). Полный разговор HSK 2 пока разрабатывается.</small></span>' +
     '<span class="panda-ai-shortcut-arrow" aria-hidden="true">➜</span></a>';
 }
 function lockedPandaAiShortcut() {
   return '<div class="panda-ai-shortcut is-locked" aria-label="Панда AI откроется после учебного диалога">' +
-    '<img src="./assets/hsk2-about-me/panda-dialogue.svg" alt="" loading="lazy">' +
+    stageImage('dialogue','about-chat-photo') +
     '<span class="panda-ai-shortcut-copy"><strong>🔒 Panda AI — после диалога</strong>' +
     '<small>Ответь на три вопроса, чтобы открыть голосовую практику</small></span></div>';
 }
@@ -1082,7 +1081,7 @@ function chat() {
   const i = state.chat.length;
   const exchange = dialogue[i];
   return '<h1 class="pill-title">💬 Фразы и диалог</h1>' + phraseCards() +
-    '<section class="dialogue"><div class="about-dialogue-head"><img src="./assets/hsk2-about-me/panda-dialogue.svg" alt="Панда задаёт вопросы" loading="lazy"><div><h2>Разговор с Пандой</h2><p class="hint">Учебный сценарий. Выбери или произнеси один из ответов.</p></div></div>' +
+    '<section class="dialogue"><div class="about-dialogue-head">' + stageImage('dialogue','about-dialogue-image') + '<div><h2>Разговор с Пандой</h2><p class="hint">Учебный сценарий. Выбери или произнеси один из ответов.</p></div></div>' +
     state.chat.map((reply,j) => bubble('Панда',dialogue[j].prompt) + bubble('Ты',dialogue[j].answers.find(a => a[0] === reply) ?? [reply,''])).join('') +
     (exchange ? bubble('Панда',exchange.prompt) + '<div class="choice-grid">' + exchange.answers.map(([answer,translation],j) =>
       '<button type="button" class="choice" data-chat="' + j + '"><span lang="zh-Hans">' + answer + '</span><span class="py">' +
@@ -1104,8 +1103,8 @@ function finish() {
     } catch {}
   }
   const result = (label,value,className='') => '<div class="' + className + '"><dt>' + label + '</dt><dd>' + value + '</dd></div>';
-  return '<div class="final-hero panel"><img src="./assets/hsk2-about-me/panda-finish.svg" alt="Панда с медалью"><div>' +
-    '<img class="award" src="./assets/hsk2-about-me/illustration-study.svg" alt=""><h1>' + (completed ? 'Урок пройден!' : 'Твой прогресс') +
+  return '<div class="final-hero panel">' + stageImage('quiz','about-final-photo') + '<div>' +
+    stageImage('quiz','award about-finish-medal') + '<h1>' + (completed ? 'Урок пройден!' : 'Твой прогресс') +
     '</h1><p class="hint">Урок 1 «О себе»</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
     result('Изучены выражения',state.heardWords.length + ' / 6') +
     result('Все мини-тесты',quizCount() + ' / 30','all') + tests.map((test,i) => result(test,correctCount(i) + ' / 6')).join('') +
