@@ -27,6 +27,26 @@ test('four ordinary ~0.34s syllables show cautious pitch movement, not a Mandari
  }
 });
 
+test('four real lesson-MP3 F0 tracks describe movement without assigning tones',()=>{
+ // Timestamped decoded F0 from original lesson MP3s in the CI reference report.
+ // This is a technical regression set, NOT human verification of pronunciation.
+ const cases=[
+  ['mā','level',[260.9,268.6,278.5,300,304.5,307.8,310.1,311.6,313.5,314.9,315.9,317.1,318.1,319.2,320.5,321.6,322.4,323,323.4,323.3,324.3,315.8]],
+  ['má','rise',[214.3,214.7,215.4,216.7,214.4,212.3,210.6,209.4,208.4,207.8,207.8,208.8,210.6,212.3,218.2,222.2,235.3,260.9,266.7,279.1,290.2,293.9,300]],
+  ['mǎ','dip',[224.3,219.7,220,219.9,216.2,213.6,211.2,209.1,206.4,204.3,202.4,201.8,202.1,202.9,204.9,207.7,210.9,214.5,218.9,222.2,225.1,229.5,231.4]],
+  ['mà','fall',[281.7,292.7,299.2,327,331,333.7,334.8,335.3,336.1,335.9,334.2,331.2,326.7,322.3,315.8,307.7,307.7,292.7,230.8,230.8,228.9,221.5,220.6,222.2]]
+ ];
+ for(const [pinyin,direction,hz] of cases){
+  const f=hz.map((v,i)=>({t:(i+2+(pinyin==='mà'&&i>=18?1:0))*.016,hz:v,clarity:.9}));
+  const result=analyseContour(f);
+  assert.equal(result.kind,'insufficient',pinyin+' must remain ungraded');
+  assert.equal(result.isToneGrade,false);
+  assert.equal(result.shapeHint?.direction,direction,
+    pinyin+': '+JSON.stringify(result.shapeHint));
+  assert.equal(result.shapeHint?.isToneGrade,false);
+ }
+});
+
 test('short speech with too few frames, gaps, or an octave slip cannot receive movement hints',()=>{
  const ten=short(u=>175+40*u).slice(0,10);
  assert.equal(analyseContour(ten).kind,'insufficient');
