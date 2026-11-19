@@ -239,8 +239,12 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .pg433-tabs button.section-locked:active{
   transform:none!important;filter:saturate(.55)!important;
 }
-#app #pg433 .practice-modes{display:flex;gap:8px;padding:6px;margin:5px 4px 8px}
-#app #pg433 .practice-modes button{flex:1;min-width:0;min-height:37px;padding:4px 6px;border-radius:12px;font-size:12px;font-weight:700}
+#app #pg433 .practice-modes{display:flex;align-items:center;gap:7px;padding:6px;margin:5px 4px 8px}
+#app #pg433 .practice-modes button{min-width:0;min-height:37px;padding:4px 6px;border-radius:12px;font-size:12px;font-weight:700}
+#app #pg433 .practice-modes .practice-main{flex:1.45}
+#app #pg433 .practice-modes .practice-backup{flex:1;border:1px dashed #d5a4df!important;background:#fff7ff!important;color:#78398d!important;box-shadow:none!important;text-shadow:none!important;font-size:11px!important;font-weight:650!important;white-space:normal}
+#app #pg433 .practice-modes .practice-backup.is-active{border-style:solid!important;background:#f3e3f8!important}
+#app #pg433 .practice-fallback-note{font-size:12px;text-align:center;margin:0 7px 7px}
 #app #pg433 .self-quiz{flex:1;white-space:normal;text-align:center;min-height:42px}
 #app #pg433 .pg433-footer #next:disabled{opacity:.58;cursor:not-allowed;filter:saturate(.4);box-shadow:inset 0 2px 5px #75147e35!important;transform:none!important}
 </style>
@@ -389,7 +393,7 @@ let state = restore();
 state.heardWords = [...new Set((Array.isArray(state.heardWords) ? state.heardWords : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.selfSpoken = [...new Set((Array.isArray(state.selfSpoken) ? state.selfSpoken : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.mic = [...new Set((Array.isArray(state.mic) ? state.mic : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
-state.practiceMode = state.practiceMode === 'self' ? 'self' : 'mic';
+state.practiceMode = 'mic'; // Start each session with the primary microphone mode.
 let audio = null;
 let speech = null;
 let feedback = '';
@@ -814,10 +818,16 @@ function toneGuide() {
 function tones() {
   const wordView = state.toneTab === 'words';
   return hero('tones',6,'Тренировка тонов','Слушай, повторяй и сравнивай произношение. Автоматической оценки тонов нет.') +
-    '<div class="practice-modes panel"><button type="button" class="' + (state.practiceMode === 'mic' ? 'primary' : 'soft') +
-    '" data-practice-mode="mic">🎙 Микрофон</button><button type="button" class="' +
-    (state.practiceMode === 'self' ? 'primary' : 'soft') +
-    '" data-practice-mode="self">🗣 Самопроверка</button></div>' +
+    '<div class="practice-modes panel"><button type="button" class="practice-main ' +
+    (state.practiceMode === 'mic' ? 'primary' : 'soft') +
+    '" data-practice-mode="mic">🎙 Микрофон · основной</button>' +
+    '<button type="button" class="practice-backup soft' + (state.practiceMode === 'self' ? ' is-active' : '') +
+    '" data-practice-mode="self">' +
+    (state.practiceMode === 'self' ? '✓ Запасной режим' : 'Не работает микрофон?') +
+    '</button></div>' +
+    (state.practiceMode === 'self'
+      ? '<p class="hint practice-fallback-note">Запасной вариант: слушай слово, произнеси вслух и отметь повторение. Тоны автоматически не проверяются.</p>'
+      : '') +
     '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
     '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (6)</button></div>' +
@@ -940,7 +950,7 @@ async function play(text,button) {
 function recognize(allowed,onMatch,onMiss) {
   const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!Recognition || !window.isSecureContext) {
-    setStatus('Распознавание недоступно. Открой урок по HTTPS в браузере с поддержкой китайского распознавания речи.');
+    setStatus('Распознавание недоступно. Можно попробовать другой браузер или воспользоваться запасной самопроверкой в разделе «Речь».');
     return;
   }
   clearMedia();
@@ -972,7 +982,8 @@ function recognize(allowed,onMatch,onMiss) {
         network:'Сервис распознавания речи недоступен. Проверь соединение и попробуй снова.',
         'no-speech':'Браузер не распознал речь. Попробуй ещё раз.'
       };
-      setStatus(errors[event.error] || 'Распознавание речи недоступно. Попробуй ещё раз.');
+      setStatus((errors[event.error] || 'Распознавание речи недоступно. Попробуй ещё раз.') +
+        ' Если проблема сохраняется, используй запасную самопроверку в разделе «Речь».');
     };
     instance.onend = () => {
       if (speech !== instance) return;
