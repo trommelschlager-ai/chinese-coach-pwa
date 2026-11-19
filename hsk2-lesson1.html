@@ -137,7 +137,6 @@ button[aria-pressed=true].orb{box-shadow:0 0 0 3px #f8c7fb,inset 0 2px 6px #6420
 .tonemarks{display:flex;gap:2px}
 .tone-number{display:grid;place-items:center;border-radius:50%;width:17px;height:17px;color:white;background:var(--gloss);font-size:11px;font-weight:850;box-shadow:inset 0 1px 1px #f6c4ff}
 .tone-number:nth-child(2){background:linear-gradient(#e3469e,#a01362)}
-.wave{width:100%;height:15px;color:#9631a5;display:block;margin-top:2px}
 .tone-guide{overflow:hidden;margin:8px 3px 6px;border-color:#fbddf8}
 .tone-guide h2{background:var(--gloss);color:#fff;font-size:17px;text-align:center;padding:5px;text-shadow:0 2px 2px #570b7a}
 .tone-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));text-align:center}
@@ -245,6 +244,11 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .practice-modes .practice-backup{flex:1;border:1px dashed #d5a4df!important;background:#fff7ff!important;color:#78398d!important;box-shadow:none!important;text-shadow:none!important;font-size:11px!important;font-weight:650!important;white-space:normal}
 #app #pg433 .practice-modes .practice-backup.is-active{border-style:solid!important;background:#f3e3f8!important}
 #app #pg433 .practice-fallback-note{font-size:12px;text-align:center;margin:0 7px 7px}
+#app #pg433 .tone-details,#app #pg433 .phrase-review{margin:8px 3px;padding:0;overflow:hidden;border-radius:16px;border:1px solid #e5b9ec;background:#fff8ff}
+#app #pg433 .tone-details summary,#app #pg433 .phrase-review summary{cursor:pointer;list-style:revert;padding:11px 14px;min-height:42px;font-weight:750;color:#742785;line-height:1.2}
+#app #pg433 .tone-details summary:focus-visible,#app #pg433 .phrase-review summary:focus-visible{outline:3px solid #a648b5;outline-offset:-3px}
+#app #pg433 .tone-details .tone-grid{padding:3px 6px 9px}
+#app #pg433 .phrase-review .phrases{margin:4px 7px 8px}
 #app #pg433 .self-quiz{flex:1;white-space:normal;text-align:center;min-height:42px}
 #app #pg433 .pg433-footer #next:disabled{opacity:.58;cursor:not-allowed;filter:saturate(.4);box-shadow:inset 0 2px 5px #75147e35!important;transform:none!important}
 /* Panda AI guided conversation: optional post-lesson link, without changing existing cards. */
@@ -455,7 +459,6 @@ const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<'
 const playIcon = '<span class="play" aria-hidden="true"></span>';
 const speaker = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke-linejoin="round"/><path d="M16 8a6 6 0 0 1 0 8m2.5-10a9 9 0 0 1 0 12" stroke-linecap="round"/></svg>';
 const microphone = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5 11v1a7 7 0 0 0 14 0v-1M12 19v3m-3 0h6"/></svg>';
-const wave = '<svg class="wave" viewBox="0 0 70 18" aria-hidden="true"><path d="M2 8v2m4-3v4m4-5v6m4-8v10m4-7v4m4-7v10m4-13v16m4-12v8m4-6v4m4-7v10m4-8v6m4-5v4m4-7v10m4-13v16m4-11v6m4-8v10m4-7v4" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>';
 const scope = () => state.step + ':' + state.quizTest + ':' + state.quizIndex;
 const correctCount = index => state.quiz[index].filter(Boolean).length;
 const quizCount = () => state.quiz.flat().filter(Boolean).length;
@@ -755,7 +758,7 @@ function question() {
         audioButton(word.zh) +
         (done ? '' : '<div class="controls">' + micButton('quiz','Произнести ' + word.zh) +
           '<button type="button" class="soft self-quiz" data-self-quiz="1">✓ Повторил и сравнил на слух</button></div>') +
-        '<p class="hint">Микрофон распознаёт слова, но не оценивает тоны. Самопроверка — без автоматической оценки.</p>';
+        '<p class="hint">🎙 Скажи слово. Тоны не оцениваются; самопроверка — запасной вариант.</p>';
       break;
   }
   const caption = courseMode
@@ -819,15 +822,14 @@ function toneGuide() {
     ['ǎ','низкий, затем вверх в изоляции','M3 4q18 23 38-1m-7 2 7-2-2 7'],
     ['à','резко падает','M3 3l38 12m-7-1 7 1-4-5']
   ];
-  return '<section class="tone-guide"><h2>Подсказка · 4 тона в китайском</h2><div class="tone-grid">' +
+  return '<details class="tone-details panel"><summary>🎵 Подсказка: четыре тона</summary><div class="tone-grid">' +
     samples.map(([sample,name,path],i) => '<div><b>' + (i+1) + '-й тон</b><svg viewBox="0 0 45 18" aria-hidden="true">' +
     '<path d="' + path + '" stroke="#af183e" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg><strong>' +
-    sample + '</strong>' + name + '</div>').join('') + '</div></section>';
+    sample + '</strong>' + name + '</div>').join('') + '</div></details>';
 }
-
 function tones() {
   const wordView = state.toneTab === 'words';
-  return hero('tones',6,'Тренировка тонов','Слушай, повторяй и сравнивай произношение. Автоматической оценки тонов нет.') +
+  return hero('tones',6,'Тренировка тонов','Слушай и повторяй шесть слов урока.') +
     '<div class="practice-modes panel"><button type="button" class="practice-main ' +
     (state.practiceMode === 'mic' ? 'primary' : 'soft') +
     '" data-practice-mode="mic">🎙 Микрофон · основной</button>' +
@@ -836,25 +838,25 @@ function tones() {
     (state.practiceMode === 'self' ? '✓ Запасной режим' : 'Не работает микрофон?') +
     '</button></div>' +
     (state.practiceMode === 'self'
-      ? '<p class="hint practice-fallback-note">Запасной вариант: слушай слово, произнеси вслух и отметь повторение. Тоны автоматически не проверяются.</p>'
+      ? '<p class="hint practice-fallback-note">Нет микрофона? Послушай, повтори и отметь слово. Тоны не проверяются.</p>'
       : '') +
     '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
     '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (6)</button></div>' +
     (wordView ? '<div class="tone-list">' + words.map((word,i) => '<article class="tone-row">' + vocabImage(i) + '<div>' +
       hanzi(word.zh) + translate([word.zh,word.py,word.ru]) + '</div><div class="tone-example">' +
-      toneStrokes(word.tones) + pitchRow(word.tones) + wave + '</div>' + audioButton(word.zh) +
+      toneStrokes(word.tones) + pitchRow(word.tones) + '</div>' + audioButton(word.zh) +
       (state.practiceMode === 'self'
         ? '<button type="button" class="orb mic' + (state.selfSpoken.includes(i) ? ' recognized' : '') +
           '" data-self-spoken="' + i + '" aria-label="Я повторил и сравнил ' + word.zh +
           '" title="Самостоятельная проверка; тоны не оцениваются">' +
           (state.selfSpoken.includes(i) ? '✓' : '●') + '</button>'
-        : micButton(i,'Произнести ' + word.zh,state.mic.includes(i))) + '</article>').join('') + '</div>' : phraseCards()) +
+        : micButton(i,'Произнести ' + word.zh,state.mic.includes(i))) + '</article>').join('') + '</div>' :
+      '<details class="phrase-review panel"><summary>💬 Открыть 6 фраз для повторения</summary>' + phraseCards() + '</details>') +
     safeStatus() + toneGuide() + '<div class="progress-panel panel">' + art('medal') + '<div><b>Практика произношения</b>' +
     '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
     ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
-    '. Тоны автоматически не оцениваются. 洗脸 — xǐliǎn (3 + 3) в речи звучит как 2 + 3.</p>' +
-    (wordView ? '<p class="hint audio-note">🔊 Для всех шести слов доступны отдельные записи.</p>' : '');
+    '. Тоны не оцениваются. 洗脸: xǐliǎn звучит как xíliǎn.</p>';
 }
 
 const replyPinyin = new Map([
@@ -892,7 +894,7 @@ function lockedPandaAiShortcut() {
 function chat() {
   const i = state.chat.length;
   const exchange = dialogue[i];
-  return '<h1 class="pill-title">💬 Фразы и диалог</h1>' + phraseCards() + '<p class="hint audio-note">🔊 Все фразы и ответы этого диалога озвучены.</p>' +
+  return '<h1 class="pill-title">💬 Фразы и диалог</h1>' + phraseCards() +
     '<section class="dialogue"><h2>Разговор с Пандой</h2><p class="hint">Учебный сценарий. Выбери или произнеси один из ответов.</p>' +
     state.chat.map((reply,j) => bubble('Панда',dialogue[j].prompt) + bubble('Ты',dialogue[j].answers.find(a => a[0] === reply) ?? [reply,''])).join('') +
     (exchange ? bubble('Панда',exchange.prompt) + '<div class="choice-grid">' + exchange.answers.map(([answer,translation],j) =>
