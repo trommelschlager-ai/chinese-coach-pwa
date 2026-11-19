@@ -34,7 +34,11 @@
     const speech=stage.querySelector('.pg346-speech');
     if(!header||!tools||!history||!scene||!send||!input||!form)return;
 
-    // Two independently accessible modes; night displays the last approved artwork tone.
+    // v501 sky layer: night gets real darkness instead of blue sky with a moon pasted onto it.
+    const landscape=document.createElement('div');landscape.className='pg500-landscape';
+    landscape.setAttribute('aria-hidden','true');
+    stage.prepend(landscape);
+        // Two independently accessible modes; night displays the last approved artwork tone.
     const switcher=document.createElement('div');
     switcher.className='pg500-theme-switch';
     switcher.setAttribute('role','group');
@@ -63,7 +67,7 @@
     const navBook=stage.querySelector('.pg346-nav a[href="./hsk1-map.html"]');
     function sideButton(css,inner,label){
       const button=document.createElement('button');button.type='button';button.className='pg500-side '+css;
-      button.setAttribute('aria-label',label);button.innerHTML=inner;scene.append(button);return button;
+      button.setAttribute('aria-label',label);button.innerHTML=inner;stage.append(button);return button;
     }
     const game=sideButton('pg500-side-game',navGame?.querySelector('svg')?.outerHTML||'🎮','Открыть тренажёр');
     game.addEventListener('click',()=>{location.href='./game.html'});
@@ -137,7 +141,10 @@
         const e=examples[i];const row=document.createElement('article');
         row.className='pg346-row pg500-example';
         row.setAttribute('aria-label','Пример для тренировки: '+e.zh);
-        const avatar=word('span','pg346-avatar','🐼');
+        const avatar=word('span','pg346-avatar','');
+        const pandaThumb=document.createElement('img');
+        pandaThumb.src='./assets/panda-character-clean-v349.webp?v=349';
+        pandaThumb.alt='Панда';avatar.append(pandaThumb);
         const left=word('div','pg346-text','');
         left.append(word('div','pg346-zh',e.zh),word('div','pg346-py',e.py));
         const ru=word('div','pg346-ru',e.ru);
