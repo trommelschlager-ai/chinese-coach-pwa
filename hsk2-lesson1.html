@@ -734,8 +734,10 @@ function question() {
       break;
     case 4:
       content = '<div class="quiz-word" lang="zh-Hans">' + word.zh + '</div><p class="py">' + word.py + '</p>' +
-        (done ? '' : '<div class="controls">' + micButton('quiz','Произнести ' + word.zh) + '</div>') +
-        '<p class="hint">Проверяем, распознано ли слово. Тоны здесь не оцениваются.</p>';
+        audioButton(word.zh) +
+        (done ? '' : '<div class="controls">' + micButton('quiz','Произнести ' + word.zh) +
+          '<button type="button" class="soft self-quiz" data-self-quiz="1">✓ Повторил и сравнил на слух</button></div>') +
+        '<p class="hint">Микрофон распознаёт слова, но не оценивает тоны. Самопроверка — без автоматической оценки.</p>';
       break;
   }
   const caption = courseMode
@@ -750,7 +752,8 @@ function question() {
     (i === 5 ? 'К списку' : 'Следующее →') + '</button></div>';
   return '<article class="panel section-panel"><h1 tabindex="-1">Тест ' + (t+1) + ' · ' + tests[t] + '</h1><p class="hint">' +
     caption + '</p>' + content + safeStatus() +
-    (done && !feedback ? '<div class="feedback good">✓ ' + (t === 4 ? 'Слово распознано' : 'Ответ засчитан') + '</div>' : '') +
+    (done && !feedback ? '<div class="feedback good">✓ ' +
+      (t === 4 ? (done.method === 'self' ? 'Самостоятельно повторено; тоны не проверялись' : 'Слово распознано; тоны не проверялись') : 'Ответ засчитан') + '</div>' : '') +
     controls + '</article>';
 }
 
@@ -774,7 +777,7 @@ function grammar() {
 }
 
 function day() {
-  return '<h1 class="pill-title day-title">🎯 Практика · Мой распорядок</h1><p class="hint">Расположи действия по порядку.</p>' +
+  return '<h1 class="pill-title day-title">🎯 Практика · Мой распорядок</h1><p class="hint">Расположи действия в том порядке, как их выполняет Панда в этом уроке.</p>' +
     '<div class="practice-grid">' + state.dayShuffled.map(i => {
       const position = state.dayOrder.indexOf(i);
       return '<button type="button" class="day-card' + (position >= 0 ? ' selected' : '') + '" data-day="' + i + '"' +
@@ -879,10 +882,18 @@ async function play(text,button) {
     if (audio !== player || origin !== scope()) return;
     audio = null;
     button.removeAttribute('aria-pressed');
+    const wordIndex = words.findIndex(word => normalize(word.zh) === normalize(text));
+    if (wordIndex >= 0 && !state.heardWords.includes(wordIndex)) {
+      state.heardWords.push(wordIndex);
+      save();
+    }
     if (state.step === 3 && state.quizTest === 1) {
       heardClip = origin;
       for (const choice of workspace.querySelectorAll('[data-choice]')) choice.disabled = false;
       setStatus('Выбери действие, которое прозвучало в конце.',true);
+    } else if (state.step === 2 && wordIndex >= 0) {
+      setStatus('✓ Прослушано ' + state.heardWords.length + ' из 6 слов.',true);
+      render();
     } else {
       setStatus('');
     }
