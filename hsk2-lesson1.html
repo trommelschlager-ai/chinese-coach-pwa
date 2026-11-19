@@ -359,7 +359,6 @@ function restore() {
 let state = restore();
 let audio = null;
 let speech = null;
-let deviceUtterance = null;
 let feedback = '';
 let positive = false;
 let heardClip = null;
@@ -427,15 +426,10 @@ const translate = item => '<span class="py">' + item[1] + '</span><span class="r
 const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' good' : '') + '" role="status">' + escape(feedback) + '</div>';
 
 function audioButton(text, icon = speaker, blind = false) {
-  const recorded = clips.has(normalize(text));
-  const deviceVoice = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
-  const available = recorded || deviceVoice;
-  const label = recorded ? 'Прослушать запись: ' + text
-    : deviceVoice ? 'Произнести китайским голосом устройства: ' + text
-    : 'На этом устройстве нет записи или китайского голосового движка для «' + text + '»';
+  const available = clips.has(normalize(text));
+  const label = blind ? 'Прослушать запись' : available ? 'Прослушать ' + text : 'Для «' + text + '» отдельной записи нет';
   return '<button type="button" class="orb' + (available ? '' : ' missing') + '" data-say="' +
-    escape(text) + '" aria-label="' + escape(label) + '" title="' + escape(label) + '">' +
-    (available ? icon : '<span aria-hidden="true">♪</span>') + '</button>';
+    escape(text) + '" aria-label="' + escape(label) + '" title="' + escape(label) + '">' + (available ? icon : '<span aria-hidden="true">♪</span>') + '</button>';
 }
 
 function micButton(id, label, recognized = false) {
@@ -467,11 +461,6 @@ function clearMedia() {
     const current = speech;
     speech = null;
     current.abort();
-  }
-  if (deviceUtterance) {
-    deviceUtterance = null;
-    try { window.speechSynthesis.cancel(); } catch {}
-    workspace.querySelector('[data-say][aria-pressed=true]')?.removeAttribute('aria-pressed');
   }
 }
 
@@ -548,7 +537,7 @@ function newWords() {
   return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' + words.map((word,i) =>
     '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + toneStrokes(word.tones) + '<div>' +
     translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh,playIcon) + '</article>').join('') +
-    '</div><p class="hint audio-note">🔊 Нажми для прослушивания: готовые MP3 и китайский голос устройства.</p>' + safeStatus();
+    '</div><p class="hint audio-note">♪ Отдельных записей этих слов пока нет. Записи фраз есть в тестах, тренировке тонов и диалоге.</p>' + safeStatus();
 }
 
 function hero(kind,step,title,subtitle) {
@@ -727,7 +716,7 @@ function tones() {
     safeStatus() + toneGuide() + '<div class="progress-panel panel">' + art('medal') + '<div><b>Распознавание слов</b>' +
     '<progress max="6" value="' + state.mic.length + '" aria-label="Распознано слов"></progress></div><b>' + state.mic.length +
     ' из 6</b></div><p class="hint audio-note">洗脸 — xǐliǎn (3 + 3). В связной речи первый слог звучит со 2-м тоном. Волна декоративная, оценки тонов нет.</p>' +
-    (wordView ? '<p class="hint audio-note">🔊 Эти шесть слов произносит китайский голос устройства.</p>' : '');
+    (wordView ? '<p class="hint audio-note">♪ Отдельных MP3 для шести слов пока нет.</p>' : '');
 }
 
 function bubble(role,item) {
@@ -739,7 +728,7 @@ function bubble(role,item) {
 function chat() {
   const i = state.chat.length;
   const exchange = dialogue[i];
-  return '<h1 class="pill-title">💬 Фразы и диалог</h1>' + phraseCards() + '<p class="hint audio-note">🔊 Для фраз без MP3 используется китайский голос устройства.</p>' +
+  return '<h1 class="pill-title">💬 Фразы и диалог</h1>' + phraseCards() + '<p class="hint audio-note">♪ Для некоторых фраз точной записи пока нет.</p>' +
     '<section class="dialogue"><h2>Разговор с Пандой</h2><p class="hint">Учебный сценарий. Выбери или произнеси один из ответов.</p>' +
     state.chat.map((reply,j) => bubble('Панда',dialogue[j].prompt) + bubble('Ты',dialogue[j].answers.find(a => a[0] === reply) ?? [reply,''])).join('') +
     (exchange ? bubble('Панда',exchange.prompt) + '<div class="choice-grid">' + exchange.answers.map(([answer,translation],j) =>
@@ -768,60 +757,10 @@ function finish() {
     result('Распорядок',state.dayDone ? '✓ Выполнено' : 'Ожидает проверки') + result('Распознано слов',state.mic.length + ' / 6') +
     result('Ответы в диалоге',state.chat.length + ' / 3') + '</dl><div class="controls"><button type="button" class="soft" data-step="3">Вернуться к тестам</button><a class="soft lesson-map-link" href="./hsk2-life-course.html?topic=0">К теме HSK 2</a></div></section>';
 }
-function playDeviceVoice(text,button) {
-  if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
-    setStatus('Для этой фразы пока нет MP3, а устройство не поддерживает китайскую озвучку.');
-    return;
-  }
-  clearMedia();
-  const engine = window.speechSynthesis;
-  const phrase = new SpeechSynthesisUtterance(text);
-  phrase.lang = 'zh-CN';
-  phrase.rate = 0.9;
-  phrase.pitch = 1;
-  phrase.volume = 1;
-  const voices = engine.getVoices();
-  phrase.voice = voices.find(v => /^(zh-CN|cmn-Hans-CN)$/i.test(v.lang))
-    || voices.find(v => /^(zh|cmn)(-|_|$)/i.test(v.lang))
-    || null;
-  const origin = scope();
-  deviceUtterance = phrase;
-  button.setAttribute('aria-pressed','true');
-  const finish = () => {
-    if (deviceUtterance !== phrase || origin !== scope()) return;
-    deviceUtterance = null;
-    button.removeAttribute('aria-pressed');
-    if (state.step === 3 && state.quizTest === 1) {
-      heardClip = origin;
-      for (const choice of workspace.querySelectorAll('[data-choice]')) choice.disabled = false;
-      setStatus('Выбери действие, которое прозвучало в конце.',true);
-    } else {
-      setStatus('');
-    }
-  };
-  phrase.onend = finish;
-  phrase.onerror = () => {
-    if (deviceUtterance !== phrase) return;
-    deviceUtterance = null;
-    button.removeAttribute('aria-pressed');
-    setStatus('Китайский голос не запустился. Проверь настройки озвучивания текста на телефоне.');
-  };
-  phrase.onstart = () => {
-    if (deviceUtterance === phrase && origin === scope())
-      setStatus('Воспроизводится китайский голос устройства.',true);
-  };
-  try {
-    engine.speak(phrase); // Directly inside the user's tap handler.
-    if (engine.paused) engine.resume();
-  } catch {
-    phrase.onerror();
-  }
-}
-
 async function play(text,button) {
   const clip = clips.get(normalize(text));
   if (!clip) {
-    playDeviceVoice(text,button);
+    setStatus('Отдельной записи для «' + text + '» пока нет.');
     return;
   }
   clearMedia();
