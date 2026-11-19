@@ -890,12 +890,12 @@ function bubble(role,item) {
 }
 
 function pandaAiShortcut() {
-  // Uses the existing HSK2 My Day guided practice (three questions), not an unrestricted AI chat.
-  return '<a class="panda-ai-shortcut" href="./panda-voice-pilot.html?practice=day&amp;mini=0&amp;from=hsk2-lesson1" ' +
-    'aria-label="Поговорить с Пандой AI после урока «Мой день»">' +
+  // Existing HSK1 introductory chat only, not a new HSK2 About Me voice conversation.
+  return '<a class="panda-ai-shortcut" href="./panda-voice-pilot.html?lesson=1&amp;from=hsk2-about-me" ' +
+    'aria-label="Панда AI: базовые вопросы для знакомства">' +
     '<img src="./assets/hsk2-lesson1-preview/tones-panda.webp" alt="" loading="lazy">' +
     '<span class="panda-ai-shortcut-copy"><strong>🐼 Поговорить с Пандой AI</strong>' +
-    '<small>Голосовая практика «Мой день»: 3 вопроса по уроку</small></span>' +
+    '<small>Базовое знакомство (HSK 1). Полный разговор HSK 2 пока разрабатывается.</small></span>' +
     '<span class="panda-ai-shortcut-arrow" aria-hidden="true">➜</span></a>';
 }
 function lockedPandaAiShortcut() {
@@ -932,11 +932,11 @@ function finish() {
   const result = (label,value,className='') => '<div class="' + className + '"><dt>' + label + '</dt><dd>' + value + '</dd></div>';
   return '<div class="final-hero panel"><img src="' + asset + 'hero-reading.webp" alt="Панда с красной книгой"><div>' +
     '<img class="award" src="' + decoration + (completed ? 'trophy' : 'medal') + '.webp" alt=""><h1>' + (completed ? 'Урок пройден!' : 'Твой прогресс') +
-    '</h1><p class="hint">Урок 1 «Мой день»</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
-    result('Прослушаны слова',state.heardWords.length + ' / 6') +
+    '</h1><p class="hint">Урок 1 «О себе»</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
+    result('Изучены выражения',state.heardWords.length + ' / 6') +
     result('Все мини-тесты',quizCount() + ' / 30','all') + tests.map((test,i) => result(test,correctCount(i) + ' / 6')).join('') +
-    result('Грамматика 以后',state.grammarDone ? '✓ Выполнено' : 'Ожидает проверки') +
-    result('Распорядок',state.dayDone ? '✓ Выполнено' : 'Ожидает проверки') +
+    result('Грамматика 现在',state.grammarDone ? '✓ Выполнено' : 'Ожидает проверки') +
+    result('Рассказ о Мише',state.dayDone ? '✓ Выполнено' : 'Ожидает проверки') +
     result('Практика речи',speechCount() + ' / 6') +
     result('Распознано микрофоном',state.mic.length + ' / 6') +
     result('Отмечено самостоятельно',state.selfSpoken.length + ' слов; ' + selfQuizCount() + ' тестов (без оценки тонов)') +
@@ -1151,7 +1151,7 @@ function update() {
 function markSelfSpoken(index) {
   if (!Number.isInteger(index) || index < 0 || index >= words.length) return;
   if (!state.heardWords.includes(index)) {
-    setStatus('Сначала прослушай запись этого слова, затем повтори его.');
+    setStatus('Сначала изучи и отметь это слово на первом шаге, затем повтори.');
     return;
   }
   if (!state.selfSpoken.includes(index)) state.selfSpoken.push(index);
