@@ -77,17 +77,22 @@ h1{font-size:25px;line-height:1.15;margin:11px 0 6px;color:#672e8d}
 <h2 id="graph-title">2. Посмотри движение голоса</h2>
 <svg id="graph" viewBox="0 0 350 142" role="img" aria-label="Сравнение учебного контура и измеренного движения высоты голоса">
 <path class="gridline" d="M20 35H337 M20 70H337 M20 105H337"/>
+<path class="gridline" d="M93 23V120 M156 23V120 M282 23V120"/>
+<text x="90" y="137" fill="#987ca4" font-size="10">0,25</text>
+<text x="151" y="137" fill="#987ca4" font-size="10">0,5</text>
+<text x="278" y="137" fill="#987ca4" font-size="10">1 с</text>
 <path id="ref-path" class="template" d="M30 62H332"/>
 <path id="your-path" class="observed" d=""/>
 <text x="8" y="18" fill="#8c739f" font-size="11">Выше ↑</text><text x="8" y="132" fill="#8c739f" font-size="11">Ниже ↓</text>
 </svg>
-<p class="legend">Пунктир — учебная схема; сплошная линия — измеренный голос, если хватает данных</p>
+<p class="legend">Пунктир — условный образец; сплошная линия — измеренный голос в масштабе времени (0–1,2 с)</p>
+<p id="segment-info" class="legend" role="status" aria-live="polite">Новая попытка ещё не записана.</p>
 <p id="result" class="result" aria-live="polite">После произношения здесь появится результат наблюдения.</p>
 <button id="next" class="action next" type="button">Следующий тон →</button>
 </section>
 <p class="tip"><b>Важно:</b> это анализ высоты голоса, а не распознавание китайских слов. Нет оценок «верно/неверно» — по одному графику нельзя достоверно проверить китайский тон. Третий тон в речи часто произносится низко, без подъёма.</p>
 <p class="warning">🎧 Лучше пользоваться в тихом месте. Говори обычным голосом. Не нужно кричать или специально растягивать слог; программа анализирует короткую запись после остановки. Твой голос временно записывается в памяти браузера для воспроизведения, не отправляется на сервер и удаляется при новой записи, смене тона или закрытии тренажёра.</p>
 </main>
-<script type="module" src="./assets/panda-tone-ma-pilot-v463.mjs?v=466"></script>
+<script type="module" src="./assets/panda-tone-ma-pilot-v463.mjs?v=467"></script>
 </body>
 </html>
