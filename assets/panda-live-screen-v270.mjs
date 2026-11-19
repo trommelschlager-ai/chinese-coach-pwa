@@ -178,6 +178,7 @@ function rotateGreeting(){let index=0;try{index=Number(storage?.getItem('pg-pand
 function dayReturnHref(){
  const params=new URLSearchParams(location.search);
  const mini=/^[0-2]$/.test(params.get('mini')||'')?params.get('mini'):'0';
+    if(params.get('from')==='hsk2-lesson1')return './hsk2-lesson1.html?step=8';
  return './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini+'&v=420';
 }
 function initLesson(id){
