@@ -241,6 +241,7 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
     <button type="button" class="primary" id="next"></button>
   </footer>
 </div>
+<script src="./assets/hsk2-lesson1-voice-v459.js?v=459"></script>
 <script>
 'use strict';
 
@@ -279,6 +280,10 @@ for (const [text,id] of [
   ['我七点起床','g033'], ['我晚上十点睡觉','g034'],
   ['我八点去上班','g035'], ['我每天六点起床','g036']
 ]) clips.set(text, 'assets/panda-grammar-voice-v451/' + id + '.mp3');
+// User-supplied 2026-11-19 Luvvoice recording, cut into eleven exact same-speaker MP3 phrases.
+for (const [text,recording] of Object.entries(window.PandaGoHSK2Lesson1NativeAudioV459 || {})) {
+  clips.set(normalize(text), recording);
+}
 
 const listening = [
   ['我七点起床。',0], ['我起床以后洗脸。',1], ['我早上吃早饭。',3],
@@ -537,7 +542,7 @@ function newWords() {
   return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' + words.map((word,i) =>
     '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + toneStrokes(word.tones) + '<div>' +
     translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh,playIcon) + '</article>').join('') +
-    '</div><p class="hint audio-note">♪ Отдельных записей этих слов пока нет. Записи фраз есть в тестах, тренировке тонов и диалоге.</p>' + safeStatus();
+    '</div><p class="hint audio-note">🔊 Все шесть слов озвучены единым женским голосом.</p>' + safeStatus();
 }
 
 function hero(kind,step,title,subtitle) {
@@ -716,7 +721,7 @@ function tones() {
     safeStatus() + toneGuide() + '<div class="progress-panel panel">' + art('medal') + '<div><b>Распознавание слов</b>' +
     '<progress max="6" value="' + state.mic.length + '" aria-label="Распознано слов"></progress></div><b>' + state.mic.length +
     ' из 6</b></div><p class="hint audio-note">洗脸 — xǐliǎn (3 + 3). В связной речи первый слог звучит со 2-м тоном. Волна декоративная, оценки тонов нет.</p>' +
-    (wordView ? '<p class="hint audio-note">♪ Отдельных MP3 для шести слов пока нет.</p>' : '');
+    (wordView ? '<p class="hint audio-note">🔊 Для всех шести слов доступны отдельные записи.</p>' : '');
 }
 
 function bubble(role,item) {
@@ -728,7 +733,7 @@ function bubble(role,item) {
 function chat() {
   const i = state.chat.length;
   const exchange = dialogue[i];
-  return '<h1 class="pill-title">💬 Фразы и диалог</h1>' + phraseCards() + '<p class="hint audio-note">♪ Для некоторых фраз точной записи пока нет.</p>' +
+  return '<h1 class="pill-title">💬 Фразы и диалог</h1>' + phraseCards() + '<p class="hint audio-note">🔊 Все фразы и ответы этого диалога озвучены.</p>' +
     '<section class="dialogue"><h2>Разговор с Пандой</h2><p class="hint">Учебный сценарий. Выбери или произнеси один из ответов.</p>' +
     state.chat.map((reply,j) => bubble('Панда',dialogue[j].prompt) + bubble('Ты',dialogue[j].answers.find(a => a[0] === reply) ?? [reply,''])).join('') +
     (exchange ? bubble('Панда',exchange.prompt) + '<div class="choice-grid">' + exchange.answers.map(([answer,translation],j) =>
