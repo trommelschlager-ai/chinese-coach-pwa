@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 370 270" role="img" aria-label="Панда: dialogue"><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#fff6ff"/><stop offset=".45" stop-color="#efd2fb"/><stop offset="1" stop-color="#b6dce6"/></linearGradient><linearGradient id="fur" x2=".7" y2="1"><stop stop-color="white"/><stop offset=".7" stop-color="#fff4fb"/><stop offset="1" stop-color="#dfbce1"/></linearGradient><radialGradient id="eyes"><stop stop-color="#5d3b32"/><stop offset=".75" stop-color="#151824"/><stop offset="1" stop-color="#111424"/></radialGradient><linearGradient id="hoodie" x2=".8" y2="1"><stop stop-color="#72e1d7"/><stop offset=".6" stop-color="#2495b3"/><stop offset="1" stop-color="#523e92"/></linearGradient><linearGradient id="earcup" x2="1" y2="1"><stop stop-color="#ffb8fb"/><stop offset=".5" stop-color="#d14adf"/><stop offset="1" stop-color="#61358e"/></linearGradient><linearGradient id="mic" x2=".7" y2="1"><stop stop-color="#f6cbef"/><stop offset="1" stop-color="#b85bbb"/></linearGradient><linearGradient id="gold" x2="1" y2="1"><stop stop-color="#fffcc6"/><stop offset=".45" stop-color="#ffd35b"/><stop offset="1" stop-color="#d98736"/></linearGradient><filter id="shadow" x="-25%" y="-25%" width="150%" height="170%"><feGaussianBlur in="SourceAlpha" stdDeviation="2.5"/><feOffset dy="5"/><feComponentTransfer><feFuncA type="linear" slope=".25"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect width="370" height="270" rx="28" fill="url(#bg)"/><path d="M0 216q70-35 136 8t139-12q52-40 95 1v57H0" fill="#b0dbcb" opacity=".62"/><circle cx="329" cy="35" r="16" fill="#fff" opacity=".45"/><path d="M19 51l5-11 5 11 11 6-11 5-5 11-5-11-11-5z" fill="#fff" opacity=".8"/><g filter="url(#shadow)" transform="translate(30 -4)">
+<ellipse cx="151" cy="245" rx="94" ry="11" fill="#b196d6" opacity=".25"/>
+<ellipse cx="151" cy="207" rx="78" ry="63" fill="url(#hoodie)" stroke="#2e7b9f" stroke-width="7"/>
+<path d="M136 160v96m-16-43h51" stroke="#fad98e" stroke-width="6" stroke-linecap="round"/>
+<path d="M87 186q-38-19-40 20l25 34 29-22" fill="url(#hoodie)" stroke="#2e7b9f" stroke-width="8"/>
+<ellipse cx="66" cy="219" rx="20" ry="18" fill="#29263d" transform="rotate(-20 66 219)"/>
+<path d="M201 188q34-11 44-30" stroke="#2d7da1" stroke-width="28" stroke-linecap="round"/><ellipse cx="243" cy="158" rx="21" ry="23" fill="#29263d"/>
+<ellipse cx="150" cy="105" rx="95" ry="85" fill="url(#fur)" stroke="#dcc8ea" stroke-width="5"/>
+<ellipse cx="83" cy="44" rx="30" ry="33" fill="#29253c"/><ellipse cx="218" cy="42" rx="30" ry="33" fill="#29253c"/>
+<ellipse cx="114" cy="105" rx="34" ry="41" fill="#252339" transform="rotate(16 114 105)"/>
+<ellipse cx="187" cy="103" rx="34" ry="41" fill="#252339" transform="rotate(-16 187 103)"/>
+<ellipse cx="119" cy="105" rx="18" ry="24" fill="url(#eyes)"/><ellipse cx="181" cy="104" rx="18" ry="24" fill="url(#eyes)"/>
+<circle cx="126" cy="95" r="7" fill="white"/><circle cx="188" cy="94" r="7" fill="white"/>
+<circle cx="103" cy="149" r="22" fill="#f6a5c8" opacity=".65"/><circle cx="199" cy="149" r="22" fill="#f6a5c8" opacity=".65"/>
+<ellipse cx="152" cy="144" rx="32" ry="20" fill="#fffafa"/><path d="M135 138q16-18 35 0-6 16-18 15-13 0-17-15" fill="#28233a"/>
+<path d="M134 166q16 23 36 0" fill="#e47b9e" stroke="#772c55" stroke-width="4"/>
+<path d="M57 122q-2-103 94-108 103 3 102 107" fill="none" stroke="#863ba4" stroke-width="18" stroke-linecap="round"/>
+<path d="M59 118q0-100 94-105 97 3 99 105" fill="none" stroke="#e673e9" stroke-width="8" stroke-linecap="round"/>
+<rect x="51" y="106" width="31" height="57" rx="14" fill="url(#earcup)" stroke="#7d359e" stroke-width="5"/>
+<rect x="221" y="105" width="33" height="59" rx="14" fill="url(#earcup)" stroke="#7d359e" stroke-width="5"/>
+</g><g filter="url(#shadow)"><path d="M217 132q2-36 46-35h47q41 0 41 32 0 34-41 35h-51l-30 23 4-26q-16-13-16-29z" fill="#fff7fd" stroke="#ba76c3" stroke-width="5"/><text x="279" y="145" font-family="sans-serif" font-size="34" text-anchor="middle" fill="#8d399f">你好!</text><path d="M257 200q0-20 32-20h31q31 0 31 20 0 21-31 21h-32l-16 14 2-15q-17-4-17-20z" fill="#d9ffe8" stroke="#5bb98b" stroke-width="4"/><text x="307" y="210" font-family="sans-serif" font-size="16" text-anchor="middle" fill="#36976b">我叫米沙</text></g></svg>
