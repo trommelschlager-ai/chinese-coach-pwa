@@ -83,15 +83,59 @@ function shortPreview(frames){
   st:Math.max(-8,Math.min(8,12*Math.log2(p.hz/hzRef)))}));
 }
 
+/*
+ * Find a single contiguous voiced candidate by the energy envelope.
+ * Silence before and after the syllable is discarded; separate attempts
+ * are NEVER joined by the pitch display. Amplitude alone is not speech proof.
+ */
+export function segmentVoicedRegion(windows,rate,width){
+ if(!Array.isArray(windows)||windows.length<2||!Number.isFinite(rate)||rate<8000)return null;
+ const amplitudes=windows.map(w=>w.rms).filter(Number.isFinite);
+ if(amplitudes.length<2)return null;
+ const peak=Math.max(...amplitudes);
+ if(peak<.004)return null;
+ const count=Math.max(2,Math.floor(amplitudes.length*.3));
+ const floor=median([...amplitudes].sort((a,b)=>a-b).slice(0,count));
+ const gate=Math.max(.0025,Math.min(.018,peak*.14),floor*1.8);
+ const indices=windows.map((w,i)=>w.rms>=gate?i:-1).filter(i=>i>=0);
+ if(!indices.length)return null;
+ const groups=[];let group=[];
+ for(const i of indices){
+  if(group.length&&i-group.at(-1)>3){groups.push(group);group=[];}
+  group.push(i);
+ }
+ if(group.length)groups.push(group);
+ const candidates=groups.map(indices=>{
+  const loudest=Math.max(...indices.map(i=>windows[i].rms));
+  const energy=indices.reduce((sum,i)=>sum+windows[i].rms**2,0);
+  const first=indices[0],last=indices.at(-1);
+  return {indices,first,last,loudest,energy};
+ }).filter(x=>x.indices.length>=5&&x.loudest>=.005);
+ if(!candidates.length)return null;
+ candidates.sort((a,b)=>b.energy-a.energy);
+ const chosen=candidates[0];
+ const frameSec=width/rate;
+ const firstCenter=(windows[chosen.first].start+width/2)/rate;
+ const lastCenter=(windows[chosen.last].start+width/2)/rate;
+ const startSec=Math.max(0,firstCenter-frameSec*.38);
+ const endSec=Math.max(startSec,lastCenter+frameSec*.38);
+ return {
+  startSec:+startSec.toFixed(4),endSec:+endSec.toFixed(4),
+  durationSec:+(endSec-startSec).toFixed(3),
+  activeFrames:chosen.indices.length,peakRms:+peak.toFixed(4),
+  noiseRms:+floor.toFixed(4),gateRms:+gate.toFixed(4),
+  firstFrame:chosen.first,lastFrame:chosen.last,
+  discardedOtherRegions:Math.max(0,candidates.length-1)
+ };
+}
+
 export function analyseRecordedBuffer(buffer,{estimatePitch,analyseContour}){
  if(!buffer||!Number.isFinite(buffer.sampleRate)||buffer.sampleRate<8000||
     !Number.isFinite(buffer.length)||buffer.length<1024||typeof buffer.getChannelData!=='function'){
-  return {available:false,reason:'decoded-audio-unavailable',frames:[],result:analyseContour([]),signal:null};
+  return {available:false,reason:'decoded-audio-unavailable',frames:[],preview:[],result:analyseContour([]),signal:null};
  }
  const rate=buffer.sampleRate,channels=Math.max(1,Math.min(2,buffer.numberOfChannels||1));
  const data=buffer.getChannelData(0);
- // Phones generally supply mono. For stereo choose the channel with more signal
- // rather than phase-cancelling two microphone tracks.
  let samples=data;
  if(channels>1){
   const right=buffer.getChannelData(1);
@@ -103,31 +147,29 @@ export function analyseRecordedBuffer(buffer,{estimatePitch,analyseContour}){
  for(let start=0;start+width<=samples.length;start+=hop){
   windows.push({start,rms:averageRms(samples,start,width)});
  }
- if(!windows.length)return {available:false,reason:'audio-too-short',frames:[],result:analyseContour([]),signal:null};
- const energies=windows.map(x=>x.rms);
- const peak=Math.max(...energies);
- const floor=median([...energies].sort((a,b)=>a-b).slice(0,Math.max(2,Math.floor(energies.length*.35))));
- // A gate independent of the old fixed 0.012 threshold.
- // If the whole file is near silence, report no audible signal; never classify pitch.
- const threshold=Math.max(.0025,Math.min(.012,peak*.18),floor*2.0);
- const usable=peak>=.004;
- const voiced=usable?windows.filter(x=>x.rms>threshold):[];
- const samplesForPitch=[];
- // Pitch estimation is CPU-intensive; skip silent windows but sample
- // all frames of a real syllable at steady 22ms intervals, not setInterval jitter.
- const input=new Float32Array(width);
- const targetPeak=.055;
- const gain=usable?Math.max(1,Math.min(12,targetPeak/Math.max(.001,peak))):1;
+ const region=segmentVoicedRegion(windows,rate,width);
+ if(!region){
+  const signal={durationSec:+(samples.length/rate).toFixed(2),
+   hasAudibleSignal:false,soundFrames:0,totalFrames:windows.length,pitchFrames:0,
+   pitchSpanSec:0,syllableDurationSec:0,fallbackPitchFrames:0,
+   discardedOtherRegions:0};
+  return {available:true,frames:[],preview:[],result:analyseContour([]),signal};
+ }
+ const voiced=windows.slice(region.firstFrame,region.lastFrame+1).filter(x=>x.rms>region.gateRms);
+ const input=new Float32Array(width),samplesForPitch=[];
+ // Limited adaptive gain can help phone recordings. It cannot prove
+ // whether a syllable was pronounced correctly.
+ const gain=Math.max(1,Math.min(12,.055/Math.max(.001,region.peakRms)));
  for(const candidate of voiced){
+  const centerSec=(candidate.start+width/2)/rate;
+  if(centerSec<region.startSec||centerSec>region.endSec)continue;
   const slice=samples.subarray(candidate.start,candidate.start+width);
   for(let i=0;i<width;i++)input[i]=Math.max(-1,Math.min(1,slice[i]*gain));
   const strict=estimatePitch(input,rate);
   const found=strict&&strict.clarity>=.7?strict:estimatePitchAutocorrelation(input,rate);
   if(found&&found.clarity>=.53&&Number.isFinite(found.hz)&&found.hz>=65&&found.hz<=550){
    samplesForPitch.push({
-    t:(candidate.start+width/2)/rate,
-    hz:found.hz,
-    clarity:found.clarity,
+    t:centerSec,hz:found.hz,clarity:found.clarity,
     method:found.method||'yin'
    });
   }
@@ -136,15 +178,20 @@ export function analyseRecordedBuffer(buffer,{estimatePitch,analyseContour}){
   ?samplesForPitch.at(-1).t-samplesForPitch[0].t:0;
  const signal={
   durationSec:+(samples.length/rate).toFixed(2),
-  peakRms:+peak.toFixed(4),noiseRms:+floor.toFixed(4),gateRms:+threshold.toFixed(4),
+  peakRms:region.peakRms,noiseRms:region.noiseRms,gateRms:region.gateRms,
   hasAudibleSignal:voiced.length>=3,
   soundFrames:voiced.length,totalFrames:windows.length,
   pitchFrames:samplesForPitch.length,
   pitchSpanSec:+span.toFixed(2),
+  syllableDurationSec:region.durationSec,
+  segmentStartSec:region.startSec,
+  segmentEndSec:region.endSec,
+  discardedOtherRegions:region.discardedOtherRegions,
   fallbackPitchFrames:samplesForPitch.filter(x=>x.method==='autocorrelation').length
  };
  return {available:true,frames:samplesForPitch,preview:shortPreview(samplesForPitch),result:analyseContour(samplesForPitch),signal};
 }
+
 export async function analyseRecordedBlob(blob,{estimatePitch,analyseContour,AudioContextClass}){
  if(!blob||blob.size<128||!AudioContextClass)throw new Error('Recorded audio decoder unavailable');
  const context=new AudioContextClass();
