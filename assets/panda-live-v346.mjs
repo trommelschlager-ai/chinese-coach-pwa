@@ -123,6 +123,7 @@ if (!bridge) {
   const dayReturnHref=()=>{
     const params=new URLSearchParams(location.search);
     const mini=/^[0-2]$/.test(params.get('mini')||'')?params.get('mini'):'0';
+    if(params.get('from')==='hsk2-lesson1')return './hsk2-lesson1.html?step=8';
     // Return the pupil to the last HSK2 lesson screen, never the topic map.
     return './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini+'&v=420';
   };
