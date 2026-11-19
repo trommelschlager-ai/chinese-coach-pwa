@@ -224,6 +224,22 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 
 
 
+
+/* Sequential course navigation: locked chapters remain visible but inaccessible. */
+#app #pg433 .pg433-tabs button.section-locked:not(.active){
+  position:relative!important;opacity:.77!important;cursor:not-allowed!important;
+  color:#847589!important;background:linear-gradient(#eee5f0,#dfd5e6)!important;
+  border-color:#cec0d3!important;border-bottom-color:#baa8c4!important;
+  box-shadow:inset 0 1px 2px #fff9ff,0 2px 4px #9e8ba73a!important;
+  filter:saturate(.55);
+}
+#app #pg433 .pg433-tabs button.section-locked::after{
+  content:"🔒";position:absolute;top:2px;right:3px;font-size:10px;line-height:1;
+  filter:grayscale(.2);pointer-events:none;
+}
+#app #pg433 .pg433-tabs button.section-locked:active{
+  transform:none!important;filter:saturate(.55)!important;
+}
 </style>
 </head>
 <body>
@@ -327,7 +343,7 @@ function blank() {
     step:1, quiz:tests.map(() => words.map(() => null)),
     missed:tests.map(() => words.map(() => false)), quizTest:null, quizIndex:0, quizPicked:[], courseQuizCursor:null, courseQuizType:null, quizRetry:null,
     grammar:[], grammarDone:false, dayOrder:[], dayShuffled:mixedDay(), dayDone:false,
-    mic:[], chat:[], toneTab:'words'
+    mic:[], chat:[], toneTab:'words', unlockedSection:0
   };
 }
 
@@ -469,11 +485,31 @@ function clearMedia() {
   }
 }
 
-function move(step) {
+// 5 visible chapter tabs cover 8 detailed screens; the welcome screen belongs to chapter 1.
+const sectionForStep = step => step === 1 ? 0 : courseSections.findIndex(section => section.steps.includes(step));
+const unlockedSection = () => Math.max(0,Math.min(courseSections.length - 1,Number(state.unlockedSection) || 0));
+function canOpenStep(target,advance = false) {
+  if (!courseMode) return true;
+  const targetSection = sectionForStep(target);
+  const currentSection = sectionForStep(state.step);
+  if (targetSection < 0) return false;
+  if (targetSection <= unlockedSection()) return true;
+  // Only the Next button can open the immediate next chapter, not direct links or tabs.
+  return advance && currentSection === unlockedSection() && targetSection === currentSection + 1;
+}
+
+function move(step,advance = false) {
+  const target = Math.max(1,Math.min(8,Number(step) || 1));
+  if (!canOpenStep(target,advance)) {
+    setStatus('Сначала пройди предыдущий раздел и нажми «Дальше».');
+    return;
+  }
+  if (courseMode && sectionForStep(target) > unlockedSection())
+    state.unlockedSection = sectionForStep(target);
   clearMedia();
   feedback = '';
   heardClip = null;
-  state.step = Math.max(1,Math.min(8,step));
+  state.step = target;
   if (state.step !== 3) state.quizTest = null;
   if (courseMode) {
     layoutParams.set('step',state.step);
@@ -497,9 +533,16 @@ function render(resetScroll = false) {
   else headLabel.textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
   headBack.disabled = step === 1;
   stepButtons.forEach((button,index) => {
-    const active = courseMode ? courseSections[index].steps.includes(step) : index+1 === step;
+    const active = courseMode ? (index === 0 && step === 1) || courseSections[index].steps.includes(step) : index+1 === step;
+    const locked = courseMode && index > unlockedSection();
     button.setAttribute('aria-current',active ? 'step' : 'false');
-    if (courseMode) button.classList.toggle('active',active);
+    if (courseMode) {
+      button.classList.toggle('active',active);
+      button.classList.toggle('section-locked',locked);
+      button.disabled = locked;
+      button.title = locked ? '🔒 Сначала пройди предыдущий раздел' : 'Раздел открыт';
+      button.setAttribute('aria-label',courseSections[index].name + (locked ? '. Закрыт — откроется после предыдущего раздела.' : '. Открыт.'));
+    }
   });
   workspace.innerHTML = [intro,newWords,quiz,grammar,day,tones,chat,finish][step-1]();
   back.hidden = step === 1;
@@ -1084,15 +1127,20 @@ next.addEventListener('click',() => {
       return;
     }
   }
-  move(state.step === 8 ? 1 : (courseMode ? courseSteps[courseSteps.indexOf(state.step)+1] : state.step+1));
+  move(state.step === 8 ? 1 : (courseMode ? courseSteps[courseSteps.indexOf(state.step)+1] : state.step+1),true);
 });
 
 const fromQuery = Number(layoutParams.get('step'));
-if (Number.isInteger(fromQuery) && fromQuery >= 1 && fromQuery <= 8) {
+if (Number.isInteger(fromQuery) && fromQuery >= 1 && fromQuery <= 8 && canOpenStep(fromQuery)) {
   if (!courseMode || state.step !== fromQuery) state.quizTest = null;
   state.step = fromQuery;
 }
 if (!Number.isInteger(state.step) || state.step < 1 || state.step > 8) state.step = 1;
+if (courseMode && !canOpenStep(state.step)) {
+  state.step = 2;
+  state.quizTest = null;
+  state.courseQuizCursor = null;
+}
 save();
 render(true);
 
