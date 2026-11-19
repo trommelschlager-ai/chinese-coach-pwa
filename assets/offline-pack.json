@@ -1,5 +1,5 @@
 {
-  "version": 500,
+  "version": 501,
   "bytes": 67143431,
   "files": [
     "./assets/panda-character-clean-v349.webp",
@@ -3122,6 +3122,8 @@
     "./assets/panda-approved-soft-v500.css?v=500",
     "./assets/panda-approved-soft-v500.js?v=500",
     "./assets/panda-live-screen-v270.mjs?v=462",
-    "./assets/panda-live-v346.mjs?v=462"
+    "./assets/panda-live-v346.mjs?v=462",
+    "./assets/panda-approved-soft-v500.css?v=501",
+    "./assets/panda-approved-soft-v500.js?v=501"
   ]
 }
