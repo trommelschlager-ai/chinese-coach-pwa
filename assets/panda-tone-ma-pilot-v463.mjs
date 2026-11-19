@@ -139,8 +139,12 @@ async function stop(){
  }
  const pitchFrames=offline?.frames?.length>frames.length?offline.frames:frames;
  const result=analyseContour(pitchFrames);
- $('your-path').setAttribute('d',plot(result.points));
- $('result').textContent=toneGuidance(tones[selected],result);
+ const partialPreview=(result.kind==='insufficient'||result.kind==='uncertain')?offline?.preview||[]:[];
+ const displayPoints=result.points?.length?result.points:partialPreview;
+ $('your-path').setAttribute('d',plot(displayPoints));
+ $('result').textContent=partialPreview.length&&!result.points?.length
+  ?'Часть высоты голоса измерена. Линия неполная, поэтому оценивать тон нельзя. '+result.reason
+  :toneGuidance(tones[selected],result);
  const sound=offline?.signal;
  const hasSound=Boolean(sound?.hasAudibleSignal||(counts?.heard||0)>0);
  if(result.kind==='insufficient'){
@@ -151,7 +155,7 @@ async function stop(){
   $('status').textContent='Контур получен. Это измерение высоты голоса, а не оценка правильности китайского тона.';
  }
  $('mic-level-label').textContent=sound
-  ?'🎤 Запись: '+sound.soundFrames+' звуковых кадров, '+sound.pitchFrames+' точек высоты голоса. '+(sound.hasAudibleSignal?'Звук есть.':'Звук не подтверждён.')
+  ?'🎤 Записан звук: '+sound.soundFrames+' кадров, '+sound.pitchFrames+' точек высоты ('+sound.fallbackPitchFrames+' уточнены резервным методом). '+(sound.hasAudibleSignal?'Голос обнаружен.':'Звук не подтверждён.')
   :counts?.heard
    ?'🎤 Микрофон уловил звук: '+counts.heard+' измерений, высота определена в '+counts.voiced+'.'
    :'🎤 Данных микрофона для анализа недостаточно.';
@@ -199,7 +203,11 @@ async function start(){
    counts.peakRms=Math.max(counts.peakRms,rms);
    if(counts.readings%4===0){
     $('mic-level-fill').style.width=Math.round(Math.min(100,100*Math.sqrt(rms/.20)))+'%';
-    $('mic-level-label').textContent=rms>=.006?'🎤 Микрофон получает звук':'🎤 Сигнал пока слабый';
+    $('mic-level-label').textContent=rms>=.006
+     ?'🎤 Звук поступает в микрофон'
+     :counts.heard>=2
+       ?'🎤 Голос уже был обнаружен. Проверяю запись…'
+       :'🎤 Жду голосовой сигнал';
    }
    if(rms<.006){counts.silent++;return;}
    counts.heard++;
