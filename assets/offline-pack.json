@@ -1,6 +1,6 @@
 {
-  "version": 455,
-  "bytes": 67037393,
+  "version": 500,
+  "bytes": 67143431,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -3118,6 +3118,10 @@
     "./assets/panda-tone-lab-ui-v457.mjs?v=463",
     "./assets/panda-tone-recording-analysis-v465.mjs?v=467",
     "./assets/hsk2-life-course-app-v1.js?v=446",
-    "./assets/panda-tone-analytics-v457.mjs?v=468"
+    "./assets/panda-tone-analytics-v457.mjs?v=468",
+    "./assets/panda-approved-soft-v500.css?v=500",
+    "./assets/panda-approved-soft-v500.js?v=500",
+    "./assets/panda-live-screen-v270.mjs?v=462",
+    "./assets/panda-live-v346.mjs?v=462"
   ]
 }
