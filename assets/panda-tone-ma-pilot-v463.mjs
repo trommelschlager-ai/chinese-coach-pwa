@@ -157,7 +157,7 @@ async function stop(){
  const partialPreview=(result.kind==='insufficient'||result.kind==='uncertain')?offline?.preview||[]:[];
  const displayPoints=result.points?.length?result.points:partialPreview;
  $('your-path').setAttribute('d',plot(displayPoints));
- const movement=result.shapeHint?.direction!=='uncertain'?result.shapeHint:null;
+ const movement=result.shapeHint&&result.shapeHint.direction!=='uncertain'?result.shapeHint:null;
  $('result').textContent=movement
   ?'Короткий слог: '+movement.text+'. Это наблюдение за движением голоса, а не проверка правильности китайского тона.'
   :partialPreview.length&&!result.points?.length
@@ -215,7 +215,7 @@ async function start(){
   $('mic-level-fill').style.width='0%';
   $('mic-level-label').textContent='Жду звук от микрофона…';
   const buffer=new Float32Array(reader.fftSize),t0=performance.now();
-  $('status').textContent='Произнеси «'+tones[selected].py+'» около секунды. Запись завершится автоматически.';
+  $('status').textContent='Произнеси «'+tones[selected].py+'» как обычно, коротко. Запись завершится автоматически.';
   interval=setInterval(()=>{
    if(!active||!analyser||!audioCtx)return;
    analyser.getFloatTimeDomainData(buffer);
