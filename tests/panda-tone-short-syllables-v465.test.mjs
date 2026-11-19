@@ -82,7 +82,7 @@ test('published page uses post-record analysis rather than only setInterval samp
  assert(trainer.includes('hasAudibleSignal'));
  assert(trainer.includes('MediaRecorder'));
  assert(trainer.includes('decode')||trainer.includes('analyseRecordedBlob'));
- assert(page.includes('panda-tone-ma-pilot-v463.mjs?v=466'));
+ assert(page.includes('panda-tone-ma-pilot-v463.mjs?v=467'));
  assert(!/fetch\s*\(|XMLHttpRequest|sendBeacon|localStorage|sessionStorage/i.test(trainer));
  assert(page.includes('Нет оценок'));
  assert(trainer.includes('offline?.preview||[]'),'Ungraded preview should be used for short audio');
