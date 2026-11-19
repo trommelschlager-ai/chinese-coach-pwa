@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+<defs>
+<linearGradient id="sky" x2="0" y2="1"><stop stop-color="#d6b5ff"/><stop offset=".43" stop-color="#ffe8fd"/><stop offset="1" stop-color="#9dcbd8"/></linearGradient>
+<radialGradient id="sun"><stop stop-color="#fffaf4"/><stop offset=".6" stop-color="#fff4d3" stop-opacity=".9"/><stop offset="1" stop-color="#fff4e8" stop-opacity="0"/></radialGradient>
+<linearGradient id="pandaFur" x1=".3" x2=".85" y1="0" y2="1"><stop stop-color="#fffefc"/><stop offset=".58" stop-color="#fffbff"/><stop offset="1" stop-color="#dcbddc"/></linearGradient>
+<radialGradient id="eye"><stop stop-color="#755035"/><stop offset=".62" stop-color="#372333"/><stop offset="1" stop-color="#121524"/></radialGradient>
+<linearGradient id="purple" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eb7af0"/><stop offset=".45" stop-color="#9735c8"/><stop offset="1" stop-color="#482478"/></linearGradient>
+<linearGradient id="jacket" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#7ce7d2"/><stop offset=".55" stop-color="#17b49f"/><stop offset="1" stop-color="#116788"/></linearGradient>
+<linearGradient id="river" x1=".1" y1="0" x2="1" y2="1"><stop stop-color="#c8f6f9"/><stop offset=".5" stop-color="#85bada"/><stop offset="1" stop-color="#cebbfb"/></linearGradient>
+<linearGradient id="gold"><stop stop-color="#fff5a6"/><stop offset=".5" stop-color="#f8bb51"/><stop offset="1" stop-color="#d87e48"/></linearGradient>
+<radialGradient id="cheek"><stop stop-color="#ff94b6" stop-opacity=".85"/><stop offset="1" stop-color="#fbb1c7" stop-opacity="0"/></radialGradient>
+<filter id="ds" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur in="SourceAlpha" stdDeviation="8"/><feOffset dx="0" dy="12"/><feComponentTransfer><feFuncA type="linear" slope=".25"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="glow"><feGaussianBlur stdDeviation="13"/></filter>
+</defs>
+<!-- bright borderless landscape of Russia to China, no flowers and no calendar -->
+<rect width="900" height="600" fill="url(#sky)"/>
+<circle cx="456" cy="220" r="156" fill="url(#sun)"/>
+<g opacity=".65" fill="#fff"><ellipse cx="140" cy="86" rx="105" ry="20"/><ellipse cx="630" cy="98" rx="140" ry="20"/><ellipse cx="690" cy="150" rx="85" ry="15"/></g>
+<path d="M0 285L105 208 175 255 275 182 368 272 510 190 620 252 708 176 825 265 900 212V470H0Z" fill="#ac91df" opacity=".6"/>
+<path d="M0 335L140 262 258 331 394 257 495 302 612 235 718 321 833 265 900 307V495H0Z" fill="#8376c5" opacity=".55"/>
+<path d="M0 403Q150 355 292 385T590 373T900 372V600H0Z" fill="#8ed6c1"/>
+<!-- distant walls, pagoda, domes -->
+<g stroke="#855ab3" stroke-width="3" opacity=".95">
+<path d="M576 274l70-26 50 8 28-19 31 6 40-17" fill="none" stroke="#fce0a3" stroke-width="13" stroke-linejoin="round"/>
+<path d="M576 274l70-26 50 8 28-19 31 6 40-17" fill="none" stroke="#9073a6" stroke-width="3"/>
+<path d="M765 310h92v62h-92z" fill="#f4d5c9"/>
+<path d="M749 311l61-37 61 37z" fill="#594a9b"/>
+<path d="M755 298l55-35 55 35z" fill="#cc6bc2"/>
+<path d="M783 269h54v13h-54z" fill="#e4b774"/>
+<path d="M785 268l24-25 24 25z" fill="#6e599a"/>
+<path d="M809 240v-18" stroke="#ebcf88"/>
+<path d="M797 336h24v36h-24z" fill="#ac88c7"/>
+<path d="M842 336h12v15h-12z" fill="#ffe5a9"/>
+<rect x="28" y="303" width="130" height="91" fill="#f8d1d5"/>
+<path d="M18 304h150l-22-17H40Z" fill="#9770bb"/>
+<path d="M38 289q-16-29 6-48 28-9 31 18-1 19-20 30z" fill="#9bc7c9"/>
+<path d="M81 290q-20-30 1-50 23-9 32 12-2 26-33 38z" fill="#e5a5c4"/>
+<path d="M116 288q-12-27 6-45 20-8 27 15-1 20-20 30z" fill="#c1a7de"/>
+<path d="M45 239v-9m42 9v-11m41 8v-12" stroke="#ecdba9"/>
+<g fill="#ad7bb4" stroke="none"><rect x="37" y="327" width="14" height="21"/><rect x="66" y="327" width="14" height="21"/><rect x="95" y="327" width="14" height="21"/><rect x="124" y="327" width="14" height="21"/></g>
+</g>
+<!-- river and bridge -->
+<path d="M0 414Q210 394 420 410T900 399V600H0Z" fill="url(#river)"/>
+<path d="M465 379Q554 344 646 374T849 363" fill="none" stroke="#faf0f9" stroke-width="14" stroke-linecap="round"/>
+<path d="M470 380Q555 345 646 375T848 365" fill="none" stroke="#9177bc" stroke-width="4"/>
+<path d="M496 380v34m42-45v43m41-42v43m42-37v38m41-37v38m41-39v38m40-42v39m42-45v45" stroke="#fff5ed" stroke-width="5"/>
+<path d="M0 492q165-26 330 8t270-7q150-31 300 4" fill="none" stroke="#eafcff" stroke-width="6" opacity=".65"/>
+<!-- travel table -->
+<g filter="url(#ds)">
+<ellipse cx="695" cy="511" rx="170" ry="31" fill="#7866ab" opacity=".24"/>
+<path d="M538 453Q689 440 873 464l-14 96H553Z" fill="#b79ddd" stroke="#7d6fbd" stroke-width="7"/>
+<path d="M537 455Q675 424 873 452l-1 33Q695 472 542 486Z" fill="#fff1d5" stroke="#9879b7" stroke-width="5"/>
+<path d="M601 467L650 449l94 24-42 29z" fill="#f6b87b" stroke="#a2647e" stroke-width="4"/>
+<path d="M615 467l35-10 68 18-30 18z" fill="#e3eefc"/>
+<path d="M639 457l10 35m14-34-2 35" stroke="#c49bac" stroke-width="2"/>
+</g>
+<!-- globe on the right, not a calendar -->
+<g filter="url(#ds)">
+<path d="M762 444v40m-32 10h63" stroke="#be7c55" stroke-width="10" stroke-linecap="round"/>
+<circle cx="763" cy="350" r="86" fill="#73c7de" stroke="url(#gold)" stroke-width="12"/>
+<circle cx="763" cy="350" r="77" fill="none" stroke="#fff9e8" stroke-width="2" opacity=".8"/>
+<path d="M694 348h138M766 272v156M715 295q86 55 0 109m96-109q-80 51 0 109" fill="none" stroke="#e9faff" opacity=".7" stroke-width="3"/>
+<path d="M720 291l30-12 35 16 8 23-17 9 9 19-27 3-23-19-21-6-14-19zM793 366l20-1 11 23-17 28-28-4-6-23z" fill="#73b98b" stroke="#47998f" stroke-width="3"/>
+<path d="M695 345l-13-12m155 25 14 14" stroke="url(#gold)" stroke-width="6" stroke-linecap="round"/>
+<circle cx="729" cy="310" r="23" fill="#fff" opacity=".14"/>
+</g>
+<!-- new cheerful Panda traveler, unlike old full-page mascot -->
+<g filter="url(#ds)" transform="translate(80 18)">
+<!-- backpack -->
+<path d="M157 356q-66-10-61 93l11 56 114-21-10-129z" fill="url(#purple)" stroke="#682b91" stroke-width="12"/>
+<rect x="88" y="411" width="60" height="62" rx="23" fill="#7642b0" stroke="#f7ca55" stroke-width="7"/>
+<!-- legs shoes -->
+<path d="M200 450l-13 71 78 12 30-66zM310 450l18 63 78 0-33-69z" fill="#424084" stroke="#28285e" stroke-width="10"/>
+<path d="M188 506q52-2 73 19l-6 28q-60 11-109-7l7-25zM330 501q55-20 82 3l15 37q-50 21-104 7z" fill="#f7fbff" stroke="#49418e" stroke-width="9"/>
+<path d="M166 527l65 12m118-9 52-9" stroke="#d97bc8" stroke-width="7" stroke-linecap="round"/>
+<!-- hoodie body -->
+<path d="M170 346q31-29 102-26l81 33q37 44 7 122-76 29-166 0-52-50-24-129z" fill="url(#jacket)" stroke="#226e91" stroke-width="10"/>
+<path d="M261 342l5 122" stroke="#fbe1a8" stroke-width="7" stroke-linecap="round"/>
+<path d="M206 402q60 29 115 7" fill="none" stroke="#def8ee" stroke-width="7" opacity=".65"/>
+<path d="M184 379q-35 21-43 57" fill="none" stroke="#f4c772" stroke-width="7"/>
+<!-- arms -->
+<path d="M176 359Q112 339 109 406q13 48 82 29l34-30z" fill="url(#jacket)" stroke="#2b7698" stroke-width="11"/>
+<ellipse cx="139" cy="416" rx="32" ry="26" fill="#21243e" transform="rotate(-28 139 416)"/>
+<path d="M346 357q27 5 51-36l29-26q32-5 33 27-6 67-65 90l-45-13z" fill="url(#jacket)" stroke="#266c99" stroke-width="11"/>
+<ellipse cx="435" cy="298" rx="29" ry="32" fill="#22243d" transform="rotate(19 435 298)"/>
+<path d="M430 304q-2-31 13-39" stroke="#2b2e43" stroke-width="20" stroke-linecap="round"/>
+<!-- head -->
+<ellipse cx="272" cy="215" rx="149" ry="133" fill="url(#pandaFur)" stroke="#d6b2d9" stroke-width="7"/>
+<ellipse cx="156" cy="99" rx="54" ry="59" fill="#22243c" transform="rotate(-25 156 99)"/>
+<ellipse cx="386" cy="97" rx="54" ry="59" fill="#23243d" transform="rotate(25 386 97)"/>
+<ellipse cx="156" cy="99" rx="29" ry="31" fill="#49325b"/>
+<ellipse cx="384" cy="95" rx="30" ry="29" fill="#4b365b"/>
+<!-- headset band -->
+<path d="M126 227Q117 91 249 61q148-9 178 128" fill="none" stroke="#592c91" stroke-width="27" stroke-linecap="round"/>
+<path d="M126 221Q116 96 252 71q136-6 169 113" fill="none" stroke="#e469ef" stroke-width="13" stroke-linecap="round"/>
+<g>
+<rect x="111" y="208" width="64" height="110" rx="30" fill="url(#purple)" stroke="#482b87" stroke-width="7" transform="rotate(-10 111 208)"/>
+<ellipse cx="151" cy="254" rx="25" ry="39" fill="#e893e4" transform="rotate(-10 151 254)"/>
+<rect x="396" y="210" width="56" height="96" rx="24" fill="url(#purple)" stroke="#482b87" stroke-width="7" transform="rotate(12 396 210)"/>
+<ellipse cx="424" cy="257" rx="18" ry="32" fill="#d99be7"/>
+</g>
+<!-- eyes -->
+<ellipse cx="211" cy="225" rx="49" ry="59" fill="#25263b" transform="rotate(15 211 225)"/>
+<ellipse cx="335" cy="221" rx="49" ry="59" fill="#25263b" transform="rotate(-15 335 221)"/>
+<ellipse cx="224" cy="226" rx="27" ry="38" fill="url(#eye)"/><ellipse cx="322" cy="226" rx="27" ry="38" fill="url(#eye)"/>
+<circle cx="234" cy="210" r="12" fill="white"/><circle cx="333" cy="209" r="12" fill="white"/>
+<circle cx="214" cy="235" r="5" fill="#f0d7df"/><circle cx="315" cy="234" r="5" fill="#f0d7df"/>
+<ellipse cx="167" cy="301" rx="49" ry="26" fill="url(#cheek)"/><ellipse cx="383" cy="301" rx="49" ry="26" fill="url(#cheek)"/>
+<ellipse cx="272" cy="282" rx="48" ry="29" fill="#fff" opacity=".86"/>
+<path d="M246 276q17-21 50-1-5 24-25 24-22-2-25-23" fill="#2a2137"/>
+<path d="M241 315q29 46 64 0" fill="#a83758" stroke="#62234f" stroke-width="7" stroke-linejoin="round"/>
+<path d="M258 341q16-17 28-3" stroke="#f196a9" stroke-width="8" stroke-linecap="round"/>
+<!-- decorative sparks -->
+<path d="M470 205l12-24m12 34 26-12m-37 30 23 14" stroke="url(#gold)" stroke-width="11" stroke-linecap="round"/>
+</g>
+<g opacity=".75"><circle cx="583" cy="136" r="6" fill="#fff"/><path d="M594 164l6-11 6 11 11 6-11 6-6 11-6-11-11-6z" fill="#fff7ca"/><path d="M113 158l6-11 6 11 11 6-11 6-6 11-6-11-11-6z" fill="#fff"/></g>
+</svg>
