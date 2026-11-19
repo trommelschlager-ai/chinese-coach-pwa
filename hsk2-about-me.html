@@ -244,6 +244,24 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .practice-modes .practice-backup{flex:1;border:1px dashed #d5a4df!important;background:#fff7ff!important;color:#78398d!important;box-shadow:none!important;text-shadow:none!important;font-size:11px!important;font-weight:650!important;white-space:normal}
 #app #pg433 .practice-modes .practice-backup.is-active{border-style:solid!important;background:#f3e3f8!important}
 #app #pg433 .practice-fallback-note{font-size:12px;text-align:center;margin:0 7px 7px}
+#app #pg433 .about-word-art{display:grid;place-items:center;width:100%;height:100%;min-width:58px;min-height:58px;border-radius:15px;font-size:clamp(31px,7vw,46px);background:linear-gradient(145deg,#ffeaff,#f1c7f6);box-shadow:0 2px 7px #962aab33}
+#app #pg433 .about-learn{min-height:38px;min-width:52px;padding:6px 5px;border-radius:14px;font-size:12px;font-weight:780;color:#742789;background:linear-gradient(#fffaff,#f5dafa);border:1px solid #d79edf;box-shadow:0 3px 0 #c185d4,0 3px 6px #9555a844}
+#app #pg433 .about-learn.learned{color:#196c4b;background:#e1fbef;border-color:#7bc7a0;box-shadow:0 2px 0 #69b590}
+#app #pg433 .about-audio-pending{display:inline-grid;place-items:center;opacity:.54;cursor:default;filter:saturate(.4)}
+#app #pg433 .about-cover{display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;min-height:100%;gap:10px;padding:26px 18px;background:linear-gradient(145deg,#f6dfff 0%,#fff9ff 48%,#f8d5f7 100%);border:2px solid #dfa6eb;border-radius:24px}
+#app #pg433 .about-cover-panda{width:min(60%,230px);aspect-ratio:1;object-fit:cover;border-radius:28px;box-shadow:0 8px 16px #ad77b45c;border:4px solid #fff6ff}
+#app #pg433 .about-cover-kicker{font-size:11px;letter-spacing:2px;color:#9a47ad;font-weight:850}
+#app #pg433 .about-cover h1{font-size:clamp(30px,9vw,49px);color:#661f80;line-height:1}
+#app #pg433 .about-cover-zh{font-size:clamp(28px,8vw,42px);font-weight:900;color:#7c278c}
+#app #pg433 .about-cover-py{font-weight:750;color:#8a40a0}
+#app #pg433 .about-cover-target{font-size:13px;font-weight:750;color:#843e93}
+#app #pg433 .about-cover-motto{font-size:12px;opacity:.75;font-style:italic}
+#app #pg433 .about-start{border-radius:18px;min-height:48px;padding:8px 30px}
+#app #pg433 .tone-row .about-word-art{min-width:0;min-height:42px;font-size:27px}
+#app #pg433 .about-day-emoji{font-size:26px;display:block}
+#app #pg433 .about-practice-grid .about-day-card{padding:8px 4px;min-height:110px}
+#app #pg433 .about-practice-grid .about-day-card .cn{font-size:clamp(11px,3vw,15px);word-break:break-word;line-height:1.15}
+#app #pg433 .about-practice-grid .about-day-card .py{font-size:10px;line-height:1.15;max-height:32px;overflow:hidden}
 #app #pg433 .tone-details,#app #pg433 .phrase-review{margin:8px 3px;padding:0;overflow:hidden;border-radius:16px;border:1px solid #e5b9ec;background:#fff8ff}
 #app #pg433 .tone-details summary,#app #pg433 .phrase-review summary{cursor:pointer;list-style:revert;padding:11px 14px;min-height:42px;font-weight:750;color:#742785;line-height:1.2}
 #app #pg433 .tone-details summary:focus-visible,#app #pg433 .phrase-review summary:focus-visible{outline:3px solid #a648b5;outline-offset:-3px}
@@ -491,9 +509,11 @@ const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' go
 
 function audioButton(text, icon = speaker, blind = false) {
   const available = clips.has(normalize(text));
-  const label = blind ? 'Прослушать запись' : available ? 'Прослушать ' + text : 'Для «' + text + '» отдельной записи нет';
-  return '<button type="button" class="orb' + (available ? '' : ' missing') + '" data-say="' +
-    escape(text) + '" aria-label="' + escape(label) + '" title="' + escape(label) + '">' + (available ? icon : '<span aria-hidden="true">♪</span>') + '</button>';
+  if (!available) return '<span class="orb missing about-audio-pending" role="note" title="Озвучка готовится" aria-label="Аудиозапись для ' +
+    escape(text) + ' готовится">♪</span>';
+  const label = blind ? 'Прослушать запись' : 'Прослушать ' + text;
+  return '<button type="button" class="orb" data-say="' +
+    escape(text) + '" aria-label="' + escape(label) + '">' + icon + '</button>';
 }
 
 function micButton(id, label, recognized = false) {
@@ -620,27 +640,29 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  if (courseMode) return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 1 · Мой день">' +
-    '<div class="word-flow-cover"><img src="' + decoration + 'course-cover-sakura-canal.webp" ' +
-    'alt="Мой день. Научись говорить о своём дне по-китайски. Слова, тесты, грамматика, распорядок, произношение и диалог. Не бойся говорить с ошибками. Бойся никогда не заговорить!" width="905" height="1737" fetchpriority="high">' +
-    '<span class="cover-tile-label cover-tile-words" aria-hidden="true">Слова</span>' +
-    '<span class="cover-tile-label cover-tile-tests" aria-hidden="true">Тесты</span>' +
-    '<a class="final-cover-back" href="./hsk2-life-course.html?view=welcome" aria-label="На главную HSK 2"></a>' +
-    '<button type="button" class="final-cover-start" data-step="2" aria-label="Начать урок"></button>' +
-    '</div></section>';
-  return '<img class="welcome-art" src="assets/hsk2-lesson1-preview/welcome-start-lesson.webp" width="959" height="1639" alt="" draggable="false">' +
-    '<section class="welcome-copy"><h1><span lang="zh-Hans">我的一天</span> · Wǒ de yì tiān · Мой день</h1>' +
-    '<p>Научиться говорить о том, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</p>' +
-    '<p>Слова, тесты, грамматика, распорядок, произношение и диалог.</p></section>';
+  return '<section class="about-cover panel" aria-label="HSK 2 · Урок 1 · О себе">' +
+    '<img class="about-cover-panda" src="./assets/hsk2-lesson1-preview/tones-panda.webp" alt="Панда Panda Go">' +
+    '<span class="about-cover-kicker">PANDA GO · HSK 2</span>' +
+    '<h1>О себе</h1><p class="about-cover-zh" lang="zh-Hans">自我介绍</p>' +
+    '<p class="about-cover-py">Zìwǒ jièshào</p>' +
+    '<p>Научись рассказывать, откуда ты, где живёшь, работаешь и что любишь делать.</p>' +
+    '<p class="about-cover-target">6 выражений · 30 заданий · разговор с Пандой</p>' +
+    '<p class="about-cover-motto">Не бойся говорить с ошибками. Бойся никогда не заговорить.</p>' +
+    '<button type="button" class="primary about-start" data-step="2">Начать урок →</button></section>';
 }
 
 function newWords() {
-  return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' + words.map((word,i) =>
-    '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + toneStrokes(word.tones) + '<div>' +
-    translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh,playIcon) + '</article>').join('') +
-    '</div><p class="hint audio-note">🔊 Прослушано ' + state.heardWords.length +
-    ' из 6 слов. Сначала прослушай все записи, затем откроется «Дальше».</p>' +
-    '<p class="hint audio-note">💡 洗脸: xǐliǎn — 3 + 3; при произношении первый слог звучит как 2-й тон (xíliǎn).</p>' + safeStatus();
+  return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' +
+    words.map((word,i) =>
+      '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + toneStrokes(word.tones) +
+      '<div>' + translate([word.zh,word.py,word.ru]) + '</div>' +
+      '<button type="button" class="about-learn' + (state.heardWords.includes(i) ? ' learned' : '') +
+      '" data-learn="' + i + '" aria-label="Отметить изученным: ' + word.zh + '">' +
+      (state.heardWords.includes(i) ? '✓' : 'Изучил') + '</button></article>'
+    ).join('') + '</div>' +
+    '<p class="hint audio-note">Изучено ' + state.heardWords.length +
+    ' из 6 выражений. Прочитай, повтори и нажми «Изучил» на каждой карточке.</p>' +
+    '<p class="hint audio-note">🎧 Озвучку добавим после записи утверждённым женским голосом.</p>' + safeStatus();
 }
 
 function hero(kind,step,title,subtitle) {
@@ -688,7 +710,7 @@ function quiz() {
 function testIcon(index) {
   const symbol = [
     '<b lang="zh-Hans">汉字</b>',
-    speaker,
+    '<b lang="zh-Hans">拼音</b>',
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 4h7a2.5 2.5 0 1 1 5 0h5v6a2.5 2.5 0 1 1 0 5v6h-7v-2a2 2 0 1 0-4 0v2H3v-7h2a2 2 0 0 0 0-4H3z"/></svg>',
     '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4zM7 9h5m-5 5h4m2 0 2 2 4-5"/></svg>',
     microphone
@@ -715,12 +737,11 @@ function question() {
       content = '<div class="quiz-word" lang="zh-Hans">' + word.zh + '</div><p class="py">' + word.py + '</p>' +
         (done ? '' : choices(i,'ru',i,false));
       break;
-    case 1: {
-      const [clip,answer] = listening[i];
-      content = '<p class="hint">Какое действие звучит в конце фразы?</p><div class="controls">' +
-        audioButton(clip,speaker,true) + '</div>' + (done ? '' : choices(answer,'zh',i+1,heardClip !== scope()));
+    case 1:
+      content = '<div class="quiz-word py">' + word.py + '</div>' +
+        '<p class="hint">Выбери правильное китайское слово по пиньиню.</p>' +
+        (done ? '' : choices(i,'zh',i+1,false));
       break;
-    }
     case 2: {
       const chars = [...word.zh];
       const order = chars.map((_,j) => (j+1)%chars.length);
@@ -738,10 +759,9 @@ function question() {
       break;
     case 4:
       content = '<div class="quiz-word" lang="zh-Hans">' + word.zh + '</div><p class="py">' + word.py + '</p>' +
-        audioButton(word.zh) +
         (done ? '' : '<div class="controls">' + micButton('quiz','Произнести ' + word.zh) +
           '<button type="button" class="soft self-quiz" data-self-quiz="1">✓ Повторил и сравнил на слух</button></div>') +
-        '<p class="hint">🎙 Скажи слово. Тоны не оцениваются; самопроверка — запасной вариант.</p>';
+        '<p class="hint">🎙 Произнеси слово или отметь самостоятельную тренировку. Аудио готовится; тоны автоматически не проверяются.</p>';
       break;
   }
   const caption = courseMode
@@ -1199,6 +1219,12 @@ const actions = {
   dayUndo: () => { state.dayOrder.pop(); state.dayDone = false; update(); },
   dayReset: () => { state.dayOrder = []; state.dayShuffled = mixedDay(); state.dayDone = false; update(); },
   dayCheck: () => checkOrder('day',6,'✓ Все шесть действий по порядку.','Проверь все шесть действий, от подъёма до сна.'),
+  learn: value => {
+    const i=Number(value);
+    if(!Number.isInteger(i)||i<0||i>=words.length)return;
+    if(!state.heardWords.includes(i))state.heardWords.push(i);
+    save();render();
+  },
   toneTab: value => { clearMedia(); state.toneTab = value; update(); },
   practiceMode: value => { if (value === 'mic' || value === 'self') {state.practiceMode = value; update();} },
   selfSpoken: value => markSelfSpoken(Number(value)),
