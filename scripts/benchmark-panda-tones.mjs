@@ -6,6 +6,7 @@ import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {estimatePitch, analyseContour} from '../assets/panda-tone-analytics-v457.mjs';
+import {analyseRecordedBuffer} from '../assets/panda-tone-recording-analysis-v465.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const cases=[
  {hanzi:'妈',pinyin:'mā',tone:1,src:'assets/lesson1-xiaoxiao-v260/ma1.mp3'},
@@ -54,6 +55,10 @@ for(const item of cases){
  knownHashes.set(sha,item.src);
  try{
   const pcm=decode(filename),{frames,peakRms}=extract(pcm),result=analyseContour(frames);
+  const postCapture=analyseRecordedBuffer({
+   sampleRate:rate,length:pcm.length,numberOfChannels:1,
+   getChannelData:()=>pcm
+  },{estimatePitch,analyseContour});
   report.checks.push({
    hanzi:item.hanzi,pinyin:item.pinyin,expectedTone:item.tone,src:item.src,
    audioSha256:sha,
@@ -64,13 +69,24 @@ for(const item of cases){
    peakRms:+peakRms.toFixed(4),observedContour:result.kind,
    observation:result.label,explanation:result.reason,
    voicedDurationSec:result.stats?.duration??null,isToneGrade:false,
+   segmentedAnalysis:{
+    soundDetected:postCapture.signal?.hasAudibleSignal??false,
+    syllableDurationSec:postCapture.signal?.syllableDurationSec??null,
+    pitchFrames:postCapture.signal?.pitchFrames??0,
+    fallbackPitchFrames:postCapture.signal?.fallbackPitchFrames??0,
+    otherRegionsIgnored:postCapture.signal?.discardedOtherRegions??0,
+    observedContour:postCapture.result.kind,
+    previewPoints:postCapture.preview.length,
+    isToneGrade:false,
+    note:'Segmented F0 diagnostics only. A native speaker or phonetics expert must still verify tone and sound.'
+   },
    pitchTrackHz:frames.slice(0,250).map(p=>({t:p.t,hz:+p.hz.toFixed(1)}))
   });
  }catch(e){report.technicalFailures.push({file:item.src,error:String(e.message||e)});}
 }
 fs.mkdirSync(path.join(root,'reports'),{recursive:true});
 fs.writeFileSync(path.join(root,'reports/panda-real-tone-diagnostics.json'),JSON.stringify(report,null,2)+'\n');
-for(const c of report.checks)console.log(c.hanzi+' '+c.pinyin+': '+c.observedContour+'; '+c.pitchFrames+' F0 frames (NOT a tone grade)');
+for(const c of report.checks)console.log(c.hanzi+' '+c.pinyin+': original '+c.pitchFrames+' F0 / segmented '+c.segmentedAnalysis.pitchFrames+' F0 over '+c.segmentedAnalysis.syllableDurationSec+'s; pattern '+c.segmentedAnalysis.observedContour+' (NOT a tone grade)');
 for(const c of report.technicalFailures)console.error('TECHNICAL FAILURE: '+c.file+': '+c.error);
 console.log('Real MP3 diagnostic: '+report.checks.length+'/'+cases.length+'; failures: '+report.technicalFailures.length);
 if(process.env.GITHUB_STEP_SUMMARY)fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
