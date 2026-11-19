@@ -1,0 +1,166 @@
+/* Panda AI v500: approved day/night screen behaviour.
+   Additive presentation only; all course, speech, history and audio routes still run through v346.
+*/
+(function () {
+  'use strict';
+  const STORAGE_KEY='panda-ai-theme-v500';
+  const NS='http://www.w3.org/2000/svg';
+  const GESTURES='idle listening talking';
+  const pict={
+    sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2m10-10h-2M4 12H2m17.1-7.1-1.4 1.4m-11.4 11.4-1.4 1.4m14.2 0-1.4-1.4M6.3 6.3 4.9 4.9"/>',
+    moon:'<path d="M20.5 15.5A9 9 0 0 1 8.5 3.5 9.1 9.1 0 1 0 20.5 15.5Z"/>'
+  };
+  const svg=(path)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
+  const examples=[
+    {zh:'我有点忙。',py:'Wǒ yǒudiǎn máng.',ru:'Я немного занят.'},
+    {zh:'你晚上有什么计划？',py:'Nǐ wǎnshang yǒu shénme jìhuà?',ru:'Какие у тебя планы на вечер?'},
+    {zh:'我想休息。',py:'Wǒ xiǎng xiūxi.',ru:'Я хочу отдохнуть.'}
+  ];
+  const word=(tag,cls,text)=>{
+    const node=document.createElement(tag);node.className=cls;
+    node.textContent=text;return node;
+  };
+  function init(stage){
+    if(stage.dataset.pg500Mounted==='true')return;
+    if(!stage.querySelector('#pg346-send')||!stage.querySelector('.pg346-header'))return;
+    stage.dataset.pg500Mounted='true';
+    const header=stage.querySelector('.pg346-header');
+    const tools=stage.querySelector('.pg346-tools');
+    const history=stage.querySelector('.pg346-history');
+    const scene=stage.querySelector('.pg346-scene');
+    const send=stage.querySelector('#pg346-send');
+    const input=stage.querySelector('#pg346-input');
+    const form=stage.querySelector('#pg346-form');
+    const speech=stage.querySelector('.pg346-speech');
+    if(!header||!tools||!history||!scene||!send||!input||!form)return;
+
+    // Two independently accessible modes; night displays the last approved artwork tone.
+    const switcher=document.createElement('div');
+    switcher.className='pg500-theme-switch';
+    switcher.setAttribute('role','group');
+    switcher.setAttribute('aria-label','Цветовая тема');
+    const day=document.createElement('button');
+    day.type='button';day.dataset.setTheme='day';day.setAttribute('aria-label','Дневная тема');
+    day.innerHTML=svg(pict.sun);
+    const night=document.createElement('button');
+    night.type='button';night.dataset.setTheme='night';night.setAttribute('aria-label','Ночная тема');
+    night.innerHTML=svg(pict.moon);
+    switcher.append(day,night);tools.append(switcher);
+    function theme(next){
+      const value=next==='day'?'day':'night';
+      stage.dataset.theme=value;
+      day.setAttribute('aria-pressed',String(value==='day'));
+      night.setAttribute('aria-pressed',String(value==='night'));
+      try{localStorage.setItem(STORAGE_KEY,value)}catch(_){}
+    }
+    let saved='night';try{saved=localStorage.getItem(STORAGE_KEY)||'night'}catch(_){}
+    theme(saved);
+    day.addEventListener('click',()=>theme('day'));
+    night.addEventListener('click',()=>theme('night'));
+
+    // Right-hand shortcuts reuse existing app destinations and speech controls.
+    const navGame=stage.querySelector('.pg346-nav a[href="./game.html"]');
+    const navBook=stage.querySelector('.pg346-nav a[href="./hsk1-map.html"]');
+    function sideButton(css,inner,label){
+      const button=document.createElement('button');button.type='button';button.className='pg500-side '+css;
+      button.setAttribute('aria-label',label);button.innerHTML=inner;scene.append(button);return button;
+    }
+    const game=sideButton('pg500-side-game',navGame?.querySelector('svg')?.outerHTML||'🎮','Открыть тренажёр');
+    game.addEventListener('click',()=>{location.href='./game.html'});
+    const book=sideButton('pg500-side-book',navBook?.querySelector('svg')?.outerHTML||'📖','Текущая фраза Панды и прослушивание');
+    book.setAttribute('aria-expanded','false');
+    book.addEventListener('click',()=>{
+      const open=stage.dataset.detailsOpen!=='true';
+      stage.dataset.detailsOpen=String(open);
+      book.setAttribute('aria-expanded',String(open));
+    });
+    if(speech){
+      const study=word('button','pg500-study-link','Подсказки и новые слова');
+      study.type='button';
+      study.addEventListener('click',()=>document.getElementById('study-open')?.click());
+      speech.append(study);
+    }
+
+    // The plane is a toggle until text has been entered. No dummy send is possible.
+    stage.dataset.composerOpen='false';
+    const cross=word('button','pg500-close-input','×');cross.type='button';
+    cross.setAttribute('aria-label','Закрыть ввод текста');form.append(cross);
+    function opened(){return stage.dataset.composerOpen==='true'}
+    function openComposer(){
+      stage.dataset.composerOpen='true';
+      send.setAttribute('aria-label','Отправить сообщение');
+      input.focus({preventScroll:true});
+    }
+    function closeComposer(){
+      stage.dataset.composerOpen='false';
+      send.setAttribute('aria-label','Открыть ввод текста');
+      if(document.activeElement===input)input.blur();
+    }
+    send.setAttribute('aria-label','Открыть ввод текста');
+    send.addEventListener('click',(event)=>{
+      if(!opened()){
+        event.preventDefault();event.stopImmediatePropagation();openComposer();return;
+      }
+      if(input.value.trim())queueMicrotask(closeComposer);
+    },true);
+    form.addEventListener('submit',()=>queueMicrotask(()=>{if(!input.value.trim())closeComposer()}));
+    input.addEventListener('focus',()=>{if(!opened())stage.dataset.composerOpen='true'});
+    cross.addEventListener('click',(event)=>{event.stopPropagation();closeComposer()});
+    stage.addEventListener('keydown',event=>{if(event.key==='Escape'&&opened()){closeComposer()}});
+    scene.addEventListener('click',event=>{
+      if(opened()&&!event.target.closest('#pg346-topics,#pg346-topics-btn,#pg346-input'))closeComposer();
+    });
+
+    // More low-speed falling petals; reduced-motion is handled by the CSS.
+    const petals=stage.querySelector('.pg354-petals');
+    if(petals){
+      while(petals.children.length<18)petals.append(document.createElement('i'));
+      Array.from(petals.children).forEach((petal,i)=>{
+        petal.style.setProperty('--x', (2+(i*37)%93)+'%');
+        petal.style.setProperty('--w', (5+(i%4)*1.3)+'px');
+        petal.style.setProperty('--duration', (13+(i*7)%13)+'s');
+        petal.style.setProperty('--delay', (-2-(i*5)%24)+'s');
+        petal.style.setProperty('--drift', (-36+(i*19)%80)+'px');
+      });
+    }
+
+    // Keep three cards visible when the conversation has fewer than three turns.
+    // Real utterances always take precedence; example cards never pretend to be spoken turns.
+    let filling=false;
+    function fillExamples(){
+      if(filling)return;
+      const rows=history.querySelectorAll('.pg346-row');
+      if(rows.length>=3)return;
+      filling=true;
+      const missing=3-rows.length;
+      for(let i=0;i<missing;i++){
+        const e=examples[i];const row=document.createElement('article');
+        row.className='pg346-row pg500-example';
+        row.setAttribute('aria-label','Пример для тренировки: '+e.zh);
+        const avatar=word('span','pg346-avatar','🐼');
+        const left=word('div','pg346-text','');
+        left.append(word('div','pg346-zh',e.zh),word('div','pg346-py',e.py));
+        const ru=word('div','pg346-ru',e.ru);
+        const choose=word('button','pg346-row-audio','›');choose.type='button';
+        choose.setAttribute('aria-label','Вставить пример в поле ввода');
+        choose.addEventListener('click',()=>{openComposer();input.value=e.zh;input.focus()});
+        row.append(avatar,left,ru,choose);
+        history.append(row);
+      }
+      filling=false;
+    }
+    const mo=new MutationObserver(()=>{if(!filling&&history.querySelectorAll('.pg346-row').length<3)fillExamples()});
+    mo.observe(history,{childList:true});
+    fillExamples();
+  }
+  function watch(){
+    const stage=document.getElementById('pg346');
+    if(stage){init(stage);return true}
+    return false;
+  }
+  if(!watch()){
+    const observer=new MutationObserver(()=>{if(watch())observer.disconnect()});
+    observer.observe(document.documentElement,{subtree:true,childList:true});
+    window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+  }
+})();
