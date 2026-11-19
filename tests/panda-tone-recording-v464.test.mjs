@@ -11,7 +11,7 @@ test('recording controls and level meter are visibly available to learners',()=>
  assert(page.includes('id="mic-level-fill"'));
  assert(page.includes('id="mic-level-label"'));
  assert(page.includes('id="recording-message"'));
- assert(page.includes('panda-tone-ma-pilot-v463.mjs?v=464'));
+ assert(page.includes('panda-tone-ma-pilot-v463.mjs?v=465'));
  assert(page.includes('не отправляется на сервер'));
  assert(js.includes('new MediaRecorder(newStream)'));
  assert(js.includes('recordedAudio=new Audio(recordedUrl)'));
