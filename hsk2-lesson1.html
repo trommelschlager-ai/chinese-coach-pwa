@@ -9,7 +9,7 @@
 {
   document.documentElement.classList.add('course-layout');
   for (const stylesheet of ['hsk2-storyboard-v433.css', 'hsk2-lilac-pink-v444.css',
-    'hsk2-lesson-theme-v451.css', 'hsk2-lesson1-word-flow.css?v=7']) {
+    'hsk2-lesson-theme-v451.css', 'hsk2-lesson1-word-flow.css?v=8']) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = './assets/' + stylesheet;
@@ -521,14 +521,16 @@ function render(resetScroll = false) {
 function intro() {
   if (courseMode) return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 1 · Мой день">' +
     '<div class="word-flow-cover"><img src="' + decoration + 'course-cover-sakura-canal.webp" ' +
-    'alt="Мой день. Научись говорить о своём дне по-китайски. 6 слов, 5 мини-тестов, грамматика, распорядок, произношение и диалог. Не бойся говорить с ошибками. Бойся никогда не заговорить!" width="905" height="1737" fetchpriority="high">' +
+    'alt="Мой день. Научись говорить о своём дне по-китайски. Слова, тесты, грамматика, распорядок, произношение и диалог. Не бойся говорить с ошибками. Бойся никогда не заговорить!" width="905" height="1737" fetchpriority="high">' +
+    '<span class="cover-tile-label cover-tile-words" aria-hidden="true">Слова</span>' +
+    '<span class="cover-tile-label cover-tile-tests" aria-hidden="true">Тесты</span>' +
     '<a class="final-cover-back" href="./hsk2-life-course.html?view=welcome" aria-label="На главную HSK 2"></a>' +
     '<button type="button" class="final-cover-start" data-step="2" aria-label="Начать урок"></button>' +
     '</div></section>';
   return '<img class="welcome-art" src="assets/hsk2-lesson1-preview/welcome-start-lesson.webp" width="959" height="1639" alt="" draggable="false">' +
     '<section class="welcome-copy"><h1><span lang="zh-Hans">我的一天</span> · Wǒ de yì tiān · Мой день</h1>' +
     '<p>Научиться говорить о том, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</p>' +
-    '<p>6 слов, 5 мини-тестов, грамматика, распорядок, произношение и диалог.</p></section>';
+    '<p>Слова, тесты, грамматика, распорядок, произношение и диалог.</p></section>';
 }
 
 function newWords() {
@@ -1030,6 +1032,18 @@ const actions = {
   },
   chatReset: () => { clearMedia(); state.chat = []; update(); }
 };
+
+let pressedNavButton;
+let pressedNavTimer;
+app.addEventListener('click',event => {
+  const button = event.target.closest('.pg433-header button, .pg433-footer button');
+  if (!button || button.disabled) return;
+  pressedNavButton?.classList.remove('lesson-button-pressed');
+  clearTimeout(pressedNavTimer);
+  pressedNavButton = button;
+  button.classList.add('lesson-button-pressed');
+  pressedNavTimer = setTimeout(() => button.classList.remove('lesson-button-pressed'),160);
+},true);
 
 app.addEventListener('click',event => {
   const button = event.target.closest('button');

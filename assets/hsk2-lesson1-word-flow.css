@@ -105,9 +105,37 @@
   display: none;
 }
 
-.course-layout #app #pg433 .pg433-header button:active,
-.course-layout #app #pg433 .pg433-footer button:active {
-  transform: none !important;
+.course-layout #app #pg433 .pg433-header button,
+.course-layout #app #pg433 .pg433-footer button {
+  box-shadow: 0 3px 0 #a64bb854, 0 5px 9px #81228d42 !important;
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out, filter 90ms ease-out;
+}
+
+.course-layout #app #pg433 .pg433-footer #back:not(:disabled) {
+  background: #fff !important;
+  border: 1px solid #e5c5ec !important;
+  border-bottom: 3px solid #d7b1df !important;
+  color: #621e79 !important;
+  text-shadow: none;
+}
+
+.course-layout #app #pg433 .pg433-header button:not(:disabled):is(:active, .lesson-button-pressed),
+.course-layout #app #pg433 .pg433-footer button:not(:disabled):is(:active, .lesson-button-pressed) {
+  transform: translateY(3px) !important;
+  box-shadow: inset 0 2px 5px #5d1a765c, 0 1px 2px #75168d33 !important;
+  filter: brightness(.95) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .course-layout #app #pg433 .pg433-header button,
+  .course-layout #app #pg433 .pg433-footer button {
+    transition: none;
+  }
+
+  .course-layout #app #pg433 .pg433-header button:not(:disabled):is(:active, .lesson-button-pressed),
+  .course-layout #app #pg433 .pg433-footer button:not(:disabled):is(:active, .lesson-button-pressed) {
+    transform: none !important;
+  }
 }
 
 .course-layout #pg433 .quiz-type-icon {
@@ -371,6 +399,30 @@
   width: 100%;
   height: auto;
 }
+.cover-tile-label {
+  position: absolute;
+  top: 60.02%;
+  height: 1.75%;
+  display: grid;
+  place-items: center;
+  background: #fbf7fc;
+  box-shadow: 0 0 2px 1px #fbf7fc;
+  color: #28114c;
+  font-size: calc(var(--art-width) * .032);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.cover-tile-words {
+  left: 15.6%;
+  width: 13.5%;
+}
+
+.cover-tile-tests {
+  left: 38.35%;
+  width: 23.6%;
+}
+
 .final-cover-back,
 .final-cover-start {
   position: absolute;
