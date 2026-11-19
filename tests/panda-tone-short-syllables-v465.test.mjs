@@ -1,0 +1,65 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {analyseRecordedBuffer} from '../assets/panda-tone-recording-analysis-v465.mjs';
+import {estimatePitch,analyseContour} from '../assets/panda-tone-analytics-v457.mjs';
+
+const rate=48000;
+function audioBurst({duration=.33,amp=.075,baseHz=155,quiet=.0001,rateHz=rate}={}){
+ const total=Math.round(rateHz*3.1),start=Math.round(rateHz*.9);
+ const samples=new Float32Array(total),len=Math.round(rateHz*duration);
+ let phase=0;
+ for(let i=0;i<total;i++){
+  samples[i]=quiet*Math.sin(i*.15);
+  if(i<start||i>=start+len)continue;
+  const u=(i-start)/len;
+  const hz=baseHz+40*u;
+  phase+=2*Math.PI*hz/rateHz;
+  const fade=Math.min(1,(i-start)/(rateHz*.012),(start+len-i)/(rateHz*.012));
+  samples[i]+=amp*Math.sin(phase)*Math.max(0,fade);
+ }
+ return {
+  sampleRate:rateHz,length:samples.length,numberOfChannels:1,
+  getChannelData(){return samples}
+ };
+}
+const helpers={estimatePitch,analyseContour};
+test('natural 0.33 second short ma is sampled throughout the recorded buffer',()=>{
+ const out=analyseRecordedBuffer(audioBurst(),helpers);
+ assert.equal(out.available,true);
+ assert.equal(out.signal.hasAudibleSignal,true);
+ assert(out.signal.soundFrames>=9,'Short syllables must have regular sampled audio frames: '+JSON.stringify(out.signal));
+ assert(out.signal.pitchFrames>=8,'Realistic vowel should produce contour points: '+JSON.stringify(out.signal));
+ assert.equal(out.result.isToneGrade,false);
+ assert.equal(out.result.kind,'insufficient','Short contour is observed but never graded');
+ assert(out.result.points.length>1,'Show a cautious short line instead of pretending the microphone missed speech');
+});
+test('softer 0.31 sec vowel can be heard without shouting or forcing 1 sec duration',()=>{
+ const out=analyseRecordedBuffer(audioBurst({duration:.31,amp:.009,baseHz:190}),helpers);
+ assert.equal(out.signal.hasAudibleSignal,true);
+ assert(out.signal.pitchFrames>=7,JSON.stringify(out.signal));
+ assert.equal(out.result.isToneGrade,false);
+});
+test('empty, short, and quiet noise cannot fabricate a Mandarin score',()=>{
+ const zero=audioBurst({amp:0,quiet:0});
+ const out=analyseRecordedBuffer(zero,helpers);
+ assert.equal(out.signal.hasAudibleSignal,false);
+ assert.equal(out.signal.pitchFrames,0);
+ assert.equal(out.result.kind,'insufficient');
+ assert.equal(out.result.isToneGrade,false);
+ const invalid=analyseRecordedBuffer(null,helpers);
+ assert.equal(invalid.available,false);
+ assert.equal(invalid.result.isToneGrade,false);
+});
+test('published page uses post-record analysis rather than only setInterval samples',()=>{
+ const page=fs.readFileSync(new URL('../panda-tone-ma-practice.html',import.meta.url),'utf8');
+ const trainer=fs.readFileSync(new URL('../assets/panda-tone-ma-pilot-v463.mjs',import.meta.url),'utf8');
+ assert(trainer.includes('analyseRecordedBlob(blob'));
+ assert(trainer.includes('offline?.frames?.length>frames.length'));
+ assert(trainer.includes('hasAudibleSignal'));
+ assert(trainer.includes('MediaRecorder'));
+ assert(trainer.includes('decode')||trainer.includes('analyseRecordedBlob'));
+ assert(page.includes('panda-tone-ma-pilot-v463.mjs?v=465'));
+ assert(!/fetch\s*\(|XMLHttpRequest|sendBeacon|localStorage|sessionStorage/i.test(trainer));
+ assert(page.includes('Нет оценок'));
+});
