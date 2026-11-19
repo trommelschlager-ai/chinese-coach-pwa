@@ -52,8 +52,11 @@ window.setTimeout(function(){
    All other Panda AI entry points and navigation retain their original behavior. */
 if(new URLSearchParams(location.search).get('from') === 'hsk2-about-me'){
   document.addEventListener('DOMContentLoaded',function(){
-    const link=document.getElementById('back-link');
-    if(link){link.href='./hsk2-about-me.html?step=7';link.textContent='← К уроку «О себе»';}
+    for(const link of document.querySelectorAll('#back-link, #pg346 .pg346-back')){
+      link.href='./hsk2-about-me.html?step=7';
+      link.textContent='← К уроку «О себе»';
+      link.setAttribute('aria-label','Вернуться в урок HSK 2 «О себе»');
+    }
   },{once:true});
 }
 </script></body></html>
