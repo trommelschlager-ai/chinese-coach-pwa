@@ -291,6 +291,40 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .panda-ai-shortcut.is-locked{opacity:.68;box-shadow:none;border-bottom-width:2px;filter:saturate(.6)}
 @media(prefers-reduced-motion:reduce){#app #pg433 .panda-ai-shortcut{transition:none}}
 
+
+/* Cover for About Me: faithful structure from the approved full-poster 'Мой день' cover.
+   The approved picture is only cropped to its untouched brand, character and motto regions.
+   Keep the five-tab lesson shell, internal content, and all original theme assets unchanged. */
+.course-layout #app[data-view="1"] #pg433 .pg433-content{overflow-y:auto!important;overscroll-behavior-y:contain;scrollbar-width:none;}
+#app #pg433 .about-reference-cover{--art-width:min(100cqw,calc(100dvh * 905 / 1737));min-height:100%;background:linear-gradient(180deg,#f7dbfa,#f9d8f8 58%,#e8c4ef);}
+#app #pg433 .about-reference-cover::after{display:none;}
+#app #pg433 .about-cover-poster{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:0;max-width:430px;min-height:100%;margin:auto;text-align:center;color:#561075;}
+#app #pg433 .about-ref-brand{position:relative;flex:none;width:100%;height:14.4cqw;min-height:52px;max-height:64px;background:url("./hsk2-lesson1-preview/course-cover-sakura-canal.webp") center top/100% auto no-repeat;}
+#app #pg433 .about-ref-return{position:absolute;left:8%;top:12%;width:11%;height:70%;min-width:38px;z-index:3;border-radius:50%;display:block;}
+#app #pg433 .about-ref-return:focus-visible{outline:3px solid #4e128b;}
+#app #pg433 .about-ref-heading{position:relative;z-index:1;padding:1px 8px 1px;}
+#app #pg433 .about-ref-heading .about-ref-pill{display:inline-block;padding:3px 20px;background:linear-gradient(#ffe1fb,#f6a1e1);border:1px solid #c86ece;border-radius:999px;font-size:clamp(13px,3.5vw,18px);font-weight:900;box-shadow:0 3px 6px #ad67ad80;}
+#app #pg433 .about-ref-heading h1{font-size:clamp(30px,9vw,47px);font-weight:960;line-height:1.02;letter-spacing:-.035em;margin:5px 0 0;color:#4d0d7f;text-shadow:0 2px 1px #fff;}
+#app #pg433 .about-ref-zh{font-size:clamp(17px,5.5vw,23px);line-height:1.1;color:#6e2189;font-weight:900;}
+#app #pg433 .about-ref-py{font-size:clamp(11px,3.1vw,15px);font-weight:760;color:#8a479e;}
+#app #pg433 .about-ref-subtitle{font-size:clamp(13px,4vw,19px);line-height:1.15;max-width:96%;margin:3px auto;font-weight:740;color:#57227c;}
+#app #pg433 .about-ref-hero{position:relative;width:100%;height:41.5cqw;max-height:185px;overflow:hidden;flex:none;}
+#app #pg433 .about-ref-hero img{display:block;position:absolute;top:-35.5cqw;left:0;width:100%;max-width:none;height:auto;}
+#app #pg433 .about-ref-content{position:relative;z-index:1;margin:-1px 5.8% 7px;padding:5px 6px 9px;border-radius:19px;background:linear-gradient(180deg,#fff9ff,#f7e8ff);border:1px solid #e7abeb;box-shadow:0 4px 9px #8b38a966;}
+#app #pg433 .about-ref-content h2{display:inline-block;max-width:100%;margin:-3px 0 3px;padding:5px 14px;border-radius:999px;font-size:clamp(17px,4.9vw,23px);line-height:1.12;background:linear-gradient(#d66ae7,#8615b0);color:white;text-shadow:0 2px 2px #69108c;box-shadow:inset 0 2px 3px #f7bbf9,0 3px 4px #a553b788;}
+#app #pg433 .about-ref-goal{font-size:clamp(12px,3.8vw,16px);font-weight:720;line-height:1.25;padding-inline:5px;}
+#app #pg433 .about-ref-tiles{margin:0 6% 8px;padding:5px 7px;border:1px solid #eab4e8;border-radius:22px;background:linear-gradient(#fffaff,#fff0fe);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));box-shadow:0 5px 10px #9e4ba65c;overflow:hidden;}
+#app #pg433 .about-ref-tiles>div{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:59px;padding:4px 1px;gap:2px;}
+#app #pg433 .about-ref-tiles>div:nth-child(-n+3){border-bottom:1px solid #d6a6db;}
+#app #pg433 .about-ref-tiles>div:not(:nth-child(3n)){border-right:1px solid #d6a6db;}
+#app #pg433 .about-ref-tiles strong{display:block;color:#7117ac;font-size:clamp(21px,6vw,30px);line-height:1;font-weight:950;}
+#app #pg433 .about-ref-tiles span{display:block;color:#37104e;font-size:clamp(10px,2.8vw,13px);line-height:1.15;font-weight:850;}
+#app #pg433 .about-ref-start{display:block;flex:none;width:84%;min-height:46px;margin:0 auto 7px;border:2px solid #ec9cf4;border-bottom:5px solid #8b198e;border-radius:999px;background:linear-gradient(180deg,#e890f0 1%,#cd44e1 25%,#8623bf 93%);box-shadow:0 5px 9px #95269d77,inset 0 2px 3px #f9c0ff;color:#fff;text-shadow:0 2px 3px #560c78;font-size:clamp(21px,5.5vw,27px);font-weight:900;touch-action:manipulation;}
+#app #pg433 .about-ref-start:active{transform:translateY(3px) scale(.99)!important;box-shadow:inset 0 2px 6px #6f157c88!important;}
+#app #pg433 .about-ref-quote{position:relative;flex:none;min-height:124px;background:url("./hsk2-lesson1-preview/course-cover-sakura-canal.webp") center bottom/100% auto no-repeat;}
+@media(max-width:374px){#app #pg433 .about-ref-content{margin-bottom:5px;}#app #pg433 .about-ref-tiles>div{min-height:55px;}#app #pg433 .about-ref-quote{min-height:112px;}}
+@media(min-height:875px){#app #pg433 .about-ref-hero{height:43cqw;}#app #pg433 .about-ref-quote{min-height:145px;}}
+
 /* HSK2 About Me only: match the approved lesson sizes while using relevant artwork. */
 #app #pg433 .word-row{grid-template-columns:20% max-content minmax(36px,14%) minmax(0,1fr) 49px;gap:4px;min-height:70px;}
 #app #pg433 .word-row .about-illustration{width:100%;height:clamp(55px,8.6dvh,73px);object-fit:cover;border-radius:11px;box-shadow:0 2px 6px #8e5b9a33;}
@@ -689,17 +723,38 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  return '<section class="about-cover panel" aria-label="HSK 2 · Урок 1 · О себе">' +
-    '<img class="about-cover-panda" src="./assets/hsk2-lesson1-preview/tones-panda.webp" alt="Панда Panda Go">' +
-    '<span class="about-cover-kicker">PANDA GO · HSK 2</span>' +
-    '<h1>О себе</h1><p class="about-cover-zh" lang="zh-Hans">自我介绍</p>' +
-    '<p class="about-cover-py">Zìwǒ jièshào</p>' +
-    '<p>Научись рассказывать, откуда ты, где живёшь, работаешь и что любишь делать.</p>' +
-    '<p class="about-cover-target">6 выражений · 30 заданий · разговор с Пандой</p>' +
-    '<p class="about-cover-motto">Не бойся говорить с ошибками. Бойся никогда не заговорить.</p>' +
-    '<button type="button" class="primary about-start" data-step="2">Начать урок →</button></section>';
+  // The HSK 2 reference uses a full-page illustrated cover, not a modal-style card.
+  // Reuse its exact approved artwork in cropped bands; replace only subject-specific copy.
+  return '<section class="word-flow-cover-shell about-reference-cover" aria-label="HSK 2 · Урок 1 · О себе">' +
+    '<div class="about-cover-poster">' +
+      '<div class="about-ref-brand" aria-label="Panda Go · Китайский с удовольствием">' +
+        '<a href="./hsk2-life-course.html?view=welcome" class="about-ref-return" aria-label="К курсу HSK 2"></a>' +
+      '</div>' +
+      '<div class="about-ref-heading">' +
+        '<span class="about-ref-pill">HSK 2 · УРОК 1</span>' +
+        '<h1>О себе</h1><p class="about-ref-zh" lang="zh-Hans">自我介绍</p>' +
+        '<p class="about-ref-py">Zìwǒ jièshào</p>' +
+        '<p class="about-ref-subtitle">Научись рассказывать о себе по-китайски!</p>' +
+      '</div>' +
+      '<div class="about-ref-hero" role="img" aria-label="Утверждённая Панда Panda Go на фоне цветущей сакуры">' +
+        '<img src="./assets/hsk2-lesson1-preview/course-cover-sakura-canal.webp" alt="" width="905" height="1737" fetchpriority="high">' +
+      '</div>' +
+      '<div class="about-ref-content">' +
+        '<h2>📚 Содержание урока:</h2>' +
+        '<p class="about-ref-goal">Расскажи о своём имени, стране, городе, работе и увлечениях.</p>' +
+      '</div>' +
+      '<div class="about-ref-tiles" aria-label="Что будем изучать">' +
+        '<div><strong>6</strong><span>новых выражений</span></div>' +
+        '<div><strong>30</strong><span>мини-тестов</span></div>' +
+        '<div><strong>现在</strong><span>грамматика</span></div>' +
+        '<div><strong>我叫…</strong><span>рассказ о себе</span></div>' +
+        '<div><strong>🎙</strong><span>произношение</span></div>' +
+        '<div><strong>🐼</strong><span>диалог с Пандой</span></div>' +
+      '</div>' +
+      '<button type="button" class="about-ref-start" data-step="2" aria-label="Начать урок О себе">Начать урок →</button>' +
+      '<div class="about-ref-quote" aria-label="Девиз курса: Не бойся говорить с ошибками. Бойся никогда не заговорить!"></div>' +
+    '</div></section>';
 }
-
 function newWords() {
   return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' +
     words.map((word,i) =>
