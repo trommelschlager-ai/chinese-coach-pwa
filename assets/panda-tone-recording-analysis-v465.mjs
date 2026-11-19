@@ -110,7 +110,7 @@ export function segmentVoicedRegion(windows,rate,width){
   const energy=indices.reduce((sum,i)=>sum+windows[i].rms**2,0);
   const first=indices[0],last=indices.at(-1);
   return {indices,first,last,loudest,energy};
- }).filter(x=>x.indices.length>=5&&x.loudest>=.005);
+ }).filter(x=>x.indices.length>=7&&x.loudest>=.005);
  if(!candidates.length)return null;
  candidates.sort((a,b)=>b.energy-a.energy);
  const chosen=candidates[0];
@@ -179,7 +179,7 @@ export function analyseRecordedBuffer(buffer,{estimatePitch,analyseContour}){
  const signal={
   durationSec:+(samples.length/rate).toFixed(2),
   peakRms:region.peakRms,noiseRms:region.noiseRms,gateRms:region.gateRms,
-  hasAudibleSignal:voiced.length>=3,
+  hasAudibleSignal:voiced.length>=7,
   soundFrames:voiced.length,totalFrames:windows.length,
   pitchFrames:samplesForPitch.length,
   pitchSpanSec:+span.toFixed(2),
