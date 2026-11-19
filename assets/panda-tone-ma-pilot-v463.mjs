@@ -143,7 +143,7 @@ async function stop(){
  const displayPoints=result.points?.length?result.points:partialPreview;
  $('your-path').setAttribute('d',plot(displayPoints));
  $('result').textContent=partialPreview.length&&!result.points?.length
-  ?'Часть высоты голоса измерена. Линия неполная, поэтому оценивать тон нельзя. '+result.reason
+  ?'Часть высоты голоса измерена. Линия неполная, поэтому оценивать китайский тон пока нельзя.'
   :toneGuidance(tones[selected],result);
  const sound=offline?.signal;
  const hasSound=Boolean(sound?.hasAudibleSignal||(counts?.heard||0)>0);
