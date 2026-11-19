@@ -1007,8 +1007,8 @@ function chat() {
     '<section class="dialogue"><h2>Разговор с Пандой</h2><p class="hint">Учебный сценарий. Выбери или произнеси один из ответов.</p>' +
     state.chat.map((reply,j) => bubble('Панда',dialogue[j].prompt) + bubble('Ты',dialogue[j].answers.find(a => a[0] === reply) ?? [reply,''])).join('') +
     (exchange ? bubble('Панда',exchange.prompt) + '<div class="choice-grid">' + exchange.answers.map(([answer,translation],j) =>
-      '<button type="button" class="choice" data-chat="' + j + '"><span lang="zh-Hans">' + answer + '</span><span class="ru">' +
-      translation + '</span></button>').join('') + '</div><div class="controls"><button type="button" class="soft" data-mic="chat">🎙 Ответить голосом</button></div>' :
+      '<button type="button" class="choice" data-chat="' + j + '"><span lang="zh-Hans">' + answer + '</span><span class="py">' +
+      (replyPinyin.get(normalize(answer)) || '') + '</span><span class="ru">' + translation + '</span></button>').join('') + '</div><div class="controls"><button type="button" class="soft" data-mic="chat">🎙 Ответить голосом</button></div>' :
       '<p class="feedback good">✓ Ты ответил на все три вопроса.</p>') + safeStatus() +
     (i ? '<div class="controls"><button type="button" class="soft" data-chat-reset>Начать диалог заново</button></div>' : '') + '</section>' +
     (i === dialogue.length ? personalStory() + pandaAiShortcut() : lockedPandaAiShortcut());
