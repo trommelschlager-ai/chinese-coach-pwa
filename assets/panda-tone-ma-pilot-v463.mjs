@@ -2,7 +2,7 @@
  * Local F0 contour visualization, NOT speech recognition or a tone grade.
  * Original lesson MP3s are played unchanged.
  */
-import {estimatePitch, analyseContour} from './panda-tone-analytics-v457.mjs?v=463';
+import {estimatePitch, analyseContour} from './panda-tone-analytics-v457.mjs?v=468';
 import {analyseRecordedBlob} from './panda-tone-recording-analysis-v465.mjs?v=467';
 const $=id=>document.getElementById(id);
 const tones=[
@@ -58,7 +58,7 @@ function updateTone(index){
  const s=tones[selected];
  $('target-hanzi').textContent=s.hz;
  $('target-pinyin').textContent=s.py;
- $('ref-path').setAttribute('d',s.reference);
+ $('ref-path').setAttribute('d',referenceForTone(selected));
  $('your-path').setAttribute('d','');
  $('segment-info').textContent='Новая попытка ещё не записана.';
  $('result').textContent='После произношения здесь появится результат наблюдения.';
@@ -82,6 +82,15 @@ $('listen').addEventListener('click',async()=>{
  }
 });
 const PLOT_SECONDS=1.2; // do not stretch 0.2s of voice to the width of a 1.2s axis
+function referenceForTone(index,seconds=.4){
+ const span=Math.max(.22,Math.min(1.2,Number.isFinite(seconds)?seconds:.4));
+ const end=30+302*span/1.2,mid=30+(end-30)*.53;
+ const x=n=>n.toFixed(1);
+ if(index===0)return 'M30 70H'+x(end);
+ if(index===1)return 'M30 101Q'+x(mid)+' 87 '+x(end)+' 43';
+ if(index===2)return 'M30 59Q'+x(mid)+' 125 '+x(end)+' 68';
+ return 'M30 44Q'+x(mid)+' 65 '+x(end)+' 108';
+}
 function plot(points){
  if(!points||points.length<2)return '';
  const first=points[0].t;
@@ -148,17 +157,21 @@ async function stop(){
  const partialPreview=(result.kind==='insufficient'||result.kind==='uncertain')?offline?.preview||[]:[];
  const displayPoints=result.points?.length?result.points:partialPreview;
  $('your-path').setAttribute('d',plot(displayPoints));
- $('result').textContent=partialPreview.length&&!result.points?.length
-  ?'Часть высоты голоса измерена. Линия неполная, поэтому оценивать китайский тон пока нельзя.'
-  :toneGuidance(tones[selected],result);
+ const movement=result.shapeHint&&result.shapeHint.direction!=='uncertain'?result.shapeHint:null;
+ $('result').textContent=movement
+  ?'Короткий слог: '+movement.text+'. Это наблюдение за движением голоса, а не проверка правильности китайского тона.'
+  :partialPreview.length&&!result.points?.length
+   ?'Часть высоты голоса измерена. Линия неполная, оценивать китайский тон пока нельзя.'
+   :toneGuidance(tones[selected],result);
  const sound=offline?.signal;
+ $('ref-path').setAttribute('d',referenceForTone(selected,sound?.syllableDurationSec));
  $('segment-info').textContent=sound?.syllableDurationSec
   ?'Найден звуковой фрагмент: '+sound.syllableDurationSec.toFixed(2)+' с. График использует реальную шкалу времени 0–1,2 с.'
   :'Продолжительность произнесённого слога пока не определена.';
  const hasSound=Boolean(sound?.hasAudibleSignal||(counts?.heard||0)>0);
  if(result.kind==='insufficient'){
   $('status').textContent=hasSound
-   ?'Голос записан, но контур короткий или неустойчивый. Это НЕ значит, что ты неправильно сказал «'+tones[selected].py+'».'
+   ?'Голос записан. Короткий слог — нормально. Измерение не означает, что слово произнесено правильно или неправильно.'
    :'Во время попытки измеренный сигнал был слишком слабым или отсутствовал. Нажми «Послушать свой голос».';
  }else{
   $('status').textContent='Контур получен. Это измерение высоты голоса, а не оценка правильности китайского тона.';
@@ -202,7 +215,7 @@ async function start(){
   $('mic-level-fill').style.width='0%';
   $('mic-level-label').textContent='Жду звук от микрофона…';
   const buffer=new Float32Array(reader.fftSize),t0=performance.now();
-  $('status').textContent='Произнеси «'+tones[selected].py+'» около секунды. Запись завершится автоматически.';
+  $('status').textContent='Произнеси «'+tones[selected].py+'» как обычно, коротко. Запись завершится автоматически.';
   interval=setInterval(()=>{
    if(!active||!analyser||!audioCtx)return;
    analyser.getFloatTimeDomainData(buffer);

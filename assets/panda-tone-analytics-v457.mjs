@@ -3,9 +3,52 @@
  * vowel/consonant quality, lexical identity, or native-like pronunciation.
  * Audio stays in browser memory and is never transmitted by this module.
  */
-export const TONE_LAB_VERSION="v462-octave-jump-safeguard";
+export const TONE_LAB_VERSION="v468-short-movement-diagnostics";
 const median=a=>{if(!a.length)return null;const s=[...a].sort((x,y)=>x-y),k=s.length>>1;return s.length%2?s[k]:(s[k-1]+s[k])/2;};
 export const semitones=(hz,ref)=>12*Math.log2(hz/ref);
+
+/* Cautious movement description for SHORT natural syllables.
+ * A direction is NOT a lexical Mandarin tone or a grade. No interpolation
+ * across missing voiced frames or octave jumps: use only one stable run.
+ */
+export function shortPitchMovement(frames){
+ const p=Array.isArray(frames)?frames:[];
+ if(p.length<12)return null;
+ const duration=p.at(-1).t-p[0].t;
+ if(duration<.20||duration>.52)return null;
+ if(p.some((x,i)=>!Number.isFinite(x.hz)||x.hz<=0||
+  (i>0&&(x.t<=p[i-1].t||x.t-p[i-1].t>.085))))return null;
+ if(findOctaveDiscontinuities(p).length)return null;
+ const hzRef=median(p.map(x=>x.hz));
+ const values=p.map(x=>semitones(x.hz,hzRef));
+ const part=Math.max(3,Math.floor(values.length*.24));
+ const head=median(values.slice(0,part));
+ const tail=median(values.slice(-part));
+ const change=tail-head;
+ const valley=Math.min(...values.slice(part,values.length-part));
+ const middle=median(values.slice(Math.floor(values.length*.4),Math.ceil(values.length*.6)));
+ const range=Math.max(...values)-Math.min(...values);
+ const settled=values.slice(Math.floor(values.length*.30));
+ const settledRange=Math.max(...settled)-Math.min(...settled);
+ let direction="uncertain",text="Движение высоты пока неоднозначно";
+ // Tone-1 reference has a short initial rise, then a high, almost level vowel.
+ // Do not label that phonation onset as an overall rising (second-tone) pattern.
+ if(change>1.5&&settledRange<1.25){
+  direction="level";text="После короткого начала высота почти ровная";
+ }else if(head-valley>1.3&&tail-valley>1.3&&middle<head-.65&&middle<tail-.65){
+  direction="dip";text="Высота сначала снижается, затем повышается";
+ }else if(change>=1.8){
+  direction="rise";text="Высота в основном повышается";
+ }else if(change<=-1.8){
+  direction="fall";text="Высота в основном снижается";
+ }else if(Math.abs(change)<.9&&range<1.8){
+  direction="level";text="Высота почти не меняется";
+ }
+ return {direction,text,durationSec:+duration.toFixed(2),
+  startToEndSt:+change.toFixed(1),
+  isToneGrade:false,confidence:"exploratory"};
+}
+
 
 /* Rapid almost-2x or half-F0 changes are a warning for octave tracking errors.
  * This heuristic NEVER repairs a frequency or assigns a Mandarin tone.
@@ -75,7 +118,7 @@ export function estimatePitch(samples,rate,{minHz=70,maxHz=550}={}){
 
 export function analyseContour(frames){
  const voiced=(frames||[]).filter(f=>Number.isFinite(f?.hz)&&f.hz>=70&&f.hz<=550&&Number.isFinite(f?.t)).sort((a,b)=>a.t-b.t);
- if(voiced.length<10)return {kind:"insufficient",label:"Недостаточно чистого голоса",reason:"Произнеси один слог чуть протяжнее в тихом помещении.",points:[],isToneGrade:false};
+ if(voiced.length<10)return {kind:"insufficient",label:"Недостаточно чистого голоса",reason:"Голос обнаружен недостаточно устойчиво для графика; можно повторить слог обычным голосом.",points:[],isToneGrade:false};
  // Keep the longest contiguous voiced run: avoid mixing two attempts / noises.
  let runs=[],run=[];
  for(const point of voiced){
@@ -99,17 +142,18 @@ export function analyseContour(frames){
   const preview=stableShort?pts.map(p=>({t:p.t-pts[0].t,st:semitones(p.hz,reference)})):[];
   return {kind:"insufficient",label:preview.length?"Короткий участок голоса виден, но для оценки его мало":"Слишком короткий голосовой фрагмент",
    reason:suspicious
-     ?"Фрагмент короткий и содержит резкие скачки частоты почти вдвое. Это может быть ошибка измерения, а не твоё произношение. Повтори один слог чуть протяжнее."
+     ?"Фрагмент короткий и содержит резкие скачки частоты почти вдвое. Это может быть ошибка измерения, а не твоё произношение. Попробуй повторить слог обычным голосом."
      :preview.length
-       ?"Сплошная линия показывает только измеренный короткий участок, не правильность тона. Повтори один слог чуть протяжнее (около 0,7–1,2 с)."
-       :"Достоверно сравнить движение тона пока нельзя. Произнеси один слог чуть протяжнее (около 0,7–1,2 с).",
-   points:preview,stats:{duration:+duration.toFixed(2),voicedFrames:pts.length,octaveJumpCount:suspicious,previewOnly:preview.length>0},
+       ?"Сплошная линия показывает только измеренный короткий участок, не правильность тона. Можно попробовать ещё раз обычным голосом, без искусственного растягивания слога."
+       :"Достоверно сравнить движение тона пока нельзя. Попробуй произнести слог как в обычной речи.",
+   points:preview,shapeHint:preview.length?shortPitchMovement(pts):null,
+   stats:{duration:+duration.toFixed(2),voicedFrames:pts.length,octaveJumpCount:suspicious,previewOnly:preview.length>0},
    isToneGrade:false};
  }
  // Even a long clip must NOT yield a tone-shaped verdict if f0 abruptly doubles/halves.
  // Preserve raw points in manual diagnostics, but omit misleading plotted points.
  if(suspicious)return {kind:"uncertain",label:"Возможный сбой отслеживания высоты голоса",
-  reason:"Найдены резкие изменения частоты почти вдвое. Это может быть ошибка октавы в алгоритме. Нельзя судить о тоне по такому графику.",
+  reason:"Найдены резкие изменения частоты почти вдвое. Это может быть ошибка октавы в алгоритме. Нельзя оценить китайский тон по такому графику.",
   points:[],stats:{duration:+(pts.at(-1).t-pts[0].t).toFixed(2),voicedFrames:pts.length,octaveJumpCount:suspicious},
   isToneGrade:false};
  // Median filtering removes single octave jumps without manufacturing a melody.
@@ -118,7 +162,7 @@ export function analyseContour(frames){
   const nearby=pts.slice(Math.max(0,i-2),Math.min(pts.length,i+3)).map(x=>x.hz);
   return Math.abs(semitones(p.hz,median(nearby)))<5;
  });
- if(cleaned.length<MIN_PITCH_FRAMES)return {kind:"uncertain",label:"Слишком шумная запись",reason:"Стабильных отсчётов мало. Попробуй говорить без фоновых звуков чуть протяжнее.",points:[],isToneGrade:false};
+ if(cleaned.length<MIN_PITCH_FRAMES)return {kind:"uncertain",label:"Слишком шумная запись",reason:"Стабильных отсчётов мало. Попробуй повторить слог обычным голосом; отдельные звуки могли быть пропущены анализатором.",points:[],isToneGrade:false};
  const smooth=cleaned.map((p,i)=>{
   const nearby=cleaned.slice(Math.max(0,i-1),Math.min(cleaned.length,i+2)).map(x=>x.hz);
   return {t:p.t,hz:median(nearby)};
