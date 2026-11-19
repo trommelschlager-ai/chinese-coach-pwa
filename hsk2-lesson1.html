@@ -240,6 +240,10 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .pg433-tabs button.section-locked:active{
   transform:none!important;filter:saturate(.55)!important;
 }
+#app #pg433 .practice-modes{display:flex;gap:8px;padding:6px;margin:5px 4px 8px}
+#app #pg433 .practice-modes button{flex:1;min-width:0;min-height:37px;padding:4px 6px;border-radius:12px;font-size:12px;font-weight:700}
+#app #pg433 .self-quiz{flex:1;white-space:normal;text-align:center;min-height:42px}
+#app #pg433 .pg433-footer #next:disabled{opacity:.58;cursor:not-allowed;filter:saturate(.4);box-shadow:inset 0 2px 5px #75147e35!important;transform:none!important}
 </style>
 </head>
 <body>
@@ -989,11 +993,12 @@ function markQuiz(ok,method) {
   const attempt = activeQuiz();
   if (attempt.quiz[t][i]) return;
   if (ok) {
-    const answer = {correctFirst:!attempt.missed[t][i],method};
+    const answer = {correctFirst:method !== 'self' && !attempt.missed[t][i],method};
     attempt.quiz[t][i] = answer;
     state.quiz[t][i] ??= {...answer,correctFirst:answer.correctFirst && !state.missed[t][i]};
     save();
-    setStatus(method === 'speech' ? '✓ Слово распознано. Тоны не оценивались.' : '✓ Верно. Ответ засчитан.',true);
+    setStatus(method === 'self' ? '✓ Самостоятельная практика выполнена. Тоны не оценивались.'
+      : method === 'speech' ? '✓ Слово распознано. Тоны не оценивались.' : '✓ Верно. Ответ засчитан.',true);
     render();
   } else {
     recordQuizMiss(t,i);
@@ -1090,6 +1095,17 @@ function update() {
   render();
 }
 
+function markSelfSpoken(index) {
+  if (!Number.isInteger(index) || index < 0 || index >= words.length) return;
+  if (!state.heardWords.includes(index)) {
+    setStatus('Сначала прослушай запись этого слова, затем повтори его.');
+    return;
+  }
+  if (!state.selfSpoken.includes(index)) state.selfSpoken.push(index);
+  save();
+  setStatus('✓ Отмечено самостоятельное повторение. Правильность тонов не подтверждена.',true);
+  render();
+}
 function onMic(id) {
   if (id === 'chat') {
     const row = dialogue[state.chat.length];
@@ -1161,6 +1177,9 @@ const actions = {
   dayReset: () => { state.dayOrder = []; state.dayShuffled = mixedDay(); state.dayDone = false; update(); },
   dayCheck: () => checkOrder('day',6,'✓ Все шесть действий по порядку.','Проверь все шесть действий, от подъёма до сна.'),
   toneTab: value => { clearMedia(); state.toneTab = value; update(); },
+  practiceMode: value => { if (value === 'mic' || value === 'self') {state.practiceMode = value; update();} },
+  selfSpoken: value => markSelfSpoken(Number(value)),
+  selfQuiz: () => { if (state.step === 3 && state.quizTest === 4) markQuiz(true,'self'); },
   mic: value => onMic(value),
   chat: value => {
     clearMedia();
@@ -1207,6 +1226,10 @@ function previousStep() {
 back.addEventListener('click',previousStep);
 headBack.addEventListener('click',previousStep);
 next.addEventListener('click',() => {
+  if (!currentStepComplete()) {
+    setStatus('Заверши текущее упражнение, чтобы продолжить.');
+    return;
+  }
   if (courseMode && state.step === 3) {
     if (state.courseQuizCursor === null) {
       startTests();
@@ -1220,6 +1243,7 @@ next.addEventListener('click',() => {
   move(state.step === 8 ? 1 : (courseMode ? courseSteps[courseSteps.indexOf(state.step)+1] : state.step+1),true);
 });
 
+reconcileUnlockedProgress();
 const fromQuery = Number(layoutParams.get('step'));
 if (Number.isInteger(fromQuery) && fromQuery >= 1 && fromQuery <= 8 && canOpenStep(fromQuery)) {
   if (!courseMode || state.step !== fromQuery) state.quizTest = null;
@@ -1230,6 +1254,24 @@ if (courseMode && !canOpenStep(state.step)) {
   state.step = 2;
   state.quizTest = null;
   state.courseQuizCursor = null;
+}
+if (courseMode) {
+  layoutParams.set('step',state.step);
+  history.replaceState({pgHsk2Lesson1:true,step:state.step},'','?' + layoutParams + location.hash);
+  window.addEventListener('popstate',event => {
+    if (!event.state?.pgHsk2Lesson1) return;
+    const requested = Number(event.state.step);
+    const target = Number.isInteger(requested) && requested >= 1 && requested <= 8 && canOpenStep(requested)
+      ? requested : 2;
+    clearMedia();
+    state.step = target;
+    state.quizTest = null;
+    state.courseQuizCursor = null;
+    feedback = '';
+    layoutParams.set('step',target);
+    save();
+    render(true);
+  });
 }
 save();
 render(true);
