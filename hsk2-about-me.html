@@ -262,6 +262,17 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .about-practice-grid .about-day-card{padding:8px 4px;min-height:110px}
 #app #pg433 .about-practice-grid .about-day-card .cn{font-size:clamp(11px,3vw,15px);word-break:break-word;line-height:1.15}
 #app #pg433 .about-practice-grid .about-day-card .py{font-size:10px;line-height:1.15;max-height:32px;overflow:hidden}
+#app #pg433 .about-personal{margin:12px 2px;padding:14px;border:1px solid #dfa3e9;background:#fffaff}
+#app #pg433 .about-personal h2{font-size:21px;color:#75218c;text-align:center}
+#app #pg433 .about-personal-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}
+#app #pg433 .about-personal-fields label{font-size:12px;font-weight:750;color:#77277f;display:flex;flex-direction:column;gap:5px}
+#app #pg433 .about-personal-fields select{max-width:100%;min-width:0;min-height:42px;border-radius:12px;padding:5px;border:1px solid #d6a4de;color:#58266b;background:#fff;font-size:13px}
+#app #pg433 .about-my-lines{padding:7px 10px;border-radius:16px;background:linear-gradient(#fff1fc,#fffaff)}
+#app #pg433 .about-my-lines p{padding:7px 0;border-bottom:1px solid #eecde9;display:flex;flex-direction:column;align-items:flex-start}
+#app #pg433 .about-my-lines p:last-child{border:0}
+#app #pg433 .about-my-lines strong{font-size:clamp(17px,5vw,21px);color:#70228c}
+#app #pg433 .about-my-lines .py{font-size:12px;color:#854996}
+@media(max-width:350px){#app #pg433 .about-personal-fields{grid-template-columns:1fr}}
 #app #pg433 .tone-details,#app #pg433 .phrase-review{margin:8px 3px;padding:0;overflow:hidden;border-radius:16px;border:1px solid #e5b9ec;background:#fff8ff}
 #app #pg433 .tone-details summary,#app #pg433 .phrase-review summary{cursor:pointer;list-style:revert;padding:11px 14px;min-height:42px;font-weight:750;color:#742785;line-height:1.2}
 #app #pg433 .tone-details summary:focus-visible,#app #pg433 .phrase-review summary:focus-visible{outline:3px solid #a648b5;outline-offset:-3px}
@@ -369,7 +380,8 @@ function blank() {
     missed:tests.map(() => words.map(() => false)), quizTest:null, quizIndex:0, quizPicked:[], courseQuizCursor:null, courseQuizType:null, quizRetry:null,
     grammar:[], grammarDone:false, dayOrder:[], dayShuffled:mixedDay(), dayDone:false,
     mic:[], chat:[], toneTab:'words', unlockedSection:0,
-    heardWords:[], selfSpoken:[], practiceMode:'mic'
+    heardWords:[], selfSpoken:[], practiceMode:'mic',
+    personal:{name:'米沙',origin:'俄罗斯',city:'莫斯科',work:'在公司工作',hobby:'听音乐'}
   };
 }
 
@@ -407,7 +419,8 @@ let state = restore();
 state.heardWords = [...new Set((Array.isArray(state.heardWords) ? state.heardWords : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.selfSpoken = [...new Set((Array.isArray(state.selfSpoken) ? state.selfSpoken : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.mic = [...new Set((Array.isArray(state.mic) ? state.mic : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
-state.practiceMode = 'mic'; // Start each session with the primary microphone mode.
+state.practiceMode = 'mic'; // Primary microphone mode.
+state.personal = {...blank().personal,...(state.personal && typeof state.personal === 'object' ? state.personal : {})};
 let audio = null;
 let speech = null;
 let feedback = '';
@@ -904,6 +917,37 @@ function lockedPandaAiShortcut() {
     '<span class="panda-ai-shortcut-copy"><strong>🔒 Panda AI — после диалога</strong>' +
     '<small>Ответь на три вопроса, чтобы открыть голосовую практику</small></span></div>';
 }
+const storyOptions = {
+  name:[['米沙','Миша','Mǐshā'],['安娜','Анна','Ānnà'],['马克','Марк','Mǎkè']],
+  origin:[['俄罗斯','Россия','Éluósī'],['中国','Китай','Zhōngguó']],
+  city:[['莫斯科','Москва','Mòsīkē'],['北京','Пекин','Běijīng'],['上海','Шанхай','Shànghǎi']],
+  work:[['在公司工作','Работаю в компании','zài gōngsī gōngzuò'],['是学生','Я студент','shì xuésheng']],
+  hobby:[['听音乐','Слушаю музыку','tīng yīnyuè'],['运动','Спорт','yùndòng'],['看书','Читаю книги','kàn shū']]
+};
+const storyFields = [['name','Имя'],['origin','Страна'],['city','Город'],['work','Работа / учёба'],['hobby','Хобби']];
+function personalStory() {
+  const get = key => storyOptions[key].find(v=>v[0] === state.personal[key]) || storyOptions[key][0];
+  const name=get('name'),origin=get('origin'),city=get('city'),work=get('work'),hobby=get('hobby');
+  const lines = [
+    ['我叫'+name[0]+'。','Wǒ jiào '+name[2]+'.'],
+    ['我来自'+origin[0]+'。','Wǒ láizì '+origin[2]+'.'],
+    ['我现在住在'+city[0]+'。','Wǒ xiànzài zhù zài '+city[2]+'.'],
+    ['我'+work[0]+'。','Wǒ '+work[2]+'.'],
+    ['我的爱好是'+hobby[0]+'。','Wǒ de àihào shì '+hobby[2]+'.'],
+    ['我每天学习中文。','Wǒ měitiān xuéxí Zhōngwén.']
+  ];
+  return '<section class="about-personal panel"><h2>✍️ Мой рассказ о себе</h2>' +
+    '<p class="hint">Выбери варианты, прочитай свой текст вслух и попробуй рассказать без подсказок.</p>' +
+    '<div class="about-personal-fields">' +
+      storyFields.map(([key,label])=>'<label>'+label+'<select data-personal="'+key+'">' +
+        storyOptions[key].map(option=>'<option value="'+escape(option[0])+'"'+(option[0]===state.personal[key]?' selected':'')+'>'+
+          escape(option[1])+' · '+escape(option[0])+'</option>').join('') +
+      '</select></label>').join('') +
+    '</div><div class="about-my-lines">' +
+      lines.map(([zh,py])=>'<p><strong lang="zh-Hans">'+escape(zh)+'</strong><span class="py">'+escape(py)+'</span></p>').join('') +
+    '</div><p class="hint">Это пример с готовыми вариантами. Позже добавим свободный ввод имени и города.</p></section>';
+}
+
 function chat() {
   const i = state.chat.length;
   const exchange = dialogue[i];
@@ -915,7 +959,7 @@ function chat() {
       translation + '</span></button>').join('') + '</div><div class="controls"><button type="button" class="soft" data-mic="chat">🎙 Ответить голосом</button></div>' :
       '<p class="feedback good">✓ Ты ответил на все три вопроса.</p>') + safeStatus() +
     (i ? '<div class="controls"><button type="button" class="soft" data-chat-reset>Начать диалог заново</button></div>' : '') + '</section>' +
-    (i === dialogue.length ? pandaAiShortcut() : lockedPandaAiShortcut());
+    (i === dialogue.length ? personalStory() + pandaAiShortcut() : lockedPandaAiShortcut());
 }
 
 function finish() {
@@ -1248,6 +1292,18 @@ const actions = {
   },
   chatReset: () => { clearMedia(); state.chat = []; update(); }
 };
+app.addEventListener('change',event=>{
+  const target=event.target.closest('select[data-personal]');
+  if(!target)return;
+  const key=target.dataset.personal;
+  if(!Object.hasOwn(storyOptions,key))return;
+  if(!storyOptions[key].some(option=>option[0]===target.value))return;
+  const oldScroll=workspace.scrollTop;
+  state.personal[key]=target.value;
+  save();
+  render();
+  workspace.scrollTop=oldScroll;
+});
 
 let pressedNavButton;
 let pressedNavTimer;
