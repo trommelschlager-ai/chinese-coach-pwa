@@ -163,143 +163,6 @@
   padding: 0 !important;
   overflow: hidden;
 }
-.word-flow-cover-shell {
-  position: relative;
-  isolation: isolate;
-  container-type: inline-size;
-  min-height: 100%;
-  background: linear-gradient(90deg, #f6defd, #f0d1f8 50%, #f6dffb);
-  --art-width: min(100cqw, calc((100dvh - 52px) * 691 / 1378));
-}
-.word-flow-cover-shell::before,
-.word-flow-cover-shell::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  height: calc(var(--art-width) * 1378 / 691 + 52px);
-  width: max(0px, calc((100% - var(--art-width)) / 2 + 1px));
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  pointer-events: none;
-  z-index: -1;
-}
-.word-flow-cover-shell::before {
-  left: 0;
-  background-image: url("./hsk2-lesson1-preview/course-cover-side-left.webp");
-}
-.word-flow-cover-shell::after {
-  right: 0;
-  background-image: url("./hsk2-lesson1-preview/course-cover-side-right.webp");
-}
-.word-flow-cover {
-  /* Fit the existing artwork around the unchanged 44 px Start button. */
-  position: relative;
-  width: var(--art-width);
-  margin-inline: auto;
-}
-.word-flow-cover-outro {
-  position: relative;
-  --edge-art: url("./hsk2-lesson1-preview/course-cover-scroll.webp");
-}
-.word-flow-cover-outro img {
-  width: 100%;
-  height: auto;
-  mask-image: linear-gradient(transparent, #000 3px);
-}
-.word-flow-cover-back {
-  position: absolute;
-  top: 0;
-  margin-top: 2.25%;
-  left: 4.3%;
-  width: 8.55%;
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border: 1px solid #ebc7f0;
-  border-radius: 50%;
-  background: linear-gradient(#fffaff, #f8e3ff);
-  box-shadow: 0 2px 6px #4c116745;
-  color: #36116a;
-  text-decoration: none;
-  font: 26px/1 system-ui, sans-serif;
-}
-.course-layout #pg433 .word-flow-cover-start {
-  display: block;
-  width: 93.2%;
-  height: 44px;
-  min-height: 44px;
-  margin: 2px auto 6px;
-  padding: 3px 10px;
-  border: 2px solid #f5bdff;
-  border-bottom: 4px solid #7131a7;
-  background: linear-gradient(#d087f4, #ad58e2 48%, #8737c8);
-  box-shadow: 0 3px 5px #54147555, inset 0 1px 2px #f3b8ff;
-  font: 850 clamp(18px, 5.2vw, 29px)/1.2 system-ui, sans-serif;
-}
-
-.word-flow-cover-art {
-  position: relative;
-  --edge-art: url("./hsk2-lesson1-preview/course-cover-top.webp");
-}
-.word-flow-cover-art::before,
-.word-flow-cover-art::after,
-.word-flow-cover-panda::before,
-.word-flow-cover-panda::after,
-.word-flow-cover-outro::before,
-.word-flow-cover-outro::after {
-  content: "";
-  position: absolute;
-  inset-block: 0;
-  width: min(17px, 5%);
-  background: var(--edge-art) no-repeat;
-  background-size: var(--art-width) 100%;
-  transform: scaleX(-1);
-  pointer-events: none;
-}
-.word-flow-cover-art::before,
-.word-flow-cover-panda::before,
-.word-flow-cover-outro::before {
-  right: 100%;
-  background-position: left;
-  mask-image: linear-gradient(to right, #000 12%, transparent);
-}
-.word-flow-cover-art::after,
-.word-flow-cover-panda::after,
-.word-flow-cover-outro::after {
-  left: 100%;
-  background-position: right;
-  mask-image: linear-gradient(to left, #000 12%, transparent);
-}
-.word-flow-cover-art img {
-  width: 100%;
-  height: auto;
-}
-.word-flow-cover-art > img {
-  mask-image: linear-gradient(#000 calc(100% - 2px), transparent);
-}
-.word-flow-cover-copy {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  inset: 63.4% 17% 26.2%;
-  margin: 0;
-  padding-inline: 2%;
-  isolation: isolate;
-  text-align: center;
-  font-size: calc(var(--art-width) * .041);
-  font-weight: 850;
-  line-height: 1.18;
-  color: #261046;
-}
-.word-flow-cover-copy::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(#fcf7ff, #faf5fe);
-  box-shadow: 0 0 3px 2px #fbf6fe;
-}
-
 .course-layout #pg433 .test-card button[data-quiz-type] {
   width: 36px;
   height: 36px;
@@ -418,21 +281,6 @@
   }
 }
 
-.word-flow-cover-section {
-  position: absolute;
-  inset: 57.35% 15.3% 37% 15.2%;
-  border-radius: 999px;
-  backdrop-filter: brightness(1.27) saturate(.78);
-}
-
-.word-flow-cover-back::after {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  min-width: 44px;
-  min-height: 44px;
-}
-
 .course-layout #pg433 .word-row {
   grid-template-columns: 20% max-content minmax(42px, 15%) minmax(0, 1fr) 37px;
   gap: 4px;
@@ -472,16 +320,83 @@
   stroke-linejoin: round;
 }
 
-.word-flow-cover-panda {
-  position: absolute;
-  inset: 25.96% 0 auto;
-  width: 100%;
-  height: 31.3%;
-  --edge-art: url("./hsk2-lesson1-preview/course-cover-panda-hd.webp");
-  mask-image: linear-gradient(transparent, #000 3%, #000 97%, transparent);
-  mask-clip: no-clip;
+/* Keep the approved artwork proportional on short and tall displays. */
+.word-flow-cover-shell {
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+  min-height: 100%;
+  background: linear-gradient(#f4dafa 21%, #efd1f8 76%, #e5cee8);
+  --cover-image: url("./hsk2-lesson1-preview/course-cover-sakura-canal.webp");
+  --art-width: min(100cqw, calc(100dvh * 905 / 1737));
 }
-.word-flow-cover-panda img {
-  height: 100%;
-  object-fit: cover;
+.word-flow-cover {
+  position: relative;
+  width: var(--art-width);
+  margin-inline: auto;
+}
+.word-flow-cover::before,
+.word-flow-cover::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: min(34px, 12%);
+  background: var(--cover-image) no-repeat;
+  background-size: var(--art-width) 100%;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+.word-flow-cover::before {
+  right: 100%;
+  background-position: left;
+  mask-image: linear-gradient(to right, #000, transparent);
+}
+.word-flow-cover::after {
+  left: 100%;
+  background-position: right;
+  mask-image: linear-gradient(to left, #000, transparent);
+}
+.word-flow-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.final-cover-back,
+.final-cover-start {
+  position: absolute;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.final-cover-back {
+  inset: .6% auto auto 8.4%;
+  width: 9%;
+  min-width: 36px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+.final-cover-start {
+  inset: 72.3% 8.5% 21.8%;
+  min-height: 36px;
+  border-radius: 999px;
+}
+.course-layout #pg433 .final-cover-start:active,
+.final-cover-back:active {
+  transform: none;
+  background: #fff2;
+  box-shadow: 0 0 0 2px #f7d8ff80;
+}
+.final-cover-back:focus-visible,
+.final-cover-start:focus-visible {
+  outline: 3px solid #571482;
+  outline-offset: 2px;
+}
+.lesson-map-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 }

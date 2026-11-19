@@ -382,6 +382,7 @@ function render(){
 }
 function go(v){if(state.view==='lesson'&&v!=='lesson'&&dayUI)dayUI.cancel();state.view=v;render()}
 function enter(t,m){
+ if(t===0&&m===0){openMergedDay(1);return}
  if(dayUI)dayUI.cancel();
  state.topic=t;state.mini=m;state.stage=0;state.quizWord=null;state.quizSentence=null;state.build=[];
  state.day=t===0&&dayUI?dayUI.makeState(m):null;
@@ -401,7 +402,7 @@ function next(){
  state.stage=Math.min(3,state.stage+1);render();
 }
 function openMergedDay(step){
- window.location.assign('./preview-hsk2-lesson1-approved.html?layout=course&step='+step);
+ window.location.assign('./hsk2-lesson1.html?step='+step);
 }
 document.addEventListener('click',function(e){
  var b=e.target.closest('button');if(!b)return;
@@ -483,7 +484,7 @@ if(toggle)toggle.addEventListener('click',function(){state.showPy=!state.showPy;
 /* Allow direct links from the ten cards on the existing HSK2 course map. */
 try {
  var params=new URLSearchParams(window.location.search);
- if(params.get('start')==='1') {state.view='lesson';state.topic=0;state.mini=0;state.stage=0;state.day=dayUI?dayUI.makeState(0):null;}
+ if(params.get('start')==='1'){openMergedDay(1);return;}
  if(params.get('view')==='map')state.view='map';
  if(params.get('view')==='welcome')state.view='welcome';
  // Panda AI -> the exact mini-lesson completion screen the student left.
@@ -501,5 +502,9 @@ try {
   state.view='topic';
  }
 }catch(e){}
+if(state.view==='lesson'&&state.topic===0&&state.mini===0){
+ window.location.replace('./hsk2-lesson1.html');
+ return;
+}
 render();
 })();

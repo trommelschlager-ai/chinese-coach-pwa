@@ -7,6 +7,11 @@
 <title>Panda Go · HSK 2 · Мой день</title>
 <script>
 if (new URLSearchParams(location.search).get('layout') === 'course') {
+  location.replace('./hsk2-lesson1.html' + location.search + location.hash);
+}
+</script>
+<script>
+if (new URLSearchParams(location.search).get('layout') === 'course') {
   document.documentElement.classList.add('course-layout');
   for (const stylesheet of ['hsk2-storyboard-v433.css', 'hsk2-lilac-pink-v444.css',
     'hsk2-lesson-theme-v451.css', 'hsk2-lesson1-course-layout.css?v=1']) {
