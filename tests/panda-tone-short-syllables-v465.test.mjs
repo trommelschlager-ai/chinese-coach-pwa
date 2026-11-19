@@ -85,4 +85,7 @@ test('published page uses post-record analysis rather than only setInterval samp
  assert(page.includes('panda-tone-ma-pilot-v463.mjs?v=466'));
  assert(!/fetch\s*\(|XMLHttpRequest|sendBeacon|localStorage|sessionStorage/i.test(trainer));
  assert(page.includes('Нет оценок'));
+ assert(trainer.includes('offline?.preview||[]'),'Ungraded preview should be used for short audio');
+ assert(trainer.includes('plot(displayPoints)'));
+ assert(trainer.includes('Голос уже был обнаружен'),'Live mic label should not switch to silence after hearing a syllable');
 });
