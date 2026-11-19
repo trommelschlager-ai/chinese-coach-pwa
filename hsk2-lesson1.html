@@ -301,9 +301,14 @@ for (const [text,recording] of Object.entries(window.PandaGoHSK2Lesson1NativeAud
   clips.set(normalize(text), recording);
 }
 
+// Exactly one listening exercise for each of the six vocabulary items.
 const listening = [
-  ['我七点起床。',0], ['我起床以后洗脸。',1], ['我早上吃早饭。',3],
-  ['我八点去上班。',4], ['我晚上十点睡觉。',5], ['我每天六点起床。',0]
+  ['我每天七点起床。',0],
+  ['我起床以后洗脸。',1],
+  ['我起床以后刷牙。',2],
+  ['我早上吃早饭。',3],
+  ['我八点去上班。',4],
+  ['我晚上十点睡觉。',5]
 ];
 const layoutParams = new URLSearchParams(location.search);
 const courseMode = true;
@@ -316,9 +321,8 @@ const courseSections = [
   {name:'Примеры',steps:[7,8]}
 ];
 // Listening results retain their original indices so completed work survives the switch.
-const courseQuiz = words.flatMap((_,word) => [0,1,2,3,4].flatMap(type =>
-  type === 1 ? listening.flatMap((entry,index) => entry[1] === word ? [{type,index,word}] : []) :
-    [{type,index:word,word}]));
+const courseQuiz = words.flatMap((_,word) =>
+  [0,1,2,3,4].map(type => ({type,index:word,word})));
 const stepNumber = step => courseMode ? courseSteps.indexOf(step)+1 : step;
 const titles = ['Вступление','Новые слова','Проверь слова','Грамматика','Мой распорядок','Тренировка тонов','Фразы и диалог','Завершение'];
 const tests = ['Значение слова','По аудио','Собери слово','Заполни фразу','Произнеси'];
@@ -343,7 +347,8 @@ function blank() {
     step:1, quiz:tests.map(() => words.map(() => null)),
     missed:tests.map(() => words.map(() => false)), quizTest:null, quizIndex:0, quizPicked:[], courseQuizCursor:null, courseQuizType:null, quizRetry:null,
     grammar:[], grammarDone:false, dayOrder:[], dayShuffled:mixedDay(), dayDone:false,
-    mic:[], chat:[], toneTab:'words', unlockedSection:0
+    mic:[], chat:[], toneTab:'words', unlockedSection:0,
+    heardWords:[], selfSpoken:[], practiceMode:'mic'
   };
 }
 
@@ -378,6 +383,10 @@ function restore() {
 }
 
 let state = restore();
+state.heardWords = [...new Set((Array.isArray(state.heardWords) ? state.heardWords : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
+state.selfSpoken = [...new Set((Array.isArray(state.selfSpoken) ? state.selfSpoken : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
+state.mic = [...new Set((Array.isArray(state.mic) ? state.mic : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
+state.practiceMode = state.practiceMode === 'self' ? 'self' : 'mic';
 let audio = null;
 let speech = null;
 let feedback = '';
@@ -433,6 +442,37 @@ const wave = '<svg class="wave" viewBox="0 0 70 18" aria-hidden="true"><path d="
 const scope = () => state.step + ':' + state.quizTest + ':' + state.quizIndex;
 const correctCount = index => state.quiz[index].filter(Boolean).length;
 const quizCount = () => state.quiz.flat().filter(Boolean).length;
+const speechCount = () => new Set([...state.mic,...state.selfSpoken]).size;
+const speechDone = () => speechCount() === words.length;
+const selfQuizCount = () => state.quiz[4].filter(record => record?.method === 'self').length;
+function sectionComplete(section) {
+  switch(section) {
+    case 0: return state.heardWords.length === words.length;
+    case 1: return state.grammarDone === true;
+    case 2: return speechDone();
+    case 3: return quizCount() === 30 && state.dayDone === true;
+    case 4: return state.chat.length === dialogue.length;
+    default: return false;
+  }
+}
+function currentStepComplete() {
+  switch(state.step) {
+    case 1: return true;
+    case 2: return sectionComplete(0);
+    case 4: return sectionComplete(1);
+    case 6: return sectionComplete(2);
+    case 3: {
+      if (state.courseQuizCursor === null) return true; // Opens the test list.
+      if (state.courseQuizCursor === courseQuiz.length) return quizCount() === 30;
+      const current = courseQuiz[state.courseQuizCursor];
+      return !!(current && activeQuiz().quiz[current.type][current.index]);
+    }
+    case 5: return sectionComplete(3);
+    case 7: return sectionComplete(4);
+    case 8: return true;
+    default: return false;
+  }
+}
 const activeQuiz = () => state.quizRetry ?? state;
 const dayScenes = ['wake','wash','brush','breakfast','work','sleep'];
 const vocabImage = i => courseMode ? art('day-' + dayScenes[i]) : i === 5 ? art('sleep') : '<img src="' + asset + 'word-' + (i+1) + '.webp" alt="">';
@@ -493,9 +533,17 @@ function canOpenStep(target,advance = false) {
   const targetSection = sectionForStep(target);
   const currentSection = sectionForStep(state.step);
   if (targetSection < 0) return false;
+  if (target === 5 && quizCount() < 30) return false;
+  if (target === 8 && !sectionComplete(4)) return false;
   if (targetSection <= unlockedSection()) return true;
-  // Only the Next button can open the immediate next chapter, not direct links or tabs.
-  return advance && currentSection === unlockedSection() && targetSection === currentSection + 1;
+  // A new chapter opens only after confirmed work on the current chapter.
+  return advance && currentSection === unlockedSection() &&
+    targetSection === currentSection + 1 && sectionComplete(currentSection);
+}
+function reconcileUnlockedProgress() {
+  let earned = 0;
+  while (earned < courseSections.length - 1 && sectionComplete(earned)) earned++;
+  state.unlockedSection = Math.min(unlockedSection(),earned);
 }
 
 function move(step,advance = false) {
@@ -513,7 +561,7 @@ function move(step,advance = false) {
   if (state.step !== 3) state.quizTest = null;
   if (courseMode) {
     layoutParams.set('step',state.step);
-    history.replaceState(null,'','?' + layoutParams);
+    history.pushState({pgHsk2Lesson1:true,step:state.step},'','?' + layoutParams + location.hash);
   }
   save();
   render(true);
@@ -529,7 +577,7 @@ function render(resetScroll = false) {
     state.quizTest = task?.type ?? null;
     if (task) state.quizIndex = task.index;
   }
-  if (courseMode) counter.textContent = stepNumber(step) + ' / 8';
+  if (courseMode) counter.textContent = 'Шаг ' + stepNumber(step) + ' из 8';
   else headLabel.textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
   headBack.disabled = step === 1;
   stepButtons.forEach((button,index) => {
@@ -540,7 +588,7 @@ function render(resetScroll = false) {
       button.classList.toggle('active',active);
       button.classList.toggle('section-locked',locked);
       button.disabled = locked;
-      button.title = locked ? '🔒 Сначала пройди предыдущий раздел' : 'Раздел открыт';
+      button.title = locked ? '🔒 Выполни предыдущий раздел, чтобы открыть' : 'Раздел открыт';
       button.setAttribute('aria-label',courseSections[index].name + (locked ? '. Закрыт — откроется после предыдущего раздела.' : '. Открыт.'));
     }
   });
@@ -557,13 +605,15 @@ function render(resetScroll = false) {
     const current = courseQuiz[cursor];
     const following = courseQuiz[adjacentCourseTask(1)];
     next.textContent = inQuiz
-      ? (!activeQuiz().quiz[current.type][current.index] ? 'Пропустить →'
+      ? (!activeQuiz().quiz[current.type][current.index] ? 'Сначала выполни'
         : !following ? (state.courseQuizType === null ? 'К результатам →' : 'К тестам →')
         : following.word !== current.word ? 'Следующее слово →' : 'Дальше →')
       : step === 8 ? 'К началу ↻' : step === 3 && cursor === null ? 'Начать тесты →' : 'Дальше →';
   } else {
     next.textContent = step === 1 ? 'Начать урок' : step === 8 ? 'К началу ↻' : titles[step] + ' →';
   }
+  next.disabled = !currentStepComplete();
+  next.setAttribute('aria-label',next.disabled ? 'Заверши текущее упражнение, чтобы продолжить' : next.textContent);
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
@@ -585,7 +635,9 @@ function newWords() {
   return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' + words.map((word,i) =>
     '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + toneStrokes(word.tones) + '<div>' +
     translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh,playIcon) + '</article>').join('') +
-    '</div><p class="hint audio-note">🔊 Все шесть слов озвучены единым женским голосом.</p>' + safeStatus();
+    '</div><p class="hint audio-note">🔊 Прослушано ' + state.heardWords.length +
+    ' из 6 слов. Сначала прослушай все записи, затем откроется «Дальше».</p>' +
+    '<p class="hint audio-note">💡 洗脸: xǐliǎn — 3 + 3; при произношении первый слог звучит как 2-й тон (xíliǎn).</p>' + safeStatus();
 }
 
 function hero(kind,step,title,subtitle) {
