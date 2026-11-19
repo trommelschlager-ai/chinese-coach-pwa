@@ -31,7 +31,7 @@ test('browser mic resources are explicitly released and there is no automatic to
  assert(trainer.includes('getUserMedia'));
  assert(trainer.includes('getTracks().forEach(t=>t.stop())'));
  assert(trainer.includes('ctx?.close()'));
- assert(trainer.includes('analyseContour(frames)'));
+ assert(trainer.includes('analyseContour(pitchFrames)'));
  assert(trainer.includes('isSecureContext'));
  assert(trainer.includes("pagehide"));
  assert(!/fetch\s*\(|XMLHttpRequest|sendBeacon/i.test(trainer));

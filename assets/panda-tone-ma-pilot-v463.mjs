@@ -3,6 +3,7 @@
  * Original lesson MP3s are played unchanged.
  */
 import {estimatePitch, analyseContour} from './panda-tone-analytics-v457.mjs?v=463';
+import {analyseRecordedBlob} from './panda-tone-recording-analysis-v465.mjs?v=465';
 const $=id=>document.getElementById(id);
 const tones=[
  {n:1,hz:'妈',py:'mā',src:'./assets/lesson1-xiaoxiao-v260/ma1.mp3',reference:'M30 62H332'},
@@ -29,7 +30,7 @@ function discardActiveCapture(){
 }
 async function finalizeCapture(){
  const current=recorder;
- if(!current)return;
+ if(!current)return null;
  if(current.state!=='inactive'){
   await new Promise(resolve=>{
    let settled=false,timeout=null;
@@ -39,15 +40,16 @@ async function finalizeCapture(){
    try{current.stop();}catch{done();}
   });
  }
- if(recorder!==current)return;
+ if(recorder!==current)return null;
  recorder=null;
  const chunks=recordedChunks.splice(0);
- if(!chunks.length){$('recording-message').textContent='Звук не сохранился. Попробуй записать ещё раз.';return;}
+ if(!chunks.length){$('recording-message').textContent='Звук не сохранился. Попробуй записать ещё раз.';return null;}
  const blob=new Blob(chunks,{type:current.mimeType||chunks[0].type||'audio/webm'});
- if(blob.size<=128){$('recording-message').textContent='Запись получилась пустой. Попробуй ещё раз.';return;}
+ if(blob.size<=128){$('recording-message').textContent='Запись получилась пустой. Попробуй ещё раз.';return null;}
  recordedUrl=URL.createObjectURL(blob);
  $('replay').disabled=false;
  $('recording-message').textContent='🎧 Твой голос записан. Нажми «Послушать свой голос».';
+ return blob;
 }
 function updateTone(index){
  if(active||opening||stopping)return;
@@ -115,26 +117,46 @@ async function release(){
 }
 async function stop(){
  if(!active||stopping)return;
- stopping=true;
- active=false;$('record').disabled=true;
+ stopping=true;active=false;
+ $('record').disabled=true;
  clearInterval(interval);clearTimeout(deadline);
- await finalizeCapture();
+ $('status').textContent='Обрабатываю запись — проверяю весь слог, а не отдельные мгновения…';
+ let blob=null,offline=null;
+ try{
+  blob=await finalizeCapture();
+ }catch{}
  await release();
- controls(false);$('record').disabled=false;stopping=false;
- const result=analyseContour(frames);
+ if(blob){
+  try{
+   offline=await analyseRecordedBlob(blob,{
+    estimatePitch,analyseContour,
+    AudioContextClass:window.AudioContext||window.webkitAudioContext
+   });
+  }catch{
+   // If Chrome cannot decode a MediaRecorder format, keep the live F0 samples.
+   $('recording-message').textContent='🎧 Запись можно послушать. Детальный анализ файла недоступен на этом устройстве.';
+  }
+ }
+ const pitchFrames=offline?.frames?.length>frames.length?offline.frames:frames;
+ const result=analyseContour(pitchFrames);
  $('your-path').setAttribute('d',plot(result.points));
  $('result').textContent=toneGuidance(tones[selected],result);
+ const sound=offline?.signal;
+ const hasSound=Boolean(sound?.hasAudibleSignal||(counts?.heard||0)>0);
  if(result.kind==='insufficient'){
-  $('status').textContent=counts?.heard
-   ?'Микрофон уловил голос, но высота тона определилась неуверенно. Послушай запись и повтори.'
-   :'Микрофон почти не уловил звук. Послушай запись и проверь доступ к микрофону.';
- } else {
-  $('status').textContent='График получен. Это описание движения голоса, а не оценка правильности.';
+  $('status').textContent=hasSound
+   ?'Голос записан, но контур короткий или неустойчивый. Это НЕ значит, что ты неправильно сказал «'+tones[selected].py+'».'
+   :'Во время попытки измеренный сигнал был слишком слабым или отсутствовал. Нажми «Послушать свой голос».';
+ }else{
+  $('status').textContent='Контур получен. Это измерение высоты голоса, а не оценка правильности китайского тона.';
  }
- $('mic-level-label').textContent=counts?.heard
-  ?'🎤 Звук был: '+counts.heard+' из '+counts.readings+' замеров; устойчивых точек высоты: '+counts.voiced+'.'
-  :'🎤 Устойчивого звукового сигнала не обнаружено.';
+ $('mic-level-label').textContent=sound
+  ?'🎤 Запись: '+sound.soundFrames+' звуковых кадров, '+sound.pitchFrames+' точек высоты голоса. '+(sound.hasAudibleSignal?'Звук есть.':'Звук не подтверждён.')
+  :counts?.heard
+   ?'🎤 Микрофон уловил звук: '+counts.heard+' измерений, высота определена в '+counts.voiced+'.'
+   :'🎤 Данных микрофона для анализа недостаточно.';
  frames=[];counts=null;
+ controls(false);$('record').disabled=false;stopping=false;
 }
 async function start(){
  if(opening||active||stopping)return;
@@ -177,9 +199,9 @@ async function start(){
    counts.peakRms=Math.max(counts.peakRms,rms);
    if(counts.readings%4===0){
     $('mic-level-fill').style.width=Math.round(Math.min(100,100*Math.sqrt(rms/.20)))+'%';
-    $('mic-level-label').textContent=rms>=.012?'🎤 Микрофон слышит звук':'🎤 Сигнал слабый — говори ближе к микрофону';
+    $('mic-level-label').textContent=rms>=.006?'🎤 Микрофон получает звук':'🎤 Сигнал пока слабый';
    }
-   if(rms<.012){counts.silent++;return;}
+   if(rms<.006){counts.silent++;return;}
    counts.heard++;
    const p=estimatePitch(buffer,audioCtx.sampleRate);
    if(!p||p.clarity<=.78)return;

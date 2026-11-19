@@ -71,7 +71,7 @@ h1{font-size:25px;line-height:1.15;margin:11px 0 6px;color:#672e8d}
 <p id="mic-level-label" class="mic-level-label" role="status" aria-live="polite">Уровень микрофона появится во время записи.</p>
 <button id="replay" class="action replay" type="button" disabled>🔊 Послушать свой голос</button>
 <p id="recording-message" class="recording-message" aria-live="polite">После произношения можно прослушать именно свою запись.</p>
-<p id="status" class="status" role="status" aria-live="polite">Микрофон включится только после нажатия.</p>
+<p id="status" class="status" role="status" aria-live="polite">Говори естественно. Микрофон включится только после нажатия.</p>
 </section>
 <section class="card" aria-labelledby="graph-title">
 <h2 id="graph-title">2. Посмотри движение голоса</h2>
@@ -81,13 +81,13 @@ h1{font-size:25px;line-height:1.15;margin:11px 0 6px;color:#672e8d}
 <path id="your-path" class="observed" d=""/>
 <text x="8" y="18" fill="#8c739f" font-size="11">Выше ↑</text><text x="8" y="132" fill="#8c739f" font-size="11">Ниже ↓</text>
 </svg>
-<p class="legend">Пунктир — учебная схема; сплошная линия — измеренный голос</p>
+<p class="legend">Пунктир — учебная схема; сплошная линия — измеренный голос, если хватает данных</p>
 <p id="result" class="result" aria-live="polite">После произношения здесь появится результат наблюдения.</p>
 <button id="next" class="action next" type="button">Следующий тон →</button>
 </section>
 <p class="tip"><b>Важно:</b> это анализ высоты голоса, а не распознавание китайских слов. Нет оценок «верно/неверно» — по одному графику нельзя достоверно проверить китайский тон. Третий тон в речи часто произносится низко, без подъёма.</p>
-<p class="warning">🎧 Лучше пользоваться в тихом месте. Для измерения один слог слегка протяни (около секунды). Твой голос временно записывается в памяти браузера для воспроизведения, не отправляется на сервер и удаляется при новой записи, смене тона или закрытии тренажёра.</p>
+<p class="warning">🎧 Лучше пользоваться в тихом месте. Говори обычным голосом. Не нужно кричать или специально растягивать слог; программа анализирует короткую запись после остановки. Твой голос временно записывается в памяти браузера для воспроизведения, не отправляется на сервер и удаляется при новой записи, смене тона или закрытии тренажёра.</p>
 </main>
-<script type="module" src="./assets/panda-tone-ma-pilot-v463.mjs?v=464"></script>
+<script type="module" src="./assets/panda-tone-ma-pilot-v463.mjs?v=465"></script>
 </body>
 </html>
