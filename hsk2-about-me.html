@@ -597,7 +597,7 @@ const dayScenes = ['wake','wash','brush','breakfast','work','sleep'];
 const aboutArtNames = ['origin','now','city','work','hobby','study'];
 const aboutArtLabels = ['Земной шар: родом из страны','Календарь и часы: сейчас','Городские дома: жить в городе','Рабочее место: работать','Наушники и музыка: хобби','Открытая книга: изучать'];
 const vocabImage = i => '<img class="about-illustration" src="./assets/hsk2-about-me/illustration-' +
-  aboutArtNames[i] + '.svg" alt="' + aboutArtLabels[i] + '" loading="lazy" width="180" height="116">';
+  aboutArtNames[i] + '.svg?v=2" alt="' + aboutArtLabels[i] + '" loading="lazy" width="180" height="116">';
 const storyImage = i => i === 0
   ? '<img src="./assets/hsk2-about-me/illustration-name.svg" alt="Имя и знакомство" loading="lazy">'
   : vocabImage([0,0,2,3,4,5][i]);
@@ -958,7 +958,7 @@ function day() {
 function phraseCards() {
   const illustrations = ['name','origin','city','work','hobby','study'];
   return '<div class="phrases">' + phrases.map((item,i) => '<article class="phrase panel about-phrase">' +
-    '<img class="about-phrase-image" src="./assets/hsk2-about-me/illustration-' + illustrations[i] + '.svg" alt="" loading="lazy">' +
+    '<img class="about-phrase-image" src="./assets/hsk2-about-me/illustration-' + illustrations[i] + '.svg?v=2" alt="" loading="lazy">' +
     '<div class="about-phrase-copy">' + hanzi(item[0]) + translate(item) + '</div>' + audioButton(item[0]) +
     '</article>').join('') + '</div>';
 }
