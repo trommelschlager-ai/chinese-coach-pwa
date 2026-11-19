@@ -308,6 +308,8 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .about-practice-grid .about-day-card .ru{font-size:10px;line-height:1.1;margin-top:2px;}
 #app #pg433 .practice-grid{align-items:stretch;}
 #app #pg433 .about-personal-fields select{font-family:system-ui,"Noto Sans CJK SC",sans-serif;}
+#app #pg433 .about-personal-custom{display:grid;gap:4px;margin-top:4px;}
+#app #pg433 .about-personal-custom input{display:block;width:100%;min-height:38px;padding:7px;border:1px solid #d6a4de;border-radius:11px;background:#fff;color:#58266b;font:inherit;font-size:13px;}
 #app #pg433 .word-row .tone-number{font-variant-numeric:tabular-nums;}
 #app #pg433 .about-audio-pending{pointer-events:none;}
 @media(max-width:374px){
@@ -408,7 +410,8 @@ function blank() {
     grammar:[], grammarDone:false, dayOrder:[], dayShuffled:mixedDay(), dayDone:false,
     mic:[], chat:[], toneTab:'words', unlockedSection:0,
     heardWords:[], selfSpoken:[], practiceMode:'mic',
-    personal:{name:'米沙',origin:'俄罗斯',city:'莫斯科',work:'在公司工作',hobby:'听音乐'}
+    personal:{name:'米沙',origin:'俄罗斯',city:'莫斯科',work:'在公司工作',hobby:'听音乐'},
+    personalCustom:{}
   };
 }
 
@@ -953,15 +956,21 @@ function lockedPandaAiShortcut() {
     '<small>Ответь на три вопроса, чтобы открыть голосовую практику</small></span></div>';
 }
 const storyOptions = {
-  name:[['米沙','Миша','Mǐshā'],['安娜','Анна','Ānnà'],['马克','Марк','Mǎkè']],
-  origin:[['俄罗斯','Россия','Éluósī'],['中国','Китай','Zhōngguó']],
-  city:[['莫斯科','Москва','Mòsīkē'],['北京','Пекин','Běijīng'],['上海','Шанхай','Shànghǎi']],
-  work:[['在公司工作','Работаю в компании','zài gōngsī gōngzuò'],['是学生','Я студент','shì xuésheng']],
-  hobby:[['听音乐','Слушаю музыку','tīng yīnyuè'],['运动','Спорт','yùndòng'],['看书','Читаю книги','kàn shū']]
+  name:[['米沙','Миша','Mǐshā'],['安东','Антон','Āndōng'],['安娜','Анна','Ānnà'],['马克','Марк','Mǎkè'],['大卫','Давид','Dàwèi'],['__custom__','Ввести своё имя','']],
+  origin:[['俄罗斯','Россия','Éluósī'],['中国','Китай','Zhōngguó'],['吉尔吉斯斯坦','Кыргызстан',"Jí'ěrjísīsītǎn"],['荷兰','Нидерланды','Hélán'],['德国','Германия','Déguó'],['__custom__','Другая страна','']],
+  city:[['莫斯科','Москва','Mòsīkē'],['北京','Пекин','Běijīng'],['上海','Шанхай','Shànghǎi'],['奥什','Ош','Àoshí'],['阿姆斯特丹','Амстердам','Āmǔsītèdān'],['圣彼得堡','Санкт-Петербург','Shèngbǐdébǎo'],['__custom__','Другой город','']],
+  work:[['在公司工作','Работаю в компании','zài gōngsī gōngzuò'],['是学生','Я студент','shì xuésheng'],['是老师','Я учитель','shì lǎoshī'],['在大学学习','Учусь в университете','zài dàxué xuéxí'],['__custom__','Своя работа или учёба','']],
+  hobby:[['听音乐','Слушаю музыку','tīng yīnyuè'],['运动','Спорт','yùndòng'],['看书','Читаю книги','kàn shū'],['旅游','Путешествия','lǚyóu'],['跳舞','Танцы','tiàowǔ'],['做饭','Готовить','zuòfàn'],['__custom__','Своё хобби','']]
 };
 const storyFields = [['name','Имя'],['origin','Страна'],['city','Город'],['work','Работа / учёба'],['hobby','Хобби']];
 function personalStory() {
-  const get = key => storyOptions[key].find(v=>v[0] === state.personal[key]) || storyOptions[key][0];
+  const get = key => {
+    if (state.personal[key] === '__custom__') {
+      const custom = state.personalCustom?.[key] || {};
+      return [String(custom.zh || '…').trim(), 'Свой вариант', String(custom.py || '…').trim()];
+    }
+    return storyOptions[key].find(v=>v[0] === state.personal[key]) || storyOptions[key][0];
+  };
   const name=get('name'),origin=get('origin'),city=get('city'),work=get('work'),hobby=get('hobby');
   const lines = [
     ['我叫'+name[0]+'。','Wǒ jiào '+name[2]+'.'],
@@ -971,16 +980,24 @@ function personalStory() {
     ['我的爱好是'+hobby[0]+'。','Wǒ de àihào shì '+hobby[2]+'.'],
     ['我每天学习中文。','Wǒ měitiān xuéxí Zhōngwén.']
   ];
+  const customInputs = key => {
+    if (state.personal[key] !== '__custom__') return '';
+    const value = state.personalCustom?.[key] || {};
+    return '<div class="about-personal-custom"><input type="text" data-personal-custom="zh" data-story-key="'+key+
+      '" lang="zh-Hans" maxlength="45" placeholder="Иероглифы" aria-label="Свой вариант на китайском" value="'+escape(value.zh || '')+'">' +
+      '<input type="text" data-personal-custom="py" data-story-key="'+key+
+      '" maxlength="100" placeholder="Пиньинь с тонами" aria-label="Пиньинь собственного варианта" value="'+escape(value.py || '')+'"></div>';
+  };
   return '<section class="about-personal panel"><h2>✍️ Мой рассказ о себе</h2>' +
-    '<p class="hint">Выбери варианты, прочитай свой текст вслух и попробуй рассказать без подсказок.</p>' +
+    '<p class="hint">Выбери готовые варианты или впиши собственные иероглифы с пиньинем. Рассказ автоматически соберётся ниже.</p>' +
     '<div class="about-personal-fields">' +
       storyFields.map(([key,label])=>'<label>'+label+'<select data-personal="'+key+'">' +
         storyOptions[key].map(option=>'<option value="'+escape(option[0])+'"'+(option[0]===state.personal[key]?' selected':'')+'>'+
-          escape(option[1])+' · '+escape(option[0])+'</option>').join('') +
-      '</select></label>').join('') +
+          escape(option[1])+' · '+(option[0] === '__custom__' ? '✎' : escape(option[0]))+'</option>').join('') +
+      '</select>'+customInputs(key)+'</label>').join('') +
     '</div><div class="about-my-lines">' +
       lines.map(([zh,py])=>'<p><strong lang="zh-Hans">'+escape(zh)+'</strong><span class="py">'+escape(py)+'</span></p>').join('') +
-    '</div><p class="hint">Это пример с готовыми вариантами. Позже добавим свободный ввод имени и города.</p></section>';
+    '</div><p class="hint">Для собственных слов пиньинь нужно ввести самостоятельно. Проверка правильности написания и тонов здесь не выполняется.</p></section>';
 }
 
 function chat() {
@@ -1331,6 +1348,17 @@ const actions = {
   chatReset: () => { clearMedia(); state.chat = []; update(); }
 };
 app.addEventListener('change',event=>{
+  const customInput=event.target.closest('input[data-personal-custom]');
+  if(customInput){
+    const field=customInput.dataset.storyKey, kind=customInput.dataset.personalCustom;
+    if(!Object.hasOwn(storyOptions,field) || !['zh','py'].includes(kind))return;
+    const oldScroll=workspace.scrollTop;
+    state.personalCustom ??= {};
+    state.personalCustom[field] ??= {};
+    state.personalCustom[field][kind]=customInput.value.trim().slice(0,kind==='py'?100:45);
+    save();render();workspace.scrollTop=oldScroll;
+    return;
+  }
   const target=event.target.closest('select[data-personal]');
   if(!target)return;
   const key=target.dataset.personal;
