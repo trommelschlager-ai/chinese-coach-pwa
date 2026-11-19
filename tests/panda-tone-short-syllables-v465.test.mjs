@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {analyseRecordedBuffer} from '../assets/panda-tone-recording-analysis-v465.mjs';
+import {analyseRecordedBuffer,estimatePitchAutocorrelation} from '../assets/panda-tone-recording-analysis-v465.mjs';
 import {estimatePitch,analyseContour} from '../assets/panda-tone-analytics-v457.mjs';
 
 const rate=48000;
@@ -39,6 +39,29 @@ test('softer 0.31 sec vowel can be heard without shouting or forcing 1 sec durat
  assert.equal(out.signal.hasAudibleSignal,true);
  assert(out.signal.pitchFrames>=7,JSON.stringify(out.signal));
  assert.equal(out.result.isToneGrade,false);
+});
+test('short naturally spoken 0.29s ma is detected by autocorrelation even when strict YIN fails',()=>{
+ const recording=audioBurst({duration:.29,amp:.035,baseHz:112});
+ const result=analyseRecordedBuffer(recording,{
+  estimatePitch:()=>null,
+  analyseContour
+ });
+ assert(result.available);
+ assert(result.signal.hasAudibleSignal);
+ assert(result.signal.fallbackPitchFrames>=5,JSON.stringify(result.signal));
+ assert(result.preview.length>=5,'At least a cautious partial F0 line should appear');
+ assert.equal(result.result.isToneGrade,false);
+ assert.equal(result.result.kind,'insufficient','0.29s cannot become a certified tone');
+});
+test('autocorrelation fallback rejects silence and never returns a Mandarin tone grade',()=>{
+ assert.equal(estimatePitchAutocorrelation(new Float32Array(4096),48000),null);
+ const signal=new Float32Array(4096);
+ for(let i=0;i<signal.length;i++)signal[i]=.08*Math.sin(2*Math.PI*110*i/48000);
+ const result=estimatePitchAutocorrelation(signal,48000);
+ assert(result,'Should track low-F0 voice');
+ assert(Math.abs(result.hz-110)<8,JSON.stringify(result));
+ assert(result.clarity>.53);
+ assert.equal(result.method,'autocorrelation');
 });
 test('empty, short, and quiet noise cannot fabricate a Mandarin score',()=>{
  const zero=audioBurst({amp:0,quiet:0});
