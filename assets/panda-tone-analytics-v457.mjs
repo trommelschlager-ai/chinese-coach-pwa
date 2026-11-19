@@ -28,8 +28,14 @@ export function shortPitchMovement(frames){
  const valley=Math.min(...values.slice(part,values.length-part));
  const middle=median(values.slice(Math.floor(values.length*.4),Math.ceil(values.length*.6)));
  const range=Math.max(...values)-Math.min(...values);
+ const settled=values.slice(Math.floor(values.length*.30));
+ const settledRange=Math.max(...settled)-Math.min(...settled);
  let direction="uncertain",text="Движение высоты пока неоднозначно";
- if(head-valley>1.3&&tail-valley>1.3&&middle<head-.65&&middle<tail-.65){
+ // Tone-1 reference has a short initial rise, then a high, almost level vowel.
+ // Do not label that phonation onset as an overall rising (second-tone) pattern.
+ if(change>1.5&&settledRange<1.25){
+  direction="level";text="После короткого начала высота почти ровная";
+ }else if(head-valley>1.3&&tail-valley>1.3&&middle<head-.65&&middle<tail-.65){
   direction="dip";text="Высота сначала снижается, затем повышается";
  }else if(change>=1.8){
   direction="rise";text="Высота в основном повышается";
