@@ -376,6 +376,188 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .detail-hero svg.about-hero-photo{height:125px;}
 #app #pg433 svg.about-quiz-photo{height:58px;margin-block:4px;}
 }
+
+/* PANDA GO HSK 2 · About Me · reference lesson premium 3D presentation v3.
+   Uses exact established HSK2 color palette and locally stored 3D scenes.
+   Scoped to hsk2-about-me.html: does not touch My Day. */
+#app #pg433 .pg433-header{background:
+  linear-gradient(180deg,#fff8faec,#f8e1f6f0),
+  url("./assets/hsk2-lesson1-preview/reference-sakura.webp") center top/cover!important;
+  border-bottom:3px solid #e7b84a!important;box-shadow:0 3px 8px #ac5caa50!important}
+#app #pg433 .pg433-title strong{color:#611273!important;font-weight:900!important}
+#app #pg433 .pg433-title small{color:#8d3e8d!important}
+#app #pg433 .pg433-pill{border:1.5px solid #dfbd6d!important;background:linear-gradient(#fffefa,#f9e6fa)!important;color:#713081!important}
+#app #pg433 .pg433-tabs button:not(.active){
+  border:1.5px solid #f1d0ab!important;border-bottom:4px solid #cfa6cd!important;
+  background:linear-gradient(155deg,#fffafd,#f8e9fa)!important;
+  box-shadow:inset 0 1px #fff,0 3px 5px #9952a847!important;
+  color:#6a3a71!important}
+#app #pg433 .pg433-tabs button.active{
+  border:1.5px solid #f8d475!important;border-bottom:4px solid #88109d!important;
+  background:linear-gradient(180deg,#f67ae3,#c137c3 55%,#8a09a5)!important;
+  box-shadow:inset 0 2px 3px #ffc3f6,0 4px 8px #8a2f9f77!important;
+  color:white!important}
+#app #pg433 .pg433-content{background:
+  linear-gradient(#f9eafb91,#f9dafa80),
+  url("./assets/hsk2-lesson1-preview/reference-sakura.webp") center/100% 100% no-repeat!important}
+#app #pg433 .word-row,#app #pg433 .panel,#app #pg433 .test-card,
+#app #pg433 .day-card,#app #pg433 .tone-list,#app #pg433 .tone-guide{
+  border:1.5px solid #e9c771!important;
+  background:linear-gradient(160deg,#fffefa 0%,#fff8fd 56%,#fae4fa 100%)!important;
+  box-shadow:inset 0 1px 1px #fff,0 3px 0 #dcb0d7,0 5px 9px #a456ad44!important}
+#app #pg433 .pill-title{
+  border:2px solid #edc55e!important;border-radius:24px!important;
+  background:linear-gradient(#fffefa,#fbe5f9)!important;
+  box-shadow:inset 0 0 0 1px #fff,0 4px 8px #9e55a750!important;
+  color:#641476!important;text-shadow:0 1px #fff!important}
+#app #pg433 .word-list{gap:7px!important}
+#app #pg433 .word-row{
+  display:grid!important;grid-template-columns:76px minmax(0,1fr) 70px!important;
+  grid-template-rows:minmax(32px,auto) minmax(33px,auto)!important;
+  column-gap:8px!important;row-gap:0!important;min-height:79px!important;
+  padding:4px 7px 4px 4px!important;border-radius:19px!important}
+#app #pg433 .word-row > svg.about-illustration{
+  grid-column:1!important;grid-row:1/span 2!important;width:76px!important;height:72px!important;
+  border:2px solid #ffe9aa!important;border-radius:15px!important;align-self:center!important}
+#app #pg433 .word-row > .cn{
+  grid-column:2!important;grid-row:1!important;font-size:clamp(22px,6.5vw,27px)!important;
+  color:#5f136f!important;white-space:normal!important;align-self:end!important}
+#app #pg433 .word-row > .tone-pair{grid-column:3!important;grid-row:1!important;align-self:center!important}
+#app #pg433 .word-row > div:not(.tone-pair){
+  grid-column:2!important;grid-row:2!important;min-width:0!important;align-self:start!important}
+#app #pg433 .word-row .py{font-size:clamp(13px,3.7vw,16px)!important;font-weight:850!important;color:#9d2e81!important}
+#app #pg433 .word-row .ru{font-size:clamp(11px,3.1vw,13px)!important;color:#653c69!important}
+#app #pg433 .word-row > button.about-learn{
+  grid-column:3!important;grid-row:2!important;align-self:center!important;
+  width:68px!important;min-height:34px!important;
+  background:linear-gradient(#f6c3fb,#be40d4 60%,#9511ac)!important;
+  color:#fff!important;border:1px solid #f4d17a!important;
+  box-shadow:0 3px 0 #77218b,0 4px 6px #a066a5aa!important}
+#app #pg433 .word-row > button.about-learn.learned{
+  background:linear-gradient(#eaffdd,#9eddac)!important;color:#29684b!important;
+  border-color:#8ac9a3!important;box-shadow:0 3px 0 #71b68c!important}
+#app #pg433 .word-row .tone-strokes svg{width:25px!important;height:22px!important}
+#app #pg433 .word-row .tone-strokes path{stroke:#7f299b!important;stroke-width:3!important}
+#app #pg433 .tone-row{min-height:66px!important;padding:5px 6px!important;gap:5px!important}
+#app #pg433 .tone-row svg.about-illustration{
+  width:100%!important;height:59px!important;border:1px solid #f5cf76!important;border-radius:12px!important}
+#app #pg433 .tone-row .cn{color:#681778!important;font-size:24px!important}
+#app #pg433 .tone-row .py{font-size:13px!important;color:#9345a0!important}
+#app #pg433 .tone-row .ru{font-size:12px!important}
+#app #pg433 .tone-row .tone-example{display:flex;flex-direction:column;align-items:center;gap:4px}
+#app #pg433 .tone-row .tone-strokes path{stroke:#7e2c9d!important;stroke-width:3!important}
+#app #pg433 .tone-number{background:linear-gradient(#f6a9ef,#9925bd)!important;border:1px solid #ffe3a3!important}
+#app #pg433 .tone-number:nth-child(2){background:linear-gradient(#ffcb8e,#b954ac)!important}
+#app #pg433 svg.about-premium-photo{background:#f5d2f0!important;box-shadow:0 2px 5px #9c51834a!important}
+#app #pg433 .detail-hero{background:linear-gradient(#fff6ff55,#f7daeaac)!important}
+#app #pg433 .detail-hero svg.about-hero-photo{border:2px solid #f5d87a!important;box-shadow:0 3px 8px #ab6ab388!important}
+#app #pg433 .hero-message{background:linear-gradient(#fffdfc,#ffe7f9)!important;
+  border:2px solid #f1cb6d!important;box-shadow:0 4px 10px #b75aa85f!important}
+#app #pg433 .hero-message h1{color:#5b0d78!important}
+#app #pg433 .hero-message .tag{border:1px solid #f5c755!important}
+#app #pg433 .practice-modes .practice-main{border:2px solid #f4cf74!important}
+#app #pg433 .test-card{padding:8px!important}
+#app #pg433 .day-card svg.about-story-photo{height:85px!important;border:1px solid #efce77!important}
+#app #pg433 .about-phrase svg.about-phrase-image{border:1px solid #eacf7b!important}
+#app #pg433 .about-dialogue-head{border:1.5px solid #efc86c!important;background:linear-gradient(125deg,#fffaf9,#f4e0fa)!important}
+#app #pg433 .about-quiz-photo{border:2px solid #eed27c!important;border-radius:14px!important}
+#app #pg433 .pg433-footer{border-top:2px solid #eccb83!important;background:linear-gradient(#fff5fd,#efd6f3)!important}
+#app #pg433 .pg433-primary:not(:disabled){
+  background:linear-gradient(#f66de4,#bf29d1 58%,#8e0caf)!important;border:1.5px solid #f4d177!important;
+  box-shadow:inset 0 2px 2px #f8a7f8,0 4px 0 #8521a4,0 6px 8px #943a9f66!important}
+#app #pg433 .pg433-secondary{
+  border:1.5px solid #e8bf7a!important;background:linear-gradient(#fffefd,#f8e5f7)!important;
+  box-shadow:0 3px 0 #dcb3cd,0 5px 7px #a873ae77!important;color:#682b7c!important}
+
+/* Exact welcome structural match: 3D character, cloudy title, golden content block,
+   six illustrative tiles and a large gold-rimmed purple CTA. */
+.course-layout #app[data-view="1"] #pg433 .pg433-content{
+  padding:0!important;background:#f7d5ed!important;overflow:hidden!important}
+#app #pg433 .about-cover-3d{
+  height:100%;min-height:0;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:space-evenly;gap:6px;
+  padding:11px 13px 14px;color:#521070;text-align:center;
+  background:url("./assets/hsk2-lesson1-preview/reference-sakura.webp") center/100% 100% no-repeat}
+#app #pg433 .about-cover-top{z-index:1;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:5px 9px}
+#app #pg433 .about-cover-brand{color:#7411b0;font-weight:1000;font-size:clamp(23px,6vw,32px);
+  letter-spacing:-.7px;text-shadow:-1px -1px #fff,1px 2px #fff,0 3px 4px #a753b955}
+#app #pg433 .about-cover-brand b{color:#d69a06;text-shadow:0 1px #fff4bf}
+#app #pg433 .about-cover-kicker{
+  border:2px solid #e7bd6c;border-radius:999px;padding:5px 13px;
+  background:linear-gradient(#fffefa,#f9def5);box-shadow:0 3px 6px #b678ae66;
+  font-weight:800;font-size:clamp(11px,3.3vw,14px)}
+#app #pg433 .about-cover-main{
+  display:grid;grid-template-columns:43% minmax(0,1fr);gap:0;
+  align-items:center;min-height:0;flex:1 1 205px;max-height:245px}
+#app #pg433 .about-cover-figure{z-index:1;margin-right:-17px;transform:rotate(-3deg);
+  filter:drop-shadow(0 9px 9px #8f4c9a7e)}
+#app #pg433 svg.about-cover-panda{display:block;aspect-ratio:1;width:100%;height:auto;
+  border-radius:25px!important;overflow:hidden;border:4px solid #f5d074;
+  box-shadow:inset 0 0 0 2px #fff,0 5px 0 #b88336,0 8px 15px #7d54845c!important}
+#app #pg433 .about-cover-cloud{
+  display:flex;min-width:0;flex-direction:column;gap:3px;align-items:center;justify-content:center;
+  padding:17px 10px 15px 20px;border:4px solid #f5c741;border-radius:42% 36% 37% 35%/30% 34% 33% 29%;
+  background:linear-gradient(#fffefa 0%,#ffe8f9 100%);
+  box-shadow:inset 0 0 0 2px #fff6da,0 4px 0 #c88b27,0 7px 13px #bc73bc88}
+#app #pg433 .about-cover-zh{font:900 clamp(28px,8.8vw,43px)/1.12 system-ui,sans-serif;color:#4f1173;letter-spacing:-1px}
+#app #pg433 .about-cover-pinyin{font-size:clamp(11px,3.3vw,16px);font-weight:850;color:#cc2e91}
+#app #pg433 .about-cover-cloud strong{font-weight:1000;font-size:clamp(28px,8vw,44px);line-height:1.12;color:#581273}
+#app #pg433 .about-cover-description{
+  flex:none;border:3px solid #f0ca62;border-radius:25px;
+  padding:9px 12px 10px;background:linear-gradient(#fffcf8,#ffeffa);
+  box-shadow:inset 0 0 0 2px #fff,0 3px 0 #be8b39,0 7px 11px #b066a666}
+#app #pg433 .about-cover-description h2{
+  display:inline-block;max-width:100%;font-size:clamp(17px,5.2vw,24px);font-weight:900;
+  margin:-21px 0 3px;padding:5px 21px;line-height:1.17;color:white;
+  background:linear-gradient(#d646dd,#8a0ca7);
+  border:2px solid #f1d477;border-radius:999px;
+  box-shadow:0 3px 5px #91539988;text-shadow:0 2px #62177e}
+#app #pg433 .about-cover-description p{
+  font-size:clamp(13px,3.6vw,17px);line-height:1.23;font-weight:850;color:#561369}
+#app #pg433 .about-cover-features{
+  flex:0 1 auto;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));
+  border:3px solid #f1c957;border-radius:25px;padding:6px;background:linear-gradient(#fffefa,#fdf0fd);
+  box-shadow:inset 0 0 0 2px #fff,0 4px 0 #bd8d3a,0 6px 12px #b36ab266}
+#app #pg433 .about-cover-feature{display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center;
+  min-width:0;border-bottom:1px solid #f1d0e5}
+#app #pg433 .about-cover-feature:nth-child(n+4){border-bottom:0}
+#app #pg433 .about-cover-feature:not(:nth-child(3n)){border-right:1px solid #f1c9df}
+#app #pg433 svg.about-cover-feature-photo{display:block;width:clamp(36px,6dvh,54px);height:clamp(36px,6dvh,54px);
+  border-radius:12px!important;border:1px solid #f4ce76!important}
+#app #pg433 .about-cover-feature span{
+  font-size:clamp(11px,3.1vw,15px);font-weight:850;line-height:1.12;white-space:nowrap}
+#app #pg433 .about-cover-quote{font-style:italic;font-size:clamp(11px,3vw,13px);
+  line-height:1.17;color:#824089;font-weight:650;padding:0 6px}
+#app #pg433 .about-cover-go{display:block;min-height:50px;width:88%;align-self:center;flex:none;
+  border:3px solid #ffdc67;border-radius:999px;
+  background:linear-gradient(180deg,#bb43ec 0%,#8916c2 45%,#53048b 100%);
+  color:#fff;font-size:clamp(19px,5.9vw,26px);font-weight:950;
+  text-shadow:0 2px 3px #52056b;box-shadow:inset 0 2px 2px #f6bcff,0 5px 0 #7c1397,0 9px 12px #a2599e90}
+#app #pg433 .about-cover-go:active{transform:translateY(3px)!important;box-shadow:inset 0 2px 4px #650e8d,0 2px 0 #7a188a!important}
+#app #pg433 .about-cover-return{display:block;position:absolute;top:10px;left:10px;
+  font-weight:750;font-size:11px;text-decoration:none;border-radius:999px;padding:5px 8px;
+  background:#ffffffec;color:#79378c;border:1px solid #ebc17f;box-shadow:0 2px 4px #a86faa77}
+@media(max-height:720px){
+ #app #pg433 .about-cover-3d{gap:4px;padding:10px 10px 12px}
+ #app #pg433 .about-cover-main{max-height:190px}
+ #app #pg433 .about-cover-description{padding-top:8px;padding-bottom:7px}
+ #app #pg433 .about-cover-description p{font-size:13px}
+ #app #pg433 .about-cover-features{padding:4px}
+ #app #pg433 svg.about-cover-feature-photo{height:38px;width:38px}
+ #app #pg433 .about-cover-go{min-height:46px}
+}
+@media(max-height:590px){
+ .course-layout #app[data-view="1"] #pg433 .pg433-content{overflow-y:auto!important}
+ #app #pg433 .about-cover-3d{height:auto;min-height:590px}
+}
+@media(max-width:365px){
+ #app #pg433 .word-row{grid-template-columns:61px minmax(0,1fr) 59px!important;column-gap:5px!important}
+ #app #pg433 .word-row > svg.about-illustration{width:61px!important;height:65px!important}
+ #app #pg433 .word-row > button.about-learn{width:59px!important;font-size:11px!important}
+ #app #pg433 .about-cover-cloud{padding:12px 8px 12px 14px}
+ #app #pg433 .about-cover-brand{font-size:23px}
+}
+
 </style>
 </head>
 <body>
@@ -539,7 +721,7 @@ if (courseMode) {
   headLabel.innerHTML = '<small>HSK 2 · Тема 1</small><strong>О себе</strong>';
   const chapter = document.createElement('span');
   chapter.className = 'pg433-pill';
-  chapter.textContent = 'Мини-урок 1 · Знакомство';
+  chapter.textContent = 'Урок 2 · Знакомство';
   top.append(chapter);
   nav.innerHTML = courseSections.map(({name,steps},i) =>
     '<button type="button" data-step="' + steps[0] + '"><b>' + (i+1) + '</b><span>' + name + '</span></button>').join('');
@@ -599,8 +781,8 @@ const dayScenes = ['wake','wash','brush','breakfast','work','sleep'];
 /* HSK2 About Me premium imagery, exactly matched to approved Lesson 1 character.
    Each inline SVG views one of six/eight REAL 3D raster photo-atlas cells. */
 const photoAtlas = Object.freeze({
-  words:'./assets/hsk2-about-me/about-me-words-3d-atlas.webp?v=20261120opt',
-  stages:'./assets/hsk2-about-me/about-me-stages-3d-atlas.webp?v=20261120opt'
+  words:'./assets/hsk2-about-me/about-me-words-3d-atlas.webp?v=20261120v3',
+  stages:'./assets/hsk2-about-me/about-me-stages-3d-atlas.webp?v=20261120v3'
 });
 const aboutArtLabels = ['Панда с глобусом: страна','Панда с часами: сейчас','Панда в квартире: Москва','Панда работает за ноутбуком','Панда слушает музыку','Панда изучает китайский'];
 const atlasTile = (type,index,description,cssClass='about-illustration') => {
@@ -764,15 +946,22 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  // The original approved 3D poster is stored permanently in this repository.
-  // Controls are real HTML overlays; the image itself contains all approved artwork and typography.
-  return '<section class="about-exact-cover" aria-label="HSK 2 · Урок 1 · О себе">' +
-    '<img class="about-exact-cover-image" src="./assets/hsk2-about-me/cover-approved-premium-v2.png" ' +
-      'width="1024" height="1536" fetchpriority="high" draggable="false" ' +
-      'alt="Panda Go. HSK 2, урок 1 О себе, 自我介绍, Zìwǒ jièshào. Научись рассказывать о себе по-китайски. Содержание: шесть выражений, 30 мини-тестов, грамматика, рассказ о себе, произношение и диалог с Пандой. Один выученный язык может изменить всю твою жизнь.">' +
-    '<a class="about-exact-back" href="./hsk2-life-course.html?view=welcome" aria-label="Вернуться к курсу HSK 2"></a>' +
-    '<button type="button" class="about-exact-start" data-step="2" aria-label="Начать урок О себе"></button>' +
-  '</section>';
+  const coverNames = ['6 слов', '30 заданий', 'Грамматика', 'Рассказ', 'Произношение', 'Диалог'];
+  const coverImages = [0,3,1,2,5,4];
+  return '<section class="about-cover-3d" aria-label="Panda Go · HSK 2 · Урок О себе">' +
+    '<div class="about-cover-top"><span class="about-cover-brand">Panda <b>Go</b> · HSK 2</span><span class="about-cover-kicker">Урок 2 · Знакомство</span></div>' +
+    '<div class="about-cover-main"><div class="about-cover-figure">' + vocabImage(0,'about-cover-panda') +
+    '</div><div class="about-cover-cloud"><span lang="zh-Hans" class="about-cover-zh">自我介绍</span>' +
+    '<span class="about-cover-pinyin">Zìwǒ jièshào</span><strong>О себе</strong></div></div>' +
+    '<div class="about-cover-description"><h2>Содержание урока</h2>' +
+    '<p>Научись рассказывать, как тебя зовут, откуда ты родом, где живёшь, работаешь и чем увлекаешься.</p></div>' +
+    '<div class="about-cover-features">' + coverNames.map((name,i) =>
+      '<div class="about-cover-feature">' + vocabImage(coverImages[i],'about-cover-feature-photo') +
+      '<span>' + name + '</span></div>').join('') + '</div>' +
+    '<p class="about-cover-quote">«Один выученный язык может изменить всю твою жизнь»</p>' +
+    '<button type="button" class="about-cover-go" data-step="2">▶ Начать урок</button>' +
+    '<a class="about-cover-return" href="./hsk2-life-course.html?view=welcome" aria-label="Вернуться к курсу HSK 2">‹ К курсу</a>' +
+    '</section>';
 }
 function newWords() {
   return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' +
@@ -785,7 +974,7 @@ function newWords() {
     ).join('') + '</div>' +
     '<p class="hint audio-note">Изучено ' + state.heardWords.length +
     ' из 6 выражений. Прочитай, повтори и нажми «Изучил» на каждой карточке.</p>' +
-    '<p class="hint audio-note">🎧 Озвучку добавим после записи утверждённым женским голосом.</p>' + safeStatus();
+    '<p class="hint audio-note">🎧 Аудиозаписи пока не загружены: кнопки звука будут доступны после утверждения озвучки.</p>' + safeStatus();
 }
 
 function hero(kind,step,title,subtitle) {
