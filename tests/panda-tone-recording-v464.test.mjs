@@ -11,7 +11,7 @@ test('recording controls and level meter are visibly available to learners',()=>
  assert(page.includes('id="mic-level-fill"'));
  assert(page.includes('id="mic-level-label"'));
  assert(page.includes('id="recording-message"'));
- assert(page.includes('panda-tone-ma-pilot-v463.mjs?v=465'));
+ assert(page.includes('panda-tone-ma-pilot-v463.mjs?v=466'));
  assert(page.includes('не отправляется на сервер'));
  assert(js.includes('new MediaRecorder(newStream)'));
  assert(js.includes('recordedAudio=new Audio(recordedUrl)'));
@@ -76,7 +76,7 @@ test('Android-like microphone capture can be replayed locally even if F0 estimat
   assert.equal(replay.disabled,true,'No stale playback before first attempt');
   record.click();
   await new Promise(resolve=>setTimeout(resolve,130));
-  assert.match(document.getElementById('mic-level-label').textContent,/Микрофон получает звук/);
+  assert.match(document.getElementById('mic-level-label').textContent,/Звук поступает в микрофон/);
   record.click();
   await new Promise(resolve=>setTimeout(resolve,35));
   assert.equal(observed.recorderStopped,1);
