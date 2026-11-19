@@ -1,0 +1,235 @@
+/* Panda Go: HSK2 我的⼀天 scenario. Opt-in URL; approved scenery/mascot untouched.
+   Browser ASR is transcription only, never acoustic tone grading. */
+import {lookupPandaVoiceClip} from './panda-live-audio.mjs?v=451';
+if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){
+const STORY=[
+[['我每天七点起床。','Wǒ měitiān qī diǎn qǐchuáng.','Я встаю в 7.'],['我起床以后洗脸。','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма умываюсь.'],['我早上刷牙。','Wǒ zǎoshang shuāyá.','Утром чищу зубы.'],['我早上吃早饭。','Wǒ zǎoshang chī zǎofàn.','Утром завтракаю.'],['我八点去上班。','Wǒ bā diǎn qù shàngbān.','В 8 иду на работу.'],['我晚上十点睡觉。','Wǒ wǎnshang shí diǎn shuìjiào.','В 10 вечера ложусь спать.']],
+[['我每天六点起床。','Wǒ měitiān liù diǎn qǐchuáng.','Я встаю в 6.'],['我起床以后刷牙。','Wǒ qǐchuáng yǐhòu shuāyá.','После подъёма чищу зубы.'],['我早上洗脸。','Wǒ zǎoshang xǐliǎn.','Утром умываюсь.'],['我早上吃早饭。','Wǒ zǎoshang chī zǎofàn.','Утром завтракаю.'],['我九点去上班。','Wǒ jiǔ diǎn qù shàngbān.','В 9 иду на работу.'],['我晚上十一点睡觉。','Wǒ wǎnshang shíyī diǎn shuìjiào.','В 11 вечера ложусь спать.']]
+];
+const Q=[
+['你每天几点起床？','Nǐ měitiān jǐ diǎn qǐchuáng?','Когда ты встаёшь?','我每天……点起床。','我每天八点起床。'],
+['你起床以后做什么？','Nǐ qǐchuáng yǐhòu zuò shénme?','Что делаешь после подъёма?','我起床以后……','我起床以后洗脸。'],
+['你早上吃早饭吗？','Nǐ zǎoshang chī zǎofàn ma?','Ты завтракаешь?','我早上……早饭。','我早上不吃早饭。'],
+['你几点去上班？','Nǐ jǐ diǎn qù shàngbān?','Во сколько идёшь на работу?','我……点去上班。 / 我不上班。','我九点去上班。'],
+['你晚上几点睡觉？','Nǐ wǎnshang jǐ diǎn shuìjiào?','Во сколько ложишься спать?','我晚上……点睡觉。','我晚上十一点睡觉。']
+];
+const norm=s=>String(s||'').normalize('NFC').replace(/[。？！!?，,.\s、]/gu,'');
+const dot=s=>norm(s)+'。';
+const cn={零:0,〇:0,一:1,二:2,两:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9};
+function num(s){
+ if(/^\d{1,2}$/.test(s))return +s;
+ if(Object.hasOwn(cn,s))return cn[s];
+ const m=/^([一二三四五六七八九]?)(十)([一二三四五六七八九]?)$/.exec(s);
+ return m?(m[1]?cn[m[1]]:1)*10+(m[3]?cn[m[3]]:0):null;
+}
+function time(s){
+ const m=/([零〇一二两三四五六七八九十\d]{1,3})点(半|一刻|三刻|[零〇一二两三四五六七八九十\d]{1,3}分?)?/.exec(s);
+ if(!m)return null;
+ const h=num(m[1]),v=m[2],minute=!v?0:v==='半'?30:v==='一刻'?15:v==='三刻'?45:num(v.replace('分',''));
+ return h!==null&&h>=0&&h<=23&&minute!==null&&minute>=0&&minute<=59?m:null;
+}
+function check(raw,i){
+ const s=norm(raw);if(!s)return {error:'Напиши или произнеси ответ.'};
+ if(i===3){
+  const wrong=/^(?:我)?去([零〇一二两三四五六七八九十\d]{1,3}点(?:半)?)上班$/.exec(s);
+  if(wrong&&time(wrong[1]))return {correction:'我'+wrong[1]+'去上班。',error:'Время ставится перед действием. Повтори исправленное предложение один раз.'};
+ }
+ if(i===0||i===4){
+  const act=i===0?'起床':'睡觉',m=time(s);
+  if(m&&s.endsWith(act)&&m.index<s.indexOf(act)&&/^(我)?(?:每天|每天早上|每天晚上|早上|晚上|夜里|上午|一般|通常)*/.test(s))return {value:dot(s)};
+ }
+ if(i===1&&/^(?:我)?(?:起床(?:以后|之后|后))?(?:先)?(?:洗脸|刷牙)(?:(?:再|然后|和)?(?:洗脸|刷牙))?$/.test(s))return {value:dot(s)};
+ if(i===2){
+  if(/^(?:我)?(?:每天)?(?:早上)?不?吃(?:早饭|早餐)$/.test(s))return {value:dot(s)};
+  if(s==='吃'||s==='不吃')return {value:s==='吃'?'我早上吃早饭。':'我早上不吃早饭。'};
+ }
+ if(i===3){
+  if(/^(?:我)?(?:不|没)(?:上班|工作)$/.test(s))return {value:dot(s)};
+  const m=time(s);
+  if(m&&m.index<s.length-3&&/^(?:我)?(?:每天|早上|上午|晚上)?/.test(s)&&
+     /(?:去上班|上班|去上学)$/.test(s)&&!/^(?:我)?去[零〇一二两三四五六七八九十\d]/.test(s))return {value:dot(s)};
+ }
+ return {error:'Я не могу уверенно подтвердить этот ответ. Это не обязательно ошибка. Проверь текст или воспользуйся подсказкой.'};
+}
+function init(stage){
+ if(stage.dataset.dayScenario)return;stage.dataset.dayScenario='ready';stage.dataset.dayPy='true';stage.dataset.dayRu='true';
+ const bridge=window.PandaApprovedBridge337;bridge?.stopPlayback?.();
+ const back=stage.querySelector('.pg346-back');if(back)back.href='./hsk2-lesson1.html?step=8';
+ const panel=document.createElement('section');panel.className='pg-day-panel';panel.setAttribute('aria-label','Разговор Мой день');
+ panel.innerHTML='<div class="pg-day-title"><b id="day-phase">🐼 Мой день · HSK 2</b><span id="day-step">10–15 минут</span></div>'+
+ '<strong id="day-zh" lang="zh-Hans">我的一天</strong><span id="day-py">Wǒ de yì tiān</span><span id="day-ru">Панда расскажет о своём дне, потом вы поговорите.</span><p id="day-status" role="status" aria-live="polite">Нажми «Начать».</p>';
+ const controls=document.createElement('section');controls.className='pg-day-controls';
+ controls.innerHTML='<div class="pg-day-entry"><input id="day-input" maxlength="260" placeholder="Ответ на китайском…" aria-label="Ответ по-китайски">'+
+ '<textarea id="day-long" rows="2" maxlength="1100" placeholder="Твой рассказ на китайском…" aria-label="Самостоятельный рассказ"></textarea>'+
+ '<button id="day-send" type="button">➤</button><button id="day-mic" type="button">🎙</button></div>'+
+ '<div class="pg-day-buttons"><button id="day-start" type="button">▶ Начать</button><button id="day-hear" type="button">🔊 Повторить</button>'+
+ '<button id="day-pause" type="button">⏸ Пауза</button><button id="day-hint" type="button">💡 Подсказка</button>'+
+ '<button id="day-finish" type="button">✓ Завершить рассказ</button><button id="day-retry" type="button">↻ Ещё раз</button></div>'+
+ '<div class="pg-day-toggles"><button id="day-show-py" type="button" aria-pressed="true">拼 Пиньинь</button>'+
+ '<button id="day-show-ru" type="button" aria-pressed="true">RU Перевод</button><a href="./hsk2-lesson1.html?step=8">← К уроку</a></div>';
+ stage.querySelector('.pg346-history').after(panel);stage.querySelector('.pg346-scene').after(controls);
+ const $=id=>stage.querySelector('#'+id);
+ let phase='ready',i=0,round=0,played=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false,source='recorded';
+ const status=s=>{$('day-status').textContent=s};
+ function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||''}
+ function stagePhase(p){
+  phase=p;stage.dataset.dayPhase=p;
+  $('day-phase').textContent=({ready:'🐼 Мой день',intro:'🐼 Приветствие',story:'🐼 История Панды',questions:'🐼 Вопросы',summary:'🐼 Твой день',monologue:'👤 Расскажи сам',results:'🏆 Итоги'}[p]);
+  $('day-step').textContent=p==='questions'?(i+1)+'/5':p==='story'?(i+1)+'/6':'HSK 2';
+  const show=(id,on)=>$(id).hidden=!on;
+  show('day-start',p==='ready');show('day-hear',!['ready','results'].includes(p));
+  show('day-pause',['story','intro','summary'].includes(p));show('day-hint',['questions','monologue'].includes(p));
+  show('day-finish',p==='monologue');show('day-retry',p==='results');
+  show('day-input',p==='questions');show('day-send',p==='questions');
+  show('day-long',p==='monologue');show('day-mic',['questions','monologue'].includes(p));
+ }
+ function stop(){
+  sequence++;clearTimeout(silence);silence=null;
+  try{player?.pause()}catch(_){}
+  player=null;try{speechSynthesis.cancel()}catch(_){}
+  stage.dataset.dayTalking='false';
+ }
+ function voice(){
+  if(!('speechSynthesis' in window))return null;
+  const v=speechSynthesis.getVoices();
+  return v.find(x=>x.lang.toLowerCase()==='zh-cn'&&/natural|online|xiaoxiao|mandarin|tingting/i.test(x.name))||
+   v.find(x=>x.lang.toLowerCase()==='zh-cn')||v.find(x=>x.lang.toLowerCase().startsWith('zh'))||null;
+ }
+ function speak(a,slow=false){
+  const native=window.PandaGoHSK2Lesson1NativeAudioV459;
+  const clip=lookupPandaVoiceClip(a[0]);
+  const src=clip?.src||native?.[a[0]]||native?.[norm(a[0])];
+  const id=sequence;
+  stage.dataset.dayTalking='true';
+  return new Promise(resolve=>{
+   let finished=false;
+   const done=()=>{if(finished)return;finished=true;stage.dataset.dayTalking='false';resolve()};
+   function synthesized(){
+    if(id!==sequence){done();return}
+    const v=voice();
+    if(!v){status('Для этой фразы нет записи и китайского голоса в браузере. Текст доступен на экране.');done();return}
+    source='browser';
+    const utter=new SpeechSynthesisUtterance(a[0]);utter.lang='zh-CN';utter.voice=v;utter.rate=slow?.76:.92;
+    utter.onend=utter.onerror=done;
+    try{speechSynthesis.speak(utter)}catch(_){done()}
+    setTimeout(()=>{if(id!==sequence||!speechSynthesis.speaking)done()},9000);
+   }
+   if(!src){synthesized();return}
+   source='recorded';
+   const audio=new Audio(src);player=audio;audio.playbackRate=slow?.83:1;
+   audio.onended=done;audio.onerror=()=>{done();synthesized()};
+   audio.play().catch(()=>{done();synthesized()});
+  });
+ }
+ const delay=ms=>new Promise(r=>setTimeout(r,ms));
+ async function playList(lines,p,start=0){
+  stagePhase(p);const token=++sequence;
+  for(let n=start;n<lines.length;n++){
+   if(token!==sequence||paused)return;
+   i=n;stagePhase(p);line(lines[n]);status(p==='story'?'Слушай Панду.':'Панда повторяет только твои ответы.');
+   await speak(lines[n]);if(token!==sequence||paused)return;
+   await delay(1000);
+  }
+  if(token!==sequence||paused)return;
+  if(p==='story')ask(0);else monologue();
+ }
+ async function begin(){
+  stop();paused=false;stagePhase('intro');
+  const a=['你好！今天我说说我的一天。','Nǐ hǎo! Jīntiān wǒ shuōshuo wǒ de yì tiān.','Привет! Сегодня я расскажу о своём дне.'];
+  line(a);status('Сначала Панда рассказывает, затем задаёт вопросы.');
+  const token=++sequence;
+  await speak(a);if(token!==sequence)return;
+  await delay(700);if(token===sequence)playList(STORY[round%2],'story');
+ }
+ function countdown(){
+  clearTimeout(silence);const idx=i;
+  silence=setTimeout(async()=>{
+   if(phase!=='questions'||i!==idx||recognizer)return;
+   if(attempt===0){attempt++;status('Повторю вопрос медленнее.');const token=sequence;await speak(Q[i].slice(0,3),true);if(token===sequence)countdown()}
+   else if(attempt===1){attempt++;status('Подсказка: '+Q[i][3]);countdown()}
+   else if(attempt===2){attempt++;status('Пример: '+Q[i][4]+' Ты можешь ответить иначе.');countdown()}
+   else{notes.push('Вопрос '+(i+1)+' пропущен.');ask(i+1)}
+  },8000);
+ }
+ async function ask(idx){
+  stop();i=idx;attempt=0;
+  if(idx===5){finishQuestions();return}
+  stagePhase('questions');line(Q[idx].slice(0,3));status('Ответь свободно. Тоны по тексту не оцениваются.');
+  const token=++sequence;await speak(Q[idx]);if(token===sequence)countdown();
+ }
+ function answer(raw){
+  if(phase!=='questions')return;
+  const result=check(raw,i);clearTimeout(silence);
+  if(result.value){
+   answers[i]=result.value;$('day-input').value='';status('✓ Ответ принят. Тоны не проверялись.');
+   const token=++sequence;setTimeout(()=>{if(token===sequence)ask(i+1)},850);
+  }else if(result.correction){
+   notes.push('Порядок слов: '+result.correction);errors.push(result.correction);
+   line([result.correction,'','Время ставим перед действием.']);
+   status(result.error+' '+result.correction);
+   const token=++sequence;speak([result.correction,'','']).then(()=>{if(token===sequence)countdown()});
+  }else{status(result.error);countdown()}
+ }
+ function finishQuestions(){
+  stop();const list=answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']);
+  if(!list.length){monologue();return}
+  playList(list,'summary');
+ }
+ function monologue(){
+  stop();stagePhase('monologue');line(['我的一天','Wǒ de yì tiān','Расскажи о своём дне самостоятельно.']);
+  status('Говори несколько предложений подряд или введи текст. Не нужно повторять слова Панды.');
+  $('day-long').value='';
+ }
+ function finish(){
+  const text=$('day-long').value.trim();
+  if(!text){status('Расскажи хотя бы одно предложение или напиши его.');return}
+  stopRecognition();spoken=text.split(/[。！？!?\n]+/).map(x=>x.trim()).filter(Boolean);
+  if(spoken.some(x=>/我去[一二三四五六七八九十\d]+点上班/.test(norm(x))))notes.push('Проверь порядок слов: 我八点去上班。');
+  stop();stagePhase('results');line(['做得好！','Zuò de hǎo!','Разговор завершён.']);
+  const report='Рассказ Панды — прослушан.\nВопросы — '+answers.filter(Boolean).length+' / 5.\nСамостоятельный рассказ — '+spoken.length+' предложений (по распознанному/введённому тексту).\nГрамматика — '+(notes.join(' ')||'В проверенных примерах явных ошибок не найдено; свободный текст полностью не проверяется.')+
+  '\nПроизношение и тоны — не удалось проверить по тексту.\nПовторить завтра — '+(errors.join(' ')||'одну сложную фразу из рассказа.')+
+  (source==='browser'?'\nНекоторые фразы прозвучали браузерным голосом: единый MP3-пакет пока неполный.':'');
+  status(report);
+ }
+ function stopRecognition(){if(recognizer){const old=recognizer;recognizer=null;try{old.abort()}catch(_){}}}
+ function mic(){
+  if(recognizer){stopRecognition();status('Микрофон остановлен.');return}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){status('Распознавание в браузере недоступно. Используй текстовый ввод.');return}
+  if(!consent){if(!confirm('Браузер может передавать звук для распознавания сторонней службе. Panda Go не сохраняет голос. Продолжить?'))return;consent=true}
+  clearTimeout(silence);
+  const r=new SR();recognizer=r;r.lang='zh-CN';r.interimResults=false;r.maxAlternatives=3;r.continuous=phase==='monologue';
+  status('🎙 Слушаю китайскую речь…');
+  r.onresult=e=>{
+   let text='';for(let j=e.resultIndex;j<e.results.length;j++)if(e.results[j].isFinal)text+=e.results[j][0].transcript+' ';
+   text=text.trim();if(!text)return;
+   if(phase==='questions'){$('day-input').value=text;status('Распознано: '+text+'. Проверь текст и отправь. Тоны не оценивались.')}
+   if(phase==='monologue'){$('day-long').value+=($('day-long').value.trim()?'。':'')+text;status('Продолжай рассказ. После окончания нажми «Завершить рассказ».')}
+  };
+  r.onerror=e=>status('Микрофон или распознавание: '+(e.error||'сбой')+'. Это НЕ означает ошибку в произношении.');
+  r.onend=()=>{if(recognizer===r)recognizer=null;if(phase==='questions')countdown()};
+  try{r.start()}catch(_){recognizer=null;status('Не удалось включить микрофон. Проверь разрешение Chrome или напиши ответ.')}
+ }
+ $('day-start').onclick=begin;
+ $('day-send').onclick=()=>answer($('day-input').value);
+ $('day-input').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();answer($('day-input').value)}};
+ $('day-mic').onclick=mic;
+ $('day-hear').onclick=()=>{stop();if(last)speak(last)};
+ $('day-hint').onclick=()=>{if(phase==='questions'){status('💡 '+Q[i][3]+' Пример: '+Q[i][4]);countdown()}else status('起床 → 洗脸 → 刷牙 → 吃早饭 → 去上班 → 睡觉')};
+ $('day-finish').onclick=finish;
+ $('day-pause').onclick=()=>{
+  if(!paused){paused=true;stop();$('day-pause').textContent='▶ Продолжить';status('Пауза.')}
+  else{paused=false;$('day-pause').textContent='⏸ Пауза';
+   const list=phase==='story'?STORY[round%2]:phase==='summary'?answers.filter(Boolean).map(x=>[x,'','Твой ответ']):null;
+   if(list)playList(list,phase,i);else begin()}
+ };
+ $('day-retry').onclick=()=>{round++;answers=Array(5).fill(null);notes=[];errors=[];spoken=[];i=0;begin()};
+ $('day-show-py').onclick=()=>{stage.dataset.dayPy=String(stage.dataset.dayPy!=='true');$('day-show-py').setAttribute('aria-pressed',stage.dataset.dayPy)};
+ $('day-show-ru').onclick=()=>{stage.dataset.dayRu=String(stage.dataset.dayRu!=='true');$('day-show-ru').setAttribute('aria-pressed',stage.dataset.dayRu)};
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();stopRecognition()}});
+ window.addEventListener('pagehide',()=>{stop();stopRecognition()},{once:true});
+ stagePhase('ready');
+}
+function mount(){const stage=document.querySelector('#pg346');if(!stage||!window.PandaApprovedBridge337)return false;init(stage);return true}
+if(!mount()){const mo=new MutationObserver(()=>{if(mount())mo.disconnect()});mo.observe(document.documentElement,{subtree:true,childList:true});window.addEventListener('pagehide',()=>mo.disconnect(),{once:true})}
+}
