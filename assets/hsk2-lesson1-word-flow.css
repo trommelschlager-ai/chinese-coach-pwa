@@ -163,15 +163,48 @@
   padding: 0 !important;
   overflow: hidden;
 }
-.word-flow-cover {
-  /* Fit 1,378 px of artwork around the 44 px Start button and 8 px of spacing. */
+.word-flow-cover-shell {
   position: relative;
-  width: min(100%, calc((100dvh - 52px) * 691 / 1378));
+  isolation: isolate;
+  container-type: inline-size;
+  min-height: 100%;
+  background: linear-gradient(90deg, #f6defd, #f0d1f8 50%, #f6dffb);
+  --art-width: min(100cqw, calc((100dvh - 52px) * 691 / 1378));
+}
+.word-flow-cover-shell::before,
+.word-flow-cover-shell::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: calc(var(--art-width) * 1378 / 691 + 52px);
+  width: max(0px, calc((100% - var(--art-width)) / 2 + 1px));
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+.word-flow-cover-shell::before {
+  left: 0;
+  background-image: url("./hsk2-lesson1-preview/course-cover-side-left.webp");
+}
+.word-flow-cover-shell::after {
+  right: 0;
+  background-image: url("./hsk2-lesson1-preview/course-cover-side-right.webp");
+}
+.word-flow-cover {
+  /* Fit the existing artwork around the unchanged 44 px Start button. */
+  position: relative;
+  width: var(--art-width);
   margin-inline: auto;
 }
-.word-flow-cover > img {
+.word-flow-cover-outro {
+  position: relative;
+  --edge-art: url("./hsk2-lesson1-preview/course-cover-scroll.webp");
+}
+.word-flow-cover-outro img {
   width: 100%;
   height: auto;
+  mask-image: linear-gradient(transparent, #000 3px);
 }
 .word-flow-cover-back {
   position: absolute;
@@ -206,11 +239,43 @@
 
 .word-flow-cover-art {
   position: relative;
-  container-type: inline-size;
+  --edge-art: url("./hsk2-lesson1-preview/course-cover-top.webp");
+}
+.word-flow-cover-art::before,
+.word-flow-cover-art::after,
+.word-flow-cover-panda::before,
+.word-flow-cover-panda::after,
+.word-flow-cover-outro::before,
+.word-flow-cover-outro::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: min(17px, 5%);
+  background: var(--edge-art) no-repeat;
+  background-size: var(--art-width) 100%;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+.word-flow-cover-art::before,
+.word-flow-cover-panda::before,
+.word-flow-cover-outro::before {
+  right: 100%;
+  background-position: left;
+  mask-image: linear-gradient(to right, #000 12%, transparent);
+}
+.word-flow-cover-art::after,
+.word-flow-cover-panda::after,
+.word-flow-cover-outro::after {
+  left: 100%;
+  background-position: right;
+  mask-image: linear-gradient(to left, #000 12%, transparent);
 }
 .word-flow-cover-art img {
   width: 100%;
   height: auto;
+}
+.word-flow-cover-art > img {
+  mask-image: linear-gradient(#000 calc(100% - 2px), transparent);
 }
 .word-flow-cover-copy {
   position: absolute;
@@ -221,7 +286,7 @@
   padding-inline: 2%;
   isolation: isolate;
   text-align: center;
-  font-size: 4.1cqw;
+  font-size: calc(var(--art-width) * .041);
   font-weight: 850;
   line-height: 1.18;
   color: #261046;
@@ -407,11 +472,16 @@
   stroke-linejoin: round;
 }
 
-.word-flow-cover-art .word-flow-cover-panda {
+.word-flow-cover-panda {
   position: absolute;
   inset: 25.96% 0 auto;
   width: 100%;
   height: 31.3%;
-  object-fit: cover;
+  --edge-art: url("./hsk2-lesson1-preview/course-cover-panda-hd.webp");
   mask-image: linear-gradient(transparent, #000 3%, #000 97%, transparent);
+  mask-clip: no-clip;
+}
+.word-flow-cover-panda img {
+  height: 100%;
+  object-fit: cover;
 }

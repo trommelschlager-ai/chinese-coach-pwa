@@ -9,7 +9,7 @@
 {
   document.documentElement.classList.add('course-layout');
   for (const stylesheet of ['hsk2-storyboard-v433.css', 'hsk2-lilac-pink-v444.css',
-    'hsk2-lesson-theme-v451.css', 'hsk2-lesson1-word-flow.css?v=4']) {
+    'hsk2-lesson-theme-v451.css', 'hsk2-lesson1-word-flow.css?v=5']) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = './assets/' + stylesheet;
@@ -511,15 +511,15 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  if (courseMode) return '<section class="word-flow-cover" aria-label="HSK 2 · Урок 1 · Мой день">' +
+  if (courseMode) return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 1 · Мой день"><div class="word-flow-cover">' +
     '<div class="word-flow-cover-art"><img src="' + decoration + 'course-cover-top.webp" alt="Panda Go · HSK 2 · Урок 1 «Мой день». Шесть слов, пять мини-тестов, грамматика, распорядок, произношение и диалог." width="691" height="1067" fetchpriority="high">' +
-    '<img class="word-flow-cover-panda" src="' + decoration + 'course-cover-panda-hd.webp" alt="" width="1080" height="521">' +
+    '<div class="word-flow-cover-panda"><img src="' + decoration + 'course-cover-panda-hd.webp" alt="" width="1080" height="521"></div>' +
     '<span class="word-flow-cover-section" role="heading" aria-level="2" aria-label="Содержание урока"></span>' +
     '<p class="word-flow-cover-copy">Расскажи о своём распорядке дня.</p></div>' +
     '<a class="word-flow-cover-back" href="./hsk2-life-course.html?view=welcome" aria-label="На главную HSK 2">‹</a>' +
     '<button type="button" class="primary word-flow-cover-start" data-step="2">Начать урок →</button>' +
-    '<img src="' + decoration + 'course-cover-scroll.webp" alt="Не бойся говорить с ошибками. Бойся никогда не заговорить!" width="691" height="311">' +
-    '</section>';
+    '<div class="word-flow-cover-outro"><img src="' + decoration + 'course-cover-scroll.webp" alt="Не бойся говорить с ошибками. Бойся никогда не заговорить!" width="691" height="311"></div>' +
+    '</div></section>';
   return '<img class="welcome-art" src="assets/hsk2-lesson1-preview/welcome-start-lesson.webp" width="959" height="1639" alt="" draggable="false">' +
     '<section class="welcome-copy"><h1><span lang="zh-Hans">我的一天</span> · Wǒ de yì tiān · Мой день</h1>' +
     '<p>Научиться говорить о том, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</p>' +
