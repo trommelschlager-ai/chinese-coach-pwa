@@ -330,6 +330,16 @@
   --cover-image: url("./hsk2-lesson1-preview/course-cover-sakura-canal.webp");
   --art-width: min(100cqw, calc(100dvh * 905 / 1737));
 }
+.word-flow-cover-shell::after {
+  /* Extend only the canal below the artwork on taller screens. */
+  content: "";
+  position: absolute;
+  inset: calc(var(--art-width) * 1737 / 905) 0 0;
+  background: url("./hsk2-lesson1-preview/course-cover-water.webp") center / var(--art-width) 100% no-repeat;
+  transform: scaleY(-1);
+  pointer-events: none;
+  z-index: -1;
+}
 .word-flow-cover {
   position: relative;
   width: var(--art-width);
