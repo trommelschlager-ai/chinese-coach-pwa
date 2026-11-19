@@ -1,0 +1,41 @@
+name: HSK2 About Me — browser smoke and reference screenshots
+on:
+  push:
+    paths:
+      - .github/workflows/hsk2-about-me-visual.yml
+      - tests/hsk2-about-me-smoke.mjs
+      - hsk2-about-me.html
+      - assets/hsk2-about-me/illustration-*.svg
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  lesson-browser-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser testing tools
+        run: |
+          npm install --no-save playwright@1.57.0
+          npx playwright install --with-deps chromium
+      - name: Run all 30 tasks and capture approved-layout screens
+        run: node tests/hsk2-about-me-smoke.mjs
+      - name: Publish screenshots as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hsk2-about-me-mobile-screenshots
+          path: assets/hsk2-about-me/screenshots/*.png
+          if-no-files-found: error
+      - name: Save preview screenshots to repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk2-about-me/screenshots/*.png
+          if ! git diff --cached --quiet; then
+            git commit -m "Add browser-verified HSK2 About Me mobile screenshots"
+            git push
+          fi
