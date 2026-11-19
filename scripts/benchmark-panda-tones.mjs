@@ -77,6 +77,12 @@ for(const item of cases){
     otherRegionsIgnored:postCapture.signal?.discardedOtherRegions??0,
     observedContour:postCapture.result.kind,
     previewPoints:postCapture.preview.length,
+    shortDirection:postCapture.result.shapeHint?.direction??null,
+    shortMovementSt:postCapture.result.shapeHint?.startToEndSt??null,
+    segmentedPitchTrackHz:postCapture.frames.slice(0,120).map(p=>({
+     t:+(p.t-(postCapture.signal?.segmentStartSec||0)).toFixed(3),
+     hz:+p.hz.toFixed(1),method:p.method||'yin'
+    })),
     isToneGrade:false,
     note:'Segmented F0 diagnostics only. A native speaker or phonetics expert must still verify tone and sound.'
    },
@@ -86,7 +92,7 @@ for(const item of cases){
 }
 fs.mkdirSync(path.join(root,'reports'),{recursive:true});
 fs.writeFileSync(path.join(root,'reports/panda-real-tone-diagnostics.json'),JSON.stringify(report,null,2)+'\n');
-for(const c of report.checks)console.log(c.hanzi+' '+c.pinyin+': original '+c.pitchFrames+' F0 / segmented '+c.segmentedAnalysis.pitchFrames+' F0 over '+c.segmentedAnalysis.syllableDurationSec+'s; pattern '+c.segmentedAnalysis.observedContour+' (NOT a tone grade)');
+for(const c of report.checks)console.log(c.hanzi+' '+c.pinyin+': segmented '+c.segmentedAnalysis.pitchFrames+' F0 over '+c.segmentedAnalysis.syllableDurationSec+'s; direction '+(c.segmentedAnalysis.shortDirection||'unresolved')+' (NOT a tone grade)');
 for(const c of report.technicalFailures)console.error('TECHNICAL FAILURE: '+c.file+': '+c.error);
 console.log('Real MP3 diagnostic: '+report.checks.length+'/'+cases.length+'; failures: '+report.technicalFailures.length);
 if(process.env.GITHUB_STEP_SUMMARY)fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
