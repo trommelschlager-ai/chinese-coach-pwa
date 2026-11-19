@@ -258,3 +258,46 @@
 @media(prefers-reduced-motion:reduce){
  #pg346 .pg354-petals i,#pg346 .pg346-sakura{animation:none!important}
 }
+
+
+/* v501 NIGHT SCENE FIX */
+/* The earlier version had only a tinted daytime garden, not a real night treatment. */
+#pg346 {
+  background-image:none!important;
+  background-color:#071633!important;
+}
+#pg346[data-theme="day"]{
+  background-image:none!important;
+  background-color:#60b4e5!important;
+}
+#pg346 .pg500-landscape {
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:url('./panda-landscape-v350.webp') center center/cover no-repeat;
+  filter:brightness(.35) saturate(1.25) hue-rotate(8deg);
+  transition:filter .45s ease;
+}
+#pg346[data-theme="day"] .pg500-landscape {filter:brightness(1) saturate(1)}
+/* A night sky replaces the daylight clouds; mountains and landscape remain legible. */
+#pg346 .pg500-landscape:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,#030921ac 0%,#0b1c5b70 31%,#0d20521f 66%,#020c2645 100%);
+}
+#pg346[data-theme="day"] .pg500-landscape:after{display:none}
+#pg346:before {z-index:1;opacity:.76}
+#pg346:after{z-index:1;top:37%;left:72%;width:clamp(23px,7vw,47px)}
+#pg346[data-theme="day"]:after{display:none}
+/* Scene shortcuts sit above artwork, never underneath it. */
+#pg346 .pg500-side {
+ position:absolute!important;display:flex!important;visibility:visible!important;opacity:1!important;
+ pointer-events:auto!important;z-index:22!important;
+ right:clamp(8px,2.5vw,16px)!important;left:auto!important;
+ width:clamp(46px,13vw,62px)!important;height:clamp(46px,13vw,62px)!important;
+}
+#pg346 .pg500-side-game{top:48.5%!important}
+#pg346 .pg500-side-book{top:67.5%!important}
+#pg346 .pg346-all-topics{z-index:18!important;top:45%!important}
+#pg346 .pg346-history{flex-basis:clamp(180px,28.8dvh,246px)!important}
+#pg346 .pg346-row{background:var(--pg500-panel)!important}
+#pg346 .pg346-row .pg346-py{letter-spacing:.05px}
+#pg346 .pg346-avatar img{width:100%!important;height:100%!important;object-fit:cover!important;transform:none!important}
+#pg346 .pg346-panda{filter:none!important}
