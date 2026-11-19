@@ -348,6 +348,34 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .final-hero>img:first-child{max-height:230px;object-fit:cover;object-position:32% 35%;}
 @media(max-width:374px){#app #pg433 .about-phrase{grid-template-columns:47px minmax(0,1fr) 33px;gap:5px;}#app #pg433 .about-phrase-image{width:47px;height:48px;}#app #pg433 .about-dialogue-head{grid-template-columns:75px minmax(0,1fr);}#app #pg433 .about-dialogue-head img{width:75px;}}
 
+
+/* 3D images: same premium panda appearance as approved HSK2 Lesson 1.
+   Real PNG images are stored locally in two atlases for responsive, coherent cards. */
+#app #pg433 svg.about-premium-photo{display:block;overflow:hidden;min-width:0;flex:none;border-radius:11px;background:#f2d8f4;box-shadow:0 2px 6px #8e5b9a42;}
+#app #pg433 .word-row svg.about-illustration{width:100%;height:clamp(55px,8.6dvh,73px);}
+#app #pg433 .tone-row svg.about-illustration{width:100%;height:47px;border-radius:9px;}
+#app #pg433 .about-practice-grid svg.about-story-photo{display:block;width:100%;height:60px;border-radius:9px;}
+#app #pg433 .about-phrase svg.about-phrase-image{width:55px;height:55px;border-radius:11px;}
+#app #pg433 .example svg.about-grammar-photo{width:100%;height:clamp(72px,12dvh,105px);border-radius:13px;}
+#app #pg433 .detail-hero svg.about-hero-photo{width:100%;height:clamp(128px,23dvh,172px);max-height:172px;align-self:end;border-radius:17px 17px 9px 9px;}
+#app #pg433 .about-dialogue-head svg.about-dialogue-image{width:89px;height:86px;border-radius:12px;}
+#app #pg433 .progress-panel svg.about-progress-photo{width:51px;height:51px;border-radius:12px;flex:none;}
+#app #pg433 .reward svg.about-reward-photo{width:58px;height:58px;border-radius:12px;flex:none;}
+#app #pg433 .final-hero svg.about-final-photo{width:100%;height:auto;aspect-ratio:1.05;border-radius:13px;}
+#app #pg433 .final-hero svg.about-finish-medal{width:64px;height:64px;margin:4px auto;border-radius:14px;}
+#app #pg433 .panda-ai-shortcut svg.about-chat-photo{width:70px;height:62px;flex:none;border-radius:12px;}
+#app #pg433 svg.about-quiz-photo{display:block;width:min(122px,32vw);height:clamp(57px,10dvh,100px);margin:8px auto;border-radius:13px;}
+@media(max-width:374px){
+#app #pg433 .about-phrase svg.about-phrase-image{width:47px;height:48px;}
+#app #pg433 .about-dialogue-head svg.about-dialogue-image{width:75px;height:76px;}
+#app #pg433 .detail-hero svg.about-hero-photo{height:127px;}
+#app #pg433 .about-practice-grid svg.about-story-photo{height:51px;}
+}
+@media(max-height:730px){
+#app #pg433 .word-row svg.about-illustration{height:clamp(47px,7.8dvh,62px);}
+#app #pg433 .detail-hero svg.about-hero-photo{height:125px;}
+#app #pg433 svg.about-quiz-photo{height:58px;margin-block:4px;}
+}
 </style>
 </head>
 <body>
@@ -567,13 +595,31 @@ function currentStepComplete() {
 }
 const activeQuiz = () => state.quizRetry ?? state;
 const dayScenes = ['wake','wash','brush','breakfast','work','sleep'];
-const aboutArtNames = ['origin','now','city','work','hobby','study'];
-const aboutArtLabels = ['Земной шар: родом из страны','Календарь и часы: сейчас','Городские дома: жить в городе','Рабочее место: работать','Наушники и музыка: хобби','Открытая книга: изучать'];
-const vocabImage = i => '<img class="about-illustration" src="./assets/hsk2-about-me/illustration-' +
-  aboutArtNames[i] + '.svg?v=2" alt="' + aboutArtLabels[i] + '" loading="lazy" width="180" height="116">';
+
+/* HSK2 About Me premium imagery, exactly matched to approved Lesson 1 character.
+   Each inline SVG views one of six/eight REAL 3D raster photo-atlas cells. */
+const photoAtlas = Object.freeze({
+  words:'./assets/hsk2-about-me/about-me-words-3d-atlas.png?v=20261120',
+  stages:'./assets/hsk2-about-me/about-me-stages-3d-atlas.png?v=20261120'
+});
+const aboutArtLabels = ['Панда с глобусом: страна','Панда с часами: сейчас','Панда в квартире: Москва','Панда работает за ноутбуком','Панда слушает музыку','Панда изучает китайский'];
+const atlasTile = (type,index,description,cssClass='about-illustration') => {
+  const isWord = type === 'words', side = isWord ? 512 : 627, cols = isWord ? 3 : 2;
+  const col = index % cols, row = Math.floor(index / cols);
+  return '<svg xmlns="http://www.w3.org/2000/svg" class="' + cssClass + ' about-premium-photo" ' +
+    'viewBox="0 0 ' + side + ' ' + side + '" preserveAspectRatio="xMidYMid slice" ' +
+    'role="img" aria-label="' + description + '">' +
+    '<image href="' + photoAtlas[type] + '" x="' + (-side*col) + '" y="' + (-side*row) + '" ' +
+    'width="' + (cols*side) + '" height="' + (2*side) + '" preserveAspectRatio="none" />' +
+    '</svg>';
+};
+const vocabImage = (i,cssClass='about-illustration') => atlasTile('words',i,aboutArtLabels[i],cssClass);
+const stageIndexes = Object.freeze({grammar:0,tones:1,quiz:2,dialogue:3});
+const stageLabels = Object.freeze({grammar:'Панда рассказывает о жизни в Москве',tones:'Панда говорит в микрофон',quiz:'Панда решает задания',dialogue:'Панды знакомятся и общаются'});
+const stageImage = (name,cssClass='about-stage-photo') => atlasTile('stages',stageIndexes[name],stageLabels[name],cssClass);
 const storyImage = i => i === 0
-  ? '<img src="./assets/hsk2-about-me/illustration-name.svg" alt="Имя и знакомство" loading="lazy">'
-  : vocabImage([0,0,2,3,4,5][i]);
+  ? stageImage('dialogue','about-story-photo')
+  : vocabImage([0,0,2,3,4,5][i],'about-story-photo');
 const art = name => '<img src="' + decoration + name + '.webp" alt="">';
 const hanzi = html => '<strong class="cn" lang="zh-Hans">' + html + '</strong>';
 const toneContours = ['M4 5 Q9 4.5 14 5', 'M4 14 Q6.5 8 14 3', 'M4 6 Q8 21 14 7', 'M4 3 Q9 6 14 14'];
@@ -905,13 +951,12 @@ function day() {
 }
 
 function phraseCards() {
-  const illustrations = ['name','origin','city','work','hobby','study'];
   return '<div class="phrases">' + phrases.map((item,i) => '<article class="phrase panel about-phrase">' +
-    '<img class="about-phrase-image" src="./assets/hsk2-about-me/illustration-' + illustrations[i] + '.svg?v=2" alt="" loading="lazy">' +
+    (i === 0 ? stageImage('dialogue','about-phrase-image') :
+      vocabImage([0,0,2,3,4,5][i],'about-phrase-image')) +
     '<div class="about-phrase-copy">' + hanzi(item[0]) + translate(item) + '</div>' + audioButton(item[0]) +
     '</article>').join('') + '</div>';
 }
-
 function toneGuide() {
   const samples = [
     ['ā','высокий, ровный','M3 9h39'],
