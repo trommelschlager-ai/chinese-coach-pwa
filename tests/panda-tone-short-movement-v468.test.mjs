@@ -30,7 +30,7 @@ test('four ordinary ~0.34s syllables show cautious pitch movement, not a Mandari
 test('short speech with too few frames, gaps, or an octave slip cannot receive movement hints',()=>{
  const ten=short(u=>175+40*u).slice(0,10);
  assert.equal(analyseContour(ten).kind,'insufficient');
- assert.equal(analyseContour(ten).shapeHint,undefined);
+ assert.equal(analyseContour(ten).shapeHint,null);
  const gap=short(u=>170+45*u);
  gap[12].t+=.12;
  assert.equal(shortPitchMovement(gap),null);
