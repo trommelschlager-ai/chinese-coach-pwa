@@ -669,10 +669,9 @@ function quiz() {
       const status = total === 6 ? '✓' : courseMode ? total + '/6' : playIcon;
       const orbClass = 'orb' + (total === 6 ? ' done' : '');
       const trigger = courseMode
-        ? '<button type="button" class="' + orbClass + '" data-quiz-type="' + i + '" aria-label="Открыть тест: ' +
-          title + '. Выполнено ' + total + ' из 6">' + status + '</button>'
+        ? '<span class="' + orbClass + '" aria-label="' + title + ': выполнено ' + total + ' из 6">' + status + '</span>'
         : '<span class="' + orbClass + '" aria-hidden="true">' + status + '</span>';
-      const retry = courseMode && total > 0
+      const retry = courseMode && total > 0 && quizCount() === 30
         ? '<button type="button" class="soft quiz-retry" data-quiz-retry="' + i + '" aria-label="Пройти ещё раз: ' + title + '">Пройти ещё раз</button>'
         : '';
       return opening + '<span class="badge">' + (i+1) + '</span>' + icon + '<span><strong>Тест ' + (i+1) + ' · ' + title +
@@ -681,7 +680,9 @@ function quiz() {
     }).join('') + '</div><div class="reward panel">' + art('trophy') +
     '<strong>' + (courseMode ? 'Выполняй задания для каждого слова по порядку.' : 'Закрепи слова урока в пяти разных заданиях!') +
     '</strong></div>' + (courseMode
-      ? '<div class="controls"><button type="button" class="soft" data-step="5">Перейти к распорядку</button></div>'
+      ? (quizCount() === 30
+        ? '<div class="controls"><button type="button" class="soft" data-step="5">Перейти к распорядку</button></div>'
+        : '<div class="controls"><button type="button" class="primary" data-start>Начать задания по порядку →</button></div>')
       : '<button type="button" class="primary large" data-start>Начать тесты ' + playIcon + '</button>');
 }
 
