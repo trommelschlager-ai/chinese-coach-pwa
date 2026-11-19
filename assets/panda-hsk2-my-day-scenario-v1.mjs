@@ -107,7 +107,7 @@ function init(stage){
    function synthesized(){
     if(id!==sequence){done();return}
     const v=voice();
-    if(!v){status('Для этой фразы нет записи и китайского голоса в браузере. Текст доступен на экране.');done();return}
+    if(!v){status('Для этой фразы нет MP3 и китайского голоса в браузере. Текст доступен на экране.');done();return}
     source='browser';
     const utter=new SpeechSynthesisUtterance(a[0]);utter.lang='zh-CN';utter.voice=v;utter.rate=slow?.76:.92;
     utter.onend=utter.onerror=done;
@@ -115,10 +115,9 @@ function init(stage){
     setTimeout(()=>{if(id!==sequence||!speechSynthesis.speaking)done()},9000);
    }
    if(!src){synthesized();return}
-   source='recorded';
    const audio=new Audio(src);player=audio;audio.playbackRate=slow?.83:1;
-   audio.onended=done;audio.onerror=()=>{done();synthesized()};
-   audio.play().catch(()=>{done();synthesized()});
+   audio.onended=done;audio.onerror=()=>{player=null;synthesized()};
+   audio.play().catch(()=>{player=null;synthesized()});
   });
  }
  const delay=ms=>new Promise(r=>setTimeout(r,ms));
@@ -134,7 +133,7 @@ function init(stage){
   if(p==='story')ask(0);else monologue();
  }
  async function begin(){
-  stop();paused=false;stagePhase('intro');
+  stop();paused=false;source='recorded';stagePhase('intro');
   const a=['你好！今天我说说我的一天。','Nǐ hǎo! Jīntiān wǒ shuōshuo wǒ de yì tiān.','Привет! Сегодня я расскажу о своём дне.'];
   line(a);status('Сначала Панда рассказывает, затем задаёт вопросы.');
   const token=++sequence;
@@ -203,7 +202,15 @@ function init(stage){
   r.onresult=e=>{
    let text='';for(let j=e.resultIndex;j<e.results.length;j++)if(e.results[j].isFinal)text+=e.results[j][0].transcript+' ';
    text=text.trim();if(!text)return;
-   if(phase==='questions'){$('day-input').value=text;status('Распознано: '+text+'. Проверь текст и отправь. Тоны не оценивались.')}
+   if(phase==='questions'){
+    $('day-input').value=text;status('Распознано: '+text+'. Тоны не оценивались.');
+    const question=i;
+    // Advance without extra tap only when the recognized text fits a reviewed answer.
+    // Anything uncertain stays editable and is never graded as bad pronunciation.
+    if(check(text,question).value)setTimeout(()=>{
+     if(phase==='questions'&&i===question&&$('day-input').value===text)answer(text)
+    },750);
+   }
    if(phase==='monologue'){$('day-long').value+=($('day-long').value.trim()?'。':'')+text;status('Продолжай рассказ. После окончания нажми «Завершить рассказ».')}
   };
   r.onerror=e=>status('Микрофон или распознавание: '+(e.error||'сбой')+'. Это НЕ означает ошибку в произношении.');
