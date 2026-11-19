@@ -3,7 +3,7 @@
  * Original lesson MP3s are played unchanged.
  */
 import {estimatePitch, analyseContour} from './panda-tone-analytics-v457.mjs?v=463';
-import {analyseRecordedBlob} from './panda-tone-recording-analysis-v465.mjs?v=466';
+import {analyseRecordedBlob} from './panda-tone-recording-analysis-v465.mjs?v=467';
 const $=id=>document.getElementById(id);
 const tones=[
  {n:1,hz:'妈',py:'mā',src:'./assets/lesson1-xiaoxiao-v260/ma1.mp3',reference:'M30 62H332'},
@@ -60,6 +60,7 @@ function updateTone(index){
  $('target-pinyin').textContent=s.py;
  $('ref-path').setAttribute('d',s.reference);
  $('your-path').setAttribute('d','');
+ $('segment-info').textContent='Новая попытка ещё не записана.';
  $('result').textContent='После произношения здесь появится результат наблюдения.';
  $('status').textContent='Выбран '+s.py+'. Нажми «Слушать образец», затем «Произнести».';
  buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===selected)));
@@ -80,11 +81,14 @@ $('listen').addEventListener('click',async()=>{
   $('status').textContent='Браузер не смог включить аудио. Нажми «Слушать» ещё раз.';
  }
 });
+const PLOT_SECONDS=1.2; // do not stretch 0.2s of voice to the width of a 1.2s axis
 function plot(points){
  if(!points||points.length<2)return '';
- const tmax=points.at(-1).t||1;
+ const first=points[0].t;
  return points.map((p,i)=>{
-  const x=30+302*p.t/tmax,y=Math.max(25,Math.min(117,70-13*p.st));
+  const elapsed=Math.max(0,p.t-first);
+  const x=30+302*Math.min(1,elapsed/PLOT_SECONDS);
+  const y=Math.max(25,Math.min(117,70-13*p.st));
   return (i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);
  }).join(' ');
 }
@@ -137,7 +141,9 @@ async function stop(){
    $('recording-message').textContent='🎧 Запись можно послушать. Детальный анализ файла недоступен на этом устройстве.';
   }
  }
- const pitchFrames=offline?.frames?.length>frames.length?offline.frames:frames;
+ // Prefer the exact decoded recording with silence trimmed. Only fall back to
+ // live samples when the saved recording cannot be decoded on this device.
+ const pitchFrames=offline?.available?offline.frames:frames;
  const result=analyseContour(pitchFrames);
  const partialPreview=(result.kind==='insufficient'||result.kind==='uncertain')?offline?.preview||[]:[];
  const displayPoints=result.points?.length?result.points:partialPreview;
@@ -146,6 +152,9 @@ async function stop(){
   ?'Часть высоты голоса измерена. Линия неполная, поэтому оценивать китайский тон пока нельзя.'
   :toneGuidance(tones[selected],result);
  const sound=offline?.signal;
+ $('segment-info').textContent=sound?.syllableDurationSec
+  ?'Найден звуковой фрагмент: '+sound.syllableDurationSec.toFixed(2)+' с. График использует реальную шкалу времени 0–1,2 с.'
+  :'Продолжительность произнесённого слога пока не определена.';
  const hasSound=Boolean(sound?.hasAudibleSignal||(counts?.heard||0)>0);
  if(result.kind==='insufficient'){
   $('status').textContent=hasSound
