@@ -1,6 +1,6 @@
 {
   "version": 502,
-  "bytes": 67160170,
+  "bytes": 67312555,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -3127,6 +3127,9 @@
     "./assets/panda-approved-soft-v500.js?v=501",
     "./panda-tone-exercises.html",
     "./assets/panda-tone-exercises-v469.mjs?v=469",
-    "./assets/panda-tone-lesson-entry-v469.js?v=469"
+    "./assets/panda-tone-lesson-entry-v469.js?v=469",
+    "./assets/panda-hsk2-my-day-scenario-v1.css?v=1",
+    "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=1",
+    "./assets/hsk2-lesson1-voice-v459.js?v=459"
   ]
 }
