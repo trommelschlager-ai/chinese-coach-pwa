@@ -49,7 +49,8 @@ function render(words,art,heading,panel,ttsNote){
   art(5)+
   '<p>Нажми «Тренировать» напротив слова. При записи с микрофона появится линия <b>реальной высоты твоего голоса</b>. Сравни её с пунктирным образцом.</p>'+
   '<div class="tone-overall"><strong>Повторения: '+progressText()+'</strong><span>С микрофоном: '+micCount()+'</span></div>'+
-  '<div class="meter"><i style="width:'+(total()/30*100)+'%"></i></div>'+
+  '<div class="meter"><i style="width:'+(total()/30*100)+'%"></i></div>'+ 
+  '<div class="tone-jump-wrap"><button class="action" type="button" data-tone-act="jump">📈 Открыть шкалу тонов ↓</button></div>'+
   rows+
   '<p class="hint">Пять отметок подтверждают повторения, но не означают, что все тоны произнесены правильно.</p>'
  )+
@@ -58,7 +59,7 @@ function render(words,art,heading,panel,ttsNote){
   '<div class="tone-title"><div><div class="cn" lang="zh-Hans">'+w.zh+'</div><div class="py">'+w.py+'</div><div class="ru">'+w.ru+'</div></div>'+
   '<div class="tone-dots" aria-label="Количество повторений">'+bullets+'</div></div>'+
   '<p class="hint">'+esc(tr(TONES[i]).join('; '))+'. Образец — схема высоты тонов, не запись носителя.</p>'+
-  '<canvas id="tone-canvas" role="img" aria-label="График высоты голоса: пунктир — примерные контуры двух тонов, зелёная линия — измеренный голос" width="620" height="245"></canvas>'+
+  '<canvas id="tone-canvas" role="img" aria-label="График высоты голоса: пунктир — примерные контуры двух тонов, зелёная линия — измеренный голос" width="420" height="220"></canvas>'+
   '<div class="tone-legend"><span class="tone-legend-target">Пунктир — образец тонов</span><span class="tone-legend-user">Зелёная — твой голос</span></div>'+
   '<div id="tone-status" class="tone-status" role="status" aria-live="polite">'+esc(note)+'</div>'+
   '<div class="btnrow tone-actions"><button id="tone-record" class="primary" type="button" data-tone-act="record" '+(count(i)>=LIMIT?'disabled':'')+'>'+
@@ -79,7 +80,7 @@ function draw(){
  const w=canvas.width,h=canvas.height,padL=45,padR=18,padT=22,padB=29;
  const pw=w-padL-padR,ph=h-padT-padB;
  ctx.clearRect(0,0,w,h);ctx.fillStyle='#fffaff';ctx.fillRect(0,0,w,h);
- ctx.font='14px system-ui';ctx.fillStyle='#765477';ctx.textBaseline='middle';
+ ctx.font='16px system-ui';ctx.fillStyle='#765477';ctx.textBaseline='middle';
  for(let k=0;k<5;k++){
    const y=padT+ph*k/4;
    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(w-padR,y);
@@ -252,6 +253,7 @@ document.addEventListener('click',event=>{
  else if(action==='record')start();
  else if(action==='manual')manual();
  else if(action==='clear')resetWord();
+ else if(action==='jump')document.getElementById('tone-trainer')?.scrollIntoView({block:'nearest',behavior:'smooth'});
 });
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&active)stop(false)});
 window.addEventListener('pagehide',()=>{if(active)stop(false)});
