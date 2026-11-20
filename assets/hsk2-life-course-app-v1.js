@@ -29,7 +29,7 @@ for(var ti=0;ti<10;ti++)for(var mi=0;mi<3;mi++){
 }
 if(mistakes.length)console.warn('Panda Go course QA:',mistakes.join('; '));
 var KEY='pg-hsk2-life-course-v1';
-var state={view:'welcome',topic:0,mini:0,stage:0,showPy:true,completed:[],difficult:[],quizWord:null,quizSentence:null,build:[],finalAnswers:{},examPassed:false};
+var state={view:'welcome',topic:0,mini:0,stage:0,showPy:true,completed:[],difficult:[],quizWord:null,quizSentence:null,build:[],finalAnswers:{},examPassed:false,catalogExpanded:null};
 var dayUI=window.PandaGoDayFirstUIV1;
 function dayPilot(){return state.topic===0&&!!dayUI;}
 function dayCoachingLink(mini){return './panda-voice-pilot.html?practice=day&mini='+Math.max(0,Math.min(2,Number(mini)||0))+'&from=hsk2-life-course&return=done&start=audio&origin=lesson1-done';}
@@ -74,8 +74,9 @@ try{
       const stagePage=[0,2,4,6,10][state.stage]||0;
       d.pg433Page=Number.isInteger(prior.pg433Page)?Math.max(0,Math.min(11,prior.pg433Page)):stagePage;
       d.pg433HighestStage=Number.isInteger(prior.pg433HighestStage)?Math.max(0,Math.min(4,prior.pg433HighestStage)):state.stage;
-      d.pg433Preview=typeof prior.pg433Preview==='boolean'?prior.pg433Preview:false;
-      d.pgApprovedCover=typeof prior.pgApprovedCover==='boolean'?prior.pgApprovedCover:false;
+      // Old cover/preview flags are display-only; resume directly in learning steps.
+      d.pg433Preview=false;
+      d.pgApprovedCover=false;
      }
      // v442 opt-in timeline and guided Panda replies. Preserve progress on Android reload.
      if(prior.pg441&&typeof prior.pg441==='object'){
@@ -150,7 +151,7 @@ function daySound(zh){
 }
 function sound(zh){
  if(rec(zh))return '<button class="audio" type="button" data-sound="'+E(zh)+'" aria-label="Прослушать настоящий MP3: '+E(zh)+'">🔊</button>';
- if(deviceVoiceAvailable())return '<button class="audio device-voice" type="button" data-device-sound="'+E(zh)+'" title="Синтезированное произношение на этом устройстве — не MP3 носительницы" aria-label="Озвучить голосом устройства: '+E(zh)+'">🔉 <small>голос устройства</small></button>';
+ if(deviceVoiceAvailable())return '<button class="audio device-voice" type="button" data-device-sound="'+E(zh)+'" title="Синтезированное произношение устройства (не запись носителя)" aria-label="Воспроизвести синтезированный голос устройства: '+E(zh)+'">🔉</button>';
  return '<span class="audio unavailable" title="Для этой фразы нет MP3 и голос устройства недоступен" aria-label="Озвучка недоступна">🔇</span>';
 }
 function phrase(zh,py,ru){return '<div class="phrase"><span class="han" lang="zh-Hans">'+E(zh)+'</span>'+(state.showPy?'<span class="py">'+E(py)+'</span>':'')+'<span class="meaning">'+E(ru)+'</span>'+sound(zh)+'</div>'}
@@ -183,7 +184,7 @@ function viewWelcome(){
  '</div></section>';
 }
 function viewMap(){
- if(window.PandaGoStoryboardV433)return window.PandaGoStoryboardV433.mapView(topics,state.completed);
+ if(window.PandaGoStoryboardV433)return window.PandaGoStoryboardV433.mapView(topics,state.completed,state.catalogExpanded);
  const counts=topics.map(function(t,i){return [0,1,2].filter(function(m){return state.completed.includes(i*3+m)}).length});
  return '<section class="approved-stage approved-map-screen" style="--approved-image:url(./assets/approved-course-v390/course-map.png)" aria-label="Карта курса: десять тем, 30 мини-уроков"><div class="approved-art">'+
  '<img src="./assets/approved-course-v390/course-map.png" alt="Panda Go: десять жизненных тем — мой распорядок дня, работа, хобби, город, транспорт, кафе, покупки, встречи, опыт, планы. Все темы открываются по нажатию." width="941" height="1672" decoding="async" draggable="false">'+
@@ -380,10 +381,11 @@ function render(){
  if(status)status.textContent='';
  store();
 }
-function go(v){if(state.view==='lesson'&&v!=='lesson'&&dayUI)dayUI.cancel();state.view=v;render()}
+function go(v){if(v==='topic'){state.catalogExpanded=state.topic;v='map'}if(state.view==='lesson'&&v!=='lesson'&&dayUI)dayUI.cancel();state.view=v;render()}
 function enter(t,m){
- if(t===0&&m===0){openMergedDay(1);return}
+ // Mini-lessons are exercises within this catalog, not aliases of main lessons.
  if(dayUI)dayUI.cancel();
+ state.catalogExpanded=t;
  state.topic=t;state.mini=m;state.stage=0;state.quizWord=null;state.quizSentence=null;state.build=[];
  state.day=t===0&&dayUI?dayUI.makeState(m):null;
  go('lesson');
@@ -429,7 +431,7 @@ document.addEventListener('click',function(e){
   }
   if(b.dataset.deviceSound!==undefined){deviceSound(b.dataset.deviceSound);return}
  if(b.dataset.pg432CoverStart!==undefined&&state.view==='lesson'&&state.topic===0&&state.mini===0){
-  openMergedDay(2);return;
+  if(state.day){state.day.pgApprovedCover=false;state.day.pg433Preview=false;}render();return;
  }
  if(state.view==='lesson'&&dayPilot()&&dayUI.handle(b,state,{render:render,go:go,deviceSound:deviceSound,complete:function(){if(!state.completed.includes(id()))state.completed.push(id());go('done')}}))return;
  if(b.dataset.nav){go(b.dataset.nav);return}
@@ -442,7 +444,16 @@ document.addEventListener('click',function(e){
   return;
  }
  if(b.dataset.start!==undefined){openFirstLesson(1);return}
- if(b.dataset.topic!==undefined){state.topic=Number(b.dataset.topic);go('topic');return}
+ if(b.dataset.topic!==undefined){
+  const t=Number(b.dataset.topic);
+  if(!Number.isInteger(t)||t<0||t>=topics.length)return;
+  state.catalogExpanded=state.catalogExpanded===t&&state.view==='map'?null:t;
+  go('map');return;
+ }
+ if(b.dataset.practiceMini!==undefined){
+  const parts=/^([0-9]):([0-2])$/.exec(b.dataset.practiceMini);
+  if(parts)enter(Number(parts[1]),Number(parts[2]));return;
+ }
  if(b.dataset.mini!==undefined){enter(state.topic,Number(b.dataset.mini));return}
  if(b.dataset.flag!==undefined){
   var w=b.dataset.flag,i=state.difficult.indexOf(w);
@@ -450,7 +461,7 @@ document.addEventListener('click',function(e){
   render();return;
  }
  if(b.dataset.stepPrev!==undefined){
-  if(state.stage===0)go('topic');else{state.stage--;render()}return;
+  if(state.stage===0)go('map');else{state.stage--;render()}return;
  }
  if(b.dataset.stepNext!==undefined){next();return}
  if(b.dataset.quizWord!==undefined){state.quizWord=Number(b.dataset.quizWord);render();return}
@@ -501,13 +512,12 @@ try {
  }
  var requested=params.get('topic');
  if(requested!==null&&/^(?:[0-9])$/.test(requested)){
-  state.topic=Number(requested);
-  state.view='topic';
+  state.catalogExpanded=Number(requested);
+  state.view='map';
  }
 }catch(e){}
-if(state.view==='lesson'&&state.topic===0&&state.mini===0){
- window.location.replace('./hsk2-lesson1.html');
- return;
+if(state.view==='lesson'&&state.topic===0&&state.day){
+ state.day.pg433Preview=false;state.day.pgApprovedCover=false;
 }
 render();
 })();
