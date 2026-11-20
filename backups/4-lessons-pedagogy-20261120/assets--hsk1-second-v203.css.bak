@@ -1,0 +1,87 @@
+/* Panda Go HSK1 second lesson v203 — dedicated practice components.
+   The approved scenic foundation remains assets/hsk1-first-v189.css. */
+.pg3-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px auto}
+.pg3-word{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;border:1.5px solid #e9cfed;border-radius:18px;padding:14px 7px 12px;background:linear-gradient(140deg,#fffaff,#f2e9fb)}
+.pg3-word strong{font:600 clamp(39px,12vw,65px)/1.22 'Noto Sans CJK SC','PingFang SC','Microsoft YaHei',sans-serif;color:#572b88;white-space:nowrap}
+.pg3-word .pg3-py{font-size:17px;font-weight:800;color:#8a50ad}
+.pg3-word .pg3-ru{font-size:14px;line-height:1.3;color:#5e447d;min-height:20px;font-weight:750}
+.pg3-audio{border:0;border-radius:25px;background:linear-gradient(135deg,#b574e5,#ec83c5);color:#fff;min-height:44px;padding:10px 17px;font-size:14px;font-weight:800;margin:9px auto 2px;display:block;box-shadow:0 3px 12px rgba(113,44,161,.16)}
+.pg3-word .pg3-audio{background:#f4d9ef;color:#713c92;box-shadow:none;padding:9px 10px;font-size:12px;min-height:39px;width:100%;max-width:150px}
+.pg3-audio:disabled{opacity:.4}
+.pg3-note{font-size:13px;line-height:1.55;color:#6e5283;background:#f4e9fc;border-radius:14px;padding:11px 13px;margin:12px 0 3px}
+.pg3-small{font-size:12px;font-weight:800;letter-spacing:.6px;color:#9b68b1;margin:5px 0 9px;text-align:center}
+.pg3-question{padding:5px 0 7px}
+.pg3-question h2{font-size:clamp(18px,5.2vw,23px);line-height:1.35;text-align:center;font-weight:850;color:#58327b;margin:10px 0 16px}
+.pg3-answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.pg3-answers button{background:linear-gradient(152deg,#fffaff,#f4e8fb);color:#5b3483;border:1.5px solid #e4c7e9;border-radius:16px;padding:13px 8px;min-height:62px;font-size:clamp(16px,4.5vw,21px);font-weight:850;overflow-wrap:anywhere}
+.pg3-answers button:focus-visible,.pg3-token:focus-visible,.pg3-main:focus-visible,.pg3-audio:focus-visible{outline:3px solid #ad68e4;outline-offset:2px}
+.pg3-answers button:active,.pg3-token:active,.pg3-main:active{transform:scale(.98)}
+.pg3-answers button:nth-child(3):last-child{grid-column:1/-1}
+.pg3-feedback{font-size:13px;font-weight:750;color:#8a4179;text-align:center;line-height:1.5;min-height:19px;margin:12px 0 3px}
+.pg3-feedback:empty{display:none}
+.pg3-success{font-size:17px;color:#6a388b;background:#f4eafa;border:1px solid #e2c9ee;border-radius:16px;padding:18px;text-align:center;font-weight:850;margin:10px 0}
+.pg3-built{min-height:85px;border:2px dashed #d7b4e8;border-radius:16px;background:#fffaff;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;padding:12px;margin:11px 0}
+.pg3-built span{font-size:13px;color:#9674a8;text-align:center}
+.pg3-tokens{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:13px 0}
+.pg3-token{border:1.5px solid #e2c7e9;border-radius:14px;background:#fff8ff;min-width:52px;padding:10px 13px;color:#60378c;font-size:clamp(24px,7vw,32px);min-height:51px;font-weight:650;font-family:'Noto Sans CJK SC',system-ui,sans-serif}
+.pg3-token.chosen{border-color:#e89ccf;background:linear-gradient(135deg,#fff6e7,#f9dcf3)}
+.pg3-main{display:block;margin:16px auto 5px;padding:12px 22px;border:1px solid #e8a8d4;border-radius:24px;min-height:47px;background:linear-gradient(135deg,#ae63e8,#ef86c8);box-shadow:0 4px 15px rgba(148,55,175,.23);color:#fff;font-size:15px;font-weight:850}
+.pg3-main:disabled{opacity:.5}
+.pg3-sentence{font-size:clamp(30px,9vw,47px);font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif;color:#56298b;font-weight:650;text-align:center;margin:17px auto 3px;line-height:1.27;overflow-wrap:anywhere}
+.pg3-result{font-size:17px;text-align:center;color:#633585;font-weight:750;line-height:1.4}
+.pg3-recorder{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:13px auto}
+.pg3-recorder button{border:1px solid #e0c2e9;background:#f9eafb;border-radius:15px;color:#6b3b94;padding:11px 13px;font-size:14px;font-weight:800;min-height:45px}
+.pg3-finish{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+.pg3-finish a,.pg3-finish button{display:block;text-align:center;border:1px solid #e5c9e9;background:#fffaff;border-radius:16px;color:#5b3489;padding:14px;text-decoration:none;font-size:15px;font-weight:800}
+@media(max-width:365px){.pg3-grid{gap:7px}.pg3-word{padding:12px 5px}.pg3-word strong{font-size:clamp(35px,11vw,52px)}.pg3-answers button{min-height:55px}.pg3-recorder button{padding:9px 10px}}
+
+/* Lesson 2 v207 recap: large legible Mandarin, practical short listening list. */
+.pg3-grid:has(> .pg3-word:nth-child(3):last-child) .pg3-word:nth-child(3){
+ grid-column:1/-1;width:min(100%,240px);margin-inline:auto
+}
+.pg7-recap{margin-top:18px;border-top:1px solid rgba(145,82,177,.23);padding-top:16px}
+.pg7-recap h2{text-align:center;color:#64358b;font-weight:850;font-size:clamp(19px,5.5vw,25px);margin:0 0 6px}
+.pg7-recap>p{font-size:13px;line-height:1.5;color:#785591;margin:9px 0 14px;text-align:center}
+.pg7-review-controls{display:flex;gap:8px;margin:12px auto;align-items:center}
+.pg7-review-controls button{min-height:48px;cursor:pointer;border-radius:18px;border:0;background:linear-gradient(125deg,#a663dc,#dc76c7);color:white;font-size:13px;font-weight:800;padding:10px 11px;flex:1}
+.pg7-review-controls button:last-child{flex:0 0 75px;color:#733e8a;background:#f5e4f4;border:1px solid #dcc1e5}
+.pg7-review-controls button:disabled{opacity:.4;cursor:default}
+.pg7-review-status{font-size:12px;color:#81599c;min-height:22px;text-align:center;margin:8px auto 14px}
+.pg7-review-list{display:flex;flex-direction:column;gap:8px}
+.pg7-review-row{display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid #e2c8eb;border-radius:16px;background:rgba(255,255,255,.63);min-width:0;flex-wrap:wrap}
+.pg7-review-word{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0;overflow-wrap:anywhere}
+.pg7-review-word strong{font-family:'Noto Sans CJK SC','Microsoft YaHei',sans-serif;color:#5c2b8a;font-size:clamp(23px,6vw,30px);font-weight:750;line-height:1.22}
+.pg7-review-word span{font-size:13px;color:#9a62b4;font-weight:750}
+.pg7-review-word small{font-size:12px;color:#6e5184;line-height:1.3}
+.pg7-review-row>button{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border:1px solid #e5b9dd;border-radius:50%;background:linear-gradient(125deg,#af65e1,#e07ac3);color:white;font-size:18px;font-weight:850}
+.pg7-review-row>button:focus-visible{outline:3px solid #e2a3cf;outline-offset:2px}
+.pg7-review-fallback{flex-basis:100%;font-size:10px;color:#9a6b9e;text-align:right;margin-top:-6px}
+.pg7-recap .pg7-review-footnote{text-align:left;font-size:11px;line-height:1.6;color:#906f9e;margin-top:15px}
+@media(max-width:360px){
+ .pg7-review-row{padding:8px;gap:6px}
+ .pg7-review-word strong{font-size:24px}
+ .pg7-review-controls button{font-size:12px;padding:8px}
+ .pg7-review-controls button:last-child{flex-basis:65px}
+}
+
+/* v211: finish the lesson before optional pronunciation practice. */
+.pg11-final-sheet{max-width:460px;padding:19px 15px!important}
+.pg11-result{border:1px solid #e3c8eb;border-radius:19px;background:linear-gradient(130deg,#f6e8fc,#fcecf4);text-align:center;padding:18px 10px 14px;color:#75478d;font-size:18px}
+.pg11-result strong{font-size:28px;font-weight:900;color:#64318e}
+.pg11-result span{display:block;color:#795a93;font-size:12px;margin-top:5px}
+.pg11-skills{padding:15px 7px 7px}
+.pg11-skills h2,.pg11-choose{text-align:center;color:#60358d;font-weight:850;font-size:19px;margin:0 0 12px}
+.pg11-skills p{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #e7cdef;padding:10px 4px;margin:0}
+.pg11-skills p:last-child{border:0}
+.pg11-skills strong{font-family:'Noto Sans CJK SC','PingFang SC','Microsoft YaHei',sans-serif;color:#60318c;font-size:clamp(22px,6.5vw,27px);font-weight:700}
+.pg11-skills span{font-size:12px;color:#77528f;text-align:right;line-height:1.35}
+.pg11-choose{margin:14px 0 12px}
+.pg11-actions{display:grid;gap:10px}
+.pg11-actions a{display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center;border:1px solid #e2c7eb;border-radius:17px;padding:13px 11px;min-height:50px;font-size:14px;font-weight:850;color:#643a88;background:#fff9ff}
+.pg11-actions a.pg11-primary{background:linear-gradient(115deg,#a963e3,#ea86c8);color:#fff;border-color:#ce83d4;box-shadow:0 7px 18px rgba(115,46,145,.16)}
+.pg11-actions a:focus-visible{outline:3px solid #a86bd9;outline-offset:3px}
+.pg11-reminder{font-size:12px;line-height:1.55;color:#855f98;background:#f8eefd;padding:12px;border-radius:14px;margin:15px 0;text-align:center}
+.pg3-dialogue-repeat p{color:#663e87;font-weight:750;font-size:14px;line-height:1.5;text-align:center;margin:10px auto}
+.pg3-dialogue-repeat button{display:block;border:1px solid #debfe8;border-radius:16px;background:#f9edfb;color:#6c4291;font-size:14px;padding:11px 12px;margin:8px auto;font-weight:800;min-height:43px}
+.pg3-note{white-space:pre-line}
+@media(max-width:355px){.pg11-final-sheet{padding:14px 10px!important}.pg11-skills p{gap:6px}.pg11-actions a{font-size:13px}}
