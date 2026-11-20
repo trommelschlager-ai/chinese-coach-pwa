@@ -2,7 +2,7 @@
    Browser ASR is transcription only, never acoustic tone grading. */
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {PANDA_GRAMMAR_AUDIO_V451} from './panda-grammar-voice-v451.mjs?v=451';
-import {understandDayAnswer} from './panda-hsk2-day-understanding-v1.mjs?v=2';
+import {understandDayAnswer} from './panda-hsk2-day-understanding-v1.mjs?v=3';
 if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){
 const STORY=[
 [['我每天七点起床。','Wǒ měitiān qī diǎn qǐchuáng.','Я встаю в 7.'],['我起床以后洗脸。','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма умываюсь.'],['我早上刷牙。','Wǒ zǎoshang shuāyá.','Утром чищу зубы.'],['我早上吃早饭。','Wǒ zǎoshang chī zǎofàn.','Утром завтракаю.'],['我八点去上班。','Wǒ bā diǎn qù shàngbān.','В 8 иду на работу.'],['我晚上十点睡觉。','Wǒ wǎnshang shí diǎn shuìjiào.','В 10 вечера ложусь спать.']],
