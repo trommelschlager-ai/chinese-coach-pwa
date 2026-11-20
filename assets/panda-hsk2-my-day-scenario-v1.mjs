@@ -128,6 +128,20 @@ function init(stage){
   if(button){button.setAttribute('aria-label',id==='day-hear'?'Повторить фразу Панды':'Показать подсказку');rail.append(button)}
  }
  scene.append(rail);
+ // Story-only player: speed sits in its header instead of floating over Panda.
+ const storyPlayer=document.createElement('section');
+ storyPlayer.id='day-story-player';
+ storyPlayer.className='pg-day-player';
+ storyPlayer.setAttribute('aria-label','Управление рассказом Панды');
+ storyPlayer.innerHTML='<div class="pg-day-player-head"><div class="pg-day-player-title">'+
+ '<strong>📖 Режим рассказа Panda</strong><span id="day-player-count">Фраза 1 из 6</span></div></div>'+
+ '<div class="pg-day-player-buttons"><button id="day-prev" type="button" aria-label="Предыдущее предложение">◀ Пред.</button>'+
+ '<button id="day-repeat-sentence" type="button" aria-label="Повторить текущее предложение">↻ Повтор фразы</button>'+
+ '<button id="day-next" type="button" aria-label="Следующее предложение">След. ▶</button></div>';
+ stage.querySelector('.pg346-scene').after(storyPlayer);
+ storyPlayer.querySelector('.pg-day-player-head').append(speedGroup);
+ const pauseButton=controls.querySelector('#day-pause');
+ if(pauseButton)storyPlayer.querySelector('#day-next').before(pauseButton);
  const entry=controls.querySelector('.pg-day-entry');
  const finishButton=controls.querySelector('#day-finish');
  if(entry&&finishButton)entry.append(finishButton);
@@ -135,16 +149,28 @@ function init(stage){
  let phase='ready',i=0,round=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false;const missingAudio=new Set();
  let playbackRate=0.75; // Learner-friendly default shown in the approved speed reference.
  const status=s=>{$('day-status').textContent=s};
- function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||'';const repeat=$('day-hear');if(repeat){repeat.disabled=!approvedClips(a[0]).length;repeat.title=repeat.disabled?'Нет точной записи утверждённым голосом':'Повторить одобренную запись'}}
+ function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||'';const repeat=$('day-hear');if(repeat){repeat.disabled=!approvedClips(a[0]).length;repeat.title=repeat.disabled?'Нет точной записи утверждённым голосом':'Повторить одобренную запись'};updateStoryPlayer()}
+ function storyLines(){
+  return phase==='story'?STORY[round%2]:phase==='summary'?answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']):[];
+ }
+ function updateStoryPlayer(){
+  const lines=storyLines(),active=phase==='story'||phase==='summary';
+  $('day-player-count').textContent=phase==='intro'?'Приветствие':active?'Фраза '+Math.min(i+1,lines.length)+' из '+lines.length:'';
+  $('day-prev').disabled=!active||i<=0;
+  $('day-next').disabled=!active;
+  $('day-repeat-sentence').disabled=!last||!approvedClips(last[0]).length;
+ }
  function stagePhase(p){
   phase=p;stage.dataset.dayPhase=p;
   $('day-phase').textContent=({ready:'🐼 Мой день',intro:'🐼 Приветствие',story:'🐼 История Панды',questions:'🐼 Вопросы',summary:'🐼 Твой день',monologue:'👤 Расскажи сам',results:'🏆 Итоги'}[p]);
   $('day-step').textContent=p==='questions'?(i+1)+'/5':p==='story'?(i+1)+'/6':'HSK 2';
   const show=(id,on)=>$(id).hidden=!on;
   show('day-start',p==='ready');show('day-hear',!['ready','results'].includes(p));
-  show('day-pause',['story','intro','summary'].includes(p));show('day-hint',['questions','monologue'].includes(p));
+  show('day-pause',['story','summary'].includes(p));show('day-hint',['story','questions','summary','monologue'].includes(p));
   show('day-finish',p==='monologue');show('day-retry',p==='results');
-  show('day-speed-wrap',['intro','story','questions','summary','monologue'].includes(p));
+  show('day-story-player',['intro','story','summary'].includes(p));
+  show('day-speed-wrap',['intro','story','summary'].includes(p));
+  updateStoryPlayer();
   show('day-input',p==='questions');show('day-send',p==='questions');
   show('day-long',p==='monologue');show('day-mic',['questions','monologue'].includes(p));
  }
@@ -194,7 +220,7 @@ function init(stage){
   stagePhase(p);const token=++sequence;
   for(let n=start;n<lines.length;n++){
    if(token!==sequence||paused)return;
-   i=n;stagePhase(p);line(lines[n]);status(p==='story'?(n===1?'洗脸: xǐliǎn (3+3); в речи первый третий тон меняется на второй — xíliǎn.':'Слушай Панду.'):'Панда повторяет только твои ответы.');
+   i=n;stagePhase(p);line(lines[n]);updateStoryPlayer();status(p==='story'?(n===1?'洗脸: xǐliǎn (3+3); в речи первый третий тон меняется на второй — xíliǎn.':'Слушай Панду.'):'Панда повторяет только твои ответы.');
    await speak(lines[n]);if(token!==sequence||paused)return;
    await delay(1000);
   }
@@ -351,6 +377,7 @@ function init(stage){
  $('day-hear').onclick=async()=>{
   const clip=last,mode=phase,position=i;
   if(!clip)return;
+  if(mode==='story'||mode==='summary'){paused=false;$('day-pause').textContent='⏸ Пауза'}
   stop();const token=sequence;
   await speak(clip);
   if(token!==sequence)return;
@@ -364,13 +391,37 @@ function init(stage){
     else monologue();
   }
  };
- $('day-hint').onclick=()=>{if(phase==='questions'){status('💡 '+Q[i][3]+' Пример: '+Q[i][4]);countdown()}else status('起床 → 洗脸 → 刷牙 → 吃早饭 → 去上班 → 睡觉')};
+ const storyHints=[
+  '每天 = каждый день; 起床 = вставать. Время ставится перед 起床.',
+  '起床以后 = после подъёма; 洗脸 = умываться. 洗脸: xǐliǎn, в речи xíliǎn.',
+  '早上 = утром; 刷牙 = чистить зубы.',
+  '吃早饭 = завтракать. 不吃早饭 = не завтракать.',
+  '去上班 = идти на работу. Время ставится перед 去上班.',
+  '晚上 = вечером; 睡觉 = ложиться спать.'
+ ];
+ $('day-hint').onclick=()=>{
+  if(phase==='questions'){status('💡 '+Q[i][3]+' Пример: '+Q[i][4]);countdown()}
+  else if(phase==='story')status('💡 '+storyHints[i]);
+  else if(phase==='summary')status('💡 Повтори свой ответ, следя за порядком слов.');
+  else status('💡 起床 → 洗脸 → 刷牙 → 吃早饭 → 去上班 → 睡觉');
+ };
+ $('day-prev').onclick=()=>seekStory(-1);
+ $('day-next').onclick=()=>seekStory(1);
+ $('day-repeat-sentence').onclick=()=>{$('day-hear').click()};
  $('day-finish').onclick=finish;
+ function seekStory(delta){
+  const mode=phase;
+  if(mode!=='story'&&mode!=='summary')return;
+  const lines=storyLines(),next=i+delta;
+  if(next<0)return;
+  stop();paused=false;$('day-pause').textContent='⏸ Пауза';
+  if(next>=lines.length){if(mode==='story')ask(0);else monologue();return}
+  playList(lines,mode,next);
+ }
  $('day-pause').onclick=()=>{
-  if(!paused){paused=true;stop();$('day-pause').textContent='▶ Продолжить';status('Пауза.')}
-  else{paused=false;$('day-pause').textContent='⏸ Пауза';
-   const list=phase==='story'?STORY[round%2]:phase==='summary'?answers.filter(Boolean).map(x=>[x,'','Твой ответ']):null;
-   if(list)playList(list,phase,i);else begin()}
+  if(phase!=='story'&&phase!=='summary')return;
+  if(!paused){paused=true;stop();$('day-pause').textContent='▶ Продолжить';status('Пауза. Нажми «Продолжить» или «Повтор фразы».')}
+  else{paused=false;$('day-pause').textContent='⏸ Пауза';playList(storyLines(),phase,i)}
  };
  $('day-retry').onclick=async()=>{
    stop();const token=sequence;
