@@ -762,6 +762,15 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .about-personal-sentence{flex:1;min-width:0;display:flex;flex-direction:column}
 #app #pg433 .about-my-lines p.about-personal-line>.orb{flex:none;width:33px!important;height:33px!important}
 
+
+#app #pg433 .about-manual-complete {
+  display:block;width:min(100%,330px);min-height:40px;flex:none;margin:4px auto 8px;
+  padding:8px 14px;border-radius:15px;border:1px solid #b88bd0;
+  color:#673274;font-size:14px;font-weight:750;
+  background:linear-gradient(#fffefd,#f4e5f8);box-shadow:0 3px 0 #c2a0c9;
+}
+#app #pg433 .about-manual-complete:active{transform:translateY(2px);box-shadow:0 1px 0 #c2a0c9}
+#app #pg433 .about-myday-word > button.about-audio-pending{background:linear-gradient(#f7f1f9,#dbbedc)!important;color:#946d99!important;opacity:.62!important}
 </style>
 </head>
 <body>
@@ -810,26 +819,8 @@ const dialogue = [
  answers:[[phrases[4][0],'Слушать музыку'],['我的爱好是运动。','Заниматься спортом']]}
 ];
 const normalize = text => String(text).replace(/[\p{P}\s]/gu,'');
-const clips = new Map([
-  ["来自","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/e5a97570-466d-43a3-9e1e-2aa603f4117a.mp3"],
-  ["现在","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/c19b0089-ff0b-42b7-b7f0-71d7e159bc0d.mp3"],
-  ["住在","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/cef960e2-8aa2-4333-99bb-58e3f84d4655.mp3"],
-  ["工作","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/8d7b8a95-6a7c-40d8-b16e-8070cd6bbe3c.mp3"],
-  ["爱好","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/b52c3637-d4f7-403b-aa36-50777c527957.mp3"],
-  ["学习","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/829170a4-da1c-4fa2-ab55-395dc05aa0ef.mp3"],
-  ["我叫米沙。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/5cc6d378-52e7-416e-88b2-a885d7248aba.mp3"],
-  ["我来自俄罗斯。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/c1a8cd18-8e01-4f6d-8040-f9c18f00323d.mp3"],
-  ["我现在住在莫斯科。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/edf787cf-7ab3-4722-acce-604c90e99e87.mp3"],
-  ["我在公司工作。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/85197244-afea-42c4-96fb-b0e76d8b662a.mp3"],
-  ["我的爱好是听音乐。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/20d8f04f-619f-4df6-8dee-b8bef43b9253.mp3"],
-  ["我每天学习中文。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/4f461ef5-0b39-4a62-8db7-57c38c883cb4.mp3"],
-  ["你来自哪里？","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/554870b4-f2d0-4a51-941d-85936a333000.mp3"],
-  ["你现在住在哪里？","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/7cb7e250-7ea6-4c51-af25-8359eeea36ce.mp3"],
-  ["你的爱好是什么？","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/c7b54532-4063-4e3b-90ed-b0e2ca40cd78.mp3"],
-  ["我来自中国。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/0c492fea-5717-4efd-aa9b-c1d8fffd8a29.mp3"],
-  ["我现在住在北京。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/7492ca08-4c9a-47e9-97ae-14e2a98a4ae2.mp3"],
-  ["我的爱好是运动。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/22ffcfc1-0a7c-4898-8ba1-594246d8b85e.mp3"]
-].map(([term,url])=>[normalize(term),url])); // provisional external recordings; replace with approved local voice files after QA.
+// No audio until it is recorded with the approved Panda Go LuvVoice speaker.
+const clips = new Map();
 const listening = words.map((w,i)=>[w.py,i]);
 const profileSentences = [...phrases];
 
@@ -848,8 +839,8 @@ const courseQuiz = words.flatMap((_,word) =>
   [0,1,2,3,4].map(type => ({type,index:word,word})));
 const stepNumber = step => courseMode ? courseSteps.indexOf(step)+1 : step;
 const titles = ['Вступление','Новые слова','Проверь слова','Грамматика','Собери рассказ','Тренировка тонов','Фразы и диалог','Завершение'];
-const tests = ['Значение слова','По аудио','Собери слово','Заполни фразу','Произнеси'];
-const testHelp = ['Выбери правильный перевод.','Прослушай запись и выбери слово.','Расставь иероглифы по порядку.','Подставь слово в предложение.','Произнеси слово или повтори самостоятельно.'];
+const tests = ['Значение слова','По пиньиню','Собери слово','Заполни фразу','Произнеси'];
+const testHelp = ['Выбери правильный перевод.','Найди слово по пиньиню.','Расставь иероглифы по порядку.','Подставь слово в предложение.','Произнеси слово или повтори самостоятельно.'];
 const tokens = ['我','现在','住在','莫斯科','。'];
 const key = 'panda-go-hsk2-about-me-v1';
 const priorLessonKey = 'panda-go-hsk2-about-me-v1';
@@ -908,8 +899,6 @@ function restore() {
 }
 
 let state = restore();
-// Earlier versions counted manual checkmarks as listened. Reset only this audio count once.
-if (!state.audioPlaybackV6) {state.heardWords=[];state.audioPlaybackV6=true;state.unlockedSection=0;}
 
 state.heardWords = [...new Set((Array.isArray(state.heardWords) ? state.heardWords : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.selfSpoken = [...new Set((Array.isArray(state.selfSpoken) ? state.selfSpoken : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
@@ -1041,7 +1030,7 @@ const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' go
 function audioButton(text, icon = speaker, blind = false) {
   const available = clips.has(normalize(text));
   const label = available ? (blind ? 'Прослушать запись' : 'Прослушать ' + text)
-    : 'Аудио пока не записано: ' + text;
+    : 'Запись тем же голосом Panda Go пока отсутствует: ' + text;
   return '<button type="button" class="orb' + (available ? '' : ' missing about-audio-pending') +
     '" ' + (available ? 'data-say="' + escape(text) + '"' : 'disabled aria-disabled="true"') +
     ' aria-label="' + escape(label) + '" title="' + escape(label) + '">' +
@@ -1184,6 +1173,7 @@ function intro() {
     '</div></section>';
 }
 function newWords() {
+  const canPlay = words.every(word => clips.has(normalize(word.zh)));
   return '<h1 class="pill-title">Новые слова</h1><div class="word-list about-myday-wordlist">' +
     words.map((word,i) => '<article class="word-row about-myday-word">' +
       vocabImage(i,'about-illustration about-myday-art') +
@@ -1191,8 +1181,10 @@ function newWords() {
       '<div class="about-myday-tones">' + toneStrokes(word.tones) + '</div>' +
       '<div class="about-myday-copy">' + translate([word.zh,word.py,word.ru]) + '</div>' +
       audioButton(word.zh,playIcon) + '</article>').join('') + '</div>' +
-    '<p class="hint audio-note about-listening-status">🔊 Прослушано ' + state.heardWords.length +
-    ' из 6 слов. Прослушай все записи, затем откроется «Дальше».</p>' + safeStatus();
+    (canPlay ? '<p class="hint audio-note about-listening-status">🔊 Прослушано ' + state.heardWords.length +
+       ' из 6 слов. Прослушай все записи, затем откроется «Дальше».</p>'
+    : '<p class="hint audio-note about-listening-status">🎧 Записи готовятся в нашем утверждённом голосе Panda Go. Другой голос не используется.</p>' +
+      '<button type="button" class="about-manual-complete" data-words-read="1">✓ Прочитал и повторил все 6 слов</button>') + safeStatus();
 }
 
 function hero(kind,step,title,subtitle) {
@@ -1269,8 +1261,9 @@ function question() {
         (done ? '' : choices(i,'ru',i,false));
       break;
     case 1:
-      content = '<div class="about-audio-test"><p class="hint">🎧 Прослушай запись и выбери слово.</p>' + audioButton(word.zh,playIcon,true) + '</div>' +
-        (done ? '' : choices(i,'zh',i+1,heardClip !== scope()));
+      content = '<div class="quiz-word py">' + word.py + '</div>' +
+        '<p class="hint">Выбери правильное китайское слово по пиньиню.</p>' +
+        (done ? '' : choices(i,'zh',i+1,false));
       break;
     case 2: {
       const chars = [...word.zh];
@@ -1389,7 +1382,7 @@ function tones() {
     (state.practiceMode === 'self' ? '✓ Запасной режим' : 'Не работает микрофон?') +
     '</button></div>' +
     (state.practiceMode === 'self'
-      ? '<p class="hint practice-fallback-note">Нет работающего распознавания? Прочитай и повтори по пиньиню, затем отметь слово. Запись можно прослушать по кнопке. Тоны не оцениваются автоматически.</p>'
+      ? '<p class="hint practice-fallback-note">Нет работающего распознавания? Прочитай и повтори по пиньиню, затем отметь слово. Если нет записи, повтори по пиньиню. Тоны автоматически не оцениваются.</p>'
       : '') +
     '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
@@ -1407,7 +1400,7 @@ function tones() {
     safeStatus() + toneGuide() + '<div class="progress-panel panel">' + stageImage('tones','about-progress-photo') + '<div><b>Практика произношения</b>' +
     '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
     ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
-    '. Тоны автоматически не оцениваются. Голос предварительный, его нужно проверить.</p>';
+    '. Тоны автоматически не оцениваются. Озвучка тем же голосом Panda Go готовится.</p>';
 }
 
 const replyPinyin = new Map([
@@ -1815,6 +1808,12 @@ const actions = {
   dayUndo: () => { state.dayOrder.pop(); state.dayDone = false; update(); },
   dayReset: () => { state.dayOrder = []; state.dayShuffled = mixedDay(); state.dayDone = false; update(); },
   dayCheck: () => checkOrder('day',6,'✓ Готово: шесть фраз рассказа по порядку образца.','Проверь: имя → страна → город → работа → хобби → учёба.'),
+  wordsRead: () => {
+    if (words.every(word => clips.has(normalize(word.zh)))) return;
+    state.heardWords = words.map((_,i) => i);
+    save(); render();
+    setStatus('✓ Повторено самостоятельно, без аудио. Тоны не проверялись.',true);
+  },
   learn: value => {
     const i=Number(value);
     if(!Number.isInteger(i)||i<0||i>=words.length)return;
