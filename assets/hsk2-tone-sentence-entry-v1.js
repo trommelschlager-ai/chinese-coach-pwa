@@ -29,7 +29,7 @@
  function open(e){e.preventDefault();
   if(typeof dialog.showModal!=='function'){location.href='./panda-hsk2-tone-sentence-pilot.html';return;}
   if(dialog.open)return;
-  const iframe=document.createElement('iframe');iframe.title='Проверка тонов фразы 我早上洗脸';iframe.src='./panda-hsk2-tone-sentence-pilot.html?v=3';iframe.allow='microphone; autoplay';dialog.append(iframe);dialog.showModal();
+  const iframe=document.createElement('iframe');iframe.title='Проверка тонов фразы 我早上洗脸';iframe.src='./panda-hsk2-tone-sentence-pilot.html?v=4';iframe.allow='microphone; autoplay';dialog.append(iframe);dialog.showModal();
  }
  function button(type){const b=document.createElement('button');b.type='button';b.className='pg2-tone-pilot-link'+(type==='tones'?' pg2-tone-speechlink':'');b.textContent='🎙 Проверь тоны';b.setAttribute('aria-label','Открыть экспериментальную проверку тонов целого предложения');b.setAttribute('data-pg2-tone-pilot','');b.addEventListener('click',open);return b;}
  function mount(){
