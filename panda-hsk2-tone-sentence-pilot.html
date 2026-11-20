@@ -243,7 +243,7 @@ function sharedSeconds(isLive=false){
 function xAt(seconds,isLive=false){
  return GRAPH_LEFT+GRAPH_W*Math.max(0,Math.min(1,seconds/sharedSeconds(isLive)));
 }
-function wholePath(data,isLive=false){
+function wholePath(data,isLive=false,axisLive=isLive){
  if(!data?.frames||data.frames.length<2)return '';
  const frames=data.frames.filter(p=>Number.isFinite(p.hz)&&p.hz>0&&Number.isFinite(p.t));
  if(frames.length<2)return '';
@@ -256,7 +256,7 @@ function wholePath(data,isLive=false){
  let out='',prev=null;
  for(const p of frames){
   if(p.t<start||p.t>end)continue;
-  const x=xAt(p.t-start,isLive);
+  const x=xAt(p.t-start,axisLive);
   const st=Math.max(-7,Math.min(7,12*Math.log2(p.hz/baseline)));
   const y=Math.max(GRAPH_TOP,Math.min(GRAPH_BOTTOM,90-st*8.7));
   const jump=prev?Math.abs(12*Math.log2(p.hz/prev.hz)):0;
@@ -337,7 +337,7 @@ $('guided-align').addEventListener('click',()=>{
  else say('Сопоставление по звучанию готово. Проверь границы слогов вручную; оценки тонов пока нет.');
 });
 
-function wholeGuides(){
+function wholeGuides(axisLive=false){
  const group=$('whole-dividers'),labels=$('whole-labels');
  group.replaceChildren();labels.replaceChildren();
  const total=weights.reduce((a,b)=>a+b,0);
@@ -346,7 +346,7 @@ function wholeGuides(){
   ? reference.bounds.map(t=>t-reference.bounds[0])
   : weights.reduce((arr,w)=>{arr.push(arr.at(-1)+span*w/total);return arr;},[0]);
  for(let i=0;i<tokens.length;i++){
-  const x=xAt((fractions[i]+fractions[i+1])/2);
+  const x=xAt((fractions[i]+fractions[i+1])/2,axisLive);
   const svgNS='http://www.w3.org/2000/svg';
   const t=document.createElementNS(svgNS,'text');t.setAttribute('x',x.toFixed(1));t.setAttribute('y','199');
   t.setAttribute('text-anchor','middle');t.setAttribute('fill','#6c4a83');
@@ -356,7 +356,7 @@ function wholeGuides(){
   py.setAttribute('text-anchor','middle');py.setAttribute('fill','#8a7392');py.setAttribute('font-size','11');py.textContent=tokens[i].py;
   labels.append(py);
   if(i<tokens.length-1){
-   const line=document.createElementNS(svgNS,'line');const bx=xAt(fractions[i+1]);
+   const line=document.createElementNS(svgNS,'line');const bx=xAt(fractions[i+1],axisLive);
    line.setAttribute('x1',bx.toFixed(1));line.setAttribute('x2',bx.toFixed(1));
    line.setAttribute('y1','28');line.setAttribute('y2','161');line.setAttribute('stroke','#ead4ed');
    line.setAttribute('stroke-dasharray','3 5');group.append(line);
@@ -365,8 +365,8 @@ function wholeGuides(){
 }
 function updateWhole(){
  const running=!!liveTimer&&!!recorder;
- drawTimeAxis(running);updateDurationLabels();wholeGuides();
- $('whole-ref').setAttribute('d',wholePath(reference));
+ drawTimeAxis(running);updateDurationLabels();wholeGuides(running);
+ $('whole-ref').setAttribute('d',wholePath(reference,false,running));
  const isCapturing=!!liveTimer&&!!recorder;showFocus();if(!isCapturing)showUncertainty();
  const display=isCapturing?{frames:liveFrames,base:median(liveFrames.map(p=>p.hz))}:learner;
  $('whole-mine').setAttribute('d',wholePath(display,isCapturing));
@@ -400,7 +400,7 @@ async function startLive(s){
   liveSource=context.createMediaStreamSource(s);liveAnalyzer=context.createAnalyser();
   liveAnalyzer.fftSize=4096;liveAnalyzer.smoothingTimeConstant=0;liveSource.connect(liveAnalyzer);
   liveFrame=new Float32Array(liveAnalyzer.fftSize);
-  liveStarted=performance.now();firstLiveVoice=null;drawTimeAxis(true);updateDurationLabels();wholeGuides();$('whole-ref').setAttribute('d',wholePath(reference));
+  liveStarted=performance.now();firstLiveVoice=null;drawTimeAxis(true);updateDurationLabels();wholeGuides(true);$('whole-ref').setAttribute('d',wholePath(reference,false,true));
   $('whole-state').textContent='● Запись';$('whole-state').classList.add('recording');
   $('whole-info').textContent='Говори фразу естественно. Линия рисуется во время речи и будет уточнена по полной записи после остановки.';
   liveTimer=setInterval(()=>{
