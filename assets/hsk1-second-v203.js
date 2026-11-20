@@ -262,20 +262,21 @@ function sample(title,items,extra=''){
 }
 function renderFinal(){
  if(state.completed){
-  return head('УРОК 2 · ПРОЙДЕН','Ты уже говоришь по-китайски! 🐼','Теперь ты умеешь говорить о себе и задавать простые вопросы.')+
+  return head('УРОК 2 · ПРОЙДЕН','Ты уже говоришь по-китайски! 🐼','Теперь ты умеешь использовать местоимения, говорить о профессии и задавать простые вопросы.')+
    '<div class="sheet pg11-final-sheet">'+
    '<div class="pg11-result">🏆 <strong>'+state.finalFirstTry+' из 5</strong><span>правильно с первой попытки</span></div>'+
    '<div class="pg11-skills"><h2>Что ты уже умеешь</h2>'+
    '<p><strong lang="zh-Hans">我是老师。</strong> <span>Я учитель.</span></p>'+
    '<p><strong lang="zh-Hans">你是老师吗？</strong> <span>Ты учитель?</span></p>'+
    '<p><strong lang="zh-Hans">您</strong> <span>Вежливое «Вы»</span></p></div>'+
-   '<h2 class="pg11-choose">Как будем закреплять?</h2>'+
+   '<details class="pg11-optional-details"><summary>🎯 Дополнительные тренировки (по желанию)</summary>'+
+   '<p class="pg11-optional-note">Основной урок пройден. Можно закрепить материал сейчас или позже.</p>'+
    '<div class="pg11-actions">'+
    '<a class="pg11-primary" href="./hsk1-second-practice.html?mode=quick">🎤 Быстрая практика · 6 слов</a>'+
    '<a href="./hsk1-second-practice.html?mode=listen">🎧 Словарь и прослушивание</a>'+
    '<a href="./hsk1-second-practice.html?mode=full">🗣 Полная тренировка · 16 пунктов</a>'+
 
-   '</div><p class="pg11-reminder">💡 Завтра повтори слова ещё раз — это поможет лучше их запомнить.</p>'+
+   '</div></details><p class="pg11-reminder">💡 Завтра повтори слова ещё раз — это поможет лучше их запомнить.</p>'+
    '<div class="pg-lesson-complete-actions"><button type="button" class="pg-end-repeat" data-restart>↻ Повторить урок</button><a class="pg-end-next" href="./hsk1-third-v212.html">Следующий урок →</a><a class="pg-end-back" href="./hsk1-map.html">Назад к Урокам</a></div></div>';
  }
  if(index(11)>=5&&(!state.finalWrong.length||state.reviewIndex>=state.finalWrong.length)){
