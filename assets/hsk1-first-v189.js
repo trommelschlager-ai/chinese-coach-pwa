@@ -263,6 +263,7 @@
     '<p class="pg-v415-smallnote">Молодец! Пройденный урок откроет следующее занятие «Местоимения».</p>'+
     '<div class="pg-lesson-complete-actions">'+
     '<button type="button" class="pg-end-repeat" id="repeat-course">↻ Повторить урок</button>'+
+    '<a class="pg-end-next" href="./hsk1-second-v203.html">Урок 2 · Местоимения →</a>'+
     '<a class="pg-end-back" href="./hsk1-map.html">Вернуться к карте</a>'+
     '</div></div>'
  );
