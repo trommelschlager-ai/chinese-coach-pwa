@@ -88,13 +88,85 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[x]));
 let index=0, answered={}, spoken=false,build=[],currentlyPlaying=false;
 try{let v=Number(localStorage.getItem('panda-street-slang-lesson1-step'));if(Number.isInteger(v))index=Math.max(0,Math.min(15,v))}catch{}
-const say=(t)=>{const ss=window.speechSynthesis;if(!ss){notify('Браузер не поддерживает демонстрационный голос');return}let utter=new SpeechSynthesisUtterance(t);utter.lang='zh-CN';utter.rate=.86;utter.pitch=1;const voices=ss.getVoices();const match=voices.find(v=>/^zh(-CN)?$/i.test(v.lang))||voices.find(v=>/zh|mandarin|chinese/i.test(v.lang+' '+v.name));if(!match){notify('На устройстве нет выбранного китайского голоса. Это только предпросмотр.');return}utter.voice=match;ss.cancel();ss.speak(utter);notify('Демо-озвучка телефона · финальный голос ещё не утверждён')};
+// Panda Street HSK1, lesson 1 only: pre-recorded Luvvoice male voice.
+// Each cue is an independently playable region of one short audio asset.
+// Until the matching asset is present, preserve the previous device TTS fallback.
+const STREET_VOICE_FILE='./assets/panda-street-lesson1-luvvoice.m4a';
+const STREET_VOICE_CUES={
+ '哈喽聊两句':[0.150,1.443],
+ '哈喽':[1.613,2.120],
+ '嗨':[2.290,2.632],
+ '早啊':[2.802,3.248],
+ '最近怎么样':[3.418,4.280],
+ '还行吧':[4.450,5.117],
+ '挺好的':[5.286,5.913],
+ '你呢':[6.083,6.605],
+ '拜拜':[6.775,7.371],
+ '没事':[7.541,8.053],
+ '还行吧你呢':[8.223,9.407],
+ '改天聊':[9.576,10.313],
+ '哈喽最近怎么样':[10.483,11.847],
+ '那就好':[12.017,12.653]
+};
+const normalizeStreetText=t=>String(t).replace(/[，。！？、\s]/g,'');
+let streetVoice,streetVoiceUnavailable=false,streetVoiceSeq=0;
+try{
+ streetVoice=new Audio(STREET_VOICE_FILE);
+ streetVoice.preload='auto';
+ streetVoice.addEventListener('error',()=>{streetVoiceUnavailable=true});
+ streetVoice.load();
+}catch(e){streetVoiceUnavailable=true}
+const sayBrowser=(t)=>{
+ const ss=window.speechSynthesis;
+ if(!ss){notify('Браузер не поддерживает голосовой режим');return}
+ let utter=new SpeechSynthesisUtterance(t);
+ utter.lang='zh-CN'; utter.rate=.86; utter.pitch=1;
+ const voices=ss.getVoices();
+ const match=voices.find(v=>/^zh(-CN)?$/i.test(v.lang))||voices.find(v=>/zh|mandarin|chinese/i.test(v.lang+' '+v.name));
+ if(!match){notify('Китайский голос не найден. Проверь аудиофайл урока.');return}
+ utter.voice=match; ss.cancel(); ss.speak(utter);
+ notify('Запасная озвучка телефона · файл Luvvoice недоступен');
+};
+const say=t=>{
+ const token=++streetVoiceSeq;
+ if(streetVoice)streetVoice.pause();
+ if(window.speechSynthesis)window.speechSynthesis.cancel();
+ const cue=STREET_VOICE_CUES[normalizeStreetText(t)];
+ if(!cue||streetVoiceUnavailable||!streetVoice){sayBrowser(t);return}
+ const fallback=()=>{
+  if(token!==streetVoiceSeq)return;
+  streetVoiceUnavailable=true;
+  streetVoice.pause();
+  sayBrowser(t);
+ };
+ const begin=()=>{
+  if(token!==streetVoiceSeq)return;
+  try{
+   streetVoice.currentTime=cue[0];
+   const p=streetVoice.play();
+   if(p&&p.catch)p.catch(fallback);
+   const watch=()=>{
+    if(token!==streetVoiceSeq||streetVoice.paused)return;
+    if(streetVoice.currentTime>=cue[1]){streetVoice.pause();return}
+    requestAnimationFrame(watch);
+   };
+   requestAnimationFrame(watch);
+  }catch(e){fallback()}
+ };
+ if(streetVoice.readyState>=1)begin();
+ else{
+  streetVoice.addEventListener('loadedmetadata',begin,{once:true});
+  streetVoice.addEventListener('error',fallback,{once:true});
+  streetVoice.load();
+ }
+};
+
 function notify(x){const el=$('notify');el.textContent=x;el.hidden=false;setTimeout(()=>{if(el.textContent===x)el.hidden=true},4200)}
-function audio(t){return `<button class="audio" type="button" data-say="${esc(t)}" aria-label="Прослушать ${esc(t)}">◖))  Слушать · демо</button>`}
+function audio(t){return `<button class="audio" type="button" data-say="${esc(t)}" aria-label="Прослушать ${esc(t)}">◖))  Слушать</button>`}
 function wordCard(n){const w=words[n];return `<div class="sheet"><span class="label">ЖИВОЕ ВЫРАЖЕНИЕ</span><div class="wordicon">${w[3]}</div><div class="hanzi" lang="zh-CN">${w[0]}</div><p class="py">${w[1]}</p><p class="ru">${w[2]}</p>${audio(w[0])}<div class="note">${w[4]}</div></div>`}
 function heading(label,title,sub){return `<div class="eyebrow">${label}</div><h1 class="title">${title}</h1>${sub?`<p class="sub">${sub}</p>`:''}`}
 function quiz(ni,q,options,correct,note){let selected=answered[ni],buttons=options.map((x,i)=>`<button type="button" data-quiz="${ni}:${i}" class="choice ${selected===i?(i===correct?'correct':'wrong'):''}">${esc(x)}</button>`).join('');return `<div class="sheet"><span class="label">ПРОВЕРЬ СЕБЯ</span><div class="miniTitle">${q}</div><div class="choiceGrid" style="margin-top:14px">${buttons}</div><div class="status" id="status-${ni}">${selected==null?'Выбери ответ':selected===correct?'✓ Верно!':'✕ Попробуй другой вариант'}</div>${selected===correct?`<div class="note">${note}</div>`:''}</div>`}
-function bubble(who,zh,py,ru,other=false){return `<div class="bubble ${other?'other':''}"><small>${who}</small><div class="h">${zh}</div><div class="p">${py}</div><div class="r">${ru}</div><button data-say="${esc(zh)}">▶ Демо-голос</button></div>`}
+function bubble(who,zh,py,ru,other=false){return `<div class="bubble ${other?'other':''}"><small>${who}</small><div class="h">${zh}</div><div class="p">${py}</div><div class="r">${ru}</div><button data-say="${esc(zh)}">▶ Слушать</button></div>`}
 const toneSvg=(p)=>`<svg viewBox="0 0 110 48" aria-hidden="true"><path d="${p}"/></svg>`;
 function render(){let body='';const labels=[
  'Старт','Первое слово','Приветствие','Утреннее приветствие','Звуки и тоны','Как дела?','Отвечаем естественно','Грамматика без учебника','Ещё один ответ','Тест: понимание','Мини-диалог','Составь фразу','Нюансы общения','Прощание','Скажи сам','Итог урока'];
