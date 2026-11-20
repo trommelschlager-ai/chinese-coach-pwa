@@ -111,9 +111,9 @@ function init(stage){
  speedGroup.className='pg-day-speed';
  speedGroup.innerHTML='<span class="pg-day-speed-icon" aria-hidden="true">◴</span>'+
   '<span class="pg-day-speed-name">Скорость</span>'+
-  '<input type="range" id="day-speed" min="0.75" max="1.25" step="0.25" value="0.75"'+
-  ' aria-label="Скорость речи Панды" aria-valuetext="0,75 раза" list="day-speed-ticks">'+
-  '<output id="day-speed-value" for="day-speed" aria-hidden="true">0,75×</output>'+
+  '<input type="range" id="day-speed" min="0.75" max="1.25" step="0.25" value="1"'+
+  ' aria-label="Скорость речи Панды" aria-valuetext="1 раз" list="day-speed-ticks">'+
+  '<output id="day-speed-value" for="day-speed" aria-hidden="true">1×</output>'+
   '<datalist id="day-speed-ticks"><option value="0.75"></option><option value="1"></option><option value="1.25"></option></datalist>';
  controls.append(speedGroup);
  const transcript=document.createElement('details');transcript.className='pg-day-transcript';transcript.hidden=true;
@@ -182,7 +182,7 @@ function init(stage){
  if(entry&&finishButton)entry.append(finishButton);
  const $=id=>stage.querySelector('#'+id);
  let phase='ready',i=0,round=0,reviewIndex=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],monologueSent=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false,chatContext={awaiting:null,turn:0},chatResume=null;const missingAudio=new Set();
- let playbackRate=0.75; // Learner-friendly default shown in the approved speed reference.
+ let playbackRate=1; // Normal speed is the learner-approved default; slow and fast are opt-in.
  const status=s=>{$('day-status').textContent=s};
  let chatCount=0;
  function addChatMessage(role,message){
