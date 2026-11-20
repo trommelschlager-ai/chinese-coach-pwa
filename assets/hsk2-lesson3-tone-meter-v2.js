@@ -7,7 +7,7 @@ const SYLLABLES=[['gōng','sī'],['xué','xiào'],['tóng','shì'],['tóng','xu�
 const SPLIT_MIN=.25,SPLIT_MAX=.75;
 const LIMIT=5;
 let state={selected:0,reps:Array.from({length:6},()=>({mic:[],manual:0}))};
-let active=null, seq=0, memo=null, note='Нажми «Записать произношение», скажи слово и посмотри на зелёную линию.';
+let active=null, seq=0, memo=null, note='Выбери слово и нажми «Записать голос».';
 const finite=n=>typeof n==='number'&&Number.isFinite(n);
 function readState(){
  try{
@@ -34,62 +34,46 @@ function progressText(){return total()+' / 30'}
 function micCount(){return state.reps.reduce((sum,r)=>sum+r.mic.length,0)}
 function tr(tones){return tones.map(x=>['','1 — ровный','2 — восходящий','3 — нисходяще-восходящий','4 — нисходящий'][x])}
 function esc(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
 function render(words,art,heading,panel,ttsNote){
  memo={words,art,heading,panel,ttsNote};
  const i=state.selected,w=words[i],r=state.reps[i];
- const rows=words.map((word,index)=>{
-  const n=count(index),selected=index===i;
-  return '<div class="tone-word'+(selected?' tone-chosen':'')+'">'+
-    '<div class="tone-word-words"><div class="cn" lang="zh-Hans">'+word.zh+'</div><div class="py">'+word.py+'</div>'+
-    '<div class="ru">'+word.ru+' · '+word.tones+'</div></div>'+
-    '<div class="tone-word-action"><span class="tone-count" aria-label="Повторений '+n+' из пяти">'+
-    (n===5?'✓ ':'')+n+' / 5</span><button type="button" class="action" data-tone-act="select" data-i="'+index+'" aria-pressed="'+selected+'">'+
-    (selected?'Выбрано':'Тренировать')+'</button></div></div>';
- }).join('');
  const last=r.mic.length?r.mic[r.mic.length-1]:null;
  const syllables=SYLLABLES[i];
  const ratio=last?.splitRatio??.5;
- const splitLabel=({pause:'по паузе в речи',energy:'по снижению громкости',manual:'вручную',midpoint:'примерно посередине'})[last?.splitSource||'midpoint'];
- const bullets=Array.from({length:LIMIT},(_,k)=>'<span class="tone-bullet'+(k<count(i)?' done':'')+'">'+(k<count(i)?'✓':(k+1))+'</span>').join('');
+ const splitLabel=({pause:'по паузе',energy:'по снижению громкости',manual:'вручную',midpoint:'примерно посередине'})[last?.splitSource||'midpoint'];
+ const done=count(i),busy=active&&active.word===i;
  return panel(
-  heading('Произношение и тоны','Шаг 4 / 8 · Каждый из 6 слов повтори 5 раз. Это тренировка памяти и контуров тонов.')+
-  '<p>Выбери выражение, нажми «Записать произношение» и сравни изменения высоты голоса по двум слогам. <b>Это пока не оценка правильности тонов.</b></p>'+
-  '<div class="tone-overall"><strong>Повторения: '+progressText()+'</strong><span>С микрофоном: '+micCount()+'</span></div>'+
-  '<div class="meter"><i style="width:'+(total()/30*100)+'%"></i></div>'+
-  '<div class="tone-quick-select" role="group" aria-label="Выбор слова">'+words.map((word,index)=>
-   '<button type="button" class="action'+(index===i?' selected':'')+'" data-tone-act="select" data-i="'+index+'" aria-pressed="'+(index===i)+'">'+
-   word.zh+'<small>'+count(index)+'/5</small></button>').join('')+'</div>'
- )+
- panel(
-  '<div id="tone-trainer" class="tone-trainer"><div class="eyebrow">🎙 Тренировка слова '+(i+1)+' / 6</div>'+
-  '<div class="tone-title"><div><div class="cn" lang="zh-Hans">'+w.zh+'</div><div class="py">'+w.py+'</div><div class="ru">'+w.ru+'</div></div>'+
-  '<div class="tone-dots" aria-label="Количество повторений">'+bullets+'</div></div>'+
-  '<p class="hint">'+esc(tr(TONES[i]).join('; '))+'. Образец — схема высоты тонов, не запись носителя.</p>'+
-  '<div class="tone-graph-pair">'+[0,1].map(n=>
-    '<div class="tone-syllable-graph"><h3 class="tone-syllable-title">'+esc(w.zh.charAt(n))+
-    ' · '+syllables[n]+' <span>тон '+TONES[i][n]+'</span></h3>'+
-    '<canvas id="tone-canvas-'+(n+1)+'" role="img" aria-label="Изменение высоты голоса, слог '+(n+1)+', '+syllables[n]+'" width="360" height="175"></canvas>'+
-    '<p id="tone-trend-'+(n+1)+'" class="tone-trend">Нажми «Записать произношение».</p></div>').join('')+'</div>'+
-  '<div class="tone-split-control">'+
-    '<label for="tone-split">Примерная граница между слогами: <strong id="tone-split-value">'+Math.round(ratio*100)+'%</strong></label>'+
-    '<input type="range" id="tone-split" min="25" max="75" step="1" value="'+Math.round(ratio*100)+'" '+(!last||active?'disabled':'')+
-    ' aria-label="Поправить границу между первым и вторым слогом">'+
-    '<p id="tone-split-hint" class="hint">Разделение '+esc(splitLabel)+'. Если граница ошибочна — передвинь ползунок после записи.</p>'+
-  '</div>'+
-  '<div class="tone-legend"><span class="tone-legend-target">Пунктир — образец тонов</span><span class="tone-legend-user">Зелёная — твой голос</span></div>'+
-  '<div id="tone-status" class="tone-status" role="status" aria-live="polite">'+esc(note)+'</div>'+
-  '<div class="btnrow tone-actions"><button id="tone-record" class="primary" type="button" data-tone-act="record" '+(count(i)>=LIMIT?'disabled':'')+'>'+
-    '🎙 Записать произношение</button>'+
-  '<button type="button" class="action" data-tone-act="manual" '+(count(i)>=LIMIT?'disabled':'')+'>✓ Повторил без микрофона</button></div>'+
-  '<div class="tone-aux"><button class="action" type="button" data-tone-act="clear">↻ Сбросить повторы слова</button></div>'+
-  '<p class="hint">Разреши доступ к микрофону. Фоновый шум мешает измерению. Анализ идёт на устройстве: звук не отправляется на сервер и не сохраняется. '+
-  'Линии показывают только измеренную высоту голоса. Разделение на два слога <b>приблизительное</b>, без распознавания звуков речи и автоматического выставления оценок за китайские тоны. '+
-  'Научная проверка точности потребует выравнивания слогов и эталонных записей носителя.</p>'+
-  (last?'<p class="hint">Последнее измерение: '+last.seconds.toFixed(1)+' с · '+last.points.length+' измерений высоты голоса.</p>':'')+
-  ttsNote+'</div>'
- )+
- panel('<h3>Все шесть выражений</h3>'+rows+
-  '<p class="hint">Зелёная линия — измерение, фиолетовый пунктир — схема. Повторы не равны проверке правильности тонов.</p>');
+  '<div id="tone-trainer" class="tone-trainer tone-compact">'+
+   '<div class="tone-compact-head"><strong>🎙 Тоны и произношение</strong><span>'+progressText()+' повторений</span></div>'+
+   '<div class="tone-quick-select" role="group" aria-label="Выбери слово для тренировки">'+words.map((word,index)=>
+    '<button type="button" class="action'+(index===i?' selected':'')+'" data-tone-act="select" data-i="'+index+'" aria-pressed="'+(index===i)+'">'+
+     word.zh+'<small>'+count(index)+'/5</small></button>').join('')+'</div>'+
+   '<div class="tone-compact-word"><div><strong class="cn" lang="zh-Hans">'+w.zh+'</strong> '+
+    '<span class="py">'+w.py+'</span> <span class="ru">'+w.ru+'</span></div>'+
+    '<span class="tone-current-count">'+done+' / 5</span></div>'+
+   '<div class="tone-graph-pair">'+[0,1].map(n=>
+    '<div class="tone-syllable-graph"><div class="tone-syllable-title">'+esc(w.zh.charAt(n))+
+    ' · '+syllables[n]+' <span>тон '+TONES[i][n]+'</span></div>'+
+    '<canvas id="tone-canvas-'+(n+1)+'" role="img" aria-label="Высота голоса для слога '+(n+1)+', '+syllables[n]+'" width="360" height="175"></canvas>'+
+    '<p id="tone-trend-'+(n+1)+'" class="tone-trend">После записи появится твоя линия.</p></div>').join('')+'</div>'+
+   '<div class="tone-legend"><span class="tone-legend-target">Пунктир — схема</span><span class="tone-legend-user">Зелёная — твой голос</span></div>'+
+   '<div id="tone-status" class="tone-status" role="status" aria-live="polite">'+esc(note)+'</div>'+
+   '<div class="btnrow tone-actions"><button id="tone-record" class="primary" type="button" data-tone-act="record" '+(done>=LIMIT&&!busy?'disabled':'')+'>'+
+    '🎙 Записать голос</button>'+
+    '<button type="button" class="action" data-tone-act="manual" '+(done>=LIMIT?'disabled':'')+'>✓ Повторил сам</button></div>'+
+   '<details class="tone-advanced"><summary>Граница слогов и пояснения</summary>'+
+    '<div class="tone-split-control"><label for="tone-split">Граница слогов: <strong id="tone-split-value">'+Math.round(ratio*100)+'%</strong></label>'+
+    '<input type="range" id="tone-split" min="25" max="75" step="1" value="'+Math.round(ratio*100)+'" '+(!last||busy?'disabled':'')+
+    ' aria-label="Сместить примерную границу между слогами">'+
+    '<p id="tone-split-hint" class="hint">Разделение '+esc(splitLabel)+'. При необходимости поправь после записи.</p></div>'+
+    '<p class="hint">Это график высоты голоса, а не подтверждение правильности тонов. Два слога определяются приблизительно, без распознавания речи. Звук не сохраняется и не отправляется на сервер.</p>'+
+    '<button class="action tone-reset" type="button" data-tone-act="clear">↻ Сбросить повторы выбранного слова</button>'+
+    (last?'<p class="hint">Запись: '+last.seconds.toFixed(1)+' с; измерений: '+last.points.length+'.</p>':'')+
+    ttsNote+'</details>'+
+   '<p class="tone-safety-label">Схема тонов — ориентир, не оценка произношения.</p>'+
+  '</div>'
+ );
 }
 function median(a){const b=a.slice().sort((x,y)=>x-y),n=b.length;return n?b[Math.floor(n/2)]:0}
 
