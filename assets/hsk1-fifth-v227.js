@@ -100,7 +100,7 @@ function finalQuizCard(){
   '<p class="small">Ответы с первой попытки учитываются отдельно. После ошибки можно исправиться.</p>');
 }
 
-const defaultState=()=>({step:0,maxStep:0,heard:{},listen:0,built:0,chosen:[],used:[],quizPassed:false,done:false,finalStep:0,finalFirstTry:0,finalErrors:{},finalLegacy:false,personal:{month:11,day:6}});
+const defaultState=()=>({step:0,maxStep:0,heard:{},listen:0,built:0,chosen:[],used:[],quizPassed:false,done:false,finalStep:0,finalFirstTry:0,finalErrors:{},finalLegacy:false,personal:{month:11,day:6},audioReadFallbacks:{}});
 let state=defaultState();
 try{
  const raw=JSON.parse(localStorage.getItem(KEY)||'null');
@@ -118,6 +118,7 @@ try{
   state.finalFirstTry=Number.isInteger(raw.finalFirstTry)?Math.max(0,Math.min(5,raw.finalFirstTry)):0;
   state.finalErrors=raw.finalErrors&&typeof raw.finalErrors==='object'?raw.finalErrors:{};
   state.personal=raw.personal&&typeof raw.personal==='object'?{month:Number(raw.personal.month)||11,day:Number(raw.personal.day)||6}:{month:11,day:6};
+  state.audioReadFallbacks=raw.audioReadFallbacks&&typeof raw.audioReadFallbacks==='object'?raw.audioReadFallbacks:{};
  }
 }catch{}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -201,9 +202,9 @@ function conversation(){return card('<h2>Послушай разговор</h2><
 function listening(){
  const i=state.listen,done=i>=questions.length,q=questions[Math.min(i,questions.length-1)];
  return card('<h2>Слушай и выбирай</h2><p class="center small">Вопрос '+Math.min(i+1,questions.length)+' из '+questions.length+'</p>'+
- '<div class="buttons">'+audioButton(q.sound)+(!voice(q.sound)&&!done?'<button type="button" class="soft" data-audio-unavailable>🔇 Нет записи — перейти к чтению</button>':'')+'</div><div class="grid three">'+q.choices.map(z=>
+ '<div class="buttons">'+audioButton(q.sound)+'</div>'+(!done?'<details class="pg-audio-fallback"><summary>Если запись не работает</summary><button type="button" class="soft" data-audio-unavailable>Продолжить в режиме чтения</button></details>':'')+'<div class="grid three">'+q.choices.map(z=>
  '<button type="button" class="card-choice" data-listen="'+esc(z)+'"'+(done||!listenReady?' disabled':'')+'><strong>'+esc(z)+'</strong></button>').join('')+'</div>'+
- (done?'<p class="result good">✓ Все ответы верны! Можно повторить.</p><div class="buttons"><button class="soft primary" type="button" data-repeat-listen>↻ Пройти заново</button></div>':'<p class="small center" id="pg5-listen-hint">'+(listenReady?'Выбирай ответ, можно переслушать.':'Нажми 🔊, чтобы включить звук и открыть ответы.')+'</p>'));}
+ (done?'<p class="result good">✓ Проверка завершена.'+(Object.keys(state.audioReadFallbacks||{}).length?' Некоторые ответы выполнены по тексту, а не на слух.':'')+'</p><div class="buttons"><button class="soft primary" type="button" data-repeat-listen>↻ Пройти заново</button></div>':'<p class="small center" id="pg5-listen-hint">'+(listenReady?'Выбирай ответ, можно переслушать.':'Нажми 🔊, чтобы включить звук и открыть ответы.')+'</p>'));}
 function builder(){
  const i=state.built,done=i>=builds.length,b=builds[Math.min(i,builds.length-1)];
  const pool=b.parts.concat(['四']);
@@ -319,10 +320,11 @@ app.addEventListener('click',event=>{
   return;
  }
  if(b.hasAttribute('data-audio-unavailable')){
-   if(state.step!==9||voice(questions[state.listen]?.sound))return;
+   if(state.step!==9||state.listen>=questions.length)return;
+   state.audioReadFallbacks[state.listen]=true;save();
    listenReady=true;
    app.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
-   const hint=app.querySelector('#pg5-listen-hint');if(hint)hint.textContent='Записи нет: вопрос проверяет чтение, а не слух.';
+   const hint=app.querySelector('#pg5-listen-hint');if(hint)hint.textContent='Режим чтения: этот ответ не считается проверкой слуха.';
    return;
  }
  if(b.hasAttribute('data-restart-lesson')){
@@ -330,7 +332,7 @@ app.addEventListener('click',event=>{
    if(micUrl){URL.revokeObjectURL(micUrl);micUrl=null}
    state=defaultState();save();refresh();return;
   }
-  if(b.hasAttribute('data-repeat-listen')){state.listen=0;listenReady=false;save();refresh();say('Аудирование начато заново.','good');return}
+  if(b.hasAttribute('data-repeat-listen')){state.listen=0;state.audioReadFallbacks={};listenReady=false;save();refresh();say('Аудирование начато заново.','good');return}
   if(b.hasAttribute('data-repeat-builder')){state.built=0;clearBuilder();refresh();say('Собери месяцы заново.','good');return}
   if(b.hasAttribute('data-listen')){
   const i=state.listen;if(i>=questions.length||!listenReady)return;
