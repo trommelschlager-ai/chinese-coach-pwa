@@ -96,6 +96,15 @@ function init(stage){
  '<button id="day-finish" type="button">✓ Завершить рассказ</button><button id="day-retry" type="button">↻ Ещё раз</button></div>'+
  '<div class="pg-day-toggles"><button id="day-show-py" type="button" aria-pressed="true">拼 Пиньинь</button>'+
  '<button id="day-show-ru" type="button" aria-pressed="true">RU Перевод</button><a href="./hsk2-lesson1.html?step=8">← К уроку</a></div>';
+ // A compact, real playback-speed selector; independent from browser TTS.
+ // Keep it on the story controls, never replace the hint or repeated-phrase buttons.
+ const speedGroup=document.createElement('label');
+ speedGroup.id='day-speed-wrap';
+ speedGroup.className='pg-day-speed';
+ speedGroup.innerHTML='<span class="pg-day-speed-icon" aria-hidden="true">◴</span><span class="pg-day-speed-name">Скорость</span>'+
+  '<select id="day-speed" aria-label="Скорость речи Панды"><option value="0.75" selected>0,75×</option>'+
+  '<option value="1">1×</option><option value="1.25">1,25×</option></select><span class="pg-day-speed-chevron" aria-hidden="true">⌄</span>';
+ controls.append(speedGroup);
  const transcript=document.createElement('details');transcript.className='pg-day-transcript';transcript.hidden=true;
  transcript.innerHTML='<summary>👤 Мой распознанный рассказ</summary><p id="day-transcribed" lang="zh-Hans"></p>';
  panel.append(transcript);
@@ -124,6 +133,7 @@ function init(stage){
  if(entry&&finishButton)entry.append(finishButton);
  const $=id=>stage.querySelector('#'+id);
  let phase='ready',i=0,round=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false;const missingAudio=new Set();
+ let playbackRate=0.75; // Learner-friendly default shown in the approved speed reference.
  const status=s=>{$('day-status').textContent=s};
  function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||'';const repeat=$('day-hear');if(repeat){repeat.disabled=!approvedClips(a[0]).length;repeat.title=repeat.disabled?'Нет точной записи утверждённым голосом':'Повторить одобренную запись'}}
  function stagePhase(p){
@@ -134,6 +144,7 @@ function init(stage){
   show('day-start',p==='ready');show('day-hear',!['ready','results'].includes(p));
   show('day-pause',['story','intro','summary'].includes(p));show('day-hint',['questions','monologue'].includes(p));
   show('day-finish',p==='monologue');show('day-retry',p==='results');
+  show('day-speed-wrap',['intro','story','questions','summary','monologue'].includes(p));
   show('day-input',p==='questions');show('day-send',p==='questions');
   show('day-long',p==='monologue');show('day-mic',['questions','monologue'].includes(p));
  }
@@ -162,7 +173,7 @@ function init(stage){
          done();return;
        }
        const audio=new Audio(candidates[k]);
-       player=audio;audio.preload='auto';audio.playbackRate=slow?.83:1;
+       player=audio;audio.preload='auto';audio.playbackRate=slow?Math.max(0.60,playbackRate*0.85):playbackRate;
        if('preservesPitch' in audio)audio.preservesPitch=true;
        stage.dataset.dayTalking='true';
        audio.onended=done;
@@ -326,6 +337,13 @@ function init(stage){
   r.onend=()=>{const wasCurrent=recognizer===r;if(wasCurrent)recognizer=null;if(wasCurrent&&phase==='questions')countdown()};
   try{r.start()}catch(_){recognizer=null;status('Не удалось включить микрофон. Проверь разрешение Chrome или напиши ответ.')}
  }
+ $('day-speed').onchange=()=>{
+   const chosen=Number($('day-speed').value);
+   if(![0.75,1,1.25].includes(chosen))return;
+   playbackRate=chosen;
+   if(player&& !player.paused)player.playbackRate=playbackRate;
+   $('day-speed').setAttribute('aria-label','Скорость речи Панды: '+chosen.toString().replace('.',',')+' раза');
+ };
  $('day-start').onclick=begin;
  $('day-send').onclick=()=>answer($('day-input').value);
  $('day-input').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();answer($('day-input').value)}};
