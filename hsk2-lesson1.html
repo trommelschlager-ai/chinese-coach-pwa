@@ -279,6 +279,19 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .pg-core-quiz-actions{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:9px!important;margin:12px 6px!important}
 #app #pg433 .pg-core-quiz-actions button{min-height:46px!important;width:100%!important;white-space:normal!important;font-size:clamp(13px,3.5vw,16px)!important;border-radius:17px!important}
 #app #pg433 .test-card strong,#app #pg433 .test-card small{overflow-wrap:anywhere!important;min-width:0!important}
+
+/* User's own day: bright, accessible expansion of existing approved chat */
+#app #pg433 .pg-routine{margin:12px 6px!important;padding:10px 12px!important;border-color:#eab3d8!important;border-radius:19px!important;background:linear-gradient(140deg,#fffafd,#f9e2fa)!important;box-shadow:0 3px 8px #a66b9c36!important}
+#app #pg433 .pg-routine summary{font-size:clamp(15px,4.2vw,19px)!important;color:#7b278a!important;font-weight:850!important;cursor:pointer;line-height:1.3}
+#app #pg433 .pg-routine-note{font-size:clamp(12px,3.2vw,14px)!important;line-height:1.45;color:#704875!important;margin:9px 0}
+#app #pg433 .pg-routine-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0}
+#app #pg433 .pg-routine-field{display:flex;flex-direction:column;gap:5px;min-width:0;font-weight:750;font-size:13px;color:#672e7a}
+#app #pg433 .pg-routine-field select{box-sizing:border-box;min-height:45px;width:100%;max-width:100%;min-width:0;border:1.5px solid #d49bd5;border-radius:12px;background:#fffaff;color:#58286f;font:650 13px/1.2 system-ui,sans-serif;padding:7px 6px}
+#app #pg433 .pg-routine-line{display:flex;flex-direction:column;margin:7px 0;padding:10px;border:1px solid #edcce6;border-radius:13px;background:#fffaff;gap:4px}
+#app #pg433 .pg-routine-line strong{font-size:clamp(18px,5vw,24px);color:#692277;line-height:1.25}
+#app #pg433 .pg-routine-line span{font-size:clamp(13px,3.8vw,16px);color:#b4369b}
+#app #pg433 .pg-routine-line small{font-size:clamp(12px,3.5vw,15px);color:#66426f}
+@media(max-width:360px){#app #pg433 .pg-routine-fields{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -387,7 +400,7 @@ function blank() {
     missed:tests.map(() => words.map(() => false)), quizTest:null, quizIndex:0, quizPicked:[], courseQuizCursor:null, courseQuizType:null, quizRetry:null,
     grammar:[], grammarDone:false, dayOrder:[], dayShuffled:mixedDay(), dayDone:false,
     mic:[], chat:[], toneTab:'words', unlockedSection:0,
-    heardWords:[], selfSpoken:[], practiceMode:'mic'
+    heardWords:[], selfSpoken:[], practiceMode:'mic', routine:{wake:'7',breakfast:'yes',work:'go',sleep:'10'}
   };
 }
 
@@ -896,6 +909,43 @@ function bubble(role,item) {
     '</div>' + audioButton(item[0]) + '</div></article>';
 }
 
+
+// Optional personal production after the model dialogue. No invented speech/audio.
+const routineData=Object.freeze({
+ wake:[['7','七点','qī diǎn','в семь'],['8','八点','bā diǎn','в восемь']],
+ breakfast:[['yes','吃早饭','chī zǎofàn','завтракаю'],['no','不吃早饭','bù chī zǎofàn','не завтракаю']],
+ work:[['go','去上班','qù shàngbān','иду на работу'],['no','今天不去上班','jīntiān bú qù shàngbān','сегодня не иду на работу'],['home','在家工作','zài jiā gōngzuò','работаю дома']],
+ sleep:[['10','十点','shí diǎn','в десять'],['11','十一点','shíyī diǎn','в одиннадцать']]
+});
+function routineChoice(key){
+ const selected=state.routine?.[key];
+ return routineData[key].find(x=>x[0]===selected)||routineData[key][0];
+}
+function routineLines(){
+ const wake=routineChoice('wake'),breakfast=routineChoice('breakfast'),
+       work=routineChoice('work'),sleep=routineChoice('sleep');
+ return [
+  ['我每天'+wake[1]+'起床。','Wǒ měitiān '+wake[2]+' qǐchuáng.','Я каждый день встаю '+wake[3]+'.'],
+  ['我早上'+breakfast[1]+'。','Wǒ zǎoshang '+breakfast[2]+'.','Утром я '+breakfast[3]+'.'],
+  ['我'+work[1]+'。','Wǒ '+work[2]+'.','Я '+work[3]+'.'],
+  ['我晚上'+sleep[1]+'睡觉。','Wǒ wǎnshang '+sleep[2]+' shuìjiào.','Вечером я ложусь спать '+sleep[3]+'.']
+ ];
+}
+function routineResultMarkup(){
+ return routineLines().map(([zh,py,ru])=>'<p class="pg-routine-line"><strong lang="zh-Hans">'+escape(zh)+'</strong><span>'+escape(py)+'</span><small>'+escape(ru)+'</small></p>').join('');
+}
+function personalRoutine(){
+ const item=(key,title)=>'<label class="pg-routine-field">'+title+'<select data-routine="'+key+'" aria-label="'+title+'">'+
+  routineData[key].map(([value,zh,py,ru])=>'<option value="'+value+'"'+(routineChoice(key)[0]===value?' selected':'')+'>'+
+   escape(ru)+' · '+escape(zh)+'</option>').join('')+'</select></label>';
+ return '<details class="panel pg-routine"><summary>✍️ Расскажи о своём настоящем дне</summary>'+
+   '<p class="pg-routine-note">Выбери варианты и прочитай собственный рассказ вслух. Если не завтракаешь или не работаешь — это тоже нормальный ответ.</p>'+
+   '<div class="pg-routine-fields">'+item('wake','Когда встаёшь')+item('breakfast','Завтракаешь ли')+
+   item('work','Работа / день')+item('sleep','Когда ложишься')+'</div>'+
+   '<div class="pg-routine-result" aria-live="polite">'+routineResultMarkup()+'</div>'+
+   '<p class="pg-routine-note">Новые варианты — письменная практика, без отдельной MP3-записи. Произношение и тоны автоматически не проверяются.</p></details>';
+}
+
 function pandaAiShortcut() {
   // Opens the approved seven-stage HSK2 My Day speaking scenario inside Panda AI.
   return '<a class="panda-ai-shortcut" href="./panda-voice-pilot.html?scenario=hsk2-my-day&amp;from=hsk2-lesson1" ' +
@@ -922,7 +972,7 @@ function chat() {
       translation + '</span></button>').join('') + '</div><div class="controls"><button type="button" class="soft" data-mic="chat">🎙 Ответить голосом</button></div>' :
       '<p class="feedback good">✓ Ты ответил на все три вопроса.</p>') + safeStatus() +
     (i ? '<div class="controls"><button type="button" class="soft" data-chat-reset>Начать диалог заново</button></div>' : '') + '</section>' +
-    (i === dialogue.length ? pandaAiShortcut() : lockedPandaAiShortcut());
+    (i === dialogue.length ? personalRoutine() + pandaAiShortcut() : lockedPandaAiShortcut());
 }
 
 function finish() {
@@ -1255,6 +1305,16 @@ const actions = {
   chatReset: () => { clearMedia(); state.chat = []; update(); }
 };
 
+app.addEventListener('change',event=>{
+ const select=event.target.closest('select[data-routine]');
+ if(!select)return;
+ const key=select.dataset.routine;
+ if(!Object.prototype.hasOwnProperty.call(routineData,key) || !routineData[key].some(x=>x[0]===select.value))return;
+ state.routine={...(state.routine||{}),[key]:select.value};
+ save();
+ const result=app.querySelector('.pg-routine-result');
+ if(result)result.innerHTML=routineResultMarkup();
+});
 let pressedNavButton;
 let pressedNavTimer;
 app.addEventListener('click',event => {
