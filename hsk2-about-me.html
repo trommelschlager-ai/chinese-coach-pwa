@@ -1010,6 +1010,162 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
  #app #pg433 .approved-story-grid.story-cols-3{gap:4px!important}
 }
 
+
+/* HSK 2 ABOUT ME · mobile screenshot refinements 2026-11-20.
+   Scoped exclusively to this page and to these views; eight-step logic untouched. */
+.course-layout #app[data-view="2"] #pg433 .pg433-content {
+  padding:7px 8px 8px!important;
+}
+.course-layout #app[data-view="2"] #pg433 .word-list.about-myday-wordlist {
+  flex:1 1 auto!important;min-height:0!important;gap:clamp(5px,.9dvh,9px)!important;
+  margin:4px 0 0!important;grid-template-rows:repeat(6,minmax(64px,1fr))!important;
+}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word {
+  min-height:64px!important;grid-template-columns:clamp(68px,20vw,92px) max-content clamp(28px,8vw,37px) minmax(0,1fr) clamp(36px,10vw,44px)!important;
+  column-gap:clamp(2px,.65vw,5px)!important;padding:4px 6px 4px 4px!important;
+  border-radius:19px!important;
+}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > svg.about-myday-art {
+  height:clamp(58px,9dvh,87px)!important;width:100%!important;
+  aspect-ratio:1;max-height:100%!important;
+}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .cn {
+  font-size:clamp(19px,5.7vw,26px)!important;
+}
+.course-layout #app[data-view="2"] #pg433 .about-myday-copy .py {
+  font-size:clamp(12px,3.8vw,16px)!important;
+}
+.course-layout #app[data-view="2"] #pg433 .about-myday-copy .ru {
+  font-size:clamp(11px,3.4vw,15px)!important;
+}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .orb {
+  width:clamp(35px,10vw,44px)!important;height:clamp(35px,10vw,44px)!important;
+  min-width:0!important;
+}
+.course-layout #app[data-view="2"] #pg433 .about-listening-status{display:none!important}
+.course-layout #app[data-view="4"] #pg433 .about-grammar-example {
+  grid-template-columns:minmax(0,1fr) 39px!important;
+  padding:10px 10px 10px 12px!important;gap:8px!important;
+}
+.course-layout #app[data-view="4"] #pg433 .about-grammar-example-copy {
+  display:flex;flex-direction:column;gap:2px;min-width:0;width:100%;
+}
+.course-layout #app[data-view="4"] #pg433 .about-grammar-example-copy .cn{
+  font-size:clamp(19px,5.6vw,25px)!important;overflow-wrap:anywhere;
+}
+.course-layout #app[data-view="4"] #pg433 .about-grammar-example-copy .py,
+.course-layout #app[data-view="4"] #pg433 .about-grammar-example-copy .ru{
+  font-size:clamp(12px,3.6vw,16px)!important;line-height:1.2!important;
+}
+.course-layout #app[data-view="5"] #pg433 .pg433-content {
+  display:flex!important;flex-direction:column!important;min-height:0!important;
+  padding:5px 7px 6px!important;overflow-y:hidden!important;
+}
+#app[data-view="5"] #pg433 .about-approved-story-head{flex:0 0 auto!important}
+#app[data-view="5"] #pg433 .approved-story-title{
+  font-size:clamp(17px,4.65vw,21px)!important;line-height:1.1!important;
+  padding:3px 12px!important;margin:1px auto 3px!important;border-width:1.5px!important;
+}
+#app[data-view="5"] #pg433 .approved-story-grid.story-cols-2 {
+  flex:1 1 auto!important;min-height:0!important;display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  gap:clamp(4px,.75dvh,8px)!important;margin:3px 0 5px!important;
+  align-items:stretch!important;
+}
+#app[data-view="5"] #pg433 .approved-story-card{
+  height:100%!important;min-height:0!important;border-radius:15px!important;
+  border-width:1.5px!important;overflow:hidden!important;
+}
+#app[data-view="5"] #pg433 .approved-story-card .approved-story-choice{
+  display:grid!important;grid-template-columns:clamp(43px,12vw,56px) minmax(0,1fr)!important;
+  grid-template-rows:auto auto auto!important;align-content:center!important;
+  align-items:center!important;text-align:left!important;column-gap:5px!important;
+  row-gap:1px!important;padding:4px 4px 4px 4px!important;
+}
+#app[data-view="5"] #pg433 .approved-story-card .approved-story-choice svg.about-story-photo{
+  grid-column:1!important;grid-row:1 / span 3!important;
+  width:100%!important;height:clamp(44px,6.7dvh,65px)!important;
+  aspect-ratio:1!important;border-radius:9px!important;
+  align-self:center!important;
+}
+#app[data-view="5"] #pg433 .approved-story-card .approved-story-choice .cn{
+  grid-column:2!important;grid-row:1!important;font-size:clamp(13px,3.8vw,17px)!important;
+  line-height:1.09!important;letter-spacing:-.02em!important;min-width:0;
+}
+#app[data-view="5"] #pg433 .approved-story-card .approved-story-choice .py{
+  grid-column:2!important;grid-row:2!important;font-size:clamp(10px,2.85vw,12px)!important;
+  line-height:1.12!important;font-weight:650!important;min-width:0;
+}
+#app[data-view="5"] #pg433 .approved-story-card .approved-story-choice .ru{
+  grid-column:2!important;grid-row:3!important;font-size:clamp(10px,2.8vw,12px)!important;
+  line-height:1.12!important;min-width:0;
+}
+#app[data-view="5"] #pg433 .approved-story-card .approved-story-audio{
+  position:absolute!important;left:clamp(15px,5vw,23px)!important;bottom:3px!important;
+  margin:0!important;padding:0!important;width:auto!important;min-height:0!important;
+}
+#app[data-view="5"] #pg433 .approved-story-card .approved-story-audio>.orb{
+  width:clamp(26px,7.8vw,32px)!important;height:clamp(26px,7.8vw,32px)!important;
+  min-width:0!important;
+}
+#app[data-view="5"] #pg433 .approved-story-card .position{
+  left:3px!important;right:auto!important;top:3px!important;
+  min-width:20px!important;min-height:20px!important;font-size:11px!important;padding:2px 4px!important;
+}
+#app[data-view="5"] #pg433 .approved-story-prompt{
+  flex:0 0 auto!important;margin:3px 0!important;padding:3px 5px!important;
+  font-size:clamp(11px,3.2vw,13px)!important;line-height:1.1!important;border-radius:12px!important;
+}
+#app[data-view="5"] #pg433 .approved-story-prompt small{
+  font-size:clamp(9px,2.65vw,11px)!important;line-height:1.15!important;margin-top:2px!important;
+}
+#app[data-view="5"] #pg433 .approved-story-answer{
+  flex:0 0 auto!important;max-height:40px!important;min-height:34px!important;
+  overflow-y:auto!important;margin:3px 0!important;padding:4px 7px!important;
+  font-size:clamp(11px,3.1vw,14px)!important;
+}
+#app[data-view="5"] #pg433 .approved-story-controls{
+  flex:0 0 auto!important;margin:3px 0!important;gap:7px!important;
+}
+#app[data-view="5"] #pg433 .approved-story-controls button{
+  min-height:35px!important;flex:1 1 0!important;padding:5px 9px!important;
+  font-size:clamp(12px,3.6vw,15px)!important;border-radius:14px!important;
+}
+#app[data-view="5"] #pg433 .approved-story-check{
+  flex:0 0 auto!important;min-height:42px!important;font-size:clamp(15px,4.3vw,19px)!important;
+  margin:4px auto 4px!important;
+}
+#app[data-view="5"] #pg433 .feedback:not(:empty){flex:0 0 auto!important;margin:2px 0!important;padding:3px 6px!important;font-size:11px!important}
+#app #pg433 .about-dialogue-head img.about-dialogue-image{
+  display:block;width:89px;height:86px;object-fit:cover;object-position:center;
+  border-radius:12px;
+}
+@media (max-width:374px) {
+ .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word{
+   grid-template-columns:62px max-content 27px minmax(0,1fr) 35px!important;
+   column-gap:2px!important;
+ }
+ .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word>.cn{
+   font-size:19px!important;
+ }
+ #app[data-view="5"] #pg433 .approved-story-card .approved-story-choice{
+   grid-template-columns:43px minmax(0,1fr)!important;column-gap:3px!important;
+ }
+}
+@media (max-height:690px){
+ #app[data-view="5"] #pg433 .approved-story-card .approved-story-choice svg.about-story-photo{
+   height:40px!important;
+ }
+ #app[data-view="5"] #pg433 .approved-story-card .approved-story-choice .cn{
+   font-size:13px!important;
+ }
+ #app[data-view="5"] #pg433 .approved-story-card .approved-story-choice .py,
+ #app[data-view="5"] #pg433 .approved-story-card .approved-story-choice .ru{
+   font-size:10px!important;
+ }
+}
+
 </style>
 </head>
 <body>
@@ -1443,10 +1599,7 @@ function newWords() {
       '<div class="about-myday-tones">' + toneStrokes(word.tones) + '</div>' +
       '<div class="about-myday-copy">' + translate([word.zh,word.py,word.ru]) + '</div>' +
       audioButton(word.zh,playIcon) + '</article>').join('') + '</div>' +
-    (canPlay ? '<p class="hint audio-note about-listening-status">🔊 Прослушано ' + state.heardWords.length +
-       ' из 6 слов. Прослушай все записи, затем откроется «Дальше».</p>'
-    : '<p class="hint audio-note about-listening-status">🎧 Записи готовятся в нашем утверждённом голосе Panda Go. Другой голос не используется.</p>' +
-      '<button type="button" class="about-manual-complete" data-words-read="1">✓ Прочитал и повторил все 6 слов</button>') + safeStatus();
+    (canPlay ? '' : '<button type="button" class="about-manual-complete" data-words-read="1">✓ Прочитал и повторил все 6 слов</button>') + safeStatus();
 }
 
 function hero(kind,step,title,subtitle) {
@@ -1580,7 +1733,7 @@ function grammar() {
     '<span class="py">xiànzài</span><span class="ru">сейчас</span></div>' +
     '<p class="about-grammar-rule">现在 ставится после подлежащего и перед действием.</p>' +
     '<p class="about-grammar-formula"><b>我</b> + <b>现在</b> + <b>住在</b> + город</p>' +
-    '<article class="about-grammar-example">' + stageImage('grammar','about-grammar-photo') +
+    '<article class="about-grammar-example">' +
       '<div class="about-grammar-example-copy">' + hanzi('我现在住在莫斯科。') + translate(phrases[2]) +
       '</div>' + audioButton(phrases[2][0],playIcon) + '</article>' +
     '<h2 class="builder-title about-grammar-build-title">Составь предложение</h2>' +
@@ -1593,15 +1746,10 @@ function grammar() {
 }
 
 function day() {
-  const columns=state.aboutStoryColumns===3 ? 3 : 2;
-  // Exact approved visual reading order in both 3D mockups; answers still follow 0..5.
+  // Two-column presentation only; preserve choices, answers, order and progress.
   const visualOrder=[4,1,0,2,3,5];
-  return '<div class="about-approved-story-head"><h1 class="pill-title day-title approved-story-title">' +
-    (columns===2 ? '💬 Собери рассказ' : '💬 Фразы и диалог') +
-    '</h1><div class="approved-layout-toggle" role="group" aria-label="Вид карточек рассказа">' +
-    '<button type="button" data-story-cols="2" aria-pressed="' +(columns===2)+ '" class="' +(columns===2?'on':'')+ '">2 в ряд</button>' +
-    '<button type="button" data-story-cols="3" aria-pressed="' +(columns===3)+ '" class="' +(columns===3?'on':'')+ '">3 в ряд</button></div></div>' +
-    '<div class="practice-grid about-practice-grid approved-story-grid story-cols-'+columns+'">' +
+  return '<div class="about-approved-story-head"><h1 class="pill-title day-title approved-story-title">💬 Собери рассказ</h1></div>' +
+    '<div class="practice-grid about-practice-grid approved-story-grid story-cols-2">' +
       visualOrder.map(i=>{
         const position=state.dayOrder.indexOf(i);
         return '<article class="about-story-card approved-story-card' +(position>=0?' picked':'')+ '">' +
@@ -1829,7 +1977,7 @@ async function play(text,button) {
       for (const choice of workspace.querySelectorAll('[data-choice]')) choice.disabled = false;
       setStatus('Запись прослушана. Теперь выбери слово.',true);
     } else if (state.step === 2 && wordIndex >= 0) {
-      setStatus('✓ Прослушано ' + state.heardWords.length + ' из 6 слов.',true);
+      setStatus('');
       render();
     } else {
       setStatus('');
