@@ -17,7 +17,7 @@ function readState(){
   if(Array.isArray(old.reps))for(let i=0;i<6;i++){
    const item=old.reps[i]||{},mic=Array.isArray(item.mic)?item.mic.slice(0,LIMIT):[];
    const clean=mic.filter(t=>t&&Array.isArray(t.points)&&t.points.length>=8).map(t=>({
-      points:t.points.slice(0,100).filter(p=>Array.isArray(p)&&p.length===2&&p.every(finite)&&p[0]>=0&&p[0]<=1&&p[1]>=55&&p[1]<=650),
+      points:t.points.slice(-120).filter(p=>Array.isArray(p)&&p.length===2&&p.every(finite)&&p[0]>=0&&p[0]<=1&&p[1]>=55&&p[1]<=650),
       seconds:finite(t.seconds)?Math.max(0,Math.min(8,t.seconds)):0,
       splitRatio:finite(t.splitRatio)?Math.max(SPLIT_MIN,Math.min(SPLIT_MAX,t.splitRatio)):.5,
       splitSource:['pause','energy','manual','midpoint'].includes(t.splitSource)?t.splitSource:'midpoint'
@@ -53,13 +53,12 @@ function render(words,art,heading,panel,ttsNote){
  const bullets=Array.from({length:LIMIT},(_,k)=>'<span class="tone-bullet'+(k<count(i)?' done':'')+'">'+(k<count(i)?'✓':(k+1))+'</span>').join('');
  return panel(
   heading('Произношение и тоны','Шаг 4 / 8 · Каждый из 6 слов повтори 5 раз. Это тренировка памяти и контуров тонов.')+
-  art(5)+
-  '<p>Нажми «Тренировать» напротив слова. При записи с микрофона появится линия <b>реальной высоты твоего голоса</b>. Сравни её с пунктирным образцом.</p>'+
+  '<p>Выбери выражение, нажми «Записать произношение» и сравни изменения высоты голоса по двум слогам. <b>Это пока не оценка правильности тонов.</b></p>'+
   '<div class="tone-overall"><strong>Повторения: '+progressText()+'</strong><span>С микрофоном: '+micCount()+'</span></div>'+
-  '<div class="meter"><i style="width:'+(total()/30*100)+'%"></i></div>'+ 
-  '<div class="tone-jump-wrap"><button class="action" type="button" data-tone-act="jump">📈 Открыть шкалу тонов ↓</button></div>'+
-  rows+
-  '<p class="hint">Пять отметок подтверждают повторения, но не означают, что все тоны произнесены правильно.</p>'
+  '<div class="meter"><i style="width:'+(total()/30*100)+'%"></i></div>'+
+  '<div class="tone-quick-select" role="group" aria-label="Выбор слова">'+words.map((word,index)=>
+   '<button type="button" class="action'+(index===i?' selected':'')+'" data-tone-act="select" data-i="'+index+'" aria-pressed="'+(index===i)+'">'+
+   word.zh+'<small>'+count(index)+'/5</small></button>').join('')+'</div>'
  )+
  panel(
   '<div id="tone-trainer" class="tone-trainer"><div class="eyebrow">🎙 Тренировка слова '+(i+1)+' / 6</div>'+
@@ -88,7 +87,9 @@ function render(words,art,heading,panel,ttsNote){
   'Научная проверка точности потребует выравнивания слогов и эталонных записей носителя.</p>'+
   (last?'<p class="hint">Последнее измерение: '+last.seconds.toFixed(1)+' с · '+last.points.length+' измерений высоты голоса.</p>':'')+
   ttsNote+'</div>'
- );
+ )+
+ panel('<h3>Все шесть выражений</h3>'+rows+
+  '<p class="hint">Зелёная линия — измерение, фиолетовый пунктир — схема. Повторы не равны проверке правильности тонов.</p>');
 }
 function median(a){const b=a.slice().sort((x,y)=>x-y),n=b.length;return n?b[Math.floor(n/2)]:0}
 
@@ -146,7 +147,7 @@ function observedTrend(points,segmentFrom,segmentTo){
 }
 function draw(){
  const take=active?.word===state.selected?active.samples:state.reps[state.selected].mic.at(-1)?.points||[];
- const split=active?.word===state.selected?.5:(state.reps[state.selected].mic.at(-1)?.splitRatio??.5);
+ const split=(active && active.word===state.selected) ? .5 : (state.reps[state.selected].mic.at(-1)?.splitRatio??.5);
  const first=take[0]?.[0]??0,last=take[take.length-1]?.[0]??1,span=Math.max(.001,last-first);
  const normalized=take.map(p=>[(p[0]-first)/span,p[1]]).filter(p=>finite(p[0])&&finite(p[1])&&p[1]>0);
  const hz=normalized.map(p=>p[1]),baseline=median(hz)||200;
@@ -268,6 +269,13 @@ function stop(countTake){
    const r=state.reps[rec.word];
    if(count(rec.word)<LIMIT){
     const boundary=estimateSplit(pts,rec.levels);
+    const boundaryAt=pts[0][0]+boundary.ratio*duration;
+    const firstSyllable=pts.filter(p=>p[0]<boundaryAt);
+    const secondSyllable=pts.filter(p=>p[0]>=boundaryAt);
+    if(firstSyllable.length<4||secondSyllable.length<4){
+     note='Измерений недостаточно для двух отдельных слогов. Произнеси оба слога чуть медленнее и повтори запись.';
+     update();syncControls();return;
+    }
     const saved=pts.slice(-120),first=saved[0][0],last=saved[saved.length-1][0],span=Math.max(.001,last-first);
     // Convert the boundary into the same saved time window as the normalized contour.
     const absolute=pts[0][0]+boundary.ratio*duration;
