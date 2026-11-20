@@ -1,0 +1,146 @@
+{
+  "source": "luvvoice.com-20261120-vWgcsj.mp3",
+  "duration_ms": 34872,
+  "items": [
+    {
+      "id": "day01",
+      "zh": "你好！今天我说说我的一天。",
+      "pinyin": "Nǐ hǎo! Jīntiān wǒ shuōshuo wǒ de yì tiān.",
+      "start_ms": 0,
+      "end_ms": 3670,
+      "duration_ms": 3670,
+      "bytes": 22556,
+      "sha256": "d3fa57843c42b1a1604aeef8c93c5a4abfe2aa61a95b9f0272ec3b863b732943"
+    },
+    {
+      "id": "day02",
+      "zh": "我早上刷牙。",
+      "pinyin": "Wǒ zǎoshang shuāyá.",
+      "start_ms": 4260,
+      "end_ms": 5750,
+      "duration_ms": 1490,
+      "bytes": 9596,
+      "sha256": "bd8d889c8f8dfe58247f2f8cd09498e25a71b00a5776d647e9a7df5bea56e2f5"
+    },
+    {
+      "id": "day03",
+      "zh": "你早上吃早饭吗？",
+      "pinyin": "Nǐ zǎoshang chī zǎofàn ma?",
+      "start_ms": 6320,
+      "end_ms": 8130,
+      "duration_ms": 1810,
+      "bytes": 11468,
+      "sha256": "e5279a98dbe298bdd10df28b1773af23ef930c76c7e4993045d6267123a8b4b7"
+    },
+    {
+      "id": "day04",
+      "zh": "你几点去上班？",
+      "pinyin": "Nǐ jǐ diǎn qù shàngbān?",
+      "start_ms": 8680,
+      "end_ms": 10330,
+      "duration_ms": 1650,
+      "bytes": 10460,
+      "sha256": "a0d16afd19560a5b5e2e2bfefbdfd655bb249050d7db0a926a3898900c3fb1e0"
+    },
+    {
+      "id": "day05",
+      "zh": "你晚上几点睡觉？",
+      "pinyin": "Nǐ wǎnshang jǐ diǎn shuìjiào?",
+      "start_ms": 10850,
+      "end_ms": 12750,
+      "duration_ms": 1900,
+      "bytes": 12044,
+      "sha256": "7b15a6ef0ffad6d7b750782d3c0dab3181aa52adedabf33b4c48947d86a8edd4"
+    },
+    {
+      "id": "day06",
+      "zh": "我九点去上班。",
+      "pinyin": "Wǒ jiǔ diǎn qù shàngbān.",
+      "start_ms": 13330,
+      "end_ms": 14960,
+      "duration_ms": 1630,
+      "bytes": 10316,
+      "sha256": "988738be2c4797260f620f86311cf662e771d2b8bc3af0bca641ae8968a61ba1"
+    },
+    {
+      "id": "day07",
+      "zh": "我晚上十一点睡觉。",
+      "pinyin": "Wǒ wǎnshang shíyī diǎn shuìjiào.",
+      "start_ms": 15510,
+      "end_ms": 17570,
+      "duration_ms": 2060,
+      "bytes": 12908,
+      "sha256": "a05ba10fd2811125046a2c8ed30d95379451f0750bc4df55c8c4508ba3069f50"
+    },
+    {
+      "id": "day08",
+      "zh": "我早上不吃早饭。",
+      "pinyin": "Wǒ zǎoshang bù chī zǎofàn.",
+      "start_ms": 18150,
+      "end_ms": 20020,
+      "duration_ms": 1870,
+      "bytes": 11756,
+      "sha256": "42b1928bc10c5c59fd595c1b91a3f9d43350c6bfff289610fe1045130951c129"
+    },
+    {
+      "id": "day09",
+      "zh": "我不上班。",
+      "pinyin": "Wǒ bú shàngbān.",
+      "start_ms": 20580,
+      "end_ms": 21750,
+      "duration_ms": 1170,
+      "bytes": 7580,
+      "sha256": "2d1f14d25104680d0ac55279bead8ae6f4ae5ab6ef2da99a16d21c9fe9e83179"
+    },
+    {
+      "id": "day10",
+      "zh": "现在请你说说你的一天。",
+      "pinyin": "Xiànzài qǐng nǐ shuōshuo nǐ de yì tiān.",
+      "start_ms": 22370,
+      "end_ms": 24940,
+      "duration_ms": 2570,
+      "bytes": 16076,
+      "sha256": "c4c6a3c18d42176a82a0c693491861393f687734f60e17221dd4d5bcc3ef6a9e"
+    },
+    {
+      "id": "day11",
+      "zh": "我没听清楚，请再说一遍。",
+      "pinyin": "Wǒ méi tīng qīngchu, qǐng zài shuō yí biàn.",
+      "start_ms": 25530,
+      "end_ms": 28390,
+      "duration_ms": 2860,
+      "bytes": 17804,
+      "sha256": "ea9882bcd9092a61176e53e75c983c78a7d8ba9654640882188a6682f99fb5c0"
+    },
+    {
+      "id": "day12",
+      "zh": "这是你的一天。",
+      "pinyin": "Zhè shì nǐ de yì tiān.",
+      "start_ms": 28970,
+      "end_ms": 30520,
+      "duration_ms": 1550,
+      "bytes": 9884,
+      "sha256": "7e602da0b0406920d3fc77a5d3f7778e0bdbef2779b1cec5fc32ca71692996f8"
+    },
+    {
+      "id": "day13",
+      "zh": "做得好！",
+      "pinyin": "Zuò de hǎo!",
+      "start_ms": 31120,
+      "end_ms": 32100,
+      "duration_ms": 980,
+      "bytes": 6428,
+      "sha256": "137bfb5e316b7b312df6163f07b7be3e911dc82c4d2161394b8446c0a38ac4aa"
+    },
+    {
+      "id": "day14",
+      "zh": "我们再试一次。",
+      "pinyin": "Wǒmen zài shì yí cì.",
+      "start_ms": 32680,
+      "end_ms": 34230,
+      "duration_ms": 1550,
+      "bytes": 9884,
+      "sha256": "a5ceddfc3ffdc5a69babf2a01d68fd12217a5f18953002dea4be6523302c9399"
+    }
+  ]
+}
