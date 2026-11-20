@@ -126,7 +126,7 @@ function miniPreview(state){const m=modules[state.mini],index=state.mini;
 function done(state,sound,link){const d=state.day||{};
  return '<section id="pg433" class="pg433-root pg433-done">'+chrome({...state,stage:4,day:{...d,pg433HighestStage:4}},12,'',state.mini)+'<main class="pg433-content"><h2>🐼 Panda AI · разговор</h2><p class="pg433-hint">Первый мини-урок пройден. Теперь ответь Панде самостоятельно.</p><div class="pg433-panel"><h3>🎙 Панда спрашивает</h3>'+[['你几点起床？','Nǐ jǐ diǎn qǐchuáng?','Во сколько ты встаёшь?'],['你早上做什么？','Nǐ zǎoshang zuò shénme?','Что ты делаешь утром?']].map(q=>'<div class="pg433-sentence">'+audio({sound},q[0])+'<div>'+word(q[0])+'<span class="pg433-py">'+esc(q[1])+'</span><small>'+esc(q[2])+'</small></div></div>').join('')+'</div><a class="pg433-ai-link" href="'+esc(link)+'">🎙 Открыть Panda AI для ответа →</a><p class="pg433-note">Речь и текст проверяются в настоящей Panda AI. Одна лишь транскрипция не доказывает правильность тонов.</p></main><footer class="pg433-footer"><button class="pg433-secondary" data-repeat>↻ Повторить</button><button class="pg433-primary" data-next-mini>Следующий мини-урок →</button></footer></section>';
 }
-function mapView(topics,completed){
+function mapView(topics,completed,expandedTopic=null){
   // Visual-only course catalog refresh. Do not change topic IDs, localStorage progress, routes or lesson engines.
   const safeDone=Array.isArray(completed)?completed:[];
   const coreLessons=[
@@ -144,19 +144,30 @@ function mapView(topics,completed){
   ).join('');
   const topicsMarkup=topics.map((t,i)=>{
     const done=[0,1,2].filter(m=>safeDone.includes(i*3+m)).length;
-    return '<button type="button" class="pg433-map-card pgc-topic-card" data-topic="'+i+'" aria-label="Тема '+(i+1)+': '+esc(t.name)+'. Пройдено '+done+' из 3 мини-уроков">'+
-      '<span class="pgc-topic-icon" aria-hidden="true">'+esc(t.icon)+'</span>'+
-      '<span class="pgc-topic-copy"><b>'+esc(t.name)+'</b>'+
-      '<small><span lang="zh-Hans">'+esc(t.cn)+'</span> · 3 мини-урока</small></span>'+
-      '<span class="pgc-topic-meta"><span>'+done+' / 3</span>'+
-      '<span class="pgc-topic-meter" aria-hidden="true"><i style="width:'+(done*100/3)+'%"></i></span></span>'+
-      '<span class="pgc-topic-chevron" aria-hidden="true">›</span>'+
-    '</button>';
+    const expanded=expandedTopic===i;
+    const name=i===0?'Утро и привычки':t.name;
+    const miniTitles=i===0?['Начало дня','Утро, работа и вечер','Мой вечер и привычки']:t.scenes.map(sc=>sc[0]);
+    const miniCards=expanded?'<div class="pgc-mini-panel" id="pgc-minis-'+i+'" role="group" aria-label="Мини-уроки темы '+esc(name)+'">'+
+      '<p class="pgc-mini-intro">Выбери мини-урок. Задания и прогресс самостоятельные.</p>'+
+      t.scenes.map((sc,m)=>'<button type="button" class="pgc-mini-card" data-practice-mini="'+i+':'+m+'" aria-label="Практика '+(i+1)+', мини-урок '+(m+1)+': '+esc(miniTitles[m])+'">'+
+        '<span class="pgc-mini-index">'+(m+1)+'</span>'+
+        '<span class="pgc-mini-copy"><b>'+esc(miniTitles[m])+'</b><small lang="zh-Hans">'+esc(sc[2])+'</small></span>'+
+        '<span class="pgc-mini-state">'+(safeDone.includes(i*3+m)?'✓':'▶')+'</span></button>').join('')+
+      '</div>':'';
+    return '<div class="pgc-topic-wrap">'+
+      '<button type="button" class="pg433-map-card pgc-topic-card" data-topic="'+i+'" aria-expanded="'+expanded+'" aria-controls="pgc-minis-'+i+'" aria-label="Практика '+(i+1)+': '+esc(name)+'. Пройдено '+done+' из 3">'+
+        '<span class="pgc-topic-icon" aria-hidden="true">'+esc(t.icon)+'</span>'+
+        '<span class="pgc-topic-copy"><b>'+esc(name)+'</b>'+
+        '<small>'+(i===0?'Дополнительные упражнения после «Моего дня»':'<span lang="zh-Hans">'+esc(t.cn)+'</span> · 3 мини-урока')+'</small></span>'+
+        '<span class="pgc-topic-meta"><span>'+done+' / 3</span>'+
+        '<span class="pgc-topic-meter" aria-hidden="true"><i style="width:'+(done*100/3)+'%"></i></span></span>'+
+        '<span class="pgc-topic-chevron" aria-hidden="true">'+(expanded?'⌃':'⌄')+'</span>'+
+      '</button>'+miniCards+'</div>';
   }).join('');
   return '<section id="pg433" class="pg433-root pg433-map pgc-catalog">'+
    '<header class="pg433-header"><div class="pg433-topline">'+
      '<div class="pg433-title"><small>PANDA GO · КУРС HSK 2</small><strong>Все уроки</strong></div>'+
-     '<span class="pg433-pill">10 тем <span aria-hidden="true">✦</span> 30 мини-уроков</span>'+
+     '<span class="pg433-pill">2 урока <span aria-hidden="true">✦</span> 10 тем</span>'+
    '</div></header>'+
    '<main class="pg433-content">'+
      '<div class="pgc-hero"><div class="pgc-hero-copy"><span class="pgc-hero-eyebrow">ТВОЙ ПУТЬ К КИТАЙСКОМУ</span>'+
@@ -167,7 +178,7 @@ function mapView(topics,completed){
        '<div><h2>Основные уроки</h2><p>Начни с знакомства, потом расскажи о своём дне</p></div></div>'+
      '<div class="pgc-feature-list">'+cards+'</div>'+
      '<div class="pgc-section-head pgc-more-head"><span class="pgc-section-emoji" aria-hidden="true">🌸</span>'+
-       '<div><h2>Дополнительная практика</h2><p>10 жизненных тем · 3 мини-урока в каждой</p></div></div>'+
+       '<div><h2>Тематический тренажёр</h2><p>10 тем · 30 мини-уроков · отдельный прогресс</p></div></div>'+
      '<div class="pgc-topic-list">'+topicsMarkup+'</div>'+
      '<p class="pgc-endnote">Твой прогресс сохраняется на этом устройстве ✨</p>'+
    '</main>'+
@@ -193,7 +204,7 @@ if(typeof document!=='undefined'){
 window.PandaGoStoryboardV433={done,mapView,topicView};
 window.PandaGoDayFirstUIV1={
  ...previous,
- makeState(mini){const d=previous.makeState(mini);d.pg433Page=0;d.pg433HighestStage=0;if(mini>0)d.pg433Preview=true;return d;},
+ makeState(mini){const d=previous.makeState(mini);d.pg433Page=0;d.pg433HighestStage=0;d.pg433Preview=false;d.pgApprovedCover=false;return d;},
  render(state,ctx){if(state.topic!==0)return previous.render(state,ctx);
   if(state.day?.pg433Preview)return miniPreview(state);
   if(state.mini===0&&state.day?.pgApprovedCover)return previous.render(state,ctx);
@@ -209,9 +220,9 @@ window.PandaGoDayFirstUIV1={
  },
  handle(button,state,api){const k=button.dataset,d=state.day;
   if(state.topic!==0||!d)return previous.handle(button,state,api);
-  if(k.pg433Back!==undefined){if(d.pg433Preview){d.pg433Preview=false;api.go('topic');return true}if(d.pgApprovedCover)return previous.handle({dataset:{pg432CoverBack:''}},state,api);if(d.pg433Page>0){d.pg433Page--;state.stage=STAGE[d.pg433Page];api.render()}else if(state.mini===0){d.pgApprovedCover=true;api.render()}else api.go('topic');return true}
+  if(k.pg433Back!==undefined){if(d.pg433Page>0){d.pg433Page--;state.stage=STAGE[d.pg433Page];api.render()}else api.go('map');return true}
   if(k.pg433StartMini!==undefined){d.pg433Preview=false;api.render();return true}
-  if(k.pg433Prev!==undefined){if(d.pg433Page>0){d.pg433Page--;state.stage=STAGE[d.pg433Page];api.render()}else if(state.mini===0){d.pgApprovedCover=true;api.render()}else api.go('topic');return true}
+  if(k.pg433Prev!==undefined){if(d.pg433Page>0){d.pg433Page--;state.stage=STAGE[d.pg433Page];api.render()}else api.go('map');return true}
   if(k.pg433Next!==undefined){this.next(state,api);return true}
   if(k.pg433Step!==undefined){const n=Number(k.pg433Step);if(n<=d.pg433HighestStage){d.pg433Page=PAGE_START[n];state.stage=n;api.render()}return true}
   // Keep the ORIGINAL real microphone, quiz and matching handlers with original scoring.
