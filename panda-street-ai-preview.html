@@ -101,6 +101,49 @@ const replies=[
  {match:/谢谢/,zh:'不客气！',py:'Bú kèqi!',ru:'Не за что!'},
  {match:/.*/,zh:'你想聊什么？',py:'Nǐ xiǎng liáo shénme?',ru:'О чём хочешь поговорить?'}
 ];
+
+/* v9 — curriculum-based Non-Stop conversation, without changing the artwork */
+const dayQuestions=[
+ {zh:'你早上做什么？',py:'Nǐ zǎoshang zuò shénme?',ru:'Что ты делаешь утром?'},
+ {zh:'你上午做什么？',py:'Nǐ shàngwǔ zuò shénme?',ru:'Что ты делаешь до обеда?'},
+ {zh:'你中午做什么？',py:'Nǐ zhōngwǔ zuò shénme?',ru:'Что ты делаешь в полдень?'},
+ {zh:'你下午做什么？',py:'Nǐ xiàwǔ zuò shénme?',ru:'Что ты делаешь после обеда?'},
+ {zh:'你晚上做什么？',py:'Nǐ wǎnshang zuò shénme?',ru:'Что ты делаешь вечером?'},
+ {zh:'你回家以后做什么？',py:'Nǐ huí jiā yǐhòu zuò shénme?',ru:'Что ты делаешь после возвращения домой?'}
+];
+const recognizedPhrases=[
+ ['我想聊聊我的一天','Wǒ xiǎng liáoliao wǒ de yì tiān.','Я хочу поговорить о своём дне.'],
+ ['我想说说我的一天','Wǒ xiǎng shuōshuo wǒ de yì tiān.','Я хочу рассказать о своём дне.'],
+ ['还好','Hái hǎo.','Нормально / Более-менее.'],
+ ['我七点起床','Wǒ qī diǎn qǐchuáng.','Я встаю в семь.'],
+ ['我早上七点起床','Wǒ zǎoshang qī diǎn qǐchuáng.','Я встаю в семь утра.'],
+ ['我八点起床','Wǒ bā diǎn qǐchuáng.','Я встаю в восемь.'],
+ ['我早上吃早饭','Wǒ zǎoshang chī zǎofàn.','Утром я завтракаю.'],
+ ['我上午学习中文','Wǒ shàngwǔ xuéxí Zhōngwén.','До обеда я учу китайский.'],
+ ['我中午吃饭','Wǒ zhōngwǔ chī fàn.','В полдень я ем.'],
+ ['我下午看书','Wǒ xiàwǔ kàn shū.','После обеда я читаю книгу.'],
+ ['我晚上听音乐','Wǒ wǎnshang tīng yīnyuè.','Вечером я слушаю музыку.'],
+ ['我回家以后休息','Wǒ huí jiā yǐhòu xiūxi.','После возвращения домой я отдыхаю.'],
+ ['你好','Nǐ hǎo.','Привет!'],['谢谢','Xièxie.','Спасибо.']
+];
+let streetTopic='',streetDayIndex=0;
+function recognizedDetail(zh){
+ const known=recognizedPhrases.find(x=>normalizeZh(x[0])===normalizeZh(zh));
+ return known?{zh,py:known[1],ru:known[2]}:{zh,py:'',ru:'Распознано ✓ · перевод не подготовлен'};
+}
+function chooseStreetReply(zh){
+ const phrase=normalizeZh(zh);
+ if(/我的一天|我的日常|聊聊一天|说说今天|聊聊今天/.test(phrase)){
+  streetTopic='day';streetDayIndex=1;return dayQuestions[0];
+ }
+ if(streetTopic==='day' && phrase && !/^(你好|您好|谢谢|再见)$/.test(phrase)){
+  if(streetDayIndex<dayQuestions.length)return dayQuestions[streetDayIndex++];
+  streetTopic='';streetDayIndex=0;
+  return {zh:'你想练习什么？',py:'Nǐ xiǎng liànxí shénme?',ru:'Что хочешь потренировать?'};
+ }
+ return replies.find(x=>x.match.test(phrase))||replies.at(-1);
+}
+
 try{const stored=sessionStorage.getItem('panda-street-v7-log');if(stored){const arr=JSON.parse(stored);if(Array.isArray(arr))history=arr.slice(-100)}}catch(_e){}
 function offsetY(y){return (y>=SKY_START+removedSky?removedSky:Math.max(0,y-SKY_START))+(y>=FLOOR_START+removedFloor?removedFloor:Math.max(0,y-FLOOR_START));}
 function coords(x,y){return [stageX+x*s, (y-offsetY(y))*s]}
@@ -144,6 +187,12 @@ const exactAudio=Object.freeze({
  '你住在哪里':'./assets/panda-voice-clips-v365/p086.mp3',
  '你吃饭了吗':'./assets/panda-voice-clips-v365/p057.mp3',
  '你想聊什么':'./assets/panda-voice-clips-v365/p129.mp3',
+ '你早上做什么':'./assets/panda-voice-clips-v365/p019.mp3',
+ '你上午做什么':'./assets/panda-voice-clips-v365/p025.mp3',
+ '你中午做什么':'./assets/panda-voice-clips-v365/p027.mp3',
+ '你下午做什么':'./assets/panda-voice-clips-v365/p029.mp3',
+ '你回家以后做什么':'./assets/panda-voice-clips-v365/p035.mp3',
+ '你想练习什么':'./assets/panda-voice-clips-v365/p130.mp3',
  '你现在有空吗':'./assets/panda-voice-clips-v365/p144.mp3',
  '好的我明白了':'./assets/panda-voice-clips-v365/p125.mp3',
  '你每天学习吗':'./assets/panda-voice-clips-v365/p010.mp3',
@@ -176,12 +225,28 @@ function liveRow(id,item){
   (item.py?'<div class="py">'+esc(item.py)+'</div>':'')+'</div><div class="ru">'+esc(item.ru||'')+'</div>';
  node.classList.add('show');
 }
-function respond(text){const zh=text.trim();if(!zh){tip('Введи или произнеси фразу по-китайски');return}const matched=replies.find(x=>x.match.test(zh))||replies.at(-1);history.push({user:zh,panda:matched,at:Date.now()});history=history.slice(-100);persist();
- liveRow('live-panda',matched);liveRow('live-learner',{zh,py:'',ru:'Твой ответ'});closePopup();tip('Реплика добавлена в историю');speak(matched.zh)}
+function respond(text){
+ const zh=String(text||'').trim();
+ if(!zh){tip('Введи или произнеси фразу по-китайски');return;}
+ const panda=chooseStreetReply(zh),learner=recognizedDetail(zh);
+ history.push({user:zh,userInfo:learner,panda,at:Date.now()});
+ history=history.slice(-100);persist();
+ liveRow('live-panda',panda);liveRow('live-learner',learner);
+ closePopup();tip('Панда продолжает разговор');speak(panda.zh);
+}
 function composition(){popup('Ответь Панде по-китайски',`<p class="hint">Набери ответ или нажми микрофон. На экране будут только две последние реплики; все предыдущие сохраняются в «Истории».</p><textarea id="entry" lang="zh-Hans" autocomplete="off" placeholder="Напиши по-китайски…" aria-label="Твой ответ"></textarea><div class="actions"><button class="action primary" id="submit">➤ Отправить</button><button class="action" id="voice">🎙 Говорить</button></div><p class="hint">Это учебная демонстрация с заранее заданными ответами. Акустическая проверка тонов пока не подключена.</p>`);el('submit').onclick=()=>respond(el('entry').value);el('voice').onclick=listen;setTimeout(()=>el('entry')?.focus({preventScroll:true}),0)}
 function listen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){tip('Для распознавания открой страницу в Chrome по HTTPS');return}let rec;try{rec=new SR();rec.lang='zh-CN';rec.interimResults=false;rec.continuous=false;rec.onresult=e=>{const phrase=e.results[0][0].transcript;const input=el('entry');if(input)input.value=phrase;respond(phrase)};rec.onerror=e=>tip('Микрофон: '+e.error);rec.start();tip('Слушаю китайскую речь…')}catch(e){tip('Микрофон недоступен: '+e.message)}}
 function phrase(i){current=i;const d=cues[i];popup('Практика фразы',`<div class="hanzi">${esc(d.zh)}</div><div class="py">${esc(d.py)}</div><div class="ru">${esc(d.ru)}</div><div class="actions"><button class="action" id="hear">🔊 Слушать</button><button class="action primary" id="reply">Ответить</button><button class="action" id="other">Следующая →</button></div><p class="hint">Можно произнести или написать ответ. Предыдущие реплики остаются в истории.</p>`);el('hear').onclick=()=>speak(d.zh);el('reply').onclick=composition;el('other').onclick=()=>phrase((i+1)%cues.length)}
-function historyView(){const rendered=history.length?history.map(x=>`<div class="logline"><strong>Ты:</strong> ${esc(x.user)}<br><strong>Панда:</strong> ${esc(x.panda.zh)}<br><span class="py">${esc(x.panda.py)}</span><br><span class="ru">${esc(x.panda.ru)}</span></div>`).join(''):'<p>Реплик пока нет. Нажми микрофон или самолётик, чтобы начать разговор.</p>';popup('История разговора',`<p class="hint">Последние ${history.length} из 100 реплик сохраняются только в этой вкладке.</p>${rendered}`)}
+function historyView(){
+ const rendered=history.length?history.map(x=>{
+  const learner=x.userInfo||recognizedDetail(x.user);
+  return '<div class="logline"><strong>Ты:</strong> '+esc(x.user)+
+   (learner.py?'<br><em>'+esc(learner.py)+'</em>':'')+
+   '<br>'+esc(learner.ru)+'<br><strong>Панда:</strong> '+esc(x.panda.zh)+
+   '<br><em>'+esc(x.panda.py)+'</em><br>'+esc(x.panda.ru)+'</div>';
+ }).join(''):'<p>Реплик пока нет.</p>';
+ popup('История разговора','<p class="hint">Последние '+history.length+' реплик.</p>'+rendered);
+}
 function shortMode(){mode='short';paint();popup('Краткие диалоги',cues.map((d,i)=>`<button class="example" data-i="${i}">${esc(d.zh)} — ${esc(d.ru)}</button>`).join('')+'<p class="hint">Выбери фразу для тренировки.</p>');body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>phrase(Number(b.dataset.i)))}
 el('row1').onclick=()=>history.length?speak(history.at(-1).panda.zh):phrase(0);
 el('row2').onclick=()=>history.length?composition():phrase(1);
@@ -191,6 +256,6 @@ el('topics').onclick=shortMode;el('book').onclick=()=>{popup('Подсказка
 el('theme').onclick=()=>{night=!night;tip(night?'Ночной вид — утверждённый дизайн':'Дневной режим будет добавлен отдельно; текущий рисунок не изменён')};
 const base='https://trommelschlager-ai.github.io/chinese-coach-pwa/';
 el('back').onclick=()=>location.assign(base+'panda-voice-pilot.html');el('home').onclick=()=>location.assign(base+'index.html');el('lessons').onclick=()=>location.assign(base+'hsk1-map.html');el('game').onclick=()=>speak(history.length?history.at(-1).panda.zh:cues[current].zh);el('trainer').onclick=()=>location.assign(base+'game.html');el('chat').onclick=composition;el('profile').onclick=()=>tip('Профиль открой в основном Panda Go');
-if(history.length){let x=history.at(-1);liveRow('live-panda',x.panda);liveRow('live-learner',{zh:x.user,py:'',ru:'Твой ответ'})}
+if(history.length){let x=history.at(-1);liveRow('live-panda',x.panda);liveRow('live-learner',x.userInfo||recognizedDetail(x.user))}
 })();
 </script></body></html>
