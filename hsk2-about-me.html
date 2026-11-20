@@ -638,6 +638,130 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
  .course-layout #app[data-view="1"] #pg433 .pg433-content{overflow-y:auto!important}
  #app #pg433 .about-approved-cover-shell.word-flow-cover-shell{height:auto;min-height:100%}
 }
+
+/* HSK2 About Me v6. Layout derived from the approved My Day word screen;
+   scoped to this lesson so the reference remains untouched. */
+.course-layout #app #pg433 .pg433-header{border-bottom:2px solid #d999da!important;box-shadow:0 2px 6px #c17dce44!important}
+.course-layout #app #pg433 .pg433-tabs button:not(.active){
+ border:1px solid #dbb6dc!important;border-bottom:3px solid #ca9dcf!important;
+ background:linear-gradient(#fffafd,#f7ecfb)!important;color:#664469!important}
+.course-layout #app #pg433 .pg433-tabs button.active{
+ border:1px solid #f1bcef!important;border-bottom:3px solid #8811aa!important;
+ background:linear-gradient(#fa79e6,#cc3ac9 55%,#9406ae)!important;color:white!important}
+.course-layout #app[data-view="2"] #pg433 .pg433-content{
+ padding:10px 10px 12px!important;
+ background:linear-gradient(#fce8fa,#f8ddf7)!important}
+.course-layout #app[data-view="2"] #pg433 .word-list.about-myday-wordlist{
+ display:grid!important;flex:1 1 auto!important;grid-template-rows:repeat(6,minmax(57px,1fr))!important;
+ gap:6px!important;margin:6px 0!important}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word{
+ display:grid!important;grid-template-columns:clamp(63px,20%,82px) max-content clamp(32px,10%,44px) minmax(0,1fr) 40px!important;
+ grid-template-rows:auto!important;column-gap:3px!important;align-items:center!important;
+ min-height:58px!important;padding:3px 5px 3px 4px!important;margin:0!important;
+ border:1px solid #e3b7de!important;border-bottom:3px solid #c893d3!important;
+ border-radius:17px!important;background:linear-gradient(160deg,#fffaff,#fff3fd)!important;
+ box-shadow:inset 0 1px white,0 2px 5px #a65ca857!important}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > svg.about-myday-art{
+ grid-column:1!important;grid-row:1!important;width:100%!important;height:clamp(47px,7.5dvh,66px)!important;
+ min-width:0!important;align-self:center!important;border:0!important;border-radius:12px!important;
+ background:#ffdbf1!important;box-shadow:0 1px 3px #ae7fb144!important}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .cn{
+ grid-column:2!important;grid-row:1!important;font-size:clamp(18px,5.1vw,25px)!important;
+ color:#641572!important;align-self:center!important;white-space:nowrap!important}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .about-myday-tones{
+ grid-column:3!important;grid-row:1!important;align-self:center!important;min-width:0!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important}
+.course-layout #app[data-view="2"] #pg433 .about-myday-tones .tone-strokes{
+ display:inline-flex!important;width:100%!important;gap:1px!important;align-items:center!important;justify-content:center!important}
+.course-layout #app[data-view="2"] #pg433 .about-myday-tones .tone-strokes svg{
+ display:block!important;width:clamp(14px,4.7vw,19px)!important;height:20px!important;flex:0 1 auto!important}
+.course-layout #app[data-view="2"] #pg433 .about-myday-tones .tone-strokes path{
+ stroke:#258a51!important;stroke-width:3!important}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .about-myday-copy{
+ grid-column:4!important;grid-row:1!important;min-width:0!important;overflow-wrap:anywhere!important;
+ display:flex!important;flex-direction:column!important;gap:2px!important}
+.course-layout #app[data-view="2"] #pg433 .about-myday-copy .py{
+ font-size:clamp(12px,3.8vw,15px)!important;font-weight:750!important;line-height:1.12!important;color:#713d7a!important}
+.course-layout #app[data-view="2"] #pg433 .about-myday-copy .ru{
+ font-size:clamp(11px,3.2vw,14px)!important;line-height:1.1!important;color:#684c6b!important}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .orb{
+ grid-column:5!important;grid-row:1!important;display:inline-grid!important;place-items:center!important;
+ align-self:center!important;width:38px!important;height:38px!important;min-width:38px!important;
+ margin:0!important;padding:0!important;border:1px solid #e9b2e5!important;border-radius:50%!important;
+ background:radial-gradient(ellipse at 40% 8%,#f2bafa,#b846dd 48%,#690a91 90%)!important;
+ box-shadow:inset 0 2px 3px #fbd0fc,0 3px 5px #8652918a!important}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word .orb .play{
+ display:block!important;opacity:1!important;border-left-color:#fff!important}
+.course-layout #app[data-view="2"] #pg433 .about-listening-status{
+ flex:none!important;margin:5px 0 4px!important;color:#6d4b73!important;
+ font-size:clamp(11px,3.2vw,13px)!important;line-height:1.2!important;text-align:center!important}
+.course-layout #app[data-view="2"] #pg433 .pg433-content>.pill-title{
+ font-size:clamp(23px,6.4vw,30px)!important;color:#651879!important;
+ border:1px solid #d6a6d5!important;box-shadow:0 3px 6px #b578ba44!important;
+ background:linear-gradient(#fffaff,#fff1fd)!important}
+@media(max-width:360px){
+ .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word{
+ grid-template-columns:58px max-content 30px minmax(0,1fr) 34px!important;column-gap:2px!important}
+ .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .orb{
+ width:33px!important;min-width:33px!important;height:33px!important}
+ .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .cn{font-size:18px!important}
+}
+
+/* A short rule, one example, and the same functional sentence-builder. */
+.course-layout #app[data-view="4"] #pg433 .pg433-content{
+ padding:11px 12px 12px!important;background:linear-gradient(#fff1fc,#f9e4fa)!important}
+.course-layout #app[data-view="4"] #pg433 .about-grammar-title{
+ font-size:clamp(20px,6vw,25px)!important;margin:0 auto 7px!important;
+ padding:6px 12px!important;border:1.5px solid #e0b7de!important;border-radius:20px!important;
+ background:linear-gradient(#fffefd,#fff1fd)!important;box-shadow:0 3px 5px #ac77b15a!important}
+#app #pg433 .about-grammar-compact{
+ display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px 14px;
+ padding:11px 12px;margin:0 3px 9px;border-radius:18px;
+ background:linear-gradient(#fff9ff,#fceafb);border:1.5px solid #e5bbe2;
+ box-shadow:0 3px 6px #9b69a449}
+#app #pg433 .about-grammar-compact strong{color:#96206f;font-size:clamp(34px,10vw,46px);line-height:1;font-weight:900}
+#app #pg433 .about-grammar-compact .py{color:#854496;font-size:clamp(15px,4vw,18px);font-weight:800}
+#app #pg433 .about-grammar-compact .ru{font-size:clamp(14px,4vw,18px);font-weight:700;color:#684275}
+#app #pg433 .about-grammar-rule{font-size:clamp(13px,3.75vw,16px);color:#502d66;
+ font-weight:750;text-align:center;line-height:1.3;margin:4px 5px 8px}
+#app #pg433 .about-grammar-formula{
+ margin:0 2px 9px;padding:8px 5px;border-radius:12px;text-align:center;
+ background:#fff6fc;border:1px dashed #d8a6d8;color:#6d2976;font-size:clamp(13px,4vw,18px)}
+#app #pg433 .about-grammar-formula b{font-weight:850;color:#9124a1}
+#app #pg433 .about-grammar-example{
+ display:grid;grid-template-columns:clamp(58px,22%,82px) minmax(0,1fr) 35px;
+ gap:6px;align-items:center;margin:8px 2px 10px;padding:6px 7px 6px 5px;
+ border:1px solid #e8badf;border-radius:17px;background:linear-gradient(#fffafb,#f8e8fa);
+ box-shadow:0 3px 7px #ba7ab35b}
+#app #pg433 .about-grammar-example .about-grammar-photo{
+ width:100%!important;height:68px!important;border:0!important;border-radius:11px!important}
+#app #pg433 .about-grammar-example-copy{min-width:0}
+#app #pg433 .about-grammar-example-copy .cn{font-size:clamp(17px,4.9vw,22px)!important;color:#75177c}
+#app #pg433 .about-grammar-example-copy .py,#app #pg433 .about-grammar-example-copy .ru{
+ font-size:clamp(11px,3.2vw,14px)!important;line-height:1.22}
+#app #pg433 .about-grammar-example > .orb{
+ width:34px!important;height:34px!important;min-width:34px!important;padding:0!important}
+#app #pg433 .about-grammar-build-title{font-size:clamp(17px,5vw,20px)!important;text-align:center;margin:10px 0 7px!important}
+#app #pg433 .about-grammar-tokens{display:flex;gap:5px!important;justify-content:center;flex-wrap:wrap}
+#app #pg433 .about-grammar-tokens .token{
+ width:auto!important;flex:0 1 auto!important;min-width:40px!important;min-height:46px!important;
+ border-radius:14px!important;padding:6px 9px!important;font-size:clamp(16px,5vw,20px)!important}
+#app #pg433 .about-grammar-answer{min-height:46px;font-size:clamp(17px,4.7vw,20px);margin:9px 2px!important}
+#app #pg433 .about-grammar-actions{display:grid;grid-template-columns:1fr 1fr 1.35fr;gap:7px;margin:8px 2px!important}
+#app #pg433 .about-grammar-actions button{min-width:0!important;min-height:44px!important;
+ padding:5px 6px!important;font-size:clamp(13px,3.7vw,16px)!important}
+#app #pg433 .about-audio-test{display:grid;place-items:center;gap:8px;padding:10px}
+#app #pg433 .about-audio-test .orb{width:53px!important;height:53px!important}
+#app #pg433 .about-story-card{position:relative;min-width:0;width:100%}
+#app #pg433 .about-story-card .about-day-card{width:100%;padding-bottom:35px!important}
+#app #pg433 .about-story-card>.orb{
+ position:absolute;right:6px;bottom:5px;z-index:2;
+ width:31px!important;height:31px!important;min-width:31px!important;padding:0!important}
+#app #pg433 .about-my-lines p.about-personal-line{
+ display:flex!important;flex-direction:row!important;align-items:center!important;gap:8px!important}
+#app #pg433 .about-personal-sentence{flex:1;min-width:0;display:flex;flex-direction:column}
+#app #pg433 .about-my-lines p.about-personal-line>.orb{flex:none;width:33px!important;height:33px!important}
+
 </style>
 </head>
 <body>
@@ -1215,16 +1339,18 @@ function grammar() {
 
 function day() {
   return '<h1 class="pill-title day-title">🎯 Собери рассказ о Мише</h1>' +
-    '<p class="hint">Порядок образца: имя → страна → город → работа → хобби → учёба. В жизни можно рассказывать о себе и в другом порядке.</p>' +
+    '<p class="hint about-story-instruction">Выбери 6 фраз по порядку: имя → страна → город → работа → хобби → учёба.</p>' +
     '<div class="practice-grid about-practice-grid">' + state.dayShuffled.map(i=>{
       const position=state.dayOrder.indexOf(i);
-      return '<button type="button" class="day-card about-day-card' + (position>=0?' selected':'') +
+      return '<div class="about-story-card">' +
+        '<button type="button" class="day-card about-day-card' + (position>=0?' selected':'') +
         '" data-day="' + i + '"' + (position>=0?' disabled':'') +
         ' aria-label="' + escape(profileSentences[i][2]) + '">' +
         storyImage(i) +
         '<span class="cn" lang="zh-Hans">' + profileSentences[i][0] + '</span>' +
         '<span class="py">' + profileSentences[i][1] + '</span><span class="ru">' + profileSentences[i][2] + '</span>' +
-        (position>=0?'<span class="position">'+(position+1)+'</span>':'') + '</button>';
+        (position>=0?'<span class="position">'+(position+1)+'</span>':'') + '</button>' +
+        audioButton(profileSentences[i][0],playIcon) + '</div>';
     }).join('') + '</div><div class="answer" lang="zh-Hans" data-placeholder="Выбери первую фразу">' +
     state.dayOrder.map(i=>profileSentences[i][0]).join(' → ') +
     '</div><div class="controls"><button type="button" class="soft" data-day-undo>↶ Отменить</button>' +
@@ -1357,7 +1483,7 @@ function personalStory() {
           escape(option[1])+' · '+(option[0] === '__custom__' ? '✎' : escape(option[0]))+'</option>').join('') +
       '</select>'+customInputs(key)+'</label>').join('') +
     '</div><div class="about-my-lines">' +
-      lines.map(([zh,py])=>'<p><strong lang="zh-Hans">'+escape(zh)+'</strong><span class="py">'+escape(py)+'</span></p>').join('') +
+      lines.map(([zh,py])=>'<p class="about-personal-line"><span class="about-personal-sentence"><strong lang="zh-Hans">'+escape(zh)+'</strong><span class="py">'+escape(py)+'</span></span>'+audioButton(zh,playIcon)+'</p>').join('') +
     '</div><p class="hint">Для собственных слов пиньинь нужно ввести самостоятельно. Проверка правильности написания и тонов здесь не выполняется.</p></section>';
 }
 
@@ -1415,7 +1541,7 @@ async function play(text,button) {
     if (audio !== player || origin !== scope()) return;
     audio = null;
     button.removeAttribute('aria-pressed');
-    setStatus('Запись не загрузилась. Попробуй прослушать ещё раз.');
+    setStatus('Аудио недоступно. Проверь интернет и повтори. Прогресс не засчитывается.');
   };
   player.addEventListener('error',failure,{once:true});
   player.addEventListener('ended',() => {
@@ -1430,7 +1556,7 @@ async function play(text,button) {
     if (state.step === 3 && state.quizTest === 1) {
       heardClip = origin;
       for (const choice of workspace.querySelectorAll('[data-choice]')) choice.disabled = false;
-      setStatus('Выбери действие, которое прозвучало в конце.',true);
+      setStatus('Запись прослушана. Теперь выбери слово.',true);
     } else if (state.step === 2 && wordIndex >= 0) {
       setStatus('✓ Прослушано ' + state.heardWords.length + ' из 6 слов.',true);
       render();
