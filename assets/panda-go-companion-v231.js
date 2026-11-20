@@ -61,7 +61,77 @@ const titles=isFamily?[
 ];
 const listening=(topic.listen?.items||[]).slice(0,4);
 const builds=(topic.builds||[topic.build]).slice(0,3);
-const defaultState=()=>({step:0,maxStep:0,listen:0,built:0,chosen:[],used:[],quizPassed:false,done:false});
+
+/* Five-question final reviews. Previously completed lessons retain completion. */
+const finalChecks=isFamily?[
+ {q:topic.quiz.question,choices:topic.quiz.choices,correct:topic.quiz.correct,explain:topic.quiz.explain},
+ {q:'Что означает 哥哥?',choices:['Младший брат','Старший брат','Папа'],correct:1,explain:'哥哥 gēge — старший брат.'},
+ {q:'Как правильно сказать «У меня есть младшая сестра»?',choices:['我有一个妹妹。','我没有哥哥。','你有妹妹吗？'],correct:0,explain:'我 + 有 + 一个 + 妹妹.'},
+ {q:'Что значит 奶奶?',choices:['Бабушка по маминой линии','Бабушка по папиной линии','Старшая сестра'],correct:1,explain:'奶奶 nǎinai — бабушка по отцу; 外婆 wàipó — по матери.'},
+ {q:'Как правильно отрицать 有?',choices:['不有','没是','没有'],correct:2,explain:'У 有 отрицание 没有 méiyǒu.'}
+]:[
+ {q:topic.quiz.question,choices:topic.quiz.choices,correct:topic.quiz.correct,explain:topic.quiz.explain},
+ {q:'Как сказать «Сегодня холодно»?',choices:['今天是冷。','今天很冷。','今天下雨。'],correct:1,explain:'В этой конструкции говорят 今天很冷, без 是.'},
+ {q:'Как спросить «Какая сегодня погода»?',choices:['今天天气怎么样？','今天星期几？','你有妹妹吗？'],correct:0,explain:'怎么样 zěnmeyàng значит «как? / какой?».'},
+ {q:'Как сказать «Завтра будет дождь»?',choices:['昨天很热。','明天是雨。','明天下雨。'],correct:2,explain:'明天 — завтра; 下雨 — идти (о дожде).'},
+ {q:'Что означает 下雪?',choices:['Идёт дождь','Идёт снег','Холодно'],correct:1,explain:'下雪 xià xuě — идёт снег.'}
+];
+const familyTerms=Object.freeze({
+ '哥哥':['gēge','старший брат'],'弟弟':['dìdi','младший брат'],
+ '姐姐':['jiějie','старшая сестра'],'妹妹':['mèimei','младшая сестра']
+});
+const weatherTerms=Object.freeze({
+ '冷':['hěn lěng','холодно','很冷'],
+ '热':['hěn rè','жарко','很热'],
+ '下雨':['xià yǔ','идёт дождь','下雨'],
+ '下雪':['xià xuě','идёт снег','下雪'],
+ '有风':['yǒu fēng','ветрено','有风']
+});
+function personalLine(){
+ if(isFamily){
+  const who=familyTerms[state.personal?.relative] ? state.personal.relative : '妹妹';
+  const has=state.personal?.has!=='no';
+  const [py,ru]=familyTerms[who];
+  const zh=has?'我有一个'+who+'。':'我没有'+who+'。';
+  return '<div class="pg-personal-line"><strong lang="zh-Hans">'+zh+'</strong><span>'+
+    (has?'Wǒ yǒu yí ge ':'Wǒ méiyǒu ')+py+'.</span><small>'+(has?'У меня есть '+ru+'.':'У меня нет '+ru+'.')+'</small></div>';
+ }
+ const when=state.personal?.when==='明天'?'明天':'今天';
+ const kind=weatherTerms[state.personal?.kind]?state.personal.kind:'冷';
+ const [py,ru,zhPart]=weatherTerms[kind];
+ return '<div class="pg-personal-line"><strong lang="zh-Hans">'+when+zhPart+'。</strong>'+
+  '<span>'+(when==='今天'?'Jīntiān ':'Míngtiān ')+py+'.</span>'+
+  '<small>'+(when==='今天'?'Сегодня ':'Завтра ')+ru+'.</small></div>';
+}
+function personalPracticeMarkup(){
+ const choose=(key,label,choices,current)=>'<label class="pg-personal-field">'+label+
+  '<select data-personal="'+key+'" aria-label="'+label+'">'+choices.map(([v,shown])=>
+   '<option value="'+esc(v)+'"'+(v===current?' selected':'')+'>'+esc(shown)+'</option>').join('')+'</select></label>';
+ const options=isFamily?
+  choose('relative','Кто из родственников',Object.entries(familyTerms).map(([k,v])=>[k,v[1]]),state.personal?.relative||'妹妹')+
+  choose('has','Есть или нет',[['yes','Есть'],['no','Нет']],state.personal?.has||'yes'):
+  choose('when','Когда',[['今天','Сегодня'],['明天','Завтра']],state.personal?.when||'今天')+
+  choose('kind','Какая погода',Object.entries(weatherTerms).map(([k,v])=>[k,v[1]]),state.personal?.kind||'冷');
+ return card('<h2>'+(isFamily?'👪 Расскажи о своей семье':'🌤️ Скажи о своей погоде')+'</h2>'+
+  '<p class="small">Выбери правдивый вариант и прочитай предложение самостоятельно. Никакие факты о тебе не предполагаются.</p>'+
+  '<div class="pg-personal-options">'+options+'</div><div class="pg-personal-result" aria-live="polite">'+personalLine()+'</div>'+
+  '<p class="small">'+(isFamily?'Тоны: 我有 (wǒ yǒu) обычно звучит как wó yǒu из-за двух третьих тонов.':
+  'Тоны: 很冷 (hěn lěng) обычно звучит как hén lěng из-за двух третьих тонов.')+
+  ' Эти составленные фразы не имеют новой отдельной MP3-записи; автоматической проверки тонов нет.</p>','pg-personal');
+}
+function finalQuizCard(){
+ const i=Math.min(finalChecks.length,Math.max(0,Number(state.finalStep)||0));
+ if(i>=finalChecks.length)return card('<h2>🎯 Итог: '+(state.finalLegacy?'старый результат сохранён':state.finalFirstTry+' / '+finalChecks.length+' с первой попытки')+'</h2>'+
+  '<p class="small">'+(state.finalLegacy?'Раньше урок завершался одним вопросом. Предыдущее достижение сохранено; новые пять вопросов можно пройти по желанию.':'Все пять вопросов пройдены. Ты можешь повторить их, не теряя прогресс.')+'</p>'+
+  '<div class="buttons"><button type="button" class="soft primary" data-final-retry>↻ Повторить 5 вопросов</button></div>');
+ const q=finalChecks[i];
+ return card('<h2>🎯 Итоговая проверка · '+(i+1)+' / '+finalChecks.length+'</h2>'+
+  '<p>'+esc(q.q)+'</p><div class="grid pg-final-answers">'+q.choices.map((answer,j)=>
+  '<button type="button" class="card-choice" data-final="'+j+'">'+esc(answer)+'</button>').join('')+'</div>'+
+  '<p class="small">После ошибки можно исправиться; результат первой попытки сохраняется.</p>');
+}
+
+const defaultState=()=>({step:0,maxStep:0,listen:0,built:0,chosen:[],used:[],quizPassed:false,done:false,finalStep:0,finalFirstTry:0,finalErrors:{},finalLegacy:false,personal:{relative:'妹妹',has:'yes',when:'今天',kind:'冷'},audioReadFallbacks:{}});
 let state=defaultState();
 try{
  const raw=JSON.parse(localStorage.getItem(KEY)||'null');
@@ -73,11 +143,18 @@ try{
   state.chosen=Array.isArray(raw.chosen)?raw.chosen.filter(x=>typeof x==='string').slice(0,5):[];
   state.used=Array.isArray(raw.used)?raw.used.filter(Number.isInteger).slice(0,5):[];
   state.quizPassed=raw.quizPassed===true;state.done=raw.done===true;
+  state.finalStep=Number.isInteger(raw.finalStep)?Math.max(0,Math.min(finalChecks.length,raw.finalStep)):state.quizPassed?finalChecks.length:0;
+  state.finalLegacy=state.quizPassed&&!Number.isInteger(raw.finalStep)||raw.finalLegacy===true;
+  state.finalFirstTry=Number.isInteger(raw.finalFirstTry)?Math.max(0,Math.min(finalChecks.length,raw.finalFirstTry)):0;
+  state.finalErrors=raw.finalErrors&&typeof raw.finalErrors==='object'?raw.finalErrors:{};
+  state.personal=raw.personal&&typeof raw.personal==='object'?raw.personal:defaultState().personal;
+  state.audioReadFallbacks=raw.audioReadFallbacks&&typeof raw.audioReadFallbacks==='object'?raw.audioReadFallbacks:{};
+
  }else{
   const prior=JSON.parse(localStorage.getItem(LEGACY)||'null');
   const completed=Array.isArray(JSON.parse(localStorage.getItem(DONE)||'[]'))&&JSON.parse(localStorage.getItem(DONE)||'[]').includes(TOPIC);
   // Preserve old progress in its original key, and never falsely skip new lessons.
-  if(completed||prior?.completed===true){state.done=true;state.quizPassed=true}
+  if(completed||prior?.completed===true){state.done=true;state.quizPassed=true;state.finalStep=finalChecks.length;state.finalLegacy=true}
  }
 }catch{}
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -235,8 +312,9 @@ function listen(){
  const choices=listening.map(([zh,ru])=>[zh,ru]);
  return card('<h2>Слушай и выбирай</h2><p class="small center">Задание '+Math.min(i+1,listening.length)+' из '+listening.length+'</p>'+
  '<div class="buttons">'+playBtn(item[0])+'</div>'+
+ (!finished?'<details class="pg-audio-fallback"><summary>Если запись не работает</summary><button type="button" class="soft" data-audio-unavailable>Продолжить по написанному тексту</button></details>':'')+
  '<div class="grid two">'+choices.map(([zh,ru])=>'<button type="button" class="card-choice" data-listen="'+esc(zh)+'"'+(finished||!listenReady?' disabled':'')+'><strong lang="zh-Hans">'+esc(zh)+'</strong><small>'+esc(ru)+'</small></button>').join('')+'</div>'+
- (finished?'<p class="result good">✓ Все ответы верны! Можешь пройти снова.</p><div class="buttons"><button class="soft primary" type="button" data-repeat-listen>↻ Пройти заново</button></div>':'<p class="small center" id="pg67-listen-hint">'+(listenReady?'Выбирай ответ, можно переслушать.':'Нажми 🔊, чтобы включить звук и открыть ответы.')+'</p>'));
+ (finished?'<p class="result good">✓ Проверка завершена.'+(Object.keys(state.audioReadFallbacks||{}).length?' Часть ответов выполнена по тексту, не на слух.':'')+'</p><div class="buttons"><button class="soft primary" type="button" data-repeat-listen>↻ Пройти заново</button></div>':'<p class="small center" id="pg67-listen-hint">'+(listenReady?'Выбирай ответ, можно переслушать.':'Нажми 🔊, чтобы включить звук и открыть ответы.')+'</p>'));
 }
 function builder(){
  const i=state.built,finished=i>=builds.length,rule=builds[Math.min(i,builds.length-1)];
@@ -260,14 +338,13 @@ function speaking(){
  return card('<h2>Повтори вслух</h2><div class="speech-card"><strong lang="zh-Hans">'+esc(z.hz)+'</strong><p>'+esc(z.py)+'</p><p>'+esc(z.ru)+'</p></div>'+
  '<div class="buttons">'+playBtn(z.hz)+'<button type="button" class="soft" data-record>🎙 Записать</button><button type="button" class="soft" data-stop disabled>■ Стоп</button><button type="button" class="soft" data-replay disabled>▶ Оригинал</button><button type="button" class="soft" data-replay-filter disabled>✨ С фильтром</button></div>'+
  '<p class="small center">Во время записи образец останавливается, чтобы уменьшить эхо. Если эхо остаётся, надень наушники. Автоматической проверки тонов здесь нет.</p>')+
- card('<div class="rule-card">'+esc(z.tip||'Повтори фразу вслух.')+'</div>');
+ card('<div class="rule-card">'+esc(z.tip||'Повтори фразу вслух.')+'</div>')+personalPracticeMarkup();
 }
 function summary(){
  const c=topic.quiz;
  return '<div class="intro"><div class="intro-copy"><span class="pg5-kicker">HSK 1 · УРОК '+lesson+'</span><strong>Отлично! 🌸</strong><p>'+(isFamily?'Ты научился говорить о своей семье.':'Ты научился говорить о погоде.')+'</p></div><div class="intro-art" role="img" aria-label="Панда поздравляет"></div></div>'+
- card('<h2>Последняя проверка</h2><p>'+esc(c.question)+'</p><div class="grid">'+c.choices.map((answer,i)=>
- '<button type="button" class="card-choice '+(state.quizPassed&&i===c.correct?'correct':'')+'" data-final="'+i+'"'+(state.quizPassed?' disabled':'')+'>'+esc(answer)+'</button>').join('')+'</div>'+
- (state.quizPassed?'<p class="result good">✓ Верно! Можно завершить урок.</p>':'<p class="small center">Выбери правильный ответ, чтобы завершить урок.</p>'))+
+ finalQuizCard()+
+ personalPracticeMarkup()+
  card('<h2>Повторение</h2><div class="grid two">'+(isFamily?words.slice(0,4):[words[0],words[1],words[5],words[6]]).map(word).join('')+
  '</div>'+(isFamily?'<h2 class="pg6-grandparents-heading">Бабушки и дедушки</h2>'+
  '<div class="pg6-grandparent-review">'+grandparents.map(([zh,py,ru,slug])=>
@@ -354,20 +431,34 @@ stage.addEventListener('click',e=>{
  if(b.hasAttribute('data-play')){
   const question=state.step===9&&listening[state.listen]?.[0]===b.dataset.play;
   if(question){
-   listenReady=true;
-   stage.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
-   const h=stage.querySelector('#pg67-listen-hint');if(h)h.textContent='Слушай и выбирай. Можно переслушать.';
-   play(b.dataset.play,b.dataset.role||'female');
+   const index=state.listen;
+   listenReady=false;
+   stage.querySelectorAll('[data-listen]').forEach(el=>el.disabled=true);
+   const h=stage.querySelector('#pg67-listen-hint');if(h)h.textContent='Дослушай запись до конца…';
+   play(b.dataset.play,b.dataset.role||'female',ok=>{
+     if(!ok||state.step!==9||state.listen!==index)return;
+     listenReady=true;
+     stage.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
+     const hint=stage.querySelector('#pg67-listen-hint');if(hint)hint.textContent='Запись завершена. Теперь выбери ответ.';
+   });
   }else play(b.dataset.play,b.dataset.role||'female');
   return;
  }
- if(b.hasAttribute('data-restart-lesson')){
+ if(b.hasAttribute('data-audio-unavailable')){
+    if(state.step!==9||state.listen>=listening.length)return;
+    state.audioReadFallbacks[state.listen]=true;
+    listenReady=true;save();
+    stage.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
+    const hint=stage.querySelector('#pg67-listen-hint');if(hint)hint.textContent='Режим чтения: ответ не считается проверкой слуха.';
+    return;
+  }
+  if(b.hasAttribute('data-restart-lesson')){
   // Keep achievements in pg-hsk1-v3-complete and start a fresh local attempt.
   stopAudio();stopWriter();if(media?.state==='recording')media.stop();
   if(micUrl){URL.revokeObjectURL(micUrl);micUrl=null}
   state=defaultState();save();refresh();return;
  }
- if(b.hasAttribute('data-repeat-listen')){state.listen=0;listenReady=false;save();refresh();say('Аудирование начато заново.','good');return}
+ if(b.hasAttribute('data-repeat-listen')){state.listen=0;state.audioReadFallbacks={};listenReady=false;save();refresh();say('Аудирование начато заново.','good');return}
  if(b.hasAttribute('data-listen')){
   const item=listening[state.listen];
   if(!listenReady)return;
@@ -405,10 +496,33 @@ stage.addEventListener('click',e=>{
  if(b.hasAttribute('data-replay')&&micUrl){
   stopAudio();try{audio=new Audio(micUrl);audio.play().catch(()=>say('Не удалось воспроизвести запись.','bad'))}catch{}return;
  }
- if(b.hasAttribute('data-final')){
-  if(Number(b.dataset.final)===topic.quiz.correct){state.quizPassed=true;done();refresh();say('✓ Отлично, правильный ответ!','good')}
-  else say('Не совсем. Вспомни правило и попробуй снова.','bad');
+ if(b.hasAttribute('data-final-retry')){
+  state.finalStep=0;state.finalFirstTry=0;state.finalErrors={};state.finalLegacy=false;
+  save();refresh();return;
  }
+ if(b.hasAttribute('data-final')){
+  const i=state.finalStep,q=finalChecks[i];
+  if(!q)return;
+  const selected=Number(b.dataset.final);
+  if(selected!==q.correct){state.finalErrors[i]=true;save();say('Пока неверно. '+q.explain,'bad');return;}
+  if(!state.finalErrors[i])state.finalFirstTry++;
+  state.finalStep++;
+  if(state.finalStep>=finalChecks.length){state.quizPassed=true;done();}
+  else save();
+  refresh();say('✓ Правильно! '+q.explain,'good');
+  return;
+ }
+});
+stage.addEventListener('change',event=>{
+ const el=event.target.closest('select[data-personal]');
+ if(!el)return;
+ const key=el.dataset.personal;
+ if(isFamily&&!['relative','has'].includes(key) || !isFamily&&!['when','kind'].includes(key))return;
+ if(key==='relative'&&!familyTerms[el.value]||key==='has'&&!['yes','no'].includes(el.value)||
+    key==='when'&&!['今天','明天'].includes(el.value)||key==='kind'&&!weatherTerms[el.value])return;
+ state.personal={...(state.personal||{}),[key]:el.value};save();
+ const result=stage.querySelector('.pg-personal-result');
+ if(result)result.innerHTML=personalLine();
 });
 prev.addEventListener('click',()=>advance(-1));
 next.addEventListener('click',()=>advance(1));
