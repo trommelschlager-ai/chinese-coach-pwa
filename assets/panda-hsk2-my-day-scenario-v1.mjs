@@ -118,6 +118,10 @@ function init(stage){
  const transcript=document.createElement('details');transcript.className='pg-day-transcript';transcript.hidden=true;
  transcript.innerHTML='<summary>👤 Мой распознанный рассказ</summary><p id="day-transcribed" lang="zh-Hans"></p>';
  panel.append(transcript);
+ const chat=document.createElement('details');chat.className='pg-day-chat-log';
+ chat.innerHTML='<summary id="day-chat-label">💬 Чат: сообщений пока нет</summary>'+
+  '<div id="day-chat-messages" role="log" aria-live="polite" aria-label="Сообщения ученика и ответы Панды"></div>';
+ panel.append(chat);
  stage.querySelector('.pg346-history').after(panel);stage.querySelector('.pg346-scene').after(controls);
  // Approved Street screen is a reference for control hierarchy only:
  // move existing interactive nodes; do not replace mascot/scenery or handlers.
@@ -171,9 +175,27 @@ function init(stage){
  const finishButton=controls.querySelector('#day-finish');
  if(entry&&finishButton)entry.append(finishButton);
  const $=id=>stage.querySelector('#'+id);
- let phase='ready',i=0,round=0,reviewIndex=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false;const missingAudio=new Set();
+ let phase='ready',i=0,round=0,reviewIndex=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],monologueSent=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false;const missingAudio=new Set();
  let playbackRate=0.75; // Learner-friendly default shown in the approved speed reference.
  const status=s=>{$('day-status').textContent=s};
+ let chatCount=0;
+ function addChatMessage(role,message){
+   const content=String(message??'').trim();
+   if(!content)return;
+   chatCount++;
+   const container=$('day-chat-messages');
+   const bubble=document.createElement('p');
+   bubble.className='pg-day-chat-msg '+(role==='user'?'pg-day-chat-user':'pg-day-chat-panda');
+   bubble.textContent=(role==='user'?'Ты: ':'Панда: ')+content;
+   container.append(bubble);
+   while(container.children.length>36)container.firstElementChild.remove();
+   const label=$('day-chat-label');
+   if(role==='user'){
+     label.textContent='💬 Отправлено: '+(content.length>32?content.slice(0,32)+'…':content);
+     label.title='Сообщение принято. Нажми, чтобы просмотреть историю переписки.';
+   }
+   if(chat.open)container.scrollTop=container.scrollHeight;
+ }
  function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||'';const repeat=$('day-hear');if(repeat){repeat.disabled=!approvedClips(a[0]).length;repeat.title=repeat.disabled?'Нет точной записи утверждённым голосом':'Повторить одобренную запись'};updateStoryPlayer()}
  function storyLines(){
   return phase==='story'||phase==='monologue'?STORY[round%2]:
@@ -301,6 +323,11 @@ function init(stage){
   clearTimeout(silence);const idx=i;
   silence=setTimeout(async()=>{
    if(phase!=='questions'||i!==idx||recognizer)return;
+   // Never auto-skip while the student is typing/editing an answer.
+   if($('day-input').value.trim()||document.activeElement===$('day-input')){
+     status('✍️ Текст в поле сохранён. Нажми стрелку или «Ответить», чтобы отправить.');
+     return;
+   }
    if(attempt===0){attempt++;status('Панда повторит вопрос медленнее. Это не оценка произношения.');const token=sequence;await speak(['我没听清楚，请再说一遍。','Wǒ méi tīng qīngchu, qǐng zài shuō yí biàn.','Я не расслышала, повтори, пожалуйста.']);if(token!==sequence)return;await delay(200);if(token!==sequence)return;await speak(Q[i].slice(0,3),true);if(token===sequence)countdown()}
    else if(attempt===1){attempt++;status('Подсказка: '+Q[i][3]);countdown()}
    else if(attempt===2){attempt++;status('Пример: '+Q[i][4]+' Ты можешь ответить иначе.');countdown()}
@@ -314,23 +341,25 @@ function init(stage){
   const token=++sequence;await speak(Q[idx]);if(token===sequence)countdown();
  }
  function answer(raw){
-  if(phase!=='questions')return;
-  const idx=i,result=understandDayAnswer(raw,idx);
-  clearTimeout(silence);
+  if(phase!=='questions'){status('Начни вопросы, чтобы отправить ответ.');return}
+  const submitted=String(raw??'').trim();
+  if(!submitted){status('Поле пустое. Напиши или произнеси свой ответ.');return}
+  const idx=i,result=understandDayAnswer(submitted,idx);
+  stop(); // Stop pending audio/timeout so a late callback cannot erase the reply.
+  addChatMessage('user',submitted);
   if(result.kind==='user-question'){
-   // Real turn-taking: answer a learner's question with a recorded fact from
-   // Panda's own story, then return to the question already being practiced.
+   // Answer only factual questions already covered by the approved Panda story.
    $('day-input').value='';
-   stop();stagePhase('questions');
    const story=STORY[round%2],reply=story[[0,1,3,4,5][result.questionIndex]];
    line(reply);
-   status('🐼 Ты спросил Панду. Она ответит о своём дне, затем продолжит урок.');
+   addChatMessage('panda',reply[0]+' — '+reply[2]);
+   status('✓ Вопрос отправлен. Панда отвечает по своему дню.');
    const token=sequence;
    (async()=>{
     await speak(reply);if(token!==sequence)return;
     await delay(500);if(token!==sequence)return;
     line(Q[idx].slice(0,3));
-    status('Теперь твоя очередь: '+Q[idx][2]+' Тоны по тексту не проверяются.');
+    status('Теперь твоя очередь: '+Q[idx][2]);
     await speak(Q[idx].slice(0,3));
     if(token===sequence)countdown();
    })();
@@ -339,7 +368,8 @@ function init(stage){
   if(result.kind==='accepted'){
    answers[idx]=result.value;$('day-input').value='';
    line([result.value,'','Твой ответ']);
-   status('✓ '+result.message);
+   addChatMessage('panda','✓ '+result.message);
+   status('✓ Ответ отправлен и принят. '+result.message);
    const token=++sequence;
    setTimeout(()=>{if(token===sequence)ask(idx+1)},1100);
    return;
@@ -348,16 +378,24 @@ function init(stage){
    if(!notes.includes('Исправление: '+result.correction))notes.push('Исправление: '+result.correction);
    if(!errors.includes(result.correction))errors.push(result.correction);
    line([result.correction,'','Время ставим перед глаголом.']);
-   status('💡 '+result.message+' Правильно: '+result.correction);
+   const response='💡 '+result.message+' Правильно: '+result.correction;
+   addChatMessage('panda',response);
+   status('✓ Отправлено. '+response);
    const token=++sequence;
    speak([result.correction,'','']).then(()=>{if(token===sequence)countdown()});
    return;
   }
-  // A clarification is a follow-up within the SAME question. Do not mistake
-  // an unclear ASR transcript for wrong Chinese or invent personal details.
-  status(result.message);
-  const token=++sequence;
-  setTimeout(()=>{if(token===sequence)countdown()},1500);
+  if(result.kind==='other-question'){
+   // Don't silently drop off-topic questions or pretend we have a general LLM.
+   $('day-input').value='';
+   addChatMessage('panda',result.message);
+   status('✓ Вопрос отправлен. '+result.message);
+   // Stay on the same curriculum question; no bogus answer or timeout.
+   return;
+  }
+  // Even unrecognized phrases remain visible in chat. Preserve editable text.
+  addChatMessage('panda',result.message);
+  status('✓ Сообщение отправлено. '+result.message);
  }
  async function finishQuestions(){
    stop();const list=answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']);
@@ -372,7 +410,7 @@ function init(stage){
    if(token===sequence)playList(list,'summary');
  }
  function monologue(){
-  stop();paused=false;reviewIndex=0;stagePhase('monologue');
+  stop();paused=false;reviewIndex=0;monologueSent=[];stagePhase('monologue');
   const prompt=['现在请你说说你的一天。','Xiànzài qǐng nǐ shuōshuo nǐ de yì tiān.','Теперь расскажи о своём дне.'];
   line(prompt);
   status('Говори несколько предложений подряд или введи текст. Не нужно повторять слова Панды.');
@@ -380,7 +418,9 @@ function init(stage){
   speak(prompt);
  }
  function finish(){
-  const text=$('day-long').value.trim();
+  const pending=$('day-long').value.trim();
+  if(pending)addChatMessage('user',pending);
+  const text=[...monologueSent,pending].filter(Boolean).join('。').trim();
   if(!text){status('Расскажи хотя бы одно предложение или напиши его.');return}
   stopRecognition();spoken=text.split(/[。！？!?\n]+/).map(x=>x.trim()).filter(Boolean);
   $('day-transcribed').textContent=text;transcript.hidden=false;
@@ -438,17 +478,32 @@ function init(stage){
  setSpeedFromSlider();
  $('day-start').onclick=begin;
  $('day-send').onclick=()=>{
-   if(phase==='questions')answer($('day-input').value);
-   else if(phase==='monologue'){
+   if(phase==='questions'){answer($('day-input').value);return}
+   if(phase==='monologue'){
     const el=$('day-long'),raw=el.value.trim();
     if(!raw){status('Скажи или напиши хотя бы одну фразу.');return}
-    el.value=/[。！？!?]$/.test(raw)?raw:raw+'。';
-    status('✓ Фраза добавлена. Продолжай рассказ или нажми «Завершить рассказ».');
+    // The arrow is a real "send" action, not an invisible punctuation edit.
+    const isQuestion=/[?？]$/.test(raw)||/^(?:你|您|什么|为什么|怎么|哪里|哪儿)/u.test(raw);
+    addChatMessage('user',raw);
+    el.value='';
+    if(isQuestion){
+      const response=understandDayAnswer(raw,1);
+      const reply=response.kind==='other-question'?response.message:
+       response.kind==='user-question'?'Вопрос получен. Этот этап предназначен для твоего рассказа; тематические вопросы можно задать на этапе «Вопросы».':
+       'Вопрос получен. Сейчас продолжи свой рассказ о дне.';
+      addChatMessage('panda',reply);
+      status('✓ Вопрос отправлен. '+reply);
+    }else{
+      monologueSent.push(raw);
+      addChatMessage('panda','Фраза получена. Продолжай или нажми «Завершить рассказ».');
+      status('✓ Фраза отправлена. Можно продолжить или завершить рассказ.');
+    }
     el.focus();
    }
  };
  $('day-answer-primary').onclick=()=>answer($('day-input').value);
- $('day-input').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();answer($('day-input').value)}};
+ $('day-input').onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();answer($('day-input').value)}};
+ $('day-input').addEventListener('input',()=>{clearTimeout(silence);if(phase==='questions'&&$('day-input').value.trim())status('✍️ Напечатано. Нажми стрелку или «Ответить», чтобы отправить.')});
  $('day-mic').onclick=mic;
  $('day-hear').onclick=async()=>{
   const clip=last,mode=phase,position=i;
