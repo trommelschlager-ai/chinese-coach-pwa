@@ -42,7 +42,7 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradi
 <button class="zone" type="button" data-action="menu" title="Главное меню" aria-label="Главное меню" style="--x:4.2508%;--y:1.6148%;--w:10.2019%;--h:5.0837%"><span class="sr-only">Главное меню</span></button>
 <button class="zone" type="button" data-action="profile" title="Мой прогресс" aria-label="Мой прогресс" style="--x:84.3783%;--y:1.7344%;--w:11.0521%;--h:4.9641%"><span class="sr-only">Мой прогресс</span></button>
 <button class="zone" type="button" data-action="lesson1" title="Урок 1: 哈喽!" aria-label="Урок 1: 哈喽!" style="--x:46.3337%;--y:29.8445%;--w:49.8406%;--h:7.4163%"><span class="sr-only">Урок 1: 哈喽!</span></button>
-<button class="zone" type="button" data-action="lesson2" title="Урок 2: О себе — ещё не готов" aria-label="Урок 2: О себе — ещё не готов" style="--x:45.6961%;--y:37.4402%;--w:50.6908%;--h:6.2201%"><span class="sr-only">Урок 2: О себе — ещё не готов</span></button>
+<button class="zone" type="button" data-action="lesson2" title="Урок 2: Знакомство — открыть" aria-label="Урок 2: Знакомство — открыть" style="--x:45.6961%;--y:37.4402%;--w:50.6908%;--h:6.2201%"><span class="sr-only">Урок 2: Знакомство — открыть</span></button>
 <button class="zone" type="button" data-action="lesson3" title="Урок 3: Семья — ещё не готов" aria-label="Урок 3: Семья — ещё не готов" style="--x:46.0149%;--y:43.8995%;--w:50.2657%;--h:5.9809%"><span class="sr-only">Урок 3: Семья — ещё не готов</span></button>
 <button class="zone" type="button" data-action="lesson4" title="Урок 4: Еда — ещё не готов" aria-label="Урок 4: Еда — ещё не готов" style="--x:46.3337%;--y:49.8206%;--w:49.8406%;--h:6.2201%"><span class="sr-only">Урок 4: Еда — ещё не готов</span></button>
 <button class="zone" type="button" data-action="lesson5" title="Урок 5: На улице — ещё не готов" aria-label="Урок 5: На улице — ещё не готов" style="--x:46.2274%;--y:56.3995%;--w:49.9469%;--h:6.1005%"><span class="sr-only">Урок 5: На улице — ещё не готов</span></button>
@@ -59,6 +59,7 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradi
 (()=>{
 'use strict';
 const lessonURL='./panda-street-slang-lesson1-preview.html';
+const lesson2URL='./panda-street-slang-lesson2-preview.html';
 const pandaURL='./panda-street-ai-preview.html';
 const courseURL='./hsk1-map.html';
 const toast=document.getElementById('toast'),dialog=document.getElementById('dialog'),title=document.getElementById('dialog-title'),content=document.getElementById('dialog-body');
@@ -73,9 +74,10 @@ const open=(url)=>{window.location.href=url};
 function activate(action){
  if(action==='lesson1'||action==='start')return open(lessonURL);
  if(action==='dialogue'||action==='ai')return open(pandaURL);
- if(/^lesson[2-7]$/.test(action))return showToast('Этот урок пока разрабатывается. Сейчас доступен урок 1 — 哈喽!');
- if(action==='menu')return showDialog('PANDA STREET','<a href="'+lessonURL+'">▶ Начать урок 1 — 哈喽!</a><a href="'+pandaURL+'">💬 Разговор с Panda Street AI</a><a href="'+courseURL+'">🐼 Обычный Panda Go HSK1</a>');
- if(action==='profile')return showDialog('Мой прогресс','<p>Курс STREET 1 находится в разработке. Первый урок открыт для обучения. Следующие будут добавляться отдельно, без изменения этой карты.</p><a href="'+lessonURL+'">Перейти к уроку 1</a>');
+ if(action==='lesson2')return open(lesson2URL);
+ if(/^lesson[3-7]$/.test(action))return showToast('Этот урок ещё разрабатывается. Сейчас доступны уроки 1 и 2.');
+ if(action==='menu')return showDialog('PANDA STREET','<a href="'+lessonURL+'">▶ Начать урок 1 — 哈喽!</a><a href="'+lesson2URL+'">▶ Урок 2 — 认识一下!</a><a href="'+pandaURL+'">💬 Разговор с Panda Street AI</a><a href="'+courseURL+'">🐼 Обычный Panda Go HSK1</a>');
+ if(action==='profile')return showDialog('Мой прогресс','<p>Курс STREET 1 находится в разработке. Уроки 1 и 2 открыты для обучения. Остальные уроки будут добавляться отдельно.</p><a href="'+lessonURL+'">Перейти к уроку 1</a><a href="'+lesson2URL+'">Перейти к уроку 2</a>');
 }
 document.querySelectorAll('.zone').forEach(el=>{
  let timeout;
