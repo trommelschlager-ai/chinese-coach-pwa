@@ -686,7 +686,26 @@ const dialogue = [
  answers:[[phrases[4][0],'Слушать музыку'],['我的爱好是运动。','Заниматься спортом']]}
 ];
 const normalize = text => String(text).replace(/[\p{P}\s]/gu,'');
-const clips = new Map(); // Await exact recordings in the approved female voice; no TTS substitution.
+const clips = new Map([
+  ["来自","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/e5a97570-466d-43a3-9e1e-2aa603f4117a.mp3"],
+  ["现在","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/c19b0089-ff0b-42b7-b7f0-71d7e159bc0d.mp3"],
+  ["住在","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/cef960e2-8aa2-4333-99bb-58e3f84d4655.mp3"],
+  ["工作","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/8d7b8a95-6a7c-40d8-b16e-8070cd6bbe3c.mp3"],
+  ["爱好","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/b52c3637-d4f7-403b-aa36-50777c527957.mp3"],
+  ["学习","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/829170a4-da1c-4fa2-ab55-395dc05aa0ef.mp3"],
+  ["我叫米沙。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/5cc6d378-52e7-416e-88b2-a885d7248aba.mp3"],
+  ["我来自俄罗斯。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/c1a8cd18-8e01-4f6d-8040-f9c18f00323d.mp3"],
+  ["我现在住在莫斯科。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/edf787cf-7ab3-4722-acce-604c90e99e87.mp3"],
+  ["我在公司工作。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/85197244-afea-42c4-96fb-b0e76d8b662a.mp3"],
+  ["我的爱好是听音乐。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/20d8f04f-619f-4df6-8dee-b8bef43b9253.mp3"],
+  ["我每天学习中文。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/4f461ef5-0b39-4a62-8db7-57c38c883cb4.mp3"],
+  ["你来自哪里？","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/554870b4-f2d0-4a51-941d-85936a333000.mp3"],
+  ["你现在住在哪里？","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/7cb7e250-7ea6-4c51-af25-8359eeea36ce.mp3"],
+  ["你的爱好是什么？","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/c7b54532-4063-4e3b-90ed-b0e2ca40cd78.mp3"],
+  ["我来自中国。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/0c492fea-5717-4efd-aa9b-c1d8fffd8a29.mp3"],
+  ["我现在住在北京。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/7492ca08-4c9a-47e9-97ae-14e2a98a4ae2.mp3"],
+  ["我的爱好是运动。","https://storage.googleapis.com/adm--audio-playback--7d--public/mcp-preview/22ffcfc1-0a7c-4898-8ba1-594246d8b85e.mp3"]
+].map(([term,url])=>[normalize(term),url])); // provisional external recordings; replace with approved local voice files after QA.
 const listening = words.map((w,i)=>[w.py,i]);
 const profileSentences = [...phrases];
 
@@ -705,8 +724,8 @@ const courseQuiz = words.flatMap((_,word) =>
   [0,1,2,3,4].map(type => ({type,index:word,word})));
 const stepNumber = step => courseMode ? courseSteps.indexOf(step)+1 : step;
 const titles = ['Вступление','Новые слова','Проверь слова','Грамматика','Собери рассказ','Тренировка тонов','Фразы и диалог','Завершение'];
-const tests = ['Значение слова','По пиньиню','Собери слово','Заполни фразу','Произнеси'];
-const testHelp = ['Выбери правильный перевод.','Найди слово по пиньиню.','Расставь иероглифы по порядку.','Подставь слово в предложение.','Произнеси слово или повтори самостоятельно.'];
+const tests = ['Значение слова','По аудио','Собери слово','Заполни фразу','Произнеси'];
+const testHelp = ['Выбери правильный перевод.','Прослушай запись и выбери слово.','Расставь иероглифы по порядку.','Подставь слово в предложение.','Произнеси слово или повтори самостоятельно.'];
 const tokens = ['我','现在','住在','莫斯科','。'];
 const key = 'panda-go-hsk2-about-me-v1';
 const priorLessonKey = 'panda-go-hsk2-about-me-v1';
@@ -765,6 +784,9 @@ function restore() {
 }
 
 let state = restore();
+// Earlier versions counted manual checkmarks as listened. Reset only this audio count once.
+if (!state.audioPlaybackV6) {state.heardWords=[];state.audioPlaybackV6=true;state.unlockedSection=0;}
+
 state.heardWords = [...new Set((Array.isArray(state.heardWords) ? state.heardWords : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.selfSpoken = [...new Set((Array.isArray(state.selfSpoken) ? state.selfSpoken : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.mic = [...new Set((Array.isArray(state.mic) ? state.mic : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
@@ -1038,18 +1060,15 @@ function intro() {
     '</div></section>';
 }
 function newWords() {
-  return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' +
-    words.map((word,i) =>
-      '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + '<div class="tone-pair">' + toneStrokes(word.tones) + pitchRow(word.tones) + '</div>' +
-      '<div>' + translate([word.zh,word.py,word.ru]) + '</div>' +
-      '<div class="about-word-actions">' + audioButton(word.zh,speaker) +
-      '<button type="button" class="about-learn' + (state.heardWords.includes(i) ? ' learned' : '') +
-      '" data-learn="' + i + '" aria-label="Отметить изученным: ' + word.zh + '">' +
-      '✓</button></div></article>'
-    ).join('') + '</div>' +
-    '<p class="hint audio-note">Изучено ' + state.heardWords.length +
-    ' из 6 выражений. Прочитай, повтори и нажми «Изучил» на каждой карточке.</p>' +
-    '<p class="hint audio-note">🎧 Аудиозаписи пока не загружены: кнопки звука будут доступны после утверждения озвучки.</p>' + safeStatus();
+  return '<h1 class="pill-title">Новые слова</h1><div class="word-list about-myday-wordlist">' +
+    words.map((word,i) => '<article class="word-row about-myday-word">' +
+      vocabImage(i,'about-illustration about-myday-art') +
+      hanzi(word.zh) +
+      '<div class="about-myday-tones">' + toneStrokes(word.tones) + '</div>' +
+      '<div class="about-myday-copy">' + translate([word.zh,word.py,word.ru]) + '</div>' +
+      audioButton(word.zh,playIcon) + '</article>').join('') + '</div>' +
+    '<p class="hint audio-note about-listening-status">🔊 Прослушано ' + state.heardWords.length +
+    ' из 6 слов. Прослушай все записи, затем откроется «Дальше».</p>' + safeStatus();
 }
 
 function hero(kind,step,title,subtitle) {
@@ -1126,9 +1145,8 @@ function question() {
         (done ? '' : choices(i,'ru',i,false));
       break;
     case 1:
-      content = '<div class="quiz-word py">' + word.py + '</div>' +
-        '<p class="hint">Выбери правильное китайское слово по пиньиню.</p>' +
-        (done ? '' : choices(i,'zh',i+1,false));
+      content = '<div class="about-audio-test"><p class="hint">🎧 Прослушай запись и выбери слово.</p>' + audioButton(word.zh,playIcon,true) + '</div>' +
+        (done ? '' : choices(i,'zh',i+1,heardClip !== scope()));
       break;
     case 2: {
       const chars = [...word.zh];
@@ -1177,20 +1195,22 @@ function tokenButtons(order,selected,key) {
 }
 
 function grammar() {
-  const current=state.grammar.map(i=>tokens[i]).join('');
-  return '<h1 class="pill-title">📚 Грамматика</h1>' +
-    '<div class="cloud rule-cloud">' + hanzi('现在') + '<span class="py">xiànzài</span>' +
-    '<b>сейчас, в настоящее время</b></div>' +
-    '<p class="grammar-explain hint">Время обычно ставится после подлежащего и перед действием: 我 + 现在 + 住在 + город.</p>' +
-    '<article class="panel example"><span class="tag">Пример</span>' + stageImage('grammar','about-grammar-photo') + '<div>' +
-      hanzi('我<em>现在</em>住在莫斯科。') + translate(phrases[2]) + '</div></article>' +
-    '<h2 class="builder-title">Составь предложение</h2><div class="tokens">' +
-      tokenButtons([2,0,3,1,4],state.grammar,'gram') + '</div>' +
-    '<div class="answer" lang="zh-Hans" data-placeholder="Нажимай на карточки по порядку">' + current + '</div>' +
-    '<div class="controls grammar-actions"><button type="button" class="soft" data-gram-undo>Отменить</button>' +
+  const current = state.grammar.map(i=>tokens[i]).join('');
+  return '<h1 class="pill-title about-grammar-title">Грамматика</h1>' +
+    '<div class="about-grammar-compact"><strong lang="zh-Hans">现在</strong>' +
+    '<span class="py">xiànzài</span><span class="ru">сейчас</span></div>' +
+    '<p class="about-grammar-rule">现在 ставится после подлежащего и перед действием.</p>' +
+    '<p class="about-grammar-formula"><b>我</b> + <b>现在</b> + <b>住在</b> + город</p>' +
+    '<article class="about-grammar-example">' + stageImage('grammar','about-grammar-photo') +
+      '<div class="about-grammar-example-copy">' + hanzi('我现在住在莫斯科。') + translate(phrases[2]) +
+      '</div>' + audioButton(phrases[2][0],playIcon) + '</article>' +
+    '<h2 class="builder-title about-grammar-build-title">Составь предложение</h2>' +
+    '<div class="tokens about-grammar-tokens">' + tokenButtons([2,0,3,1,4],state.grammar,'gram') + '</div>' +
+    '<div class="answer about-grammar-answer" lang="zh-Hans" data-placeholder="Выбери слова по порядку">' + current + '</div>' +
+    '<div class="controls grammar-actions about-grammar-actions"><button type="button" class="soft" data-gram-undo>Отменить</button>' +
     '<button type="button" class="soft" data-gram-clear>Очистить</button>' +
     '<button type="button" class="primary" data-gram-check>✓ Проверить</button></div>' +
-    safeStatus() + (state.grammarDone && !feedback ? '<p class="feedback good">✓ Предложение собрано верно</p>' : '');
+    safeStatus() + (state.grammarDone && !feedback ? '<p class="feedback good">✓ Верно!</p>' : '');
 }
 
 function day() {
@@ -1243,7 +1263,7 @@ function tones() {
     (state.practiceMode === 'self' ? '✓ Запасной режим' : 'Не работает микрофон?') +
     '</button></div>' +
     (state.practiceMode === 'self'
-      ? '<p class="hint practice-fallback-note">Нет работающего распознавания? Прочитай и повтори по пиньиню, затем отметь слово. Утверждённого аудио пока нет; тоны не проверяются.</p>'
+      ? '<p class="hint practice-fallback-note">Нет работающего распознавания? Прочитай и повтори по пиньиню, затем отметь слово. Запись можно прослушать по кнопке. Тоны не оцениваются автоматически.</p>'
       : '') +
     '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
@@ -1261,7 +1281,7 @@ function tones() {
     safeStatus() + toneGuide() + '<div class="progress-panel panel">' + stageImage('tones','about-progress-photo') + '<div><b>Практика произношения</b>' +
     '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
     ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
-    '. Тоны автоматически не оцениваются. Записи утверждённым голосом готовятся.</p>';
+    '. Тоны автоматически не оцениваются. Голос предварительный, его нужно проверить.</p>';
 }
 
 const replyPinyin = new Map([
