@@ -610,5 +610,5 @@ window.PandaApprovedBridge337={
 };
 
 initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
-// Try the existing recording; browsers may require the first tap before playback.
-play();
+// Do not auto-play a legacy greeting when the HSK2 fixed-voice My Day scenario owns playback.
+if(new URLSearchParams(location.search).get('scenario')!=='hsk2-my-day')play();
