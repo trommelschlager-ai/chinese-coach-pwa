@@ -126,20 +126,20 @@ function miniPreview(state){const m=modules[state.mini],index=state.mini;
 function done(state,sound,link){const d=state.day||{};
  return '<section id="pg433" class="pg433-root pg433-done">'+chrome({...state,stage:4,day:{...d,pg433HighestStage:4}},12,'',state.mini)+'<main class="pg433-content"><h2>🐼 Panda AI · разговор</h2><p class="pg433-hint">Первый мини-урок пройден. Теперь ответь Панде самостоятельно.</p><div class="pg433-panel"><h3>🎙 Панда спрашивает</h3>'+[['你几点起床？','Nǐ jǐ diǎn qǐchuáng?','Во сколько ты встаёшь?'],['你早上做什么？','Nǐ zǎoshang zuò shénme?','Что ты делаешь утром?']].map(q=>'<div class="pg433-sentence">'+audio({sound},q[0])+'<div>'+word(q[0])+'<span class="pg433-py">'+esc(q[1])+'</span><small>'+esc(q[2])+'</small></div></div>').join('')+'</div><a class="pg433-ai-link" href="'+esc(link)+'">🎙 Открыть Panda AI для ответа →</a><p class="pg433-note">Речь и текст проверяются в настоящей Panda AI. Одна лишь транскрипция не доказывает правильность тонов.</p></main><footer class="pg433-footer"><button class="pg433-secondary" data-repeat>↻ Повторить</button><button class="pg433-primary" data-next-mini>Следующий мини-урок →</button></footer></section>';
 }
-function mapView(topics,completed,expandedTopic=null){
+function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
   // Visual-only course catalog refresh. Do not change topic IDs, localStorage progress, routes or lesson engines.
   const safeDone=Array.isArray(completed)?completed:[];
   const coreLessons=[
-    {n:1,name:'О себе',cn:'自我介绍',desc:'Расскажи, как тебя зовут и откуда ты',href:'./hsk2-about-me.html',art:'about'},
-    {n:2,name:'Мой день',cn:'我的一天',desc:'Говори об утре, работе и привычках',href:'./hsk2-lesson1.html',art:'day'}
+    {n:1,name:'О себе',cn:'自我介绍',desc:'Расскажи, как тебя зовут и откуда ты',href:'./hsk2-about-me.html',art:'about',done:!!mainProgress[0]},
+    {n:2,name:'Мой день',cn:'我的一天',desc:'Говори об утре, работе и привычках',href:'./hsk2-lesson1.html',art:'day',done:!!mainProgress[1]}
   ];
   const cards=coreLessons.map(lesson=>
-    '<a class="pgc-feature-card pgc-feature-'+lesson.art+'" href="'+lesson.href+'" aria-label="Урок '+lesson.n+': '+esc(lesson.name)+'. Открыть">'+
+    '<a class="pgc-feature-card pgc-feature-'+lesson.art+'" href="'+lesson.href+'" aria-label="Урок '+lesson.n+': '+esc(lesson.name)+(lesson.done?'. Пройден. Повторить':'. Открыть')+'">'+
       '<span class="pgc-feature-art pgc-art-'+lesson.art+'" aria-hidden="true"></span>'+
-      '<span class="pgc-feature-text"><span class="pgc-feature-tag">УРОК '+lesson.n+'</span>'+
+      '<span class="pgc-feature-text"><span class="pgc-feature-tag">УРОК '+lesson.n+(lesson.done?' · ✓ ПРОЙДЕН':'')+'</span>'+ 
         '<strong>'+esc(lesson.name)+'</strong><span class="pgc-feature-cn" lang="zh-Hans">'+esc(lesson.cn)+'</span>'+
         '<small>'+esc(lesson.desc)+'</small></span>'+
-      '<span class="pgc-feature-action" aria-hidden="true">▶</span>'+
+      '<span class="pgc-feature-action" aria-hidden="true">'+(lesson.done?'✓':'▶')+'</span>'+ 
     '</a>'
   ).join('');
   const topicsMarkup=topics.map((t,i)=>{
