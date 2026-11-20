@@ -23,7 +23,7 @@
 .tone-bullet{display:grid;place-items:center;min-width:26px;height:28px;border:1px solid #d5b0dd;
  border-radius:8px;background:linear-gradient(#f7eafa,#e9d9ee);font-size:12px;font-weight:900;color:#8b5b90}
 .tone-bullet.done{color:#285f43;background:linear-gradient(#e1fbe6,#ade3bc);border-color:#9ecfac}
-#tone-canvas{width:100%;height:auto;aspect-ratio:620/245;border-radius:16px;border:1px solid #e5bfe4;
+#tone-canvas{width:100%;height:auto;aspect-ratio:420/220;border-radius:16px;border:1px solid #e5bfe4;
  background:#fffaff;display:block;box-shadow:inset 0 1px #fff,0 3px 8px #ab7ba435}
 .tone-legend{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;padding:8px 1px;
  font-size:11px;line-height:1.35;font-weight:780;color:#6d3b80}
@@ -47,3 +47,6 @@
 @media(prefers-reduced-motion:reduce){
  .tone-word,.tone-trainer button{transition:none!important;scroll-behavior:auto!important}
 }
+
+.tone-jump-wrap{text-align:center;margin:7px 0 11px}.tone-jump-wrap button{min-height:44px;width:100%;font-weight:850;color:#842995}
+.tone-legend{font-size:12px}
