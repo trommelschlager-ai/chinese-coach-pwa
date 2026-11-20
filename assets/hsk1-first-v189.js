@@ -4,9 +4,11 @@
 (()=>{
  'use strict';
  const PREVIEW_KIND=new URLSearchParams(window.location.search).get('preview');
- const FIRST4_PREVIEW=['first4-v414','lesson1-v415'].includes(PREVIEW_KIND);
+ // The approved conversational 16-screen path is now the published lesson.
+  // ?preview=first4-v414 and ?preview=lesson1-v415 remain separate sandbox previews.
+  const FIRST4_PREVIEW=['first4-v414','lesson1-v415'].includes(PREVIEW_KIND)||!PREVIEW_KIND;
  const STEPS=16;
- const PROGRESS_KEY=FIRST4_PREVIEW?(PREVIEW_KIND==='lesson1-v415'?'pg-hsk1-v415-full-preview':'pg-hsk1-v414-first4-preview'):'pg-hsk1-v189-lesson1';
+ const PROGRESS_KEY=PREVIEW_KIND==='lesson1-v415'?'pg-hsk1-v415-full-preview':PREVIEW_KIND==='first4-v414'?'pg-hsk1-v414-first4-preview':'pg-hsk1-v189-lesson1';
  const LEGACY_KEY='pg-hsk1-v3-foundations';
  const COMPLETE_KEY='pg-hsk1-v3-complete';
  const app=document.querySelector('#app');
@@ -38,7 +40,17 @@
 ];
  let step=0,radical=0,order=[],verified=false,listenPassed=false,listenSelected='',savedListenTarget=null,audio=null,recorder=null,stream=null,recordUrl=null,recording=false,playedAtLeastOnce=false;
  try{const v=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');if(v&&Number.isInteger(v.step)){const alreadyDone=v.step===13&&(!v.lessonVersion||v.lessonVersion<194);const oldStep=alreadyDone?14:Math.min(14,Math.max(0,v.step));step=Number(v.lessonVersion)>=295?Math.min(15,Math.max(0,v.step)):(oldStep>=6?oldStep+1:oldStep);verified=!!v.verified||oldStep>8;listenPassed=!!v.listenPassed||alreadyDone;order=Array.isArray(v.order)?v.order.filter(n=>Number.isInteger(n)&&n>=0&&n<=2).slice(0,3):(verified?[0,1,2]:[]);savedListenTarget=typeof v.listenTarget==='string'?v.listenTarget:null;listenSelected=typeof v.listenSelected==='string'?v.listenSelected:''}}catch{}
- if(FIRST4_PREVIEW)step=Math.min(PREVIEW_KIND==='first4-v414'?3:15,Math.max(0,step));
+ if(!PREVIEW_KIND){
+    // One-time migration of old radical-first screen positions. Never erase
+    // completed milestones or the original stored word/exercise history.
+    try{
+      const old=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'null');
+      if(old && Number(old.pathVersion||0)<516){
+        step=Number(old.step)>=15?15:Number(old.step)>=12?11:0;
+      }
+    }catch{}
+  }
+  if(FIRST4_PREVIEW)step=Math.min(PREVIEW_KIND==='first4-v414'?3:15,Math.max(0,step));
  const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const intro=(n,title,sub)=>`${n?`<p class="screen-eyebrow">${esc(n)}</p>`:""}<h1 class="screen-title">${esc(title)}</h1>${sub?`<p class="screen-sub">${sub}</p>`:""}`;
  // Use one consistent Xiaoxiao voice for all 10 playable strings in Lesson 1.
@@ -185,7 +197,7 @@
     '<div class="pg-v414-line"><img class="pg-v414-face" src="./assets/lesson4-dialog-v282/man.webp" alt="Мужчина" loading="lazy">'+
     '<div class="pg-v414-bubble"><strong lang="zh-Hans">你好！</strong><div class="pg-v414-py">nǐ hǎo</div>'+
     '<div class="pg-v414-meaning">Привет!</div><button type="button" data-say="你好！" data-role="male">▶ Слушать</button></div></div>'+
-    '<p class="pg-v414-last-note">Повтори за каждым собеседником. Остальные экраны будут обновлены после согласования первых четырёх.</p></div>'
+    '<p class="pg-v414-last-note">Повтори за каждым собеседником. Ты уже можешь поздороваться по-китайски! 🐼</p></div>'
  );
 
  // v415 preview screens 5–16: tones, first sentences, practice and result.
@@ -248,13 +260,13 @@
     '<div><span>✓</span> Сказать: <b lang="zh-Hans">我是学生。</b></div>'+
     '<div><span>✓</span> Различать четыре тона</div>'+
     '<div><span>✓</span> Увидеть порядок черт <b lang="zh-Hans">好</b></div></div>'+
-    '<p class="pg-v415-smallnote">Это тестовый просмотр. Прогресс основного курса не меняется.</p>'+
+    '<p class="pg-v415-smallnote">Молодец! Пройденный урок откроет следующее занятие «Местоимения».</p>'+
     '<div class="pg-lesson-complete-actions">'+
     '<button type="button" class="pg-end-repeat" id="repeat-course">↻ Повторить урок</button>'+
     '<a class="pg-end-back" href="./hsk1-map.html">Вернуться к карте</a>'+
     '</div></div>'
  );
- function save(){try{localStorage.setItem(PROGRESS_KEY,JSON.stringify({step,order,verified,listenPassed,listenTarget,listenSelected,lessonVersion:295,updatedAt:Date.now()}))}catch{}}
+ function save(){try{localStorage.setItem(PROGRESS_KEY,JSON.stringify({step,order,verified,listenPassed,listenTarget,listenSelected,lessonVersion:295,pathVersion:516,updatedAt:Date.now()}))}catch{}}
  function markComplete(){
  /* Unlock only the next lesson in the new HSK1 sequence. */
  try{const k='pg-hsk1-path-v371';const v=Number(localStorage.getItem(k)||'0');if(v===0)localStorage.setItem(k,'1');}catch{}
@@ -489,7 +501,7 @@
    return false;
   }
  }
- function render(){releaseHaoTrace();stopSound();counter.textContent=String(step+1).padStart(2,'0')+' / '+STEPS;progress.setAttribute('aria-valuenow',String(step+1));fill.style.width=(100*(step+1)/STEPS)+'%';area.innerHTML=views[step]();area.scrollTop=0;prev.disabled=step===0;next.hidden=step===STEPS-1;next.textContent=step===STEPS-2?'Завершить урок ✓':!FIRST4_PREVIEW&&step===3?'К первым словам →':'Дальше →';next.disabled=FIRST4_PREVIEW?((step===10&&!verified)||(step===12&&!!listenTarget&&!listenPassed)):((step===9&&!verified)||(step===14&&!!listenTarget&&!listenPassed));if(step===STEPS-1){if(!FIRST4_PREVIEW)markComplete();prev.textContent='← Назад'}save()}
+ function render(){releaseHaoTrace();stopSound();counter.textContent=String(step+1).padStart(2,'0')+' / '+STEPS;progress.setAttribute('aria-valuenow',String(step+1));fill.style.width=(100*(step+1)/STEPS)+'%';area.innerHTML=views[step]();area.scrollTop=0;prev.disabled=step===0;next.hidden=step===STEPS-1;next.textContent=step===STEPS-2?'Завершить урок ✓':!FIRST4_PREVIEW&&step===3?'К первым словам →':'Дальше →';next.disabled=FIRST4_PREVIEW?((step===10&&!verified)||(step===12&&!!listenTarget&&!listenPassed)):((step===9&&!verified)||(step===14&&!!listenTarget&&!listenPassed));if(step===STEPS-1){if(!PREVIEW_KIND)markComplete();prev.textContent='← Назад'}save()}
  function advance(){if(FIRST4_PREVIEW){if((step===10&&!verified)||(step===12&&listenTarget&&!listenPassed))return}else{if(step===9&&!verified)return;if(step===14&&listenTarget&&!listenPassed)return}if(step<STEPS-1){if(FIRST4_PREVIEW&&step===0)cleanupRecord();else if(step===13)stopRecord();step++;render()}}
  prev.addEventListener('click',()=>{if(step>0){if(step===13)stopRecord();step--;render()}});
  next.addEventListener('click',advance);
