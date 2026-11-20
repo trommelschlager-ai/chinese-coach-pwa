@@ -391,17 +391,20 @@ function init(stage){
     else monologue();
   }
  };
- const storyHints=[
-  '每天 = каждый день; 起床 = вставать. Время ставится перед 起床.',
-  '起床以后 = после подъёма; 洗脸 = умываться. 洗脸: xǐliǎn, в речи xíliǎn.',
-  '早上 = утром; 刷牙 = чистить зубы.',
-  '吃早饭 = завтракать. 不吃早饭 = не завтракать.',
-  '去上班 = идти на работу. Время ставится перед 去上班.',
-  '晚上 = вечером; 睡觉 = ложиться спать.'
- ];
+ function storyHint(){
+  const sentence=STORY[round%2]?.[i]?.[0]||'';
+  if(sentence.includes('起床以后')&&sentence.includes('洗脸'))return '起床以后 = после подъёма; 洗脸 = умываться. Тоны xǐliǎn, в речи xíliǎn.';
+  if(sentence.includes('起床以后')&&sentence.includes('刷牙'))return '起床以后 = после подъёма; 刷牙 = чистить зубы.';
+  if(sentence.includes('洗脸'))return '早上 = утром; 洗脸 = умываться. Тоны xǐliǎn, в речи xíliǎn.';
+  if(sentence.includes('刷牙'))return '早上 = утром; 刷牙 = чистить зубы.';
+  if(sentence.includes('吃早饭'))return '吃早饭 = завтракать. 不吃早饭 = не завтракать.';
+  if(sentence.includes('上班'))return '去上班 = идти на работу. Время ставится перед 去上班.';
+  if(sentence.includes('睡觉'))return '晚上 = вечером; 睡觉 = ложиться спать.';
+  return '每天 = каждый день. Время ставится перед действием.';
+ }
  $('day-hint').onclick=()=>{
   if(phase==='questions'){status('💡 '+Q[i][3]+' Пример: '+Q[i][4]);countdown()}
-  else if(phase==='story')status('💡 '+storyHints[i]);
+  else if(phase==='story')status('💡 '+storyHint());
   else if(phase==='summary')status('💡 Повтори свой ответ, следя за порядком слов.');
   else status('💡 起床 → 洗脸 → 刷牙 → 吃早饭 → 去上班 → 睡觉');
  };
