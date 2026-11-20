@@ -723,7 +723,7 @@ function quiz() {
       const retry = courseMode && total > 0 && quizCount() === 30
         ? '<button type="button" class="soft quiz-retry" data-quiz-retry="' + i + '" aria-label="Пройти ещё раз: ' + title + '">Пройти ещё раз</button>'
         : '';
-      return opening + '<span class="badge">' + (i+1) + '</span>' + icon + '<span><strong>Тест ' + (i+1) + ' · ' + title +
+      return opening + '<span class="badge">' + (i+1) + '</span>' + icon + '<span><strong>Тест ' + (i+1) + (courseMode ? (i===0 ? ' · Основной' : ' · Дополнительный') : '') + ' · ' + title +
         '</strong><small>' + testHelp[i] + (total && !courseMode ? ' · ' + total + '/6' : '') + '</small>' + retry + '</span>' +
         trigger + (courseMode ? '</div>' : '</button>');
     }).join('') + '</div><div class="reward panel">' + art('trophy') +
