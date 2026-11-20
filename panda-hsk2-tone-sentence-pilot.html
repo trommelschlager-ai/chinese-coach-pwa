@@ -40,6 +40,10 @@
 #ref-controls{margin-top:8px;padding:8px;border:1px dashed #dec1e8;border-radius:12px}
 #ref-controls summary{font-size:12px;font-weight:750;cursor:pointer;color:#70448a}
 #ref-reset{border:1px solid #dec1e8;border-radius:9px;padding:7px 9px;background:#fff;color:#754894;font-size:11px;font-weight:750}
+
+.whole-durations{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:8px 0 5px}
+.whole-duration{padding:6px 8px;border-radius:10px;background:#f2e7f8;font-size:12px;font-weight:750;color:#705184;font-variant-numeric:tabular-nums}
+.whole-duration.user{background:#ede1fd;color:#60409a}
 </style></head><body><main>
 <span class="kicker">🐼 PANDA GO · HSK 2 · МОЙ ДЕНЬ</span>
 <h1>🎙️ Проверь произношение</h1>
@@ -54,17 +58,18 @@
 
 <section class="panel" aria-labelledby="whole-title" id="whole-panel">
 <div class="whole-head"><h2 id="whole-title">📈 Всё предложение — одна шкала</h2><span class="whole-live" id="whole-state">Эталон</span></div>
-<p class="small">Пунктир — вся фраза из урока. Фиолетовая линия появляется во время речи, а после записи показывает твой голос целиком. По вертикали — относительная высота голоса, по горизонтали — время.</p>
-<svg class="whole-svg" id="whole-chart" viewBox="0 0 560 220" role="img" aria-label="Общий график высоты голоса для всего предложения">
+<p class="small">Пунктир — вся фраза из урока. Фиолетовая линия появляется во время речи и после записи показывает твой голос целиком. Обе линии построены по настоящему времени в секундах, без растяжения фразы. По вертикали — относительная высота голоса.</p>
+<svg class="whole-svg" id="whole-chart" viewBox="0 0 560 242" role="img" aria-label="Общий график высоты голоса по настоящему времени в секундах">
  <g stroke="#eee3f2" stroke-dasharray="4 5" stroke-width="1"><path d="M28 37H542 M28 77H542 M28 117H542 M28 157H542"/></g>
- <g id="whole-uncertainty"></g><rect id="whole-focus" class="whole-focus" x="28" y="22" width="0" height="137"/><g id="whole-dividers"></g><g id="whole-labels"></g>
+ <g id="whole-uncertainty"></g><rect id="whole-focus" class="whole-focus" x="28" y="22" width="0" height="137"/><g id="whole-dividers"></g><g id="whole-time-ticks"></g><g id="whole-labels"></g>
  <path class="whole-path" id="whole-ref" stroke="#b39abd" stroke-width="4" stroke-dasharray="8 7"/>
  <path class="whole-path" id="whole-mine" stroke="#7952ba" stroke-width="4"/>
  <line id="whole-cursor" x1="28" x2="28" y1="21" y2="161" stroke="#bb6caa" stroke-width="1.7" stroke-dasharray="3 5" style="display:none"/>
  <text x="9" y="15" font-size="10" fill="#806491">Выше ↑</text>
- <text x="478" y="212" font-size="11" fill="#806491">Время →</text>
+ <text x="473" y="237" font-size="11" fill="#806491">Время, с →</text>
 </svg>
 <div class="whole-legend"><span><i class="ref"></i> Голос из урока</span><span><i></i> Твой голос</span></div>
+<div class="whole-durations"><span class="whole-duration" id="ref-seconds">Образец: измеряется…</span><span class="whole-duration user" id="my-seconds">Твой голос: ещё нет записи</span></div>
 <p id="whole-active">Нажми «Записать себя», чтобы увидеть движение голоса.</p><p id="whole-info" class="whole-note" aria-live="polite">Сначала послушай образец, затем произнеси всё предложение за одну запись.</p>
 <div class="align-panel">
  <button type="button" class="align-button" id="guided-align" disabled>🎯 Сопоставить с образцом по звучанию</button>
@@ -198,17 +203,17 @@ function showUncertainty(){
  for(let i=0;i<tokens.length;i++){
   if(!syllableQuality(i).weak)continue;
   const rect=document.createElementNS(svg,'rect');rect.setAttribute('class','whole-uncertainty');
-  rect.setAttribute('x',String(GRAPH_LEFT+GRAPH_W*(learner.bounds[i]-a)/dur));
+  rect.setAttribute('x',String(xAt(learner.bounds[i]-a)));
   rect.setAttribute('y','22');rect.setAttribute('height','137');
-  rect.setAttribute('width',String(GRAPH_W*(learner.bounds[i+1]-learner.bounds[i])/dur));group.append(rect);
+  rect.setAttribute('width',String(xAt(learner.bounds[i+1]-a)-xAt(learner.bounds[i]-a)));group.append(rect);
  }
 }
 function showFocus(){
  const rect=$('whole-focus'),bounds=learner?.valid?learner.bounds:reference?.bounds;
  if(!bounds?.length){rect.setAttribute('width','0');return;}
  const a=bounds[0],dur=bounds.at(-1)-a;if(dur<=0)return;
- rect.setAttribute('x',String(GRAPH_LEFT+GRAPH_W*(bounds[selected]-a)/dur));
- rect.setAttribute('width',String(GRAPH_W*(bounds[selected+1]-bounds[selected])/dur));
+ rect.setAttribute('x',String(xAt(bounds[selected]-a)));
+ rect.setAttribute('width',String(xAt(bounds[selected+1]-a)-xAt(bounds[selected]-a)));
 }
 
 function render(){
@@ -226,28 +231,63 @@ async function decode(url){const resp=await fetch(url);if(!resp.ok)throw new Err
 
 const GRAPH_LEFT=28,GRAPH_W=514,GRAPH_TOP=23,GRAPH_BOTTOM=159,MAX_RECORD_SECONDS=6;
 let liveContext=null,liveSource=null,liveAnalyzer=null,liveTimer=null,liveFrame=null,liveFrames=[],liveStarted=0;
+function voicedSeconds(data){
+ if(!data?.valid||!data.bounds?.length)return 0;
+ return Math.max(0,data.bounds.at(-1)-data.bounds[0]);
+}
+function sharedSeconds(isLive=false){
+ if(isLive)return MAX_RECORD_SECONDS;
+ const longest=Math.max(1.25,voicedSeconds(reference),voicedSeconds(learner));
+ return Math.ceil((longest+.13)*2)/2;
+}
+function xAt(seconds,isLive=false){
+ return GRAPH_LEFT+GRAPH_W*Math.max(0,Math.min(1,seconds/sharedSeconds(isLive)));
+}
 function wholePath(data,isLive=false){
  if(!data?.frames||data.frames.length<2)return '';
  const frames=data.frames.filter(p=>Number.isFinite(p.hz)&&p.hz>0&&Number.isFinite(p.t));
  if(frames.length<2)return '';
- const t0=isLive?0:(data.bounds?.[0]??frames[0].t);
- const t1=isLive?MAX_RECORD_SECONDS:(data.bounds?.at(-1)??frames.at(-1).t);
- if(t1<=t0)return '';
+ // Both phrases begin at 0 seconds of speech, not by stretching them to 100% width.
+ // The live trace begins at the first detected voice; the finished recording uses analysed voice onset.
+ const start=isLive?(firstLiveVoice??0):(data.bounds?.[0]??frames[0].t);
+ const end=start+sharedSeconds(isLive);
  const baseline=data.base||median(frames.map(p=>p.hz));
  if(!baseline)return '';
  let out='',prev=null;
  for(const p of frames){
-  if(p.t<t0||p.t>t1)continue;
-  const x=GRAPH_LEFT+GRAPH_W*Math.max(0,Math.min(1,(p.t-t0)/(t1-t0)));
+  if(p.t<start||p.t>end)continue;
+  const x=xAt(p.t-start,isLive);
   const st=Math.max(-7,Math.min(7,12*Math.log2(p.hz/baseline)));
   const y=Math.max(GRAPH_TOP,Math.min(GRAPH_BOTTOM,90-st*8.7));
-  // Missing voiced regions and octave tracking failures must not become lines.
   const jump=prev?Math.abs(12*Math.log2(p.hz/prev.hz)):0;
   const pen=!prev||p.t-prev.t>.16||jump>8?'M':'L';
   out+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
   prev=p;
  }
  return out.trim();
+}
+function drawTimeAxis(isLive=false){
+ const g=$('whole-time-ticks');g.replaceChildren();
+ const n=sharedSeconds(isLive),step=n>4?1:.5,svg='http://www.w3.org/2000/svg';
+ for(let t=0;t<=n+1e-8;t+=step){
+  const x=xAt(t,isLive);
+  const line=document.createElementNS(svg,'line');
+  line.setAttribute('x1',x.toFixed(1));line.setAttribute('x2',x.toFixed(1));
+  line.setAttribute('y1','156');line.setAttribute('y2','163');
+  line.setAttribute('stroke','#cdb6d6');
+  const label=document.createElementNS(svg,'text');
+  label.setAttribute('x',x.toFixed(1));label.setAttribute('y','176');
+  label.setAttribute('text-anchor','middle');label.setAttribute('font-size','10');
+  label.setAttribute('fill','#806491');
+  label.textContent=String(t.toFixed(1)).replace('.0','')+'с';
+  g.append(line,label);
+ }
+}
+function updateDurationLabels(){
+ const fmt=x=>x.toFixed(2).replace('.',',');
+ $('ref-seconds').textContent=reference?.valid?'Образец: '+fmt(voicedSeconds(reference))+' с речи':'Образец: нет измерения';
+ $('my-seconds').textContent=learner?.valid?'Твой голос: '+fmt(voicedSeconds(learner))+' с речи'
+  :(!!recorder?'Твой голос: идёт запись':'Твой голос: ещё нет записи');
 }
 
 function referenceSliders(){
@@ -301,21 +341,22 @@ function wholeGuides(){
  const group=$('whole-dividers'),labels=$('whole-labels');
  group.replaceChildren();labels.replaceChildren();
  const total=weights.reduce((a,b)=>a+b,0);
+ const span=voicedSeconds(reference)||sharedSeconds(false);
  const fractions=reference?.valid&&reference.bounds?.length===tokens.length+1
-  ? reference.bounds.map(t=>(t-reference.bounds[0])/(reference.bounds.at(-1)-reference.bounds[0]))
-  : [0,...weights.reduce((arr,w)=>{arr.push(arr.at(-1)+w/total);return arr;},[0]).slice(1)];
+  ? reference.bounds.map(t=>t-reference.bounds[0])
+  : weights.reduce((arr,w)=>{arr.push(arr.at(-1)+span*w/total);return arr;},[0]);
  for(let i=0;i<tokens.length;i++){
-  const x=GRAPH_LEFT+GRAPH_W*(fractions[i]+fractions[i+1])/2;
+  const x=xAt((fractions[i]+fractions[i+1])/2);
   const svgNS='http://www.w3.org/2000/svg';
-  const t=document.createElementNS(svgNS,'text');t.setAttribute('x',x.toFixed(1));t.setAttribute('y','185');
+  const t=document.createElementNS(svgNS,'text');t.setAttribute('x',x.toFixed(1));t.setAttribute('y','199');
   t.setAttribute('text-anchor','middle');t.setAttribute('fill','#6c4a83');
   t.setAttribute('font-size','17');t.setAttribute('font-weight','700');t.textContent=tokens[i].zh;
   labels.append(t);
-  const py=document.createElementNS(svgNS,'text');py.setAttribute('x',x.toFixed(1));py.setAttribute('y','202');
+  const py=document.createElementNS(svgNS,'text');py.setAttribute('x',x.toFixed(1));py.setAttribute('y','217');
   py.setAttribute('text-anchor','middle');py.setAttribute('fill','#8a7392');py.setAttribute('font-size','11');py.textContent=tokens[i].py;
   labels.append(py);
   if(i<tokens.length-1){
-   const line=document.createElementNS(svgNS,'line');const bx=GRAPH_LEFT+GRAPH_W*fractions[i+1];
+   const line=document.createElementNS(svgNS,'line');const bx=xAt(fractions[i+1]);
    line.setAttribute('x1',bx.toFixed(1));line.setAttribute('x2',bx.toFixed(1));
    line.setAttribute('y1','28');line.setAttribute('y2','161');line.setAttribute('stroke','#ead4ed');
    line.setAttribute('stroke-dasharray','3 5');group.append(line);
@@ -323,6 +364,8 @@ function wholeGuides(){
  }
 }
 function updateWhole(){
+ const running=!!liveTimer&&!!recorder;
+ drawTimeAxis(running);updateDurationLabels();wholeGuides();
  $('whole-ref').setAttribute('d',wholePath(reference));
  const isCapturing=!!liveTimer&&!!recorder;showFocus();if(!isCapturing)showUncertainty();
  const display=isCapturing?{frames:liveFrames,base:median(liveFrames.map(p=>p.hz))}:learner;
@@ -333,7 +376,7 @@ function updateWhole(){
   $('whole-state').classList.remove('recording');
   $('whole-cursor').style.display='none';
   $('whole-info').textContent=alignmentStatus|| (learner?.valid
-   ?'Фиолетовая линия — результат твоей записи. Голоса нормализованы по высоте и длительности; разделение слогов предварительное, оценки правильности нет.'
+   ?'Обе записи показаны на общей временной шкале в настоящих секундах, без растягивания. По высоте нормализованы, границы слогов предварительные. Оценки тонов нет.'
    :reference?.valid?'Пунктир — измеренный эталон. Запиши предложение целиком, чтобы поверх появилась твоя кривая.':'Данные эталона ещё не готовы.');
  }
 }
@@ -357,7 +400,7 @@ async function startLive(s){
   liveSource=context.createMediaStreamSource(s);liveAnalyzer=context.createAnalyser();
   liveAnalyzer.fftSize=4096;liveAnalyzer.smoothingTimeConstant=0;liveSource.connect(liveAnalyzer);
   liveFrame=new Float32Array(liveAnalyzer.fftSize);
-  liveStarted=performance.now();firstLiveVoice=null;
+  liveStarted=performance.now();firstLiveVoice=null;drawTimeAxis(true);updateDurationLabels();wholeGuides();$('whole-ref').setAttribute('d',wholePath(reference));
   $('whole-state').textContent='● Запись';$('whole-state').classList.add('recording');
   $('whole-info').textContent='Говори фразу естественно. Линия рисуется во время речи и будет уточнена по полной записи после остановки.';
   liveTimer=setInterval(()=>{
@@ -367,7 +410,7 @@ async function startLive(s){
    const level=Math.sqrt(energy/(liveFrame.length/4));
    $('level').style.width=Math.round(Math.max(0,Math.min(100,level*1800)))+'%';
    const elapsed=(performance.now()-liveStarted)/1000;
-   const pos=GRAPH_LEFT+GRAPH_W*Math.min(1,elapsed/MAX_RECORD_SECONDS);
+   const pos=xAt(Math.max(0,elapsed-(firstLiveVoice??elapsed)),true);
    const cursor=$('whole-cursor');cursor.style.display='';cursor.setAttribute('x1',pos.toFixed(1));cursor.setAttribute('x2',pos.toFixed(1));
    if(level>.007){
     if(firstLiveVoice===null)firstLiveVoice=elapsed;
@@ -412,7 +455,7 @@ $('record').addEventListener('click',async()=>{
    try{decodedLearner=await decode(recordedUrl);learner=analyze(decodedLearner);autoBounds=learner?.bounds?.slice()||null;adjustControls();$('guided-align').disabled=!(learner?.valid&&reference?.valid&&decodedReference);if(!($('guided-align').disabled))guidedAlign();say(learner.valid?'Готово! Нажимай на иероглифы и сравнивай линии. Разделение на слоги пока приблизительное.':'Звук записан, но F0 извлечён не полностью. Попробуй произнести фразу естественно в тишине.');render();updateWhole();}
    catch(e){say('Запись есть, но браузер не смог построить график: '+(e?.message||'ошибка'));}
   },{once:true});
-  recorder.start();void startLive(stream);$('record').disabled=true;$('stop').disabled=false;say('🎙 Говори «我早上洗脸» естественным голосом. Остановка автоматически через 6 секунд.');
+  recorder.start();updateWhole();void startLive(stream);$('record').disabled=true;$('stop').disabled=false;say('🎙 Говори «我早上洗脸» естественным голосом. Остановка автоматически через 6 секунд.');
   micTimer=setTimeout(()=>{if(recorder?.state==='recording')recorder.stop();},6000);
  }catch(e){stopStream();recorder=null;$('record').disabled=false;$('stop').disabled=true;say(e?.name==='NotAllowedError'?'Микрофон запрещён. Разреши доступ в Chrome.':'Микрофон недоступен: '+(e?.message||'ошибка'));}
 });
