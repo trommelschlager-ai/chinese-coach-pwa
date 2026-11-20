@@ -17,6 +17,7 @@ const cases=[
  ['我不上班',3,'accepted'],['我在家工作',3,'accepted'],
  ['我周末不用上班',3,'accepted'],['我去八点上班',3,'correct'],
  ['我上夜班',3,'clarify'],['我早上二十五点去上班',3,'clarify'],
+ ['他七点起床',0,'clarify'],['我哥哥早上吃早饭',2,'clarify'],['她不上班',3,'clarify'],
  ['我晚上十点睡觉',4,'accepted'],['十一点半',4,'accepted'],
  ['我凌晨一点睡觉',4,'accepted'],['我睡得很晚',4,'clarify'],
  ['我想十一点睡觉',4,'clarify'],
