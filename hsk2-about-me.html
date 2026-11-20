@@ -1214,6 +1214,58 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   font-size:15px!important;
  }
 }
+
+/* Panda Go HSK2 2026-11-20: preserve approved artwork and lilac-pink style.
+   Readable body copy, eight-step visual progress, optional oral rehearsal. */
+#app #pg433 .pg433-tabs{--pg2-progress:12.5%}
+#app #pg433 .pg433-tabs::after{
+ content:"";position:absolute;z-index:3;pointer-events:none;
+ left:2px;right:2px;bottom:-5px;height:4px;border-radius:99px;
+ background:linear-gradient(90deg,#b633c4 0%,#d968d8 var(--pg2-progress),#eedaf0 var(--pg2-progress),#eedaf0 100%);
+ box-shadow:0 1px 3px #a77daf66;
+}
+#app #pg433 .pg433-counter{min-width:47px!important;max-width:64px!important;line-height:1.13!important;
+ white-space:normal!important;text-align:center!important;font-size:11px!important;color:#833e8d!important}
+#app:not([data-view="1"]) #pg433 .pg433-content{overflow-y:auto!important;overscroll-behavior-y:contain!important;
+ -webkit-overflow-scrolling:touch;scrollbar-width:thin!important}
+#app #pg433 .word-row .py,#app #pg433 .word-row .ru{
+ font-size:clamp(13px,3.5vw,15px)!important;line-height:1.3!important;overflow-wrap:anywhere!important}
+#app #pg433 .tone-row .py,#app #pg433 .tone-row .ru{
+ font-size:clamp(12px,3.4vw,14px)!important;line-height:1.22!important;overflow-wrap:anywhere!important}
+#app #pg433 .phrase .py,#app #pg433 .phrase .ru,
+#app #pg433 .chat-bubble .py,#app #pg433 .chat-bubble .ru{
+ font-size:clamp(13px,3.5vw,15px)!important;line-height:1.34!important;overflow-wrap:anywhere!important}
+#app #pg433 .choice,#app #pg433 .soft{min-height:44px!important}
+#app #pg433 .pg2-own-practice{
+ margin:13px 2px 8px;border:1.5px solid #e3b1e6;border-bottom:3px solid #c18cce;
+ border-radius:18px;background:linear-gradient(155deg,#fffafd,#f6e0fa);
+ box-shadow:0 4px 9px #ab71ab37;padding:10px;min-width:0}
+#app #pg433 .pg2-own-practice>summary{
+ cursor:pointer;color:#6e227f;font-size:clamp(15px,4.1vw,18px);font-weight:850;
+ line-height:1.3;min-height:44px;display:list-item;padding:9px 8px}
+#app #pg433 .pg2-own-practice .about-personal{margin:4px 0!important}
+#app #pg433 .pg2-rehearsal{
+ margin:12px 0 6px;padding:12px 10px;border-radius:16px;border:1.5px solid #e8c1e4;
+ background:linear-gradient(#fffaff,#fbe9fc);box-shadow:0 3px 7px #a16da82b}
+#app #pg433 .pg2-rehearsal h3{
+ color:#682580;font-size:clamp(15px,4vw,18px);line-height:1.3;margin:0 0 7px}
+#app #pg433 .pg2-rehearsal p{color:#725078;font-size:clamp(12px,3.2vw,14px);line-height:1.38;margin:6px 0 10px}
+#app #pg433 .pg2-rehearsal-steps{
+ display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:8px 0}
+#app #pg433 .pg2-rehearsal-steps button{
+ min-width:0;min-height:46px;border-radius:12px;border:1.5px solid #d49ddd;
+ background:linear-gradient(#fff7fd,#edcff4);font-weight:900;font-size:17px;color:#75308d;
+ box-shadow:0 3px 5px #a87cac33;padding:6px 0}
+#app #pg433 .pg2-rehearsal-steps button[aria-pressed="true"]{
+ background:linear-gradient(#def7d7,#9fdc93);border-color:#78b979;color:#2e6930}
+#app #pg433 .pg2-rehearsal-steps button:focus-visible,
+#app #pg433 .pg2-own-practice>summary:focus-visible{outline:3px solid #903db3;outline-offset:2px}
+@media(max-width:375px){
+ #app #pg433 .word-row .py,#app #pg433 .word-row .ru{font-size:13px!important}
+ #app #pg433 .pg2-rehearsal-steps{gap:4px}
+ #app #pg433 .pg2-rehearsal-steps button{font-size:16px;min-height:45px}
+}
+
 </style>
 </head>
 <body>
@@ -1326,7 +1378,7 @@ function blank() {
     mic:[], chat:[], toneTab:'words', unlockedSection:0,
     heardWords:[], selfSpoken:[], practiceMode:'mic',
     personal:{name:'米沙',origin:'俄罗斯',city:'莫斯科',work:'在公司工作',hobby:'听音乐'},
-    personalCustom:{}
+    personalCustom:{},personalRead:[]
   };
 }
 
@@ -1371,6 +1423,7 @@ state.selfSpoken = [...new Set((Array.isArray(state.selfSpoken) ? state.selfSpok
 state.mic = [...new Set((Array.isArray(state.mic) ? state.mic : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.practiceMode = 'mic'; // Primary microphone mode.
 state.personal = {...blank().personal,...(state.personal && typeof state.personal === 'object' ? state.personal : {})};
+state.personalRead = [...new Set((Array.isArray(state.personalRead)?state.personalRead:[]).filter(i=>Number.isInteger(i)&&i>=0&&i<6))];
 let audio = null;
 let speech = null;
 let feedback = '';
@@ -1384,6 +1437,7 @@ const headBack = document.getElementById('detail-back');
 const back = document.getElementById('back');
 const next = document.getElementById('next');
 let counter;
+let chapter;
 if (courseMode) {
   const frame = document.createElement('div');
   frame.id = 'pg433';
@@ -1400,7 +1454,7 @@ if (courseMode) {
   headLabel.className = 'pg433-title';
   headLabel.removeAttribute('id');
   headLabel.innerHTML = '<small>HSK 2 · Урок 1</small><strong>О себе</strong>';
-  const chapter = document.createElement('span');
+  chapter = document.createElement('span');
   chapter.className = 'pg433-pill';
   chapter.textContent = 'Урок 1 · Знакомство';
   top.append(chapter);
@@ -1589,8 +1643,14 @@ function render(resetScroll = false) {
     state.quizTest = task?.type ?? null;
     if (task) state.quizIndex = task.index;
   }
-  if (courseMode) counter.textContent = 'Шаг ' + stepNumber(step) + ' из 8';
-  else headLabel.textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
+  if(courseMode){
+    const n=stepNumber(step);
+    counter.textContent=['Начало','Слова','Правило','Речь','Тесты','Рассказ','Диалог','Итог'][n-1];
+    counter.title='Шаг '+n+' из 8 · '+titles[step-1];
+    chapter.textContent='Шаг '+n+' / 8';
+    chapter.setAttribute('aria-label','Шаг '+n+' из восьми. '+titles[step-1]);
+    nav.style.setProperty('--pg2-progress',(n*100/8)+'%');
+  } else headLabel.textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
   headBack.disabled = step === 1;
   stepButtons.forEach((button,index) => {
     const active = courseMode ? (index === 0 && step === 1) || courseSections[index].steps.includes(step) : index+1 === step;
@@ -1821,7 +1881,9 @@ function day() {
     '<div class="controls approved-story-controls"><button type="button" class="soft" data-day-undo>↶ Отменить</button>' +
       '<button type="button" class="soft" data-day-reset>Сброс</button></div>' +
     '<button type="button" class="primary large approved-story-check" data-day-check>✓ Проверить рассказ</button>' +
-    safeStatus() + (state.dayDone&&!feedback?'<p class="feedback good">✓ Рассказ о Мише собран!</p>':'');
+    safeStatus() + (state.dayDone&&!feedback?'<p class="feedback good">✓ Рассказ о Мише собран!</p>':'') +
+    '<details class="pg2-own-practice"><summary>✨ Теперь составь рассказ о себе</summary>'+
+      personalStory()+'</details>';
 }
 
 function phraseCards() {
@@ -1918,6 +1980,27 @@ const storyOptions = {
   hobby:[['听音乐','Слушаю музыку','tīng yīnyuè'],['运动','Спорт','yùndòng'],['看书','Читаю книги','kàn shū'],['旅游','Путешествия','lǚyóu'],['跳舞','Танцы','tiàowǔ'],['做饭','Готовить','zuòfàn'],['__custom__','Своё хобби','']]
 };
 const storyFields = [['name','Имя'],['origin','Страна'],['city','Город'],['work','Работа / учёба'],['hobby','Хобби']];
+
+function personalReadControls(count=6){
+ const completed=new Set(state.personalRead||[]);
+ return '<section class="pg2-rehearsal" aria-label="Самостоятельная практика речи">'+
+  '<h3>🎙 Произнеси рассказ самостоятельно</h3>'+
+  '<p>Прочитай каждую фразу вслух и отметь, что повторил. Слушай оригинальные записи, где они есть.</p>'+
+  '<div class="pg2-rehearsal-steps">'+Array.from({length:count},(_,i)=>
+   '<button type="button" data-personal-read="'+i+'" aria-pressed="'+completed.has(i)+'"'+
+    ' aria-label="Фраза '+(i+1)+'. '+(completed.has(i)?'Отмечена как произнесённая':'Отметить после самостоятельного произнесения')+'">'+
+    (completed.has(i)?'✓':'○')+' '+(i+1)+'</button>').join('')+'</div>'+
+  '<p class="pg2-rehearsal-status">'+completed.size+' / '+count+' фраз отмечено. Это самостоятельная отметка, не проверка произношения и тонов.</p></section>';
+}
+function refreshPersonalBuilder(){
+ const current=workspace.querySelector('.about-personal');
+ if(!current){render();return}
+ const holder=document.createElement('div');
+ holder.innerHTML=personalStory();
+ const replacement=holder.firstElementChild;
+ if(replacement)current.replaceWith(replacement);
+}
+
 function personalStory() {
   const get = key => {
     if (state.personal[key] === '__custom__') {
@@ -1952,7 +2035,7 @@ function personalStory() {
       '</select>'+customInputs(key)+'</label>').join('') +
     '</div><div class="about-my-lines">' +
       lines.map(([zh,py])=>'<p class="about-personal-line"><span class="about-personal-sentence"><strong lang="zh-Hans">'+escape(zh)+'</strong><span class="py">'+escape(py)+'</span></span>'+audioButton(zh,playIcon)+'</p>').join('') +
-    '</div><p class="hint">Для собственных слов пиньинь нужно ввести самостоятельно. Проверка правильности написания и тонов здесь не выполняется.</p></section>';
+    '</div>' + personalReadControls(lines.length) + '<p class="hint">Для собственных слов пиньинь нужно ввести самостоятельно. Проверка правильности написания и тонов здесь не выполняется.</p></section>';
 }
 
 function chat() {
@@ -2312,7 +2395,16 @@ const actions = {
     update();
     followDialogue();
   },
-  chatReset: () => { clearMedia(); state.chat = []; update(); }
+  chatReset: () => { clearMedia(); state.chat = []; update(); },
+  personalRead: value => {
+    const i=Number(value);
+    if(!Number.isInteger(i)||i<0||i>=6)return;
+    const marked=new Set(state.personalRead||[]);
+    if(marked.has(i))marked.delete(i);else marked.add(i);
+    state.personalRead=[...marked].sort((a,b)=>a-b);save();
+    const panel=workspace.querySelector('.pg2-rehearsal');
+    if(panel)panel.outerHTML=personalReadControls(6);
+  }
 };
 app.addEventListener('change',event=>{
   const customInput=event.target.closest('input[data-personal-custom]');
@@ -2323,7 +2415,8 @@ app.addEventListener('change',event=>{
     state.personalCustom ??= {};
     state.personalCustom[field] ??= {};
     state.personalCustom[field][kind]=customInput.value.trim().slice(0,kind==='py'?100:45);
-    save();render();workspace.scrollTop=oldScroll;
+    state.personalRead=[];
+    save();refreshPersonalBuilder();workspace.scrollTop=oldScroll;
     return;
   }
   const target=event.target.closest('select[data-personal]');
@@ -2333,8 +2426,9 @@ app.addEventListener('change',event=>{
   if(!storyOptions[key].some(option=>option[0]===target.value))return;
   const oldScroll=workspace.scrollTop;
   state.personal[key]=target.value;
+  state.personalRead=[];
   save();
-  render();
+  refreshPersonalBuilder();
   workspace.scrollTop=oldScroll;
 });
 
