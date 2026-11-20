@@ -1,0 +1,89 @@
+/* Panda Go · Panda AI beginner conversation v16.
+   Minimal control change; approved Panda/landscape and lesson player stay intact.
+   Only affects ?scenario=hsk2-my-day. */
+#pg346[data-day-scenario="ready"] .pg-day-title #day-chat-mode{
+  order:2!important;
+  display:grid!important;place-items:center!important;
+  flex:0 0 clamp(31px,8.2vw,37px)!important;
+  width:clamp(31px,8.2vw,37px)!important;
+  height:clamp(29px,4.2dvh,37px)!important;
+  margin:0 1px!important;
+  padding:0!important;
+  border:1px solid var(--pg500-edge)!important;
+  border-radius:10px!important;
+  background:var(--pg500-panel)!important;
+  color:var(--pg500-copy)!important;
+  box-shadow:0 2px 5px #09152f66!important;
+  font-size:clamp(17px,4.4vw,21px)!important;
+  line-height:1!important;
+  cursor:pointer;
+}
+#pg346[data-day-scenario="ready"] .pg-day-title #day-chat-mode[aria-pressed="true"]{
+  background:linear-gradient(135deg,#9b53d8,#642aaf)!important;
+  color:#fff!important;
+  border-color:#d8bbff!important;
+  box-shadow:0 0 0 2px #bc67fc52,0 2px 6px #21094280!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-title #day-chat-mode:active{
+  transform:translateY(2px);
+}
+#pg346[data-day-phase="freechat"] .pg-day-controls{
+  display:flex!important;
+  flex:0 0 auto!important;
+  min-height:clamp(66px,8.8dvh,89px)!important;
+  padding:clamp(5px,1.25vw,10px)!important;
+  margin-inline:clamp(6px,1.6vw,13px)!important;
+  border-radius:22px!important;
+  background:var(--pg500-panel)!important;
+}
+#pg346[data-day-phase="freechat"] .pg-day-controls .pg-day-entry,
+#pg346[data-day-phase="freechat"] .pg-day-controls .pg-day-answer-fields{
+  display:flex!important;
+  min-width:0!important;
+  width:100%!important;
+  flex:1 1 auto!important;
+  align-items:center!important;
+}
+#pg346[data-day-phase="freechat"] .pg-day-controls .pg-day-answer-fields{
+  background:#fff9ff!important;
+}
+#pg346[data-day-phase="freechat"] .pg-day-controls input#day-input{
+  display:block!important;
+  min-width:0!important;
+  width:100%!important;
+  flex:1 1 auto!important;
+  font-size:16px!important;
+  color:#3b3153!important;
+}
+#pg346[data-day-phase="freechat"] .pg-day-controls #day-answer-primary{
+  display:grid!important;place-items:center!important;
+  color:#fff!important;background:linear-gradient(130deg,#bd61ec,#793cbd)!important;
+  flex-basis:clamp(103px,25vw,139px)!important;
+  min-width:0!important;
+}
+#pg346[data-day-phase="freechat"] .pg-day-panel{
+  max-height:min(31dvh,265px)!important;
+}
+#pg346[data-day-phase="freechat"] .pg-day-chat-log:not([hidden]){display:block!important}
+#pg346[data-day-phase="freechat"] .pg-day-chat-log[open] #day-chat-messages{
+  max-height:min(17dvh,160px)!important;
+}
+#pg346[data-day-phase="freechat"] .pg-day-rail #day-hint{
+  display:flex!important;
+}
+#pg346[data-day-phase="freechat"] .pg-day-rail #day-hear[hidden]{
+  display:none!important;
+}
+@media(max-width:360px){
+ #pg346[data-day-scenario="ready"] .pg-day-title #day-chat-mode{
+   flex-basis:29px!important;width:29px!important;height:28px!important;
+   font-size:17px!important;
+ }
+ #pg346[data-day-phase="freechat"] .pg-day-controls #day-answer-primary{
+   flex-basis:93px!important;
+   font-size:11px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ #pg346[data-day-scenario="ready"] .pg-day-title #day-chat-mode{transition:none!important}
+}
