@@ -144,7 +144,9 @@ function init(stage){
  '<strong>📖 Режим рассказа Panda</strong><span id="day-player-count">Фраза 1 из 6</span></div></div>'+
  '<div class="pg-day-player-buttons"><button id="day-prev" type="button" aria-label="Предыдущее предложение">◀ Пред.</button>'+
  '<button id="day-repeat-sentence" type="button" aria-label="Повторить текущее предложение">↻ Повтор фразы</button>'+
- '<button id="day-next" type="button" aria-label="Следующее предложение">След. ▶</button></div>';
+ '<button id="day-next" type="button" aria-label="Следующее предложение">▶▶ След.</button></div>'+
+ '<div class="pg-day-player-progress" aria-label="Прогресс урока"><span id="day-progress-count">Фраза 1 из 6</span>'+
+ '<div id="day-progress-dots" role="group" aria-label="Выбор предложения"></div></div>';
  stage.querySelector('.pg346-scene').after(storyPlayer);
  storyPlayer.querySelector('.pg-day-player-head').append(speedGroup);
  const pauseButton=controls.querySelector('#day-pause');
@@ -179,23 +181,41 @@ function init(stage){
   const isQuestion=phase==='questions',isReview=phase==='monologue';
   const active=['story','summary','questions','monologue'].includes(phase);
   const current=isReview?reviewIndex:i;
+  const total=isQuestion?5:lines.length;
   const count=isQuestion?'Вопрос '+(i+1)+' из 5':
-    active?'Фраза '+Math.min(current+1,lines.length)+' из '+lines.length:'';
-  $('day-player-count').textContent=count;
+    active?'Фраза '+Math.min(current+1,Math.max(1,total))+' из '+total:'';
+  $('day-player-count').textContent=phase==='story'?'Слушай предложения и повторяй.':
+    phase==='questions'?'Слушай вопросы, отвечай и повторяй.':
+    phase==='summary'?'Повтори свой день по предложениям.':
+    phase==='monologue'?'Подсказки к твоему рассказу.':'';
+  $('day-progress-count').textContent=count;
+  const dots=$('day-progress-dots');
+  if(dots&&active){
+    const buttons=[];
+    for(let index=0;index<total;index++){
+      const cls=index<current?'done':index===current?'current':'future';
+      const label=(isQuestion?'Вопрос ':'Фраза ')+(index+1)+(cls==='current'?' — текущая':'');
+      buttons.push('<button type="button" class="pg-day-progress-dot '+cls+'" data-index="'+index+
+       '" aria-label="'+label+'" aria-current="'+(cls==='current'?'step':'false')+'"'+
+       ((isQuestion&&index>i)?' disabled':'')+'><span>'+(cls==='done'?'✓':index+1)+'</span></button>');
+    }
+    dots.innerHTML=buttons.join('');
+  }else if(dots) dots.replaceChildren();
   $('day-prev').disabled=!active||current<=0;
   $('day-next').disabled=!active||(isReview&&current>=lines.length-1);
   const targetLine=isQuestion?Q[i]?.[0]:isReview?lines[reviewIndex]?.[0]:last?.[0];
   $('day-repeat-sentence').disabled=!targetLine||!approvedClips(targetLine).length;
   $('day-repeat-sentence').textContent=isQuestion?'↻ Повтор вопроса':'↻ Повтор фразы';
-  $('day-next').textContent=isQuestion?'Пропустить ▶':'След. ▶';
+  $('day-next').textContent=isQuestion?'▶▶ След.':'▶▶ След.';
+  $('day-next').title=isQuestion?'Следующий вопрос (пропуск с подтверждением)':'Следующее предложение';
   const heading=$('day-story-player')?.querySelector('.pg-day-player-title strong');
-  if(heading)heading.textContent=isQuestion?'📖 Режим вопросов Panda':
-    isReview?'📖 Режим рассказа Panda':'📖 Режим рассказа Panda';
+  if(heading)heading.textContent=isQuestion?'📖 Режим вопросов Panda':'📖 Режим рассказа Panda';
  }
  function stagePhase(p){
   phase=p;stage.dataset.dayPhase=p;
   $('day-phase').textContent=({ready:'🐼 Мой день',intro:'🐼 Приветствие',story:'🐼 История Панды',questions:'🐼 Вопросы',summary:'🐼 Твой день',monologue:'👤 Расскажи сам',results:'🏆 Итоги'}[p]);
-  $('day-step').textContent=p==='questions'?(i+1)+'/5':p==='story'?(i+1)+'/6':'HSK 2';
+  // The step counter belongs in the progress strip, as in approved photo 2.
+  $('day-step').textContent='HSK 2';
   const show=(id,on)=>$(id).hidden=!on;
   show('day-start',p==='ready');show('day-hear',!['ready','results'].includes(p));
   show('day-pause',['story','summary','questions','monologue'].includes(p));
@@ -206,7 +226,9 @@ function init(stage){
   show('day-input',p==='questions');show('day-send',['questions','monologue'].includes(p));
   show('day-long',p==='monologue');show('day-mic',['questions','monologue'].includes(p));
   show('day-answer-primary',p==='questions');
-  $('day-pause').textContent='⏸ Пауза';
+  $('day-pause').textContent='Ⅱ';
+  $('day-pause').setAttribute('aria-label','Пауза');
+  $('day-pause').title='Пауза';
   updateStoryPlayer();
  }
  function stop(){
@@ -422,7 +444,7 @@ function init(stage){
  $('day-hear').onclick=async()=>{
   const clip=last,mode=phase,position=i;
   if(!clip)return;
-  if(mode==='story'||mode==='summary'){paused=false;$('day-pause').textContent='⏸ Пауза'}
+  if(mode==='story'||mode==='summary'){paused=false;$('day-pause').textContent='Ⅱ';$('day-pause').setAttribute('aria-label','Пауза')}
   stop();const token=sequence;
   await speak(clip);
   if(token!==sequence)return;
@@ -455,6 +477,21 @@ function init(stage){
  };
  $('day-prev').onclick=()=>seekStory(-1);
  $('day-next').onclick=()=>seekStory(1);
+ // Progress dots are functional: tap any completed or current step to replay.
+ $('day-progress-dots').addEventListener('click',event=>{
+  const dot=event.target.closest('button[data-index]');
+  if(!dot||dot.disabled)return;
+  const index=Number(dot.dataset.index);
+  if(!Number.isInteger(index))return;
+  if(phase==='story'||phase==='summary'){
+    const lines=storyLines();
+    if(index>=0&&index<lines.length){stop();paused=false;playList(lines,phase,index)}
+  }else if(phase==='questions'){
+    if(index>=0&&index<=i){$('day-input').value='';ask(index)}
+  }else if(phase==='monologue'){
+    if(index>=0&&index<storyLines().length)reviewExample(index);
+  }
+ });
  $('day-repeat-sentence').onclick=()=>{
   if(phase==='questions'){replayQuestion();return}
   if(phase==='monologue'){reviewExample(reviewIndex);return}
@@ -494,7 +531,8 @@ function init(stage){
   if(mode!=='story'&&mode!=='summary')return;
   const lines=storyLines(),next=i+delta;
   if(next<0)return;
-  stop();paused=false;$('day-pause').textContent='⏸ Пауза';
+  stop();paused=false;$('day-pause').textContent='Ⅱ';
+  $('day-pause').setAttribute('aria-label','Пауза');
   if(next>=lines.length){if(mode==='story')ask(0);else monologue();return}
   playList(lines,mode,next);
  }
@@ -502,11 +540,15 @@ function init(stage){
   const mode=phase;
   if(!['story','summary','questions','monologue'].includes(mode))return;
   if(!paused){
-   paused=true;stop();$('day-pause').textContent='▶ Продолжить';
+   paused=true;stop();$('day-pause').textContent='▶';
+   $('day-pause').setAttribute('aria-label','Продолжить');
+   $('day-pause').title='Продолжить';
    status(mode==='questions'?'Вопрос на паузе. Нажми «Продолжить», когда готов.':
     'Пауза. Нажми «Продолжить» или «Повтор фразы».');
   }else{
-   paused=false;$('day-pause').textContent='⏸ Пауза';
+   paused=false;$('day-pause').textContent='Ⅱ';
+   $('day-pause').setAttribute('aria-label','Пауза');
+   $('day-pause').title='Пауза';
    if(mode==='questions')replayQuestion();
    else if(mode==='monologue')reviewExample(reviewIndex);
    else playList(storyLines(),mode,i);
