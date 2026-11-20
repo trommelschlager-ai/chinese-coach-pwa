@@ -1,6 +1,6 @@
 {
   "version": 502,
-  "bytes": 67450741,
+  "bytes": 67623560,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -3135,6 +3135,21 @@
     "./assets/panda-live-v346.mjs?v=463",
     "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=3",
     "./assets/panda-live-screen-v270.mjs?v=465",
-    "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=4"
+    "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=4",
+    "./assets/panda-hsk2-my-day-voice-20261120/day01.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day02.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day03.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day04.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day05.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day06.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day07.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day08.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day09.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day10.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day11.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day12.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day13.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/day14.mp3",
+    "./assets/panda-hsk2-my-day-voice-20261120/manifest.json"
   ]
 }
