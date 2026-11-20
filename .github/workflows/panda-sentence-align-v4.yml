@@ -1,0 +1,21 @@
+name: Panda sentence alignment v4 regression
+on:
+  push:
+    paths:
+      - "assets/panda-sentence-align-v4.mjs"
+      - "tests/panda-sentence-align-v4.test.mjs"
+      - ".github/workflows/panda-sentence-align-v4.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  alignment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate reference-guided syllable alignment
+        run: node --test tests/panda-sentence-align-v4.test.mjs
