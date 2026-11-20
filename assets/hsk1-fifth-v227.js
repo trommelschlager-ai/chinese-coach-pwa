@@ -41,7 +41,66 @@ const builds=[
  {parts:['十','二','月'],word:'十二月',ru:'декабрь'},
  {parts:['三','月'],word:'三月',ru:'март'}
 ];
-const defaultState=()=>({step:0,maxStep:0,heard:{},listen:0,built:0,chosen:[],used:[],quizPassed:false,done:false});
+
+/* Five meaningful final checks; old one-question completions stay valid. */
+const finalChecks=[
+ {q:topic.quiz.question,choices:topic.quiz.choices,correct:topic.quiz.correct,explain:topic.quiz.explain},
+ {q:'Как написать «ноябрь»?',choices:['十一月','十二月','十月'],correct:0,explain:'十一 (11) + 月 — 十一月.'},
+ {q:'Как написать «декабрь»?',choices:['十月','十二月','二月'],correct:1,explain:'十二 (12) + 月 — 十二月.'},
+ {q:'В чём разница между 号 и 年?',choices:['号 — число месяца, 年 — год','号 — месяц, 年 — день','Оба обозначают год'],correct:0,explain:'号 часто употребляется при разговоре о дне месяца; 年 — год.'},
+ {q:'Как читают 2026年?',choices:['Как одно обычное четырёхзначное число','По цифрам: èr líng èr liù nián','Как название месяца'],correct:1,explain:'Год обычно читают по отдельным цифрам: 二零二六年.'}
+];
+const dateHanzi=['零','一','二','三','四','五','六','七','八','九'];
+const datePinyin=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
+const dateMonthRu=['','января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+function dateNumber(n){
+ if(n===10)return '十';
+ if(n<10)return dateHanzi[n];
+ if(n<20)return '十'+dateHanzi[n%10];
+ const tens=Math.floor(n/10),unit=n%10;
+ return dateHanzi[tens]+'十'+(unit?dateHanzi[unit]:'');
+}
+function datePinyinNumber(n){
+ if(n===10)return 'shí';
+ if(n<10)return datePinyin[n];
+ const suffix=i=>i===2?"'èr":datePinyin[i];
+ if(n<20)return 'shí'+suffix(n%10);
+ const tens=Math.floor(n/10),unit=n%10;
+ return datePinyin[tens]+'shí'+(unit?suffix(unit):'');
+}
+function personalDateResult(){
+ const month=Math.min(12,Math.max(1,Number(state.personal?.month)||11));
+ const day=Math.min(31,Math.max(1,Number(state.personal?.day)||6));
+ return '<div class="pg-personal-line"><strong lang="zh-Hans">'+dateNumber(month)+'月'+dateNumber(day)+'号</strong>'+
+  '<span>'+datePinyinNumber(month)+' yuè '+datePinyinNumber(day)+' hào</span>'+
+  '<small>'+day+' '+dateMonthRu[month]+'</small></div>';
+}
+function personalDateMarkup(){
+ const month=Math.min(12,Math.max(1,Number(state.personal?.month)||11));
+ const day=Math.min(31,Math.max(1,Number(state.personal?.day)||6));
+ const choices=(id,max,val,formatter)=>'<label class="pg-personal-field">'+(id==='month'?'Месяц':'Число месяца')+
+  '<select data-personal="'+id+'" aria-label="'+(id==='month'?'Выбери месяц':'Выбери число месяца')+'">'+
+  Array.from({length:max},(_,i)=>'<option value="'+(i+1)+'"'+(i+1===val?' selected':'')+'>'+
+  formatter(i+1)+'</option>').join('')+'</select></label>';
+ return '<section class="card pg-personal"><h2>📅 Назови свою дату</h2>'+
+  '<p class="small">Выбери месяц и число. Это твой пример для практики, а не автоматически определённая сегодняшняя дата.</p>'+
+  '<div class="pg-personal-options">'+choices('month',12,month,i=>dateMonthRu[i])+choices('day',31,day,i=>String(i))+'</div>'+
+  '<div class="pg-personal-result" aria-live="polite">'+personalDateResult()+'</div>'+
+  '<p class="small">Прочитай самостоятельно и сравни составляющие с аудиозаписями урока. Для созданной даты отдельной MP3 нет; тоны не проверяются автоматически.</p></section>';
+}
+function finalQuizCard(){
+ const i=Math.min(finalChecks.length,Math.max(0,Number(state.finalStep)||0));
+ if(i>=finalChecks.length)return card('<h2>🎯 Проверка: '+(state.finalLegacy?'прежний результат сохранён':state.finalFirstTry+' / '+finalChecks.length+' с первой попытки')+'</h2>'+
+  '<p class="small">'+(state.finalLegacy?'Раньше этот урок завершался одним вопросом. Результат сохранён; новый тест из пяти вопросов доступен отдельно.':'Ты ответил на все пять вопросов. При желании повтори их.')+'</p>'+
+  '<div class="buttons"><button type="button" class="soft primary" data-final-retry>↻ Пройти 5 вопросов ещё раз</button></div>');
+ const q=finalChecks[i];
+ return card('<h2>🎯 Итоговая проверка · '+(i+1)+' / '+finalChecks.length+'</h2>'+
+  '<p>'+esc(q.q)+'</p><div class="grid pg-final-answers">'+q.choices.map((answer,j)=>
+  '<button type="button" class="card-choice" data-final="'+j+'">'+esc(answer)+'</button>').join('')+'</div>'+
+  '<p class="small">Ответы с первой попытки учитываются отдельно. После ошибки можно исправиться.</p>');
+}
+
+const defaultState=()=>({step:0,maxStep:0,heard:{},listen:0,built:0,chosen:[],used:[],quizPassed:false,done:false,finalStep:0,finalFirstTry:0,finalErrors:{},finalLegacy:false,personal:{month:11,day:6}});
 let state=defaultState();
 try{
  const raw=JSON.parse(localStorage.getItem(KEY)||'null');
@@ -54,6 +113,11 @@ try{
   state.used=Array.isArray(raw.used)?raw.used.filter(Number.isInteger).slice(0,3):[];
   state.heard=raw.heard&&typeof raw.heard==='object'?raw.heard:{};
   state.quizPassed=raw.quizPassed===true;state.done=raw.done===true;
+  state.finalStep=Number.isInteger(raw.finalStep)?Math.max(0,Math.min(finalChecks.length,raw.finalStep)):state.quizPassed?finalChecks.length:0;
+  state.finalLegacy=state.quizPassed&&!Number.isInteger(raw.finalStep)||raw.finalLegacy===true;
+  state.finalFirstTry=Number.isInteger(raw.finalFirstTry)?Math.max(0,Math.min(5,raw.finalFirstTry)):0;
+  state.finalErrors=raw.finalErrors&&typeof raw.finalErrors==='object'?raw.finalErrors:{};
+  state.personal=raw.personal&&typeof raw.personal==='object'?{month:Number(raw.personal.month)||11,day:Number(raw.personal.day)||6}:{month:11,day:6};
  }
 }catch{}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -137,7 +201,7 @@ function conversation(){return card('<h2>Послушай разговор</h2><
 function listening(){
  const i=state.listen,done=i>=questions.length,q=questions[Math.min(i,questions.length-1)];
  return card('<h2>Слушай и выбирай</h2><p class="center small">Вопрос '+Math.min(i+1,questions.length)+' из '+questions.length+'</p>'+
- '<div class="buttons">'+audioButton(q.sound)+'</div><div class="grid three">'+q.choices.map(z=>
+ '<div class="buttons">'+audioButton(q.sound)+(!voice(q.sound)&&!done?'<button type="button" class="soft" data-audio-unavailable>🔇 Нет записи — перейти к чтению</button>':'')+'</div><div class="grid three">'+q.choices.map(z=>
  '<button type="button" class="card-choice" data-listen="'+esc(z)+'"'+(done||!listenReady?' disabled':'')+'><strong>'+esc(z)+'</strong></button>').join('')+'</div>'+
  (done?'<p class="result good">✓ Все ответы верны! Можно повторить.</p><div class="buttons"><button class="soft primary" type="button" data-repeat-listen>↻ Пройти заново</button></div>':'<p class="small center" id="pg5-listen-hint">'+(listenReady?'Выбирай ответ, можно переслушать.':'Нажми 🔊, чтобы включить звук и открыть ответы.')+'</p>'));}
 function builder(){
@@ -163,9 +227,8 @@ function speaking(){
 function summary(){
  const q=topic.quiz;
  return '<div class="intro"><div class="intro-copy"><span class="pg5-kicker">УРОК 5 · HSK 1</span><strong>Отлично! 🌸</strong><p>Ты разобрал месяцы, слова 年、月、日、号 и китайский порядок даты.</p></div><div class="intro-art" role="img" aria-label="Панда в фиолетовых наушниках"></div></div>'+
- card('<h2>Последняя проверка</h2><p>'+esc(q.question)+'</p><div class="grid">'+q.choices.map((c,i)=>
- '<button type="button" class="card-choice '+(state.quizPassed&&i===q.correct?'correct':'')+'" data-final="'+i+'"'+(state.quizPassed?' disabled':'')+'>'+esc(c)+'</button>').join('')+'</div>'+
- (state.quizPassed?'<p class="result good">✓ Верно! Урок 5 завершён.</p>':'<p class="small">Выбери правильный ответ, чтобы завершить урок.</p>'))+
+ finalQuizCard()+
+ personalDateMarkup()+
  card('<h2>Повтори четыре важных слова</h2><div class="grid two">'+keywords.map(word).join('')+'</div>')+
  (state.done?'<div class="pg-lesson-complete-actions"><button type="button" class="pg-end-repeat" data-restart-lesson>↻ Повторить урок</button><a class="pg-end-next" href="./hsk1-family-v231.html">Следующий урок →</a><a class="pg-end-back" href="./hsk1-map.html">Назад к Урокам</a></div>':'');
 }
@@ -242,12 +305,25 @@ app.addEventListener('click',event=>{
  if(b.hasAttribute('data-play')){
   const question=state.step===9&&questions[state.listen]?.sound===b.dataset.play;
   if(question){
-   listenReady=true;
-   app.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
-   const h=app.querySelector('#pg5-listen-hint');if(h)h.textContent='Слушай и выбирай. Можно переслушать.';
-   play(b.dataset.play,b.dataset.role||'female');
+   const start=state.listen;
+   listenReady=false;
+   app.querySelectorAll('[data-listen]').forEach(el=>el.disabled=true);
+   const h=app.querySelector('#pg5-listen-hint');if(h)h.textContent='Дослушай запись до конца…';
+   play(b.dataset.play,b.dataset.role||'female',ok=>{
+     if(!ok||state.step!==9||state.listen!==start)return;
+     listenReady=true;
+     app.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
+     const hint=app.querySelector('#pg5-listen-hint');if(hint)hint.textContent='Запись завершена. Теперь выбери ответ.';
+   });
   }else play(b.dataset.play,b.dataset.role||'female');
   return;
+ }
+ if(b.hasAttribute('data-audio-unavailable')){
+   if(state.step!==9||voice(questions[state.listen]?.sound))return;
+   listenReady=true;
+   app.querySelectorAll('[data-listen]').forEach(el=>el.disabled=false);
+   const hint=app.querySelector('#pg5-listen-hint');if(hint)hint.textContent='Записи нет: вопрос проверяет чтение, а не слух.';
+   return;
  }
  if(b.hasAttribute('data-restart-lesson')){
    stopAudio();stopWriter();if(recorder?.state==='recording')recorder.stop();
@@ -287,11 +363,34 @@ app.addEventListener('click',event=>{
   stopAudio();try{audio=new Audio(filtered);audio.play().catch(()=>say('Обработка не воспроизводится.','bad'))}catch{say('Ошибка обработки.','bad')}return;
  }
  if(b.hasAttribute('data-record-play')){if(micUrl){stopAudio();try{audio=new Audio(micUrl);audio.play().catch(()=>say('Не удалось открыть запись.','bad'))}catch{}}return}
- if(b.hasAttribute('data-final')){
-  const index=Number(b.dataset.final);
-  if(index===topic.quiz.correct){state.quizPassed=true;markDone();refresh();say('✓ Правильно! '+topic.quiz.explain,'good')}
-  else say('Неверно. Подумай, что в китайском пишут первым.','bad');return;
+ if(b.hasAttribute('data-final-retry')){
+  state.finalStep=0;state.finalFirstTry=0;state.finalErrors={};state.finalLegacy=false;
+  save();refresh();return;
  }
+ if(b.hasAttribute('data-final')){
+  const i=state.finalStep,q=finalChecks[i];
+  if(!q)return;
+  const selected=Number(b.dataset.final);
+  if(selected!==q.correct){
+    state.finalErrors[i]=true;save();say('Пока неверно. '+q.explain,'bad');return;
+  }
+  if(!state.finalErrors[i])state.finalFirstTry++;
+  state.finalStep++;
+  if(state.finalStep>=finalChecks.length){state.quizPassed=true;markDone();}
+  else save();
+  refresh();say('✓ Правильно! '+q.explain,'good');
+  return;
+ }
+});
+app.addEventListener('change',event=>{
+  const el=event.target.closest('select[data-personal]');
+  if(!el||!['month','day'].includes(el.dataset.personal))return;
+  const max=el.dataset.personal==='month'?12:31,val=Number(el.value);
+  if(!Number.isInteger(val)||val<1||val>max)return;
+  state.personal={...(state.personal||{}),[el.dataset.personal]:val};
+  save();
+  const result=app.querySelector('.pg-personal-result');
+  if(result)result.innerHTML=personalDateResult();
 });
 back.addEventListener('click',()=>go(-1));forward.addEventListener('click',()=>go(1));
 window.addEventListener('pagehide',()=>{stopAudio();stopWriter();if(recorder?.state==='recording')recorder.stop();stream?.getTracks().forEach(t=>t.stop());if(micUrl)URL.revokeObjectURL(micUrl)});
