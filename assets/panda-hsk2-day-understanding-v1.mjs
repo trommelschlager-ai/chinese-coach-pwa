@@ -17,8 +17,10 @@ function getTimes(s){
   if(hour===null||hour<0||hour>23||minute===null||minute<0||minute>59)return {invalid:true,matches:[]};
   found.push({text:m[0],index:m.index});
  }
- for(const m of s.matchAll(/([01]?\d|2[0-3])[:：]([0-5]\d)/gu))
+ for(const m of s.matchAll(/([01]?\d|2[0-3])[:：]([0-5]\d)/gu)){
+  if(m.index>0&&/[0-9]/.test(s[m.index-1]))continue;
   found.push({text:m[0],index:m.index});
+ }
  found.sort((a,b)=>a.index-b.index);
  return {invalid:false,matches:found};
 }
@@ -56,6 +58,7 @@ function timeAnswer(s,i){
 const activities=['刷牙','洗脸','洗澡','喝水','喝茶','喝咖啡','吃早饭','吃早餐','做早饭','做早餐','做饭','吃饭','跑步','运动','锻炼','看手机','看书','学习中文','学中文','上厕所','穿衣服','收拾房间','去上班','去上学','工作','休息','遛狗'];
 function afterWake(s){
  if(/不知道|忘了/.test(s))return clarify('你起床以后做什么？ — Назови хотя бы одно действие.');
+ if(/下班以后|下班之后|睡觉以后/.test(s))return clarify('Это действие после работы или сна. Что ты делаешь сразу после утреннего подъёма?');
  if(/(?:起床|起来)(?:以后|之后|后)?$/.test(s))return clarify('А что ты делаешь после того, как встанешь?');
  const found=activities.filter(v=>s.includes(v));
  if(!found.length)return clarify('你起床以后做什么？ — Например: 喝水, 刷牙, 洗脸.');
