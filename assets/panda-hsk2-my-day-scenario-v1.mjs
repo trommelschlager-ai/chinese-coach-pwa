@@ -143,22 +143,47 @@ function init(stage){
  const pauseButton=controls.querySelector('#day-pause');
  if(pauseButton)storyPlayer.querySelector('#day-next').before(pauseButton);
  const entry=controls.querySelector('.pg-day-entry');
+ // One clearly separated answer field and primary action, in the approved
+ // photo 2 hierarchy. Existing voice and send controls are moved, not replaced.
+ const answerFields=document.createElement('div');answerFields.className='pg-day-answer-fields';
+ for(const id of ['day-input','day-long','day-mic','day-send']){
+  const control=entry?.querySelector('#'+id);if(control)answerFields.append(control);
+ }
+ if(entry)entry.prepend(answerFields);
+ const questionSubmit=document.createElement('button');
+ questionSubmit.id='day-answer-primary';
+ questionSubmit.type='button';
+ questionSubmit.textContent='✓ Ответить';
+ questionSubmit.setAttribute('aria-label','Отправить ответ Пандe');
+ if(entry)entry.append(questionSubmit);
  const finishButton=controls.querySelector('#day-finish');
  if(entry&&finishButton)entry.append(finishButton);
  const $=id=>stage.querySelector('#'+id);
- let phase='ready',i=0,round=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false;const missingAudio=new Set();
+ let phase='ready',i=0,round=0,reviewIndex=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false;const missingAudio=new Set();
  let playbackRate=0.75; // Learner-friendly default shown in the approved speed reference.
  const status=s=>{$('day-status').textContent=s};
  function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||'';const repeat=$('day-hear');if(repeat){repeat.disabled=!approvedClips(a[0]).length;repeat.title=repeat.disabled?'Нет точной записи утверждённым голосом':'Повторить одобренную запись'};updateStoryPlayer()}
  function storyLines(){
-  return phase==='story'?STORY[round%2]:phase==='summary'?answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']):[];
+  return phase==='story'||phase==='monologue'?STORY[round%2]:
+    phase==='summary'?answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']):[];
  }
  function updateStoryPlayer(){
-  const lines=storyLines(),active=phase==='story'||phase==='summary';
-  $('day-player-count').textContent=phase==='intro'?'Приветствие':active?'Фраза '+Math.min(i+1,lines.length)+' из '+lines.length:'';
-  $('day-prev').disabled=!active||i<=0;
-  $('day-next').disabled=!active;
-  $('day-repeat-sentence').disabled=!last||!approvedClips(last[0]).length;
+  const lines=storyLines();
+  const isQuestion=phase==='questions',isReview=phase==='monologue';
+  const active=['story','summary','questions','monologue'].includes(phase);
+  const current=isReview?reviewIndex:i;
+  const count=isQuestion?'Вопрос '+(i+1)+' из 5':
+    active?'Фраза '+Math.min(current+1,lines.length)+' из '+lines.length:'';
+  $('day-player-count').textContent=count;
+  $('day-prev').disabled=!active||current<=0;
+  $('day-next').disabled=!active||(isReview&&current>=lines.length-1);
+  const targetLine=isQuestion?Q[i]?.[0]:isReview?lines[reviewIndex]?.[0]:last?.[0];
+  $('day-repeat-sentence').disabled=!targetLine||!approvedClips(targetLine).length;
+  $('day-repeat-sentence').textContent=isQuestion?'↻ Повтор вопроса':'↻ Повтор фразы';
+  $('day-next').textContent=isQuestion?'Пропустить ▶':'След. ▶';
+  const heading=$('day-story-player')?.querySelector('.pg-day-player-title strong');
+  if(heading)heading.textContent=isQuestion?'📖 Режим вопросов Panda':
+    isReview?'📖 Режим рассказа Panda':'📖 Режим рассказа Panda';
  }
  function stagePhase(p){
   phase=p;stage.dataset.dayPhase=p;
@@ -166,13 +191,16 @@ function init(stage){
   $('day-step').textContent=p==='questions'?(i+1)+'/5':p==='story'?(i+1)+'/6':'HSK 2';
   const show=(id,on)=>$(id).hidden=!on;
   show('day-start',p==='ready');show('day-hear',!['ready','results'].includes(p));
-  show('day-pause',['story','summary'].includes(p));show('day-hint',['story','questions','summary','monologue'].includes(p));
+  show('day-pause',['story','summary','questions','monologue'].includes(p));
+  show('day-hint',['story','questions','summary','monologue'].includes(p));
   show('day-finish',p==='monologue');show('day-retry',p==='results');
-  show('day-story-player',['story','summary'].includes(p));
-  show('day-speed-wrap',['story','summary'].includes(p));
-  updateStoryPlayer();
-  show('day-input',p==='questions');show('day-send',p==='questions');
+  show('day-story-player',['story','summary','questions','monologue'].includes(p));
+  show('day-speed-wrap',['story','summary','questions','monologue'].includes(p));
+  show('day-input',p==='questions');show('day-send',['questions','monologue'].includes(p));
   show('day-long',p==='monologue');show('day-mic',['questions','monologue'].includes(p));
+  show('day-answer-primary',p==='questions');
+  $('day-pause').textContent='⏸ Пауза';
+  updateStoryPlayer();
  }
  function stop(){
   sequence++;clearTimeout(silence);silence=null;
@@ -248,7 +276,7 @@ function init(stage){
   },8000);
  }
  async function ask(idx){
-  stop();i=idx;attempt=0;
+  stop();paused=false;i=idx;attempt=0;
   if(idx===5){finishQuestions();return}
   stagePhase('questions');line(Q[idx].slice(0,3));status('Ответь свободно. Тоны по тексту не оцениваются.');
   const token=++sequence;await speak(Q[idx]);if(token===sequence)countdown();
@@ -312,7 +340,7 @@ function init(stage){
    if(token===sequence)playList(list,'summary');
  }
  function monologue(){
-  stop();stagePhase('monologue');
+  stop();paused=false;reviewIndex=0;stagePhase('monologue');
   const prompt=['现在请你说说你的一天。','Xiànzài qǐng nǐ shuōshuo nǐ de yì tiān.','Теперь расскажи о своём дне.'];
   line(prompt);
   status('Говори несколько предложений подряд или введи текст. Не нужно повторять слова Панды.');
@@ -371,7 +399,17 @@ function init(stage){
    $('day-speed').setAttribute('aria-label','Скорость речи Панды: '+chosen.toString().replace('.',',')+' раза');
  };
  $('day-start').onclick=begin;
- $('day-send').onclick=()=>answer($('day-input').value);
+ $('day-send').onclick=()=>{
+   if(phase==='questions')answer($('day-input').value);
+   else if(phase==='monologue'){
+    const el=$('day-long'),raw=el.value.trim();
+    if(!raw){status('Скажи или напиши хотя бы одну фразу.');return}
+    el.value=/[。！？!?]$/.test(raw)?raw:raw+'。';
+    status('✓ Фраза добавлена. Продолжай рассказ или нажми «Завершить рассказ».');
+    el.focus();
+   }
+ };
+ $('day-answer-primary').onclick=()=>answer($('day-input').value);
  $('day-input').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();answer($('day-input').value)}};
  $('day-mic').onclick=mic;
  $('day-hear').onclick=async()=>{
@@ -410,10 +448,42 @@ function init(stage){
  };
  $('day-prev').onclick=()=>seekStory(-1);
  $('day-next').onclick=()=>seekStory(1);
- $('day-repeat-sentence').onclick=()=>{$('day-hear').click()};
+ $('day-repeat-sentence').onclick=()=>{
+  if(phase==='questions'){replayQuestion();return}
+  if(phase==='monologue'){reviewExample(reviewIndex);return}
+  $('day-hear').click();
+ };
  $('day-finish').onclick=finish;
+ async function replayQuestion(){
+  if(phase!=='questions')return;
+  stop();paused=false;
+  line(Q[i].slice(0,3));
+  status('🔊 Слушай вопрос ещё раз, затем ответь.');
+  const token=sequence;
+  await speak(Q[i].slice(0,3));
+  if(token===sequence)countdown();
+ }
+ async function reviewExample(n){
+  if(phase!=='monologue')return;
+  const lines=STORY[round%2];
+  reviewIndex=Math.max(0,Math.min(n,lines.length-1));
+  stop();paused=false;updateStoryPlayer();
+  line(lines[reviewIndex]);
+  status('🔊 Образец Панды: повтори эту фразу, затем продолжи свой рассказ.');
+  await speak(lines[reviewIndex]);
+ }
  function seekStory(delta){
   const mode=phase;
+  if(mode==='questions'){
+   if(delta<0){if(i>0){$('day-input').value=answers[i-1]?.replace(/。$/,'')||'';ask(i-1)}}
+   else if(window.confirm('Пропустить этот вопрос? Ответ не будет придуман.')){
+    if(!answers[i])notes.push('Вопрос '+(i+1)+' пропущен.');
+    $('day-input').value='';
+    ask(i+1);
+   }
+   return;
+  }
+  if(mode==='monologue'){reviewExample(reviewIndex+delta);return}
   if(mode!=='story'&&mode!=='summary')return;
   const lines=storyLines(),next=i+delta;
   if(next<0)return;
@@ -422,9 +492,18 @@ function init(stage){
   playList(lines,mode,next);
  }
  $('day-pause').onclick=()=>{
-  if(phase!=='story'&&phase!=='summary')return;
-  if(!paused){paused=true;stop();$('day-pause').textContent='▶ Продолжить';status('Пауза. Нажми «Продолжить» или «Повтор фразы».')}
-  else{paused=false;$('day-pause').textContent='⏸ Пауза';playList(storyLines(),phase,i)}
+  const mode=phase;
+  if(!['story','summary','questions','monologue'].includes(mode))return;
+  if(!paused){
+   paused=true;stop();$('day-pause').textContent='▶ Продолжить';
+   status(mode==='questions'?'Вопрос на паузе. Нажми «Продолжить», когда готов.':
+    'Пауза. Нажми «Продолжить» или «Повтор фразы».');
+  }else{
+   paused=false;$('day-pause').textContent='⏸ Пауза';
+   if(mode==='questions')replayQuestion();
+   else if(mode==='monologue')reviewExample(reviewIndex);
+   else playList(storyLines(),mode,i);
+  }
  };
  $('day-retry').onclick=async()=>{
    stop();const token=sequence;
