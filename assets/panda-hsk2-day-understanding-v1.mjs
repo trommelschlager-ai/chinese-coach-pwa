@@ -42,7 +42,13 @@ function timeAnswer(s,i){
  if(t.invalid)return clarify('Проверь часы: допустимо время от 0 до 23.');
  if(t.matches.length>1)return clarify('Уточни одно обычное время: ты назвал больше одного.');
  const m=t.matches[0],action=i===0?'起床':'睡觉';
- if(!m)return clarify(i===0?'你一般几点起床？ — Назови точное время подъёма.':'你晚上一般几点睡觉？ — Назови точное время сна.');
+ if(!m){
+  if(i===4&&/^(?:我)?(?:晚上)?(?:睡觉|睡了|睡)$/u.test(s))
+   return clarify('Поняла: 睡觉 (shuìjiào) — «спать». А во сколько? Например: 我晚上十点睡觉。');
+  if(i===0&&/^(?:我)?(?:每天)?(?:起床|起来)$/u.test(s))
+   return clarify('Поняла: 起床 — «вставать». А во сколько? Например: 我每天七点起床。');
+  return clarify(i===0?'你一般几点起床？ — Назови точное время подъёма.':'你晚上一般几点睡觉？ — Назови точное время сна.');
+ }
  const before=s.slice(0,m.index),after=s.slice(m.index+m.text.length);
  if(!after||after==='左右'||after==='前后'){
   if(!/^(?:我)?(?:(?:每天|平时|一般|通常|大概|差不多|早上|晚上|凌晨|上午|下午|有时候|今天|周末))*$/.test(before))return unknown();
@@ -57,6 +63,14 @@ function timeAnswer(s,i){
 }
 const activities=['刷牙','洗脸','洗澡','喝水','喝茶','喝咖啡','吃早饭','吃早餐','做早饭','做早餐','做饭','吃饭','跑步','运动','锻炼','看手机','看书','学习中文','学中文','上厕所','穿衣服','收拾房间','去上班','去上学','工作','休息','遛狗'];
 function afterWake(s){
+ // A short, perfectly intelligible activity answer: 睡觉 — to sleep.
+ // It is unusual after getting up, but not a recognition error. Do not
+ // invent the exact duration or claim the learner pronounced tones correctly.
+ if(/^(?:我)?(?:起床(?:以后|之后|后))?(?:又|再|继续|还)?(?:睡觉|睡了|睡一会儿|睡个回笼觉)$/u.test(s)||
+    /^(?:我)?(?:再|又)?睡(?:个)?回笼觉$/u.test(s)){
+  const answer=/^(?:我)?(?:睡觉|睡了)$/u.test(s)?'我起床以后睡觉':s;
+  return accept(answer,'Поняла: 睡觉 (shuìjiào) — «спать». Если снова ложишься после подъёма, естественнее: 我起床以后又睡了。');
+ }
  if(/不知道|忘了/.test(s))return clarify('你起床以后做什么？ — Назови хотя бы одно действие.');
  if(/下班以后|下班之后|睡觉以后/.test(s))return clarify('Это действие после работы или сна. Что ты делаешь сразу после утреннего подъёма?');
  if(/(?:起床|起来)(?:以后|之后|后)?$/.test(s))return clarify('А что ты делаешь после того, как встанешь?');
