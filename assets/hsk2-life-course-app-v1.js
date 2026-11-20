@@ -212,7 +212,7 @@ function viewTopic(){
 function viewLesson(){
  if(dayPilot())return dayUI.render(state,{sound:daySound});
  var t=chosen(), sc=current(), step=state.stage, ws=words(state.topic,state.mini), idx=id();
- var html='<section class="lesson"><div class="lesson-head"><div class="eyebrow">ТЕМА '+(state.topic+1)+' / 10 · МИНИ-УРОК '+(state.mini+1)+' / 3</div><h1>'+t.icon+' '+E(t.name)+'</h1><p>'+E(sc[0])+'</p><div class="step-meter"><i style="width:'+((step+1)*25)+'%"></i></div><div class="step-labels"><span>Слова</span><span>Правило</span><span>Проверка</span><span>Собери</span></div></div>';
+ var html='<section class="lesson"><div class="lesson-head"><div class="eyebrow">ТЕМАТИЧЕСКАЯ ПРАКТИКА · ТЕМА '+(state.topic+1)+' / 10 · МИНИ-УРОК '+(state.mini+1)+' / 3</div><h1>'+t.icon+' '+E(t.name)+'</h1><p>'+E(sc[0])+'</p><div class="step-meter"><i style="width:'+((step+1)*25)+'%"></i></div><div class="step-labels"><span>Слова</span><span>Правило</span><span>Проверка</span><span>Собери</span></div></div>';
  if(step===0){
   html+='<div class="stage-title"><h2>📖 Слова и выражения</h2><span>'+ws.length+' слов</span></div>'+
    '<div class="word-grid">'+ws.map(wordCard).join('')+'</div>'+
@@ -250,7 +250,7 @@ function viewLesson(){
  var lock=false;
  if(step===2){var q=ws[Math.min(2,ws.length-1)],opts=[q[2],ws[0][2],ws[ws.length-1][2]],ids=shuffledIndices(3,idx+2);lock=state.quizWord!==ids.indexOf(0)||state.quizSentence!==shuffledIndices(3,idx+7).indexOf(0)}
  if(step===3){lock=state.build.length!==builders[idx].length||normalize(state.build.map(function(k){return builders[idx][k]}).join(''))!==normalize(sc[2])}
- html+='<div class="lesson-nav"><button class="secondary" type="button" data-step-prev>← '+(step===0?'К теме':'Назад')+'</button><button class="primary" type="button" data-step-next'+(lock?' disabled':'')+'>'+(step===3?'✅ Завершить урок':'Далее →')+'</button></div></section>';
+ html+='<div class="lesson-nav"><button class="secondary" type="button" data-step-prev>← '+(step===0?'К списку тем':'Назад')+'</button><button class="primary" type="button" data-step-next'+(lock?' disabled':'')+'>'+(step===3?'✅ Завершить урок':'Далее →')+'</button></div></section>';
  return html;
 }
 function viewDone(){
@@ -343,6 +343,7 @@ function render(){
  app.classList.toggle('show-approved-welcome',state.view==='welcome');
  app.classList.toggle('approved-welcome-v390',state.view==='welcome');
  app.classList.toggle('approved-map-v390',state.view==='map');
+  app.classList.toggle('course-practice-active',state.view==='lesson'&&state.topic!==0);
  var isDayLesson=state.view==='lesson'&&dayPilot(),isDayDone=state.view==='done'&&state.topic===0;
  app.classList.toggle('day-lesson-active',isDayLesson);
  var isDayArt=isDayLesson&&!!screen.querySelector('.day-visual-start,.pg415-art-screen');
