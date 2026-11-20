@@ -168,8 +168,8 @@ function init(stage){
   show('day-start',p==='ready');show('day-hear',!['ready','results'].includes(p));
   show('day-pause',['story','summary'].includes(p));show('day-hint',['story','questions','summary','monologue'].includes(p));
   show('day-finish',p==='monologue');show('day-retry',p==='results');
-  show('day-story-player',['intro','story','summary'].includes(p));
-  show('day-speed-wrap',['intro','story','summary'].includes(p));
+  show('day-story-player',['story','summary'].includes(p));
+  show('day-speed-wrap',['story','summary'].includes(p));
   updateStoryPlayer();
   show('day-input',p==='questions');show('day-send',p==='questions');
   show('day-long',p==='monologue');show('day-mic',['questions','monologue'].includes(p));
