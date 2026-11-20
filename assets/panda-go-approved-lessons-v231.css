@@ -109,3 +109,46 @@ h1{font-size:30px;line-height:1.12;letter-spacing:-.5px;text-align:center;margin
 /* v289: clean weather symbols replace cached blurry lesson7 sprite art. */
 .app[data-lesson="7"] .word-art.pg7-weather-icon{display:grid;place-items:center;width:60px;height:60px;border:1px solid #e6d3f3;border-radius:16px;background:linear-gradient(145deg,#fffaff,#f1e5ff);font-size:34px;line-height:1;box-shadow:0 2px 7px #8e6ba021}
 @media(max-width:365px){.app[data-lesson="7"] .word-art.pg7-weather-icon{width:50px;height:50px;font-size:29px}}
+
+
+/* Panda Go L5–L7 personalized practice 2026-11-20.
+   Scoped enhancements: original panda scenes, cards, fonts and colors are preserved. */
+.app[data-lesson="5"] .pg-personal,
+.app[data-lesson="6"] .pg-personal,
+.app[data-lesson="7"] .pg-personal {
+  background:linear-gradient(140deg,#fffaff 0%,#ffebf9 54%,#f2e2ff 100%);
+  border:1.5px solid #e2b9f4;border-radius:22px;
+  box-shadow:0 5px 13px #a977b740,inset 0 1px #fff;
+  padding:14px;min-width:0;
+}
+.pg-personal h2{color:#742a96;line-height:1.26;font-size:clamp(17px,4.6vw,21px);margin:0 0 9px}
+.pg-personal p{color:#715181;line-height:1.46}
+.pg-personal-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+.pg-personal-field{display:flex;flex-direction:column;gap:6px;min-width:0;color:#663582;font-weight:800;font-size:clamp(12px,3.3vw,15px)}
+.pg-personal-field select{box-sizing:border-box;width:100%;min-width:0;min-height:46px;max-width:100%;
+  border:1.5px solid #c995df;border-radius:13px;padding:8px 9px;
+  font:700 clamp(13px,3.5vw,16px)/1.2 system-ui,"Noto Sans",Arial,sans-serif;
+  color:#5d287e;background:#fff9ff;box-shadow:inset 0 1px #fff,0 3px 6px #bb92d92a}
+.pg-personal-field select:focus-visible,.pg-audio-fallback summary:focus-visible{outline:3px solid #aa61ce;outline-offset:2px}
+.pg-personal-result{padding:3px 0}
+.pg-personal-line{background:#fffefd;border:1px solid #edc7eb;border-radius:18px;
+  padding:13px 12px;display:flex;flex-direction:column;gap:5px;min-width:0;
+  box-shadow:0 2px 5px #be95b92a}
+.pg-personal-line strong{font-family:LessonHanzi,"Noto Sans SC","Microsoft YaHei",sans-serif;
+  color:#71218f;font-size:clamp(22px,6.2vw,29px);line-height:1.3;overflow-wrap:anywhere}
+.pg-personal-line span{color:#a633a0;font-size:clamp(14px,3.7vw,17px);line-height:1.3;font-weight:700;overflow-wrap:anywhere}
+.pg-personal-line small{color:#715079;font-size:clamp(13px,3.5vw,15px);line-height:1.4;overflow-wrap:anywhere}
+.pg-final-answers{grid-template-columns:minmax(0,1fr);gap:10px}
+.pg-final-answers .card-choice{min-height:48px;padding:11px 13px;
+  font-size:clamp(14px,3.8vw,16px);line-height:1.35;text-align:center;
+  white-space:normal;overflow-wrap:anywhere}
+.pg-audio-fallback{margin:8px 0 10px;border:1px solid #eacced;border-radius:12px;
+  background:#fffaff;padding:7px 10px;color:#876194}
+.pg-audio-fallback summary{cursor:pointer;font-size:13px;line-height:1.4;font-weight:750}
+.pg-audio-fallback button{margin-top:8px;width:100%;min-height:44px;white-space:normal}
+@media(max-width:365px){
+ .pg-personal-options{grid-template-columns:minmax(0,1fr);gap:8px}
+ .pg-personal h2{font-size:18px}
+ .pg-personal-line strong{font-size:23px}
+ .pg-personal-field select{font-size:15px}
+}
