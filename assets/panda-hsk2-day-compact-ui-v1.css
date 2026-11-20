@@ -262,3 +262,85 @@
   background:linear-gradient(125deg,#b158e5,#6728b4)!important;
 }
 #pg346[data-day-scenario="ready"] .pg-day-buttons #day-retry{width:100%!important}
+
+
+/* v2: speed selector attached to the story controls (reference: speed pill).
+   Positioned above the controls without adding a second bottom action row. */
+#pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-speed{
+  position:absolute!important;
+  z-index:35!important;
+  right:clamp(5px,2vw,13px)!important;
+  top:calc(-1 * clamp(46px,6.5dvh,55px))!important;
+  width:clamp(192px,51vw,270px)!important;
+  height:clamp(40px,5.9dvh,48px)!important;
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:clamp(3px,1vw,9px)!important;
+  padding:4px 9px!important;
+  border:1px solid var(--pg500-edge)!important;
+  border-radius:999px!important;
+  background:var(--pg500-panel)!important;
+  box-shadow:0 2px 9px #031a3c78,0 0 6px var(--pg500-glow)!important;
+  color:var(--pg500-copy)!important;
+  font-size:clamp(12px,3.2vw,15px)!important;
+  white-space:nowrap!important;
+  pointer-events:auto!important;
+  user-select:none;
+}
+#pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-speed[hidden]{
+  display:none!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-speed-icon{
+  font-size:clamp(23px,5.7vw,28px);font-weight:800;
+  color:#f9d376;line-height:1;
+}
+#pg346[data-day-scenario="ready"] .pg-day-speed-name{
+  flex:0 1 auto;min-width:0;font-weight:770;
+}
+#pg346[data-day-scenario="ready"] .pg-day-speed select{
+  display:block!important;position:relative;
+  flex:0 0 auto;width:clamp(62px,17vw,84px)!important;
+  height:clamp(31px,4.1dvh,38px)!important;
+  border:0!important;border-radius:999px!important;
+  padding:0 clamp(6px,1vw,10px)!important;
+  background:linear-gradient(125deg,#9548c9,#552689)!important;
+  color:#fff!important;
+  box-shadow:0 2px 6px #140b3570!important;
+  font-size:clamp(14px,3.65vw,17px)!important;
+  font-weight:850!important;
+  text-align:center!important;text-align-last:center!important;
+  appearance:none!important;-webkit-appearance:none!important;
+  outline-offset:3px;
+  cursor:pointer;
+}
+#pg346[data-day-scenario="ready"] .pg-day-speed select option{
+  color:#fff!important;background:#402269!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-speed-chevron{
+  color:var(--pg500-copy);font-size:24px;font-weight:900;
+  flex:0 0 auto;line-height:1;transform:translateY(-2px);
+}
+#pg346[data-day-scenario="ready"][data-theme="day"] .pg-day-speed select{
+  background:linear-gradient(125deg,#9655c7,#6f37ab)!important;color:white!important;
+}
+/* Tone down ONLY the white moon overlay in the approved nighttime Panda scene.
+   Do not change daytime sky or any baked scenery/character art. */
+#pg346[data-day-scenario="ready"]:not([data-theme="day"]):after{
+  background:radial-gradient(circle at 33% 30%,#bccad9 0%,#8da0bb 58%,#68819f 100%)!important;
+  box-shadow:0 0 8px 2px #c6d8fc35!important;
+  opacity:.74!important;
+  filter:saturate(.83)!important;
+}
+@media(max-width:360px){
+  #pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-speed{
+    width:clamp(177px,55vw,210px)!important;padding:4px 6px!important;
+    gap:4px!important;
+  }
+  #pg346[data-day-scenario="ready"] .pg-day-speed-name{font-size:12px!important}
+  #pg346[data-day-scenario="ready"] .pg-day-speed select{width:58px!important}
+  #pg346[data-day-scenario="ready"] .pg-day-speed-chevron{font-size:20px!important}
+}
+@media(max-height:650px){
+  #pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-speed{
+    top:-45px!important;height:40px!important;
+  }
+}
