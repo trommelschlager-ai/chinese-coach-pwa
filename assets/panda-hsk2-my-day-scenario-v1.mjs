@@ -108,9 +108,12 @@ function init(stage){
  const speedGroup=document.createElement('label');
  speedGroup.id='day-speed-wrap';
  speedGroup.className='pg-day-speed';
- speedGroup.innerHTML='<span class="pg-day-speed-icon" aria-hidden="true">◴</span><span class="pg-day-speed-name">Скорость</span>'+
-  '<select id="day-speed" aria-label="Скорость речи Панды"><option value="0.75" selected>0,75×</option>'+
-  '<option value="1">1×</option><option value="1.25">1,25×</option></select><span class="pg-day-speed-chevron" aria-hidden="true">⌄</span>';
+ speedGroup.innerHTML='<span class="pg-day-speed-icon" aria-hidden="true">◴</span>'+
+  '<span class="pg-day-speed-name">Скорость</span>'+
+  '<input type="range" id="day-speed" min="0.75" max="1.25" step="0.25" value="0.75"'+
+  ' aria-label="Скорость речи Панды" aria-valuetext="0,75 раза" list="day-speed-ticks">'+
+  '<output id="day-speed-value" for="day-speed" aria-hidden="true">0,75×</output>'+
+  '<datalist id="day-speed-ticks"><option value="0.75"></option><option value="1"></option><option value="1.25"></option></datalist>';
  controls.append(speedGroup);
  const transcript=document.createElement('details');transcript.className='pg-day-transcript';transcript.hidden=true;
  transcript.innerHTML='<summary>👤 Мой распознанный рассказ</summary><p id="day-transcribed" lang="zh-Hans"></p>';
@@ -420,13 +423,19 @@ function init(stage){
   r.onend=()=>{const wasCurrent=recognizer===r;if(wasCurrent)recognizer=null;if(wasCurrent&&phase==='questions')countdown()};
   try{r.start()}catch(_){recognizer=null;status('Не удалось включить микрофон. Проверь разрешение Chrome или напиши ответ.')}
  }
- $('day-speed').onchange=()=>{
-   const chosen=Number($('day-speed').value);
+ function setSpeedFromSlider(){
+   const range=$('day-speed'),chosen=Number(range.value);
    if(![0.75,1,1.25].includes(chosen))return;
    playbackRate=chosen;
-   if(player&& !player.paused)player.playbackRate=playbackRate;
-   $('day-speed').setAttribute('aria-label','Скорость речи Панды: '+chosen.toString().replace('.',',')+' раза');
- };
+   const label=chosen.toString().replace('.',',');
+   $('day-speed-value').textContent=label+'×';
+   range.style.setProperty('--day-speed-progress',((chosen-0.75)/0.50*100)+'%');
+   range.setAttribute('aria-valuetext',label+' раза');
+   if(player&&!player.paused)player.playbackRate=chosen;
+ }
+ $('day-speed').addEventListener('input',setSpeedFromSlider);
+ $('day-speed').addEventListener('change',setSpeedFromSlider);
+ setSpeedFromSlider();
  $('day-start').onclick=begin;
  $('day-send').onclick=()=>{
    if(phase==='questions')answer($('day-input').value);
