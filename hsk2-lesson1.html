@@ -268,7 +268,7 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
   <header class="head">
     <div class="lesson-bar">
       <button type="button" class="orb" id="detail-back" aria-label="Предыдущий шаг">❮</button>
-      <span id="head-label">HSK 2 · Урок 1 · Шаг 1 из 8</span>
+      <span id="head-label">HSK 2 · Урок 2 · Шаг 1 из 8</span>
     </div>
     <nav id="steps" aria-label="Восемь шагов урока"></nav>
   </header>
@@ -439,7 +439,7 @@ if (courseMode) {
   headLabel.innerHTML = '<small>HSK 2 · Тема 1</small><strong>Мой день</strong>';
   const chapter = document.createElement('span');
   chapter.className = 'pg433-pill';
-  chapter.textContent = 'Мини-урок 1 · Начало дня';
+  chapter.textContent = 'Урок 2 · Мой день';
   top.append(chapter);
   nav.innerHTML = courseSections.map(({name,steps},i) =>
     '<button type="button" data-step="' + steps[0] + '"><b>' + (i+1) + '</b><span>' + name + '</span></button>').join('');
@@ -598,7 +598,7 @@ function render(resetScroll = false) {
     if (task) state.quizIndex = task.index;
   }
   if (courseMode) counter.textContent = 'Шаг ' + stepNumber(step) + ' из 8';
-  else headLabel.textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
+  else headLabel.textContent = 'HSK 2 · Урок 2 · Шаг ' + step + ' из 8';
   headBack.disabled = step === 1;
   stepButtons.forEach((button,index) => {
     const active = courseMode ? (index === 0 && step === 1) || courseSections[index].steps.includes(step) : index+1 === step;
@@ -637,7 +637,7 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  if (courseMode) return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 1 · Мой день">' +
+  if (courseMode) return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 2 · Мой день">' +
     '<div class="word-flow-cover"><img src="' + decoration + 'course-cover-sakura-canal.webp" ' +
     'alt="Мой день. Научись говорить о своём дне по-китайски. Слова, тесты, грамматика, распорядок, произношение и диалог. Не бойся говорить с ошибками. Бойся никогда не заговорить!" width="905" height="1737" fetchpriority="high">' +
     '<span class="cover-tile-label cover-tile-words" aria-hidden="true">Слова</span>' +
@@ -919,7 +919,7 @@ function finish() {
   const result = (label,value,className='') => '<div class="' + className + '"><dt>' + label + '</dt><dd>' + value + '</dd></div>';
   return '<div class="final-hero panel"><img src="' + asset + 'hero-reading.webp" alt="Панда с красной книгой"><div>' +
     '<img class="award" src="' + decoration + (completed ? 'trophy' : 'medal') + '.webp" alt=""><h1>' + (completed ? 'Урок пройден!' : 'Твой прогресс') +
-    '</h1><p class="hint">Урок 1 «Мой день»</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
+    '</h1><p class="hint">Урок 2 «Мой день»</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
     result('Прослушаны слова',state.heardWords.length + ' / 6') +
     result('Все мини-тесты',quizCount() + ' / 30','all') + tests.map((test,i) => result(test,correctCount(i) + ' / 6')).join('') +
     result('Грамматика 以后',state.grammarDone ? '✓ Выполнено' : 'Ожидает проверки') +
