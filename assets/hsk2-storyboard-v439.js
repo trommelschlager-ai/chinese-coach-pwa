@@ -127,16 +127,53 @@ function done(state,sound,link){const d=state.day||{};
  return '<section id="pg433" class="pg433-root pg433-done">'+chrome({...state,stage:4,day:{...d,pg433HighestStage:4}},12,'',state.mini)+'<main class="pg433-content"><h2>🐼 Panda AI · разговор</h2><p class="pg433-hint">Первый мини-урок пройден. Теперь ответь Панде самостоятельно.</p><div class="pg433-panel"><h3>🎙 Панда спрашивает</h3>'+[['你几点起床？','Nǐ jǐ diǎn qǐchuáng?','Во сколько ты встаёшь?'],['你早上做什么？','Nǐ zǎoshang zuò shénme?','Что ты делаешь утром?']].map(q=>'<div class="pg433-sentence">'+audio({sound},q[0])+'<div>'+word(q[0])+'<span class="pg433-py">'+esc(q[1])+'</span><small>'+esc(q[2])+'</small></div></div>').join('')+'</div><a class="pg433-ai-link" href="'+esc(link)+'">🎙 Открыть Panda AI для ответа →</a><p class="pg433-note">Речь и текст проверяются в настоящей Panda AI. Одна лишь транскрипция не доказывает правильность тонов.</p></main><footer class="pg433-footer"><button class="pg433-secondary" data-repeat>↻ Повторить</button><button class="pg433-primary" data-next-mini>Следующий мини-урок →</button></footer></section>';
 }
 function mapView(topics,completed){
-  const lessons='<h2>📚 Основные уроки HSK 2</h2>'+
-    '<p class="pg433-hint">Начинай со знакомства, затем рассказывай о своём дне. Прогресс каждого урока сохраняется.</p>'+
-    '<a class="pg433-map-card pg433-direct-lesson" href="./hsk2-about-me.html" aria-label="Урок 1 — О себе">'+
-    '<span class="pg433-map-no">1</span><span><b>О себе</b><small lang="zh-Hans">自我介绍 · Знакомство</small></span><em>▶</em></a>'+
-    '<a class="pg433-map-card pg433-direct-lesson" href="./hsk2-lesson1.html" aria-label="Урок 2 — Мой день">'+
-    '<span class="pg433-map-no">2</span><span><b>Мой день</b><small lang="zh-Hans">我的一天 · Распорядок дня</small></span><em>▶</em></a>'+
-    '<h2>📖 Темы для дополнительной практики</h2>';
-  return '<section id="pg433" class="pg433-root pg433-map"><header class="pg433-header"><div class="pg433-topline"><div class="pg433-title"><small>Panda Go · Китайский язык</small><strong>HSK 2 · Все уроки</strong></div><span class="pg433-pill">10 тем · 30 мини-уроков</span></div></header><main class="pg433-content">'+lessons+
-    topics.map((t,i)=>'<button type="button" class="pg433-map-card" data-topic="'+i+'"><span class="pg433-map-no">'+(i+1)+'</span><span><b>'+esc(t.name)+'</b><small>'+esc(t.cn)+' · '+t.scenes.length+' мини-урока</small></span><em>'+((completed||[]).filter(v=>Math.floor(v/3)===i).length)+' / 3</em></button>').join('')+
-    '</main><footer class="pg433-footer"><button class="pg433-secondary" data-view="welcome">← На главную</button><button class="pg433-primary" data-start="0">Начать урок 1 →</button></footer></section>';
+  // Visual-only course catalog refresh. Do not change topic IDs, localStorage progress, routes or lesson engines.
+  const safeDone=Array.isArray(completed)?completed:[];
+  const coreLessons=[
+    {n:1,name:'О себе',cn:'自我介绍',desc:'Расскажи, как тебя зовут и откуда ты',href:'./hsk2-about-me.html',art:'about'},
+    {n:2,name:'Мой день',cn:'我的一天',desc:'Говори об утре, работе и привычках',href:'./hsk2-lesson1.html',art:'day'}
+  ];
+  const cards=coreLessons.map(lesson=>
+    '<a class="pgc-feature-card pgc-feature-'+lesson.art+'" href="'+lesson.href+'" aria-label="Урок '+lesson.n+': '+esc(lesson.name)+'. Открыть">'+
+      '<span class="pgc-feature-art pgc-art-'+lesson.art+'" aria-hidden="true"></span>'+
+      '<span class="pgc-feature-text"><span class="pgc-feature-tag">УРОК '+lesson.n+'</span>'+
+        '<strong>'+esc(lesson.name)+'</strong><span class="pgc-feature-cn" lang="zh-Hans">'+esc(lesson.cn)+'</span>'+
+        '<small>'+esc(lesson.desc)+'</small></span>'+
+      '<span class="pgc-feature-action" aria-hidden="true">▶</span>'+
+    '</a>'
+  ).join('');
+  const topicsMarkup=topics.map((t,i)=>{
+    const done=[0,1,2].filter(m=>safeDone.includes(i*3+m)).length;
+    return '<button type="button" class="pg433-map-card pgc-topic-card" data-topic="'+i+'" aria-label="Тема '+(i+1)+': '+esc(t.name)+'. Пройдено '+done+' из 3 мини-уроков">'+
+      '<span class="pgc-topic-icon" aria-hidden="true">'+esc(t.icon)+'</span>'+
+      '<span class="pgc-topic-copy"><b>'+esc(t.name)+'</b>'+
+      '<small><span lang="zh-Hans">'+esc(t.cn)+'</span> · 3 мини-урока</small></span>'+
+      '<span class="pgc-topic-meta"><span>'+done+' / 3</span>'+
+      '<span class="pgc-topic-meter" aria-hidden="true"><i style="width:'+(done*100/3)+'%"></i></span></span>'+
+      '<span class="pgc-topic-chevron" aria-hidden="true">›</span>'+
+    '</button>';
+  }).join('');
+  return '<section id="pg433" class="pg433-root pg433-map pgc-catalog">'+
+   '<header class="pg433-header"><div class="pg433-topline">'+
+     '<div class="pg433-title"><small>PANDA GO · КУРС HSK 2</small><strong>Все уроки</strong></div>'+
+     '<span class="pg433-pill">10 тем <span aria-hidden="true">✦</span> 30 мини-уроков</span>'+
+   '</div></header>'+
+   '<main class="pg433-content">'+
+     '<div class="pgc-hero"><div class="pgc-hero-copy"><span class="pgc-hero-eyebrow">ТВОЙ ПУТЬ К КИТАЙСКОМУ</span>'+
+       '<h2>От первых фраз к свободному разговору</h2>'+
+       '<p>Изучай темы по порядку и говори с Пандой 🐼</p></div>'+
+       '<span class="pgc-hero-panda" aria-hidden="true"></span></div>'+
+     '<div class="pgc-section-head"><span class="pgc-section-emoji" aria-hidden="true">📚</span>'+
+       '<div><h2>Основные уроки</h2><p>Начни с знакомства, потом расскажи о своём дне</p></div></div>'+
+     '<div class="pgc-feature-list">'+cards+'</div>'+
+     '<div class="pgc-section-head pgc-more-head"><span class="pgc-section-emoji" aria-hidden="true">🌸</span>'+
+       '<div><h2>Дополнительная практика</h2><p>10 жизненных тем · 3 мини-урока в каждой</p></div></div>'+
+     '<div class="pgc-topic-list">'+topicsMarkup+'</div>'+
+     '<p class="pgc-endnote">Твой прогресс сохраняется на этом устройстве ✨</p>'+
+   '</main>'+
+   '<footer class="pg433-footer"><button class="pg433-secondary" data-view="welcome">← На главную</button>'+
+     '<button class="pg433-primary" data-start="0">Начать урок 1 →</button></footer>'+
+  '</section>';
 }
 function topicView(state,t){
  const done=(state.completed||[]).filter(v=>Math.floor(v/3)===state.topic).length;
