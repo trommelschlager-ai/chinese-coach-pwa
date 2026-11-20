@@ -15,6 +15,21 @@
 .whole-legend{display:flex;gap:15px;flex-wrap:wrap;justify-content:center;margin:7px 0;font-size:12px;color:#6b5876}
 .whole-legend i{display:inline-block;vertical-align:middle;width:23px;border-top:3px solid #7952ba}
 .whole-legend i.ref{border-top:3px dashed #b39abd}
+
+.syllable.active{outline:3px solid #ae69cb;outline-offset:1px}
+.syllable .quality{display:block;font:750 10px system-ui;color:#775189;line-height:1.35}
+.syllable .quality.sparse{color:#af723e}
+.whole-focus{fill:#e9d7f868;pointer-events:none}
+.whole-uncertainty{fill:#f2b77344;pointer-events:none}
+#whole-active{font-size:12px;line-height:1.5;color:#724c84;margin:8px 0}
+#boundary-controls[hidden]{display:none}
+#boundary-controls{border:1px solid #e5d0ed;border-radius:13px;padding:9px;margin:9px 0}
+#boundary-controls summary{font-size:12px;font-weight:750;color:#75478e;cursor:pointer}
+.boundary-row{display:grid;grid-template-columns:70px minmax(0,1fr) 47px;align-items:center;gap:7px;font-size:11px;margin:7px 0}
+.boundary-row input{width:100%;min-height:24px;accent-color:#8f5cb9}
+.boundary-row output{text-align:right;font-variant-numeric:tabular-nums}
+.boundary-hint{font-size:11px;color:#715982;line-height:1.5}
+#boundary-reset{border:1px solid #d3b4e3;color:#694185;background:#f4e8f7;border-radius:10px;padding:7px 9px;font-size:11px;font-weight:700}
 </style></head><body><main>
 <span class="kicker">🐼 PANDA GO · HSK 2 · МОЙ ДЕНЬ</span>
 <h1>🎙️ Проверь произношение</h1>
@@ -32,7 +47,7 @@
 <p class="small">Пунктир — вся фраза из урока. Фиолетовая линия появляется во время речи, а после записи показывает твой голос целиком. По вертикали — относительная высота голоса, по горизонтали — время.</p>
 <svg class="whole-svg" id="whole-chart" viewBox="0 0 560 220" role="img" aria-label="Общий график высоты голоса для всего предложения">
  <g stroke="#eee3f2" stroke-dasharray="4 5" stroke-width="1"><path d="M28 37H542 M28 77H542 M28 117H542 M28 157H542"/></g>
- <g id="whole-dividers"></g><g id="whole-labels"></g>
+ <g id="whole-uncertainty"></g><rect id="whole-focus" class="whole-focus" x="28" y="22" width="0" height="137"/><g id="whole-dividers"></g><g id="whole-labels"></g>
  <path class="whole-path" id="whole-ref" stroke="#b39abd" stroke-width="4" stroke-dasharray="8 7"/>
  <path class="whole-path" id="whole-mine" stroke="#7952ba" stroke-width="4"/>
  <line id="whole-cursor" x1="28" x2="28" y1="21" y2="161" stroke="#bb6caa" stroke-width="1.7" stroke-dasharray="3 5" style="display:none"/>
@@ -40,14 +55,14 @@
  <text x="478" y="212" font-size="11" fill="#806491">Время →</text>
 </svg>
 <div class="whole-legend"><span><i class="ref"></i> Голос из урока</span><span><i></i> Твой голос</span></div>
-<p id="whole-info" class="whole-note" aria-live="polite">Сначала послушай образец, затем произнеси всё предложение за одну запись.</p>
+<p id="whole-active">Нажми «Записать себя», чтобы увидеть движение голоса.</p><p id="whole-info" class="whole-note" aria-live="polite">Сначала послушай образец, затем произнеси всё предложение за одну запись.</p>
 </section>
 <section class="panel"><h2>Тон каждого слога</h2>
 <p class="small">Нажми на иероглиф: внизу появится увеличенная кривая. Пунктир — запись урока; фиолетовая линия — твой голос.</p>
 <div class="syllables" id="syllables" role="group" aria-label="Пять слогов предложения"></div>
 <svg id="large" class="chart" viewBox="0 0 340 150" role="img" aria-label="Сравнение контура высоты выбранного слога"><path d="M25 35H323 M25 73H323 M25 111H323" stroke="#e8daed" stroke-dasharray="4 5"/><path id="reference-line" stroke="#b09bbf" stroke-width="3.8" stroke-dasharray="7 6" fill="none"/><path id="learner-line" stroke="#7a50b5" stroke-width="3.8" fill="none"/><text x="8" y="14" fill="#886a98" font-size="10">Выше ↑</text><text x="267" y="142" fill="#886a98" font-size="10">Время →</text></svg>
 <div class="legend"><span><i class="line ref"></i> Образец урока</span><span><i class="line"></i> Твой голос</span></div>
-<p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
+<details id="boundary-controls" hidden><summary>⚙️ Уточнить границы слогов</summary><p class="boundary-hint">Границы приблизительные. Если разделитель оказался не там, сдвинь ползунок. Меняется только отображение графика, не запись.</p><div id="boundary-sliders"></div><button type="button" id="boundary-reset">↻ Вернуть автоматические границы</button></details><p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
 </section>
 <section class="panel"><h2>Почему пока без оценки?</h2><p class="small">Программа измеряет частоту F0 и предварительно делит непрерывную речь на слоги по времени и тихим участкам. В быстрой связной речи границы могут быть неверными. Учитываются изменения третьего тона: <b>我早</b> ≈ wó zǎo, <b>洗脸</b> ≈ xí liǎn. Для полноценной проверки нужны точное выравнивание слогов и проверка фонетики.</p></section>
 <footer>🔒 Запись обрабатывается локально в браузере и не отправляется на сервер. Не сохраняется в аккаунте. Образец — существующая запись урока, не заявленная как живая носительница. Для микрофона требуется HTTPS, разрешение браузера и поддержка записи звука.</footer>
@@ -59,10 +74,26 @@ const $=id=>document.getElementById(id);
 const tokens=[{zh:'我',py:'wǒ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'早',py:'zǎo',tone:'3-й · низкий'},{zh:'上',py:'shang',tone:'нейтральный'},{zh:'洗',py:'xǐ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'脸',py:'liǎn',tone:'3-й · часто низкий'}];
 const weights=[1.0,1.15,.65,1,1.2];
 const source=window.PandaGoHSK2Lesson1NativeAudioV459?.['我早上洗脸。'];
-let reference=null, learner=null, selected=0, recorder=null, stream=null, recordedUrl=null, chunks=[], recorded=null, micTimer=null;
+let reference=null, learner=null, selected=0, recorder=null, stream=null, recordedUrl=null, chunks=[], recorded=null, micTimer=null, autoBounds=null, firstLiveVoice=null;
 function say(msg){$('status').textContent=msg;}
 function median(xs){if(!xs.length)return 0;const a=xs.slice().sort((x,y)=>x-y),m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;}
 function rms(d,start,end){let v=0,k=0;for(let i=start;i<end;i+=4){v+=d[i]*d[i];k++;}return k?Math.sqrt(v/k):0;}
+
+function estimateBounds(arr,begin,end,peak){
+ const n=weights.length,total=weights.reduce((a,b)=>a+b,0),span=end-begin;let cumulative=0,bounds=[begin];
+ for(let i=0;i<n-1;i++){
+  cumulative+=weights[i];const guess=begin+span*cumulative/total,rad=Math.min(.16,span*.08),lo=bounds.at(-1)+.075,hi=end-(n-i-1)*.075;
+  let best=Infinity,picked=Math.max(lo,Math.min(hi,guess));
+  for(let j=0;j<arr.length;j++){
+   const x=arr[j];if(x.t<Math.max(lo,guess-rad)||x.t>Math.min(hi,guess+rad))continue;
+   const before=arr[Math.max(0,j-1)].en,after=arr[Math.min(arr.length-1,j+1)].en;
+   const valley=Math.max(0,(before+after-2*x.en)/(before+after+.0001));
+   const score=.62*Math.abs(x.t-guess)/(rad||.1)+.4*x.en/(peak||1)-.1*valley;
+   if(score<best){best=score;picked=x.t;}
+  }bounds.push(picked);
+ }bounds.push(end);return bounds;
+}
+
 function analyze(buffer){
  const d=buffer.getChannelData(0),rate=buffer.sampleRate,win=Math.min(4096,d.length),hop=Math.max(512,Math.round(rate*.025));let arr=[],peak=0;
  for(let i=0;i+win<=d.length;i+=hop){const en=rms(d,i,i+win);arr.push({t:(i+win/2)/rate,en,start:i});peak=Math.max(peak,en);}
@@ -73,13 +104,7 @@ function analyze(buffer){
  if(end-begin<.35)return {valid:false,reason:'Слишком короткая запись',frames:[],bounds:[]};
  // Estimate syllable positions from their approximate durations; snap to nearby RMS valleys.
  // This is not forced alignment, and is intentionally never used as a correctness score.
- const total=weights.reduce((a,b)=>a+b,0);let sum=0,bounds=[begin];
- for(let k=0;k<weights.length-1;k++){
-  sum+=weights[k];const guess=begin+(end-begin)*sum/total,rad=Math.min(.065,(end-begin)*.04);
-  const local=arr.filter(x=>Math.abs(x.t-guess)<rad);
-  const valley=local.length?local.reduce((a,b)=>b.en<a.en?b:a):null;
-  let b=valley?.t??guess; b=Math.max(bounds.at(-1)+.055,Math.min(end-(weights.length-1-k)*.055,b));bounds.push(b);
- }bounds.push(end);
+ const bounds=estimateBounds(arr,begin,end,peak);
  const frames=[],sample=new Float32Array(win);
  for(const a of arr){if(a.en<gate||a.t<begin||a.t>end)continue;
   const gain=Math.max(1,Math.min(9,.055/Math.max(.004,peak)));
@@ -103,16 +128,78 @@ function path(data,i,x0,y0,w,h){
  }
  return p.trim();
 }
+
+function syllableQuality(i){
+ if(!learner?.valid)return {text:'ожидает',weak:true,count:0};
+ const a=learner.bounds[i],b=learner.bounds[i+1],pts=learner.frames.filter(p=>p.t>=a&&p.t<=b);
+ const coverage=pts.length/Math.max(1,(b-a)/.025);
+ const weak=pts.length<4||coverage<.32;
+ return {text:pts.length<4?'мало F0':coverage<.32?'пропуски F0':'контур виден',weak,count:pts.length};
+}
+function describeMovement(i){
+ if(!learner?.valid)return '';
+ const a=learner.bounds[i],b=learner.bounds[i+1],pts=learner.frames.filter(p=>p.t>=a&&p.t<=b);
+ if(pts.length<6)return 'Мало точек F0 для анализа движения.';
+ const k=Math.max(2,Math.floor(pts.length*.25)),first=median(pts.slice(0,k).map(p=>p.hz)),last=median(pts.slice(-k).map(p=>p.hz));
+ if(!first||!last)return 'Недостаточно данных.';
+ const delta=12*Math.log2(last/first);
+ return delta>1.8?'Высота в измеренном участке в основном повышается.':delta< -1.8?'Высота в измеренном участке в основном снижается.':'Высота в измеренном участке меняется незначительно.';
+}
+function adjustControls(){
+ const root=$('boundary-controls');root.hidden=!learner?.valid;
+ const list=$('boundary-sliders');list.replaceChildren();
+ if(!learner?.valid)return;
+ const a=learner.bounds[0],b=learner.bounds.at(-1),dur=b-a;if(dur<=0)return;
+ for(let i=1;i<tokens.length;i++){
+  const row=document.createElement('div');row.className='boundary-row';
+  const label=document.createElement('label');label.textContent=tokens[i-1].zh+' / '+tokens[i].zh;
+  const input=document.createElement('input');input.type='range';input.min='0';input.max='1000';input.step='1';input.id='bound'+i;
+  input.value=String(Math.round((learner.bounds[i]-a)*1000/dur));input.setAttribute('aria-label','Граница '+tokens[i-1].zh+' и '+tokens[i].zh);label.htmlFor=input.id;
+  const output=document.createElement('output');output.textContent=(learner.bounds[i]-a).toFixed(2)+' с';
+  input.addEventListener('input',()=>{
+   const min=learner.bounds[i-1]+.07,max=learner.bounds[i+1]-.07;
+   if(min>max)return;
+   const desired=a+dur*Number(input.value)/1000;
+   learner.bounds[i]=Math.max(min,Math.min(max,desired));
+   output.textContent=(learner.bounds[i]-a).toFixed(2)+' с';
+   render();updateWhole();
+  });row.append(label,input,output);list.append(row);
+ }
+}
+$('boundary-reset').addEventListener('click',()=>{
+ if(!learner?.valid||!autoBounds)return;
+ learner.bounds=autoBounds.slice();adjustControls();render();updateWhole();
+});
+function showUncertainty(){
+ const group=$('whole-uncertainty');group.replaceChildren();
+ if(!learner?.valid)return;
+ const svg='http://www.w3.org/2000/svg',a=learner.bounds[0],dur=learner.bounds.at(-1)-a;if(dur<=0)return;
+ for(let i=0;i<tokens.length;i++){
+  if(!syllableQuality(i).weak)continue;
+  const rect=document.createElementNS(svg,'rect');rect.setAttribute('class','whole-uncertainty');
+  rect.setAttribute('x',String(GRAPH_LEFT+GRAPH_W*(learner.bounds[i]-a)/dur));
+  rect.setAttribute('y','22');rect.setAttribute('height','137');
+  rect.setAttribute('width',String(GRAPH_W*(learner.bounds[i+1]-learner.bounds[i])/dur));group.append(rect);
+ }
+}
+function showFocus(){
+ const rect=$('whole-focus'),bounds=learner?.valid?learner.bounds:reference?.bounds;
+ if(!bounds?.length){rect.setAttribute('width','0');return;}
+ const a=bounds[0],dur=bounds.at(-1)-a;if(dur<=0)return;
+ rect.setAttribute('x',String(GRAPH_LEFT+GRAPH_W*(bounds[selected]-a)/dur));
+ rect.setAttribute('width',String(GRAPH_W*(bounds[selected+1]-bounds[selected])/dur));
+}
+
 function render(){
  const parent=$('syllables');parent.innerHTML='';
  for(let i=0;i<tokens.length;i++){
-  const t=tokens[i],btn=document.createElement('button');btn.type='button';btn.className='syllable';btn.setAttribute('aria-pressed',String(i===selected));btn.setAttribute('aria-label',t.zh+', '+t.py);btn.innerHTML='<b>'+t.zh+'</b><span>'+t.py+'</span><svg viewBox="0 0 130 68" class="mini" aria-hidden="true"><path d="'+path(reference,i,7,8,116,52)+'" stroke="#b09bbf" stroke-width="3" stroke-dasharray="6 4" fill="none"/><path d="'+path(learner,i,7,8,116,52)+'" stroke="#7a50b5" stroke-width="3.5" fill="none"/></svg>';btn.addEventListener('click',()=>{selected=i;render();});parent.append(btn);
+  const t=tokens[i],btn=document.createElement('button');btn.type='button';btn.className='syllable';btn.setAttribute('aria-pressed',String(i===selected));btn.setAttribute('aria-label',t.zh+', '+t.py);btn.innerHTML='<b>'+t.zh+'</b><span>'+t.py+'</span><small class="quality '+(syllableQuality(i).weak?'sparse':'')+'">'+syllableQuality(i).text+'</small><svg viewBox="0 0 130 68" class="mini" aria-hidden="true"><path d="'+path(reference,i,7,8,116,52)+'" stroke="#b09bbf" stroke-width="3" stroke-dasharray="6 4" fill="none"/><path d="'+path(learner,i,7,8,116,52)+'" stroke="#7a50b5" stroke-width="3.5" fill="none"/></svg>';btn.addEventListener('click',()=>{selected=i;render();updateWhole();});parent.append(btn);
  }
  $('reference-line').setAttribute('d',path(reference,selected,25,22,298,106));
  $('learner-line').setAttribute('d',path(learner,selected,25,22,298,106));
  const refCount=reference?.frames.filter(x=>x.t>=reference.bounds[selected]&&x.t<=reference.bounds[selected+1]).length||0;
  const userCount=learner?.frames.filter(x=>x.t>=learner.bounds[selected]&&x.t<=learner.bounds[selected+1]).length||0;
- $('detail').textContent=tokens[selected].zh+' · '+tokens[selected].py+' — '+tokens[selected].tone+'. Точки F0: образец '+refCount+', ученик '+userCount+'. Границы слога предварительные; при нехватке точек линия не строится. Оценка правильности не выставляется.';
+ $('detail').textContent=tokens[selected].zh+' · '+tokens[selected].py+' — '+tokens[selected].tone+'. '+describeMovement(selected)+' Точки F0: образец '+refCount+', ученик '+userCount+'. Нет точек F0 — не обязательно ошибка ученика. Оценка правильности не выставляется.';
 }
 async function decode(url){const resp=await fetch(url);if(!resp.ok)throw new Error('Не удалось прочитать запись');const b=await resp.arrayBuffer();const c=new (window.AudioContext||window.webkitAudioContext)();try{return await c.decodeAudioData(b.slice(0));}finally{await c.close();}}
 
@@ -167,10 +254,11 @@ function wholeGuides(){
 }
 function updateWhole(){
  $('whole-ref').setAttribute('d',wholePath(reference));
- const isCapturing=!!liveTimer&&!!recorder;
+ const isCapturing=!!liveTimer&&!!recorder;showFocus();if(!isCapturing)showUncertainty();
  const display=isCapturing?{frames:liveFrames,base:median(liveFrames.map(p=>p.hz))}:learner;
  $('whole-mine').setAttribute('d',wholePath(display,isCapturing));
  if(!isCapturing){
+  $('whole-active').textContent=learner?.valid?'Выбран слог '+tokens[selected].zh+' · '+tokens[selected].py+'. Оранжевые зоны — недостаточно F0.':'Нажми «Записать себя», чтобы увидеть движение голоса.';
   $('whole-state').textContent=learner?.valid?'Запись готова':'Эталон';
   $('whole-state').classList.remove('recording');
   $('whole-cursor').style.display='none';
@@ -199,7 +287,7 @@ async function startLive(s){
   liveSource=context.createMediaStreamSource(s);liveAnalyzer=context.createAnalyser();
   liveAnalyzer.fftSize=4096;liveAnalyzer.smoothingTimeConstant=0;liveSource.connect(liveAnalyzer);
   liveFrame=new Float32Array(liveAnalyzer.fftSize);
-  liveStarted=performance.now();
+  liveStarted=performance.now();firstLiveVoice=null;
   $('whole-state').textContent='● Запись';$('whole-state').classList.add('recording');
   $('whole-info').textContent='Говори фразу естественно. Линия рисуется во время речи и будет уточнена по полной записи после остановки.';
   liveTimer=setInterval(()=>{
@@ -212,6 +300,13 @@ async function startLive(s){
    const pos=GRAPH_LEFT+GRAPH_W*Math.min(1,elapsed/MAX_RECORD_SECONDS);
    const cursor=$('whole-cursor');cursor.style.display='';cursor.setAttribute('x1',pos.toFixed(1));cursor.setAttribute('x2',pos.toFixed(1));
    if(level>.007){
+    if(firstLiveVoice===null)firstLiveVoice=elapsed;
+    const seconds=reference?.valid?reference.bounds.at(-1)-reference.bounds[0]:2;
+    const progress=Math.max(0,Math.min(.999,(elapsed-firstLiveVoice)/Math.max(1.2,seconds*1.2)));
+    const total=weights.reduce((a,b)=>a+b,0);let sum=0,index=weights.length-1;
+    for(let k=0;k<weights.length;k++){sum+=weights[k]/total;if(progress<sum){index=k;break;}}
+    $('whole-active').textContent='≈ Сейчас: '+tokens[index].zh+' · '+tokens[index].py+' (приблизительно)';
+    for(const [k,el] of [...$('syllables').children].entries())el.classList.toggle('active',k===index);
     const p=estimatePitch(liveFrame,context.sampleRate);
     if(p&&p.clarity>=.70&&p.hz>=65&&p.hz<=550){
      liveFrames.push({t:elapsed,hz:p.hz});
@@ -236,7 +331,7 @@ $('record').addEventListener('click',async()=>{
  if(recorder||!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){say('Для записи открой страницу в Chrome через HTTPS и разреши микрофон.');return;}
  try{
   if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}
-  learner=null;chunks=[];$('replay').disabled=true;render();updateWhole();
+  learner=null;autoBounds=null;chunks=[];$('replay').disabled=true;adjustControls();render();updateWhole();
   stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
   recorder=new MediaRecorder(stream);recorder.addEventListener('dataavailable',e=>{if(e.data.size)chunks.push(e.data);});
   recorder.addEventListener('stop',async()=>{
@@ -244,7 +339,7 @@ $('record').addEventListener('click',async()=>{
    if(!chunks.length){say('Запись пустая. Попробуй снова.');return;}
    recorded=new Blob(chunks,{type:mime});recordedUrl=URL.createObjectURL(recorded);$('replay').disabled=false;
    say('Анализирую короткую запись…');
-   try{learner=analyze(await decode(recordedUrl));say(learner.valid?'Готово! Нажимай на иероглифы и сравнивай линии. Разделение на слоги пока приблизительное.':'Звук записан, но F0 извлечён не полностью. Попробуй произнести фразу естественно в тишине.');render();updateWhole();}
+   try{learner=analyze(await decode(recordedUrl));autoBounds=learner?.bounds?.slice()||null;adjustControls();say(learner.valid?'Готово! Нажимай на иероглифы и сравнивай линии. Разделение на слоги пока приблизительное.':'Звук записан, но F0 извлечён не полностью. Попробуй произнести фразу естественно в тишине.');render();updateWhole();}
    catch(e){say('Запись есть, но браузер не смог построить график: '+(e?.message||'ошибка'));}
   },{once:true});
   recorder.start();void startLive(stream);$('record').disabled=true;$('stop').disabled=false;say('🎙 Говори «我早上洗脸» естественным голосом. Остановка автоматически через 6 секунд.');
