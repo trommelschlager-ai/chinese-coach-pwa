@@ -1,0 +1,111 @@
+@font-face{font-family:LessonHanzi;src:url('./lesson-hanzi-v233.woff') format('woff');font-display:swap;font-weight:400;unicode-range:U+3000-303F,U+3400-9FFF,U+FF00-FFEF}
+/* Panda Go lessons 5–7. Reference-based component stylesheet, v233. */
+:root{color-scheme:light;--ink:#542379;--sub:#775394;--border:#ebc9f1;--pink:#f34cad;--surface:#fff7ff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#f2e5fc}body{font:500 15px/1.4 LessonHanzi,Arial,'Noto Sans',sans-serif;color:var(--ink)}button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,a:focus-visible{outline:3px solid #9153cd;outline-offset:3px}
+.app{--scene:url('./lesson5-scene-v233.webp');width:min(100%,430px);height:var(--pg-visible-height,100svh);min-height:0;margin:auto;isolation:isolate;position:relative;overflow:hidden;display:flex;flex-direction:column;background:#faedff;box-shadow:0 0 45px #9663b83d}
+.app[data-lesson="6"]{--scene:url('./lesson6-scene-v233.webp')}.app[data-lesson="7"]{--scene:url('./lesson7-scene-v233.webp')}
+.header{display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:9px;padding:calc(10px + env(safe-area-inset-top)) 16px 7px;background:#fbf0ff;flex:none}
+.back{display:grid;place-items:center;width:37px;height:37px;border-radius:50%;border:1px solid #e9c7f4;background:#fff6ff;color:#57277c;text-decoration:none;font-size:28px;box-shadow:0 2px 4px #b883d54a}
+.brand{display:flex;align-items:center;gap:6px;min-width:0}.brand-panda{width:29px;height:32px;flex:none;background:url('./lesson-brand-v233.webp') center/contain no-repeat}.brand-name{font-size:21px;letter-spacing:-.8px;font-weight:900;line-height:1}.brand-name em{font-style:normal;color:#f13ca1}.brand-caption{display:block;font-size:10px;line-height:1.3}.count{font-size:12px;font-weight:800;background:#fbeaff;border:1px solid #e4c1ee;border-radius:22px;padding:7px 11px;box-shadow:0 2px 4px #c89bda42;white-space:nowrap}
+.bar{margin:5px 19px 0;height:8px;flex:none;overflow:hidden;border-radius:99px;background:#e4c6ef;box-shadow:inset 0 1px 2px #b990cd4d}.fill{height:100%;background:linear-gradient(90deg,#ce57cf,#fb67ba);border-radius:99px;transition:width .2s}
+.body{position:relative;isolation:isolate;min-height:0;flex:1 1 0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#deb1ec transparent;padding:10px 16px 18px;background:linear-gradient(#faedff,#f9e9ff)}
+.body:before{content:'';position:absolute;top:0;left:0;width:100%;height:140px;background:url('./lesson-sakura-v233.webp') top center/100% auto no-repeat;z-index:-1;pointer-events:none}
+.kicker{display:table;margin:8px auto 10px;padding:5px 19px;border:1px solid #ecc5ef;border-radius:99px;background:#fceaff;box-shadow:0 2px 4px #c69bd535;font-weight:800;font-size:12px;color:#70308c}
+h1{font-size:30px;line-height:1.12;letter-spacing:-.5px;text-align:center;margin:9px 0;font-weight:900} .subtitle{font-size:14px;line-height:1.4;text-align:center;margin:0 auto 17px;max-width:330px;color:#6d4089}
+.card{margin:12px 0;padding:14px;border:1px solid #ecd1f5;border-radius:23px;background:linear-gradient(140deg,#fff8ff,#fbeaff);box-shadow:0 3px 5px #b78ccc38,inset 0 1px 1px #fff;min-width:0;overflow-wrap:anywhere}.card:has(> .grid > .word){background:transparent;border:0;box-shadow:none;padding:0}.card h2{font-size:19px;line-height:1.3;margin:0 0 12px}.card p{font-size:14px;line-height:1.5;margin:9px 0}.small{font-size:12px!important;color:#805c97!important}.center{text-align:center}.grid{display:grid;gap:10px}.grid.two,.grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.word{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:2px;align-items:center;min-height:143px;padding:12px 8px 11px 14px;border:1px solid #ebc8f2;border-radius:22px;background:linear-gradient(135deg,#fff9ff,#f9e9ff);box-shadow:0 3px 4px #c294d636,inset 0 1px #fff}.word>div{min-width:0}.word strong{display:block;font-size:31px;line-height:1.2;letter-spacing:0;font-weight:800;font-family:LessonHanzi,Arial,'Noto Sans SC','Microsoft YaHei',sans-serif}.word .py{display:block;font-size:15px;line-height:1.25;margin-top:3px;color:#6a368d}.word .ru{display:block;font-size:13px;line-height:1.25;margin-top:2px;color:#643484}.word-emoji{display:none}.word-art{display:block;width:54px;height:54px;margin:0 0 3px;background-position:center;background-size:contain;background-repeat:no-repeat}.word-art.weather{background-image:url('./lesson7-weather-v233.webp');background-size:200% 200%}.word-art.relative{background-image:url('./lesson6-relatives-v233.webp');background-size:200% 200%}.word-art.scene{background-image:var(--scene);width:53px;height:42px;border-radius:12px;background-size:cover}.word-art.flower{background-image:url('./lesson-sakura-v233.webp');background-size:500% auto;background-position:top left}
+.audio{width:42px;height:42px;min-width:42px;display:grid;place-items:center;padding:0;border:1px solid #ffb5e6;border-radius:50%;background:#ffe3f8;box-shadow:0 2px 3px #d185be4a,inset 0 1px #fff;color:#ef48b2;font-size:0}.audio:before{content:'';width:21px;height:21px;background:currentColor;mask:url('./speaker-fill-v233.svg') center/contain no-repeat}.audio:active{transform:scale(.95)}.audio[aria-busy="true"]{box-shadow:0 0 0 3px #f6b0e5}
+.soft,.card-choice{border:1px solid #e5bced;border-radius:19px;background:linear-gradient(#fff8ff,#f7e4fd);box-shadow:0 3px 4px #b27bcc38,inset 0 1px #fff;color:#55267e;font-weight:800;padding:10px 12px;min-height:44px}.primary{border-color:#ffafe0;background:linear-gradient(#ff86d2,#f550b0 65%,#ec40a5);color:#fff;text-shadow:0 1px 1px #b93d91;box-shadow:0 3px 4px #de79c174,inset 0 1px 2px #ffebff}.buttons{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:9px;margin:12px 0 2px}.card-choice{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;min-height:68px}.card-choice strong{font-size:25px}.card-choice small{font-size:12px;font-weight:500}.card-choice.chosen{border:2px solid #f386cf;box-shadow:0 0 0 2px #ffd0ef}.card-choice.correct{border-color:#72c96b;background:#efffeb}.card-choice.wrong{border-color:#e77b9c;background:#ffeff4}
+.intro{position:relative;display:flex;flex-direction:column;text-align:center;margin:0 -16px;background:transparent;overflow:hidden}.intro-copy{z-index:1;padding:0 28px}.intro-copy strong{display:block;max-width:320px;margin-left:auto;margin-right:auto;font-size:35px;font-weight:900;line-height:1.12;letter-spacing:-.5px}.intro-copy p{font-size:16px;line-height:1.35;margin:10px auto 0;max-width:265px}.pg5-kicker{display:table;margin:8px auto 12px;padding:5px 18px;border:1px solid #e8b9ed;background:#fde8ff;border-radius:99px;font-size:12px;font-weight:800;box-shadow:0 2px 4px #d7b0e945}
+.intro-art{height:auto;aspect-ratio:3/2;width:100%;background:var(--scene) center/cover no-repeat;margin:4px 0 0;mask-image:linear-gradient(transparent,#000 9%,#000 93%,transparent)}
+.cover-milestones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:6px 0}.cover-milestones>div{padding:7px 2px;border:1px solid #e8bdec;border-radius:18px;background:linear-gradient(#fff8ff,#fceaff);text-align:center;box-shadow:0 3px 4px #c190d638}.cover-milestones strong{display:block;font-size:24px;line-height:1.2}.cover-milestones small{display:block;font-size:10px;margin-top:3px}.cover-caption{font-size:12px;text-align:center;margin:10px 0;color:#805292}.cover-note{text-align:center;font-size:12px;padding:8px;border:1px solid #ecd0f5;border-radius:17px;background:#fff6ff;margin:7px 0}.cover-note strong{font-weight:800}
+.app[data-step="0"] .body>.kicker,.app[data-step="0"] .body>h1,.app[data-step="0"] .body>.subtitle{display:none}.app[data-step="0"] .body{padding-top:9px}.app[data-step="0"] .footer{grid-template-columns:1fr}.app[data-step="0"] #pg5-prev{display:none}
+.app[data-step="13"] .intro{flex-direction:column-reverse}.app[data-step="13"] .intro-art{background-image:url('./lesson-success-v233.webp');height:176px;aspect-ratio:auto;background-position:center 43%;margin-top:0}.app[data-step="13"] .intro-copy{border-radius:30px;padding:15px;background:#fff0ff;border:1px solid #ebc8f4;margin:-16px 16px 6px}.app[data-step="13"] .intro-copy .pg5-kicker{display:none}.app[data-step="13"] .intro-copy strong{font-size:30px}.app[data-step="13"] .intro-copy p{font-size:14px;margin-top:7px}.app[data-step="13"] .body>.subtitle{margin-bottom:6px}
+.formula{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;margin:14px 0}.part{font-size:33px;padding:8px 12px;background:#fff8ff;border:1px solid #e8c2ee;border-radius:15px}.formula b{font-size:22px;color:#b565bb}.rule-card{padding:12px;margin:7px 0;background:#fff5ff;border-radius:16px;border:1px solid #efc9ef;color:#6c3b89;font-size:14px;line-height:1.6}.example{position:relative;padding:14px 11px;border:1px solid #edc8f1;border-radius:21px;background:#fff4ff;box-shadow:0 3px 4px #c69bce2b;margin:10px 0;text-align:center}.example strong{display:block;font-size:27px;line-height:1.3}.example .py{display:block;font-size:14px;margin:3px 0;color:#7d4a98}.example .ru{font-size:13px}.dialogue{display:grid;gap:12px}.bubble{position:relative;max-width:95%;padding:14px;border:1px solid #e8bdec;border-radius:23px 23px 23px 7px;background:#fff2ff;box-shadow:0 3px 5px #bc85ca2e}.bubble:nth-child(even){justify-self:end;border-radius:23px 23px 7px 23px;background:#f5e3ff}.bubble strong{display:block;font-size:24px;line-height:1.3}.bubble small{display:block;font-size:13px;color:#84529f;margin:4px 0}.bubble .ru{display:block;font-size:14px;margin:4px 0}.bubble .audio{margin-top:9px}
+.coach-scene{height:100px;width:100px;margin:14px auto 0;background:url('./lesson-coaches-v233.webp') left center/200% 100% no-repeat}.word-art.symbol{background:#b767c9;mask:var(--word-symbol) center/70% no-repeat}.dialogue .bubble{max-width:calc(100% - 55px);margin-left:55px}.dialogue .bubble:before{content:'';position:absolute;left:-66px;top:2px;width:62px;height:73px;background:url('./lesson-coaches-v233.webp') left center/200% 100% no-repeat}.dialogue .bubble:nth-child(even){margin-left:0;margin-right:55px}.dialogue .bubble:nth-child(even):before{left:auto;right:-66px;background-position:right center}
+.app[data-lesson="6"] .grid.two:has(.word){grid-template-columns:1fr;gap:9px}.app[data-lesson="6"] .word{display:grid;grid-template-columns:1fr 42px;min-height:82px;padding:8px 10px}.app[data-lesson="6"] .word>div{display:grid;grid-template-columns:64px minmax(60px,1fr) minmax(70px,1fr);grid-template-rows:auto auto;align-items:center;column-gap:7px}.app[data-lesson="6"] .word-art{grid-row:1/3;width:62px;height:62px;margin:0}.app[data-lesson="6"] .word strong{font-size:28px;grid-column:2;grid-row:1}.app[data-lesson="6"] .word .py{font-size:14px;grid-column:2;grid-row:2;margin:0}.app[data-lesson="6"] .word .ru{font-size:13px;grid-column:3;grid-row:1/3;padding-left:8px;border-left:1px solid #eab8ed}
+.write-grid{width:min(65vw,250px);height:min(65vw,250px);margin:14px auto;border:1px solid #deb0e9;border-radius:22px;background:linear-gradient(to right,transparent 49.7%,#ecd6ef 50%,transparent 50.3%),linear-gradient(to bottom,transparent 49.7%,#ecd6ef 50%,transparent 50.3%),#fffaff;display:grid;place-items:center}#writer{width:100%;height:100%;display:grid;place-items:center}#writer svg{max-width:100%;max-height:100%;touch-action:none}.assemble{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:12px 7px;min-height:72px;margin:10px 0;border:1px solid #e8c6ef;background:#fff4ff;border-radius:18px}.assemble .unit{min-width:46px;min-height:47px;border:1px solid #e3b9ed;border-radius:14px;background:#fff3ff;box-shadow:0 3px 4px #b883ce39;font-size:26px;color:#56247b}.assemble .unit:disabled{opacity:.3}.speech-card{text-align:center}.speech-card strong{font-size:28px}.result{padding:11px;margin:10px 0;border:1px solid #ddbce8;border-radius:16px;background:#fff2ff;text-align:center;font-size:14px;font-weight:700}.result.good{background:#f1ffef;border-color:#9dd398;color:#3a8238}.result.bad{background:#fff0f5;border-color:#e9a9c1;color:#a53b6c}.calendar{text-align:center;padding:16px;border:1px solid #e9bbe8;background:#fff5ff;border-radius:20px}.calendar .month{display:block;font-size:16px}.calendar .day{display:block;font-size:64px}.calendar .lunar{display:block;font-size:26px}.date-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.date-chip{border:1px solid #eac6f0;border-radius:16px;padding:8px;text-align:center}.date-chip strong{display:block;font-size:25px}
+.footer{display:grid;grid-template-columns:38% 1fr;gap:12px;flex:none;padding:12px 17px max(20px,env(safe-area-inset-bottom,0px));background:#fbeaff}.footer button{touch-action:manipulation;min-width:0;min-height:56px;border-radius:25px;font-size:17px}.footer .primary{font-size:18px}
+@media(max-width:365px){.header{padding-left:12px;padding-right:12px}.body{padding-left:13px;padding-right:13px}.intro{margin-left:-13px;margin-right:-13px}.intro-copy strong,h1{font-size:28px}.word{padding-left:10px;grid-template-columns:minmax(0,1fr) 38px}.word strong{font-size:28px}.word .py{font-size:14px}.audio{width:38px;min-width:38px;height:38px}.card{padding:10px}.app[data-lesson="6"] .word>div{grid-template-columns:54px minmax(57px,1fr) minmax(60px,1fr);gap:5px}.app[data-lesson="6"] .word-art{width:52px;height:52px}.app[data-lesson="6"] .word strong{font-size:26px}.footer{gap:9px;padding-left:13px;padding-right:13px}.footer button{touch-action:manipulation;min-width:0;font-size:16px}}
+@media(prefers-reduced-motion:reduce){.fill{transition:none}}
+
+/* Lesson 6 human-family art direction v235: 8 consistent character/meaning portraits.
+   Scope all overrides to family lesson only; lessons 5/7 retain their approved artwork. */
+.app[data-lesson="6"] .word-art.human {
+  background-image:url('./family-people-v235.webp');
+  background-size:400% 200%;
+  background-repeat:no-repeat;
+}
+.app[data-lesson="6"][data-step="0"] .intro-art{
+  background-image:url('./family-cover-v235.webp');
+}
+.app[data-lesson="6"] .dialogue .bubble:before{
+  background-image:url('./family-people-v235.webp');
+  background-size:400% 200%;
+  background-position:33.3333% 0;
+  background-repeat:no-repeat;
+}
+.app[data-lesson="6"] .dialogue .bubble:nth-child(even):before{
+  background-position:0 0;
+}
+.app[data-lesson="6"] .coach-scene{
+  background-image:url('./family-people-v235.webp');
+  background-size:400% 200%;
+  background-position:66.6667% 0;
+  background-repeat:no-repeat;
+}
+
+
+/* Panda Go · family photo cards v276. Scoped to lesson 6; lesson 7 retains its own design. */
+.app[data-lesson="6"] .pg6-grandparents-heading{font-size:19px;line-height:1.25;margin:16px 2px 6px;text-align:center;color:#61338a;font-weight:900}
+.app[data-lesson="6"] .pg6-grandparents-hint{font-size:12px;text-align:center;color:#74598c;margin:0 auto 12px;line-height:1.4}
+.app[data-lesson="6"] .pg6-grandparents-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.app[data-lesson="6"] .pg6-grandparent-card{min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px 11px;background:#fff;border:1.5px solid #e7d5f1;border-radius:20px;box-shadow:0 4px 12px #ad90c529}
+.app[data-lesson="6"] .pg6-grandparent-photo{display:block;width:94px;height:94px;max-width:100%;flex:none;border-radius:16px;border:2px solid #fff;object-fit:cover;object-position:center 34%;background:#f6e9fa;box-shadow:0 3px 10px #80649c30}
+.app[data-lesson="6"] .pg6-grandparent-side{display:block;max-width:100%;font-size:10px;font-weight:850;line-height:1.15;text-align:center;padding:4px 7px;border-radius:999px;background:#f3e9ff;color:#8154ab}
+.app[data-lesson="6"] .pg6-grandparent-card:nth-child(-n+2) .pg6-grandparent-side{background:#fff0f2;color:#c36a89}
+.app[data-lesson="6"] .pg6-grandparent-card strong{font-family:LessonHanzi,'Noto Sans SC',sans-serif;font-size:30px;line-height:1.15;color:#60328e}
+.app[data-lesson="6"] .pg6-grandparent-card .py{font-size:14px;line-height:1.3;font-weight:850;color:#754ca0}
+.app[data-lesson="6"] .pg6-grandparent-card .ru{font-size:12px;line-height:1.3;text-align:center;color:#614f74;min-height:31px}
+.app[data-lesson="6"] .pg6-grandparent-card .audio{margin-top:auto}
+.app[data-lesson="6"] .pg6-grandparent-examples{display:grid;gap:10px}
+.app[data-lesson="6"] .pg6-grandparent-phrase{display:grid;grid-template-columns:60px minmax(0,1fr) 42px;align-items:center;gap:9px;padding:10px;border:1px solid #ead9f1;border-radius:17px;background:#fff;box-shadow:0 3px 9px #af8fc019;min-width:0}
+.app[data-lesson="6"] .pg6-phrase-photo{display:block;width:60px;height:70px;object-fit:cover;object-position:center 34%;border:1.5px solid #f4e8f8;border-radius:13px;background:#f6e9fa}
+.app[data-lesson="6"] .pg6-phrase-copy{min-width:0}
+.app[data-lesson="6"] .pg6-grandparent-phrase strong{display:block;font-family:LessonHanzi,'Noto Sans SC',sans-serif;font-size:21px;color:#5e2e89;line-height:1.32;overflow-wrap:anywhere}
+.app[data-lesson="6"] .pg6-grandparent-phrase .py,.app[data-lesson="6"] .pg6-grandparent-phrase .ru{display:block;font-size:12px;line-height:1.45;color:#725789}
+.app[data-lesson="6"] .pg6-grandparent-review{display:grid;gap:9px}
+.app[data-lesson="6"] .pg6-grandparent-review>div{display:grid;grid-template-columns:53px minmax(0,1fr) 42px;align-items:center;gap:9px;padding:8px;border:1px solid #e7d6ef;border-radius:15px;background:#fff}
+.app[data-lesson="6"] .pg6-review-photo{display:block;width:53px;height:53px;object-fit:cover;object-position:center 34%;border-radius:12px;background:#f8eefa}
+.app[data-lesson="6"] .pg6-review-copy{display:grid;gap:2px;min-width:0}
+.app[data-lesson="6"] .pg6-grandparent-review b{font-size:24px;line-height:1.15;font-family:LessonHanzi,'Noto Sans SC',sans-serif;color:#60328e}
+.app[data-lesson="6"] .pg6-grandparent-review small{font-size:12px;line-height:1.35;color:#655174}
+.app[data-lesson="6"] .audio{border-color:#f5afb9;background:#ffe9ee;color:#d94f7d}
+.app[data-lesson="6"] .footer .soft.primary{border:1.5px solid #975ad3;background:linear-gradient(#ae77e6,#8a49cd);box-shadow:0 3px 0 #6f31b2,0 5px 12px #955bcc45;color:#fff}
+.app[data-lesson="6"] .footer .soft:not(.primary){background:#fff;border:1.5px solid #e1cfeb;color:#292330;box-shadow:0 2px 7px #8d739d20}
+.app[data-lesson="6"] .word{grid-template-columns:minmax(0,1fr) 42px;min-height:95px;padding:9px 10px}
+.app[data-lesson="6"] .word>div{display:grid;grid-template-columns:70px minmax(0,1fr);grid-template-rows:repeat(3,auto);align-items:center;column-gap:11px;min-width:0}
+.app[data-lesson="6"] .word-art{grid-column:1;grid-row:1/4;width:69px;height:69px;border-radius:12px}
+.app[data-lesson="6"] .word strong{font-size:29px;line-height:1.2;grid-column:2;grid-row:1}
+.app[data-lesson="6"] .word .py{font-size:14px;line-height:1.2;grid-column:2;grid-row:2;margin:0}
+.app[data-lesson="6"] .word .ru{font-size:13px;line-height:1.3;grid-column:2;grid-row:3;border-left:0;padding:0}
+@media(max-width:365px){
+ .app[data-lesson="6"] .pg6-grandparents-grid{gap:7px}
+ .app[data-lesson="6"] .pg6-grandparent-card{padding:8px 6px}
+ .app[data-lesson="6"] .pg6-grandparent-photo{width:80px;height:80px}
+ .app[data-lesson="6"] .pg6-grandparent-card strong{font-size:27px}
+ .app[data-lesson="6"] .pg6-grandparent-phrase{grid-template-columns:48px minmax(0,1fr) 38px;gap:7px;padding:7px}
+ .app[data-lesson="6"] .pg6-phrase-photo{width:48px;height:61px}
+ .app[data-lesson="6"] .pg6-grandparent-phrase strong{font-size:19px}
+ .app[data-lesson="6"] .word>div{grid-template-columns:56px minmax(0,1fr);gap:4px 8px}
+ .app[data-lesson="6"] .word-art{width:55px;height:55px}
+ .app[data-lesson="6"] .word strong{font-size:26px}
+}
+
+/* Family vocabulary v280: approved photo cards for 有、没有、一个 only. */
+.app[data-lesson="6"] .word-art.pg6-word-photo{display:block;width:69px;height:69px;max-width:100%;grid-column:1;grid-row:1/4;object-fit:cover;object-position:center;border:1px solid #ead6ee;border-radius:14px;background:#fff6fc;box-shadow:0 2px 7px #926bab25;image-rendering:auto}
+@media(max-width:365px){.app[data-lesson="6"] .word-art.pg6-word-photo{width:55px;height:55px}}
+
+/* v289: clean weather symbols replace cached blurry lesson7 sprite art. */
+.app[data-lesson="7"] .word-art.pg7-weather-icon{display:grid;place-items:center;width:60px;height:60px;border:1px solid #e6d3f3;border-radius:16px;background:linear-gradient(145deg,#fffaff,#f1e5ff);font-size:34px;line-height:1;box-shadow:0 2px 7px #8e6ba021}
+@media(max-width:365px){.app[data-lesson="7"] .word-art.pg7-weather-icon{width:50px;height:50px;font-size:29px}}
