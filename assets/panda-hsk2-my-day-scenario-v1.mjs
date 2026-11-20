@@ -2,6 +2,7 @@
    Browser ASR is transcription only, never acoustic tone grading. */
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {PANDA_GRAMMAR_AUDIO_V451} from './panda-grammar-voice-v451.mjs?v=451';
+import {understandDayAnswer} from './panda-hsk2-day-understanding-v1.mjs?v=1';
 if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){
 const STORY=[
 [['我每天七点起床。','Wǒ měitiān qī diǎn qǐchuáng.','Я встаю в 7.'],['我起床以后洗脸。','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма умываюсь.'],['我早上刷牙。','Wǒ zǎoshang shuāyá.','Утром чищу зубы.'],['我早上吃早饭。','Wǒ zǎoshang chī zǎofàn.','Утром завтракаю.'],['我八点去上班。','Wǒ bā diǎn qù shàngbān.','В 8 иду на работу.'],['我晚上十点睡觉。','Wǒ wǎnshang shí diǎn shuìjiào.','В 10 вечера ложусь спать.']],
@@ -195,16 +196,49 @@ function init(stage){
  }
  function answer(raw){
   if(phase!=='questions')return;
-  const result=check(raw,i);clearTimeout(silence);
-  if(result.value){
-   answers[i]=result.value;$('day-input').value='';status('✓ Ответ принят. Тоны не проверялись.');
-   const token=++sequence;setTimeout(()=>{if(token===sequence)ask(i+1)},850);
-  }else if(result.correction){
-   notes.push('Порядок слов: '+result.correction);errors.push(result.correction);
-   line([result.correction,'','Время ставим перед действием.']);
-   status(result.error+' '+result.correction);
-   const token=++sequence;speak([result.correction,'','']).then(()=>{if(token===sequence)countdown()});
-  }else{status(result.error);countdown()}
+  const idx=i,result=understandDayAnswer(raw,idx);
+  clearTimeout(silence);
+  if(result.kind==='user-question'){
+   // Real turn-taking: answer a learner's question with a recorded fact from
+   // Panda's own story, then return to the question already being practiced.
+   $('day-input').value='';
+   stop();stagePhase('questions');
+   const story=STORY[round%2],reply=story[[0,1,3,4,5][result.questionIndex]];
+   line(reply);
+   status('🐼 Ты спросил Панду. Она ответит о своём дне, затем продолжит урок.');
+   const token=sequence;
+   (async()=>{
+    await speak(reply);if(token!==sequence)return;
+    await delay(500);if(token!==sequence)return;
+    line(Q[idx].slice(0,3));
+    status('Теперь твоя очередь: '+Q[idx][2]+' Тоны по тексту не проверяются.');
+    await speak(Q[idx].slice(0,3));
+    if(token===sequence)countdown();
+   })();
+   return;
+  }
+  if(result.kind==='accepted'){
+   answers[idx]=result.value;$('day-input').value='';
+   line([result.value,'','Твой ответ']);
+   status('✓ '+result.message);
+   const token=++sequence;
+   setTimeout(()=>{if(token===sequence)ask(idx+1)},1100);
+   return;
+  }
+  if(result.kind==='correct'){
+   if(!notes.includes('Исправление: '+result.correction))notes.push('Исправление: '+result.correction);
+   if(!errors.includes(result.correction))errors.push(result.correction);
+   line([result.correction,'','Время ставим перед глаголом.']);
+   status('💡 '+result.message+' Правильно: '+result.correction);
+   const token=++sequence;
+   speak([result.correction,'','']).then(()=>{if(token===sequence)countdown()});
+   return;
+  }
+  // A clarification is a follow-up within the SAME question. Do not mistake
+  // an unclear ASR transcript for wrong Chinese or invent personal details.
+  status(result.message);
+  const token=++sequence;
+  setTimeout(()=>{if(token===sequence)countdown()},1500);
  }
  async function finishQuestions(){
    stop();const list=answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']);
@@ -259,14 +293,15 @@ function init(stage){
     const question=i;
     // Advance without extra tap only when the recognized text fits a reviewed answer.
     // Anything uncertain stays editable and is never graded as bad pronunciation.
-    if(check(text,question).value)setTimeout(()=>{
+    const intent=understandDayAnswer(text,question);
+    if(intent.kind==='accepted'||intent.kind==='user-question')setTimeout(()=>{
      if(phase==='questions'&&i===question&&$('day-input').value===text)answer(text)
     },750);
    }
    if(phase==='monologue'){$('day-long').value+=($('day-long').value.trim()?'。':'')+text;status('Продолжай рассказ. После окончания нажми «Завершить рассказ».')}
   };
   r.onerror=e=>status('Микрофон или распознавание: '+(e.error||'сбой')+'. Это НЕ означает ошибку в произношении.');
-  r.onend=()=>{if(recognizer===r)recognizer=null;if(phase==='questions')countdown()};
+  r.onend=()=>{const wasCurrent=recognizer===r;if(wasCurrent)recognizer=null;if(wasCurrent&&phase==='questions')countdown()};
   try{r.start()}catch(_){recognizer=null;status('Не удалось включить микрофон. Проверь разрешение Chrome или напиши ответ.')}
  }
  $('day-start').onclick=begin;
