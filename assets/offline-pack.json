@@ -3150,6 +3150,7 @@
     "./assets/panda-hsk2-my-day-voice-20261120/day12.mp3",
     "./assets/panda-hsk2-my-day-voice-20261120/day13.mp3",
     "./assets/panda-hsk2-my-day-voice-20261120/day14.mp3",
-    "./assets/panda-hsk2-my-day-voice-20261120/manifest.json"
+    "./assets/panda-hsk2-my-day-voice-20261120/manifest.json",
+    "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=5"
   ]
 }
