@@ -820,7 +820,26 @@ const dialogue = [
 ];
 const normalize = text => String(text).replace(/[\p{P}\s]/gu,'');
 // No audio until it is recorded with the approved Panda Go LuvVoice speaker.
-const clips = new Map();
+const clips = new Map([
+  ["来自","./assets/hsk2-about-me/voice-luvvoice-20261120/about01.mp3"],
+  ["现在","./assets/hsk2-about-me/voice-luvvoice-20261120/about02.mp3"],
+  ["住在","./assets/hsk2-about-me/voice-luvvoice-20261120/about03.mp3"],
+  ["工作","./assets/hsk2-about-me/voice-luvvoice-20261120/about04.mp3"],
+  ["爱好","./assets/hsk2-about-me/voice-luvvoice-20261120/about05.mp3"],
+  ["学习","./assets/hsk2-about-me/voice-luvvoice-20261120/about06.mp3"],
+  ["我叫米沙。","./assets/hsk2-about-me/voice-luvvoice-20261120/about07.mp3"],
+  ["我来自俄罗斯。","./assets/hsk2-about-me/voice-luvvoice-20261120/about08.mp3"],
+  ["我现在住在莫斯科。","./assets/hsk2-about-me/voice-luvvoice-20261120/about09.mp3"],
+  ["我在公司工作。","./assets/hsk2-about-me/voice-luvvoice-20261120/about10.mp3"],
+  ["我的爱好是听音乐。","./assets/hsk2-about-me/voice-luvvoice-20261120/about11.mp3"],
+  ["我每天学习中文。","./assets/hsk2-about-me/voice-luvvoice-20261120/about12.mp3"],
+  ["你来自哪里？","./assets/hsk2-about-me/voice-luvvoice-20261120/about13.mp3"],
+  ["我来自中国。","./assets/hsk2-about-me/voice-luvvoice-20261120/about14.mp3"],
+  ["你现在住在哪里？","./assets/hsk2-about-me/voice-luvvoice-20261120/about15.mp3"],
+  ["我现在住在北京。","./assets/hsk2-about-me/voice-luvvoice-20261120/about16.mp3"],
+  ["你的爱好是什么？","./assets/hsk2-about-me/voice-luvvoice-20261120/about17.mp3"],
+  ["我的爱好是运动。","./assets/hsk2-about-me/voice-luvvoice-20261120/about18.mp3"]
+].map(([hanzi,url]) => [normalize(hanzi),url])); // Original user's 2026-11-20 LuvVoice recording only.
 const listening = words.map((w,i)=>[w.py,i]);
 const profileSentences = [...phrases];
 
@@ -901,6 +920,8 @@ function restore() {
 let state = restore();
 
 state.heardWords = [...new Set((Array.isArray(state.heardWords) ? state.heardWords : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
+// Reset legacy manually marked listening only once now that original-voice recordings exist.
+if (!state.aboutOriginalVoiceV8) { state.heardWords=[]; state.aboutOriginalVoiceV8=true; try { localStorage.setItem(key,JSON.stringify(state)); } catch {} }
 state.selfSpoken = [...new Set((Array.isArray(state.selfSpoken) ? state.selfSpoken : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.mic = [...new Set((Array.isArray(state.mic) ? state.mic : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.practiceMode = 'mic'; // Primary microphone mode.
@@ -1400,7 +1421,7 @@ function tones() {
     safeStatus() + toneGuide() + '<div class="progress-panel panel">' + stageImage('tones','about-progress-photo') + '<div><b>Практика произношения</b>' +
     '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
     ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
-    '. Тоны автоматически не оцениваются. Озвучка тем же голосом Panda Go готовится.</p>';
+    '. Тоны автоматически не оцениваются. Прослушай пример и повтори.</p>';
 }
 
 const replyPinyin = new Map([
