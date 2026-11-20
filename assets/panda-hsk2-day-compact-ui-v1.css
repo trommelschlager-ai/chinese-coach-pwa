@@ -236,3 +236,21 @@
  #pg346[data-day-scenario="ready"] .pg-day-controls button,
  #pg346[data-day-scenario="ready"] .pg-day-rail button{transition:none!important}
 }
+
+/* State-level visibility must override the generic display:flex rules above.
+   Buttons moved across parents continue to rely on the native hidden attribute. */
+#pg346[data-day-scenario="ready"] .pg-day-rail button[hidden],
+#pg346[data-day-scenario="ready"] .pg-day-controls button[hidden],
+#pg346[data-day-scenario="ready"] .pg-day-controls input[hidden],
+#pg346[data-day-scenario="ready"] .pg-day-controls textarea[hidden]{
+  display:none!important;
+}
+#pg346[data-day-scenario="ready"][data-day-phase="ready"] .pg-day-controls .pg-day-entry,
+#pg346[data-day-scenario="ready"][data-day-phase="intro"] .pg-day-controls .pg-day-entry,
+#pg346[data-day-scenario="ready"][data-day-phase="story"] .pg-day-controls .pg-day-entry,
+#pg346[data-day-scenario="ready"][data-day-phase="summary"] .pg-day-controls .pg-day-entry,
+#pg346[data-day-scenario="ready"][data-day-phase="results"] .pg-day-controls .pg-day-entry,
+#pg346[data-day-scenario="ready"][data-day-phase="questions"] .pg-day-controls .pg-day-buttons,
+#pg346[data-day-scenario="ready"][data-day-phase="monologue"] .pg-day-controls .pg-day-buttons{
+  display:none!important;
+}
