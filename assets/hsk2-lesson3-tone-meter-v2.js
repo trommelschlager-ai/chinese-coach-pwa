@@ -160,7 +160,13 @@ function draw(){
   const segmentFrom=syll===0?0:split,segmentTo=syll===0?split:1;
   const selected=normalized.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo);
   const trend=document.getElementById('tone-trend-'+(syll+1));
-  if(trend)trend.textContent=observedTrend(normalized,segmentFrom,segmentTo);
+  if(trend){
+   const description=observedTrend(normalized,segmentFrom,segmentTo);
+   trend.textContent=description.includes('снижалась в середине')?'↘↗ Изгиб':
+    description.includes('повышалась')?'↗ Повышается':
+    description.includes('понижалась')?'↘ Понижается':
+    description.includes('ровной')?'→ Ровный':'— Недостаточно данных';
+  }
   if(selected.length<2)continue;
   ctx.beginPath();ctx.strokeStyle='#198b70';ctx.lineWidth=3.5;
   let painted=0;
@@ -180,7 +186,7 @@ function status(message){note=message;const el=document.getElementById('tone-sta
 function syncControls(){
  const btn=document.getElementById('tone-record');if(!btn)return;
  const running=active&&active.word===state.selected;
- btn.textContent=running?'■ Закончить запись':'🎙 Записать произношение';
+ btn.textContent=running?'■ Стоп':'🎙 Записать голос';
  btn.disabled=!running&&count(state.selected)>=LIMIT;
 }
 function update(){
@@ -257,7 +263,7 @@ function stop(countTake){
     const firstSyllable=pts.filter(p=>p[0]<boundaryAt);
     const secondSyllable=pts.filter(p=>p[0]>=boundaryAt);
     if(firstSyllable.length<4||secondSyllable.length<4){
-     note='Измерений недостаточно для двух отдельных слогов. Произнеси оба слога чуть медленнее и повтори запись.';
+     note='Недостаточно сигнала для двух слогов. Произнеси чуть медленнее.';
      update();syncControls();return;
     }
     const saved=pts.slice(-120),first=saved[0][0],last=saved[saved.length-1][0],span=Math.max(.001,last-first);
@@ -266,10 +272,10 @@ function stop(countTake){
     const ratio=Math.max(SPLIT_MIN,Math.min(SPLIT_MAX,(absolute-first)/span));
     r.mic.push({points:saved.map(p=>[(p[0]-first)/span,p[1]]),seconds:duration,
       splitRatio:ratio,splitSource:boundary.source});
-    note='✓ Голос измерен. Повтор '+count(rec.word)+' из 5. Показаны два предположительных слога. Если нужно, передвинь границу между ними.';persist();
+    note='✓ Записано: '+count(rec.word)+'/5. Сравни линии.';persist();
    }
-  }else note='Для разделения на два слога недостаточно устойчивого голоса. Скажи оба слога чётко и повтори попытку.';
- }else if(rec)note='Запись остановлена. Этот дубль не засчитан.';
+  }else note='Не удалось выделить оба слога. Попробуй ещё раз.';
+ }else if(rec)note='Запись остановлена без зачёта.';
  update();syncControls();
 }
 
@@ -317,7 +323,7 @@ async function start(){
   const source=ctx.createMediaStreamSource(stream),analyser=ctx.createAnalyser();
   analyser.fftSize=4096;analyser.smoothingTimeConstant=0;source.connect(analyser);
   const rec={stream,ctx,source,analyser,buffer:new Float32Array(analyser.fftSize),word,samples:[],levels:[],lastTick:0,lastVoice:0,started:performance.now(),raf:0};
-  active=rec;status('🎙 Говори сейчас. Линия будет строиться в реальном времени. Чтобы закончить — нажми кнопку ещё раз.');
+  active=rec;status('🎙 Произнеси оба слога. Нажми «Стоп», чтобы закончить.');
   syncControls();tick(rec);
  }catch(error){
   if(turn!==seq)return;
@@ -329,13 +335,13 @@ async function start(){
 function manual(){
  if(active){status('Сначала закончи запись с микрофона.');return}
  const r=state.reps[state.selected];if(count(state.selected)>=LIMIT)return;
- r.manual++;persist();note='Самостоятельное повторение '+count(state.selected)+' / 5 отмечено. Это не проверка высоты голоса и тонов.';update();
+ r.manual++;persist();note='✓ Повтор '+count(state.selected)+'/5 отмечен вручную, без проверки.';update();
 }
 function choose(i){
  if(!Number.isInteger(i)||i<0||i>5)return;
  if(active)stop(false);
  state.selected=i;persist();
- note='Теперь произнеси '+(memo?.words[i]?.zh||'выбранное слово')+'. Потребуется до пяти повторений.';
+ note='Выбрано '+(memo?.words[i]?.zh||'слово')+'. Нажми «Записать голос».';
  update();
  const e=document.getElementById('tone-trainer');e?.scrollIntoView({block:'nearest',behavior:'smooth'});
 }
