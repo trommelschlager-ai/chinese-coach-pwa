@@ -1354,7 +1354,7 @@ if (courseMode) {
   headLabel.innerHTML = '<small>HSK 2 · Тема 1</small><strong>О себе</strong>';
   const chapter = document.createElement('span');
   chapter.className = 'pg433-pill';
-  chapter.textContent = 'Урок 2 · Знакомство';
+  chapter.textContent = 'Урок 1 · Знакомство';
   top.append(chapter);
   nav.innerHTML = courseSections.map(({name,steps},i) =>
     '<button type="button" data-step="' + steps[0] + '"><b>' + (i+1) + '</b><span>' + name + '</span></button>').join('');
@@ -1584,7 +1584,7 @@ function intro() {
   return '<section class="word-flow-cover-shell about-approved-cover-shell" aria-label="Panda Go · HSK 2 · О себе. 3D-обложка по эталону Мой день">' +
     '<div class="word-flow-cover about-approved-cover">' +
     '<img class="about-approved-cover-image" src="./assets/hsk2-about-me/cover-about-me-approved-layout-v5.avif?v=20261120v5" ' +
-      'width="905" height="1737" alt="Урок 2 О себе. Панда за учебным столом с ноутбуком и книгами, китайский пейзаж. 自我介绍. 6 новых выражений, 30 мини-тестов, грамматика, рассказ о себе, произношение, диалог с Пандой. Один выученный язык может изменить всю твою жизнь." ' +
+      'width="905" height="1737" alt="Урок 1 О себе. Панда за учебным столом с ноутбуком и книгами, китайский пейзаж. 自我介绍. 6 новых выражений, 30 мини-тестов, грамматика, рассказ о себе, произношение, диалог с Пандой. Один выученный язык может изменить всю твою жизнь." ' +
       'fetchpriority="high" decoding="async" draggable="false">' +
     '<a class="about-approved-cover-back" href="./hsk2-life-course.html?view=welcome" aria-label="К курсу HSK 2"></a>' +
     '<button class="about-approved-cover-start" type="button" data-step="2" aria-label="Начать урок О себе"></button>' +
@@ -1942,7 +1942,7 @@ function finish() {
     result('Практика речи',speechCount() + ' / 6') +
     result('Распознано микрофоном',state.mic.length + ' / 6') +
     result('Отмечено самостоятельно',state.selfSpoken.length + ' слов; ' + selfQuizCount() + ' тестов (без оценки тонов)') +
-    result('Ответы в диалоге',state.chat.length + ' / 3') + '</dl><div class="controls"><button type="button" class="soft" data-step="3">Вернуться к тестам</button><a class="soft lesson-map-link" href="./hsk2-life-course.html?topic=0">К теме HSK 2</a></div></section>' +
+    result('Ответы в диалоге',state.chat.length + ' / 3') + '</dl><div class="controls"><button type="button" class="soft" data-step="3">Вернуться к тестам</button><a class="soft lesson-map-link" href="./hsk2-lesson1.html">Урок 2 · Мой день →</a><a class="soft lesson-map-link" href="./hsk2-life-course.html?view=map">Все уроки</a></div></section>' +
     (completed ? pandaAiShortcut() : '');
 }
 async function play(text,button) {
