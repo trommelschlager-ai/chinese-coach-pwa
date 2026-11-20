@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2d9f8"><title>Panda Go · Тоновые кривые предложения · пилот</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#4a285e;background:#faf0fc}button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button:disabled{opacity:.45;cursor:default}button:active:not(:disabled){transform:translateY(2px)}button:focus-visible{outline:3px solid #a35ec9;outline-offset:2px}main{max-width:530px;margin:auto;padding:14px 13px 30px}h1{font-size:22px;line-height:1.18;margin:3px 0 7px;color:#642a81}h2{font-size:16px;margin:0 0 8px}.kicker{font-size:11px;font-weight:800;letter-spacing:.08em;color:#8c54a4}.lead,.small{font-size:12px;line-height:1.5;color:#725481;margin:5px 0 10px}.panel{border:1px solid #ebd0ef;border-radius:20px;background:#fffafd;padding:13px;margin-top:11px;box-shadow:0 6px 14px #a271aa16}.phrase{font-size:31px;font-weight:800;text-align:center;letter-spacing:.04em}.pinyin{text-align:center;color:#8a4c9e;font-weight:700;font-size:16px}.translation{text-align:center;font-size:13px;color:#73557b;margin:3px 0 10px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.action{border:0;border-radius:13px;background:linear-gradient(145deg,#ad62c9,#813ca4);color:white;font-weight:780;min-height:44px;padding:9px 7px;font-size:13px;box-shadow:0 3px 0 #65308b}.action.alt{background:#f2e4f6;color:#683d7c;border:1px solid #dcc0e8;box-shadow:0 2px 0 #ddc8e6}.status{font-size:12px;line-height:1.55;color:#654879;min-height:35px;margin:10px 0 3px}.syllables{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.syllable{min-width:0;padding:7px 2px 6px;border:1px solid #e6cbe9;background:#fcf4fe;border-radius:12px;color:#5e3680}.syllable[aria-pressed=true]{background:#e9d5f7;border:2px solid #a46ac3;padding:6px 1px 5px}.syllable b{display:block;font-size:25px}.syllable span{display:block;font-size:11px;margin:2px 0}.mini{width:100%;height:38px;display:block}.mini path{stroke-linecap:round;stroke-linejoin:round}.chart{width:100%;display:block;background:linear-gradient(180deg,#fff,#fff9ff);border:1px solid #f0dcf3;border-radius:15px}.legend{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;font-size:11px;color:#75637a;margin:5px 0}.line{display:inline-block;vertical-align:middle;width:20px;height:0;border-top:3px solid #7a50b5}.line.ref{border-top:3px dashed #b09bbf}.note{border-radius:12px;background:#f4e9f8;padding:9px 11px;font-size:12px;line-height:1.5;color:#694679}.badge{display:inline-flex;align-items:center;gap:5px;background:#ebdcfa;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:800;color:#71458c}.rms{height:6px;background:#edddf2;border-radius:10px;overflow:hidden;margin-top:7px}.rms>div{height:100%;width:0;background:#a96dc3;transition:width .12s}footer{font-size:11px;color:#7c6683;line-height:1.55;margin-top:11px}
+
+.whole-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.whole-head h2{margin:0}
+.whole-svg{display:block;width:100%;height:auto;background:linear-gradient(#fff,#fdf8ff);border:1px solid #edd7f1;border-radius:15px}
+.whole-note{font-size:12px;line-height:1.5;color:#715580;margin:8px 0 2px}
+.whole-live{background:#f2e5f6;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:800;white-space:nowrap;color:#704c80}
+.whole-live.recording{background:#fbe2eb;color:#a72f65}
+.whole-path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.whole-legend{display:flex;gap:15px;flex-wrap:wrap;justify-content:center;margin:7px 0;font-size:12px;color:#6b5876}
+.whole-legend i{display:inline-block;vertical-align:middle;width:23px;border-top:3px solid #7952ba}
+.whole-legend i.ref{border-top:3px dashed #b39abd}
+
+.syllable.active{outline:3px solid #ae69cb;outline-offset:1px}
+.syllable .quality{display:block;font:750 10px system-ui;color:#775189;line-height:1.35}
+.syllable .quality.sparse{color:#af723e}
+.whole-focus{fill:#e9d7f868;pointer-events:none}
+.whole-uncertainty{fill:#f2b77344;pointer-events:none}
+#whole-active{font-size:12px;line-height:1.5;color:#724c84;margin:8px 0}
+#boundary-controls[hidden]{display:none}
+#boundary-controls{border:1px solid #e5d0ed;border-radius:13px;padding:9px;margin:9px 0}
+#boundary-controls summary{font-size:12px;font-weight:750;color:#75478e;cursor:pointer}
+.boundary-row{display:grid;grid-template-columns:70px minmax(0,1fr) 47px;align-items:center;gap:7px;font-size:11px;margin:7px 0}
+.boundary-row input{width:100%;min-height:24px;accent-color:#8f5cb9}
+.boundary-row output{text-align:right;font-variant-numeric:tabular-nums}
+.boundary-hint{font-size:11px;color:#715982;line-height:1.5}
+#boundary-reset{border:1px solid #d3b4e3;color:#694185;background:#f4e8f7;border-radius:10px;padding:7px 9px;font-size:11px;font-weight:700}
+
+/* v4: reference-guided acoustical alignment; editable reference timing. */
+.align-panel{margin-top:10px;border:1px solid #e5cbec;border-radius:14px;padding:10px;background:#faf4fd}
+.align-button{border:1px solid #bb88ce;border-radius:12px;background:linear-gradient(#fff,#f3e4fd);box-shadow:0 2px 0 #d7b3e1;color:#68347f;font:750 12px system-ui;padding:9px 10px;min-height:41px;width:100%}
+.align-button:disabled{opacity:.5}
+.align-panel small{display:block;font-size:11px;line-height:1.5;color:#775487;margin-top:7px}
+#ref-controls[hidden]{display:none}
+#ref-controls{margin-top:8px;padding:8px;border:1px dashed #dec1e8;border-radius:12px}
+#ref-controls summary{font-size:12px;font-weight:750;cursor:pointer;color:#70448a}
+#ref-reset{border:1px solid #dec1e8;border-radius:9px;padding:7px 9px;background:#fff;color:#754894;font-size:11px;font-weight:750}
+</style></head><body><main>
+<span class="kicker">🐼 PANDA GO · HSK 2 · МОЙ ДЕНЬ</span>
+<h1>🎙️ Проверь произношение</h1>
+<p class="lead">Пилот: измерение высоты голоса на каждом слоге предложения. Границы слогов определяются <b>приблизительно</b>, без оценки «правильно/неправильно».</p>
+<section class="panel" aria-label="Фраза из урока">
+<div class="phrase" lang="zh-Hans">我早上洗脸。</div><div class="pinyin">Wǒ zǎoshang xǐliǎn.</div>
+<div class="translation">Я утром умываюсь.</div>
+<div class="actions"><button class="action alt" id="listen" type="button">🔊 Образец урока</button><button class="action" id="record" type="button">🎙 Записать себя</button><button class="action alt" id="stop" type="button" disabled>■ Завершить запись</button><button class="action alt" id="replay" type="button" disabled>🔁 Мой голос</button></div>
+<div class="rms"><div id="level"></div></div>
+<p id="status" class="status" role="status" aria-live="polite">Загружаю эталонную запись из действующего урока…</p>
+</section>
+
+<section class="panel" aria-labelledby="whole-title" id="whole-panel">
+<div class="whole-head"><h2 id="whole-title">📈 Всё предложение — одна шкала</h2><span class="whole-live" id="whole-state">Эталон</span></div>
+<p class="small">Пунктир — вся фраза из урока. Фиолетовая линия появляется во время речи, а после записи показывает твой голос целиком. По вертикали — относительная высота голоса, по горизонтали — время.</p>
+<svg class="whole-svg" id="whole-chart" viewBox="0 0 560 220" role="img" aria-label="Общий график высоты голоса для всего предложения">
+ <g stroke="#eee3f2" stroke-dasharray="4 5" stroke-width="1"><path d="M28 37H542 M28 77H542 M28 117H542 M28 157H542"/></g>
+ <g id="whole-uncertainty"></g><rect id="whole-focus" class="whole-focus" x="28" y="22" width="0" height="137"/><g id="whole-dividers"></g><g id="whole-labels"></g>
+ <path class="whole-path" id="whole-ref" stroke="#b39abd" stroke-width="4" stroke-dasharray="8 7"/>
+ <path class="whole-path" id="whole-mine" stroke="#7952ba" stroke-width="4"/>
+ <line id="whole-cursor" x1="28" x2="28" y1="21" y2="161" stroke="#bb6caa" stroke-width="1.7" stroke-dasharray="3 5" style="display:none"/>
+ <text x="9" y="15" font-size="10" fill="#806491">Выше ↑</text>
+ <text x="478" y="212" font-size="11" fill="#806491">Время →</text>
+</svg>
+<div class="whole-legend"><span><i class="ref"></i> Голос из урока</span><span><i></i> Твой голос</span></div>
+<p id="whole-active">Нажми «Записать себя», чтобы увидеть движение голоса.</p><p id="whole-info" class="whole-note" aria-live="polite">Сначала послушай образец, затем произнеси всё предложение за одну запись.</p>
+<div class="align-panel">
+ <button type="button" class="align-button" id="guided-align" disabled>🎯 Сопоставить с образцом по звучанию</button>
+ <small>Разметка переносится по акустическим признакам записи, не просто по её длительности. Это предварительное выравнивание, <b>не распознавание фонем и не оценка правильности тонов</b>.</small>
+ <details id="ref-controls" hidden>
+  <summary>⚙️ Проверить границы слогов в эталоне</summary>
+  <p class="boundary-hint">Эталонная разметка пока приблизительная. Подвинь границы после прослушивания записи. Только подтверждённые вручную границы подходят для более надёжного сравнения.</p>
+  <div id="ref-sliders"></div>
+  <button id="ref-reset" type="button">↻ Сбросить границы эталона</button>
+ </details>
+</div>
+</section>
+<section class="panel"><h2>Тон каждого слога</h2>
+<p class="small">Нажми на иероглиф: внизу появится увеличенная кривая. Пунктир — запись урока; фиолетовая линия — твой голос.</p>
+<div class="syllables" id="syllables" role="group" aria-label="Пять слогов предложения"></div>
+<svg id="large" class="chart" viewBox="0 0 340 150" role="img" aria-label="Сравнение контура высоты выбранного слога"><path d="M25 35H323 M25 73H323 M25 111H323" stroke="#e8daed" stroke-dasharray="4 5"/><path id="reference-line" stroke="#b09bbf" stroke-width="3.8" stroke-dasharray="7 6" fill="none"/><path id="learner-line" stroke="#7a50b5" stroke-width="3.8" fill="none"/><text x="8" y="14" fill="#886a98" font-size="10">Выше ↑</text><text x="267" y="142" fill="#886a98" font-size="10">Время →</text></svg>
+<div class="legend"><span><i class="line ref"></i> Образец урока</span><span><i class="line"></i> Твой голос</span></div>
+<details id="boundary-controls" hidden><summary>⚙️ Уточнить границы слогов</summary><p class="boundary-hint">Границы приблизительные. Если разделитель оказался не там, сдвинь ползунок. Меняется только отображение графика, не запись.</p><div id="boundary-sliders"></div><button type="button" id="boundary-reset">↻ Вернуть автоматические границы</button></details><p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
+</section>
+<section class="panel"><h2>Почему пока без оценки?</h2><p class="small">Программа измеряет частоту F0 и предварительно делит непрерывную речь на слоги по времени и тихим участкам. В быстрой связной речи границы могут быть неверными. Учитываются изменения третьего тона: <b>我早</b> ≈ wó zǎo, <b>洗脸</b> ≈ xí liǎn. Для полноценной проверки нужны точное выравнивание слогов и проверка фонетики.</p></section>
+<footer>🔒 Запись обрабатывается локально в браузере и не отправляется на сервер. Не сохраняется в аккаунте. Образец — существующая запись урока, не заявленная как живая носительница. Для микрофона требуется HTTPS, разрешение браузера и поддержка записи звука.</footer>
+</main><script src="./assets/hsk2-lesson1-voice-v459.js?v=459"></script>
+<script type="module">
+import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
+import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
+import {alignFromReference} from './assets/panda-sentence-align-v4.mjs?v=4';
+const $=id=>document.getElementById(id);
+const tokens=[{zh:'我',py:'wǒ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'早',py:'zǎo',tone:'3-й · низкий'},{zh:'上',py:'shang',tone:'нейтральный'},{zh:'洗',py:'xǐ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'脸',py:'liǎn',tone:'3-й · часто низкий'}];
+const weights=[1.0,1.15,.65,1,1.2];
+const source=window.PandaGoHSK2Lesson1NativeAudioV459?.['我早上洗脸。'];
+let reference=null, learner=null, selected=0, recorder=null, stream=null, recordedUrl=null, chunks=[], recorded=null, micTimer=null, autoBounds=null, firstLiveVoice=null, decodedReference=null, decodedLearner=null, refAutoBounds=null, alignmentStatus='';
+function say(msg){$('status').textContent=msg;}
+function median(xs){if(!xs.length)return 0;const a=xs.slice().sort((x,y)=>x-y),m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;}
+function rms(d,start,end){let v=0,k=0;for(let i=start;i<end;i+=4){v+=d[i]*d[i];k++;}return k?Math.sqrt(v/k):0;}
+
+function estimateBounds(arr,begin,end,peak){
+ const n=weights.length,total=weights.reduce((a,b)=>a+b,0),span=end-begin;let cumulative=0,bounds=[begin];
+ for(let i=0;i<n-1;i++){
+  cumulative+=weights[i];const guess=begin+span*cumulative/total,rad=Math.min(.16,span*.08),lo=bounds.at(-1)+.075,hi=end-(n-i-1)*.075;
+  let best=Infinity,picked=Math.max(lo,Math.min(hi,guess));
+  for(let j=0;j<arr.length;j++){
+   const x=arr[j];if(x.t<Math.max(lo,guess-rad)||x.t>Math.min(hi,guess+rad))continue;
+   const before=arr[Math.max(0,j-1)].en,after=arr[Math.min(arr.length-1,j+1)].en;
+   const valley=Math.max(0,(before+after-2*x.en)/(before+after+.0001));
+   const score=.62*Math.abs(x.t-guess)/(rad||.1)+.4*x.en/(peak||1)-.1*valley;
+   if(score<best){best=score;picked=x.t;}
+  }bounds.push(picked);
+ }bounds.push(end);return bounds;
+}
+
+function analyze(buffer){
+ const d=buffer.getChannelData(0),rate=buffer.sampleRate,win=Math.min(4096,d.length),hop=Math.max(512,Math.round(rate*.025));let arr=[],peak=0;
+ for(let i=0;i+win<=d.length;i+=hop){const en=rms(d,i,i+win);arr.push({t:(i+win/2)/rate,en,start:i});peak=Math.max(peak,en);}
+ const gate=Math.max(.0035,Math.min(.018,peak*.16));
+ const active=arr.filter(x=>x.en>gate);
+ if(active.length<6)return {valid:false,reason:'Недостаточно звукового сигнала',frames:[],bounds:[]};
+ let begin=active[0].t,end=active[active.length-1].t;
+ if(end-begin<.35)return {valid:false,reason:'Слишком короткая запись',frames:[],bounds:[]};
+ // Estimate syllable positions from their approximate durations; snap to nearby RMS valleys.
+ // This is not forced alignment, and is intentionally never used as a correctness score.
+ const bounds=estimateBounds(arr,begin,end,peak);
+ const frames=[],sample=new Float32Array(win);
+ for(const a of arr){if(a.en<gate||a.t<begin||a.t>end)continue;
+  const gain=Math.max(1,Math.min(9,.055/Math.max(.004,peak)));
+  for(let i=0;i<win;i++)sample[i]=Math.max(-1,Math.min(1,d[a.start+i]*gain));
+  const p=estimatePitch(sample,rate);
+  const q=p&&p.clarity>=.7?p:estimatePitchAutocorrelation(sample,rate);
+  if(q&&q.clarity>=.55&&q.hz>=65&&q.hz<=550)frames.push({t:a.t,hz:q.hz});
+ }
+ const base=median(frames.map(x=>x.hz));
+ return {valid:frames.length>=5,bounds,frames,base,reason:frames.length<5?'Не удалось надёжно измерить высоту голоса':'Измерено'};
+}
+function path(data,i,x0,y0,w,h){
+ if(!data?.valid||!data.bounds?.length)return '';
+ const start=data.bounds[i],end=data.bounds[i+1],pts=data.frames.filter(x=>x.t>=start&&x.t<=end);
+ if(pts.length<3||end-start<.06)return '';
+ let p='';
+ for(let j=0;j<pts.length;j++){
+  const a=pts[j],x=x0+w*(a.t-start)/(end-start),st=Math.max(-6,Math.min(6,12*Math.log2(a.hz/data.base))),y=y0+h/2-st*(h/13);
+  // Do not join across very large unvoiced gaps.
+  const pen=j===0||a.t-pts[j-1].t>.105?'M':'L';p+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
+ }
+ return p.trim();
+}
+
+function syllableQuality(i){
+ if(!learner?.valid)return {text:'ожидает',weak:true,count:0};
+ const a=learner.bounds[i],b=learner.bounds[i+1],pts=learner.frames.filter(p=>p.t>=a&&p.t<=b);
+ const coverage=pts.length/Math.max(1,(b-a)/.025);
+ const weak=pts.length<4||coverage<.32;
+ return {text:pts.length<4?'мало F0':coverage<.32?'пропуски F0':'контур виден',weak,count:pts.length};
+}
+function describeMovement(i){
+ if(!learner?.valid)return '';
+ const a=learner.bounds[i],b=learner.bounds[i+1],pts=learner.frames.filter(p=>p.t>=a&&p.t<=b);
+ if(pts.length<6)return 'Мало точек F0 для анализа движения.';
+ const k=Math.max(2,Math.floor(pts.length*.25)),first=median(pts.slice(0,k).map(p=>p.hz)),last=median(pts.slice(-k).map(p=>p.hz));
+ if(!first||!last)return 'Недостаточно данных.';
+ const delta=12*Math.log2(last/first);
+ return delta>1.8?'Высота в измеренном участке в основном повышается.':delta< -1.8?'Высота в измеренном участке в основном снижается.':'Высота в измеренном участке меняется незначительно.';
+}
+function adjustControls(){
+ const root=$('boundary-controls');root.hidden=!learner?.valid;
+ const list=$('boundary-sliders');list.replaceChildren();
+ if(!learner?.valid)return;
+ const a=learner.bounds[0],b=learner.bounds.at(-1),dur=b-a;if(dur<=0)return;
+ for(let i=1;i<tokens.length;i++){
+  const row=document.createElement('div');row.className='boundary-row';
+  const label=document.createElement('label');label.textContent=tokens[i-1].zh+' / '+tokens[i].zh;
+  const input=document.createElement('input');input.type='range';input.min='0';input.max='1000';input.step='1';input.id='bound'+i;
+  input.value=String(Math.round((learner.bounds[i]-a)*1000/dur));input.setAttribute('aria-label','Граница '+tokens[i-1].zh+' и '+tokens[i].zh);label.htmlFor=input.id;
+  const output=document.createElement('output');output.textContent=(learner.bounds[i]-a).toFixed(2)+' с';
+  input.addEventListener('input',()=>{
+   const min=learner.bounds[i-1]+.07,max=learner.bounds[i+1]-.07;
+   if(min>max)return;
+   const desired=a+dur*Number(input.value)/1000;
+   learner.bounds[i]=Math.max(min,Math.min(max,desired));
+   output.textContent=(learner.bounds[i]-a).toFixed(2)+' с';
+   render();updateWhole();
+  });row.append(label,input,output);list.append(row);
+ }
+}
+$('boundary-reset').addEventListener('click',()=>{
+ if(!learner?.valid||!autoBounds)return;
+ learner.bounds=autoBounds.slice();adjustControls();render();updateWhole();
+});
+function showUncertainty(){
+ const group=$('whole-uncertainty');group.replaceChildren();
+ if(!learner?.valid)return;
+ const svg='http://www.w3.org/2000/svg',a=learner.bounds[0],dur=learner.bounds.at(-1)-a;if(dur<=0)return;
+ for(let i=0;i<tokens.length;i++){
+  if(!syllableQuality(i).weak)continue;
+  const rect=document.createElementNS(svg,'rect');rect.setAttribute('class','whole-uncertainty');
+  rect.setAttribute('x',String(GRAPH_LEFT+GRAPH_W*(learner.bounds[i]-a)/dur));
+  rect.setAttribute('y','22');rect.setAttribute('height','137');
+  rect.setAttribute('width',String(GRAPH_W*(learner.bounds[i+1]-learner.bounds[i])/dur));group.append(rect);
+ }
+}
+function showFocus(){
+ const rect=$('whole-focus'),bounds=learner?.valid?learner.bounds:reference?.bounds;
+ if(!bounds?.length){rect.setAttribute('width','0');return;}
+ const a=bounds[0],dur=bounds.at(-1)-a;if(dur<=0)return;
+ rect.setAttribute('x',String(GRAPH_LEFT+GRAPH_W*(bounds[selected]-a)/dur));
+ rect.setAttribute('width',String(GRAPH_W*(bounds[selected+1]-bounds[selected])/dur));
+}
+
+function render(){
+ const parent=$('syllables');parent.innerHTML='';
+ for(let i=0;i<tokens.length;i++){
+  const t=tokens[i],btn=document.createElement('button');btn.type='button';btn.className='syllable';btn.setAttribute('aria-pressed',String(i===selected));btn.setAttribute('aria-label',t.zh+', '+t.py);btn.innerHTML='<b>'+t.zh+'</b><span>'+t.py+'</span><small class="quality '+(syllableQuality(i).weak?'sparse':'')+'">'+syllableQuality(i).text+'</small><svg viewBox="0 0 130 68" class="mini" aria-hidden="true"><path d="'+path(reference,i,7,8,116,52)+'" stroke="#b09bbf" stroke-width="3" stroke-dasharray="6 4" fill="none"/><path d="'+path(learner,i,7,8,116,52)+'" stroke="#7a50b5" stroke-width="3.5" fill="none"/></svg>';btn.addEventListener('click',()=>{selected=i;render();updateWhole();});parent.append(btn);
+ }
+ $('reference-line').setAttribute('d',path(reference,selected,25,22,298,106));
+ $('learner-line').setAttribute('d',path(learner,selected,25,22,298,106));
+ const refCount=reference?.frames.filter(x=>x.t>=reference.bounds[selected]&&x.t<=reference.bounds[selected+1]).length||0;
+ const userCount=learner?.frames.filter(x=>x.t>=learner.bounds[selected]&&x.t<=learner.bounds[selected+1]).length||0;
+ $('detail').textContent=tokens[selected].zh+' · '+tokens[selected].py+' — '+tokens[selected].tone+'. '+describeMovement(selected)+' Точки F0: образец '+refCount+', ученик '+userCount+'. Нет точек F0 — не обязательно ошибка ученика. Оценка правильности не выставляется.';
+}
+async function decode(url){const resp=await fetch(url);if(!resp.ok)throw new Error('Не удалось прочитать запись');const b=await resp.arrayBuffer();const c=new (window.AudioContext||window.webkitAudioContext)();try{return await c.decodeAudioData(b.slice(0));}finally{await c.close();}}
+
+const GRAPH_LEFT=28,GRAPH_W=514,GRAPH_TOP=23,GRAPH_BOTTOM=159,MAX_RECORD_SECONDS=6;
+let liveContext=null,liveSource=null,liveAnalyzer=null,liveTimer=null,liveFrame=null,liveFrames=[],liveStarted=0;
+function wholePath(data,isLive=false){
+ if(!data?.frames||data.frames.length<2)return '';
+ const frames=data.frames.filter(p=>Number.isFinite(p.hz)&&p.hz>0&&Number.isFinite(p.t));
+ if(frames.length<2)return '';
+ const t0=isLive?0:(data.bounds?.[0]??frames[0].t);
+ const t1=isLive?MAX_RECORD_SECONDS:(data.bounds?.at(-1)??frames.at(-1).t);
+ if(t1<=t0)return '';
+ const baseline=data.base||median(frames.map(p=>p.hz));
+ if(!baseline)return '';
+ let out='',prev=null;
+ for(const p of frames){
+  if(p.t<t0||p.t>t1)continue;
+  const x=GRAPH_LEFT+GRAPH_W*Math.max(0,Math.min(1,(p.t-t0)/(t1-t0)));
+  const st=Math.max(-7,Math.min(7,12*Math.log2(p.hz/baseline)));
+  const y=Math.max(GRAPH_TOP,Math.min(GRAPH_BOTTOM,90-st*8.7));
+  // Missing voiced regions and octave tracking failures must not become lines.
+  const jump=prev?Math.abs(12*Math.log2(p.hz/prev.hz)):0;
+  const pen=!prev||p.t-prev.t>.16||jump>8?'M':'L';
+  out+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
+  prev=p;
+ }
+ return out.trim();
+}
+
+function referenceSliders(){
+ const details=$('ref-controls'),list=$('ref-sliders');details.hidden=!reference?.valid;list.replaceChildren();
+ if(!reference?.valid)return;
+ const origin=reference.bounds[0],end=reference.bounds.at(-1),duration=end-origin;
+ if(!(duration>0))return;
+ for(let k=1;k<tokens.length;k++){
+  const row=document.createElement('div');row.className='boundary-row';
+  const label=document.createElement('label');label.textContent=tokens[k-1].zh+' / '+tokens[k].zh;
+  const input=document.createElement('input');input.type='range';input.id='ref-bound-'+k;
+  input.setAttribute('aria-label','Граница эталона: '+tokens[k-1].zh+' и '+tokens[k].zh);
+  input.min='0';input.max='1000';input.step='1';input.value=String(Math.round(1000*(reference.bounds[k]-origin)/duration));
+  label.htmlFor=input.id;
+  const value=document.createElement('output');value.textContent=(reference.bounds[k]-origin).toFixed(2)+' с';
+  input.addEventListener('input',()=>{
+   const min=reference.bounds[k-1]+.055,max=reference.bounds[k+1]-.055;
+   if(min>=max)return;
+   reference.bounds[k]=Math.max(min,Math.min(max,origin+duration*Number(input.value)/1000));
+   value.textContent=(reference.bounds[k]-origin).toFixed(2)+' с';
+   alignmentStatus='Границы эталона изменены. Нажми «Сопоставить с образцом», чтобы пересчитать запись ученика.';
+   wholeGuides();render();updateWhole();
+  });
+  row.append(label,input,value);list.append(row);
+ }
+}
+$('ref-reset').addEventListener('click',()=>{
+ if(!refAutoBounds||!reference?.valid)return;
+ reference.bounds=refAutoBounds.slice();alignmentStatus='Разметка эталона сброшена к приблизительным границам.';
+ referenceSliders();wholeGuides();render();updateWhole();
+});
+function guidedAlign(){
+ if(!decodedReference||!decodedLearner||!reference?.valid||!learner?.valid)
+  return {ok:false,reason:'Для сравнения нужны обе аудиозаписи'};
+ const result=alignFromReference(decodedReference,decodedLearner,reference.bounds,autoBounds||learner.bounds);
+ if(result.ok){
+  learner.bounds=result.bounds.slice();adjustControls();
+  alignmentStatus='Акустическое сопоставление выполнено (предварительно). Выделение слогов основано на эталонной разметке, которую нужно проверить вручную. Тоны не оцениваются.';
+ }else{
+  alignmentStatus='Автоматическое сопоставление ненадёжно: '+result.reason+'. Оставлена предыдущая разметка; можно исправить её вручную.';
+ }
+ render();updateWhole();return result;
+}
+$('guided-align').addEventListener('click',()=>{
+ const res=guidedAlign();
+ if(!res.ok)say('Сопоставление не завершилось: '+res.reason);
+ else say('Сопоставление по звучанию готово. Проверь границы слогов вручную; оценки тонов пока нет.');
+});
+
+function wholeGuides(){
+ const group=$('whole-dividers'),labels=$('whole-labels');
+ group.replaceChildren();labels.replaceChildren();
+ const total=weights.reduce((a,b)=>a+b,0);
+ const fractions=reference?.valid&&reference.bounds?.length===tokens.length+1
+  ? reference.bounds.map(t=>(t-reference.bounds[0])/(reference.bounds.at(-1)-reference.bounds[0]))
+  : [0,...weights.reduce((arr,w)=>{arr.push(arr.at(-1)+w/total);return arr;},[0]).slice(1)];
+ for(let i=0;i<tokens.length;i++){
+  const x=GRAPH_LEFT+GRAPH_W*(fractions[i]+fractions[i+1])/2;
+  const svgNS='http://www.w3.org/2000/svg';
+  const t=document.createElementNS(svgNS,'text');t.setAttribute('x',x.toFixed(1));t.setAttribute('y','185');
+  t.setAttribute('text-anchor','middle');t.setAttribute('fill','#6c4a83');
+  t.setAttribute('font-size','17');t.setAttribute('font-weight','700');t.textContent=tokens[i].zh;
+  labels.append(t);
+  const py=document.createElementNS(svgNS,'text');py.setAttribute('x',x.toFixed(1));py.setAttribute('y','202');
+  py.setAttribute('text-anchor','middle');py.setAttribute('fill','#8a7392');py.setAttribute('font-size','11');py.textContent=tokens[i].py;
+  labels.append(py);
+  if(i<tokens.length-1){
+   const line=document.createElementNS(svgNS,'line');const bx=GRAPH_LEFT+GRAPH_W*fractions[i+1];
+   line.setAttribute('x1',bx.toFixed(1));line.setAttribute('x2',bx.toFixed(1));
+   line.setAttribute('y1','28');line.setAttribute('y2','161');line.setAttribute('stroke','#ead4ed');
+   line.setAttribute('stroke-dasharray','3 5');group.append(line);
+  }
+ }
+}
+function updateWhole(){
+ $('whole-ref').setAttribute('d',wholePath(reference));
+ const isCapturing=!!liveTimer&&!!recorder;showFocus();if(!isCapturing)showUncertainty();
+ const display=isCapturing?{frames:liveFrames,base:median(liveFrames.map(p=>p.hz))}:learner;
+ $('whole-mine').setAttribute('d',wholePath(display,isCapturing));
+ if(!isCapturing){
+  $('whole-active').textContent=learner?.valid?'Выбран слог '+tokens[selected].zh+' · '+tokens[selected].py+'. Оранжевые зоны — недостаточно F0.':'Нажми «Записать себя», чтобы увидеть движение голоса.';
+  $('whole-state').textContent=learner?.valid?'Запись готова':'Эталон';
+  $('whole-state').classList.remove('recording');
+  $('whole-cursor').style.display='none';
+  $('whole-info').textContent=alignmentStatus|| (learner?.valid
+   ?'Фиолетовая линия — результат твоей записи. Голоса нормализованы по высоте и длительности; разделение слогов предварительное, оценки правильности нет.'
+   :reference?.valid?'Пунктир — измеренный эталон. Запиши предложение целиком, чтобы поверх появилась твоя кривая.':'Данные эталона ещё не готовы.');
+ }
+}
+function stopLive(){
+ if(liveTimer){clearInterval(liveTimer);liveTimer=null;}
+ try{liveSource?.disconnect();}catch{}
+ try{liveAnalyzer?.disconnect();}catch{}
+ liveSource=null;liveAnalyzer=null;liveFrame=null;
+ const old=liveContext;liveContext=null;
+ if(old){try{void old.close();}catch{}}
+ $('level').style.width='0%';
+ $('whole-cursor').style.display='none';
+}
+async function startLive(s){
+ stopLive();liveFrames=[];
+ if(!(window.AudioContext||window.webkitAudioContext))return;
+ try{
+  const context=new (window.AudioContext||window.webkitAudioContext)();
+  liveContext=context;await context.resume();
+  if(!stream||stream!==s){stopLive();return;}
+  liveSource=context.createMediaStreamSource(s);liveAnalyzer=context.createAnalyser();
+  liveAnalyzer.fftSize=4096;liveAnalyzer.smoothingTimeConstant=0;liveSource.connect(liveAnalyzer);
+  liveFrame=new Float32Array(liveAnalyzer.fftSize);
+  liveStarted=performance.now();firstLiveVoice=null;
+  $('whole-state').textContent='● Запись';$('whole-state').classList.add('recording');
+  $('whole-info').textContent='Говори фразу естественно. Линия рисуется во время речи и будет уточнена по полной записи после остановки.';
+  liveTimer=setInterval(()=>{
+   if(!liveAnalyzer||!liveContext)return;
+   liveAnalyzer.getFloatTimeDomainData(liveFrame);
+   let energy=0;for(let i=0;i<liveFrame.length;i+=4)energy+=liveFrame[i]*liveFrame[i];
+   const level=Math.sqrt(energy/(liveFrame.length/4));
+   $('level').style.width=Math.round(Math.max(0,Math.min(100,level*1800)))+'%';
+   const elapsed=(performance.now()-liveStarted)/1000;
+   const pos=GRAPH_LEFT+GRAPH_W*Math.min(1,elapsed/MAX_RECORD_SECONDS);
+   const cursor=$('whole-cursor');cursor.style.display='';cursor.setAttribute('x1',pos.toFixed(1));cursor.setAttribute('x2',pos.toFixed(1));
+   if(level>.007){
+    if(firstLiveVoice===null)firstLiveVoice=elapsed;
+    const seconds=reference?.valid?reference.bounds.at(-1)-reference.bounds[0]:2;
+    const progress=Math.max(0,Math.min(.999,(elapsed-firstLiveVoice)/Math.max(1.2,seconds*1.2)));
+    const total=weights.reduce((a,b)=>a+b,0);let sum=0,index=weights.length-1;
+    for(let k=0;k<weights.length;k++){sum+=weights[k]/total;if(progress<sum){index=k;break;}}
+    $('whole-active').textContent='≈ Сейчас: '+tokens[index].zh+' · '+tokens[index].py+' (приблизительно)';
+    for(const [k,el] of [...$('syllables').children].entries())el.classList.toggle('active',k===index);
+    const p=estimatePitch(liveFrame,context.sampleRate);
+    if(p&&p.clarity>=.70&&p.hz>=65&&p.hz<=550){
+     liveFrames.push({t:elapsed,hz:p.hz});
+     if(liveFrames.length>90)liveFrames.shift();
+    }
+   }
+   if(liveFrames.length>1){
+    $('whole-mine').setAttribute('d',wholePath({frames:liveFrames,base:median(liveFrames.map(p=>p.hz))},true));
+   }
+  },110);
+ }catch(e){stopLive();$('whole-info').textContent='Живой график недоступен на этом устройстве; после записи попробуем построить итоговый.';}
+}
+
+function stopStream(){stopLive();if(micTimer){clearTimeout(micTimer);micTimer=null;}stream?.getTracks().forEach(x=>x.stop());stream=null;$('level').style.width='0%';}
+async function load(){
+ if(!source){say('Не найдена точная запись фразы в аудиокарте урока.');return;}
+ try{decodedReference=await decode(source);reference=analyze(decodedReference);refAutoBounds=reference.bounds?.slice()||null;referenceSliders();wholeGuides();say(reference.valid?'Образец загружен. Послушай запись и нажми «Записать себя».':'Образец загружен, но данных F0 недостаточно для тоновой кривой.');render();updateWhole();}
+ catch(e){say('Не удалось прочитать образец: '+(e?.message||'ошибка'));}
+}
+$('listen').addEventListener('click',()=>{if(!source)return;const a=new Audio(source);a.play().catch(()=>say('Звук не воспроизведён: проверь громкость и разрешения Chrome.'));});
+$('record').addEventListener('click',async()=>{
+ if(recorder||!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){say('Для записи открой страницу в Chrome через HTTPS и разреши микрофон.');return;}
+ try{
+  if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}
+  learner=null;autoBounds=null;decodedLearner=null;alignmentStatus='';$('guided-align').disabled=true;chunks=[];$('replay').disabled=true;adjustControls();render();updateWhole();
+  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+  recorder=new MediaRecorder(stream);recorder.addEventListener('dataavailable',e=>{if(e.data.size)chunks.push(e.data);});
+  recorder.addEventListener('stop',async()=>{
+   const mime=recorder?.mimeType||'audio/webm';recorder=null;stopStream();$('record').disabled=false;$('stop').disabled=true;
+   if(!chunks.length){say('Запись пустая. Попробуй снова.');return;}
+   recorded=new Blob(chunks,{type:mime});recordedUrl=URL.createObjectURL(recorded);$('replay').disabled=false;
+   say('Анализирую короткую запись…');
+   try{decodedLearner=await decode(recordedUrl);learner=analyze(decodedLearner);autoBounds=learner?.bounds?.slice()||null;adjustControls();$('guided-align').disabled=!(learner?.valid&&reference?.valid&&decodedReference);if(!($('guided-align').disabled))guidedAlign();say(learner.valid?'Готово! Нажимай на иероглифы и сравнивай линии. Разделение на слоги пока приблизительное.':'Звук записан, но F0 извлечён не полностью. Попробуй произнести фразу естественно в тишине.');render();updateWhole();}
+   catch(e){say('Запись есть, но браузер не смог построить график: '+(e?.message||'ошибка'));}
+  },{once:true});
+  recorder.start();void startLive(stream);$('record').disabled=true;$('stop').disabled=false;say('🎙 Говори «我早上洗脸» естественным голосом. Остановка автоматически через 6 секунд.');
+  micTimer=setTimeout(()=>{if(recorder?.state==='recording')recorder.stop();},6000);
+ }catch(e){stopStream();recorder=null;$('record').disabled=false;$('stop').disabled=true;say(e?.name==='NotAllowedError'?'Микрофон запрещён. Разреши доступ в Chrome.':'Микрофон недоступен: '+(e?.message||'ошибка'));}
+});
+$('stop').addEventListener('click',()=>{if(recorder?.state==='recording')recorder.stop();});
+$('replay').addEventListener('click',()=>{if(!recordedUrl)return;new Audio(recordedUrl).play().catch(()=>say('Не удалось воспроизвести запись.'));});
+function cleanup(){if(recorder?.state==='recording'){recorder.onstop=null;try{recorder.stop();}catch{}}stopStream();if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}}
+window.addEventListener('pagehide',cleanup);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&recorder?.state==='recording')recorder.stop();});
+wholeGuides();render();updateWhole();void load();
+</script></body></html>
