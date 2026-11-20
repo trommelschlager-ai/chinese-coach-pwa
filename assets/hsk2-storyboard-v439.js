@@ -178,7 +178,8 @@ function mapView(topics,completed,expandedTopic=null){
        '<div><h2>Основные уроки</h2><p>Начни с знакомства, потом расскажи о своём дне</p></div></div>'+
      '<div class="pgc-feature-list">'+cards+'</div>'+
      '<div class="pgc-section-head pgc-more-head"><span class="pgc-section-emoji" aria-hidden="true">🌸</span>'+
-       '<div><h2>Тематический тренажёр</h2><p>10 тем · 30 мини-уроков · отдельный прогресс</p></div></div>'+
+       '<div><h2>Тематический тренажёр</h2><p>10 тем · 30 мини-уроков · аудио пополняется</p></div></div>'+
+     '<p class="pgc-voice-notice">🎧 Дополнительные мини-уроки в разработке: для части слов пока используется голос устройства. Записи носителя доступны не везде.</p>'+ 
      '<div class="pgc-topic-list">'+topicsMarkup+'</div>'+
      '<p class="pgc-endnote">Твой прогресс сохраняется на этом устройстве ✨</p>'+
    '</main>'+
