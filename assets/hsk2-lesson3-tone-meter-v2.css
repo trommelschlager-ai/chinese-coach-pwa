@@ -76,3 +76,14 @@
 @media(max-width:480px){.tone-graph-pair{grid-template-columns:minmax(0,1fr);gap:10px}
  .tone-syllable-title{font-size:18px}
  .tone-syllable-graph{padding:10px}}
+
+
+/* Урок 3: выбор слов непосредственно над двумя шкалами, без большой иллюстрации */
+.tone-quick-select{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0 2px}
+.tone-quick-select .action{width:100%;min-width:0;min-height:52px;font-size:clamp(16px,4.5vw,20px);
+ padding:6px 4px;font-weight:900;line-height:1.2;border-radius:12px}
+.tone-quick-select .action small{display:block;margin-top:3px;font-size:11px;font-weight:800;color:#96619e}
+.tone-quick-select .action.selected{background:linear-gradient(#f7c3f0,#e68ce3);border-color:#be77c7;color:#641c77}
+.tone-quick-select .action.selected small{color:#692977}
+@media(max-width:365px){.tone-quick-select{gap:5px}
+ .tone-quick-select .action{min-height:50px;font-size:16px;padding:4px 3px}}
