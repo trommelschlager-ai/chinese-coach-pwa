@@ -1,0 +1,1339 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#9e2cc9">
+<title>Panda Go · HSK 2 · Мой день</title>
+<script>
+{
+  document.documentElement.classList.add('course-layout');
+  for (const stylesheet of ['hsk2-lesson1-approved-merged-v460.css']) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = './assets/' + stylesheet;
+    document.head.append(link);
+  }
+}
+</script>
+<style>
+:root{color-scheme:light;--ink:#241039;--purple:#541174;--gold:#f5d184;--rose:#e35caf;--panel:linear-gradient(165deg,#fffaff 10%,#fff2fc 49%,#f7d3ee 100%);--gloss:linear-gradient(180deg,#dc76f3 0%,#b73cde 32%,#8420a8 65%,#580879 98%);font:16px system-ui,sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;color:var(--ink);min-height:100dvh;background:#ecd3f7}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:disabled{cursor:default}
+button:focus-visible{outline:3px solid #6423b8;outline-offset:2px}
+button:not(:disabled):active{transform:translateY(2px);filter:brightness(.91)}
+img{display:block;max-width:100%}
+h1,h2,h3,p,figure{margin:0}
+[lang=zh-Hans]{font-family:"Noto Sans CJK SC","Noto Sans SC",system-ui,sans-serif}
+.app{position:relative;isolation:isolate;max-width:440px;margin:auto;overflow:hidden;border:4px double #893bac;border-radius:34px;background:#f6d5f2 url(assets/hsk2-lesson1-preview/reference-sakura.webp) center/100% 100% no-repeat;box-shadow:0 0 0 1px #ffe2ff,inset 0 0 0 2px #fff0fe,inset 0 0 0 4px #da8dea,0 6px 13px #722b8a6b}
+.head{position:relative;z-index:2;padding:env(safe-area-inset-top,0px) 0 6px}
+.lesson-bar{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;min-height:56px;padding:0 7px 4px;background:linear-gradient(#c960e5 0%,#a138c6 25%,#74118f 82%,#9625b1);color:#fff;text-shadow:0 2px 5px #4d075f;box-shadow:inset 0 2px 3px #f4b8ff,0 3px 10px #8533a65c}
+.lesson-bar #detail-back{justify-self:start;width:36px;height:36px}
+.lesson-bar #detail-back:disabled{opacity:1}
+#head-label{text-align:center;font-size:clamp(13px,4.4vw,19px);font-weight:850;white-space:nowrap;font-variant-numeric:tabular-nums}
+#steps{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));align-items:center;margin:-4px max(9px,3.4%) 0;padding:0 5px;border:1px solid #fff5ff;border-radius:999px;background:linear-gradient(#fff9fd,#f7d5f5);box-shadow:0 3px 7px #a13cb960}
+#steps::before{content:"";height:2px;position:absolute;inset-inline:7%;top:50%;background:#c965c4;box-shadow:0 1px 0 #fff0ff}
+.nav-step{position:relative;display:grid;place-items:center;min-width:0;height:38px;border:0;padding:0;background:none;border-radius:999px}
+.nav-step span{display:grid;place-items:center;width:28px;height:28px;border:1px solid #ca92e5;border-radius:50%;background:linear-gradient(#edb3f3,#cf83e8);box-shadow:0 2px 4px #842ba850;font-size:16px;font-weight:850;color:#4b135e}
+.nav-step[aria-current=step] span{color:#fff;border-color:#6e2095;background:linear-gradient(#9136b7,#531074);box-shadow:0 0 0 2px #ffd75e,0 3px 6px #842ba875}
+.head button:not(:disabled):active{transform:none;filter:brightness(.9)}
+main{padding:0 10px 4px}
+footer{padding:5px 15px 12px;display:flex;gap:8px;justify-content:center}
+footer #back[hidden]{display:block;visibility:hidden}
+.primary,.orb,.ribbon,.tag{background:var(--gloss);color:white;text-shadow:0 1px 2px #52096d;font-weight:850;box-shadow:0 3px 5px #6e1b8a65,inset 0 2px 3px #f8bdff,inset 0 -3px 4px #570a79aa;border:1px solid #f3cf86}
+.primary,.ribbon,.tag{border-radius:999px}
+.primary{min-height:45px;padding:7px 17px;font-size:16px}
+footer .primary{flex:1}
+.primary.large{width:100%;min-height:53px;font-size:22px;border-width:2px;margin-top:4px}
+.orb{border-radius:50%;width:37px;height:37px;flex:none;display:inline-grid;place-items:center;padding:0;background:radial-gradient(ellipse at 40% 8%,#efb7ff,#b748df 43%,#650788 83%);border-color:#eed2ff;font-size:16px}
+.orb:disabled{opacity:.5}
+button.missing{background:radial-gradient(ellipse at 40% 8%,#e6b3ee,#a75bc0 53%,#752b9f);color:white}
+button[aria-pressed=true].orb{box-shadow:0 0 0 3px #f8c7fb,inset 0 2px 6px #642083}
+.play{display:inline-block;width:0;height:0;border-top:.39em solid transparent;border-bottom:.39em solid transparent;border-left:.6em solid currentColor;vertical-align:-.02em;margin:0 .16em;filter:drop-shadow(0 2px 1px #590b78)}
+.orb .play{margin-left:3px}
+.orb.mic.recognized,.orb.done{background:radial-gradient(ellipse at 38% 9%,#c2fd8a,#50cb22 50%,#258c12);box-shadow:0 2px 4px #368b5377,inset 0 1px 3px #edffd0}
+.orb svg{width:19px;height:19px}
+.soft,.token,.choice{background:var(--panel);border:1px solid #d991c9;border-radius:14px;min-height:40px;padding:5px 10px;font-weight:740;box-shadow:0 2px 3px #ae4f9450}
+.soft{color:#5c266e}
+.panel,.word-row,.day-card,.test-card,.tone-list,.tone-guide{background:var(--panel);border:1px solid #efaee0;box-shadow:0 3px 6px #ac4f9460,inset 0 1px 0 white;border-radius:18px}
+.pill-title,.cloud{background:linear-gradient(160deg,#fffafc,#fce2f5);border:2px solid #f3d38a;box-shadow:inset 0 0 0 1px #fff8d9,0 3px 5px #b452a858;color:#4a0a68;text-align:center}
+.pill-title{border-radius:40% 35% 37% 41% / 29% 33% 29% 30%;width:max-content;max-width:100%;margin:4px auto 6px;padding:3px 17px;font-size:clamp(21px,6.25vw,28px);line-height:1.16;font-weight:900;letter-spacing:-.045em}
+.pill-title.day-title{font-size:clamp(17px,5.65vw,24px);padding-inline:9px}
+.cloud{border:0;box-shadow:none;border-radius:0;background:no-repeat center/100% 100% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 208 122' preserveAspectRatio='none'%3E%3Cpath d='M34 25Q54 6 81 18Q104 0 126 17Q153 8 170 26Q202 27 198 49Q217 62 197 77Q202 99 174 101Q156 120 130 109Q104 124 80 109Q54 121 34 101Q4 101 10 79Q-5 64 10 49Q5 29 34 25Z' fill='%23fff0f9' stroke='%23f4cf81' stroke-width='3'/%3E%3Cpath d='M36 29Q55 11 82 22Q105 5 126 21Q153 12 167 30Q199 32 193 50Q212 64 193 75Q198 95 172 97Q155 115 130 105Q103 120 80 105Q53 116 36 97Q9 98 14 78Q0 63 14 50Q10 33 36 29Z' fill='none' stroke='%23fffced' stroke-width='2'/%3E%3C/svg%3E");filter:drop-shadow(0 3px 3px #ae3f9f78);padding:21px 6px}
+.ribbon{position:absolute;top:-18px;left:50%;translate:-50% 0;white-space:nowrap;font-size:19px;padding:2px 16px}
+.word-list{display:grid;gap:4px}
+.word-row{min-height:51px;display:grid;grid-template-columns:28% minmax(0,.75fr) minmax(0,1.25fr) 39px;gap:6px;align-items:center;padding:2px 5px 2px 4px;border-color:#ecc18a;border-radius:16px}
+.word-row img{width:100%;height:46px;object-fit:cover;border-radius:11px}
+.cn{display:block;font-size:23px;font-weight:900;line-height:1.21;letter-spacing:-.04em}
+.word-row .cn{white-space:nowrap;font-size:clamp(17px,5.45vw,24px)}
+.py,.ru{display:block;font-size:13px;line-height:1.2;overflow-wrap:anywhere}
+.py{font-weight:700}
+.hint{font-size:13px;line-height:1.28;text-align:center;color:#492655}
+.audio-note{margin:7px 0 0;font-size:12px}
+.rule-cloud{max-width:265px;margin:2px auto 7px;padding:9px 14px 12px}
+.rule-cloud .cn{font-size:38px;color:#bf1245;line-height:1.13}
+.rule-cloud b{display:block;font-size:15px}
+.grammar-explain{font-weight:700;margin:5px 10px 9px;font-size:15px;line-height:1.14}
+.example{position:relative;display:grid;grid-template-columns:35% minmax(0,1fr) 37px;align-items:center;gap:6px;padding:8px 5px;border-radius:17px;margin-bottom:7px}
+.example img{width:100%;height:80px;object-fit:cover;border-radius:12px}
+.example .cn{font-size:clamp(16px,4.75vw,22px)}
+.example em{color:#c21a52;font-style:normal}
+.example .tag{position:absolute;top:-7px;left:7px;padding:1px 7px}
+.tag{font-size:12px;display:inline-block;padding:3px 9px}
+.builder-title{text-align:center;font-size:17px;margin:4px 0}
+.tokens,.controls{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin:5px 0}
+.token{flex:1 0 0;border-radius:999px;min-width:44px;background:linear-gradient(#fff1fc,#f8c8ea);font-size:17px}
+.token:disabled{opacity:.48}
+.answer{min-height:39px;text-align:center;border:2px dashed #c880be;border-radius:14px;margin-top:6px;display:grid;place-items:center;padding:4px 8px;background:#fff2fa70;font-weight:800;overflow-wrap:anywhere}
+.answer:empty::after{content:attr(data-placeholder);font-weight:550;color:#73507c;font-size:13px}
+.feedback:empty{display:none}
+.feedback{font-size:13px;font-weight:700;text-align:center;background:#fff3e2;border:1px solid #f2bb7d;border-radius:11px;padding:7px 9px;margin:7px 0}
+.feedback.good{color:#1d5721;background:#ecf9e5;border-color:#97d685}
+.practice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:8px 0}
+.day-card{position:relative;padding:3px 3px 6px;text-align:center;overflow:hidden;border-color:#f5c685;border-radius:14px}
+.day-card img{width:100%;aspect-ratio:1.32;object-fit:cover;border-radius:9px}
+.day-card .cn{font-size:21px}
+.day-card .py{font-size:12px}
+.day-card.selected{border:2px solid #bb3a99;padding:2px 2px 5px;background:#ffe4f1}
+.position{position:absolute;top:3px;left:3px;display:grid;place-items:center;width:24px;height:24px;border:1px solid #fff4fa;border-radius:50%;background:linear-gradient(#fe79cb,#af126e);color:white;font-weight:900;box-shadow:0 2px 4px #81395788}
+.detail main{padding-inline:5px}
+.detail-hero{position:relative;min-height:143px;display:grid;grid-template-columns:43% 57%;align-items:end;margin:-1px -5px 7px;background:linear-gradient(transparent,#f8c5ed7a)}
+.detail-hero img{width:100%;max-height:153px;object-fit:contain;object-position:left bottom}
+.hero-message{z-index:1;align-self:center;margin:9px 9px 4px -14px;padding:9px 10px 9px 15px;border:1px solid #fff1fc;border-radius:24px;background:linear-gradient(#fff8fc,#fcdef4);box-shadow:0 5px 9px #b752a65f}
+.hero-message h1{font-size:clamp(20px,5.9vw,26px);line-height:1.05;font-weight:900;letter-spacing:-.065em;margin:4px 0}
+.hero-message p{font-size:13px;font-weight:650;line-height:1.2}
+.test-list{display:grid;gap:7px}
+.test-card{display:grid;grid-template-columns:27px 72px minmax(0,1fr) 36px;align-items:center;gap:7px;min-height:72px;padding:6px 7px;text-align:left;width:100%;border-color:#fff4ff;border-radius:21px}
+.test-card img{width:100%;height:56px;object-fit:cover;border-radius:13px}
+.badge{align-self:start;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;font-weight:850;background:var(--gloss);color:#fff;border:1px solid #f3c7ff;text-shadow:0 1px 2px #521674;box-shadow:0 2px 3px #8328877a}
+.test-card strong{display:block;font-size:clamp(13px,4.15vw,18px);font-weight:900;line-height:1.13;letter-spacing:-.043em}
+.test-card small{display:block;font-size:12px;line-height:1.18;margin-top:3px}
+.test-card .orb{width:34px;height:34px}
+.test-card .quiz-retry{margin-top:5px;max-width:100%;font-size:13px;line-height:1.16;text-align:left}
+.reward,.progress-panel{display:flex;align-items:center;gap:9px;padding:7px 10px;margin:9px 0 7px}
+.reward{border-color:#ffe3a2;background:linear-gradient(110deg,#fff4cc,#fff9e8,#fff0cf);font-size:16px;line-height:1.18}
+.reward img,.progress-panel img{width:51px;border-radius:14px;mix-blend-mode:multiply}
+.section-panel{padding:14px;text-align:center;margin-top:7px}
+.section-panel h1{font-size:22px}
+.quiz-word{font-size:clamp(26px,8vw,36px);margin:12px 0 5px}
+.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:10px 0}
+.choice{min-height:46px;overflow-wrap:anywhere}
+.choice .ru{font-weight:550}
+.tones-hero{min-height:121px;margin-bottom:3px}
+.tones-hero img{max-height:124px}
+.tones-hero .hero-message h1{font-size:clamp(15px,4.55vw,20px);letter-spacing:-.052em;white-space:nowrap}
+.tones-hero .hero-message p{font-weight:650;font-size:13px}
+.tone-tabs{display:flex;gap:4px;padding:4px;margin:0 4px 7px}
+.tone-tabs button{flex:1;min-height:36px;font-size:13px;padding:4px 6px}
+.tone-list{overflow:hidden;margin-inline:3px}
+.tone-row{display:grid;grid-template-columns:21% minmax(0,1fr) 36px 61px 36px;align-items:center;gap:4px;min-height:49px;padding:2px 4px;background:#fff6fcad}
+.tone-row+ .tone-row{border-top:1px solid #f0d2ec}
+.tone-row img{width:100%;height:44px;object-fit:cover;border-radius:9px}
+.tone-row .cn{font-size:20px;line-height:1.02}
+.tone-row .py,.tone-row .ru{font-size:11px;line-height:1.07}
+.tone-row .orb{width:35px;height:35px}
+.tonemarks{display:flex;gap:2px}
+.tone-number{display:grid;place-items:center;border-radius:50%;width:17px;height:17px;color:white;background:var(--gloss);font-size:11px;font-weight:850;box-shadow:inset 0 1px 1px #f6c4ff}
+.tone-number:nth-child(2){background:linear-gradient(#e3469e,#a01362)}
+.tone-guide{overflow:hidden;margin:8px 3px 6px;border-color:#fbddf8}
+.tone-guide h2{background:var(--gloss);color:#fff;font-size:17px;text-align:center;padding:5px;text-shadow:0 2px 2px #570b7a}
+.tone-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));text-align:center}
+.tone-grid div{background:linear-gradient(#fffaff,#f6e3f5);border-radius:9px;padding:6px 2px;font-size:11px;line-height:1.08}
+.tone-grid strong{display:block;font-size:20px;color:#a41240}
+.tone-grid svg{width:44px;height:16px;display:block;margin:4px auto 0}
+.progress-panel{justify-content:space-between;margin:7px 3px}
+.progress-panel div{flex:1;min-width:0}
+.progress-panel b{font-size:14px}
+progress{display:block;width:100%;height:13px;margin-top:4px;appearance:none;border:1px solid #bd91c7;border-radius:999px;background:#e9d6ed;overflow:hidden}
+progress::-webkit-progress-bar{background:#e9d6ed}
+progress::-webkit-progress-value{background:linear-gradient(#a0ed63,#55bb27 65%,#3e9c23);border-radius:999px}
+.phrases{display:grid;gap:6px}
+.phrase,.chat-bubble{padding:8px 10px}
+.phrase{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.phrase .cn,.chat-bubble .cn{font-size:20px}
+.chat-bubble.me{margin:4px 0 8px 14%;background:linear-gradient(#f4ebff,#ebd4fa)}
+.dialogue{margin-top:11px}
+.dialogue h2{font-size:20px;margin:4px 0}
+.dialogue .chat-role{display:block;font-size:13px;font-weight:850;color:#692980;margin-bottom:2px}
+.final-hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:7px;text-align:center;padding:8px;margin-bottom:7px}
+.final-hero img{width:100%;border-radius:14px}
+.final-hero h1{line-height:1.06;font-size:26px}
+.final-hero .award{width:63px;margin:4px auto}
+.results{padding:8px 10px}
+.results h2{font-size:17px;margin-bottom:4px}
+.results dl{margin:0}
+.results dl div{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:5px 2px;border-bottom:1px solid #f0cde5;font-size:13px}
+.results dd{margin:0;text-align:right;font-weight:800}
+.results .all{font-weight:850}
+.compact-footer{min-width:46px}
+@media(max-width:374px){
+ main{padding-inline:7px}.test-card{grid-template-columns:25px 58px minmax(0,1fr) 34px;gap:5px}.hero-message{padding-left:14px}.word-row{gap:4px}.tone-row{grid-template-columns:20% minmax(0,1fr) 34px 55px 34px;gap:3px}.tone-row .orb{width:33px;height:33px}
+}
+
+.app[data-view="3"]{container-type:inline-size}
+.app[data-view="3"] .quiz-hero{grid-template-columns:43% 57%;min-height:39cqw;background:linear-gradient(transparent,#f8c5ed7a)}
+.app[data-view="3"] .quiz-hero > img:first-child{width:110%;max-width:none;max-height:39cqw;margin-left:1px;filter:drop-shadow(0 2px 5px #71386d66)}
+.app[data-view="3"] .quiz-hero .hero-message{margin:8px 24px 9px -10px;padding:9px 9px 10px 17px;border-radius:26px 30px 26px 22px}
+.app[data-view="3"] .quiz-hero .tag{display:inline-flex;align-items:center;min-height:24px;gap:4px}
+.app[data-view="3"] .quiz-hero .tag::before{content:"";width:17px;height:17px;background:url(assets/hsk2-lesson1-preview/feature-2.webp) center/contain no-repeat}
+.app[data-view="3"] .quiz-hero .hero-message h1{font-size:clamp(18px,5.85vw,26px);white-space:nowrap}
+.app[data-view="3"] .quiz-hero .hero-message p{max-width:100%;font-size:clamp(12px,3.36vw,14px);font-weight:600}
+.app[data-view="3"] .quiz-clipboard{position:absolute;z-index:2;bottom:0;right:0;width:12cqw;pointer-events:none;filter:drop-shadow(0 2px 2px #84297566)}
+.app[data-view="3"] .test-card{min-height:20.5cqw;grid-template-columns:8cqw 22cqw minmax(0,1fr) 9cqw;gap:2cqw;background:linear-gradient(160deg,#fffaff,#fff2fa 52%,#ffdef0);border-color:#fff8fc;box-shadow:0 3px 6px #b65c9559,inset 0 1px 2px white}
+.app[data-view="3"] .test-card img{height:16cqw}
+.app[data-view="3"] .test-card strong{font-size:clamp(13px,4.2vw,18px)}
+.app[data-view="3"] .test-card small{font-size:clamp(12px,3.45vw,14px)}
+.app[data-view="3"] .reward{min-height:19cqw;margin:15px 4px 13px}
+.app[data-view="3"] .reward img{width:64px}
+.app[data-view="3"] [data-start]{display:block;width:85%;min-height:14cqw;margin:0 auto 24px}
+
+/* The lesson fills the viewport. Long exercises scroll between the header and navigation. */
+.app{height:100vh;height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+main{min-height:0;overflow:auto;overflow-anchor:none;overscroll-behavior-y:contain;scrollbar-width:none;padding-bottom:12px}
+main::-webkit-scrollbar{display:none}
+footer{position:relative;isolation:isolate;display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;padding:6px 12px calc(7px + env(safe-area-inset-bottom,0px));border-top:1px solid #e3a9de;background:linear-gradient(#ffe8fa,#f4c6ed);box-shadow:0 -3px 9px #aa579635}
+footer button{width:100%;height:46px;min-height:46px;border-radius:999px;white-space:nowrap}
+footer .primary{padding:3px 8px;font-size:clamp(13px,4vw,17px)}
+footer .soft{font-size:13px;padding:3px 5px}
+footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6c236cac;filter:brightness(.9)}
+
+/* Frame just the illustrated welcome content between the shared controls. */
+.app[data-view="1"] main{position:relative;padding:0;overflow:hidden}
+.welcome-art{position:absolute;inset:-14.64% 0 auto;width:100%;height:128.97%;object-fit:fill;pointer-events:none}
+.app[data-view="1"] #next{background:linear-gradient(#8d05bd,#480b85);border:2px solid #ffd75d}
+.app[data-view="1"] #next::before{content:"";display:inline-block;margin-right:.6em;border-block:.45em solid transparent;border-left:.68em solid currentColor;vertical-align:-.05em}
+.welcome-copy{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.app[data-view="2"] main{display:flex;flex-direction:column}
+.app[data-view="5"] .day-card img{object-position:center 46%}
+.app[data-view="2"] .word-list{flex:1 0 auto;grid-template-rows:repeat(6,minmax(51px,1fr))}
+.app[data-view="2"] .word-row img{height:clamp(42px,8dvh,75px)}
+.app[data-view="3"] .quiz-hero{min-height:35cqw}
+.app[data-view="3"] .quiz-hero > img:first-child{max-height:35cqw}
+.app[data-view="3"] .test-card{min-height:clamp(60px,8.3dvh,75px)}
+.app[data-view="3"] .test-card img{height:clamp(44px,6.3dvh,58px)}
+.app[data-view="3"] .reward{min-height:59px;margin:9px 4px}
+.app[data-view="3"] .reward img{width:53px}
+.app[data-view="3"] [data-start]{min-height:46px;margin:0 auto 4px}
+.app[data-view="4"] .example,.app[data-view="5"] .practice-grid,.app[data-view="8"] .results{margin-block:clamp(8px,2.1dvh,19px)}
+.app[data-view="4"] .example img{height:clamp(80px,14dvh,123px)}
+.app[data-view="5"] .day-card img{aspect-ratio:1.14}
+
+
+
+
+/* Sequential course navigation: locked chapters remain visible but inaccessible. */
+#app #pg433 .pg433-tabs button.section-locked:not(.active){
+  position:relative!important;opacity:.77!important;cursor:not-allowed!important;
+  color:#847589!important;background:linear-gradient(#eee5f0,#dfd5e6)!important;
+  border-color:#cec0d3!important;border-bottom-color:#baa8c4!important;
+  box-shadow:inset 0 1px 2px #fff9ff,0 2px 4px #9e8ba73a!important;
+  filter:saturate(.55);
+}
+#app #pg433 .pg433-tabs button.section-locked::after{
+  content:"🔒";position:absolute;top:2px;right:3px;font-size:10px;line-height:1;
+  filter:grayscale(.2);pointer-events:none;
+}
+#app #pg433 .pg433-tabs button.section-locked:active{
+  transform:none!important;filter:saturate(.55)!important;
+}
+#app #pg433 .practice-modes{display:flex;align-items:center;gap:7px;padding:6px;margin:5px 4px 8px}
+#app #pg433 .practice-modes button{min-width:0;min-height:37px;padding:4px 6px;border-radius:12px;font-size:12px;font-weight:700}
+#app #pg433 .practice-modes .practice-main{flex:1.45}
+#app #pg433 .practice-modes .practice-backup{flex:1;border:1px dashed #d5a4df!important;background:#fff7ff!important;color:#78398d!important;box-shadow:none!important;text-shadow:none!important;font-size:11px!important;font-weight:650!important;white-space:normal}
+#app #pg433 .practice-modes .practice-backup.is-active{border-style:solid!important;background:#f3e3f8!important}
+#app #pg433 .practice-fallback-note{font-size:12px;text-align:center;margin:0 7px 7px}
+#app #pg433 .tone-details,#app #pg433 .phrase-review{margin:8px 3px;padding:0;overflow:hidden;border-radius:16px;border:1px solid #e5b9ec;background:#fff8ff}
+#app #pg433 .tone-details summary,#app #pg433 .phrase-review summary{cursor:pointer;list-style:revert;padding:11px 14px;min-height:42px;font-weight:750;color:#742785;line-height:1.2}
+#app #pg433 .tone-details summary:focus-visible,#app #pg433 .phrase-review summary:focus-visible{outline:3px solid #a648b5;outline-offset:-3px}
+#app #pg433 .tone-details .tone-grid{padding:3px 6px 9px}
+#app #pg433 .phrase-review .phrases{margin:4px 7px 8px}
+#app #pg433 .self-quiz{flex:1;white-space:normal;text-align:center;min-height:42px}
+#app #pg433 .pg433-footer #next:disabled{opacity:.58;cursor:not-allowed;filter:saturate(.4);box-shadow:inset 0 2px 5px #75147e35!important;transform:none!important}
+/* Panda AI guided conversation: optional post-lesson link, without changing existing cards. */
+#app #pg433 .panda-ai-shortcut{display:flex;align-items:center;gap:11px;min-height:88px;margin:16px 3px 20px;padding:10px 13px;border:2px solid #e7a4ec;border-bottom:5px solid #c377d0;border-radius:24px;background:linear-gradient(140deg,#fffaff 0%,#f8e5ff 60%,#f4d4f8 100%);box-shadow:0 5px 11px #9c4ba34f;color:#652078;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+#app #pg433 a.panda-ai-shortcut:active{transform:translateY(3px) scale(.99);box-shadow:0 2px 5px #9c4ba34f;filter:brightness(.98)}
+#app #pg433 .panda-ai-shortcut img{flex:none;width:66px;height:66px;object-fit:contain;border-radius:17px;background:radial-gradient(circle,#ffe6fc,#f3d6f4);box-shadow:inset 0 0 0 1px #ead0eb}
+#app #pg433 .panda-ai-shortcut-copy{display:flex;flex:1;flex-direction:column;gap:3px;min-width:0}
+#app #pg433 .panda-ai-shortcut strong{font-size:clamp(15px,4.5vw,19px);font-weight:850;line-height:1.14}
+#app #pg433 .panda-ai-shortcut small{font-size:clamp(11px,3.2vw,13px);line-height:1.3;color:#86558f}
+#app #pg433 .panda-ai-shortcut-arrow{font-size:22px;font-weight:850;color:#a42cad}
+#app #pg433 .panda-ai-shortcut.is-locked{opacity:.68;box-shadow:none;border-bottom-width:2px;filter:saturate(.6)}
+@media(prefers-reduced-motion:reduce){#app #pg433 .panda-ai-shortcut{transition:none}}
+
+/* HSK2 Lesson 2: the approved static illustration has a baked-in obsolete
+   "УРОК 1" label. Cover only that small caption, never modify the image. */
+.course-layout #app .word-flow-cover .cover-number-updated{
+  position:absolute;left:34.8%;top:7.23%;width:30.5%;height:3.07%;
+  z-index:3;display:grid;place-items:center;
+  border:1px solid #d29cda;border-radius:999px;
+  background:linear-gradient(180deg,#ffe4f7 0%,#f8c7ec 100%);
+  box-shadow:inset 0 1px #fff9ff,0 2px 5px #bd82c375;
+  color:#572075;font-weight:900;font-size:calc(var(--art-width) * .032);
+  line-height:1;white-space:nowrap;letter-spacing:-.02em;pointer-events:none;
+}
+
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="head">
+    <div class="lesson-bar">
+      <button type="button" class="orb" id="detail-back" aria-label="Предыдущий шаг">❮</button>
+      <span id="head-label">HSK 2 · Урок 2 · Шаг 1 из 8</span>
+    </div>
+    <nav id="steps" aria-label="Восемь шагов урока"></nav>
+  </header>
+  <main id="workspace"></main>
+  <footer aria-label="Переключение шагов">
+    <button type="button" class="soft compact-footer" id="back" aria-label="Предыдущий шаг">‹ Назад</button>
+    <button type="button" class="primary" id="next"></button>
+  </footer>
+</div>
+<script src="./assets/hsk2-lesson1-voice-v459.js?v=459"></script>
+<script>
+'use strict';
+
+const asset = 'assets/hsk2-preview-v457/';
+const decoration = 'assets/hsk2-lesson1-preview/';
+const words = [
+  {zh:'起床', py:'qǐchuáng', ru:'вставать с постели', tones:[3,2], fill:'我每天七点____。', hint:'Я каждый день встаю в семь.'},
+  {zh:'洗脸', py:'xǐliǎn', ru:'умываться', tones:[3,3], fill:'我起床以后____。', hint:'После того как встаю, я умываюсь.'},
+  {zh:'刷牙', py:'shuāyá', ru:'чистить зубы', tones:[1,2], fill:'我每天早上____。', hint:'Я чищу зубы каждое утро.'},
+  {zh:'吃早饭', py:'chī zǎofàn', ru:'завтракать', tones:[1,3,4], fill:'我早上____。', hint:'Я завтракаю утром.'},
+  {zh:'去上班', py:'qù shàngbān', ru:'идти на работу', tones:[4,4,1], fill:'我八点____。', hint:'Я иду на работу в восемь.'},
+  {zh:'睡觉', py:'shuìjiào', ru:'спать, ложиться спать', tones:[4,4], fill:'我晚上十点____。', hint:'Я ложусь спать в десять вечера.'}
+];
+
+const phrases = [
+  ['你每天几点起床？','Nǐ měitiān jǐ diǎn qǐchuáng?','Во сколько ты каждый день встаёшь?'],
+  ['我每天七点起床。','Wǒ měitiān qī diǎn qǐchuáng.','Я каждый день встаю в семь часов.'],
+  ['我起床以后洗脸。','Wǒ qǐchuáng yǐhòu xǐliǎn.','После того как я встаю, я умываюсь.'],
+  ['我早上吃早饭。','Wǒ zǎoshang chī zǎofàn.','Утром я завтракаю.'],
+  ['我八点去上班。','Wǒ bā diǎn qù shàngbān.','Я иду на работу в восемь.'],
+  ['我晚上十点睡觉。','Wǒ wǎnshang shí diǎn shuìjiào.','Я ложусь спать в десять вечера.']
+];
+
+const dialogue = [
+  {prompt:phrases[0], answers:[[phrases[1][0],'В семь часов'],['我每天八点起床。','В восемь часов']]},
+  {prompt:['你早上做什么？','Nǐ zǎoshang zuò shénme?','Что ты делаешь утром?'], answers:[['我早上洗脸。','Умываюсь'],[phrases[3][0],'Завтракаю']]},
+  {prompt:['你起床以后做什么？','Nǐ qǐchuáng yǐhòu zuò shénme?','Что ты делаешь после подъёма?'], answers:[[phrases[2][0],'Умываюсь'],['我起床以后刷牙。','Чищу зубы']]}
+];
+
+const normalize = text => text.replace(/[\p{P}\s]/gu, '');
+const clips = new Map([
+  ['你早上做什么','p019'], ['我早上吃早饭','p020'],
+  ['你起床以后做什么','p021'], ['我起床以后洗脸','p022']
+].map(([text,id]) => [text, 'assets/panda-voice-clips-v365/' + id + '.mp3']));
+for (const [text,id] of [
+  ['我七点起床','g033'], ['我晚上十点睡觉','g034'],
+  ['我八点去上班','g035'], ['我每天六点起床','g036']
+]) clips.set(text, 'assets/panda-grammar-voice-v451/' + id + '.mp3');
+// User-supplied 2026-11-19 Luvvoice recording, cut into eleven exact same-speaker MP3 phrases.
+for (const [text,recording] of Object.entries(window.PandaGoHSK2Lesson1NativeAudioV459 || {})) {
+  clips.set(normalize(text), recording);
+}
+
+// Exactly one listening exercise for each of the six vocabulary items.
+const listening = [
+  ['我每天七点起床。',0],
+  ['我起床以后洗脸。',1],
+  ['我起床以后刷牙。',2],
+  ['我早上吃早饭。',3],
+  ['我八点去上班。',4],
+  ['我晚上十点睡觉。',5]
+];
+const layoutParams = new URLSearchParams(location.search);
+const courseMode = true;
+const courseSteps = [1,2,4,6,3,5,7,8];
+const courseSections = [
+  {name:'Слова',steps:[2]},
+  {name:'Правило',steps:[4]},
+  {name:'Речь',steps:[6]},
+  {name:'Тест',steps:[3,5]},
+  {name:'Примеры',steps:[7,8]}
+];
+// Listening results retain their original indices so completed work survives the switch.
+const courseQuiz = words.flatMap((_,word) =>
+  [0,1,2,3,4].map(type => ({type,index:word,word})));
+const stepNumber = step => courseMode ? courseSteps.indexOf(step)+1 : step;
+const titles = ['Вступление','Новые слова','Проверь слова','Грамматика','Мой распорядок','Тренировка тонов','Фразы и диалог','Завершение'];
+const tests = ['Значение слова','По аудио','Собери слово','Заполни фразу','Произнеси'];
+const testHelp = ['Выбери правильный перевод.','Послушай и выбери действие.','Расставь иероглифы по порядку.','Подставь слово в предложение.','Скажи слово в микрофон.'];
+const tokens = ['我','起床','以后','洗脸','。'];
+const key = 'panda-go-hsk2-lesson1-word-flow-review-v1';
+const priorLessonKey = 'panda-go-hsk2-lesson1-approved-preview-v2';
+const courseProgressKey = 'pg-hsk2-my-day-main-v1';
+
+function mixedDay() {
+  const order = [0,1,2,3,4,5];
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [order[i],order[j]] = [order[j],order[i]];
+  }
+  if (order.every((item,i) => item === i)) order.push(order.shift());
+  return order;
+}
+
+function blank() {
+  return {
+    step:1, quiz:tests.map(() => words.map(() => null)),
+    missed:tests.map(() => words.map(() => false)), quizTest:null, quizIndex:0, quizPicked:[], courseQuizCursor:null, courseQuizType:null, quizRetry:null,
+    grammar:[], grammarDone:false, dayOrder:[], dayShuffled:mixedDay(), dayDone:false,
+    mic:[], chat:[], toneTab:'words', unlockedSection:0,
+    heardWords:[], selfSpoken:[], practiceMode:'mic'
+  };
+}
+
+function readProgress(storageKey) {
+  try {
+    return JSON.parse(localStorage.getItem(storageKey));
+  } catch {
+    return null;
+  }
+}
+
+function restore() {
+  const defaults = blank();
+  const approved = readProgress(key);
+  const prior = approved?.migrationV1 ? null : readProgress(priorLessonKey);
+  if (!prior) return Object.assign(defaults,approved,{migrationV1:true});
+  const result = Object.assign(defaults,prior,approved);
+  result.quiz = tests.map((_,type) => words.map((_,index) =>
+    approved?.quiz?.[type]?.[index] ?? prior.quiz?.[type]?.[index] ?? null));
+  result.missed = tests.map((_,type) => words.map((_,index) =>
+    Boolean(approved?.missed?.[type]?.[index] || prior.missed?.[type]?.[index])));
+  for (const [flag,order] of [['grammarDone','grammar'],['dayDone','dayOrder']]) {
+    if (prior[flag] && !result[flag]) {
+      result[flag] = true;
+      result[order] = prior[order];
+    }
+  }
+  result.mic = [...new Set([...(prior.mic ?? []),...(approved?.mic ?? [])])];
+  if ((prior.chat?.length ?? 0) > (result.chat?.length ?? 0)) result.chat = prior.chat;
+  result.migrationV1 = true;
+  return result;
+}
+
+let state = restore();
+state.heardWords = [...new Set((Array.isArray(state.heardWords) ? state.heardWords : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
+state.selfSpoken = [...new Set((Array.isArray(state.selfSpoken) ? state.selfSpoken : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
+state.mic = [...new Set((Array.isArray(state.mic) ? state.mic : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
+state.practiceMode = 'mic'; // Start each session with the primary microphone mode.
+let audio = null;
+let speech = null;
+let feedback = '';
+let positive = false;
+let heardClip = null;
+const app = document.getElementById('app');
+const workspace = document.getElementById('workspace');
+const nav = document.getElementById('steps');
+const headLabel = document.getElementById('head-label');
+const headBack = document.getElementById('detail-back');
+const back = document.getElementById('back');
+const next = document.getElementById('next');
+let counter;
+if (courseMode) {
+  const frame = document.createElement('div');
+  frame.id = 'pg433';
+  frame.append(...app.children);
+  app.append(frame);
+  nav.removeAttribute('id');
+  nav.className = 'pg433-tabs';
+  nav.setAttribute('aria-label','Разделы урока');
+  const top = headBack.parentElement;
+  top.className = 'pg433-topline';
+  top.parentElement.className = 'pg433-header';
+  headBack.className = 'pg433-back';
+  headBack.textContent = '‹';
+  headLabel.className = 'pg433-title';
+  headLabel.removeAttribute('id');
+  headLabel.innerHTML = '<small>HSK 2 · Урок 2</small><strong>Мой день</strong>';
+  const chapter = document.createElement('span');
+  chapter.className = 'pg433-pill';
+  chapter.textContent = 'Урок 2 · Мой день';
+  top.append(chapter);
+  nav.innerHTML = courseSections.map(({name,steps},i) =>
+    '<button type="button" data-step="' + steps[0] + '"><b>' + (i+1) + '</b><span>' + name + '</span></button>').join('');
+  workspace.className = 'pg433-content';
+  back.parentElement.className = 'pg433-footer';
+  back.className = 'pg433-secondary';
+  next.className = 'pg433-primary';
+  counter = document.createElement('span');
+  counter.className = 'pg433-counter';
+  back.after(counter);
+} else {
+  nav.innerHTML = titles.map((title,i) => '<button type="button" class="nav-step" data-step="' + (i+1) +
+    '" aria-label="Шаг ' + (i+1) + ' · ' + title + '"><span>' + (i+1) + '</span></button>').join('');
+}
+const stepButtons = [...nav.querySelectorAll('button')];
+const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const playIcon = '<span class="play" aria-hidden="true"></span>';
+const speaker = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke-linejoin="round"/><path d="M16 8a6 6 0 0 1 0 8m2.5-10a9 9 0 0 1 0 12" stroke-linecap="round"/></svg>';
+const microphone = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5 11v1a7 7 0 0 0 14 0v-1M12 19v3m-3 0h6"/></svg>';
+const scope = () => state.step + ':' + state.quizTest + ':' + state.quizIndex;
+const correctCount = index => state.quiz[index].filter(Boolean).length;
+const quizCount = () => state.quiz.flat().filter(Boolean).length;
+const speechCount = () => new Set([...state.mic,...state.selfSpoken]).size;
+const speechDone = () => speechCount() === words.length;
+const selfQuizCount = () => state.quiz[4].filter(record => record?.method === 'self').length;
+function sectionComplete(section) {
+  switch(section) {
+    case 0: return state.heardWords.length === words.length;
+    case 1: return state.grammarDone === true;
+    case 2: return speechDone();
+    case 3: return quizCount() === 30 && state.dayDone === true;
+    case 4: return state.chat.length === dialogue.length;
+    default: return false;
+  }
+}
+function currentStepComplete() {
+  switch(state.step) {
+    case 1: return true;
+    case 2: return sectionComplete(0);
+    case 4: return sectionComplete(1);
+    case 6: return sectionComplete(2);
+    case 3: {
+      if (state.courseQuizCursor === null) return true; // Opens the test list.
+      if (state.courseQuizCursor === courseQuiz.length) return quizCount() === 30;
+      const current = courseQuiz[state.courseQuizCursor];
+      return !!(current && activeQuiz().quiz[current.type][current.index]);
+    }
+    case 5: return sectionComplete(3);
+    case 7: return sectionComplete(4);
+    case 8: return true;
+    default: return false;
+  }
+}
+const activeQuiz = () => state.quizRetry ?? state;
+const dayScenes = ['wake','wash','brush','breakfast','work','sleep'];
+const vocabImage = i => courseMode ? art('day-' + dayScenes[i]) : i === 5 ? art('sleep') : '<img src="' + asset + 'word-' + (i+1) + '.webp" alt="">';
+const art = name => '<img src="' + decoration + name + '.webp" alt="">';
+const hanzi = html => '<strong class="cn" lang="zh-Hans">' + html + '</strong>';
+const toneContours = ['M4 5 Q9 4.5 14 5', 'M4 14 Q6.5 8 14 3', 'M4 6 Q8 21 14 7', 'M4 3 Q9 6 14 14'];
+const toneStrokes = values => '<span class="tone-strokes" role="img" aria-label="Тоны: ' + values.join(', ') + '">' +
+  values.map(tone => '<svg viewBox="0 0 18 18" aria-hidden="true"><path d="' + toneContours[tone-1] + '"/></svg>').join('') +
+  '</span>';
+const pitchRow = values => '<div class="tonemarks">' + values.map(v => '<span class="tone-number">' + v + '</span>').join('') + '</div>';
+const translate = item => '<span class="py">' + item[1] + '</span><span class="ru">' + item[2] + '</span>';
+const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' good' : '') + '" role="status">' + escape(feedback) + '</div>';
+
+function audioButton(text, icon = speaker, blind = false) {
+  const available = clips.has(normalize(text));
+  const label = blind ? 'Прослушать запись' : available ? 'Прослушать ' + text : 'Для «' + text + '» отдельной записи нет';
+  return '<button type="button" class="orb' + (available ? '' : ' missing') + '" data-say="' +
+    escape(text) + '" aria-label="' + escape(label) + '" title="' + escape(label) + '">' + (available ? icon : '<span aria-hidden="true">♪</span>') + '</button>';
+}
+
+function micButton(id, label, recognized = false) {
+  return '<button type="button" class="orb mic' + (recognized ? ' recognized' : '') + '" data-mic="' + id +
+    '" aria-label="' + escape(label) + '">' + microphone + '</button>';
+}
+
+function save() {
+  try { localStorage.setItem(key,JSON.stringify(state)); } catch {}
+}
+
+function setStatus(message, good = false) {
+  feedback = message;
+  positive = good;
+  const box = document.getElementById('feedback');
+  if (box) {
+    box.classList.toggle('good',good);
+    box.textContent = message;
+  }
+}
+
+function clearMedia() {
+  if (audio) {
+    audio.pause();
+    audio = null;
+    workspace.querySelector('[data-say][aria-pressed=true]')?.removeAttribute('aria-pressed');
+  }
+  if (speech) {
+    const current = speech;
+    speech = null;
+    current.abort();
+  }
+}
+
+// 5 visible chapter tabs cover 8 detailed screens; the welcome screen belongs to chapter 1.
+const sectionForStep = step => step === 1 ? 0 : courseSections.findIndex(section => section.steps.includes(step));
+const unlockedSection = () => Math.max(0,Math.min(courseSections.length - 1,Number(state.unlockedSection) || 0));
+function canOpenStep(target,advance = false) {
+  if (!courseMode) return true;
+  const targetSection = sectionForStep(target);
+  const currentSection = sectionForStep(state.step);
+  if (targetSection < 0) return false;
+  if (target === 5 && quizCount() < 30) return false;
+  if (target === 8 && !sectionComplete(4)) return false;
+  if (targetSection <= unlockedSection()) return true;
+  // A new chapter opens only after confirmed work on the current chapter.
+  return advance && currentSection === unlockedSection() &&
+    targetSection === currentSection + 1 && sectionComplete(currentSection);
+}
+function reconcileUnlockedProgress() {
+  let earned = 0;
+  while (earned < courseSections.length - 1 && sectionComplete(earned)) earned++;
+  state.unlockedSection = Math.min(unlockedSection(),earned);
+}
+
+function move(step,advance = false) {
+  const target = Math.max(1,Math.min(8,Number(step) || 1));
+  if (!canOpenStep(target,advance)) {
+    setStatus('Сначала пройди предыдущий раздел и нажми «Дальше».');
+    return;
+  }
+  if (courseMode && sectionForStep(target) > unlockedSection())
+    state.unlockedSection = sectionForStep(target);
+  clearMedia();
+  feedback = '';
+  heardClip = null;
+  state.step = target;
+  if (state.step !== 3) state.quizTest = null;
+  if (courseMode) {
+    layoutParams.set('step',state.step);
+    history.pushState({pgHsk2Lesson1:true,step:state.step},'','?' + layoutParams + location.hash);
+  }
+  save();
+  render(true);
+}
+
+function render(resetScroll = false) {
+  const step = state.step;
+  const detailed = step === 3 || step === 6;
+  app.classList.toggle('detail',detailed);
+  app.dataset.view = step;
+  if (courseMode && step === 3) {
+    const task = courseQuiz[state.courseQuizCursor];
+    state.quizTest = task?.type ?? null;
+    if (task) state.quizIndex = task.index;
+  }
+  if (courseMode) counter.textContent = 'Шаг ' + stepNumber(step) + ' из 8';
+  else headLabel.textContent = 'HSK 2 · Урок 2 · Шаг ' + step + ' из 8';
+  headBack.disabled = step === 1;
+  stepButtons.forEach((button,index) => {
+    const active = courseMode ? (index === 0 && step === 1) || courseSections[index].steps.includes(step) : index+1 === step;
+    const locked = courseMode && index > unlockedSection();
+    button.setAttribute('aria-current',active ? 'step' : 'false');
+    if (courseMode) {
+      button.classList.toggle('active',active);
+      button.classList.toggle('section-locked',locked);
+      button.disabled = locked;
+      button.title = locked ? '🔒 Выполни предыдущий раздел, чтобы открыть' : 'Раздел открыт';
+      button.setAttribute('aria-label',courseSections[index].name + (locked ? '. Закрыт — откроется после предыдущего раздела.' : '. Открыт.'));
+    }
+  });
+  workspace.innerHTML = [intro,newWords,quiz,grammar,day,tones,chat,finish][step-1]();
+  back.hidden = step === 1;
+  const inQuiz = step === 3 && state.quizTest !== null;
+  const canExitQuiz = inQuiz || (courseMode && step === 3 && state.courseQuizCursor !== null);
+  back.textContent = canExitQuiz ? '← К тестам' : '← Назад';
+  const backLabel = canExitQuiz ? 'К списку тестов' : 'Предыдущий шаг';
+  back.setAttribute('aria-label',backLabel);
+  headBack.setAttribute('aria-label',backLabel);
+  if (courseMode) {
+    const cursor = state.courseQuizCursor;
+    const current = courseQuiz[cursor];
+    const following = courseQuiz[adjacentCourseTask(1)];
+    next.textContent = inQuiz
+      ? (!activeQuiz().quiz[current.type][current.index] ? 'Сначала выполни'
+        : !following ? (state.courseQuizType === null ? 'К результатам →' : 'К тестам →')
+        : following.word !== current.word ? 'Следующее слово →' : 'Дальше →')
+      : step === 8 ? 'К началу ↻' : step === 3 && cursor === null ? 'Начать тесты →' : 'Дальше →';
+  } else {
+    next.textContent = step === 1 ? 'Начать урок' : step === 8 ? 'К началу ↻' : titles[step] + ' →';
+  }
+  next.disabled = !currentStepComplete();
+  next.setAttribute('aria-label',next.disabled ? 'Заверши текущее упражнение, чтобы продолжить' : next.textContent);
+  if (resetScroll) workspace.scrollTop = 0;
+}
+function intro() {
+  if (courseMode) return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 2 · Мой день">' +
+    '<div class="word-flow-cover"><img src="' + decoration + 'course-cover-sakura-canal.webp" ' +
+    'alt="Мой день. Научись говорить о своём дне по-китайски. Слова, тесты, грамматика, распорядок, произношение и диалог. Не бойся говорить с ошибками. Бойся никогда не заговорить!" width="905" height="1737" fetchpriority="high">' +
+    '<span class="cover-number-updated" aria-hidden="true">HSK 2 · УРОК 2</span>' +
+    '<span class="cover-tile-label cover-tile-words" aria-hidden="true">Слова</span>' +
+    '<span class="cover-tile-label cover-tile-tests" aria-hidden="true">Тесты</span>' +
+    '<a class="final-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>' +
+    '<button type="button" class="final-cover-start" data-step="2" aria-label="Начать урок"></button>' +
+    '</div></section>';
+  return '<img class="welcome-art" src="assets/hsk2-lesson1-preview/welcome-start-lesson.webp" width="959" height="1639" alt="" draggable="false">' +
+    '<section class="welcome-copy"><h1><span lang="zh-Hans">我的一天</span> · Wǒ de yì tiān · Мой день</h1>' +
+    '<p>Научиться говорить о том, когда встаёшь, умываешься, чистишь зубы, завтракаешь, идёшь на работу и ложишься спать.</p>' +
+    '<p>Слова, тесты, грамматика, распорядок, произношение и диалог.</p></section>';
+}
+
+function newWords() {
+  return '<h1 class="pill-title">Новые слова</h1><div class="word-list">' + words.map((word,i) =>
+    '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + toneStrokes(word.tones) + '<div>' +
+    translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh,playIcon) + '</article>').join('') +
+    '</div><p class="hint audio-note">🔊 Прослушано ' + state.heardWords.length +
+    ' из 6 слов. Сначала прослушай все записи, затем откроется «Дальше».</p>' +
+    '<p class="hint audio-note">💡 洗脸: xǐliǎn — 3 + 3; при произношении первый слог звучит как 2-й тон (xíliǎn).</p>' + safeStatus();
+}
+
+function hero(kind,step,title,subtitle) {
+  return '<div class="detail-hero ' + kind + '-hero">' + art(courseMode && kind === 'quiz' ? 'course-quiz-panda' : kind + '-panda') +
+    '<div class="hero-message"><span class="tag">Шаг ' + stepNumber(step) + '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div>' +
+    (kind === 'quiz' ? '<img class="quiz-clipboard" src="' + decoration + 'quiz-clipboard.webp" alt="">' : '') + '</div>';
+}
+
+function quiz() {
+  if (state.quizTest !== null) return question();
+  if (courseMode && state.courseQuizCursor === courseQuiz.length) {
+    const answers = activeQuiz().quiz;
+    const completed = answers.flat().filter(Boolean).length;
+    return '<section class="panel section-panel quiz-review"><h1>Итоги тренировки</h1>' +
+      '<p>Выполнено заданий: ' + completed + ' из ' + courseQuiz.length + '.</p><div class="controls">' +
+      (completed < courseQuiz.length ? '<button type="button" class="primary" data-start>К пропущенным заданиям</button>' : '') +
+      '<button type="button" class="soft" data-quiz-retry="all">Пройти ещё раз</button></div></section>';
+  }
+  return hero('quiz',3,'Проверь слова!',courseMode ? 'Пять видов заданий. Тренируй слова по порядку.' :
+    '5 интерактивных тестов,<br>чтобы лучше запомнить<br>новые слова.') +
+    '<div class="test-list">' + tests.map((title,i) => {
+      const total = correctCount(i);
+      const opening = courseMode ? '<div class="test-card">' : '<button type="button" class="test-card" data-test="' + i + '">';
+      const icon = courseMode ? testIcon(i) : art('test-' + (i+1));
+      const status = total === 6 ? '✓' : courseMode ? total + '/6' : playIcon;
+      const orbClass = 'orb' + (total === 6 ? ' done' : '');
+      const trigger = courseMode
+        ? '<span class="' + orbClass + '" aria-label="' + title + ': выполнено ' + total + ' из 6">' + status + '</span>'
+        : '<span class="' + orbClass + '" aria-hidden="true">' + status + '</span>';
+      const retry = courseMode && total > 0 && quizCount() === 30
+        ? '<button type="button" class="soft quiz-retry" data-quiz-retry="' + i + '" aria-label="Пройти ещё раз: ' + title + '">Пройти ещё раз</button>'
+        : '';
+      return opening + '<span class="badge">' + (i+1) + '</span>' + icon + '<span><strong>Тест ' + (i+1) + ' · ' + title +
+        '</strong><small>' + testHelp[i] + (total && !courseMode ? ' · ' + total + '/6' : '') + '</small>' + retry + '</span>' +
+        trigger + (courseMode ? '</div>' : '</button>');
+    }).join('') + '</div><div class="reward panel">' + art('trophy') +
+    '<strong>' + (courseMode ? 'Выполняй задания для каждого слова по порядку.' : 'Закрепи слова урока в пяти разных заданиях!') +
+    '</strong></div>' + (courseMode
+      ? (quizCount() === 30
+        ? '<div class="controls"><button type="button" class="soft" data-step="5">Перейти к распорядку</button></div>'
+        : '<div class="controls"><button type="button" class="primary" data-start>Начать задания по порядку →</button></div>')
+      : '<button type="button" class="primary large" data-start>Начать тесты ' + playIcon + '</button>');
+}
+
+function testIcon(index) {
+  const symbol = [
+    '<b lang="zh-Hans">汉字</b>',
+    speaker,
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 4h7a2.5 2.5 0 1 1 5 0h5v6a2.5 2.5 0 1 1 0 5v6h-7v-2a2 2 0 1 0-4 0v2H3v-7h2a2 2 0 0 0 0-4H3z"/></svg>',
+    '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4zM7 9h5m-5 5h4m2 0 2 2 4-5"/></svg>',
+    microphone
+  ][index];
+  return '<span class="quiz-type-icon" aria-hidden="true">' + symbol + '</span>';
+}
+
+function choices(correct,category,seed,locked) {
+  const ids = [0,1,2,3].map(offset => (correct+offset)%words.length);
+  for (let i=0; i<seed%4; i++) ids.push(ids.shift());
+  return '<div class="choice-grid">' + ids.map(id => '<button type="button" class="choice" data-choice="' + id +
+    '"' + (category === 'zh' ? ' lang="zh-Hans"' : '') + (locked ? ' disabled' : '') + '>' +
+    words[id][category] + '</button>').join('') + '</div>';
+}
+
+function question() {
+  const t = state.quizTest;
+  const i = state.quizIndex;
+  const word = words[i];
+  const done = activeQuiz().quiz[t][i];
+  let content;
+  switch (t) {
+    case 0:
+      content = '<div class="quiz-word" lang="zh-Hans">' + word.zh + '</div><p class="py">' + word.py + '</p>' +
+        (done ? '' : choices(i,'ru',i,false));
+      break;
+    case 1: {
+      const [clip,answer] = listening[i];
+      content = '<p class="hint">Какое действие звучит в конце фразы?</p><div class="controls">' +
+        audioButton(clip,speaker,true) + '</div>' + (done ? '' : choices(answer,'zh',i+1,heardClip !== scope()));
+      break;
+    }
+    case 2: {
+      const chars = [...word.zh];
+      const order = chars.map((_,j) => (j+1)%chars.length);
+      const current = state.quizPicked.map(j => chars[j]).join('');
+      content = '<div class="quiz-word">' + word.ru + '</div><p class="py">' + word.py + '</p>' +
+        (done ? '' : '<div class="answer" lang="zh-Hans" data-placeholder="Нажимай на иероглифы">' + current + '</div>' +
+          '<div class="tokens">' + order.map(j => '<button type="button" class="token" lang="zh-Hans" data-letter="' + j + '"' +
+          (state.quizPicked.includes(j) ? ' disabled' : '') + '>' + chars[j] + '</button>').join('') + '</div>' +
+          '<div class="controls"><button type="button" class="soft" data-letter-clear>Очистить</button><button type="button" class="primary" data-letter-check>Проверить</button></div>');
+      break;
+    }
+    case 3:
+      content = '<div class="quiz-word" lang="zh-Hans">' + word.fill + '</div><p class="hint">' + word.hint + '</p>' +
+        (done ? '' : choices(i,'zh',i+3,false));
+      break;
+    case 4:
+      content = '<div class="quiz-word" lang="zh-Hans">' + word.zh + '</div><p class="py">' + word.py + '</p>' +
+        audioButton(word.zh) +
+        (done ? '' : '<div class="controls">' + micButton('quiz','Произнести ' + word.zh) +
+          '<button type="button" class="soft self-quiz" data-self-quiz="1">✓ Повторил и сравнил на слух</button></div>') +
+        '<p class="hint">🎙 Скажи слово. Тоны не оцениваются; самопроверка — запасной вариант.</p>';
+      break;
+  }
+  const caption = courseMode
+    ? state.courseQuizType === null
+      ? 'Слово ' + (courseQuiz[state.courseQuizCursor].word+1) + ' из ' + words.length +
+        ' · задание ' + (state.courseQuizCursor+1) + ' из ' + courseQuiz.length
+      : 'Задание ' + courseQuiz.slice(0,state.courseQuizCursor+1).filter(task => task.type === t).length + ' из ' + state.quiz[t].length
+    : 'Задание ' + (i+1) + ' из 6 · выполнено ' + correctCount(t);
+  const controls = courseMode ? '' :
+    '<div class="controls"><button type="button" class="soft" data-question="-1"' + (!i ? ' disabled' : '') +
+    '>‹ Предыдущее</button><button type="button" class="primary" data-question="1">' +
+    (i === 5 ? 'К списку' : 'Следующее →') + '</button></div>';
+  return '<article class="panel section-panel"><h1 tabindex="-1">Тест ' + (t+1) + ' · ' + tests[t] + '</h1><p class="hint">' +
+    caption + '</p>' + content + safeStatus() +
+    (done && !feedback ? '<div class="feedback good">✓ ' +
+      (t === 4 ? (done.method === 'self' ? 'Самостоятельно повторено; тоны не проверялись' : 'Слово распознано; тоны не проверялись') : 'Ответ засчитан') + '</div>' : '') +
+    controls + '</article>';
+}
+
+function tokenButtons(order,selected,key) {
+  return order.map(i => '<button type="button" class="token" lang="zh-Hans" data-' + key + '="' + i +
+    '"' + (selected.includes(i) ? ' disabled' : '') + '>' + tokens[i] + '</button>').join('');
+}
+
+function grammar() {
+  const current = state.grammar.map(i => tokens[i]).join('');
+  return '<h1 class="pill-title">📚 Грамматика</h1><div class="cloud rule-cloud">' + hanzi('以后') +
+    '<span class="py">yǐhòu</span><b>после того как…</b></div><p class="grammar-explain hint">Ставим 以后 после первого действия.</p>' +
+    '<article class="panel example"><span class="tag">Пример</span>' + vocabImage(1) + '<div>' +
+    hanzi('我起床<em>以后</em>洗脸。') + translate(phrases[2]) + '</div>' + audioButton(phrases[2][0]) + '</article>' +
+    '<h2 class="builder-title">Составь предложение</h2><div class="tokens">' + tokenButtons([2,0,3,1,4],state.grammar,'gram') +
+    '</div><div class="answer" lang="zh-Hans" data-placeholder="Нажимай на карточки по порядку">' + current + '</div>' +
+    '<div class="controls grammar-actions"><button type="button" class="soft" data-gram-undo>Отменить</button>' +
+    '<button type="button" class="soft" data-gram-clear>Очистить</button>' +
+    '<button type="button" class="primary" data-gram-check>✓ Проверить</button></div>' + safeStatus() +
+    (state.grammarDone && !feedback ? '<p class="feedback good">✓ Предложение собрано верно</p>' : '');
+}
+
+function day() {
+  return '<h1 class="pill-title day-title">🎯 Практика · Мой распорядок</h1><p class="hint">Расположи действия в том порядке, как их выполняет Панда в этом уроке.</p>' +
+    '<div class="practice-grid">' + state.dayShuffled.map(i => {
+      const position = state.dayOrder.indexOf(i);
+      return '<button type="button" class="day-card' + (position >= 0 ? ' selected' : '') + '" data-day="' + i + '"' +
+        (position >= 0 ? ' disabled' : '') + ' aria-label="' + words[i].ru + '">' + art('day-' + dayScenes[i]) + hanzi(words[i].zh) +
+        '<span class="py">' + words[i].py + '</span>' + (position >= 0 ? '<span class="position">' + (position+1) + '</span>' : '') + '</button>';
+    }).join('') + '</div><div class="answer" lang="zh-Hans" data-placeholder="Выбери первое действие">' +
+    state.dayOrder.map(i => words[i].zh).join(' → ') + '</div><div class="controls"><button type="button" class="soft" data-day-undo>↶ Отменить</button>' +
+    '<button type="button" class="soft" data-day-reset>Сброс</button></div><button type="button" class="primary large" data-day-check>' + playIcon + ' Проверить порядок</button>' +
+    safeStatus() + (state.dayDone && !feedback ? '<p class="feedback good">✓ Все шесть действий по порядку</p>' : '');
+}
+
+function phraseCards() {
+  return '<div class="phrases">' + phrases.map(item => '<article class="phrase panel"><div>' + hanzi(item[0]) +
+    translate(item) + '</div>' + audioButton(item[0]) + '</article>').join('') + '</div>';
+}
+
+function toneGuide() {
+  const samples = [
+    ['ā','высокий, ровный','M3 9h39'],
+    ['á','идёт вверх','M3 14 41 3m-7 0h7l-4 6'],
+    ['ǎ','низкий, затем вверх в изоляции','M3 4q18 23 38-1m-7 2 7-2-2 7'],
+    ['à','резко падает','M3 3l38 12m-7-1 7 1-4-5']
+  ];
+  return '<details class="tone-details panel"><summary>🎵 Подсказка: четыре тона</summary><div class="tone-grid">' +
+    samples.map(([sample,name,path],i) => '<div><b>' + (i+1) + '-й тон</b><svg viewBox="0 0 45 18" aria-hidden="true">' +
+    '<path d="' + path + '" stroke="#af183e" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg><strong>' +
+    sample + '</strong>' + name + '</div>').join('') + '</div></details>';
+}
+function tones() {
+  const wordView = state.toneTab === 'words';
+  return hero('tones',6,'Тренировка тонов','Слушай и повторяй шесть слов урока.') +
+    '<div class="practice-modes panel"><button type="button" class="practice-main ' +
+    (state.practiceMode === 'mic' ? 'primary' : 'soft') +
+    '" data-practice-mode="mic">🎙 Микрофон · основной</button>' +
+    '<button type="button" class="practice-backup soft' + (state.practiceMode === 'self' ? ' is-active' : '') +
+    '" data-practice-mode="self">' +
+    (state.practiceMode === 'self' ? '✓ Запасной режим' : 'Не работает микрофон?') +
+    '</button></div>' +
+    (state.practiceMode === 'self'
+      ? '<p class="hint practice-fallback-note">Нет микрофона? Послушай, повтори и отметь слово. Тоны не проверяются.</p>'
+      : '') +
+    '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
+    '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
+    '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (6)</button></div>' +
+    (wordView ? '<div class="tone-list">' + words.map((word,i) => '<article class="tone-row">' + vocabImage(i) + '<div>' +
+      hanzi(word.zh) + translate([word.zh,word.py,word.ru]) + '</div><div class="tone-example">' +
+      toneStrokes(word.tones) + pitchRow(word.tones) + '</div>' + audioButton(word.zh) +
+      (state.practiceMode === 'self'
+        ? '<button type="button" class="orb mic' + (state.selfSpoken.includes(i) ? ' recognized' : '') +
+          '" data-self-spoken="' + i + '" aria-label="Я повторил и сравнил ' + word.zh +
+          '" title="Самостоятельная проверка; тоны не оцениваются">' +
+          (state.selfSpoken.includes(i) ? '✓' : '●') + '</button>'
+        : micButton(i,'Произнести ' + word.zh,state.mic.includes(i))) + '</article>').join('') + '</div>' :
+      '<details class="phrase-review panel"><summary>💬 Открыть 6 фраз для повторения</summary>' + phraseCards() + '</details>') +
+    safeStatus() + toneGuide() + '<div class="progress-panel panel">' + art('medal') + '<div><b>Практика произношения</b>' +
+    '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
+    ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
+    '. Тоны не оцениваются. 洗脸: xǐliǎn звучит как xíliǎn.</p>';
+}
+
+const replyPinyin = new Map([
+  ['我每天七点起床', 'Wǒ měitiān qī diǎn qǐchuáng.'],
+  ['我每天八点起床', 'Wǒ měitiān bā diǎn qǐchuáng.'],
+  ['我早上洗脸', 'Wǒ zǎoshang xǐliǎn.'],
+  ['我早上吃早饭', 'Wǒ zǎoshang chī zǎofàn.'],
+  ['我起床以后洗脸', 'Wǒ qǐchuáng yǐhòu xǐliǎn.'],
+  ['我起床以后刷牙', 'Wǒ qǐchuáng yǐhòu shuāyá.']
+]);
+function bubble(role,item) {
+  const reading = item.length === 3 ? translate(item)
+    : '<span class="py">' + (replyPinyin.get(normalize(item[0])) || '') +
+      '</span><span class="ru">' + escape(item[1]) + '</span>';
+  return '<article class="panel chat-bubble' + (role === 'Ты' ? ' me' : '') + '"><b class="chat-role">' + role + '</b>' +
+    '<div class="phrase"><div>' + hanzi(item[0]) + reading +
+    '</div>' + audioButton(item[0]) + '</div></article>';
+}
+
+function pandaAiShortcut() {
+  // Opens the approved seven-stage HSK2 My Day speaking scenario inside Panda AI.
+  return '<a class="panda-ai-shortcut" href="./panda-voice-pilot.html?scenario=hsk2-my-day&amp;from=hsk2-lesson1" ' +
+    'aria-label="Поговорить с Пандой AI после урока «Мой день»">' +
+    '<img src="./assets/hsk2-lesson1-preview/tones-panda.webp" alt="" loading="lazy">' +
+    '<span class="panda-ai-shortcut-copy"><strong>🐼 Поговорить с Пандой AI</strong>' +
+    '<small>История Панды · 5 вопросов · твой самостоятельный рассказ</small></span>' +
+    '<span class="panda-ai-shortcut-arrow" aria-hidden="true">➜</span></a>';
+}
+function lockedPandaAiShortcut() {
+  return '<div class="panda-ai-shortcut is-locked" aria-label="Панда AI откроется после учебного диалога">' +
+    '<img src="./assets/hsk2-lesson1-preview/tones-panda.webp" alt="" loading="lazy">' +
+    '<span class="panda-ai-shortcut-copy"><strong>🔒 Panda AI — после диалога</strong>' +
+    '<small>Ответь на три вопроса, чтобы открыть голосовую практику</small></span></div>';
+}
+function chat() {
+  const i = state.chat.length;
+  const exchange = dialogue[i];
+  return '<h1 class="pill-title">💬 Фразы и диалог</h1>' + phraseCards() +
+    '<section class="dialogue"><h2>Разговор с Пандой</h2><p class="hint">Учебный сценарий. Выбери или произнеси один из ответов.</p>' +
+    state.chat.map((reply,j) => bubble('Панда',dialogue[j].prompt) + bubble('Ты',dialogue[j].answers.find(a => a[0] === reply) ?? [reply,''])).join('') +
+    (exchange ? bubble('Панда',exchange.prompt) + '<div class="choice-grid">' + exchange.answers.map(([answer,translation],j) =>
+      '<button type="button" class="choice" data-chat="' + j + '"><span lang="zh-Hans">' + answer + '</span><span class="ru">' +
+      translation + '</span></button>').join('') + '</div><div class="controls"><button type="button" class="soft" data-mic="chat">🎙 Ответить голосом</button></div>' :
+      '<p class="feedback good">✓ Ты ответил на все три вопроса.</p>') + safeStatus() +
+    (i ? '<div class="controls"><button type="button" class="soft" data-chat-reset>Начать диалог заново</button></div>' : '') + '</section>' +
+    (i === dialogue.length ? pandaAiShortcut() : lockedPandaAiShortcut());
+}
+
+function finish() {
+  const completed = state.heardWords.length === 6 && quizCount() === 30 && state.grammarDone &&
+    state.dayDone && speechDone() && state.chat.length === 3;
+  if (completed) {
+    save();
+    try {
+      const progress = readProgress(courseProgressKey) ?? {};
+      const done = new Set(Array.isArray(progress.completed) ? progress.completed : []);
+      if (!done.has(0)) localStorage.setItem(courseProgressKey, JSON.stringify({...progress, completed:[...done,0]}));
+    } catch {}
+  }
+  const result = (label,value,className='') => '<div class="' + className + '"><dt>' + label + '</dt><dd>' + value + '</dd></div>';
+  return '<div class="final-hero panel"><img src="' + asset + 'hero-reading.webp" alt="Панда с красной книгой"><div>' +
+    '<img class="award" src="' + decoration + (completed ? 'trophy' : 'medal') + '.webp" alt=""><h1>' + (completed ? 'Урок пройден!' : 'Твой прогресс') +
+    '</h1><p class="hint">Урок 2 «Мой день»</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
+    result('Прослушаны слова',state.heardWords.length + ' / 6') +
+    result('Все мини-тесты',quizCount() + ' / 30','all') + tests.map((test,i) => result(test,correctCount(i) + ' / 6')).join('') +
+    result('Грамматика 以后',state.grammarDone ? '✓ Выполнено' : 'Ожидает проверки') +
+    result('Распорядок',state.dayDone ? '✓ Выполнено' : 'Ожидает проверки') +
+    result('Практика речи',speechCount() + ' / 6') +
+    result('Распознано микрофоном',state.mic.length + ' / 6') +
+    result('Отмечено самостоятельно',state.selfSpoken.length + ' слов; ' + selfQuizCount() + ' тестов (без оценки тонов)') +
+    result('Ответы в диалоге',state.chat.length + ' / 3') + '</dl><div class="controls"><button type="button" class="soft" data-step="3">Вернуться к тестам</button><a class="soft lesson-map-link" href="./hsk2-life-course.html?view=map">Все уроки</a></div></section>' +
+    (completed ? pandaAiShortcut() : '');
+}
+async function play(text,button) {
+  const clip = clips.get(normalize(text));
+  if (!clip) {
+    setStatus('Отдельной записи для «' + text + '» пока нет.');
+    return;
+  }
+  clearMedia();
+  const player = new Audio(clip);
+  audio = player;
+  const origin = scope();
+  button.setAttribute('aria-pressed','true');
+  const failure = () => {
+    if (audio !== player || origin !== scope()) return;
+    audio = null;
+    button.removeAttribute('aria-pressed');
+    setStatus('Запись не загрузилась. Попробуй прослушать ещё раз.');
+  };
+  player.addEventListener('error',failure,{once:true});
+  player.addEventListener('ended',() => {
+    if (audio !== player || origin !== scope()) return;
+    audio = null;
+    button.removeAttribute('aria-pressed');
+    const wordIndex = words.findIndex(word => normalize(word.zh) === normalize(text));
+    if (wordIndex >= 0 && !state.heardWords.includes(wordIndex)) {
+      state.heardWords.push(wordIndex);
+      save();
+    }
+    if (state.step === 3 && state.quizTest === 1) {
+      heardClip = origin;
+      for (const choice of workspace.querySelectorAll('[data-choice]')) choice.disabled = false;
+      setStatus('Выбери действие, которое прозвучало в конце.',true);
+    } else if (state.step === 2 && wordIndex >= 0) {
+      setStatus('✓ Прослушано ' + state.heardWords.length + ' из 6 слов.',true);
+      render();
+    } else {
+      setStatus('');
+    }
+  },{once:true});
+  try {
+    await player.play();
+    if (audio === player && origin === scope()) setStatus('Запись воспроизводится.',true);
+  } catch {
+    failure();
+  }
+}
+
+function recognize(allowed,onMatch,onMiss) {
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!Recognition || !window.isSecureContext) {
+    setStatus('Распознавание недоступно. Можно попробовать другой браузер или воспользоваться запасной самопроверкой в разделе «Речь».');
+    return;
+  }
+  clearMedia();
+  let instance;
+  try {
+    instance = new Recognition();
+    speech = instance;
+    instance.lang = 'zh-CN';
+    instance.continuous = false;
+    instance.interimResults = false;
+    instance.maxAlternatives = 3;
+    instance.onresult = event => {
+      if (speech !== instance) return;
+      speech = null;
+      const alternatives = Array.from(event.results[event.resultIndex || 0], item => item.transcript);
+      const match = allowed.find(text => alternatives.some(heard => normalize(heard) === normalize(text)));
+      if (match) onMatch(match);
+      else {
+        if (onMiss) onMiss();
+        setStatus('Распознано «' + (alternatives[0] || '…') + '». Попробуй ещё раз. Тоны не оценивались.');
+      }
+    };
+    instance.onerror = event => {
+      if (speech !== instance) return;
+      speech = null;
+      const errors = {
+        'not-allowed':'Разреши доступ к микрофону в настройках браузера и попробуй снова.',
+        'audio-capture':'Браузер не нашёл доступный микрофон.',
+        network:'Сервис распознавания речи недоступен. Проверь соединение и попробуй снова.',
+        'no-speech':'Браузер не распознал речь. Попробуй ещё раз.'
+      };
+      setStatus((errors[event.error] || 'Распознавание речи недоступно. Попробуй ещё раз.') +
+        ' Если проблема сохраняется, используй запасную самопроверку в разделе «Речь».');
+    };
+    instance.onend = () => {
+      if (speech !== instance) return;
+      speech = null;
+      setStatus('Речь не распознана. Попробуй ещё раз.');
+    };
+    instance.start();
+    setStatus('Слушаю…');
+  } catch {
+    if (speech === instance) speech = null;
+    setStatus('Микрофон не запустился. Проверь разрешение и попробуй снова.');
+  }
+}
+
+function markQuiz(ok,method) {
+  const t = state.quizTest;
+  const i = state.quizIndex;
+  const attempt = activeQuiz();
+  if (attempt.quiz[t][i]) return;
+  if (ok) {
+    const answer = {correctFirst:method !== 'self' && !attempt.missed[t][i],method};
+    attempt.quiz[t][i] = answer;
+    state.quiz[t][i] ??= {...answer,correctFirst:answer.correctFirst && !state.missed[t][i]};
+    save();
+    setStatus(method === 'self' ? '✓ Самостоятельная практика выполнена. Тоны не оценивались.'
+      : method === 'speech' ? '✓ Слово распознано. Тоны не оценивались.' : '✓ Верно. Ответ засчитан.',true);
+    render();
+  } else {
+    recordQuizMiss(t,i);
+    save();
+    setStatus('Пока неверно. Попробуй ещё раз.');
+  }
+}
+
+function recordQuizMiss(type,index) {
+  activeQuiz().missed[type][index] = true;
+  if (!state.quiz[type][index]) state.missed[type][index] = true;
+}
+
+function adjacentCourseTask(direction) {
+  const type = state.courseQuizType;
+  for (let index = state.courseQuizCursor + direction; index >= 0 && index < courseQuiz.length; index += direction) {
+    if (type === null || courseQuiz[index].type === type) return index;
+  }
+  return direction === 1 && type === null ? courseQuiz.length : -1;
+}
+
+function showCourseTask(cursor) {
+  clearMedia();
+  state.courseQuizCursor = cursor < 0 ? null : Math.min(cursor,courseQuiz.length);
+  if (cursor < 0) {
+    state.courseQuizType = null;
+    state.quizRetry = null;
+  }
+  state.quizPicked = [];
+  heardClip = null;
+  feedback = '';
+  render(true);
+  save();
+  workspace.querySelector('.section-panel h1[tabindex]')?.focus({preventScroll:true});
+}
+
+function startTests() {
+  if (!courseMode) {
+    openTest(Math.max(0,tests.findIndex((_,i) => correctCount(i) < words.length)));
+    return;
+  }
+  state.courseQuizType = null;
+  const firstPending = courseQuiz.findIndex(({type,index}) => !activeQuiz().quiz[type][index]);
+  if (firstPending < 0) startCourseReplay(null);
+  else showCourseTask(firstPending);
+}
+
+function startCourseReplay(type) {
+  state.courseQuizType = type;
+  state.quizRetry = {
+    quiz:tests.map(() => Array(words.length).fill(null)),
+    missed:tests.map(() => Array(words.length).fill(false))
+  };
+  showCourseTask(courseQuiz.findIndex(task => type === null || task.type === type));
+}
+
+function startCourseType(type) {
+  state.courseQuizType = type;
+  const firstPending = courseQuiz.findIndex(task => task.type === type && !state.quiz[type][task.index]);
+  if (firstPending < 0) startCourseReplay(type);
+  else showCourseTask(firstPending);
+}
+
+function openTest(test) {
+  clearMedia();
+  state.quizTest = test;
+  state.quizIndex = test === null ? 0 : Math.max(0,state.quiz[test].findIndex(result => !result));
+  state.quizPicked = [];
+  heardClip = null;
+  feedback = '';
+  save();
+  render(true);
+}
+
+function changeQuestion(direction) {
+  const index = state.quizIndex + direction;
+  if (index >= words.length) {
+    openTest(null);
+    return;
+  }
+  if (index < 0) return;
+  clearMedia();
+  state.quizIndex = index;
+  state.quizPicked = [];
+  heardClip = null;
+  feedback = '';
+  save();
+  render(true);
+}
+
+function update() {
+  feedback = '';
+  save();
+  render();
+}
+
+function markSelfSpoken(index) {
+  if (!Number.isInteger(index) || index < 0 || index >= words.length) return;
+  if (!state.heardWords.includes(index)) {
+    setStatus('Сначала прослушай запись этого слова, затем повтори его.');
+    return;
+  }
+  if (!state.selfSpoken.includes(index)) state.selfSpoken.push(index);
+  save();
+  setStatus('✓ Отмечено самостоятельное повторение. Правильность тонов не подтверждена.',true);
+  render();
+}
+function onMic(id) {
+  if (id === 'chat') {
+    const row = dialogue[state.chat.length];
+    if (!row) return;
+    recognize(row.answers.map(a => a[0]),answer => {
+      state.chat.push(answer);
+      save();
+      setStatus('✓ Ответ распознан.',true);
+      render();
+      followDialogue();
+    });
+  } else if (id === 'quiz') {
+    recognize([words[state.quizIndex].zh],() => markQuiz(true,'speech'),() => {
+      recordQuizMiss(state.quizTest,state.quizIndex);
+      save();
+    });
+  } else {
+    const index = Number(id);
+    recognize([words[index].zh],match => {
+      if (!state.mic.includes(index)) state.mic.push(index);
+      save();
+      setStatus('✓ Распознано «' + match + '». Тоны не оценивались.',true);
+      render();
+    });
+  }
+}
+
+function followDialogue() {
+  const target = workspace.querySelector('.dialogue .chat-bubble:last-of-type');
+  if (target) target.scrollIntoView({block:'nearest'});
+}
+
+function checkOrder(part,length,success,failure) {
+  const order = part === 'grammar' ? state.grammar : state.dayOrder;
+  const ok = order.length === length && order.every((value,i) => value === i);
+  state[part + 'Done'] = ok;
+  save();
+  setStatus(ok ? success : failure,ok);
+  render();
+}
+
+const actions = {
+  step: value => {
+    if (courseMode && state.step === 3 && Number(value) === 3) showCourseTask(-1);
+    else move(Number(value));
+  },
+  say: (value,button) => play(value,button),
+  test: value => openTest(Number(value)),
+  quizType: value => startCourseType(Number(value)),
+  quizRetry: value => startCourseReplay(value === 'all' ? null : Number(value)),
+  start: startTests,
+  question: value => changeQuestion(Number(value)),
+  choice: value => {
+    const correct = state.quizTest === 1 ? listening[state.quizIndex][1] : state.quizIndex;
+    markQuiz(Number(value) === correct,'choice');
+  },
+  letter: value => { state.quizPicked.push(Number(value)); update(); },
+  letterClear: () => { state.quizPicked = []; update(); },
+  letterCheck: () => {
+    const target = words[state.quizIndex].zh;
+    markQuiz(state.quizPicked.map(i => [...target][i]).join('') === target,'assemble');
+  },
+  gram: value => { state.grammar.push(Number(value)); state.grammarDone = false; update(); },
+  gramUndo: () => { state.grammar.pop(); state.grammarDone = false; update(); },
+  gramClear: () => { state.grammar = []; state.grammarDone = false; update(); },
+  gramCheck: () => checkOrder('grammar',5,'✓ Верно. После 起床 ставим 以后, затем 洗脸。','Проверь порядок. Сначала подлежащее и первое действие, затем 以后 и второе действие.'),
+  day: value => { state.dayOrder.push(Number(value)); state.dayDone = false; update(); },
+  dayUndo: () => { state.dayOrder.pop(); state.dayDone = false; update(); },
+  dayReset: () => { state.dayOrder = []; state.dayShuffled = mixedDay(); state.dayDone = false; update(); },
+  dayCheck: () => checkOrder('day',6,'✓ Все шесть действий по порядку.','Проверь все шесть действий, от подъёма до сна.'),
+  toneTab: value => { clearMedia(); state.toneTab = value; update(); },
+  practiceMode: value => { if (value === 'mic' || value === 'self') {state.practiceMode = value; update();} },
+  selfSpoken: value => markSelfSpoken(Number(value)),
+  selfQuiz: () => { if (state.step === 3 && state.quizTest === 4) markQuiz(true,'self'); },
+  mic: value => onMic(value),
+  chat: value => {
+    clearMedia();
+    state.chat.push(dialogue[state.chat.length].answers[Number(value)][0]);
+    update();
+    followDialogue();
+  },
+  chatReset: () => { clearMedia(); state.chat = []; update(); }
+};
+
+let pressedNavButton;
+let pressedNavTimer;
+app.addEventListener('click',event => {
+  const button = event.target.closest('.pg433-header button, .pg433-footer button');
+  if (!button || button.disabled) return;
+  pressedNavButton?.classList.remove('lesson-button-pressed');
+  clearTimeout(pressedNavTimer);
+  pressedNavButton = button;
+  button.classList.add('lesson-button-pressed');
+  pressedNavTimer = setTimeout(() => button.classList.remove('lesson-button-pressed'),160);
+},true);
+
+app.addEventListener('click',event => {
+  const button = event.target.closest('button');
+  if (!button || button.disabled) return;
+  for (const [action,value] of Object.entries(button.dataset)) {
+    if (Object.hasOwn(actions,action)) {
+      actions[action](value,button);
+      break;
+    }
+  }
+});
+
+function previousStep() {
+  if (courseMode && state.step === 3 && state.courseQuizCursor !== null) {
+    showCourseTask(-1);
+  } else if (state.step === 3 && state.quizTest !== null) {
+    openTest(null);
+  } else {
+    move(courseMode ? courseSteps[courseSteps.indexOf(state.step)-1] : state.step-1);
+  }
+}
+
+back.addEventListener('click',previousStep);
+headBack.addEventListener('click',previousStep);
+next.addEventListener('click',() => {
+  if (!currentStepComplete()) {
+    setStatus('Заверши текущее упражнение, чтобы продолжить.');
+    return;
+  }
+  if (courseMode && state.step === 3) {
+    if (state.courseQuizCursor === null) {
+      startTests();
+      return;
+    }
+    if (state.quizTest !== null) {
+      showCourseTask(adjacentCourseTask(1));
+      return;
+    }
+  }
+  move(state.step === 8 ? 1 : (courseMode ? courseSteps[courseSteps.indexOf(state.step)+1] : state.step+1),true);
+});
+
+reconcileUnlockedProgress();
+const fromQuery = Number(layoutParams.get('step'));
+if (Number.isInteger(fromQuery) && fromQuery >= 1 && fromQuery <= 8 && canOpenStep(fromQuery)) {
+  if (!courseMode || state.step !== fromQuery) state.quizTest = null;
+  state.step = fromQuery;
+}
+if (!Number.isInteger(state.step) || state.step < 1 || state.step > 8) state.step = 1;
+if (courseMode && !canOpenStep(state.step)) {
+  state.step = 2;
+  state.quizTest = null;
+  state.courseQuizCursor = null;
+}
+if (courseMode) {
+  layoutParams.set('step',state.step);
+  history.replaceState({pgHsk2Lesson1:true,step:state.step},'','?' + layoutParams + location.hash);
+  window.addEventListener('popstate',event => {
+    if (!event.state?.pgHsk2Lesson1) return;
+    const requested = Number(event.state.step);
+    const target = Number.isInteger(requested) && requested >= 1 && requested <= 8 && canOpenStep(requested)
+      ? requested : 2;
+    clearMedia();
+    state.step = target;
+    state.quizTest = null;
+    state.courseQuizCursor = null;
+    feedback = '';
+    layoutParams.set('step',target);
+    save();
+    render(true);
+  });
+}
+save();
+render(true);
+
+window.PandaGoHSK2Preview = {
+  getProgress: () => JSON.parse(JSON.stringify(state)),
+  goToStep: move
+};
+</script>
+</body>
+</html>
