@@ -50,6 +50,26 @@
 .file-upload label{font-weight:750;font-size:13px;display:block;margin-bottom:8px}
 .file-upload input{width:100%;font-size:13px;color:#603979}
 .file-hint{font-size:11px;color:#785b85;line-height:1.55;margin:8px 0 0}
+
+/* Auditory Mandarin tones: pedagogical guides are never measurement or a grade. */
+.compare-trigger{width:100%;margin:10px 0;padding:11px 12px;border:1px solid #be8ed6;border-radius:13px;background:linear-gradient(145deg,#f5e6fd,#e9d5f6);color:#683383;font:780 13px/1.35 system-ui,sans-serif;box-shadow:0 3px 0 #d8b3e7;cursor:pointer}
+.compare-trigger[disabled]{opacity:.5;cursor:default}
+.compare-trigger:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 #d8b3e7}
+.compare-trigger:focus-visible{outline:3px solid #a35ec9;outline-offset:2px}
+.compare-guide[hidden]{display:none}
+.compare-guide{border-radius:16px;border:1px solid #e6cbe9;background:#fcf6ff;padding:11px;margin:3px 0 13px}
+.compare-head{display:flex;flex-wrap:wrap;gap:7px;align-items:baseline;margin:0 0 7px}
+.compare-head b{font-size:17px}
+.compare-head span{font-size:12px;color:#795c84}
+.compare-columns{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.compare-panel{min-width:0;border:1px solid #e6d7ed;background:#fff;border-radius:12px;padding:8px 7px}
+.compare-panel strong{font-size:11px;color:#64437e;display:block;margin-bottom:5px}
+.compare-panel svg{display:block;width:100%;height:auto}
+.compare-legend{font-size:10px;line-height:1.35;color:#806a88;margin-top:4px}
+.compare-note{font-size:12px;line-height:1.55;color:#684d7a;background:#f1e5f8;border-radius:10px;padding:9px 10px;margin:9px 0 0}
+.compare-warning{font-size:11px;line-height:1.45;color:#7a6482;margin:9px 0 0}
+.compare-empty{font-size:12px;line-height:1.4;color:#947899}
+@media(max-width:330px){.compare-columns{gap:5px}.compare-panel{padding:6px 4px}}
 </style></head><body><main>
 <span class="kicker">🐼 PANDA GO · ТЕСТ НОСИТЕЛЬНИЦЫ · 4 СЛОГА</span>
 <h1>🎙️ Тест реальной записи</h1>
@@ -92,6 +112,35 @@
 <section class="panel"><h2>Тон каждого слога</h2>
 <p class="small">Нажми на иероглиф: внизу появится увеличенная кривая. Пунктир — загруженный образец; фиолетовая линия — твой голос.</p>
 <div class="syllables" id="syllables" role="group" aria-label="Четыре слога предложения"></div>
+
+<button id="compare-tones" class="compare-trigger" type="button" disabled aria-expanded="false" aria-controls="comparison-guide">📈 Сравнить с правильными тонами</button>
+<div id="comparison-guide" class="compare-guide" hidden aria-live="polite">
+ <div class="compare-head"><b id="cmp-title">我 · wǒ</b><span id="cmp-tone">Третий тон</span></div>
+ <div class="compare-columns">
+  <div class="compare-panel">
+   <strong>Ожидаемое движение</strong>
+   <svg viewBox="0 0 160 104" role="img" aria-label="Условная учебная схема движения тона">
+    <path d="M13 17H149 M13 51H149 M13 83H149" stroke="#ebe0f0" stroke-dasharray="3 5" stroke-width="1"/>
+    <path id="cmp-ideal" stroke="#bc8a51" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text id="cmp-no-ideal" x="81" y="44" font-size="12" text-anchor="middle" fill="#806986" style="display:none">Нет фиксированной</text>
+    <text id="cmp-no-ideal-2" x="81" y="61" font-size="12" text-anchor="middle" fill="#806986" style="display:none">кривой</text>
+    <text x="81" y="100" font-size="9" text-anchor="middle" fill="#8a7293">Условная схема</text>
+   </svg>
+  </div>
+  <div class="compare-panel">
+   <strong>Измерено в MP3</strong>
+   <svg viewBox="0 0 160 104" role="img" aria-label="Измеренные точки высоты голоса выбранного слога">
+    <path d="M13 17H149 M13 51H149 M13 83H149" stroke="#ebe0f0" stroke-dasharray="3 5" stroke-width="1"/>
+    <path id="cmp-measured" stroke="#7952ba" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text id="cmp-empty" x="81" y="51" font-size="11" text-anchor="middle" fill="#967f9f" style="display:none">Мало точек F0</text>
+    <text x="81" y="100" font-size="9" text-anchor="middle" fill="#8a7293">Реальное движение</text>
+   </svg>
+  </div>
+ </div>
+ <p class="compare-note" id="cmp-note">Выбери иероглиф, чтобы увидеть объяснение.</p>
+ <p class="compare-warning" id="cmp-warning">Схема справа и измерение слева служат разным целям: сравнивай направление движения, а не высоту или идеальное совпадение линий. Границы слогов предварительные. Оценка правильности не выставляется.</p>
+</div>
+
 <svg id="large" class="chart" viewBox="0 0 340 150" role="img" aria-label="Сравнение контура высоты выбранного слога"><path d="M25 35H323 M25 73H323 M25 111H323" stroke="#e8daed" stroke-dasharray="4 5"/><path id="reference-line" stroke="#b09bbf" stroke-width="3.8" stroke-dasharray="7 6" fill="none"/><path id="learner-line" stroke="#7a50b5" stroke-width="3.8" fill="none"/><text x="8" y="14" fill="#886a98" font-size="10">Выше ↑</text><text x="267" y="142" fill="#886a98" font-size="10">Время →</text></svg>
 <div class="legend"><span><i class="line ref"></i> Образец урока</span><span><i class="line"></i> Твой голос</span></div>
 <details id="boundary-controls" hidden><summary>⚙️ Уточнить границы слогов</summary><p class="boundary-hint">Границы приблизительные. Если разделитель оказался не там, сдвинь ползунок. Меняется только отображение графика, не запись.</p><div id="boundary-sliders"></div><button type="button" id="boundary-reset">↻ Вернуть автоматические границы</button></details><p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
@@ -223,6 +272,76 @@ function showFocus(){
  rect.setAttribute('width',String(xAt(bounds[selected+1]-a)-xAt(bounds[selected]-a)));
 }
 
+
+/* Chinese tone teaching aid: expectations are conceptual, not canonical F0 values.
+ * Do not compare vertical coordinates directly with measured F0, nor assign scores.
+ * The recording's timing segmentation is approximate and may cross syllables.
+ */
+const toneTeaching=[
+ {zh:'我',py:'wǒ',name:'3-й тон · низкий',shape:'M13 39 Q47 64 82 72 T149 71',color:'#d1ad57',
+  expect:'Перед 是 (4-й тон) третий тон 我 обычно остаётся низким; полный изгиб вниз-вверх не обязателен.'},
+ {zh:'是',py:'shì',name:'4-й тон · нисходящий',shape:'M13 18 C43 27 106 67 149 83',color:'#d88962',
+  expect:'Для shì ожидается заметное понижение высоты голоса в пределах слога.'},
+ {zh:'学',py:'xué',name:'2-й тон · восходящий',shape:'M13 78 C52 74 103 35 149 17',color:'#9c83d5',
+  expect:'Для xué ожидается восходящее движение высоты голоса; начальная часть может быть относительно низкой.'},
+ {zh:'生',py:'sheng',name:'Нейтральный тон · лёгкий',shape:null,color:'#7cbaa1',
+  expect:'У нейтрального sheng нет одной обязательной тоновой кривой: она зависит от предыдущего слога, интонации и длительности. Проверять его только графиком нельзя.'}
+];
+let compareOpen=false;
+function measuredSyllable(i){
+ if(!reference?.valid||reference.bounds?.length!==tokens.length+1)return {valid:false,points:[],note:'Сначала загрузи запись.'};
+ const a=reference.bounds[i],b=reference.bounds[i+1];
+ const points=reference.frames.filter(p=>p.t>=a&&p.t<=b&&Number.isFinite(p.hz)&&p.hz>0);
+ if(points.length<4||b-a<.09)return {valid:false,points,note:'На выделенном участке недостаточно устойчивых точек высоты голоса.'};
+ const hzBase=median(points.map(p=>p.hz));
+ if(!hzBase)return {valid:false,points,note:'Частота на этом слоге не определилась.'};
+ const semitones=points.map(p=>12*Math.log2(p.hz/hzBase));
+ const parts=Math.max(2,Math.floor(points.length*.25));
+ const first=median(semitones.slice(0,parts));
+ const last=median(semitones.slice(-parts));
+ const delta=last-first;
+ const missing=points.some((p,k)=>k>0&&(p.t-points[k-1].t>.115||
+   Math.abs(12*Math.log2(p.hz/points[k-1].hz))>8));
+ let d='',prior=null;
+ for(let k=0;k<points.length;k++){
+  const p=points[k],v=semitones[k];
+  const x=13+136*(p.t-a)/(b-a);
+  const y=Math.max(14,Math.min(84,51-7.2*v));
+  const jump=prior&&Math.abs(12*Math.log2(p.hz/prior.hz))>8;
+  const gap=prior&&p.t-prior.t>.115;
+  d+=(prior&&!gap&&!jump?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)+' ';
+  prior=p;
+ }
+ const heading=Math.abs(delta)<1.5?'высота меняется слабо':delta>0?'голос преимущественно повышается':'голос преимущественно снижается';
+ return {valid:true,points,path:d.trim(),note:'На выделенном участке '+heading+'. Точек F0: '+points.length+'.'+(missing?' Есть разрывы или резкие скачки измерения.':''),
+  uncertain:missing,delta};
+}
+function renderToneComparison(){
+ const pane=$('comparison-guide'),btn=$('compare-tones');
+ btn.disabled=!reference?.valid;
+ btn.setAttribute('aria-expanded',String(compareOpen));
+ pane.hidden=!compareOpen;
+ if(!compareOpen)return;
+ const tone=toneTeaching[selected],measure=measuredSyllable(selected);
+ $('cmp-title').textContent=tone.zh+' · '+tone.py;
+ $('cmp-tone').textContent=tone.name;
+ $('cmp-ideal').setAttribute('d',tone.shape||'');
+ $('cmp-ideal').setAttribute('stroke',tone.color);
+ $('cmp-no-ideal').style.display=tone.shape?'none':'';
+ $('cmp-no-ideal-2').style.display=tone.shape?'none':'';
+ $('cmp-measured').setAttribute('d',measure.valid?measure.path:'');
+ $('cmp-empty').style.display=measure.valid?'none':'';
+ $('cmp-note').textContent=tone.expect+' '+measure.note;
+ $('cmp-warning').textContent=measure.uncertain
+  ?'Есть пропуски F0. Границы слога и направление могут быть ошибочными. Схема — ориентир, не шкала правильности. Зелёные галочки и проценты здесь намеренно отсутствуют.'
+  :'Схема показывает типичное направление, а не нормативную запись для побуквенного совпадения. В каждой панели своя вертикальная шкала; границы слога приблизительные. Итоговой оценки правильности нет.';
+}
+$('compare-tones').addEventListener('click',()=>{
+ if(!reference?.valid)return;
+ compareOpen=!compareOpen;
+ renderToneComparison();
+});
+
 function render(){
  const parent=$('syllables');parent.innerHTML='';
  for(let i=0;i<tokens.length;i++){
@@ -232,6 +351,7 @@ function render(){
  $('learner-line').setAttribute('d',path(learner,selected,25,22,298,106));
  const refCount=reference?.frames.filter(x=>x.t>=reference.bounds[selected]&&x.t<=reference.bounds[selected+1]).length||0;
  const userCount=learner?.frames.filter(x=>x.t>=learner.bounds[selected]&&x.t<=learner.bounds[selected+1]).length||0;
+ renderToneComparison();
  $('detail').textContent=tokens[selected].zh+' · '+tokens[selected].py+' — '+tokens[selected].tone+'. '+describeMovement(selected)+' Точки F0: образец '+refCount+', ученик '+userCount+'. Нет точек F0 — не обязательно ошибка ученика. Оценка правильности не выставляется.';
 }
 async function decode(url){const resp=await fetch(url);if(!resp.ok)throw new Error('Не удалось прочитать запись');const b=await resp.arrayBuffer();const c=new (window.AudioContext||window.webkitAudioContext)();try{return await c.decodeAudioData(b.slice(0));}finally{await c.close();}}
