@@ -1,0 +1,238 @@
+/* Panda Go · HSK2 My Day · compact control layout v1.
+   Source UX: approved screenshot #1 screen, screenshot #2 (Street) control locations only.
+   Scope intentionally excludes Panda Street and all regular Panda AI conversations.
+   All scenery, panda, voice, stone and skin colors remain inherited. */
+#pg346[data-day-scenario="ready"] .pg-day-panel{
+  flex:0 0 auto!important;
+  margin:4px clamp(7px,2vw,12px) 2px!important;
+  padding:clamp(7px,1.8vw,10px) clamp(10px,2.8vw,15px)!important;
+  border-radius:clamp(16px,5vw,23px)!important;
+  max-height:min(26dvh,206px)!important;
+  gap:3px!important;
+  overflow:auto!important;
+  scrollbar-width:thin;
+}
+#pg346[data-day-scenario="ready"] .pg-day-title{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:clamp(3px,1vw,6px)!important;
+  min-width:0!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-title b{
+  min-width:0;flex:1 1 auto;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;
+  font-size:clamp(11px,2.9vw,15px);
+}
+#pg346[data-day-scenario="ready"] .pg-day-title #day-step{
+  flex:0 0 auto;order:3;font-size:clamp(10px,2.6vw,13px)!important;
+  font-variant-numeric:tabular-nums;
+}
+#pg346[data-day-scenario="ready"] .pg-day-title .pg-day-toggles{
+  display:flex!important;order:2;flex:0 0 auto;
+  gap:clamp(3px,.8vw,6px)!important;
+  margin-left:auto!important;
+  align-items:center!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-title .pg-day-toggles button{
+  min-width:32px!important;width:32px!important;height:29px!important;
+  min-height:29px!important;padding:2px 4px!important;
+  font-weight:850!important;font-size:clamp(11px,2.8vw,13px)!important;
+  display:grid!important;place-items:center!important;
+  color:var(--pg500-copy)!important;background:var(--pg500-panel)!important;
+  border:1px solid var(--pg500-edge)!important;
+  box-shadow:0 1px 4px #07173a55!important;border-radius:9px!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-title .pg-day-toggles button[aria-pressed="false"]{
+  opacity:.48;
+}
+#pg346[data-day-scenario="ready"] .pg-day-title .pg-day-toggles a{display:none!important}
+#pg346[data-day-scenario="ready"] #day-zh{
+  font-size:clamp(23px,5.9vw,34px)!important;line-height:1.17!important;
+}
+#pg346[data-day-scenario="ready"] #day-py,
+#pg346[data-day-scenario="ready"] #day-ru{
+  font-size:clamp(11px,2.95vw,15px)!important;line-height:1.25!important;
+}
+#pg346[data-day-scenario="ready"] #day-status{
+  max-height:clamp(38px,7dvh,72px)!important;
+  overflow:auto!important;line-height:1.3!important;
+  font-size:clamp(11px,2.72vw,13px)!important;
+}
+#pg346[data-day-scenario="ready"] .pg346-scene{
+  flex:1 1 0!important;
+  min-height:clamp(180px,32dvh,350px)!important;
+  overflow:hidden!important;
+}
+/* Short right-side rail, like the control hierarchy in the supplied Street mockup.
+   Existing scenic art stays untouched; only controls move in the DOM. */
+#pg346[data-day-scenario="ready"] .pg-day-rail{
+  position:absolute!important;z-index:28!important;
+  top:46%!important;right:clamp(8px,2.4vw,17px)!important;
+  transform:translateY(-33%);
+  width:clamp(52px,13.7vw,69px)!important;
+  display:flex!important;flex-direction:column!important;
+  gap:clamp(10px,2.2dvh,19px)!important;
+  align-items:center!important;
+  pointer-events:none;
+}
+#pg346[data-day-scenario="ready"] .pg-day-rail button{
+  pointer-events:auto;
+  flex:0 0 auto!important;display:flex!important;
+  align-items:center!important;justify-content:center!important;
+  flex-direction:column!important;gap:1px!important;
+  width:clamp(50px,13.3vw,65px)!important;
+  height:clamp(50px,13.3vw,65px)!important;
+  padding:3px!important;
+  font-size:0!important;
+  border:1px solid var(--pg500-edge)!important;
+  border-radius:50%!important;
+  background:var(--pg500-btn)!important;
+  color:#fff!important;
+  box-shadow:0 3px 9px #061a3b77,0 0 5px var(--pg500-glow)!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-rail #day-hear::before{
+  content:"🔊";font-size:clamp(22px,6vw,29px)!important;line-height:1.05;
+}
+#pg346[data-day-scenario="ready"] .pg-day-rail #day-hear::after{
+  content:"Повтор";font-size:clamp(9px,2.5vw,11px)!important;line-height:1;
+  white-space:nowrap;font-weight:700;
+}
+#pg346[data-day-scenario="ready"] .pg-day-rail #day-hint::before{
+  content:"💡";font-size:clamp(22px,6vw,29px)!important;line-height:1.05;
+}
+#pg346[data-day-scenario="ready"] .pg-day-rail #day-hint::after{
+  content:"Подсказка";font-size:clamp(9px,2.5vw,11px)!important;line-height:1;
+  white-space:nowrap;font-weight:700;
+}
+#pg346[data-day-scenario="ready"] .pg-day-rail button:disabled{opacity:.42!important}
+/* Exactly ONE action row between scene and the five main navigation icons. */
+#pg346[data-day-scenario="ready"] .pg-day-controls{
+  flex:0 0 auto!important;
+  min-height:clamp(53px,7.5dvh,67px)!important;
+  max-height:none!important;
+  margin:0 clamp(8px,2.5vw,14px) 4px!important;
+  padding:6px 8px!important;
+  border-radius:18px!important;
+  gap:0!important;
+  display:flex!important;justify-content:center!important;
+  background:var(--pg500-panel)!important;
+  box-shadow:0 2px 8px #0c254a55!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-buttons{
+  display:flex!important;
+  width:100%!important;flex:1 1 auto!important;min-width:0;
+  gap:6px!important;flex-wrap:nowrap!important;
+  align-items:center!important;justify-content:center!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-entry{
+  display:flex!important;
+  width:100%!important;flex:1 1 auto!important;
+  min-width:0;gap:6px!important;
+  align-items:center!important;justify-content:center!important;
+}
+#pg346[data-day-phase="ready"] .pg-day-entry,
+#pg346[data-day-phase="intro"] .pg-day-entry,
+#pg346[data-day-phase="story"] .pg-day-entry,
+#pg346[data-day-phase="summary"] .pg-day-entry,
+#pg346[data-day-phase="results"] .pg-day-entry,
+#pg346[data-day-phase="questions"] .pg-day-buttons,
+#pg346[data-day-phase="monologue"] .pg-day-buttons{
+  display:none!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-controls button{
+  border-radius:13px!important;
+  min-height:42px!important;
+  box-shadow:0 3px 6px #05173470!important;
+  transition:transform .15s ease,filter .15s ease!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-controls button:active,
+#pg346[data-day-scenario="ready"] .pg-day-rail button:active{
+  transform:translateY(2px) scale(.97)!important;
+  filter:brightness(.88)!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-buttons #day-start,
+#pg346[data-day-scenario="ready"] .pg-day-buttons #day-pause,
+#pg346[data-day-scenario="ready"] .pg-day-buttons #day-retry{
+  flex:1 1 auto!important;
+  min-width:140px!important;
+  max-width:340px!important;
+  font-size:clamp(13px,3.5vw,17px)!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-buttons #day-pause{
+  background:var(--pg500-btn)!important;
+  color:#fff!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-entry input,
+#pg346[data-day-scenario="ready"] .pg-day-entry textarea{
+  width:auto!important;
+  height:43px!important;min-height:43px!important;
+  min-width:0!important;flex:1 1 0!important;
+  margin:0!important;font-size:16px!important;
+  padding:7px 9px!important;border-radius:12px!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-entry textarea{
+  resize:none!important;line-height:1.2!important;
+  max-height:43px!important;overflow:auto!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-entry #day-send,
+#pg346[data-day-scenario="ready"] .pg-day-entry #day-mic{
+  flex:0 0 clamp(42px,11vw,49px)!important;
+  width:clamp(42px,11vw,49px)!important;
+  min-width:0!important;height:43px!important;
+  border-radius:50%!important;
+  font-size:clamp(21px,5.5vw,25px)!important;
+  padding:0!important;display:grid!important;place-items:center!important;
+  background:var(--pg500-btn)!important;color:white!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-entry #day-finish{
+  flex:0 0 clamp(82px,24vw,125px)!important;
+  min-width:0!important;height:43px!important;
+  font-size:clamp(11px,2.6vw,13px)!important;
+  line-height:1.1!important;padding:4px 5px!important;
+}
+#pg346[data-day-phase="monologue"] .pg-day-entry #day-mic{
+  flex-basis:clamp(40px,10vw,45px)!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-toggles{display:none!important}
+#pg346[data-day-scenario="ready"] .pg346-nav{z-index:5!important}
+:root[data-keyboard="true"] #pg346[data-day-scenario="ready"] .pg-day-panel{
+  max-height:28dvh!important;
+}
+:root[data-keyboard="true"] #pg346[data-day-scenario="ready"] .pg346-scene{
+  min-height:75px!important;
+}
+:root[data-keyboard="true"] #pg346[data-day-scenario="ready"] .pg-day-rail{
+  top:20%!important;transform:none!important;
+}
+@media(max-height:700px){
+ #pg346[data-day-scenario="ready"] .pg-day-panel{
+   max-height:26dvh!important;
+ }
+ #pg346[data-day-scenario="ready"] .pg346-scene{
+   min-height:150px!important;
+ }
+ #pg346[data-day-scenario="ready"] .pg-day-controls{
+   min-height:48px!important;
+   padding:4px 7px!important;
+ }
+ #pg346[data-day-scenario="ready"] .pg-day-controls button{min-height:39px!important}
+ #pg346[data-day-scenario="ready"] .pg-day-entry input,
+ #pg346[data-day-scenario="ready"] .pg-day-entry textarea{height:39px!important;min-height:39px!important}
+ #pg346[data-day-scenario="ready"] .pg-day-entry #day-send,
+ #pg346[data-day-scenario="ready"] .pg-day-entry #day-mic,
+ #pg346[data-day-scenario="ready"] .pg-day-entry #day-finish{height:39px!important}
+}
+@media(max-width:355px){
+ #pg346[data-day-scenario="ready"] .pg-day-title b{font-size:11px!important}
+ #pg346[data-day-scenario="ready"] .pg-day-title .pg-day-toggles button{
+   min-width:28px!important;width:28px!important;height:27px!important;min-height:27px!important;
+ }
+ #pg346[data-day-scenario="ready"] .pg-day-controls{margin-inline:6px!important;padding-inline:5px!important}
+ #pg346[data-day-scenario="ready"] .pg-day-entry{gap:4px!important}
+ #pg346[data-day-scenario="ready"] .pg-day-entry #day-finish{flex-basis:78px!important;font-size:10px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #pg346[data-day-scenario="ready"] .pg-day-controls button,
+ #pg346[data-day-scenario="ready"] .pg-day-rail button{transition:none!important}
+}
