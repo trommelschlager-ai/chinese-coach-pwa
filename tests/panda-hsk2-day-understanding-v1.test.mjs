@@ -26,6 +26,8 @@ const cases=[
  ['我晚上十点睡觉',4,'accepted'],['十一点半',4,'accepted'],
  ['我凌晨一点睡觉',4,'accepted'],['我睡得很晚',4,'clarify'],
  ['我想十一点睡觉',4,'clarify'],
+ ['你喜欢什么？',1,'other-question'],['你叫什么名字？',2,'other-question'],
+ ['为什么不吃早饭？',0,'other-question'],['Как дела?',3,'other-question'],
  ['你每天几点起床？',4,'user-question'],
  ['你早上吃早饭吗？',1,'user-question'],
  ['你几点去上班？',0,'user-question']
