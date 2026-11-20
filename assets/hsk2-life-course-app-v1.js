@@ -183,8 +183,25 @@ function viewWelcome(){
  '<a class="approved-hotspot poster-welcome-ai-card" href="./panda-voice-pilot.html" aria-label="Открыть Panda AI через карточку"></a>'+
  '</div></section>';
 }
+function mainLessonProgress(){
+  // Main lessons have their own records; do not derive them from the 30-mini-lesson trainer.
+  function read(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}}
+  function finished(state){
+    if(!state || !Array.isArray(state.quiz) || state.quiz.length!==5 ||
+       !state.quiz.every(row=>Array.isArray(row)&&row.length===6&&row.every(Boolean)))return false;
+    const spoken=[...(Array.isArray(state.mic)?state.mic:[]),...(Array.isArray(state.selfSpoken)?state.selfSpoken:[])];
+    return Array.isArray(state.heardWords)&&new Set(state.heardWords).size===6 &&
+      state.grammarDone===true&&state.dayDone===true &&
+      new Set(spoken).size===6&&Array.isArray(state.chat)&&state.chat.length===3;
+  }
+  function done(k){const s=read(k);return Array.isArray(s?.completed)&&s.completed.includes(0)}
+  return [
+    done('pg-hsk2-about-me-preview-v1')||finished(read('panda-go-hsk2-about-me-v1')),
+    done('pg-hsk2-my-day-main-v1')||finished(read('panda-go-hsk2-lesson1-word-flow-review-v1'))
+  ];
+}
 function viewMap(){
- if(window.PandaGoStoryboardV433)return window.PandaGoStoryboardV433.mapView(topics,state.completed,state.catalogExpanded);
+ if(window.PandaGoStoryboardV433)return window.PandaGoStoryboardV433.mapView(topics,state.completed,state.catalogExpanded,mainLessonProgress());
  const counts=topics.map(function(t,i){return [0,1,2].filter(function(m){return state.completed.includes(i*3+m)}).length});
  return '<section class="approved-stage approved-map-screen" style="--approved-image:url(./assets/approved-course-v390/course-map.png)" aria-label="Карта курса: десять тем, 30 мини-уроков"><div class="approved-art">'+
  '<img src="./assets/approved-course-v390/course-map.png" alt="Panda Go: десять жизненных тем — мой распорядок дня, работа, хобби, город, транспорт, кафе, покупки, встречи, опыт, планы. Все темы открываются по нажатию." width="941" height="1672" decoding="async" draggable="false">'+
