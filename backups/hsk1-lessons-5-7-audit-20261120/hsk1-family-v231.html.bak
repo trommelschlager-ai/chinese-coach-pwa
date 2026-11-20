@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#f8f2ff">
+<meta name="description" content="Panda Go · HSK1 · Урок 6: Моя семья. 14 экранов в утверждённом дизайне, оригинальное китайское произношение.">
+<meta name="panda-go-lesson6-audio" content="Xiaoxiao v274 · vocabulary image cards v280" />
+<title>Урок 6 · Моя семья — Panda Go</title>
+<link rel="stylesheet" href="./assets/panda-go-approved-lessons-v231.css?v=289">
+<link rel="preload" as="image" href="./assets/lesson6-photos-v276/yeye.webp" type="image/webp">
+<link rel="preload" as="image" href="./assets/lesson6-photos-v276/nainai.webp" type="image/webp">
+<link rel="preload" as="image" href="./assets/lesson6-photos-v277/waigong.webp" type="image/webp">
+<link rel="preload" as="image" href="./assets/lesson6-photos-v277/waipo.webp" type="image/webp">
+<script src="./assets/lesson-viewport.js?v=237"></script>
+<link rel="stylesheet" href="./assets/hanzi-writing-shortcut-v283.css?v=283">
+<link rel="stylesheet" href="./assets/hsk1-finish-buttons-v296.css?v=296">
+<link rel="stylesheet" href="./assets/hsk1-headers-v421.css?v=421">
+<link rel="stylesheet" href="./assets/hsk1-next-only-v440.css?v=440">
+<script defer src="./assets/hsk1-next-only-v440.js?v=440"></script>
+<script defer src="./assets/panda-translation-guard-v503.js?v=503"></script>
+</head>
+<body data-pg-hsk1="6">
+<main class="app" data-lesson="6" data-step="0" aria-label="Panda Go, урок 6: Моя семья">
+<header class="pg-hsk1-header" data-pg-hsk1-header>
+ <a class="pg-hsk1-back" href="./hsk1-map.html" aria-label="К карте HSK1">‹</a>
+ <div class="pg-hsk1-brand"><span class="pg-hsk1-panda" aria-hidden="true"></span><div><strong>Panda <em>Go</em></strong><small>Китайский с нуля</small></div></div>
+ <div class="pg-hsk1-tools"><a class="pg-hsk1-write" href="./hanzi-writing.html?lesson=6" title="Письмо иероглифов" aria-label="Тренажёр написания иероглифов — урок 6">✍️</a><span class="pg-hsk1-count" id="pg5-count" aria-live="polite">1 из 14</span></div>
+</header>
+<div class="bar pg-hsk1-progress" role="progressbar" aria-label="Прогресс урока 6" aria-valuemin="1" aria-valuemax="14"><div id="pg5-fill" class="fill"></div></div>
+<section id="pg5-scroll" class="body">
+<div class="kicker" id="pg5-kicker">УРОК 6 · HSK1</div>
+<h1 id="pg5-title">Моя семья</h1>
+<p id="pg5-subtitle" class="subtitle">Учим китайский с Panda Go</p>
+<div id="pg5-stage" aria-live="polite"></div>
+<p id="pg5-status" class="result" role="status" aria-live="polite" hidden></p>
+</section>
+<footer class="footer"><button type="button" id="pg5-prev" class="soft">← Назад</button><button type="button" id="pg5-next" class="soft primary">Начать урок →</button></footer>
+</main>
+<script src="./assets/hsk1-foundations-data-v152.js?v=188"></script>
+<script src="./assets/hsk1-voices-map-v160.js?v=160"></script>
+<script src="./assets/hsk1-native-human-map-v167.js?v=167"></script>
+<script src="./assets/native-owner-v200.js?v=200"></script>
+<script src="./assets/panda-owner-lessons5-7-native-v221.js?v=221"></script>
+<script src="./assets/vendor/hanzi-writer.min.js"></script>
+<script src="./assets/lesson-visuals-v233.js?v=289"></script>
+<script src="./assets/panda-mic-v236.js?v=292"></script>
+<script src="./assets/fallback-audio-v237.js?v=237"></script>
+<script src="./assets/owner-audio-v237.js?v=237"></script>
+<script src="./assets/lesson6-xiaoxiao-v274.js?v=274"></script>
+<script src="./assets/lesson6-grandparents-v275.js?v=275"></script>
+<script src="./assets/panda-go-hsk1-path-v371.js?v=371"></script>
+<script src="./assets/panda-go-companion-v231.js?v=371"></script>
+<script src="./assets/lesson-audio-source.js?v=282"></script>
+<script defer src="./assets/panda-tone-lesson-entry-v469.js?v=469"></script>
+</body>
+</html>
