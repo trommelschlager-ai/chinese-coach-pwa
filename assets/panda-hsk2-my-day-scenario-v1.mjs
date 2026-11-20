@@ -222,7 +222,22 @@ function init(stage){
  $('day-send').onclick=()=>answer($('day-input').value);
  $('day-input').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();answer($('day-input').value)}};
  $('day-mic').onclick=mic;
- $('day-hear').onclick=()=>{stop();if(last)speak(last)};
+ $('day-hear').onclick=async()=>{
+  const clip=last,mode=phase,position=i;
+  if(!clip)return;
+  stop();const token=sequence;
+  await speak(clip);
+  if(token!==sequence)return;
+  if(mode==='questions')countdown();
+  else if(mode==='story'||mode==='summary'){
+    await delay(1000);
+    if(token!==sequence)return;
+    const lines=mode==='story'?STORY[round%2]:answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']);
+    if(position+1<lines.length)playList(lines,mode,position+1);
+    else if(mode==='story')ask(0);
+    else monologue();
+  }
+ };
  $('day-hint').onclick=()=>{if(phase==='questions'){status('💡 '+Q[i][3]+' Пример: '+Q[i][4]);countdown()}else status('起床 → 洗脸 → 刷牙 → 吃早饭 → 去上班 → 睡觉')};
  $('day-finish').onclick=finish;
  $('day-pause').onclick=()=>{
