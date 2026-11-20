@@ -1,4 +1,4 @@
-# Panda AI · HSK 2 · 我的⼀天 — missing approved-voice recordings
+# Panda AI · HSK 2 · 我的一天 — missing approved-voice recordings
 
 Status: **recording required**, as of 2026-11-20. This is a coverage list, not an assertion that the MP3s exist.
 
