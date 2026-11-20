@@ -99,6 +99,8 @@ export function understandDayAnswer(raw,index){
  if(!Number.isInteger(index)||index<0||index>4)return unknown();
  if(!s)return clarify('Скажи или напиши ответ на китайском.');
  if(s.length>120)return unknown();
+ if(/^(?:他|她|他们|她们|它|我哥哥|我弟弟|我姐姐|我妹妹|我爸爸|我妈妈|我朋友)/u.test(s))
+  return clarify('Я спрашиваю именно о твоём дне. Ответь о себе: 我……');
  const q=question(s);
  if(q!==null)return q>=0?{kind:'user-question',questionIndex:q,message:'Панда ответит о своём дне и вернётся к твоему вопросу.'}:{kind:'unconfirmed',message:'Панда пока отвечает на вопросы о своём дне. Спроси, например, 你几点起床？'};
  if(s.endsWith('吗')&&!s.startsWith('你'))return unknown();
