@@ -94,11 +94,12 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
  const slope=z/n;
  for(let i=1;i<=n;i++){
   const ideal=i*slope;
-  const band=Math.max(10,Math.floor(z*.29));
+  const band=Math.max(9,Math.floor(z*.18));
   const low=Math.max(1,Math.floor(ideal-band));
   const high=Math.min(z,Math.ceil(ideal+band));
   for(let j=low;j<=high;j++){
-   const local=cost(r[i-1],u[j-1]);
+   const drift=j/z-i/n;
+   const local=cost(r[i-1],u[j-1])+1.8*(drift/.18)**2;
    const diag=costs[(i-1)*stride+j-1];
    const up=costs[(i-1)*stride+j]+.075;
    const left=costs[i*stride+j-1]+.075;
