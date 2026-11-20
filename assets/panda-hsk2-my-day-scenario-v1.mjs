@@ -118,7 +118,7 @@ function init(stage){
  const transcript=document.createElement('details');transcript.className='pg-day-transcript';transcript.hidden=true;
  transcript.innerHTML='<summary>👤 Мой распознанный рассказ</summary><p id="day-transcribed" lang="zh-Hans"></p>';
  panel.append(transcript);
- const chat=document.createElement('details');chat.className='pg-day-chat-log';
+ const chat=document.createElement('details');chat.className='pg-day-chat-log';chat.hidden=true;
  chat.innerHTML='<summary id="day-chat-label">💬 Чат: сообщений пока нет</summary>'+
   '<div id="day-chat-messages" role="log" aria-live="polite" aria-label="Сообщения ученика и ответы Панды"></div>';
  panel.append(chat);
@@ -183,6 +183,7 @@ function init(stage){
    const content=String(message??'').trim();
    if(!content)return;
    chatCount++;
+   chat.hidden=false;
    const container=$('day-chat-messages');
    const bubble=document.createElement('p');
    bubble.className='pg-day-chat-msg '+(role==='user'?'pg-day-chat-user':'pg-day-chat-panda');
