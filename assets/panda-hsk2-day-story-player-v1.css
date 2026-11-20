@@ -1,0 +1,130 @@
+/* Panda Go · HSK2 My Day v10: story player anchored to story phase.
+   No changes to the approved Panda, lake art, character or recorded voices. */
+#pg346[data-day-scenario="ready"] .pg-day-player{
+  position:relative!important;z-index:12!important;
+  flex:0 0 auto!important;
+  min-height:108px!important;
+  margin:2px clamp(8px,2.3vw,14px) 5px!important;
+  padding:9px clamp(8px,2vw,13px) 10px!important;
+  border:1px solid var(--pg500-edge)!important;
+  border-radius:20px!important;
+  background:var(--pg500-panel)!important;
+  box-shadow:0 3px 12px #04172e55!important;
+  color:var(--pg500-copy)!important;
+  display:flex!important;flex-direction:column!important;justify-content:space-between!important;
+  gap:8px!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player[hidden]{display:none!important}
+#pg346[data-day-scenario="ready"][data-day-phase="intro"] .pg-day-controls,
+#pg346[data-day-scenario="ready"][data-day-phase="story"] .pg-day-controls,
+#pg346[data-day-scenario="ready"][data-day-phase="summary"] .pg-day-controls{
+  display:none!important
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-head{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:5px!important;min-width:0!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-title{
+  min-width:0!important;flex:1 1 auto!important;
+  display:flex;flex-direction:column;gap:1px;line-height:1.15!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-title strong{
+  font-size:clamp(11px,2.9vw,14px)!important;font-weight:850!important;
+  overflow-wrap:normal;white-space:normal;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-title span{
+  font-size:clamp(10px,2.5vw,12px)!important;opacity:.86;
+  font-weight:650!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player .pg-day-speed{
+  position:static!important;transform:none!important;
+  flex:0 0 auto!important;z-index:2!important;
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:clamp(3px,.75vw,6px)!important;
+  width:clamp(150px,40vw,197px)!important;
+  height:clamp(34px,4.7dvh,42px)!important;
+  padding:3px 6px!important;margin:0!important;
+  border:1px solid var(--pg500-edge)!important;border-radius:999px!important;
+  background:var(--pg500-btn)!important;color:#fff!important;
+  box-shadow:0 2px 6px #071b3877!important;
+  white-space:nowrap!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player .pg-day-speed[hidden]{display:none!important}
+#pg346[data-day-scenario="ready"] .pg-day-player .pg-day-speed-icon{
+  color:#f5d27d!important;font-size:clamp(18px,4.8vw,24px)!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player .pg-day-speed-name{
+  font-size:clamp(11px,2.75vw,13px)!important;font-weight:800!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player .pg-day-speed select{
+  flex:0 0 clamp(58px,15.4vw,78px)!important;
+  width:clamp(58px,15.4vw,78px)!important;
+  min-height:30px!important;height:30px!important;
+  padding:0 5px!important;
+  font-size:clamp(13px,3.35vw,16px)!important;
+  color:white!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player .pg-day-speed-chevron{
+  font-size:17px!important;color:white!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-buttons{
+  min-width:0!important;
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,.86fr) minmax(0,1.25fr) minmax(0,.94fr) minmax(0,.85fr);
+  gap:clamp(3px,.95vw,7px)!important;
+  align-items:center!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-buttons button{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  flex:1 1 auto!important;min-width:0!important;
+  height:clamp(42px,5.5dvh,49px)!important;min-height:0!important;
+  padding:4px 2px!important;margin:0!important;
+  font-family:inherit!important;font-size:clamp(10.5px,2.75vw,14px)!important;
+  font-weight:800!important;line-height:1.1!important;
+  white-space:nowrap!important;
+  border:1px solid var(--pg500-edge)!important;
+  border-radius:999px!important;
+  background:var(--pg500-btn)!important;color:#fff!important;
+  box-shadow:0 2px 7px #04132d5c!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-buttons #day-repeat-sentence{
+  background:linear-gradient(128deg,#733fa6,#472c7b)!important;
+  border-color:#c9a0ee!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-buttons #day-pause{
+  background:linear-gradient(125deg,#a64fe5,#6430b5)!important;
+  border-color:#cfb5ff!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-buttons button:disabled{
+  opacity:.4!important;filter:grayscale(.2)!important;
+  box-shadow:none!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-buttons button:active{
+  transform:translateY(2px) scale(.98);
+  filter:brightness(.9);
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-buttons button[hidden]{display:none!important}
+#pg346[data-day-scenario="ready"] .pg-day-rail #day-hint:not([hidden]){
+  box-shadow:0 0 0 1px #e9beff60,0 0 9px #a16be463,0 2px 8px #030e2670!important;
+}
+:root[data-keyboard="true"] #pg346[data-day-scenario="ready"] .pg-day-player{
+  display:none!important
+}
+@media(max-width:355px){
+ #pg346[data-day-scenario="ready"] .pg-day-player{
+  margin-inline:5px!important;padding:6px!important;gap:5px!important;min-height:99px!important;
+ }
+ #pg346[data-day-scenario="ready"] .pg-day-player .pg-day-speed{
+  width:142px!important;gap:2px!important;padding-inline:4px!important;
+ }
+ #pg346[data-day-scenario="ready"] .pg-day-player .pg-day-speed select{
+  width:55px!important;flex-basis:55px!important;
+ }
+ #pg346[data-day-scenario="ready"] .pg-day-player-buttons button{font-size:10px!important}
+}
+@media(max-height:675px){
+ #pg346[data-day-scenario="ready"] .pg-day-player{min-height:94px!important;padding:6px 8px!important;gap:4px!important}
+ #pg346[data-day-scenario="ready"] .pg-day-player-buttons button{height:38px!important}
+ #pg346[data-day-scenario="ready"] .pg346-scene{min-height:135px!important}
+}
