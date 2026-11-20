@@ -106,6 +106,10 @@
 .ps1-cta{min-height:51px;margin-top:8px}
 }
 
+
+/* Scale street-art cover to the actual mobile viewport without stretching the panda. */
+.page[data-screen="intro"] .ps1-intro-scene{min-height:0;height:clamp(192px,37dvh,340px)}
+@media(max-height:700px){.page[data-screen="intro"] .ps1-intro-scene{height:clamp(180px,34dvh,248px)}.ps1-cover{padding-top:2px}.ps1-chip{margin:4px auto 3px}.ps1-tagline{margin:3px auto 5px}.ps1-description{margin-bottom:5px}.ps1-topic{min-height:47px}.ps1-cta{min-height:49px;margin-top:8px}}
 </style></head><body><main class="page"><header class="top"><a class="back" href="./panda-street-ai-preview.html" aria-label="Вернуться к Panda Street AI">‹</a><div class="brand"><b>PANDA STREET</b><small>STREET 1 · Живой китайский · Урок 1</small></div><div class="num" id="current">01 / 16</div></header><div class="track" id="pg-progress" role="progressbar" aria-label="Прогресс урока" aria-valuemin="0" aria-valuemax="16" aria-valuenow="1"><i id="track"></i></div><section id="screen" class="viewport" aria-live="polite"></section><footer class="foot"><button type="button" id="prev" class="btn ghost">← Назад</button><button type="button" id="next" class="btn primary">Дальше →</button></footer><div id="notify" role="status" style="position:absolute;left:10px;right:10px;bottom:84px;background:#25213df2;color:#fff3d3;border:1px solid #ba98c9;border-radius:13px;padding:11px;z-index:8;font-weight:800;font-size:12px;text-align:center" hidden></div></main><script>(() => {'use strict';
 const STAGES=16;
 const words=[
