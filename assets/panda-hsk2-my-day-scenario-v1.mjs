@@ -232,16 +232,19 @@ function init(stage){
   stopRecognition();spoken=text.split(/[。！？!?\n]+/).map(x=>x.trim()).filter(Boolean);
   $('day-transcribed').textContent=text;transcript.hidden=false;
   if(spoken.some(x=>/我去[一二三四五六七八九十\d]+点上班/.test(norm(x))))notes.push('Проверь порядок слов: 我八点去上班。');
-  stop();stagePhase('results');line(['做得好！','Zuò de hǎo!','Разговор завершён.']);speak(['做得好！','Zuò de hǎo!','Хорошо получилось!']);
+  stop();stagePhase('results');line(['做得好！','Zuò de hǎo!','Разговор завершён.']);
   const notMentioned=[['подъём','起床'],['умывание / чистка зубов','洗脸|刷牙'],['завтрак','早饭|早餐'],['работа / учёба','上班|工作|上学'],['сон','睡觉']].filter(([label,pattern])=>!new RegExp(pattern).test(text)).map(([label])=>label);
   const report='Рассказ Панды — прослушан.\nВопросы — '+answers.filter(Boolean).length+' / 5.\nСамостоятельный рассказ — '+spoken.length+' предложений (по распознанному/введённому тексту).\nНе упомянуто (не обязательно ошибка) — '+(notMentioned.join(', ')||'все пять тем затронуты')+'.\nГрамматика — '+(notes.join(' ')||'В проверенных примерах явных ошибок не найдено; свободный текст полностью не проверяется.')+
   '\nПроизношение и тоны — не удалось проверить по тексту.\nПовторить завтра — '+(errors.join(' ')||'одну сложную фразу из рассказа.')+
   (missingAudio.size?'\nБез записи утверждённым голосом: '+missingAudio.size+' уникальных фраз (показаны текстом).':'\nГолос: только утверждённые записи LuvVoice.');
   status(report);
+  speak(['做得好！','Zuò de hǎo!','Хорошо получилось!']).then(()=>{if(phase==='results')status(report)});
  }
  function stopRecognition(){if(recognizer){const old=recognizer;recognizer=null;try{old.abort()}catch(_){}}}
  function mic(){
   if(recognizer){stopRecognition();status('Микрофон остановлен.');return}
+  // Never let Panda's voice leak into browser speech recognition.
+  stop();
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){status('Распознавание в браузере недоступно. Используй текстовый ввод.');return}
   if(!consent){if(!confirm('Браузер может передавать звук для распознавания сторонней службе. Panda Go не сохраняет голос. Продолжить?'))return;consent=true}
