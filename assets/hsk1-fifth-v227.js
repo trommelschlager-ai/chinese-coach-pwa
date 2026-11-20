@@ -224,7 +224,8 @@ function speaking(){
  return card('<div class="speech-card"><h2>Повтори дату вслух</h2><strong lang="zh-Hans">'+esc(speech.hz)+'</strong><p>'+esc(speech.py)+'</p><p>'+esc(speech.ru)+'</p>'+
  '<div class="buttons">'+audioButton(speech.hz)+'<button class="soft" data-record-start type="button">🎙 Записать себя</button><button class="soft" type="button" data-record-stop disabled>■ Стоп</button><button class="soft" type="button" data-record-play disabled>▶ Оригинал</button><button class="soft" type="button" data-record-filter disabled>✨ С фильтром</button></div>'+
  '<p class="small">Перед записью образец отключается, чтобы избежать эха. Если оно осталось, воспользуйся наушниками. Автоматической проверки тонов пока нет.</p></div>')+
- card('<p class="center">Скажи также: <b>今天几月几号？</b> — Какое сегодня число?</p>');}
+ card('<p class="center">Скажи также: <b>今天几月几号？</b> — Какое сегодня число?</p>')+
+ personalDateMarkup();}
 function summary(){
  const q=topic.quiz;
  return '<div class="intro"><div class="intro-copy"><span class="pg5-kicker">УРОК 5 · HSK 1</span><strong>Отлично! 🌸</strong><p>Ты разобрал месяцы, слова 年、月、日、号 и китайский порядок даты.</p></div><div class="intro-art" role="img" aria-label="Панда в фиолетовых наушниках"></div></div>'+
