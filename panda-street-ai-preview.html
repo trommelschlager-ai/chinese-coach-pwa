@@ -255,7 +255,7 @@ el('send').onclick=composition;el('mic').onclick=listen;el('history').onclick=hi
 el('topics').onclick=shortMode;el('book').onclick=()=>{popup('Подсказка',`<p class="hint">Ответь на текущую фразу Панды:</p><div class="hanzi">我有点忙。</div><div class="py">Wǒ yǒudiǎn máng.</div><div class="ru">Я немного занят.</div><div class="actions"><button class="action primary" id="usehint">Попробовать ответить</button></div>`);el('usehint').onclick=composition;};
 el('theme').onclick=()=>{night=!night;tip(night?'Ночной вид — утверждённый дизайн':'Дневной режим будет добавлен отдельно; текущий рисунок не изменён')};
 const base='https://trommelschlager-ai.github.io/chinese-coach-pwa/';
-el('back').onclick=()=>location.assign(base+'panda-voice-pilot.html');el('home').onclick=()=>location.assign(base+'index.html');el('lessons').onclick=()=>location.assign(base+'hsk1-map.html');el('game').onclick=()=>speak(history.length?history.at(-1).panda.zh:cues[current].zh);el('trainer').onclick=()=>location.assign(base+'game.html');el('chat').onclick=composition;el('profile').onclick=()=>tip('Профиль открой в основном Panda Go');
+el('back').onclick=()=>location.assign(base+'panda-voice-pilot.html');el('home').onclick=()=>location.assign(base+'index.html');el('lessons').onclick=()=>location.assign(base+'panda-street-hsk1-map.html');el('game').onclick=()=>speak(history.length?history.at(-1).panda.zh:cues[current].zh);el('trainer').onclick=()=>location.assign(base+'game.html');el('chat').onclick=composition;el('profile').onclick=()=>tip('Профиль открой в основном Panda Go');
 if(history.length){let x=history.at(-1);liveRow('live-panda',x.panda);liveRow('live-learner',x.userInfo||recognizedDetail(x.user))}
 })();
 </script></body></html>
