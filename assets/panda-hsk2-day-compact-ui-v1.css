@@ -254,3 +254,11 @@
 #pg346[data-day-scenario="ready"][data-day-phase="monologue"] .pg-day-controls .pg-day-buttons{
   display:none!important;
 }
+
+/* Keep the main action readable in both day and night palettes. */
+#pg346[data-day-scenario="ready"] .pg-day-entry #day-finish,
+#pg346[data-day-scenario="ready"] .pg-day-buttons #day-retry{
+  color:#fff!important;
+  background:linear-gradient(125deg,#b158e5,#6728b4)!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-buttons #day-retry{width:100%!important}
