@@ -3,6 +3,7 @@
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {PANDA_GRAMMAR_AUDIO_V451} from './panda-grammar-voice-v451.mjs?v=451';
 import {understandDayAnswer} from './panda-hsk2-day-understanding-v1.mjs?v=4';
+import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=1';
 if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){
 const STORY=[
 [['我每天七点起床。','Wǒ měitiān qī diǎn qǐchuáng.','Я встаю в 7.'],['我起床以后洗脸。','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма умываюсь.'],['我早上刷牙。','Wǒ zǎoshang shuāyá.','Утром чищу зубы.'],['我早上吃早饭。','Wǒ zǎoshang chī zǎofàn.','Утром завтракаю.'],['我八点去上班。','Wǒ bā diǎn qù shàngbān.','В 8 иду на работу.'],['我晚上十点睡觉。','Wǒ wǎnshang shí diǎn shuìjiào.','В 10 вечера ложусь спать.']],
@@ -135,6 +136,11 @@ function init(stage){
  if(pinyinToggle){pinyinToggle.textContent='拼';pinyinToggle.setAttribute('aria-label','Показать или скрыть пиньинь');pinyinToggle.title='Пиньинь'}
  if(russianToggle){russianToggle.textContent='RU';russianToggle.setAttribute('aria-label','Показать или скрыть перевод');russianToggle.title='Русский перевод'}
  if(preferences)titleRow.querySelector('#day-step').before(preferences);
+ const chatModeButton=document.createElement('button');chatModeButton.type='button';
+ chatModeButton.id='day-chat-mode';chatModeButton.textContent='💬';
+ chatModeButton.title='Свободный разговор';chatModeButton.setAttribute('aria-label','Открыть простой разговор с Пандой');
+ chatModeButton.setAttribute('aria-pressed','false');
+ if(preferences)preferences.before(chatModeButton);
  const scene=stage.querySelector('.pg346-scene');
  const rail=document.createElement('div');rail.className='pg-day-rail';rail.setAttribute('aria-label','Помощь и повторение');
  for(const id of ['day-hear','day-hint']){
@@ -175,7 +181,7 @@ function init(stage){
  const finishButton=controls.querySelector('#day-finish');
  if(entry&&finishButton)entry.append(finishButton);
  const $=id=>stage.querySelector('#'+id);
- let phase='ready',i=0,round=0,reviewIndex=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],monologueSent=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false;const missingAudio=new Set();
+ let phase='ready',i=0,round=0,reviewIndex=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],monologueSent=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false,chatContext={awaiting:null,turn:0},chatResume=null;const missingAudio=new Set();
  let playbackRate=0.75; // Learner-friendly default shown in the approved speed reference.
  const status=s=>{$('day-status').textContent=s};
  let chatCount=0;
@@ -196,6 +202,22 @@ function init(stage){
      label.title='Сообщение принято. Нажми, чтобы просмотреть историю переписки.';
    }
    if(chat.open)container.scrollTop=container.scrollHeight;
+ }
+ // In simple chat, only exact approved MP3s may play. No browser voice swaps.
+ function chatReplyTo(raw,{alreadyLogged=false}={}){
+  const text=String(raw??'').trim();
+  if(!text){status('Напиши вопрос или предложение на китайском.');return}
+  stop();
+  if(!alreadyLogged)addChatMessage('user',text);
+  const reply=respondToPandaChat(text,chatContext);chatContext=reply.context;
+  addChatMessage('panda',reply.line[0]+' — '+reply.line[2]);
+  line(reply.line);
+  status(reply.supported?'✓ Ответ Панды показан. Продолжай диалог.':
+   '✓ Вопрос получен, но на эту тему пока нет подготовленного ответа.');
+  if(approvedClips(reply.line[0]).length){
+   const token=sequence;
+   speak(reply.line).then(()=>{if(token===sequence)status('✓ Ответ Панды показан. Продолжай диалог.')});
+  }
  }
  function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||'';const repeat=$('day-hear');if(repeat){repeat.disabled=!approvedClips(a[0]).length;repeat.title=repeat.disabled?'Нет точной записи утверждённым голосом':'Повторить одобренную запись'};updateStoryPlayer()}
  function storyLines(){
@@ -239,19 +261,24 @@ function init(stage){
  }
  function stagePhase(p){
   phase=p;stage.dataset.dayPhase=p;
-  $('day-phase').textContent=({ready:'🐼 Мой день',intro:'🐼 Приветствие',story:'🐼 История Панды',questions:'🐼 Вопросы',summary:'🐼 Твой день',monologue:'👤 Расскажи сам',results:'🏆 Итоги'}[p]);
+  $('day-phase').textContent=({ready:'🐼 Мой день',intro:'🐼 Приветствие',story:'🐼 История Панды',questions:'🐼 Вопросы',summary:'🐼 Твой день',monologue:'👤 Расскажи сам',freechat:'💬 Разговор',results:'🏆 Итоги'}[p]);
   // The step counter belongs in the progress strip, as in approved photo 2.
   $('day-step').textContent='HSK 2';
   const show=(id,on)=>$(id).hidden=!on;
   show('day-start',p==='ready');show('day-hear',!['ready','results'].includes(p));
   show('day-pause',['story','summary','questions','monologue'].includes(p));
-  show('day-hint',['story','questions','summary','monologue'].includes(p));
+  show('day-hint',['story','questions','summary','monologue','freechat'].includes(p));
   show('day-finish',p==='monologue');show('day-retry',p==='results');
   show('day-story-player',['story','summary','questions','monologue'].includes(p));
   show('day-speed-wrap',['story','summary','questions','monologue'].includes(p));
-  show('day-input',p==='questions');show('day-send',['questions','monologue'].includes(p));
-  show('day-long',p==='monologue');show('day-mic',['questions','monologue'].includes(p));
-  show('day-answer-primary',p==='questions');
+  show('day-input',['questions','freechat'].includes(p));show('day-send',['questions','monologue','freechat'].includes(p));
+  show('day-long',p==='monologue');show('day-mic',['questions','monologue','freechat'].includes(p));
+  show('day-answer-primary',['questions','freechat'].includes(p));
+  $('day-answer-primary').textContent=p==='freechat'?'✓ Отправить':'✓ Ответить';
+  $('day-input').placeholder=p==='freechat'?'Напиши вопрос по-китайски…':'Ответ на китайском…';
+  chatModeButton.setAttribute('aria-pressed',String(p==='freechat'));
+  chatModeButton.title=p==='freechat'?'Вернуться к уроку':'Свободный разговор';
+  chatModeButton.setAttribute('aria-label',chatModeButton.title);
   $('day-pause').textContent='Ⅱ';
   $('day-pause').setAttribute('aria-label','Пауза');
   $('day-pause').title='Пауза';
@@ -342,6 +369,11 @@ function init(stage){
   const token=++sequence;await speak(Q[idx]);if(token===sequence)countdown();
  }
  function answer(raw){
+  if(phase==='freechat'){
+   const text=String(raw??'').trim();chatReplyTo(text);
+   if(text)$('day-input').value='';
+   return;
+  }
   if(phase!=='questions'){status('Начни вопросы, чтобы отправить ответ.');return}
   const submitted=String(raw??'').trim();
   if(!submitted){status('Поле пустое. Напиши или произнеси свой ответ.');return}
@@ -387,11 +419,8 @@ function init(stage){
    return;
   }
   if(result.kind==='other-question'){
-   // Don't silently drop off-topic questions or pretend we have a general LLM.
-   $('day-input').value='';
-   addChatMessage('panda',result.message);
-   status('✓ Вопрос отправлен. '+result.message);
-   // Stay on the same curriculum question; no bogus answer or timeout.
+   $('day-input').value='';chatReplyTo(submitted,{alreadyLogged:true});
+   // Do not skip the active curriculum question.
    return;
   }
   // Even unrecognized phrases remain visible in chat. Preserve editable text.
@@ -448,15 +477,17 @@ function init(stage){
   r.onresult=e=>{
    let text='';for(let j=e.resultIndex;j<e.results.length;j++)if(e.results[j].isFinal)text+=e.results[j][0].transcript+' ';
    text=text.trim();if(!text)return;
-   if(phase==='questions'){
+   if(phase==='questions'||phase==='freechat'){
     $('day-input').value=text;status('Распознано: '+text+'. Тоны не оценивались.');
-    const question=i;
-    // Advance without extra tap only when the recognized text fits a reviewed answer.
-    // Anything uncertain stays editable and is never graded as bad pronunciation.
-    const intent=understandDayAnswer(text,question);
-    if(intent.kind==='accepted'||intent.kind==='user-question')setTimeout(()=>{
-     if(phase==='questions'&&i===question&&$('day-input').value===text)answer(text)
-    },750);
+    if(phase==='questions'){
+     const question=i;
+     // Only reviewed lesson answers advance automatically.
+     // Free-chat transcripts remain editable until explicitly sent.
+     const intent=understandDayAnswer(text,question);
+     if(intent.kind==='accepted'||intent.kind==='user-question')setTimeout(()=>{
+      if(phase==='questions'&&i===question&&$('day-input').value===text)answer(text)
+     },750);
+    }
    }
    if(phase==='monologue'){$('day-long').value+=($('day-long').value.trim()?'。':'')+text;status('Продолжай рассказ. После окончания нажми «Завершить рассказ».')}
   };
@@ -477,9 +508,35 @@ function init(stage){
  $('day-speed').addEventListener('input',setSpeedFromSlider);
  $('day-speed').addEventListener('change',setSpeedFromSlider);
  setSpeedFromSlider();
+ chatModeButton.onclick=()=>{
+  if(phase!=='freechat'){
+   stop();stopRecognition();
+   chatResume={phase,idx:i,last,lastInput:$('day-input').value,lastLong:$('day-long').value};
+   $('day-input').value='';
+   stagePhase('freechat');
+   line(['自由聊天','Zìyóu liáotiān','Простой разговор: имя, увлечения, еда, учёба и повседневные дела.']);
+   status('Спроси: 你喜欢什么？ — Что тебе нравится? Это учебный разговор, не свободный ИИ.');
+   chat.open=true;
+   $('day-input').focus();return;
+  }
+  stop();stopRecognition();
+  const saved=chatResume;chatResume=null;
+  const restore=saved?.phase||'ready';
+  if(restore==='questions'){
+   i=saved.idx;stagePhase('questions');
+   line(Q[i].slice(0,3));$('day-input').value=saved.lastInput||'';
+   status('Вернулись к вопросу '+(i+1)+' из 5. Можно повторить вопрос или ответить.');
+  }else if(restore==='monologue'){
+   stagePhase('monologue');line(saved.last||['我的一天','Wǒ de yì tiān','Мой день.']);
+   $('day-long').value=saved.lastLong||'';status('Твой рассказ сохранён. Продолжай.');
+  }else{
+   stagePhase('ready');line(['我的一天','Wǒ de yì tiān','Мой день.']);
+   status('Нажми «Начать», чтобы пройти урок «Мой день».');
+  }
+ };
  $('day-start').onclick=begin;
  $('day-send').onclick=()=>{
-   if(phase==='questions'){answer($('day-input').value);return}
+   if(phase==='questions'||phase==='freechat'){answer($('day-input').value);return}
    if(phase==='monologue'){
     const el=$('day-long'),raw=el.value.trim();
     if(!raw){status('Скажи или напиши хотя бы одну фразу.');return}
@@ -488,12 +545,7 @@ function init(stage){
     addChatMessage('user',raw);
     el.value='';
     if(isQuestion){
-      const response=understandDayAnswer(raw,1);
-      const reply=response.kind==='other-question'?response.message:
-       response.kind==='user-question'?'Вопрос получен. Этот этап предназначен для твоего рассказа; тематические вопросы можно задать на этапе «Вопросы».':
-       'Вопрос получен. Сейчас продолжи свой рассказ о дне.';
-      addChatMessage('panda',reply);
-      status('✓ Вопрос отправлен. '+reply);
+     chatReplyTo(raw,{alreadyLogged:true});
     }else{
       monologueSent.push(raw);
       addChatMessage('panda','Фраза получена. Продолжай или нажми «Завершить рассказ».');
@@ -538,6 +590,7 @@ function init(stage){
   if(phase==='questions'){status('💡 '+Q[i][3]+' Пример: '+Q[i][4]);countdown()}
   else if(phase==='story')status('💡 '+storyHint());
   else if(phase==='summary')status('💡 Повтори свой ответ, следя за порядком слов.');
+  else if(phase==='freechat')status('💡 Спроси: 你喜欢什么？ / 你叫什么名字？ / 你在做什么？ / 你喜欢吃什么？');
   else status('💡 起床 → 洗脸 → 刷牙 → 吃早饭 → 去上班 → 睡觉');
  };
  $('day-prev').onclick=()=>seekStory(-1);
