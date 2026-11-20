@@ -70,3 +70,7 @@
  #pg346 #day-status{font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){#pg346 .pg-day-controls button{transition:none!important}}
+
+#pg346 .pg-day-transcript{margin-top:5px;border-top:1px solid var(--pg500-edge);padding-top:5px;font-size:12px}
+#pg346 .pg-day-transcript summary{cursor:pointer;font-weight:800}
+#pg346 .pg-day-transcript p{margin:5px 0;overflow-wrap:anywhere;user-select:text;font-size:clamp(13px,3.5vw,17px)}
