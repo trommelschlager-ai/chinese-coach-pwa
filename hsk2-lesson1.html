@@ -274,6 +274,11 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
   line-height:1;white-space:nowrap;letter-spacing:-.02em;pointer-events:none;
 }
 
+
+/* Panda Go HSK2 · primary vs optional quiz: responsive controls */
+#app #pg433 .pg-core-quiz-actions{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:9px!important;margin:12px 6px!important}
+#app #pg433 .pg-core-quiz-actions button{min-height:46px!important;width:100%!important;white-space:normal!important;font-size:clamp(13px,3.5vw,16px)!important;border-radius:17px!important}
+#app #pg433 .test-card strong,#app #pg433 .test-card small{overflow-wrap:anywhere!important;min-width:0!important}
 </style>
 </head>
 <body>
@@ -478,12 +483,13 @@ const quizCount = () => state.quiz.flat().filter(Boolean).length;
 const speechCount = () => new Set([...state.mic,...state.selfSpoken]).size;
 const speechDone = () => speechCount() === words.length;
 const selfQuizCount = () => state.quiz[4].filter(record => record?.method === 'self').length;
+function coreQuizDone(){const x=state.quiz?.[0];return Array.isArray(x)&&x.length===words.length&&x.every(Boolean)}
 function sectionComplete(section) {
   switch(section) {
     case 0: return state.heardWords.length === words.length;
     case 1: return state.grammarDone === true;
     case 2: return speechDone();
-    case 3: return quizCount() === 30 && state.dayDone === true;
+    case 3: return coreQuizDone() && state.dayDone === true;
     case 4: return state.chat.length === dialogue.length;
     default: return false;
   }
@@ -496,7 +502,7 @@ function currentStepComplete() {
     case 6: return sectionComplete(2);
     case 3: {
       if (state.courseQuizCursor === null) return true; // Opens the test list.
-      if (state.courseQuizCursor === courseQuiz.length) return quizCount() === 30;
+      if (state.courseQuizCursor === courseQuiz.length) return coreQuizDone();
       const current = courseQuiz[state.courseQuizCursor];
       return !!(current && activeQuiz().quiz[current.type][current.index]);
     }
@@ -566,7 +572,7 @@ function canOpenStep(target,advance = false) {
   const targetSection = sectionForStep(target);
   const currentSection = sectionForStep(state.step);
   if (targetSection < 0) return false;
-  if (target === 5 && quizCount() < 30) return false;
+  if (target === 5 && !coreQuizDone()) return false;
   if (target === 8 && !sectionComplete(4)) return false;
   if (targetSection <= unlockedSection()) return true;
   // A new chapter opens only after confirmed work on the current chapter.
@@ -641,7 +647,7 @@ function render(resetScroll = false) {
       ? (!activeQuiz().quiz[current.type][current.index] ? 'Сначала выполни'
         : !following ? (state.courseQuizType === null ? 'К результатам →' : 'К тестам →')
         : following.word !== current.word ? 'Следующее слово →' : 'Дальше →')
-      : step === 8 ? 'К началу ↻' : step === 3 && cursor === null ? 'Начать тесты →' : 'Дальше →';
+      : step === 8 ? 'К началу ↻' : step === 3 && cursor === null ? (coreQuizDone() ? 'К распорядку →' : 'Проверить 6 слов →') : 'Дальше →';
   } else {
     next.textContent = step === 1 ? 'Начать урок' : step === 8 ? 'К началу ↻' : titles[step] + ' →';
   }
@@ -690,7 +696,7 @@ function quiz() {
       (completed < courseQuiz.length ? '<button type="button" class="primary" data-start>К пропущенным заданиям</button>' : '') +
       '<button type="button" class="soft" data-quiz-retry="all">Пройти ещё раз</button></div></section>';
   }
-  return hero('quiz',3,'Проверь слова!',courseMode ? 'Пять видов заданий. Тренируй слова по порядку.' :
+  return hero('quiz',3,'Проверь слова!',courseMode ? 'Сначала шесть коротких проверок. Ещё 24 задания можно выполнить позже.' :
     '5 интерактивных тестов,<br>чтобы лучше запомнить<br>новые слова.') +
     '<div class="test-list">' + tests.map((title,i) => {
       const total = correctCount(i);
@@ -708,11 +714,11 @@ function quiz() {
         '</strong><small>' + testHelp[i] + (total && !courseMode ? ' · ' + total + '/6' : '') + '</small>' + retry + '</span>' +
         trigger + (courseMode ? '</div>' : '</button>');
     }).join('') + '</div><div class="reward panel">' + art('trophy') +
-    '<strong>' + (courseMode ? 'Выполняй задания для каждого слова по порядку.' : 'Закрепи слова урока в пяти разных заданиях!') +
+    '<strong>' + (courseMode ? 'Для продолжения достаточно шести основных вопросов; остальные задания дополнительные.' : 'Закрепи слова урока в пяти разных заданиях!') +
     '</strong></div>' + (courseMode
-      ? (quizCount() === 30
-        ? '<div class="controls"><button type="button" class="soft" data-step="5">Перейти к распорядку</button></div>'
-        : '<div class="controls"><button type="button" class="primary" data-start>Начать задания по порядку →</button></div>')
+      ? (coreQuizDone()
+        ? '<div class="controls pg-core-quiz-actions"><button type="button" class="primary" data-step="5">К распорядку →</button><button type="button" class="soft" data-quiz-extended>Ещё 24 задания (пройдено '+(quizCount()-correctCount(0))+'/24)</button></div>'
+        : '<div class="controls"><button type="button" class="primary" data-start>Проверить 6 слов →</button></div>')
       : '<button type="button" class="primary large" data-start>Начать тесты ' + playIcon + '</button>');
 }
 
@@ -920,7 +926,7 @@ function chat() {
 }
 
 function finish() {
-  const completed = state.heardWords.length === 6 && quizCount() === 30 && state.grammarDone &&
+  const completed = state.heardWords.length === 6 && coreQuizDone() && state.grammarDone &&
     state.dayDone && speechDone() && state.chat.length === 3;
   if (completed) {
     save();
@@ -935,7 +941,7 @@ function finish() {
     '<img class="award" src="' + decoration + (completed ? 'trophy' : 'medal') + '.webp" alt=""><h1>' + (completed ? 'Урок пройден!' : 'Твой прогресс') +
     '</h1><p class="hint">Урок 2 «Мой день»</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
     result('Прослушаны слова',state.heardWords.length + ' / 6') +
-    result('Все мини-тесты',quizCount() + ' / 30','all') + tests.map((test,i) => result(test,correctCount(i) + ' / 6')).join('') +
+    result('Основная проверка',correctCount(0) + ' / 6','all') + result('Дополнительные тесты',(quizCount()-correctCount(0)) + ' / 24') + tests.map((test,i) => result(test,correctCount(i) + ' / 6')).join('') +
     result('Грамматика 以后',state.grammarDone ? '✓ Выполнено' : 'Ожидает проверки') +
     result('Распорядок',state.dayDone ? '✓ Выполнено' : 'Ожидает проверки') +
     result('Практика речи',speechCount() + ' / 6') +
@@ -1069,9 +1075,9 @@ function recordQuizMiss(type,index) {
 function adjacentCourseTask(direction) {
   const type = state.courseQuizType;
   for (let index = state.courseQuizCursor + direction; index >= 0 && index < courseQuiz.length; index += direction) {
-    if (type === null || courseQuiz[index].type === type) return index;
+    if (type === null || (type === -1 ? courseQuiz[index].type !== 0 : courseQuiz[index].type === type)) return index;
   }
-  return direction === 1 && type === null ? courseQuiz.length : -1;
+  return direction === 1 && (type===null || type===-1) ? courseQuiz.length : -1;
 }
 
 function showCourseTask(cursor) {
@@ -1094,10 +1100,14 @@ function startTests() {
     openTest(Math.max(0,tests.findIndex((_,i) => correctCount(i) < words.length)));
     return;
   }
-  state.courseQuizType = null;
-  const firstPending = courseQuiz.findIndex(({type,index}) => !activeQuiz().quiz[type][index]);
-  if (firstPending < 0) startCourseReplay(null);
-  else showCourseTask(firstPending);
+  state.courseQuizType=0;state.quizRetry=null;
+  const firstPending=courseQuiz.findIndex(({type,index})=>type===0&&!state.quiz[0][index]);
+  if(firstPending<0)showCourseTask(-1);else showCourseTask(firstPending);
+}
+function startOptionalTests(){
+  state.courseQuizType=-1;state.quizRetry=null;
+  const pending=courseQuiz.findIndex(({type,index})=>type!==0&&!state.quiz[type][index]);
+  showCourseTask(pending<0?courseQuiz.length:pending);
 }
 
 function startCourseReplay(type) {
@@ -1211,6 +1221,7 @@ const actions = {
   quizType: value => startCourseType(Number(value)),
   quizRetry: value => startCourseReplay(value === 'all' ? null : Number(value)),
   start: startTests,
+  quizExtended: startOptionalTests,
   question: value => changeQuestion(Number(value)),
   choice: value => {
     const correct = state.quizTest === 1 ? listening[state.quizIndex][1] : state.quizIndex;
@@ -1286,7 +1297,7 @@ next.addEventListener('click',() => {
   }
   if (courseMode && state.step === 3) {
     if (state.courseQuizCursor === null) {
-      startTests();
+      if(coreQuizDone())move(5,true);else startTests();
       return;
     }
     if (state.quizTest !== null) {
