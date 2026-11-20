@@ -20,10 +20,29 @@ const dot=s=>norm(s)+'。';
 // No Android TTS, unrelated lesson voices or stitched fragments.
 const exactLuvvoice=new Map(PANDA_CLIPS.filter(item=>/^\.\/assets\/panda-voice-clips-v365\/p\d{3}\.mp3$/.test(item.src))
   .map(item=>[norm(item.zh),item.src]));
-function approvedClip(text){
- const key=norm(text),native=window.PandaGoHSK2Lesson1NativeAudioV459;
- return exactLuvvoice.get(key)||PANDA_GRAMMAR_AUDIO_V451[key]||native?.[text]||native?.[key]||null;
-}
+// The 14 user-recorded MP3s are distributed as a separate binary pack.
+ // The GitHub connector cannot copy uploaded binaries directly into the repo,
+ // so the app activates the pack only when ALL 14 MP3s and the manifest exist.
+ const DAY_AUDIO_DIRECTORY='./assets/panda-hsk2-my-day-voice-20261120/';
+ const extraDayVoice=new Map();
+ const voicePackReady=fetch(DAY_AUDIO_DIRECTORY+'manifest.json',{cache:'no-store'})
+   .then(async response=>response.ok?response.json():null)
+   .then(async manifest=>{
+     if(!manifest||!Array.isArray(manifest.items)||manifest.items.length!==14)return;
+     const entries=manifest.items;
+     if(new Set(entries.map(e=>e.id)).size!==14)return;
+     if(!entries.every(e=>/^day(?:0[1-9]|1[0-4])$/.test(e.id)&&
+       typeof e.zh==='string'&&e.zh.length>0))return;
+     // Verify each binary is actually present before marking the pack as installed.
+     const checks=await Promise.all(entries.map(e=>fetch(DAY_AUDIO_DIRECTORY+e.id+'.mp3',{method:'HEAD',cache:'no-store'}).then(x=>x.ok).catch(()=>false)));
+     if(!checks.every(Boolean))return;
+     for(const e of entries)extraDayVoice.set(norm(e.zh),DAY_AUDIO_DIRECTORY+e.id+'.mp3');
+   }).catch(()=>{});
+ function approvedClips(text){
+   const key=norm(text),native=window.PandaGoHSK2Lesson1NativeAudioV459;
+   return [...new Set([extraDayVoice.get(key),exactLuvvoice.get(key),
+     PANDA_GRAMMAR_AUDIO_V451[key],native?.[text],native?.[key]].filter(Boolean))];
+ }
 const cn={零:0,〇:0,一:1,二:2,两:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9};
 function num(s){
  if(/^\d{1,2}$/.test(s))return +s;
@@ -83,7 +102,7 @@ function init(stage){
  const $=id=>stage.querySelector('#'+id);
  let phase='ready',i=0,round=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false;const missingAudio=new Set();
  const status=s=>{$('day-status').textContent=s};
- function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||'';const repeat=$('day-hear');if(repeat){repeat.disabled=!approvedClip(a[0]);repeat.title=repeat.disabled?'Нет точной записи утверждённым голосом':'Повторить одобренную запись'}}
+ function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||'';const repeat=$('day-hear');if(repeat){repeat.disabled=!approvedClips(a[0]).length;repeat.title=repeat.disabled?'Нет точной записи утверждённым голосом':'Повторить одобренную запись'}}
  function stagePhase(p){
   phase=p;stage.dataset.dayPhase=p;
   $('day-phase').textContent=({ready:'🐼 Мой день',intro:'🐼 Приветствие',story:'🐼 История Панды',questions:'🐼 Вопросы',summary:'🐼 Твой день',monologue:'👤 Расскажи сам',results:'🏆 Итоги'}[p]);
@@ -102,22 +121,39 @@ function init(stage){
   stage.dataset.dayTalking='false';
  }
  function speak(a,slow=false){
-  const src=approvedClip(a[0]),token=sequence;
-  if(!src){
-   missingAudio.add(norm(a[0]));
+   const candidates=approvedClips(a[0]),token=sequence;
    stage.dataset.dayTalking='false';
-   status('🔇 Нет записи этой фразы утверждённым голосом. Вместо другого голоса показан китайский текст.');
-   return new Promise(resolve=>setTimeout(resolve,1300));
-  }
-  stage.dataset.dayTalking='true';
-  return new Promise(resolve=>{
-   const audio=new Audio(src);player=audio;audio.playbackRate=slow?.83:1;
-   let settled=false;
-   const done=()=>{if(settled)return;settled=true;if(player===audio)player=null;stage.dataset.dayTalking='false';resolve()};
-   audio.onended=done;
-   audio.onerror=()=>{missingAudio.add(norm(a[0]));if(token===sequence)status('🔇 Исходная запись не загрузилась. Голос не заменён.');done()};
-   audio.play().catch(()=>{missingAudio.add(norm(a[0]));if(token===sequence)status('🔇 Chrome заблокировал аудио. Проверь настройки звука.');done()});
-  });
+   if(!candidates.length){
+     missingAudio.add(norm(a[0]));
+     status('🔇 У этой фразы пока нет точной записи тем же голосом. Текст показан вместо синтезированного голоса.');
+     return new Promise(resolve=>setTimeout(resolve,1000));
+   }
+   return new Promise(resolve=>{
+     let ended=false;
+     const done=()=>{if(ended)return;ended=true;player=null;stage.dataset.dayTalking='false';resolve()};
+     function next(k){
+       if(token!==sequence){done();return}
+       if(k>=candidates.length){
+         missingAudio.add(norm(a[0]));
+         status('🔇 Исходная запись пока не доступна. Другой голос не подставляется.');
+         done();return;
+       }
+       const audio=new Audio(candidates[k]);
+       player=audio;audio.preload='auto';audio.playbackRate=slow?.83:1;
+       if('preservesPitch' in audio)audio.preservesPitch=true;
+       stage.dataset.dayTalking='true';
+       audio.onended=done;
+       audio.onpause=()=>{if(token!==sequence)done()};
+       audio.onerror=()=>next(k+1);
+       audio.play().catch(err=>{
+         if(err?.name==='NotAllowedError'){
+           status('🔇 Chrome заблокировал звук. Нажми «Повторить» и разреши воспроизведение.');
+           done();
+         }else next(k+1);
+       });
+     }
+     next(0);
+   });
  }
  const delay=ms=>new Promise(r=>setTimeout(r,ms));
  async function playList(lines,p,start=0){
@@ -133,6 +169,8 @@ function init(stage){
  }
  async function begin(){
   stop();paused=false;missingAudio.clear();stagePhase('intro');
+  status('Проверяю единую озвучку…');
+  await voicePackReady;
   const a=['你好！今天我说说我的一天。','Nǐ hǎo! Jīntiān wǒ shuōshuo wǒ de yì tiān.','Привет! Сегодня я расскажу о своём дне.'];
   line(a);status('Сначала Панда рассказывает, затем задаёт вопросы.');
   const token=++sequence;
@@ -168,15 +206,25 @@ function init(stage){
    const token=++sequence;speak([result.correction,'','']).then(()=>{if(token===sequence)countdown()});
   }else{status(result.error);countdown()}
  }
- function finishQuestions(){
-  stop();const list=answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']);
-  if(!list.length){monologue();return}
-  playList(list,'summary');
+ async function finishQuestions(){
+   stop();const list=answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']);
+   if(!list.length){monologue();return}
+   stagePhase('summary');
+   const intro=['这是你的一天。','Zhè shì nǐ de yì tiān.','Это твой день.'];
+   line(intro);
+   const token=sequence;
+   await speak(intro);
+   if(token!==sequence)return;
+   await delay(500);
+   if(token===sequence)playList(list,'summary');
  }
  function monologue(){
-  stop();stagePhase('monologue');line(['我的一天','Wǒ de yì tiān','Расскажи о своём дне самостоятельно.']);
+  stop();stagePhase('monologue');
+  const prompt=['现在请你说说你的一天。','Xiànzài qǐng nǐ shuōshuo nǐ de yì tiān.','Теперь расскажи о своём дне.'];
+  line(prompt);
   status('Говори несколько предложений подряд или введи текст. Не нужно повторять слова Панды.');
   $('day-long').value='';
+  speak(prompt);
  }
  function finish(){
   const text=$('day-long').value.trim();
@@ -184,7 +232,7 @@ function init(stage){
   stopRecognition();spoken=text.split(/[。！？!?\n]+/).map(x=>x.trim()).filter(Boolean);
   $('day-transcribed').textContent=text;transcript.hidden=false;
   if(spoken.some(x=>/我去[一二三四五六七八九十\d]+点上班/.test(norm(x))))notes.push('Проверь порядок слов: 我八点去上班。');
-  stop();stagePhase('results');line(['做得好！','Zuò de hǎo!','Разговор завершён.']);
+  stop();stagePhase('results');line(['做得好！','Zuò de hǎo!','Разговор завершён.']);speak(['做得好！','Zuò de hǎo!','Хорошо получилось!']);
   const notMentioned=[['подъём','起床'],['умывание / чистка зубов','洗脸|刷牙'],['завтрак','早饭|早餐'],['работа / учёба','上班|工作|上学'],['сон','睡觉']].filter(([label,pattern])=>!new RegExp(pattern).test(text)).map(([label])=>label);
   const report='Рассказ Панды — прослушан.\nВопросы — '+answers.filter(Boolean).length+' / 5.\nСамостоятельный рассказ — '+spoken.length+' предложений (по распознанному/введённому тексту).\nНе упомянуто (не обязательно ошибка) — '+(notMentioned.join(', ')||'все пять тем затронуты')+'.\nГрамматика — '+(notes.join(' ')||'В проверенных примерах явных ошибок не найдено; свободный текст полностью не проверяется.')+
   '\nПроизношение и тоны — не удалось проверить по тексту.\nПовторить завтра — '+(errors.join(' ')||'одну сложную фразу из рассказа.')+
@@ -246,7 +294,12 @@ function init(stage){
    const list=phase==='story'?STORY[round%2]:phase==='summary'?answers.filter(Boolean).map(x=>[x,'','Твой ответ']):null;
    if(list)playList(list,phase,i);else begin()}
  };
- $('day-retry').onclick=()=>{round++;answers=Array(5).fill(null);notes=[];errors=[];spoken=[];i=0;transcript.hidden=true;begin()};
+ $('day-retry').onclick=async()=>{
+   stop();const token=sequence;
+   await speak(['我们再试一次。','Wǒmen zài shì yí cì.','Давай попробуем ещё раз.']);
+   if(token!==sequence)return;
+   round++;answers=Array(5).fill(null);notes=[];errors=[];spoken=[];i=0;transcript.hidden=true;begin();
+ };
  $('day-show-py').onclick=()=>{stage.dataset.dayPy=String(stage.dataset.dayPy!=='true');$('day-show-py').setAttribute('aria-pressed',stage.dataset.dayPy)};
  $('day-show-ru').onclick=()=>{stage.dataset.dayRu=String(stage.dataset.dayRu!=='true');$('day-show-ru').setAttribute('aria-pressed',stage.dataset.dayRu)};
  document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();stopRecognition()}});
