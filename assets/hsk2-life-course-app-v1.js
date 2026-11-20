@@ -175,7 +175,7 @@ function deviceSound(zh){
 function daySound(zh){
  // Use only exact indexed MP3 for the first HSK2 topic.
  // No robotic Android speech is silently substituted for missing recordings.
- if(rec(zh))return sound(zh);
+ if(rec(zh)||approvedSrc(zh))return sound(zh);
  return '<span class="audio hsk2-no-mp3" role="status" aria-label="Для '+E(zh)+' нет подтверждённого MP3" title="Для этой фразы MP3 ещё не предоставлен">🔇<small>MP3 нет</small></span>';
 }
 function sound(zh){
