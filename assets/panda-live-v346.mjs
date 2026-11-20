@@ -335,7 +335,7 @@ if (!bridge) {
   }
   function sync(){const s=bridge.snapshot();ingestSpeechSignal(s.speechSignal,s);
     const historySpeaking=!!(historyAudio&&!historyAudio.paused&&!historyAudio.ended);
-    const pandaSpeaking=historySpeaking||s.pose==='talking';
+    const pandaSpeaking=historySpeaking||s.pose==='talking'||stage.dataset.dayTalking==='true';
     stage.dataset.listening=String(s.active);stage.dataset.welcome=String(s.history.length<=1);
     stage.dataset.pose=s.active?'listening':pandaSpeaking?'talking':'idle';
     liveMouth.setTalking(!s.active&&pandaSpeaking);
@@ -366,6 +366,12 @@ if (!bridge) {
   $('#pg346-hear').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-play').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-repeat').addEventListener('click',()=>{stopHistoryAudio();bridge.play();sync()});$('#pg346-speed').addEventListener('click',()=>{bridge.toggleSpeed();sync()});
   $('#pg346-topics-btn').addEventListener('click',toggleTopics);$('#pg346-topics-close').addEventListener('click',closeTopics);$('#pg374-topics-back').addEventListener('click',showTopicList);stage.addEventListener('click',e=>{if(!$('#pg346-topics').hidden&&!e.target.closest('#pg346-topics,#pg346-topics-btn'))closeTopics()});stage.addEventListener('keydown',e=>{if(e.key==='Escape')closeTopics()});
   const core=document.querySelector('main');if(core){let pending=false;new MutationObserver(()=>{if(!pending&&!document.hidden){pending=true;requestAnimationFrame(()=>{pending=false;sync()})}}).observe(core,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['data-state','aria-pressed','disabled']})}
+  // HSK2 My Day uses its own reviewed audio player; animate the SAME approved mouth rig.
+  if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){
+    const daySpeakingObserver=new MutationObserver(()=>sync());
+    daySpeakingObserver.observe(stage,{attributes:true,attributeFilter:['data-day-talking']});
+    window.addEventListener('pagehide',()=>daySpeakingObserver.disconnect(),{once:true});
+  }
   document.addEventListener('visibilitychange',()=>{if(document.hidden){stopHistoryAudio();liveMouth.setTalking(false)}else sync()});window.addEventListener('pagehide',()=>{stopHistoryAudio();liveMouth.dispose()});
   sync();document.documentElement.dataset.pandaCleanVersion='365';document.documentElement.classList.remove('panda-booting');document.documentElement.dataset.pandaUiReady='true';
 }
