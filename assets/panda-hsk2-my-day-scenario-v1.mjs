@@ -67,6 +67,9 @@ function init(stage){
  '<button id="day-finish" type="button">✓ Завершить рассказ</button><button id="day-retry" type="button">↻ Ещё раз</button></div>'+
  '<div class="pg-day-toggles"><button id="day-show-py" type="button" aria-pressed="true">拼 Пиньинь</button>'+
  '<button id="day-show-ru" type="button" aria-pressed="true">RU Перевод</button><a href="./hsk2-lesson1.html?step=8">← К уроку</a></div>';
+ const transcript=document.createElement('details');transcript.className='pg-day-transcript';transcript.hidden=true;
+ transcript.innerHTML='<summary>👤 Мой распознанный рассказ</summary><p id="day-transcribed" lang="zh-Hans"></p>';
+ panel.append(transcript);
  stage.querySelector('.pg346-history').after(panel);stage.querySelector('.pg346-scene').after(controls);
  const $=id=>stage.querySelector('#'+id);
  let phase='ready',i=0,round=0,played=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false,source='recorded';
@@ -125,7 +128,7 @@ function init(stage){
   stagePhase(p);const token=++sequence;
   for(let n=start;n<lines.length;n++){
    if(token!==sequence||paused)return;
-   i=n;stagePhase(p);line(lines[n]);status(p==='story'?'Слушай Панду.':'Панда повторяет только твои ответы.');
+   i=n;stagePhase(p);line(lines[n]);status(p==='story'?(n===1?'洗脸: xǐliǎn (3+3); в речи первый третий тон меняется на второй — xíliǎn.':'Слушай Панду.'):'Панда повторяет только твои ответы.');
    await speak(lines[n]);if(token!==sequence||paused)return;
    await delay(1000);
   }
@@ -183,9 +186,11 @@ function init(stage){
   const text=$('day-long').value.trim();
   if(!text){status('Расскажи хотя бы одно предложение или напиши его.');return}
   stopRecognition();spoken=text.split(/[。！？!?\n]+/).map(x=>x.trim()).filter(Boolean);
+  $('day-transcribed').textContent=text;transcript.hidden=false;
   if(spoken.some(x=>/我去[一二三四五六七八九十\d]+点上班/.test(norm(x))))notes.push('Проверь порядок слов: 我八点去上班。');
   stop();stagePhase('results');line(['做得好！','Zuò de hǎo!','Разговор завершён.']);
-  const report='Рассказ Панды — прослушан.\nВопросы — '+answers.filter(Boolean).length+' / 5.\nСамостоятельный рассказ — '+spoken.length+' предложений (по распознанному/введённому тексту).\nГрамматика — '+(notes.join(' ')||'В проверенных примерах явных ошибок не найдено; свободный текст полностью не проверяется.')+
+  const notMentioned=[['подъём','起床'],['умывание / чистка зубов','洗脸|刷牙'],['завтрак','早饭|早餐'],['работа / учёба','上班|工作|上学'],['сон','睡觉']].filter(([label,pattern])=>!new RegExp(pattern).test(text)).map(([label])=>label);
+  const report='Рассказ Панды — прослушан.\nВопросы — '+answers.filter(Boolean).length+' / 5.\nСамостоятельный рассказ — '+spoken.length+' предложений (по распознанному/введённому тексту).\nНе упомянуто (не обязательно ошибка) — '+(notMentioned.join(', ')||'все пять тем затронуты')+'.\nГрамматика — '+(notes.join(' ')||'В проверенных примерах явных ошибок не найдено; свободный текст полностью не проверяется.')+
   '\nПроизношение и тоны — не удалось проверить по тексту.\nПовторить завтра — '+(errors.join(' ')||'одну сложную фразу из рассказа.')+
   (source==='browser'?'\nНекоторые фразы прозвучали браузерным голосом: единый MP3-пакет пока неполный.':'');
   status(report);
@@ -230,7 +235,7 @@ function init(stage){
    const list=phase==='story'?STORY[round%2]:phase==='summary'?answers.filter(Boolean).map(x=>[x,'','Твой ответ']):null;
    if(list)playList(list,phase,i);else begin()}
  };
- $('day-retry').onclick=()=>{round++;answers=Array(5).fill(null);notes=[];errors=[];spoken=[];i=0;begin()};
+ $('day-retry').onclick=()=>{round++;answers=Array(5).fill(null);notes=[];errors=[];spoken=[];i=0;transcript.hidden=true;begin()};
  $('day-show-py').onclick=()=>{stage.dataset.dayPy=String(stage.dataset.dayPy!=='true');$('day-show-py').setAttribute('aria-pressed',stage.dataset.dayPy)};
  $('day-show-ru').onclick=()=>{stage.dataset.dayRu=String(stage.dataset.dayRu!=='true');$('day-show-ru').setAttribute('aria-pressed',stage.dataset.dayRu)};
  document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();stopRecognition()}});
