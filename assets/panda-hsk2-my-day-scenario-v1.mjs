@@ -100,6 +100,28 @@ function init(stage){
  transcript.innerHTML='<summary>👤 Мой распознанный рассказ</summary><p id="day-transcribed" lang="zh-Hans"></p>';
  panel.append(transcript);
  stage.querySelector('.pg346-history').after(panel);stage.querySelector('.pg346-scene').after(controls);
+ // Approved Street screen is a reference for control hierarchy only:
+ // move existing interactive nodes; do not replace mascot/scenery or handlers.
+ const titleRow=panel.querySelector('.pg-day-title');
+ const preferences=controls.querySelector('.pg-day-toggles');
+ const returnShortcut=preferences?.querySelector('a');
+ // The existing circular top-left back arrow already returns to this lesson.
+ returnShortcut?.remove();
+ const pinyinToggle=preferences?.querySelector('#day-show-py');
+ const russianToggle=preferences?.querySelector('#day-show-ru');
+ if(pinyinToggle){pinyinToggle.textContent='拼';pinyinToggle.setAttribute('aria-label','Показать или скрыть пиньинь');pinyinToggle.title='Пиньинь'}
+ if(russianToggle){russianToggle.textContent='RU';russianToggle.setAttribute('aria-label','Показать или скрыть перевод');russianToggle.title='Русский перевод'}
+ if(preferences)titleRow.querySelector('#day-step').before(preferences);
+ const scene=stage.querySelector('.pg346-scene');
+ const rail=document.createElement('div');rail.className='pg-day-rail';rail.setAttribute('aria-label','Помощь и повторение');
+ for(const id of ['day-hear','day-hint']){
+  const button=controls.querySelector('#'+id);
+  if(button){button.setAttribute('aria-label',id==='day-hear'?'Повторить фразу Панды':'Показать подсказку');rail.append(button)}
+ }
+ scene.append(rail);
+ const entry=controls.querySelector('.pg-day-entry');
+ const finishButton=controls.querySelector('#day-finish');
+ if(entry&&finishButton)entry.append(finishButton);
  const $=id=>stage.querySelector('#'+id);
  let phase='ready',i=0,round=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false;const missingAudio=new Set();
  const status=s=>{$('day-status').textContent=s};
