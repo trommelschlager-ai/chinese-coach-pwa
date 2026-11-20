@@ -98,6 +98,8 @@ export function understandDayAnswer(raw,index){
  if(s.length>120)return unknown();
  const q=question(s);
  if(q!==null)return q>=0?{kind:'user-question',questionIndex:q,message:'Панда ответит о своём дне и вернётся к твоему вопросу.'}:{kind:'unconfirmed',message:'Панда пока отвечает на вопросы о своём дне. Спроси, например, 你几点起床？'};
+ if(s.endsWith('吗')&&!s.startsWith('你'))return unknown();
+ if(/想|打算|计划|应该|需要/u.test(s))return clarify('Ты рассказал о желании или плане. А что ты обычно делаешь на самом деле?');
  if(index===0||index===4)return timeAnswer(s,index);
  if(index===1)return afterWake(s);
  if(index===2)return breakfast(s);
