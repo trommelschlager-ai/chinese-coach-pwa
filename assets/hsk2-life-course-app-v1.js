@@ -131,6 +131,35 @@ function chosen(){return topics[state.topic]}
 function current(){return chosen().scenes[state.mini]}
 function words(t,m){return topics[t].words.slice(m===0?0:m===1?7:14,m===0?7:m===1?14:20)}
 function rec(zh){return !!(window.PandaHsk2AudioV330&&window.PandaHsk2AudioV330.lookup(zh))}
+const approvedAboutClips=Object.freeze({
+ '工作':'./assets/hsk2-about-me/voice-luvvoice-20261120/about04.mp3',
+ '爱好':'./assets/hsk2-about-me/voice-luvvoice-20261120/about05.mp3',
+ '学习':'./assets/hsk2-about-me/voice-luvvoice-20261120/about06.mp3'
+});
+let approvedAudio=null;
+function approvedSrc(zh){
+ const native=window.PandaGoHSK2Lesson1NativeAudioV459;
+ const src=(native&&native[zh])||approvedAboutClips[zh]||null;
+ return typeof src==='string'&&(/^(?:data:audio\/mpeg;base64,|\.\/assets\/hsk2-about-me\/voice-luvvoice-20261120\/about0[456]\.mp3$)/).test(src)?src:null;
+}
+function stopApprovedAudio(){
+ if(approvedAudio){try{approvedAudio.pause();approvedAudio.currentTime=0}catch{}approvedAudio=null;}
+}
+function playApproved(zh){
+ const src=approvedSrc(zh);
+ if(!src){if(status)status.textContent='Нет точной утверждённой записи для этого слова.';return;}
+ try{
+  stopApprovedAudio();
+  window.PandaHsk2AudioV330?.stop?.();
+  window.speechSynthesis?.cancel?.();
+  const clip=new Audio(src);
+  approvedAudio=clip;
+  clip.onended=()=>{if(approvedAudio===clip)approvedAudio=null;};
+  clip.onerror=()=>{if(approvedAudio===clip){approvedAudio=null;if(status)status.textContent='Не удалось открыть MP3. Проверь соединение.';}};
+  const task=clip.play();
+  if(task?.catch)task.catch(()=>{if(approvedAudio===clip){approvedAudio=null;if(status)status.textContent='MP3 не воспроизвёлся в браузере.';}});
+ }catch{if(status)status.textContent='Ошибка запуска утверждённого MP3.';}
+}
 function deviceVoiceAvailable(){return !!window.speechSynthesis&&typeof window.SpeechSynthesisUtterance==='function'}
 function deviceSound(zh){
  if(!deviceVoiceAvailable()){if(status)status.textContent='Голос устройства недоступен в этом браузере.';return false}
@@ -151,6 +180,7 @@ function daySound(zh){
 }
 function sound(zh){
  if(rec(zh))return '<button class="audio" type="button" data-sound="'+E(zh)+'" aria-label="Прослушать настоящий MP3: '+E(zh)+'">🔊</button>';
+ if(approvedSrc(zh))return '<button class="audio approved-voice" type="button" data-approved-sound="'+E(zh)+'" aria-label="Прослушать утверждённую LuvVoice запись: '+E(zh)+'">🔊</button>';
  if(deviceVoiceAvailable())return '<button class="audio device-voice" type="button" data-device-sound="'+E(zh)+'" title="Синтезированное произношение устройства (не запись носителя)" aria-label="Воспроизвести синтезированный голос устройства: '+E(zh)+'">🔉</button>';
  return '<span class="audio unavailable" title="Для этой фразы нет MP3 и голос устройства недоступен" aria-label="Озвучка недоступна">🔇</span>';
 }
@@ -346,7 +376,7 @@ function render(){
  var paintKey=[state.view,state.topic,state.mini,state.stage,state.view==='lesson'&&state.topic===0&&state.stage===3?(state.day?.v414?.testPage||0):'',state.day&&state.day.poster?'poster':'content'].join(':');
  var preserve=paintKey===lastPaintKey;
   // A navigation step must silence the previous lesson's clip before repainting.
-  if(lastPaintKey!==null&&!preserve)window.PandaHsk2AudioV330?.stop?.();
+  if(lastPaintKey!==null&&!preserve){window.PandaHsk2AudioV330?.stop?.();stopApprovedAudio();}
  var rememberedY=preserve?screen.scrollTop:0;
  // The live seven-question test scrolls inside the approved artwork.
  // Remember its own position, not just the outer screen scrollTop.
@@ -430,10 +460,12 @@ function openFirstLesson(step){
 document.addEventListener('click',function(e){
  var b=e.target.closest('button');if(!b)return;
  if(b.dataset.sound!==undefined){
+  stopApprovedAudio();
   window.speechSynthesis?.cancel?.();
   if(window.PandaHsk2AudioV330)window.PandaHsk2AudioV330.play(b.dataset.sound,function(msg){if(status)status.textContent=msg});
   return;
  }
+ if(b.dataset.approvedSound!==undefined){playApproved(b.dataset.approvedSound);return;}
  if(b.dataset.missingSound!==undefined){
    window.speechSynthesis?.cancel?.();
    if(status){
@@ -447,7 +479,7 @@ document.addEventListener('click',function(e){
    }
    return;
   }
-  if(b.dataset.deviceSound!==undefined){deviceSound(b.dataset.deviceSound);return}
+  if(b.dataset.deviceSound!==undefined){stopApprovedAudio();deviceSound(b.dataset.deviceSound);return}
  if(b.dataset.pg432CoverStart!==undefined&&state.view==='lesson'&&state.topic===0&&state.mini===0){
   if(state.day){state.day.pgApprovedCover=false;state.day.pg433Preview=false;}render();return;
  }
