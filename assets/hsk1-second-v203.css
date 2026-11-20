@@ -85,3 +85,17 @@
 .pg3-dialogue-repeat button{display:block;border:1px solid #debfe8;border-radius:16px;background:#f9edfb;color:#6c4291;font-size:14px;padding:11px 12px;margin:8px auto;font-weight:800;min-height:43px}
 .pg3-note{white-space:pre-line}
 @media(max-width:355px){.pg11-final-sheet{padding:14px 10px!important}.pg11-skills p{gap:6px}.pg11-actions a{font-size:13px}}
+
+
+/* Panda Go HSK1 2 · optional enrichment, not another compulsory step.
+   Same approved lilac-pink palette and card shadows. */
+.pg11-optional-details{margin:15px auto 8px;padding:11px 12px;
+  border:1.5px solid #edc3e7;border-bottom:3px solid #c58bce;
+  border-radius:18px;background:linear-gradient(145deg,#fffaff,#f7e7fa);
+  box-shadow:0 5px 13px #a879ae40}
+.pg11-optional-details>summary{cursor:pointer;line-height:1.32;
+  font-size:clamp(15px,4.2vw,18px);font-weight:850;color:#71348c;padding:5px 3px}
+.pg11-optional-details>summary:focus-visible{outline:3px solid #a563d9;outline-offset:3px}
+.pg11-optional-note{font-size:13px;color:#765680;line-height:1.42;margin:10px 3px}
+.pg11-optional-details .pg11-actions{margin-top:8px}
+.pg11-optional-details .pg11-actions a{min-height:44px}
