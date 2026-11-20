@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2d9f8"><title>Panda Go · Тоновые кривые предложения · пилот</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#4a285e;background:#faf0fc}button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button:disabled{opacity:.45;cursor:default}button:active:not(:disabled){transform:translateY(2px)}button:focus-visible{outline:3px solid #a35ec9;outline-offset:2px}main{max-width:530px;margin:auto;padding:14px 13px 30px}h1{font-size:22px;line-height:1.18;margin:3px 0 7px;color:#642a81}h2{font-size:16px;margin:0 0 8px}.kicker{font-size:11px;font-weight:800;letter-spacing:.08em;color:#8c54a4}.lead,.small{font-size:12px;line-height:1.5;color:#725481;margin:5px 0 10px}.panel{border:1px solid #ebd0ef;border-radius:20px;background:#fffafd;padding:13px;margin-top:11px;box-shadow:0 6px 14px #a271aa16}.phrase{font-size:31px;font-weight:800;text-align:center;letter-spacing:.04em}.pinyin{text-align:center;color:#8a4c9e;font-weight:700;font-size:16px}.translation{text-align:center;font-size:13px;color:#73557b;margin:3px 0 10px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.action{border:0;border-radius:13px;background:linear-gradient(145deg,#ad62c9,#813ca4);color:white;font-weight:780;min-height:44px;padding:9px 7px;font-size:13px;box-shadow:0 3px 0 #65308b}.action.alt{background:#f2e4f6;color:#683d7c;border:1px solid #dcc0e8;box-shadow:0 2px 0 #ddc8e6}.status{font-size:12px;line-height:1.55;color:#654879;min-height:35px;margin:10px 0 3px}.syllables{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.syllable{min-width:0;padding:7px 2px 6px;border:1px solid #e6cbe9;background:#fcf4fe;border-radius:12px;color:#5e3680}.syllable[aria-pressed=true]{background:#e9d5f7;border:2px solid #a46ac3;padding:6px 1px 5px}.syllable b{display:block;font-size:25px}.syllable span{display:block;font-size:11px;margin:2px 0}.mini{width:100%;height:38px;display:block}.mini path{stroke-linecap:round;stroke-linejoin:round}.chart{width:100%;display:block;background:linear-gradient(180deg,#fff,#fff9ff);border:1px solid #f0dcf3;border-radius:15px}.legend{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;font-size:11px;color:#75637a;margin:5px 0}.line{display:inline-block;vertical-align:middle;width:20px;height:0;border-top:3px solid #7a50b5}.line.ref{border-top:3px dashed #b09bbf}.note{border-radius:12px;background:#f4e9f8;padding:9px 11px;font-size:12px;line-height:1.5;color:#694679}.badge{display:inline-flex;align-items:center;gap:5px;background:#ebdcfa;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:800;color:#71458c}.rms{height:6px;background:#edddf2;border-radius:10px;overflow:hidden;margin-top:7px}.rms>div{height:100%;width:0;background:#a96dc3;transition:width .12s}footer{font-size:11px;color:#7c6683;line-height:1.55;margin-top:11px}
+
+.whole-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.whole-head h2{margin:0}
+.whole-svg{display:block;width:100%;height:auto;background:linear-gradient(#fff,#fdf8ff);border:1px solid #edd7f1;border-radius:15px}
+.whole-note{font-size:12px;line-height:1.5;color:#715580;margin:8px 0 2px}
+.whole-live{background:#f2e5f6;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:800;white-space:nowrap;color:#704c80}
+.whole-live.recording{background:#fbe2eb;color:#a72f65}
+.whole-path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.whole-legend{display:flex;gap:15px;flex-wrap:wrap;justify-content:center;margin:7px 0;font-size:12px;color:#6b5876}
+.whole-legend i{display:inline-block;vertical-align:middle;width:23px;border-top:3px solid #7952ba}
+.whole-legend i.ref{border-top:3px dashed #b39abd}
+</style></head><body><main>
+<span class="kicker">🐼 PANDA GO · HSK 2 · МОЙ ДЕНЬ</span>
+<h1>🎙️ Проверь произношение</h1>
+<p class="lead">Пилот: измерение высоты голоса на каждом слоге предложения. Границы слогов определяются <b>приблизительно</b>, без оценки «правильно/неправильно».</p>
+<section class="panel" aria-label="Фраза из урока">
+<div class="phrase" lang="zh-Hans">我早上洗脸。</div><div class="pinyin">Wǒ zǎoshang xǐliǎn.</div>
+<div class="translation">Я утром умываюсь.</div>
+<div class="actions"><button class="action alt" id="listen" type="button">🔊 Образец урока</button><button class="action" id="record" type="button">🎙 Записать себя</button><button class="action alt" id="stop" type="button" disabled>■ Завершить запись</button><button class="action alt" id="replay" type="button" disabled>🔁 Мой голос</button></div>
+<div class="rms"><div id="level"></div></div>
+<p id="status" class="status" role="status" aria-live="polite">Загружаю эталонную запись из действующего урока…</p>
+</section>
+
+<section class="panel" aria-labelledby="whole-title" id="whole-panel">
+<div class="whole-head"><h2 id="whole-title">📈 Всё предложение — одна шкала</h2><span class="whole-live" id="whole-state">Эталон</span></div>
+<p class="small">Пунктир — вся фраза из урока. Фиолетовая линия появляется во время речи, а после записи показывает твой голос целиком. По вертикали — относительная высота голоса, по горизонтали — время.</p>
+<svg class="whole-svg" id="whole-chart" viewBox="0 0 560 220" role="img" aria-label="Общий график высоты голоса для всего предложения">
+ <g stroke="#eee3f2" stroke-dasharray="4 5" stroke-width="1"><path d="M28 37H542 M28 77H542 M28 117H542 M28 157H542"/></g>
+ <g id="whole-dividers"></g><g id="whole-labels"></g>
+ <path class="whole-path" id="whole-ref" stroke="#b39abd" stroke-width="4" stroke-dasharray="8 7"/>
+ <path class="whole-path" id="whole-mine" stroke="#7952ba" stroke-width="4"/>
+ <line id="whole-cursor" x1="28" x2="28" y1="21" y2="161" stroke="#bb6caa" stroke-width="1.7" stroke-dasharray="3 5" style="display:none"/>
+ <text x="9" y="15" font-size="10" fill="#806491">Выше ↑</text>
+ <text x="478" y="212" font-size="11" fill="#806491">Время →</text>
+</svg>
+<div class="whole-legend"><span><i class="ref"></i> Голос из урока</span><span><i></i> Твой голос</span></div>
+<p id="whole-info" class="whole-note" aria-live="polite">Сначала послушай образец, затем произнеси всё предложение за одну запись.</p>
+</section>
+<section class="panel"><h2>Тон каждого слога</h2>
+<p class="small">Нажми на иероглиф: внизу появится увеличенная кривая. Пунктир — запись урока; фиолетовая линия — твой голос.</p>
+<div class="syllables" id="syllables" role="group" aria-label="Пять слогов предложения"></div>
+<svg id="large" class="chart" viewBox="0 0 340 150" role="img" aria-label="Сравнение контура высоты выбранного слога"><path d="M25 35H323 M25 73H323 M25 111H323" stroke="#e8daed" stroke-dasharray="4 5"/><path id="reference-line" stroke="#b09bbf" stroke-width="3.8" stroke-dasharray="7 6" fill="none"/><path id="learner-line" stroke="#7a50b5" stroke-width="3.8" fill="none"/><text x="8" y="14" fill="#886a98" font-size="10">Выше ↑</text><text x="267" y="142" fill="#886a98" font-size="10">Время →</text></svg>
+<div class="legend"><span><i class="line ref"></i> Образец урока</span><span><i class="line"></i> Твой голос</span></div>
+<p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
+</section>
+<section class="panel"><h2>Почему пока без оценки?</h2><p class="small">Программа измеряет частоту F0 и предварительно делит непрерывную речь на слоги по времени и тихим участкам. В быстрой связной речи границы могут быть неверными. Учитываются изменения третьего тона: <b>我早</b> ≈ wó zǎo, <b>洗脸</b> ≈ xí liǎn. Для полноценной проверки нужны точное выравнивание слогов и проверка фонетики.</p></section>
+<footer>🔒 Запись обрабатывается локально в браузере и не отправляется на сервер. Не сохраняется в аккаунте. Образец — существующая запись урока, не заявленная как живая носительница. Для микрофона требуется HTTPS, разрешение браузера и поддержка записи звука.</footer>
+</main><script src="./assets/hsk2-lesson1-voice-v459.js?v=459"></script>
+<script type="module">
+import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
+import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
+const $=id=>document.getElementById(id);
+const tokens=[{zh:'我',py:'wǒ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'早',py:'zǎo',tone:'3-й · низкий'},{zh:'上',py:'shang',tone:'нейтральный'},{zh:'洗',py:'xǐ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'脸',py:'liǎn',tone:'3-й · часто низкий'}];
+const weights=[1.0,1.15,.65,1,1.2];
+const source=window.PandaGoHSK2Lesson1NativeAudioV459?.['我早上洗脸。'];
+let reference=null, learner=null, selected=0, recorder=null, stream=null, recordedUrl=null, chunks=[], recorded=null, micTimer=null;
+function say(msg){$('status').textContent=msg;}
+function median(xs){if(!xs.length)return 0;const a=xs.slice().sort((x,y)=>x-y),m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;}
+function rms(d,start,end){let v=0,k=0;for(let i=start;i<end;i+=4){v+=d[i]*d[i];k++;}return k?Math.sqrt(v/k):0;}
+function analyze(buffer){
+ const d=buffer.getChannelData(0),rate=buffer.sampleRate,win=Math.min(4096,d.length),hop=Math.max(512,Math.round(rate*.025));let arr=[],peak=0;
+ for(let i=0;i+win<=d.length;i+=hop){const en=rms(d,i,i+win);arr.push({t:(i+win/2)/rate,en,start:i});peak=Math.max(peak,en);}
+ const gate=Math.max(.0035,Math.min(.018,peak*.16));
+ const active=arr.filter(x=>x.en>gate);
+ if(active.length<6)return {valid:false,reason:'Недостаточно звукового сигнала',frames:[],bounds:[]};
+ let begin=active[0].t,end=active[active.length-1].t;
+ if(end-begin<.35)return {valid:false,reason:'Слишком короткая запись',frames:[],bounds:[]};
+ // Estimate syllable positions from their approximate durations; snap to nearby RMS valleys.
+ // This is not forced alignment, and is intentionally never used as a correctness score.
+ const total=weights.reduce((a,b)=>a+b,0);let sum=0,bounds=[begin];
+ for(let k=0;k<weights.length-1;k++){
+  sum+=weights[k];const guess=begin+(end-begin)*sum/total,rad=Math.min(.065,(end-begin)*.04);
+  const local=arr.filter(x=>Math.abs(x.t-guess)<rad);
+  const valley=local.length?local.reduce((a,b)=>b.en<a.en?b:a):null;
+  let b=valley?.t??guess; b=Math.max(bounds.at(-1)+.055,Math.min(end-(weights.length-1-k)*.055,b));bounds.push(b);
+ }bounds.push(end);
+ const frames=[],sample=new Float32Array(win);
+ for(const a of arr){if(a.en<gate||a.t<begin||a.t>end)continue;
+  const gain=Math.max(1,Math.min(9,.055/Math.max(.004,peak)));
+  for(let i=0;i<win;i++)sample[i]=Math.max(-1,Math.min(1,d[a.start+i]*gain));
+  const p=estimatePitch(sample,rate);
+  const q=p&&p.clarity>=.7?p:estimatePitchAutocorrelation(sample,rate);
+  if(q&&q.clarity>=.55&&q.hz>=65&&q.hz<=550)frames.push({t:a.t,hz:q.hz});
+ }
+ const base=median(frames.map(x=>x.hz));
+ return {valid:frames.length>=5,bounds,frames,base,reason:frames.length<5?'Не удалось надёжно измерить высоту голоса':'Измерено'};
+}
+function path(data,i,x0,y0,w,h){
+ if(!data?.valid||!data.bounds?.length)return '';
+ const start=data.bounds[i],end=data.bounds[i+1],pts=data.frames.filter(x=>x.t>=start&&x.t<=end);
+ if(pts.length<3||end-start<.06)return '';
+ let p='';
+ for(let j=0;j<pts.length;j++){
+  const a=pts[j],x=x0+w*(a.t-start)/(end-start),st=Math.max(-6,Math.min(6,12*Math.log2(a.hz/data.base))),y=y0+h/2-st*(h/13);
+  // Do not join across very large unvoiced gaps.
+  const pen=j===0||a.t-pts[j-1].t>.105?'M':'L';p+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
+ }
+ return p.trim();
+}
+function render(){
+ const parent=$('syllables');parent.innerHTML='';
+ for(let i=0;i<tokens.length;i++){
+  const t=tokens[i],btn=document.createElement('button');btn.type='button';btn.className='syllable';btn.setAttribute('aria-pressed',String(i===selected));btn.setAttribute('aria-label',t.zh+', '+t.py);btn.innerHTML='<b>'+t.zh+'</b><span>'+t.py+'</span><svg viewBox="0 0 130 68" class="mini" aria-hidden="true"><path d="'+path(reference,i,7,8,116,52)+'" stroke="#b09bbf" stroke-width="3" stroke-dasharray="6 4" fill="none"/><path d="'+path(learner,i,7,8,116,52)+'" stroke="#7a50b5" stroke-width="3.5" fill="none"/></svg>';btn.addEventListener('click',()=>{selected=i;render();});parent.append(btn);
+ }
+ $('reference-line').setAttribute('d',path(reference,selected,25,22,298,106));
+ $('learner-line').setAttribute('d',path(learner,selected,25,22,298,106));
+ const refCount=reference?.frames.filter(x=>x.t>=reference.bounds[selected]&&x.t<=reference.bounds[selected+1]).length||0;
+ const userCount=learner?.frames.filter(x=>x.t>=learner.bounds[selected]&&x.t<=learner.bounds[selected+1]).length||0;
+ $('detail').textContent=tokens[selected].zh+' · '+tokens[selected].py+' — '+tokens[selected].tone+'. Точки F0: образец '+refCount+', ученик '+userCount+'. Границы слога предварительные; при нехватке точек линия не строится. Оценка правильности не выставляется.';
+}
+async function decode(url){const resp=await fetch(url);if(!resp.ok)throw new Error('Не удалось прочитать запись');const b=await resp.arrayBuffer();const c=new (window.AudioContext||window.webkitAudioContext)();try{return await c.decodeAudioData(b.slice(0));}finally{await c.close();}}
+
+const GRAPH_LEFT=28,GRAPH_W=514,GRAPH_TOP=23,GRAPH_BOTTOM=159,MAX_RECORD_SECONDS=6;
+let liveContext=null,liveSource=null,liveAnalyzer=null,liveTimer=null,liveFrame=null,liveFrames=[],liveStarted=0;
+function wholePath(data,isLive=false){
+ if(!data?.frames||data.frames.length<2)return '';
+ const frames=data.frames.filter(p=>Number.isFinite(p.hz)&&p.hz>0&&Number.isFinite(p.t));
+ if(frames.length<2)return '';
+ const t0=isLive?0:(data.bounds?.[0]??frames[0].t);
+ const t1=isLive?MAX_RECORD_SECONDS:(data.bounds?.at(-1)??frames.at(-1).t);
+ if(t1<=t0)return '';
+ const baseline=data.base||median(frames.map(p=>p.hz));
+ if(!baseline)return '';
+ let out='',prev=null;
+ for(const p of frames){
+  if(p.t<t0||p.t>t1)continue;
+  const x=GRAPH_LEFT+GRAPH_W*Math.max(0,Math.min(1,(p.t-t0)/(t1-t0)));
+  const st=Math.max(-7,Math.min(7,12*Math.log2(p.hz/baseline)));
+  const y=Math.max(GRAPH_TOP,Math.min(GRAPH_BOTTOM,90-st*8.7));
+  // Missing voiced regions and octave tracking failures must not become lines.
+  const jump=prev?Math.abs(12*Math.log2(p.hz/prev.hz)):0;
+  const pen=!prev||p.t-prev.t>.16||jump>8?'M':'L';
+  out+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
+  prev=p;
+ }
+ return out.trim();
+}
+function wholeGuides(){
+ const group=$('whole-dividers'),labels=$('whole-labels');
+ group.replaceChildren();labels.replaceChildren();
+ const total=weights.reduce((a,b)=>a+b,0);
+ let cumulative=0;
+ for(let i=0;i<tokens.length;i++){
+  const x=GRAPH_LEFT+GRAPH_W*(cumulative+weights[i]/2)/total;
+  const svgNS='http://www.w3.org/2000/svg';
+  const t=document.createElementNS(svgNS,'text');t.setAttribute('x',x.toFixed(1));t.setAttribute('y','185');
+  t.setAttribute('text-anchor','middle');t.setAttribute('fill','#6c4a83');
+  t.setAttribute('font-size','17');t.setAttribute('font-weight','700');t.textContent=tokens[i].zh;
+  labels.append(t);
+  const py=document.createElementNS(svgNS,'text');py.setAttribute('x',x.toFixed(1));py.setAttribute('y','202');
+  py.setAttribute('text-anchor','middle');py.setAttribute('fill','#8a7392');py.setAttribute('font-size','11');py.textContent=tokens[i].py;
+  labels.append(py);
+  cumulative+=weights[i];
+  if(i<tokens.length-1){
+   const line=document.createElementNS(svgNS,'line');const bx=GRAPH_LEFT+GRAPH_W*cumulative/total;
+   line.setAttribute('x1',bx.toFixed(1));line.setAttribute('x2',bx.toFixed(1));
+   line.setAttribute('y1','28');line.setAttribute('y2','161');line.setAttribute('stroke','#ead4ed');
+   line.setAttribute('stroke-dasharray','3 5');group.append(line);
+  }
+ }
+}
+function updateWhole(){
+ $('whole-ref').setAttribute('d',wholePath(reference));
+ const isCapturing=!!liveTimer&&!!recorder;
+ const display=isCapturing?{frames:liveFrames,base:median(liveFrames.map(p=>p.hz))}:learner;
+ $('whole-mine').setAttribute('d',wholePath(display,isCapturing));
+ if(!isCapturing){
+  $('whole-state').textContent=learner?.valid?'Запись готова':'Эталон';
+  $('whole-state').classList.remove('recording');
+  $('whole-cursor').style.display='none';
+  $('whole-info').textContent=learner?.valid
+   ?'Фиолетовая линия — результат твоей записи. Оба голоса показаны в относительном масштабе по высоте и времени; точного выравнивания слогов и оценки правильности нет.'
+   :reference?.valid?'Пунктир — измеренный эталон. Запиши предложение целиком, чтобы поверх появилась твоя кривая.':'Данные эталона ещё не готовы.';
+ }
+}
+function stopLive(){
+ if(liveTimer){clearInterval(liveTimer);liveTimer=null;}
+ try{liveSource?.disconnect();}catch{}
+ try{liveAnalyzer?.disconnect();}catch{}
+ liveSource=null;liveAnalyzer=null;liveFrame=null;
+ const old=liveContext;liveContext=null;
+ if(old){try{void old.close();}catch{}}
+ $('level').style.width='0%';
+ $('whole-cursor').style.display='none';
+}
+async function startLive(s){
+ stopLive();liveFrames=[];
+ if(!(window.AudioContext||window.webkitAudioContext))return;
+ try{
+  const context=new (window.AudioContext||window.webkitAudioContext)();
+  liveContext=context;await context.resume();
+  if(!stream||stream!==s){stopLive();return;}
+  liveSource=context.createMediaStreamSource(s);liveAnalyzer=context.createAnalyser();
+  liveAnalyzer.fftSize=4096;liveAnalyzer.smoothingTimeConstant=0;liveSource.connect(liveAnalyzer);
+  liveFrame=new Float32Array(liveAnalyzer.fftSize);
+  liveStarted=performance.now();
+  $('whole-state').textContent='● Запись';$('whole-state').classList.add('recording');
+  $('whole-info').textContent='Говори фразу естественно. Линия рисуется во время речи и будет уточнена по полной записи после остановки.';
+  liveTimer=setInterval(()=>{
+   if(!liveAnalyzer||!liveContext)return;
+   liveAnalyzer.getFloatTimeDomainData(liveFrame);
+   let energy=0;for(let i=0;i<liveFrame.length;i+=4)energy+=liveFrame[i]*liveFrame[i];
+   const level=Math.sqrt(energy/(liveFrame.length/4));
+   $('level').style.width=Math.round(Math.max(0,Math.min(100,level*1800)))+'%';
+   const elapsed=(performance.now()-liveStarted)/1000;
+   const pos=GRAPH_LEFT+GRAPH_W*Math.min(1,elapsed/MAX_RECORD_SECONDS);
+   const cursor=$('whole-cursor');cursor.style.display='';cursor.setAttribute('x1',pos.toFixed(1));cursor.setAttribute('x2',pos.toFixed(1));
+   if(level>.007){
+    const p=estimatePitch(liveFrame,context.sampleRate);
+    if(p&&p.clarity>=.70&&p.hz>=65&&p.hz<=550){
+     liveFrames.push({t:elapsed,hz:p.hz});
+     if(liveFrames.length>90)liveFrames.shift();
+    }
+   }
+   if(liveFrames.length>1){
+    $('whole-mine').setAttribute('d',wholePath({frames:liveFrames,base:median(liveFrames.map(p=>p.hz))},true));
+   }
+  },110);
+ }catch(e){stopLive();$('whole-info').textContent='Живой график недоступен на этом устройстве; после записи попробуем построить итоговый.';}
+}
+
+function stopStream(){stopLive();if(micTimer){clearTimeout(micTimer);micTimer=null;}stream?.getTracks().forEach(x=>x.stop());stream=null;$('level').style.width='0%';}
+async function load(){
+ if(!source){say('Не найдена точная запись фразы в аудиокарте урока.');return;}
+ try{reference=analyze(await decode(source));say(reference.valid?'Образец загружен. Послушай запись и нажми «Записать себя».':'Образец загружен, но данных F0 недостаточно для тоновой кривой.');render();updateWhole();}
+ catch(e){say('Не удалось прочитать образец: '+(e?.message||'ошибка'));}
+}
+$('listen').addEventListener('click',()=>{if(!source)return;const a=new Audio(source);a.play().catch(()=>say('Звук не воспроизведён: проверь громкость и разрешения Chrome.'));});
+$('record').addEventListener('click',async()=>{
+ if(recorder||!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){say('Для записи открой страницу в Chrome через HTTPS и разреши микрофон.');return;}
+ try{
+  if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}
+  learner=null;chunks=[];$('replay').disabled=true;render();updateWhole();
+  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+  recorder=new MediaRecorder(stream);recorder.addEventListener('dataavailable',e=>{if(e.data.size)chunks.push(e.data);});
+  recorder.addEventListener('stop',async()=>{
+   const mime=recorder?.mimeType||'audio/webm';recorder=null;stopStream();$('record').disabled=false;$('stop').disabled=true;
+   if(!chunks.length){say('Запись пустая. Попробуй снова.');return;}
+   recorded=new Blob(chunks,{type:mime});recordedUrl=URL.createObjectURL(recorded);$('replay').disabled=false;
+   say('Анализирую короткую запись…');
+   try{learner=analyze(await decode(recordedUrl));say(learner.valid?'Готово! Нажимай на иероглифы и сравнивай линии. Разделение на слоги пока приблизительное.':'Звук записан, но F0 извлечён не полностью. Попробуй произнести фразу естественно в тишине.');render();updateWhole();}
+   catch(e){say('Запись есть, но браузер не смог построить график: '+(e?.message||'ошибка'));}
+  },{once:true});
+  recorder.start();void startLive(stream);$('record').disabled=true;$('stop').disabled=false;say('🎙 Говори «我早上洗脸» естественным голосом. Остановка автоматически через 6 секунд.');
+  micTimer=setTimeout(()=>{if(recorder?.state==='recording')recorder.stop();},6000);
+ }catch(e){stopStream();recorder=null;$('record').disabled=false;$('stop').disabled=true;say(e?.name==='NotAllowedError'?'Микрофон запрещён. Разреши доступ в Chrome.':'Микрофон недоступен: '+(e?.message||'ошибка'));}
+});
+$('stop').addEventListener('click',()=>{if(recorder?.state==='recording')recorder.stop();});
+$('replay').addEventListener('click',()=>{if(!recordedUrl)return;new Audio(recordedUrl).play().catch(()=>say('Не удалось воспроизвести запись.'));});
+function cleanup(){if(recorder?.state==='recording'){recorder.onstop=null;try{recorder.stop();}catch{}}stopStream();if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}}
+window.addEventListener('pagehide',cleanup);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&recorder?.state==='recording')recorder.stop();});
+wholeGuides();render();updateWhole();void load();
+</script></body></html>
