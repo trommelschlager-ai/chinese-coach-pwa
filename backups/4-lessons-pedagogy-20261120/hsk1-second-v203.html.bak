@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#f7f0ff">
+<meta name="description" content="Panda Go — урок 2 HSK 1: личные местоимения, вежливое 您, вопросы с 吗 и практика общения.">
+<meta name="panda-go-lesson2-audio" content="Xiaoxiao v262" />
+<title>Урок 2 · Личные местоимения — Panda Go</title>
+<link rel="stylesheet" href="./assets/hsk1-first-v189.css?v=237">
+<link rel="stylesheet" href="./assets/hsk1-second-v203.css?v=237">
+<link rel="stylesheet" href="./assets/hsk1-second-extras-v204.css?v=237">
+<script src="./assets/lesson-viewport.js?v=237"></script>
+<link rel="stylesheet" href="./assets/hanzi-writing-shortcut-v283.css?v=283">
+<link rel="stylesheet" href="./assets/hsk1-finish-buttons-v296.css?v=296">
+<link rel="stylesheet" href="./assets/panda-mobile-v394.css?v=394"><link rel="stylesheet" href="./assets/hsk1-headers-v421.css?v=421">
+<link rel="stylesheet" href="./assets/hsk1-controls-v421.css?v=421">
+<link rel="stylesheet" href="./assets/hsk1-next-only-v440.css?v=440">
+<script defer src="./assets/hsk1-next-only-v440.js?v=440"></script>
+<script defer src="./assets/panda-translation-guard-v503.js?v=503"></script>
+</head>
+<body data-pg-hsk1="2">
+<main class="pg-lesson" id="app" aria-label="Урок 2 HSK 1: личные местоимения">
+ <header class="pg-hsk1-header" data-pg-hsk1-header>
+ <a class="pg-hsk1-back" href="./hsk1-map.html" aria-label="К карте HSK1">‹</a>
+ <div class="pg-hsk1-brand"><span class="pg-hsk1-panda" aria-hidden="true"></span><div><strong>Panda <em>Go</em></strong><small>Китайский с нуля</small></div></div>
+ <div class="pg-hsk1-tools"><a class="pg-hsk1-write" href="./hanzi-writing.html?lesson=2" title="Письмо иероглифов" aria-label="Тренажёр написания иероглифов — урок 2">✍️</a><span class="pg-hsk1-count" id="pg-counter" aria-live="polite">01 / 12</span></div>
+</header>
+ <div class="progress pg-hsk1-progress" role="progressbar" id="pg-progress" aria-label="Прогресс второго урока" aria-valuemin="0" aria-valuemax="12" aria-valuenow="1"><i id="pg-progress-fill"></i></div>
+ <section class="content" id="pg-content" aria-live="polite"><h1 class="screen-title">Личные местоимения</h1></section>
+ <footer class="pg-footer" id="pg-footer">
+  <button class="secondary" type="button" id="pg-back">← Назад</button>
+  <button class="primary" type="button" id="pg-next">Дальше →</button>
+ </footer>
+</main>
+<p class="sr-only" aria-live="assertive" id="pg-announcement"></p>
+<script src="./assets/hsk1-voices-map-v160.js?v=160"></script>
+<script src="./assets/hsk1-native-human-map-v167.js?v=167"></script>
+<script src="./assets/hsk1-lesson2-audio-v208.js?v=208"></script>
+<script src="./assets/vendor/hanzi-writer.min.js"></script>
+<script src="./assets/hsk1-second-extras-v204.js?v=262"></script>
+<script src="./assets/panda-mic-v236.js?v=292"></script>
+<script src="./assets/fallback-audio-v237.js?v=237"></script>
+<script src="./assets/owner-audio-v237.js?v=237"></script>
+<script src="./assets/panda-lesson2-xiaoxiao-v261.js?v=261&reload=262"></script>
+<script src="./assets/panda-go-hsk1-path-v371.js?v=371"></script>
+<script src="./assets/hsk1-second-v203.js?v=371"></script>
+<script src="./assets/lesson-audio-source.js?v=282"></script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.getRegistration().then(r=>r&&r.update()).catch(()=>{});</script>\n<script src="./assets/hsk1-controls-v421.js?v=421"></script>
+<script defer src="./assets/panda-tone-lesson-entry-v469.js?v=469"></script>
+</body>
+</html>
