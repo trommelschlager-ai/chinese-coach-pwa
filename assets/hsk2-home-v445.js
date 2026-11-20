@@ -25,15 +25,15 @@ function sync(){
  const controls=[
   ['button','Вернуться к карте HSK 2','pg445-back',{'type':'button','data-view':'map'}],
   ['button','Все уроки и темы курса','pg445-lessons',{'type':'button','data-view':'map'}],
-  ['button','Слова: первый этап урока','pg445-words',{'type':'button','data-v445-stage':'0'}],
-  ['button','Грамматика: второй этап урока','pg445-grammar',{'type':'button','data-v445-stage':'1'}],
+  ['button','Слова: урок 1 О себе','pg445-words',{'type':'button','data-v445-stage':'0'}],
+  ['button','Грамматика: урок 1 О себе','pg445-grammar',{'type':'button','data-v445-stage':'1'}],
   ['button','Практика произношения','pg445-practice',{'type':'button','data-v445-stage':'2'}],
   ['a','Поговорить с Panda AI','pg445-ai',{'href':'./panda-voice-pilot.html'}],
   ['button','Посмотреть программу курса','pg445-program',{'type':'button','data-view':'map'}],
-  ['button','Начать первый урок','pg445-start',{'type':'button','data-start':'0'}],
-  ['button','Диалоги из первого урока','pg445-dialogues',{'type':'button','data-v445-stage':'4'}],
+  ['button','Начать урок 1 — О себе','pg445-start',{'type':'button','data-start':'0'}],
+  ['button','Диалоги из урока 1 О себе','pg445-dialogues',{'type':'button','data-v445-stage':'4'}],
   ['button','Аудио и китайские тоны','pg445-audio',{'type':'button','data-view':'tones'}],
-  ['button','Мини-тесты первого урока','pg445-tests',{'type':'button','data-v445-stage':'3'}]
+  ['button','Мини-тесты урока 1 О себе','pg445-tests',{'type':'button','data-v445-stage':'3'}]
  ];
  for(const [tag,name,cls,attrs] of controls)art.appendChild(hotspot(tag,name,cls,attrs));
 }
