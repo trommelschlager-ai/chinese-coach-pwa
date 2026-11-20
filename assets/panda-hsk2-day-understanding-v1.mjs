@@ -116,7 +116,8 @@ export function understandDayAnswer(raw,index){
  if(/^(?:他|她|他们|她们|它|我哥哥|我弟弟|我姐姐|我妹妹|我爸爸|我妈妈|我朋友)/u.test(s))
   return clarify('Я спрашиваю именно о твоём дне. Ответь о себе: 我……');
  const q=question(s);
- if(q!==null)return q>=0?{kind:'user-question',questionIndex:q,message:'Панда ответит о своём дне и вернётся к твоему вопросу.'}:{kind:'unconfirmed',message:'Панда пока отвечает на вопросы о своём дне. Спроси, например, 你几点起床？'};
+ if(q!==null)return q>=0?{kind:'user-question',questionIndex:q,message:'Панда ответит о своём дне и вернётся к твоему вопросу.'}:{kind:'other-question',message:'Сообщение получено, но этот тематический режим пока не умеет отвечать на произвольные вопросы. Попробуй вопрос о распорядке дня, например 你几点起床？'};
+ if(/[?？]\s*$/.test(String(raw))||/^(?:什么|为什么|怎么|谁|哪里|哪儿|多少|几)/u.test(s))return {kind:'other-question',message:'Вопрос отправлен. В этом уроке я могу обсудить свой день, но пока не умею отвечать на любые темы.'};
  if(s.endsWith('吗')&&!s.startsWith('你'))return unknown();
  if(/想|打算|计划|应该|需要/u.test(s))return clarify('Ты рассказал о желании или плане. А что ты обычно делаешь на самом деле?');
  if(index===0||index===4)return timeAnswer(s,index);
