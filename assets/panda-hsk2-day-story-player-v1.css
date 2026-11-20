@@ -128,3 +128,137 @@
  #pg346[data-day-scenario="ready"] .pg-day-player-buttons button{height:38px!important}
  #pg346[data-day-scenario="ready"] .pg346-scene{min-height:135px!important}
 }
+
+
+/* v11: apply the approved photo-2 hierarchy ALSO in questions/monologue.
+   Keep one unified player + an input bar in all interactive speaking phases. */
+#pg346[data-day-scenario="ready"][data-day-phase="questions"] .pg-day-player,
+#pg346[data-day-scenario="ready"][data-day-phase="monologue"] .pg-day-player{
+  display:flex!important;
+  min-height:clamp(112px,12.4dvh,150px)!important;
+  flex:0 0 auto!important;
+}
+#pg346[data-day-scenario="ready"][data-day-phase="questions"] .pg-day-controls,
+#pg346[data-day-scenario="ready"][data-day-phase="monologue"] .pg-day-controls{
+  display:flex!important;
+  flex:0 0 auto!important;
+  margin:4px clamp(6px,1.5vw,14px) 5px!important;
+  padding:clamp(6px,1.3vw,10px)!important;
+  min-height:clamp(68px,8.7dvh,94px)!important;
+  max-height:none!important;
+  border-radius:clamp(20px,4.5vw,26px)!important;
+  background:var(--pg500-panel)!important;
+  border:1px solid var(--pg500-edge)!important;
+  box-shadow:0 3px 12px #04132e66!important;
+}
+#pg346[data-day-scenario="ready"][data-day-phase="questions"] .pg346-scene,
+#pg346[data-day-scenario="ready"][data-day-phase="monologue"] .pg346-scene{
+  flex:1 1 0!important;
+  min-height:clamp(160px,24dvh,310px)!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-answer-fields{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  flex:1 1 0!important;min-width:0!important;
+  height:clamp(54px,7.5dvh,70px)!important;
+  gap:clamp(4px,.8vw,9px)!important;
+  background:linear-gradient(140deg,#ffffff,#f8ecff)!important;
+  border:1px solid #e0cced!important;
+  border-radius:999px!important;
+  padding:4px clamp(6px,1.6vw,11px)!important;
+  box-shadow:inset 0 2px 5px #110d3220,0 2px 4px #090b2a52!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-answer-fields input,
+#pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-answer-fields textarea{
+  flex:1 1 0!important;min-width:0!important;width:100%!important;
+  height:clamp(43px,6.5dvh,60px)!important;
+  min-height:0!important;max-height:60px!important;
+  margin:0!important;padding:5px clamp(5px,1.5vw,12px)!important;
+  color:#40364f!important;background:transparent!important;
+  border:0!important;outline:none!important;box-shadow:none!important;
+  border-radius:18px!important;
+  font-size:clamp(15px,3.7vw,18px)!important;
+  line-height:1.25!important;text-align:left!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-answer-fields textarea{
+  resize:none!important;overflow:auto!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-answer-fields #day-mic,
+#pg346[data-day-scenario="ready"] .pg-day-answer-fields #day-send{
+  flex:0 0 clamp(39px,9.6vw,54px)!important;
+  width:clamp(39px,9.6vw,54px)!important;
+  min-width:0!important;
+  height:clamp(39px,5.9dvh,53px)!important;
+  min-height:0!important;
+  border:none!important;border-radius:50%!important;
+  background:transparent!important;
+  color:#8943cb!important;box-shadow:none!important;
+  font-size:clamp(20px,5.1vw,26px)!important;
+  padding:0!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-answer-fields #day-mic{
+  border-right:1px solid #e4d9e9!important;border-radius:8px!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-answer-fields #day-send{
+  background:linear-gradient(135deg,#a75dea,#6c32b5)!important;
+  color:#fff!important;
+  box-shadow:0 2px 5px #7f37ae77!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-answer-fields button[hidden],
+#pg346[data-day-scenario="ready"] .pg-day-controls #day-answer-primary[hidden],
+#pg346[data-day-scenario="ready"] .pg-day-controls #day-finish[hidden]{
+  display:none!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-entry #day-answer-primary,
+#pg346[data-day-scenario="ready"] .pg-day-entry #day-finish{
+  flex:0 0 clamp(104px,29vw,158px)!important;
+  min-width:0!important;
+  min-height:0!important;
+  height:clamp(54px,7.5dvh,70px)!important;
+  margin:0!important;padding:4px 6px!important;
+  border:1px solid #d4b2ff!important;border-radius:clamp(15px,3vw,21px)!important;
+  background:linear-gradient(130deg,#b65fed,#7935bf)!important;
+  color:#fff!important;
+  box-shadow:0 3px 7px #3b125f74!important;
+  font-size:clamp(12px,2.95vw,16px)!important;
+  line-height:1.12!important;
+  font-weight:850!important;text-align:center!important;
+  white-space:normal!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-entry{
+  width:100%!important;align-items:center!important;
+  gap:clamp(5px,1.5vw,12px)!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-buttons #day-next{
+  font-size:clamp(10px,2.35vw,13px)!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-title strong{
+  font-size:clamp(12px,2.95vw,15px)!important;
+}
+#pg346[data-day-scenario="ready"] .pg-day-player-title span{
+  font-size:clamp(10px,2.6vw,13px)!important;
+}
+@media(max-height:735px){
+ #pg346[data-day-scenario="ready"][data-day-phase="questions"] .pg-day-player,
+ #pg346[data-day-scenario="ready"][data-day-phase="monologue"] .pg-day-player{
+  min-height:94px!important;padding:6px!important;gap:4px!important;
+ }
+ #pg346[data-day-scenario="ready"][data-day-phase="questions"] .pg-day-controls,
+ #pg346[data-day-scenario="ready"][data-day-phase="monologue"] .pg-day-controls{
+  min-height:60px!important;padding:4px 6px!important;
+ }
+ #pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-answer-fields,
+ #pg346[data-day-scenario="ready"] .pg-day-entry #day-answer-primary,
+ #pg346[data-day-scenario="ready"] .pg-day-entry #day-finish{height:50px!important}
+ #pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-answer-fields input,
+ #pg346[data-day-scenario="ready"] .pg-day-controls .pg-day-answer-fields textarea{height:40px!important}
+}
+@media(max-width:360px){
+ #pg346[data-day-scenario="ready"] .pg-day-entry #day-answer-primary,
+ #pg346[data-day-scenario="ready"] .pg-day-entry #day-finish{
+  flex-basis:97px!important;font-size:11px!important;
+ }
+ #pg346[data-day-scenario="ready"] .pg-day-answer-fields #day-mic,
+ #pg346[data-day-scenario="ready"] .pg-day-answer-fields #day-send{
+  flex-basis:36px!important;width:36px!important;
+ }
+}
