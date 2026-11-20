@@ -292,6 +292,34 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .pg-routine-line span{font-size:clamp(13px,3.8vw,16px);color:#b4369b}
 #app #pg433 .pg-routine-line small{font-size:clamp(12px,3.5vw,15px);color:#66426f}
 @media(max-width:360px){#app #pg433 .pg-routine-fields{grid-template-columns:minmax(0,1fr)}}
+
+/* HSK2 My Day · comfortable reading + step progress · 2026-11-20 */
+#app #pg433 .pg433-tabs{--pg2-progress:12.5%}
+#app #pg433 .pg433-tabs::after{content:"";position:absolute;z-index:3;pointer-events:none;
+ left:2px;right:2px;bottom:-5px;height:4px;border-radius:99px;
+ background:linear-gradient(90deg,#b633c4 0%,#d968d8 var(--pg2-progress),#eedaf0 var(--pg2-progress),#eedaf0 100%);box-shadow:0 1px 3px #a77daf66}
+#app #pg433 .pg433-counter{min-width:47px!important;max-width:64px!important;line-height:1.13!important;
+ white-space:normal!important;text-align:center!important;font-size:11px!important;color:#833e8d!important}
+#app:not([data-view="1"]) #pg433 .pg433-content{overflow-y:auto!important;overscroll-behavior-y:contain!important;
+ -webkit-overflow-scrolling:touch;scrollbar-width:thin!important}
+#app #pg433 .word-row .py,#app #pg433 .word-row .ru{font-size:clamp(13px,3.5vw,15px)!important;line-height:1.3!important;overflow-wrap:anywhere!important}
+#app #pg433 .tone-row .py,#app #pg433 .tone-row .ru{font-size:clamp(12px,3.4vw,14px)!important;line-height:1.22!important;overflow-wrap:anywhere!important}
+#app #pg433 .phrase .py,#app #pg433 .phrase .ru,#app #pg433 .chat-bubble .py,#app #pg433 .chat-bubble .ru{
+ font-size:clamp(13px,3.5vw,15px)!important;line-height:1.34!important;overflow-wrap:anywhere!important}
+#app #pg433 .choice,#app #pg433 .soft{min-height:44px!important}
+#app #pg433 .pg2-practice-invite{font-size:clamp(13px,3.6vw,15px)!important;line-height:1.42!important;
+ font-weight:750!important;color:#74318a!important;margin:14px 8px 7px!important}
+#app #pg433 .pg2-rehearsal{margin:12px 0 6px;padding:12px 10px;border-radius:16px;border:1.5px solid #e8c1e4;
+ background:linear-gradient(#fffaff,#fbe9fc);box-shadow:0 3px 7px #a16da82b}
+#app #pg433 .pg2-rehearsal h3{color:#682580;font-size:clamp(15px,4vw,18px);line-height:1.3;margin:0 0 7px}
+#app #pg433 .pg2-rehearsal p{color:#725078;font-size:clamp(12px,3.2vw,14px);line-height:1.38;margin:6px 0 10px}
+#app #pg433 .pg2-rehearsal-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:8px 0}
+#app #pg433 .pg2-rehearsal-steps button{min-width:0;min-height:46px;border-radius:12px;border:1.5px solid #d49ddd;
+ background:linear-gradient(#fff7fd,#edcff4);font-weight:900;font-size:17px;color:#75308d;box-shadow:0 3px 5px #a87cac33;padding:6px 0}
+#app #pg433 .pg2-rehearsal-steps button[aria-pressed="true"]{background:linear-gradient(#def7d7,#9fdc93);border-color:#78b979;color:#2e6930}
+#app #pg433 .pg2-rehearsal-steps button:focus-visible{outline:3px solid #903db3;outline-offset:2px}
+@media(max-width:375px){#app #pg433 .word-row .py,#app #pg433 .word-row .ru{font-size:13px!important}}
+
 </style>
 </head>
 <body>
@@ -400,7 +428,7 @@ function blank() {
     missed:tests.map(() => words.map(() => false)), quizTest:null, quizIndex:0, quizPicked:[], courseQuizCursor:null, courseQuizType:null, quizRetry:null,
     grammar:[], grammarDone:false, dayOrder:[], dayShuffled:mixedDay(), dayDone:false,
     mic:[], chat:[], toneTab:'words', unlockedSection:0,
-    heardWords:[], selfSpoken:[], practiceMode:'mic', routine:{wake:'7',breakfast:'yes',work:'go',sleep:'10'}
+    heardWords:[], selfSpoken:[], practiceMode:'mic', routine:{wake:'7',breakfast:'yes',work:'go',sleep:'10'},personalRead:[]
   };
 }
 
@@ -439,6 +467,7 @@ state.heardWords = [...new Set((Array.isArray(state.heardWords) ? state.heardWor
 state.selfSpoken = [...new Set((Array.isArray(state.selfSpoken) ? state.selfSpoken : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.mic = [...new Set((Array.isArray(state.mic) ? state.mic : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.practiceMode = 'mic'; // Start each session with the primary microphone mode.
+state.personalRead=[...new Set((Array.isArray(state.personalRead)?state.personalRead:[]).filter(i=>Number.isInteger(i)&&i>=0&&i<4))];
 let audio = null;
 let speech = null;
 let feedback = '';
@@ -452,6 +481,7 @@ const headBack = document.getElementById('detail-back');
 const back = document.getElementById('back');
 const next = document.getElementById('next');
 let counter;
+let chapter;
 if (courseMode) {
   const frame = document.createElement('div');
   frame.id = 'pg433';
@@ -468,7 +498,7 @@ if (courseMode) {
   headLabel.className = 'pg433-title';
   headLabel.removeAttribute('id');
   headLabel.innerHTML = '<small>HSK 2 · Урок 2</small><strong>Мой день</strong>';
-  const chapter = document.createElement('span');
+  chapter = document.createElement('span');
   chapter.className = 'pg433-pill';
   chapter.textContent = 'Урок 2 · Мой день';
   top.append(chapter);
@@ -629,8 +659,14 @@ function render(resetScroll = false) {
     state.quizTest = task?.type ?? null;
     if (task) state.quizIndex = task.index;
   }
-  if (courseMode) counter.textContent = 'Шаг ' + stepNumber(step) + ' из 8';
-  else headLabel.textContent = 'HSK 2 · Урок 2 · Шаг ' + step + ' из 8';
+  if(courseMode){
+    const n=stepNumber(step);
+    counter.textContent=['Начало','Слова','Правило','Речь','Тесты','Распорядок','Диалог','Итог'][n-1];
+    counter.title='Шаг '+n+' из 8 · '+titles[step-1];
+    chapter.textContent='Шаг '+n+' / 8';
+    chapter.setAttribute('aria-label','Шаг '+n+' из восьми. '+titles[step-1]);
+    nav.style.setProperty('--pg2-progress',(n*100/8)+'%');
+  } else headLabel.textContent = 'HSK 2 · Урок 2 · Шаг ' + step + ' из 8';
   headBack.disabled = step === 1;
   stepButtons.forEach((button,index) => {
     const active = courseMode ? (index === 0 && step === 1) || courseSections[index].steps.includes(step) : index+1 === step;
@@ -840,7 +876,8 @@ function day() {
     }).join('') + '</div><div class="answer" lang="zh-Hans" data-placeholder="Выбери первое действие">' +
     state.dayOrder.map(i => words[i].zh).join(' → ') + '</div><div class="controls"><button type="button" class="soft" data-day-undo>↶ Отменить</button>' +
     '<button type="button" class="soft" data-day-reset>Сброс</button></div><button type="button" class="primary large" data-day-check>' + playIcon + ' Проверить порядок</button>' +
-    safeStatus() + (state.dayDone && !feedback ? '<p class="feedback good">✓ Все шесть действий по порядку</p>' : '');
+    safeStatus() + (state.dayDone && !feedback ? '<p class="feedback good">✓ Все шесть действий по порядку</p>' : '') +
+    '<p class="pg2-practice-invite">🌸 А теперь расскажи о своём дне — не обязательно как у Панды.</p>' + personalRoutine();
 }
 
 function phraseCards() {
@@ -934,15 +971,28 @@ function routineLines(){
 function routineResultMarkup(){
  return routineLines().map(([zh,py,ru])=>'<p class="pg-routine-line"><strong lang="zh-Hans">'+escape(zh)+'</strong><span>'+escape(py)+'</span><small>'+escape(ru)+'</small></p>').join('');
 }
+
+function routineReadControls(){
+ const count=routineLines().length,marked=new Set(state.personalRead||[]);
+ return '<section class="pg2-rehearsal" aria-label="Самостоятельная практика речи">'+
+  '<h3>🎙 Произнеси свои предложения вслух</h3>'+
+  '<p>Прочитай каждое предложение по пиньиню, затем попробуй без подсказки. Отметь самостоятельно.</p>'+
+  '<div class="pg2-rehearsal-steps">'+Array.from({length:count},(_,i)=>
+   '<button type="button" data-routine-read="'+i+'" aria-pressed="'+marked.has(i)+'"'+
+   ' aria-label="Фраза '+(i+1)+'. '+(marked.has(i)?'Отмечена':'Отметить после произнесения')+'">'+
+    (marked.has(i)?'✓':'○')+' '+(i+1)+'</button>').join('')+'</div>'+
+  '<p>'+marked.size+' / '+count+' фраз отмечено. Это самостоятельная отметка, не проверка тонов.</p></section>';
+}
+
 function personalRoutine(){
  const item=(key,title)=>'<label class="pg-routine-field">'+title+'<select data-routine="'+key+'" aria-label="'+title+'">'+
   routineData[key].map(([value,zh,py,ru])=>'<option value="'+value+'"'+(routineChoice(key)[0]===value?' selected':'')+'>'+
    escape(ru)+' · '+escape(zh)+'</option>').join('')+'</select></label>';
- return '<details class="panel pg-routine"><summary>✍️ Расскажи о своём настоящем дне</summary>'+
+ return '<details class="panel pg-routine"'+(state.step===5?' open':'')+'><summary>✍️ Расскажи о своём настоящем дне</summary>'+
    '<p class="pg-routine-note">Выбери варианты и прочитай собственный рассказ вслух. Если не завтракаешь или не работаешь — это тоже нормальный ответ.</p>'+
    '<div class="pg-routine-fields">'+item('wake','Когда встаёшь')+item('breakfast','Завтракаешь ли')+
    item('work','Работа / день')+item('sleep','Когда ложишься')+'</div>'+
-   '<div class="pg-routine-result" aria-live="polite">'+routineResultMarkup()+'</div>'+
+   '<div class="pg-routine-result" aria-live="polite">'+routineResultMarkup()+'</div>'+routineReadControls()+
    '<p class="pg-routine-note">Новые варианты — письменная практика, без отдельной MP3-записи. Произношение и тоны автоматически не проверяются.</p></details>';
 }
 
@@ -1302,7 +1352,15 @@ const actions = {
     update();
     followDialogue();
   },
-  chatReset: () => { clearMedia(); state.chat = []; update(); }
+  chatReset: () => { clearMedia(); state.chat = []; update(); },
+  routineRead: value => {
+    const i=Number(value);if(!Number.isInteger(i)||i<0||i>=4)return;
+    const flags=new Set(state.personalRead||[]);
+    if(flags.has(i))flags.delete(i);else flags.add(i);
+    state.personalRead=[...flags].sort((a,b)=>a-b);save();
+    const panel=workspace.querySelector('.pg2-rehearsal');
+    if(panel)panel.outerHTML=routineReadControls();
+  }
 };
 
 app.addEventListener('change',event=>{
@@ -1311,9 +1369,12 @@ app.addEventListener('change',event=>{
  const key=select.dataset.routine;
  if(!Object.prototype.hasOwnProperty.call(routineData,key) || !routineData[key].some(x=>x[0]===select.value))return;
  state.routine={...(state.routine||{}),[key]:select.value};
+ state.personalRead=[];
  save();
- const result=app.querySelector('.pg-routine-result');
+ const result=workspace.querySelector('.pg-routine-result');
  if(result)result.innerHTML=routineResultMarkup();
+ const read=workspace.querySelector('.pg2-rehearsal');
+ if(read)read.outerHTML=routineReadControls();
 });
 let pressedNavButton;
 let pressedNavTimer;
