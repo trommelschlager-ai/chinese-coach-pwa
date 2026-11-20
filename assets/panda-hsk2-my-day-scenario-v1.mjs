@@ -181,7 +181,7 @@ function init(stage){
   clearTimeout(silence);const idx=i;
   silence=setTimeout(async()=>{
    if(phase!=='questions'||i!==idx||recognizer)return;
-   if(attempt===0){attempt++;status('Повторю вопрос медленнее.');const token=sequence;await speak(Q[i].slice(0,3),true);if(token===sequence)countdown()}
+   if(attempt===0){attempt++;status('Панда повторит вопрос медленнее. Это не оценка произношения.');const token=sequence;await speak(['我没听清楚，请再说一遍。','Wǒ méi tīng qīngchu, qǐng zài shuō yí biàn.','Я не расслышала, повтори, пожалуйста.']);if(token!==sequence)return;await delay(200);if(token!==sequence)return;await speak(Q[i].slice(0,3),true);if(token===sequence)countdown()}
    else if(attempt===1){attempt++;status('Подсказка: '+Q[i][3]);countdown()}
    else if(attempt===2){attempt++;status('Пример: '+Q[i][4]+' Ты можешь ответить иначе.');countdown()}
    else{notes.push('Вопрос '+(i+1)+' пропущен.');ask(i+1)}
