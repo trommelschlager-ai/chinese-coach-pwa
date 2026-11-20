@@ -30,6 +30,16 @@
 .boundary-row output{text-align:right;font-variant-numeric:tabular-nums}
 .boundary-hint{font-size:11px;color:#715982;line-height:1.5}
 #boundary-reset{border:1px solid #d3b4e3;color:#694185;background:#f4e8f7;border-radius:10px;padding:7px 9px;font-size:11px;font-weight:700}
+
+/* v4: reference-guided acoustical alignment; editable reference timing. */
+.align-panel{margin-top:10px;border:1px solid #e5cbec;border-radius:14px;padding:10px;background:#faf4fd}
+.align-button{border:1px solid #bb88ce;border-radius:12px;background:linear-gradient(#fff,#f3e4fd);box-shadow:0 2px 0 #d7b3e1;color:#68347f;font:750 12px system-ui;padding:9px 10px;min-height:41px;width:100%}
+.align-button:disabled{opacity:.5}
+.align-panel small{display:block;font-size:11px;line-height:1.5;color:#775487;margin-top:7px}
+#ref-controls[hidden]{display:none}
+#ref-controls{margin-top:8px;padding:8px;border:1px dashed #dec1e8;border-radius:12px}
+#ref-controls summary{font-size:12px;font-weight:750;cursor:pointer;color:#70448a}
+#ref-reset{border:1px solid #dec1e8;border-radius:9px;padding:7px 9px;background:#fff;color:#754894;font-size:11px;font-weight:750}
 </style></head><body><main>
 <span class="kicker">🐼 PANDA GO · HSK 2 · МОЙ ДЕНЬ</span>
 <h1>🎙️ Проверь произношение</h1>
@@ -56,6 +66,16 @@
 </svg>
 <div class="whole-legend"><span><i class="ref"></i> Голос из урока</span><span><i></i> Твой голос</span></div>
 <p id="whole-active">Нажми «Записать себя», чтобы увидеть движение голоса.</p><p id="whole-info" class="whole-note" aria-live="polite">Сначала послушай образец, затем произнеси всё предложение за одну запись.</p>
+<div class="align-panel">
+ <button type="button" class="align-button" id="guided-align" disabled>🎯 Сопоставить с образцом по звучанию</button>
+ <small>Разметка переносится по акустическим признакам записи, не просто по её длительности. Это предварительное выравнивание, <b>не распознавание фонем и не оценка правильности тонов</b>.</small>
+ <details id="ref-controls" hidden>
+  <summary>⚙️ Проверить границы слогов в эталоне</summary>
+  <p class="boundary-hint">Эталонная разметка пока приблизительная. Подвинь границы после прослушивания записи. Только подтверждённые вручную границы подходят для более надёжного сравнения.</p>
+  <div id="ref-sliders"></div>
+  <button id="ref-reset" type="button">↻ Сбросить границы эталона</button>
+ </details>
+</div>
 </section>
 <section class="panel"><h2>Тон каждого слога</h2>
 <p class="small">Нажми на иероглиф: внизу появится увеличенная кривая. Пунктир — запись урока; фиолетовая линия — твой голос.</p>
@@ -70,11 +90,12 @@
 <script type="module">
 import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
 import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
+import {alignFromReference} from './assets/panda-sentence-align-v4.mjs?v=4';
 const $=id=>document.getElementById(id);
 const tokens=[{zh:'我',py:'wǒ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'早',py:'zǎo',tone:'3-й · низкий'},{zh:'上',py:'shang',tone:'нейтральный'},{zh:'洗',py:'xǐ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'脸',py:'liǎn',tone:'3-й · часто низкий'}];
 const weights=[1.0,1.15,.65,1,1.2];
 const source=window.PandaGoHSK2Lesson1NativeAudioV459?.['我早上洗脸。'];
-let reference=null, learner=null, selected=0, recorder=null, stream=null, recordedUrl=null, chunks=[], recorded=null, micTimer=null, autoBounds=null, firstLiveVoice=null;
+let reference=null, learner=null, selected=0, recorder=null, stream=null, recordedUrl=null, chunks=[], recorded=null, micTimer=null, autoBounds=null, firstLiveVoice=null, decodedReference=null, decodedLearner=null, refAutoBounds=null, alignmentStatus='';
 function say(msg){$('status').textContent=msg;}
 function median(xs){if(!xs.length)return 0;const a=xs.slice().sort((x,y)=>x-y),m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;}
 function rms(d,start,end){let v=0,k=0;for(let i=start;i<end;i+=4){v+=d[i]*d[i];k++;}return k?Math.sqrt(v/k):0;}
@@ -228,13 +249,63 @@ function wholePath(data,isLive=false){
  }
  return out.trim();
 }
+
+function referenceSliders(){
+ const details=$('ref-controls'),list=$('ref-sliders');details.hidden=!reference?.valid;list.replaceChildren();
+ if(!reference?.valid)return;
+ const origin=reference.bounds[0],end=reference.bounds.at(-1),duration=end-origin;
+ if(!(duration>0))return;
+ for(let k=1;k<tokens.length;k++){
+  const row=document.createElement('div');row.className='boundary-row';
+  const label=document.createElement('label');label.textContent=tokens[k-1].zh+' / '+tokens[k].zh;
+  const input=document.createElement('input');input.type='range';input.id='ref-bound-'+k;
+  input.setAttribute('aria-label','Граница эталона: '+tokens[k-1].zh+' и '+tokens[k].zh);
+  input.min='0';input.max='1000';input.step='1';input.value=String(Math.round(1000*(reference.bounds[k]-origin)/duration));
+  label.htmlFor=input.id;
+  const value=document.createElement('output');value.textContent=(reference.bounds[k]-origin).toFixed(2)+' с';
+  input.addEventListener('input',()=>{
+   const min=reference.bounds[k-1]+.055,max=reference.bounds[k+1]-.055;
+   if(min>=max)return;
+   reference.bounds[k]=Math.max(min,Math.min(max,origin+duration*Number(input.value)/1000));
+   value.textContent=(reference.bounds[k]-origin).toFixed(2)+' с';
+   alignmentStatus='Границы эталона изменены. Нажми «Сопоставить с образцом», чтобы пересчитать запись ученика.';
+   wholeGuides();render();updateWhole();
+  });
+  row.append(label,input,value);list.append(row);
+ }
+}
+$('ref-reset').addEventListener('click',()=>{
+ if(!refAutoBounds||!reference?.valid)return;
+ reference.bounds=refAutoBounds.slice();alignmentStatus='Разметка эталона сброшена к приблизительным границам.';
+ referenceSliders();wholeGuides();render();updateWhole();
+});
+function guidedAlign(){
+ if(!decodedReference||!decodedLearner||!reference?.valid||!learner?.valid)
+  return {ok:false,reason:'Для сравнения нужны обе аудиозаписи'};
+ const result=alignFromReference(decodedReference,decodedLearner,reference.bounds,autoBounds||learner.bounds);
+ if(result.ok){
+  learner.bounds=result.bounds.slice();adjustControls();
+  alignmentStatus='Акустическое сопоставление выполнено (предварительно). Выделение слогов основано на эталонной разметке, которую нужно проверить вручную. Тоны не оцениваются.';
+ }else{
+  alignmentStatus='Автоматическое сопоставление ненадёжно: '+result.reason+'. Оставлена предыдущая разметка; можно исправить её вручную.';
+ }
+ render();updateWhole();return result;
+}
+$('guided-align').addEventListener('click',()=>{
+ const res=guidedAlign();
+ if(!res.ok)say('Сопоставление не завершилось: '+res.reason);
+ else say('Сопоставление по звучанию готово. Проверь границы слогов вручную; оценки тонов пока нет.');
+});
+
 function wholeGuides(){
  const group=$('whole-dividers'),labels=$('whole-labels');
  group.replaceChildren();labels.replaceChildren();
  const total=weights.reduce((a,b)=>a+b,0);
- let cumulative=0;
+ const fractions=reference?.valid&&reference.bounds?.length===tokens.length+1
+  ? reference.bounds.map(t=>(t-reference.bounds[0])/(reference.bounds.at(-1)-reference.bounds[0]))
+  : [0,...weights.reduce((arr,w)=>{arr.push(arr.at(-1)+w/total);return arr;},[0]).slice(1)];
  for(let i=0;i<tokens.length;i++){
-  const x=GRAPH_LEFT+GRAPH_W*(cumulative+weights[i]/2)/total;
+  const x=GRAPH_LEFT+GRAPH_W*(fractions[i]+fractions[i+1])/2;
   const svgNS='http://www.w3.org/2000/svg';
   const t=document.createElementNS(svgNS,'text');t.setAttribute('x',x.toFixed(1));t.setAttribute('y','185');
   t.setAttribute('text-anchor','middle');t.setAttribute('fill','#6c4a83');
@@ -243,9 +314,8 @@ function wholeGuides(){
   const py=document.createElementNS(svgNS,'text');py.setAttribute('x',x.toFixed(1));py.setAttribute('y','202');
   py.setAttribute('text-anchor','middle');py.setAttribute('fill','#8a7392');py.setAttribute('font-size','11');py.textContent=tokens[i].py;
   labels.append(py);
-  cumulative+=weights[i];
   if(i<tokens.length-1){
-   const line=document.createElementNS(svgNS,'line');const bx=GRAPH_LEFT+GRAPH_W*cumulative/total;
+   const line=document.createElementNS(svgNS,'line');const bx=GRAPH_LEFT+GRAPH_W*fractions[i+1];
    line.setAttribute('x1',bx.toFixed(1));line.setAttribute('x2',bx.toFixed(1));
    line.setAttribute('y1','28');line.setAttribute('y2','161');line.setAttribute('stroke','#ead4ed');
    line.setAttribute('stroke-dasharray','3 5');group.append(line);
@@ -262,9 +332,9 @@ function updateWhole(){
   $('whole-state').textContent=learner?.valid?'Запись готова':'Эталон';
   $('whole-state').classList.remove('recording');
   $('whole-cursor').style.display='none';
-  $('whole-info').textContent=learner?.valid
-   ?'Фиолетовая линия — результат твоей записи. Оба голоса показаны в относительном масштабе по высоте и времени; точного выравнивания слогов и оценки правильности нет.'
-   :reference?.valid?'Пунктир — измеренный эталон. Запиши предложение целиком, чтобы поверх появилась твоя кривая.':'Данные эталона ещё не готовы.';
+  $('whole-info').textContent=alignmentStatus|| (learner?.valid
+   ?'Фиолетовая линия — результат твоей записи. Голоса нормализованы по высоте и длительности; разделение слогов предварительное, оценки правильности нет.'
+   :reference?.valid?'Пунктир — измеренный эталон. Запиши предложение целиком, чтобы поверх появилась твоя кривая.':'Данные эталона ещё не готовы.');
  }
 }
 function stopLive(){
@@ -323,7 +393,7 @@ async function startLive(s){
 function stopStream(){stopLive();if(micTimer){clearTimeout(micTimer);micTimer=null;}stream?.getTracks().forEach(x=>x.stop());stream=null;$('level').style.width='0%';}
 async function load(){
  if(!source){say('Не найдена точная запись фразы в аудиокарте урока.');return;}
- try{reference=analyze(await decode(source));say(reference.valid?'Образец загружен. Послушай запись и нажми «Записать себя».':'Образец загружен, но данных F0 недостаточно для тоновой кривой.');render();updateWhole();}
+ try{decodedReference=await decode(source);reference=analyze(decodedReference);refAutoBounds=reference.bounds?.slice()||null;referenceSliders();wholeGuides();say(reference.valid?'Образец загружен. Послушай запись и нажми «Записать себя».':'Образец загружен, но данных F0 недостаточно для тоновой кривой.');render();updateWhole();}
  catch(e){say('Не удалось прочитать образец: '+(e?.message||'ошибка'));}
 }
 $('listen').addEventListener('click',()=>{if(!source)return;const a=new Audio(source);a.play().catch(()=>say('Звук не воспроизведён: проверь громкость и разрешения Chrome.'));});
@@ -331,7 +401,7 @@ $('record').addEventListener('click',async()=>{
  if(recorder||!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){say('Для записи открой страницу в Chrome через HTTPS и разреши микрофон.');return;}
  try{
   if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}
-  learner=null;autoBounds=null;chunks=[];$('replay').disabled=true;adjustControls();render();updateWhole();
+  learner=null;autoBounds=null;decodedLearner=null;alignmentStatus='';$('guided-align').disabled=true;chunks=[];$('replay').disabled=true;adjustControls();render();updateWhole();
   stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
   recorder=new MediaRecorder(stream);recorder.addEventListener('dataavailable',e=>{if(e.data.size)chunks.push(e.data);});
   recorder.addEventListener('stop',async()=>{
@@ -339,7 +409,7 @@ $('record').addEventListener('click',async()=>{
    if(!chunks.length){say('Запись пустая. Попробуй снова.');return;}
    recorded=new Blob(chunks,{type:mime});recordedUrl=URL.createObjectURL(recorded);$('replay').disabled=false;
    say('Анализирую короткую запись…');
-   try{learner=analyze(await decode(recordedUrl));autoBounds=learner?.bounds?.slice()||null;adjustControls();say(learner.valid?'Готово! Нажимай на иероглифы и сравнивай линии. Разделение на слоги пока приблизительное.':'Звук записан, но F0 извлечён не полностью. Попробуй произнести фразу естественно в тишине.');render();updateWhole();}
+   try{decodedLearner=await decode(recordedUrl);learner=analyze(decodedLearner);autoBounds=learner?.bounds?.slice()||null;adjustControls();$('guided-align').disabled=!(learner?.valid&&reference?.valid&&decodedReference);if(!($('guided-align').disabled))guidedAlign();say(learner.valid?'Готово! Нажимай на иероглифы и сравнивай линии. Разделение на слоги пока приблизительное.':'Звук записан, но F0 извлечён не полностью. Попробуй произнести фразу естественно в тишине.');render();updateWhole();}
    catch(e){say('Запись есть, но браузер не смог построить график: '+(e?.message||'ошибка'));}
   },{once:true});
   recorder.start();void startLive(stream);$('record').disabled=true;$('stop').disabled=false;say('🎙 Говори «我早上洗脸» естественным голосом. Остановка автоматически через 6 секунд.');
