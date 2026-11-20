@@ -82,6 +82,13 @@ function check(raw,i){
 }
 function init(stage){
  if(stage.dataset.dayScenario)return;stage.dataset.dayScenario='ready';stage.dataset.dayPy='true';stage.dataset.dayRu='true';
+ // Match Android browser/PWA status bar to the approved day/night scene.
+ const themeMeta=document.querySelector('meta[name="theme-color"]');
+ const syncThemeBar=()=>{if(themeMeta)themeMeta.content=stage.dataset.theme==='day'?'#5bb4e5':'#08182f'};
+ syncThemeBar();
+ const themeObserver=new MutationObserver(syncThemeBar);
+ themeObserver.observe(stage,{attributes:true,attributeFilter:['data-theme']});
+ window.addEventListener('pagehide',()=>themeObserver.disconnect(),{once:true});
  const bridge=window.PandaApprovedBridge337;bridge?.stopPlayback?.();
  const back=stage.querySelector('.pg346-back');if(back)back.href='./hsk2-lesson1.html?step=8';
  const panel=document.createElement('section');panel.className='pg-day-panel';panel.setAttribute('aria-label','Разговор Мой день');
