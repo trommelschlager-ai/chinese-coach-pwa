@@ -177,7 +177,7 @@ function viewWelcome(){
  return '<section class="approved-stage approved-welcome-screen" style="--approved-image:url(./assets/hsk2-life-approved-fullscreen-v412.png)" aria-label="Panda Go Китайский плюс Легко · курс 2"><div class="approved-art">'+
  '<img src="./assets/hsk2-life-approved-fullscreen-v412.png" alt="Panda Go Китайский + Легко. 10 тем, 30 мини-уроков, 200+ слов и выражений. Грамматика, тесты, произношение 5 раз, общение с Panda AI. Кнопки: Посмотреть программу, Начать курс." width="842" height="1867" fetchpriority="high" decoding="async" draggable="false">'+
  '<button type="button" class="approved-hotspot approved-program poster-welcome-program" data-view="map" aria-label="Посмотреть программу: десять тем и 30 мини-уроков"></button>'+
- '<button type="button" class="approved-hotspot approved-start poster-welcome-start" data-start="0" aria-label="Начать курс: первый мини-урок Мой распорядок дня"></button>'+
+ '<button type="button" class="approved-hotspot approved-start poster-welcome-start" data-start="0" aria-label="Начать курс: урок 1 О себе"></button>'+
  '<a class="approved-hotspot approved-ai-top poster-welcome-ai" href="./panda-voice-pilot.html" aria-label="Открыть Panda AI: разговорная практика"></a>'+
  '<a class="approved-hotspot poster-welcome-ai-card" href="./panda-voice-pilot.html" aria-label="Открыть Panda AI через карточку"></a>'+
  '</div></section>';
@@ -404,6 +404,9 @@ function next(){
 function openMergedDay(step){
  window.location.assign('./hsk2-lesson1.html?step='+step);
 }
+function openFirstLesson(step){
+ window.location.assign('./hsk2-about-me.html'+(step?'?step='+step:''));
+}
 document.addEventListener('click',function(e){
  var b=e.target.closest('button');if(!b)return;
  if(b.dataset.sound!==undefined){
@@ -435,10 +438,10 @@ document.addEventListener('click',function(e){
  if(b.dataset.v445Stage!==undefined){
   const sections=[2,4,6,3,7];
   const step=sections[Number(b.dataset.v445Stage)];
-  if(step)openMergedDay(step);
+  if(step)openFirstLesson(step);
   return;
  }
- if(b.dataset.start!==undefined){enter(0,0);return}
+ if(b.dataset.start!==undefined){openFirstLesson(1);return}
  if(b.dataset.topic!==undefined){state.topic=Number(b.dataset.topic);go('topic');return}
  if(b.dataset.mini!==undefined){enter(state.topic,Number(b.dataset.mini));return}
  if(b.dataset.flag!==undefined){
@@ -484,7 +487,7 @@ if(toggle)toggle.addEventListener('click',function(){state.showPy=!state.showPy;
 /* Allow direct links from the ten cards on the existing HSK2 course map. */
 try {
  var params=new URLSearchParams(window.location.search);
- if(params.get('start')==='1'){openMergedDay(1);return;}
+ if(params.get('start')==='1'){openFirstLesson(1);return;}
  if(params.get('view')==='map')state.view='map';
  if(params.get('view')==='welcome')state.view='welcome';
  // Panda AI -> the exact mini-lesson completion screen the student left.
