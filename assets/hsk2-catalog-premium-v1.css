@@ -156,6 +156,15 @@
   background-image:url("./hsk2-lesson4-hobby-3d/cover.webp");
   background-size:cover;background-position:center center;
 }
+/* Main lesson cards 5 and 6 use real Panda Go artwork, no placeholder tiles. */
+#app #pg433.pgc-catalog .pgc-art-friends{
+  background-image:url("./meaning-friends.webp");
+  background-size:cover;background-position:center center;
+}
+#app #pg433.pgc-catalog .pgc-art-yesterday{
+  background-image:url("./hsk2-lesson6-cover-gold-v2.webp");
+  background-size:cover;background-position:48% 30%;
+}
 #app #pg433.pgc-catalog .pgc-feature-text{
   display:flex!important;flex-direction:column;align-items:flex-start;justify-content:center;
   min-width:0;gap:1px!important;position:relative;z-index:1;
