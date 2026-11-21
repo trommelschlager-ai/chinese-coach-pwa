@@ -503,6 +503,8 @@ document.addEventListener('click',function(e){
  if(b.dataset.topic!==undefined){
   const t=Number(b.dataset.topic);
   if(!Number.isInteger(t)||t<0||t>=topics.length)return;
+  // HSK2 lesson 5 has its own approved five-tab course page and 3D illustrations.
+  if(t===4){window.location.assign('./hsk2-lesson5-friends-v2.html?rev=20261121');return;}
   state.catalogExpanded=state.catalogExpanded===t&&state.view==='map'?null:t;
   go('map');return;
  }
