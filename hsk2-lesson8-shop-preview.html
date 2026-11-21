@@ -1392,19 +1392,19 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  gap: 7px;
-  padding: 8px 0 max(13px, env(safe-area-inset-bottom));
+  gap: clamp(7px, 1.25dvh, 12px);
+  padding: 8px 0 max(12px, env(safe-area-inset-bottom));
   background: #f7ddf6 url("./assets/hsk2-lesson1-preview/reference-sakura.webp") center / cover no-repeat;
   color: #351050;
   text-align: center;
 }
-#pg433 .shop-cover > :not(.shop-cover-picture) { width: min(86%, 420px); }
+#pg433 .shop-cover > :not(.shop-cover-picture) { width: min(90%, 470px); }
 #pg433 .shop-brand {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 0 0 7px;
-  border-bottom: 4px solid #d79fe9;
+  border-bottom: 4px solid #d28ae9;
   text-align: start;
   line-height: 1.12;
 }
@@ -1426,7 +1426,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #pg433 .shop-brand strong { display: block; font-size: clamp(18px, 5vw, 23px); font-weight: 900; }
 #pg433 .shop-brand b { color: #c01278; }
 #pg433 .shop-brand small { font-size: 11px; color: #51265e; }
-#pg433 .shop-title { line-height: 1.18; }
+#pg433 .shop-title { line-height: 1.15; text-shadow: 0 1px 3px #ffebfa; }
 #pg433 .shop-chapter {
   display: inline-block;
   border: 1px solid #dfacda;
@@ -1437,19 +1437,18 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   font-size: 12px;
   font-weight: 800;
 }
-#pg433 .shop-title h1 { margin: 4px 0 2px; font-size: clamp(25px, 7.5vw, 37px); line-height: 1.06; }
+#pg433 .shop-title h1 { margin: 4px 0 2px; font-size: clamp(27px, 8vw, 41px); font-weight: 900; line-height: 1.05; }
 #pg433 .shop-title p { font-size: clamp(13px, 3.8vw, 17px); }
 #pg433 .shop-cover-picture {
-  width: 100%;
-  height: clamp(112px, 24dvh, 207px);
+  width: min(94%, 520px, 65dvh);
+  flex: none;
   overflow: hidden;
+  border: 1px solid #f1c477;
+  border-radius: 17px;
+  background: #f0c4e7;
+  box-shadow: 0 4px 10px #9a4c9961;
 }
-#pg433 .shop-cover-picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
+#pg433 .shop-cover-picture img { width: 100%; height: auto; }
 #pg433 .shop-summary, #pg433 .shop-cover-grid {
   border: 1px solid #e8bfdf;
   border-radius: 17px;
@@ -1479,9 +1478,9 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   justify-items: center;
   align-content: center;
   min-width: 0;
-  min-height: 47px;
+  min-height: 55px;
   gap: 2px;
-  padding: 3px 1px;
+  padding: 4px 1px;
   border: 0;
   background: transparent;
   color: #421650;
@@ -1491,13 +1490,23 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 }
 #pg433 .shop-cover-grid button:nth-child(-n+3) { border-bottom: 1px solid #e1b9df; }
 #pg433 .shop-cover-grid button:not(:nth-child(3n)) { border-right: 1px solid #e1b9df; }
-#pg433 .shop-cover-grid img { width: clamp(29px, 9vw, 43px); height: clamp(24px, 4.7dvh, 42px); object-fit: contain; }
+#pg433 .shop-cover-icon {
+  display: block;
+  width: clamp(37px, 11.8vw, 54px);
+  aspect-ratio: 1;
+  background: url("./assets/hsk2-lesson8-shop-icons-v3.webp") var(--icon-x) var(--icon-y) / 300% 200% no-repeat;
+}
+#pg433 .shop-cover-grid button:nth-child(3n+1) { --icon-x: 0%; }
+#pg433 .shop-cover-grid button:nth-child(3n+2) { --icon-x: 50%; }
+#pg433 .shop-cover-grid button:nth-child(3n) { --icon-x: 100%; }
+#pg433 .shop-cover-grid button:nth-child(-n+3) { --icon-y: 0%; }
+#pg433 .shop-cover-grid button:nth-child(n+4) { --icon-y: 100%; }
 #pg433 .shop-start {
   min-height: 44px;
   padding: 5px 12px;
   border: 1px solid #d490ee;
   border-radius: 999px;
-  background: linear-gradient(#d881ec, #aa40d0 57%, #8323b0);
+  background: linear-gradient(#e984f0, #b544da 53%, #8620b2);
   color: white;
   font-size: clamp(18px, 5vw, 23px);
   font-weight: 850;
@@ -1505,7 +1514,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   box-shadow: inset 0 2px 3px #f4c4ff88, 0 4px 0 #79239f, 0 6px 10px #74308055;
 }
 #pg433 .shop-cover .shop-proverb {
-  width: min(80%, 355px);
+  width: min(83%, 370px);
   margin: 3px 0 0;
   padding: 8px 11px;
   border: 2px solid #e7b85f;
@@ -1523,7 +1532,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #app #pg433 .shop-word-list { display: grid; gap: 7px; margin: 7px 0 12px; }
 #app #pg433 .shop-word-card {
   display: grid;
-  grid-template-columns: clamp(49px, 16vw, 67px) minmax(0, 1fr) max-content;
+  grid-template-columns: clamp(55px, 18vw, 78px) minmax(0, 1fr) max-content;
   align-items: center;
   gap: 8px;
   padding: 5px 7px 5px 5px;
@@ -1575,12 +1584,59 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 }
 #app #pg433 .detail-hero { align-items: center; }
 #app #pg433 .detail-hero .hero-message { min-width: 0; margin-left: 0; }
-#app #pg433 .detail-hero img.about-hero-photo { object-fit: cover; align-self: center; }
-#app #pg433 img.hobby-test-photo { object-fit: cover; }
-@media (max-height: 725px) {
-  #pg433 .shop-cover { gap: 6px; }
-  #pg433 .shop-cover-picture { height: clamp(112px, 21dvh, 162px); }
-  #pg433 .shop-cover-grid img { height: 26px; }
+#app #pg433 .detail-hero img.about-hero-photo { object-fit: cover; object-position: center; align-self: center; }
+#app #pg433 .test-card {
+  grid-template-columns: 24px clamp(73px, 24vw, 112px) minmax(0, 1fr) 34px;
+  column-gap: clamp(5px, 1.9vw, 10px);
+}
+#app #pg433 .test-card .shop-photo.hobby-test-photo,
+#app #pg433 .approved-phrase-row > .shop-photo.about-phrase-image {
+  width: 100%;
+  height: auto !important;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+#app #pg433 .approved-phrase-row {
+  grid-template-columns: clamp(72px, 28%, 120px) minmax(0, 1fr) clamp(39px, 11%, 54px) !important;
+}
+#app #pg433 .approved-phrase-row > button.orb { width: 100% !important; }
+.course-layout #app[data-view="4"] #pg433 .about-grammar-example {
+  grid-template-columns: clamp(56px, 19%, 85px) minmax(0, 1fr) 36px !important;
+}
+#app #pg433 .about-grammar-example > .shop-photo.about-grammar-photo {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1;
+}
+#app #pg433 .shop-photo.about-quiz-photo {
+  width: clamp(81px, 28vw, 132px);
+  height: auto;
+  aspect-ratio: 1;
+}
+#app #pg433 .about-dialogue-head .shop-photo.about-dialogue-image,
+#app[data-view="5"] #pg433 .hobby-answer-list .approved-story-choice > .shop-photo.about-story-photo {
+  height: auto !important;
+  aspect-ratio: 1;
+}
+@media (max-height: 690px) {
+  #pg433 .shop-cover { gap: 5px; padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+  #pg433 .shop-cover-icon { width: clamp(36px, 10.5vw, 45px); }
+}
+@media (max-height: 600px) {
+  #pg433 .shop-cover { gap: 4px; padding-top: 6px; }
+  #pg433 .shop-cover-picture { width: min(94%, 46dvh); }
+  #pg433 .shop-brand { padding-bottom: 4px; }
+  #pg433 .shop-summary { padding-block: 5px; }
+  #pg433 .shop-cover-grid button { min-height: 46px; padding-block: 2px; }
+  #pg433 .shop-cover-icon { width: 32px; }
+  #pg433 .shop-cover .shop-proverb { padding-block: 5px; }
+}
+@media (max-width: 350px) {
+  #app #pg433 .test-card {
+    grid-template-columns: 22px clamp(65px, 23vw, 79px) minmax(0, 1fr) 31px;
+    gap: 5px;
+  }
+  #app #pg433 .test-card .orb { width: 31px; height: 31px; }
 }
 </style></head>
 <body>
@@ -1784,12 +1840,13 @@ const activeQuiz = () => state.quizRetry ?? state;
 const dayScenes = ['wake','wash','brush','breakfast','work','sleep'];
 
 const courseArt = './assets/hsk2-lesson1-preview/';
-const coverHero = './assets/hsk2-lesson8-shop-cover-v2.webp';
+const coverHero = './assets/hsk2-lesson8-shop-cover-v3.webp';
+// Use the same exercise portraits shown in the course video.
+const exerciseArt = './assets/hsk2-lesson5-friends-3d/';
 const shopScenes = {
-  tones: courseArt + 'tones-panda.webp',
-  quiz: courseArt + 'course-quiz-panda.webp',
-  dialogue: coverHero,
-  finish: courseArt + 'course-cover-panda-hd.webp'
+  tones: exerciseArt + 'tones-hd.webp',
+  quiz: exerciseArt + 'quiz-hd.webp',
+  finish: coverHero
 };
 function vocabImage(index, cssClass = 'about-illustration') {
   const x = index % 4 * 100 / 3;
@@ -1930,15 +1987,15 @@ function intro() {
       <p><strong lang="zh-Hans">在商店</strong><br>Zài shāngdiàn</p>
     </div>
     <figure class="shop-cover-picture">
-      <img src="${coverHero}" alt="Панда выбирает товары в китайском магазине" width="240" height="100" draggable="false">
+      <img src="${coverHero}" alt="Панда выбирает товары в китайском магазине" width="1200" height="512" draggable="false" fetchpriority="high">
     </figure>
     <div class="shop-summary">
       <h2>Содержание урока</h2>
       <p>Научись спрашивать цену, выбирать товары и говорить о покупке по-китайски.</p>
     </div>
     <div class="shop-cover-grid">
-      ${tiles.map(([step,label],i) => `<button type="button" data-step="${step}">
-        <img src="${courseArt}feature-${i+1}.webp" alt="" width="44" height="40"><span>${label}</span>
+      ${tiles.map(([step,label]) => `<button type="button" data-step="${step}">
+        <span class="shop-cover-icon" aria-hidden="true"></span><span>${label}</span>
       </button>`).join('')}
     </div>
     <button type="button" class="shop-start" data-step="2">Начать урок →</button>
@@ -2088,13 +2145,15 @@ function grammar() {
     '<div class="about-grammar-compact"><strong lang="zh-Hans">多少钱？</strong><span class="py">duōshao qián?</span><span class="ru">сколько стоит?</span></div>' +
     '<p class="about-grammar-rule">Чтобы узнать цену, назови товар и добавь <b>多少钱</b>. Для одежды используется счётное слово <b>件</b> (jiàn).</p>' +
     '<p class="about-grammar-formula">这件 + 衣服 + <b>多少钱？</b></p>' +
-    '<article class="about-grammar-example"><div class="about-grammar-example-copy">'+
+    '<article class="about-grammar-example">' + vocabImage(3,'about-grammar-photo') +
+    '<div class="about-grammar-example-copy">'+
       hanzi('这件衣服多少钱？')+
       translate(['这件衣服多少钱？','Zhè jiàn yīfu duōshao qián?','Сколько стоит эта вещь?'])+
     '</div>'+audioButton('这件衣服多少钱？',playIcon)+'</article>' +
     '<h2 class="builder-title">太…了 и 可以…吗？</h2>' +
     '<p class="about-grammar-rule"><b>太贵了</b> (tài guì le) — слишком дорого. <b>可以试穿吗？</b> (kěyǐ shìchuān ma?) — можно примерить?</p>' +
-    '<article class="about-grammar-example"><div class="about-grammar-example-copy">'+
+    '<article class="about-grammar-example">' + vocabImage(7,'about-grammar-photo') +
+    '<div class="about-grammar-example-copy">'+
       hanzi('我可以试穿吗？')+
       translate(['我可以试穿吗？','Wǒ kěyǐ shìchuān ma?','Можно мне примерить?'])+
     '</div>'+audioButton('我可以试穿吗？',playIcon)+'</article>' +
@@ -2264,7 +2323,7 @@ function chat() {
   const i = state.chat.length;
   const exchange = dialogue[i];
   return '<h1 class="pill-title approved-phrases-title">💬 Фразы и диалог</h1>' + phraseCards() +
-    '<section class="dialogue"><div class="about-dialogue-head">' + stageImage('dialogue','about-dialogue-image') + '<div><h2>Разговор с Пандой</h2><p class="hint">Учебный сценарий. Выбери или произнеси один из ответов.</p></div></div>' +
+    '<section class="dialogue"><div class="about-dialogue-head">' + vocabImage(3,'about-dialogue-image') + '<div><h2>Разговор с Пандой</h2><p class="hint">Учебный сценарий. Выбери или произнеси один из ответов.</p></div></div>' +
     state.chat.map((reply,j) => bubble('Панда',dialogue[j].prompt) + bubble('Ты',dialogue[j].answers.find(a => a[0] === reply) ?? [reply,''])).join('') +
     (exchange ? bubble('Панда',exchange.prompt) + '<div class="choice-grid">' + exchange.answers.map(([answer,translation],j) =>
       '<button type="button" class="choice" data-chat="' + j + '"><span lang="zh-Hans">' + answer + '</span><span class="py">' +
