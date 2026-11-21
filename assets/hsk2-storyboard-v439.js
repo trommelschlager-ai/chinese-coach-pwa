@@ -131,7 +131,8 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
   const safeDone=Array.isArray(completed)?completed:[];
   const coreLessons=[
     {n:1,name:'О себе',cn:'自我介绍',desc:'Расскажи, как тебя зовут и откуда ты',href:'./hsk2-about-me.html',art:'about',done:!!mainProgress[0]},
-    {n:2,name:'Мой день',cn:'我的一天',desc:'Говори об утре, работе и привычках',href:'./hsk2-lesson1.html',art:'day',done:!!mainProgress[1]}
+    {n:2,name:'Мой день',cn:'我的一天',desc:'Говори об утре, работе и привычках',href:'./hsk2-lesson1.html',art:'day',done:!!mainProgress[1]},
+    {n:3,name:'Работа',cn:'工作和学习',desc:'Моя работа и учёба',href:'./hsk2-lesson3-work-study-preview.html',art:'work',done:!!mainProgress[2]}
   ];
   const cards=coreLessons.map(lesson=>
     '<a class="pgc-feature-card pgc-feature-'+lesson.art+'" href="'+lesson.href+'" aria-label="Урок '+lesson.n+': '+esc(lesson.name)+(lesson.done?'. Пройден. Повторить':'. Открыть')+'">'+
@@ -167,7 +168,7 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
   return '<section id="pg433" class="pg433-root pg433-map pgc-catalog">'+
    '<header class="pg433-header"><div class="pg433-topline">'+
      '<div class="pg433-title"><small>PANDA GO · КУРС HSK 2</small><strong>Все уроки</strong></div>'+
-     '<span class="pg433-pill">2 урока <span aria-hidden="true">✦</span> 10 тем</span>'+
+     '<span class="pg433-pill">3 урока <span aria-hidden="true">✦</span> 10 тем</span>'+
    '</div></header>'+
    '<main class="pg433-content">'+
      '<div class="pgc-hero"><div class="pgc-hero-copy"><span class="pgc-hero-eyebrow">ТВОЙ ПУТЬ К КИТАЙСКОМУ</span>'+
