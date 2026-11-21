@@ -1399,12 +1399,28 @@ function restore() {
 }
 
 let state = restore();
+if (!readProgress(key) && readProgress(courseProgressKey)) {
+ const legacy=readProgress(courseProgressKey);
+ const answered=legacy?.done||{};
+ for(let t=0;t<5;t++)for(let i=0;i<6;i++){
+  if(answered[t+'-'+i])state.quiz[t][i]={correctFirst:true,method:'legacy'};
+ }
+ if(legacy.grammar){state.grammarDone=true;state.grammar=[0,1,2,3,4];}
+ if(Array.isArray(legacy.dialog)){
+  state.chat=legacy.dialog.slice(0,3).map((choice,i)=>dialogue[i].answers[choice]?.[0]||dialogue[i].answers[0][0]);
+ }
+ if(legacy.step>=2)state.heardWords=[0,1,2,3,4,5];
+ state.step=1;
+ state.migrationV1=true;
+ try{localStorage.setItem(key,JSON.stringify(state));}catch{}
+}
+
 // Presentation preference for the two approved story layouts; does not change lesson progress.
 state.aboutStoryColumns = state.aboutStoryColumns === 3 ? 3 : 2;
 
 state.heardWords = [...new Set((Array.isArray(state.heardWords) ? state.heardWords : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 // Reset legacy manually marked listening only once now that original-voice recordings exist.
-if (!state.lesson3VoicePreservedV1) { state.heardWords=[]; state.lesson3VoicePreservedV1=true; try { localStorage.setItem(key,JSON.stringify(state)); } catch {} }
+// No lesson-1 voice reset: preserve prior student progress.
 state.selfSpoken = [...new Set((Array.isArray(state.selfSpoken) ? state.selfSpoken : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.mic = [...new Set((Array.isArray(state.mic) ? state.mic : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.practiceMode = 'mic'; // Primary microphone mode.
@@ -1911,7 +1927,14 @@ function tones() {
     safeStatus() + toneGuide() + '<div class="progress-panel panel">' + stageImage('tones','about-progress-photo') + '<div><b>Практика произношения</b>' +
     '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
     ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
-    '. Тоны автоматически не оцениваются. Прослушай пример и повтори.</p>';
+    '. Результат распознавания слова не равен оценке тонов.</p>' +
+    '<details class="l3-tone-details"><summary>📈 Точная шкала тонов · без лимита попыток</summary>' +
+    (window.PandaToneTrainer?.render(words,
+      i=>'<img class="hero-art" src="'+A[i]+'" alt="Иллюстрация слова">',
+      (title,caption)=>'<h2>'+title+'</h2><p class="hint">'+caption+'</p>',
+      content=>'<section class="panel">'+content+'</section>',
+      '<p class="hint">Аудио этого слова пока не утверждено.</p>') || '') +
+    '</details>';
 }
 
 
@@ -2004,30 +2027,34 @@ function chat() {
     (i === dialogue.length ? personalStory() + pandaAiShortcut() : lockedPandaAiShortcut());
 }
 
+
 function finish() {
-  const completed = state.heardWords.length === 6 && coreQuizDone() && state.grammarDone &&
-    state.dayDone && speechDone() && state.chat.length === 3;
-  if (completed) {
-    save();
-    try {
-      const progress = readProgress(courseProgressKey) ?? {};
-      const done = new Set(Array.isArray(progress.completed) ? progress.completed : []);
-      if (!done.has(0)) localStorage.setItem(courseProgressKey, JSON.stringify({...progress, completed:[...done,0]}));
-    } catch {}
-  }
-  const result = (label,value,className='') => '<div class="' + className + '"><dt>' + label + '</dt><dd>' + value + '</dd></div>';
-  return '<div class="final-hero panel">' + stageImage('quiz','about-final-photo') + '<div>' +
-    stageImage('quiz','award about-finish-medal') + '<h1>' + (completed ? 'Урок пройден!' : 'Твой прогресс') +
-    '</h1><p class="hint">Урок 1 «О себе»</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
-    result('Изучены выражения',state.heardWords.length + ' / 6') +
-    result('Основная проверка',correctCount(0) + ' / 6','all') + result('Дополнительные тесты',(quizCount()-correctCount(0)) + ' / 24') + tests.map((test,i) => result(test,correctCount(i) + ' / 6')).join('') +
-    result('Грамматика 现在',state.grammarDone ? '✓ Выполнено' : 'Ожидает проверки') +
-    result('Рассказ о Мише',state.dayDone ? '✓ Выполнено' : 'Ожидает проверки') +
-    result('Практика речи',speechCount() + ' / 6') +
-    result('Распознано микрофоном',state.mic.length + ' / 6') +
-    result('Отмечено самостоятельно',state.selfSpoken.length + ' слов; ' + selfQuizCount() + ' тестов (без оценки тонов)') +
-    result('Ответы в диалоге',state.chat.length + ' / 3') + '</dl><div class="controls"><button type="button" class="soft" data-step="3">Вернуться к тестам</button><a class="soft lesson-map-link" href="./hsk2-lesson1.html">Урок 2 · Мой день →</a><a class="soft lesson-map-link" href="./hsk2-life-course.html?view=map">Все уроки</a></div></section>' +
-    (completed ? pandaAiShortcut() : '');
+ const complete=state.heardWords.length===6 && coreQuizDone() && state.grammarDone &&
+   state.dayDone && speechDone() && state.chat.length===3;
+ if(complete){
+  try{
+   const progress=readProgress(courseProgressKey)??{};
+   const completed=new Set(Array.isArray(progress.completed)?progress.completed:[]);
+   completed.add(2); // Third lesson, never mark the first lesson completed.
+   localStorage.setItem(courseProgressKey,JSON.stringify({...progress,completed:[...completed]}));
+  }catch{}
+ }
+ const item=(label,value)=>'<div><dt>'+label+'</dt><dd>'+value+'</dd></div>';
+ return '<div class="final-hero panel">'+stageImage('quiz','about-final-photo')+
+  '<div><h1>'+(complete?'Урок пройден!':'Мой прогресс')+'</h1><p class="hint">Урок 3 · Моя работа и учёба</p></div></div>' +
+  '<section class="results panel"><h2>Результаты урока</h2><dl>' +
+   item('Новые выражения',state.heardWords.length+' / 6') +
+   item('Основные тесты',correctCount(0)+' / 6') +
+   item('Дополнительные тесты',(quizCount()-correctCount(0))+' / 24') +
+   item('Грамматика 在 / 会',state.grammarDone?'✓':'ещё не проверена') +
+   item('Собери примеры',state.dayDone?'✓':'ещё не выполнено') +
+   item('Речь',speechCount()+' / 6') +
+   item('Тоновая практика',window.PandaToneTrainer?.progressText()||'0 / 30') +
+   item('Диалог',state.chat.length+' / 3') +
+  '</dl><div class="controls">' +
+    '<button type="button" class="soft" data-step="3">К тестам</button>' +
+    '<a class="soft lesson-map-link" href="./hsk2-life-course.html?view=map">Все уроки</a>' +
+  '</div></section>' + pandaAiShortcut();
 }
 async function play(text,button) {
   const clip = clips.get(normalize(text));
