@@ -1,0 +1,107 @@
+/* Panda Go HSK2 Lesson 3 · user-approved photo 5 and focused fixes · v537.
+   The 3D poster is a cropped copy of the user's image; never stretch,
+   recolor, composite, or overwrite that artwork. Only transparent hit zones. */
+.course-layout #app[data-view="1"] #pg433 .pg433-content {
+  padding:0!important;overflow:hidden!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  background:#edd1ed!important;
+}
+.course-layout #app[data-view="1"] #pg433 .pg433-content .l3-cover.l3-poster-cover {
+  position:relative!important;display:flex!important;align-items:center!important;
+  justify-content:center!important;flex:1 1 auto!important;
+  width:100%!important;height:100%!important;min-height:0!important;
+  padding:0!important;margin:0!important;gap:0!important;
+  overflow:hidden!important;text-align:center!important;
+  background:#edd1ed!important;
+}
+#app #pg433 .l3-poster-frame{
+  position:relative;display:block;flex:none;
+  width:min(100%, calc(100dvh * 694 / 1232));
+  max-width:100%;max-height:100%;
+  aspect-ratio:694/1232;
+  margin:0 auto;overflow:hidden;
+}
+#app #pg433 .l3-poster-image{
+  display:block;width:100%;height:100%;
+  object-fit:contain;object-position:center center;
+  aspect-ratio:694/1232;
+  border:0;border-radius:0;margin:0;
+  box-shadow:none;filter:none;
+}
+#app #pg433 .l3-poster-back,
+#app #pg433 .l3-poster-start{
+  position:absolute;z-index:6;display:block;
+  appearance:none;-webkit-appearance:none;
+  background:transparent;border:0;
+  cursor:pointer;text-decoration:none;
+  outline-offset:-3px;touch-action:manipulation;
+}
+#app #pg433 .l3-poster-back{left:3%;top:0%;width:13%;height:7%}
+#app #pg433 .l3-poster-start{left:13%;top:74%;width:74%;height:10%}
+#app #pg433 .l3-poster-start:active,
+#app #pg433 .l3-poster-back:active {
+  background:#ffffff19;
+  box-shadow:inset 0 0 0 3px #fff8;
+  border-radius:30px;
+}
+#app #pg433 .l3-poster-start:focus-visible,
+#app #pg433 .l3-poster-back:focus-visible{
+  outline:3px solid #710f8d;border-radius:24px
+}
+/* Word cards: move pinyin + translation to the left for all six rows.
+   Keep the tone markings visible in their own column. */
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word{
+  grid-template-columns:clamp(61px,17.3vw,71px) max-content 30px minmax(0,1fr) 39px!important;
+  column-gap:2px!important;
+}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > img.about-myday-art{
+  display:block;width:100%!important;max-width:100%!important;
+  min-width:0!important;height:clamp(51px,7.8dvh,67px)!important;
+  object-fit:cover!important;object-position:center!important;
+  border-radius:12px!important;align-self:center!important;
+  grid-column:1!important;grid-row:1!important
+}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .about-myday-copy{
+  grid-column:4!important;grid-row:1!important;min-width:0!important;
+  margin-left:0!important;padding-left:0!important;
+}
+.course-layout #app[data-view="2"] #pg433 .about-myday-copy .py,
+.course-layout #app[data-view="2"] #pg433 .about-myday-copy .ru{
+  overflow-wrap:anywhere!important;word-break:normal!important
+}
+@media(max-width:365px){
+ .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word{
+  grid-template-columns:59px max-content 27px minmax(0,1fr) 35px!important;
+  column-gap:2px!important
+ }
+ .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word>.cn{
+  font-size:18px!important
+ }
+}
+/* Remove the redundant fallback explanation rather than hiding the mode.
+   The detailed note about tone accuracy remains below the exercise. */
+#app[data-view="6"] #pg433 .practice-modes{margin-bottom:5px!important}
+#app[data-view="6"] #pg433 .tone-tabs{margin-top:3px!important}
+/* 6-example story cards: illustrations 15-20% larger while staying proportional. */
+#app[data-view="5"] #pg433 .approved-story-card .approved-story-choice{
+  grid-template-columns:clamp(55px,16vw,68px) minmax(0,1fr)!important;
+  column-gap:5px!important;
+}
+#app[data-view="5"] #pg433 .approved-story-card .approved-story-choice img.about-story-photo {
+  grid-column:1!important;grid-row:1 / span 3!important;
+  display:block!important;
+  width:100%!important;
+  height:clamp(68px,8.8dvh,87px)!important;
+  object-fit:cover!important;object-position:center center!important;
+  aspect-ratio:auto!important;border-radius:10px!important;
+  flex:none!important;align-self:center!important
+}
+@media(max-width:365px){
+ #app[data-view="5"] #pg433 .approved-story-card .approved-story-choice{
+   grid-template-columns:52px minmax(0,1fr)!important;
+   column-gap:3px!important;
+ }
+ #app[data-view="5"] #pg433 .approved-story-card .approved-story-choice img.about-story-photo{
+   height:65px!important;
+ }
+}
