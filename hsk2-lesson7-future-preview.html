@@ -1993,6 +1993,83 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   }
 }
 
+
+/* HSK 2 Lesson 7 – exact approved cover photograph, v6.
+   Image contains Panda Go branding, sections, call-to-action and the proverb.
+   Crop only Android/browser chrome from the source screenshot; never stretch the image. */
+.course-layout #app[data-view="1"] #pg433 .pg433-content{
+  width:100%!important;height:100%!important;min-height:0!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+  justify-content:center!important;flex:1 1 0%!important;
+  margin:0!important;padding:0!important;overflow:hidden!important;
+  overscroll-behavior:none!important;
+  background:linear-gradient(180deg,#f5d6fa 0%,#f7e3fb 27%,#eac7e7 76%,#e4c0df 100%)!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-approved-cover-shell{
+  container-type:size;display:flex!important;flex-direction:column!important;
+  justify-content:center!important;align-items:center!important;
+  width:100%!important;max-width:100%!important;
+  height:100%!important;min-height:0!important;flex:1 1 0%!important;
+  padding:0!important;margin:0!important;overflow:hidden!important;
+  background:transparent!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-v6{
+  position:relative!important;display:block!important;flex:none!important;
+  width:min(100%,52.005cqh)!important;
+  max-width:100%!important;max-height:100%!important;
+  aspect-ratio:843 / 1621!important;
+  height:auto!important;margin:0 auto!important;padding:0!important;
+  overflow:hidden!important;isolation:isolate;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-image{
+  display:block!important;position:static!important;
+  width:100%!important;height:auto!important;max-height:100%!important;
+  aspect-ratio:843 / 1621!important;object-fit:contain!important;
+  object-position:center!important;max-width:100%!important;
+  margin:0!important;padding:0!important;filter:none!important;
+  transform:none!important;-webkit-user-drag:none;user-select:none;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-hotspot{
+  position:absolute!important;z-index:3!important;
+  display:block!important;margin:0!important;padding:0!important;
+  border:0!important;background:transparent!important;
+  border-radius:12px!important;box-shadow:none!important;
+  cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  transition:background-color .16s,box-shadow .16s;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-hotspot:focus-visible{
+  outline:3px solid #69218e!important;outline-offset:1px;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-hotspot:active{
+  transform:none!important;background:#ffffff22!important;
+  box-shadow:inset 0 0 0 3px #ffffff99!important;filter:brightness(.96)!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-back{
+  left:7%!important;top:.2%!important;width:10%!important;height:3.8%!important;
+  border-radius:50%!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-words{
+  left:8.2%!important;top:51%!important;width:28%!important;height:7.6%!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-tests{
+  left:36.5%!important;top:51%!important;width:27%!important;height:7.6%!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-grammar{
+  left:63.4%!important;top:51%!important;width:28.5%!important;height:7.6%!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-story{
+  left:8.2%!important;top:58.6%!important;width:28%!important;height:7%!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-speech{
+  left:36.5%!important;top:58.6%!important;width:27%!important;height:7%!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-dialogue{
+  left:63.4%!important;top:58.6%!important;width:28.5%!important;height:7%!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson7-poster-start{
+  left:7.7%!important;top:66.7%!important;width:84.4%!important;height:6.2%!important;
+  border-radius:999px!important;
+}
 </style>
 </head>
 <body>
@@ -2318,33 +2395,22 @@ function lesson7CoverArt(className, bounds) {
 
 function intro() {
   const tiles = [
-    {step:2,label:'Слова',bounds:'200 779 124 74'},
-    {step:3,label:'Тесты',bounds:'503 779 110 74'},
-    {step:4,label:'Грамматика',bounds:'787 779 121 74'},
-    {step:5,label:'Мой рассказ',bounds:'202 898 120 76'},
-    {step:6,label:'Произношение',bounds:'489 897 126 78'},
-    {step:7,label:'Диалог',bounds:'767 898 154 76'}
+    {step:2,label:'Слова',area:'words'},
+    {step:3,label:'Тесты',area:'tests'},
+    {step:4,label:'Грамматика',area:'grammar'},
+    {step:5,label:'Мой рассказ',area:'story'},
+    {step:6,label:'Произношение',area:'speech'},
+    {step:7,label:'Диалог',area:'dialogue'}
   ];
   return '<section class="lesson7-approved-cover-shell" aria-label="HSK 2 · Урок 7 · Мои планы на будущее">' +
-    '<div class="lesson7-cover-layout">' +
-    '<header class="lesson7-cover-header">' + lesson7CoverArt('lesson7-cover-brand-art','0 0 1100 107') +
-      '<a class="lesson7-cover-return" href="./hsk2-start.html" aria-label="Вернуться к курсу HSK 2"></a></header>' +
-    '<div class="lesson7-cover-stage">' +
-      lesson7CoverArt('lesson7-cover-bough','0 113 164 127') +
-      lesson7CoverArt('lesson7-cover-bough','936 113 164 127') +
-      '<div class="lesson7-cover-heading"><span class="lesson7-cover-chapter">HSK 2 · УРОК 7</span>' +
-      '<h1>Мои планы на будущее</h1><strong lang="zh-Hans">我的未来计划</strong><span>Wǒ de wèilái jìhuà</span></div>' +
-      '<img class="lesson7-cover-scene" src="./assets/hsk2-lesson7-hero-v5.webp" width="1100" height="377" alt="" fetchpriority="high" draggable="false"></div>' +
-    '<div class="lesson7-cover-summary"><h2><img src="./assets/hsk2-lesson1-preview/feature-1.webp" width="61" height="50" alt="">Содержание урока:</h2>' +
-      lesson7CoverArt('lesson7-cover-icon','43 491 137 114') +
-      '<p>Расскажи, что ты собираешься делать и чего хочешь достичь.</p>' +
-      lesson7CoverArt('lesson7-cover-icon','861 459 180 138') + '</div>' +
-    '<div class="lesson7-cover-sections">' +
-      tiles.map(tile => '<button type="button" data-step="' + tile.step + '" aria-label="Открыть раздел: ' + tile.label + '">' +
-        lesson7CoverArt('lesson7-cover-icon',tile.bounds) + '<span>' + tile.label + '</span></button>').join('') + '</div>' +
-    '<button type="button" class="lesson7-cover-begin" data-step="2" aria-label="Начать урок 7">Начать урок →</button>' +
-    '<img class="lesson7-cover-scroll" src="./assets/hsk2-lesson7-scroll-v3.webp" width="694" height="394" ' +
-      'alt="Сколько языков ты знаешь — столько раз ты человек" draggable="false">' +
+    '<div class="lesson7-poster-v6">' +
+      '<img class="lesson7-poster-image" src="./assets/hsk2-lesson7-cover-approved-v6.webp" width="843" height="1621" ' +
+        'alt="Panda Go, урок 7 Мои планы на будущее. Панда планирует учёбу, работу и путешествия. Сколько языков ты знаешь — столько раз ты человек." ' +
+        'fetchpriority="high" decoding="async" draggable="false">' +
+      '<a class="lesson7-poster-hotspot lesson7-poster-back" href="./hsk2-start.html" aria-label="Назад к курсу HSK 2"></a>' +
+      tiles.map(tile => '<button type="button" class="lesson7-poster-hotspot lesson7-poster-' + tile.area +
+        '" data-step="' + tile.step + '" aria-label="Открыть раздел: ' + tile.label + '"></button>').join('') +
+      '<button type="button" class="lesson7-poster-hotspot lesson7-poster-start" data-step="2" aria-label="Начать урок 7"></button>' +
     '</div></section>';
 }
 function newWords() {
