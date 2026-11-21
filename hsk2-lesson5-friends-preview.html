@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#9e2cc9">
-<title>Panda Go · HSK 2 · Урок 5 · Друзья, встречи и планы</title>
+<meta name="panda-go-lesson5-build" content="20261121-approved-cover-v3">
+<title>Panda Go · HSK 2 · Урок 5 · Друзья, встречи и планы · v2</title>
 <script>
 {
   document.documentElement.classList.add('course-layout');
@@ -1418,6 +1419,35 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   #app #pg433 .friends-cover-tile{min-height:53px}
 }
 
+
+/* Approved HSK 2 Lesson 5 cover: original 843 x 1864 image, no cropping or stretching. */
+.course-layout #app[data-view="1"]{background:#efd0f6!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+.course-layout #app[data-view="1"] #pg433{display:grid!important;grid-template-rows:minmax(0,1fr)!important;height:100%!important;min-height:0!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+.course-layout #app[data-view="1"] #pg433 .pg433-header,
+.course-layout #app[data-view="1"] #pg433 .pg433-footer{display:none!important}
+.course-layout #app[data-view="1"] #pg433 .pg433-content{
+display:flex!important;justify-content:center!important;align-items:center!important;
+width:100%!important;height:100%!important;min-height:0!important;
+padding:0!important;margin:0!important;overflow:hidden!important;background:#efd0f6!important}
+#app[data-view="1"] #pg433 .approved5-shell{display:flex;justify-content:center;align-items:center;width:100%;height:100%;min-height:0;margin:0;padding:0}
+#app[data-view="1"] #pg433 .approved5-frame{position:relative;width:min(100%,calc(100dvh * 843 / 1864));max-width:100%;max-height:100%;aspect-ratio:843 / 1864;flex:none;overflow:hidden;background:#e8b9f2}
+#app[data-view="1"] #pg433 .approved5-art{display:block;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none;pointer-events:none}
+#app[data-view="1"] #pg433 .approved5-hotspot{
+position:absolute;z-index:2;padding:0;margin:0;border:0;min-width:0;min-height:0;
+border-radius:12px;background:transparent;box-shadow:none;color:transparent;font-size:0;
+cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#app[data-view="1"] #pg433 .approved5-hotspot:active{
+transform:scale(.98)!important;background:#fff4!important;box-shadow:inset 0 0 0 2px #fff9!important}
+#app[data-view="1"] #pg433 .approved5-hotspot:focus-visible{outline:3px solid #fff;outline-offset:-3px}
+#app[data-view="1"] #pg433 .approved5-back{left:2%;top:.5%;width:13%;height:5.4%;border-radius:50%}
+#app[data-view="1"] #pg433 .approved5-tile[data-step="2"]{left:3%;top:55.2%;width:31%;height:8.2%}
+#app[data-view="1"] #pg433 .approved5-tile[data-step="3"]{left:34.5%;top:55.2%;width:31%;height:8.2%}
+#app[data-view="1"] #pg433 .approved5-tile[data-step="4"]{left:66%;top:55.2%;width:31%;height:8.2%}
+#app[data-view="1"] #pg433 .approved5-tile[data-step="5"]{left:3%;top:63.3%;width:31%;height:8.3%}
+#app[data-view="1"] #pg433 .approved5-tile[data-step="6"]{left:34.5%;top:63.3%;width:31%;height:8.3%}
+#app[data-view="1"] #pg433 .approved5-tile[data-step="7"]{left:66%;top:63.3%;width:31%;height:8.3%}
+#app[data-view="1"] #pg433 .approved5-start{left:10.5%;top:73%;width:79%;height:6%;border-radius:999px}
+
 </style>
 </head>
 <body>
@@ -1937,21 +1967,17 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  const tiles=[[2,'Слова','📖'],[3,'Тесты','🎯'],[4,'Грамматика','🌸'],[5,'Мои планы','🗓️'],[6,'Произношение','🎙️'],[7,'Диалог','💬']];
-  return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 5 · Друзья и встречи">'+
-    '<div class="word-flow-cover friends-cover">'+
-      '<a class="friends-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков">‹</a>'+
-      '<span class="friends-cover-chapter">HSK 2 · УРОК 5</span>'+
-      '<div class="friends-cover-title"><h1>Друзья и встречи</h1>'+
-        '<p lang="zh-Hans">朋友与见面</p><small>Péngyou yǔ jiànmiàn</small></div>'+
-      '<div class="friends-cover-hero">'+
-        atlasTile('words',0,'friends-cover-photo')+atlasTile('words',1,'friends-cover-photo')+
-        '<span class="friends-cover-spark">🌸</span></div>'+
-      '<div class="friends-cover-summary">Научись приглашать друга, договариваться о встрече и рассказывать о совместных планах.</div>'+
-      '<div class="friends-cover-menu">'+tiles.map(([step,label,emoji])=>
-        '<button type="button" class="friends-cover-tile" data-step="'+step+'"><span>'+emoji+'</span><b>'+label+'</b></button>').join('')+'</div>'+
-      '<button type="button" class="friends-cover-start" data-step="2">Начать урок <span>→</span></button>'+
-      '<div class="friends-cover-footer">🌸 Учим живой китайский вместе 🌸</div>'+
+  const cover='./assets/hsk2-lesson5-approved-cover-20261121.png';
+  const tiles=[
+    [2,'Слова'],[3,'Тесты'],[4,'Грамматика'],
+    [5,'Мои планы'],[6,'Произношение'],[7,'Диалог']
+  ];
+  return '<section class="approved5-shell" aria-label="Обложка HSK 2 · Урок 5 · Друзья и встречи">'+
+    '<div class="approved5-frame">'+
+      '<img class="approved5-art" src="'+cover+'" width="843" height="1864" fetchpriority="high" decoding="async" draggable="false" alt="Panda Go. Урок 5: Друзья и встречи. Новый Язык — Новая жизнь.">'+
+      '<a class="approved5-hotspot approved5-back" href="./hsk2-life-course.html?view=map" aria-label="Вернуться к карте уроков"></a>'+
+      tiles.map(([step,label])=>'<button type="button" class="approved5-hotspot approved5-tile" data-step="'+step+'" aria-label="'+label+'"></button>').join('')+
+      '<button type="button" class="approved5-hotspot approved5-start" data-step="2" aria-label="Начать урок 5"></button>'+
     '</div></section>';
 }
 function newWords() {
