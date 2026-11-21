@@ -7,6 +7,10 @@
 <title>Panda Go · HSK 2 · Урок 5 — Друзья, встречи и планы</title>
 <link rel="stylesheet" href="./assets/hsk2-lesson1-approved-merged-v460.css?v=460">
 <style>
+#app.pg5-app .pg5-panel img{max-width:100%;height:auto}
+#app.pg5-app .pg5-panel > img{display:block;width:min(54%,220px);max-height:180px;margin:2px auto 10px;object-fit:contain}
+#app.pg5-app .pg5-word .pg5-icon svg{width:100%;height:100%;display:block}
+
 :root{color-scheme:light;--ink:#5b2570;--purple:#622381;--rose:#d83faf;--line:#e7b5df;--gold:#f7d99b;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
 *,*::before,*::after{box-sizing:border-box}
 html,body{margin:0;height:100%;overflow:hidden;background:#ecd5f3;color:var(--ink)}
@@ -291,7 +295,7 @@ function speaking(){
  '<p>Здесь можно записывать и слушать себя, но автоматическая оценка тонов не заявлена: без надёжной аудиопроверки она может ошибаться.</p>')+
  '<p class="pg5-small">Эталонное прослушивание пока синтезируется устройством. Финальные MP3 носителя не подключены.</p>';
 }
-function choiceIds(i,t){const a=[i,(i+2+t)%8,(i+4+t)%8,(i+5+t)%8];const n=(i+t)%4;return a.slice(n).concat(a.slice(0,n))}
+function choiceIds(i,t){const a=[i];for(const offset of [2+t,4+t,6+t,1+t,3+t,5+t,7+t]){const k=(i+offset)%8;if(!a.includes(k))a.push(k);if(a.length===4)break}const n=(i+t)%4;return a.slice(n).concat(a.slice(0,n))}
 function quizQuestion(){
  const t=s.qtype,i=s.qi,w=W[i],id=t+'-'+i,done=!!s.done[id];
  let start='<div class="pg5-actions"><span class="pg5-pill">Тест '+(t+1)+'/5</span><span class="pg5-pill">Вопрос '+(i+1)+'/8</span><span class="pg5-pill">'+count(t)+'/8 верно</span></div>';
