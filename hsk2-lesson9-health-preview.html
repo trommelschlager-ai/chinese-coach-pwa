@@ -2100,6 +2100,62 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 .course-layout #app[data-view="6"] #pg433 .tone-row .orb{width:30px!important;height:30px!important;min-width:30px!important;}
 .course-layout #app[data-view="6"] #pg433 .tone-row .tone-strokes svg{width:12px!important;height:15px!important;stroke:#258a51!important}
 .course-layout #app #pg433 [data-say]{opacity:.48!important;}
+
+/* Lesson 9 v3: responsive cover modules and one-column paged practice. */
+.course-layout #app[data-view="1"] #pg433 .pg433-content{display:block!important;padding:0!important;margin:0!important;height:100%!important;overflow:hidden!important;background:#f6d8f2!important;}
+.course-layout #app[data-view="1"] #pg433 .lesson9-mobile-cover{height:100%;width:100%;min-height:0;display:grid;grid-template-rows:6.4% 32% 12.4% 15.4% 6.8% minmax(0,1fr);align-items:stretch;justify-items:center;gap:0;overflow:hidden;background:linear-gradient(#f5d9f7,#f3c9f0 70%,#edc8e8);container-type:inline-size;}
+.lesson9-mobile-cover .l9-cover-brand,.lesson9-mobile-cover .l9-cover-main{min-height:0;width:100%;position:relative;overflow:hidden;}
+.lesson9-mobile-cover .l9-cover-brand{background:linear-gradient(#eac1fa,#f5dbf7);}
+.lesson9-mobile-cover .l9-art{display:block;width:100%;height:100%;max-width:100%;overflow:hidden;}
+.lesson9-mobile-cover .l9-cover-brand .l9-art{height:auto;}
+.lesson9-mobile-cover .l9-cover-back{position:absolute;left:6%;top:0;width:9%;height:100%;border-radius:50%;}
+.lesson9-mobile-cover .l9-cover-main{background:linear-gradient(#f4d7fa,#f8d9f2 70%,#f0c6da);display:flex;align-items:flex-start;}
+.lesson9-mobile-cover .l9-cover-main .l9-art{width:100%;height:100%;}
+.lesson9-mobile-cover .l9-cover-summary,.lesson9-mobile-cover .l9-cover-grid{background:linear-gradient(145deg,#fffaff,#fdf3ff);width:84%;min-height:0;margin:1cqw 0;border-radius:3.8cqw;box-shadow:0 1cqw 1.8cqw #8e3c9850;}
+.lesson9-mobile-cover .l9-cover-summary{position:relative;display:grid;grid-template-columns:10cqw minmax(0,1fr) 10cqw;gap:1cqw;align-items:center;padding:6cqw 2cqw 1.5cqw;text-align:center;}
+.lesson9-mobile-cover .l9-cover-summary h2{position:absolute;top:0;left:12%;width:76%;height:6cqw;display:grid;place-items:center;margin:0;border-radius:999px;color:#fff;background:linear-gradient(#d97bf3,#7b1ebc);font-size:4.4cqw;line-height:1;font-weight:850;}
+.lesson9-mobile-cover .l9-cover-summary p{font-size:3.25cqw;line-height:1.17;font-weight:760;margin:0;color:#281042;}
+.lesson9-mobile-cover .l9-summary-icon{width:100%;height:auto;max-height:100%;}
+.lesson9-mobile-cover .l9-cover-grid{display:grid;grid-template:repeat(2,minmax(0,1fr))/repeat(3,minmax(0,1fr));padding:1.2cqw 2cqw;}
+.lesson9-mobile-cover .l9-cover-grid button{display:grid;grid-template-rows:minmax(0,1fr) auto;justify-items:center;align-items:center;min-width:0;min-height:0;background:none!important;border:0!important;box-shadow:none!important;color:#281042;padding:0.5cqw 0.2cqw;gap:.3cqw;font-size:3.25cqw;font-weight:800;line-height:1.1;}
+.lesson9-mobile-cover .l9-cover-grid button:not(:nth-child(3n)){border-right:1px solid #d9b1db!important;}
+.lesson9-mobile-cover .l9-cover-grid button:nth-child(-n+3){border-bottom:1px solid #d9b1db!important;}
+.lesson9-mobile-cover .l9-tile-art{width:12cqw;height:100%;min-height:0;max-height:100%;}
+.lesson9-mobile-cover .l9-cover-start{width:84%;min-height:0;margin:1cqw 0 .5cqw;padding:0;border:0;border-radius:999px;background:linear-gradient(#d98af4,#a343d6 55%,#741db2);box-shadow:0 .7cqw 1.3cqw #7921a660;color:white;font-size:5.3cqw;font-weight:850;text-shadow:0 1px 2px #5e1689;}
+.lesson9-mobile-cover .l9-cover-bottom{width:100%;min-height:0;background:linear-gradient(#eac7e900,#eac7e933),url("./assets/hsk2-lesson4-hobby-3d/garden.webp") center bottom/cover no-repeat;display:flex;align-items:flex-start;justify-content:center;padding-top:1cqw;overflow:hidden;}
+.lesson9-mobile-cover .l9-scroll-art{width:65%;height:auto;max-height:85%;object-fit:contain;}
+.l9-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
+.course-layout #app[data-view="2"] #pg433 .l9-one-column,.course-layout #app[data-view="6"] #pg433 .l9-speech-screen{width:100%!important;height:100%!important;min-height:0!important;display:grid!important;gap:4px!important;overflow:hidden!important;}
+.course-layout #app[data-view="2"] #pg433 .l9-one-column{grid-template-rows:auto auto minmax(0,1fr) auto auto!important;}
+.course-layout #app[data-view="6"] #pg433 .l9-speech-screen{grid-template-rows:auto auto auto minmax(0,1fr) auto auto auto!important;}
+.course-layout #app[data-view="6"] #pg433 .pg433-content{display:flex!important;flex-direction:column!important;padding:5px 7px!important;overflow:hidden!important;min-height:0!important;}
+#app #pg433 .l9-pager{display:grid;grid-template-columns:1fr 1.35fr 1fr;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#6c287e;text-align:center;}
+#app #pg433 .l9-pager button,#app #pg433 .l9-speech-modes button{min-height:28px;border:1px solid #d9b0df;border-radius:12px;background:#fff5ff;color:#602278;font-size:12px;font-weight:800;padding:4px;}
+#app #pg433 .l9-pager button[aria-pressed="true"],#app #pg433 .l9-speech-modes button[aria-pressed="true"]{background:linear-gradient(#eb80df,#9622b7);color:white;border-color:#a748b9;}
+#app #pg433 .l9-vocab-paged,#app #pg433 .l9-speech-list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;min-height:0!important;height:100%!important;gap:5px!important;margin:0!important;padding:0!important;container-type:size;}
+#app #pg433 .l9-word-card,#app #pg433 .l9-speech-row{display:grid!important;align-items:center!important;min-width:0!important;min-height:0!important;height:100%!important;width:100%!important;margin:0!important;padding:4px 5px!important;gap:5px!important;border:1px solid #d5a6de!important;background:#fff9ff!important;border-radius:14px!important;overflow:hidden!important;box-shadow:0 2px 0 #c599d2!important;}
+#app #pg433 .l9-word-card{grid-template-columns:min(24cqw,calc((100cqh - 15px)/4 - 10px)) minmax(0,1fr) minmax(27px,12cqw) 32px!important;grid-template-rows:minmax(0,1fr)!important;}
+#app #pg433 .l9-speech-row{grid-template-columns:min(25cqw,calc((100cqh - 15px)/4 - 10px)) minmax(0,1fr) 33px!important;grid-template-rows:minmax(0,1fr)!important;}
+#app #pg433 .l9-word-card .l9-word-art,#app[data-view="6"] #pg433 .l9-speech-row .l9-speech-art{display:block!important;width:100%!important;height:auto!important;aspect-ratio:1!important;max-height:100%!important;border-radius:9px!important;object-fit:contain!important;align-self:center!important;}
+#app #pg433 .l9-word-copy{display:flex!important;flex-direction:column!important;min-width:0!important;gap:2px!important;justify-content:center!important;align-items:flex-start!important;}
+#app #pg433 .l9-word-copy .cn{font-size:clamp(17px,5.6vw,25px)!important;line-height:1.08!important;white-space:normal!important;word-break:break-word!important;text-shadow:none!important;}
+#app #pg433 .l9-word-copy .py{font-weight:750!important;font-size:clamp(11px,3.7vw,16px)!important;line-height:1.15!important;white-space:normal!important;overflow-wrap:anywhere!important;}
+#app #pg433 .l9-word-copy .ru{font-size:clamp(11px,3.4vw,15px)!important;line-height:1.12!important;white-space:normal!important;overflow-wrap:anywhere!important;}
+#app #pg433 .l9-word-tones .tone-strokes{display:flex!important;gap:1px;justify-content:center!important;}
+#app #pg433 .l9-word-tones .tone-strokes svg{width:clamp(9px,3vw,15px)!important;height:17px!important;stroke:#258a51!important;flex-shrink:1;}
+#app #pg433 .l9-word-card .orb,#app #pg433 .l9-speech-row .orb{width:30px!important;height:30px!important;min-width:30px!important;margin:0!important;}
+#app #pg433 .l9-speech-actions{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;}
+#app #pg433 .l9-speech-row .l9-word-tones{display:flex;align-items:center;gap:4px;}
+#app #pg433 .l9-speech-row .tonemarks{display:flex!important;gap:2px!important;}
+#app #pg433 .l9-speech-row .tone-number{width:14px!important;height:14px!important;font-size:10px!important;line-height:14px!important;}
+#app #pg433 .l9-speech-modes,#app #pg433 .l9-record-controls{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+#app #pg433 .l9-record-controls button{font-size:12px!important;min-height:30px!important;padding:4px!important;}
+#app #pg433 .l9-speech-screen .tone-tabs{margin:0!important;padding:3px!important;display:flex!important;gap:4px!important;}
+#app #pg433 .l9-speech-screen .tone-tabs button{min-height:30px!important;padding:3px!important;font-size:13px!important;flex:1!important;}
+#app #pg433 .l9-speech-note{font-size:10px!important;text-align:center;line-height:1.2;margin:0!important;}
+#app #pg433 .l9-speech-screen #feedback:empty,#app #pg433 .l9-one-column #feedback:empty{display:none!important;}
+#app #pg433 .l9-speech-screen #feedback:not(:empty),#app #pg433 .l9-one-column #feedback:not(:empty){font-size:10px!important;line-height:1.1!important;margin:0!important;padding:3px!important;}
+@media (max-height:610px){#app #pg433 .l9-word-copy .cn{font-size:17px!important}#app #pg433 .l9-word-copy .py,#app #pg433 .l9-word-copy .ru{font-size:11px!important}#app #pg433 .l9-speech-row .orb{width:25px!important;height:25px!important;min-width:25px!important}#app #pg433 .l9-speech-row .l9-word-tones{gap:1px}#app #pg433 .l9-speech-row .tone-number{width:12px!important;height:12px!important;font-size:9px!important;line-height:12px!important}}
 </style>
 </head>
 <body>
@@ -2423,42 +2479,35 @@ function lesson9CoverArt(className, bounds) {
     '" x="' + -left + '" y="' + -top + '" width="1100" height="1430"/></svg></svg>';
 }
 
-function intro() {
-  const tiles = [
-    {step:2,label:'Слова',area:'words'},
-    {step:3,label:'Тесты',area:'tests'},
-    {step:4,label:'Грамматика',area:'grammar'},
-    {step:5,label:'Мой рассказ',area:'story'},
-    {step:6,label:'Произношение',area:'speech'},
-    {step:7,label:'Диалог',area:'dialogue'}
-  ];
-  return '<section class="lesson9-approved-cover-shell" aria-label="HSK 2 · Урок 9 · Здоровье и самочувствие">' +
-    '<div class="lesson9-poster-v6">' +
-      '<img class="lesson9-poster-image" src="./assets/hsk2-lesson9-health-cover-v1.webp" width="900" height="1200" ' +
-        'alt="Panda Go, урок 9 Здоровье и самочувствие. Панда на приёме у врача. Знание языков — богатство, которое всегда с тобой." ' +
-        'fetchpriority="high" decoding="async" draggable="false">' +
-      '<a class="lesson9-poster-hotspot lesson9-poster-back" href="./hsk2-start.html" aria-label="Назад к курсу HSK 2"></a>' +
-      tiles.map(tile => '<button type="button" class="lesson9-poster-hotspot lesson9-poster-' + tile.area +
-        '" data-step="' + tile.step + '" aria-label="Открыть раздел: ' + tile.label + '"></button>').join('') +
-      '<button type="button" class="lesson9-poster-hotspot lesson9-poster-start" data-step="2" aria-label="Начать урок 9"></button>' +
-    '</div></section>';
+function coverCrop(cls,box){
+ return '<svg class="'+cls+'" viewBox="'+box+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><image href="./assets/hsk2-lesson9-health-cover-v1.webp" width="1056" height="1408"/></svg>';
 }
-function newWords() {
-  return '<section class="lesson9-vocab-screen" aria-label="Новые слова урока 9">' +
-    '<h1 class="pill-title lesson9-vocab-heading">Новые слова</h1>' +
-    '<div class="word-list about-myday-wordlist lesson9-vocab-list">' +
-    words.map((word,i) => '<article class="word-row about-myday-word lesson9-vocab-card" aria-label="' +
-      escape(word.zh + ', ' + word.py + ', ' + word.ru) + '">' +
-      vocabImage(i,'about-illustration about-myday-art lesson9-vocab-art') +
-      '<div class="lesson9-vocab-details">' + hanzi(word.zh) + '<span class="py">' + word.py + '</span>' +
-      '<div class="lesson9-vocab-tones">' + toneStrokes(word.tones) + '</div>' +
-      audioButton(word.zh,playIcon) + '</div><span class="ru">' + word.ru + '</span></article>').join('') + '</div>' +
-    '<div class="lesson9-vocab-completion">' +
-      '<button type="button" class="about-manual-complete" data-words-read="1">' +
-      (state.heardWords.length===words.length ? '✓ Повторено 8 из 8' : '✓ Повторил все 8 выражений') +
-      '</button>' +
-      '<p class="hint">Аудио носителя пока не подключено. Повтори по пиньиню; тоны автоматически не проверяются.</p>' +
-      '</div>' + safeStatus() + '</section>';
+function intro(){
+ const tiles=[['Слова',2,'180 790 140 76'],['Тесты',3,'480 790 116 76'],['Грамматика',4,'757 790 112 76'],['Мой рассказ',5,'192 910 112 74'],['Произношение',6,'465 907 128 77'],['Диалог',7,'748 912 134 69']];
+ return '<section class="lesson9-mobile-cover" aria-label="HSK 2 · Урок 9 · Здоровье и самочувствие">'+
+ '<header class="l9-cover-brand">'+coverCrop('l9-art','0 0 1056 88')+'<a href="./hsk2-start.html" class="l9-cover-back" aria-label="Назад к курсу"></a></header>'+
+ '<div class="l9-cover-main">'+coverCrop('l9-art','0 88 1056 522')+'</div>'+
+ '<section class="l9-cover-summary"><h2>Содержание урока:</h2>'+coverCrop('l9-summary-icon','105 675 125 99')+'<p>Научись говорить о своём самочувствии, описывать симптомы, обращаться к врачу и давать простые советы по здоровью.</p>'+coverCrop('l9-summary-icon','831 666 120 115')+'</section>'+
+ '<div class="l9-cover-grid">'+tiles.map(([label,step,box])=>'<button type="button" data-step="'+step+'">'+coverCrop('l9-tile-art',box)+'<span>'+label+'</span></button>').join('')+'</div>'+
+ '<button type="button" data-step="2" class="l9-cover-start">Начать урок →</button>'+
+ '<div class="l9-cover-bottom">'+coverCrop('l9-scroll-art','250 1136 555 240')+'<span class="l9-sr">Знание языков — богатство, которое всегда с тобой.</span></div></section>';
+}
+let vocabPage=0, speechPage=0;
+function l9Pager(kind,page){
+ return '<div class="l9-pager" aria-label="Страницы списка"><button type="button" data-'+kind+'-page="0" aria-pressed="'+(page===0)+'">1–4</button><span>Слова '+(page===0?'1–4':'5–8')+' из 8</span><button type="button" data-'+kind+'-page="1" aria-pressed="'+(page===1)+'">5–8</button></div>';
+}
+function newWords(){
+ const first=vocabPage*4;
+ return '<section class="lesson9-vocab-screen l9-one-column" aria-label="Новые слова урока 9">'+
+ '<h1 class="pill-title lesson9-vocab-heading">Новые слова</h1>'+l9Pager('vocab',vocabPage)+
+ '<div class="word-list l9-vocab-paged">'+words.slice(first,first+4).map((word,j)=>{
+ const i=first+j;
+ return '<article class="word-row l9-word-card">'+vocabImage(i,'about-illustration l9-word-art')+
+ '<div class="l9-word-copy">'+hanzi(word.zh)+'<span class="py">'+word.py+'</span><span class="ru">'+word.ru+'</span></div>'+
+ '<div class="l9-word-tones">'+toneStrokes(word.tones)+'</div>'+audioButton(word.zh,playIcon)+'</article>';
+ }).join('')+'</div><div class="lesson9-vocab-completion">'+
+ '<button type="button" class="about-manual-complete" data-words-read="1">'+(state.heardWords.length===8?'✓ Повторено 8 из 8':'✓ Повторил все 8 выражений')+'</button>'+
+ '<p class="hint">Аудио носителя пока не подключено. Повтори по пиньиню.</p></div>'+safeStatus()+'</section>';
 }
 
 function hero(kind,step,title,subtitle) {
@@ -2633,39 +2682,17 @@ function toneGuide() {
     '<path d="' + path + '" stroke="#af183e" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg><strong>' +
     sample + '</strong>' + name + '</div>').join('') + '</div></details>';
 }
-function tones() {
-  const wordView = state.toneTab === 'words';
-  return hero('tones',6,'Тренировка тонов','Произнеси восемь выражений о здоровье.') +
-    '<div class="practice-modes panel"><button type="button" class="practice-main ' +
-    (state.practiceMode === 'mic' ? 'primary' : 'soft') +
-    '" data-practice-mode="mic">🎙 Микрофон · основной</button>' +
-    '<button type="button" class="practice-backup soft' + (state.practiceMode === 'self' ? ' is-active' : '') +
-    '" data-practice-mode="self">' +
-    (state.practiceMode === 'self' ? '✓ Запасной режим' : 'Не работает микрофон?') +
-    '</button></div>' +
-    (state.practiceMode === 'self'
-      ? '<p class="hint practice-fallback-note">Нет работающего распознавания? Прочитай и повтори по пиньиню, затем отметь слово. Если нет записи, повтори по пиньиню. Тоны автоматически не оцениваются.</p>'
-      : '') +
-    '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
-    '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (8)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
-    '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (8)</button></div>' +
-    (wordView ? '<div class="tone-list">' + words.map((word,i) => '<article class="tone-row">' + vocabImage(i) + '<div>' +
-      hanzi(word.zh) + translate([word.zh,word.py,word.ru]) + '</div><div class="tone-example">' +
-      toneStrokes(word.tones) + pitchRow(word.tones) + '</div>' + audioButton(word.zh) +
-      (state.practiceMode === 'self'
-        ? '<button type="button" class="orb mic' + (state.selfSpoken.includes(i) ? ' recognized' : '') +
-          '" data-self-spoken="' + i + '" aria-label="Я повторил и сравнил ' + word.zh +
-          '" title="Самостоятельная проверка; тоны не оцениваются">' +
-          (state.selfSpoken.includes(i) ? '✓' : '●') + '</button>'
-        : micButton(i,'Произнести ' + word.zh,state.mic.includes(i))) + '</article>').join('') + '</div>' :
-      '<details class="phrase-review panel"><summary>💬 Открыть 8 фраз для повторения</summary>' + phraseCards() + '</details>') +
-     '<div class="controls"><button type="button" class="soft" data-record="1">'+
-    (take?.recorder?.state==='recording'?'■ Остановить':'🎙 Записать себя')+
-    '</button><button type="button" class="primary" data-replay="1"'+(recordUrl?'':' disabled')+'>▶ Моя запись</button></div>'+
-    safeStatus() + toneGuide() + '<div class="progress-panel panel">' + stageImage('tones','about-progress-photo') + '<div><b>Практика произношения</b>' +
-    '<progress max="8" value="' + speechCount() + '" aria-label="Выражений отработано"></progress></div><b>' + speechCount() +
-    ' из 8</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
-    '. Тоны автоматически не оцениваются. Прослушай пример и повтори. В 舒服 (shūfu) и 休息 (xiūxi) второй слог нейтральный.</p>';
+function tones(){
+ const wordView=state.toneTab==='words',first=speechPage*4;
+ return '<section class="l9-speech-screen"><div class="l9-speech-modes"><button type="button" data-practice-mode="mic" aria-pressed="'+(state.practiceMode==='mic')+'">🎙 Микрофон</button><button type="button" data-practice-mode="self" aria-pressed="'+(state.practiceMode==='self')+'">Самопроверка</button></div>'+
+ '<div class="tone-tabs panel"><button type="button" data-tone-tab="words" class="'+(wordView?'primary':'soft')+'">Слова (8)</button><button type="button" data-tone-tab="phrases" class="'+(!wordView?'primary':'soft')+'">Фразы (8)</button></div>'+
+ l9Pager('speech',speechPage)+'<div class="l9-speech-list">'+(wordView?words.slice(first,first+4).map((word,j)=>{
+ const i=first+j;
+ return '<article class="tone-row l9-speech-row">'+vocabImage(i,'about-illustration l9-speech-art')+'<div class="l9-word-copy">'+hanzi(word.zh)+translate([word.zh,word.py,word.ru])+'<div class="l9-word-tones">'+toneStrokes(word.tones)+pitchRow(word.tones)+'</div></div>'+
+ '<div class="l9-speech-actions">'+audioButton(word.zh)+(state.practiceMode==='self'?'<button type="button" class="orb mic" data-self-spoken="'+i+'" aria-label="Повторил '+word.zh+'">'+(state.selfSpoken.includes(i)?'✓':'●')+'</button>':micButton(i,'Произнести '+word.zh,state.mic.includes(i)))+'</div></article>';
+ }).join(''):phrases.slice(first,first+4).map((item,j)=>'<article class="l9-speech-row panel">'+vocabImage(first+j,'about-illustration l9-speech-art')+'<div class="l9-word-copy">'+hanzi(item[0])+translate(item)+'</div>'+audioButton(item[0])+'</article>').join(''))+
+ '</div><div class="l9-record-controls"><button type="button" class="soft" data-record="1">'+(take?.recorder?.state==='recording'?'■ Стоп':'🎙 Записать себя')+'</button><button type="button" class="primary" data-replay="1"'+(recordUrl?'':' disabled')+'>▶ Моя запись</button></div>'+
+ '<p class="l9-speech-note">Отработано '+speechCount()+' из 8 · Тоны не оцениваются автоматически.</p>'+safeStatus()+'</section>';
 }
 
 let take = null;
@@ -3010,6 +3037,8 @@ function checkOrder(part,length,success,failure) {
 }
 
 const actions = {
+  vocabPage: value => {vocabPage=Number(value)===1?1:0;render(true);},
+  speechPage: value => {clearMedia();speechPage=Number(value)===1?1:0;render(true);},
   step: value => {
     if (courseMode && state.step === 3 && Number(value) === 3) showCourseTask(-1);
     else move(Number(value));
