@@ -1702,8 +1702,8 @@ async function startRecord(){
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&!b.disabled)handle(b.dataset.act,b)});
 document.addEventListener('change',e=>{if(e.target.id==='own-choice'){let n=Number(e.target.value);if(n>=0&&n<OPTIONS.length){s.own=n;s.storyRead=false;save();render()}}});
-$('headBack').addEventListener('click',()=>s.step===1?go(0):go(s.step-1));
-$('prev').addEventListener('click',()=>s.step===1?go(0):go(s.step-1));
+$('headBack').addEventListener('click',()=>s.step<=2?go(0):go(s.step-1));
+$('prev').addEventListener('click',()=>s.step<=2?go(0):go(s.step-1));
 $('next').addEventListener('click',()=>s.step===8?go(0):go(s.step+1));
 window.addEventListener('resize',()=>{if(s.step)fitCompactStage()});
 window.addEventListener('pagehide',()=>{closeRecord();if(recordUrl)URL.revokeObjectURL(recordUrl);window.speechSynthesis?.cancel()});
