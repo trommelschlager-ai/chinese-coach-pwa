@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#8d2ba4">
+<title>Panda Go · HSK 2 · Урок 4 — Моё хобби и свободное время (предпросмотр)</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#5e256d;background:#ead2ef;--plum:#752994;--pink:#ec40ab;--gold:#f7d48a}
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #ef48aa;outline-offset:2px}button:active{transform:translateY(3px);filter:brightness(.97)}[hidden]{display:none!important}
+#app{height:100dvh;width:100%;overflow:hidden;display:flex;flex-direction:column;background:radial-gradient(circle at 75% 12%,#fff9fe 0,#f4e2f9 44%,#e7d2ef 100%)}
+header{flex:none;min-height:58px;padding:7px max(12px,env(safe-area-inset-left)) 6px;background:linear-gradient(110deg,#f2cdf2,#fff4fd 55%,#edcff7);box-shadow:0 3px 9px #a66ab155;z-index:2}
+.top{display:flex;align-items:center;gap:9px;max-width:950px;margin:auto}.back{flex:none;height:39px;width:39px;border-radius:50%;color:#742b88;border:1.5px solid #dfacdc;background:linear-gradient(#fff,#efd7f7);font-size:23px;font-weight:900;box-shadow:0 3px 2px #a0779c77;text-decoration:none;display:grid;place-items:center}.brand{flex:1;min-width:0}.brand b{display:block;font-size:clamp(17px,4.5vw,23px);line-height:1;font-weight:1000;color:#8e2298}.brand b span{color:#e736a3}.brand small{display:block;font-size:11px;line-height:1.1;color:#795483;font-weight:760;margin-top:3px}.pill{font-size:11px;font-weight:900;background:#fff8fc;border:1px solid #ddb2d9;color:#87408e;border-radius:999px;padding:6px 10px;white-space:nowrap}
+.track{max-width:950px;margin:6px auto 0;height:6px;border-radius:20px;background:#dbc0e3;overflow:hidden}.track i{display:block;height:100%;width:12.5%;background:linear-gradient(90deg,#f989c8,#d639aa,#9a40b9);transition:width .2s}
+main{flex:1;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:clamp(7px,1.7vh,15px) clamp(10px,2.6vw,22px)}
+.view{height:100%;max-width:790px;width:100%;min-height:0;display:flex;flex-direction:column;gap:clamp(5px,1.2vh,12px)}
+.card{min-height:0;flex:1;overflow:hidden;border:2px solid #e8bbdd;border-bottom:4px solid #cd8cba;border-radius:22px;background:linear-gradient(150deg,#fffaff,#faeafa 72%,#f7e3fb);box-shadow:0 7px 20px #8b5a9c36;padding:clamp(10px,2.1vh,20px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:clamp(4px,1.3vh,12px);position:relative}
+.card h1,.card h2,.card h3,.card p{margin:0}.card h1{font-size:clamp(25px,5.6vw,37px);line-height:1.05;color:#6c228e;font-weight:1000}.card h2{font-size:clamp(19px,4.3vw,28px);line-height:1.1;color:#6c2682}.card h3{font-size:clamp(16px,3.6vw,20px);color:#753184}.card p{font-size:clamp(12px,2.9vw,15px);line-height:1.34;color:#75537b;max-width:650px}
+.cn{font-family:"Microsoft YaHei","Noto Sans CJK SC","PingFang SC",sans-serif;font-size:clamp(31px,7.3vw,48px);font-weight:850;color:#662289;line-height:1.15}.py{font-size:clamp(16px,3.7vw,22px);color:#bc3599;font-weight:800}.ru{font-size:clamp(15px,3.4vw,19px);font-weight:740;color:#78557c}.subcn{font-size:clamp(19px,4.4vw,26px);font-weight:800;color:#6d287f}.hint{font-size:clamp(10px,2.4vw,12px)!important;color:#8f7193!important}.eyebrow{font-size:11px;font-weight:900;color:#aa398e;border:1px solid #eccae7;background:#fff5fe;padding:4px 10px;border-radius:99px}
+.controls{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:7px}
+.btn{border:1.5px solid #dfb0e2;border-bottom:3px solid #c28cce;background:linear-gradient(#fffaff,#f0dafa);color:#70267f;box-shadow:0 3px 8px #9c6e9d44;border-radius:13px;min-height:42px;padding:8px 12px;font-weight:860;line-height:1.15}
+.btn.primary{border:2px solid var(--gold);border-bottom:4px solid #ad6b9b;background:linear-gradient(155deg,#f47aca,#dc35ac 53%,#8b29b1);color:white;text-shadow:0 1px 2px #842a82;box-shadow:0 4px 11px #ae589b68}.btn:disabled{opacity:.42;cursor:not-allowed}.btn.selected{background:#e2f5df;border-color:#7fb486;color:#2f713d}.btn.error{background:#ffedf2;border-color:#eb9caa;color:#98344b}
+footer{flex:none;display:flex;gap:8px;padding:8px max(12px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom));background:linear-gradient(#f7e9f954,#f0d9f4);border-top:1px solid #ddb4dc}
+footer .btn{flex:1;min-height:46px}footer .btn.primary{flex:1.8}
+.flexrow{display:flex;align-items:center;gap:clamp(8px,2.5vw,22px);width:100%;max-width:720px;justify-content:center}.illustration{width:clamp(92px,29vw,205px);height:min(42vh,225px);max-height:100%;object-fit:contain;flex:none;filter:drop-shadow(0 9px 11px #8d62a342)}.introcopy{min-width:0;text-align:left;display:flex;flex-direction:column;gap:clamp(5px,1.7vh,13px)}.introcopy p{text-align:left}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(5px,1.6vh,10px);width:100%;max-width:650px}.choices .btn{width:100%;min-height:clamp(42px,8vh,60px);font-size:clamp(12px,3vw,17px);overflow-wrap:anywhere;padding:6px}
+.status{width:100%;max-width:640px;border:1px solid #e2b9dc;border-radius:11px;padding:6px 10px;background:#fff7fd;color:#805480;font-size:clamp(11px,2.5vw,13px);font-weight:750}.status.ok{background:#e7f9e7;border-color:#a2d8a1;color:#287338}.status.bad{background:#fff0f3;border-color:#edbecb;color:#ab354b}
+.minirow{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap}.rule{background:#fffaff;border:1px solid #ecc3e4;padding:8px 12px;border-radius:13px;font-weight:900;color:#823591;font-size:clamp(16px,3.6vw,21px)}.sample{background:#fff9ff;border:1px solid #edc4ea;border-radius:13px;padding:8px 12px;width:100%;max-width:650px}.sample .subcn{font-size:clamp(20px,4.1vw,25px)}.sample small{display:block;color:#82598b;margin-top:2px}
+.chat{border:1px solid #e9bde5;background:#fff9ff;border-radius:18px;padding:12px;max-width:640px;width:100%}.chat .subcn{font-size:clamp(23px,5.2vw,32px)}.chat.you{background:#f8e6fa;border-color:#c99dd5}
+.story{width:100%;max-width:620px;background:#fff9fe;border:1px solid #e9c6e8;border-radius:14px;padding:10px}.story select{max-width:100%;border:1px solid #dea7dc;border-radius:9px;background:#fff;color:#682980;padding:5px;font-size:14px}.rowstory{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+.softnote{font-size:11px;color:#926d98}.tinybar{font-size:12px;color:#9e429b;font-weight:850}
+@media(max-height:500px){header{min-height:47px;padding-top:4px;padding-bottom:4px}.top .back{height:33px;width:33px;font-size:20px}.brand b{font-size:19px}.brand small{font-size:10px}.track{height:4px;margin-top:4px}.card{border-radius:15px;gap:3px;padding:7px 10px}.card h2{font-size:19px}.card h1{font-size:26px}.cn{font-size:35px}.py{font-size:16px}.ru{font-size:14px}.btn{min-height:34px;padding:5px 9px;font-size:12px}.choices{gap:5px}.choices .btn{min-height:33px;font-size:13px}.rule{padding:4px 8px;font-size:16px}.sample{padding:5px 8px}.subcn{font-size:19px}.story{padding:5px}.chat{padding:7px}.illustration{width:clamp(75px,22vw,150px);height:50vh}.introcopy{gap:5px}footer{padding-top:5px;padding-bottom:calc(5px + env(safe-area-inset-bottom))}footer .btn{min-height:35px}.status{padding:4px}}
+@media(max-width:440px) and (orientation:portrait){.choices .btn{min-height:53px}.illustration{width:36vw;height:31vh}.introcopy h1{font-size:25px}.introcopy p{font-size:12px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style></head>
+<body><div id="app">
+<header><div class="top"><a class="back" href="./hsk2-life-course.html?view=map" aria-label="Ко всем урокам">‹</a><div class="brand"><b>Panda <span>Go</span></b><small>HSK 2 · Урок 4 · Моё хобби и свободное время</small></div><span class="pill" id="badge">Шаг 1/8</span></div><div class="track"><i id="progress"></i></div></header>
+<main><section class="view"><div class="card" id="stage" aria-live="polite"></div></section></main>
+<footer><button class="btn" id="prev" type="button">← Назад</button><button class="btn primary" id="next" type="button">Далее →</button></footer></div>
+<script>
+(function(){'use strict';
+const $=id=>document.getElementById(id),KEY='pg-hsk2-hobby-preview-v1';
+const WORDS=[
+ {zh:'爱好',py:'àihào',ru:'увлечение, хобби',ex:'我的爱好是听音乐。',epy:'Wǒ de àihào shì tīng yīnyuè.',eru:'Моё увлечение — слушать музыку.'},
+ {zh:'喜欢',py:'xǐhuan',ru:'нравиться, любить',ex:'我喜欢中文。',epy:'Wǒ xǐhuan Zhōngwén.',eru:'Мне нравится китайский язык.'},
+ {zh:'周末',py:'zhōumò',ru:'выходные',ex:'我周末常常跑步。',epy:'Wǒ zhōumò chángcháng pǎobù.',eru:'По выходным я часто бегаю.'},
+ {zh:'听音乐',py:'tīng yīnyuè',ru:'слушать музыку',ex:'我晚上听音乐。',epy:'Wǒ wǎnshang tīng yīnyuè.',eru:'Вечером я слушаю музыку.'},
+ {zh:'看电影',py:'kàn diànyǐng',ru:'смотреть фильмы',ex:'我周末看电影。',epy:'Wǒ zhōumò kàn diànyǐng.',eru:'По выходным я смотрю фильмы.'},
+ {zh:'看书',py:'kàn shū',ru:'читать книги',ex:'我每天晚上看书。',epy:'Wǒ měitiān wǎnshang kàn shū.',eru:'Каждый вечер я читаю книги.'},
+ {zh:'跑步',py:'pǎobù',ru:'бегать',ex:'他每天早上跑步。',epy:'Tā měitiān zǎoshang pǎobù.',eru:'Он бегает каждое утро.'},
+ {zh:'游泳',py:'yóuyǒng',ru:'плавать',ex:'她喜欢游泳。',epy:'Tā xǐhuan yóuyǒng.',eru:'Она любит плавать.'}
+];
+const RULES=[
+ {name:'喜欢 + действие',rule:'Кто + 喜欢 + что делать',zh:'我喜欢听音乐。',py:'Wǒ xǐhuan tīng yīnyuè.',ru:'Я люблю слушать музыку.',desc:'После 喜欢 можно поставить действие: 看书, 跑步, 游泳. Не нужно ставить 是.'},
+ {name:'Когда + что делаю',rule:'周末 + кто + 常常 + действие',zh:'周末我常常看电影。',py:'Zhōumò wǒ chángcháng kàn diànyǐng.',ru:'По выходным я часто смотрю фильмы.',desc:'周末 можно поставить в начале предложения. 常常 («часто») ставим перед действием.'}
+];
+const LISTEN=[
+ {zh:'我喜欢听音乐。',py:'Wǒ xǐhuan tīng yīnyuè.',ru:'Я люблю слушать музыку.',opts:['Я люблю слушать музыку.','Я люблю плавать.','Я часто бегаю.'],correct:0},
+ {zh:'我周末看电影。',py:'Wǒ zhōumò kàn diànyǐng.',ru:'По выходным я смотрю фильмы.',opts:['Я смотрю фильмы каждый день.','По выходным я смотрю фильмы.','Я читаю книги на работе.'],correct:1},
+ {zh:'你喜欢游泳吗？',py:'Nǐ xǐhuan yóuyǒng ma?',ru:'Ты любишь плавать?',opts:['Ты умеешь плавать?','Ты сейчас плаваешь?','Ты любишь плавать?'],correct:2}
+];
+const TALK=[
+ ['Панда','你有什么爱好？','Nǐ yǒu shénme àihào?','Какие у тебя увлечения?'],
+ ['Ты','我喜欢听音乐。','Wǒ xǐhuan tīng yīnyuè.','Я люблю слушать музыку.'],
+ ['Панда','你周末喜欢做什么？','Nǐ zhōumò xǐhuan zuò shénme?','Что ты любишь делать по выходным?'],
+ ['Ты','我周末常常看电影。','Wǒ zhōumò chángcháng kàn diànyǐng.','По выходным я часто смотрю фильмы.'],
+ ['Панда','你喜欢运动吗？','Nǐ xǐhuan yùndòng ma?','Тебе нравится заниматься спортом?'],
+ ['Ты','喜欢，我喜欢游泳。','Xǐhuan, wǒ xǐhuan yóuyǒng.','Да, мне нравится плавать.']
+];
+let state={step:0,word:0,quiz:0,qdone:[],qanswer:null,grammar:0,listen:0,ldone:[],lanswer:null,speak:0,spoken:[],talk:0,showPy:true,showRu:true,hobby:0,finish:false};
+try{const old=JSON.parse(localStorage.getItem(KEY)||'null');if(old&&typeof old==='object'){state=Object.assign(state,old);state.step=Math.max(0,Math.min(7,Number(state.step)||0));}}catch(e){}
+let recorder=null,chunks=[],recordStream=null,recordUrl=null,soundTimeout=null;
+function esc(s){return String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]))}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function speak(str){if(!('speechSynthesis' in window)){message('Устройство не поддерживает синтез речи.',false);return}window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(str);u.lang='zh-CN';u.rate=.82;u.pitch=1;u.volume=1;const voices=window.speechSynthesis.getVoices();u.voice=voices.find(v=>v.lang.toLowerCase().startsWith('zh-cn'))||voices.find(v=>v.lang.toLowerCase().startsWith('zh'))||null;window.speechSynthesis.speak(u)}
+function message(t,ok=true){const el=$('feedback');if(el){el.className='status '+(ok?'ok':'bad');el.textContent=t;el.hidden=false}}
+function control(name,act,cls=''){return '<button type="button" class="btn '+cls+'" data-act="'+act+'">'+name+'</button>'}
+function nav(stage){state.step=Math.max(0,Math.min(7,stage));state.qanswer=null;state.lanswer=null;stopRecord();save();render()}
+function intro(){return '<div class="flexrow"><img class="illustration" src="./assets/hsk2-lesson1-preview/intro-panda.webp" alt="Панда Panda Go" onerror="this.hidden=true"><div class="introcopy"><span class="eyebrow">🐼 HSK 2 · УРОК 4</span><h1>Моё хобби и свободное время</h1><div class="py">我的爱好 · Wǒ de àihào</div><p>Расскажешь, что любишь делать, как проводишь выходные и чем увлекаешься.</p><p class="hint">8 слов · 40 проверок · грамматика · аудирование · речь · диалог</p></div></div><div class="controls">'+control('▶ Начать урок','start','primary')+'</div>'}
+function words(){const w=WORDS[state.word];return '<div class="eyebrow">📖 Новые слова · '+(state.word+1)+'/8</div><div class="cn">'+w.zh+'</div><div class="py">'+w.py+'</div><div class="ru">'+w.ru+'</div><div class="sample"><div class="subcn">'+w.ex+'</div><div class="py" style="font-size:14px">'+w.epy+'</div><small>'+w.eru+'</small></div><div class="controls">'+control('🔊 Слушать','audio-word')+control('← Слово','word-prev')+control('Следующее →','word-next','primary')+'</div>'}
+function quizOptions(idx,mode){let field=['ru','zh','py','zh','eru'][mode];let choices=[idx,(idx+1+mode)%8,(idx+3+mode)%8,(idx+5+mode)%8];choices=[...new Set(choices)];while(choices.length<4)for(let i=0;i<8&&choices.length<4;i++)if(!choices.includes(i))choices.push(i);const offset=(idx+mode)%4;choices=[...choices.slice(offset),...choices.slice(0,offset)];return {choices:choices.map(i=>WORDS[i][field]),correct:choices.indexOf(idx)}}
+function test(){let num=state.quiz%40,mode=Math.floor(num/8),idx=num%8,w=WORDS[idx],opts=quizOptions(idx,mode);let titles=['Выбери перевод','Выбери иероглифы','Выбери правильный пиньинь','Послушай и выбери слово','Переведи предложение'];let prompt=mode===0?w.zh:mode===1?w.ru:mode===2?w.zh:mode===3?'🔊 Аудиозадание':w.ex;return '<div class="eyebrow">🧩 Проверка '+(num+1)+'/40 · '+(state.qdone||[]).length+' верно</div><h2>'+titles[mode]+'</h2><div class="'+(mode===1?'ru':'subcn')+'">'+esc(prompt)+'</div>'+(mode===3?control('🔊 Воспроизвести слово','audio-test','primary'):'')+'<div class="choices">'+opts.choices.map((o,i)=>'<button type="button" class="btn '+(state.qanswer===i?(i===opts.correct?'selected':'error'):'')+'" data-act="test-answer" data-index="'+i+'">'+esc(o)+'</button>').join('')+'</div><div class="status" id="feedback" hidden></div><div class="controls">'+control('← Проверка','test-prev')+control('Следующая →','test-next','primary')+control('↻ Заново','test-reset')+'</div><p class="hint">Каждое слово — 5 видов проверки. Повторять можно неограниченно.</p>'}
+function grammar(){let r=RULES[state.grammar];return '<div class="eyebrow">📚 Грамматика · '+(state.grammar+1)+'/2</div><h2>'+r.name+'</h2><div class="rule">'+r.rule+'</div><div class="sample"><div class="subcn">'+r.zh+'</div><div class="py">'+r.py+'</div><small>'+r.ru+'</small></div><p>'+r.desc+'</p><div class="controls">'+control('🔊 Пример','audio-rule')+control('← Правило','rule-prev')+control('Дальше →','rule-next','primary')+'</div>'}
+function listening(){let a=LISTEN[state.listen];return '<div class="eyebrow">🎧 Аудирование · '+(state.listen+1)+'/3</div><h2>Прослушай и выбери перевод</h2>'+control('🔊 Прослушать фразу','audio-listen','primary')+'<div class="choices">'+a.opts.map((o,i)=>'<button type="button" class="btn '+(state.lanswer===i?(i===a.correct?'selected':'error'):'')+'" data-act="listen-answer" data-index="'+i+'">'+esc(o)+'</button>').join('')+'</div><div class="status" id="feedback" hidden></div><div class="controls">'+control('← Фраза','listen-prev')+control('Следующая →','listen-next','primary')+'</div><p class="hint">Демо-аудио: голос устройства. Финальные MP3 носителя ещё не подключены.</p>'}
+const SPOKEN=[
+ ['我喜欢听音乐。','Wǒ xǐhuan tīng yīnyuè.','Я люблю слушать музыку.'],
+ ['周末我常常看电影。','Zhōumò wǒ chángcháng kàn diànyǐng.','По выходным я часто смотрю фильмы.'],
+ ['我喜欢游泳。','Wǒ xǐhuan yóuyǒng.','Я люблю плавать.']
+];
+function speaking(){let a=SPOKEN[state.speak];return '<div class="eyebrow">🎤 Говори сам · '+(state.speak+1)+'/3</div><div class="cn">'+a[0]+'</div><div class="py">'+a[1]+'</div><div class="ru">'+a[2]+'</div><div class="controls">'+control('🔊 Эталон (синтез)','audio-speak')+control(recorder&&recorder.state==='recording'?'■ Стоп':'🎙 Записать себя','record','primary')+control('▶ Моя запись','play-record')+'</div><div class="status" id="feedback">Запиши фразу и прослушай себя. Автоматической оценки тонов здесь нет.</div><div class="controls">'+control('← Фраза','speak-prev')+control('Следующая →','speak-next','primary')+'</div>'}
+function dialogue(){let a=TALK[state.talk];return '<div class="eyebrow">💬 Диалог · реплика '+(state.talk+1)+'/6</div><h2>'+(a[0]==='Ты'?'Твой ответ':'Вопрос Панды')+'</h2><div class="chat '+(a[0]==='Ты'?'you':'')+'"><div class="tinybar">'+(a[0]==='Ты'?'🧑 Ты':'🐼 Панда')+'</div><div class="subcn">'+a[1]+'</div>'+(state.showPy?'<div class="py">'+a[2]+'</div>':'')+(state.showRu?'<p>'+a[3]+'</p>':'')+'</div><div class="controls">'+control('🔊 Слушать','audio-talk')+control(state.showPy?'Скрыть пиньинь':'Показать пиньинь','toggle-py')+control(state.showRu?'Скрыть перевод':'Показать перевод','toggle-ru')+'</div><div class="controls">'+control('← Реплика','talk-prev')+control('Дальше →','talk-next','primary')+'</div><p class="hint">Это учебный диалог. Отдельный разговорный сценарий Panda AI подключим после проверки.</p>'}
+function results(){const a=WORDS[[3,4,5,6,7][state.hobby]],[zh,py,ru]=['','',''];let textZh='我喜欢'+a.zh+'。';let textPy='Wǒ xǐhuan '+a.py+'.';let textRu='Мне нравится '+a.ru+'.';return '<div class="eyebrow">🏆 Итог · Урок 4</div><h2>Моё хобби</h2><p>Составь свою фразу и произнеси её вслух.</p><div class="story"><div class="rowstory"><label for="hobby">Я люблю:</label><select id="hobby">'+[3,4,5,6,7].map((i,k)=>'<option value="'+k+'" '+(state.hobby===k?'selected':'')+'>'+WORDS[i].ru+'</option>').join('')+'</select></div><div class="subcn">'+textZh+'</div><div class="py">'+textPy+'</div><p>'+textRu+'</p></div><div class="minirow"><span class="pill">Слова: 8</span><span class="pill">Тесты: '+(state.qdone||[]).length+'/40</span><span class="pill">Аудирование: '+(state.ldone||[]).length+'/3</span></div><div class="controls">'+control('🔊 Слушать','audio-story')+control('📋 Копировать','copy-story')+control('↻ Повторить тесты','reset-tests')+'</div><p class="hint">Результаты сохраняются на устройстве. Носитель ещё должен проверить финальную озвучку.</p><div class="controls"><a class="btn" href="./panda-voice-pilot.html" style="text-decoration:none">🐼 Panda AI · общая практика</a></div>'}
+const screens=[intro,words,test,grammar,listening,speaking,dialogue,results];
+function render(){let st=state.step;$('stage').innerHTML=screens[st]();$('badge').textContent='Шаг '+(st+1)+'/8';$('progress').style.width=((st+1)/8*100)+'%';$('prev').textContent=st===0?'← Все уроки':'← Назад';$('next').textContent=st===7?'К началу ↻':'Далее →';save()}
+async function toggleRecording(){if(recorder&&recorder.state==='recording'){recorder.stop();return}if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder){message('Микрофон или запись недоступны в этом браузере.',false);return}try{stopRecord();recordStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}});chunks=[];recorder=new MediaRecorder(recordStream);recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};recorder.onstop=()=>{if(recordUrl)URL.revokeObjectURL(recordUrl);recordUrl=URL.createObjectURL(new Blob(chunks,{type:recorder.mimeType||'audio/webm'}));if(recordStream){recordStream.getTracks().forEach(t=>t.stop());recordStream=null}message('Запись готова. Прослушай её кнопкой «Моя запись».');render()};recorder.start();message('● Идёт запись. Произнеси фразу и нажми «Стоп».');const b=document.querySelector('[data-act="record"]');if(b)b.textContent='■ Стоп'}catch(e){message('Не удалось включить микрофон. Проверь разрешение браузера.',false)}}
+function stopRecord(){if(recorder&&recorder.state==='recording'){recorder.onstop=null;recorder.stop()}if(recordStream){recordStream.getTracks().forEach(t=>t.stop());recordStream=null}recorder=null}
+function onAction(act,index){switch(act){
+ case'start':nav(1);return;
+ case'audio-word':speak(WORDS[state.word].zh);return;
+ case'word-prev':state.word=(state.word+7)%8;break;
+ case'word-next':state.word=(state.word+1)%8;break;
+ case'audio-test':speak(WORDS[state.quiz%8].zh);return;
+ case'test-prev':state.quiz=(state.quiz+39)%40;state.qanswer=null;break;
+ case'test-next':state.quiz=(state.quiz+1)%40;state.qanswer=null;break;
+ case'test-reset':state.quiz=0;state.qdone=[];state.qanswer=null;break;
+ case'test-answer':{const mode=Math.floor(state.quiz/8),idx=state.quiz%8;const ans=quizOptions(idx,mode);state.qanswer=index;if(index===ans.correct){if(!state.qdone.includes(state.quiz))state.qdone.push(state.quiz);save();render();message('✓ Правильно! Можно повторять сколько угодно раз.');}else{save();render();message('Пока неверно. Попробуй другой вариант.',false)}return}
+ case'rule-prev':state.grammar=(state.grammar+1)%2;break;
+ case'rule-next':state.grammar=(state.grammar+1)%2;break;
+ case'audio-rule':speak(RULES[state.grammar].zh);return;
+ case'audio-listen':speak(LISTEN[state.listen].zh);return;
+ case'listen-answer':{let i=state.listen;state.lanswer=index;if(index===LISTEN[i].correct){if(!state.ldone.includes(i))state.ldone.push(i);save();render();message('✓ Верно: '+LISTEN[i].zh+' — '+LISTEN[i].ru)}else{save();render();message('Не совпало. Слушай ещё раз и попробуй.',false)}return}
+ case'listen-next':state.listen=(state.listen+1)%3;state.lanswer=null;break;
+ case'listen-prev':state.listen=(state.listen+2)%3;state.lanswer=null;break;
+ case'audio-speak':speak(SPOKEN[state.speak][0]);return;
+ case'record':toggleRecording();return;
+ case'play-record':if(!recordUrl){message('Сначала запиши свою речь.',false);return}new Audio(recordUrl).play().catch(()=>message('Не удалось воспроизвести запись.',false));return;
+ case'speak-next':state.speak=(state.speak+1)%3;break;
+ case'speak-prev':state.speak=(state.speak+2)%3;break;
+ case'audio-talk':speak(TALK[state.talk][1]);return;
+ case'talk-next':state.talk=(state.talk+1)%6;break;
+ case'talk-prev':state.talk=(state.talk+5)%6;break;
+ case'toggle-py':state.showPy=!state.showPy;break;
+ case'toggle-ru':state.showRu=!state.showRu;break;
+ case'audio-story':speak('我喜欢'+WORDS[[3,4,5,6,7][state.hobby]].zh+'。');return;
+ case'copy-story':{const w=WORDS[[3,4,5,6,7][state.hobby]];if(navigator.clipboard?.writeText)navigator.clipboard.writeText('我喜欢'+w.zh+'。').then(()=>message('Фраза скопирована.')).catch(()=>message('Не удалось скопировать.',false));return}
+ case'reset-tests':state.quiz=0;state.qdone=[];nav(2);return;
+ default:return;
+ }save();render()}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.disabled)return;onAction(b.dataset.act,Number(b.dataset.index))});
+document.addEventListener('change',e=>{if(e.target.id==='hobby'){state.hobby=Number(e.target.value)||0;save();render()}});
+$('prev').addEventListener('click',()=>state.step===0?location.assign('./hsk2-life-course.html?view=map'):nav(state.step-1));
+$('next').addEventListener('click',()=>nav(state.step===7?0:state.step+1));
+window.addEventListener('pagehide',()=>{stopRecord();if(recordUrl)URL.revokeObjectURL(recordUrl);window.speechSynthesis?.cancel()});
+render();
+})();
+</script></body></html>
