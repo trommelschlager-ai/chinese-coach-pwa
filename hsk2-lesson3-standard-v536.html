@@ -1348,7 +1348,8 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 </div>
 <!-- New recordings are not installed: the previous lesson's voice files are deliberately not reused. -->
 <link rel="stylesheet" href="./assets/hsk2-lesson3-tone-meter-v2.css?v=525">
-<script src="./assets/hsk2-lesson3-tone-meter-v5.js?v=529"></script>
+<script src="./assets/hsk2-lesson3-voice/voice-map.js?v=1"></script>
+<script src="./assets/hsk2-lesson3-tone-meter-v6.js?v=1"></script>
 <script>
 'use strict';
 
@@ -1384,7 +1385,8 @@ const normalize = text => String(text).replace(/[\p{P}\s]/gu,'');
 // No audio until it is recorded with the approved Panda Go LuvVoice speaker.
 // Reuse only the approved recording of the identical sentence; no mismatched voices.
 const clips = new Map([
- ['我在公司工作。','./assets/hsk2-about-me/voice-luvvoice-20261120/about10.mp3']
+ ['我在公司工作。','./assets/hsk2-about-me/voice-luvvoice-20261120/about10.mp3'],
+ ...(Array.isArray(window.PandaLesson3Voice) ? window.PandaLesson3Voice : [])
 ].map(([hanzi,url])=>[normalize(hanzi),url]));
 const listening = words.map((w,i)=>[w.py,i]);
 const profileSentences = [...phrases];
@@ -1601,6 +1603,9 @@ const pitchRow = values => '<div class="tonemarks">' + values.map(v => '<span cl
 const translate = item => '<span class="py">' + item[1] + '</span><span class="ru">' + item[2] + '</span>';
 const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' good' : '') + '" role="status">' + escape(feedback) + '</div>';
 
+function optionalAudio(text, icon = speaker) {
+  return clips.has(normalize(text)) ? audioButton(text,icon) : '';
+}
 function audioButton(text, icon = speaker, blind = false) {
   const available = clips.has(normalize(text));
   const label = available ? (blind ? 'Прослушать запись' : 'Прослушать ' + text)
@@ -1854,11 +1859,11 @@ function question() {
     }
     case 3:
       content = '<div class="quiz-word" lang="zh-Hans">' + word.fill + '</div><p class="hint">' + word.hint + '</p>' +
-        (done ? '' : choices(i,'zh',i+3,false));
+        (done ? optionalAudio(phrases[i][0],playIcon) : choices(i,'zh',i+3,false));
       break;
     case 4:
       content = '<div class="quiz-word" lang="zh-Hans">' + word.zh + '</div><p class="py">' + word.py + '</p>' +
-        (done ? '' : '<div class="controls">' + micButton('quiz','Произнести ' + word.zh) +
+        (done ? '' : '<div class="controls">' + optionalAudio(word.zh,playIcon) + micButton('quiz','Произнести ' + word.zh) +
           (recognitionAvailable() && state.practiceMode !== 'self'
             ? '<button type="button" class="soft self-quiz" data-practice-mode="self">Нет микрофона?</button>'
             : '<button type="button" class="soft self-quiz" data-self-quiz="1">✓ Повторил по пиньиню</button>') + '</div>') +
@@ -1898,7 +1903,7 @@ function grammar() {
   '<article class="about-grammar-example"><div class="about-grammar-example-copy">' +
    hanzi('我在公司工作。') + translate(phrases[0]) + '</div>' + audioButton(phrases[0][0],playIcon) + '</article>' +
   '<div class="l3-extra-rule"><b lang="zh-Hans">会 + глагол</b><span class="py">huì — уметь</span>' +
-   '<span>我会说中文。 — Я умею говорить по-китайски.<br>我不会说中文。 — Я не умею говорить по-китайски. Перед 会 слово 不 произносится bú.</span></div>' +
+   '<span>我会说中文。 — Я умею говорить по-китайски. ' + optionalAudio('我会说中文。',playIcon) + '<br>我不会说中文。 — Я не умею говорить по-китайски. ' + optionalAudio('我不会说中文。',playIcon) + ' Перед 会 слово 不 произносится bú.</span></div>' +
   '<h2 class="builder-title about-grammar-build-title">Составь предложение</h2>' +
   '<div class="tokens about-grammar-tokens">' + tokenButtons([2,0,4,3,1],state.grammar,'gram') + '</div>' +
   '<div class="answer about-grammar-answer" lang="zh-Hans" data-placeholder="Нажимай слова по порядку">' + current + '</div>' +
@@ -1922,7 +1927,7 @@ function day() {
        storyImage(i) + '<span class="cn" lang="zh-Hans">'+phrases[i][0]+'</span>' +
        '<span class="py">'+phrases[i][1]+'</span><span class="ru">'+phrases[i][2]+'</span>' +
        (position>=0?'<span class="position">'+(position+1)+'</span>':'') +
-     '</button></article>';
+     '</button>' + (clips.has(normalize(phrases[i][0])) ? '<div class="approved-story-audio">'+audioButton(phrases[i][0],playIcon)+'</div>' : '') + '</article>';
    }).join('')+'</div>' +
   '<div class="approved-story-prompt"><span>Составь набор из 6 примеров</span>' +
    '<small>'+state.dayOrder.length+' из 6 · компания → школа → коллега → одноклассница → компьютер → китайский</small></div>' +
@@ -1990,7 +1995,7 @@ function tones() {
       i=>'<img class="hero-art" src="'+A[i]+'" alt="Иллюстрация слова">',
       (title,caption)=>'<h2>'+title+'</h2><p class="hint">'+caption+'</p>',
       content=>'<section class="panel">'+content+'</section>',
-      '<p class="hint">Аудио этого слова пока не утверждено.</p>') || '') +
+      '',word=>optionalAudio(word,playIcon)) || '') +
     '</details>';
 }
 
@@ -2065,7 +2070,7 @@ function personalStory() {
   '<div class="l3-work-choices">' +
    options.map((o,i)=>'<button type="button" class="'+(chosen===o?'primary':'soft')+
     '" data-work-choice="'+i+'">'+escape(o[2])+'</button>').join('')+
-  '</div><div class="l3-work-line">' + hanzi(chosen[0]) + translate(chosen) + '</div>' +
+  '</div><div class="l3-work-line">' + hanzi(chosen[0]) + translate(chosen) + optionalAudio(chosen[0],playIcon) + '</div>' +
   '<button type="button" class="soft l3-work-read" data-work-read="1">' +
    (state.workRead?'✓ Я произнёс эту фразу':'🎙 Произнеси фразу сам')+'</button>' +
   '<p class="hint">Отметка самостоятельная. Правильность тонов не определяется автоматически.</p></section>';
