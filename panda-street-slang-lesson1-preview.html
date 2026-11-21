@@ -281,6 +281,17 @@
  .page:not([data-screen="intro"]):not([data-step="intro"]) .top{min-height:54px;padding-top:4px;padding-bottom:4px}
  .page:not([data-screen="intro"]):not([data-step="intro"]) .foot .btn{min-height:48px}
 }
+
+/* Tone audio + speed controls (2026-11-21): additive; preserves existing layout */
+.street-tones .tone{gap:6px}
+.street-tone-play{width:100%;min-height:37px;margin-top:4px;padding:6px 5px;border-radius:12px;border:1.5px solid #dea0ff;background:linear-gradient(135deg,#783dc0,#443ba3);color:white;font-size:clamp(11px,3vw,13px);font-weight:850;box-shadow:0 3px 9px #09031a80;touch-action:manipulation}
+.street-tone-play:disabled{background:#362b4a;color:#bcb0cb;border-color:#6d557f;opacity:.9;box-shadow:none;cursor:not-allowed}
+.street-speed{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;margin:3px 0 14px;padding:9px 7px;background:linear-gradient(135deg,#312341,#222844);border:1px solid #866bb4;border-radius:15px}
+.street-speed strong{font-size:13px;color:#ffe0a2;margin-right:auto;white-space:nowrap}
+.street-speed button{min-width:43px;min-height:39px;padding:3px 8px;border-radius:12px;border:1.5px solid #ae8ccc;background:#392b56;color:white;font-size:23px;font-weight:900;touch-action:manipulation}
+.street-speed button:disabled{opacity:.4;cursor:not-allowed}
+.street-speed output{min-width:65px;text-align:center;color:#fff1b8;font-weight:900;font-size:19px;font-variant-numeric:tabular-nums}
+@media(max-height:740px){.street-tones .tone{min-height:151px}.street-tone-play{min-height:34px}}
 </style></head><body><main class="page"><header class="top"><a class="back" href="./panda-street-hsk1-map.html" aria-label="К главной странице Panda Street">‹</a><div class="brand"><b>PANDA STREET</b><small>STREET 1 · Живой китайский · Урок 1</small></div><div class="num" id="current">01 / 16</div></header><div class="track" id="pg-progress" role="progressbar" aria-label="Прогресс урока" aria-valuemin="0" aria-valuemax="16" aria-valuenow="1"><i id="track"></i></div><section id="screen" class="viewport" aria-live="polite"></section><footer class="foot"><button type="button" id="prev" class="btn ghost">← Назад</button><button type="button" id="next" class="btn primary">Дальше →</button></footer><div id="notify" role="status" style="position:absolute;left:10px;right:10px;bottom:84px;background:#25213df2;color:#fff3d3;border:1px solid #ba98c9;border-radius:13px;padding:11px;z-index:8;font-weight:800;font-size:12px;text-align:center" hidden></div></main><script>(() => {'use strict';
 const STAGES=16;
 const words=[
@@ -302,10 +313,62 @@ try{let v=Number(localStorage.getItem('panda-street-slang-lesson1-step'));if(Num
 try{if(/(?:\?|&)welcome=1(?:&|$)/.test(location.search||''))index=0}catch(_){ }
 // Panda Street HSK1, lesson 1 only: pre-recorded Luvvoice male voice.
 // Each cue is an independently playable region of one short audio asset.
-// Until the matching asset is present, preserve the previous device TTS fallback.
+// If an approved recording is missing, report it; never fall back to device TTS.
 const STREET_VOICE_FILE='./assets/panda-street-lesson1-luvvoice.m4a';
 // First Street lesson only: slower, natural-pitch speech with a clean audio tail.
 const STREET_VOICE_RATE=1.0;
+const STREET_SPEEDS=[0.85,1.00,1.15];
+const STREET_SPEED_STORAGE='panda-street-lesson1-speed-index-v1';
+let streetSpeedIndex=1;
+try{const savedSpeed=Number(localStorage.getItem(STREET_SPEED_STORAGE));if(Number.isInteger(savedSpeed)&&savedSpeed>=0&&savedSpeed<STREET_SPEEDS.length)streetSpeedIndex=savedSpeed}catch(_){}
+function applyStreetSpeed(media){
+ if(!media)return;
+ media.playbackRate=STREET_SPEEDS[streetSpeedIndex];
+ if('preservesPitch' in media)media.preservesPitch=true;
+ if('webkitPreservesPitch' in media)media.webkitPreservesPitch=true;
+}
+function updateStreetSpeedUI(){
+ const out=document.getElementById('street-speed-value');
+ if(out)out.textContent=STREET_SPEEDS[streetSpeedIndex].toFixed(2)+'×';
+ const minus=document.querySelector('[data-speed="-1"]');
+ const plus=document.querySelector('[data-speed="1"]');
+ if(minus)minus.disabled=streetSpeedIndex===0;
+ if(plus)plus.disabled=streetSpeedIndex===STREET_SPEEDS.length-1;
+}
+function changeStreetSpeed(delta){
+ streetSpeedIndex=Math.max(0,Math.min(STREET_SPEEDS.length-1,streetSpeedIndex+delta));
+ try{localStorage.setItem(STREET_SPEED_STORAGE,String(streetSpeedIndex))}catch(_){}
+ applyStreetSpeed(streetVoice);applyStreetSpeed(streetTonePlayer);updateStreetSpeedUI();
+}
+const STREET_TONE_SOURCES={1:'./assets/panda-street-tones/shi1.mp3',2:'./assets/panda-street-tones/shi2.mp3',3:'./assets/panda-street-tones/shi3.mp3',4:'./assets/panda-street-tones/shi4.mp3'};
+const streetToneAvailable={1:false,2:false,3:false,4:false};
+let streetTonePlayer=null;
+function updateToneButtons(){
+ document.querySelectorAll('[data-tone]').forEach(button=>{
+  const key=Number(button.dataset.tone),ready=streetToneAvailable[key]===true;
+  button.disabled=!ready;
+  button.textContent=ready?'▶ Слушать':'🔇 Нет MP3';
+  button.title=ready?'Прослушать тон '+key:'Для тона '+key+' пока нет утверждённой записи';
+  button.setAttribute('aria-label',ready?'Прослушать тон '+key:'Запись тона '+key+' пока недоступна');
+ });
+}
+function checkStreetToneFiles(){
+ Object.entries(STREET_TONE_SOURCES).forEach(async ([tone,path])=>{
+  try{const response=await fetch(path,{method:'HEAD',cache:'no-store'});streetToneAvailable[tone]=response.ok}
+  catch(_){streetToneAvailable[tone]=false}
+  updateToneButtons();
+ });
+}
+async function playStreetTone(tone){
+ if(!streetToneAvailable[tone]){notify('Для этого тона ещё нет отдельного проверенного MP3.');return}
+ ++streetVoiceSeq;
+ if(streetVoice){streetVoice.pause();streetVoice.volume=1}
+ if(!streetTonePlayer)streetTonePlayer=new Audio();
+ streetTonePlayer.pause();streetTonePlayer.src=STREET_TONE_SOURCES[tone];streetTonePlayer.currentTime=0;
+ applyStreetSpeed(streetTonePlayer);
+ streetTonePlayer.onerror=()=>notify('Не удалось загрузить аудиофайл этого тона.');
+ try{await streetTonePlayer.play()}catch(_){notify('Запись тона не воспроизведена. Голос телефона не включается.')}
+}
 const STREET_FADE_IN=.035;
 const STREET_FADE_OUT=.125;
 const STREET_TAIL_GUARD=.050;
@@ -330,26 +393,15 @@ let streetVoice,streetVoiceUnavailable=false,streetVoiceSeq=0;
 try{
  streetVoice=new Audio(STREET_VOICE_FILE);
  streetVoice.preload='auto';
- streetVoice.playbackRate=STREET_VOICE_RATE;
+ applyStreetSpeed(streetVoice);
  if('preservesPitch' in streetVoice)streetVoice.preservesPitch=true;
  streetVoice.addEventListener('error',()=>{streetVoiceUnavailable=true});
  streetVoice.load();
 }catch(e){streetVoiceUnavailable=true}
-const sayBrowser=(t)=>{
- const ss=window.speechSynthesis;
- if(!ss){notify('Браузер не поддерживает голосовой режим');return}
- let utter=new SpeechSynthesisUtterance(t);
- utter.lang='zh-CN'; utter.rate=.75; utter.pitch=1;
- const voices=ss.getVoices();
- const match=voices.find(v=>/^zh(-CN)?$/i.test(v.lang))||voices.find(v=>/zh|mandarin|chinese/i.test(v.lang+' '+v.name));
- if(!match){notify('Китайский голос не найден. Проверь аудиофайл урока.');return}
- utter.voice=match; ss.cancel(); ss.speak(utter);
- notify('Запасная озвучка телефона · файл Luvvoice недоступен');
-};
 const say=t=>{
  const token=++streetVoiceSeq;
  if(streetVoice){streetVoice.pause();streetVoice.volume=1}
- if(window.speechSynthesis)window.speechSynthesis.cancel();
+ if(streetTonePlayer)streetTonePlayer.pause();
  const cue=STREET_VOICE_CUES[normalizeStreetText(t)];
  if(!cue||streetVoiceUnavailable||!streetVoice){notify('Фраза пока без качественной записи. Запасной голос телефона отключён.');return}
  const fallback=()=>{
@@ -363,7 +415,7 @@ const say=t=>{
   if(token!==streetVoiceSeq)return;
   try{
    streetVoice.pause();
-   streetVoice.playbackRate=STREET_VOICE_RATE;
+   applyStreetSpeed(streetVoice);
    if('preservesPitch' in streetVoice)streetVoice.preservesPitch=true;
    streetVoice.currentTime=cue[0];
    streetVoice.volume=0;
@@ -405,13 +457,13 @@ function render(){let body='';const labels=[
 case 1: body=heading('Фразы · 1/3','Вместо учебника — 哈喽','Сразу начинаем с дружеского приветствия.')+wordCard(0);break;
  case 2: body=heading('Фразы · 2/3','Ещё короче: 嗨','Один слог — и ты уже поздоровался.')+wordCard(1);break;
  case 3: body=heading('Фразы · 3/3','Утром: 早啊','Небольшая фраза, которую удобно говорить друзьям.')+wordCard(2);break;
- case 4: body=heading('Произношение','Тоны решают всё','Важно различать все четыре тона.')+`<div class="street-tones"><span class="label">ЧЕТЫРЕ ОСНОВНЫХ ТОНА</span><div class="tonegrid"><div class="tone"><b>shī</b>${toneSvg('M12 18 L98 18')}<small>1 · ровный</small></div><div class="tone"><b>shí</b>${toneSvg('M12 37 L98 10')}<small>2 · вверх</small></div><div class="tone"><b>shǐ</b>${toneSvg('M12 13 Q50 52 98 16')}<small>3 · вниз и вверх</small></div><div class="tone"><b>shì</b>${toneSvg('M12 10 L98 38')}<small>4 · вниз</small></div></div><div class="street-tone-note"><b>shī</b> — 诗 (стихотворение) · <b>shí</b> — 十 (десять)<br><b>shǐ</b> — 始 (начинать) · <b>shì</b> — 是 (быть).<br>Один слог с разными тонами — разные слова. Знаки тонов в пиньине важны.</div></div>`;break;
+ case 4: body=heading('Произношение','Тоны решают всё','Важно различать все четыре тона.')+`<div class="street-tones"><span class="label">ЧЕТЫРЕ ОСНОВНЫХ ТОНА</span><div class="tonegrid"><div class="tone"><b>shī</b>${toneSvg('M12 18 L98 18')}<small>1 · ровный</small><button type="button" class="street-tone-play" data-tone="1" disabled title="Запись пока не загружена">🔇 Нет MP3</button></div><div class="tone"><b>shí</b>${toneSvg('M12 37 L98 10')}<small>2 · вверх</small><button type="button" class="street-tone-play" data-tone="2" disabled title="Запись пока не загружена">🔇 Нет MP3</button></div><div class="tone"><b>shǐ</b>${toneSvg('M12 13 Q50 52 98 16')}<small>3 · вниз и вверх</small><button type="button" class="street-tone-play" data-tone="3" disabled title="Запись пока не загружена">🔇 Нет MP3</button></div><div class="tone"><b>shì</b>${toneSvg('M12 10 L98 38')}<small>4 · вниз</small><button type="button" class="street-tone-play" data-tone="4" disabled title="Запись пока не загружена">🔇 Нет MP3</button></div></div><div class="street-tone-note"><b>shī</b> — 诗 (стихотворение) · <b>shí</b> — 十 (десять)<br><b>shǐ</b> — 始 (начинать) · <b>shì</b> — 是 (быть).<br>Один слог с разными тонами — разные слова. Знаки тонов в пиньине важны.</div></div>`;break;
  case 5: body=heading('Спроси по-настоящему','最近怎么样？','Что сказать человеку, которого давно не видел?')+wordCard(3);break;
  case 6: body=heading('Первый ответ','还行吧。','Ответ спокойный, не слишком восторженный.')+wordCard(4);break;
  case 7: body=heading('Разговорная грамматика','Как работают 吧 и 呢','Это короткие, но очень полезные частицы.')+`<div class="sheet"><span class="label">ПРАВИЛО №1</span><div class="hanzi" style="font-size:44px">还行<span style="color:#f6cd77">吧</span></div><div class="ru">«Нормально вроде»</div><p class="detail">吧 (ba) смягчает ответ: звучит менее категорично.</p><div class="hanzi" style="font-size:42px;margin-top:16px">你<span style="color:#f6cd77">呢</span>？</div><div class="ru">«А ты?»</div><p class="detail">呢 (ne) возвращает вопрос собеседнику.</p><div class="note">Обе частицы обычно произносятся нейтральным тоном. Грубый сленг не нужен, чтобы звучать естественно.</div>${audio('还行吧。你呢？')}</div>`;break;
  case 8: body=heading('Второй ответ','挺好的。','Теперь умеешь отвечать теплее.')+wordCard(5)+`<div class="sheet"><div class="label">ДОБАВЬ «А ТЫ?»</div><div class="hanzi" style="font-size:42px">你呢？</div><div class="py">Nǐ ne?</div><div class="ru">А ты?</div>${audio('你呢？')}</div>`;break;
  case 9: body=heading('Практика · 1/3','Что означает 还行吧？','Не переводим по одному иероглифу — понимаем живой смысл.')+quiz(9,'还行吧', ['Я немного занят','Да нормально вроде','Пока!','Как тебя зовут?'],1,'Эта фраза звучит сдержанно: не обязательно «отлично».');break;
- case 10: body=heading('Живой диалог','Как общаются знакомые','Послушай реплики и повтори обе стороны.')+`<div class="sheet"><span class="label">МИНИ-ДИАЛОГ · 4 РЕПЛИКИ</span>${bubble('Панда','哈喽！最近怎么样？','Hālou! Zuìjìn zěnmeyàng?','Привет! Как дела?')}${bubble('Ты','还行吧，你呢？','Hái xíng ba, nǐ ne?','Да нормально вроде, а ты?',true)}${bubble('Панда','挺好的！','Tǐng hǎo de!','Вполне хорошо!')}${bubble('Ты','那就好！','Nà jiù hǎo!','Ну и отлично!',true)}</div>`;break;
+ case 10: body=heading('Живой диалог','Как общаются знакомые','Послушай реплики и повтори обе стороны.')+`<div class="sheet"><span class="label">МИНИ-ДИАЛОГ · 4 РЕПЛИКИ</span><div class="street-speed" aria-label="Скорость аудио"><strong>Скорость</strong><button type="button" data-speed="-1" aria-label="Медленнее">−</button><output id="street-speed-value">1.00×</output><button type="button" data-speed="1" aria-label="Быстрее">+</button></div>${bubble('Панда','哈喽！最近怎么样？','Hālou! Zuìjìn zěnmeyàng?','Привет! Как дела?')}${bubble('Ты','还行吧，你呢？','Hái xíng ba, nǐ ne?','Да нормально вроде, а ты?',true)}${bubble('Панда','挺好的！','Tǐng hǎo de!','Вполне хорошо!')}${bubble('Ты','那就好！','Nà jiù hǎo!','Ну и отлично!',true)}</div>`;break;
  case 11: body=heading('Практика · 2/3','Собери выражение','Нажми элементы в правильном порядке.')+`<div class="sheet"><span class="label">«ДА НОРМАЛЬНО ВРОДЕ»</span><div class="buildarea" id="built">${build.length?build.map((x,i)=>`<button class="token selected" data-remove="${i}">${x}</button>`).join(''):'<span class="muted">Выбери элементы ниже</span>'}</div><div class="buildchoices">${['吧','还','行'].filter(x=>!build.includes(x)).map(x=>`<button class="token" data-add="${x}">${x}</button>`).join('')}</div><button id="checkbuild" class="btn primary" style="width:100%;margin-top:7px">Проверить</button><div id="buildstatus" class="status"></div></div>`;break;
  case 12: body=heading('Нюансы','没事 — не всегда «Как дела?»','Контекст важен больше дословного перевода.')+wordCard(8)+quiz(12,'Кто-то извинился за случайный толчок. Ты отвечаешь…',['没事！','最近怎么样？','早啊！','拜拜！'],0,'没事！ здесь означает «Ничего страшного!».');break;
  case 13: body=heading('Прощание','拜拜！','Так ты можешь закончить разговор с приятелем.')+wordCard(7)+`<div class="sheet"><div class="label">ЕЩЁ ОДНА ФРАЗА НА ПОТОМ</div><div class="hanzi" style="font-size:44px">改天聊！</div><div class="py">Gǎitiān liáo!</div><div class="ru">Поболтаем в другой день!</div>${audio('改天聊！')}</div>`;break;
@@ -420,6 +472,8 @@ case 1: body=heading('Фразы · 1/3','Вместо учебника — 哈�
  }
  document.querySelector('.page').dataset.screen=index===0?'intro':index===4?'tones':'standard';
  $('screen').innerHTML=body;
+ updateStreetSpeedUI();
+ updateToneButtons();
  $('current').textContent=String(index+1).padStart(2,'0')+' / '+STAGES;
  $('track').style.width=(100*(index+1)/STAGES)+'%';
  $('pg-progress').setAttribute('aria-valuenow',index+1);
@@ -432,6 +486,8 @@ $('next').onclick=()=>{if(index===15){index=0;answered={};build=[]}else index++;
 $('prev').onclick=()=>{index=Math.max(0,index-1);render()};
 $('screen').addEventListener('click',e=>{
 const b=e.target.closest('button');if(!b)return;
+if(b.hasAttribute('data-speed')){changeStreetSpeed(Number(b.dataset.speed));return}
+if(b.hasAttribute('data-tone')){playStreetTone(Number(b.dataset.tone));return}
 if(b.hasAttribute('data-say')){say(b.dataset.say);return}
 if(b.hasAttribute('data-quiz')){const [n,i]=b.dataset.quiz.split(':').map(Number);answered[n]=i;render();return}
 if(b.hasAttribute('data-add')){const x=b.dataset.add;if(!build.includes(x))build.push(x);render();return}
@@ -442,5 +498,6 @@ if(b.id==='repeatvoice'){say('哈喽！最近怎么样？');return}
 if(b.id==='again'){index=0;build=[];answered={};render();return}
 if(b.id==='recognize'){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){$('recognized').textContent='На этом устройстве нет браузерного распознавания речи. Можно просто повторить фразу вслух.';return}let rec=new SR();rec.lang='zh-CN';rec.interimResults=false;rec.continuous=false;rec.onresult=e=>{$('recognized').textContent='Распознано: '+e.results[0][0].transcript+' · Это текстовая проверка, не анализ тонов.'};rec.onerror=e=>{$('recognized').textContent='Микрофон: '+e.error};try{rec.start();$('recognized').textContent='Слушаю китайскую речь…'}catch(e){$('recognized').textContent='Не удалось включить микрофон: '+e.message}return}
 });
+checkStreetToneFiles();
 render();
 })();</script></body></html>
