@@ -30,7 +30,7 @@ test('vocabulary, fallback layout and story images match the four targeted fixes
   assert(!html.includes('practice-fallback-note">'));
   assert(html.includes('tone-tabs panel'));
   assert(html.includes('tone-meter-v5.js'));
-  assert(html.includes('30 мини-тестов'));
+  assert(html.includes('const courseQuiz = words.flatMap'));
 });
 
 test('both versions remain valid JavaScript and no lesson 1 audio words were substituted',()=>{
