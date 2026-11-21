@@ -1273,7 +1273,9 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 }
 .hobby-cover-chapter{inset:8.7% 33.45% auto;height:3.3%;display:grid;place-items:center;background:linear-gradient(#fff7ff,#f5dcf2);border-radius:999px;font-size:3.8cqw}
 .hobby-cover-title{left:34%;top:12.35%;width:40%;height:15.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(135deg,#fff1fd,#f0d2fa);border-radius:3cqw}
-.hobby-cover-title h1{margin:0 0 .6cqw;font-size:5.3cqw;line-height:1.04}
+.hobby-cover-title{clip-path:polygon(0 0,100% 0,100% 100%,25% 100%,25% 74%,17% 60%,17% 35%,0 31%);border-radius:1.4cqw}
+.hobby-cover-title h1{margin:0 0 .65cqw;font-size:4.3cqw;line-height:1.06;white-space:nowrap}
+.hobby-cover-title b,.hobby-cover-title span{margin-left:18%}
 .hobby-cover-title b{font-size:6.4cqw}
 .hobby-cover-title span{font-size:3.45cqw}
 .hobby-cover-summary{left:6.2%;top:46.1%;width:87.6%;height:5.4%;display:grid;place-items:center;background:linear-gradient(#fffaff,#fff2f8);border-radius:2.5cqw;font-size:3.45cqw}
@@ -1281,12 +1283,19 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 .hobby-cover-count>div{display:flex;flex-direction:column;align-items:center;justify-content:center}
 .hobby-cover-count>div+div{border-left:1px solid #dcb4dc}
 .hobby-cover-count b{display:block;color:#8a209d;font-size:8cqw}
+.hobby-cover-story-icon{position:absolute;left:19%;top:64.15%;width:9.4%;height:3.1%;display:grid;place-items:center;background:#f6dafa;color:#610e77;font-size:3.2cqw;font-weight:800;border-radius:.6cqw}
 .hobby-cover-story{left:6.5%;top:67.8%;width:28%;height:2.6%;display:grid;place-items:center;background:#fff5fc;font-size:2.8cqw}
 #app[data-view="5"] #pg433 .hobby-answer-list {display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%;gap:9px!important}
 #app[data-view="5"] #pg433 .hobby-answer-list .approved-story-choice{display:grid;grid-template-columns:76px minmax(0,1fr);text-align:left;column-gap:12px;padding-right:48px}
 #app[data-view="5"] #pg433 .hobby-answer-list .about-story-photo{grid-row:1 / span 3;width:76px;height:76px;margin:0}
 #app[data-view="5"] #pg433 .about-personal select{display:block;width:100%;margin:.4em 0}
 #app[data-view="7"] #pg433 .dialogue .choice-grid{grid-template-columns:minmax(0,1fr)}
+.course-layout #app[data-view="2"] #pg433 .word-list.about-myday-wordlist{
+  flex:0 0 auto!important;grid-template-rows:repeat(8,minmax(calc(clamp(58px,9dvh,87px) + 15px),auto))!important
+}
+#app[data-view="5"] #pg433 .hobby-answer-list .approved-story-choice{
+  grid-template-columns:76px minmax(0,1fr)!important
+}
 #app #pg433 .quiz-word{overflow-wrap:anywhere}
 </style>
 </head>
@@ -1315,11 +1324,11 @@ const words=[
  {zh:'爱好',py:'àihào',ru:'увлечение, хобби',tones:[4,4],ex:'我的爱好是听音乐。',p:'Wǒ de àihào shì tīng yīnyuè.',r:'Моё хобби — слушать музыку.',fill:'我的____是听音乐。'},
  {zh:'喜欢',py:'xǐhuan',ru:'нравится, любить',tones:[3,0],ex:'我喜欢看书。',p:'Wǒ xǐhuan kàn shū.',r:'Я люблю читать.',fill:'我____看书。'},
  {zh:'周末',py:'zhōumò',ru:'выходные',tones:[1,4],ex:'我周末常常跑步。',p:'Wǒ zhōumò chángcháng pǎobù.',r:'По выходным я часто бегаю.',fill:'我____常常跑步。'},
- {zh:'听音乐',py:'tīng yīnyuè',ru:'слушать музыку',tones:[1,1,4],ex:'我喜欢听音乐。',p:'Wǒ xǐhuan tīng yīnyuè.',r:'Я люблю слушать музыку.',fill:'我喜欢____，也喜欢唱歌。',hint:'Я люблю слушать музыку, а ещё люблю петь.'},
+ {zh:'听音乐',py:'tīng yīnyuè',ru:'слушать музыку',tones:[1,1,4],ex:'我喜欢听音乐。',p:'Wǒ xǐhuan tīng yīnyuè.',r:'Я люблю слушать музыку.',fill:'我喜欢____。'},
  {zh:'看电影',py:'kàn diànyǐng',ru:'смотреть фильмы',tones:[4,4,3],ex:'周末我常常看电影。',p:'Zhōumò wǒ chángcháng kàn diànyǐng.',r:'По выходным я часто смотрю фильмы.',fill:'周末我常常____。'},
  {zh:'看书',py:'kàn shū',ru:'читать книги',tones:[4,1],ex:'我每天晚上看书。',p:'Wǒ měitiān wǎnshang kàn shū.',r:'Каждый вечер я читаю книги.',fill:'我每天晚上____。'},
  {zh:'跑步',py:'pǎobù',ru:'бегать',tones:[3,4],ex:'我周末喜欢跑步。',p:'Wǒ zhōumò xǐhuan pǎobù.',r:'По выходным я люблю бегать.',fill:'我周末喜欢____。'},
- {zh:'游泳',py:'yóuyǒng',ru:'плавать',tones:[2,3],ex:'她喜欢游泳。',p:'Tā xǐhuan yóuyǒng.',r:'Она любит плавать.',fill:'她喜欢____，每周都去游泳馆。',hint:'Она любит плавать и каждую неделю ходит в бассейн.'}
+ {zh:'游泳',py:'yóuyǒng',ru:'плавать',tones:[2,3],ex:'她喜欢游泳。',p:'Tā xǐhuan yóuyǒng.',r:'Она любит плавать.',fill:'她喜欢____。'}
 ];
 const OPTIONS=[
  ['我喜欢听音乐。','Wǒ xǐhuan tīng yīnyuè.','Я люблю слушать музыку.'],
@@ -1692,10 +1701,10 @@ function intro() {
     '<img class="about-approved-cover-image" src="./assets/hsk2-about-me/cover-about-me-approved-layout-v5.avif?v=20261120v5" width="905" height="1737" alt="" fetchpriority="high" draggable="false">'+
     '<a class="about-approved-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>'+
     '<div class="hobby-cover-chapter">HSK 2 · УРОК 4</div>'+
-    '<div class="hobby-cover-title"><h1>Моё хобби<br>и свободное время</h1><b lang="zh-Hans">我的爱好</b><span>Wǒ de àihào</span></div>'+
+    '<div class="hobby-cover-title"><h1>Моё хобби и<br>свободное время</h1><b lang="zh-Hans">我的爱好</b><span>Wǒ de àihào</span></div>'+
     '<div class="hobby-cover-summary">Расскажи, чем любишь заниматься<br>в свободное время и по выходным.</div>'+
     '<div class="hobby-cover-count"><div><b>8</b>новых выражений</div><div><b>40</b>мини-тестов</div><div><b lang="zh-Hans">喜欢</b>грамматика</div></div>'+
-    '<div class="hobby-cover-story">рассказ о хобби</div>'+
+    '<div class="hobby-cover-story-icon" lang="zh-Hans">爱好</div><div class="hobby-cover-story">рассказ о хобби</div>'+
     '<button class="about-approved-cover-start" type="button" data-step="2" aria-label="Начать урок Моё хобби"></button>'+
     '</div></section>';
 }
