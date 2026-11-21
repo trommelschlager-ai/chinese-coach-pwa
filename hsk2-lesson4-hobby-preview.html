@@ -1234,167 +1234,114 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
  #app #pg433 .pg2-rehearsal-steps button{font-size:16px;min-height:45px}
 }
 
-/* Lesson 4 uses its own 3D photos in the original rose-and-lilac cover composition. */
+/* Match the "Мой день" cover using its artwork and live lesson labels. */
 .course-layout #app[data-view="1"] #pg433 .pg433-content {
   overflow-y:auto!important;
 }
-.course-layout #app #pg433 .pg433-header::before {
-  background: url("./assets/hsk2-lesson4-hobby-3d/garden.webp") right top / 105px auto no-repeat;
-}
-#app #pg433 .hobby-cover {
-  container-type:inline-size;
-  min-height:100%;
-  width:100%;
-  margin-inline:auto;
-  color:#351050;
-  text-align:center;
-  background:linear-gradient(#f4daf9,#f9e5fd 58%,#edccef);
-}
-.hobby-cover-header {
-  display:flex;
-  align-items:center;
-  text-align:left;
-  gap:2.4cqw;
-  margin-inline:8.5%;
-  padding:2cqw 0 1.8cqw;
-  border-bottom:clamp(3px,1.2cqw,6px) solid #c184dd;
-}
-#app #pg433 .hobby-cover-header .about-premium-photo {
-  width:8.2cqw;
-  height:8.2cqw;
-  border-radius:50%;
-}
-.hobby-cover-back {
-  display:grid;
-  flex:none;
-  place-items:center;
-  width:8.8cqw;
-  height:8.8cqw;
-  min-width:34px;
-  min-height:34px;
-  border:1px solid #e0b4e5;
-  border-radius:50%;
-  background:linear-gradient(#fff9ff,#f1d4fa);
-  box-shadow:0 3px 5px #78418d57;
-  color:#45105c;
-  font-size:clamp(23px,6.8cqw,34px);
-  line-height:1;
-  text-decoration:none;
-}
-.hobby-cover-brand strong {display:block;font-size:4.9cqw;line-height:1.05}
-.hobby-cover-brand strong span {color:#cf157a}
-.hobby-cover-brand small {display:block;font-size:2.9cqw;line-height:1.18}
-.hobby-cover-title {padding:1.8cqw 4% 1.4cqw}
-.hobby-cover-chapter {
-  display:inline-block;
-  padding:.65cqw 3.8cqw;
-  border:1px solid #dcabd9;
-  border-radius:999px;
-  background:linear-gradient(#fff1fc,#f4caed);
-  box-shadow:0 2px 5px #a3539245;
-  font-size:3.2cqw;
-  font-weight:850;
-  line-height:1.15;
-}
-.hobby-cover-title h1 {
-  margin:.7cqw 0 .25cqw;
-  font-size:8.55cqw;
-  font-weight:950;
-  letter-spacing:-.035em;
-  line-height:1;
-}
-.hobby-cover-title p {margin:0;font-size:3.7cqw;font-weight:650;line-height:1.22}
+#app #pg433 .hobby-cover {container-type:inline-size}
 #app #pg433 .hobby-cover-art {
   display:block;
   width:100%;
   height:auto;
-  aspect-ratio:1.82;
-  object-fit:cover;
-  object-position:center 44%;
 }
-.hobby-cover-summary,.hobby-cover-tiles {
-  width:84%;
-  margin:1.8cqw auto 0;
-  border:1px solid #e2b7e5;
-  border-radius:4cqw;
-  background:linear-gradient(#fffafd,#fbf1fd);
-  box-shadow:0 3px 0 #d4a6db,0 4px 9px #9252aa4f;
+.hobby-cover-chapter,.hobby-cover-title,.hobby-cover-summary,.hobby-cover .cover-tile-label {
+  position:absolute;
+  color:#351050;
+  text-align:center;
 }
-.hobby-cover-summary h2 {
-  width:max-content;
-  max-width:94%;
-  margin:0 auto;
-  transform:translateY(-.65cqw);
-  padding:.6cqw 2.8cqw;
+.hobby-cover-chapter {
+  inset:7.45% 35.8% auto;
+  height:2.6%;
+  display:grid;
+  place-items:center;
   border-radius:999px;
-  background:linear-gradient(#cf71f1,#7d11a5);
-  color:white;
-  font-size:4.4cqw;
-  line-height:1.2;
+  background:linear-gradient(#fbe8ff,#f5c9ef);
+  font-size:3.1cqw;
+  font-weight:850;
+  line-height:1;
 }
-.hobby-cover-summary p {
-  margin:0;
-  padding:1.45cqw 2cqw 1.8cqw;
-  font-size:3.47cqw;
-  font-weight:790;
-  line-height:1.24;
-}
-.hobby-cover-tiles {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:1.1cqw}
-#app #pg433 .hobby-cover-tile {
+.hobby-cover-title {
+  inset:10.65% 20.5% auto;
+  height:8%;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  min-width:0;
-  min-height:44px;
-  gap:.65cqw;
-  padding:.6cqw .3cqw;
-  border:0;
-  background:transparent;
-  color:#351050;
-  font-size:clamp(10px,3.15cqw,17px);
-  font-weight:850;
-  line-height:1.14;
+  gap:.5cqw;
+  isolation:isolate;
 }
-#app #pg433 .hobby-cover-tile:not(:nth-child(3n)) {border-right:1px solid #dfc0e2}
-#app #pg433 .hobby-cover-tile:nth-child(-n+3) {border-bottom:1px solid #dfc0e2}
-#app #pg433 .hobby-cover-tile .about-premium-photo {width:7.55cqw;height:7.55cqw;border-radius:1.6cqw}
-#app #pg433 .hobby-cover-start {
-  display:block;
-  width:84%;
-  min-height:44px;
-  margin:2.25cqw auto 1.65cqw;
-  padding:1.65cqw 3cqw;
-  border:1px solid #e5a2f0;
-  border-bottom:4px solid #821998;
-  border-radius:999px;
-  background:linear-gradient(#cf7bec,#a942d0 55%,#8923be);
-  box-shadow:0 4px 8px #7c329c57;
-  color:white;
-  font-size:clamp(19px,5.5cqw,31px);
-  font-weight:900;
-  line-height:1.15;
+.hobby-cover-title::before {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  background:linear-gradient(100deg,#f5dbfd 4%,#fbdffc 55%,#fce1fa 96%);
+  mask-image:linear-gradient(to right,transparent,#000 7% 93%,transparent);
 }
-.hobby-cover-footer {
-  display:grid;
-  place-items:start center;
-  min-height:29cqw;
-  padding:2.4cqw 3cqw 5cqw;
-  background:url("./assets/hsk2-lesson4-hobby-3d/garden.webp") center 75% / cover no-repeat;
-}
-.hobby-cover-footer p {
+.hobby-cover-title h1 {
   margin:0;
-  padding:1.85cqw 3.8cqw;
-  border:2px solid #e9b65d;
-  border-radius:3cqw 3cqw 6cqw 6cqw;
-  background:linear-gradient(#fff8d8,#ffdfa4);
-  box-shadow:0 4px 10px #85406163;
-  color:#351050;
-  font-size:3.8cqw;
-  font-weight:900;
-  line-height:1.14;
+  font-size:8.65cqw;
+  font-weight:950;
+  letter-spacing:-.035em;
+  line-height:1.02;
+  white-space:nowrap;
 }
-.hobby-cover-footer em {color:#ad125f}
+.hobby-cover-title p {
+  margin:0;
+  font-size:3.9cqw;
+  font-weight:650;
+  line-height:1.18;
+}
+.hobby-cover-summary {
+  inset:46.1% 9.3% auto;
+  min-height:6.65%;
+  display:grid;
+  align-items:center;
+  grid-template-columns:10% 1fr 10%;
+  gap:1cqw;
+  background:#fcf7fd;
+  box-shadow:0 0 2px 2px #fcf7fd;
+  border-radius:1.3cqw;
+}
+.hobby-cover-summary p {
+  margin:0;
+  font-size:3cqw;
+  font-weight:800;
+  line-height:1.22;
+}
+.hobby-cover-summary::before,.hobby-cover-summary::after {
+  content:"";
+  aspect-ratio:1;
+  background:center / contain no-repeat;
+}
+.hobby-cover-summary::before {background-image:url("./assets/hsk2-hobby-icons/like.svg")}
+.hobby-cover-summary::after {background-image:url("./assets/hsk2-hobby-icons/weekend.svg")}
+.hobby-cover .cover-tile-story {
+  inset:68.1% auto auto 10.7%;
+  width:23.5%;
+  height:2%;
+}
+.hobby-cover-tile {
+  position:absolute;
+  width:28%;
+  height:7.8%;
+  padding:0;
+  border:0;
+  border-radius:2cqw;
+  background:transparent;
+  cursor:pointer;
+}
+.hobby-cover-tile:nth-of-type(3n+1) {left:8.2%}
+.hobby-cover-tile:nth-of-type(3n+2) {left:36%}
+.hobby-cover-tile:nth-of-type(3n) {left:63.8%}
+.hobby-cover-tile:nth-of-type(-n+3) {top:54.8%}
+.hobby-cover-tile:nth-of-type(n+4) {top:63%}
+.hobby-cover-tile:active {background:#a757d125}
+.hobby-cover-tile:focus-visible {outline:3px solid #571482;outline-offset:2px}
+.hobby-cover .final-cover-start {z-index:1}
+.course-layout #app #pg433 .pg433-header::before {
+  background: url("./assets/hsk2-lesson4-hobby-3d/garden.webp") right top / 105px auto no-repeat;
+}
 #app #pg433 .test-card svg.hobby-test-photo {
   width:100%;
   height:clamp(42px,7.2dvh,62px);
@@ -1790,23 +1737,24 @@ function render(resetScroll = false) {
 }
 function intro() {
   const tiles = [
-    [2,'Слова',vocabImage(5)], [3,'Тесты',stageImage('quiz')], [4,'Грамматика',vocabImage(1)],
-    [5,'Мой рассказ',vocabImage(0)], [6,'Произношение',stageImage('tones')], [7,'Диалог',vocabImage(8)]
+    [2,'Слова'], [3,'Тесты'], [4,'Грамматика'],
+    [5,'Рассказ о хобби'], [6,'Произношение'], [7,'Диалог']
   ];
-  return '<section class="hobby-cover" aria-label="HSK 2 · Урок 4 · Моё хобби">' +
-    '<div class="hobby-cover-header">' +
-    '<a class="hobby-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2">‹</a>' +
-    vocabImage(0) + '<div class="hobby-cover-brand"><strong>Panda <span>Go</span></strong><small>Китайский с удовольствием</small></div></div>' +
-    '<div class="hobby-cover-title"><span class="hobby-cover-chapter">HSK 2 · УРОК 4</span>' +
-    '<h1>Моё хобби</h1><p><span lang="zh-Hans">我的爱好</span> · Wǒ de àihào</p></div>' +
-    '<img class="hobby-cover-art" src="' + hobbyArt + 'cover.webp" width="840" height="840" fetchpriority="high" ' +
-      'alt="Панда читает в садовой беседке. Рядом гитара и кисти для рисования.">' +
-    '<div class="hobby-cover-summary"><h2>Содержание урока</h2>' +
-      '<p>Расскажи, чем любишь заниматься<br>в свободное время и по выходным.</p></div>' +
-    '<div class="hobby-cover-tiles">' + tiles.map(([step,label,photo]) =>
-      '<button type="button" class="hobby-cover-tile" data-step="' + step + '">' + photo + '<span>' + label + '</span></button>').join('') +
-    '</div><button type="button" class="hobby-cover-start" data-step="2">Начать урок →</button>' +
-    '<div class="hobby-cover-footer"><p>Не бойся говорить с ошибками.<br><em>Бойся никогда не заговорить!</em></p></div></section>';
+  return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 4 · Моё хобби">' +
+    '<div class="word-flow-cover hobby-cover">' +
+    '<img class="hobby-cover-art" src="./assets/hsk2-lesson1-preview/course-cover-sakura-canal.webp" ' +
+      'alt="" width="905" height="1737" fetchpriority="high" draggable="false">' +
+    '<a class="final-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>' +
+    '<span class="hobby-cover-chapter">HSK 2 · УРОК 4</span>' +
+    '<div class="hobby-cover-title"><h1>Моё хобби</h1><p><span lang="zh-Hans">我的爱好</span><br>Wǒ de àihào</p></div>' +
+    '<div class="hobby-cover-summary"><p>Расскажи, чем любишь заниматься<br>в свободное время и по выходным.</p></div>' +
+    '<span class="cover-tile-label cover-tile-words" aria-hidden="true">Слова</span>' +
+    '<span class="cover-tile-label cover-tile-tests" aria-hidden="true">Тесты</span>' +
+    '<span class="cover-tile-label cover-tile-story" aria-hidden="true">Мой рассказ</span>' +
+    tiles.map(([step,label]) => '<button type="button" class="hobby-cover-tile" data-step="' + step +
+      '" aria-label="' + label + '"></button>').join('') +
+    '<button type="button" class="final-cover-start" data-step="2" aria-label="Начать урок"></button>' +
+    '</div></section>';
 }
 function newWords() {
   
