@@ -65,7 +65,7 @@ function render(words,art,heading,panel,ttsNote){
     '<p id="tone-trend-'+(n+1)+'" class="tone-trend">После записи появится твоя линия.</p></div>').join('')+'</div>'+
    '<div class="tone-legend"><span class="tone-legend-target">Пунктир — схема</span><span class="tone-legend-user">Зелёная — твой голос</span></div>'+
    '<div id="tone-status" class="tone-status" role="status" aria-live="polite">'+esc(note)+'</div>'+
-   '<div class="btnrow tone-actions"><button id="tone-record" class="primary" type="button" data-tone-act="record" '+(done>=LIMIT&&!busy?'disabled':'')+'>'+
+   '<div class="btnrow tone-actions"><button id="tone-record" class="primary" type="button" data-tone-act="record">'+
     '🎙 Записать голос</button>'+
     '<button type="button" class="action" data-tone-act="manual" '+(done>=LIMIT?'disabled':'')+'>✓ Повторил сам</button></div>'+
    '<details class="tone-advanced"><summary>Граница слогов и пояснения</summary>'+
@@ -223,7 +223,7 @@ function syncControls(){
  const btn=document.getElementById('tone-record');if(!btn)return;
  const running=active&&active.word===state.selected;
  btn.textContent=running?'■ Стоп':'🎙 Записать голос';
- btn.disabled=!running&&count(state.selected)>=LIMIT;
+ btn.disabled=false; // Five is a progress target, not a microphone practice limit.
 }
 function update(){
  if(!memo)return;
@@ -332,8 +332,17 @@ function stop(countTake){
  if(countTake&&rec.word===state.selected){
   const result=buildRecording(rec);
   visibleAttempt=result.entry;
-  if(result.accepted&&count(rec.word)<LIMIT){
-   state.reps[rec.word].mic.push(result.entry);persist();
+  if(result.accepted){
+   const rep=state.reps[rec.word];
+   // Keep the last measured attempt even after 5/5; preserve the progress cap.
+   if(count(rec.word)>=LIMIT){
+    if(rep.mic.length)rep.mic.shift();
+    else rep.manual=Math.max(0,rep.manual-1);
+   }
+   rep.mic.push(result.entry);
+   if(rep.mic.length>LIMIT)rep.mic=rep.mic.slice(-LIMIT);
+   rep.manual=Math.max(0,Math.min(rep.manual,LIMIT-rep.mic.length));
+   persist();
    note=result.message+' '+count(rec.word)+'/5.';
   }else note=result.message;
  }else{
@@ -373,7 +382,6 @@ function tick(rec){
 
 async function start(){
  if(active){stop(true);return}
- if(count(state.selected)>=LIMIT){status('Для этого слова пять повторений уже выполнены.');return}
  if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){
   status('Микрофон недоступен. Открой урок через HTTPS на GitHub Pages в Chrome и разреши доступ к микрофону.');return;
  }
