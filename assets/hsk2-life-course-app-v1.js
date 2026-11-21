@@ -225,15 +225,18 @@ function mainLessonProgress(){
       new Set(spoken).size===6&&Array.isArray(state.chat)&&state.chat.length===3;
   }
   function done(k){const s=read(k);return Array.isArray(s?.completed)&&s.completed.includes(0)}
-  const hobby=read('panda-go-hsk2-hobby-v1');
-  const hobbyQuiz=hobby?.quiz?.[0];
-  const hobbyFinished=Array.isArray(hobbyQuiz)&&hobbyQuiz.length===8&&hobbyQuiz.every(Boolean) &&
-    hobby.grammarDone===true&&Array.isArray(hobby.chat)&&hobby.chat.length===3;
+  function fullEightWordLesson(key){
+    const s=read(key),quiz=s?.quiz?.[0];
+    return Array.isArray(quiz)&&quiz.length===8&&quiz.every(Boolean)&&
+      s.grammarDone===true&&Array.isArray(s.chat)&&s.chat.length===3;
+  }
   return [
     done('pg-hsk2-about-me-preview-v1')||finished(read('panda-go-hsk2-about-me-v1')),
     done('pg-hsk2-my-day-main-v1')||finished(read('panda-go-hsk2-lesson1-word-flow-review-v1')),
     done('pg-hsk2-lesson3-preview-v1')||finished(read('panda-go-hsk2-lesson3-standard-v1')),
-    hobbyFinished
+    fullEightWordLesson('panda-go-hsk2-hobby-v1'),
+    fullEightWordLesson('panda-go-hsk2-friends-v2'),
+    fullEightWordLesson('panda-go-hsk2-yesterday-lesson6-v1')
   ];
 }
 function viewMap(){
