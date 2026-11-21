@@ -223,21 +223,6 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 
 
 
-/* Sequential course navigation: locked chapters remain visible but inaccessible. */
-#app #pg433 .pg433-tabs button.section-locked:not(.active){
-  position:relative!important;opacity:.77!important;cursor:not-allowed!important;
-  color:#847589!important;background:linear-gradient(#eee5f0,#dfd5e6)!important;
-  border-color:#cec0d3!important;border-bottom-color:#baa8c4!important;
-  box-shadow:inset 0 1px 2px #fff9ff,0 2px 4px #9e8ba73a!important;
-  filter:saturate(.55);
-}
-#app #pg433 .pg433-tabs button.section-locked::after{
-  content:"🔒";position:absolute;top:2px;right:3px;font-size:10px;line-height:1;
-  filter:grayscale(.2);pointer-events:none;
-}
-#app #pg433 .pg433-tabs button.section-locked:active{
-  transform:none!important;filter:saturate(.55)!important;
-}
 #app #pg433 .practice-modes{display:flex;align-items:center;gap:7px;padding:6px;margin:5px 4px 8px}
 #app #pg433 .practice-modes button{min-width:0;min-height:37px;padding:4px 6px;border-radius:12px;font-size:12px;font-weight:700}
 #app #pg433 .practice-modes .practice-main{flex:1.45}
@@ -1266,25 +1251,111 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
  #app #pg433 .pg2-rehearsal-steps button{font-size:16px;min-height:45px}
 }
 
-/* The lesson-one poster supplies the artwork, chrome and grid. The lesson text is live HTML. */
-#app #pg433 .hobby-cover {container-type:inline-size}
-.hobby-cover-chapter,.hobby-cover-title,.hobby-cover-summary,.hobby-cover-count,.hobby-cover-story{
- position:absolute;color:#3f0c59;text-align:center;line-height:1.13;font-weight:800
+/* Match the "Мой день" cover using its artwork and live lesson labels. */
+.course-layout #app[data-view="1"] #pg433 .pg433-content {
+  overflow-y:auto!important;
 }
-.hobby-cover-chapter{inset:8.7% 33.45% auto;height:3.3%;display:grid;place-items:center;background:linear-gradient(#fff7ff,#f5dcf2);border-radius:999px;font-size:3.8cqw}
-.hobby-cover-title{left:34%;top:12.35%;width:40%;height:15.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(135deg,#fff1fd,#f0d2fa);border-radius:3cqw}
-.hobby-cover-title{clip-path:polygon(0 0,100% 0,100% 100%,25% 100%,25% 74%,17% 60%,17% 46%,0 46%);border-radius:1.4cqw}
-.hobby-cover-title h1{margin:0 0 .65cqw;font-size:4.3cqw;line-height:1.06;white-space:nowrap}
-.hobby-cover-title b,.hobby-cover-title span{margin-left:18%}
-.hobby-cover-title b{font-size:6.4cqw}
-.hobby-cover-title span{font-size:3.45cqw}
-.hobby-cover-summary{left:6.2%;top:46.1%;width:87.6%;height:5.4%;display:grid;place-items:center;background:linear-gradient(#fffaff,#fff2f8);border-radius:2.5cqw;font-size:3.45cqw}
-.hobby-cover-count{left:5.8%;top:54.1%;width:88.4%;height:7.8%;display:grid;grid-template-columns:repeat(3,1fr);align-items:stretch;background:#fff5fc;border-radius:2.5cqw 2.5cqw 0 0;font-size:2.8cqw}
-.hobby-cover-count>div{display:flex;flex-direction:column;align-items:center;justify-content:center}
-.hobby-cover-count>div+div{border-left:1px solid #dcb4dc}
-.hobby-cover-count b{display:block;color:#8a209d;font-size:8cqw}
-.hobby-cover-story-icon{position:absolute;left:19%;top:64.15%;width:9.4%;height:3.1%;display:grid;place-items:center;background:#f6dafa;color:#610e77;font-size:3.2cqw;font-weight:800;border-radius:.6cqw}
-.hobby-cover-story{left:6.5%;top:67.8%;width:28%;height:2.6%;display:grid;place-items:center;background:#fff5fc;font-size:2.8cqw}
+#app #pg433 .hobby-cover {container-type:inline-size}
+#app #pg433 .hobby-cover-art {
+  display:block;
+  width:100%;
+  height:auto;
+}
+.hobby-cover-chapter,.hobby-cover-title,.hobby-cover-summary,.hobby-cover .cover-tile-label {
+  position:absolute;
+  color:#351050;
+  text-align:center;
+}
+.hobby-cover-chapter {
+  inset:7.45% 35.8% auto;
+  height:2.6%;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  background:linear-gradient(#fbe8ff,#f5c9ef);
+  font-size:3.1cqw;
+  font-weight:850;
+  line-height:1;
+}
+.hobby-cover-title {
+  inset:10.65% 20.5% auto;
+  height:8%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:.5cqw;
+  isolation:isolate;
+}
+.hobby-cover-title::before {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  background:linear-gradient(100deg,#f5dbfd 4%,#fbdffc 55%,#fce1fa 96%);
+  mask-image:linear-gradient(to right,transparent,#000 7% 93%,transparent);
+}
+.hobby-cover-title h1 {
+  margin:0;
+  font-size:8.65cqw;
+  font-weight:950;
+  letter-spacing:-.035em;
+  line-height:1.02;
+  white-space:nowrap;
+}
+.hobby-cover-title p {
+  margin:0;
+  font-size:3.9cqw;
+  font-weight:650;
+  line-height:1.18;
+}
+.hobby-cover-summary {
+  inset:46.1% 10.5% auto;
+  min-height:6.65%;
+  display:grid;
+  align-items:center;
+  grid-template-columns:10% 1fr 10%;
+  gap:1cqw;
+  background:#fcf7fd;
+  box-shadow:0 0 2px 2px #fcf7fd;
+  border-radius:1.3cqw;
+}
+.hobby-cover-summary p {
+  margin:0;
+  font-size:3.5cqw;
+  font-weight:800;
+  line-height:1.22;
+}
+.hobby-cover-summary::before,.hobby-cover-summary::after {
+  content:"";
+  aspect-ratio:1;
+  background:center / contain no-repeat;
+}
+.hobby-cover-summary::before {background-image:url("./assets/hsk2-hobby-icons/like.svg")}
+.hobby-cover-summary::after {background-image:url("./assets/hsk2-hobby-icons/weekend.svg")}
+.hobby-cover .cover-tile-story {
+  inset:68.1% auto auto 10.7%;
+  width:23.5%;
+  height:2%;
+}
+.hobby-cover-tile {
+  position:absolute;
+  width:28%;
+  height:7.8%;
+  padding:0;
+  border:0;
+  border-radius:2cqw;
+  background:transparent;
+  cursor:pointer;
+}
+.hobby-cover-tile:nth-of-type(3n+1) {left:8.2%}
+.hobby-cover-tile:nth-of-type(3n+2) {left:36%}
+.hobby-cover-tile:nth-of-type(3n) {left:63.8%}
+.hobby-cover-tile:nth-of-type(-n+3) {top:54.8%}
+.hobby-cover-tile:nth-of-type(n+4) {top:63%}
+.hobby-cover-tile:active {background:#a757d125}
+.hobby-cover-tile:focus-visible {outline:3px solid #571482;outline-offset:2px}
+.hobby-cover .final-cover-start {z-index:1}
 #app[data-view="5"] #pg433 .hobby-answer-list {display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%;gap:9px!important}
 #app[data-view="5"] #pg433 .hobby-answer-list .approved-story-choice{display:grid;grid-template-columns:76px minmax(0,1fr);text-align:left;column-gap:12px;padding-right:48px}
 #app[data-view="5"] #pg433 .hobby-answer-list .about-story-photo{grid-row:1 / span 3;width:76px;height:76px;margin:0}
@@ -1301,6 +1372,22 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   grid-template-columns:76px minmax(0,1fr)!important
 }
 #app #pg433 .quiz-word{overflow-wrap:anywhere}
+/* Keep the card grid intact and give the Chinese glyphs a raised purple face. */
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .cn {
+  font-weight:900;
+  color:#741294!important;
+  text-shadow:0 -1px #f1b6ff,0 1px #580b73,0 2px #47065f,0 3px 3px #54116d62;
+}
+@supports (background-clip:text) {
+  .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .cn {
+    background:linear-gradient(#b456ce 12%,#8b269e 41%,#601279 78%,#741590);
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:none;
+    filter:drop-shadow(0 -1px 0 #f1b6ff) drop-shadow(0 1px 0 #4e0967)
+      drop-shadow(0 1px 0 #4e0967) drop-shadow(0 2px 1px #54116d45);
+  }
+}
 </style>
 </head>
 <body>
@@ -1388,7 +1475,7 @@ function blank() {
     step:1, quiz:tests.map(() => words.map(() => null)),
     missed:tests.map(() => words.map(() => false)), quizTest:null, quizIndex:0, quizPicked:[], courseQuizCursor:null, courseQuizType:null, quizRetry:null,
     grammar:[], grammarDone:false, dayOrder:[], dayShuffled:mixedDay(), dayDone:false,
-    mic:[], chat:[], toneTab:'words', unlockedSection:0,
+    mic:[], chat:[], toneTab:'words',
     heardWords:[], selfSpoken:[], practiceMode:'mic',
     personal:{hobby:'0'},
     personalCustom:{},personalRead:[]
@@ -1421,7 +1508,6 @@ function restore() {
     .map((exchange,i)=>exchange.answers[prior.dialog[i]]?.[0] ?? exchange.answers[0][0]);
   defaults.personal.hobby = String(Math.max(0,Math.min(4,Number(prior.own)||0)));
   defaults.personalRead = prior.storyRead ? [0] : [];
-  defaults.unlockedSection = courseSections.length-1;
   return defaults;
 }
 
@@ -1516,7 +1602,7 @@ function currentStepComplete() {
       const current = courseQuiz[state.courseQuizCursor];
       return !!(current && activeQuiz().quiz[current.type][current.index]);
     }
-    case 5: return coreQuizDone();
+    case 5: return true;
     case 7: return sectionComplete(4);
     case 8: return true;
     default: return false;
@@ -1602,35 +1688,8 @@ function clearMedia() {
   }
 }
 
-// 5 visible chapter tabs cover 8 detailed screens; the welcome screen belongs to chapter 1.
-const sectionForStep = step => step === 1 ? 0 : courseSections.findIndex(section => section.steps.includes(step));
-const unlockedSection = () => Math.max(0,Math.min(courseSections.length - 1,Number(state.unlockedSection) || 0));
-function canOpenStep(target,advance = false) {
-  if (!courseMode) return true;
-  const targetSection = sectionForStep(target);
-  const currentSection = sectionForStep(state.step);
-  if (targetSection < 0) return false;
-  if (target === 5 && !coreQuizDone()) return false;
-  if (target === 8 && !sectionComplete(4)) return false;
-  if (targetSection <= unlockedSection()) return true;
-  // A new chapter opens only after confirmed work on the current chapter.
-  return advance && currentSection === unlockedSection() &&
-    targetSection === currentSection + 1 && sectionComplete(currentSection);
-}
-function reconcileUnlockedProgress() {
-  let earned = 0;
-  while (earned < courseSections.length - 1 && sectionComplete(earned)) earned++;
-  state.unlockedSection = Math.min(unlockedSection(),earned);
-}
-
-function move(step,advance = false) {
+function move(step) {
   const target = Math.max(1,Math.min(8,Number(step) || 1));
-  if (!canOpenStep(target,advance)) {
-    setStatus('Сначала пройди предыдущий раздел и нажми «Дальше».');
-    return;
-  }
-  if (courseMode && sectionForStep(target) > unlockedSection())
-    state.unlockedSection = sectionForStep(target);
   clearMedia();
   feedback = '';
   heardClip = null;
@@ -1665,14 +1724,10 @@ function render(resetScroll = false) {
   headBack.disabled = step === 1;
   stepButtons.forEach((button,index) => {
     const active = courseMode ? (index === 0 && step === 1) || courseSections[index].steps.includes(step) : index+1 === step;
-    const locked = courseMode && index > unlockedSection();
     button.setAttribute('aria-current',active ? 'step' : 'false');
     if (courseMode) {
       button.classList.toggle('active',active);
-      button.classList.toggle('section-locked',locked);
-      button.disabled = locked;
-      button.title = locked ? '🔒 Выполни предыдущий раздел, чтобы открыть' : 'Раздел открыт';
-      button.setAttribute('aria-label',courseSections[index].name + (locked ? '. Закрыт — откроется после предыдущего раздела.' : '. Открыт.'));
+      button.setAttribute('aria-label',courseSections[index].name);
     }
   });
   workspace.innerHTML = [intro,newWords,quiz,grammar,day,tones,chat,finish][step-1]();
@@ -1700,16 +1755,24 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  return '<section class="word-flow-cover-shell about-approved-cover-shell" aria-label="Урок 4. Моё хобби и свободное время">'+
-    '<div class="word-flow-cover about-approved-cover hobby-cover">'+
-    '<img class="about-approved-cover-image" src="./assets/hsk2-about-me/cover-about-me-approved-layout-v5.avif?v=20261120v5" width="905" height="1737" alt="" fetchpriority="high" draggable="false">'+
-    '<a class="about-approved-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>'+
-    '<div class="hobby-cover-chapter">HSK 2 · УРОК 4</div>'+
-    '<div class="hobby-cover-title"><h1>Моё хобби и<br>свободное время</h1><b lang="zh-Hans">我的爱好</b><span>Wǒ de àihào</span></div>'+
-    '<div class="hobby-cover-summary">Расскажи, чем любишь заниматься<br>в свободное время и по выходным.</div>'+
-    '<div class="hobby-cover-count"><div><b>8</b>новых выражений</div><div><b>40</b>мини-тестов</div><div><b lang="zh-Hans">喜欢</b>грамматика</div></div>'+
-    '<div class="hobby-cover-story-icon" lang="zh-Hans">爱好</div><div class="hobby-cover-story">рассказ о хобби</div>'+
-    '<button class="about-approved-cover-start" type="button" data-step="2" aria-label="Начать урок Моё хобби"></button>'+
+  const tiles = [
+    [2,'Слова'], [3,'Тесты'], [4,'Грамматика'],
+    [5,'Рассказ о хобби'], [6,'Произношение'], [7,'Диалог']
+  ];
+  return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 4 · Моё хобби">' +
+    '<div class="word-flow-cover hobby-cover">' +
+    '<img class="hobby-cover-art" src="' + decoration + 'course-cover-sakura-canal.webp" ' +
+      'alt="" width="905" height="1737" fetchpriority="high" draggable="false">' +
+    '<a class="final-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>' +
+    '<span class="hobby-cover-chapter">HSK 2 · УРОК 4</span>' +
+    '<div class="hobby-cover-title"><h1>Моё хобби</h1><p><span lang="zh-Hans">我的爱好</span><br>Wǒ de àihào</p></div>' +
+    '<div class="hobby-cover-summary"><p>Расскажи, чем любишь заниматься<br>в свободное время и по выходным.</p></div>' +
+    '<span class="cover-tile-label cover-tile-words" aria-hidden="true">Слова</span>' +
+    '<span class="cover-tile-label cover-tile-tests" aria-hidden="true">Тесты</span>' +
+    '<span class="cover-tile-label cover-tile-story" aria-hidden="true">Мой рассказ</span>' +
+    tiles.map(([step,label]) => '<button type="button" class="hobby-cover-tile" data-step="' + step +
+      '" aria-label="' + label + '"></button>').join('') +
+    '<button type="button" class="final-cover-start" data-step="2" aria-label="Начать урок"></button>' +
     '</div></section>';
 }
 function newWords() {
@@ -1757,11 +1820,11 @@ function quiz() {
         '</strong><small>' + testHelp[i] + (total && !courseMode ? ' · ' + total + '/8' : '') + '</small>' + '</span>' +
         trigger + '</button>';
     }).join('') + '</div><div class="reward panel">' + stageImage('quiz','about-reward-photo') +
-    '<strong>' + (courseMode ? 'Для продолжения достаточно восьми основных вопросов; остальные задания дополнительные.' : 'Закрепи слова урока в пяти разных заданиях!') +
+    '<strong>' + (courseMode ? 'Восемь основных вопросов и 32 дополнительных задания.' : 'Закрепи слова урока в пяти разных заданиях!') +
     '</strong></div>' + (courseMode
       ? (coreQuizDone()
         ? '<div class="controls pg-core-quiz-actions"><button type="button" class="primary" data-step="5">К рассказу →</button><button type="button" class="soft" data-quiz-extended>Ещё 32 задания (пройдено '+(quizCount()-correctCount(0))+'/32)</button></div>'
-        : '<div class="controls"><button type="button" class="primary" data-start>Проверить 8 выражений →</button></div>')
+        : '<div class="controls"><button type="button" class="primary" data-start>Проверить 8 выражений →</button><button type="button" class="soft" data-step="5">К рассказу →</button></div>')
       : '<button type="button" class="primary large" data-start>Начать тесты ' + playIcon + '</button>');
 }
 
@@ -2036,7 +2099,7 @@ function chat() {
       (replyPinyin.get(normalize(answer)) || '') + '</span><span class="ru">' + translation + '</span></button>').join('') + '</div><div class="controls"><button type="button" class="soft" data-mic="chat">🎙 Ответить голосом</button></div>' :
       '<p class="feedback good">✓ Ты ответил на все три вопроса.</p>') + safeStatus() +
     (i ? '<div class="controls"><button type="button" class="soft" data-chat-reset>Начать диалог заново</button></div>' : '') + '</section>' +
-    '';
+    '<div class="controls"><button type="button" class="soft" data-step="8">К итогам →</button></div>';
 }
 
 function finish() {
@@ -2408,7 +2471,7 @@ next.addEventListener('click',() => {
   }
   if (courseMode && state.step === 3) {
     if (state.courseQuizCursor === null) {
-      if(coreQuizDone())move(5,true);else startTests();
+      if(coreQuizDone())move(5);else startTests();
       return;
     }
     if (state.quizTest !== null) {
@@ -2416,28 +2479,22 @@ next.addEventListener('click',() => {
       return;
     }
   }
-  move(state.step === 8 ? 1 : (courseMode ? courseSteps[courseSteps.indexOf(state.step)+1] : state.step+1),true);
+  move(state.step === 8 ? 1 : (courseMode ? courseSteps[courseSteps.indexOf(state.step)+1] : state.step+1));
 });
 
-reconcileUnlockedProgress();
 const fromQuery = Number(layoutParams.get('step'));
-if (Number.isInteger(fromQuery) && fromQuery >= 1 && fromQuery <= 8 && canOpenStep(fromQuery)) {
+if (Number.isInteger(fromQuery) && fromQuery >= 1 && fromQuery <= 8) {
   if (!courseMode || state.step !== fromQuery) state.quizTest = null;
   state.step = fromQuery;
 }
 if (!Number.isInteger(state.step) || state.step < 1 || state.step > 8) state.step = 1;
-if (courseMode && !canOpenStep(state.step)) {
-  state.step = 2;
-  state.quizTest = null;
-  state.courseQuizCursor = null;
-}
 if (courseMode) {
   layoutParams.set('step',state.step);
   history.replaceState({pgHsk2Lesson4:true,step:state.step},'','?' + layoutParams + location.hash);
   window.addEventListener('popstate',event => {
     if (!event.state?.pgHsk2Lesson4) return;
     const requested = Number(event.state.step);
-    const target = Number.isInteger(requested) && requested >= 1 && requested <= 8 && canOpenStep(requested)
+    const target = Number.isInteger(requested) && requested >= 1 && requested <= 8
       ? requested : 2;
     clearMedia();
     state.step = target;
