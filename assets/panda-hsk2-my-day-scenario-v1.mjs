@@ -2,8 +2,8 @@
    Browser ASR is transcription only, never acoustic tone grading. */
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {PANDA_GRAMMAR_AUDIO_V451} from './panda-grammar-voice-v451.mjs?v=451';
-import {understandDayAnswer} from './panda-hsk2-day-understanding-v1.mjs?v=4';
-import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=1';
+import {understandDayAnswer} from './panda-hsk2-day-understanding-v1.mjs?v=5';
+import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=2';
 if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){
 const STORY=[
 [['我每天七点起床。','Wǒ měitiān qī diǎn qǐchuáng.','Я встаю в 7.'],['我起床以后洗脸。','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма умываюсь.'],['我早上刷牙。','Wǒ zǎoshang shuāyá.','Утром чищу зубы.'],['我早上吃早饭。','Wǒ zǎoshang chī zǎofàn.','Утром завтракаю.'],['我八点去上班。','Wǒ bā diǎn qù shàngbān.','В 8 иду на работу.'],['我晚上十点睡觉。','Wǒ wǎnshang shí diǎn shuìjiào.','В 10 вечера ложусь спать.']],
@@ -209,14 +209,27 @@ function init(stage){
   if(!text){status('Напиши вопрос или предложение на китайском.');return}
   stop();
   if(!alreadyLogged)addChatMessage('user',text);
-  const reply=respondToPandaChat(text,chatContext);chatContext=reply.context;
+  const dayQuestion=understandDayAnswer(text,0);
+  let reply;
+  if(dayQuestion.kind==='user-question'){
+   const idx=dayQuestion.questionIndex;
+   reply={line:STORY[round%2][[0,1,3,4,5][idx]],supported:true};
+   chatContext={dayQuestion:idx};
+  }else if(Number.isInteger(chatContext?.dayQuestion)&&understandDayAnswer(text,chatContext.dayQuestion).kind==='accepted'){
+   const idx=chatContext.dayQuestion;
+   reply={line:['好的，我明白了。','Hǎo de, wǒ míngbai le.','Хорошо, я поняла.'],supported:true};
+   chatContext={dayQuestion:idx};
+  }else{
+   reply=respondToPandaChat(text,chatContext);chatContext=reply.context;
+  }
   addChatMessage('panda',reply.line[0]+' — '+reply.line[2]);
   line(reply.line);
   status(reply.supported?'✓ Ответ Панды показан. Продолжай диалог.':
    '✓ Вопрос получен, но на эту тему пока нет подготовленного ответа.');
   if(approvedClips(reply.line[0]).length){
-   const token=sequence;
-   speak(reply.line).then(()=>{if(token===sequence)status('✓ Ответ Панды показан. Продолжай диалог.')});
+   void speak(reply.line);
+  }else if(reply.supported){
+   status('💬 Ответ текстом. Для этой фразы пока нет записи.');
   }
  }
  function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||'';const repeat=$('day-hear');if(repeat){repeat.disabled=!approvedClips(a[0]).length;repeat.title=repeat.disabled?'Нет точной записи утверждённым голосом':'Повторить одобренную запись'};updateStoryPlayer()}
@@ -368,7 +381,7 @@ function init(stage){
   stagePhase('questions');line(Q[idx].slice(0,3));status('Ответь свободно. Тоны по тексту не оцениваются.');
   const token=++sequence;await speak(Q[idx]);if(token===sequence)countdown();
  }
- function answer(raw){
+ async function answer(raw){
   if(phase==='freechat'){
    const text=String(raw??'').trim();chatReplyTo(text);
    if(text)$('day-input').value='';
@@ -377,7 +390,10 @@ function init(stage){
   if(phase!=='questions'){status('Начни вопросы, чтобы отправить ответ.');return}
   const submitted=String(raw??'').trim();
   if(!submitted){status('Поле пустое. Напиши или произнеси свой ответ.');return}
-  const idx=i,result=understandDayAnswer(submitted,idx);
+  const idx=i;
+  const reciprocal=/你呢[？?。！!\s]*$/u.test(submitted);
+  const statement=reciprocal?submitted.replace(/[，,。！？!?\s]*你呢[？?。！!\s]*$/u,''):submitted;
+  const result=reciprocal&&!statement?{kind:'user-question',questionIndex:idx}:understandDayAnswer(statement,idx);
   stop(); // Stop pending audio/timeout so a late callback cannot erase the reply.
   addChatMessage('user',submitted);
   if(result.kind==='user-question'){
@@ -404,7 +420,12 @@ function init(stage){
    addChatMessage('panda','✓ '+result.message);
    status('✓ Ответ отправлен и принят. '+result.message);
    const token=++sequence;
-   setTimeout(()=>{if(token===sequence)ask(idx+1)},1100);
+   if(reciprocal){
+    const reply=STORY[round%2][[0,1,3,4,5][idx]];
+    addChatMessage('panda',reply[0]+' — '+reply[2]);line(reply);
+    await speak(reply);
+   }
+   if(token===sequence)setTimeout(()=>{if(token===sequence)ask(idx+1)},reciprocal?2200:1100);
    return;
   }
   if(result.kind==='correct'){
