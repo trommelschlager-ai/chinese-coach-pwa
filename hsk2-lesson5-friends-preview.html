@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#9e2cc9">
-<meta name="panda-go-lesson5-build" content="20261121-approved-cover-v3">
+<meta name="panda-go-lesson5-build" content="20261121-friends-art-tones-v4">
 <title>Panda Go · HSK 2 · Урок 5 · Друзья, встречи и планы · v2</title>
 <script>
 {
@@ -422,16 +422,17 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 #app #pg433 .word-row > button.about-learn.learned{
   background:linear-gradient(#eaffdd,#9eddac)!important;color:#29684b!important;
   border-color:#8ac9a3!important;box-shadow:0 3px 0 #71b68c!important}
-#app #pg433 .word-row .tone-strokes svg{width:25px!important;height:22px!important}
-#app #pg433 .word-row .tone-strokes path{stroke:#7f299b!important;stroke-width:3!important}
-#app #pg433 .tone-row{min-height:66px!important;padding:5px 6px!important;gap:5px!important}
+#app #pg433 .tone-row{
+  grid-template-columns:20% max-content max-content minmax(0,1fr) 35px 35px;
+  min-height:66px!important;padding:5px 6px!important;gap:clamp(2px,.9vw,4px)!important}
+#app #pg433 .tone-row>.cn{white-space:nowrap}
+#app #pg433 .tone-row .tone-copy{min-width:0}
 #app #pg433 .tone-row svg.about-illustration{
   width:100%!important;height:59px!important;border:1px solid #f5cf76!important;border-radius:12px!important}
 #app #pg433 .tone-row .cn{color:#681778!important;font-size:24px!important}
 #app #pg433 .tone-row .py{font-size:13px!important;color:#9345a0!important}
 #app #pg433 .tone-row .ru{font-size:12px!important}
 #app #pg433 .tone-row .tone-example{display:flex;flex-direction:column;align-items:center;gap:4px}
-#app #pg433 .tone-row .tone-strokes path{stroke:#7e2c9d!important;stroke-width:3!important}
 #app #pg433 .tone-number{background:linear-gradient(#f6a9ef,#9925bd)!important;border:1px solid #ffe3a3!important}
 #app #pg433 .tone-number:nth-child(2){background:linear-gradient(#ffcb8e,#b954ac)!important}
 #app #pg433 svg.about-premium-photo{background:#f5d2f0!important;box-shadow:0 2px 5px #9c51834a!important}
@@ -639,13 +640,14 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
  color:#641572!important;align-self:center!important;white-space:nowrap!important}
 .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .about-myday-tones{
  grid-column:3!important;grid-row:1!important;align-self:center!important;min-width:0!important;
- display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important}
-.course-layout #app[data-view="2"] #pg433 .about-myday-tones .tone-strokes{
- display:inline-flex!important;width:100%!important;gap:1px!important;align-items:center!important;justify-content:center!important}
-.course-layout #app[data-view="2"] #pg433 .about-myday-tones .tone-strokes svg{
- display:block!important;width:clamp(14px,4.7vw,19px)!important;height:20px!important;flex:0 1 auto!important}
-.course-layout #app[data-view="2"] #pg433 .about-myday-tones .tone-strokes path{
- stroke:#258a51!important;stroke-width:3!important}
+ display:flex!important;align-items:center!important;justify-content:flex-start!important}
+/* Match the green contours and the two-syllable spacing in «Мой день». */
+#app #pg433 :is(.about-myday-tones,.tone-example) .tone-strokes{
+ display:inline-flex;flex-wrap:nowrap;gap:1px;color:#258a51}
+#app #pg433 :is(.about-myday-tones,.tone-example) .tone-strokes svg{
+ width:clamp(14px,4.2vw,18px);height:20px;flex:none}
+#app #pg433 :is(.about-myday-tones,.tone-example) .tone-strokes path{
+ fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > .about-myday-copy{
  grid-column:4!important;grid-row:1!important;min-width:0!important;overflow-wrap:anywhere!important;
  display:flex!important;flex-direction:column!important;gap:2px!important}
@@ -990,7 +992,7 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
   margin:4px 0 0!important;grid-template-rows:repeat(6,minmax(64px,1fr))!important;
 }
 .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word {
-  min-height:64px!important;grid-template-columns:clamp(68px,20vw,92px) max-content clamp(28px,8vw,37px) minmax(0,1fr) clamp(36px,10vw,44px)!important;
+  min-height:64px!important;grid-template-columns:clamp(68px,20vw,92px) max-content max-content minmax(0,1fr) clamp(36px,10vw,44px)!important;
   column-gap:clamp(2px,.65vw,5px)!important;padding:4px 6px 4px 4px!important;
   border-radius:19px!important;
 }
@@ -1112,7 +1114,7 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 }
 @media (max-width:374px) {
  .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word{
-   grid-template-columns:62px max-content 27px minmax(0,1fr) 35px!important;
+   grid-template-columns:62px max-content max-content minmax(0,1fr) 35px!important;
    column-gap:2px!important;
  }
  .course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word>.cn{
@@ -1836,19 +1838,15 @@ function currentStepComplete() {
 const activeQuiz = () => state.quizRetry ?? state;
 const dayScenes = ['friends','together','meet','calendar','time','plan'];
 
-// Sixteen new, never-before-used 3D Panda Go friendship scenes: 8 words + 4 stage images + cover scenes.
-const photoAtlas = Object.freeze({ words:{columns:4,size:512}, stages:{columns:4,size:512} });
-function atlasTile(type,index,cssClass='about-illustration') {
-  const columns=4, size=512, side=128;
-  const actualIndex=type==='stages'?index+8:index;
-  const x=side*(actualIndex%columns), y=side*Math.floor(actualIndex/columns);
+// Keep each existing picture frame and load its own high-resolution scene.
+function sceneImage(name, cssClass) {
   return '<svg class="'+cssClass+' about-premium-photo" aria-hidden="true" focusable="false" '+
-    'viewBox="'+x+' '+y+' '+side+' '+side+'" preserveAspectRatio="xMidYMid slice">'+
-    '<image href="'+friendsArt+'atlas.avif" width="'+size+'" height="'+size+'" /></svg>';
+    'viewBox="0 0 512 512" preserveAspectRatio="xMidYMid slice">'+
+    '<image href="'+friendsArt+name+'-hd.webp" width="512" height="512" /></svg>';
 }
-const vocabImage=(i,cssClass)=>atlasTile('words',i,cssClass);
-const stageIndexes=Object.freeze({tones:0,quiz:1,dialogue:2,finish:3});
-const stageImage=(name,cssClass='about-stage-photo')=>atlasTile('stages',stageIndexes[name],cssClass);
+const vocabScenes = ['friends','together','meet','free-time','tomorrow','afternoon','time','plan'];
+const vocabImage = (i,cssClass='about-illustration') => sceneImage(vocabScenes[i],cssClass);
+const stageImage = (name,cssClass='about-stage-photo') => sceneImage(name,cssClass);
 const storyImage=i=>vocabImage([3,2,5,4,1][i],'about-story-photo');
 const phraseImages=[0,1,2,3,4,5,6,7];
 const hanzi = html => '<strong class="cn" lang="zh-Hans">' + html + '</strong>';
@@ -2181,9 +2179,9 @@ function tones() {
     '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (8)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
     '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (8)</button></div>' +
-    (wordView ? '<div class="tone-list">' + words.map((word,i) => '<article class="tone-row">' + vocabImage(i) + '<div>' +
-      hanzi(word.zh) + translate([word.zh,word.py,word.ru]) + '</div><div class="tone-example">' +
-      toneStrokes(word.tones) + pitchRow(word.tones) + '</div>' + audioButton(word.zh) +
+    (wordView ? '<div class="tone-list">' + words.map((word,i) => '<article class="tone-row">' + vocabImage(i) +
+      hanzi(word.zh) + '<div class="tone-example">' + toneStrokes(word.tones) + pitchRow(word.tones) +
+      '</div><div class="tone-copy">' + translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh,playIcon) +
       (state.practiceMode === 'self'
         ? '<button type="button" class="orb mic' + (state.selfSpoken.includes(i) ? ' recognized' : '') +
           '" data-self-spoken="' + i + '" aria-label="Я повторил и сравнил ' + word.zh +
