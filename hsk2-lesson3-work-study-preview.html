@@ -30,6 +30,7 @@
 @media (max-width:365px){#content{padding:11px 9px 18px}.paper{padding:12px}.grid{gap:7px}.card{padding:7px}.card .cn{font-size:21px}.card .py{font-size:12.8px}.brand strong{font-size:20px}.head-badge{font-size:10px}.btnrow{gap:6px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 </style>
 <link rel="stylesheet" href="./assets/hsk2-lesson3-tone-meter-v2.css?v=525">
+<link rel="stylesheet" href="./assets/hsk2-lesson3-compact-v530.css?v=530">
 </head><body>
 <div id="app">
 <section id="cover">
@@ -108,13 +109,29 @@ function dialog(){let n=Math.min(3,s.dialog.length);let h=heading('Диалог 
  return panel(h+ttsNote)+'<p class="endnote">Это интерактивный учебный диалог с вариантами ответов, а не полноценная голосовая Panda AI. Отдельный AI-сценарий не подключён без проверки.</p>';}
 function result(){const complete=coreCount()===6&&s.grammar&&s.dialog.length===3;return panel(heading('Итоги урока 3','Шаг 8 / 8 · Моя работа и учёба')+art(2)+ '<div class="section-title"><h3>'+(complete?'🎉 Отлично! Урок завершён':'Продолжай — почти готово!')+'</h3>'+badge('6 выражений')+'</div><p>Основные тесты: <b>'+coreCount()+'/6</b></p><p>Дополнительная практика: <b>'+optCount()+'/24</b></p><p>Грамматическая фраза: <b>'+(s.grammar?'✓':'ещё не проверена')+'</b></p><p>Повторения со шкалой тонов: <b>'+(window.PandaToneTrainer?.progressText()||'0 / 30')+'</b></p><p>Диалог: <b>'+s.dialog.length+'/3 ответа</b></p><p>Свой рассказ: <b>'+(s.storyRead?'прочитан вслух':'можно потренировать')+'</b></p><div class="example"><div class="cn">'+OPTIONS[s.own][0]+'</div><div class="py">'+OPTIONS[s.own][1]+'</div><div class="ru">'+OPTIONS[s.own][2]+'</div></div>'+(complete?'<div class="status ok">✓ Все обязательные этапы выполнены. Прогресс сохранён только в предварительном уроке 3.</div>':'<div class="status bad">Для завершения нужны 6 основных заданий, грамматический конструктор и три ответа в диалоге.</div>')+'<div class="btnrow"><button class="action" data-act="reset">↻ Пройти заново</button><button class="primary" data-act="cover-home">К обложке</button></div>')+panel('<h3>Разговор с Panda AI</h3><p>Тематический сценарий подготовлен. Прямой голосовой переход не активирован до проверки. Никаких случайных голосов и ложных оценок тонов.</p><button class="action" disabled>🎙 Panda AI · скоро</button>');}
 const screens=[welcome,words,grammar,speaking,tests,own,dialog,result];
+function fitCompactStage(){
+ const lesson=$('lesson'),box=$('content');
+ if(s.step!==5&&s.step!==8)return;
+ lesson.classList.remove('compact-tight','compact-ultra','compact-overflow');
+ // Measure the actual Android viewport; progressively compact only if needed.
+ const over=()=>box.scrollHeight>box.clientHeight+2;
+ if(over())lesson.classList.add('compact-tight');
+ if(over())lesson.classList.add('compact-ultra');
+ // A very short viewport must never hide any answer or result.
+ if(over())lesson.classList.add('compact-overflow');
+}
 function render(){const open=s.step>0;$('cover').hidden=open;$('lesson').hidden=!open;
+ const lesson=$('lesson');
+ lesson.classList.remove('compact-tests','compact-result','compact-tight','compact-ultra','compact-overflow');
+ if(s.step===5)lesson.classList.add('compact-tests');
+ if(s.step===8)lesson.classList.add('compact-result');
  if(!open)return;
  $('step-label').textContent='Шаг '+s.step+' из 8';$('step-name').textContent=steps[s.step-1];$('progress-bar').style.width=(s.step*12.5)+'%';
- $('content').innerHTML=screens[s.step-1]();$('prev').textContent=s.step===1?'← Обложка':'← Назад';
+ $('content').innerHTML=screens[s.step-1]();$('prev').textContent='← Назад';
  $('next').textContent=s.step===8?'К обложке ↺':s.step===5&&coreCount()<6?'Нужны 6 ответов':'Далее →';
  $('next').disabled=s.step===5&&coreCount()<6;
  if(s.step===4)window.PandaToneTrainer?.mount();
+ fitCompactStage();
 }
 function handle(act,b){const i=Number(b.dataset.index);s.message='';switch(act){
  case'cover-start':go(1);return;case'cover-home':go(0);return;case'cover-back':window.location.href='https://trommelschlager-ai.github.io/chinese-coach-pwa/hsk2-life-course.html?view=map';return;
@@ -137,5 +154,6 @@ document.addEventListener('click',e=>{const btn=e.target.closest('[data-act]');i
 document.addEventListener('change',e=>{if(e.target.id==='own-choice'){const n=Number(e.target.value);if(n>=0&&n<OPTIONS.length){s.own=n;s.storyRead=false;save();render()}}});
 $('headBack').addEventListener('click',()=>s.step===1?go(0):go(s.step-1));$('prev').addEventListener('click',()=>s.step===1?go(0):go(s.step-1));$('next').addEventListener('click',()=>{if(s.step===5&&coreCount()<6)return;if(s.step===8)go(0);else go(s.step+1)});
 render();
+window.addEventListener('resize',fitCompactStage);
 })();
 </script></body></html>
