@@ -1348,7 +1348,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 </div>
 <!-- New recordings are not installed: the previous lesson's voice files are deliberately not reused. -->
 <link rel="stylesheet" href="./assets/hsk2-lesson3-tone-meter-v2.css?v=525">
-<script src="./assets/hsk2-lesson3-voice/voice-map.js?v=1"></script>
+<script src="./assets/hsk2-lesson3-voice/voice-map.js?v=20261122"></script>
 <script src="./assets/hsk2-lesson3-tone-meter-v6.js?v=1"></script>
 <script>
 'use strict';
@@ -1382,7 +1382,6 @@ const dialogue = [
   answers:[['我会说一点中文。','Немного говорю по-китайски.'],['我不会说中文。','Пока не говорю по-китайски.']]}
 ];
 const normalize = text => String(text).replace(/[\p{P}\s]/gu,'');
-// No audio until it is recorded with the approved Panda Go LuvVoice speaker.
 // Reuse only the approved recording of the identical sentence; no mismatched voices.
 const clips = new Map([
  ['我在公司工作。','./assets/hsk2-about-me/voice-luvvoice-20261120/about10.mp3'],
