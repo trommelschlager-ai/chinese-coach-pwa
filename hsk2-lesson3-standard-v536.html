@@ -1914,13 +1914,15 @@ function tones() {
     '. Тоны автоматически не оцениваются. Прослушай пример и повтори.</p>';
 }
 
+
 const replyPinyin = new Map([
- ['我来自俄罗斯','Wǒ láizì Éluósī.'],
- ['我来自中国','Wǒ láizì Zhōngguó.'],
- ['我现在住在莫斯科','Wǒ xiànzài zhù zài Mòsīkē.'],
- ['我现在住在北京','Wǒ xiànzài zhù zài Běijīng.'],
- ['我的爱好是听音乐','Wǒ de àihào shì tīng yīnyuè.'],
- ['我的爱好是运动','Wǒ de àihào shì yùndòng.']
+ ['我在公司工作','Wǒ zài gōngsī gōngzuò.'],
+ ['我在家工作','Wǒ zài jiā gōngzuò.'],
+ ['我现在不工作','Wǒ xiànzài bù gōngzuò.'],
+ ['我在学校学习','Wǒ zài xuéxiào xuéxí.'],
+ ['不我在家学习','Bù, wǒ zài jiā xuéxí.'],
+ ['我会说一点中文','Wǒ huì shuō yìdiǎn Zhōngwén.'],
+ ['我不会说中文','Wǒ bú huì shuō Zhōngwén.']
 ]);
 function bubble(role,item) {
   const reading = item.length === 3 ? translate(item)
@@ -1931,20 +1933,12 @@ function bubble(role,item) {
     '</div>' + audioButton(item[0]) + '</div></article>';
 }
 
+
 function pandaAiShortcut() {
-  // Existing HSK1 introductory chat only, not a new HSK2 About Me voice conversation.
-  return '<a class="panda-ai-shortcut" href="./panda-voice-pilot.html?lesson=1&amp;from=hsk2-about-me" ' +
-    'aria-label="Панда AI: базовые вопросы для знакомства">' +
-    stageImage('dialogue','about-chat-photo') +
-    '<span class="panda-ai-shortcut-copy"><strong>🐼 Поговорить с Пандой AI</strong>' +
-    '<small>Базовое знакомство (HSK 1). Полный разговор HSK 2 пока разрабатывается.</small></span>' +
-    '<span class="panda-ai-shortcut-arrow" aria-hidden="true">➜</span></a>';
+ return '<span class="l3-panda-ai-label" aria-label="Panda AI: HSK 2 тематическая практика пока не включена">🐼 Panda AI · скоро</span>';
 }
 function lockedPandaAiShortcut() {
-  return '<div class="panda-ai-shortcut is-locked" aria-label="Панда AI откроется после учебного диалога">' +
-    stageImage('dialogue','about-chat-photo') +
-    '<span class="panda-ai-shortcut-copy"><strong>🔒 Panda AI — после диалога</strong>' +
-    '<small>Ответь на три вопроса, чтобы открыть голосовую практику</small></span></div>';
+ return '<span class="l3-panda-ai-label locked">🔒 Panda AI · после диалога</span>';
 }
 const storyOptions = {
   name:[['米沙','Миша','Mǐshā'],['安东','Антон','Āndōng'],['安娜','Анна','Ānnà'],['马克','Марк','Mǎkè'],['大卫','Давид','Dàwèi'],['__custom__','Ввести своё имя','']],
@@ -1975,43 +1969,27 @@ function refreshPersonalBuilder(){
  if(replacement)current.replaceWith(replacement);
 }
 
-function personalStory() {
-  const get = key => {
-    if (state.personal[key] === '__custom__') {
-      const custom = state.personalCustom?.[key] || {};
-      return [String(custom.zh || '…').trim(), 'Свой вариант', String(custom.py || '…').trim()];
-    }
-    return storyOptions[key].find(v=>v[0] === state.personal[key]) || storyOptions[key][0];
-  };
-  const name=get('name'),origin=get('origin'),city=get('city'),work=get('work'),hobby=get('hobby');
-  const lines = [
-    ['我叫'+name[0]+'。','Wǒ jiào '+name[2]+'.'],
-    ['我来自'+origin[0]+'。','Wǒ láizì '+origin[2]+'.'],
-    ['我现在住在'+city[0]+'。','Wǒ xiànzài zhù zài '+city[2]+'.'],
-    ['我'+work[0]+'。','Wǒ '+work[2]+'.'],
-    ['我的爱好是'+hobby[0]+'。','Wǒ de àihào shì '+hobby[2]+'.'],
-    ['我每天学习中文。','Wǒ měitiān xuéxí Zhōngwén.']
-  ];
-  const customInputs = key => {
-    if (state.personal[key] !== '__custom__') return '';
-    const value = state.personalCustom?.[key] || {};
-    return '<div class="about-personal-custom"><input type="text" data-personal-custom="zh" data-story-key="'+key+
-      '" lang="zh-Hans" maxlength="45" placeholder="Иероглифы" aria-label="Свой вариант на китайском" value="'+escape(value.zh || '')+'">' +
-      '<input type="text" data-personal-custom="py" data-story-key="'+key+
-      '" maxlength="100" placeholder="Пиньинь с тонами" aria-label="Пиньинь собственного варианта" value="'+escape(value.py || '')+'"></div>';
-  };
-  return '<section class="about-personal panel"><h2>✍️ Мой рассказ о себе</h2>' +
-    '<p class="hint">Выбери готовые варианты или впиши собственные иероглифы с пиньинем. Рассказ автоматически соберётся ниже.</p>' +
-    '<div class="about-personal-fields">' +
-      storyFields.map(([key,label])=>'<label>'+label+'<select data-personal="'+key+'">' +
-        storyOptions[key].map(option=>'<option value="'+escape(option[0])+'"'+(option[0]===state.personal[key]?' selected':'')+'>'+
-          escape(option[1])+' · '+(option[0] === '__custom__' ? '✎' : escape(option[0]))+'</option>').join('') +
-      '</select>'+customInputs(key)+'</label>').join('') +
-    '</div><div class="about-my-lines">' +
-      lines.map(([zh,py])=>'<p class="about-personal-line"><span class="about-personal-sentence"><strong lang="zh-Hans">'+escape(zh)+'</strong><span class="py">'+escape(py)+'</span></span>'+audioButton(zh,playIcon)+'</p>').join('') +
-    '</div>' + personalReadControls(lines.length) + '<p class="hint">Для собственных слов пиньинь нужно ввести самостоятельно. Проверка правильности написания и тонов здесь не выполняется.</p></section>';
-}
 
+function personalStory() {
+ const options=[
+  ['我在公司工作。','Wǒ zài gōngsī gōngzuò.','Я работаю в компании.'],
+  ['我在学校学习。','Wǒ zài xuéxiào xuéxí.','Я учусь в школе.'],
+  ['我在家工作。','Wǒ zài jiā gōngzuò.','Я работаю дома.'],
+  ['我在家学习。','Wǒ zài jiā xuéxí.','Я учусь дома.'],
+  ['我现在不工作。','Wǒ xiànzài bù gōngzuò.','Сейчас я не работаю.']
+ ];
+ const chosen=options[Math.max(0,Math.min(options.length-1,Number(state.workChoice)||0))];
+ return '<section class="about-personal panel l3-work-story">' +
+  '<h2>✍️ Расскажи о себе правдиво</h2>' +
+  '<p class="hint">Выбери подходящий вариант. Панда не будет выдумывать твою работу или учёбу.</p>' +
+  '<div class="l3-work-choices">' +
+   options.map((o,i)=>'<button type="button" class="'+(chosen===o?'primary':'soft')+
+    '" data-work-choice="'+i+'">'+escape(o[2])+'</button>').join('')+
+  '</div><div class="l3-work-line">' + hanzi(chosen[0]) + translate(chosen) + '</div>' +
+  '<button type="button" class="soft l3-work-read" data-work-read="1">' +
+   (state.workRead?'✓ Я произнёс эту фразу':'🎙 Произнеси фразу сам')+'</button>' +
+  '<p class="hint">Отметка самостоятельная. Правильность тонов не определяется автоматически.</p></section>';
+}
 function chat() {
   const i = state.chat.length;
   const exchange = dialogue[i];
@@ -2320,6 +2298,12 @@ const actions = {
     if (courseMode && state.step === 3 && Number(value) === 3) showCourseTask(-1);
     else move(Number(value));
   },
+  workChoice: value => {
+    const i=Number(value);
+    if(!Number.isInteger(i)||i<0||i>=5)return;
+    state.workChoice=i;state.workRead=false;save();render();
+  },
+  workRead: () => {state.workRead=true;save();render();},
   say: (value,button) => play(value,button),
   test: value => openTest(Number(value)),
   quizType: value => startCourseType(Number(value)),
@@ -2340,12 +2324,12 @@ const actions = {
   gram: value => { state.grammar.push(Number(value)); state.grammarDone = false; update(); },
   gramUndo: () => { state.grammar.pop(); state.grammarDone = false; update(); },
   gramClear: () => { state.grammar = []; state.grammarDone = false; update(); },
-  gramCheck: () => checkOrder('grammar',5,'✓ Верно: 我现在住在莫斯科。','Порядок: 我 → 现在 → 住在 → 莫斯科 → 。'),
+  gramCheck: () => checkOrder('grammar',5,'✓ Верно: 我在公司工作。','Порядок: 我 → 在 → 公司 → 工作 → 。'),
   day: value => { const i=Number(value); if(!Number.isInteger(i)||i<0||i>=6||state.dayOrder.includes(i))return; state.dayOrder.push(i); state.dayDone = false; update(); },
   storyCols: value => { const n=Number(value); if(n!==2&&n!==3)return; state.aboutStoryColumns=n; save();render(); },
   dayUndo: () => { state.dayOrder.pop(); state.dayDone = false; update(); },
   dayReset: () => { state.dayOrder = []; state.dayShuffled = mixedDay(); state.dayDone = false; update(); },
-  dayCheck: () => checkOrder('day',6,'✓ Готово: шесть фраз рассказа по порядку образца.','Проверь: имя → страна → город → работа → хобби → учёба.'),
+  dayCheck: () => checkOrder('day',6,'✓ Отлично: все шесть примеров собраны.','Порядок: компания → школа → коллега → одноклассница → компьютер → китайский.'),
   wordsRead: () => {
     if (words.every(word => clips.has(normalize(word.zh)))) return;
     state.heardWords = words.map((_,i) => i);
