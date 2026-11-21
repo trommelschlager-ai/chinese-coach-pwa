@@ -158,3 +158,18 @@
 /* If viewport truly cannot fit required content, show it instead of clipping. */
 #lesson.compact-intro.compact-overflow #content,
 #lesson.compact-tests.compact-overflow #content {overflow-y:auto}
+
+/* Completed banner uses less height, without removing its information. */
+#lesson.compact-tests #content>.paper:first-of-type:not(:last-child) {
+ padding:6px 9px;
+ margin-bottom:5px;
+}
+#lesson.compact-tests #content>.paper:first-of-type:not(:last-child) h3 {
+ font-size:14.5px;
+ margin:0 0 2px;
+}
+#lesson.compact-tests #content>.paper:first-of-type:not(:last-child) p {
+ font-size:12.5px;
+ line-height:1.16;
+ margin:2px 0;
+}
