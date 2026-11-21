@@ -2320,7 +2320,7 @@ const actions = {
   gram: value => { state.grammar.push(Number(value)); state.grammarDone = false; update(); },
   gramUndo: () => { state.grammar.pop(); state.grammarDone = false; update(); },
   gramClear: () => { state.grammar = []; state.grammarDone = false; update(); },
-  gramCheck: () => checkOrder('grammar',5,'✓ Верно: 我喜欢听音乐。','Порядок: 我 → 喜欢 → 听 → 音乐 → 。'),
+  gramCheck: () => checkOrder('grammar',5,'✓ Верно: 我要一碗面条。','Порядок: 我 → 要 → 一碗 → 面条 → 。'),
   wordsRead: () => {
     state.heardWords = words.map((_,i) => i);
     save(); render();
