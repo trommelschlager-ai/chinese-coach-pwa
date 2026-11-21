@@ -152,6 +152,10 @@
   background-image:url("./hsk2-lesson3-cover-photo5-20261121.jpg");
   background-size:cover;background-position:center center;
 }
+#app #pg433.pgc-catalog .pgc-art-hobby{
+  background-image:url("./hsk2-lesson4-hobby-3d/cover.webp");
+  background-size:cover;background-position:center center;
+}
 #app #pg433.pgc-catalog .pgc-feature-text{
   display:flex!important;flex-direction:column;align-items:flex-start;justify-content:center;
   min-width:0;gap:1px!important;position:relative;z-index:1;
