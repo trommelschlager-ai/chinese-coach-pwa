@@ -70,21 +70,129 @@
 .compare-warning{font-size:11px;line-height:1.45;color:#7a6482;margin:9px 0 0}
 .compare-empty{font-size:12px;line-height:1.4;color:#947899}
 @media(max-width:330px){.compare-columns{gap:5px}.compare-panel{padding:6px 4px}}
-</style></head><body><main>
+
+/* Compact, no-page-scroll phone view for 4-syllable voice audit. */
+html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+body{background:#f9effb}
+.native-compact{
+ width:100%;height:100vh;height:100dvh;max-width:560px;min-height:0;
+ overflow:hidden;display:flex;flex-direction:column;gap:6px;
+ margin:0 auto;padding:8px 11px max(8px,env(safe-area-inset-bottom));
+}
+.native-compact .kicker{display:block;flex:0 0 auto;font-size:10px;line-height:13px;letter-spacing:.04em}
+.native-compact h1{font-size:19px;line-height:23px;margin:0;flex:0 0 auto}
+.native-compact>p.lead{display:none}
+.native-compact>.panel{margin:0;flex:0 0 auto;padding:9px 10px;border-radius:16px;box-shadow:0 2px 9px #a271aa13}
+.native-compact>.panel[aria-label="Загрузка исходной записи и сравнение"]{display:flex;flex-direction:column;gap:3px}
+.native-compact .phrase{font-size:29px;line-height:34px;letter-spacing:0}
+.native-compact .pinyin{font-size:13px;line-height:16px}
+.native-compact .translation{display:none}
+.native-compact .file-upload{height:36px;min-height:36px;display:flex;align-items:center;gap:8px;
+ margin:5px 0 1px;padding:3px 5px;border-radius:10px;max-width:100%;background:#f4e8f8}
+.native-compact .upload-btn{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ min-height:28px;margin:0;padding:4px 9px;border-radius:8px;background:#e7d2f0;
+ border:1px solid #d8b5e4;box-shadow:0 2px 0 #d2b0df;font-size:11px;font-weight:800;color:#65387b;cursor:pointer}
+.native-compact .sr-file{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;
+ overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;padding:0!important;border:0!important}
+.native-compact .sr-file:focus-visible+.filename,.native-compact .file-upload:focus-within .upload-btn{outline:2px solid #934dbd;outline-offset:2px}
+.native-compact .filename{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ font-size:11px;line-height:15px;font-weight:600;color:#765480}
+.native-compact .actions{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:4px 0 0}
+.native-compact .action{min-height:37px;padding:4px 2px;border-radius:10px;font-size:11px;line-height:1.15;
+ white-space:nowrap;box-shadow:0 2px 0 #65308b}
+.native-compact .action.alt{box-shadow:0 2px 0 #ddc8e6}
+.native-compact .rms{height:3px;margin:2px 0 0}
+.native-compact .status{font-size:11px;line-height:14px;min-height:14px;max-height:28px;
+ display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+ margin:3px 0 0;color:#66457b}
+.native-compact #whole-panel{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:4px}
+.native-compact #whole-panel>.small{display:none}
+.native-compact .whole-head{flex:0 0 auto;gap:7px}
+.native-compact .whole-head h2{font-size:14px;line-height:18px}
+.native-compact .whole-live{font-size:10px;padding:3px 6px}
+.native-compact #whole-chart{width:100%;height:auto;min-height:0;max-height:min(29dvh,190px);flex:1 1 auto;align-self:center}
+.native-compact .whole-legend{font-size:10px;line-height:12px;margin:0;gap:12px;flex:0 0 auto}
+.native-compact .whole-legend i{width:14px;border-top-width:2px}
+.native-compact .whole-durations{margin:2px 0 0;gap:5px;flex:0 0 auto}
+.native-compact .whole-duration{font-size:10px;line-height:12px;padding:4px 6px;border-radius:7px}
+.native-compact #whole-active{font-size:11px;line-height:14px;min-height:14px;max-height:14px;overflow:hidden;
+ white-space:nowrap;text-overflow:ellipsis;margin:1px 0}
+.native-compact #whole-info{display:none}
+.native-compact #whole-panel>.align-panel{display:none}
+.native-compact #syllable-panel{display:flex;flex-direction:column;gap:5px}
+.native-compact #syllable-panel>h2,.native-compact #syllable-panel>.small{display:none}
+.native-compact .syllables{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.native-compact .syllable,.native-compact .syllable[aria-pressed=true]{
+ min-height:46px;padding:3px 2px;border-radius:10px;box-shadow:0 2px 0 #e0c7e9}
+.native-compact .syllable b{font-size:20px;line-height:25px}
+.native-compact .syllable span{font-size:10px;line-height:13px;margin:0}
+.native-compact .syllable .quality,.native-compact .syllable .mini{display:none}
+.native-compact .compact-toolbar{display:grid;grid-template-columns:1.6fr 1fr;gap:6px}
+.native-compact .compare-trigger,.native-compact .compact-settings{height:32px;min-height:32px;margin:0;padding:5px 6px;
+ font:750 11.5px/1.1 system-ui,sans-serif;border-radius:10px;cursor:pointer}
+.native-compact .compare-trigger{box-shadow:0 2px 0 #d8b3e7}
+.native-compact .compact-settings{color:#683383;background:#f1e5f7;border:1px solid #d1b0e4;box-shadow:0 2px 0 #dfcce9}
+.native-compact #large,.native-compact>.panel #boundary-controls,.native-compact>.panel #detail{display:none}
+.native-compact>.panel:last-of-type,.native-compact>footer{display:none}
+.compact-advanced,.compare-guide{position:fixed;box-sizing:border-box;margin:auto;padding:0;border:1px solid #dec3e7;
+ background:#fdf7ff;color:#503066;width:calc(100vw - 18px);max-width:530px;max-height:min(86dvh,780px);
+ overflow:auto;border-radius:19px;box-shadow:0 20px 50px #32173e65}
+.compact-advanced::backdrop,.compare-guide::backdrop{background:#29133591}
+.compact-advanced:not([open]),.compare-guide:not([open]){display:none}
+.compact-advanced .advanced-header{display:flex;align-items:center;justify-content:space-between;gap:8px;
+ position:sticky;top:0;background:#f5e7f9;padding:10px 12px;z-index:2;border-bottom:1px solid #e6cce9}
+.compact-advanced #advanced-content{display:flex;flex-direction:column;gap:10px;padding:12px}
+.compact-advanced .align-panel{margin:0}
+.compact-advanced #large{width:100%;max-height:170px}
+.compact-advanced .legend{font-size:11px}
+.compact-advanced .note{font-size:12px}
+.compact-advanced .panel{padding:12px;margin:0;border-radius:13px}
+.compact-advanced footer{font-size:11px;margin:0}
+.compact-close{min-height:32px;border:1px solid #d8b6e7;border-radius:9px;background:#fff;color:#6a3a80;
+ font:750 12px/1.2 system-ui;padding:7px 12px;cursor:pointer}
+.compare-guide{padding:14px;overflow:auto}
+.compare-guide #cmp-close{width:100%;margin-top:10px}
+.compare-guide .compare-panel svg{max-height:110px}
+.compare-guide .compare-note{font-size:12px}
+@media(max-height:625px){
+ .native-compact{gap:4px;padding-top:5px;padding-bottom:5px}
+ .native-compact .kicker{display:none}
+ .native-compact>.panel{padding:6px 8px}
+ .native-compact .phrase{font-size:26px;line-height:29px}
+ .native-compact .file-upload{height:33px;min-height:33px;margin:2px 0 0}
+ .native-compact .actions{margin:2px 0 0}
+ .native-compact .action{min-height:33px}
+ .native-compact .whole-duration{padding:3px 5px}
+ .native-compact .syllable,.native-compact .syllable[aria-pressed=true]{min-height:39px}
+ .native-compact .syllable b{font-size:18px;line-height:21px}
+ .native-compact #whole-chart{max-height:24dvh}
+}
+@media(max-height:505px){
+ .native-compact h1{font-size:16px;line-height:19px}
+ .native-compact .pinyin{display:none}
+ .native-compact #whole-active{display:none}
+ .native-compact .status{min-height:12px;line-height:12px}
+ .native-compact #whole-chart{max-height:23dvh}
+}
+</style></head><body><main class="native-compact native-compact-v1">
 <span class="kicker">🐼 PANDA GO · ТЕСТ НОСИТЕЛЬНИЦЫ · 4 СЛОГА</span>
-<h1>🎙️ Тест реальной записи</h1>
+<h1>🎙️ Проверка китайских тонов</h1>
 <p class="lead">Отдельный тест для записи «我是学生». Загрузим аудио локально, посмотрим реальную длительность и тоновые кривые <b>четырёх</b> слогов. Оценки правильности нет.</p>
 <section class="panel" aria-label="Загрузка исходной записи и сравнение">
 <div class="phrase" lang="zh-Hans">我是学生。</div><div class="pinyin">Wǒ shì xuésheng.</div>
 <div class="translation">Я студент.</div>
-<div class="file-upload"><label for="reference-file">🎧 Загрузить MP3/M4A китаянки</label><input id="reference-file" type="file" accept=".mp3,.m4a,.wav,.ogg,.webm,audio/*"/><p class="file-hint">Выбери файл <b>wo_shi_xuesheng_native_reference.mp3</b> из загрузок телефона. Аудио анализируется только в браузере и не отправляется в GitHub.</p></div>
-<div class="actions"><button class="action alt" id="listen" type="button" disabled>🔊 Исходный голос</button><button class="action" id="record" type="button" disabled>🎙 Записать себя</button><button class="action alt" id="stop" type="button" disabled>■ Завершить запись</button><button class="action alt" id="replay" type="button" disabled>🔁 Мой голос</button></div>
+<div class="file-upload">
+ <label class="upload-btn" for="reference-file">📁 Выбрать MP3</label>
+ <span id="chosen-filename" class="filename" title="Запись не выбрана">Запись не выбрана</span>
+ <input id="reference-file" class="sr-file" type="file" accept=".mp3,.m4a,.wav,.ogg,.webm,audio/*" aria-label="Загрузить аудиозапись китаянки"/>
+</div>
+<div class="actions"><button class="action alt" id="listen" type="button" disabled>🔊 Образец</button><button class="action" id="record" type="button" disabled>🎙 Запись</button><button class="action alt" id="stop" type="button" disabled>■ Стоп</button><button class="action alt" id="replay" type="button" disabled>↻ Повтор</button></div>
 <div class="rms"><div id="level"></div></div>
-<p id="status" class="status" role="status" aria-live="polite">Выбери исходный MP3, чтобы построить график.</p>
+<p id="status" class="status" role="status" aria-live="polite">Выбери MP3 с фразой 我是学生</p>
 </section>
 
 <section class="panel" aria-labelledby="whole-title" id="whole-panel">
-<div class="whole-head"><h2 id="whole-title">📈 Всё предложение — одна шкала</h2><span class="whole-live" id="whole-state">Эталон</span></div>
+<div class="whole-head"><h2 id="whole-title">📈 Вся фраза · тоновая шкала</h2><span class="whole-live" id="whole-state">Эталон</span></div>
 <p class="small">Пунктир — загруженная запись китаянки. Фиолетовая линия появляется во время речи и после записи показывает твой голос целиком. Обе линии построены по настоящему времени в секундах, без растяжения фразы. По вертикали — относительная высота голоса.</p>
 <svg class="whole-svg" id="whole-chart" viewBox="0 0 560 242" role="img" aria-label="Общий график высоты голоса по настоящему времени в секундах">
  <g stroke="#eee3f2" stroke-dasharray="4 5" stroke-width="1"><path d="M28 37H542 M28 77H542 M28 117H542 M28 157H542"/></g>
@@ -109,12 +217,12 @@
  </details>
 </div>
 </section>
-<section class="panel"><h2>Тон каждого слога</h2>
+<section class="panel" id="syllable-panel"><h2>Тон каждого слога</h2>
 <p class="small">Нажми на иероглиф: внизу появится увеличенная кривая. Пунктир — загруженный образец; фиолетовая линия — твой голос.</p>
 <div class="syllables" id="syllables" role="group" aria-label="Четыре слога предложения"></div>
 
-<button id="compare-tones" class="compare-trigger" type="button" disabled aria-expanded="false" aria-controls="comparison-guide">📈 Сравнить с правильными тонами</button>
-<div id="comparison-guide" class="compare-guide" hidden aria-live="polite">
+<div class="compact-toolbar"><button id="compare-tones" class="compare-trigger" type="button" disabled aria-expanded="false" aria-controls="comparison-guide">📈 Сравнить тоны</button><button id="compact-settings" type="button" class="compact-settings">⚙ Подробнее</button></div>
+<dialog id="comparison-guide" class="compare-guide" aria-live="polite" aria-modal="true" aria-label="Сравнение нормативных схем и измеренных тонов">
  <div class="compare-head"><b id="cmp-title">我 · wǒ</b><span id="cmp-tone">Третий тон</span></div>
  <div class="compare-columns">
   <div class="compare-panel">
@@ -139,7 +247,8 @@
  </div>
  <p class="compare-note" id="cmp-note">Выбери иероглиф, чтобы увидеть объяснение.</p>
  <p class="compare-warning" id="cmp-warning">Схема справа и измерение слева служат разным целям: сравнивай направление движения, а не высоту или идеальное совпадение линий. Границы слогов предварительные. Оценка правильности не выставляется.</p>
-</div>
+<button type="button" id="cmp-close" class="compact-close">✕ Закрыть сравнение</button>
+</dialog>
 
 <svg id="large" class="chart" viewBox="0 0 340 150" role="img" aria-label="Сравнение контура высоты выбранного слога"><path d="M25 35H323 M25 73H323 M25 111H323" stroke="#e8daed" stroke-dasharray="4 5"/><path id="reference-line" stroke="#b09bbf" stroke-width="3.8" stroke-dasharray="7 6" fill="none"/><path id="learner-line" stroke="#7a50b5" stroke-width="3.8" fill="none"/><text x="8" y="14" fill="#886a98" font-size="10">Выше ↑</text><text x="267" y="142" fill="#886a98" font-size="10">Время →</text></svg>
 <div class="legend"><span><i class="line ref"></i> Образец урока</span><span><i class="line"></i> Твой голос</span></div>
@@ -148,6 +257,10 @@
 <section class="panel"><h2>Почему пока без оценки?</h2><p class="small">Высота голоса измеряется из загруженного MP3, но переходы между слогами автоматически определяются только приблизительно. <b>我</b> — 3-й тон (часто низкий), <b>是</b> — 4-й, <b>学</b> — 2-й, <b>生</b> — нейтральный. Даже хороший график ещё не доказывает правильность всех звуков.</p></section>
 <footer>🔒 Загруженная запись и твой голос остаются на устройстве. Файлы не отправляются на сервер и не публикуются в GitHub. Личность и носительство диктора устанавливаются вне графика. Микрофон требует HTTPS и разрешения Chrome.</footer>
 </main>
+<dialog id="compact-advanced" class="compact-advanced" aria-label="Дополнительная настройка анализа">
+ <div class="advanced-header"><strong>⚙️ Дополнительный анализ</strong><button type="button" id="advanced-close" class="compact-close">✕ Закрыть</button></div>
+ <div id="advanced-content"></div>
+</dialog>
 <script type="module">
 import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
 import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
@@ -320,7 +433,8 @@ function renderToneComparison(){
  const pane=$('comparison-guide'),btn=$('compare-tones');
  btn.disabled=!reference?.valid;
  btn.setAttribute('aria-expanded',String(compareOpen));
- pane.hidden=!compareOpen;
+ if(compareOpen&&!pane.open)pane.showModal();
+ if(!compareOpen&&pane.open)pane.close();
  if(!compareOpen)return;
  const tone=toneTeaching[selected],measure=measuredSyllable(selected);
  $('cmp-title').textContent=tone.zh+' · '+tone.py;
@@ -341,6 +455,8 @@ $('compare-tones').addEventListener('click',()=>{
  compareOpen=!compareOpen;
  renderToneComparison();
 });
+$('cmp-close').addEventListener('click',()=>{compareOpen=false;renderToneComparison();});
+$('comparison-guide').addEventListener('close',()=>{compareOpen=false;$('compare-tones').setAttribute('aria-expanded','false');});
 
 function render(){
  const parent=$('syllables');parent.innerHTML='';
@@ -594,6 +710,8 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&recorder?.
 $('reference-file').addEventListener('change',async()=>{
  const f=$('reference-file').files?.[0];
  if(!f)return;
+ $('chosen-filename').textContent=f.name;
+ $('chosen-filename').title=f.name;
  if(f.size>20*1024*1024||f.size<100){say('Нужна аудиозапись размером от 100 байт до 20 МБ.');return;}
  if(recorder?.state==='recording'){recorder.stop();}
  $('listen').disabled=true;$('record').disabled=true;$('guided-align').disabled=true;
@@ -604,5 +722,17 @@ $('reference-file').addEventListener('change',async()=>{
  await load();
 });
 window.addEventListener('pagehide',()=>{if(sourceURL)URL.revokeObjectURL(sourceURL);});
+
+(function setupCompactDrawer(){
+ const dialog=$('compact-advanced');
+ const content=$('advanced-content');
+ const chart=$('large'),chartLegend=chart.nextElementSibling;
+ const moving=[document.querySelector('#whole-panel>.align-panel'),chart,chartLegend,
+   $('boundary-controls'),$('detail'),document.querySelector('main>section.panel:last-of-type'),
+   document.querySelector('main>footer')];
+ for(const item of moving){if(item)content.append(item);}
+ $('compact-settings').addEventListener('click',()=>{if(!dialog.open)dialog.showModal();});
+ $('advanced-close').addEventListener('click',()=>{if(dialog.open)dialog.close();});
+})();
 wholeGuides();render();updateWhole();
 </script></body></html>
