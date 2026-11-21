@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="panda-go-lesson-version" content="4">
 <meta name="theme-color" content="#9e2cc9">
 <title>Panda Go · HSK 2 · Урок 9 · Здоровье и самочувствие</title>
 <script>
@@ -1994,100 +1995,62 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 }
 
 
-/* HSK 2 Lesson 9 – exact approved cover photograph, v6.
-   Image contains Panda Go branding, sections, call-to-action and the proverb.
-   Crop only Android/browser chrome from the source screenshot; never stretch the image. */
-.course-layout #app[data-view="1"] #pg433 .pg433-content{
-  width:100%!important;height:100%!important;min-height:0!important;
-  display:flex!important;flex-direction:column!important;align-items:center!important;
-  justify-content:center!important;flex:1 1 0%!important;
-  margin:0!important;padding:0!important;overflow:hidden!important;
-  overscroll-behavior:none!important;
-  background:linear-gradient(180deg,#f5d6fa 0%,#f7e3fb 27%,#eac7e7 76%,#e4c0df 100%)!important;
+/* Lesson 9 V4: keep the approved poster at its native 3:4 ratio. */
+.course-layout #app[data-view="1"] #pg433 .pg433-content {
+  display:block!important;
+  width:100%!important;
+  padding:0!important;
+  margin:0!important;
+  overflow:hidden auto!important;
+  background:#e9bee7!important;
 }
-.course-layout #app[data-view="1"] #pg433 .lesson9-approved-cover-shell{
-  container-type:size;display:flex!important;flex-direction:column!important;
-  justify-content:center!important;align-items:center!important;
-  width:100%!important;max-width:100%!important;
-  height:100%!important;min-height:0!important;flex:1 1 0%!important;
-  padding:0!important;margin:0!important;overflow:hidden!important;
-  background:transparent!important;
+#app #pg433 .l9-cover {
+  width:100%;
+  min-height:100%;
+  display:grid;
+  place-items:start center;
+  background:#e9bee7 url("./assets/hsk2-lesson4-hobby-3d/garden.webp") center bottom/cover no-repeat;
 }
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-v6{
-  position:relative!important;display:block!important;flex:none!important;
-  width:min(100%,75cqh)!important;
-  max-width:100%!important;max-height:100%!important;
-  aspect-ratio:900 / 1200!important;
-  height:auto!important;margin:0 auto!important;padding:0!important;
-  overflow:hidden!important;isolation:isolate;
+#app #pg433 .l9-cover-poster {
+  position:relative;
+  width:min(100%, max(320px, 75dvh));
+  aspect-ratio:3 / 4;
 }
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-image{
-  display:block!important;position:static!important;
-  width:100%!important;height:auto!important;max-height:100%!important;
-  aspect-ratio:900 / 1200!important;object-fit:contain!important;
-  object-position:center!important;max-width:100%!important;
-  margin:0!important;padding:0!important;filter:none!important;
-  transform:none!important;-webkit-user-drag:none;user-select:none;
+#app #pg433 .l9-cover-poster img {
+  display:block;
+  width:100%;
+  height:auto;
+  -webkit-user-drag:none;
+  user-select:none;
+  mask-image:linear-gradient(#000 98%, transparent);
 }
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-hotspot{
-  position:absolute!important;z-index:3!important;
-  display:block!important;margin:0!important;padding:0!important;
-  border:0!important;background:transparent!important;
-  border-radius:12px!important;box-shadow:none!important;
-  cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
-  transition:background-color .16s,box-shadow .16s;
+#app #pg433 .l9-cover-link {
+  position:absolute;
+  display:block;
+  margin:0;
+  padding:0;
+  min-height:0;
+  border:0;
+  border-radius:10px;
+  background:transparent;
+  box-shadow:none;
+  touch-action:manipulation;
 }
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-hotspot:focus-visible{
-  outline:3px solid #69218e!important;outline-offset:1px;
+#app #pg433 .l9-cover-link:active {
+  background:#fff4;
+  transform:none;
 }
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-hotspot:active{
-  transform:none!important;background:#ffffff22!important;
-  box-shadow:inset 0 0 0 3px #ffffff99!important;filter:brightness(.96)!important;
+#app #pg433 .l9-cover-link:focus-visible {
+  outline:3px solid #69218e;
+  outline-offset:-2px;
 }
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-back{
-  left:7%!important;top:.2%!important;width:10%!important;height:3.8%!important;
-  border-radius:50%!important;
-}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-words{
-  left:8.2%!important;top:51%!important;width:28%!important;height:7.6%!important;
-}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-tests{
-  left:36.5%!important;top:51%!important;width:27%!important;height:7.6%!important;
-}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-grammar{
-  left:63.4%!important;top:51%!important;width:28.5%!important;height:7.6%!important;
-}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-story{
-  left:8.2%!important;top:58.6%!important;width:28%!important;height:7%!important;
-}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-speech{
-  left:36.5%!important;top:58.6%!important;width:27%!important;height:7%!important;
-}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-dialogue{
-  left:63.4%!important;top:58.6%!important;width:28.5%!important;height:7%!important;
-}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-start{
-  left:7.7%!important;top:66.7%!important;width:84.4%!important;height:6.2%!important;
-  border-radius:999px!important;
-}
-
-/* Approved lesson 9 artwork and precisely mapped interactive regions. */
-.course-layout #app[data-view="1"] #pg433 .pg433-content{
- background:linear-gradient(#f5d6f5a0,#f9e7f77a),url("./assets/hsk2-lesson4-hobby-3d/garden.webp") center/cover no-repeat!important;
-}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-v6,
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-image{
- aspect-ratio:3 / 4!important;
-}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-v6{width:min(100%,75cqh)!important;}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-back{left:6.5%!important;top:0!important;width:7.5%!important;height:5.7%!important;}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-words{left:8.7%!important;top:56%!important;width:28.3%!important;height:8.2%!important;}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-tests{left:37%!important;top:56%!important;width:26%!important;height:8.2%!important;}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-grammar{left:63%!important;top:56%!important;width:28.5%!important;height:8.2%!important;}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-story{left:8.7%!important;top:64.2%!important;width:28.3%!important;height:8.4%!important;}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-speech{left:37%!important;top:64.2%!important;width:26%!important;height:8.4%!important;}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-dialogue{left:63%!important;top:64.2%!important;width:28.5%!important;height:8.4%!important;}
-.course-layout #app[data-view="1"] #pg433 .lesson9-poster-start{left:15.9%!important;top:73.8%!important;width:68.2%!important;height:6%!important;}
+#app #pg433 .l9-cover-back {left:6%;top:0;width:9%;height:6.7%;border-radius:50%;}
+#app #pg433 .l9-cover-tile {width:28%;height:8.3%;top:56%;}
+#app #pg433 .l9-cover-tile:nth-of-type(n+4) {top:64.3%;}
+#app #pg433 .l9-cover-tile:nth-of-type(3n+1) {left:8.7%;}
+#app #pg433 .l9-cover-tile:nth-of-type(3n+2) {left:36.7%;}
+#app #pg433 .l9-cover-tile:nth-of-type(3n) {left:64.7%;}
+#app #pg433 .l9-cover-start {left:15.8%;top:73.6%;width:68.4%;height:6.5%;border-radius:999px;}
 .course-layout #app[data-view="6"] #pg433 .detail-hero{min-height:0!important;height:auto!important;padding:3px!important;gap:6px!important;display:grid!important;grid-template-columns:72px minmax(0,1fr)!important;align-items:center!important;}
 .course-layout #app[data-view="6"] #pg433 .detail-hero .about-hero-photo{width:72px!important;height:72px!important;object-fit:contain!important;}
 .course-layout #app[data-view="6"] #pg433 .hero-message{margin:0!important;padding:5px!important;min-height:0!important;}
@@ -2101,42 +2064,39 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 .course-layout #app[data-view="6"] #pg433 .tone-row .tone-strokes svg{width:12px!important;height:15px!important;stroke:#258a51!important}
 .course-layout #app #pg433 [data-say]{opacity:.48!important;}
 
-/* Lesson 9 v3: responsive cover modules and one-column paged practice. */
-.course-layout #app[data-view="1"] #pg433 .pg433-content{display:block!important;padding:0!important;margin:0!important;height:100%!important;overflow:hidden!important;background:#f6d8f2!important;}
-.course-layout #app[data-view="1"] #pg433 .lesson9-mobile-cover{height:100%;width:100%;min-height:0;display:grid;grid-template-rows:6.4% 32% 12.4% 15.4% 6.8% minmax(0,1fr);align-items:stretch;justify-items:center;gap:0;overflow:hidden;background:linear-gradient(#f5d9f7,#f3c9f0 70%,#edc8e8);container-type:inline-size;}
-.lesson9-mobile-cover .l9-cover-brand,.lesson9-mobile-cover .l9-cover-main{min-height:0;width:100%;position:relative;overflow:hidden;}
-.lesson9-mobile-cover .l9-cover-brand{background:linear-gradient(#eac1fa,#f5dbf7);}
-.lesson9-mobile-cover .l9-art{display:block;width:100%;height:100%;max-width:100%;overflow:hidden;}
-.lesson9-mobile-cover .l9-cover-brand .l9-art{height:auto;}
-.lesson9-mobile-cover .l9-cover-back{position:absolute;left:6%;top:0;width:9%;height:100%;border-radius:50%;}
-.lesson9-mobile-cover .l9-cover-main{background:linear-gradient(#f4d7fa,#f8d9f2 70%,#f0c6da);display:flex;align-items:flex-start;}
-.lesson9-mobile-cover .l9-cover-main .l9-art{width:100%;height:100%;}
-.lesson9-mobile-cover .l9-cover-summary,.lesson9-mobile-cover .l9-cover-grid{background:linear-gradient(145deg,#fffaff,#fdf3ff);width:84%;min-height:0;margin:1cqw 0;border-radius:3.8cqw;box-shadow:0 1cqw 1.8cqw #8e3c9850;}
-.lesson9-mobile-cover .l9-cover-summary{position:relative;display:grid;grid-template-columns:10cqw minmax(0,1fr) 10cqw;gap:1cqw;align-items:center;padding:6cqw 2cqw 1.5cqw;text-align:center;}
-.lesson9-mobile-cover .l9-cover-summary h2{position:absolute;top:0;left:12%;width:76%;height:6cqw;display:grid;place-items:center;margin:0;border-radius:999px;color:#fff;background:linear-gradient(#d97bf3,#7b1ebc);font-size:4.4cqw;line-height:1;font-weight:850;}
-.lesson9-mobile-cover .l9-cover-summary p{font-size:3.25cqw;line-height:1.17;font-weight:760;margin:0;color:#281042;}
-.lesson9-mobile-cover .l9-summary-icon{width:100%;height:auto;max-height:100%;}
-.lesson9-mobile-cover .l9-cover-grid{display:grid;grid-template:repeat(2,minmax(0,1fr))/repeat(3,minmax(0,1fr));padding:1.2cqw 2cqw;}
-.lesson9-mobile-cover .l9-cover-grid button{display:grid;grid-template-rows:minmax(0,1fr) auto;justify-items:center;align-items:center;min-width:0;min-height:0;background:none!important;border:0!important;box-shadow:none!important;color:#281042;padding:0.5cqw 0.2cqw;gap:.3cqw;font-size:3.25cqw;font-weight:800;line-height:1.1;}
-.lesson9-mobile-cover .l9-cover-grid button:not(:nth-child(3n)){border-right:1px solid #d9b1db!important;}
-.lesson9-mobile-cover .l9-cover-grid button:nth-child(-n+3){border-bottom:1px solid #d9b1db!important;}
-.lesson9-mobile-cover .l9-tile-art{width:12cqw;height:100%;min-height:0;max-height:100%;}
-.lesson9-mobile-cover .l9-cover-start{width:84%;min-height:0;margin:1cqw 0 .5cqw;padding:0;border:0;border-radius:999px;background:linear-gradient(#d98af4,#a343d6 55%,#741db2);box-shadow:0 .7cqw 1.3cqw #7921a660;color:white;font-size:5.3cqw;font-weight:850;text-shadow:0 1px 2px #5e1689;}
-.lesson9-mobile-cover .l9-cover-bottom{width:100%;min-height:0;background:linear-gradient(#eac7e900,#eac7e933),url("./assets/hsk2-lesson4-hobby-3d/garden.webp") center bottom/cover no-repeat;display:flex;align-items:flex-start;justify-content:center;padding-top:1cqw;overflow:hidden;}
-.lesson9-mobile-cover .l9-scroll-art{width:65%;height:auto;max-height:85%;object-fit:contain;}
-.l9-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
-.course-layout #app[data-view="2"] #pg433 .l9-one-column,.course-layout #app[data-view="6"] #pg433 .l9-speech-screen{width:100%!important;height:100%!important;min-height:0!important;display:grid!important;gap:4px!important;overflow:hidden!important;}
-.course-layout #app[data-view="2"] #pg433 .l9-one-column{grid-template-rows:auto auto minmax(0,1fr) auto auto!important;}
-.course-layout #app[data-view="6"] #pg433 .l9-speech-screen{grid-template-rows:auto auto auto minmax(0,1fr) auto auto auto!important;}
+/* Lesson 9 V4: single-column practice lists with pinned controls. */
+.course-layout #app[data-view="2"] #pg433 .l9-one-column,
+.course-layout #app[data-view="6"] #pg433 .l9-speech-screen{
+  display:grid!important;width:100%!important;height:100%!important;min-height:0!important;gap:4px!important;
+}
+.course-layout #app[data-view="2"] #pg433 .l9-one-column{grid-template-rows:auto minmax(0,1fr) auto auto!important;}
+.course-layout #app[data-view="6"] #pg433 .l9-speech-screen{grid-template-rows:auto auto minmax(0,1fr) auto auto auto!important;}
 .course-layout #app[data-view="6"] #pg433 .pg433-content{display:flex!important;flex-direction:column!important;padding:5px 7px!important;overflow:hidden!important;min-height:0!important;}
-#app #pg433 .l9-pager{display:grid;grid-template-columns:1fr 1.35fr 1fr;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#6c287e;text-align:center;}
-#app #pg433 .l9-pager button,#app #pg433 .l9-speech-modes button{min-height:28px;border:1px solid #d9b0df;border-radius:12px;background:#fff5ff;color:#602278;font-size:12px;font-weight:800;padding:4px;}
-#app #pg433 .l9-pager button[aria-pressed="true"],#app #pg433 .l9-speech-modes button[aria-pressed="true"]{background:linear-gradient(#eb80df,#9622b7);color:white;border-color:#a748b9;}
-#app #pg433 .l9-vocab-paged,#app #pg433 .l9-speech-list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;min-height:0!important;height:100%!important;gap:5px!important;margin:0!important;padding:0!important;container-type:size;}
-#app #pg433 .l9-word-card,#app #pg433 .l9-speech-row{display:grid!important;align-items:center!important;min-width:0!important;min-height:0!important;height:100%!important;width:100%!important;margin:0!important;padding:4px 5px!important;gap:5px!important;border:1px solid #d5a6de!important;background:#fff9ff!important;border-radius:14px!important;overflow:hidden!important;box-shadow:0 2px 0 #c599d2!important;}
-#app #pg433 .l9-word-card{grid-template-columns:min(24cqw,calc((100cqh - 15px)/4 - 10px)) minmax(0,1fr) minmax(27px,12cqw) 32px!important;grid-template-rows:minmax(0,1fr)!important;}
-#app #pg433 .l9-speech-row{grid-template-columns:min(25cqw,calc((100cqh - 15px)/4 - 10px)) minmax(0,1fr) 33px!important;grid-template-rows:minmax(0,1fr)!important;}
-#app #pg433 .l9-word-card .l9-word-art,#app[data-view="6"] #pg433 .l9-speech-row .l9-speech-art{display:block!important;width:100%!important;height:auto!important;aspect-ratio:1!important;max-height:100%!important;border-radius:9px!important;object-fit:contain!important;align-self:center!important;}
+#app #pg433 .l9-speech-modes button{min-height:28px;border:1px solid #d9b0df;border-radius:12px;background:#fff5ff;color:#602278;font-size:12px;font-weight:800;padding:4px;}
+#app #pg433 .l9-speech-modes button[aria-pressed="true"]{background:linear-gradient(#eb80df,#9622b7);color:white;border-color:#a748b9;}
+#app #pg433 .l9-practice-list{
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;align-content:start;
+  min-width:0;min-height:0;height:auto!important;margin:0!important;padding:0 2px 4px 0!important;gap:6px!important;
+  overflow:hidden auto;overscroll-behavior-y:contain;scrollbar-width:thin;
+}
+#app #pg433 .l9-word-card,#app #pg433 .l9-speech-row{
+  --art-size:clamp(80px, 27vw, 120px);
+  display:grid!important;grid-template-columns:var(--art-size) minmax(0,1fr) 36px!important;
+  grid-template-rows:auto!important;align-items:center!important;min-width:0!important;
+  width:100%!important;height:auto!important;margin:0!important;padding:5px 7px!important;gap:8px!important;
+  border:1px solid #d5a6de!important;background:#fff9ff!important;border-radius:14px!important;
+  box-shadow:0 2px 0 #c599d2!important;
+}
+.course-layout #app[data-view="6"] #pg433 .l9-speech-row{grid-template-columns:var(--art-size) minmax(0,1fr) 36px!important;}
+#app #pg433 .l9-word-card > svg.l9-word-art,
+.course-layout #app[data-view="6"] #pg433 .l9-speech-row > svg.l9-speech-art{
+  display:block!important;grid-area:1 / 1!important;width:var(--art-size)!important;height:var(--art-size)!important;
+  border:1px solid #f5cf76!important;border-radius:10px!important;
+}
+#app #pg433 .l9-word-card > .l9-word-copy,
+#app #pg433 .l9-speech-row > .l9-word-copy{grid-area:1 / 2!important;align-self:center!important;}
+#app #pg433 .l9-word-card > .orb,
+#app #pg433 .l9-speech-row > :is(.l9-speech-actions,.orb){grid-area:1 / 3!important;justify-self:center;}
 #app #pg433 .l9-word-copy{display:flex!important;flex-direction:column!important;min-width:0!important;gap:2px!important;justify-content:center!important;align-items:flex-start!important;}
 #app #pg433 .l9-word-copy .cn{font-size:clamp(17px,5.6vw,25px)!important;line-height:1.08!important;white-space:normal!important;word-break:break-word!important;text-shadow:none!important;}
 #app #pg433 .l9-word-copy .py{font-weight:750!important;font-size:clamp(11px,3.7vw,16px)!important;line-height:1.15!important;white-space:normal!important;overflow-wrap:anywhere!important;}
@@ -2145,7 +2105,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #app #pg433 .l9-word-tones .tone-strokes svg{width:clamp(9px,3vw,15px)!important;height:17px!important;stroke:#258a51!important;flex-shrink:1;}
 #app #pg433 .l9-word-card .orb,#app #pg433 .l9-speech-row .orb{width:30px!important;height:30px!important;min-width:30px!important;margin:0!important;}
 #app #pg433 .l9-speech-actions{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;}
-#app #pg433 .l9-speech-row .l9-word-tones{display:flex;align-items:center;gap:4px;}
+#app #pg433 .l9-word-copy .l9-word-tones{display:flex;align-items:center;gap:4px;}
 #app #pg433 .l9-speech-row .tonemarks{display:flex!important;gap:2px!important;}
 #app #pg433 .l9-speech-row .tone-number{width:14px!important;height:14px!important;font-size:10px!important;line-height:14px!important;}
 #app #pg433 .l9-speech-modes,#app #pg433 .l9-record-controls{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
@@ -2155,7 +2115,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #app #pg433 .l9-speech-note{font-size:10px!important;text-align:center;line-height:1.2;margin:0!important;}
 #app #pg433 .l9-speech-screen #feedback:empty,#app #pg433 .l9-one-column #feedback:empty{display:none!important;}
 #app #pg433 .l9-speech-screen #feedback:not(:empty),#app #pg433 .l9-one-column #feedback:not(:empty){font-size:10px!important;line-height:1.1!important;margin:0!important;padding:3px!important;}
-@media (max-height:610px){#app #pg433 .l9-word-copy .cn{font-size:17px!important}#app #pg433 .l9-word-copy .py,#app #pg433 .l9-word-copy .ru{font-size:11px!important}#app #pg433 .l9-speech-row .orb{width:25px!important;height:25px!important;min-width:25px!important}#app #pg433 .l9-speech-row .l9-word-tones{gap:1px}#app #pg433 .l9-speech-row .tone-number{width:12px!important;height:12px!important;font-size:9px!important;line-height:12px!important}}
+@media (max-height:610px){#app #pg433 .l9-word-copy .cn{font-size:17px!important}#app #pg433 .l9-word-copy .py,#app #pg433 .l9-word-copy .ru{font-size:11px!important}#app #pg433 .l9-speech-row .orb{width:25px!important;height:25px!important;min-width:25px!important}#app #pg433 .l9-word-copy .l9-word-tones{gap:1px}#app #pg433 .l9-speech-row .tone-number{width:12px!important;height:12px!important;font-size:9px!important;line-height:12px!important}}
 </style>
 </head>
 <body>
@@ -2447,6 +2407,7 @@ function render(resetScroll = false) {
       button.setAttribute('aria-label',courseSections[index].name);
     }
   });
+  const practiceScroll = resetScroll ? 0 : workspace.querySelector(".l9-practice-list")?.scrollTop ?? 0;
   workspace.innerHTML = [intro,newWords,quiz,grammar,day,tones,chat,finish][step-1]();
   back.hidden = step === 1;
   const inQuiz = step === 3 && state.quizTest !== null;
@@ -2469,42 +2430,30 @@ function render(resetScroll = false) {
   }
   next.disabled = !currentStepComplete();
   next.setAttribute('aria-label',next.disabled ? 'Заверши текущее упражнение, чтобы продолжить' : next.textContent);
+  const practiceList = workspace.querySelector(".l9-practice-list");
+  if (practiceList) practiceList.scrollTop = practiceScroll;
   if (resetScroll) workspace.scrollTop = 0;
 }
-const lesson9CoverSource = './assets/hsk2-lesson9-health-cover-v1.webp';
-function lesson9CoverArt(className, bounds) {
-  const [left, top, width, height] = bounds.split(' ').map(Number);
-  return '<svg class="' + className + '" viewBox="0 0 ' + width + ' ' + height + '" aria-hidden="true" focusable="false">' +
-    '<svg width="' + width + '" height="' + height + '" overflow="hidden"><image href="' + lesson9CoverSource +
-    '" x="' + -left + '" y="' + -top + '" width="1100" height="1430"/></svg></svg>';
-}
-
-function coverCrop(cls,box){
- return '<svg class="'+cls+'" viewBox="'+box+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><image href="./assets/hsk2-lesson9-health-cover-v1.webp" width="1056" height="1408"/></svg>';
-}
 function intro(){
- const tiles=[['Слова',2,'180 790 140 76'],['Тесты',3,'480 790 116 76'],['Грамматика',4,'757 790 112 76'],['Мой рассказ',5,'192 910 112 74'],['Произношение',6,'465 907 128 77'],['Диалог',7,'748 912 134 69']];
- return '<section class="lesson9-mobile-cover" aria-label="HSK 2 · Урок 9 · Здоровье и самочувствие">'+
- '<header class="l9-cover-brand">'+coverCrop('l9-art','0 0 1056 88')+'<a href="./hsk2-start.html" class="l9-cover-back" aria-label="Назад к курсу"></a></header>'+
- '<div class="l9-cover-main">'+coverCrop('l9-art','0 88 1056 522')+'</div>'+
- '<section class="l9-cover-summary"><h2>Содержание урока:</h2>'+coverCrop('l9-summary-icon','105 675 125 99')+'<p>Научись говорить о своём самочувствии, описывать симптомы, обращаться к врачу и давать простые советы по здоровью.</p>'+coverCrop('l9-summary-icon','831 666 120 115')+'</section>'+
- '<div class="l9-cover-grid">'+tiles.map(([label,step,box])=>'<button type="button" data-step="'+step+'">'+coverCrop('l9-tile-art',box)+'<span>'+label+'</span></button>').join('')+'</div>'+
- '<button type="button" data-step="2" class="l9-cover-start">Начать урок →</button>'+
- '<div class="l9-cover-bottom">'+coverCrop('l9-scroll-art','250 1136 555 240')+'<span class="l9-sr">Знание языков — богатство, которое всегда с тобой.</span></div></section>';
-}
-let vocabPage=0, speechPage=0;
-function l9Pager(kind,page){
- return '<div class="l9-pager" aria-label="Страницы списка"><button type="button" data-'+kind+'-page="0" aria-pressed="'+(page===0)+'">1–4</button><span>Слова '+(page===0?'1–4':'5–8')+' из 8</span><button type="button" data-'+kind+'-page="1" aria-pressed="'+(page===1)+'">5–8</button></div>';
+  const tiles = [['Слова',2],['Тесты',3],['Грамматика',4],['Мой рассказ',5],['Произношение',6],['Диалог',7]];
+  return '<section class="l9-cover" aria-label="HSK 2 · Урок 9 · Здоровье и самочувствие">' +
+    '<div class="l9-cover-poster">' +
+    '<img src="./assets/hsk2-lesson9-health-cover-v1.webp" width="900" height="1200" ' +
+      'alt="Panda Go. Здоровье и самочувствие · 健康和身体状况 · Jiànkāng hé shēntǐ zhuàngkuàng. ' +
+      'Научись говорить о своём самочувствии, описывать симптомы, обращаться к врачу и давать простые советы по здоровью. ' +
+      'Знание языков — богатство, которое всегда с тобой.">' +
+    '<a href="./hsk2-start.html" class="l9-cover-link l9-cover-back" aria-label="Назад к курсу"></a>' +
+    tiles.map(([label,step]) => '<button type="button" class="l9-cover-link l9-cover-tile" data-step="' + step +
+      '" aria-label="' + label + '"></button>').join('') +
+    '<button type="button" class="l9-cover-link l9-cover-start" data-step="2" aria-label="Начать урок"></button>' +
+    '</div></section>';
 }
 function newWords(){
- const first=vocabPage*4;
  return '<section class="lesson9-vocab-screen l9-one-column" aria-label="Новые слова урока 9">'+
- '<h1 class="pill-title lesson9-vocab-heading">Новые слова</h1>'+l9Pager('vocab',vocabPage)+
- '<div class="word-list l9-vocab-paged">'+words.slice(first,first+4).map((word,j)=>{
- const i=first+j;
+ '<h1 class="pill-title lesson9-vocab-heading">Новые слова</h1>'+
+ '<div class="word-list l9-practice-list">'+words.map((word,i)=>{
  return '<article class="word-row l9-word-card">'+vocabImage(i,'about-illustration l9-word-art')+
- '<div class="l9-word-copy">'+hanzi(word.zh)+'<span class="py">'+word.py+'</span><span class="ru">'+word.ru+'</span></div>'+
- '<div class="l9-word-tones">'+toneStrokes(word.tones)+'</div>'+audioButton(word.zh,playIcon)+'</article>';
+ '<div class="l9-word-copy">'+hanzi(word.zh)+'<span class="py">'+word.py+'</span><span class="ru">'+word.ru+'</span><div class="l9-word-tones">'+toneStrokes(word.tones)+'</div></div>'+audioButton(word.zh,playIcon)+'</article>';
  }).join('')+'</div><div class="lesson9-vocab-completion">'+
  '<button type="button" class="about-manual-complete" data-words-read="1">'+(state.heardWords.length===8?'✓ Повторено 8 из 8':'✓ Повторил все 8 выражений')+'</button>'+
  '<p class="hint">Аудио носителя пока не подключено. Повтори по пиньиню.</p></div>'+safeStatus()+'</section>';
@@ -2683,14 +2632,13 @@ function toneGuide() {
     sample + '</strong>' + name + '</div>').join('') + '</div></details>';
 }
 function tones(){
- const wordView=state.toneTab==='words',first=speechPage*4;
+ const wordView=state.toneTab==='words';
  return '<section class="l9-speech-screen"><div class="l9-speech-modes"><button type="button" data-practice-mode="mic" aria-pressed="'+(state.practiceMode==='mic')+'">🎙 Микрофон</button><button type="button" data-practice-mode="self" aria-pressed="'+(state.practiceMode==='self')+'">Самопроверка</button></div>'+
  '<div class="tone-tabs panel"><button type="button" data-tone-tab="words" class="'+(wordView?'primary':'soft')+'">Слова (8)</button><button type="button" data-tone-tab="phrases" class="'+(!wordView?'primary':'soft')+'">Фразы (8)</button></div>'+
- l9Pager('speech',speechPage)+'<div class="l9-speech-list">'+(wordView?words.slice(first,first+4).map((word,j)=>{
- const i=first+j;
+ '<div class="l9-practice-list">'+(wordView?words.map((word,i)=>{
  return '<article class="tone-row l9-speech-row">'+vocabImage(i,'about-illustration l9-speech-art')+'<div class="l9-word-copy">'+hanzi(word.zh)+translate([word.zh,word.py,word.ru])+'<div class="l9-word-tones">'+toneStrokes(word.tones)+pitchRow(word.tones)+'</div></div>'+
  '<div class="l9-speech-actions">'+audioButton(word.zh)+(state.practiceMode==='self'?'<button type="button" class="orb mic" data-self-spoken="'+i+'" aria-label="Повторил '+word.zh+'">'+(state.selfSpoken.includes(i)?'✓':'●')+'</button>':micButton(i,'Произнести '+word.zh,state.mic.includes(i)))+'</div></article>';
- }).join(''):phrases.slice(first,first+4).map((item,j)=>'<article class="l9-speech-row panel">'+vocabImage(first+j,'about-illustration l9-speech-art')+'<div class="l9-word-copy">'+hanzi(item[0])+translate(item)+'</div>'+audioButton(item[0])+'</article>').join(''))+
+ }).join(''):phrases.map((item,i)=>'<article class="l9-speech-row panel">'+vocabImage(i,'about-illustration l9-speech-art')+'<div class="l9-word-copy">'+hanzi(item[0])+translate(item)+'</div>'+audioButton(item[0])+'</article>').join(''))+
  '</div><div class="l9-record-controls"><button type="button" class="soft" data-record="1">'+(take?.recorder?.state==='recording'?'■ Стоп':'🎙 Записать себя')+'</button><button type="button" class="primary" data-replay="1"'+(recordUrl?'':' disabled')+'>▶ Моя запись</button></div>'+
  '<p class="l9-speech-note">Отработано '+speechCount()+' из 8 · Тоны не оцениваются автоматически.</p>'+safeStatus()+'</section>';
 }
@@ -3037,8 +2985,6 @@ function checkOrder(part,length,success,failure) {
 }
 
 const actions = {
-  vocabPage: value => {vocabPage=Number(value)===1?1:0;render(true);},
-  speechPage: value => {clearMedia();speechPage=Number(value)===1?1:0;render(true);},
   step: value => {
     if (courseMode && state.step === 3 && Number(value) === 3) showCourseTask(-1);
     else move(Number(value));
@@ -3075,7 +3021,7 @@ const actions = {
     if(!state.heardWords.includes(i))state.heardWords.push(i);
     save();render();
   },
-  toneTab: value => { clearMedia(); state.toneTab = value; update(); },
+  toneTab: value => { clearMedia(); state.toneTab = value; update(); workspace.querySelector(".l9-practice-list").scrollTop = 0; },
   practiceMode: value => { if (value === 'mic' || value === 'self') {state.practiceMode = value; update();} },
   selfSpoken: value => markSelfSpoken(Number(value)),
   selfQuiz: () => { if (state.step === 3 && state.quizTest === 4) markQuiz(true,'self'); },
