@@ -31,6 +31,7 @@
 </style>
 <link rel="stylesheet" href="./assets/hsk2-lesson3-tone-meter-v2.css?v=525">
 <link rel="stylesheet" href="./assets/hsk2-lesson3-compact-v530.css?v=530">
+<link rel="stylesheet" href="./assets/hsk2-lesson3-compact-v531.css?v=531">
 </head><body>
 <div id="app">
 <section id="cover">
@@ -100,7 +101,7 @@ function tests(){const base=s.qmode==='core'?0:1;const total=s.qmode==='core'?6:
  content+='<div class="btnrow"><button class="'+(s.qmode==='core'?'primary':'action')+'" data-act="q-mode" data-mode="core">Основные '+coreCount()+'/6</button><button class="'+(s.qmode==='optional'?'primary':'action')+'" data-act="q-mode" data-mode="optional">Дополнительные '+optCount()+'/24</button></div>';
  if(finished)content+=panel('<h3>✓ '+(s.qmode==='core'?'Основные 6 вопросов пройдены!':'Дополнительные задания пройдены!')+'</h3><p>Можешь продолжать урок или повторить задания.</p>');
  content+=panel(question(type,i)+msg()+'<div class="btnrow" style="margin-top:12px"><button class="action" data-act="q-prev" '+(at===0?'disabled':'')+'>← Назад</button><button class="primary" data-act="q-next" '+(!s.done[seq(type,i)]?'disabled':'')+'>'+ (at===total-1?'К началу ↻':'Далее →')+'</button></div>'+ (s.done[seq(type,i)]?'<p class="hint">✓ Это задание отмечено как выполненное.</p>':''));
- content+=panel('<h3>Твой прогресс</h3><div class="meter"><i style="width:'+(coreCount()*100/6)+'%"></i></div><p class="hint">Основное: '+coreCount()+' / 6. Дополнительное: '+optCount()+' / 24.</p>'+(coreCount()===6?'<p>Теперь можно переходить к собственному рассказу.</p>':'<p>Чтобы завершить урок, пройди шесть основных заданий.</p>'));return content;}
+ return content;}
 function own(){const i=Math.max(0,Math.min(4,Number(s.own)||0)),q=OPTIONS[i];return panel(heading('Расскажи о своей работе или учёбе','Шаг 6 / 8 · Выбирай только то, что действительно подходит тебе.')+art(i%6)+'<label class="field">Какое предложение тебе подходит?<select id="own-choice">'+OPTIONS.map((row,j)=>'<option value="'+j+'" '+(j===i?'selected':'')+'>'+esc(row[2])+'</option>').join('')+'</select></label><div class="example"><div class="cn">'+q[0]+'</div><div class="py">'+q[1]+'</div><div class="ru">'+q[2]+'</div></div><div class="btnrow" style="margin-top:12px"><button class="action" data-act="own-said">'+(s.storyRead?'✓ Произнёс':'🎙 Прочитал вслух')+'</button><button class="primary" data-act="own-save">Сохранить мой вариант</button></div>'+msg()+'<p class="hint">Запись произношения для автоматически созданных вариантов пока не утверждена. Панда не выдумывает факты о тебе.</p>')+panel('<h3>Другие возможные ответы</h3><div class="grid">'+OPTIONS.map((x,j)=>'<button class="card" data-act="own-set" data-index="'+j+'"><div class="cn" style="font-size:17px">'+x[0]+'</div><div class="ru">'+x[2]+'</div></button>').join('')+'</div>');}
 function dialog(){let n=Math.min(3,s.dialog.length);let h=heading('Диалог с Пандой','Шаг 7 / 8 · Отвечай правдиво. Доступны варианты, не требующие выдумывать работу или школу.')+art(5);
  for(let j=0;j<3;j++){const q=QUESTIONS[j];if(j>n)break;h+='<div class="chatbubble"><div class="speaker">🐼 Панда</div><div class="cn">'+q.q+'</div><div class="py">'+q.p+'</div><div class="ru">'+q.ru+'</div></div>';if(j<n){const x=q.options[s.dialog[j]]||q.options[0];h+='<div class="chatbubble me"><div class="speaker">Ты</div><div class="cn">'+x[0]+'</div><div class="py">'+x[1]+'</div><div class="ru">'+x[2]+'</div></div>';}}
@@ -111,7 +112,7 @@ function result(){const complete=coreCount()===6&&s.grammar&&s.dialog.length===3
 const screens=[welcome,words,grammar,speaking,tests,own,dialog,result];
 function fitCompactStage(){
  const lesson=$('lesson'),box=$('content');
- if(s.step!==5&&s.step!==8)return;
+ if(s.step!==1&&s.step!==5&&s.step!==8)return;
  lesson.classList.remove('compact-tight','compact-ultra','compact-overflow');
  // Measure the actual Android viewport; progressively compact only if needed.
  const over=()=>box.scrollHeight>box.clientHeight+2;
@@ -122,7 +123,8 @@ function fitCompactStage(){
 }
 function render(){const open=s.step>0;$('cover').hidden=open;$('lesson').hidden=!open;
  const lesson=$('lesson');
- lesson.classList.remove('compact-tests','compact-result','compact-tight','compact-ultra','compact-overflow');
+ lesson.classList.remove('compact-intro','compact-tests','compact-result','compact-tight','compact-ultra','compact-overflow');
+ if(s.step===1)lesson.classList.add('compact-intro');
  if(s.step===5)lesson.classList.add('compact-tests');
  if(s.step===8)lesson.classList.add('compact-result');
  if(!open)return;
