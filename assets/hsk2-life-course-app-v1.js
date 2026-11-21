@@ -227,7 +227,8 @@ function mainLessonProgress(){
   function done(k){const s=read(k);return Array.isArray(s?.completed)&&s.completed.includes(0)}
   return [
     done('pg-hsk2-about-me-preview-v1')||finished(read('panda-go-hsk2-about-me-v1')),
-    done('pg-hsk2-my-day-main-v1')||finished(read('panda-go-hsk2-lesson1-word-flow-review-v1'))
+    done('pg-hsk2-my-day-main-v1')||finished(read('panda-go-hsk2-lesson1-word-flow-review-v1')),
+    done('pg-hsk2-lesson3-preview-v1')||finished(read('panda-go-hsk2-lesson3-standard-v1'))
   ];
 }
 function viewMap(){
