@@ -1384,6 +1384,58 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #app #pg433 .hobby-cover-title h1 {font-size:5.8cqw;letter-spacing:-.045em;}
 #app #pg433 .pg433-title strong {font-size:clamp(17px,4.8vw,23px)!important;letter-spacing:-.045em;}
 #app #pg433 .hobby-cover-title p{font-size:3.5cqw;}
+
+/* APPROVED LESSON 6 COVER — pixel-faithful original illustration, no stretching or synthetic redraw. */
+.course-layout #app[data-view="1"] #pg433 .pg433-header,
+.course-layout #app[data-view="1"] #pg433 .pg433-footer {display:none!important}
+.course-layout #app[data-view="1"] #pg433 .pg433-content {
+  display:block!important;flex:1 1 auto!important;min-height:0!important;
+  width:100%!important;padding:0!important;margin:0!important;
+  overflow-x:hidden!important;overflow-y:auto!important;
+  background:#f5dcfa!important;scrollbar-width:none!important;
+  overscroll-behavior:contain;
+}
+.course-layout #app[data-view="1"] #pg433 .pg433-content::-webkit-scrollbar {display:none}
+.course-layout #app[data-view="1"] #pg433 .lesson6-approved-cover-shell {
+  display:block!important;position:relative!important;
+  width:100%!important;height:auto!important;min-height:0!important;
+  padding:0!important;margin:0!important;overflow:visible!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson6-approved-cover {
+  position:relative!important;display:block!important;width:100%!important;
+  height:auto!important;aspect-ratio:941 / 1492!important;
+  padding:0!important;margin:0!important;overflow:hidden!important;
+  background:#f4d8fa!important;isolation:isolate;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson6-approved-cover-image {
+  position:static!important;display:block!important;width:100%!important;height:auto!important;
+  aspect-ratio:941 / 1492!important;max-height:none!important;
+  object-fit:contain!important;user-select:none;-webkit-user-drag:none;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson6-cover-hotspot {
+  position:absolute!important;z-index:4;
+  display:block!important;border:0!important;background:transparent!important;
+  padding:0!important;margin:0!important;cursor:pointer;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;border-radius:10px!important;
+  transition:box-shadow .12s, background .12s, filter .12s;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson6-cover-hotspot:active {
+  background:#fff3!important;box-shadow:inset 0 0 0 3px #fff9!important;
+  filter:brightness(.97);
+}
+.course-layout #app[data-view="1"] #pg433 .lesson6-cover-hotspot:focus-visible {
+  outline:3px solid #7625a3!important;outline-offset:2px;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson6-cover-back {
+  left:7.6%!important;top:.3%!important;width:9.5%!important;height:5.4%!important;border-radius:50%!important;
+}
+.course-layout #app[data-view="1"] #pg433 .lesson6-cover-words {left:8.2%!important;top:57.3%!important;width:27.6%!important;height:8.1%!important}
+.course-layout #app[data-view="1"] #pg433 .lesson6-cover-tests {left:36.0%!important;top:57.3%!important;width:27.6%!important;height:8.1%!important}
+.course-layout #app[data-view="1"] #pg433 .lesson6-cover-grammar {left:63.8%!important;top:57.3%!important;width:27.6%!important;height:8.1%!important}
+.course-layout #app[data-view="1"] #pg433 .lesson6-cover-story {left:8.2%!important;top:65.4%!important;width:27.6%!important;height:8.0%!important}
+.course-layout #app[data-view="1"] #pg433 .lesson6-cover-speech {left:36.0%!important;top:65.4%!important;width:27.6%!important;height:8.0%!important}
+.course-layout #app[data-view="1"] #pg433 .lesson6-cover-dialogue {left:63.8%!important;top:65.4%!important;width:27.6%!important;height:8.0%!important}
+.course-layout #app[data-view="1"] #pg433 .lesson6-cover-start {left:8.1%!important;top:74.6%!important;width:83.5%!important;height:6.5%!important;border-radius:999px!important}
 </style>
 </head>
 <body>
@@ -1730,23 +1782,21 @@ function render(resetScroll = false) {
 }
 function intro() {
   const tiles = [
-    [2,'Слова'], [3,'Тесты'], [4,'Грамматика'],
-    [5,'Рассказ о вчерашнем дне'], [6,'Произношение'], [7,'Диалог']
+    {step:2,label:'Слова',cls:'words'},
+    {step:3,label:'Тесты',cls:'tests'},
+    {step:4,label:'Грамматика',cls:'grammar'},
+    {step:5,label:'Мой рассказ',cls:'story'},
+    {step:6,label:'Произношение',cls:'speech'},
+    {step:7,label:'Диалог',cls:'dialogue'}
   ];
-  return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 6 · Вчера и мой опыт">' +
-    '<div class="word-flow-cover hobby-cover">' +
-    '<img class="hobby-cover-art" src="./assets/hsk2-lesson1-preview/course-cover-sakura-canal.webp" ' +
-      'alt="" width="905" height="1737" fetchpriority="high" draggable="false">' +
-    '<a class="final-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>' +
-    '<span class="hobby-cover-chapter">HSK 2 · УРОК 6</span>' +
-    '<div class="hobby-cover-title"><h1>Вчера и мой опыт</h1><p><span lang="zh-Hans">昨天和我的经历</span><br>Zuótiān hé wǒ de jīnglì</p></div>' +
-    '<div class="hobby-cover-summary"><p>Расскажи, что ты делал вчера<br>и где уже успел побывать.</p></div>' +
-    '<span class="cover-tile-label cover-tile-words" aria-hidden="true">Слова</span>' +
-    '<span class="cover-tile-label cover-tile-tests" aria-hidden="true">Тесты</span>' +
-    '<span class="cover-tile-label cover-tile-story" aria-hidden="true">Мой рассказ</span>' +
-    tiles.map(([step,label]) => '<button type="button" class="hobby-cover-tile" data-step="' + step +
-      '" aria-label="' + label + '"></button>').join('') +
-    '<button type="button" class="final-cover-start" data-step="2" aria-label="Начать урок"></button>' +
+  return '<section class="lesson6-approved-cover-shell" aria-label="HSK 2 · Урок 6 · Вчера и мой опыт">' +
+    '<div class="lesson6-approved-cover">' +
+    '<img class="lesson6-approved-cover-image" src="./assets/hsk2-lesson6-approved-cover-v1.webp" width="941" height="1492" ' +
+      'alt="Panda Go. Урок 6 — Вчера и мой опыт. Панда вспоминает вчерашний день: календарь, музыку, кино, книги и путешествия. Учение не имеет границ." fetchpriority="high" decoding="async" draggable="false">' +
+    '<a class="lesson6-cover-hotspot lesson6-cover-back" href="./hsk2-start.html" aria-label="Вернуться к курсу HSK 2"></a>' +
+    tiles.map(tile => '<button type="button" class="lesson6-cover-hotspot lesson6-cover-' + tile.cls +
+      '" data-step="' + tile.step + '" aria-label="Открыть раздел: ' + tile.label + '"></button>').join('') +
+    '<button type="button" class="lesson6-cover-hotspot lesson6-cover-start" data-step="2" aria-label="Начать урок 6"></button>' +
     '</div></section>';
 }
 function newWords() {
