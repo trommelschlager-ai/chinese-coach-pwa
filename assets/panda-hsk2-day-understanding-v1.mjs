@@ -109,13 +109,8 @@ function work(s){
  if(t.invalid)return clarify('Назови правильный час от 0 до 23.');
  if(t.matches.length===2){
   const [first,last]=t.matches;
-  const action=i===0?'起床':'睡觉';
-  if(s==='不是'+first.text+'是'+last.text||s==='不是'+first.text+'是'+last.text+action)
-   return timeAnswer(last.text,i);
-  const routine=/^(?:我)?(?:平时|通常|一般|每天)/u.exec(s);
-  if(routine&&s.startsWith(routine[0]+first.text+action+'今天')&&
-     ['今天'+last.text+action,'今天'+last.text+'才'+action].includes(s.slice(s.indexOf('今天'))))
-   return accept(s.replace('今天','，今天'));
+  if(['不是'+first.text+'是'+last.text,'不是'+first.text+'是'+last.text+'去上班'].includes(s))
+   return work(last.text);
  }
  if(t.matches.length>1)return clarify('Уточни одно время работы.');
  const m=t.matches[0];
