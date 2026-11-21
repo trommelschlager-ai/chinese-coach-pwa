@@ -390,7 +390,7 @@ const tests=[
 ];
 let index=0,answers={},build=[],builtCorrect=false;
 try{const saved=Number(localStorage.getItem("panda-street-lesson2-step-v4"));if(Number.isInteger(saved))index=Math.max(0,Math.min(6,saved));}catch(e){}
-try{if(new URLSearchParams(location.search).has('welcome'))index=0}catch(_){ }
+try{if(/(?:\?|&)welcome=1(?:&|$)/.test(location.search||''))index=0}catch(_){ }
 const esc=s=>String(s).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const title=(small,main,sub)=>'<div class="eyebrow">'+esc(small)+'</div><h1 class="street-learn-title">'+esc(main)+'</h1><p class="sub">'+esc(sub)+'</p>';
 const note=s=>'<div class="street-hint">'+esc(s)+'</div>';
