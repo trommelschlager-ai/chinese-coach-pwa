@@ -24,6 +24,32 @@ const pandaPreferences = {
  food: ['我喜欢吃竹子。','Wǒ xǐhuan chī zhúzi.','Я люблю есть бамбук.'],
  mood: ['我很开心。','Wǒ hěn kāixīn.','Я очень рада.']
 };
+const teaAmount=['我喝了两杯茶。','Wǒ hē le liǎng bēi chá.','Я выпила две чашки чая.'];
+export function breakfastReply(s,context){
+ const awaiting=context?.awaiting;
+ if(s==='早上好')return response('你吃饭了吗？','Nǐ chīfàn le ma?','Ты уже поел?','breakfastToday');
+ if(/^(?:我)?(?:今天|早上|今天早上)?(?:没(?:有)?吃(?:早餐|早饭)?|没吃饭)?只喝(?:了)?茶$/u.test(s))
+  return response('你喝的是什么茶？','Nǐ hē de shì shénme chá?','Какой чай ты пил?','teaType');
+ if(awaiting==='teaType'&&/^(?:我喝的?是?|是)?(?:绿茶|红茶|花茶|乌龙茶)$/u.test(s))
+  return response(...teaAmount,'teaAmount');
+ if(/^(?:那)?你(?:今天|早上|今天早上)?喝(?:了什么|了几杯茶|什么了)$/u.test(s)||
+   (awaiting==='teaAmount'&&s==='你呢'))return response(...teaAmount,'teaAmount');
+ if(/^你(?:在(?:哪儿|哪里)|在哪)吃(?:早饭|早餐|饭)$/u.test(s))
+  return response('我在家吃饭。','Wǒ zài jiā chīfàn.','Я ем дома.','place');
+ if(/^你(?:跟|和)谁(?:一起)?吃(?:早饭|早餐|饭)$/u.test(s))
+  return response('我跟朋友一起吃饭。','Wǒ gēn péngyou yìqǐ chīfàn.','Я ем вместе с друзьями.','company');
+ if(awaiting==='breakfastToday'){
+  if(/^(?:我)?(?:已经)?吃(?:过|了)(?:(?:早饭|早餐|饭)了?)?你呢$|^你呢$/u.test(s))
+   return response('吃了，谢谢。','Chī le, xièxie.','Да, уже поела, спасибо.','breakfastToday');
+  if(/^(?:我)?(?:还)?没(?:有)?(?:吃(?:早餐|早饭|饭)?)?$/u.test(s))
+   return response('你想不想喝茶？','Nǐ xiǎng bu xiǎng hē chá?','Хочешь чаю?','offerTea');
+ }
+ if(awaiting==='offerTea'&&/^(?:想|想喝|好|不想|不喝|不用了)(?:谢谢)?$/u.test(s))
+  return response('好的，我明白了。','Hǎo de, wǒ míngbai le.','Хорошо, я поняла.','breakfastToday');
+ if(s==='我喝茶了两杯')return {...response(...teaAmount,'teaAmount'),review:'两杯 стоит перед 茶. Попробуй сказать ещё раз.'};
+ if(s==='明天见')return response('明天见！','Míngtiān jiàn!','До завтра!');
+ return null;
+}
 function everydayReply(s,context){
  if(s==='你早上做什么')return response('我早上吃早饭。','Wǒ zǎoshang chī zǎofàn.','Утром я завтракаю.','breakfast');
  if(/^(?:我)?(?:早上)?(?:只)?喝水$/u.test(s))return response('你每天喝水吗？','Nǐ měitiān hē shuǐ ma?','Ты каждый день пьёшь воду?','water');
@@ -64,7 +90,7 @@ function everydayReply(s,context){
 /** Supports simple, adult-sounding beginner dialogue; not open-ended LLM output. */
 export function respondToPandaChat(input,context=null){
  const s=tidy(input);
- let result=everydayReply(s,context);
+ let result=breakfastReply(s,context)||everydayReply(s,context);
  if(result)return withContext(result,context);
  if(!s||s.length>140)result=unknown();
  // Question-first precedence means "你喜欢什么" is never mistaken for "我喜欢..."
