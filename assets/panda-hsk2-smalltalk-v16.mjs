@@ -17,15 +17,60 @@ function nextContext(context,awaiting){
  const x=context&&typeof context==='object'?context:{};
  return {awaiting:awaiting||null,turn:Math.min(100,(Number(x.turn)||0)+1)};
 }
+// Resolve elliptical turns against the last conversational subject.
+const pandaPreferences = {
+ water: ['是，我每天喝水。','Shì, wǒ měitiān hē shuǐ.','Да, я каждый день пью воду.'],
+ drink: ['我喜欢喝茶。','Wǒ xǐhuan hē chá.','Я люблю пить чай.'],
+ food: ['我喜欢吃竹子。','Wǒ xǐhuan chī zhúzi.','Я люблю есть бамбук.'],
+ mood: ['我很开心。','Wǒ hěn kāixīn.','Я очень рада.']
+};
+function everydayReply(s,context){
+ if(s==='你早上做什么')return response('我早上吃早饭。','Wǒ zǎoshang chī zǎofàn.','Утром я завтракаю.','breakfast');
+ if(/^(?:我)?(?:早上)?(?:只)?喝水$/u.test(s))return response('你每天喝水吗？','Nǐ měitiān hē shuǐ ma?','Ты каждый день пьёшь воду?','water');
+ if(s==='你上午做什么')return response('我上午学习中文。','Wǒ shàngwǔ xuéxí Zhōngwén.','До полудня я учу китайский.','study');
+ if(s==='你下午做什么')return response('我下午看书。','Wǒ xiàwǔ kàn shū.','Днём я читаю.','activity');
+ if(s==='你晚上做什么')return response('我晚上听音乐。','Wǒ wǎnshang tīng yīnyuè.','Вечером я слушаю музыку.','likes');
+ if(context?.awaiting==='study'&&/^(?:我)?也(?:学|学习)(?:中文|汉语)$/u.test(s))
+  return response('你觉得中文难吗？','Nǐ juéde Zhōngwén nán ma?','Тебе китайский кажется трудным?','difficulty');
+ if(context?.awaiting==='difficulty'&&/^(?:有点难|有一点难|很难|太难了)$/u.test(s))
+  return response('没关系，我们慢慢来。','Méi guānxi, wǒmen mànmàn lái.','Ничего, давай потихоньку.','study');
+ const reciprocal=s.endsWith('你呢');
+ const statement=reciprocal?s.slice(0,-2):s;
+ const drink=/^(?:我)?(?:早上|今天)?(?:没有只|只|也|最|很|不)?(?:喜欢|爱)?(?:喝了?)?(?:绿茶|红茶|茶|咖啡|水|牛奶)$/u.test(statement);
+ const food=/^(?:我)?(?:也|最|很|不)?(?:喜欢|爱)?(?:吃)?(?:饺子|米饭|面条|苹果|香蕉|蛋糕|竹子)$/u.test(statement);
+ const mood=/^(?:我)?(?:今天|现在)?(?:很|非常|特别|有点)?(?:开心|高兴|累)$/u.test(statement);
+ const topic=drink?'drink':food?'food':mood?'mood':context?.awaiting;
+ if(reciprocal&&(!statement||drink||food||mood)&&Object.hasOwn(pandaPreferences,topic))
+  return response(...pandaPreferences[topic],topic);
+ if(/^你(?:平时|最|也)?(?:喜欢喝什么|爱喝什么|喜欢喝茶吗)$/u.test(s))
+  return response(...pandaPreferences.drink,'drink');
+ if(s==='为什么'&&context?.reason==='tea')
+  return response('因为茶很好喝。','Yīnwèi chá hěn hǎohē.','Потому что чай вкусный.','drink');
+ if(s==='为什么'&&context?.reason==='bamboo')
+  return response('因为竹子很好吃。','Yīnwèi zhúzi hěn hǎochī.','Потому что бамбук вкусный.','food');
+ if(drink&&!statement.endsWith('水'))return response('你每天都喝吗？','Nǐ měitiān dōu hē ma?','Ты пьёшь это каждый день?','drink');
+ if(drink)return response('你每天喝水吗？','Nǐ měitiān hē shuǐ ma?','Ты каждый день пьёшь воду?','water');
+ if(['drink','water'].includes(context?.awaiting)&&/^(?:是|对|不|不是|每天|(?:我)?(?:不|每天)?喝(?:水)?)$/u.test(s))
+  return response(...pandaPreferences[context.awaiting],context.awaiting);
+ if(food)return response('你常吃吗？','Nǐ cháng chī ma?','Ты часто это ешь?','food');
+ if(context?.awaiting==='food'&&/^(?:常吃|经常吃|不常吃|有时候吃)$/u.test(s))
+  return response(...pandaPreferences.food,'food');
+ if(mood&&/(开心|高兴)$/u.test(s))return response('今天有什么好事？','Jīntiān yǒu shénme hǎoshì?','Что хорошего сегодня произошло?','mood');
+ if(mood)return response('你想休息吗？','Nǐ xiǎng xiūxi ma?','Хочешь отдохнуть?','mood');
+ if(/^(?:我)?(?:现在)?(?:没有工作|没工作|不上班)$/u.test(s))
+  return response('那你最近忙什么？','Nà nǐ zuìjìn máng shénme?','А чем ты сейчас занят?','activity');
+ return null;
+}
 /** Supports simple, adult-sounding beginner dialogue; not open-ended LLM output. */
 export function respondToPandaChat(input,context=null){
  const s=tidy(input);
- let result;
+ let result=everydayReply(s,context);
+ if(result)return withContext(result,context);
  if(!s||s.length>140)result=unknown();
  // Question-first precedence means "你喜欢什么" is never mistaken for "我喜欢..."
  else if(/^(?:你|熊猫|你们)(?:平时|最|也|都)?喜欢(?:做|吃|喝|看|听)?什么/u.test(s)||
          /^你喜欢做什么/u.test(s)){
-  if(/喜欢吃什么|喜欢喝什么/u.test(s))result=response('我喜欢吃竹子。你喜欢吃什么？','Wǒ xǐhuan chī zhúzi. Nǐ xǐhuan chī shénme?','Я люблю есть бамбук. А что любишь есть ты?','food');
+  if(/喜欢吃什么/u.test(s))result=response('我喜欢吃竹子。你喜欢吃什么？','Wǒ xǐhuan chī zhúzi. Nǐ xǐhuan chī shénme?','Я люблю есть бамбук. А что любишь есть ты?','food');
   else result=response('我喜欢学中文，也喜欢听音乐。你呢？','Wǒ xǐhuan xué Zhōngwén, yě xǐhuan tīng yīnyuè. Nǐ ne?','Мне нравится изучать китайский и слушать музыку. А тебе?','likes');
  }
  else if(/^(?:你|熊猫)(?:叫|的名字是什么|叫什么|叫什么名字)/u.test(s))result=response('我叫熊猫。你叫什么名字？','Wǒ jiào Xióngmāo. Nǐ jiào shénme míngzi?','Меня зовут Панда. А как зовут тебя?','name');
@@ -52,5 +97,11 @@ export function respondToPandaChat(input,context=null){
  else if(/^(?:我)?(?:音乐|电影|看书|读书|跑步|运动|游泳|旅游|唱歌|画画|学中文)$/u.test(s))result=response('真好！你每天都喜欢做这件事吗？','Zhēn hǎo! Nǐ měitiān dōu xǐhuan zuò zhè jiàn shì ma?','Здорово! Тебе нравится делать это каждый день?','likes');
  else if((s==='是'||s==='不是'||s==='喜欢'||s==='不喜欢'||s==='会'||s==='不会'||s==='好'||s==='不好')&&context?.awaiting)result=response('明白了！你还想聊什么？','Míngbai le! Nǐ hái xiǎng liáo shénme?','Поняла! О чём ещё хочешь поговорить?','topic');
  else result=unknown();
- return {...result,context:nextContext(context,result.awaiting)};
+ return withContext(result,context);
+}
+function withContext(result,context){
+ const next=nextContext(context,result.awaiting);
+ if(result.line[0].startsWith('我喜欢喝茶'))next.reason='tea';
+ if(result.line[0].startsWith('我喜欢吃竹子'))next.reason='bamboo';
+ return {...result,context:next};
 }
