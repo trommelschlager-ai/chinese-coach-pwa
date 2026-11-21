@@ -260,6 +260,27 @@
 }
 @media(prefers-reduced-motion:reduce){.ps-welcome-cta{transition:none}}
 
+
+/* Android bottom controls & Street visual pass 2026-11-21 */
+@media(max-width:620px) and (pointer:coarse){
+ .page:not([data-screen="intro"]):not([data-step="intro"]){padding-bottom:calc(62px + env(safe-area-inset-bottom,0px))!important}
+ .page:not([data-screen="intro"]):not([data-step="intro"]) .foot{flex:none;min-height:75px;padding:9px 13px 12px!important;z-index:10;box-shadow:0 -9px 25px #070819b8}
+ .page:not([data-screen="intro"]):not([data-step="intro"]) .viewport{min-height:0;flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px}
+}
+.foot .btn{transition:transform .5s ease,box-shadow .5s ease;touch-action:manipulation}
+.foot .btn.primary{background:linear-gradient(180deg,#fff0ac 0%,#ffd04d 47%,#f7a320 100%)!important;color:#2b1330!important;border:2px solid #ffefb1!important;text-shadow:none!important;box-shadow:0 0 0 1px #da55e5,0 0 16px #b742f680,0 5px 12px #05000b9c!important;font-weight:950}
+.foot .btn:active{transform:translateY(2px) scale(.98);box-shadow:0 1px 4px #0007!important}
+.sheet,.street-card,.street-panel{border:1.5px solid #a56bd1;background:radial-gradient(ellipse 75% 35% at 90% 0%,#59277766,transparent),linear-gradient(145deg,#211934f5,#101a30f6);box-shadow:inset 0 1px 3px #e7b2ff24,0 10px 30px #060512a8,0 0 13px #883af038}
+.sheet .label,.street-card .street-minibadge,.street-panel .street-minibadge{color:#ffd68a}
+.wordicon{background:linear-gradient(145deg,#5c286e,#211e51);border:1.5px solid #c76bff;box-shadow:0 0 18px #b546e95b}
+.hanzi,.street-card .cn{color:#fffafc;text-shadow:0 2px 6px #17061e,0 0 19px #c35cf766}
+.py,.street-card .pin{color:#ffd78b}
+.note,.street-hint{background:#33224596;border-color:#a067bc8c;color:#e7d7ec}
+.audio{background:linear-gradient(130deg,#8739c8,#523ac6);border:1.5px solid #d990ff;box-shadow:0 0 12px #8132d66b}
+@media(max-height:680px){
+ .page:not([data-screen="intro"]):not([data-step="intro"]) .top{min-height:54px;padding-top:4px;padding-bottom:4px}
+ .page:not([data-screen="intro"]):not([data-step="intro"]) .foot .btn{min-height:48px}
+}
 </style></head><body><main class="page"><header class="top"><a class="back" href="./panda-street-hsk1-map.html" aria-label="К главной странице Panda Street">‹</a><div class="brand"><b>PANDA STREET</b><small>STREET 1 · Живой китайский · Урок 1</small></div><div class="num" id="current">01 / 16</div></header><div class="track" id="pg-progress" role="progressbar" aria-label="Прогресс урока" aria-valuemin="0" aria-valuemax="16" aria-valuenow="1"><i id="track"></i></div><section id="screen" class="viewport" aria-live="polite"></section><footer class="foot"><button type="button" id="prev" class="btn ghost">← Назад</button><button type="button" id="next" class="btn primary">Дальше →</button></footer><div id="notify" role="status" style="position:absolute;left:10px;right:10px;bottom:84px;background:#25213df2;color:#fff3d3;border:1px solid #ba98c9;border-radius:13px;padding:11px;z-index:8;font-weight:800;font-size:12px;text-align:center" hidden></div></main><script>(() => {'use strict';
 const STAGES=16;
 const words=[
@@ -284,7 +305,7 @@ try{if(/(?:\?|&)welcome=1(?:&|$)/.test(location.search||''))index=0}catch(_){ }
 // Until the matching asset is present, preserve the previous device TTS fallback.
 const STREET_VOICE_FILE='./assets/panda-street-lesson1-luvvoice.m4a';
 // First Street lesson only: slower, natural-pitch speech with a clean audio tail.
-const STREET_VOICE_RATE=0.75;
+const STREET_VOICE_RATE=1.0;
 const STREET_FADE_IN=.035;
 const STREET_FADE_OUT=.125;
 const STREET_TAIL_GUARD=.050;
@@ -330,13 +351,13 @@ const say=t=>{
  if(streetVoice){streetVoice.pause();streetVoice.volume=1}
  if(window.speechSynthesis)window.speechSynthesis.cancel();
  const cue=STREET_VOICE_CUES[normalizeStreetText(t)];
- if(!cue||streetVoiceUnavailable||!streetVoice){sayBrowser(t);return}
+ if(!cue||streetVoiceUnavailable||!streetVoice){notify('Фраза пока без качественной записи. Запасной голос телефона отключён.');return}
  const fallback=()=>{
   if(token!==streetVoiceSeq)return;
   streetVoiceUnavailable=true;
   streetVoice.pause();
   streetVoice.volume=1;
-  sayBrowser(t);
+  notify('Аудиофайл не воспроизведён. Запасной голос телефона отключён.');
  };
  const begin=()=>{
   if(token!==streetVoiceSeq)return;
