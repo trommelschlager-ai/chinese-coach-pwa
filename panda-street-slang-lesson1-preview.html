@@ -278,7 +278,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 let index=0, answered={}, spoken=false,build=[],currentlyPlaying=false;
 try{let v=Number(localStorage.getItem('panda-street-slang-lesson1-step'));if(Number.isInteger(v))index=Math.max(0,Math.min(15,v))}catch{}
 // A visit from the HSK1 map can explicitly show the welcome screen.
-try{if(new URLSearchParams(location.search).has('welcome'))index=0}catch(_){ }
+try{if(/(?:\?|&)welcome=1(?:&|$)/.test(location.search||''))index=0}catch(_){ }
 // Panda Street HSK1, lesson 1 only: pre-recorded Luvvoice male voice.
 // Each cue is an independently playable region of one short audio asset.
 // Until the matching asset is present, preserve the previous device TTS fallback.
