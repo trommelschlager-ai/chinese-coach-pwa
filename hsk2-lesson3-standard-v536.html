@@ -1335,7 +1335,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   <header class="head">
     <div class="lesson-bar">
       <button type="button" class="orb" id="detail-back" aria-label="Предыдущий шаг">❮</button>
-      <span id="head-label">HSK 2 · Урок 1 · Шаг 1 из 8</span>
+      <span id="head-label">HSK 2 · Урок 3 · Шаг 1 из 8</span>
     </div>
     <nav id="steps" aria-label="Восемь шагов урока"></nav>
   </header>
@@ -1702,7 +1702,7 @@ function render(resetScroll = false) {
     chapter.textContent='Шаг '+n+' / 8';
     chapter.setAttribute('aria-label','Шаг '+n+' из восьми. '+titles[step-1]);
     nav.style.setProperty('--pg2-progress',(n*100/8)+'%');
-  } else headLabel.textContent = 'HSK 2 · Урок 1 · Шаг ' + step + ' из 8';
+  } else headLabel.textContent = 'HSK 2 · Урок 3 · Шаг ' + step + ' из 8';
   headBack.disabled = step === 1;
   stepButtons.forEach((button,index) => {
     const active = courseMode ? (index === 0 && step === 1) || courseSections[index].steps.includes(step) : index+1 === step;
