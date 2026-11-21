@@ -1811,57 +1811,55 @@ function tokenButtons(order,selected,key) {
     '"' + (selected.includes(i) ? ' disabled' : '') + '>' + tokens[i] + '</button>').join('');
 }
 
+
 function grammar() {
-  const current = state.grammar.map(i=>tokens[i]).join('');
-  return '<h1 class="pill-title about-grammar-title">Грамматика</h1>' +
-    '<div class="about-grammar-compact"><strong lang="zh-Hans">现在</strong>' +
-    '<span class="py">xiànzài</span><span class="ru">сейчас</span></div>' +
-    '<p class="about-grammar-rule">В нашем примере 现在 стоит после 我 и перед действием. Также можно сказать 现在我住在莫斯科 — «Сейчас я живу в Москве».</p>' +
-    '<p class="about-grammar-formula"><b>我</b> + <b>现在</b> + <b>住在</b> + город</p>' +
-    '<article class="about-grammar-example">' +
-      '<div class="about-grammar-example-copy">' + hanzi('我现在住在莫斯科。') + translate(phrases[2]) +
-      '</div>' + audioButton(phrases[2][0],playIcon) + '</article>' +
-    '<h2 class="builder-title about-grammar-build-title">Составь предложение</h2>' +
-    '<div class="tokens about-grammar-tokens">' + tokenButtons([2,0,3,1,4],state.grammar,'gram') + '</div>' +
-    '<div class="answer about-grammar-answer" lang="zh-Hans" data-placeholder="Выбери слова по порядку">' + current + '</div>' +
-    '<div class="controls grammar-actions about-grammar-actions"><button type="button" class="soft" data-gram-undo>Отменить</button>' +
-    '<button type="button" class="soft" data-gram-clear>Очистить</button>' +
-    '<button type="button" class="primary" data-gram-check>✓ Проверить</button></div>' +
-    safeStatus() + (state.grammarDone && !feedback ? '<p class="feedback good">✓ Верно!</p>' : '');
+ const current=state.grammar.map(i=>tokens[i]).join('');
+ return '<h1 class="pill-title about-grammar-title">Грамматика</h1>' +
+  '<div class="about-grammar-compact"><strong lang="zh-Hans">在</strong>' +
+   '<span class="py">zài</span><span class="ru">в / на (место действия)</span></div>' +
+  '<p class="about-grammar-rule">В предложении 我在公司工作 слово 在 ставится перед местом, где происходит действие.</p>' +
+  '<p class="about-grammar-formula"><b>кто</b> + <b>在</b> + <b>место</b> + действие</p>' +
+  '<article class="about-grammar-example"><div class="about-grammar-example-copy">' +
+   hanzi('我在公司工作。') + translate(phrases[0]) + '</div>' + audioButton(phrases[0][0],playIcon) + '</article>' +
+  '<div class="l3-extra-rule"><b lang="zh-Hans">会 + глагол</b><span class="py">huì — уметь</span>' +
+   '<span>我会说中文。 — Я умею говорить по-китайски.<br>我不会说中文。 — Я не умею говорить по-китайски. Перед 会 слово 不 произносится bú.</span></div>' +
+  '<h2 class="builder-title about-grammar-build-title">Составь предложение</h2>' +
+  '<div class="tokens about-grammar-tokens">' + tokenButtons([2,0,4,3,1],state.grammar,'gram') + '</div>' +
+  '<div class="answer about-grammar-answer" lang="zh-Hans" data-placeholder="Нажимай слова по порядку">' + current + '</div>' +
+  '<div class="controls grammar-actions about-grammar-actions">' +
+   '<button type="button" class="soft" data-gram-undo>Отменить</button>' +
+   '<button type="button" class="soft" data-gram-clear>Очистить</button>' +
+   '<button type="button" class="primary" data-gram-check>✓ Проверить</button></div>' +
+  safeStatus() + (state.grammarDone && !feedback?'<p class="feedback good">✓ Верно! 我在公司工作。</p>':'');
 }
 
 function day() {
-  // Two-column presentation only; preserve choices, answers, order and progress.
-  const visualOrder=[4,1,0,2,3,5];
-  return '<div class="about-approved-story-head"><h1 class="pill-title day-title approved-story-title">💬 Собери рассказ</h1></div>' +
-    '<div class="practice-grid about-practice-grid approved-story-grid story-cols-2">' +
-      visualOrder.map(i=>{
-        const position=state.dayOrder.indexOf(i);
-        return '<article class="about-story-card approved-story-card' +(position>=0?' picked':'')+ '">' +
-          '<button type="button" class="day-card about-day-card approved-story-choice" data-day="'+i+'"' +
-            (position>=0?' disabled':'') +' aria-label="Выбрать фразу: '+escape(profileSentences[i][0])+'">' +
-            storyImage(i) +
-            '<span class="cn" lang="zh-Hans">'+profileSentences[i][0]+'</span>' +
-            '<span class="py">'+profileSentences[i][1]+'</span>' +
-            '<span class="ru">'+profileSentences[i][2]+'</span>' +
-            (position>=0?'<span class="position">'+(position+1)+'</span>':'') +
-          '</button>' +
-          '<div class="approved-story-audio">'+audioButton(profileSentences[i][0],playIcon)+'</div>' +
-        '</article>';
-      }).join('')+
-    '</div>' +
-    '<div class="approved-story-prompt"><span>Выбери фразы и составь рассказ</span>' +
-      '<small>' +state.dayOrder.length+ ' из 6 · имя → страна → город → работа → хобби → учёба</small></div>' +
-    '<div class="answer approved-story-answer" lang="zh-Hans" data-placeholder="Выбери первую фразу">' +
-      state.dayOrder.map(i=>profileSentences[i][0]).join(' → ')+ '</div>' +
-    '<div class="controls approved-story-controls"><button type="button" class="soft" data-day-undo>↶ Отменить</button>' +
-      '<button type="button" class="soft" data-day-reset>Сброс</button></div>' +
-    '<button type="button" class="primary large approved-story-check" data-day-check>✓ Проверить рассказ</button>' +
-    safeStatus() + (state.dayDone&&!feedback?'<p class="feedback good">✓ Рассказ о Мише собран!</p>':'') +
-    '<details class="pg2-own-practice"><summary>✨ Теперь составь рассказ о себе</summary>'+
-      personalStory()+'</details>';
+ const visualOrder=[2,5,1,4,0,3];
+ return '<div class="about-approved-story-head"><h1 class="pill-title day-title approved-story-title">💬 Собери примеры</h1></div>' +
+  '<p class="hint l3-story-hint">Расположи шесть фраз в порядке списка. Это учебные примеры, не факты о тебе.</p>' +
+  '<div class="practice-grid about-practice-grid approved-story-grid story-cols-2">' +
+   visualOrder.map(i=>{
+    const position=state.dayOrder.indexOf(i);
+    return '<article class="about-story-card approved-story-card' +(position>=0?' picked':'')+ '">' +
+     '<button type="button" class="day-card about-day-card approved-story-choice" data-day="'+i+'"' +
+      (position>=0?' disabled':'') + ' aria-label="Выбрать пример: '+escape(phrases[i][0])+'">' +
+       storyImage(i) + '<span class="cn" lang="zh-Hans">'+phrases[i][0]+'</span>' +
+       '<span class="py">'+phrases[i][1]+'</span><span class="ru">'+phrases[i][2]+'</span>' +
+       (position>=0?'<span class="position">'+(position+1)+'</span>':'') +
+     '</button></article>';
+   }).join('')+'</div>' +
+  '<div class="approved-story-prompt"><span>Составь набор из 6 примеров</span>' +
+   '<small>'+state.dayOrder.length+' из 6 · компания → школа → коллега → одноклассница → компьютер → китайский</small></div>' +
+  '<div class="answer approved-story-answer" lang="zh-Hans" data-placeholder="Выбери первое предложение">' +
+   state.dayOrder.map(i=>phrases[i][0]).join(' → ')+'</div>' +
+  '<div class="controls approved-story-controls">' +
+   '<button type="button" class="soft" data-day-undo>↶ Отменить</button>' +
+   '<button type="button" class="soft" data-day-reset>Сброс</button></div>' +
+  '<button type="button" class="primary large approved-story-check" data-day-check>✓ Проверить</button>' +
+  safeStatus() + (state.dayDone && !feedback?'<p class="feedback good">✓ Шесть фраз собраны!</p>':'') +
+  '<details class="pg2-own-practice"><summary>✨ Теперь расскажи о своей работе или учёбе</summary>' +
+  personalStory()+'</details>';
 }
-
 function phraseCards() {
   return '<div class="phrases approved-phrase-list">' + phrases.map((item,i) =>
     '<article class="phrase panel about-phrase approved-phrase-row">' +
