@@ -1,0 +1,160 @@
+/* Panda Go HSK2 lesson 3 — v531: larger quiz; compact, readable first screen.
+   Overrides v530 for steps 1 and 5 only. Other approved steps remain unchanged. */
+#lesson.compact-intro #content {
+  padding:8px 11px 6px;
+  overflow-y:hidden;
+  scrollbar-width:none;
+}
+#lesson.compact-intro #content>.paper {
+  margin:0;
+  padding:10px 12px 9px;
+  border-radius:20px;
+}
+#lesson.compact-intro #content>.paper>.eyebrow {display:none}
+#lesson.compact-intro #content>.paper>h2 {
+  font-size:clamp(19px,5.55vw,24px);
+  line-height:1.14;
+  margin:0 0 4px;
+}
+#lesson.compact-intro #content>.paper>.hint {
+  font-size:12.5px!important;
+  line-height:1.25;
+  margin:3px 0 5px;
+}
+#lesson.compact-intro #content>.paper>.hero-art {
+  width:100%;
+  height:clamp(110px,19dvh,168px);
+  aspect-ratio:auto;
+  object-fit:cover;
+  object-position:center 42%;
+  margin:5px 0 7px;
+  border-radius:16px;
+}
+#lesson.compact-intro #content>.paper>.cn {
+  font-size:clamp(28px,8vw,34px);
+  line-height:1.18;
+}
+#lesson.compact-intro #content>.paper>.py {
+  font-size:clamp(15px,4.35vw,17px);
+  line-height:1.18;
+  margin-top:2px;
+}
+#lesson.compact-intro #content>.paper>p:not(.hint):not(.endnote) {
+  font-size:clamp(13px,3.9vw,15px);
+  line-height:1.26;
+  margin:6px 0 4px;
+}
+#lesson.compact-intro #content>.paper>p.endnote {
+  font-size:11.5px;
+  line-height:1.2;
+  padding:6px 8px;
+  margin:5px 0 0;
+}
+
+/* Only the redundant bottom progress panel is removed by the view renderer.
+   Keep the completed-message banner and both types of tests. */
+#lesson.compact-tests #content {
+  padding:9px 11px 4px;
+  overflow-y:hidden;
+}
+#lesson.compact-tests #content>h2 {
+  font-size:clamp(23px,6.2vw,27px);
+  line-height:1.12;
+  margin:1px 0 5px;
+}
+#lesson.compact-tests #content>.hint {
+  font-size:clamp(12px,3.6vw,14px)!important;
+  line-height:1.2;
+  margin:4px 0 6px;
+}
+#lesson.compact-tests #content>.btnrow button {
+  min-height:46px;
+  font-size:clamp(13px,3.95vw,15.5px);
+  padding:7px 8px;
+  line-height:1.19;
+}
+#lesson.compact-tests #content>.paper {
+  padding:10px 11px;
+  margin-bottom:8px;
+  border-radius:19px;
+}
+#lesson.compact-tests #content>.paper h3 {
+  font-size:clamp(15px,4.5vw,18px);
+  margin:0 0 5px;
+  line-height:1.2;
+}
+#lesson.compact-tests #content>.paper p {
+  font-size:clamp(13px,3.85vw,15.5px);
+  line-height:1.26;
+  margin:4px 0 6px;
+}
+#lesson.compact-tests #content>.paper .pill {
+  font-size:11.5px;
+  padding:4px 8px;
+}
+#lesson.compact-tests #content>.paper .cn {
+  font-size:clamp(27px,7.8vw,34px);
+  line-height:1.17;
+}
+#lesson.compact-tests #content>.paper .py {font-size:clamp(15px,4.35vw,17px)}
+#lesson.compact-tests #content>.paper .option {
+  min-height:46px;
+  margin:6px 0;
+  padding:9px 11px;
+  font-size:clamp(15px,4.35vw,17px);
+  line-height:1.2;
+  border-radius:14px;
+}
+#lesson.compact-tests #content>.paper .option .cn {font-size:clamp(23px,6vw,27px)!important}
+#lesson.compact-tests #content>.paper .btnrow button {
+  min-height:42px;
+  font-size:clamp(14px,4.05vw,16px);
+  padding:7px 8px;
+}
+#lesson.compact-tests #content>.paper .status {
+  margin:5px 0;
+  padding:7px 9px;
+  font-size:13px;
+  line-height:1.18;
+}
+#lesson.compact-tests #content>.paper .hint {
+  font-size:12px!important;
+  line-height:1.2;
+  margin:4px 0 1px;
+}
+#lesson.compact-tests #content>.paper .answer {
+  font-size:20px;
+  min-height:43px;
+  padding:8px;
+}
+
+/* Shorter browser viewports: preserve interactive targets and let image shrink first. */
+#lesson.compact-intro.compact-tight #content {padding:5px 9px 4px}
+#lesson.compact-intro.compact-tight #content>.paper {padding:8px 10px 7px}
+#lesson.compact-intro.compact-tight #content>.paper>.hero-art {height:clamp(90px,16dvh,140px);margin:3px 0 5px}
+#lesson.compact-intro.compact-tight #content>.paper>h2 {font-size:19px;line-height:1.12}
+#lesson.compact-intro.compact-tight #content>.paper>.hint {font-size:11.5px!important;margin:2px 0 3px}
+#lesson.compact-intro.compact-tight #content>.paper>p:not(.hint):not(.endnote) {font-size:12.5px;margin:3px 0}
+#lesson.compact-intro.compact-tight #content>.paper>.cn {font-size:27px}
+#lesson.compact-intro.compact-tight #content>.paper>p.endnote {font-size:10.5px;padding:4px 6px;margin-top:3px}
+#lesson.compact-intro.compact-ultra #content>.paper>.hero-art {height:86px;margin:2px 0 4px}
+#lesson.compact-intro.compact-ultra #content>.paper>h2 {font-size:17.5px}
+#lesson.compact-intro.compact-ultra #content>.paper>.hint {font-size:10.5px!important;line-height:1.12}
+#lesson.compact-intro.compact-ultra #content>.paper>.cn {font-size:24px}
+#lesson.compact-intro.compact-ultra #content>.paper>.py {font-size:13px}
+#lesson.compact-intro.compact-ultra #content>.paper>p:not(.hint):not(.endnote) {font-size:11.5px;line-height:1.13}
+#lesson.compact-intro.compact-ultra #content>.paper>p.endnote {font-size:10px;line-height:1.1}
+
+#lesson.compact-tests.compact-tight #content>.paper {padding:8px 9px;margin-bottom:5px}
+#lesson.compact-tests.compact-tight #content>.paper .option {min-height:40px;margin:4px 0;padding:6px 9px;font-size:14.5px}
+#lesson.compact-tests.compact-tight #content>.paper h3 {font-size:14.5px}
+#lesson.compact-tests.compact-tight #content>.paper .cn {font-size:26px}
+#lesson.compact-tests.compact-tight #content>.paper .btnrow button {min-height:38px;font-size:14px}
+#lesson.compact-tests.compact-ultra #content>.paper .option {min-height:34px;margin:3px 0;padding:4px 7px;font-size:13.5px}
+#lesson.compact-tests.compact-ultra #content>.paper .btnrow button {min-height:34px;font-size:13px}
+#lesson.compact-tests.compact-ultra #content>.paper .cn {font-size:23px}
+#lesson.compact-tests.compact-ultra #content>.paper h3 {font-size:13.5px}
+
+/* If viewport truly cannot fit required content, show it instead of clipping. */
+#lesson.compact-intro.compact-overflow #content,
+#lesson.compact-tests.compact-overflow #content {overflow-y:auto}
