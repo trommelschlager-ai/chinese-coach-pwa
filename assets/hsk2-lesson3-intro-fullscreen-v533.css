@@ -1,0 +1,165 @@
+/* Panda Go · HSK 2 · Lesson 3 · intro fullscreen v533.
+   Only step 1 changes; lesson navigation, colors and all other steps are untouched.
+   The image keeps its intrinsic aspect ratio and is never stretched or cropped. */
+
+#lesson.compact-intro #content {
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  padding:8px 10px 8px;
+  overflow:hidden;
+}
+#lesson.compact-intro #content > .paper {
+  flex:1 1 auto;
+  min-height:0;
+  width:100%;
+  margin:0;
+  padding:12px 14px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:clamp(4px,.9dvh,9px);
+  border-radius:21px;
+}
+/* The header already shows the lesson: remove only the duplicate tag. */
+#lesson.compact-intro #content > .paper > .eyebrow {display:none}
+#lesson.compact-intro #content > .paper > h2 {
+  font-size:clamp(20px,5.8vw,27px);
+  line-height:1.14;
+  margin:0;
+  flex:none;
+}
+#lesson.compact-intro #content > .paper > .hint {
+  font-size:clamp(12px,3.55vw,14.5px)!important;
+  line-height:1.25;
+  margin:0;
+  flex:none;
+}
+/* Explicitly reset previous hard height limits: natural ratio, no distortion. */
+#lesson.compact-intro #content > .paper > img.hero-art {
+  display:block;
+  align-self:center;
+  box-sizing:border-box;
+  width:100%;
+  height:auto;
+  max-width:100%;
+  max-height:min(36dvh,320px);
+  aspect-ratio:auto;
+  object-fit:contain;
+  object-position:center center;
+  flex:0 1 auto;
+  margin:0;
+  background:#fff7fd;
+  border-radius:15px;
+}
+#lesson.compact-intro #content > .paper > .cn {
+  font-size:clamp(34px,9.3vw,46px);
+  line-height:1.07;
+  margin:0;
+  flex:none;
+}
+#lesson.compact-intro #content > .paper > .py {
+  font-size:clamp(19px,5.25vw,23px);
+  line-height:1.15;
+  margin:0;
+  flex:none;
+}
+#lesson.compact-intro #content > .paper > p:not(.hint):not(.endnote) {
+  font-size:clamp(16px,4.3vw,19px);
+  line-height:1.23;
+  margin:0;
+  flex:none;
+}
+#lesson.compact-intro #content > .paper > .endnote {
+  font-size:clamp(11.5px,3.25vw,13.5px);
+  line-height:1.2;
+  margin:0;
+  padding:8px 10px;
+  flex:none;
+}
+
+/* Reduce the photograph before shrinking study text on shorter phones. */
+#lesson.compact-intro.compact-tight #content {
+  padding:6px 8px 6px;
+}
+#lesson.compact-intro.compact-tight #content > .paper {
+  padding:9px 11px;
+  gap:4px;
+}
+#lesson.compact-intro.compact-tight #content > .paper > img.hero-art {
+  width:100%;
+  height:auto;
+  max-height:23dvh;
+  aspect-ratio:auto;
+  object-fit:contain;
+  margin:0;
+}
+#lesson.compact-intro.compact-tight #content > .paper > h2 {
+  font-size:clamp(19px,5.35vw,24px);
+  line-height:1.12;
+}
+#lesson.compact-intro.compact-tight #content > .paper > .hint {
+  font-size:12px!important;
+  line-height:1.18;
+}
+#lesson.compact-intro.compact-tight #content > .paper > .cn {
+  font-size:clamp(30px,8.4vw,38px);
+  line-height:1.09;
+}
+#lesson.compact-intro.compact-tight #content > .paper > .py {
+  font-size:clamp(17px,4.6vw,20px);
+  line-height:1.14;
+}
+#lesson.compact-intro.compact-tight #content > .paper > p:not(.hint):not(.endnote) {
+  font-size:clamp(14px,3.9vw,17px);
+  line-height:1.18;
+  margin:0;
+}
+#lesson.compact-intro.compact-tight #content > .paper > .endnote {
+  font-size:11px;
+  line-height:1.15;
+  padding:5px 7px;
+  margin:0;
+}
+#lesson.compact-intro.compact-ultra #content > .paper {
+  padding:7px 9px;
+  gap:3px;
+}
+#lesson.compact-intro.compact-ultra #content > .paper > img.hero-art {
+  width:100%;
+  height:auto;
+  max-height:17dvh;
+  aspect-ratio:auto;
+  object-fit:contain;
+  margin:0;
+}
+#lesson.compact-intro.compact-ultra #content > .paper > h2 {
+  font-size:17.5px;
+}
+#lesson.compact-intro.compact-ultra #content > .paper > .hint {
+  font-size:10.5px!important;
+  line-height:1.12;
+}
+#lesson.compact-intro.compact-ultra #content > .paper > .cn {
+  font-size:27px;
+}
+#lesson.compact-intro.compact-ultra #content > .paper > .py {
+  font-size:15px;
+}
+#lesson.compact-intro.compact-ultra #content > .paper > p:not(.hint):not(.endnote) {
+  font-size:12px;
+  line-height:1.13;
+}
+#lesson.compact-intro.compact-ultra #content > .paper > .endnote {
+  font-size:10px;
+  line-height:1.12;
+  padding:4px 6px;
+}
+/* Never hide required content if even the shortest layout cannot fit. */
+#lesson.compact-intro.compact-overflow #content {
+  overflow-y:auto;
+}
+#lesson.compact-intro.compact-overflow #content > .paper {
+  min-height:max-content;
+  justify-content:flex-start;
+}
