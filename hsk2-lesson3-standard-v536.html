@@ -1439,10 +1439,10 @@ if (courseMode) {
   headBack.textContent = '‹';
   headLabel.className = 'pg433-title';
   headLabel.removeAttribute('id');
-  headLabel.innerHTML = '<small>HSK 2 · Урок 1</small><strong>О себе</strong>';
+  headLabel.innerHTML = '<small>HSK 2 · Урок 3</small><strong>Работа и учёба</strong>';
   chapter = document.createElement('span');
   chapter.className = 'pg433-pill';
-  chapter.textContent = 'Урок 1 · Знакомство';
+  chapter.textContent = 'Урок 3 · Работа и учёба';
   top.append(chapter);
   nav.innerHTML = courseSections.map(({name,steps},i) =>
     '<button type="button" data-step="' + steps[0] + '"><b>' + (i+1) + '</b><span>' + name + '</span></button>').join('');
@@ -1502,28 +1502,14 @@ const dayScenes = ['wake','wash','brush','breakfast','work','sleep'];
 
 /* HSK2 About Me premium imagery, exactly matched to approved Lesson 1 character.
    Each inline SVG views one of six/eight REAL 3D raster photo-atlas cells. */
-const photoAtlas = Object.freeze({
-  words:'./assets/hsk2-about-me/about-me-words-3d-atlas.webp?v=20261120v3',
-  stages:'./assets/hsk2-about-me/about-me-stages-3d-atlas.webp?v=20261120v3'
-});
-const aboutArtLabels = ['Панда с глобусом: страна','Панда с часами: сейчас','Панда в квартире: Москва','Панда работает за ноутбуком','Панда слушает музыку','Панда изучает китайский'];
-const atlasTile = (type,index,description,cssClass='about-illustration') => {
-  const isWord = type === 'words', side = isWord ? 512 : 627, cols = isWord ? 3 : 2;
-  const col = index % cols, row = Math.floor(index / cols);
-  return '<svg xmlns="http://www.w3.org/2000/svg" class="' + cssClass + ' about-premium-photo" ' +
-    'viewBox="0 0 ' + side + ' ' + side + '" preserveAspectRatio="xMidYMid slice" ' +
-    'role="img" aria-label="' + description + '">' +
-    '<image href="' + photoAtlas[type] + '" x="' + (-side*col) + '" y="' + (-side*row) + '" ' +
-    'width="' + (cols*side) + '" height="' + (2*side) + '" preserveAspectRatio="none" />' +
-    '</svg>';
-};
-const vocabImage = (i,cssClass='about-illustration') => atlasTile('words',i,aboutArtLabels[i],cssClass);
-const stageIndexes = Object.freeze({grammar:0,tones:1,quiz:2,dialogue:3});
-const stageLabels = Object.freeze({grammar:'Панда рассказывает о жизни в Москве',tones:'Панда говорит в микрофон',quiz:'Панда решает задания',dialogue:'Панды знакомятся и общаются'});
-const stageImage = (name,cssClass='about-stage-photo') => atlasTile('stages',stageIndexes[name],stageLabels[name],cssClass);
-const storyImage = i => i === 0
-  ? stageImage('dialogue','about-story-photo')
-  : vocabImage([0,0,2,3,4,5][i],'about-story-photo');
+
+const vocabImage = (i,cssClass='about-illustration') =>
+ '<img src="' + A[i] + '" class="' + cssClass + ' about-premium-photo" alt="' +
+ escape(words[i]?.zh || 'Панда') + '" loading="lazy" decoding="async">';
+const stageIndexes=Object.freeze({grammar:0,tones:5,quiz:2,dialogue:3});
+const stageImage = (name,cssClass='about-stage-photo') =>
+ vocabImage(stageIndexes[name] || 0,cssClass);
+const storyImage = i => vocabImage(i,'about-story-photo');
 const art = name => '<img src="' + decoration + name + '.webp" alt="">';
 const hanzi = html => '<strong class="cn" lang="zh-Hans">' + html + '</strong>';
 const toneContours = ['M4 5 Q9 4.5 14 5', 'M4 14 Q6.5 8 14 3', 'M4 6 Q8 21 14 7', 'M4 3 Q9 6 14 14'];
@@ -1674,16 +1660,20 @@ function render(resetScroll = false) {
   next.setAttribute('aria-label',next.disabled ? 'Заверши текущее упражнение, чтобы продолжить' : next.textContent);
   if (resetScroll) workspace.scrollTop = 0;
 }
+
 function intro() {
-  // Match approved HSK2 My Day poster dimensions and responsive rendering.
-  return '<section class="word-flow-cover-shell about-approved-cover-shell" aria-label="Panda Go · HSK 2 · О себе. 3D-обложка по эталону Мой день">' +
-    '<div class="word-flow-cover about-approved-cover">' +
-    '<img class="about-approved-cover-image" src="./assets/hsk2-about-me/cover-about-me-approved-layout-v5.avif?v=20261120v5" ' +
-      'width="905" height="1737" alt="Урок 1 О себе. Панда за учебным столом с ноутбуком и книгами, китайский пейзаж. 自我介绍. 6 новых выражений, 30 мини-тестов, грамматика, рассказ о себе, произношение, диалог с Пандой. Один выученный язык может изменить всю твою жизнь." ' +
-      'fetchpriority="high" decoding="async" draggable="false">' +
-    '<a class="about-approved-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>' +
-    '<button class="about-approved-cover-start" type="button" data-step="2" aria-label="Начать урок О себе"></button>' +
-    '</div></section>';
+ return '<section class="l3-cover" aria-label="HSK 2, урок 3 — Моя работа и учёба">' +
+  '<a class="l3-cover-back" href="./hsk2-life-course.html?view=map">← Все уроки</a>' +
+  '<div class="l3-cover-label">HSK 2 · УРОК 3</div>' +
+  '<h1>Моя работа и учёба</h1><div class="l3-cover-cn" lang="zh-Hans">我的工作和学习</div>' +
+  '<img class="l3-cover-art" src="' + A[0] + '" alt="Панда работает за компьютером" decoding="async">' +
+  '<div class="l3-cover-syllabus"><b>Содержание урока:</b>' +
+   '<p>6 новых выражений · 2 правила · 30 мини-тестов</p>' +
+   '<div class="l3-cover-grid"><span>📖 Слова</span><span>🎙 Речь и тоны</span><span>💬 Диалог</span></div>' +
+  '</div>' +
+  '<button type="button" class="primary l3-cover-start" data-step="2">Начать урок →</button>' +
+  '<p class="l3-cover-motto">Не бойся говорить с ошибками. Бойся никогда не заговорить.</p>' +
+ '</section>';
 }
 function newWords() {
   const canPlay = words.every(word => clips.has(normalize(word.zh)));
