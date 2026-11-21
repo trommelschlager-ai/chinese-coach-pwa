@@ -397,7 +397,7 @@ function render(){
  if(state.view==='topic' && state.topic===6){
  html += '<aside class="pg-shop8-preview" style="margin:10px;padding:13px;border-radius:18px;background:linear-gradient(145deg,#fff6fa,#f7ddff);border:2px solid #eac0f4;box-shadow:0 4px 10px #7d3a8540;text-align:center">'+
   '<strong style="display:block;margin-bottom:7px;color:#601b7f">🛍️ HSK 2 · Урок 8 — В магазине</strong>'+
-  '<a href="./hsk2-lesson8-shop-preview.html?rev=shop8-art-v1" style="display:block;border-radius:24px;background:linear-gradient(#d657ef,#7728b1);border:2px solid #f2d181;padding:10px;color:#fff;font-weight:800;text-decoration:none;box-shadow:0 4px 8px #71208d55">▶ Открыть интерактивный урок 8</a>'+
+  '<a href="./hsk2-lesson8-shop-preview.html?rev=shop8-layout-v2" style="display:block;border-radius:24px;background:linear-gradient(#d657ef,#7728b1);border:2px solid #f2d181;padding:10px;color:#fff;font-weight:800;text-decoration:none;box-shadow:0 4px 8px #71208d55">▶ Открыть интерактивный урок 8</a>'+
   '<small style="display:block;margin-top:7px;color:#5b326d">Слова, цены, примерка, диалог · предварительная версия без MP3</small>'+
  '</aside>';
 }
