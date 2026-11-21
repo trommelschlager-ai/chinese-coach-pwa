@@ -1,0 +1,54 @@
+/* Panda Go HSK2 · lesson 3 · v534.
+   Match the wide illustration frame of step 2 on the step 1 intro.
+   Original square panda illustration is scaled proportionally and cropped, never stretched.
+   Only intro image layout changes; content, progress, navigation and other steps remain untouched. */
+
+#lesson.compact-intro #content > .paper > img.hero-art {
+  display:block;
+  align-self:stretch;
+  flex:0 0 auto;
+  width:100%;
+  height:min(27dvh,220px);
+  max-width:100%;
+  max-height:none;
+  aspect-ratio:3/2;
+  object-fit:cover;
+  object-position:50% 48%;
+  margin:0;
+  border-radius:15px;
+  background:transparent;
+}
+
+/* Fit the same wide landscape image into shorter Android browser viewports.
+   Keep the image full-width, with no side bars at any density. */
+#lesson.compact-intro.compact-tight #content > .paper > img.hero-art {
+  width:100%;
+  height:min(25dvh,205px);
+  max-height:none;
+  aspect-ratio:3/2;
+  object-fit:cover;
+  object-position:50% 48%;
+  margin:0;
+}
+#lesson.compact-intro.compact-ultra #content > .paper > img.hero-art {
+  width:100%;
+  height:min(22dvh,175px);
+  max-height:none;
+  aspect-ratio:3/2;
+  object-fit:cover;
+  object-position:50% 48%;
+  margin:0;
+}
+#lesson.compact-intro.compact-overflow #content > .paper > img.hero-art {
+  width:100%;
+  height:min(27dvh,220px);
+  max-height:none;
+  object-fit:cover;
+}
+
+/* A slightly denser layout keeps the complete text on the same mobile page. */
+#lesson.compact-intro #content > .paper {
+  gap:clamp(2px,.55dvh,6px);
+}
+#lesson.compact-intro.compact-tight #content > .paper,
+#lesson.compact-intro.compact-ultra #content > .paper {gap:3px}
