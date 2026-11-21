@@ -104,6 +104,55 @@ test('actual canvas trace is downward/upward without stretching saved syllables'
 
 test('the lesson loads the updated chart without removing prior exercises', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'hsk2-lesson3-work-study-preview.html'), 'utf8');
-  assert.ok(html.includes('./assets/hsk2-lesson3-tone-meter-v5.js?v=528'));
+  assert.ok(html.includes('./assets/hsk2-lesson3-tone-meter-v5.js?v=529'));
   assert.ok(html.includes('hsk2-lesson3'));
+});
+
+
+test('5/5 keeps record enabled and rotates recent microphone attempts without losing progress', () => {
+  const entry = {
+    points: [[0, 210], [.25, 211], [.5, 215], [.75, 220], [1, 223]],
+    seconds: .6, splitRatio: .5, splitSource: 'midpoint',
+    quality: 'both', validParts: [true, true], voiceMs: 600
+  };
+  for (const manualOnly of [false, true]) {
+    const reps = Array.from({length: 6}, () => ({mic: [], manual: 0}));
+    reps[0] = manualOnly ? {mic: [], manual: 5} : {mic: Array.from({length: 5}, () => ({...entry})), manual: 0};
+    const localStorage = {
+      data: JSON.stringify({selected: 0, reps}),
+      getItem() { return this.data; },
+      setItem(k, v) { this.data = v; }
+    };
+    const record = {disabled: true, textContent: ''};
+    const document = {
+      addEventListener() {},
+      getElementById(id) { return id === 'tone-record' ? record : null; }
+    };
+    const window = {addEventListener() {}};
+    const patchedModule = moduleCode.replace(
+      'window.PandaToneTrainer={',
+      'window.__toneTest={stop,setActive:r=>active=r,getState:()=>state};window.PandaToneTrainer={'
+    );
+    assert.notEqual(patchedModule, moduleCode);
+    vm.runInNewContext(patchedModule, {
+      window, document, localStorage, cancelAnimationFrame() {}
+    }, {timeout: 4000});
+    const words = ['公司','学校','同事','同学','电脑','会说'].map(zh => ({zh, py:'gōngsī', ru:'слово'}));
+    const markup = window.PandaToneTrainer.render(words, null, null, x => x, '');
+    assert.match(markup, /id="tone-record"[^>]*>/);
+    assert.doesNotMatch(markup, /id="tone-record"[^>]*disabled/);
+    window.PandaToneTrainer.mount();
+    assert.equal(record.disabled, false);
+    const levels = [0,.1,.2,.3,.4,.5,.6,.7].map(t => [t, .06]);
+    const samples = levels.map(([t]) => [t, 240 + 6*t]);
+    window.__toneTest.setActive({word: 0, levels, samples});
+    window.__toneTest.stop(true);
+    const actual = window.__toneTest.getState();
+    assert.equal(actual.reps[0].mic.length, manualOnly ? 1 : 5);
+    assert.equal(actual.reps[0].manual, manualOnly ? 4 : 0);
+    assert.equal(actual.reps[0].mic.at(-1).points.at(-1)[1], 244.2);
+    assert.equal(actual.reps[0].mic.length + actual.reps[0].manual, 5);
+    assert.equal(record.disabled, false);
+    assert.equal(JSON.parse(localStorage.data).reps[0].mic.length, manualOnly ? 1 : 5);
+  }
 });
