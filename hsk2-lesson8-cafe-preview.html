@@ -1402,6 +1402,16 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   text-shadow:0 1px white;pointer-events:none;background:linear-gradient(165deg,#fff4d6eb,#ffdfb1df);
   border:2px solid #e9b558;border-radius:12% / 18%;box-shadow:0 3px 8px #6b298040}
 #app #pg433 .shop-cover .hobby-cover-tile:focus-visible{outline:3px solid #5b0c83}
+</style><style>
+/* Only lesson 8: the approved shopping panda occupies the illustration area. */
+#app #pg433 .shop-cover{position:relative}
+#app #pg433 .shop-cover .shop-cover-hero{
+  position:absolute;z-index:2;top:20.1%;left:0;width:100%;height:23.5%;
+  object-fit:cover;object-position:center 42%;border:0;box-shadow:none;pointer-events:none;
+}
+#app #pg433 .shop-cover .hobby-cover-title,
+#app #pg433 .shop-cover .hobby-cover-chapter{z-index:3}
+#app #pg433 .shop-cover .hobby-cover-summary{z-index:5}
 </style></head>
 <body>
 <div class="app" id="app">
@@ -1739,7 +1749,7 @@ function intro() {
     '<a class="final-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>' +
     '<span class="hobby-cover-chapter">HSK 2 · УРОК 8</span>' +
     '<div class="hobby-cover-title"><h1>В магазине</h1><p><span lang="zh-Hans">在商店</span><br>Zài shāngdiàn</p></div>' +
-    '<div class="shop-cover-goods" aria-hidden="true">🛍️ <span>🏪</span> 🏷️</div>' +
+    '<img class="shop-cover-hero" src="./assets/hsk2-lesson8-shop-hero-approved.webp" width="320" height="146" alt="Панда в кожаной куртке выбирает товары в китайском магазине" draggable="false">' +
     '<div class="hobby-cover-summary"><p>Научись спрашивать цену, выбирать<br>товары и говорить о покупке по-китайски.</p></div>' +
     '<span class="cover-tile-label cover-tile-words" aria-hidden="true">Слова</span>' +
     '<span class="cover-tile-label cover-tile-tests" aria-hidden="true">Тесты</span>' +
