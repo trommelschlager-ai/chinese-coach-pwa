@@ -2,8 +2,8 @@
    Browser ASR is transcription only, never acoustic tone grading. */
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {PANDA_GRAMMAR_AUDIO_V451} from './panda-grammar-voice-v451.mjs?v=451';
-import {understandDayAnswer} from './panda-hsk2-day-understanding-v1.mjs?v=5';
-import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=2';
+import {understandDayAnswer} from './panda-hsk2-day-understanding-v1.mjs?v=6';
+import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=3';
 if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){
 const STORY=[
 [['我每天七点起床。','Wǒ měitiān qī diǎn qǐchuáng.','Я встаю в 7.'],['我起床以后洗脸。','Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма умываюсь.'],['我早上刷牙。','Wǒ zǎoshang shuāyá.','Утром чищу зубы.'],['我早上吃早饭。','Wǒ zǎoshang chī zǎofàn.','Утром завтракаю.'],['我八点去上班。','Wǒ bā diǎn qù shàngbān.','В 8 иду на работу.'],['我晚上十点睡觉。','Wǒ wǎnshang shí diǎn shuìjiào.','В 10 вечера ложусь спать.']],
@@ -204,26 +204,40 @@ function init(stage){
    if(chat.open)container.scrollTop=container.scrollHeight;
  }
  // In simple chat, only exact approved MP3s may play. No browser voice swaps.
+ let lastChatLine=null, chatReview=null;
+ const replayCommand=/^(?:请|麻烦你)?(?:你能)?(?:再说一遍|重复一遍|说慢一点|慢一点说)(?:吗)?$/u;
  function chatReplyTo(raw,{alreadyLogged=false}={}){
   const text=String(raw??'').trim();
   if(!text){status('Напиши вопрос или предложение на китайском.');return}
   stop();
   if(!alreadyLogged)addChatMessage('user',text);
+  const words=norm(text);
+  const repeat=replayCommand.test(words);
+  if(repeat){
+   if(!lastChatLine){status('Сначала задай Панде вопрос.');return}
+   line(lastChatLine);
+   void speak(lastChatLine,words.includes('慢'));
+   return;
+  }
+  const chatAnswer=respondToPandaChat(text,chatContext);
   const dayQuestion=understandDayAnswer(text,0);
   let reply;
   if(dayQuestion.kind==='user-question'){
    const idx=dayQuestion.questionIndex;
    reply={line:STORY[round%2][[0,1,3,4,5][idx]],supported:true};
    chatContext={dayQuestion:idx};
-  }else if(Number.isInteger(chatContext?.dayQuestion)&&understandDayAnswer(text,chatContext.dayQuestion).kind==='accepted'){
+  }else if(!chatAnswer.supported&&Number.isInteger(chatContext?.dayQuestion)&&understandDayAnswer(text,chatContext.dayQuestion).kind==='accepted'){
    const idx=chatContext.dayQuestion;
    reply={line:['好的，我明白了。','Hǎo de, wǒ míngbai le.','Хорошо, я поняла.'],supported:true};
    chatContext={dayQuestion:idx};
   }else{
-   reply=respondToPandaChat(text,chatContext);chatContext=reply.context;
+   reply=chatAnswer;chatContext=reply.context;
   }
+  if(reply.review&&!chatReview)chatReview={original:text,line:reply.line,tip:reply.review};
+  lastChatLine=reply.line;
   addChatMessage('panda',reply.line[0]+' — '+reply.line[2]);
   line(reply.line);
+  if(/^(?:再见|明天见|拜拜)$/u.test(words))showChatReview();
   status(reply.supported?'✓ Ответ Панды показан. Продолжай диалог.':
    '✓ Вопрос получен, но на эту тему пока нет подготовленного ответа.');
   if(approvedClips(reply.line[0]).length){
@@ -231,6 +245,12 @@ function init(stage){
   }else if(reply.supported){
    status('💬 Ответ текстом. Для этой фразы пока нет записи.');
   }
+ }
+ function showChatReview(){
+  if(!chatReview)return;
+  const {original,line,tip}=chatReview;
+  addChatMessage('panda','Разбор: '+original+' → '+line[0]+' · '+line[1]+' · '+line[2]+' '+tip);
+  chatReview=null;
  }
  function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||'';const repeat=$('day-hear');if(repeat){repeat.disabled=!approvedClips(a[0]).length;repeat.title=repeat.disabled?'Нет точной записи утверждённым голосом':'Повторить одобренную запись'};updateStoryPlayer()}
  function storyLines(){
@@ -496,10 +516,14 @@ function init(stage){
   const r=new SR();recognizer=r;r.lang='zh-CN';r.interimResults=false;r.maxAlternatives=3;r.continuous=phase==='monologue';
   status('🎙 Слушаю китайскую речь…');
   r.onresult=e=>{
+   if(recognizer!==r)return;
    let text='';for(let j=e.resultIndex;j<e.results.length;j++)if(e.results[j].isFinal)text+=e.results[j][0].transcript+' ';
    text=text.trim();if(!text)return;
    if(phase==='questions'||phase==='freechat'){
     $('day-input').value=text;status('Распознано: '+text+'. Тоны не оценивались.');
+    if(phase==='freechat'&&replayCommand.test(norm(text))&&e.results[e.resultIndex]?.[0]?.confidence>=0.75){
+     stopRecognition();answer(text);return;
+    }
     if(phase==='questions'){
      const question=i;
      // Only reviewed lesson answers advance automatically.
@@ -532,15 +556,17 @@ function init(stage){
  chatModeButton.onclick=()=>{
   if(phase!=='freechat'){
    stop();stopRecognition();
+   lastChatLine=null;chatReview=null;chatContext=null;
    chatResume={phase,idx:i,last,lastInput:$('day-input').value,lastLong:$('day-long').value};
    $('day-input').value='';
    stagePhase('freechat');
    line(['自由聊天','Zìyóu liáotiān','Простой разговор: имя, увлечения, еда, учёба и повседневные дела.']);
-   status('Спроси: 你喜欢什么？ — Что тебе нравится? Это учебный разговор, не свободный ИИ.');
+   status('Начни с 早上好 — «Доброе утро». Для повтора скажи 请再说一遍, для замедления — 请说慢一点.');
    chat.open=true;
    $('day-input').focus();return;
   }
   stop();stopRecognition();
+  showChatReview();
   const saved=chatResume;chatResume=null;
   const restore=saved?.phase||'ready';
   if(restore==='questions'){
