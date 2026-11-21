@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="ru" class="course-layout"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#9e2cc9">
+<meta name="description" content="Panda Go HSK 2, урок 5 — Друзья, встречи и планы. Интерактивная предварительная версия.">
+<title>Panda Go · HSK 2 · Урок 5 — Друзья, встречи и планы</title>
+<link rel="stylesheet" href="./assets/hsk2-lesson1-approved-merged-v460.css?v=460">
+<style>
+:root{color-scheme:light;--ink:#5b2570;--purple:#622381;--rose:#d83faf;--line:#e7b5df;--gold:#f7d99b;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#ecd5f3;color:var(--ink)}
+button,select{font:inherit;color:inherit;cursor:pointer}
+button:disabled{opacity:.42;cursor:default}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #7b279a;outline-offset:2px}
+button:not(:disabled):active{transform:translateY(3px);filter:brightness(.96);box-shadow:0 1px 3px #8f599552!important}
+[hidden]{display:none!important}
+#app.pg5-app{width:min(100%,560px)!important;height:100dvh!important;min-height:0!important;max-width:560px!important;margin:0 auto!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;background:#f5e2f8!important;isolation:isolate;border:none!important;border-radius:0!important;box-shadow:0 0 20px #8a529047!important}
+#app.pg5-app #pg433{width:100%!important;height:100%!important;min-height:0!important;display:flex!important;flex-direction:column!important;border:none!important;border-radius:0!important;overflow:hidden!important;background:linear-gradient(#f8eafb,#f4ddf7)!important}
+#app.pg5-app .pg433-header{flex:none!important;padding:calc(7px + env(safe-area-inset-top)) 10px 9px!important;background:linear-gradient(180deg,#fff3ff 0%,#f7ddfa 70%,#ecd0ef 100%)!important;border-bottom:2px solid #d5a0d6!important;box-shadow:0 4px 9px #9861a449!important;z-index:3}
+#app.pg5-app .pg433-topline{display:flex;align-items:center;gap:9px;min-height:49px!important}
+#app.pg5-app .pg433-back{flex:none;display:grid;place-items:center;width:42px!important;height:42px!important;padding:0!important;border-radius:50%!important;border:2px solid #d7ace3!important;background:linear-gradient(#fffaff,#eecff5)!important;box-shadow:0 3px 6px #9757a35e!important;font-size:27px;color:#7a378c!important}
+#app.pg5-app .pg433-title{min-width:0;flex:1;line-height:1.12;display:flex;flex-direction:column;gap:3px}
+#app.pg5-app .pg433-title small{font-size:11px;color:#965298;font-weight:800}
+#app.pg5-app .pg433-title strong{font-size:clamp(21px,5.7vw,27px)!important;line-height:1.04;letter-spacing:-.04em;color:#662583;font-weight:1000}
+#app.pg5-app .pg433-pill{flex:none;max-width:93px;text-align:center;font-size:11px!important;font-weight:900;color:#92499b!important;background:#fff6fc!important;border:1px solid #e1b6dd;border-radius:20px;padding:7px 7px!important}
+#app.pg5-app .pg433-tabs{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important;margin:8px 0 6px!important;position:relative!important}
+#app.pg5-app .pg433-tabs button{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;min-height:54px!important;gap:2px!important;padding:5px 1px!important;font-size:clamp(10px,2.65vw,13px)!important;font-weight:800;line-height:1.08;white-space:normal!important;border-radius:12px!important;border:1.5px solid #e2b7dd!important;border-bottom:4px solid #c69cc8!important;background:linear-gradient(#fffaff,#f4e7fb)!important;color:#6d4075!important;box-shadow:0 3px 6px #a77daf42!important}
+#app.pg5-app .pg433-tabs button b{font-size:clamp(17px,4.9vw,22px)!important;line-height:1.05}
+#app.pg5-app .pg433-tabs button.active{background:linear-gradient(155deg,#f180df,#c63cc9 60%,#8723a6)!important;border-color:#f6d28d!important;border-bottom-color:#8d25a2!important;color:#fff!important;text-shadow:0 1px #7a278b;box-shadow:0 4px 6px #92509d70!important}
+#app.pg5-app .pg5-progress{height:6px;background:#e5c0e8;border-radius:10px;overflow:hidden;box-shadow:inset 0 1px 3px #a47aaf64;margin:0 2px}
+#app.pg5-app .pg5-progress>i{display:block;height:100%;width:12.5%;background:linear-gradient(90deg,#eb8cd5,#b33abc,#77219b);transition:width .2s}
+#app.pg5-app .pg433-content{flex:1!important;min-height:0!important;width:100%!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#cf98d2 transparent;padding:clamp(10px,2.9vw,16px)!important;background:radial-gradient(ellipse at top,#fff6fe,#f8e8fa 75%)!important}
+#app.pg5-app .pg433-footer{flex:none!important;display:flex!important;align-items:center!important;gap:8px!important;min-height:62px!important;padding:8px 12px calc(8px + env(safe-area-inset-bottom))!important;border-top:2px solid #d8a9db;background:linear-gradient(#fff3fd,#eecff2)!important;box-shadow:0 -3px 8px #a76da845!important}
+#app.pg5-app .pg433-footer button{flex:1;min-height:46px!important;border-radius:14px!important;border:1.5px solid #dcb4e2!important;border-bottom:4px solid #bd8ecb!important;box-shadow:0 4px 6px #a16aab55!important;background:linear-gradient(#fffafd,#ecd6f7)!important;color:#77338c!important;font-size:clamp(14px,3.6vw,17px)!important;font-weight:850}
+#app.pg5-app .pg433-footer #next{flex:1.55!important;background:linear-gradient(155deg,#f37ad9,#c53cc5 55%,#79209b)!important;color:#fff!important;border:2px solid #f2d595!important;border-bottom:4px solid #822391!important;text-shadow:0 1px 2px #7b2b8d;font-size:clamp(16px,4vw,19px)!important}
+#app.pg5-app .pg433-footer .pg5-counter{width:63px;max-width:63px;text-align:center;flex:none;font-size:11px;font-weight:850;color:#855c91;line-height:1.12}
+#app.pg5-app .pg5-title{width:max-content;max-width:100%;margin:4px auto 12px;padding:5px 22px;border:2px solid #edc484;border-radius:35px;background:linear-gradient(#fff9fe,#fae9fb);color:#702b8c;text-align:center;font-size:clamp(25px,6.2vw,34px);font-weight:1000;line-height:1.14;box-shadow:0 3px 6px #ae70b65a;text-shadow:0 2px #fff}
+#app.pg5-app .pg5-sub{font-size:clamp(12px,3.1vw,15px);line-height:1.35;color:#85608c;text-align:center;margin:0 0 12px}
+#app.pg5-app .pg5-panel{border:1.5px solid #e5b8df;border-bottom:4px solid #ce99d3;border-radius:19px;background:linear-gradient(145deg,#fffbfe,#f9e8fb 85%);padding:clamp(12px,3vw,18px);margin-bottom:12px;box-shadow:0 4px 10px #aa72af47;overflow:hidden}
+#app.pg5-app .pg5-panel h2,#app.pg5-app .pg5-panel h3{margin:0 0 9px;color:#732989;font-weight:900;line-height:1.16}
+#app.pg5-app .pg5-panel h2{font-size:clamp(21px,5.6vw,28px)}
+#app.pg5-app .pg5-panel h3{font-size:clamp(17px,4.4vw,21px)}
+#app.pg5-app .pg5-panel p{margin:6px 0;font-size:clamp(13px,3.4vw,16px);color:#785080;line-height:1.4}
+#app.pg5-app .pg5-cn{font-family:"Noto Sans CJK SC","Microsoft YaHei","PingFang SC",sans-serif;font-size:clamp(26px,6.7vw,36px);line-height:1.19;word-break:keep-all;overflow-wrap:normal;letter-spacing:0;font-weight:950;color:#69258a;text-shadow:0 1px white,0 2px #e8bde9,0 3px #c98fce,0 5px 7px #94709b6b}
+#app.pg5-app .pg5-py{color:#af329c;font-size:clamp(15px,3.85vw,19px);font-weight:850;line-height:1.26;overflow-wrap:anywhere}
+#app.pg5-app .pg5-ru{color:#74527e;font-size:clamp(13px,3.5vw,16px);font-weight:650;line-height:1.35}
+#app.pg5-app .pg5-small{font-size:12px;color:#8e6c92}
+#app.pg5-app .pg5-hero{min-height:0;position:relative;overflow:hidden;border-radius:18px;background:#f1d8f1 url("./assets/hsk2-lesson1-preview/course-cover-sakura-canal.webp") center/cover no-repeat;border:2px solid #e3b4dd;box-shadow:0 5px 12px #9b6caa55;padding:9px;display:flex;flex-direction:column;align-items:center;gap:5px}
+#app.pg5-app .pg5-hero>img{width:100%;max-height:33dvh;height:33dvh;object-fit:contain;filter:drop-shadow(0 8px 9px #83679465)}
+#app.pg5-app .pg5-hero .pg5-hero-copy{width:100%;padding:11px 12px;border:2px solid #f0c887;border-radius:18px;background:linear-gradient(#fffafbec,#f9e5f9ee);display:flex;flex-direction:column;gap:4px;text-align:center;box-shadow:0 4px 10px #9a6ca353}
+#app.pg5-app .pg5-hero-copy h1{font-size:clamp(24px,6.2vw,35px);line-height:1.12;margin:0;color:#71218e;text-shadow:0 2px #fff,0 3px #e9b0e6;font-weight:1000}
+#app.pg5-app .pg5-hero-copy .pg5-cn{font-size:clamp(28px,7.7vw,42px)}
+#app.pg5-app .pg5-hero-copy p{font-size:clamp(12px,3.2vw,15px);line-height:1.3;margin:2px 0}
+#app.pg5-app .pg5-hero-pills{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin:7px 0}
+#app.pg5-app .pg5-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:99px;padding:5px 10px;border:1px solid #e8c2e9;background:#fff8ff;color:#82428e;font-size:11px;font-weight:900;box-shadow:0 2px 5px #b17aaf35}
+#app.pg5-app .pg5-primary,#app.pg5-app .pg5-soft{padding:9px 13px;min-height:43px;max-width:100%;border-radius:13px;line-height:1.21;font-weight:850;font-size:clamp(13px,3.5vw,16px);border:1.5px solid #dfb2e3;box-shadow:0 3px 7px #9b66ab55;background:linear-gradient(#fff9fe,#ead5f6);color:#743588}
+#app.pg5-app .pg5-primary{color:white;border:2px solid #f1d595;border-bottom:4px solid #8e268e;background:linear-gradient(160deg,#f47edc,#c634bb 56%,#81249b);text-shadow:0 1px #632477}
+#app.pg5-app .pg5-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:9px 0 2px}
+#app.pg5-app .pg5-actions button{flex:1 1 145px}
+#app.pg5-app .pg5-wordlist{display:flex;flex-direction:column;gap:9px;margin:8px 0}
+#app.pg5-app .pg5-word{display:grid;grid-template-columns:clamp(70px,21%,94px) minmax(0,1fr) 43px;grid-template-rows:auto auto;column-gap:9px;row-gap:4px;min-height:102px;width:100%;padding:8px;border:1.5px solid #e2b7dc;border-bottom:3px solid #c58ed1;border-radius:17px;background:linear-gradient(145deg,#fffbfe,#f6e6f8);box-shadow:0 3px 7px #a874aa4b;align-items:center;overflow:hidden}
+#app.pg5-app .pg5-word .pg5-icon{grid-column:1;grid-row:1/3;display:block;width:100%;height:88px;object-fit:contain;border:1px solid #e8c6e6;border-radius:12px;background:linear-gradient(#fff8fc,#ecd4f5);padding:3px}
+#app.pg5-app .pg5-word .pg5-hanzi{grid-column:2;grid-row:1;display:flex;align-items:center;flex-wrap:wrap;gap:6px;min-width:0}
+#app.pg5-app .pg5-word .pg5-hanzi .pg5-cn{font-size:clamp(24px,6.5vw,32px)}
+#app.pg5-app .pg5-word .pg5-tones{display:inline-flex;gap:0;vertical-align:middle}
+#app.pg5-app .pg5-word .pg5-info{grid-column:2;grid-row:2;min-width:0}
+#app.pg5-app .pg5-word .pg5-info .pg5-py{font-size:clamp(14px,3.8vw,18px)}
+#app.pg5-app .pg5-word .pg5-info .pg5-ru{font-size:clamp(12px,3.3vw,15px)}
+#app.pg5-app .pg5-word .pg5-play{grid-column:3;grid-row:1/3;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:linear-gradient(145deg,#df7be0,#ad34b8);border:2px solid #f0c4eb;color:#fff;box-shadow:0 3px 5px #9f62a36e;font-size:20px;padding:0 0 0 3px}
+#app.pg5-app .pg5-tone{width:17px;height:19px;flex:none}
+#app.pg5-app .pg5-tone path{stroke:#299551;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;fill:none}
+#app.pg5-app .pg5-tone circle{fill:#299551}
+#app.pg5-app .pg5-example{padding:11px;border:1px solid #e8c3e6;border-radius:14px;background:#fff9fe;margin:9px 0;display:flex;flex-direction:column;gap:3px}
+#app.pg5-app .pg5-example .pg5-cn{font-size:clamp(22px,5.6vw,30px)}
+#app.pg5-app .pg5-answer{background:#fff7ff;border:2px dashed #d5a1dc;border-radius:12px;padding:10px;min-height:55px;text-align:center;color:#6e3383;font-size:clamp(21px,5.7vw,29px);font-weight:900;line-height:1.35}
+#app.pg5-app .pg5-tokens{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:10px 0}
+#app.pg5-app .pg5-tokens button{font-size:clamp(19px,5vw,27px);min-width:60px}
+#app.pg5-app .pg5-notice{padding:9px 12px;border:1px solid #e5c0de;background:#fff8fc;color:#78567e;border-radius:13px;line-height:1.37;font-size:13px;margin:8px 0}
+#app.pg5-app .pg5-notice.ok{background:#eaf8e7;border-color:#a9d9a3;color:#2e7640}
+#app.pg5-app .pg5-notice.bad{background:#fff0f3;border-color:#e8b0bb;color:#9b4251}
+#app.pg5-app .pg5-selector{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:11px 0}
+#app.pg5-app .pg5-selectcard{width:100%;min-width:0;text-align:left;white-space:normal;overflow-wrap:anywhere;min-height:65px}
+#app.pg5-app .pg5-selectcard.selected{border-color:#a760a8;box-shadow:inset 0 0 0 2px #cb8fc8,0 2px 6px #a16aa65e;background:#f2d8f5}
+#app.pg5-app .pg5-testlist{display:flex;flex-direction:column;gap:9px}
+#app.pg5-app .pg5-testitem{display:grid;grid-template-columns:32px 58px minmax(0,1fr) 41px;gap:8px;align-items:center;text-align:left;width:100%;min-height:84px;padding:8px;border:1.5px solid #e3b6dd;border-bottom:4px solid #c693cb;border-radius:16px;background:linear-gradient(#fff9fe,#f3e2f7);box-shadow:0 3px 8px #a576ac5a}
+#app.pg5-app .pg5-testitem .num{display:grid;place-items:center;border-radius:50%;background:#e4bee9;color:#793087;font-weight:950;width:30px;height:30px}
+#app.pg5-app .pg5-testitem .symbol{display:grid;place-items:center;width:56px;height:55px;border-radius:13px;background:linear-gradient(#fffafd,#e9cfef);color:#b338a9;font-weight:950;font-size:23px;box-shadow:inset 0 0 0 1px #dbaadb}
+#app.pg5-app .pg5-testitem .txt{min-width:0;display:flex;flex-direction:column;gap:4px}
+#app.pg5-app .pg5-testitem strong{font-size:clamp(14px,3.7vw,18px);color:#6c247e;line-height:1.18}
+#app.pg5-app .pg5-testitem small{color:#916a97;font-size:clamp(10px,2.9vw,13px);line-height:1.22}
+#app.pg5-app .pg5-testitem .count{text-align:center;background:#f3dff7;border:1px solid #dbb5da;border-radius:12px;padding:5px 2px;font-size:12px;font-weight:900;color:#83308f}
+#app.pg5-app .pg5-q-choices{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+#app.pg5-app .pg5-q-choices button{text-align:left;width:100%;padding:10px 13px;min-height:52px}
+#app.pg5-app .pg5-q-choices .pg5-cn{font-size:clamp(19px,5.1vw,27px)}
+#app.pg5-app .pg5-response-list{display:flex;flex-direction:column;gap:8px;margin:11px 0}
+#app.pg5-app .pg5-response-list button{display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;text-align:left;padding:10px 12px;white-space:normal;word-break:keep-all}
+#app.pg5-app .pg5-response-list button .pg5-cn{font-size:clamp(21px,5.8vw,29px)}
+#app.pg5-app .pg5-select-row{display:flex;flex-direction:column;gap:5px;margin:10px 0}
+#app.pg5-app .pg5-select-row label{font-weight:850;font-size:13px;color:#764387}
+#app.pg5-app .pg5-select-row select{width:100%;padding:9px;border:1px solid #d6a9dc;border-radius:11px;min-height:44px;background:#fff9ff;color:#6e2784;font-weight:700;font-size:15px}
+#app.pg5-app .pg5-bubble{width:92%;border:1.5px solid #e6b8e0;border-radius:17px 17px 17px 6px;padding:11px 12px;margin:10px 0;background:#fffbff;box-shadow:0 3px 7px #b07bac48}
+#app.pg5-app .pg5-bubble.me{margin-left:auto;border-radius:17px 17px 6px 17px;background:#f3def8}
+#app.pg5-app .pg5-bubble .pg5-cn{font-size:clamp(21px,5.8vw,29px)}
+#app.pg5-app .pg5-bubble .speaker{font-weight:950;color:#bd329c;font-size:12px;margin-bottom:6px}
+#app.pg5-app .pg5-summary{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+#app.pg5-app .pg5-stat{text-align:center;background:#fff9fe;border:1px solid #e1b5dd;border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:5px}
+#app.pg5-app .pg5-stat strong{font-size:clamp(21px,5.4vw,27px);color:#85249a;font-weight:950}
+#app.pg5-app .pg5-stat small{color:#8b668f;font-size:12px}
+#app.pg5-app .pg5-grammar-grid{display:flex;flex-direction:column;gap:10px}
+#app.pg5-app .pg5-record-status{font-size:12px;color:#816287;margin:6px 0}
+#app.pg5-app .pg5-completion{font-size:13px;font-weight:850;color:#776080}
+@media(max-width:375px){
+ #app.pg5-app .pg5-word{grid-template-columns:66px minmax(0,1fr) 37px;gap:5px;min-height:96px;padding:6px}
+ #app.pg5-app .pg5-word .pg5-icon{height:79px}
+ #app.pg5-app .pg5-word .pg5-play{height:36px;width:36px}
+ #app.pg5-app .pg5-word .pg5-hanzi .pg5-cn{font-size:23px}
+ #app.pg5-app .pg5-tone{width:14px}
+ #app.pg5-app .pg5-selectcard{font-size:12.5px}
+ #app.pg5-app .pg5-testitem{grid-template-columns:25px 48px minmax(0,1fr) 36px;gap:6px}
+ #app.pg5-app .pg5-testitem .symbol{width:47px}
+}
+@media(max-height:630px){
+ #app.pg5-app .pg433-header{padding-top:4px!important;padding-bottom:5px!important}
+ #app.pg5-app .pg433-tabs button{min-height:43px!important}
+ #app.pg5-app .pg433-footer{min-height:46px!important;padding-top:5px!important;padding-bottom:calc(5px + env(safe-area-inset-bottom))!important}
+ #app.pg5-app .pg433-footer button{min-height:38px!important}
+ #app.pg5-app .pg5-hero>img{max-height:25dvh;height:25dvh}
+}
+@media(prefers-reduced-motion:reduce){#app.pg5-app *{transition:none!important}}
+</style></head><body>
+<div class="app pg5-app" id="app"><section id="pg433" class="pg433-root">
+<header class="pg433-header">
+ <div class="pg433-topline">
+  <a class="pg433-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков" style="text-decoration:none">‹</a>
+  <div class="pg433-title"><small>HSK 2 · Урок 5</small><strong>Друзья и встречи</strong></div>
+  <span class="pg433-pill" id="stepBadge">Шаг 1 / 8</span>
+ </div>
+ <nav class="pg433-tabs" aria-label="Пять разделов">
+  <button type="button" data-tab="2"><b>1</b><span>Слова</span></button>
+  <button type="button" data-tab="3"><b>2</b><span>Правило</span></button>
+  <button type="button" data-tab="4"><b>3</b><span>Речь</span></button>
+  <button type="button" data-tab="5"><b>4</b><span>Тест</span></button>
+  <button type="button" data-tab="6"><b>5</b><span>Примеры</span></button>
+ </nav>
+ <div class="pg5-progress"><i id="progress"></i></div>
+</header>
+<main class="pg433-content" id="workspace" tabindex="-1" aria-live="polite"></main>
+<footer class="pg433-footer">
+ <button type="button" id="prev">← Назад</button>
+ <span class="pg5-counter" id="stepName">Начало</span>
+ <button type="button" id="next">Далее →</button>
+</footer>
+</section></div>
+<script>
+(function(){'use strict';
+const key='panda-go-hsk2-lesson5-friends-preview-v1';
+const W=[
+ {zh:'朋友',py:'péngyou',ru:'друг, друзья',tones:[2,0],icon:'friends',ex:['我和朋友一起学习中文。','Wǒ hé péngyou yìqǐ xuéxí Zhōngwén.','Мы с другом вместе учим китайский.'],fill:'我和____一起学习中文。'},
+ {zh:'一起',py:'yìqǐ',ru:'вместе',tones:[4,3],icon:'together',ex:['我们一起去吧。','Wǒmen yìqǐ qù ba.','Пойдём вместе.'],fill:'我们____去吧。'},
+ {zh:'见面',py:'jiànmiàn',ru:'встретиться',tones:[4,4],icon:'meet',ex:['我们明天见面吧。','Wǒmen míngtiān jiànmiàn ba.','Давай встретимся завтра.'],fill:'我们明天____吧。'},
+ {zh:'有空',py:'yǒu kòng',ru:'быть свободным, иметь время',tones:[3,4],icon:'free',ex:['你明天有空吗？','Nǐ míngtiān yǒu kòng ma?','Ты завтра свободен?'],fill:'你明天____吗？'},
+ {zh:'明天',py:'míngtiān',ru:'завтра',tones:[2,1],icon:'tomorrow',ex:['明天我们去看电影。','Míngtiān wǒmen qù kàn diànyǐng.','Завтра мы пойдём смотреть фильм.'],fill:'____我们去看电影。'},
+ {zh:'下午',py:'xiàwǔ',ru:'после полудня, днём',tones:[4,3],icon:'afternoon',ex:['我们下午三点见面。','Wǒmen xiàwǔ sān diǎn jiànmiàn.','Встретимся в три часа дня.'],fill:'我们____三点见面。'},
+ {zh:'时间',py:'shíjiān',ru:'время',tones:[2,1],icon:'time',ex:['你有时间吗？','Nǐ yǒu shíjiān ma?','У тебя есть время?'],fill:'你有____吗？'},
+ {zh:'计划',py:'jìhuà',ru:'план, планировать',tones:[4,4],icon:'plan',ex:['你周末有什么计划？','Nǐ zhōumò yǒu shénme jìhuà?','Какие у тебя планы на выходные?'],fill:'你周末有什么____？'}
+];
+const PRACTICE=[
+ ['你明天下午有空吗？','Nǐ míngtiān xiàwǔ yǒu kòng ma?','Ты свободен завтра после обеда?'],
+ ['我们明天见面吧。','Wǒmen míngtiān jiànmiàn ba.','Давай встретимся завтра.'],
+ ['我们下午三点见面。','Wǒmen xiàwǔ sān diǎn jiànmiàn.','Мы встретимся в три часа дня.'],
+ ['你周末有什么计划？','Nǐ zhōumò yǒu shénme jìhuà?','Какие у тебя планы на выходные?']
+];
+const DIALOG=[
+ {q:['你明天下午有空吗？','Nǐ míngtiān xiàwǔ yǒu kòng ma?','Ты свободен завтра после обеда?'],
+  choices:[['有空，我们可以见面。','Yǒu kòng, wǒmen kěyǐ jiànmiàn.','Да, можем встретиться.'],['有空，我下午四点有时间。','Yǒu kòng, wǒ xiàwǔ sì diǎn yǒu shíjiān.','Да, у меня есть время после четырёх.']]},
+ {q:['我们几点见面？','Wǒmen jǐ diǎn jiànmiàn?','Во сколько встретимся?'],
+  choices:[['下午三点吧。','Xiàwǔ sān diǎn ba.','Давай в три часа дня.'],['下午四点吧。','Xiàwǔ sì diǎn ba.','Давай в четыре часа дня.'],['下午五点吧。','Xiàwǔ wǔ diǎn ba.','Давай в пять часов дня.']]},
+ {q:['我们一起做什么？','Wǒmen yìqǐ zuò shénme?','Что мы будем делать вместе?'],
+  choices:[['我们一起看电影吧。','Wǒmen yìqǐ kàn diànyǐng ba.','Давай вместе посмотрим фильм.'],['我们一起喝咖啡吧。','Wǒmen yìqǐ hē kāfēi ba.','Давай выпьем кофе вместе.'],['我们一起去公园吧。','Wǒmen yìqǐ qù gōngyuán ba.','Давай вместе пойдём в парк.']]}
+];
+const DAYS=[['明天','míngtiān','завтра'],['周末','zhōumò','в выходные'],['星期六','xīngqīliù','в субботу']];
+const TIMES=[['下午三点','xiàwǔ sān diǎn','в 15:00'],['下午四点','xiàwǔ sì diǎn','в 16:00'],['下午五点','xiàwǔ wǔ diǎn','в 17:00']];
+const ACTIVITIES=[['见面','jiànmiàn','встретиться'],['一起看电影','yìqǐ kàn diànyǐng','посмотреть фильм'],['一起喝咖啡','yìqǐ hē kāfēi','попить кофе']];
+const T=['Вступление','Новые слова','Грамматика','Произношение','Проверка слов','Мой план','Диалог','Итоги'];
+const TYPES=['Выбери перевод','Найди иероглифы','Собери слово','Вставь слово','Послушай и выбери'];
+const SYMBOLS=['汉','拼','🧩','✓','♫'];
+const $=id=>document.getElementById(id),esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const blank=()=>({step:1,done:{},heard:[],grammar:false,builder:[],spoken:[],practice:0,qtype:null,qi:0,qchars:[],feedback:'',feedbackKind:'',dialog:[],day:0,time:0,activity:0,planSaved:false});
+let s=blank();try{const p=JSON.parse(localStorage.getItem(key)||'null');if(p&&typeof p==='object')s={...s,...p,done:p.done||{},heard:Array.isArray(p.heard)?p.heard:[],spoken:Array.isArray(p.spoken)?p.spoken:[],dialog:Array.isArray(p.dialog)?p.dialog:[],builder:[],qchars:[]}}catch(e){}
+s.step=Number.isInteger(s.step)?Math.max(1,Math.min(8,s.step)):1;
+const save=()=>{try{localStorage.setItem(key,JSON.stringify(s))}catch(e){}};
+const button=(text,act,extra='',attr='')=>'<button type="button" class="'+(extra||'pg5-soft')+'" data-action="'+act+'" '+attr+'>'+text+'</button>';
+const title=(t,desc='')=>'<h1 class="pg5-title">'+t+'</h1>'+(desc?'<p class="pg5-sub">'+desc+'</p>':'');
+const panel=content=>'<section class="pg5-panel">'+content+'</section>';
+const sample=a=>'<div class="pg5-example"><div class="pg5-cn" lang="zh-Hans">'+a[0]+'</div><div class="pg5-py">'+a[1]+'</div><div class="pg5-ru">'+a[2]+'</div></div>';
+const notify=()=>s.feedback?'<div class="pg5-notice '+(s.feedbackKind==='bad'?'bad':'ok')+'" role="status">'+esc(s.feedback)+'</div>':'';
+const stat=(x,y)=>'<div class="pg5-stat"><strong>'+x+'</strong><small>'+y+'</small></div>';
+const count=(start)=>Object.keys(s.done).filter(k=>k.startsWith(String(start)+'-')&&s.done[k]).length;
+const img=(name,alt,cl='')=>'<img class="'+cl+'" src="./assets/'+name+'" alt="'+alt+'" loading="lazy">';
+function tone(t){let p=t===1?'M2 5 L19 5':t===2?'M2 17 L19 3':t===3?'M2 6 Q10 22 19 4':t===4?'M2 3 L19 17':null;return '<svg class="pg5-tone" viewBox="0 0 22 21" aria-label="'+(t===0?'лёгкий тон':'тон '+t)+'">'+(p?'<path d="'+p+'"/>':'<circle cx="11" cy="11" r="3"/>')+'</svg>'}
+function icon(which){
+ const shapes={
+ friends:'<circle cx="51" cy="44" r="21" fill="url(#cream)" stroke="#73477d" stroke-width="3"/><circle cx="91" cy="44" r="21" fill="url(#cream)" stroke="#73477d" stroke-width="3"/><circle cx="35" cy="25" r="10" fill="#4c4358"/><circle cx="67" cy="25" r="10" fill="#4c4358"/><circle cx="75" cy="25" r="10" fill="#4c4358"/><circle cx="108" cy="25" r="10" fill="#4c4358"/><ellipse cx="45" cy="43" rx="7" ry="9" fill="#645575"/><ellipse cx="57" cy="43" rx="7" ry="9" fill="#645575"/><ellipse cx="85" cy="43" rx="7" ry="9" fill="#645575"/><ellipse cx="97" cy="43" rx="7" ry="9" fill="#645575"/><circle cx="46" cy="43" r="2" fill="white"/><circle cx="86" cy="43" r="2" fill="white"/><path d="M45 63Q52 70 59 63M85 63Q92 70 99 63" stroke="#af7a92" fill="none" stroke-width="3"/>',
+ together:'<path d="M71 71L37 43Q24 27 39 20Q52 13 71 32Q89 13 104 20Q117 30 103 44Z" fill="url(#pink)" stroke="#b565a3" stroke-width="3"/><path d="M51 34Q61 28 71 42" stroke="white" stroke-width="7" opacity=".7" fill="none" stroke-linecap="round"/>',
+ meet:'<rect x="18" y="24" width="64" height="41" rx="14" fill="url(#purple)" stroke="#9a5cad" stroke-width="3"/><path d="M39 63l-7 14 22-13" fill="url(#purple)"/><rect x="54" y="45" width="62" height="37" rx="14" fill="url(#cream)" stroke="#ae74b3" stroke-width="3"/><path d="M93 79l12 12-2-15" fill="url(#cream)"/><path d="M33 43h33M70 64h32" stroke="white" stroke-width="5" stroke-linecap="round"/>',
+ free:'<circle cx="71" cy="54" r="31" fill="url(#cream)" stroke="#bc86c2" stroke-width="4"/><circle cx="71" cy="54" r="24" fill="#fffefd"/><path d="M71 35v21l15 10" fill="none" stroke="#a359b2" stroke-width="6" stroke-linecap="round"/><path d="M71 12v8M71 88v8" stroke="#b276bc" stroke-width="5" stroke-linecap="round"/>',
+ tomorrow:'<rect x="34" y="23" width="74" height="65" rx="10" fill="url(#cream)" stroke="#ab75b8" stroke-width="4"/><rect x="34" y="23" width="74" height="19" rx="8" fill="url(#purple)"/><path d="M49 14v19M93 14v19" stroke="#9f5caf" stroke-width="6" stroke-linecap="round"/><circle cx="72" cy="64" r="16" fill="url(#gold)"/><path d="M66 64h12m-6-6v12" stroke="#a26794" stroke-width="4" stroke-linecap="round"/>',
+ afternoon:'<circle cx="73" cy="51" r="22" fill="url(#gold)" stroke="#e5ad5e" stroke-width="4"/><path d="M73 13v9M73 79v10M35 51h10m56 0h11M47 26l7 7m39 38 7 7M99 26l-7 7M46 78l8-7" stroke="#e5a65a" stroke-width="5" stroke-linecap="round"/><path d="M36 80Q40 57 62 66Q73 52 87 66Q111 62 113 80Z" fill="url(#cream)" stroke="#dfb6e2" stroke-width="2"/>',
+ time:'<circle cx="73" cy="56" r="32" fill="url(#purple)" stroke="#a865b1" stroke-width="3"/><circle cx="73" cy="56" r="24" fill="#fffefd"/><path d="M73 37v19l17 9" stroke="#9e56a8" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M58 20v-7h29v7" fill="none" stroke="#a966ac" stroke-width="6" stroke-linecap="round"/>',
+ plan:'<rect x="38" y="15" width="70" height="78" rx="9" fill="url(#cream)" stroke="#a56baf" stroke-width="4"/><rect x="43" y="15" width="9" height="78" rx="5" fill="url(#purple)"/><path d="M60 40l7 7 11-12M60 65l7 7 11-12M86 43h13M86 68h13" stroke="#b875b2" stroke-width="4" stroke-linecap="round" fill="none"/>'
+ };
+ return '<svg class="pg5-icon" viewBox="0 0 140 110" role="img" aria-label="Иллюстрация" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cream" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#f5d4f8"/></linearGradient><linearGradient id="purple" x2="1" y2="1"><stop stop-color="#ffdbf6"/><stop offset="1" stop-color="#be78cd"/></linearGradient><linearGradient id="pink" x2="1" y2="1"><stop stop-color="#ffdfed"/><stop offset="1" stop-color="#d87fb9"/></linearGradient><linearGradient id="gold" x2="1" y2="1"><stop stop-color="#fff9cd"/><stop offset="1" stop-color="#f4c16b"/></linearGradient><filter id="drop"><feGaussianBlur in="SourceAlpha" stdDeviation="2"/><feOffset dy="3"/><feComponentTransfer><feFuncA type="linear" slope=".23"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect x="2" y="2" width="136" height="106" rx="15" fill="url(#cream)" stroke="#e7bce7" stroke-width="2"/><path d="M12 28Q50 2 128 28" fill="none" stroke="#fff" stroke-width="6" opacity=".5"/><g filter="url(#drop)">'+shapes[which]+'</g></svg>';
+}
+let recording=null,stream=null,recUrl=null;
+function play(zh){
+ if(!('speechSynthesis' in window)){message('Синтез речи недоступен на этом устройстве.','bad');return}
+ window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(zh);u.lang='zh-CN';u.rate=.84;u.pitch=1;u.volume=1;
+ const voices=window.speechSynthesis.getVoices();u.voice=voices.find(v=>v.lang.toLowerCase().startsWith('zh-cn'))||voices.find(v=>v.lang.toLowerCase().startsWith('zh'))||null;
+ window.speechSynthesis.speak(u);
+}
+function message(text,type='ok'){s.feedback=text;s.feedbackKind=type;save();render(false)}
+function stopRecording(){if(recording&&recording.state==='recording'){recording.onstop=null;recording.stop()}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}recording=null}
+async function record(){
+ if(recording&&recording.state==='recording'){recording.stop();return}
+ if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){message('Микрофон или запись не поддерживаются браузером.','bad');return}
+ try{
+   stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true}});
+   const chunks=[];recording=new MediaRecorder(stream);
+   recording.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+   recording.onstop=()=>{
+      if(recUrl)URL.revokeObjectURL(recUrl);
+      recUrl=URL.createObjectURL(new Blob(chunks,{type:recording?.mimeType||'audio/webm'}));
+      if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}
+      recording=null;message('Запись готова. Прослушай свой голос.')
+   };
+   recording.start();message('● Идёт запись. Нажми «Остановить», когда закончишь.')
+ }catch(e){message('Нет доступа к микрофону. Проверь разрешение браузера.','bad')}
+}
+function go(step){
+ if(s.step===4&&step!==4)stopRecording();
+ s.step=Math.max(1,Math.min(8,step));s.feedback='';
+ if(step===5){s.qtype=null;s.qi=0;s.qchars=[]}
+ save();render();$('workspace').scrollTop=0;
+}
+function intro(){
+ return title('Друзья, встречи и планы','Вступление · Урок 5 HSK 2')+
+ '<section class="pg5-hero">'+img('hsk2-lesson1-preview/course-cover-panda-hd.webp','Панда Panda Go в китайском саду')+
+ '<div class="pg5-hero-copy"><h1>Друзья, встречи и планы</h1><div class="pg5-cn" lang="zh-Hans">朋友、见面和计划</div><div class="pg5-py">Péngyou, jiànmiàn hé jìhuà</div><p>Пригласи друга, договорись о времени и расскажи о планах на выходные.</p></div></section>'+
+ '<div class="pg5-hero-pills"><span class="pg5-pill">8 новых выражений</span><span class="pg5-pill">40 проверок</span><span class="pg5-pill">Диалог</span></div>'+
+ panel('<h3>Сегодня научимся</h3><p>Спросить, свободен ли друг; предложить встречу и согласовать время.</p>'+sample(['你明天下午有空吗？','Nǐ míngtiān xiàwǔ yǒu kòng ma?','Ты свободен завтра после обеда?'])+
+ '<div class="pg5-actions">'+button('Начать урок →','start','pg5-primary')+'</div>');
+}
+function words(){
+ return title('Новые слова','Все 8 выражений на одной странице · нажми ▶, чтобы послушать и повторить.')+
+ '<div class="pg5-wordlist">'+W.map((w,i)=>
+ '<article class="pg5-word"><div class="pg5-icon" style="grid-column:1;grid-row:1/3">'+icon(w.icon)+'</div>'+
+ '<div class="pg5-hanzi"><span class="pg5-cn" lang="zh-Hans">'+w.zh+'</span><span class="pg5-tones">'+w.tones.map(tone).join('')+'</span></div>'+
+ '<div class="pg5-info"><div class="pg5-py">'+w.py+'</div><div class="pg5-ru">'+w.ru+'</div></div>'+
+ '<button type="button" class="pg5-play" data-action="listen-word" data-index="'+i+'" aria-label="Слушать '+w.zh+'">▶</button></article>').join('')+'</div>'+
+ panel('<h3>Примеры в речи</h3>'+W.slice(0,4).map(w=>sample(w.ex)).join(''))+
+ '<p class="pg5-small">Озвучка в этом предпросмотре — голос устройства, не утверждённый MP3 носителя.</p>';
+}
+function grammar(){
+ const tok=['你','明天下午','有空','吗','？'];const selected=s.builder.map(i=>tok[i]).join('');
+ const rule1=panel('<h2>Правило 1 · Есть время?</h2>'+
+ sample(['你明天下午有空吗？','Nǐ míngtiān xiàwǔ yǒu kòng ma?','Ты свободен завтра после обеда?'])+
+ '<p><b>有空</b> означает «иметь свободное время». С <b>吗</b> получаем вопрос, на который можно ответить «да» или «нет».</p>'+
+ sample(['我明天有空。','Wǒ míngtiān yǒu kòng.','Я завтра свободен.']));
+ const rule2=panel('<h2>Правило 2 · Предлагаем встречу</h2>'+
+ sample(['我们明天见面吧。','Wǒmen míngtiān jiànmiàn ba.','Давай встретимся завтра.'])+
+ '<p><b>吧 (ba)</b> в конце делает фразу предложением или приглашением. <b>一起</b> — вместе.</p>'+
+ sample(['我们一起看电影吧。','Wǒmen yìqǐ kàn diànyǐng ba.','Давай вместе посмотрим фильм.']));
+ const builder=panel('<h2>Собери предложение</h2><p>Составь вопрос «Ты завтра после обеда свободен?»</p>'+
+ '<div class="pg5-answer" aria-live="polite">'+(selected||'Нажимай на слова в правильном порядке')+'</div>'+
+ '<div class="pg5-tokens">'+[2,4,0,3,1].map(i=>button(tok[i],'gram-token','pg5-soft',(s.builder.includes(i)?'disabled ':'')+'data-index="'+i+'"')).join('')+'</div>'+
+ '<div class="pg5-actions">'+button('Очистить','gram-clear')+button('Проверить','gram-check','pg5-primary')+'</div>'+notify());
+ return title('Грамматика','Как пригласить друга и договориться о времени.')+rule1+rule2+builder;
+}
+function speaking(){
+ const p=PRACTICE[s.practice];
+ return title('Говори сам','Прослушай фразу, произнеси её и сравни с собственным голосом.')+
+ panel('<div class="pg5-actions"><span class="pg5-pill">Фраза '+(s.practice+1)+' / '+PRACTICE.length+'</span><span class="pg5-pill">'+s.spoken.length+' повторено</span></div>'+
+ sample(p)+
+ '<div class="pg5-actions">'+button('🔊 Слушать','speak-model')+
+ button(recording&&recording.state==='recording'?'■ Остановить':'🎙 Записать себя','record','pg5-primary')+
+ button('▶ Моя запись','replay')+'</div>'+
+ '<div class="pg5-actions">'+button('← Фраза','speak-prev')+button('Следующая →','speak-next','pg5-primary')+'</div>'+
+ '<div class="pg5-actions">'+button(s.spoken.includes(s.practice)?'✓ Повторено':'✓ Я повторил','mark-spoken','pg5-primary')+'</div>'+notify())+
+ panel('<h3>Тоны и произношение</h3><p>Обрати внимание: <b>朋友 — péngyou</b>: второй слог безударный. <b>一起 — yìqǐ</b>: четвёртый и третий тоны.</p>'+
+ '<p>Здесь можно записывать и слушать себя, но автоматическая оценка тонов не заявлена: без надёжной аудиопроверки она может ошибаться.</p>')+
+ '<p class="pg5-small">Эталонное прослушивание пока синтезируется устройством. Финальные MP3 носителя не подключены.</p>';
+}
+function choiceIds(i,t){const a=[i,(i+2+t)%8,(i+4+t)%8,(i+5+t)%8];const n=(i+t)%4;return a.slice(n).concat(a.slice(0,n))}
+function quizQuestion(){
+ const t=s.qtype,i=s.qi,w=W[i],id=t+'-'+i,done=!!s.done[id];
+ let start='<div class="pg5-actions"><span class="pg5-pill">Тест '+(t+1)+'/5</span><span class="pg5-pill">Вопрос '+(i+1)+'/8</span><span class="pg5-pill">'+count(t)+'/8 верно</span></div>';
+ if(t===0){
+   start+='<h2>Как переводится выражение?</h2><div class="pg5-cn">'+w.zh+'</div>';
+   start+='<div class="pg5-q-choices">'+choiceIds(i,t).map(k=>button(W[k].ru,'answer','pg5-soft','data-index="'+k+'"')).join('')+'</div>';
+ }else if(t===1){
+   start+='<h2>Выбери иероглифы по пиньиню</h2><div class="pg5-py">'+w.py+'</div>';
+   start+='<div class="pg5-q-choices">'+choiceIds(i,t).map(k=>button('<span class="pg5-cn">'+W[k].zh+'</span>','answer','pg5-soft','data-index="'+k+'"')).join('')+'</div>';
+ }else if(t===2){
+   const chars=[...w.zh];const order=chars.map((_,k)=>k).reverse();
+   start+='<h2>Собери слово из иероглифов</h2><div class="pg5-py">'+w.py+'</div>'+
+   '<div class="pg5-answer">'+(s.qchars.length?s.qchars.map(k=>chars[k]).join(''):'Выбирай иероглифы')+'</div>'+
+   '<div class="pg5-tokens">'+order.map(k=>button(chars[k],'char','pg5-soft',(s.qchars.includes(k)?'disabled ':'')+'data-index="'+k+'"')).join('')+'</div>'+
+   '<div class="pg5-actions">'+button('Очистить','char-clear')+button('Проверить','char-check','pg5-primary')+'</div>';
+ }else if(t===3){
+   start+='<h2>Вставь пропущенное выражение</h2><div class="pg5-cn" style="font-size:25px">'+w.fill+'</div>';
+   start+='<div class="pg5-q-choices">'+choiceIds(i,t).map(k=>button('<span class="pg5-cn">'+W[k].zh+'</span>','answer','pg5-soft','data-index="'+k+'"')).join('')+'</div>';
+ }else{
+   start+='<h2>Прослушай и выбери перевод</h2>'+button('🔊 Прослушать слово','quiz-sound','pg5-primary')+
+   '<div class="pg5-q-choices">'+choiceIds(i,t).map(k=>button(W[k].ru,'answer','pg5-soft','data-index="'+k+'"')).join('')+'</div>';
+ }
+ return title(TYPES[t],'По 8 заданий каждого типа. Выполненное можно повторять.')+
+ panel(start+notify()+(done?'<div class="pg5-notice ok">✓ Уже выполнено. Можешь выбрать ответ снова.</div>':'')+
+ '<div class="pg5-actions">'+button('← К пяти тестам','quiz-home')+
+ button(i===7?'К списку тестов →':'Следующий вопрос →','quiz-next','pg5-primary',(done?'':'disabled'))+'</div>');
+}
+function tests(){
+ if(s.qtype!==null)return quizQuestion();
+ return title('Проверь слова!','40 упражнений: 8 основных, ещё 32 для закрепления.')+
+ panel('<div style="display:flex;align-items:center;gap:12px">'+img('hsk2-about-me/panda-quiz.svg','Панда с заданиями','')+
+ '<div><h2>Пять видов заданий</h2><p>Первый тест обязателен; остальные доступны всегда.</p></div></div>').replace('<img src="./assets/hsk2-about-me/panda-quiz.svg"','<img style="width:34%;max-height:145px;object-fit:contain;flex:none" src="./assets/hsk2-about-me/panda-quiz.svg"')+
+ '<div class="pg5-testlist">'+TYPES.map((t,i)=>'<button type="button" class="pg5-testitem" data-action="choose-test" data-index="'+i+'"><span class="num">'+(i+1)+'</span><span class="symbol">'+SYMBOLS[i]+'</span><span class="txt"><strong>'+t+(i===0?' · Основной':' · Дополнительный')+'</strong><small>'+['Переведи китайское слово','Найди слово по звучанию','Поставь иероглифы по порядку','Заполни предложение','Слушай и выбирай'][i]+'</small></span><span class="count">'+count(i)+'/8</span></button>').join('')+'</div>'+
+ '<div class="pg5-notice">Чтобы перейти дальше, достаточно пройти первые 8 заданий. Остальные 32 можно выполнить позже.</div>';
+}
+function plan(){
+ const day=DAYS[s.day],time=TIMES[s.time],act=ACTIVITIES[s.activity];
+ const value=['我们'+day[0]+time[0]+act[0]+'吧。','Wǒmen '+day[1]+' '+time[1]+' '+act[1]+' ba.','Давай '+day[2]+' '+time[2]+' '+act[2]+'.'];
+ const select=(name,arr,val)=>'<div class="pg5-select-row"><label for="'+name+'">'+({day:'День встречи',time:'Время встречи',activity:'Чем займёмся'}[name])+'</label><select id="'+name+'">'+arr.map((a,i)=>'<option value="'+i+'"'+(i===val?' selected':'')+'>'+a[2]+'</option>').join('')+'</select></div>';
+ return title('Мой план встречи','Составь приглашение другу, выбрав день, время и занятие.')+
+ panel(select('day',DAYS,s.day)+select('time',TIMES,s.time)+select('activity',ACTIVITIES,s.activity)+sample(value)+
+ '<div class="pg5-actions">'+button('🔊 Слушать приглашение','plan-sound')+button('✓ Сохранить мой план','plan-save','pg5-primary')+'</div>'+notify())+
+ panel('<h3>Другие примеры</h3><div class="pg5-response-list">'+[
+ ['我们星期六下午三点见面吧。','Wǒmen xīngqīliù xiàwǔ sān diǎn jiànmiàn ba.','Давай встретимся в субботу в 15:00.'],
+ ['我们周末一起看电影吧。','Wǒmen zhōumò yìqǐ kàn diànyǐng ba.','Давай на выходных вместе посмотрим фильм.'],
+ ['你明天下午有时间吗？','Nǐ míngtiān xiàwǔ yǒu shíjiān ma?','У тебя завтра после обеда есть время?']
+ ].map((p,i)=>button('<span class="pg5-cn">'+p[0]+'</span><span class="pg5-py">'+p[1]+'</span><span class="pg5-ru">'+p[2]+'</span>','plan-example','pg5-soft','data-index="'+i+'"')).join('')+'</div>');
+}
+function dialogue(){
+ let next=Math.min(DIALOG.length,s.dialog.length);
+ let h=title('Диалог с Пандой','Три вопроса, шесть реплик. Выбирай подходящий ответ — без замков.')+
+ panel('<h3>Договоримся о встрече</h3>'+DIALOG.map((turn,i)=>{
+   if(i>next)return '';
+   let out='<div class="pg5-bubble"><div class="speaker">🐼 Панда</div>'+sample(turn.q)+
+     button('🔊 Слушать вопрос','dialog-sound','pg5-soft','data-index="'+i+'')+'</div>';
+   if(i<next)out+='<div class="pg5-bubble me"><div class="speaker">🧑 Ты</div>'+sample(turn.choices[s.dialog[i]])+'</div>';
+   return out;
+ }).join('')+
+ (next<3?'<h3>Как ответишь?</h3><div class="pg5-response-list">'+DIALOG[next].choices.map((ans,i)=>
+ button('<span class="pg5-cn">'+ans[0]+'</span><span class="pg5-py">'+ans[1]+'</span><span class="pg5-ru">'+ans[2]+'</span>','dialog-answer','pg5-soft','data-index="'+i+'"')).join('')+'</div>':
+ '<div class="pg5-notice ok">✓ Диалог завершён! Теперь ты умеешь согласовать встречу.</div>')+
+ '<div class="pg5-actions">'+button('↻ Начать диалог заново','dialog-reset')+'</div>');
+ return h+'<div class="pg5-small">Это диалог с вариантами ответов, не самостоятельный разговорный Panda AI.</div>';
+}
+function summary(){
+ const allCore=count(0)===8;
+ const meaningful=allCore&&s.grammar&&s.dialog.length===3;
+ const sentence='我们'+DAYS[s.day][0]+TIMES[s.time][0]+ACTIVITIES[s.activity][0]+'吧。';
+ const pinyin='Wǒmen '+DAYS[s.day][1]+' '+TIMES[s.time][1]+' '+ACTIVITIES[s.activity][1]+' ba.';
+ return title('Итог урока 5','Ты учился приглашать друзей и договариваться о встрече.')+
+ panel(img('hsk2-about-me/panda-finish.svg','Панда поздравляет с уроком','')+
+ '<h2>'+(meaningful?'🎉 Основная программа пройдена!':'Продолжай практиковаться!')+'</h2>'+
+ '<div class="pg5-summary">'+stat('8','выражений')+stat(count(0)+'/8','основной тест')+stat([1,2,3,4].reduce((a,i)=>a+count(i),0)+'/32','доп. задания')+stat(s.dialog.length+'/3','ответы в диалоге')+'</div>'+
+ '<p class="pg5-completion">Грамматика: '+(s.grammar?'✓':'нужна проверка')+' · Произнесено: '+s.spoken.length+'/'+PRACTICE.length+' · Мой план: '+(s.planSaved?'✓':'ещё не сохранён')+'</p>'+
+ '<h3>Твоё приглашение</h3>'+sample([sentence,pinyin,'Предложение другу встретиться'])+
+ (meaningful?'<div class="pg5-notice ok">✓ Обязательные задания выполнены.</div>':'<div class="pg5-notice">Для завершения пройди 8 основных тестов, грамматику и диалог. Просмотр всех вкладок остаётся открытым.</div>')+
+ '<div class="pg5-actions">'+button('↻ Повторить урок','restart','pg5-primary')+'</div>')+
+ '<p class="pg5-small">Пока используем демонстрационный голос устройства; финальную запись носителя подключим после утверждения урока.</p>';
+}
+const renderers=[intro,words,grammar,speaking,tests,plan,dialogue,summary];
+function render(reset=true){
+ $('stepBadge').textContent='Шаг '+s.step+' / 8';
+ $('progress').style.width=(s.step/8*100)+'%';
+ $('stepName').textContent=T[s.step-1];
+ const active=s.step===2?0:s.step===3?1:s.step===4?2:s.step===5?3:4;
+ document.querySelectorAll('[data-tab]').forEach((b,i)=>{const flag=i===active;b.classList.toggle('active',flag);b.setAttribute('aria-current',flag?'step':'false');b.disabled=false});
+ $('workspace').innerHTML=renderers[s.step-1]();
+ $('prev').textContent=s.step===1?'← Все уроки':'← Назад';
+ $('next').textContent=s.step===8?'К началу ↻':s.step===5&&s.qtype!==null?'К тестам →':'Далее →';
+ $('next').disabled=false;
+ if(reset)$('workspace').scrollTop=0;
+ save();
+}
+const set=(text,kind='ok')=>{s.feedback=text;s.feedbackKind=kind;render(false)};
+function action(which,button){
+ const i=Number(button.dataset.index);
+ switch(which){
+ case 'start':go(2);return;
+ case 'listen-word':play(W[i].zh);if(!s.heard.includes(i))s.heard.push(i);save();return;
+ case 'gram-token':if(!s.builder.includes(i))s.builder.push(i);render(false);return;
+ case 'gram-clear':s.builder=[];s.feedback='';render(false);return;
+ case 'gram-check':if(s.builder.join(',')==='0,1,2,3,4'){s.grammar=true;set('✓ Правильно! 你明天下午有空吗？')}else set('Проверь порядок слов: 你 → 明天下午 → 有空 → 吗 → ？','bad');return;
+ case 'speak-model':play(PRACTICE[s.practice][0]);return;
+ case 'speak-prev':s.practice=(s.practice+PRACTICE.length-1)%PRACTICE.length;render(false);return;
+ case 'speak-next':s.practice=(s.practice+1)%PRACTICE.length;render(false);return;
+ case 'mark-spoken':if(!s.spoken.includes(s.practice))s.spoken.push(s.practice);set('✓ Повторение отмечено. Проверка тонов не проводилась.');return;
+ case 'record':record();return;
+ case 'replay':if(!recUrl){set('Сначала сделай запись.','bad');return}new Audio(recUrl).play().catch(()=>set('Не удалось воспроизвести запись.','bad'));return;
+ case 'choose-test':s.qtype=Math.max(0,Math.min(4,i));s.qi=0;s.qchars=[];s.feedback='';render();return;
+ case 'quiz-home':s.qtype=null;s.feedback='';render();return;
+ case 'quiz-next':if(s.qi===7){s.qtype=null;s.qi=0}else s.qi++;s.qchars=[];s.feedback='';render();return;
+ case 'quiz-sound':play(W[s.qi].zh);return;
+ case 'answer':if(i===s.qi){s.done[s.qtype+'-'+s.qi]=true;set('✓ Верно! '+W[s.qi].zh+' — '+W[s.qi].ru)}else set('Не совпало. Попробуй другой ответ.','bad');return;
+ case 'char':if(!s.qchars.includes(i))s.qchars.push(i);render(false);return;
+ case 'char-clear':s.qchars=[];s.feedback='';render(false);return;
+ case 'char-check':if(s.qchars.join(',')===[...W[s.qi].zh].map((_,j)=>j).join(',')){s.done[s.qtype+'-'+s.qi]=true;set('✓ Правильно собрал: '+W[s.qi].zh)}else set('Неправильный порядок иероглифов.','bad');return;
+ case 'plan-sound':play('我们'+DAYS[s.day][0]+TIMES[s.time][0]+ACTIVITIES[s.activity][0]+'吧。');return;
+ case 'plan-save':s.planSaved=true;set('✓ Твой вариант встречи сохранён.');return;
+ case 'plan-example':play(['我们星期六下午三点见面吧。','我们周末一起看电影吧。','你明天下午有时间吗？'][i]);return;
+ case 'dialog-sound':play(DIALOG[i].q[0]);return;
+ case 'dialog-answer':{const t=DIALOG[s.dialog.length];if(t&&t.choices[i]){s.dialog.push(i);render()}return}
+ case 'dialog-reset':s.dialog=[];render();return;
+ case 'restart':if(confirm('Начать урок 5 заново?')){s=blank();go(1)}return;
+ }
+}
+document.addEventListener('click',e=>{const tab=e.target.closest('[data-tab]');if(tab){go(Number(tab.dataset.tab));return}const b=e.target.closest('[data-action]');if(b&&!b.disabled)action(b.dataset.action,b)});
+document.addEventListener('change',e=>{
+ const field=e.target.id;
+ if(['day','time','activity'].includes(field)){const n=Number(e.target.value),list={day:DAYS,time:TIMES,activity:ACTIVITIES}[field];if(Number.isInteger(n)&&n>=0&&n<list.length){s[field]=n;s.planSaved=false;s.feedback='';render(false)}}
+});
+$('prev').addEventListener('click',()=>s.step===1?location.assign('./hsk2-life-course.html?view=map'):go(s.step-1));
+$('next').addEventListener('click',()=>s.step===8?go(1):s.step===5&&s.qtype!==null?(s.qtype=null,render()):go(s.step+1));
+window.addEventListener('pagehide',()=>{stopRecording();if(recUrl)URL.revokeObjectURL(recUrl);window.speechSynthesis?.cancel()});
+render();
+})();
+</script></body></html>
