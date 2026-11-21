@@ -52,3 +52,22 @@
 #app .pg445-audio{left:35%;top:89%;width:28%;height:8.9%}
 #app .pg445-tests{left:63%;top:89%;width:33%;height:8.9%}
 @media (prefers-reduced-motion:reduce){#app .pg445-hotspot{transition:none!important}}
+
+
+/* HSK2 v446 seamless backdrop.
+ * On tall Android screens the approved 941x1602 poster is letterboxed,
+ * so its pale edge must blend into the surrounding welcome-screen background.
+ * Preserve the bitmap aspect ratio and all interactive hotspot coordinates. */
+#app.approved-welcome-v390:has(.approved-art.pg445-enabled),
+#app.approved-welcome-v390:has(.approved-art.pg445-enabled) #screen,
+#app.approved-welcome-v390 .approved-welcome-screen:has(.approved-art.pg445-enabled) {
+  background:radial-gradient(ellipse 82% 120% at 50% 48%,
+    #f6e4fd 0%, #f8e3fb 55%, #fbe0fb 100%)!important;
+}
+#app.approved-welcome-v390 .approved-welcome-screen .approved-art.pg445-enabled > img {
+  /* Fade only the decorative, empty outer 14px of the bitmap; controls remain sharp. */
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 14px,
+    #000 calc(100% - 14px), transparent 100%);
+  mask-image:linear-gradient(to bottom, transparent 0, #000 14px,
+    #000 calc(100% - 14px), transparent 100%);
+}
