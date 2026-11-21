@@ -1854,7 +1854,6 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
     <button type="button" class="primary" id="next"></button>
   </footer>
 </div>
-<!-- New recordings are not installed: the previous lesson's voice files are deliberately not reused. -->
 <script>
 'use strict';
 
@@ -2076,7 +2075,7 @@ const translate = item => '<span class="py">' + item[1] + '</span><span class="r
 const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' good' : '') + '" role="status">' + escape(feedback) + '</div>';
 
 function audioButton(text, icon = speaker) {
-  const label = 'Прослушать '+text+' · голос устройства';
+  const label = 'Прослушать '+text+' · запись Panda Go';
   return '<button type="button" class="orb" data-say="'+escape(text)+'" aria-label="'+escape(label)+'" title="'+escape(label)+'">'+icon+'</button>';
 }
 
@@ -2101,7 +2100,6 @@ function setStatus(message, good = false) {
 }
 
 function clearMedia() {
-  window.speechSynthesis?.cancel();
   cancelRecording();
   if (audio) {
     audio.pause();
@@ -2550,32 +2548,122 @@ function finish() {
     '<a class="soft lesson-map-link" href="./hsk2-life-course.html?view=map">Все уроки</a></div></section>';
 }
 
+const approvedLessonClips = Object.freeze({
+  "昨天": {
+    "src": "./assets/hsk2-lesson6-voice/l6_01.mp3"
+  },
+  "以前": {
+    "src": "./assets/hsk2-lesson6-voice/l6_02.mp3"
+  },
+  "去过": {
+    "src": "./assets/hsk2-lesson6-voice/l6_03.mp3"
+  },
+  "听了音乐": {
+    "src": "./assets/hsk2-lesson6-voice/l6_04.mp3"
+  },
+  "看了电影": {
+    "src": "./assets/hsk2-lesson6-voice/l6_05.mp3"
+  },
+  "看了书": {
+    "src": "./assets/hsk2-lesson6-voice/l6_06.mp3"
+  },
+  "跑步了": {
+    "src": "./assets/hsk2-lesson6-voice/l6_07.mp3"
+  },
+  "游泳了": {
+    "src": "./assets/hsk2-lesson6-voice/l6_08.mp3"
+  },
+  "昨天我去了公园": {
+    "src": "./assets/hsk2-lesson6-voice/l6_09.mp3"
+  },
+  "我以前在公司工作": {
+    "src": "./assets/hsk2-lesson6-voice/l6_10.mp3"
+  },
+  "我去过上海": {
+    "src": "./assets/hsk2-lesson6-voice/l6_11.mp3"
+  },
+  "我昨天听了音乐": {
+    "src": "./assets/hsk2-lesson6-voice/l6_12.mp3"
+  },
+  "我昨天看了电影": {
+    "src": "./assets/hsk2-lesson6-voice/l6_13.mp3"
+  },
+  "我昨天看了书": {
+    "src": "./assets/hsk2-lesson6-voice/l6_14.mp3"
+  },
+  "我昨天跑步了": {
+    "src": "./assets/hsk2-lesson6-voice/l6_15.mp3"
+  },
+  "我昨天游泳了": {
+    "src": "./assets/hsk2-lesson6-voice/l6_16.mp3"
+  },
+  "你昨天做什么了": {
+    "src": "./assets/hsk2-lesson6-voice/l6_17.mp3"
+  },
+  "你昨天运动了吗": {
+    "src": "./assets/hsk2-lesson6-voice/l6_18.mp3"
+  },
+  "运动了我昨天跑步了": {
+    "src": "./assets/hsk2-lesson6-voice/l6_19.mp3"
+  },
+  "运动了我昨天游泳了": {
+    "src": "./assets/hsk2-lesson6-voice/l6_20.mp3"
+  },
+  "没有我昨天没有运动": {
+    "src": "./assets/hsk2-lesson6-voice/l6_21.mp3"
+  },
+  "你去过上海吗": {
+    "src": "./assets/hsk2-lesson6-voice/l6_22.mp3"
+  },
+  "去过我去过上海": {
+    "src": "./assets/hsk2-lesson6-voice/l6_23.mp3"
+  },
+  "没有我没去过上海": {
+    "src": "./assets/hsk2-lesson6-voice/l6_24.mp3"
+  },
+  "我以前去过上海": {
+    "src": "./assets/hsk2-lesson6-voice/l6_25.mp3"
+  }
+});
 function play(text,button) {
-  if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
-    setStatus('Синтез речи недоступен. Можно повторить по пиньиню.');
-    return;
-  }
-  const synth = window.speechSynthesis;
-  const voices = synth.getVoices();
-  const voice = voices.find(v=>/^zh[-_]CN/i.test(v.lang)) ||
-    voices.find(v=>/^zh(?:[-_]|$)/i.test(v.lang));
-  if (!voice && voices.length) {
-    setStatus('Китайский голос недоступен на устройстве. Можно повторить по пиньиню.');
-    return;
-  }
-  synth.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'zh-CN';
-  utterance.rate = .85;
-  if (voice) utterance.voice = voice;
+  const clip = approvedLessonClips[normalize(text)];
+  if (!clip) { setStatus('Для этой фразы пока нет утверждённой записи.'); return; }
+  clearMedia();
+  const player = new Audio(clip.src);
+  audio = player;
+  player.preload = 'auto';
   button.setAttribute('aria-pressed','true');
-  utterance.onend = () => button.removeAttribute('aria-pressed');
-  utterance.onerror = event => {
+  let ready = !Number.isFinite(clip.start);
+  player.muted = !ready;
+  let timer = null;
+  const done = () => {
+    if (timer !== null) { clearInterval(timer); timer=null; }
+    if (audio !== player) return;
+    player.pause(); audio = null;
     button.removeAttribute('aria-pressed');
-    if (!['canceled','interrupted'].includes(event.error))
-      setStatus('Не удалось воспроизвести китайскую речь. Повтори по пиньиню.');
   };
-  synth.speak(utterance);
+  const fail = () => {
+    if (audio !== player) return;
+    done(); setStatus('MP3 не воспроизвёлся. Проверь соединение и повтори.');
+  };
+  const seek = () => {
+    if (audio !== player || ready) return;
+    try { player.currentTime = clip.start; } catch { fail(); }
+  };
+  player.addEventListener('loadedmetadata',seek,{once:true});
+  player.addEventListener('seeked',() => {
+    if (audio === player && !ready && Math.abs(player.currentTime - clip.start) < .12) {
+      ready = true; player.muted = false;
+    }
+  });
+  if (Number.isFinite(clip.end)) timer = setInterval(() => {
+    if (audio !== player) { clearInterval(timer); timer=null; return; }
+    if (ready && player.currentTime >= clip.end) done();
+  },20);
+  player.addEventListener('error',fail,{once:true});
+  player.addEventListener('ended',done,{once:true});
+  if (player.readyState >= 1) seek();
+  try { const pending = player.play(); if (pending?.catch) pending.catch(fail); } catch { fail(); }
 }
 
 function recognize(allowed,onMatch,onMiss) {
