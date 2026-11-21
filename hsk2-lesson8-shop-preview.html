@@ -1387,112 +1387,160 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   scrollbar-width: none;
 }
 #pg433 .shop-cover {
-  min-height: 100%;
+  --cover-inner: 83%;
+  --cover-icon-size: clamp(33px, min(11.4cqw, 5.8dvh), 53px);
+  container-type: inline-size;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
-  gap: clamp(7px, 1.25dvh, 12px);
-  padding: 8px 0 max(12px, env(safe-area-inset-bottom));
-  background: #f7ddf6 url("./assets/hsk2-lesson1-preview/reference-sakura.webp") center / cover no-repeat;
-  color: #351050;
+  padding-top: max(5px, env(safe-area-inset-top));
+  background: radial-gradient(ellipse at 50% 15%, #ffe9f6 0%, #f8dbf6 59%, #f7d2f3 100%);
+  color: #341054;
   text-align: center;
 }
-#pg433 .shop-cover > :not(.shop-cover-picture) { width: min(90%, 470px); }
+#pg433 .shop-cover > :not(.shop-cover-footer) { flex: none; }
+#pg433 .shop-brand, #pg433 .shop-summary, #pg433 .shop-cover-grid, #pg433 .shop-start { width: var(--cover-inner); }
 #pg433 .shop-brand {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
   align-items: center;
-  gap: 8px;
-  padding: 0 0 7px;
-  border-bottom: 4px solid #d28ae9;
+  gap: 0 9px;
   text-align: start;
   line-height: 1.12;
 }
 #pg433 .shop-brand a {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
-  flex: none;
+  width: clamp(28px, 7.6cqw, 38px);
+  aspect-ratio: 1;
   border: 1px solid #ead1ed;
   border-radius: 50%;
-  background: #fff6fe;
+  background: linear-gradient(#fffaff, #f8e3fa);
   box-shadow: 0 3px 6px #9c489553;
   color: inherit;
   font-size: 25px;
+  line-height: 1;
   text-decoration: none;
 }
-#pg433 .shop-brand img { width: 38px; height: 38px; object-fit: contain; }
-#pg433 .shop-brand strong { display: block; font-size: clamp(18px, 5vw, 23px); font-weight: 900; }
-#pg433 .shop-brand b { color: #c01278; }
-#pg433 .shop-brand small { font-size: 11px; color: #51265e; }
-#pg433 .shop-title { line-height: 1.15; text-shadow: 0 1px 3px #ffebfa; }
+#pg433 .shop-cover-accent {
+  display: block;
+  aspect-ratio: 1;
+  background: url("./assets/hsk2-lesson8-shop-accents-v4.webp") var(--accent-x) center / 300% 100% no-repeat;
+}
+#pg433 .shop-brand-panda { --accent-x: 100%; width: clamp(28px, 8.7cqw, 44px); }
+#pg433 .shop-brand strong { display: block; font-size: clamp(16px, 4.6cqw, 25px); font-weight: 900; }
+#pg433 .shop-brand b { color: #dc0878; }
+#pg433 .shop-brand small { font-size: clamp(9px, 2.55cqw, 14px); color: #51265e; }
+#pg433 .shop-brand::after {
+  content: "";
+  grid-column: 1 / -1;
+  height: clamp(5px, 1.4cqw, 8px);
+  margin-top: 5px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #ee0e83 0 8%, #d3a0e7 8% 100%);
+  box-shadow: inset 0 1px 2px #8e41a644;
+}
+#pg433 .shop-title {
+  width: 100%;
+  margin-top: 4px;
+  padding: 2px 0 0;
+  background: url("./assets/hsk2-lesson8-shop-sakura-v4.webp") center top / 100% auto no-repeat;
+  line-height: 1.1;
+}
 #pg433 .shop-chapter {
   display: inline-block;
   border: 1px solid #dfacda;
   border-radius: 999px;
-  padding: 3px 12px;
-  background: linear-gradient(#fff6fe, #f5ccf0);
+  padding: 3px 13px;
+  background: linear-gradient(#fff2fc, #f5c5ef);
   box-shadow: 0 2px 4px #ab5f9b44;
-  font-size: 12px;
+  font-size: clamp(10px, 3cqw, 16px);
   font-weight: 800;
 }
-#pg433 .shop-title h1 { margin: 4px 0 2px; font-size: clamp(27px, 8vw, 41px); font-weight: 900; line-height: 1.05; }
-#pg433 .shop-title p { font-size: clamp(13px, 3.8vw, 17px); }
+#pg433 .shop-title h1 {
+  margin: 3px 0 0;
+  font-size: clamp(25px, 8.5cqw, 46px);
+  font-weight: 950;
+  line-height: 1.06;
+  letter-spacing: -.035em;
+}
+#pg433 .shop-title p { font-size: clamp(13px, 3.6cqw, 19px); line-height: 1.12; }
 #pg433 .shop-cover-picture {
-  width: min(94%, 520px, 65dvh);
-  flex: none;
+  width: 100%;
   overflow: hidden;
-  border: 1px solid #f1c477;
-  border-radius: 17px;
-  background: #f0c4e7;
-  box-shadow: 0 4px 10px #9a4c9961;
 }
-#pg433 .shop-cover-picture img { width: 100%; height: auto; }
+#pg433 .shop-cover-picture img {
+  width: 100%;
+  height: auto;
+  mask-image:
+    linear-gradient(transparent, #000 8% 94%, transparent),
+    linear-gradient(transparent 25%, #000 40%),
+    linear-gradient(90deg, transparent 19%, #000 27% 73%, transparent 81%);
+  mask-composite: intersect, add;
+}
 #pg433 .shop-summary, #pg433 .shop-cover-grid {
-  border: 1px solid #e8bfdf;
-  border-radius: 17px;
-  background: linear-gradient(#fffaff, #f9eafd);
-  box-shadow: inset 0 1px #fff, 0 3px 0 #c492d6, 0 5px 10px #793a9038;
+  border: 1px solid #ecceea;
+  border-radius: clamp(13px, 3.9cqw, 22px);
+  background: linear-gradient(#fffaff, #fbf2fd);
+  box-shadow: inset 0 1px #fff, 0 3px 0 #ca9cda, 0 5px 8px #793a903a;
 }
-#pg433 .shop-summary { padding: 7px 10px 8px; }
+#pg433 .shop-summary {
+  display: grid;
+  grid-template-columns: 13% minmax(0, 1fr) 13%;
+  align-items: center;
+  padding: 0 6px 7px;
+  gap: 3px 4px;
+}
 #pg433 .shop-summary h2 {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: fit-content;
-  margin: 0 auto 4px;
-  padding: 3px 14px;
+  min-width: 74%;
+  margin: 0 auto;
+  padding: 1px 12px 1px 5px;
+  gap: 5px;
   border-radius: 999px;
   background: var(--gloss);
   color: white;
-  font-size: clamp(13px, 3.8vw, 17px);
-  line-height: 1.25;
+  text-shadow: 0 1px 2px #65178d;
+  box-shadow: 0 2px 3px #7e29935e;
+  font-size: clamp(14px, 4.35cqw, 24px);
+  line-height: 1.2;
 }
-#pg433 .shop-summary p { font-size: clamp(12px, 3.6vw, 16px); font-weight: 650; line-height: 1.24; text-wrap: balance; }
+#pg433 .shop-summary .shop-cover-icon { --icon-x: 0%; --icon-y: 0%; width: clamp(23px, 7cqw, 37px); }
+#pg433 .shop-summary .shop-cover-accent { width: 100%; }
+#pg433 .shop-summary-tag { --accent-x: 0%; }
+#pg433 .shop-summary-bag { --accent-x: 50%; }
+#pg433 .shop-summary p { font-size: clamp(11px, 3.25cqw, 17px); font-weight: 800; line-height: 1.17; text-wrap: balance; }
 #pg433 .shop-cover-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  padding: 4px 5px;
+  margin-top: 7px;
+  padding: 2px 6px;
 }
 #pg433 .shop-cover-grid button {
   display: grid;
   justify-items: center;
   align-content: center;
   min-width: 0;
-  min-height: 55px;
-  gap: 2px;
-  padding: 4px 1px;
+  min-height: 44px;
+  gap: 1px;
+  padding: 2px 1px 3px;
   border: 0;
   background: transparent;
-  color: #421650;
-  font-size: clamp(10px, 3vw, 14px);
-  font-weight: 800;
+  color: #371051;
+  font-size: clamp(10px, 3.05cqw, 16px);
+  font-weight: 850;
   line-height: 1.12;
 }
 #pg433 .shop-cover-grid button:nth-child(-n+3) { border-bottom: 1px solid #e1b9df; }
 #pg433 .shop-cover-grid button:not(:nth-child(3n)) { border-right: 1px solid #e1b9df; }
 #pg433 .shop-cover-icon {
   display: block;
-  width: clamp(37px, 11.8vw, 54px);
+  width: var(--cover-icon-size);
   aspect-ratio: 1;
   background: url("./assets/hsk2-lesson8-shop-icons-v3.webp") var(--icon-x) var(--icon-y) / 300% 200% no-repeat;
 }
@@ -1503,29 +1551,50 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #pg433 .shop-cover-grid button:nth-child(n+4) { --icon-y: 100%; }
 #pg433 .shop-start {
   min-height: 44px;
+  margin: 8px 0 6px;
   padding: 5px 12px;
   border: 1px solid #d490ee;
   border-radius: 999px;
-  background: linear-gradient(#e984f0, #b544da 53%, #8620b2);
+  background: linear-gradient(#e18cf0, #ad43d2 54%, #8620b2);
   color: white;
-  font-size: clamp(18px, 5vw, 23px);
-  font-weight: 850;
+  font-size: clamp(18px, 5.2cqw, 28px);
+  font-weight: 900;
   text-shadow: 0 1px 2px #65178d;
   box-shadow: inset 0 2px 3px #f4c4ff88, 0 4px 0 #79239f, 0 6px 10px #74308055;
 }
-#pg433 .shop-cover .shop-proverb {
-  width: min(83%, 370px);
-  margin: 3px 0 0;
-  padding: 8px 11px;
-  border: 2px solid #e7b85f;
-  border-radius: 18px;
-  background: linear-gradient(#fff4d7, #ffe2b7);
-  box-shadow: inset 0 0 0 2px #fff2d7, 0 3px 7px #8a496746;
-  font-size: clamp(14px, 4.2vw, 19px);
-  font-weight: 800;
-  font-style: italic;
-  line-height: 1.2;
+#pg433 .shop-cover-footer {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 30cqw;
+  overflow: hidden;
+  background: #e5cbea url("./assets/hsk2-lesson1-preview/course-cover-water.webp") center bottom / 100% auto repeat-y;
+}
+#pg433 .shop-scroll-art { position: relative; }
+#pg433 .shop-scroll-art img { width: 100%; height: auto; }
+#pg433 .shop-proverb {
+  position: absolute;
+  inset: 16% 22% auto;
+  min-height: 48%;
+  display: grid;
+  place-content: center;
+  margin: 0;
+  color: #32115b;
+  font-size: clamp(12px, 3.95cqw, 25px);
+  font-weight: 950;
+  line-height: 1.14;
   text-wrap: balance;
+}
+#pg433 .shop-proverb em { color: #a31573; }
+@media (max-height: 710px) {
+  #pg433 .shop-cover { --cover-icon-size: clamp(28px, 5.3dvh, 39px); }
+  #pg433 .shop-cover-picture img { max-height: 20.9dvh; object-fit: contain; }
+}
+@media (max-height: 600px) {
+  #pg433 .shop-cover { --cover-icon-size: 28px; }
+  #pg433 .shop-cover-footer { min-height: 26cqw; }
+  #pg433 .shop-title { margin-top: 2px; }
+  #pg433 .shop-cover-grid { margin-top: 4px; }
+  #pg433 .shop-start { margin-top: 5px; }
 }
 
 /* Both lists share the same reading order and keep controls out of the text column. */
@@ -1617,19 +1686,6 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #app[data-view="5"] #pg433 .hobby-answer-list .approved-story-choice > .shop-photo.about-story-photo {
   height: auto !important;
   aspect-ratio: 1;
-}
-@media (max-height: 690px) {
-  #pg433 .shop-cover { gap: 5px; padding-bottom: max(10px, env(safe-area-inset-bottom)); }
-  #pg433 .shop-cover-icon { width: clamp(36px, 10.5vw, 45px); }
-}
-@media (max-height: 600px) {
-  #pg433 .shop-cover { gap: 4px; padding-top: 6px; }
-  #pg433 .shop-cover-picture { width: min(94%, 46dvh); }
-  #pg433 .shop-brand { padding-bottom: 4px; }
-  #pg433 .shop-summary { padding-block: 5px; }
-  #pg433 .shop-cover-grid button { min-height: 46px; padding-block: 2px; }
-  #pg433 .shop-cover-icon { width: 32px; }
-  #pg433 .shop-cover .shop-proverb { padding-block: 5px; }
 }
 @media (max-width: 350px) {
   #app #pg433 .test-card {
@@ -1839,7 +1895,6 @@ function currentStepComplete() {
 const activeQuiz = () => state.quizRetry ?? state;
 const dayScenes = ['wake','wash','brush','breakfast','work','sleep'];
 
-const courseArt = './assets/hsk2-lesson1-preview/';
 const coverHero = './assets/hsk2-lesson8-shop-cover-v3.webp';
 // Use the same exercise portraits shown in the course video.
 const exerciseArt = './assets/hsk2-lesson5-friends-3d/';
@@ -1978,7 +2033,7 @@ function intro() {
   return `<section class="shop-cover">
     <div class="shop-brand">
       <a href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2">‹</a>
-      <img src="${courseArt}intro-panda.webp" alt="" width="38" height="38">
+      <span class="shop-cover-accent shop-brand-panda" aria-hidden="true"></span>
       <div><strong>Panda <b>Go</b></strong><small>Китайский с удовольствием</small></div>
     </div>
     <div class="shop-title">
@@ -1987,11 +2042,13 @@ function intro() {
       <p><strong lang="zh-Hans">在商店</strong><br>Zài shāngdiàn</p>
     </div>
     <figure class="shop-cover-picture">
-      <img src="${coverHero}" alt="Панда выбирает товары в китайском магазине" width="1200" height="512" draggable="false" fetchpriority="high">
+      <img src="./assets/hsk2-lesson8-shop-scene-v4.webp" alt="Панда с пакетом и ценником у прилавка" width="1200" height="524" draggable="false" fetchpriority="high">
     </figure>
     <div class="shop-summary">
-      <h2>Содержание урока</h2>
+      <h2><span class="shop-cover-icon" aria-hidden="true"></span>Содержание урока:</h2>
+      <span class="shop-cover-accent shop-summary-tag" aria-hidden="true"></span>
       <p>Научись спрашивать цену, выбирать товары и говорить о покупке по-китайски.</p>
+      <span class="shop-cover-accent shop-summary-bag" aria-hidden="true"></span>
     </div>
     <div class="shop-cover-grid">
       ${tiles.map(([step,label]) => `<button type="button" data-step="${step}">
@@ -1999,7 +2056,12 @@ function intro() {
       </button>`).join('')}
     </div>
     <button type="button" class="shop-start" data-step="2">Начать урок →</button>
-    <blockquote class="shop-proverb">Изучая чужой язык, лучше понимаешь свой.</blockquote>
+    <div class="shop-cover-footer">
+      <figure class="shop-scroll-art">
+        <img src="./assets/hsk2-lesson8-shop-scroll-v4.webp" alt="" width="1100" height="445" draggable="false">
+        <blockquote class="shop-proverb">Изучая чужой язык, <em>лучше понимаешь свой.</em></blockquote>
+      </figure>
+    </div>
   </section>`;
 }
 function shopWordCard(word, index, practiceControl = '') {
