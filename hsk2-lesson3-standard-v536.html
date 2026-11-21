@@ -1329,6 +1329,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #pg433 .results dl div{gap:6px}
 #pg433 .results dd{max-width:48%}
 </style>
+<link rel="stylesheet" href="./assets/hsk2-lesson3-refinements-v537.css?v=537">
 </head>
 <body>
 <div class="app" id="app">
@@ -1743,18 +1744,12 @@ function render(resetScroll = false) {
 }
 
 function intro() {
- return '<section class="l3-cover" aria-label="HSK 2, урок 3 — Моя работа и учёба">' +
-  '<a class="l3-cover-back" href="./hsk2-life-course.html?view=map">← Все уроки</a>' +
-  '<div class="l3-cover-label">HSK 2 · УРОК 3</div>' +
-  '<h1>Моя работа и учёба</h1><div class="l3-cover-cn" lang="zh-Hans">我的工作和学习</div>' +
-  '<img class="l3-cover-art" src="' + A[0] + '" alt="Панда работает за компьютером" decoding="async">' +
-  '<div class="l3-cover-syllabus"><b>Содержание урока:</b>' +
-   '<p>6 новых выражений · 2 правила · 30 мини-тестов</p>' +
-   '<div class="l3-cover-grid"><span>📖 Слова</span><span>🎙 Речь и тоны</span><span>💬 Диалог</span></div>' +
-  '</div>' +
-  '<button type="button" class="primary l3-cover-start" data-step="2">Начать урок →</button>' +
-  '<p class="l3-cover-motto">Не бойся говорить с ошибками. Бойся никогда не заговорить.</p>' +
- '</section>';
+ return '<section class="l3-cover l3-poster-cover" aria-label="HSK 2 — урок 3. Моя работа и учёба">' +
+   '<div class="l3-poster-frame">' +
+     '<img class="l3-poster-image" src="./assets/hsk2-lesson3-cover-photo5-20261121.jpg" alt="Panda Go. HSK 2, урок 3: Моя работа и учёба. Шесть выражений, тридцать мини-тестов, грамматика, произношение и диалог с Пандой." width="694" height="1232" fetchpriority="high" decoding="async" draggable="false">' +
+     '<a class="l3-poster-back" href="./hsk2-life-course.html?view=map" aria-label="Вернуться ко всем урокам"></a>' +
+     '<button type="button" class="l3-poster-start" data-step="2" aria-label="Начать урок 3"></button>' +
+   '</div></section>';
 }
 function newWords() {
   const canPlay = words.every(word => clips.has(normalize(word.zh)));
@@ -1973,9 +1968,6 @@ function tones() {
     '" data-practice-mode="self">' +
     (state.practiceMode === 'self' ? '✓ Запасной режим' : 'Не работает микрофон?') +
     '</button></div>' +
-    (state.practiceMode === 'self'
-      ? '<p class="hint practice-fallback-note">Нет работающего распознавания? Прочитай и повтори по пиньиню, затем отметь слово. Если нет записи, повтори по пиньиню. Тоны автоматически не оцениваются.</p>'
-      : '') +
     '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
     '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (6)</button></div>' +
