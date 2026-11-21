@@ -1442,6 +1442,8 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   box-shadow: inset 0 1px 2px #8e41a644;
 }
 #pg433 .shop-title {
+  position: relative;
+  z-index: 1;
   width: 100%;
   margin-top: 4px;
   padding: 2px 0 0;
@@ -1468,13 +1470,15 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #app #pg433 .pg433-title strong { font-size: clamp(15px, 4.8vw, 22px) !important; white-space: normal !important; }
 #pg433 .shop-title p { font-size: clamp(13px, 3.6cqw, 19px); line-height: 1.12; }
 #pg433 .shop-cover-picture {
+  --scene-extension: calc(100cqw / 12);
   width: 100%;
+  margin-top: calc(-1 * var(--scene-extension));
   overflow: hidden;
 }
 #pg433 .shop-cover-picture img {
   width: 100%;
   height: auto;
-  mask-image: linear-gradient(transparent, #000 11% 91%, transparent);
+  mask-image: linear-gradient(transparent, #000 8% 91%, transparent);
 }
 #pg433 .shop-summary, #pg433 .shop-cover-grid {
   border: 1px solid #ecceea;
@@ -1583,7 +1587,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #pg433 .shop-proverb em { color: #a31573; }
 @media (max-height: 710px) {
   #pg433 .shop-cover { --cover-icon-size: clamp(28px, 5.3dvh, 39px); }
-  #pg433 .shop-cover-picture img { max-height: 19.8dvh; object-fit: contain; }
+  #pg433 .shop-cover-picture img { max-height: calc(19.8dvh + var(--scene-extension)); object-fit: contain; }
   #pg433 .shop-cover-footer { min-height: 24cqw; }
 }
 @media (max-height: 600px) {
@@ -2049,7 +2053,7 @@ function intro() {
       <p><strong lang="zh-Hans">恋爱与相处</strong><br>Liàn’ài yǔ xiāngchǔ</p>
     </div>
     <figure class="shop-cover-picture">
-      <img src="./assets/hsk2-lesson10-relationships-cover-v1.webp" alt="Две панды встречаются в саду с фонариками" width="1200" height="522" draggable="false" fetchpriority="high">
+      <img src="./assets/hsk2-lesson10-relationships-cover-v2.webp" alt="Две панды встречаются в саду с фонариками" width="1200" height="622" draggable="false" fetchpriority="high">
     </figure>
     <div class="shop-summary">
       <h2><span class="shop-cover-icon" aria-hidden="true"></span>Содержание урока:</h2>
