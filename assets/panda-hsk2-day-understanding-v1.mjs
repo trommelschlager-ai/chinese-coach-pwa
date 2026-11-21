@@ -40,6 +40,16 @@ const unknown=()=>({kind:'unconfirmed',message:'Я не могу уверенн�
 function timeAnswer(s,i){
  const t=getTimes(s);
  if(t.invalid)return clarify('Проверь часы: допустимо время от 0 до 23.');
+ if(t.matches.length===2){
+  const [first,last]=t.matches;
+  const action=i===0?'起床':'睡觉';
+  if(s==='不是'+first.text+'是'+last.text||s==='不是'+first.text+'是'+last.text+action)
+   return timeAnswer(last.text,i);
+  const routine=/^(?:我)?(?:平时|通常|一般|每天)/u.exec(s);
+  if(routine&&s.startsWith(routine[0]+first.text+action+'今天')&&
+     ['今天'+last.text+action,'今天'+last.text+'才'+action].includes(s.slice(s.indexOf('今天'))))
+   return accept(s.replace('今天','，今天'));
+ }
  if(t.matches.length>1)return clarify('Уточни одно обычное время: ты назвал больше одного.');
  const m=t.matches[0],action=i===0?'起床':'睡觉';
  if(!m){
@@ -97,6 +107,16 @@ function work(s){
   return accept(s,'Поняла: ты не ходишь на работу в указанное время.');
  const t=getTimes(s);
  if(t.invalid)return clarify('Назови правильный час от 0 до 23.');
+ if(t.matches.length===2){
+  const [first,last]=t.matches;
+  const action=i===0?'起床':'睡觉';
+  if(s==='不是'+first.text+'是'+last.text||s==='不是'+first.text+'是'+last.text+action)
+   return timeAnswer(last.text,i);
+  const routine=/^(?:我)?(?:平时|通常|一般|每天)/u.exec(s);
+  if(routine&&s.startsWith(routine[0]+first.text+action+'今天')&&
+     ['今天'+last.text+action,'今天'+last.text+'才'+action].includes(s.slice(s.indexOf('今天'))))
+   return accept(s.replace('今天','，今天'));
+ }
  if(t.matches.length>1)return clarify('Уточни одно время работы.');
  const m=t.matches[0];
  if(!m)return clarify('你几点去上班？ — Если не работаешь, скажи 我不上班.');
