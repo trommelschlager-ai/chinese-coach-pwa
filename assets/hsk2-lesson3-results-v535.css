@@ -1,0 +1,96 @@
+/* Panda Go · HSK2 · Lesson 3 · results v535.
+   Restore a wide hero image like earlier lesson screens without distortion.
+   Remove the long Panda AI explanation card; a standalone badge remains. */
+
+#lesson.compact-result #content {
+  padding:6px 10px 5px;
+  scrollbar-width:none;
+}
+#lesson.compact-result #content > .paper:first-child {
+  padding:9px 10px 10px;
+  margin:0 0 5px;
+  gap:3px 7px;
+  align-content:start;
+}
+#lesson.compact-result #content > .paper:first-child > img.hero-art.result-hero {
+  grid-column:1/-1;
+  display:block;
+  justify-self:stretch;
+  align-self:center;
+  width:100%;
+  max-width:100%;
+  height:clamp(175px,23dvh,220px);
+  max-height:none;
+  aspect-ratio:auto;
+  object-fit:cover;
+  object-position:50% 28%;
+  margin:2px 0 4px;
+  border-radius:15px;
+}
+#lesson.compact-result #content > .paper:first-child > .section-title {
+  margin:2px 0 3px;
+}
+#lesson.compact-result #content > .paper:first-child > .section-title h3 {
+  font-size:14px;
+  margin:0;
+}
+#lesson.compact-result #content > .paper:first-child > p:not(.hint) {
+  padding:3px 5px;
+  font-size:11.5px;
+  line-height:1.2;
+  margin:0;
+}
+#lesson.compact-result #content > .paper:first-child > .example {
+  margin:2px 0;
+  padding:5px 8px;
+}
+#lesson.compact-result #content > .paper:first-child > .status {
+  padding:6px 8px;
+  font-size:11.5px;
+  line-height:1.17;
+  margin:3px 0;
+}
+#lesson.compact-result #content > .paper:first-child > .btnrow {
+  margin-top:4px!important;
+}
+#lesson.compact-result #content > .paper:first-child > .btnrow button {
+  min-height:40px;
+  font-size:13px;
+}
+#lesson.compact-result #content > .result-ai-only {
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  padding:2px 6px 4px;
+  margin:0;
+}
+#lesson.compact-result #content > .result-ai-only .pill {
+  border-color:#d89fdf;
+  border-bottom:2px solid #ac63bb;
+  color:#733080;
+  background:linear-gradient(#fff8fe,#f3d9f7);
+  font-size:12px;
+  padding:5px 12px;
+  box-shadow:0 2px 5px #9c60a33a;
+}
+
+/* On short screens shrink the image first instead of truncating completion data. */
+#lesson.compact-result.compact-tight #content > .paper:first-child > img.hero-art.result-hero {
+  width:100%;
+  height:clamp(138px,19dvh,179px);
+  max-height:none;
+  object-fit:cover;
+  object-position:50% 28%;
+  margin:0 0 2px;
+}
+#lesson.compact-result.compact-ultra #content > .paper:first-child > img.hero-art.result-hero {
+  width:100%;
+  height:clamp(105px,15dvh,145px);
+  max-height:none;
+  object-fit:cover;
+  object-position:50% 28%;
+}
+#lesson.compact-result.compact-ultra #content > .result-ai-only .pill {
+  font-size:10.5px;
+  padding:3px 9px;
+}
