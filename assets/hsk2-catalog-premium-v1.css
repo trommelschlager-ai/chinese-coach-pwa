@@ -148,6 +148,10 @@
   background-image:url("./hsk2-lesson1-preview/course-cover-panda-hd.webp");
   background-size:auto 100%;background-position:23% center;
 }
+#app #pg433.pgc-catalog .pgc-art-work{
+  background-image:url("./hsk2-lesson3-cover-photo5-20261121.jpg");
+  background-size:cover;background-position:center center;
+}
 #app #pg433.pgc-catalog .pgc-feature-text{
   display:flex!important;flex-direction:column;align-items:flex-start;justify-content:center;
   min-width:0;gap:1px!important;position:relative;z-index:1;
