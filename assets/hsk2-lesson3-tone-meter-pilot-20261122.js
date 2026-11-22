@@ -50,6 +50,8 @@ function readState(){
       splitSource:['pause','energy','manual','midpoint','uncertain'].includes(t.splitSource)?t.splitSource:'midpoint',
        splitWarning:typeof t.splitWarning==='string'?t.splitWarning.slice(0,200):'',
       quality,validParts:Array.isArray(t.validParts)&&t.validParts.length===2?t.validParts.map(Boolean):[false,false],
+      previewPoints:Array.isArray(t.previewPoints)?t.previewPoints.slice(-150).filter(p=>Array.isArray(p)&&p.length===2&&p.every(finite)&&p[0]>=0&&p[0]<=1&&p[1]>=70&&p[1]<=600):[],
+      previewSeconds:finite(t.previewSeconds)?Math.min(8,Math.max(.1,t.previewSeconds)):0,
       offline:t.offline&&typeof t.offline==='object'?t.offline:null,
       evidence:Array.isArray(t.evidence)&&t.evidence.length===2?t.evidence:null,
       voiceMs:finite(t.voiceMs)?Math.max(0,Math.min(8000,t.voiceMs)):0,
@@ -95,7 +97,7 @@ function render(words,art,heading,panel,ttsNote,listenButton){
     ' · '+syllables[n]+' <span>тон '+TONES[i][n]+'</span></div>'+
     '<canvas id="tone-canvas-'+(n+1)+'" role="img" aria-label="Высота голоса для слога '+(n+1)+', '+syllables[n]+'" width="360" height="175"></canvas>'+
     '<p id="tone-trend-'+(n+1)+'" class="tone-trend">После записи появится твоя линия.</p></div>').join('')+'</div>'+
-   '<div class="tone-legend"><span class="tone-legend-target">Пунктир — схема</span><span class="tone-legend-user">Зелёная — твой голос</span></div>'+
+   '<div class="tone-legend"><span class="tone-legend-target">Пунктир — схема</span><span class="tone-legend-user">Зелёная — линия во время записи</span><span class="tone-legend-final" style="font-weight:750;color:#a45219">🟠 Оранжевая — пересчёт после «Стоп»</span></div>'+
    '<div id="tone-status" class="tone-status" role="status" aria-live="polite">'+esc(note)+'</div>'+
    '<div class="btnrow tone-actions">'+(typeof listenButton==='function'?listenButton(w.zh):'')+'<button id="tone-record" class="primary" type="button" data-tone-act="record">'+
     '🎙 Записать голос</button>'+
@@ -109,7 +111,7 @@ function render(words,art,heading,panel,ttsNote,listenButton){
     '<button class="action tone-reset" type="button" data-tone-act="clear">↻ Сбросить повторы выбранного слова</button>'+
     (last?'<p class="hint">Запись: '+last.seconds.toFixed(1)+' с; измерений: '+last.points.length+'.'+(last.stats?' Основной: '+last.stats.yin+' · запасной: '+last.stats.fallback+' · пропуски: '+last.stats.none+'.':'')+'</p>':'')+
     ttsNote+'</details>'+
-   '<p class="tone-safety-label">⚠ Пробная версия: показывает высоту голоса и качество сигнала. Не определяет правильность китайских тонов. Пять повторений не являются оценкой.</p>'+
+   '<p class="tone-safety-label">⚠ Зелёная линия — предварительная; после «Стоп» она остаётся на месте, а оранжевая показывает независимый повторный анализ. При расхождении это ошибка/неопределённость измерения, а не доказательство неправильного тона. Повторы не являются оценкой.</p>'+
   '</div>'
  );
 }
@@ -201,21 +203,24 @@ function isLongPitchGap(prevTime,nextTime,voiceSeconds){
 function draw(){
  const live=Boolean(active&&active.word===state.selected);
  const recent=visibleAttempt?.word===state.selected?visibleAttempt:state.reps[state.selected].mic.at(-1);
- const take=live?active.samples:(recent?.points||[]);
+ const liveSamples=live?active.samples:[];
+ const livePoints=live?normalizeChartPoints(liveSamples,true):Array.isArray(recent?.previewPoints)?recent.previewPoints:[];
+ const finalPoints=live?[]:(recent?.points||[]);
  const split=live?.5:(recent?.splitRatio??.5);
- const normalized=normalizeChartPoints(take,live);
- const voiceSeconds=live?Math.max(.1,(take.at(-1)?.[0]??0)-(take[0]?.[0]??0)):
-  (finite(recent?.seconds)&&recent.seconds>.1?recent.seconds:.8);
+ const liveSeconds=live?Math.max(.1,(liveSamples.at(-1)?.[0]??0)-(liveSamples[0]?.[0]??0)):(recent?.previewSeconds||.8);
+ const finalSeconds=finite(recent?.seconds)&&recent.seconds>.1?recent.seconds:.8;
  const shapes={1:[.5,.5],2:[.5,.23],3:[.5,.82,.56],4:[.5,.82]};
  for(let syll=0;syll<2;syll++){
   const canvas=document.getElementById('tone-canvas-'+(syll+1));if(!canvas)continue;
   const ctx=canvas.getContext('2d');if(!ctx)continue;
   const w=canvas.width,h=canvas.height,l=40,r=12,t=15,b=23,plotW=w-l-r,plotH=h-t-b;
-  const segmentFrom=syll===0?0:split,segmentTo=syll===0?split:1;
-  const trace=semitoneContour(normalized,segmentFrom,segmentTo);
-  // Minimum ±5 semitones makes 2.8–3.6-semitone movements clearly visible.
-  // Expand instead of clipping and inventing a horizontal end plateau.
-  const axisHalf=Math.max(5,Math.ceil(Math.max(0,...trace.map(p=>Math.abs(p.semitones)))*2)/2);
+  const liveFrom=syll===0?0:.5,liveTo=syll===0?.5:1;
+  const finalFrom=syll===0?0:split,finalTo=syll===0?split:1;
+  // Both curves use a FIXED scale. Pressing Stop must not rescale or replace
+  // the live curve. Values beyond the visible scale are clipped at plot edges.
+  const axisHalf=9;
+  const liveTrace=semitoneContour(livePoints,liveFrom,liveTo);
+  const finalTrace=semitoneContour(finalPoints,finalFrom,finalTo);
   ctx.clearRect(0,0,w,h);ctx.fillStyle='#fffaff';ctx.fillRect(0,0,w,h);
   ctx.font='11px system-ui';ctx.textBaseline='middle';
   for(let k=0;k<=4;k++){
@@ -235,22 +240,42 @@ function draw(){
    if(k===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
   }
   ctx.stroke();ctx.setLineDash([]);
-  const trend=document.getElementById('tone-trend-'+(syll+1));
-  if(trend){const measured=normalized.filter(p=>p[0]>=segmentFrom&&(segmentTo===1?p[0]<=1:p[0]<segmentTo));const hasRms=Array.isArray(recent?.levels)&&recent.levels.length>0;const rmsFrames=hasRms?recent.levels.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo&&p[1]>=.023).length:null;const evidence=rmsFrames===null?' · RMS: нет данных для старой записи':' · '+rmsFrames+' звуковых кадров RMS';trend.textContent=live?'🎙 Идёт запись — дождись результата после «Стоп».':(observedTrend(normalized,segmentFrom,segmentTo)+' · '+measured.length+' точек F0'+evidence+(recent?.splitWarning?' · ⚠ проверь границу слогов':''));}
-  if(trace.length<2)continue;
-  ctx.strokeStyle='#198b70';ctx.lineWidth=3.5;
-  let painted=0,prior=null;ctx.beginPath();
-  for(const p of trace){
-   const x=l+plotW*p.x;
-   const y=t+plotH*(.5-p.semitones/(2*axisHalf));
-   if(prior!==null&&isLongPitchGap(prior,p.time,voiceSeconds)){
-    if(painted>=2)ctx.stroke();
-    ctx.beginPath();painted=0;
+  const traceLine=(trace,color,width,seconds)=>{
+   if(trace.length<2)return;
+   ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash([]);
+   let painted=0,prior=null;ctx.beginPath();
+   for(const p of trace){
+    const x=l+plotW*p.x;
+    const y=Math.max(t,Math.min(t+plotH,t+plotH*(.5-p.semitones/(2*axisHalf))));
+    if(prior!==null&&isLongPitchGap(prior,p.time,seconds)){
+     if(painted>=2)ctx.stroke();
+     ctx.beginPath();painted=0;
+    }
+    if(!painted)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    prior=p.time;painted++;
    }
-   if(painted===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-   prior=p.time;painted++;
+   if(painted>=2)ctx.stroke();
+  };
+  // Draw preliminary green first, then separately render post-stop orange.
+  traceLine(liveTrace,'#198b70',3.5,liveSeconds);
+  if(!live)traceLine(finalTrace,'#d97827',2.8,finalSeconds);
+  const trend=document.getElementById('tone-trend-'+(syll+1));
+  if(trend){
+   if(live){
+    trend.textContent='🎙 Предварительный зелёный контур. После «Стоп» появится оранжевая проверка.';
+   }else{
+    const count=finalPoints.filter(p=>p[0]>=finalFrom&&(finalTo===1?p[0]<=1:p[0]<finalTo)).length;
+    const a=livePoints.filter(p=>p[0]>=liveFrom&&(liveTo===1?p[0]<=1:p[0]<liveTo)).length;
+    const finalTrend=observedTrend(finalPoints,finalFrom,finalTo);
+    const previewTrend=observedTrend(livePoints,liveFrom,liveTo);
+    const dir=t=>t.startsWith('↗')?'up':t.startsWith('↘ ')?'down':t.startsWith('→')?'flat':null;
+    const disagree=a>=5&&count>=5&&dir(finalTrend)&&dir(previewTrend)&&dir(finalTrend)!==dir(previewTrend);
+    trend.textContent='🟠 '+finalTrend+' · '+count+' точек F0'
+     +(a?' | 🟢 запись: '+a+' точек':'')
+     +(disagree?' · ⚠ Кривые расходятся: пока нельзя оценить тон':'')
+     +(recent?.splitWarning?' · ⚠ граница слогов приблизительна':'');
+   }
   }
-  if(painted>=2)ctx.stroke();
  }
 }
 
@@ -536,7 +561,8 @@ function buildRecording(rec){
  const signal={frames:levels.length,voicedFrames:voiced.length,peak,p95,seconds:levels.at(-1)?.[0]??0,rawF0:points.length,threshold:.023,
    speech:{from:finite(from)?from:0,to:finite(to)?to:0,frames:speech.frames,discarded:speech.discarded,groups:speech.groups,ambiguous:speech.ambiguous,span:duration}};
  const result={word:rec.word,points:[],seconds:Math.max(0,duration),splitRatio:.5,recordedAt:Date.now(),attemptId:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),
-  splitSource:'midpoint',splitWarning:'',voiceMs:speech.frames*30,quality:'unmeasured',validParts:[false,false],stats:rec.stats||null,signal,offline:rec.offline||null};
+  splitSource:'midpoint',splitWarning:'',voiceMs:speech.frames*30,quality:'unmeasured',validParts:[false,false],stats:rec.stats||null,signal,offline:rec.offline||null,
+  previewPoints:rec.liveGraphPoints||[],previewSeconds:rec.liveGraphSeconds||0};
  if(!validSound){
    // Preserve meter evidence even if the attempt must not count toward 5/5.
    const span=Math.max(.001,signal.seconds);
@@ -594,6 +620,12 @@ async function stop(countTake){
  seq++;
  const rec=active;active=null;
  if(!rec){syncControls();return}
+ // Freeze EXACTLY the same normalized preview points and 50% split that were
+ // displayed during recording. Offline PCM must not replace these points.
+ if(countTake){
+  rec.liveGraphPoints=normalizeChartPoints(rec.samples,true);
+  rec.liveGraphSeconds=rec.samples.length>=2?Math.max(.1,rec.samples.at(-1)[0]-rec.samples[0][0]):.8;
+ }
  rec.keepReplay=Boolean(countTake&&rec.word===state.selected);
  if(countTake&&rec.captureMethod==='worklet'&&rec.captureNode?.port){
   // Flush is asynchronous: the old code analyzed PCM before receiving the
