@@ -2,7 +2,7 @@
   "schema": 1,
   "project": "Panda Go / conversational Panda AI",
   "created": "2026-11-22",
-  "status": "pending-new-recordings-no-mp3-uploaded",
+  "status": "five-user-supplied-recordings-uploaded-exact-transcript-verified",
   "voice": {
     "provider": "Luvvoice",
     "display_name": "Xiaoxiao",
@@ -24,43 +24,64 @@
   "items": [
     {
       "id": 1,
-      "filename": "panda-context-01.mp3",
+      "filename": "panda01.mp3",
       "zh": "今天我有空，可以聊聊天。",
       "pinyin": "Jīntiān wǒ yǒu kòng, kěyǐ liáoliao tiān.",
       "ru": "Сегодня у меня есть время, можем поболтать.",
-      "status": "needs-matching-approved-Xiaoxiao-voice"
+      "status": "exact-mp3-loaded-native-tone-review-pending",
+      "original_filename": "luvvoice.com-20261122-4MJz2s.mp3",
+      "bytes": 21312,
+      "sha256": "a309494f5aefd892e3ad3a6f064d9d94d35904a2c58885ccf2a0ea0fd16359ed",
+      "git_blob_sha": "a831535d717b7c479ea27327702f23da6ef43b77"
     },
     {
       "id": 2,
-      "filename": "panda-context-02.mp3",
+      "filename": "panda02.mp3",
       "zh": "好的，那你先忙吧。",
       "pinyin": "Hǎo de, nà nǐ xiān máng ba.",
       "ru": "Хорошо, тогда занимайся своими делами.",
-      "status": "needs-matching-approved-Xiaoxiao-voice"
+      "status": "exact-mp3-loaded-native-tone-review-pending",
+      "original_filename": "luvvoice.com-20261122-zWphHn.mp3",
+      "bytes": 17856,
+      "sha256": "f615f0bd055c985a8e0aa071ee73a2cb6d2e6a41295600630208b4fe3a33c3a8",
+      "git_blob_sha": "adc7fefb6944162cbcc412daa980e4e2966ade19"
     },
     {
       "id": 3,
-      "filename": "panda-context-03.mp3",
+      "filename": "panda03.mp3",
       "zh": "那你今天想做什么？",
       "pinyin": "Nà nǐ jīntiān xiǎng zuò shénme?",
       "ru": "Тогда что ты хочешь сегодня делать?",
-      "status": "needs-matching-approved-Xiaoxiao-voice"
+      "status": "exact-mp3-loaded-native-tone-review-pending",
+      "original_filename": "luvvoice.com-20261122-CPFdwt.mp3",
+      "bytes": 16128,
+      "sha256": "16a0648011c546ed7beeee7e51a45415899acdddbe2e7be45b5c020f0649d910",
+      "git_blob_sha": "ad61d5a938e57ece3e8f7e66d075519338789df1"
     },
     {
       "id": 4,
-      "filename": "panda-context-04.mp3",
+      "filename": "panda04.mp3",
       "zh": "那你想聊聊天吗？",
       "pinyin": "Nà nǐ xiǎng liáoliao tiān ma?",
       "ru": "Тогда хочешь немного поболтать?",
-      "status": "needs-matching-approved-Xiaoxiao-voice"
+      "status": "exact-mp3-loaded-native-tone-review-pending",
+      "original_filename": "luvvoice.com-20261122-KoM1si.mp3",
+      "bytes": 15552,
+      "sha256": "8e71ac734df78eeedd41785e3dc9502da33dc1c93469d0ecec3c2592da738975",
+      "git_blob_sha": "341a93f2dade31bfb691a2daad8169eadba4db06"
     },
     {
       "id": 5,
-      "filename": "panda-context-05.mp3",
+      "filename": "panda05.mp3",
       "zh": "你想聊聊工作吗？",
       "pinyin": "Nǐ xiǎng liáoliao gōngzuò ma?",
       "ru": "Хочешь поговорить о работе?",
-      "status": "needs-matching-approved-Xiaoxiao-voice"
+      "status": "exact-mp3-loaded-native-tone-review-pending",
+      "original_filename": "luvvoice.com-20261122-hUnPFU.mp3",
+      "bytes": 15264,
+      "sha256": "1f1949d796f2d24738f26d2681ec64b6cebe45f90ff3f3eb47f945edbe84cb24",
+      "git_blob_sha": "5f8510c8bdb293b4ba59acea1479586e1692cb54"
     }
-  ]
+  ],
+  "technical_verification": "File bytes preserved, MP3 24000 Hz mono, original SHA256 and Git blob SHA match; native-speaker acoustic tone certification not performed."
 }
