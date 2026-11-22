@@ -2083,6 +2083,45 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 </style>
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
 <style id="lesson7-unified-purple-shadows">
+/* L7 v510: maximize readable vocabulary within the fixed eight-card viewport. */
+html.course-layout #app[data-view="2"] #pg433 .lesson7-vocab-screen{
+  grid-template-rows:auto minmax(0,1fr) auto!important;
+  gap:5px!important;
+}
+html.course-layout #app[data-view="2"] #pg433 .word-list.lesson7-vocab-list{
+  gap:6px!important;padding:2px 2px 7px!important;
+}
+html.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word.lesson7-vocab-card{
+  --reference-width:calc((100cqw + 16px) * .195);
+  --card-height:calc((100cqh - 18px) / 4);
+  --art-height:clamp(22px,calc(var(--card-height) - 43px),var(--reference-height));
+  grid-template-columns:min(var(--reference-width),calc(var(--art-height) * .94118)) minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr) auto!important;
+  padding:4px 5px!important;gap:2px 4px!important;
+}
+html.course-layout #app[data-view="2"] #pg433 .lesson7-vocab-card > .lesson7-vocab-details > .py{
+  font-size:clamp(14px,4.4vw,20px)!important;font-weight:850!important;
+  line-height:1.12!important;letter-spacing:-.025em!important;
+  white-space:normal!important;overflow-wrap:normal!important;max-width:100%!important;
+  color:#54216a!important;
+}
+html.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word.lesson7-vocab-card > .ru{
+  font-size:clamp(14px,4.45vw,20px)!important;font-weight:850!important;
+  line-height:1.12!important;letter-spacing:-.025em!important;
+  white-space:normal!important;overflow-wrap:anywhere!important;max-width:100%!important;
+  color:#54216a!important;align-self:end!important;
+}
+@media(max-height:650px){
+  html.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word.lesson7-vocab-card{
+    --art-height:clamp(22px,calc(var(--card-height) - 35px),var(--reference-height));
+    padding:2px 4px!important;
+  }
+  html.course-layout #app[data-view="2"] #pg433 .lesson7-vocab-card > .lesson7-vocab-details > .py,
+  html.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word.lesson7-vocab-card > .ru{
+    font-size:clamp(12px,3.8vw,16px)!important;
+  }
+}
+
 html.course-layout #app[data-view="6"] #pg433 .progress-panel>img.l7-progress-panda{display:block!important;width:51px!important;height:45px!important;max-width:51px!important;flex:0 0 51px!important;object-fit:cover!important;border-radius:10px!important;mix-blend-mode:normal!important;border:1px solid #bd51d4!important;}
 
 html.course-layout #app[data-view="6"] #pg433 .tones-hero{
@@ -2299,7 +2338,7 @@ function sectionComplete(section) {
 function currentStepComplete() {
   switch(state.step) {
     case 1: return true;
-    case 2: return sectionComplete(0);
+    case 2: return true; // The Next button confirms review of the vocabulary.
     case 4: return sectionComplete(1);
     case 6: return sectionComplete(2);
     case 3: {
@@ -2623,12 +2662,7 @@ function newWords() {
       '<div class="lesson7-vocab-details">' + hanzi(word.zh) + '<span class="py">' + word.py + '</span>' +
       '<div class="lesson7-vocab-tones">' + toneStrokes(word.tones) + '</div>' +
       audioButton(word.zh,playIcon) + '</div><span class="ru">' + word.ru + '</span></article>').join('') + '</div>' +
-    '<div class="lesson7-vocab-completion">' +
-      '<button type="button" class="about-manual-complete" data-words-read="1">' +
-      (state.heardWords.length===words.length ? '✓ Повторено 8 из 8' : '✓ Повторил все 8 выражений') +
-      '</button>' +
-      '<p class="hint">Сравни произношение с пиньинем. Автоматическая проверка тонов пока не подключена.</p>' +
-      '</div>' + safeStatus() + '</section>';
+    safeStatus() + '</section>';
 }
 
 function hero(kind,step,title,subtitle) {
@@ -3317,6 +3351,11 @@ function previousStep() {
 back.addEventListener('click',previousStep);
 headBack.addEventListener('click',previousStep);
 next.addEventListener('click',() => {
+  if (state.step === 2) {
+    // Same voluntary review confirmation as the removed manual completion button.
+    // No recording or tone assessment is implied.
+    state.heardWords = words.map((_,i) => i);
+  }
   if (!currentStepComplete()) {
     setStatus('Заверши текущее упражнение, чтобы продолжить.');
     return;
