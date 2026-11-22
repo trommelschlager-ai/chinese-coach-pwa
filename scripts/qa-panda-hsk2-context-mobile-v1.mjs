@@ -8,7 +8,7 @@ import {chromium} from 'playwright';
 const base=process.env.QA_BASE||'http://127.0.0.1:4173';
 fs.mkdirSync('qa/panda-context-v1',{recursive:true});
 const checks=[
- ['今天你有没有空？','Jīntiān nǐ yǒu méiyǒu kòng?','今天我有空，可以聊聊天。','有时间'],
+ ['今天你有没有空？','Jīntiān nǐ yǒu méiyǒu kòng?','今天我有空，可以聊聊天。','есть время'],
  ['现在我很忙。','Xiànzài wǒ hěn máng.','好的，那你先忙吧。','очень занят'],
  ['今天我休息。','Jīntiān wǒ xiūxi.','那你今天想做什么？','Сегодня я отдыхаю'],
  ['现在我休息。','Xiànzài wǒ xiūxi.','那你想聊聊天吗？','Сейчас я отдыхаю'],
