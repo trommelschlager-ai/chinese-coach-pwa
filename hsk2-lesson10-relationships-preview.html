@@ -1934,9 +1934,109 @@ const toneStrokes = values => '<span class="tone-strokes" role="img" aria-label=
 const translate = item => '<span class="py">' + item[1] + '</span><span class="ru">' + item[2] + '</span>';
 const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' good' : '') + '" role="status">' + escape(feedback) + '</div>';
 
+const approvedLessonClips = Object.freeze({
+  "认识": {
+    "src": "./assets/hsk2-lesson10-voice/l10_01.mp3"
+  },
+  "约会": {
+    "src": "./assets/hsk2-lesson10-voice/l10_02.mp3"
+  },
+  "男朋友": {
+    "src": "./assets/hsk2-lesson10-voice/l10_03.mp3"
+  },
+  "女朋友": {
+    "src": "./assets/hsk2-lesson10-voice/l10_04.mp3"
+  },
+  "我喜欢和你聊天": {
+    "src": "./assets/hsk2-lesson10-voice/l10_05.mp3"
+  },
+  "我们一起去散步吧": {
+    "src": "./assets/hsk2-lesson10-voice/l10_06.mp3"
+  },
+  "我今晚有个约会": {
+    "src": "./assets/hsk2-lesson10-voice/l10_07.mp3"
+  },
+  "他是我的男朋友": {
+    "src": "./assets/hsk2-lesson10-voice/l10_08.mp3"
+  },
+  "她是我的女朋友": {
+    "src": "./assets/hsk2-lesson10-voice/l10_09.mp3"
+  },
+  "我爱你": {
+    "src": "./assets/hsk2-lesson10-voice/l10_10.mp3"
+  },
+  "周末要不要一起喝咖啡": {
+    "src": "./assets/hsk2-lesson10-voice/l10_11.mp3"
+  },
+  "不好意思我今天没空": {
+    "src": "./assets/hsk2-lesson10-voice/l10_12.mp3"
+  },
+  "你好很高兴认识你": {
+    "src": "./assets/hsk2-lesson10-voice/l10_13.mp3"
+  },
+  "我也很高兴认识你": {
+    "src": "./assets/hsk2-lesson10-voice/l10_14.mp3"
+  },
+  "你好我叫小安": {
+    "src": "./assets/hsk2-lesson10-voice/l10_15.mp3"
+  },
+  "你好很高兴见到你": {
+    "src": "./assets/hsk2-lesson10-voice/l10_16.mp3"
+  },
+  "好啊我们几点见面": {
+    "src": "./assets/hsk2-lesson10-voice/l10_17.mp3"
+  },
+  "不好意思我周末没空": {
+    "src": "./assets/hsk2-lesson10-voice/l10_18.mp3"
+  },
+  "谢谢下次吧": {
+    "src": "./assets/hsk2-lesson10-voice/l10_19.mp3"
+  },
+  "我们在哪儿见面": {
+    "src": "./assets/hsk2-lesson10-voice/l10_20.mp3"
+  },
+  "在咖啡馆见面吧": {
+    "src": "./assets/hsk2-lesson10-voice/l10_21.mp3"
+  },
+  "我们在公园门口见面吧": {
+    "src": "./assets/hsk2-lesson10-voice/l10_22.mp3"
+  },
+  "你想在哪儿见面": {
+    "src": "./assets/hsk2-lesson10-voice/l10_23.mp3"
+  },
+  "要不要一起喝咖啡": {
+    "src": "./assets/hsk2-lesson10-voice/l10_24.mp3"
+  },
+  "很高兴认识你": {
+    "src": "./assets/hsk2-user-voice/20261114-APqUx9.mp3",
+    "start": 8.53,
+    "end": 10.3
+  },
+  "喜欢": {
+    "src": "./assets/hsk2-user-voice/20261114-words-b-v338.mp3",
+    "start": 6.35,
+    "end": 7.31
+  },
+  "一起": {
+    "src": "./assets/hsk2-lesson5-voice/l5_01.mp3"
+  },
+  "见面": {
+    "src": "./assets/hsk2-lesson5-voice/l5_02.mp3"
+  },
+  "我们明天见面吧": {
+    "src": "./assets/hsk2-lesson5-voice/l5_10.mp3"
+  },
+  "爱": {
+    "src": "./assets/hsk2-user-voice/20261114-words-b-v338.mp3",
+    "start": 3.71,
+    "end": 4.37
+  }
+});
+
 function audioButton(text, icon = speaker) {
-  const label = 'Аудиозапись пока не загружена: '+text;
-  return '<button type="button" class="orb missing" disabled aria-label="'+escape(label)+'" title="'+escape(label)+'">◌</button>';
+  const clip = approvedLessonClips[normalize(text)];
+  const label = clip ? 'Прослушать '+text+' · запись Panda Go' : 'Запись пока не загружена: '+text;
+  return '<button type="button" class="orb'+(clip?'':' missing')+'" '+(clip?'data-say="'+escape(text)+'"':'disabled')+' aria-label="'+escape(label)+'" title="'+escape(label)+'">'+(clip?icon:'◌')+'</button>';
 }
 
 const recognitionAvailable = () => Boolean(window.SpeechRecognition || window.webkitSpeechRecognition) && window.isSecureContext;
@@ -2423,7 +2523,44 @@ function finish() {
 }
 
 function play(text,button) {
-  setStatus('Для этой реплики ещё нет утверждённой MP3-записи. Системная озвучка отключена.');
+  const clip = approvedLessonClips[normalize(text)];
+  if (!clip) { setStatus('Для этой фразы пока нет утверждённой записи.'); return; }
+  clearMedia();
+  const player = new Audio(clip.src);
+  audio = player;
+  player.preload = 'auto';
+  button.setAttribute('aria-pressed','true');
+  let ready = !Number.isFinite(clip.start);
+  player.muted = !ready;
+  let timer = null;
+  const done = () => {
+    if (timer !== null) { clearInterval(timer); timer=null; }
+    if (audio !== player) return;
+    player.pause(); audio = null;
+    button.removeAttribute('aria-pressed');
+  };
+  const fail = () => {
+    if (audio !== player) return;
+    done(); setStatus('MP3 не воспроизвёлся. Проверь соединение и повтори.');
+  };
+  const seek = () => {
+    if (audio !== player || ready) return;
+    try { player.currentTime = clip.start; } catch { fail(); }
+  };
+  player.addEventListener('loadedmetadata',seek,{once:true});
+  player.addEventListener('seeked',() => {
+    if (audio === player && !ready && Math.abs(player.currentTime - clip.start) < .12) {
+      ready = true; player.muted = false;
+    }
+  });
+  if (Number.isFinite(clip.end)) timer = setInterval(() => {
+    if (audio !== player) { clearInterval(timer); timer=null; return; }
+    if (ready && player.currentTime >= clip.end) done();
+  },20);
+  player.addEventListener('error',fail,{once:true});
+  player.addEventListener('ended',done,{once:true});
+  if (player.readyState >= 1) seek();
+  try { const pending = player.play(); if (pending?.catch) pending.catch(fail); } catch { fail(); }
 }
 function recognize(allowed,onMatch,onMiss) {
   const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
