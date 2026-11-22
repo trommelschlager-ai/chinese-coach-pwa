@@ -1695,6 +1695,8 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   #app #pg433 .test-card .orb { width: 31px; height: 31px; }
 }
 </style><link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
+<link rel="stylesheet" href="./assets/hsk2-unified-cover-v1.css?v=1">
+<script src="./assets/hsk2-unified-cover-v1.js?v=1"></script>
 </head>
 <body>
 <div class="app" id="app">
@@ -2110,6 +2112,8 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
+  if (courseMode) return window.PandaGoHSK2UnifiedCover({"lesson":8,"title":"В магазине","hanzi":"在商店","pinyin":"Zài shāngdiàn","subtitle":"Покупай по-китайски!","summary":"Научись спрашивать цену, выбирать товары и говорить о покупках.","words":8,"art":"./assets/hsk2-lesson8-shop-scene-v4.webp","focus":"50%","motto":"Изучая чужой язык, лучше понимаешь свой.","tiles":["Слова","Тесты","Грамматика","Мои покупки","Произношение","Диалог"]});
+
   const tiles = [[2,'Слова'],[3,'Тесты'],[4,'Грамматика'],[5,'Мои покупки'],[6,'Произношение'],[7,'Диалог']];
   return `<section class="shop-cover">
     <div class="shop-brand">
