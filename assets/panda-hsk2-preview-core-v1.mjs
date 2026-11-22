@@ -56,7 +56,9 @@ function happy(){pose('happy');poseTimer=setTimeout(()=>pose('idle'),1300)}
 function stopAudio(){const a=audio;audio=null;clearTimeout(audioBufferTimer);cancelAnimationFrame(audioFrame);if(a){a.onplaying=a.onended=a.onerror=a.onpause=a.onwaiting=a.onstalled=a.onloadedmetadata=a.ontimeupdate=a.onseeked=a.oncanplay=null;a.pause()}$('hear').classList.remove('playing');rig.setLevel(0);pandaVisualAudioLevel=0;if($('character').dataset.state==='talking')pose('idle')}
 function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;micActivatedAt=0;if(r){r.onstart=r.onaudiostart=r.onspeechstart=r.onspeechend=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
+let blockedPlayback=null;
 function play(entry=null){
+ blockedPlayback=null;
  const currentLine=entry||current();
  const replyKey=normalize(currentLine?.hanzi||currentLine?.panda||'');
  const resumingMissedReply=!!state.pendingAudioReply&&replyKey===state.pendingAudioReply;
@@ -91,7 +93,7 @@ function play(entry=null){
   note(message);
  };
  a.onerror=()=>failed('Запись не загрузилась. Нажми 🔊 на реплике Панды, чтобы продолжить.');
- a.play().catch(()=>failed('Браузер не включил звук автоматически. Нажми 🔊 на реплике Панды, чтобы продолжить.'));
+ a.play().catch(()=>{if(valid()){blockedPlayback=entry||currentLine;failed('Браузер не включил звук автоматически. Нажми 🔊 на реплике Панды, чтобы продолжить.')}});
 }
 function cancelFollowup(){clearTimeout(followupTimer);state.followup=null;state.pendingAudioReply=null}
 function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.pendingAudioReply)return;if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();showLearnerFeedback(null);say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
@@ -633,7 +635,7 @@ window.PandaApprovedBridge337={
   return true;
  },
 
- play:()=>play(),playEntry:entry=>{const sameBlocked=!!state.pendingAudioReply&&normalize(entry?.hanzi||entry?.panda||'')===state.pendingAudioReply;if(!sameBlocked)cancelFollowup();play(entry)},stopPlayback:()=>stopAudio(),
+ retryPlayback:()=>play(blockedPlayback),play:()=>play(),playEntry:entry=>{const sameBlocked=!!state.pendingAudioReply&&normalize(entry?.hanzi||entry?.panda||'')===state.pendingAudioReply;if(!sameBlocked)cancelFollowup();play(entry)},stopPlayback:()=>stopAudio(),
  getAudioLevel:()=>audio&&!audio.paused&&!audio.ended?pandaVisualAudioLevel:null,
  toggleSpeed:()=>$('speed-toggle').click(),
  setMode:mode=>{if(mode!=='short'&&mode!=='nonstop')return;if(hsk2){cancelFollowup();stopRecognition();stopAudio();state.mode=mode;if(hsk2.done){hsk2.done=false;hsk2.index=0;askHSK2(false)}else render();}else setMode(mode)},

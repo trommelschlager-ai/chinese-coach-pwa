@@ -349,7 +349,7 @@ if (!bridge) {
     const needsMicHelp=!!micRecovery&&!micRecovery.hidden;
     warning.hidden=!problem;
     warning.textContent=problem?s.status:'';
-    if(/Браузер не включил звук автоматически/.test(s.status||'')){const b=el('button','pg502-start-audio','🔊 Включить голос Панды');b.type='button';b.addEventListener('click',()=>{bridge.playEntry({hanzi:'你好！',audioKey:'你好'});sync()});warning.replaceChildren(b);}
+    if(/Браузер не включил звук автоматически/.test(s.status||'')){const b=el('button','pg502-start-audio','🔊 Включить голос Панды');b.type='button';b.addEventListener('click',()=>{bridge.retryPlayback();sync()});warning.replaceChildren(b);}
     if(problem&&needsMicHelp)warning.append(micHelpBtn);
     if(!needsMicHelp&&micHelp.open)micHelp.close();
     const live=$('#pg346-live');const showingAssessment=Date.now()<assessmentUntil;
