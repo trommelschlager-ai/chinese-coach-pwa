@@ -1,0 +1,147 @@
+{
+  "source": "luvvoice.com-20261122-stIYgG.mp3",
+  "source_sha256": "76ecb2cce29078d1a33f8851eb8de9c7a090588d7717ecbeff170a34f9ba4bb9",
+  "voice": "User-supplied approved Luvvoice pack; no alternate voice",
+  "items": [
+    {
+      "zh": "你今天好吗？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q01.mp3",
+      "sha256": "b0e6abf1b7daf4bcf603a3577d7a715d477b997aa5dd563f6a913d7ed8c37cf2",
+      "file": "hsk1q01.mp3",
+      "git_blob_sha1": "79a0f771e5aacc2de8dfa6ebaaea198b37095af2"
+    },
+    {
+      "zh": "晚上好！你好吗？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q02.mp3",
+      "sha256": "fe1834bd53a2f58591d2899e712f5186630920a58b8dfd8b35055efe6e3528f3",
+      "file": "hsk1q02.mp3",
+      "git_blob_sha1": "16711ba51733241142f52178b162811b8bf24d95"
+    },
+    {
+      "zh": "你吃了吗？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q03.mp3",
+      "sha256": "2cf57f53bb98e919c2f7a58f29231b2c7d03f04b5fef3bc84d94c28afaa05f6d",
+      "file": "hsk1q03.mp3",
+      "git_blob_sha1": "89e07c6e54af44614b50d8100eafed653a03fad4"
+    },
+    {
+      "zh": "他是学生吗？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q04.mp3",
+      "sha256": "dce308b96c9db69ea46f8a0aef79cb28a90446128015873ff17a9b662bcc006d",
+      "file": "hsk1q04.mp3",
+      "git_blob_sha1": "58638fc4a810ea2a3f7d373a6e649f8e6207eb8e"
+    },
+    {
+      "zh": "她是老师吗？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q05.mp3",
+      "sha256": "56b5b7a9df963425081e7367f2cba0653451e2b229908f2dbac54956353c8b5e",
+      "file": "hsk1q05.mp3",
+      "git_blob_sha1": "cabf874cece7e8d2486a72bde70359b8ee9a3714"
+    },
+    {
+      "zh": "你有几个？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q06.mp3",
+      "sha256": "71f03dc3723c2dc1568fb2121f435d137289c5ea30cd6d7a9121ff20754c88af",
+      "file": "hsk1q06.mp3",
+      "git_blob_sha1": "033ae5a15e8501ac14eeb5f6c55a7c56c1e34d45"
+    },
+    {
+      "zh": "十后面是几？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q07.mp3",
+      "sha256": "9f0ed7428f242bfd4135c2975b2dda9e9f5d01638ef91f4d714524f2c11216e5",
+      "file": "hsk1q07.mp3",
+      "git_blob_sha1": "ef969d9151eccb0b82ba0e865b76765906b660e8"
+    },
+    {
+      "zh": "三十加二是多少？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q08.mp3",
+      "sha256": "f22989ea56a9b16d0a55485975889db81c344ca64ce955e6a9bcab360d646dca",
+      "file": "hsk1q08.mp3",
+      "git_blob_sha1": "1d845e0eca9b2e12f1535e14cc024ffd1268078a"
+    },
+    {
+      "zh": "明天星期几？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q09.mp3",
+      "sha256": "d02627261455a50ce368eabaa8607a4574a7aacdf02251ed243d7589c7591db6",
+      "file": "hsk1q09.mp3",
+      "git_blob_sha1": "c459ac0ac3301801bad1c0e52f40669d4b9c6490"
+    },
+    {
+      "zh": "昨天星期几？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q10.mp3",
+      "sha256": "3b8d03c2772766c2a5c733b8827684c60ed53d3ef9926edbeb0591bf85513c3c",
+      "file": "hsk1q10.mp3",
+      "git_blob_sha1": "0db098e76d76b43d7cf8568b9458a1833830a159"
+    },
+    {
+      "zh": "你星期天有空吗？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q11.mp3",
+      "sha256": "16a4e4ada19a1cb98e4c0d3526935b500ed14b6a9dcb85f673c2a45955137fdb",
+      "file": "hsk1q11.mp3",
+      "git_blob_sha1": "8cdcf01e60005d1b2a9d469500d55f338a17d549"
+    },
+    {
+      "zh": "明天几月几号？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q12.mp3",
+      "sha256": "6be14ad27dfd926ef43e64381fce28a2e0991963604012e20a62a6cd5e76d0aa",
+      "file": "hsk1q12.mp3",
+      "git_blob_sha1": "0ee167caa21f8989ba19cefff9dc7c76805b0479"
+    },
+    {
+      "zh": "现在几月？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q13.mp3",
+      "sha256": "41f4c4c23f0c9aacd0f7299cb0e2d894a5a87cd8c840e6a7bf1a41ec59e2454d",
+      "file": "hsk1q13.mp3",
+      "git_blob_sha1": "41bfbb5f947eecba1223b31299aa7f92b978d8f2"
+    },
+    {
+      "zh": "今年是哪一年？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q14.mp3",
+      "sha256": "8ffcc18acbcfaa93ceba1cd2f87041f2a279eed993edd94f9e37d54713c1678e",
+      "file": "hsk1q14.mp3",
+      "git_blob_sha1": "036eaa5159830c3c8cc584e04a3a56d030453e30"
+    },
+    {
+      "zh": "这个月有多少天？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q15.mp3",
+      "sha256": "0bbb6a91bc7096af5b6e98995f75664c80670df1fea65a680d670bb7c064cff0",
+      "file": "hsk1q15.mp3",
+      "git_blob_sha1": "debf15ca227dfcc32830bc5ba0eea2be3718cf9e"
+    },
+    {
+      "zh": "下个月是几月？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q16.mp3",
+      "sha256": "a12d0bbf57d32cff2916c3bac5e7f167e26e029bdb415d1a2684cc948491391f",
+      "file": "hsk1q16.mp3",
+      "git_blob_sha1": "a5517513987a98ad4b7be03dfd9c75ac68f6e45d"
+    },
+    {
+      "zh": "今天下雪吗？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q17.mp3",
+      "sha256": "b19661871eacfe3e4df226251fcc04119953ab533ae26d5d492365eef920c62a",
+      "file": "hsk1q17.mp3",
+      "git_blob_sha1": "6d0c9dfee0a8bbbc424ecddae84e41b2430d3fad"
+    },
+    {
+      "zh": "冬天天气怎么样？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q18.mp3",
+      "sha256": "2ba5c2b6c16ce12631862920182cb7277c9745129004880a56c2539dc972301c",
+      "file": "hsk1q18.mp3",
+      "git_blob_sha1": "0f1e55bdffaae79b2cc9e2e2565575cc68c43abd"
+    },
+    {
+      "zh": "夏天天气怎么样？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q19.mp3",
+      "sha256": "454b0015e94a49e3c616a8a614438aaffefaf02699ffc501eb9205c3a225597d",
+      "file": "hsk1q19.mp3",
+      "git_blob_sha1": "2fd96f341b010a40d035af86ce693d5735109685"
+    },
+    {
+      "zh": "今天有风吗？",
+      "src": "./assets/panda-hsk1-catalog-voice-20261122/hsk1q20.mp3",
+      "sha256": "d6a54f2f93cef3b1f79b9c820585788c1e891414595a8eaa0521eb0094847158",
+      "file": "hsk1q20.mp3",
+      "git_blob_sha1": "9024078251f721861d5034947908e3bd911daa42"
+    }
+  ]
+}

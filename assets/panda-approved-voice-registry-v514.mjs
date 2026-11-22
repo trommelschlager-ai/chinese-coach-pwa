@@ -1,4 +1,4 @@
-// v514 (staged; activate only after all MP3 hash checks pass): historically approved Panda packs plus the current HSK2 Luvvoice lesson packs, user confirmed reference samples on 2026-11-22. Not an acoustic certification of each clip.
+// v514: all 20 HSK1 uploads verified against original archive Git blob hashes. historically approved Panda packs plus the current HSK2 Luvvoice lesson packs, user confirmed reference samples on 2026-11-22. Not an acoustic certification of each clip.
 import {lookupPandaVoiceClip as original} from './panda-live-audio.mjs?v=451';
 import {PANDA_V422_VOICE} from './qa-v411/panda-voice-v422.mjs?v=422';
 import {PANDA_CLARIFICATION_VOICE} from './panda-clarification-voice-20261122/index.mjs?v=505';
@@ -334,7 +334,7 @@ const HSK1_CATALOG_V514=Object.freeze([
 const approvedCatalog=new Map(HSK1_CATALOG_V514.map(e=>[voiceNorm(e.zh),e]));
 export function lookupApprovedPandaVoice(text){
  const key=voiceNorm(text);if(!key)return null;
- const entry=exact.get(key)||approvedCatalog.get(key);if(entry)return {src:entry.src,start:0,end:null,source:'panda-approved-luvvoice:'+entry.batch};
+ const entry=exact.get(key)||approvedCatalog.get(key);if(entry)return {src:entry.src,start:0,end:null,source:'panda-approved-luvvoice:'+(entry.batch||'hsk1-catalog-v514')};
  const originalKey=EMBEDDED_KEYS.find(k=>voiceNorm(k)===key),src=originalKey&&globalThis.PandaGoHSK2Lesson1NativeAudioV459?.[originalKey];
  if(typeof src==='string'&&src.startsWith('data:audio/mpeg;base64,'))return {src,start:0,end:null,source:'panda-approved-luvvoice:day-v459'};
  const old=original(key);
