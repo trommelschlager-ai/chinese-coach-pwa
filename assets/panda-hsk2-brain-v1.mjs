@@ -1,7 +1,7 @@
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=3';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
-import {clarificationLine} from './panda-clarification-map-v504.mjs';
+import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 export const norm=s=>String(s||'').normalize('NFC').replace(/[\p{P}\s]/gu,'').toLowerCase();
 export const getTopic=id=>HSK2_TOPICS.find(t=>t.id===Number(id));
 export const line=a=>({hanzi:a[0],pinyin:a[1]||'',ru:a[2]||'',audioKey:a[0]});

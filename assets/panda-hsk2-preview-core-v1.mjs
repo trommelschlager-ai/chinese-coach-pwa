@@ -1,9 +1,10 @@
+import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=4';
+import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=505';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
-import {getTopic,replyHSK2,knownHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=4';
+import {getTopic,replyHSK2,knownHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=505';
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
@@ -214,7 +215,15 @@ function askNext(){
  state.prompt=p;state.topic=p.line.lesson;state.discussed.add(p.line.lesson);state.questions.push(p.line.hanzi);state.askedInTopic++;if(state.questions.length>50)state.questions.shift();
  say(p.line);note('Урок '+state.topic+'. Ответь или сам спроси Панду по пройденному материалу.');
 }
-function setMode(mode){if(mode==='short')state.lockedTopic=null;if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
+function setMode(mode){
+ if(mode===state.mode)return;
+ if(hsk2){
+  cancelFollowup();stopRecognition();stopAudio();
+  state.mode=mode;
+  if(hsk2.done){hsk2.done=false;hsk2.index=0;askHSK2(false)}else render();
+  return;
+ }
+ if(mode==='short')state.lockedTopic=null;if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 let hsk2=null;
 function beginHSK2(id,index=0,autoplay=true){
  const t=getTopic(id);if(!t)return false;
@@ -404,7 +413,7 @@ function hideMicRecovery(){
  $('speech-check-result').textContent='';
 }
 function shareableSpeechUrl(){
- const link=new URL('panda-voice-pilot.html',document.baseURI);
+ const link=new URL('panda-ai-hsk2-preview.html',document.baseURI);
  const params=new URLSearchParams(location.search);
  if(params.has('lesson'))link.searchParams.set('lesson',params.get('lesson'));
  return link.href;
@@ -466,7 +475,11 @@ function startRecognition(){
  recognition=r;const token=++epoch;state.active=true;micActivatedAt=Date.now();
  let heard=false,failed=false,started=false,audioStarted=false;
  const valid=()=>recognition===r&&epoch===token;
- const fail=(message)=>{if(!valid())return;failed=true;stopRecognition();showMicRecovery(message)};
+ const fail=(message,unheard=false)=>{
+  if(!valid())return;
+  failed=true;stopRecognition();showMicRecovery(message);
+  if(unheard)play(clarificationLine(2));
+ };;
  hideMicRecovery();updateMic();note('Подключаю микрофон…');
  r.onstart=()=>{
   if(!valid())return;
@@ -521,9 +534,9 @@ function startRecognition(){
    'language-not-supported':'Этот браузер не поддерживает распознавание китайского zh-CN.',
    'aborted':'Распознавание неожиданно прервалось. Попробуй ещё раз.'
   };
-  fail(reasons[e?.error]||'Ошибка распознавания. Открой Panda Go напрямую в Chrome или используй текст.');
+  fail(reasons[e?.error]||'Ошибка распознавания. Открой Panda Go напрямую в Chrome или используй текст.',e?.error==='no-speech');
  };
- r.onnomatch=()=>fail('Речь не распознана. Попробуй ещё раз или напиши ответ по-китайски.');
+ r.onnomatch=()=>fail('Речь не распознана. Попробуй ещё раз или напиши ответ по-китайски.',true);
  r.onend=()=>{if(!valid()||heard||failed)return;clearTimeout(watchdog);clearTimeout(speechEndTimer);note('⏳ Завершаю распознавание…');
   // Some mobile implementations deliver the final transcript after the end event.
   recognitionEndTimer=setTimeout(()=>{if(valid()&&!heard&&!failed)fail(started?'Распознавание завершилось без результата. Попробуй Chrome или текст.':'Браузер не подключил службу распознавания. Открой ссылку напрямую в Chrome.')},1200);
@@ -640,7 +653,7 @@ window.PandaApprovedBridge337={
  retryPlayback:()=>play(blockedPlayback),play:()=>play(),playEntry:entry=>{const sameBlocked=!!state.pendingAudioReply&&normalize(entry?.hanzi||entry?.panda||'')===state.pendingAudioReply;if(!sameBlocked)cancelFollowup();play(entry)},stopPlayback:()=>stopAudio(),
  getAudioLevel:()=>audio&&!audio.paused&&!audio.ended?pandaVisualAudioLevel:null,
  toggleSpeed:()=>$('speed-toggle').click(),
- setMode:mode=>{if(mode!=='short'&&mode!=='nonstop')return;if(hsk2){cancelFollowup();stopRecognition();stopAudio();state.mode=mode;if(hsk2.done){hsk2.done=false;hsk2.index=0;askHSK2(false)}else render();}else setMode(mode)},
+ setMode:mode=>{if(mode==='short'||mode==='nonstop')setMode(mode)},
  send:value=>submit(value),mic:()=>startRecognition(),note:text=>note(text)
 };
 
