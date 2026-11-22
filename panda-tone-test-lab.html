@@ -207,7 +207,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
 <main class="content-pad">
   <section class="test-panel">
     <h1>Проверяем произношение</h1>
-    <p class="info">Выбери слово, послушай <b>локальный MP3</b> и запиши голос. Пунктир — образец движения высоты тона, зелёная линия — измеренный голос. <b>5/5 — число повторов, не оценка правильности.</b></p>
+    <p class="info">Выбери слово, послушай <b>локальный MP3</b> и запиши голос. Пунктир — условная форма тона, зелёная линия — твой голос. Начало каждой кривой приведено к нулевому уровню для сравнения направления. <b>5/5 — число повторов, не оценка правильности.</b></p>
     <div id="content"></div>
   </section>
   <div class="report-actions">
@@ -302,7 +302,7 @@ function render(words,art,heading,panel,ttsNote,listenButton){
     '<button class="action tone-reset" type="button" data-tone-act="clear">↻ Сбросить повторы выбранного слова</button>'+
     (last?'<p class="hint">Запись: '+last.seconds.toFixed(1)+' с; измерений: '+last.points.length+'.</p>':'')+
     ttsNote+'</details>'+
-   '<p class="tone-safety-label">Схема тонов — ориентир, не оценка произношения.</p>'+
+   '<p class="tone-safety-label">Пунктир и голос сравнивай по форме, не по высоте. Это не оценка произношения.</p>'+
   '</div>'
  );
 }
@@ -394,7 +394,7 @@ function draw(){
  const normalized=normalizeChartPoints(take,live);
  const voiceSeconds=live?Math.max(.1,(take.at(-1)?.[0]??0)-(take[0]?.[0]??0)):
   (finite(recent?.seconds)&&recent.seconds>.1?recent.seconds:.8);
- const shapes={1:[.26,.26],2:[.72,.20],3:[.57,.82,.40],4:[.17,.84]};
+ const shapes={1:[.5,.5],2:[.5,.23],3:[.5,.82,.56],4:[.5,.82]};
  for(let syll=0;syll<2;syll++){
   const canvas=document.getElementById('tone-canvas-'+(syll+1));if(!canvas)continue;
   const ctx=canvas.getContext('2d');if(!ctx)continue;
@@ -424,7 +424,7 @@ function draw(){
   }
   ctx.stroke();ctx.setLineDash([]);
   const trend=document.getElementById('tone-trend-'+(syll+1));
-  if(trend)trend.textContent=observedTrend(normalized,segmentFrom,segmentTo);
+  if(trend)trend.textContent=live?'🎙 Идёт запись — дождись результата после «Стоп».':observedTrend(normalized,segmentFrom,segmentTo);
   if(trace.length<2)continue;
   ctx.strokeStyle='#198b70';ctx.lineWidth=3.5;
   let painted=0,prior=null;ctx.beginPath();
