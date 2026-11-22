@@ -7,6 +7,7 @@ on:
       - 'assets/hsk2-*.js'
       - 'assets/hsk2-*.css'
       - 'tests/hsk2-visual-qa-pr161.cjs'
+      - 'tests/hsk2-deep-pages-qa-pr161.cjs'
       - '.github/workflows/hsk2-visual-qa.yml'
   workflow_dispatch:
 permissions:
@@ -33,6 +34,8 @@ jobs:
           exit 1
       - name: Check 10 lessons on 3 phone viewports
         run: node tests/hsk2-visual-qa-pr161.cjs
+      - name: Check the remaining 60 interior screens
+        run: node tests/hsk2-deep-pages-qa-pr161.cjs
       - name: Save screenshots and result JSON
         if: always()
         uses: actions/upload-artifact@v4
