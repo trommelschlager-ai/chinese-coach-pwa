@@ -346,7 +346,7 @@ if (!bridge) {
     const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable;$('#pg357-audio-note').hidden=!!s.audioAvailable}
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
     renderFeedback(s);renderTopics(s);
-    const warning=$('#pg346-status'),problem=/(микрофон|распознаван|распознано|неуверенно|исправь текст|разреши|доступ|Chrome|запись не|запись пока|звуковой файл|браузер.*звук|mp3|фрагмент)/i.test(s.status||'');
+    const warning=$('#pg346-status'),problem=/(микрофон|распознаван|распознано|неуверенно|исправь текст|разреши|доступ|Chrome|запись не|запись пока|звуковой файл|браузер.*звук|mp3|фрагмент|учебный пример)/i.test(s.status||'');
     const needsMicHelp=!!micRecovery&&!micRecovery.hidden;
     warning.hidden=!problem;
     warning.textContent=problem?s.status:'';

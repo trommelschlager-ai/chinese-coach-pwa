@@ -2,6 +2,7 @@ import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=3';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
+import {everydayMeaning} from './panda-everyday-meaning-v515.mjs';
 export const norm=s=>String(s||'').normalize('NFC').replace(/[\p{P}\s]/gu,'').toLowerCase();
 export const getTopic=id=>HSK2_TOPICS.find(t=>t.id===Number(id));
 export const line=a=>({hanzi:a[0],pinyin:a[1]||'',ru:a[2]||'',audioKey:a[0]});
@@ -55,6 +56,7 @@ export function knownHSK2(raw){
  }
  if(a)return line([raw,a[1],a[2]]);
  const d=discourse(raw);if(d){const restored=restoreDiscourse(raw,d,knownHSK2(d.body));if(restored)return restored;}
+ const meaning=everydayMeaning(raw,null,null);if(meaning)return line(meaning.spoken);
  return hobbyStatement(raw)?.spoken||intentionQuestion(raw)?.spoken||everydayAspect(raw,null)?.spoken||null;
 }
 const R={
@@ -249,6 +251,7 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const t=getTopic(id),s=norm(raw),q=t?.questions[index];
  if(!t||!q||!s)return {kind:'unknown'};
  const exact=!done&&q.options.find(a=>norm(a[0])===s);if(exact)return {kind:'accepted',answer:line(exact)};
+ const meaning=everydayMeaning(raw,id,context);if(meaning)return {kind:'social',line:line(meaning.reply),spoken:line(meaning.spoken),context:meaning.context,coachNote:meaning.coachNote};
  const hobby=hobbyStatement(raw);
  if(hobby&&hobby.parts.length>1){
   if(!done&&((id===101&&index===2)||(id===104&&index===0)))return {kind:'variant',spoken:hobby.spoken};
