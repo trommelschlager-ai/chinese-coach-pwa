@@ -1381,6 +1381,8 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 </style>
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
 <link rel="stylesheet" href="./assets/hsk2-lesson4-hobby-v2.css">
+<link rel="stylesheet" href="./assets/hsk2-unified-cover-v1.css?v=1">
+<script src="./assets/hsk2-unified-cover-v1.js?v=1"></script>
 </head>
 <body>
 <div class="app" id="app">
@@ -1737,6 +1739,8 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
+  if (courseMode) return window.PandaGoHSK2UnifiedCover({"lesson":4,"title":"Моё хобби","hanzi":"我的爱好","pinyin":"Wǒ de àihào","subtitle":"Расскажи о любимых занятиях!","summary":"Расскажи, чем любишь заниматься в свободное время и по выходным.","words":8,"art":"./assets/hsk2-lesson4-hobby-3d/cover-v2.webp","focus":"50%","motto":"У каждого нового слова — своя история.","tiles":["Слова","Тесты","Грамматика","Моё хобби","Произношение","Диалог"]});
+
   const tiles=[[2,'Слова',vocabImage(5,'pg-hobby-tile-art')],[3,'Тесты',stageImage('quiz','pg-hobby-tile-art')],[4,'Грамматика',vocabImage(0,'pg-hobby-tile-art')],[5,'Мой рассказ',vocabImage(3,'pg-hobby-tile-art')],[6,'Произношение',stageImage('tones','pg-hobby-tile-art')],[7,'Диалог',stageImage('dialogue','pg-hobby-tile-art')]];
   return '<section class="pg-hobby-cover" aria-label="HSK 2 · Урок 4 · Моё хобби">'+
   '<div class="pg-hobby-head"><a href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2">‹</a><span class="pg-hobby-brand"><img src="./assets/hsk2-lesson4-hobby-3d/cover.webp" alt=""><span><b>Panda <em>Go</em></b><small>Китайский с удовольствием</small></span></span></div>'+
