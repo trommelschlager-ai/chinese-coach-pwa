@@ -217,7 +217,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
   <div id="lab-msg" aria-live="polite"></div>
   <section class="lab-footer">
     <b>Как тестируем:</b> сначала 公司 (gōngsī) с двумя ровными первыми тонами. Затем 会说 (huì shuō) с падающим и ровным тоном. После записи нажми «Стоп», раскрой «Граница слогов» и при необходимости уточни разделение. Отправь скриншот или скопированный отчёт.
-    <p>🔒 Аудио обрабатывается на устройстве и не отправляется на сервер; в памяти браузера сохраняются только параметры графика. Данные этой страницы отделены от прогресса основного урока.</p>
+    <p>🔒 Аудио обрабатывается на устройстве и не отправляется на сервер; текущая запись временно доступна для прослушивания до следующей записи или закрытия вкладки, а локально сохраняются только параметры графика. Данные этой страницы отделены от прогресса основного урока.</p>
     <a class="backlink" href="./hsk2-lesson3-work-study-preview.html">← Открыть основной урок 3</a>
   </section>
 </main>
@@ -227,6 +227,29 @@ button:disabled{opacity:.55;cursor:not-allowed}
 (function(){
 'use strict';
 const KEY='pg-tone-temporary-lab-isolated-20261122-v1';
+ let replayUrl='',replayWord=-1,replayAudio=null,replayToken=0;
+ function clearReplay(){if(replayAudio){replayAudio.pause();replayAudio=null;}if(replayUrl){URL.revokeObjectURL(replayUrl);replayUrl='';}replayWord=-1;}
+ function captureReplay(rec){
+  if(typeof MediaRecorder==='undefined')return false;
+  try{
+   const type=['audio/mp4','audio/webm;codecs=opus','audio/webm'].find(x=>MediaRecorder.isTypeSupported?.(x));
+   const recorder=type?new MediaRecorder(rec.stream,{mimeType:type}):new MediaRecorder(rec.stream);
+   const chunks=[];
+   recorder.ondataavailable=e=>{if(e.data?.size)chunks.push(e.data);};
+   recorder.onstop=()=>{
+    if(!rec.keepReplay||rec.token!==replayToken||!chunks.length)return;
+    const blob=new Blob(chunks,{type:recorder.mimeType||chunks[0].type});
+    if(blob.size<300)return;
+    clearReplay();replayUrl=URL.createObjectURL(blob);replayWord=rec.word;
+    const b=document.getElementById('lab-replay');
+    if(b&&state.selected===rec.word)b.disabled=false;
+   };
+   recorder.onerror=()=>{rec.keepReplay=false;};
+   recorder.start(250);rec.recorder=recorder;
+   return true;
+  }catch{return false;}
+ }
+
 const TONES=[[1,1],[2,4],[2,4],[2,2],[4,3],[4,1]];
 const SYLLABLES=[['gōng','sī'],['xué','xiào'],['tóng','shì'],['tóng','xué'],['diàn','nǎo'],['huì','shuō']];
 const SPLIT_MIN=.25,SPLIT_MAX=.75;
@@ -297,12 +320,12 @@ function render(words,art,heading,panel,ttsNote,listenButton){
    '<div class="btnrow tone-actions">'+(typeof listenButton==='function'?listenButton(w.zh):'')+'<button id="tone-record" class="primary" type="button" data-tone-act="record">'+
     '🎙 Записать голос</button>'+
     '<button type="button" class="action" data-tone-act="manual" '+(done>=LIMIT?'disabled':'')+'>✓ Повторил сам</button></div>'+
-   '<details class="tone-advanced"><summary>Граница слогов и пояснения</summary>'+
+   '<div class="tone-aux"><button type="button" class="action" id="lab-replay" '+(replayUrl&&replayWord===i?'':'disabled')+'>▶ Прослушать свою запись / 回听录音</button></div>'+ '<details class="tone-advanced"><summary>Граница слогов и пояснения</summary>'+
     '<div class="tone-split-control"><label for="tone-split">Граница слогов: <strong id="tone-split-value">'+Math.round(ratio*100)+'%</strong></label>'+
     '<input type="range" id="tone-split" min="25" max="75" step="1" value="'+Math.round(ratio*100)+'" '+(!last||busy?'disabled':'')+
     ' aria-label="Сместить примерную границу между слогами">'+
     '<p id="tone-split-hint" class="hint">Разделение '+esc(splitLabel)+'. При необходимости поправь после записи.</p></div>'+
-    '<p class="hint">Это график высоты голоса, а не подтверждение правильности тонов. Два слога определяются приблизительно, без распознавания речи. Звук не сохраняется и не отправляется на сервер.</p>'+
+    '<p class="hint">Это график высоты голоса, а не подтверждение правильности тонов. Два слога определяются приблизительно, без распознавания речи. Звук хранится только в памяти открытой страницы для воспроизведения и не отправляется на сервер.</p>'+
     '<button class="action tone-reset" type="button" data-tone-act="clear">↻ Сбросить повторы выбранного слова</button>'+
     (last?'<p class="hint">Запись: '+last.seconds.toFixed(1)+' с; измерений: '+last.points.length+'.'+(last.stats?' Основной: '+last.stats.yin+' · запасной: '+last.stats.fallback+' · пропуски: '+last.stats.none+'.':'')+'</p>':'')+
     ttsNote+'</details>'+
@@ -598,6 +621,8 @@ function stop(countTake){
  seq++;
  const rec=active;active=null;
  if(!rec){syncControls();return}
+ rec.keepReplay=Boolean(countTake&&rec.word===state.selected);
+ try{if(rec.recorder?.state==='recording')rec.recorder.stop()}catch{}
  cleanup(rec);
  if(countTake&&rec.word===state.selected){
   const result=buildRecording(rec);
@@ -670,8 +695,9 @@ async function start(){
   if(turn!==seq){stream.getTracks().forEach(t=>t.stop());ctx.close();return}
   const source=ctx.createMediaStreamSource(stream),analyser=ctx.createAnalyser();
   analyser.fftSize=4096;analyser.smoothingTimeConstant=0;source.connect(analyser);
-  const rec={stream,ctx,source,analyser,buffer:new Float32Array(analyser.fftSize),word,samples:[],levels:[],stats:{yin:0,fallback:0,none:0},lastTick:0,lastDraw:0,lastVoice:0,started:performance.now(),raf:0};
-  active=rec;status('🎙 Произнеси оба слога. Нажми «Стоп», чтобы закончить.');
+  clearReplay();const rec={stream,ctx,source,analyser,buffer:new Float32Array(analyser.fftSize),word,samples:[],levels:[],stats:{yin:0,fallback:0,none:0},lastTick:0,lastDraw:0,lastVoice:0,started:performance.now(),raf:0,recorder:null,token:++replayToken,keepReplay:false};
+   const supportsReplay=captureReplay(rec);
+  active=rec;status('🎙 Произнеси оба слога. Нажми «Стоп», чтобы закончить.'+(supportsReplay?'':' 回放录音不可用，请用 Chrome 浏览器。'));
   syncControls();tick(rec);
  }catch(error){
   if(turn!==seq)return;
@@ -687,6 +713,7 @@ function manual(){
 }
 function choose(i){
  if(!Number.isInteger(i)||i<0||i>5)return;
+ clearReplay();
  if(active)stop(false);
  state.selected=i;visibleAttempt=null;persist();
  note='Выбрано '+(memo?.words[i]?.zh||'слово')+'. Нажми «Записать голос».';
@@ -698,7 +725,7 @@ function resetWord(){
  if(!window.confirm('Сбросить пять повторений только выбранного слова?'))return;
  state.reps[state.selected]={mic:[],manual:0};visibleAttempt=null;persist();note='Повторы слова сброшены.';update();
 }
-function reset(){if(active)stop(false);state={selected:0,reps:Array.from({length:6},()=>({mic:[],manual:0}))};visibleAttempt=null;persist()}
+function reset(){if(active)stop(false);clearReplay();state={selected:0,reps:Array.from({length:6},()=>({mic:[],manual:0}))};visibleAttempt=null;persist()}
 document.addEventListener('click',event=>{
  const btn=event.target.closest('[data-tone-act]');if(!btn||btn.disabled)return;
  const action=btn.dataset.toneAct;
@@ -709,7 +736,7 @@ document.addEventListener('click',event=>{
  else if(action==='jump')document.getElementById('tone-trainer')?.scrollIntoView({block:'nearest',behavior:'smooth'});
 });
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&active)stop(false)});
-window.addEventListener('pagehide',()=>{if(active)stop(false)});
+window.addEventListener('pagehide',()=>{if(active)stop(false);clearReplay()});
 document.addEventListener('input',event=>{
  const el=event.target;
  if(el?.id!=='tone-split'||active)return;
@@ -724,7 +751,7 @@ document.addEventListener('input',event=>{
  if(hint)hint.textContent='Граница вручную. Это не распознавание слогов.';
  draw();
 });
-window.PandaToneTrainer={render,mount,stop:()=>{if(active)stop(false)},reset,progressText,total,diagnostics:()=>{const i=state.selected;return {word:memo?.words?.[i]?.zh||'',pinyin:memo?.words?.[i]?.py||'',selected:i,repeats:count(i),total:total(),recording:Boolean(active),attempt:visibleAttempt?.word===i?visibleAttempt:(state.reps[i]?.mic?.at(-1)||null)}}};
+window.PandaToneTrainer={render,mount,stop:()=>{if(active)stop(false)},reset,progressText,total,replay:async()=>{if(!replayUrl||replayWord!==state.selected)return false;try{if(replayAudio)replayAudio.pause();replayAudio=new Audio(replayUrl);await replayAudio.play();return true}catch{return false}},diagnostics:()=>{const i=state.selected;return {word:memo?.words?.[i]?.zh||'',pinyin:memo?.words?.[i]?.py||'',selected:i,repeats:count(i),total:total(),recording:Boolean(active),attempt:visibleAttempt?.word===i?visibleAttempt:(state.reps[i]?.mic?.at(-1)||null)}}};
 window.PandaToneMathV2={pitchOf,fallbackPitchOf,estimateSplit,observedTrend,buildRecording,normalizeChartPoints,semitoneContour,isLongPitchGap};
 })();
 </script>
@@ -750,7 +777,8 @@ const player=new Audio();player.preload='none';
 const diag=()=>window.PandaToneTrainer.diagnostics();
 const msg=(s)=>{document.getElementById('lab-msg').textContent=s};
 document.addEventListener('click',async function(ev){
- const play=ev.target.closest('#listen-sample');
+ if(ev.target.closest('#lab-replay')){const ok=await window.PandaToneTrainer.replay();msg(ok?'▶ Прослушивание записи / 正在播放录音':'Не удалось воспроизвести запись / 无法播放，请用 Chrome 浏览器');return;}
+  const play=ev.target.closest('#listen-sample');
  if(play){
   const current=diag().word;
   const src=voiceMap.get(current);
