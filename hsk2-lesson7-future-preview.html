@@ -2072,7 +2072,12 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 }
 
 /* Lesson 7: keep the tone training card to the right of its illustration. */
-#app #pg433 .tones-hero .hero-message{margin-left:6px;margin-right:5px;min-width:0;box-sizing:border-box;padding-left:12px;padding-right:9px}
+#app #pg433 .tones-hero{grid-template-columns:43% minmax(0,1fr)!important;column-gap:7px!important}
+#app #pg433 .tones-hero .hero-message{margin-left:0!important;margin-right:5px!important;min-width:0;box-sizing:border-box;padding-left:12px;padding-right:9px}
+.course-layout #app[data-view="2"] #pg433 .word-list.about-myday-wordlist.lesson7-vocab-list{gap:5px!important;padding:1px 2px 4px!important;box-sizing:border-box}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word.lesson7-vocab-card{--art-height:clamp(22px,calc(var(--card-height) - 31px),var(--reference-height));box-shadow:0 2px 0 #bc89c9,0 3px 5px #a46aae40!important}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word.lesson7-vocab-card > .ru{font-size:clamp(12px,3.45vw,15px)!important;font-weight:650!important;line-height:1.15!important;color:#653b72!important;overflow-wrap:normal}
+@media(max-height:650px){.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word.lesson7-vocab-card > .ru{font-size:clamp(11px,3.15vw,13px)!important}.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word.lesson7-vocab-card{--art-height:clamp(22px,calc(var(--card-height) - 28px),var(--reference-height))}}
 #app #pg433 .tones-hero .hero-message h1{white-space:normal;overflow-wrap:normal}
 </style>
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
@@ -2268,7 +2273,9 @@ const dayScenes = ['wake','wash','brush','breakfast','work','sleep'];
 // Custom 3D Panda Go lesson 7 atlas: 8 320px square panels, 4 columns x 2 rows.
 function vocabImage(index,cssClass='about-illustration'){
  const i=Math.max(0,Math.min(7,Number(index)||0)),x=(i%4)*320,y=Math.floor(i/4)*320;
- return '<svg class="'+cssClass+' about-premium-photo" aria-hidden="true" focusable="false" viewBox="'+x+' '+y+' 320 320" preserveAspectRatio="xMidYMid slice">'+
+ // Crop the fifth vocabulary tile below the unrelated title fragment, preserving its illustration.
+ const viewBox=(i===4&&cssClass.includes("lesson7-vocab-art"))?"0 362 320 278":x+" "+y+" 320 320";
+ return '<svg class="'+cssClass+' about-premium-photo" aria-hidden="true" focusable="false" viewBox="'+viewBox+'" preserveAspectRatio="xMidYMid slice">'+
  '<image href="./assets/hsk2-lesson7-vocab-atlas-v1.webp" width="1280" height="640" /></svg>';
 }
 const stageIndexes=Object.freeze({tones:6,quiz:3,dialogue:4,finish:7});
