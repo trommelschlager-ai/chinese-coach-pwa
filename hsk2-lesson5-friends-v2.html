@@ -1455,6 +1455,7 @@ transform:scale(.98)!important;background:#fff4!important;box-shadow:inset 0 0 0
 #app[data-view="1"] #pg433 .approved5-start{left:10.5%;top:73%;width:79%;height:6%;border-radius:999px}
 
 </style>
+<link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
 </head>
 <body>
 <div class="app" id="app">
@@ -1989,7 +1990,7 @@ function newWords() {
       '<div class="about-myday-tones">' + toneStrokes(word.tones) + '</div>' +
       '<div class="about-myday-copy">' + translate([word.zh,word.py,word.ru]) + '</div>' +
       audioButton(word.zh,playIcon) + '</article>').join('') + '</div>' +
-    '<button type="button" class="about-manual-complete" data-words-read="1">✓ Повторил все 8 выражений</button><p class="hint">Озвучка зависит от китайского голоса на устройстве.</p>' + safeStatus();
+    '<button type="button" class="about-manual-complete" data-words-read="1">✓ Повторил все 8 выражений</button><p class="hint">Прослушай утверждённые записи Panda Go и повтори вслух.</p>' + safeStatus();
 }
 
 function hero(kind,step,title,subtitle) {
@@ -2165,6 +2166,13 @@ function toneGuide() {
     '<path d="' + path + '" stroke="#af183e" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg><strong>' +
     sample + '</strong>' + name + '</div>').join('') + '</div></details>';
 }
+/* Shared speech-row standard: Chinese, pinyin, translation, tone marks, speaker, microphone. */
+function pgStandardSpeechRow(word,i) {
+  const strokes={0:'',1:'M3 8 H19',2:'M3 15 L19 3',3:'M3 4 Q11 24 19 4',4:'M3 3 L19 15'};
+  const tones=word.tones.map(v=>'<span class="pg-standard-tone"><svg viewBox="0 0 22 20" aria-hidden="true">'+(v===0?'<circle cx="11" cy="9" r="2.8" fill="#267d31"/>':'<path d="'+strokes[v]+'" fill="none" stroke="#782a8f" stroke-width="3.3" stroke-linecap="round"/>')+'</svg><b>'+v+'</b></span>').join('');
+  const control=state.practiceMode==='self'?'<button type="button" class="orb mic'+(state.selfSpoken.includes(i)?' recognized':'')+'" data-self-spoken="'+i+'" aria-label="Я повторил и сравнил '+escape(word.zh)+'" title="Самопроверка; тоны не оцениваются">'+(state.selfSpoken.includes(i)?'✓':'●')+'</button>':micButton(i,'Произнести '+word.zh,state.mic.includes(i));
+  return '<article class="pg-standard-speech-row"><div class="pg-standard-copy"><strong class="pg-standard-cn" lang="zh-Hans">'+escape(word.zh)+'</strong><span class="pg-standard-py">'+escape(word.py)+'</span><span class="pg-standard-ru">'+escape(word.ru)+'</span></div><div class="pg-standard-tones" role="img" aria-label="Тоны: '+word.tones.join(', ')+'">'+tones+'</div>'+audioButton(word.zh,speaker)+control+'</article>';
+}
 function tones() {
   const wordView = state.toneTab === 'words';
   return hero('tones',6,'Тренировка тонов','Произнеси восемь выражений о встречах.') +
@@ -2181,15 +2189,7 @@ function tones() {
     '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (8)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
     '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (8)</button></div>' +
-    (wordView ? '<div class="tone-list">' + words.map((word,i) => '<article class="tone-row">' + vocabImage(i) +
-      hanzi(word.zh) + '<div class="tone-example">' + toneStrokes(word.tones) + pitchRow(word.tones) +
-      '</div><div class="tone-copy">' + translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh,playIcon) +
-      (state.practiceMode === 'self'
-        ? '<button type="button" class="orb mic' + (state.selfSpoken.includes(i) ? ' recognized' : '') +
-          '" data-self-spoken="' + i + '" aria-label="Я повторил и сравнил ' + word.zh +
-          '" title="Самостоятельная проверка; тоны не оцениваются">' +
-          (state.selfSpoken.includes(i) ? '✓' : '●') + '</button>'
-        : micButton(i,'Произнести ' + word.zh,state.mic.includes(i))) + '</article>').join('') + '</div>' :
+    (wordView ? '<div class="pg-standard-list">' + words.map(pgStandardSpeechRow).join('') + '</div>' :
       '<details class="phrase-review panel"><summary>💬 Открыть 8 фраз для повторения</summary>' + phraseCards() + '</details>') +
      '<div class="controls"><button type="button" class="soft" data-record="1">'+
     (take?.recorder?.state==='recording'?'■ Остановить':'🎙 Записать себя')+
