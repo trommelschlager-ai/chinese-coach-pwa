@@ -16,25 +16,27 @@ The lookup prioritizes exact approved recordings from family, “My Day”, clar
 
 A static code/registry audit shows no automatic route from `panda-xiaoxiao-trainer-v250`/Xiaoxiao lesson recordings, no Panda Street fallback, and no `speechSynthesis` route in active conversational modules. This is not a perceptual speaker-identity, tone, or listening audit; verify those acoustically.
 
-## Five newly introduced replies: still missing
+## Five newly introduced replies: MP3 uploaded and exact route active (2026-11-22)
 
-Machine-readable recording queue: `assets/panda-ai-xiaoxiao-pending-20261122.json`.
+Source of truth: `assets/panda-ai-xiaoxiao-pending-20261122.json`, including source filenames, byte sizes, SHA-256 and Git blob SHA values.
 
-1. 今天我有空，可以聊聊天。 — Jīntiān wǒ yǒu kòng, kěyǐ liáoliao tiān.
-2. 好的，那你先忙吧。 — Hǎo de, nà nǐ xiān máng ba.
-3. 那你今天想做什么？ — Nà nǐ jīntiān xiǎng zuò shénme?
-4. 那你想聊聊天吗？ — Nà nǐ xiǎng liáoliao tiān ma?
-5. 你想聊聊工作吗？ — Nǐ xiǎng liáoliao gōngzuò ma?
+1. 今天我有空，可以聊聊天。 — `panda01.mp3`
+2. 好的，那你先忙吧。 — `panda02.mp3`
+3. 那你今天想做什么？ — `panda03.mp3`
+4. 那你想聊聊天吗？ — `panda04.mp3`
+5. 你想聊聊工作吗？ — `panda05.mp3`
 
-The second 聊 in reduplicated 聊聊 is a neutral tone in these learning transcriptions. New phrases must remain **text only** until separately recorded exact MP3s have been listened to and approved. Do not create a voice using the male Street preset or browser TTS.
+All five original user-supplied files are preserved in `assets/panda-ai-xiaoxiao-new-replies-20261122/`. The user-uploaded Chinese transcript matched the exact intended phrase for each clip; Git blobs match the original local file hashes byte-for-byte. MP3s decode at 24 kHz mono with no clipping. The live Panda AI registry now activates an exact matching MP3 for each full phrase; no fuzzy text reuse.
 
-## Safe next release gate
+*This is an engineering integrity check, not human-certified tone accuracy or independent proof of a specific synthesizer voice ID.*
 
-1. Generate five individual full-phrase files with the **same confirmed Xiaoxiao voice settings** as current approved Panda AI, not automatically copied from the trainer.
-2. Compare all five with one approved conversational reference for vocal timbre, speed, tone, audible tails and start/end silence.
-3. Only after approval, register exact phrase-to-file paths in `lookupApprovedPandaVoice` and validate all five in Android Chrome.
-4. Keep all existing approved MP3s unchanged. Continue separating microphone/network faults from language errors.
+## Release verification
+
+1. Run `node --test tests/panda-ai-xiaoxiao-voice-boundary-v1.test.mjs` and the isolated real-mobile Chromium text/audio regression.
+2. Check visible `🔊` controls and real playback from each exact Panda response.
+3. Keep the existing approved MP3 sources unchanged; optionally have a native speaker verify the two 聊聊 neutral tones.
+4. Continue treating microphone/network failures as distinct from language-understanding bugs.
 
 ## Automated guard
 
-`node --test tests/panda-ai-xiaoxiao-voice-boundary-v1.test.mjs` checks exact route isolation, absence of unauthorized TTS or lesson/human/Street substitution, and the explicit five-file missing-audio queue. It **does not prove** a voice's identity from MP3 waveforms.
+`node --test tests/panda-ai-xiaoxiao-voice-boundary-v1.test.mjs` checks exact route isolation, absence of unauthorized TTS or lesson/human/Street substitution, and the exact five-file recorded-audio registry. It **does not prove** a voice's identity from MP3 waveforms.

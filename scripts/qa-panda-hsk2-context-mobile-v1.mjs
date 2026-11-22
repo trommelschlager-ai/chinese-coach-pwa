@@ -40,8 +40,12 @@ try{
    assert.equal(await rows.nth((await rows.count())-2).locator('.pg346-py').textContent(),pinyin);
    assert((await rows.nth((await rows.count())-2).locator('.pg346-ru').innerText()).includes(russian),'Missing reviewed Russian for '+learner);
    assert.equal(await page.locator('.pg500-example').count(),0,'Sample cards must not be chat messages');
-   assert.equal(await page.locator('#pg346-hear').isDisabled(),true,'New text-only Panda reply must not pretend MP3 exists');
+   assert.equal(await page.locator('#pg346-hear').isDisabled(),false,'The five exact user MP3s must activate the Panda playback button');
+   assert.equal(await rows.last().locator('.pg346-row-audio').isDisabled(),false,'Panda history clip should also be playable');
   }
+  // Real MP3 playback, not merely a clickable audio icon. Browser click is a user gesture.
+  await page.locator('#pg346-rows .pg346-row').last().locator('.pg346-row-audio').click();
+  await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pose==='talking',null,{timeout:7000});
   assert.equal(await page.locator('.pg346-panda').count(),1,'Approved Panda image must remain present');
   const image=await page.locator('.pg346-panda').evaluate(img=>({loaded:img.complete&&img.naturalWidth>0,ratio:img.naturalWidth/img.naturalHeight}));
   assert.equal(image.loaded,true,'Original Panda visual must be loaded');

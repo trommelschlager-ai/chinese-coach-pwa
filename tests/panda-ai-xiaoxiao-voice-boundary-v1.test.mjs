@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
 import {lookupApprovedPandaVoice,voiceNorm} from '../assets/panda-approved-voice-registry-v516.mjs';
 import {PANDA_V422_VOICE} from '../assets/qa-v411/panda-voice-v422.mjs';
 import {PANDA_V411_VOICE} from '../assets/panda-voice-v411.mjs';
@@ -23,19 +24,28 @@ test('The correct Xiaoxiao profile is documented, without reassigning lesson aud
   assert.match(trainer,/RATE\s*=\s*-20/,'Trainer speed is separate from conversational reference');
 });
 
-test('Five new response phrases remain text-only until exact approved MP3s arrive',()=>{
+test('Five user-supplied Xiaoxiao MP3s match exact text, hashes, and audio registry',()=>{
   assert.equal(pending.items.length,5);
+  assert.equal(pending.status,'five-user-supplied-recordings-uploaded-exact-transcript-verified');
   const unique=new Set();
-  for(const x of pending.items) {
-    assert.ok(x.filename.endsWith('.mp3'));
+  for(const x of pending.items){
+    assert.match(x.filename,/^panda0[1-5]\.mp3$/);
     assert.ok(x.pinyin.length>8 && x.ru.length>9);
     const key=voiceNorm(x.zh);
-    assert(!unique.has(key),'duplicate pending phrase');
-    unique.add(key);
-    assert.equal(lookupApprovedPandaVoice(x.zh),null,'Do not fake audio for '+x.zh);
-    assert.match(x.status,/needs-matching-approved/);
+    assert(!unique.has(key),'Duplicate phrase');unique.add(key);
+    const approved=lookupApprovedPandaVoice(x.zh);
+    assert.equal(approved?.src, './'+pending.output_folder+'/'+x.filename);
+    assert.match(approved.source,/xiaoxiao/);
+    assert.equal(x.status,'exact-mp3-loaded-native-tone-review-pending');
+    const data=fs.readFileSync(new URL('../'+pending.output_folder+'/'+x.filename,import.meta.url));
+    assert.equal(data.length,x.bytes);
+    assert.equal(createHash('sha256').update(data).digest('hex'),x.sha256);
+    assert(data.length>1000,'Audio file unexpectedly short');
+    assert.equal(data[0],0xff,'MP3 frame sync first byte');
+    assert.equal(data[1]&0xe0,0xe0,'MP3 frame sync marker');
   }
 });
+
 
 test('All current voice routes remain exact and confined to the approved Panda voice registry',()=>{
   const reg=read('assets/panda-approved-voice-registry-v516.mjs');
