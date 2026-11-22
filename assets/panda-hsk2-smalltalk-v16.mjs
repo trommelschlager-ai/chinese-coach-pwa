@@ -107,7 +107,7 @@ export function respondToPandaChat(input,context=null){
  else if(/^你(?:今天|最近)?(?:怎么样|好吗|还好吗)/u.test(s)||s==='你好吗')result=response('我很好，谢谢！你今天怎么样？','Wǒ hěn hǎo, xièxie! Nǐ jīntiān zěnmeyàng?','У меня всё хорошо, спасибо! А как у тебя дела?','mood');
  else if(/^(?:你|你们)(?:今天)?(?:吃早饭了吗|吃饭了吗|吃早饭吗)/u.test(s))result=response('我早上吃早饭。你呢？','Wǒ zǎoshang chī zǎofàn. Nǐ ne?','Я завтракаю по утрам. А ты?','breakfast');
  else if(/^你(?:那里|那边|住的地方)?(?:的)?天气怎么样/u.test(s)||/^(?:你)?知道.*天气/u.test(s))result=response('我不知道你那里的天气。你能告诉我吗？','Wǒ bù zhīdào nǐ nàli de tiānqì. Nǐ néng gàosu wǒ ma?','Я не знаю погоду там, где ты находишься. Расскажешь?','weather');
- else if(/^你(?:喜欢我吗|喜欢跟我聊天吗)/u.test(s))result=response('我喜欢跟你一起学习中文。你喜欢学中文吗？','Wǒ xǐhuan gēn nǐ yìqǐ xuéxí Zhōngwén. Nǐ xǐhuan xué Zhōngwén ma?','Мне нравится учить китайский вместе с тобой. А тебе нравится китайский?','study');
+ else if(/^你(?:(?:喜欢|爱)(?:我|跟我聊天|和我聊天)吗|(?:喜不喜欢|喜欢不喜欢|爱不爱)(?:我|跟我聊天|和我聊天))$/u.test(s))result=response('我喜欢和你聊天。','Wǒ xǐhuan hé nǐ liáotiān.','Мне нравится с тобой разговаривать.','friendly-chat');
  else if(/^你(?:几岁|多大)/u.test(s))result=response('我的年龄是个秘密。你呢？','Wǒ de niánlíng shì ge mìmì. Nǐ ne?','Мой возраст — секрет. А тебе сколько лет?','age');
  else if(/^(?:你好|您好|哈喽|嗨|早上好|下午好|晚上好)$/u.test(s))result=response('你好！你今天怎么样？','Nǐ hǎo! Nǐ jīntiān zěnmeyàng?','Привет! Как твои дела сегодня?','mood');
  else if(/^(?:谢谢|谢谢你|非常感谢|多谢)$/u.test(s))result=response('不客气！你还想练习什么？','Bú kèqi! Nǐ hái xiǎng liànxí shénme?','Пожалуйста! Что ещё хочешь потренировать?','topic');

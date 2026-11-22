@@ -1,5 +1,5 @@
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
-import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=3';
+import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=517';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {everydayMeaning} from './panda-everyday-meaning-v515.mjs';
@@ -191,6 +191,19 @@ function everydayAspect(raw,context){
 function spokenEveryday(raw,context){
  const k=norm(raw);
  const say=(a,py,ru,awaiting,more={})=>({kind:'social',line:line(a),spoken:line([raw,py,ru]),context:{...context,awaiting,lastClarification:null},...more});
+ // Natural 喜欢 / 爱 questions about Panda chat; avoid claiming romance.
+ const friendly=k.match(/^你(?:(喜欢|爱)(我|跟我聊天|和我聊天)吗|(喜不喜欢|喜欢不喜欢|爱不爱)(我|跟我聊天|和我聊天))$/u);
+ if(friendly){
+  const word=friendly[1]||friendly[3],target=friendly[2]||friendly[4];
+  const pword={喜欢:'xǐhuan',爱:'ài',喜不喜欢:'xǐ bu xǐhuan',喜欢不喜欢:'xǐhuan bu xǐhuan',爱不爱:'ài bu ài'}[word];
+  const ptarget={我:'wǒ',跟我聊天:'gēn wǒ liáotiān',和我聊天:'hé wǒ liáotiān'}[target];
+  const translation=target==='我'?(word.includes('爱')?'Ты меня любишь?':'Я тебе нравлюсь?'):'Тебе нравится со мной разговаривать?';
+  return say(['我喜欢和你聊天。','Wǒ xǐhuan hé nǐ liáotiān.','Мне нравится с тобой разговаривать.'],'Nǐ '+pword+' '+ptarget+(friendly[1]?' ma?':'?'),translation,'friendly-chat');
+ }
+ if(/^(?:我喜欢你|我喜欢跟你聊天|我喜欢和你聊天)$/.test(k)){
+  return say(['我喜欢和你聊天。','Wǒ xǐhuan hé nǐ liáotiān.','Мне нравится с тобой разговаривать.'],k==='我喜欢你'?'Wǒ xǐhuan nǐ.':k==='我喜欢和你聊天'?'Wǒ xǐhuan hé nǐ liáotiān.':'Wǒ xǐhuan gēn nǐ liáotiān.',k==='我喜欢你'?'Ты мне нравишься.':'Мне нравится с тобой разговаривать.','friendly-chat');
+ }
+
  if(/^(?:你|熊猫)(?:叫(?:什么|什么名字)|的名字是什么)$/.test(k)){
   return say(['我叫熊猫。','Wǒ jiào Xióngmāo.','Меня зовут Панда.'],k.includes('的名字')?'Nǐ de míngzi shì shénme?':k.startsWith('熊猫')?'Xióngmāo jiào '+(k.endsWith('名字')?'shénme míngzi?':'shénme?'):'Nǐ jiào '+(k.endsWith('名字')?'shénme míngzi?':'shénme?'),'Как тебя зовут?','name');
  }
