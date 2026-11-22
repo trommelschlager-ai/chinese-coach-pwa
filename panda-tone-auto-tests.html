@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panda Go · Автотест тонов — без микрофона</title>
+<meta name="theme-color" content="#f4e7ff">
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#31213d;background:#f8f2fb;color-scheme:light}
+*{box-sizing:border-box}body{margin:0;padding:16px;min-height:100vh}
+main{max-width:810px;margin:0 auto}h1{font-size:clamp(22px,5vw,30px);color:#662684;margin:6px 0}
+h2{font-size:18px;color:#632879;margin:0 0 10px}p{line-height:1.55;margin:7px 0}
+.card{background:#fff;border:1px solid #e5cfed;border-radius:17px;padding:16px;margin:13px 0;box-shadow:0 3px 9px #8d659a15}
+.label{font-size:12px;font-weight:850;letter-spacing:.03em;color:#8d559d}
+.muted{color:#665c69;font-size:13px}.status{font-size:15px;font-weight:800}
+button,.link-button{background:#8733a2;border:0;border-bottom:3px solid #63247c;border-radius:11px;color:#fff;padding:12px 14px;font-size:15px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block}
+button:disabled{opacity:.55;cursor:progress}button.secondary,.link-button.secondary{background:#fcf4ff;color:#672a80;border:1px solid #dcb7e8;border-bottom:3px solid #d5b2e2}
+.action-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:#674575;font-size:12px}td,th{padding:10px 7px;border-bottom:1px solid #f0e2f3;vertical-align:top}td:nth-child(2){font-weight:800;white-space:nowrap}.pass{color:#13784f}.fail{color:#b22d36}.pending{color:#7f607f}
+input[type=file],select{width:100%;border:1px solid #cfa7db;background:#fff;border-radius:10px;padding:12px;font-size:14px;margin:8px 0 11px}
+label{display:block;margin-top:10px;font-weight:750;color:#5e336d}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#fbf5fc;border-radius:11px;padding:12px;font-size:12px;line-height:1.55}
+footer{margin:20px 0;font-size:12px;color:#655a65}
+#engine{width:0;height:0;position:absolute;opacity:0;pointer-events:none;border:0}
+@media(max-width:480px){body{padding:10px}.card{padding:13px}td,th{padding:9px 4px}table{font-size:12px}}
+</style>
+</head>
+<body>
+<main>
+<div class="label">PANDA GO · ИЗОЛИРОВАННАЯ ЛАБОРАТОРИЯ</div>
+<h1>🧪 Автотест китайских тонов</h1>
+<p>Без микрофона и без участия ученика. Тест запускает <b>тот же алгоритм F0</b>, что используется в экспериментальном тренажёре, на контрольных звуковых сигналах.</p>
+<section class="card">
+<h2>Автоматические проверки</h2>
+<p id="status" class="status" role="status">Загрузка алгоритма…</p>
+<div class="action-row"><button id="run" type="button" disabled>↻ Запустить автотест заново</button><button class="secondary" type="button" id="copy" disabled>📋 Скопировать результаты</button></div>
+<table aria-label="Результаты автоматических тестов">
+<thead><tr><th>Сценарий</th><th>Статус</th><th>Наблюдение</th></tr></thead>
+<tbody id="results"><tr><td colspan="3">Подключаем измеритель…</td></tr></tbody>
+</table>
+<p class="muted">Эти тесты подтверждают работу программной обработки на контролируемых сигналах. Они <b>не подтверждают</b> правильность распознавания реальной китайской речи или тонов ученика.</p>
+</section>
+<section class="card">
+<h2>📂 Проверить готовую аудиозапись</h2>
+<p>Можно выбрать уже записанный MP3 или WAV. Программа проанализирует файл прямо на устройстве; повторно произносить слово не нужно.</p>
+<label for="word">Какое слово записано?</label>
+<select id="word">
+<option value="0">公司 · gōngsī · 1 + 1</option>
+<option value="1">学校 · xuéxiào · 2 + 4</option>
+<option value="2">同事 · tóngshì · 2 + 4</option>
+<option value="3">同学 · tóngxué · 2 + 2</option>
+<option value="4">电脑 · diànnǎo · 4 + 3</option>
+<option value="5">会说 · huì shuō · 4 + 1</option>
+</select>
+<label for="file">Аудиофайл (WAV, MP3, M4A, если поддерживается браузером)</label>
+<input type="file" accept="audio/*,.wav,.mp3,.m4a" id="file">
+<div class="action-row"><button id="file-test" disabled>▶ Анализировать файл</button></div>
+<pre id="file-result" aria-live="polite">Выбери файл для анализа. Звук не отправляется на сервер.</pre>
+<p class="muted">Лучше использовать короткий файл с <b>одним</b> словом. Если в записи несколько фраз или долгие паузы, вывод может быть частичным. Эталонный правильный тон автоматически пока не выставляется.</p>
+</section>
+<div class="action-row"><a class="link-button secondary" href="./panda-tone-test-lab.html?v=20261122m">← Лаборатория с микрофоном</a></div>
+<footer>Тестовые сигналы генерируются в памяти. Приватные аудиофайлы не загружаются в GitHub, не отправляются на сервер и не сохраняются этой страницей.</footer>
+</main>
+<iframe id="engine" title="Движок измерения тонов" src="./panda-tone-test-lab.html?autotest=1"></iframe>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const frame=$('engine');
+const results=$('results'),status=$('status'),run=$('run'),copy=$('copy'),fileTest=$('file-test');
+let math=null,lastReport='',busy=false;
+const TONES=['公司 gōngsī','学校 xuéxiào','同事 tóngshì','同学 tóngxué','电脑 diànnǎo','会说 huì shuō'];
+function sleep(){return new Promise(resolve=>setTimeout(resolve,0));}
+function approx(v){return Number.isFinite(v)?v.toFixed(1):'—';}
+function hzDelta(points){return points.length<2?NaN:12*Math.log2(points.at(-1)[1]/points[0][1]);}
+function makeAudio(opts){
+ const rate=opts.rate||48000,length=opts.length||1.15,n=Math.round(rate*length),pcm=new Float32Array(n);
+ let phase=0,seed=1526;
+ const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296-.5;};
+ const windows=opts.windows||[[.15,.49,'first'],[.57,.93,'second']];
+ for(let i=0;i<n;i++){
+  const t=i/rate,win=windows.find(w=>t>=w[0]&&t<w[1]);
+  if(!win)continue;
+  if(opts.mode==='noise'){pcm[i]=.17*random();continue;}
+  if(win[2]==='noise'){pcm[i]=.15*random();continue;}
+  const u=(t-win[0])/(win[1]-win[0]);
+  let hz=opts.firstHz||190;
+  if(win[2]==='second'){
+   if(opts.mode==='rising')hz=185+78*u;
+   else if(opts.mode==='falling')hz=279-82*u;
+   else if(opts.mode==='third')hz=215-46*Math.sin(Math.PI*u);
+   else hz=opts.secondHz||205;
+  }
+  phase+=2*Math.PI*hz/rate;
+  pcm[i]=.17*Math.sin(phase)+.035*Math.sin(phase*2);
+ }
+ return {pcm,rate};
+}
+function evaluate(rec,opts){
+ math.reanalyzePcm(rec);
+ const b=math.buildRecording(rec),entry=b.entry;
+ const pts=entry.points||[],sp=entry.splitRatio;
+ const a=pts.filter(p=>p[0]<sp),c=pts.filter(p=>p[0]>=sp);
+ const out={accepted:b.accepted,quality:entry.quality,points:pts.length,
+  first:hzDelta(a),second:hzDelta(c),firstN:a.length,secondN:c.length,
+  span:entry.signal?.speech?.span,discarded:entry.signal?.speech?.discarded,
+  ambiguous:entry.signal?.speech?.ambiguous,segments:entry.signal?.speech?.groups,
+  shortRecovered:entry.offline?.shortRecovered||0};
+ return out;
+}
+function synthetic(options){
+ const made=makeAudio(options);
+ return evaluate({word:options.word||0,ctx:{sampleRate:made.rate},pcmParts:[made.pcm],captureMethod:'synthetic',samples:[],levels:[],stats:{yin:0,fallback:0,none:0}},options);
+}
+function testSpecs(){
+ return [
+  {name:'Ровный тон · 44,1 кГц',opts:{rate:44100,mode:'flat'},check:r=>r.quality==='both'&&r.firstN>=7&&r.secondN>=7&&Math.abs(r.second)<1.5,show:r=>'F0 '+r.points+' · второй '+approx(r.second)+' полут.'},
+  {name:'Ровный тон · 48 кГц',opts:{rate:48000,mode:'flat'},check:r=>r.quality==='both'&&Math.abs(r.second)<1.5,show:r=>'F0 '+r.points+' · второй '+approx(r.second)+' полут.'},
+  {name:'Восходящий 2-й тон',opts:{mode:'rising'},check:r=>r.quality==='both'&&r.second>=2.3&&r.second<=8.5,show:r=>'второй ↗ '+approx(r.second)+' полут.'},
+  {name:'Падающий 4-й тон',opts:{mode:'falling'},check:r=>r.quality==='both'&&r.second<=-2.3&&r.second>=-8.5,show:r=>'второй ↘ '+approx(r.second)+' полут.'},
+  {name:'Низкий изгиб · контроль F0',opts:{mode:'third'},check:r=>r.quality==='both'&&r.secondN>=7,show:r=>'F0 '+r.points+' · 2-й слог '+r.secondN+' точек'},
+  {name:'Короткая гласная после x-/s-',opts:{windows:[[.15,.49,'first'],[.57,.75,'noise'],[.75,.93,'second']]},check:r=>r.accepted&&r.secondN>=4,show:r=>'F0 '+r.points+' · 2-й слог '+r.secondN+' точек'},
+  {name:'Тишина',opts:{windows:[]},check:r=>!r.accepted&&r.points===0,show:r=>'F0 '+r.points+' · попытка '+(r.accepted?'принята':'отклонена')},
+  {name:'Случайный шум без голоса',opts:{mode:'noise'},check:r=>r.quality!=='both',show:r=>'F0 '+r.points+' · '+r.quality},
+  {name:'Длинная пауза между фрагментами',opts:{length:4.4,windows:[[.20,.53,'first'],[.61,.94,'second'],[3.35,3.72,'first']]},check:r=>r.accepted&&r.span<1.55&&r.discarded>0,show:r=>'выделено '+approx(r.span)+' с · отброшено '+r.discarded+' кадров'},
+  {name:'Два одинаковых слова в записи',opts:{length:4.4,windows:[[.20,.53,'first'],[.61,.94,'second'],[3.10,3.43,'first'],[3.51,3.84,'second']]},check:r=>r.ambiguous&&r.quality!=='both',show:r=>'неоднозначность '+(r.ambiguous?'обнаружена':'не найдена')},
+ ];
+}
+function directTests(){
+ const spike=[[0,150],[.018,151],[.036,150],[.054,450],[.072,454],[.090,450]];
+ const cleaned=math.cleanPitch(spike);
+ const rising=[[0,180],[.018,190],[.036,200],[.054,215],[.072,230],[.090,245]];
+ const preserved=math.cleanPitch(rising);
+ const bound=[[0,170],[.25,170],[.5,171],[.75,172],[1,173]];
+ const a=math.contourEvidence(bound,0,.5,.8).points,b=math.contourEvidence(bound,.5,1,.8).points;
+ return [
+  {name:'Ложный скачок гармоники',pass:cleaned.length<spike.length,detail:'оставлено '+cleaned.length+' из '+spike.length+' точек'},
+  {name:'Плавный подъём не удаляется',pass:preserved.length===rising.length,detail:'оставлено '+preserved.length+' из '+rising.length+' точек'},
+  {name:'Граница слогов без двойного счёта',pass:a+b===bound.length,detail:a+' + '+b+' = '+bound.length+' точек'}
+ ];
+}
+function addResult(name,pass,detail){
+ const tr=document.createElement('tr'),c1=document.createElement('td'),c2=document.createElement('td'),c3=document.createElement('td');
+ c1.textContent=name;c2.textContent=pass?'✓ ПРОШЁЛ':'✕ ОШИБКА';c2.className=pass?'pass':'fail';c3.textContent=detail;tr.append(c1,c2,c3);results.appendChild(tr);
+ return (pass?'✓ ':'✕ ')+name+' — '+detail;
+}
+async function runTests(){
+ if(!math||busy)return;
+ busy=true;run.disabled=true;copy.disabled=true;results.replaceChildren();
+ const specs=testSpecs(),reports=[],summary=[];
+ status.textContent='Выполняются контрольные проверки…';
+ let ok=0;let total=0;
+ try{
+  for(const item of specs){
+   await sleep();
+   try{
+    const r=synthetic(item.opts);const pass=Boolean(item.check(r));
+    reports.push(addResult(item.name,pass,item.show(r)));total++;if(pass)ok++;
+   }catch(e){reports.push(addResult(item.name,false,'Ошибка запуска: '+String(e.message||e)));total++;}
+   status.textContent='Проверено: '+total+' из '+(specs.length+3);
+  }
+  for(const t of directTests()){
+   reports.push(addResult(t.name,t.pass,t.detail));total++;if(t.pass)ok++;
+  }
+  status.textContent=ok===total?'✓ Все '+total+' контрольных тестов прошли.':'⚠ Прошло '+ok+' из '+total+' тестов. Смотри ошибки ниже.';
+  status.className='status '+(ok===total?'pass':'fail');
+  lastReport='Panda Go · Автоматический тест F0 (без микрофона)\n'+
+  'Код двигателя: panda-tone-test-lab.html\n'+
+  'Дата запуска: '+new Date().toLocaleString('ru-RU')+'\n'+
+  'Результат: '+ok+'/'+total+'\n'+reports.join('\n')+'\n'+
+  'Примечание: проверено на синтетических сигналах; нет оценки реального произношения.';
+ }catch(e){
+  status.textContent='Ошибка проверки: '+String(e.message||e);status.className='status fail';
+ }finally{busy=false;run.disabled=false;copy.disabled=!lastReport;}
+}
+async function analyzeFile(){
+ const file=$('file').files?.[0];
+ if(!file||!math||busy)return;
+ const output=$('file-result');busy=true;fileTest.disabled=true;
+ output.textContent='Локально читаю и анализирую файл…';
+ let ctx;
+ try{
+  const C=window.AudioContext||window.webkitAudioContext;
+  if(!C)throw Error('Браузер не поддерживает декодирование аудио.');
+  ctx=new C();
+  const decoded=await ctx.decodeAudioData(await file.arrayBuffer());
+  const maxSamples=Math.min(decoded.length,Math.floor(decoded.sampleRate*8));
+  if(maxSamples<decoded.sampleRate*.25)throw Error('Запись слишком короткая.');
+  const mono=new Float32Array(maxSamples);
+  for(let ch=0;ch<decoded.numberOfChannels;ch++){
+   const track=decoded.getChannelData(ch);
+   for(let i=0;i<maxSamples;i++)mono[i]+=track[i]/decoded.numberOfChannels;
+  }
+  const rec={word:Number($('word').value),ctx:{sampleRate:decoded.sampleRate},
+    pcmParts:[mono],captureMethod:'file-local',samples:[],levels:[],stats:{yin:0,fallback:0,none:0}};
+  const m=evaluate(rec,{}),s=rec.offline;
+  const rows=[
+   'Файл: '+file.name,
+   'Выбрано: '+TONES[rec.word],
+   'Длительность загруженного фрагмента: '+approx(maxSamples/decoded.sampleRate)+' с (до 8 с)',
+   'Качество кривых: '+m.quality,
+   'Точки F0: '+m.points+' (первый '+m.firstN+', второй '+m.secondN+')',
+   'Первый слог: '+approx(m.first)+' полут.',
+   'Второй слог: '+approx(m.second)+' полут.',
+   'Выбранный участок: '+approx(m.span)+' с; RMS-кадров вне него: '+m.discarded,
+   'Неоднозначные фрагменты: '+(m.ambiguous?'да':'нет'),
+   'Шаг анализа: '+s.hopMs+' мс; 90/68 мс окон; восстановлено '+s.shortRecovered+' точек',
+   'Это только измерения, не оценка правильности произношения.'
+  ];
+  output.textContent=rows.join('\n');
+ }catch(e){output.textContent='Не удалось разобрать файл: '+String(e.message||e)+'. Попробуй WAV или MP3 с одним словом.';}
+ finally{if(ctx)try{await ctx.close()}catch{}busy=false;fileTest.disabled=!math;}
+}
+function engineReady(){
+ if(math)return;
+ try{math=frame.contentWindow.PandaToneMathV2}catch{}
+ if(!math?.reanalyzePcm||!math?.buildRecording||!math?.cleanPitch||!math?.contourEvidence)return;
+ run.disabled=false;fileTest.disabled=false;
+ runTests();
+}
+frame.addEventListener('load',engineReady);
+if(frame.contentWindow?.PandaToneMathV2)engineReady();
+frame.addEventListener('error',()=>{status.textContent='Не удалось загрузить код основной лаборатории.';status.className='status fail';});
+run.addEventListener('click',runTests);
+fileTest.addEventListener('click',analyzeFile);
+copy.addEventListener('click',async()=>{
+ if(!lastReport)return;
+ try{await navigator.clipboard.writeText(lastReport);status.textContent='✓ Отчёт автотеста скопирован.';}
+ catch{const t=document.createElement('textarea');t.value=lastReport;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();status.textContent='✓ Отчёт скопирован.';}
+});
+})();
+</script>
+</body></html>
