@@ -251,6 +251,7 @@ function readState(){
       splitSource:['pause','energy','manual','midpoint'].includes(t.splitSource)?t.splitSource:'midpoint',
       quality,validParts:Array.isArray(t.validParts)&&t.validParts.length===2?t.validParts.map(Boolean):[false,false],
       voiceMs:finite(t.voiceMs)?Math.max(0,Math.min(8000,t.voiceMs)):0,
+      stats:t.stats&&typeof t.stats==='object'?{yin:Math.max(0,Number(t.stats.yin)||0),fallback:Math.max(0,Number(t.stats.fallback)||0),none:Math.max(0,Number(t.stats.none)||0)}:null,
       levels:Array.isArray(t.levels)?t.levels.slice(-180).filter(p=>Array.isArray(p)&&p.length===2&&p.every(finite)&&p[0]>=0&&p[0]<=1&&p[1]>=0&&p[1]<=1):[]};
    }).filter(t=>t.points.length>=2||(t.quality==='unmeasured'&&t.voiceMs>=250));
    state.reps[i]={mic,manual:Math.max(0,Math.min(LIMIT-mic.length,Number.isInteger(item.manual)?item.manual:0))};
@@ -301,7 +302,7 @@ function render(words,art,heading,panel,ttsNote,listenButton){
     '<p id="tone-split-hint" class="hint">Разделение '+esc(splitLabel)+'. При необходимости поправь после записи.</p></div>'+
     '<p class="hint">Это график высоты голоса, а не подтверждение правильности тонов. Два слога определяются приблизительно, без распознавания речи. Звук не сохраняется и не отправляется на сервер.</p>'+
     '<button class="action tone-reset" type="button" data-tone-act="clear">↻ Сбросить повторы выбранного слова</button>'+
-    (last?'<p class="hint">Запись: '+last.seconds.toFixed(1)+' с; измерений: '+last.points.length+'.</p>':'')+
+    (last?'<p class="hint">Запись: '+last.seconds.toFixed(1)+' с; измерений: '+last.points.length+'.'+(last.stats?' Основной: '+last.stats.yin+' · запасной: '+last.stats.fallback+' · пропуски: '+last.stats.none+'.':'')+'</p>':'')+
     ttsNote+'</details>'+
    '<p class="tone-safety-label">Пунктир и голос сравнивай по форме, не по высоте. Это не оценка произношения.</p>'+
   '</div>'
@@ -502,6 +503,46 @@ function pitchOf(buf,rate,previous){
  return finite(hz)&&hz>=78&&hz<=530?hz:null;
 }
 
+// Experimental normalized autocorrelation backup, used only in the separate test lab.
+// It requires a strong periodic signal; fallback detections are NOT tone correctness.
+function fallbackPitchOf(buf,rate,previous){
+ if(!buf||!finite(rate)||rate<8000||buf.length<2048)return null;
+ const n=960,minLag=Math.max(20,Math.floor(rate/520));
+ const maxLag=Math.min(Math.floor(rate/80),Math.floor(buf.length*.30));
+ if(maxLag<=minLag||buf.length<n+maxLag)return null;
+ const start=buf.length-n-maxLag;
+ let energy=0;
+ for(let k=0;k<n;k+=3){const a=buf[start+k];energy+=a*a;}
+ if(Math.sqrt(energy/Math.ceil(n/3))<.018)return null;
+ const corr=new Float32Array(maxLag+2);
+ for(let lag=minLag;lag<=maxLag;lag++){
+  let cross=0,a2=0,b2=0;
+  for(let k=0;k<n;k+=3){
+   const a=buf[start+k],b=buf[start+k+lag];
+   cross+=a*b;a2+=a*a;b2+=b*b;
+  }
+  corr[lag]=cross/Math.sqrt(a2*b2+1e-10);
+ }
+ let best=0,bestValue=.64;
+ for(let lag=minLag+1;lag<maxLag-1;lag++){
+  if(corr[lag]>bestValue&&corr[lag]>=corr[lag-1]&&corr[lag]>=corr[lag+1]){
+   if(!best||corr[lag]>bestValue+.055){
+    best=lag;bestValue=corr[lag];
+   }
+  }
+ }
+ if(!best)return null;
+ let lag=best;
+ const a=corr[best-1],b=corr[best],d=corr[best+1],den=a-2*b+d;
+ if(Math.abs(den)>1e-6)lag+=Math.max(-1,Math.min(1,.5*(a-d)/den));
+ let hz=rate/lag;
+ if(previous&&finite(previous)){
+  if(hz>previous*1.8&&hz/2>=80)hz/=2;
+  else if(hz<previous*.55&&hz*2<=520)hz*=2;
+  if(Math.abs(12*Math.log2(hz/previous))>6.5)return null;
+ }
+ return finite(hz)&&hz>=80&&hz<=520?hz:null;
+}
 function cleanup(rec){
  if(!rec)return;
  if(rec.raf)cancelAnimationFrame(rec.raf);
@@ -518,7 +559,7 @@ function buildRecording(rec){
  const validSound=voiced.length>=5&&duration>=.24;
  const points=(rec.samples||[]).filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1])&&p[1]>=70&&p[1]<=600);
  const result={word:rec.word,points:[],seconds:Math.max(0,duration),splitRatio:.5,
-  splitSource:'midpoint',voiceMs:voiced.length*30,quality:'unmeasured',validParts:[false,false]};
+  splitSource:'midpoint',voiceMs:voiced.length*30,quality:'unmeasured',validParts:[false,false],stats:rec.stats||null};
  if(!validSound)return {accepted:false,entry:result,message:'Слишком мало звука для попытки. Повтори слово ближе к микрофону.'};
  const speechPoints=points.filter(p=>p[0]>=from-.08&&p[0]<=to+.08).slice(-120);
  const span=Math.max(.001,duration);
@@ -592,14 +633,17 @@ function tick(rec){
   if(rec.levels.length>180)rec.levels.shift();
   const lastHz=rec.samples.length?rec.samples[rec.samples.length-1][1]:null;
   let hz=pitchOf(rec.buffer,rec.ctx.sampleRate,lastHz);
+  let method='yin';
+  if(!hz){hz=fallbackPitchOf(rec.buffer,rec.ctx.sampleRate,lastHz);method='fallback';}
   if(hz){
+    rec.stats[method]++;
     // Light smoothing preserving a rising or falling slope.
     const prev=rec.samples.length?rec.samples[rec.samples.length-1][1]:null;
     if(prev&&Math.abs(12*Math.log2(hz/prev))<4)hz=.75*hz+.25*prev;
     rec.samples.push([elapsed/1000,hz]);
     rec.lastVoice=now;
     if(rec.samples.length>150)rec.samples.shift();
-  }
+  }else rec.stats.none++;
   if(now-(rec.lastDraw||0)>120){rec.lastDraw=now;draw()}
  }
  // A pause helps identify a boundary. Leave enough silence for the next syllable.
@@ -624,7 +668,7 @@ async function start(){
   if(turn!==seq){stream.getTracks().forEach(t=>t.stop());ctx.close();return}
   const source=ctx.createMediaStreamSource(stream),analyser=ctx.createAnalyser();
   analyser.fftSize=4096;analyser.smoothingTimeConstant=0;source.connect(analyser);
-  const rec={stream,ctx,source,analyser,buffer:new Float32Array(analyser.fftSize),word,samples:[],levels:[],lastTick:0,lastDraw:0,lastVoice:0,started:performance.now(),raf:0};
+  const rec={stream,ctx,source,analyser,buffer:new Float32Array(analyser.fftSize),word,samples:[],levels:[],stats:{yin:0,fallback:0,none:0},lastTick:0,lastDraw:0,lastVoice:0,started:performance.now(),raf:0};
   active=rec;status('🎙 Произнеси оба слога. Нажми «Стоп», чтобы закончить.');
   syncControls();tick(rec);
  }catch(error){
@@ -679,7 +723,7 @@ document.addEventListener('input',event=>{
  draw();
 });
 window.PandaToneTrainer={render,mount,stop:()=>{if(active)stop(false)},reset,progressText,total,diagnostics:()=>{const i=state.selected;return {word:memo?.words?.[i]?.zh||'',pinyin:memo?.words?.[i]?.py||'',selected:i,repeats:count(i),total:total(),attempt:visibleAttempt?.word===i?visibleAttempt:(state.reps[i]?.mic?.at(-1)||null)}}};
-window.PandaToneMathV2={pitchOf,estimateSplit,observedTrend,buildRecording,normalizeChartPoints,semitoneContour,isLongPitchGap};
+window.PandaToneMathV2={pitchOf,fallbackPitchOf,estimateSplit,observedTrend,buildRecording,normalizeChartPoints,semitoneContour,isLongPitchGap};
 })();
 </script>
 <script>
@@ -727,6 +771,7 @@ document.addEventListener('click',async function(ev){
    'Данные: '+(a?a.quality:'записи нет'),
    'Длительность голоса: '+(a?a.seconds.toFixed(2)+' с':'—'),
    'Точек F0: '+pts.length,
+   'Методы F0: основной '+(a?.stats?.yin??'нет')+'; запасной '+(a?.stats?.fallback??'нет')+'; без результата '+(a?.stats?.none??'нет'),
    'Граница слогов: '+Math.round(split*100)+'%'+(a?' ('+a.splitSource+')':''),
    'Слог 1: '+(pts.length?trend(pts,0,split):'—')+' ('+pts.filter(p=>p[0]<=split).length+' точек F0; '+(Array.isArray(a?.levels)&&a.levels.length>0?a.levels.filter(p=>p[0]<=split&&p[1]>=.023).length:'нет данных для старой записи')+' кадров RMS)',
    'Слог 2: '+(pts.length?trend(pts,split,1):'—')+' ('+pts.filter(p=>p[0]>=split).length+' точек F0; '+(Array.isArray(a?.levels)&&a.levels.length>0?a.levels.filter(p=>p[0]>=split&&p[1]>=.023).length:'нет данных для старой записи')+' кадров RMS)',
