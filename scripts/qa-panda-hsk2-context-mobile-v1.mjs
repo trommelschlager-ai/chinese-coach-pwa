@@ -43,6 +43,9 @@ try{
    assert.equal(await page.locator('#pg346-hear').isDisabled(),false,'The five exact user MP3s must activate the Panda playback button');
    assert.equal(await rows.last().locator('.pg346-row-audio').isDisabled(),false,'Panda history clip should also be playable');
   }
+  // Real MP3 playback, not merely a clickable audio icon. Browser click is a user gesture.
+  await page.locator('#pg346-hear').click();
+  await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pose==='talking',null,{timeout:7000});
   assert.equal(await page.locator('.pg346-panda').count(),1,'Approved Panda image must remain present');
   const image=await page.locator('.pg346-panda').evaluate(img=>({loaded:img.complete&&img.naturalWidth>0,ratio:img.naturalWidth/img.naturalHeight}));
   assert.equal(image.loaded,true,'Original Panda visual must be loaded');
