@@ -2279,9 +2279,112 @@ const pitchRow = values => '<div class="tonemarks">' + values.map(v => '<span cl
 const translate = item => '<span class="py">' + item[1] + '</span><span class="ru">' + item[2] + '</span>';
 const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' good' : '') + '" role="status">' + escape(feedback) + '</div>';
 
+const approvedLessonClips = Object.freeze({
+  "下周": {
+    "src": "./assets/hsk2-lesson7-voice/l7_01.mp3"
+  },
+  "下个月": {
+    "src": "./assets/hsk2-lesson7-voice/l7_02.mp3"
+  },
+  "打算": {
+    "src": "./assets/hsk2-lesson7-voice/l7_03.mp3"
+  },
+  "准备": {
+    "src": "./assets/hsk2-lesson7-voice/l7_04.mp3"
+  },
+  "学中文": {
+    "src": "./assets/hsk2-lesson7-voice/l7_05.mp3"
+  },
+  "去旅行": {
+    "src": "./assets/hsk2-lesson7-voice/l7_06.mp3"
+  },
+  "明天我要学中文": {
+    "src": "./assets/hsk2-lesson7-voice/l7_07.mp3"
+  },
+  "下周我打算去旅行": {
+    "src": "./assets/hsk2-lesson7-voice/l7_08.mp3"
+  },
+  "下个月我想去中国": {
+    "src": "./assets/hsk2-lesson7-voice/l7_09.mp3"
+  },
+  "我打算明天学中文": {
+    "src": "./assets/hsk2-lesson7-voice/l7_10.mp3"
+  },
+  "我准备下周去旅行": {
+    "src": "./assets/hsk2-lesson7-voice/l7_11.mp3"
+  },
+  "我明天学中文": {
+    "src": "./assets/hsk2-lesson7-voice/l7_12.mp3"
+  },
+  "我下个月想去旅行": {
+    "src": "./assets/hsk2-lesson7-voice/l7_13.mp3"
+  },
+  "我想下周去旅行": {
+    "src": "./assets/hsk2-lesson7-voice/l7_14.mp3"
+  },
+  "我准备找工作": {
+    "src": "./assets/hsk2-lesson7-voice/l7_15.mp3"
+  },
+  "我下个月想去中国": {
+    "src": "./assets/hsk2-lesson7-voice/l7_16.mp3"
+  },
+  "我明天要运动": {
+    "src": "./assets/hsk2-lesson7-voice/l7_17.mp3"
+  },
+  "你明天打算做什么": {
+    "src": "./assets/hsk2-lesson7-voice/l7_18.mp3"
+  },
+  "我打算学中文": {
+    "src": "./assets/hsk2-lesson7-voice/l7_19.mp3"
+  },
+  "我想去运动": {
+    "src": "./assets/hsk2-lesson7-voice/l7_20.mp3"
+  },
+  "我打算在家休息": {
+    "src": "./assets/hsk2-lesson7-voice/l7_21.mp3"
+  },
+  "你下个月想去哪儿": {
+    "src": "./assets/hsk2-lesson7-voice/l7_22.mp3"
+  },
+  "我想去北京": {
+    "src": "./assets/hsk2-lesson7-voice/l7_23.mp3"
+  },
+  "我想去上海": {
+    "src": "./assets/hsk2-lesson7-voice/l7_24.mp3"
+  },
+  "我下个月不打算旅行": {
+    "src": "./assets/hsk2-lesson7-voice/l7_25.mp3"
+  },
+  "你为什么想学中文": {
+    "src": "./assets/hsk2-lesson7-voice/l7_26.mp3"
+  },
+  "因为我想去中国": {
+    "src": "./assets/hsk2-lesson7-voice/l7_27.mp3"
+  },
+  "因为我想和朋友说中文": {
+    "src": "./assets/hsk2-lesson7-voice/l7_28.mp3"
+  },
+  "明天": {
+    "src": "./assets/hsk2-lesson5-voice/l5_04.mp3"
+  },
+  "想": {
+    "src": "./assets/hsk2-user-voice/20261114-words-b-v338.mp3",
+    "start": 26.87,
+    "end": 27.59
+  },
+  "我想去中国": {
+    "src": "./assets/panda-grammar-voice-v451/g028.mp3"
+  },
+  "因为我喜欢中文": {
+    "src": "./assets/hsk2-user-voice/B01-B10-20261113.mp3",
+    "start": 15.55,
+    "end": 17.93
+  }
+});
 function audioButton(text, icon = speaker) {
-  const label = 'Прослушать '+text+' · голос устройства';
-  return '<button type="button" class="orb" data-say="'+escape(text)+'" aria-label="'+escape(label)+'" title="'+escape(label)+'">'+icon+'</button>';
+  const clip = approvedLessonClips[normalize(text)];
+  const label = clip ? 'Прослушать '+text+' · запись Panda Go' : 'Запись пока не загружена: '+text;
+  return '<button type="button" class="orb'+(clip?'':' missing')+'" '+(clip?'data-say="'+escape(text)+'"':'disabled')+' aria-label="'+escape(label)+'" title="'+escape(label)+'">'+(clip?icon:'◌')+'</button>';
 }
 
 const recognitionAvailable = () => Boolean(window.SpeechRecognition || window.webkitSpeechRecognition) && window.isSecureContext;
@@ -2305,7 +2408,6 @@ function setStatus(message, good = false) {
 }
 
 function clearMedia() {
-  window.speechSynthesis?.cancel();
   cancelRecording();
   if (audio) {
     audio.pause();
@@ -2759,31 +2861,44 @@ function finish() {
 }
 
 function play(text,button) {
-  if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
-    setStatus('Синтез речи недоступен. Можно повторить по пиньиню.');
-    return;
-  }
-  const synth = window.speechSynthesis;
-  const voices = synth.getVoices();
-  const voice = voices.find(v=>/^zh[-_]CN/i.test(v.lang)) ||
-    voices.find(v=>/^zh(?:[-_]|$)/i.test(v.lang));
-  if (!voice && voices.length) {
-    setStatus('Китайский голос недоступен на устройстве. Можно повторить по пиньиню.');
-    return;
-  }
-  synth.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'zh-CN';
-  utterance.rate = .85;
-  if (voice) utterance.voice = voice;
+  const clip = approvedLessonClips[normalize(text)];
+  if (!clip) { setStatus('Для этой фразы пока нет утверждённой записи.'); return; }
+  clearMedia();
+  const player = new Audio(clip.src);
+  audio = player;
+  player.preload = 'auto';
   button.setAttribute('aria-pressed','true');
-  utterance.onend = () => button.removeAttribute('aria-pressed');
-  utterance.onerror = event => {
+  let ready = !Number.isFinite(clip.start);
+  player.muted = !ready;
+  let timer = null;
+  const done = () => {
+    if (timer !== null) { clearInterval(timer); timer=null; }
+    if (audio !== player) return;
+    player.pause(); audio = null;
     button.removeAttribute('aria-pressed');
-    if (!['canceled','interrupted'].includes(event.error))
-      setStatus('Не удалось воспроизвести китайскую речь. Повтори по пиньиню.');
   };
-  synth.speak(utterance);
+  const fail = () => {
+    if (audio !== player) return;
+    done(); setStatus('MP3 не воспроизвёлся. Проверь соединение и повтори.');
+  };
+  const seek = () => {
+    if (audio !== player || ready) return;
+    try { player.currentTime = clip.start; } catch { fail(); }
+  };
+  player.addEventListener('loadedmetadata',seek,{once:true});
+  player.addEventListener('seeked',() => {
+    if (audio === player && !ready && Math.abs(player.currentTime - clip.start) < .12) {
+      ready = true; player.muted = false;
+    }
+  });
+  if (Number.isFinite(clip.end)) timer = setInterval(() => {
+    if (audio !== player) { clearInterval(timer); timer=null; return; }
+    if (ready && player.currentTime >= clip.end) done();
+  },20);
+  player.addEventListener('error',fail,{once:true});
+  player.addEventListener('ended',done,{once:true});
+  if (player.readyState >= 1) seek();
+  try { const pending = player.play(); if (pending?.catch) pending.catch(fail); } catch { fail(); }
 }
 
 function recognize(allowed,onMatch,onMiss) {
