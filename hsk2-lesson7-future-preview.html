@@ -2168,6 +2168,8 @@ html.course-layout #app[data-view] #pg433 :is(.quiz-hero,.tones-hero)>svg.about-
   --l7-current-shadow:inset 0 0 0 2px #fff9,var(--l7-purple-pressed);
 }
 </style>
+<link rel="stylesheet" href="./assets/hsk2-unified-cover-v1.css?v=1">
+<script src="./assets/hsk2-unified-cover-v1.js?v=1"></script>
 </head>
 <body>
 <div class="app" id="app">
@@ -2634,6 +2636,8 @@ function lesson7CoverArt(className, bounds) {
 }
 
 function intro() {
+  if (courseMode) return window.PandaGoHSK2UnifiedCover({"lesson":7,"title":"Мои планы на будущее","hanzi":"我的未来计划","pinyin":"Wǒ de wèilái jìhuà","subtitle":"Расскажи о своих планах и мечтах!","summary":"Расскажи, что собираешься делать и чего хочешь достичь.","words":8,"art":"./assets/hsk2-lesson7-cover-approved-v6.webp","focus":"43%","motto":"Сколько языков ты знаешь — столько раз ты человек.","tiles":["Слова","Тесты","Грамматика","Мой рассказ","Произношение","Диалог"]});
+
   const tiles = [
     {step:2,label:'Слова',area:'words'},
     {step:3,label:'Тесты',area:'tests'},
