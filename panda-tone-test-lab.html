@@ -250,7 +250,8 @@ function readState(){
       splitRatio:finite(t.splitRatio)?Math.min(SPLIT_MAX,Math.max(SPLIT_MIN,t.splitRatio)):.5,
       splitSource:['pause','energy','manual','midpoint'].includes(t.splitSource)?t.splitSource:'midpoint',
       quality,validParts:Array.isArray(t.validParts)&&t.validParts.length===2?t.validParts.map(Boolean):[false,false],
-      voiceMs:finite(t.voiceMs)?Math.max(0,Math.min(8000,t.voiceMs)):0};
+      voiceMs:finite(t.voiceMs)?Math.max(0,Math.min(8000,t.voiceMs)):0,
+      levels:Array.isArray(t.levels)?t.levels.slice(-180).filter(p=>Array.isArray(p)&&p.length===2&&p.every(finite)&&p[0]>=0&&p[0]<=1&&p[1]>=0&&p[1]<=1):[]};
    }).filter(t=>t.points.length>=2||(t.quality==='unmeasured'&&t.voiceMs>=250));
    state.reps[i]={mic,manual:Math.max(0,Math.min(LIMIT-mic.length,Number.isInteger(item.manual)?item.manual:0))};
   }
@@ -424,7 +425,7 @@ function draw(){
   }
   ctx.stroke();ctx.setLineDash([]);
   const trend=document.getElementById('tone-trend-'+(syll+1));
-  if(trend){const measured=normalized.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo);trend.textContent=live?'🎙 Идёт запись — дождись результата после «Стоп».':(observedTrend(normalized,segmentFrom,segmentTo)+' · '+measured.length+' точек F0');}
+  if(trend){const measured=normalized.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo);const rmsFrames=Array.isArray(recent?.levels)?recent.levels.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo&&p[1]>=.023).length:null;const evidence=rmsFrames===null?'':' · '+rmsFrames+' звуковых кадров';trend.textContent=live?'🎙 Идёт запись — дождись результата после «Стоп».':(observedTrend(normalized,segmentFrom,segmentTo)+' · '+measured.length+' точек F0'+evidence);}
   if(trace.length<2)continue;
   ctx.strokeStyle='#198b70';ctx.lineWidth=3.5;
   let painted=0,prior=null;ctx.beginPath();
@@ -539,6 +540,7 @@ function buildRecording(rec){
   }
  }
  result.points=normalized;
+ result.levels=levels.filter(p=>p[0]>=from&&p[0]<=to).map(p=>[Math.min(1,Math.max(0,(p[0]-from)/span)),p[1]]).slice(-180);
  const i=result.splitRatio,first=normalized.filter(p=>p[0]<i),second=normalized.filter(p=>p[0]>=i);
  const enough=arr=>arr.length>=4&&(arr.at(-1)[0]-arr[0][0])>=.10;
  result.validParts=[enough(first),enough(second)];
@@ -726,9 +728,9 @@ document.addEventListener('click',async function(ev){
    'Длительность голоса: '+(a?a.seconds.toFixed(2)+' с':'—'),
    'Точек F0: '+pts.length,
    'Граница слогов: '+Math.round(split*100)+'%'+(a?' ('+a.splitSource+')':''),
-   'Слог 1: '+(pts.length?trend(pts,0,split):'—')+' ('+pts.filter(p=>p[0]<=split).length+' точек F0)',
-   'Слог 2: '+(pts.length?trend(pts,split,1):'—')+' ('+pts.filter(p=>p[0]>=split).length+' точек F0)',
-   'Это измерения высоты голоса, не оценка правильности произношения.'
+   'Слог 1: '+(pts.length?trend(pts,0,split):'—')+' ('+pts.filter(p=>p[0]<=split).length+' точек F0; '+(Array.isArray(a?.levels)?a.levels.filter(p=>p[0]<=split&&p[1]>=.023).length:'нет')+' кадров RMS)',
+   'Слог 2: '+(pts.length?trend(pts,split,1):'—')+' ('+pts.filter(p=>p[0]>=split).length+' точек F0; '+(Array.isArray(a?.levels)?a.levels.filter(p=>p[0]>=split&&p[1]>=.023).length:'нет')+' кадров RMS)',
+   'Звуковые кадры RMS показывают наличие сигнала; F0 — количество отсчётов высоты. Это измерения, не оценка правильности произношения.'
   ];
   const report=rows.join('\n');
   try{
