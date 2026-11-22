@@ -19,7 +19,7 @@ function unifiedCover(o){
   return '<section class="pg-ref-cover pg-ref-lesson-'+lesson+'" aria-label="HSK 2 · Урок '+lesson+' · '+esc(o.title)+'">'+
    '<div class="pg-ref-top"><div class="pg-ref-brandline">'+
       '<a href="./hsk2-start.html#map" class="pg-ref-back" aria-label="Назад к карте уроков">‹</a>'+
-      '<img class="pg-ref-brand-panda" src="./icons/icon-192.png" alt="" width="48" height="48" decoding="async">'+
+      '<img class="pg-ref-brand-panda" src="./assets/hsk2-lesson7-tone-panda-hd-v509.webp" alt="" width="48" height="48" decoding="async">'+
       '<div class="pg-ref-brandtext"><strong>Panda <em>Go</em></strong><span>Китайский с удовольствием</span></div></div>'+
       '<div class="pg-ref-progress" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="'+lesson+'" aria-label="Урок '+lesson+' из 10"><i style="width:'+lesson*10+'%"></i></div></div>'+
    '<div class="pg-ref-hero">'+
