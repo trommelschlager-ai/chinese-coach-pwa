@@ -20,9 +20,9 @@ const patterns={
 const aliases=[[/^你从哪里来$|^你来自哪儿$/,101,0],[/^你(?:现在)?住在哪儿$/,101,1],[/^你(?:每天)?几点起床$/,102,0],[/^你在哪儿工作$|^你在哪里上班$/,103,0],[/^你会讲中文吗$/,103,2],[/^你明天有空吗$/,105,0],[/^你昨天干什么了$/,106,0],[/^你明天有什么计划$/,107,0],[/^你哪里不舒服$/,109,1]];
 const BASIC=new Map([["很好","hěn hǎo","Очень хорошо."],["我很好","wǒ hěn hǎo","У меня всё хорошо."],["我也很好","wǒ yě hěn hǎo","У меня тоже всё хорошо."],["好","hǎo","Хорошо."],["还好","hái hǎo","Нормально."],["挺好的","tǐng hǎo de","Вполне хорошо."],["不错","búcuò","Неплохо."],["还不错","hái búcuò","Вполне неплохо."],["不太好","bú tài hǎo","Не очень хорошо."],["不好","bù hǎo","Плохо."],["我不好","wǒ bù hǎo","У меня не всё хорошо."],["我不太好","wǒ bú tài hǎo","У меня не очень хорошо."],["很累","hěn lèi","Очень устал(а)."],["我很累","wǒ hěn lèi","Я очень устал(а)."],["有点累","yǒudiǎn lèi","Немного устал(а)."],["很忙","hěn máng","Очень занят(а)."],["我很忙","wǒ hěn máng","Я очень занят(а)."],["很开心","hěn kāixīn","Очень рад(а)."],["很高兴","hěn gāoxìng","Очень рад(а)."],["谢谢","xièxie","Спасибо!"],["谢谢你","xièxie nǐ","Спасибо тебе!"],["非常感谢","fēicháng gǎnxiè","Большое спасибо!"],["多谢","duōxiè","Большое спасибо!"],["不客气","bú kèqi","Пожалуйста (в ответ на благодарность)."],["没关系","méi guānxi","Ничего страшного."],["对不起","duìbuqǐ","Извини."],["不好意思","bù hǎoyìsi","Извини, неловко."],["是","shì","Да; быть."],["是的","shì de","Да."],["对","duì","Верно."],["不是","bú shì","Нет, не так."],["不","bù","Нет; не."],["有","yǒu","Есть."],["没有","méiyǒu","Нет; не имеется."],["会","huì","Умею."],["不会","bú huì","Не умею."],["可以","kěyǐ","Можно; могу."],["不可以","bù kěyǐ","Нельзя."],["喜欢","xǐhuan","Нравится."],["不喜欢","bù xǐhuan","Не нравится."],["想","xiǎng","Хочу."],["不想","bù xiǎng","Не хочу."],["有空","yǒu kòng","Есть свободное время."],["没空","méi kòng","Нет свободного времени."],["吃了","chī le","Уже поел(а)."],["没吃","méi chī","Не ел(а)."],["我还没吃","wǒ hái méi chī","Я ещё не ел(а)."],["我知道","wǒ zhīdào","Я знаю."],["不知道","bù zhīdào","Не знаю."],["我不知道","wǒ bù zhīdào","Я не знаю."],["我明白了","wǒ míngbai le","Я понял(а)."],["明白了","míngbai le","Понятно."],["不明白","bù míngbai","Не понимаю."],["听不懂","tīng bu dǒng","Не понимаю на слух."],["我也是","wǒ yě shì","Я тоже."],["你呢","nǐ ne","А ты?"],["再见","zàijiàn","До свидания!"],["明天见","míngtiān jiàn","До завтра!"],["好啊","hǎo a","Хорошо!"],["好的","hǎo de","Хорошо."],["当然","dāngrán","Конечно."],["你好吗","nǐ hǎo ma","Как дела?"],["你今天怎么样","nǐ jīntiān zěnmeyàng","Как у тебя сегодня дела?"],["你叫什么名字","nǐ jiào shénme míngzi","Как тебя зовут?"],["你喜欢喝什么","nǐ xǐhuan hē shénme","Что ты любишь пить?"],["你吃了吗","nǐ chī le ma","Ты уже поел(а)?"],["你吃饭了吗","nǐ chīfàn le ma","Ты уже поел(а)?"]].map(a=>[norm(a[0]),a]));
 // Discourse markers are not demonstratives: preserve 那个人, 那本书, 那里.
-const DISCOURSE={那:['Nà','Ну а'],那么:['Nàme','Тогда'],对了:['Duì le','Кстати,'],请问:['Qǐngwèn','Скажи, пожалуйста,']};
+const DISCOURSE={顺便说一下:['Shùnbiàn shuō yíxià','Кстати,'],顺便问一下:['Shùnbiàn wèn yíxià','Кстати,'],顺便问一句:['Shùnbiàn wèn yí jù','Кстати,'],那:['Nà','Ну а'],那么:['Nàme','Тогда'],对了:['Duì le','Кстати,'],请问:['Qǐngwèn','Скажи, пожалуйста,']};
 function discourse(raw){
- const m=String(raw||'').trim().match(/^(那么|那|对了|请问)[，、,：:\s]*(?=(?:你|您|我|我们|他|她|现在|今天|明天|昨天|周末|这|怎么|为什么|什么|几点|哪里|哪儿|可以|能不能|是不是|有没有))(.+)$/u);
+ const m=String(raw||'').trim().match(/^(顺便说一下|顺便问一下|顺便问一句|那么|那|对了|请问)[，、,：:\s]*(?=(?:你|您|我|我们|他|她|现在|今天|明天|昨天|周末|这|怎么|为什么|什么|几点|哪里|哪儿|可以|能不能|是不是|有没有))(.+)$/u);
  return m?{key:m[1],body:m[2]}:null;
 }
 function restoreDiscourse(raw,d,spoken){
@@ -55,7 +55,7 @@ export function knownHSK2(raw){
  }
  if(a)return line([raw,a[1],a[2]]);
  const d=discourse(raw);if(d){const restored=restoreDiscourse(raw,d,knownHSK2(d.body));if(restored)return restored;}
- return hobbyStatement(raw)?.spoken||intentionQuestion(raw)?.spoken||null;
+ return hobbyStatement(raw)?.spoken||intentionQuestion(raw)?.spoken||everydayAspect(raw,null)?.spoken||null;
 }
 const R={
  activity:['你今天做什么？','Nǐ jīntiān zuò shénme?','Что ты сегодня делаешь?'],
@@ -148,6 +148,44 @@ const PREFERENCES={
  吃竹子:['chī zhúzi','есть бамбук','我喜欢吃竹子。','Wǒ xǐhuan chī zhúzi.','Я люблю есть бамбук.'],
  汉字:['Hànzì','китайские иероглифы','喜欢，我喜欢汉字。','Xǐhuan, wǒ xǐhuan Hànzì.','Да, мне нравятся китайские иероглифы.']
 };
+// Bounded compositional questions; preserve aspect and the learner's original wording.
+const POSSESSION={
+ 女朋友:['nǚpéngyou','девушка','我没有女朋友。','Wǒ méiyǒu nǚpéngyou.','У меня нет девушки.'],
+ 男朋友:['nánpéngyou','парень','我没有男朋友。','Wǒ méiyǒu nánpéngyou.','У меня нет парня.'],
+ 哥哥:['gēge','старший брат','我没有哥哥。','Wǒ méiyǒu gēge.','У меня нет старшего брата.'],
+ 姐姐:['jiějie','старшая сестра','我没有姐姐。','Wǒ méiyǒu jiějie.','У меня нет старшей сестры.'],
+ 弟弟:['dìdi','младший брат','没有，我没有弟弟。','Méiyǒu, wǒ méiyǒu dìdi.','Нет, у меня нет младшего брата.'],
+ 妹妹:['mèimei','младшая сестра','我有一个妹妹。','Wǒ yǒu yí ge mèimei.','У меня есть младшая сестра.']
+};
+function everydayAspect(raw,context){
+ const k=norm(raw),reply=(a,py,ru,awaiting)=>({kind:'social',line:line(a),spoken:line([raw,py,ru]),context:{...context,awaiting,lastClarification:null}});
+ const a=k.match(/^你(?:有没有(.+)|有(.+)吗)$/u);
+ if(a){
+ const v=POSSESSION[a[1]||a[2]];
+ if(v)return reply(v.slice(2),'Nǐ '+(a[1]?'yǒu méiyǒu ':'yǒu ')+v[0]+(a[2]?' ma?':'?'),'У тебя есть '+v[1]+'?', 'possession');
+ }
+ const m=k.match(/^你(昨天|今天|今天早上|早上|刚才)?(吃|喝|买|做|看)了什么(?:东西|呢|啊)?$/u);
+ if(m){
+ const time={'':['',''],昨天:['zuótiān','вчера'],今天:['jīntiān','сегодня'],今天早上:['jīntiān zǎoshang','сегодня утром'],早上:['zǎoshang','утром'],刚才:['gāngcái','только что']}[m[1]||''];
+ const verb={
+ 吃:['chī','съел(а)',['我吃了竹子。','Wǒ chī le zhúzi.','Я поела бамбука.'],'food'],
+ 喝:['hē','выпил(а)',['我喝了两杯茶。','Wǒ hē le liǎng bēi chá.','Я выпила две чашки чая.'],'drink'],
+ 买:['mǎi','купил(а)',['我买了一本书。','Wǒ mǎi le yì běn shū.','Я купила книгу.'],'shopping'],
+ 做:['zuò','делал(а)',['我昨天听了音乐。','Wǒ zuótiān tīng le yīnyuè.','Вчера я слушала музыку.'],'activity'],
+ 看:['kàn','посмотрел(а)',['我昨天看了电影。','Wǒ zuótiān kàn le diànyǐng.','Вчера я посмотрела фильм.'],'activity']
+ }[m[2]];
+ // Do not assert yesterday in reply to a different time.
+ let ans=verb[2];if(m[2]==='做'||m[2]==='看')if(m[1]!=='昨天')ans=m[2]==='做'?['我听了音乐。','Wǒ tīng le yīnyuè.','Я послушала музыку.']:['我看了电影。','Wǒ kàn le diànyǐng.','Я посмотрела фильм.'];
+ const end=k.endsWith('东西')?' dōngxi':k.endsWith('呢')?' ne':k.endsWith('啊')?' a':'';
+ return reply(ans,['Nǐ',time[0],verb[0],'le','shénme'+end+'?'].filter(Boolean).join(' '),'Что ты '+[time[1],verb[1]].filter(Boolean).join(' ')+'?',verb[3]);
+ }
+ if(/^(?:你还好吗|你最近还好吗|你最近怎么样|你最近好吗)$/.test(k)){
+ const py={你还好吗:'Nǐ hái hǎo ma?',你最近还好吗:'Nǐ zuìjìn hái hǎo ma?',你最近怎么样:'Nǐ zuìjìn zěnmeyàng?',你最近好吗:'Nǐ zuìjìn hǎo ma?'}[k];
+ return reply(['我很好，你呢？','Wǒ hěn hǎo, nǐ ne?','У меня всё хорошо, а у тебя?'],py,k==='你还好吗'?'У тебя всё хорошо?':'Как у тебя дела в последнее время?','mood');
+ }
+ return null;
+}
+
 function spokenEveryday(raw,context){
  const k=norm(raw);
  const say=(a,py,ru,awaiting,more={})=>({kind:'social',line:line(a),spoken:line([raw,py,ru]),context:{...context,awaiting,lastClarification:null},...more});
@@ -160,10 +198,10 @@ function spokenEveryday(raw,context){
   const a=context?.lastPreference==='music'?['我喜欢看书。','Wǒ xǐhuan kàn shū.','Я люблю читать.']:['我喜欢听音乐。','Wǒ xǐhuan tīng yīnyuè.','Я люблю слушать музыку.'];
   const result=say(a,py,ru,'likes');result.context.lastPreference=context?.lastPreference==='music'?'reading':'music';return result;
  }
- const m=k.match(/^你(?:(喜欢|爱)(.+)吗|(喜不喜欢|爱不爱)(.+))$/u);
+ const m=k.match(/^你(?:(喜欢|爱)(.+)吗|(喜欢不喜欢|喜不喜欢|爱不爱)(.+))$/u);
  if(m){
   const key=m[2]||m[4],v=PREFERENCES[key];if(v){
-   const py=m[1]?('Nǐ '+(m[1]==='爱'?'ài':'xǐhuan')+' '+v[0]+' ma?'):('Nǐ '+(m[3]==='爱不爱'?'ài bu ài':'xǐ bu xǐhuan')+' '+v[0]+'?');
+   const py=m[1]?('Nǐ '+(m[1]==='爱'?'ài':'xǐhuan')+' '+v[0]+' ma?'):('Nǐ '+(m[3]==='爱不爱'?'ài bu ài':m[3]==='喜欢不喜欢'?'xǐhuan bu xǐhuan':'xǐ bu xǐhuan')+' '+v[0]+'?');
    return say(v.slice(2),py,'Тебе нравится '+v[1]+'?','likes');
   }
  }
@@ -194,6 +232,7 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const spoken=restoreDiscourse(raw,d,out.spoken||out.answer||knownHSK2(d.body));return {...out,...(spoken?{spoken}:{}),...(out.kind==='accepted'&&spoken?{answer:spoken}:{})};}
  return out;}
  const input=norm(raw);
+ const aspect=everydayAspect(raw,context);if(aspect)return aspect;
  const early=spokenEveryday(raw,context);if(early)return early;
  const everyday=everydayShort(raw,context);if(everyday)return everyday;
  if(foodQuestion.test(input)){

@@ -1,6 +1,6 @@
 /* Panda AI v346. Clean responsive user-approved screen.
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
-import {lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=508';
+import {lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=511';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {PANDA_V411_VOICE} from './panda-voice-v411.mjs?v=411';
@@ -359,8 +359,8 @@ if (!bridge) {
     live.textContent=s.active?(/Речь закончилась|Завершаю распознавание/.test(s.status||'')?'⏳ Распознаю речь…':'🎙 Слушаю китайскую речь…'):pandaSpeaking?'🔊 Панда говорит':showingAssessment?assessmentText:'';
     const back=document.getElementById('back-link');if(back)$('a.pg346-back').href=back.href;
   }
-  function closeTopics(){$('#pg346-topics').hidden=true;$('#pg346-topics-btn').setAttribute('aria-expanded','false');showTopicList()}
-  function toggleTopics(){const pop=$('#pg346-topics');pop.hidden=!pop.hidden;$('#pg346-topics-btn').setAttribute('aria-expanded',String(!pop.hidden));if(!pop.hidden){showTopicList();renderTopics(bridge.snapshot());$('#pg346-topics-close').focus()}}
+  function closeTopics(){stage.dataset.topicsOpen='false';$('#pg346-topics').hidden=true;$('#pg346-topics-btn').setAttribute('aria-expanded','false');showTopicList()}
+  function toggleTopics(){const pop=$('#pg346-topics');pop.hidden=!pop.hidden;stage.dataset.topicsOpen=String(!pop.hidden);$('#pg346-topics-btn').setAttribute('aria-expanded',String(!pop.hidden));if(!pop.hidden){showTopicList();renderTopics(bridge.snapshot());$('#pg346-topics-close').focus()}}
   function send(){const inp=$('#pg346-input');const value=inp.value.trim();if(!value){inp.focus();return}stopHistoryAudio();closeTopics();inp.value='';bridge.send(value);sync()}
   function toggle(which){if(which==='py'){showPy=!showPy;stage.dataset.py=String(showPy);$('#pg346-py').setAttribute('aria-pressed',String(showPy))}else{showRu=!showRu;stage.dataset.ru=String(showRu);$('#pg346-ru').setAttribute('aria-pressed',String(showRu))}}
   $('#pg346-form').addEventListener('submit',e=>{e.preventDefault();send()});$('#pg346-send').addEventListener('click',send);$('#pg346-mic').addEventListener('click',()=>{stopHistoryAudio();bridge.mic();sync()});
