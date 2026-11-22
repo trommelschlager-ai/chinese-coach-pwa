@@ -424,7 +424,7 @@ function draw(){
   }
   ctx.stroke();ctx.setLineDash([]);
   const trend=document.getElementById('tone-trend-'+(syll+1));
-  if(trend)trend.textContent=live?'🎙 Идёт запись — дождись результата после «Стоп».':observedTrend(normalized,segmentFrom,segmentTo);
+  if(trend){const measured=normalized.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo);trend.textContent=live?'🎙 Идёт запись — дождись результата после «Стоп».':(observedTrend(normalized,segmentFrom,segmentTo)+' · '+measured.length+' точек F0');}
   if(trace.length<2)continue;
   ctx.strokeStyle='#198b70';ctx.lineWidth=3.5;
   let painted=0,prior=null;ctx.beginPath();
@@ -517,7 +517,7 @@ function buildRecording(rec){
  const validSound=voiced.length>=5&&duration>=.24;
  const points=(rec.samples||[]).filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1])&&p[1]>=70&&p[1]<=600);
  const result={word:rec.word,points:[],seconds:Math.max(0,duration),splitRatio:.5,
-  splitSource:'midpoint',voiceMs:voiced.length*45,quality:'unmeasured',validParts:[false,false]};
+  splitSource:'midpoint',voiceMs:voiced.length*30,quality:'unmeasured',validParts:[false,false]};
  if(!validSound)return {accepted:false,entry:result,message:'Слишком мало звука для попытки. Повтори слово ближе к микрофону.'};
  const speechPoints=points.filter(p=>p[0]>=from-.08&&p[0]<=to+.08).slice(-120);
  const span=Math.max(.001,duration);
@@ -582,7 +582,7 @@ function tick(rec){
  if(active!==rec)return;
  const now=performance.now(),elapsed=now-rec.started;
  if(elapsed>8000){stop(true);return}
- if(now-rec.lastTick>=45){
+ if(now-rec.lastTick>=30){
   rec.lastTick=now;
   rec.analyser.getFloatTimeDomainData(rec.buffer);
   const rms=voiceRms(rec.buffer);
@@ -726,8 +726,8 @@ document.addEventListener('click',async function(ev){
    'Длительность голоса: '+(a?a.seconds.toFixed(2)+' с':'—'),
    'Точек F0: '+pts.length,
    'Граница слогов: '+Math.round(split*100)+'%'+(a?' ('+a.splitSource+')':''),
-   'Слог 1: '+(pts.length?trend(pts,0,split):'—'),
-   'Слог 2: '+(pts.length?trend(pts,split,1):'—'),
+   'Слог 1: '+(pts.length?trend(pts,0,split):'—')+' ('+pts.filter(p=>p[0]<=split).length+' точек F0)',
+   'Слог 2: '+(pts.length?trend(pts,split,1):'—')+' ('+pts.filter(p=>p[0]>=split).length+' точек F0)',
    'Это измерения высоты голоса, не оценка правильности произношения.'
   ];
   const report=rows.join('\n');
