@@ -1,0 +1,21 @@
+name: HSK2 approved full-cover assets
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'assets/hsk2-approved-cover.*'
+      - 'assets/hsk2-approved-covers/**'
+      - 'hsk2-*.html'
+      - 'tests/hsk2-approved-art-check.py'
+      - '.github/workflows/hsk2-approved-assets.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-images-and-lesson-links:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require all ten approved full-resolution images and their checksum
+        run: python3 tests/hsk2-approved-art-check.py
