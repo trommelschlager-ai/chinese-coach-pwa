@@ -136,7 +136,7 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
     {n:4,name:'Моё хобби',cn:'我的爱好',desc:'Расскажи об увлечениях и выходных',href:'./hsk2-lesson4-hobby-preview.html',art:'hobby',done:!!mainProgress[3]},
     {n:5,name:'Друзья и встречи',cn:'朋友与见面',desc:'Приглашай друзей и договаривайся о встрече',href:'./hsk2-lesson5-friends-v2.html?rev=20261121',art:'friends',done:!!mainProgress[4]},
     {n:6,name:'Вчера и мой опыт',cn:'昨天和我的经历',desc:'Расскажи о вчерашнем дне и своём опыте',href:'./hsk2-lesson6-yesterday-preview.html?v=4',art:'yesterday',done:!!mainProgress[5]},
-    {n:7,name:'Мои планы на будущее',cn:'我的未来计划',desc:'Учёба, работа, путешествия и планы',href:'./hsk2-lesson7-future-preview.html?cover=v6',art:'future',preview:true,done:false}
+    {n:7,name:'Мои планы на будущее',cn:'我的未来计划',desc:'Учёба, работа, путешествия и планы',href:'./hsk2-lesson7-future-preview.html?cover=v6&rev=approved7',art:'future',done:!!mainProgress[6]}
   ];
   const cards=coreLessons.map(lesson=>
     '<a class="pgc-feature-card pgc-feature-'+lesson.art+'" href="'+lesson.href+'" aria-label="Урок '+lesson.n+': '+esc(lesson.name)+(lesson.done?'. Пройден. Повторить':'. Открыть')+'">'+
@@ -172,7 +172,7 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
   return '<section id="pg433" class="pg433-root pg433-map pgc-catalog">'+
    '<header class="pg433-header"><div class="pg433-topline">'+
      '<div class="pg433-title"><small>PANDA GO · КУРС HSK 2</small><strong>Все уроки</strong></div>'+
-     '<span class="pg433-pill">'+coreLessons.length+' уроков <span aria-hidden="true">✦</span> 6 готовых</span>'+
+     '<span class="pg433-pill">'+coreLessons.length+' уроков <span aria-hidden="true">✦</span> '+coreLessons.filter(lesson=>!lesson.preview).length+' готовых</span>'+
    '</div></header>'+
    '<main class="pg433-content">'+
      '<div class="pgc-hero"><div class="pgc-hero-copy"><span class="pgc-hero-eyebrow">ТВОЙ ПУТЬ К КИТАЙСКОМУ</span>'+
