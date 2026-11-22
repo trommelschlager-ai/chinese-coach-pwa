@@ -136,8 +136,8 @@
   outline:3px solid #8c36bb;outline-offset:2px;
 }
 #app #pg433.pgc-catalog .pgc-feature-art{
-  display:block;width:84px;height:91px;flex:none;border-radius:16px;
-  background:#efd8fc center / cover no-repeat;border:2px solid #fff7f1;
+  display:block;width:84px;height:84px;flex:none;border-radius:16px;
+  background:#f0dff7 center / contain no-repeat;border:2px solid #fff7f1;
   box-shadow:0 4px 7px #9c58a34d,0 0 0 1px #e1bbe6;
 }
 #app #pg433.pgc-catalog .pgc-art-about{
@@ -270,7 +270,7 @@
  #app #pg433.pgc-catalog .pgc-hero{padding:12px 99px 12px 12px;min-height:120px}
  #app #pg433.pgc-catalog .pgc-hero-panda{width:96px;height:96px}
  #app #pg433.pgc-catalog a.pgc-feature-card{grid-template-columns:70px minmax(0,1fr) 30px;gap:8px;padding:7px;min-height:105px}
- #app #pg433.pgc-catalog .pgc-feature-art{width:70px;height:84px}
+ #app #pg433.pgc-catalog .pgc-feature-art{width:70px;height:70px}
  #app #pg433.pgc-catalog .pgc-feature-action{width:29px;height:29px}
  #app #pg433.pgc-catalog .pgc-feature-text strong{font-size:21px!important}
  #app #pg433.pgc-catalog .pg433-map-card.pgc-topic-card{grid-template-columns:39px minmax(0,1fr) 39px 9px;gap:7px!important;padding:8px 7px!important}
@@ -301,7 +301,7 @@
   padding: 14px;
   font-weight: 800;
 }
-#pg433 .pgc-grammar > summary {
+#pg433 .pgc-grammar-link {
   display: grid;
   grid-template-columns: 39px minmax(0, 1fr) 13px;
   align-items: center;
@@ -315,10 +315,10 @@
   font-size: clamp(1rem, 4.6vw, 1.25rem);
   text-shadow: 0 1px 2px #502166;
   box-shadow: inset 0 1px #f9c9fa, 0 4px 0 #713093, 0 7px 13px #85479742;
-  list-style: none;
+  text-decoration: none;
+  margin: 16px 0;
 }
-#pg433 .pgc-grammar > summary::-webkit-details-marker { display: none; }
-#pg433 .pgc-grammar > summary span {
+#pg433 .pgc-grammar-link span {
   display: grid;
   place-items: center;
   height: 39px;
@@ -326,18 +326,16 @@
   border-radius: 12px;
   background: #fff3fb;
 }
-#pg433 .pgc-grammar > summary::after {
+#pg433 .pgc-grammar-link::after {
   content: "";
   width: 8px;
   height: 8px;
   border: solid #ffe4a6;
   border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
 }
-#pg433 .pgc-grammar[open] > summary { margin-bottom: 12px; }
-#pg433 .pgc-grammar[open] > summary::after { transform: rotate(225deg); }
-#pg433 .pgc-grammar > summary:active { transform: translateY(2px); }
-#pg433 .pgc-grammar > summary:focus-visible { outline: 3px solid #692292; outline-offset: 3px; }
+#pg433 .pgc-grammar-link:active { transform: translateY(2px); }
+#pg433 .pgc-grammar-link:focus-visible { outline: 3px solid #692292; outline-offset: 3px; }
 #pg433 .pgc-grammar-lessons { padding: 0 10px 12px; }
 #pg433 .pgc-grammar-lesson {
   margin: 6px 0;
@@ -358,3 +356,17 @@
 #pg433 .pgc-grammar-rule strong { font-size: 1.16rem; }
 #pg433 .pgc-grammar-pinyin { color: #704580; }
 #pg433 .pgc-grammar audio { display: block; width: 100%; margin-top: 8px; }
+
+#app #pg433.pgc-grammar-page .pgc-grammar { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
+#app #pg433.pgc-grammar-page .pg433-footer { grid-template-columns: 1fr; }
+#app #pg433.pgc-grammar-page .pgc-grammar-back {
+  display: grid;
+  place-items: center;
+  min-height: 48px;
+  border: 1px solid #d8afe5;
+  border-radius: 16px;
+  background: #fff8ff;
+  color: #692292;
+  font-weight: 800;
+  text-decoration: none;
+}

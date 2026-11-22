@@ -243,8 +243,8 @@ function mainLessonProgress(){
     fullEightWordLesson('panda-go-hsk2-relationships-lesson10-v1')
   ];
 }
-function viewMap(){
- if(window.PandaGoStoryboardV433)return window.PandaGoStoryboardV433.mapView(topics,state.completed,state.catalogExpanded,mainLessonProgress());
+function viewMap(grammarPage=false){
+ if(window.PandaGoStoryboardV433)return window.PandaGoStoryboardV433.mapView(topics,state.completed,state.catalogExpanded,mainLessonProgress(),grammarPage);
  const counts=topics.map(function(t,i){return [0,1,2].filter(function(m){return state.completed.includes(i*3+m)}).length});
  return '<section class="approved-stage approved-map-screen" style="--approved-image:url(./assets/approved-course-v390/course-map.png)" aria-label="Карта курса: десять тем, 30 мини-уроков"><div class="approved-art">'+
  '<img src="./assets/approved-course-v390/course-map.png" alt="Panda Go: десять жизненных тем — мой распорядок дня, работа, хобби, город, транспорт, кафе, покупки, встречи, опыт, планы. Все темы открываются по нажатию." width="941" height="1672" decoding="async" draggable="false">'+
@@ -397,7 +397,7 @@ function render(){
  var dialogueBefore=preserve?screen.querySelector('.pg415-dialogue-panel'):null;
  var savedExamY=examBefore?examBefore.scrollTop:0;
  var savedDialogueY=dialogueBefore?dialogueBefore.scrollTop:0;
- var html=state.view==='welcome'?viewWelcome():state.view==='map'?viewMap():state.view==='topic'?viewTopic():state.view==='lesson'?viewLesson():state.view==='done'?viewDone():state.view==='review'?viewReview():state.view==='tones'?viewTones():viewExam();
+ var html=state.view==='welcome'?viewWelcome():state.view==='grammar'?viewMap(true):state.view==='map'?viewMap():state.view==='topic'?viewTopic():state.view==='lesson'?viewLesson():state.view==='done'?viewDone():state.view==='review'?viewReview():state.view==='tones'?viewTones():viewExam();
  if(state.view==='topic' && state.topic===6){
  html += '<aside class="pg-shop8-preview" style="margin:10px;padding:13px;border-radius:18px;background:linear-gradient(145deg,#fff6fa,#f7ddff);border:2px solid #eac0f4;box-shadow:0 4px 10px #7d3a8540;text-align:center">'+
   '<strong style="display:block;margin-bottom:7px;color:#601b7f">🛍️ HSK 2 · Урок 8 — В магазине</strong>'+
@@ -409,7 +409,7 @@ screen.innerHTML=html;
  var app=document.getElementById('app');
  app.classList.toggle('show-approved-welcome',state.view==='welcome');
  app.classList.toggle('approved-welcome-v390',state.view==='welcome');
- app.classList.toggle('approved-map-v390',state.view==='map');
+ app.classList.toggle('approved-map-v390',state.view==='map'||state.view==='grammar');
   app.classList.toggle('course-practice-active',state.view==='lesson'&&state.topic!==0);
  var isDayLesson=state.view==='lesson'&&dayPilot(),isDayDone=state.view==='done'&&state.topic===0;
  app.classList.toggle('day-lesson-active',isDayLesson);
@@ -572,6 +572,7 @@ try {
  var params=new URLSearchParams(window.location.search);
  if(params.get('start')==='1'){openFirstLesson(1);return;}
  if(params.get('view')==='map')state.view='map';
+ if(params.get('view')==='grammar'){state.view='grammar';document.title='Грамматика HSK 2 · Panda Go';}
  if(params.get('view')==='welcome')state.view='welcome';
  // Panda AI -> the exact mini-lesson completion screen the student left.
  // Query values are fixed and validated; other courses keep their own routing.

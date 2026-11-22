@@ -126,7 +126,7 @@ function miniPreview(state){const m=modules[state.mini],index=state.mini;
 function done(state,sound,link){const d=state.day||{};
  return '<section id="pg433" class="pg433-root pg433-done">'+chrome({...state,stage:4,day:{...d,pg433HighestStage:4}},12,'',state.mini)+'<main class="pg433-content"><h2>🐼 Panda AI · разговор</h2><p class="pg433-hint">Первый мини-урок пройден. Теперь ответь Панде самостоятельно.</p><div class="pg433-panel"><h3>🎙 Панда спрашивает</h3>'+[['你几点起床？','Nǐ jǐ diǎn qǐchuáng?','Во сколько ты встаёшь?'],['你早上做什么？','Nǐ zǎoshang zuò shénme?','Что ты делаешь утром?']].map(q=>'<div class="pg433-sentence">'+audio({sound},q[0])+'<div>'+word(q[0])+'<span class="pg433-py">'+esc(q[1])+'</span><small>'+esc(q[2])+'</small></div></div>').join('')+'</div><a class="pg433-ai-link" href="'+esc(link)+'">🎙 Открыть Panda AI для ответа →</a><p class="pg433-note">Речь и текст проверяются в настоящей Panda AI. Одна лишь транскрипция не доказывает правильность тонов.</p></main><footer class="pg433-footer"><button class="pg433-secondary" data-repeat>↻ Повторить</button><button class="pg433-primary" data-next-mini>Следующий мини-урок →</button></footer></section>';
 }
-function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
+function mapView(topics,completed,expandedTopic=null,mainProgress=[],grammarPage=false){
   // Visual-only course catalog refresh. Do not change topic IDs, localStorage progress, routes or lesson engines.
   const safeDone=Array.isArray(completed)?completed:[];
   const coreLessons=[
@@ -173,6 +173,7 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
         '<span class="pgc-topic-chevron" aria-hidden="true">'+(expanded?'⌃':'⌄')+'</span>'+
       '</button>'+miniCards+'</div>';
   }).join('');
+  if(grammarPage){
   const grammar=(window.PandaHSK2GrammarReview||[]).map((rules,i)=>{
     const lesson=coreLessons[i];
     const label=lesson.preview?' · Предпросмотр':lesson.done?' · Пройден':'';
@@ -187,6 +188,13 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
     return '<details class="pgc-grammar-lesson" name="pgc-grammar-lessons"><summary>'+
       'Урок '+lesson.n+' · '+esc(lesson.name)+'<small>'+label+'</small></summary>'+examples+'</details>';
   }).join('');
+  return '<section id="pg433" class="pg433-root pg433-map pgc-catalog pgc-grammar-page">'+
+    '<header class="pg433-header"><div class="pg433-topline"><div class="pg433-title">'+
+    '<small>PANDA GO · КУРС HSK 2</small><strong>Грамматика HSK 2</strong></div></div></header>'+
+    '<main class="pg433-content pgc-grammar"><div class="pgc-grammar-lessons">'+grammar+'</div></main>'+
+    '<footer class="pg433-footer"><a class="pg433-secondary pgc-grammar-back" href="?view=map">← К урокам</a></footer>'+
+    '</section>';
+  }
   return '<section id="pg433" class="pg433-root pg433-map pgc-catalog">'+
    '<header class="pg433-header"><div class="pg433-topline">'+
      '<div class="pg433-title"><small>PANDA GO · КУРС HSK 2</small><strong>Все уроки</strong></div>'+
@@ -200,8 +208,7 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
      '<div class="pgc-section-head"><span class="pgc-section-emoji" aria-hidden="true">📚</span>'+
        '<div><h2>Основные уроки</h2><p>От знакомства до планов на будущее</p></div></div>'+
      '<div class="pgc-feature-list">'+cards+'</div>'+
-     '<details class="pgc-grammar" id="grammar"><summary><span aria-hidden="true">📖</span> Грамматика HSK 2</summary>'+
-       '<div class="pgc-grammar-lessons">'+grammar+'</div></details>'+
+     '<a class="pgc-grammar-link" href="?view=grammar"><span aria-hidden="true">📖</span> Грамматика HSK 2</a>'+
      (topicsMarkup?'<div class="pgc-topic-list">'+topicsMarkup+'</div>':'')+
      '<p class="pgc-endnote">Твой прогресс сохраняется на этом устройстве ✨</p>'+
    '</main>'+
