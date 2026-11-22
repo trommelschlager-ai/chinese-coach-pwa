@@ -355,7 +355,7 @@ function estimateSplit(rawPoints,levels){
   const center=(t1+t2)/2,g=t2-t1;
   if(center>.32&&center<.68&&g>gap){gap=g;at=center}
  }
- if(gap>=.16&&gap*span>=.13)return {ratio:Math.max(SPLIT_MIN,Math.min(SPLIT_MAX,at)),source:'pause'};
+ if(gap>=.10&&gap*span>=.07)return {ratio:Math.max(SPLIT_MIN,Math.min(SPLIT_MAX,at)),source:'pause'};
  // Look for a smoothed valley in the short-term energy envelope.
  const e=(levels||[]).filter(x=>Array.isArray(x)&&finite(x[0])&&finite(x[1])&&x[0]>=from&&x[0]<=to);
  const valid=e.filter(x=>x[1]>.009).map(x=>x[1]);
