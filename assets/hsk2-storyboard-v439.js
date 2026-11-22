@@ -136,7 +136,10 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
     {n:4,name:'Моё хобби',cn:'我的爱好',desc:'Расскажи об увлечениях и выходных',href:'./hsk2-lesson4-hobby-preview.html',art:'hobby',done:!!mainProgress[3]},
     {n:5,name:'Друзья и встречи',cn:'朋友与见面',desc:'Приглашай друзей и договаривайся о встрече',href:'./hsk2-lesson5-friends-v2.html?rev=20261121',art:'friends',done:!!mainProgress[4]},
     {n:6,name:'Вчера и мой опыт',cn:'昨天和我的经历',desc:'Расскажи о вчерашнем дне и своём опыте',href:'./hsk2-lesson6-yesterday-preview.html?v=4',art:'yesterday',done:!!mainProgress[5]},
-    {n:7,name:'Мои планы на будущее',cn:'我的未来计划',desc:'Учёба, работа, путешествия и планы',href:'./hsk2-lesson7-future-preview.html?cover=v6&rev=approved7',art:'future',done:!!mainProgress[6]}
+    {n:7,name:'Мои планы на будущее',cn:'我的未来计划',desc:'Учёба, работа, путешествия и планы',href:'./hsk2-lesson7-future-preview.html?cover=v6&rev=approved7',art:'future',done:!!mainProgress[6]},
+    {n:8,name:'В магазине',cn:'在商店',desc:'Покупки, цены и выбор товаров',href:'./hsk2-lesson8-shop-preview.html?rev=shop8-layout-v4',art:'shop',preview:true,done:!!mainProgress[7]},
+    {n:9,name:'Здоровье и самочувствие',cn:'健康和身体状况',desc:'Расскажи о здоровье и самочувствии',href:'./hsk2-lesson9-health-preview.html',art:'health',preview:true,done:!!mainProgress[8]},
+    {n:10,name:'Любовь и отношения',cn:'恋爱与相处',desc:'Знакомство, чувства и отношения',href:'./hsk2-lesson10-relationships-preview.html',art:'relationships',preview:true,done:!!mainProgress[9]}
   ];
   const cards=coreLessons.map(lesson=>
     '<a class="pgc-feature-card pgc-feature-'+lesson.art+'" href="'+lesson.href+'" aria-label="Урок '+lesson.n+': '+esc(lesson.name)+(lesson.done?'. Пройден. Повторить':'. Открыть')+'">'+
