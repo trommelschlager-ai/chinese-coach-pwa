@@ -76,7 +76,19 @@ try{
   assert.equal(image.loaded,true,'Original Panda visual must be loaded');
   assert(!errors.length,'Browser JS errors: '+JSON.stringify(errors));
   await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-after-five-phrases.png',fullPage:false,animations:'disabled'});
-  console.log('PASS mobile browser '+width+'px: 5 learner turns + translations + approved Panda intact');
+  // Why-comedies must be a meaningful fourth movie turn, not a false speech error.
+  await page.locator('#pg346-send').click();
+  await page.locator('#pg346-input').fill('你为什么喜欢喜剧片？');
+  await page.locator('#pg346-send').click();
+  await page.waitForFunction(()=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent==='因为喜剧片很好笑。',null,{timeout:8000});
+  const whyRows=page.locator('#pg346-rows .pg346-row');
+  assert.equal(await whyRows.last().locator('.pg346-py').textContent(),'Yīnwèi xǐjùpiàn hěn hǎoxiào.');
+  assert.equal(await whyRows.last().locator('.pg346-ru').textContent(),'Потому что комедии очень смешные.');
+  assert.equal(await whyRows.nth((await whyRows.count())-2).locator('.pg346-py').textContent(),'Nǐ wèishénme xǐhuan xǐjùpiàn?');
+  assert.equal(await whyRows.nth((await whyRows.count())-2).locator('.pg346-ru').textContent(),'Почему тебе нравятся комедии?');
+  assert.equal(await page.locator('#pg346-hear').isDisabled(),true,'No unapproved Xiaoxiao voice for new reason reply');
+  await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-movie-why-reason.png',fullPage:false,animations:'disabled'});
+  console.log('PASS mobile browser '+width+'px: 5 learner turns + 4-step movie chat + translations + approved Panda intact');
   await context.close();
  }
 } finally {await browser.close()}
