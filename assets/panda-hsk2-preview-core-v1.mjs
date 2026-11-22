@@ -1,9 +1,9 @@
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=2';
+import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=3';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
-import {getTopic,replyHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=2';
+import {getTopic,replyHSK2,knownHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=3';
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
@@ -226,15 +226,17 @@ function askHSK2(autoplay=true){
  state.prompt={line:{...l,accepted:q.options.map(a=>a[0])}};state.awaitQuestion=false;state.hint=false;say(l,autoplay);
 }
 function submitHSK2(input){
- const t=getTopic(hsk2.id),q=t.questions[hsk2.index],out=replyHSK2(input,hsk2.id,hsk2.index,hsk2.done,hsk2.context);
+ const t=getTopic(hsk2.id),q=t.questions[hsk2.index],prior=state.display,out=replyHSK2(input,hsk2.id,hsk2.index,hsk2.done,hsk2.context);
+ const known=out.spoken||knownHSK2(input);const legacy=known?null:analyzeLearner(input,[1,2,3,4,5,6,7],null,curriculum,false);
+ const spoken=known?{known:true,pinyin:known.pinyin,translation:known.ru}:legacy?.known?legacy:null;
  if('context' in out)hsk2.context=out.context;
  if(out.kind==='accepted'){learner(input,{known:true,pinyin:out.answer.pinyin,translation:out.answer.ru});hsk2.exact++;}
- else if(out.kind==='variant'){learner(input,null);hsk2.similar++;}
+ else if(out.kind==='variant'){learner(input,spoken);hsk2.similar++;}
  else if(out.kind==='unknown'){
  const c=explainPandaAnswer441(input,{prompt:null,confidence:state.confidence})||correctPandaGrammarV2(input,{prompt:null,confidence:state.confidence})||correctCommonPhrase(input);
  if(c){learner(input,c.spoken);recordCorrection(input,c.spoken);note(c.message);render();return;}
- learner(input,null);hsk2.unknown++;if(out.line)say(out.line,true);note('Ответ не подтверждён. Текущий вопрос: '+q.q);return;
- }else{learner(input,out.spoken?{known:true,pinyin:out.spoken.pinyin,translation:out.spoken.ru}:null);if(out.line)say(out.line,true);if(out.kind==='end')hsk2.done=true;return;}
+ learner(input,spoken);hsk2.unknown++;if(out.line)say(out.line,true);note('Ответ не подтверждён. Текущий вопрос: '+q.q);return;
+ }else{learner(input,spoken);if(out.action==='slow')state.slow=true;if(out.action==='repeat'&&prior){say(prior,true);return;}if(out.line)say(out.line,!out.followup);if(out.followup)say(out.followup,true);if(out.kind==='end')hsk2.done=true;return;}
  if(hsk2.index+1<t.questions.length){hsk2.index++;askHSK2();return;}
  if(state.mode==='nonstop'){hsk2.id=HSK2_TOPICS[(HSK2_TOPICS.findIndex(x=>x.id===hsk2.id)+1)%HSK2_TOPICS.length].id;hsk2.index=0;askHSK2();return;}
  hsk2.done=true;say(hsk2Line(['很好！','Hěn hǎo!','Раунд завершён. Точных ответов: '+hsk2.exact+'. Вариантов по смыслу: '+hsk2.similar+'. Не распознано: '+hsk2.unknown+'. Тоны не оценивались.']));
