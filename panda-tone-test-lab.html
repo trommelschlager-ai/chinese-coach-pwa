@@ -251,6 +251,8 @@ function readState(){
       splitSource:['pause','energy','manual','midpoint'].includes(t.splitSource)?t.splitSource:'midpoint',
       quality,validParts:Array.isArray(t.validParts)&&t.validParts.length===2?t.validParts.map(Boolean):[false,false],
       voiceMs:finite(t.voiceMs)?Math.max(0,Math.min(8000,t.voiceMs)):0,
+      recordedAt:finite(t.recordedAt)&&t.recordedAt>0?t.recordedAt:null,
+      attemptId:typeof t.attemptId==='string'?t.attemptId.slice(0,80):null,
       stats:t.stats&&typeof t.stats==='object'?{yin:Math.max(0,Number(t.stats.yin)||0),fallback:Math.max(0,Number(t.stats.fallback)||0),none:Math.max(0,Number(t.stats.none)||0)}:null,
       levels:Array.isArray(t.levels)?t.levels.slice(-180).filter(p=>Array.isArray(p)&&p.length===2&&p.every(finite)&&p[0]>=0&&p[0]<=1&&p[1]>=0&&p[1]<=1):[]};
    }).filter(t=>t.points.length>=2||(t.quality==='unmeasured'&&t.voiceMs>=250));
@@ -558,7 +560,7 @@ function buildRecording(rec){
  const from=voiced[0]?.[0],to=voiced[voiced.length-1]?.[0],duration=finite(from)&&finite(to)?to-from:0;
  const validSound=voiced.length>=5&&duration>=.24;
  const points=(rec.samples||[]).filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1])&&p[1]>=70&&p[1]<=600);
- const result={word:rec.word,points:[],seconds:Math.max(0,duration),splitRatio:.5,
+ const result={word:rec.word,points:[],seconds:Math.max(0,duration),splitRatio:.5,recordedAt:Date.now(),attemptId:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),
   splitSource:'midpoint',voiceMs:voiced.length*30,quality:'unmeasured',validParts:[false,false],stats:rec.stats||null};
  if(!validSound)return {accepted:false,entry:result,message:'Слишком мало звука для попытки. Повтори слово ближе к микрофону.'};
  const speechPoints=points.filter(p=>p[0]>=from-.08&&p[0]<=to+.08).slice(-120);
@@ -722,7 +724,7 @@ document.addEventListener('input',event=>{
  if(hint)hint.textContent='Граница вручную. Это не распознавание слогов.';
  draw();
 });
-window.PandaToneTrainer={render,mount,stop:()=>{if(active)stop(false)},reset,progressText,total,diagnostics:()=>{const i=state.selected;return {word:memo?.words?.[i]?.zh||'',pinyin:memo?.words?.[i]?.py||'',selected:i,repeats:count(i),total:total(),attempt:visibleAttempt?.word===i?visibleAttempt:(state.reps[i]?.mic?.at(-1)||null)}}};
+window.PandaToneTrainer={render,mount,stop:()=>{if(active)stop(false)},reset,progressText,total,diagnostics:()=>{const i=state.selected;return {word:memo?.words?.[i]?.zh||'',pinyin:memo?.words?.[i]?.py||'',selected:i,repeats:count(i),total:total(),recording:Boolean(active),attempt:visibleAttempt?.word===i?visibleAttempt:(state.reps[i]?.mic?.at(-1)||null)}}};
 window.PandaToneMathV2={pitchOf,fallbackPitchOf,estimateSplit,observedTrend,buildRecording,normalizeChartPoints,semitoneContour,isLongPitchGap};
 })();
 </script>
@@ -761,12 +763,15 @@ document.addEventListener('click',async function(ev){
  if(ev.target.closest('[data-tone-act="record"]')){player.pause();}
  if(ev.target.closest('#lab-copy')){
   const d=diag(),a=d.attempt;
+  if(d.recording){msg('🎙 Сначала нажми «Стоп» и дождись окончательного результата. Отчёт во время записи не копируется.');return;}
   const pts=(a&&Array.isArray(a.points))?a.points:[];
   const split=(a&&Number.isFinite(a.splitRatio))?a.splitRatio:.5;
   const trend=window.PandaToneMathV2.observedTrend;
   const rows=[
    'Panda Go · Тест тонов · отдельная лаборатория',
    'Слово: '+d.word+' ('+d.pinyin+')',
+   'ID записи: '+(a?.attemptId||'нет — старая запись, выполни новую'),
+   'Время записи: '+(a?.recordedAt?new Date(a.recordedAt).toLocaleString('ru-RU'):'не сохранено в старой записи'),
    'Повторов: '+d.repeats+'/5, всего '+d.total+'/30',
    'Данные: '+(a?a.quality:'записи нет'),
    'Длительность голоса: '+(a?a.seconds.toFixed(2)+' с':'—'),
