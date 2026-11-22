@@ -274,6 +274,7 @@ function readState(){
       splitSource:['pause','energy','manual','midpoint'].includes(t.splitSource)?t.splitSource:'midpoint',
       quality,validParts:Array.isArray(t.validParts)&&t.validParts.length===2?t.validParts.map(Boolean):[false,false],
       voiceMs:finite(t.voiceMs)?Math.max(0,Math.min(8000,t.voiceMs)):0,
+      signal:t.signal&&typeof t.signal==='object'?{frames:Number(t.signal.frames)||0,voicedFrames:Number(t.signal.voicedFrames)||0,peak:Number(t.signal.peak)||0,p95:Number(t.signal.p95)||0,seconds:Number(t.signal.seconds)||0,rawF0:Number(t.signal.rawF0)||0,threshold:.023}:null,
       recordedAt:finite(t.recordedAt)&&t.recordedAt>0?t.recordedAt:null,
       attemptId:typeof t.attemptId==='string'?t.attemptId.slice(0,80):null,
       stats:t.stats&&typeof t.stats==='object'?{yin:Math.max(0,Number(t.stats.yin)||0),fallback:Math.max(0,Number(t.stats.fallback)||0),none:Math.max(0,Number(t.stats.none)||0)}:null,
@@ -583,9 +584,16 @@ function buildRecording(rec){
  const from=voiced[0]?.[0],to=voiced[voiced.length-1]?.[0],duration=finite(from)&&finite(to)?to-from:0;
  const validSound=voiced.length>=5&&duration>=.24;
  const points=(rec.samples||[]).filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1])&&p[1]>=70&&p[1]<=600);
+ const rmsValues=levels.map(p=>p[1]).sort((a,b)=>a-b),peak=rmsValues.at(-1)??0,p95=rmsValues[Math.max(0,Math.ceil(rmsValues.length*.95)-1)]??0;
+ const signal={frames:levels.length,voicedFrames:voiced.length,peak,p95,seconds:levels.at(-1)?.[0]??0,rawF0:points.length,threshold:.023};
  const result={word:rec.word,points:[],seconds:Math.max(0,duration),splitRatio:.5,recordedAt:Date.now(),attemptId:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),
-  splitSource:'midpoint',voiceMs:voiced.length*30,quality:'unmeasured',validParts:[false,false],stats:rec.stats||null};
- if(!validSound)return {accepted:false,entry:result,message:'Слишком мало звука для попытки. Повтори слово ближе к микрофону.'};
+  splitSource:'midpoint',voiceMs:voiced.length*30,quality:'unmeasured',validParts:[false,false],stats:rec.stats||null,signal};
+ if(!validSound){
+   // Preserve meter evidence even if the attempt must not count toward 5/5.
+   const span=Math.max(.001,signal.seconds);
+   result.levels=levels.map(p=>[Math.max(0,Math.min(1,p[0]/span)),p[1]]).slice(-180);
+   return {accepted:false,entry:result,message:'Недостаточный сигнал микрофона: '+voiced.length+' кадров выше порога RMS 0,023 из '+levels.length+'. Пик RMS '+peak.toFixed(4)+'. Проверь, слышен ли голос при воспроизведении записи.'};
+ }
  const speechPoints=points.filter(p=>p[0]>=from-.08&&p[0]<=to+.08).slice(-120);
  const span=Math.max(.001,duration);
  const normalized=speechPoints.map(p=>[Math.min(1,Math.max(0,(p[0]-from)/span)),p[1]]);
@@ -795,6 +803,7 @@ document.addEventListener('click',async function(ev){
   const pts=(a&&Array.isArray(a.points))?a.points:[];
   const split=(a&&Number.isFinite(a.splitRatio))?a.splitRatio:.5;
   const trend=window.PandaToneMathV2.observedTrend;
+  const sig=a?.signal||null;
   const rows=[
    'Panda Go · Тест тонов · отдельная лаборатория',
    'Слово: '+d.word+' ('+d.pinyin+')',
@@ -803,12 +812,16 @@ document.addEventListener('click',async function(ev){
    'Повторов: '+d.repeats+'/5, всего '+d.total+'/30',
    'Данные: '+(a?a.quality:'записи нет'),
    'Длительность голоса: '+(a?a.seconds.toFixed(2)+' с':'—'),
+   'Длительность попытки: '+(sig?sig.seconds.toFixed(2)+' с':'нет данных'),
+   'RMS: пик '+(sig?sig.peak.toFixed(4):'нет данных')+'; 95-й процентиль '+(sig?sig.p95.toFixed(4):'нет данных')+'; порог 0,023',
+   'RMS-кадры: всего '+(sig?sig.frames:'нет данных')+'; выше порога '+(sig?sig.voicedFrames:'нет данных'),
+   'Кандидаты F0 до проверки голосового интервала: '+(sig?sig.rawF0:'нет данных'),
    'Точек F0: '+pts.length,
    'Методы F0: основной '+(a?.stats?.yin??'нет')+'; запасной '+(a?.stats?.fallback??'нет')+'; без результата '+(a?.stats?.none??'нет'),
    'Граница слогов: '+Math.round(split*100)+'%'+(a?' ('+a.splitSource+')':''),
-   'Слог 1: '+(pts.length?trend(pts,0,split):'—')+' ('+pts.filter(p=>p[0]<=split).length+' точек F0; '+(Array.isArray(a?.levels)&&a.levels.length>0?a.levels.filter(p=>p[0]<=split&&p[1]>=.023).length:'нет данных для старой записи')+' кадров RMS)',
-   'Слог 2: '+(pts.length?trend(pts,split,1):'—')+' ('+pts.filter(p=>p[0]>=split).length+' точек F0; '+(Array.isArray(a?.levels)&&a.levels.length>0?a.levels.filter(p=>p[0]>=split&&p[1]>=.023).length:'нет данных для старой записи')+' кадров RMS)',
-   'Звуковые кадры RMS показывают наличие сигнала; F0 — количество отсчётов высоты. Это измерения, не оценка правильности произношения.'
+   'Слог 1: '+(pts.length?trend(pts,0,split):'—')+' ('+pts.filter(p=>p[0]<=split).length+' точек F0; '+(Array.isArray(a?.levels)&&a.levels.length>0?a.levels.filter(p=>p[0]<=split&&p[1]>=.023).length:(sig?'0':'нет данных для старой записи'))+' кадров RMS)',
+   'Слог 2: '+(pts.length?trend(pts,split,1):'—')+' ('+pts.filter(p=>p[0]>=split).length+' точек F0; '+(Array.isArray(a?.levels)&&a.levels.length>0?a.levels.filter(p=>p[0]>=split&&p[1]>=.023).length:(sig?'0':'нет данных для старой записи'))+' кадров RMS)',
+   'Звуковые кадры RMS показывают наличие сигнала; F0 — количество отсчётов высоты. Записи с нулевой длительностью распознанного голоса не засчитываются. Это измерения, не оценка правильности произношения.'
   ];
   const report=rows.join('\n');
   try{
@@ -867,6 +880,10 @@ window.addEventListener('pagehide',()=>{player.pause()});
   ['Микрофон запрещён в браузере.','浏览器禁止使用麦克风。'],
   ['Не удалось открыть микрофон.','无法打开麦克风。'],
   ['Слишком мало звука для попытки. Повтори слово ближе к микрофону.','音量太小，无法分析。请靠近麦克风再试一次。'],
+  ['Недостаточный сигнал микрофона:','麦克风信号不足：'],
+  ['кадров выше порога RMS 0,023 из','帧高于RMS阈值0.023，总帧数'],
+  ['Пик RMS','RMS峰值'],
+  ['Проверь, слышен ли голос при воспроизведении записи.','请回听录音，确认是否能听到自己的声音。'],
   ['Один слог измерен частично','部分音节的测量数据不足'],
   ['— Мало данных','— 数据不足'], ['— Короткий слог','— 音节太短'],
   ['Идёт запись','正在录音'], ['точек F0','个F0测量点'],
