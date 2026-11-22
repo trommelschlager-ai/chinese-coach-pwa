@@ -2082,6 +2082,27 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #app[data-view="3"] #pg433 .quiz-hero .tag::before{content:none!important}
 </style>
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
+<style id="lesson7-unified-purple-shadows">
+/* Lesson 7 only: the eight vocabulary cards are the visual reference. */
+html .course-layout #app, html.course-layout #app, body.course-layout #app, #app {
+  --l7-purple-shadow:0 2px 0 #bc89c9,0 3px 5px #a46aae40;
+  --l7-purple-pressed:0 1px 0 #bc89c9,0 1px 3px #a46aae40;
+}
+html body #app[data-view] #pg433 :is(button:not(.lesson7-poster-hotspot),a[role="button"],summary,select),
+html body #app[data-view] :is(.pg433-header,.pg433-footer) button,
+html body #app[data-view] button#detail-back,
+html body #app[data-view] #pg433 :is(.lesson7-vocab-card,.about-grammar-compact,.about-grammar-formula,.about-grammar-example,.hero-message,.practice-modes,.tone-tabs,.pg-standard-list,.progress-panel,.tone-details,.approved-phrase-row,.approved-story-card,.test-card,.phrase-review) {
+  box-shadow:var(--l7-purple-shadow)!important;
+}
+html body #app[data-view] #pg433 :is(button.orb[data-say],button.orb[data-mic],button.orb[data-self-spoken]):not(:disabled) {
+  box-shadow:inset 0 2px 3px #ffffff70,var(--l7-purple-shadow)!important;
+}
+html body #app[data-view] #pg433 :is(button:not(.lesson7-poster-hotspot),a[role="button"],summary):active,
+html body #app[data-view] :is(.pg433-header,.pg433-footer) button:active {
+  box-shadow:var(--l7-purple-pressed)!important;
+}
+html body #app[data-view] #pg433 button:disabled{cursor:not-allowed}
+</style>
 </head>
 <body>
 <div class="app" id="app">
