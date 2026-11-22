@@ -131,3 +131,30 @@ html.course-layout #app[data-view="1"] #pg433 .pg-ref-cover{
 html.course-layout #app[data-view="1"] #pg433 .pg433-content:has(.pg-ref-cover){
   background:#edc0ef url("./hsk2-lesson1-preview/reference-sakura.webp") center bottom / cover no-repeat!important;
 }
+
+/* v3 — user-approved 3D panda cover reference, all nine dedicated text-free scenes. */
+#app #pg433 .pg-ref-brand-panda{
+  object-fit:cover!important;
+  object-position:center 22%!important;
+  border:2px solid #f7d6fd!important;
+  border-radius:50%!important;
+  box-shadow:0 2px 4px #7b2b8d67!important;
+}
+#app #pg433 .pg-ref-landscape {
+  background:linear-gradient(to bottom,#efc6ef07 0%,#eab9e81f 18%,#f4cdef26 36%),
+    url("./hsk2-lesson4-hobby-3d/garden.webp") center 75% / cover no-repeat!important;
+}
+#app #pg433 .pg-ref-lesson-2.pg-ref-cover .pg-ref-art img,
+#app #pg433 .pg-ref-lesson-3.pg-ref-cover .pg-ref-art img,
+#app #pg433 .pg-ref-lesson-4.pg-ref-cover .pg-ref-art img,
+#app #pg433 .pg-ref-lesson-5.pg-ref-cover .pg-ref-art img,
+#app #pg433 .pg-ref-lesson-6.pg-ref-cover .pg-ref-art img,
+#app #pg433 .pg-ref-lesson-7.pg-ref-cover .pg-ref-art img,
+#app #pg433 .pg-ref-lesson-8.pg-ref-cover .pg-ref-art img,
+#app #pg433 .pg-ref-lesson-9.pg-ref-cover .pg-ref-art img,
+#app #pg433 .pg-ref-lesson-10.pg-ref-cover .pg-ref-art img {
+  object-fit:cover!important;
+  object-position:center 35%!important;
+  transform:none!important;
+  image-rendering:auto!important;
+}
