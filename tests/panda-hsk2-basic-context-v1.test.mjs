@@ -23,6 +23,9 @@ test('Every screenshot regression phrase has pinyin, Russian and a contextual an
     assert.equal(turn.spoken.pinyin,py,zh);
     assert.equal(turn.spoken.ru,known.ru,zh);
     assert.equal(turn.line.hanzi,response,zh);
+    if(response==='今天我有空，可以聊聊天。') assert.equal(turn.line.pinyin,'Jīntiān wǒ yǒu kòng, kěyǐ liáoliao tiān.');
+    if(response==='那你想聊聊天吗？') assert.equal(turn.line.pinyin,'Nà nǐ xiǎng liáoliao tiān ma?');
+    if(response==='你想聊聊工作吗？') assert.equal(turn.line.pinyin,'Nǐ xiǎng liáoliao gōngzuò ma?');
     assert.ok(turn.line.pinyin.length>10,zh);
     assert.ok(turn.line.ru.length>8,zh);
     assert.equal(turn.context.awaiting,replyBasicContext(zh).context.awaiting);
