@@ -49,11 +49,11 @@ const known = new Map(phrases.map(([hanzi,pinyin,ru,intent]) =>
   [hanzi, Object.freeze({pinyin,ru,intent})]));
 
 const responses = Object.freeze({
-  availability: ['今天我有空，可以聊聊天。', 'Jīntiān wǒ yǒu kòng, kěyǐ liáo liáotiān.', 'Сегодня у меня есть время, можем поболтать.', 'conversation'],
+  availability: ['今天我有空，可以聊聊天。', 'Jīntiān wǒ yǒu kòng, kěyǐ liáoliao tiān.', 'Сегодня у меня есть время, можем поболтать.', 'conversation'],
   busy: ['好的，那你先忙吧。', 'Hǎo de, nà nǐ xiān máng ba.', 'Хорошо, тогда занимайся своими делами.', null],
   'rest-today': ['那你今天想做什么？', 'Nà nǐ jīntiān xiǎng zuò shénme?', 'Тогда что ты хочешь сегодня делать?', 'plans'],
-  'rest-now': ['那你想聊聊天吗？', 'Nà nǐ xiǎng liáo liáotiān ma?', 'Тогда хочешь немного поболтать?', 'conversation'],
-  'work-topic': ['你想聊聊工作吗？', 'Nǐ xiǎng liáo liáo gōngzuò ma?', 'Хочешь поговорить о работе?', 'work']
+  'rest-now': ['那你想聊聊天吗？', 'Nà nǐ xiǎng liáoliao tiān ma?', 'Тогда хочешь немного поболтать?', 'conversation'],
+  'work-topic': ['你想聊聊工作吗？', 'Nǐ xiǎng liáoliao gōngzuò ma?', 'Хочешь поговорить о работе?', 'work']
 });
 
 export function knownBasicContext(raw) {
