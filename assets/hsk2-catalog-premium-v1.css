@@ -170,6 +170,10 @@
  background-size:cover;background-position:50% center;
 }
 /* Lesson 7 is approved and uses the standard ready lesson card. */
+#app #pg433.pgc-catalog .pgc-art-shop{background-image:url("./hsk2-lesson8-shop-cover-v3.webp");background-size:cover;background-position:center}
+#app #pg433.pgc-catalog .pgc-art-health{background-image:url("./hsk2-lesson9-health-cover-v1.webp");background-size:cover;background-position:center}
+#app #pg433.pgc-catalog .pgc-art-relationships{background-image:url("./hsk2-lesson10-relationships-cover-v1.webp");background-size:cover;background-position:center}
+#app #pg433.pgc-catalog a.pgc-feature-shop,#app #pg433.pgc-catalog a.pgc-feature-health,#app #pg433.pgc-catalog a.pgc-feature-relationships{border-color:#d8abe4;background:linear-gradient(133deg,#fffefd,#fdf1ff 70%,#f0e3fd)}
 #app #pg433.pgc-catalog .pgc-feature-text{
   display:flex!important;flex-direction:column;align-items:flex-start;justify-content:center;
   min-width:0;gap:1px!important;position:relative;z-index:1;
