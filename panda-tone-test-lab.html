@@ -425,7 +425,7 @@ function draw(){
   }
   ctx.stroke();ctx.setLineDash([]);
   const trend=document.getElementById('tone-trend-'+(syll+1));
-  if(trend){const measured=normalized.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo);const rmsFrames=Array.isArray(recent?.levels)?recent.levels.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo&&p[1]>=.023).length:null;const evidence=rmsFrames===null?'':' · '+rmsFrames+' звуковых кадров';trend.textContent=live?'🎙 Идёт запись — дождись результата после «Стоп».':(observedTrend(normalized,segmentFrom,segmentTo)+' · '+measured.length+' точек F0'+evidence);}
+  if(trend){const measured=normalized.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo);const hasRms=Array.isArray(recent?.levels)&&recent.levels.length>0;const rmsFrames=hasRms?recent.levels.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo&&p[1]>=.023).length:null;const evidence=rmsFrames===null?' · RMS: нет данных для старой записи':' · '+rmsFrames+' звуковых кадров RMS';trend.textContent=live?'🎙 Идёт запись — дождись результата после «Стоп».':(observedTrend(normalized,segmentFrom,segmentTo)+' · '+measured.length+' точек F0'+evidence);}
   if(trace.length<2)continue;
   ctx.strokeStyle='#198b70';ctx.lineWidth=3.5;
   let painted=0,prior=null;ctx.beginPath();
@@ -728,8 +728,8 @@ document.addEventListener('click',async function(ev){
    'Длительность голоса: '+(a?a.seconds.toFixed(2)+' с':'—'),
    'Точек F0: '+pts.length,
    'Граница слогов: '+Math.round(split*100)+'%'+(a?' ('+a.splitSource+')':''),
-   'Слог 1: '+(pts.length?trend(pts,0,split):'—')+' ('+pts.filter(p=>p[0]<=split).length+' точек F0; '+(Array.isArray(a?.levels)?a.levels.filter(p=>p[0]<=split&&p[1]>=.023).length:'нет')+' кадров RMS)',
-   'Слог 2: '+(pts.length?trend(pts,split,1):'—')+' ('+pts.filter(p=>p[0]>=split).length+' точек F0; '+(Array.isArray(a?.levels)?a.levels.filter(p=>p[0]>=split&&p[1]>=.023).length:'нет')+' кадров RMS)',
+   'Слог 1: '+(pts.length?trend(pts,0,split):'—')+' ('+pts.filter(p=>p[0]<=split).length+' точек F0; '+(Array.isArray(a?.levels)&&a.levels.length>0?a.levels.filter(p=>p[0]<=split&&p[1]>=.023).length:'нет данных для старой записи')+' кадров RMS)',
+   'Слог 2: '+(pts.length?trend(pts,split,1):'—')+' ('+pts.filter(p=>p[0]>=split).length+' точек F0; '+(Array.isArray(a?.levels)&&a.levels.length>0?a.levels.filter(p=>p[0]>=split&&p[1]>=.023).length:'нет данных для старой записи')+' кадров RMS)',
    'Звуковые кадры RMS показывают наличие сигнала; F0 — количество отсчётов высоты. Это измерения, не оценка правильности произношения.'
   ];
   const report=rows.join('\n');
