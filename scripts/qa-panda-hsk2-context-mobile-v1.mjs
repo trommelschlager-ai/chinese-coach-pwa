@@ -33,6 +33,9 @@ try{
    const rows=page.locator('#pg346-rows .pg346-row');
    await page.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,reply,{timeout:5000});
    assert.equal(await rows.last().locator('.pg346-zh').textContent(),reply,'Wrong Panda answer: '+learner);
+   if(reply==='今天我有空，可以聊聊天。') assert.equal(await rows.last().locator('.pg346-py').textContent(),'Jīntiān wǒ yǒu kòng, kěyǐ liáoliao tiān.');
+   if(reply==='那你想聊聊天吗？') assert.equal(await rows.last().locator('.pg346-py').textContent(),'Nà nǐ xiǎng liáoliao tiān ma?');
+   if(reply==='你想聊聊工作吗？') assert.equal(await rows.last().locator('.pg346-py').textContent(),'Nǐ xiǎng liáoliao gōngzuò ma?');
    assert.equal(await rows.nth((await rows.count())-2).locator('.pg346-zh').textContent(),learner);
    assert.equal(await rows.nth((await rows.count())-2).locator('.pg346-py').textContent(),pinyin);
    assert((await rows.nth((await rows.count())-2).locator('.pg346-ru').innerText()).includes(russian),'Missing reviewed Russian for '+learner);
