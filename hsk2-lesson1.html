@@ -322,6 +322,9 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 
 </style>
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
+<link rel="stylesheet" href="./assets/hsk2-unified-cover-v1.css?v=1">
+<script src="./assets/hsk2-unified-cover-v1.js?v=1"></script>
+<link rel="stylesheet" href="./assets/hsk2-interiors-reference-v2.css?v=2">
 </head>
 <body>
 <div class="app" id="app">
@@ -705,6 +708,8 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
+  if (courseMode) return window.PandaGoHSK2UnifiedCover({"lesson":2,"title":"Мой день","hanzi":"我的一天","pinyin":"Wǒ de yì tiān","subtitle":"Научись говорить о своём дне по-китайски!","summary":"Расскажи, когда встаёшь, завтракаешь, работаешь и отдыхаешь.","words":6,"art":"./assets/hsk2-reference-scenes-20261122/lesson-2.svg","focus":"35%","motto":"Не бойся говорить с ошибками. Бойся никогда не заговорить!","tiles":["Слова","Тесты","Грамматика","Распорядок","Произношение","Диалог"]});
+
   if (courseMode) return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 2 · Мой день">' +
     '<div class="word-flow-cover"><img src="' + decoration + 'course-cover-sakura-canal.webp" ' +
     'alt="Мой день. Научись говорить о своём дне по-китайски. Слова, тесты, грамматика, распорядок, произношение и диалог. Не бойся говорить с ошибками. Бойся никогда не заговорить!" width="905" height="1737" fetchpriority="high">' +

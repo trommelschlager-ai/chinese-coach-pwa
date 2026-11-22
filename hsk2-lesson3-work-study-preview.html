@@ -1331,6 +1331,9 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 </style>
 <link rel="stylesheet" href="./assets/hsk2-lesson3-refinements-v537.css?v=537">
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
+<link rel="stylesheet" href="./assets/hsk2-unified-cover-v1.css?v=1">
+<script src="./assets/hsk2-unified-cover-v1.js?v=1"></script>
+<link rel="stylesheet" href="./assets/hsk2-interiors-reference-v2.css?v=2">
 </head>
 <body>
 <div class="app" id="app">
@@ -1749,6 +1752,8 @@ function render(resetScroll = false) {
 }
 
 function intro() {
+  if (courseMode) return window.PandaGoHSK2UnifiedCover({"lesson":3,"title":"Моя работа и учёба","hanzi":"我的工作和学习","pinyin":"Wǒ de gōngzuò hé xuéxí","subtitle":"Научись рассказывать о работе и учёбе!","summary":"Расскажи, где работаешь или учишься, что делаешь и что умеешь.","words":6,"art":"./assets/hsk2-reference-scenes-20261122/lesson-3.svg","focus":"35%","motto":"Язык открывает двери к работе и учёбе.","tiles":["Слова","Тесты","Грамматика","О работе","Произношение","Диалог"]});
+
  return '<section class="l3-cover l3-poster-cover" aria-label="HSK 2 — урок 3. Моя работа и учёба">' +
    '<div class="l3-poster-frame">' +
      '<img class="l3-poster-image" src="./assets/hsk2-lesson3-cover-photo5-20261121.jpg" alt="Panda Go. HSK 2, урок 3: Моя работа и учёба. Шесть выражений, тридцать мини-тестов, грамматика, произношение и диалог с Пандой." width="694" height="1232" fetchpriority="high" decoding="async" draggable="false">' +

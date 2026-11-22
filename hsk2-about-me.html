@@ -1285,8 +1285,48 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
  #app #pg433 .pg2-rehearsal-steps button{font-size:16px;min-height:45px}
 }
 
+
+/* HSK 2 unified upper feature labels, including immutable lesson-1 poster.
+   The original 3D image and other four tiles remain untouched.
+   Positions match the top row of the existing 905 × 1737 cover artwork. */
+#app #pg433 .about-approved-cover .about-cover-updated-tiles{
+  position:absolute!important;z-index:4!important;
+  left:6.8%!important;top:50.05%!important;
+  width:56.6%!important;height:7.65%!important;
+  display:grid!important;grid-template-columns:1fr 1fr!important;
+  overflow:hidden!important;pointer-events:none!important;
+  background:linear-gradient(180deg,#fff9ff 0%,#fdf5ff 100%)!important;
+  box-shadow:inset 0 -1px #d8b0db!important;
+}
+#app #pg433 .about-approved-cover .about-cover-updated-tile{
+  display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:center!important;
+  gap:0!important;min-width:0!important;min-height:0!important;
+  color:#3d164e!important;text-align:center!important;
+}
+#app #pg433 .about-approved-cover .about-cover-updated-tile:first-child{
+  border-right:1px solid #bda1c2!important;
+}
+#app #pg433 .about-approved-cover .about-cover-updated-icon{
+  width:38%!important;height:58%!important;flex:none!important;
+  background:url("./assets/hsk2-lesson8-shop-icons-v3.webp") 0% 0% / 300% 200% no-repeat!important;
+  filter:drop-shadow(0 1px 2px #91379b38)!important;
+}
+#app #pg433 .about-approved-cover .about-cover-updated-icon.target{
+  background-position:50% 0%!important;
+}
+#app #pg433 .about-approved-cover .about-cover-updated-tile b{
+  font-family:Arial,"Segoe UI",sans-serif!important;
+  font-size:clamp(11px,2.55cqw,22px)!important;
+  font-weight:900!important;line-height:1.06!important;
+  white-space:nowrap!important;letter-spacing:-.03em!important;
+  text-shadow:0 1px 0 #fff!important;
+}
+/* Ensure old image's alternative text also reflects approved two labels. */
+
 </style>
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
+<link rel="stylesheet" href="./assets/hsk2-interiors-reference-v2.css?v=2">
 </head>
 <body>
 <div class="app" id="app">
@@ -1713,9 +1753,13 @@ function intro() {
   return '<section class="word-flow-cover-shell about-approved-cover-shell" aria-label="Panda Go · HSK 2 · О себе. 3D-обложка по эталону Мой день">' +
     '<div class="word-flow-cover about-approved-cover">' +
     '<img class="about-approved-cover-image" src="./assets/hsk2-about-me/cover-about-me-approved-layout-v5.avif?v=20261120v5" ' +
-      'width="905" height="1737" alt="Урок 1 О себе. Панда за учебным столом с ноутбуком и книгами, китайский пейзаж. 自我介绍. 6 новых выражений, 30 мини-тестов, грамматика, рассказ о себе, произношение, диалог с Пандой. Один выученный язык может изменить всю твою жизнь." ' +
+      'width="905" height="1737" alt="Урок 1 О себе. Панда за учебным столом с ноутбуком и книгами, китайский пейзаж. 自我介绍. Новые слова, Тесты, грамматика, рассказ о себе, произношение, диалог с Пандой. Один выученный язык может изменить всю твою жизнь." ' +
       'fetchpriority="high" decoding="async" draggable="false">' +
     '<span class="about-approved-cover-number-fix" aria-hidden="true"></span>' +
+    '<div class="about-cover-updated-tiles" aria-label="Разделы: Новые слова и Тесты">' +
+      '<span class="about-cover-updated-tile"><i class="about-cover-updated-icon books" aria-hidden="true"></i><b>Новые слова</b></span>' +
+      '<span class="about-cover-updated-tile"><i class="about-cover-updated-icon target" aria-hidden="true"></i><b>Тесты</b></span>' +
+    '</div>' +
     '<a class="about-approved-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>' +
     '<button class="about-approved-cover-start" type="button" data-step="2" aria-label="Начать урок О себе"></button>' +
     '</div></section>';

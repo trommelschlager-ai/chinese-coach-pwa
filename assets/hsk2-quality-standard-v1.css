@@ -88,3 +88,106 @@
 #app #pg433 .l3-poster-tile-5,#app #pg433 .l3-poster-tile-6,#app #pg433 .l3-poster-tile-7{top:65%}
 #app #pg433 .l3-poster-frame :is(button,a):active{background:#fff5!important;box-shadow:inset 0 0 0 2px #fff8!important;transform:scale(.98)!important}
 #app #pg433 .l3-poster-frame :is(button,a):focus-visible{outline:3px solid #fff;outline-offset:-3px}
+
+/* 2026-11-22 / HSK2 reference audit preview.
+ * Cover reference: lesson 1, user screenshot 38221.jpg.
+ * Interior reference: lesson 7, user recording 38225.mp4.
+ * Decorative artwork is never stretched. Lesson content, progress and audio stay unchanged.
+ */
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-header {
+  background:linear-gradient(180deg,#fff8faec,#f8e1f6f0),url("./hsk2-lesson4-hobby-3d/garden.webp") center top/cover no-repeat!important;
+  border-bottom:2px solid #d999da!important;
+  box-shadow:0 2px 6px #c17dce44!important;
+  padding:5px 8px 7px!important;
+  flex:none!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-topline {
+  min-height:42px!important;height:42px!important;gap:7px!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-title strong{color:#611273!important;font-weight:900!important}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-title small{color:#8d3e8d!important}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-pill{border:1px solid #d7a0da!important;background:linear-gradient(#fffefa,#f9e6fa)!important;color:#713081!important}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-tabs{
+  display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:4px!important;min-height:44px!important;height:44px!important;margin-top:4px!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-tabs button{
+  min-width:0!important;min-height:44px!important;border-radius:11px!important;
+  padding:3px 1px!important;font-size:10px!important;line-height:1.05!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-tabs button:not(.active){
+  border:1px solid #dbb6dc!important;border-bottom:3px solid #ca9dcf!important;
+  background:linear-gradient(#fffafd,#f7ecfb)!important;color:#664469!important;
+  box-shadow:0 2px 4px #9952a847!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-tabs button.active{
+  border:1px solid #f1bcef!important;border-bottom:3px solid #8811aa!important;
+  background:linear-gradient(#fa79e6,#cc3ac9 55%,#9406ae)!important;color:#fff!important;
+  box-shadow:inset 0 2px 3px #ffc3f6,0 3px 7px #8a2f9f66!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-content{
+  min-height:0!important;min-width:0!important;overscroll-behavior-y:contain;
+  background:linear-gradient(#f9eafb91,#f9dafa80),url("./hsk2-lesson4-hobby-3d/garden.webp") center/cover no-repeat!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-footer{
+  border-top:2px solid #bd51d4!important;
+  background:linear-gradient(#fff5fd,#efd6f3)!important;
+  min-height:58px!important;height:58px!important;padding:5px 9px 7px!important;
+  gap:7px!important;flex:none!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-footer button{
+  min-height:44px!important;border-radius:15px!important;
+  font-size:clamp(12px,3.6vw,15px)!important;padding:6px 9px!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-footer #next:not(:disabled){
+  color:white!important;background:linear-gradient(#e97cec,#b329d1 58%,#8312ad)!important;
+  border:1px solid #d99ce1!important;border-bottom:3px solid #77148f!important;
+  box-shadow:inset 0 1px 2px #ffd7fb,0 3px 6px #8b389c55!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 .pg433-footer #back:not(:disabled){
+  color:#67237e!important;background:linear-gradient(#fff,#faeefd)!important;
+  border:1px solid #ddb6dd!important;border-bottom:3px solid #cc9dd1!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 :is(.pg433-header,.pg433-footer) button:not(:disabled):is(:active,.lesson-button-pressed){
+  filter:brightness(.84)!important;transform:translateY(2px)!important;
+  box-shadow:inset 0 2px 4px #5e186955!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 :is(.word-row,.shop-word-card,.l9-word-card,.test-card,.approved-phrase-row,.about-grammar-example,.about-grammar-compact,.hero-message){
+  border-color:#d69bdb!important;border-radius:15px!important;
+}
+html.course-layout #app:not([data-view="1"]) #pg433 :is(.word-row,.shop-word-card,.l9-word-card,.test-card,.approved-phrase-row,.about-grammar-example,.about-grammar-compact,.hero-message) img{
+  object-fit:contain!important;image-rendering:auto!important;
+}
+/* Native covers 4, 8 and 10: bring the common UI closer to approved lesson 1.
+ * Existing theme artwork, titles, counts and navigation are retained. */
+html.course-layout #app[data-view="1"] #pg433 :is(.pg-hobby-cover,.shop-cover){
+  background:linear-gradient(#fae5f9,#efccef)!important;
+  color:#3d1451!important;
+}
+html.course-layout #app[data-view="1"] #pg433 :is(.pg-hobby-summary,.pg-hobby-tiles,.shop-summary,.shop-cover-grid){
+  border:2px solid #e8bd55!important;border-radius:18px!important;
+  background:linear-gradient(155deg,#fffdfd,#fff6ff)!important;
+  box-shadow:0 3px 0 #c595d1,0 4px 9px #8a338d44!important;
+}
+html.course-layout #app[data-view="1"] #pg433 :is(.pg-hobby-summary>b,.shop-summary h2){
+  color:white!important;background:linear-gradient(#e26be8,#9e25cb 58%,#74109c)!important;
+  border-radius:999px!important;text-shadow:0 1px 2px #672279!important;
+}
+html.course-layout #app[data-view="1"] #pg433 :is(.pg-hobby-start,.shop-start){
+  width:76%!important;margin-inline:auto!important;
+  min-height:44px!important;border:2px solid #f3cf66!important;border-radius:999px!important;
+  background:linear-gradient(#e972ef 0%,#ae2ed6 46%,#720caa 100%)!important;
+  box-shadow:inset 0 1px 3px #fff7,0 3px 0 #69227a,0 5px 8px #85339755!important;
+  color:white!important;font-weight:900!important;
+  font-size:clamp(18px,5.3vw,26px)!important;
+}
+html.course-layout #app[data-view="1"] #pg433 :is(.pg-hobby-picture,.shop-cover-picture) img{
+  display:block!important;width:100%!important;max-width:100%!important;
+  object-fit:contain!important;object-position:center!important;
+  filter:none!important;transform:none!important;image-rendering:auto!important;
+}
+html.course-layout #app[data-view="1"] #pg433 :is(.pg-hobby-title>span,.shop-chapter){
+  border:1px solid #f1c464!important;box-shadow:0 2px 4px #a9569e44!important;
+}
+/* Do not modify composite poster hotspot geometry. Existing proportional
+ * cover rules for lessons 1, 2, 3, 5, 6, 7 and 9 remain in force. */
