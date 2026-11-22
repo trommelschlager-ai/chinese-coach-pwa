@@ -25,7 +25,7 @@ export function knownHSK2(raw){
   const w=t.words.find(w=>norm(w.zh)===k);if(w){a=[w.zh,w.py,w.ru];break;}
   a=t.phrases.find(a=>norm(a[0])===k)||t.questions.flatMap(q=>[[q.q,q.p,q.ru],...q.options]).find(a=>norm(a[0])===k);if(a)break;
  }
- return a?line([raw,a[1],a[2]]):null;
+ return a?line([raw,a[1],a[2]]):intentionQuestion(raw)?.spoken||null;
 }
 const R={
  activity:['你今天做什么？','Nǐ jīntiān zuò shénme?','Что ты сегодня делаешь?'],
@@ -52,11 +52,35 @@ function everydayShort(raw,context){
  if(/^(?:我)?明白了$/.test(k))return respond(R.understand,null,R.practice);
  return null;
 }
+// Compositional, bounded everyday intention questions; no arbitrary translation claims.
+const WANTS={
+ 吃:{py:'chī',ru:'съесть',reply:['我喜欢吃竹子。','Wǒ xǐhuan chī zhúzi.','Я люблю есть бамбук.'],topic:'food'},
+ 喝:{py:'hē',ru:'выпить',reply:['我想喝点儿水。','Wǒ xiǎng hē diǎnr shuǐ.','Я хочу выпить немного воды.'],topic:'drink'},
+ 做:{py:'zuò',ru:'делать',reply:['我想休息一下。','Wǒ xiǎng xiūxi yíxià.','Я хочу немного отдохнуть.'],topic:'activity'},
+ 买:{py:'mǎi',ru:'купить',reply:['我想买一件衣服。','Wǒ xiǎng mǎi yí jiàn yīfu.','Я хочу купить предмет одежды.'],topic:'shopping'},
+ 学:{py:'xué',ru:'изучать',reply:['我想学中文。','Wǒ xiǎng xué Zhōngwén.','Я хочу изучать китайский.'],topic:'study'},
+ 看:{py:'kàn',ru:'посмотреть',reply:['我喜欢看电影。','Wǒ xǐhuan kàn diànyǐng.','Я люблю смотреть фильмы.'],topic:'activity'}
+};
+const TIMES={'':['',''],现在:['xiànzài','сейчас'],今天:['jīntiān','сегодня'],明天:['míngtiān','завтра'],晚上:['wǎnshang','вечером'],周末:['zhōumò','на выходных'],早上:['zǎoshang','утром']};
+function intentionQuestion(raw){
+ const k=norm(raw);
+ const m=k.match(/^你(现在|今天|明天|晚上|周末|早上)?(想|要|想要|打算)(吃|喝|做|买|学|看)什么(东西|呢|啊|呀)?$/u);
+ if(m){
+  const t=TIMES[m[1]||''], modal={想:'xiǎng',要:'yào',想要:'xiǎng yào',打算:'dǎsuàn'}[m[2]],a=WANTS[m[3]],end={东西:'dōngxi',呢:'ne',啊:'a',呀:'ya'}[m[4]]||'';
+  const verb=m[2]==='打算'?'планируешь':'хочешь';
+  return {kind:'social',line:line(a.reply),spoken:line([raw,['Nǐ',t[0],modal,a.py,'shénme',end].filter(Boolean).join(' ')+'?','Что ты '+[t[1],verb,a.ru].filter(Boolean).join(' ')+'?']),context:{awaiting:a.topic}};
+ }
+ const g=k.match(/^你(现在|今天|明天|周末)?(想|要|打算)去(哪里|哪儿|哪)去?$/u);
+ if(g){const t=TIMES[g[1]||''];return {kind:'social',line:line(['我想去中国。','Wǒ xiǎng qù Zhōngguó.','Я хочу поехать в Китай.']),spoken:line([raw,['Nǐ',t[0],{想:'xiǎng',要:'yào',打算:'dǎsuàn'}[g[2]],'qù',{哪里:'nǎlǐ',哪儿:'nǎr',哪:'nǎ'}[g[3]]].filter(Boolean).join(' ')+'?','Куда ты '+[t[1],g[2]==='打算'?'планируешь':'хочешь','поехать'].filter(Boolean).join(' ')+'?']),context:{awaiting:'travel'}};}
+ return null;
+}
+
 function clarificationContext(raw,context){
  const k=norm(raw),known=knownHSK2(raw),previous=context?.awaiting;
  const say=(id,awaiting,spoken=known,extra={})=>({kind:'social',line:clarificationLine(id),spoken,context:{...context,awaiting,lastClarification:id,...extra}});
  const annotated=(py,ru)=>line([raw,py,ru]);
  const afterRun=()=>previous==='run-frequency'?say(15,'run-reason',annotated('Wǒ xǐhuan pǎobù.','Я люблю бегать.')):say(16,'run-frequency',annotated('Wǒ xǐhuan pǎobù.','Я люблю бегать.'));
+ if(k==='跑步')return say(previous==='run-frequency'?15:16,previous==='run-frequency'?'run-reason':'run-frequency',annotated('pǎobù','Бегать.'));
  if(/^(?:我)?(?:很|最)?喜欢跑步$/.test(k))return afterRun();
  if(previous==='run-frequency'&&/^(?:我)?(?:每天|经常|常常|有时候|不常|很少)(?:跑步)?$/.test(k)){
   const a={每天:['měitiān','Каждый день.'],经常:['jīngcháng','Часто.'],常常:['chángcháng','Часто.'],有时候:['yǒu shíhou','Иногда.'],不常:['bù cháng','Нечасто.'],很少:['hěn shǎo','Редко.']};const m=k.match(/^(我)?(每天|经常|常常|有时候|不常|很少)(跑步)?$/);const v=a[m[2]];return say(15,'run-reason',annotated((m[1]?'Wǒ ':'')+v[0]+(m[3]?' pǎobù':''),m[3]?v[1].replace(/\.$/,'')+' бегаю.':v[1]));
@@ -104,6 +128,7 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const t=getTopic(id),s=norm(raw),q=t?.questions[index];
  if(!t||!q||!s)return {kind:'unknown'};
  const exact=!done&&q.options.find(a=>norm(a[0])===s);if(exact)return {kind:'accepted',answer:line(exact)};
+ const intended=intentionQuestion(raw);if(intended)return intended;
  const contextual=clarificationContext(raw,context);if(contextual)return contextual;
  if(/^(?:你呢|那你呢)$/.test(s)&&context?.awaiting){const reply=respondToPandaChat(raw,context);if(reply.supported)return {kind:'social',line:line(reply.line),context:reply.context,spoken:line([raw,'Nǐ ne?','А ты?'])};}
  if(/^(?:你呢|那你呢)$/.test(s))return {kind:'question',line:line(q.options[0]),spoken:line([raw,'Nǐ ne?','А ты?'])};

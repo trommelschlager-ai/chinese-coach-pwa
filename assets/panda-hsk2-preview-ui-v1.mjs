@@ -1,6 +1,6 @@
 /* Panda AI v346. Clean responsive user-approved screen.
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
-import {lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=4';
+import {lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=506';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {PANDA_V411_VOICE} from './panda-voice-v411.mjs?v=411';
@@ -159,6 +159,7 @@ if (!bridge) {
   function renderRows(rows){const root=$('#pg346-rows');root.replaceChildren();for(const e of rows.slice(-3)){
     const example=e.who==='example'||e.analysis?.kind==='correction-response';
     const row=el('article','pg346-row'+(example?' pg445-example-row':''));
+    if(Array.from(e.hanzi||'').length>17||(e.pinyin||'').length>60||(e.ru||'').length>80)row.classList.add('pg506-long');
     const av=el('span','pg346-avatar');
     if(example){av.textContent='💡';av.setAttribute('aria-label','Учебный пример, а не реплика Панды');}
     else if(e.who==='you')av.textContent='👤';
@@ -172,7 +173,7 @@ if (!bridge) {
     }
     const sound=el('button','pg346-row-audio','🔊');sound.type='button';sound.disabled=!clipFor(e);sound.setAttribute('aria-label',sound.disabled?'Для этой фразы нет MP3':'Слушать эту реплику');sound.addEventListener('click',()=>playHistory(e));
     row.append(av,text,translation,sound);root.append(row);
-  }}
+  }requestAnimationFrame(()=>{root.scrollTop=root.scrollHeight;});}
   const topicsFallback=['Приветствия','Учёба и знакомство','Числа','Дни недели','Даты','Семья','Погода'];
   // All ten 14 November Luvvoice source files are available for audio practice.
   // Only answer-engine-verified entries appear as conversational questions.
