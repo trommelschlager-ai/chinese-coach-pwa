@@ -90,6 +90,8 @@ try{
   assert.equal(await whyRows.last().locator('.pg346-row-audio').isDisabled(),false,'History row must play user Xiaoxiao MP3');
   const audioPath=await page.evaluate(async()=>{const {lookupApprovedPandaVoice}=await import('./assets/panda-approved-voice-registry-v516.mjs?v=524').catch(()=>({lookupApprovedPandaVoice:null}));return lookupApprovedPandaVoice?.('因为喜剧片很好笑。')?.src||null});
   assert.equal(audioPath,'./assets/panda-ai-xiaoxiao-new-replies-20261122/panda06.mp3');
+  await whyRows.last().locator('.pg346-row-audio').click();
+  await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pose==='talking',null,{timeout:7000});
   await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-movie-why-reason.png',fullPage:false,animations:'disabled'});
   console.log('PASS mobile browser '+width+'px: 5 learner turns + 4-step movie chat + translations + approved Panda intact');
   await context.close();
