@@ -137,42 +137,22 @@
 }
 #app #pg433.pgc-catalog .pgc-feature-art{
   display:block;width:84px;height:91px;flex:none;border-radius:16px;
-  background-color:#efd8fc;background-repeat:no-repeat;border:2px solid #fff7f1;
+  background:#efd8fc center / cover no-repeat;border:2px solid #fff7f1;
   box-shadow:0 4px 7px #9c58a34d,0 0 0 1px #e1bbe6;
 }
 #app #pg433.pgc-catalog .pgc-art-about{
   background-image:url("./hsk2-about-me/about-me-stages-3d-atlas.webp");
   background-size:200% 200%;background-position:100% 100%;
 }
-#app #pg433.pgc-catalog .pgc-art-day{
-  background-image:url("./hsk2-lesson1-preview/course-cover-panda-hd.webp");
-  background-size:auto 100%;background-position:23% center;
-}
-#app #pg433.pgc-catalog .pgc-art-work{
-  background-image:url("./hsk2-lesson3-cover-photo5-20261121.jpg");
-  background-size:cover;background-position:center center;
-}
-#app #pg433.pgc-catalog .pgc-art-hobby{
-  background-image:url("./hsk2-lesson4-hobby-3d/cover.webp");
-  background-size:cover;background-position:center center;
-}
-/* Main lesson cards 5 and 6 use real Panda Go artwork, no placeholder tiles. */
-#app #pg433.pgc-catalog .pgc-art-friends{
-  background-image:url("./meaning-friends.webp");
-  background-size:cover;background-position:center center;
-}
-#app #pg433.pgc-catalog .pgc-art-yesterday{
-  background-image:url("./hsk2-lesson6-cover-gold-v2.webp");
-  background-size:cover;background-position:48% 30%;
-}
-#app #pg433.pgc-catalog .pgc-art-future{
- background-image:url("./hsk2-lesson7-hero-v5.webp");
- background-size:cover;background-position:50% center;
-}
-/* Lesson 7 is approved and uses the standard ready lesson card. */
-#app #pg433.pgc-catalog .pgc-art-shop{background-image:url("./hsk2-lesson8-shop-cover-v3.webp");background-size:cover;background-position:center}
-#app #pg433.pgc-catalog .pgc-art-health{background-image:url("./hsk2-lesson9-health-cover-v1.webp");background-size:cover;background-position:center}
-#app #pg433.pgc-catalog .pgc-art-relationships{background-image:url("./hsk2-lesson10-relationships-cover-v1.webp");background-size:cover;background-position:center}
+#app #pg433.pgc-catalog .pgc-art-day { background-image: url("./hsk2-catalog-thumbnails/day.webp"); }
+#app #pg433.pgc-catalog .pgc-art-work { background-image: url("./hsk2-catalog-thumbnails/work.webp"); }
+#app #pg433.pgc-catalog .pgc-art-hobby { background-image: url("./hsk2-catalog-thumbnails/hobby.webp"); }
+#app #pg433.pgc-catalog .pgc-art-friends { background-image: url("./hsk2-catalog-thumbnails/friends.webp"); }
+#app #pg433.pgc-catalog .pgc-art-yesterday { background-image: url("./hsk2-catalog-thumbnails/yesterday.webp"); }
+#app #pg433.pgc-catalog .pgc-art-future { background-image: url("./hsk2-catalog-thumbnails/future.webp"); }
+#app #pg433.pgc-catalog .pgc-art-shop { background-image: url("./hsk2-catalog-thumbnails/shop.webp"); }
+#app #pg433.pgc-catalog .pgc-art-health { background-image: url("./hsk2-catalog-thumbnails/health.webp"); }
+#app #pg433.pgc-catalog .pgc-art-relationships { background-image: url("./hsk2-catalog-thumbnails/relationships.webp"); }
 #app #pg433.pgc-catalog a.pgc-feature-shop,#app #pg433.pgc-catalog a.pgc-feature-health,#app #pg433.pgc-catalog a.pgc-feature-relationships{border-color:#d8abe4;background:linear-gradient(133deg,#fffefd,#fdf1ff 70%,#f0e3fd)}
 #app #pg433.pgc-catalog .pgc-feature-text{
   display:flex!important;flex-direction:column;align-items:flex-start;justify-content:center;
@@ -321,7 +301,43 @@
   padding: 14px;
   font-weight: 800;
 }
-#pg433 .pgc-grammar > summary { font-size: 1.12rem; }
+#pg433 .pgc-grammar > summary {
+  display: grid;
+  grid-template-columns: 39px minmax(0, 1fr) 13px;
+  align-items: center;
+  gap: 11px;
+  min-height: 66px;
+  padding: 10px 15px;
+  border: 1px solid #ecd194;
+  border-radius: 19px;
+  background: linear-gradient(125deg, #66218d, #8c36af 63%, #a14ebd);
+  color: #fff;
+  font-size: clamp(1rem, 4.6vw, 1.25rem);
+  text-shadow: 0 1px 2px #502166;
+  box-shadow: inset 0 1px #f9c9fa, 0 4px 0 #713093, 0 7px 13px #85479742;
+  list-style: none;
+}
+#pg433 .pgc-grammar > summary::-webkit-details-marker { display: none; }
+#pg433 .pgc-grammar > summary span {
+  display: grid;
+  place-items: center;
+  height: 39px;
+  border: 1px solid #f1d2a0;
+  border-radius: 12px;
+  background: #fff3fb;
+}
+#pg433 .pgc-grammar > summary::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border: solid #ffe4a6;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+#pg433 .pgc-grammar[open] > summary { margin-bottom: 12px; }
+#pg433 .pgc-grammar[open] > summary::after { transform: rotate(225deg); }
+#pg433 .pgc-grammar > summary:active { transform: translateY(2px); }
+#pg433 .pgc-grammar > summary:focus-visible { outline: 3px solid #692292; outline-offset: 3px; }
 #pg433 .pgc-grammar-lessons { padding: 0 10px 12px; }
 #pg433 .pgc-grammar-lesson {
   margin: 6px 0;
