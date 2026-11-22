@@ -1,6 +1,6 @@
 /* Panda AI v346. Clean responsive user-approved screen.
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
-import {lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs';
+import {lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=2';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {PANDA_V411_VOICE} from './panda-voice-v411.mjs?v=411';
@@ -349,6 +349,7 @@ if (!bridge) {
     const needsMicHelp=!!micRecovery&&!micRecovery.hidden;
     warning.hidden=!problem;
     warning.textContent=problem?s.status:'';
+    if(/Браузер не включил звук автоматически/.test(s.status||'')){const b=el('button','pg502-start-audio','🔊 Включить голос Панды');b.type='button';b.addEventListener('click',()=>{bridge.playEntry({hanzi:'你好！',audioKey:'你好'});sync()});warning.replaceChildren(b);}
     if(problem&&needsMicHelp)warning.append(micHelpBtn);
     if(!needsMicHelp&&micHelp.open)micHelp.close();
     const live=$('#pg346-live');const showingAssessment=Date.now()<assessmentUntil;

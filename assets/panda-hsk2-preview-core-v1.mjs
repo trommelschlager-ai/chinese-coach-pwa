@@ -1,9 +1,9 @@
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs';
+import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=2';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
-import {getTopic,replyHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs';
+import {getTopic,replyHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=2';
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
@@ -81,6 +81,7 @@ function play(entry=null){
     if(prompt){state.display=prompt;render();note('Продолжай HSK2 «Мой день»: ответь на учебный вопрос.');}
     return;
    }
+   if(entry===opening&&hsk2&&state.history.length===2){play();return;}
    if((!entry||resumingMissedReply)&&state.followup)scheduleFollowup(1200);
   }};
  a.onended=finished;
@@ -215,7 +216,7 @@ function setMode(mode){if(mode==='short')state.lockedTopic=null;if(state.dayMode
 let hsk2=null;
 function beginHSK2(id,index=0,autoplay=true){
  const t=getTopic(id);if(!t)return false;
- cancelFollowup();stopAudio();stopRecognition();hsk2={id:t.id,index,done:false,exact:0,similar:0,unknown:0};
+ cancelFollowup();stopAudio();stopRecognition();hsk2={id:t.id,index,done:false,exact:0,similar:0,unknown:0,context:null};
  state.mode='short';state.dayMode=false;state.done=false;askHSK2(autoplay);return true;
 }
 function askHSK2(autoplay=true){
@@ -223,14 +224,15 @@ function askHSK2(autoplay=true){
  state.prompt={line:{...l,accepted:q.options.map(a=>a[0])}};state.awaitQuestion=false;state.hint=false;say(l,autoplay);
 }
 function submitHSK2(input){
- const t=getTopic(hsk2.id),q=t.questions[hsk2.index],out=replyHSK2(input,hsk2.id,hsk2.index,hsk2.done);
+ const t=getTopic(hsk2.id),q=t.questions[hsk2.index],out=replyHSK2(input,hsk2.id,hsk2.index,hsk2.done,hsk2.context);
+ if('context' in out)hsk2.context=out.context;
  if(out.kind==='accepted'){learner(input,{known:true,pinyin:out.answer.pinyin,translation:out.answer.ru});hsk2.exact++;}
  else if(out.kind==='variant'){learner(input,null);hsk2.similar++;}
  else if(out.kind==='unknown'){
  const c=explainPandaAnswer441(input,{prompt:null,confidence:state.confidence})||correctPandaGrammarV2(input,{prompt:null,confidence:state.confidence})||correctCommonPhrase(input);
  if(c){learner(input,c.spoken);recordCorrection(input,c.spoken);note(c.message);render();return;}
  learner(input,null);hsk2.unknown++;if(out.line)say(out.line,true);note('Ответ не подтверждён. Текущий вопрос: '+q.q);return;
- }else{learner(input,null);if(out.line)say(out.line,true);if(out.kind==='end')hsk2.done=true;return;}
+ }else{learner(input,out.spoken?{known:true,pinyin:out.spoken.pinyin,translation:out.spoken.ru}:null);if(out.line)say(out.line,true);if(out.kind==='end')hsk2.done=true;return;}
  if(hsk2.index+1<t.questions.length){hsk2.index++;askHSK2();return;}
  if(state.mode==='nonstop'){hsk2.id=HSK2_TOPICS[(HSK2_TOPICS.findIndex(x=>x.id===hsk2.id)+1)%HSK2_TOPICS.length].id;hsk2.index=0;askHSK2();return;}
  hsk2.done=true;say(hsk2Line(['很好！','Hěn hǎo!','Раунд завершён. Точных ответов: '+hsk2.exact+'. Вариантов по смыслу: '+hsk2.similar+'. Не распознано: '+hsk2.unknown+'. Тоны не оценивались.']));
@@ -641,3 +643,7 @@ window.PandaApprovedBridge337={
 initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
 // Do not auto-play a legacy greeting when the HSK2 fixed-voice My Day scenario owns playback.
 beginHSK2(100+Math.min(10,Math.max(1,Number(new URLSearchParams(location.search).get('topic'))||1)),0,false);
+// Start with the already-indexed greeting. If autoplay is forbidden, leave a real retry button.
+const opening={hanzi:'你好！',pinyin:'Nǐ hǎo!',ru:'Привет!',audioKey:'你好'};
+state.history=[];refreshHistory();say(opening,false);askHSK2(false);
+document.addEventListener('DOMContentLoaded',()=>{if(!document.hidden)play(opening);},{once:true});

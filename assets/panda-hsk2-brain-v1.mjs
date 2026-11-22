@@ -1,4 +1,6 @@
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
+import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=3';
+import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 export const norm=s=>String(s||'').normalize('NFC').replace(/[\p{P}\s]/gu,'').toLowerCase();
 export const getTopic=id=>HSK2_TOPICS.find(t=>t.id===Number(id));
 export const line=a=>({hanzi:a[0],pinyin:a[1]||'',ru:a[2]||'',audioKey:a[0]});
@@ -15,18 +17,40 @@ const patterns={
 109:[/^(?:我)?(?:今天)?(?:很好|身体很好|不舒服|有点儿不舒服|好多了)$/u,/^(?:我)?(?:有点儿)?(?:头疼|发烧了|不舒服|没事)$/u,/^我(?:现在)?想(?:休息|休息一下|看医生|喝水)$/u],
 110:[/^(?:你好)?我(?:也)?很高兴认识你$/u,/^(?:好啊|可以|不好意思我没空|下次吧|我周末没空)$/u,/^(?:我们)?在[\p{Script=Han}]{1,12}见面吧?$/u]};
 const aliases=[[/^你从哪里来$|^你来自哪儿$/,101,0],[/^你(?:现在)?住在哪儿$/,101,1],[/^你(?:每天)?几点起床$/,102,0],[/^你在哪儿工作$|^你在哪里上班$/,103,0],[/^你会讲中文吗$/,103,2],[/^你明天有空吗$/,105,0],[/^你昨天干什么了$/,106,0],[/^你明天有什么计划$/,107,0],[/^你哪里不舒服$/,109,1]];
-export function replyHSK2(raw,id,index,done=false){
+const foodQuestion=/^(?:你|你们)(?:今天|早上|已经)?(?:吃了(?:饭|早饭|早餐)?吗|吃(?:饭|早饭|早餐)(?:了|过)?吗|吃过(?:饭|早饭|早餐)?了吗|吃过吗|吃了吗|吃没吃饭|吃饭了没有|吃了没有)$/u;
+const foodReplies={
+ yes:['吃了，谢谢。','Chī le, xièxie.','Да, уже поела, спасибо.'],
+ no:['你想不想喝茶？','Nǐ xiǎng bu xiǎng hē chá?','Хочешь чаю?']
+};
+export function replyHSK2(raw,id,index,done=false,context=null){
+ const input=norm(raw);
+ if(foodQuestion.test(input)){
+ const p=input.includes('早饭')?'Nǐ chī zǎofàn le ma?':input.includes('早餐')?'Nǐ chī zǎocān le ma?':input==='你吃了吗'?'Nǐ chī le ma?':'';
+ return {kind:'social',line:line(foodReplies.yes),spoken:line([raw,p|| (input==='你吃饭了吗'?'Nǐ chīfàn le ma?':''),'Ты уже поел(а)?']),context:{awaiting:'breakfastToday',turn:(context?.turn||0)+1}};
+ }
+ if(context?.awaiting==='breakfastToday'&&/^(?:我)?(?:还)?没(?:有)?(?:吃(?:饭|早饭|早餐)?)?(?:呢)?$/u.test(input))return {kind:'social',line:line(foodReplies.no),spoken:line([raw,'','Я ещё не ел(а).']),context:{awaiting:'offerTea'}};
+ if(context?.awaiting==='breakfastToday'&&/^(?:我)?(?:已经)?吃(?:了|过了|过)(?:饭|早饭|早餐)?(?:了)?$/u.test(input))return {kind:'social',line:line(['很好！','Hěn hǎo!','Отлично!']),spoken:line([raw,'','Я уже поел(а).']),context:{awaiting:null}};
+ if(/^(?:你好|您好|哈喽|嗨|早上好|中午好|下午好|晚上好)$/u.test(input)){
+ const greetings={你好:['你好！','Nǐ hǎo!','Привет!'],您好:['你好！','Nǐ hǎo!','Здравствуйте!'],哈喽:['你好！','Nǐ hǎo!','Привет!'],嗨:['你好！','Nǐ hǎo!','Привет!'],早上好:['早上好！','Zǎoshang hǎo!','Доброе утро!'],中午好:['中午好！','Zhōngwǔ hǎo!','Добрый день!'],下午好:['下午好！','Xiàwǔ hǎo!','Добрый день!'],晚上好:['晚上好！','Wǎnshang hǎo!','Добрый вечер!']};
+ return {kind:'social',line:line(greetings[input]),spoken:line([raw,greetings[input][1],greetings[input][2]]),context:{awaiting:null}};
+ }
+
  const t=getTopic(id),s=norm(raw),q=t?.questions[index];
  if(!t||!q||!s)return {kind:'unknown'};
  const exact=!done&&q.options.find(a=>norm(a[0])===s);if(exact)return {kind:'accepted',answer:line(exact)};
- if(/^(?:你呢|那你呢)$/.test(s))return {kind:'question',line:line(q.options[0])};
+ if(/^(?:你呢|那你呢)$/.test(s)&&context?.awaiting){const reply=respondToPandaChat(raw,context);if(reply.supported)return {kind:'social',line:line(reply.line),context:reply.context,spoken:line([raw,'Nǐ ne?','А ты?'])};}
+ if(/^(?:你呢|那你呢)$/.test(s))return {kind:'question',line:line(q.options[0]),spoken:line([raw,'Nǐ ne?','А ты?'])};
  if(/^(?:再见|拜拜|明天见)$/.test(s))return {kind:'end',line:line(['再见！','Zàijiàn!','До свидания!'])};
  if(/перевод|значит|означает|как сказать|пиньинь|什么意思|怎么说|怎么读/i.test(raw)){
  const w=[...t.words,...HSK2_TOPICS.filter(x=>x.id!==id).flatMap(x=>x.words)].find(w=>s.includes(norm(w.zh))||s.includes(norm(w.ru))||s.includes(norm(w.py)));if(w)return {kind:'word',line:line([w.zh,w.py,w.ru])};}
- for(const topic of [t,...HSK2_TOPICS.filter(x=>x.id!==id)]){const m=topic.questions.find(x=>norm(x.q)===s);if(m)return {kind:'question',line:line(m.options[0])};}
- const a=aliases.find(x=>x[0].test(s));if(a)return {kind:'question',line:line(getTopic(a[1]).questions[a[2]].options[0])};
+ for(const topic of [t,...HSK2_TOPICS.filter(x=>x.id!==id)]){const m=topic.questions.find(x=>norm(x.q)===s);if(m)return {kind:'question',line:line(m.options[0]),spoken:line([raw,m.p,m.ru])};}
+ const a=aliases.find(x=>x[0].test(s));if(a){const m=getTopic(a[1]).questions[a[2]];return {kind:'question',line:line(m.options[0]),spoken:line([raw,'',m.ru])};}
  const isQuestion=/[?？]/.test(raw)||/(?:吗|呢)$/.test(s)||/^你.*(?:什么|哪里|哪儿|几点|多少|为什么|怎么样)/.test(s);
  if(!done&&!isQuestion&&patterns[id]?.[index]?.test(s))return {kind:'variant'};
- const phrase=t.phrases.find(a=>norm(a[0])===s);if(phrase)return {kind:'example',line:line(phrase)};
+ const phrase=t.phrases.find(a=>norm(a[0])===s);if(phrase)return {kind:'example',line:line(phrase),spoken:line(phrase)};
+ const recorded=recordedPandaAnswer(raw,[1,2,3,4,5,6,7])||recordedPandaAnswer(raw,[1],{course:'hsk2-day'});
+ const dayRecorded=recorded?.kind==='clarify'?recordedPandaAnswer(raw,[1],{course:'hsk2-day'}):recorded;
+ if(dayRecorded?.kind==='question')return {kind:'social',line:dayRecorded.reply,spoken:line([raw,dayRecorded.spoken.pinyin,dayRecorded.spoken.translation]),context};
+ const social=respondToPandaChat(raw,context);if(social.supported)return {kind:'social',line:line(social.line),context:social.context};
  return {kind:'unknown',line:line(['请再说一遍。','Qǐng zài shuō yí biàn.','Пока не могу уверенно понять. Попробуй сказать иначе.'])};
 }
