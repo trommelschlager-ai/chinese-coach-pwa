@@ -135,6 +135,8 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Verify HSK2 My Day accepted and rejected responses
         run: node tests/panda-hsk2-day-chat-v1.test.mjs
+      - name: Check screenshot regression phrases, pinyin, translations and social responses
+        run: node --test tests/panda-hsk2-basic-context-v1.test.mjs
       - name: Verify HSK1 weather and HSK2 My Day Q&A routing and exact MP3
         run: node --test tests/panda-live-recorded-qa-v358.test.mjs
 
