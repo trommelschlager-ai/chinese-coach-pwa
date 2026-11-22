@@ -1,9 +1,9 @@
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=3';
+import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=4';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
-import {getTopic,replyHSK2,knownHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=3';
+import {getTopic,replyHSK2,knownHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=4';
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';

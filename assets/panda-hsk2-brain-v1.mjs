@@ -1,6 +1,7 @@
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=3';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
+import {clarificationLine} from './panda-clarification-map-v504.mjs';
 export const norm=s=>String(s||'').normalize('NFC').replace(/[\p{P}\s]/gu,'').toLowerCase();
 export const getTopic=id=>HSK2_TOPICS.find(t=>t.id===Number(id));
 export const line=a=>({hanzi:a[0],pinyin:a[1]||'',ru:a[2]||'',audioKey:a[0]});
@@ -38,7 +39,7 @@ const R={
 function everydayShort(raw,context){
  const k=norm(raw),spoken=knownHSK2(raw);
  const respond=(a,awaiting=null,followup=null,action=null)=>({kind:'social',line:line(a),spoken,context:{awaiting},...(followup?{followup:line(followup)}:{}),...(action?{action}:{})});
- if(/^(?:谢谢|谢谢你|非常感谢|多谢)$/.test(k))return respond(R.thanks,'topic',R.practice);
+ if(/^(?:谢谢|谢谢你|非常感谢|多谢)$/.test(k))return respond(R.thanks,'topic');
  if(/^(?:你好吗|你今天怎么样|你最近好吗|你还好吗)$/.test(k))return respond(['我很好，你呢？','Wǒ hěn hǎo, nǐ ne?','У меня всё хорошо, а у тебя?'],'mood');
  if(/^(?:我(?:也|今天)?(?:很)?好|很好|好|还好|挺好的|不错|还不错)$/.test(k)&&context?.awaiting==='mood')return respond(R.activity,'activity');
  if(/^(?:我)?(?:不太好|不好|很累|有点累)$/.test(k)&&context?.awaiting==='mood')return respond(R.rest,'offerRest');
@@ -49,6 +50,36 @@ function everydayShort(raw,context){
  if(/^(?:请)?(?:你能)?(?:再说一遍|重复一遍)(?:吗)?$/.test(k))return respond(R.repeat,context?.awaiting,null,'repeat');
  if(/^(?:请)?(?:你能)?(?:说慢一点|慢一点)(?:吗)?$/.test(k))return respond(R.slow,context?.awaiting,null,'slow');
  if(/^(?:我)?明白了$/.test(k))return respond(R.understand,null,R.practice);
+ return null;
+}
+function clarificationContext(raw,context){
+ const k=norm(raw),known=knownHSK2(raw),previous=context?.awaiting;
+ const say=(id,awaiting,spoken=known,extra={})=>({kind:'social',line:clarificationLine(id),spoken,context:{...context,awaiting,lastClarification:id,...extra}});
+ const annotated=(py,ru)=>line([raw,py,ru]);
+ const afterRun=()=>previous==='run-frequency'?say(15,'run-reason',annotated('Wǒ xǐhuan pǎobù.','Я люблю бегать.')):say(16,'run-frequency',annotated('Wǒ xǐhuan pǎobù.','Я люблю бегать.'));
+ if(/^(?:我)?(?:很|最)?喜欢跑步$/.test(k))return afterRun();
+ if(previous==='run-frequency'&&/^(?:我)?(?:每天|经常|常常|有时候|不常|很少)(?:跑步)?$/.test(k)){
+  const a={每天:['měitiān','Каждый день.'],经常:['jīngcháng','Часто.'],常常:['chángcháng','Часто.'],有时候:['yǒu shíhou','Иногда.'],不常:['bù cháng','Нечасто.'],很少:['hěn shǎo','Редко.']};const m=k.match(/^(我)?(每天|经常|常常|有时候|不常|很少)(跑步)?$/);const v=a[m[2]];return say(15,'run-reason',annotated((m[1]?'Wǒ ':'')+v[0]+(m[3]?' pǎobù':''),m[3]?v[1].replace(/\.$/,'')+' бегаю.':v[1]));
+ }
+ if(previous==='run-frequency'&&/^(?:是的|是|对|不|没有)$/.test(k))return say(15,'run-reason');
+ if(previous==='run-reason'&&/^(?:因为)?(?:跑步)?(?:对身体好|对健康好|很有意思|让我开心|我喜欢运动)$/.test(k))return say(17,'sport');
+ if(/^(?:我)?喜欢(?:运动|游泳|打篮球|踢足球)$/.test(k))return say(17,'sport');
+ if(/^(?:我)?喜欢(?:一个女孩|一个女生|一个女孩子|一个女朋友)$/.test(k)){
+ const z=k.replace(/^我?/,'').slice(2),d={'一个女孩':['yí ge nǚhái','одна девушка'],'一个女生':['yí ge nǚshēng','одна девушка'],'一个女孩子':['yí ge nǚháizi','одна девушка']};
+ // A girl the learner likes is not necessarily their girlfriend.
+ if(z==='一个女朋友')return say(6,'clarify',null);
+ return say(18,'relationship-status',annotated((k.startsWith('我')?'Wǒ ':'')+'xǐhuan '+d[z][0],'Мне нравится одна девушка.'));
+ }
+ if(/^(?:我)?(?:现在)?有女朋友(?:了)?$/.test(k)||previous==='relationship-status'&&/^(?:有|有啊|是的|对)$/.test(k))return say(19,'relationship-how',known||annotated('','У меня есть девушка.'),{relationshipConfirmed:true});
+ if(/^(?:我)?(?:现在)?(?:没有|没)女朋友$/.test(k)||previous==='relationship-status'&&/^(?:没有|没|没有啊)$/.test(k))return say(10,'topic',known||annotated('','У меня нет девушки.'),{relationshipConfirmed:false});
+ if(previous==='relationship-how'&&context?.relationshipConfirmed&&/^(?:我们)?(?:是)?(?:在(?:学校|公司|网上|中国)|通过朋友|朋友介绍)(?:认识的|认识|介绍的)?$/.test(k))return say(20,'relationship-likes');
+ if(/^(?:你)(?:最)?喜欢喝什么$/.test(k))return say(13,'drink',annotated('Nǐ xǐhuan hē shénme?','Что ты любишь пить?'));
+ if(/^(?:你)(?:最)?喜欢吃什么$/.test(k))return say(14,'food',annotated('Nǐ xǐhuan chī shénme?','Что ты любишь есть?'));
+ if(/^(?:我)?喜欢喝(?:茶|咖啡|水|牛奶)$/.test(k))return say(12,'drink',known);
+ if(/^(?:我)?喜欢[\p{Script=Han}]{1,20}$/u.test(k)&&!known){
+ const tail=k.replace(/^我?喜欢/,'');const learned=knownHSK2(tail);
+ if(!learned&&!/^(?:看书|看电影|听音乐|学中文|吃饭|喝水|旅游|唱歌|画画|跳舞)$/.test(tail))return say(previous==='clarify'?6:4,'clarify',annotated('','Частично: «Мне нравится…». Значение «'+tail+'» не уточнено.'),{unresolved:tail});
+ }
  return null;
 }
 const foodQuestion=/^(?:你|你们)(?:今天|早上|已经)?(?:吃了(?:饭|早饭|早餐)?吗|吃(?:饭|早饭|早餐)(?:了|过)?吗|吃过(?:饭|早饭|早餐)?了吗|吃过吗|吃了吗|吃没吃饭|吃饭了没有|吃了没有)$/u;
@@ -73,6 +104,7 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const t=getTopic(id),s=norm(raw),q=t?.questions[index];
  if(!t||!q||!s)return {kind:'unknown'};
  const exact=!done&&q.options.find(a=>norm(a[0])===s);if(exact)return {kind:'accepted',answer:line(exact)};
+ const contextual=clarificationContext(raw,context);if(contextual)return contextual;
  if(/^(?:你呢|那你呢)$/.test(s)&&context?.awaiting){const reply=respondToPandaChat(raw,context);if(reply.supported)return {kind:'social',line:line(reply.line),context:reply.context,spoken:line([raw,'Nǐ ne?','А ты?'])};}
  if(/^(?:你呢|那你呢)$/.test(s))return {kind:'question',line:line(q.options[0]),spoken:line([raw,'Nǐ ne?','А ты?'])};
  if(/^(?:再见|拜拜|明天见)$/.test(s))return {kind:'end',line:line(['再见！','Zàijiàn!','До свидания!'])};
@@ -89,5 +121,5 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const social=respondToPandaChat(raw,context);if(social.supported)return {kind:'social',line:line(social.line),context:social.context,spoken:knownHSK2(raw)};
  if(knownHSK2(raw)&&/^(?:很好|我很好|还好|不错|挺好的|我也很好)$/.test(s))return {kind:'social',line:line(R.activity),spoken:knownHSK2(raw),context:{awaiting:'activity'}};
  if(knownHSK2(raw)&&/^(?:好|好的|好啊|当然|对|是的|不客气|没关系)$/.test(s))return {kind:'social',line:line(R.practice),spoken:knownHSK2(raw),context:{awaiting:'topic'}};
- return {kind:'unknown',line:line(['请再说一遍。','Qǐng zài shuō yí biàn.','Пока не могу уверенно понять. Попробуй сказать иначе.'])};
+ return {kind:'unknown',line:clarificationLine(context?.lastClarification===1?7:1),context:{...context,lastClarification:context?.lastClarification===1?7:1}};
 }
