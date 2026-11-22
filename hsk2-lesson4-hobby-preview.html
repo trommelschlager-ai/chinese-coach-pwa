@@ -1379,6 +1379,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
   }
 }
 </style>
+<link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
 </head>
 <body>
 <div class="app" id="app">
@@ -1629,8 +1630,9 @@ const translate = item => '<span class="py">' + item[1] + '</span><span class="r
 const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' good' : '') + '" role="status">' + escape(feedback) + '</div>';
 
 function audioButton(text, icon = speaker) {
-  const label = 'Прослушать '+text+' · запись Panda Go';
-  return '<button type="button" class="orb" data-say="'+escape(text)+'" aria-label="'+escape(label)+'" title="'+escape(label)+'">'+icon+'</button>';
+  const clip = hobbyApprovedClips[normalize(text)];
+  const label = clip ? 'Прослушать '+text+' · запись Panda Go' : 'Запись пока не загружена: '+text;
+  return '<button type="button" class="orb'+(clip?'':' missing')+'" '+(clip?'data-say="'+escape(text)+'"':'disabled')+' aria-label="'+escape(label)+'" title="'+escape(label)+'">'+(clip?icon:'◌')+'</button>';
 }
 
 const recognitionAvailable = () => Boolean(window.SpeechRecognition || window.webkitSpeechRecognition) && window.isSecureContext;
@@ -1734,25 +1736,15 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  const tiles = [
-    [2,'Слова'], [3,'Тесты'], [4,'Грамматика'],
-    [5,'Рассказ о хобби'], [6,'Произношение'], [7,'Диалог']
-  ];
-  return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 4 · Моё хобби">' +
-    '<div class="word-flow-cover hobby-cover">' +
-    '<img class="hobby-cover-art" src="./assets/hsk2-lesson1-preview/course-cover-sakura-canal.webp" ' +
-      'alt="" width="905" height="1737" fetchpriority="high" draggable="false">' +
-    '<a class="final-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>' +
-    '<span class="hobby-cover-chapter">HSK 2 · УРОК 4</span>' +
-    '<div class="hobby-cover-title"><h1>Моё хобби</h1><p><span lang="zh-Hans">我的爱好</span><br>Wǒ de àihào</p></div>' +
-    '<div class="hobby-cover-summary"><p>Расскажи, чем любишь заниматься<br>в свободное время и по выходным.</p></div>' +
-    '<span class="cover-tile-label cover-tile-words" aria-hidden="true">Слова</span>' +
-    '<span class="cover-tile-label cover-tile-tests" aria-hidden="true">Тесты</span>' +
-    '<span class="cover-tile-label cover-tile-story" aria-hidden="true">Мой рассказ</span>' +
-    tiles.map(([step,label]) => '<button type="button" class="hobby-cover-tile" data-step="' + step +
-      '" aria-label="' + label + '"></button>').join('') +
-    '<button type="button" class="final-cover-start" data-step="2" aria-label="Начать урок"></button>' +
-    '</div></section>';
+  const tiles=[[2,'Слова',vocabImage(5,'pg-hobby-tile-art')],[3,'Тесты',stageImage('quiz','pg-hobby-tile-art')],[4,'Грамматика',vocabImage(0,'pg-hobby-tile-art')],[5,'Мой рассказ',vocabImage(3,'pg-hobby-tile-art')],[6,'Произношение',stageImage('tones','pg-hobby-tile-art')],[7,'Диалог',stageImage('dialogue','pg-hobby-tile-art')]];
+  return '<section class="pg-hobby-cover" aria-label="HSK 2 · Урок 4 · Моё хобби">'+
+  '<div class="pg-hobby-head"><a href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2">‹</a><span class="pg-hobby-brand"><img src="./assets/hsk2-lesson4-hobby-3d/cover.webp" alt=""><span><b>Panda <em>Go</em></b><small>Китайский с удовольствием</small></span></span></div>'+
+  '<div class="pg-hobby-progress" aria-hidden="true"></div><div class="pg-hobby-title"><span>HSK 2 · УРОК 4</span><h1>Моё хобби</h1><p><b lang="zh-Hans">我的爱好</b> · Wǒ de àihào</p></div>'+
+  '<div class="pg-hobby-picture"><img src="./assets/hsk2-lesson4-hobby-3d/cover.webp" width="840" height="840" alt="Панда в наушниках читает книгу в саду, рядом гитара и кисти" fetchpriority="high" draggable="false"></div>'+
+  '<div class="pg-hobby-lower"><div class="pg-hobby-summary"><b>Содержание урока</b><p>Расскажи, чем любишь заниматься в свободное время и по выходным.</p></div>'+
+  '<div class="pg-hobby-tiles">'+tiles.map(([step,label,art])=>'<button type="button" data-step="'+step+'">'+art+'<span>'+label+'</span></button>').join('')+'</div>'+
+  '<button class="pg-hobby-start" type="button" data-step="2">Начать урок →</button></div>'+
+  '<div class="pg-hobby-motto"><p>Не бойся говорить с ошибками.<br><em>Бойся никогда не заговорить!</em></p></div></section>';
 }
 function newWords() {
   
@@ -1763,7 +1755,7 @@ function newWords() {
       '<div class="about-myday-tones">' + toneStrokes(word.tones) + '</div>' +
       '<div class="about-myday-copy">' + translate([word.zh,word.py,word.ru]) + '</div>' +
       audioButton(word.zh,playIcon) + '</article>').join('') + '</div>' +
-    '<button type="button" class="about-manual-complete" data-words-read="1">✓ Повторил все 8 выражений</button><p class="hint">Озвучка зависит от китайского голоса на устройстве.</p>' + safeStatus();
+    '<button type="button" class="about-manual-complete" data-words-read="1">✓ Повторил все 8 выражений</button><p class="hint">Прослушай утверждённые записи Panda Go и повтори вслух.</p>' + safeStatus();
 }
 
 function hero(kind,step,title,subtitle) {
@@ -1940,6 +1932,13 @@ function toneGuide() {
     '<path d="' + path + '" stroke="#af183e" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg><strong>' +
     sample + '</strong>' + name + '</div>').join('') + '</div></details>';
 }
+/* Shared speech-row standard: Chinese, pinyin, translation, tone marks, speaker, microphone. */
+function pgStandardSpeechRow(word,i) {
+  const strokes={0:'',1:'M3 8 H19',2:'M3 15 L19 3',3:'M3 4 Q11 24 19 4',4:'M3 3 L19 15'};
+  const tones=word.tones.map(v=>'<span class="pg-standard-tone"><svg viewBox="0 0 22 20" aria-hidden="true">'+(v===0?'<circle cx="11" cy="9" r="2.8" fill="#267d31"/>':'<path d="'+strokes[v]+'" fill="none" stroke="#782a8f" stroke-width="3.3" stroke-linecap="round"/>')+'</svg><b>'+v+'</b></span>').join('');
+  const control=state.practiceMode==='self'?'<button type="button" class="orb mic'+(state.selfSpoken.includes(i)?' recognized':'')+'" data-self-spoken="'+i+'" aria-label="Я повторил и сравнил '+escape(word.zh)+'" title="Самопроверка; тоны не оцениваются">'+(state.selfSpoken.includes(i)?'✓':'●')+'</button>':micButton(i,'Произнести '+word.zh,state.mic.includes(i));
+  return '<article class="pg-standard-speech-row"><div class="pg-standard-copy"><strong class="pg-standard-cn" lang="zh-Hans">'+escape(word.zh)+'</strong><span class="pg-standard-py">'+escape(word.py)+'</span><span class="pg-standard-ru">'+escape(word.ru)+'</span></div><div class="pg-standard-tones" role="img" aria-label="Тоны: '+word.tones.join(', ')+'">'+tones+'</div>'+audioButton(word.zh,speaker)+control+'</article>';
+}
 function tones() {
   const wordView = state.toneTab === 'words';
   return hero('tones',6,'Тренировка тонов','Произнеси восемь выражений о хобби.') +
@@ -1956,15 +1955,7 @@ function tones() {
     '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (8)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
     '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (8)</button></div>' +
-    (wordView ? '<div class="tone-list">' + words.map((word,i) => '<article class="tone-row">' + vocabImage(i) + '<div>' +
-      hanzi(word.zh) + translate([word.zh,word.py,word.ru]) + '</div><div class="tone-example">' +
-      toneStrokes(word.tones) + pitchRow(word.tones) + '</div>' + audioButton(word.zh) +
-      (state.practiceMode === 'self'
-        ? '<button type="button" class="orb mic' + (state.selfSpoken.includes(i) ? ' recognized' : '') +
-          '" data-self-spoken="' + i + '" aria-label="Я повторил и сравнил ' + word.zh +
-          '" title="Самостоятельная проверка; тоны не оцениваются">' +
-          (state.selfSpoken.includes(i) ? '✓' : '●') + '</button>'
-        : micButton(i,'Произнести ' + word.zh,state.mic.includes(i))) + '</article>').join('') + '</div>' :
+    (wordView ? '<div class="pg-standard-list">' + words.map(pgStandardSpeechRow).join('') + '</div>' :
       '<details class="phrase-review panel"><summary>💬 Открыть 8 фраз для повторения</summary>' + phraseCards() + '</details>') +
      '<div class="controls"><button type="button" class="soft" data-record="1">'+
     (take?.recorder?.state==='recording'?'■ Остановить':'🎙 Записать себя')+
