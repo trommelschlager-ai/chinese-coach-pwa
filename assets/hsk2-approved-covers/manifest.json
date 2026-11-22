@@ -1,0 +1,92 @@
+[
+  {
+    "lesson": 1,
+    "title": "О себе",
+    "path": "assets/hsk2-approved-covers/lesson-01.png",
+    "sha256": "6be470a6fd7cf70ccf2cb80f3e46ed59be9251ce2dd76c39fd45ed190e7070aa",
+    "width": 941,
+    "height": 1672,
+    "tail": "assets/hsk2-approved-covers/lesson-01-tail.webp"
+  },
+  {
+    "lesson": 2,
+    "title": "Мой день",
+    "path": "assets/hsk2-approved-covers/lesson-02.png",
+    "sha256": "b1d69181a0987073ceff0670d49a575b2749752e6dd0bee6e75a57a25a56bd83",
+    "width": 941,
+    "height": 1672,
+    "tail": "assets/hsk2-approved-covers/lesson-02-tail.webp"
+  },
+  {
+    "lesson": 3,
+    "title": "Работа и учёба",
+    "path": "assets/hsk2-approved-covers/lesson-03.png",
+    "sha256": "6ef131fff4fa92c8bdb5b4af186579d3ef86d0b17c416cfe7df13f724c72b17a",
+    "width": 941,
+    "height": 1672,
+    "tail": "assets/hsk2-approved-covers/lesson-03-tail.webp"
+  },
+  {
+    "lesson": 4,
+    "title": "Моё хобби",
+    "path": "assets/hsk2-approved-covers/lesson-04.png",
+    "sha256": "11399d59ba0296307fe52bcb1aad9b22ec25f6887ade201b3f4cf6fc8629efe1",
+    "width": 941,
+    "height": 1672,
+    "tail": "assets/hsk2-approved-covers/lesson-04-tail.webp"
+  },
+  {
+    "lesson": 5,
+    "title": "Друзья и встречи",
+    "path": "assets/hsk2-approved-covers/lesson-05.png",
+    "sha256": "6b842a759d82adb667be92d1719c7074fc040657d1d1017852298af6e7993c92",
+    "width": 941,
+    "height": 1672,
+    "tail": "assets/hsk2-approved-covers/lesson-05-tail.webp"
+  },
+  {
+    "lesson": 6,
+    "title": "Вчера и мой опыт",
+    "path": "assets/hsk2-approved-covers/lesson-06.png",
+    "sha256": "d8fcd9622a7158593778813ce45a8884cc6ee899a4b2774d7e44c355eebd91e4",
+    "width": 941,
+    "height": 1672,
+    "tail": "assets/hsk2-approved-covers/lesson-06-tail.webp"
+  },
+  {
+    "lesson": 7,
+    "title": "Мои планы на будущее",
+    "path": "assets/hsk2-approved-covers/lesson-07.png",
+    "sha256": "0d561ffc37812c07b5de8fd6b9e1b23ce350d94b4d41283436ed275b895240d7",
+    "width": 941,
+    "height": 1672,
+    "tail": "assets/hsk2-approved-covers/lesson-07-tail.webp"
+  },
+  {
+    "lesson": 8,
+    "title": "В магазине",
+    "path": "assets/hsk2-approved-covers/lesson-08.png",
+    "sha256": "51c39756322a3276f3fb95b037d6a3e68b291b074fd0eb54d926f0fbe1767257",
+    "width": 941,
+    "height": 1672,
+    "tail": "assets/hsk2-approved-covers/lesson-08-tail.webp"
+  },
+  {
+    "lesson": 9,
+    "title": "Здоровье",
+    "path": "assets/hsk2-approved-covers/lesson-09.png",
+    "sha256": "e619d6188a3567cf715bc127dd1ccd0ea3d8a79f465396a3e14953342f491528",
+    "width": 941,
+    "height": 1672,
+    "tail": "assets/hsk2-approved-covers/lesson-09-tail.webp"
+  },
+  {
+    "lesson": 10,
+    "title": "Любовь и отношения",
+    "path": "assets/hsk2-approved-covers/lesson-10.png",
+    "sha256": "a40e39d2d3460adf464b20722482214406071ac77a501c75ef8c67997486dbe7",
+    "width": 941,
+    "height": 1672,
+    "tail": "assets/hsk2-approved-covers/lesson-10-tail.webp"
+  }
+]
