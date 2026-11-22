@@ -277,7 +277,7 @@ function readState(){
       offline:t.offline&&typeof t.offline==='object'?t.offline:null,
       evidence:Array.isArray(t.evidence)&&t.evidence.length===2?t.evidence:null,
       voiceMs:finite(t.voiceMs)?Math.max(0,Math.min(8000,t.voiceMs)):0,
-      signal:t.signal&&typeof t.signal==='object'?{frames:Number(t.signal.frames)||0,voicedFrames:Number(t.signal.voicedFrames)||0,peak:Number(t.signal.peak)||0,p95:Number(t.signal.p95)||0,seconds:Number(t.signal.seconds)||0,rawF0:Number(t.signal.rawF0)||0,threshold:.023}:null,
+      signal:t.signal&&typeof t.signal==='object'?{frames:Number(t.signal.frames)||0,voicedFrames:Number(t.signal.voicedFrames)||0,peak:Number(t.signal.peak)||0,p95:Number(t.signal.p95)||0,seconds:Number(t.signal.seconds)||0,rawF0:Number(t.signal.rawF0)||0,threshold:.023,speech:t.signal.speech&&typeof t.signal.speech==='object'?t.signal.speech:null}:null,
       recordedAt:finite(t.recordedAt)&&t.recordedAt>0?t.recordedAt:null,
       attemptId:typeof t.attemptId==='string'?t.attemptId.slice(0,80):null,
       stats:t.stats&&typeof t.stats==='object'?{yin:Math.max(0,Number(t.stats.yin)||0),fallback:Math.max(0,Number(t.stats.fallback)||0),none:Math.max(0,Number(t.stats.none)||0)}:null,
@@ -714,16 +714,50 @@ function cleanup(rec){
 }
 
 
+
+/* Select a connected compact utterance instead of spanning unrelated noises. */
+function selectSpeechSegment(levels,points){
+ const loud=levels.filter(p=>p[1]>=.023),maxPause=.38,maxSpan=1.55;
+ if(!loud.length)return {from:NaN,to:NaN,frames:0,allFrames:0,discarded:0,ambiguous:false,groups:0};
+ const groups=[];let group=[];
+ for(const p of loud){
+  if(group.length&&p[0]-group.at(-1)[0]>maxPause){groups.push(group);group=[];}
+  group.push(p);
+ }
+ if(group.length)groups.push(group);
+ const candidates=[];
+ for(const g of groups){
+  for(let i=0;i<g.length;i++){
+   let j=i;
+   while(j+1<g.length&&g[j+1][0]-g[i][0]<=maxSpan)j++;
+   const slice=g.slice(i,j+1),from=slice[0][0],to=slice.at(-1)[0];
+   if(slice.length<4)continue;
+   const pitch=points.filter(p=>p[0]>=from-.06&&p[0]<=to+.06).length;
+   const score=slice.length+Math.min(20,pitch)*.18-Math.max(0,to-from-.9)*2;
+   candidates.push({from,to,frames:slice.length,score});
+   i=Math.max(i,j-2);
+  }
+ }
+ if(!candidates.length)return {from:loud[0][0],to:loud.at(-1)[0],frames:loud.length,allFrames:loud.length,discarded:0,ambiguous:false,groups:groups.length};
+ candidates.sort((a,b)=>b.score-a.score);
+ const best=candidates[0];
+ const alternative=candidates.find(c=>c.to<best.from-.35||c.from>best.to+.35);
+ const ambiguous=Boolean(alternative&&alternative.score>=best.score*.72&&alternative.frames>=5);
+ return {from:best.from,to:best.to,frames:best.frames,allFrames:loud.length,
+  discarded:Math.max(0,loud.length-best.frames),ambiguous,groups:groups.length};
+}
 function buildRecording(rec){
  const levels=(rec.levels||[]).filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1]));
  const voiced=levels.filter(p=>p[1]>=.023);
- const from=voiced[0]?.[0],to=voiced[voiced.length-1]?.[0],duration=finite(from)&&finite(to)?to-from:0;
- const validSound=voiced.length>=5&&duration>=.24;
  const points=(rec.samples||[]).filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1])&&p[1]>=70&&p[1]<=600);
+ const speech=selectSpeechSegment(levels,points);
+ const from=speech.from,to=speech.to,duration=finite(from)&&finite(to)?to-from:0;
+ const validSound=speech.frames>=5&&duration>=.24;
  const rmsValues=levels.map(p=>p[1]).sort((a,b)=>a-b),peak=rmsValues.at(-1)??0,p95=rmsValues[Math.max(0,Math.ceil(rmsValues.length*.95)-1)]??0;
- const signal={frames:levels.length,voicedFrames:voiced.length,peak,p95,seconds:levels.at(-1)?.[0]??0,rawF0:points.length,threshold:.023};
+ const signal={frames:levels.length,voicedFrames:voiced.length,peak,p95,seconds:levels.at(-1)?.[0]??0,rawF0:points.length,threshold:.023,
+   speech:{from:finite(from)?from:0,to:finite(to)?to:0,frames:speech.frames,discarded:speech.discarded,groups:speech.groups,ambiguous:speech.ambiguous,span:duration}};
  const result={word:rec.word,points:[],seconds:Math.max(0,duration),splitRatio:.5,recordedAt:Date.now(),attemptId:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),
-  splitSource:'midpoint',splitWarning:'',voiceMs:voiced.length*30,quality:'unmeasured',validParts:[false,false],stats:rec.stats||null,signal,offline:rec.offline||null};
+  splitSource:'midpoint',splitWarning:'',voiceMs:speech.frames*30,quality:'unmeasured',validParts:[false,false],stats:rec.stats||null,signal,offline:rec.offline||null};
  if(!validSound){
    // Preserve meter evidence even if the attempt must not count toward 5/5.
    const span=Math.max(.001,signal.seconds);
@@ -767,6 +801,10 @@ function buildRecording(rec){
  result.evidence=[contourEvidence(result.points,0,i,duration),contourEvidence(result.points,i,1,duration)];
  result.validParts=result.evidence.map(x=>x.usable);
  result.quality=result.validParts.every(Boolean)?'both':result.points.length>=2?'partial':'unmeasured';
+ if(speech.ambiguous){
+  result.splitWarning+=(result.splitWarning?' ':'')+'⚠ В попытке обнаружены несколько похожих голосовых фрагментов, выбор слова неоднозначен.';
+  if(result.quality==='both')result.quality='partial';
+ }
  const message=result.quality==='both'?'✓ Записано: обе кривые измерены (тоны не оценены).':
   result.quality==='partial'?'✓ Записано. Один слог измерен частично — показаны доступные данные.':
   '✓ Повтор учтён по звуковому сигналу, но высоту голоса измерить не удалось.';
@@ -925,7 +963,7 @@ document.addEventListener('input',event=>{
  draw();
 });
 window.PandaToneTrainer={render,mount,stop:()=>{if(active)stop(false)},reset,progressText,total,replay:async()=>{if(!replayUrl||replayWord!==state.selected)return false;try{if(replayAudio)replayAudio.pause();replayAudio=new Audio(replayUrl);await replayAudio.play();return true}catch{return false}},diagnostics:()=>{const i=state.selected;return {word:memo?.words?.[i]?.zh||'',pinyin:memo?.words?.[i]?.py||'',selected:i,repeats:count(i),total:total(),recording:Boolean(active),attempt:visibleAttempt?.word===i?visibleAttempt:(state.reps[i]?.mic?.at(-1)||null)}}};
-window.PandaToneMathV2={pitchOf,fallbackPitchOf,offlinePitch,reanalyzePcm,cleanPitch,contourEvidence,estimateSplit,observedTrend,buildRecording,normalizeChartPoints,semitoneContour,isLongPitchGap};
+window.PandaToneMathV2={pitchOf,fallbackPitchOf,offlinePitch,reanalyzePcm,cleanPitch,contourEvidence,selectSpeechSegment,estimateSplit,observedTrend,buildRecording,normalizeChartPoints,semitoneContour,isLongPitchGap};
 })();
 </script>
 <script>
@@ -980,6 +1018,8 @@ document.addEventListener('click',async function(ev){
    'Длительность попытки: '+(sig?sig.seconds.toFixed(2)+' с':'нет данных'),
    'RMS: пик '+(sig?sig.peak.toFixed(4):'нет данных')+'; 95-й процентиль '+(sig?sig.p95.toFixed(4):'нет данных')+'; порог 0,023',
    'RMS-кадры: всего '+(sig?sig.frames:'нет данных')+'; выше порога '+(sig?sig.voicedFrames:'нет данных'),
+   'Сумма активных кадров RMS: '+(sig?(sig.voicedFrames*.03).toFixed(2)+' с':'нет данных')+' (не непрерывная длительность слова)',
+   'Выбранный голосовой участок: '+(sig?.speech?'с '+sig.speech.from.toFixed(2)+' до '+sig.speech.to.toFixed(2)+' с; '+sig.speech.frames+' кадров RMS, отброшено вне участка '+sig.speech.discarded+'; конкурирующие фрагменты '+(sig.speech.ambiguous?'да':'нет'):'нет данных для старой записи'),
    'Кандидаты F0 до проверки голосового интервала: '+(sig?sig.rawF0:'нет данных'),
    'Точек F0: '+pts.length,
    'Методы F0 онлайн: основной '+(a?.stats?.yin??'нет')+'; запасной '+(a?.stats?.fallback??'нет')+'; без результата '+(a?.stats?.none??'нет'),
