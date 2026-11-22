@@ -1,6 +1,6 @@
 {
-  "version": 506,
-  "bytes": 80088324,
+  "version": 507,
+  "bytes": 80255598,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -3291,9 +3291,9 @@
     "./assets/hsk1-fifth-v227.js?v=520",
     "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=19",
     "./assets/hsk2-home-v445.css?v=446",
-    "./assets/hsk2-catalog-premium-v1.css?v=506",
+    "./assets/hsk2-catalog-premium-v1.css?v=507",
     "./assets/hsk2-navigation-audit-v1.css?v=2",
-    "./assets/hsk2-storyboard-v439.js?v=505",
+    "./assets/hsk2-storyboard-v439.js?v=507",
     "./assets/hsk2-life-course-app-v1.js?v=505",
     "./assets/hsk2-home-v445.js?v=446",
     "./assets/hsk2-quality-standard-v1.css?v=1",
@@ -3309,6 +3309,19 @@
     "./assets/hsk2-speaking-v324.js?v=324",
     "./assets/panda-brain-v341.js?v=341",
     "./assets/hsk2-audio-coverage-v332.json",
-    "./assets/hsk2-audio-coverage-v330.json"
+    "./assets/hsk2-audio-coverage-v330.json",
+    "./assets/hsk2-grammar-review.js?v=507",
+    "./assets/hsk2-about-me/voice-luvvoice-20261120/about09.mp3",
+    "./assets/hsk2-lesson7-voice/l7_10.mp3",
+    "./assets/hsk2-lesson7-voice/l7_09.mp3",
+    "./assets/hsk2-lesson7-voice/l7_11.mp3",
+    "./assets/hsk2-lesson8-voice/l8_11.mp3",
+    "./assets/hsk2-lesson8-voice/l8_13.mp3",
+    "./assets/hsk2-lesson8-voice/l8_15.mp3",
+    "./assets/hsk2-lesson9-voice/l9_15.mp3",
+    "./assets/hsk2-lesson9-voice/l9_21.mp3",
+    "./assets/hsk2-lesson10-voice/l10_24.mp3",
+    "./assets/hsk2-lesson10-voice/l10_06.mp3",
+    "./assets/hsk2-lesson10-voice/l10_12.mp3"
   ]
 }

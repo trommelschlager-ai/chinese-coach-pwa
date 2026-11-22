@@ -151,6 +151,7 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
     '</a>'
   ).join('');
   const topicsMarkup=topics.map((t,i)=>{
+    if(expandedTopic!==i)return '';
     const done=[0,1,2].filter(m=>safeDone.includes(i*3+m)).length;
     const expanded=expandedTopic===i;
     const name=i===0?'Утро и привычки':t.name;
@@ -172,6 +173,20 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
         '<span class="pgc-topic-chevron" aria-hidden="true">'+(expanded?'⌃':'⌄')+'</span>'+
       '</button>'+miniCards+'</div>';
   }).join('');
+  const grammar=(window.PandaHSK2GrammarReview||[]).map((rules,i)=>{
+    const lesson=coreLessons[i];
+    const label=lesson.preview?' · Предпросмотр':lesson.done?' · Пройден':'';
+    const examples=rules.map(([rule,explanation,zh,py,ru,recording])=>{
+      const src=recording||window.PandaGoHSK2Lesson1NativeAudioV459?.[zh];
+      return '<article class="pgc-grammar-rule"><h3>'+esc(rule)+'</h3><p>'+esc(explanation)+'</p>'+
+        '<strong lang="zh-Hans">'+esc(zh)+'</strong><span class="pgc-grammar-pinyin">'+esc(py)+'</span>'+
+        '<span>'+esc(ru)+'</span>'+
+        (src?'<audio controls preload="none" src="'+esc(src)+'" aria-label="Прослушать '+esc(zh)+'"></audio>':'')+
+        '</article>';
+    }).join('');
+    return '<details class="pgc-grammar-lesson" name="pgc-grammar-lessons"><summary>'+
+      'Урок '+lesson.n+' · '+esc(lesson.name)+'<small>'+label+'</small></summary>'+examples+'</details>';
+  }).join('');
   return '<section id="pg433" class="pg433-root pg433-map pgc-catalog">'+
    '<header class="pg433-header"><div class="pg433-topline">'+
      '<div class="pg433-title"><small>PANDA GO · КУРС HSK 2</small><strong>Все уроки</strong></div>'+
@@ -185,10 +200,9 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[]){
      '<div class="pgc-section-head"><span class="pgc-section-emoji" aria-hidden="true">📚</span>'+
        '<div><h2>Основные уроки</h2><p>От знакомства до планов на будущее</p></div></div>'+
      '<div class="pgc-feature-list">'+cards+'</div>'+
-     '<div class="pgc-section-head pgc-more-head"><span class="pgc-section-emoji" aria-hidden="true">🌸</span>'+
-       '<div><h2>Тематический тренажёр</h2><p>10 тем · 30 мини-уроков · аудио пополняется</p></div></div>'+
-     '<p class="pgc-voice-notice">🎧 Дополнительные мини-уроки в разработке: для части слов пока используется голос устройства. Записи носителя доступны не везде.</p>'+ 
-     '<div class="pgc-topic-list">'+topicsMarkup+'</div>'+
+     '<details class="pgc-grammar" id="grammar"><summary><span aria-hidden="true">📖</span> Грамматика HSK 2</summary>'+
+       '<div class="pgc-grammar-lessons">'+grammar+'</div></details>'+
+     (topicsMarkup?'<div class="pgc-topic-list">'+topicsMarkup+'</div>':'')+
      '<p class="pgc-endnote">Твой прогресс сохраняется на этом устройстве ✨</p>'+
    '</main>'+
    '<footer class="pg433-footer"><button class="pg433-secondary" data-view="welcome">← На главную</button>'+

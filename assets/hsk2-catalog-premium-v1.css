@@ -307,3 +307,38 @@
  #app #pg433.pgc-catalog a.pgc-feature-card,
  #app #pg433.pgc-catalog button.pgc-topic-card{transition:none!important}
 }
+/* Grammar review follows the same palette and spacing as the lesson cards. */
+#pg433 .pgc-grammar {
+  margin: 16px 0;
+  border: 1px solid #d8afe5;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #fffafd, #f6e1f7);
+  box-shadow: 0 3px 0 #ca98d6;
+  color: #531874;
+}
+#pg433 .pgc-grammar summary {
+  cursor: pointer;
+  padding: 14px;
+  font-weight: 800;
+}
+#pg433 .pgc-grammar > summary { font-size: 1.12rem; }
+#pg433 .pgc-grammar-lessons { padding: 0 10px 12px; }
+#pg433 .pgc-grammar-lesson {
+  margin: 6px 0;
+  border: 1px solid #e4c8eb;
+  border-radius: 13px;
+  background: #fffafd;
+}
+#pg433 .pgc-grammar-lesson small { color: #704580; }
+#pg433 .pgc-grammar-rule {
+  margin: 0 12px 12px;
+  padding: 12px 0 0;
+  border-top: 1px solid #e4c8eb;
+}
+#pg433 .pgc-grammar-rule h3,
+#pg433 .pgc-grammar-rule p { margin: 0 0 9px; }
+#pg433 .pgc-grammar-rule strong,
+#pg433 .pgc-grammar-rule span { display: block; margin: 3px 0; }
+#pg433 .pgc-grammar-rule strong { font-size: 1.16rem; }
+#pg433 .pgc-grammar-pinyin { color: #704580; }
+#pg433 .pgc-grammar audio { display: block; width: 100%; margin-top: 8px; }
