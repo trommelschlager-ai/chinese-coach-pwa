@@ -648,18 +648,26 @@ function reanalyzePcm(rec){
  const pcm=new Float32Array(num),audio=new Float32Array(total);
  let off=0;for(const p of parts){pcm.set(p,off);off+=p.length;}
  for(let i=0;i<total;i++){let sum=0;for(let j=0;j<dec;j++)sum+=pcm[i*dec+j];audio[i]=sum/dec;}
- const levels=[],hopRms=Math.round(rate*.03),win=Math.round(rate*.09),hop=Math.round(rate*.018);
+ const levels=[],hopRms=Math.round(rate*.03),win=Math.round(rate*.09),shortWin=Math.round(rate*.068),hop=Math.round(rate*.018);
  for(let i=0;i+hopRms<=total;i+=hopRms){
   let power=0;for(let j=i;j<i+hopRms;j++)power+=audio[j]*audio[j];
   levels.push([i/rate,Math.sqrt(power/hopRms)]);
  }
- const points=[];let missed=0;
+ const points=[];let missed=0,shortRecovered=0;
  for(let i=0;i+win<=total;i+=hop){
-  const hz=offlinePitch(audio.subarray(i,i+win),rate);
+  let hz=offlinePitch(audio.subarray(i,i+win),rate);
+  if(!hz){
+   // Retest the same center using 68ms. This avoids blending an x-/s- onset
+   // and a short voiced vowel into a long unreliable 90ms frame.
+   const center=i+Math.floor(win*.5);
+   const start=Math.max(0,Math.min(total-shortWin,center-Math.floor(shortWin*.5)));
+   hz=offlinePitch(audio.subarray(start,start+shortWin),rate);
+   if(hz)shortRecovered++;
+  }
   if(hz)points.push([(i+win*.5)/rate,hz]);else missed++;
  }
  rec.samples=cleanPitch(points);rec.levels=levels;
- rec.offline={windowMs:90,hopMs:18,raw:points.length,kept:rec.samples.length,missed,method:rec.captureMethod};
+ rec.offline={windowMs:90,shortWindowMs:68,hopMs:18,shortRecovered,raw:points.length,kept:rec.samples.length,missed,method:rec.captureMethod};
  return true;
 }
 async function setupPcmCapture(rec){
@@ -676,7 +684,7 @@ async function setupPcmCapture(rec){
  };
  if(!ctx.audioWorklet?.addModule||typeof AudioWorkletNode==='undefined')return fallback();
  const code=`class PGCapture extends AudioWorkletProcessor {
- constructor(){super();this.parts=[];this.size=0;this.port.onmessage=e=>{if(e.data==='flush')this.flush();};}
+ constructor(){super();this.parts=[];this.size=0;this.port.onmessage=e=>{if(e.data==='flush'){this.flush();this.port.postMessage({type:'flushed'});}};}
  flush(){if(!this.size)return;const out=new Float32Array(this.size);let p=0;
   for(const a of this.parts){out.set(a,p);p+=a.length;}
   this.parts=[];this.size=0;this.port.postMessage(out,[out.buffer]);}
@@ -688,7 +696,7 @@ async function setupPcmCapture(rec){
  try{
   await ctx.audioWorklet.addModule(url);
   const node=new AudioWorkletNode(ctx,'pg-lab-capture-1'),mute=ctx.createGain();mute.gain.value=0;
-  node.port.onmessage=e=>{if(e.data instanceof Float32Array)append(e.data);};
+  node.port.onmessage=e=>{if(e.data instanceof Float32Array)append(e.data);else if(e.data?.type==='flushed'){rec.flushDone?.();rec.flushDone=null;}};
   src.connect(node);node.connect(mute);mute.connect(ctx.destination);
   rec.captureNode=node;rec.muteNode=mute;rec.captureMethod='worklet';return true;
  }catch{return fallback();}
@@ -765,12 +773,22 @@ function buildRecording(rec){
  return {accepted:true,entry:result,message};
 }
 
-function stop(countTake){
+async function stop(countTake){
  seq++;
  const rec=active;active=null;
  if(!rec){syncControls();return}
  rec.keepReplay=Boolean(countTake&&rec.word===state.selected);
- try{rec.captureNode?.port?.postMessage('flush')}catch{}
+ if(countTake&&rec.captureMethod==='worklet'&&rec.captureNode?.port){
+  // Flush is asynchronous: the old code analyzed PCM before receiving the
+  // final chunk. Wait for the acknowledged chunk (with a short timeout).
+  await Promise.race([
+   new Promise(resolve=>{
+    rec.flushDone=resolve;
+    try{rec.captureNode.port.postMessage('flush')}catch{resolve()}
+   }),
+   new Promise(resolve=>setTimeout(resolve,180))
+  ]);
+ }
  if(countTake&&rec.pcmParts?.length)reanalyzePcm(rec);
  try{if(rec.recorder?.state==='recording')rec.recorder.stop()}catch{}
  cleanup(rec);
@@ -965,7 +983,7 @@ document.addEventListener('click',async function(ev){
    'Кандидаты F0 до проверки голосового интервала: '+(sig?sig.rawF0:'нет данных'),
    'Точек F0: '+pts.length,
    'Методы F0 онлайн: основной '+(a?.stats?.yin??'нет')+'; запасной '+(a?.stats?.fallback??'нет')+'; без результата '+(a?.stats?.none??'нет'),
-   'Повторный анализ PCM: '+(a?.offline?'да ('+a.offline.method+'; окно '+a.offline.windowMs+'мс, шаг '+a.offline.hopMs+'мс; сырых точек '+a.offline.raw+', отброшено '+(a.offline.raw-a.offline.kept)+')':'не применён'),
+   'Повторный анализ PCM: '+(a?.offline?'да ('+a.offline.method+'; окно '+a.offline.windowMs+'мс, шаг '+a.offline.hopMs+'мс; короткое окно '+(a.offline.shortWindowMs||'нет')+'мс; восстановлено коротким окном '+(a.offline.shortRecovered??0)+' F0; сырых точек '+a.offline.raw+', отброшено '+(a.offline.raw-a.offline.kept)+')':'не применён'),
    'Качество контуров: '+(a?.evidence?'слог 1 '+(a.evidence[0].usable?'достаточно':'недостаточно')+'; слог 2 '+(a.evidence[1].usable?'достаточно':'недостаточно'):'нет данных'),
    'Граница слогов: '+Math.round(split*100)+'%'+(a?' ('+a.splitSource+')':''),
    'Надёжность границы: '+(a?.splitWarning||'граница предварительная; ручная настройка не доказывает фонетическую точность'),
