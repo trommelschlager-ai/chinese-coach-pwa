@@ -19,13 +19,43 @@ const patterns={
 110:[/^(?:你好)?我(?:也)?很高兴认识你$/u,/^(?:好啊|可以|不好意思我没空|下次吧|我周末没空)$/u,/^(?:我们)?在[\p{Script=Han}]{1,12}见面吧?$/u]};
 const aliases=[[/^你从哪里来$|^你来自哪儿$/,101,0],[/^你(?:现在)?住在哪儿$/,101,1],[/^你(?:每天)?几点起床$/,102,0],[/^你在哪儿工作$|^你在哪里上班$/,103,0],[/^你会讲中文吗$/,103,2],[/^你明天有空吗$/,105,0],[/^你昨天干什么了$/,106,0],[/^你明天有什么计划$/,107,0],[/^你哪里不舒服$/,109,1]];
 const BASIC=new Map([["很好","hěn hǎo","Очень хорошо."],["我很好","wǒ hěn hǎo","У меня всё хорошо."],["我也很好","wǒ yě hěn hǎo","У меня тоже всё хорошо."],["好","hǎo","Хорошо."],["还好","hái hǎo","Нормально."],["挺好的","tǐng hǎo de","Вполне хорошо."],["不错","búcuò","Неплохо."],["还不错","hái búcuò","Вполне неплохо."],["不太好","bú tài hǎo","Не очень хорошо."],["不好","bù hǎo","Плохо."],["我不好","wǒ bù hǎo","У меня не всё хорошо."],["我不太好","wǒ bú tài hǎo","У меня не очень хорошо."],["很累","hěn lèi","Очень устал(а)."],["我很累","wǒ hěn lèi","Я очень устал(а)."],["有点累","yǒudiǎn lèi","Немного устал(а)."],["很忙","hěn máng","Очень занят(а)."],["我很忙","wǒ hěn máng","Я очень занят(а)."],["很开心","hěn kāixīn","Очень рад(а)."],["很高兴","hěn gāoxìng","Очень рад(а)."],["谢谢","xièxie","Спасибо!"],["谢谢你","xièxie nǐ","Спасибо тебе!"],["非常感谢","fēicháng gǎnxiè","Большое спасибо!"],["多谢","duōxiè","Большое спасибо!"],["不客气","bú kèqi","Пожалуйста (в ответ на благодарность)."],["没关系","méi guānxi","Ничего страшного."],["对不起","duìbuqǐ","Извини."],["不好意思","bù hǎoyìsi","Извини, неловко."],["是","shì","Да; быть."],["是的","shì de","Да."],["对","duì","Верно."],["不是","bú shì","Нет, не так."],["不","bù","Нет; не."],["有","yǒu","Есть."],["没有","méiyǒu","Нет; не имеется."],["会","huì","Умею."],["不会","bú huì","Не умею."],["可以","kěyǐ","Можно; могу."],["不可以","bù kěyǐ","Нельзя."],["喜欢","xǐhuan","Нравится."],["不喜欢","bù xǐhuan","Не нравится."],["想","xiǎng","Хочу."],["不想","bù xiǎng","Не хочу."],["有空","yǒu kòng","Есть свободное время."],["没空","méi kòng","Нет свободного времени."],["吃了","chī le","Уже поел(а)."],["没吃","méi chī","Не ел(а)."],["我还没吃","wǒ hái méi chī","Я ещё не ел(а)."],["我知道","wǒ zhīdào","Я знаю."],["不知道","bù zhīdào","Не знаю."],["我不知道","wǒ bù zhīdào","Я не знаю."],["我明白了","wǒ míngbai le","Я понял(а)."],["明白了","míngbai le","Понятно."],["不明白","bù míngbai","Не понимаю."],["听不懂","tīng bu dǒng","Не понимаю на слух."],["我也是","wǒ yě shì","Я тоже."],["你呢","nǐ ne","А ты?"],["再见","zàijiàn","До свидания!"],["明天见","míngtiān jiàn","До завтра!"],["好啊","hǎo a","Хорошо!"],["好的","hǎo de","Хорошо."],["当然","dāngrán","Конечно."],["你好吗","nǐ hǎo ma","Как дела?"],["你今天怎么样","nǐ jīntiān zěnmeyàng","Как у тебя сегодня дела?"],["你叫什么名字","nǐ jiào shénme míngzi","Как тебя зовут?"],["你喜欢喝什么","nǐ xǐhuan hē shénme","Что ты любишь пить?"],["你吃了吗","nǐ chī le ma","Ты уже поел(а)?"],["你吃饭了吗","nǐ chīfàn le ma","Ты уже поел(а)?"]].map(a=>[norm(a[0]),a]));
+// Discourse markers are not demonstratives: preserve 那个人, 那本书, 那里.
+const DISCOURSE={那:['Nà','Ну а'],那么:['Nàme','Тогда'],对了:['Duì le','Кстати,'],请问:['Qǐngwèn','Скажи, пожалуйста,']};
+function discourse(raw){
+ const m=String(raw||'').trim().match(/^(那么|那|对了|请问)[，、,：:\s]*(?=(?:你|您|我|我们|他|她|现在|今天|明天|昨天|周末|这|怎么|为什么|什么|几点|哪里|哪儿|可以|能不能|是不是|有没有))(.+)$/u);
+ return m?{key:m[1],body:m[2]}:null;
+}
+function restoreDiscourse(raw,d,spoken){
+ if(!spoken?.ru)return null;
+ const py=spoken.pinyin?DISCOURSE[d.key][0]+', '+spoken.pinyin.charAt(0).toLowerCase()+spoken.pinyin.slice(1):'';
+ return line([raw,py,DISCOURSE[d.key][1]+' '+spoken.ru.charAt(0).toLocaleLowerCase('ru')+spoken.ru.slice(1)]);
+}
+const HOBBIES={
+ 跑步:['pǎobù','бег'],乒乓球:['pīngpāngqiú','настольный теннис'],打乒乓球:['dǎ pīngpāngqiú','игра в настольный теннис'],篮球:['lánqiú','баскетбол'],打篮球:['dǎ lánqiú','игра в баскетбол'],足球:['zúqiú','футбол'],踢足球:['tī zúqiú','игра в футбол'],游泳:['yóuyǒng','плавание'],运动:['yùndòng','спорт'],听音乐:['tīng yīnyuè','прослушивание музыки'],音乐:['yīnyuè','музыка'],看书:['kàn shū','чтение'],读书:['dú shū','чтение'],看电影:['kàn diànyǐng','просмотр фильмов'],电影:['diànyǐng','кино'],旅游:['lǚyóu','путешествия'],旅行:['lǚxíng','путешествия'],唱歌:['chànggē','пение'],跳舞:['tiàowǔ','танцы'],画画:['huàhuà','рисование'],学中文:['xué Zhōngwén','изучение китайского'],学习中文:['xuéxí Zhōngwén','изучение китайского'],打羽毛球:['dǎ yǔmáoqiú','бадминтон'],骑自行车:['qí zìxíngchē','езда на велосипеде'],做饭:['zuò fàn','готовка'],摄影:['shèyǐng','фотография']
+};
+function hobbyStatement(raw){
+ const m=norm(raw).match(/^(我的爱好是|我喜欢|我很喜欢)(.+)$/u);if(!m)return null;
+ let tail=m[2],parts=[],joins=[];const keys=Object.keys(HOBBIES).sort((a,b)=>b.length-a.length);
+ while(tail&&parts.length<8){
+  const k=keys.find(x=>tail.startsWith(x));if(!k)return null;parts.push(k);tail=tail.slice(k.length);
+  if(!tail)break;const join=tail.match(/^(还有|以及|和|跟|也喜欢)/u);joins.push(join?.[0]||'');if(join)tail=tail.slice(join[0].length);
+ }
+ if(tail||!parts.length)return null;
+ const py=parts.map((k,i)=>i?({和:' hé ',跟:' gēn ',还有:' háiyǒu ',以及:' yǐjí ',也喜欢:' yě xǐhuan '}[joins[i-1]]||', ')+HOBBIES[k][0]:HOBBIES[k][0]).join('');
+ const ru=parts.map(k=>HOBBIES[k][1]);const list=ru.length>1?ru.slice(0,-1).join(', ')+' и '+ru.at(-1):ru[0];
+ const prefix={'我的爱好是':'Wǒ de àihào shì','我喜欢':'Wǒ xǐhuan','我很喜欢':'Wǒ hěn xǐhuan'}[m[1]];
+ return {parts,spoken:line([raw,prefix+' '+py+'.',m[1]==='我的爱好是'?'Мои увлечения — '+list+'.':(m[1]==='我很喜欢'?'Мне очень нравится':'Мне нравится')+': '+list+'.'])};
+}
+
 export function knownHSK2(raw){
  const k=norm(raw);let a=BASIC.get(k);
  if(!a)for(const t of HSK2_TOPICS){
   const w=t.words.find(w=>norm(w.zh)===k);if(w){a=[w.zh,w.py,w.ru];break;}
   a=t.phrases.find(a=>norm(a[0])===k)||t.questions.flatMap(q=>[[q.q,q.p,q.ru],...q.options]).find(a=>norm(a[0])===k);if(a)break;
  }
- return a?line([raw,a[1],a[2]]):intentionQuestion(raw)?.spoken||null;
+ if(a)return line([raw,a[1],a[2]]);
+ const d=discourse(raw);if(d){const restored=restoreDiscourse(raw,d,knownHSK2(d.body));if(restored)return restored;}
+ return hobbyStatement(raw)?.spoken||intentionQuestion(raw)?.spoken||null;
 }
 const R={
  activity:['你今天做什么？','Nǐ jīntiān zuò shénme?','Что ты сегодня делаешь?'],
@@ -112,6 +142,10 @@ const foodReplies={
  no:['你想不想喝茶？','Nǐ xiǎng bu xiǎng hē chá?','Хочешь чаю?']
 };
 export function replyHSK2(raw,id,index,done=false,context=null){
+ const d=discourse(raw);
+ if(d){const out=replyHSK2(d.body,id,index,done,context);if(out.kind!=='unknown'){
+ const spoken=restoreDiscourse(raw,d,out.spoken||out.answer||knownHSK2(d.body));return {...out,...(spoken?{spoken}:{}),...(out.kind==='accepted'&&spoken?{answer:spoken}:{})};}
+ return out;}
  const input=norm(raw);
  const everyday=everydayShort(raw,context);if(everyday)return everyday;
  if(foodQuestion.test(input)){
@@ -128,6 +162,11 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const t=getTopic(id),s=norm(raw),q=t?.questions[index];
  if(!t||!q||!s)return {kind:'unknown'};
  const exact=!done&&q.options.find(a=>norm(a[0])===s);if(exact)return {kind:'accepted',answer:line(exact)};
+ const hobby=hobbyStatement(raw);
+ if(hobby&&hobby.parts.length>1){
+  if(!done&&((id===101&&index===2)||(id===104&&index===0)))return {kind:'variant',spoken:hobby.spoken};
+  return {kind:'social',line:clarificationLine(hobby.parts.includes('跑步')?16:17),spoken:hobby.spoken,context:{...context,awaiting:hobby.parts.includes('跑步')?'run-frequency':'sport'}};
+ }
  const intended=intentionQuestion(raw);if(intended)return intended;
  const contextual=clarificationContext(raw,context);if(contextual)return contextual;
  if(/^(?:你呢|那你呢)$/.test(s)&&context?.awaiting){const reply=respondToPandaChat(raw,context);if(reply.supported)return {kind:'social',line:line(reply.line),context:reply.context,spoken:line([raw,'Nǐ ne?','А ты?'])};}
@@ -138,7 +177,10 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  for(const topic of [t,...HSK2_TOPICS.filter(x=>x.id!==id)]){const m=topic.questions.find(x=>norm(x.q)===s);if(m)return {kind:'question',line:line(m.options[0]),spoken:line([raw,m.p,m.ru])};}
  const a=aliases.find(x=>x[0].test(s));if(a){const m=getTopic(a[1]).questions[a[2]];return {kind:'question',line:line(m.options[0]),spoken:line([raw,'',m.ru])};}
  const isQuestion=/[?？]/.test(raw)||/(?:吗|呢)$/.test(s)||/^你.*(?:什么|哪里|哪儿|几点|多少|为什么|怎么样)/.test(s);
- if(!done&&!isQuestion&&patterns[id]?.[index]?.test(s))return {kind:'variant',spoken:knownHSK2(raw)};
+ if(!done&&!isQuestion&&patterns[id]?.[index]?.test(s)){
+  if(((id===101&&index===2)||(id===104&&index===0))&&!knownHSK2(raw))return {kind:'unknown',line:clarificationLine(6),context:{...context,awaiting:'clarify'}};
+  return {kind:'variant',spoken:knownHSK2(raw)};
+ }
  const phrase=t.phrases.find(a=>norm(a[0])===s);if(phrase)return {kind:'example',line:line(phrase),spoken:line(phrase)};
  const recorded=recordedPandaAnswer(raw,[1,2,3,4,5,6,7])||recordedPandaAnswer(raw,[1],{course:'hsk2-day'});
  const dayRecorded=recorded?.kind==='clarify'?recordedPandaAnswer(raw,[1],{course:'hsk2-day'}):recorded;
