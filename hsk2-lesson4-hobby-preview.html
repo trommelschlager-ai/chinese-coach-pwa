@@ -27,7 +27,7 @@ button:not(:disabled):active{transform:translateY(2px);filter:brightness(.91)}
 img{display:block;max-width:100%}
 h1,h2,h3,p,figure{margin:0}
 [lang=zh-Hans]{font-family:"Noto Sans CJK SC","Noto Sans SC",system-ui,sans-serif}
-.app{position:relative;isolation:isolate;max-width:440px;margin:auto;overflow:hidden;border:4px double #893bac;border-radius:34px;background:#f6d5f2 url(./assets/hsk2-lesson4-hobby-3d/garden.webp) center/100% 100% no-repeat;box-shadow:0 0 0 1px #ffe2ff,inset 0 0 0 2px #fff0fe,inset 0 0 0 4px #da8dea,0 6px 13px #722b8a6b}
+.app{position:relative;isolation:isolate;max-width:440px;margin:auto;overflow:hidden;border:4px double #893bac;border-radius:34px;background:#f6d5f2 url(./assets/hsk2-lesson4-hobby-3d/garden.webp) center/cover no-repeat;box-shadow:0 0 0 1px #ffe2ff,inset 0 0 0 2px #fff0fe,inset 0 0 0 4px #da8dea,0 6px 13px #722b8a6b}
 .head{position:relative;z-index:2;padding:env(safe-area-inset-top,0px) 0 6px}
 .lesson-bar{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;min-height:56px;padding:0 7px 4px;background:linear-gradient(#c960e5 0%,#a138c6 25%,#74118f 82%,#9625b1);color:#fff;text-shadow:0 2px 5px #4d075f;box-shadow:inset 0 2px 3px #f4b8ff,0 3px 10px #8533a65c}
 .lesson-bar #detail-back{justify-self:start;width:36px;height:36px}
@@ -384,7 +384,7 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
   color:white!important}
 #app #pg433 .pg433-content{background:
   linear-gradient(#f9eafb91,#f9dafa80),
-  url("./assets/hsk2-lesson4-hobby-3d/garden.webp") center/100% 100% no-repeat!important}
+  url("./assets/hsk2-lesson4-hobby-3d/garden.webp") center/cover no-repeat!important}
 #app #pg433 .word-row,#app #pg433 .panel,#app #pg433 .test-card,
 #app #pg433 .day-card,#app #pg433 .tone-list,#app #pg433 .tone-guide{
   border:1.5px solid #e9c771!important;
@@ -462,7 +462,7 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
   height:100%;min-height:0;position:relative;overflow:hidden;
   display:flex;flex-direction:column;justify-content:space-evenly;gap:6px;
   padding:11px 13px 14px;color:#521070;text-align:center;
-  background:url("./assets/hsk2-lesson4-hobby-3d/garden.webp") center/100% 100% no-repeat}
+  background:url("./assets/hsk2-lesson4-hobby-3d/garden.webp") center/cover no-repeat}
 #app #pg433 .about-cover-top{z-index:1;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:5px 9px}
 #app #pg433 .about-cover-brand{color:#7411b0;font-weight:1000;font-size:clamp(23px,6vw,32px);
   letter-spacing:-.7px;text-shadow:-1px -1px #fff,1px 2px #fff,0 3px 4px #a753b955}
@@ -1380,6 +1380,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 }
 </style>
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
+<link rel="stylesheet" href="./assets/hsk2-lesson4-hobby-v2.css">
 </head>
 <body>
 <div class="app" id="app">
@@ -1602,8 +1603,8 @@ const dayScenes = ['wake','wash','brush','breakfast','work','sleep'];
 
 // Every cell in these two raster atlases was created for the hobby lesson.
 const photoAtlas = Object.freeze({
-  words:{columns:3,size:768},
-  stages:{columns:2,size:800}
+  words:{columns:3,size:1200},
+  stages:{columns:2,size:1200}
 });
 function atlasTile(type,index,cssClass='about-illustration') {
   const {columns,size} = photoAtlas[type];
@@ -1612,7 +1613,7 @@ function atlasTile(type,index,cssClass='about-illustration') {
   const y = side * Math.floor(index / columns);
   return '<svg class="' + cssClass + ' about-premium-photo" aria-hidden="true" focusable="false" ' +
     'viewBox="' + x + ' ' + y + ' ' + side + ' ' + side + '" preserveAspectRatio="xMidYMid slice">' +
-    '<image href="' + hobbyArt + type + '.webp" width="' + size + '" height="' + size + '" />' +
+    '<image href="' + hobbyArt + type + '-v2.webp" width="' + size + '" height="' + size + '" />' +
     '</svg>';
 }
 const vocabImage = (i,cssClass) => atlasTile('words',i,cssClass);
@@ -1739,8 +1740,8 @@ function intro() {
   const tiles=[[2,'Слова',vocabImage(5,'pg-hobby-tile-art')],[3,'Тесты',stageImage('quiz','pg-hobby-tile-art')],[4,'Грамматика',vocabImage(0,'pg-hobby-tile-art')],[5,'Мой рассказ',vocabImage(3,'pg-hobby-tile-art')],[6,'Произношение',stageImage('tones','pg-hobby-tile-art')],[7,'Диалог',stageImage('dialogue','pg-hobby-tile-art')]];
   return '<section class="pg-hobby-cover" aria-label="HSK 2 · Урок 4 · Моё хобби">'+
   '<div class="pg-hobby-head"><a href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2">‹</a><span class="pg-hobby-brand"><img src="./assets/hsk2-lesson4-hobby-3d/cover.webp" alt=""><span><b>Panda <em>Go</em></b><small>Китайский с удовольствием</small></span></span></div>'+
-  '<div class="pg-hobby-progress" aria-hidden="true"></div><div class="pg-hobby-title"><span>HSK 2 · УРОК 4</span><h1>Моё хобби</h1><p><b lang="zh-Hans">我的爱好</b> · Wǒ de àihào</p></div>'+
-  '<div class="pg-hobby-picture"><img src="./assets/hsk2-lesson4-hobby-3d/cover.webp" width="840" height="840" alt="Панда в наушниках читает книгу в саду, рядом гитара и кисти" fetchpriority="high" draggable="false"></div>'+
+  '<div class="pg-hobby-progress" aria-hidden="true"></div><div class="pg-hobby-title"><span>HSK 2 · УРОК 4</span><h1>Моё хобби</h1><p><b lang="zh-Hans">我的爱好</b><small>Wǒ de àihào</small></p></div>'+
+  '<div class="pg-hobby-picture"><img src="./assets/hsk2-lesson4-hobby-3d/cover-v2.webp" width="1500" height="500" alt="Панда в розовых наушниках, книга, мольберт, гитара и кроссовки в саду сакуры" fetchpriority="high" draggable="false"></div>'+
   '<div class="pg-hobby-lower"><div class="pg-hobby-summary"><b>Содержание урока</b><p>Расскажи, чем любишь заниматься в свободное время и по выходным.</p></div>'+
   '<div class="pg-hobby-tiles">'+tiles.map(([step,label,art])=>'<button type="button" data-step="'+step+'">'+art+'<span>'+label+'</span></button>').join('')+'</div>'+
   '<button class="pg-hobby-start" type="button" data-step="2">Начать урок →</button></div>'+

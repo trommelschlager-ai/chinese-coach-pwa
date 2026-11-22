@@ -1,0 +1,106 @@
+/* Lesson 4 cover follows the HSK2 pink and lilac cover layout. */
+.course-layout #app #pg433 .pg-hobby-cover {
+  --hobby-garden: url("./hsk2-lesson4-hobby-3d/garden.webp");
+  max-width: 540px;
+  margin-inline: auto;
+  min-height: max(100%, 510px);
+  height: auto;
+  background: linear-gradient(#f9dffa 8%, #f9ddf3 52%, #f5d6ec);
+}
+.course-layout #app[data-view="1"]:has(.pg-hobby-cover),
+.course-layout #app[data-view="1"] #pg433:has(.pg-hobby-cover) .pg433-content {
+  background: #f8def4 !important;
+}
+#app #pg433 .pg-hobby-head {
+  padding-block: max(5px, env(safe-area-inset-top)) 5px;
+  background: linear-gradient(105deg, #fff4fd, #e4aff5);
+}
+#app #pg433 .pg-hobby-progress {
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ea3da3, #8524bd);
+}
+#app #pg433 .pg-hobby-title {
+  padding-block: clamp(8px, 2dvh, 21px) 6px;
+  background: linear-gradient(#f7dafa 5%, #f8e1f6cc 80%, #f8e1f6),
+    var(--hobby-garden) center 15% / cover;
+}
+#app #pg433 .pg-hobby-title h1 {
+  font-size: clamp(25px, 7vw, 36px);
+}
+#app #pg433 .pg-hobby-title p > * {
+  display: block;
+}
+#app #pg433 .pg-hobby-title p small {
+  margin-top: 2px;
+}
+#app #pg433 .pg-hobby-picture {
+  aspect-ratio: 3 / 1;
+  min-height: 0;
+  flex: none;
+}
+#app #pg433 .pg-hobby-picture img {
+  position: absolute;
+  inset: 0;
+  object-position: center;
+}
+#app #pg433 .pg-hobby-lower {
+  position: relative;
+  z-index: 1;
+  padding-block: 0 7px;
+  margin-top: -5px;
+  gap: clamp(5px, 1dvh, 8px);
+}
+#app #pg433 .pg-hobby-summary {
+  background: linear-gradient(#fffaff, #fff4fc);
+}
+#app #pg433 .pg-hobby-summary > b {
+  display: block;
+  width: 76%;
+  margin-inline: auto;
+}
+#app #pg433 .pg-hobby-tiles button {
+  min-height: 44px;
+}
+#app #pg433 .pg-hobby-start {
+  min-height: 44px;
+  font-size: clamp(16px, 4.6vw, 22px);
+}
+#app #pg433 .pg-hobby-motto {
+  flex: 1 1 0;
+  min-height: 66px;
+  display: grid;
+  align-items: start;
+  padding-top: 8px;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  background: var(--hobby-garden) center 66% / cover no-repeat;
+}
+#app #pg433 .pg-hobby-motto p {
+  padding: 7px 13px;
+  background: linear-gradient(100deg, #f0ba66, #fff0bd 12%, #ffebad 88%, #f0ba66);
+  border-block: 3px solid #b97434;
+  border-radius: 13px 13px 21px 21px;
+}
+
+/* Remove the outer frame shadow and the shadow plate behind vocabulary cards. */
+.course-layout body #app,
+.course-layout body #app #pg433 {
+  box-shadow: none !important;
+  filter: none !important;
+}
+.course-layout #app[data-view="2"] #pg433 .word-list.about-myday-wordlist {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word {
+  min-height: 60px !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #d9b2e1 !important;
+}
+.course-layout #app[data-view="2"] #pg433 .word-row.about-myday-word > svg.about-myday-art,
+.course-layout #app #pg433 svg.about-premium-photo {
+  box-shadow: none !important;
+}
+.course-layout #app #pg433 .about-premium-photo {
+  background: transparent !important;
+}
