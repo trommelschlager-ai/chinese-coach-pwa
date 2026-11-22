@@ -116,6 +116,7 @@ function evaluate(rec,opts){
  const a=pts.filter(p=>p[0]<sp),c=pts.filter(p=>p[0]>=sp);
  const out={accepted:b.accepted,quality:entry.quality,points:pts.length,
   first:hzDelta(a),second:hzDelta(c),firstN:a.length,secondN:c.length,
+  firstTrend:math.observedTrend(pts,0,sp),secondTrend:math.observedTrend(pts,sp,1),
   span:entry.signal?.speech?.span,discarded:entry.signal?.speech?.discarded,
   ambiguous:entry.signal?.speech?.ambiguous,segments:entry.signal?.speech?.groups,
   shortRecovered:entry.offline?.shortRecovered||0};
@@ -131,7 +132,7 @@ function testSpecs(){
   {name:'Ровный тон · 48 кГц',opts:{rate:48000,mode:'flat'},check:r=>r.quality==='both'&&Math.abs(r.second)<1.5,show:r=>'F0 '+r.points+' · второй '+approx(r.second)+' полут.'},
   {name:'Восходящий 2-й тон',opts:{mode:'rising'},check:r=>r.quality==='both'&&r.second>=2.3&&r.second<=8.5,show:r=>'второй ↗ '+approx(r.second)+' полут.'},
   {name:'Падающий 4-й тон',opts:{mode:'falling'},check:r=>r.quality==='both'&&r.second<=-2.3&&r.second>=-8.5,show:r=>'второй ↘ '+approx(r.second)+' полут.'},
-  {name:'Низкий изгиб · контроль F0',opts:{mode:'third'},check:r=>r.quality==='both'&&r.secondN>=7,show:r=>'F0 '+r.points+' · 2-й слог '+r.secondN+' точек'},
+  {name:'Третий тон · обнаружение изгиба',opts:{mode:'third'},check:r=>r.quality==='both'&&r.secondN>=7&&r.secondTrend.includes('Изгиб'),show:r=>'F0 '+r.points+' · второй '+r.secondTrend},
   {name:'Короткая гласная после x-/s-',opts:{windows:[[.15,.49,'first'],[.57,.75,'noise'],[.75,.93,'second']]},check:r=>r.accepted&&r.secondN>=4,show:r=>'F0 '+r.points+' · 2-й слог '+r.secondN+' точек'},
   {name:'Тишина',opts:{windows:[]},check:r=>!r.accepted&&r.points===0,show:r=>'F0 '+r.points+' · попытка '+(r.accepted?'принята':'отклонена')},
   {name:'Случайный шум без голоса',opts:{mode:'noise'},check:r=>r.quality!=='both',show:r=>'F0 '+r.points+' · '+r.quality},
