@@ -1,0 +1,28 @@
+/* Panda Go HSK2 — reference 38014, shared speech row; no voice substitution. */
+.course-layout #app #pg433 .pg-standard-list{display:flex!important;flex-direction:column!important;gap:0!important;min-height:0!important;flex:1 1 auto!important;overflow-y:auto!important;overflow-x:hidden!important;width:100%!important;border:1px solid #e4c77f;border-radius:16px;background:#fff8ff;box-sizing:border-box;scrollbar-width:thin}
+.course-layout #app #pg433 .pg-standard-speech-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto var(--pg-orb) var(--pg-orb)!important;align-items:center!important;gap:clamp(4px,1.2vw,10px)!important;--pg-orb:clamp(42px,12vw,50px);width:100%!important;min-height:58px!important;padding:7px 6px!important;border:0!important;border-bottom:1px solid #e5c7e8!important;background:linear-gradient(135deg,#fffcff,#fdf3fc)!important;box-shadow:none!important;border-radius:0!important;box-sizing:border-box;flex:none}
+.course-layout #app #pg433 .pg-standard-speech-row:last-child{border-bottom:0!important}
+#app #pg433 .pg-standard-copy{display:flex;flex-direction:column;gap:1px;min-width:0;overflow-wrap:anywhere;text-align:left}
+#app #pg433 .pg-standard-cn{font-size:clamp(21px,6.4vw,29px);line-height:1.15;color:#70208b;font-weight:850;white-space:normal}
+#app #pg433 .pg-standard-py{font-size:clamp(13px,3.8vw,17px);color:#9552a3;line-height:1.13;font-weight:700}
+#app #pg433 .pg-standard-ru{font-size:clamp(11px,3.3vw,15px);line-height:1.18;color:#672774;white-space:normal}
+#app #pg433 .pg-standard-tones{display:flex;gap:2px;align-items:center;justify-content:center}
+#app #pg433 .pg-standard-tone{display:flex;align-items:center;flex-direction:column;gap:2px;width:clamp(12px,4.1vw,20px)}
+#app #pg433 .pg-standard-tone svg{width:100%;height:18px;display:block}
+#app #pg433 .pg-standard-tone b{display:grid;place-items:center;width:clamp(13px,4.4vw,19px);height:clamp(13px,4.4vw,19px);border-radius:50%;background:linear-gradient(#dc97e8,#a237c3);border:1px solid #f1d491;color:#fff;font-size:11px;line-height:1;font-weight:800}
+#app #pg433 .pg-standard-tone:nth-child(even) b{background:linear-gradient(#ffcd93,#b954ac)}
+/* Green speaker, purple microphone. Disabled controls never pretend to work. */
+.course-layout #app #pg433 button.orb[data-say]:not(:disabled):not(.missing){background:radial-gradient(ellipse at 37% 12%,#a5ff76 0%,#4cd315 42%,#168600 77%,#166600 100%)!important;color:white!important;opacity:1!important;border:1px solid #e4ffcd!important;box-shadow:inset 0 2px 3px #e9ffd5aa,0 3px 5px #32671966!important}
+.course-layout #app #pg433 button.orb:is([data-mic],[data-self-spoken]):not(:disabled){background:radial-gradient(ellipse at 37% 12%,#f1b6ff 0%,#b94bdc 44%,#8419a8 80%,#62107d 100%)!important;color:white!important;opacity:1!important;border:1px solid #ffe3ff!important;box-shadow:inset 0 2px 3px #ffe3ff99,0 3px 5px #7c238c66!important}
+.course-layout #app #pg433 .pg-standard-speech-row button.orb{display:grid!important;place-items:center!important;position:relative!important;align-self:center!important;justify-self:center!important;width:var(--pg-orb)!important;height:var(--pg-orb)!important;min-width:var(--pg-orb)!important;min-height:var(--pg-orb)!important;margin:0!important;padding:0!important;border-radius:50%!important;grid-area:auto!important;transform:none!important}
+.course-layout #app #pg433 .pg-standard-speech-row button.orb svg{display:block!important;width:56%!important;height:56%!important;color:white!important}
+.course-layout #app #pg433 button.orb[data-say]:active,.course-layout #app #pg433 button.orb[data-mic]:active,.course-layout #app #pg433 button.orb[data-self-spoken]:active{transform:scale(.91)!important;filter:brightness(.85)!important}
+.course-layout #app #pg433 button.orb[data-say][aria-pressed=true]{outline:3px solid #b8ef98!important;outline-offset:1px}
+.course-layout #app #pg433 button.orb.mic.recognized{outline:2px solid #76bc4f!important;outline-offset:1px}
+.course-layout #app #pg433 button.orb:focus-visible{outline:2px solid #632182;outline-offset:2px}
+.course-layout #app #pg433 button.orb:disabled,.course-layout #app #pg433 button.orb.missing{opacity:.55!important;cursor:not-allowed}
+@media(max-width:340px){.course-layout #app #pg433 .pg-standard-speech-row{gap:3px!important;padding-inline:3px!important;--pg-orb:42px}}
+/* Keep the health cover anchored at the top; background is real artwork, not an empty strip. */
+.course-layout #app[data-view="1"] #pg433 .l9-cover{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;height:100%!important;min-height:100%!important;width:100%!important;margin:0!important;padding:0!important;background:#ead0ef url("./hsk2-lesson4-hobby-3d/garden.webp") center bottom/cover no-repeat!important}
+.course-layout #app[data-view="1"] #pg433 .l9-cover-poster{width:100%!important;max-width:100%!important;flex:none!important;margin:0!important}
+.course-layout #app[data-view="1"] #pg433 .l9-cover-poster>svg{width:100%!important;height:auto!important;mask-image:none!important;display:block!important}
