@@ -1,6 +1,6 @@
 /* Panda Go: HSK2 我的⼀天 scenario. Opt-in URL; approved scenery/mascot untouched.
    Browser ASR is transcription only, never acoustic tone grading. */
-import {lookupApprovedPandaVoice} from './panda-approved-voice-registry-v512.mjs';
+import {lookupApprovedPandaVoice} from './panda-approved-voice-registry-v513.mjs';
 import {understandDayAnswer} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=3';
 if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){

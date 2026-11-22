@@ -1,6 +1,6 @@
 /* Panda AI v346. Clean responsive user-approved screen.
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
-import {lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=512';
+import {lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=513';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {PANDA_V411_VOICE} from './panda-voice-v411.mjs?v=411';
