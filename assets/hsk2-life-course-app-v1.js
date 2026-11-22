@@ -237,7 +237,10 @@ function mainLessonProgress(){
     fullEightWordLesson('panda-go-hsk2-hobby-v1'),
     fullEightWordLesson('panda-go-hsk2-friends-v2'),
     fullEightWordLesson('panda-go-hsk2-yesterday-lesson6-v1'),
-    fullEightWordLesson('panda-go-hsk2-future-lesson7-v1')
+    fullEightWordLesson('panda-go-hsk2-future-lesson7-v1'),
+    fullEightWordLesson('panda-go-hsk2-shop-lesson8-v1'),
+    fullEightWordLesson('panda-go-hsk2-health-lesson9-v1'),
+    fullEightWordLesson('panda-go-hsk2-relationships-lesson10-v1')
   ];
 }
 function viewMap(){
