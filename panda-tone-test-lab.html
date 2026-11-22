@@ -828,4 +828,87 @@ document.addEventListener('click',async function(ev){
 window.addEventListener('pagehide',()=>{player.pause()});
 })();
 </script>
+
+<script>
+(function(){
+ const params=new URLSearchParams(location.search);
+ const zh=params.get('lang')==='zh';
+ const nav=document.createElement('nav');
+ nav.style.cssText='display:flex;justify-content:flex-end;gap:14px;padding:7px 16px;font-size:13px;font-weight:750';
+ nav.innerHTML='<a href="?lang=ru" style="color:#792b88">Русский</a><a href="?lang=zh" style="color:#792b88">中文</a>';
+ document.querySelector('.app')?.prepend(nav);
+ if(!zh)return;
+ document.documentElement.lang='zh-CN';
+ document.title='Panda Go · 声调测试（临时实验室）';
+ document.querySelector('.brand small').textContent='轻松学中文';
+ document.querySelector('.temp-tag').textContent='测试版 · HSK 2';
+ document.querySelector('.strip').innerHTML='<span>🎙 声调练习</span><span>第3课 · 测试实验室</span>';
+ document.querySelector('h1').textContent='测试中文声调';
+ document.querySelector('.info').innerHTML='请选择词语，先听<b>示范发音（MP3）</b>，再录下自己的声音。紫色虚线是声调示意，绿色曲线是你的音高变化。<b>5/5只表示练习次数，不代表发音正确。</b>';
+ document.querySelector('.lab-footer').innerHTML='<b>测试方法：</b>先选「会说 huì shuō」，点击「开始录音」，读完后点击「停止录音」，再点「回听自己的录音」。之后请复制诊断报告发给我。请分别尝试正确的第四声＋第一声，以及故意读成两个第一声。<p>🔒 录音只保留在当前页面的内存中供回听；不会上传服务器。关闭页面后录音消失。<b>本工具目前不判断发音正确与否。</b> 微信内置浏览器如无法正常录音或回放，请在手机 Chrome 浏览器中打开。</p><a class="backlink" href="./hsk2-lesson3-work-study-preview.html">← 返回第3课</a>';
+ const dict=[
+  ['🎙 Тоны и произношение','🎙 声调与发音'],
+  ['повторений','次练习'],
+  ['тон ','第'], ['После записи появится твоя линия.','录音后显示你的音高曲线。'],
+  ['Пунктир — схема','虚线：声调示意'], ['Зелёная — твой голос','绿线：你的音高'],
+  ['🎙 Записать голос','🎙 开始录音'], ['■ Стоп','■ 停止录音'],
+  ['✓ Повторил сам','✓ 手动记录一次'], ['▶ Прослушать свою запись / 回听录音','▶ 回听自己的录音'],
+  ['▶ Слушать образец (MP3)','▶ 听示范发音（MP3）'],
+  ['Граница слогов и пояснения','音节分界与说明'],
+  ['Граница слогов:','音节分界：'], ['Разделение','分界方式'],
+  ['по паузе','根据停顿'], ['по снижению громкости','根据音量'],
+  ['вручную','手动'], ['примерно посередине','大约在中间'],
+  ['При необходимости поправь после записи.','录音后可手动调整。'],
+  ['Сбросить повторы выбранного слова','清除当前词语记录'],
+  ['↻ Сбросить тест','↻ 重置测试'], ['📋 Копировать отчёт','📋 复制测试报告'],
+  ['Выбери слово и нажми «Записать голос».','请选择一个词语，然后点击「开始录音」。'],
+  ['🎙 Произнеси оба слога. Нажми «Стоп», чтобы закончить.','🎙 请读出两个音节，然后点击「停止录音」。'],
+  ['Запрашиваю доступ к микрофону…','正在请求麦克风权限…'],
+  ['Микрофон запрещён в браузере.','浏览器禁止使用麦克风。'],
+  ['Не удалось открыть микрофон.','无法打开麦克风。'],
+  ['Слишком мало звука для попытки. Повтори слово ближе к микрофону.','音量太小，无法分析。请靠近麦克风再试一次。'],
+  ['Один слог измерен частично','部分音节的测量数据不足'],
+  ['— Мало данных','— 数据不足'], ['— Короткий слог','— 音节太短'],
+  ['Идёт запись','正在录音'], ['точек F0','个F0测量点'],
+  ['точек F0','个F0测量点'], ['звуковых кадров RMS','个RMS音频帧'],
+  ['↘ Изгиб','↘ 弯曲'], ['полут.','个半音'], ['полутона','个半音'],
+  ['→ Изменение менее 1','→ 变化小于1'],
+  ['Это график высоты голоса, а не подтверждение правильности тонов.','这里只显示音高曲线，并不判断声调是否正确。'],
+  ['Два слога определяются приблизительно, без распознавания речи.','两个音节的分界仅为估算，没有语音识别。'],
+  ['Звук хранится только в памяти открытой страницы для воспроизведения и не отправляется на сервер.','录音只保存在当前页面的内存中，不上传服务器。'],
+  ['Пунктир и голос сравнивай по форме, не по высоте. Это не оценка произношения.','只比较曲线形状；本工具暂不评价发音对错。']
+ ];
+ function translateText(raw){
+  let t=raw;
+  for(const [a,b] of dict)t=t.split(a).join(b);
+  t=t.replace(/Записано: обе кривые измерены \(тоны не оценены\)\./g,'两个音节都有音高数据，暂不判断发音对错。');
+  t=t.replace(/✓ Записано\. /g,'✓ 录音成功。');
+  t=t.replace(/Повтор учтён по звуковому сигналу, но высоту голоса измерить не удалось/g,'已记录练习，但未能测出音高');
+  t=t.replace(/Выбрано ([\u4e00-\u9fff]+)\. Нажми «Записать голос»\./g,'已选择 $1，请点击「开始录音」。');
+  return t;
+ }
+ let changing=false;
+ function apply(root){
+  if(changing)return;
+  changing=true;
+  try{
+   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+   const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+   for(const node of nodes){
+    if(node.parentElement?.closest('script,style,textarea,code'))continue;
+    const next=translateText(node.nodeValue);
+    if(next!==node.nodeValue)node.nodeValue=next;
+   }
+   document.querySelectorAll('.tone-compact-word .ru').forEach(e=>e.style.display='none');
+   document.querySelectorAll('.tone-syllable-title span').forEach(e=>{
+     const val=e.textContent.trim().match(/^第([1-4])$/);
+     if(val)e.textContent='第'+val[1]+'声';
+   });
+  }finally{changing=false;}
+ }
+ apply(document.body);
+ const obs=new MutationObserver(()=>apply(document.body));
+ obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+})();
+</script>
 </body></html>
