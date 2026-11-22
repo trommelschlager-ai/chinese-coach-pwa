@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {knownBasicContext,replyBasicContext} from '../assets/panda-hsk2-basic-context-v1.mjs';
 import {knownHSK2,replyHSK2} from '../assets/panda-hsk2-brain-v1.mjs';
+import {lookupApprovedPandaVoice} from '../assets/panda-approved-voice-registry-v516.mjs';
 
 const cases = [
   ['今天你有没有空？','Jīntiān nǐ yǒu méiyǒu kòng?','availability','今天我有空，可以聊聊天。'],
@@ -9,7 +10,9 @@ const cases = [
   ['今天我休息。','Jīntiān wǒ xiūxi.','rest-today','那你今天想做什么？'],
   ['现在我休息。','Xiànzài wǒ xiūxi.','rest-now','那你想聊聊天吗？'],
   ['工作','gōngzuò','work-topic','你想聊聊工作吗？'],
-  ['我今天不工作。','Wǒ jīntiān bù gōngzuò.','rest-today','那你今天想做什么？']
+  ['我今天不工作。','Wǒ jīntiān bù gōngzuò.','rest-today','那你今天想做什么？'],
+  ['我想看电影。','Wǒ xiǎng kàn diànyǐng.','movie-plan','你想看什么电影？'],
+  ['我想看喜剧片。','Wǒ xiǎng kàn xǐjùpiàn.','movie-comedy','我喜欢喜剧片。']
 ];
 
 test('Every screenshot regression phrase has pinyin, Russian and a contextual answer',()=>{
@@ -46,7 +49,13 @@ test('Natural word order, punctuation and tone neutral syllables are preserved',
     ['我今天不上班。','Wǒ jīntiān bú shàngbān.','rest-today'],
     ['今天我不上班。','Jīntiān wǒ bú shàngbān.','rest-today'],
     ['我今天不用上班。','Wǒ jīntiān bú yòng shàngbān.','rest-today'],
-    ['今天我不用上班。','Jīntiān wǒ bú yòng shàngbān.','rest-today']
+    ['今天我不用上班。','Jīntiān wǒ bú yòng shàngbān.','rest-today'],
+    ['今天我想看电影。','Jīntiān wǒ xiǎng kàn diànyǐng.','movie-plan'],
+    ['我今天想看电影。','Wǒ jīntiān xiǎng kàn diànyǐng.','movie-plan'],
+    ['我想去看电影。','Wǒ xiǎng qù kàn diànyǐng.','movie-plan'],
+    ['我想看一部电影。','Wǒ xiǎng kàn yí bù diànyǐng.','movie-plan'],
+    ['我喜欢喜剧片。','Wǒ xǐhuan xǐjùpiàn.','movie-comedy'],
+    ['喜剧片','xǐjùpiàn','movie-comedy']
   ];
   for(const [zh,pinyin,intent] of variants){
     const actual=knownBasicContext(' '+zh+' ');
@@ -61,7 +70,31 @@ test('Do not pretend to understand unreviewed speech or invent a tone score',()=
   assert.equal(replyBasicContext('对我很重要。'),null);
   assert.equal(replyBasicContext('我昨天不工作'),null);
   assert.equal(replyBasicContext('我今天在工作'),null);
+  assert.equal(replyBasicContext('我不想看电影'),null);
+  assert.equal(replyBasicContext('我昨天看了电影'),null);
   assert.equal('toneVerified' in replyBasicContext('工作'),false);
+});
+
+test('A day-off answer can lead to a real second and third movie-related turn',()=>{
+  const dayOff=replyHSK2('我今天不工作。',101,0,false,{awaiting:'origin'});
+  assert.equal(dayOff.line.hanzi,'那你今天想做什么？');
+  assert.equal(dayOff.context.awaiting,'plans');
+
+  const movie=replyHSK2('我想看电影。',101,0,false,dayOff.context);
+  assert.equal(movie.kind,'social');
+  assert.equal(movie.spoken.pinyin,'Wǒ xiǎng kàn diànyǐng.');
+  assert.equal(movie.spoken.ru,'Я хочу посмотреть фильм.');
+  assert.equal(movie.line.hanzi,'你想看什么电影？');
+  assert.equal(movie.line.pinyin,'Nǐ xiǎng kàn shénme diànyǐng?');
+  assert.equal(movie.context.awaiting,'movie-choice');
+  assert.equal(lookupApprovedPandaVoice(movie.line.hanzi),null,'Do not pretend a newly drafted question has an approved Xiaoxiao MP3');
+
+  const genre=replyHSK2('我想看喜剧片。',101,0,false,movie.context);
+  assert.equal(genre.kind,'social');
+  assert.equal(genre.spoken.ru,'Я хочу посмотреть комедию.');
+  assert.equal(genre.line.hanzi,'我喜欢喜剧片。');
+  assert.equal(genre.context.awaiting,'movie-topic');
+  assert.equal(lookupApprovedPandaVoice(genre.line.hanzi)?.src,'./assets/panda-context-voice-20261122/chat03.mp3');
 });
 
 test('Existing HSK2 exact answer and social question remain functional',()=>{
