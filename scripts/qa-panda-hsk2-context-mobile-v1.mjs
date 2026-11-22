@@ -44,6 +44,30 @@ try{
    assert.equal(await page.locator('#pg346-hear').isDisabled(),false,'The five exact user MP3s must activate the Panda playback button');
    assert.equal(await rows.last().locator('.pg346-row-audio').isDisabled(),false,'Panda history clip should also be playable');
   }
+  // Regression: preserve learner context across an actual three-turn chat.
+  // Previous test ends with 我今天不工作 -> 那你今天想做什么？.
+  // The next two turns must stay on the same film topic, not ask to speak simpler.
+  await page.locator('#pg346-send').click();
+  await page.locator('#pg346-input').fill('我想看电影。');
+  await page.locator('#pg346-send').click();
+  const movieRows=page.locator('#pg346-rows .pg346-row');
+  await page.waitForFunction(()=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent==='你想看什么电影？',null,{timeout:5000});
+  assert.equal(await movieRows.last().locator('.pg346-py').textContent(),'Nǐ xiǎng kàn shénme diànyǐng?');
+  assert.equal(await movieRows.nth((await movieRows.count())-2).locator('.pg346-zh').textContent(),'我想看电影。');
+  assert.equal(await movieRows.nth((await movieRows.count())-2).locator('.pg346-py').textContent(),'Wǒ xiǎng kàn diànyǐng.');
+  assert((await movieRows.nth((await movieRows.count())-2).locator('.pg346-ru').textContent()).includes('Я хочу посмотреть фильм'));
+  assert.equal(await page.locator('#pg346-hear').isDisabled(),true,'Do not invent a voice for an unrecorded follow-up');
+  await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-movie-followup.png',fullPage:false,animations:'disabled'});
+
+  await page.locator('#pg346-send').click();
+  await page.locator('#pg346-input').fill('我想看喜剧片。');
+  await page.locator('#pg346-send').click();
+  await page.waitForFunction(()=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent==='我喜欢喜剧片。',null,{timeout:5000});
+  assert.equal(await movieRows.last().locator('.pg346-py').textContent(),'Wǒ xǐhuan xǐjùpiàn.');
+  assert.equal(await movieRows.nth((await movieRows.count())-2).locator('.pg346-py').textContent(),'Wǒ xiǎng kàn xǐjùpiàn.');
+  assert((await movieRows.nth((await movieRows.count())-2).locator('.pg346-ru').textContent()).includes('посмотреть комедию'));
+  assert.equal(await page.locator('#pg346-hear').isDisabled(),false,'Use existing Xiaoxiao MP3 for a known genre');
+  assert.equal(await movieRows.last().locator('.pg346-row-audio').isDisabled(),false);
   // Real MP3 playback, not merely a clickable audio icon. Browser click is a user gesture.
   await page.locator('#pg346-rows .pg346-row').last().locator('.pg346-row-audio').click();
   await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pose==='talking',null,{timeout:7000});
