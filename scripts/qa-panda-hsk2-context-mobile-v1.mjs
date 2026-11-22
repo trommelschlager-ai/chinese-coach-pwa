@@ -86,7 +86,10 @@ try{
   assert.equal(await whyRows.last().locator('.pg346-ru').textContent(),'Потому что комедии очень смешные.');
   assert.equal(await whyRows.nth((await whyRows.count())-2).locator('.pg346-py').textContent(),'Nǐ wèishénme xǐhuan xǐjùpiàn?');
   assert.equal(await whyRows.nth((await whyRows.count())-2).locator('.pg346-ru').textContent(),'Почему тебе нравятся комедии?');
-  assert.equal(await page.locator('#pg346-hear').isDisabled(),true,'No unapproved Xiaoxiao voice for new reason reply');
+  assert.equal(await page.locator('#pg346-hear').isDisabled(),false,'Approved user-supplied Xiaoxiao audio should activate');
+  assert.equal(await whyRows.last().locator('.pg346-row-audio').isDisabled(),false,'History row must play user Xiaoxiao MP3');
+  const audioPath=await page.evaluate(async()=>{const {lookupApprovedPandaVoice}=await import('./assets/panda-approved-voice-registry-v516.mjs?v=524').catch(()=>({lookupApprovedPandaVoice:null}));return lookupApprovedPandaVoice?.('因为喜剧片很好笑。')?.src||null});
+  assert.equal(audioPath,'./assets/panda-ai-xiaoxiao-new-replies-20261122/panda06.mp3');
   await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-movie-why-reason.png',fullPage:false,animations:'disabled'});
   console.log('PASS mobile browser '+width+'px: 5 learner turns + 4-step movie chat + translations + approved Panda intact');
   await context.close();
