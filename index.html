@@ -1881,7 +1881,13 @@ async function updateOfflineBar(){const info=document.getElementById('offlineinf
 window.addEventListener('online',updateOfflineBar);window.addEventListener('offline',updateOfflineBar);
 if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')){
  const hadServiceWorkerController=!!navigator.serviceWorker.controller;
- navigator.serviceWorker.register('./sw.js?v=394',{scope:'./',updateViaCache:'none'}).then(()=>navigator.serviceWorker.ready).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
+ navigator.serviceWorker.register('./sw.js?v=394',{scope:'./',updateViaCache:'none'}).then(reg=>{
+   const refresh=()=>{if(navigator.onLine)reg.update().catch(()=>{});};
+   window.addEventListener('online',refresh);
+   window.addEventListener('pageshow',event=>{if(event.persisted)refresh();});
+   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});
+   return navigator.serviceWorker.ready;
+ }).then(()=>updateOfflineBar()).catch(e=>{toast('Кэширование не удалось: '+e.message);updateOfflineBar()});
  navigator.serviceWorker.addEventListener('controllerchange',()=>{
   // Replace an already-open cached shell once the new offline version takes control.
   if(hadServiceWorkerController){
