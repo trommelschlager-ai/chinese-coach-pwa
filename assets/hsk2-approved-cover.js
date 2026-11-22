@@ -22,7 +22,7 @@
   section.innerHTML='<div class="pg-approved-poster">'+
    '<img class="pg-approved-cover-image" width="941" height="1672" draggable="false" decoding="async" alt="HSK 2. Урок '+num+'. '+esc(names[num-1])+'">'+
    '<a class="pg-approved-hotspot pg-approved-map-link" href="./hsk2-life-course.html?view=map" aria-label="Все уроки HSK 2"></a>'+
-   steps+'<button type="button" class="pg-approved-hotspot" data-step="2" aria-label="Начать урок" style="left:16.5%;top:63.1%;width:66.5%;height:4.6%"></button>'+
+   steps+'<button type="button" class="pg-approved-hotspot pg-approved-start" data-step="2" aria-label="Начать урок" style="left:12%;top:66.5%;width:72%;height:6.6%"></button>'+
    '</div><div class="pg-approved-bottom" aria-hidden="true"></div>';
   section.querySelector('img').src=img.src;
   return section;
