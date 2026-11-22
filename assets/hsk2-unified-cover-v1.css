@@ -121,3 +121,13 @@ html.course-layout #app[data-view="1"] #pg433 .pg-ref-cover{
 #app #pg433 .pg-ref-tile:nth-child(4) .pg-ref-tile-icon{background-position:0% 100%!important}
 #app #pg433 .pg-ref-tile:nth-child(5) .pg-ref-tile-icon{background-position:50% 100%!important}
 #app #pg433 .pg-ref-tile:nth-child(6) .pg-ref-tile-icon{background-position:100% 100%!important}
+
+/* Use remaining display height for natural scenery; avoid empty strips.
+   Only footer track grows, 3D picture remains aspect-preserving. */
+html.course-layout #app[data-view="1"] #pg433 .pg-ref-cover{
+  height:100%!important;min-height:100%!important;aspect-ratio:auto!important;
+  grid-template-rows:15cqw 70cqw 25cqw 31cqw 14cqw 24cqw minmax(13cqw,1fr)!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg433-content:has(.pg-ref-cover){
+  background:#edc0ef url("./hsk2-lesson1-preview/reference-sakura.webp") center bottom / cover no-repeat!important;
+}
