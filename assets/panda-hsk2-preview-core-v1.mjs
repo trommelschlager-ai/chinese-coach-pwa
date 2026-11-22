@@ -188,6 +188,7 @@ function dayReturnHref(){
  return './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini+'&v=420';
 }
 function initLesson(id){
+ hsk2=null;
  cancelFollowup();stopAudio();stopRecognition();base=prepareConversation(CONVERSATIONS.find(c=>c.id===id)||CONVERSATIONS[0],new Date());
  conversation=withPracticeGreeting(base,rotateGreeting());state.step=0;state.done=false;state.reviewStep=null;state.prompt=null;state.shortDisplay=null;state.nonstopDisplay=null;state.awaitQuestion=false;state.hint=false;state.topic=base.id;state.turns=0;state.askedInTopic=0;showLearnerFeedback(null);
  state.allowed=accessibleLessons(storage,conversation.id);state.profile.hasNumbers=state.allowed.includes(3);state.cursor=Math.max(0,state.allowed.indexOf(conversation.id));$('lesson-select').value=String(conversation.id);
@@ -228,7 +229,11 @@ let hsk2=null;
 function beginHSK2(id,index=0,autoplay=true){
  const t=getTopic(id);if(!t)return false;
  cancelFollowup();stopAudio();stopRecognition();hsk2={id:t.id,index,done:false,exact:0,similar:0,unknown:0,context:null};
- state.mode='short';state.dayMode=false;state.done=false;askHSK2(autoplay);return true;
+ state.mode='short';state.dayMode=false;state.done=false;
+ if(dayParams.get('from')==='hsk2-about-me')$('back-link').href='./hsk2-about-me.html?step=7';
+ $('allowed-topics').textContent='HSK 2 · '+t.name+' — разговорная практика по изученным конструкциям.';
+ $('words').replaceChildren();for(const w of t.words){const p=document.createElement('p');p.textContent=[w.zh,w.py,w.ru].join(' — ');$('words').append(p)}
+ askHSK2(autoplay);return true;
 }
 function askHSK2(autoplay=true){
  const q=getTopic(hsk2.id).questions[hsk2.index],l=prompt(q);
@@ -413,7 +418,7 @@ function hideMicRecovery(){
  $('speech-check-result').textContent='';
 }
 function shareableSpeechUrl(){
- const link=new URL('panda-ai-hsk2-preview.html',document.baseURI);
+ const link=new URL(location.href);
  const params=new URLSearchParams(location.search);
  if(params.has('lesson'))link.searchParams.set('lesson',params.get('lesson'));
  return link.href;
@@ -600,7 +605,7 @@ $('lesson-select').addEventListener('change',()=>{const id=Number($('lesson-sele
 function resize(){const v=window.visualViewport;const h=v?.height||window.innerHeight;document.documentElement.style.setProperty('--screen-height',h+'px');document.documentElement.style.setProperty('--screen-top',(v?.offsetTop||0)+'px');document.documentElement.dataset.keyboard=String((window.innerHeight-h>120)||(h<560))}
 window.visualViewport?.addEventListener('resize',resize);window.visualViewport?.addEventListener('scroll',resize);window.addEventListener('resize',resize);document.addEventListener('focusin',resize);document.addEventListener('focusout',resize);
 window.addEventListener('pagehide',e=>{cancelFollowup();stopRecognition();stopAudio();clearTimeout(poseTimer);if(!e.persisted)rig.dispose()});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFollowup();stopRecognition();stopAudio()}});
-if(false && 'serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=326',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
+if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=510',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
 if(window.ResizeObserver){const observer=new window.ResizeObserver(entries=>{document.documentElement.style.setProperty('--scene-height',entries[0].contentRect.height+'px')});observer.observe(document.querySelector('.scene'))}
 
 // v337: Bridge for the approved artwork layer; retain the existing dialogue,
@@ -616,8 +621,9 @@ window.PandaApprovedBridge337={
  },
  chooseTopic:id=>{
   id=Number(id);
- if(getTopic(id))return beginHSK2(id,0,false); hsk2=null;
+ if(getTopic(id))return beginHSK2(id,0,false);
   if(!state.allowed.includes(id))return false;
+  hsk2=null;
   cancelFollowup();stopAudio();stopRecognition();
   state.cursor=state.allowed.indexOf(id);state.askedInTopic=0;state.topic=id;
   // Selecting a topic opens its question catalogue. Do NOT choose or speak
@@ -634,8 +640,9 @@ window.PandaApprovedBridge337={
  },
  startTopicQuestion:(id,text)=>{
   id=Number(id);
- if(getTopic(id)){const i=getTopic(id).questions.findIndex(q=>hsk2Norm(q.q)===hsk2Norm(text));return i>=0&&beginHSK2(id,i);} hsk2=null;
+ if(getTopic(id)){const i=getTopic(id).questions.findIndex(q=>hsk2Norm(q.q)===hsk2Norm(text));return i>=0&&beginHSK2(id,i);}
   if(!state.allowed.includes(id))return false;
+  hsk2=null;
   const question=topicCatalogGroups()
     .find(g=>g.lesson===id)?.questions.find(q=>normalize(q.hanzi)===normalize(text));
   if(!question)return false;
@@ -657,10 +664,22 @@ window.PandaApprovedBridge337={
  send:value=>submit(value),mic:()=>startRecognition(),note:text=>note(text)
 };
 
-initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
-// Do not auto-play a legacy greeting when the HSK2 fixed-voice My Day scenario owns playback.
-beginHSK2(100+Math.min(10,Math.max(1,Number(new URLSearchParams(location.search).get('topic'))||1)),0,false);
-// Start with the already-indexed greeting. If autoplay is forbidden, leave a real retry button.
 const opening={hanzi:'你好！',pinyin:'Nǐ hǎo!',ru:'Привет!',audioKey:'你好'};
-state.history=[];refreshHistory();say(opening,false);askHSK2(false);
-document.addEventListener('DOMContentLoaded',()=>{if(!document.hidden)play(opening);},{once:true});
+function resolvePandaEntry(search){
+ const params=new URLSearchParams(search);
+ if(params.get('scenario')==='hsk2-my-day')return {kind:'scenario'};
+ if(params.get('practice')==='day')return {kind:'day'};
+ if(params.get('from')==='hsk2-about-me')return {kind:'hsk2',id:101};
+ const topic=Number(params.get('topic'));
+ if(params.has('topic')&&Number.isInteger(topic)&&topic>=1&&topic<=10)return {kind:'hsk2',id:100+topic};
+ if(params.has('lesson')&&/^[1-7]$/.test(params.get('lesson')))return {kind:'hsk1'};
+ return {kind:'hsk2',id:101};
+}
+const entry=resolvePandaEntry(location.search);
+initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
+if(entry.kind==='hsk2'){
+ beginHSK2(entry.id,0,false);
+ state.history=[];refreshHistory();say(opening,false);askHSK2(false);
+ const greet=()=>{if(!document.hidden)play(opening)};
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',greet,{once:true});else greet();
+}else if(entry.kind!=='scenario'){play();}
