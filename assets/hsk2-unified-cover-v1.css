@@ -90,3 +90,18 @@ html.course-layout #app[data-view="1"] #pg433 .pg-ref-cover{
 #app #pg433 .pg-ref-cover :is(button,a):focus-visible{outline:3px solid #6a1a92!important;outline-offset:2px!important}
 @media(max-width:370px){#app #pg433 .pg-ref-back{font-size:26px}#app #pg433 .pg-ref-cover .pg-ref-summary p{font-size:3.25cqw!important}}
 @media(prefers-reduced-motion:reduce){#app #pg433 .pg-ref-cover :is(button,a){transition:none!important}}
+
+/* Art framing adjustments based on source dimensions and content location.
+   This changes crop focus, never image aspect ratio or pixels. */
+#app #pg433 .pg-ref-lesson-2 .pg-ref-art img{object-position:center 22%!important}
+#app #pg433 .pg-ref-lesson-3 .pg-ref-art img{object-position:center 28%!important}
+#app #pg433 .pg-ref-lesson-6 .pg-ref-art img{object-position:center 30%!important}
+#app #pg433 .pg-ref-lesson-7 .pg-ref-art img{object-position:center 29%!important}
+#app #pg433 .pg-ref-lesson-9 .pg-ref-art img{object-position:center 36%!important}
+#app #pg433 .pg-ref-lesson-3 .pg-ref-hero-title h1,
+#app #pg433 .pg-ref-lesson-7 .pg-ref-hero-title h1{font-size:5.55cqw!important}
+#app #pg433 .pg-ref-lesson-9 .pg-ref-hero-title h1{font-size:5.2cqw!important}
+#app #pg433 .pg-ref-lesson-6 .pg-ref-hero-title h1,
+#app #pg433 .pg-ref-lesson-10 .pg-ref-hero-title h1{font-size:6.15cqw!important}
+#app #pg433 .pg-ref-lesson-3 .pg-ref-hero-title strong,
+#app #pg433 .pg-ref-lesson-9 .pg-ref-hero-title strong{font-size:4.65cqw!important}
