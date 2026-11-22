@@ -1,0 +1,40 @@
+name: Panda Go tone analyzer regression
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'panda-tone-test-lab.html'
+      - 'tests/panda-tone-regression.cjs'
+      - 'assets/hsk2-lesson3-voice/**'
+      - '.github/workflows/panda-tone-regression.yml'
+  pull_request:
+    paths:
+      - 'panda-tone-test-lab.html'
+      - 'tests/panda-tone-regression.cjs'
+      - 'assets/hsk2-lesson3-voice/**'
+      - '.github/workflows/panda-tone-regression.yml'
+permissions:
+  contents: read
+jobs:
+  tone-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify ffmpeg
+        run: ffmpeg -version | head -n 1
+      - name: Analyze tone algorithm and six HSK2 MP3 clips
+        run: node tests/panda-tone-regression.cjs
+      - name: Upload diagnostic report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-tone-regression-report
+          path: tone-regression-report.json
+          retention-days: 14
+          if-no-files-found: warn
