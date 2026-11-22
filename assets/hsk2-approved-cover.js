@@ -10,7 +10,7 @@
  if(!Number.isInteger(num)||num<1||num>10)return;
  const art='./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'.png';
  const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
- const requested=new WeakSet();
+ const loading=new WeakSet();
  function build(img){
   const steps=[46.5,54.5].map((y,row)=>[4.6,35.6,66.6].map((x,col)=>{
    const step=row*3+col+2;
@@ -29,17 +29,22 @@
  }
  function mount(){
   const app=document.querySelector('#app');
-  if(!app||app.dataset.view!=='1')return;
+  if(!app)return;
+  if(app.dataset.view!=='1'){
+   app.querySelector('#pg433 .pg433-content')?.classList.remove('pg-approved-active');
+   return;
+  }
   const content=app.querySelector('#pg433 .pg433-content');
-  if(!content||content.querySelector('.pg-approved-overlay')||requested.has(content))return;
-  requested.add(content);
+  if(!content||content.querySelector('.pg-approved-overlay')||loading.has(content))return;
+  loading.add(content);
   const img=new Image();
   img.onload=()=>{
+   loading.delete(content);
    if(app.dataset.view!=='1'||!content.isConnected||app.querySelector('#pg433 .pg433-content')!==content)return;
    content.classList.add('pg-approved-active');
    content.append(build(img));
   };
-  img.onerror=()=>{/* Missing artwork? Keep the existing original cover and buttons. */};
+  img.onerror=()=>{loading.delete(content); /* Keep original cover. */};
   img.src=art;
  }
  let queued=false;
