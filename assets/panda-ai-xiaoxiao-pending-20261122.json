@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "project": "Panda Go / conversational Panda AI",
+  "created": "2026-11-22",
+  "status": "pending-new-recordings-no-mp3-uploaded",
+  "voice": {
+    "provider": "Luvvoice",
+    "display_name": "Xiaoxiao",
+    "voice_id": "voice-093",
+    "language": "Mandarin Chinese",
+    "pitch": 0,
+    "volume": 0,
+    "speed_percent_reference": -15,
+    "note": "-15% was an earlier conversational approval reference; compare with actual current approved Panda AI MP3 before finalizing. -20% belongs to pronunciation trainer and must not be silently reused."
+  },
+  "policy": {
+    "keep_existing_approved_mp3": true,
+    "do_not_use_chinese_human_recordings": true,
+    "do_not_use_panda_street_voice": true,
+    "do_not_fallback_to_browser_tts": true,
+    "never_alias_audio_by_partial_hanzi": true
+  },
+  "output_folder": "assets/panda-ai-xiaoxiao-new-replies-20261122",
+  "items": [
+    {
+      "id": 1,
+      "filename": "panda-context-01.mp3",
+      "zh": "今天我有空，可以聊聊天。",
+      "pinyin": "Jīntiān wǒ yǒu kòng, kěyǐ liáoliao tiān.",
+      "ru": "Сегодня у меня есть время, можем поболтать.",
+      "status": "needs-matching-approved-Xiaoxiao-voice"
+    },
+    {
+      "id": 2,
+      "filename": "panda-context-02.mp3",
+      "zh": "好的，那你先忙吧。",
+      "pinyin": "Hǎo de, nà nǐ xiān máng ba.",
+      "ru": "Хорошо, тогда занимайся своими делами.",
+      "status": "needs-matching-approved-Xiaoxiao-voice"
+    },
+    {
+      "id": 3,
+      "filename": "panda-context-03.mp3",
+      "zh": "那你今天想做什么？",
+      "pinyin": "Nà nǐ jīntiān xiǎng zuò shénme?",
+      "ru": "Тогда что ты хочешь сегодня делать?",
+      "status": "needs-matching-approved-Xiaoxiao-voice"
+    },
+    {
+      "id": 4,
+      "filename": "panda-context-04.mp3",
+      "zh": "那你想聊聊天吗？",
+      "pinyin": "Nà nǐ xiǎng liáoliao tiān ma?",
+      "ru": "Тогда хочешь немного поболтать?",
+      "status": "needs-matching-approved-Xiaoxiao-voice"
+    },
+    {
+      "id": 5,
+      "filename": "panda-context-05.mp3",
+      "zh": "你想聊聊工作吗？",
+      "pinyin": "Nǐ xiǎng liáoliao gōngzuò ma?",
+      "ru": "Хочешь поговорить о работе?",
+      "status": "needs-matching-approved-Xiaoxiao-voice"
+    }
+  ]
+}

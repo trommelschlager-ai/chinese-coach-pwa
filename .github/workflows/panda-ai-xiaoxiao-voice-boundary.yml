@@ -1,0 +1,25 @@
+name: Panda AI approved Xiaoxiao voice boundary
+on:
+  push:
+    paths:
+      - 'tests/panda-ai-xiaoxiao-voice-boundary-v1.test.mjs'
+      - 'assets/panda-ai-xiaoxiao-pending-20261122.json'
+      - 'assets/panda-approved-voice-registry-v516.mjs'
+      - 'assets/panda-live-audio.mjs'
+      - 'assets/panda-hsk2-preview-core-v1.mjs'
+      - '.github/workflows/panda-ai-xiaoxiao-voice-boundary.yml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  voice-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify approved conversation clips and five pending Xiaoxiao phrases
+        run: node --test tests/panda-ai-xiaoxiao-voice-boundary-v1.test.mjs
