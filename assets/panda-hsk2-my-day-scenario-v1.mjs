@@ -1,7 +1,6 @@
 /* Panda Go: HSK2 我的⼀天 scenario. Opt-in URL; approved scenery/mascot untouched.
    Browser ASR is transcription only, never acoustic tone grading. */
-import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
-import {PANDA_GRAMMAR_AUDIO_V451} from './panda-grammar-voice-v451.mjs?v=451';
+import {lookupApprovedPandaVoice} from './panda-approved-voice-registry-v512.mjs';
 import {understandDayAnswer} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=3';
 if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){
@@ -20,31 +19,8 @@ const norm=s=>String(s||'').normalize('NFC').replace(/[。？！!?，,.\s、]/gu
 const dot=s=>norm(s)+'。';
 // Restrict this scenario to exact, user-approved adult LuvVoice phrase recordings.
 // No Android TTS, unrelated lesson voices or stitched fragments.
-const exactLuvvoice=new Map(PANDA_CLIPS.filter(item=>/^\.\/assets\/panda-voice-clips-v365\/p\d{3}\.mp3$/.test(item.src))
-  .map(item=>[norm(item.zh),item.src]));
-// The 14 user-recorded MP3s are distributed as a separate binary pack.
- // The GitHub connector cannot copy uploaded binaries directly into the repo,
- // so the app activates the pack only when ALL 14 MP3s and the manifest exist.
- const DAY_AUDIO_DIRECTORY='./assets/panda-hsk2-my-day-voice-20261120/';
- const extraDayVoice=new Map();
- const voicePackReady=fetch(DAY_AUDIO_DIRECTORY+'manifest.json',{cache:'no-store'})
-   .then(async response=>response.ok?response.json():null)
-   .then(async manifest=>{
-     if(!manifest||!Array.isArray(manifest.items)||manifest.items.length!==14)return;
-     const entries=manifest.items;
-     if(new Set(entries.map(e=>e.id)).size!==14)return;
-     if(!entries.every(e=>/^day(?:0[1-9]|1[0-4])$/.test(e.id)&&
-       typeof e.zh==='string'&&e.zh.length>0))return;
-     // Verify each binary is actually present before marking the pack as installed.
-     const checks=await Promise.all(entries.map(e=>fetch(DAY_AUDIO_DIRECTORY+e.id+'.mp3',{method:'HEAD',cache:'no-store'}).then(x=>x.ok).catch(()=>false)));
-     if(!checks.every(Boolean))return;
-     for(const e of entries)extraDayVoice.set(norm(e.zh),DAY_AUDIO_DIRECTORY+e.id+'.mp3');
-   }).catch(()=>{});
- function approvedClips(text){
-   const key=norm(text),native=window.PandaGoHSK2Lesson1NativeAudioV459;
-   return [...new Set([extraDayVoice.get(key),exactLuvvoice.get(key),
-     PANDA_GRAMMAR_AUDIO_V451[key],native?.[text],native?.[key]].filter(Boolean))];
- }
+const voicePackReady=Promise.resolve();
+ function approvedClips(text){const clip=lookupApprovedPandaVoice(text);return clip?[clip.src]:[];}
 const cn={零:0,〇:0,一:1,二:2,两:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9};
 function num(s){
  if(/^\d{1,2}$/.test(s))return +s;
