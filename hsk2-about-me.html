@@ -612,7 +612,19 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
   width:100%;height:100%;min-height:100%;
   background:linear-gradient(#f6d5f6,#eac5f4);
 }
-#app #pg433 .about-approved-cover-shell.word-flow-cover-shell::after{display:none}
+#app #pg433 .about-approved-cover-shell.word-flow-cover-shell::after {
+  content:"";
+  display:block;
+  position:absolute;
+  inset:calc(var(--art-width) * 1737 / 905) 0 0;
+  width:var(--art-width);
+  max-width:100%;
+  margin-inline:auto;
+  background:url("./assets/hsk2-about-me/cover-lake-extension-v1.webp") center top / cover no-repeat;
+  transform:none;
+  pointer-events:none;
+  z-index:-1;
+}
 #app #pg433 .about-approved-cover.word-flow-cover{
   position:relative;width:var(--art-width);max-width:100%;
   height:auto;min-height:0;overflow:visible;margin:0 auto;
