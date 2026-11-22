@@ -1,1 +1,0 @@
-Approved HSK2 images: 10 PNG + 10 WebP tails. Reconstruct only after SHA256 matches bc1ac0ecbf1c11c84ff30df25d23be8a911588ef8a3625262dd2d71274bfdc90.
