@@ -600,55 +600,39 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
  #app #pg433 .about-approved-cover{height:100%;min-height:570px}
 }
 
-/* About Me v5: same 905x1737 scale and aspect-preserving layout as approved My Day.
-   This override is intentionally scoped to this document only. */
+/* Original approved cover v7: preserve the PNG, complete frame and intrinsic ratio. */
 .course-layout #app[data-view="1"] #pg433 .pg433-content {
   padding:0!important;overflow:hidden!important;
-  background:linear-gradient(#f4dafa,#edc4f4)!important;
+  background:#edc4f4!important;
 }
 #app #pg433 .about-approved-cover-shell.word-flow-cover-shell {
-  --cover-image:url("./assets/hsk2-about-me/cover-about-me-approved-layout-v5.avif?v=20261120v5");
-  --art-width:min(100cqw,calc(100dvh * 905 / 1737));
-  width:100%;height:100%;min-height:100%;
-  background:linear-gradient(#f6d5f6,#eac5f4);
+  container-type:size;position:relative;display:grid;place-items:center;
+  width:100%;height:100%;min-height:0;
+  padding:0;overflow:hidden;background:#edc4f4;
 }
-#app #pg433 .about-approved-cover-shell.word-flow-cover-shell::after {
-  content:"";
-  display:block;
-  position:absolute;
-  inset:calc(var(--art-width) * 1737 / 905) 0 0;
-  width:var(--art-width);
-  max-width:100%;
-  margin-inline:auto;
-  background:url("./assets/hsk2-about-me/cover-lake-extension-v1.webp") center top / cover no-repeat;
-  transform:none;
-  pointer-events:none;
-  z-index:-1;
-}
-#app #pg433 .about-approved-cover.word-flow-cover{
-  position:relative;width:var(--art-width);max-width:100%;
-  height:auto;min-height:0;overflow:visible;margin:0 auto;
-  background:transparent;isolation:isolate;
+#app #pg433 .about-approved-cover-shell.word-flow-cover-shell::after {display:none!important}
+#app #pg433 .about-approved-cover.word-flow-cover {
+  position:relative;display:block;
+  width:min(100cqw,calc(100cqh * 842 / 1867));
+  max-width:100%;height:auto;aspect-ratio:842 / 1867;
+  min-height:0;overflow:hidden;margin:0;
+  padding:0;background:transparent;isolation:isolate;
 }
 #app #pg433 .about-approved-cover-image {
-  display:block;width:100%;height:auto;aspect-ratio:905 / 1737;
-  object-fit:contain;object-position:center top;
+  display:block;width:100%;height:auto;aspect-ratio:842 / 1867;
+  object-fit:contain;object-position:center;
   user-select:none;-webkit-user-drag:none;
 }
 #app #pg433 .about-approved-cover-back {
-  left:6.6%;top:.6%;width:9.5%;height:5.2%;min-width:35px;
-  border-radius:50%;z-index:4;
+  left:6.3%;top:5.3%;width:8.6%;height:4.2%;min-width:0;
+  right:auto;bottom:auto;border-radius:50%;z-index:4;
 }
 #app #pg433 .about-approved-cover-start {
-  left:17%;top:72.3%;width:66%;height:7.2%;right:auto;bottom:auto;
-  min-height:36px;border-radius:999px;z-index:4;
+  left:16.4%;top:68.0%;width:67.3%;height:5.9%;right:auto;bottom:auto;
+  min-height:0;border-radius:999px;z-index:4;
 }
 #app #pg433 .about-approved-cover-start:active {
-  background:#fff3!important;box-shadow:inset 0 0 0 3px #fff8d88c!important;
-}
-@media(max-height:600px) {
- .course-layout #app[data-view="1"] #pg433 .pg433-content{overflow-y:auto!important}
- #app #pg433 .about-approved-cover-shell.word-flow-cover-shell{height:auto;min-height:100%}
+  background:#0002!important;box-shadow:inset 0 0 0 2px #6a1789!important;transform:none!important;
 }
 
 /* HSK2 About Me v6. Layout derived from the approved My Day word screen;
@@ -1705,8 +1689,8 @@ function intro() {
   // Match approved HSK2 My Day poster dimensions and responsive rendering.
   return '<section class="word-flow-cover-shell about-approved-cover-shell" aria-label="Panda Go · HSK 2 · О себе. 3D-обложка по эталону Мой день">' +
     '<div class="word-flow-cover about-approved-cover">' +
-    '<img class="about-approved-cover-image" src="./assets/hsk2-about-me/cover-about-me-approved-layout-v5.avif?v=20261120v5" ' +
-      'width="905" height="1737" alt="Урок 1 О себе. Панда за учебным столом с ноутбуком и книгами, китайский пейзаж. 自我介绍. 6 новых выражений, 30 мини-тестов, грамматика, рассказ о себе, произношение, диалог с Пандой. Один выученный язык может изменить всю твою жизнь." ' +
+    '<img class="about-approved-cover-image" src="./assets/hsk2-about-me/cover-about-me-original-v7.png?v=20261122" ' +
+      'width="842" height="1867" alt="Урок 1 О себе. Панда за учебным столом с ноутбуком и книгами, китайский пейзаж. 自我介绍. 6 новых выражений, 30 мини-тестов, грамматика, рассказ о себе, произношение, диалог с Пандой. Один выученный язык может изменить всю твою жизнь." ' +
       'fetchpriority="high" decoding="async" draggable="false">' +
     '<a class="about-approved-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>' +
     '<button class="about-approved-cover-start" type="button" data-step="2" aria-label="Начать урок О себе"></button>' +
