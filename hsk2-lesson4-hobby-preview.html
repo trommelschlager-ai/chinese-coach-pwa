@@ -1736,25 +1736,15 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  const tiles = [
-    [2,'Слова'], [3,'Тесты'], [4,'Грамматика'],
-    [5,'Рассказ о хобби'], [6,'Произношение'], [7,'Диалог']
-  ];
-  return '<section class="word-flow-cover-shell" aria-label="HSK 2 · Урок 4 · Моё хобби">' +
-    '<div class="word-flow-cover hobby-cover">' +
-    '<img class="hobby-cover-art" src="./assets/hsk2-lesson1-preview/course-cover-sakura-canal.webp" ' +
-      'alt="" width="905" height="1737" fetchpriority="high" draggable="false">' +
-    '<a class="final-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>' +
-    '<span class="hobby-cover-chapter">HSK 2 · УРОК 4</span>' +
-    '<div class="hobby-cover-title"><h1>Моё хобби</h1><p><span lang="zh-Hans">我的爱好</span><br>Wǒ de àihào</p></div>' +
-    '<div class="hobby-cover-summary"><p>Расскажи, чем любишь заниматься<br>в свободное время и по выходным.</p></div>' +
-    '<span class="cover-tile-label cover-tile-words" aria-hidden="true">Слова</span>' +
-    '<span class="cover-tile-label cover-tile-tests" aria-hidden="true">Тесты</span>' +
-    '<span class="cover-tile-label cover-tile-story" aria-hidden="true">Мой рассказ</span>' +
-    tiles.map(([step,label]) => '<button type="button" class="hobby-cover-tile" data-step="' + step +
-      '" aria-label="' + label + '"></button>').join('') +
-    '<button type="button" class="final-cover-start" data-step="2" aria-label="Начать урок"></button>' +
-    '</div></section>';
+  const tiles=[[2,'Слова',vocabImage(5,'pg-hobby-tile-art')],[3,'Тесты',stageImage('quiz','pg-hobby-tile-art')],[4,'Грамматика',vocabImage(0,'pg-hobby-tile-art')],[5,'Мой рассказ',vocabImage(3,'pg-hobby-tile-art')],[6,'Произношение',stageImage('tones','pg-hobby-tile-art')],[7,'Диалог',stageImage('dialogue','pg-hobby-tile-art')]];
+  return '<section class="pg-hobby-cover" aria-label="HSK 2 · Урок 4 · Моё хобби">'+
+  '<div class="pg-hobby-head"><a href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2">‹</a><span class="pg-hobby-brand"><img src="./assets/hsk2-lesson4-hobby-3d/cover.webp" alt=""><span><b>Panda <em>Go</em></b><small>Китайский с удовольствием</small></span></span></div>'+
+  '<div class="pg-hobby-progress" aria-hidden="true"></div><div class="pg-hobby-title"><span>HSK 2 · УРОК 4</span><h1>Моё хобби</h1><p><b lang="zh-Hans">我的爱好</b> · Wǒ de àihào</p></div>'+
+  '<div class="pg-hobby-picture"><img src="./assets/hsk2-lesson4-hobby-3d/cover.webp" width="840" height="840" alt="Панда в наушниках читает книгу в саду, рядом гитара и кисти" fetchpriority="high" draggable="false"></div>'+
+  '<div class="pg-hobby-lower"><div class="pg-hobby-summary"><b>Содержание урока</b><p>Расскажи, чем любишь заниматься в свободное время и по выходным.</p></div>'+
+  '<div class="pg-hobby-tiles">'+tiles.map(([step,label,art])=>'<button type="button" data-step="'+step+'">'+art+'<span>'+label+'</span></button>').join('')+'</div>'+
+  '<button class="pg-hobby-start" type="button" data-step="2">Начать урок →</button></div>'+
+  '<div class="pg-hobby-motto"><p>Не бойся говорить с ошибками.<br><em>Бойся никогда не заговорить!</em></p></div></section>';
 }
 function newWords() {
   
