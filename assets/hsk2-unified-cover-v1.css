@@ -105,3 +105,19 @@ html.course-layout #app[data-view="1"] #pg433 .pg-ref-cover{
 #app #pg433 .pg-ref-lesson-10 .pg-ref-hero-title h1{font-size:6.15cqw!important}
 #app #pg433 .pg-ref-lesson-3 .pg-ref-hero-title strong,
 #app #pg433 .pg-ref-lesson-9 .pg-ref-hero-title strong{font-size:4.65cqw!important}
+
+/* Replace platform-dependent emoji with already approved sharp 3D sprites.
+   One image = six consistent symbols, no fuzzy upscaled screenshots. */
+#app #pg433 .pg-ref-tile-icon{
+  width:10cqw!important;height:10cqw!important;display:block!important;flex:none!important;
+  background-image:url("./hsk2-lesson8-shop-icons-v3.webp")!important;
+  background-size:300% 200%!important;background-repeat:no-repeat!important;
+  font-size:0!important;line-height:0!important;color:transparent!important;
+  filter:drop-shadow(0 1px 1px #9650a657)!important;
+}
+#app #pg433 .pg-ref-tile:nth-child(1) .pg-ref-tile-icon{background-position:0% 0%!important}
+#app #pg433 .pg-ref-tile:nth-child(2) .pg-ref-tile-icon{background-position:50% 0%!important}
+#app #pg433 .pg-ref-tile:nth-child(3) .pg-ref-tile-icon{background-position:100% 0%!important}
+#app #pg433 .pg-ref-tile:nth-child(4) .pg-ref-tile-icon{background-position:0% 100%!important}
+#app #pg433 .pg-ref-tile:nth-child(5) .pg-ref-tile-icon{background-position:50% 100%!important}
+#app #pg433 .pg-ref-tile:nth-child(6) .pg-ref-tile-icon{background-position:100% 100%!important}
