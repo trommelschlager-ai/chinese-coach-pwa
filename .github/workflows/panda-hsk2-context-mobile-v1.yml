@@ -1,0 +1,53 @@
+name: Panda AI beginner dialogue — isolated mobile regression
+on:
+  push:
+    paths:
+      - 'assets/panda-hsk2-brain-v1.mjs'
+      - 'assets/panda-hsk2-basic-context-v1.mjs'
+      - 'assets/panda-approved-soft-v500.js'
+      - 'assets/panda-hsk2-preview-core-v1.mjs'
+      - 'panda-voice-pilot.html'
+      - 'sw.js'
+      - 'tests/panda-hsk2-basic-context-v1.test.mjs'
+      - 'scripts/qa-panda-hsk2-context-mobile-v1.mjs'
+      - '.github/workflows/panda-hsk2-context-mobile-v1.yml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  conversation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify five Mandarin reports and ordinary variants
+        run: node --test tests/panda-hsk2-basic-context-v1.test.mjs
+      - name: Install isolated mobile Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify visible Panda AI chat at three Android widths
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/panda-context-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-voice-pilot.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-hsk2-context-mobile-v1.mjs
+      - name: Preserve Android screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-ai-beginner-context-android
+          path: qa/panda-context-v1/
+          if-no-files-found: warn
