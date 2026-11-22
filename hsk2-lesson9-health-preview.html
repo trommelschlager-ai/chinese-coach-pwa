@@ -2135,6 +2135,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 #app #pg433 .l9-speech-screen #feedback:not(:empty),#app #pg433 .l9-one-column #feedback:not(:empty){font-size:10px!important;line-height:1.1!important;margin:0!important;padding:3px!important;}
 @media (max-height:610px){#app #pg433 .l9-word-copy .cn{font-size:17px!important}#app #pg433 .l9-word-copy .py,#app #pg433 .l9-word-copy .ru{font-size:11px!important}#app #pg433 .l9-speech-row .orb{width:25px!important;height:25px!important;min-width:25px!important}#app #pg433 .l9-word-copy .l9-word-tones{gap:1px}#app #pg433 .l9-speech-row .tone-number{width:12px!important;height:12px!important;font-size:9px!important;line-height:12px!important}}
 </style>
+<link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
 </head>
 <body>
 <div class="app" id="app">
@@ -2574,7 +2575,7 @@ function newWords(){
  '<div class="l9-word-copy">'+hanzi(word.zh)+'<span class="py">'+word.py+'</span><span class="ru">'+word.ru+'</span><div class="l9-word-tones">'+toneStrokes(word.tones)+'</div></div>'+audioButton(word.zh,playIcon)+'</article>';
  }).join('')+'</div><div class="lesson9-vocab-completion">'+
  '<button type="button" class="about-manual-complete" data-words-read="1">'+(state.heardWords.length===8?'✓ Повторено 8 из 8':'✓ Повторил все 8 выражений')+'</button>'+
- '<p class="hint">Аудио носителя пока не подключено. Повтори по пиньиню.</p></div>'+safeStatus()+'</section>';
+ '<p class="hint">Прослушай утверждённые записи Panda Go и повтори вслух.</p></div>'+safeStatus()+'</section>';
 }
 
 function hero(kind,step,title,subtitle) {
@@ -2749,14 +2750,18 @@ function toneGuide() {
     '<path d="' + path + '" stroke="#af183e" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg><strong>' +
     sample + '</strong>' + name + '</div>').join('') + '</div></details>';
 }
+/* Shared speech-row standard: Chinese, pinyin, translation, tone marks, speaker, microphone. */
+function pgStandardSpeechRow(word,i) {
+  const strokes={0:'',1:'M3 8 H19',2:'M3 15 L19 3',3:'M3 4 Q11 24 19 4',4:'M3 3 L19 15'};
+  const tones=word.tones.map(v=>'<span class="pg-standard-tone"><svg viewBox="0 0 22 20" aria-hidden="true">'+(v===0?'<circle cx="11" cy="9" r="2.8" fill="#267d31"/>':'<path d="'+strokes[v]+'" fill="none" stroke="#782a8f" stroke-width="3.3" stroke-linecap="round"/>')+'</svg><b>'+v+'</b></span>').join('');
+  const control=state.practiceMode==='self'?'<button type="button" class="orb mic'+(state.selfSpoken.includes(i)?' recognized':'')+'" data-self-spoken="'+i+'" aria-label="Я повторил и сравнил '+escape(word.zh)+'" title="Самопроверка; тоны не оцениваются">'+(state.selfSpoken.includes(i)?'✓':'●')+'</button>':micButton(i,'Произнести '+word.zh,state.mic.includes(i));
+  return '<article class="pg-standard-speech-row"><div class="pg-standard-copy"><strong class="pg-standard-cn" lang="zh-Hans">'+escape(word.zh)+'</strong><span class="pg-standard-py">'+escape(word.py)+'</span><span class="pg-standard-ru">'+escape(word.ru)+'</span></div><div class="pg-standard-tones" role="img" aria-label="Тоны: '+word.tones.join(', ')+'">'+tones+'</div>'+audioButton(word.zh,speaker)+control+'</article>';
+}
 function tones(){
  const wordView=state.toneTab==='words';
  return '<section class="l9-speech-screen"><div class="l9-speech-modes"><button type="button" data-practice-mode="mic" aria-pressed="'+(state.practiceMode==='mic')+'">🎙 Микрофон</button><button type="button" data-practice-mode="self" aria-pressed="'+(state.practiceMode==='self')+'">Самопроверка</button></div>'+
  '<div class="tone-tabs panel"><button type="button" data-tone-tab="words" class="'+(wordView?'primary':'soft')+'">Слова (8)</button><button type="button" data-tone-tab="phrases" class="'+(!wordView?'primary':'soft')+'">Фразы (8)</button></div>'+
- '<div class="l9-practice-list">'+(wordView?words.map((word,i)=>{
- return '<article class="tone-row l9-speech-row">'+vocabImage(i,'about-illustration l9-speech-art')+'<div class="l9-word-copy">'+hanzi(word.zh)+translate([word.zh,word.py,word.ru])+'<div class="l9-word-tones">'+toneStrokes(word.tones)+pitchRow(word.tones)+'</div></div>'+
- '<div class="l9-speech-actions">'+audioButton(word.zh)+(state.practiceMode==='self'?'<button type="button" class="orb mic" data-self-spoken="'+i+'" aria-label="Повторил '+word.zh+'">'+(state.selfSpoken.includes(i)?'✓':'●')+'</button>':micButton(i,'Произнести '+word.zh,state.mic.includes(i)))+'</div></article>';
- }).join(''):phrases.map((item,i)=>'<article class="l9-speech-row panel">'+vocabImage(i,'about-illustration l9-speech-art')+'<div class="l9-word-copy">'+hanzi(item[0])+translate(item)+'</div>'+audioButton(item[0])+'</article>').join(''))+
+ '<div class="l9-practice-list '+(wordView?'pg-standard-list':'')+'">'+(wordView?words.map(pgStandardSpeechRow).join(''):phrases.map((item,i)=>'<article class="l9-speech-row panel">'+vocabImage(i,'about-illustration l9-speech-art')+'<div class="l9-word-copy">'+hanzi(item[0])+translate(item)+'</div>'+audioButton(item[0])+'</article>').join(''))+
  '</div><div class="l9-record-controls"><button type="button" class="soft" data-record="1">'+(take?.recorder?.state==='recording'?'■ Стоп':'🎙 Записать себя')+'</button><button type="button" class="primary" data-replay="1"'+(recordUrl?'':' disabled')+'>▶ Моя запись</button></div>'+
  '<p class="l9-speech-note">Отработано '+speechCount()+' из 8 · Тоны не оцениваются автоматически.</p>'+safeStatus()+'</section>';
 }
