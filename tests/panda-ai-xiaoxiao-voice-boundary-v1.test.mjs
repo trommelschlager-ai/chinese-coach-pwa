@@ -41,7 +41,8 @@ test('Five user-supplied Xiaoxiao MP3s match exact text, hashes, and audio regis
     assert.equal(data.length,x.bytes);
     assert.equal(createHash('sha256').update(data).digest('hex'),x.sha256);
     assert(data.length>1000,'Audio file unexpectedly short');
-    assert.equal(data.subarray(0,3).toString(),'ID3','MP3 must contain valid ID3 header');
+    assert.equal(data[0],0xff,'MP3 frame sync first byte');
+    assert.equal(data[1]&0xe0,0xe0,'MP3 frame sync marker');
   }
 });
 
