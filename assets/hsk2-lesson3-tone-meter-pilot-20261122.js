@@ -741,6 +741,17 @@ document.addEventListener('input',event=>{
  if(hint)hint.textContent='Граница вручную. Это не распознавание слогов.';
  draw();
 });
+// Lesson-only replay control: lab page has its own handler, but step 6 does not.
+document.addEventListener('click',event=>{
+ const button=event.target.closest('#lab-replay');
+ if(!button||button.disabled||!button.closest('.l3-tone-details'))return;
+ if(!replayUrl||replayWord!==state.selected){status('Нет доступной записи для прослушивания.');return;}
+ try{
+  if(replayAudio)replayAudio.pause();
+  replayAudio=new Audio(replayUrl);
+  replayAudio.play().catch(()=>status('Не удалось воспроизвести запись. Проверь звук в браузере.'));
+ }catch{status('Не удалось воспроизвести запись.');}
+});
 window.PandaToneTrainer={render,mount,stop:()=>{if(active)stop(false)},reset,progressText,total,replay:async()=>{if(!replayUrl||replayWord!==state.selected)return false;try{if(replayAudio)replayAudio.pause();replayAudio=new Audio(replayUrl);await replayAudio.play();return true}catch{return false}},diagnostics:()=>{const i=state.selected;return {word:memo?.words?.[i]?.zh||'',pinyin:memo?.words?.[i]?.py||'',selected:i,repeats:count(i),total:total(),recording:Boolean(active),attempt:visibleAttempt?.word===i?visibleAttempt:(state.reps[i]?.mic?.at(-1)||null)}}};
 window.PandaToneMathV2={pitchOf,fallbackPitchOf,offlinePitch,reanalyzePcm,cleanPitch,contourEvidence,selectSpeechSegment,estimateSplit,observedTrend,buildRecording,normalizeChartPoints,semitoneContour,isLongPitchGap};
 })();
