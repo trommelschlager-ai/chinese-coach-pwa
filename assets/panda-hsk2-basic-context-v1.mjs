@@ -65,6 +65,15 @@ const phrases = [
   ['我喜欢喜剧片', 'Wǒ xǐhuan xǐjùpiàn.', 'Мне нравятся комедии.', 'movie-comedy'],
   ['喜剧片', 'xǐjùpiàn', 'Комедии.', 'movie-comedy'],
 
+  // Why a comedy? Treat a valid beginner question as a reason question,
+  // NOT a recognition or pronunciation error. The reason answer has no Xiaoxiao
+  // recording yet; display text only until the user's exact MP3 is approved.
+  ['你为什么喜欢喜剧片', 'Nǐ wèishénme xǐhuan xǐjùpiàn?', 'Почему тебе нравятся комедии?', 'movie-why'],
+  ['为什么你喜欢喜剧片', 'Wèishénme nǐ xǐhuan xǐjùpiàn?', 'Почему тебе нравятся комедии?', 'movie-why'],
+  ['你为什么喜欢看喜剧片', 'Nǐ wèishénme xǐhuan kàn xǐjùpiàn?', 'Почему тебе нравится смотреть комедии?', 'movie-why'],
+  ['为什么喜欢喜剧片', 'Wèishénme xǐhuan xǐjùpiàn?', 'Почему нравятся комедии?', 'movie-why'],
+  ['你为什么喜欢喜剧电影', 'Nǐ wèishénme xǐhuan xǐjù diànyǐng?', 'Почему тебе нравятся комедийные фильмы?', 'movie-why'],
+
   // A one-word topic is not automatically a grammar error.
   ['工作', 'gōngzuò', 'Работа; работать.', 'work-topic']
 ];
@@ -80,7 +89,8 @@ const responses = Object.freeze({
   // No approved Xiaoxiao MP3 for this new question: remain text-only until one is recorded.
   'movie-plan': ['你想看什么电影？', 'Nǐ xiǎng kàn shénme diànyǐng?', 'Какой фильм ты хочешь посмотреть?', 'movie-choice'],
   // Existing approved Xiaoxiao context clip chat03.mp3, not a newly generated voice.
-  'movie-comedy': ['我喜欢喜剧片。', 'Wǒ xǐhuan xǐjùpiàn.', 'Я люблю комедии.', 'movie-topic']
+  'movie-comedy': ['我喜欢喜剧片。', 'Wǒ xǐhuan xǐjùpiàn.', 'Я люблю комедии.', 'movie-topic'],
+  'movie-why': ['因为喜剧片很好笑。', 'Yīnwèi xǐjùpiàn hěn hǎoxiào.', 'Потому что комедии очень смешные.', 'movie-topic']
 });
 
 export function knownBasicContext(raw) {

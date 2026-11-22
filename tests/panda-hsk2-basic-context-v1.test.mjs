@@ -12,7 +12,8 @@ const cases = [
   ['工作','gōngzuò','work-topic','你想聊聊工作吗？'],
   ['我今天不工作。','Wǒ jīntiān bù gōngzuò.','rest-today','那你今天想做什么？'],
   ['我想看电影。','Wǒ xiǎng kàn diànyǐng.','movie-plan','你想看什么电影？'],
-  ['我想看喜剧片。','Wǒ xiǎng kàn xǐjùpiàn.','movie-comedy','我喜欢喜剧片。']
+  ['我想看喜剧片。','Wǒ xiǎng kàn xǐjùpiàn.','movie-comedy','我喜欢喜剧片。'],
+  ['你为什么喜欢喜剧片？','Nǐ wèishénme xǐhuan xǐjùpiàn?','movie-why','因为喜剧片很好笑。']
 ];
 
 test('Every screenshot regression phrase has pinyin, Russian and a contextual answer',()=>{
@@ -55,7 +56,11 @@ test('Natural word order, punctuation and tone neutral syllables are preserved',
     ['我想去看电影。','Wǒ xiǎng qù kàn diànyǐng.','movie-plan'],
     ['我想看一部电影。','Wǒ xiǎng kàn yí bù diànyǐng.','movie-plan'],
     ['我喜欢喜剧片。','Wǒ xǐhuan xǐjùpiàn.','movie-comedy'],
-    ['喜剧片','xǐjùpiàn','movie-comedy']
+    ['喜剧片','xǐjùpiàn','movie-comedy'],
+    ['为什么你喜欢喜剧片？','Wèishénme nǐ xǐhuan xǐjùpiàn?','movie-why'],
+    ['你为什么喜欢看喜剧片？','Nǐ wèishénme xǐhuan kàn xǐjùpiàn?','movie-why'],
+    ['为什么喜欢喜剧片？','Wèishénme xǐhuan xǐjùpiàn?','movie-why'],
+    ['你为什么喜欢喜剧电影？','Nǐ wèishénme xǐhuan xǐjù diànyǐng?','movie-why']
   ];
   for(const [zh,pinyin,intent] of variants){
     const actual=knownBasicContext(' '+zh+' ');
@@ -72,6 +77,8 @@ test('Do not pretend to understand unreviewed speech or invent a tone score',()=
   assert.equal(replyBasicContext('我今天在工作'),null);
   assert.equal(replyBasicContext('我不想看电影'),null);
   assert.equal(replyBasicContext('我昨天看了电影'),null);
+  assert.equal(replyBasicContext('你为什么不喜欢喜剧片？'),null);
+  assert.equal(replyBasicContext('你为什么喜欢恐怖片？'),null);
   assert.equal('toneVerified' in replyBasicContext('工作'),false);
 });
 
@@ -95,6 +102,16 @@ test('A day-off answer can lead to a real second and third movie-related turn',(
   assert.equal(genre.line.hanzi,'我喜欢喜剧片。');
   assert.equal(genre.context.awaiting,'movie-topic');
   assert.equal(lookupApprovedPandaVoice(genre.line.hanzi)?.src,'./assets/panda-context-voice-20261122/chat03.mp3');
+
+  const why=replyHSK2('你为什么喜欢喜剧片？',101,0,false,genre.context);
+  assert.equal(why.kind,'social');
+  assert.equal(why.spoken.pinyin,'Nǐ wèishénme xǐhuan xǐjùpiàn?');
+  assert.equal(why.spoken.ru,'Почему тебе нравятся комедии?');
+  assert.equal(why.line.hanzi,'因为喜剧片很好笑。');
+  assert.equal(why.line.pinyin,'Yīnwèi xǐjùpiàn hěn hǎoxiào.');
+  assert.equal(why.line.ru,'Потому что комедии очень смешные.');
+  assert.equal(why.context.awaiting,'movie-topic');
+  assert.equal(lookupApprovedPandaVoice(why.line.hanzi),null,'Do not invent voice audio for new answer');
 });
 
 test('Existing HSK2 exact answer and social question remain functional',()=>{
