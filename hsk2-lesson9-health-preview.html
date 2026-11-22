@@ -2061,7 +2061,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 .course-layout #app[data-view="6"] #pg433 .tone-row .py,.course-layout #app[data-view="6"] #pg433 .tone-row .ru{font-size:11px!important;white-space:normal!important;line-height:1.15!important;overflow-wrap:anywhere!important;}
 .course-layout #app[data-view="6"] #pg433 .tone-row .orb{width:30px!important;height:30px!important;min-width:30px!important;}
 .course-layout #app[data-view="6"] #pg433 .tone-row .tone-strokes svg{width:12px!important;height:15px!important;stroke:#258a51!important}
-.course-layout #app #pg433 [data-say]{opacity:.48!important;}
+
 
 /* Lesson 9 V4: single-column practice lists with pinned controls. */
 .course-layout #app[data-view="2"] #pg433 .l9-one-column,
@@ -2343,9 +2343,104 @@ const pitchRow = values => '<div class="tonemarks">' + values.map(v => '<span cl
 const translate = item => '<span class="py">' + item[1] + '</span><span class="ru">' + item[2] + '</span>';
 const safeStatus = () => '<div id="feedback" class="feedback' + (positive ? ' good' : '') + '" role="status">' + escape(feedback) + '</div>';
 
+const approvedLessonClips = Object.freeze({
+  "身体": {
+    "src": "./assets/hsk2-lesson9-voice/l9_01.mp3"
+  },
+  "不舒服": {
+    "src": "./assets/hsk2-lesson9-voice/l9_02.mp3"
+  },
+  "生病": {
+    "src": "./assets/hsk2-lesson9-voice/l9_03.mp3"
+  },
+  "头疼": {
+    "src": "./assets/hsk2-lesson9-voice/l9_04.mp3"
+  },
+  "发烧": {
+    "src": "./assets/hsk2-lesson9-voice/l9_05.mp3"
+  },
+  "吃药": {
+    "src": "./assets/hsk2-lesson9-voice/l9_06.mp3"
+  },
+  "休息": {
+    "src": "./assets/hsk2-lesson9-voice/l9_07.mp3"
+  },
+  "看医生": {
+    "src": "./assets/hsk2-lesson9-voice/l9_08.mp3"
+  },
+  "我身体很好": {
+    "src": "./assets/hsk2-lesson9-voice/l9_09.mp3"
+  },
+  "我今天不舒服": {
+    "src": "./assets/hsk2-lesson9-voice/l9_10.mp3"
+  },
+  "他生病了": {
+    "src": "./assets/hsk2-lesson9-voice/l9_11.mp3"
+  },
+  "我有点儿头疼": {
+    "src": "./assets/hsk2-lesson9-voice/l9_12.mp3"
+  },
+  "她发烧了": {
+    "src": "./assets/hsk2-lesson9-voice/l9_13.mp3"
+  },
+  "我按医生说的吃药": {
+    "src": "./assets/hsk2-lesson9-voice/l9_14.mp3"
+  },
+  "你应该多休息": {
+    "src": "./assets/hsk2-lesson9-voice/l9_15.mp3"
+  },
+  "我想去看医生": {
+    "src": "./assets/hsk2-lesson9-voice/l9_16.mp3"
+  },
+  "我今天身体很好": {
+    "src": "./assets/hsk2-lesson9-voice/l9_17.mp3"
+  },
+  "我今天有点儿不舒服": {
+    "src": "./assets/hsk2-lesson9-voice/l9_18.mp3"
+  },
+  "我头疼想休息": {
+    "src": "./assets/hsk2-lesson9-voice/l9_19.mp3"
+  },
+  "我生病了想去看医生": {
+    "src": "./assets/hsk2-lesson9-voice/l9_20.mp3"
+  },
+  "我觉得好多了": {
+    "src": "./assets/hsk2-lesson9-voice/l9_21.mp3"
+  },
+  "你哪儿不舒服": {
+    "src": "./assets/hsk2-lesson9-voice/l9_22.mp3"
+  },
+  "我头疼": {
+    "src": "./assets/hsk2-lesson9-voice/l9_23.mp3"
+  },
+  "我发烧了": {
+    "src": "./assets/hsk2-lesson9-voice/l9_24.mp3"
+  },
+  "我没事": {
+    "src": "./assets/hsk2-lesson9-voice/l9_25.mp3"
+  },
+  "你现在想做什么": {
+    "src": "./assets/hsk2-lesson9-voice/l9_26.mp3"
+  },
+  "我想喝点儿水": {
+    "src": "./assets/hsk2-lesson9-voice/l9_27.mp3"
+  },
+  "你今天怎么样": {
+    "src": "./assets/hsk2-user-voice/20261114-BWLSNa.mp3",
+    "start": 3.95,
+    "end": 5.55
+  },
+  "我想休息一下": {
+    "src": "./assets/hsk2-user-voice/20261114-d9kQmz.mp3",
+    "start": 23.38,
+    "end": 25.01
+  }
+});
+
 function audioButton(text, icon = speaker) {
-  const label = 'Запись носителя для '+text+' пока не подключена';
-  return '<button type="button" class="orb" data-say="'+escape(text)+'" aria-label="'+escape(label)+'" title="'+escape(label)+'">'+icon+'</button>';
+  const clip = approvedLessonClips[normalize(text)];
+  const label = clip ? 'Прослушать '+text+' · запись Panda Go' : 'Запись пока не загружена: '+text;
+  return '<button type="button" class="orb'+(clip?'':' missing')+'" '+(clip?'data-say="'+escape(text)+'"':'disabled')+' aria-label="'+escape(label)+'" title="'+escape(label)+'">'+(clip?icon:'◌')+'</button>';
 }
 
 const recognitionAvailable = () => Boolean(window.SpeechRecognition || window.webkitSpeechRecognition) && window.isSecureContext;
@@ -2787,7 +2882,44 @@ function finish() {
 }
 
 function play(text,button) {
-  setStatus('Запись носителя для урока 9 ещё не подключена. Повтори по пиньиню.');
+  const clip = approvedLessonClips[normalize(text)];
+  if (!clip) { setStatus('Для этой фразы пока нет утверждённой записи.'); return; }
+  clearMedia();
+  const player = new Audio(clip.src);
+  audio = player;
+  player.preload = 'auto';
+  button.setAttribute('aria-pressed','true');
+  let ready = !Number.isFinite(clip.start);
+  player.muted = !ready;
+  let timer = null;
+  const done = () => {
+    if (timer !== null) { clearInterval(timer); timer=null; }
+    if (audio !== player) return;
+    player.pause(); audio = null;
+    button.removeAttribute('aria-pressed');
+  };
+  const fail = () => {
+    if (audio !== player) return;
+    done(); setStatus('MP3 не воспроизвёлся. Проверь соединение и повтори.');
+  };
+  const seek = () => {
+    if (audio !== player || ready) return;
+    try { player.currentTime = clip.start; } catch { fail(); }
+  };
+  player.addEventListener('loadedmetadata',seek,{once:true});
+  player.addEventListener('seeked',() => {
+    if (audio === player && !ready && Math.abs(player.currentTime - clip.start) < .12) {
+      ready = true; player.muted = false;
+    }
+  });
+  if (Number.isFinite(clip.end)) timer = setInterval(() => {
+    if (audio !== player) { clearInterval(timer); timer=null; return; }
+    if (ready && player.currentTime >= clip.end) done();
+  },20);
+  player.addEventListener('error',fail,{once:true});
+  player.addEventListener('ended',done,{once:true});
+  if (player.readyState >= 1) seek();
+  try { const pending = player.play(); if (pending?.catch) pending.catch(fail); } catch { fail(); }
 }
 function recognize(allowed,onMatch,onMiss) {
   const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
