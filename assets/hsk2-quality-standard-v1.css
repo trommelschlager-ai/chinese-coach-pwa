@@ -67,3 +67,24 @@
 .course-layout #app[data-view="1"] #pg433 .approved5-frame,.course-layout #app[data-view="1"] #pg433 .lesson6-approved-cover{width:100%!important;height:auto!important;max-height:none!important;margin:0!important;flex:none!important}
 .course-layout #app[data-view="1"] #pg433 .approved5-art{width:100%!important;height:auto!important;max-height:none!important}
 }
+
+/* Full-bleed portrait-cover containers. Do not stretch illustrations or move overlay hotspots. */
+@media(max-width:600px){
+.course-layout #app[data-view="1"]:has(:is(.pg-hobby-cover,.l3-poster-cover,.approved5-shell,.lesson6-approved-cover-shell,.lesson7-poster-v6,.l9-cover)){width:100%!important;max-width:none!important;height:100dvh!important;max-height:100dvh!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-sizing:border-box!important}
+.course-layout #app[data-view="1"] #pg433:has(:is(.pg-hobby-cover,.l3-poster-cover,.approved5-shell,.lesson6-approved-cover-shell,.lesson7-poster-v6,.l9-cover)){width:100%!important;max-width:none!important;height:100%!important;min-height:0!important;margin:0!important;padding:0!important}
+.course-layout #app[data-view="1"] #pg433:has(:is(.l3-poster-cover,.approved5-shell,.lesson6-approved-cover-shell,.lesson7-poster-v6,.l9-cover)) .pg433-content{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;background:#edc8ed url("./hsk2-lesson4-hobby-3d/garden.webp") center bottom/cover no-repeat!important}
+}
+.course-layout #app[data-view="1"] #pg433 .l3-poster-cover{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-direction:column!important;width:100%!important;height:100%!important;min-height:0!important;max-width:none!important;margin:0!important;padding:0!important;gap:0!important;overflow:auto!important;background:#edc8ed url("./hsk2-lesson4-hobby-3d/garden.webp") center bottom/cover no-repeat!important}
+.course-layout #app[data-view="1"] #pg433 .l3-poster-frame{position:relative!important;width:min(100%,calc(100dvh * .56331));height:auto;aspect-ratio:694/1232;flex:none;margin:0!important;padding:0!important}
+.course-layout #app[data-view="1"] #pg433 .l3-poster-image{display:block!important;width:100%!important;height:auto!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;object-fit:contain!important;filter:none!important}
+#app #pg433 .l3-poster-frame :is(.l3-poster-back,.l3-poster-tile,.l3-poster-start){position:absolute!important;border:0!important;min-height:0!important;padding:0!important;margin:0!important;background:transparent!important;box-shadow:none!important;cursor:pointer;touch-action:manipulation;border-radius:12px;font-size:0;color:transparent}
+#app #pg433 .l3-poster-back{left:4%;top:1%;width:10%;height:4.7%}
+#app #pg433 .l3-poster-start{left:14.5%;top:75.9%;width:70%;height:6.7%;border-radius:999px!important}
+#app #pg433 .l3-poster-tile{width:30%;height:8.6%}
+#app #pg433 .l3-poster-tile-2,#app #pg433 .l3-poster-tile-5{left:4.5%}
+#app #pg433 .l3-poster-tile-3,#app #pg433 .l3-poster-tile-6{left:35%}
+#app #pg433 .l3-poster-tile-4,#app #pg433 .l3-poster-tile-7{left:65.5%}
+#app #pg433 .l3-poster-tile-2,#app #pg433 .l3-poster-tile-3,#app #pg433 .l3-poster-tile-4{top:55.8%}
+#app #pg433 .l3-poster-tile-5,#app #pg433 .l3-poster-tile-6,#app #pg433 .l3-poster-tile-7{top:65%}
+#app #pg433 .l3-poster-frame :is(button,a):active{background:#fff5!important;box-shadow:inset 0 0 0 2px #fff8!important;transform:scale(.98)!important}
+#app #pg433 .l3-poster-frame :is(button,a):focus-visible{outline:3px solid #fff;outline-offset:-3px}
