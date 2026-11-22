@@ -236,7 +236,8 @@ function mainLessonProgress(){
     done('pg-hsk2-lesson3-preview-v1')||finished(read('panda-go-hsk2-lesson3-standard-v1')),
     fullEightWordLesson('panda-go-hsk2-hobby-v1'),
     fullEightWordLesson('panda-go-hsk2-friends-v2'),
-    fullEightWordLesson('panda-go-hsk2-yesterday-lesson6-v1')
+    fullEightWordLesson('panda-go-hsk2-yesterday-lesson6-v1'),
+    fullEightWordLesson('panda-go-hsk2-future-lesson7-v1')
   ];
 }
 function viewMap(){
