@@ -8,6 +8,7 @@
 - Original lesson 1 cover retained without modification.
 - Lessons 2–10: one native HTML cover component, consistent 905:1737-inspired dimensions and master CSS; six interactive section buttons, one CTA, progress and banner, consistent gold borders and lilac/purple gradients.
 - All 10 lessons: final interior stylesheet matching the reference lesson 7.
+- Nine separate scene-only 3D illustrations are now committed under `assets/hsk2-reference-scenes-20261122/lesson-{2..10}.svg`, each with a locally embedded WebP source; this prevents old poster lettering from appearing behind the HTML copy.
 - 3D illustrated section icons are sourced from the already installed `hsk2-lesson8-shop-icons-v3.webp` sprite; illustrations remain existing high-resolution assets, rendered with `object-fit:cover` for scenes and `contain` for teaching illustrations — **no nonuniform image stretch**.
 - Audio, voice mapping, microphoning/ASR, exercise content, progress state, routing and lock logic deliberately not changed.
 - The main branch and public website are unchanged; all changes live on `hsk2-reference-audit-20261122`.
@@ -44,6 +45,8 @@
 7. Only merge after browser QA or screenshot evidence.
 
 ## Known limitations
-- A unified structure and existing theme artwork **does not guarantee pixel-identical image composition** to lesson 1; nine bespoke high-resolution full illustrations are not integrated into the repository.
+- Nine individual theme scenes are integrated, but their original source dimensions are **512×341 px**; they should be reviewed at high device pixel ratios before claiming HD quality, and they do not guarantee a pixel-identical reproduction of the approved first cover.
 - CSS refactoring is deployed only in the separate test branch, and has not been screenshot-compared in a working Android browser yet.
-- This is a production-candidate **visual master**, not a final visual sign-off.
+- Automated Chromium smoke tests have passed **30/30** checks (10 lessons × 3 viewports) for opening the cover, loading art, entering the vocabulary step, displaying 5 tabs and footer, and no page errors. This is **not** a comprehensive test of all lesson stages, microphone hardware or tone quality.
+- Screenshot inspections found duplicate poster lettering and plain lower backgrounds in the first attempt; these were corrected with scene-only art and a lakeside garden footer. Subsequent screenshots require final visual review.
+- This remains a production-candidate **visual master**, not a final pixel-perfect sign-off.
