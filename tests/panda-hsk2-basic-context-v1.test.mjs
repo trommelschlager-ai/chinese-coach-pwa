@@ -111,7 +111,7 @@ test('A day-off answer can lead to a real second and third movie-related turn',(
   assert.equal(why.line.pinyin,'Yīnwèi xǐjùpiàn hěn hǎoxiào.');
   assert.equal(why.line.ru,'Потому что комедии очень смешные.');
   assert.equal(why.context.awaiting,'movie-topic');
-  assert.equal(lookupApprovedPandaVoice(why.line.hanzi),null,'Do not invent voice audio for new answer');
+  assert.equal(lookupApprovedPandaVoice(why.line.hanzi)?.src,'./assets/panda-ai-xiaoxiao-new-replies-20261122/panda06.mp3','Use only the exact user-supplied Xiaoxiao MP3 for the new answer');
 });
 
 test('Existing HSK2 exact answer and social question remain functional',()=>{

@@ -47,6 +47,22 @@ test('Five user-supplied Xiaoxiao MP3s match exact text, hashes, and audio regis
 });
 
 
+test('Sixth user-uploaded Xiaoxiao reason clip is byte-exact, isolated, and audible as its own phrase',()=>{
+  const detail=JSON.parse(read('assets/panda-ai-xiaoxiao-new-replies-20261122/panda06-manifest.json'));
+  assert.equal(detail.phrase,'因为喜剧片很好笑。');
+  assert.equal(detail.git_blob_sha1,'c2d8be54540eeb24b9da052d0df5c54c200eca04');
+  const approved=lookupApprovedPandaVoice(detail.phrase);
+  assert.equal(approved?.src,'./assets/panda-ai-xiaoxiao-new-replies-20261122/panda06.mp3');
+  assert.match(approved.source,/xiaoxiao/);
+  const data=fs.readFileSync(new URL('../'+approved.src.slice(2),import.meta.url));
+  assert.equal(data.length,18144);
+  assert.equal(createHash('sha256').update(data).digest('hex'),detail.sha256);
+  assert.equal(data[0],0xff);
+  assert.equal(data[1]&0xe0,0xe0);
+  // Never use this clip as generic fallback for other Mandarin phrases.
+  assert.equal(lookupApprovedPandaVoice('因为喜剧片很无聊。'),null);
+});
+
 test('All current voice routes remain exact and confined to the approved Panda voice registry',()=>{
   const reg=read('assets/panda-approved-voice-registry-v516.mjs');
   const m=reg.match(/const APPROVED_HSK2=Object\.freeze\((\{[\s\S]*?\})\);/);

@@ -2,7 +2,7 @@ import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
-import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=520';
+import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=524';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {getTopic,replyHSK2,knownHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=523';
 import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';

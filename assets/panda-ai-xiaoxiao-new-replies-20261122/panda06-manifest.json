@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "panda06",
+  "file": "panda06.mp3",
+  "phrase": "因为喜剧片很好笑。",
+  "pinyin": "Yīnwèi xǐjùpiàn hěn hǎoxiào.",
+  "russian": "Потому что комедии очень смешные.",
+  "source_filename": "luvvoice.com-20261122-QD3BHq (1).mp3",
+  "voice": "Xiaoxiao",
+  "provider": "Luvvoice",
+  "uploaded_by": "user",
+  "duration_seconds": 3.024,
+  "sample_rate_hz": 24000,
+  "channels": 1,
+  "bytes": 18144,
+  "sha256": "e9e18f34f49089855d9da8bf990f5ba5f251831ee166b127deae9f9b24a4944e",
+  "git_blob_sha1": "c2d8be54540eeb24b9da052d0df5c54c200eca04",
+  "status": "audio-technical-checked-user-device-listening-pending",
+  "review": "Original bytes preserved. Auditory listening found expected Mandarin sentence and no obvious truncation; tone fidelity should still be validated by native listener."
+}
