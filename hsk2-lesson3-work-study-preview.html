@@ -1325,6 +1325,9 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 .l3-tone-details>summary{cursor:pointer;font-weight:850;padding:9px 4px;color:#7b288d;font-size:14px}
 .l3-tone-details #tone-trainer{max-width:100%;overflow-x:hidden}
 .l3-tone-details .cn{overflow-wrap:anywhere}
+.l3-tone-details .tone-aux{margin:5px 0 8px;text-align:center}
+.l3-tone-details .tone-aux button{width:100%;min-height:44px;font-size:13px}
+.l3-tone-details .tone-safety-label{font-size:11px;line-height:1.35}
 #pg433 .final-hero img.about-final-photo{width:100%;object-fit:cover;max-height:175px}
 #pg433 .results dl div{gap:6px}
 #pg433 .results dd{max-width:48%}
@@ -1350,7 +1353,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 <!-- New recordings are not installed: the previous lesson's voice files are deliberately not reused. -->
 <link rel="stylesheet" href="./assets/hsk2-lesson3-tone-meter-v2.css?v=525">
 <script src="./assets/hsk2-lesson3-voice/voice-map.js?v=20261122"></script>
-<script src="./assets/hsk2-lesson3-tone-meter-v6.js?v=1"></script>
+<script src="./assets/hsk2-lesson3-tone-meter-pilot-20261122.js?v=20261122p"></script>
 <script>
 'use strict';
 
@@ -1990,7 +1993,7 @@ function tones() {
     '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
     ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
     '. Результат распознавания слова не равен оценке тонов.</p>' +
-    '<details class="l3-tone-details"><summary>📈 Точная шкала тонов · без лимита попыток</summary>' +
+    '<details class="l3-tone-details"><summary>📈 Пробная проверка тонов · графики и запись голоса</summary>' +
     (window.PandaToneTrainer?.render(words,
       i=>'<img class="hero-art" src="'+A[i]+'" alt="Иллюстрация слова">',
       (title,caption)=>'<h2>'+title+'</h2><p class="hint">'+caption+'</p>',
