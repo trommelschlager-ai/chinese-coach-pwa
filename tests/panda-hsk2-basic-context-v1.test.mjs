@@ -8,7 +8,8 @@ const cases = [
   ['现在我很忙。','Xiànzài wǒ hěn máng.','busy','好的，那你先忙吧。'],
   ['今天我休息。','Jīntiān wǒ xiūxi.','rest-today','那你今天想做什么？'],
   ['现在我休息。','Xiànzài wǒ xiūxi.','rest-now','那你想聊聊天吗？'],
-  ['工作','gōngzuò','work-topic','你想聊聊工作吗？']
+  ['工作','gōngzuò','work-topic','你想聊聊工作吗？'],
+  ['我今天不工作。','Wǒ jīntiān bù gōngzuò.','rest-today','那你今天想做什么？']
 ];
 
 test('Every screenshot regression phrase has pinyin, Russian and a contextual answer',()=>{
@@ -40,7 +41,12 @@ test('Natural word order, punctuation and tone neutral syllables are preserved',
     ['我有点忙。','Wǒ yǒudiǎn máng.','busy'],
     ['我今天休息。','Wǒ jīntiān xiūxi.','rest-today'],
     ['我现在在休息。','Wǒ xiànzài zài xiūxi.','rest-now'],
-    ['我在工作。','Wǒ zài gōngzuò.','busy']
+    ['我在工作。','Wǒ zài gōngzuò.','busy'],
+    ['今天我不工作。','Jīntiān wǒ bù gōngzuò.','rest-today'],
+    ['我今天不上班。','Wǒ jīntiān bú shàngbān.','rest-today'],
+    ['今天我不上班。','Jīntiān wǒ bú shàngbān.','rest-today'],
+    ['我今天不用上班。','Wǒ jīntiān bú yòng shàngbān.','rest-today'],
+    ['今天我不用上班。','Jīntiān wǒ bú yòng shàngbān.','rest-today']
   ];
   for(const [zh,pinyin,intent] of variants){
     const actual=knownBasicContext(' '+zh+' ');
@@ -53,6 +59,8 @@ test('Do not pretend to understand unreviewed speech or invent a tone score',()=
   assert.equal(knownBasicContext('不知道你好'),null);
   assert.equal(replyBasicContext('明天会下雨吗？'),null);
   assert.equal(replyBasicContext('对我很重要。'),null);
+  assert.equal(replyBasicContext('我昨天不工作'),null);
+  assert.equal(replyBasicContext('我今天在工作'),null);
   assert.equal('toneVerified' in replyBasicContext('工作'),false);
 });
 
