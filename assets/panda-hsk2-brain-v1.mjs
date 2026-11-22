@@ -3,6 +3,7 @@ import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=517';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {everydayMeaning} from './panda-everyday-meaning-v515.mjs';
+import {knownBasicContext,replyBasicContext} from './panda-hsk2-basic-context-v1.mjs?v=1';
 export const norm=s=>String(s||'').normalize('NFC').replace(/[\p{P}\s]/gu,'').toLowerCase();
 export const getTopic=id=>HSK2_TOPICS.find(t=>t.id===Number(id));
 export const line=a=>({hanzi:a[0],pinyin:a[1]||'',ru:a[2]||'',audioKey:a[0]});
@@ -55,6 +56,8 @@ export function knownHSK2(raw){
   a=t.phrases.find(a=>norm(a[0])===k)||t.questions.flatMap(q=>[[q.q,q.p,q.ru],...q.options]).find(a=>norm(a[0])===k);if(a)break;
  }
  if(a)return line([raw,a[1],a[2]]);
+ const basic=knownBasicContext(raw);
+ if(basic)return line([raw,basic.pinyin,basic.ru]);
  const d=discourse(raw);if(d){const restored=restoreDiscourse(raw,d,knownHSK2(d.body));if(restored)return restored;}
  const meaning=everydayMeaning(raw,null,null);if(meaning)return line(meaning.spoken);
  return hobbyStatement(raw)?.spoken||intentionQuestion(raw)?.spoken||everydayAspect(raw,null)?.spoken||null;
@@ -249,6 +252,7 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const input=norm(raw);
  const aspect=everydayAspect(raw,context);if(aspect)return aspect;
  const early=spokenEveryday(raw,context);if(early)return early;
+ const basicContext=replyBasicContext(raw,context);if(basicContext)return basicContext;
  const everyday=everydayShort(raw,context);if(everyday)return everyday;
  if(foodQuestion.test(input)){
  const p=input.includes('早饭')?'Nǐ chī zǎofàn le ma?':input.includes('早餐')?'Nǐ chī zǎocān le ma?':input==='你吃了吗'?'Nǐ chī le ma?':'';

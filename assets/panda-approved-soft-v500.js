@@ -11,11 +11,6 @@
     moon:'<path d="M20.5 15.5A9 9 0 0 1 8.5 3.5 9.1 9.1 0 1 0 20.5 15.5Z"/>'
   };
   const svg=(path)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
-  const examples=[
-    {zh:'我有点忙。',py:'Wǒ yǒudiǎn máng.',ru:'Я немного занят.'},
-    {zh:'你晚上有什么计划？',py:'Nǐ wǎnshang yǒu shénme jìhuà?',ru:'Какие у тебя планы на вечер?'},
-    {zh:'我想休息。',py:'Wǒ xiǎng xiūxi.',ru:'Я хочу отдохнуть.'}
-  ];
   const word=(tag,cls,text)=>{
     const node=document.createElement(tag);node.className=cls;
     node.textContent=text;return node;
@@ -128,37 +123,8 @@
       });
     }
 
-    // Keep three cards visible when the conversation has fewer than three turns.
-    // Real utterances always take precedence; example cards never pretend to be spoken turns.
-    let filling=false;
-    function fillExamples(){
-      if(filling)return;
-      const rows=history.querySelectorAll('.pg346-row');
-      if(rows.length>=3)return;
-      filling=true;
-      const missing=3-rows.length;
-      for(let i=0;i<missing;i++){
-        const e=examples[i];const row=document.createElement('article');
-        row.className='pg346-row pg500-example';
-        row.setAttribute('aria-label','Пример для тренировки: '+e.zh);
-        const avatar=word('span','pg346-avatar','');
-        const pandaThumb=document.createElement('img');
-        pandaThumb.src='./assets/panda-character-clean-v349.webp?v=349';
-        pandaThumb.alt='Панда';avatar.append(pandaThumb);
-        const left=word('div','pg346-text','');
-        left.append(word('div','pg346-zh',e.zh),word('div','pg346-py',e.py));
-        const ru=word('div','pg346-ru',e.ru);
-        const choose=word('button','pg346-row-audio','›');choose.type='button';
-        choose.setAttribute('aria-label','Вставить пример в поле ввода');
-        choose.addEventListener('click',()=>{openComposer();input.value=e.zh;input.focus()});
-        row.append(avatar,left,ru,choose);
-        history.append(row);
-      }
-      filling=false;
-    }
-    const mo=new MutationObserver(()=>{if(!filling&&history.querySelectorAll('.pg346-row').length<3)fillExamples()});
-    mo.observe(history,{childList:true});
-    fillExamples();
+    // Do not insert example cards into live chat: every visible turn must be real.
+
   }
   function watch(){
     const stage=document.getElementById('pg346');
