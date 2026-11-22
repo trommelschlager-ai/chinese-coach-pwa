@@ -52,6 +52,19 @@ const phrases = [
   ['现在我在休息', 'Xiànzài wǒ zài xiūxi.', 'Сейчас я отдыхаю.', 'rest-now'],
   ['我现在在休息', 'Wǒ xiànzài zài xiūxi.', 'Сейчас я отдыхаю.', 'rest-now'],
 
+  // Day-off plans: continue the *previous topic*, do not ask the learner to speak simpler.
+  // Keep this a bounded set of reviewed beginner utterances; no unverified generic translation.
+  ['我想看电影', 'Wǒ xiǎng kàn diànyǐng.', 'Я хочу посмотреть фильм.', 'movie-plan'],
+  ['我今天想看电影', 'Wǒ jīntiān xiǎng kàn diànyǐng.', 'Сегодня я хочу посмотреть фильм.', 'movie-plan'],
+  ['今天我想看电影', 'Jīntiān wǒ xiǎng kàn diànyǐng.', 'Сегодня я хочу посмотреть фильм.', 'movie-plan'],
+  ['我想去看电影', 'Wǒ xiǎng qù kàn diànyǐng.', 'Я хочу пойти посмотреть фильм.', 'movie-plan'],
+  ['我想看一部电影', 'Wǒ xiǎng kàn yí bù diànyǐng.', 'Я хочу посмотреть фильм.', 'movie-plan'],
+
+  // Next turn of the same film conversation: respond to a concrete genre.
+  ['我想看喜剧片', 'Wǒ xiǎng kàn xǐjùpiàn.', 'Я хочу посмотреть комедию.', 'movie-comedy'],
+  ['我喜欢喜剧片', 'Wǒ xǐhuan xǐjùpiàn.', 'Мне нравятся комедии.', 'movie-comedy'],
+  ['喜剧片', 'xǐjùpiàn', 'Комедии.', 'movie-comedy'],
+
   // A one-word topic is not automatically a grammar error.
   ['工作', 'gōngzuò', 'Работа; работать.', 'work-topic']
 ];
@@ -63,7 +76,11 @@ const responses = Object.freeze({
   busy: ['好的，那你先忙吧。', 'Hǎo de, nà nǐ xiān máng ba.', 'Хорошо, тогда занимайся своими делами.', null],
   'rest-today': ['那你今天想做什么？', 'Nà nǐ jīntiān xiǎng zuò shénme?', 'Тогда что ты хочешь сегодня делать?', 'plans'],
   'rest-now': ['那你想聊聊天吗？', 'Nà nǐ xiǎng liáoliao tiān ma?', 'Тогда хочешь немного поболтать?', 'conversation'],
-  'work-topic': ['你想聊聊工作吗？', 'Nǐ xiǎng liáoliao gōngzuò ma?', 'Хочешь поговорить о работе?', 'work']
+  'work-topic': ['你想聊聊工作吗？', 'Nǐ xiǎng liáoliao gōngzuò ma?', 'Хочешь поговорить о работе?', 'work'],
+  // No approved Xiaoxiao MP3 for this new question: remain text-only until one is recorded.
+  'movie-plan': ['你想看什么电影？', 'Nǐ xiǎng kàn shénme diànyǐng?', 'Какой фильм ты хочешь посмотреть?', 'movie-choice'],
+  // Existing approved Xiaoxiao context clip chat03.mp3, not a newly generated voice.
+  'movie-comedy': ['我喜欢喜剧片。', 'Wǒ xǐhuan xǐjùpiàn.', 'Я люблю комедии.', 'movie-topic']
 });
 
 export function knownBasicContext(raw) {
