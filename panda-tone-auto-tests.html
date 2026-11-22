@@ -40,6 +40,17 @@ footer{margin:20px 0;font-size:12px;color:#655a65}
 </table>
 <p class="muted">Эти тесты подтверждают работу программной обработки на контролируемых сигналах. Они <b>не подтверждают</b> правильность распознавания реальной китайской речи или тонов ученика.</p>
 </section>
+<section class="card" id="lesson-fixtures">
+<h2>🎧 Готовые MP3 из урока HSK2</h2>
+<p>Шесть существующих аудиообразцов курса Panda Go автоматически проверяются <b>тем же анализатором F0</b>. Микрофон не нужен. Это проверка качества измерения, <b>не оценка правильности произношения</b>.</p>
+<p id="fixture-status" class="status" aria-live="polite">Ожидаем загрузки анализатора…</p>
+<div class="action-row"><button id="fixture-run" type="button" disabled>↻ Перепроверить 6 MP3</button><button id="fixture-copy" class="secondary" type="button" disabled>📋 Копировать отчёт MP3</button></div>
+<table aria-label="Анализ шести локальных аудиообразцов">
+<thead><tr><th>Слово</th><th>Данные</th><th>Измерения</th></tr></thead>
+<tbody id="fixture-results"><tr><td colspan="3">Загрузка тестового модуля…</td></tr></tbody>
+</table>
+<p class="muted">Если второй слог не измеряется, это будет видно. Такие записи <b>не засчитываются как подтверждение точности</b>. Эталонные MP3 не обязательно совпадают с естественной речью ученика.</p>
+</section>
 <section class="card">
 <h2>📂 Проверить готовую аудиозапись</h2>
 <p>Можно выбрать уже записанный MP3 или WAV. Программа проанализирует файл прямо на устройстве; повторно произносить слово не нужно.</p>
@@ -68,8 +79,10 @@ footer{margin:20px 0;font-size:12px;color:#655a65}
 const $=id=>document.getElementById(id);
 const frame=$('engine');
 const results=$('results'),status=$('status'),run=$('run'),copy=$('copy'),fileTest=$('file-test');
-let math=null,lastReport='',busy=false;
+const fixtureRun=$('fixture-run'),fixtureCopy=$('fixture-copy'),fixtureResults=$('fixture-results'),fixtureStatus=$('fixture-status');
+let math=null,lastReport='',lastFixtureReport='',busy=false,fixtureBusy=false;
 const TONES=['公司 gōngsī','学校 xuéxiào','同事 tóngshì','同学 tóngxué','电脑 diànnǎo','会说 huì shuō'];
+const AUDIO_FIXTURES=TONES.map((name,i)=>({name,word:i,url:'./assets/hsk2-lesson3-voice/l3-'+String(i+1).padStart(2,'0')+'.mp3'}));
 function sleep(){return new Promise(resolve=>setTimeout(resolve,0));}
 function approx(v){return Number.isFinite(v)?v.toFixed(1):'—';}
 function hzDelta(points){return points.length<2?NaN:12*Math.log2(points.at(-1)[1]/points[0][1]);}
@@ -173,6 +186,62 @@ async function runTests(){
   status.textContent='Ошибка проверки: '+String(e.message||e);status.className='status fail';
  }finally{busy=false;run.disabled=false;copy.disabled=!lastReport;}
 }
+
+async function analyzeLessonFixtures(){
+ if(!math||fixtureBusy)return;
+ fixtureBusy=true;fixtureRun.disabled=true;fixtureCopy.disabled=true;
+ fixtureResults.replaceChildren();
+ fixtureStatus.textContent='Проверяем готовые аудиофайлы HSK2…';
+ let ctx=null;const rows=[];let readable=0,both=0,partial=0,missing=0;
+ try{
+  const C=window.AudioContext||window.webkitAudioContext;
+  if(!C)throw Error('В браузере нет AudioContext для чтения MP3.');
+  ctx=new C();
+  for(let i=0;i<AUDIO_FIXTURES.length;i++){
+   const fixture=AUDIO_FIXTURES[i];await sleep();
+   const tr=document.createElement('tr'),name=document.createElement('td'),state=document.createElement('td'),details=document.createElement('td');
+   name.textContent=fixture.name;tr.append(name,state,details);fixtureResults.appendChild(tr);
+   try{
+    const response=await fetch(fixture.url,{cache:'no-store'});
+    if(!response.ok)throw Error('MP3 недоступен (HTTP '+response.status+')');
+    const decoded=await ctx.decodeAudioData(await response.arrayBuffer());
+    const take=Math.min(decoded.length,Math.floor(decoded.sampleRate*8));
+    const mono=new Float32Array(take);
+    for(let ch=0;ch<decoded.numberOfChannels;ch++){
+     const samples=decoded.getChannelData(ch);
+     for(let j=0;j<take;j++)mono[j]+=samples[j]/decoded.numberOfChannels;
+    }
+    const rec={word:fixture.word,ctx:{sampleRate:decoded.sampleRate},pcmParts:[mono],
+     captureMethod:'lesson-mp3',samples:[],levels:[],stats:{yin:0,fallback:0,none:0}};
+    const q=evaluate(rec);
+    readable++;
+    const label=q.quality==='both'?'оба слога':q.quality==='partial'?'частично':'нет F0';
+    if(q.quality==='both')both++;else if(q.quality==='partial')partial++;else missing++;
+    state.textContent=label;state.className=q.quality==='both'?'pass':q.quality==='partial'?'pending':'fail';
+    details.textContent='F0 '+q.points+' ('+q.firstN+' / '+q.secondN+'); '+
+      'изменения '+approx(q.first)+' / '+approx(q.second)+' полут.; '+
+      'длина '+approx(q.span)+' с'+(q.ambiguous?'; ⚠ несколько фрагментов':'');
+    rows.push(fixture.name+' | '+label+' | F0='+q.points+' ('+q.firstN+'/'+q.secondN+
+      ') | ΔF0='+approx(q.first)+'/'+approx(q.second)+' полут. | участок='+approx(q.span)+' с | неоднозначно='+(q.ambiguous?'да':'нет'));
+   }catch(error){
+    missing++;state.textContent='ошибка';state.className='fail';details.textContent=String(error?.message||error);
+    rows.push(fixture.name+' | ОШИБКА: '+String(error?.message||error));
+   }
+   fixtureStatus.textContent='Проанализировано '+(i+1)+' из 6 готовых MP3…';
+  }
+  const summary='обработано '+readable+'/6; оба слога '+both+', частично '+partial+', без результата '+missing;
+  fixtureStatus.textContent='Готово: '+summary+'.';
+  fixtureStatus.className='status '+(readable===6&&both===6?'pass':'pending');
+  lastFixtureReport='Panda Go · Проверка 6 настоящих MP3 из урока HSK2\n'+
+    'Время: '+new Date().toLocaleString('ru-RU')+'\n'+summary+'\n'+rows.join('\n')+
+    '\nВажно: наличие F0 не означает правильность тонов и не подтверждает точность на живой речи.';
+ }catch(error){
+  fixtureStatus.textContent='Не удалось запустить MP3-тесты: '+String(error?.message||error);fixtureStatus.className='status fail';
+ }finally{
+  if(ctx)try{await ctx.close()}catch{}
+  fixtureBusy=false;fixtureRun.disabled=false;fixtureCopy.disabled=!lastFixtureReport;
+ }
+}
 async function analyzeFile(){
  const file=$('file').files?.[0];
  if(!file||!math||busy)return;
@@ -215,14 +284,23 @@ function engineReady(){
  if(math)return;
  try{math=frame.contentWindow.PandaToneMathV2}catch{}
  if(!math?.reanalyzePcm||!math?.buildRecording||!math?.cleanPitch||!math?.contourEvidence)return;
- run.disabled=false;fileTest.disabled=false;
- runTests();
+ run.disabled=false;fileTest.disabled=false;fixtureRun.disabled=false;
+ runTests().then(()=>analyzeLessonFixtures());
 }
 frame.addEventListener('load',engineReady);
 if(frame.contentWindow?.PandaToneMathV2)engineReady();
 frame.addEventListener('error',()=>{status.textContent='Не удалось загрузить код основной лаборатории.';status.className='status fail';});
 run.addEventListener('click',runTests);
+fixtureRun.addEventListener('click',analyzeLessonFixtures);
 fileTest.addEventListener('click',analyzeFile);
+fixtureCopy.addEventListener('click',async()=>{
+ if(!lastFixtureReport)return;
+ try{await navigator.clipboard.writeText(lastFixtureReport);fixtureStatus.textContent='✓ Отчёт MP3 скопирован.';}
+ catch{
+  const t=document.createElement('textarea');t.value=lastFixtureReport;document.body.appendChild(t);
+  t.select();document.execCommand('copy');t.remove();fixtureStatus.textContent='✓ Отчёт MP3 скопирован.';
+ }
+});
 copy.addEventListener('click',async()=>{
  if(!lastReport)return;
  try{await navigator.clipboard.writeText(lastReport);status.textContent='✓ Отчёт автотеста скопирован.';}
