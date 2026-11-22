@@ -1,0 +1,83 @@
+name: Install approved HSK2 cover assets (lossless)
+on:
+  push:
+    branches:
+      - hsk2-approved-covers-20261122
+    paths:
+      - assets/hsk2-approved-transfer/READY.txt
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  install:
+    if: github.ref == 'refs/heads/hsk2-approved-covers-20261122'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Verify and reconstruct approved images
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,io,json,struct,zipfile
+          from pathlib import Path
+          folder=Path("assets/hsk2-approved-transfer")
+          chunks=sorted(folder.glob("approved.part*"))
+          assert len(chunks)==11, f"Expected 11 archive segments, got {len(chunks)}"
+          content="".join(p.read_text("utf-8") for p in chunks)
+          raw=base64.b64decode(content,validate=True)
+          expected="bc1ac0ecbf1c11c84ff30df25d23be8a911588ef8a3625262dd2d71274bfdc90"
+          assert hashlib.sha256(raw).hexdigest()==expected,"Approved ZIP SHA256 mismatch — refusing release"
+          assert len(raw)==23688696,"Unexpected transfer size"
+          with zipfile.ZipFile(io.BytesIO(raw)) as z:
+            manifest=json.loads(Path("assets/hsk2-approved-covers/manifest.json").read_text("utf-8"))
+            assert len(manifest)==10,"Expected exactly 10 approved lessons"
+            for item in manifest:
+              p=Path(item["path"])
+              assert str(p).startswith("assets/hsk2-approved-covers/"),"Path outside destination"
+              buf=z.read(str(p))
+              assert buf.startswith(bytes.fromhex("89504e470d0a1a0a")),f"Not PNG: {p}"
+              wh=struct.unpack(">II",buf[16:24])
+              assert wh==(941,1672),f"Wrong dimensions for {p}: {wh}"
+              assert hashlib.sha256(buf).hexdigest()==item["sha256"],f"Artwork SHA mismatch for {p}"
+              p.parent.mkdir(parents=True,exist_ok=True)
+              p.write_bytes(buf)
+              tp=Path(item["tail"])
+              assert str(tp).startswith("assets/hsk2-approved-covers/"),"Path outside destination"
+              tail=z.read(str(tp))
+              assert tail[:4]==b"RIFF" and tail[8:12]==b"WEBP",f"Not WebP: {tp}"
+              tp.write_bytes(tail)
+              print(f"VERIFIED lesson {item['lesson']:02d}: {len(buf)} PNG bytes + {len(tail)} WebP bytes")
+          print("ALL TEN IMAGES AND ALL TEN TAILS VERIFIED, NO RECOMPRESSION")
+          PY
+      - name: Check all ten HTML lessons import approved overlay
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          pages=["hsk2-about-me.html","hsk2-lesson1.html",
+             "hsk2-lesson3-work-study-preview.html","hsk2-lesson4-hobby-preview.html",
+             "hsk2-lesson5-friends-v2.html","hsk2-lesson6-yesterday-preview.html",
+             "hsk2-lesson7-future-preview.html","hsk2-lesson8-shop-preview.html",
+             "hsk2-lesson9-health-preview.html","hsk2-lesson10-relationships-preview.html"]
+          for i,p in enumerate(pages,1):
+             s=Path(p).read_text("utf-8")
+             assert "hsk2-approved-cover.js?v=20261122" in s,p
+             assert "hsk2-approved-cover.css?v=20261122" in s,p
+             assert f'data-lesson="{i}"' in s,p
+             print("LINKED",i,p)
+          PY
+      - name: Commit approved binary artwork and remove temporary archive
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk2-approved-covers/
+          git rm -r assets/hsk2-approved-transfer/
+          if [ -d assets/hsk2-approved-covers-staging ]; then
+            git rm -r assets/hsk2-approved-covers-staging/
+          fi
+          git commit -m "Install 10 approved full-quality HSK2 PNG covers and 10 extended backgrounds"
+          git push origin HEAD:hsk2-approved-covers-20261122
