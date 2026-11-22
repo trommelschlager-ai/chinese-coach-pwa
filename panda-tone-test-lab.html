@@ -271,7 +271,8 @@ function readState(){
     const quality=['both','partial','unmeasured','legacy'].includes(t.quality)?t.quality:'legacy';
     return {points,seconds:finite(t.seconds)?Math.min(8,Math.max(0,t.seconds)):0,
       splitRatio:finite(t.splitRatio)?Math.min(SPLIT_MAX,Math.max(SPLIT_MIN,t.splitRatio)):.5,
-      splitSource:['pause','energy','manual','midpoint'].includes(t.splitSource)?t.splitSource:'midpoint',
+      splitSource:['pause','energy','manual','midpoint','uncertain'].includes(t.splitSource)?t.splitSource:'midpoint',
+       splitWarning:typeof t.splitWarning==='string'?t.splitWarning.slice(0,200):'',
       quality,validParts:Array.isArray(t.validParts)&&t.validParts.length===2?t.validParts.map(Boolean):[false,false],
       offline:t.offline&&typeof t.offline==='object'?t.offline:null,
       evidence:Array.isArray(t.evidence)&&t.evidence.length===2?t.evidence:null,
@@ -302,7 +303,7 @@ function render(words,art,heading,panel,ttsNote,listenButton){
  const last=(visibleAttempt?.word===i ? visibleAttempt : (r.mic.length?r.mic[r.mic.length-1]:null));
  const syllables=SYLLABLES[i];
  const ratio=last?.splitRatio??.5;
- const splitLabel=({pause:'по паузе',energy:'по снижению громкости',manual:'вручную',midpoint:'примерно посередине'})[last?.splitSource||'midpoint'];
+ const splitLabel=({pause:'по паузе',energy:'по снижению громкости',manual:'вручную',midpoint:'примерно посередине',uncertain:'⚠ ненадёжная автоматическая граница, условно 50%'})[last?.splitSource||'midpoint'];
  const done=count(i),busy=active&&active.word===i;
  return panel(
   '<div id="tone-trainer" class="tone-trainer tone-compact">'+
@@ -375,7 +376,7 @@ function estimateSplit(rawPoints,levels){
 }
 
 function observedTrend(points,segmentFrom,segmentTo){
- const pts=points.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo&&finite(p[1])&&p[1]>0);
+ const pts=points.filter(p=>p[0]>=segmentFrom&&(segmentTo===1?p[0]<=1:p[0]<segmentTo)&&finite(p[1])&&p[1]>0);
  if(pts.length<4)return '— Мало данных';
  const duration=pts.at(-1)[0]-pts[0][0];
  if(duration<.065)return '— Короткий слог';
@@ -406,7 +407,7 @@ function normalizeChartPoints(take,live){
   .filter(p=>finite(p[0])&&p[0]>=0&&p[0]<=1&&finite(p[1])&&p[1]>0);
 }
 function semitoneContour(points,segmentFrom,segmentTo){
- const selected=points.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo);
+ const selected=points.filter(p=>p[0]>=segmentFrom&&(segmentTo===1?p[0]<=1:p[0]<segmentTo));
  if(!selected.length)return [];
  const firstWindow=selected.slice(0,Math.max(2,Math.min(4,Math.floor(selected.length*.3))));
  const reference=median(firstWindow.map(p=>p[1]))||selected[0][1];
@@ -459,7 +460,7 @@ function draw(){
   }
   ctx.stroke();ctx.setLineDash([]);
   const trend=document.getElementById('tone-trend-'+(syll+1));
-  if(trend){const measured=normalized.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo);const hasRms=Array.isArray(recent?.levels)&&recent.levels.length>0;const rmsFrames=hasRms?recent.levels.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo&&p[1]>=.023).length:null;const evidence=rmsFrames===null?' · RMS: нет данных для старой записи':' · '+rmsFrames+' звуковых кадров RMS';trend.textContent=live?'🎙 Идёт запись — дождись результата после «Стоп».':(observedTrend(normalized,segmentFrom,segmentTo)+' · '+measured.length+' точек F0'+evidence);}
+  if(trend){const measured=normalized.filter(p=>p[0]>=segmentFrom&&(segmentTo===1?p[0]<=1:p[0]<segmentTo));const hasRms=Array.isArray(recent?.levels)&&recent.levels.length>0;const rmsFrames=hasRms?recent.levels.filter(p=>p[0]>=segmentFrom&&p[0]<=segmentTo&&p[1]>=.023).length:null;const evidence=rmsFrames===null?' · RMS: нет данных для старой записи':' · '+rmsFrames+' звуковых кадров RMS';trend.textContent=live?'🎙 Идёт запись — дождись результата после «Стоп».':(observedTrend(normalized,segmentFrom,segmentTo)+' · '+measured.length+' точек F0'+evidence+(recent?.splitWarning?' · ⚠ проверь границу слогов':''));}
   if(trace.length<2)continue;
   ctx.strokeStyle='#198b70';ctx.lineWidth=3.5;
   let painted=0,prior=null;ctx.beginPath();
@@ -629,7 +630,7 @@ function cleanPitch(points,scale=1){
  return result;
 }
 function contourEvidence(points,from,to,voiceSeconds){
- const p=points.filter(q=>q[0]>=from&&q[0]<=to);
+ const p=points.filter(q=>q[0]>=from&&(to===1?q[0]<=1:q[0]<to));
  const len=p.length;
  const duration=len>1?(p[len-1][0]-p[0][0])*voiceSeconds:0;
  let maxGap=0,jump=false;
@@ -714,7 +715,7 @@ function buildRecording(rec){
  const rmsValues=levels.map(p=>p[1]).sort((a,b)=>a-b),peak=rmsValues.at(-1)??0,p95=rmsValues[Math.max(0,Math.ceil(rmsValues.length*.95)-1)]??0;
  const signal={frames:levels.length,voicedFrames:voiced.length,peak,p95,seconds:levels.at(-1)?.[0]??0,rawF0:points.length,threshold:.023};
  const result={word:rec.word,points:[],seconds:Math.max(0,duration),splitRatio:.5,recordedAt:Date.now(),attemptId:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),
-  splitSource:'midpoint',voiceMs:voiced.length*30,quality:'unmeasured',validParts:[false,false],stats:rec.stats||null,signal,offline:rec.offline||null};
+  splitSource:'midpoint',splitWarning:'',voiceMs:voiced.length*30,quality:'unmeasured',validParts:[false,false],stats:rec.stats||null,signal,offline:rec.offline||null};
  if(!validSound){
    // Preserve meter evidence even if the attempt must not count toward 5/5.
    const span=Math.max(.001,signal.seconds);
@@ -741,6 +742,18 @@ function buildRecording(rec){
   }
  }
  result.points=cleanPitch(normalized,span);
+ // Pitch pauses are not reliable word boundaries in voiceless-onset syllables.
+ // An extreme automatic split with insufficient evidence on either side
+ // must not be presented as a verified syllable boundary.
+ if(result.splitSource==='pause'||result.splitSource==='energy'){
+  const ea=contourEvidence(result.points,0,result.splitRatio,duration);
+  const eb=contourEvidence(result.points,result.splitRatio,1,duration);
+  if((result.splitRatio<.35||result.splitRatio>.65)&&(!ea.usable||!eb.usable)){
+   const abandoned=Math.round(result.splitRatio*100);
+   result.splitRatio=.5;result.splitSource='uncertain';
+   result.splitWarning='Автограница '+abandoned+'% ненадёжна: не хватает данных F0 по обоим слогам. Взята условная середина 50%; проверь границу вручную.';
+  }
+ }
  result.levels=levels.filter(p=>p[0]>=from&&p[0]<=to).map(p=>[Math.min(1,Math.max(0,(p[0]-from)/span)),p[1]]).slice(-180);
  const i=result.splitRatio;
  result.evidence=[contourEvidence(result.points,0,i,duration),contourEvidence(result.points,i,1,duration)];
@@ -884,7 +897,9 @@ document.addEventListener('input',event=>{
  if(!last||!Array.isArray(last.points)||last.points.length<2)return;
  const pct=Number(el.value);
  if(!finite(pct)||pct<25||pct>75)return;
- last.splitRatio=pct/100;last.splitSource='manual';persist();
+ last.splitRatio=pct/100;last.splitSource='manual';last.splitWarning='';
+  last.evidence=[contourEvidence(last.points,0,last.splitRatio,last.seconds),contourEvidence(last.points,last.splitRatio,1,last.seconds)];
+  last.validParts=last.evidence.map(x=>x.usable);last.quality=last.validParts.every(Boolean)?'both':'partial';persist();
  const label=document.getElementById('tone-split-value');
  if(label)label.textContent=pct+'%';
  const hint=document.getElementById('tone-split-hint');
@@ -953,7 +968,8 @@ document.addEventListener('click',async function(ev){
    'Повторный анализ PCM: '+(a?.offline?'да ('+a.offline.method+'; окно '+a.offline.windowMs+'мс, шаг '+a.offline.hopMs+'мс; сырых точек '+a.offline.raw+', отброшено '+(a.offline.raw-a.offline.kept)+')':'не применён'),
    'Качество контуров: '+(a?.evidence?'слог 1 '+(a.evidence[0].usable?'достаточно':'недостаточно')+'; слог 2 '+(a.evidence[1].usable?'достаточно':'недостаточно'):'нет данных'),
    'Граница слогов: '+Math.round(split*100)+'%'+(a?' ('+a.splitSource+')':''),
-   'Слог 1: '+(pts.length?trend(pts,0,split):'—')+' ('+pts.filter(p=>p[0]<=split).length+' точек F0; '+(Array.isArray(a?.levels)&&a.levels.length>0?a.levels.filter(p=>p[0]<=split&&p[1]>=.023).length:(sig?'0':'нет данных для старой записи'))+' кадров RMS)',
+   'Надёжность границы: '+(a?.splitWarning||'граница предварительная; ручная настройка не доказывает фонетическую точность'),
+   'Слог 1: '+(pts.length?trend(pts,0,split):'—')+' ('+pts.filter(p=>p[0]<split).length+' точек F0; '+(Array.isArray(a?.levels)&&a.levels.length>0?a.levels.filter(p=>p[0]<split&&p[1]>=.023).length:(sig?'0':'нет данных для старой записи'))+' кадров RMS)',
    'Слог 2: '+(pts.length?trend(pts,split,1):'—')+' ('+pts.filter(p=>p[0]>=split).length+' точек F0; '+(Array.isArray(a?.levels)&&a.levels.length>0?a.levels.filter(p=>p[0]>=split&&p[1]>=.023).length:(sig?'0':'нет данных для старой записи'))+' кадров RMS)',
    'Звуковые кадры RMS показывают наличие сигнала; F0 — количество отсчётов высоты. Записи с нулевой длительностью распознанного голоса не засчитываются. Это измерения, не оценка правильности произношения.'
   ];
