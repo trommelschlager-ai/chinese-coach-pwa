@@ -1,0 +1,5 @@
+# Prototype only. The new function is not deployed by GitHub Pages.
+# Supabase's old gateway JWT verifier does not accept modern publishable API keys.
+# We verify the signed-in user JWT explicitly via /auth/v1/user inside the function.
+[functions.panda-ai-chat-v1]
+verify_jwt = false

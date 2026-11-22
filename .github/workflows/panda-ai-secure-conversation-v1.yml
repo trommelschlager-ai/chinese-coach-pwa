@@ -1,0 +1,31 @@
+name: Panda AI secure conversation foundation (isolated)
+on:
+  push:
+    paths:
+      - 'assets/panda-ai-secure-bridge-v1.mjs'
+      - 'tests/panda-ai-secure-bridge-v1.test.mjs'
+      - 'tests/panda-ai-secure-server-v1.test.mjs'
+      - 'supabase/functions/panda-ai-chat-v1/**'
+      - 'supabase/config.toml'
+      - '.github/workflows/panda-ai-secure-conversation-v1.yml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test bounded history and Xiaoxiao-only audio contract
+        run: node --test tests/panda-ai-secure-bridge-v1.test.mjs tests/panda-ai-secure-server-v1.test.mjs
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Type-check opt-in Supabase Edge Function (no deployment and no paid API requests)
+        run: deno check supabase/functions/panda-ai-chat-v1/index.ts
