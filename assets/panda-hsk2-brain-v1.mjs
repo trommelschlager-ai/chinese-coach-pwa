@@ -136,6 +136,53 @@ function clarificationContext(raw,context){
  }
  return null;
 }
+// Voice-backed everyday questions and clarification replies.
+const PREFERENCES={
+ 跑步:['pǎobù','бегать','我喜欢跑步。','Wǒ xǐhuan pǎobù.','Я люблю бегать.'],
+ 游泳:['yóuyǒng','плавать','我喜欢游泳。','Wǒ xǐhuan yóuyǒng.','Я люблю плавать.'],
+ 看书:['kàn shū','читать','我喜欢看书。','Wǒ xǐhuan kàn shū.','Я люблю читать.'],
+ 读书:['dú shū','читать','我喜欢看书。','Wǒ xǐhuan kàn shū.','Я люблю читать.'],
+ 听音乐:['tīng yīnyuè','слушать музыку','我喜欢听音乐。','Wǒ xǐhuan tīng yīnyuè.','Я люблю слушать музыку.'],
+ 看电影:['kàn diànyǐng','смотреть фильмы','我喜欢看电影。','Wǒ xǐhuan kàn diànyǐng.','Я люблю смотреть фильмы.'],
+ 喝茶:['hē chá','пить чай','我喜欢喝茶。','Wǒ xǐhuan hē chá.','Я люблю пить чай.'],
+ 吃竹子:['chī zhúzi','есть бамбук','我喜欢吃竹子。','Wǒ xǐhuan chī zhúzi.','Я люблю есть бамбук.'],
+ 汉字:['Hànzì','китайские иероглифы','喜欢，我喜欢汉字。','Xǐhuan, wǒ xǐhuan Hànzì.','Да, мне нравятся китайские иероглифы.']
+};
+function spokenEveryday(raw,context){
+ const k=norm(raw);
+ const say=(a,py,ru,awaiting,more={})=>({kind:'social',line:line(a),spoken:line([raw,py,ru]),context:{...context,awaiting,lastClarification:null},...more});
+ if(/^(?:你|熊猫)(?:叫(?:什么|什么名字)|的名字是什么)$/.test(k)){
+  return say(['我叫熊猫。','Wǒ jiào Xióngmāo.','Меня зовут Панда.'],k.includes('的名字')?'Nǐ de míngzi shì shénme?':k.startsWith('熊猫')?'Xióngmāo jiào '+(k.endsWith('名字')?'shénme míngzi?':'shénme?'):'Nǐ jiào '+(k.endsWith('名字')?'shénme míngzi?':'shénme?'),'Как тебя зовут?','name');
+ }
+ if(k==='你喜欢什么'||k==='你喜欢做什么'||k==='你有什么爱好'||k==='你的爱好是什么'){
+  const py={'你喜欢什么':'Nǐ xǐhuan shénme?','你喜欢做什么':'Nǐ xǐhuan zuò shénme?','你有什么爱好':'Nǐ yǒu shénme àihào?','你的爱好是什么':'Nǐ de àihào shì shénme?'}[k];
+  const ru={'你喜欢什么':'Что тебе нравится?','你喜欢做什么':'Что любишь делать?','你有什么爱好':'Какие у тебя увлечения?','你的爱好是什么':'Какое у тебя хобби?'}[k];
+  const a=context?.lastPreference==='music'?['我喜欢看书。','Wǒ xǐhuan kàn shū.','Я люблю читать.']:['我喜欢听音乐。','Wǒ xǐhuan tīng yīnyuè.','Я люблю слушать музыку.'];
+  const result=say(a,py,ru,'likes');result.context.lastPreference=context?.lastPreference==='music'?'reading':'music';return result;
+ }
+ const m=k.match(/^你(?:(喜欢|爱)(.+)吗|(喜不喜欢|爱不爱)(.+))$/u);
+ if(m){
+  const key=m[2]||m[4],v=PREFERENCES[key];if(v){
+   const py=m[1]?('Nǐ '+(m[1]==='爱'?'ài':'xǐhuan')+' '+v[0]+' ma?'):('Nǐ '+(m[3]==='爱不爱'?'ài bu ài':'xǐ bu xǐhuan')+' '+v[0]+'?');
+   return say(v.slice(2),py,'Тебе нравится '+v[1]+'?','likes');
+  }
+ }
+ const time=k.match(/^你(今天晚上|今晚|晚上|明天晚上|今天|明天|周末|现在)(?:做什么|干什么)$/u);
+ if(time){
+  const times={今天晚上:['jīntiān wǎnshang','сегодня вечером'],今晚:['jīnwǎn','сегодня вечером'],晚上:['wǎnshang','вечером'],明天晚上:['míngtiān wǎnshang','завтра вечером'],今天:['jīntiān','сегодня'],明天:['míngtiān','завтра'],周末:['zhōumò','на выходных'],现在:['xiànzài','сейчас']};
+  const t=times[time[1]],reply=time[1].includes('晚')||time[1]==='今晚'?['我晚上听音乐。','Wǒ wǎnshang tīng yīnyuè.','Вечером я слушаю музыку.']:['我想学中文。','Wǒ xiǎng xué Zhōngwén.','Я хочу учить китайский.'];
+  return say(reply,'Nǐ '+t[0]+' '+(k.endsWith('干什么')?'gàn':'zuò')+' shénme?','Что ты делаешь '+t[1]+'?','activity');
+ }
+ if(k==='你想不想什么'){
+  return say(['你想聊什么？','Nǐ xiǎng liáo shénme?','О чём хочешь поговорить?'],'Nǐ xiǎng bu xiǎng shénme?','Неестественная формулировка. Для «Что ты хочешь?» скажи 你想要什么？ или 你想做什么？.','topic',{coachNote:'想不想 требует конкретного действия: 你想不想喝茶？ — Хочешь чаю?'});
+ }
+ if(context?.lastClarification&&/^(?:可以|好|好的|好啊|当然|行)$/.test(k)){
+  const v=knownHSK2(raw);
+  const result=say(['好的，我明白了。','Hǎo de, wǒ míngbai le.','Хорошо, я поняла.'],v?.pinyin||'',k==='可以'?'Да, могу.':v?.ru||'Хорошо.','clarify-retry');return result;
+ }
+ return null;
+}
+
 const foodQuestion=/^(?:你|你们)(?:今天|早上|已经)?(?:吃了(?:饭|早饭|早餐)?吗|吃(?:饭|早饭|早餐)(?:了|过)?吗|吃过(?:饭|早饭|早餐)?了吗|吃过吗|吃了吗|吃没吃饭|吃饭了没有|吃了没有)$/u;
 const foodReplies={
  yes:['吃了，谢谢。','Chī le, xièxie.','Да, уже поела, спасибо.'],
@@ -147,6 +194,7 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const spoken=restoreDiscourse(raw,d,out.spoken||out.answer||knownHSK2(d.body));return {...out,...(spoken?{spoken}:{}),...(out.kind==='accepted'&&spoken?{answer:spoken}:{})};}
  return out;}
  const input=norm(raw);
+ const early=spokenEveryday(raw,context);if(early)return early;
  const everyday=everydayShort(raw,context);if(everyday)return everyday;
  if(foodQuestion.test(input)){
  const p=input.includes('早饭')?'Nǐ chī zǎofàn le ma?':input.includes('早餐')?'Nǐ chī zǎocān le ma?':input==='你吃了吗'?'Nǐ chī le ma?':'';
