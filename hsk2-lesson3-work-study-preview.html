@@ -1753,6 +1753,7 @@ function intro() {
    '<div class="l3-poster-frame">' +
      '<img class="l3-poster-image" src="./assets/hsk2-lesson3-cover-photo5-20261121.jpg" alt="Panda Go. HSK 2, урок 3: Моя работа и учёба. Шесть выражений, тридцать мини-тестов, грамматика, произношение и диалог с Пандой." width="694" height="1232" fetchpriority="high" decoding="async" draggable="false">' +
      '<a class="l3-poster-back" href="./hsk2-life-course.html?view=map" aria-label="Вернуться ко всем урокам"></a>' +
+     [[2,'Выражения'],[3,'Мини-тесты'],[4,'Грамматика'],[5,'Рассказ о работе'],[6,'Произношение'],[7,'Диалог с Пандой']].map(([step,label])=>'<button type="button" class="l3-poster-tile l3-poster-tile-'+step+'" data-step="'+step+'" aria-label="'+label+'"></button>').join('') +
      '<button type="button" class="l3-poster-start" data-step="2" aria-label="Начать урок 3"></button>' +
    '</div></section>';
 }
