@@ -28,6 +28,7 @@ function synth(mode,rate=48000){
  const length=mode==='pause'||mode==='double'?4.4:1.15,n=Math.floor(rate*length),pcm=new Float32Array(n);
  let phase=0,seed=191;
  const rnd=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296-.5;};
+ if(mode==='silence')return measure(pcm,rate,mode);
  for(let i=0;i<n;i++){
   const t=i/rate,a=t>=.15&&t<.49,b=t>=.57&&t<.93;
   const later=mode==='pause'&&t>=3.4&&t<3.7;
