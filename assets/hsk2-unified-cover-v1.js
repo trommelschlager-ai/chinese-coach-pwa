@@ -15,7 +15,7 @@ function unifiedCover(o){
   const alt=[o.title,o.hanzi,o.summary].filter(Boolean).join('. ');
   const tiles=steps.map((step,i)=>'<button type="button" data-step="'+step+'" class="pg-ref-tile" aria-label="Открыть: '+esc(names[i])+'">'+
       '<span class="pg-ref-tile-icon" aria-hidden="true">'+(i===0?'📚':i===1?'🎯':i===2?'🗓️':i===3?'🪪':i===4?'🎙️':'🗣️')+'</span>'+
-      '<span class="pg-ref-tile-label">'+(i===0?count+' новых выражений':i===1?tests+' мини-тестов':esc(names[i]))+'</span></button>').join('');
+      '<span class="pg-ref-tile-label">'+(i===0?'Новые слова':i===1?'Тесты':esc(names[i]))+'</span></button>').join('');
   return '<section class="pg-ref-cover pg-ref-lesson-'+lesson+'" aria-label="HSK 2 · Урок '+lesson+' · '+esc(o.title)+'">'+
    '<div class="pg-ref-top"><div class="pg-ref-brandline">'+
       '<a href="./hsk2-start.html#map" class="pg-ref-back" aria-label="Назад к карте уроков">‹</a>'+
