@@ -1,0 +1,50 @@
+// Actual mobile-size Chromium smoke for Panda AI: the user-facing chat, not a mock model.
+// All Mandarin expectations are hand-reviewed and already asserted at the core level.
+// Browser speech microphone itself is deliberately not asserted here.
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {chromium} from 'playwright';
+
+const base=process.env.QA_BASE||'http://127.0.0.1:4173';
+fs.mkdirSync('qa/panda-context-v1',{recursive:true});
+const checks=[
+ ['今天你有没有空？','Jīntiān nǐ yǒu méiyǒu kòng?','今天我有空，可以聊聊天。','有时间'],
+ ['现在我很忙。','Xiànzài wǒ hěn máng.','好的，那你先忙吧。','очень занят'],
+ ['今天我休息。','Jīntiān wǒ xiūxi.','那你今天想做什么？','Сегодня я отдыхаю'],
+ ['现在我休息。','Xiànzài wǒ xiūxi.','那你想聊聊天吗？','Сейчас я отдыхаю'],
+ ['工作','gōngzuò','你想聊聊工作吗？','Работа; работать']
+];
+const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+try{
+ for(const width of [360,393,412]){
+  const context=await browser.newContext({viewport:{width,height:852},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+  const page=await context.newPage();
+  const errors=[];
+  page.on('pageerror',err=>errors.push(err.message));
+  await page.goto(base+'/panda-voice-pilot.html',{waitUntil:'domcontentloaded'});
+  await page.locator('#pg346').waitFor({state:'visible',timeout:15000});
+  await page.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true',{timeout:15000});
+  await page.locator('#pg346-nonstop').click();
+  assert.equal(await page.locator('#pg346-nonstop').getAttribute('aria-pressed'),'true');
+  for(const [learner,pinyin,reply,russian] of checks){
+   await page.locator('#pg346-send').click();
+   await page.locator('#pg346-input').fill(learner);
+   await page.locator('#pg346-send').click();
+   const rows=page.locator('#pg346-rows .pg346-row');
+   await page.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,reply,{timeout:5000});
+   assert.equal(await rows.last().locator('.pg346-zh').textContent(),reply,'Wrong Panda answer: '+learner);
+   assert.equal(await rows.nth((await rows.count())-2).locator('.pg346-zh').textContent(),learner);
+   assert.equal(await rows.nth((await rows.count())-2).locator('.pg346-py').textContent(),pinyin);
+   assert((await rows.nth((await rows.count())-2).locator('.pg346-ru').innerText()).includes(russian),'Missing reviewed Russian for '+learner);
+   assert.equal(await page.locator('.pg500-example').count(),0,'Sample cards must not be chat messages');
+   assert.equal(await page.locator('#pg346-hear').isDisabled(),true,'New text-only Panda reply must not pretend MP3 exists');
+  }
+  assert.equal(await page.locator('.pg346-panda').count(),1,'Approved Panda image must remain present');
+  const image=await page.locator('.pg346-panda').evaluate(img=>({loaded:img.complete&&img.naturalWidth>0,ratio:img.naturalWidth/img.naturalHeight}));
+  assert.equal(image.loaded,true,'Original Panda visual must be loaded');
+  assert(!errors.length,'Browser JS errors: '+JSON.stringify(errors));
+  await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-after-five-phrases.png',fullPage:false,animations:'disabled'});
+  console.log('PASS mobile browser '+width+'px: 5 learner turns + translations + approved Panda intact');
+  await context.close();
+ }
+} finally {await browser.close()}
