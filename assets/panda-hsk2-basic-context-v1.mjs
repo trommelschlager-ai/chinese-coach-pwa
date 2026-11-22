@@ -34,6 +34,16 @@ const phrases = [
   ['我在工作', 'Wǒ zài gōngzuò.', 'Я работаю.', 'busy'],
   ['我现在在工作', 'Wǒ xiànzài zài gōngzuò.', 'Сейчас я работаю.', 'busy'],
 
+  // Not going to work today is a normal, correct everyday statement.
+  // It is NOT a grammar mistake and must not lead to "please speak simpler".
+  // Reuse the already approved Xiaoxiao response and its exact MP3.
+  ['我今天不工作', 'Wǒ jīntiān bù gōngzuò.', 'Сегодня я не работаю.', 'rest-today'],
+  ['今天我不工作', 'Jīntiān wǒ bù gōngzuò.', 'Сегодня я не работаю.', 'rest-today'],
+  ['我今天不上班', 'Wǒ jīntiān bú shàngbān.', 'Сегодня я не иду на работу.', 'rest-today'],
+  ['今天我不上班', 'Jīntiān wǒ bú shàngbān.', 'Сегодня я не иду на работу.', 'rest-today'],
+  ['我今天不用上班', 'Wǒ jīntiān bú yòng shàngbān.', 'Сегодня мне не нужно идти на работу.', 'rest-today'],
+  ['今天我不用上班', 'Jīntiān wǒ bú yòng shàngbān.', 'Сегодня мне не нужно идти на работу.', 'rest-today'],
+
   // Rest, keeping the today/now distinction in the reply.
   ['今天我休息', 'Jīntiān wǒ xiūxi.', 'Сегодня я отдыхаю.', 'rest-today'],
   ['我今天休息', 'Wǒ jīntiān xiūxi.', 'Сегодня я отдыхаю.', 'rest-today'],
