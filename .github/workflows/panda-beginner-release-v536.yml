@@ -19,6 +19,10 @@ on:
       - 'tests/panda-ai-voice-queue-v545.test.mjs'
       - 'tests/panda-approved-natural-voice-v546.test.mjs'
       - 'assets/panda-live-dialogue-v272.mjs'
+      - 'assets/panda-ai-approved-layout-v547.css'
+      - 'assets/panda-ai-approved-layout-v547.js'
+      - 'tests/panda-ai-approved-layout-v547.test.mjs'
+      - 'scripts/qa-panda-approved-layout-v547.mjs'
       - 'panda-voice-pilot.html'
       - 'panda-ai-hsk2-preview.html'
       - 'sw.js'
@@ -52,6 +56,8 @@ jobs:
           node --test tests/panda-ai-voice-queue-v545.test.mjs
           node --test tests/panda-approved-natural-voice-v546.test.mjs
           node scripts/panda-ai-voice-gap-v545.mjs
+      - name: Check approved interactive Panda AI v547 layout
+        run: node --test tests/panda-ai-approved-layout-v547.test.mjs
       - name: Install mobile Chromium
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
@@ -67,10 +73,13 @@ jobs:
             sleep 1
           done
           node scripts/qa-panda-beginner-release-v536.mjs
+          node scripts/qa-panda-approved-layout-v547.mjs
       - name: Preserve screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: panda-beginner-v536-android
-          path: qa/panda-beginner-release/
+          path: |
+            qa/panda-beginner-release/
+            qa/panda-approved-layout-v547/
           if-no-files-found: warn
