@@ -1,0 +1,94 @@
+name: Verify Start press on all HSK 2 covers
+on:
+  push:
+    branches: [qa/hsk2-all-cover-press]
+permissions:
+  contents: read
+jobs:
+  covers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright pillow
+      - name: Compare real Chromium frames for each lesson
+        run: |
+          mkdir evidence
+          python tests/hsk2-approved-art-check.py
+          node --check assets/hsk2-approved-cover.js
+          python -m http.server 8123 --bind 127.0.0.1 >/tmp/panda-all-http.log 2>&1 &
+          python -u - <<'PY'
+          import io,re,statistics
+          from pathlib import Path
+          from PIL import Image, ImageChops
+          from playwright.sync_api import sync_playwright, expect
+          root='http://panda.localhost:8123'
+          lessons={}
+          for path in Path('.').glob('*.html'):
+              m=re.search(r'hsk2-approved-cover\.js[^\n]+data-lesson="(\d+)"',path.read_text())
+              if m:
+                  lessons[int(m[1])]=path.name
+          assert sorted(lessons)==list(range(1,11))
+          def rgb(image):
+              return Image.open(io.BytesIO(image)).convert('RGB')
+          with sync_playwright() as p:
+              browser=p.chromium.launch(channel='chrome',args=['--no-proxy-server'])
+              context=browser.new_context(**(p.devices['Pixel 7']|{'device_scale_factor':1}))
+              page=context.new_page()
+              page.goto(root+'/hsk2-life-course.html?view=map')
+              page.evaluate("""async () => {
+                 await navigator.serviceWorker.register('./sw.js');
+                 await navigator.serviceWorker.ready;
+              }""")
+              page.wait_for_function('!!navigator.serviceWorker.controller')
+              for n, filename in sorted(lessons.items()):
+                  url=f'{root}/{filename}?step=1'
+                  page.goto(url)
+                  start=page.locator('.pg-approved-start')
+                  frame=page.locator('.pg-approved-press-frame')
+                  expect(start).to_be_visible()
+                  expect(page.locator('.pg-approved-base-canvas')).to_have_count(0)
+                  assert page.locator('.pg-approved-hotspot[data-step]').count()==7
+                  assert page.evaluate('document.documentElement.scrollWidth<=innerWidth && document.documentElement.scrollHeight<=innerHeight')
+                  before=rgb(page.screenshot(path=f'evidence/{n:02}-before.png'))
+                  start.dispatch_event('pointerdown',{'pointerType':'touch'})
+                  expect(frame).to_be_visible()
+                  page.wait_for_timeout(125)
+                  during=rgb(page.screenshot(path=f'evidence/{n:02}-during.png'))
+                  box=frame.bounding_box()
+                  bounds=ImageChops.difference(before,during).getbbox()
+                  assert bounds and bounds[1]>=int(box['y'])-1 and bounds[3]<=int(box['y']+box['height'])+2,(n,bounds,box)
+                  start.dispatch_event('pointercancel',{'pointerType':'touch'})
+                  expect(frame).to_be_hidden()
+                  assert not ImageChops.difference(before,rgb(page.screenshot())).getbbox(),n
+                  page.evaluate("""() => {
+                      window.startTaps=[];window.lessonOpens=[];
+                      const app=document.querySelector('#app');
+                      const start=document.querySelector('.pg-approved-start');
+                      start.addEventListener('click',e=>{ if(e.isTrusted) startTaps.push(performance.now()); });
+                      const observer=new MutationObserver(records=>{
+                          if(app.dataset.view==='2')lessonOpens.push(...records.map(()=>performance.now()));
+                      });
+                      observer.observe(app,{attributes:true,attributeFilter:['data-view']});
+                  }""")
+                  b=start.bounding_box()
+                  for _ in range(2):
+                      page.touchscreen.tap(b['x']+b['width']/2,b['y']+b['height']/2)
+                  expect(page.locator('#app')).to_have_attribute('data-view','2')
+                  timing=page.evaluate('({delay:lessonOpens[0]-startTaps[0],taps:startTaps.length,opens:lessonOpens.length,sw:!!navigator.serviceWorker.controller})')
+                  assert timing['taps']==2 and timing['opens']==1 and 495<=timing['delay']<675 and timing['sw'],(n,timing)
+                  page.goto(url)
+                  expect(start).to_be_visible()
+                  expect(frame).to_be_hidden()
+                  print(f'PASS lesson {n:02}: {filename}, band {bounds}, {timing}')
+              context.close()
+              browser.close()
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hsk2-all-cover-press-screenshots
+          path: evidence/
