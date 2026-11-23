@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
 import {
  APPROVED_STREET_MALE_MP3, STREET_APPROVED_MALE_VOICE_ID,
  lookupApprovedStreetMaleMp3, normalizeStreetMalePhrase
@@ -17,11 +18,24 @@ const base={
  status:'approved',
  nativeSpeakerChecked:true
 };
-test('three native-approved tracks stay inactive until MP3s reach the repository',()=>{
- assert.equal(APPROVED_STREET_MALE_MP3.length,0);
- assert.equal(lookupApprovedStreetMaleMp3('我有点忙。'),null);
- assert.equal(queue.phrases.filter(x=>x.priority==='P0'&&x.status==='native-speaker-approved-pending-repository-upload').length,3);
+test('three native-approved MP3s are installed and exactly match the owner-reviewed audio',()=>{
+ assert.equal(APPROVED_STREET_MALE_MP3.length,3);
+ assert.equal(queue.phrases.filter(x=>x.priority==='P0'&&x.status==='native-speaker-approved-active-in-pr').length,3);
  assert.equal(queue.phrases.filter(x=>x.priority==='P0'&&x.status==='awaiting-approved-male-luvvoice').length,3);
+ for(const item of APPROVED_STREET_MALE_MP3){
+   const record=queue.phrases.find(row=>row.hanzi===item.hanzi);
+   assert.ok(record,'missing record for '+item.hanzi);
+   const bytes=fs.readFileSync(new URL('../'+item.src,import.meta.url));
+   assert.equal(bytes.length,record.mp3Bytes);
+   assert.equal(createHash('sha256').update(bytes).digest('hex'),record.mp3Sha256);
+   assert.equal(item.voiceId,STREET_APPROVED_MALE_VOICE_ID);
+   assert.equal(item.status,'approved');
+   assert.equal(item.nativeSpeakerChecked,true);
+   assert.deepEqual(lookupApprovedStreetMaleMp3(item.hanzi),{
+     src:'./'+item.src,hanzi:item.hanzi,voiceId:STREET_APPROVED_MALE_VOICE_ID
+   });
+ }
+ assert.equal(lookupApprovedStreetMaleMp3('你好！'),null,'Unapproved 04 must remain silent');
 });
 test('registry resolves ONLY independently reviewed male Luvvoice MP3s',()=>{
  assert.deepEqual(lookupApprovedStreetMaleMp3(' 我有点忙！ ',[base]),{
