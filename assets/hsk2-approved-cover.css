@@ -90,3 +90,19 @@ html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-1 .pg-approved
   background-position:center top!important;background-size:cover!important;
   background-color:#943f3b!important;
 }
+
+
+/* Panda Go HSK2 unique thematic scene (non-destructive, optional art layer).
+   Only displayed once matching lesson-XX-scene.webp successfully loads.
+   3D art fills the space below the Start CTA; transparent hotspot layout unchanged. */
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-overlay .pg-approved-theme-scene{
+  display:none;position:absolute!important;left:0!important;right:0!important;bottom:0!important;
+  z-index:2!important;pointer-events:none!important;
+  background-repeat:no-repeat!important;background-position:center center!important;
+  background-size:cover!important;transform:none!important;filter:none!important;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 5%,#000 100%)!important;
+  mask-image:linear-gradient(to bottom,transparent 0%,#000 5%,#000 100%)!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-overlay .pg-approved-theme-scene.pg-approved-scene-ready{
+  display:block!important;
+}
