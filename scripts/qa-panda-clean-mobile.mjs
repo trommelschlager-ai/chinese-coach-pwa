@@ -21,7 +21,19 @@ export async function verifyCleanMobile(browser,base,dir){
   assert(await page.locator('.pg364-ground-shadow').count()===1,'Fixed contact shadow required underneath the Panda');
   await page.waitForFunction(()=>document.querySelector('.pg346-panda').naturalWidth>0);
   assert.match(await page.locator('.pg346-panda').getAttribute('src'),/panda-character-clean-v349\.webp/);
-  assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
+  // The approved v501 night/day treatment uses a dedicated landscape layer.
+  // The outer stage intentionally has no background image.
+  const scenic=await page.locator('#pg346 .pg500-landscape').evaluate(async el=>{
+   const style=getComputedStyle(el),rect=el.getBoundingClientRect();
+   const src=style.backgroundImage.match(/url\(["']?([^)"']+)/)?.[1];
+   let decoded=false;if(src){const img=new Image();img.src=src;try{await img.decode();decoded=img.naturalWidth>0}catch{}}
+   return {url:style.backgroundImage,decoded,width:rect.width,height:rect.height,
+    display:style.display,visibility:style.visibility,opacity:Number(style.opacity)};
+  });
+  assert.match(scenic.url,/panda-landscape-v350/,'Approved original lake must remain on the active scenic layer');
+  assert.ok(scenic.decoded&&scenic.width>100&&scenic.height>100&&scenic.display!=='none'&&
+   scenic.visibility==='visible'&&scenic.opacity>0,
+   'Approved natural landscape must visibly load: '+JSON.stringify(scenic));
   assert.equal(await page.locator('.pg352-rocks').isVisible(),false,'The flat faux-stone slab must not cover the natural scenery');
   await page.waitForFunction(()=>document.querySelector('.pg352-mascot').dataset.faceReady==='true');
   assert(await page.locator('.pg353-face-canvas').isVisible(),'Approved mascot canvas is rendered');
