@@ -275,7 +275,8 @@ function submit(raw){
  // HSK2 day practice keeps its dedicated answer validator.
  if(!hsk2&&!state.dayMode){
   const s=normalize(input);
-  if(['不好','我不好','非常好','我非常好','很不错你呢','我很不错你呢','休息','你可以说中文','跑步这么样'].includes(s)){
+  const genuineLessonAnswer=state.mode==='short'&&!state.done&&conversation?.lines?.[state.step]&&verifyAnswerFor(conversation.lines,state.step,input).ok;
+  if(!genuineLessonAnswer&&['不好','我不好','非常好','我非常好','很不错你呢','我很不错你呢','休息','你可以说中文','跑步这么样'].includes(s)){
    const social=everydayMeaning(input,lesson(),null);
    if(social){
     learner(input,{known:true,hanzi:input,pinyin:social.spoken[1],translation:social.spoken[2],topic:1});
