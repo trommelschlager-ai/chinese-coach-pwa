@@ -18,6 +18,8 @@ try{
    await page.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,answer,{timeout:7000});
    assert.equal(await page.locator('#pg346-rows .pg346-row:last-child .pg346-zh').textContent(),answer);
   };
+  // v548: independent learner question has a pre-recorded Mandarin response.
+  await send('你是老师吗？','我是老师。');
   await send('我爱你！','谢谢你！我很开心！你叫什么名字？');
   await send('我叫小明。','很高兴认识你！你今天怎么样？');
   await send('我很好。','太好了！你想聊什么？');
@@ -81,6 +83,7 @@ try{
   assert.equal(await page.locator('#pg346-input').inputValue(),'','One click must empty the input');
   await page.locator('#pg346-nonstop').click();
   await send('不好','怎么了？');
+  await send('你是老师吗？','我是老师。');
   // The HSK2 short quiz stays scored; independent statements belong in free topic chat.
   await page.locator('#pg346-topics-btn').click();
   const hsk2Topics=page.locator('#pg346-topics .pg346-topic-group').nth(1).locator('button');
