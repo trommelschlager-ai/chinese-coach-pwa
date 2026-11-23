@@ -360,7 +360,8 @@ if (!bridge) {
     const pandaSpeaking=historySpeaking||s.pose==='talking'||stage.dataset.dayTalking==='true';
     stage.dataset.listening=String(s.active);stage.dataset.welcome=String(s.history.length<=1);
     stage.dataset.pose=s.active?'listening':pandaSpeaking?'talking':'idle';
-    liveMouth.setTalking(!s.active&&pandaSpeaking);
+    // v541: audio continues, but the approved Panda is visually motionless.
+    liveMouth.setTalking(false);
     stage.dataset.headphones=s.active?'listening':headsetResult;$('#pg346-mic').setAttribute('aria-pressed',String(s.active));$('#pg346-mic').setAttribute('aria-label',s.active?'Микрофон включён. Говори по-китайски.':'Ответить Панде голосом');$('#pg346-short').setAttribute('aria-pressed',String(s.mode==='short'));$('#pg346-nonstop').setAttribute('aria-pressed',String(s.mode==='nonstop'));
     const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable;$('#pg357-audio-note').hidden=!!s.audioAvailable}
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
