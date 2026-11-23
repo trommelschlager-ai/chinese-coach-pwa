@@ -7,6 +7,9 @@ on:
       - 'panda-shared-profile-settings.html'
       - 'assets/panda-street-shared-brain-v1.mjs'
       - 'assets/panda-street-face-rig-v1.mjs'
+      - 'assets/panda-street-male-voice-queue-v1.json'
+      - 'docs/panda-street-voice-audit-20261123.md'
+      - 'tests/panda-street-male-voice-queue-v1.test.mjs'
       - 'assets/panda-cross-character-memory-v1.mjs'
       - 'assets/panda-live-screen-v270.mjs'
       - 'assets/panda-hsk2-preview-core-v1.mjs'
@@ -25,4 +28,4 @@ jobs:
         with:
           node-version: '22'
       - name: Check opt-in shared learner memory and Panda Street conversation
-        run: node --test tests/panda-cross-character-memory-v1.test.mjs tests/panda-street-live-android-v2.test.mjs
+        run: node --test tests/panda-cross-character-memory-v1.test.mjs tests/panda-street-live-android-v2.test.mjs tests/panda-street-male-voice-queue-v1.test.mjs
