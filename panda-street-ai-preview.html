@@ -82,6 +82,7 @@ const boxes={
  home:[57,1344,87,95],lessons:[179,1344,92,95],trainer:[302,1344,92,95],chat:[428,1344,92,95],profile:[569,1344,91,95]
 };
 let s=1,removedSky=0,removedFloor=0,stageX=0,night=true,mode='nonstop',current=0,history=[];
+let streetFaceRig=null;
 const cues=[
  {zh:'我有点忙。',py:'Wǒ yǒudiǎn máng.',ru:'Я немного занят.'},
  {zh:'你晚上有什么计划？',py:'Nǐ wǎnshang yǒu shénme jìhuà?',ru:'Какие у тебя планы на вечер?'},
@@ -167,9 +168,13 @@ function paint(){if(!src.complete||!src.naturalWidth)return;
  const u={avatarW:60,cardGap:12,cardPadV:5,cardPadH:11,zhFont:25,pyFont:17.5,ruFont:23,
   avatarLabel:28,textGap:2,ruPadL:13,ruPadR:20,arrowRight:12,arrowFont:39};
  for(const id of ['live-panda','live-learner']){const node=el(id);for(const [k,v] of Object.entries(u))node.style.setProperty('--'+k,v*s+'px');}
+ streetFaceRig?.resize({width,height,scale:s,left:stageX,cutSky:removedSky});
 
  const ring=mode==='short'?[26,76,323,60]:null;if(ring){place(el('mode-ring'),ring);el('mode-ring').classList.add('show')}else el('mode-ring').classList.remove('show');
 }
+import('./assets/panda-street-face-rig-v1.mjs?v=1').then(module=>{
+ streetFaceRig=module.createStreetFaceRig({stage,source:src});paint();
+}).catch(error=>{console.warn('Street face rig optional:',error)});
 src.addEventListener('load',paint);window.addEventListener('resize',paint);window.visualViewport?.addEventListener('resize',paint);new ResizeObserver(paint).observe(stage);if(src.complete&&src.naturalWidth)paint();
 const esc=str=>String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 let timer;function tip(msg){const t=el('toast');t.textContent=msg;t.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>t.classList.remove('show'),2700)}
@@ -193,10 +198,13 @@ const MALE_CUES=Object.freeze({
 let playing=null,voiceToken=0;
 function speak(text){
  const cue=MALE_CUES[normalizeZh(text)];
- if(playing){playing.pause();playing=null}
+ if(playing){playing.pause();playing=null;streetFaceRig?.setState('idle')}
  const token=++voiceToken;
- if(!cue){tip('Фраза показана текстом · мужская запись для неё пока не загружена');return false}
+ if(!cue){streetFaceRig?.setState('idle');tip('Фраза показана текстом · мужская запись для неё пока не загружена');return false}
  const a=new Audio(MALE_VOICE);playing=a;a.preload='auto';a.playbackRate=.75;
+ a.addEventListener('playing',()=>{if(token===voiceToken)streetFaceRig?.setState('talking')});
+ a.addEventListener('pause',()=>{if(token===voiceToken)streetFaceRig?.setState('idle')});
+ a.addEventListener('ended',()=>{if(token===voiceToken)streetFaceRig?.setState('idle')});
  if('preservesPitch' in a)a.preservesPitch=true;
  const ready=()=>{
   if(token!==voiceToken)return;
@@ -208,9 +216,11 @@ function speak(text){
     const elapsed=a.currentTime-cue[0],left=cue[1]-a.currentTime;
     if(left<=.05){a.volume=0;a.pause();return}
     a.volume=Math.min(1,Math.max(0,elapsed/.035),Math.max(0,(left-.05)/.125));
+    // Mouth motion approximates speech timing; it is not acoustic lip-sync or tone grading.
+    streetFaceRig?.talk(Math.max(0,.50+.42*Math.sin(a.currentTime*20))*a.volume);
     requestAnimationFrame(tick);
    };
-   if(play?.then)play.then(()=>requestAnimationFrame(tick)).catch(()=>tip('Аудио недоступно. Попробуй ещё раз.'));
+   if(play?.then)play.then(()=>requestAnimationFrame(tick)).catch(()=>{streetFaceRig?.setState('idle');tip('Аудио недоступно. Попробуй ещё раз.')});
    else requestAnimationFrame(tick);
   }catch(e){tip('Не удалось воспроизвести запись')}
  };
@@ -277,6 +287,7 @@ function streetMicState(active){
 function stopStreetRecognition(manual=false){
  const rec=streetRecognition;streetRecognition=null;streetMicState(false);
  if(rec){rec.onresult=null;rec.onerror=null;rec.onend=null;rec.onstart=null;try{rec.abort()}catch(_e){}}
+ streetFaceRig?.setState('idle');
  if(manual)tip('Микрофон остановлен');
 }
 function listen(){
@@ -296,12 +307,14 @@ function startStreetRecognition(){
  if(!SR){tip('Распознавание недоступно. Открой страницу в Chrome по HTTPS или напиши ответ.');return}
  if(!window.isSecureContext){tip('Микрофон работает только по HTTPS или localhost.');return}
  if(streetRecognition)stopStreetRecognition();
+ // Avoid the panda speaking into her own microphone while listening.
+ if(playing){playing.pause();playing=null;voiceToken++;streetFaceRig?.setState('idle')}
  let rec;
  try{
   rec=new SR();streetRecognition=rec;rec.lang='zh-CN';rec.interimResults=false;
   rec.continuous=false;rec.maxAlternatives=1;
   let handled=false;
-  rec.onstart=()=>{if(streetRecognition===rec){streetMicState(true);tip('🎙 Слушаю китайскую речь…')}};
+  rec.onstart=()=>{if(streetRecognition===rec){streetMicState(true);streetFaceRig?.setState('listening');tip('🎙 Слушаю китайскую речь…')}};
   rec.onresult=e=>{
    if(streetRecognition!==rec||handled)return;
    let transcript='';
