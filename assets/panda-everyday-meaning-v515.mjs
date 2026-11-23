@@ -44,6 +44,24 @@ const items={'':['',''],这个:['zhège','это'],这个东西:['zhège dōngxi
 export function everydayMeaning(raw,id,context){
  const k=norm(raw);
  const out=(py,ru,reply,awaiting,coachNote,extra={})=>({spoken:[raw,py,ru],reply,context:{...context,awaiting,lastClarification:null,...extra},coachNote});
+ // A recognised friendly introduction is a valid beginner utterance.
+ // Never treat it as bad pronunciation or invent a new voice recording.
+ if(context?.awaiting==='friendly-name'){
+  const match=k.match(/^我叫([\p{Script=Han}]{1,12})$/u);
+  if(match){
+   const py={小明:'Xiǎomíng',小红:'Xiǎohóng'}[match[1]];
+   return out(py?'Wǒ jiào '+py+'.':null,'Меня зовут '+match[1]+'.',
+    ['很高兴认识你！你今天怎么样？','Hěn gāoxìng rènshi nǐ! Nǐ jīntiān zěnmeyàng?','Рада познакомиться! Как у тебя сегодня дела?'],'friendly-mood');
+  }
+ }
+ if(context?.awaiting==='friendly-mood'){
+  if(k==='我很好'||k==='很好')return out(k==='我很好'?'Wǒ hěn hǎo.':'Hěn hǎo.','У меня всё хорошо.',
+   ['太好了！你想聊什么？','Tài hǎo le! Nǐ xiǎng liáo shénme?','Здорово! О чём хочешь поговорить?'],'topic');
+  if(k==='我不好'||k==='不好')return out(k==='我不好'?'Wǒ bù hǎo.':'Bù hǎo.','У меня дела не очень.',
+   ['怎么了？','Zěnme le?','Что случилось?'],'wellbeing');
+ }
+ if(k==='我爱你')return out('Wǒ ài nǐ!','Я тебя люблю!',
+  ['谢谢你！我很开心！你叫什么名字？','Xièxie nǐ! Wǒ hěn kāixīn! Nǐ jiào shénme míngzi?','Спасибо! Мне очень приятно! Как тебя зовут?'],'friendly-name');
  if(Object.hasOwn(Q,k))return out(...Q[k]);
  if(Object.hasOwn(places,k)){const v=places[k];return out(v[0],v[1]+'.',v[4]?A.city:A.thanks,v[4]?'city':'city-known',null,{mentionedPlace:k});}
  const m=k.match(/^我(现在)?住在(.+)$/);if(m&&Object.hasOwn(places,m[2])){const v=places[m[2]];return out('Wǒ '+(m[1]?'xiànzài ':'')+'zhù zài '+v[0]+'.','Я '+(m[1]?'сейчас ':'')+'живу в '+v[2]+'.',A.thanks,'city-known',null,{learnerCity:m[2]});}
