@@ -104,10 +104,10 @@
       const stoneX=sceneRect.left-stageRect.left+left;
       const stoneY=sceneRect.bottom-stageRect.top-bottom-stoneHeight;
       const pandaX=rect.left-stageRect.left,pandaY=rect.top-stageRect.top;
-      const layer=word('div','pg541-static-layer');
+      const layer=word('div','pg541-static-layer','');
       layer.setAttribute('aria-hidden','true');
-      const stoneBack=word('div','pg541-static-stone pg541-static-back');
-      const stoneFront=word('div','pg541-static-stone pg541-static-front');
+      const stoneBack=word('div','pg541-static-stone pg541-static-back','');
+      const stoneFront=word('div','pg541-static-stone pg541-static-front','');
       const px=(name,value)=>layer.style.setProperty(name,value+'px');
       px('--pg541-panda-x',pandaX);px('--pg541-panda-y',pandaY);
       px('--pg541-panda-w',rect.width);px('--pg541-panda-h',rect.height);
