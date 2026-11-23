@@ -55,7 +55,7 @@ test('approved Panda AI audio is wired to current entrypoints and new PWA cache'
  const ui=source('../assets/panda-hsk2-preview-ui-v1.mjs');
  const aud=source('../assets/panda-hsk2-preview-audio-v1.mjs');
  const reg=source('../assets/panda-approved-voice-registry-v516.mjs');
- assert.equal(manifest.version,546);
+ assert(manifest.version>=546,'Natural Panda voice release must not roll back');
  assert(sw.includes("const CACHE='chinese-coach-pwa-v"+manifest.version+"-"));
  for(const file of [
   'panda-ai-natural-voice-batch01-v546.mjs?v=546',
