@@ -104,7 +104,7 @@ const results=windows.map(config=>{
 function compareContours(reference,alternative){
  const candidate=alternative.absolutePoints||[];
  const baseline=reference.absolutePoints||[];
- const diffs=[],covered=0;
+ const diffs=[];let covered=0;
  for(const point of baseline){
   const nearest=candidate.reduce((best,c)=>!best||Math.abs(c.ms-point.ms)<Math.abs(best.ms-point.ms)?c:best,null);
   if(!nearest||Math.abs(nearest.ms-point.ms)>20)continue;
@@ -121,11 +121,15 @@ const original=results.find(x=>x.config.label==='90/56/15');
 const rescanned=results.find(x=>x.config.label==='90/60/12');
 const rescues=names.map((name,i)=>{
  const primary=original.samples[i],backup=rescanned.samples[i],agreement=compareContours(primary,backup);
+ const unverifiedGap=backup.syllables.some(y=>y.maxGapMs>70);
+ const splitShift=Math.abs(backup.splitPct-primary.splitPct);
+ // A single trailing xiao F0 after a 96ms silent pitch gap can make a short
+ // 120ms vowel look 228ms long. Do not count this as verified new coverage.
  const recovered=primary.quality!=='both'&&backup.quality==='both'&&backup.timestampsMonotonic&&
   backup.syllables.every(y=>y.usable)&&agreement.good&&
-  !backup.warning;
+  !unverifiedGap&&splitShift<=7&&!backup.warning;
  return {name,primary:primary.quality,backup:backup.quality,agreement,recovered,
-  backupSyllables:backup.syllables.map(y=>({points:y.points,durationMs:y.durationMs,maxGapMs:y.maxGapMs,jump:y.jump})),
+  unverifiedGap,splitShift,backupSyllables:backup.syllables.map(y=>({points:y.points,durationMs:y.durationMs,maxGapMs:y.maxGapMs,jump:y.jump})),
   splitChangePct:backup.splitPct-primary.splitPct};
 });
 const report={generated:new Date().toISOString(),source:'panda-tone-test-lab.html',
@@ -136,7 +140,7 @@ console.log('ADAPTIVE CHECK (90/56/15 → 90/60/12 on partial only, with absolut
 for(const r of rescues)console.log('  '+r.name+': '+r.primary+' vs '+r.backup+
   ', match '+r.agreement.covered+'/'+r.agreement.original+
   ', median/max delta '+r.agreement.medianAbsSt+'/'+r.agreement.maxAbsSt+' st'+
-  ', split delta '+r.splitChangePct+'%, rescue='+r.recovered);
+  ', split delta '+r.splitChangePct+'%, gap>70ms='+r.unverifiedGap+', rescue='+r.recovered);
 for(const result of results){
  console.log(result.config.label+': both='+result.complete+'/6, partial='+result.partial+'/6, synthetic='+ (result.sane?'pass':'FAIL')
   +', noise F0='+result.synthetic.noise.points);
