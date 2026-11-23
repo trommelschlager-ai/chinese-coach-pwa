@@ -93,7 +93,38 @@ try{
   await whyRows.last().locator('.pg346-row-audio').click();
   await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pose==='talking',null,{timeout:7000});
   await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-movie-why-reason.png',fullPage:false,animations:'disabled'});
-  console.log('PASS mobile browser '+width+'px: 5 learner turns + 4-step movie chat + translations + approved Panda intact');
+  // v519: exercise ACTUAL UI and learner history for contextual "no" answers.
+  // All checks run on mobile widths; they are not acoustic tone measurements.
+  const negativeRounds=[
+   [102,'你早上吃早饭吗？','不吃','Bù chī.','你几点去上班？'],
+   [103,'你在学校学习吗？','不在','Bú zài.','你会说中文吗？'],
+   [105,'你明天下午有空吗？','没空','Méi kòng.','我们几点见面？'],
+   [106,'你昨天运动了吗？','我昨天没运动','Wǒ zuótiān méi yùndòng.','你去过上海吗？'],
+   [109,'你今天怎么样？','不好','Bù hǎo.','你哪儿不舒服？'],
+   [110,'周末要不要一起喝咖啡？','不想','Bù xiǎng.','我们在哪儿见面？']
+  ];
+  for(const [topic,question,learner,pinyin,nextQuestion] of negativeRounds){
+   const started=await page.evaluate(([id,zh])=>window.PandaApprovedBridge337.startTopicQuestion(id,zh),[topic,question]);
+   assert.equal(started,true,'Cannot start reviewed Panda question '+question);
+   await page.locator('#pg346-input').fill(learner);
+   await page.locator('#pg346-send').click();
+   await page.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,nextQuestion,{timeout:5000});
+   const negativeRows=page.locator('#pg346-rows .pg346-row');
+   const previous=negativeRows.nth((await negativeRows.count())-2);
+   assert.equal(await previous.locator('.pg346-zh').textContent(),learner);
+   assert.equal(await previous.locator('.pg346-py').textContent(),pinyin,'Wrong tone marks for '+learner);
+   assert(!/не подтверждён/.test(await previous.locator('.pg346-ru').textContent()),'Missing meaning for '+learner);
+   assert.equal(await negativeRows.last().locator('.pg346-zh').textContent(),nextQuestion,'Panda should ask the next curriculum question');
+  }
+  const startedInverse=await page.evaluate(()=>window.PandaApprovedBridge337.startTopicQuestion(104,'你喜欢运动吗？'));
+  assert.equal(startedInverse,true);
+  await page.locator('#pg346-input').fill('你不喜欢运动吗？');
+  await page.locator('#pg346-send').click();
+  await page.waitForFunction(()=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent==='喜欢，我喜欢运动。',null,{timeout:5000});
+  await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-negative-dialogue.png',fullPage:false,animations:'disabled'});
+  assert(!errors.length,'Browser errors after negative-dialogue QA: '+JSON.stringify(errors));
+
+  console.log('PASS mobile browser '+width+'px: 5 learner turns + 4-step movie chat + six negative question rounds + inverse question');
   await context.close();
  }
 } finally {await browser.close()}
