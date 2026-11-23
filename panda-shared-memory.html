@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#f1e6fc">
+<title>Panda Go · общая память</title>
+<style>
+:root{color-scheme:light;font:15px/1.45 system-ui,-apple-system,"Noto Sans SC",Arial,sans-serif;background:#f4ecfb;color:#322048}
+*{box-sizing:border-box}html,body{margin:0;min-height:100dvh}
+body{background:linear-gradient(155deg,#eee1fc,#fffaf5);padding:12px;overscroll-behavior:none}
+main{max-width:680px;margin:auto;display:grid;gap:12px}
+header{display:flex;align-items:center;gap:11px}
+h1{font-size:23px;margin:0;line-height:1.2;color:#432968}h2{font-size:17px;margin:0 0 8px;color:#4b3472}
+p{margin:0 0 8px}.panda{font-size:42px}
+small,.muted{font-size:12px;color:#726281}.state{font-size:12px;font-weight:750;white-space:nowrap;margin-left:auto;padding:7px 10px;background:#fff;border-radius:999px}
+section{padding:16px;background:#fffdfd;border:1px solid #e1d3ed;border-radius:20px;box-shadow:0 8px 24px #4b227912}
+.zh{font-size:clamp(23px,4.5vw,30px);font-weight:800;color:#392654;margin-bottom:3px}
+.py{font-size:14px;color:#695092}.ru{font-size:13px;color:#6b6077}
+label{font-weight:700;display:block;margin:10px 0 5px;font-size:13px}
+select,input{width:100%;border:1px solid #dacbe8;border-radius:12px;background:#fff;padding:11px;font:inherit;min-height:44px}
+button{min-height:44px;border:0;border-radius:12px;padding:10px 14px;font:700 14px system-ui;cursor:pointer;box-shadow:0 3px 0 #3e2a6724}
+button:active{transform:translateY(2px);box-shadow:0 1px 0 #3e2a6724}
+button.primary{background:#7556ba;color:white}button.secondary{background:#e5daf5;color:#51397b}button.ghost{background:#f8f4fb;color:#584571;border:1px solid #e4d8f0}
+button:disabled{opacity:.46;cursor:not-allowed}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.actions button{flex:1;min-width:145px}
+.reply{padding:13px;border-radius:15px;background:#f6f0fc;border:1px solid #e2d4f0;margin:12px 0}
+.status{min-height:24px;color:#594580;font-size:13px;font-weight:650;margin-top:11px}
+.status.error{color:#a43a49}.notice{background:#f2eafa;color:#69547f;border-radius:12px;padding:10px;font-size:12px}
+footer{font-size:12px;text-align:center;color:#6c6177}
+a{color:#604497;font-weight:650}
+@media(max-width:370px){section{padding:12px}button{font-size:12px;padding:8px}.state{padding:5px}}
+</style></head><body><main>
+<header><span class="panda" aria-hidden="true">🐼</span><div><h1>Общая память Panda Go</h1><p class="muted">Проверенные фразы и MP3 Xiaoxiao · общий курс</p></div><span class="state" id="online" aria-live="polite">Проверка сети</span></header>
+<section>
+<h2>1. Общая библиотека — для всех учеников</h2>
+<p class="muted">Одинаковый набор проверенных фраз доступен всем, но скачивается отдельно на каждый телефон. Личные разговоры сюда не попадают.</p>
+<p>Версия на телефоне: <strong id="release">не скачана</strong></p>
+<p>Готовых фраз: <strong id="count">0</strong></p>
+<div class="actions">
+<button class="primary" id="download" type="button">⬇ Скачать / обновить общую память</button>
+<button class="secondary" id="prepare" type="button">📴 Подготовить офлайн</button>
+</div>
+<div id="downloadStatus" class="status" role="status" aria-live="polite">Для первой загрузки подключи интернет.</div>
+</section>
+<section>
+<h2>2. Проверь общую память без интернета</h2>
+<label for="sample">Тема и пример</label>
+<select id="sample">
+<option value="movie-comedy">Кино · люблю комедии</option>
+<option value="movie-why">Кино · почему комедии смешные</option>
+<option value="day-rest">Мой день · сегодня отдыхаю</option>
+</select>
+<label for="phrase">Фраза ученика</label>
+<input id="phrase" lang="zh-CN" type="text" autocomplete="off" spellcheck="false" value="我想看喜剧片。">
+<div class="actions">
+<button class="primary" id="check" type="button">🔎 Найти ответ</button>
+<button class="secondary" id="play" type="button" disabled>🔊 Xiaoxiao</button>
+</div>
+<div class="reply" id="answer" aria-live="polite"><p class="muted">Сначала загрузи общий набор, затем проверь фразу.</p></div>
+<div id="testStatus" class="status" role="status" aria-live="polite">Ответ ещё не выбран.</div>
+</section>
+<section>
+<h2>3. Личная память — отдельно</h2>
+<p class="muted">Сохранённые учеником выражения хранятся отдельно от общего курса, не отправляются другим ученикам и не становятся учебными материалами без проверки и отдельного разрешения.</p>
+<a href="./panda-memory-preview.html">Открыть личную тестовую память</a>
+<p class="notice" style="margin-top:10px">Общая библиотека пока включает 3 утверждённых примера. Это не полноценная офлайн-языковая модель: новые неизвестные предложения без интернета она не придумывает.</p>
+<div class="actions"><button id="clearShared" type="button" class="ghost">Удалить скачанный общий набор с телефона</button></div>
+</section>
+<footer><a href="./panda-voice-pilot.html">Вернуться к Panda AI</a> · Тест Panda Memory · v1</footer>
+</main>
+<script type="module">
+import {PANDA_MEMORY_SAMPLES_V1 as samples} from './assets/panda-memory-reviewed-samples-v1.mjs';
+import {createPandaSharedLibrary} from './assets/panda-shared-library-v1.mjs';
+const $=id=>document.getElementById(id);
+const origin=location.hostname==='panda.localhost'
+ ? 'https://trommelschlager-ai.github.io/chinese-coach-pwa/'
+ : new URL('./',location.href).href;
+const library=createPandaSharedLibrary({baseUrl:origin});
+let audio=null,objectUrl=null,clip=null,busy=false;
+function selected(){return samples.find(x=>x.id===$('sample').value)||samples[0]}
+function status(id,s,error=false){$(id).textContent=s;$(id).classList.toggle('error',error)}
+function network(){ $('online').textContent=navigator.onLine?'● Онлайн':'○ Офлайн';}
+function stopAudio(){
+ if(audio){audio.onended=null;audio.onerror=null;audio.pause();audio.removeAttribute('src');audio.load();audio=null}
+ if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null}
+}
+function empty(){stopAudio();clip=null;$('play').disabled=true;$('answer').replaceChildren();const p=document.createElement('p');p.className='muted';p.textContent='Нажми «Найти ответ», когда загрузишь общую память.';$('answer').append(p)}
+function busyState(state){busy=state;for(const id of ['download','prepare','check','clearShared'])$(id).disabled=state}
+async function refresh(){
+ try{
+  const [release,cards]=await Promise.all([library.installedRelease(),library.list()]);
+  $('release').textContent=release?'№ '+release:'не скачана';
+  $('count').textContent=String(cards.length);
+ }catch(e){status('downloadStatus','Локальная память недоступна: '+e.message,true)}
+}
+async function download(){
+ if(busy)return;
+ if(!navigator.onLine){status('downloadStatus','Для обновления нужен интернет.',true);return}
+ busyState(true);
+ try{
+  const result=await library.update();
+  status('downloadStatus',result.status==='already-installed'?
+   '✅ Актуальная версия уже сохранена. Старые фразы не удалены.':
+   '✅ Скачано '+result.saved+' фраз и MP3 Xiaoxiao. Доступно без сети.');
+  await refresh();
+ }catch(e){status('downloadStatus','Не удалось обновить: '+e.message,true)}
+ finally{busyState(false)}
+}
+async function recall(){
+ if(busy)return;
+ empty();
+ try{
+  const card=await library.recall({topic:selected().topic,trigger:$('phrase').value});
+  if(!card){status('testStatus','Этой фразы нет в скачанной общей библиотеке.',true);return}
+  clip=card;
+  const root=$('answer');
+  for(const [txt,className] of [[card.hanzi,'zh'],[card.pinyin,'py'],[card.ru,'ru']]){
+   const d=document.createElement('div');d.className=className;d.textContent=txt;root.append(d);
+  }
+  $('play').disabled=false;
+  status('testStatus','✅ Найдено локально. Сохранённый голос Xiaoxiao готов.');
+ }catch(e){status('testStatus','Ошибка памяти: '+e.message,true)}
+}
+async function play(){
+ if(!clip)return;
+ stopAudio();
+ try{
+  objectUrl=URL.createObjectURL(clip.audioBlob);
+  audio=new Audio(objectUrl);
+  audio.onended=()=>{stopAudio();};
+  audio.onerror=()=>status('testStatus','Не удалось воспроизвести MP3.',true);
+  await audio.play();
+  status('testStatus','🔊 Воспроизводится скачанная запись Xiaoxiao без интернета.');
+ }catch(e){stopAudio();status('testStatus','Плеер не включился: '+e.message,true)}
+}
+async function prepare(){
+ if(busy)return;busyState(true);
+ try{
+  if(!navigator.onLine)throw new Error('Подключи интернет для подготовки страницы');
+  if(!('serviceWorker'in navigator)||!('caches'in window))throw new Error('Офлайн-страницы не поддерживаются');
+  await navigator.serviceWorker.register('./sw.js');
+  await navigator.serviceWorker.ready;
+  const cache=await caches.open('panda-shared-memory-shell-v1');
+  await cache.addAll([
+   new URL('./panda-shared-memory.html',location.href).href,
+   new URL('./assets/panda-shared-library-v1.mjs',location.href).href,
+   new URL('./assets/panda-offline-memory-v1.mjs',location.href).href,
+   new URL('./assets/panda-memory-reviewed-samples-v1.mjs',location.href).href
+  ]);
+  status('downloadStatus','✅ Страница готова для авиарежима. Убедись, что общий набор скачан.');
+ }catch(e){status('downloadStatus','Ошибка офлайн-подготовки: '+e.message,true)}
+ finally{busyState(false)}
+}
+async function clear(){
+ if(busy)return;busyState(true);
+ try{
+  await library.clear();empty();await refresh();
+  status('downloadStatus','Общий набор удалён с этого телефона. Личная память не тронута.');
+ }catch(e){status('downloadStatus','Ошибка удаления: '+e.message,true)}
+ finally{busyState(false)}
+}
+$('download').addEventListener('click',download);
+$('prepare').addEventListener('click',prepare);
+$('check').addEventListener('click',recall);
+$('play').addEventListener('click',play);
+$('clearShared').addEventListener('click',clear);
+$('sample').addEventListener('change',()=>{empty();$('phrase').value=selected().trigger});
+window.addEventListener('online',network);window.addEventListener('offline',network);
+window.addEventListener('pagehide',stopAudio);
+network();refresh();
+</script></body></html>
