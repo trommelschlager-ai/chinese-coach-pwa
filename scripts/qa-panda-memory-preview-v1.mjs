@@ -51,6 +51,8 @@ try {
 
   await page.locator('#delete').click();
   await page.waitForFunction(()=>document.querySelector('#saveStatus')?.textContent.includes('ещё не сохранена'));
+  // The delete handler finishes after its UI status update. Wait until actions unlock.
+  await page.waitForFunction(()=>document.querySelector('#recall')?.disabled===false);
   await page.locator('#recall').click();
   assert.equal(await page.locator('#listen').isDisabled(),true);
   assert.match(await page.locator('#testStatus').textContent(),/пока нет/);
