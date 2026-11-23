@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#070815">
+<meta name="robots" content="noindex,nofollow">
+<title>Panda Street AI — один естественный кивок</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;height:100dvh;background:#070815;color:#fff;font-family:system-ui,-apple-system,Arial,sans-serif;overflow:hidden}
+main{position:relative;width:100%;height:100dvh;overflow:hidden;touch-action:manipulation;background:#070815}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+aside{position:absolute;bottom:max(12px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(96%,460px);z-index:5;background:#141127e8;border:1px solid #b58cff;border-radius:18px;padding:12px 12px 10px;box-shadow:0 6px 25px #0009;backdrop-filter:blur(9px)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px}
+strong{font-size:13px;color:#ffdf9f}
+span{font-size:10px;color:#d6c9e8}
+.actions{display:flex;gap:8px;margin-top:9px}
+button{flex:1;min-height:45px;border:1px solid #c49fff;border-radius:13px;background:linear-gradient(145deg,#743ca5,#442661);font:inherit;color:white;font-weight:800;font-size:14px;cursor:pointer}
+button.secondary{background:#282038}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.5;cursor:not-allowed}
+small{display:block;font-size:11px;line-height:1.4;color:#d0c3dc;margin-top:8px}
+#loading{position:absolute;inset:0;display:grid;place-items:center;z-index:8;background:#080a18ef;text-align:center;padding:25px;font-weight:600;font-size:15px;line-height:1.5}
+#loading[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
+</style>
+</head>
+<body>
+<main id="stage">
+<canvas id="screen" role="img" aria-label="Оригинальная Panda Street AI, тест кивка без перерисовки лица"></canvas>
+<div id="loading" role="status">Загружается оригинальная Panda Street AI…</div>
+<aside aria-label="Проба кивка">
+  <div class="bar"><strong>🐼 Panda Street — один кивок</strong><span>Тест, не основной экран</span></div>
+  <div class="actions">
+   <button id="nod" disabled>👍 Кивнуть</button>
+   <button id="reset" class="secondary" disabled>↺ Исходная поза</button>
+  </div>
+  <small>Голова двигается отдельным слоем около шеи. Лицо, очки и одежда не растягиваются. Движение запускается один раз.</small>
+</aside>
+</main>
+<script>
+(()=>{'use strict';
+const W=693,H=1444,SKY_START=338,SKY_SIZE=60,FLOOR_START=1303,FLOOR_SIZE=43;
+const img=new Image(),canvas=document.getElementById('screen'),stage=document.getElementById('stage');
+const nod=document.getElementById('nod'),reset=document.getElementById('reset'),loading=document.getElementById('loading');
+const bg=document.createElement('canvas'),fg=document.createElement('canvas'),frame=document.createElement('canvas'),mask=document.createElement('canvas');
+for(const a of [bg,fg,frame,mask]){a.width=W;a.height=H}
+const b=bg.getContext('2d',{willReadFrequently:true}),h=fg.getContext('2d'),f=frame.getContext('2d'),mc=mask.getContext('2d',{willReadFrequently:true});
+let started=-1,playing=false,ready=false,raf=0;
+const DURATION=1250;
+// Manually traced approximate outline of the ORIGINAL head. No new face is generated.
+function headPath(c){
+ c.beginPath();
+ c.moveTo(192,500);
+ c.bezierCurveTo(179,490,164,483,161,457);
+ c.bezierCurveTo(156,426,174,407,203,407);
+ c.bezierCurveTo(229,407,246,420,254,442);
+ c.bezierCurveTo(279,434,315,431,354,444);
+ c.bezierCurveTo(368,416,394,411,415,428);
+ c.bezierCurveTo(449,451,452,484,426,501);
+ c.bezierCurveTo(445,534,438,592,418,616);
+ c.bezierCurveTo(405,646,370,660,333,660);
+ c.bezierCurveTo(284,663,249,645,226,623);
+ c.bezierCurveTo(201,600,183,553,192,500);
+ c.closePath();
+}
+function makeLayers(){
+ b.drawImage(img,0,0,W,H);
+ mc.clearRect(0,0,W,H);
+ mc.fillStyle='#fff';headPath(mc);mc.fill();
+ // Exact original head pixels as a transparent separate layer.
+ h.drawImage(img,0,0,W,H);
+ h.globalCompositeOperation='destination-in';
+ h.drawImage(mask,0,0);h.globalCompositeOperation='source-over';
+
+ // Cover ONLY the narrow strip of the old head edge that could be uncovered
+ // by the restrained motion. Original background is sampled from just outside
+ // the cut line; the rest of the original scene remains pixel-identical.
+ const pixels=b.getImageData(0,0,W,H),rgb=pixels.data,alpha=mc.getImageData(0,0,W,H).data;
+ const out=new Uint8ClampedArray(rgb);
+ const dirs=[[1,0],[-1,0],[0,1],[0,-1],[.707,.707],[-.707,.707],[.707,-.707],[-.707,-.707]];
+ const X0=149,X1=461,Y0=399,Y1=666;
+ for(let y=Y0;y<Y1;y++)for(let x=X0;x<X1;x++){
+   const ix=(y*W+x)*4;
+   if(alpha[ix+3]<140)continue;
+   let found=false;
+   for(let rad=1;rad<=13&&!found;rad++){
+    for(let k=0;k<8;k++){
+     const xx=Math.round(x+dirs[k][0]*rad), yy=Math.round(y+dirs[k][1]*rad);
+     if(xx<0||yy<0||xx>=W||yy>=H)continue;
+     const at=(yy*W+xx)*4;
+     if(alpha[at+3]<30){
+      out[ix]=rgb[at];out[ix+1]=rgb[at+1];out[ix+2]=rgb[at+2];
+      found=true;break;
+     }
+    }
+   }
+ }
+ pixels.data.set(out);b.putImageData(pixels,0,0);
+}
+function pose(time){
+ if(!playing)return{angle:0,dy:0};
+ const u=Math.min(1,Math.max(0,(time-started)/DURATION));
+ if(u>=1){playing=false;nod.disabled=false;return{angle:0,dy:0}}
+ // Two gentle dips with full stop and return to the approved pose.
+ const dip=Math.sin(2*Math.PI*u)**2*Math.sin(Math.PI*u);
+ return{angle:.021*dip,dy:5*dip};
+}
+function draw(ts=0){
+ if(!ready)return;
+ const p=pose(ts);
+ f.clearRect(0,0,W,H);f.drawImage(bg,0,0);
+ // Rotate around the original neck, not around the whole picture.
+ f.save();f.translate(307,628);f.rotate(p.angle);f.translate(0,p.dy);f.translate(-307,-628);
+ f.drawImage(fg,0,0);f.restore();
+
+ const w=stage.clientWidth,hh=stage.clientHeight;
+ if(!w||!hh)return;
+ const dpr=Math.min(devicePixelRatio||1,2);
+ const pw=Math.round(w*dpr),ph=Math.round(hh*dpr);
+ if(canvas.width!==pw||canvas.height!==ph){canvas.width=pw;canvas.height=ph}
+ const c=canvas.getContext('2d',{alpha:false});
+ c.setTransform(pw/w,0,0,ph/hh,0,0);c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+ c.fillStyle='#050817';c.fillRect(0,0,w,hh);
+ let s=w/W,left=0,cut=Math.max(0,H-hh/s);
+ let cutSky=Math.min(SKY_SIZE,cut*.60);
+ let cutFloor=Math.min(FLOOR_SIZE,Math.max(0,cut-cutSky));
+ if(cut>SKY_SIZE+FLOOR_SIZE){cutSky=SKY_SIZE;cutFloor=FLOOR_SIZE;s=Math.min(w/W,hh/(H-SKY_SIZE-FLOOR_SIZE));left=(w-W*s)/2}
+ const parts=[[0,SKY_START],[SKY_START+cutSky,FLOOR_START-SKY_START-cutSky],[FLOOR_START+cutFloor,H-FLOOR_START-cutFloor]];
+ let y=0;
+ for(const [sy,sh] of parts)if(sh>0){
+   c.drawImage(frame,0,sy,W,sh,left,y*s,W*s,sh*s);y+=sh;
+ }
+ if(playing)raf=requestAnimationFrame(draw);else raf=0;
+}
+nod.addEventListener('click',()=>{if(!ready)return;cancelAnimationFrame(raf);started=performance.now();playing=true;nod.disabled=true;raf=requestAnimationFrame(draw)});
+reset.addEventListener('click',()=>{if(!ready)return;cancelAnimationFrame(raf);playing=false;nod.disabled=false;draw()});
+window.addEventListener('resize',()=>{if(!playing)draw()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;playing=false}else if(ready)draw()});
+img.onload=()=>{try{
+ if(img.naturalWidth!==W||img.naturalHeight!==H)throw new Error('Размер оригинала неожиданно изменился');
+ makeLayers();ready=true;nod.disabled=false;reset.disabled=false;loading.hidden=true;draw();
+ }catch(e){loading.textContent='Не удалось подготовить анимацию: '+e.message;console.error(e)}
+};
+img.onerror=()=>{loading.textContent='Исходное изображение не загрузилось. Проверь соединение и обнови страницу.'};
+img.src='./assets/panda-street-ai-approved-original.webp?v=1';
+})();
+</script>
+</body>
+</html>
