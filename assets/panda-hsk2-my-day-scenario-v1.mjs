@@ -308,23 +308,47 @@ function init(stage){
      return new Promise(resolve=>setTimeout(resolve,1000));
    }
    return new Promise(resolve=>{
-     let ended=false;
-     const done=()=>{if(ended)return;ended=true;player=null;stage.dataset.dayTalking='false';resolve()};
+     let ended=false,active=null,stallTimer=null;
+     const clearStall=()=>{clearTimeout(stallTimer);stallTimer=null};
+     const done=()=>{
+       if(ended)return;
+       ended=true;clearStall();
+       if(player===active){player=null;if(token===sequence)stage.dataset.dayTalking='false'}
+       resolve();
+     };
      function next(k){
        if(token!==sequence){done();return}
+       clearStall();
        if(k>=candidates.length){
          missingAudio.add(norm(a[0]));
          status('🔇 Исходная запись пока не доступна. Другой голос не подставляется.');
          done();return;
        }
        const audio=new Audio(candidates[k]);
-       player=audio;audio.preload='auto';audio.playbackRate=slow?Math.max(0.60,playbackRate*0.85):playbackRate;
+       active=audio;player=audio;audio.preload='auto';
+       audio.playbackRate=slow?Math.max(0.60,playbackRate*0.85):playbackRate;
        if('preservesPitch' in audio)audio.preservesPitch=true;
        stage.dataset.dayTalking='true';
+       // A stalled or blocked MP3 must never leave Panda "speaking" forever.
+       const watchStall=()=>{
+         if(ended||token!==sequence||active!==audio||stallTimer)return;
+         stallTimer=setTimeout(()=>{
+           if(ended||token!==sequence||active!==audio)return;
+           missingAudio.add(norm(a[0]));
+           status('🔇 Запись не воспроизводится. Нажми «Повторить» или проверь интернет.');
+           try{audio.pause()}catch(_){}
+           done();
+         },10000);
+       };
+       audio.onplaying=clearStall;
+       audio.onwaiting=watchStall;
+       audio.onstalled=watchStall;
        audio.onended=done;
        audio.onpause=()=>{if(token!==sequence)done()};
        audio.onerror=()=>next(k+1);
+       watchStall();
        audio.play().catch(err=>{
+         if(ended||token!==sequence||active!==audio)return;
          if(err?.name==='NotAllowedError'){
            status('🔇 Chrome заблокировал звук. Нажми «Повторить» и разреши воспроизведение.');
            done();
@@ -493,27 +517,32 @@ function init(stage){
   status('🎙 Слушаю китайскую речь…');
   r.onresult=e=>{
    if(recognizer!==r)return;
-   let text='';for(let j=e.resultIndex;j<e.results.length;j++)if(e.results[j].isFinal)text+=e.results[j][0].transcript+' ';
-   text=text.trim();if(!text)return;
-   if(phase==='questions'||phase==='freechat'){
-    $('day-input').value=text;status('Распознано: '+text+'. Тоны не оценивались.');
-    if(phase==='freechat'&&replayCommand.test(norm(text))&&e.results[e.resultIndex]?.[0]?.confidence>=0.75){
-     stopRecognition();answer(text);return;
-    }
-    if(phase==='questions'){
-     const question=i;
-     // Only reviewed lesson answers advance automatically.
-     // Free-chat transcripts remain editable until explicitly sent.
-     const intent=understandDayAnswer(text,question);
-     if(intent.kind==='accepted'||intent.kind==='user-question')setTimeout(()=>{
-      if(phase==='questions'&&i===question&&$('day-input').value===text)answer(text)
-     },750);
-    }
+   let text='',confidence=null;
+   for(let j=e.resultIndex;j<e.results.length;j++){
+     if(!e.results[j].isFinal)continue;
+     text+=(e.results[j][0]?.transcript||'')+' ';
+     const score=e.results[j][0]?.confidence;
+     if(typeof score==='number'&&score>0)confidence=confidence===null?score:Math.min(confidence,score);
    }
-   if(phase==='monologue'){$('day-long').value+=($('day-long').value.trim()?'。':'')+text;status('Продолжай рассказ. После окончания нажми «Завершить рассказ».')}
+   text=text.trim();
+   if(!text)return;
+   if(phase==='questions'||phase==='freechat'){
+     // Recognition is a draft transcript, NOT verified pronunciation or permission
+     // to advance the lesson. Never auto-submit even a high-confidence ASR result.
+     stopRecognition();
+     $('day-input').value=text;
+     status(confidence!==null&&confidence<0.65
+       ?'⚠️ Распознано неуверенно: '+text+'. Проверь или исправь текст и нажми «Ответить». Тоны не оценивались.'
+       :'🎙 Распознано: '+text+'. Проверь текст и нажми «Ответить». Тоны не оценивались.');
+     return;
+   }
+   if(phase==='monologue'){
+     $('day-long').value+=($('day-long').value.trim()?'。':'')+text;
+     status('Продолжай рассказ. После окончания нажми «Завершить рассказ». Тоны не оценивались.');
+   }
   };
-  r.onerror=e=>status('Микрофон или распознавание: '+(e.error||'сбой')+'. Это НЕ означает ошибку в произношении.');
-  r.onend=()=>{const wasCurrent=recognizer===r;if(wasCurrent)recognizer=null;if(wasCurrent&&phase==='questions')countdown()};
+  r.onerror=e=>{if(recognizer!==r)return;stopRecognition();status('Микрофон или распознавание: '+(e.error||'сбой')+'. Можно ответить текстом. Это НЕ означает ошибку в произношении.');};
+  r.onend=()=>{if(recognizer!==r)return;recognizer=null;if(phase==='questions')status('Распознавание закончилось. Повтори 🎙 или напиши ответ — вопрос не пропущен.');};
   try{r.start()}catch(_){recognizer=null;status('Не удалось включить микрофон. Проверь разрешение Chrome или напиши ответ.')}
  }
  function setSpeedFromSlider(){
