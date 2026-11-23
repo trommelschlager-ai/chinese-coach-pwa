@@ -14,7 +14,7 @@ import {brainQuestion,interpretBrainSentence} from './panda-brain-hsk1-v302.mjs?
 import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from './panda-sentence-coach-v319.mjs?v=319';
 import {answerBasicConversation} from './panda-basic-conversation-v323.mjs?v=336';
-import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=518';
+import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=520';
 import {negativeAnswerForQuestion,negativeAcknowledgement,negativeQuestionFromLearner} from './panda-negative-dialogue-v519.mjs?v=519';
 import {analyzeCalendarLiteral,calendarAcknowledgement} from './panda-calendar-literal-v383.mjs?v=401';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
@@ -270,6 +270,19 @@ export function answerLive(raw,options={}){
       translation:negativeReply.ru,topic:prompt?.lesson||topic},
      reply:line(answer.hanzi,answer.pinyin,answer.ru),
      followup:null,message:'Отрицательный ответ принят по контексту вопроса. Тоны голоса не оценивались.'};
+ }
+
+ // v520: understand affectionate greetings in the dialogue itself,
+ // not as an unknown phrase or a pronunciation/tone assessment.
+ const friendlyTurn=s==='我爱你'||
+  (options.friendlyAwaiting==='friendly-name'&&/^我叫[\p{Script=Han}]{1,12}$/u.test(s))||
+  (options.friendlyAwaiting==='friendly-mood'&&/^(?:我很好|很好|我不好|不好)$/u.test(s));
+ if(friendlyTurn){
+  const social=everydayMeaning(raw,topic,{awaiting:options.friendlyAwaiting||null});
+  if(social)return {kind:'statement',lesson:1,
+   spoken:{known:true,hanzi:raw,pinyin:social.spoken[1],translation:social.spoken[2],topic:1},
+   reply:line(...social.reply),followup:null,friendlyAwaiting:social.context.awaiting,
+   message:'Панда поддержала знакомство по контексту. Произношение и тоны не оценивались.'};
  }
 
  // v518: approved short social replies must not fall through to "I didn't understand".
