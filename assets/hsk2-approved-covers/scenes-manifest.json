@@ -1,0 +1,102 @@
+[
+  {
+    "lesson": 1,
+    "title": "О себе",
+    "path": "assets/hsk2-approved-covers/lesson-01-scene.webp",
+    "sha256": "3978a84312695e075f2de171425f29967904e13a2b42d1eda93432f1c1f06b29",
+    "size": [
+      941,
+      950
+    ]
+  },
+  {
+    "lesson": 2,
+    "title": "Мой день",
+    "path": "assets/hsk2-approved-covers/lesson-02-scene.webp",
+    "sha256": "e94ec9cd41f4134e5ff130b4bf93744b95de4f5c22e57d9c9f09505355b9d66f",
+    "size": [
+      941,
+      950
+    ]
+  },
+  {
+    "lesson": 3,
+    "title": "Работа и учёба",
+    "path": "assets/hsk2-approved-covers/lesson-03-scene.webp",
+    "sha256": "3141d97d7a4a92705072ca419e70407fbc174148672aa0183bc0b0c970164790",
+    "size": [
+      941,
+      950
+    ]
+  },
+  {
+    "lesson": 4,
+    "title": "Моё хобби",
+    "path": "assets/hsk2-approved-covers/lesson-04-scene.webp",
+    "sha256": "9dc6c3e1f724b24bd753a998dba5738f7fd77cf2e5cd65989054e67a5474287d",
+    "size": [
+      941,
+      950
+    ]
+  },
+  {
+    "lesson": 5,
+    "title": "Друзья и встречи",
+    "path": "assets/hsk2-approved-covers/lesson-05-scene.webp",
+    "sha256": "98ed18f0fc1888fdf5faa09d4e4b8be33cb40930ac5e4f01ce4b71e1c85bcef7",
+    "size": [
+      941,
+      950
+    ]
+  },
+  {
+    "lesson": 6,
+    "title": "Вчера и мой опыт",
+    "path": "assets/hsk2-approved-covers/lesson-06-scene.webp",
+    "sha256": "46397ea6d441b5f0dab43330b348b9bbe79b38501cd8c795991b881a9958c88e",
+    "size": [
+      941,
+      950
+    ]
+  },
+  {
+    "lesson": 7,
+    "title": "Мои планы на будущее",
+    "path": "assets/hsk2-approved-covers/lesson-07-scene.webp",
+    "sha256": "e178177a523034d80a311a9d215f0626310751cf6d82612ea5049f720c427362",
+    "size": [
+      941,
+      950
+    ]
+  },
+  {
+    "lesson": 8,
+    "title": "В магазине",
+    "path": "assets/hsk2-approved-covers/lesson-08-scene.webp",
+    "sha256": "ddf42dc614baaee51ad8c3105216702086606a2cc3abf6d2f5eaabf9d6eccf7a",
+    "size": [
+      941,
+      950
+    ]
+  },
+  {
+    "lesson": 9,
+    "title": "Здоровье и самочувствие",
+    "path": "assets/hsk2-approved-covers/lesson-09-scene.webp",
+    "sha256": "048c5800b615429ce4d79e1d0fe6af96138774b8c5feb9d34a780ad780134f9c",
+    "size": [
+      941,
+      950
+    ]
+  },
+  {
+    "lesson": 10,
+    "title": "Любовь и отношения",
+    "path": "assets/hsk2-approved-covers/lesson-10-scene.webp",
+    "sha256": "9952aba7d594ce071a7d97c8d9bfb2837966cc12e0a6727e26925b9e3d098ab4",
+    "size": [
+      941,
+      950
+    ]
+  }
+]
