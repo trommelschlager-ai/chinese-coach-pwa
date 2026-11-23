@@ -13,7 +13,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter, ImageOps
 
 W,H=693,1444
-CROP=(235,515,445,720)
+CROP=(205,740,380,915)
 
 def make_mask(geometry, blur=.35):
     ss=4
