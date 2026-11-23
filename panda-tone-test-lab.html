@@ -751,7 +751,15 @@ function buildRecording(rec){
  const voiced=levels.filter(p=>p[1]>=.023);
  const points=(rec.samples||[]).filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1])&&p[1]>=70&&p[1]<=600);
  const speech=selectSpeechSegment(levels,points);
- const from=speech.from,to=speech.to,duration=finite(from)&&finite(to)?to-from:0;
+ // Windowed F0 is centered in time. RMS boundaries can end before a real
+ // trailing pitch window; clipping those windows to 1.0 invents zero-time jumps.
+ // Extend only to EXISTING measured F0 points within the former ±60/80ms
+ // search padding. Never synthesize/interpolate pitch or bridge a longer pause.
+ const rmsFrom=speech.from,rmsTo=speech.to;
+ const adjacentPitch=points.filter(p=>p[0]>=rmsFrom-.06&&p[0]<=rmsTo+.08);
+ const from=adjacentPitch.length?Math.min(rmsFrom,adjacentPitch[0][0]):rmsFrom;
+ const to=adjacentPitch.length?Math.max(rmsTo,adjacentPitch.at(-1)[0]):rmsTo;
+ const duration=finite(from)&&finite(to)?to-from:0;
  const validSound=speech.frames>=5&&duration>=.24;
  const rmsValues=levels.map(p=>p[1]).sort((a,b)=>a-b),peak=rmsValues.at(-1)??0,p95=rmsValues[Math.max(0,Math.ceil(rmsValues.length*.95)-1)]??0;
  const signal={frames:levels.length,voicedFrames:voiced.length,peak,p95,seconds:levels.at(-1)?.[0]??0,rawF0:points.length,threshold:.023,
@@ -764,9 +772,9 @@ function buildRecording(rec){
    result.levels=levels.map(p=>[Math.max(0,Math.min(1,p[0]/span)),p[1]]).slice(-180);
    return {accepted:false,entry:result,message:'Недостаточный сигнал микрофона: '+voiced.length+' кадров выше порога RMS 0,023 из '+levels.length+'. Пик RMS '+peak.toFixed(4)+'. Проверь, слышен ли голос при воспроизведении записи.'};
  }
- const speechPoints=points.filter(p=>p[0]>=from-.08&&p[0]<=to+.08).slice(-120);
+ const speechPoints=points.filter(p=>p[0]>=from&&p[0]<=to).slice(-120);
  const span=Math.max(.001,duration);
- const normalized=speechPoints.map(p=>[Math.min(1,Math.max(0,(p[0]-from)/span)),p[1]]);
+ const normalized=speechPoints.map(p=>[(p[0]-from)/span,p[1]]);
  // A low-energy valley or a voiced-pitch pause can hint at the boundary.
  // Only use pitch-based alignment when voiced pitch covers most of the audible interval.
  const pitchCoverage=speechPoints.length>1?(speechPoints.at(-1)[0]-speechPoints[0][0])/span:0;
