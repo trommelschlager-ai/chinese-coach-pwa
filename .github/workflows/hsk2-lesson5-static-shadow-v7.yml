@@ -55,13 +55,16 @@ jobs:
           dest.parent.mkdir(parents=True,exist_ok=True)
           im.save(dest,optimize=True)
           print('Edited',count,'pixels at',w,h,'saved',dest,'bytes',dest.stat().st_size)
+          preview=Path('assets/hsk2-approved-covers/lesson-05-full-softshadow-v7-preview.webp')
+          im.resize((422,934)).save(preview,format='WEBP',quality=90,method=6)
+          print('Preview',preview,preview.stat().st_size)
           PY
       - name: Commit edited static artwork
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/hsk2-approved-covers/lesson-05-full-softshadow-v7.png
-          git commit -m "HSK2 lesson 5: add exact-size poster with gentler baked shadow"
+          git add assets/hsk2-approved-covers/lesson-05-full-softshadow-v7.png assets/hsk2-approved-covers/lesson-05-full-softshadow-v7-preview.webp
+          git commit -m "HSK2 lesson 5: add edited poster and visual preview"
           git fetch origin hsk2-lesson5-static-button-shadow-v7-20261123
           git rebase origin/hsk2-lesson5-static-button-shadow-v7-20261123
           git push origin HEAD:hsk2-lesson5-static-button-shadow-v7-20261123
