@@ -1,5 +1,5 @@
 {
-  "version": 527,
+  "version": 528,
   "bytes": 80382882,
   "files": [
     "./assets/panda-character-clean-v349.webp",
@@ -3345,6 +3345,10 @@
     "./assets/panda-everyday-meaning-v515.mjs?v=518",
     "./assets/panda-hsk2-brain-v1.mjs?v=519",
     "./assets/panda-live-dialogue-v272.mjs?v=519",
-    "./assets/panda-hsk1-questions-v281.mjs?v=409"
+    "./assets/panda-hsk1-questions-v281.mjs?v=409",
+    "./assets/panda-hsk2-preview-core-v1.mjs?v=534",
+    "./assets/panda-hsk2-brain-v1.mjs?v=520",
+    "./assets/panda-live-dialogue-v272.mjs?v=520",
+    "./assets/panda-everyday-meaning-v515.mjs?v=520"
   ]
 }
