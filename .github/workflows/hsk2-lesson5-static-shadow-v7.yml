@@ -62,4 +62,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/hsk2-approved-covers/lesson-05-full-softshadow-v7.png
           git commit -m "HSK2 lesson 5: add exact-size poster with gentler baked shadow"
+          git fetch origin hsk2-lesson5-static-button-shadow-v7-20261123
+          git rebase origin/hsk2-lesson5-static-button-shadow-v7-20261123
           git push origin HEAD:hsk2-lesson5-static-button-shadow-v7-20261123
