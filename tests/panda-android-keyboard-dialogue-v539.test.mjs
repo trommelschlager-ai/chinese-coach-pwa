@@ -66,9 +66,9 @@ test('v544 assets and SW cached together to avoid stale Android scripts',()=>{
   const html=source('../panda-voice-pilot.html');
   const worker=source('../sw.js');
   const pack=JSON.parse(source('../assets/offline-pack.json'));
-  assert.equal(pack.version,544);
-  assert.match(worker,/const CACHE='chinese-coach-pwa-v544-/);
-  for(const asset of ['panda-hsk2-preview-v506.css?v=543','panda-hsk2-preview-ui-v1.mjs?v=543','panda-approved-soft-v500.js?v=543']){
+  assert.equal(pack.version,545);
+  assert.match(worker,/const CACHE='chinese-coach-pwa-v545-/);
+  for(const asset of ['panda-hsk2-preview-v506.css?v=545','panda-hsk2-preview-ui-v1.mjs?v=543','panda-approved-soft-v500.js?v=545']){
     assert(html.includes(asset));
     assert(pack.files.some(f=>f.endsWith(asset)));
     assert(worker.includes(asset));
