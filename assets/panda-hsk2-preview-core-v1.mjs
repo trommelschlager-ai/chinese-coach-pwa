@@ -230,7 +230,7 @@ function setMode(mode){
  }
  if(mode==='short')state.lockedTopic=null;if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 let hsk2=null;
-function beginHSK2(id,index=0,autoplay=true){
+function beginHSK2(id,index=0,autoplay=true,skipInitialQuestion=false){
  friendlyStage=null;state.naturalAwaiting=null;
  const t=getTopic(id);if(!t)return false;
  cancelFollowup();stopAudio();stopRecognition();hsk2={id:t.id,index,done:false,exact:0,similar:0,unknown:0,context:null};
@@ -238,7 +238,7 @@ function beginHSK2(id,index=0,autoplay=true){
  if(dayParams.get('from')==='hsk2-about-me')$('back-link').href='./hsk2-about-me.html?step=7';
  $('allowed-topics').textContent='HSK 2 · '+t.name+' — разговорная практика по изученным конструкциям.';
  $('words').replaceChildren();for(const w of t.words){const p=document.createElement('p');p.textContent=[w.zh,w.py,w.ru].join(' — ');$('words').append(p)}
- askHSK2(autoplay);return true;
+ if(!skipInitialQuestion)askHSK2(autoplay);return true;
 }
 function askHSK2(autoplay=true){
  const q=getTopic(hsk2.id).questions[hsk2.index],l=prompt(q);
@@ -704,7 +704,7 @@ window.PandaApprovedBridge337={
  openTopicForChat:id=>{
   id=Number(id);state.naturalAwaiting=null;
   if(getTopic(id)){
-   if(!beginHSK2(id,0,false))return false;
+   if(!beginHSK2(id,0,false,true))return false;
    hsk2.openChat=true;state.mode='nonstop';state.prompt=null;state.awaitQuestion=true;
   }else{
    if(!window.PandaApprovedBridge337.chooseTopic(id))return false;
