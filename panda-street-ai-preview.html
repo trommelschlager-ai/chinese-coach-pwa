@@ -244,11 +244,33 @@ const MALE_CUES=Object.freeze({
  '那就好':[12.017,12.653]
 });
 let playing=null,voiceToken=0;
+// Exact 3 native-approved male MP3s only. Unknown phrases stay text-only.
+const approvedMaleRegistryPromise=import('./assets/panda-street-approved-male-mp3-v1.mjs?v=1')
+ .catch(error=>{console.warn('Approved Street male audio registry unavailable:',error);return null});
+function playApprovedStreetMaleClip(clip,token){
+ if(token!==voiceToken)return;
+ const audio=new Audio(clip.src);playing=audio;audio.preload='auto';audio.playbackRate=1;
+ if('preservesPitch' in audio)audio.preservesPitch=true;
+ const valid=()=>token===voiceToken&&playing===audio;
+ const clear=()=>{if(valid())playing=null};
+ audio.addEventListener('ended',clear);
+ audio.addEventListener('error',()=>{if(valid()){clear();tip('Мужская MP3 недоступна. Реплика остаётся текстом.')}});
+ const started=audio.play();
+ if(started?.catch)started.catch(()=>{if(valid()){clear();tip('Нажми ещё раз, чтобы прослушать мужскую запись.')}});
+}
 function speak(text){
  const cue=MALE_CUES[normalizeZh(text)];
  if(playing){playing.pause();playing=null}
  const token=++voiceToken;
- if(!cue){tip('Фраза показана текстом · мужская запись для неё пока не загружена');return false}
+ if(!cue){
+  approvedMaleRegistryPromise.then(mod=>{
+   if(token!==voiceToken)return;
+   const clip=mod?.lookupApprovedStreetMaleMp3(text);
+   if(!clip){tip('Фраза показана текстом · мужская запись для неё пока не загружена');return}
+   playApprovedStreetMaleClip(clip,token);
+  });
+  return true;
+ }
  const a=new Audio(MALE_VOICE);playing=a;a.preload='auto';a.playbackRate=.75;
  if('preservesPitch' in a)a.preservesPitch=true;
  const ready=()=>{

@@ -1,0 +1,214 @@
+{
+  "schema": "panda-street-male-voice-queue-v1",
+  "generatedFrom": "panda-street-ai-preview.html",
+  "date": "2026-11-23",
+  "voice": "approved male Panda Street Luvvoice; same voice as street lesson 1",
+  "warning": "Three native-approved exact male MP3 files (01–03) have been uploaded and activated in this isolated draft PR, pending Android/offline QA and merge. The other phrases still await generation and review. The 18-item queue is not exhaustive.",
+  "recordingRules": [
+    "Generate one Chinese phrase per MP3, no combined narration",
+    "Natural clear Mandarin; slower approved male voice; consistent volume",
+    "No additional female voice, system TTS or voice cloning",
+    "No leading/trailing speech, residual hiss, or cut-off final syllables",
+    "Native-speaker approval, verify tones and final audio before activating any new file"
+  ],
+  "phrases": [
+    {
+      "id": "street-voice-01",
+      "priority": "P0",
+      "category": "home-preview",
+      "hanzi": "我有点忙。",
+      "pinyin": "Wǒ yǒudiǎn máng.",
+      "russian": "Я немного занят.",
+      "status": "native-speaker-approved-active-in-pr",
+      "audioPath": "assets/panda-street-male-voice-v1/01.mp3",
+      "nativeApprovalDate": "2026-11-23",
+      "nativeApprovalSource": "Owner-reported approval from Chinese native speaker: voice is excellent and may be used",
+      "mp3Sha256": "17b320c370cd0577afda3113dc0d848fd8495e4a10ce9997e71572922bc5b4ed",
+      "mp3Bytes": 18860,
+      "preparedLocalSourceName": "panda_street_01_review.mp3",
+      "activationBranch": "feat/panda-shared-learner-memory-20261123"
+    },
+    {
+      "id": "street-voice-02",
+      "priority": "P0",
+      "category": "home-preview",
+      "hanzi": "你晚上有什么计划？",
+      "pinyin": "Nǐ wǎnshang yǒu shénme jìhuà?",
+      "russian": "Какие у тебя планы на вечер?",
+      "status": "native-speaker-approved-active-in-pr",
+      "audioPath": "assets/panda-street-male-voice-v1/02.mp3",
+      "nativeApprovalDate": "2026-11-23",
+      "nativeApprovalSource": "Owner-reported approval from Chinese native speaker: voice is excellent and may be used",
+      "mp3Sha256": "29411eae89f95156d6c6f81ddfc214c028f7f766b701610beb421aae800f878b",
+      "mp3Bytes": 33452,
+      "preparedLocalSourceName": "panda_street_02_candidate.mp3",
+      "activationBranch": "feat/panda-shared-learner-memory-20261123"
+    },
+    {
+      "id": "street-voice-03",
+      "priority": "P0",
+      "category": "home-preview",
+      "hanzi": "我们聊聊吧！",
+      "pinyin": "Wǒmen liáoliao ba!",
+      "russian": "Давай поболтаем!",
+      "status": "native-speaker-approved-active-in-pr",
+      "audioPath": "assets/panda-street-male-voice-v1/03.mp3",
+      "nativeApprovalDate": "2026-11-23",
+      "nativeApprovalSource": "Owner-reported approval from Chinese native speaker: voice is excellent and may be used",
+      "mp3Sha256": "b9da1f4b28133011d1c3fdc97e644a4f75029270b1fcc73cb7cd426e59aa8df7",
+      "mp3Bytes": 30284,
+      "preparedLocalSourceName": "panda_street_03_review.mp3",
+      "activationBranch": "feat/panda-shared-learner-memory-20261123"
+    },
+    {
+      "id": "street-voice-04",
+      "priority": "P0",
+      "category": "home-preview",
+      "hanzi": "你好！",
+      "pinyin": "Nǐ hǎo!",
+      "russian": "Привет!",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/04.mp3"
+    },
+    {
+      "id": "street-voice-05",
+      "priority": "P0",
+      "category": "home-preview",
+      "hanzi": "你今天怎么样？",
+      "pinyin": "Nǐ jīntiān zěnmeyàng?",
+      "russian": "Как ты сегодня?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/05.mp3"
+    },
+    {
+      "id": "street-voice-06",
+      "priority": "P0",
+      "category": "home-preview",
+      "hanzi": "你晚上做什么？",
+      "pinyin": "Nǐ wǎnshang zuò shénme?",
+      "russian": "Что ты делаешь вечером?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/06.mp3"
+    },
+    {
+      "id": "street-voice-07",
+      "priority": "P1",
+      "category": "legacy-fallback",
+      "hanzi": "没关系，我们慢慢来。",
+      "pinyin": "Méi guānxi, wǒmen mànmàn lái.",
+      "russian": "Ничего страшного, не будем спешить.",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/07.mp3"
+    },
+    {
+      "id": "street-voice-08",
+      "priority": "P1",
+      "category": "legacy-fallback",
+      "hanzi": "你学中文吗？",
+      "pinyin": "Nǐ xué Zhōngwén ma?",
+      "russian": "Ты изучаешь китайский?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/08.mp3"
+    },
+    {
+      "id": "street-voice-09",
+      "priority": "P1",
+      "category": "legacy-fallback",
+      "hanzi": "你做什么工作？",
+      "pinyin": "Nǐ zuò shénme gōngzuò?",
+      "russian": "Кем ты работаешь?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/09.mp3"
+    },
+    {
+      "id": "street-voice-10",
+      "priority": "P1",
+      "category": "legacy-fallback",
+      "hanzi": "你住在哪里？",
+      "pinyin": "Nǐ zhù zài nǎlǐ?",
+      "russian": "Где ты живёшь?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/10.mp3"
+    },
+    {
+      "id": "street-voice-11",
+      "priority": "P1",
+      "category": "legacy-fallback",
+      "hanzi": "你吃饭了吗？",
+      "pinyin": "Nǐ chī fàn le ma?",
+      "russian": "Ты уже поел?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/11.mp3"
+    },
+    {
+      "id": "street-voice-12",
+      "priority": "P1",
+      "category": "legacy-fallback",
+      "hanzi": "不客气！",
+      "pinyin": "Bú kèqi!",
+      "russian": "Не за что!",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/12.mp3"
+    },
+    {
+      "id": "street-voice-13",
+      "priority": "P1",
+      "category": "legacy-fallback",
+      "hanzi": "你想聊什么？",
+      "pinyin": "Nǐ xiǎng liáo shénme?",
+      "russian": "О чём хочешь поговорить?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/13.mp3"
+    },
+    {
+      "id": "street-voice-14",
+      "priority": "P2",
+      "category": "legacy-my-day",
+      "hanzi": "你早上做什么？",
+      "pinyin": "Nǐ zǎoshang zuò shénme?",
+      "russian": "Что ты делаешь утром?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/14.mp3"
+    },
+    {
+      "id": "street-voice-15",
+      "priority": "P2",
+      "category": "legacy-my-day",
+      "hanzi": "你上午做什么？",
+      "pinyin": "Nǐ shàngwǔ zuò shénme?",
+      "russian": "Что ты делаешь до обеда?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/15.mp3"
+    },
+    {
+      "id": "street-voice-16",
+      "priority": "P2",
+      "category": "legacy-my-day",
+      "hanzi": "你中午做什么？",
+      "pinyin": "Nǐ zhōngwǔ zuò shénme?",
+      "russian": "Что ты делаешь в полдень?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/16.mp3"
+    },
+    {
+      "id": "street-voice-17",
+      "priority": "P2",
+      "category": "legacy-my-day",
+      "hanzi": "你下午做什么？",
+      "pinyin": "Nǐ xiàwǔ zuò shénme?",
+      "russian": "Что ты делаешь после обеда?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/17.mp3"
+    },
+    {
+      "id": "street-voice-18",
+      "priority": "P2",
+      "category": "legacy-my-day",
+      "hanzi": "你回家以后做什么？",
+      "pinyin": "Nǐ huí jiā yǐhòu zuò shénme?",
+      "russian": "Что ты делаешь после возвращения домой?",
+      "status": "awaiting-approved-male-luvvoice",
+      "audioPath": "assets/panda-street-male-voice-v1/18.mp3"
+    }
+  ]
+}
