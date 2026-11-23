@@ -93,7 +93,72 @@ try{
   await whyRows.last().locator('.pg346-row-audio').click();
   await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pose==='talking',null,{timeout:7000});
   await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-movie-why-reason.png',fullPage:false,animations:'disabled'});
-  console.log('PASS mobile browser '+width+'px: 5 learner turns + 4-step movie chat + translations + approved Panda intact');
+  // v519: exercise ACTUAL UI and learner history for contextual "no" answers.
+  // All checks run on mobile widths; they are not acoustic tone measurements.
+  const negativeRounds=[
+   [102,'你早上吃早饭吗？','不吃','Bù chī.','你几点去上班？'],
+   [103,'你在学校学习吗？','不在','Bú zài.','你会说中文吗？'],
+   [105,'你明天下午有空吗？','没空','Méi kòng.','没关系，那我们改天再约吧。'],
+   [106,'你昨天运动了吗？','我昨天没运动','Wǒ zuótiān méi yùndòng.','你去过上海吗？'],
+   [109,'你今天怎么样？','不好','Bù hǎo.','怎么了？'],
+   [110,'周末要不要一起喝咖啡？','不想','Bù xiǎng.','没关系，我们可以聊点别的。']
+  ];
+  for(const [topic,question,learner,pinyin,nextQuestion] of negativeRounds){
+   const started=await page.evaluate(([id,zh])=>window.PandaApprovedBridge337.startTopicQuestion(id,zh),[topic,question]);
+   assert.equal(started,true,'Cannot start reviewed Panda question '+question);
+   // Approved design keeps the composer hidden until the paper-plane button is tapped.
+   await page.locator('#pg346-send').click();
+   await page.locator('#pg346-input').waitFor({state:'visible',timeout:5000});
+   await page.locator('#pg346-input').fill(learner);
+   await page.locator('#pg346-send').click();
+   await page.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,nextQuestion,{timeout:5000});
+   const negativeRows=page.locator('#pg346-rows .pg346-row');
+   const previous=negativeRows.nth((await negativeRows.count())-2);
+   assert.equal(await previous.locator('.pg346-zh').textContent(),learner);
+   assert.equal(await previous.locator('.pg346-py').textContent(),pinyin,'Wrong tone marks for '+learner);
+   assert(!/не подтверждён/.test(await previous.locator('.pg346-ru').textContent()),'Missing meaning for '+learner);
+   assert.equal(await negativeRows.last().locator('.pg346-zh').textContent(),nextQuestion,'Panda must honor the meaning of the refusal rather than force the next question');
+  }
+  const startedInverse=await page.evaluate(()=>window.PandaApprovedBridge337.startTopicQuestion(104,'你喜欢运动吗？'));
+  assert.equal(startedInverse,true);
+  await page.locator('#pg346-send').click();
+  await page.locator('#pg346-input').waitFor({state:'visible',timeout:5000});
+  await page.locator('#pg346-input').fill('你不喜欢运动吗？');
+  await page.locator('#pg346-send').click();
+  await page.waitForFunction(()=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent==='喜欢，我喜欢运动。',null,{timeout:5000});
+  await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-negative-dialogue.png',fullPage:false,animations:'disabled'});
+  assert(!errors.length,'Browser errors after negative-dialogue QA: '+JSON.stringify(errors));
+
+  // v520: reproduce the student's screenshot in the actual SHORT dialogue UI.
+  // Existing design, original Panda and voice assets must remain untouched.
+  const introPage=await context.newPage();
+  const introErrors=[];
+  introPage.on('pageerror',e=>introErrors.push(e.message));
+  await introPage.goto(base+'/panda-voice-pilot.html',{waitUntil:'domcontentloaded'});
+  await introPage.locator('#pg346').waitFor({state:'visible',timeout:15000});
+  await introPage.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true',{timeout:15000});
+  assert.equal(await introPage.locator('#pg346-short').getAttribute('aria-pressed'),'true',
+   'Student screenshot reproduces the short-dialogue mode');
+  const introTurns=[
+   ['我爱你！','谢谢你！我很开心！你叫什么名字？','Xièxie nǐ! Wǒ hěn kāixīn! Nǐ jiào shénme míngzi?'],
+   ['我叫小明。','很高兴认识你！你今天怎么样？','Hěn gāoxìng rènshi nǐ! Nǐ jīntiān zěnmeyàng?'],
+   ['我很好。','太好了！你想聊什么？','Tài hǎo le! Nǐ xiǎng liáo shénme?']
+  ];
+  for(const [learner,panda,py] of introTurns){
+   await introPage.locator('#pg346-send').click();
+   await introPage.locator('#pg346-input').fill(learner);
+   await introPage.locator('#pg346-send').click();
+   await introPage.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,panda,{timeout:6000});
+   const last=introPage.locator('#pg346-rows .pg346-row').last();
+   assert.equal(await last.locator('.pg346-zh').textContent(),panda);
+   assert.equal(await last.locator('.pg346-py').textContent(),py);
+   assert(!/我没听懂/.test(await last.textContent()),'Recognized beginner text cannot be treated as incomprehensible');
+  }
+  assert(!introErrors.length,'Intro page JS errors: '+JSON.stringify(introErrors));
+  await introPage.screenshot({path:'qa/panda-context-v1/panda-'+width+'-friendly-intro-short.png',
+   fullPage:false,animations:'disabled'});
+  await introPage.close();
+  console.log('PASS mobile browser '+width+'px: 5 learner turns + 4-step movie chat + six negative question rounds + inverse question + short-mode friendly intro');
   await context.close();
  }
 } finally {await browser.close()}

@@ -29,10 +29,13 @@ test('existing Panda voices and no false sound remain',()=>{
  }
  assert.equal(lookupPandaVoiceClip('没有录音的句子'),null);
 });
-test('mobile screen and history load the same current Panda voice mapping',()=>{
+test('active mobile core and UI use the same exact approved Panda voice mapping',()=>{
  const read=path=>fs.readFileSync(new URL('../'+path,import.meta.url),'utf8');
- assert(/panda-live-audio\.mjs\?v=\d+/.test(read('assets/panda-live-v346.mjs')));
- assert(/panda-live-audio\.mjs\?v=\d+/.test(read('assets/panda-live-screen-v270.mjs')));
- assert(/panda-live-screen-v270\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
- assert(/panda-live-v346\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
+ const core=read('assets/panda-hsk2-preview-core-v1.mjs');
+ const ui=read('assets/panda-hsk2-preview-ui-v1.mjs');
+ const html=read('panda-voice-pilot.html');
+ assert.match(core,/panda-hsk2-preview-audio-v1\.mjs\?v=\d+/,'Active core must load approved recording registry');
+ assert.match(ui,/panda-hsk2-preview-audio-v1\.mjs\?v=\d+/,'Active UI must use the same recording registry');
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=\d+/,'Current core must be cache-versioned');
+ assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/,'Current UI must be cache-versioned');
 });

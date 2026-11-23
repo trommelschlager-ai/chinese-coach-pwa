@@ -333,7 +333,7 @@ if (!bridge) {
   function ingestSpeechSignal(signal,previousSnapshot){
     if(!signal||signal.id===lastSpeechSignalId)return;
     lastSpeechSignalId=signal.id;clearTimeout(effectTimer);
-    if(signal.kind==='uncertain'&&signal.text){
+    if((signal.kind==='uncertain'||signal.kind==='text-only')&&signal.text){
       // The active visible composer, not the hidden legacy input, must receive the editable transcript.
       const visibleInput=$('#pg346-input');visibleInput.value=signal.text;visibleInput.focus();
     }

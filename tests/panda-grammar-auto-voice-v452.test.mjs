@@ -58,6 +58,10 @@ test('existing Panda player handles playback, not a new voice or microphone requ
  assert.ok(fn.includes('lookupPandaVoiceClip(c.hanzi)'));
  assert.ok(!fn.includes('startRecognition('));
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- assert.ok(html.includes('panda-live-screen-v270.mjs?v=452'));
- assert.ok(html.includes('panda-live-v346.mjs?v=453'));
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=\d+/, 'Active correction engine must load');
+ assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/, 'Approved visible UI must load');
+ const core=fs.readFileSync(new URL('../assets/panda-hsk2-preview-core-v1.mjs',import.meta.url),'utf8');
+ assert.ok(core.includes('function recordCorrection(input,spoken){'));
+ assert.ok(core.includes('const verifiedClip=!c.uncertain&&lookupPandaVoiceClip(c.hanzi)'));
+ assert.ok(core.includes('if(verifiedClip)play({hanzi:c.hanzi,audioKey:c.hanzi})'));
 });

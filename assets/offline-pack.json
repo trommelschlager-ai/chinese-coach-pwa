@@ -1,5 +1,5 @@
 {
-  "version": 509,
+  "version": 528,
   "bytes": 80382882,
   "files": [
     "./assets/panda-character-clean-v349.webp",
@@ -3331,6 +3331,24 @@
     "./assets/hsk2-catalog-thumbnails/future.webp",
     "./assets/hsk2-catalog-thumbnails/shop.webp",
     "./assets/hsk2-catalog-thumbnails/health.webp",
-    "./assets/hsk2-catalog-thumbnails/relationships.webp"
+    "./assets/hsk2-catalog-thumbnails/relationships.webp",
+    "./assets/panda-approved-soft-v500.css?v=527",
+    "./assets/panda-hsk2-preview-v506.css?v=533",
+    "./assets/panda-hsk2-preview-core-v1.mjs?v=533",
+    "./assets/panda-hsk2-preview-ui-v1.mjs?v=527",
+    "./assets/panda-memory-live-connector-v1.mjs?v=1",
+    "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=516",
+    "./assets/panda-approved-soft-v500.js?v=525",
+    "./assets/hsk2-home-photo2-v447.css?v=448",
+    "./assets/hsk2-home-photo2-v447.js?v=448",
+    "./assets/panda-negative-dialogue-v519.mjs?v=519",
+    "./assets/panda-everyday-meaning-v515.mjs?v=518",
+    "./assets/panda-hsk2-brain-v1.mjs?v=519",
+    "./assets/panda-live-dialogue-v272.mjs?v=519",
+    "./assets/panda-hsk1-questions-v281.mjs?v=409",
+    "./assets/panda-hsk2-preview-core-v1.mjs?v=534",
+    "./assets/panda-hsk2-brain-v1.mjs?v=520",
+    "./assets/panda-live-dialogue-v272.mjs?v=520",
+    "./assets/panda-everyday-meaning-v515.mjs?v=520"
   ]
 }

@@ -1,57 +1,86 @@
 'use strict';
+/* Compatibility regression for the original interactive HSK2 day engine.
+ * The current course welcome CTA deliberately opens hsk2-about-me.html;
+ * v414 and v433 wrap this engine in other approved screens. Test the engine
+ * directly without requiring its retired welcome-page markup or device TTS.
+ */
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
-const path=require('node:path');
-const {JSDOM,VirtualConsole}=require('jsdom');
-const root=path.join(__dirname,'..');
-const html=fs.readFileSync(path.join(root,'hsk2-life-course.html'),'utf8');
-const errors=[],vc=new VirtualConsole();
-vc.on('jsdomError',e=>errors.push(e.message));
-vc.on('error',e=>errors.push(String(e)));
-const dom=new JSDOM(html,{url:'https://example.org/hsk2-life-course.html',runScripts:'dangerously',virtualConsole:vc});
-const w=dom.window,doc=w.document;
-const spoken=[];
-let humanPlay=0;
-w.speechSynthesis={cancel(){},speak(u){spoken.push(u.text)},getVoices(){return [{lang:'zh-CN',name:'Mandarin test'}]}};
-w.SpeechSynthesisUtterance=class{constructor(text){this.text=text}};
-w.PandaHsk2AudioV330={lookup(zh){return zh==='我起床以后洗脸'?'sample.mp3':null},play(){humanPlay++;return true},stop(){}};
-for(const f of ['assets/hsk2-life-course-data-v1.js','assets/hsk2-day-first-data-v1.js','assets/hsk2-day-topic-one-v391.js','assets/hsk2-day-first-ui-v1.js','assets/hsk2-life-course-app-v1.js'])
- w.eval(fs.readFileSync(path.join(root,f),'utf8'));
-const click=selector=>{const b=doc.querySelector(selector);assert.ok(b,'Missing '+selector);assert.ok(!b.disabled,'Disabled '+selector);b.click()};
-click('.approved-start');
-assert.ok(doc.querySelector('.art-sound'),'Approved first-lesson art must remain');
-click('.art-sound');
-assert.deepEqual(spoken,['起床'],'Clicking image speaker says the exact word, not a whole unrelated sentence');
-assert.equal(doc.querySelector('.art-audio-note'),null,'Sound tap must not create an overlay or cause a rerender');
-assert.equal(humanPlay,0);
+const {JSDOM}=require('jsdom');
+const html=fs.readFileSync('hsk2-life-course.html','utf8');
+for(const script of [
+ 'hsk2-day-first-ui-v1.js','hsk2-six-screens-v414.js',
+ 'hsk2-exact-overlay-v415.js','hsk2-storyboard-v439.js'
+ ]) assert(html.includes(script),'Current HSK2 course must preserve '+script);
+const live=fs.readFileSync('assets/hsk2-life-course-app-v1.js','utf8');
+assert.match(live,/function openFirstLesson\(step\)\s*\{[\s\S]*?hsk2-about-me\.html/,
+ 'Welcome CTA still opens the current approved first lesson');
+const dom=new JSDOM('<!doctype html><html><body><main id="screen"></main></body></html>',{
+ url:'https://panda.test/hsk2-life-course.html',runScripts:'outside-only'});
+const w=dom.window,d=w.document;
+for(const file of [
+ 'assets/hsk2-life-course-data-v1.js',
+ 'assets/hsk2-day-first-data-v1.js',
+ 'assets/hsk2-day-topic-one-v391.js',
+ 'assets/hsk2-day-first-ui-v1.js'
+ ])w.eval(fs.readFileSync(file,'utf8'));
+assert.equal(w.PandaGoDayModulesV391.length,3,'Three day mini-lessons remain defined');
+assert.deepEqual(Array.from(w.PandaGoDayModulesV391,x=>x.words.length),[7,7,6]);
+let played=0,spoken=[],completed=0;
+w.PandaHsk2AudioV330={lookup(zh){return zh==='我起床以后洗脸'?'sample.mp3':null},
+ play(){played++;return true},stop(){}};
+const ui=w.PandaGoDayFirstUIV1;
+assert(ui&&typeof ui.render==='function'&&typeof ui.handle==='function');
+const state={view:'lesson',topic:0,mini:0,stage:0,showPy:true,day:ui.makeState(0)};
+const ctx={sound(zh){
+ const available=!!w.PandaHsk2AudioV330.lookup(zh);
+ return available?'<button class="audio" data-sound="'+zh+'">🔊</button>':
+  '<span class="audio hsk2-no-mp3" role="status">MP3 нет</span>';
+}};
+const api={
+ render(){d.getElementById('screen').innerHTML=ui.render(state,ctx)},
+ go(v){throw Error('Unexpected navigation: '+v)},
+ deviceSound(zh){spoken.push(zh)},
+ complete(){completed++}
+};
+function click(selector){
+ const button=d.querySelector(selector);
+ assert(button,'Missing real v413 control '+selector+' at stage '+state.stage);
+ assert(!button.disabled,'Disabled '+selector);
+ const handled=ui.handle(button,state,api);
+ assert.equal(handled,true,'Active handler must handle '+selector);
+}
+api.render();
+assert(d.querySelector('.day-visual-start img[src="./assets/approved-course-v390/day-lesson.png"]'),
+ 'Original approved v413 image stays in its own fallback module');
+click('[data-day-poster-audio]');
+assert.deepEqual(spoken,['起床'],'The original poster audio requests exactly 起床');
 click('[data-day-show-words]');
-const headers=()=>[...doc.querySelectorAll('.day-stages span')].map(n=>n.textContent.replace(/\s+/g,'').trim());
-assert.deepEqual(headers(),['1Слово','2Правило','3Речь','4Тест','5Примеры']);
-assert.ok(doc.querySelector('.day-headword').textContent.includes('起床'));
-click('[data-day-next]'); // grammar
-assert.ok(doc.querySelector('.day-formula').textContent.includes('七点'));
-click('[data-day-next]'); // speech
-assert.ok(doc.querySelector('.day-speech-card'));
-assert.ok(doc.querySelectorAll('.day-attempts>div').length===5);
-const genuine=doc.querySelector('.day-speechhero [data-sound="我起床以后洗脸"]');
-assert.ok(genuine,'An existing full-sentence MP3 is offered as its own labelled example');
-genuine.click();
-assert.equal(humanPlay,1,'Real human MP3 takes priority over device voice for the exact available sample');
-click('[data-day-speech-word="4"]'); // isolated 刷牙 is not in existing MP3 index
-const missing=doc.querySelector('.day-speechhero .hsk2-no-mp3');
-assert.ok(missing,'A missing word must show an honest non-interactive MP3 status');
-assert.match(missing.textContent,/MP3 нет/);
-assert.equal(doc.querySelector('.day-speechhero .missing-voice'),null,'Do not display a clickable imitation of recorded audio');
-assert.deepEqual(spoken,['起床'],'Missing standalone word must not trigger robotic Android voice');
-click('[data-day-next]'); // test
-assert.equal(doc.querySelectorAll('.day-question').length,2);
-click('[data-day-quiz="0:1"]');click('[data-day-quiz="1:0"]');
-for(let i=0;i<4;i++)click('[data-day-token="'+i+'"]');
-click('[data-day-next]'); // examples
-assert.equal(doc.querySelectorAll('.day-dialogue').length,4);
-assert.ok(doc.querySelectorAll('.day-line .audio').length>=3,'Examples are playable even if individual MP3 files are missing');
+assert.equal(d.querySelectorAll('.day-vword').length,7);
+assert(d.querySelector('.day-headword').textContent.includes('起床'));
+assert(d.querySelector('.day-recorded-example [data-sound="我起床以后洗脸"]'),
+ 'Existing sentence MP3 must not be mislabelled as a standalone-word recording');
 click('[data-day-next]');
-assert.ok(doc.querySelector('.day-ai-panel a'));
-assert.equal(JSON.parse(w.localStorage.getItem('pg-hsk2-life-course-v1')).completed.length,1);
-assert.deepEqual(errors,[]);
-console.log('PASS HSK2 v413: direct illustration speech, no popup, reordered stages, exact human MP3 priority, no robotic substitute and end-of-lesson progress');
+assert.equal(state.stage,1);
+assert.match(d.querySelector('.day-formula').textContent,/七点/);
+click('[data-day-next]');
+assert.equal(state.stage,2);
+assert.equal(d.querySelectorAll('.day-attempts>div').length,5);
+click('[data-day-speech-word="4"]');
+assert.match(d.querySelector('.day-speechhero .hsk2-no-mp3').textContent,/MP3 нет/,
+ 'Unknown standalone audio must show an honest unavailable status');
+assert.equal(played,0,'Missing MP3 must not play a replacement');
+assert.deepEqual(spoken,['起床'],'No additional speech request for unavailable audio');
+click('[data-day-next]');
+assert.equal(state.stage,3);
+assert.equal(d.querySelectorAll('.day-question').length,2);
+const first=w.PandaGoDayModulesV391[0];
+for(let i=0;i<2;i++)click('[data-day-quiz="'+i+':'+first.quiz[i].answer+'"]');
+for(let i=0;i<first.builder.length;i++)click('[data-day-token="'+i+'"]');
+click('[data-day-next]');
+assert.equal(state.stage,4,'Completion requires the correct quiz and ordered sentence');
+assert.equal(d.querySelectorAll('.day-dialogue').length,4);
+click('[data-day-next]');
+assert.equal(completed,1,'Original engine still signals completion once');
+dom.window.close();
+console.log('PASS HSK2 v413 compatibility: 7/7/6 words, original fallback art, honest exact MP3, 5 stages, quiz gate and completion. Production HSK2 v433 is tested separately.');

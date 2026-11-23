@@ -2,44 +2,59 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {chromium} from 'playwright';
 
+// The approved completion screen changed from v415 artwork to v433 storyboard.
+// Verify real navigation through current visible controls, not the removed v415 inputs.
 const base=process.env.PANDA_TEST_BASE||'http://127.0.0.1:4173';
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
-fs.mkdirSync('qa/panda-hsk2-back-v419',{recursive:true});
-try {
+const dir='qa/panda-hsk2-back-v419';
+fs.mkdirSync(dir,{recursive:true});
+try{
  for(const size of [{width:360,height:800},{width:393,height:852},{width:412,height:915}]){
   const tag=size.width+'x'+size.height;
   const context=await browser.newContext({viewport:size,isMobile:true,hasTouch:true,deviceScaleFactor:1,locale:'ru-RU'});
   const page=await context.newPage(),errors=[];
-  page.on('pageerror',err=>errors.push(err.message));
-  // Navigate directly to the screen where the user hands over to Panda AI.
-  await page.goto(base+'/hsk2-life-course.html?from=hsk2-life-course&return=done&mini=0&v=419',{waitUntil:'domcontentloaded'});
-  await page.locator('.pg415-ai-screen').waitFor();
-  await page.locator('.pg415-ai-screen .pg415-art').evaluate(async im=>{await im.decode()});
-  assert.equal(await page.locator('.pg415-ai-submit').textContent(),'➤','Checkmark should be a send arrow');
-  assert.equal(await page.locator('#pg414-ai-feedback.pg419-sr-status').count(),1,'Keep accessible feedback');
-  const hidden=await page.locator('#pg414-ai-feedback').evaluate(el=>{const r=el.getBoundingClientRect();return r.width<=2&&r.height<=2});
-  assert.ok(hidden,'Redundant beige feedback strip must not be visible');
-  await page.screenshot({path:'qa/panda-hsk2-back-v419/'+tag+'-01-panda-sixth-screen.png',fullPage:false});
-
-  // The back button inside the sixth screen must take student to exactly the last examples step.
-  await page.locator('.pg415-ai-back').click();
-  await page.locator('.pg415-step-4').waitFor();
-  assert.equal(await page.locator('.pg415-ai-screen').count(),0,'Should not restart the lesson or open topic map');
-  assert.equal(await page.locator('.pg415-step-4 .pg415-art').count(),1,'Must return to examples 5/5');
-
-  // Navigate again to the completed lesson and enter the separate full Panda chat.
-  await page.goto(base+'/hsk2-life-course.html?from=hsk2-life-course&return=done&mini=0&v=419',{waitUntil:'domcontentloaded'});
-  await page.locator('.pg415-ai-next').click();
-  await page.waitForURL(/panda-voice-pilot\.html\?.*practice=day/);
-  await page.locator('.pg346-back').waitFor({state:'visible',timeout:20000});
-  const href=await page.locator('.pg346-back').getAttribute('href');
-  assert.match(href,/hsk2-life-course\.html\?from=hsk2-life-course&return=done&mini=0/,'Panda must return to exact prior screen, not topic list');
-  await page.locator('.pg346-back').click();
-  await page.locator('.pg415-ai-screen').waitFor({timeout:15000});
-  assert.equal(await page.locator('.topic').count(),0,'Must not return to course topic map');
-  await page.screenshot({path:'qa/panda-hsk2-back-v419/'+tag+'-02-returned-to-exact-screen.png',fullPage:false});
-  assert.deepEqual(errors,[],'JS errors on Android '+tag);
+  page.on('pageerror',e=>errors.push(e.message));
+  const returnUrl=base+'/hsk2-life-course.html?from=hsk2-life-course&return=done&mini=0&v=419';
+  await page.goto(returnUrl,{waitUntil:'load'});
+  await page.locator('#pg433.pg433-done').waitFor({state:'visible'});
+  assert.equal(await page.locator('.pg433-ai-link').count(),1,'Completion screen must offer a single Panda AI link');
+  assert.equal(await page.locator('.pg433-done .pg433-sentence').count(),2,
+   'Approved two questions remain on the completed day lesson');
+  await page.screenshot({path:dir+'/'+tag+'-01-approved-completion.png',fullPage:false});
+  // This exact back button previously did nothing on the approved v433 completion screen.
+  await page.locator('.pg433-done [data-pg433-back]').click();
+  await page.locator('#pg433-content').waitFor({state:'visible'});
+  assert.match((await page.locator('.pg433-counter').textContent()).trim(),/^11\s*\/\s*12$/,
+   'Back must return to examples, not restart words or open topic map');
+  assert.match(await page.locator('#pg433-content h2').textContent(),/Примеры/);
+  assert.equal(await page.locator('.pg433-done').count(),0);
+  assert.equal(await page.locator('.topic').count(),0);
+  await page.screenshot({path:dir+'/'+tag+'-02-examples-preserved.png',fullPage:false});
+  // The completed lesson remains recoverable via the real Panda AI return URL.
+  await page.goto(returnUrl,{waitUntil:'load'});
+  await page.locator('.pg433-ai-link').click();
+  await page.waitForURL(/panda-voice-pilot\.html\?.*practice=day/,{timeout:20000});
+  await page.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true');
+  const back=page.locator('#pg346 a.pg346-back');
+  await back.waitFor({state:'visible'});
+  assert.match(await back.getAttribute('href'),/hsk2-life-course\.html\?from=hsk2-life-course&return=done&mini=0/,
+   'Panda chat back link must retain lesson and mini index');
+  assert.equal(await page.locator('#pg346-form').count(),1,'Only one real text composer exists');
+  assert.equal(await page.locator('#pg346-send').count(),1,'Only one airplane send button exists');
+  assert.equal(await page.locator('#pg346-input').count(),1,'Only one editable Mandarin input exists');
+  await page.locator('#pg346-send').click();
+  await page.locator('#pg346-input').waitFor({state:'visible'});
+  assert.equal(await page.locator('#pg346').getAttribute('data-composer-open'),'true');
+  await page.locator('#pg346-input').fill('你好');
+  assert.equal(await page.locator('#pg346-input').inputValue(),'你好',
+   'Mandarin text must stay editable until explicit send');
+  await page.screenshot({path:dir+'/'+tag+'-03-panda-composer.png',fullPage:false});
+  await back.click();
+  await page.waitForURL(/hsk2-life-course\.html/,{timeout:20000});
+  await page.locator('.pg433-done').waitFor({state:'visible',timeout:20000});
+  assert.equal(await page.locator('.topic').count(),0,'No accidental route to topic map');
+  assert.deepEqual(errors,[],'Browser errors on '+tag);
   await context.close();
-  console.log('PASS Panda HSK2 precise back link and single chat row '+tag);
+  console.log('PASS current HSK2 completion back -> examples and Panda AI exact return '+tag);
  }
 }finally{await browser.close();}

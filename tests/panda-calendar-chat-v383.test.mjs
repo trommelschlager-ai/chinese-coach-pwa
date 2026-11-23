@@ -60,11 +60,11 @@ test('an active HSK1 calendar exercise still uses context-aware answer validatio
  assert.notEqual(wrong.kind,'answer','Wrong weekday must not count as correct');
 });
 test('the duplicate unknown-meaning bubble is absent but reviewed grammar corrections remain',()=>{
- const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
- assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong;"));
- assert(!ui.includes('const unknown=last&&!last.ru'),'No generic bubble beside Все темы');
- assert(ui.includes("'pg445-after'"),'Preserve grammar corrections');
+ const ui=fs.readFileSync(new URL('../assets/panda-hsk2-preview-ui-v1.mjs',import.meta.url),'utf8');
+ assert(ui.includes("const root=$('#pg346-feedback'),active=!!wrong;"),'Only a reviewed correction opens the feedback card');
+ assert(!ui.includes('const unknown=last&&!last.ru'),'No duplicate generic meaning bubble');
+ assert(ui.includes("'pg445-after'"),'Preserve visible grammar corrections');
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- assert.match(html,/panda-live-v346\.mjs\?v=\d+/,'Panda approved UI module is loaded with a versioned URL');
- assert.match(html,/panda-live-screen-v270\.mjs\?v=\d+/,'Versioned Panda script is loaded');
+ assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/,'Current approved UI module must be versioned');
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=\d+/,'Current Panda conversation core must be versioned');
 });

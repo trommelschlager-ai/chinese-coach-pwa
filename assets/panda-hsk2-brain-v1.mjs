@@ -2,8 +2,9 @@ import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=517';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
-import {everydayMeaning} from './panda-everyday-meaning-v515.mjs';
+import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=520';
 import {knownBasicContext,replyBasicContext} from './panda-hsk2-basic-context-v1.mjs?v=5';
+import {negativeAnswerForQuestion,negativeFollowup,negativeQuestionFromLearner} from './panda-negative-dialogue-v519.mjs?v=519';
 export const norm=s=>String(s||'').normalize('NFC').replace(/[\p{P}\s]/gu,'').toLowerCase();
 export const getTopic=id=>HSK2_TOPICS.find(t=>t.id===Number(id));
 export const line=a=>({hanzi:a[0],pinyin:a[1]||'',ru:a[2]||'',audioKey:a[0]});
@@ -250,6 +251,41 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const spoken=restoreDiscourse(raw,d,out.spoken||out.answer||knownHSK2(d.body));return {...out,...(spoken?{spoken}:{}),...(out.kind==='accepted'&&spoken?{answer:spoken}:{})};}
  return out;}
  const input=norm(raw);
+ // v520: user-initiated friendly introductions must precede generic clarifications
+ // and active HSK2 drill matching, without advancing the exercise.
+ const friendlyTurn=input==='我爱你'||
+  (context?.awaiting==='friendly-name'&&/^我叫[\p{Script=Han}]{1,12}$/u.test(input))||
+  (context?.awaiting==='friendly-mood'&&/^(?:我很好|很好|我不好|不好)$/u.test(input));
+ if(friendlyTurn){
+  const greeting=everydayMeaning(raw,id,context);
+  if(greeting)return {kind:'social',line:line(greeting.reply),spoken:line(greeting.spoken),
+   context:greeting.context,coachNote:greeting.coachNote};
+ }
+ // Evaluate the ACTIVE Panda question first: "不会" is meaningful after
+ // "你会说中文吗？", but must not become a universal negative answer.
+ const active=getTopic(id)?.questions[index];
+ const exactNegativeGuard=!done&&active?.options.find(a=>norm(a[0])===input);
+ if(exactNegativeGuard)return {kind:'accepted',answer:line(exactNegativeGuard)};
+ const negative=active?negativeAnswerForQuestion(raw,active.q):null;
+ if(negative&&!done){
+  const question=norm(active.q),spoken=line([negative.hanzi,negative.pinyin,negative.ru]);
+  const base={spoken,negative:true};
+  // A declined invitation must NOT be followed by asking where/when to meet.
+  if(question==='你明天下午有空吗')
+   return {...base,kind:'end',line:line(['没关系，那我们改天再约吧。','Méi guānxi, nà wǒmen gǎitiān zài yuē ba.','Ничего страшного, договоримся на другой день.'])};
+  if(question==='周末要不要一起喝咖啡')
+   return {...base,kind:'end',line:line(['没关系，我们可以聊点别的。','Méi guānxi, wǒmen kěyǐ liáo diǎn bié de.','Ничего страшного, можем поговорить о другом.'])};
+  // A low mood is not automatically a physical illness.
+  if(question==='你今天怎么样'&&input!=='我不舒服')
+   return {...base,kind:'social',line:line(['怎么了？','Zěnme le?','Что случилось?']),context:{...context,awaiting:'wellbeing-reason',lastClarification:null}};
+  if(question==='你会说中文吗')
+   return {...base,kind:'end',line:line(['没关系，我们慢慢学。','Méi guānxi, wǒmen mànmàn xué.','Ничего страшного, будем учиться постепенно.'])};
+  if(question==='你喜欢运动吗')
+   return {...base,kind:'social',line:line(['那你喜欢什么？','Nà nǐ xǐhuan shénme?','А что тебе нравится?']),context:{...context,awaiting:'likes',lastClarification:null}};
+  return {...base,kind:'variant'};
+ }
+ const inverse=negativeQuestionFromLearner(raw);if(inverse)return inverse;
+ const contextualNegative=negativeFollowup(raw,context);if(contextualNegative)return {...contextualNegative,context:{...context,...contextualNegative.context}};
  const aspect=everydayAspect(raw,context);if(aspect)return aspect;
  const early=spokenEveryday(raw,context);if(early)return early;
  const basicContext=replyBasicContext(raw,context);if(basicContext)return basicContext;

@@ -8,9 +8,9 @@ const html=fs.readFileSync('hsk1-fifth-v227.html','utf8');
 const js=fs.readFileSync('assets/hsk1-fifth-v227.js','utf8');
 const css=fs.readFileSync('assets/panda-go-approved-lessons-v231.css','utf8');
 const data=fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8');
-assert(html.includes('hsk1-fifth-v227.js?v=371'));
+assert(/\.\/assets\/hsk1-fifth-v227\.js\?v=\d+/.test(html),'Current HSK1 lesson-5 JS must be cache-versioned');
 assert(html.includes('panda-lesson-audio-v240.js?v=248'));
-assert(html.includes('panda-go-approved-lessons-v231.css?v=237'));
+assert(/\.\/assets\/panda-go-approved-lessons-v231\.css\?v=\d+/.test(html),'Current HSK1 approved CSS must be cache-versioned');
 assert(!html.includes('lesson3-approved-panda'),'Wrong screenshot mosaic must never return');
 assert(css.includes('lesson5-scene-v233.webp'),'Approved illustrated calendar scene required');
 assert(css.includes('#faedff')&&css.includes('#fff7ff'),'Approved pale-lilac and pearl-pink palette required');
@@ -64,10 +64,14 @@ assert(d.getElementById('writer'));
 click('#pg5-next');assert.equal(steps(),13); // speaking
 assert(d.querySelector('[data-record-start]'),'Self recording controls missing');
 click('#pg5-next');assert.equal(steps(),14);
-assert(d.getElementById('pg5-next').disabled,'Must answer final question first');
-click('[data-final="1"]');
-assert(!d.getElementById('pg5-next').disabled);
+assert(d.getElementById('pg5-next').disabled,'Must answer all final questions');
+for(const [i,answer] of [1,0,1,0,1].entries()){
+ assert(d.getElementById('pg5-next').disabled,'Cannot complete before question '+(i+1));
+ assert.equal(d.querySelectorAll('[data-final]').length,3,'Missing answers for question '+(i+1));
+ click('[data-final="'+answer+'"]');
+}
+assert(!d.getElementById('pg5-next').disabled,'Five correct answers must complete HSK1 lesson 5');
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-l5-v227')).done);
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('dates'));
 assert(!w.localStorage.getItem('pg-hsk1-v3-dates'),'Original seven-step state must remain untouched');
-console.log('PASS lesson 5 v227: 14 screens, existing curriculum, listening, 3 builds, writing, speaking and completion');
+console.log('PASS lesson 5 v227: 14 screens, existing curriculum, listening, 3 builds, writing, speaking and all 5 final questions');

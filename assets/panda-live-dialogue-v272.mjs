@@ -14,6 +14,8 @@ import {brainQuestion,interpretBrainSentence} from './panda-brain-hsk1-v302.mjs?
 import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from './panda-sentence-coach-v319.mjs?v=319';
 import {answerBasicConversation} from './panda-basic-conversation-v323.mjs?v=336';
+import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=520';
+import {negativeAnswerForQuestion,negativeAcknowledgement,negativeQuestionFromLearner} from './panda-negative-dialogue-v519.mjs?v=519';
 import {analyzeCalendarLiteral,calendarAcknowledgement} from './panda-calendar-literal-v383.mjs?v=401';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
@@ -258,6 +260,42 @@ function extendQuestion(result,raw,allowed,date,profile){
 export function answerLive(raw,options={}){
  const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={},course='hsk1'}=options;
  raw=String(raw||'').trim();const s=normalize(raw);if(!raw)return {kind:'empty',message:'Скажи или напиши фразу на китайском.'};
+ // The pending yes/no question takes priority over standalone beginner meanings.
+ const activeQuestion=prompt?.hanzi||prompt?.panda||'';
+ const negativeReply=activeQuestion?negativeAnswerForQuestion(raw,activeQuestion):null;
+ if(negativeReply){
+   const answer=negativeAcknowledgement(raw,activeQuestion);
+   return {kind:'answer',lesson:prompt?.lesson||topic,
+     spoken:{known:true,hanzi:raw,pinyin:negativeReply.pinyin,
+      translation:negativeReply.ru,topic:prompt?.lesson||topic},
+     reply:line(answer.hanzi,answer.pinyin,answer.ru),
+     followup:null,message:'Отрицательный ответ принят по контексту вопроса. Тоны голоса не оценивались.'};
+ }
+
+ // v520: understand affectionate greetings in the dialogue itself,
+ // not as an unknown phrase or a pronunciation/tone assessment.
+ const friendlyTurn=s==='我爱你'||
+  (options.friendlyAwaiting==='friendly-name'&&/^我叫[\p{Script=Han}]{1,12}$/u.test(s))||
+  (options.friendlyAwaiting==='friendly-mood'&&/^(?:我很好|很好|我不好|不好)$/u.test(s));
+ if(friendlyTurn){
+  const social=everydayMeaning(raw,topic,{awaiting:options.friendlyAwaiting||null});
+  if(social)return {kind:'statement',lesson:1,
+   spoken:{known:true,hanzi:raw,pinyin:social.spoken[1],translation:social.spoken[2],topic:1},
+   reply:line(...social.reply),followup:null,friendlyAwaiting:social.context.awaiting,
+   message:'Панда поддержала знакомство по контексту. Произношение и тоны не оценивались.'};
+ }
+
+ // v518: approved short social replies must not fall through to "I didn't understand".
+ // This is a text dialogue rule, not an assessment of microphone pronunciation.
+ if(['不好','我不好','非常好','我非常好','很不错你呢','我很不错你呢','休息','你可以说中文','跑步这么样'].includes(s)){
+  const simple=everydayMeaning(raw,topic,null);
+  if(simple)return {kind:'statement',lesson:1,
+   spoken:{known:true,hanzi:raw,pinyin:simple.spoken[1],translation:simple.spoken[2],topic:1},
+   reply:line(...simple.reply),followup:null,
+   ...(simple.coachNote?{explanation:simple.coachNote}:{}),
+   message:simple.coachNote||'Панда поняла твою фразу и продолжила разговор. Тоны голоса не оценивались.'};
+ }
+
  // HSK2 daily-life MP3 questions are not HSK1 Weather (chapter 7), even if unlocked.
  if(recordedCourseScope(raw)==='hsk2-day')return recordedPandaAnswer(raw,course==='hsk2-day'?[1]:allowed,{course});
  // Android ASR can mishear the sibling question as a different phrase.
@@ -321,6 +359,16 @@ export function answerLive(raw,options={}){
    followup:null,
    message:askedBack?'Панда ответила на твой встречный вопрос.':'Ответ принят. Можешь задать следующий вопрос или выбрать другую тему.'};
  }
+ // Negative learner questions and short answers are contextual, not a global "no".
+ // Apply only after the special greeting/你好吗? path above.
+ const inverseQuestion=negativeQuestionFromLearner(raw);
+ if(inverseQuestion)return {
+   kind:'question',lesson:1,
+   spoken:{known:true,hanzi:raw,pinyin:inverseQuestion.spoken.pinyin,
+    translation:inverseQuestion.spoken.ru,topic:1},
+   reply:line(inverseQuestion.line.hanzi,inverseQuestion.line.pinyin,inverseQuestion.line.ru),
+   followup:null,message:'Ответ на отрицательный вопрос без домысливания произношения.'
+ };
  // Social and common-family questions must work before any broad fallback.
  // Keep our known corrections independent of experimental on-device AI.
  const basic=answerBasicConversation(raw,allowed);if(basic)return basic;

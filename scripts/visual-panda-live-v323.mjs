@@ -23,7 +23,22 @@ try{
   res=await page.goto(base+'/panda-voice-pilot.html?lesson=1',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   await page.locator('#pg346').waitFor();
-  assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
+  // Since approved v501, the background belongs to a separate scene layer:
+  // the outer #pg346 intentionally has background-image: none.
+  const scenicAudit=await page.locator('#pg346 .pg500-landscape').evaluate(async el=>{
+   const style=getComputedStyle(el),box=el.getBoundingClientRect();
+   const source=style.backgroundImage.match(/url\(["']?([^)"']+)/)?.[1];
+   let loaded=false;
+   if(source){const img=new Image();img.src=source;try{await img.decode();loaded=img.naturalWidth>0}catch{}}
+   return {background:style.backgroundImage,display:style.display,
+    visibility:style.visibility,opacity:style.opacity,
+    width:box.width,height:box.height,loaded};
+  });
+  assert.match(scenicAudit.background,/panda-landscape-v350/,'Approved lake asset must remain on its active landscape layer');
+  assert.ok(scenicAudit.loaded,'Approved landscape file must decode successfully');
+  assert.ok(scenicAudit.width>100&&scenicAudit.height>100&&scenicAudit.visibility==='visible'&&
+   scenicAudit.display!=='none'&&Number(scenicAudit.opacity)>0,
+   'Approved landscape layer must remain visible: '+JSON.stringify(scenicAudit));
   assert.equal(await page.locator('#pg346-topics').isVisible(),false,'Do not cover Panda with open topic menu');
   assert(await page.locator('.pg352-mascot .pg346-panda').isVisible());
   assert.equal(await page.locator('.pg352-rocks').isVisible(),false,'The approved lake already contains natural stones');

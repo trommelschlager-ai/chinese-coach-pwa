@@ -9,7 +9,22 @@ assert.match(html,/hsk2-six-screens-v414\.js\?v=418/);
 assert.match(html,/hsk2-six-screens-v414\.css\?v=414/);
 const vc=new VirtualConsole(),errors=[];
 vc.on('jsdomError',e=>errors.push(e.message));vc.on('error',e=>errors.push(String(e)));
-const dom=new JSDOM(html,{url:'https://example.org/hsk2-life-course.html',runScripts:'dangerously',virtualConsole:vc});
+// This is a regression test of the underlying v414 mini-lesson engine.
+ // The current welcome CTA correctly opens the separate approved "О себе" lesson,
+ // so it must not be used as the entrypoint for these mini-lesson assertions.
+const courseSource=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'utf8');
+assert.match(courseSource,/function openFirstLesson\(step\)\s*\{[\s\S]*?hsk2-about-me\.html/,
+ 'Approved first lesson navigation must remain intact');
+const dom=new JSDOM(html,{
+ url:'https://example.org/hsk2-life-course.html',
+ runScripts:'dangerously',virtualConsole:vc,
+ beforeParse(window){
+  window.localStorage.setItem('pg-hsk2-life-course-v1',JSON.stringify({
+   completed:[],difficult:[],showPy:true,
+   resume:{topic:0,mini:0,stage:0,stepOrderV413:true,wordOrderV414:true}
+  }));
+ }
+});
 const w=dom.window,doc=w.document;
 let current=null,starts=0;
 class SR{
@@ -66,12 +81,18 @@ function fullQuiz(mini){
  assert.match(doc.querySelector('.pg414-test .pg414-progress').textContent,/7\/7/);
  assert.ok(doc.querySelector('[data-day-next]')&&!doc.querySelector('[data-day-next]').disabled,'Final next button only after 7/7');
 }
-click('.approved-start');
+assert.ok(doc.querySelector('.pg415-art-screen'),
+ 'Stored mini-lesson resume must show the underlying approved interactive stage');
 const wordCount=[7,7,6];
 for(let mini=0;mini<3;mini++){
  assertStage(0);
  assert.equal(doc.querySelectorAll('.pg414-vocab-row').length,wordCount[mini]);
- assert.equal(doc.querySelectorAll('.pg414-vocab-row button.audio').length,wordCount[mini]);
+ // Unrecorded words must show an honest MP3-unavailable label, not a synthetic voice.
+ const slots=[...doc.querySelectorAll('.pg414-vocab-row')];
+ assert.equal(slots.filter(row=>row.querySelector('button.audio,.hsk2-no-mp3')).length,wordCount[mini],
+  'Every word must expose either an approved MP3 button or explicit no-MP3 label');
+ assert.equal(doc.querySelectorAll('.pg414-vocab-row .device-voice').length,0,
+  'Do not substitute device TTS for unavailable approved Mandarin MP3');
  assert.ok(doc.querySelectorAll('.pg414-pinyin').length>0,'Pinyin visible');
  click('[data-day-pinyin]');
  assert.equal(doc.querySelectorAll('.pg414-pinyin').length,0,'Pinyin switch must hide pinyin');

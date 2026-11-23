@@ -61,12 +61,14 @@ test('existing user Luvvoice voice and offline versions are preserved',()=>{
   assert.ok(pack.files.includes('./assets/panda-grammar-voice-v451/'+row.file),'Offline entry missing: '+row.file);
  }
  const html=read('panda-voice-pilot.html');
- const screen=read('assets/panda-live-screen-v270.mjs');
- const ui=read('assets/panda-live-v346.mjs');
+ const core=read('assets/panda-hsk2-preview-core-v1.mjs');
+ const ui=read('assets/panda-hsk2-preview-ui-v1.mjs');
+ const registry=read('assets/panda-approved-voice-registry-v516.mjs');
  const audio=read('assets/panda-live-audio.mjs');
- assert.ok(html.includes('panda-live-v346.mjs?v=453'));
- assert.match(html,/panda-live-screen-v270\.mjs\?v=45[12]/);
- assert.ok(screen.includes('panda-live-audio.mjs?v=451'));
- assert.ok(ui.includes('panda-live-audio.mjs?v=451'));
- assert.ok(audio.includes('PANDA_GRAMMAR_AUDIO_V451'));
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=\d+/);
+ assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/);
+ assert.match(core,/panda-hsk2-preview-audio-v1\.mjs\?v=\d+/);
+ assert.match(ui,/panda-hsk2-preview-audio-v1\.mjs\?v=\d+/);
+ assert.match(registry,/panda-live-audio\.mjs\?v=\d+/);
+ assert.ok(audio.includes('PANDA_GRAMMAR_AUDIO_V451'),'Original reviewed Luvvoice grammar recordings remain mapped');
 });

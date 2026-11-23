@@ -77,15 +77,27 @@ const fs=require('node:fs');
  }
  assert.equal(coachSentence('下雨',{allowed:base.allowed,prompt:{...weatherPrompt,time:'明天',hanzi:'明天天气怎么样？'}}),null);
  const html=fs.readFileSync('panda-voice-pilot.html','utf8');
- const activeScreen=html.match(/\.\/assets\/panda-live-screen-v270\.mjs\?v=\d+/)?.[0];
- assert(activeScreen,'Panda live screen must have an actual versioned HTML import');
+ // Check the CURRENT approved entrypoint instead of a retired live-screen import.
+ // The coach is reached via preview core -> answerLive -> coachSentence.
+ const coreImport=html.match(/\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0];
+ const uiImport=html.match(/\.\/assets\/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/)?.[0];
+ assert(coreImport&&uiImport,'Both active versioned Panda AI modules must load on the real page');
+ const core=fs.readFileSync('assets/panda-hsk2-preview-core-v1.mjs','utf8');
+ const dialogue=fs.readFileSync('assets/panda-live-dialogue-v272.mjs','utf8');
+ assert.match(core,/import\s*\{[^}]*answerLive[^}]*\}\s*from\s*['"]\.\/panda-live-dialogue-v272\.mjs\?v=\d+['"]/,
+  'Active Panda AI must call the reviewed HSK1 conversation engine');
+ assert.match(dialogue,/import\s*\{\s*coachSentence\s*\}\s*from\s*['"]\.\/panda-sentence-coach-v319\.mjs\?v=319['"]/,
+  'Reviewed dialogue engine must still import the fragment coach');
+ assert.match(dialogue,/coachSentence\(raw,\{allowed,prompt\}\)/,
+  'Reviewed dialogue engine must still use the fragment coach');
+ const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).files;
  for(const p of [
   './assets/panda-sentence-coach-v319.mjs?v=319',
   './assets/panda-live-dialogue-v272.mjs?v=434',
-  activeScreen,
+  coreImport,uiImport,
   './assets/panda-hsk1-questions-v281.mjs?v=319',
   './panda-voice-pilot.html?v=326'
- ]) assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).files.includes(p),p);
+ ]) assert(offline.includes(p),'Offline missing '+p);
  assert(fs.readFileSync('panda-voice-pilot.html','utf8').includes('<span class="release">v326</span>'));
  console.log('PASS Panda sentence coach v319: 17 safe phrase expansions + 4 contextual weather prompts, audio B02/B04/B05 and old HSK1 preserved.');
 })().catch(err=>{console.error(err);process.exitCode=1});
