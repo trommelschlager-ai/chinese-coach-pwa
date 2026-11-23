@@ -48,6 +48,12 @@ try{
   const href=await back.getAttribute('href');
   assert.match(href,/hsk2-life-course\.html\?from=hsk2-life-course&return=done&mini=0/);
   assert.ok(!href.includes('topic=0'),'Back must go to completion, not the topic map');
+  // The approved Panda composer is intentionally closed by default.
+  // Open it through the actual airplane button, just like a learner on Android.
+  const airplane=page.locator('#pg346-send');
+  await airplane.waitFor({state:'visible'});
+  await airplane.click();
+  await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.composerOpen==='true');
   for(const id of ['pg346-input','pg346-send','pg346-mic']){
    const element=page.locator('#'+id);
    await element.waitFor({state:'visible'});
