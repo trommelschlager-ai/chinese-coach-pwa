@@ -5,7 +5,7 @@ on:
     paths:
       - "assets/hsk2-approved-cover.js"
       - "assets/hsk2-approved-cover.css"
-      - "assets/hsk2-approved-covers/lesson-*-scene.webp"
+      - "assets/hsk2-approved-covers/lesson-*-full.webp"
       - "assets/hsk2-approved-covers/scenes-manifest.json"
       - "tests/hsk2-thematic-scene-check.py"
       - ".github/workflows/hsk2-thematic-scenes.yml"
