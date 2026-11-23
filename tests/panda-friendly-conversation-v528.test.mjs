@@ -65,7 +65,7 @@ test('Panda short and Non-Stop use the same reviewed social route before fallbac
  assert.match(core,/say\(\{hanzi:social.reply\[0\]/);
  assert.match(core,/Тоны речи не оценивались/);
  assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=541/);
- assert.match(sw,/chinese-coach-pwa-v540-approved-panda-restored/);
+ assert.match(sw,/chinese-coach-pwa-v541-approved-panda-restored/);
  assert.ok(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=540'));
 });
 
