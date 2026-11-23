@@ -15,6 +15,7 @@ import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from './panda-sentence-coach-v319.mjs?v=319';
 import {answerBasicConversation} from './panda-basic-conversation-v323.mjs?v=336';
 import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=518';
+import {negativeAnswerForQuestion,negativeAcknowledgement,negativeQuestionFromLearner} from './panda-negative-dialogue-v519.mjs?v=519';
 import {analyzeCalendarLiteral,calendarAcknowledgement} from './panda-calendar-literal-v383.mjs?v=401';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
@@ -332,6 +333,26 @@ export function answerLive(raw,options={}){
     :line('很好！','Hěn hǎo!','Отлично!'),
    followup:null,
    message:askedBack?'Панда ответила на твой встречный вопрос.':'Ответ принят. Можешь задать следующий вопрос или выбрать другую тему.'};
+ }
+ // Negative learner questions and short answers are contextual, not a global "no".
+ // Apply only after the special greeting/你好吗? path above.
+ const inverseQuestion=negativeQuestionFromLearner(raw);
+ if(inverseQuestion)return {
+   kind:'question',lesson:1,
+   spoken:{known:true,hanzi:raw,pinyin:inverseQuestion.spoken.pinyin,
+    translation:inverseQuestion.spoken.ru,topic:1},
+   reply:line(inverseQuestion.line.hanzi,inverseQuestion.line.pinyin,inverseQuestion.line.ru),
+   followup:null,message:'Ответ на отрицательный вопрос без домысливания произношения.'
+ };
+ const activeQuestion=prompt?.hanzi||prompt?.panda||'';
+ const negativeReply=activeQuestion?negativeAnswerForQuestion(raw,activeQuestion):null;
+ if(negativeReply){
+   const answer=negativeAcknowledgement(raw,activeQuestion);
+   return {kind:'answer',lesson:prompt?.lesson||topic,
+     spoken:{known:true,hanzi:raw,pinyin:negativeReply.pinyin,
+      translation:negativeReply.ru,topic:prompt?.lesson||topic},
+     reply:line(answer.hanzi,answer.pinyin,answer.ru),
+     followup:null,message:'Отрицательный ответ принят по контексту вопроса. Тоны голоса не оценивались.'};
  }
  // Social and common-family questions must work before any broad fallback.
  // Keep our known corrections independent of experimental on-device AI.
