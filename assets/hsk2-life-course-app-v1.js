@@ -544,11 +544,16 @@ document.addEventListener('click',function(e){
   render();return;
  }
  if(b.dataset.remove!==undefined){state.build.splice(Number(b.dataset.remove),1);render();return}
- if(b.dataset.pg419AiBack!==undefined){
-  // From the sixth approved screen, go to the immediately preceding
-  // examples step. Do not restart the lesson or go to the topic map.
+ if((state.view==='done'&&state.topic===0&&b.dataset.pg433Back!==undefined)||
+    b.dataset.pg419AiBack!==undefined){
+  // The approved v433 completion header now carries data-pg433-back.
+  // Return to the existing EXAMPLES page, not the map or a restarted lesson.
   state.view='lesson';state.stage=4;
   if(!state.day&&dayUI)state.day=dayUI.makeState(state.mini);
+  if(state.day){
+   state.day.pg433Page=10;state.day.pg433HighestStage=4;
+   state.day.pg433Preview=false;state.day.pgApprovedCover=false;
+  }
   render();return;
  }
  if(b.dataset.repeat!==undefined){enter(state.topic,state.mini);return}
