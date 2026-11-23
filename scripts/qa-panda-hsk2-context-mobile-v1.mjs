@@ -98,10 +98,10 @@ try{
   const negativeRounds=[
    [102,'你早上吃早饭吗？','不吃','Bù chī.','你几点去上班？'],
    [103,'你在学校学习吗？','不在','Bú zài.','你会说中文吗？'],
-   [105,'你明天下午有空吗？','没空','Méi kòng.','我们几点见面？'],
+   [105,'你明天下午有空吗？','没空','Méi kòng.','没关系，那我们改天再约吧。'],
    [106,'你昨天运动了吗？','我昨天没运动','Wǒ zuótiān méi yùndòng.','你去过上海吗？'],
-   [109,'你今天怎么样？','不好','Bù hǎo.','你哪儿不舒服？'],
-   [110,'周末要不要一起喝咖啡？','不想','Bù xiǎng.','我们在哪儿见面？']
+   [109,'你今天怎么样？','不好','Bù hǎo.','怎么了？'],
+   [110,'周末要不要一起喝咖啡？','不想','Bù xiǎng.','没关系，我们可以聊点别的。']
   ];
   for(const [topic,question,learner,pinyin,nextQuestion] of negativeRounds){
    const started=await page.evaluate(([id,zh])=>window.PandaApprovedBridge337.startTopicQuestion(id,zh),[topic,question]);
@@ -114,7 +114,7 @@ try{
    assert.equal(await previous.locator('.pg346-zh').textContent(),learner);
    assert.equal(await previous.locator('.pg346-py').textContent(),pinyin,'Wrong tone marks for '+learner);
    assert(!/не подтверждён/.test(await previous.locator('.pg346-ru').textContent()),'Missing meaning for '+learner);
-   assert.equal(await negativeRows.last().locator('.pg346-zh').textContent(),nextQuestion,'Panda should ask the next curriculum question');
+   assert.equal(await negativeRows.last().locator('.pg346-zh').textContent(),nextQuestion,'Panda must honor the meaning of the refusal rather than force the next question');
   }
   const startedInverse=await page.evaluate(()=>window.PandaApprovedBridge337.startTopicQuestion(104,'你喜欢运动吗？'));
   assert.equal(startedInverse,true);
