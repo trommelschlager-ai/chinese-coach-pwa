@@ -275,6 +275,24 @@ function submit(raw){
   say({hanzi,pinyin:replyPinyin,ru});
   return;
  }
+ // v543: HSK1 conversational questions and laughter are valid even when
+ // the corresponding topic has not been explicitly unlocked. Keep replies
+ // short, natural and translated; do not trigger "我没听懂" on these examples.
+ if(!hsk2&&!state.dayMode){
+  const said=normalize(input);
+  if(said==='你是老师吗'){
+   learner(input,{known:true,pinyin:'Nǐ shì lǎoshī ma?',translation:'Ты учитель?'});
+   say({hanzi:'是，我是你的中文老师。',pinyin:'Shì, wǒ shì nǐ de Zhōngwén lǎoshī.',ru:'Да, я твой учитель китайского.'},false);
+   note('Панда ответила на вопрос. Тоны по написанному тексту не оцениваются.');
+   return;
+  }
+  if(['哈哈','哈哈哈','呵呵'].includes(said)){
+   learner(input,{known:true,pinyin:'Hāhā!',translation:'Ха-ха!'});
+   say({hanzi:'哈哈，我们继续吧！',pinyin:'Hāhā, wǒmen jìxù ba!',ru:'Ха-ха, давай продолжим!'},false);
+   note('Панда поняла смех и продолжает разговор.');
+   return;
+  }
+ }
  // v539: "什么？" means "What?"; repeat the last clear question instead of
  // misclassifying a beginner's request as incomprehensible Chinese.
  if(!hsk2&&!state.dayMode&&state.mode==='nonstop'&&normalize(input)==='什么'){
