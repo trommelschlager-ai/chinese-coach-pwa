@@ -8,9 +8,13 @@ const html=fs.readFileSync('hsk1-fifth-v227.html','utf8');
 const js=fs.readFileSync('assets/hsk1-fifth-v227.js','utf8');
 const css=fs.readFileSync('assets/panda-go-approved-lessons-v231.css','utf8');
 const data=fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8');
-assert(html.includes('hsk1-fifth-v227.js?v=371'));
+// Query versions advance for cache refreshes; keep the original asset identity
+// and a monotonic floor instead of pinning an obsolete 2026 version.
+const lessonJs=html.match(/src=["']\.\/assets\/hsk1-fifth-v227\.js\?v=(\d+)["']/);
+assert(lessonJs&&Number(lessonJs[1])>=371,'Active HSK1 lesson 5 JavaScript missing or stale');
 assert(html.includes('panda-lesson-audio-v240.js?v=248'));
-assert(html.includes('panda-go-approved-lessons-v231.css?v=237'));
+const lessonCss=html.match(/href=["']\.\/assets\/panda-go-approved-lessons-v231\.css\?v=(\d+)["']/);
+assert(lessonCss&&Number(lessonCss[1])>=237,'Approved HSK1 lesson 5 stylesheet missing or stale');
 assert(!html.includes('lesson3-approved-panda'),'Wrong screenshot mosaic must never return');
 assert(css.includes('lesson5-scene-v233.webp'),'Approved illustrated calendar scene required');
 assert(css.includes('#faedff')&&css.includes('#fff7ff'),'Approved pale-lilac and pearl-pink palette required');
