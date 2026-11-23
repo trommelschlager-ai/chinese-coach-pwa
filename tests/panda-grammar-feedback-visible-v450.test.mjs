@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {correctPandaGrammarV2} from '../assets/panda-grammar-hsk12-v2.mjs';
 
-const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
+const ui=fs.readFileSync(new URL('../assets/panda-hsk2-preview-ui-v1.mjs',import.meta.url),'utf8');
 const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
 const render=ui.slice(ui.indexOf('  function renderFeedback(s){'),ui.indexOf('  function ingestSpeechSignal('));
 
@@ -32,7 +32,8 @@ for(const [wrong,right,rule] of [
 }
 
 test('approved visuals and disabled audio handling remain intact',()=>{
- assert.ok(html.includes('panda-live-v346.mjs?v=453'));
+ assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/, 'Approved UI module is actually mounted');
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=\d+/, 'Conversational engine is actually mounted');
  assert.ok(html.includes('panda-chat-corrections-v377.css?v=454'));
  assert.ok(render.includes("details.append(el('p','pg445-before'"),'Original phrase remains in Details');
  assert.ok(ui.includes('lookupPandaVoiceClip'));
