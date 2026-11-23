@@ -28,7 +28,7 @@ test('PA-001 is reserved for learner statement 我是老师 and is NOT the answe
 test('both free and short dialogue recognize 你是老师吗 without falling through to 我没听懂',()=>{
  const core=source('../assets/panda-hsk2-preview-core-v1.mjs');
  assert.match(core,/teacherQuestion==='你是老师吗'\|\|teacherQuestion==='你是老师'/);
- assert.match(core,/if\(!hsk2&&!state\.dayMode\)/);
+ assert.match(core,/entry\.beginnerGreeting&&hsk2\.id===101/);
  assert.match(core,/learner\(input,\{/);
  assert.match(core,/hanzi:'我是老师。',pinyin:'Wǒ shì lǎoshī\.',ru:'Я учитель\.'/);
  assert.match(core,/say\(teacherReply,!!lookupPandaVoiceClip\(teacherReply\.hanzi\)\)/);
@@ -42,11 +42,11 @@ test('both free and short dialogue recognize 你是老师吗 without falling thr
 test('Panda AI pages and offline SW use v548 teacher-question handler; approved natural audio remains v546',()=>{
  const html=source('../panda-voice-pilot.html'),hsk2=source('../panda-ai-hsk2-preview.html');
  const sw=source('../sw.js'),pack=JSON.parse(source('../assets/offline-pack.json'));
- assert.equal(pack.version,548);
- assert.match(sw,/const CACHE='chinese-coach-pwa-v548-/);
- for(const page of [html,hsk2])assert(page.includes('panda-hsk2-preview-core-v1.mjs?v=548'));
- assert(sw.includes('panda-hsk2-preview-core-v1.mjs?v=548'));
- assert(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=548'));
+ assert.equal(pack.version,549);
+ assert.match(sw,/const CACHE='chinese-coach-pwa-v549-/);
+ for(const page of [html,hsk2])assert(page.includes('panda-hsk2-preview-core-v1.mjs?v=549'));
+ assert(sw.includes('panda-hsk2-preview-core-v1.mjs?v=549'));
+ assert(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=549'));
  assert(html.includes('panda-hsk2-preview-ui-v1.mjs?v=546'));
  assert(sw.includes('panda-ai-natural-voice-batch01-v546.mjs?v=546'));
 });
