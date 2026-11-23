@@ -263,8 +263,74 @@ async function respond(text){
    },2800);
  }
 }
-function composition(){popup('Ответь Панде по-китайски',`<p class="hint">Набери ответ или нажми микрофон. На экране будут только две последние реплики; все предыдущие сохраняются в «Истории».</p><textarea id="entry" lang="zh-Hans" autocomplete="off" placeholder="Напиши по-китайски…" aria-label="Твой ответ"></textarea><div class="actions"><button class="action primary" id="submit">➤ Отправить</button><button class="action" id="voice">🎙 Говорить</button></div><p class="hint">Это учебная демонстрация с заранее заданными ответами. Акустическая проверка тонов пока не подключена.</p>`);el('submit').onclick=()=>respond(el('entry').value);el('voice').onclick=listen;setTimeout(()=>el('entry')?.focus({preventScroll:true}),0)}
-function listen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){tip('Для распознавания открой страницу в Chrome по HTTPS');return}let rec;try{rec=new SR();rec.lang='zh-CN';rec.interimResults=false;rec.continuous=false;rec.onresult=e=>{const phrase=e.results[0][0].transcript;const input=el('entry');if(input)input.value=phrase;respond(phrase)};rec.onerror=e=>tip('Микрофон: '+e.error);rec.start();tip('Слушаю китайскую речь…')}catch(e){tip('Микрофон недоступен: '+e.message)}}
+function composition(){popup('Ответь Панде по-китайски',`<p class="hint">Набери ответ или нажми микрофон. На экране будут только две последние реплики; все предыдущие сохраняются в «Истории».</p><textarea id="entry" lang="zh-Hans" autocomplete="off" placeholder="Напиши по-китайски…" aria-label="Твой ответ"></textarea><div class="actions"><button class="action primary" id="submit">➤ Отправить</button><button class="action" id="voice">🎙 Говорить</button></div><p class="hint">Разговорный движок использует проверенные темы HSK и Panda Street. Акустическая проверка тонов не подключена.</p>`);el('submit').onclick=()=>respond(el('entry').value);el('voice').onclick=listen;setTimeout(()=>el('entry')?.focus({preventScroll:true}),0)}
+/* Street voice v2: one recognizer, explicit consent and clear Android states.
+ * The browser may send speech to its recognition provider; we do not record or
+ * send raw audio to our own service. Never infer acoustic tones from ASR text.
+ */
+let streetRecognition=null,streetMicConsent=false;
+function streetMicState(active){
+ const mic=el('mic');mic.setAttribute('aria-pressed',String(active));
+ mic.setAttribute('aria-label',active?'Остановить микрофон':'Ответить голосом по-китайски');
+ mic.style.filter=active?'drop-shadow(0 0 10px #a9edff)':'';
+}
+function stopStreetRecognition(manual=false){
+ const rec=streetRecognition;streetRecognition=null;streetMicState(false);
+ if(rec){rec.onresult=null;rec.onerror=null;rec.onend=null;rec.onstart=null;try{rec.abort()}catch(_e){}}
+ if(manual)tip('Микрофон остановлен');
+}
+function listen(){
+ if(streetRecognition){stopStreetRecognition(true);return}
+ if(!streetMicConsent){
+  popup('Разрешение на голос',`<p class="hint">Для распознавания китайской речи используется браузер Chrome. Он может отправлять звук своей службе распознавания. Panda Street не сохраняет голосовые записи.</p>
+   <p class="hint">Распознавание слов <strong>не является проверкой тонов</strong>. Для разговора можно также писать текстом.</p>
+   <div class="actions"><button class="action primary" id="street-allow">🎙 Разрешить и говорить</button><button class="action" id="street-text">Печатать</button></div>`);
+  el('street-allow').onclick=()=>{streetMicConsent=true;closePopup();startStreetRecognition()};
+  el('street-text').onclick=()=>{closePopup();composition()};
+  return;
+ }
+ startStreetRecognition();
+}
+function startStreetRecognition(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){tip('Распознавание недоступно. Открой страницу в Chrome по HTTPS или напиши ответ.');return}
+ if(!window.isSecureContext){tip('Микрофон работает только по HTTPS или localhost.');return}
+ if(streetRecognition)stopStreetRecognition();
+ let rec;
+ try{
+  rec=new SR();streetRecognition=rec;rec.lang='zh-CN';rec.interimResults=false;
+  rec.continuous=false;rec.maxAlternatives=1;
+  let handled=false;
+  rec.onstart=()=>{if(streetRecognition===rec){streetMicState(true);tip('🎙 Слушаю китайскую речь…')}};
+  rec.onresult=e=>{
+   if(streetRecognition!==rec||handled)return;
+   let transcript='';
+   for(let i=e.resultIndex||0;i<e.results.length;i++){
+    if(e.results[i].isFinal){transcript=String(e.results[i][0]?.transcript||'').trim();break}
+   }
+   if(!transcript)return;
+   handled=true;stopStreetRecognition();
+   const input=el('entry');if(input)input.value=transcript;
+   respond(transcript);
+  };
+  rec.onerror=e=>{
+   if(streetRecognition!==rec)return;
+   const reason=e.error||'unknown';stopStreetRecognition();
+   const help=reason==='not-allowed'?'Разреши микрофон в настройках Chrome.':
+    reason==='no-speech'?'Не услышал речь. Нажми микрофон и повтори.':
+    reason==='network'?'Браузер не смог распознать речь без сети. Используй текстовый ввод.':
+    reason==='audio-capture'?'Телефон не открыл микрофон. Проверь разрешения.':
+    'Микрофон: '+reason;
+   tip(help);
+  };
+  rec.onend=()=>{
+   if(streetRecognition!==rec)return;
+   stopStreetRecognition();
+   if(!handled)tip('Распознавание завершилось. Можешь повторить или написать ответ.');
+  };
+  rec.start();
+ }catch(e){stopStreetRecognition();tip('Микрофон недоступен: '+e.message)}
+}
 function phrase(i){current=i;const d=cues[i];popup('Практика фразы',`<div class="hanzi">${esc(d.zh)}</div><div class="py">${esc(d.py)}</div><div class="ru">${esc(d.ru)}</div><div class="actions"><button class="action" id="hear">🔊 Слушать</button><button class="action primary" id="reply">Ответить</button><button class="action" id="other">Следующая →</button></div><p class="hint">Можно произнести или написать ответ. Предыдущие реплики остаются в истории.</p>`);el('hear').onclick=()=>speak(d.zh);el('reply').onclick=composition;el('other').onclick=()=>phrase((i+1)%cues.length)}
 function historyView(){
  const rendered=history.length?history.map(x=>{
@@ -274,7 +340,7 @@ function historyView(){
    '<br>'+esc(learner.ru)+'<br><strong>Панда:</strong> '+esc(x.panda.zh)+
    '<br><em>'+esc(x.panda.py)+'</em><br>'+esc(x.panda.ru)+'</div>';
  }).join(''):'<p>Реплик пока нет.</p>';
- popup('История разговора','<p class="hint">Последние '+history.length+' реплик.</p>'+rendered);
+ popup('История разговора','<p class="hint">Последние '+history.length+' реплик. Личные разговоры не добавляются в общий словарь.</p><p><a href="./panda-shared-profile-settings.html">🧠 Общая память двух Панд — настройки</a></p>'+rendered);
 }
 function shortMode(){mode='short';paint();popup('Краткие диалоги',cues.map((d,i)=>`<button class="example" data-i="${i}">${esc(d.zh)} — ${esc(d.ru)}</button>`).join('')+'<p class="hint">Выбери фразу для тренировки.</p>');body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>phrase(Number(b.dataset.i)))}
 el('row1').onclick=()=>history.length?speak(history.at(-1).panda.zh):phrase(0);
@@ -284,7 +350,7 @@ el('send').onclick=composition;el('mic').onclick=listen;el('history').onclick=hi
 el('topics').onclick=shortMode;el('book').onclick=()=>{popup('Подсказка',`<p class="hint">Ответь на текущую фразу Панды:</p><div class="hanzi">我有点忙。</div><div class="py">Wǒ yǒudiǎn máng.</div><div class="ru">Я немного занят.</div><div class="actions"><button class="action primary" id="usehint">Попробовать ответить</button></div>`);el('usehint').onclick=composition;};
 el('theme').onclick=()=>{night=!night;tip(night?'Ночной вид — утверждённый дизайн':'Дневной режим будет добавлен отдельно; текущий рисунок не изменён')};
 const base='https://trommelschlager-ai.github.io/chinese-coach-pwa/';
-el('back').onclick=()=>location.assign(base+'panda-voice-pilot.html');el('home').onclick=()=>location.assign(base+'index.html');el('lessons').onclick=()=>location.assign(base+'panda-street-hsk1-map.html');el('game').onclick=()=>speak(history.length?history.at(-1).panda.zh:cues[current].zh);el('trainer').onclick=()=>location.assign(base+'game.html');el('chat').onclick=composition;el('profile').onclick=()=>tip('Профиль открой в основном Panda Go');
+el('back').onclick=()=>location.assign(base+'panda-voice-pilot.html');el('home').onclick=()=>location.assign(base+'index.html');el('lessons').onclick=()=>location.assign(base+'panda-street-hsk1-map.html');el('game').onclick=()=>speak(history.length?history.at(-1).panda.zh:cues[current].zh);el('trainer').onclick=()=>location.assign(base+'game.html');el('chat').onclick=composition;el('profile').onclick=()=>location.assign('./panda-shared-profile-settings.html');
 if(history.length){let x=history.at(-1);liveRow('live-panda',x.panda);liveRow('live-learner',x.userInfo||recognizedDetail(x.user))}
 })();
 </script></body></html>
