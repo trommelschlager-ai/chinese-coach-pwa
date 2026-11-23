@@ -54,12 +54,13 @@ function measure(dsp,pcm,i){
  const splits=[pts.filter(p=>p[0]<r.splitRatio),pts.filter(p=>p[0]>=r.splitRatio)];
  const timestampsMonotonic=pts.every((p,i)=>p[0]>=0&&p[0]<=1&&(i===0||p[0]>pts[i-1][0]));
  const curves=splits.map(part=>part.map(p=>({tMs:Math.round(p[0]*r.seconds*1000),hz:Math.round(p[1])})));
+ const absolutePoints=pts.map(p=>({ms:Math.round((r.signal.speech.from+p[0]*r.seconds)*1000),hz:p[1]}));
  const syllables=(r.evidence||[]).map((e,j)=>({
   syllable:j+1,points:e.points,durationMs:Math.round(e.duration*1000),
   maxGapMs:Math.round(e.maxGap*1000),jump:e.jump,usable:e.usable,
   deltaSt:splits[j].length>=2?+(12*Math.log2(splits[j].at(-1)[1]/splits[j][0][1])).toFixed(2):null
  }));
- return {quality:r.quality,points:pts.length,syllables,curves,timestampsMonotonic,splitPct:Math.round(r.splitRatio*100),
+ return {quality:r.quality,points:pts.length,syllables,curves,absolutePoints,timestampsMonotonic,splitPct:Math.round(r.splitRatio*100),
   splitSource:r.splitSource,warning:!!r.splitWarning,groups:r.signal?.speech?.groups||0,
   shortRecovered:rec.offline?.shortRecovered||0};
 }
@@ -100,10 +101,42 @@ const results=windows.map(config=>{
   complete:samples.filter(x=>x.quality==='both').length,
   partial:samples.filter(x=>x.quality==='partial').length};
 });
+function compareContours(reference,alternative){
+ const candidate=alternative.absolutePoints||[];
+ const baseline=reference.absolutePoints||[];
+ const diffs=[],covered=0;
+ for(const point of baseline){
+  const nearest=candidate.reduce((best,c)=>!best||Math.abs(c.ms-point.ms)<Math.abs(best.ms-point.ms)?c:best,null);
+  if(!nearest||Math.abs(nearest.ms-point.ms)>20)continue;
+  covered++;
+  diffs.push(Math.abs(12*Math.log2(point.hz/nearest.hz)));
+ }
+ diffs.sort((a,b)=>a-b);
+ const mid=diffs.length?diffs[Math.floor(diffs.length/2)]:null;
+ const max=diffs.length?diffs.at(-1):null;
+ const good=covered>=Math.max(8,Math.ceil(baseline.length*.8))&&mid!==null&&mid<.9&&max<2.2;
+ return {covered,original:baseline.length,medianAbsSt:mid===null?null:+mid.toFixed(2),maxAbsSt:max===null?null:+max.toFixed(2),good};
+}
+const original=results.find(x=>x.config.label==='90/56/15');
+const rescanned=results.find(x=>x.config.label==='90/60/12');
+const rescues=names.map((name,i)=>{
+ const primary=original.samples[i],backup=rescanned.samples[i],agreement=compareContours(primary,backup);
+ const recovered=primary.quality!=='both'&&backup.quality==='both'&&backup.timestampsMonotonic&&
+  backup.syllables.every(y=>y.usable)&&agreement.good&&
+  !backup.warning;
+ return {name,primary:primary.quality,backup:backup.quality,agreement,recovered,
+  backupSyllables:backup.syllables.map(y=>({points:y.points,durationMs:y.durationMs,maxGapMs:y.maxGapMs,jump:y.jump})),
+  splitChangePct:backup.splitPct-primary.splitPct};
+});
 const report={generated:new Date().toISOString(),source:'panda-tone-test-lab.html',
- note:'Experiments only: no edits to production pitch code or pronunciation grading.',results};
+ note:'Experiments only: no edits to production pitch code or pronunciation grading.',results,rescues};
 fs.writeFileSync(path.join(root,'tone-window-sweep.json'),JSON.stringify(report,null,2)+'\n');
 console.log('Panda Go short-syllable F0 sweep on real lesson-3 MP3 (no microphone)');
+console.log('ADAPTIVE CHECK (90/56/15 → 90/60/12 on partial only, with absolute-time F0 agreement):');
+for(const r of rescues)console.log('  '+r.name+': '+r.primary+' vs '+r.backup+
+  ', match '+r.agreement.covered+'/'+r.agreement.original+
+  ', median/max delta '+r.agreement.medianAbsSt+'/'+r.agreement.maxAbsSt+' st'+
+  ', split delta '+r.splitChangePct+'%, rescue='+r.recovered);
 for(const result of results){
  console.log(result.config.label+': both='+result.complete+'/6, partial='+result.partial+'/6, synthetic='+ (result.sane?'pass':'FAIL')
   +', noise F0='+result.synthetic.noise.points);
@@ -128,6 +161,11 @@ if(process.env.GITHUB_STEP_SUMMARY){
  const display=y=>y?y.points+' F0; '+y.durationMs+' мс'+(y.jump?'; скачок':''):'нет данных';
  return '| '+x.config.label+' | '+x.complete+'/6 | '+display(slot)+' | '+display(col)+' | '+(x.sane?'OK':'FAIL')+' |';
  }),
+ '','### Резервный анализ только при нехватке F0',
+ '| Слово | Основной режим | Резервный | Совпадающие F0 | Максимальная разница | Допустимо? |',
+ '|---|---|---|---:|---:|---|',
+ ...rescues.map(r=>'| '+r.name+' | '+r.primary+' | '+r.backup+' | '+r.agreement.covered+'/'+r.agreement.original+
+  ' | '+r.agreement.maxAbsSt+' st | '+(r.recovered?'да':'нет')+' |'),
  '','Полная диагностика: tone-window-sweep.json в артефакте GitHub Actions.'];
  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,rows.join('\n')+'\n');
 }
