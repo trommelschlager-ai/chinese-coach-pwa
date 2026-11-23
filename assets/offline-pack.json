@@ -3381,6 +3381,10 @@
     "./assets/panda-street-male-voice-v1/01.mp3",
     "./assets/panda-street-male-voice-v1/02.mp3",
     "./assets/panda-street-male-voice-v1/03.mp3",
-    "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=538"
+    "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=538",
+    "./assets/panda-hsk2-preview-v506.css?v=535",
+    "./assets/panda-hsk2-preview-ui-v1.mjs?v=535",
+    "./assets/panda-hsk2-preview-core-v1.mjs?v=536",
+    "./assets/panda-everyday-meaning-v515.mjs?v=536"
   ]
 }
