@@ -230,3 +230,21 @@ html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-pos
   transform:translateY(5px)!important;
   filter:brightness(.90)!important;
 }
+
+/* Lesson 5 shows either the original poster or its composited press frame. */
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-5 .pg-approved-press-frame{
+  display:none!important;
+  position:absolute!important;inset:0!important;
+  width:100%!important;height:100%!important;
+  object-fit:cover!important;object-position:center center!important;
+  pointer-events:none;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-5 .pg-approved-frame-visible .pg-approved-press-frame{
+  display:block!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-5 .pg-approved-frame-visible .pg-approved-cover-image{
+  visibility:hidden!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full.pg-approved-lesson-5 .pg-approved-start:focus-visible{
+  outline:3px solid white!important;
+}
