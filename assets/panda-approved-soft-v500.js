@@ -87,30 +87,40 @@
     stage.dataset.composerOpen='false';
     const cross=word('button','pg500-close-input','×');cross.type='button';
     cross.setAttribute('aria-label','Закрыть ввод текста');form.append(cross);
-    // Store the approved resting geometry *before* Android reduces visualViewport.
-    // Both the mascot and its stone stay at the same pixel size while typing.
+    // v541: approved Panda and rock are frozen in a stage-sized overlay.
+    // History growth, audio status and Android keyboard reflow must never
+    // change the mascot's position, size, pose or seating.
     const mascot=scene.querySelector('.pg352-mascot');
+    let geometryFrozen=false;
     function rememberPandaGeometry(){
-      if(document.documentElement.dataset.keyboard==='true'||!mascot)return;
-      const pandaWidth=mascot.getBoundingClientRect().width;
-      const stoneStyle=getComputedStyle(scene,'::before');
-      const pandaBottom=getComputedStyle(mascot).bottom;
-      const stoneWidth=parseFloat(stoneStyle.width);
-      const stoneLeft=parseFloat(stoneStyle.left);
-      // Once captured at full height, do not overwrite the baseline with a
-      // smaller measurement from an Android intermediate keyboard frame.
-      const heldPanda=parseFloat(stage.style.getPropertyValue('--pg540-panda-width'))||0;
-      const heldStone=parseFloat(stage.style.getPropertyValue('--pg540-stone-width'))||0;
-      if(pandaWidth>90&&Number.isFinite(pandaWidth)&&pandaWidth>=heldPanda-1){
-        stage.style.setProperty('--pg540-panda-width',pandaWidth+'px');
-        if(pandaBottom&&pandaBottom!=='auto')stage.style.setProperty('--pg540-panda-bottom',pandaBottom);
-      }
-      if(Number.isFinite(stoneWidth)&&stoneWidth>90&&stoneWidth>=heldStone-1){
-        stage.style.setProperty('--pg540-stone-width',stoneWidth+'px');
-        if(Number.isFinite(stoneLeft))stage.style.setProperty('--pg540-stone-left',stoneLeft+'px');
-      }
+      if(geometryFrozen||!mascot||document.documentElement.dataset.keyboard==='true')return;
+      const picture=mascot.querySelector('.pg346-panda');
+      if(!picture?.complete||!picture.naturalWidth)return;
+      const rect=mascot.getBoundingClientRect(),sceneRect=scene.getBoundingClientRect(),stageRect=stage.getBoundingClientRect();
+      const back=getComputedStyle(scene,'::before');
+      const width=parseFloat(back.width),bottom=parseFloat(back.bottom),left=parseFloat(back.left);
+      if(rect.width<90||rect.height<90||!Number.isFinite(width)||width<90||!Number.isFinite(bottom)||!Number.isFinite(left))return;
+      const stoneHeight=width*207/600;
+      const stoneX=sceneRect.left-stageRect.left+left;
+      const stoneY=sceneRect.bottom-stageRect.top-bottom-stoneHeight;
+      const pandaX=rect.left-stageRect.left,pandaY=rect.top-stageRect.top;
+      const layer=word('div','pg541-static-layer');
+      layer.setAttribute('aria-hidden','true');
+      const stoneBack=word('div','pg541-static-stone pg541-static-back');
+      const stoneFront=word('div','pg541-static-stone pg541-static-front');
+      const px=(name,value)=>layer.style.setProperty(name,value+'px');
+      px('--pg541-panda-x',pandaX);px('--pg541-panda-y',pandaY);
+      px('--pg541-panda-w',rect.width);px('--pg541-panda-h',rect.height);
+      px('--pg541-stone-x',stoneX);px('--pg541-stone-y',stoneY);
+      px('--pg541-stone-w',width);px('--pg541-stone-h',stoneHeight);
+      // Move the SAME approved image/face DOM, not a replacement character.
+      layer.append(stoneBack,mascot,stoneFront);
+      stage.append(layer);
+      geometryFrozen=true;
+      stage.dataset.pandaStatic='true';
     }
     requestAnimationFrame(rememberPandaGeometry);
+    mascot?.querySelector('.pg346-panda')?.addEventListener('load',()=>requestAnimationFrame(rememberPandaGeometry),{once:true});
     function opened(){return stage.dataset.composerOpen==='true'}
     function openComposer(){
       rememberPandaGeometry();
