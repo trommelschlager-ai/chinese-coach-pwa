@@ -7,6 +7,8 @@ import {correctPandaGrammarV2} from './panda-grammar-hsk12-v2.mjs?v=2';
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
 import {accessibleLessons} from './panda-nonstop-v267.mjs?v=270';
 import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
+import {mergePandaFacts435} from './panda-natural-memory-v435.mjs?v=435';
+import {readSharedPandaProfile,saveSharedPandaProfile} from './panda-cross-character-memory-v1.mjs';
 
 const clean=s=>String(s??'').normalize('NFC').replace(/[\s，。？！?!、,.]/g,'');
 const line=(zh,py,ru)=>({zh,py,ru});
@@ -14,18 +16,15 @@ const normalizeLine=r=>r?line(r.hanzi||r.panda||r.zh||'',r.pinyin||r.py||'',r.ru
 const STREET_FIRST=line('哈喽！最近怎么样？','Hālou! Zuìjìn zěnmeyàng?','Привет! Как дела?');
 const STREET_NEXT=line('你呢？','Nǐ ne?','А ты?');
 
-export function createStreetBrain({storage=null,curriculum=[]}={}){
+export function createStreetBrain({storage=(()=>{try{return globalThis.localStorage}catch{return null}})(),curriculum=[]}={}){
  const state={turn:0,mode:'nonstop',prompt:null,pending:null,topic:1,
-  questions:[],profile:{family:{},recentQuestions:[]},recent:[]};
+  questions:[],profile:{...readSharedPandaProfile(storage),recentQuestions:[]},recent:[]};
  const allowed=()=>{try{return accessibleLessons(storage,1)}catch{return [1]}};
  const remember=(input,result)=>{
-   const fact=result?.spoken?.fact;
-   if(fact&&typeof fact==='object'){
-     for(const [key,value] of Object.entries(fact))if(['name','age','role','profession','workplace'].includes(key)&&value)state.profile[key]=value;
-   }
-   const family=result?.spoken?.family;
-   if(family){for(const x of family.present||[])state.profile.family[x]=true;if(family.absent)state.profile.family[family.absent]=false}
+   if(!result?.spoken?.known||result.spoken.correction)return;
+   state.profile=mergePandaFacts435(state.profile,result.spoken);
    state.profile.recentQuestions=state.questions.slice(-30);
+   saveSharedPandaProfile(storage,state.profile);
  };
  function start(mode='nonstop'){
    state.mode=mode==='short'?'short':'nonstop';
