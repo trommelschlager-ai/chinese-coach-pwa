@@ -212,3 +212,21 @@ html.course-layout #app[data-view="1"] #pg433 .pg-approved-full.pg-approved-canv
 @media(prefers-reduced-motion:reduce){
  html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-button-canvas{transition:none!important}
 }
+
+/* CTA in the approved poster is bitmap artwork. Hit testing is fully invisible.
+   Do not paint a second rectangle, rim, label, or shadow over the CTA. */
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start,
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start:active,
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start.pg-approved-start-pressed {
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  box-shadow:none!important;
+  outline:0!important;
+  filter:none!important;
+  transform:none!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-poster.pg-approved-pressing .pg-approved-button-canvas{
+  transform:translateY(5px)!important;
+  filter:brightness(.90)!important;
+}
