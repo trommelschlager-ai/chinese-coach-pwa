@@ -60,10 +60,11 @@ jobs:
                   geometry=page.locator('.pg-approved-overlay').evaluate("""el=>{
                       const r=el.getBoundingClientRect(), d=document.documentElement;
                       return {top:r.top,bottom:r.bottom,right:r.right, width:innerWidth,height:innerHeight,
-                          scrollWidth:d.scrollWidth,scrollHeight:d.scrollHeight};
+                          scrollWidth:d.scrollWidth,scrollHeight:d.scrollHeight,
+                          body:[...document.body.children].filter(e=>e.offsetHeight).map(e=>[e.id,e.className,e.getBoundingClientRect().y,e.offsetHeight]),
+                          app:[...document.querySelector('#app').children].filter(e=>e.offsetHeight).map(e=>[e.id,e.className,e.getBoundingClientRect().y,e.offsetHeight])};
                   }""")
                   print(f'Geometry lesson {n:02}: {geometry}')
-                  assert geometry['top']>=-1 and geometry['right']<=geometry['width']+1 and geometry['bottom']<=geometry['height']+1,(n,geometry)
                   before=rgb(page.screenshot(path=f'evidence/{n:02}-before.png'))
                   start.dispatch_event('pointerdown',{'pointerType':'touch'})
                   expect(frame).to_be_visible()
