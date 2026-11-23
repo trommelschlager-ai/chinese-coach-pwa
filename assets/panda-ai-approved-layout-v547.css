@@ -194,3 +194,22 @@
  #pg346[data-pa-layout="v547"] .pg346-nav{flex-basis:55px!important;height:55px!important}
  #pg346[data-pa-layout="v547"] .pg346-composer{flex-basis:58px!important;height:58px!important}
 }
+
+/* Android IME: beat legacy :root[data-keyboard] rules from v545.
+   The old 540/545 selectors were more specific than this screen's default
+   layout and resized the mascot/stone as soon as the keyboard opened. */
+:root[data-keyboard="true"] #pg346[data-pa-layout="v547"]:not([data-day-scenario="ready"]) .pg352-mascot,
+:root[data-keyboard="true"] #pg346[data-pa-layout="v547"]:not([data-day-scenario="ready"])[data-pose] .pg352-mascot {
+  position:absolute!important;top:var(--pa-panda-top)!important;
+  left:2%!important;right:auto!important;bottom:auto!important;
+  width:var(--pa-panda-width)!important;height:auto!important;
+  max-width:none!important;max-height:none!important;
+  animation:none!important;transform:none!important;transition:none!important
+}
+:root[data-keyboard="true"] #pg346[data-pa-layout="v547"]:not([data-day-scenario="ready"]) .pg346-scene::before,
+:root[data-keyboard="true"] #pg346[data-pa-layout="v547"]:not([data-day-scenario="ready"]) .pg346-scene::after{
+  position:absolute!important;top:var(--pa-stone-top)!important;
+  left:-2%!important;right:auto!important;bottom:auto!important;
+  width:var(--pa-stone-width)!important;aspect-ratio:600/207!important;
+  height:auto!important;transform:none!important;animation:none!important
+}
