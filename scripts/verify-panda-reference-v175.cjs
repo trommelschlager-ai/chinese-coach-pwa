@@ -39,8 +39,14 @@ for(const [initial,completed] of cases){
  const frontier=Math.min(7,completed+1);
  for(const node of d.querySelectorAll('nav.hotspots > a.lesson')){
    const n=Number(node.dataset.num);
-   const url=n===1?'./hsk1-first-v189.html':n===2?'./hsk1-second-v203.html':n===3?'./hsk1-third-v212.html':n===4?'./hsk1-fourth-v214.html':n===5?'./hsk1-fifth-v227.html':'./hsk1-lesson.html?lesson='+n;
-   assert.equal(node.getAttribute('href'),url);
+   const routes={
+     1:'./hsk1-first-v189.html',2:'./hsk1-second-v203.html',
+     3:'./hsk1-third-v212.html',4:'./hsk1-fourth-v214.html',
+     5:'./hsk1-fifth-v227.html',6:'./hsk1-family-v231.html',
+     7:'./hsk1-weather-v231.html'
+   };
+   assert.equal(node.getAttribute('href')?.split('?')[0],routes[n],
+    'Approved lesson '+n+' hotspot route must remain correct');
    assert.equal(node.classList.contains('locked'),n>frontier,'Lock mismatch for lesson '+n);
    assert.equal(node.classList.contains('done'),n<=completed,'Done mismatch for lesson '+n);
    assert.equal(node.classList.contains('current'),n===frontier&&n>completed,'Current mismatch for lesson '+n);
