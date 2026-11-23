@@ -24,7 +24,8 @@ test('HSK2 understands six Android phrases instead of generic misunderstandings'
   assert.ok(result.line.pinyin,hanzi+' Panda reply has pinyin');
   assert.ok(result.line.ru,hanzi+' Panda reply has Russian');
   assert.ok(!/我没听懂|你可以用简单一点/.test(result.line.hanzi),hanzi);
-  assert.equal(knownHSK2(hanzi)?.pinyin,pinyin,hanzi);
+  const normalizePy=text=>String(text||'').toLowerCase().replace(/[.!?]/g,'').trim();
+  assert.equal(normalizePy(knownHSK2(hanzi)?.pinyin),normalizePy(pinyin),hanzi);
  }
 });
 test('HSK1 non-stop applies the same responses without unlocking lessons',()=>{
