@@ -23,7 +23,9 @@ try{
   res=await page.goto(base+'/panda-voice-pilot.html?lesson=1',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   await page.locator('#pg346').waitFor();
-  assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
+  await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pg500Mounted==='true');
+  assert.match(await page.locator('#pg346 .pg500-landscape').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/,
+   'The approved v500 day/night background must live on its dedicated landscape layer');
   assert.equal(await page.locator('#pg346-topics').isVisible(),false,'Do not cover Panda with open topic menu');
   assert(await page.locator('.pg352-mascot .pg346-panda').isVisible());
   assert.equal(await page.locator('.pg352-rocks').isVisible(),false,'The approved lake already contains natural stones');
