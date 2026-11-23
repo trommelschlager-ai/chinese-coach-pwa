@@ -54,8 +54,8 @@ test('worker and offline download include exact updated versions',()=>{
  assert.equal(activeVersion,pack.version,'Worker and offline manifest versions must match');
  assert(html.includes('panda-hsk2-preview-core-v1.mjs?v=539'));
  assert(html.includes('panda-hsk2-preview-ui-v1.mjs?v=541'));
- assert(html.includes('panda-hsk2-preview-v506.css?v=541'));
- for(const p of ['./assets/panda-hsk2-preview-core-v1.mjs?v=539','./assets/panda-hsk2-preview-ui-v1.mjs?v=541','./assets/panda-hsk2-preview-v506.css?v=541','./assets/panda-everyday-meaning-v515.mjs?v=539','./assets/panda-live-dialogue-v272.mjs?v=536','./assets/panda-approved-soft-v500.js?v=541']){
+ assert(html.includes('panda-hsk2-preview-v506.css?v=542'));
+ for(const p of ['./assets/panda-hsk2-preview-core-v1.mjs?v=539','./assets/panda-hsk2-preview-ui-v1.mjs?v=541','./assets/panda-hsk2-preview-v506.css?v=542','./assets/panda-everyday-meaning-v515.mjs?v=539','./assets/panda-live-dialogue-v272.mjs?v=536','./assets/panda-approved-soft-v500.js?v=542']){
   assert(pack.files.includes(p),'Offline missing '+p);
   assert(worker.includes(p),'Worker missing '+p);
  }
