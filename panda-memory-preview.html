@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#e9daf5">
+<title>Panda Memory · офлайн-лаборатория · Panda Go</title>
+<style>
+:root{color-scheme:light;font:15px/1.4 system-ui,-apple-system,"Noto Sans SC",Arial,sans-serif;background:#f2ebf7;color:#291e3d}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100dvh}
+body{background:radial-gradient(circle at 10% -10%,#e4d1fb 0,transparent 36%),linear-gradient(150deg,#f7f3ff,#eee9f7);padding:clamp(9px,2vmin,18px);overscroll-behavior:none}
+main{max-width:990px;margin:auto;display:grid;gap:11px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:10px}
+.mascot{font-size:clamp(30px,6vw,46px);filter:drop-shadow(0 3px 4px #34214925);line-height:1}
+h1{font-size:clamp(20px,3vw,29px);line-height:1.1;margin:0;color:#46326e}
+.subtitle{font-size:12px;color:#675a7f;margin:3px 0 0}
+.chip{font-weight:750;font-size:12px;color:#4f377e;background:#fff;border:1px solid #d9c9eb;border-radius:999px;padding:8px 11px;white-space:nowrap}
+.chip.offline{color:#975827;background:#fff2e2}
+.column-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:stretch}
+.panel{background:#fffdfd;border:1px solid #e3d8ec;border-radius:22px;padding:16px;box-shadow:0 8px 22px #60448e0d;min-width:0}
+h2{font-size:16px;margin:0 0 10px;color:#483069}
+p{margin:0 0 8px}
+.small{font-size:12px;color:#716582}
+.note{font-size:12px;background:#f5effb;color:#60487e;border-radius:11px;padding:9px 10px;margin-top:10px}
+label{font-size:13px;font-weight:700;color:#4f4262;display:block;margin:9px 0 6px}
+select,input[type=text]{font:inherit;min-height:43px;width:100%;padding:10px;border-radius:12px;border:1px solid #d4c6e4;background:#fff;color:#302140}
+select:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #b9a1ef;outline-offset:2px}
+.zh{font-weight:800;font-size:clamp(21px,2.9vw,29px);line-height:1.3;color:#322249;overflow-wrap:anywhere}
+.py{font-size:14px;color:#6b5394;margin-top:2px}
+.ru{font-size:13px;color:#6a5c76;margin-top:3px}
+.example{border:1px solid #ebe1f5;background:#faf7ff;border-radius:16px;padding:12px;margin:10px 0}
+.example strong{display:block;font-size:11px;letter-spacing:.05em;color:#7b6493;text-transform:uppercase;margin-bottom:5px}
+.checkline{display:flex;align-items:flex-start;gap:9px;background:#f7f2fc;border:1px solid #e9dff3;padding:11px;border-radius:14px;margin:12px 0;cursor:pointer}
+.checkline input{accent-color:#7b54c5;margin:3px 0 0;transform:scale(1.2)}
+.checkline span{flex:1;font-size:13px;font-weight:600;color:#4b3a63}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+button{appearance:none;border:0;border-radius:12px;min-height:44px;padding:10px 13px;font:700 13px system-ui,sans-serif;cursor:pointer;transition:transform .18s,filter .18s;box-shadow:0 3px 0 #39265526}
+button:active{transform:translateY(2px);box-shadow:0 1px 0 #39265526}
+button.primary{background:#7455bf;color:#fff}
+button.secondary{background:#e7dbfb;color:#4f347e}
+button.tertiary{background:#f7f3fa;border:1px solid #e5d9ef;color:#594b6e}
+button:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+.fill{flex:1;min-width:148px}
+.answer{margin-top:10px;border:1px solid #e5d9ef;border-radius:16px;min-height:126px;padding:12px;background:#f9f5ff}
+.answer .empty{color:#80738a;font-size:13px;padding-top:14px}
+.status{min-height:22px;color:#5a4677;font-weight:600;font-size:12px;margin-top:10px}
+.status.error{color:#a33c43}
+.footer{font-size:11px;color:#716680;text-align:center}
+.link{color:#5d3d95;font-weight:700}
+@media(max-width:650px){.column-grid{grid-template-columns:1fr}.panel{padding:13px}.subtitle{font-size:11px}}
+@media(min-width:651px) and (max-height:460px){body{padding:7px}main{gap:5px}.panel{padding:10px 13px}.example{margin:6px 0;padding:8px}.checkline{margin:8px 0;padding:7px}.actions{margin-top:5px}button{min-height:38px}.answer{min-height:88px;padding:8px}.zh{font-size:19px}h2{margin-bottom:5px}.note{margin-top:5px;padding:6px}.small{font-size:11px}}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="brand">
+    <div class="mascot" aria-hidden="true">🐼</div>
+    <div>
+      <h1>Panda Memory</h1>
+      <p class="subtitle">Офлайн-лаборатория · 3 проверенные фразы · Xiaoxiao</p>
+    </div>
+  </div>
+  <div id="network" class="chip" aria-live="polite">Проверка сети…</div>
+</header>
+<div class="column-grid">
+  <section class="panel" aria-labelledby="saveTitle">
+    <h2 id="saveTitle">1. Сохраняем знания</h2>
+    <p class="small">Это отдельный тест, не основной разговорный AI. Мы используем только заранее утверждённые ответы и настоящие MP3 Xiaoxiao.</p>
+    <label for="sample">Выбери учебный диалог</label>
+    <select id="sample">
+      <option value="movie-comedy">Кино · люблю комедии</option>
+      <option value="movie-why">Кино · почему нравятся комедии</option>
+      <option value="day-rest">Мой день · сегодня отдыхаю</option>
+    </select>
+    <div class="example">
+      <strong>Ученик</strong>
+      <div id="sampleTrigger" class="zh">我想看喜剧片。</div>
+      <strong style="margin-top:8px">Панда ответит</strong>
+      <div id="sampleAnswer" class="zh">我喜欢喜剧片。</div>
+      <div id="samplePinyin" class="py">Wǒ xǐhuan xǐjùpiàn.</div>
+      <div id="sampleRussian" class="ru">Я люблю комедии.</div>
+    </div>
+    <label class="checkline" for="consent">
+      <input type="checkbox" id="consent">
+      <span>Я согласен сохранить выбранный учебный диалог и его MP3 на этом устройстве.</span>
+    </label>
+    <div class="actions">
+      <button type="button" id="save" class="primary fill">💾 Сохранить с Xiaoxiao</button>
+      <button type="button" id="prepare" class="secondary">⬇ Подготовить офлайн</button>
+    </div>
+    <div id="saveStatus" class="status" role="status" aria-live="polite">Сначала отметь согласие и сохрани пример.</div>
+    <p class="note">Непроверенные ответы онлайн-AI автоматически в учебную память не попадают. Эта лаборатория не записывает микрофон и не отправляет личные разговоры.</p>
+  </section>
+  <section class="panel" aria-labelledby="testTitle">
+    <h2 id="testTitle">2. Проверяем без интернета</h2>
+    <p class="small">После сохранения включи авиарежим и введи фразу. Проверка работает по сохранённому тексту и теме; голосовой ввод офлайн пока не предусмотрен.</p>
+    <label for="query">Китайская фраза ученика</label>
+    <input id="query" type="text" lang="zh-CN" autocomplete="off" spellcheck="false" value="我想看喜剧片。" maxlength="500">
+    <div class="actions">
+      <button type="button" id="recall" class="primary fill">🔎 Проверить память</button>
+      <button type="button" id="listen" class="secondary" disabled>🔊 Слушать Xiaoxiao</button>
+    </div>
+    <div id="result" class="answer" aria-live="polite">
+      <div class="empty">После сохранения ответ появится здесь. Можно проверять без интернета.</div>
+    </div>
+    <div id="testStatus" class="status" role="status" aria-live="polite">Записей для этого примера ещё не проверяли.</div>
+    <div class="actions">
+      <button type="button" id="delete" class="tertiary">Удалить эту фразу</button>
+      <button type="button" id="wipe" class="tertiary">Удалить всю тестовую память</button>
+    </div>
+    <p class="note">Память хранится в IndexedDB браузера. Очистка данных сайта или нехватка места может удалить записи. Скачанные ответы не создают новые фразы сами.</p>
+  </section>
+</div>
+<p class="footer">Panda Go · отдельная проверка Panda Memory · <a class="link" href="./panda-voice-pilot.html">Вернуться к Panda AI</a></p>
+</main>
+<script type="module">
+import {PANDA_MEMORY_SAMPLES_V1 as samples} from './assets/panda-memory-reviewed-samples-v1.mjs';
+import {createPandaMemoryStore,preparePandaMemoryCandidate,fetchApprovedPandaMp3} from './assets/panda-offline-memory-v1.mjs';
+
+const $=id=>document.getElementById(id);
+const DB_OWNER='panda-preview-local';
+const store=createPandaMemoryStore();
+let readyClip=null,player=null,objectURL=null,busy=false;
+const sourceBase=location.hostname==='127.0.0.1'||location.hostname==='localhost'
+  ? 'https://trommelschlager-ai.github.io/chinese-coach-pwa/'
+  : new URL('./',location.href).href;
+const current=()=>samples.find(x=>x.id===$('sample').value)||samples[0];
+function setText(id,value){$(id).textContent=value}
+function status(id,message,error=false){setText(id,message);$(id).classList.toggle('error',!!error)}
+function connection(){
+ const online=navigator.onLine;
+ setText('network',online?'● Онлайн':'○ Без интернета');
+ $('network').classList.toggle('offline',!online);
+}
+function stopPlayer(){
+ if(player){player.pause();player.src='';player=null}
+ if(objectURL){URL.revokeObjectURL(objectURL);objectURL=null}
+}
+function clearResult(){
+ stopPlayer();readyClip=null;$('listen').disabled=true;
+ const root=$('result');root.replaceChildren();
+ const p=document.createElement('div');p.className='empty';p.textContent='Нажми «Проверить память», чтобы найти сохранённый ответ.';root.append(p);
+}
+function showAnswer(card){
+ const root=$('result');root.replaceChildren();
+ for(const [text,cls] of [[card.answer,'zh'],[card.pinyin,'py'],[card.ru,'ru']]){
+  const p=document.createElement('div');p.className=cls;p.textContent=text;root.append(p)
+ }
+}
+function disabledWhileBusy(flag){
+ busy=flag;
+ for(const id of ['save','recall','delete','wipe','prepare'])$(id).disabled=flag;
+}
+async function updateSelected(){
+ const item=current();
+ setText('sampleTrigger',item.trigger);setText('sampleAnswer',item.answer);
+ setText('samplePinyin',item.pinyin);setText('sampleRussian',item.ru);
+ $('query').value=item.trigger;
+ clearResult();
+ try{
+  const stored=await store.recall({ownerId:DB_OWNER,topic:item.topic,trigger:item.trigger});
+  status('saveStatus',stored?'✅ Эта фраза и MP3 уже сохранены в телефоне.':'Фраза ещё не сохранена.');
+ }catch(e){status('saveStatus','Локальная память недоступна: '+e.message,true)}
+}
+async function save(){
+ if(busy)return;
+ if(!$('consent').checked){status('saveStatus','Сначала включи согласие на локальное сохранение.',true);return}
+ const item=current();
+ disabledWhileBusy(true);
+ try{
+  const previous=await store.recall({ownerId:DB_OWNER,topic:item.topic,trigger:item.trigger});
+  if(previous){status('saveStatus','✅ Уже сохранено: '+Math.ceil(previous.audioBlob.size/1024)+' КБ MP3.');return}
+  if(!navigator.onLine)throw new Error('Для первой загрузки MP3 нужен интернет');
+  const input={ownerId:DB_OWNER,topic:item.topic,trigger:item.trigger,answer:item.answer,
+    pinyin:item.pinyin,ru:item.ru,level:item.level,consent:true};
+  const draft=preparePandaMemoryCandidate(input);
+  await store.stage(input);
+  const audioBlob=await fetchApprovedPandaMp3(item.src,{baseUrl:sourceBase});
+  await store.approve({candidate:draft,source:'approved-course-audio',reviewRef:item.reviewRef,
+    audioBlob,voiceId:item.voiceId});
+  status('saveStatus','✅ Сохранено на телефоне: перевод, пиньинь и '+Math.ceil(audioBlob.size/1024)+' КБ MP3 Xiaoxiao.');
+ }catch(e){status('saveStatus','Не удалось сохранить: '+e.message,true)}
+ finally{disabledWhileBusy(false)}
+}
+async function recall(){
+ if(busy)return;
+ stopPlayer();readyClip=null;$('listen').disabled=true;
+ const item=current();
+ try{
+  const saved=await store.recall({ownerId:DB_OWNER,topic:item.topic,trigger:$('query').value});
+  if(!saved){clearResult();status('testStatus','Такой фразы по теме пока нет в проверенной памяти.',true);return}
+  readyClip=saved;
+  $('listen').disabled=false;
+  showAnswer(saved);
+  status('testStatus','✅ Ответ найден локально, MP3 тоже хранится на телефоне.');
+ }catch(e){clearResult();status('testStatus','Ошибка офлайн-памяти: '+e.message,true)}
+}
+async function listen(){
+ if(!readyClip)return;
+ stopPlayer();
+ try{
+  objectURL=URL.createObjectURL(readyClip.audioBlob);
+  player=new Audio(objectURL);
+  player.onended=stopPlayer;
+  player.onerror=()=>status('testStatus','Аудио не воспроизвелось. Проверь звук телефона.',true);
+  await player.play();
+  status('testStatus','🔊 Играет сохранённая запись Xiaoxiao (без сети).');
+ }catch(e){stopPlayer();status('testStatus','Браузер не разрешил звук: '+e.message,true)}
+}
+async function erase(all=false){
+ if(busy)return;
+ disabledWhileBusy(true);
+ try{
+  if(all){await store.clearOwner(DB_OWNER)}else{
+   const item=current();await store.delete({ownerId:DB_OWNER,topic:item.topic,trigger:item.trigger});
+  }
+  clearResult();status('testStatus',all?'Все тестовые записи удалены.':'Выбранная запись удалена.');
+  await updateSelected();
+ }catch(e){status('testStatus','Ошибка удаления: '+e.message,true)}
+ finally{disabledWhileBusy(false)}
+}
+async function prepOffline(){
+ if(busy)return;
+ disabledWhileBusy(true);
+ try{
+  if(!navigator.onLine)throw new Error('Подготовка страницы требует интернета');
+  if(!('serviceWorker' in navigator)||!('caches' in window))throw new Error('Браузер не поддерживает офлайн-страницы');
+  await navigator.serviceWorker.register('./sw.js');
+  await navigator.serviceWorker.ready;
+  const cache=await caches.open('panda-memory-preview-shell-v1');
+  await cache.addAll([
+    new URL('./panda-memory-preview.html',location.href).href,
+    new URL('./assets/panda-offline-memory-v1.mjs',location.href).href,
+    new URL('./assets/panda-memory-reviewed-samples-v1.mjs',location.href).href
+  ]);
+  status('saveStatus','✅ Экран и код подготовлены для офлайна. Сохрани MP3 и затем включи авиарежим.');
+ }catch(e){status('saveStatus','Ошибка подготовки офлайна: '+e.message,true)}
+ finally{disabledWhileBusy(false)}
+}
+$('sample').addEventListener('change',updateSelected);
+$('save').addEventListener('click',save);
+$('recall').addEventListener('click',recall);
+$('listen').addEventListener('click',listen);
+$('delete').addEventListener('click',()=>erase(false));
+$('wipe').addEventListener('click',()=>erase(true));
+$('prepare').addEventListener('click',prepOffline);
+window.addEventListener('online',connection);window.addEventListener('offline',connection);
+window.addEventListener('pagehide',stopPlayer);
+connection();updateSelected();
+</script>
+</body>
+</html>
