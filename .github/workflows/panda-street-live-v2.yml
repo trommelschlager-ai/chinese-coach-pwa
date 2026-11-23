@@ -17,6 +17,8 @@ on:
       - 'assets/panda-hsk2-preview-core-v1.mjs'
       - 'tests/panda-cross-character-memory-v1.test.mjs'
       - 'tests/panda-street-live-android-v2.test.mjs'
+      - 'tests/panda-street-real-chrome-v1.mjs'
+      - 'assets/panda-street-male-voice-v1/**'
       - '.github/workflows/panda-street-live-v2.yml'
   workflow_dispatch:
 jobs:
@@ -31,3 +33,21 @@ jobs:
           node-version: '22'
       - name: Check opt-in shared learner memory and Panda Street conversation
         run: node --test tests/panda-cross-character-memory-v1.test.mjs tests/panda-street-live-android-v2.test.mjs tests/panda-street-male-voice-queue-v1.test.mjs tests/panda-street-approved-male-mp3-v1.test.mjs
+
+      - name: Install Playwright driver (Chrome already on Ubuntu)
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm install --no-save --no-package-lock playwright@1.56.1
+      - name: Android-size real Chrome: approved MP3 decode and playback, no 04, day/night
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/panda-street-http.log 2>&1 &
+          sleep 2
+          node tests/panda-street-real-chrome-v1.mjs
+      - name: Upload Panda Street real-browser review screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-street-android-emulation
+          path: qa/panda-street-browser-v1/
+          if-no-files-found: warn
