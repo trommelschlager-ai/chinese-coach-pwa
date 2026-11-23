@@ -78,6 +78,26 @@
    else {bg.fillStyle='#74219e';bg.fillRect(left,top,bw,bh);}
    if('filter' in bg)bg.drawImage(img,0,0,w,h);
    bg.restore();
+   // Lesson 5: gently fade the grey arc baked into the approved poster
+   // above Start. Leave the purple button, gold rim and six tiles untouched.
+   if(num===5){
+    try{
+     const x=Math.floor(w*.06),y=Math.max(0,Math.floor((rect.y-.023)*h));
+     const sw=Math.min(w-x,Math.ceil(w*.88));
+     const sh=Math.min(h-y,Math.max(1,Math.ceil(h*.027)));
+     const region=bg.getImageData(x,y,sw,sh),pixels=region.data;
+     for(let i=0;i<pixels.length;i+=4){
+      const r=pixels[i],g=pixels[i+1],b=pixels[i+2];
+      if(r>=155&&r<245&&g>=155&&g<245&&b>=155&&b<245
+         &&Math.abs(r-g)<=23&&Math.abs(b-g)<=27){
+       pixels[i]=Math.round(r+(248-r)*.34);
+       pixels[i+1]=Math.round(g+(229-g)*.34);
+       pixels[i+2]=Math.round(b+(245-b)*.34);
+      }
+     }
+     bg.putImageData(region,x,y);
+    }catch(_ignored){/* Preserve the original poster if pixel access is blocked. */}
+   }
    fg.save();
    fg.beginPath();
    fg.roundRect(left,top,bw,bh,bh/2);
