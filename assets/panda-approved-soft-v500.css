@@ -273,14 +273,14 @@
 #pg346 .pg500-landscape {
   position:absolute;inset:0;z-index:0;pointer-events:none;
   background:url('./panda-landscape-v350.webp') center center/cover no-repeat;
-  filter:brightness(.35) saturate(1.25) hue-rotate(8deg);
+  filter:brightness(.60) saturate(1.15) hue-rotate(8deg);
   transition:filter .45s ease;
 }
 #pg346[data-theme="day"] .pg500-landscape {filter:brightness(1) saturate(1)}
 /* A night sky replaces the daylight clouds; mountains and landscape remain legible. */
 #pg346 .pg500-landscape:after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,#030921ac 0%,#0b1c5b70 31%,#0d20521f 66%,#020c2645 100%);
+  background:linear-gradient(180deg,#030921a0 0%,#0b1c5b52 31%,#0d205216 66%,#020c2633 100%);
 }
 #pg346[data-theme="day"] .pg500-landscape:after{display:none}
 #pg346:before {z-index:1;opacity:.76}
