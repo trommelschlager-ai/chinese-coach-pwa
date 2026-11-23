@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0c0918">
+<title>Panda Street — маска кастета, исходное разрешение</title>
+<style>
+*{box-sizing:border-box}
+:root{color-scheme:dark}
+body{margin:0;background:#0c0918;color:#fff;font:13px system-ui,-apple-system,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:12px 12px max(18px,env(safe-area-inset-bottom))}
+h1{font-size:17px;color:#ffdc9b;margin:3px 0 6px}
+p{color:#d3c8dd;font-size:12px;line-height:1.45;margin:5px 0 13px}
+#state{color:#cfeddd;font-size:11px;line-height:1.35;padding:6px 0}
+header,section{border:1px solid #5c426e;background:#181426;border-radius:15px;padding:10px;margin-bottom:10px}
+.controls{display:flex;flex-wrap:wrap;gap:7px}
+button{font:700 12px system-ui,-apple-system,Arial,sans-serif;border:1px solid #9675c4;border-radius:11px;color:#fff;background:#3c2b55;min-height:41px;padding:7px 11px;flex:1;cursor:pointer}
+button[aria-pressed="true"]{background:#7847a8;border-color:#edd0ff}
+button:disabled{opacity:.5;cursor:wait}
+section h2{font-size:13px;color:#f7d8a2;margin:0 0 8px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+figure{margin:0;min-width:0}
+figure canvas{display:block;width:100%;aspect-ratio:1/1;border-radius:12px;border:1px solid #785a8c;background:#222131}
+figcaption{font-size:11px;text-align:center;color:#e2d9ea;margin-top:5px}
+#fullrow{display:flex;align-items:center;gap:7px}
+#fullrow button{font-size:11px}
+#warning{color:#ffd4a2}
+#download{margin-top:5px}
+footer{font-size:11px;color:#bcb1c8;padding:4px 7px 16px}
+@media(min-width:520px){main{padding-top:19px}.grid{gap:16px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>🐼 PANDA STREET · КАСТЕТ</h1>
+<p>Статичная проверка настоящего исходника 693×1444. Лапа взята без перерисовки, скрытая куртка пока не восстановлена. Никаких неестественных движений.</p>
+<div class="controls" aria-label="Выбор оригинала">
+<button id="night" aria-pressed="true">🌙 Ночь</button>
+<button id="day" aria-pressed="false">☀ День</button>
+</div>
+<div id="state" role="status">Загрузка утверждённых изображений…</div>
+</header>
+<section aria-label="Сопоставление">
+<h2>1. Сравнение контура с оригиналом</h2>
+<div class="grid">
+<figure><canvas id="original" aria-label="Оригинальная лапа с кастетом"></canvas><figcaption>Оригинал</figcaption></figure>
+<figure><canvas id="overlay" aria-label="Оригинал с предварительным контуром"></canvas><figcaption>Контур из двух Android-скриншотов</figcaption></figure>
+</div>
+</section>
+<section aria-label="Прозрачный слой">
+<h2>2. Прозрачный слой и область для восстановления</h2>
+<div class="grid">
+<figure><canvas id="isolated" aria-label="Кулак и кастет на шахматном прозрачном фоне"></canvas><figcaption>Отдельный слой</figcaption></figure>
+<figure><canvas id="hole" aria-label="Прозрачная область без восстановленной ткани"></canvas><figcaption>Скрытая ткань пока не восстановлена</figcaption></figure>
+</div>
+<p id="warning">Жёлтая граница и отверстия в кастете пока черновые. Для анимации нужен художник, который вручную восстановит материал под кулаком.</p>
+</section>
+<section id="download">
+<h2>3. Экспорт из оригинального WebP</h2>
+<div class="controls">
+<button id="saveLayer" disabled>↓ Прозрачный PNG 693×1444</button>
+<button id="saveMask" disabled>↓ Маска 693×1444</button>
+<button id="saveMap" disabled>↓ Контур JSON</button>
+</div>
+<p>Экспорт осуществляется в твоём браузере напрямую из оригинального изображения. В репозиторий ничего не загружается, основная Panda Street не меняется.</p>
+</section>
+<footer>Экспериментальная ветка · PR №201 · не публиковать до проверки контура, ретуши и естественного движения.</footer>
+</main>
+<script>
+(()=>{
+'use strict';
+const W=693,H=1444,ROI={x:238,y:523,w:210,h:210};
+const ROOT='https://raw.githubusercontent.com/trommelschlager-ai/chinese-coach-pwa/a442485be6088b07af6815bdb7a170665d2cfb38/assets/panda-street-day-night/';
+const sources={night:ROOT+'night.webp',day:ROOT+'day.webp'};
+const $=id=>document.getElementById(id);
+const img={},created=[];
+let day='night',contour=null;
+function notify(s){$('state').textContent=s}
+function make(w=W,h=H){const c=document.createElement('canvas');c.width=w;c.height=h;return c}
+function trace(c,pts){
+ c.beginPath();c.moveTo(...pts[0]);
+ for(let j=1;j<pts.length;j++)c.lineTo(...pts[j]);c.closePath();
+}
+function mask(){
+ const can=make(),g=can.getContext('2d');
+ g.fillStyle='#fff';trace(g,contour.outline);g.fill();
+ g.globalCompositeOperation='destination-out';
+ for(const p of contour.holes){trace(g,p);g.fill()}
+ g.globalCompositeOperation='source-over';return can;
+}
+function cutout(){
+ const can=make(),g=can.getContext('2d');
+ g.drawImage(img[day],0,0);
+ g.globalCompositeOperation='destination-in';g.drawImage(mask(),0,0);
+ g.globalCompositeOperation='source-over';
+ return can;
+}
+function underlay(){
+ const can=make(),g=can.getContext('2d');
+ g.drawImage(img[day],0,0);
+ g.globalCompositeOperation='destination-out';g.drawImage(mask(),0,0);
+ g.globalCompositeOperation='source-over';return can;
+}
+function checker(g,w,h){
+ const v=15;g.fillStyle='#302b3d';g.fillRect(0,0,w,h);
+ for(let y=0;y<h;y+=v)for(let x=0;x<w;x+=v)if(((x/v|0)+(y/v|0))%2===0){g.fillStyle='#464052';g.fillRect(x,y,v,v)}
+}
+function paintCrop(target,source,which){
+ const can=$(target),resolution=Math.min(2,devicePixelRatio||1),css=can.clientWidth||160;
+ const dim=Math.round(css*resolution);
+ if(can.width!==dim||can.height!==dim){can.width=dim;can.height=dim}
+ const g=can.getContext('2d',{alpha:false});g.setTransform(dim/ROI.w,0,0,dim/ROI.h,0,0);
+ if(which==='original'||which==='overlay')g.drawImage(source,ROI.x,ROI.y,ROI.w,ROI.h,0,0,ROI.w,ROI.h);
+ else{checker(g,ROI.w,ROI.h);g.drawImage(source,ROI.x,ROI.y,ROI.w,ROI.h,0,0,ROI.w,ROI.h)}
+ if(which==='overlay'){
+  g.save();g.translate(-ROI.x,-ROI.y);g.strokeStyle='#ffda72';g.lineWidth=1.5;
+  trace(g,contour.outline);g.stroke();
+  g.strokeStyle='#65f5ef';g.lineWidth=1;
+  for(const p of contour.holes){trace(g,p);g.stroke()}
+  g.restore();
+ }
+}
+function draw(){
+ if(!img[day]||!contour)return;
+ paintCrop('original',img[day],'original');
+ paintCrop('overlay',img[day],'overlay');
+ paintCrop('isolated',cutout(),'isolated');
+ paintCrop('hole',underlay(),'hole');
+ $('night').setAttribute('aria-pressed',String(day==='night'));
+ $('day').setAttribute('aria-pressed',String(day==='day'));
+}
+async function fetchSource(name,url){
+ const r=await fetch(url,{mode:'cors',credentials:'omit',cache:'no-store'});
+ if(!r.ok||r.type==='opaque')throw new Error(name+': HTTP/CORS '+r.status);
+ const blob=await r.blob();
+ if(!blob.type.startsWith('image/'))throw new Error(name+': некорректный формат');
+ const objectUrl=URL.createObjectURL(blob);created.push(objectUrl);
+ const v=new Image();v.crossOrigin='anonymous';
+ await new Promise((resolve,reject)=>{v.onload=resolve;v.onerror=()=>reject(Error(name+': файл не открылся'));v.src=objectUrl});
+ if(v.naturalWidth!==W||v.naturalHeight!==H)throw new Error(name+': размер не '+W+'×'+H);
+ const check=make(1,1),g=check.getContext('2d',{willReadFrequently:true});
+ g.drawImage(v,0,0,1,1);g.getImageData(0,0,1,1);img[name]=v;
+}
+function exportCanvas(canvas,filename){
+ canvas.toBlob(blob=>{
+  if(!blob){notify('PNG: ошибка экспорта.');return}
+  const u=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=u;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(u),3000);
+ },'image/png');
+}
+function exportJson(){
+ const b=new Blob([JSON.stringify(contour,null,2)],{type:'application/json'});
+ const u=URL.createObjectURL(b),a=document.createElement('a');
+ a.href=u;a.download='castet-mask-source-v1.UNAPPROVED.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),3000);
+}
+$('night').onclick=()=>{day='night';draw()};
+$('day').onclick=()=>{day='day';draw()};
+$('saveLayer').onclick=()=>exportCanvas(cutout(),'panda-street-'+day+'-castet-source-pixels-UNAPPROVED.png');
+$('saveMask').onclick=()=>exportCanvas(mask(),'panda-street-castet-mask-693x1444-UNAPPROVED.png');
+$('saveMap').onclick=exportJson;
+window.addEventListener('resize',draw);
+window.addEventListener('pagehide',()=>created.forEach(x=>URL.revokeObjectURL(x)),{once:true});
+Promise.all([
+ fetch('./art/panda-street/castet-mask-source-v1.UNAPPROVED.json').then(r=>{if(!r.ok)throw Error('Нет файла контура');return r.json()}),
+ ...Object.entries(sources).map(([name,url])=>fetchSource(name,url))
+]).then(([geometry])=>{
+ if(geometry.target_resolution?.join(',')!=='693,1444'||geometry.outline.length<10||geometry.holes.length<1)throw Error('Неподходящая разметка');
+ contour=geometry;
+ ['saveLayer','saveMask','saveMap'].forEach(id=>$(id).disabled=false);
+ notify('Оба оригинальных WebP загружены. Контур автоматически совмещён. Ничего обводить вручную не нужно.');
+ draw();
+}).catch(err=>{notify('Ошибка: '+err.message+'. Исходный файл не изменён.');console.error(err)});
+})();
+</script>
+</body></html>
