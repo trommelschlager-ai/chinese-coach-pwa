@@ -1,5 +1,5 @@
 {
-  "version": 535,
+  "version": 536,
   "bytes": 80382882,
   "files": [
     "./assets/panda-approved-soft-v500.css?v=527",
@@ -3374,6 +3374,9 @@
     "./assets/hsk2-catalog-thumbnails/future.webp",
     "./assets/hsk2-catalog-thumbnails/shop.webp",
     "./assets/hsk2-catalog-thumbnails/health.webp",
-    "./assets/hsk2-catalog-thumbnails/relationships.webp"
+    "./assets/hsk2-catalog-thumbnails/relationships.webp",
+    "./assets/panda-hsk2-preview-core-v1.mjs?v=536",
+    "./assets/panda-live-dialogue-v272.mjs?v=536",
+    "./assets/panda-everyday-meaning-v515.mjs?v=536"
   ]
 }
