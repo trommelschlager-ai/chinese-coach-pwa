@@ -17,7 +17,7 @@
  // Detect the purple CTA's vertical position from EACH approved cover.
  // Individual posters have different CTA heights: a shared y=60% hotspot is wrong.
  function findStartRect(img){
-  const fallback={x:.013,y:([2,3,6].includes(num)?.587:num===9?.600:.608),w:.974,h:.112};
+  const fallback={x:.013,y:([2,3,6].includes(num)?.588:num===9?.628:.635),w:.974,h:.088};
   try{
    const scan=document.createElement('canvas');
    scan.width=220;scan.height=480;
@@ -47,7 +47,7 @@
    }
    if(best<.47||at<0)return fallback;
    // Include the original GOLD RIM and shadow, not just text / purple interior.
-   return {x:.013,y:Math.max(.54,at/h-.062),w:.974,h:.112};
+   return {x:.013,y:Math.max(.54,at/h-.047),w:.974,h:.088};
   }catch(_e){return fallback;}
  }
  // Render the ORIGINAL pixels as a movable button, never a replacement graphic.
