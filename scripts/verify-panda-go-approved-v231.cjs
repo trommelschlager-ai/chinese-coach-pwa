@@ -74,9 +74,23 @@ for(const lesson of [6,7]){
  click('#pg5-next');assert.equal(step(),12);assert(d.getElementById('writer'),'Hanzi exercise unavailable');
  click('#pg5-next');assert.equal(step(),13);assert(d.querySelector('[data-record]'),'Recorder buttons missing');
  click('#pg5-next');assert.equal(step(),14);
- assert(d.querySelectorAll('[data-final]').length===currentTopic.quiz.choices.length,'Final choices missing');
- click('[data-final="'+currentTopic.quiz.correct+'"]');
- assert(!d.getElementById('pg5-next').disabled,'Correct final answer must unlock completion');
+ // Approved HSK1 family/weather now finish with five real questions, not one.
+ const answers=lesson===6?[currentTopic.quiz.correct,1,0,1,2]:
+                         [currentTopic.quiz.correct,1,0,2,1];
+ assert.equal(d.querySelectorAll('[data-final]').length,currentTopic.quiz.choices.length,
+  'First final-question choices must remain present');
+ for(let i=0;i<answers.length;i++){
+  assert.equal(d.querySelector('[data-final]').disabled,false,'Final choice disabled at question '+(i+1));
+  click('[data-final="'+answers[i]+'"]');
+  const intermediate=JSON.parse(w.localStorage.getItem('pg-hsk1-l'+lesson+'-v231'));
+  assert.equal(intermediate.finalStep,i+1,'Question progression must be real');
+  if(i<answers.length-1){
+   assert.equal(intermediate.done,false,'Lesson must not complete early');
+   assert(d.getElementById('pg5-next').disabled,'Five-question test cannot be skipped');
+  }
+ }
+ assert(!d.getElementById('pg5-next').disabled,'Five correct answers must unlock completion');
+ assert.match(d.getElementById('pg5-stage').textContent,/5\s*\/\s*5/,'Final score must show five first attempts');
  const saved=JSON.parse(w.localStorage.getItem('pg-hsk1-l'+lesson+'-v231'));
  assert(saved.done&&saved.quizPassed,'Completed lesson state not stored');
  assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes(topic),'Legacy achievement missing');
