@@ -1,4 +1,4 @@
-import {friendlyIntroduction} from './panda-everyday-meaning-v515.mjs?v=535';
+import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=536';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -15,7 +15,7 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=434';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=536';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=436';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
@@ -270,6 +270,21 @@ function submit(raw){
   note('');
   say({hanzi,pinyin:replyPinyin,ru});
   return;
+ }
+ // v536: standalone HSK1 short and Non-Stop replies from real Android reports.
+ // HSK2 day practice keeps its dedicated answer validator.
+ if(!hsk2&&!state.dayMode){
+  const s=normalize(input);
+  if(['不好','我不好','非常好','我非常好','很不错你呢','我很不错你呢','休息','你可以说中文','跑步这么样'].includes(s)){
+   const social=everydayMeaning(input,lesson(),null);
+   if(social){
+    learner(input,{known:true,hanzi:input,pinyin:social.spoken[1],translation:social.spoken[2],topic:1});
+    const [hanzi,pinyin,ru]=social.reply;
+    say({hanzi,pinyin,ru},false);
+    note(social.coachNote||'Панда поняла фразу. Китайские тоны по тексту не оценивались.');
+    return;
+   }
+  }
  }
  if(hsk2){submitHSK2(input);return;}
  if(state.dayMode){
