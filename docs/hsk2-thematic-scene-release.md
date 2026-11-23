@@ -1,29 +1,32 @@
-# Panda Go HSK2 — release checklist for 10 thematic bottom scenes
+# Panda Go HSK 2 — эталон обложки пользователя, 23 ноября 2026
 
-**Status:** integration code is in this separate branch, but the ten binary WebP
-assets must be uploaded before the PR can be merged. Main remains unchanged.
+## Важно: исправлено по двум фото пользователя
 
-## Upload package
-Panda_Go_HSK2_10_thematic_scenes.zip contains exactly the required files under
-`assets/hsk2-approved-covers/`. Unpack it and upload
-`lesson-01-scene.webp` … `lesson-10-scene.webp`.
-Keep existing `lesson-XX.png`, `lesson-XX-tail.webp`, audio, tests and progress intact.
-`scenes-manifest.json` is already in the branch.
+**Фото 1** было сравнительным коллажем из трёх миниатюр, открытым в фотогалерее на чёрном фоне. ЭТО НЕ ПРИЕМЛЕМЫЙ ВИД ЭКРАНА УРОКА.
 
-## Implementation
-`assets/hsk2-approved-cover.js` preloads the WebP for each active HSK2 lesson.
-If it is missing/invalid, the previous cover is displayed unchanged. If present,
-it adds an image backdrop below the existing «Начать урок» button, covering the
-old reward/floor section. Hit targets, navigation, voices, practice, scores and
-storage are untouched. `assets/hsk2-approved-cover.css` styles the layer.
+**Фото 2** — утверждённый эталон: **ОДНА ЕДИНАЯ ВЕРТИКАЛЬНАЯ КАРТИНКА** от верхнего края до нижнего, полный экран телефона, 694×1536, с крупными читаемыми элементами, роскошным китайским 3D-оформлением и цельной нижней сценой (учитель читает книгу, панда, чайная, круглое окно, мост, пагода).
 
-## Quality gate (must pass BEFORE merge)
-1. `python tests/hsk2-thematic-scene-check.py` reports 10 assets present and exact SHA256/size.
-2. Check actual HTML lessons 1–10 in Android Chrome at 360×800, 393×873 and 412×915.
-3. Check no blank bands, face cropping, horizontal stretching, broken tap zones or scrolling.
-4. Check Back, Start, all six lesson section hotspots, voice, tests and persisted progress.
-5. Verify loaded WebP art doesn't cover «Начать урок» or the back button.
-6. Take screenshots of all ten lessons and compare to the approved lesson-1 tea-room aesthetic.
-7. Only merge after user inspects the real previews. No auto-publish from this branch.
+### Требуемое решение
+1. Для каждого из 10 уроков — свой **полный** вертикальный постер с относительной геометрией эталона 694:1536; файл `assets/hsk2-approved-covers/lesson-XX-full.webp`.
+2. Верх не должен просто повторять урок 1 с другим заголовком: корректные названия по теме, правильные иероглифы и пиньинь (с проверкой тонов), корректный текст содержания для каждого урока.
+3. Никаких коллажей, картинок с тройным экраном, маленьких миниатюр или чёрного холста фотогалереи внутри интерфейса.
+4. Никаких пустых полос сверху/снизу, растягивания, вырезанных лиц, обрезанных кнопок и лишней прокрутки. Растровый постер охватывает всё доступное пространство с object-fit: cover (только минимальный край при близком соотношении сторон).
+5. Внутри картинки находятся и верхняя секция, и нижняя тематическая 3D-сцена; **не склеивать отдельный футер с верхом**. Старый подход с накладываемым `lesson-XX-scene.webp` отклонён.
+6. Кнопки «Назад», 6 учебных плиток и «Начать урок» остаются функциональными. Прозрачные hotspots откалиброваны для эталонного расположения 694×1536, **обязательно** проверить их на готовых изображениях перед слиянием.
+7. Не менять локальные MP3, уроки, тесты, микрофон и сохранение прогресса.
+8. Цветовой эталон: яркие фиолетовые, золотые, розовые оттенки, резкие и детальные 3D-персонажи, традиционный Китай. Десять нижних сцен по темам перечислены в `docs/hsk2-thematic-bottom-scenes-20261123.md`.
 
-A contact sheet / ZIP is provided in the conversation where this draft PR was created.
+### Состояние разработки
+- Изменён `assets/hsk2-approved-cover.js`: **предпочитает один новый full-screen WebP**, а если тот ещё не загружен, использует существующий исходный постер и действующий режим.
+- Изменён `assets/hsk2-approved-cover.css`: новые постеры заполняют экран без отдельного нижнего фона.
+- `scenes-manifest.json` и CI требуют 10 новых файлов и подтверждения пользователя.
+- **Новые `lesson-XX-full.webp` пока отсутствуют в GitHub; обновление НЕ опубликовано.**
+- Ранее предоставленный архив `Panda_Go_HSK2_10_thematic_scenes.zip` — **не заменяет** готовые полноэкранные обложки: это отдельно обрезанные нижние иллюстрации и он не должен использоваться для этого релиза.
+- Ранее проведённый тест трёх размеров — только smoke-check старого составного макета; НЕ подтверждает этот новый вариант.
+
+### Контроль качества перед публикацией
+- Все десять уникальных полноразмерных обложек показаны пользователю на одном экране каждая и одобрены.
+- Реальные мобильные страницы проверены в Chromium на 360×800, 393×873 и 412×915, каждая обложка — отдельно, а не тройной коллаж.
+- Проверены отсутствие полос и прокрутки, читабельность, совпадение координат 8 кнопок, звук, тесты и сохранение прогресса.
+- После одобрения сохранить SHA256 каждой картинки в manifest и сменить `approved` на true; CI должен пройти.
+- После этого открыть PR к слиянию и перепроверить GitHub Pages.
