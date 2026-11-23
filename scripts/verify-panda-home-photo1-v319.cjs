@@ -39,7 +39,8 @@ assert(hsk1Map.includes('pg-hsk1-v3-complete')||(hsk1Map.includes('pg-hsk1-path-
 assert(read('hsk2-start.html').includes('./hsk2-introduction.html'),'HSK 2 lesson navigation unavailable');
 // Test the actual first-install list, not the source CORE catalog.
 // The optional Street assets remain obtainable through DOWNLOAD_COURSE.
-const shell=vm.runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'")))+'INSTALL_SHELL');
+const workerBeforeInstall=sw.split("self.addEventListener('install'")[0];
+const shell=vm.runInNewContext(workerBeforeInstall+'INSTALL_SHELL');
 assert(Array.isArray(shell),'Service worker must define a concrete install shell');
 
 for(const file of ['./assets/'+currentHomeScript,'./assets/panda-home-photo1-v319.css?v=319','./assets/panda-home-approved-photo1-v319.jpg']){
