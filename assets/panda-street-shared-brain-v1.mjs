@@ -57,6 +57,22 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
    state.turn++;
    state.mode=mode==='short'?'short':'nonstop';
    const learned=allowed();
+   // A natural, valid statement is a conversation turn, not a grammar explanation.
+   // Do not persist temporary busyness in the shared learner profile and never
+   // claim acoustic tone assessment for text entry.
+   if(['我有点忙','我很忙','我现在有点忙'].includes(s)){
+     const variants={
+       '我有点忙':['Wǒ yǒudiǎn máng.','Я немного занят.'],
+       '我很忙':['Wǒ hěn máng.','Я очень занят.'],
+       '我现在有点忙':['Wǒ xiànzài yǒudiǎn máng.','Сейчас я немного занят.']
+     };
+     state.pending=null;
+     return {kind:'answer',
+       learner:line(raw,...variants[s]),
+       panda:line('好，那你先忙吧！','Hǎo, nà nǐ xiān máng ba!','Хорошо, тогда занимайся своими делами.'),
+       nextQuestion:null,
+       message:'Панда поняла твою реплику. Проверки тонов по звуку не было.'};
+   }
    // Street-specific vocabulary supplements the SAME HSK engine.
    if(['哈喽','嗨','早啊'].includes(s)){
      const p=STREET_FIRST;
