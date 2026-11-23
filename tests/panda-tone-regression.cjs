@@ -5,13 +5,13 @@
 const fs=require('fs'),path=require('path'),cp=require('child_process');
 const root=path.join(__dirname,'..');
 let html=fs.readFileSync(path.join(root,'panda-tone-test-lab.html'),'utf8');
-const candidate=process.env.PANDA_TONE_EXPERIMENT==='90-56-15';
+const candidate=process.env.PANDA_TONE_EXPERIMENT==='90-60-18';
 if(candidate){
- const a='win=Math.round(rate*.09),shortWin=Math.round(rate*.060),hop=Math.round(rate*.018)';
- const b='win=Math.round(rate*.09),shortWin=Math.round(rate*.056),hop=Math.round(rate*.015)';
- if(html.split(a).length!==2)throw Error('Pitch source changed: candidate baseline missing');
+ const a='win=Math.round(rate*.09),shortWin=Math.round(rate*.056),hop=Math.round(rate*.015)';
+ const b='win=Math.round(rate*.09),shortWin=Math.round(rate*.060),hop=Math.round(rate*.018)';
+ if(html.split(a).length!==2)throw Error('Pitch source changed: promoted settings missing');
  html=html.replace(a,b);
- html=html.replace('windowMs:90,shortWindowMs:60,hopMs:18','windowMs:90,shortWindowMs:56,hopMs:15');
+ html=html.replace('windowMs:90,shortWindowMs:56,hopMs:15','windowMs:90,shortWindowMs:60,hopMs:18');
 }
 function part(a,b){const i=html.indexOf(a),j=html.indexOf(b,i+a.length);if(i<0||j<i)throw Error('Missing DSP code: '+a);return html.slice(i,j);}
 const finite=n=>typeof n==='number'&&Number.isFinite(n);
@@ -106,19 +106,19 @@ const timelineErrors=mp3.filter(x=>!x.error&&!x.timestampsMonotonic).map(x=>x.na
 const report={generated:new Date().toISOString(),source:'panda-tone-test-lab.html',
  automatic:{passed:passes,total:tests.length,tests},realAudio:{decoded,total:6,mp3},
  note:'F0 measurements only. Real MP3 output does not prove tone recognition accuracy.'};
-report.configuration=candidate?'experimental 90/56/15':'production 90/60/18';
-fs.writeFileSync(path.join(root,candidate?'tone-regression-candidate.json':'tone-regression-report.json'),JSON.stringify(report,null,2)+'\n');
+report.configuration=candidate?'historical 90/60/18':'production 90/56/15';
+fs.writeFileSync(path.join(root,candidate?'tone-regression-baseline.json':'tone-regression-report.json'),JSON.stringify(report,null,2)+'\n');
 
 const both=mp3.filter(x=>!x.error&&x.quality==='both').length;
 const partial=mp3.filter(x=>!x.error&&x.quality==='partial').length;
 const failed=mp3.filter(x=>x.error||x.quality==='unmeasured').length;
 const markdown=[
- '# Panda Go · Проверка анализатора тонов'+(candidate?' (КАНДИДАТ 90/56/15)':''),
+ '# Panda Go · Проверка анализатора тонов'+(candidate?' (СТАРЫЙ ВАРИАНТ 90/60/18)':''),
  '',
  'Проверено синтетических сценариев: **'+passes+'/'+tests.length+'**.',
  'Настоящих MP3 прочитано: **'+decoded+'/6**; оба слога пригодны для измерения: **'+both+'/6**; частично: **'+partial+'**; ошибки/не измерено: **'+failed+'**.',
  '',
- '| Слово | F0 | Слог 1 | Слог 2 | Восстановлено ('+(candidate?'56':'60')+' мс) | Качество | Причина partial |',
+ '| Слово | F0 | Слог 1 | Слог 2 | Восстановлено ('+(candidate?'60':'56')+' мс) | Качество | Причина partial |',
  '|---|---:|---:|---:|---:|---|---|',
  ...mp3.map(a=>a.error?
   '| '+a.name+' | — | — | — | — | ОШИБКА | '+a.error.replace(/[|]/g,'/')+' |':
@@ -126,14 +126,14 @@ const markdown=[
  '',
  '> **Не является оценкой произношения.** Статус both значит только достаточное качество F0 в двух слогах. Без размеченных записей живой речи нельзя включать автоматическое «правильно/неправильно».',
  '',
- 'Машинный отчёт: '+(candidate?'tone-regression-candidate.json':'tone-regression-report.json')+'.'
+ 'Машинный отчёт: '+(candidate?'tone-regression-baseline.json':'tone-regression-report.json')+'.'
 ].join('\n')+'\n';
 if(process.env.GITHUB_STEP_SUMMARY){
  try{fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,markdown)}
  catch(error){console.warn('GitHub step summary unavailable: '+error.message)}
 }
 
-console.log((candidate?'EXPERIMENTAL 90/56/15 ':'')+'Synthetic checks: '+passes+'/'+tests.length);
-for(const a of mp3)console.log(a.name+': '+(a.error||('quality='+a.quality+', F0='+a.points+', '+(candidate?'56':'60')+'ms recovered='+a.shortRecovered+', points='+a.syllables.join('/')+', Δ='+a.delta.join('/')+', reasons='+(a.diagnostics.join('; ')||'none'))));
+console.log((candidate?'HISTORICAL 90/60/18 ':'')+'Synthetic checks: '+passes+'/'+tests.length);
+for(const a of mp3)console.log(a.name+': '+(a.error||('quality='+a.quality+', F0='+a.points+', '+(candidate?'60':'56')+'ms recovered='+a.shortRecovered+', points='+a.syllables.join('/')+', Δ='+a.delta.join('/')+', reasons='+(a.diagnostics.join('; ')||'none'))));
 if(timelineErrors.length)console.error('F0 timestamps not strictly increasing: '+timelineErrors.join(', '));
 if(passes!==tests.length||decoded!==6||timelineErrors.length)process.exitCode=1;
