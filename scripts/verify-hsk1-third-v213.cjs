@@ -16,7 +16,7 @@ assert(html.includes('hsk1-third-v213.css?v=237'));
 assert(html.includes('lesson3-xiaoxiao-v263.js?v=263'),'Xiaoxiao map loaded before lesson 3');
 assert(!html.includes('hsk1-numbers-audio-map-v250.js'),'No old stitched audio map');
 assert(fs.existsSync('assets/lesson3-xiaoxiao-v263/100.mp3'),'Full-number yì bǎi missing');
-assert(/data-num="3"[^>]*href="\.\/hsk1-third-v212\.html"/.test(map),'Approved v373 map must open the full 14-screen lesson 3');
+assert(/data-num="3"[^>]*href="\.\/hsk1-third-v212\.html(?:\?v=\d+)?"/.test(map),'Approved map must open the complete lesson 3 with optional cache version');
 assert(css.includes('.pg13-study-grid')&&css.includes('.pg13-tens-grid'));
 assert(js.includes("if(n===100)return ['yì','bǎi']"),'100 must be yì bǎi');
 assert(js.includes('(2 × 10)')||js.includes('десятков × 10'),'Number structure must use multiplication');
