@@ -34,6 +34,20 @@ try{
   assert.equal(rects.rows,3,'Three most recent chat cards remain visible');
   assert(rects.lastTop>=rects.historyTop-2 && rects.lastBottom<=rects.historyBottom+3,'Last reply clipped: '+JSON.stringify(rects));
   assert(rects.sceneTop==null || rects.sceneTop>=rects.historyBottom-3,'Panda obscures chat: '+JSON.stringify(rects));
+  // Android's real keyboard cannot open in Playwright's headless mobile mode.
+  // Emulate the same root flag set by visualViewport/resize and assert that
+  // the panda stage keeps room while history hides, then comes back cleanly.
+  const keyboard=await page.evaluate(()=>{
+   const root=document.documentElement,history=document.querySelector('#pg346-rows');
+   const scene=document.querySelector('#pg346 .pg346-scene');
+   root.dataset.keyboard='true';
+   const opened={historyDisplay:getComputedStyle(history).display,sceneHeight:scene.getBoundingClientRect().height};
+   root.dataset.keyboard='false';
+   return {...opened,historyRestored:getComputedStyle(history).display};
+  });
+  assert.equal(keyboard.historyDisplay,'none','Keyboard must not let chat push Panda into a tiny corner');
+  assert(keyboard.sceneHeight>=119,'Keyboard shrinks Panda scene: '+JSON.stringify(keyboard));
+  assert.notEqual(keyboard.historyRestored,'none','Chat must reappear when keyboard closes');
   await page.locator('#pg346-nonstop').click();
   await send('不好','怎么了？');
   assert(!errors.length,'JS error: '+errors.join('; '));
