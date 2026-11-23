@@ -135,9 +135,22 @@ const controls=[
 });
 const mp3=words.map((w,i)=>{
  const file=path.join(root,'assets/hsk2-lesson3-voice/l3-'+String(i+1).padStart(2,'0')+'.mp3');
- try{return {name:w.name,expected:w.target,diagnostic:classify(decode(file),i)};}
- catch(e){return {name:w.name,error:String(e)};}
+ try{
+  const diagnostic=classify(decode(file),i),targetShapes=w.target.map(t=>tones[t]);
+  return {name:w.name,expected:w.target,targetShapes,diagnostic,
+   shapeAgreement:diagnostic.usable&&targetShapes.every((tone,j)=>diagnostic.observed[j]===tone)};
+ }catch(e){return {name:w.name,error:String(e)};}
 });
+const realShapeMatches=mp3.filter(x=>x.shapeAgreement).length;
+// NOTE: These are course reference clips, not independently annotated native
+// speakers or a representative sample of learners' Mandarin speech.
+const readiness={
+ studentPronunciationGrading:false,
+ reason:'Insufficient independently validated natural-speech controls and real-voice contour disagreements',
+ realReferenceShapeMatches:realShapeMatches,
+ realReferenceTotal:mp3.length,
+ requires:'Independent labels, multiple speakers, negative natural-speech examples, tone sandhi/coarticulation checks'
+};
 const report={
  generated:new Date().toISOString(),method:'experimental offline shape classification',
  disclaimer:'This test is NOT validation on human speech; no automated grading is enabled.',
@@ -153,7 +166,7 @@ const report={
     wrongAccepted:no.filter(t=>t.matched).length,wrongTotal:no.length};
   }),
   failures:trials.filter(t=>t.correct&&!t.matched||!t.correct&&t.matched)
- },controls,realMp3:mp3
+ },controls,realMp3:mp3,readiness
 };
 fs.writeFileSync(path.join(root,'tone-contrast-lab.json'),JSON.stringify(report,null,2)+'\n');
 console.log('Panda Go CONTRAST LAB (synthetic only; no student grading)');
@@ -167,7 +180,9 @@ for(const c of controls)console.log('Control '+c.name+': '+(c.pass?'PASS':'FAIL'
   ', quality='+c.result.quality+', predicted='+c.result.observed.join('/'));
 for(const r of mp3)console.log('MP3 diagnostic '+r.name+': '+
  (r.error||r.diagnostic.observed.join('/')+', quality='+r.diagnostic.quality+
- ', usable='+r.diagnostic.usable)+' (not ground-truth score)');
+ ', usable='+r.diagnostic.usable+', shapeAgreement='+r.shapeAgreement)+
+ ' (NOT pronunciation correctness)');
+console.log('STUDENT GRADING: DISABLED; natural reference shape agreement '+realShapeMatches+'/'+mp3.length);
 if(process.env.GITHUB_STEP_SUMMARY){
  const lines=[
  '## Лаборатория контрастов тонов (не для оценки ученика)',
@@ -185,6 +200,14 @@ if(process.env.GITHUB_STEP_SUMMARY){
   ' | '+w.wrongAccepted+'/'+w.wrongTotal+' |'),
  '',
  'Результаты MP3 — лишь диагностический вывод, потому что нет независимой разметки человеческих тонов.',
+ '',
+ '### Сопоставление с ожидаемым контуром на учебных MP3',
+ '| Слово | Ожидалось | Получено | Совпадение формы |',
+ '|---|---|---|---|',
+ ...mp3.map(x=>'| '+x.name+' | '+(x.targetShapes?.join('/')||'—')+
+  ' | '+(x.diagnostic?.observed.join('/')||'ошибка')+' | '+(x.shapeAgreement?'да':'нет / неизвестно')+' |'),
+ '',
+ '**Оценка произношения ученика: ВЫКЛЮЧЕНА.** Простое совпадение формы с эталоном НЕ доказывает правильность тона.',
  'Подробности: tone-contrast-lab.json в артефакте.'];
  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,lines.join('\n')+'\n');
 }
