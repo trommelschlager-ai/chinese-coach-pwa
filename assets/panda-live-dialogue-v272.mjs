@@ -260,6 +260,18 @@ function extendQuestion(result,raw,allowed,date,profile){
 export function answerLive(raw,options={}){
  const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={},course='hsk1'}=options;
  raw=String(raw||'').trim();const s=normalize(raw);if(!raw)return {kind:'empty',message:'Скажи или напиши фразу на китайском.'};
+ // The pending yes/no question takes priority over standalone beginner meanings.
+ const activeQuestion=prompt?.hanzi||prompt?.panda||'';
+ const negativeReply=activeQuestion?negativeAnswerForQuestion(raw,activeQuestion):null;
+ if(negativeReply){
+   const answer=negativeAcknowledgement(raw,activeQuestion);
+   return {kind:'answer',lesson:prompt?.lesson||topic,
+     spoken:{known:true,hanzi:raw,pinyin:negativeReply.pinyin,
+      translation:negativeReply.ru,topic:prompt?.lesson||topic},
+     reply:line(answer.hanzi,answer.pinyin,answer.ru),
+     followup:null,message:'Отрицательный ответ принят по контексту вопроса. Тоны голоса не оценивались.'};
+ }
+
  // v518: approved short social replies must not fall through to "I didn't understand".
  // This is a text dialogue rule, not an assessment of microphone pronunciation.
  if(['不好','我不好','非常好','我非常好','很不错你呢','我很不错你呢','休息','你可以说中文','跑步这么样'].includes(s)){
@@ -344,16 +356,6 @@ export function answerLive(raw,options={}){
    reply:line(inverseQuestion.line.hanzi,inverseQuestion.line.pinyin,inverseQuestion.line.ru),
    followup:null,message:'Ответ на отрицательный вопрос без домысливания произношения.'
  };
- const activeQuestion=prompt?.hanzi||prompt?.panda||'';
- const negativeReply=activeQuestion?negativeAnswerForQuestion(raw,activeQuestion):null;
- if(negativeReply){
-   const answer=negativeAcknowledgement(raw,activeQuestion);
-   return {kind:'answer',lesson:prompt?.lesson||topic,
-     spoken:{known:true,hanzi:raw,pinyin:negativeReply.pinyin,
-      translation:negativeReply.ru,topic:prompt?.lesson||topic},
-     reply:line(answer.hanzi,answer.pinyin,answer.ru),
-     followup:null,message:'Отрицательный ответ принят по контексту вопроса. Тоны голоса не оценивались.'};
- }
  // Social and common-family questions must work before any broad fallback.
  // Keep our known corrections independent of experimental on-device AI.
  const basic=answerBasicConversation(raw,allowed);if(basic)return basic;
