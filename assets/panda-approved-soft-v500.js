@@ -58,16 +58,14 @@
     night.addEventListener('click',()=>theme('night'));
 
     // Right-hand shortcuts reuse existing app destinations and speech controls.
-    const navGame=stage.querySelector('.pg346-nav a[href="./game.html"]');
+    // The game remains in the bottom navigation; don't duplicate it on the right.
     const navBook=stage.querySelector('.pg346-nav a[href="./hsk1-map.html"]');
     const rail=stage.querySelector('.pg346-side-rail');
     function sideButton(css,inner,label,text){
       const button=document.createElement('button');button.type='button';button.className='pg500-side '+css;
       button.setAttribute('aria-label',label);button.innerHTML=inner;button.append(word('span','',text));return button;
     }
-    const game=sideButton('pg500-side-game',navGame?.querySelector('svg')?.outerHTML||'🎮','Открыть тренажёр','Тренажёр');
-    rail.prepend(game);
-    game.addEventListener('click',()=>{location.href='./game.html'});
+    // Only "Все темы" (existing) and "Уроки" remain in the side rail.
     const book=sideButton('pg500-side-book',navBook?.querySelector('svg')?.outerHTML||'📖','Текущая фраза Панды и прослушивание','Уроки');
     rail.append(book);
     book.setAttribute('aria-expanded','false');
