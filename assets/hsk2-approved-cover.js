@@ -8,6 +8,7 @@
  const labels=['Новые слова','Тесты','Грамматика','Тематический рассказ','Произношение','Диалог'];
  const num=Number(document.currentScript?.dataset.lesson||0);
  if(!Number.isInteger(num)||num<1||num>10)return;
+ const tactileFix=[2,3,6,9].includes(num);
  const art='./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'.png'+(num===1?'?v=20261123back1':'');
  const fullArt='./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'-full.webp';
  const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -26,7 +27,7 @@
   section.className='pg-approved-overlay pg-approved-lesson-'+num+(full?' pg-approved-full':'');
   section.setAttribute('aria-label','HSK 2. Урок '+num+'. '+names[num-1]);
   const size=full?['843','1866']:['941','1672'];
-  const start=full?'left:2.4%;top:62.0%;width:95.2%;height:7.1%':(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
+  const start=full?(tactileFix?'left:2.3%;top:58.8%;width:95.4%;height:7.7%':'left:2.4%;top:62.0%;width:95.2%;height:7.1%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
   section.innerHTML='<div class="pg-approved-poster">'+
    '<img class="pg-approved-cover-image" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" alt="HSK 2. Урок '+num+'. '+esc(names[num-1])+'">'+
    '<a class="pg-approved-hotspot pg-approved-map-link" href="./hsk2-life-course.html?view=map" aria-label="Все уроки HSK 2"></a>'+
@@ -39,6 +40,13 @@
    const startButton=section.querySelector('.pg-approved-start');
    let pressPending=false;
    let forwardClick=false;
+   // Four covers have the painted CTA higher than the original transparent hotspot.
+   // Show the press as soon as the finger goes down; hold it through navigation.
+   if(tactileFix){
+    startButton.addEventListener('pointerdown',()=>startButton.classList.add('pg-approved-start-pressed'),{passive:true});
+    startButton.addEventListener('pointercancel',()=>{if(!pressPending)startButton.classList.remove('pg-approved-start-pressed');},{passive:true});
+    startButton.addEventListener('pointerleave',()=>{if(!pressPending)startButton.classList.remove('pg-approved-start-pressed');},{passive:true});
+   }
    startButton.addEventListener('click',event=>{
     if(forwardClick){forwardClick=false;return;}
     event.preventDefault();
@@ -55,7 +63,7 @@
      forwardClick=true;
      startButton.click(); // forwards once to the original app data-step listener
      forwardClick=false;
-    },260);
+    },tactileFix?500:260);
    });
   }
   return section;
