@@ -14,7 +14,12 @@ const windows=[
  {label:'90/60/15',primary:90,short:60,hop:15},
  {label:'90/60/12',primary:90,short:60,hop:12},
  {label:'90/64/15',primary:90,short:64,hop:15},
- {label:'80/60/15',primary:80,short:60,hop:15}
+ {label:'80/60/15',primary:80,short:60,hop:15},
+ {label:'80/56/12',primary:80,short:56,hop:12},
+ {label:'80/56/15',primary:80,short:56,hop:15},
+ {label:'90/56/12',primary:90,short:56,hop:12},
+ {label:'80/60/12',primary:80,short:60,hop:12},
+ {label:'80/64/12',primary:80,short:64,hop:12}
 ];
 function once(source,oldValue,newValue){
  const hits=source.split(oldValue).length-1;
@@ -68,7 +73,10 @@ function sample(kind){
    seed=(Math.imul(seed,1664525)+1013904223)>>>0;
    pcm[i]=.16*(seed/4294967296-.5);continue;
   }
-  const f=syll===0?185:kind==='rising'?180+70*Math.min(1,(t-.55)/.38):205;
+  const u=Math.max(0,Math.min(1,(t-.55)/.38));
+  const f=syll===0?185:kind==='rising'?180+70*u:
+   kind==='falling'?275-75*u:
+   kind==='third'?225-52*Math.sin(Math.PI*u):205;
   phase+=2*Math.PI*f/rate;
   pcm[i]=.17*Math.sin(phase)+.025*Math.sin(2*phase);
  }
@@ -81,10 +89,12 @@ const results=windows.map(config=>{
   silence:measure(dsp,sample('silence'),0),
   noise:measure(dsp,sample('noise'),0),
   flat:measure(dsp,sample('flat'),0),
-  rising:measure(dsp,sample('rising'),0)
+  rising:measure(dsp,sample('rising'),0),
+  falling:measure(dsp,sample('falling'),0),
+  third:measure(dsp,sample('third'),0)
  };
- const sane=synthetic.silence.points===0&&synthetic.noise.quality!=='both'&&
-  synthetic.flat.quality==='both'&&synthetic.rising.quality==='both'&&
+ const sane=synthetic.silence.points===0&&synthetic.noise.points===0&&
+  ['flat','rising','falling','third'].every(k=>synthetic[k].quality==='both')&&
   samples.every(x=>x.timestampsMonotonic);
  return {config,sane,samples,synthetic,
   complete:samples.filter(x=>x.quality==='both').length,
@@ -95,7 +105,8 @@ const report={generated:new Date().toISOString(),source:'panda-tone-test-lab.htm
 fs.writeFileSync(path.join(root,'tone-window-sweep.json'),JSON.stringify(report,null,2)+'\n');
 console.log('Panda Go short-syllable F0 sweep on real lesson-3 MP3 (no microphone)');
 for(const result of results){
- console.log(result.config.label+': both='+result.complete+'/6, partial='+result.partial+'/6, synthetic='+ (result.sane?'pass':'FAIL'));
+ console.log(result.config.label+': both='+result.complete+'/6, partial='+result.partial+'/6, synthetic='+ (result.sane?'pass':'FAIL')
+  +', noise F0='+result.synthetic.noise.points);
  for(const [i,a] of result.samples.entries()){
   if(i!==1&&i!==2)continue;
   console.log('  '+a.name+': '+a.quality+', F0 '+a.points+', syllables '+a.syllables.map(x=>x.points+'/'+x.durationMs+'ms'+(x.jump?' JUMP':'')).join(' | ')+', split='+a.splitPct+'%'+(a.warning?' warning':''));
