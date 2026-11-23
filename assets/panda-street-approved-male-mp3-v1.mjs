@@ -1,16 +1,23 @@
 /* Panda Street AI: reviewed male Luvvoice MP3 registry.
- * Fail closed: there are no new approved files as of 2026-11-23.
+ * The three native-approved clips 01–03 are present in this PR branch.
  * Only add entries after the exact MP3 has been uploaded, listened to,
  * checked for correct Mandarin tones, exact wording and the same approved
  * male voice. This module must NEVER fall back to female/system TTS.
  */
 export const STREET_APPROVED_MALE_VOICE_ID='panda-street-luvvoice-male-approved-v1';
 export const APPROVED_STREET_MALE_MP3=Object.freeze([
-  // Future verified format:
-  // {hanzi:'我有点忙。',src:'assets/panda-street-male-voice-v1/01.mp3',
-  //  voiceId:STREET_APPROVED_MALE_VOICE_ID,
-  //  reviewRef:'reviewed:street-luvvoice-20261123-01',status:'approved',
-  //  nativeSpeakerChecked:true}
+  {hanzi:'我有点忙。',src:'assets/panda-street-male-voice-v1/01.mp3',
+   voiceId:STREET_APPROVED_MALE_VOICE_ID,
+   reviewRef:'reviewed:street-luvvoice-20261123-01',status:'approved',
+   nativeSpeakerChecked:true},
+  {hanzi:'你晚上有什么计划？',src:'assets/panda-street-male-voice-v1/02.mp3',
+   voiceId:STREET_APPROVED_MALE_VOICE_ID,
+   reviewRef:'reviewed:street-luvvoice-20261123-02',status:'approved',
+   nativeSpeakerChecked:true},
+  {hanzi:'我们聊聊吧！',src:'assets/panda-street-male-voice-v1/03.mp3',
+   voiceId:STREET_APPROVED_MALE_VOICE_ID,
+   reviewRef:'reviewed:street-luvvoice-20261123-03',status:'approved',
+   nativeSpeakerChecked:true}
 ]);
 export const normalizeStreetMalePhrase=text=>String(text??'').normalize('NFC')
  .replace(/[\s\u3000，。！？?!,.、]/g,'');
