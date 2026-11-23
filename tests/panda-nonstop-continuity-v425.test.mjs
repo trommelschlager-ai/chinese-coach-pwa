@@ -37,14 +37,14 @@ test('no repeat, locked question, silent recording or unseen invented topic',()=
  assert.equal(coherentPandaFollowup({...options('你好'),followup:{hanzi:'你好吗？'}}).hanzi,'你好吗？');
 });
 test('current Panda engine, history, and HTML load v425 with unchanged approved character',()=>{
- const screen=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
+ const screen=fs.readFileSync(new URL('../assets/panda-hsk2-preview-core-v1.mjs',import.meta.url),'utf8');
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
  assert(screen.includes('followup=coherentPandaFollowup({input,result,followup,'));
- assert(/panda-live-screen-v270\.mjs\?v=\d+/.test(html));
- assert(/panda-live-v346\.mjs\?v=\d+/.test(html));
+ assert(/panda-hsk2-preview-core-v1\.mjs\?v=\d+/.test(html));
+ assert(/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/.test(html));
  const offline=JSON.parse(fs.readFileSync(new URL('../assets/offline-pack.json',import.meta.url),'utf8'));
  assert(offline.files.includes('./assets/panda-nonstop-continuity-v425.mjs?v=425'));
- assert(offline.files.includes('./'+html.match(/assets\/panda-live-screen-v270\.mjs\?v=\d+/)?.[0]));
+ assert(offline.files.includes('./'+html.match(/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0]));
 });
 for(const [input,expected,topic] of [
  ['你有妹妹吗？','你有哥哥吗？',6],
