@@ -259,7 +259,9 @@ function submitHSK2(input){
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
- if(hsk2){submitHSK2(input);return;}
+ // v540: friendly conversation must be checked before HSK2's topic drill.
+ // A normal Panda AI launch defaults to an HSK2 topic, but a valid social
+ // phrase is still meaningful outside that exercise.
  // v528: a recognised greeting or friendly introduction is meaningful
  // independently of the current HSK1 short / Non-Stop drill question.
  if(!state.dayMode){
@@ -281,6 +283,7 @@ function submit(raw){
   }
   state.friendlyAwaiting=null;
  }
+ if(hsk2){submitHSK2(input);return;}
  if(state.dayMode){
   if(state.dayDone){note('Тренировка завершена. Вернись к уроку или выбери обычные диалоги.');return;}
   // Keep reviewed grammar corrections available inside the HSK2 day dialogue.
