@@ -63,8 +63,10 @@ try{
               const response=await fetch(url);
               if(!response.ok)throw Error('MP3 response '+clip+': '+response.status);
               const data=await response.arrayBuffer();
+              // decodeAudioData() detaches the input buffer; measure bytes before decoding.
+              const bytes=data.byteLength;
               const decoded=await audioContext.decodeAudioData(data);
-              result.push({clip,bytes:data.byteLength,duration:decoded.duration,channels:decoded.numberOfChannels});
+              result.push({clip,bytes,duration:decoded.duration,channels:decoded.numberOfChannels});
             }
             return result;
           }finally{await audioContext.close()}
