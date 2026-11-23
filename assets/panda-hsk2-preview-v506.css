@@ -135,3 +135,19 @@
 #pg346 .pg346-nav a svg {
  filter: drop-shadow(0 0 3px #fffd) drop-shadow(0 0 6px #fff8);
 }
+
+/* Seat the paws into the top face of the stone without resizing the mascot. */
+:root:not([data-keyboard="true"]) #pg346 .pg352-mascot {
+ bottom: calc(var(--pg-seat-bottom) - clamp(3px, 1.35vw, 7px)) !important;
+}
+:root:not([data-keyboard="true"]) #pg346 .pg352-mascot::before {
+ left: 17%;
+ bottom: -1%;
+ width: 76%;
+ height: 4.5%;
+ filter: blur(1.5px);
+ background:
+  radial-gradient(ellipse 25% 45% at 21% 48%, #171510b8, transparent),
+  radial-gradient(ellipse 24% 46% at 81% 48%, #171510b8, transparent),
+  radial-gradient(ellipse 49% 50% at 50% 44%, #221e19a6, transparent);
+}
