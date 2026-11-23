@@ -7,6 +7,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;background:#030513;color:#fff;font-family:system-ui,Arial,sans-serif}
 #stage{position:relative;width:100%;height:100vh;height:100dvh;overflow:hidden;isolation:isolate;touch-action:manipulation;background:#030513}
+@media (min-aspect-ratio:3/4){#stage{width:min(100%,calc(100dvh * 393 / 852));margin-inline:auto}}
 #art{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;image-rendering:auto}
 #src,#day-src{display:none}
 #day-art{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity .5s ease}
@@ -96,7 +97,7 @@ html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;backgrou
 <script>
 (()=>{'use strict';
 const el=id=>document.getElementById(id),stage=el('stage'),src=el('src'),canvas=el('art');
-const W=693,H=1444,SKY_START=338,SKY_SIZE=60,FLOOR_START=1303,FLOOR_SIZE=43,NAV_START=1346;
+const W=693,H=1444,SKY_START=338,SKY_SIZE=60,FLOOR_START=1303,FLOOR_SIZE=25,NAV_START=1328;
 const boxes={
  back:[15,12,120,65], short:[23,73,325,66], nonstop:[357,73,316,66], history:[426,6,145,63],theme:[576,6,110,63],
  row1:[27,147,643,86],row2:[27,237,645,98],
@@ -197,19 +198,10 @@ function paintScene(canvas,image,width,height,dpr,fill){
  // Keep the approved crop points and extend the pavement on taller screens.
  const drawStrip=(sourceY,stripHeight,destY)=>{
   if(stripHeight<=0)return;
-  const draw=(x)=>c.drawImage(image,0,sourceY,W,stripHeight,x,destY,W*s,stripHeight*s);
-  draw(stageX);
-  for(let offset=0;offset<stageX;offset+=W*s){
-   c.save();
-   c.translate(2*stageX-offset,0);
-   c.scale(-1,1);
-   draw(stageX);
-   c.restore();
-   c.save();
-   c.translate(2*(stageX+W*s)+offset,0);
-   c.scale(-1,1);
-   draw(stageX);
-   c.restore();
+  c.drawImage(image,0,sourceY,W,stripHeight,stageX,destY,W*s,stripHeight*s);
+  if(stageX>0){
+   c.drawImage(image,0,sourceY,1,stripHeight,0,destY,stageX,stripHeight*s);
+   c.drawImage(image,W-1,sourceY,1,stripHeight,stageX+W*s,destY,stageX,stripHeight*s);
   }
  };
  const skyEnd=SKY_START+removedSky,floorEnd=FLOOR_START+removedFloor;
