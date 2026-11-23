@@ -134,8 +134,22 @@ export function createPandaMemoryStore(database = globalThis.indexedDB) {
   return Object.freeze({
     async stage(input) {
       const card=preparePandaMemoryCandidate(input);
-      await transact(database,'readwrite',store=>store.put(card));
-      return {id:card.id,status:card.status};
+      // An online re-encounter must NEVER overwrite a reviewed lesson or its MP3.
+      const db=await openPandaMemory(database);
+      try {
+        return await new Promise((resolve,reject)=>{
+          let status='pending-review';
+          const tx=db.transaction(STORE,'readwrite'),store=tx.objectStore(STORE);
+          const existing=store.get(card.id);
+          existing.onsuccess=()=>{
+            if(existing.result?.status==='offline-ready')status='offline-ready';
+            else store.put(card);
+          };
+          tx.oncomplete=()=>resolve({id:card.id,status});
+          tx.onerror=()=>reject(tx.error||new Error('Panda memory write failed'));
+          tx.onabort=()=>reject(tx.error||new Error('Panda memory write aborted'));
+        });
+      }finally{db.close()}
     },
     async approve(input) {
       const card=prepareReviewedPandaMemory(input);
