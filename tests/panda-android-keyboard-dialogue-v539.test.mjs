@@ -49,6 +49,9 @@ test('Panda and stone hold pre-keyboard pixel dimensions instead of shrinking',(
   const css=source('../assets/panda-hsk2-preview-v506.css');
   assert.match(js,/function rememberPandaGeometry\(/);
   assert.match(js,/--pg540-panda-width/);
+  assert.match(js,/--pg545-panda-height/);
+  assert.match(css,/height:var\(--pg545-panda-height/);
+  assert.match(css,/max-height:none!important/);
   assert.match(js,/--pg540-stone-width/);
   assert.match(css,/width:var\(--pg540-panda-width/);
   assert.match(css,/width:var\(--pg540-stone-width/);
