@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0b091b">
+<title>Panda Street — точная разметка кастета (арт-этап)</title>
+<style>
+:root{color-scheme:dark;--bg:#0b091b;--card:#19172cea;--gold:#ffe1a2;--text:#f6f0ff;--muted:#c9bad7}
+*{box-sizing:border-box}html,body{margin:0;height:100%;height:100dvh;background:var(--bg);overflow:hidden;color:var(--text);font:13px system-ui,-apple-system,Arial,sans-serif}
+#app{position:relative;width:100%;height:100dvh;overflow:hidden;isolation:isolate}
+#stage{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+#head{position:absolute;z-index:4;left:50%;top:max(7px,env(safe-area-inset-top));transform:translateX(-50%);padding:9px 11px;background:var(--card);border:1px solid #b294b8;border-radius:13px;width:min(95vw,550px);box-shadow:0 5px 24px #0009;pointer-events:none}
+h1{margin:0 0 3px;color:var(--gold);font-weight:800;font-size:13px}#head p{margin:0;font-size:10.5px;line-height:1.35;color:#ddd3e6}
+#panel{position:absolute;z-index:6;left:50%;bottom:max(7px,env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--card);padding:9px;width:min(96vw,580px);border:1px solid #aa88cf;border-radius:17px;box-shadow:0 4px 25px #000a}
+.line{display:flex;align-items:center;gap:6px;margin-bottom:6px}.line:last-child{margin-bottom:0}.line>*{flex:1;min-width:0}
+button,select{border:1px solid #9971c2;background:#302543;border-radius:10px;color:#fff;padding:6px 4px;min-height:38px;font:700 11px system-ui,-apple-system,Arial,sans-serif;cursor:pointer;white-space:normal}
+button.primary{background:#8050a8;border-color:#e6beff}button.active{background:#644987;box-shadow:inset 0 0 0 1px #ffe0ad}button:active{transform:scale(.97)}
+button:disabled{opacity:.46;cursor:default}select{padding-inline:5px}#tools button{font-size:10.5px}
+.small{font-size:10px;color:#d7cadd;line-height:1.35}
+#status{font-size:10.5px;color:#e9dcf5;margin:0;padding:5px 2px 0;min-height:21px;line-height:1.35}
+#picker{display:flex;align-items:center;gap:6px}
+#range{display:flex;gap:6px;align-items:center}#range label{font-size:10px;flex:0 0 auto}#zoom{flex:1;accent-color:#e3b4ff}#zoomText{font-size:10px;flex:0 0 34px;text-align:right}
+#loader{z-index:10;position:absolute;inset:0;display:grid;place-items:center;background:#080817f2;padding:25px;text-align:center;line-height:1.55;font-size:14px}#loader[hidden]{display:none}
+#warning{color:#ffdfab;font-size:10px;line-height:1.35}
+#chrome-toggle,#castet-focus{position:absolute;z-index:8;top:max(10px,env(safe-area-inset-top));height:42px;padding:7px 11px;border-radius:13px;background:#21182fe8;border:1px solid #b18cc8;box-shadow:0 3px 10px #0008;backdrop-filter:blur(8px);font-size:11px}
+#chrome-toggle{right:10px}#castet-focus{left:10px}
+body.ui-hidden #panel,body.ui-hidden #head{display:none}
+body.ui-hidden #chrome-toggle{background:#443164}
+@media(min-aspect-ratio:11/10){#head{left:9px;transform:none;width:250px}#panel{left:auto;right:9px;transform:none;width:280px}.line{flex-wrap:wrap}.line>*{flex:1 1 42%}}
+</style></head>
+<body><main id="app">
+<canvas id="stage" aria-label="Оригинальная Panda Street — ручная разметка контура кастета и прозрачных слоёв"></canvas>
+<button type="button" id="castet-focus" disabled>🔍 Кастет</button>
+<button type="button" id="chrome-toggle" aria-expanded="false">🛠 Инструменты</button>
+<div id="loader" role="status">Открываю оригинальные изображения Panda Street AI из GitHub…</div>
+<header id="head">
+ <h1>🐼 PANDA STREET · АРТ-ЭТАП 02</h1>
+ <p>Никакой анимации и деформаций. Разметка только по утверждённым полноразмерным WebP. Оригиналы остаются неизменными.</p>
+</header>
+<section id="panel" aria-label="Разметка изображения">
+ <div class="line" id="picker">
+  <select id="theme" aria-label="Тема"><option value="night">🌙 Ночь · оригинал</option><option value="day">☀ День · оригинал</option></select>
+  <select id="view" aria-label="Отображение"><option value="original">Оригинал + контур</option><option value="cutout">Прозрачный слой</option><option value="hole">Зона под реставрацию</option><option value="alpha">Маска</option></select>
+ </div>
+ <div class="line" id="tools">
+   <button id="pan" class="active">✋ Сдвиг</button>
+   <button id="draw">✎ Точки</button>
+   <button id="undo">↶ Отменить</button>
+   <button id="clear">Очистить</button>
+ </div>
+ <div id="range" class="line"><label for="zoom">Увеличение</label><input type="range" id="zoom" min="1" max="6" step=".25" value="1"><span id="zoomText">1×</span></div>
+ <div class="line">
+  <button id="mask" disabled>↓ Маска PNG</button>
+  <button id="layer" class="primary" disabled>↓ Слой PNG</button>
+  <button id="project" disabled>↓ Контур JSON</button>
+ </div>
+ <div id="warning">Ткань и скрытая рука пока НЕ восстановлены. Экспортируем только маску и исходные пиксели.</div>
+ <p id="status" role="status">Сначала укажи контур вокруг кулака с кастетом.</p>
+</section></main>
+<script>
+(()=>{'use strict';
+const W=693,H=1444,ROOT='https://raw.githubusercontent.com/trommelschlager-ai/chinese-coach-pwa/a442485be6088b07af6815bdb7a170665d2cfb38/assets/panda-street-day-night/';
+const urls={night:ROOT+'night.webp',day:ROOT+'day.webp'};
+const $=id=>document.getElementById(id),canvas=$('stage'),ctx=canvas.getContext('2d',{alpha:false}),imgs={},objectUrls=[];
+const make=()=>{const c=document.createElement('canvas');c.width=W;c.height=H;return c};
+let theme='night',view='original',mode='pan',zoom=1,panX=0,panY=0,drag=null,ready=false;
+// Focus and toolbar display change the VIEWPORT only; the underlying image is never altered.
+document.body.classList.add('ui-hidden');
+let matrices={},points={night:[],day:[]},editHistory={night:[],day:[]};
+const storeKey='panda-street-castet-mask-v2';
+try{const saved=JSON.parse(localStorage.getItem(storeKey)||'null');for(const t of ['night','day'])if(Array.isArray(saved?.[t])&&saved[t].every(p=>Array.isArray(p)&&p.length===2))points[t]=saved[t]}catch{}
+function save(){try{localStorage.setItem(storeKey,JSON.stringify(points))}catch{}}
+function status(s){$('status').textContent=s}
+function metrics(){
+ const b=canvas.getBoundingClientRect(),w=b.width,h=b.height,scale=Math.min(w/W,h/H)*zoom;
+ const dpr=Math.min(window.devicePixelRatio||1,2.5),cw=Math.round(w*dpr),ch=Math.round(h*dpr);
+ if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch}
+ let ox=w/2-W*scale/2+panX,oy=h/2-H*scale/2+panY;
+ matrices={w,h,cw,ch,scale,ox,oy};
+ return matrices
+}
+function screenToImage(e){const b=canvas.getBoundingClientRect(),m=matrices;return [(e.clientX-b.left-m.ox)/m.scale,(e.clientY-b.top-m.oy)/m.scale]}
+function within(x,y){return x>=0&&y>=0&&x<W&&y<H}
+function trace(g,poly){
+ if(poly.length<3)return false;
+ g.beginPath();g.moveTo(...poly[0]);for(let i=1;i<poly.length;i++)g.lineTo(...poly[i]);g.closePath();return true
+}
+function selectionMask(){
+ const m=make(),g=m.getContext('2d');
+ const ps=points[theme];if(ps.length>=3){g.fillStyle='#fff';trace(g,ps);g.fill()}
+ return m
+}
+function layerCanvas(){
+ const a=make(),g=a.getContext('2d');g.drawImage(imgs[theme],0,0);
+ g.globalCompositeOperation='destination-in';g.drawImage(selectionMask(),0,0);
+ g.globalCompositeOperation='source-over';return a
+}
+function holeCanvas(){
+ const a=make(),g=a.getContext('2d');g.drawImage(imgs[theme],0,0);
+ g.globalCompositeOperation='destination-out';g.drawImage(selectionMask(),0,0);
+ g.globalCompositeOperation='source-over';return a
+}
+function drawChecker(g,x,y,w,h){
+ g.fillStyle='#27243b';g.fillRect(x,y,w,h);
+ const unit=18;for(let yy=0;yy<h;yy+=unit)for(let xx=0;xx<w;xx+=unit)if(((xx/unit+yy/unit)|0)%2===0){g.fillStyle='#49465d';g.fillRect(x+xx,y+yy,Math.min(unit,w-xx),Math.min(unit,h-yy))}
+}
+function draw(){
+ if(!ready)return;
+ const m=metrics();ctx.setTransform(m.cw/m.w,0,0,m.ch/m.h,0,0);
+ ctx.fillStyle='#080715';ctx.fillRect(0,0,m.w,m.h);
+ ctx.save();ctx.translate(m.ox,m.oy);ctx.scale(m.scale,m.scale);
+ ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+ if(view==='original')ctx.drawImage(imgs[theme],0,0);
+ else if(view==='cutout'){drawChecker(ctx,0,0,W,H);ctx.drawImage(layerCanvas(),0,0)}
+ else if(view==='hole'){drawChecker(ctx,0,0,W,H);ctx.drawImage(holeCanvas(),0,0)}
+ else {ctx.fillStyle='#141125';ctx.fillRect(0,0,W,H);ctx.drawImage(selectionMask(),0,0)}
+ if(view==='original'){
+  const poly=points[theme];
+  if(poly.length){
+   ctx.strokeStyle='#ffdb8e';ctx.lineWidth=2.6/Math.max(zoom*.5,1);ctx.shadowColor='#1e091a';ctx.shadowBlur=4;
+   ctx.beginPath();ctx.moveTo(...poly[0]);for(let i=1;i<poly.length;i++)ctx.lineTo(...poly[i]);
+   if(poly.length>=3)ctx.closePath();
+   ctx.stroke();ctx.shadowBlur=0;
+   poly.forEach(([x,y],i)=>{ctx.fillStyle=i===0?'#7ff6d5':'#ffd2ae';ctx.beginPath();ctx.arc(x,y,6/Math.max(zoom*.5,1),0,2*Math.PI);ctx.fill()});
+  }
+ }
+ ctx.restore();
+ const valid=points[theme].length>=3;
+ for(const k of ['mask','layer','project'])$(k).disabled=!valid;
+ $('undo').disabled=!(editHistory[theme].length||points[theme].length);
+}
+function state(){return points[theme].map(p=>p.slice())}
+function remember(){editHistory[theme].push(state());if(editHistory[theme].length>40)editHistory[theme].shift()}
+function selectMode(m){mode=m;for(const k of ['pan','draw'])$(k).classList.toggle('active',k===m);
+ status(m==='draw'?'Касайся границы кулака, чтобы добавлять точки; перетаскивай существующие точки.':'Сдвигай изображение пальцем; для контура выбери «Точки».')}
+function fitFocus(){
+ // Exact source image stays untouched. Magnify ONLY the approved brass-knuckle region.
+ // Center is a rough locator, not a claiming-to-be-exact alpha mask.
+ zoom=window.innerWidth<=640?3:2.4;
+ $('zoom').value=String(zoom);$('zoomText').textContent=zoom+'×';
+ const s=Math.min(canvas.clientWidth/W,canvas.clientHeight/H)*zoom;
+ panX=-(324-W/2)*s;panY=-(790-H/2)*s;
+ draw();
+}
+$('chrome-toggle').addEventListener('click',()=>{
+ const open=document.body.classList.toggle('ui-hidden')===false;
+ $('chrome-toggle').textContent=open?'✕ Скрыть':'🛠 Инструменты';
+ $('chrome-toggle').setAttribute('aria-expanded',String(open));
+});
+$('castet-focus').addEventListener('click',()=>{
+ if(!ready)return;
+ fitFocus();
+ document.body.classList.add('ui-hidden');
+ $('chrome-toggle').textContent='🛠 Инструменты';
+ $('chrome-toggle').setAttribute('aria-expanded','false');
+ status('Показана зона кастета в оригинальном разрешении. Разметка и движение не запускаются.');
+});
+function exportCanvas(c,name){
+ c.toBlob(b=>{if(!b){status('Экспорт не удался: пустой PNG.');return}
+  const url=URL.createObjectURL(b),a=document.createElement('a');a.download=name;a.href=url;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),4000)},'image/png')
+}
+function saveFile(content,name){
+ const u=URL.createObjectURL(new Blob([content],{type:'application/json'})),a=document.createElement('a');
+ a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),4000)
+}
+$('mask').onclick=()=>{if(points[theme].length<3)return;exportCanvas(selectionMask(),'panda-castet-'+theme+'-alpha-mask-693x1444.png')};
+$('layer').onclick=()=>{if(points[theme].length<3)return;exportCanvas(layerCanvas(),'panda-castet-'+theme+'-raw-layer-693x1444.png')};
+$('project').onclick=()=>{if(points[theme].length<3)return;saveFile(JSON.stringify({version:2,source:urls[theme],theme,dimensions:[W,H],status:'rough tracing — not approved production artwork',points:points[theme]},null,2),'panda-castet-'+theme+'-contour.json')};
+$('pan').onclick=()=>selectMode('pan');$('draw').onclick=()=>selectMode('draw');
+$('undo').onclick=()=>{if(editHistory[theme].length){points[theme]=editHistory[theme].pop()}else if(points[theme].length){points[theme].pop()}save();draw()};
+$('clear').onclick=()=>{if(!points[theme].length)return;remember();points[theme]=[];save();draw();status('Контур очищен только в браузере, исходник не изменён.')};
+$('view').onchange=()=>{view=$('view').value;draw()};
+$('theme').onchange=()=>{theme=$('theme').value;draw();status('Тема '+(theme==='night'?'ночь':'день')+'. Контуры сохраняются отдельно для каждой картинки.')};
+$('zoom').oninput=()=>{zoom=Number($('zoom').value);$('zoomText').textContent=zoom+'×';draw()};
+canvas.addEventListener('pointerdown',e=>{
+ if(!ready)return;
+ const [x,y]=screenToImage(e),ps=points[theme];let near=-1,dist=18/Math.max(zoom*.7,1);
+ if(mode==='draw'){
+  ps.forEach(([px,py],i)=>{const n=Math.hypot(px-x,py-y);if(n<dist){dist=n;near=i}});
+  if(near>=0){remember();drag={type:'point',index:near,origin:[e.clientX,e.clientY]}}
+  else if(within(x,y)){remember();ps.push([Math.round(x),Math.round(y)]);drag={type:'point',index:ps.length-1,origin:[e.clientX,e.clientY]};save();draw()}
+ }else drag={type:'pan',x:e.clientX,y:e.clientY,px:panX,py:panY};
+ if(drag)canvas.setPointerCapture(e.pointerId)
+});
+canvas.addEventListener('pointermove',e=>{
+ if(!drag)return;
+ if(drag.type==='pan'){panX=drag.px+e.clientX-drag.x;panY=drag.py+e.clientY-drag.y}
+ else{const [x,y]=screenToImage(e);points[theme][drag.index]=[Math.max(0,Math.min(W,Math.round(x))),Math.max(0,Math.min(H,Math.round(y)))]}
+ draw()
+});
+function pointerUp(){if(!drag)return;drag=null;save();draw()}
+canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);
+window.addEventListener('resize',()=>draw());
+window.addEventListener('pagehide',()=>{objectUrls.forEach(u=>URL.revokeObjectURL(u))},{once:true});
+async function loadImage(name,url){
+ const r=await fetch(url,{mode:'cors',credentials:'omit',cache:'no-store'});
+ if(!r.ok||r.type==='opaque')throw Error(name+': HTTP/CORS '+r.status);
+ const blob=await r.blob();if(!blob.type.startsWith('image/'))throw Error(name+': получен не файл изображения');
+ const object=URL.createObjectURL(blob);objectUrls.push(object);
+ const im=new Image();im.crossOrigin='anonymous';
+ await new Promise((resolve,reject)=>{im.onload=resolve;im.onerror=()=>reject(Error(name+': ошибка декодирования'));im.src=object});
+ if(im.naturalWidth!==W||im.naturalHeight!==H)throw Error(name+': ожидался исходник 693 × 1444');
+ // Explicit origin-clean check for full-resolution pixel extraction.
+ const t=document.createElement('canvas');t.width=t.height=1;const g=t.getContext('2d',{willReadFrequently:true});
+ g.drawImage(im,0,0,1,1);g.getImageData(0,0,1,1);
+ imgs[name]=im;
+}
+Promise.all(Object.entries(urls).map(([n,url])=>loadImage(n,url)))
+.then(()=>{ready=true;$('loader').hidden=true;$('castet-focus').disabled=false;selectMode('pan');zoom=1;panX=panY=0;$('zoom').value='1';$('zoomText').textContent='1×';draw();status('Оригинал загружен без изменений. Инструменты скрыты, чтобы не перекрывать Панду. Кастет можно увеличить отдельной кнопкой.')})
+.catch(e=>{$('loader').textContent='Не удалось открыть оригинал: '+e.message+'. Исходники и приложение не изменены.';console.error(e)});
+})();
+</script></body></html>
