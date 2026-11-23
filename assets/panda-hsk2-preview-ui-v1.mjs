@@ -21,7 +21,8 @@ if (!bridge) {
     person:'<circle cx="12" cy="7" r="4"/><path d="M4 22c0-5 3-8 8-8s8 3 8 8"/>',
     send:'<path d="m22 2-7 20-4-9-9-4 20-7Z"/><path d="M22 2 11 13"/>',
     mic:'<rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4m-5 0h10"/>',
-    layers:'<path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/>'
+    layers:'<path d="M8 5h13M8 12h13M8 19h13M3 5h.01M3 12h.01M3 19h.01"/>',
+    graduation:'<path d="m2 9 10-5 10 5-10 5-10-5Zm4 2v5c3 3 9 3 12 0v-5m4-2v7"/>'
   };
   function icon(name){return `<svg viewBox="0 0 24 24" xmlns="${ns}" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round" stroke-linecap="round">${icons[name]||icons.chat}</svg>`}
   const stage=document.createElement('section');stage.id='pg346';stage.dataset.py='true';stage.dataset.ru='true';stage.dataset.listening='false';stage.dataset.headphones='idle';stage.setAttribute('aria-label','Pоговори с Пандой — Panda AI');
@@ -69,7 +70,6 @@ if (!bridge) {
       <div class="pg346-live" id="pg346-live" data-active="false" aria-live="polite"></div>
       <div class="pg346-feedback" id="pg346-feedback" hidden aria-live="polite"></div>
       <div class="pg346-status" id="pg346-status" hidden role="status" aria-live="polite"></div>
-      <button id="pg346-topics-btn" type="button" class="pg346-all-topics" aria-label="Все темы — выбрать урок" aria-expanded="false" aria-controls="pg346-topics">${icon('layers')}<span>Все<br>темы</span></button>
       <div class="pg346-topic-menu" id="pg346-topics" hidden>
   <div class="pg346-topic-menu-title">
    <button class="pg374-back" id="pg374-topics-back" type="button" hidden aria-label="Назад к списку тем">‹</button>
@@ -81,6 +81,9 @@ if (!bridge) {
   <div class="pg374-topic-details" id="pg374-topic-details" hidden></div>
  </div>
     </section>
+    <div class="pg346-side-rail" role="group" aria-label="Быстрые действия">
+      <button id="pg346-topics-btn" type="button" class="pg346-all-topics" aria-label="Все темы — выбрать урок" aria-expanded="false" aria-controls="pg346-topics">${icon('layers')}<span>Все<br>темы</span></button>
+    </div>
     <div class="pg346-composer"><form class="pg346-form" id="pg346-form"><input id="pg346-input" class="pg346-input" name="message" maxlength="160" autocomplete="off" placeholder="Напиши по-китайски…" enterkeyhint="send" aria-label="Напиши по-китайски"></form><button class="pg346-send" id="pg346-send" type="button" aria-label="Отправить">${icon('send')}</button><button class="pg346-mic" id="pg346-mic" type="button" aria-label="Ответить голосом" aria-pressed="false">${icon('mic')}</button></div>
     <nav class="pg346-nav" aria-label="Разделы Panda Go">
       <a href="./index.html#panda/home">${icon('home')}<span>Главная</span></a>
@@ -183,11 +186,22 @@ if (!bridge) {
    '20261114-K0Uh5q.mp3':2,'20261114-FMAH9S.mp3':3,
    '20261114-M7EwcW.mp3':6,'20261114-7JVWfV.mp3':8
   });
+  function topicGroup(level){
+   const section=el('section','pg346-topic-group');
+   const title=el('h3','pg346-topic-group-title');
+   title.innerHTML=icon('graduation');
+   title.append(level);
+   const grid=el('div','pg346-topic-grid');
+   section.append(title,grid);
+   return {section,grid};
+  }
   let catalogueTopic=null;
   function renderTopics(s){
    const key=s.allowed.join(',')+'|'+s.topic;
    if(key===lastTopics)return;lastTopics=key;
-   const grid=$('.pg346-topic-list');grid.replaceChildren();
+   const list=$('.pg346-topic-list');
+   const hsk1=topicGroup('HSK1'),hsk2=topicGroup('HSK2');
+   list.replaceChildren(hsk1.section,hsk2.section);
    for(const id of [7,6,4,3,2,5,1]){
     const name=topicsFallback[id-1],count=bridge.topicQuestions(id).length;
     const audioCount=PANDA_CLIPS.filter(c=>corpusTopicByFile[c.file]===id).length;
@@ -196,16 +210,16 @@ if (!bridge) {
     b.setAttribute('aria-label',name+', '+count+' вопросов'+(audioCount?', '+audioCount+' аудиофраз':''));
     if(b.disabled)b.title='Сначала пройди урок '+id;
     b.addEventListener('click',()=>showTopicDetails(id));
-    grid.append(b);
+    hsk1.grid.append(b);
    }
-   for(const t of HSK2_TOPICS){const b=el('button','','HSK2 · '+(t.id-100)+'. '+t.name);b.type='button';b.setAttribute('aria-current',String(t.id===s.topic));b.addEventListener('click',()=>showTopicDetails(t.id));grid.append(b);}
+   for(const t of HSK2_TOPICS){const b=el('button','',(t.id-100)+'. '+t.name);b.type='button';b.setAttribute('aria-current',String(t.id===s.topic));b.addEventListener('click',()=>showTopicDetails(t.id));hsk2.grid.append(b);}
    // HSK2 "My day" recordings can be studied as audio here without
    // wrongly claiming that HSK2 free-form dialogue is unlocked.
    const day=el('button','pg374-day-entry','🎧 Мой день · '+PANDA_CLIPS.filter(c=>corpusTopicByFile[c.file]===8).length+' записей');
    day.type='button';day.addEventListener('click',()=>showTopicDetails(8));
-   grid.append(day);
+   list.append(day);
    const allAudio=el('button','pg374-day-entry','🎧 Все записи · '+(PANDA_CLIPS.length+PANDA_V411_VOICE.length));
-   allAudio.type='button';allAudio.addEventListener('click',()=>showTopicDetails(9));grid.append(allAudio);
+   allAudio.type='button';allAudio.addEventListener('click',()=>showTopicDetails(9));list.append(allAudio);
   }
   function showTopicDetails(id){
    catalogueTopic=id;
@@ -265,7 +279,7 @@ if (!bridge) {
    $('.pg346-topic-list').hidden=false;$('#pg374-topics-back').hidden=true;
    $('#pg374-topics-title').textContent='Все темы';
    $('#pg374-topics-tip').textContent='Выбери тему, затем вопрос для разговора.';
-   $('#pg346-topics').scrollTop=0;
+   $('.pg346-topic-list').scrollTop=0;
   }
   function renderFeedback(s){
     const last=s.history.slice().reverse().find(x=>x.who==='you');
@@ -346,11 +360,13 @@ if (!bridge) {
     const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable;$('#pg357-audio-note').hidden=!!s.audioAvailable}
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
     renderFeedback(s);renderTopics(s);
-    const warning=$('#pg346-status'),problem=/(микрофон|распознаван|распознано|неуверенно|исправь текст|разреши|доступ|Chrome|запись не|запись пока|звуковой файл|браузер.*звук|mp3|фрагмент|учебный пример)/i.test(s.status||'');
+    const warning=$('#pg346-status');
+    const status=s.status||'';
+    const autoplayBlocked=status.startsWith('Браузер не включил звук автоматически');
+    const problem=!autoplayBlocked&&/(микрофон|распознаван|распознано|неуверенно|исправь текст|разреши|доступ|Chrome|запись не|запись пока|звуковой файл|браузер.*звук|mp3|фрагмент|учебный пример)/i.test(status);
     const needsMicHelp=!!micRecovery&&!micRecovery.hidden;
     warning.hidden=!problem;
-    warning.textContent=problem?s.status:'';
-    if(/Браузер не включил звук автоматически/.test(s.status||'')){const b=el('button','pg502-start-audio','🔊 Включить голос Панды');b.type='button';b.addEventListener('click',()=>{bridge.retryPlayback();sync()});warning.replaceChildren(b);}
+    warning.textContent=problem?status:'';
     if(problem&&needsMicHelp)warning.append(micHelpBtn);
     if(!needsMicHelp&&micHelp.open)micHelp.close();
     const live=$('#pg346-live');const showingAssessment=Date.now()<assessmentUntil;
@@ -360,7 +376,12 @@ if (!bridge) {
     const back=document.getElementById('back-link');if(back)$('a.pg346-back').href=back.href;
   }
   function closeTopics(){stage.dataset.topicsOpen='false';$('#pg346-topics').hidden=true;$('#pg346-topics-btn').setAttribute('aria-expanded','false');showTopicList()}
-  function toggleTopics(){const pop=$('#pg346-topics');pop.hidden=!pop.hidden;stage.dataset.topicsOpen=String(!pop.hidden);$('#pg346-topics-btn').setAttribute('aria-expanded',String(!pop.hidden));if(!pop.hidden){showTopicList();renderTopics(bridge.snapshot());$('#pg346-topics-close').focus()}}
+  let lastTopicsToggle=-Infinity;
+  function toggleTopics(){
+   const now=performance.now();
+   if(now-lastTopicsToggle<300)return;
+   lastTopicsToggle=now;
+   const pop=$('#pg346-topics');pop.hidden=!pop.hidden;stage.dataset.topicsOpen=String(!pop.hidden);$('#pg346-topics-btn').setAttribute('aria-expanded',String(!pop.hidden));if(!pop.hidden){showTopicList();renderTopics(bridge.snapshot());$('#pg346-topics-close').focus()}}
   function send(){const inp=$('#pg346-input');const value=inp.value.trim();if(!value){inp.focus();return}stopHistoryAudio();closeTopics();inp.value='';bridge.send(value);sync()}
   function toggle(which){if(which==='py'){showPy=!showPy;stage.dataset.py=String(showPy);$('#pg346-py').setAttribute('aria-pressed',String(showPy))}else{showRu=!showRu;stage.dataset.ru=String(showRu);$('#pg346-ru').setAttribute('aria-pressed',String(showRu))}}
   $('#pg346-form').addEventListener('submit',e=>{e.preventDefault();send()});$('#pg346-send').addEventListener('click',send);$('#pg346-mic').addEventListener('click',()=>{stopHistoryAudio();bridge.mic();sync()});

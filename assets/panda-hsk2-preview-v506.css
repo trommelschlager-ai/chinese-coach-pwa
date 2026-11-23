@@ -1,8 +1,21 @@
-/* v506: fit content instead of forcing equal height. Only preview. */
+/* Let dialogue rows grow and scroll inside the reserved chat area. */
 #pg346 .pg346-history{
  display:flex!important;flex-direction:column!important;flex:0 1 auto!important;
  max-height:42dvh!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;
  overscroll-behavior:contain;scrollbar-width:thin;grid-template-rows:none!important;
+}
+#pg346:not([data-day-scenario="ready"]) .pg346-history {
+ --pg-chat-row-height: clamp(58px, 8.3dvh, 84px);
+ --pg-chat-row-gap: clamp(4px, .7dvh, 7px);
+ --pg-chat-extra-space: 0px;
+ box-sizing: border-box;
+ flex: 0 0 calc(2 * var(--pg-chat-row-height) + var(--pg-chat-row-gap) + 7px + var(--pg-chat-extra-space)) !important;
+ margin-bottom: calc(-1 * var(--pg-chat-extra-space)) !important;
+}
+/* Use the space above the panda for a third row, keeping the scene's origin fixed. */
+#pg346:not([data-day-scenario="ready"], [data-topics-open="true"], [data-details-open="true"]) .pg346-history:has(.pg346-row:nth-child(3)) {
+ --pg-chat-extra-space: clamp(0px, calc(55dvh - 385px), calc(var(--pg-chat-row-height) + var(--pg-chat-row-gap)));
+ z-index: 3;
 }
 #pg346 .pg346-history .pg346-row{
  flex:0 0 auto!important;height:auto!important;min-height:clamp(58px,8.3dvh,84px)!important;
@@ -30,3 +43,130 @@
 #pg346 #pg346-topics[hidden],#pg346 #pg346-topics [hidden]{display:none!important}
 #pg346 #pg346-topics .pg346-topic-menu-title,#pg346 #pg346-topics .pg374-tip{flex:0 0 auto!important;position:static!important}
 #pg346 #pg346-topics .pg374-topic-details,#pg346 #pg346-topics .pg346-topic-list{flex:1 1 auto!important;min-height:0!important;max-height:none!important;overflow-y:auto!important;overscroll-behavior:contain}
+
+/* Level cards and a shared rail keep the three shortcuts clear of the catalogue. */
+#pg346 {
+ --pg-topic-side-size: clamp(46px, 13.2vw, 62px);
+ --pg-topic-edge: clamp(8px, 2.5vw, 16px);
+}
+#pg346 .pg346-side-rail {
+ position: absolute;
+ z-index: 17;
+ top: 54%;
+ right: var(--pg-topic-edge);
+ transform: translateY(-50%);
+ display: grid;
+ gap: clamp(8px, 2.4vw, 16px);
+}
+#pg346 .pg346-side-rail > :is(.pg500-side, .pg346-all-topics) {
+ position: static !important;
+ width: var(--pg-topic-side-size) !important;
+ height: var(--pg-topic-side-size) !important;
+ cursor: pointer;
+ touch-action: manipulation;
+}
+:root[data-keyboard="true"] #pg346 .pg346-side-rail,
+#pg346[data-day-scenario="ready"] .pg346-side-rail {
+ display: none;
+}
+#pg346 #pg346-topics:not([hidden]) {
+ box-sizing: border-box;
+ right: calc(var(--pg-topic-side-size) + 2 * var(--pg-topic-edge)) !important;
+ width: min(440px, calc(100% - var(--pg-topic-side-size) - 4 * var(--pg-topic-edge))) !important;
+ padding: clamp(9px, 2.3vw, 16px) !important;
+ border-radius: clamp(17px, 4vw, 26px);
+}
+#pg346 #pg346-topics .pg346-topic-list {
+ display: flex;
+ flex-direction: column;
+ gap: 8px;
+ padding: 1px 3px 4px 1px;
+}
+#pg346 .pg346-topic-group {
+ flex: none;
+ min-width: 0;
+ border: 1px solid #d9c5e9;
+ border-radius: 14px;
+ background: #efe5f8;
+ overflow: hidden;
+}
+#pg346 .pg346-topic-group-title {
+ display: flex;
+ align-items: center;
+ gap: 7px;
+ margin: 0;
+ padding: 3px 9px;
+ color: #4c1675;
+ background: #e8d4f5;
+ font-size: clamp(15px, 3.9vw, 20px);
+}
+#pg346 .pg346-topic-group-title svg {
+ width: 20px;
+ height: 20px;
+}
+#pg346 .pg346-topic-grid {
+ display: grid;
+ grid-template-columns: repeat(2, minmax(0, 1fr));
+ gap: 4px;
+ padding: 4px;
+}
+#pg346 #pg346-topics .pg346-topic-grid > button {
+ min-width: 0;
+ min-height: 30px;
+ padding: 2px 3px;
+ border: 1px solid #fff;
+ border-radius: 20px;
+ color: #4c1675;
+ background: linear-gradient(#fbf4ff, #ead7f7);
+ box-shadow: 0 2px 4px #4c167526;
+ font-size: clamp(11px, 3vw, 15px);
+ line-height: 1.12;
+ white-space: normal;
+ overflow-wrap: break-word;
+ text-wrap: balance;
+}
+#pg346 #pg346-topics .pg346-topic-grid > button[aria-current="true"] {
+ color: white;
+ background: linear-gradient(#d643e7, #9d1acd);
+}
+#pg346 #pg346-topics .pg346-topic-grid > button:disabled {
+ opacity: .55;
+}
+#pg346 #pg346-topics .pg346-topic-grid > button:active:not(:disabled),
+#pg346 .pg346-side-rail > button:active {
+ transform: scale(.96);
+}
+#pg346 .pg346-nav a,
+#pg346[data-theme="day"] .pg346-nav a,
+#pg346[data-theme="day"] .pg346-nav a[aria-current="page"] {
+ color: #fff !important;
+ text-shadow: 0 1px 2px #233059;
+}
+#pg346[data-topics-open="true"] .pg346-status {
+ visibility: hidden;
+}
+#pg346 .pg346-nav a svg {
+ color: #fff;
+ filter: none;
+}
+
+#pg346[data-theme="day"] .pg346-nav a svg {
+ color: #111;
+}
+
+/* Connect the underside of the body and both paws to the stone. */
+:root:not([data-keyboard="true"]) #pg346 .pg352-mascot {
+ bottom: calc(var(--pg-seat-bottom) - clamp(12px, 4.35vw, 20px)) !important;
+}
+:root:not([data-keyboard="true"]) #pg346 .pg352-mascot::before {
+ left: 17%;
+ bottom: -1.4%;
+ width: 76%;
+ height: 6.4%;
+ filter: blur(1.5px);
+ background:
+  radial-gradient(ellipse 25% 45% at 21% 48%, #171510d6, transparent),
+  radial-gradient(ellipse 24% 46% at 81% 48%, #171510d6, transparent),
+  radial-gradient(ellipse 30% 34% at 50% 33%, #18120eff, transparent),
+  radial-gradient(ellipse 49% 50% at 50% 44%, #19130ed9, transparent);
+}
