@@ -87,7 +87,12 @@ const wordCount=[7,7,6];
 for(let mini=0;mini<3;mini++){
  assertStage(0);
  assert.equal(doc.querySelectorAll('.pg414-vocab-row').length,wordCount[mini]);
- assert.equal(doc.querySelectorAll('.pg414-vocab-row button.audio').length,wordCount[mini]);
+ // Unrecorded words must show an honest MP3-unavailable label, not a synthetic voice.
+ const slots=[...doc.querySelectorAll('.pg414-vocab-row')];
+ assert.equal(slots.filter(row=>row.querySelector('button.audio,.hsk2-no-mp3')).length,wordCount[mini],
+  'Every word must expose either an approved MP3 button or explicit no-MP3 label');
+ assert.equal(doc.querySelectorAll('.pg414-vocab-row .device-voice').length,0,
+  'Do not substitute device TTS for unavailable approved Mandarin MP3');
  assert.ok(doc.querySelectorAll('.pg414-pinyin').length>0,'Pinyin visible');
  click('[data-day-pinyin]');
  assert.equal(doc.querySelectorAll('.pg414-pinyin').length,0,'Pinyin switch must hide pinyin');
