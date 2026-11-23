@@ -38,13 +38,17 @@ test('queue is only a recording checklist, not imaginary approved new clips',()=
  for(const row of queue.phrases){
   const index=Number(row.id.slice(-2));
   if(index<=3){
-   assert.equal(row.status,'native-speaker-approved-pending-repository-upload');
+   assert.equal(row.status,'native-speaker-approved-active-in-pr');
    assert.equal(row.nativeApprovalDate,'2026-11-23');
    assert.match(row.mp3Sha256,/^[a-f0-9]{64}$/);
-   assert.ok(row.mp3Bytes>0);
-  }else assert.equal(row.status,'awaiting-approved-male-luvvoice');
+   const filePath=new URL(row.audioPath,root);
+   assert.equal(fs.existsSync(filePath),true,'approved audio missing: '+row.audioPath);
+   assert.equal(fs.statSync(filePath).size,row.mp3Bytes);
+  }else {
+   assert.equal(row.status,'awaiting-approved-male-luvvoice');
+   assert.equal(fs.existsSync(new URL(row.audioPath,root)),false,'audio unexpectedly present: '+row.audioPath);
+  }
   assert.ok(!audioKeys.includes(normalize(row.hanzi)));
-  assert.equal(fs.existsSync(new URL(row.audioPath,root)),false,'audio claimed but absent: '+row.audioPath);
  }
  assert.match(queue.warning,/not exhaustive coverage/);
 });
