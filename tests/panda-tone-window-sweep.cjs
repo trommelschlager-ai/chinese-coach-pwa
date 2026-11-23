@@ -114,4 +114,4 @@ if(process.env.GITHUB_STEP_SUMMARY){
  '','Полная диагностика: tone-window-sweep.json в артефакте GitHub Actions.'];
  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,rows.join('\n')+'\n');
 }
-if(results.some(x=>!x.sane))process.exitCode=1;
+if(!results[0].sane)process.exitCode=1; // Experimental candidates may fail guards; report, don't promote them.
