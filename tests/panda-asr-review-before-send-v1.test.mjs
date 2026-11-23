@@ -51,3 +51,11 @@ test('empty Mandarin ASR never sends anything',()=>{
 test('learner action still submits through explicit message form',()=>{
  assert.match(source,/\$\('message-form'\)\.addEventListener\('submit',e=>\{e\.preventDefault\(\);state\.confidence=null;submit\(\$\('message'\)\.value\)\}/);
 });
+
+test('visible Panda chat receives both confident and uncertain Mandarin transcripts before send',()=>{
+ const ui=fs.readFileSync(new URL('../assets/panda-hsk2-preview-ui-v1.mjs',import.meta.url),'utf8');
+ assert.match(ui,/if\(\(signal\.kind==='uncertain'\|\|signal\.kind==='text-only'\)\&\&signal\.text\)\{/);
+ assert.match(ui,/const visibleInput=\$\('#pg346-input'\);visibleInput\.value=signal\.text;visibleInput\.focus\(\);/);
+ assert.match(ui,/function send\(\)\{const inp=\$\('#pg346-input'\)/);
+ assert.match(ui,/\$\('#pg346-form'\)\.addEventListener\('submit'/);
+});
