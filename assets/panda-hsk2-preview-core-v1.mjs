@@ -4,7 +4,7 @@ import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
 import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=524';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
-import {getTopic,replyHSK2,knownHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=519';
+import {getTopic,replyHSK2,knownHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=520';
 import {PILOT_LINES,verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
@@ -14,7 +14,8 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=519';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=520';
+import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=520';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=436';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
@@ -38,7 +39,7 @@ const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
 let micActivatedAt=0; // Guard the first seconds of a new recording against accidental second taps.
-const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,pendingAudioReply:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
+const state={friendlyAwaiting:null,mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,pendingAudioReply:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
 // Cache verified question groups while the same HSK lessons are unlocked.
 let cachedAskGroupsKey='',cachedAskGroups=[];
 function topicCatalogGroups(){
@@ -190,7 +191,7 @@ function dayReturnHref(){
 function initLesson(id){
  hsk2=null;
  cancelFollowup();stopAudio();stopRecognition();base=prepareConversation(CONVERSATIONS.find(c=>c.id===id)||CONVERSATIONS[0],new Date());
- conversation=withPracticeGreeting(base,rotateGreeting());state.step=0;state.done=false;state.reviewStep=null;state.prompt=null;state.shortDisplay=null;state.nonstopDisplay=null;state.awaitQuestion=false;state.hint=false;state.topic=base.id;state.turns=0;state.askedInTopic=0;showLearnerFeedback(null);
+ conversation=withPracticeGreeting(base,rotateGreeting());state.step=0;state.done=false;state.reviewStep=null;state.prompt=null;state.shortDisplay=null;state.nonstopDisplay=null;state.awaitQuestion=false;state.friendlyAwaiting=null;state.hint=false;state.topic=base.id;state.turns=0;state.askedInTopic=0;showLearnerFeedback(null);
  state.allowed=accessibleLessons(storage,conversation.id);state.profile.hasNumbers=state.allowed.includes(3);state.cursor=Math.max(0,state.allowed.indexOf(conversation.id));$('lesson-select').value=String(conversation.id);
  const routes={1:'panda-lesson1.html',2:'hsk1-second-v203.html',3:'hsk1-third-v212.html',4:'hsk1-fourth-v214.html',5:'hsk1-fifth-v227.html',6:'hsk1-family-v231.html',7:'hsk1-weather-v231.html'};$('back-link').href='./'+routes[conversation.id];
  if(new URLSearchParams(location.search).get('from')==='hsk2-about-me') $('back-link').href='./hsk2-about-me.html?step=8';
@@ -224,12 +225,12 @@ function setMode(mode){
   if(hsk2.done){hsk2.done=false;hsk2.index=0;askHSK2(false)}else render();
   return;
  }
- if(mode==='short')state.lockedTopic=null;if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
+ if(mode==='short')state.lockedTopic=null;if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.friendlyAwaiting=null;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 let hsk2=null;
 function beginHSK2(id,index=0,autoplay=true){
  const t=getTopic(id);if(!t)return false;
  cancelFollowup();stopAudio();stopRecognition();hsk2={id:t.id,index,done:false,exact:0,similar:0,unknown:0,context:null};
- state.mode='short';state.dayMode=false;state.done=false;
+ state.mode='short';state.dayMode=false;state.done=false;state.friendlyAwaiting=null;
  if(dayParams.get('from')==='hsk2-about-me')$('back-link').href='./hsk2-about-me.html?step=7';
  $('allowed-topics').textContent='HSK 2 · '+t.name+' — разговорная практика по изученным конструкциям.';
  $('words').replaceChildren();for(const w of t.words){const p=document.createElement('p');p.textContent=[w.zh,w.py,w.ru].join(' — ');$('words').append(p)}
@@ -259,6 +260,26 @@ function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
  if(hsk2){submitHSK2(input);return;}
+ // v520: both HSK1 short and Non-Stop modes handle a natural introduction
+ // independently of the current drill step. Never infer microphone tones.
+ if(!state.dayMode){
+  const cleaned=normalize(input);
+  const friendlyTurn=cleaned==='我爱你'||
+   (state.friendlyAwaiting==='friendly-name'&&/^我叫[\u3400-\u9fff]{1,12}$/u.test(cleaned))||
+   (state.friendlyAwaiting==='friendly-mood'&&/^(?:我很好|很好|我不好|不好)$/u.test(cleaned));
+  const social=friendlyTurn?everydayMeaning(input,lesson(),{awaiting:state.friendlyAwaiting}):null;
+  if(social){
+   state.friendlyAwaiting=social.context.awaiting;
+   state.awaitQuestion=true;
+   state.prompt=null;
+   state.turns++;
+   learner(input,{known:true,hanzi:input,pinyin:social.spoken[1],translation:social.spoken[2],topic:1});
+   say({hanzi:social.reply[0],pinyin:social.reply[1],ru:social.reply[2]},false);
+   note('Панда поддержала разговор. Тоны голоса не оценивались.');
+   return;
+  }
+  state.friendlyAwaiting=null;
+ }
  if(state.dayMode){
   if(state.dayDone){note('Тренировка завершена. Вернись к уроку или выбери обычные диалоги.');return;}
   // Keep reviewed grammar corrections available inside the HSK2 day dialogue.
