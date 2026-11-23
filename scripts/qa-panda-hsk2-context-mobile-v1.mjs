@@ -106,6 +106,9 @@ try{
   for(const [topic,question,learner,pinyin,nextQuestion] of negativeRounds){
    const started=await page.evaluate(([id,zh])=>window.PandaApprovedBridge337.startTopicQuestion(id,zh),[topic,question]);
    assert.equal(started,true,'Cannot start reviewed Panda question '+question);
+   // Approved design keeps the composer hidden until the paper-plane button is tapped.
+   await page.locator('#pg346-send').click();
+   await page.locator('#pg346-input').waitFor({state:'visible',timeout:5000});
    await page.locator('#pg346-input').fill(learner);
    await page.locator('#pg346-send').click();
    await page.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,nextQuestion,{timeout:5000});
@@ -118,6 +121,8 @@ try{
   }
   const startedInverse=await page.evaluate(()=>window.PandaApprovedBridge337.startTopicQuestion(104,'你喜欢运动吗？'));
   assert.equal(startedInverse,true);
+  await page.locator('#pg346-send').click();
+  await page.locator('#pg346-input').waitFor({state:'visible',timeout:5000});
   await page.locator('#pg346-input').fill('你不喜欢运动吗？');
   await page.locator('#pg346-send').click();
   await page.waitForFunction(()=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent==='喜欢，我喜欢运动。',null,{timeout:5000});
