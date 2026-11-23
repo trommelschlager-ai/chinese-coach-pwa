@@ -78,25 +78,59 @@
    else {bg.fillStyle='#74219e';bg.fillRect(left,top,bw,bh);}
    if('filter' in bg)bg.drawImage(img,0,0,w,h);
    bg.restore();
-   // Lesson 5: gently fade the grey arc baked into the approved poster
-   // above Start. Leave the purple button, gold rim and six tiles untouched.
+   // Lesson 5 only. The duplicate-looking DARK PURPLE ARC is baked into
+   // the approved cover bitmap, not a CSS box-shadow. Fade that painted
+   // arc on the background canvas; keep the gold edge, art, and one CTA.
    if(num===5){
     try{
-     const x=Math.floor(w*.06),y=Math.max(0,Math.floor((rect.y-.023)*h));
-     const sw=Math.min(w-x,Math.ceil(w*.88));
-     const sh=Math.min(h-y,Math.max(1,Math.ceil(h*.027)));
-     const region=bg.getImageData(x,y,sw,sh),pixels=region.data;
-     for(let i=0;i<pixels.length;i+=4){
-      const r=pixels[i],g=pixels[i+1],b=pixels[i+2];
-      if(r>=155&&r<245&&g>=155&&g<245&&b>=155&&b<245
-         &&Math.abs(r-g)<=23&&Math.abs(b-g)<=27){
-       pixels[i]=Math.round(r+(248-r)*.34);
-       pixels[i+1]=Math.round(g+(229-g)*.34);
-       pixels[i+2]=Math.round(b+(245-b)*.34);
+     const frame=bg.getImageData(0,0,w,h),pixels=frame.data;
+     const idx=(xx,yy)=>(yy*w+xx)*4;
+     const y0=Math.max(0,Math.round((rect.y-.043)*h));
+     const y1=Math.min(h-1,Math.round((rect.y-.006)*h));
+     const scores=[];
+     let peak=0;
+     for(let yy=y0;yy<=y1;yy+=2){
+      let score=0;
+      for(let xx=Math.round(w*.25);xx<Math.round(w*.75);xx+=5){
+       const p=idx(xx,yy),r=pixels[p],g=pixels[p+1],b=pixels[p+2];
+       if((r+g+b)/3<150&&r<210&&b>g*.9)score++;
       }
+      scores.push([yy,score]);peak=Math.max(peak,score);
      }
-     bg.putImageData(region,x,y);
-    }catch(_ignored){/* Preserve the original poster if pixel access is blocked. */}
+     // Do not change arbitrary artwork if the expected dark arc is absent.
+     if(peak>=10){
+      let total=0,weighted=0;
+      for(const [yy,score] of scores)if(score>=peak*.8){
+       total+=score;weighted+=yy*score;
+      }
+      const center=Math.round(weighted/total);
+      const radius=Math.max(5,Math.round(h*.009));
+      const anchor=Math.max(0,center-Math.round(h*.006));
+      const x0=Math.round(w*.065),x1=Math.round(w*.935);
+      const feather=Math.max(1,w*.07);
+      for(let yy=Math.max(0,center-radius);yy<=Math.min(h-1,center+radius);yy++){
+       const vertical=Math.pow(Math.max(0,1-Math.abs(yy-center)/radius),1.4);
+       for(let xx=x0;xx<x1;xx++){
+        const horizontal=Math.min(1,(xx-x0)/feather,(x1-xx)/feather);
+        if(horizontal<=0)continue;
+        const p=idx(xx,yy),r=pixels[p],g=pixels[p+1],b=pixels[p+2];
+        // Keep yellow/gold edging as painted by the artist.
+        if(r>190&&g>105&&b<120)continue;
+        const a=idx(xx,anchor);
+        let rr=pixels[a],gg=pixels[a+1],bb=pixels[a+2];
+        if(rr>210&&gg>150&&bb<130){rr=201;gg=132;bb=210;}
+        const light=(r+g+b)/3;
+        const darkWeight=.33+.67*Math.min(1,Math.max(0,(212-light)/105));
+        const alpha=.68*vertical*horizontal*darkWeight;
+        pixels[p]=Math.round(r+(rr-r)*alpha);
+        pixels[p+1]=Math.round(g+(gg-g)*alpha);
+        pixels[p+2]=Math.round(b+(bb-b)*alpha);
+       }
+      }
+      bg.putImageData(frame,0,0);
+      section.dataset.ctaShadow="arc-soft-v5";
+     }
+    }catch(_ignored){/* Leave the approved art intact on unsupported devices. */}
    }
    fg.save();
    fg.beginPath();
