@@ -48,6 +48,37 @@ try{
   assert.equal(keyboard.historyDisplay,'none','Keyboard must not let chat push Panda into a tiny corner');
   assert(keyboard.sceneHeight>=119,'Keyboard shrinks Panda scene: '+JSON.stringify(keyboard));
   assert.notEqual(keyboard.historyRestored,'none','Chat must reappear when keyboard closes');
+  // Record the approved full-size illustration, then emulate the resized
+  // Android visual viewport. Its dimensions must not jump at all.
+  await page.locator('#pg346-send').click();
+  const geometry=await page.evaluate(()=>{
+    const root=document.documentElement,stage=document.querySelector('#pg346');
+    const panda=stage.querySelector('.pg352-mascot');
+    const scene=stage.querySelector('.pg346-scene');
+    const read=()=>({
+      pandaWidth:panda.getBoundingClientRect().width,
+      pandaHeight:panda.getBoundingClientRect().height,
+      stoneWidth:parseFloat(getComputedStyle(scene,'::before').width),
+      sceneHeight:scene.getBoundingClientRect().height
+    });
+    const normal=read();
+    root.style.setProperty('--screen-height','460px');
+    root.dataset.keyboard='true';
+    const compact=read();
+    root.dataset.keyboard='false';
+    root.style.setProperty('--screen-height','800px');
+    return {normal,compact};
+  });
+  assert(Math.abs(geometry.normal.pandaWidth-geometry.compact.pandaWidth)<1.6,'Panda rescaled when keyboard opened: '+JSON.stringify(geometry));
+  assert(Math.abs(geometry.normal.pandaHeight-geometry.compact.pandaHeight)<2,'Panda changed body proportions: '+JSON.stringify(geometry));
+  assert(Math.abs(geometry.normal.stoneWidth-geometry.compact.stoneWidth)<2,'Seating stone rescaled: '+JSON.stringify(geometry));
+  // Android sometimes clears composerOpen while committing pinyin. A single
+  // tap on the plane must still send an existing Chinese character.
+  await page.locator('#pg346-input').fill('对');
+  await page.evaluate(()=>document.querySelector('#pg346').dataset.composerOpen='false');
+  await page.locator('#pg346-send').click();
+  await page.waitForFunction(()=>[...document.querySelectorAll('#pg346-rows .pg346-row .pg346-zh')].some(n=>n.textContent==='对'),null,{timeout:7000});
+  assert.equal(await page.locator('#pg346-input').inputValue(),'','One click must empty the input');
   await page.locator('#pg346-nonstop').click();
   await send('不好','怎么了？');
   assert(!errors.length,'JS error: '+errors.join('; '));
