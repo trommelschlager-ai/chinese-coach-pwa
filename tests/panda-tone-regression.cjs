@@ -88,6 +88,29 @@ tests.push({name:'preserve-rising',pass:dsp.cleanPitch(gradual).length===gradual
 const boundary=[[0,170],[.25,170],[.5,171],[.75,172],[1,173]];
 tests.push({name:'boundary-no-double-count',pass:dsp.contourEvidence(boundary,0,.5,.8).points+dsp.contourEvidence(boundary,.5,1,.8).points===5});
 tests.push({name:'synthetic-strictly-increasing-timestamps',pass:tests.every(x=>!x.result||x.result.timestampsMonotonic!==false)});
+// Regression of the actual bug: several trailing F0 windows used to collapse
+// onto x=1.0 when the RMS end boundary was earlier than the pitch samples.
+// This test must keep true frame ordering and not fabricate repeated timestamps.
+const edgeFixture={
+ word:2,stats:{},levels:Array.from({length:16},(_,i)=>[.09+i*.03,.045]),
+ samples:[
+  ...Array.from({length:14},(_,i)=>[.105+i*.015,190+.5*i]),
+  ...[.405,.420,.435,.450,.465,.480,.525,.540,.555,.600,.615]
+    .map((t,i)=>[t,[325,325,324,323,316,299,241,239,204,196,185][i]])
+ ]};
+const edgeResult=dsp.buildRecording(edgeFixture),edgePoints=edgeResult.entry.points;
+tests.push({name:'trailing-pitch-not-collapsed-to-one-timestamp',
+ pass:edgeResult.accepted&&edgePoints.length>=20&&
+ edgePoints.every((p,i)=>Number.isFinite(p[0])&&p[0]>=0&&p[0]<=1&&
+   (i===0||p[0]>edgePoints[i-1][0]))&&
+ edgeResult.entry.seconds>.50&&edgePoints.at(-1)[0]>=.99});
+// Nine credible F0 frames spanning 120 ms are NOT a validated tone contour.
+// More measurements alone must never weaken the minimum voiced duration.
+const shortEvidence=dsp.contourEvidence(
+ Array.from({length:9},(_,i)=>[.55+i*.015,310-i*8]),.5,.8,1);
+tests.push({name:'short-120ms-syllable-remains-insufficient',
+ pass:shortEvidence.points===9&&shortEvidence.duration>.115&&shortEvidence.duration<.13&&
+ !shortEvidence.usable});
 function decode(file){
  const p=cp.spawnSync('ffmpeg',['-hide_banner','-loglevel','error','-nostdin','-i',file,
   '-t','8','-f','f32le','-ac','1','-ar','12000','pipe:1'],{maxBuffer:20*1024*1024,timeout:20000});
@@ -136,4 +159,8 @@ if(process.env.GITHUB_STEP_SUMMARY){
 console.log((candidate?'HISTORICAL 90/60/18 ':'')+'Synthetic checks: '+passes+'/'+tests.length);
 for(const a of mp3)console.log(a.name+': '+(a.error||('quality='+a.quality+', F0='+a.points+', '+(candidate?'60':'56')+'ms recovered='+a.shortRecovered+', points='+a.syllables.join('/')+', Δ='+a.delta.join('/')+', reasons='+(a.diagnostics.join('; ')||'none'))));
 if(timelineErrors.length)console.error('F0 timestamps not strictly increasing: '+timelineErrors.join(', '));
-if(passes!==tests.length||decoded!==6||timelineErrors.length)process.exitCode=1;
+// Guard pitch *coverage* on the six current approved MP3 files; this never
+// claims tone or pronunciation accuracy. Keep historical A/B free to report
+// its expected lower coverage.
+if(!candidate&&both<5)console.error('Real MP3 F0 coverage regression: '+both+'/6, expected >=5/6');
+if(passes!==tests.length||decoded!==6||timelineErrors.length||(!candidate&&both<5))process.exitCode=1;
