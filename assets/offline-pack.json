@@ -1,7 +1,9 @@
 {
-  "version": 546,
-  "bytes": 80602394,
+  "version": 547,
+  "bytes": 80622394,
   "files": [
+    "./assets/panda-ai-approved-layout-v547.css?v=547",
+    "./assets/panda-ai-approved-layout-v547.js?v=547",
     "./assets/panda-ai-natural-voice-batch01-v546.mjs?v=546",
     "./assets/panda-approved-voice-registry-v516.mjs?v=546",
     "./assets/panda-hsk2-preview-audio-v1.mjs?v=546",
