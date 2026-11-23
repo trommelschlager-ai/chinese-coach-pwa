@@ -173,7 +173,9 @@ if (!bridge) {
     const text=el('div','pg346-text');
     if(example)text.append(el('div','pg445-example-label','Правильный пример'));
     text.append(el('div','pg346-zh',e.hanzi||''),el('div','pg346-py',e.pinyin||''));
-    const translation=el('div','pg346-ru',e.ru||e.analysis?.probable||'Перевод пока не подтверждён');
+    const translationText=e.ru||e.analysis?.probable||'';
+    const translation=el('div','pg346-ru',translationText);
+    if(!translationText)translation.hidden=true;
     if(e.analysis?.kind==='calendar-complete'&&e.analysis.summary){
      translation.append(el('div','pg406-finish',e.analysis.summary));
     }
