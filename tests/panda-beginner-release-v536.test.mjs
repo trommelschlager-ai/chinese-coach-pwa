@@ -52,7 +52,7 @@ test('worker and offline download include exact updated versions',()=>{
  assert(pack.version>=536,'Release cache must not roll back below v536');
  const activeVersion=Number(worker.match(/^const CACHE='chinese-coach-pwa-v(\d+)-/m)?.[1]);
  assert.equal(activeVersion,pack.version,'Worker and offline manifest versions must match');
- const activeCoreVersion=Number(html.match(/panda-hsk2-preview-core-v1\\.mjs\\?v=(\\d+)/)?.[1]);
+ const activeCoreVersion=Number(html.match(/panda-hsk2-preview-core-v1\.mjs\?v=(\d+)/)?.[1]);
  assert(activeCoreVersion>=536,'Current Panda AI core must not be older than approved v536');
  assert(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v='+activeCoreVersion),
   'The exact current Panda AI core must be available in the full offline pack');
