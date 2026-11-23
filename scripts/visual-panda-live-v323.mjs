@@ -51,9 +51,14 @@ try{
   await page.locator('#pg346-nonstop').click();
   assert.equal(await page.locator('#pg346-nonstop').getAttribute('aria-pressed'),'true');
   const input=page.locator('#pg346-input');
+  // Approved v500: the paper plane first OPENS the compact composer.
+  await page.locator('#pg346-send').click();
+  assert.equal(await page.locator('#pg346').getAttribute('data-composer-open'),'true','Paper plane should open the composer before typing');
   await input.fill('你好');await page.locator('#pg346-send').click();
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh')?.textContent==='你好！');
   assert((await page.locator('#pg346-rows').textContent()).includes('你好'));
+  await page.locator('#pg346-send').click();
+  assert(await input.isVisible(),'The second paper-plane tap must reopen text entry');
   await input.fill('你好吗？');await page.locator('#pg346-send').click();
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh')?.textContent==='很好！');
   summary.results.push({width,case:'short Mandarin dialogue',reply:await page.locator('.pg346-main-zh').textContent()});
