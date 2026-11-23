@@ -3,9 +3,11 @@ on:
   push:
     paths:
       - 'assets/panda-hsk2-brain-v1.mjs'
+      - 'assets/panda-negative-dialogue-v519.mjs'
       - 'assets/panda-everyday-meaning-v515.mjs'
       - 'assets/panda-live-dialogue-v272.mjs'
       - 'tests/panda-beginner-replies-v518.test.mjs'
+      - 'tests/panda-negative-dialogue-v519.test.mjs'
       - 'assets/panda-hsk2-basic-context-v1.mjs'
       - 'assets/panda-approved-soft-v500.js'
       - 'assets/panda-hsk2-preview-core-v1.mjs'
@@ -34,6 +36,8 @@ jobs:
         run: node --test tests/panda-hsk2-basic-context-v1.test.mjs
       - name: Verify six Android screenshot replies (HSK1 and HSK2)
         run: node --test tests/panda-beginner-replies-v518.test.mjs
+      - name: Verify negative answers and questions in Panda AI v519
+        run: node --test tests/panda-negative-dialogue-v519.test.mjs
       - name: Install isolated mobile Chromium
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
