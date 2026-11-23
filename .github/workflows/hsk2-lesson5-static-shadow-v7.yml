@@ -1,0 +1,65 @@
+name: HSK2 lesson 5 - produce softly shaded approved bitmap
+on:
+  push:
+    branches: [hsk2-lesson5-static-button-shadow-v7-20261123]
+    paths: [.github/workflows/hsk2-lesson5-static-shadow-v7.yml]
+permissions:
+  contents: write
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hsk2-lesson5-static-button-shadow-v7-20261123
+          persist-credentials: true
+      - name: Render corrected exact-size artwork
+        run: |
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          import math
+          source=Path('assets/hsk2-approved-covers/lesson-05-full.webp')
+          dest=Path('assets/hsk2-approved-covers/lesson-05-full-softshadow-v7.png')
+          im=Image.open(source).convert('RGB')
+          w,h=im.size
+          assert w>=700 and h>=1500,(w,h)
+          # Baked-in double arch sits between the six tiles and the
+          # start button (around y=60% of the untouched approved image).
+          # Only lessen dark purple shading, NEVER move/repaint the button.
+          px=im.load()
+          y0=int(h*.590); y1=int(h*.617)
+          x0=int(w*.018); x1=int(w*.982)
+          count=0
+          for yy in range(y0,y1):
+              v=math.sin(math.pi*(yy-y0)/(y1-y0))**1.25
+              for xx in range(x0,x1):
+                  xfade=min(1.0,(xx-x0)/(w*.045),(x1-xx)/(w*.045))
+                  if xfade<=0: continue
+                  r,g,b=px[xx,yy]
+                  # Gold/yellow outlines and white panels must remain exact.
+                  if (r>150 and g>90 and b<135) or (r>210 and g>180): continue
+                  # Distinguish the dark purple painted cast shadow from
+                  # the bright violet backdrop and the gold pill outline.
+                  shade=max(0.,min(1.,(205-(r+g+b)/3)/105))
+                  if b < g*.78 or r > 215 or g > 160: continue
+                  a=0.52*shade*v*xfade
+                  if a<.025: continue
+                  # Warm violet from the surrounding artwork, not a grey
+                  # overlay or a second HTML button.
+                  target=(177,91,214)
+                  px[xx,yy]=tuple(round(c*(1-a)+t*a) for c,t in zip((r,g,b),target))
+                  count+=1
+          assert count>400,(count,(w,h))
+          dest.parent.mkdir(parents=True,exist_ok=True)
+          im.save(dest,optimize=True)
+          print('Edited',count,'pixels at',w,h,'saved',dest,'bytes',dest.stat().st_size)
+          PY
+      - name: Commit edited static artwork
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hsk2-approved-covers/lesson-05-full-softshadow-v7.png
+          git commit -m "HSK2 lesson 5: add exact-size poster with gentler baked shadow"
+          git push origin HEAD:hsk2-lesson5-static-button-shadow-v7-20261123
