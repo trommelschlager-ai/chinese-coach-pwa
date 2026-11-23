@@ -10,7 +10,8 @@
     "User-approved Panda AI voice is separate from Panda Street male Yunjian. Do not mix voices.",
     "Only change audio_status to approved_and_integrated after the actual approved MP3 file exists, is checked for Chinese tones/noise/truncation, exact match lookup is registered, and Android sound was tested.",
     "Do not automatically upload private learner conversation transcripts to public GitHub.",
-    "If this chat is lost, resume from issue #216 + this JSON queue + PR #215."
+    "If this chat is lost, resume from issue #216 + this JSON queue + PR #215.",
+    "2026-11-24: Owner approved voice identity for all 10 original clips; all 10 exact MP3s are committed on staging branch and linked in v546 registry. Android QA and release remain separate."
   ],
   "tracks": [
     {
@@ -20,11 +21,14 @@
       "pinyin": "Nǐ shì lǎoshī! Nǐ zài nǎr gōngzuò?",
       "translation": "Ты учитель! Где ты работаешь?",
       "logic_status": "v543-main",
-      "audio_status": "awaiting_exact_clip_check_or_recording",
-      "audio_file": null,
-      "voice_approved": false,
+      "audio_status": "approved_uploaded_awaiting_android_qa",
+      "audio_file": "./assets/panda-ai-natural-voice-batch01-20261124/PA-001.mp3",
+      "voice_approved": true,
       "android_verified": false,
-      "awaiting": null
+      "awaiting": null,
+      "audio_sha256": "bb44670e90a9f454bd87587b05ede8b47d84d7e4ee1a2a2fdd1bc6a45a366539",
+      "tone_review": "owner_approved_voice_identity; independent tone audit not completed",
+      "reviewed_at": "2026-11-24"
     },
     {
       "id": "PA-002",
@@ -33,11 +37,14 @@
       "pinyin": "Nǐ shì yīshēng! Nǐ zài nǎr gōngzuò?",
       "translation": "Ты врач! Где ты работаешь?",
       "logic_status": "v544-pr215",
-      "audio_status": "awaiting_exact_clip_check_or_recording",
-      "audio_file": null,
-      "voice_approved": false,
+      "audio_status": "approved_uploaded_awaiting_android_qa",
+      "audio_file": "./assets/panda-ai-natural-voice-batch01-20261124/PA-002.mp3",
+      "voice_approved": true,
       "android_verified": false,
-      "awaiting": null
+      "awaiting": null,
+      "audio_sha256": "712330979d998d23bd84745554df5926fdf5fca52df040b32d4a8c7416efecd1",
+      "tone_review": "owner_approved_voice_identity; independent tone audit not completed",
+      "reviewed_at": "2026-11-24"
     },
     {
       "id": "PA-003",
@@ -46,11 +53,14 @@
       "pinyin": "Nǐ shì gōngchéngshī! Nǐ zài nǎr gōngzuò?",
       "translation": "Ты инженер! Где ты работаешь?",
       "logic_status": "v544-pr215",
-      "audio_status": "awaiting_exact_clip_check_or_recording",
-      "audio_file": null,
-      "voice_approved": false,
+      "audio_status": "approved_uploaded_awaiting_android_qa",
+      "audio_file": "./assets/panda-ai-natural-voice-batch01-20261124/PA-003.mp3",
+      "voice_approved": true,
       "android_verified": false,
-      "awaiting": null
+      "awaiting": null,
+      "audio_sha256": "54fb80adcc423e0d308de06ad853079bb01aa18c6c7ba5fbb373e6bc1ee58a58",
+      "tone_review": "owner_approved_voice_identity; independent tone audit not completed",
+      "reviewed_at": "2026-11-24"
     },
     {
       "id": "PA-004",
@@ -59,11 +69,14 @@
       "pinyin": "Nǐ xǐhuan nǐ de gōngzuò ma?",
       "translation": "Тебе нравится твоя работа?",
       "logic_status": "v543-main",
-      "audio_status": "awaiting_exact_clip_check_or_recording",
-      "audio_file": null,
-      "voice_approved": false,
+      "audio_status": "approved_uploaded_awaiting_android_qa",
+      "audio_file": "./assets/panda-ai-natural-voice-batch01-20261124/PA-004.mp3",
+      "voice_approved": true,
       "android_verified": false,
-      "awaiting": null
+      "awaiting": null,
+      "audio_sha256": "2dd3e3b7a7ae9c9cc1a5af754dd9507cfed62b3b47d182005eef85ca2ba90ff8",
+      "tone_review": "owner_approved_voice_identity; independent tone audit not completed",
+      "reviewed_at": "2026-11-24"
     },
     {
       "id": "PA-005",
@@ -72,11 +85,14 @@
       "pinyin": "Nǐ zài kàn shénme diànyǐng?",
       "translation": "Какой фильм ты смотришь?",
       "logic_status": "v544-pr215",
-      "audio_status": "awaiting_exact_clip_check_or_recording",
-      "audio_file": null,
-      "voice_approved": false,
+      "audio_status": "approved_uploaded_awaiting_android_qa",
+      "audio_file": "./assets/panda-ai-natural-voice-batch01-20261124/PA-005.mp3",
+      "voice_approved": true,
       "android_verified": false,
-      "awaiting": null
+      "awaiting": null,
+      "audio_sha256": "c4775382f6cb1f3de64127cf850dbc9c0308966aa846bef98b73f50c6ddadada",
+      "tone_review": "owner_approved_voice_identity; independent tone audit not completed",
+      "reviewed_at": "2026-11-24"
     },
     {
       "id": "PA-006",
@@ -85,11 +101,14 @@
       "pinyin": "Wǒmen liáo liáotiān ba! Nǐ xǐhuan kàn diànyǐng ma?",
       "translation": "Давай поболтаем! Ты любишь смотреть фильмы?",
       "logic_status": "v544-pr215",
-      "audio_status": "awaiting_exact_clip_check_or_recording",
-      "audio_file": null,
-      "voice_approved": false,
+      "audio_status": "approved_uploaded_awaiting_android_qa",
+      "audio_file": "./assets/panda-ai-natural-voice-batch01-20261124/PA-006.mp3",
+      "voice_approved": true,
       "android_verified": false,
-      "awaiting": null
+      "awaiting": null,
+      "audio_sha256": "0c8af276129bf4d23b132cd6425476691d83512bb93b3cef0bfe447dd49f3438",
+      "tone_review": "owner_approved_voice_identity; independent tone audit not completed",
+      "reviewed_at": "2026-11-24"
     },
     {
       "id": "PA-007",
@@ -98,11 +117,14 @@
       "pinyin": "Nǐ xiǎng gàosu wǒ shénme?",
       "translation": "Что ты хочешь мне рассказать?",
       "logic_status": "v544-pr215",
-      "audio_status": "awaiting_exact_clip_check_or_recording",
-      "audio_file": null,
-      "voice_approved": false,
+      "audio_status": "approved_uploaded_awaiting_android_qa",
+      "audio_file": "./assets/panda-ai-natural-voice-batch01-20261124/PA-007.mp3",
+      "voice_approved": true,
       "android_verified": false,
-      "awaiting": null
+      "awaiting": null,
+      "audio_sha256": "a888ed5e16953e36aab9cac8636c8fa2787f92648512751a4b108549bc675154",
+      "tone_review": "owner_approved_voice_identity; independent tone audit not completed",
+      "reviewed_at": "2026-11-24"
     },
     {
       "id": "PA-008",
@@ -111,11 +133,14 @@
       "pinyin": "Míngbai le. Nǐ zuò shénme gōngzuò?",
       "translation": "Понятно. Кем ты работаешь?",
       "logic_status": "v543-main",
-      "audio_status": "awaiting_exact_clip_check_or_recording",
-      "audio_file": null,
-      "voice_approved": false,
+      "audio_status": "approved_uploaded_awaiting_android_qa",
+      "audio_file": "./assets/panda-ai-natural-voice-batch01-20261124/PA-008.mp3",
+      "voice_approved": true,
       "android_verified": false,
-      "awaiting": null
+      "awaiting": null,
+      "audio_sha256": "40b295838b662ae53da8b1cdc08b28775ba1f8c6ab5f81c37f18f6788f38bc91",
+      "tone_review": "owner_approved_voice_identity; independent tone audit not completed",
+      "reviewed_at": "2026-11-24"
     },
     {
       "id": "PA-009",
@@ -124,11 +149,14 @@
       "pinyin": "Nǐ shì xuésheng! Nǐ xué shénme?",
       "translation": "Ты студент! Что ты изучаешь?",
       "logic_status": "v543-main",
-      "audio_status": "awaiting_exact_clip_check_or_recording",
-      "audio_file": null,
-      "voice_approved": false,
+      "audio_status": "approved_uploaded_awaiting_android_qa",
+      "audio_file": "./assets/panda-ai-natural-voice-batch01-20261124/PA-009.mp3",
+      "voice_approved": true,
       "android_verified": false,
-      "awaiting": null
+      "awaiting": null,
+      "audio_sha256": "db01beb954e2fd6b56eaa184a97b2fc4ee6d3f75941390a953313fc65767b748",
+      "tone_review": "owner_approved_voice_identity; independent tone audit not completed",
+      "reviewed_at": "2026-11-24"
     },
     {
       "id": "PA-010",
@@ -137,11 +165,14 @@
       "pinyin": "Tài hǎo le! Nǐ gōngzuò máng ma?",
       "translation": "Здорово! У тебя много работы?",
       "logic_status": "v543-main",
-      "audio_status": "awaiting_exact_clip_check_or_recording",
-      "audio_file": null,
-      "voice_approved": false,
+      "audio_status": "approved_uploaded_awaiting_android_qa",
+      "audio_file": "./assets/panda-ai-natural-voice-batch01-20261124/PA-010.mp3",
+      "voice_approved": true,
       "android_verified": false,
-      "awaiting": "job-liking"
+      "awaiting": "job-liking",
+      "audio_sha256": "4772b766c766c9bc4fa68240c2896421f17165cf7ed8e2f20b2e575caff877ad",
+      "tone_review": "owner_approved_voice_identity; independent tone audit not completed",
+      "reviewed_at": "2026-11-24"
     }
   ]
 }
