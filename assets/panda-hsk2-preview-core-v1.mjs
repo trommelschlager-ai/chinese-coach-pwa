@@ -4,7 +4,7 @@ import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v
 import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7';
 import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=524';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
-import {getTopic,replyHSK2,knownHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=518';
+import {getTopic,replyHSK2,knownHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=519';
 import {PILOT_LINES,verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
@@ -14,7 +14,7 @@ import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedMistake} from './panda-live-practice.mjs?v=265';
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
-import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=518';
+import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=519';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=436';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
