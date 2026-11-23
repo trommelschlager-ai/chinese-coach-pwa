@@ -87,37 +87,46 @@
     stage.dataset.composerOpen='false';
     const cross=word('button','pg500-close-input','×');cross.type='button';
     cross.setAttribute('aria-label','Закрыть ввод текста');form.append(cross);
-    // v541: approved Panda and rock are frozen in a stage-sized overlay.
-    // History growth, audio status and Android keyboard reflow must never
-    // change the mascot's position, size, pose or seating.
+    // v542: Keep the ORIGINAL approved mascot in the scenic DOM for audio/AI.
+    // A separate visible COPY of its approved image is locked to the stage,
+    // so resizing the chat history/keyboard can never relocate the portrait.
+    // Importantly, never move the original DOM node (v541 made Panda vanish).
     const mascot=scene.querySelector('.pg352-mascot');
-    let geometryFrozen=false;
+    let frozenAttempt=false;
     function rememberPandaGeometry(){
-      if(geometryFrozen||!mascot||document.documentElement.dataset.keyboard==='true')return;
+      if(frozenAttempt||!mascot||document.documentElement.dataset.keyboard==='true')return;
       const picture=mascot.querySelector('.pg346-panda');
       if(!picture?.complete||!picture.naturalWidth)return;
-      const rect=mascot.getBoundingClientRect(),sceneRect=scene.getBoundingClientRect(),stageRect=stage.getBoundingClientRect();
-      const back=getComputedStyle(scene,'::before');
-      const width=parseFloat(back.width),bottom=parseFloat(back.bottom),left=parseFloat(back.left);
-      if(rect.width<90||rect.height<90||!Number.isFinite(width)||width<90||!Number.isFinite(bottom)||!Number.isFinite(left))return;
-      const stoneHeight=width*207/600;
-      const stoneX=sceneRect.left-stageRect.left+left;
-      const stoneY=sceneRect.bottom-stageRect.top-bottom-stoneHeight;
-      const pandaX=rect.left-stageRect.left,pandaY=rect.top-stageRect.top;
-      const layer=word('div','pg541-static-layer','');
-      layer.setAttribute('aria-hidden','true');
-      const stoneBack=word('div','pg541-static-stone pg541-static-back','');
-      const stoneFront=word('div','pg541-static-stone pg541-static-front','');
-      const px=(name,value)=>layer.style.setProperty(name,value+'px');
-      px('--pg541-panda-x',pandaX);px('--pg541-panda-y',pandaY);
-      px('--pg541-panda-w',rect.width);px('--pg541-panda-h',rect.height);
-      px('--pg541-stone-x',stoneX);px('--pg541-stone-y',stoneY);
-      px('--pg541-stone-w',width);px('--pg541-stone-h',stoneHeight);
-      // Move the SAME approved image/face DOM, not a replacement character.
-      layer.append(stoneBack,mascot,stoneFront);
+      const ir=picture.getBoundingClientRect();
+      const sr=scene.getBoundingClientRect(),pr=stage.getBoundingClientRect();
+      const stone=getComputedStyle(scene,'::before');
+      const w=parseFloat(stone.width),left=parseFloat(stone.left),bottom=parseFloat(stone.bottom);
+      if(ir.width<90||ir.height<90||!Number.isFinite(w)||w<90||!Number.isFinite(left)||!Number.isFinite(bottom))return;
+      const layer=word('div','pg542-static-layer','');
+      const back=word('div','pg542-static-stone pg542-static-back','');
+      const front=word('div','pg542-static-stone pg542-static-front','');
+      const frozen=word('img','pg542-frozen-panda','');
+      frozen.alt='';frozen.draggable=false;frozen.decoding='async';
+      const set=(k,n)=>layer.style.setProperty(k,n+'px');
+      set('--pg542-panda-x',ir.left-pr.left);
+      set('--pg542-panda-y',ir.top-pr.top);
+      set('--pg542-panda-w',ir.width);
+      set('--pg542-panda-h',ir.height);
+      set('--pg542-stone-x',sr.left-pr.left+left);
+      set('--pg542-stone-y',sr.bottom-pr.top-bottom-w*207/600);
+      set('--pg542-stone-w',w);
+      set('--pg542-stone-h',w*207/600);
+      layer.append(back,frozen,front);
       stage.append(layer);
-      geometryFrozen=true;
-      stage.dataset.pandaStatic='true';
+      frozenAttempt=true;
+      const commit=()=>{
+        if(!frozen.naturalWidth||!frozen.naturalHeight)return;
+        stage.dataset.pandaStatic='true';
+      };
+      frozen.addEventListener('load',commit,{once:true});
+      frozen.addEventListener('error',()=>{layer.remove();frozenAttempt=false},{once:true});
+      frozen.src=picture.currentSrc||picture.src;
+      if(frozen.complete&&frozen.naturalWidth)commit();
     }
     requestAnimationFrame(rememberPandaGeometry);
     mascot?.querySelector('.pg346-panda')?.addEventListener('load',()=>requestAnimationFrame(rememberPandaGeometry),{once:true});
