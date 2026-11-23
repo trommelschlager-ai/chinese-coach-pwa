@@ -1,0 +1,148 @@
+name: Lesson 5 cover press mobile evidence
+on:
+  push:
+    branches: [qa/hsk2-cover-press]
+permissions:
+  contents: read
+jobs:
+  mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          python -m pip install playwright pillow
+          python -m playwright install --with-deps chromium
+      - name: Test production path and Service Worker with mobile Chromium
+        run: |
+          mkdir evidence
+          node --check assets/hsk2-approved-cover.js
+          python tests/hsk2-approved-art-check.py
+          git worktree add --detach /tmp/panda-old 406e448464e55256f82d243e57b840077cb633e8
+          ln -s /tmp/panda-old /tmp/panda-serving
+          python -u - <<'SERVER' >/tmp/panda-http.log 2>&1 &
+          from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+          from functools import partial
+          ThreadingHTTPServer(('127.0.0.1', 8123), partial(SimpleHTTPRequestHandler, directory='/tmp/panda-serving')).serve_forever()
+          SERVER
+          python -u - <<'PY'
+          import io, os, shutil
+          from pathlib import Path
+          from PIL import Image, ImageChops
+          from playwright.sync_api import sync_playwright, expect
+          root='http://panda.test:8123'
+          options=['--host-resolver-rules=MAP panda.test 127.0.0.1', '--unsafely-treat-insecure-origin-as-secure='+root, '--no-proxy-server']
+          with sync_playwright() as p:
+              browser=p.chromium.launch(args=options)
+              settings=p.devices['Pixel 7']|{'device_scale_factor':1}
+              context=browser.new_context(**settings)
+              page=context.new_page()
+              page.goto(root+'/hsk2-life-course.html?view=map')
+              page.evaluate("""async () => {
+                await navigator.serviceWorker.register('./sw.js', {updateViaCache:'none'});
+                await navigator.serviceWorker.ready;
+              }""")
+              page.wait_for_function('!!navigator.serviceWorker.controller', timeout=30000)
+              map_url=page.url
+              link=page.locator('a[href*="hsk2-lesson5-friends-v2.html"]').first
+              link.tap()
+              page.wait_for_url('**/hsk2-lesson5-friends-v2.html?*')
+              lesson_url=page.url
+              start=page.locator('.pg-approved-start')
+              expect(start).to_be_visible()
+              expect(page.locator('.pg-approved-button-canvas')).to_be_visible()
+              page.screenshot(path='evidence/00-old-before.png')
+              start.dispatch_event('pointerdown', {'pointerType':'touch'})
+              page.wait_for_timeout(160)
+              page.screenshot(path='evidence/01-old-during.png')
+              start.dispatch_event('pointercancel')
+              os.symlink(os.getcwd(), '/tmp/panda-new')
+              os.replace('/tmp/panda-new','/tmp/panda-serving')
+              seen={}
+              page.on('response',lambda r:seen.update({r.url:r.from_service_worker}))
+              page.reload()
+              expect(start).to_be_visible()
+              expect(page.locator('.pg-approved-press-frame')).to_have_count(1)
+              expect(page.locator('.pg-approved-button-canvas')).to_have_count(0)
+              assert seen.get(lesson_url), seen
+              assert sum('single-press' in u and via for u,via in seen.items())==2, seen
+              assert page.evaluate("""async () => {
+                const sw=!!navigator.serviceWorker.controller;
+                const keys=(await (await caches.open('chinese-coach-pwa-v526-street-clean-day')).keys()).map(r=>r.url);
+                return sw && keys.some(u=>u.includes('static-softshadow-v7')) &&
+                  keys.filter(u=>u.includes('single-press')).length===2;
+              }""")
+              print('PASS: map opens lesson 5, active production SW refreshes old cached HTML/JS/CSS')
+              assert page.evaluate('document.documentElement.scrollHeight<=innerHeight && document.documentElement.scrollWidth<=innerWidth')
+              assert page.locator('.pg-approved-hotspot[data-step]').count()==7
+              before=page.screenshot(path='evidence/02-before.png')
+              old=Path('evidence/00-old-before.png').read_bytes()
+              diff=ImageChops.difference(Image.open(io.BytesIO(old)).convert('RGB'), Image.open(io.BytesIO(before)).convert('RGB'))
+              print('Old vs new idle pixel bounds:',diff.getbbox())
+              start.dispatch_event('pointerdown', {'pointerType':'touch'})
+              page.wait_for_timeout(140)
+              during=page.screenshot(path='evidence/03-during.png')
+              frame=page.locator('.pg-approved-press-frame')
+              expect(frame).to_be_visible()
+              expect(page.locator('.pg-approved-cover-image')).to_be_hidden()
+              diff=ImageChops.difference(Image.open(io.BytesIO(before)).convert('RGB'), Image.open(io.BytesIO(during)).convert('RGB'))
+              bounds=diff.getbbox()
+              size=page.viewport_size
+              assert bounds and size['height']*.54<bounds[1]<bounds[3]<size['height']*.74, bounds
+              print('PASS: changes restricted to CTA band',bounds)
+              start.dispatch_event('pointercancel', {'pointerType':'touch'})
+              expect(frame).to_be_hidden()
+              released=page.screenshot(path='evidence/04-after-release.png')
+              assert not ImageChops.difference(Image.open(io.BytesIO(before)).convert('RGB'),Image.open(io.BytesIO(released)).convert('RGB')).getbbox()
+              page.evaluate("""() => {
+                window.taps=[];window.opens=[];
+                const app=document.querySelector('#app');
+                new MutationObserver(records=>{
+                  for(const r of records)if(app.dataset.view==='2')window.opens.push(performance.now());
+                }).observe(app,{attributes:true,attributeFilter:['data-view']});
+                document.querySelector('.pg-approved-start').addEventListener('click',e=>{
+                  if(e.isTrusted)window.taps.push(performance.now());
+                });
+              }""")
+              box=start.bounding_box()
+              for _ in range(2):
+                  page.touchscreen.tap(box['x']+box['width']/2, box['y']+box['height']/2)
+              expect(page.locator('#app')).to_have_attribute('data-view','1')
+              expect(page.locator('#app')).to_have_attribute('data-view','2')
+              timing=page.evaluate('({delay:opens[0]-taps[0], taps:taps.length, transitions:opens.length})')
+              assert 495<=timing['delay']<650 and timing['transitions']==1 and timing['taps']==2,timing
+              page.wait_for_timeout(190)
+              page.screenshot(path='evidence/05-lesson-open.png')
+              page.goto(map_url)
+              page.locator('a[href*="hsk2-lesson5-friends-v2.html"]').first.tap()
+              expect(start).to_be_visible()
+              expect(frame).to_be_hidden()
+              context.set_offline(True)
+              page.reload()
+              expect(start).to_be_visible()
+              expect(frame).to_have_count(1)
+              context.set_offline(False)
+              print('PASS: cancel restores exact pixels, double touch opens once, reopen and cached offline reload work',timing)
+              context.close()
+              video_context=browser.new_context(**settings,record_video_dir='/tmp/panda-video',record_video_size=settings['viewport'])
+              video=video_context.new_page()
+              video.goto(lesson_url)
+              expect(video.locator('.pg-approved-start')).to_be_visible()
+              video.wait_for_timeout(700)
+              video.locator('.pg-approved-start').tap()
+              expect(video.locator('#app')).to_have_attribute('data-view','2')
+              video.wait_for_timeout(600)
+              video_context.close()
+              shutil.copyfile(video.video.path(),'evidence/panda-hsk2-press.webm')
+              browser.close()
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: panda-hsk2-cover-press-evidence
+          path: evidence/
