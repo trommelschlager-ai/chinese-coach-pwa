@@ -257,7 +257,23 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const exactNegativeGuard=!done&&active?.options.find(a=>norm(a[0])===input);
  if(exactNegativeGuard)return {kind:'accepted',answer:line(exactNegativeGuard)};
  const negative=active?negativeAnswerForQuestion(raw,active.q):null;
- if(negative&&!done)return {kind:'variant',spoken:line([negative.hanzi,negative.pinyin,negative.ru]),negative:true};
+ if(negative&&!done){
+  const question=norm(active.q),spoken=line([negative.hanzi,negative.pinyin,negative.ru]);
+  const base={spoken,negative:true};
+  // A declined invitation must NOT be followed by asking where/when to meet.
+  if(question==='你明天下午有空吗')
+   return {...base,kind:'end',line:line(['没关系，那我们改天再约吧。','Méi guānxi, nà wǒmen gǎitiān zài yuē ba.','Ничего страшного, договоримся на другой день.'])};
+  if(question==='周末要不要一起喝咖啡')
+   return {...base,kind:'end',line:line(['没关系，我们可以聊点别的。','Méi guānxi, wǒmen kěyǐ liáo diǎn bié de.','Ничего страшного, можем поговорить о другом.'])};
+  // A low mood is not automatically a physical illness.
+  if(question==='你今天怎么样'&&input!=='我不舒服')
+   return {...base,kind:'social',line:line(['怎么了？','Zěnme le?','Что случилось?']),context:{...context,awaiting:'wellbeing-reason',lastClarification:null}};
+  if(question==='你会说中文吗')
+   return {...base,kind:'end',line:line(['没关系，我们慢慢学。','Méi guānxi, wǒmen mànmàn xué.','Ничего страшного, будем учиться постепенно.'])};
+  if(question==='你喜欢运动吗')
+   return {...base,kind:'social',line:line(['那你喜欢什么？','Nà nǐ xǐhuan shénme?','А что тебе нравится?']),context:{...context,awaiting:'likes',lastClarification:null}};
+  return {...base,kind:'variant'};
+ }
  const inverse=negativeQuestionFromLearner(raw);if(inverse)return inverse;
  const contextualNegative=negativeFollowup(raw,context);if(contextualNegative)return {...contextualNegative,context:{...context,...contextualNegative.context}};
  const aspect=everydayAspect(raw,context);if(aspect)return aspect;
