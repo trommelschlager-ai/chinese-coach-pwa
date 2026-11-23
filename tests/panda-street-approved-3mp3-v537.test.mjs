@@ -34,8 +34,9 @@ test('public Street page uses only exact male registry and retains original Luvv
 test('new MP3s are included in SW and offline pack v537',()=>{
  const pack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
  const sw=fs.readFileSync('sw.js','utf8');
- assert.equal(pack.version,537);
- assert(sw.includes('chinese-coach-pwa-v537-street-approved-male-three'));
+ assert(pack.version>=537);
+ const workerVersion=Number(sw.match(/^const CACHE='chinese-coach-pwa-v(\d+)-/m)?.[1]);
+ assert.equal(workerVersion,pack.version);
  for(const url of ['./assets/panda-street-approved-male-mp3-v1.mjs?v=1',
   './assets/panda-street-male-voice-v1/01.mp3',
   './assets/panda-street-male-voice-v1/02.mp3',
