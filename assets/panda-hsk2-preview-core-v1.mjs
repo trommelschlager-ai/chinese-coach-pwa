@@ -502,31 +502,22 @@ function startRecognition(){
  r.onresult=e=>{
   if(!valid())return;
   clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);
-  const a=e.results?.[0]?.[0];const text=String(a?.transcript||'').trim();
-  if(!text){fail('Браузер вернул пустой ответ. Попробуй ещё раз в Chrome или напиши фразу.');return}
-  heard=true;const confidence=typeof a?.confidence==='number'&&a.confidence>0?a.confidence:null;
-  if(confidence!==null&&confidence<.65){
-   // The ASR transcript is uncertain: the learner must approve it before any dialogue update.
-   stopRecognition();state.confidence=null;$('message').value=text;
-   state.speechSignal={id:(state.speechSignal?.id||0)+1,kind:'uncertain',text,confidence,contentVerified:false,toneVerified:false};
-   note('Распознано неуверенно: '+text+'. Исправь текст и нажми ➤ или повтори через 🎙.');
-   $('message').focus();return;
-  }
-  state.confidence=confidence;
-  submit(text);
-  // ASR returns text and optional confidence, never a validated acoustic tone score.
-  const latestLearner=[...state.history].reverse().find(turn=>turn.who==='you'&&turn.hanzi===text);
-  const correctionHanzi=latestLearner?.analysis?.correction?.hanzi||null;
-  const reliable=state.confidence!==null&&state.confidence>=.85;
-  const kind=state.confidence!==null&&state.confidence<.65?'uncertain'
-    :correctionHanzi&&reliable?'content-error':'text-only';
+  const candidate=e.results?.[0]?.[0];
+  const transcript=String(candidate?.transcript||'').trim();
+  if(!transcript){fail('Браузер вернул пустой ответ. Попробуй ещё раз в Chrome или напиши фразу.');return}
+  heard=true;
+  const confidence=typeof candidate?.confidence==='number'&&candidate.confidence>0?candidate.confidence:null;
+  // Browser ASR text (even high-confidence) never proves pronunciation or tones.
+  // Do NOT submit until the learner explicitly verifies and sends the transcript.
+  stopRecognition();state.confidence=null;
+  $('message').value=transcript;
   state.speechSignal={
-    id:(state.speechSignal?.id||0)+1,kind,text,confidence:state.confidence,
-    correctionHanzi:kind==='content-error'?correctionHanzi:null,
-    contentVerified:false,toneVerified:false
+   id:(state.speechSignal?.id||0)+1,
+   kind:confidence!==null&&confidence<.65?'uncertain':'text-only',
+   text:transcript,confidence,contentVerified:false,toneVerified:false
   };
-  if(kind==='uncertain')note('Распознано неуверенно. Проверь текст и повтори при необходимости.');
-  state.confidence=null;
+  note((confidence!==null&&confidence<.65?'Распознано неуверенно: ':'Распознано: ')+transcript+'. Проверь текст и нажми ➤, чтобы отправить, или повтори через 🎙.');
+  $('message').focus();
  };
  r.onerror=e=>{
   if(!valid())return;
