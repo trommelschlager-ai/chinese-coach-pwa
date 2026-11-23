@@ -5,20 +5,13 @@
  overscroll-behavior:contain;scrollbar-width:thin;grid-template-rows:none!important;
 }
 #pg346:not([data-day-scenario="ready"]) .pg346-history {
- --pg-chat-row-height: clamp(58px, 8.3dvh, 84px);
- --pg-chat-row-gap: clamp(4px, .7dvh, 7px);
- --pg-chat-extra-space: 0px;
- box-sizing: border-box;
- flex: 0 0 calc(2 * var(--pg-chat-row-height) + var(--pg-chat-row-gap) + 7px + var(--pg-chat-extra-space)) !important;
- margin-bottom: calc(-1 * var(--pg-chat-extra-space)) !important;
-}
-/* Use the space above the panda for a third row, keeping the scene's origin fixed. */
-#pg346:not([data-day-scenario="ready"], [data-topics-open="true"], [data-details-open="true"]) .pg346-history:has(.pg346-row:nth-child(3)) {
- --pg-chat-extra-space: clamp(0px, calc(55dvh - 385px), calc(var(--pg-chat-row-height) + var(--pg-chat-row-gap)));
- z-index: 3;
+ box-sizing:border-box;
+ flex:0 1 auto!important;
+ max-height:min(42dvh,calc(var(--screen-height,100dvh) - 200px))!important;
+ margin:0!important;
 }
 #pg346 .pg346-history .pg346-row{
- flex:0 0 auto!important;height:auto!important;min-height:clamp(58px,8.3dvh,84px)!important;
+ flex:0 0 auto!important;height:auto!important;min-height:clamp(52px,7.4dvh,72px)!important;
  box-sizing:border-box!important;max-width:100%;padding:7px 8px 7px 5px!important;
  border-radius:clamp(20px,7vw,38px)!important;overflow:hidden!important;
 }
@@ -34,7 +27,7 @@
 #pg346 .pg346-row.pg506-long .pg346-row-audio{grid-column:3;grid-row:1 / span 2}
 #pg346 .pg346-history .pg346-text,#pg346 .pg346-history .pg346-ru{min-height:0;height:auto!important;max-height:none!important;white-space:normal!important;overflow-wrap:anywhere!important}
 #pg346 .pg346-history .pg346-zh,#pg346 .pg346-history .pg346-py{height:auto!important;max-height:none!important;white-space:normal!important;overflow-wrap:anywhere!important;display:block}
-:root[data-keyboard="true"] #pg346 .pg346-history{display:none!important}
+:root[data-keyboard="true"] #pg346:not([data-day-scenario="ready"]) .pg346-history{display:flex!important;max-height:calc(var(--screen-height,100dvh) - 185px)!important}
 
 /* v511: one opaque catalogue, sticky header, one scroll area. */
 #pg346[data-topics-open="true"] .pg346-feedback{display:none!important}

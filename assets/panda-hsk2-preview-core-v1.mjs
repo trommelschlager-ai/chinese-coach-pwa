@@ -1,3 +1,4 @@
+import {friendlyIntroduction} from './panda-everyday-meaning-v515.mjs?v=535';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -227,6 +228,7 @@ function setMode(mode){
  if(mode==='short')state.lockedTopic=null;if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 let hsk2=null;
 function beginHSK2(id,index=0,autoplay=true){
+ friendlyStage=null;
  const t=getTopic(id);if(!t)return false;
  cancelFollowup();stopAudio();stopRecognition();hsk2={id:t.id,index,done:false,exact:0,similar:0,unknown:0,context:null};
  state.mode='short';state.dayMode=false;state.done=false;
@@ -255,9 +257,20 @@ function submitHSK2(input){
  if(state.mode==='nonstop'){hsk2.id=HSK2_TOPICS[(HSK2_TOPICS.findIndex(x=>x.id===hsk2.id)+1)%HSK2_TOPICS.length].id;hsk2.index=0;askHSK2();return;}
  hsk2.done=true;say(hsk2Line(['很好！','Hěn hǎo!','Раунд завершён. Точных ответов: '+hsk2.exact+'. Вариантов по смыслу: '+hsk2.similar+'. Не распознано: '+hsk2.unknown+'. Тоны не оценивались.']));
 }
+let friendlyStage=null;
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
+ const introduction=friendlyIntroduction(input,friendlyStage);
+ friendlyStage=introduction?.next||null;
+ if(introduction){
+  const [pinyin,translation]=introduction.spoken;
+  learner(input,{known:true,pinyin,translation});
+  const [hanzi,replyPinyin,ru]=introduction.reply;
+  note('');
+  say({hanzi,pinyin:replyPinyin,ru});
+  return;
+ }
  if(hsk2){submitHSK2(input);return;}
  if(state.dayMode){
   if(state.dayDone){note('Тренировка завершена. Вернись к уроку или выбери обычные диалоги.');return;}
@@ -602,7 +615,7 @@ $('knowledge-form').addEventListener('submit',e=>{e.preventDefault();$('knowledg
 $('review').addEventListener('click',()=>{const item=hardestMistake(storage,conversation.id);if(!item)return;setMode('short');state.step=Math.min(item.step,conversation.lines.length-1);state.reviewStep=state.step;state.done=false;$('study-dialog').close();say(conversation.lines[state.step]);note('Повтори эту фразу. После верного ответа она исчезнет из списка повторения.')});
 for(const c of CONVERSATIONS.filter(c=>c.lines.length&&!c.status.startsWith('draft'))){const o=document.createElement('option');o.value=c.id;o.textContent=c.id+'. '+c.theme;$('lesson-select').append(o)}
 $('lesson-select').addEventListener('change',()=>{const id=Number($('lesson-select').value);const url=new URL(location.href);url.searchParams.set('lesson',id);history.replaceState(null,'',url);initLesson(id)});
-function resize(){const v=window.visualViewport;const h=v?.height||window.innerHeight;document.documentElement.style.setProperty('--screen-height',h+'px');document.documentElement.style.setProperty('--screen-top',(v?.offsetTop||0)+'px');document.documentElement.dataset.keyboard=String((window.innerHeight-h>120)||(h<560))}
+function resize(){const v=window.visualViewport;const h=v?.height||window.innerHeight;document.documentElement.style.setProperty('--screen-height',h+'px');document.documentElement.style.setProperty('--screen-top',(v?.offsetTop||0)+'px');document.documentElement.dataset.keyboard=String((window.innerHeight-h>120)||(document.activeElement?.matches('#pg346-input, #message')&&h<560))}
 window.visualViewport?.addEventListener('resize',resize);window.visualViewport?.addEventListener('scroll',resize);window.addEventListener('resize',resize);document.addEventListener('focusin',resize);document.addEventListener('focusout',resize);
 window.addEventListener('pagehide',e=>{cancelFollowup();stopRecognition();stopAudio();clearTimeout(poseTimer);if(!e.persisted)rig.dispose()});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFollowup();stopRecognition();stopAudio()}});
 if('serviceWorker' in navigator && !['localhost','127.0.0.1','terminal.local'].includes(location.hostname))navigator.serviceWorker.register('./sw.js?v=517',{scope:'./',updateViaCache:'none'}).then(async r=>{await r.update();r.active?.postMessage?.({type:'PRUNE_PANDA_LEGACY'})}).catch(()=>{});
