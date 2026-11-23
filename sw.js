@@ -34,6 +34,11 @@ const STREET_SHELL=[
  "./assets/panda-sentence-coach-v319.mjs?v=319",
  "./assets/panda-street-lesson1-luvvoice.m4a",
  "./assets/panda-street-shared-brain-v1.mjs?v=1",
+ "./assets/panda-street-shared-brain-v1.mjs?v=3",
+ "./assets/panda-street-shared-brain-v1.mjs?v=3-retry",
+ "./assets/panda-cross-character-memory-v1.mjs",
+ "./assets/panda-street-face-rig-v1.mjs?v=3",
+ "./assets/panda-street-face-rig-v1.mjs?v=3-retry",
  "./assets/panda-voice-clips-v365.mjs?v=365",
  "./assets/panda-voice-pilot-engine.mjs?v=live6",
  "./assets/panda-voice-v411.mjs?v=411"
