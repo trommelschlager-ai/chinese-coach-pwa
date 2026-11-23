@@ -8,6 +8,7 @@ on:
       - 'tests/panda-tone-lesson3-smoke.cjs'
       - 'panda-tone-test-lab.html'
       - 'tests/panda-tone-regression.cjs'
+      - 'tests/panda-tone-window-sweep.cjs'
       - 'assets/hsk2-lesson3-voice/**'
       - '.github/workflows/panda-tone-regression.yml'
   pull_request:
@@ -17,6 +18,7 @@ on:
       - 'tests/panda-tone-lesson3-smoke.cjs'
       - 'panda-tone-test-lab.html'
       - 'tests/panda-tone-regression.cjs'
+      - 'tests/panda-tone-window-sweep.cjs'
       - 'assets/hsk2-lesson3-voice/**'
       - '.github/workflows/panda-tone-regression.yml'
 permissions:
@@ -40,6 +42,9 @@ jobs:
           ffmpeg -hide_banner -version
       - name: Analyze tone algorithm and six HSK2 MP3 clips
         run: node tests/panda-tone-regression.cjs
+      - name: Compare experimental F0 windows on six real MP3 clips
+        if: ${{ always() }}
+        run: node tests/panda-tone-window-sweep.cjs
       - name: Verify HSK2 lesson 3 tone pilot and saved progress
         if: ${{ always() }}
         run: node tests/panda-tone-lesson3-smoke.cjs
@@ -48,6 +53,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: panda-tone-regression-report
-          path: tone-regression-report.json
+          path: |
+            tone-regression-report.json
+            tone-window-sweep.json
           retention-days: 14
           if-no-files-found: warn
