@@ -108,14 +108,23 @@
       const frozen=word('img','pg542-frozen-panda','');
       frozen.alt='';frozen.draggable=false;frozen.decoding='async';
       const set=(k,n)=>layer.style.setProperty(k,n+'px');
-      set('--pg542-panda-x',ir.left-pr.left);
-      set('--pg542-panda-y',ir.top-pr.top);
-      set('--pg542-panda-w',ir.width);
-      set('--pg542-panda-h',ir.height);
-      set('--pg542-stone-x',sr.left-pr.left+left);
-      set('--pg542-stone-y',sr.bottom-pr.top-bottom-w*207/600);
-      set('--pg542-stone-w',w);
-      set('--pg542-stone-h',w*207/600);
+      // Design coordinates are relative to a stable full screen, NOT the
+      // current chat/scene height. This avoids different mascot positions
+      // on pages that initially show two vs. three dialogue cards.
+      const designWidth=Math.min(pr.width*.61,335);
+      const designHeight=designWidth*(picture.naturalHeight/picture.naturalWidth);
+      const designStoneWidth=pr.width*.82;
+      const designStoneHeight=designStoneWidth*207/600;
+      const designStoneTop=pr.height*.705;
+      const designPandaBottom=designStoneTop+designStoneHeight*.57;
+      set('--pg542-panda-x',pr.width*.035);
+      set('--pg542-panda-y',designPandaBottom-designHeight);
+      set('--pg542-panda-w',designWidth);
+      set('--pg542-panda-h',designHeight);
+      set('--pg542-stone-x',-pr.width*.015);
+      set('--pg542-stone-y',designStoneTop);
+      set('--pg542-stone-w',designStoneWidth);
+      set('--pg542-stone-h',designStoneHeight);
       layer.append(back,frozen,front);
       stage.append(layer);
       frozenAttempt=true;
