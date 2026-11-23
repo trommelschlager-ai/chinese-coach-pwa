@@ -66,7 +66,7 @@ test('Panda short and Non-Stop use the same reviewed social route before fallbac
  assert.match(core,/Тоны речи не оценивались/);
  assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=541/);
  assert.match(sw,/chinese-coach-pwa-v541-approved-panda-restored/);
- assert.ok(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=540'));
+ assert.ok(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=541'));
 });
 
 test('approved Panda screen: no voice banner, clean side rail, grounded mascot and active UI assets',()=>{
