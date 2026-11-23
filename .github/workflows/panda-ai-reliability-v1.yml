@@ -1,0 +1,31 @@
+name: Panda AI conversation reliability
+on:
+  pull_request:
+    paths:
+      - 'assets/panda-hsk2-my-day-scenario-v1.mjs'
+      - 'panda-voice-pilot.html'
+      - 'panda-ai-hsk2-preview.html'
+      - 'sw.js'
+      - 'assets/offline-pack.json'
+      - 'tests/panda-hsk2-my-day-reliability-v1.test.mjs'
+      - 'tests/panda-ai-offline-consistency-v1.test.mjs'
+  push:
+    branches:
+      - panda-ai-reliability-audit-20261123
+  workflow_dispatch:
+jobs:
+  safety:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check scenario and service worker syntax
+        run: |
+          node --check assets/panda-hsk2-my-day-scenario-v1.mjs
+          node --check sw.js
+      - name: Run Panda audio, speech and offline regression tests
+        run: node --test tests/panda-hsk2-my-day-reliability-v1.test.mjs tests/panda-ai-offline-consistency-v1.test.mjs
