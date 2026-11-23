@@ -648,7 +648,7 @@ function reanalyzePcm(rec){
  const pcm=new Float32Array(num),audio=new Float32Array(total);
  let off=0;for(const p of parts){pcm.set(p,off);off+=p.length;}
  for(let i=0;i<total;i++){let sum=0;for(let j=0;j<dec;j++)sum+=pcm[i*dec+j];audio[i]=sum/dec;}
- const levels=[],hopRms=Math.round(rate*.03),win=Math.round(rate*.09),shortWin=Math.round(rate*.060),hop=Math.round(rate*.018);
+ const levels=[],hopRms=Math.round(rate*.03),win=Math.round(rate*.09),shortWin=Math.round(rate*.056),hop=Math.round(rate*.015);
  for(let i=0;i+hopRms<=total;i+=hopRms){
   let power=0;for(let j=i;j<i+hopRms;j++)power+=audio[j]*audio[j];
   levels.push([i/rate,Math.sqrt(power/hopRms)]);
@@ -657,7 +657,7 @@ function reanalyzePcm(rec){
  for(let i=0;i+win<=total;i+=hop){
   let hz=offlinePitch(audio.subarray(i,i+win),rate);
   if(!hz){
-   // Retest the same center using 68ms. This avoids blending an x-/s- onset
+   // Retest the same center using a strict 56ms frame. This avoids blending an x-/s- onset
    // and a short voiced vowel into a long unreliable 90ms frame.
    const center=i+Math.floor(win*.5);
    const start=Math.max(0,Math.min(total-shortWin,center-Math.floor(shortWin*.5)));
@@ -667,7 +667,7 @@ function reanalyzePcm(rec){
   if(hz)points.push([(i+win*.5)/rate,hz]);else missed++;
  }
  rec.samples=cleanPitch(points);rec.levels=levels;
- rec.offline={windowMs:90,shortWindowMs:60,hopMs:18,shortRecovered,raw:points.length,kept:rec.samples.length,missed,method:rec.captureMethod};
+ rec.offline={windowMs:90,shortWindowMs:56,hopMs:15,shortRecovered,raw:points.length,kept:rec.samples.length,missed,method:rec.captureMethod};
  return true;
 }
 async function setupPcmCapture(rec){
