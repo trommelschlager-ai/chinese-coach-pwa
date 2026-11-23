@@ -22,7 +22,8 @@ function measure(pcm,rate,name,word=0){
  const delta=x=>x.length<2?null:+(12*Math.log2(x.at(-1)[1]/x[0][1])).toFixed(2);
  return {name,accepted,quality:entry.quality,points:pts.length,syllables:[a.length,b.length],
   delta:[delta(a),delta(b)],trend:[dsp.observedTrend(pts,0,split),dsp.observedTrend(pts,split,1)],
-  length:+entry.seconds.toFixed(2),speech:entry.signal?.speech,splitPct:Math.round(split*100)};
+  length:+entry.seconds.toFixed(2),speech:entry.signal?.speech,splitPct:Math.round(split*100),
+  shortRecovered:r.offline?.shortRecovered||0,shortWindowMs:r.offline?.shortWindowMs||0};
 }
 function synth(mode,rate=48000){
  const length=mode==='pause'||mode==='double'?4.4:1.15,n=Math.floor(rate*length),pcm=new Float32Array(n);
@@ -94,11 +95,11 @@ const markdown=[
  'Проверено синтетических сценариев: **'+passes+'/'+tests.length+'**.',
  'Настоящих MP3 прочитано: **'+decoded+'/6**; оба слога пригодны для измерения: **'+both+'/6**; частично: **'+partial+'**; ошибки/не измерено: **'+failed+'**.',
  '',
- '| Слово | F0 | Слог 1 | Слог 2 | Качество |',
- '|---|---:|---:|---:|---|',
+ '| Слово | F0 | Слог 1 | Слог 2 | Восстановлено (60 мс) | Качество |',
+ '|---|---:|---:|---:|---:|---|',
  ...mp3.map(a=>a.error?
-  '| '+a.name+' | — | — | — | ОШИБКА: '+a.error.replace(/[|]/g,'/')+' |':
-  '| '+a.name+' | '+a.points+' | '+a.syllables[0]+' | '+a.syllables[1]+' | '+a.quality+(a.speech?.ambiguous?' · граница неоднозначна':'')+' |'),
+  '| '+a.name+' | — | — | — | — | ОШИБКА: '+a.error.replace(/[|]/g,'/')+' |':
+  '| '+a.name+' | '+a.points+' | '+a.syllables[0]+' | '+a.syllables[1]+' | '+a.shortRecovered+' | '+a.quality+(a.speech?.ambiguous?' · граница неоднозначна':'')+' |'),
  '',
  '> **Не является оценкой произношения.** Статус both значит только достаточное качество F0 в двух слогах. Без размеченных записей живой речи нельзя включать автоматическое «правильно/неправильно».',
  '',
@@ -110,5 +111,5 @@ if(process.env.GITHUB_STEP_SUMMARY){
 }
 
 console.log('Synthetic checks: '+passes+'/'+tests.length);
-for(const a of mp3)console.log(a.name+': '+(a.error||('quality='+a.quality+', F0='+a.points+', points='+a.syllables.join('/')+', Δ='+a.delta.join('/'))));
+for(const a of mp3)console.log(a.name+': '+(a.error||('quality='+a.quality+', F0='+a.points+', 60ms recovered='+a.shortRecovered+', points='+a.syllables.join('/')+', Δ='+a.delta.join('/'))));
 if(passes!==tests.length||decoded!==6)process.exitCode=1;
