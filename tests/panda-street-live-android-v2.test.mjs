@@ -85,7 +85,7 @@ test('video 38791: 我有点忙 is a valid conversational turn, not an empty exp
 });
 
 test('face rig uses the existing approved photo and follows uniform canvas crop',()=>{
- assert.match(source,/import\('\.\/assets\/panda-street-face-rig-v1\.mjs\?v=2'\)/);
+ assert.match(source,/import\('\.\/assets\/panda-street-face-rig-v1\.mjs\?v=3'\)/);
  assert.match(source,/streetFaceRig\?\.resize\(\{width,height,scale:s,left:stageX,cutSky:removedSky\}\)/);
  assert.match(source,/streetFaceRig\?\.setState\('listening'\)/);
  assert.match(source,/streetFaceRig\?\.setState\('talking'\)/);
@@ -95,6 +95,16 @@ test('face rig uses the existing approved photo and follows uniform canvas crop'
  assert.ok(streetMouthOpenness(.9,20)>.4);
  assert.ok(streetMouthOpenness(9,0)<=1);
 });
+test('broken module import cannot block Panda Street chat or silent mouth reactions',()=>{
+ assert.match(source,/function createStreetOfflineBrain\(\)/);
+ assert.match(source,/streetBrainPromise=import\('\.\/assets\/panda-street-shared-brain-v1\.mjs\?v=3'\)/);
+ assert.match(source,/stage\.dataset\.brainState='fallback'/);
+ assert.match(source,/createStreetOfflineBrain\(\)\.answer\(zh\)/);
+ assert.match(source,/streetFaceRig\?\.acknowledge\?\.\(\)/);
+ assert.doesNotMatch(source,/Модуль Panda AI недоступен\. Проверь подключение\./);
+ assert.doesNotMatch(source,/speechSynthesis|SpeechSynthesisUtterance/);
+});
+
 test('face rig is a transparent, noninteractive animation layer and can be stopped',()=>{
  const calls=[];
  const ctx={
