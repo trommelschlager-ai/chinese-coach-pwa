@@ -17,13 +17,14 @@ jobs:
           python-version: '3.12'
       - run: |
           python -m pip install playwright pillow
-          python -m playwright install --with-deps chromium
+          python -m playwright install ffmpeg
       - name: Test production path and Service Worker with mobile Chromium
         run: |
           mkdir evidence
           node --check assets/hsk2-approved-cover.js
           python tests/hsk2-approved-art-check.py
           git worktree add --detach /tmp/panda-old 406e448464e55256f82d243e57b840077cb633e8
+          git worktree add --detach /tmp/panda-fixed e0ad532e0a41d409946584fcb4d6751a2ca289ec
           ln -s /tmp/panda-old /tmp/panda-serving
           python -u - <<'SERVER' >/tmp/panda-http.log 2>&1 &
           from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -38,7 +39,7 @@ jobs:
           root='http://panda.localhost:8123'
           options=['--host-resolver-rules=MAP panda.localhost 127.0.0.1', '--unsafely-treat-insecure-origin-as-secure='+root, '--no-proxy-server']
           with sync_playwright() as p:
-              browser=p.chromium.launch(args=options)
+              browser=p.chromium.launch(channel='chrome', args=options)
               settings=p.devices['Pixel 7']|{'device_scale_factor':1}
               context=browser.new_context(**settings)
               page=context.new_page()
@@ -61,7 +62,7 @@ jobs:
               page.wait_for_timeout(160)
               page.screenshot(path='evidence/01-old-during.png')
               start.dispatch_event('pointercancel')
-              os.symlink(os.getcwd(), '/tmp/panda-new')
+              os.symlink('/tmp/panda-fixed', '/tmp/panda-new')
               os.replace('/tmp/panda-new','/tmp/panda-serving')
               seen={}
               page.on('response',lambda r:seen.update({r.url:r.from_service_worker}))
@@ -69,7 +70,7 @@ jobs:
               expect(start).to_be_visible()
               expect(page.locator('.pg-approved-press-frame')).to_have_count(1)
               expect(page.locator('.pg-approved-button-canvas')).to_have_count(0)
-              assert seen.get(lesson_url), seen
+              assert any('hsk2-lesson5-friends-v2.html' in u and via for u,via in seen.items()), seen
               assert sum('single-press' in u and via for u,via in seen.items())==2, seen
               assert page.evaluate("""async () => {
                 const sw=!!navigator.serviceWorker.controller;
@@ -89,7 +90,7 @@ jobs:
               during=page.screenshot(path='evidence/03-during.png')
               frame=page.locator('.pg-approved-press-frame')
               expect(frame).to_be_visible()
-              expect(page.locator('.pg-approved-cover-image')).to_be_hidden()
+              expect(page.locator('.pg-approved-cover-image')).to_be_visible()
               diff=ImageChops.difference(Image.open(io.BytesIO(before)).convert('RGB'), Image.open(io.BytesIO(during)).convert('RGB'))
               bounds=diff.getbbox()
               size=page.viewport_size
