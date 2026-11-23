@@ -33,10 +33,28 @@ test('17 real HSK2 Panda questions accept correct negatives and keep tone marks'
   assert.equal(match.pinyin,pinyin,hanzi);
   assert.ok(match.ru,hanzi+' must have Russian meaning');
   const result=replyHSK2(hanzi,topic,index,false,null);
-  assert.ok(['accepted','variant'].includes(result.kind),current.q+' / '+hanzi+': '+result.kind);
+  assert.ok(['accepted','variant','social','end'].includes(result.kind),current.q+' / '+hanzi+': '+result.kind);
   assert.ok(result.answer?.ru||result.spoken?.ru,hanzi+' must be translated');
   assert.notEqual(result.line?.hanzi,'我没听懂。你可以再说一遍，或者换一种说法吗？');
  }
+});
+test('Rejecting a meeting stops scheduling; a low mood is not assumed to mean illness',()=>{
+  const busy=replyHSK2('没空',105,0,false);
+  assert.equal(busy.kind,'end');
+  assert.equal(busy.line.hanzi,'没关系，那我们改天再约吧。');
+  assert.notEqual(busy.line.hanzi,'我们几点见面？');
+  const declined=replyHSK2('不想',110,1,false);
+  assert.equal(declined.kind,'end');
+  assert.equal(declined.line.hanzi,'没关系，我们可以聊点别的。');
+  assert.notEqual(declined.line.hanzi,'我们在哪儿见面？');
+  const lowMood=replyHSK2('不好',109,0,false);
+  assert.equal(lowMood.kind,'social');
+  assert.equal(lowMood.line.hanzi,'怎么了？');
+  assert.equal(lowMood.context.awaiting,'wellbeing-reason');
+  const unwell=replyHSK2('我不舒服',109,0,false);
+  assert.equal(unwell.kind,'variant','Physical illness may lead to a symptom question');
+  const refusalOfSports=replyHSK2('不喜欢',104,2,false);
+  assert.equal(refusalOfSports.line.hanzi,'那你喜欢什么？');
 });
 test('No is NOT accepted when incompatible with a Panda question',()=>{
  for(const [topic,index,hanzi] of [[101,0,'没有'],[103,2,'没去过'],[106,2,'不吃'],[104,2,'没有']]){
