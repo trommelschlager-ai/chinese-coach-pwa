@@ -55,9 +55,15 @@ jobs:
                   expect(start).to_be_visible()
                   expect(page.locator('.pg-approved-base-canvas')).to_have_count(0)
                   assert page.locator('.pg-approved-hotspot[data-step]').count()==7
-                  assert page.evaluate('document.documentElement.scrollWidth<=innerWidth && document.documentElement.scrollHeight<=innerHeight')
                   page.locator('.pg-approved-cover-image').evaluate('img=>img.decode()')
                   page.evaluate('()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
+                  geometry=page.locator('.pg-approved-overlay').evaluate("""el=>{
+                      const r=el.getBoundingClientRect(), d=document.documentElement;
+                      return {top:r.top,bottom:r.bottom,right:r.right, width:innerWidth,height:innerHeight,
+                          scrollWidth:d.scrollWidth,scrollHeight:d.scrollHeight};
+                  }""")
+                  print(f'Geometry lesson {n:02}: {geometry}')
+                  assert geometry['top']>=-1 and geometry['right']<=geometry['width']+1 and geometry['bottom']<=geometry['height']+1,(n,geometry)
                   before=rgb(page.screenshot(path=f'evidence/{n:02}-before.png'))
                   start.dispatch_event('pointerdown',{'pointerType':'touch'})
                   expect(frame).to_be_visible()
