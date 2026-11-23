@@ -44,6 +44,26 @@ const items={'':['',''],这个:['zhège','это'],这个东西:['zhège dōngxi
 export function everydayMeaning(raw,id,context){
  const k=norm(raw);
  const out=(py,ru,reply,awaiting,coachNote,extra={})=>({spoken:[raw,py,ru],reply,context:{...context,awaiting,lastClarification:null,...extra},coachNote});
+
+ // Panda AI v536: six screenshot-confirmed beginner phrases.
+ // These are checked text meanings, not an acoustic tone assessment.
+ const beginner={
+  '不好':['Bù hǎo.','Плохо.',['怎么了？','Zěnme le?','Что случилось?'],'wellbeing'],
+  '我不好':['Wǒ bù hǎo.','У меня дела не очень.',['怎么了？','Zěnme le?','Что случилось?'],'wellbeing'],
+  '非常好':['Fēicháng hǎo.','Очень хорошо.',['太好了！','Tài hǎo le!','Здорово!'],'wellbeing'],
+  '我非常好':['Wǒ fēicháng hǎo.','У меня всё очень хорошо.',['太好了！','Tài hǎo le!','Здорово!'],'wellbeing'],
+  '很不错你呢':['Hěn búcuò, nǐ ne?','Довольно хорошо, а у тебя?',['我也很好，谢谢！','Wǒ yě hěn hǎo, xièxie!','У меня тоже всё хорошо, спасибо!'],'wellbeing'],
+  '我很不错你呢':['Wǒ hěn búcuò, nǐ ne?','У меня всё довольно хорошо, а у тебя?',['我也很好，谢谢！','Wǒ yě hěn hǎo, xièxie!','У меня тоже всё хорошо, спасибо!'],'wellbeing'],
+  '休息':['Xiūxi.','Отдыхать.',['你今天休息吗？','Nǐ jīntiān xiūxi ma?','Ты сегодня отдыхаешь?'],'rest'],
+  '你可以说中文':['Nǐ kěyǐ shuō Zhōngwén.','Ты можешь говорить по-китайски.',['可以！我们说中文吧！','Kěyǐ! Wǒmen shuō Zhōngwén ba!','Конечно! Давай говорить по-китайски!'],'language'],
+  '跑步这么样':['Pǎobù zhème yàng?','Вероятно: «Как насчёт бега?»',['我喜欢跑步。','Wǒ xǐhuan pǎobù.','Я люблю бегать.'],'run-frequency']
+ };
+ if(Object.hasOwn(beginner,k)){
+  const [py,ru,reply,awaiting]=beginner[k];
+  const tip=k==='跑步这么样'?'Возможно, распознавание перепутало 这么样 и 怎么样. Для «Как насчёт бега?» скажи: 跑步怎么样？ — Pǎobù zěnmeyàng?':null;
+  return out(py,ru,reply,awaiting,tip);
+ }
+
  if(Object.hasOwn(Q,k))return out(...Q[k]);
  if(Object.hasOwn(places,k)){const v=places[k];return out(v[0],v[1]+'.',v[4]?A.city:A.thanks,v[4]?'city':'city-known',null,{mentionedPlace:k});}
  const m=k.match(/^我(现在)?住在(.+)$/);if(m&&Object.hasOwn(places,m[2])){const v=places[m[2]];return out('Wǒ '+(m[1]?'xiànzài ':'')+'zhù zài '+v[0]+'.','Я '+(m[1]?'сейчас ':'')+'живу в '+v[2]+'.',A.thanks,'city-known',null,{learnerCity:m[2]});}
@@ -54,5 +74,28 @@ export function everydayMeaning(raw,id,context){
  if(count){const v={这个东西:['zhège dōngxi','этого товара'],这种东西:['zhè zhǒng dōngxi','этого вида товара'],这件衣服:['zhè jiàn yīfu','этой одежды'],这种衣服:['zhè zhǒng yīfu','этой одежды'],这些衣服:['zhèxiē yīfu','этой одежды'],'':['','']}[count[1]||''];const role=id===108&&/衣服/.test(count[1]||'');return out([v[0],count[2]?'yǒu':'',count[3]==='几件'?'jǐ jiàn':'duōshao jiàn'].filter(Boolean).join(' ')+'?','Сколько единиц'+(v[1]?' '+v[1]:'')+'?',role?A.count:A.clarify,'shopping-object',count[1]==='这个东西'?'Исправь текст: для количества естественнее 这种东西有多少件？; для цены 这个东西多少钱？':role?'Учебный пример: количество условное.':null,{shoppingQuestion:'count'});}
  const products={衣服:['yīfu','Одежда'],书:['shū','Книга'],苹果:['píngguǒ','Яблоко'],茶:['chá','Чай'],咖啡:['kāfēi','Кофе']};
  if(context?.awaiting==='shopping-object'&&Object.hasOwn(products,k)){const v=products[k];return out(v[0],v[1]+'.',context.shoppingQuestion==='count'?(id===108?A.count:A.unknownCount):(id===108?A.price:A.unknownPrice),'shopping',id===108?'Учебный пример: значение условное.':null);}
+ return null;
+}
+
+export function friendlyIntroduction(raw,stage){
+ const text=norm(raw);
+ if(text==='我爱你')return {
+  spoken:['Wǒ ài nǐ!','Я тебя люблю!'],
+  reply:['谢谢你！我很开心！你叫什么名字？','Xièxie nǐ! Wǒ hěn kāixīn! Nǐ jiào shénme míngzi?','Спасибо! Мне очень приятно! Как тебя зовут?'],
+  next:'name'
+ };
+ const name=stage==='name'&&text.match(/^我叫([\p{Script=Han}]{1,12})$/u)?.[1];
+ if(name){
+  const pinyin={小明:'Xiǎomíng',小红:'Xiǎohóng'}[name];
+  return {
+   spoken:[pinyin?'Wǒ jiào '+pinyin+'.':null,'Меня зовут '+name+'.'],
+   reply:['很高兴认识你！你今天怎么样？','Hěn gāoxìng rènshi nǐ! Nǐ jīntiān zěnmeyàng?','Рада познакомиться! Как у тебя сегодня дела?'],
+   next:'mood'
+  };
+ }
+ if(stage==='mood'&&(text==='我很好'||text==='很好'))return {
+  spoken:text==='我很好'?['Wǒ hěn hǎo.','У меня всё хорошо.']:['Hěn hǎo.','Очень хорошо.'],
+  reply:['太好了！你想聊什么？','Tài hǎo le! Nǐ xiǎng liáo shénme?','Здорово! О чём хочешь поговорить?']
+ };
  return null;
 }

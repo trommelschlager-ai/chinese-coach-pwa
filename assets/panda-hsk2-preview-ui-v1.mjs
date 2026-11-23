@@ -159,6 +159,9 @@ if (!bridge) {
   // History shares the main player: stops recognition, pending replies and prior audio.
   function playHistory(entry){stopHistoryAudio();bridge.playEntry(entry);sync()}
 
+  const chatHistory=$('#pg346-rows');
+  function revealLatest(){chatHistory.scrollTop=chatHistory.scrollHeight;}
+  new ResizeObserver(revealLatest).observe(chatHistory);
   function renderRows(rows){const root=$('#pg346-rows');root.replaceChildren();for(const e of rows.slice(-3)){
     const example=e.who==='example'||e.analysis?.kind==='correction-response';
     const row=el('article','pg346-row'+(example?' pg445-example-row':''));
@@ -176,7 +179,7 @@ if (!bridge) {
     }
     const sound=el('button','pg346-row-audio','🔊');sound.type='button';sound.disabled=!clipFor(e);sound.setAttribute('aria-label',sound.disabled?'Для этой фразы нет MP3':'Слушать эту реплику');sound.addEventListener('click',()=>playHistory(e));
     row.append(av,text,translation,sound);root.append(row);
-  }requestAnimationFrame(()=>{root.scrollTop=root.scrollHeight;});}
+  }requestAnimationFrame(revealLatest);}
   const topicsFallback=['Приветствия','Учёба и знакомство','Числа','Дни недели','Даты','Семья','Погода'];
   // All ten 14 November Luvvoice source files are available for audio practice.
   // Only answer-engine-verified entries appear as conversational questions.
