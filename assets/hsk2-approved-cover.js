@@ -8,98 +8,25 @@
  const labels=['Новые слова','Тесты','Грамматика','Тематический рассказ','Произношение','Диалог'];
  const num=Number(document.currentScript?.dataset.lesson||0);
  if(!Number.isInteger(num)||num<1||num>10)return;
- const tactileFix=[2,3,6,9].includes(num);
  const art='./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'.png'+(num===1?'?v=20261123back1':'');
  const fullArt=num===5?'./assets/hsk2-approved-covers/lesson-05-full-softshadow-v7.png':'./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'-full.webp';
  const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const loading=new WeakSet();
 
- // Detect the purple CTA's vertical position from EACH approved cover.
- // Individual posters have different CTA heights: a shared y=60% hotspot is wrong.
- function findStartRect(img){
-  const fallback={x:.013,y:([2,3,6].includes(num)?.588:num===9?.628:.635),w:.974,h:.088};
-  try{
-   const scan=document.createElement('canvas');
-   scan.width=220;scan.height=480;
-   const context=scan.getContext('2d',{willReadFrequently:true});
-   if(!context)return fallback;
-   context.drawImage(img,0,0,scan.width,scan.height);
-   const data=context.getImageData(0,0,scan.width,scan.height).data;
-   const h=scan.height,w=scan.width,scores=new Float32Array(h);
-   for(let y=Math.round(h*.54);y<Math.round(h*.78);y++){
-    let matched=0,total=0;
-    for(const range of [[.12,.32],[.68,.88]]){
-     for(let x=Math.round(w*range[0]);x<Math.round(w*range[1]);x+=2){
-      const p=(y*w+x)*4,r=data[p],g=data[p+1],b=data[p+2];
-      if(r<210&&g<100&&b>100&&b>g*1.4)matched++;
-      total++;
-     }
-    }
-    scores[y]=matched/total;
-   }
-   const span=Math.round(h*.05),half=Math.floor(span/2);
-   let best=0,at=-1;
-   for(let cy=Math.round(h*.575);cy<Math.round(h*.745);cy++){
-    let sum=0;
-    for(let y=cy-half;y<cy-half+span;y++)sum+=scores[y];
-    const score=sum/span;
-    if(score>best){best=score;at=cy;}
-   }
-   if(best<.47||at<0)return fallback;
-   // Include the original GOLD RIM and shadow, not just text / purple interior.
-   return {x:.013,y:Math.max(.54,at/h-.047),w:.974,h:.088};
-  }catch(_e){return fallback;}
- }
- // Render the ORIGINAL pixels as a movable button, never a replacement graphic.
- // The base is softly blurred UNDER the pill, preventing an exposed duplicate.
- // Canvas uses the same natural dimensions and object-fit as the approved cover.
- function preparePressedArtwork(section,poster,img,rect){
-  try{
-   const w=img.naturalWidth,h=img.naturalHeight;
-   if(!w||!h)return;
-   const left=rect.x*w,top=rect.y*h,bw=rect.w*w,bh=rect.h*h;
-   const make=kind=>{
-    const node=document.createElement('canvas');
-    node.width=w;node.height=h;
-    node.className='pg-approved-'+kind+'-canvas';
-    node.setAttribute('aria-hidden','true');
-    return node;
-   };
-   const base=make('base'),button=make('button');
-   const bg=base.getContext('2d'),fg=button.getContext('2d');
-   if(!bg||!fg)return;
-   const artSource=img; // lesson 5 now uses one pre-edited image
-   bg.drawImage(artSource,0,0,w,h);
-   bg.save();
-   bg.beginPath();
-   bg.roundRect(left,top,bw,bh,bh/2);
-   bg.clip();
-   // The temporary recess is visible only while the button is 4px lower.
-   if('filter' in bg)bg.filter='blur(42px)';
-   else {bg.fillStyle='#74219e';bg.fillRect(left,top,bw,bh);}
-   if('filter' in bg)bg.drawImage(artSource,0,0,w,h);
-   bg.restore();
-   fg.save();
-   fg.beginPath();
-   fg.roundRect(left,top,bw,bh,bh/2);
-   fg.clip();
-   fg.drawImage(artSource,0,0,w,h);
-   fg.restore();
-   const cover=section.querySelector('.pg-approved-cover-image');
-   cover.after(base,button);
-   section.classList.add('pg-approved-canvas-ready');
-  }catch(_e){/* Keep the original intact if canvas is unavailable. */}
- }
- // The full lesson-5 poster is 843 × 1866. Move its painted gold rim
- // and label together, stretching the narrow strip above and compressing
- // the strip below. Adjacent source bands meet without any repeated pixels.
- function prepareLessonFivePress(poster,cover,img){
+ // Vertical bounds of the painted gold rim on each 843 × 1866 full poster.
+ // Coordinates are artwork pixels. The surrounding tiles stay outside the press band.
+ const startRims=[
+  [1114,1244],[1093,1221],[1097,1227],[1108,1236],[1133,1264],
+  [1083,1214],[1117,1252],[1114,1247],[1092,1222],[1110,1244]
+ ];
+ const [rimTop,rimBottom]=startRims[num-1];
+ function preparePress(poster,cover,img){
   const w=img.naturalWidth,h=img.naturalHeight;
   if(w!==843||h!==1866)return ()=>{};
   const frame=document.createElement('canvas');
   const ctx=frame.getContext('2d');
   if(!ctx)return ()=>{};
-  const top=1122,rimTop=1133,rimBottom=1264,bottom=1288;
+  const top=rimTop-11,bottom=rimBottom+24;
   frame.width=w;
   frame.height=bottom-top;
   frame.className='pg-approved-press-frame';
@@ -157,8 +84,7 @@
   section.className='pg-approved-overlay pg-approved-lesson-'+num+(full?' pg-approved-full':'');
   section.setAttribute('aria-label','HSK 2. Урок '+num+'. '+names[num-1]);
   const size=full?['843','1866']:['941','1672'];
-  const rect=full?findStartRect(img):null;
-  const start=full?('left:'+(rect.x*100).toFixed(2)+'%;top:'+(rect.y*100).toFixed(2)+'%;width:'+(rect.w*100).toFixed(2)+'%;height:'+(rect.h*100).toFixed(2)+'%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
+  const start=full?('left:1.3%;top:'+(rimTop/18.66)+'%;width:97.4%;height:'+((rimBottom-rimTop)/18.66)+'%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
   section.innerHTML='<div class="pg-approved-poster">'+
    '<img class="pg-approved-cover-image" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" alt="HSK 2. Урок '+num+'. '+esc(names[num-1])+'">'+
 
@@ -169,8 +95,7 @@
   const cover=section.querySelector('.pg-approved-cover-image');
   cover.src=img.src;
   if(full){
-   const renderPress=num===5?prepareLessonFivePress(poster,cover,img):null;
-   if(!renderPress)preparePressedArtwork(section,poster,img,rect);
+   const renderPress=preparePress(poster,cover,img);
 
    // Give the painted Start CTA a real pressed state before changing lessons.
    // The lesson's existing delegated data-step handler still owns navigation.
@@ -180,22 +105,15 @@
    // The single painted button moves with the pointer; never swap artwork.
    let showingPressed=false;
    const showPressed=pressed=>{
-    if(renderPress){
-     if(showingPressed===pressed)return;
-     showingPressed=pressed;
-     renderPress(pressed);
-     return;
-    }
-    startButton.classList.toggle('pg-approved-start-pressed',pressed);
-    poster.classList.toggle('pg-approved-pressing',pressed);
+    if(showingPressed===pressed)return;
+    showingPressed=pressed;
+    renderPress(pressed);
    };
    startButton.addEventListener('pointerdown',()=>showPressed(true),{passive:true});
    startButton.addEventListener('pointercancel',()=>{if(!pressPending)showPressed(false);},{passive:true});
-   if(renderPress){
-    startButton.addEventListener('pointerup',()=>{
-     requestAnimationFrame(()=>{if(!pressPending)showPressed(false);});
-    },{passive:true});
-   }
+   startButton.addEventListener('pointerup',()=>{
+    requestAnimationFrame(()=>{if(!pressPending)showPressed(false);});
+   },{passive:true});
    startButton.addEventListener('pointerleave',()=>{if(!pressPending)showPressed(false);},{passive:true});
    startButton.addEventListener('click',event=>{
     if(forwardClick){forwardClick=false;return;}
