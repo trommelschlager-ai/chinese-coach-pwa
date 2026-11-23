@@ -1,7 +1,9 @@
 {
-  "version": 543,
+  "version": 544,
   "bytes": 80382882,
   "files": [
+    "./assets/panda-natural-statements-v544.mjs?v=544",
+    "./assets/panda-hsk2-preview-core-v1.mjs?v=544",
     "./assets/panda-everyday-meaning-v515.mjs?v=543",
     "./assets/panda-approved-soft-v500.js?v=543",
     "./assets/panda-hsk2-preview-v506.css?v=543",
