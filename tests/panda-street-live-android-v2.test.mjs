@@ -38,7 +38,9 @@ test('microphone requires an explicit disclosure and never claims tone grading',
 });
 test('male approved Luvvoice only, and no invented audio for missing phrase',()=>{
  assert.match(source,/MALE_VOICE='\.\/assets\/panda-street-lesson1-luvvoice\.m4a'/);
- assert.match(source,/if\(!cue\)\{streetFaceRig\?\.setState\('idle'\);tip\('Фраза показана текстом/);
+ assert.match(source,/if\(!cue\)\{/);
+ assert.match(source,/lookupApprovedStreetMaleMp3\(text\)/);
+ assert.match(source,/Фраза показана текстом · мужская запись для неё пока не загружена/);
  assert.doesNotMatch(source,/new Audio\(['"].*xiaoxiao/i);
 });
 test('the Street brain responds to natural everyday Chinese and uses common HSK code',()=>{
