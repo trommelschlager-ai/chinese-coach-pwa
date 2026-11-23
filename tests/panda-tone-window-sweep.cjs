@@ -47,12 +47,13 @@ function measure(dsp,pcm,i){
  if(!dsp.reanalyzePcm(rec))throw Error('Audio too short');
  const r=dsp.buildRecording(rec).entry,pts=r.points||[];
  const splits=[pts.filter(p=>p[0]<r.splitRatio),pts.filter(p=>p[0]>=r.splitRatio)];
+ const curves=splits.map(part=>part.map(p=>({tMs:Math.round(p[0]*r.seconds*1000),hz:Math.round(p[1])})));
  const syllables=(r.evidence||[]).map((e,j)=>({
   syllable:j+1,points:e.points,durationMs:Math.round(e.duration*1000),
   maxGapMs:Math.round(e.maxGap*1000),jump:e.jump,usable:e.usable,
   deltaSt:splits[j].length>=2?+(12*Math.log2(splits[j].at(-1)[1]/splits[j][0][1])).toFixed(2):null
  }));
- return {quality:r.quality,points:pts.length,syllables,splitPct:Math.round(r.splitRatio*100),
+ return {quality:r.quality,points:pts.length,syllables,curves,splitPct:Math.round(r.splitRatio*100),
   splitSource:r.splitSource,warning:!!r.splitWarning,groups:r.signal?.speech?.groups||0,
   shortRecovered:rec.offline?.shortRecovered||0};
 }
@@ -96,6 +97,9 @@ for(const result of results){
  for(const [i,a] of result.samples.entries()){
   if(i!==1&&i!==2)continue;
   console.log('  '+a.name+': '+a.quality+', F0 '+a.points+', syllables '+a.syllables.map(x=>x.points+'/'+x.durationMs+'ms'+(x.jump?' JUMP':'')).join(' | ')+', split='+a.splitPct+'%'+(a.warning?' warning':''));
+  if(i===2&&(result.config.label==='BASE 90/60/18'||result.config.label==='90/60/12')){
+   console.log('  同事 shì F0 sequence (ms:Hz): '+a.curves[1].map(p=>p.tMs+':'+p.hz).join(', '));
+  }
  }
 }
 if(process.env.GITHUB_STEP_SUMMARY){
