@@ -102,9 +102,13 @@
       // Once captured at full height, do not overwrite the baseline with a
       // smaller measurement from an Android intermediate keyboard frame.
       const heldPanda=parseFloat(stage.style.getPropertyValue('--pg540-panda-width'))||0;
+      const heldHeight=parseFloat(stage.style.getPropertyValue('--pg545-panda-height'))||0;
       const heldStone=parseFloat(stage.style.getPropertyValue('--pg540-stone-width'))||0;
       if(pandaWidth>90&&Number.isFinite(pandaWidth)&&pandaWidth>=heldPanda-1){
         stage.style.setProperty('--pg540-panda-width',pandaWidth+'px');
+        if(pandaHeight>80&&Number.isFinite(pandaHeight)&&pandaHeight>=heldHeight-1){
+          stage.style.setProperty('--pg545-panda-height',pandaHeight+'px');
+        }
         if(pandaBottom&&pandaBottom!=='auto')stage.style.setProperty('--pg540-panda-bottom',pandaBottom);
       }
       if(Number.isFinite(stoneWidth)&&stoneWidth>90&&stoneWidth>=heldStone-1){
