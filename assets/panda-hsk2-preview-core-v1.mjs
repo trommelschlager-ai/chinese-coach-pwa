@@ -15,7 +15,7 @@ import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedM
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
 import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=434';
-import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=528';
+import {everydayMeaning,extractFriendlyLearnerName} from './panda-everyday-meaning-v515.mjs?v=529';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=436';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
@@ -265,7 +265,7 @@ function submit(raw){
  if(!state.dayMode){
   const cleaned=normalize(input);
   const friendlyTurn=cleaned==='我爱你'||
-   (state.friendlyAwaiting==='friendly-name'&&/^我叫[\u3400-\u9fff]{1,12}$/u.test(cleaned))||
+   (state.friendlyAwaiting==='friendly-name'&&!!extractFriendlyLearnerName(input))||
    (state.friendlyAwaiting==='friendly-mood'&&/^(?:我很好|很好|我不好|不好)$/u.test(cleaned));
   const social=friendlyTurn?everydayMeaning(input,lesson(),{awaiting:state.friendlyAwaiting}):null;
   if(social){
