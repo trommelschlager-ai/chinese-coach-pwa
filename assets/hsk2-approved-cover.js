@@ -10,7 +10,7 @@
  if(!Number.isInteger(num)||num<1||num>10)return;
  const tactileFix=[2,3,6,9].includes(num);
  const art='./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'.png'+(num===1?'?v=20261123back1':'');
- const fullArt='./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'-full.webp';
+ const fullArt=num===5?'./assets/hsk2-approved-covers/lesson-05-full-softshadow-v7.png':'./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'-full.webp';
  const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const loading=new WeakSet();
 
@@ -68,67 +68,7 @@
    const base=make('base'),button=make('button');
    const bg=base.getContext('2d'),fg=button.getContext('2d');
    if(!bg||!fg)return;
-   // Lesson 5 only: the dark arc is PART OF THE POSTER BITMAP.
-   // Correct the source BEFORE composing the still and pressed button.
-   // Otherwise the uncorrected foreground canvas hides the edit.
-   let artSource=img;
-   if(num===5){
-    try{
-     const corrected=document.createElement('canvas');
-     corrected.width=w;corrected.height=h;
-     const correctionContext=corrected.getContext('2d',{willReadFrequently:true});
-     if(!correctionContext)throw Error('Canvas not supported');
-     correctionContext.drawImage(img,0,0,w,h);
-     const frame=correctionContext.getImageData(0,0,w,h),pixels=frame.data;
-     const idx=(xx,yy)=>(yy*w+xx)*4;
-     const y0=Math.max(0,Math.round((rect.y-.043)*h));
-     const y1=Math.min(h-1,Math.round((rect.y-.006)*h));
-     const scores=[];
-     let peak=0;
-     for(let yy=y0;yy<=y1;yy+=2){
-      let score=0;
-      for(let xx=Math.round(w*.25);xx<Math.round(w*.75);xx+=5){
-       const p=idx(xx,yy),r=pixels[p],g=pixels[p+1],b=pixels[p+2];
-       if((r+g+b)/3<150&&r<210&&b>g*.9)score++;
-      }
-      scores.push([yy,score]);peak=Math.max(peak,score);
-     }
-     // Do not change arbitrary artwork if the expected dark arc is absent.
-     if(peak>=10){
-      let total=0,weighted=0;
-      for(const [yy,score] of scores)if(score>=peak*.8){
-       total+=score;weighted+=yy*score;
-      }
-      const center=Math.round(weighted/total);
-      const radius=Math.max(5,Math.round(h*.009));
-      const anchor=Math.max(0,center-Math.round(h*.006));
-      const x0=Math.round(w*.065),x1=Math.round(w*.935);
-      const feather=Math.max(1,w*.07);
-      for(let yy=Math.max(0,center-radius);yy<=Math.min(h-1,center+radius);yy++){
-       const vertical=Math.pow(Math.max(0,1-Math.abs(yy-center)/radius),1.4);
-       for(let xx=x0;xx<x1;xx++){
-        const horizontal=Math.min(1,(xx-x0)/feather,(x1-xx)/feather);
-        if(horizontal<=0)continue;
-        const p=idx(xx,yy),r=pixels[p],g=pixels[p+1],b=pixels[p+2];
-        // Keep yellow/gold edging as painted by the artist.
-        if(r>190&&g>105&&b<120)continue;
-        const a=idx(xx,anchor);
-        let rr=pixels[a],gg=pixels[a+1],bb=pixels[a+2];
-        if(rr>210&&gg>150&&bb<130){rr=201;gg=132;bb=210;}
-        const light=(r+g+b)/3;
-        const darkWeight=.33+.67*Math.min(1,Math.max(0,(212-light)/105));
-        const alpha=.68*vertical*horizontal*darkWeight;
-        pixels[p]=Math.round(r+(rr-r)*alpha);
-        pixels[p+1]=Math.round(g+(gg-g)*alpha);
-        pixels[p+2]=Math.round(b+(bb-b)*alpha);
-       }
-      }
-      correctionContext.putImageData(frame,0,0);
-      artSource=corrected;
-      section.dataset.ctaShadow="arc-soft-v6";
-     }
-    }catch(_ignored){/* Leave the approved art intact on unsupported devices. */}
-   }
+   const artSource=img; // lesson 5 now uses one pre-edited image
    bg.drawImage(artSource,0,0,w,h);
    bg.save();
    bg.beginPath();
