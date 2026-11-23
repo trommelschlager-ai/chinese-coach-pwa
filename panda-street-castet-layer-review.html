@@ -72,7 +72,7 @@ footer{font-size:11px;color:#bcb1c8;padding:4px 7px 16px}
 <script>
 (()=>{
 'use strict';
-const W=693,H=1444,ROI={x:200,y:730,w:200,h:200};
+const W=693,H=1444,ROI={x:205,y:735,w:200,h:200};
 const ROOT='https://raw.githubusercontent.com/trommelschlager-ai/chinese-coach-pwa/a442485be6088b07af6815bdb7a170665d2cfb38/assets/panda-street-day-night/';
 const sources={night:ROOT+'night.webp',day:ROOT+'day.webp'};
 const $=id=>document.getElementById(id);
@@ -154,7 +154,7 @@ function exportCanvas(canvas,filename){
 function exportJson(){
  const b=new Blob([JSON.stringify(contour,null,2)],{type:'application/json'});
  const u=URL.createObjectURL(b),a=document.createElement('a');
- a.href=u;a.download='castet-mask-source-v1.UNAPPROVED.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),3000);
+ a.href=u;a.download='castet-mask-source-v2.UNAPPROVED.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),3000);
 }
 $('night').onclick=()=>{day='night';draw()};
 $('day').onclick=()=>{day='day';draw()};
@@ -164,7 +164,7 @@ $('saveMap').onclick=exportJson;
 window.addEventListener('resize',draw);
 window.addEventListener('pagehide',()=>created.forEach(x=>URL.revokeObjectURL(x)),{once:true});
 Promise.all([
- fetch('./art/panda-street/castet-mask-source-v1.UNAPPROVED.json').then(r=>{if(!r.ok)throw Error('Нет файла контура');return r.json()}),
+ fetch('./art/panda-street/castet-mask-source-v2.UNAPPROVED.json').then(r=>{if(!r.ok)throw Error('Нет файла контура');return r.json()}),
  ...Object.entries(sources).map(([name,url])=>fetchSource(name,url))
 ]).then(([geometry])=>{
  if(geometry.target_resolution?.join(',')!=='693,1444'||geometry.outline.length<10||geometry.holes.length<1)throw Error('Неподходящая разметка');
