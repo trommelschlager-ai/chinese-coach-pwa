@@ -125,7 +125,7 @@ const $=id=>document.getElementById(id);
 const DB_OWNER='panda-preview-local';
 const store=createPandaMemoryStore();
 let readyClip=null,player=null,objectURL=null,busy=false;
-const sourceBase=location.hostname==='127.0.0.1'||location.hostname==='localhost'
+const sourceBase=location.hostname==='127.0.0.1'||location.hostname==='localhost'||location.hostname.endsWith('.localhost')
   ? 'https://trommelschlager-ai.github.io/chinese-coach-pwa/'
   : new URL('./',location.href).href;
 const current=()=>samples.find(x=>x.id===$('sample').value)||samples[0];
