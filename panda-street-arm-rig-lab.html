@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#090916">
+<title>Panda Street — Arm Rig Lab (isolated)</title>
+<style>
+*{box-sizing:border-box}
+html,body{height:100%;height:100dvh;margin:0;overflow:hidden;background:#090916;color:#fff;font-family:system-ui,-apple-system,Arial,sans-serif}
+main{position:relative;width:100%;height:100dvh;overflow:hidden;touch-action:manipulation}
+#stage{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none}
+#headbar{position:absolute;z-index:5;top:max(8px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:min(94vw,520px);border-radius:15px;background:#111327ed;border:1px solid #aa88ce;padding:8px 11px;box-shadow:0 5px 18px #0008}
+h1{font-size:13px;line-height:1.2;margin:0 0 4px;color:#ffdfaf}
+.note{font-size:10px;line-height:1.35;color:#e9dfed;margin:0}
+#panel{position:absolute;z-index:6;bottom:max(9px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(95vw,550px);border-radius:17px;background:#111327f0;border:1px solid #a884c9;box-shadow:0 5px 24px #0009;padding:9px;backdrop-filter:blur(10px)}
+.line{display:flex;gap:6px;margin:0 0 6px}
+.line:last-child{margin-bottom:0}
+button,select{border:1px solid #896ba9;background:#302544;color:#fff;border-radius:10px;font:700 11px system-ui,-apple-system,Arial,sans-serif;min-height:39px;padding:5px;min-width:0;flex:1;cursor:pointer}
+button:active{transform:scale(.965)}
+button.primary{background:#7847aa;border-color:#e0b9ff}
+button[aria-pressed="true"]{background:#5b3b74;border-color:#ffd9a3;box-shadow:inset 0 0 0 1px #ffd9a3}
+button:disabled{opacity:.5;cursor:wait}
+select{background:#302544}
+label{font-size:10px;display:flex;align-items:center;gap:5px;white-space:nowrap}
+input[type=range]{min-width:0;flex:1;accent-color:#e3b4ff}
+#rangeRow{display:flex;align-items:center;gap:9px;margin:0 4px 6px}
+#rangeValue{font-size:11px;min-width:31px;text-align:right}
+#status{font-size:10px;color:#d4cadf;padding:2px 3px;min-height:15px;line-height:1.3}
+#loading{position:absolute;inset:0;z-index:9;background:#090916f2;display:grid;place-items:center;text-align:center;padding:20px;font-size:14px;line-height:1.5}
+#loading[hidden]{display:none}
+#editRow[hidden],#rangeRow[hidden]{display:none}
+@media(min-aspect-ratio:10/9){#headbar{left:10px;transform:none;width:230px}#panel{left:auto;right:9px;transform:none;width:238px}.line{flex-wrap:wrap}.line>*{flex:1 1 42%}}
+</style>
+</head>
+<body>
+<main>
+<canvas id="stage" aria-label="Пробная послойная анимация руки Panda Street. Исходное лицо и фон не перерисовываются."></canvas>
+<header id="headbar"><h1>🐼 Panda Street · тест руки №1</h1><p class="note">Изолированная лаборатория, не главная страница. Оригинальные night.webp / day.webp. Разметка черновая — требует точной ручной подгонки.</p></header>
+<div id="loading" role="status">Загружаю утверждённую Панду…</div>
+<section id="panel" aria-label="Управление тестом">
+ <div class="line">
+  <button id="ask" class="primary" disabled>❓ Задать вопрос</button>
+  <button id="reset" disabled>↺ Исходная поза</button>
+  <button id="theme" disabled>☀ День</button>
+  <button id="edit" aria-pressed="false" disabled>✎ Контур</button>
+ </div>
+ <div id="rangeRow"><label for="lift">Амплитуда</label><input id="lift" type="range" min="2" max="12" step="1" value="6"><span id="rangeValue">6°</span></div>
+ <div id="editRow" hidden>
+  <div class="line">
+   <select id="piece" aria-label="Редактируемая часть"><option value="upper">Плечо / верх руки</option><option value="lower">Предплечье / кисть</option><option value="head">Голова (без движения)</option><option value="torso">Корпус (без движения)</option></select>
+   <button id="pivot" aria-pressed="false">◉ Оси</button>
+   <button id="newpoint">+ Точка</button>
+   <button id="delpoint">− Точка</button>
+  </div>
+  <div class="line">
+   <button id="export">↓ Контур JSON</button>
+   <button id="png">↓ PNG слоя</button>
+   <button id="restore">Сбросить разметку</button>
+  </div>
+ </div>
+ <div id="status" role="status">Ожидается исходное изображение…</div>
+</section>
+</main>
+<script>
+(()=>{
+'use strict';
+// All geometry is in the original approved 693 × 1444 source coordinate space.
+// This is a manually adjustable layer tool, NOT a claim of completed pixel-perfect segmentation.
+const W=693,H=1444;
+const URLS={night:'./assets/panda-street-day-night/night.webp',day:'./assets/panda-street-day-night/day.webp?v=2'};
+const $=id=>document.getElementById(id);
+const cv=$('stage'),c=cv.getContext('2d',{alpha:false}),loading=$('loading');
+const buttons=['ask','reset','theme','edit'].map($);
+let theme='night',editing=false,selected='upper',movePivot=false,playing=false,start=0,raf=0,ready=false,poseProgress=0,hover=null;
+const images={},sprites={},clean={};
+const make=()=>{const a=document.createElement('canvas');a.width=W;a.height=H;return a};
+const BARE={
+ upper:[[414,668],[451,661],[479,691],[495,737],[505,779],[493,814],[466,819],[455,780],[442,737],[422,709]],
+ lower:[[472,787],[507,786],[519,826],[519,871],[510,917],[488,937],[454,924],[446,894],[452,845]],
+ head:[[192,500],[162,457],[175,415],[203,407],[255,440],[310,432],[353,442],[394,411],[425,429],[448,477],[426,501],[439,558],[418,616],[370,653],[332,660],[270,650],[226,624],[191,566]],
+ torso:[[207,647],[265,637],[325,645],[386,639],[426,657],[438,714],[455,832],[440,943],[432,1083],[385,1130],[233,1124],[202,1065],[186,900],[188,751]],
+ shoulder:[447,688],elbow:[478,806]
+};
+let rig=JSON.parse(JSON.stringify(BARE));
+const fromSave=()=>{try{const o=JSON.parse(localStorage.getItem('panda-street-arm-rig-v1')||'null');if(o&&['upper','lower','head','torso','shoulder','elbow'].every(k=>Array.isArray(o[k])))rig=o}catch{}};
+fromSave();
+function notify(msg){$('status').textContent=msg}
+function trace(ctx,points){if(!points||points.length<3)return;ctx.beginPath();ctx.moveTo(...points[0]);for(let i=1;i<points.length;i++)ctx.lineTo(...points[i]);ctx.closePath()}
+function maskLayer(src,poly){const a=make(),g=a.getContext('2d');g.drawImage(src,0,0);g.globalCompositeOperation='destination-in';g.fillStyle='#fff';trace(g,poly);g.fill();g.globalCompositeOperation='source-over';return a}
+function readyScene(src){
+ const layers={};
+ for(const p of ['upper','lower','head','torso'])layers[p]=maskLayer(src,rig[p]);
+ sprites[theme]=layers;
+ // Only a small band behind the moved arm is reconstructed. This is NOT a complete city clean plate.
+ const b=make(),bc=b.getContext('2d',{willReadFrequently:true});bc.drawImage(src,0,0);
+ const m=make(),mc=m.getContext('2d',{willReadFrequently:true});mc.fillStyle='#fff';for(const p of ['upper','lower']){trace(mc,rig[p]);mc.fill()}
+ const im=bc.getImageData(0,0,W,H),a=im.data,mark=mc.getImageData(0,0,W,H).data;
+ const n=W*H,dist=new Int16Array(n),nearest=new Int32Array(n),q=new Int32Array(n);let rd=0,wr=0;
+ // 0 = original pixel, 1 = cut-out; BFS copies the nearest exterior color into cut-out.
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+  const k=y*W+x; if(mark[k*4+3]<128)continue;
+  dist[k]=-1;
+  const four=[k-1,k+1,k-W,k+W];
+  let edge=false;for(const nb of four)if(nb>=0&&nb<n&&mark[nb*4+3]<128){nearest[k]=nb;edge=true;break}
+  if(edge){dist[k]=1;q[wr++]=k}
+ }
+ while(rd<wr){
+  const k=q[rd++],x=k%W,y=(k/W)|0,ns=[];
+  if(x>0)ns.push(k-1);if(x<W-1)ns.push(k+1);if(y>0)ns.push(k-W);if(y<H-1)ns.push(k+W);
+  for(const nb of ns)if(dist[nb]===-1){dist[nb]=dist[k]+1;nearest[nb]=nearest[k];q[wr++]=nb}
+ }
+ for(let k=0;k<n;k++)if(mark[k*4+3]>=128){
+  const p=nearest[k]*4,j=k*4;a[j]=a[p];a[j+1]=a[p+1];a[j+2]=a[p+2];a[j+3]=255
+ }
+ bc.putImageData(im,0,0);clean[theme]=b;
+}
+function dims(){
+ const r=cv.getBoundingClientRect(),w=r.width,h=r.height,dpr=Math.min(2,devicePixelRatio||1);
+ const pw=Math.round(w*dpr),ph=Math.round(h*dpr);
+ if(cv.width!==pw||cv.height!==ph){cv.width=pw;cv.height=ph}
+ const s=Math.min(w/W,h/H);return {w,h,pw,ph,s,ox:(w-W*s)/2,oy:(h-H*s)/2}
+}
+function render(t=0){
+ if(!ready)return;
+ const d=dims();c.setTransform(d.pw/d.w,0,0,d.ph/d.h,0,0);
+ c.fillStyle='#090916';c.fillRect(0,0,d.w,d.h);
+ c.save();c.translate(d.ox,d.oy);c.scale(d.s,d.s);c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+ const img=images[theme],sp=sprites[theme];
+ let v=0;
+ if(playing){
+  const p=Math.min(1,Math.max(0,(t-start)/1150));poseProgress=p;
+  // Smooth rise, short pause at top, smooth descent. Exactly one gesture.
+  const ease=z=>z*z*(3-2*z);
+  v=p<.38?ease(p/.38):p<.58?1:ease((1-p)/.42);
+  if(p>=1){playing=false;poseProgress=0;$('ask').disabled=false;v=0;notify('Жест завершён. Проверь плечо, локоть и место удаления руки.')}
+ }
+ if(v>0&&!editing){
+  c.drawImage(clean[theme],0,0);
+  // Two real source-pixel layers: upper arm about shoulder, forearm about elbow.
+  const sh=rig.shoulder,el=rig.elbow;
+  const angle=Number($('lift').value)*Math.PI/180;
+  const a1=-angle*.32*v,a2=-angle*1.08*v;
+  const x=el[0]-sh[0],y=el[1]-sh[1];
+  const nex=[sh[0]+x*Math.cos(a1)-y*Math.sin(a1),sh[1]+x*Math.sin(a1)+y*Math.cos(a1)];
+  c.save();c.translate(...sh);c.rotate(a1);c.translate(-sh[0],-sh[1]);c.drawImage(sp.upper,0,0);c.restore();
+  c.save();c.translate(...nex);c.rotate(a1+a2);c.translate(-el[0],-el[1]);c.drawImage(sp.lower,0,0);c.restore();
+  // The untouched head/face is always copied from the source, without any transform.
+  c.drawImage(sp.head,0,0);
+ }else c.drawImage(img,0,0); // exact approved image, zero changed pixels at rest
+ if(editing){
+  c.save();
+  for(const name of ['upper','lower','head','torso']){
+   const pts=rig[name];c.fillStyle=name===selected?'rgba(230,150,255,.18)':'rgba(100,190,245,.045)';
+   c.strokeStyle=name===selected?'#ffe3ac':'#7dc9f0';c.lineWidth=name===selected?2.4:.8;
+   trace(c,pts);c.fill();c.stroke();
+   if(name===selected)pts.forEach(([x,y],i)=>{
+    c.fillStyle=i===hover?'#fff':'#ffca9c';c.beginPath();c.arc(x,y,6.5,0,Math.PI*2);c.fill()
+   });
+  }
+  for(const [name,col] of [['shoulder','#ffce77'],['elbow','#70ffd5']]){
+   const [x,y]=rig[name];c.strokeStyle=col;c.lineWidth=2;c.beginPath();c.arc(x,y,11,0,Math.PI*2);c.moveTo(x-18,y);c.lineTo(x+18,y);c.moveTo(x,y-18);c.lineTo(x,y+18);c.stroke()
+  }
+  c.restore()
+ }
+ c.restore();
+ if(playing)raf=requestAnimationFrame(render);else raf=0
+}
+function save(){try{localStorage.setItem('panda-street-arm-rig-v1',JSON.stringify(rig))}catch{}}
+function rerig(){if(!ready)return;playing=false;for(const t of ['night','day'])if(images[t]){const prev=theme;theme=t;readyScene(images[t]);theme=prev}render();save()}
+function showEdit(v){editing=v;playing=false;cancelAnimationFrame(raf);$('edit').setAttribute('aria-pressed',String(v));$('edit').textContent=v?'✓ Контур':'✎ Контур';$('editRow').hidden=!v;notify(v?'Перемещай узлы контура пальцем; жёлтая ось — плечо, зелёная — локоть. Черновая разметка требует подгонки.':'Оригинал в покое неизменён. Нажми «Задать вопрос» для одного жеста.');render()}
+$('ask').onclick=()=>{if(!ready)return;if(editing)showEdit(false);playing=true;start=performance.now();$('ask').disabled=true;notify('Пробный жест: только плечо и предплечье, лицо неподвижно.');raf=requestAnimationFrame(render)};
+$('reset').onclick=()=>{playing=false;cancelAnimationFrame(raf);$('ask').disabled=false;notify('Возврат к утверждённой позе без изменений пикселей.');render()};
+$('theme').onclick=()=>{if(!ready)return;theme=theme==='night'?'day':'night';$('theme').textContent=theme==='night'?'☀ День':'☾ Ночь';render()};
+$('edit').onclick=()=>showEdit(!editing);
+$('lift').oninput=()=>{$('rangeValue').textContent=$('lift').value+'°'};
+$('piece').onchange=()=>{selected=$('piece').value;hover=null;render()};
+$('pivot').onclick=()=>{movePivot=!movePivot;$('pivot').setAttribute('aria-pressed',String(movePivot));notify(movePivot?'Перетаскивай жёлтую (плечо) или зелёную (локоть) ось.':'Перетаскивай точки выбранного контура.')};
+$('newpoint').onclick=()=>{const pts=rig[selected];const a=pts.at(-1),b=pts[0];pts.push([Math.round((a[0]+b[0])/2),Math.round((a[1]+b[1])/2)]);hover=pts.length-1;rerig()};
+$('delpoint').onclick=()=>{if(rig[selected].length>3){rig[selected].splice(hover??rig[selected].length-1,1);hover=null;rerig()}};
+$('restore').onclick=()=>{rig=JSON.parse(JSON.stringify(BARE));hover=null;rerig();notify('Восстановлена исходная черновая разметка.')};
+function download(name,data,type){const blob=data instanceof Blob?data:new Blob([data],{type});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),4000)}
+$('export').onclick=()=>download('panda-street-arm-rig-v1.json',JSON.stringify({source:URLS,dimensions:[W,H],note:'Unreviewed tracing: align manually before production use',...rig},null,2),'application/json');
+$('png').onclick=()=>{if(!ready)return;const layer=sprites[theme][selected];layer.toBlob(b=>b&&download('panda-street-'+theme+'-'+selected+'.png',b,'image/png'),'image/png')};
+function where(e){const d=dims(),r=cv.getBoundingClientRect();return [(e.clientX-r.left-d.ox)/d.s,(e.clientY-r.top-d.oy)/d.s]}
+let drag=null;
+cv.addEventListener('pointerdown',e=>{
+ if(!editing)return;const [x,y]=where(e);let found=null,best=24;
+ if(movePivot){
+  for(const n of ['shoulder','elbow']){const p=rig[n],dist=Math.hypot(x-p[0],y-p[1]);if(dist<best){best=dist;found={name:n}}}
+ }else{
+  rig[selected].forEach((p,i)=>{const dist=Math.hypot(x-p[0],y-p[1]);if(dist<best){best=dist;found={name:selected,i}}})
+ }
+ if(!found)return;
+ drag=found;hover=found.i??null;cv.setPointerCapture(e.pointerId);render()
+});
+cv.addEventListener('pointermove',e=>{
+ if(!drag)return;const p=where(e).map((n,i)=>Math.max(0,Math.min(i===0?W:H,Math.round(n))));
+ if(drag.i===undefined)rig[drag.name]=p;else rig[drag.name][drag.i]=p;
+ // Rebuild source-pixel masks on release; during dragging show vector guides only.
+ render()
+});
+function stopDrag(){if(!drag)return;drag=null;rerig()}
+cv.addEventListener('pointerup',stopDrag);cv.addEventListener('pointercancel',stopDrag);
+window.addEventListener('resize',()=>render());
+document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;playing=false}else render()});
+Promise.all(Object.entries(URLS).map(([name,url])=>new Promise((resolve,reject)=>{
+ const i=new Image();i.onload=()=>{if(i.naturalWidth!==W||i.naturalHeight!==H)reject(new Error(name+': unexpected dimensions'));else{images[name]=i;resolve()}};
+ i.onerror=()=>reject(new Error('Нет доступа к '+url));i.src=url
+}))).then(()=>{
+ for(const name of ['night','day']){theme=name;readyScene(images[name])}
+ theme='night';ready=true;loading.hidden=true;buttons.forEach(b=>b.disabled=false);$('ask').disabled=false;
+ notify('Исходник загружен; оригинальная поза не изменена. Контуры пока ориентировочные.');render()
+}).catch(e=>{loading.textContent='Ошибка загрузки: '+e.message+'; открой тест со всеми assets в одной ветке.';console.error(e)});
+})();
+</script>
+</body>
+</html>
