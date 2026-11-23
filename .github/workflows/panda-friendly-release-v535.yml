@@ -1,0 +1,64 @@
+name: Panda AI friendly dialogue and three-row mobile release gate v535
+on:
+  push:
+    paths:
+      - 'assets/panda-everyday-meaning-v515.mjs'
+      - 'assets/panda-hsk2-preview-core-v1.mjs'
+      - 'assets/panda-hsk2-preview-ui-v1.mjs'
+      - 'assets/panda-hsk2-preview-v506.css'
+      - 'panda-voice-pilot.html'
+      - 'sw.js'
+      - 'assets/offline-pack.json'
+      - 'tests/panda-friendly-release-v535.test.mjs'
+      - 'scripts/qa-panda-friendly-release-v535.mjs'
+      - '.github/workflows/panda-friendly-release-v535.yml'
+  pull_request:
+    paths:
+      - 'assets/panda-everyday-meaning-v515.mjs'
+      - 'assets/panda-hsk2-preview-core-v1.mjs'
+      - 'assets/panda-hsk2-preview-ui-v1.mjs'
+      - 'assets/panda-hsk2-preview-v506.css'
+      - 'panda-voice-pilot.html'
+      - 'sw.js'
+      - 'assets/offline-pack.json'
+      - 'tests/panda-friendly-release-v535.test.mjs'
+      - 'scripts/qa-panda-friendly-release-v535.mjs'
+      - '.github/workflows/panda-friendly-release-v535.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  release-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Check Chinese reply logic and offline release references
+        run: node --test tests/panda-friendly-release-v535.test.mjs
+      - name: Install mobile Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Check live chat at three Android screen widths
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/panda-friendly.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-voice-pilot.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-friendly-release-v535.mjs
+      - name: Preserve mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-friendly-3-card-mobile-v535
+          path: qa/panda-friendly-release/
+          if-no-files-found: warn
