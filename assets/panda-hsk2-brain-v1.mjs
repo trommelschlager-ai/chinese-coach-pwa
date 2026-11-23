@@ -2,7 +2,7 @@ import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=517';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
-import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=518';
+import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=520';
 import {knownBasicContext,replyBasicContext} from './panda-hsk2-basic-context-v1.mjs?v=5';
 import {negativeAnswerForQuestion,negativeFollowup,negativeQuestionFromLearner} from './panda-negative-dialogue-v519.mjs?v=519';
 export const norm=s=>String(s||'').normalize('NFC').replace(/[\p{P}\s]/gu,'').toLowerCase();
@@ -251,6 +251,16 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const spoken=restoreDiscourse(raw,d,out.spoken||out.answer||knownHSK2(d.body));return {...out,...(spoken?{spoken}:{}),...(out.kind==='accepted'&&spoken?{answer:spoken}:{})};}
  return out;}
  const input=norm(raw);
+ // v520: user-initiated friendly introductions must precede generic clarifications
+ // and active HSK2 drill matching, without advancing the exercise.
+ const friendlyTurn=input==='我爱你'||
+  (context?.awaiting==='friendly-name'&&/^我叫[\p{Script=Han}]{1,12}$/u.test(input))||
+  (context?.awaiting==='friendly-mood'&&/^(?:我很好|很好|我不好|不好)$/u.test(input));
+ if(friendlyTurn){
+  const greeting=everydayMeaning(raw,id,context);
+  if(greeting)return {kind:'social',line:line(greeting.reply),spoken:line(greeting.spoken),
+   context:greeting.context,coachNote:greeting.coachNote};
+ }
  // Evaluate the ACTIVE Panda question first: "不会" is meaningful after
  // "你会说中文吗？", but must not become a universal negative answer.
  const active=getTopic(id)?.questions[index];
