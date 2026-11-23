@@ -39,9 +39,9 @@ test('Unverified translation is not shown as a learner-facing placeholder',()=>{
 
 test('Main HTML busts stale Android CSS and JS caches',()=>{
   const html=source('../panda-voice-pilot.html');
-  assert.match(html,/panda-hsk2-preview-v506\.css\?v=542/);
-  assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=539/);
-  assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=541/);
+  assert.match(html,/panda-hsk2-preview-v506\.css\?v=543/);
+  assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=543/);
+  assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=543/);
 });
 
 test('Panda remains visible: preserve original and show loaded static copy',()=>{
@@ -74,13 +74,41 @@ test('v542 visible Panda and SW cached together to avoid stale Android scripts',
   const html=source('../panda-voice-pilot.html');
   const worker=source('../sw.js');
   const pack=JSON.parse(source('../assets/offline-pack.json'));
-  assert.equal(pack.version,542);
-  assert(source('../panda-ai-hsk2-preview.html').includes('panda-approved-soft-v500.js?v=542'));
-  assert(source('../panda-ai-hsk2-preview.html').includes('panda-hsk2-preview-v506.css?v=542'));
-  assert.match(worker,/const CACHE='chinese-coach-pwa-v542-/);
-  for(const asset of ['panda-hsk2-preview-v506.css?v=542','panda-hsk2-preview-ui-v1.mjs?v=541','panda-approved-soft-v500.js?v=542']){
+  assert.equal(pack.version,543);
+  assert(source('../panda-ai-hsk2-preview.html').includes('panda-approved-soft-v500.js?v=543'));
+  assert(source('../panda-ai-hsk2-preview.html').includes('panda-hsk2-preview-v506.css?v=543'));
+  assert.match(worker,/const CACHE='chinese-coach-pwa-v543-/);
+  for(const asset of ['panda-hsk2-preview-v506.css?v=543','panda-hsk2-preview-ui-v1.mjs?v=543','panda-approved-soft-v500.js?v=543']){
     assert(html.includes(asset));
     assert(pack.files.some(f=>f.endsWith(asset)));
     assert(worker.includes(asset));
   }
+});
+
+test('v543 conversation layout cannot shift Panda when chat cards grow',()=>{
+ const js=source('../assets/panda-approved-soft-v500.js');
+ const css=source('../assets/panda-hsk2-preview-v506.css');
+ assert.match(js,/const designWidth=Math.min\(pr.width\*\.61,335\)/);
+ assert.match(js,/const designStoneTop=pr.height\*\.705/);
+ assert.match(css,/flex:0 0 clamp\(185px,29dvh,255px\)!important/);
+ assert.match(css,/max-height:clamp\(105px,21dvh,164px\)!important/);
+ assert.match(css,/overflow-y:auto!important/);
+});
+
+test('v543 mic guidance is not a persistent warning over the mascot',()=>{
+ const ui=source('../assets/panda-hsk2-preview-ui-v1.mjs');
+ const css=source('../assets/panda-hsk2-preview-v506.css');
+ assert.match(ui,/const problem=!autoplayBlocked&&\/\(не удалось\|ошибка/);
+ assert.doesNotMatch(ui,/const problem=!autoplayBlocked&&\/\(микрофон\|/);
+ assert.match(css,/#pg346 #pg346-status:not\(\[hidden\]\)/);
+ assert.match(css,/top:calc\(clamp\(61px,7\.4dvh,77px\)/);
+});
+
+test('v543 responds to recognized learner question and laughter',()=>{
+ const core=source('../assets/panda-hsk2-preview-core-v1.mjs');
+ assert.match(core,/said==='你是老师吗'/);
+ assert.match(core,/hanzi:'是，我是你的中文老师。'/);
+ assert.match(core,/pinyin:'Nǐ shì lǎoshī ma\?'/);
+ assert.match(core,/\['哈哈','哈哈哈','呵呵'\]/);
+ assert.match(core,/hanzi:'哈哈，我们继续吧！'/);
 });
