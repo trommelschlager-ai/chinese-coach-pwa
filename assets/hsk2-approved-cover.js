@@ -26,7 +26,7 @@
   section.className='pg-approved-overlay pg-approved-lesson-'+num+(full?' pg-approved-full':'');
   section.setAttribute('aria-label','HSK 2. Урок '+num+'. '+names[num-1]);
   const size=full?['843','1866']:['941','1672'];
-  const start=full?'left:2.4%;top:59.6%;width:95.2%;height:7.1%':(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
+  const start=full?'left:2.4%;top:62.0%;width:95.2%;height:7.1%':(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
   section.innerHTML='<div class="pg-approved-poster">'+
    '<img class="pg-approved-cover-image" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" alt="HSK 2. Урок '+num+'. '+esc(names[num-1])+'">'+
    '<a class="pg-approved-hotspot pg-approved-map-link" href="./hsk2-life-course.html?view=map" aria-label="Все уроки HSK 2"></a>'+
