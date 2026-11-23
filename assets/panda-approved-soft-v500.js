@@ -87,8 +87,33 @@
     stage.dataset.composerOpen='false';
     const cross=word('button','pg500-close-input','×');cross.type='button';
     cross.setAttribute('aria-label','Закрыть ввод текста');form.append(cross);
+    // Store the approved resting geometry *before* Android reduces visualViewport.
+    // Both the mascot and its stone stay at the same pixel size while typing.
+    const mascot=scene.querySelector('.pg352-mascot');
+    function rememberPandaGeometry(){
+      if(document.documentElement.dataset.keyboard==='true'||!mascot)return;
+      const pandaWidth=mascot.getBoundingClientRect().width;
+      const stoneStyle=getComputedStyle(scene,'::before');
+      const pandaBottom=getComputedStyle(mascot).bottom;
+      const stoneWidth=parseFloat(stoneStyle.width);
+      const stoneLeft=parseFloat(stoneStyle.left);
+      // Once captured at full height, do not overwrite the baseline with a
+      // smaller measurement from an Android intermediate keyboard frame.
+      const heldPanda=parseFloat(stage.style.getPropertyValue('--pg540-panda-width'))||0;
+      const heldStone=parseFloat(stage.style.getPropertyValue('--pg540-stone-width'))||0;
+      if(pandaWidth>90&&Number.isFinite(pandaWidth)&&pandaWidth>=heldPanda-1){
+        stage.style.setProperty('--pg540-panda-width',pandaWidth+'px');
+        if(pandaBottom&&pandaBottom!=='auto')stage.style.setProperty('--pg540-panda-bottom',pandaBottom);
+      }
+      if(Number.isFinite(stoneWidth)&&stoneWidth>90&&stoneWidth>=heldStone-1){
+        stage.style.setProperty('--pg540-stone-width',stoneWidth+'px');
+        if(Number.isFinite(stoneLeft))stage.style.setProperty('--pg540-stone-left',stoneLeft+'px');
+      }
+    }
+    requestAnimationFrame(rememberPandaGeometry);
     function opened(){return stage.dataset.composerOpen==='true'}
     function openComposer(){
+      rememberPandaGeometry();
       stage.dataset.composerOpen='true';
       send.setAttribute('aria-label','Отправить сообщение');
       input.focus({preventScroll:true});
@@ -100,13 +125,16 @@
     }
     send.setAttribute('aria-label','Открыть ввод текста');
     send.addEventListener('click',(event)=>{
-      if(!opened()){
+      // An occupied input is always a SEND action, even if Android changed
+      // focus/composer state while committing Chinese IME text.
+      if(!input.value.trim()&&!opened()){
         event.preventDefault();event.stopImmediatePropagation();openComposer();return;
       }
-      if(input.value.trim())queueMicrotask(closeComposer);
+      // Keep click propagation intact: the real UI send handler sends once.
+      if(input.value.trim()&&!opened())stage.dataset.composerOpen='true';
     },true);
     form.addEventListener('submit',()=>queueMicrotask(()=>{if(!input.value.trim())closeComposer()}));
-    input.addEventListener('focus',()=>{if(!opened())stage.dataset.composerOpen='true'});
+    input.addEventListener('focus',()=>{rememberPandaGeometry();if(!opened())stage.dataset.composerOpen='true'});
     cross.addEventListener('click',(event)=>{event.stopPropagation();closeComposer()});
     stage.addEventListener('keydown',event=>{if(event.key==='Escape'&&opened()){closeComposer()}});
     scene.addEventListener('click',event=>{
