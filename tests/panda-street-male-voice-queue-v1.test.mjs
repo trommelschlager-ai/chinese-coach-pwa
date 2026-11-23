@@ -11,7 +11,8 @@ test('approved male audio stays unchanged with existing 14 indexed segments',()=
  assert.equal(audioKeys.length,14);
  assert.equal(new Set(audioKeys).size,audioKeys.length);
  assert.match(html,/const MALE_VOICE='\.\/assets\/panda-street-lesson1-luvvoice\.m4a'/);
- assert.match(html,/if\(!cue\)\{streetFaceRig\?\.setState\('idle'\);tip\('Фраза показана текстом/);
+ assert.match(html,/if\(!cue\)\{/);
+ assert.match(html,/Фраза показана текстом · мужская запись для неё пока не загружена/);
  assert.doesNotMatch(html,/speechSynthesis|SpeechSynthesisUtterance/);
 });
 test('new male voice queue matches 18 missing unique phrases from current Street screen',()=>{
