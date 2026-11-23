@@ -211,6 +211,12 @@ function draw(){
  const finalPoints=live?[]:(recent?.points||[]);
  const split=live?.5:(recent?.splitRatio??.5);
  const liveSeconds=live?Math.max(.1,(liveSamples.at(-1)?.[0]??0)-(liveSamples[0]?.[0]??0)):(recent?.previewSeconds||.8);
+ // Freeze the exact preview frame that was last painted. Stop can occur between
+ // animation frames, so recalculating from newer microphone samples would jump.
+ if(live&&active){
+  active.previewRenderedPoints=livePoints.map(p=>[p[0],p[1]]);
+  active.previewRenderedSeconds=liveSeconds;
+ }
  const finalSeconds=finite(recent?.seconds)&&recent.seconds>.1?recent.seconds:.8;
  const view=live?'preview':(chartView==='analysis'||!livePoints.length?'analysis':'preview');
  for(const button of document.querySelectorAll('.l3-tone-details [data-tone-view]')){
@@ -634,8 +640,8 @@ async function stop(countTake){
  // Freeze EXACTLY the same normalized preview points and 50% split that were
  // displayed during recording. Offline PCM must not replace these points.
  if(countTake){
-  rec.liveGraphPoints=normalizeChartPoints(rec.samples,true);
-  rec.liveGraphSeconds=rec.samples.length>=2?Math.max(.1,rec.samples.at(-1)[0]-rec.samples[0][0]):.8;
+  rec.liveGraphPoints=rec.previewRenderedPoints||normalizeChartPoints(rec.samples,true);
+  rec.liveGraphSeconds=rec.previewRenderedSeconds||(rec.samples.length>=2?Math.max(.1,rec.samples.at(-1)[0]-rec.samples[0][0]):.8);
  }
  rec.keepReplay=Boolean(countTake&&rec.word===state.selected);
  if(countTake&&rec.captureMethod==='worklet'&&rec.captureNode?.port){
