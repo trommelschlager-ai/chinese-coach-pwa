@@ -173,8 +173,17 @@ try{
     await fallbackPage.evaluate(()=>{
       window.__streetFallbackMotions=[];
       const layer=document.getElementById('street-face-motion-layer');
-      new MutationObserver(()=>window.__streetFallbackMotions.push(layer.getAttribute('data-motion-state')))
-        .observe(layer,{attributes:true,attributeFilter:['data-motion-state']});
+      new MutationObserver(()=>{
+        const state=layer.getAttribute('data-motion-state');
+        window.__streetFallbackMotions.push(state);
+        if(state==='reaction'){
+          const pixels=layer.getContext('2d').getImageData(0,0,layer.width,layer.height).data;
+          window.__streetMotionActuallyPainted=false;
+          for(let i=3;i<pixels.length;i+=4){
+            if(pixels[i]>60){window.__streetMotionActuallyPainted=true;break}
+          }
+        }
+      }).observe(layer,{attributes:true,attributeFilter:['data-motion-state']});
     });
     await fallbackPage.locator('#send').click();
     await fallbackPage.locator('#entry').fill('我有点忙。');
@@ -185,6 +194,8 @@ try{
       !document.getElementById('shade')?.classList.contains('open'),
       null,{timeout:12000});
     await fallbackPage.waitForFunction(()=>window.__streetFallbackMotions?.includes('reaction'),null,{timeout:6000});
+    assert.equal(await fallbackPage.evaluate(()=>window.__streetMotionActuallyPainted),true,
+      'Visible alpha pixels must be painted, not just a data-motion-state attribute');
     assert(!await fallbackPage.locator('#toast').innerText().then(s=>s.includes('Модуль Panda AI недоступен')),
       'Older fatal-error toast must never show');
     await fallbackPage.screenshot({path:output+'/brain-import-failed-graceful.png'});
