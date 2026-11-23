@@ -100,6 +100,25 @@ try{
         await page.locator('#close').click();
         reports.push({viewport:name,decoded,played:['01.mp3','02.mp3','03.mp3'],unapproved04:'silent'});
       }
+      if(viewport.width===393){
+        // Regression from Android screen recording 38791.mp4:
+        // one Send tap on valid 我有点忙 must close input, show both turns
+        // and save it to history instead of opening "Панда объясняет".
+        await page.locator('#send').click();
+        await page.locator('#entry').fill('我有点忙');
+        await page.locator('#submit').click();
+        await page.waitForFunction(()=>
+          document.getElementById('live-learner')?.textContent.includes('我有点忙') &&
+          document.getElementById('live-panda')?.textContent.includes('好，那你先忙吧！') &&
+          !document.getElementById('shade')?.classList.contains('open'),
+          null,{timeout:10000});
+        assert.equal(await page.locator('#shade').evaluate(el=>el.classList.contains('open')),false);
+        await page.locator('#history').click();
+        assert.match(await page.locator('#body').innerText(),/我有点忙/);
+        assert.match(await page.locator('#body').innerText(),/好，那你先忙吧/);
+        await page.locator('#close').click();
+        reports.push({viewport:name,oneTapSend:'passed',validBusyPhrase:'conversational reply'});
+      }
       await page.locator('#theme').click();
       await page.waitForFunction(()=>document.documentElement.dataset.theme==='day',null,{timeout:10000});
       await page.screenshot({path:output+'/day-'+name+'.png'});
