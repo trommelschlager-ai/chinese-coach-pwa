@@ -16,7 +16,9 @@ assert(css.includes('lesson5-lilac-sakura-v225.svg'),'Approved lilac sakura back
 assert(map.includes('hsk1-first-v189.html'),'HSK map must route to rebuilt first lesson');
 assert(legacy.includes('hsk1-first-v189.html'),'Old first lesson URL must route to new implementation');
 assert(sw.includes('hsk1-first-v189.js'),'New lesson must be in offline app shell');
-const dom=new JSDOM(page,{url:'https://example.test/chinese-coach-pwa/hsk1-first-v189.html',runScripts:'outside-only'});
+// This historical v189 regression exercises the explicitly preserved legacy
+// layout. The published greeting-first layout is covered by the newer v415 QA.
+const dom=new JSDOM(page,{url:'https://example.test/chinese-coach-pwa/hsk1-first-v189.html?preview=legacy',runScripts:'outside-only'});
 const w=dom.window,d=w.document;
 w.PANDA_HSK1_VOICES={female:{'我':'data:audio/mpeg;base64,AA==','是':'x.mp3','学生':'x2.mp3','你':'y.mp3','你好':'data:audio/mpeg;base64,AA==','我是学生':'data:audio/mpeg;base64,AA==','你好！':'data:audio/mpeg;base64,AA=='}};
 w.courseHumanAudio={'妈':'a.mp3','麻':'b.mp3','马':'c.mp3','骂':'d.mp3'};
@@ -59,7 +61,7 @@ const saved=JSON.parse(w.localStorage.getItem('pg-hsk1-v189-lesson1'));
 assert(saved.listenPassed,'Save listening achievement');
 assert.equal(saved.listenTarget,sound,'Do not change the listening target on a page reload');
 assert.deepEqual(Array.from(saved.order),[0,1,2],'Remember completed sentence tiles');
-const reload=new JSDOM(page,{url:'https://example.test/chinese-coach-pwa/hsk1-first-v189.html',runScripts:'outside-only'});
+const reload=new JSDOM(page,{url:'https://example.test/chinese-coach-pwa/hsk1-first-v189.html?preview=legacy',runScripts:'outside-only'});
 const r=reload.window;const k=reload.window.document;
 r.localStorage.setItem('pg-hsk1-v189-lesson1',JSON.stringify(saved));
 r.PANDA_HSK1_VOICES=w.PANDA_HSK1_VOICES;r.courseHumanAudio=w.courseHumanAudio;
