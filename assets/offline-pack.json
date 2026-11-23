@@ -1,6 +1,6 @@
 {
-  "version": 509,
-  "bytes": 80382882,
+  "version": 526,
+  "bytes": 80651358,
   "files": [
     "./assets/panda-character-clean-v349.webp",
     "./assets/panda-live-v346.css?v=349",
@@ -3331,6 +3331,17 @@
     "./assets/hsk2-catalog-thumbnails/future.webp",
     "./assets/hsk2-catalog-thumbnails/shop.webp",
     "./assets/hsk2-catalog-thumbnails/health.webp",
-    "./assets/hsk2-catalog-thumbnails/relationships.webp"
+    "./assets/hsk2-catalog-thumbnails/relationships.webp",
+    "./assets/panda-hsk2-preview-v506.css?v=511",
+    "./assets/panda-hsk2-preview-core-v1.mjs?v=524",
+    "./assets/panda-hsk2-preview-ui-v1.mjs?v=526",
+    "./assets/panda-memory-live-connector-v1.mjs?v=1",
+    "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=516",
+    "./assets/panda-approved-soft-v500.js?v=502",
+    "./assets/hsk2-home-photo2-v447.css?v=448",
+    "./assets/hsk2-home-photo2-v447.js?v=448",
+    "./assets/panda-hsk2-preview-core-v1.mjs?v=517",
+    "./assets/panda-hsk23-official-topics-v1.mjs?v=1",
+    "./panda-ai-hsk2-preview.html"
   ]
 }

@@ -2,6 +2,7 @@
    Only the presentation changes: no modifications to the established HSK/audio/speech engine. */
 import {lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=524';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
+import {pandaHSKTopicGroups,pandaHSKTopicStats} from './panda-hsk23-official-topics-v1.mjs?v=1';
 import {PANDA_CLIPS} from './panda-voice-clips-v365.mjs?v=365';
 import {PANDA_V411_VOICE} from './panda-voice-v411.mjs?v=411';
 import {audioStudyLine436} from './panda-audio-study-v436.mjs?v=436';
@@ -206,6 +207,33 @@ if (!bridge) {
    grid.append(day);
    const allAudio=el('button','pg374-day-entry','🎧 Все записи · '+(PANDA_CLIPS.length+PANDA_V411_VOICE.length));
    allAudio.type='button';allAudio.addEventListener('click',()=>showTopicDetails(9));grid.append(allAudio);
+   const syllabus=el('button','pg374-day-entry','📚 Программа HSK 2–3 · 40 групп');
+   syllabus.type='button';syllabus.addEventListener('click',()=>showSyllabusCatalog(2));grid.append(syllabus);
+  }
+  function showSyllabusCatalog(level=2){
+   // Official learning index only. No unverified HSK3 audio or AI lessons.
+   catalogueTopic='syllabus-'+level;
+   const detail=$('#pg374-topic-details');detail.replaceChildren();detail.hidden=false;
+   $('.pg346-topic-list').hidden=true;$('#pg374-topics-back').hidden=false;
+   $('#pg374-topics-title').textContent='Программа HSK 2–3';
+   const stats=pandaHSKTopicStats(level);
+   $('#pg374-topics-tip').textContent='HSK '+level+': '+stats.areaCount+' направлений, '+stats.groupCount+' групп, '+stats.subtopicCount+' подтем. Не все темы доступны для разговора.';
+   const tabs=el('div','pg374-syllabus-tabs');
+   for(const n of [2,3]){const b=el('button','pg374-syllabus-tab','HSK '+n);b.type='button';b.setAttribute('aria-pressed',String(n===level));b.addEventListener('click',()=>showSyllabusCatalog(n));tabs.append(b)}
+   detail.append(tabs);
+   detail.append(el('p','pg374-muted',level===3?'HSK 3: темы внесены в программу, но диалоги и мужские MP3 ещё не созданы.':'HSK 2: связанные темы ниже ведут к существующей практике. Покрытие официальной программы пока частичное.'));
+   let area='';
+   for(const group of pandaHSKTopicGroups(level)){
+    if(group.areaCn!==area){area=group.areaCn;detail.append(el('h3','pg374-section-title',group.areaRu+' · '+group.areaCn))}
+    const card=document.createElement('details');card.className='pg374-audio-section';
+    card.append(el('summary','',group.topicRu+' · '+group.topicCn),el('p','pg374-muted','По программе: '+group.subtopicsCn.join(' · ')));
+    if(level===2&&group.relatedPandaTopicIds.length){
+     card.append(el('p','pg374-muted','Есть связанная практика, но не полное покрытие темы.'));
+     for(const id of group.relatedPandaTopicIds){const related=HSK2_TOPICS.find(t=>t.id===id);if(!related)continue;const b=el('button','pg374-question','💬 '+related.name);b.type='button';b.addEventListener('click',()=>showTopicDetails(id));card.append(b)}
+    }else card.append(el('p','pg374-muted',level===3?'⏳ Разговор HSK 3 пока не готов.':'⏳ Отдельной практики пока нет.'));
+    detail.append(card);
+   }
+   detail.scrollTop=0;$('#pg346-topics').scrollTop=0;
   }
   function showTopicDetails(id){
    catalogueTopic=id;
