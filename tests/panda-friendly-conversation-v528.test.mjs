@@ -64,7 +64,36 @@ test('Panda short and Non-Stop use the same reviewed social route before fallbac
  assert.match(core,/everydayMeaning\(input,lesson\(\),\{awaiting:state.friendlyAwaiting\}\)/);
  assert.match(core,/say\(\{hanzi:social.reply\[0\]/);
  assert.match(core,/Тоны речи не оценивались/);
- assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=529/);
- assert.match(sw,/chinese-coach-pwa-v529-friendly-name/);
- assert.ok(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=529'));
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=540/);
+ assert.match(sw,/chinese-coach-pwa-v540-approved-panda-restored/);
+ assert.ok(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=540'));
+});
+
+test('approved Panda screen: no voice banner, clean side rail, grounded mascot and active UI assets',()=>{
+ const ui=fs.readFileSync('assets/panda-hsk2-preview-ui-v1.mjs','utf8');
+ const css=fs.readFileSync('assets/panda-hsk2-preview-v506.css','utf8');
+ const softJs=fs.readFileSync('assets/panda-approved-soft-v500.js','utf8');
+ const html=fs.readFileSync('panda-voice-pilot.html','utf8');
+ const sw=fs.readFileSync('sw.js','utf8');
+ const pack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
+ assert.doesNotMatch(ui,/pg502-start-audio|Включить голос Панды/,
+   'Do not recreate removed voice-enable banner');
+ assert.match(ui,/class="pg346-side-rail"/,'Approved rail must hold right-side shortcuts');
+ assert.match(softJs,/stage\.querySelector\('\.pg346-side-rail'\)/,
+   'Quick access buttons must mount inside one dedicated rail');
+ assert.match(css,/#pg346 \.pg346-side-rail\s*\{/);
+ assert.match(css,/#pg346 \.pg352-mascot::before\s*\{/,
+   'Panda paw/body contact shadow must be maintained on natural stone');
+ for(const path of [
+  'assets/panda-hsk2-preview-ui-v1.mjs?v=535',
+  'assets/panda-hsk2-preview-v506.css?v=535',
+  'assets/panda-approved-soft-v500.js?v=525',
+  'assets/panda-approved-soft-v500.css?v=527',
+  'assets/panda-hsk2-my-day-scenario-v1.mjs?v=538'
+ ]){
+  assert.ok(html.includes('./'+path),'Preview must load approved visual asset: '+path);
+  assert.ok(sw.includes('"./'+path+'"'),'New service worker must cache visible asset '+path);
+  assert.ok(pack.files.includes('./'+path),'Full offline pack must contain '+path);
+ }
+ assert.equal(pack.version,540);
 });
