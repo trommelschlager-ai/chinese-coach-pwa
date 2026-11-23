@@ -92,9 +92,16 @@ function classify(audio,word){
  const r=extract(audio,word),entry=r.entry,points=entry.points||[];
  const p=[points.filter(x=>x[0]<entry.splitRatio),points.filter(x=>x[0]>=entry.splitRatio)];
  const observed=p.map(x=>shape(x,entry.seconds));
- const usable=r.accepted&&entry.quality==='both'&&
+ // An F0 window can overlap the end of a 90ms vowel and make it look
+ // 150-200ms long. Require five INDEPENDENT 30ms RMS frames in each syllable.
+ // This gate never extends pitch tracks or guesses missing voiced F0.
+ const rmsFrames=[0,1].map(i=>(entry.levels||[]).filter(x=>
+   x[0]>=(i===0?0:entry.splitRatio)&&
+   (i===0?x[0]<entry.splitRatio:x[0]<=1)&&x[1]>=.023).length);
+ const enoughRms=rmsFrames.every(n=>n>=5);
+ const usable=r.accepted&&entry.quality==='both'&&enoughRms&&
   !entry.splitWarning&&entry.validParts?.every(Boolean)&&observed.every(x=>x.kind!=='unknown');
- return {accepted:r.accepted,quality:entry.quality,usable,
+ return {accepted:r.accepted,quality:entry.quality,usable,rmsFrames,
   observed:observed.map(x=>x.kind),reasons:observed.map(x=>x.reason),
   points:p.map(x=>x.length),split:entry.splitRatio,seconds:entry.seconds};
 }
