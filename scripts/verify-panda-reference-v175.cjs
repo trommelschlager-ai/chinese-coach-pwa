@@ -33,7 +33,10 @@ for(const [initial,completed] of cases){
  const w=dom.window,d=w.document;
  Object.entries(initial).forEach(([k,v])=>w.localStorage.setItem(k,v));
  const before=JSON.stringify({...w.localStorage});
- w.eval(d.querySelector('script').textContent);
+ // Execute actual map gate logic after the external press-effect script.
+  const mapGateScript=[...d.scripts].find(node=>node.textContent.includes("const KEY='pg-hsk1-path-v371'"));
+  assert(mapGateScript,'Sequential map gate logic must be present');
+  w.eval(mapGateScript.textContent);
  assert.equal(JSON.stringify({...w.localStorage}),before,'Map must never reset student progress');
  assert.equal(d.querySelectorAll('nav.hotspots > a.lesson').length,7);
  const frontier=Math.min(7,completed+1);
