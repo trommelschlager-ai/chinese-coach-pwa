@@ -105,12 +105,12 @@ test('new topic question without relative metadata accepts negative answer for a
 });
 test('screen and offline course include v426 family logic with approved art intact',()=>{
  const read=path=>fs.readFileSync(new URL('../'+path,import.meta.url),'utf8');
- assert(read('assets/panda-live-screen-v270.mjs').includes('continueFamilyAfterAnswer({'));
- assert(/panda-live-screen-v270\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
- assert(/panda-live-v346\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
+ assert(read('assets/panda-hsk2-preview-core-v1.mjs').includes('continueFamilyAfterAnswer({'));
+ assert(/panda-hsk2-preview-core-v1\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
+ assert(/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
  const pack=JSON.parse(read('assets/offline-pack.json'));
  assert(pack.files.includes('./assets/panda-family-turn-v426.mjs?v=427'));
- assert(pack.files.includes('./'+read('panda-voice-pilot.html').match(/assets\/panda-live-screen-v270\.mjs\?v=\d+/)?.[0]));
+ assert(pack.files.includes('./'+read('panda-voice-pilot.html').match(/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0]));
 });
 test('Android-like Non-Stop third turn replies and asks a new, voiced family question',async()=>{
  const f=await liveDOM(1,{completed:['family','weekdays']});
