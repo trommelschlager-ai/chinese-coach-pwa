@@ -59,4 +59,7 @@ test('worker and offline download include exact updated versions',()=>{
   assert(pack.files.includes(p),'Offline missing '+p);
   assert(worker.includes(p),'Worker missing '+p);
  }
+ for(const p of ['./assets/panda-hsk2-preview-v506.css?v=535','./assets/panda-hsk2-preview-ui-v1.mjs?v=535','./assets/panda-hsk2-preview-core-v1.mjs?v=536','./assets/panda-everyday-meaning-v515.mjs?v=536']){
+  assert(pack.files.includes(p),'Legacy HSK2 preview missing from full offline pack: '+p);
+ }
 });
