@@ -39,7 +39,38 @@ test('Unverified translation is not shown as a learner-facing placeholder',()=>{
 
 test('Main HTML busts stale Android CSS and JS caches',()=>{
   const html=source('../panda-voice-pilot.html');
-  assert.match(html,/panda-hsk2-preview-v506\.css\?v=539/);
+  assert.match(html,/panda-hsk2-preview-v506\.css\?v=540/);
   assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=539/);
-  assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=539/);
+  assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=540/);
+});
+
+test('Panda and stone hold pre-keyboard pixel dimensions instead of shrinking',()=>{
+  const js=source('../assets/panda-approved-soft-v500.js');
+  const css=source('../assets/panda-hsk2-preview-v506.css');
+  assert.match(js,/function rememberPandaGeometry\(/);
+  assert.match(js,/--pg540-panda-width/);
+  assert.match(js,/--pg540-stone-width/);
+  assert.match(css,/width:var\(--pg540-panda-width/);
+  assert.match(css,/width:var\(--pg540-stone-width/);
+});
+
+test('Filled input is sent by the FIRST airplane tap',()=>{
+  const js=source('../assets/panda-approved-soft-v500.js');
+  const ui=source('../assets/panda-hsk2-preview-ui-v1.mjs');
+  assert.match(js,/if\(!input.value.trim\(\)\&\&!opened\(\)\)/);
+  assert.match(ui,/bridge.send\(value\);sync\(\);stage.dataset.composerOpen='false'/);
+  assert.doesNotMatch(js,/if\(!opened\(\)\)\{\s*event.preventDefault/);
+});
+
+test('v540 assets and SW cached together to avoid stale Android scripts',()=>{
+  const html=source('../panda-voice-pilot.html');
+  const worker=source('../sw.js');
+  const pack=JSON.parse(source('../assets/offline-pack.json'));
+  assert.equal(pack.version,540);
+  assert.match(worker,/const CACHE='chinese-coach-pwa-v540-/);
+  for(const asset of ['panda-hsk2-preview-v506.css?v=540','panda-hsk2-preview-ui-v1.mjs?v=540','panda-approved-soft-v500.js?v=540']){
+    assert(html.includes(asset));
+    assert(pack.files.some(f=>f.endsWith(asset)));
+    assert(worker.includes(asset));
+  }
 });
