@@ -33,6 +33,31 @@
    steps+'<button type="button" class="pg-approved-hotspot pg-approved-start" data-step="2" aria-label="Начать урок" style="'+start+'"></button>'+
    '</div>'+(full?'':'<div class="pg-approved-bottom" aria-hidden="true"></div>');
   section.querySelector('img').src=img.src;
+  if(full){
+   // Give the painted Start CTA a real pressed state before changing lessons.
+   // The lesson's existing delegated data-step handler still owns navigation.
+   const startButton=section.querySelector('.pg-approved-start');
+   let pressPending=false;
+   let forwardClick=false;
+   startButton.addEventListener('click',event=>{
+    if(forwardClick){forwardClick=false;return;}
+    event.preventDefault();
+    event.stopPropagation();
+    if(pressPending)return; // no double navigation from repeated taps
+    pressPending=true;
+    startButton.classList.add('pg-approved-start-pressed');
+    startButton.setAttribute('aria-busy','true');
+    window.setTimeout(()=>{
+     startButton.classList.remove('pg-approved-start-pressed');
+     startButton.removeAttribute('aria-busy');
+     pressPending=false;
+     if(!startButton.isConnected)return;
+     forwardClick=true;
+     startButton.click(); // forwards once to the original app data-step listener
+     forwardClick=false;
+    },260);
+   });
+  }
   return section;
  }
  function mount(){
