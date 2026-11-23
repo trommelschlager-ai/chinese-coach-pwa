@@ -52,12 +52,16 @@ test('feedback CSS permits compact card to grow inside scene without hard 35% he
 
 test('approved Panda design, auto-speaking grammar and 42 MP3 remain intact',()=>{
  assert.ok(html.includes('panda-chat-corrections-v377.css?v=454'));
- assert.ok(html.includes('panda-live-v346.mjs?v=453'));
- assert.ok(html.includes('panda-live-screen-v270.mjs?v=452'));
- assert.ok(sw.includes("chinese-coach-pwa-v454-feedback-topic-clear"));
- assert.equal(pack.version,454);
+ assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/, 'Active approved Panda UI');
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=\d+/, 'Active Panda correction engine');
+ assert.match(sw,/chinese-coach-pwa-v\d+/, 'Versioned offline cache');
+ assert.ok(pack.version>=454,'Approved offline version must not regress');
  assert.equal(pack.files.filter(x=>/panda-grammar-voice-v451\/g\d{3}\.mp3/.test(x)).length,42);
  assert.ok(ui.includes('lookupPandaVoiceClip'));
  assert.ok(ui.includes('sound.disabled=!clipFor(e)'));
- assert.ok(read('assets/panda-live-screen-v270.mjs').includes("if(verifiedClip)play({hanzi:c.hanzi,audioKey:c.hanzi})"));
+ const activeCore=read('assets/panda-hsk2-preview-core-v1.mjs');
+ const activeUI=read('assets/panda-hsk2-preview-ui-v1.mjs');
+ assert.ok(activeCore.includes("if(verifiedClip)play({hanzi:c.hanzi,audioKey:c.hanzi})"));
+ assert.ok(activeUI.includes("root.append(el('p','pg445-brief',shortRule))"));
+ assert.ok(activeUI.includes("if(wrong.why)details.append("));
 });
