@@ -11,6 +11,21 @@ try{
   await page.goto(base+'/panda-voice-pilot.html',{waitUntil:'domcontentloaded'});
   await page.locator('#pg346').waitFor({state:'visible',timeout:15000});
   await page.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true',{timeout:15000});
+  await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pandaStatic==='true',{timeout:15000});
+  const portrait=async()=>page.evaluate(()=>{
+   const panda=document.querySelector('#pg346 .pg541-static-layer .pg352-mascot');
+   const stone=document.querySelector('#pg346 .pg541-static-back');
+   const coords=node=>{const r=node.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}};
+   return {panda:coords(panda),stone:coords(stone)};
+  });
+  const frozen=await portrait();
+  const verifyFrozen=async(label)=>{
+   const now=await portrait();
+   for(const name of ['panda','stone'])for(const property of ['x','y','w','h']){
+    const diff=Math.abs(now[name][property]-frozen[name][property]);
+    assert(diff<1.6,label+': '+name+'.'+property+' changed by '+diff+': '+JSON.stringify({frozen,now}));
+   }
+  };
   const send=async(input,answer)=>{
    await page.locator('#pg346-send').click();
    await page.locator('#pg346-input').fill(input);
@@ -26,6 +41,7 @@ try{
   await send('很不错，你呢？','我也很好，谢谢！');
   await send('你可以说中文','可以！我们说中文吧！');
   await send('跑步这么样','我喜欢跑步。');
+  await verifyFrozen('After multiple dialogue turns');
   const rects=await page.evaluate(()=>{
    const history=document.querySelector('#pg346-rows'),last=history.lastElementChild,scene=document.querySelector('#pg346 .pg346-scene');
    const a=history.getBoundingClientRect(),b=last.getBoundingClientRect(),c=scene?.getBoundingClientRect();
@@ -55,12 +71,12 @@ try{
     const root=document.documentElement,stage=document.querySelector('#pg346');
     const panda=stage.querySelector('.pg352-mascot');
     const scene=stage.querySelector('.pg346-scene');
-    const read=()=>({
-      pandaWidth:panda.getBoundingClientRect().width,
-      pandaHeight:panda.getBoundingClientRect().height,
-      stoneWidth:parseFloat(getComputedStyle(scene,'::before').width),
-      sceneHeight:scene.getBoundingClientRect().height
-    });
+    const stone=stage.querySelector('.pg541-static-back');
+    const read=()=>{
+      const a=panda.getBoundingClientRect(),b=stone.getBoundingClientRect();
+      return {pandaWidth:a.width,pandaHeight:a.height,pandaTop:a.top,pandaLeft:a.left,
+        stoneWidth:b.width,stoneTop:b.top,stoneLeft:b.left,sceneHeight:scene.getBoundingClientRect().height};
+    };
     const normal=read();
     root.style.setProperty('--screen-height','460px');
     root.dataset.keyboard='true';
@@ -72,6 +88,23 @@ try{
   assert(Math.abs(geometry.normal.pandaWidth-geometry.compact.pandaWidth)<1.6,'Panda rescaled when keyboard opened: '+JSON.stringify(geometry));
   assert(Math.abs(geometry.normal.pandaHeight-geometry.compact.pandaHeight)<2,'Panda changed body proportions: '+JSON.stringify(geometry));
   assert(Math.abs(geometry.normal.stoneWidth-geometry.compact.stoneWidth)<2,'Seating stone rescaled: '+JSON.stringify(geometry));
+  for(const prop of ['pandaTop','pandaLeft','stoneTop','stoneLeft'])
+    assert(Math.abs(geometry.normal[prop]-geometry.compact[prop])<2,'Panda or stone moved during Android keyboard: '+prop+' '+JSON.stringify(geometry));
+  await verifyFrozen('After keyboard open / close');
+  const speechAppearance=await page.evaluate(()=>{
+    const stage=document.querySelector('#pg346'),panda=stage.querySelector('.pg352-mascot');
+    stage.dataset.pose='talking';
+    const visible=selector=>{const node=stage.querySelector(selector);return node?getComputedStyle(node).display:'absent'};
+    const state={animation:getComputedStyle(panda).animationName,
+      mouth:visible('.pg352-mouth'),face:visible('.pg353-face-canvas'),headphones:visible('.pg352-ear-effects')};
+    stage.dataset.pose='idle';return state;
+  });
+  assert.equal(speechAppearance.animation,'none','Panda moves while speaking');
+  assert.equal(speechAppearance.face,'none','Panda facial canvas moves while speaking');
+  assert.equal(speechAppearance.headphones,'none','Panda ears change when speaking');
+  assert(['none','absent'].includes(speechAppearance.mouth),'Panda mouth moves while speaking');
+  await verifyFrozen('After Panda speaking state');
+
   // Android sometimes clears composerOpen while committing pinyin. A single
   // tap on the plane must still send an existing Chinese character.
   await page.locator('#pg346-input').fill('对');
@@ -79,8 +112,10 @@ try{
   await page.locator('#pg346-send').click();
   await page.waitForFunction(()=>[...document.querySelectorAll('#pg346-rows .pg346-row .pg346-zh')].some(n=>n.textContent==='对'),null,{timeout:7000});
   assert.equal(await page.locator('#pg346-input').inputValue(),'','One click must empty the input');
+  await verifyFrozen('After sending single Chinese character');
   await page.locator('#pg346-nonstop').click();
   await send('不好','怎么了？');
+  await verifyFrozen('After Non-Stop conversation');
   assert(!errors.length,'JS error: '+errors.join('; '));
   await page.screenshot({path:'qa/panda-beginner-release/beginner-'+width+'.png',fullPage:false,animations:'disabled'});
   console.log('PASS Panda beginner short/nonstop '+width+'px');
