@@ -245,6 +245,26 @@ function askHSK2(autoplay=true){
  state.prompt={line:{...l,accepted:q.options.map(a=>a[0])}};state.awaitQuestion=false;state.hint=false;say(l,autoplay);
 }
 function submitHSK2(input){
+ // "Своя фраза" is conversation, not a scored HSK2 quiz.
+ if(hsk2.openChat){
+  const out=replyHSK2(input,hsk2.id,hsk2.index,true,hsk2.context);
+  if('context' in out)hsk2.context=out.context;
+  let fallback=null;
+  if(out.kind==='unknown')fallback=answerLive(input,{allowed:state.allowed,topic:conversation.id,prompt:null,curriculum,date:new Date(),turn:state.turns,profile:state.profile});
+  const known=out.spoken||knownHSK2(input);
+  const spoken=fallback?.spoken?.known?fallback.spoken:known?{known:true,pinyin:known.pinyin||null,translation:known.ru||known.translation||null}:null;
+  learner(input,spoken);
+  state.turns=(state.turns||0)+1;
+  const reply=fallback?.reply||(['example','variant'].includes(out.kind)?
+   {hanzi:'我明白了。你还想说什么？',pinyin:'Wǒ míngbai le. Nǐ hái xiǎng shuō shénme?',ru:'Понятно. Что ещё хочешь рассказать?'}:
+   out.kind==='unknown'?
+    {hanzi:'你能说得简单一点吗？',pinyin:'Nǐ néng shuō de jiǎndān yìdiǎn ma?',ru:'Можешь сказать немного проще?'}:out.line);
+  if(reply)say(reply,!!lookupPandaVoiceClip(reply.hanzi));
+  note(out.kind==='unknown'&&!fallback?.reply?
+   'Пока нет проверенного ответа на эту формулировку. Попробуй проще или другое выражение. Тоны не проверялись.':
+   'Продолжай разговор своими словами. Тоны произношения не оценивались.');
+  return;
+ }
  const t=getTopic(hsk2.id),q=t.questions[hsk2.index],prior=state.display,out=replyHSK2(input,hsk2.id,hsk2.index,hsk2.done,hsk2.context);
  const known=out.spoken||knownHSK2(input);const legacy=known?null:analyzeLearner(input,[1,2,3,4,5,6,7],null,curriculum,false);
  const spoken=known?{known:true,pinyin:known.pinyin,translation:known.ru}:legacy?.known?legacy:null;
@@ -679,6 +699,18 @@ window.PandaApprovedBridge337={
   // an arbitrary first prompt until the learner selects one.
   state.mode='nonstop';state.lockedTopic=id;state.prompt=null;state.awaitQuestion=true;state.hint=false;
   render();note('Тема выбрана. Выбери вопрос из списка.');
+  return true;
+ },
+ openTopicForChat:id=>{
+  id=Number(id);state.naturalAwaiting=null;
+  if(getTopic(id)){
+   if(!beginHSK2(id,0,false))return false;
+   hsk2.openChat=true;state.mode='nonstop';state.prompt=null;state.awaitQuestion=true;
+  }else{
+   if(!window.PandaApprovedBridge337.chooseTopic(id))return false;
+  }
+  say({hanzi:'你想聊什么？',pinyin:'Nǐ xiǎng liáo shénme?',ru:'О чём ты хочешь поговорить?'},false);
+  note('Напиши своё предложение на китайском. Панда понимает изученные выражения; незнакомую фразу может попросить уточнить.');
   return true;
  },
  topicQuestions:id=>{
