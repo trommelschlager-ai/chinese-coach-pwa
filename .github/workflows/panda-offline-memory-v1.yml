@@ -1,0 +1,23 @@
+name: Panda AI offline memory — isolated tests
+on:
+  push:
+    paths:
+      - 'assets/panda-offline-memory-v1.mjs'
+      - 'tests/panda-offline-memory-v1.test.mjs'
+      - '.github/workflows/panda-offline-memory-v1.yml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  memory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify consent and reviewed Xiaoxiao offline memory
+        run: node --test tests/panda-offline-memory-v1.test.mjs
