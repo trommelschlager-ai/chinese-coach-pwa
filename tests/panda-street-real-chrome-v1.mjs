@@ -157,6 +157,50 @@ try{
       if(viewport.width!==393)reports.push({viewport:name,dayNight:'passed'});
     }finally{await context.close()}
   }
+  // Reproduce 38813.jpg: one dependency cannot load on Android,
+  // but the Panda must still answer, keep its face animation and never show
+  // "Модуль Panda AI недоступен. Проверь подключение".
+  const fallbackContext=await browser.newContext({
+    viewport:{width:393,height:852},isMobile:true,hasTouch:true,deviceScaleFactor:1
+  });
+  try{
+    const fallbackPage=await fallbackContext.newPage();
+    fallbackPage.on('pageerror',e=>errors.push(String(e.message)));
+    await fallbackPage.route('**/assets/panda-cross-character-memory-v1.mjs*',route=>route.abort('failed'));
+    await fallbackPage.goto(base+'/panda-street-ai-preview.html',{waitUntil:'domcontentloaded'});
+    await fallbackPage.waitForFunction(()=>document.querySelector('#stage')?.dataset.brainState==='fallback',null,{timeout:15000});
+    await fallbackPage.waitForFunction(()=>document.querySelector('#street-face-motion-layer'),null,{timeout:15000});
+    await fallbackPage.evaluate(()=>{
+      window.__streetFallbackMotions=[];
+      const layer=document.getElementById('street-face-motion-layer');
+      new MutationObserver(()=>{
+        const state=layer.getAttribute('data-motion-state');
+        window.__streetFallbackMotions.push(state);
+        if(state==='reaction'){
+          const pixels=layer.getContext('2d').getImageData(0,0,layer.width,layer.height).data;
+          window.__streetMotionActuallyPainted=false;
+          for(let i=3;i<pixels.length;i+=4){
+            if(pixels[i]>60){window.__streetMotionActuallyPainted=true;break}
+          }
+        }
+      }).observe(layer,{attributes:true,attributeFilter:['data-motion-state']});
+    });
+    await fallbackPage.locator('#send').click();
+    await fallbackPage.locator('#entry').fill('我有点忙。');
+    await fallbackPage.locator('#submit').click();
+    await fallbackPage.waitForFunction(()=>
+      document.getElementById('live-panda')?.textContent.includes('好，那你先忙吧')&&
+      document.getElementById('live-learner')?.textContent.includes('我有点忙')&&
+      !document.getElementById('shade')?.classList.contains('open'),
+      null,{timeout:12000});
+    await fallbackPage.waitForFunction(()=>window.__streetFallbackMotions?.includes('reaction'),null,{timeout:6000});
+    assert.equal(await fallbackPage.evaluate(()=>window.__streetMotionActuallyPainted),true,
+      'Visible alpha pixels must be painted, not just a data-motion-state attribute');
+    assert(!await fallbackPage.locator('#toast').innerText().then(s=>s.includes('Модуль Panda AI недоступен')),
+      'Older fatal-error toast must never show');
+    await fallbackPage.screenshot({path:output+'/brain-import-failed-graceful.png'});
+    reports.push({viewport:'393x852',forcedModuleFailure:'graceful limited chat',silentFaceMotion:'passed'});
+  }finally{await fallbackContext.close()}
   assert.deepEqual(errors,[],'Browser JavaScript errors: '+errors.join('; '));
   fs.writeFileSync(output+'/results.json',JSON.stringify({reports,errors},null,2));
   console.log('STREET CHROMIUM ANDROID EMULATION PASS '+JSON.stringify(reports));

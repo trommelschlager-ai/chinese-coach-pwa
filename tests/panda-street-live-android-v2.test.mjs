@@ -5,6 +5,7 @@ import {createStreetBrain} from '../assets/panda-street-shared-brain-v1.mjs';
 import {streetFacePlacement,streetMouthOpenness,createStreetFaceRig} from '../assets/panda-street-face-rig-v1.mjs';
 const source=fs.readFileSync(new URL('../panda-street-ai-preview.html',import.meta.url),'utf8');
 const brainSource=fs.readFileSync(new URL('../assets/panda-street-shared-brain-v1.mjs',import.meta.url),'utf8');
+const swSource=fs.readFileSync(new URL('../sw.js',import.meta.url),'utf8');
 function storage(){
  const store=new Map();
  return {getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,String(v)),removeItem:k=>store.delete(k)};
@@ -85,7 +86,7 @@ test('video 38791: 我有点忙 is a valid conversational turn, not an empty exp
 });
 
 test('face rig uses the existing approved photo and follows uniform canvas crop',()=>{
- assert.match(source,/import\('\.\/assets\/panda-street-face-rig-v1\.mjs\?v=2'\)/);
+ assert.match(source,/import\('\.\/assets\/panda-street-face-rig-v1\.mjs\?v=3'\)/);
  assert.match(source,/streetFaceRig\?\.resize\(\{width,height,scale:s,left:stageX,cutSky:removedSky\}\)/);
  assert.match(source,/streetFaceRig\?\.setState\('listening'\)/);
  assert.match(source,/streetFaceRig\?\.setState\('talking'\)/);
@@ -95,6 +96,25 @@ test('face rig uses the existing approved photo and follows uniform canvas crop'
  assert.ok(streetMouthOpenness(.9,20)>.4);
  assert.ok(streetMouthOpenness(9,0)<=1);
 });
+test('Street service worker preloads the once-missing memory and motion module files',()=>{
+ for(const required of [
+  'panda-cross-character-memory-v1.mjs',
+  'panda-street-face-rig-v1.mjs?v=3',
+  'panda-street-shared-brain-v1.mjs?v=3'
+ ])assert(swSource.includes(required),'Not available offline: '+required);
+ assert.match(swSource,/chinese-coach-pwa-v543-street-motion-brain-fix-20261123/);
+});
+
+test('broken module import cannot block Panda Street chat or silent mouth reactions',()=>{
+ assert.match(source,/function createStreetOfflineBrain\(\)/);
+ assert.match(source,/streetBrainPromise=import\('\.\/assets\/panda-street-shared-brain-v1\.mjs\?v=3'\)/);
+ assert.match(source,/stage\.dataset\.brainState='fallback'/);
+ assert.match(source,/createStreetOfflineBrain\(\)\.answer\(zh\)/);
+ assert.match(source,/streetFaceRig\?\.acknowledge\?\.\(\)/);
+ assert.doesNotMatch(source,/Модуль Panda AI недоступен\. Проверь подключение\./);
+ assert.doesNotMatch(source,/speechSynthesis|SpeechSynthesisUtterance/);
+});
+
 test('face rig is a transparent, noninteractive animation layer and can be stopped',()=>{
  const calls=[];
  const ctx={

@@ -240,9 +240,12 @@ function paintScene(canvas,image,width,height,dpr,fill){
 }
 const daySrc=el('day-src');
 daySrc.addEventListener('load',paint);
-import('./assets/panda-street-face-rig-v1.mjs?v=2').then(module=>{
+import('./assets/panda-street-face-rig-v1.mjs?v=3').catch(error=>{
+ console.warn('Street face rig first load failed; retrying:',error);
+ return import('./assets/panda-street-face-rig-v1.mjs?v=3-retry');
+}).then(module=>{
  streetFaceRig=module.createStreetFaceRig({stage,source:src});paint();
-}).catch(error=>{console.warn('Street face rig optional:',error)});
+}).catch(error=>{console.error('Street face animation unavailable:',error);tip('Мимика не загрузилась. Обнови страницу.')});
 src.addEventListener('load',paint);window.addEventListener('resize',()=>{keepStreetStageSize();paint()});window.visualViewport?.addEventListener('resize',()=>{keepStreetStageSize();paint()});new ResizeObserver(paint).observe(stage);if(src.complete&&src.naturalWidth)paint();
 const esc=str=>String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 let timer;function tip(msg){const t=el('toast');t.textContent=msg;t.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>t.classList.remove('show'),2700)}
@@ -336,10 +339,52 @@ function liveRow(id,item){
   (item.py?'<div class="py">'+esc(item.py)+'</div>':'')+'</div><div class="ru">'+esc(item.ru||'')+'</div>';
  node.classList.add('show');
 }
-const streetBrainPromise=import('./assets/panda-street-shared-brain-v1.mjs?v=1')
- .then(m=>m.createStreetBrain({storage:(()=>{try{return localStorage}catch{return null}})(),
-   curriculum:window.PANDA_HSK1_FOUNDATIONS||[]}))
- .catch(e=>{console.error('Panda Street shared brain:',e);tip('Разговорный модуль не загрузился. Обнови страницу.');return null});
+// Safe local fallback: never claims to understand phrases it cannot parse.
+// It has NO shared memory writes, no synthesized voice and no tone grading.
+function createStreetOfflineBrain(){
+ const line=(zh,py,ru)=>({zh,py,ru});
+ const hello=line('哈喽！最近怎么样？','Hālou! Zuìjìn zěnmeyàng?','Привет! Как дела?');
+ const unknown=line('我还没理解。你能换个说法吗？','Wǒ hái méi lǐjiě. Nǐ néng huàn ge shuōfǎ ma?','Пока не понял. Можешь сказать иначе?');
+ const clean=s=>String(s??'').normalize('NFC').replace(/[\s，。？！?!、,.]/g,'');
+ return {
+  fallback:true,
+  start:()=>hello,
+  nextQuestion:()=>null,
+  answer(text){
+   const raw=String(text??'').trim(),s=clean(raw);
+   if(!s)return {kind:'empty',message:'Введи фразу по-китайски.'};
+   let panda=unknown,learner=line(raw,'','Фраза принята · подробный перевод недоступен');
+   if(['我有点忙','我很忙','我现在有点忙'].includes(s)){
+    learner=line(raw,s==='我很忙'?'Wǒ hěn máng.':s==='我现在有点忙'?'Wǒ xiànzài yǒudiǎn máng.':'Wǒ yǒudiǎn máng.',
+      s==='我很忙'?'Я очень занят.':'Я немного занят.');
+    panda=line('好，那你先忙吧！','Hǎo, nà nǐ xiān máng ba!','Хорошо, тогда занимайся своими делами.');
+   }else if(['哈喽','你好','嗨','早上好'].includes(s)){
+    panda=hello;learner=line(raw,'','Приветствие');
+   }else if(['我很好','我还好','还好','挺好的','不错'].includes(s)){
+    panda=line('太好了！你今天有什么计划？','Tài hǎo le! Nǐ jīntiān yǒu shénme jìhuà?','Здорово! Какие у тебя планы на сегодня?');
+    learner=line(raw,'','Ответ о самочувствии');
+   }else if(/^我是(老师|学生|医生|工程师|司机|厨师|老板)$/.test(s)){
+    panda=line('你喜欢吗？','Nǐ xǐhuan ma?','Тебе нравится?');
+   }
+   return {kind:'answer',learner,panda,nextQuestion:null,message:''};
+  }
+ };
+}
+let streetOfflineMode=false;
+const makeStreetBrain=m=>m.createStreetBrain({storage:(()=>{try{return localStorage}catch{return null}})(),
+ curriculum:window.PANDA_HSK1_FOUNDATIONS||[]});
+const streetBrainPromise=import('./assets/panda-street-shared-brain-v1.mjs?v=3')
+ .catch(firstError=>{
+  console.warn('Street brain first load failed; retrying:',firstError);
+  return import('./assets/panda-street-shared-brain-v1.mjs?v=3-retry');
+ })
+ .then(m=>{const brain=makeStreetBrain(m);stage.dataset.brainState='full';return brain})
+ .catch(error=>{
+  console.error('Street brain unavailable; using limited offline conversation:',error);
+  streetOfflineMode=true;stage.dataset.brainState='fallback';
+  tip('Включён базовый диалог. Полный модуль не загрузился.');
+  return createStreetOfflineBrain();
+ });
 let responseSeq=0;
 async function respond(text){
  const zh=String(text||'').trim();
@@ -347,8 +392,14 @@ async function respond(text){
  const token=++responseSeq;
  const brain=await streetBrainPromise;
  if(token!==responseSeq)return;
- if(!brain){tip('Модуль Panda AI недоступен. Проверь подключение.');return}
- const result=brain.answer(zh,{mode});
+ if(!brain){tip('Диалог временно не готов. Обнови страницу.');return}
+ let result;
+ try{result=brain.answer(zh,{mode})}
+ catch(error){
+  console.error('Street conversation error:',error);
+  if(!streetOfflineMode){streetOfflineMode=true;stage.dataset.brainState='fallback';}
+  result=createStreetOfflineBrain().answer(zh);
+ }
  if(!result||result.kind==='empty'||result.kind==='error'){tip(result?.message||'Не удалось разобрать фразу');return}
  if(['correction','clarify','locked','explanation'].includes(result.kind)||!result.panda){
   const correction=result.correction;
