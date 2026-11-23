@@ -132,115 +132,21 @@ html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-map
   transform:scale(.93)!important;filter:brightness(1.05)!important;
 }
 
-/* Approved 23 Nov: only the 'Начать урок' CTA receives a THIN, subdued
-   yellow rim. No page/frame outline, no highlight on the six tiles.
-   Keep the artwork's own gold edge; do not repaint it or add a broad glow. */
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start{
-  border-radius:999px!important;
-  background:transparent!important;
-  box-shadow:inset 0 0 0 1.5px rgba(255,218,116,.64)!important;
-  transition:box-shadow 120ms ease!important;
-}
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start:active{
-  background:transparent!important;
-  box-shadow:inset 0 0 0 2px rgba(255,224,137,.8)!important;
-}
-/* No changes to non-CTA hotspots: full-poster tile and navigation outlines
-   stay as previously configured. */
-
-/* One-button tactile feedback across all 10 full-cover HSK 2 intros.
-   The label, border and purple artwork already exist in the poster image.
-   Never show a second bitmap, text layer or replacement HTML button. */
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start{
-  box-sizing:border-box!important;
-  border:0!important;
-  border-radius:999px!important;
-  transform-origin:center center!important;
-  transition:transform 110ms ease,background-color 110ms ease,box-shadow 110ms ease!important;
-  -webkit-tap-highlight-color:transparent!important;
-}
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start:active,
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start.pg-approved-start-pressed{
-  /* Darken the very same painted CTA; do not paint a new button. */
-  background:linear-gradient(180deg,rgba(33,0,65,.08),rgba(28,0,55,.24))!important;
-  box-shadow:inset 0 5px 12px rgba(20,0,48,.43),inset 0 0 0 1.5px rgba(255,219,129,.68)!important;
-  transform:translateY(3px) scale(.99)!important;
-  filter:none!important;
-}
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start::before,
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start::after{
-  content:none!important;
-}
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-pressed-art{
-  display:none!important;
-}
-@media(prefers-reduced-motion:reduce){
-  html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start{transition:none!important}
-}
-
-
-/* Original-pixel press: two composited CANVASES, not a swapped HTML button.
-   The base has the button recessed and blurred; button pixels appear once.
-   Press moves that same rendered button by 4px. */
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-base-canvas,
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-button-canvas{
-  position:absolute!important;inset:0!important;
-  display:block!important;width:100%!important;height:100%!important;
-  max-width:100%!important;max-height:100%!important;
-  object-fit:cover!important;object-position:center center!important;
-  pointer-events:none!important;user-select:none!important;
-  background:transparent!important;
-}
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-base-canvas{
-  z-index:1!important;
-}
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-button-canvas{
-  z-index:2!important;transform:translateY(0)!important;filter:none!important;
-  transition:transform 105ms ease,filter 105ms ease!important;
-}
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full.pg-approved-canvas-ready .pg-approved-cover-image{
-  visibility:hidden!important;
-}
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-poster.pg-approved-pressing .pg-approved-button-canvas{
-  transform:translateY(4px)!important;filter:brightness(.82)!important;
-}
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full.pg-approved-canvas-ready .pg-approved-start.pg-approved-start-pressed{
-  transform:translateY(0)!important;
-  background:transparent!important;
-  box-shadow:inset 0 4px 10px rgba(25,0,50,.26)!important;
-}
-@media(prefers-reduced-motion:reduce){
- html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-button-canvas{transition:none!important}
-}
-
-/* CTA in the approved poster is bitmap artwork. Hit testing is fully invisible.
-   Do not paint a second rectangle, rim, label, or shadow over the CTA. */
+/* Full-cover Start buttons are transparent hit targets for the painted artwork. */
 html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start,
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start:active,
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start.pg-approved-start-pressed {
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start:active{
+  border-radius:999px!important;
   background:transparent!important;
-  background-image:none!important;
-  border:0!important;
   box-shadow:none!important;
-  outline:0!important;
   filter:none!important;
   transform:none!important;
 }
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-poster.pg-approved-pressing .pg-approved-button-canvas{
-  transform:translateY(5px)!important;
-  filter:brightness(.90)!important;
-}
-
-/* Lesson 5 temporarily replaces only the strip containing the painted CTA. */
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-5 .pg-approved-press-frame{
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-press-frame{
   display:none!important;
   position:absolute!important;
   max-width:none!important;max-height:none!important;
   pointer-events:none;
 }
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-5 .pg-approved-frame-visible .pg-approved-press-frame{
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-frame-visible .pg-approved-press-frame{
   display:block!important;
-}
-html.course-layout #app[data-view="1"] #pg433 .pg-approved-full.pg-approved-lesson-5 .pg-approved-start:focus-visible{
-  outline:3px solid white!important;
 }
