@@ -36,6 +36,25 @@ try{
         railRect:rail.getBoundingClientRect().toJSON()
       };
     });
+    const pandaPixels=async()=>page.evaluate(()=>{
+      const stage=document.getElementById('pg346');
+      const img=stage.querySelector('.pg352-mascot .pg346-panda');
+      const cs=getComputedStyle(img),face=stage.querySelector('.pg353-face-canvas');
+      const cv=document.createElement('canvas');cv.width=40;cv.height=40;
+      const ctx=cv.getContext('2d',{willReadFrequently:true});
+      ctx.drawImage(img,0,0,40,40);
+      const data=ctx.getImageData(0,0,40,40).data;
+      let opaque=0;for(let i=3;i<data.length;i+=4)if(data[i]>100)opaque++;
+      return {loaded:img.complete&&img.naturalWidth>100,opacity:cs.opacity,
+        display:cs.display,visibility:cs.visibility,
+        faceDisplay:getComputedStyle(face).display,opaque};
+    });
+    const portrait=await pandaPixels();
+    assert(portrait.loaded,'Panda original image is not loaded: '+JSON.stringify(portrait));
+    assert.equal(portrait.opacity,'1','Panda photo is invisible behind a hidden face canvas: '+JSON.stringify(portrait));
+    assert.equal(portrait.visibility,'visible','Panda image visibility lost: '+JSON.stringify(portrait));
+    assert(portrait.opaque>200,'Panda image has no visible pixels: '+JSON.stringify(portrait));
+    assert.equal(portrait.faceDisplay,'none','Animated canvas must be hidden when static photo is visible');
     const initial=await snapshot();
     assert.deepEqual(initial.labels,['Главная','История','Panda AI','Профиль'],'Wrong footer order: '+JSON.stringify(initial));
     assert.equal(initial.right.length,2,'Right buttons should be Topics and Lessons only: '+JSON.stringify(initial.right));
@@ -50,6 +69,7 @@ try{
     await page.locator('#pg346-send').click();
     await page.waitForFunction(()=>document.querySelector('#pg346-input')?.value==='',{timeout:6000});
     const afterSend=await snapshot();
+    assert.equal((await pandaPixels()).opacity,'1','Panda disappeared after text send');
     for(const key of ['x','y','w','h'])
       assert(Math.abs(afterSend.panda[key]-initial.panda[key])<1.5,'Panda jumps after send: '+key);
     assert.equal(afterSend.stoneTop,initial.stoneTop);
