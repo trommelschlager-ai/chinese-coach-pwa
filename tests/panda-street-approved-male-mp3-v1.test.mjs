@@ -65,7 +65,7 @@ test('Street page keeps approved v1 voice, supports new MP3 and never uses syste
  assert.match(html,/const MALE_VOICE='\.\/assets\/panda-street-lesson1-luvvoice\.m4a'/);
  assert.match(html,/import\('\.\/assets\/panda-street-approved-male-mp3-v1\.mjs\?v=1'\)/);
  assert.match(html,/lookupApprovedStreetMaleMp3\(text\)/);
- assert.match(html,/playApprovedMaleMp3\(clip,token\)/);
+ assert.match(html,/playApprovedStreetMaleClip\(clip,token\)/);
  assert.match(html,/streetFaceRig\?\.setState\('talking'\)/);
  assert.match(html,/Фраза показана текстом · мужская запись для неё пока не загружена/);
  assert.doesNotMatch(html,/speechSynthesis|SpeechSynthesisUtterance/);
