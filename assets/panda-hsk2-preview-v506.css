@@ -189,48 +189,42 @@
   left:var(--pg540-stone-left, -4%)!important;
 }
 
-/* v541: The Panda and original stone are placed once in a stage-anchored layer.
-   Never tie them to shrinking chat/scene/keyboard dimensions again. */
-#pg346[data-panda-static="true"] .pg541-static-layer {
+
+/* v542: Freeze the APPROVED image after the copy loads. Never detach the
+   original image/face DOM from the scenic stage (that broke v541). */
+#pg346[data-panda-static="true"] .pg542-static-layer {
  position:absolute!important;inset:0!important;z-index:5!important;
- pointer-events:none!important;overflow:visible!important;
- contain:none!important;transform:none!important;animation:none!important;
+ display:block!important;pointer-events:none!important;overflow:visible!important;
+ animation:none!important;transform:none!important;transition:none!important;
 }
-#pg346[data-panda-static="true"] .pg541-static-layer .pg352-mascot {
- position:absolute!important;left:var(--pg541-panda-x)!important;
- top:var(--pg541-panda-y)!important;bottom:auto!important;right:auto!important;
- width:var(--pg541-panda-w)!important;height:var(--pg541-panda-h)!important;
- min-width:0!important;max-width:none!important;min-height:0!important;max-height:none!important;
+#pg346 .pg542-frozen-panda {
+ display:block!important;position:absolute!important;
+ left:var(--pg542-panda-x)!important;top:var(--pg542-panda-y)!important;
+ bottom:auto!important;right:auto!important;
+ width:var(--pg542-panda-w)!important;height:var(--pg542-panda-h)!important;
+ max-width:none!important;max-height:none!important;object-fit:contain!important;
+ opacity:1!important;visibility:visible!important;
  transform:none!important;transition:none!important;animation:none!important;
- will-change:auto!important;z-index:2!important;
+ filter:none!important;will-change:auto!important;z-index:2!important;
 }
-#pg346[data-panda-static="true"] .pg541-static-stone {
- position:absolute!important;left:var(--pg541-stone-x)!important;
- top:var(--pg541-stone-y)!important;bottom:auto!important;right:auto!important;
- width:var(--pg541-stone-w)!important;height:var(--pg541-stone-h)!important;
+#pg346 .pg542-static-stone {
+ position:absolute!important;left:var(--pg542-stone-x)!important;
+ top:var(--pg542-stone-y)!important;right:auto!important;bottom:auto!important;
+ width:var(--pg542-stone-w)!important;height:var(--pg542-stone-h)!important;
  background:url('./panda-exact-stone-v361.webp?v=361') center bottom/contain no-repeat!important;
- transform:none!important;animation:none!important;transition:none!important;
+ transition:none!important;transform:none!important;animation:none!important;
  pointer-events:none!important;
 }
-#pg346[data-panda-static="true"] .pg541-static-back {
- z-index:1!important;filter:drop-shadow(0 4px 4px #28516b6b);
-}
-#pg346[data-panda-static="true"] .pg541-static-front {
+#pg346 .pg542-static-back {z-index:1!important;filter:drop-shadow(0 4px 4px #28516b6b)}
+#pg346 .pg542-static-front {
  z-index:3!important;clip-path:inset(72% 0 0 0);
- filter:drop-shadow(0 2px 2px #3156684d);
+ filter:drop-shadow(0 2px 2px #3156684d)
+}
+/* Original stays in place and its mouth rig keeps its normal callbacks. */
+#pg346[data-panda-static="true"] .pg352-mascot {
+ visibility:hidden!important;animation:none!important;transition:none!important
 }
 #pg346[data-panda-static="true"] .pg346-scene::before,
 #pg346[data-panda-static="true"] .pg346-scene::after {display:none!important}
-#pg346[data-panda-static="true"] .pg352-mascot *,
-#pg346[data-panda-static="true"] .pg352-mascot::before,
-#pg346[data-panda-static="true"] .pg352-mascot::after {
- animation:none!important;transition:none!important;
-}
-#pg346[data-panda-static="true"] .pg352-mouth,
-#pg346[data-panda-static="true"] .pg353-face-canvas,
-#pg346[data-panda-static="true"] .pg352-ear-effects {
- display:none!important;opacity:0!important;animation:none!important;
-}
-/* Conversation cards are allowed to grow above the frozen, non-interactive art. */
 #pg346[data-panda-static="true"] .pg346-history {z-index:7!important}
 #pg346[data-panda-static="true"] .pg346-composer {z-index:10!important}
