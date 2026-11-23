@@ -5,6 +5,10 @@ on:
       - 'assets/panda-everyday-meaning-v515.mjs'
       - 'assets/panda-hsk2-preview-core-v1.mjs'
       - 'assets/panda-live-dialogue-v272.mjs'
+      - 'assets/panda-ai-approved-layout-v546.css'
+      - 'assets/panda-ai-approved-layout-v546.js'
+      - 'tests/panda-ai-approved-layout-v546.test.mjs'
+      - 'scripts/qa-panda-approved-layout-v546.mjs'
       - 'panda-voice-pilot.html'
       - 'panda-ai-hsk2-preview.html'
       - 'sw.js'
@@ -34,6 +38,8 @@ jobs:
         run: |
           node --test tests/panda-android-keyboard-dialogue-v539.test.mjs
           node --test tests/panda-natural-statements-v542.test.mjs
+      - name: Check approved v546 Panda AI layout and original assets
+        run: node --test tests/panda-ai-approved-layout-v546.test.mjs
       - name: Install mobile Chromium
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
@@ -49,10 +55,13 @@ jobs:
             sleep 1
           done
           node scripts/qa-panda-beginner-release-v536.mjs
+          node scripts/qa-panda-approved-layout-v546.mjs
       - name: Preserve screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: panda-beginner-v536-android
-          path: qa/panda-beginner-release/
+          path: |
+            qa/panda-beginner-release/
+            qa/panda-approved-layout-v546/
           if-no-files-found: warn
