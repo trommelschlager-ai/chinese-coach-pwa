@@ -1,6 +1,6 @@
 /* Photo-2 inspired footer for the live HSK2 landing screen.
  * Existing image and transparent hotspots stay in place, including floating petals.
- * Never alter the lesson state machine, audio, localStorage, or navigation. */
+ * Never alter the lesson state machine, audio, student records, or navigation. */
 (function(){
 'use strict';
 const mount=document.getElementById('screen');
