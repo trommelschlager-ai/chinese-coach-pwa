@@ -1,14 +1,14 @@
 {
-  "version": 542,
+  "version": 543,
   "bytes": 80382882,
   "files": [
     "./assets/panda-approved-soft-v500.css?v=527",
-    "./assets/panda-hsk2-preview-v506.css?v=542",
-    "./assets/panda-hsk2-preview-core-v1.mjs?v=539",
-    "./assets/panda-hsk2-preview-ui-v1.mjs?v=541",
+    "./assets/panda-hsk2-preview-v506.css?v=543",
+    "./assets/panda-hsk2-preview-core-v1.mjs?v=543",
+    "./assets/panda-hsk2-preview-ui-v1.mjs?v=543",
     "./assets/panda-memory-live-connector-v1.mjs?v=1",
     "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=516",
-    "./assets/panda-approved-soft-v500.js?v=542",
+    "./assets/panda-approved-soft-v500.js?v=543",
     "./panda-ai-hsk2-preview.html",
     "./assets/panda-everyday-meaning-v515.mjs?v=535",
     "./assets/panda-clarification-map-v504.mjs?v=505",
@@ -3395,6 +3395,10 @@
     "./assets/panda-hsk2-preview-ui-v1.mjs?v=540",
     "./assets/panda-approved-soft-v500.js?v=540",
     "./assets/panda-hsk2-preview-v506.css?v=541",
-    "./assets/panda-approved-soft-v500.js?v=541"
+    "./assets/panda-approved-soft-v500.js?v=541",
+    "./assets/panda-hsk2-preview-v506.css?v=542",
+    "./assets/panda-hsk2-preview-ui-v1.mjs?v=541",
+    "./assets/panda-hsk2-preview-core-v1.mjs?v=539",
+    "./assets/panda-approved-soft-v500.js?v=542"
   ]
 }
