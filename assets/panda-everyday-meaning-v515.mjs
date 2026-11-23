@@ -44,10 +44,31 @@ const items={'':['',''],这个:['zhège','это'],这个东西:['zhège dōngxi
 export function everydayMeaning(raw,id,context){
  const k=norm(raw);
  const out=(py,ru,reply,awaiting,coachNote,extra={})=>({spoken:[raw,py,ru],reply,context:{...context,awaiting,lastClarification:null,...extra},coachNote});
+
+ // v520: Friendly, bounded introduction after a learner says 我爱你.
+ // No claims of reciprocal romantic attachment, no synthesized voice.
+ if(context?.awaiting==='friendly-name'){
+  const match=k.match(/^我叫([\p{Script=Han}]{1,12})$/u);
+  if(match){
+   const names={小明:'Xiǎomíng',小红:'Xiǎohóng'};
+   const py=names[match[1]]?'Wǒ jiào '+names[match[1]]+'.':null;
+   return out(py,'Меня зовут '+match[1]+'.',
+    ['很高兴认识你！你今天怎么样？','Hěn gāoxìng rènshi nǐ! Nǐ jīntiān zěnmeyàng?','Рада познакомиться! Как у тебя сегодня дела?'],'friendly-mood');
+  }
+ }
+ if(context?.awaiting==='friendly-mood'){
+  if(k==='我很好'||k==='很好')return out(k==='我很好'?'Wǒ hěn hǎo.':'Hěn hǎo.',
+   k==='我很好'?'У меня всё хорошо.':'Очень хорошо.',
+   ['太好了！你想聊什么？','Tài hǎo le! Nǐ xiǎng liáo shénme?','Здорово! О чём хочешь поговорить?'],'topic');
+  if(k==='我不好'||k==='不好')return out(k==='我不好'?'Wǒ bù hǎo.':'Bù hǎo.',
+   'У меня дела не очень.',['怎么了？','Zěnme le?','Что случилось?'],'wellbeing');
+ }
+
  // v518: beginner replies seen in the Android conversation audit.
  // Use reviewed Hanzi, pinyin and Russian meanings; never infer spoken tones.
  // New Panda lines stay text-only unless the existing approved MP3 registry matches.
  const beginner={
+  '我爱你':['Wǒ ài nǐ!','Я тебя люблю!',['谢谢你！我很开心！你叫什么名字？','Xièxie nǐ! Wǒ hěn kāixīn! Nǐ jiào shénme míngzi?','Спасибо! Мне очень приятно! Как тебя зовут?'],'friendly-name'],
   '不好':['Bù hǎo.','Плохо.',['怎么了？','Zěnme le?','Что случилось?'],'wellbeing'],
   '我不好':['Wǒ bù hǎo.','У меня дела не очень.',['怎么了？','Zěnme le?','Что случилось?'],'wellbeing'],
   '非常好':['Fēicháng hǎo.','Очень хорошо.',['太好了！','Tài hǎo le!','Здорово!'],'wellbeing'],
