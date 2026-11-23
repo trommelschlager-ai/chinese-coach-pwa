@@ -30,3 +30,103 @@
 #pg346 #pg346-topics[hidden],#pg346 #pg346-topics [hidden]{display:none!important}
 #pg346 #pg346-topics .pg346-topic-menu-title,#pg346 #pg346-topics .pg374-tip{flex:0 0 auto!important;position:static!important}
 #pg346 #pg346-topics .pg374-topic-details,#pg346 #pg346-topics .pg346-topic-list{flex:1 1 auto!important;min-height:0!important;max-height:none!important;overflow-y:auto!important;overscroll-behavior:contain}
+
+/* Level cards and a shared rail keep the three shortcuts clear of the catalogue. */
+#pg346 {
+ --pg-topic-side-size: clamp(46px, 13.2vw, 62px);
+ --pg-topic-edge: clamp(8px, 2.5vw, 16px);
+}
+#pg346 .pg346-side-rail {
+ position: absolute;
+ z-index: 17;
+ top: 54%;
+ right: var(--pg-topic-edge);
+ transform: translateY(-50%);
+ display: grid;
+ gap: clamp(8px, 2.4vw, 16px);
+}
+#pg346 .pg346-side-rail > :is(.pg500-side, .pg346-all-topics) {
+ position: static !important;
+ width: var(--pg-topic-side-size) !important;
+ height: var(--pg-topic-side-size) !important;
+ cursor: pointer;
+ touch-action: manipulation;
+}
+:root[data-keyboard="true"] #pg346 .pg346-side-rail,
+#pg346[data-day-scenario="ready"] .pg346-side-rail {
+ display: none;
+}
+#pg346 #pg346-topics:not([hidden]) {
+ box-sizing: border-box;
+ right: calc(var(--pg-topic-side-size) + 2 * var(--pg-topic-edge)) !important;
+ width: min(440px, calc(100% - var(--pg-topic-side-size) - 4 * var(--pg-topic-edge))) !important;
+ padding: clamp(9px, 2.3vw, 16px) !important;
+ border-radius: clamp(17px, 4vw, 26px);
+}
+#pg346 #pg346-topics .pg346-topic-list {
+ display: flex;
+ flex-direction: column;
+ gap: 8px;
+ padding: 1px 3px 4px 1px;
+}
+#pg346 .pg346-topic-group {
+ flex: none;
+ min-width: 0;
+ border: 1px solid #d9c5e9;
+ border-radius: 14px;
+ background: #efe5f8;
+ overflow: hidden;
+}
+#pg346 .pg346-topic-group-title {
+ display: flex;
+ align-items: center;
+ gap: 7px;
+ margin: 0;
+ padding: 4px 9px;
+ color: #4c1675;
+ background: #e8d4f5;
+ font-size: clamp(15px, 3.9vw, 20px);
+}
+#pg346 .pg346-topic-group-title svg {
+ width: 20px;
+ height: 20px;
+}
+#pg346 .pg346-topic-grid {
+ display: grid;
+ grid-template-columns: repeat(2, minmax(0, 1fr));
+ gap: 6px;
+ padding: 5px;
+}
+#pg346 #pg346-topics .pg346-topic-grid > button {
+ min-width: 0;
+ min-height: 36px;
+ padding: 4px 3px;
+ border: 1px solid #fff;
+ border-radius: 20px;
+ color: #4c1675;
+ background: linear-gradient(#fbf4ff, #ead7f7);
+ box-shadow: 0 2px 4px #4c167526;
+ font-size: clamp(11px, 3vw, 15px);
+ line-height: 1.12;
+ white-space: normal;
+ overflow-wrap: break-word;
+ text-wrap: balance;
+}
+#pg346 #pg346-topics .pg346-topic-grid > button[aria-current="true"] {
+ color: white;
+ background: linear-gradient(#d643e7, #9d1acd);
+}
+#pg346 #pg346-topics .pg346-topic-grid > button:disabled {
+ opacity: .55;
+}
+#pg346 #pg346-topics .pg346-topic-grid > button:active:not(:disabled),
+#pg346 .pg346-side-rail > button:active {
+ transform: scale(.96);
+}
+#pg346 .pg346-nav a,
+#pg346[data-theme="day"] .pg346-nav a {
+ text-shadow: 0 0 4px #fff, 0 0 10px #fffb;
+}
+#pg346 .pg346-nav a svg {
+ filter: drop-shadow(0 0 3px #fffd) drop-shadow(0 0 6px #fff8);
+}

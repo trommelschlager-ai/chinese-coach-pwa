@@ -60,13 +60,16 @@
     // Right-hand shortcuts reuse existing app destinations and speech controls.
     const navGame=stage.querySelector('.pg346-nav a[href="./game.html"]');
     const navBook=stage.querySelector('.pg346-nav a[href="./hsk1-map.html"]');
-    function sideButton(css,inner,label){
+    const rail=stage.querySelector('.pg346-side-rail');
+    function sideButton(css,inner,label,text){
       const button=document.createElement('button');button.type='button';button.className='pg500-side '+css;
-      button.setAttribute('aria-label',label);button.innerHTML=inner;stage.append(button);return button;
+      button.setAttribute('aria-label',label);button.innerHTML=inner;button.append(word('span','',text));return button;
     }
-    const game=sideButton('pg500-side-game',navGame?.querySelector('svg')?.outerHTML||'🎮','Открыть тренажёр');
+    const game=sideButton('pg500-side-game',navGame?.querySelector('svg')?.outerHTML||'🎮','Открыть тренажёр','Тренажёр');
+    rail.prepend(game);
     game.addEventListener('click',()=>{location.href='./game.html'});
-    const book=sideButton('pg500-side-book',navBook?.querySelector('svg')?.outerHTML||'📖','Текущая фраза Панды и прослушивание');
+    const book=sideButton('pg500-side-book',navBook?.querySelector('svg')?.outerHTML||'📖','Текущая фраза Панды и прослушивание','Уроки');
+    rail.append(book);
     book.setAttribute('aria-expanded','false');
     book.addEventListener('click',()=>{
       const open=stage.dataset.detailsOpen!=='true';
