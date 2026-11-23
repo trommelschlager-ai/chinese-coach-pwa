@@ -74,3 +74,19 @@ html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-7 .pg-approved
 html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-8 .pg-approved-bottom{background-image:url('./hsk2-approved-covers/lesson-08-tail.webp')!important;}
 html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-9 .pg-approved-bottom{background-image:url('./hsk2-approved-covers/lesson-09-tail.webp')!important;}
 html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-10 .pg-approved-bottom{background-image:url('./hsk2-approved-covers/lesson-10-tail.webp')!important;}
+
+/* HSK2 Lesson 1 poster with integrated visible back button, 2026-11-23.
+   Exact image pixels remain unscaled; the extra mobile viewport area is decorative wood floor. */
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-1 .pg-approved-map-link{
+  left:1.8%!important;top:.1%!important;width:12.4%!important;height:6.25%!important;
+  border-radius:50%!important;-webkit-tap-highlight-color:transparent!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-1 .pg-approved-start{
+  border-radius:999px!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-1 .pg-approved-bottom{
+  background-image:url('./hsk2-approved-covers/lesson-01-tail-v3.webp?v=20261123')!important;
+  background-position:center top!important;background-size:cover!important;
+  background-color:#943f3b!important;
+}
