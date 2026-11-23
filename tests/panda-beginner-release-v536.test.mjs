@@ -49,8 +49,9 @@ test('worker and offline download include exact updated versions',()=>{
  const pack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
  const worker=fs.readFileSync('sw.js','utf8');
  const html=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert.equal(pack.version,536);
- assert.match(worker,/chinese-coach-pwa-v536-panda-beginner-dialogue/);
+ assert(pack.version>=536,'Release cache must not roll back below v536');
+ const activeVersion=Number(worker.match(/^const CACHE='chinese-coach-pwa-v(\d+)-/m)?.[1]);
+ assert.equal(activeVersion,pack.version,'Worker and offline manifest versions must match');
  assert(html.includes('panda-hsk2-preview-core-v1.mjs?v=536'));
  for(const p of ['./assets/panda-hsk2-preview-core-v1.mjs?v=536','./assets/panda-everyday-meaning-v515.mjs?v=536','./assets/panda-live-dialogue-v272.mjs?v=536']){
   assert(pack.files.includes(p),'Offline missing '+p);
