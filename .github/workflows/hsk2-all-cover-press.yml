@@ -23,6 +23,7 @@ jobs:
           python -u - <<'PY'
           import io,re,statistics
           from pathlib import Path
+          from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
           from PIL import Image, ImageChops
           from playwright.sync_api import sync_playwright, expect
           root='http://panda.localhost:8123'
@@ -44,8 +45,10 @@ jobs:
                  await navigator.serviceWorker.ready;
               }""")
               page.wait_for_function('!!navigator.serviceWorker.controller')
+              urls={filename:page.locator(f'a[href*="{filename}"]').first.evaluate('(a)=>a.href') for filename in lessons.values()}
               for n, filename in sorted(lessons.items()):
-                  url=f'{root}/{filename}?step=1'
+                  parts=urlsplit(urls[filename])
+                  url=urlunsplit(parts._replace(query=urlencode(parse_qsl(parts.query)+[('step','1')])))
                   page.goto(url)
                   start=page.locator('.pg-approved-start')
                   frame=page.locator('.pg-approved-press-frame')
@@ -53,6 +56,8 @@ jobs:
                   expect(page.locator('.pg-approved-base-canvas')).to_have_count(0)
                   assert page.locator('.pg-approved-hotspot[data-step]').count()==7
                   assert page.evaluate('document.documentElement.scrollWidth<=innerWidth && document.documentElement.scrollHeight<=innerHeight')
+                  page.locator('.pg-approved-cover-image').evaluate('img=>img.decode()')
+                  page.evaluate('()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
                   before=rgb(page.screenshot(path=f'evidence/{n:02}-before.png'))
                   start.dispatch_event('pointerdown',{'pointerType':'touch'})
                   expect(frame).to_be_visible()
