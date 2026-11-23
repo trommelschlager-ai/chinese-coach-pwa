@@ -13,6 +13,81 @@
  const fullArt='./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'-full.webp';
  const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const loading=new WeakSet();
+
+ // Detect the purple CTA's vertical position from EACH approved cover.
+ // Individual posters have different CTA heights: a shared y=60% hotspot is wrong.
+ function findStartRect(img){
+  const fallback={x:.023,y:([2,3,6].includes(num)?.597:num===9?.633:.62),w:.954,h:.075};
+  try{
+   const scan=document.createElement('canvas');
+   scan.width=220;scan.height=480;
+   const context=scan.getContext('2d',{willReadFrequently:true});
+   if(!context)return fallback;
+   context.drawImage(img,0,0,scan.width,scan.height);
+   const data=context.getImageData(0,0,scan.width,scan.height).data;
+   const h=scan.height,w=scan.width,scores=new Float32Array(h);
+   for(let y=Math.round(h*.54);y<Math.round(h*.78);y++){
+    let matched=0,total=0;
+    for(const range of [[.12,.32],[.68,.88]]){
+     for(let x=Math.round(w*range[0]);x<Math.round(w*range[1]);x+=2){
+      const p=(y*w+x)*4,r=data[p],g=data[p+1],b=data[p+2];
+      if(r<210&&g<100&&b>100&&b>g*1.4)matched++;
+      total++;
+     }
+    }
+    scores[y]=matched/total;
+   }
+   const span=Math.round(h*.05),half=Math.floor(span/2);
+   let best=0,at=-1;
+   for(let cy=Math.round(h*.575);cy<Math.round(h*.745);cy++){
+    let sum=0;
+    for(let y=cy-half;y<cy-half+span;y++)sum+=scores[y];
+    const score=sum/span;
+    if(score>best){best=score;at=cy;}
+   }
+   if(best<.47||at<0)return fallback;
+   return {x:.023,y:Math.max(.54,at/h-.0375),w:.954,h:.075};
+  }catch(_e){return fallback;}
+ }
+ // Render the ORIGINAL pixels as a movable button, never a replacement graphic.
+ // The base is softly blurred UNDER the pill, preventing an exposed duplicate.
+ // Canvas uses the same natural dimensions and object-fit as the approved cover.
+ function preparePressedArtwork(section,poster,img,rect){
+  try{
+   const w=img.naturalWidth,h=img.naturalHeight;
+   if(!w||!h)return;
+   const left=rect.x*w,top=rect.y*h,bw=rect.w*w,bh=rect.h*h;
+   const make=kind=>{
+    const node=document.createElement('canvas');
+    node.width=w;node.height=h;
+    node.className='pg-approved-'+kind+'-canvas';
+    node.setAttribute('aria-hidden','true');
+    return node;
+   };
+   const base=make('base'),button=make('button');
+   const bg=base.getContext('2d'),fg=button.getContext('2d');
+   if(!bg||!fg)return;
+   bg.drawImage(img,0,0,w,h);
+   bg.save();
+   bg.beginPath();
+   bg.roundRect(left,top,bw,bh,bh/2);
+   bg.clip();
+   // The temporary recess is visible only while the button is 4px lower.
+   if('filter' in bg)bg.filter='blur(42px)';
+   else {bg.fillStyle='#74219e';bg.fillRect(left,top,bw,bh);}
+   if('filter' in bg)bg.drawImage(img,0,0,w,h);
+   bg.restore();
+   fg.save();
+   fg.beginPath();
+   fg.roundRect(left,top,bw,bh,bh/2);
+   fg.clip();
+   fg.drawImage(img,0,0,w,h);
+   fg.restore();
+   const cover=section.querySelector('.pg-approved-cover-image');
+   cover.after(base,button);
+   section.classList.add('pg-approved-canvas-ready');
+  }catch(_e){/* Keep the original intact if canvas is unavailable. */}
+ }
  function build(img,full){
   // Reference example is one full-height 843×1866 poster (not a contact sheet,
   // old 941×1672 cover with overlay, or a separate footer image).
@@ -27,10 +102,11 @@
   section.className='pg-approved-overlay pg-approved-lesson-'+num+(full?' pg-approved-full':'');
   section.setAttribute('aria-label','HSK 2. Урок '+num+'. '+names[num-1]);
   const size=full?['843','1866']:['941','1672'];
-  const start=full?(tactileFix?'left:2.3%;top:60.0%;width:95.4%;height:7.7%':'left:2.4%;top:62.0%;width:95.2%;height:7.1%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
+  const rect=full?findStartRect(img):null;
+  const start=full?('left:'+(rect.x*100).toFixed(2)+'%;top:'+(rect.y*100).toFixed(2)+'%;width:'+(rect.w*100).toFixed(2)+'%;height:'+(rect.h*100).toFixed(2)+'%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
   section.innerHTML='<div class="pg-approved-poster">'+
    '<img class="pg-approved-cover-image" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" alt="HSK 2. Урок '+num+'. '+esc(names[num-1])+'">'+
-   (full?'<img class="pg-approved-cta-art" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" aria-hidden="true" alt="">':'')+
+
    '<a class="pg-approved-hotspot pg-approved-map-link" href="./hsk2-life-course.html?view=map" aria-label="Все уроки HSK 2"></a>'+
    steps+'<button type="button" class="pg-approved-hotspot pg-approved-start" data-step="2" aria-label="Начать урок" style="'+start+'"></button>'+
    '</div>'+(full?'':'<div class="pg-approved-bottom" aria-hidden="true"></div>');
@@ -38,32 +114,7 @@
   const cover=section.querySelector('.pg-approved-cover-image');
   cover.src=img.src;
   if(full){
-   // The CTA is baked into the approved poster. Cut it OUT of the base layer
-   // and show those exact same pixels in ONE movable layer from the beginning.
-   // The base and CTA never both render the button, even during a long press.
-   const supportsMask=!!(window.CSS && (
-    CSS.supports('mask-image','linear-gradient(black,black)') ||
-    CSS.supports('-webkit-mask-image','linear-gradient(black,black)')
-   ));
-   if(supportsMask){
-    const b=tactileFix?{x:23,y:600,w:954,h:77}:{x:24,y:620,w:952,h:71};
-    const x2=b.x+b.w,y2=b.y+b.h,rx=80,ry=b.h/2;
-    const hole='M'+(b.x+rx)+' '+b.y+' H'+(x2-rx)+
-      ' A'+rx+' '+ry+' 0 0 1 '+x2+' '+(b.y+ry)+
-      ' V'+(y2-ry)+' A'+rx+' '+ry+' 0 0 1 '+(x2-rx)+' '+y2+
-      ' H'+(b.x+rx)+' A'+rx+' '+ry+' 0 0 1 '+b.x+' '+(y2-ry)+
-      ' V'+(b.y+ry)+' A'+rx+' '+ry+' 0 0 1 '+(b.x+rx)+' '+b.y+' Z';
-    const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"><path fill="#fff" fill-rule="evenodd" d="M0 0H1000V1000H0Z '+hole+'"/></svg>';
-    const mask='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
-    cover.style.maskImage=mask;
-    cover.style.webkitMaskImage=mask;
-    cover.style.maskSize='100% 100%';
-    cover.style.webkitMaskSize='100% 100%';
-    const cta=section.querySelector('.pg-approved-cta-art');
-    cta.src=img.src;
-    cta.style.clipPath='inset('+(b.y/10)+'% '+((1000-x2)/10)+'% '+((1000-y2)/10)+'% '+(b.x/10)+'% round 999px)';
-    section.classList.add('pg-approved-cutout-ready');
-   }
+   preparePressedArtwork(section,poster,img,rect);
 
    // Give the painted Start CTA a real pressed state before changing lessons.
    // The lesson's existing delegated data-step handler still owns navigation.
