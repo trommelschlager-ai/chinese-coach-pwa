@@ -92,7 +92,9 @@
     const mascot=scene.querySelector('.pg352-mascot');
     function rememberPandaGeometry(){
       if(document.documentElement.dataset.keyboard==='true'||!mascot)return;
-      const pandaWidth=mascot.getBoundingClientRect().width;
+      const pandaRect=mascot.getBoundingClientRect();
+      const pandaWidth=pandaRect.width;
+      const pandaHeight=pandaRect.height;
       const stoneStyle=getComputedStyle(scene,'::before');
       const pandaBottom=getComputedStyle(mascot).bottom;
       const stoneWidth=parseFloat(stoneStyle.width);
