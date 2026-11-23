@@ -104,7 +104,7 @@ function render(words,art,heading,panel,ttsNote,listenButton){
    '<div id="tone-status" class="tone-status" role="status" aria-live="polite">'+esc(note)+'</div>'+
    '<div class="btnrow tone-actions">'+(typeof listenButton==='function'?listenButton(w.zh):'')+'<button id="tone-record" class="primary" type="button" data-tone-act="record">'+
     '🎙 Записать голос</button>'+
-    '<button type="button" class="action" data-tone-act="manual" '+(done>=LIMIT?'disabled':'')+'>✓ Повторил сам</button></div>'+
+    (done<LIMIT?'<button type="button" class="action" data-tone-act="manual">✓ Повторил сам</button>':'')+'</div>'+
    '<div class="tone-aux"><button type="button" class="action" id="lab-replay" '+(replayUrl&&replayWord===i?'':'disabled')+'>▶ Прослушать свою запись / 回听录音</button></div>'+ '<details class="tone-advanced"><summary>Граница слогов и пояснения</summary>'+
     '<div class="tone-split-control"><label for="tone-split">Граница слогов: <strong id="tone-split-value">'+Math.round(ratio*100)+'%</strong></label>'+
     '<input type="range" id="tone-split" min="25" max="75" step="1" value="'+Math.round(ratio*100)+'" '+(!last||busy?'disabled':'')+
@@ -114,7 +114,7 @@ function render(words,art,heading,panel,ttsNote,listenButton){
     '<button class="action tone-reset" type="button" data-tone-act="clear">↻ Сбросить повторы выбранного слова</button>'+
     (last?'<p class="hint">Запись: '+last.seconds.toFixed(1)+' с; измерений: '+last.points.length+'.'+(last.stats?' Основной: '+last.stats.yin+' · запасной: '+last.stats.fallback+' · пропуски: '+last.stats.none+'.':'')+'</p>':'')+
     ttsNote+'</details>'+
-   '<p class="tone-safety-label">⚠ Зелёный график фиксируется при остановке без изменения формы. Оранжевый — отдельный расчёт с другими границами слова. Графики нельзя считать напрямую совпадающими по времени. Это не оценка правильности тонов.</p>'+
+   '<p class="tone-safety-label">Пробный график высоты голоса. Не является оценкой правильности тонов.</p>'+
   '</div>'
  );
 }
@@ -279,18 +279,16 @@ function draw(){
   const trend=document.getElementById('tone-trend-'+(syll+1));
   if(trend){
    if(live){
-    trend.textContent='🎙 Текущий график. После «Стоп» сохранится без замены.';
+    trend.textContent='🎙 Предварительный контур';
    }else if(view==='preview'){
     const a=livePoints.filter(p=>p[0]>=liveFrom&&(liveTo===1?p[0]<=1:p[0]<liveTo)).length;
-    trend.textContent='🟢 График при записи · '+a+' точек F0'
-     +' · 🟠 Нажми «Анализ» для независимого измерения';
+    trend.textContent='🟢 '+a+' точек F0'+(a<7?' · мало данных':' · без оценки');
    }else{
     const count=finalPoints.filter(p=>p[0]>=finalFrom&&(finalTo===1?p[0]<=1:p[0]<finalTo)).length;
     const finalTrend=observedTrend(finalPoints,finalFrom,finalTo);
     const valid=recent?.validParts?.[syll]===true;
-    trend.textContent='🟠 '+(valid?finalTrend:'Данных недостаточно для надёжной оценки контура')
-     +' · '+count+' точек F0'
-     +(recent?.splitWarning?' · ⚠ граница слогов приблизительна':'');
+    trend.textContent=valid?'🟠 '+finalTrend+' · '+count+' F0':'🟠 '+count+' F0 · данных недостаточно';
+    if(recent?.splitWarning)trend.textContent+=' · ⚠ граница приблизительна';
    }
   }
  }
