@@ -137,9 +137,13 @@
  filter: none;
 }
 
-/* Seat the paws into the top face of the stone without resizing the mascot. */
+#pg346[data-theme="day"] .pg346-nav a svg {
+ color: #111;
+}
+
+/* Connect the underside of the body and both paws to the stone. */
 :root:not([data-keyboard="true"]) #pg346 .pg352-mascot {
- bottom: calc(var(--pg-seat-bottom) - clamp(6px, 2.15vw, 11px)) !important;
+ bottom: calc(var(--pg-seat-bottom) - clamp(8px, 2.9vw, 14px)) !important;
 }
 :root:not([data-keyboard="true"]) #pg346 .pg352-mascot::before {
  left: 17%;
@@ -150,5 +154,6 @@
  background:
   radial-gradient(ellipse 25% 45% at 21% 48%, #171510d6, transparent),
   radial-gradient(ellipse 24% 46% at 81% 48%, #171510d6, transparent),
+  radial-gradient(ellipse 30% 34% at 50% 29%, #241e19e0, transparent),
   radial-gradient(ellipse 49% 50% at 50% 44%, #221e19bd, transparent);
 }
