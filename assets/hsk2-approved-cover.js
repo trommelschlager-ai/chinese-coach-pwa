@@ -90,6 +90,59 @@
    section.classList.add('pg-approved-canvas-ready');
   }catch(_e){/* Keep the original intact if canvas is unavailable. */}
  }
+ // The full lesson-5 poster is 843 × 1866. Move its painted gold rim
+ // and label together, stretching the narrow strip above and compressing
+ // the strip below. Adjacent source bands meet without any repeated pixels.
+ function prepareLessonFivePress(poster,cover,img){
+  const w=img.naturalWidth,h=img.naturalHeight;
+  if(w!==843||h!==1866)return ()=>{};
+  const frame=document.createElement('canvas');
+  const ctx=frame.getContext('2d');
+  if(!ctx)return ()=>{};
+  const top=1122,rimTop=1133,rimBottom=1264,bottom=1288;
+  frame.width=w;
+  frame.height=bottom-top;
+  frame.className='pg-approved-press-frame';
+  frame.setAttribute('aria-hidden','true');
+  cover.after(frame);
+  const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  let animation=0;
+  function draw(offset,brightness){
+   const band=(from,to,start,end)=>{
+    ctx.drawImage(img,0,from,w,to-from,0,start-top,w,end-start);
+   };
+   band(top,rimTop,top,rimTop+offset);
+   ctx.filter='brightness('+brightness+')';
+   band(rimTop,rimBottom,rimTop+offset,rimBottom+offset);
+   ctx.filter='none';
+   band(rimBottom,bottom,rimBottom+offset,bottom);
+  }
+  return pressed=>{
+   cancelAnimationFrame(animation);
+   if(!pressed){
+    poster.classList.remove('pg-approved-frame-visible');
+    return;
+   }
+   const {width,height}=cover.getBoundingClientRect();
+   const scale=Math.max(width/w,height/h);
+   if(!scale)return;
+   // Match the cover's centered object-fit: cover crop exactly.
+   frame.style.left=(width-w*scale)/2+'px';
+   frame.style.top=(height-h*scale)/2+top*scale+'px';
+   frame.style.width=w*scale+'px';
+   frame.style.height=(bottom-top)*scale+'px';
+   const offset=3/scale;
+   const start=performance.now();
+   function tick(now){
+    const progress=Math.min(1,Math.max(0,(now-start)/100));
+    const eased=1-(1-progress)**2;
+    draw(reducedMotion.matches?0:Math.round(offset*eased),1-.025*eased);
+    poster.classList.add('pg-approved-frame-visible');
+    if(progress<1)animation=requestAnimationFrame(tick);
+   }
+   animation=requestAnimationFrame(tick);
+  };
+ }
  function build(img,full){
   // Reference example is one full-height 843×1866 poster (not a contact sheet,
   // old 941×1672 cover with overlay, or a separate footer image).
@@ -116,7 +169,8 @@
   const cover=section.querySelector('.pg-approved-cover-image');
   cover.src=img.src;
   if(full){
-   preparePressedArtwork(section,poster,img,rect);
+   const renderPress=num===5?prepareLessonFivePress(poster,cover,img):null;
+   if(!renderPress)preparePressedArtwork(section,poster,img,rect);
 
    // Give the painted Start CTA a real pressed state before changing lessons.
    // The lesson's existing delegated data-step handler still owns navigation.
@@ -124,12 +178,24 @@
    let pressPending=false;
    let forwardClick=false;
    // The single painted button moves with the pointer; never swap artwork.
+   let showingPressed=false;
    const showPressed=pressed=>{
+    if(renderPress){
+     if(showingPressed===pressed)return;
+     showingPressed=pressed;
+     renderPress(pressed);
+     return;
+    }
     startButton.classList.toggle('pg-approved-start-pressed',pressed);
     poster.classList.toggle('pg-approved-pressing',pressed);
    };
    startButton.addEventListener('pointerdown',()=>showPressed(true),{passive:true});
    startButton.addEventListener('pointercancel',()=>{if(!pressPending)showPressed(false);},{passive:true});
+   if(renderPress){
+    startButton.addEventListener('pointerup',()=>{
+     requestAnimationFrame(()=>{if(!pressPending)showPressed(false);});
+    },{passive:true});
+   }
    startButton.addEventListener('pointerleave',()=>{if(!pressPending)showPressed(false);},{passive:true});
    startButton.addEventListener('click',event=>{
     if(forwardClick){forwardClick=false;return;}
