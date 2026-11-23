@@ -1,0 +1,36 @@
+name: Generate soft Xiaoxuan Pinyin voice v74
+on:
+  push:
+    paths:
+      - ".github/workflows/generate-soft-pinyin-v74.yml"
+      - "scripts/generate_soft_pinyin_v74.py"
+permissions:
+  contents: write
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 29
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Prepare synthesis tools
+        run: |
+          python -m pip install --disable-pip-version-check edge-tts==7.3.1
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Record and check all 190 soft pinyin clips
+        run: python scripts/generate_soft_pinyin_v74.py
+      - name: Save audio in source branch after complete verification
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/pinyin-reading-v4/
+          if git diff --cached --quiet; then
+            echo "No new audio files"
+          else
+            git commit -m "Generate 190 softer adult Xiaoxuan Mandarin Pinyin previews"
+            git push
+          fi
