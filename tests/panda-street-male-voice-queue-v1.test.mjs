@@ -36,7 +36,13 @@ test('new male voice queue matches 18 missing unique phrases from current Street
 });
 test('queue is only a recording checklist, not imaginary approved new clips',()=>{
  for(const row of queue.phrases){
-  assert.equal(row.status,'awaiting-approved-male-luvvoice');
+  const index=Number(row.id.slice(-2));
+  if(index<=3){
+   assert.equal(row.status,'native-speaker-approved-pending-repository-upload');
+   assert.equal(row.nativeApprovalDate,'2026-11-23');
+   assert.match(row.mp3Sha256,/^[a-f0-9]{64}$/);
+   assert.ok(row.mp3Bytes>0);
+  }else assert.equal(row.status,'awaiting-approved-male-luvvoice');
   assert.ok(!audioKeys.includes(normalize(row.hanzi)));
   assert.equal(fs.existsSync(new URL(row.audioPath,root)),false,'audio claimed but absent: '+row.audioPath);
  }
