@@ -39,25 +39,24 @@ test('Unverified translation is not shown as a learner-facing placeholder',()=>{
 
 test('Main HTML busts stale Android CSS and JS caches',()=>{
   const html=source('../panda-voice-pilot.html');
-  assert.match(html,/panda-hsk2-preview-v506\.css\?v=541/);
+  assert.match(html,/panda-hsk2-preview-v506\.css\?v=542/);
   assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=539/);
   assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=541/);
 });
 
-test('The same approved Panda and stone are anchored to the stage for all dialogue',()=>{
+test('Panda remains visible: preserve original and show loaded static copy',()=>{
   const js=source('../assets/panda-approved-soft-v500.js');
   const css=source('../assets/panda-hsk2-preview-v506.css');
   const ui=source('../assets/panda-hsk2-preview-ui-v1.mjs');
+  assert.match(js,/const frozen=word\('img','pg542-frozen-panda',''\)/);
+  assert.match(js,/layer\.append\(back,frozen,front\)/);
   assert.match(js,/stage\.dataset\.pandaStatic='true'/);
-  assert.match(js,/layer\.append\(stoneBack,mascot,stoneFront\)/);
-  assert.match(js,/if\(geometryFrozen\|\|!mascot/);
-  assert.match(css,/\.pg541-static-layer/);
-  assert.match(css,/top:var\(--pg541-panda-y\)/);
-  assert.match(css,/left:var\(--pg541-panda-x\)/);
-  assert.match(css,/width:var\(--pg541-panda-w\)/);
-  assert.match(css,/top:var\(--pg541-stone-y\)/);
-  assert.match(css,/\.pg353-face-canvas/);
-  assert.match(css,/\.pg352-ear-effects/);
+  assert.match(js,/if\(!frozen\.naturalWidth\|\|!frozen\.naturalHeight\)return/);
+  assert.doesNotMatch(js,/layer\.append\(stoneBack,mascot,stoneFront\)/);
+  assert.match(css,/\.pg542-frozen-panda/);
+  assert.match(css,/width:var\(--pg542-panda-w\)/);
+  assert.match(css,/top:var\(--pg542-panda-y\)/);
+  assert.match(css,/\.pg542-static-stone/);
   assert.match(css,/animation:none!important/);
   assert.match(ui,/liveMouth\.setTalking\(false\)/);
   assert.doesNotMatch(ui,/liveMouth\.setTalking\(!s\.active&&pandaSpeaking\)/);
@@ -71,15 +70,15 @@ test('Filled input is sent by the FIRST airplane tap',()=>{
   assert.doesNotMatch(js,/if\(!opened\(\)\)\{\s*event.preventDefault/);
 });
 
-test('v541 static Panda and SW cached together to avoid stale Android scripts',()=>{
+test('v542 visible Panda and SW cached together to avoid stale Android scripts',()=>{
   const html=source('../panda-voice-pilot.html');
   const worker=source('../sw.js');
   const pack=JSON.parse(source('../assets/offline-pack.json'));
-  assert.equal(pack.version,541);
-  assert(source('../panda-ai-hsk2-preview.html').includes('panda-approved-soft-v500.js?v=541'));
-  assert(source('../panda-ai-hsk2-preview.html').includes('panda-hsk2-preview-v506.css?v=541'));
-  assert.match(worker,/const CACHE='chinese-coach-pwa-v541-/);
-  for(const asset of ['panda-hsk2-preview-v506.css?v=541','panda-hsk2-preview-ui-v1.mjs?v=541','panda-approved-soft-v500.js?v=541']){
+  assert.equal(pack.version,542);
+  assert(source('../panda-ai-hsk2-preview.html').includes('panda-approved-soft-v500.js?v=542'));
+  assert(source('../panda-ai-hsk2-preview.html').includes('panda-hsk2-preview-v506.css?v=542'));
+  assert.match(worker,/const CACHE='chinese-coach-pwa-v542-/);
+  for(const asset of ['panda-hsk2-preview-v506.css?v=542','panda-hsk2-preview-ui-v1.mjs?v=541','panda-approved-soft-v500.js?v=542']){
     assert(html.includes(asset));
     assert(pack.files.some(f=>f.endsWith(asset)));
     assert(worker.includes(asset));
