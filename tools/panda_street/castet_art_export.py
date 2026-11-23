@@ -85,6 +85,12 @@ def main():
     if geometry.get("status")!="UNAPPROVED" or geometry.get("target_resolution")!=[W,H]:
         raise ValueError("Refusing undocumented or non-source-resolution geometry")
     mask=make_mask(geometry)
+    # Hard fail if screenshot-to-source mapping ever targets the panda's face again.
+    bounds=mask.getbbox()
+    if not bounds or not (220<=bounds[0]<=270 and 730<=bounds[1]<=820 and 320<=bounds[2]<=395 and 870<=bounds[3]<=935):
+        raise ValueError("Castet mask is not positioned on the viewer-left fist: "+repr(bounds))
+    if len(geometry["holes"])!=4:
+        raise ValueError("Expected four reviewed brass-ring interior contours")
     report={
         "review":"UNAPPROVED - NOT AN ANIMATION",
         "source_original_preserved":True,
