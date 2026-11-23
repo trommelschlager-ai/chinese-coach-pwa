@@ -35,8 +35,8 @@ jobs:
           from pathlib import Path
           from PIL import Image, ImageChops
           from playwright.sync_api import sync_playwright, expect
-          root='http://panda.test:8123'
-          options=['--host-resolver-rules=MAP panda.test 127.0.0.1', '--unsafely-treat-insecure-origin-as-secure='+root, '--no-proxy-server']
+          root='http://panda.localhost:8123'
+          options=['--host-resolver-rules=MAP panda.localhost 127.0.0.1', '--unsafely-treat-insecure-origin-as-secure='+root, '--no-proxy-server']
           with sync_playwright() as p:
               browser=p.chromium.launch(args=options)
               settings=p.devices['Pixel 7']|{'device_scale_factor':1}
