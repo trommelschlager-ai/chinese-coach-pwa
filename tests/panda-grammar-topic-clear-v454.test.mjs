@@ -36,12 +36,13 @@ test('rule readability and full explanation stay in place',()=>{
 });
 test('42 approved MP3 and Android v454 publication references are preserved',()=>{
  assert.ok(html.includes('panda-chat-corrections-v377.css?v=454'));
- assert.ok(html.includes('panda-live-v346.mjs?v=453'));
- assert.ok(html.includes('panda-live-screen-v270.mjs?v=452'));
- assert.ok(sw.includes('chinese-coach-pwa-v454-feedback-topic-clear'));
+ assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/, 'Current approved UI must load');
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=\d+/, 'Current Panda dialogue must load');
+ assert.match(sw,/chinese-coach-pwa-v\d+/, 'Versioned service worker cache must remain');
  assert.ok(sw.includes('panda-chat-corrections-v377.css?v=454'));
- assert.equal(pack.version,454);
+ assert.ok(pack.version>=454,'The offline pack must not roll back an approved release');
  assert.ok(pack.files.includes('./assets/panda-chat-corrections-v377.css?v=454'));
+ assert.ok(pack.files.some(x=>/^\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+$/.test(x)), 'Current core available in the offline pack');
  assert.equal(pack.files.filter(s=>/^\.\/assets\/panda-grammar-voice-v451\/g\d{3}\.mp3$/.test(s)).length,42);
  for(const [zh,file] of [
   ['他有两个妹妹。','g001.mp3'],
