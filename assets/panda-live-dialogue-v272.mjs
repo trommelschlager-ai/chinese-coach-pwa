@@ -14,6 +14,7 @@ import {brainQuestion,interpretBrainSentence} from './panda-brain-hsk1-v302.mjs?
 import {answerHsk2Bridge} from './panda-hsk2-bridge-v304.mjs?v=307';
 import {coachSentence} from './panda-sentence-coach-v319.mjs?v=319';
 import {answerBasicConversation} from './panda-basic-conversation-v323.mjs?v=336';
+import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=518';
 import {analyzeCalendarLiteral,calendarAcknowledgement} from './panda-calendar-literal-v383.mjs?v=401';
 const NUMPY=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
 export const numberPy=n=>n===100?'yì bǎi':n<10?NUMPY[n]:(n<20?'shí':NUMPY[Math.floor(n/10)]+'shí')+(n%10?(n%10===2?"'":'')+NUMPY[n%10]:'');
@@ -258,6 +259,17 @@ function extendQuestion(result,raw,allowed,date,profile){
 export function answerLive(raw,options={}){
  const {allowed=[1],topic=1,prompt=null,curriculum=[],date=new Date(),turn=0,profile={},course='hsk1'}=options;
  raw=String(raw||'').trim();const s=normalize(raw);if(!raw)return {kind:'empty',message:'Скажи или напиши фразу на китайском.'};
+ // v518: approved short social replies must not fall through to "I didn't understand".
+ // This is a text dialogue rule, not an assessment of microphone pronunciation.
+ if(['不好','我不好','非常好','我非常好','很不错你呢','我很不错你呢','休息','你可以说中文','跑步这么样'].includes(s)){
+  const simple=everydayMeaning(raw,topic,null);
+  if(simple)return {kind:'statement',lesson:1,
+   spoken:{known:true,hanzi:raw,pinyin:simple.spoken[1],translation:simple.spoken[2],topic:1},
+   reply:line(...simple.reply),followup:null,
+   ...(simple.coachNote?{explanation:simple.coachNote}:{}),
+   message:simple.coachNote||'Панда поняла твою фразу и продолжила разговор. Тоны голоса не оценивались.'};
+ }
+
  // HSK2 daily-life MP3 questions are not HSK1 Weather (chapter 7), even if unlocked.
  if(recordedCourseScope(raw)==='hsk2-day')return recordedPandaAnswer(raw,course==='hsk2-day'?[1]:allowed,{course});
  // Android ASR can mishear the sibling question as a different phrase.
