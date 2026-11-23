@@ -47,7 +47,7 @@ footer{font-size:11px;color:#bcb1c8;padding:4px 7px 16px}
 <h2>1. Сравнение контура с оригиналом</h2>
 <div class="grid">
 <figure><canvas id="original" aria-label="Оригинальная лапа с кастетом"></canvas><figcaption>Оригинал</figcaption></figure>
-<figure><canvas id="overlay" aria-label="Оригинал с предварительным контуром"></canvas><figcaption>Контур из двух Android-скриншотов</figcaption></figure>
+<figure><canvas id="overlay" aria-label="Оригинал с предварительным контуром"></canvas><figcaption>Контур R2 по оригинальному WebP</figcaption></figure>
 </div>
 </section>
 <section aria-label="Прозрачный слой">
@@ -56,7 +56,7 @@ footer{font-size:11px;color:#bcb1c8;padding:4px 7px 16px}
 <figure><canvas id="isolated" aria-label="Кулак и кастет на шахматном прозрачном фоне"></canvas><figcaption>Отдельный слой</figcaption></figure>
 <figure><canvas id="hole" aria-label="Прозрачная область без восстановленной ткани"></canvas><figcaption>Скрытая ткань пока не восстановлена</figcaption></figure>
 </div>
-<p id="warning">Жёлтая граница и отверстия в кастете пока черновые. Для анимации нужен художник, который вручную восстановит материал под кулаком.</p>
+<p id="warning">Жёлтая граница R2 построена на исходном WebP и пока требует проверки краёв. Для анимации нужен художник, который вручную восстановит материал под кулаком.</p>
 </section>
 <section id="download">
 <h2>3. Экспорт из оригинального WebP</h2>
@@ -72,7 +72,7 @@ footer{font-size:11px;color:#bcb1c8;padding:4px 7px 16px}
 <script>
 (()=>{
 'use strict';
-const W=693,H=1444,ROI={x:238,y:523,w:210,h:210};
+const W=693,H=1444,ROI={x:200,y:730,w:200,h:200};
 const ROOT='https://raw.githubusercontent.com/trommelschlager-ai/chinese-coach-pwa/a442485be6088b07af6815bdb7a170665d2cfb38/assets/panda-street-day-night/';
 const sources={night:ROOT+'night.webp',day:ROOT+'day.webp'};
 const $=id=>document.getElementById(id);
