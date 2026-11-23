@@ -95,5 +95,5 @@ test('approved Panda screen: no voice banner, clean side rail, grounded mascot a
   assert.ok(sw.includes('"./'+path+'"'),'New service worker must cache visible asset '+path);
   assert.ok(pack.files.includes('./'+path),'Full offline pack must contain '+path);
  }
- assert.equal(pack.version,540);
+ assert.equal(pack.version,541);
 });
