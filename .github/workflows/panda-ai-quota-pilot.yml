@@ -1,0 +1,31 @@
+name: Panda AI Model A quota pilot tests
+
+on:
+  pull_request:
+    paths:
+      - "panda-ai-quota/**"
+      - ".github/workflows/panda-ai-quota-pilot.yml"
+  push:
+    branches:
+      - "feature/panda-ai-model-a-quota-pilot"
+    paths:
+      - "panda-ai-quota/**"
+      - ".github/workflows/panda-ai-quota-pilot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quota-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout test branch
+        uses: actions/checkout@v4
+      - name: Install Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test 10-to-3 day switch, permissions and concurrent usage
+        run: node --test panda-ai-quota/worker.test.mjs

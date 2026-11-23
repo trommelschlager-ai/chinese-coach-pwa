@@ -1,0 +1,18 @@
+name = "panda-ai-quota-pilot"
+main = "worker.mjs"
+compatibility_date = "2026-11-18"
+
+[vars]
+# Exact origin of the public test frontend, no trailing slash.
+ALLOWED_ORIGIN = "https://trommelschlager-ai.github.io"
+SUPABASE_URL = "https://YOUR_PROJECT.supabase.co"
+SUPABASE_PUBLISHABLE_KEY = "sb_publishable_REPLACE_ME"
+ENABLE_TEST_GRANTS = "false"
+GEMINI_MODEL = "gemini-2.5-flash-lite"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "panda-ai-quota-pilot"
+database_id = "REPLACE_WITH_D1_ID"
+
+# Keep GEMINI_API_KEY and ADMIN_SECRET in Worker secrets, never in Git.
