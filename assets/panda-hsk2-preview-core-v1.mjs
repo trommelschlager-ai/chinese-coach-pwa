@@ -110,7 +110,8 @@ function remember(spoken){
 function makeRow(entry,full=false){
  const row=document.createElement('article'),who=document.createElement('strong');who.textContent=entry.who==='you'?'Ты: ':entry.who==='example'?'💡 Правильный пример: ':'Панда: ';row.append(who,document.createTextNode(entry.hanzi));
  if(entry.pinyin&&(full||entry.who==='you')){const py=document.createElement('span');py.className='py';py.textContent=entry.pinyin;row.append(py)}
- const ru=document.createElement('span');ru.className='ru';ru.textContent=(full?'Перевод: ':' — ')+(entry.ru||(entry.analysis?.probable?'Возможный смысл: '+entry.analysis.probable:'Точный перевод пока не подтверждён'));row.append(ru);
+ const translated=entry.ru||(entry.analysis?.probable?'Возможный смысл: '+entry.analysis.probable:'');
+ if(translated){const ru=document.createElement('span');ru.className='ru';ru.textContent=(full?'Перевод: ':' — ')+translated;row.append(ru)}
  if(full&&entry.analysis?.explanation){const detail=document.createElement('p');detail.textContent=entry.analysis.explanation;row.append(detail)}
  if(entry.analysis?.kind==='calendar-complete'&&entry.analysis.summary){const detail=document.createElement('p');detail.textContent=entry.analysis.summary;row.append(detail)}
  if(full&&entry.analysis?.correction){const c=entry.analysis.correction;const detail=document.createElement('p');detail.textContent='Правильно: '+c.hanzi+' '+(c.pinyin||'')+' — '+c.ru+' '+c.why;row.append(detail)}
@@ -289,7 +290,9 @@ let friendlyStage=null;
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
- const introduction=friendlyIntroduction(input,friendlyStage);
+ // Recognize voluntary Chinese name introductions in free HSK1 conversation.
+ const standaloneName=state.mode==='nonstop'&&!hsk2&&!state.dayMode&&/^我叫[\p{Script=Han}]{1,12}$/u.test(normalize(input));
+ const introduction=friendlyIntroduction(input,standaloneName?'name':friendlyStage);
  friendlyStage=introduction?.next||null;
  if(introduction){
   const [pinyin,translation]=introduction.spoken;
@@ -297,6 +300,20 @@ function submit(raw){
   const [hanzi,replyPinyin,ru]=introduction.reply;
   note('');
   say({hanzi,pinyin:replyPinyin,ru});
+  return;
+ }
+ // v539: a simple 什么？ requests repetition, it is not an unknown phrase.
+ if(!hsk2&&!state.dayMode&&state.mode==='nonstop'&&normalize(input)==='什么'){
+  learner(input,{known:true,pinyin:'Shénme?',translation:'Что?'});
+  const previousQuestion=state.prompt?.line;
+  const questionText=String(previousQuestion?.hanzi||previousQuestion?.panda||'');
+  if(previousQuestion&&/[？?]$/.test(questionText)){
+   say(previousQuestion,!!lookupPandaVoiceClip(questionText));
+   note('Панда повторила последний вопрос.');
+  }else{
+   say({hanzi:'你想问什么？',pinyin:'Nǐ xiǎng wèn shénme?',ru:'О чём ты хочешь спросить?'},false);
+   note('Можешь задать вопрос по-китайски.');
+  }
   return;
  }
  // v542: use reviewed beginner statements as genuine conversation turns,
