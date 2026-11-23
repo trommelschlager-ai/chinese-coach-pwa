@@ -78,6 +78,9 @@ try{
  );
  await page.locator('#pg346-history').click();
  await page.waitForFunction(()=>document.querySelectorAll('#pml-saved [role="listitem"]').length===2,null,{timeout:7000});
+ assert.equal(await page.locator('#pml-saved .pml-play').count(),1,'Only approved Xiaoxiao replies get offline play');
+ await page.locator('#pml-saved .pml-play').click();
+ await page.waitForFunction(()=>document.querySelector('#pml-status')?.textContent.includes('Воспроизводится сохранённый MP3 Xiaoxiao'),null,{timeout:7000});
  page.once('dialog',dialog=>dialog.accept());
  await page.locator('#pml-clear').click();
  await page.waitForFunction(()=>document.querySelector('#pml-count')?.textContent.includes('На устройстве: 0'),null,{timeout:7000});
