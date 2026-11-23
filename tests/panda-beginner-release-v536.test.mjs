@@ -52,8 +52,10 @@ test('worker and offline download include exact updated versions',()=>{
  assert(pack.version>=536,'Release cache must not roll back below v536');
  const activeVersion=Number(worker.match(/^const CACHE='chinese-coach-pwa-v(\d+)-/m)?.[1]);
  assert.equal(activeVersion,pack.version,'Worker and offline manifest versions must match');
- assert(html.includes('panda-hsk2-preview-core-v1.mjs?v=536'));
- for(const p of ['./assets/panda-hsk2-preview-core-v1.mjs?v=536','./assets/panda-everyday-meaning-v515.mjs?v=536','./assets/panda-live-dialogue-v272.mjs?v=536']){
+ assert(html.includes('panda-hsk2-preview-core-v1.mjs?v=539'));
+ assert(html.includes('panda-hsk2-preview-ui-v1.mjs?v=539'));
+ assert(html.includes('panda-hsk2-preview-v506.css?v=539'));
+ for(const p of ['./assets/panda-hsk2-preview-core-v1.mjs?v=539','./assets/panda-hsk2-preview-ui-v1.mjs?v=539','./assets/panda-hsk2-preview-v506.css?v=539','./assets/panda-everyday-meaning-v515.mjs?v=539','./assets/panda-live-dialogue-v272.mjs?v=536']){
   assert(pack.files.includes(p),'Offline missing '+p);
   assert(worker.includes(p),'Worker missing '+p);
  }
