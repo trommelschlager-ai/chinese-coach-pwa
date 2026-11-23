@@ -4,6 +4,7 @@ import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=518';
 import {knownBasicContext,replyBasicContext} from './panda-hsk2-basic-context-v1.mjs?v=5';
+import {negativeAnswerForQuestion,negativeFollowup,negativeQuestionFromLearner} from './panda-negative-dialogue-v519.mjs?v=519';
 export const norm=s=>String(s||'').normalize('NFC').replace(/[\p{P}\s]/gu,'').toLowerCase();
 export const getTopic=id=>HSK2_TOPICS.find(t=>t.id===Number(id));
 export const line=a=>({hanzi:a[0],pinyin:a[1]||'',ru:a[2]||'',audioKey:a[0]});
@@ -250,6 +251,15 @@ export function replyHSK2(raw,id,index,done=false,context=null){
  const spoken=restoreDiscourse(raw,d,out.spoken||out.answer||knownHSK2(d.body));return {...out,...(spoken?{spoken}:{}),...(out.kind==='accepted'&&spoken?{answer:spoken}:{})};}
  return out;}
  const input=norm(raw);
+ // Evaluate the ACTIVE Panda question first: "不会" is meaningful after
+ // "你会说中文吗？", but must not become a universal negative answer.
+ const active=getTopic(id)?.questions[index];
+ const exactNegativeGuard=!done&&active?.options.find(a=>norm(a[0])===input);
+ if(exactNegativeGuard)return {kind:'accepted',answer:line(exactNegativeGuard)};
+ const negative=active?negativeAnswerForQuestion(raw,active.q):null;
+ if(negative&&!done)return {kind:'variant',spoken:line([negative.hanzi,negative.pinyin,negative.ru]),negative:true};
+ const inverse=negativeQuestionFromLearner(raw);if(inverse)return inverse;
+ const contextualNegative=negativeFollowup(raw,context);if(contextualNegative)return {...contextualNegative,context:{...context,...contextualNegative.context}};
  const aspect=everydayAspect(raw,context);if(aspect)return aspect;
  const early=spokenEveryday(raw,context);if(early)return early;
  const basicContext=replyBasicContext(raw,context);if(basicContext)return basicContext;
