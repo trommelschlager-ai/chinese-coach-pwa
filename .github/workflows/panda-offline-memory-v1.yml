@@ -5,6 +5,9 @@ on:
       - 'assets/panda-offline-memory-v1.mjs'
       - 'tests/panda-offline-memory-v1.test.mjs'
       - 'scripts/qa-panda-offline-memory-browser-v1.mjs'
+      - 'scripts/qa-panda-memory-preview-v1.mjs'
+      - 'panda-memory-preview.html'
+      - 'assets/panda-memory-reviewed-samples-v1.mjs'
       - '.github/workflows/panda-offline-memory-v1.yml'
   pull_request:
     branches: [main]
@@ -37,3 +40,4 @@ jobs:
             sleep 1
           done
           node scripts/qa-panda-offline-memory-browser-v1.mjs
+          node scripts/qa-panda-memory-preview-v1.mjs
