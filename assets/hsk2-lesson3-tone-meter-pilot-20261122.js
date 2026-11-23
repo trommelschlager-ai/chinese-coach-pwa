@@ -31,7 +31,7 @@ const SYLLABLES=[['gōng','sī'],['xué','xiào'],['tóng','shì'],['tóng','xu�
 const SPLIT_MIN=.25,SPLIT_MAX=.75;
 const LIMIT=5;
 let state={selected:0,reps:Array.from({length:6},()=>({mic:[],manual:0}))};
-let active=null, seq=0, memo=null, visibleAttempt=null, note='Выбери слово и нажми «Записать голос».';
+let active=null, seq=0, memo=null, visibleAttempt=null, chartView='preview', note='Выбери слово и нажми «Записать голос».';
 const finite=n=>typeof n==='number'&&Number.isFinite(n);
 
 function readState(){
@@ -97,7 +97,10 @@ function render(words,art,heading,panel,ttsNote,listenButton){
     ' · '+syllables[n]+' <span>тон '+TONES[i][n]+'</span></div>'+
     '<canvas id="tone-canvas-'+(n+1)+'" role="img" aria-label="Высота голоса для слога '+(n+1)+', '+syllables[n]+'" width="360" height="175"></canvas>'+
     '<p id="tone-trend-'+(n+1)+'" class="tone-trend">После записи появится твоя линия.</p></div>').join('')+'</div>'+
-   '<div class="tone-legend"><span class="tone-legend-target">Пунктир — схема</span><span class="tone-legend-user">Зелёная — линия во время записи</span><span class="tone-legend-final" style="font-weight:750;color:#a45219">🟠 Оранжевая — пересчёт после «Стоп»</span></div>'+
+   '<div class="tone-legend"><span class="tone-legend-target">Пунктир — схема тона</span></div>'+
+   '<div class="tone-view-picker" role="group" aria-label="Выбор отображения кривой">'+
+    '<button type="button" class="action" data-tone-view="preview" aria-pressed="true">🟢 Как при записи</button>'+
+    '<button type="button" class="action" data-tone-view="analysis" aria-pressed="false">🟠 Анализ после «Стоп»</button></div>'+
    '<div id="tone-status" class="tone-status" role="status" aria-live="polite">'+esc(note)+'</div>'+
    '<div class="btnrow tone-actions">'+(typeof listenButton==='function'?listenButton(w.zh):'')+'<button id="tone-record" class="primary" type="button" data-tone-act="record">'+
     '🎙 Записать голос</button>'+
@@ -111,7 +114,7 @@ function render(words,art,heading,panel,ttsNote,listenButton){
     '<button class="action tone-reset" type="button" data-tone-act="clear">↻ Сбросить повторы выбранного слова</button>'+
     (last?'<p class="hint">Запись: '+last.seconds.toFixed(1)+' с; измерений: '+last.points.length+'.'+(last.stats?' Основной: '+last.stats.yin+' · запасной: '+last.stats.fallback+' · пропуски: '+last.stats.none+'.':'')+'</p>':'')+
     ttsNote+'</details>'+
-   '<p class="tone-safety-label">⚠ Зелёная линия — предварительная; после «Стоп» она остаётся на месте, а оранжевая показывает независимый повторный анализ. При расхождении это ошибка/неопределённость измерения, а не доказательство неправильного тона. Повторы не являются оценкой.</p>'+
+   '<p class="tone-safety-label">⚠ Зелёный график фиксируется при остановке без изменения формы. Оранжевый — отдельный расчёт с другими границами слова. Графики нельзя считать напрямую совпадающими по времени. Это не оценка правильности тонов.</p>'+
   '</div>'
  );
 }
@@ -209,6 +212,13 @@ function draw(){
  const split=live?.5:(recent?.splitRatio??.5);
  const liveSeconds=live?Math.max(.1,(liveSamples.at(-1)?.[0]??0)-(liveSamples[0]?.[0]??0)):(recent?.previewSeconds||.8);
  const finalSeconds=finite(recent?.seconds)&&recent.seconds>.1?recent.seconds:.8;
+ const view=live?'preview':(chartView==='analysis'||!livePoints.length?'analysis':'preview');
+ for(const button of document.querySelectorAll('.l3-tone-details [data-tone-view]')){
+  const current=button.dataset.toneView===view;
+  button.setAttribute('aria-pressed',String(current));
+  button.classList.toggle('selected',current);
+  button.disabled=live||(button.dataset.toneView==='preview'?!livePoints.length:!finalPoints.length);
+ }
  const shapes={1:[.5,.5],2:[.5,.23],3:[.5,.82,.56],4:[.5,.82]};
  for(let syll=0;syll<2;syll++){
   const canvas=document.getElementById('tone-canvas-'+(syll+1));if(!canvas)continue;
@@ -256,23 +266,24 @@ function draw(){
    }
    if(painted>=2)ctx.stroke();
   };
-  // Draw preliminary green first, then separately render post-stop orange.
-  traceLine(liveTrace,'#198b70',3.5,liveSeconds);
-  if(!live)traceLine(finalTrace,'#d97827',2.8,finalSeconds);
+  // IMPORTANT: do NOT overlay independent time scales / syllable boundaries.
+  // Default stays on the exact frozen preview; offline DSP is a separate view.
+  if(view==='preview')traceLine(liveTrace,'#198b70',3.5,liveSeconds);
+  else traceLine(finalTrace,'#d97827',3.5,finalSeconds);
   const trend=document.getElementById('tone-trend-'+(syll+1));
   if(trend){
    if(live){
-    trend.textContent='🎙 Предварительный зелёный контур. После «Стоп» появится оранжевая проверка.';
+    trend.textContent='🎙 Текущий график. После «Стоп» сохранится без замены.';
+   }else if(view==='preview'){
+    const a=livePoints.filter(p=>p[0]>=liveFrom&&(liveTo===1?p[0]<=1:p[0]<liveTo)).length;
+    trend.textContent='🟢 График при записи · '+a+' точек F0'
+     +' · 🟠 Нажми «Анализ» для независимого измерения';
    }else{
     const count=finalPoints.filter(p=>p[0]>=finalFrom&&(finalTo===1?p[0]<=1:p[0]<finalTo)).length;
-    const a=livePoints.filter(p=>p[0]>=liveFrom&&(liveTo===1?p[0]<=1:p[0]<liveTo)).length;
     const finalTrend=observedTrend(finalPoints,finalFrom,finalTo);
-    const previewTrend=observedTrend(livePoints,liveFrom,liveTo);
-    const dir=t=>t.startsWith('↗')?'up':t.startsWith('↘ ')?'down':t.startsWith('→')?'flat':null;
-    const disagree=a>=5&&count>=5&&dir(finalTrend)&&dir(previewTrend)&&dir(finalTrend)!==dir(previewTrend);
-    trend.textContent='🟠 '+finalTrend+' · '+count+' точек F0'
-     +(a?' | 🟢 запись: '+a+' точек':'')
-     +(disagree?' · ⚠ Кривые расходятся: пока нельзя оценить тон':'')
+    const valid=recent?.validParts?.[syll]===true;
+    trend.textContent='🟠 '+(valid?finalTrend:'Данных недостаточно для надёжной оценки контура')
+     +' · '+count+' точек F0'
      +(recent?.splitWarning?' · ⚠ граница слогов приблизительна':'');
    }
   }
@@ -701,6 +712,7 @@ async function start(){
   status('Микрофон недоступен. Открой урок через HTTPS на GitHub Pages в Chrome и разреши доступ к микрофону.');return;
  }
  const turn=++seq,word=state.selected;
+ chartView='preview';
  visibleAttempt={word,points:[],seconds:0,splitRatio:.5,splitSource:'midpoint',quality:'unmeasured',voiceMs:0};
  draw();status('Запрашиваю доступ к микрофону…');
  try{
@@ -735,7 +747,7 @@ function choose(i){
  if(!Number.isInteger(i)||i<0||i>5)return;
  clearReplay();
  if(active)stop(false);
- state.selected=i;visibleAttempt=null;persist();
+ state.selected=i;visibleAttempt=null;chartView='preview';persist();
  note='Выбрано '+(memo?.words[i]?.zh||'слово')+'. Нажми «Записать голос».';
  update();
  const e=document.getElementById('tone-trainer');e?.scrollIntoView({block:'nearest',behavior:'smooth'});
@@ -746,6 +758,13 @@ function resetWord(){
  state.reps[state.selected]={mic:[],manual:0};visibleAttempt=null;persist();note='Повторы слова сброшены.';update();
 }
 function reset(){if(active)stop(false);clearReplay();state={selected:0,reps:Array.from({length:6},()=>({mic:[],manual:0}))};visibleAttempt=null;persist()}
+// Chart-mode switch is isolated to the tone trainer; it does not affect lesson progress.
+document.addEventListener('click',event=>{
+ const button=event.target.closest('[data-tone-view]');
+ if(!button||button.disabled||!button.closest('.l3-tone-details'))return;
+ if(button.dataset.toneView!=='preview'&&button.dataset.toneView!=='analysis')return;
+ chartView=button.dataset.toneView;draw();
+});
 document.addEventListener('click',event=>{
  const btn=event.target.closest('[data-tone-act]');if(!btn||btn.disabled)return;
  const action=btn.dataset.toneAct;
