@@ -12,9 +12,30 @@ try{
   await page.locator('#pg346').waitFor({state:'visible',timeout:15000});
   await page.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true',{timeout:15000});
   await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pandaStatic==='true',{timeout:15000});
+  const visibility=await page.evaluate(()=>{
+    const stage=document.querySelector('#pg346');
+    const original=stage.querySelector('.pg346-scene .pg352-mascot');
+    const panda=stage.querySelector('.pg542-frozen-panda');
+    const cs=getComputedStyle(panda),r=panda.getBoundingClientRect();
+    const cv=document.createElement('canvas');cv.width=40;cv.height=40;
+    const ctx=cv.getContext('2d',{willReadFrequently:true});
+    ctx.drawImage(panda,0,0,40,40);
+    const data=ctx.getImageData(0,0,40,40).data;
+    let visiblePixels=0;for(let i=3;i<data.length;i+=4)if(data[i]>90)visiblePixels++;
+    return {originalStillInScene:!!original,pandaLoaded:panda.complete&&panda.naturalWidth>100,
+      display:cs.display,visibility:cs.visibility,opacity:cs.opacity,
+      bounds:{x:r.x,y:r.y,w:r.width,h:r.height},visiblePixels};
+  });
+  assert(visibility.originalStillInScene,'Original Panda must remain in scenic DOM for audio/face callbacks');
+  assert(visibility.pandaLoaded,'Frozen Panda image is NOT loaded');
+  assert.equal(visibility.display,'block','Panda clone is hidden by CSS');
+  assert.equal(visibility.visibility,'visible','Panda clone is invisible');
+  assert(visibility.bounds.w>90&&visibility.bounds.h>90,'Panda portrait has no visible size: '+JSON.stringify(visibility));
+  assert(visibility.visiblePixels>60,'Panda portrait appears transparent/empty: '+JSON.stringify(visibility));
+
   const portrait=async()=>page.evaluate(()=>{
-   const panda=document.querySelector('#pg346 .pg541-static-layer .pg352-mascot');
-   const stone=document.querySelector('#pg346 .pg541-static-back');
+   const panda=document.querySelector('#pg346 .pg542-static-layer .pg542-frozen-panda');
+   const stone=document.querySelector('#pg346 .pg542-static-back');
    const coords=node=>{const r=node.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}};
    return {panda:coords(panda),stone:coords(stone)};
   });
@@ -71,7 +92,7 @@ try{
     const root=document.documentElement,stage=document.querySelector('#pg346');
     const panda=stage.querySelector('.pg352-mascot');
     const scene=stage.querySelector('.pg346-scene');
-    const stone=stage.querySelector('.pg541-static-back');
+    const stone=stage.querySelector('.pg542-static-back');
     const read=()=>{
       const a=panda.getBoundingClientRect(),b=stone.getBoundingClientRect();
       return {pandaWidth:a.width,pandaHeight:a.height,pandaTop:a.top,pandaLeft:a.left,
@@ -92,17 +113,17 @@ try{
     assert(Math.abs(geometry.normal[prop]-geometry.compact[prop])<2,'Panda or stone moved during Android keyboard: '+prop+' '+JSON.stringify(geometry));
   await verifyFrozen('After keyboard open / close');
   const speechAppearance=await page.evaluate(()=>{
-    const stage=document.querySelector('#pg346'),panda=stage.querySelector('.pg352-mascot');
+    const stage=document.querySelector('#pg346'),panda=stage.querySelector('.pg542-frozen-panda');
     stage.dataset.pose='talking';
     const visible=selector=>{const node=stage.querySelector(selector);return node?getComputedStyle(node).display:'absent'};
     const state={animation:getComputedStyle(panda).animationName,
-      mouth:visible('.pg352-mouth'),face:visible('.pg353-face-canvas'),headphones:visible('.pg352-ear-effects')};
+      mouth:visible('.pg352-mouth'),face:visible('.pg353-face-canvas'),headphones:visible('.pg352-ear-effects'),
+      originalHidden:getComputedStyle(stage.querySelector('.pg352-mascot')).visibility};
     stage.dataset.pose='idle';return state;
   });
   assert.equal(speechAppearance.animation,'none','Panda moves while speaking');
-  assert.equal(speechAppearance.face,'none','Panda facial canvas moves while speaking');
-  assert.equal(speechAppearance.headphones,'none','Panda ears change when speaking');
-  assert(['none','absent'].includes(speechAppearance.mouth),'Panda mouth moves while speaking');
+  assert.equal(speechAppearance.originalHidden,'hidden','Original animated Panda must be visually hidden');
+  assert.equal(speechAppearance.animation,'none','Approved Panda copy must not animate when speaking');
   await verifyFrozen('After Panda speaking state');
 
   // Android sometimes clears composerOpen while committing pinyin. A single
