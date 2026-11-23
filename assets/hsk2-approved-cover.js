@@ -9,6 +9,7 @@
  const num=Number(document.currentScript?.dataset.lesson||0);
  if(!Number.isInteger(num)||num<1||num>10)return;
  const art='./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'.png'+(num===1?'?v=20261123back1':'');
+ const thematicArt='./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'-scene.webp';
  const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const loading=new WeakSet();
  function build(img){
@@ -23,7 +24,7 @@
    '<img class="pg-approved-cover-image" width="941" height="1672" draggable="false" decoding="async" alt="HSK 2. Урок '+num+'. '+esc(names[num-1])+'">'+
    '<a class="pg-approved-hotspot pg-approved-map-link" href="./hsk2-life-course.html?view=map" aria-label="Все уроки HSK 2"></a>'+
    steps+'<button type="button" class="pg-approved-hotspot pg-approved-start" data-step="2" aria-label="Начать урок" style="'+(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%')+'"></button>'+
-   '</div><div class="pg-approved-bottom" aria-hidden="true"></div>';
+   '</div><div class="pg-approved-bottom" aria-hidden="true"></div><div class="pg-approved-theme-scene" aria-hidden="true"></div>';
   section.querySelector('img').src=img.src;
   return section;
  }
@@ -42,7 +43,25 @@
    loading.delete(content);
    if(app.dataset.view!=='1'||!content.isConnected||app.querySelector('#pg433 .pg433-content')!==content)return;
    content.classList.add('pg-approved-active');
-   content.append(build(img));
+   const cover=build(img);
+   content.append(cover);
+   // Image existence is verified before any visual override. Existing poster,
+   // lesson navigation, audio and progress are untouched if the scene is absent.
+   const theme=new Image();
+   theme.onload=()=>{
+    if(!cover.isConnected)return;
+    const area=cover.querySelector('.pg-approved-theme-scene');
+    const poster=cover.querySelector('.pg-approved-poster');
+    if(!area||!poster)return;
+    const position=()=>{area.style.top=(poster.getBoundingClientRect().height*(num===1?.675:.74)).toFixed(2)+'px';};
+    area.style.backgroundImage='url("'+thematicArt+'")';
+    position();
+    area.classList.add('pg-approved-scene-ready');
+    if('ResizeObserver' in window)new ResizeObserver(position).observe(poster);
+    else window.addEventListener('resize',position,{passive:true});
+   };
+   theme.onerror=()=>{}; // approved original remains visible
+   theme.src=thematicArt;
   };
   img.onerror=()=>{loading.delete(content); /* Keep original cover. */};
   img.src=art;
