@@ -84,6 +84,31 @@ const report={generated:new Date().toISOString(),source:'panda-tone-test-lab.htm
  automatic:{passed:passes,total:tests.length,tests},realAudio:{decoded,total:6,mp3},
  note:'F0 measurements only. Real MP3 output does not prove tone recognition accuracy.'};
 fs.writeFileSync(path.join(root,'tone-regression-report.json'),JSON.stringify(report,null,2)+'\n');
+
+const both=mp3.filter(x=>!x.error&&x.quality==='both').length;
+const partial=mp3.filter(x=>!x.error&&x.quality==='partial').length;
+const failed=mp3.filter(x=>x.error||x.quality==='unmeasured').length;
+const markdown=[
+ '# Panda Go · Проверка анализатора тонов',
+ '',
+ 'Проверено синтетических сценариев: **'+passes+'/'+tests.length+'**.',
+ 'Настоящих MP3 прочитано: **'+decoded+'/6**; оба слога пригодны для измерения: **'+both+'/6**; частично: **'+partial+'**; ошибки/не измерено: **'+failed+'**.',
+ '',
+ '| Слово | F0 | Слог 1 | Слог 2 | Качество |',
+ '|---|---:|---:|---:|---|',
+ ...mp3.map(a=>a.error?
+  '| '+a.name+' | — | — | — | ОШИБКА: '+a.error.replace(/[|]/g,'/')+' |':
+  '| '+a.name+' | '+a.points+' | '+a.syllables[0]+' | '+a.syllables[1]+' | '+a.quality+(a.speech?.ambiguous?' · граница неоднозначна':'')+' |'),
+ '',
+ '> **Не является оценкой произношения.** Статус both значит только достаточное качество F0 в двух слогах. Без размеченных записей живой речи нельзя включать автоматическое «правильно/неправильно».',
+ '',
+ 'Подробный машинный отчёт находится в артефакте tone-regression-report.json.'
+].join('\n')+'\n';
+if(process.env.GITHUB_STEP_SUMMARY){
+ try{fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,markdown)}
+ catch(error){console.warn('GitHub step summary unavailable: '+error.message)}
+}
+
 console.log('Synthetic checks: '+passes+'/'+tests.length);
 for(const a of mp3)console.log(a.name+': '+(a.error||('quality='+a.quality+', F0='+a.points+', points='+a.syllables.join('/')+', Δ='+a.delta.join('/'))));
 if(passes!==tests.length||decoded!==6)process.exitCode=1;
