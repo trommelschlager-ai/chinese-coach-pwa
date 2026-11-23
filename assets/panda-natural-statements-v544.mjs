@@ -63,7 +63,7 @@ export function respondToNaturalStatement(raw,{awaiting=null}={}){
  const job=/^我在([\p{Script=Han}]{1,8})工作$/u.exec(s);
  if(job&&workplaces[job[1]]){
   const [py,ru]=workplaces[job[1]];
-  return result(raw,'Wǒ zài '+py+' gōngzuò.','Я работаю в '+ru+'.',workLike,'job-liking');
+  return result(raw,'Wǒ zài '+py+' gōngzuò.',(job[1]==='家'?'Я работаю дома.':'Я работаю в '+ru+'.'),workLike,'job-liking');
  }
  if(s==='我不工作'||s==='我没有工作'||s==='我现在没有工作'||s==='我退休了'||s==='我在找工作'){
   const situations={
