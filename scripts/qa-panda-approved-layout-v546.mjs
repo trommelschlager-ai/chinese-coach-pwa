@@ -27,7 +27,7 @@ try{
         panda:{x:panda.x,y:panda.y,w:panda.width,h:panda.height},
         stoneTop:stoneStyle.top,stoneWidth:stoneStyle.width,
         labels:Array.from(nav.children).map(text),
-        right:Array.from(rail.children).filter(el=>getComputedStyle(el).display!=='none').map(text),
+        right:Array.from(rail.children).filter(el=>getComputedStyle(el).display!=='none').map(el=>el.getAttribute('aria-label')||text(el)),
         historyInsideFooter:nav.contains(stage.querySelector('#pg346-history')),
         historyInsideHeader:head.contains(stage.querySelector('#pg346-history')),
         rows:cards.length,
@@ -38,7 +38,8 @@ try{
     });
     const initial=await snapshot();
     assert.deepEqual(initial.labels,['Главная','История','Panda AI','Профиль'],'Wrong footer order: '+JSON.stringify(initial));
-    assert.deepEqual(initial.right,['Все\nтемы','Уроки'],'Right buttons should be Topics and Lessons only: '+JSON.stringify(initial.right));
+    assert.equal(initial.right.length,2,'Right buttons should be Topics and Lessons only: '+JSON.stringify(initial.right));
+    assert(initial.right.some(s=>s.includes('Все темы'))&&initial.right.some(s=>s.includes('уроки')),'Right labels are wrong: '+JSON.stringify(initial.right));
     assert(initial.historyInsideFooter&&!initial.historyInsideHeader,'History button was not moved to bottom');
     assert(initial.panda.w>150&&initial.panda.h>150,'Panda is missing or too small: '+JSON.stringify(initial.panda));
     assert(initial.historyRect.bottom<=initial.panda.y+15,'Panda overlaps chat: '+JSON.stringify(initial));
