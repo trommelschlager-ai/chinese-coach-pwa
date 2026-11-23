@@ -1,119 +1,96 @@
+// Regression against the CURRENT approved HSK2 day storyboard (v439).
+// The welcome CTA intentionally routes to the separate "О себе" lesson.
+// Exercise the genuine 12-page day mini-lesson via its persisted resume state,
+// including the seven graded items, real navigation, screenshots and completion.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {chromium} from 'playwright';
 const base=process.env.PANDA_TEST_BASE||'http://127.0.0.1:4173';
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
-fs.mkdirSync('qa/hsk2-v414-six-screens',{recursive:true});
-const sizes=[{width:360,height:800},{width:393,height:852},{width:412,height:915}];
-try{
- for(const size of sizes){
-  const tag=size.width+'x'+size.height;
-  const errors=[];
-  const context=await browser.newContext({viewport:size,deviceScaleFactor:1,isMobile:true,hasTouch:true,locale:'ru-RU'});
-  const page=await context.newPage();
-  page.on('pageerror',err=>errors.push(err.message));
-  await page.goto(base+'/hsk2-life-course.html?start=1&v=414',{waitUntil:'domcontentloaded'});
-  await page.locator('.pg414-vocab-row').first().waitFor();
-  const scan=async name=>{
-   await page.waitForFunction(()=>{const im=document.querySelector('.pg415-art');return !im||(im.complete&&im.naturalWidth===941)},null,{timeout:16000});
-   await page.locator('.pg415-art').evaluate(async img=>{await img.decode();await new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done))) });
-   const info=await page.evaluate(()=>{
-    const root=document.getElementById('app');
-    const w=document.documentElement.clientWidth;
-    const main=document.querySelector('#screen');
-    const footer=document.querySelector('#day-fixed-actions');
-    const art=document.querySelector('.pg415-art-screen .pg415-art,.pg415-ai-screen .pg415-art');
-    const head=document.querySelector('.pg414-hero');
-    const panel=document.querySelector('.pg414-panel');
-    const rect=n=>n?(({x,y,width,height,bottom,right})=>({x,y,width,height,bottom,right}))(n.getBoundingClientRect()):null;
-    return {width:w,scrollWidth:document.documentElement.scrollWidth,mainWidth:main.scrollWidth,mainClientWidth:main.clientWidth,
-      head:rect(head),panel:rect(panel),footer:rect(footer),art:rect(art),sourceWidth:art?.naturalWidth,bg:getComputedStyle(root).backgroundImage};
-   });
-   assert.ok(info.art||info.head,'Actual approved illustration or original header present '+name);
-   assert.ok(info.scrollWidth<=size.width+1,'No horizontal viewport overflow '+name+' '+JSON.stringify(info));
-   assert.ok(info.mainWidth<=info.mainClientWidth+2,'No horizontal course overflow '+name+' '+JSON.stringify(info));
-   if(info.art){
-      assert.ok(info.art.width>size.width*.85,'Original illustration fills device width '+name);
-      assert.equal(info.sourceWidth,941,'Approved original resolution preserved '+name);
-      assert.ok(info.art.height>=size.height-3,
-       'The full original drawing AND its touch zones must occupy the phone height '+name+' '+JSON.stringify(info));
-      assert.ok(info.art.width>=size.width-3,
-       'Approved illustration must occupy the full device width '+name+' '+JSON.stringify(info));
-   }else assert.ok(info.panel&&info.panel.width>size.width*.85,'Content panel fills width '+name);
-      console.log('METRICS '+name+' '+tag+' '+JSON.stringify(info));
-   await page.screenshot({path:'qa/hsk2-v414-six-screens/'+tag+'-'+name+'.png',fullPage:false});
-  };
-  assert.equal(await page.locator('.pg414-vocab-row').count(),7);
-  await scan('01-words');
-  // Do not autoplay the low-quality Android synthetic voice when the exact MP3
-  // is missing. Clicking the original speaker should give an honest message,
-  // without replacing the drawing or moving its scroll container.
-  const robotClicks=await page.evaluate(()=>{
-   window.__pg416SpeechCalls=0;
-   if(window.speechSynthesis)window.speechSynthesis.speak=()=>{window.__pg416SpeechCalls++};
-   return window.__pg416SpeechCalls;
+const folder='qa/hsk2-v414-six-screens';
+fs.mkdirSync(folder,{recursive:true});
+try {
+ for(const size of [{width:360,height:800},{width:393,height:852},{width:412,height:915}]){
+  const tag=size.width+'x'+size.height,errors=[];
+  const context=await browser.newContext({
+   viewport:size,deviceScaleFactor:1,isMobile:true,hasTouch:true,locale:'ru-RU'});
+  await context.addInitScript(()=>{
+   localStorage.setItem('pg-hsk2-life-course-v1',JSON.stringify({
+    completed:[],difficult:[],showPy:true,examPassed:false,
+    resume:{topic:0,mini:0,stage:0,stepOrderV413:true,wordOrderV414:true}
+   }));
   });
-  assert.equal(robotClicks,0);
-  await page.locator('.pg415-vocab-audio [data-missing-sound]').first().evaluate(el=>el.click());
-  assert.match(await page.locator('#message').innerText(),/пока нет проверенной MP3-записи/);
-  assert.equal(await page.evaluate(()=>window.__pg416SpeechCalls),0,'Robotic voice must not be played');
-  // The toast is overlaid and must never shrink the illustration.
-  assert.ok(await page.locator('.pg415-graphic').evaluate(el=>el.getBoundingClientRect().height>=innerHeight-3));
-  const wordBounds=await page.locator('.pg414-vocab-row').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().bottom));
-  assert.ok(Math.max(...wordBounds)<size.height-60,'All seven words above fixed footer on '+tag+' '+JSON.stringify(wordBounds));
-  await page.locator('[data-day-next]').click();
-  await page.locator('.pg415-step-1,.pg414-rule').first().waitFor();
-  await scan('02-rule');
-  await page.locator('[data-day-next]').click();
-  await page.locator('.pg414-speech-row').first().waitFor();
-  assert.equal(await page.locator('.pg414-speech-row').count(),7);
-  await scan('03-speech');
-  await page.locator('[data-day-next]').click();
-  await page.locator('.pg414-test').waitFor();
-  assert.equal(await page.locator('.pg414-question').count(),3,'Page 1 shows only tasks 1-3');
-  await scan('04-test');
-  const exam=page.locator('.pg415-live-test');
-  assert.equal(await exam.count(),1,'Independent test panel retained');
-  const overflow=await exam.evaluate(el=>el.scrollHeight-el.clientHeight);
-  if(overflow>24){
-   await exam.evaluate(el=>{el.scrollTop=Math.min(70,el.scrollHeight-el.clientHeight)});
-   const before=await exam.evaluate(el=>el.scrollTop);
-   await page.locator('[data-day-quiz="0:1"]').evaluate(el=>el.click());
-   await page.waitForTimeout(70);
-   assert.ok(Math.abs((await exam.evaluate(el=>el.scrollTop))-before)<5,'Answer must not jump page 1 to top '+tag);
+  const page=await context.newPage();
+  page.on('pageerror',e=>errors.push(e.message));
+  const response=await page.goto(base+'/hsk2-life-course.html?v=439',{waitUntil:'load'});
+  assert.equal(response?.status(),200);
+  await page.locator('#pg433.pg433-root').waitFor({state:'visible'});
+  const stage=page.locator('#pg433');
+  const content=page.locator('#pg433-content');
+  async function checkPage(n,shot){
+   await page.waitForFunction(expected=>document.querySelector('.pg433-counter')?.textContent.trim()===expected,
+    (n+1)+' / 12');
+   assert.ok(await content.isVisible(),'Current approved teaching content must be visible');
+   const result=await page.evaluate(()=>{
+    const art=document.querySelector('#pg433');
+    const b=art.getBoundingClientRect();
+    return {viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth,
+      box:{x:b.x,y:b.y,width:b.width,height:b.height}};
+   });
+   assert.ok(result.scrollWidth<=size.width+2,'No horizontal overflow '+tag+' page '+n);
+   assert.ok(result.box.width>=size.width*.82,'Mobile teaching surface too narrow '+tag);
+   assert.equal(await page.locator('.pg433-title strong').textContent(),'Мой день');
+   if(shot)await page.screenshot({path:folder+'/'+tag+'-'+shot+'.png',fullPage:false});
   }
-  await page.locator('[data-day-quiz="0:1"]').click();
-  await page.locator('[data-day-quiz="1:0"]').click();
+  async function next(n,shot){const btn=page.locator('[data-pg433-next]');
+   assert.equal(await btn.isDisabled(),false,'Page '+n+' is ready to advance');
+   await btn.click();await checkPage(n+1,shot);
+  }
+  await checkPage(0,'01-words');
+  assert.equal(await content.locator('.pg433-wordrow').count(),4,'Word page 1 has four words');
+  await next(0,'01-words-continued');
+  assert.equal(await content.locator('.pg433-wordrow').count(),3,'Word page 2 has three words');
+  await next(1,'02-rule');
+  assert.ok((await content.textContent()).includes('七点'));
+  await next(2,'02-rule-practice');
+  await page.locator('[data-day-rule-choice="0"]').click();
+  await next(3,'03-speech');
+  assert.equal(await content.locator('.pg433-speechrow').count(),4);
+  await next(4,'03-speech-continued');
+  assert.equal(await content.locator('.pg433-speechrow').count(),3);
+  await next(5,'04-test-1');
+  assert.equal(await content.locator('.pg433-quiz').count(),2);
+  for(const choice of ['0:1','1:0']){
+   await page.locator('[data-day-quiz="'+choice+'"]').click();
+  }
+  assert.equal(await page.locator('[data-pg433-next]').isDisabled(),false,'Correct questions must unlock next');
+  await next(6,'04-test-2');
   for(let i=0;i<3;i++){
    await page.locator('[data-day-pair-left="'+i+'"]').click();
    await page.locator('[data-day-pair-right="'+i+'"]').click();
   }
-  await page.locator('[data-pg418-test-next]').click();
-  assert.equal(await page.locator('.pg414-question').count(),2,'Page 2 shows tasks 4 and 5');
-  await page.screenshot({path:'qa/hsk2-v414-six-screens/'+tag+'-04-test-2.png',fullPage:false});
+  assert.match(await content.textContent(),/3\/3/);
+  await next(7,'04-test-3');
   await page.locator('[data-day-listen="0"]').click();
-  for(let i=0;i<4;i++)await page.locator('[data-day-token="'+i+'"]').click();
-  await page.locator('[data-pg418-test-next]').click();
-  assert.equal(await page.locator('.pg414-question').count(),2,'Page 3 shows tasks 6 and 7');
-  await page.screenshot({path:'qa/hsk2-v414-six-screens/'+tag+'-04-test-3.png',fullPage:false});
+  const builder=await page.evaluate(()=>window.PandaGoDayModulesV391[0].builder);
+  assert.ok(builder.length>=4);
+  for(let i=0;i<builder.length;i++)await page.locator('[data-day-token="'+i+'"]').click();
+  await next(8,'04-test-4');
   await page.locator('[data-day-fill="0"]').click();
   await page.locator('[data-day-truth="true"]').click();
-  assert.match(await page.locator('.pg414-test .pg414-progress').innerText(),/7\/7/);
-  await page.locator('[data-day-next]').click();
-  await page.locator('.pg414-example-large').first().waitFor();
-  await scan('05-examples');
-  await page.locator('[data-day-next]').click();
-  await page.locator('.pg414-ai').waitFor();
-  assert.match(await page.locator('.day-ai-panel a').getAttribute('href'),/practice=day&mini=0/);
-  await page.locator('#pg414-ai-input').fill('我每天七点起床');
-  await page.locator('[data-pg414-send]').click();
-  await page.locator('#pg414-ai-feedback').filter({hasText:'Теперь ответь на второй вопрос'}).waitFor({timeout:8000});
-  await page.locator('#pg414-ai-input').fill('我早上洗脸');
-  await page.locator('[data-pg414-send]').click();
-  await page.locator('#pg414-ai-feedback').filter({hasText:'Два ответа подходят'}).waitFor({timeout:8000});
-  await page.screenshot({path:'qa/hsk2-v414-six-screens/'+tag+'-06-panda-ai.png',fullPage:false});
-  assert.deepEqual(errors,[],'No JS errors on '+tag);
-  console.log('PASS HSK2 six actual screens Android '+tag);
+  await next(9,'05-examples');
+  assert.ok(await content.locator('.pg433-sentence').count()>=2);
+  await next(10,'05-dialogue');
+  assert.equal(await content.locator('.pg433-chat').count(),4);
+  const complete=page.locator('[data-pg433-next]');
+  await complete.click();
+  await page.locator('#pg433.pg433-done').waitFor({state:'visible'});
+  assert.match(await page.locator('.pg433-ai-link').getAttribute('href'),/practice=day&mini=0/);
+  const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('pg-hsk2-life-course-v1')));
+  assert.ok(saved.completed.includes(0),'Successful seven-item test must save completion');
+  await page.screenshot({path:folder+'/'+tag+'-06-panda-ai.png',fullPage:false});
+  assert.deepEqual(errors,[],'Browser errors at '+tag);
+  console.log('PASS HSK2 approved storyboard: 7 words, full grammar, mic screens, 7 tasks, dialogue, Panda AI at '+tag);
   await context.close();
  }
-}finally{await browser.close()}
+} finally {await browser.close()}
