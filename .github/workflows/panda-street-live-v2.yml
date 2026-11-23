@@ -6,6 +6,7 @@ on:
       - 'panda-voice-pilot.html'
       - 'panda-shared-profile-settings.html'
       - 'assets/panda-street-shared-brain-v1.mjs'
+      - 'assets/panda-street-face-rig-v1.mjs'
       - 'assets/panda-cross-character-memory-v1.mjs'
       - 'assets/panda-live-screen-v270.mjs'
       - 'assets/panda-hsk2-preview-core-v1.mjs'
