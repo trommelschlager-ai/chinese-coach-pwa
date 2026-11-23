@@ -94,7 +94,7 @@ function render(ts){
  const m=motion(ts);
  // Same approved bitmap, copied through a soft mask into a tiny moving head layer.
  c.save();c.translate(left+(CX*s),(CY-cutSky)*s);c.rotate(m.a);c.translate(-(CX*s),-(CY-cutSky)*s);
- c.drawImage(head,left+BX*s,(BY-cutSky+m.y)*s,BW*s,BH*s);c.restore();
+ c.drawImage(head,BX*s,(BY-cutSky+m.y)*s,BW*s,BH*s);c.restore();
  raf=requestAnimationFrame(render);
 }
 buttons.forEach(btn=>btn.addEventListener('click',()=>{
