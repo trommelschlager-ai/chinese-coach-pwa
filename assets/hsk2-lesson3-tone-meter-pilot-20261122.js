@@ -90,7 +90,8 @@ function diagnosticSummary(){
    const pts=attempt.points||[];
    const a=contourEvidence(pts,0,split,seconds),b=contourEvidence(pts,split,1,seconds);
    const hasWarning=Boolean(attempt.splitWarning)||Boolean(attempt.signal?.speech?.ambiguous);
-   if(a.usable&&b.usable&&!hasWarning&&attempt.quality==='both')both++;
+   const rms=voicedRmsFrames(attempt.levels||[],split);
+   if(a.usable&&b.usable&&rms.every(n=>n>=5)&&!hasWarning&&attempt.quality==='both')both++;
    else if(pts.length>=2)partial++;
    else unmeasured++;
   }
@@ -100,6 +101,8 @@ function diagnosticSummary(){
    for(const [j,a,b] of [[1,0,split],[2,split,1]]){
     const evidence=contourEvidence(latest.points||[],a,b,sec);
     const reasons=[];
+    const rms=voicedRmsFrames(latest.levels||[],split);
+    if(rms[j-1]<5)reasons.push('озвученных RMS '+rms[j-1]+'/5');
     if(evidence.points<7)reasons.push('F0 '+evidence.points+'/7');
     if(evidence.duration<.14)reasons.push('короткий голос '+Math.round(evidence.duration*1000)+'мс');
     if(evidence.maxGap>.13)reasons.push('разрыв F0');
@@ -330,7 +333,7 @@ function draw(){
    }else{
     const count=finalPoints.filter(p=>p[0]>=finalFrom&&(finalTo===1?p[0]<=1:p[0]<finalTo)).length;
     const finalTrend=observedTrend(finalPoints,finalFrom,finalTo);
-    const valid=recent?.validParts?.[syll]===true;
+    const valid=recent?.validParts?.[syll]===true&&voicedRmsFrames(recent?.levels||[],split)[syll]>=5;
     trend.textContent=valid?'🟠 '+finalTrend+' · '+count+' F0':'🟠 '+count+' F0 · данных недостаточно';
     if(recent?.splitWarning)trend.textContent+=' · ⚠ граница приблизительна';
    }
@@ -609,6 +612,14 @@ function selectSpeechSegment(levels,points){
  return {from:best.from,to:best.to,frames:best.frames,allFrames:loud.length,
   discarded:Math.max(0,loud.length-best.frames),ambiguous,groups:groups.length};
 }
+// Require independent, audible 30ms RMS frames in EACH syllable.
+// F0 windows can overhang a very short vowel, so F0 points alone are not enough.
+// This is a data-quality gate, never a correctness/tonal grade.
+function voicedRmsFrames(levels,splitRatio){
+ if(!Array.isArray(levels)||!finite(splitRatio))return [0,0];
+ return [0,1].map(i=>levels.filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1])&&
+  p[0]>=(i===0?0:splitRatio)&&(i===0?p[0]<splitRatio:p[0]<=1)&&p[1]>=.023).length);
+}
 function buildRecording(rec){
  const levels=(rec.levels||[]).filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1]));
  const voiced=levels.filter(p=>p[1]>=.023);
@@ -669,14 +680,15 @@ function buildRecording(rec){
  result.levels=levels.filter(p=>p[0]>=from&&p[0]<=to).map(p=>[Math.min(1,Math.max(0,(p[0]-from)/span)),p[1]]).slice(-180);
  const i=result.splitRatio;
  result.evidence=[contourEvidence(result.points,0,i,duration),contourEvidence(result.points,i,1,duration)];
- result.validParts=result.evidence.map(x=>x.usable);
+ result.voicedRmsFrames=voicedRmsFrames(result.levels,i);
+ result.validParts=result.evidence.map((x,j)=>x.usable&&result.voicedRmsFrames[j]>=5);
  result.quality=result.validParts.every(Boolean)?'both':result.points.length>=2?'partial':'unmeasured';
  if(speech.ambiguous){
   result.splitWarning+=(result.splitWarning?' ':'')+'⚠ В попытке обнаружены несколько похожих голосовых фрагментов, выбор слова неоднозначен.';
   if(result.quality==='both')result.quality='partial';
  }
  const message=result.quality==='both'?'✓ Записано: обе кривые измерены (тоны не оценены).':
-  result.quality==='partial'?'✓ Записано. Один слог измерен частично — показаны доступные данные.':
+  result.quality==='partial'?'✓ Записано. Для обоих слогов данных пока недостаточно — показаны доступные измерения F0.':
   '✓ Повтор учтён по звуковому сигналу, но высоту голоса измерить не удалось.';
  return {accepted:true,entry:result,message};
 }
@@ -855,7 +867,9 @@ document.addEventListener('input',event=>{
  if(!finite(pct)||pct<25||pct>75)return;
  last.splitRatio=pct/100;last.splitSource='manual';last.splitWarning='';
   last.evidence=[contourEvidence(last.points,0,last.splitRatio,last.seconds),contourEvidence(last.points,last.splitRatio,1,last.seconds)];
-  last.validParts=last.evidence.map(x=>x.usable);last.quality=last.validParts.every(Boolean)?'both':'partial';persist();
+  last.voicedRmsFrames=voicedRmsFrames(last.levels||[],last.splitRatio);
+  last.validParts=last.evidence.map((x,j)=>x.usable&&last.voicedRmsFrames[j]>=5);
+  last.quality=last.validParts.every(Boolean)?'both':'partial';persist();
  const label=document.getElementById('tone-split-value');
  if(label)label.textContent=pct+'%';
  const hint=document.getElementById('tone-split-hint');
@@ -874,5 +888,5 @@ document.addEventListener('click',event=>{
  }catch{status('Не удалось воспроизвести запись.');}
 });
 window.PandaToneTrainer={render,mount,stop:()=>{if(active)stop(false)},reset,progressText,total,replay:async()=>{if(!replayUrl||replayWord!==state.selected)return false;try{if(replayAudio)replayAudio.pause();replayAudio=new Audio(replayUrl);await replayAudio.play();return true}catch{return false}},diagnostics:()=>{const i=state.selected;return {word:memo?.words?.[i]?.zh||'',pinyin:memo?.words?.[i]?.py||'',selected:i,repeats:count(i),total:total(),recording:Boolean(active),attempt:visibleAttempt?.word===i?visibleAttempt:(state.reps[i]?.mic?.at(-1)||null)}}};
-window.PandaToneMathV2={pitchOf,fallbackPitchOf,offlinePitch,reanalyzePcm,cleanPitch,contourEvidence,selectSpeechSegment,estimateSplit,observedTrend,buildRecording,normalizeChartPoints,semitoneContour,isLongPitchGap};
+window.PandaToneMathV2={pitchOf,fallbackPitchOf,offlinePitch,reanalyzePcm,cleanPitch,contourEvidence,selectSpeechSegment,estimateSplit,observedTrend,buildRecording,voicedRmsFrames,normalizeChartPoints,semitoneContour,isLongPitchGap};
 })();
