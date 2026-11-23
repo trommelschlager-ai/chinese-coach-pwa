@@ -44,14 +44,14 @@ test('four footer controls and lowered pair of right controls match approved ima
 });
 test('both pages, offline pack and service worker use exact new layout version',()=>{
   for(const page of [html,mirror]){
-    assert.match(page,/panda-ai-approved-layout-v547\.css\?v=546/);
-    assert.match(page,/panda-ai-approved-layout-v547\.js\?v=546/);
+    assert.match(page,/panda-ai-approved-layout-v547\.css\?v=547/);
+    assert.match(page,/panda-ai-approved-layout-v547\.js\?v=547/);
   }
   const pack=JSON.parse(load('../assets/offline-pack.json'));
   const sw=load('../sw.js');
-  assert.equal(pack.version,546);
+  assert.equal(pack.version,547);
   assert.match(sw,/const CACHE='chinese-coach-pwa-v547-/);
-  for(const file of ['./assets/panda-ai-approved-layout-v547.css?v=546','./assets/panda-ai-approved-layout-v547.js?v=546']){
+  for(const file of ['./assets/panda-ai-approved-layout-v547.css?v=547','./assets/panda-ai-approved-layout-v547.js?v=547']){
     assert(pack.files.includes(file),'missing offline file '+file);
     assert(sw.includes(file),'missing worker preload '+file);
   }
