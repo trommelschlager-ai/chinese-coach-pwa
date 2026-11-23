@@ -119,8 +119,11 @@ jobs:
               assert 495<=timing['delay']<650 and timing['transitions']==1 and timing['taps']==2,timing
               page.wait_for_timeout(190)
               page.screenshot(path='evidence/05-lesson-open.png')
+              print('PASS: exact pixels restored on cancel and double touch opens once',timing)
               page.goto(map_url)
               page.locator('a[href*="hsk2-lesson5-friends-v2.html"]').first.tap()
+              expect(page.locator('#app')).to_have_attribute('data-view','2')
+              page.locator('#detail-back').tap()
               expect(start).to_be_visible()
               expect(frame).to_be_hidden()
               context.set_offline(True)
