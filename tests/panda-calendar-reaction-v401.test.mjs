@@ -122,7 +122,9 @@ test('Short and Non-Stop screen paths retain progress and skip unavailable ackno
  assert(source.indexOf("if(question.spoken?.calendarLiteral&&question.reply)") >
    source.indexOf("const result=verifyAnswerFor(conversation.lines,state.step,input)"));
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- assert.match(html,/panda-live-screen-v270\.mjs\?v=\d+/,'The updated Panda engine uses a cache-busted module URL');
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=\d+/,'Active Panda engine uses a cache-busted module URL');
+ const activeCore=fs.readFileSync(new URL('../assets/panda-hsk2-preview-core-v1.mjs',import.meta.url),'utf8');
+ assert.ok(activeCore.includes('const playReply=completedCalendarRound?false:'),'Active calendar completion never plays an unrelated MP3');
 });
 
 test('the approved panda chat visibly renders the calendar-completion message',()=>{
