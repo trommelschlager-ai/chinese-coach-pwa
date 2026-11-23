@@ -181,7 +181,10 @@
   width:var(--pg540-panda-width, 66vw)!important;
   max-width:none!important;
   bottom:var(--pg540-panda-bottom, 10px)!important;
-  height:auto!important;
+  /* v545: do not let max-height or the resized flex parent squash the image. */
+  height:var(--pg545-panda-height, auto)!important;
+  min-height:var(--pg545-panda-height, 0px)!important;
+  max-height:none!important;
 }
 :root[data-keyboard="true"] #pg346:not([data-day-scenario="ready"]) .pg346-scene::before,
 :root[data-keyboard="true"] #pg346:not([data-day-scenario="ready"]) .pg346-scene::after {
