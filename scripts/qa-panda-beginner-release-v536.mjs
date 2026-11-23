@@ -15,7 +15,22 @@ try{
    await page.locator('#pg346-send').click();
    await page.locator('#pg346-input').fill(input);
    await page.locator('#pg346-send').click();
-   await page.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,answer,{timeout:7000});
+   await page.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,answer,{timeout:7000}).catch(async e=>{
+    const observed=await page.evaluate(()=>({
+      rows:[...document.querySelectorAll('#pg346-rows .pg346-row')].map(r=>({
+        name:r.querySelector('.pg346-zh')?.textContent,
+        en:r.querySelector('.pg346-ru')?.textContent,
+        node:r.outerHTML.slice(0,350)
+      })),
+      input:document.querySelector('#pg346-input')?.value,
+      composer:document.querySelector('#pg346')?.dataset.composerOpen,
+      note:document.querySelector('#pg346-status')?.textContent,
+      body:document.querySelector('#pg346')?.dataset,
+      state:document.documentElement.dataset
+    }));
+    console.error('PANDA_QA_SEND_FAIL',JSON.stringify({input,answer,observed,errors}));
+    throw e;
+   });
    assert.equal(await page.locator('#pg346-rows .pg346-row:last-child .pg346-zh').textContent(),answer);
   };
   // v548: independent learner question has a pre-recorded Mandarin response.
