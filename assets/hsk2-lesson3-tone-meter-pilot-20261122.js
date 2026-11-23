@@ -73,6 +73,47 @@ function total(){return state.reps.reduce((sum,r,i)=>sum+count(i),0)}
 function progressText(){return total()+' / 30'}
 function micCount(){return state.reps.reduce((sum,r)=>sum+r.mic.length,0)}
 function tr(tones){return tones.map(x=>['','1 — ровный','2 — восходящий','3 — нисходяще-восходящий','4 — нисходящий'][x])}
+function diagnosticSummary(){
+ const words=memo?.words||[];
+ const names=['公司','学校','同事','同学','电脑','会说'];
+ const rows=['Panda Go · HSK 2 · Урок 3 · диагностика накопленных попыток',
+  'Повторений: '+total()+'/30 (это НЕ оценка произношения)',
+  'Записей с микрофона: '+micCount()+'; отметок вручную: '+state.reps.reduce((n,r)=>n+r.manual,0),
+  'Достаточно F0 — значит пригодно для дальнейшего анализа, но НЕ правильный тон.',''];
+ for(let i=0;i<6;i++){
+  const item=state.reps[i],n=item.mic.length;
+  let both=0,partial=0,unmeasured=0;
+  const latest=item.mic.at(-1),latestInfo=[];
+  for(const attempt of item.mic){
+   const split=finite(attempt.splitRatio)?attempt.splitRatio:.5;
+   const seconds=finite(attempt.seconds)?attempt.seconds:0;
+   const pts=attempt.points||[];
+   const a=contourEvidence(pts,0,split,seconds),b=contourEvidence(pts,split,1,seconds);
+   const hasWarning=Boolean(attempt.splitWarning)||Boolean(attempt.signal?.speech?.ambiguous);
+   if(a.usable&&b.usable&&!hasWarning&&attempt.quality==='both')both++;
+   else if(pts.length>=2)partial++;
+   else unmeasured++;
+  }
+  if(latest){
+   const split=finite(latest.splitRatio)?latest.splitRatio:.5;
+   const sec=finite(latest.seconds)?latest.seconds:0;
+   for(const [j,a,b] of [[1,0,split],[2,split,1]]){
+    const evidence=contourEvidence(latest.points||[],a,b,sec);
+    const reasons=[];
+    if(evidence.points<7)reasons.push('F0 '+evidence.points+'/7');
+    if(evidence.duration<.14)reasons.push('короткий голос '+Math.round(evidence.duration*1000)+'мс');
+    if(evidence.maxGap>.13)reasons.push('разрыв F0');
+    if(evidence.jump)reasons.push('скачок F0');
+    latestInfo.push('слог '+j+': '+(reasons.length?reasons.join(', '):'данных по F0 достаточно'));
+   }
+  }
+  rows.push((names[i]+' '+(words[i]?.py||'')+': записей '+n+', вручную '+item.manual+
+   '; F0 достаточно для двух слогов '+both+', частично '+partial+', без F0 '+unmeasured));
+  if(latestInfo.length)rows.push('  Последняя запись: '+latestInfo.join(' · ')+(latest.splitWarning?' · ⚠ ненадёжная граница':''));
+ }
+ rows.push('', 'Данные берутся из сохранённых попыток на ЭТОМ устройстве. Звуковые файлы не передаются и не сохраняются в отчёте.');
+ return rows.join('\n');
+}
 function esc(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
 function render(words,art,heading,panel,ttsNote,listenButton){
@@ -106,6 +147,9 @@ function render(words,art,heading,panel,ttsNote,listenButton){
     '🎙 Записать голос</button>'+
     (done<LIMIT?'<button type="button" class="action" data-tone-act="manual">✓ Повторил сам</button>':'')+'</div>'+
    '<div class="tone-aux"><button type="button" class="action" id="lab-replay" '+(replayUrl&&replayWord===i?'':'disabled')+'>▶ Прослушать свою запись / 回听录音</button></div>'+ '<details class="tone-advanced"><summary>Граница слогов и пояснения</summary>'+
+    '<details class="tone-stored-summary"><summary>📊 Сводка сохранённых попыток · без новых записей</summary>'+
+    '<pre class="tone-stored-report">'+esc(diagnosticSummary())+'</pre>'+
+    '<button type="button" class="action" data-tone-act="copy-summary">📋 Скопировать сводку</button></details>'+
     '<div class="tone-split-control"><label for="tone-split">Граница слогов: <strong id="tone-split-value">'+Math.round(ratio*100)+'%</strong></label>'+
     '<input type="range" id="tone-split" min="25" max="75" step="1" value="'+Math.round(ratio*100)+'" '+(!last||busy?'disabled':'')+
     ' aria-label="Сместить примерную границу между слогами">'+
@@ -775,6 +819,22 @@ document.addEventListener('click',event=>{
  if(action==='select')choose(Number(btn.dataset.i));
  else if(action==='record')start();
  else if(action==='manual')manual();
+ else if(action==='copy-summary'){
+  const report=diagnosticSummary();
+  const copy=async()=>{
+   try{
+    if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(report);
+    else{
+     const el=document.createElement('textarea');
+     el.value=report;document.body.appendChild(el);el.select();
+     if(!document.execCommand('copy'))throw Error('Copy unavailable');
+     el.remove();
+    }
+    status('✓ Сводка скопирована. Аудио не передаётся.');
+   }catch{status('Не удалось скопировать сводку. Можешь выделить текст вручную.');}
+  };
+  copy();
+ }
  else if(action==='clear')resetWord();
  else if(action==='jump')document.getElementById('tone-trainer')?.scrollIntoView({block:'nearest',behavior:'smooth'});
 });
