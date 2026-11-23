@@ -17,7 +17,7 @@ assert(!html.includes('hsk1-second-speaking-v209.js'),'Main lesson must not load
 assert(fs.readFileSync('hsk1-second-practice.html','utf8').includes('hsk1-second-speaking-v209.js?v=262'),'Dedicated practice loads the trainer');
 assert(html.includes('hsk1-lesson2-audio-v208.js?v=208'),'One-speaker voice map must be loaded first');
 assert(html.includes('hsk1-second-v203.css?v=237'),'Second lesson CSS version');
-assert(/data-num="2"[^>]*href="\.\/hsk1-second-v203\.html"/.test(map),'Approved v373 map must link to lesson 2 regardless of hotspot coordinates');
+assert(/data-num="2"[^>]*href="\.\/hsk1-second-v203\.html(?:\?v=\d+)?"/.test(map),'Approved map must link to lesson 2, even with cache version');
 assert(css.includes('.pg3-word')&&css.includes('.pg3-answers'),'Mobile practice layout');
 assert(!js.includes('不是'), 'Move negative sentence grammar to later lesson');
 assert(!js.includes('他们'), 'Extra third-person plural moves to future lesson');
