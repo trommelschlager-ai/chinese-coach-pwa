@@ -302,6 +302,28 @@ function submit(raw){
   say({hanzi,pinyin:replyPinyin,ru});
   return;
  }
+ // v548: an independent, basic HSK1 question about Panda's profession
+ // must be understood in BOTH Short and Non-Stop modes. The previously
+ // approved Luvvoice files already include 你是老师吗？ (p01) and
+ // 我是老师。 (p03); never replace them with synthetic speech or PA-001,
+ // which is for the different assertion 我是老师 by the learner.
+ if(!hsk2&&!state.dayMode){
+  const teacherQuestion=normalize(input);
+  if(teacherQuestion==='你是老师吗'||teacherQuestion==='你是老师'){
+   const isQuestion=teacherQuestion.endsWith('吗');
+   learner(input,{
+    known:true,
+    pinyin:isQuestion?'Nǐ shì lǎoshī ma?':'Nǐ shì lǎoshī.',
+    translation:isQuestion?'Ты учитель?':'Ты учитель.'
+   });
+   state.naturalAwaiting=null;
+   state.awaitQuestion=true;
+   const teacherReply={hanzi:'我是老师。',pinyin:'Wǒ shì lǎoshī.',ru:'Я учитель.'};
+   say(teacherReply,!!lookupPandaVoiceClip(teacherReply.hanzi));
+   note('Панда поняла вопрос. Ответ озвучивается существующей записью 我是老师. Тоны по тексту не оцениваются.');
+   return;
+  }
+ }
  // v539: a simple 什么？ requests repetition, it is not an unknown phrase.
  if(!hsk2&&!state.dayMode&&state.mode==='nonstop'&&normalize(input)==='什么'){
   learner(input,{known:true,pinyin:'Shénme?',translation:'Что?'});
