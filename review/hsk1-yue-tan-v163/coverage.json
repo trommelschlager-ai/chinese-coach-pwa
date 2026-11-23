@@ -1,0 +1,939 @@
+{
+  "status": "REVIEW_ONLY_NOT_PRODUCTION",
+  "speaker": "Yue Tan (Shtooka cmn-caen-tan)",
+  "original_author": "Yue Tan, 2009",
+  "conversion_author": "Hugo Lopez (audio-cmn)",
+  "license": "CC BY-SA 3.0 US",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0/us/",
+  "source_url": "https://github.com/hugolpz/audio-cmn",
+  "source_tree": "f759a0f18f27690742957619e1248ed91e9b3f2c",
+  "target_count": 124,
+  "match_count": 59,
+  "missing_count": 65,
+  "native_ri_already_active": true,
+  "native_tone_listener_audit_complete": false,
+  "live_course_unchanged": true,
+  "items": [
+    {
+      "text": "一",
+      "pinyin": "yī",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 0.97,
+      "local_file": "audio/001_a7f2c9f0dffabf9492ed.mp3",
+      "source_path": "96k/hsk/cmn-一.mp3"
+    },
+    {
+      "text": "一个",
+      "pinyin": "yí ge",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "一月",
+      "pinyin": "yī yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "一百",
+      "pinyin": "yì bǎi",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "七",
+      "pinyin": "qī",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.02,
+      "local_file": "audio/005_f15c7f782984638376b7.mp3",
+      "source_path": "96k/hsk/cmn-七.mp3"
+    },
+    {
+      "text": "七月",
+      "pinyin": "qī yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "三",
+      "pinyin": "sān",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/007_dba2db859eab46d297b8.mp3",
+      "source_path": "96k/hsk/cmn-三.mp3"
+    },
+    {
+      "text": "三十五",
+      "pinyin": "Sānshíwǔ",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "三月",
+      "pinyin": "sān yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "下雨",
+      "pinyin": "xià yǔ",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "下雪",
+      "pinyin": "xià xuě",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "不是，我是学生。",
+      "pinyin": "Bú shì, wǒ shì xuésheng.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "两个人",
+      "pinyin": "liǎng ge rén",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "九",
+      "pinyin": "jiǔ",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.18,
+      "local_file": "audio/014_c70ba12335fa0a9311d9.mp3",
+      "source_path": "96k/hsk/cmn-九.mp3"
+    },
+    {
+      "text": "九月",
+      "pinyin": "jiǔ yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "二",
+      "pinyin": "èr",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 0.91,
+      "local_file": "audio/016_65fb5aa1cc708aec050c.mp3",
+      "source_path": "96k/hsk/cmn-二.mp3"
+    },
+    {
+      "text": "二十三",
+      "pinyin": "èrshísān",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "二月",
+      "pinyin": "èr yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "二零二六年十一月六日",
+      "pinyin": "Èr líng èr liù nián shíyī yuè liù rì",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "五",
+      "pinyin": "wǔ",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.18,
+      "local_file": "audio/020_733b4ae599e65e0495b2.mp3",
+      "source_path": "96k/hsk/cmn-五.mp3"
+    },
+    {
+      "text": "五月",
+      "pinyin": "wǔ yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "人",
+      "pinyin": "rén",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/022_31970b13c835b06c4118.mp3",
+      "source_path": "96k/hsk/cmn-人.mp3"
+    },
+    {
+      "text": "今天",
+      "pinyin": "jīntiān",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.41,
+      "local_file": "audio/023_dc0f8c6a1c10f9cdd193.mp3",
+      "source_path": "96k/hsk/cmn-今天.mp3"
+    },
+    {
+      "text": "今天下雨",
+      "pinyin": "Jīntiān xià yǔ.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "今天下雨。",
+      "pinyin": "Jīntiān xià yǔ.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "今天几月几号？",
+      "pinyin": "Jīntiān jǐ yuè jǐ hào?",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "今天十一月六号。",
+      "pinyin": "Jīntiān shíyī yuè liù hào.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "今天天气怎么样？",
+      "pinyin": "Jīntiān tiānqì zěnmeyàng?",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "今天很冷",
+      "pinyin": "Jīntiān hěn lěng.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "今天很冷。",
+      "pinyin": "Jīntiān hěn lěng.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "今天星期五",
+      "pinyin": "Jīntiān xīngqīwǔ.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "今天星期五。",
+      "pinyin": "Jīntiān xīngqīwǔ.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "今天是星期五。",
+      "pinyin": "Jīntiān shì xīngqīwǔ.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "他",
+      "pinyin": "tā",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.02,
+      "local_file": "audio/034_6250fcf4ddffe0e09e0b.mp3",
+      "source_path": "96k/hsk/cmn-他.mp3"
+    },
+    {
+      "text": "他们",
+      "pinyin": "tāmen",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/035_264cb1f9d1cdd7c1d0ff.mp3",
+      "source_path": "96k/hsk/cmn-他们.mp3"
+    },
+    {
+      "text": "他是老师",
+      "pinyin": "Tā shì lǎoshī.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "你",
+      "pinyin": "nǐ",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/037_b3121374185eaf99fa54.mp3",
+      "source_path": "96k/hsk/cmn-你.mp3"
+    },
+    {
+      "text": "你们",
+      "pinyin": "nǐmen",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.18,
+      "local_file": "audio/038_288177dfcd2e36a4c06d.mp3",
+      "source_path": "96k/hsk/cmn-你们.mp3"
+    },
+    {
+      "text": "你好",
+      "pinyin": "nǐ hǎo",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "你好！",
+      "pinyin": "Nǐ hǎo!",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "你是学生",
+      "pinyin": "Nǐ shì xuésheng.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "你是老师吗？",
+      "pinyin": "Nǐ shì lǎoshī ma?",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "八",
+      "pinyin": "bā",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.07,
+      "local_file": "audio/043_6c23ab6e91124d69d1ca.mp3",
+      "source_path": "96k/hsk/cmn-八.mp3"
+    },
+    {
+      "text": "八月",
+      "pinyin": "bā yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "六",
+      "pinyin": "liù",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.02,
+      "local_file": "audio/045_a6bfa444b36a023cbd01.mp3",
+      "source_path": "96k/hsk/cmn-六.mp3"
+    },
+    {
+      "text": "六月",
+      "pinyin": "liù yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "冬天",
+      "pinyin": "dōngtiān",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.67,
+      "local_file": "audio/047_312c146a9eeb3d8b554e.mp3",
+      "source_path": "96k/hsk/cmn-冬天.mp3"
+    },
+    {
+      "text": "冬天很冷。",
+      "pinyin": "Dōngtiān hěn lěng.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "冷",
+      "pinyin": "lěng",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/049_42b51e95d67c7b7917b1.mp3",
+      "source_path": "96k/hsk/cmn-冷.mp3"
+    },
+    {
+      "text": "几",
+      "pinyin": "jǐ",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.25,
+      "local_file": "audio/050_e2e4b1164ea07e93d0a4.mp3",
+      "source_path": "96k/hsk/cmn-几.mp3"
+    },
+    {
+      "text": "十",
+      "pinyin": "shí",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/051_d852f4fc79b5575b2d7a.mp3",
+      "source_path": "96k/hsk/cmn-十.mp3"
+    },
+    {
+      "text": "十一",
+      "pinyin": "Shíyī",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "十一月",
+      "pinyin": "shíyī yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "十三",
+      "pinyin": "shísān",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "十二月",
+      "pinyin": "shí'èr yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "十月",
+      "pinyin": "shí yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "口",
+      "pinyin": "kǒu",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.23,
+      "local_file": "audio/057_3e6fc718125dba248779.mp3",
+      "source_path": "96k/hsk/cmn-口.mp3"
+    },
+    {
+      "text": "号",
+      "pinyin": "hào",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 0.97,
+      "local_file": "audio/058_67672593634e45419ef2.mp3",
+      "source_path": "96k/hsk/cmn-号.mp3"
+    },
+    {
+      "text": "吗",
+      "pinyin": "ma",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 0.91,
+      "local_file": "audio/059_94c297c29512a9a21645.mp3",
+      "source_path": "96k/hsk/cmn-吗.mp3"
+    },
+    {
+      "text": "哥哥",
+      "pinyin": "gēge",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/060_ebda92600798695680bb.mp3",
+      "source_path": "96k/hsk/cmn-哥哥.mp3"
+    },
+    {
+      "text": "四",
+      "pinyin": "sì",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.07,
+      "local_file": "audio/061_7f0b593c512ac6418c29.mp3",
+      "source_path": "96k/hsk/cmn-四.mp3"
+    },
+    {
+      "text": "四月",
+      "pinyin": "sì yuè",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "声调",
+      "pinyin": "shēngdiào",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.36,
+      "local_file": "audio/063_9d39160d0eb452892b91.mp3",
+      "source_path": "96k/hsk/cmn-声调.mp3"
+    },
+    {
+      "text": "夏天",
+      "pinyin": "xiàtiān",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.41,
+      "local_file": "audio/064_9bd1a1247a6c9be88187.mp3",
+      "source_path": "96k/hsk/cmn-夏天.mp3"
+    },
+    {
+      "text": "天气",
+      "pinyin": "tiānqì",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.25,
+      "local_file": "audio/065_ab03b2484d6f4861e102.mp3",
+      "source_path": "96k/hsk/cmn-天气.mp3"
+    },
+    {
+      "text": "女",
+      "pinyin": "nǚ",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/066_65ed0dda9ff03b470cfe.mp3",
+      "source_path": "96k/hsk/cmn-女.mp3"
+    },
+    {
+      "text": "她",
+      "pinyin": "tā",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 0.91,
+      "local_file": "audio/067_8b745dd7610b534d1bf9.mp3",
+      "source_path": "96k/hsk/cmn-她.mp3"
+    },
+    {
+      "text": "妈",
+      "pinyin": "mā",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "妈妈",
+      "pinyin": "māma",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.07,
+      "local_file": "audio/069_378dc59e4f5f478ada72.mp3",
+      "source_path": "96k/hsk/cmn-妈妈.mp3"
+    },
+    {
+      "text": "妹妹",
+      "pinyin": "mèimei",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/070_f2b2837b18136f86a4a1.mp3",
+      "source_path": "96k/hsk/cmn-妹妹.mp3"
+    },
+    {
+      "text": "姐姐",
+      "pinyin": "jiějie",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.18,
+      "local_file": "audio/071_3d9e0e52fe3426b15605.mp3",
+      "source_path": "96k/hsk/cmn-姐姐.mp3"
+    },
+    {
+      "text": "学生",
+      "pinyin": "xuésheng",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.23,
+      "local_file": "audio/072_98bbd8130a78d2b4cc1b.mp3",
+      "source_path": "96k/hsk/cmn-学生.mp3"
+    },
+    {
+      "text": "它",
+      "pinyin": "tā",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 0.91,
+      "local_file": "audio/073_c6d0a8e4f60d09176e24.mp3",
+      "source_path": "96k/hsk/cmn-它.mp3"
+    },
+    {
+      "text": "家",
+      "pinyin": "jiā",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.07,
+      "local_file": "audio/074_4e957452635a351b50ca.mp3",
+      "source_path": "96k/hsk/cmn-家.mp3"
+    },
+    {
+      "text": "年",
+      "pinyin": "nián",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.07,
+      "local_file": "audio/075_fe17a7595182e54e20c2.mp3",
+      "source_path": "96k/hsk/cmn-年.mp3"
+    },
+    {
+      "text": "弟弟",
+      "pinyin": "dìdi",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/076_e1d8980e0e9b987d7950.mp3",
+      "source_path": "96k/hsk/cmn-弟弟.mp3"
+    },
+    {
+      "text": "我",
+      "pinyin": "wǒ",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.18,
+      "local_file": "audio/077_ef5e1f7cc69ee652e35c.mp3",
+      "source_path": "96k/hsk/cmn-我.mp3"
+    },
+    {
+      "text": "我不是老师。",
+      "pinyin": "Wǒ bú shì lǎoshī.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "我们",
+      "pinyin": "wǒmen",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.18,
+      "local_file": "audio/079_900366662530adb33e88.mp3",
+      "source_path": "96k/hsk/cmn-我们.mp3"
+    },
+    {
+      "text": "我很忙。",
+      "pinyin": "Wǒ hěn máng.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "我是老师",
+      "pinyin": "Wǒ shì lǎoshī.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "我是老师。",
+      "pinyin": "Wǒ shì lǎoshī.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "我有一个妹妹",
+      "pinyin": "Wǒ yǒu yí ge mèimei.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "我有一个妹妹。",
+      "pinyin": "Wǒ yǒu yí ge mèimei.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "我有两个。",
+      "pinyin": "Wǒ yǒu liǎng ge.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "我没有哥哥",
+      "pinyin": "Wǒ méiyǒu gēge.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "我没有哥哥。",
+      "pinyin": "Wǒ méiyǒu gēge.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "我的",
+      "pinyin": "wǒ de",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "我的妈妈",
+      "pinyin": "wǒ de māma",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "拼音",
+      "pinyin": "pīnyīn",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "明天",
+      "pinyin": "míngtiān",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.36,
+      "local_file": "audio/091_679cd4984d824ade4afa.mp3",
+      "source_path": "96k/hsk/cmn-明天.mp3"
+    },
+    {
+      "text": "明天下雨",
+      "pinyin": "Míngtiān xià yǔ.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "明天下雨。",
+      "pinyin": "Míngtiān xià yǔ.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "星期",
+      "pinyin": "xīngqī",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.36,
+      "local_file": "audio/094_92611b3bbea1298a77d4.mp3",
+      "source_path": "96k/hsk/cmn-星期.mp3"
+    },
+    {
+      "text": "星期一",
+      "pinyin": "xīngqīyī",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "星期三",
+      "pinyin": "xīngqīsān",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "星期二",
+      "pinyin": "xīngqīèr",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "星期五",
+      "pinyin": "xīngqīwǔ",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "星期六",
+      "pinyin": "xīngqīliù",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "星期四",
+      "pinyin": "xīngqīsì",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "星期天",
+      "pinyin": "xīngqītiān",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "星期日",
+      "pinyin": "xīngqīrì",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.52,
+      "local_file": "audio/102_d50c55b8235d60b59ba1.mp3",
+      "source_path": "96k/hsk/cmn-星期日.mp3"
+    },
+    {
+      "text": "春天",
+      "pinyin": "chūntiān",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.41,
+      "local_file": "audio/103_101e2e3c3dccf289ab1a.mp3",
+      "source_path": "96k/hsk/cmn-春天.mp3"
+    },
+    {
+      "text": "昨天",
+      "pinyin": "zuótiān",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.36,
+      "local_file": "audio/104_534bc4ba031c04ffec88.mp3",
+      "source_path": "96k/hsk/cmn-昨天.mp3"
+    },
+    {
+      "text": "是",
+      "pinyin": "shì",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.02,
+      "local_file": "audio/105_3354ea2825a501b26e6e.mp3",
+      "source_path": "96k/hsk/cmn-是.mp3"
+    },
+    {
+      "text": "是，这是我妈妈。",
+      "pinyin": "Shì, zhè shì wǒ māma.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "晴",
+      "pinyin": "qíng",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.23,
+      "local_file": "audio/107_334b652e4a3cf7f8f9f2.mp3",
+      "source_path": "96k/hsk/cmn-晴.mp3"
+    },
+    {
+      "text": "月",
+      "pinyin": "yuè",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 0.97,
+      "local_file": "audio/108_754ca9e42cc3af67d903.mp3",
+      "source_path": "96k/hsk/cmn-月.mp3"
+    },
+    {
+      "text": "有",
+      "pinyin": "yǒu",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.18,
+      "local_file": "audio/109_8eda305b3cda34d82569.mp3",
+      "source_path": "96k/hsk/cmn-有.mp3"
+    },
+    {
+      "text": "有，我有一个妹妹。",
+      "pinyin": "Yǒu, wǒ yǒu yí ge mèimei.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "木",
+      "pinyin": "mù",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 0.97,
+      "local_file": "audio/111_2a19ab942db1e690bdf2.mp3",
+      "source_path": "96k/hsk/cmn-木.mp3"
+    },
+    {
+      "text": "汉字",
+      "pinyin": "hànzì",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.31,
+      "local_file": "audio/112_76b38345e37580d9eeaa.mp3",
+      "source_path": "96k/hsk/cmn-汉字.mp3"
+    },
+    {
+      "text": "没有",
+      "pinyin": "méiyǒu",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.25,
+      "local_file": "audio/113_43797dd6c8e7ec6a30e9.mp3",
+      "source_path": "96k/hsk/cmn-没有.mp3"
+    },
+    {
+      "text": "热",
+      "pinyin": "rè",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.07,
+      "local_file": "audio/114_a2fb8f40490c863e5f67.mp3",
+      "source_path": "96k/hsk/cmn-热.mp3"
+    },
+    {
+      "text": "爸爸",
+      "pinyin": "bàba",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/115_ba80f8a261b27e146fbf.mp3",
+      "source_path": "96k/hsk/cmn-爸爸.mp3"
+    },
+    {
+      "text": "百",
+      "pinyin": "bǎi",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.18,
+      "local_file": "audio/116_ff77006fbeaee3011893.mp3",
+      "source_path": "96k/hsk/cmn-百.mp3"
+    },
+    {
+      "text": "秋天",
+      "pinyin": "qiūtiān",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.41,
+      "local_file": "audio/117_659c3a4ab7adc58599fd.mp3",
+      "source_path": "96k/hsk/cmn-秋天.mp3"
+    },
+    {
+      "text": "老师",
+      "pinyin": "lǎoshī",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.31,
+      "local_file": "audio/118_e1c095f86b03eb39a5cb.mp3",
+      "source_path": "96k/hsk/cmn-老师.mp3"
+    },
+    {
+      "text": "这是我爸爸",
+      "pinyin": "Zhè shì wǒ bàba.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "这是我爸爸。",
+      "pinyin": "Zhè shì wǒ bàba.",
+      "found_exact_hanzi": false,
+      "review_status": "MISSING_HUMAN_AUDIO"
+    },
+    {
+      "text": "阴",
+      "pinyin": "yīn",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.07,
+      "local_file": "audio/121_2572d95631bcccd85a55.mp3",
+      "source_path": "96k/hsk/cmn-阴.mp3"
+    },
+    {
+      "text": "零",
+      "pinyin": "líng",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 1.12,
+      "local_file": "audio/122_8b80e9b3aee79a19e761.mp3",
+      "source_path": "96k/hsk/cmn-零.mp3"
+    },
+    {
+      "text": "风",
+      "pinyin": "fēng",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 0.97,
+      "local_file": "audio/123_c4c5c4c1257185d7058e.mp3",
+      "source_path": "96k/hsk/cmn-风.mp3"
+    },
+    {
+      "text": "日",
+      "pinyin": "rì",
+      "found_exact_hanzi": true,
+      "review_status": "NOT_YET_LISTENED",
+      "duration_seconds": 0.91,
+      "local_file": "audio/124_native-ri.mp3",
+      "source_path": "96k/hsk/cmn-日.mp3"
+    }
+  ]
+}

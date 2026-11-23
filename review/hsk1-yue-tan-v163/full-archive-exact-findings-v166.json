@@ -1,0 +1,23 @@
+{
+  "status": "FULL_ARCHIVE_INDEX_EXACT_HANZI_COMPARISON",
+  "archive": "Trevor L. Davis Free Cultural Works Mandarin ZIP source, Yue Tan / Shtooka subdirectory",
+  "archive_zip_total_files": 10191,
+  "verified_yue_tan_audio_entries": 8596,
+  "yue_tan_license": "CC BY-SA 3.0 US",
+  "hsk1_unique_remaining_texts": 56,
+  "additional_exact_mandarin_recordings_found": 0,
+  "false_positive_substring_hits": [
+    {
+      "requested": "一个",
+      "found_other": "一个劲儿",
+      "reason": "not the same word"
+    },
+    {
+      "requested": "妈",
+      "found_other": "妈妈",
+      "reason": "not an isolated single-syllable word"
+    }
+  ],
+  "validated_method": "Chinese characters after last underscore of each Shtooka file basename must equal the requested Chinese characters, not merely contain them",
+  "note": "Does not provide recordings of missing full HSK1 sentences. Native-speaker tone audit remains necessary for all existing recordings."
+}

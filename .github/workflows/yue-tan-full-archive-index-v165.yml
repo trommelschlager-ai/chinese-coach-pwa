@@ -1,0 +1,38 @@
+name: Inspect full Yue Tan source ZIP without full download
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  index-full-mandarin-archive:
+    if: ${{ github.event.pull_request.head.ref == 'review/hsk1-yue-tan-human-audio-coverage-20261106' && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read remote 604 MB archive index through HTTP 206 byte ranges
+        run: python scripts/index-yue-tan-range-zip-v165.py
+      - name: Store source coverage index in review branch only
+        run: |
+          git config user.name "Panda Go Audio Research"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add review/hsk1-yue-tan-v163/full-archive-index-v165.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "audio(review): exact index matches from fuller Yue Tan collection"
+          git push origin "HEAD:refs/heads/${{ github.head_ref }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: PandaGo-Yue-Tan-Full-Archive-Index
+          path: review/hsk1-yue-tan-v163/full-archive-index-v165.json
+          if-no-files-found: warn
+          retention-days: 7

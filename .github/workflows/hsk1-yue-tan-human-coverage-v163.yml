@@ -1,0 +1,41 @@
+name: Audit Yue Tan native female HSK1 coverage — review only
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  stage-human-audio:
+    if: ${{ github.event.pull_request.head.ref == 'review/hsk1-yue-tan-human-audio-coverage-20261106' && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install MP3 inspection
+        run: sudo apt-get update -qq && sudo apt-get install -y ffmpeg
+      - name: Compare all 123 female utterances and 日 with Yue Tan source archive
+        run: python scripts/stage-yue-tan-hsk1-v163.py
+      - name: Commit review coverage and exact matching native MP3 files to review branch only
+        run: |
+          git config user.name "Panda Go Mandarin Audio Review"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add review/hsk1-yue-tan-v163/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "audio(review): stage Yue Tan exact-word files and report missing HSK1 phrases"
+          git push origin "HEAD:refs/heads/${{ github.head_ref }}"
+      - name: Upload standalone human audio QA bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PandaGo-Yue-Tan-HSK1-Native-Voice-Coverage
+          path: review/hsk1-yue-tan-v163/
+          retention-days: 7
+          if-no-files-found: warn

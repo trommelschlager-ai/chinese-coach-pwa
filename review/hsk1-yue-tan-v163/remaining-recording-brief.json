@@ -1,0 +1,526 @@
+{
+  "status": "RECORDING_BRIEF_REVIEW_NOT_PRODUCTION",
+  "human_voice_approved": "Yue Tan (cmn-caen-tan)",
+  "matched_existing": 59,
+  "unmatched_course_slots": 65,
+  "unique_recording_prompts": 56,
+  "exact_same_speaker_replacement_possible": false,
+  "reason": "Yue Tan herself would need to record the missing phrases; another female speaker must be credited distinctly",
+  "license_note": "Any new voice recordings need independently confirmed performer consent and an explicit commercial license. Do not assume a new actor's recording inherits Shtooka licensing.",
+  "no_synthetic_audio_substitution": true,
+  "phrases": [
+    {
+      "canonical": "一个",
+      "pinyin": "yí ge",
+      "variants": [
+        "一个"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P1_core_lessons"
+    },
+    {
+      "canonical": "一月",
+      "pinyin": "yī yuè",
+      "variants": [
+        "一月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "一百",
+      "pinyin": "yì bǎi",
+      "variants": [
+        "一百"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P1_core_lessons"
+    },
+    {
+      "canonical": "七月",
+      "pinyin": "qī yuè",
+      "variants": [
+        "七月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "三十五",
+      "pinyin": "Sānshíwǔ",
+      "variants": [
+        "三十五"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "三月",
+      "pinyin": "sān yuè",
+      "variants": [
+        "三月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "下雨",
+      "pinyin": "xià yǔ",
+      "variants": [
+        "下雨"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P1_core_lessons"
+    },
+    {
+      "canonical": "下雪",
+      "pinyin": "xià xuě",
+      "variants": [
+        "下雪"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P1_core_lessons"
+    },
+    {
+      "canonical": "不是，我是学生。",
+      "pinyin": "Bú shì, wǒ shì xuésheng.",
+      "variants": [
+        "不是，我是学生。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "两个人",
+      "pinyin": "liǎng ge rén",
+      "variants": [
+        "两个人"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "九月",
+      "pinyin": "jiǔ yuè",
+      "variants": [
+        "九月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "二十三",
+      "pinyin": "èrshísān",
+      "variants": [
+        "二十三"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "二月",
+      "pinyin": "èr yuè",
+      "variants": [
+        "二月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "二零二六年十一月六日",
+      "pinyin": "Èr líng èr liù nián shíyī yuè liù rì",
+      "variants": [
+        "二零二六年十一月六日"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "五月",
+      "pinyin": "wǔ yuè",
+      "variants": [
+        "五月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "今天下雨",
+      "pinyin": "Jīntiān xià yǔ.",
+      "variants": [
+        "今天下雨",
+        "今天下雨。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "今天几月几号？",
+      "pinyin": "Jīntiān jǐ yuè jǐ hào?",
+      "variants": [
+        "今天几月几号？"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "今天十一月六号。",
+      "pinyin": "Jīntiān shíyī yuè liù hào.",
+      "variants": [
+        "今天十一月六号。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "今天天气怎么样？",
+      "pinyin": "Jīntiān tiānqì zěnmeyàng?",
+      "variants": [
+        "今天天气怎么样？"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "今天很冷",
+      "pinyin": "Jīntiān hěn lěng.",
+      "variants": [
+        "今天很冷",
+        "今天很冷。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "今天星期五",
+      "pinyin": "Jīntiān xīngqīwǔ.",
+      "variants": [
+        "今天星期五",
+        "今天星期五。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "今天是星期五。",
+      "pinyin": "Jīntiān shì xīngqīwǔ.",
+      "variants": [
+        "今天是星期五。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "他是老师",
+      "pinyin": "Tā shì lǎoshī.",
+      "variants": [
+        "他是老师"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "你好",
+      "pinyin": "nǐ hǎo",
+      "variants": [
+        "你好",
+        "你好！"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P1_core_lessons"
+    },
+    {
+      "canonical": "你是学生",
+      "pinyin": "Nǐ shì xuésheng.",
+      "variants": [
+        "你是学生"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "你是老师吗？",
+      "pinyin": "Nǐ shì lǎoshī ma?",
+      "variants": [
+        "你是老师吗？"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "八月",
+      "pinyin": "bā yuè",
+      "variants": [
+        "八月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "六月",
+      "pinyin": "liù yuè",
+      "variants": [
+        "六月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "冬天很冷。",
+      "pinyin": "Dōngtiān hěn lěng.",
+      "variants": [
+        "冬天很冷。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "十一",
+      "pinyin": "Shíyī",
+      "variants": [
+        "十一"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "十一月",
+      "pinyin": "shíyī yuè",
+      "variants": [
+        "十一月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "十三",
+      "pinyin": "shísān",
+      "variants": [
+        "十三"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "十二月",
+      "pinyin": "shí'èr yuè",
+      "variants": [
+        "十二月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "十月",
+      "pinyin": "shí yuè",
+      "variants": [
+        "十月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "四月",
+      "pinyin": "sì yuè",
+      "variants": [
+        "四月"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "妈",
+      "pinyin": "mā",
+      "variants": [
+        "妈"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P1_core_lessons"
+    },
+    {
+      "canonical": "我不是老师。",
+      "pinyin": "Wǒ bú shì lǎoshī.",
+      "variants": [
+        "我不是老师。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "我很忙。",
+      "pinyin": "Wǒ hěn máng.",
+      "variants": [
+        "我很忙。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "我是老师",
+      "pinyin": "Wǒ shì lǎoshī.",
+      "variants": [
+        "我是老师",
+        "我是老师。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "我有一个妹妹",
+      "pinyin": "Wǒ yǒu yí ge mèimei.",
+      "variants": [
+        "我有一个妹妹",
+        "我有一个妹妹。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "我有两个。",
+      "pinyin": "Wǒ yǒu liǎng ge.",
+      "variants": [
+        "我有两个。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "我没有哥哥",
+      "pinyin": "Wǒ méiyǒu gēge.",
+      "variants": [
+        "我没有哥哥",
+        "我没有哥哥。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "我的",
+      "pinyin": "wǒ de",
+      "variants": [
+        "我的"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P1_core_lessons"
+    },
+    {
+      "canonical": "我的妈妈",
+      "pinyin": "wǒ de māma",
+      "variants": [
+        "我的妈妈"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P1_core_lessons"
+    },
+    {
+      "canonical": "拼音",
+      "pinyin": "pīnyīn",
+      "variants": [
+        "拼音"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P1_core_lessons"
+    },
+    {
+      "canonical": "明天下雨",
+      "pinyin": "Míngtiān xià yǔ.",
+      "variants": [
+        "明天下雨",
+        "明天下雨。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "星期一",
+      "pinyin": "xīngqīyī",
+      "variants": [
+        "星期一"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "星期三",
+      "pinyin": "xīngqīsān",
+      "variants": [
+        "星期三"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "星期二",
+      "pinyin": "xīngqīèr",
+      "variants": [
+        "星期二"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "星期五",
+      "pinyin": "xīngqīwǔ",
+      "variants": [
+        "星期五"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "星期六",
+      "pinyin": "xīngqīliù",
+      "variants": [
+        "星期六"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "星期四",
+      "pinyin": "xīngqīsì",
+      "variants": [
+        "星期四"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "星期天",
+      "pinyin": "xīngqītiān",
+      "variants": [
+        "星期天"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_vocabulary"
+    },
+    {
+      "canonical": "是，这是我妈妈。",
+      "pinyin": "Shì, zhè shì wǒ māma.",
+      "variants": [
+        "是，这是我妈妈。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "有，我有一个妹妹。",
+      "pinyin": "Yǒu, wǒ yǒu yí ge mèimei.",
+      "variants": [
+        "有，我有一个妹妹。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    },
+    {
+      "canonical": "这是我爸爸",
+      "pinyin": "Zhè shì wǒ bàba.",
+      "variants": [
+        "这是我爸爸",
+        "这是我爸爸。"
+      ],
+      "needs_real_human_recording": true,
+      "priority": "P2_sentences"
+    }
+  ]
+}
