@@ -1,5 +1,5 @@
 {
-  "version": 537,
+  "version": 538,
   "bytes": 80382882,
   "files": [
     "./assets/panda-approved-soft-v500.css?v=527",
@@ -3381,6 +3381,7 @@
     "./assets/panda-street-approved-male-mp3-v1.mjs?v=1",
     "./assets/panda-street-male-voice-v1/01.mp3",
     "./assets/panda-street-male-voice-v1/02.mp3",
-    "./assets/panda-street-male-voice-v1/03.mp3"
+    "./assets/panda-street-male-voice-v1/03.mp3",
+    "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=538"
   ]
 }
