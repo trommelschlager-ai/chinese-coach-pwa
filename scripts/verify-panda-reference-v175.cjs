@@ -76,7 +76,10 @@ test.close();
 const sw=fs.readFileSync('sw.js','utf8'),core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
 const installedShellCount=require('node:vm').runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'"))+'INSTALL_SHELL.length');
 assert(installedShellCount<=200,'Current two-course offline app shell must stay bounded');
-for(const entry of [...layers.map(x=>'./assets/hsk1-v371-'+x+'.webp'),'./assets/hsk1-layered-v372.css?v=372','./hsk2-start.html','./hsk2-introduction.html'])assert(core.includes(entry),'Offline file missing '+entry);
+for(const entry of [...layers.map(x=>'./assets/hsk1-v371-'+x+'.webp'),'./hsk2-start.html','./hsk2-introduction.html'])assert(core.includes(entry),'Historical HSK1/HSK2 source shell catalog must retain '+entry);
+const offlinePack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
+assert(offlinePack.files.includes('./assets/hsk1-layered-v372.css?v=372'),
+ 'Retired layered map CSS must remain available through full offline download');
 for(const entry of core)assert(fs.existsSync(entry.split('?')[0]),'Offline file missing on disk '+entry);
 for(const [file,index] of [
  ['assets/hsk1-first-v189.js',1],['assets/hsk1-second-v203.js',2],['assets/hsk1-third-v213.js',3],
