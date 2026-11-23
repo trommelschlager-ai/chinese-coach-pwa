@@ -170,6 +170,7 @@ export function mountPandaLiveMemory({
 if(typeof window!=='undefined'){
  let attempts=0;
  const attach=()=>{
+  if(document.getElementById('panda-memory-live-controls'))return;
   if(mountPandaLiveMemory())return;
   if(++attempts<150)setTimeout(attach,100);
  };
