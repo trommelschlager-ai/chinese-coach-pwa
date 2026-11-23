@@ -114,6 +114,19 @@ assert(measured.points.every((p,i)=>p[0]>=0&&p[0]<=1&&
  'Trailing F0 points collapsed to an identical timestamp');
 assert(measured.seconds>.6,'Trailing F0 samples not included in measured time span');
 
+// A short 90ms second vowel must NOT look like a fully measured tone merely
+// because many overlapping F0 windows landed over those few audible frames.
+const gatedRms=math.voicedRmsFrames([
+ ...Array.from({length:8},(_,i)=>[.12+i*.03,.09]),
+ ...Array.from({length:3},(_,i)=>[.65+i*.03,.09])
+],.5);
+assert.equal(gatedRms[0],8,'First syllable should have 8 independently voiced frames');
+assert.equal(gatedRms[1],3,'Short second syllable must have only 3 RMS frames');
+assert(asset.includes('result.validParts=result.evidence.map((x,j)=>x.usable&&result.voicedRmsFrames[j]>=5)'),
+ 'Lesson UI must apply the per-syllable independent-voicing gate');
+assert(asset.includes('last.validParts=last.evidence.map((x,j)=>x.usable&&last.voicedRmsFrames[j]>=5)'),
+ 'Manual syllable boundary must not bypass the quality gate');
+
 console.log('Lesson-3 tone pilot smoke: PASS');
 console.log('  - six words and saved 30/30 progress');
 console.log('  - no progress reset / no duplicate microphone module');
@@ -121,3 +134,4 @@ console.log('  - preview unchanged after stop');
 console.log('  - offline analysis rendered only on request');
 console.log('  - replay and saved-attempt diagnostics present');
 console.log('  - trailing real F0 timestamps remain strictly increasing');
+console.log('  - independent RMS duration per syllable (including manual boundaries)');
