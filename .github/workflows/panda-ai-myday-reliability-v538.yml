@@ -1,0 +1,32 @@
+name: Panda AI My Day ASR and audio reliability v538
+on:
+  push:
+    paths:
+      - 'assets/panda-hsk2-my-day-scenario-v1.mjs'
+      - 'panda-voice-pilot.html'
+      - 'panda-ai-hsk2-preview.html'
+      - 'sw.js'
+      - 'assets/offline-pack.json'
+      - 'tests/panda-hsk2-my-day-reliability-v1.test.mjs'
+      - 'tests/panda-ai-offline-consistency-v1.test.mjs'
+      - '.github/workflows/panda-ai-myday-reliability-v538.yml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  safety:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check module and service worker syntax
+        run: |
+          node --check assets/panda-hsk2-my-day-scenario-v1.mjs
+          node --check sw.js
+      - name: Test recovery, ASR review and offline references
+        run: node --test tests/panda-hsk2-my-day-reliability-v1.test.mjs tests/panda-ai-offline-consistency-v1.test.mjs
