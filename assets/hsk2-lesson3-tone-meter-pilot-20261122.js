@@ -333,7 +333,7 @@ function draw(){
    }else{
     const count=finalPoints.filter(p=>p[0]>=finalFrom&&(finalTo===1?p[0]<=1:p[0]<finalTo)).length;
     const finalTrend=observedTrend(finalPoints,finalFrom,finalTo);
-    const valid=recent?.validParts?.[syll]===true&&voicedRmsFrames(recent?.levels||[],finalSplit)[syll]>=5;
+    const valid=recent?.validParts?.[syll]===true&&voicedRmsFrames(recent?.levels||[],split)[syll]>=5;
     trend.textContent=valid?'🟠 '+finalTrend+' · '+count+' F0':'🟠 '+count+' F0 · данных недостаточно';
     if(recent?.splitWarning)trend.textContent+=' · ⚠ граница приблизительна';
    }
