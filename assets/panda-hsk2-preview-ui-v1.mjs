@@ -173,7 +173,9 @@ if (!bridge) {
     const text=el('div','pg346-text');
     if(example)text.append(el('div','pg445-example-label','Правильный пример'));
     text.append(el('div','pg346-zh',e.hanzi||''),el('div','pg346-py',e.pinyin||''));
-    const translation=el('div','pg346-ru',e.ru||e.analysis?.probable||'Перевод пока не подтверждён');
+    const translationText=e.ru||e.analysis?.probable||'';
+    const translation=el('div','pg346-ru',translationText);
+    if(!translationText)translation.hidden=true;
     if(e.analysis?.kind==='calendar-complete'&&e.analysis.summary){
      translation.append(el('div','pg406-finish',e.analysis.summary));
     }
@@ -233,8 +235,17 @@ if (!bridge) {
      ?'Все 165 проверенных MP3, включая последние 10 записей v411. Нажми фразу, чтобы прослушать и увидеть пиньинь и перевод.'
      :id===8
      ?'Нажми запись, посмотри пиньинь и перевод. Практику HSK2 начни из урока «Мой день».'
-     :'Выбери вопрос — Панда начнёт разговор именно с него. Ниже также доступны загруженные аудиофразы.';
+     :'Можно начать своими словами или выбрать готовый вопрос. Ниже доступны проверенные аудиозаписи.';
    if(id!==8&&id!==9){
+    const own=el('button','pg374-question');
+    own.type='button';
+    own.append(el('strong','pg374-zh','✍️ Начать со своей фразы'),el('span','pg374-ru','Пиши или говори по-китайски на выбранную тему'));
+    own.addEventListener('click',()=>{
+      if(bridge.openTopicForChat(id)){
+       stopHistoryAudio();closeTopics();$('#pg346-input').value='';sync();$('#pg346-input').focus();
+      }
+    });
+    detail.append(own);
     const questions=bridge.topicQuestions(id);
     detail.append(el('h3','pg374-section-title','💬 Вопросы для разговора · '+questions.length));
     if(!questions.length)detail.append(el('p','pg374-muted','Проверенных вопросов по этой теме пока нет.'));
@@ -281,7 +292,7 @@ if (!bridge) {
    catalogueTopic=null;$('#pg374-topic-details').replaceChildren();$('#pg374-topic-details').hidden=true;
    $('.pg346-topic-list').hidden=false;$('#pg374-topics-back').hidden=true;
    $('#pg374-topics-title').textContent='Все темы';
-   $('#pg374-topics-tip').textContent='Выбери тему, затем вопрос для разговора.';
+   $('#pg374-topics-tip').textContent='Выбери тему: можно начать со своей фразы или готового вопроса.';
    $('.pg346-topic-list').scrollTop=0;
   }
   function renderFeedback(s){
@@ -385,7 +396,7 @@ if (!bridge) {
    if(now-lastTopicsToggle<300)return;
    lastTopicsToggle=now;
    const pop=$('#pg346-topics');pop.hidden=!pop.hidden;stage.dataset.topicsOpen=String(!pop.hidden);$('#pg346-topics-btn').setAttribute('aria-expanded',String(!pop.hidden));if(!pop.hidden){showTopicList();renderTopics(bridge.snapshot());$('#pg346-topics-close').focus()}}
-  function send(){const inp=$('#pg346-input');const value=inp.value.trim();if(!value){inp.focus();return}stopHistoryAudio();closeTopics();inp.value='';bridge.send(value);sync()}
+  function send(){const inp=$('#pg346-input');const value=inp.value.trim();if(!value){inp.focus();return}stopHistoryAudio();closeTopics();inp.value='';bridge.send(value);sync();stage.dataset.composerOpen='false';inp.blur();$('#pg346-send').setAttribute('aria-label','Открыть ввод текста')}
   function toggle(which){if(which==='py'){showPy=!showPy;stage.dataset.py=String(showPy);$('#pg346-py').setAttribute('aria-pressed',String(showPy))}else{showRu=!showRu;stage.dataset.ru=String(showRu);$('#pg346-ru').setAttribute('aria-pressed',String(showRu))}}
   $('#pg346-form').addEventListener('submit',e=>{e.preventDefault();send()});$('#pg346-send').addEventListener('click',send);$('#pg346-mic').addEventListener('click',()=>{stopHistoryAudio();bridge.mic();sync()});
   $('#pg346-short').addEventListener('click',()=>{stopHistoryAudio();bridge.setMode('short');sync()});$('#pg346-nonstop').addEventListener('click',()=>{stopHistoryAudio();bridge.setMode('nonstop');sync()});

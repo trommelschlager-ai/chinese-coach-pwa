@@ -86,9 +86,10 @@ export function friendlyIntroduction(raw,stage){
  };
  const name=stage==='name'&&text.match(/^我叫([\p{Script=Han}]{1,12})$/u)?.[1];
  if(name){
-  const pinyin={小明:'Xiǎomíng',小红:'Xiǎohóng'}[name];
+  const pinyin={小明:'Xiǎomíng',小红:'Xiǎohóng',米沙:'Mǐshā',安东:'Āndōng'}[name];
+  const russian={小明:'Сяомин',小红:'Сяохун',米沙:'Миша',安东:'Антон'}[name];
   return {
-   spoken:[pinyin?'Wǒ jiào '+pinyin+'.':null,'Меня зовут '+name+'.'],
+   spoken:[pinyin?'Wǒ jiào '+pinyin+'.':null,russian?'Меня зовут '+russian+'.':'Меня зовут '+name+'.'],
    reply:['很高兴认识你！你今天怎么样？','Hěn gāoxìng rènshi nǐ! Nǐ jīntiān zěnmeyàng?','Рада познакомиться! Как у тебя сегодня дела?'],
    next:'mood'
   };

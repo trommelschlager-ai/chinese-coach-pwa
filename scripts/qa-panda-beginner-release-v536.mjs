@@ -34,8 +34,60 @@ try{
   assert.equal(rects.rows,3,'Three most recent chat cards remain visible');
   assert(rects.lastTop>=rects.historyTop-2 && rects.lastBottom<=rects.historyBottom+3,'Last reply clipped: '+JSON.stringify(rects));
   assert(rects.sceneTop==null || rects.sceneTop>=rects.historyBottom-3,'Panda obscures chat: '+JSON.stringify(rects));
+  // Android's real keyboard cannot open in Playwright's headless mobile mode.
+  // Emulate the same root flag set by visualViewport/resize and assert that
+  // the panda stage keeps room while history hides, then comes back cleanly.
+  const keyboard=await page.evaluate(()=>{
+   const root=document.documentElement,history=document.querySelector('#pg346-rows');
+   const scene=document.querySelector('#pg346 .pg346-scene');
+   root.dataset.keyboard='true';
+   const opened={historyDisplay:getComputedStyle(history).display,sceneHeight:scene.getBoundingClientRect().height};
+   root.dataset.keyboard='false';
+   return {...opened,historyRestored:getComputedStyle(history).display};
+  });
+  assert.equal(keyboard.historyDisplay,'none','Keyboard must not let chat push Panda into a tiny corner');
+  assert(keyboard.sceneHeight>=119,'Keyboard shrinks Panda scene: '+JSON.stringify(keyboard));
+  assert.notEqual(keyboard.historyRestored,'none','Chat must reappear when keyboard closes');
+  // Record the approved full-size illustration, then emulate the resized
+  // Android visual viewport. Its dimensions must not jump at all.
+  await page.locator('#pg346-send').click();
+  const geometry=await page.evaluate(()=>{
+    const root=document.documentElement,stage=document.querySelector('#pg346');
+    const panda=stage.querySelector('.pg352-mascot');
+    const scene=stage.querySelector('.pg346-scene');
+    const read=()=>({
+      pandaWidth:panda.getBoundingClientRect().width,
+      pandaHeight:panda.getBoundingClientRect().height,
+      stoneWidth:parseFloat(getComputedStyle(scene,'::before').width),
+      sceneHeight:scene.getBoundingClientRect().height
+    });
+    const normal=read();
+    root.style.setProperty('--screen-height','460px');
+    root.dataset.keyboard='true';
+    const compact=read();
+    root.dataset.keyboard='false';
+    root.style.setProperty('--screen-height','800px');
+    return {normal,compact};
+  });
+  assert(Math.abs(geometry.normal.pandaWidth-geometry.compact.pandaWidth)<1.6,'Panda rescaled when keyboard opened: '+JSON.stringify(geometry));
+  assert(Math.abs(geometry.normal.pandaHeight-geometry.compact.pandaHeight)<2,'Panda changed body proportions: '+JSON.stringify(geometry));
+  assert(Math.abs(geometry.normal.stoneWidth-geometry.compact.stoneWidth)<2,'Seating stone rescaled: '+JSON.stringify(geometry));
+  // Android sometimes clears composerOpen while committing pinyin. A single
+  // tap on the plane must still send an existing Chinese character.
+  await page.locator('#pg346-input').fill('对');
+  await page.evaluate(()=>document.querySelector('#pg346').dataset.composerOpen='false');
+  await page.locator('#pg346-send').click();
+  await page.waitForFunction(()=>[...document.querySelectorAll('#pg346-rows .pg346-row .pg346-zh')].some(n=>n.textContent==='对'),null,{timeout:7000});
+  assert.equal(await page.locator('#pg346-input').inputValue(),'','One click must empty the input');
   await page.locator('#pg346-nonstop').click();
   await send('不好','怎么了？');
+  // The HSK2 short quiz stays scored; independent statements belong in free topic chat.
+  await page.locator('#pg346-topics-btn').click();
+  const hsk2Topics=page.locator('#pg346-topics .pg346-topic-group').nth(1).locator('button');
+  await hsk2Topics.first().click();
+  await page.locator('#pg374-topic-details .pg374-question').first().click();
+  await send('我是老师。','你是老师！你在哪儿工作？');
+  await send('我在学校工作。','你喜欢你的工作吗？');
   assert(!errors.length,'JS error: '+errors.join('; '));
   await page.screenshot({path:'qa/panda-beginner-release/beginner-'+width+'.png',fullPage:false,animations:'disabled'});
   console.log('PASS Panda beginner short/nonstop '+width+'px');

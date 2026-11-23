@@ -1,4 +1,5 @@
-import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=536';
+import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
+import {respondToNaturalStatement} from './panda-natural-statements-v542.mjs?v=542';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -109,7 +110,8 @@ function remember(spoken){
 function makeRow(entry,full=false){
  const row=document.createElement('article'),who=document.createElement('strong');who.textContent=entry.who==='you'?'Ты: ':entry.who==='example'?'💡 Правильный пример: ':'Панда: ';row.append(who,document.createTextNode(entry.hanzi));
  if(entry.pinyin&&(full||entry.who==='you')){const py=document.createElement('span');py.className='py';py.textContent=entry.pinyin;row.append(py)}
- const ru=document.createElement('span');ru.className='ru';ru.textContent=(full?'Перевод: ':' — ')+(entry.ru||(entry.analysis?.probable?'Возможный смысл: '+entry.analysis.probable:'Точный перевод пока не подтверждён'));row.append(ru);
+ const translated=entry.ru||(entry.analysis?.probable?'Возможный смысл: '+entry.analysis.probable:'');
+ if(translated){const ru=document.createElement('span');ru.className='ru';ru.textContent=(full?'Перевод: ':' — ')+translated;row.append(ru)}
  if(full&&entry.analysis?.explanation){const detail=document.createElement('p');detail.textContent=entry.analysis.explanation;row.append(detail)}
  if(entry.analysis?.kind==='calendar-complete'&&entry.analysis.summary){const detail=document.createElement('p');detail.textContent=entry.analysis.summary;row.append(detail)}
  if(full&&entry.analysis?.correction){const c=entry.analysis.correction;const detail=document.createElement('p');detail.textContent='Правильно: '+c.hanzi+' '+(c.pinyin||'')+' — '+c.ru+' '+c.why;row.append(detail)}
@@ -191,7 +193,7 @@ function dayReturnHref(){
  return './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini+'&v=420';
 }
 function initLesson(id){
- hsk2=null;
+ hsk2=null;state.naturalAwaiting=null;
  cancelFollowup();stopAudio();stopRecognition();base=prepareConversation(CONVERSATIONS.find(c=>c.id===id)||CONVERSATIONS[0],new Date());
  conversation=withPracticeGreeting(base,rotateGreeting());state.step=0;state.done=false;state.reviewStep=null;state.prompt=null;state.shortDisplay=null;state.nonstopDisplay=null;state.awaitQuestion=false;state.hint=false;state.topic=base.id;state.turns=0;state.askedInTopic=0;showLearnerFeedback(null);
  state.allowed=accessibleLessons(storage,conversation.id);state.profile.hasNumbers=state.allowed.includes(3);state.cursor=Math.max(0,state.allowed.indexOf(conversation.id));$('lesson-select').value=String(conversation.id);
@@ -223,27 +225,52 @@ function setMode(mode){
  if(mode===state.mode)return;
  if(hsk2){
   cancelFollowup();stopRecognition();stopAudio();
+  // Leaving free topic chat restores the ordinary scored HSK2 question path.
+  if(hsk2.openChat&&mode==='short'){
+   hsk2.openChat=false;state.mode='short';askHSK2(false);
+   note('Короткие вопросы HSK 2. Теперь отвечай на учебный вопрос.');return;
+  }
   state.mode=mode;
   if(hsk2.done){hsk2.done=false;hsk2.index=0;askHSK2(false)}else render();
   return;
  }
  if(mode==='short')state.lockedTopic=null;if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 let hsk2=null;
-function beginHSK2(id,index=0,autoplay=true){
- friendlyStage=null;
+function beginHSK2(id,index=0,autoplay=true,skipInitialQuestion=false){
+ friendlyStage=null;state.naturalAwaiting=null;
  const t=getTopic(id);if(!t)return false;
  cancelFollowup();stopAudio();stopRecognition();hsk2={id:t.id,index,done:false,exact:0,similar:0,unknown:0,context:null};
  state.mode='short';state.dayMode=false;state.done=false;
  if(dayParams.get('from')==='hsk2-about-me')$('back-link').href='./hsk2-about-me.html?step=7';
  $('allowed-topics').textContent='HSK 2 · '+t.name+' — разговорная практика по изученным конструкциям.';
  $('words').replaceChildren();for(const w of t.words){const p=document.createElement('p');p.textContent=[w.zh,w.py,w.ru].join(' — ');$('words').append(p)}
- askHSK2(autoplay);return true;
+ if(!skipInitialQuestion)askHSK2(autoplay);return true;
 }
 function askHSK2(autoplay=true){
  const q=getTopic(hsk2.id).questions[hsk2.index],l=prompt(q);
  state.prompt={line:{...l,accepted:q.options.map(a=>a[0])}};state.awaitQuestion=false;state.hint=false;say(l,autoplay);
 }
 function submitHSK2(input){
+ // "Своя фраза" is conversation, not a scored HSK2 quiz.
+ if(hsk2.openChat){
+  const out=replyHSK2(input,hsk2.id,hsk2.index,true,hsk2.context);
+  if('context' in out)hsk2.context=out.context;
+  let fallback=null;
+  if(out.kind==='unknown')fallback=answerLive(input,{allowed:state.allowed,topic:conversation.id,prompt:null,curriculum,date:new Date(),turn:state.turns,profile:state.profile});
+  const known=out.spoken||knownHSK2(input);
+  const spoken=fallback?.spoken?.known?fallback.spoken:known?{known:true,pinyin:known.pinyin||null,translation:known.ru||known.translation||null}:null;
+  learner(input,spoken);
+  state.turns=(state.turns||0)+1;
+  const reply=fallback?.reply||(['example','variant'].includes(out.kind)?
+   {hanzi:'我明白了。你还想说什么？',pinyin:'Wǒ míngbai le. Nǐ hái xiǎng shuō shénme?',ru:'Понятно. Что ещё хочешь рассказать?'}:
+   out.kind==='unknown'?
+    {hanzi:'你能说得简单一点吗？',pinyin:'Nǐ néng shuō de jiǎndān yìdiǎn ma?',ru:'Можешь сказать немного проще?'}:out.line);
+  if(reply)say(reply,!!lookupPandaVoiceClip(reply.hanzi));
+  note(out.kind==='unknown'&&!fallback?.reply?
+   'Пока нет проверенного ответа на эту формулировку. Попробуй проще или другое выражение. Тоны не проверялись.':
+   'Продолжай разговор своими словами. Тоны произношения не оценивались.');
+  return;
+ }
  const t=getTopic(hsk2.id),q=t.questions[hsk2.index],prior=state.display,out=replyHSK2(input,hsk2.id,hsk2.index,hsk2.done,hsk2.context);
  const known=out.spoken||knownHSK2(input);const legacy=known?null:analyzeLearner(input,[1,2,3,4,5,6,7],null,curriculum,false);
  const spoken=known?{known:true,pinyin:known.pinyin,translation:known.ru}:legacy?.known?legacy:null;
@@ -263,7 +290,9 @@ let friendlyStage=null;
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
- const introduction=friendlyIntroduction(input,friendlyStage);
+ // Recognize voluntary Chinese name introductions in free HSK1 conversation.
+ const standaloneName=state.mode==='nonstop'&&!hsk2&&!state.dayMode&&/^我叫[\p{Script=Han}]{1,12}$/u.test(normalize(input));
+ const introduction=friendlyIntroduction(input,standaloneName?'name':friendlyStage);
  friendlyStage=introduction?.next||null;
  if(introduction){
   const [pinyin,translation]=introduction.spoken;
@@ -272,6 +301,37 @@ function submit(raw){
   note('');
   say({hanzi,pinyin:replyPinyin,ru});
   return;
+ }
+ // v539: a simple 什么？ requests repetition, it is not an unknown phrase.
+ if(!hsk2&&!state.dayMode&&state.mode==='nonstop'&&normalize(input)==='什么'){
+  learner(input,{known:true,pinyin:'Shénme?',translation:'Что?'});
+  const previousQuestion=state.prompt?.line;
+  const questionText=String(previousQuestion?.hanzi||previousQuestion?.panda||'');
+  if(previousQuestion&&/[？?]$/.test(questionText)){
+   say(previousQuestion,!!lookupPandaVoiceClip(questionText));
+   note('Панда повторила последний вопрос.');
+  }else{
+   say({hanzi:'你想问什么？',pinyin:'Nǐ xiǎng wèn shénme?',ru:'О чём ты хочешь спросить?'},false);
+   note('Можешь задать вопрос по-китайски.');
+  }
+  return;
+ }
+ // v542: use reviewed beginner statements as genuine conversation turns,
+ // rather than treating a correct assertion as a failed quiz answer.
+ // Keep short HSK1 drills and the independent HSK2 My Day scenario intact.
+ if(((hsk2&&hsk2.openChat)||(!hsk2&&state.mode==='nonstop'))&&!state.dayMode){
+  const natural=respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
+  if(natural){
+   state.naturalAwaiting=natural.next;
+   learner(input,natural.spoken);
+   state.turns=(state.turns||0)+1;
+   state.awaitQuestion=true;
+   // New replies have no verified MP3. Never fall back to browser voices.
+   say(natural.reply,false);
+   note(natural.message);
+   return;
+  }
+  state.naturalAwaiting=null;
  }
  // v536: standalone HSK1 short and Non-Stop replies from real Android reports.
  // HSK2 day practice keeps its dedicated answer validator.
@@ -661,6 +721,18 @@ window.PandaApprovedBridge337={
   // an arbitrary first prompt until the learner selects one.
   state.mode='nonstop';state.lockedTopic=id;state.prompt=null;state.awaitQuestion=true;state.hint=false;
   render();note('Тема выбрана. Выбери вопрос из списка.');
+  return true;
+ },
+ openTopicForChat:id=>{
+  id=Number(id);state.naturalAwaiting=null;
+  if(getTopic(id)){
+   if(!beginHSK2(id,0,false,true))return false;
+   hsk2.openChat=true;state.mode='nonstop';state.prompt=null;state.awaitQuestion=true;
+  }else{
+   if(!window.PandaApprovedBridge337.chooseTopic(id))return false;
+  }
+  say({hanzi:'你想聊什么？',pinyin:'Nǐ xiǎng liáo shénme?',ru:'О чём ты хочешь поговорить?'},false);
+  note('Напиши своё предложение на китайском. Панда понимает изученные выражения; незнакомую фразу может попросить уточнить.');
   return true;
  },
  topicQuestions:id=>{
