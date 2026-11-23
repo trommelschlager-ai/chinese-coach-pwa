@@ -48,7 +48,7 @@ const bg=document.createElement('canvas'),fg=document.createElement('canvas'),fr
 for(const a of [bg,fg,frame,mask]){a.width=W;a.height=H}
 const b=bg.getContext('2d',{willReadFrequently:true}),h=fg.getContext('2d'),f=frame.getContext('2d'),mc=mask.getContext('2d',{willReadFrequently:true});
 let started=-1,playing=false,ready=false,raf=0;
-const DURATION=1250;
+const DURATION=950;
 // Manually traced approximate outline of the ORIGINAL head. No new face is generated.
 function headPath(c){
  c.beginPath();
@@ -103,8 +103,8 @@ function pose(time){
  if(!playing)return{angle:0,dy:0};
  const u=Math.min(1,Math.max(0,(time-started)/DURATION));
  if(u>=1){playing=false;nod.disabled=false;return{angle:0,dy:0}}
- // Two gentle dips with full stop and return to the approved pose.
- const dip=Math.sin(2*Math.PI*u)**2*Math.sin(Math.PI*u);
+ // One short nod with natural slow-in/slow-out, then a full stop.
+ const dip=Math.sin(Math.PI*u)**2;
  return{angle:.021*dip,dy:5*dip};
 }
 function draw(ts=0){
