@@ -37,7 +37,7 @@ input[type=range]{min-width:0;flex:1;accent-color:#e3b4ff}
 <body>
 <main>
 <canvas id="stage" aria-label="Пробная послойная анимация руки Panda Street. Исходное лицо и фон не перерисовываются."></canvas>
-<header id="headbar"><h1>🐼 Panda Street · тест руки №1</h1><p class="note">Изолированная лаборатория, не главная страница. Оригинальные night.webp / day.webp. Разметка черновая — требует точной ручной подгонки.</p></header>
+<header id="headbar"><h1>🐼 Panda Street · тест руки №2</h1><p class="note">Изолированная лаборатория, не главная страница. Из видео №38705 исправлено направление жеста и увеличено время показа. Контур пока черновой.</p></header>
 <div id="loading" role="status">Загружаю утверждённую Панду…</div>
 <section id="panel" aria-label="Управление тестом">
  <div class="line">
@@ -46,7 +46,7 @@ input[type=range]{min-width:0;flex:1;accent-color:#e3b4ff}
   <button id="theme" disabled>☀ День</button>
   <button id="edit" aria-pressed="false" disabled>✎ Контур</button>
  </div>
- <div id="rangeRow"><label for="lift">Амплитуда</label><input id="lift" type="range" min="2" max="12" step="1" value="6"><span id="rangeValue">6°</span></div>
+ <div id="rangeRow"><label for="lift">Подъём руки</label><input id="lift" type="range" min="8" max="24" step="1" value="20"><span id="rangeValue">20°</span></div>
  <div id="editRow" hidden>
   <div class="line">
    <select id="piece" aria-label="Редактируемая часть"><option value="upper">Плечо / верх руки</option><option value="lower">Предплечье / кисть</option><option value="head">Голова (без движения)</option><option value="torso">Корпус (без движения)</option></select>
@@ -132,18 +132,22 @@ function render(t=0){
  const img=images[theme],sp=sprites[theme];
  let v=0;
  if(playing){
-  const p=Math.min(1,Math.max(0,(t-start)/1150));poseProgress=p;
+  const p=Math.min(1,Math.max(0,(t-start)/1800));poseProgress=p;
   // Smooth rise, short pause at top, smooth descent. Exactly one gesture.
   const ease=z=>z*z*(3-2*z);
-  v=p<.38?ease(p/.38):p<.58?1:ease((1-p)/.42);
-  if(p>=1){playing=false;poseProgress=0;$('ask').disabled=false;v=0;notify('Жест завершён. Проверь плечо, локоть и место удаления руки.')}
+  v=p<.35?ease(p/.35):p<.64?1:ease((1-p)/.36);
+  if(p>=1){playing=false;poseProgress=0;$('ask').disabled=false;v=0;notify('Жест завершён. Контуры ещё черновые: внимательно проверь швы у локтя и фон!')}
  }
  if(v>0&&!editing){
   c.drawImage(clean[theme],0,0);
   // Two real source-pixel layers: upper arm about shoulder, forearm about elbow.
   const sh=rig.shoulder,el=rig.elbow;
   const angle=Number($('lift').value)*Math.PI/180;
-  const a1=-angle*.32*v,a2=-angle*1.08*v;
+  // Video 38705.mp4 showed the former negative wrist rotation moved the paw
+  // sideways / slightly DOWN (at 7° only ~0.5px up in source coordinates).
+  // Opposed articulated rotations raise the wrist while preserving the shoulder pivot.
+  // Geometry cross-check for wrist (466,893), 20°: approx 15px up, 18px left in source.
+  const a1=-angle*.35*v,a2=angle*1.45*v;
   const x=el[0]-sh[0],y=el[1]-sh[1];
   const nex=[sh[0]+x*Math.cos(a1)-y*Math.sin(a1),sh[1]+x*Math.sin(a1)+y*Math.cos(a1)];
   c.save();c.translate(...sh);c.rotate(a1);c.translate(-sh[0],-sh[1]);c.drawImage(sp.upper,0,0);c.restore();
@@ -172,7 +176,7 @@ function render(t=0){
 function save(){try{localStorage.setItem('panda-street-arm-rig-v1',JSON.stringify(rig))}catch{}}
 function rerig(){if(!ready)return;playing=false;for(const t of ['night','day'])if(images[t]){const prev=theme;theme=t;readyScene(images[t]);theme=prev}render();save()}
 function showEdit(v){editing=v;playing=false;cancelAnimationFrame(raf);$('edit').setAttribute('aria-pressed',String(v));$('edit').textContent=v?'✓ Контур':'✎ Контур';$('editRow').hidden=!v;notify(v?'Перемещай узлы контура пальцем; жёлтая ось — плечо, зелёная — локоть. Черновая разметка требует подгонки.':'Оригинал в покое неизменён. Нажми «Задать вопрос» для одного жеста.');render()}
-$('ask').onclick=()=>{if(!ready)return;if(editing)showEdit(false);playing=true;start=performance.now();$('ask').disabled=true;notify('Пробный жест: только плечо и предплечье, лицо неподвижно.');raf=requestAnimationFrame(render)};
+$('ask').onclick=()=>{if(!ready)return;if(editing)showEdit(false);playing=true;start=performance.now();$('ask').disabled=true;notify('Проверяем исправленный подъём: рука вверх и немного к корпусу. Лицо и корпус неподвижны.');raf=requestAnimationFrame(render)};
 $('reset').onclick=()=>{playing=false;cancelAnimationFrame(raf);$('ask').disabled=false;notify('Возврат к утверждённой позе без изменений пикселей.');render()};
 $('theme').onclick=()=>{if(!ready)return;theme=theme==='night'?'day':'night';$('theme').textContent=theme==='night'?'☀ День':'☾ Ночь';render()};
 $('edit').onclick=()=>showEdit(!editing);
