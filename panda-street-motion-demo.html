@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#080916">
+<meta name="robots" content="noindex,nofollow">
+<title>Panda Street AI — проба движения без генерации</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;background:#080916;color:white;font-family:system-ui,-apple-system,Arial,sans-serif}
+#stage{position:relative;height:100dvh;width:100%;overflow:hidden;background:#080916}
+#scene{display:block;width:100%;height:100%;image-rendering:auto}
+#overlay{position:absolute;z-index:4;left:50%;transform:translateX(-50%);bottom:max(env(safe-area-inset-bottom),12px);width:min(94vw,520px);background:#101326e8;border:1px solid #b27af7;border-radius:21px;box-shadow:0 0 18px #8d30dd66;backdrop-filter:blur(10px);padding:10px}
+#label{margin:0 4px 7px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#f4d9ff;font-weight:800}
+#small{font-size:10px;color:#cfc2da;font-weight:500}
+#choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+button{min-height:43px;border:1px solid #9665ca;background:#292143;color:#fff;border-radius:12px;font-weight:750;font-size:12px;cursor:pointer;padding:5px}
+button:active{transform:scale(.96)}button[aria-pressed="true"]{background:#8541bd;border-color:#f6dcff;box-shadow:0 0 8px #c76bff99}
+#hint{margin:8px 4px 0;color:#d3cadc;font-size:10.5px;line-height:1.3}
+#status{position:absolute;inset:0;display:grid;place-items:center;background:#080916ee;text-align:center;padding:25px;z-index:6;font-size:14px;line-height:1.7}
+#status[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){#hint:after{content:" · Уменьшенное движение включено"}}
+</style>
+</head>
+<body><main id="stage">
+<canvas id="scene" aria-label="Оригинальный утверждённый персонаж Panda Street AI, пробная анимация головы"></canvas>
+<div id="status" role="status">Загружаю оригинальную Панду из приложения…</div>
+<section id="overlay" aria-label="Проверка движений">
+  <div id="label"><span>🐼 Panda Street · тест движения</span><span id="small">Оригинал без перерисовки</span></div>
+  <div id="choices">
+    <button type="button" data-mode="idle" aria-pressed="true">😎 Спокойно</button>
+    <button type="button" data-mode="ask" aria-pressed="false">❓ Вопрос</button>
+    <button type="button" data-mode="yes" aria-pressed="false">👍 Да</button>
+    <button type="button" data-mode="no" aria-pressed="false">🙅 Нет</button>
+  </div>
+  <p id="hint">Двигается только голова. Фон, одежда и лицо не заменяются. Это отдельная проба — основной Panda Street AI не изменён.</p>
+</section>
+</main>
+<script>
+(()=>{'use strict';
+const W=693,H=1444,SKY_START=338,SKY_SIZE=60,FLOOR_START=1303,FLOOR_SIZE=43;
+const cv=document.getElementById('scene'),stage=document.getElementById('stage'),status=document.getElementById('status');
+const buttons=[...document.querySelectorAll('[data-mode]')];
+let original=null,head=null,mode='idle',modeAt=performance.now(),raf=0,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const BX=151,BY=399,BW=315,BH=265,CX=307,CY=546;
+let last=0;
+function constructHead(src){
+  const mask=document.createElement('canvas');mask.width=BW;mask.height=BH;
+  const m=mask.getContext('2d');m.filter='blur(3px)';m.fillStyle='#fff';
+  // The masking contours enclose only the original ears, face and chin.
+  // No generative redraw, no invented fur, no modified clothes.
+  const px=x=>x-BX,py=y=>y-BY;
+  m.beginPath();m.ellipse(px(308),py(536),132,111,0,0,Math.PI*2);m.fill();
+  m.beginPath();m.ellipse(px(208),py(455),43,47,-.18,0,Math.PI*2);m.fill();
+  m.beginPath();m.ellipse(px(411),py(463),43,47,.18,0,Math.PI*2);m.fill();
+  m.beginPath();m.ellipse(px(309),py(601),109,49,0,0,Math.PI*2);m.fill();
+  const layer=document.createElement('canvas');layer.width=BW;layer.height=BH;
+  const k=layer.getContext('2d');k.drawImage(src,BX,BY,BW,BH,0,0,BW,BH);
+  k.globalCompositeOperation='destination-in';k.drawImage(mask,0,0);
+  return layer;
+}
+function motion(t){
+ const elapsed=(t-modeAt)/1000, breathe=reduce?0:Math.sin(t*.0015);
+ if(mode==='idle') return {a:reduce?0:Math.sin(t*.00062)*.0037,y:breathe*.45};
+ if(mode==='ask') return {a:reduce?.005:(.012+Math.sin(t*.002)*.003),y:reduce?0:1.2};
+ if(mode==='yes') {
+  const p=Math.min(elapsed,1.4), ease=Math.max(0,1-p/1.4);
+  return {a:0,y:reduce?1.0:2.6*Math.sin(p*2*Math.PI*2)*ease};
+ }
+ if(mode==='no'){
+  const p=Math.min(elapsed,1.65),ease=Math.max(0,1-p/1.65);
+  return {a:reduce?-.004:.020*Math.sin(p*2*Math.PI*1.7)*ease,y:0};
+ }
+ return {a:0,y:0};
+}
+function render(ts){
+ if(!original)return;
+ if(ts-last<33){raf=requestAnimationFrame(render);return}last=ts;
+ const w=stage.clientWidth,h=stage.clientHeight;
+ if(!w||!h){raf=requestAnimationFrame(render);return}
+ const dpr=Math.min(2,devicePixelRatio||1);
+ const bw=Math.round(w*dpr),bh=Math.round(h*dpr);
+ if(cv.width!==bw||cv.height!==bh){cv.width=bw;cv.height=bh}
+ const c=cv.getContext('2d',{alpha:false});c.setTransform(bw/w,0,0,bh/h,0,0);
+ c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+ c.fillStyle='#050817';c.fillRect(0,0,w,h);
+ let s=w/W,left=0,cut=Math.max(0,H-h/s);
+ let cutSky=Math.min(SKY_SIZE,cut*.60);
+ let cutFloor=Math.min(FLOOR_SIZE,Math.max(0,cut-cutSky));
+ if(cut>SKY_SIZE+FLOOR_SIZE){cutSky=SKY_SIZE;cutFloor=FLOOR_SIZE;s=Math.min(w/W,h/(H-SKY_SIZE-FLOOR_SIZE));left=(w-W*s)/2}
+ const parts=[[0,SKY_START],[SKY_START+cutSky,FLOOR_START-(SKY_START+cutSky)],[FLOOR_START+cutFloor,H-FLOOR_START-cutFloor]];
+ let destY=0;
+ for(const [sy,sh] of parts){if(sh>0){c.drawImage(original,0,sy,W,sh,left,destY*s,W*s,sh*s);destY+=sh}}
+ const m=motion(ts);
+ // Same approved bitmap, copied through a soft mask into a tiny moving head layer.
+ c.save();c.translate(left+(CX*s),(CY-cutSky)*s);c.rotate(m.a);c.translate(-(CX*s),-(CY-cutSky)*s);
+ c.drawImage(head,left+BX*s,(BY-cutSky+m.y)*s,BW*s,BH*s);c.restore();
+ raf=requestAnimationFrame(render);
+}
+buttons.forEach(btn=>btn.addEventListener('click',()=>{
+ mode=btn.dataset.mode;modeAt=performance.now();
+ buttons.forEach(x=>x.setAttribute('aria-pressed',String(x===btn)));
+}));
+async function load(){
+ try{
+  const res=await fetch('./panda-street-ai-preview.html',{cache:'no-cache'});
+  if(!res.ok)throw new Error('HTTP '+res.status);
+  const source=await res.text();
+  const match=source.match(/<img\s+id="src"[^>]*\bsrc="(data:image\/[^"]+)"/i);
+  if(!match)throw new Error('Не найдено утверждённое изображение');
+  const img=new Image();img.src=match[1];await img.decode();
+  if(img.naturalWidth!==W||img.naturalHeight!==H)throw new Error('Исходное изображение изменило размер');
+  original=img;head=constructHead(img);status.hidden=true;
+  raf=requestAnimationFrame(render);
+ }catch(err){status.textContent='Не удалось загрузить оригинальный экран Panda Street AI: '+err.message+'. Открой страницу по ссылке GitHub Pages.';console.error(err)}
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0}else if(original&&!raf){raf=requestAnimationFrame(render)}});
+load();
+})();
+</script></body></html>
