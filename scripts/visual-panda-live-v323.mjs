@@ -23,7 +23,20 @@ try{
   res=await page.goto(base+'/panda-voice-pilot.html?lesson=1',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   await page.locator('#pg346').waitFor();
-  assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
+  const scenicAudit=await page.locator('#pg346').evaluate(el=>({
+   background:getComputedStyle(el).backgroundImage,
+   color:getComputedStyle(el).backgroundColor,
+   theme:el.dataset.theme,
+   inlineStyle:el.getAttribute('style'),
+   className:el.className,
+   stylesheets:[...document.styleSheets].map(x=>x.href).filter(Boolean)
+    .filter(x=>/panda-live-scenic|panda-approved-soft|panda-hsk2-preview/.test(x)),
+   cssRules:[...document.styleSheets].filter(x=>/panda-live-scenic|panda-approved-soft/.test(x.href||''))
+    .map(x=>{try{return {href:x.href,rules:x.cssRules.length}}catch{return {href:x.href,rules:'unreadable'}}})
+  }));
+  console.log('Approved Panda scene computed-style diagnostic:',JSON.stringify(scenicAudit));
+  assert.match(scenicAudit.background,/panda-landscape-v350/,
+   'Current approved Panda scene must render its original licensed lake image');
   assert.equal(await page.locator('#pg346-topics').isVisible(),false,'Do not cover Panda with open topic menu');
   assert(await page.locator('.pg352-mascot .pg346-panda').isVisible());
   assert.equal(await page.locator('.pg352-rocks').isVisible(),false,'The approved lake already contains natural stones');
