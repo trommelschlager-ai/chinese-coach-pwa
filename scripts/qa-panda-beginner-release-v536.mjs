@@ -62,6 +62,15 @@ try{
   await send('很不错，你呢？','我也很好，谢谢！');
   await send('你可以说中文','可以！我们说中文吧！');
   await send('跑步这么样','我喜欢跑步。');
+  const historyHeight=await page.evaluate(()=>{
+    const history=document.querySelector('#pg346-rows');
+    const r=history.getBoundingClientRect();
+    return {height:r.height,windowHeight:document.querySelector('#pg346').getBoundingClientRect().height,overflow:getComputedStyle(history).overflowY};
+  });
+  assert(historyHeight.height<=260,'Chat cards took over Panda scene: '+JSON.stringify(historyHeight));
+  assert(historyHeight.overflow==='auto','Long dialogue history should scroll internally');
+  assert(historyHeight.height>=180,'Chat area too small to use');
+
   await verifyFrozen('After multiple dialogue turns');
   const rects=await page.evaluate(()=>{
    const history=document.querySelector('#pg346-rows'),last=history.lastElementChild,scene=document.querySelector('#pg346 .pg346-scene');
@@ -136,6 +145,14 @@ try{
   await verifyFrozen('After sending single Chinese character');
   await page.locator('#pg346-nonstop').click();
   await send('不好','怎么了？');
+  await send('你是老师吗？','是，我是你的中文老师。');
+  await send('哈哈','哈哈，我们继续吧！');
+  const promptStatus=await page.evaluate(()=>{
+    const warning=document.querySelector('#pg346-status');
+    return {hidden:warning.hidden,text:warning.textContent};
+  });
+  assert(promptStatus.hidden,'Non-failure microphone status must not cover Panda: '+JSON.stringify(promptStatus));
+
   await verifyFrozen('After Non-Stop conversation');
   assert(!errors.length,'JS error: '+errors.join('; '));
   await page.screenshot({path:'qa/panda-beginner-release/beginner-'+width+'.png',fullPage:false,animations:'disabled'});
