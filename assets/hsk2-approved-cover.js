@@ -30,10 +30,13 @@
   const start=full?(tactileFix?'left:2.3%;top:58.8%;width:95.4%;height:7.7%':'left:2.4%;top:62.0%;width:95.2%;height:7.1%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
   section.innerHTML='<div class="pg-approved-poster">'+
    '<img class="pg-approved-cover-image" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" alt="HSK 2. Урок '+num+'. '+esc(names[num-1])+'">'+
+   (full&&tactileFix?'<img class="pg-approved-pressed-art" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" aria-hidden="true" alt="">':'')+
    '<a class="pg-approved-hotspot pg-approved-map-link" href="./hsk2-life-course.html?view=map" aria-label="Все уроки HSK 2"></a>'+
    steps+'<button type="button" class="pg-approved-hotspot pg-approved-start" data-step="2" aria-label="Начать урок" style="'+start+'"></button>'+
    '</div>'+(full?'':'<div class="pg-approved-bottom" aria-hidden="true"></div>');
-  section.querySelector('img').src=img.src;
+  // The art is a single bitmap: during a tap, temporarily overlay its cropped,
+  // darker, displaced CTA so the PAINTED button itself visibly presses.
+  section.querySelectorAll('img').forEach(coverImg=>{coverImg.src=img.src;});
   if(full){
    // Give the painted Start CTA a real pressed state before changing lessons.
    // The lesson's existing delegated data-step handler still owns navigation.
