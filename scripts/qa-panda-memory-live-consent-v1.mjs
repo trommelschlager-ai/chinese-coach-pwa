@@ -72,7 +72,18 @@ try{
   (signature[0]===255&&(signature[1]&224)===224),
   'Saved offline content must carry an MP3 signature'
  );
+ await page.locator('#pg346-history').click();
+ await page.waitForFunction(()=>document.querySelectorAll('#pml-saved [role="listitem"]').length===2,null,{timeout:7000});
+ page.once('dialog',dialog=>dialog.accept());
+ await page.locator('#pml-clear').click();
+ await page.waitForFunction(()=>document.querySelector('#pml-count')?.textContent.includes('На устройстве: 0'),null,{timeout:7000});
+ const afterClear=await page.evaluate(async()=>{
+  const {createPandaMemoryStore}=await import('./assets/panda-offline-memory-v1.mjs');
+  const owner=localStorage.getItem('panda-memory-device-owner-v1');
+  return (await createPandaMemoryStore().list(owner)).length;
+ });
+ assert.equal(afterClear,0,'User must be able to erase local learner memory');
  assert.deepEqual(errors,[]);
- console.log('PASS: real Panda conversation opt-in, approved Xiaoxiao MP3, pending new phrase, session-only consent, offline recall');
+ console.log('PASS: real Panda opt-in, approved Xiaoxiao, pending phrase, reset consent, offline recall, personal-data deletion');
  await context.close();
 }finally{await browser.close()}
