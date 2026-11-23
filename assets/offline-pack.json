@@ -1,7 +1,9 @@
 {
-  "version": 543,
-  "bytes": 80382882,
+  "version": 546,
+  "bytes": 80402882,
   "files": [
+    "./assets/panda-ai-approved-layout-v546.css?v=546",
+    "./assets/panda-ai-approved-layout-v546.js?v=546",
     "./assets/panda-everyday-meaning-v515.mjs?v=543",
     "./assets/panda-approved-soft-v500.js?v=543",
     "./assets/panda-hsk2-preview-v506.css?v=543",
