@@ -19,7 +19,7 @@ async function expectDone(page,mini){
  for(let i=0;i<2;i++){
   assert.ok((await sentences.nth(i).locator('.pg433-hanzi').count())>0,'Chinese sentence missing');
   assert.ok((await sentences.nth(i).locator('.pg433-py').textContent()).trim(),'Pinyin missing');
-  assert.ok((await sentences.nth(i).locator('small').textContent()).trim(),'Translation missing');
+  assert.ok((await sentences.nth(i).locator('div > small').textContent()).trim(),'Translation missing');
  }
  const a=page.locator('.pg433-done a.pg433-ai-link');
  assert.equal(await a.count(),1,'One real Panda AI entry link on the current completion screen');
