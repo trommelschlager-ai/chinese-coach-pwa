@@ -30,26 +30,23 @@
   const start=full?(tactileFix?'left:2.3%;top:60.0%;width:95.4%;height:7.7%':'left:2.4%;top:62.0%;width:95.2%;height:7.1%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
   section.innerHTML='<div class="pg-approved-poster">'+
    '<img class="pg-approved-cover-image" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" alt="HSK 2. Урок '+num+'. '+esc(names[num-1])+'">'+
-   (full&&tactileFix?'<img class="pg-approved-pressed-art" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" aria-hidden="true" alt="">':'')+
+   
    '<a class="pg-approved-hotspot pg-approved-map-link" href="./hsk2-life-course.html?view=map" aria-label="Все уроки HSK 2"></a>'+
    steps+'<button type="button" class="pg-approved-hotspot pg-approved-start" data-step="2" aria-label="Начать урок" style="'+start+'"></button>'+
    '</div>'+(full?'':'<div class="pg-approved-bottom" aria-hidden="true"></div>');
-  // The art is a single bitmap: during a tap, temporarily overlay its cropped,
-  // darker, displaced CTA so the PAINTED button itself visibly presses.
-  section.querySelectorAll('img').forEach(coverImg=>{coverImg.src=img.src;});
+  // The full-size illustration is always the only visible artwork.
+  // A transparent hotspot provides tactile feedback without duplicating the CTA.
+  section.querySelector('.pg-approved-cover-image').src=img.src;
   if(full){
    // Give the painted Start CTA a real pressed state before changing lessons.
    // The lesson's existing delegated data-step handler still owns navigation.
    const startButton=section.querySelector('.pg-approved-start');
    let pressPending=false;
    let forwardClick=false;
-   // Four covers have the painted CTA higher than the original transparent hotspot.
-   // Show the press as soon as the finger goes down; hold it through navigation.
-   if(tactileFix){
-    startButton.addEventListener('pointerdown',()=>startButton.classList.add('pg-approved-start-pressed'),{passive:true});
-    startButton.addEventListener('pointercancel',()=>{if(!pressPending)startButton.classList.remove('pg-approved-start-pressed');},{passive:true});
-    startButton.addEventListener('pointerleave',()=>{if(!pressPending)startButton.classList.remove('pg-approved-start-pressed');},{passive:true});
-   }
+   // Immediate one-layer feedback on every HSK 2 cover.
+   startButton.addEventListener('pointerdown',()=>startButton.classList.add('pg-approved-start-pressed'),{passive:true});
+   startButton.addEventListener('pointercancel',()=>{if(!pressPending)startButton.classList.remove('pg-approved-start-pressed');},{passive:true});
+   startButton.addEventListener('pointerleave',()=>{if(!pressPending)startButton.classList.remove('pg-approved-start-pressed');},{passive:true});
    startButton.addEventListener('click',event=>{
     if(forwardClick){forwardClick=false;return;}
     event.preventDefault();
@@ -66,7 +63,7 @@
      forwardClick=true;
      startButton.click(); // forwards once to the original app data-step listener
      forwardClick=false;
-    },tactileFix?500:260);
+    },500);
    });
   }
   return section;
