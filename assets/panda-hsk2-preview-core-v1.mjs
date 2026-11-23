@@ -1,4 +1,4 @@
-import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=536';
+import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
 import {respondToNaturalStatement} from './panda-natural-statements-v542.mjs?v=542';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
