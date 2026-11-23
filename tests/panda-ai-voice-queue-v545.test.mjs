@@ -28,6 +28,13 @@ test('pending recordings must never be marked approved without an actual exact-m
    assert.equal(x.audio_file,approved.src,'wrong MP3 path for '+x.id);
    assert.equal(x.voice_approved,true,'voice review missing for '+x.id);
    assert.equal(x.android_verified,true,'Android QA missing for '+x.id);
+  }else if(x.audio_status==='approved_uploaded_awaiting_android_qa'){
+   const approved=lookupApprovedPandaVoice(x.reply);
+   assert(approved,'No original exact recording registered for '+x.id);
+   assert.equal(x.audio_file,approved.src,'Unexpected recording path for '+x.id);
+   assert.equal(x.voice_approved,true,'Owner approved voice identity for '+x.id);
+   assert.equal(x.android_verified,false,'Do not pre-approve untested real Android audio for '+x.id);
+   assert.match(x.audio_sha256,/^[a-f0-9]{64}$/,'Missing immutable SHA256 for '+x.id);
   }else{
    assert.equal(x.voice_approved,false,'pending voice cannot be marked approved '+x.id);
    assert.equal(x.android_verified,false,'pending audio cannot be marked Android-verified '+x.id);
