@@ -162,7 +162,13 @@ if (!bridge) {
   const chatHistory=$('#pg346-rows');
   function revealLatest(){chatHistory.scrollTop=chatHistory.scrollHeight;}
   new ResizeObserver(revealLatest).observe(chatHistory);
-  function renderRows(rows){const root=$('#pg346-rows');root.replaceChildren();for(const e of rows.slice(-3)){
+  // v544: Don't devote a giant third card to the generic long "I didn't understand"
+  // fallback. The exact teacher question and other reviewed HSK1 utterances
+  // already have explicit responses; preserve the full record in the engine.
+  const obsoleteLongClarification='我没听懂。你可以再说一遍，或者换一种说法吗？';
+  function renderRows(rows){const root=$('#pg346-rows');root.replaceChildren();
+    const displayRows=rows.filter(e=>e.hanzi!==obsoleteLongClarification).slice(-3);
+    for(const e of displayRows){
     const example=e.who==='example'||e.analysis?.kind==='correction-response';
     const row=el('article','pg346-row'+(example?' pg445-example-row':''));
     if(Array.from(e.hanzi||'').length>17||(e.pinyin||'').length>60||(e.ru||'').length>80)row.classList.add('pg506-long');
