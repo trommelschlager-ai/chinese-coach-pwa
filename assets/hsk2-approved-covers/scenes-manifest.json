@@ -1,0 +1,132 @@
+[
+  {
+    "lesson": 1,
+    "title": "О себе",
+    "path": "assets/hsk2-approved-covers/lesson-01-full.webp",
+    "aspect_ratio": [
+      843,
+      1866
+    ],
+    "min_width": 843,
+    "min_height": 1866,
+    "approved": true,
+    "sha256": "e66a2401066a38ff451ecf629e99047990365cb8b18b95070b9d411ef4a41f71"
+  },
+  {
+    "lesson": 2,
+    "title": "Мой день",
+    "path": "assets/hsk2-approved-covers/lesson-02-full.webp",
+    "aspect_ratio": [
+      843,
+      1866
+    ],
+    "min_width": 843,
+    "min_height": 1866,
+    "approved": true,
+    "sha256": "813ebc744e8303f3fb95bc02ff9d76690a52dc499a490e839fd705447dd778c7"
+  },
+  {
+    "lesson": 3,
+    "title": "Работа и учёба",
+    "path": "assets/hsk2-approved-covers/lesson-03-full.webp",
+    "aspect_ratio": [
+      843,
+      1866
+    ],
+    "min_width": 843,
+    "min_height": 1866,
+    "approved": true,
+    "sha256": "ff40c47aacd88f228789f647509b7462cae01f6dd15ad9df89b2412638134969"
+  },
+  {
+    "lesson": 4,
+    "title": "Моё хобби",
+    "path": "assets/hsk2-approved-covers/lesson-04-full.webp",
+    "aspect_ratio": [
+      843,
+      1866
+    ],
+    "min_width": 843,
+    "min_height": 1866,
+    "approved": true,
+    "sha256": "7a0eb41506ce858b39f1534eac8d81e679bf06da43ac54e77b4f22f0fd4e0949"
+  },
+  {
+    "lesson": 5,
+    "title": "Друзья и встречи",
+    "path": "assets/hsk2-approved-covers/lesson-05-full.webp",
+    "aspect_ratio": [
+      843,
+      1866
+    ],
+    "min_width": 843,
+    "min_height": 1866,
+    "approved": true,
+    "sha256": "f4bd0c603e8b10f6213f973ab11a28f1d0ddc7fbf9fd639a2d4bebdb0f700eea"
+  },
+  {
+    "lesson": 6,
+    "title": "Вчера и мой опыт",
+    "path": "assets/hsk2-approved-covers/lesson-06-full.webp",
+    "aspect_ratio": [
+      843,
+      1866
+    ],
+    "min_width": 843,
+    "min_height": 1866,
+    "approved": true,
+    "sha256": "c851fb575ed279ce5727dba581b5265da8c18c8fc1ca77f93c45229d7b9e04fa"
+  },
+  {
+    "lesson": 7,
+    "title": "Мои планы на будущее",
+    "path": "assets/hsk2-approved-covers/lesson-07-full.webp",
+    "aspect_ratio": [
+      843,
+      1866
+    ],
+    "min_width": 843,
+    "min_height": 1866,
+    "approved": true,
+    "sha256": "9eecaac6401e648d34b7863cf1b73deb38cc2dbb56a0294b2295977b4ebf1150"
+  },
+  {
+    "lesson": 8,
+    "title": "В магазине",
+    "path": "assets/hsk2-approved-covers/lesson-08-full.webp",
+    "aspect_ratio": [
+      843,
+      1866
+    ],
+    "min_width": 843,
+    "min_height": 1866,
+    "approved": true,
+    "sha256": "38cf6d9e7d5efaed5e79e9408b42c790b965003b001b09c804bd6592bed66442"
+  },
+  {
+    "lesson": 9,
+    "title": "Здоровье и самочувствие",
+    "path": "assets/hsk2-approved-covers/lesson-09-full.webp",
+    "aspect_ratio": [
+      843,
+      1866
+    ],
+    "min_width": 843,
+    "min_height": 1866,
+    "approved": true,
+    "sha256": "5849a475b03d00d1a9b38fed3559238e8272af39c5755f64497a1f38d9cb2711"
+  },
+  {
+    "lesson": 10,
+    "title": "Любовь и отношения",
+    "path": "assets/hsk2-approved-covers/lesson-10-full.webp",
+    "aspect_ratio": [
+      843,
+      1866
+    ],
+    "min_width": 843,
+    "min_height": 1866,
+    "approved": true,
+    "sha256": "83831a3f54cd6b996f1c44d9ef1fcf926175b5443b6d58adda963082adf4317b"
+  }
+]

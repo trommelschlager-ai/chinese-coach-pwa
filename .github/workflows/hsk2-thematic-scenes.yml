@@ -1,0 +1,27 @@
+name: Panda Go HSK2 themed covers checks
+
+on:
+  pull_request:
+    paths:
+      - "assets/hsk2-approved-cover.js"
+      - "assets/hsk2-approved-cover.css"
+      - "assets/hsk2-approved-covers/lesson-*-full.webp"
+      - "assets/hsk2-approved-covers/scenes-manifest.json"
+      - "tests/hsk2-thematic-scene-check.py"
+      - ".github/workflows/hsk2-thematic-scenes.yml"
+  workflow_dispatch:
+
+jobs:
+  verify-themed-covers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install image validation dependency
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0
+      - name: Verify that all 10 binary WebP images are present and match SHA256
+        run: python tests/hsk2-thematic-scene-check.py
+      - name: Check cover loader JS syntax
+        run: node --check assets/hsk2-approved-cover.js
