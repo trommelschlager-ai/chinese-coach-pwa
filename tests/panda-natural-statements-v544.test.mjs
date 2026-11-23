@@ -78,8 +78,8 @@ test('active Panda AI free chat uses new v544 engine, not the graded quiz or the
  const pack=JSON.parse(readFileSync(new URL('../assets/offline-pack.json',import.meta.url),'utf8'));
  assert.match(core,/from '.\/panda-natural-statements-v544\.mjs\?v=544'/);
  assert.match(core,/if\(\(\(hsk2&&hsk2\.openChat\)\|\|\(!hsk2&&state\.mode==='nonstop'\)\)\&\&!state\.dayMode\)/);
- assert.match(core,/say\(natural\.reply,false\)/);
- assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=544/);
+ assert.match(core,/say\(natural\.reply,!!lookupPandaVoiceClip\(natural\.reply\.hanzi\)\)/);
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=546/);
  assert(pack.version>=545,'Offline pack must include the latest Panda layout version');
  assert(sw.includes("const CACHE='chinese-coach-pwa-v"+pack.version+"-"),'Service worker cache must match offline pack version');
  assert(pack.files.includes('./assets/panda-natural-statements-v544.mjs?v=544'));
