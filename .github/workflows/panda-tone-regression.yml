@@ -42,6 +42,9 @@ jobs:
           ffmpeg -hide_banner -version
       - name: Analyze tone algorithm and six HSK2 MP3 clips
         run: node tests/panda-tone-regression.cjs
+      - name: Full synthetic and six-MP3 regression for minimal 90/56/15 candidate
+        if: ${{ always() }}
+        run: PANDA_TONE_EXPERIMENT=90-56-15 node tests/panda-tone-regression.cjs
       - name: Compare experimental F0 windows on six real MP3 clips
         if: ${{ always() }}
         run: node tests/panda-tone-window-sweep.cjs
@@ -56,5 +59,6 @@ jobs:
           path: |
             tone-regression-report.json
             tone-window-sweep.json
+            tone-regression-candidate.json
           retention-days: 14
           if-no-files-found: warn
