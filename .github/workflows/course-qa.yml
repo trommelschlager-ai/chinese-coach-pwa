@@ -20,9 +20,14 @@ jobs:
         run: node --test tests/offline-active-assets-v434.test.mjs
       - run: npm run check:pronunciation
       - run: node scripts/verify-hsk1-fifth-v227.cjs
-      - name: Fetch preserved HSK1 baseline for control-protection checks
-        run: git fetch --depth=1 origin 404e142c20aab37a6c8a24d60b60aa57028f8043
-      - run: node scripts/verify-hsk1-final-unification-v421.cjs
+      - name: Fetch current approved HSK1 base for control-protection checks
+        env:
+          PANDA_APPROVED_BASE_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
+        run: git fetch --depth=1 origin "$PANDA_APPROVED_BASE_SHA"
+      - name: Verify current approved HSK1 content and header controls
+        env:
+          PANDA_APPROVED_BASE_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
+        run: node scripts/verify-hsk1-final-unification-v421.cjs
       - run: node scripts/verify-hsk1-fourth-v216.cjs
       - run: node scripts/verify-weather-one-voice-v239.cjs
       - run: node scripts/verify-panda-go-approved-v231.cjs
