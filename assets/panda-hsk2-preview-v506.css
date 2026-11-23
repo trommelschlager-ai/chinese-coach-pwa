@@ -127,27 +127,28 @@
 #pg346[data-theme="day"] .pg346-nav a,
 #pg346[data-theme="day"] .pg346-nav a[aria-current="page"] {
  color: #fff !important;
- text-shadow: 0 1px 2px #233059, 0 0 5px #fffd, 0 0 9px #fff9;
+ text-shadow: 0 1px 2px #233059;
 }
 #pg346[data-topics-open="true"] .pg346-status {
  visibility: hidden;
 }
 #pg346 .pg346-nav a svg {
- filter: drop-shadow(0 0 3px #fffd) drop-shadow(0 0 6px #fff8);
+ color: #fff;
+ filter: none;
 }
 
 /* Seat the paws into the top face of the stone without resizing the mascot. */
 :root:not([data-keyboard="true"]) #pg346 .pg352-mascot {
- bottom: calc(var(--pg-seat-bottom) - clamp(3px, 1.35vw, 7px)) !important;
+ bottom: calc(var(--pg-seat-bottom) - clamp(6px, 2.15vw, 11px)) !important;
 }
 :root:not([data-keyboard="true"]) #pg346 .pg352-mascot::before {
  left: 17%;
- bottom: -1%;
+ bottom: -1.4%;
  width: 76%;
- height: 4.5%;
+ height: 5.2%;
  filter: blur(1.5px);
  background:
-  radial-gradient(ellipse 25% 45% at 21% 48%, #171510b8, transparent),
-  radial-gradient(ellipse 24% 46% at 81% 48%, #171510b8, transparent),
-  radial-gradient(ellipse 49% 50% at 50% 44%, #221e19a6, transparent);
+  radial-gradient(ellipse 25% 45% at 21% 48%, #171510d6, transparent),
+  radial-gradient(ellipse 24% 46% at 81% 48%, #171510d6, transparent),
+  radial-gradient(ellipse 49% 50% at 50% 44%, #221e19bd, transparent);
 }
