@@ -104,9 +104,20 @@ try{
         // Regression from Android screen recording 38791.mp4:
         // one Send tap on valid 我有点忙 must close input, show both turns
         // and save it to history instead of opening "Панда объясняет".
+        const intactBefore=await page.locator('#stage').boundingBox();
         await page.locator('#send').click();
         await page.locator('#entry').fill('我有点忙');
+        // Reproduce the Android keyboard reducing viewport height without width change.
+        await page.setViewportSize({width:393,height:520});
+        await page.waitForTimeout(120);
+        const intactWithKeyboard=await page.locator('#stage').boundingBox();
+        assert(Math.abs(intactBefore.width-intactWithKeyboard.width)<=1,
+          'Android keyboard must not shrink Panda scene WIDTH');
+        assert(Math.abs(intactBefore.height-intactWithKeyboard.height)<=1,
+          'Android keyboard must not shrink Panda scene HEIGHT');
+        await page.screenshot({path:output+'/keyboard-stable-'+name+'.png'});
         await page.locator('#submit').click();
+        await page.setViewportSize({width:393,height:852});
         await page.waitForFunction(()=>
           document.getElementById('live-learner')?.textContent.includes('我有点忙') &&
           document.getElementById('live-panda')?.textContent.includes('好，那你先忙吧！') &&
