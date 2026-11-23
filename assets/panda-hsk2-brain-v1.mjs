@@ -2,7 +2,7 @@ import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=517';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
-import {everydayMeaning} from './panda-everyday-meaning-v515.mjs';
+import {everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=518';
 import {knownBasicContext,replyBasicContext} from './panda-hsk2-basic-context-v1.mjs?v=5';
 export const norm=s=>String(s||'').normalize('NFC').replace(/[\p{P}\s]/gu,'').toLowerCase();
 export const getTopic=id=>HSK2_TOPICS.find(t=>t.id===Number(id));
