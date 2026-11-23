@@ -307,7 +307,11 @@ function submit(raw){
  // approved Luvvoice files already include 你是老师吗？ (p01) and
  // 我是老师。 (p03); never replace them with synthetic speech or PA-001,
  // which is for the different assertion 我是老师 by the learner.
- if(!hsk2&&!state.dayMode){
+ // The main /panda-voice-pilot.html route boots with beginnerGreeting
+ // inside HSK2 topic 101, even when the visible tab says "Краткие диалоги".
+ // Exempt that conversational entry (and explicit free HSK2 chat) from scored
+ // HSK2 answer validation; retain the dedicated HSK2 My Day path untouched.
+ if(!state.dayMode&&(!hsk2||hsk2.openChat||(entry.beginnerGreeting&&hsk2.id===101))){
   const teacherQuestion=normalize(input);
   if(teacherQuestion==='你是老师吗'||teacherQuestion==='你是老师'){
    const isQuestion=teacherQuestion.endsWith('吗');
