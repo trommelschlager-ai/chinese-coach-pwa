@@ -23,11 +23,14 @@ assert(audio.length>8000,'No cleaned male speech present');
 assert.equal(audio.subarray(0,3).toString('ascii'),'ID3','Invalid MP3 header');
 assert(l5.includes("hz==='今天几月几号？'?'./assets/lesson5-male-clean-v290.mp3'"),'Noisy phrase should use new recording');
 for(const [html,token] of [
- ['hsk1-second-v203.html','hsk1-second-v203.js?v=371'],
- ['hsk1-fifth-v227.html','hsk1-fifth-v227.js?v=371'],
- ['hsk1-family-v231.html','panda-go-companion-v231.js?v=371'],
- ['hsk1-weather-v231.html','panda-go-companion-v231.js?v=371']
-])assert(read(html).includes(token),html+' has outdated cached script');
+ ['hsk1-second-v203.html','hsk1-second-v203.js'],
+ ['hsk1-fifth-v227.html','hsk1-fifth-v227.js'],
+ ['hsk1-family-v231.html','panda-go-companion-v231.js'],
+ ['hsk1-weather-v231.html','panda-go-companion-v231.js']
+]){
+ const version=Number(read(html).split(token+'?v=')[1]?.match(/^\d+/)?.[0]);
+ assert(Number.isInteger(version)&&version>=371,html+' needs current versioned '+token);
+}
 const pack=JSON.parse(read('assets/offline-pack.json'));
 assert(pack.version>=290&&pack.files.includes('./assets/lesson5-male-clean-v290.mp3'));
 const cache=read('sw.js').match(/^const CACHE='chinese-coach-pwa-v(\d+)-/);assert(cache&&Number(cache[1])>=290,'Service worker must refresh to a current release');
