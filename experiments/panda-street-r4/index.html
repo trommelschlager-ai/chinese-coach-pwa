@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panda Street AI · R4</title>
+<style>
+* { box-sizing: border-box }
+body { margin: 0; background: #121212; color: #fff; font: 16px system-ui, sans-serif }
+main { min-height: 100svh; display: grid; place-content: center; justify-items: center; gap: 12px; padding: 12px }
+video { display: block; width: min(calc(100vw - 24px), calc((100svh - 88px) * 694 / 1444)); height: auto; aspect-ratio: 694 / 1444; object-fit: contain; background: #121212 }
+button { min-height: 44px; padding: 0 20px; color: #19130a; background: #f4c46c; border: 0; border-radius: 8px; font: inherit; font-weight: 700 }
+p { margin: 0; max-width: 28ch; text-align: center }
+</style>
+<main>
+  <video id="clip" width="694" height="1444" muted playsinline preload="auto"
+    poster="../../assets/panda-street-day-night/night.webp" src="panda-street-r4.mp4"
+    aria-label="Жест Panda Street в ночной и дневной темах"></video>
+  <button id="replay" type="button">Проверить жест</button>
+  <p id="status" role="status" hidden></p>
+</main>
+<script>
+const clip = document.querySelector('#clip');
+const status = document.querySelector('#status');
+document.querySelector('#replay').addEventListener('click', async () => {
+  status.hidden = true;
+  clip.currentTime = 0;
+  try {
+    await clip.play();
+  } catch {
+    status.textContent = 'Не удалось воспроизвести тестовый ролик.';
+    status.hidden = false;
+  }
+});
+</script>
+</html>
