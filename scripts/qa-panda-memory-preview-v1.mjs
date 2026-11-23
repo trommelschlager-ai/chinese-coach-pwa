@@ -54,6 +54,8 @@ try {
   // The delete handler finishes after its UI status update. Wait until actions unlock.
   await page.waitForFunction(()=>document.querySelector('#recall')?.disabled===false);
   await page.locator('#recall').click();
+  // IndexedDB is asynchronous; do not assert before the recall promise settles.
+  await page.waitForFunction(()=>document.querySelector('#testStatus')?.textContent.includes('пока нет'));
   assert.equal(await page.locator('#listen').isDisabled(),true);
   assert.match(await page.locator('#testStatus').textContent(),/пока нет/);
   assert.deepEqual(errors,[],'JavaScript errors in Panda Memory preview');
