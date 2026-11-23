@@ -1,4 +1,5 @@
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=536';
+import {respondToNaturalStatement} from './panda-natural-statements-v542.mjs?v=542';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -191,7 +192,7 @@ function dayReturnHref(){
  return './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini+'&v=420';
 }
 function initLesson(id){
- hsk2=null;
+ hsk2=null;state.naturalAwaiting=null;
  cancelFollowup();stopAudio();stopRecognition();base=prepareConversation(CONVERSATIONS.find(c=>c.id===id)||CONVERSATIONS[0],new Date());
  conversation=withPracticeGreeting(base,rotateGreeting());state.step=0;state.done=false;state.reviewStep=null;state.prompt=null;state.shortDisplay=null;state.nonstopDisplay=null;state.awaitQuestion=false;state.hint=false;state.topic=base.id;state.turns=0;state.askedInTopic=0;showLearnerFeedback(null);
  state.allowed=accessibleLessons(storage,conversation.id);state.profile.hasNumbers=state.allowed.includes(3);state.cursor=Math.max(0,state.allowed.indexOf(conversation.id));$('lesson-select').value=String(conversation.id);
@@ -230,7 +231,7 @@ function setMode(mode){
  if(mode==='short')state.lockedTopic=null;if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 let hsk2=null;
 function beginHSK2(id,index=0,autoplay=true){
- friendlyStage=null;
+ friendlyStage=null;state.naturalAwaiting=null;
  const t=getTopic(id);if(!t)return false;
  cancelFollowup();stopAudio();stopRecognition();hsk2={id:t.id,index,done:false,exact:0,similar:0,unknown:0,context:null};
  state.mode='short';state.dayMode=false;state.done=false;
@@ -272,6 +273,23 @@ function submit(raw){
   note('');
   say({hanzi,pinyin:replyPinyin,ru});
   return;
+ }
+ // v542: use reviewed beginner statements as genuine conversation turns,
+ // rather than treating a correct assertion as a failed quiz answer.
+ // Keep short HSK1 drills and the independent HSK2 My Day scenario intact.
+ if((hsk2||state.mode==='nonstop')&&!state.dayMode){
+  const natural=respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
+  if(natural){
+   state.naturalAwaiting=natural.next;
+   learner(input,natural.spoken);
+   state.turns=(state.turns||0)+1;
+   state.awaitQuestion=true;
+   // New replies have no verified MP3. Never fall back to browser voices.
+   say(natural.reply,false);
+   note(natural.message);
+   return;
+  }
+  state.naturalAwaiting=null;
  }
  // v536: standalone HSK1 short and Non-Stop replies from real Android reports.
  // HSK2 day practice keeps its dedicated answer validator.
