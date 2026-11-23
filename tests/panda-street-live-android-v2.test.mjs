@@ -57,6 +57,13 @@ test('the Street brain responds to natural everyday Chinese and uses common HSK 
 });
 
 
+test('Android keyboard changes only viewport height, never scales Panda Street artwork',()=>{
+ assert.match(source,/height:var\(--street-stage-h,100dvh\)/);
+ assert.match(source,/calc\(var\(--street-stage-h,100dvh\) \* 393 \/ 852\)/);
+ assert.match(source,/if\(Math\.abs\(width-streetViewportWidth\)>4\)/);
+ assert.match(source,/keepStreetStageSize\(\);paint\(\)/);
+});
+
 test('video 38791: 我有点忙 is a valid conversational turn, not an empty explanation',()=>{
  for(const [typed,pinyin] of [
   ['我有点忙','Wǒ yǒudiǎn máng.'],
