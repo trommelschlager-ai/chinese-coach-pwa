@@ -213,3 +213,20 @@
   width:var(--pa-stone-width)!important;aspect-ratio:600/207!important;
   height:auto!important;transform:none!important;animation:none!important
 }
+
+/* The older v353 face renderer sets opacity:0 on the approved photo once a
+   canvas is ready. v547 deliberately hides the animated canvas, therefore the
+   ORIGINAL approved picture must be visible again in every face-ready state. */
+#pg346[data-pa-layout="v547"] .pg352-mascot .pg346-panda,
+#pg346[data-pa-layout="v547"] .pg352-mascot[data-face-ready="true"] .pg346-panda,
+#pg346[data-pa-layout="v547"] .pg352-mascot[data-face-ready=true] .pg346-panda {
+  opacity:1!important;visibility:visible!important;display:block!important;
+}
+/* Speech/listening status must never cover the footer navigation. */
+#pg346[data-pa-layout="v547"] .pg346-live[data-active="true"] {
+  position:absolute!important;top:calc(clamp(56px,8dvh,70px) + clamp(156px,22dvh,200px) + 4px)!important;
+  bottom:auto!important;left:auto!important;right:3%!important;
+  width:auto!important;max-width:42%!important;z-index:24!important;
+  padding:4px 7px!important;font-size:11px!important;line-height:1.2!important;
+  pointer-events:none!important;
+}
