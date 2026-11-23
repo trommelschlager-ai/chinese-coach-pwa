@@ -102,7 +102,8 @@ test('Street service worker preloads the once-missing memory and motion module f
   'panda-street-face-rig-v1.mjs?v=3',
   'panda-street-shared-brain-v1.mjs?v=3'
  ])assert(swSource.includes(required),'Not available offline: '+required);
- assert.match(swSource,/chinese-coach-pwa-v543-street-motion-brain-fix-20261123/);
+ const cacheVersion=Number(swSource.match(/const CACHE='chinese-coach-pwa-v(\d+)-/)?.[1]);
+ assert(cacheVersion>=543,'Panda Street cache must not roll back below v543');
 });
 
 test('broken module import cannot block Panda Street chat or silent mouth reactions',()=>{

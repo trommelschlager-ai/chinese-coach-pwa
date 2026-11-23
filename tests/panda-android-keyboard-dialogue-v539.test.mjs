@@ -39,9 +39,11 @@ test('Unverified translation is not shown as a learner-facing placeholder',()=>{
 
 test('Main HTML busts stale Android CSS and JS caches',()=>{
   const html=source('../panda-voice-pilot.html');
-  assert.match(html,/panda-hsk2-preview-v506\.css\?v=543/);
-  assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=543/);
-  assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=543/);
+  const pack=JSON.parse(source('../assets/offline-pack.json'));
+  assert(html.includes('panda-hsk2-preview-v506.css?v='+pack.version),'HTML loads current CSS release');
+  assert(html.includes('panda-approved-soft-v500.js?v='+pack.version),'HTML loads current Android geometry JS');
+  assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=546/);
+  assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=546/);
 });
 
 test('Panda and stone hold pre-keyboard pixel dimensions instead of shrinking',()=>{
@@ -49,6 +51,9 @@ test('Panda and stone hold pre-keyboard pixel dimensions instead of shrinking',(
   const css=source('../assets/panda-hsk2-preview-v506.css');
   assert.match(js,/function rememberPandaGeometry\(/);
   assert.match(js,/--pg540-panda-width/);
+  assert.match(js,/--pg545-panda-height/);
+  assert.match(css,/height:var\(--pg545-panda-height/);
+  assert.match(css,/max-height:none!important/);
   assert.match(js,/--pg540-stone-width/);
   assert.match(css,/width:var\(--pg540-panda-width/);
   assert.match(css,/width:var\(--pg540-stone-width/);
@@ -62,13 +67,13 @@ test('Filled input is sent by the FIRST airplane tap',()=>{
   assert.doesNotMatch(js,/if\(!opened\(\)\)\{\s*event.preventDefault/);
 });
 
-test('v543 assets and SW cached together to avoid stale Android scripts',()=>{
+test('v545 assets and SW cached together to avoid stale Android scripts',()=>{
   const html=source('../panda-voice-pilot.html');
   const worker=source('../sw.js');
   const pack=JSON.parse(source('../assets/offline-pack.json'));
-  assert.equal(pack.version,543);
-  assert.match(worker,/const CACHE='chinese-coach-pwa-v543-/);
-  for(const asset of ['panda-hsk2-preview-v506.css?v=543','panda-hsk2-preview-ui-v1.mjs?v=543','panda-approved-soft-v500.js?v=543']){
+  assert(pack.version>=545,'Panda Android fixes must not roll back');
+  assert(worker.includes("const CACHE='chinese-coach-pwa-v"+pack.version+"-"),'SW and offline pack must agree');
+  for(const asset of ['panda-hsk2-preview-v506.css?v='+pack.version,'panda-hsk2-preview-ui-v1.mjs?v=546','panda-approved-soft-v500.js?v='+pack.version]){
     assert(html.includes(asset));
     assert(pack.files.some(f=>f.endsWith(asset)));
     assert(worker.includes(asset));

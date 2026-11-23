@@ -2,6 +2,7 @@
 import {lookupPandaVoiceClip as original} from './panda-live-audio.mjs?v=451';
 import {PANDA_V422_VOICE} from './qa-v411/panda-voice-v422.mjs?v=422';
 import {PANDA_CLARIFICATION_VOICE} from './panda-clarification-voice-20261122/index.mjs?v=505';
+import {PANDA_AI_NATURAL_V546} from './panda-ai-natural-voice-batch01-v546.mjs?v=546';
 const DAY=Object.freeze([{"zh":"你好！今天我说说我的一天。","src":"./assets/panda-hsk2-my-day-voice-20261120/day01.mp3"},{"zh":"我早上刷牙。","src":"./assets/panda-hsk2-my-day-voice-20261120/day02.mp3"},{"zh":"你早上吃早饭吗？","src":"./assets/panda-hsk2-my-day-voice-20261120/day03.mp3"},{"zh":"你几点去上班？","src":"./assets/panda-hsk2-my-day-voice-20261120/day04.mp3"},{"zh":"你晚上几点睡觉？","src":"./assets/panda-hsk2-my-day-voice-20261120/day05.mp3"},{"zh":"我九点去上班。","src":"./assets/panda-hsk2-my-day-voice-20261120/day06.mp3"},{"zh":"我晚上十一点睡觉。","src":"./assets/panda-hsk2-my-day-voice-20261120/day07.mp3"},{"zh":"我早上不吃早饭。","src":"./assets/panda-hsk2-my-day-voice-20261120/day08.mp3"},{"zh":"我不上班。","src":"./assets/panda-hsk2-my-day-voice-20261120/day09.mp3"},{"zh":"现在请你说说你的一天。","src":"./assets/panda-hsk2-my-day-voice-20261120/day10.mp3"},{"zh":"我没听清楚，请再说一遍。","src":"./assets/panda-hsk2-my-day-voice-20261120/day11.mp3"},{"zh":"这是你的一天。","src":"./assets/panda-hsk2-my-day-voice-20261120/day12.mp3"},{"zh":"做得好！","src":"./assets/panda-hsk2-my-day-voice-20261120/day13.mp3"},{"zh":"我们再试一次。","src":"./assets/panda-hsk2-my-day-voice-20261120/day14.mp3"}]);
 const EMBEDDED_KEYS=Object.freeze(["起床","洗脸","刷牙","吃早饭","去上班","睡觉","你每天几点起床？","我每天七点起床。","我每天八点起床。","我早上洗脸。","我起床以后刷牙。"]);
 export const voiceNorm=s=>String(s||'').normalize('NFC').replace(/[\p{P}\s]/gu,'');
@@ -366,8 +367,10 @@ const CONTEXT_BY_ZH=new Map(PANDA_CONTEXT_V516.map(e=>[voiceNorm(e.zh),e]));
 // Preserve the original bytes and avoid any TTS, native-speaker or Street fallback.
 export const PANDA_XIAOXIAO_NEW_REPLIES_V520=Object.freeze([{"zh":"今天我有空，可以聊聊天。","src":"./assets/panda-ai-xiaoxiao-new-replies-20261122/panda01.mp3"},{"zh":"好的，那你先忙吧。","src":"./assets/panda-ai-xiaoxiao-new-replies-20261122/panda02.mp3"},{"zh":"那你今天想做什么？","src":"./assets/panda-ai-xiaoxiao-new-replies-20261122/panda03.mp3"},{"zh":"那你想聊聊天吗？","src":"./assets/panda-ai-xiaoxiao-new-replies-20261122/panda04.mp3"},{"zh":"你想聊聊工作吗？","src":"./assets/panda-ai-xiaoxiao-new-replies-20261122/panda05.mp3"},{"zh":"因为喜剧片很好笑。","src":"./assets/panda-ai-xiaoxiao-new-replies-20261122/panda06.mp3"}]);
 const NEW_XIAOXIAO_REPLIES_BY_ZH=new Map(PANDA_XIAOXIAO_NEW_REPLIES_V520.map(x=>[voiceNorm(x.zh),x]));
+const NATURAL_V546_BY_ZH=new Map(PANDA_AI_NATURAL_V546.map(x=>[voiceNorm(x.zh),x]));
 export function lookupApprovedPandaVoice(text){
  const key=voiceNorm(text);if(!key)return null;
+ const approvedNatural=NATURAL_V546_BY_ZH.get(key);if(approvedNatural)return {src:approvedNatural.src,start:0,end:null,source:'panda-approved-luvvoice:natural-v546'};
  const latest=NEW_XIAOXIAO_REPLIES_BY_ZH.get(key);if(latest)return {src:latest.src,start:0,end:null,source:'panda-xiaoxiao:user-upload-v520'};
  const entry=exact.get(key)||approvedCatalog.get(key);if(entry)return {src:entry.src,start:0,end:null,source:'panda-approved-luvvoice:'+(entry.batch||'hsk1-catalog-v514')};
  const contextClip=CONTEXT_BY_ZH.get(key);if(contextClip)return {src:contextClip.src,start:0,end:null,source:'panda-approved-luvvoice:context-v516'};

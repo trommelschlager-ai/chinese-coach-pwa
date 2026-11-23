@@ -4,6 +4,20 @@ on:
     paths:
       - 'assets/panda-everyday-meaning-v515.mjs'
       - 'assets/panda-hsk2-preview-core-v1.mjs'
+      - 'assets/panda-approved-voice-registry-v516.mjs'
+      - 'assets/panda-ai-natural-voice-batch01-v546.mjs'
+      - 'assets/panda-ai-natural-voice-batch01-20261124/**'
+      - 'assets/panda-hsk2-preview-audio-v1.mjs'
+      - 'assets/panda-hsk2-preview-ui-v1.mjs'
+      - 'assets/panda-natural-statements-v544.mjs'
+      - 'assets/panda-approved-soft-v500.js'
+      - 'assets/panda-hsk2-preview-v506.css'
+      - 'docs/panda-ai-voice-queue-v545.json'
+      - 'scripts/panda-ai-voice-gap-v545.mjs'
+      - 'tests/panda-android-keyboard-dialogue-v539.test.mjs'
+      - 'tests/panda-natural-statements-v544.test.mjs'
+      - 'tests/panda-ai-voice-queue-v545.test.mjs'
+      - 'tests/panda-approved-natural-voice-v546.test.mjs'
       - 'assets/panda-live-dialogue-v272.mjs'
       - 'panda-voice-pilot.html'
       - 'panda-ai-hsk2-preview.html'
@@ -34,6 +48,10 @@ jobs:
         run: |
           node --test tests/panda-android-keyboard-dialogue-v539.test.mjs
           node --test tests/panda-natural-statements-v542.test.mjs
+          node --test tests/panda-natural-statements-v544.test.mjs
+          node --test tests/panda-ai-voice-queue-v545.test.mjs
+          node --test tests/panda-approved-natural-voice-v546.test.mjs
+          node scripts/panda-ai-voice-gap-v545.mjs
       - name: Install mobile Chromium
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
