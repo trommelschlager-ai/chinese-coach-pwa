@@ -44,6 +44,25 @@ const items={'':['',''],这个:['zhège','это'],这个东西:['zhège dōngxi
 export function everydayMeaning(raw,id,context){
  const k=norm(raw);
  const out=(py,ru,reply,awaiting,coachNote,extra={})=>({spoken:[raw,py,ru],reply,context:{...context,awaiting,lastClarification:null,...extra},coachNote});
+ // v518: beginner replies seen in the Android conversation audit.
+ // Use reviewed Hanzi, pinyin and Russian meanings; never infer spoken tones.
+ // New Panda lines stay text-only unless the existing approved MP3 registry matches.
+ const beginner={
+  '不好':['Bù hǎo.','Плохо.',['怎么了？','Zěnme le?','Что случилось?'],'wellbeing'],
+  '我不好':['Wǒ bù hǎo.','У меня дела не очень.',['怎么了？','Zěnme le?','Что случилось?'],'wellbeing'],
+  '非常好':['Fēicháng hǎo.','Очень хорошо.',['太好了！','Tài hǎo le!','Здорово!'],'wellbeing'],
+  '我非常好':['Wǒ fēicháng hǎo.','У меня всё очень хорошо.',['太好了！','Tài hǎo le!','Здорово!'],'wellbeing'],
+  '很不错你呢':['Hěn búcuò, nǐ ne?','Довольно хорошо, а у тебя?',['我也很好，谢谢！','Wǒ yě hěn hǎo, xièxie!','У меня тоже всё хорошо, спасибо!'],'wellbeing'],
+  '我很不错你呢':['Wǒ hěn búcuò, nǐ ne?','У меня всё довольно хорошо, а у тебя?',['我也很好，谢谢！','Wǒ yě hěn hǎo, xièxie!','У меня тоже всё хорошо, спасибо!'],'wellbeing'],
+  '休息':['Xiūxi.','Отдыхать.',['你今天休息吗？','Nǐ jīntiān xiūxi ma?','Ты сегодня отдыхаешь?'],'rest'],
+  '你可以说中文':['Nǐ kěyǐ shuō Zhōngwén.','Ты можешь говорить по-китайски / Можешь говорить по-китайски?',['可以！我们说中文吧！','Kěyǐ! Wǒmen shuō Zhōngwén ba!','Конечно! Давай говорить по-китайски!'],'language'],
+  '跑步这么样':['Pǎobù zhème yàng?','Вероятно: «Как насчёт бега?»',['我喜欢跑步。','Wǒ xǐhuan pǎobù.','Я люблю бегать.'],'run-frequency']
+ };
+ if(Object.hasOwn(beginner,k)){
+  const [py,ru,reply,awaiting]=beginner[k];
+  const tip=k==='跑步这么样'?'Возможно, распознавание перепутало 这么样 и 怎么样. Для «Как насчёт бега?» скажи: 跑步怎么样？ — Pǎobù zěnmeyàng?':null;
+  return out(py,ru,reply,awaiting,tip);
+ }
  if(Object.hasOwn(Q,k))return out(...Q[k]);
  if(Object.hasOwn(places,k)){const v=places[k];return out(v[0],v[1]+'.',v[4]?A.city:A.thanks,v[4]?'city':'city-known',null,{mentionedPlace:k});}
  const m=k.match(/^我(现在)?住在(.+)$/);if(m&&Object.hasOwn(places,m[2])){const v=places[m[2]];return out('Wǒ '+(m[1]?'xiànzài ':'')+'zhù zài '+v[0]+'.','Я '+(m[1]?'сейчас ':'')+'живу в '+v[2]+'.',A.thanks,'city-known',null,{learnerCity:m[2]});}
