@@ -4,12 +4,12 @@ import {readFileSync} from 'node:fs';
 import {respondToNaturalStatement} from '../assets/panda-natural-statements-v544.mjs';
 import {lookupApprovedPandaVoice} from '../assets/panda-approved-voice-registry-v516.mjs';
 const queue=JSON.parse(readFileSync(new URL('../docs/panda-ai-voice-queue-v545.json',import.meta.url),'utf8'));
-const norm=s=>String(s||'').normalize('NFC').replace(/[\\p{P}\\s]/gu,'');
+const norm=s=>String(s||'').normalize('NFC').replace(/[\p{P}\s]/gu,'');
 test('the external issue survives chat loss and every queued learner sentence has a real expected reply',()=>{
  assert.equal(queue.tracker,'https://github.com/trommelschlager-ai/chinese-coach-pwa/issues/216');
  assert(queue.tracks.length>=8);
  for(const x of queue.tracks){
-  assert(/^PA-\\d{3}$/.test(x.id),x.id);
+  assert(/^PA-\d{3}$/.test(x.id),x.id);
   assert(x.pinyin && x.translation && x.reply && x.learner,x.id);
   const r=respondToNaturalStatement(x.learner,{awaiting:x.awaiting});
   assert(r,x.id+' unrecognized learner input');
