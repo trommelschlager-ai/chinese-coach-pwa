@@ -40,7 +40,7 @@ test('Unverified translation is not shown as a learner-facing placeholder',()=>{
 test('Main HTML busts stale Android CSS and JS caches',()=>{
   const html=source('../panda-voice-pilot.html');
   assert.match(html,/panda-hsk2-preview-v506\.css\?v=543/);
-  assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=543/);
+  assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=544/);
   assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=543/);
 });
 
@@ -62,12 +62,12 @@ test('Filled input is sent by the FIRST airplane tap',()=>{
   assert.doesNotMatch(js,/if\(!opened\(\)\)\{\s*event.preventDefault/);
 });
 
-test('v543 assets and SW cached together to avoid stale Android scripts',()=>{
+test('v544 assets and SW cached together to avoid stale Android scripts',()=>{
   const html=source('../panda-voice-pilot.html');
   const worker=source('../sw.js');
   const pack=JSON.parse(source('../assets/offline-pack.json'));
-  assert.equal(pack.version,543);
-  assert.match(worker,/const CACHE='chinese-coach-pwa-v543-/);
+  assert.equal(pack.version,544);
+  assert.match(worker,/const CACHE='chinese-coach-pwa-v544-/);
   for(const asset of ['panda-hsk2-preview-v506.css?v=543','panda-hsk2-preview-ui-v1.mjs?v=543','panda-approved-soft-v500.js?v=543']){
     assert(html.includes(asset));
     assert(pack.files.some(f=>f.endsWith(asset)));
