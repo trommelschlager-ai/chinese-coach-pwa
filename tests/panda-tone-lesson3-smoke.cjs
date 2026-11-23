@@ -94,9 +94,30 @@ for(const fn of callbacks.click||[])fn({target:{closest:s=>s==='[data-tone-view]
  dataset:{toneView:'analysis'},disabled:false,closest:()=>({})}:null}});
 assert(strokes[1].some(x=>x.color==='#d97827'),'Offline chart not shown after switching');
 
+// Regression: trailing real F0 windows must retain their own time coordinates,
+// rather than collapsing three different pitch measurements onto the same x=1.
+const math=window.PandaToneMathV2;
+assert(math&&typeof math.buildRecording==='function','Lesson pilot math not available');
+const rmsFrames=Array.from({length:39},(_,i)=>{
+ const t=+(i*.03).toFixed(3);
+ return [t,t>=.18&&t<=.75?.095:.002];
+});
+const voicedSamples=[
+ ...Array.from({length:18},(_,i)=>[.20+i*.018,270+i*.4]),
+ ...Array.from({length:15},(_,i)=>[.55+i*.018,325-i*7])
+];
+const measured=math.buildRecording({word:2,levels:rmsFrames,samples:voicedSamples,
+ stats:{yin:0,fallback:0,none:0}}).entry;
+assert(measured.points.length>=15,'Synthetic word was not measured');
+assert(measured.points.every((p,i)=>p[0]>=0&&p[0]<=1&&
+ (i===0||p[0]>measured.points[i-1][0])),
+ 'Trailing F0 points collapsed to an identical timestamp');
+assert(measured.seconds>.6,'Trailing F0 samples not included in measured time span');
+
 console.log('Lesson-3 tone pilot smoke: PASS');
 console.log('  - six words and saved 30/30 progress');
 console.log('  - no progress reset / no duplicate microphone module');
 console.log('  - preview unchanged after stop');
 console.log('  - offline analysis rendered only on request');
 console.log('  - replay and saved-attempt diagnostics present');
+console.log('  - trailing real F0 timestamps remain strictly increasing');

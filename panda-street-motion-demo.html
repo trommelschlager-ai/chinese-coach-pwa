@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#080916">
+<meta name="robots" content="noindex,nofollow">
+<title>Panda Street AI — естественные движения без генерации</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;background:#080916;color:white;font-family:system-ui,-apple-system,Arial,sans-serif}
+#stage{position:relative;height:100dvh;width:100%;overflow:hidden;background:#080916}
+#scene{display:block;width:100%;height:100%;image-rendering:auto}
+#overlay{position:absolute;z-index:4;left:50%;transform:translateX(-50%);bottom:max(env(safe-area-inset-bottom),12px);width:min(94vw,520px);background:#101326e8;border:1px solid #b27af7;border-radius:21px;box-shadow:0 0 18px #8d30dd66;backdrop-filter:blur(10px);padding:10px}
+#label{margin:0 4px 7px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#f4d9ff;font-weight:800}
+#small{font-size:10px;color:#cfc2da;font-weight:500}
+#choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+button{min-height:43px;border:1px solid #9665ca;background:#292143;color:#fff;border-radius:12px;font-weight:750;font-size:12px;cursor:pointer;padding:5px}
+button:active{transform:scale(.96)}button[aria-pressed="true"]{background:#8541bd;border-color:#f6dcff;box-shadow:0 0 8px #c76bff99}
+#motion-slider{display:flex;justify-content:space-between;font-size:12px;color:#e6d2fc;margin:8px 4px 2px}#intensity{width:100%;height:21px;accent-color:#ce89ff}#hint{margin:5px 4px 0;color:#d3cadc;font-size:10.5px;line-height:1.3}
+#status{position:absolute;inset:0;display:grid;place-items:center;background:#080916ee;text-align:center;padding:25px;z-index:6;font-size:14px;line-height:1.7}
+#status[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){#hint:after{content:" · Уменьшенное движение включено"}}
+</style>
+</head>
+<body><main id="stage">
+<canvas id="scene" aria-label="Оригинальный утверждённый персонаж Panda Street AI, пробная анимация головы"></canvas>
+<div id="status" role="status">Загружаю оригинальную Панду из приложения…</div>
+<section id="overlay" aria-label="Проверка усиленных движений">
+  <div id="label"><span>🐼 Panda Street · естественные движения</span><span id="small">Оригинал без перерисовки</span></div>
+  <div id="choices">
+    <button type="button" data-mode="idle" aria-pressed="true">😎 Спокойно</button>
+    <button type="button" data-mode="ask" aria-pressed="false">❓ Вопрос</button>
+    <button type="button" data-mode="yes" aria-pressed="false">👍 Да</button>
+    <button type="button" data-mode="no" aria-pressed="false">🙅 Нет</button>
+  </div>
+  <label id="motion-slider" for="intensity">Сила движения: <strong id="intensity-label">85%</strong></label>
+  <input id="intensity" aria-label="Сила движения" type="range" min="35" max="150" value="85" step="5">
+  <p id="hint">Панда делает один спокойный жест и возвращается в исходную позу. Движение регулируется. Оригинальное изображение не заменено.</p>
+</section>
+</main>
+<script>
+(()=>{'use strict';
+const W=693,H=1444,SKY_START=338,SKY_SIZE=60,FLOOR_START=1303,FLOOR_SIZE=43;
+const cv=document.getElementById('scene'),stage=document.getElementById('stage'),status=document.getElementById('status');
+const buttons=[...document.querySelectorAll('[data-mode]')];
+let original=null,mode='idle',modeAt=performance.now(),raf=0,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Original approved image remains untouched. Motion is a soft local pixel warp,
+// not a new image layered over an unmoving duplicate head.
+const WX=100,WY=358,WW=430,WH=350;
+const warp=document.createElement('canvas');warp.width=WW;warp.height=WH;
+const warpCtx=warp.getContext('2d',{willReadFrequently:true});
+let sourcePixels=null,output=null,last=0;
+const intensity=document.getElementById('intensity');
+const intensityLabel=document.getElementById('intensity-label');
+function initWarp(img){
+ const scratch=document.createElement('canvas');scratch.width=W;scratch.height=H;
+ const ctx=scratch.getContext('2d',{willReadFrequently:true});
+ ctx.drawImage(img,0,0,W,H);
+ sourcePixels=ctx.getImageData(0,0,W,H).data;
+ output=warpCtx.createImageData(WW,WH);
+}
+function fadeEllipse(x,y,cx,cy,rx,ry){
+ const dx=(x-cx)/rx,dy=(y-cy)/ry,d=dx*dx+dy*dy;
+ if(d<=0.56)return 1;
+ if(d>=1.64)return 0;
+ const u=(1.64-d)/1.08;return u*u*(3-2*u);
+}
+// Animate one contextual gesture, then ease back into the exact approved pose.
+function motion(t){
+ const sec=Math.max(0,(t-modeAt)/1000);
+ const level=Number(intensity?.value||85)/100;
+ const wave=Math.sin(t*.0014);
+ const basic={hx:0,hy:0,ht:0};
+ if(mode==='idle')return{hx:0,hy:0,ht:0}; // No incessant head wobble.
+ if(sec>1.45)return basic;
+ const u=Math.min(1,sec/1.35);
+ const envelope=Math.sin(Math.PI*u);
+ if(mode==='ask'){
+  // A single attentive lean, not a permanent sideways pose.
+  return {hx:-6*level*envelope,hy:3.4*level*envelope,ht:-.013*level*envelope};
+ }
+ if(mode==='yes'){
+  // Two restrained nods, with smooth onset and stop.
+  const nod=(1-Math.cos(4*Math.PI*u))/2*envelope;
+  return{hx:0,hy:9.2*level*nod,ht:-.007*level*nod};
+ }
+ if(mode==='no'){
+  // A small left/right head shake, not full-body oscillation.
+  const shake=Math.sin(4*Math.PI*u)*envelope;
+  return{hx:8.5*level*shake,hy:0,ht:.016*level*shake};
+ }
+ return basic;
+}
+function redrawWarp(m){
+ if(!sourcePixels||!output)return;
+ const src=sourcePixels,out=output.data;
+ let p=0;
+ // Bilinear sampling avoids doubling the original face at the new position.
+ for(let j=0;j<WH;j++){
+  const y=WY+j,hdY=y-549,bdY=y-770;
+  for(let i=0;i<WW;i++){
+   const x=WX+i;
+   const h=fadeEllipse(x,y,308,540,145,125);
+   const b=0;
+   const hand=0;
+   const dx=(m.hx+m.ht*hdY)*h;
+   const dy=(m.hy-m.ht*(x-308))*h;
+   const u=Math.max(0,Math.min(W-1.001,x-dx));
+   const v=Math.max(0,Math.min(H-1.001,y-dy));
+   const ix=u|0,iy=v|0,fx=u-ix,fy=v-iy;
+   const a=(iy*W+ix)*4,rr=a+4,d=a+W*4,dr=d+4;
+   const wa=(1-fx)*(1-fy),wb=fx*(1-fy),wc=(1-fx)*fy,wd=fx*fy;
+   out[p++]=src[a]*wa+src[rr]*wb+src[d]*wc+src[dr]*wd;
+   out[p++]=src[a+1]*wa+src[rr+1]*wb+src[d+1]*wc+src[dr+1]*wd;
+   out[p++]=src[a+2]*wa+src[rr+2]*wb+src[d+2]*wc+src[dr+2]*wd;
+   out[p++]=255;
+  }
+ }
+ warpCtx.putImageData(output,0,0);
+}
+function render(ts){
+ if(!original)return;
+ if(ts-last<42){raf=requestAnimationFrame(render);return}last=ts;
+ const w=stage.clientWidth,h=stage.clientHeight;
+ if(!w||!h){raf=requestAnimationFrame(render);return}
+ const dpr=Math.min(2,devicePixelRatio||1);
+ const bw=Math.round(w*dpr),bh=Math.round(h*dpr);
+ if(cv.width!==bw||cv.height!==bh){cv.width=bw;cv.height=bh}
+ const c=cv.getContext('2d',{alpha:false});c.setTransform(bw/w,0,0,bh/h,0,0);
+ c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+ c.fillStyle='#050817';c.fillRect(0,0,w,h);
+ let s=w/W,left=0,cut=Math.max(0,H-h/s);
+ let cutSky=Math.min(SKY_SIZE,cut*.60);
+ let cutFloor=Math.min(FLOOR_SIZE,Math.max(0,cut-cutSky));
+ if(cut>SKY_SIZE+FLOOR_SIZE){
+  cutSky=SKY_SIZE;cutFloor=FLOOR_SIZE;
+  s=Math.min(w/W,h/(H-SKY_SIZE-FLOOR_SIZE));left=(w-W*s)/2;
+ }
+ const parts=[[0,SKY_START],[SKY_START+cutSky,FLOOR_START-(SKY_START+cutSky)],[FLOOR_START+cutFloor,H-FLOOR_START-cutFloor]];
+ let destY=0;
+ for(const [sy,sh] of parts){
+  if(sh>0){c.drawImage(original,0,sy,W,sh,left,destY*s,W*s,sh*s);destY+=sh}
+ }
+ const m=motion(ts);redrawWarp(m);
+ // The continuous warp keeps all original pixels, face, accessories and background intact.
+ // Source y-coordinate maps to the cropped stage, exactly as in the approved UI.
+ c.drawImage(warp,left+WX*s,(WY-cutSky)*s,WW*s,WH*s);
+ raf=requestAnimationFrame(render);
+}
+buttons.forEach(btn=>btn.addEventListener('click',()=>{
+ mode=btn.dataset.mode;modeAt=performance.now();
+ buttons.forEach(x=>x.setAttribute('aria-pressed',String(x===btn)));
+}));
+intensity?.addEventListener('input',()=>{
+ intensityLabel.textContent=intensity.value+'%';
+});
+async function load(){
+ try{
+  // Load the exact approved source image as a dedicated, immutable asset.
+  // The image is copied byte-for-byte from the original Panda Street AI page.
+  // No HTML scraping, AI regeneration, or third-party service.
+  const img=new Image();
+  img.src='./assets/panda-street-ai-approved-original.webp';
+  await img.decode();
+  if(img.naturalWidth!==W||img.naturalHeight!==H)throw new Error('Исходное изображение изменило размер');
+  original=img;initWarp(img);status.hidden=true;
+  raf=requestAnimationFrame(render);
+ }catch(err){status.textContent='Не удалось загрузить оригинальный экран Panda Street AI: '+err.message+'. Проверь подключение и обнови страницу.';console.error(err)}
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0}else if(original&&!raf){raf=requestAnimationFrame(render)}});
+load();
+})();
+</script></body></html>

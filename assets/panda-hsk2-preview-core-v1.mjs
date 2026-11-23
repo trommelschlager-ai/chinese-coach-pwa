@@ -5,7 +5,7 @@ import {withPracticeGreeting,GREETINGS} from './panda-live-greetings.mjs?v=live7
 import {lookupPilotAudio,lookupPandaVoiceClip} from './panda-hsk2-preview-audio-v1.mjs?v=524';
 import {HSK2_TOPICS} from './panda-hsk2-brain-data-v1.mjs';
 import {getTopic,replyHSK2,knownHSK2,prompt,line as hsk2Line,norm as hsk2Norm} from './panda-hsk2-brain-v1.mjs?v=523';
-import {verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
+import {PILOT_LINES,verifyAnswerFor,normalize} from './panda-voice-pilot-engine.mjs?v=live6';
 import {CONVERSATIONS,selectConversation} from './panda-live-lessons.mjs?v=live6';
 import {ENVELOPES} from './panda-live-envelope.mjs?v=live6';
 import {createPandaRig} from './panda-live-rig.mjs';
@@ -85,7 +85,7 @@ function play(entry=null){
     if(prompt){state.display=prompt;render();note('Продолжай HSK2 «Мой день»: ответь на учебный вопрос.');}
     return;
    }
-   if(entry===opening&&hsk2&&state.history.length===2){play();return;}
+   if(entry&&replyKey===opening.audioKey&&hsk2&&state.history.length===2){play();return;}
    if((!entry||resumingMissedReply)&&state.followup)scheduleFollowup(1200);
   }};
  a.onended=finished;
@@ -251,7 +251,7 @@ function submitHSK2(input){
  else if(out.kind==='unknown'){
  const c=explainPandaAnswer441(input,{prompt:null,confidence:state.confidence})||correctPandaGrammarV2(input,{prompt:null,confidence:state.confidence})||correctCommonPhrase(input);
  if(c){learner(input,c.spoken);recordCorrection(input,c.spoken);note(c.message);render();return;}
- learner(input,spoken);hsk2.unknown++;if(out.line)say(out.line,true);note('Ответ не подтверждён. Текущий вопрос: '+q.q);return;
+ learner(input,spoken);hsk2.unknown++;if(out.line)say(out.line,true);note('Ответ не подтверждён. Текущий вопрос: '+(state.prompt?.line?.panda||q.q));return;
  }else{learner(input,spoken);if(out.action==='slow')state.slow=true;if(out.action==='repeat'&&prior){say(prior,true);return;}if(out.line)say(out.line,!out.followup);if(out.followup)say(out.followup,true);if(out.coachNote)note(out.coachNote);if(out.kind==='end')hsk2.done=true;return;}
  if(hsk2.index+1<t.questions.length){hsk2.index++;askHSK2();return;}
  if(state.mode==='nonstop'){hsk2.id=HSK2_TOPICS[(HSK2_TOPICS.findIndex(x=>x.id===hsk2.id)+1)%HSK2_TOPICS.length].id;hsk2.index=0;askHSK2();return;}
@@ -675,13 +675,18 @@ function resolvePandaEntry(search){
  const topic=Number(params.get('topic'));
  if(params.has('topic')&&Number.isInteger(topic)&&topic>=1&&topic<=10)return {kind:'hsk2',id:100+topic};
  if(params.has('lesson')&&/^[1-7]$/.test(params.get('lesson')))return {kind:'hsk1'};
- return {kind:'hsk2',id:101};
+ return {kind:'hsk2',id:101,beginnerGreeting:true};
 }
 const entry=resolvePandaEntry(location.search);
 initLesson(selectConversation(location.search).id);resize();document.documentElement.dataset.pandaLiveReady='true';
 if(entry.kind==='hsk2'){
  beginHSK2(entry.id,0,false);
- state.history=[];refreshHistory();say(opening,false);askHSK2(false);
+ state.history=[];refreshHistory();say(opening,false);
+ if(entry.beginnerGreeting){
+  const question=PILOT_LINES[1];
+  state.prompt={line:question};
+  say(question,false);
+ }else askHSK2(false);
  const greet=()=>{if(!document.hidden)play(opening)};
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',greet,{once:true});else greet();
 }else if(entry.kind!=='scenario'){play();}

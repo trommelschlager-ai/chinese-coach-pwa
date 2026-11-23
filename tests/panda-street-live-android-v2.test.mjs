@@ -15,7 +15,7 @@ test('the approved Panda Street character artwork and proportional render still 
  assert.match(source,/const W=693,H=1444/);
  assert.match(source,/s=width\/W/);
  assert.match(source,/Uniform scaling ONLY/);
- assert.match(source,/c\.drawImage\(src/);
+ assert.match(source,/paintScene\(canvas,src/);\n assert.match(source,/c\.drawImage\(image/);\n assert.match(source,/themeButton\.onclick=async/);
  assert.match(source,/id="art"/);
 });
 test('the existing layout buttons are still present and connected',()=>{

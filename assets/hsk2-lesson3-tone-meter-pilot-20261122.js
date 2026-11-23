@@ -511,7 +511,7 @@ function reanalyzePcm(rec){
  const pcm=new Float32Array(num),audio=new Float32Array(total);
  let off=0;for(const p of parts){pcm.set(p,off);off+=p.length;}
  for(let i=0;i<total;i++){let sum=0;for(let j=0;j<dec;j++)sum+=pcm[i*dec+j];audio[i]=sum/dec;}
- const levels=[],hopRms=Math.round(rate*.03),win=Math.round(rate*.09),shortWin=Math.round(rate*.060),hop=Math.round(rate*.018);
+ const levels=[],hopRms=Math.round(rate*.03),win=Math.round(rate*.09),shortWin=Math.round(rate*.056),hop=Math.round(rate*.015);
  for(let i=0;i+hopRms<=total;i+=hopRms){
   let power=0;for(let j=i;j<i+hopRms;j++)power+=audio[j]*audio[j];
   levels.push([i/rate,Math.sqrt(power/hopRms)]);
@@ -520,7 +520,7 @@ function reanalyzePcm(rec){
  for(let i=0;i+win<=total;i+=hop){
   let hz=offlinePitch(audio.subarray(i,i+win),rate);
   if(!hz){
-   // Retest the same center using 68ms. This avoids blending an x-/s- onset
+   // Retest the same center using a strict 56ms frame. This avoids blending an x-/s- onset
    // and a short voiced vowel into a long unreliable 90ms frame.
    const center=i+Math.floor(win*.5);
    const start=Math.max(0,Math.min(total-shortWin,center-Math.floor(shortWin*.5)));
@@ -530,7 +530,7 @@ function reanalyzePcm(rec){
   if(hz)points.push([(i+win*.5)/rate,hz]);else missed++;
  }
  rec.samples=cleanPitch(points);rec.levels=levels;
- rec.offline={windowMs:90,shortWindowMs:60,hopMs:18,shortRecovered,raw:points.length,kept:rec.samples.length,missed,method:rec.captureMethod};
+ rec.offline={windowMs:90,shortWindowMs:56,hopMs:15,shortRecovered,raw:points.length,kept:rec.samples.length,missed,method:rec.captureMethod};
  return true;
 }
 async function setupPcmCapture(rec){
@@ -614,7 +614,13 @@ function buildRecording(rec){
  const voiced=levels.filter(p=>p[1]>=.023);
  const points=(rec.samples||[]).filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1])&&p[1]>=70&&p[1]<=600);
  const speech=selectSpeechSegment(levels,points);
- const from=speech.from,to=speech.to,duration=finite(from)&&finite(to)?to-from:0;
+ // F0 windows are centered. Use their real timeline within the existing
+ // ±60/80ms selection instead of clipping several timestamps to x=1.
+ const rmsFrom=speech.from,rmsTo=speech.to;
+ const adjacentPitch=points.filter(p=>p[0]>=rmsFrom-.06&&p[0]<=rmsTo+.08);
+ const from=adjacentPitch.length?Math.min(rmsFrom,adjacentPitch[0][0]):rmsFrom;
+ const to=adjacentPitch.length?Math.max(rmsTo,adjacentPitch.at(-1)[0]):rmsTo;
+ const duration=finite(from)&&finite(to)?to-from:0;
  const validSound=speech.frames>=5&&duration>=.24;
  const rmsValues=levels.map(p=>p[1]).sort((a,b)=>a-b),peak=rmsValues.at(-1)??0,p95=rmsValues[Math.max(0,Math.ceil(rmsValues.length*.95)-1)]??0;
  const signal={frames:levels.length,voicedFrames:voiced.length,peak,p95,seconds:levels.at(-1)?.[0]??0,rawF0:points.length,threshold:.023,
@@ -628,9 +634,9 @@ function buildRecording(rec){
    result.levels=levels.map(p=>[Math.max(0,Math.min(1,p[0]/span)),p[1]]).slice(-180);
    return {accepted:false,entry:result,message:'Недостаточный сигнал микрофона: '+voiced.length+' кадров выше порога RMS 0,023 из '+levels.length+'. Пик RMS '+peak.toFixed(4)+'. Проверь, слышен ли голос при воспроизведении записи.'};
  }
- const speechPoints=points.filter(p=>p[0]>=from-.08&&p[0]<=to+.08).slice(-120);
+ const speechPoints=points.filter(p=>p[0]>=from&&p[0]<=to).slice(-120);
  const span=Math.max(.001,duration);
- const normalized=speechPoints.map(p=>[Math.min(1,Math.max(0,(p[0]-from)/span)),p[1]]);
+ const normalized=speechPoints.map(p=>[(p[0]-from)/span,p[1]]);
  // A low-energy valley or a voiced-pitch pause can hint at the boundary.
  // Only use pitch-based alignment when voiced pitch covers most of the audible interval.
  const pitchCoverage=speechPoints.length>1?(speechPoints.at(-1)[0]-speechPoints[0][0])/span:0;
