@@ -8,6 +8,7 @@ on:
       - 'assets/panda-live-dialogue-v272.mjs'
       - 'tests/panda-beginner-replies-v518.test.mjs'
       - 'tests/panda-negative-dialogue-v519.test.mjs'
+      - 'tests/panda-friendly-intro-v520.test.mjs'
       - 'tests/panda-asr-review-before-send-v1.test.mjs'
       - 'assets/panda-hsk2-basic-context-v1.mjs'
       - 'assets/panda-approved-soft-v500.js'
@@ -37,6 +38,8 @@ jobs:
         run: node --test tests/panda-hsk2-basic-context-v1.test.mjs
       - name: Verify six Android screenshot replies (HSK1 and HSK2)
         run: node --test tests/panda-beginner-replies-v518.test.mjs
+      - name: Verify affectionate introduction and contextual name followups
+        run: node --test tests/panda-friendly-intro-v520.test.mjs
       - name: Verify negative answers and questions in Panda AI v519
         run: node --test tests/panda-negative-dialogue-v519.test.mjs
       - name: Verify Android ASR waits for learner confirmation (not acoustic tone grading)
