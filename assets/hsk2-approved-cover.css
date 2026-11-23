@@ -166,3 +166,20 @@ html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-sta
     transition:none!important;
   }
 }
+
+/* 2026-11-23 — tactile Start CTA alignment for lessons 2, 3, 6 and 9 only.
+   The clickable gold rim must overlap the button painted in each poster. */
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full:is(.pg-approved-lesson-2,.pg-approved-lesson-3,.pg-approved-lesson-6,.pg-approved-lesson-9) .pg-approved-start{
+  transform-origin:center center!important;
+  transition:transform 90ms ease,background 90ms ease,box-shadow 90ms ease!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full:is(.pg-approved-lesson-2,.pg-approved-lesson-3,.pg-approved-lesson-6,.pg-approved-lesson-9) .pg-approved-start:active,
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full:is(.pg-approved-lesson-2,.pg-approved-lesson-3,.pg-approved-lesson-6,.pg-approved-lesson-9) .pg-approved-start.pg-approved-start-pressed{
+  transform:translateY(4px) scale(.976)!important;
+  background:linear-gradient(180deg,rgba(53,9,92,.30),rgba(35,0,69,.46))!important;
+  box-shadow:inset 0 5px 12px rgba(23,0,50,.62),inset 0 0 0 2px rgba(255,220,113,.90),0 1px 2px rgba(35,0,62,.23)!important;
+  filter:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+ html.course-layout #app[data-view="1"] #pg433 .pg-approved-full:is(.pg-approved-lesson-2,.pg-approved-lesson-3,.pg-approved-lesson-6,.pg-approved-lesson-9) .pg-approved-start{transition:none!important}
+}
