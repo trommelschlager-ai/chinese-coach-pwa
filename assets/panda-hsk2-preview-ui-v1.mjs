@@ -369,7 +369,9 @@ if (!bridge) {
     const warning=$('#pg346-status');
     const status=s.status||'';
     const autoplayBlocked=status.startsWith('Браузер не включил звук автоматически');
-    const problem=!autoplayBlocked&&/(микрофон|распознаван|распознано|неуверенно|исправь текст|разреши|доступ|Chrome|запись не|запись пока|звуковой файл|браузер.*звук|mp3|фрагмент|учебный пример)/i.test(status);
+    // v543: normal microphone instructions belong to the mic live indicator,
+    // not a huge white warning banner across the Panda's body.
+    const problem=!autoplayBlocked&&/(не удалось|ошибка|недоступ|не найден|не распознана|не распознано|нет доступа|доступ запрещ|отказ в доступе|не поддержива|невозможно|запрещено|не загружается)/i.test(status);
     const needsMicHelp=!!micRecovery&&!micRecovery.hidden;
     warning.hidden=!problem;
     warning.textContent=problem?status:'';
