@@ -68,9 +68,22 @@ assert(d.getElementById('writer'));
 click('#pg5-next');assert.equal(steps(),13); // speaking
 assert(d.querySelector('[data-record-start]'),'Self recording controls missing');
 click('#pg5-next');assert.equal(steps(),14);
-assert(d.getElementById('pg5-next').disabled,'Must answer final question first');
-click('[data-final="1"]');
-assert(!d.getElementById('pg5-next').disabled);
+assert(d.getElementById('pg5-next').disabled,'All five final questions must be completed before proceeding');
+const finalAnswers=[1,0,1,0,1]; // Topic quiz, November, December, 号 vs 年, reading 2026年
+for(let i=0;i<finalAnswers.length;i++){
+ const title=d.querySelector('.pg-final-answers')?.parentElement?.textContent||'';
+ assert(title.includes((i+1)+' / '+finalAnswers.length),'Expected final question '+(i+1)+' / 5');
+ if(i===1){
+  click('[data-final="2"]'); // Wrong December instead of November.
+  assert(d.querySelector('.pg-final-answers'),'Incorrect answer must not advance the quiz');
+  assert(d.getElementById('pg5-next').disabled,'Incorrect answer must not unlock completion');
+ }
+ click('[data-final="'+finalAnswers[i]+'"]');
+ if(i<finalAnswers.length-1)assert(d.getElementById('pg5-next').disabled,
+  'Advancing after '+(i+1)+' question(s) must remain locked');
+}
+assert(d.querySelector('[data-final-retry]'),'Five completed questions should offer retry');
+assert(!d.getElementById('pg5-next').disabled,'Five completed questions unlock lesson completion');
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-l5-v227')).done);
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('dates'));
 assert(!w.localStorage.getItem('pg-hsk1-v3-dates'),'Original seven-step state must remain untouched');
