@@ -88,6 +88,10 @@ try{
   await page.locator('#pg374-topic-details .pg374-question').first().click();
   await send('我是老师。','你是老师！你在哪儿工作？');
   await send('我在学校工作。','你喜欢你的工作吗？');
+  await send('我是医生。','你是医生！你在哪儿工作？');
+  await send('我在看电影。','你在看什么电影？');
+  await send('很无聊','我们聊聊天吧！你喜欢看电影吗？');
+  await send('你知道吗？','你想告诉我什么？');
   assert(!errors.length,'JS error: '+errors.join('; '));
   await page.screenshot({path:'qa/panda-beginner-release/beginner-'+width+'.png',fullPage:false,animations:'disabled'});
   console.log('PASS Panda beginner short/nonstop '+width+'px');
