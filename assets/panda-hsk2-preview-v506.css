@@ -173,3 +173,18 @@
   flex:1 1 0!important;
   min-height:120px!important;
 }
+
+/* v540: preserve exact pre-keyboard panda/stone pixel dimensions.
+   The previous 44vw, 56vw, 100cqh and visualViewport-based scaling made
+   the approved mascot jump between small and large while writing Chinese. */
+:root[data-keyboard="true"] #pg346:not([data-day-scenario="ready"]) .pg352-mascot {
+  width:var(--pg540-panda-width, 66vw)!important;
+  max-width:none!important;
+  bottom:var(--pg540-panda-bottom, 10px)!important;
+  height:auto!important;
+}
+:root[data-keyboard="true"] #pg346:not([data-day-scenario="ready"]) .pg346-scene::before,
+:root[data-keyboard="true"] #pg346:not([data-day-scenario="ready"]) .pg346-scene::after {
+  width:var(--pg540-stone-width, 86vw)!important;
+  left:var(--pg540-stone-left, -4%)!important;
+}
