@@ -196,11 +196,42 @@ const MALE_CUES=Object.freeze({
  '那就好':[12.017,12.653]
 });
 let playing=null,voiceToken=0;
+const approvedMaleRegistryPromise=import('./assets/panda-street-approved-male-mp3-v1.mjs?v=1')
+ .catch(error=>{console.error('Approved Street male registry:',error);return null});
+function playApprovedMaleMp3(clip,token){
+ if(token!==voiceToken)return;
+ // Only possible after a reviewed same-male entry is activated in the registry.
+ const a=new Audio(clip.src);playing=a;a.preload='auto';a.playbackRate=1;
+ if('preservesPitch' in a)a.preservesPitch=true;
+ const valid=()=>token===voiceToken&&playing===a;
+ const reset=()=>{if(valid()){streetFaceRig?.setState('idle');playing=null}};
+ a.addEventListener('playing',()=>{if(valid()){streetFaceRig?.setState('talking');requestAnimationFrame(animate)}});
+ a.addEventListener('ended',reset);
+ a.addEventListener('pause',()=>{if(valid())streetFaceRig?.setState('idle')});
+ a.addEventListener('error',()=>{if(valid()){reset();tip('Мужская MP3 не загрузилась. Фраза остаётся текстом.')}});
+ function animate(){
+  if(!valid()||a.paused||a.ended)return;
+  // Time-based visual cue, not acoustic lip sync or pronunciation grading.
+  streetFaceRig?.talk(.5+.35*Math.sin(a.currentTime*23));
+  requestAnimationFrame(animate);
+ }
+ const play=a.play();
+ if(play?.catch)play.catch(()=>{if(valid()){reset();tip('Браузер не включил мужскую запись. Нажми повторить.')}});
+}
 function speak(text){
  const cue=MALE_CUES[normalizeZh(text)];
  if(playing){playing.pause();playing=null;streetFaceRig?.setState('idle')}
  const token=++voiceToken;
- if(!cue){streetFaceRig?.setState('idle');tip('Фраза показана текстом · мужская запись для неё пока не загружена');return false}
+ if(!cue){
+  streetFaceRig?.setState('idle');
+  approvedMaleRegistryPromise.then(mod=>{
+   if(token!==voiceToken)return;
+   const clip=mod?.lookupApprovedStreetMaleMp3(text);
+   if(!clip){tip('Фраза показана текстом · мужская запись для неё пока не загружена');return}
+   playApprovedMaleMp3(clip,token);
+  });
+  return false;
+ }
  const a=new Audio(MALE_VOICE);playing=a;a.preload='auto';a.playbackRate=.75;
  a.addEventListener('playing',()=>{if(token===voiceToken)streetFaceRig?.setState('talking')});
  a.addEventListener('pause',()=>{if(token===voiceToken)streetFaceRig?.setState('idle')});
