@@ -103,16 +103,16 @@ buttons.forEach(btn=>btn.addEventListener('click',()=>{
 }));
 async function load(){
  try{
-  const res=await fetch('./panda-street-ai-preview.html',{cache:'no-cache'});
-  if(!res.ok)throw new Error('HTTP '+res.status);
-  const source=await res.text();
-  const match=source.match(/<img\s+id="src"[^>]*\bsrc="(data:image\/[^"]+)"/i);
-  if(!match)throw new Error('Не найдено утверждённое изображение');
-  const img=new Image();img.src=match[1];await img.decode();
+  // Load the exact approved source image as a dedicated, immutable asset.
+  // The image is copied byte-for-byte from the original Panda Street AI page.
+  // No HTML scraping, AI regeneration, or third-party service.
+  const img=new Image();
+  img.src='./assets/panda-street-ai-approved-original.webp';
+  await img.decode();
   if(img.naturalWidth!==W||img.naturalHeight!==H)throw new Error('Исходное изображение изменило размер');
   original=img;head=constructHead(img);status.hidden=true;
   raf=requestAnimationFrame(render);
- }catch(err){status.textContent='Не удалось загрузить оригинальный экран Panda Street AI: '+err.message+'. Открой страницу по ссылке GitHub Pages.';console.error(err)}
+ }catch(err){status.textContent='Не удалось загрузить оригинальный экран Panda Street AI: '+err.message+'. Проверь подключение и обнови страницу.';console.error(err)}
 }
 document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0}else if(original&&!raf){raf=requestAnimationFrame(render)}});
 load();
