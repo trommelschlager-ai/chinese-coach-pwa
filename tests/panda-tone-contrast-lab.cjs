@@ -18,7 +18,7 @@ const dsp=new Function('finite','median','SPLIT_MIN','SPLIT_MAX',
  part('function observedTrend(points,segmentFrom,segmentTo){','function normalizeChartPoints(')+
  part('function offlinePitch(frame,rate){','function cleanup(rec){')+
  part('function selectSpeechSegment(levels,points){','async function stop(countTake){')+
- '\nreturn {reanalyzePcm,buildRecording,contourEvidence};')(finite,median,.25,.75);
+ '\nreturn {reanalyzePcm,buildRecording,contourEvidence,voicedRmsFrames};')(finite,median,.25,.75);
 const tones={1:'level',2:'rise',3:'dip',4:'fall'};
 const words=[
  {name:'公司 gōngsī',target:[1,1]},
@@ -92,12 +92,9 @@ function classify(audio,word){
  const r=extract(audio,word),entry=r.entry,points=entry.points||[];
  const p=[points.filter(x=>x[0]<entry.splitRatio),points.filter(x=>x[0]>=entry.splitRatio)];
  const observed=p.map(x=>shape(x,entry.seconds));
- // An F0 window can overlap the end of a 90ms vowel and make it look
- // 150-200ms long. Require five INDEPENDENT 30ms RMS frames in each syllable.
- // This gate never extends pitch tracks or guesses missing voiced F0.
- const rmsFrames=[0,1].map(i=>(entry.levels||[]).filter(x=>
-   x[0]>=(i===0?0:entry.splitRatio)&&
-   (i===0?x[0]<entry.splitRatio:x[0]<=1)&&x[1]>=.023).length);
+ // Use exactly the same independent RMS-duration gate as the lesson UI.
+ // This is acoustic-data quality, NOT correct Chinese pronunciation.
+ const rmsFrames=dsp.voicedRmsFrames(entry.levels||[],entry.splitRatio);
  const enoughRms=rmsFrames.every(n=>n>=5);
  const usable=r.accepted&&entry.quality==='both'&&enoughRms&&
   !entry.splitWarning&&entry.validParts?.every(Boolean)&&observed.every(x=>x.kind!=='unknown');
