@@ -1,0 +1,21 @@
+name: Panda AI friendly-name v529
+on:
+  push:
+    branches:
+      - fix/panda-v527-friendly-dialogue-20261123
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  friendly-name:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test names, follow-up and old non-name phrases
+        run: node --test tests/panda-friendly-conversation-v528.test.mjs
