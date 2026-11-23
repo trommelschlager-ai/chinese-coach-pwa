@@ -77,12 +77,15 @@ const fs=require('node:fs');
  }
  assert.equal(coachSentence('下雨',{allowed:base.allowed,prompt:{...weatherPrompt,time:'明天',hanzi:'明天天气怎么样？'}}),null);
  const html=fs.readFileSync('panda-voice-pilot.html','utf8');
- const activeScreen=html.match(/\.\/assets\/panda-live-screen-v270\.mjs\?v=\d+/)?.[0];
- assert(activeScreen,'Panda live screen must have an actual versioned HTML import');
+ const activeScreen=html.match(/\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0];
+ const activeUi=html.match(/\.\/assets\/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/)?.[0];
+ assert(activeScreen&&activeUi,'Current Panda conversational engine and UI must have versioned HTML imports');
+ assert(fs.readFileSync('assets/panda-hsk2-preview-core-v1.mjs','utf8').includes("from './panda-live-dialogue-v272.mjs?v=434'"),
+  'Live engine must still use the checked sentence-coach dialogue rules');
  for(const p of [
   './assets/panda-sentence-coach-v319.mjs?v=319',
   './assets/panda-live-dialogue-v272.mjs?v=434',
-  activeScreen,
+  activeScreen,activeUi,
   './assets/panda-hsk1-questions-v281.mjs?v=319',
   './panda-voice-pilot.html?v=326'
  ]) assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).files.includes(p),p);

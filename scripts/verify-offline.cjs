@@ -6,7 +6,18 @@ const cacheAPI={open:async name=>{if(!stores.has(name))stores.set(name,new Map()
 class ScopedRequest extends Request{constructor(path,options){super(new URL(path,base),options)}};
 const ctx={URL,Promise,Request:ScopedRequest,Response,fetch:network,caches:cacheAPI,AbortController,setTimeout,clearTimeout,self:{location:{origin},registration:{scope:base},clients:{claim:async()=>{}},skipWaiting:async()=>{},addEventListener:(n,f)=>events[n]=f}};
 vm.runInNewContext(code,ctx);
-(async()=>{let pending;events.install({waitUntil:p=>pending=p});await pending;const currentCache=(code.match(/const CACHE='([^']+)'/)||[])[1];assert(currentCache?.startsWith('chinese-coach-pwa-v'));assert.deepEqual(await cacheAPI.keys(),[currentCache]);const coreCount=stores.get(currentCache).size;assert(coreCount<=200,'Keep current approved HSK1/HSK2 and Panda AI install shell bounded, while sound and most images stay on demand');const coreBytes=[...stores.get(currentCache).keys()].reduce((n,url)=>{const p=decodeURIComponent(new URL(url).pathname.replace('/chinese-coach-pwa/',''))||'index.html';return n+fs.statSync(p).size},0);assert(coreBytes<5000000,'Keep shell including the exact approved home art under 5 MB');assert(!await cacheAPI.match('./assets/approved-welcome.png'),'Unused large cover must not be preloaded');
+(async()=>{let pending;events.install({waitUntil:p=>pending=p});await pending;const currentCache=(code.match(/const CACHE='([^']+)'/)||[])[1];assert(currentCache?.startsWith('chinese-coach-pwa-v'));assert.deepEqual(await cacheAPI.keys(),[currentCache]);const coreCount=stores.get(currentCache).size;const coreBytes=[...stores.get(currentCache).keys()].reduce((n,url)=>{const p=decodeURIComponent(new URL(url).pathname.replace('/chinese-coach-pwa/',''))||'index.html';return n+fs.statSync(p).size},0);console.log('Offline install-shell budget: '+coreCount+' pre-cached files, '+coreBytes+' bytes (limits: 200, 5000000)');const cacheSizes=[...stores.get(currentCache).keys()].map(url=>{const p=decodeURIComponent(new URL(url).pathname.replace('/chinese-coach-pwa/',''))||'index.html';return {file:p,bytes:fs.statSync(p).size}}).sort((a,b)=>b.bytes-a.bytes);console.log('Offline largest 28 pre-cache files: '+JSON.stringify(cacheSizes.slice(0,28)));assert(coreCount<=200,'Keep current approved HSK1/HSK2 and Panda AI install shell bounded, while sound and most images stay on demand');assert(coreBytes<5000000,'Keep shell including the exact approved home art under 5 MB');assert(!await cacheAPI.match('./assets/approved-welcome.png'),'Unused large cover must not be preloaded');
+// Compact install must not silently remove Panda Street/optional routes
+// from the separate user-initiated full offline course download.
+const streetPaths=vm.runInNewContext(code.match(/const STREET_SHELL=(\[[\s\S]*?\]);/)[1]);
+const deferredPaths=vm.runInNewContext(code.match(/const ON_DEMAND_BOOT=new Set\((\[[\s\S]*?\])\);/)[1]);
+const fullPackFiles=new Set(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).files);
+for(const url of [...streetPaths,...deferredPaths]){
+ assert(fullPackFiles.has(url),'Deferred page/media must remain downloadable for offline use: '+url);
+ assert(!stores.get(currentCache).has(normalize(url)),'Heavy/optional Street asset unexpectedly preloaded: '+url);
+}
+assert(fullPackFiles.has('./assets/panda-hsk2-preview-core-v1.mjs?v=524'),'Active Panda conversational engine must be downloadable offline');
+
 const retained='./assets/course-human/cmn-我.mp3',oldImage='./assets/hanzi-paper-v141.png',oldData='./assets/hanzi-data/大.json';
 const oldCache=await cacheAPI.open('chinese-coach-pwa-v48');for(const path of [retained,oldImage,oldData])await oldCache.put(path,await network(path));
 const stalePanda='./assets/panda-live-screen-v270.mjs?v=302',stalePandaPage='./panda-voice-pilot.html?v=302';

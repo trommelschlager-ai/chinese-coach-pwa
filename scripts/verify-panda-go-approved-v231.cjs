@@ -19,8 +19,12 @@ for(const lesson of [6,7]){
  const topic=lesson===6?'family':'weather';
  const filename=lesson===6?'hsk1-family-v231.html':'hsk1-weather-v231.html';
  const html=fs.readFileSync(filename,'utf8');
- assert(html.includes('panda-go-approved-lessons-v231.css?v=289'));
- assert(html.includes('panda-go-companion-v231.js?v=371'));
+ assert(/panda-go-approved-lessons-v231\.css\?v=(\d+)/.test(html)&&
+ Number(html.match(/panda-go-approved-lessons-v231\.css\?v=(\d+)/)[1])>=289,
+ 'Approved lesson stylesheet must remain cache-versioned');
+ assert(/panda-go-companion-v231\.js\?v=(\d+)/.test(html)&&
+ Number(html.match(/panda-go-companion-v231\.js\?v=(\d+)/)[1])>=371,
+ 'Lesson companion script must remain cache-versioned');
  assert(html.includes('owner-audio-v237.js?v=237'));
  assert(html.includes('panda-owner-lessons5-7-native-v221.js?v=221'));
  assert(css.includes('lesson'+lesson+'-scene-v233.webp'));
@@ -74,9 +78,17 @@ for(const lesson of [6,7]){
  click('#pg5-next');assert.equal(step(),12);assert(d.getElementById('writer'),'Hanzi exercise unavailable');
  click('#pg5-next');assert.equal(step(),13);assert(d.querySelector('[data-record]'),'Recorder buttons missing');
  click('#pg5-next');assert.equal(step(),14);
- assert(d.querySelectorAll('[data-final]').length===currentTopic.quiz.choices.length,'Final choices missing');
- click('[data-final="'+currentTopic.quiz.correct+'"]');
- assert(!d.getElementById('pg5-next').disabled,'Correct final answer must unlock completion');
+ const finalAnswers=lesson===6?
+  [currentTopic.quiz.correct,1,0,1,2]:
+  [currentTopic.quiz.correct,1,0,2,1];
+ for(let i=0;i<finalAnswers.length;i++){
+  assert.equal(d.querySelectorAll('[data-final]').length,i===0?currentTopic.quiz.choices.length:3,
+   'Final choices missing in question '+(i+1));
+  assert(d.getElementById('pg5-next').disabled,'Do not unlock before all five final questions');
+  click('[data-final="'+finalAnswers[i]+'"]');
+ }
+ assert(d.querySelector('[data-final-retry]'),'Five completed questions must offer replay');
+ assert(!d.getElementById('pg5-next').disabled,'All five final questions must unlock completion');
  const saved=JSON.parse(w.localStorage.getItem('pg-hsk1-l'+lesson+'-v231'));
  assert(saved.done&&saved.quizPassed,'Completed lesson state not stored');
  assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes(topic),'Legacy achievement missing');

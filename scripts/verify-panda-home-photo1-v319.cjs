@@ -23,7 +23,7 @@ assert.equal(image?.getAttribute('src'),'./assets/panda-home-approved-photo1-v31
 assert.equal(image.getAttribute('width'),'864');assert.equal(image.getAttribute('height'),'1536');
 const buttons=[...document.querySelectorAll('nav.pg-hsk-level-list > a.pg-photo1-hit')];
 assert.equal(buttons.length,2,'Only two working hotspots');
-assert.deepEqual(buttons.map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=map']);
+assert.deepEqual(buttons.map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=welcome']);
 assert.deepEqual(buttons.map(x=>x.querySelector('strong')?.textContent),['Начальный уровень','Продолжающий уровень']);
 assert(buttons.every(x=>x.getAttribute('aria-label')?.includes('Открыть уровень')),'Buttons must remain accessible and functional');
 assert(!document.querySelector('.pg-hsk-bridge'),'No separate blurry bridge may overlay the original landscape');
@@ -37,9 +37,11 @@ for(const file of ['hsk1-map.html','hsk2-start.html','hsk2-introduction.html'])a
 const hsk1Map=read('hsk1-map.html');
 assert(hsk1Map.includes('pg-hsk1-v3-complete')||(hsk1Map.includes('pg-hsk1-path-v371')&&!hsk1Map.includes('localStorage.clear(')&&!hsk1Map.includes("removeItem('pg-hsk1-v3-complete'")),'HSK 1 progress must remain saved without wiping historical data');
 assert(read('hsk2-start.html').includes('./hsk2-introduction.html'),'HSK 2 lesson navigation unavailable');
-const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
-const optionalArt=JSON.parse(sw.match(/const CORE_ART=new Set\((\[[^\n]+\])\)/)[1]);
-const shell=core.filter(path=>!/.\.(?:mp3|ogg)(?:\?|$)/i.test(path)&&(!/.\.(?:png|jpe?g|webp)(?:\?|$)/i.test(path)||optionalArt.includes(path)));
+// Test the actual first-install list, not the source CORE catalog.
+// The optional Street assets remain obtainable through DOWNLOAD_COURSE.
+const workerBeforeInstall=sw.split("self.addEventListener('install'")[0];
+const shell=vm.runInNewContext(workerBeforeInstall+'INSTALL_SHELL');
+assert(Array.isArray(shell),'Service worker must define a concrete install shell');
 
 for(const file of ['./assets/'+currentHomeScript,'./assets/panda-home-photo1-v319.css?v=319','./assets/panda-home-approved-photo1-v319.jpg']){
  assert(shell.includes(file),'PWA install shell missing '+file);

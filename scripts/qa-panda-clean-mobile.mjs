@@ -21,7 +21,9 @@ export async function verifyCleanMobile(browser,base,dir){
   assert(await page.locator('.pg364-ground-shadow').count()===1,'Fixed contact shadow required underneath the Panda');
   await page.waitForFunction(()=>document.querySelector('.pg346-panda').naturalWidth>0);
   assert.match(await page.locator('.pg346-panda').getAttribute('src'),/panda-character-clean-v349\.webp/);
-  assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
+  await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pg500Mounted==='true');
+  assert.match(await page.locator('#pg346 .pg500-landscape').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/,
+   'Day/night Panda artwork must remain present on the approved dedicated landscape layer');
   assert.equal(await page.locator('.pg352-rocks').isVisible(),false,'The flat faux-stone slab must not cover the natural scenery');
   await page.waitForFunction(()=>document.querySelector('.pg352-mascot').dataset.faceReady==='true');
   assert(await page.locator('.pg353-face-canvas').isVisible(),'Approved mascot canvas is rendered');
@@ -69,6 +71,8 @@ export async function verifyCleanMobile(browser,base,dir){
   }
   await page.locator('#pg346-nonstop').click();
   for(const [question,answer] of [['你好','你好！'],['你好吗','很好！'],['今天天气怎么样','今天很冷。']]){
+   if(await page.locator('#pg346').getAttribute('data-composer-open')!=='true')await page.locator('#pg346-send').click();
+   assert(await page.locator('#pg346-input').isVisible(),'Approved v500 composer must be visible after opening');
    await page.locator('#pg346-input').fill(question);await page.locator('#pg346-send').click();
    await page.waitForFunction(text=>document.querySelector('.pg346-main-zh').textContent===text,answer);
   }
@@ -107,6 +111,7 @@ export async function verifyCleanMobile(browser,base,dir){
   assert.equal(await page.evaluate(()=>window.__micDiagnosticStops),1,'Diagnostic must release the actual microphone track');
   await page.locator('.pg407-mic-close').click();
   assert.equal(await page.locator('#pg407-mic-help').isVisible(),false);
+  if(await page.locator('#pg346').getAttribute('data-composer-open')!=='true')await page.locator('#pg346-send').click();
   await page.locator('#pg346-input').fill('你好');
   await page.locator('#pg346-send').click();
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh').textContent==='你好！');

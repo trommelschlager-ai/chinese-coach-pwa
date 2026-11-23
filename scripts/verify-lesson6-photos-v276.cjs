@@ -23,8 +23,8 @@ for(const slug of images){
  assert.equal(b.toString('ascii',8,12),'WEBP','Actual WebP');
  if(hashes[slug])assert.equal(crypto.createHash('sha256').update(b).digest('hex'),hashes[slug],'Correct individual portrait '+slug);
 }
-assert(page.includes('panda-go-approved-lessons-v231.css?v=289'));
-assert(page.includes('panda-go-companion-v231.js?v=371'));
+assert(/panda-go-approved-lessons-v231\.css\?v=(\d+)/.test(page)&&Number(page.match(/panda-go-approved-lessons-v231\.css\?v=(\d+)/)[1])>=289,'Approved CSS must remain versioned');
+assert(/panda-go-companion-v231\.js\?v=(\d+)/.test(page)&&Number(page.match(/panda-go-companion-v231\.js\?v=(\d+)/)[1])>=371,'Approved family JS must remain versioned');
 assert(!js.includes('pg6-grandparent-icon'),'Emoji avatars should be replaced by portraits');
 assert(css.includes('.pg6-grandparent-photo')&&css.includes('.pg6-phrase-photo'),'Photo styles');
 const pack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));

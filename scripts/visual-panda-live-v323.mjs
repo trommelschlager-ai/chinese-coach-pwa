@@ -23,7 +23,9 @@ try{
   res=await page.goto(base+'/panda-voice-pilot.html?lesson=1',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   await page.locator('#pg346').waitFor();
-  assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
+  await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pg500Mounted==='true');
+  assert.match(await page.locator('#pg346 .pg500-landscape').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/,
+   'The approved v500 day/night background must live on its dedicated landscape layer');
   assert.equal(await page.locator('#pg346-topics').isVisible(),false,'Do not cover Panda with open topic menu');
   assert(await page.locator('.pg352-mascot .pg346-panda').isVisible());
   assert.equal(await page.locator('.pg352-rocks').isVisible(),false,'The approved lake already contains natural stones');
@@ -49,9 +51,14 @@ try{
   await page.locator('#pg346-nonstop').click();
   assert.equal(await page.locator('#pg346-nonstop').getAttribute('aria-pressed'),'true');
   const input=page.locator('#pg346-input');
+  // Approved v500: the paper plane first OPENS the compact composer.
+  await page.locator('#pg346-send').click();
+  assert.equal(await page.locator('#pg346').getAttribute('data-composer-open'),'true','Paper plane should open the composer before typing');
   await input.fill('你好');await page.locator('#pg346-send').click();
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh')?.textContent==='你好！');
   assert((await page.locator('#pg346-rows').textContent()).includes('你好'));
+  await page.locator('#pg346-send').click();
+  assert(await input.isVisible(),'The second paper-plane tap must reopen text entry');
   await input.fill('你好吗？');await page.locator('#pg346-send').click();
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh')?.textContent==='很好！');
   summary.results.push({width,case:'short Mandarin dialogue',reply:await page.locator('.pg346-main-zh').textContent()});

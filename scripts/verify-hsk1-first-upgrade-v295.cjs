@@ -11,9 +11,12 @@ for(const [p,s] of [['radicals',radical],['extras',extras],['lesson1',main]])new
 assert(html.indexOf('hsk1-radicals-v295.js')<html.indexOf('hsk1-first-extras-v295.js'));
 assert(html.indexOf('hsk1-first-extras-v295.js')<html.indexOf('hsk1-first-v189.js'));
 assert(html.includes('aria-valuemax="16"'));
-assert(read('hsk1-map.html').includes('href="./hsk1-first-v189.html"'),'Approved HSK1 map must still open the full 16-screen first lesson');
-const make=(saved)=>{
- const dom=new JSDOM(html,{url:'https://panda.test/chinese-coach-pwa/hsk1-first-v189.html',runScripts:'outside-only'});
+assert(/href="\.\/hsk1-first-v189\.html(?:\?v=\d+)?"/.test(read('hsk1-map.html')),'Approved HSK1 map must still open the full 16-screen first lesson');
+const make=(saved,variant='legacy')=>{
+ // Archived v295 radical tests use the supported non-default legacy path;
+ // the published approved v414/v415 greeting-first path is smoke-tested below.
+ const suffix=variant==='legacy'?'?preview=legacy':'';
+ const dom=new JSDOM(html,{url:'https://panda.test/chinese-coach-pwa/hsk1-first-v189.html'+suffix,runScripts:'outside-only'});
  const w=dom.window;const played=[];
  w.Audio=function(src){this.src=src;this.pause=()=>{};this.play=()=>{played.push(src);return Promise.resolve();}};
  w.PANDA_HSK1_VOICES={female:{'你好！':'./assets/female-hello.mp3'},male:{'你好！':'./assets/hsk1-voices-v156/ca2a36b2097b5a6321a2.mp3?v=300'}};
@@ -21,6 +24,14 @@ const make=(saved)=>{
  w.eval(radical);w.eval(extras);w.eval(main);
  return {w,dom,d:w.document,played};
 };
+{
+ const {d,dom}=make(null,'approved');
+ assert(d.querySelector('.pg-v414-hero'),'Published first screen must use approved conversational 你好 design');
+ assert(d.getElementById('pg-counter').textContent.includes('1 / 16'),'Approved first lesson retains 16 screens');
+ d.getElementById('pg-next').click();
+ assert(d.getElementById('pg-counter').textContent.includes('2 / 16'),'Approved first lesson advances without skipping');
+ dom.window.close();
+}
 {
  const {w,d,dom}=make();
  assert.equal(w.PANDA_HSK1_RADICALS_V295.all.length,214);

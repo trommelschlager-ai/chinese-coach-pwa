@@ -33,14 +33,23 @@ for(const [initial,completed] of cases){
  const w=dom.window,d=w.document;
  Object.entries(initial).forEach(([k,v])=>w.localStorage.setItem(k,v));
  const before=JSON.stringify({...w.localStorage});
- w.eval(d.querySelector('script').textContent);
+ // Execute actual map gate logic after the external press-effect script.
+  const mapGateScript=[...d.scripts].find(node=>node.textContent.includes("const KEY='pg-hsk1-path-v371'"));
+  assert(mapGateScript,'Sequential map gate logic must be present');
+  w.eval(mapGateScript.textContent);
  assert.equal(JSON.stringify({...w.localStorage}),before,'Map must never reset student progress');
  assert.equal(d.querySelectorAll('nav.hotspots > a.lesson').length,7);
  const frontier=Math.min(7,completed+1);
  for(const node of d.querySelectorAll('nav.hotspots > a.lesson')){
    const n=Number(node.dataset.num);
-   const url=n===1?'./hsk1-first-v189.html':n===2?'./hsk1-second-v203.html':n===3?'./hsk1-third-v212.html':n===4?'./hsk1-fourth-v214.html':n===5?'./hsk1-fifth-v227.html':'./hsk1-lesson.html?lesson='+n;
-   assert.equal(node.getAttribute('href'),url);
+   const routes={
+     1:'./hsk1-first-v189.html',2:'./hsk1-second-v203.html',
+     3:'./hsk1-third-v212.html',4:'./hsk1-fourth-v214.html',
+     5:'./hsk1-fifth-v227.html',6:'./hsk1-family-v231.html',
+     7:'./hsk1-weather-v231.html'
+   };
+   assert.equal(node.getAttribute('href')?.split('?')[0],routes[n],
+    'Approved lesson '+n+' hotspot route must remain correct');
    assert.equal(node.classList.contains('locked'),n>frontier,'Lock mismatch for lesson '+n);
    assert.equal(node.classList.contains('done'),n<=completed,'Done mismatch for lesson '+n);
    assert.equal(node.classList.contains('current'),n===frontier&&n>completed,'Current mismatch for lesson '+n);
@@ -67,7 +76,10 @@ test.close();
 const sw=fs.readFileSync('sw.js','utf8'),core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
 const installedShellCount=require('node:vm').runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'"))+'INSTALL_SHELL.length');
 assert(installedShellCount<=200,'Current two-course offline app shell must stay bounded');
-for(const entry of [...layers.map(x=>'./assets/hsk1-v371-'+x+'.webp'),'./assets/hsk1-layered-v372.css?v=372','./hsk2-start.html','./hsk2-introduction.html'])assert(core.includes(entry),'Offline file missing '+entry);
+for(const entry of [...layers.map(x=>'./assets/hsk1-v371-'+x+'.webp'),'./hsk2-start.html','./hsk2-introduction.html'])assert(core.includes(entry),'Historical HSK1/HSK2 source shell catalog must retain '+entry);
+const offlinePack=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
+assert(offlinePack.files.includes('./assets/hsk1-layered-v372.css?v=372'),
+ 'Retired layered map CSS must remain available through full offline download');
 for(const entry of core)assert(fs.existsSync(entry.split('?')[0]),'Offline file missing on disk '+entry);
 for(const [file,index] of [
  ['assets/hsk1-first-v189.js',1],['assets/hsk1-second-v203.js',2],['assets/hsk1-third-v213.js',3],
