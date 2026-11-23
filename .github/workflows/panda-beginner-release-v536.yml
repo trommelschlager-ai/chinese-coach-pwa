@@ -4,6 +4,7 @@ on:
     paths:
       - 'assets/panda-everyday-meaning-v515.mjs'
       - 'assets/panda-hsk2-preview-core-v1.mjs'
+      - 'tests/panda-teacher-question-v548.test.mjs'
       - 'assets/panda-approved-voice-registry-v516.mjs'
       - 'assets/panda-ai-natural-voice-batch01-v546.mjs'
       - 'assets/panda-ai-natural-voice-batch01-20261124/**'
@@ -56,6 +57,8 @@ jobs:
           node --test tests/panda-ai-voice-queue-v545.test.mjs
           node --test tests/panda-approved-natural-voice-v546.test.mjs
           node scripts/panda-ai-voice-gap-v545.mjs
+      - name: Teacher question 你是老师吗 — correct response and three approved MP3s
+        run: node --test tests/panda-teacher-question-v548.test.mjs
       - name: Check approved interactive Panda AI v547 layout
         run: node --test tests/panda-ai-approved-layout-v547.test.mjs
       - name: Install mobile Chromium
