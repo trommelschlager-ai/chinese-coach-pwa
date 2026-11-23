@@ -129,7 +129,36 @@ try{
   await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-negative-dialogue.png',fullPage:false,animations:'disabled'});
   assert(!errors.length,'Browser errors after negative-dialogue QA: '+JSON.stringify(errors));
 
-  console.log('PASS mobile browser '+width+'px: 5 learner turns + 4-step movie chat + six negative question rounds + inverse question');
+  // v520: reproduce the student's screenshot in the actual SHORT dialogue UI.
+  // Existing design, original Panda and voice assets must remain untouched.
+  const introPage=await context.newPage();
+  const introErrors=[];
+  introPage.on('pageerror',e=>introErrors.push(e.message));
+  await introPage.goto(base+'/panda-voice-pilot.html',{waitUntil:'domcontentloaded'});
+  await introPage.locator('#pg346').waitFor({state:'visible',timeout:15000});
+  await introPage.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true',{timeout:15000});
+  assert.equal(await introPage.locator('#pg346-short').getAttribute('aria-pressed'),'true',
+   'Student screenshot reproduces the short-dialogue mode');
+  const introTurns=[
+   ['我爱你！','谢谢你！我很开心！你叫什么名字？','Xièxie nǐ! Wǒ hěn kāixīn! Nǐ jiào shénme míngzi?'],
+   ['我叫小明。','很高兴认识你！你今天怎么样？','Hěn gāoxìng rènshi nǐ! Nǐ jīntiān zěnmeyàng?'],
+   ['我很好。','太好了！你想聊什么？','Tài hǎo le! Nǐ xiǎng liáo shénme?']
+  ];
+  for(const [learner,panda,py] of introTurns){
+   await introPage.locator('#pg346-send').click();
+   await introPage.locator('#pg346-input').fill(learner);
+   await introPage.locator('#pg346-send').click();
+   await introPage.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,panda,{timeout:6000});
+   const last=introPage.locator('#pg346-rows .pg346-row').last();
+   assert.equal(await last.locator('.pg346-zh').textContent(),panda);
+   assert.equal(await last.locator('.pg346-py').textContent(),py);
+   assert(!/我没听懂/.test(await last.textContent()),'Recognized beginner text cannot be treated as incomprehensible');
+  }
+  assert(!introErrors.length,'Intro page JS errors: '+JSON.stringify(introErrors));
+  await introPage.screenshot({path:'qa/panda-context-v1/panda-'+width+'-friendly-intro-short.png',
+   fullPage:false,animations:'disabled'});
+  await introPage.close();
+  console.log('PASS mobile browser '+width+'px: 5 learner turns + 4-step movie chat + six negative question rounds + inverse question + short-mode friendly intro');
   await context.close();
  }
 } finally {await browser.close()}
