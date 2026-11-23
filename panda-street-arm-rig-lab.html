@@ -69,7 +69,9 @@ input[type=range]{min-width:0;flex:1;accent-color:#e3b4ff}
 // All geometry is in the original approved 693 × 1444 source coordinate space.
 // This is a manually adjustable layer tool, NOT a claim of completed pixel-perfect segmentation.
 const W=693,H=1444;
-const URLS={night:'./assets/panda-street-day-night/night.webp',day:'./assets/panda-street-day-night/day.webp?v=2'};
+// The HTML is previewed on a CDN origin; use GitHub's CORS-enabled raw origin explicitly.
+// Pinned commit keeps both approved images immutable while this draft is tested.
+const URLS={night:'https://raw.githubusercontent.com/trommelschlager-ai/chinese-coach-pwa/a442485be6088b07af6815bdb7a170665d2cfb38/assets/panda-street-day-night/night.webp',day:'https://raw.githubusercontent.com/trommelschlager-ai/chinese-coach-pwa/a442485be6088b07af6815bdb7a170665d2cfb38/assets/panda-street-day-night/day.webp'};
 const $=id=>document.getElementById(id);
 const cv=$('stage'),c=cv.getContext('2d',{alpha:false}),loading=$('loading');
 const buttons=['ask','reset','theme','edit'].map($);
@@ -205,14 +207,39 @@ function stopDrag(){if(!drag)return;drag=null;rerig()}
 cv.addEventListener('pointerup',stopDrag);cv.addEventListener('pointercancel',stopDrag);
 window.addEventListener('resize',()=>render());
 document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;playing=false}else render()});
-Promise.all(Object.entries(URLS).map(([name,url])=>new Promise((resolve,reject)=>{
- const i=new Image();i.onload=()=>{if(i.naturalWidth!==W||i.naturalHeight!==H)reject(new Error(name+': unexpected dimensions'));else{images[name]=i;resolve()}};
- i.onerror=()=>reject(new Error('Нет доступа к '+url));i.src=url
-}))).then(()=>{
+// Load through an explicit CORS fetch, then use an object URL belonging to THIS page's
+// origin. The canvas remains origin-clean; getImageData and PNG export are permitted.
+const objectUrls=[];
+async function loadSafeImage(name,url){
+ const response=await fetch(url,{mode:'cors',credentials:'omit',cache:'no-store'});
+ if(!response.ok||response.type==='opaque')throw new Error(name+': CORS/HTTP '+response.status);
+ const blob=await response.blob();
+ if(!blob.type.startsWith('image/'))throw new Error(name+': unexpected content-type '+blob.type);
+ const blobUrl=URL.createObjectURL(blob);objectUrls.push(blobUrl);
+ const img=new Image();
+ img.crossOrigin='anonymous'; // explicit CORS contract; blob URL itself is same-origin
+ await new Promise((resolve,reject)=>{
+  img.onload=resolve;
+  img.onerror=()=>reject(new Error(name+': не удалось декодировать изображение'));
+  img.src=blobUrl;
+ });
+ if(img.naturalWidth!==W||img.naturalHeight!==H)throw new Error(name+': размер не '+W+'×'+H);
+ // Fail early with a helpful error instead of leaving a black stage.
+ const probe=document.createElement('canvas');probe.width=1;probe.height=1;
+ const pc=probe.getContext('2d',{willReadFrequently:true});pc.drawImage(img,0,0,1,1);
+ try{pc.getImageData(0,0,1,1)}catch(e){throw new Error(name+': изображение всё ещё заблокировано политикой CORS ('+e.message+')')}
+ images[name]=img;
+}
+window.addEventListener('pagehide',()=>objectUrls.forEach(u=>URL.revokeObjectURL(u)),{once:true});
+Promise.all(Object.entries(URLS).map(([name,url])=>loadSafeImage(name,url)))
+.then(()=>{
  for(const name of ['night','day']){theme=name;readyScene(images[name])}
  theme='night';ready=true;loading.hidden=true;buttons.forEach(b=>b.disabled=false);$('ask').disabled=false;
- notify('Исходник загружен; оригинальная поза не изменена. Контуры пока ориентировочные.');render()
-}).catch(e=>{loading.textContent='Ошибка загрузки: '+e.message+'; открой тест со всеми assets в одной ветке.';console.error(e)});
+ notify('Изображения загружены без CORS-ограничений. Контуры предварительные — редактируй перед оценкой жеста.');render();
+}).catch(e=>{
+ loading.textContent='Не удалось загрузить тест: '+e.message+'. Проверь подключение и открой обновлённую ссылку.';
+ console.error('Panda Street arm-rig loading failed:',e)
+});
 })();
 </script>
 </body>
