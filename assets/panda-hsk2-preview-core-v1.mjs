@@ -224,6 +224,11 @@ function setMode(mode){
  if(mode===state.mode)return;
  if(hsk2){
   cancelFollowup();stopRecognition();stopAudio();
+  // Leaving free topic chat restores the ordinary scored HSK2 question path.
+  if(hsk2.openChat&&mode==='short'){
+   hsk2.openChat=false;state.mode='short';askHSK2(false);
+   note('Короткие вопросы HSK 2. Теперь отвечай на учебный вопрос.');return;
+  }
   state.mode=mode;
   if(hsk2.done){hsk2.done=false;hsk2.index=0;askHSK2(false)}else render();
   return;
