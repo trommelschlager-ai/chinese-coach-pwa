@@ -10,6 +10,8 @@ jobs:
     timeout-minutes: 9
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: 218cbbfaeaa06de7a2f39e0fd4fa099783a69f57
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -65,6 +67,7 @@ jobs:
                           app:[...document.querySelector('#app').children].filter(e=>e.offsetHeight).map(e=>[e.id,e.className,e.getBoundingClientRect().y,e.offsetHeight])};
                   }""")
                   print(f'Geometry lesson {n:02}: {geometry}')
+                  assert geometry['top']>=-1 and geometry['scrollHeight']<=geometry['height']+1 and geometry['scrollWidth']<=geometry['width']+1,(n,geometry)
                   before=rgb(page.screenshot(path=f'evidence/{n:02}-before.png'))
                   start.dispatch_event('pointerdown',{'pointerType':'touch'})
                   expect(frame).to_be_visible()
