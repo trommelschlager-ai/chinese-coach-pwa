@@ -233,8 +233,17 @@ if (!bridge) {
      ?'Все 165 проверенных MP3, включая последние 10 записей v411. Нажми фразу, чтобы прослушать и увидеть пиньинь и перевод.'
      :id===8
      ?'Нажми запись, посмотри пиньинь и перевод. Практику HSK2 начни из урока «Мой день».'
-     :'Выбери вопрос — Панда начнёт разговор именно с него. Ниже также доступны загруженные аудиофразы.';
+     :'Можно начать своими словами или выбрать готовый вопрос. Ниже доступны проверенные аудиозаписи.';
    if(id!==8&&id!==9){
+    const own=el('button','pg374-question');
+    own.type='button';
+    own.append(el('strong','pg374-zh','✍️ Начать со своей фразы'),el('span','pg374-ru','Пиши или говори по-китайски на выбранную тему'));
+    own.addEventListener('click',()=>{
+      if(bridge.openTopicForChat(id)){
+       stopHistoryAudio();closeTopics();$('#pg346-input').value='';sync();$('#pg346-input').focus();
+      }
+    });
+    detail.append(own);
     const questions=bridge.topicQuestions(id);
     detail.append(el('h3','pg374-section-title','💬 Вопросы для разговора · '+questions.length));
     if(!questions.length)detail.append(el('p','pg374-muted','Проверенных вопросов по этой теме пока нет.'));
@@ -281,7 +290,7 @@ if (!bridge) {
    catalogueTopic=null;$('#pg374-topic-details').replaceChildren();$('#pg374-topic-details').hidden=true;
    $('.pg346-topic-list').hidden=false;$('#pg374-topics-back').hidden=true;
    $('#pg374-topics-title').textContent='Все темы';
-   $('#pg374-topics-tip').textContent='Выбери тему, затем вопрос для разговора.';
+   $('#pg374-topics-tip').textContent='Выбери тему: можно начать со своей фразы или готового вопроса.';
    $('.pg346-topic-list').scrollTop=0;
   }
   function renderFeedback(s){
