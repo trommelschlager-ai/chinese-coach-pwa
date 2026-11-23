@@ -3,12 +3,18 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - 'assets/hsk2-lesson3-tone-meter-pilot-20261122.js'
+      - 'hsk2-lesson3-work-study-preview.html'
+      - 'tests/panda-tone-lesson3-smoke.cjs'
       - 'panda-tone-test-lab.html'
       - 'tests/panda-tone-regression.cjs'
       - 'assets/hsk2-lesson3-voice/**'
       - '.github/workflows/panda-tone-regression.yml'
   pull_request:
     paths:
+      - 'assets/hsk2-lesson3-tone-meter-pilot-20261122.js'
+      - 'hsk2-lesson3-work-study-preview.html'
+      - 'tests/panda-tone-lesson3-smoke.cjs'
       - 'panda-tone-test-lab.html'
       - 'tests/panda-tone-regression.cjs'
       - 'assets/hsk2-lesson3-voice/**'
@@ -30,6 +36,8 @@ jobs:
         run: ffmpeg -version | head -n 1
       - name: Analyze tone algorithm and six HSK2 MP3 clips
         run: node tests/panda-tone-regression.cjs
+      - name: Verify HSK2 lesson 3 tone pilot and saved progress
+        run: node tests/panda-tone-lesson3-smoke.cjs
       - name: Upload diagnostic report
         if: always()
         uses: actions/upload-artifact@v4
