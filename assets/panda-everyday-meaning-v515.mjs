@@ -41,16 +41,48 @@ const Q={
 };
 const H={跑步:['pǎobù','бега',A.run],游泳:['yóuyǒng','плавания',A.swim],看书:['kàn shū','чтения',A.read],听音乐:['tīng yīnyuè','музыки',A.music],看电影:['kàn diànyǐng','кино',['我喜欢看电影。','Wǒ xǐhuan kàn diànyǐng.','Я люблю смотреть фильмы.']]};
 const items={'':['',''],这个:['zhège','это'],这个东西:['zhège dōngxi','эта вещь'],那个:['nàge','то'],那个东西:['nàge dōngxi','та вещь'],这件衣服:['zhè jiàn yīfu','эта одежда'],那件衣服:['nà jiàn yīfu','та одежда'],这本书:['zhè běn shū','эта книга'],那本书:['nà běn shū','та книга'],这个苹果:['zhège píngguǒ','это яблоко'],这杯茶:['zhè bēi chá','эта чашка чая'],这杯咖啡:['zhè bēi kāfēi','эта чашка кофе']};
+
+// Accept a bare name ONLY after Panda has explicitly asked 你叫什么名字？.
+// A Latin/Cyrillic name has no invented Mandarin reading; known Chinese
+// transcriptions can show verified pinyin. This does NOT assess voice tones.
+const FRIENDLY_NAME_PINYIN=Object.freeze({
+ '安东':['Āndōng','Антон'],'小明':['Xiǎomíng','Сяомин'],
+ '小红':['Xiǎohóng','Сяохун'],'安娜':['Ānnà','Анна'],
+ '小丽':['Xiǎolì','Сяоли'],'玛丽':['Mǎlì','Мэри']
+});
+const NOT_NAMES=new Set([
+ '你好','你好吗','您好','谢谢','谢谢你','我爱你','很好','我很好',
+ '不好','我不好','非常好','今天','明天','昨天','休息','跑步',
+ '可以','不可以','不知道','没有','没空','不是','再见','吃饭',
+ 'привет','здравствуйте','спасибо','пока','да','нет','хорошо',
+ 'hello','thanks','hi','yes','no','good','fine'
+]);
+export function extractFriendlyLearnerName(raw){
+ const text=String(raw||'').normalize('NFC').trim().replace(/[。！？!?.,，]+$/u,'').trim();
+ if(!text)return null;
+ const compact=text.replace(/\s+/g,'');
+ const explicit=compact.match(/^(?:我叫|我的名字是)([\p{Script=Han}]{1,12})$/u);
+ const hanzi=explicit?.[1]||(/^[\p{Script=Han}]{2,4}$/u.test(compact)?compact:null);
+ if(hanzi){
+  if(NOT_NAMES.has(hanzi))return null;
+  const info=FRIENDLY_NAME_PINYIN[hanzi];
+  return {name:hanzi,display:info?.[1]||hanzi,pinyin:info?.[0]||null,explicit:!!explicit};
+ }
+ if(!/^[\p{Script=Latin}\p{Script=Cyrillic}][\p{Script=Latin}\p{Script=Cyrillic}\p{M}' -]{1,39}$/u.test(text))return null;
+ if(text.split(/\s+/).length>2||NOT_NAMES.has(text.toLocaleLowerCase()))return null;
+ return {name:text,display:text,pinyin:null,explicit:false};
+}
+
 export function everydayMeaning(raw,id,context){
  const k=norm(raw);
  const out=(py,ru,reply,awaiting,coachNote,extra={})=>({spoken:[raw,py,ru],reply,context:{...context,awaiting,lastClarification:null,...extra},coachNote});
  // A recognised friendly introduction is a valid beginner utterance.
  // Never treat it as bad pronunciation or invent a new voice recording.
  if(context?.awaiting==='friendly-name'){
-  const match=k.match(/^我叫([\p{Script=Han}]{1,12})$/u);
-  if(match){
-   const py={小明:'Xiǎomíng',小红:'Xiǎohóng'}[match[1]];
-   return out(py?'Wǒ jiào '+py+'.':null,'Меня зовут '+match[1]+'.',
+  const parsed=extractFriendlyLearnerName(raw);
+  if(parsed){
+   const py=parsed.pinyin?(parsed.explicit?'Wǒ jiào '+parsed.pinyin+'.':parsed.pinyin+'.'):null;
+   return out(py,parsed.explicit?'Меня зовут '+parsed.display+'.':'Имя: '+parsed.display+'.',
     ['很高兴认识你！你今天怎么样？','Hěn gāoxìng rènshi nǐ! Nǐ jīntiān zěnmeyàng?','Рада познакомиться! Как у тебя сегодня дела?'],'friendly-mood');
   }
  }
