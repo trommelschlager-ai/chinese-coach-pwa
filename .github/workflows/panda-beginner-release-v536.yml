@@ -35,6 +35,8 @@ jobs:
           node --test tests/panda-android-keyboard-dialogue-v539.test.mjs
           node --test tests/panda-natural-statements-v542.test.mjs
           node --test tests/panda-natural-statements-v544.test.mjs
+          node --test tests/panda-ai-voice-queue-v545.test.mjs
+          node scripts/panda-ai-voice-gap-v545.mjs
       - name: Install mobile Chromium
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
