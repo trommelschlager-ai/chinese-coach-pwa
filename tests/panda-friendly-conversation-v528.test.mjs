@@ -64,7 +64,7 @@ test('Panda short and Non-Stop use the same reviewed social route before fallbac
  assert.match(core,/everydayMeaning\(input,lesson\(\),\{awaiting:state.friendlyAwaiting\}\)/);
  assert.match(core,/say\(\{hanzi:social.reply\[0\]/);
  assert.match(core,/Тоны речи не оценивались/);
- assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=528/);
- assert.match(sw,/chinese-coach-pwa-v528-friendly-conversation/);
- assert.ok(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=528'));
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=529/);
+ assert.match(sw,/chinese-coach-pwa-v529-friendly-name/);
+ assert.ok(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=529'));
 });
