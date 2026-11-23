@@ -30,6 +30,10 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Check learner meaning, live replies and offline files
         run: node --test tests/panda-beginner-release-v536.test.mjs
+      - name: Regression — Panda Android keyboard, learner name and natural dialogue
+        run: |
+          node --test tests/panda-android-keyboard-dialogue-v539.test.mjs
+          node --test tests/panda-natural-statements-v542.test.mjs
       - name: Install mobile Chromium
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
