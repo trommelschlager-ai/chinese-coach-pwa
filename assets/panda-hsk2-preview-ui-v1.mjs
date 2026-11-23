@@ -387,7 +387,7 @@ if (!bridge) {
    if(now-lastTopicsToggle<300)return;
    lastTopicsToggle=now;
    const pop=$('#pg346-topics');pop.hidden=!pop.hidden;stage.dataset.topicsOpen=String(!pop.hidden);$('#pg346-topics-btn').setAttribute('aria-expanded',String(!pop.hidden));if(!pop.hidden){showTopicList();renderTopics(bridge.snapshot());$('#pg346-topics-close').focus()}}
-  function send(){const inp=$('#pg346-input');const value=inp.value.trim();if(!value){inp.focus();return}stopHistoryAudio();closeTopics();inp.value='';bridge.send(value);sync()}
+  function send(){const inp=$('#pg346-input');const value=inp.value.trim();if(!value){inp.focus();return}stopHistoryAudio();closeTopics();inp.value='';bridge.send(value);sync();stage.dataset.composerOpen='false';inp.blur();$('#pg346-send').setAttribute('aria-label','Открыть ввод текста')}
   function toggle(which){if(which==='py'){showPy=!showPy;stage.dataset.py=String(showPy);$('#pg346-py').setAttribute('aria-pressed',String(showPy))}else{showRu=!showRu;stage.dataset.ru=String(showRu);$('#pg346-ru').setAttribute('aria-pressed',String(showRu))}}
   $('#pg346-form').addEventListener('submit',e=>{e.preventDefault();send()});$('#pg346-send').addEventListener('click',send);$('#pg346-mic').addEventListener('click',()=>{stopHistoryAudio();bridge.mic();sync()});
   $('#pg346-short').addEventListener('click',()=>{stopHistoryAudio();bridge.setMode('short');sync()});$('#pg346-nonstop').addEventListener('click',()=>{stopHistoryAudio();bridge.setMode('nonstop');sync()});
