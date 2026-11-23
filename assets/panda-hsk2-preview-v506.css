@@ -1,8 +1,12 @@
-/* v506: fit content instead of forcing equal height. Only preview. */
+/* Let dialogue rows grow and scroll inside the reserved chat area. */
 #pg346 .pg346-history{
  display:flex!important;flex-direction:column!important;flex:0 1 auto!important;
  max-height:42dvh!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;
  overscroll-behavior:contain;scrollbar-width:thin;grid-template-rows:none!important;
+}
+#pg346:not([data-day-scenario="ready"]) .pg346-history {
+ box-sizing: border-box;
+ flex: 0 0 calc(2 * clamp(58px, 8.3dvh, 84px) + clamp(4px, .7dvh, 7px) + 7px) !important;
 }
 #pg346 .pg346-history .pg346-row{
  flex:0 0 auto!important;height:auto!important;min-height:clamp(58px,8.3dvh,84px)!important;
@@ -143,7 +147,7 @@
 
 /* Connect the underside of the body and both paws to the stone. */
 :root:not([data-keyboard="true"]) #pg346 .pg352-mascot {
- bottom: calc(var(--pg-seat-bottom) - clamp(10px, 3.65vw, 17px)) !important;
+ bottom: calc(var(--pg-seat-bottom) - clamp(12px, 4.35vw, 20px)) !important;
 }
 :root:not([data-keyboard="true"]) #pg346 .pg352-mascot::before {
  left: 17%;
@@ -154,6 +158,6 @@
  background:
   radial-gradient(ellipse 25% 45% at 21% 48%, #171510d6, transparent),
   radial-gradient(ellipse 24% 46% at 81% 48%, #171510d6, transparent),
-  radial-gradient(ellipse 30% 34% at 50% 29%, #241e19e0, transparent),
+  radial-gradient(ellipse 30% 34% at 50% 33%, #241e19ec, transparent),
   radial-gradient(ellipse 49% 50% at 50% 44%, #221e19bd, transparent);
 }
