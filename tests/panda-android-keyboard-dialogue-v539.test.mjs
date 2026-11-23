@@ -39,9 +39,9 @@ test('Unverified translation is not shown as a learner-facing placeholder',()=>{
 
 test('Main HTML busts stale Android CSS and JS caches',()=>{
   const html=source('../panda-voice-pilot.html');
-  assert.match(html,/panda-hsk2-preview-v506\.css\?v=543/);
+  assert.match(html,/panda-hsk2-preview-v506\.css\?v=544/);
   assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=543/);
-  assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=543/);
+  assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=544/);
 });
 
 test('Panda remains visible: preserve original and show loaded static copy',()=>{
@@ -74,11 +74,11 @@ test('v542 visible Panda and SW cached together to avoid stale Android scripts',
   const html=source('../panda-voice-pilot.html');
   const worker=source('../sw.js');
   const pack=JSON.parse(source('../assets/offline-pack.json'));
-  assert.equal(pack.version,543);
-  assert(source('../panda-ai-hsk2-preview.html').includes('panda-approved-soft-v500.js?v=543'));
-  assert(source('../panda-ai-hsk2-preview.html').includes('panda-hsk2-preview-v506.css?v=543'));
-  assert.match(worker,/const CACHE='chinese-coach-pwa-v543-/);
-  for(const asset of ['panda-hsk2-preview-v506.css?v=543','panda-hsk2-preview-ui-v1.mjs?v=543','panda-approved-soft-v500.js?v=543']){
+  assert.equal(pack.version,544);
+  assert(source('../panda-ai-hsk2-preview.html').includes('panda-approved-soft-v500.js?v=544'));
+  assert(source('../panda-ai-hsk2-preview.html').includes('panda-hsk2-preview-v506.css?v=544'));
+  assert.match(worker,/const CACHE='chinese-coach-pwa-v544-/);
+  for(const asset of ['panda-hsk2-preview-v506.css?v=544','panda-hsk2-preview-ui-v1.mjs?v=544','panda-approved-soft-v500.js?v=544']){
     assert(html.includes(asset));
     assert(pack.files.some(f=>f.endsWith(asset)));
     assert(worker.includes(asset));
@@ -111,4 +111,22 @@ test('v543 responds to recognized learner question and laughter',()=>{
  assert.match(core,/pinyin:'Nǐ shì lǎoshī ma\?'/);
  assert.match(core,/\['哈哈','哈哈哈','呵呵'\]/);
  assert.match(core,/hanzi:'哈哈，我们继续吧！'/);
+});
+
+test('v544 right shortcuts contain only Topics and Lessons',()=>{
+  const soft=source('../assets/panda-approved-soft-v500.js');
+  const css=source('../assets/panda-hsk2-preview-v506.css');
+  const ui=source('../assets/panda-hsk2-preview-ui-v1.mjs');
+  assert.match(soft,/const book=sideButton\('pg500-side-book'/);
+  assert.doesNotMatch(soft,/const game=sideButton\('pg500-side-game'/);
+  assert.doesNotMatch(soft,/rail\.prepend\(game\)/);
+  assert.match(ui,/class="pg346-all-topics"/);
+  assert.match(ui,/<a href="\.\/game\.html">/); // Trainer remains on the bottom nav
+  assert.match(css,/#pg346 \.pg346-side-rail > \.pg500-side-game \{\s*display:none!important;/);
+});
+
+test('v544 does not show enormous default clarification in dialogue cards',()=>{
+  const ui=source('../assets/panda-hsk2-preview-ui-v1.mjs');
+  assert.match(ui,/obsoleteLongClarification='我没听懂。你可以再说一遍，或者换一种说法吗？'/);
+  assert.match(ui,/rows\.filter\(e=>e\.hanzi!==obsoleteLongClarification\)\.slice\(-3\)/);
 });
