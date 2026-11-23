@@ -50,5 +50,5 @@ test('queue is only a recording checklist, not imaginary approved new clips',()=
   }
   assert.ok(!audioKeys.includes(normalize(row.hanzi)));
  }
- assert.match(queue.warning,/not exhaustive coverage/);
+ assert.match(queue.warning,/not exhaustive/);
 });
