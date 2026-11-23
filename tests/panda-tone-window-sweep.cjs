@@ -28,7 +28,7 @@ function once(source,oldValue,newValue){
 }
 function engine(v){
  let source=once(lab,
-  'win=Math.round(rate*.09),shortWin=Math.round(rate*.060),hop=Math.round(rate*.018)',
+  'win=Math.round(rate*.09),shortWin=Math.round(rate*.056),hop=Math.round(rate*.015)',
   'win=Math.round(rate*.'+String(v.primary/1000).slice(2)+'),shortWin=Math.round(rate*.'+String(v.short/1000).slice(2)+'),hop=Math.round(rate*.'+String(v.hop/1000).slice(2)+')');
  const part=(a,b)=>{const i=source.indexOf(a),j=source.indexOf(b,i+a.length);if(i<0||j<i)throw Error('DSP function missing '+a);return source.slice(i,j)};
  return new Function('finite','median','SPLIT_MIN','SPLIT_MAX',
@@ -131,4 +131,4 @@ if(process.env.GITHUB_STEP_SUMMARY){
  '','Полная диагностика: tone-window-sweep.json в артефакте GitHub Actions.'];
  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,rows.join('\n')+'\n');
 }
-if(!results[0].sane)process.exitCode=1; // Experimental candidates may fail guards; report, don't promote them.
+if(!results.find(x=>x.config.label==='90/56/15')?.sane)process.exitCode=1; // Promoted settings must pass noise/contour checks.
