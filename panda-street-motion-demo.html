@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#080916">
 <meta name="robots" content="noindex,nofollow">
-<title>Panda Street AI — проба движения без генерации</title>
+<title>Panda Street AI — усиленные движения без генерации</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;background:#080916;color:white;font-family:system-ui,-apple-system,Arial,sans-serif}
 #stage{position:relative;height:100dvh;width:100%;overflow:hidden;background:#080916}
@@ -25,15 +25,15 @@ button:active{transform:scale(.96)}button[aria-pressed="true"]{background:#8541b
 <body><main id="stage">
 <canvas id="scene" aria-label="Оригинальный утверждённый персонаж Panda Street AI, пробная анимация головы"></canvas>
 <div id="status" role="status">Загружаю оригинальную Панду из приложения…</div>
-<section id="overlay" aria-label="Проверка движений">
-  <div id="label"><span>🐼 Panda Street · тест движения</span><span id="small">Оригинал без перерисовки</span></div>
+<section id="overlay" aria-label="Проверка усиленных движений">
+  <div id="label"><span>🐼 Panda Street · сильнее движения</span><span id="small">Оригинал без перерисовки</span></div>
   <div id="choices">
     <button type="button" data-mode="idle" aria-pressed="true">😎 Спокойно</button>
     <button type="button" data-mode="ask" aria-pressed="false">❓ Вопрос</button>
     <button type="button" data-mode="yes" aria-pressed="false">👍 Да</button>
     <button type="button" data-mode="no" aria-pressed="false">🙅 Нет</button>
   </div>
-  <p id="hint">Двигается только голова. Фон, одежда и лицо не заменяются. Это отдельная проба — основной Panda Street AI не изменён.</p>
+  <p id="hint">Движения усилены: голова поворачивается, корпус слегка подаётся вперёд. Это проба на оригинальной картинке; основной экран не изменён.</p>
 </section>
 </main>
 <script>
@@ -41,41 +41,74 @@ button:active{transform:scale(.96)}button[aria-pressed="true"]{background:#8541b
 const W=693,H=1444,SKY_START=338,SKY_SIZE=60,FLOOR_START=1303,FLOOR_SIZE=43;
 const cv=document.getElementById('scene'),stage=document.getElementById('stage'),status=document.getElementById('status');
 const buttons=[...document.querySelectorAll('[data-mode]')];
-let original=null,head=null,mode='idle',modeAt=performance.now(),raf=0,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const BX=151,BY=399,BW=315,BH=265,CX=307,CY=546;
-let last=0;
-function constructHead(src){
-  const mask=document.createElement('canvas');mask.width=BW;mask.height=BH;
-  const m=mask.getContext('2d');m.filter='blur(3px)';m.fillStyle='#fff';
-  // The masking contours enclose only the original ears, face and chin.
-  // No generative redraw, no invented fur, no modified clothes.
-  const px=x=>x-BX,py=y=>y-BY;
-  m.beginPath();m.ellipse(px(308),py(536),132,111,0,0,Math.PI*2);m.fill();
-  m.beginPath();m.ellipse(px(208),py(455),43,47,-.18,0,Math.PI*2);m.fill();
-  m.beginPath();m.ellipse(px(411),py(463),43,47,.18,0,Math.PI*2);m.fill();
-  m.beginPath();m.ellipse(px(309),py(601),109,49,0,0,Math.PI*2);m.fill();
-  const layer=document.createElement('canvas');layer.width=BW;layer.height=BH;
-  const k=layer.getContext('2d');k.drawImage(src,BX,BY,BW,BH,0,0,BW,BH);
-  k.globalCompositeOperation='destination-in';k.drawImage(mask,0,0);
-  return layer;
+let original=null,mode='idle',modeAt=performance.now(),raf=0,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Original approved image remains untouched. Motion is a soft local pixel warp,
+// not a new image layered over an unmoving duplicate head.
+const WX=84,WY=365,WW=505,WH=620;
+const warp=document.createElement('canvas');warp.width=WW;warp.height=WH;
+const warpCtx=warp.getContext('2d',{willReadFrequently:true});
+let sourcePixels=null,output=null,last=0;
+function initWarp(img){
+ const scratch=document.createElement('canvas');scratch.width=W;scratch.height=H;
+ const ctx=scratch.getContext('2d',{willReadFrequently:true});
+ ctx.drawImage(img,0,0,W,H);
+ sourcePixels=ctx.getImageData(0,0,W,H).data;
+ output=warpCtx.createImageData(WW,WH);
+}
+function fadeEllipse(x,y,cx,cy,rx,ry){
+ const dx=(x-cx)/rx,dy=(y-cy)/ry,d=dx*dx+dy*dy;
+ if(d<=0.56)return 1;
+ if(d>=1.64)return 0;
+ const u=(1.64-d)/1.08;return u*u*(3-2*u);
 }
 function motion(t){
- const elapsed=(t-modeAt)/1000, breathe=reduce?0:Math.sin(t*.0015);
- if(mode==='idle') return {a:reduce?0:Math.sin(t*.00062)*.0037,y:breathe*.45};
- if(mode==='ask') return {a:reduce?.005:(.012+Math.sin(t*.002)*.003),y:reduce?0:1.2};
- if(mode==='yes') {
-  const p=Math.min(elapsed,1.4), ease=Math.max(0,1-p/1.4);
-  return {a:0,y:reduce?1.0:2.6*Math.sin(p*2*Math.PI*2)*ease};
+ const sec=(t-modeAt)/1000;
+ const breath=Math.sin(t*.0019);
+ if(mode==='idle')return{hx:Math.sin(t*.0010)*3.3,hy:Math.sin(t*.0015)*2.7,ht:Math.sin(t*.0008)*.017,bx:Math.sin(t*.0008)*2.5,by:breath*3.4,hand:breath*2.8};
+ if(mode==='ask'){
+  const z=Math.min(1,sec/.40),ease=z*z*(3-2*z);
+  return{hx:-14*ease+Math.sin(t*.002)*2,hy:9*ease,ht:-.070*ease,bx:-4*ease,by:2*ease,hand:-6*ease};
+ }
+ if(mode==='yes'){
+  const v=Math.sin(sec*9.1),n=(1-Math.cos(sec*9.1))/2;
+  return{hx:Math.sin(sec*3.2)*3,hy:21*n,ht:-.035*v,bx:0,by:5*n,hand:-9*n};
  }
  if(mode==='no'){
-  const p=Math.min(elapsed,1.65),ease=Math.max(0,1-p/1.65);
-  return {a:reduce?-.004:.020*Math.sin(p*2*Math.PI*1.7)*ease,y:0};
+  const v=Math.sin(sec*7.4);
+  return{hx:23*v,hy:Math.abs(v)*2,ht:.082*v,bx:4*v,by:1,hand:4*v};
  }
- return {a:0,y:0};
+ return{hx:0,hy:0,ht:0,bx:0,by:0,hand:0};
+}
+function redrawWarp(m){
+ if(!sourcePixels||!output)return;
+ const src=sourcePixels,out=output.data;
+ let p=0;
+ // Bilinear sampling avoids doubling the original face at the new position.
+ for(let j=0;j<WH;j++){
+  const y=WY+j,hdY=y-549,bdY=y-770;
+  for(let i=0;i<WW;i++){
+   const x=WX+i;
+   const h=fadeEllipse(x,y,308,540,144,130);
+   const b=fadeEllipse(x,y,314,757,202,165);
+   const hand=fadeEllipse(x,y,305,840,82,66);
+   const dx=(m.hx+m.ht*hdY)*h+m.bx*b;
+   const dy=(m.hy-m.ht*(x-308))*h+m.by*b+m.hand*hand;
+   const u=Math.max(0,Math.min(W-1.001,x-dx));
+   const v=Math.max(0,Math.min(H-1.001,y-dy));
+   const ix=u|0,iy=v|0,fx=u-ix,fy=v-iy;
+   const a=(iy*W+ix)*4,rr=a+4,d=a+W*4,dr=d+4;
+   const wa=(1-fx)*(1-fy),wb=fx*(1-fy),wc=(1-fx)*fy,wd=fx*fy;
+   out[p++]=src[a]*wa+src[rr]*wb+src[d]*wc+src[dr]*wd;
+   out[p++]=src[a+1]*wa+src[rr+1]*wb+src[d+1]*wc+src[dr+1]*wd;
+   out[p++]=src[a+2]*wa+src[rr+2]*wb+src[d+2]*wc+src[dr+2]*wd;
+   out[p++]=255;
+  }
+ }
+ warpCtx.putImageData(output,0,0);
 }
 function render(ts){
  if(!original)return;
- if(ts-last<33){raf=requestAnimationFrame(render);return}last=ts;
+ if(ts-last<42){raf=requestAnimationFrame(render);return}last=ts;
  const w=stage.clientWidth,h=stage.clientHeight;
  if(!w||!h){raf=requestAnimationFrame(render);return}
  const dpr=Math.min(2,devicePixelRatio||1);
@@ -87,14 +120,19 @@ function render(ts){
  let s=w/W,left=0,cut=Math.max(0,H-h/s);
  let cutSky=Math.min(SKY_SIZE,cut*.60);
  let cutFloor=Math.min(FLOOR_SIZE,Math.max(0,cut-cutSky));
- if(cut>SKY_SIZE+FLOOR_SIZE){cutSky=SKY_SIZE;cutFloor=FLOOR_SIZE;s=Math.min(w/W,h/(H-SKY_SIZE-FLOOR_SIZE));left=(w-W*s)/2}
+ if(cut>SKY_SIZE+FLOOR_SIZE){
+  cutSky=SKY_SIZE;cutFloor=FLOOR_SIZE;
+  s=Math.min(w/W,h/(H-SKY_SIZE-FLOOR_SIZE));left=(w-W*s)/2;
+ }
  const parts=[[0,SKY_START],[SKY_START+cutSky,FLOOR_START-(SKY_START+cutSky)],[FLOOR_START+cutFloor,H-FLOOR_START-cutFloor]];
  let destY=0;
- for(const [sy,sh] of parts){if(sh>0){c.drawImage(original,0,sy,W,sh,left,destY*s,W*s,sh*s);destY+=sh}}
- const m=motion(ts);
- // Same approved bitmap, copied through a soft mask into a tiny moving head layer.
- c.save();c.translate(left+(CX*s),(CY-cutSky)*s);c.rotate(m.a);c.translate(-(CX*s),-(CY-cutSky)*s);
- c.drawImage(head,BX*s,(BY-cutSky+m.y)*s,BW*s,BH*s);c.restore();
+ for(const [sy,sh] of parts){
+  if(sh>0){c.drawImage(original,0,sy,W,sh,left,destY*s,W*s,sh*s);destY+=sh}
+ }
+ const m=motion(ts);redrawWarp(m);
+ // The continuous warp keeps all original pixels, face, accessories and background intact.
+ // Source y-coordinate maps to the cropped stage, exactly as in the approved UI.
+ c.drawImage(warp,left+WX*s,(WY-cutSky)*s,WW*s,WH*s);
  raf=requestAnimationFrame(render);
 }
 buttons.forEach(btn=>btn.addEventListener('click',()=>{
@@ -110,7 +148,7 @@ async function load(){
   img.src='./assets/panda-street-ai-approved-original.webp';
   await img.decode();
   if(img.naturalWidth!==W||img.naturalHeight!==H)throw new Error('Исходное изображение изменило размер');
-  original=img;head=constructHead(img);status.hidden=true;
+  original=img;initWarp(img);status.hidden=true;
   raf=requestAnimationFrame(render);
  }catch(err){status.textContent='Не удалось загрузить оригинальный экран Panda Street AI: '+err.message+'. Проверь подключение и обнови страницу.';console.error(err)}
 }
