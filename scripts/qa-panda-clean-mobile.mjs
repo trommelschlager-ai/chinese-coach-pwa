@@ -21,7 +21,9 @@ export async function verifyCleanMobile(browser,base,dir){
   assert(await page.locator('.pg364-ground-shadow').count()===1,'Fixed contact shadow required underneath the Panda');
   await page.waitForFunction(()=>document.querySelector('.pg346-panda').naturalWidth>0);
   assert.match(await page.locator('.pg346-panda').getAttribute('src'),/panda-character-clean-v349\.webp/);
-  assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
+  await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pg500Mounted==='true');
+  assert.match(await page.locator('#pg346 .pg500-landscape').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/,
+   'Day/night Panda artwork must remain present on the approved dedicated landscape layer');
   assert.equal(await page.locator('.pg352-rocks').isVisible(),false,'The flat faux-stone slab must not cover the natural scenery');
   await page.waitForFunction(()=>document.querySelector('.pg352-mascot').dataset.faceReady==='true');
   assert(await page.locator('.pg353-face-canvas').isVisible(),'Approved mascot canvas is rendered');
