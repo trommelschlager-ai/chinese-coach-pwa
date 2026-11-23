@@ -9,6 +9,7 @@ on:
       - 'panda-tone-test-lab.html'
       - 'tests/panda-tone-regression.cjs'
       - 'tests/panda-tone-window-sweep.cjs'
+      - 'tests/panda-tone-contrast-lab.cjs'
       - 'assets/hsk2-lesson3-voice/**'
       - '.github/workflows/panda-tone-regression.yml'
   pull_request:
@@ -19,6 +20,7 @@ on:
       - 'panda-tone-test-lab.html'
       - 'tests/panda-tone-regression.cjs'
       - 'tests/panda-tone-window-sweep.cjs'
+      - 'tests/panda-tone-contrast-lab.cjs'
       - 'assets/hsk2-lesson3-voice/**'
       - '.github/workflows/panda-tone-regression.yml'
 permissions:
@@ -48,6 +50,9 @@ jobs:
       - name: Compare experimental F0 windows on six real MP3 clips
         if: ${{ always() }}
         run: node tests/panda-tone-window-sweep.cjs
+      - name: Check correct and deliberately wrong tone contours (synthetic only)
+        if: ${{ always() }}
+        run: node tests/panda-tone-contrast-lab.cjs
       - name: Verify HSK2 lesson 3 tone pilot and saved progress
         if: ${{ always() }}
         run: node tests/panda-tone-lesson3-smoke.cjs
@@ -60,5 +65,6 @@ jobs:
             tone-regression-report.json
             tone-window-sweep.json
             tone-regression-baseline.json
+            tone-contrast-lab.json
           retention-days: 14
           if-no-files-found: warn
