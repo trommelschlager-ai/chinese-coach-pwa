@@ -26,7 +26,7 @@ test('the existing layout buttons are still present and connected',()=>{
 });
 test('microphone requires an explicit disclosure and never claims tone grading',()=>{
  assert.match(source,/let streetRecognition=null,streetMicConsent=false/);
- assert.match(source,/Браузер Chrome/);
+ assert.match(source,/браузер Chrome/);
  assert.match(source,/может отправлять звук своей службе распознавания/);
  assert.match(source,/function stopStreetRecognition\(/);
  assert.match(source,/if\(streetRecognition\)\{stopStreetRecognition\(true\);return\}/);
