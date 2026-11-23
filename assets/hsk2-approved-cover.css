@@ -91,7 +91,7 @@ html.course-layout #app[data-view="1"] #pg433 .pg-approved-lesson-1 .pg-approved
   background-color:#943f3b!important;
 }
 
-/* A single edge-to-edge 694:1536 poster as approved in user photo #2.
+/* A single edge-to-edge 843:1866 poster as approved in user photo #2.
    The transparent tap zones scale with the visible poster, not with a
    separate lower image. Ratio of target Android screens ~0.450. */
 html.course-layout #app[data-view="1"] #pg433 .pg-approved-overlay.pg-approved-full{
@@ -112,3 +112,22 @@ html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-map
 }
 /* The older continuation footer must never appear behind a full-height poster. */
 html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-bottom{display:none!important}
+
+/* The new artwork omits the drawn Back circle. Restore an accessible visible
+   clickable Back button without painting into or cropping the source PNG. */
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-map-link{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  background:radial-gradient(circle at 45% 28%,#fff 0%,#f3e6ff 62%,#ca84ec 100%)!important;
+  border:3px solid #f6d46a!important;
+  box-shadow:0 2px 0 2px #8032ab,0 4px 7px 1px rgba(56,7,76,.55)!important;
+  text-decoration:none!important;color:#531283!important;
+  line-height:1!important;font-weight:900!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-map-link::before{
+  content:"‹";font-size:clamp(26px,8vw,50px)!important;
+  font-family:Arial,sans-serif!important;
+  transform:translateY(-2px);pointer-events:none!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-map-link:active{
+  transform:scale(.93)!important;filter:brightness(1.05)!important;
+}
