@@ -23,7 +23,8 @@
       "audio_status": "awaiting_exact_clip_check_or_recording",
       "audio_file": null,
       "voice_approved": false,
-      "android_verified": false
+      "android_verified": false,
+      "awaiting": null
     },
     {
       "id": "PA-002",
@@ -35,7 +36,8 @@
       "audio_status": "awaiting_exact_clip_check_or_recording",
       "audio_file": null,
       "voice_approved": false,
-      "android_verified": false
+      "android_verified": false,
+      "awaiting": null
     },
     {
       "id": "PA-003",
@@ -47,7 +49,8 @@
       "audio_status": "awaiting_exact_clip_check_or_recording",
       "audio_file": null,
       "voice_approved": false,
-      "android_verified": false
+      "android_verified": false,
+      "awaiting": null
     },
     {
       "id": "PA-004",
@@ -59,7 +62,8 @@
       "audio_status": "awaiting_exact_clip_check_or_recording",
       "audio_file": null,
       "voice_approved": false,
-      "android_verified": false
+      "android_verified": false,
+      "awaiting": null
     },
     {
       "id": "PA-005",
@@ -71,7 +75,8 @@
       "audio_status": "awaiting_exact_clip_check_or_recording",
       "audio_file": null,
       "voice_approved": false,
-      "android_verified": false
+      "android_verified": false,
+      "awaiting": null
     },
     {
       "id": "PA-006",
@@ -83,7 +88,8 @@
       "audio_status": "awaiting_exact_clip_check_or_recording",
       "audio_file": null,
       "voice_approved": false,
-      "android_verified": false
+      "android_verified": false,
+      "awaiting": null
     },
     {
       "id": "PA-007",
@@ -95,7 +101,8 @@
       "audio_status": "awaiting_exact_clip_check_or_recording",
       "audio_file": null,
       "voice_approved": false,
-      "android_verified": false
+      "android_verified": false,
+      "awaiting": null
     },
     {
       "id": "PA-008",
@@ -107,7 +114,8 @@
       "audio_status": "awaiting_exact_clip_check_or_recording",
       "audio_file": null,
       "voice_approved": false,
-      "android_verified": false
+      "android_verified": false,
+      "awaiting": null
     },
     {
       "id": "PA-009",
@@ -119,7 +127,8 @@
       "audio_status": "awaiting_exact_clip_check_or_recording",
       "audio_file": null,
       "voice_approved": false,
-      "android_verified": false
+      "android_verified": false,
+      "awaiting": null
     },
     {
       "id": "PA-010",
@@ -131,7 +140,8 @@
       "audio_status": "awaiting_exact_clip_check_or_recording",
       "audio_file": null,
       "voice_approved": false,
-      "android_verified": false
+      "android_verified": false,
+      "awaiting": "job-liking"
     }
   ]
 }
