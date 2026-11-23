@@ -20,6 +20,7 @@ function measure(pcm,rate,name,word=0){
  const {entry,accepted}=dsp.buildRecording(r),pts=entry.points||[],split=entry.splitRatio;
  const a=pts.filter(x=>x[0]<split),b=pts.filter(x=>x[0]>=split);
  const delta=x=>x.length<2?null:+(12*Math.log2(x.at(-1)[1]/x[0][1])).toFixed(2);
+ const timestampsMonotonic=pts.every((p,i)=>p[0]>=0&&p[0]<=1&&(i===0||p[0]>pts[i-1][0]));
  const evidence=(entry.evidence||[]).map((ev,i)=>{
   const reasons=[];
   if(ev.points<7)reasons.push('F0<7 ('+ev.points+')');
@@ -30,7 +31,7 @@ function measure(pcm,rate,name,word=0){
  });
  const diagnostics=evidence.flatMap(x=>x.reasons.map(y=>'syllable '+x.syllable+': '+y));
  if(entry.splitWarning)diagnostics.push('split uncertain: '+entry.splitWarning);
- return {name,accepted,quality:entry.quality,points:pts.length,syllables:[a.length,b.length],evidence,diagnostics,
+ return {name,accepted,quality:entry.quality,points:pts.length,syllables:[a.length,b.length],evidence,diagnostics,timestampsMonotonic,
   delta:[delta(a),delta(b)],trend:[dsp.observedTrend(pts,0,split),dsp.observedTrend(pts,split,1)],
   length:+entry.seconds.toFixed(2),speech:entry.signal?.speech,splitPct:Math.round(split*100),
   shortRecovered:r.offline?.shortRecovered||0,shortWindowMs:r.offline?.shortWindowMs||0};
@@ -77,6 +78,7 @@ tests.push({name:'harmonic-glitch',pass:dsp.cleanPitch(glitch).length<glitch.len
 tests.push({name:'preserve-rising',pass:dsp.cleanPitch(gradual).length===gradual.length});
 const boundary=[[0,170],[.25,170],[.5,171],[.75,172],[1,173]];
 tests.push({name:'boundary-no-double-count',pass:dsp.contourEvidence(boundary,0,.5,.8).points+dsp.contourEvidence(boundary,.5,1,.8).points===5});
+tests.push({name:'synthetic-strictly-increasing-timestamps',pass:tests.every(x=>!x.result||x.result.timestampsMonotonic!==false)});
 function decode(file){
  const p=cp.spawnSync('ffmpeg',['-hide_banner','-loglevel','error','-nostdin','-i',file,
   '-t','8','-f','f32le','-ac','1','-ar','12000','pipe:1'],{maxBuffer:20*1024*1024,timeout:20000});
@@ -91,6 +93,7 @@ const mp3=names.map((name,i)=>{
  catch(e){return {name,file:filename,error:String(e)};}
 });
 const passes=tests.filter(x=>x.pass).length,decoded=mp3.filter(x=>!x.error).length;
+const timelineErrors=mp3.filter(x=>!x.error&&!x.timestampsMonotonic).map(x=>x.name);
 const report={generated:new Date().toISOString(),source:'panda-tone-test-lab.html',
  automatic:{passed:passes,total:tests.length,tests},realAudio:{decoded,total:6,mp3},
  note:'F0 measurements only. Real MP3 output does not prove tone recognition accuracy.'};
@@ -122,4 +125,5 @@ if(process.env.GITHUB_STEP_SUMMARY){
 
 console.log('Synthetic checks: '+passes+'/'+tests.length);
 for(const a of mp3)console.log(a.name+': '+(a.error||('quality='+a.quality+', F0='+a.points+', 60ms recovered='+a.shortRecovered+', points='+a.syllables.join('/')+', Δ='+a.delta.join('/')+', reasons='+(a.diagnostics.join('; ')||'none'))));
-if(passes!==tests.length||decoded!==6)process.exitCode=1;
+if(timelineErrors.length)console.error('F0 timestamps not strictly increasing: '+timelineErrors.join(', '));
+if(passes!==tests.length||decoded!==6||timelineErrors.length)process.exitCode=1;
