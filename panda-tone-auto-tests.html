@@ -274,7 +274,7 @@ async function analyzeFile(){
    'Второй слог: '+approx(m.second)+' полут.',
    'Выбранный участок: '+approx(m.span)+' с; RMS-кадров вне него: '+m.discarded,
    'Неоднозначные фрагменты: '+(m.ambiguous?'да':'нет'),
-   'Шаг анализа: '+s.hopMs+' мс; 90/68 мс окон; восстановлено '+s.shortRecovered+' точек',
+   'Шаг анализа: '+s.hopMs+' мс; 90/60 мс окон; восстановлено '+s.shortRecovered+' точек',
    'Это только измерения, не оценка правильности произношения.'
   ];
   output.textContent=rows.join('\n');
