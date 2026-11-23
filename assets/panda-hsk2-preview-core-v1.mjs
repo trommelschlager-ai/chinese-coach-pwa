@@ -15,6 +15,7 @@ import {validatedVariants,readMistakes,noteMistake,hardestMistake,clearReviewedM
 import {accessibleLessons,answerNonStop} from './panda-nonstop-v267.mjs?v=270';
 import {choosePracticePrompt} from './panda-live-prompts-v270.mjs?v=270';
 import {answerLive,analyzeLearner,nextTopicPrompt} from './panda-live-dialogue-v272.mjs?v=434';
+import {everydayMeaning,extractFriendlyLearnerName} from './panda-everyday-meaning-v515.mjs?v=529';
 import {recordedPandaAnswer} from './panda-recorded-qa-v358.mjs?v=381';
 import {availableAskGroups} from './panda-ask-catalog-v326.mjs?v=436';
 import {dailyQuestions,checkDayAnswer,dailyFinal} from './panda-hsk2-day-coach-v1.mjs?v=398';
@@ -38,7 +39,7 @@ const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
 let micActivatedAt=0; // Guard the first seconds of a new recording against accidental second taps.
-const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,pendingAudioReply:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
+const state={friendlyAwaiting:null,mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,pendingAudioReply:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
 // Cache verified question groups while the same HSK lessons are unlocked.
 let cachedAskGroupsKey='',cachedAskGroups=[];
 function topicCatalogGroups(){
@@ -258,6 +259,30 @@ function submitHSK2(input){
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
+ // v540: friendly conversation must be checked before HSK2's topic drill.
+ // A normal Panda AI launch defaults to an HSK2 topic, but a valid social
+ // phrase is still meaningful outside that exercise.
+ // v528: a recognised greeting or friendly introduction is meaningful
+ // independently of the current HSK1 short / Non-Stop drill question.
+ if(!state.dayMode){
+  const cleaned=normalize(input);
+  const friendlyTurn=cleaned==='我爱你'||
+   (state.friendlyAwaiting==='friendly-name'&&!!extractFriendlyLearnerName(input))||
+   (state.friendlyAwaiting==='friendly-mood'&&/^(?:我很好|很好|我不好|不好)$/u.test(cleaned));
+  const social=friendlyTurn?everydayMeaning(input,lesson(),{awaiting:state.friendlyAwaiting}):null;
+  if(social){
+   state.friendlyAwaiting=social.context.awaiting;
+   state.awaitQuestion=true;
+   state.prompt=null;
+   state.turns++;
+   learner(input,{known:true,hanzi:input,pinyin:social.spoken[1],translation:social.spoken[2],topic:1});
+   // Never use system TTS or a substituted voice for a new line.
+   say({hanzi:social.reply[0],pinyin:social.reply[1],ru:social.reply[2]},false);
+   note('Панда продолжила разговор. Тоны речи не оценивались.');
+   return;
+  }
+  state.friendlyAwaiting=null;
+ }
  if(hsk2){submitHSK2(input);return;}
  if(state.dayMode){
   if(state.dayDone){note('Тренировка завершена. Вернись к уроку или выбери обычные диалоги.');return;}

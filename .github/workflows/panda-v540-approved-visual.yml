@@ -1,0 +1,44 @@
+name: Panda v540 approved screen Android visual regression
+on:
+  push:
+    branches: [fix/panda-v527-friendly-dialogue-20261123]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  approved-mobile-screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Check conversation and approved UI bindings
+        run: node --test tests/panda-friendly-conversation-v528.test.mjs
+      - name: Check offline install-shell size and download
+        run: node scripts/verify-offline.cjs
+      - name: Install test Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Inspect approved Panda screen at 360 393 and 412 px
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/panda-v540.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-voice-pilot.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-approved-v540.mjs
+      - name: Save mobile screen evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-v540-restored-android-screenshots
+          path: qa/panda-v540-approved-visual/
+          if-no-files-found: warn

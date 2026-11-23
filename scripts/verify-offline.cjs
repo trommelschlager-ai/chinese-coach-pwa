@@ -16,7 +16,9 @@ for(const url of [...streetPaths,...deferredPaths]){
  assert(fullPackFiles.has(url),'Deferred page/media must remain downloadable for offline use: '+url);
  assert(!stores.get(currentCache).has(normalize(url)),'Heavy/optional Street asset unexpectedly preloaded: '+url);
 }
-assert(fullPackFiles.has('./assets/panda-hsk2-preview-core-v1.mjs?v=524'),'Active Panda conversational engine must be downloadable offline');
+const activePandaHtml=fs.readFileSync('panda-voice-pilot.html','utf8');
+const activePandaCore=(activePandaHtml.match(/src="(\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+)"/)||[])[1];
+assert(activePandaCore&&fullPackFiles.has(activePandaCore),'Active versioned Panda conversational engine must be downloadable offline');
 
 const retained='./assets/course-human/cmn-我.mp3',oldImage='./assets/hanzi-paper-v141.png',oldData='./assets/hanzi-data/大.json';
 const oldCache=await cacheAPI.open('chinese-coach-pwa-v48');for(const path of [retained,oldImage,oldData])await oldCache.put(path,await network(path));
