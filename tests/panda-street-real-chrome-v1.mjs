@@ -40,6 +40,13 @@ try{
       },null,{timeout:20000});
       assert.equal(await page.locator('#art').count(),1);
       assert.equal(await page.locator('#theme').count(),1);
+      await page.waitForFunction(()=>document.getElementById('street-face-motion-layer'),null,{timeout:20000});
+      await page.evaluate(()=>{
+        window.__streetMotionLog=[];
+        const layer=document.getElementById('street-face-motion-layer');
+        new MutationObserver(()=>window.__streetMotionLog.push(layer.getAttribute('data-motion-state')))
+          .observe(layer,{attributes:true,attributeFilter:['data-motion-state']});
+      });
       const name=viewport.width+'x'+viewport.height;
       await page.screenshot({path:output+'/night-'+name+'.png'});
       const state=await page.evaluate(()=>({
@@ -88,6 +95,15 @@ try{
           assert.equal(played.error,false,'Browser reported MP3 playback error: '+clip);
           await page.locator('#close').click();
         }
+        assert(await page.evaluate(()=>window.__streetMotionLog.includes('talking')),
+          'Approved male MP3 playback must animate Panda face');
+        const motionCanvas=await page.evaluate(()=>{
+          const c=document.getElementById('street-face-motion-layer');
+          return {width:c.width,height:c.height,cssWidth:c.getBoundingClientRect().width,
+                  sourceWidth:document.getElementById('art').width};
+        });
+        assert(motionCanvas.width>0&&motionCanvas.width<motionCanvas.sourceWidth,
+          'Only the actual face, never the full approved photo, should animate');
         const oldCount=await page.evaluate(()=>window.__streetAudio.length);
         await page.locator('#short').click();
         await page.locator('[data-i="3"]').click();
@@ -124,6 +140,9 @@ try{
           !document.getElementById('shade')?.classList.contains('open'),
           null,{timeout:10000});
         assert.equal(await page.locator('#shade').evaluate(el=>el.classList.contains('open')),false);
+        assert(await page.evaluate(()=>window.__streetMotionLog.includes('reaction')),
+          'Text-only Panda reply must show a short silent facial reaction');
+        await page.screenshot({path:output+'/face-reaction-'+name+'.png'});
         await page.locator('#history').click();
         assert.match(await page.locator('#body').innerText(),/我有点忙/);
         assert.match(await page.locator('#body').innerText(),/好，那你先忙吧/);
