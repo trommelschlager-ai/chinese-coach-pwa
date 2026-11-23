@@ -65,7 +65,13 @@ try{
   }));
  });
  assert.equal(savedOffline.answer,'我喜欢喜剧片。');
- assert.ok(savedOffline.audioBlob.size>50,'Save real MP3 bytes, not only URL');
+ assert.ok(savedOffline.audioBlob.size>0,'Store full MP3 Blob, not only URL');
+ const signature=new Uint8Array(await savedOffline.audioBlob.slice(0,3).arrayBuffer());
+ assert.ok(
+  (signature[0]===73&&signature[1]===68&&signature[2]===51)||
+  (signature[0]===255&&(signature[1]&224)===224),
+  'Saved offline content must carry an MP3 signature'
+ );
  assert.deepEqual(errors,[]);
  console.log('PASS: real Panda conversation opt-in, approved Xiaoxiao MP3, pending new phrase, session-only consent, offline recall');
  await context.close();
