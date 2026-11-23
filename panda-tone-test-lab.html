@@ -746,6 +746,14 @@ function selectSpeechSegment(levels,points){
  return {from:best.from,to:best.to,frames:best.frames,allFrames:loud.length,
   discarded:Math.max(0,loud.length-best.frames),ambiguous,groups:groups.length};
 }
+// Require independent, audible 30ms RMS frames in EACH syllable.
+// F0 windows can overhang a very short vowel, so F0 points alone are not enough.
+// This is a data-quality gate, never a correctness/tonal grade.
+function voicedRmsFrames(levels,splitRatio){
+ if(!Array.isArray(levels)||!finite(splitRatio))return [0,0];
+ return [0,1].map(i=>levels.filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1])&&
+  p[0]>=(i===0?0:splitRatio)&&(i===0?p[0]<splitRatio:p[0]<=1)&&p[1]>=.023).length);
+}
 function buildRecording(rec){
  const levels=(rec.levels||[]).filter(p=>Array.isArray(p)&&finite(p[0])&&finite(p[1]));
  const voiced=levels.filter(p=>p[1]>=.023);
@@ -807,14 +815,15 @@ function buildRecording(rec){
  result.levels=levels.filter(p=>p[0]>=from&&p[0]<=to).map(p=>[Math.min(1,Math.max(0,(p[0]-from)/span)),p[1]]).slice(-180);
  const i=result.splitRatio;
  result.evidence=[contourEvidence(result.points,0,i,duration),contourEvidence(result.points,i,1,duration)];
- result.validParts=result.evidence.map(x=>x.usable);
+ result.voicedRmsFrames=voicedRmsFrames(result.levels,i);
+ result.validParts=result.evidence.map((x,j)=>x.usable&&result.voicedRmsFrames[j]>=5);
  result.quality=result.validParts.every(Boolean)?'both':result.points.length>=2?'partial':'unmeasured';
  if(speech.ambiguous){
   result.splitWarning+=(result.splitWarning?' ':'')+'⚠ В попытке обнаружены несколько похожих голосовых фрагментов, выбор слова неоднозначен.';
   if(result.quality==='both')result.quality='partial';
  }
  const message=result.quality==='both'?'✓ Записано: обе кривые измерены (тоны не оценены).':
-  result.quality==='partial'?'✓ Записано. Один слог измерен частично — показаны доступные данные.':
+  result.quality==='partial'?'✓ Записано. Для обоих слогов данных пока недостаточно — показаны доступные измерения F0.':
   '✓ Повтор учтён по звуковому сигналу, но высоту голоса измерить не удалось.';
  return {accepted:true,entry:result,message};
 }
@@ -963,7 +972,9 @@ document.addEventListener('input',event=>{
  if(!finite(pct)||pct<25||pct>75)return;
  last.splitRatio=pct/100;last.splitSource='manual';last.splitWarning='';
   last.evidence=[contourEvidence(last.points,0,last.splitRatio,last.seconds),contourEvidence(last.points,last.splitRatio,1,last.seconds)];
-  last.validParts=last.evidence.map(x=>x.usable);last.quality=last.validParts.every(Boolean)?'both':'partial';persist();
+  last.voicedRmsFrames=voicedRmsFrames(last.levels||[],last.splitRatio);
+  last.validParts=last.evidence.map((x,j)=>x.usable&&last.voicedRmsFrames[j]>=5);
+  last.quality=last.validParts.every(Boolean)?'both':'partial';persist();
  const label=document.getElementById('tone-split-value');
  if(label)label.textContent=pct+'%';
  const hint=document.getElementById('tone-split-hint');
