@@ -112,13 +112,31 @@ export function mountPandaLiveMemory({
  #pml-status{min-height:20px;font-weight:700}
  #pml-count{font-size:12px;color:#6f5c8b}
  #pml-saved{display:grid;gap:4px;max-height:110px;overflow:auto}
- #pml-saved [role="listitem"]{border-radius:7px;background:#fff;padding:5px 8px;font-size:12px}
+ #pml-saved [role="listitem"]{border-radius:7px;background:#fff;padding:5px 8px;font-size:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+ #pml-saved .pml-play{min-height:32px;padding:5px 7px;flex:0 0 auto;font-size:11px;background:#e8dbfc;color:#5d398a}
  #pml-clear{background:#f2e8fa!important;color:#6f4b82!important}
  `;
  document.head.append(css);
  const $=id=>controls.querySelector('#'+id),consent=$('pml-consent'),auto=$('pml-auto');
  const note=text=>{$('pml-status').textContent=text};
- let lastSeen='',writing=false;
+ let lastSeen='',writing=false,savedPlayer=null,savedObjectURL=null;
+ function stopSavedPlayer(){
+  if(savedPlayer){savedPlayer.onended=null;savedPlayer.onerror=null;savedPlayer.pause();savedPlayer.removeAttribute('src');savedPlayer.load();savedPlayer=null}
+  if(savedObjectURL){URL.revokeObjectURL(savedObjectURL);savedObjectURL=null}
+ }
+ async function playSaved(card){
+  stopSavedPlayer();
+  try{
+   const ready=await store.recall({ownerId:owner,topic:card.topic,trigger:card.trigger});
+   if(!ready)return note('Запись ещё не проверена или аудио не сохранено.');
+   savedObjectURL=URL.createObjectURL(ready.audioBlob);
+   savedPlayer=new Audio(savedObjectURL);
+   savedPlayer.onended=stopSavedPlayer;
+   savedPlayer.onerror=()=>note('Не удалось открыть сохранённый MP3 Xiaoxiao.');
+   await savedPlayer.play();
+   note('🔊 Воспроизводится сохранённый MP3 Xiaoxiao с телефона.');
+  }catch(e){stopSavedPlayer();note('Не удалось воспроизвести запись: '+e.message)}
+ }
  const latest=()=>eligibleLivePandaPair(bridge.snapshot().history);
  const signature=pair=>pair?.trigger+'|'+pair?.answer+'|'+pair?.pinyin;
  async function counts(){
@@ -129,7 +147,15 @@ export function mountPandaLiveMemory({
    const list=$('pml-saved');list.replaceChildren();
    for(const card of cards.slice(-6).reverse()){
     const row=document.createElement('div');row.setAttribute('role','listitem');
-    row.textContent=card.trigger+' — '+(card.hasAudio?'🔊 MP3 готов':'📝 Ждёт проверки');
+    const text=document.createElement('span');
+    text.textContent=card.trigger+' — '+(card.hasAudio?'MP3 готов':'📝 Ждёт проверки');
+    row.append(text);
+    if(card.hasAudio){
+     const play=document.createElement('button');play.type='button';play.className='pml-play';
+     play.textContent='🔊 Офлайн';play.setAttribute('aria-label','Слушать '+card.trigger+' голосом Xiaoxiao');
+     play.addEventListener('click',()=>playSaved(card));
+     row.append(play);
+    }
     list.append(row);
    }
   }catch(e){$('pml-count').textContent='Локальная память недоступна: '+e.message}
@@ -160,7 +186,7 @@ export function mountPandaLiveMemory({
  $('pml-save').addEventListener('click',()=>save(latest(),true));
  $('pml-clear').addEventListener('click',async()=>{
   if(!window.confirm('Удалить ВСЕ сохранённые фразы личной памяти этого браузера? Общая библиотека Panda Go останется.'))return;
-  try{await store.clearOwner(owner);note('Личная память этого браузера очищена. Общая память не изменена.');await counts()}
+  try{stopSavedPlayer();await store.clearOwner(owner);note('Личная память этого браузера очищена. Общая память не изменена.');await counts()}
   catch(e){note('Не удалось очистить память: '+e.message)}
  });
  $('pml-check').addEventListener('click',async()=>{
@@ -178,7 +204,7 @@ export function mountPandaLiveMemory({
   lastSeen=key;save(pair,false);
  });
  observer.observe(historyRoot,{childList:true});
- window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+ window.addEventListener('pagehide',()=>{observer.disconnect();stopSavedPlayer()},{once:true});
  counts();
  return {controls,counts,latest};
 }
