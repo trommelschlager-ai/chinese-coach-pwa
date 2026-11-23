@@ -68,22 +68,18 @@
    const base=make('base'),button=make('button');
    const bg=base.getContext('2d'),fg=button.getContext('2d');
    if(!bg||!fg)return;
-   bg.drawImage(img,0,0,w,h);
-   bg.save();
-   bg.beginPath();
-   bg.roundRect(left,top,bw,bh,bh/2);
-   bg.clip();
-   // The temporary recess is visible only while the button is 4px lower.
-   if('filter' in bg)bg.filter='blur(42px)';
-   else {bg.fillStyle='#74219e';bg.fillRect(left,top,bw,bh);}
-   if('filter' in bg)bg.drawImage(img,0,0,w,h);
-   bg.restore();
-   // Lesson 5 only. The duplicate-looking DARK PURPLE ARC is baked into
-   // the approved cover bitmap, not a CSS box-shadow. Fade that painted
-   // arc on the background canvas; keep the gold edge, art, and one CTA.
+   // Lesson 5 only: the dark arc is PART OF THE POSTER BITMAP.
+   // Correct the source BEFORE composing the still and pressed button.
+   // Otherwise the uncorrected foreground canvas hides the edit.
+   let artSource=img;
    if(num===5){
     try{
-     const frame=bg.getImageData(0,0,w,h),pixels=frame.data;
+     const corrected=document.createElement('canvas');
+     corrected.width=w;corrected.height=h;
+     const correctionContext=corrected.getContext('2d',{willReadFrequently:true});
+     if(!correctionContext)throw Error('Canvas not supported');
+     correctionContext.drawImage(img,0,0,w,h);
+     const frame=correctionContext.getImageData(0,0,w,h),pixels=frame.data;
      const idx=(xx,yy)=>(yy*w+xx)*4;
      const y0=Math.max(0,Math.round((rect.y-.043)*h));
      const y1=Math.min(h-1,Math.round((rect.y-.006)*h));
@@ -127,16 +123,27 @@
         pixels[p+2]=Math.round(b+(bb-b)*alpha);
        }
       }
-      bg.putImageData(frame,0,0);
-      section.dataset.ctaShadow="arc-soft-v5";
+      correctionContext.putImageData(frame,0,0);
+      artSource=corrected;
+      section.dataset.ctaShadow="arc-soft-v6";
      }
     }catch(_ignored){/* Leave the approved art intact on unsupported devices. */}
    }
+   bg.drawImage(artSource,0,0,w,h);
+   bg.save();
+   bg.beginPath();
+   bg.roundRect(left,top,bw,bh,bh/2);
+   bg.clip();
+   // The temporary recess is visible only while the button is 4px lower.
+   if('filter' in bg)bg.filter='blur(42px)';
+   else {bg.fillStyle='#74219e';bg.fillRect(left,top,bw,bh);}
+   if('filter' in bg)bg.drawImage(artSource,0,0,w,h);
+   bg.restore();
    fg.save();
    fg.beginPath();
    fg.roundRect(left,top,bw,bh,bh/2);
    fg.clip();
-   fg.drawImage(img,0,0,w,h);
+   fg.drawImage(artSource,0,0,w,h);
    fg.restore();
    const cover=section.querySelector('.pg-approved-cover-image');
    cover.after(base,button);
