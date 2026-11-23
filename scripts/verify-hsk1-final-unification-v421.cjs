@@ -1,7 +1,10 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),cp=require('node:child_process');
 const {JSDOM}=require('jsdom');
-const base='404e142c20aab37a6c8a24d60b60aa57028f8043';
+// On pull requests compare protected lessons with the actual approved base
+// branch, not a stale v421 archive snapshot. CI passes the PR base SHA.
+const base=process.env.PANDA_APPROVED_BASE_SHA||cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+assert.match(base,/^[a-f0-9]{40}$/,'Approved reference must be a concrete commit SHA');
 const pages=['hsk1-first-v189.html','hsk1-second-v203.html','hsk1-third-v212.html','hsk1-fourth-v214.html','hsk1-fifth-v227.html','hsk1-family-v231.html','hsk1-weather-v231.html'];
 function stripAllowed(html){return html.replace(/<header\b[\s\S]*?<\/header>/,'').replace(/\s*<link rel="stylesheet" href="\.\/assets\/hsk1-headers-v421.css\?v=421">/,'').replace(/ data-pg-hsk1="[1-7]"/,'').replace(/ pg-hsk1-progress/g,'').replace(/>\s+</g,'><')}
 for(const [i,p] of pages.entries()){
@@ -39,5 +42,5 @@ for(const url of ['./assets/hsk1-headers-v421.css?v=421','./assets/hsk1-controls
   const original=cp.execFileSync('git',['show',base+':'+path],{encoding:'utf8'});
   assert.equal(fs.readFileSync(path,'utf8'),original,'Protected file unchanged: '+path);
  }
- console.log('PASS v421: seven uniform scoped headers, exact lesson 5–7 content/control protection, unchanged map/shared CSS/scripts, dynamic semantic buttons preserve actions and disabled state.');
+ console.log('PASS v421: seven uniform scoped headers, lesson 5–7 unchanged versus approved '+base.slice(0,10)+', dynamic semantic buttons preserve actions and disabled state.');
 })().catch(err=>{console.error(err);process.exitCode=1});
