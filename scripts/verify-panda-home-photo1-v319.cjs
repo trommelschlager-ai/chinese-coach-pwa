@@ -23,7 +23,7 @@ assert.equal(image?.getAttribute('src'),'./assets/panda-home-approved-photo1-v31
 assert.equal(image.getAttribute('width'),'864');assert.equal(image.getAttribute('height'),'1536');
 const buttons=[...document.querySelectorAll('nav.pg-hsk-level-list > a.pg-photo1-hit')];
 assert.equal(buttons.length,2,'Only two working hotspots');
-assert.deepEqual(buttons.map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=map']);
+assert.deepEqual(buttons.map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=welcome']);
 assert.deepEqual(buttons.map(x=>x.querySelector('strong')?.textContent),['Начальный уровень','Продолжающий уровень']);
 assert(buttons.every(x=>x.getAttribute('aria-label')?.includes('Открыть уровень')),'Buttons must remain accessible and functional');
 assert(!document.querySelector('.pg-hsk-bridge'),'No separate blurry bridge may overlay the original landscape');
