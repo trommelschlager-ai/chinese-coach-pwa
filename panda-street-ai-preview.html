@@ -251,7 +251,7 @@ const MALE_CUES=Object.freeze({
 let playing=null,voiceToken=0;
 const approvedMaleRegistryPromise=import('./assets/panda-street-approved-male-mp3-v1.mjs?v=1')
  .catch(error=>{console.error('Approved Street male registry:',error);return null});
-function playApprovedMaleMp3(clip,token){
+function playApprovedStreetMaleClip(clip,token){
  if(token!==voiceToken)return;
  // Only possible after a reviewed same-male entry is activated in the registry.
  const a=new Audio(clip.src);playing=a;a.preload='auto';a.playbackRate=1;
@@ -281,7 +281,7 @@ function speak(text){
    if(token!==voiceToken)return;
    const clip=mod?.lookupApprovedStreetMaleMp3(text);
    if(!clip){tip('Фраза показана текстом · мужская запись для неё пока не загружена');return}
-   playApprovedMaleMp3(clip,token);
+   playApprovedStreetMaleClip(clip,token);
   });
   return false;
  }
