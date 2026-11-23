@@ -1,0 +1,32 @@
+name: Panda AI HSK2-3 official syllabus catalog
+on:
+  pull_request:
+    paths:
+      - 'assets/panda-hsk23-official-topics-v1.mjs'
+      - 'assets/panda-hsk2-preview-ui-v1.mjs'
+      - 'tests/panda-hsk23-official-topics-v1.test.mjs'
+      - 'assets/offline-pack.json'
+      - 'sw.js'
+      - 'panda-voice-pilot.html'
+      - 'panda-ai-hsk2-preview.html'
+  push:
+    branches:
+      - panda-hsk23-official-catalog-20261123
+  workflow_dispatch:
+jobs:
+  syllabus:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax validation
+        run: |
+          node --check assets/panda-hsk23-official-topics-v1.mjs
+          node --check assets/panda-hsk2-preview-ui-v1.mjs
+          node --check sw.js
+      - name: Official HSK2/3 taxonomy and offline safety
+        run: node --test tests/panda-hsk23-official-topics-v1.test.mjs
