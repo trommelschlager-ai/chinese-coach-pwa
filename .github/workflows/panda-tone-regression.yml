@@ -32,11 +32,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify ffmpeg
-        run: ffmpeg -version | head -n 1
+      - name: Install MP3 decoder (FFmpeg)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg
+          command -v ffmpeg
+          ffmpeg -hide_banner -version
       - name: Analyze tone algorithm and six HSK2 MP3 clips
         run: node tests/panda-tone-regression.cjs
       - name: Verify HSK2 lesson 3 tone pilot and saved progress
+        if: ${{ always() }}
         run: node tests/panda-tone-lesson3-smoke.cjs
       - name: Upload diagnostic report
         if: always()
