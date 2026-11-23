@@ -17,10 +17,11 @@ const base={
  status:'approved',
  nativeSpeakerChecked:true
 };
-test('all six additional Luvvoice phrases remain disabled until the approved MP3s exist',()=>{
+test('three native-approved tracks stay inactive until MP3s reach the repository',()=>{
  assert.equal(APPROVED_STREET_MALE_MP3.length,0);
  assert.equal(lookupApprovedStreetMaleMp3('我有点忙。'),null);
- assert.equal(queue.phrases.filter(x=>x.priority==='P0'&&x.status==='awaiting-approved-male-luvvoice').length,6);
+ assert.equal(queue.phrases.filter(x=>x.priority==='P0'&&x.status==='native-speaker-approved-pending-repository-upload').length,3);
+ assert.equal(queue.phrases.filter(x=>x.priority==='P0'&&x.status==='awaiting-approved-male-luvvoice').length,3);
 });
 test('registry resolves ONLY independently reviewed male Luvvoice MP3s',()=>{
  assert.deepEqual(lookupApprovedStreetMaleMp3(' 我有点忙！ ',[base]),{
