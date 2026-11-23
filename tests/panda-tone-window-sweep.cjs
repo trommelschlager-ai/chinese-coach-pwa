@@ -14,7 +14,10 @@ const windows=[
  {label:'90/60/15',primary:90,short:60,hop:15},
  {label:'90/60/12',primary:90,short:60,hop:12},
  {label:'90/64/15',primary:90,short:64,hop:15},
- {label:'80/60/15',primary:80,short:60,hop:15}
+ {label:'80/60/15',primary:80,short:60,hop:15},
+ {label:'TIMELINE trim',primary:90,short:60,hop:18,timeline:'trim'},
+ {label:'TIMELINE align',primary:90,short:60,hop:18,timeline:'align'},
+ {label:'TIMELINE align-slope',primary:90,short:60,hop:18,timeline:'align',slopeAware:true}
 ];
 function once(source,oldValue,newValue){
  const hits=source.split(oldValue).length-1;
@@ -22,9 +25,38 @@ function once(source,oldValue,newValue){
  return source.replace(oldValue,newValue);
 }
 function engine(v){
- const source=once(lab,
+ let source=once(lab,
   'win=Math.round(rate*.09),shortWin=Math.round(rate*.060),hop=Math.round(rate*.018)',
   'win=Math.round(rate*.'+String(v.primary/1000).slice(2)+'),shortWin=Math.round(rate*.'+String(v.short/1000).slice(2)+'),hop=Math.round(rate*.'+String(v.hop/1000).slice(2)+')');
+ if(v.timeline==='trim'){
+  source=once(source,
+   'const speechPoints=points.filter(p=>p[0]>=from-.08&&p[0]<=to+.08).slice(-120);',
+   'const speechPoints=points.filter(p=>p[0]>=from&&p[0]<=to).slice(-120);');
+  source=once(source,
+   'const normalized=speechPoints.map(p=>[Math.min(1,Math.max(0,(p[0]-from)/span)),p[1]]);',
+   'const normalized=speechPoints.map(p=>[(p[0]-from)/span,p[1]]);');
+ }else if(v.timeline==='align'){
+  source=once(source,
+   'const from=speech.from,to=speech.to,duration=finite(from)&&finite(to)?to-from:0;',
+   'const seedFrom=speech.from,seedTo=speech.to;'+
+   'const edgePitch=points.filter(p=>p[0]>=seedFrom-.06&&p[0]<=seedTo+.08);'+
+   'const from=edgePitch.length?Math.min(seedFrom,edgePitch[0][0]):seedFrom;'+
+   'const to=edgePitch.length?Math.max(seedTo,edgePitch.at(-1)[0]):seedTo;'+
+   'const duration=finite(from)&&finite(to)?to-from:0;');
+  source=once(source,
+   'const normalized=speechPoints.map(p=>[Math.min(1,Math.max(0,(p[0]-from)/span)),p[1]]);',
+   'const normalized=speechPoints.map(p=>[(p[0]-from)/span,p[1]]);');
+ }
+ if(v.slopeAware){
+  source=once(source,
+   'if(dt<.085&&Math.abs(12*Math.log2(p[i][1]/p[i-1][1]))>=3.3)jump=true;',
+   'if(dt<.085&&Math.abs(12*Math.log2(p[i][1]/p[i-1][1]))>=3.3){'+
+   'const prev=i>1?12*Math.log2(p[i-1][1]/p[i-2][1]):0;'+
+   'const current=12*Math.log2(p[i][1]/p[i-1][1]);'+
+   'const next=i+1<len?12*Math.log2(p[i+1][1]/p[i][1]):0;'+
+   'const coherent=prev*current>=0&&next*current>=0&&Math.abs(prev)>=.3&&Math.abs(next)>=.15;'+
+   'if(!coherent)jump=true;}');
+ }
  const part=(a,b)=>{const i=source.indexOf(a),j=source.indexOf(b,i+a.length);if(i<0||j<i)throw Error('DSP function missing '+a);return source.slice(i,j)};
  return new Function('finite','median','SPLIT_MIN','SPLIT_MAX',
   part('function estimateSplit(rawPoints,levels){','function observedTrend(')+
