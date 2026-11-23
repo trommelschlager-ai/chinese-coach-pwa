@@ -1,0 +1,27 @@
+name: Panda Street AI voice and shared memory checks
+on:
+  pull_request:
+    paths:
+      - 'panda-street-ai-preview.html'
+      - 'panda-voice-pilot.html'
+      - 'panda-shared-profile-settings.html'
+      - 'assets/panda-street-shared-brain-v1.mjs'
+      - 'assets/panda-cross-character-memory-v1.mjs'
+      - 'assets/panda-live-screen-v270.mjs'
+      - 'assets/panda-hsk2-preview-core-v1.mjs'
+      - 'tests/panda-cross-character-memory-v1.test.mjs'
+      - 'tests/panda-street-live-android-v2.test.mjs'
+      - '.github/workflows/panda-street-live-v2.yml'
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check opt-in shared learner memory and Panda Street conversation
+        run: node --test tests/panda-cross-character-memory-v1.test.mjs tests/panda-street-live-android-v2.test.mjs
