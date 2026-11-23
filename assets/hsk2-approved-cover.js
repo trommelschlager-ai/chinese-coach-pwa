@@ -27,7 +27,7 @@
   section.className='pg-approved-overlay pg-approved-lesson-'+num+(full?' pg-approved-full':'');
   section.setAttribute('aria-label','HSK 2. Урок '+num+'. '+names[num-1]);
   const size=full?['843','1866']:['941','1672'];
-  const start=full?(tactileFix?'left:2.3%;top:58.8%;width:95.4%;height:7.7%':'left:2.4%;top:62.0%;width:95.2%;height:7.1%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
+  const start=full?(tactileFix?'left:2.3%;top:60.0%;width:95.4%;height:7.7%':'left:2.4%;top:62.0%;width:95.2%;height:7.1%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
   section.innerHTML='<div class="pg-approved-poster">'+
    '<img class="pg-approved-cover-image" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" alt="HSK 2. Урок '+num+'. '+esc(names[num-1])+'">'+
    (full&&tactileFix?'<img class="pg-approved-pressed-art" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" aria-hidden="true" alt="">':'')+
