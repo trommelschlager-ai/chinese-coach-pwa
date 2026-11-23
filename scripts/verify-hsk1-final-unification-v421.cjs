@@ -1,7 +1,9 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),cp=require('node:child_process');
 const {JSDOM}=require('jsdom');
-const base='404e142c20aab37a6c8a24d60b60aa57028f8043';
+// Snapshot of the currently approved HSK1 lessons (including the later five-question finals).
+// Keep exact-content protection; the 2026-10 snapshot predates these approved lessons.
+const base='8030fff4c02ca3ba6cd9d8dbef87ddff266ed753';
 const pages=['hsk1-first-v189.html','hsk1-second-v203.html','hsk1-third-v212.html','hsk1-fourth-v214.html','hsk1-fifth-v227.html','hsk1-family-v231.html','hsk1-weather-v231.html'];
 function stripAllowed(html){return html.replace(/<header\b[\s\S]*?<\/header>/,'').replace(/\s*<link rel="stylesheet" href="\.\/assets\/hsk1-headers-v421.css\?v=421">/,'').replace(/ data-pg-hsk1="[1-7]"/,'').replace(/ pg-hsk1-progress/g,'').replace(/>\s+</g,'><')}
 for(const [i,p] of pages.entries()){
