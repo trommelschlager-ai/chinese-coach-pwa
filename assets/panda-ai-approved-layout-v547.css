@@ -203,7 +203,7 @@
   position:absolute!important;top:var(--pa-panda-top)!important;
   left:2%!important;right:auto!important;bottom:auto!important;
   width:var(--pa-panda-width)!important;height:auto!important;
-  max-width:none!important;max-height:none!important;
+  min-height:0!important;max-width:none!important;max-height:none!important;
   animation:none!important;transform:none!important;transition:none!important
 }
 :root[data-keyboard="true"] #pg346[data-pa-layout="v547"]:not([data-day-scenario="ready"]) .pg346-scene::before,
