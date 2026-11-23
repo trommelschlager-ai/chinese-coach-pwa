@@ -8,106 +8,67 @@
  const labels=['Новые слова','Тесты','Грамматика','Тематический рассказ','Произношение','Диалог'];
  const num=Number(document.currentScript?.dataset.lesson||0);
  if(!Number.isInteger(num)||num<1||num>10)return;
- const tactileFix=[2,3,6,9].includes(num);
  const art='./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'.png'+(num===1?'?v=20261123back1':'');
- const fullArt='./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'-full.webp';
+ const fullArt=num===5?'./assets/hsk2-approved-covers/lesson-05-full-softshadow-v7.png':'./assets/hsk2-approved-covers/lesson-'+String(num).padStart(2,'0')+'-full.webp';
  const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const loading=new WeakSet();
 
- // Detect the purple CTA's vertical position from EACH approved cover.
- // Individual posters have different CTA heights: a shared y=60% hotspot is wrong.
- function findStartRect(img){
-  const fallback={x:.013,y:([2,3,6].includes(num)?.588:num===9?.628:.635),w:.974,h:.088};
-  try{
-   const scan=document.createElement('canvas');
-   scan.width=220;scan.height=480;
-   const context=scan.getContext('2d',{willReadFrequently:true});
-   if(!context)return fallback;
-   context.drawImage(img,0,0,scan.width,scan.height);
-   const data=context.getImageData(0,0,scan.width,scan.height).data;
-   const h=scan.height,w=scan.width,scores=new Float32Array(h);
-   for(let y=Math.round(h*.54);y<Math.round(h*.78);y++){
-    let matched=0,total=0;
-    for(const range of [[.12,.32],[.68,.88]]){
-     for(let x=Math.round(w*range[0]);x<Math.round(w*range[1]);x+=2){
-      const p=(y*w+x)*4,r=data[p],g=data[p+1],b=data[p+2];
-      if(r<210&&g<100&&b>100&&b>g*1.4)matched++;
-      total++;
-     }
-    }
-    scores[y]=matched/total;
-   }
-   const span=Math.round(h*.05),half=Math.floor(span/2);
-   let best=0,at=-1;
-   for(let cy=Math.round(h*.575);cy<Math.round(h*.745);cy++){
-    let sum=0;
-    for(let y=cy-half;y<cy-half+span;y++)sum+=scores[y];
-    const score=sum/span;
-    if(score>best){best=score;at=cy;}
-   }
-   if(best<.47||at<0)return fallback;
-   // Include the original GOLD RIM and shadow, not just text / purple interior.
-   return {x:.013,y:Math.max(.54,at/h-.047),w:.974,h:.088};
-  }catch(_e){return fallback;}
- }
- // Render the ORIGINAL pixels as a movable button, never a replacement graphic.
- // The base is softly blurred UNDER the pill, preventing an exposed duplicate.
- // Canvas uses the same natural dimensions and object-fit as the approved cover.
- function preparePressedArtwork(section,poster,img,rect){
-  try{
-   const w=img.naturalWidth,h=img.naturalHeight;
-   if(!w||!h)return;
-   const left=rect.x*w,top=rect.y*h,bw=rect.w*w,bh=rect.h*h;
-   const make=kind=>{
-    const node=document.createElement('canvas');
-    node.width=w;node.height=h;
-    node.className='pg-approved-'+kind+'-canvas';
-    node.setAttribute('aria-hidden','true');
-    return node;
+ // Vertical bounds of the painted gold rim on each 843 × 1866 full poster.
+ // Coordinates are artwork pixels. The surrounding tiles stay outside the press band.
+ const startRims=[
+  [1114,1244],[1093,1221],[1097,1227],[1108,1236],[1133,1264],
+  [1083,1214],[1117,1252],[1114,1247],[1092,1222],[1110,1244]
+ ];
+ const [rimTop,rimBottom]=startRims[num-1];
+ function preparePress(poster,cover,img){
+  const w=img.naturalWidth,h=img.naturalHeight;
+  if(w!==843||h!==1866)return ()=>{};
+  const frame=document.createElement('canvas');
+  const ctx=frame.getContext('2d');
+  if(!ctx)return ()=>{};
+  const top=rimTop-11,bottom=rimBottom+24;
+  frame.width=w;
+  frame.height=bottom-top;
+  frame.className='pg-approved-press-frame';
+  frame.setAttribute('aria-hidden','true');
+  cover.after(frame);
+  const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  let animation=0;
+  function draw(offset,brightness){
+   const band=(from,to,start,end)=>{
+    ctx.drawImage(img,0,from,w,to-from,0,start-top,w,end-start);
    };
-   const base=make('base'),button=make('button');
-   const bg=base.getContext('2d'),fg=button.getContext('2d');
-   if(!bg||!fg)return;
-   bg.drawImage(img,0,0,w,h);
-   bg.save();
-   bg.beginPath();
-   bg.roundRect(left,top,bw,bh,bh/2);
-   bg.clip();
-   // The temporary recess is visible only while the button is 4px lower.
-   if('filter' in bg)bg.filter='blur(42px)';
-   else {bg.fillStyle='#74219e';bg.fillRect(left,top,bw,bh);}
-   if('filter' in bg)bg.drawImage(img,0,0,w,h);
-   bg.restore();
-   // Lesson 5: gently fade the grey arc baked into the approved poster
-   // above Start. Leave the purple button, gold rim and six tiles untouched.
-   if(num===5){
-    try{
-     const x=Math.floor(w*.06),y=Math.max(0,Math.floor((rect.y-.023)*h));
-     const sw=Math.min(w-x,Math.ceil(w*.88));
-     const sh=Math.min(h-y,Math.max(1,Math.ceil(h*.027)));
-     const region=bg.getImageData(x,y,sw,sh),pixels=region.data;
-     for(let i=0;i<pixels.length;i+=4){
-      const r=pixels[i],g=pixels[i+1],b=pixels[i+2];
-      if(r>=155&&r<245&&g>=155&&g<245&&b>=155&&b<245
-         &&Math.abs(r-g)<=23&&Math.abs(b-g)<=27){
-       pixels[i]=Math.round(r+(248-r)*.34);
-       pixels[i+1]=Math.round(g+(229-g)*.34);
-       pixels[i+2]=Math.round(b+(245-b)*.34);
-      }
-     }
-     bg.putImageData(region,x,y);
-    }catch(_ignored){/* Preserve the original poster if pixel access is blocked. */}
+   band(top,rimTop,top,rimTop+offset);
+   ctx.filter='brightness('+brightness+')';
+   band(rimTop,rimBottom,rimTop+offset,rimBottom+offset);
+   ctx.filter='none';
+   band(rimBottom,bottom,rimBottom+offset,bottom);
+  }
+  return pressed=>{
+   cancelAnimationFrame(animation);
+   if(!pressed){
+    poster.classList.remove('pg-approved-frame-visible');
+    return;
    }
-   fg.save();
-   fg.beginPath();
-   fg.roundRect(left,top,bw,bh,bh/2);
-   fg.clip();
-   fg.drawImage(img,0,0,w,h);
-   fg.restore();
-   const cover=section.querySelector('.pg-approved-cover-image');
-   cover.after(base,button);
-   section.classList.add('pg-approved-canvas-ready');
-  }catch(_e){/* Keep the original intact if canvas is unavailable. */}
+   const {width,height}=cover.getBoundingClientRect();
+   const scale=Math.max(width/w,height/h);
+   if(!scale)return;
+   // Match the cover's centered object-fit: cover crop exactly.
+   frame.style.left=(width-w*scale)/2+'px';
+   frame.style.top=(height-h*scale)/2+top*scale+'px';
+   frame.style.width=w*scale+'px';
+   frame.style.height=(bottom-top)*scale+'px';
+   const offset=3/scale;
+   const start=performance.now();
+   function tick(now){
+    const progress=Math.min(1,Math.max(0,(now-start)/100));
+    const eased=1-(1-progress)**2;
+    draw(reducedMotion.matches?0:Math.round(offset*eased),1-.025*eased);
+    poster.classList.add('pg-approved-frame-visible');
+    if(progress<1)animation=requestAnimationFrame(tick);
+   }
+   animation=requestAnimationFrame(tick);
+  };
  }
  function build(img,full){
   // Reference example is one full-height 843×1866 poster (not a contact sheet,
@@ -123,8 +84,7 @@
   section.className='pg-approved-overlay pg-approved-lesson-'+num+(full?' pg-approved-full':'');
   section.setAttribute('aria-label','HSK 2. Урок '+num+'. '+names[num-1]);
   const size=full?['843','1866']:['941','1672'];
-  const rect=full?findStartRect(img):null;
-  const start=full?('left:'+(rect.x*100).toFixed(2)+'%;top:'+(rect.y*100).toFixed(2)+'%;width:'+(rect.w*100).toFixed(2)+'%;height:'+(rect.h*100).toFixed(2)+'%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
+  const start=full?('left:1.3%;top:'+(rimTop/18.66)+'%;width:97.4%;height:'+((rimBottom-rimTop)/18.66)+'%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
   section.innerHTML='<div class="pg-approved-poster">'+
    '<img class="pg-approved-cover-image" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" alt="HSK 2. Урок '+num+'. '+esc(names[num-1])+'">'+
 
@@ -135,7 +95,7 @@
   const cover=section.querySelector('.pg-approved-cover-image');
   cover.src=img.src;
   if(full){
-   preparePressedArtwork(section,poster,img,rect);
+   const renderPress=preparePress(poster,cover,img);
 
    // Give the painted Start CTA a real pressed state before changing lessons.
    // The lesson's existing delegated data-step handler still owns navigation.
@@ -143,12 +103,17 @@
    let pressPending=false;
    let forwardClick=false;
    // The single painted button moves with the pointer; never swap artwork.
+   let showingPressed=false;
    const showPressed=pressed=>{
-    startButton.classList.toggle('pg-approved-start-pressed',pressed);
-    poster.classList.toggle('pg-approved-pressing',pressed);
+    if(showingPressed===pressed)return;
+    showingPressed=pressed;
+    renderPress(pressed);
    };
    startButton.addEventListener('pointerdown',()=>showPressed(true),{passive:true});
    startButton.addEventListener('pointercancel',()=>{if(!pressPending)showPressed(false);},{passive:true});
+   startButton.addEventListener('pointerup',()=>{
+    requestAnimationFrame(()=>{if(!pressPending)showPressed(false);});
+   },{passive:true});
    startButton.addEventListener('pointerleave',()=>{if(!pressPending)showPressed(false);},{passive:true});
    startButton.addEventListener('click',event=>{
     if(forwardClick){forwardClick=false;return;}
