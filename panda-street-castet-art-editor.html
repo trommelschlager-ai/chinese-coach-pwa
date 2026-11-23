@@ -20,10 +20,16 @@ button:disabled{opacity:.46;cursor:default}select{padding-inline:5px}#tools butt
 #range{display:flex;gap:6px;align-items:center}#range label{font-size:10px;flex:0 0 auto}#zoom{flex:1;accent-color:#e3b4ff}#zoomText{font-size:10px;flex:0 0 34px;text-align:right}
 #loader{z-index:10;position:absolute;inset:0;display:grid;place-items:center;background:#080817f2;padding:25px;text-align:center;line-height:1.55;font-size:14px}#loader[hidden]{display:none}
 #warning{color:#ffdfab;font-size:10px;line-height:1.35}
+#chrome-toggle,#castet-focus{position:absolute;z-index:8;top:max(10px,env(safe-area-inset-top));height:42px;padding:7px 11px;border-radius:13px;background:#21182fe8;border:1px solid #b18cc8;box-shadow:0 3px 10px #0008;backdrop-filter:blur(8px);font-size:11px}
+#chrome-toggle{right:10px}#castet-focus{left:10px}
+body.ui-hidden #panel,body.ui-hidden #head{display:none}
+body.ui-hidden #chrome-toggle{background:#443164}
 @media(min-aspect-ratio:11/10){#head{left:9px;transform:none;width:250px}#panel{left:auto;right:9px;transform:none;width:280px}.line{flex-wrap:wrap}.line>*{flex:1 1 42%}}
 </style></head>
 <body><main id="app">
 <canvas id="stage" aria-label="Оригинальная Panda Street — ручная разметка контура кастета и прозрачных слоёв"></canvas>
+<button type="button" id="castet-focus" disabled>🔍 Кастет</button>
+<button type="button" id="chrome-toggle" aria-expanded="false">🛠 Инструменты</button>
 <div id="loader" role="status">Открываю оригинальные изображения Panda Street AI из GitHub…</div>
 <header id="head">
  <h1>🐼 PANDA STREET · АРТ-ЭТАП 02</h1>
@@ -56,6 +62,8 @@ const urls={night:ROOT+'night.webp',day:ROOT+'day.webp'};
 const $=id=>document.getElementById(id),canvas=$('stage'),ctx=canvas.getContext('2d',{alpha:false}),imgs={},objectUrls=[];
 const make=()=>{const c=document.createElement('canvas');c.width=W;c.height=H;return c};
 let theme='night',view='original',mode='pan',zoom=1,panX=0,panY=0,drag=null,ready=false;
+// Focus and toolbar display change the VIEWPORT only; the underlying image is never altered.
+document.body.classList.add('ui-hidden');
 let matrices={},points={night:[],day:[]},editHistory={night:[],day:[]};
 const storeKey='panda-street-castet-mask-v2';
 try{const saved=JSON.parse(localStorage.getItem(storeKey)||'null');for(const t of ['night','day'])if(Array.isArray(saved?.[t])&&saved[t].every(p=>Array.isArray(p)&&p.length===2))points[t]=saved[t]}catch{}
@@ -124,14 +132,27 @@ function remember(){editHistory[theme].push(state());if(editHistory[theme].lengt
 function selectMode(m){mode=m;for(const k of ['pan','draw'])$(k).classList.toggle('active',k===m);
  status(m==='draw'?'Касайся границы кулака, чтобы добавлять точки; перетаскивай существующие точки.':'Сдвигай изображение пальцем; для контура выбери «Точки».')}
 function fitFocus(){
- // Only viewport moves: approved image pixels and proportions never change.
- zoom=window.innerWidth<=640?2.3:1.6;$('zoom').value=String(zoom);$('zoomText').textContent=zoom+'×';
- const w=canvas.clientWidth,h=canvas.clientHeight;
- const s=Math.min(w/W,h/H)*zoom;
- const focusX=330,focusY=810;
- panX=-(focusX-W/2)*s;panY=-(focusY-H/2)*s;
- draw()
+ // Exact source image stays untouched. Magnify ONLY the approved brass-knuckle region.
+ // Center is a rough locator, not a claiming-to-be-exact alpha mask.
+ zoom=window.innerWidth<=640?3:2.4;
+ $('zoom').value=String(zoom);$('zoomText').textContent=zoom+'×';
+ const s=Math.min(canvas.clientWidth/W,canvas.clientHeight/H)*zoom;
+ panX=-(324-W/2)*s;panY=-(790-H/2)*s;
+ draw();
 }
+$('chrome-toggle').addEventListener('click',()=>{
+ const open=document.body.classList.toggle('ui-hidden')===false;
+ $('chrome-toggle').textContent=open?'✕ Скрыть':'🛠 Инструменты';
+ $('chrome-toggle').setAttribute('aria-expanded',String(open));
+});
+$('castet-focus').addEventListener('click',()=>{
+ if(!ready)return;
+ fitFocus();
+ document.body.classList.add('ui-hidden');
+ $('chrome-toggle').textContent='🛠 Инструменты';
+ $('chrome-toggle').setAttribute('aria-expanded','false');
+ status('Показана зона кастета в оригинальном разрешении. Разметка и движение не запускаются.');
+});
 function exportCanvas(c,name){
  c.toBlob(b=>{if(!b){status('Экспорт не удался: пустой PNG.');return}
   const url=URL.createObjectURL(b),a=document.createElement('a');a.download=name;a.href=url;a.click();
@@ -184,7 +205,7 @@ async function loadImage(name,url){
  imgs[name]=im;
 }
 Promise.all(Object.entries(urls).map(([n,url])=>loadImage(n,url)))
-.then(()=>{ready=true;$('loader').hidden=true;selectMode('pan');fitFocus();status('Оригиналы night/day загружены 693×1444. Выбери «Точки» и разметь кулак. Все файлы — только черновики.')})
+.then(()=>{ready=true;$('loader').hidden=true;$('castet-focus').disabled=false;selectMode('pan');zoom=1;panX=panY=0;$('zoom').value='1';$('zoomText').textContent='1×';draw();status('Оригинал загружен без изменений. Инструменты скрыты, чтобы не перекрывать Панду. Кастет можно увеличить отдельной кнопкой.')})
 .catch(e=>{$('loader').textContent='Не удалось открыть оригинал: '+e.message+'. Исходники и приложение не изменены.';console.error(e)});
 })();
 </script></body></html>
