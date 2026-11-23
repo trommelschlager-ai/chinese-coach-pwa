@@ -59,14 +59,18 @@ try{
  await context.setOffline(true);
  const savedOffline=await page.evaluate(async()=>{
   const {createPandaMemoryStore}=await import('./assets/panda-offline-memory-v1.mjs');
-  return (await createPandaMemoryStore().recall({
+  const card=await createPandaMemoryStore().recall({
    ownerId:localStorage.getItem('panda-memory-device-owner-v1'),
    topic:'movies',trigger:'我想看喜剧片。'
-  }));
+  });
+  // Playwright cannot serialize a Blob into Node. Inspect the bytes INSIDE
+  // the browser realm; return only plain numbers and strings.
+  return {answer:card?.answer,bytes:card?.audioBlob.size,
+   signature:Array.from(new Uint8Array(await card.audioBlob.slice(0,3).arrayBuffer()))};
  });
  assert.equal(savedOffline.answer,'我喜欢喜剧片。');
- assert.ok(savedOffline.audioBlob.size>0,'Store full MP3 Blob, not only URL');
- const signature=new Uint8Array(await savedOffline.audioBlob.slice(0,3).arrayBuffer());
+ assert.ok(savedOffline.bytes>0,'Store full MP3 Blob, not only URL');
+ const signature=savedOffline.signature;
  assert.ok(
   (signature[0]===73&&signature[1]===68&&signature[2]===51)||
   (signature[0]===255&&(signature[1]&224)===224),
