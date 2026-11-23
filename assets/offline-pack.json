@@ -1,7 +1,10 @@
 {
-  "version": 538,
+  "version": 542,
   "bytes": 80382882,
   "files": [
+    "./assets/panda-hsk2-preview-core-v1.mjs?v=542",
+    "./assets/panda-hsk2-preview-ui-v1.mjs?v=542",
+    "./assets/panda-natural-statements-v542.mjs?v=542",
     "./assets/panda-approved-soft-v500.css?v=527",
     "./assets/panda-hsk2-preview-v506.css?v=535",
     "./assets/panda-hsk2-preview-core-v1.mjs?v=535",
