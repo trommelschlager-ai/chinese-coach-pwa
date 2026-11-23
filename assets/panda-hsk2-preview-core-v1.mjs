@@ -319,7 +319,7 @@ function submit(raw){
  // v542: use reviewed beginner statements as genuine conversation turns,
  // rather than treating a correct assertion as a failed quiz answer.
  // Keep short HSK1 drills and the independent HSK2 My Day scenario intact.
- if((hsk2||state.mode==='nonstop')&&!state.dayMode){
+ if(((hsk2&&hsk2.openChat)||(!hsk2&&state.mode==='nonstop'))&&!state.dayMode){
   const natural=respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
   if(natural){
    state.naturalAwaiting=natural.next;
