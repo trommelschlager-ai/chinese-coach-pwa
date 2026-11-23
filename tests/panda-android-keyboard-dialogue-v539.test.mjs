@@ -66,8 +66,9 @@ test('v543 assets and SW cached together to avoid stale Android scripts',()=>{
   const html=source('../panda-voice-pilot.html');
   const worker=source('../sw.js');
   const pack=JSON.parse(source('../assets/offline-pack.json'));
-  assert.equal(pack.version,543);
-  assert.match(worker,/const CACHE='chinese-coach-pwa-v543-/);
+  assert(pack.version>=543,'Do not roll back the Android fixes');
+  const cacheVersion=Number(worker.match(/^const CACHE='chinese-coach-pwa-v(\d+)-/m)?.[1]);
+  assert.equal(cacheVersion,pack.version,'PWA and offline assets must use the same current version');
   for(const asset of ['panda-hsk2-preview-v506.css?v=543','panda-hsk2-preview-ui-v1.mjs?v=543','panda-approved-soft-v500.js?v=543']){
     assert(html.includes(asset));
     assert(pack.files.some(f=>f.endsWith(asset)));
