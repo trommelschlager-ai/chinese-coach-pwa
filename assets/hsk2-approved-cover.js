@@ -30,33 +30,64 @@
   const start=full?(tactileFix?'left:2.3%;top:60.0%;width:95.4%;height:7.7%':'left:2.4%;top:62.0%;width:95.2%;height:7.1%'):(num===1?'left:12%;top:61.1%;width:74%;height:5.8%':'left:12%;top:66.5%;width:72%;height:6.6%');
   section.innerHTML='<div class="pg-approved-poster">'+
    '<img class="pg-approved-cover-image" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" alt="HSK 2. Урок '+num+'. '+esc(names[num-1])+'">'+
-   
+   (full?'<img class="pg-approved-cta-art" width="'+size[0]+'" height="'+size[1]+'" draggable="false" decoding="async" aria-hidden="true" alt="">':'')+
    '<a class="pg-approved-hotspot pg-approved-map-link" href="./hsk2-life-course.html?view=map" aria-label="Все уроки HSK 2"></a>'+
    steps+'<button type="button" class="pg-approved-hotspot pg-approved-start" data-step="2" aria-label="Начать урок" style="'+start+'"></button>'+
    '</div>'+(full?'':'<div class="pg-approved-bottom" aria-hidden="true"></div>');
-  // The full-size illustration is always the only visible artwork.
-  // A transparent hotspot provides tactile feedback without duplicating the CTA.
-  section.querySelector('.pg-approved-cover-image').src=img.src;
+  const poster=section.querySelector('.pg-approved-poster');
+  const cover=section.querySelector('.pg-approved-cover-image');
+  cover.src=img.src;
   if(full){
+   // The CTA is baked into the approved poster. Cut it OUT of the base layer
+   // and show those exact same pixels in ONE movable layer from the beginning.
+   // The base and CTA never both render the button, even during a long press.
+   const supportsMask=!!(window.CSS && (
+    CSS.supports('mask-image','linear-gradient(black,black)') ||
+    CSS.supports('-webkit-mask-image','linear-gradient(black,black)')
+   ));
+   if(supportsMask){
+    const b=tactileFix?{x:23,y:600,w:954,h:77}:{x:24,y:620,w:952,h:71};
+    const x2=b.x+b.w,y2=b.y+b.h,rx=80,ry=b.h/2;
+    const hole='M'+(b.x+rx)+' '+b.y+' H'+(x2-rx)+
+      ' A'+rx+' '+ry+' 0 0 1 '+x2+' '+(b.y+ry)+
+      ' V'+(y2-ry)+' A'+rx+' '+ry+' 0 0 1 '+(x2-rx)+' '+y2+
+      ' H'+(b.x+rx)+' A'+rx+' '+ry+' 0 0 1 '+b.x+' '+(y2-ry)+
+      ' V'+(b.y+ry)+' A'+rx+' '+ry+' 0 0 1 '+(b.x+rx)+' '+b.y+' Z';
+    const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"><path fill="#fff" fill-rule="evenodd" d="M0 0H1000V1000H0Z '+hole+'"/></svg>';
+    const mask='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
+    cover.style.maskImage=mask;
+    cover.style.webkitMaskImage=mask;
+    cover.style.maskSize='100% 100%';
+    cover.style.webkitMaskSize='100% 100%';
+    const cta=section.querySelector('.pg-approved-cta-art');
+    cta.src=img.src;
+    cta.style.clipPath='inset('+(b.y/10)+'% '+((1000-x2)/10)+'% '+((1000-y2)/10)+'% '+(b.x/10)+'% round 999px)';
+    section.classList.add('pg-approved-cutout-ready');
+   }
+
    // Give the painted Start CTA a real pressed state before changing lessons.
    // The lesson's existing delegated data-step handler still owns navigation.
    const startButton=section.querySelector('.pg-approved-start');
    let pressPending=false;
    let forwardClick=false;
-   // Immediate one-layer feedback on every HSK 2 cover.
-   startButton.addEventListener('pointerdown',()=>startButton.classList.add('pg-approved-start-pressed'),{passive:true});
-   startButton.addEventListener('pointercancel',()=>{if(!pressPending)startButton.classList.remove('pg-approved-start-pressed');},{passive:true});
-   startButton.addEventListener('pointerleave',()=>{if(!pressPending)startButton.classList.remove('pg-approved-start-pressed');},{passive:true});
+   // The single painted button moves with the pointer; never swap artwork.
+   const showPressed=pressed=>{
+    startButton.classList.toggle('pg-approved-start-pressed',pressed);
+    poster.classList.toggle('pg-approved-pressing',pressed);
+   };
+   startButton.addEventListener('pointerdown',()=>showPressed(true),{passive:true});
+   startButton.addEventListener('pointercancel',()=>{if(!pressPending)showPressed(false);},{passive:true});
+   startButton.addEventListener('pointerleave',()=>{if(!pressPending)showPressed(false);},{passive:true});
    startButton.addEventListener('click',event=>{
     if(forwardClick){forwardClick=false;return;}
     event.preventDefault();
     event.stopPropagation();
     if(pressPending)return; // no double navigation from repeated taps
     pressPending=true;
-    startButton.classList.add('pg-approved-start-pressed');
+    showPressed(true);
     startButton.setAttribute('aria-busy','true');
     window.setTimeout(()=>{
-     startButton.classList.remove('pg-approved-start-pressed');
+     showPressed(false);
      startButton.removeAttribute('aria-busy');
      pressPending=false;
      if(!startButton.isConnected)return;

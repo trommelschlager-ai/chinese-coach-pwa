@@ -177,3 +177,31 @@ html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-pre
 @media(prefers-reduced-motion:reduce){
   html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-start{transition:none!important}
 }
+
+/* 2026-11-23: move the actual painted CTA, not a replacement HTML button.
+   The SVG cutout removes it from the base poster at ALL times, so the single
+   clipped artwork layer can be depressed without a duplicate appearing. */
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-cta-art{
+  display:none!important;position:absolute!important;inset:0!important;
+  width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;
+  object-fit:cover!important;object-position:center center!important;z-index:2!important;
+  pointer-events:none!important;user-select:none!important;-webkit-user-drag:none!important;
+  transform:translateY(0)!important;filter:none!important;
+  transition:transform 105ms ease-out,filter 105ms ease-out!important;
+  will-change:transform;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full.pg-approved-cutout-ready .pg-approved-cta-art{
+  display:block!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full.pg-approved-cutout-ready .pg-approved-poster.pg-approved-pressing .pg-approved-cta-art{
+  transform:translateY(4px)!important;
+  filter:brightness(.82)!important;
+}
+html.course-layout #app[data-view="1"] #pg433 .pg-approved-full.pg-approved-cutout-ready .pg-approved-start.pg-approved-start-pressed{
+  transform:translateY(4px)!important;
+  background:rgba(18,0,46,.09)!important;
+  box-shadow:inset 0 4px 9px rgba(15,0,38,.36)!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html.course-layout #app[data-view="1"] #pg433 .pg-approved-full .pg-approved-cta-art{transition:none!important}
+}
