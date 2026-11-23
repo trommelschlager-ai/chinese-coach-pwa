@@ -29,6 +29,7 @@ import {continueFamilyAfterAnswer} from './panda-family-turn-v426.mjs?v=427';
 import {enrichConversation430} from './panda-conversation-memory-v430.mjs?v=430';
 import {enrichTopics431} from './panda-topic-memory-v431.mjs?v=431';
 import {mergePandaFacts435,refineFollowup435} from './panda-natural-memory-v435.mjs?v=435';
+import {readSharedPandaProfile,saveSharedPandaProfile} from './panda-cross-character-memory-v1.mjs';
 const $=id=>document.getElementById(id);
 const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
@@ -39,7 +40,7 @@ const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
 let pandaVisualAudioLevel=0; // Read-only signal for the approved face animation.
 let micActivatedAt=0; // Guard the first seconds of a new recording against accidental second taps.
-const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,pendingAudioReply:null,turns:0,profile:{family:{}},followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
+const state={mode:'short',step:0,done:false,slow:false,allowed:[],cursor:0,askedInTopic:0,prompt:null,display:null,history:[],discussed:new Set(),questions:[],answers:[],awaitQuestion:false,speechConsent:false,active:false,hint:false,confidence:null,reviewStep:null,topic:1,lockedTopic:null,pendingAudioReply:null,turns:0,profile:readSharedPandaProfile(storage),followup:null,speechSignal:null,dayMode:dayLaunch,dayMini,dayStep:0,dayDone:false,dayResumeStep:null};
 // Cache verified question groups while the same HSK lessons are unlocked.
 let cachedAskGroupsKey='',cachedAskGroups=[];
 function topicCatalogGroups(){
@@ -103,6 +104,7 @@ function remember(spoken){
  // v435: facts stay only in this open session. A corrected "没有妹妹"
  // also clears the stale age remembered from an earlier "有妹妹".
  state.profile=mergePandaFacts435(state.profile,spoken);
+ if(spoken?.known&&!spoken.correction)saveSharedPandaProfile(storage,state.profile);
 }
 function makeRow(entry,full=false){
  const row=document.createElement('article'),who=document.createElement('strong');who.textContent=entry.who==='you'?'Ты: ':entry.who==='example'?'💡 Правильный пример: ':'Панда: ';row.append(who,document.createTextNode(entry.hanzi));
