@@ -6,8 +6,8 @@
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;background:#030513;color:#fff;font-family:system-ui,Arial,sans-serif}
-#stage{position:relative;width:100%;height:100vh;height:100dvh;overflow:hidden;isolation:isolate;touch-action:manipulation;background:#030513}
-@media (min-aspect-ratio:3/4){#stage{width:min(100%,calc(100dvh * 393 / 852));margin-inline:auto}}
+#stage{position:relative;width:100%;height:100vh;height:var(--street-stage-h,100dvh);overflow:hidden;isolation:isolate;touch-action:manipulation;background:#030513}
+@media (min-aspect-ratio:3/4){#stage{width:min(100%,calc(var(--street-stage-h,100dvh) * 393 / 852));margin-inline:auto}}
 #art{position:absolute;filter:brightness(1.07);inset:0;width:100%;height:100%;pointer-events:none;z-index:0;image-rendering:auto}
 #src,#day-src{display:none}
 #day-art{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity .5s ease}
@@ -96,6 +96,21 @@ html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;backgrou
 <section id="shade" role="dialog" aria-modal="true" aria-labelledby="title"><div id="sheet"><header><h2 id="title">Panda Street AI</h2><button id="close" type="button" aria-label="Закрыть">×</button></header><div id="body"></div></div></section>
 <script>
 (()=>{'use strict';
+// Stable approved Street scene: Android soft keyboard reduces dvh/innerHeight,
+// but must never resize the Panda artwork or its hit targets.
+let streetViewportWidth=window.innerWidth,streetViewportHeight=Math.max(1,window.innerHeight);
+const setStreetStageHeight=()=>document.documentElement.style.setProperty('--street-stage-h',streetViewportHeight+'px');
+setStreetStageHeight();
+function keepStreetStageSize(){
+  const width=window.innerWidth;
+  // A width change means actual rotation/resizing; a height-only change
+  // from the software keyboard must NOT change the approved scene.
+  if(Math.abs(width-streetViewportWidth)>4){
+    streetViewportWidth=width;
+    streetViewportHeight=Math.max(1,window.innerHeight);
+    setStreetStageHeight();
+  }
+}
 const el=id=>document.getElementById(id),stage=el('stage'),src=el('src'),canvas=el('art');
 const W=693,H=1444,SKY_START=338,SKY_SIZE=60,FLOOR_START=1303,FLOOR_SIZE=25,NAV_START=1328;
 const boxes={
@@ -228,7 +243,7 @@ daySrc.addEventListener('load',paint);
 import('./assets/panda-street-face-rig-v1.mjs?v=1').then(module=>{
  streetFaceRig=module.createStreetFaceRig({stage,source:src});paint();
 }).catch(error=>{console.warn('Street face rig optional:',error)});
-src.addEventListener('load',paint);window.addEventListener('resize',paint);window.visualViewport?.addEventListener('resize',paint);new ResizeObserver(paint).observe(stage);if(src.complete&&src.naturalWidth)paint();
+src.addEventListener('load',paint);window.addEventListener('resize',()=>{keepStreetStageSize();paint()});window.visualViewport?.addEventListener('resize',()=>{keepStreetStageSize();paint()});new ResizeObserver(paint).observe(stage);if(src.complete&&src.naturalWidth)paint();
 const esc=str=>String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 let timer;function tip(msg){const t=el('toast');t.textContent=msg;t.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>t.classList.remove('show'),2700)}
 const shade=el('shade'),body=el('body');let oldFocus=null;
