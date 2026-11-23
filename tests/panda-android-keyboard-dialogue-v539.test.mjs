@@ -44,7 +44,7 @@ test('Main HTML busts stale Android CSS and JS caches',()=>{
   assert(html.includes('panda-approved-soft-v500.js?v=546'),'Keep the existing Android voice/geometry logic');
   assert(html.includes('panda-ai-approved-layout-v547.css?v='+pack.version),'Load final approved layout on top');
   assert(html.includes('panda-ai-approved-layout-v547.js?v='+pack.version),'Load live approved controls');
-  assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=546/);
+  assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=548/);
   assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=546/);
 });
 
