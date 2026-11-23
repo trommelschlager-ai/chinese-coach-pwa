@@ -240,7 +240,7 @@ function paintScene(canvas,image,width,height,dpr,fill){
 }
 const daySrc=el('day-src');
 daySrc.addEventListener('load',paint);
-import('./assets/panda-street-face-rig-v1.mjs?v=1').then(module=>{
+import('./assets/panda-street-face-rig-v1.mjs?v=2').then(module=>{
  streetFaceRig=module.createStreetFaceRig({stage,source:src});paint();
 }).catch(error=>{console.warn('Street face rig optional:',error)});
 src.addEventListener('load',paint);window.addEventListener('resize',()=>{keepStreetStageSize();paint()});window.visualViewport?.addEventListener('resize',()=>{keepStreetStageSize();paint()});new ResizeObserver(paint).observe(stage);if(src.complete&&src.naturalWidth)paint();
@@ -295,7 +295,7 @@ function speak(text){
   approvedMaleRegistryPromise.then(mod=>{
    if(token!==voiceToken)return;
    const clip=mod?.lookupApprovedStreetMaleMp3(text);
-   if(!clip){tip('Фраза показана текстом · мужская запись для неё пока не загружена');return}
+   if(!clip){streetFaceRig?.acknowledge?.();tip('Фраза показана текстом · мужская запись для неё пока не загружена');return}
    playApprovedStreetMaleClip(clip,token);
   });
   return false;
