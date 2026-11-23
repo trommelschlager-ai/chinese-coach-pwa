@@ -92,6 +92,8 @@ export function mountPandaLiveMemory({
  <div class="pml-actions"><button type="button" id="pml-save">💾 Сохранить последнюю пару</button><button type="button" id="pml-check">🔎 Проверить память</button></div>
  <p id="pml-status" role="status" aria-live="polite">Сначала отметь согласие, затем говори с Пандой.</p>
  <p id="pml-count">Сохранённые фразы: проверяю…</p>
+ <div id="pml-saved" role="list" aria-label="Последние сохранённые китайские фразы"></div>
+ <div class="pml-actions"><button type="button" id="pml-clear">Удалить личную память этого браузера</button></div>
  <p class="pml-warning">✅ Проверенные фразы с точным MP3 Xiaoxiao работают офлайн. Новые ответы сохраняются с пометкой «Ждёт проверки» и пока не используются как правильные. Это память браузера, не привязанная к аккаунту; на общем телефоне её могут видеть другие пользователи этого браузера.</p>
  `;
  historyDialog.append(controls);
@@ -109,6 +111,9 @@ export function mountPandaLiveMemory({
  #panda-memory-live-controls .pml-warning{font-size:11px;color:#736482}
  #pml-status{min-height:20px;font-weight:700}
  #pml-count{font-size:12px;color:#6f5c8b}
+ #pml-saved{display:grid;gap:4px;max-height:110px;overflow:auto}
+ #pml-saved [role="listitem"]{border-radius:7px;background:#fff;padding:5px 8px;font-size:12px}
+ #pml-clear{background:#f2e8fa!important;color:#6f4b82!important}
  `;
  document.head.append(css);
  const $=id=>controls.querySelector('#'+id),consent=$('pml-consent'),auto=$('pml-auto');
@@ -121,6 +126,12 @@ export function mountPandaLiveMemory({
    const cards=await store.list(owner);
    const ready=cards.filter(c=>c.status==='offline-ready').length;
    $('pml-count').textContent='На устройстве: '+cards.length+' · с MP3: '+ready+' · ждут проверки: '+(cards.length-ready);
+   const list=$('pml-saved');list.replaceChildren();
+   for(const card of cards.slice(-6).reverse()){
+    const row=document.createElement('div');row.setAttribute('role','listitem');
+    row.textContent=card.trigger+' — '+(card.hasAudio?'🔊 MP3 готов':'📝 Ждёт проверки');
+    list.append(row);
+   }
   }catch(e){$('pml-count').textContent='Локальная память недоступна: '+e.message}
  }
  async function save(pair,manual=false){
@@ -147,6 +158,11 @@ export function mountPandaLiveMemory({
   lastSeen=signature(latest());note(auto.checked?'Новые подходящие пары будут сохраняться на устройстве.':'Автосохранение выключено.');
  });
  $('pml-save').addEventListener('click',()=>save(latest(),true));
+ $('pml-clear').addEventListener('click',async()=>{
+  if(!window.confirm('Удалить ВСЕ сохранённые фразы личной памяти этого браузера? Общая библиотека Panda Go останется.'))return;
+  try{await store.clearOwner(owner);note('Личная память этого браузера очищена. Общая память не изменена.');await counts()}
+  catch(e){note('Не удалось очистить память: '+e.message)}
+ });
  $('pml-check').addEventListener('click',async()=>{
   const pair=latest();
   if(!pair){note('Нет подходящей последней пары реплик.');return}
