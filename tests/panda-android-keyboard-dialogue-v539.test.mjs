@@ -40,8 +40,10 @@ test('Unverified translation is not shown as a learner-facing placeholder',()=>{
 test('Main HTML busts stale Android CSS and JS caches',()=>{
   const html=source('../panda-voice-pilot.html');
   const pack=JSON.parse(source('../assets/offline-pack.json'));
-  assert(html.includes('panda-hsk2-preview-v506.css?v='+pack.version),'HTML loads current CSS release');
-  assert(html.includes('panda-approved-soft-v500.js?v='+pack.version),'HTML loads current Android geometry JS');
+  assert(html.includes('panda-hsk2-preview-v506.css?v=546'),'Keep the tested existing Panda stylesheet');
+  assert(html.includes('panda-approved-soft-v500.js?v=546'),'Keep the existing Android voice/geometry logic');
+  assert(html.includes('panda-ai-approved-layout-v547.css?v='+pack.version),'Load final approved layout on top');
+  assert(html.includes('panda-ai-approved-layout-v547.js?v='+pack.version),'Load live approved controls');
   assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=546/);
   assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=546/);
 });
@@ -73,7 +75,7 @@ test('v545 assets and SW cached together to avoid stale Android scripts',()=>{
   const pack=JSON.parse(source('../assets/offline-pack.json'));
   assert(pack.version>=545,'Panda Android fixes must not roll back');
   assert(worker.includes("const CACHE='chinese-coach-pwa-v"+pack.version+"-"),'SW and offline pack must agree');
-  for(const asset of ['panda-hsk2-preview-v506.css?v='+pack.version,'panda-hsk2-preview-ui-v1.mjs?v=546','panda-approved-soft-v500.js?v='+pack.version]){
+  for(const asset of ['panda-hsk2-preview-v506.css?v=546','panda-hsk2-preview-ui-v1.mjs?v=546','panda-approved-soft-v500.js?v=546','panda-ai-approved-layout-v547.css?v='+pack.version,'panda-ai-approved-layout-v547.js?v='+pack.version]){
     assert(html.includes(asset));
     assert(pack.files.some(f=>f.endsWith(asset)));
     assert(worker.includes(asset));
