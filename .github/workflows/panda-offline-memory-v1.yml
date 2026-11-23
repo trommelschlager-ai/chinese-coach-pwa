@@ -4,6 +4,7 @@ on:
     paths:
       - 'assets/panda-offline-memory-v1.mjs'
       - 'tests/panda-offline-memory-v1.test.mjs'
+      - 'scripts/qa-panda-offline-memory-browser-v1.mjs'
       - '.github/workflows/panda-offline-memory-v1.yml'
   pull_request:
     branches: [main]
@@ -21,3 +22,18 @@ jobs:
           node-version: '22'
       - name: Verify consent and reviewed Xiaoxiao offline memory
         run: node --test tests/panda-offline-memory-v1.test.mjs
+      - name: Install Android-browser test dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify real IndexedDB persistence in offline mobile Chromium
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/panda-memory-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-voice-pilot.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-offline-memory-browser-v1.mjs
