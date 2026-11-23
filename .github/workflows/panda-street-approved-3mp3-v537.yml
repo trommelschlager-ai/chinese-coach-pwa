@@ -1,0 +1,53 @@
+name: Panda Street three approved male MP3 v537 — isolated Android gate
+on:
+  push:
+    paths:
+      - 'panda-street-ai-preview.html'
+      - 'assets/panda-street-approved-male-mp3-v1.mjs'
+      - 'assets/panda-street-male-voice-v1/**'
+      - 'assets/panda-street-male-voice-queue-v1.json'
+      - 'sw.js'
+      - 'assets/offline-pack.json'
+      - 'tests/panda-street-approved-3mp3-v537.test.mjs'
+      - 'scripts/qa-panda-street-approved-3mp3-v537.mjs'
+      - '.github/workflows/panda-street-approved-3mp3-v537.yml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  street-male-audio:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Validate 3 original approved MP3 blobs and voice boundary
+        run: node --test tests/panda-street-approved-3mp3-v537.test.mjs
+      - name: Install mobile Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify exact audio playback on Android widths
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/panda-street-audio.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-street-ai-preview.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-street-approved-3mp3-v537.mjs
+      - name: Preserve screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-street-approved-male-android-v537
+          path: qa/panda-street-approved-male/
+          if-no-files-found: warn
