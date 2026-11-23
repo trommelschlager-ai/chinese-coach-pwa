@@ -166,6 +166,16 @@ export function createPandaMemoryStore(database = globalThis.indexedDB) {
         level:row.level,audioBlob:row.audioBlob,voiceId:row.voiceId,
         source:'reviewed-offline-memory'};
     },
+    async list(ownerId) {
+      if(typeof ownerId!=='string'||!OWNER.test(ownerId))throw new TypeError('Invalid local owner');
+      const rows=await transact(database,'readonly',store=>store.getAll());
+      // Never expose MP3 binary or another learner's cards through list().
+      return rows.filter(row=>row.ownerId===ownerId).map(row=>({
+        id:row.id,topic:row.topic,level:row.level,trigger:row.trigger,
+        answer:row.answer,status:row.status,hasAudio:row.status==='offline-ready'&&
+          row.voiceId==='voice-093'&&row.audioBlob instanceof Blob
+      }));
+    },
     async delete({ownerId,topic,trigger}) {
       await transact(database,'readwrite',store=>store.delete(scope(ownerId,topic,trigger)));
     },
