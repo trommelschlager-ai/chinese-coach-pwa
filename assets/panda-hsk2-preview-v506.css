@@ -271,3 +271,13 @@
 #pg346[data-panda-static="true"] .pg542-frozen-panda {
  pointer-events:none!important;
 }
+
+/* v544: only two right-hand shortcuts — Topics and Lessons.
+   Trainer remains accessible in the existing bottom navigation. */
+#pg346 .pg346-side-rail {
+ top:58%!important;
+ gap:clamp(14px,2.2dvh,24px)!important;
+}
+#pg346 .pg346-side-rail > .pg500-side-game {
+ display:none!important;
+}
