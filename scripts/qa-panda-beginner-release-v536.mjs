@@ -81,6 +81,14 @@ try{
   assert.equal(await page.locator('#pg346-input').inputValue(),'','One click must empty the input');
   await page.locator('#pg346-nonstop').click();
   await send('不好','怎么了？');
+  // A learner statement must be understood as conversation, not a wrong answer.
+  await send('我是老师。','你是老师！你在哪儿工作？');
+  // A chosen HSK2 topic must allow initiating with an independent statement.
+  await page.locator('#pg346-topics-btn').click();
+  const hsk2Topics=page.locator('#pg346-topics .pg346-topic-group').nth(1).locator('button');
+  await hsk2Topics.first().click();
+  await page.locator('#pg374-topic-details .pg374-question').first().click();
+  await send('我在学校工作。','你喜欢你的工作吗？');
   assert(!errors.length,'JS error: '+errors.join('; '));
   await page.screenshot({path:'qa/panda-beginner-release/beginner-'+width+'.png',fullPage:false,animations:'disabled'});
   console.log('PASS Panda beginner short/nonstop '+width+'px');
