@@ -12,8 +12,9 @@ assert(html.indexOf('hsk1-radicals-v295.js')<html.indexOf('hsk1-first-extras-v29
 assert(html.indexOf('hsk1-first-extras-v295.js')<html.indexOf('hsk1-first-v189.js'));
 assert(html.includes('aria-valuemax="16"'));
 assert(/href="\.\/hsk1-first-v189\.html(?:\?v=\d+)?"/.test(read('hsk1-map.html')),'Approved HSK1 map must still open the full 16-screen first lesson');
-const make=(saved)=>{
- const dom=new JSDOM(html,{url:'https://panda.test/chinese-coach-pwa/hsk1-first-v189.html',runScripts:'outside-only'});
+// Keep the original regression on the retained radical-first route.
+const make=(saved, search='?preview=legacy')=>{
+ const dom=new JSDOM(html,{url:'https://panda.test/chinese-coach-pwa/hsk1-first-v189.html'+search,runScripts:'outside-only'});
  const w=dom.window;const played=[];
  w.Audio=function(src){this.src=src;this.pause=()=>{};this.play=()=>{played.push(src);return Promise.resolve();}};
  w.PANDA_HSK1_VOICES={female:{'你好！':'./assets/female-hello.mp3'},male:{'你好！':'./assets/hsk1-voices-v156/ca2a36b2097b5a6321a2.mp3?v=300'}};
@@ -71,6 +72,29 @@ const make=(saved)=>{
  assert(d.getElementById('pg-counter').textContent.includes('16 / 16'),'Old fully completed lesson should remain finished');
  assert(w.localStorage.getItem('pg-hsk1-v189-lesson1').includes('"lessonVersion":295'));
  dom.window.close();
+}
+{
+ const route=new JSDOM(read('hsk1-map.html')).window;
+ const search=new URL(route.document.querySelector('[data-num="1"]').getAttribute('href'),'https://panda.test').search;
+ route.close();
+ const {d,dom}=make(null,search);
+ const next=()=>d.querySelector('#pg-next').click();
+ next();next();
+ assert.match(d.querySelector('.pg-v414-partners').textContent,/女 \+ 子 = 好/);
+ next();
+ assert.equal(d.querySelectorAll('.pg-v414-dialogue [data-role]').length,2);
+ next();
+ assert.equal(d.querySelectorAll('.pg-v415-tones .tone-list button').length,4);
+ for(let n=0;n<5;n++)next();
+ assert.match(d.querySelector('.pg-v415-grammar').textContent,/我[+]是[+]学生/);
+ dom.window.close();
+ const current=make({step:15,lessonVersion:295,verified:true,listenPassed:true},search);
+ assert.match(current.d.querySelector('#pg-counter').textContent,/16 \/ 16/);
+ assert(current.d.querySelector('.pg-end-next[href="./hsk1-second-v203.html"]'));
+ const migrated=JSON.parse(current.w.localStorage.getItem('pg-hsk1-v189-lesson1'));
+ assert.equal(migrated.pathVersion,516);
+ assert.equal(migrated.listenPassed,true);
+ current.dom.window.close();
 }
 const embed=read('hsk1-pronunciation.html');
 assert(embed.includes("get('embedded')==='1'")&&embed.includes('.pg-embedded-pronunciation .topbar'));
