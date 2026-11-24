@@ -101,10 +101,86 @@ function respondToFood(raw,s,awaiting){
   `Я ${negative?'нечасто':'часто'} это ${ruVerb}.`,
   negative?foodAlternatives[verb]:['你还喜欢什么？','Nǐ hái xǐhuan shénme?','Что тебе ещё нравится?'],null,2);
 }
+const shoppingItems={
+ 衣服:['yīfu','одежду','件','jiàn'],衬衫:['chènshān','рубашку','件','jiàn'],
+ 裙子:['qúnzi','юбку','条','tiáo'],裤子:['kùzi','брюки','条','tiáo'],
+ 鞋:['xié','обувь','双','shuāng'],袜子:['wàzi','носки','双','shuāng'],
+ 书:['shū','книгу','本','běn'],手机:['shǒujī','телефон','部','bù']
+};
+const shoppingPrice=['你有多少预算？','Nǐ yǒu duōshao yùsuàn?','Какой у тебя бюджет?'];
+const shoppingKinds={
+ 想:['xiǎng','хочу',shoppingPrice,'shopping-budget'],
+ 要:['yào','хочу',shoppingPrice,'shopping-budget'],
+ 打算:['dǎsuàn','собираюсь',shoppingPrice,'shopping-budget'],
+ 不想:['bù xiǎng','не хочу',['那你想买什么？','Nà nǐ xiǎng mǎi shénme?','А что ты хочешь купить?'],null],
+ 已经:['yǐjīng','уже', ['你花了多少钱？','Nǐ huā le duōshao qián?','Сколько ты потратил?'],'shopping-spent']
+};
+function respondToShopping(raw,s,awaiting){
+ const purchase=/^我(想|要|打算|不想|已经)买(了)?(一[件条双本部])?([\p{Script=Han}]{1,2})$/u.exec(s);
+ if(purchase){
+  const [,kind,completed,quantity,item]=purchase;
+  const entry=shoppingItems[item];
+  if(!entry||Boolean(completed)!==(kind==='已经')||(quantity&&quantity!=='一'+entry[2]))return null;
+  const [itemPy,itemRu,measure,measurePy]=entry;
+  const [kindPy,kindRu,followUp,next]=shoppingKinds[kind];
+  const measurePrefix=quantity?(measure==='部'||measure==='件'?'yí ':'yì ')+measurePy+' ':'';
+  const ru=kind==='已经'?'Я уже купил / купила '+itemRu+'.':`Я ${kindRu} купить ${itemRu}.`;
+  return result(raw,`Wǒ ${kindPy} mǎi ${completed?'le ':''}${measurePrefix}${itemPy}.`,ru,followUp,next,8);
+ }
+ if(awaiting!=='shopping-budget'&&awaiting!=='shopping-spent')return null;
+ const budget=/^(一百|两百|三百|五百)(?:块|元)$/u.exec(s);
+ if(!budget)return null;
+ const numbers={一百:['yìbǎi',100],两百:['liǎngbǎi',200],三百:['sānbǎi',300],五百:['wǔbǎi',500]};
+ const [py,value]=numbers[budget[1]];
+ const unit=s.endsWith('块')?'kuài':'yuán';
+ return result(raw,`${py[0].toUpperCase()+py.slice(1)} ${unit}.`,`${value} юаней.`,
+  awaiting==='shopping-spent'?['你觉得贵吗？','Nǐ juéde guì ma?','Как думаешь, это дорого?']:
+   ['你想去商店看看吗？','Nǐ xiǎng qù shāngdiàn kànkan ma?','Хочешь посмотреть в магазине?'],null,8);
+}
+
+const destinations={
+ 北京:['Běijīng','в Пекин','в Пекине'],上海:['Shànghǎi','в Шанхай','в Шанхае'],
+ 广州:['Guǎngzhōu','в Гуанчжоу','в Гуанчжоу'],深圳:['Shēnzhèn','в Шэньчжэнь','в Шэньчжэне'],
+ 成都:['Chéngdū','в Чэнду','в Чэнду'],杭州:['Hángzhōu','в Ханчжоу','в Ханчжоу'],
+ 西安:['Xī’ān','в Сиань','в Сиане'],南京:['Nánjīng','в Нанкин','в Нанкине']
+};
+const travelIntents={
+ 想去:['xiǎng qù','Я хочу поехать','travel-time'],
+ 打算去:['dǎsuàn qù','Я собираюсь поехать','travel-time'],
+ 明天去:['míngtiān qù','Завтра я еду','travel-transit'],
+ 去过:['qùguo','Я бывал / бывала','travel-past'],
+ 没去过:['méi qùguo','Я ещё не бывал / не бывала','travel-wish']
+};
+const travelQuestions={
+ 'travel-time':['你什么时候去？','Nǐ shénme shíhou qù?','Когда ты поедешь?'],
+ 'travel-transit':['你怎么去？','Nǐ zěnme qù?','Как ты туда поедешь?'],
+ 'travel-past':['你喜欢那里吗？','Nǐ xǐhuan nàli ma?','Тебе там понравилось?'],
+ 'travel-wish':['你想去那里吗？','Nǐ xiǎng qù nàli ma?','Хочешь туда поехать?']
+};
+function respondToTravel(raw,s,awaiting){
+ const trip=/^我(想去|打算去|明天去|去过|没去过)([\p{Script=Han}]{2})$/u.exec(s);
+ if(trip&&Object.hasOwn(destinations,trip[2])){
+  const [py,to,at]=destinations[trip[2]];
+  const [intentPy,ru,next]=travelIntents[trip[1]];
+  return result(raw,`Wǒ ${intentPy} ${py}.`,`${ru} ${trip[1].endsWith('过')?at:to}.`,travelQuestions[next],next,7);
+ }
+ if(awaiting==='travel-transit'){
+  const transport={坐飞机:['Zuò fēijī','На самолёте'],坐火车:['Zuò huǒchē','На поезде'],坐地铁:['Zuò dìtiě','На метро'],坐公共汽车:['Zuò gōnggòng qìchē','На автобусе']};
+  if(Object.hasOwn(transport,s)){
+   const [py,ru]=transport[s];
+   return result(raw,py+'.',ru+'.',['祝你一路顺风！','Zhù nǐ yílù shùnfēng!','Счастливого пути!'],null,7);
+  }
+ }
+ if(awaiting!=='travel-time')return null;
+ const travelTime={明天:['Míngtiān','Завтра'],后天:['Hòutiān','Послезавтра'],下周:['Xià zhōu','На следующей неделе'],下个月:['Xià ge yuè','В следующем месяце']};
+ if(!Object.hasOwn(travelTime,s))return null;
+ const [py,ru]=travelTime[s];
+ return result(raw,py+'.',ru+'.',travelQuestions['travel-transit'],'travel-transit',7);
+}
 export function respondToNaturalStatement(raw,{awaiting=null}={}){
  const s=norm(raw);if(!s)return null;
- const food=respondToFood(raw,s,awaiting);
- if(food)return food;
+ const topicReply=respondToFood(raw,s,awaiting)??respondToShopping(raw,s,awaiting)??respondToTravel(raw,s,awaiting);
+ if(topicReply)return topicReply;
 
  // v552 Android screenshots (24 Nov): common compliments and conversational
  // reactions are complete, valid Chinese — never route them to the

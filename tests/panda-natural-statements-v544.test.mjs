@@ -161,3 +161,62 @@ test('40 food and drink inputs distinguish intention, preference and negation',a
  assert.equal(respond('经常'),null);
  assert.equal(respond('我想喝米饭'),null);
 });
+
+test('40 shopping inputs preserve item, aspect and purchase intent',async()=>{
+ const {respondToNaturalStatement:respond}=await import('../assets/panda-natural-statements-v552.mjs');
+ const items=[
+  ['衣服','yīfu'],['衬衫','chènshān'],['裙子','qúnzi'],['裤子','kùzi'],
+  ['鞋','xié'],['袜子','wàzi'],['书','shū'],['手机','shǒujī']
+ ];
+ const variants=[
+  ['想买','xiǎng mǎi','你有多少预算？'],['要买','yào mǎi','你有多少预算？'],
+  ['打算买','dǎsuàn mǎi','你有多少预算？'],['不想买','bù xiǎng mǎi','那你想买什么？'],
+  ['已经买了','yǐjīng mǎi le','你花了多少钱？']
+ ];
+ const inputs=new Set();
+ for(const [item,py] of items)for(const [form,formPy,answer] of variants){
+  const input='我'+form+item;
+  inputs.add(input);
+  const r=respond(input);
+  assert(r,input);
+  assert.equal(r.spoken.pinyin,`Wǒ ${formPy} ${py}.`,input);
+  assert.equal(r.reply.hanzi,answer,input);
+  assert(r.spoken.translation&&r.reply.pinyin&&r.reply.ru,input);
+  assert.equal(r.spoken.toneVerified,false,input);
+ }
+ assert.equal(inputs.size,40);
+ assert.equal(respond('我想买一双鞋').spoken.pinyin,'Wǒ xiǎng mǎi yì shuāng xié.');
+ assert.equal(respond('我想买一件衣服').spoken.pinyin,'Wǒ xiǎng mǎi yí jiàn yīfu.');
+ assert.equal(respond('我想买一本手机'),null);
+ assert.equal(respond('两百块',{awaiting:respond('我想买衣服').next}).spoken.translation,'200 юаней.');
+ assert.equal(respond('两百块'),null);
+});
+
+test('40 travel inputs distinguish past trips, plans and intentions',async()=>{
+ const {respondToNaturalStatement:respond}=await import('../assets/panda-natural-statements-v552.mjs');
+ const cities=[
+  ['北京','Běijīng'],['上海','Shànghǎi'],['广州','Guǎngzhōu'],['深圳','Shēnzhèn'],
+  ['成都','Chéngdū'],['杭州','Hángzhōu'],['西安','Xī’ān'],['南京','Nánjīng']
+ ];
+ const variants=[
+  ['想去','xiǎng qù','你什么时候去？'],['打算去','dǎsuàn qù','你什么时候去？'],
+  ['明天去','míngtiān qù','你怎么去？'],['去过','qùguo','你喜欢那里吗？'],['没去过','méi qùguo','你想去那里吗？']
+ ];
+ const inputs=new Set();
+ for(const [city,py] of cities)for(const [form,formPy,answer] of variants){
+  const input='我'+form+city;
+  inputs.add(input);
+  const r=respond(input);
+  assert(r,input);
+  assert.equal(r.spoken.pinyin,`Wǒ ${formPy} ${py}.`,input);
+  assert.equal(r.reply.hanzi,answer,input);
+  assert(r.spoken.translation&&r.reply.pinyin&&r.reply.ru,input);
+  assert.equal(r.spoken.toneVerified,false,input);
+ }
+ assert.equal(inputs.size,40);
+ assert.equal(respond('我没去过北京').spoken.translation,'Я ещё не бывал / не бывала в Пекине.');
+ assert.equal(respond('下周',{awaiting:respond('我想去北京').next}).reply.hanzi,'你怎么去？');
+ const departure=respond('下周',{awaiting:respond('我想去北京').next});
+ assert.equal(respond('坐火车',{awaiting:departure.next}).reply.hanzi,'祝你一路顺风！');
+ assert.equal(respond('下周'),null);
+});
