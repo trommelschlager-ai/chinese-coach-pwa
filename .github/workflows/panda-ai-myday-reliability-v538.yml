@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - 'assets/panda-hsk2-my-day-scenario-v1.mjs'
+      - 'assets/panda-hsk2-day-understanding-v1.mjs'
+      - 'tests/panda-my-day-feedback-v1.test.mjs'
       - 'panda-voice-pilot.html'
       - 'panda-ai-hsk2-preview.html'
       - 'sw.js'
@@ -27,6 +29,7 @@ jobs:
       - name: Check module and service worker syntax
         run: |
           node --check assets/panda-hsk2-my-day-scenario-v1.mjs
+          node --check assets/panda-hsk2-day-understanding-v1.mjs
           node --check sw.js
       - name: Test recovery, ASR review and offline references
-        run: node --test tests/panda-hsk2-my-day-reliability-v1.test.mjs tests/panda-ai-offline-consistency-v1.test.mjs
+        run: node --test tests/panda-hsk2-my-day-reliability-v1.test.mjs tests/panda-ai-offline-consistency-v1.test.mjs tests/panda-my-day-feedback-v1.test.mjs
