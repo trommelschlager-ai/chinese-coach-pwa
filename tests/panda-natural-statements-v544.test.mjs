@@ -278,3 +278,41 @@ test('30 introductions cover polite replies, origin, hometown and nationality',a
  assert.equal(respond('我是俄罗斯人').spoken.translation,'Я русский / русская.');
  assert.equal(respond('我从中国'),null);
 });
+
+test('50 free conversation inputs use reviewed responses and preserve context when repeating',async()=>{
+ const {respondToNaturalStatement:respond}=await import('../assets/panda-natural-statements-v552.mjs');
+ const groups=[
+  ['哪一句你没听懂？',['我没听懂','我没有听懂','我听不懂这句话','我不太明白','我没明白你的意思']],
+  ['你想听哪一句？',['能再说一遍吗','你可以再说一遍吗','请再说一遍','请重复一下','再说一次吧']],
+  ['请用慢速按钮。你也可以看拼音。',['你说得太快了','请说慢一点','可以说慢一点吗','麻烦你说慢一点','你能说得慢一点吗']],
+  ['请把那个词打出来。',['这个词怎么写','这个字怎么读','这个词是什么意思','这个字我不认识','我不知道这个词怎么读']],
+  ['不客气！还想练习吗？',['谢谢你的帮助','太谢谢你了','谢谢你帮我','非常感谢你','多谢你的提醒']],
+  ['好，下次见！',['我先走了','我们下次再聊','今天就聊到这里吧','我得走了','我一会儿再来']],
+  ['辛苦了。你想休息一下吗？',['我有点儿累','我今天很累','今天过得不太好','我今天心情不好','我今天有点儿难过']],
+  ['好啊！你想练什么？',['我想练习中文','我们继续练习吧','我想多说一点中文','今天我想练口语','我想和你用中文聊天']],
+  ['谢谢你！你喜欢熊猫吗？',['你很可爱','你真可爱']],
+  ['谢谢你！你喜欢这里的风景吗？',['你很漂亮','你真漂亮']],
+  ['太好了！我们继续聊吧！',['太好了']],
+  ['谢谢你！你喜欢我的耳机吗？',['你很酷','你真酷']],
+  ['谢谢你！我们一起加油！',['你太厉害了','你太棒了']],
+  ['没关系。你想聊什么？',['我不喜欢你']]
+ ];
+ const inputs=new Set();
+ for(const [answer,phrases] of groups)for(const input of phrases){
+  inputs.add(input);
+  const r=respond(input);
+  assert(r,input);
+  assert.equal(r.reply.hanzi,answer,input);
+  assert.match(r.spoken.pinyin,/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/u,input);
+  assert(r.spoken.translation&&r.reply.pinyin&&r.reply.ru,input);
+  assert.equal(r.spoken.toneVerified,false,input);
+ }
+ assert.equal(inputs.size,50);
+ const family=respond('我有一个姐姐');
+ const repeat=respond('请再说一遍',{awaiting:family.context,previous:family.reply});
+ assert.deepEqual(repeat.reply,family.reply);
+ assert.equal(repeat.next,family.context);
+ assert.equal(repeat.spoken.pinyin,'Qǐng zài shuō yí biàn.');
+ assert.equal(respond('她二十二岁',{awaiting:repeat.next}).reply.hanzi,'你姐姐二十二岁！她喜欢做什么？');
+ assert.equal(respond('我没听懂').spoken.translation,'Я не понял / поняла на слух.');
+});

@@ -259,10 +259,103 @@ function respondToIntroduction(raw,s,awaiting){
  })[place]:'Я из '+placeRu;
  return result(raw,`${opening[form]} ${placePy}${ending}.`,ru+'.',followUp,null,1);
 }
-export function respondToNaturalStatement(raw,{awaiting=null}={}){
+const freeTopics=[
+ {
+  type:'clarify',
+  reply:['哪一句你没听懂？','Nǎ yí jù nǐ méi tīngdǒng?','Какую фразу ты не понял?'],
+  phrases:[
+   ['我没听懂','Wǒ méi tīngdǒng.','Я не понял / поняла на слух.'],
+   ['我没有听懂','Wǒ méiyǒu tīngdǒng.','Я не понял / поняла на слух.'],
+   ['我听不懂这句话','Wǒ tīngbudǒng zhè jù huà.','Я не понимаю эту фразу на слух.'],
+   ['我不太明白','Wǒ bú tài míngbai.','Мне не совсем понятно.'],
+   ['我没明白你的意思','Wǒ méi míngbai nǐ de yìsi.','Я не понял / поняла, что ты имеешь в виду.']
+  ]
+ },{
+  type:'repeat',
+  reply:['你想听哪一句？','Nǐ xiǎng tīng nǎ yí jù?','Какую фразу ты хочешь услышать?'],
+  phrases:[
+   ['能再说一遍吗','Néng zài shuō yí biàn ma?','Можешь повторить?'],
+   ['你可以再说一遍吗','Nǐ kěyǐ zài shuō yí biàn ma?','Ты можешь сказать ещё раз?'],
+   ['请再说一遍','Qǐng zài shuō yí biàn.','Повтори, пожалуйста.'],
+   ['请重复一下','Qǐng chóngfù yíxià.','Пожалуйста, повтори.'],
+   ['再说一次吧','Zài shuō yí cì ba.','Скажи ещё раз.']
+  ]
+ },{
+  type:'pace',
+  reply:['请用慢速按钮。你也可以看拼音。','Qǐng yòng mànsù ànniǔ. Nǐ yě kěyǐ kàn pīnyīn.','Нажми кнопку замедления. Можно также посмотреть пиньинь.'],
+  phrases:[
+   ['你说得太快了','Nǐ shuō de tài kuài le.','Ты говоришь слишком быстро.'],
+   ['请说慢一点','Qǐng shuō màn yìdiǎn.','Говори помедленнее, пожалуйста.'],
+   ['可以说慢一点吗','Kěyǐ shuō màn yìdiǎn ma?','Можешь говорить немного медленнее?'],
+   ['麻烦你说慢一点','Máfan nǐ shuō màn yìdiǎn.','Пожалуйста, говори чуть медленнее.'],
+   ['你能说得慢一点吗','Nǐ néng shuō de màn yìdiǎn ma?','Можешь говорить помедленнее?']
+  ]
+ },{
+  type:'writing',
+  reply:['请把那个词打出来。','Qǐng bǎ nàge cí dǎ chūlái.','Напечатай это слово, пожалуйста.'],
+  phrases:[
+   ['这个词怎么写','Zhège cí zěnme xiě?','Как пишется это слово?'],
+   ['这个字怎么读','Zhège zì zěnme dú?','Как читается этот иероглиф?'],
+   ['这个词是什么意思','Zhège cí shì shénme yìsi?','Что значит это слово?'],
+   ['这个字我不认识','Zhège zì wǒ bú rènshi.','Я не знаю этот иероглиф.'],
+   ['我不知道这个词怎么读','Wǒ bù zhīdào zhège cí zěnme dú.','Я не знаю, как читается это слово.']
+  ]
+ },{
+  type:'thanks',
+  reply:['不客气！还想练习吗？','Bú kèqi! Hái xiǎng liànxí ma?','Пожалуйста! Хочешь ещё попрактиковаться?'],
+  phrases:[
+   ['谢谢你的帮助','Xièxie nǐ de bāngzhù.','Спасибо за помощь.'],
+   ['太谢谢你了','Tài xièxie nǐ le.','Большое тебе спасибо.'],
+   ['谢谢你帮我','Xièxie nǐ bāng wǒ.','Спасибо, что помогаешь мне.'],
+   ['非常感谢你','Fēicháng gǎnxiè nǐ.','Очень тебе благодарен / благодарна.'],
+   ['多谢你的提醒','Duōxiè nǐ de tíxǐng.','Спасибо за напоминание.']
+  ]
+ },{
+  type:'farewell',
+  reply:['好，下次见！','Hǎo, xià cì jiàn!','Хорошо, до следующего раза!'],
+  phrases:[
+   ['我先走了','Wǒ xiān zǒu le.','Я пойду.'],
+   ['我们下次再聊','Wǒmen xià cì zài liáo.','Поговорим в следующий раз.'],
+   ['今天就聊到这里吧','Jīntiān jiù liáo dào zhèlǐ ba.','Давай на сегодня закончим.'],
+   ['我得走了','Wǒ děi zǒu le.','Мне нужно идти.'],
+   ['我一会儿再来','Wǒ yíhuìr zài lái.','Я вернусь чуть позже.']
+  ]
+ },{
+  type:'wellbeing',
+  reply:['辛苦了。你想休息一下吗？','Xīnkǔ le. Nǐ xiǎng xiūxi yíxià ma?','Тебе пришлось нелегко. Хочешь немного отдохнуть?'],
+  phrases:[
+   ['我有点儿累','Wǒ yǒudiǎnr lèi.','Я немного устал / устала.'],
+   ['我今天很累','Wǒ jīntiān hěn lèi.','Я сегодня сильно устал / устала.'],
+   ['今天过得不太好','Jīntiān guò de bú tài hǎo.','День прошёл не очень хорошо.'],
+   ['我今天心情不好','Wǒ jīntiān xīnqíng bù hǎo.','У меня сегодня плохое настроение.'],
+   ['我今天有点儿难过','Wǒ jīntiān yǒudiǎnr nánguò.','Мне сегодня немного грустно.']
+  ]
+ },{
+  type:'practice',
+  reply:['好啊！你想练什么？','Hǎo a! Nǐ xiǎng liàn shénme?','Давай! Что хочешь потренировать?'],
+  phrases:[
+   ['我想练习中文','Wǒ xiǎng liànxí Zhōngwén.','Я хочу попрактиковаться в китайском.'],
+   ['我们继续练习吧','Wǒmen jìxù liànxí ba.','Давай продолжим практиковаться.'],
+   ['我想多说一点中文','Wǒ xiǎng duō shuō yìdiǎn Zhōngwén.','Я хочу чуть больше говорить по-китайски.'],
+   ['今天我想练口语','Jīntiān wǒ xiǎng liàn kǒuyǔ.','Сегодня я хочу потренировать разговорную речь.'],
+   ['我想和你用中文聊天','Wǒ xiǎng hé nǐ yòng Zhōngwén liáotiān.','Я хочу поговорить с тобой по-китайски.']
+  ]
+ }
+];
+const freeByPhrase=new Map(freeTopics.flatMap(({type,reply,phrases})=>
+ phrases.map(([hanzi,py,ru])=>[hanzi,{type,reply,py,ru}])));
+function respondToFree(raw,s,awaiting,previous){
+ const turn=freeByPhrase.get(s);
+ if(!turn)return null;
+ const canRepeat=turn.type==='repeat'&&previous?.hanzi&&previous?.pinyin&&previous?.ru;
+ const followUp=canRepeat?[previous.hanzi,previous.pinyin,previous.ru]:turn.reply;
+ return result(raw,turn.py,turn.ru,followUp,canRepeat?awaiting:null,1);
+}
+export function respondToNaturalStatement(raw,{awaiting=null,previous=null}={}){
  const s=norm(raw);if(!s)return null;
  const topicReply=respondToIntroduction(raw,s,awaiting)??respondToDay(raw,s,awaiting)??
-  respondToFood(raw,s,awaiting)??respondToShopping(raw,s,awaiting)??respondToTravel(raw,s,awaiting);
+  respondToFood(raw,s,awaiting)??respondToShopping(raw,s,awaiting)??respondToTravel(raw,s,awaiting)??
+  respondToFree(raw,s,awaiting,previous);
  if(topicReply)return topicReply;
 
  // v552 Android screenshots (24 Nov): common compliments and conversational

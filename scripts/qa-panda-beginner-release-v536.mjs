@@ -50,10 +50,13 @@ try{
   await send('不喜欢','明白了。你想换工作吗？');
   await send('想换工作','你想做什么工作？');
   await send('我有一个姐姐','你姐姐几岁？');
+  await send('请再说一遍','你姐姐几岁？');
   await send('她二十二岁','你姐姐二十二岁！她喜欢做什么？');
   await send('我没有孩子','你家有几口人？');
   await send('三口人','你跟家人一起住吗？');
   await send('我一个人住','你住在哪里？');
+  await send('我想练习中文','好啊！你想练什么？');
+  await send('这个词是什么意思','请把那个词打出来。');
   await send('你是老师吗？','我是老师。');
   await send('我爱你！','谢谢你！我很开心！你叫什么名字？');
   await send('我叫小明。','很高兴认识你！你今天怎么样？');
@@ -134,10 +137,13 @@ try{
   await send('不喜欢','明白了。你想换工作吗？');
   await send('想换工作','你想做什么工作？');
   await send('我有一个姐姐','你姐姐几岁？');
+  await send('请再说一遍','你姐姐几岁？');
   await send('她二十二岁','你姐姐二十二岁！她喜欢做什么？');
   await send('我没有孩子','你家有几口人？');
   await send('三口人','你跟家人一起住吗？');
   await send('我一个人住','你住在哪里？');
+  await send('我想练习中文','好啊！你想练什么？');
+  await send('这个词是什么意思','请把那个词打出来。');
   await send('你是老师吗？','我是老师。');
   // The HSK2 short quiz stays scored; independent statements belong in free topic chat.
   await page.locator('#pg346-topics-btn').click();
