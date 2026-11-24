@@ -42,10 +42,20 @@ try{
   await page.locator('#pg346-nonstop').click();
   assert.equal(await page.locator('#pg346-nonstop').getAttribute('aria-pressed'),'true');
   const input=page.locator('#pg346-input');
-  await input.fill('你好');await page.locator('#pg346-send').click();
+  // v500+ deliberately collapses the composer until the plane is tapped.
+  // Exercise the same visible controls as an Android learner, never force-fill.
+  const send=page.locator('#pg346-send');
+  async function sendChinese(message){
+   if(!(await input.isVisible()))await send.click();
+   await input.waitFor({state:'visible'});
+   assert(await input.isEditable(),'Chinese composer must be editable after opening');
+   await input.fill(message);
+   await send.click();
+  }
+  await sendChinese('你好');
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh')?.textContent==='你好！');
   assert((await page.locator('#pg346-rows').textContent()).includes('你好'));
-  await input.fill('你好吗？');await page.locator('#pg346-send').click();
+  await sendChinese('你好吗？');
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh')?.textContent==='很好！');
   summary.results.push({width,case:'short Mandarin dialogue',reply:await page.locator('.pg346-main-zh').textContent()});
   await page.locator('#pg346-topics-btn').click();
