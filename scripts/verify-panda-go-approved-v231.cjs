@@ -19,8 +19,8 @@ for(const lesson of [6,7]){
  const topic=lesson===6?'family':'weather';
  const filename=lesson===6?'hsk1-family-v231.html':'hsk1-weather-v231.html';
  const html=fs.readFileSync(filename,'utf8');
- assert(html.includes('panda-go-approved-lessons-v231.css?v=289'));
- assert(html.includes('panda-go-companion-v231.js?v=371'));
+ assert(html.includes('panda-go-approved-lessons-v231.css?v=520'));
+ assert(html.includes('panda-go-companion-v231.js?v=520'));
  assert(html.includes('owner-audio-v237.js?v=237'));
  assert(html.includes('panda-owner-lessons5-7-native-v221.js?v=221'));
  assert(css.includes('lesson'+lesson+'-scene-v233.webp'));
@@ -75,8 +75,13 @@ for(const lesson of [6,7]){
  click('#pg5-next');assert.equal(step(),13);assert(d.querySelector('[data-record]'),'Recorder buttons missing');
  click('#pg5-next');assert.equal(step(),14);
  assert(d.querySelectorAll('[data-final]').length===currentTopic.quiz.choices.length,'Final choices missing');
- click('[data-final="'+currentTopic.quiz.correct+'"]');
- assert(!d.getElementById('pg5-next').disabled,'Correct final answer must unlock completion');
+ const answers=[currentTopic.quiz.correct,1,0,...(lesson===6?[1,2]:[2,1])];
+ for(const [index,answer] of answers.entries()){
+  assert(d.querySelector('h2').textContent.includes((index+1)+' / 5'),'Unexpected final question');
+  assert(d.getElementById('pg5-next').disabled,'All five final questions are required');
+  click('[data-final="'+answer+'"]');
+ }
+ assert(!d.getElementById('pg5-next').disabled,'Five correct final answers must unlock completion');
  const saved=JSON.parse(w.localStorage.getItem('pg-hsk1-l'+lesson+'-v231'));
  assert(saved.done&&saved.quizPassed,'Completed lesson state not stored');
  assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes(topic),'Legacy achievement missing');

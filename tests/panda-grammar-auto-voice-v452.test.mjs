@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import {lookupPandaVoiceClip} from '../assets/panda-live-audio.mjs';
+import {lookupPandaVoiceClip} from '../assets/panda-hsk2-preview-audio-v1.mjs';
 import {correctPandaGrammarV2} from '../assets/panda-grammar-hsk12-v2.mjs';
 
-const src=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
+const src=fs.readFileSync(new URL('../assets/panda-hsk2-preview-core-v1.mjs',import.meta.url),'utf8');
 const start=src.indexOf('function recordCorrection(input,spoken){');
 const end=src.indexOf('function showLearnerFeedback(spoken){',start);
 assert.ok(start>0&&end>start,'Find correction function safely');
@@ -58,6 +58,6 @@ test('existing Panda player handles playback, not a new voice or microphone requ
  assert.ok(fn.includes('lookupPandaVoiceClip(c.hanzi)'));
  assert.ok(!fn.includes('startRecognition('));
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- assert.ok(html.includes('panda-live-screen-v270.mjs?v=452'));
- assert.ok(html.includes('panda-live-v346.mjs?v=453'));
+ assert.ok(/panda-hsk2-preview-core-v1\.mjs\?v=\d+/.test(html));
+ assert.ok(/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/.test(html));
 });

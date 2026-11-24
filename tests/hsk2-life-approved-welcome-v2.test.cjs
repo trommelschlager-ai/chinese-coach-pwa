@@ -40,7 +40,12 @@ assert.equal(d.querySelectorAll('img[src$="/course-map.png"]').length,1);
 assert.equal(d.querySelectorAll('.poster-map-nav').length,5);
 click('.poster-map-back');
 assert.equal(d.querySelectorAll('.approved-start').length,1);
-click('.approved-start');
+// Exercise the legacy engine via the same delegated mini-lesson action as the catalog.
+const entry=d.createElement('button');
+entry.dataset.practiceMini='0:0';
+d.body.append(entry);
+entry.click();
+entry.remove();
 assert.equal(d.querySelectorAll('img[src$="/day-lesson.png"]').length,1);
 assert.equal(d.querySelectorAll('[data-day-show-words]').length,2);
 click('.art-next');

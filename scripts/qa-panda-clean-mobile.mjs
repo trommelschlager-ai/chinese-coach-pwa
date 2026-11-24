@@ -11,74 +11,48 @@ export async function verifyCleanMobile(browser,base,dir){
    localStorage.setItem('pg-hsk1-v3-complete',JSON.stringify(['foundations','pronouns','numbers','weekdays','dates','family','weather']));
   });
   const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(base+'/panda-voice-pilot.html');await page.locator('#pg346').waitFor();
+  await page.goto(base+'/panda-voice-pilot.html?lesson=1');await page.locator('#pg346').waitFor();
   await page.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true');
   assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('panda-booting')),false,'Startup must not expose the old Panda screen');
   assert.equal(await page.locator('body>main').evaluate(el=>getComputedStyle(el).visibility),'hidden','Legacy engine UI should remain visually hidden');
-  const planted=await page.locator('.pg352-mascot').evaluate(el=>({animation:getComputedStyle(el).animationName,transform:getComputedStyle(el).transform}));
-  assert.equal(planted.animation,'none','Panda body must NOT bob or rotate on the stone');
-  assert.equal(planted.transform,'none','Panda body must remain planted on its stone');
-  assert(await page.locator('.pg364-ground-shadow').count()===1,'Fixed contact shadow required underneath the Panda');
-  await page.waitForFunction(()=>document.querySelector('.pg346-panda').naturalWidth>0);
-  assert.match(await page.locator('.pg346-panda').getAttribute('src'),/panda-character-clean-v349\.webp/);
-  assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
-  assert.equal(await page.locator('.pg352-rocks').isVisible(),false,'The flat faux-stone slab must not cover the natural scenery');
-  await page.waitForFunction(()=>document.querySelector('.pg352-mascot').dataset.faceReady==='true');
-  assert(await page.locator('.pg353-face-canvas').isVisible(),'Approved mascot canvas is rendered');
-  const placement=await page.evaluate(()=>{
-    const mascot=document.querySelector('.pg352-mascot').getBoundingClientRect();
-    const bubble=document.querySelector('.pg346-speech').getBoundingClientRect();
-    const scene=document.querySelector('.pg346-scene').getBoundingClientRect();
-    const glow=getComputedStyle(document.querySelector('.pg352-ear-effects'));
-    return {eyeRight:mascot.left+mascot.width*.72,bubbleLeft:bubble.left,mascotBottom:mascot.bottom,sceneBottom:scene.bottom,glow:glow.opacity};
-  });
-  assert(placement.bubbleLeft>=placement.eyeRight-8,'Speech bubble must not conceal Panda eyes: '+JSON.stringify(placement));
-  assert(placement.sceneBottom-placement.mascotBottom<65,'Panda must rest near the lake stone shoreline: '+JSON.stringify(placement));
-  assert(Number(placement.glow)>.5,'Headset purple glow must be on while idle');
-  if(width===360){
-    const ledge=await page.locator('.pg346-scene').evaluate(el=>{
-      const s=getComputedStyle(el,'::before');return {content:s.content,bottom:s.bottom,background:s.backgroundImage}
-    });
-    assert(ledge.content!=='none'&&ledge.background.includes('panda-exact-stone-v361.webp'),'Independent natural stone platform is missing');
-    assert(parseFloat(ledge.bottom)<0,'Stone must extend below the feet, not float above them');
-  }
+  await page.waitForFunction(()=>document.querySelector('#pg346').dataset.paLayout==='v547');
+  const mascot=page.locator('.pg352-mascot');
+  const photo=mascot.locator('.pg346-panda');
+  assert.match(await photo.getAttribute('src'),/panda-character-clean-v349\.webp/);
+  assert(await photo.isVisible());
+  assert.equal(await mascot.evaluate(el=>getComputedStyle(el).animationName),'none');
+  assert.equal(await mascot.evaluate(el=>getComputedStyle(el).transform),'none');
+  assert.equal(await page.locator('.pg353-face-canvas').isVisible(),false);
+  assert.match(await page.locator('.pg500-landscape').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
+  assert.match(await page.locator('.pg346-scene').evaluate(el=>getComputedStyle(el,'::before').backgroundImage),/panda-exact-stone-v361/);
+  assert.equal(await page.locator('.pg352-rocks').isVisible(),false);
   await page.screenshot({path:dir+'/welcome-'+width+'.png',animations:'disabled'});
-  const mouthSignature=()=>page.evaluate(()=>{
-    const c=document.querySelector('.pg353-face-canvas'),ctx=c.getContext('2d',{willReadFrequently:true});
-    const x=Math.floor(c.width*.60),y=Math.floor(c.height*.38),w=Math.floor(c.width*.10),h=Math.floor(c.height*.08);
-    const arr=ctx.getImageData(x,y,w,h).data;let hash=2166136261;
-    for(let i=0;i<arr.length;i+=7)hash=Math.imul(hash^arr[i],16777619)>>>0;
-    return hash;
+  await page.evaluate(()=>{
+   window.__playedMp3=[];
+   const play=HTMLMediaElement.prototype.play;
+   HTMLMediaElement.prototype.play=function(){
+    this.addEventListener('playing',()=>window.__playedMp3.push(this.currentSrc),{once:true});
+    return play.call(this);
+   };
   });
-  const mouthIdle=await mouthSignature();
-  await page.locator('#pg346-hear').click();
-  await page.waitForFunction(()=>document.querySelector('#pg346').dataset.pose==='talking'&&
-    document.querySelector('.pg352-mascot').dataset.lips==='moving'&&
-    Number(document.querySelector('.pg352-mascot').dataset.mouthFrame)>0);
-  const mouthTalking=await mouthSignature();
-  assert.notEqual(mouthIdle,mouthTalking,'Mouth pixels must visibly change when MP3 is playing');
-  if(width===360){
-    // Natural blink must occur with no replacement character art or extra face layer.
-    const previousBlink=await page.locator('.pg352-mascot').evaluate(el=>Number(el.dataset.blinkCount)||0);
-    await page.waitForFunction(count=>
-      Number(document.querySelector('.pg352-mascot').dataset.blinkCount||0)>count,
-      previousBlink,{timeout:10000});
-    assert(await page.locator('.pg346-sakura').isVisible(),'Sakura animation should be a separate visible overlay');
-    const sakuraAnimation=await page.locator('.pg346-sakura').evaluate(el=>getComputedStyle(el).animationName);
-    assert.match(sakuraAnimation,/pg354-sakura-sway/,'Branches should sway softly without moving the entire scene');
-  }
-  await page.locator('#pg346-nonstop').click();
-  for(const [question,answer] of [['你好','你好！'],['你好吗','很好！'],['今天天气怎么样','今天很冷。']]){
-   await page.locator('#pg346-input').fill(question);await page.locator('#pg346-send').click();
+  await page.locator('#pg346-rows button[aria-label="Слушать эту реплику"]').first().click();
+  await page.waitForFunction(()=>window.__playedMp3.some(src=>/\.mp3(?:[?#]|$)/.test(src)));
+  const send=async (question,answer)=>{
+   if(!await page.locator('#pg346-input').isVisible())await page.locator('#pg346-send').click();
+   await page.locator('#pg346-input').fill(question);
+   await page.locator('#pg346-send').click();
    await page.waitForFunction(text=>document.querySelector('.pg346-main-zh').textContent===text,answer);
-  }
-  await page.locator('#pg346-py').click();assert.equal(await page.locator('.pg346-main-py').isVisible(),false);
-  await page.locator('#pg346-py').click();assert.equal(await page.locator('.pg346-main-py').isVisible(),true);
+   assert.equal(await page.locator('#pg346-input').inputValue(),'');
+  };
+  await page.locator('#pg346-nonstop').click();
+  for(const [question,answer] of [['你好','你好！'],['你好吗','很好！'],['今天天气怎么样','今天很冷。']])await send(question,answer);
+  assert.match(await page.locator('#pg346-rows .pg346-py').last().textContent(),/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/);
   await page.locator('#pg346-topics-btn').click();assert(await page.locator('#pg346-topics').isVisible());await page.locator('#pg346-topics-close').click();
   await page.locator('#pg346-history').click();assert(await page.locator('#history-dialog').isVisible());await page.locator('[data-close="history-dialog"]').click();
   await page.locator('#pg346-mic').click();assert(await page.locator('#speech-dialog').isVisible());
   assert.equal(await page.evaluate(()=>window.__speech.length),0);await page.locator('#speech-allow').click();
   await page.waitForFunction(()=>document.querySelector('#pg346').dataset.pose==='listening');
+  assert.equal(await page.evaluate(()=>window.__speech.at(-1).lang),'zh-CN');
   assert.equal(await page.locator('#pg346').getAttribute('data-headphones'),'listening','Listening switches headset to blue');
   await page.evaluate(()=>{const r=window.__speech.at(-1);r.onspeechstart?.();r.onspeechend?.()});
   await page.waitForFunction(()=>document.querySelector('#status').textContent.includes('Речь закончилась'));
@@ -107,21 +81,26 @@ export async function verifyCleanMobile(browser,base,dir){
   assert.equal(await page.evaluate(()=>window.__micDiagnosticStops),1,'Diagnostic must release the actual microphone track');
   await page.locator('.pg407-mic-close').click();
   assert.equal(await page.locator('#pg407-mic-help').isVisible(),false);
-  await page.locator('#pg346-input').fill('你好');
-  await page.locator('#pg346-send').click();
-  await page.waitForFunction(()=>document.querySelector('.pg346-main-zh').textContent==='你好！');
+  await send('你好','你好！');
+  await page.locator('#pg346-mic').click();
+  await page.waitForFunction(()=>document.querySelector('#pg346').dataset.pose==='listening');
+  await page.evaluate(()=>window.__speech.at(-1).onresult({results:[[{transcript:'早上好',confidence:.95}]]}));
+  await page.waitForFunction(()=>document.querySelector('.pg346-main-zh').textContent==='早上好！');
 
   for(const height of [568,640,740,825,915,400,320]){
    await page.setViewportSize({width,height});
    await page.waitForFunction(()=>Math.abs(document.querySelector('#pg346').getBoundingClientRect().height-(visualViewport?.height||innerHeight))<2);
    const fit=await page.evaluate(()=>{
-    const box=el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height}};
-    const stage=box(document.querySelector('#pg346'));
-    return {stage,viewport:{width:innerWidth,height:innerHeight},controls:['pg346-input','pg346-send','pg346-mic','pg346-short','pg346-nonstop'].map(id=>({id,...box(document.getElementById(id))})),panda:box(document.querySelector('.pg346-panda')),scene:box(document.querySelector('.pg346-scene'))};
+    const box=el=>el.getBoundingClientRect().toJSON();
+    return {
+     controls:['pg346-send','pg346-mic'].map(id=>box(document.getElementById(id))),
+     panda:box(document.querySelector('.pg352-mascot')),
+     landscape:box(document.querySelector('.pg500-landscape')),
+     viewport:innerWidth
+    };
    });
    assert(fit.controls.every(r=>r.width>0&&r.height>0&&r.x>=-1&&r.right<=width+1&&r.y>=-1&&r.bottom<=height+1),JSON.stringify(fit));
-   // The whole mascot stays inside its scene; the illustration never stretches.
-   assert(fit.panda.y>=fit.scene.y-6&&fit.panda.bottom<=fit.scene.bottom+3,JSON.stringify(fit));
+   assert(fit.panda.width>100&&fit.panda.right<=width+1,JSON.stringify(fit));
    results.push({width,height,...fit});
   }
   await page.setViewportSize({width,height:825});

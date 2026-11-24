@@ -83,10 +83,10 @@ test('known family count is acknowledged and repeated size question is avoided',
 });
 test('v430 integrated without changing approved Panda artwork or lesson audio',()=>{
  const read=f=>fs.readFileSync(new URL('../'+f,import.meta.url),'utf8');
- const screen=read('assets/panda-live-screen-v270.mjs');
+ const screen=read('assets/panda-hsk2-preview-core-v1.mjs');
  assert(screen.includes('enrichConversation430({'));
  assert(screen.includes('state.profile'));
- assert(/panda-live-screen-v270\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
+ assert(/panda-hsk2-preview-core-v1\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
  assert(read('assets/offline-pack.json').includes('panda-conversation-memory-v430.mjs?v=430'));
  assert(read('assets/panda-live-v346.mjs').includes('panda-character-clean-v349.webp'));
 });

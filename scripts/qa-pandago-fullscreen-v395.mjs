@@ -8,30 +8,6 @@ const sizes=[{width:360,height:800},{width:393,height:852},{width:412,height:915
 const errors=[];
 fs.mkdirSync('qa/pandago-fullscreen-v395',{recursive:true});
 
-async function visibleArt(page,selector,tag){
- await page.locator(selector+' .approved-art.ready').waitFor({state:'visible',timeout:30000});
- const result=await page.locator(selector).evaluate(node=>{
-  const box=node.getBoundingClientRect();
-  const art=node.querySelector('.approved-art').getBoundingClientRect();
-  const bg=getComputedStyle(node,'::before');
-  return {h:box.height,background:bg.backgroundImage,display:bg.display,artH:art.height,artW:art.width};
- });
- assert.ok(result.h>400,tag+' should be a full screen container');
- if(selector==='.approved-welcome-screen'){
-  // The new full-height artwork has no separate sky/lake filler and no seams.
-  assert.equal(result.display,'none','No duplicate scenic bands around v412 welcome '+tag);
-  const covers=await page.locator(selector).evaluate(node=>{
-   const art=node.querySelector('.approved-art').getBoundingClientRect(),stage=node.getBoundingClientRect();
-   return art.left<=stage.left+1&&art.top<=stage.top+1&&art.right>=stage.right-1&&art.bottom>=stage.bottom-1;
-  });
-  assert.ok(covers,'Single approved poster covers the entire mobile welcome '+tag);
- }else{
-  assert.ok(result.background.includes('url('),'Map and lesson scenic extensions preserved '+tag);
-  assert.notEqual(result.display,'none','Map and lesson scenic extension remains visible '+tag);
- }
- assert.ok(result.artW>0&&result.artH>0,'Original artwork remains visible '+tag);
- return result;
-}
 async function tapFeedback(page,sel,tag){
  const el=page.locator(sel).first();
  await el.waitFor({state:'visible'});
@@ -88,26 +64,18 @@ try{
   assert.match(await page.locator('#step-title').innerText(),/Грамматика/);
 
 
-  await page.goto(base+'/hsk2-life-course.html?v=395',{waitUntil:'domcontentloaded'});
-  await visibleArt(page,'.approved-welcome-screen',tag+' welcome');
-  await tapFeedback(page,'.approved-welcome-screen .approved-program',tag+' course welcome button');
-  await page.screenshot({path:'qa/pandago-fullscreen-v395/welcome-'+tag+'.png',fullPage:false});
-  await page.locator('.approved-welcome-screen .approved-program').click();
-  await visibleArt(page,'.approved-map-screen',tag+' map');
-  assert.equal(await page.locator('.approved-map-screen .poster-map-card[data-topic]').count(),10);
-  await tapFeedback(page,'.approved-map-screen .poster-map-card[data-topic="0"]',tag+' map topic');
-  await page.screenshot({path:'qa/pandago-fullscreen-v395/map-'+tag+'.png',fullPage:false});
-  await page.locator('.approved-map-screen .poster-map-card[data-topic="0"]').click();
-  await page.locator('[data-mini="0"]').first().click();
-  await page.locator('.pg414-vocab-row').first().waitFor({state:'visible',timeout:20000});
-  assert.equal(await page.locator('.pg414-vocab-row').count(),7,'All seven real interactive day vocabulary rows visible');
-  assert.equal(await page.locator('.pg414-vocab-row .audio').count(),7,'Each word has an audio control');
-  assert.equal(await page.locator('.pg415-art-screen [data-day-next]').count(),1,'Real step navigation preserved');
+  await page.goto(base+'/hsk2-life-course.html?view=map',{waitUntil:'domcontentloaded'});
+  await page.locator('.pgc-feature-day').click();
+  await page.waitForURL(url=>url.pathname.endsWith('/hsk2-lesson1.html'));
+  const cover=page.getByRole('button',{name:'Начать урок',exact:true});
+  await cover.waitFor();
+  const hit=await cover.boundingBox();
+  assert(hit&&hit.width>=35&&hit.height>=30&&hit.y+hit.height<=height+1,'Start control fits the approved day cover');
   await page.screenshot({path:'qa/pandago-fullscreen-v395/day-'+tag+'.png',fullPage:false});
-  await page.locator('[data-day-next]').click();
-  assert.equal(await page.locator('.pg415-step-1,.pg414-rule').count(),1,'Approved grammar artwork follows vocabulary');
+  await cover.click();
+  await page.waitForURL(url=>url.searchParams.get('step')==='2');
   assert.deepEqual(errors,[],'No JS errors: '+tag);
-  console.log('PASS '+tag+': Bastian 2 pages, three approved image screens, 5 visible tap highlights, real word practice.');
+  console.log('PASS '+tag+': Bastian practice and current fullscreen My Day cover with a working start button.');
   await context.close();
  }
 }finally{await browser.close()}

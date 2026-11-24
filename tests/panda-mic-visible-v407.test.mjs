@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {liveDOM} from './panda-live-dom-fixture.mjs';
 
-const source=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
+const source=fs.readFileSync(new URL('../assets/panda-hsk2-preview-ui-v1.mjs',import.meta.url),'utf8');
 const styles=fs.readFileSync(new URL('../assets/panda-mic-help-v407.css',import.meta.url),'utf8');
 const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
 
@@ -17,7 +17,7 @@ test('approved Panda UI exposes real permission and recovery controls only after
  assert(styles.includes('#pg407-mic-help #speech-recovery.speech-recovery'));
  assert(styles.includes('min-height:44px'),'Diagnostic buttons are touch-sized');
  assert(html.includes('panda-mic-help-v407.css?v=407'));
- assert(/panda-live-v346\.mjs\?v=\d+/.test(html));
+ assert(/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/.test(html));
 });
 
 test('speech failure keeps the learner transcript fallback and provides a direct Chrome route',async()=>{
