@@ -358,7 +358,10 @@ function submitHSK2(input){
   return;
  }
  const t=getTopic(hsk2.id),q=t.questions[hsk2.index],prior=state.display,out=replyHSK2(input,hsk2.id,hsk2.index,hsk2.done,hsk2.context);
- if(!['accepted','variant'].includes(out.kind)&&respondIndependentNatural(input))return;
+ // Origin-question wildcard used to accept any 我是… as a nationality.
+ // A reviewed profession is an independent statement, not an origin answer.
+ const possibleRoleInsteadOfOrigin=hsk2.id===101&&hsk2.index===0&&/^我(?:不)?是/.test(normalize(input));
+ if(out.kind!=='accepted'&&(out.kind!=='variant'||possibleRoleInsteadOfOrigin)&&respondIndependentNatural(input))return;
  const known=out.spoken||knownHSK2(input);const legacy=known?null:analyzeLearner(input,[1,2,3,4,5,6,7],null,curriculum,false);
  const spoken=known?{known:true,pinyin:known.pinyin,translation:known.ru}:legacy?.known?legacy:null;
  if('context' in out)hsk2.context=out.context;
