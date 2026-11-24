@@ -111,9 +111,98 @@ function workConversation(raw,s,awaiting){
  }
  return null;
 }
+// v556: introductions and personal facts. Short fragments require the matching question.
+// The character has no real human age or nationality; do not invent a citizenship.
+const introCountries={俄罗斯:['Éluósī','Россия','русский/русская','России'],中国:['Zhōngguó','Китай','китаец/китаянка','Китае'],德国:['Déguó','Германия','немец/немка','Германии'],法国:['Fǎguó','Франция','француз/француженка','Франции'],美国:['Měiguó','США','американец/американка','США'],英国:['Yīngguó','Великобритания','британец/британка','Великобритании'],吉尔吉斯斯坦:["Jí'ěrjísīsītǎn",'Кыргызстан','гражданин/гражданка Кыргызстана','Кыргызстане'],荷兰:['Hélán','Нидерланды','нидерландец/нидерландка','Нидерландах'],日本:['Rìběn','Япония','японец/японка','Японии'],韩国:['Hánguó','Южная Корея','кореец/кореянка','Южной Корее']};
+const introCities={莫斯科:['Mòsīkē','Москва','Москве'],北京:['Běijīng','Пекин','Пекине'],上海:['Shànghǎi','Шанхай','Шанхае'],广州:['Guǎngzhōu','Гуанчжоу','Гуанчжоу'],深圳:['Shēnzhèn','Шэньчжэнь','Шэньчжэне'],阿姆斯特丹:['Āmǔsītèdān','Амстердам','Амстердаме']};
+const introNames={安东:['Āndōng','Антон'],小明:['Xiǎomíng','Сяомин'],小红:['Xiǎohóng','Сяохун'],米沙:['Mǐshā','Миша'],王明:['Wáng Míng','Ван Мин'],李华:['Lǐ Huá','Ли Хуа']};
+const introSurnames={王:['Wáng','Ван'],李:['Lǐ','Ли'],张:['Zhāng','Чжан'],刘:['Liú','Лю'],陈:['Chén','Чэнь']};
+function introAge(s){
+ const digits='零一二三四五六七八九',py=['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
+ let n;
+ if(/^[0-9]{1,2}$/.test(s))n=Number(s);
+ else if(/^[一二三四五六七八九]$/.test(s))n=digits.indexOf(s);
+ else if(/^[二三四五六七八九]?十[一二三四五六七八九]?$/.test(s)){
+  const [a,b]=s.split('十');n=(a?digits.indexOf(a):1)*10+(b?digits.indexOf(b):0);
+ }else return null;
+ if(n<1||n>99)return null;
+ return [n,n<10?py[n]:(n<20?'shí':py[Math.floor(n/10)]+'shí')+(n%10?py[n%10]:'')];
+}
+function introductionConversation(raw,s,awaiting){
+ const r=(py,ru,a,next=null,kind='statement')=>({...result(raw,py,ru,a,next,2),kind,domain:'identity'});
+ const nameQ=['你叫什么名字？','Nǐ jiào shénme míngzi?','Как тебя зовут?'];
+ const ageQ=['你今年多大？','Nǐ jīnnián duō dà?','Сколько тебе лет?'];
+ const originQ=['你来自哪里？','Nǐ láizì nǎlǐ?','Откуда ты родом?'];
+ const cityQ=['你现在住在哪里？','Nǐ xiànzài zhù zài nǎlǐ?','Где ты сейчас живёшь?'];
+ const jobQ=['你做什么工作？','Nǐ zuò shénme gōngzuò?','Кем ты работаешь?'];
+ const greet=['我也很高兴认识你！','Wǒ yě hěn gāoxìng rènshi nǐ!','Я тоже рад(а) познакомиться!'];
+ const pandaName=['我叫熊猫。','Wǒ jiào Xióngmāo.','Меня зовут Панда.'];
+ const pandaAge=['我是虚拟熊猫，没有实际年龄。','Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì niánlíng.','Я виртуальная панда, у меня нет реального возраста.'];
+ const pandaOrigin=['我是虚拟熊猫，没有国籍。','Wǒ shì xūnǐ xióngmāo, méiyǒu guójí.','Я виртуальная панда, у меня нет гражданства.'];
+ const pandaCity=['我住在山里。','Wǒ zhù zài shānlǐ.','Я живу в горах (в учебном мире).'];
+ const q={
+ '你叫什么名字':[nameQ[1],nameQ[2],pandaName],
+ '你叫什么':['Nǐ jiào shénme?',nameQ[2],pandaName],
+ '你的名字是什么':['Nǐ de míngzi shì shénme?',nameQ[2],pandaName],
+ '你姓什么':['Nǐ xìng shénme?','Какая у тебя фамилия?',['我没有姓，我叫熊猫。','Wǒ méiyǒu xìng, wǒ jiào Xióngmāo.','У меня нет фамилии, меня зовут Панда.']],
+ '你几岁':['Nǐ jǐ suì?',ageQ[2],pandaAge],
+ '你多大':['Nǐ duō dà?',ageQ[2],pandaAge],
+ '你多大了':['Nǐ duō dà le?',ageQ[2],pandaAge],
+ '你今年多大':[ageQ[1],ageQ[2],pandaAge],
+ '你是哪国人':['Nǐ shì nǎ guó rén?','Из какой ты страны?',pandaOrigin],
+ '你来自哪里':[originQ[1],originQ[2],pandaOrigin],
+ '你从哪里来':['Nǐ cóng nǎlǐ lái?',originQ[2],pandaOrigin],
+ '你住在哪里':['Nǐ zhù zài nǎlǐ?','Где ты живёшь?',pandaCity],
+ '你现在住在哪儿':['Nǐ xiànzài zhù zài nǎr?',cityQ[2],pandaCity]
+ };
+ if(Object.hasOwn(q,s)){const [py,ru,a]=q[s];return r(py,ru,a,null,'question')}
+ const nationalityQ=/^你(?:是不是(.+?)人|是(.+?)人吗)$/u.exec(s);
+ if(nationalityQ&&Object.hasOwn(introCountries,nationalityQ[1]||nationalityQ[2])){
+  const [py,,ru]=introCountries[nationalityQ[1]||nationalityQ[2]];
+  return r('Nǐ '+(nationalityQ[1]?'shì bu shì ':'shì ')+py+' rén'+(nationalityQ[2]?' ma?':'?'),'Ты '+ru+'?',pandaOrigin,null,'question');
+ }
+ if(s==='很高兴认识你'||s==='我也很高兴认识你'){
+  return r(s.startsWith('我也')?'Wǒ yě hěn gāoxìng rènshi nǐ.':'Hěn gāoxìng rènshi nǐ.','Рад(а) познакомиться.',[greet[0]+ageQ[0],greet[1]+' '+ageQ[1],greet[2]+' '+ageQ[2]],'intro-age');
+ }
+ const name=/^(我叫|我的名字叫|我的名字是)([\p{Script=Han}]{1,8})$/u.exec(s);
+ const shortName=awaiting==='intro-name'&&Object.hasOwn(introNames,s)?s:null;
+ if(name||shortName){
+  const n=name?.[2]||shortName,v=introNames[n];
+  const prefix=name?{'我叫':'Wǒ jiào ','我的名字叫':'Wǒ de míngzi jiào ','我的名字是':'Wǒ de míngzi shì '}[name[1]]:'';
+  return r(v?prefix+v[0]+'.':null,'Меня зовут '+(v?v[1]:n)+'.',['很高兴认识你！'+ageQ[0],'Hěn gāoxìng rènshi nǐ! '+ageQ[1],'Рад(а) познакомиться! '+ageQ[2]],'intro-age');
+ }
+ const surname=/^我姓([\p{Script=Han}])$/u.exec(s);
+ if(surname&&Object.hasOwn(introSurnames,surname[1])){
+  const [py,ru]=introSurnames[surname[1]];return r('Wǒ xìng '+py+'.','Моя фамилия '+ru+'.',nameQ,'intro-name');
+ }
+ const age=/^(我)?(今年)?([一二三四五六七八九十0-9]{1,3})岁$/u.exec(s);
+ if(age&&(age[1]||awaiting==='intro-age')){
+  const a=introAge(age[3]);if(!a)return null;
+  const [n,py]=a,ending=n%100>=11&&n%100<=14?'лет':n%10===1?'год':n%10>=2&&n%10<=4?'года':'лет';
+  const p=[age[1]?'wǒ':'',age[2]?'jīnnián':'',py,'suì'].filter(Boolean).join(' ');
+  return r(p[0].toUpperCase()+p.slice(1)+'.','Мне '+n+' '+ending+'.',originQ,'intro-origin');
+ }
+ const nationality=/^我(不是|也是|是)(.+)人$/u.exec(s);
+ if(nationality&&Object.hasOwn(introCountries,nationality[2])){
+  const [py,,ru]=introCountries[nationality[2]],negative=nationality[1]==='不是';
+  return r('Wǒ '+(negative?'bú shì ':nationality[1]==='也是'?'yě shì ':'shì ')+py+' rén.','Я '+(negative?'не ':nationality[1]==='也是'?'тоже ':'')+ru+'.',negative?originQ:cityQ,negative?'intro-origin':'intro-city');
+ }
+ const origin=/^我(?:来自(.+)|从(.+)来)$/u.exec(s);
+ const country=origin?.[1]||origin?.[2]||(awaiting==='intro-origin'&&Object.hasOwn(introCountries,s)?s:null);
+ if(country&&Object.hasOwn(introCountries,country)){
+  const [py,ru]=introCountries[country];return r(origin?(origin[1]?'Wǒ láizì '+py+'.':'Wǒ cóng '+py+' lái.'):py+'.','Я родом из страны: '+ru+'.',cityQ,'intro-city');
+ }
+ const home=/^我(现在)?住在(.+)$/u.exec(s),shortHome=awaiting==='intro-city'?s.replace(/^在/,''):null,place=home?.[2]||shortHome;
+ if(place&&(Object.hasOwn(introCities,place)||Object.hasOwn(introCountries,place))){
+  const city=introCities[place],countryData=introCountries[place],py=(city||countryData)[0],ru=city?city[2]:countryData[3];
+  return r(home?'Wǒ '+(home[1]?'xiànzài ':'')+'zhù zài '+py+'.':(s.startsWith('在')?'Zài ':'')+py+'.','Я живу в '+ru+'.',jobQ,'job-role');
+ }
+ return null;
+}
 export function respondToNaturalStatement(raw,{awaiting=null}={}){
  const s=norm(raw);if(!s)return null;
  const work=workConversation(raw,s,awaiting);if(work)return work;
+ const intro=introductionConversation(raw,s,awaiting);if(intro)return intro;
 
  // v552 Android screenshots (24 Nov): common compliments and conversational
  // reactions are complete, valid Chinese — never route them to the
