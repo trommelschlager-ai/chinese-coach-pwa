@@ -102,10 +102,6 @@ CORE.push("./assets/panda-ai-approved-layout-v547.css?v=547","./assets/panda-ai-
 CORE.push('./assets/panda-hsk2-preview-core-v1.mjs?v=552');
 // Install only the home, HSK1 entry, writing and current Panda AI shell.
 const INSTALL_SHELL=[
- "./panda-ai-hsk2-preview.html",
- "./panda-street-ai-preview.html",
- "./assets/panda-street-shared-brain-v1.mjs?v=3",
- "./assets/panda-street-shared-brain-v1.mjs?v=3-retry",
  "./assets/approved-lesson-design.css?v=56",
  "./assets/approved-lesson-design.js?v=112",
  "./assets/approved-mobile-v112.css?v=119",
