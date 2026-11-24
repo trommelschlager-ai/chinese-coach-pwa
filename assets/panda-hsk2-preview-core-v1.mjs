@@ -357,7 +357,10 @@ function submit(raw){
  // Default beginner chat understands natural statements in both visible tabs;
  // other explicit HSK2 lesson entries retain their assessed question path.
  if(((hsk2&&(hsk2.openChat||(entry.beginnerGreeting&&hsk2.id===101)))||(!hsk2&&state.mode==='nonstop'))&&!state.dayMode){
-  const natural=respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
+  // Keep HSK1 Non-Stop family answer validation and recorded follow-ups intact.
+  // v552 family facts are for the free HSK2 chat route; new 有没有 questions work in both.
+  const legacyFamilyAnswer=!hsk2&&state.mode==='nonstop'&&/^(?:我(?:有一个|有|没有)(?:哥哥|姐姐|弟弟|妹妹)|我(?:的)?(?:哥哥|姐姐|弟弟|妹妹)[一二三四五六七八九十]岁)$/u.test(normalize(input));
+  const natural=legacyFamilyAnswer?null:respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
   if(natural){
    state.naturalAwaiting=natural.next;
    learner(input,natural.spoken);
