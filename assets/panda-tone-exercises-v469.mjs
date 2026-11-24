@@ -127,3 +127,166 @@ if(typeof document!=='undefined'&&$('hear-play')&&$('shape-prompt')){
  window.addEventListener('pagehide',()=>{hearing.playing?.pause();hearing.playing=null;});
  resetHearing();resetShapes();
 }
+
+/* Curated standard Mandarin examples, not an unrestricted sandhi parser.
+ * Quiz checks knowledge of the usual pronunciation; never scores microphone. */
+export const contextToneExamples=[
+ {
+  "zh": "你好",
+  "written": "nǐ hǎo",
+  "spoken": "ní hǎo",
+  "target": 0,
+  "answer": 2,
+  "why": "В сочетании двух третьих тонов первый обычно становится восходящим."
+ },
+ {
+  "zh": "很好",
+  "written": "hěn hǎo",
+  "spoken": "hén hǎo",
+  "target": 0,
+  "answer": 2,
+  "why": "Перед третьим тоном третий обычно меняется на второй."
+ },
+ {
+  "zh": "洗脸",
+  "written": "xǐ liǎn",
+  "spoken": "xí liǎn",
+  "target": 0,
+  "answer": 2,
+  "why": "Первый из двух третьих тонов становится восходящим."
+ },
+ {
+  "zh": "不是",
+  "written": "bù shì",
+  "spoken": "bú shì",
+  "target": 0,
+  "answer": 2,
+  "why": "不 перед четвёртым тоном произносится вторым."
+ },
+ {
+  "zh": "不喝",
+  "written": "bù hē",
+  "spoken": "bù hē",
+  "target": 0,
+  "answer": 4,
+  "why": "Перед первым тоном 不 сохраняет четвёртый."
+ },
+ {
+  "zh": "一天",
+  "written": "yī tiān",
+  "spoken": "yì tiān",
+  "target": 0,
+  "answer": 4,
+  "why": "一 перед первым, вторым или третьим тоном обычно становится четвёртым."
+ },
+ {
+  "zh": "一块",
+  "written": "yī kuài",
+  "spoken": "yí kuài",
+  "target": 0,
+  "answer": 2,
+  "why": "一 перед четвёртым тоном обычно становится вторым."
+ },
+ {
+  "zh": "妈妈",
+  "written": "māma",
+  "spoken": "māma",
+  "target": 1,
+  "answer": 0,
+  "why": "Второе ma безударное, короткое, без фиксированной высоты; после первого тона обычно ниже."
+ },
+ {
+  "zh": "早上",
+  "written": "zǎoshang",
+  "spoken": "zǎoshang",
+  "target": 1,
+  "answer": 0,
+  "why": "上 в этом слове обычно нейтральный; после третьего тона нейтральный слог может звучать относительно высоко."
+ },
+ {
+  "zh": "谢谢",
+  "written": "xièxie",
+  "spoken": "xièxie",
+  "target": 1,
+  "answer": 0,
+  "why": "Второй слог обычно нейтральный, короткий; после четвёртого тона часто низкий."
+ }
+];
+export function checkContextTone(index,answer){
+ const item=contextToneExamples[index];
+ return !!item&&Number.isInteger(answer)&&item.answer===answer;
+}
+if(typeof document!=='undefined'&&$('context-prompt')){
+ let index=0,score=0,answered=false;
+ const choices=[...document.querySelectorAll('[data-context-tone]')];
+ function show(){
+  answered=false;
+  const item=contextToneExamples[index];
+  $('context-count').textContent=index+' / '+contextToneExamples.length;
+  $('context-next').disabled=true;
+  choices.forEach(b=>{b.disabled=!item;b.classList.remove('correct','wrong');b.setAttribute('aria-pressed','false');});
+  $('context-pinyin').textContent=item?item.written:'';
+  $('context-prompt').replaceChildren();
+  if(!item){
+   $('context-prompt').textContent='✓';
+   $('context-feedback').textContent='Результат: '+score+' из '+contextToneExamples.length+'. Это знание правил, не оценка голоса.';
+   return;
+  }
+  [...item.zh].forEach((h,i)=>{
+   const span=document.createElement('span');span.textContent=h;
+   if(i===item.target){span.style.textDecoration='underline';span.style.color='#8a3da6';}
+   $('context-prompt').append(span);
+  });
+  $('context-feedback').textContent='Какой тон обычно слышен у подчёркнутого слога?';
+ }
+ choices.forEach(b=>b.addEventListener('click',()=>{
+  const item=contextToneExamples[index];
+  if(answered||!item)return;
+  answered=true;
+  const answer=Number(b.dataset.contextTone),ok=checkContextTone(index,answer);
+  if(ok)score++;
+  document.dispatchEvent(new window.CustomEvent('panda-tone-rule-answer',{detail:{index,correct:ok}}));
+  choices.forEach(btn=>{
+   const n=Number(btn.dataset.contextTone);
+   btn.disabled=true;btn.setAttribute('aria-pressed',String(n===answer));
+   if(n===item.answer)btn.classList.add('correct');else if(n===answer)btn.classList.add('wrong');
+  });
+  $('context-feedback').textContent=(ok?'Верно! ':'Правильный вариант: ')+item.spoken+'. '+item.why;
+  $('context-next').disabled=false;
+ }));
+ $('context-next').addEventListener('click',()=>{if(answered){index++;show();}});
+ $('context-restart').addEventListener('click',()=>{index=0;score=0;show();});
+ show();
+}
+
+/* Optional aggregate knowledge statistics. Never store speech, words or F0. */
+if(typeof document!=='undefined'&&$('tone-stats-opt-in')){
+ const key='panda-tone-rule-stats-v1';
+ const groups=['3+3','不','一','轻声'];
+ const groupOf=i=>i<3?0:i<5?1:i<7?2:3;
+ const empty=()=>groups.map(()=>({total:0,wrong:0}));
+ let enabled=false,stats=empty();
+ try{
+  const raw=JSON.parse(window.localStorage.getItem(key)||'null');
+  if(raw?.enabled===true&&Array.isArray(raw.stats)&&raw.stats.length===4&&raw.stats.every(v=>Number.isSafeInteger(v.total)&&Number.isSafeInteger(v.wrong)&&v.wrong>=0&&v.total>=v.wrong)){enabled=true;stats=raw.stats;}
+ }catch{}
+ $('tone-stats-opt-in').checked=enabled;
+ function draw(){
+  $('tone-stats-result').replaceChildren();
+  if(!enabled){$('tone-stats-result').textContent='Статистика выключена.';return}
+  groups.forEach((label,i)=>{
+   const p=document.createElement('p');const s=stats[i];p.textContent=label+': ошибок '+s.wrong+' из '+s.total+' ответов';$('tone-stats-result').append(p);
+  });
+ }
+ function persist(){try{if(enabled)window.localStorage.setItem(key,JSON.stringify({enabled:true,stats}));else window.localStorage.removeItem(key)}catch{$('tone-stats-result').append(' Хранилище недоступно.');}}
+ $('tone-stats-opt-in').onchange=()=>{enabled=$('tone-stats-opt-in').checked;if(!enabled)stats=empty();draw();persist()};
+ $('tone-stats-clear').onclick=()=>{enabled=false;stats=empty();$('tone-stats-opt-in').checked=false;draw();persist()};
+ document.addEventListener('panda-tone-rule-answer',e=>{
+  const {index,correct}=e.detail||{};
+  if(!enabled||!Number.isInteger(index)||index<0||index>=contextToneExamples.length||typeof correct!=='boolean')return;
+  const s=stats[groupOf(index)];
+  if(s.total<Number.MAX_SAFE_INTEGER){s.total++;if(!correct)s.wrong++;}
+  draw();persist();
+ });
+ draw();
+}

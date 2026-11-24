@@ -68,7 +68,9 @@ function updateTone(index){
 buttons.forEach((b,i)=>b.addEventListener('click',()=>updateTone(i)));
 $('next').addEventListener('click',()=>updateTone(selected+1));
 $('listen').addEventListener('click',async()=>{
- if(active||opening)return;
+ if(active||opening||stopping)return;
+ try{recordedAudio?.pause();}catch{}
+ $('replay').textContent='🔊 Послушать свой голос';
  silencePlayback();
  const s=tones[selected];
  try{
@@ -102,14 +104,16 @@ function plot(points){
  }).join(' ');
 }
 function toneGuidance(s,result){
- const kind=result.kind;
- if(kind==='insufficient'||kind==='uncertain')return result.label+'. '+result.reason;
- if(s.n===1&&kind==='level')return 'Высота голоса почти ровная — это характерно для первого тона. Это не подтверждение правильности слога.';
- if(s.n===2&&kind==='rise')return 'Голос повышается — движение похоже на второй тон. Звук самого слога ещё не проверен.';
- if(s.n===3&&kind==='dip')return 'Виден спад и последующий подъём — возможный вариант третьего тона в изоляции.';
- if(s.n===3&&kind==='fall')return 'Виден нисходящий/низкий участок: третий тон бывает таким в связной речи; это не ошибка сама по себе.';
- if(s.n===4&&kind==='fall')return 'Высота голоса снижается — движение похоже на четвёртый тон. Это ещё не оценка произношения.';
- return result.label+'. Контур отличается от учебной схемы. Повтори слог спокойно; одной кривой недостаточно, чтобы признать тон ошибочным.';
+ const measured=result.kind;
+ const short=measured==='insufficient'&&result.stats?.previewOnly===true&&result.stats?.octaveJumpCount===0&&result.shapeHint?.confidence==='exploratory'&&result.shapeHint?.isToneGrade===false;
+ const kind=short?result.shapeHint.direction:measured;
+ if(!['level','rise','dip','fall'].includes(kind))return result.label+'. '+result.reason;
+ const observation={level:'Высота почти ровная.',rise:'Высота повышается.',dip:'Высота снижается, затем повышается.',fall:'Высота снижается.'}[kind];
+ const practice={1:'Удерживай голос ровно в комфортной верхней части своего диапазона.',2:'Начни со средней высоты и плавно подними голос к концу.',3:'Для отдельного mǎ опусти голос, затем мягко подними. В связной речи подъём часто отсутствует.',4:'Начни выше и быстро опусти голос, не усиливая громкость.'}[s.n];
+ const expected={1:'level',2:'rise',3:'dip',4:'fall'}[s.n];
+ const comparison=kind===expected?'Движение похоже на учебную схему.':s.n===3&&kind==='fall'?'Нисходящий участок возможен у третьего тона; отсутствие подъёма само по себе не ошибка.':'Попробуй другое движение: '+practice;
+ const caution=short?'Короткий слог: наблюдение предварительное.':'По высоте нельзя подтвердить правильность слога или тона.';
+ return observation+' '+comparison+' '+caution;
 }
 function controls(recording){
  $('record').textContent=recording?'■ Стоп':'🎙 Произнести';
@@ -157,10 +161,7 @@ async function stop(){
  const partialPreview=(result.kind==='insufficient'||result.kind==='uncertain')?offline?.preview||[]:[];
  const displayPoints=result.points?.length?result.points:partialPreview;
  $('your-path').setAttribute('d',plot(displayPoints));
- const movement=result.shapeHint&&result.shapeHint.direction!=='uncertain'?result.shapeHint:null;
- $('result').textContent=movement
-  ?'Короткий слог: '+movement.text+'. Это наблюдение за движением голоса, а не проверка правильности китайского тона.'
-  :partialPreview.length&&!result.points?.length
+ $('result').textContent=partialPreview.length&&!result.points?.length
    ?'Часть высоты голоса измерена. Линия неполная, оценивать китайский тон пока нельзя.'
    :toneGuidance(tones[selected],result);
  const sound=offline?.signal;
@@ -252,6 +253,7 @@ async function start(){
 $('record').addEventListener('click',()=>{if(active)void stop();else void start();});
 $('replay').addEventListener('click',async()=>{
  if(active||opening||stopping||!recordedUrl)return;
+ silencePlayback();
  if(recordedAudio&&!recordedAudio.paused){
   recordedAudio.pause();$('replay').textContent='🔊 Послушать свой голос';return;
  }

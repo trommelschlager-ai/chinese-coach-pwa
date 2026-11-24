@@ -97,7 +97,7 @@ import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
 import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
 import {alignFromReference} from './assets/panda-sentence-align-v4.mjs?v=4';
 const $=id=>document.getElementById(id);
-const tokens=[{zh:'我',py:'wǒ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'早',py:'zǎo',tone:'3-й · низкий'},{zh:'上',py:'shang',tone:'нейтральный'},{zh:'洗',py:'xǐ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'脸',py:'liǎn',tone:'3-й · часто низкий'}];
+const tokens=[{zh:'我',py:'wǒ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'早',py:'zǎo',tone:'3-й · низкий'},{zh:'上',py:'shang',tone:'нейтральный · короткий, после третьего тона может звучать относительно высоко'},{zh:'洗',py:'xǐ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'脸',py:'liǎn',tone:'3-й · часто низкий'}];
 const weights=[1.0,1.15,.65,1,1.2];
 const source=window.PandaGoHSK2Lesson1NativeAudioV459?.['我早上洗脸。'];
 let reference=null, learner=null, selected=0, recorder=null, stream=null, recordedUrl=null, chunks=[], recorded=null, micTimer=null, autoBounds=null, firstLiveVoice=null, decodedReference=null, decodedLearner=null, refAutoBounds=null, alignmentStatus='';
@@ -164,6 +164,8 @@ function syllableQuality(i){
 }
 function describeMovement(i){
  if(!learner?.valid)return '';
+ if(tokens[i].py==='shang')return 'У нейтрального тона нет фиксированного контура. По направлению высоты не определяем ошибку; сравни краткость и лёгкость с образцом.';
+ if(syllableQuality(i).weak)return 'Участок содержит пропуски F0: направление пока не определяем.';
  const a=learner.bounds[i],b=learner.bounds[i+1],pts=learner.frames.filter(p=>p.t>=a&&p.t<=b);
  if(pts.length<6)return 'Мало точек F0 для анализа движения.';
  const k=Math.max(2,Math.floor(pts.length*.25)),first=median(pts.slice(0,k).map(p=>p.hz)),last=median(pts.slice(-k).map(p=>p.hz));

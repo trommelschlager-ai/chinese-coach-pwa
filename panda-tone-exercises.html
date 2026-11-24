@@ -78,6 +78,24 @@ button:disabled{cursor:default;opacity:.58;box-shadow:none}
  <a class="go primary" href="./panda-tone-ma-practice.html?v=468">🎙 Открыть тренировку голоса</a>
  <p class="note">Важно: микрофон показывает движение высоты, но пока не подтверждает правильность китайского произношения. Не нужно растягивать слог.</p>
 </section>
+<section class="card" aria-labelledby="context-title">
+ <div class="track"><h2 id="context-title">4. Тоны в живой речи</h2><span class="count" id="context-count">0 / 10</span></div>
+ <p class="hint">轻声 qīngshēng — нейтральный тон: короткий и без собственной фиксированной высоты. Тоны также меняются в сочетаниях. Выбери обычное произношение подчёркнутого слога.</p>
+ <div id="context-prompt" lang="zh-Hans" style="font-size:38px;font-weight:800;text-align:center"></div>
+ <p id="context-pinyin" style="text-align:center;font-weight:700"></p>
+ <div class="answers" style="grid-template-columns:repeat(5,minmax(0,1fr))" role="group" aria-label="Тон в контексте">
+ <button type="button" data-context-tone="1"><strong>1</strong>→</button>
+ <button type="button" data-context-tone="2"><strong>2</strong>↗</button>
+ <button type="button" data-context-tone="3"><strong>3</strong>↘↗</button>
+ <button type="button" data-context-tone="4"><strong>4</strong>↘</button>
+ <button type="button" data-context-tone="0"><strong>0</strong>轻声</button>
+ </div>
+ <p id="context-feedback" class="feedback" role="status" aria-live="polite"></p>
+ <div class="row"><button id="context-next" type="button" disabled>Далее →</button><button id="context-restart" type="button">↻ Повторить</button></div>
+ <p class="note">Это тест правил, не анализ аудио. В свободной речи варианты зависят от слов, ударения и границ фраз.</p>
+</section>
+<section class="card" aria-labelledby="free-tone-title"><h2 id="free-tone-title">5. Свободная фраза</h2><p class="intro">Запиши целую фразу, посмотри изменение высоты голоса и прослушай себя. Можно включить локальный счётчик тренировок. Слоги автоматически не оцениваются.</p><a class="go" href="./panda-tone-free-practice.html">🎙 График свободной речи</a></section>
+<section class="card"><h2>Мои трудные правила</h2><label><input id="tone-stats-opt-in" type="checkbox"> Сохранять число ответов и ошибок на этом устройстве</label><div id="tone-stats-result" class="note" role="status"></div><button id="tone-stats-clear" type="button">Удалить статистику</button><p class="note">Это ошибки в тестах правил, не оценки произношения. Голос и тексты не сохраняются.</p></section>
 </main>
 <script type="module" src="./assets/panda-tone-exercises-v469.mjs?v=469"></script>
 </body>
