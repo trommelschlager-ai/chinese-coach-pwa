@@ -20,6 +20,7 @@ on:
       - 'tests/panda-family-dialogue-v556.test.mjs'
       - 'tests/panda-everyday-dialogue-v556.test.mjs'
       - 'scripts/panda-dialogue-voice-audit-v556.mjs'
+      - 'scripts/qa-panda-dialogue-v556.mjs'
       - 'assets/panda-approved-soft-v500.js'
       - 'assets/panda-hsk2-preview-v506.css'
       - 'docs/panda-ai-voice-queue-v545.json'
@@ -95,6 +96,7 @@ jobs:
           node scripts/qa-panda-beginner-release-v536.mjs
           node scripts/qa-panda-approved-layout-v547.mjs
           node scripts/qa-panda-chat-readable-v551.mjs
+          node scripts/qa-panda-dialogue-v556.mjs
       - name: Generate exact missing voice queue
         run: node scripts/panda-dialogue-voice-audit-v556.mjs
       - name: Preserve screenshots
