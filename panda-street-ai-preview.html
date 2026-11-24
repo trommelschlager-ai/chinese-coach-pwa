@@ -386,7 +386,45 @@ const streetBrainPromise=import('./assets/panda-street-shared-brain-v1.mjs?v=3')
   return createStreetOfflineBrain();
  });
 let responseSeq=0;
-async function respond(text){
+
+let streetReviewConsent=false,streetLastCorrection=null,streetLastSaved=false;
+function streetReviewView(brain){
+ if(!brain?.review){popup('Мои ошибки','<p>Модуль повторения недоступен. Обнови страницу.</p>');return}
+ ++responseSeq;stopStreetRecognition();if(playing){playing.pause();playing=null;voiceToken++}
+ const api=brain.review,stats=api.stats();
+ popup('📚 Мои ошибки','<label><input type="checkbox" id="street-review-consent"> Сохранять исправления и результаты в этом браузере</label><p class="hint">Согласие выключается после перезагрузки. Голос и исходная речь не сохраняются.</p><p>Всего: '+stats.total+' · Сегодня: '+stats.due+' · Позже: '+stats.scheduled+' · Завершено: '+stats.completed+'</p><div class="actions"><button class="action" id="street-review-save">Сохранить последнее исправление</button><button class="action primary" id="street-review-start">Тренировать ошибки</button></div><div id="street-review-cards"></div><button class="action" id="street-review-clear">Удалить личные карточки</button>');
+ const consent=el('street-review-consent');consent.checked=streetReviewConsent;
+ const refresh=()=>{el('street-review-save').disabled=!streetReviewConsent||!streetLastCorrection||streetLastSaved;el('street-review-start').disabled=!streetReviewConsent||!api.stats().due};
+ consent.onchange=()=>{streetReviewConsent=consent.checked;refresh()};
+ el('street-review-save').onclick=()=>{if(!streetReviewConsent||!streetLastCorrection||streetLastSaved)return;streetLastSaved=api.save(streetLastCorrection,true);streetReviewView(brain)};
+ el('street-review-start').onclick=()=>streetRecall(brain);
+ el('street-review-clear').onclick=()=>{if(!confirm('Удалить все личные карточки ошибок обеих Панд из этого браузера?'))return;api.clear();streetLastCorrection=null;streetLastSaved=false;streetReviewView(brain)};
+ for(const card of api.cards()){
+  const row=document.createElement('p');row.className='logline';row.textContent=card.line.join(' — ')+' · '+(card.stage===4?'Цикл завершён':card.due>Date.now()?'Следующее: '+new Date(card.due).toLocaleDateString('ru-RU'):'К повторению')+' · Ошибок: '+card.count;el('street-review-cards').append(row);
+ }
+ refresh();
+}
+function streetRecall(brain,retry=null){
+ if(!streetReviewConsent)return;
+ const due=brain.review.due(),card=due.find(x=>x.zh===retry)||due[0];
+ if(!card){streetReviewView(brain);return}
+ popup('Тренировка ошибок','<p id="street-recall-prompt"></p><form id="street-recall-form"><textarea id="street-recall-input" lang="zh-Hans" maxlength="100" aria-label="Переведи на китайский" autocomplete="off"></textarea><button class="action primary" type="submit">Проверить</button></form><p id="street-recall-feedback" role="status"></p><div class="actions"><button class="action" id="street-recall-next" hidden>Следующая карточка</button><button class="action" id="street-recall-close">К словарю</button></div>');
+ el('street-recall-prompt').textContent='Переведи на китайский: '+card.line[2];
+ el('street-recall-close').onclick=()=>streetReviewView(brain);
+ let done=false;
+ el('street-recall-form').onsubmit=e=>{
+  e.preventDefault();if(done)return;
+  const r=brain.review.practice(card.zh,el('street-recall-input').value,streetReviewConsent);
+  if(r.kind==='empty'){el('street-recall-feedback').textContent='Введи ответ.';return}
+  if(!['matched','different'].includes(r.kind)){streetReviewView(brain);return}
+  done=true;el('street-recall-input').disabled=true;el('street-recall-form').querySelector('button').disabled=true;
+  el('street-recall-feedback').textContent=r.kind==='matched'?(r.stage===4?'✓ Цикл завершён.':'✓ Совпало. Следующее повторение через '+['1 день','3 дня','7 дней'][r.stage-1]):'Ответ не совпал с образцом (другой вариант может быть правильным). '+r.line.join(' — ');
+  const next=el('street-recall-next');next.hidden=false;next.textContent=r.kind==='different'?'Попробовать ещё раз':'Следующая карточка';next.onclick=()=>streetRecall(brain,r.kind==='different'?card.zh:null);
+ };
+ el('street-recall-input').focus();
+}
+
+async function respond(text,{fromSpeech=false}={}){
  const zh=String(text||'').trim();
  if(!zh){tip('Введи или произнеси фразу по-китайски');return}
  const token=++responseSeq;
@@ -394,7 +432,7 @@ async function respond(text){
  if(token!==responseSeq)return;
  if(!brain){tip('Диалог временно не готов. Обнови страницу.');return}
  let result;
- try{result=brain.answer(zh,{mode})}
+ try{result=brain.answer(zh,{mode,fromSpeech})}
  catch(error){
   console.error('Street conversation error:',error);
   if(!streetOfflineMode){streetOfflineMode=true;stage.dataset.brainState='fallback';}
@@ -403,9 +441,12 @@ async function respond(text){
  if(!result||result.kind==='empty'||result.kind==='error'){tip(result?.message||'Не удалось разобрать фразу');return}
  if(['correction','clarify','locked','explanation'].includes(result.kind)||!result.panda){
   const correction=result.correction;
+  streetLastCorrection=result.reviewCorrection||null;streetLastSaved=false;
+  if(streetLastCorrection&&streetReviewConsent&&brain.review)streetLastSaved=brain.review.save(streetLastCorrection,true);
   const detail=correction?'<p class="hanzi">'+esc(correction.zh)+'</p><p class="py">'+esc(correction.py)+'</p><p class="ru">'+esc(correction.ru)+'</p>':'';
   popup('Панда объясняет',detail+'<p class="hint">'+esc(result.why||result.message||'Пожалуйста, уточни фразу.')+
-    '</p><p class="hint">Это проверка текста, не оценка китайских тонов по звуку.</p>');
+    '</p><p class="hint">Это проверка текста, не оценка китайских тонов по звуку.</p>'+(streetLastCorrection?'<button class="action" id="street-correction-review">📚 Мои ошибки</button>':''));
+  if(streetLastCorrection)el('street-correction-review').onclick=()=>streetReviewView(brain);
   return;
  }
  const panda=result.panda,learner=result.learner||recognizedDetail(zh);
@@ -474,7 +515,7 @@ function startStreetRecognition(){
    if(!transcript)return;
    handled=true;stopStreetRecognition();
    const input=el('entry');if(input)input.value=transcript;
-   respond(transcript);
+   respond(transcript,{fromSpeech:true});
   };
   rec.onerror=e=>{
    if(streetRecognition!==rec)return;
@@ -503,7 +544,8 @@ function historyView(){
    '<br>'+esc(learner.ru)+'<br><strong>Панда:</strong> '+esc(x.panda.zh)+
    '<br><em>'+esc(x.panda.py)+'</em><br>'+esc(x.panda.ru)+'</div>';
  }).join(''):'<p>Реплик пока нет.</p>';
- popup('История разговора','<p class="hint">Последние '+history.length+' реплик. Личные разговоры не добавляются в общий словарь.</p><p><a href="./panda-shared-profile-settings.html">🧠 Общая память двух Панд — настройки</a></p>'+rendered);
+ popup('История разговора','<p class="hint">Последние '+history.length+' реплик. Личные разговоры не добавляются в общий словарь.</p><p><a href="./panda-shared-profile-settings.html">🧠 Общая память двух Панд — настройки</a></p><button class="action" id="street-history-review">📚 Мои ошибки</button>'+rendered);
+ el('street-history-review').onclick=async()=>streetReviewView(await streetBrainPromise);
 }
 function shortMode(){mode='short';paint();popup('Краткие диалоги',cues.map((d,i)=>`<button class="example" data-i="${i}">${esc(d.zh)} — ${esc(d.ru)}</button>`).join('')+'<p class="hint">Выбери фразу для тренировки.</p>');body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>phrase(Number(b.dataset.i)))}
 el('row1').onclick=()=>history.length?speak(history.at(-1).panda.zh):phrase(0);
