@@ -114,7 +114,7 @@ test('accepted active date completes calendar round even without spoken.calendar
 });
 
 test('Short and Non-Stop screen paths retain progress and skip unavailable acknowledgement audio',()=>{
- const source=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
+ const source=fs.readFileSync(new URL('../assets/panda-hsk2-preview-core-v1.mjs',import.meta.url),'utf8');
  assert(source.includes("const playReply=completedCalendarRound?false:"),'Completion is text-first without forcing a different recorded voice');
  assert(source.includes("lookupPandaVoiceClip(closingReply.hanzi)"),'Other answers still use only verified exact audio');
  assert(source.includes("if(question.spoken?.calendarLiteral&&question.reply)"));
@@ -122,17 +122,17 @@ test('Short and Non-Stop screen paths retain progress and skip unavailable ackno
  assert(source.indexOf("if(question.spoken?.calendarLiteral&&question.reply)") >
    source.indexOf("const result=verifyAnswerFor(conversation.lines,state.step,input)"));
  const html=fs.readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
- assert.match(html,/panda-live-screen-v270\.mjs\?v=\d+/,'The updated Panda engine uses a cache-busted module URL');
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=\d+/,'The updated Panda engine uses a cache-busted module URL');
 });
 
 test('the approved panda chat visibly renders the calendar-completion message',()=>{
- const ui=fs.readFileSync(new URL('../assets/panda-live-v346.mjs',import.meta.url),'utf8');
+ const ui=fs.readFileSync(new URL('../assets/panda-hsk2-preview-ui-v1.mjs',import.meta.url),'utf8');
  assert(ui.includes("e.analysis?.kind==='calendar-complete'"),'A chat-row completion is visible without covering the Panda');
  assert(ui.includes("translation.append(el('div','pg406-finish',e.analysis.summary))"));
 });
 
 test('the UI does not overwrite the reviewed calendar follow-up with an unrelated greeting',()=>{
- const source=fs.readFileSync(new URL('../assets/panda-live-screen-v270.mjs',import.meta.url),'utf8');
+ const source=fs.readFileSync(new URL('../assets/panda-hsk2-preview-core-v1.mjs',import.meta.url),'utf8');
  assert(source.includes("else if(followup&&followup.intent!=='relative-age'&&!followup.isContextual)"));
  const november=free('11月16号',[1,4,5]);
  const followup=november.followup;
@@ -144,7 +144,7 @@ test('the UI does not overwrite the reviewed calendar follow-up with an unrelate
 });
 
 test('Non-Stop screenshot regression: a new date interrupts unfinished 你好吗 when calendar topic is open',async()=>{
- const dom=await liveDOM(1,{completed:['weekdays','dates']});
+ const dom=await liveDOM(1,{active:true,completed:['weekdays','dates']});
  try{
   const {el,send,w}=dom;
   el('mode-nonstop').click();
