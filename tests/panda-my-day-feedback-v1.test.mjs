@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {understandDayAnswer,getDayCorrectionLine,readDayReview,saveDayReview,masterDayReview,clearDayReview,DAY_REVIEW_KEY,dueDayReview,dayReviewStats,practiceDayReview} from '../assets/panda-hsk2-day-understanding-v1.mjs';
+import {understandDayAnswer,getDayCorrectionLine,readDayReview,saveDayReview,masterDayReview,clearDayReview,DAY_REVIEW_KEY,dueDayReview,dayReviewStats,practiceDayReview,saveGrammarReview,getReviewCardLine} from '../assets/panda-hsk2-day-understanding-v1.mjs';
 
 const cases=[
  ['我起床八点',0,'correct','我八点起床。'],
@@ -169,4 +169,38 @@ test('new conversation mistake reopens a completed recall cycle',()=>{
  assert.equal(dayReviewStats(st,now).completed,1);
  saveDayReview(st,PHRASE,true);
  assert.equal(dayReviewStats(st,now).due,1);
+});
+
+const GRAMMAR_CARD={category:'grammar',hanzi:'他有两个妹妹。',pinyin:'Tā yǒu liǎng ge mèimei.',ru:'У него две младшие сестры.'};
+test('shared deck preserves grammar metadata and existing My Day cards',()=>{
+ const st=memoryStorage();saveDayReview(st,PHRASE,true);
+ assert.equal(saveGrammarReview(st,GRAMMAR_CARD,true),true);
+ assert.equal(readDayReview(st).length,2);
+ const card=readDayReview(st).find(x=>x.source==='grammar');
+ assert.deepEqual(getReviewCardLine(card),[GRAMMAR_CARD.hanzi,GRAMMAR_CARD.pinyin,GRAMMAR_CARD.ru]);
+ const result=practiceDayReview(st,card.zh,card.zh,true,START);
+ assert.equal(result.kind,'matched');
+ assert.deepEqual(result.line,getReviewCardLine(card));
+ assert.equal(dayReviewStats(st,START).scheduled,1);
+ assert.equal(dayReviewStats(st,START).due,1);
+});
+test('shared deck excludes meaning-only and uncertain grammar, requires consent and complete metadata',()=>{
+ const st=memoryStorage();
+ assert.equal(saveGrammarReview(st,GRAMMAR_CARD,false),false);
+ assert.equal(saveGrammarReview(st,{...GRAMMAR_CARD,category:'meaning'},true),false);
+ assert.equal(saveGrammarReview(st,{...GRAMMAR_CARD,uncertain:true},true),false);
+ assert.equal(saveGrammarReview(st,GRAMMAR_CARD,true,.74),false);
+ assert.equal(saveGrammarReview(st,{...GRAMMAR_CARD,pinyin:''},true),false);
+ assert.deepEqual(readDayReview(st),[]);
+});
+test('cross-mode correction of same phrase deduplicates and resets review cycle',()=>{
+ const st=memoryStorage();saveDayReview(st,PHRASE,true);
+ practiceDayReview(st,PHRASE,PHRASE,true,START);
+ saveGrammarReview(st,{category:'grammar',hanzi:'我八点起床。',pinyin:'Wǒ bā diǎn qǐchuáng.',ru:'Я встаю в восемь часов.'},true);
+ assert.equal(readDayReview(st).length,1);
+ assert.equal(readDayReview(st)[0].count,2);
+ assert.equal(dueDayReview(st,START).length,1);
+ saveDayReview(st,PHRASE,true);
+ assert.equal(readDayReview(st).length,1);
+ assert.equal(readDayReview(st)[0].count,3);
 });
