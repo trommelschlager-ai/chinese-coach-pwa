@@ -146,3 +146,44 @@ export function understandDayAnswer(raw,index){
  if(index===3)return work(s);
  return unknown();
 }
+
+/* Reviewed time-before-verb correction metadata. No acoustic assessment. */
+const DAY_MODIFIERS={
+ 每天:['měitiān','каждый день'],平时:['píngshí','обычно'],一般:['yìbān','обычно'],
+ 通常:['tōngcháng','обычно'],大概:['dàgài','примерно'],差不多:['chàbuduō','примерно'],
+ 早上:['zǎoshang','утром'],晚上:['wǎnshang','вечером'],凌晨:['língchén','глубокой ночью'],
+ 上午:['shàngwǔ','в первой половине дня'],下午:['xiàwǔ','во второй половине дня'],
+ 今天:['jīntiān','сегодня'],周末:['zhōumò','на выходных']
+};
+const DAY_ACTIONS={起床:['qǐchuáng','встаю'],睡觉:['shuìjiào','ложусь спать'],去上班:['qù shàngbān','иду на работу']};
+const NUM_PINYIN={零:'líng',〇:'líng',一:'yī',二:'èr',两:'liǎng',三:'sān',四:'sì',五:'wǔ',六:'liù',七:'qī',八:'bā',九:'jiǔ',十:'shí'};
+function chineseNumberPinyin(n,hour=false){
+ if(/^\d+$/.test(n)){
+  const v=Number(n);
+  if(v===2&&hour)return 'liǎng';
+  if(v<10)return ['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'][v];
+  const d=['','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
+  return (v>=20?d[Math.floor(v/10)]:'')+'shí'+d[v%10];
+ }
+ return Array.from(n,c=>NUM_PINYIN[c]||'').join('');
+}
+export function getDayCorrectionLine(value){
+ const zh=dot(value),s=norm(value);
+ const m=/^我(.*?)([零〇一二两三四五六七八九十\d]{1,3})点(半|一刻|三刻|[零〇一二两三四五六七八九十\d]{1,3}分?)?(左右|前后)?(起床|睡觉|去上班)$/u.exec(s);
+ if(!m)return [zh,'','Исправленный вариант.'];
+ const [,prefix,h,minute,approx,action]=m;
+ const hours=number(h);
+ const mins=!minute?0:minute==='半'?30:minute==='一刻'?15:minute==='三刻'?45:number(minute.replace('分',''));
+ if(hours===null||hours>23||mins===null||mins>59)return [zh,'','Исправленный вариант.'];
+ let rest=prefix;const py=['Wǒ'],ru=[];
+ while(rest){
+  const key=Object.keys(DAY_MODIFIERS).find(k=>rest.startsWith(k));
+  if(!key)return [zh,'','Исправленный вариант.'];
+  py.push(DAY_MODIFIERS[key][0]);ru.push(DAY_MODIFIERS[key][1]);rest=rest.slice(key.length);
+ }
+ py.push(chineseNumberPinyin(h,true),'diǎn');
+ if(minute)py.push(minute==='半'?'bàn':minute==='一刻'?'yí kè':minute==='三刻'?'sān kè':chineseNumberPinyin(minute.replace('分',''))+(minute.endsWith('分')?' fēn':''));
+ if(approx){py.push(approx==='左右'?'zuǒyòu':'qiánhòu');if(!ru.includes('примерно'))ru.push('примерно')}
+ py.push(DAY_ACTIONS[action][0]);
+ return [zh,py.join(' ')+'.',['Я',...ru,DAY_ACTIONS[action][1],'в '+hours+':'+String(mins).padStart(2,'0')].join(' ')+'.'];
+}
