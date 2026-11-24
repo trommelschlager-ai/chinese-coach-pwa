@@ -245,6 +245,7 @@ if(typeof document!=='undefined'&&$('context-prompt')){
   answered=true;
   const answer=Number(b.dataset.contextTone),ok=checkContextTone(index,answer);
   if(ok)score++;
+  document.dispatchEvent(new window.CustomEvent('panda-tone-rule-answer',{detail:{index,correct:ok}}));
   choices.forEach(btn=>{
    const n=Number(btn.dataset.contextTone);
    btn.disabled=true;btn.setAttribute('aria-pressed',String(n===answer));
@@ -256,4 +257,36 @@ if(typeof document!=='undefined'&&$('context-prompt')){
  $('context-next').addEventListener('click',()=>{if(answered){index++;show();}});
  $('context-restart').addEventListener('click',()=>{index=0;score=0;show();});
  show();
+}
+
+/* Optional aggregate knowledge statistics. Never store speech, words or F0. */
+if(typeof document!=='undefined'&&$('tone-stats-opt-in')){
+ const key='panda-tone-rule-stats-v1';
+ const groups=['3+3','不','一','轻声'];
+ const groupOf=i=>i<3?0:i<5?1:i<7?2:3;
+ const empty=()=>groups.map(()=>({total:0,wrong:0}));
+ let enabled=false,stats=empty();
+ try{
+  const raw=JSON.parse(window.localStorage.getItem(key)||'null');
+  if(raw?.enabled===true&&Array.isArray(raw.stats)&&raw.stats.length===4&&raw.stats.every(v=>Number.isSafeInteger(v.total)&&Number.isSafeInteger(v.wrong)&&v.wrong>=0&&v.total>=v.wrong)){enabled=true;stats=raw.stats;}
+ }catch{}
+ $('tone-stats-opt-in').checked=enabled;
+ function draw(){
+  $('tone-stats-result').replaceChildren();
+  if(!enabled){$('tone-stats-result').textContent='Статистика выключена.';return}
+  groups.forEach((label,i)=>{
+   const p=document.createElement('p');const s=stats[i];p.textContent=label+': ошибок '+s.wrong+' из '+s.total+' ответов';$('tone-stats-result').append(p);
+  });
+ }
+ function persist(){try{if(enabled)window.localStorage.setItem(key,JSON.stringify({enabled:true,stats}));else window.localStorage.removeItem(key)}catch{$('tone-stats-result').append(' Хранилище недоступно.');}}
+ $('tone-stats-opt-in').onchange=()=>{enabled=$('tone-stats-opt-in').checked;if(!enabled)stats=empty();draw();persist()};
+ $('tone-stats-clear').onclick=()=>{enabled=false;stats=empty();$('tone-stats-opt-in').checked=false;draw();persist()};
+ document.addEventListener('panda-tone-rule-answer',e=>{
+  const {index,correct}=e.detail||{};
+  if(!enabled||!Number.isInteger(index)||index<0||index>=contextToneExamples.length||typeof correct!=='boolean')return;
+  const s=stats[groupOf(index)];
+  if(s.total<Number.MAX_SAFE_INTEGER){s.total++;if(!correct)s.wrong++;}
+  draw();persist();
+ });
+ draw();
 }
