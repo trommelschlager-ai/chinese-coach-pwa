@@ -34,7 +34,7 @@ const keywords=topic.words.slice(0,4);
 const questions=[
  {sound:'四月',correct:'四月',choices:['二月','四月','十月'],hint:'四月 sì yuè — апрель'},
  {sound:'十一月',correct:'十一月',choices:['十二月','十一月','十月'],hint:'十一月 shíyī yuè — ноябрь'},
- {sound:'十二月',correct:'十二月',choices:['二月','十月','十二月'],hint:'十二月 shíèr yuè — декабрь'}
+ {sound:'十二月',correct:'十二月',choices:['二月','十月','十二月'],hint:'十二月 shí\'èr yuè — декабрь'}
 ];
 const builds=[
  {parts:['十','一','月'],word:'十一月',ru:'ноябрь'},
