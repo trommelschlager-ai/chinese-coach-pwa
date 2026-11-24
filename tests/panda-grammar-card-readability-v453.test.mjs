@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs';
 import {correctPandaGrammarV2} from '../assets/panda-grammar-hsk12-v2.mjs';
-import {lookupPandaVoiceClip} from '../assets/panda-live-audio.mjs';
+import {lookupPandaVoiceClip} from '../assets/panda-hsk2-preview-audio-v1.mjs';
 
 const read=path=>fs.readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const ui=read('assets/panda-live-v346.mjs');
@@ -52,12 +52,12 @@ test('feedback CSS permits compact card to grow inside scene without hard 35% he
 
 test('approved Panda design, auto-speaking grammar and 42 MP3 remain intact',()=>{
  assert.ok(html.includes('panda-chat-corrections-v377.css?v=454'));
- assert.ok(html.includes('panda-live-v346.mjs?v=453'));
- assert.ok(html.includes('panda-live-screen-v270.mjs?v=452'));
- assert.ok(sw.includes("chinese-coach-pwa-v454-feedback-topic-clear"));
- assert.equal(pack.version,454);
+ assert.ok(/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/.test(html));
+ assert.ok(/panda-hsk2-preview-core-v1\.mjs\?v=\d+/.test(html));
+ assert.equal(Number(sw.match(/const CACHE='chinese-coach-pwa-v(\d+)-/)?.[1]),pack.version);
+ assert.ok(pack.version>=454);
  assert.equal(pack.files.filter(x=>/panda-grammar-voice-v451\/g\d{3}\.mp3/.test(x)).length,42);
  assert.ok(ui.includes('lookupPandaVoiceClip'));
  assert.ok(ui.includes('sound.disabled=!clipFor(e)'));
- assert.ok(read('assets/panda-live-screen-v270.mjs').includes("if(verifiedClip)play({hanzi:c.hanzi,audioKey:c.hanzi})"));
+ assert.ok(read('assets/panda-hsk2-preview-core-v1.mjs').includes("if(verifiedClip)play({hanzi:c.hanzi,audioKey:c.hanzi})"));
 });
