@@ -220,3 +220,61 @@ test('40 travel inputs distinguish past trips, plans and intentions',async()=>{
  assert.equal(respond('坐火车',{awaiting:departure.next}).reply.hanzi,'祝你一路顺风！');
  assert.equal(respond('下周'),null);
 });
+
+test('40 My Day inputs distinguish the time and the daily action',async()=>{
+ const {respondToNaturalStatement:respond}=await import('../assets/panda-natural-statements-v552.mjs');
+ const hours=[['五','wǔ'],['六','liù'],['七','qī'],['八','bā'],['九','jiǔ'],['十','shí'],['十一','shíyī'],['十二','shí’èr']];
+ const activities=[
+  ['每天早上','měitiān zǎoshang','起床','qǐchuáng','你起床以后做什么？'],
+  ['早上','zǎoshang','吃早饭','chī zǎofàn','你早饭吃什么？'],
+  ['每天','měitiān','去上班','qù shàngbān','你怎么去上班？'],
+  ['','', '下班','xiàbān','你下班以后做什么？'],
+  ['晚上','wǎnshang','睡觉','shuìjiào','你睡觉以前做什么？']
+ ];
+ const inputs=new Set();
+ for(const [prefix,prefixPy,activity,activityPy,answer] of activities)for(const [hour,hourPy] of hours){
+  const half=activity==='吃早饭';
+  const input=`我${prefix}${hour}点${half?'半':''}${activity}`;
+  inputs.add(input);
+  const r=respond(input);
+  assert(r,input);
+  assert.equal(r.spoken.pinyin,`Wǒ ${prefixPy?prefixPy+' ':''}${hourPy} diǎn${half?' bàn':''} ${activityPy}.`,input);
+  assert.equal(r.reply.hanzi,answer,input);
+  assert(r.spoken.translation&&r.reply.pinyin&&r.reply.ru,input);
+  assert.equal(r.spoken.toneVerified,false,input);
+ }
+ assert.equal(inputs.size,40);
+ const wake=respond('我每天早上七点起床');
+ assert.equal(respond('我先刷牙',{awaiting:wake.next}).spoken.pinyin,'Wǒ xiān shuāyá.');
+ assert.equal(respond('我早上七点半吃早饭').spoken.translation,'Я завтракаю в 7:30 утра.');
+ assert.equal(respond('我早上二十五点起床'),null);
+});
+
+test('30 introductions cover polite replies, origin, hometown and nationality',async()=>{
+ const {respondToNaturalStatement:respond}=await import('../assets/panda-natural-statements-v552.mjs');
+ const countries=[['俄罗斯','Éluósī'],['中国','Zhōngguó'],['吉尔吉斯斯坦','Jí’ěrjísīsītǎn'],['法国','Fǎguó'],['德国','Déguó'],['日本','Rìběn']];
+ const forms=[['来自','Wǒ láizì','',''],['从','Wǒ cóng','来',' lái'],['是','Wǒ shì','人',' rén'],['的家乡是','Wǒ de jiāxiāng shì','','']];
+ const cases=[
+  ['很高兴认识你','Hěn gāoxìng rènshi nǐ.','我也很高兴认识你！'],
+  ['见到你很高兴','Jiàndào nǐ hěn gāoxìng.','我也很高兴见到你！'],
+  ['可以认识一下吗','Kěyǐ rènshi yíxià ma?','当然可以。你叫什么名字？'],
+  ['我们认识一下吧','Wǒmen rènshi yíxià ba.','好啊！你叫什么名字？'],
+  ['我先介绍一下自己','Wǒ xiān jièshào yíxià zìjǐ.','好啊！你来自哪里？'],
+  ['请问你怎么称呼','Qǐngwèn nǐ zěnme chēnghu?','你可以叫我熊猫。']
+ ];
+ for(const [country,py] of countries)for(const [form,opening,suffix,ending] of forms)
+  cases.push(['我'+form+country+suffix,`${opening} ${py}${ending}.`,'你现在住在哪儿？']);
+ assert.equal(new Set(cases.map(row=>row[0])).size,30);
+ for(const [input,pinyin,answer] of cases){
+  const r=respond(input);
+  assert(r,input);
+  assert.equal(r.spoken.pinyin,pinyin,input);
+  assert.equal(r.reply.hanzi,answer,input);
+  assert(r.spoken.translation&&r.reply.pinyin&&r.reply.ru,input);
+  assert.equal(r.spoken.toneVerified,false,input);
+ }
+ const meet=respond('我先介绍一下自己');
+ assert.equal(respond('吉尔吉斯斯坦',{awaiting:meet.next}).spoken.translation,'Я из Кыргызстана.');
+ assert.equal(respond('我是俄罗斯人').spoken.translation,'Я русский / русская.');
+ assert.equal(respond('我从中国'),null);
+});

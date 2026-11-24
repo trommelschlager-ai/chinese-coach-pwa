@@ -34,6 +34,10 @@ try{
    assert.equal(await page.locator('#pg346-rows .pg346-row:last-child .pg346-zh').textContent(),answer);
   };
   // v548: independent learner question has a pre-recorded Mandarin response.
+  await send('我先介绍一下自己','好啊！你来自哪里？');
+  await send('吉尔吉斯斯坦','你现在住在哪儿？');
+  await send('我每天早上七点起床','你起床以后做什么？');
+  await send('我先刷牙','然后呢？');
   await send('我想买一双鞋','你有多少预算？');
   await send('两百块','你想去商店看看吗？');
   await send('我想去北京','你什么时候去？');
@@ -114,6 +118,10 @@ try{
   assert.equal(await page.locator('#pg346-input').inputValue(),'','One click must empty the input');
   await page.locator('#pg346-nonstop').click();
   await send('不好','怎么了？');
+  await send('我先介绍一下自己','好啊！你来自哪里？');
+  await send('吉尔吉斯斯坦','你现在住在哪儿？');
+  await send('我每天早上七点起床','你起床以后做什么？');
+  await send('我先刷牙','然后呢？');
   await send('我想买一双鞋','你有多少预算？');
   await send('两百块','你想去商店看看吗？');
   await send('我想去北京','你什么时候去？');

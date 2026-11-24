@@ -177,9 +177,92 @@ function respondToTravel(raw,s,awaiting){
  const [py,ru]=travelTime[s];
  return result(raw,py+'.',ru+'.',travelQuestions['travel-transit'],'travel-transit',7);
 }
+const dayClock={
+ 五:['wǔ',5],六:['liù',6],七:['qī',7],八:['bā',8],九:['jiǔ',9],
+ 十:['shí',10],十一:['shíyī',11],十二:['shí’èr',12]
+};
+const dayRoutines={
+ 起床:['qǐchuáng','встаю',
+  ['你起床以后做什么？','Nǐ qǐchuáng yǐhòu zuò shénme?','Что ты делаешь после подъёма?'],'day-after-wake'],
+ 吃早饭:['chī zǎofàn','завтракаю',
+  ['你早饭吃什么？','Nǐ zǎofàn chī shénme?','Что ты ешь на завтрак?'],null],
+ 去上班:['qù shàngbān','иду на работу',
+  ['你怎么去上班？','Nǐ zěnme qù shàngbān?','Как ты добираешься до работы?'],null],
+ 下班:['xiàbān','заканчиваю работу',
+  ['你下班以后做什么？','Nǐ xiàbān yǐhòu zuò shénme?','Что ты делаешь после работы?'],null],
+ 睡觉:['shuìjiào','ложусь спать',
+  ['你睡觉以前做什么？','Nǐ shuìjiào yǐqián zuò shénme?','Что ты делаешь перед сном?'],null]
+};
+const dayTime={早上:['zǎoshang','утра'],上午:['shàngwǔ','утра'],下午:['xiàwǔ','дня'],晚上:['wǎnshang','вечера']};
+function respondToDay(raw,s,awaiting){
+ const routine=/^我(每天)?(早上|上午|下午|晚上)?(十一|十二|[五六七八九十])点(半)?(起床|吃早饭|去上班|下班|睡觉)$/u.exec(s);
+ if(routine){
+  const [,daily,time,hour,half,action]=routine;
+  const [hourPy,h]=dayClock[hour];
+  const [timePy,timeRu]=time?dayTime[time]:['',''];
+  const [actionPy,actionRu,followUp,next]=dayRoutines[action];
+  const clock=half?h+':30':String(h);
+  return result(raw,`Wǒ ${daily?'měitiān ':''}${timePy?timePy+' ':''}${hourPy} diǎn${half?' bàn':''} ${actionPy}.`,
+   `Я ${daily?'каждый день ':''}${actionRu} в ${clock}${timeRu?' '+timeRu:''}.`,followUp,next,2);
+ }
+ if(awaiting!=='day-after-wake')return null;
+ const wake=/^(我(?:先)?)?(刷牙|洗脸|喝水)$/u.exec(s);
+ if(!wake)return null;
+ const actions={刷牙:['shuāyá','чищу зубы'],洗脸:['xǐliǎn','умываюсь'],喝水:['hē shuǐ','пью воду']};
+ const [py,ru]=actions[wake[2]];
+ const subject=wake[1]==='我先'?'Wǒ xiān ':wake[1]?'Wǒ ':'';
+ return result(raw,(subject?subject+py:py[0].toUpperCase()+py.slice(1))+'.',
+  'Я '+(wake[1]==='我先'?'сначала ':'')+ru+'.',
+  ['然后呢？','Ránhòu ne?','А потом?'],null,2);
+}
+
+const origins={
+ 俄罗斯:['Éluósī','России','русский / русская'],中国:['Zhōngguó','Китая','китаец / китаянка'],
+ 吉尔吉斯斯坦:['Jí’ěrjísīsītǎn','Кыргызстана','кыргыз / кыргызка'],
+ 法国:['Fǎguó','Франции','француз / француженка'],
+ 德国:['Déguó','Германии','немец / немка'],日本:['Rìběn','Японии','японец / японка']
+};
+const meetReplies={
+ '很高兴认识你':['Hěn gāoxìng rènshi nǐ.','Рад / рада познакомиться.',
+  ['我也很高兴认识你！','Wǒ yě hěn gāoxìng rènshi nǐ!','Я тоже рада познакомиться!']],
+ '见到你很高兴':['Jiàndào nǐ hěn gāoxìng.','Очень приятно тебя видеть.',
+  ['我也很高兴见到你！','Wǒ yě hěn gāoxìng jiàndào nǐ!','Я тоже рада тебя видеть!']],
+ '可以认识一下吗':['Kěyǐ rènshi yíxià ma?','Можно познакомиться?',
+  ['当然可以。你叫什么名字？','Dāngrán kěyǐ. Nǐ jiào shénme míngzi?','Конечно. Как тебя зовут?']],
+ '我们认识一下吧':['Wǒmen rènshi yíxià ba.','Давай познакомимся.',
+  ['好啊！你叫什么名字？','Hǎo a! Nǐ jiào shénme míngzi?','Давай! Как тебя зовут?']],
+ '我先介绍一下自己':['Wǒ xiān jièshào yíxià zìjǐ.','Сначала я представлюсь.',
+  ['好啊！你来自哪里？','Hǎo a! Nǐ láizì nǎlǐ?','Давай! Ты откуда?']],
+ '请问你怎么称呼':['Qǐngwèn nǐ zěnme chēnghu?','Скажи, пожалуйста, как к тебе обращаться?',
+  ['你可以叫我熊猫。','Nǐ kěyǐ jiào wǒ xióngmāo.','Можешь звать меня Пандой.']]
+};
+function respondToIntroduction(raw,s,awaiting){
+ if(Object.hasOwn(meetReplies,s)){
+  const [py,ru,followUp]=meetReplies[s];
+  const response=result(raw,py,ru,followUp,s==='我先介绍一下自己'?'intro-origin':null,1);
+  if(s.endsWith('吗')||s.startsWith('请问'))response.kind='question';
+  return response;
+ }
+ const match=/^我(来自|从|是|的家乡是)([\p{Script=Han}]{2,6}?)(来|人)?$/u.exec(s);
+ const shortOrigin=awaiting==='intro-origin'&&Object.hasOwn(origins,s);
+ const place=shortOrigin?s:match?.[2];
+ if(!Object.hasOwn(origins,place))return null;
+ const [placePy,placeRu,nationality]=origins[place];
+ const followUp=['你现在住在哪儿？','Nǐ xiànzài zhù zài nǎr?','Где ты сейчас живёшь?'];
+ if(shortOrigin)return result(raw,placePy+'.','Я из '+placeRu+'.',followUp,null,1);
+ const [,form,,suffix]=match;
+ const opening={来自:'Wǒ láizì',从:'Wǒ cóng',是:'Wǒ shì',的家乡是:'Wǒ de jiāxiāng shì'};
+ if(suffix!==({从:'来',是:'人'})[form])return null;
+ const ending=suffix==='来'?' lái':suffix==='人'?' rén':'';
+ const ru=form==='是'?'Я '+nationality:form==='的家乡是'?'Моя родина — '+({
+  俄罗斯:'Россия',中国:'Китай',吉尔吉斯斯坦:'Кыргызстан',法国:'Франция',德国:'Германия',日本:'Япония'
+ })[place]:'Я из '+placeRu;
+ return result(raw,`${opening[form]} ${placePy}${ending}.`,ru+'.',followUp,null,1);
+}
 export function respondToNaturalStatement(raw,{awaiting=null}={}){
  const s=norm(raw);if(!s)return null;
- const topicReply=respondToFood(raw,s,awaiting)??respondToShopping(raw,s,awaiting)??respondToTravel(raw,s,awaiting);
+ const topicReply=respondToIntroduction(raw,s,awaiting)??respondToDay(raw,s,awaiting)??
+  respondToFood(raw,s,awaiting)??respondToShopping(raw,s,awaiting)??respondToTravel(raw,s,awaiting);
  if(topicReply)return topicReply;
 
  // v552 Android screenshots (24 Nov): common compliments and conversational
