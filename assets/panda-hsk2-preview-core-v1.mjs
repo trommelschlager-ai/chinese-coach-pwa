@@ -323,6 +323,19 @@ function askHSK2(autoplay=true){
  const q=getTopic(hsk2.id).questions[hsk2.index],l=prompt(q);
  state.prompt={line:{...l,accepted:q.options.map(a=>a[0])}};state.awaitQuestion=false;state.hint=false;say(l,autoplay);
 }
+// v556: a reviewed independent statement is not a failed lesson answer.
+// Keep scored exact/variant answers and dedicated My Day training intact.
+function respondIndependentNatural(input){
+ if(state.dayMode||entry.kind==='scenario')return false;
+ const natural=respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
+ if(!natural||natural.kind!=='statement'||!natural.spoken?.known||!natural.spoken.pinyin||natural.next==='clarify')return false;
+ state.naturalAwaiting=natural.next;
+ learner(input,natural.spoken);
+ state.turns=(state.turns||0)+1;
+ say(natural.reply,!!lookupPandaVoiceClip(natural.reply.hanzi));
+ note(natural.message);
+ return true;
+}
 function submitHSK2(input){
  // "Своя фраза" is conversation, not a scored HSK2 quiz.
  if(hsk2.openChat){
@@ -345,6 +358,7 @@ function submitHSK2(input){
   return;
  }
  const t=getTopic(hsk2.id),q=t.questions[hsk2.index],prior=state.display,out=replyHSK2(input,hsk2.id,hsk2.index,hsk2.done,hsk2.context);
+ if(!['accepted','variant'].includes(out.kind)&&respondIndependentNatural(input))return;
  const known=out.spoken||knownHSK2(input);const legacy=known?null:analyzeLearner(input,[1,2,3,4,5,6,7],null,curriculum,false);
  const spoken=known?{known:true,pinyin:known.pinyin,translation:known.ru}:legacy?.known?legacy:null;
  if('context' in out)hsk2.context=out.context;
@@ -570,6 +584,8 @@ function submit(raw){
   }
   note(result.message);render();return;
  }
+ // Keep actual lesson answers and reviewed grammar corrections on the original path.
+ if((state.done||!verifyAnswerFor(conversation.lines,state.step,input).ok)&&respondIndependentNatural(input))return;
  const spoken=explainPandaAnswer441(input,{prompt:conversation.lines[state.step],confidence:state.confidence})?.spoken||correctPandaGrammarV2(input,{prompt:conversation.lines[state.step],confidence:state.confidence})?.spoken||correctCommonPhrase(input)?.spoken||analyzeLearner(input,[1,conversation.id],conversation.lines[state.step],curriculum);learner(input,spoken);
  const greeting=/^(你好[呀啊]?|早上好[呀啊]?|中午好[呀啊]?|下午好[呀啊]?|晚上好[呀啊]?)$/.test(normalize(input));
  const social=replyToExtraSpeech(input,conversation.id,curriculum);
