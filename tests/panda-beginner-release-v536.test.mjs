@@ -56,7 +56,7 @@ test('worker and offline download include exact updated versions',()=>{
  assert(activeCoreVersion>=536,'Current Panda AI core must not be older than approved v536');
  assert(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v='+activeCoreVersion),
   'The exact current Panda AI core must be available in the full offline pack');
- for(const p of ['./assets/panda-hsk2-preview-core-v1.mjs?v=536','./assets/panda-everyday-meaning-v515.mjs?v=536','./assets/panda-live-dialogue-v272.mjs?v=536']){
+ for(const p of ['./assets/panda-hsk2-preview-core-v1.mjs?v='+activeCoreVersion,'./assets/panda-everyday-meaning-v515.mjs?v=536','./assets/panda-live-dialogue-v272.mjs?v=536']){
   assert(pack.files.includes(p),'Offline missing '+p);
   assert(worker.includes(p),'Worker missing '+p);
  }
