@@ -141,14 +141,14 @@ export function respondToNaturalStatement(raw,{awaiting=null}={}){
    poss+' '+dat+' '+num+' '+years+'.',
    ['你'+ageMatch[2]+ageMatch[3]+'岁！'+person+'喜欢做什么？',
     'Nǐ '+py+' '+numPy+' suì! Tā xǐhuan zuò shénme?',
-    'Возраст '+ageMatch[2]+': '+num+' '+years+'! Что '+(person==='她'?'она':'он')+' любит делать?'],
+    (person==='她'?'Твоей ':'Твоему ')+dat+' '+num+' '+years+'! Что '+(person==='她'?'она':'он')+' любит делать?'],
    'family-hobby',6);
  }
 
  const familyQuestion=/^你(有没有|有)(哥哥|姐姐|弟弟|妹妹)(吗)?$/u.exec(s);
  if(familyQuestion&&((familyQuestion[1]==='有没有'&&!familyQuestion[3])||
   (familyQuestion[1]==='有'&&familyQuestion[3]==='吗'))){
-  const [py,,, ,]=relatives[familyQuestion[2]];
+  const py=relatives[familyQuestion[2]][0];
   const isAorB=familyQuestion[1]==='有没有';
   const queryPy='Nǐ '+(isAorB?'yǒu méiyǒu ':'yǒu ')+py+(isAorB?'?':' ma?');
   const confirmations={
@@ -157,7 +157,7 @@ export function respondToNaturalStatement(raw,{awaiting=null}={}){
    弟弟:['我没有弟弟。','Wǒ méiyǒu dìdi.','Нет, у меня нет младшего брата.'],
    妹妹:['我有一个妹妹。','Wǒ yǒu yí ge mèimei.','Да, у меня есть младшая сестра.']
   };
-  const response=result(raw,queryPy,'Есть ли у Панды '+relatives[familyQuestion[2]][2]+'?',
+  const response=result(raw,queryPy,'У тебя есть '+relatives[familyQuestion[2]][1]+'?',
    confirmations[familyQuestion[2]],null,6);
   response.kind='question';
   response.message='Панда отвечает одинаково на 你有…吗？ и 你有没有…？. Тоны по распознанному тексту не оценивались.';
@@ -165,13 +165,13 @@ export function respondToNaturalStatement(raw,{awaiting=null}={}){
  }
  const familyHave=/^我(有一个|有|没有)(哥哥|姐姐|弟弟|妹妹)$/u.exec(s);
  if(familyHave){
-  const [py,nom,gen,,, ,oneWord]=relatives[familyHave[2]];
+  const [py,nom,gen,dat,person,,oneWord]=relatives[familyHave[2]];
   const no=familyHave[1]==='没有';
   const one=familyHave[1]==='有一个';
   return result(raw,no?'Wǒ méiyǒu '+py+'.':'Wǒ yǒu '+(one?'yí ge ':'')+py+'.',
    no?'У меня нет '+gen+'.':'У меня есть '+(one?oneWord+' ':'')+nom+'.',
    no?['明白了。你家有几口人？','Míngbai le. Nǐ jiā yǒu jǐ kǒu rén?','Понятно. Сколько человек в твоей семье?']:
-   ['你'+familyHave[2]+'几岁？','Nǐ '+py+' jǐ suì?','Сколько лет твоему родственнику?'],
+   ['你'+familyHave[2]+'几岁？','Nǐ '+py+' jǐ suì?', 'Сколько лет '+(person==='她'?'твоей ':'твоему ')+dat+'?'],
    no?'family-size':'family-age',6);
  }
  // "你有没有" alone is unfinished. Clarify; never guess the missing object.
