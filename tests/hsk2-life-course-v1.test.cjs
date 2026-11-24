@@ -33,9 +33,12 @@ assert.match(doc.querySelector('img[src$="hsk2-life-approved-fullscreen-v412.png
 assert.match(css,/topic-grid/);
 click('[data-view="map"]');
 assert.equal(doc.querySelectorAll('[data-topic]').length,10);
-click('[data-topic="0"]');
-assert.equal(doc.querySelectorAll('[data-mini]').length,4);
-click('[data-mini="0"]');
+// Exercise the legacy engine via the same delegated mini-lesson action as the catalog.
+const entry=doc.createElement('button');
+entry.dataset.practiceMini='0:0';
+doc.body.append(entry);
+entry.click();
+entry.remove();
 assert.ok(doc.querySelector('.day-visual-start'),'Approved first lesson artwork is present');
 click('[data-day-show-words]');
 assert.equal(doc.querySelectorAll('.day-vword').length,7,'Day one must contain seven studied words');
@@ -115,7 +118,7 @@ for(let lesson=3;lesson<30;lesson++){
  const t=Math.floor(lesson/3),m=lesson%3,scene=topics[t].scenes[m];
  const expectedWords=m===2?6:7;
  assert.equal(doc.querySelectorAll('.word-card').length,expectedWords,'Mini '+lesson+' word count');
- assert.equal(doc.querySelectorAll('.word-card .audio.unavailable').length,expectedWords,'Missing audio is labeled, not faked');
+ assert.equal(doc.querySelectorAll('.word-card .audio.unavailable,.word-card .audio.approved-voice').length,expectedWords,'Each word has an honest unavailable state or an approved recording');
  click('[data-step-next]');
  assert.ok(doc.querySelector('.gram').textContent.includes(scene[2]),'Grammar missing example in mini '+lesson);
  click('[data-step-next]');

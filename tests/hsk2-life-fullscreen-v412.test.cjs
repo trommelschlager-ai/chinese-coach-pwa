@@ -13,7 +13,7 @@ const html=fs.readFileSync(path.join(root,'hsk2-life-course.html'),'utf8');
 const css=fs.readFileSync(path.join(root,'assets/hsk2-life-welcome-v412.css'),'utf8');
 const app=fs.readFileSync(path.join(root,'assets/hsk2-life-course-app-v1.js'),'utf8');
 assert(html.includes('hsk2-life-welcome-v412.css?v=412'));
-assert(html.includes('hsk2-life-course-app-v1.js?v=444'));
+assert(/hsk2-life-course-app-v1\.js\?v=(\d+)/.exec(html)?.[1]>=444);
 assert(html.includes('hsk2-responsive-v439.css?v=439'));
 assert(html.includes('hsk2-viewport-v440.css?v=440'),'The v440 proportional artwork must still be loaded');
 assert(html.includes('hsk2-day-upgrades-v441.js?v=443'),'New lesson chat must load');
@@ -34,7 +34,7 @@ assert(v440css.includes('.pg433-petals span'),'Petal animation must be present')
 assert(v440css.includes('pointer-events:none!important'),'Petals and branches cannot block taps');
 assert(JSON.parse(fs.readFileSync(path.join(root,'assets/offline-pack.json'),'utf8')).files.includes('./assets/hsk2-viewport-v440.css?v=440'),'The new styles must be available offline');
 
-assert(html.includes('hsk2-storyboard-v439.js?v=447'));
+assert(/hsk2-storyboard-v439\.js\?v=(\d+)/.exec(html)?.[1]>=447);
 const v439Css=fs.readFileSync(path.join(root,'assets/hsk2-responsive-v439.css'),'utf8');
 const v439Js=fs.readFileSync(path.join(root,'assets/hsk2-storyboard-v439.js'),'utf8');
 assert(v439Css.includes('aspect-ratio:9 / 16!important'));

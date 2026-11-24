@@ -1,6 +1,4 @@
-/* Android 393x852 E2E — approved 12-screen HSK2 storyboard, then Panda AI.
- * Uses actual visible controls; no bypassing stages or silent test skipping.
- */
+// Complete the current day storyboard through its visible controls.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {chromium} from 'playwright';
@@ -13,7 +11,7 @@ fs.mkdirSync(dir,{recursive:true});
 try{
  for(const width of widths){
  const errors=[];
- const context=await browser.newContext({viewport:{width,height:852},deviceScaleFactor:1,isMobile:true,hasTouch:true,locale:'ru-RU'});
+ const context=await browser.newContext({viewport:{width,height:{360:800,393:852,412:915}[width]||852},deviceScaleFactor:1,isMobile:true,hasTouch:true,locale:'ru-RU'});
  const page=await context.newPage();
  page.on('pageerror',error=>errors.push(error.message));
 
@@ -29,6 +27,7 @@ try{
   assert.equal((await page.locator('.pg433-counter').innerText()).trim(),(from+1)+' / 12','Unexpected storyboard page '+from);
   const button=page.locator('[data-pg433-next]');
   assert.equal(await button.isDisabled(),false,'Lesson should permit next after completing page '+(from+1));
+  assert.equal(await page.locator('.pg395-pulse').count(),0,'No poster tap effects on interactive learning controls');
   const layout=await page.evaluate(()=>{
    const main=document.querySelector('#pg433-content');
    const footer=document.querySelector('.pg433-footer').getBoundingClientRect();
@@ -41,6 +40,7 @@ try{
  };
  // 1–2: seven visible words across two pages.
  assert.equal(await page.locator('.pg433-wordrow').count(),4);
+ assert.equal(await page.locator('.pg433-wordrow :is(button.audio,.hsk2-no-mp3)').count(),4,'Each word has an honest audio state');
  await page.screenshot({path:dir+'/'+width+'-words.png',fullPage:false});
  await next(0,1);
  assert.equal(await page.locator('.pg433-wordrow').count(),3);
@@ -58,7 +58,12 @@ try{
  // 7: Q1–Q2; 8: match pairs; 9: listening + word order; 10: final two questions.
  await next(5,6);
  assert.equal(await page.locator('[data-day-quiz]').count()>2,true);
- await page.locator('[data-day-quiz="0:1"]').click();
+ const question=page.locator('[data-day-quiz="0:1"]');
+ await question.scrollIntoViewIfNeeded();
+ const contents=page.locator('#pg433-content');
+ const before=await contents.evaluate(el=>el.scrollTop);
+ await question.click();
+ assert(Math.abs(await contents.evaluate(el=>el.scrollTop)-before)<6,'Answer must keep the current scroll position');
  await page.locator('[data-day-quiz="1:0"]').click();
  await next(6,7);
  assert.equal(await page.locator('[data-day-pair-left]').count(),3);
@@ -66,6 +71,9 @@ try{
   await page.locator('[data-day-pair-left="'+i+'"]').click();
   await page.locator('[data-day-pair-right="'+i+'"]').click();
  }
+ await next(7,8);
+ await page.locator('[data-pg433-prev]').click();
+ assert.equal(await page.locator('.pg433-pairs button.correct').count(),6,'Matched answers survive back navigation');
  await next(7,8);
  assert.equal(await page.locator('[data-day-listen]').count(),3);
  await page.locator('[data-day-listen="0"]').click();
@@ -90,7 +98,7 @@ try{
  assert.deepEqual(await page.evaluate(()=>JSON.parse(localStorage.getItem('pg-hsk2-life-course-v1')).completed),[0]);
  assert.match(await page.locator('[data-topic="0"]').innerText(),/1 \/ 3/);
  assert.deepEqual(errors,[],'No browser JS errors');
- console.log('PASS: HSK2 catalog, all twelve learning pages, seven tasks and persisted progress.');
+ console.log('PASS: HSK2 '+width+'px, all twelve learning pages, seven tasks and persisted progress.');
  await context.close();
  }
 }finally{await browser.close()}

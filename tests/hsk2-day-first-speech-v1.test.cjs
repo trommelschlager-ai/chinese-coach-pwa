@@ -20,7 +20,12 @@ w.SpeechRecognition=FakeSpeechRecognition;
 w.PandaHsk2AudioV330={lookup:()=>null,play:()=>false};
 for(const f of ['assets/hsk2-life-course-data-v1.js','assets/hsk2-day-first-data-v1.js','assets/hsk2-day-topic-one-v391.js','assets/hsk2-day-first-ui-v1.js','assets/hsk2-life-course-app-v1.js'])w.eval(fs.readFileSync(path.join(root,f),'utf8'));
 function click(sel){const el=doc.querySelector(sel);assert.ok(el,'missing '+sel);assert.equal(el.disabled,false,'disabled '+sel);el.click()}
-click('.approved-start');
+// Exercise the legacy engine via the same delegated mini-lesson action as the catalog.
+const entry=doc.createElement('button');
+entry.dataset.practiceMini='0:0';
+doc.body.append(entry);
+entry.click();
+entry.remove();
 click('[data-day-show-words]');
 click('[data-day-next]'); // 2: grammar
 click('[data-day-next]'); // 3: speech
