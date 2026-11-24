@@ -32,7 +32,9 @@ for(const [wrong,right,rule] of [
 }
 
 test('approved visuals and disabled audio handling remain intact',()=>{
- assert.ok(html.includes('panda-live-v346.mjs?v=453'));
+ assert.match(html,/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/);
+ const active=fs.readFileSync(new URL('../assets/panda-hsk2-preview-ui-v1.mjs',import.meta.url),'utf8');
+ assert.ok(active.includes('sound.disabled=!clipFor(e)'));
  assert.ok(html.includes('panda-chat-corrections-v377.css?v=454'));
  assert.ok(render.includes("details.append(el('p','pg445-before'"),'Original phrase remains in Details');
  assert.ok(ui.includes('lookupPandaVoiceClip'));

@@ -15,51 +15,101 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-      - run: npm ci
+      - id: dependencies
+        run: npm ci
       - name: Check offline coverage of current HSK1, Panda AI and HSK2 screens
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
         run: node --test tests/offline-active-assets-v434.test.mjs
-      - run: npm run check:pronunciation
-      - run: node scripts/verify-hsk1-fifth-v227.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: npm run check:pronunciation
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-fifth-v227.cjs
       - name: Fetch preserved HSK1 baseline for control-protection checks
-        run: git fetch --depth=1 origin 404e142c20aab37a6c8a24d60b60aa57028f8043
-      - run: node scripts/verify-hsk1-final-unification-v421.cjs
-      - run: node scripts/verify-hsk1-fourth-v216.cjs
-      - run: node scripts/verify-weather-one-voice-v239.cjs
-      - run: node scripts/verify-panda-go-approved-v231.cjs
-      - run: node scripts/verify-hsk1-lesson2-xiaoxiao-v261.cjs
-      - run: node scripts/verify-hsk1-lesson3-xiaoxiao-v263.cjs
-      - run: node scripts/verify-hsk1-lesson4-xiaoxiao-v265.cjs
-      - run: node scripts/verify-hsk1-lesson5-xiaoxiao-v272.cjs
-      - run: node scripts/verify-lesson6-grandparents-v275.cjs
-      - run: node scripts/verify-lesson6-photos-v276.cjs
-      - run: node scripts/verify-lesson6-words-v280.cjs
-      - run: node scripts/verify-lesson4-visual-v269.cjs
-      - run: node scripts/verify-panda-lesson4-voice-labels-v282.cjs
-      - run: node scripts/verify-panda-go-audio-v236.cjs
-      - run: node scripts/verify-mic-raw-v292.cjs
-      - run: node scripts/verify-panda-mobile-repairs-v290.cjs
-      - run: node scripts/verify-lesson7-opening-male-v291.cjs
-      - run: node scripts/verify-hsk1-full-restart-v291.cjs
-      - run: node scripts/verify-hsk1-exercise-replay-v293.cjs
-      - run: node scripts/verify-hsk1-first-upgrade-v295.cjs
-      - run: node scripts/verify-hsk1-finish-avatars-v297.cjs
-      - run: node scripts/verify-panda-hsk1-variants-v301.cjs
-      - run: node scripts/verify-panda-brain-v302.cjs
-      - run: node scripts/verify-panda-hsk2-seed-v303.cjs
-      - run: node scripts/verify-panda-hsk2-bridge-v304.cjs
-      - run: node scripts/verify-panda-sentence-coach-v319.cjs
-      - run: node --test tests/panda-basic-conversation-v323.test.mjs
-      - run: node --test tests/panda-ask-catalog-v326.test.mjs
-      - run: node scripts/verify-panda-native-real-v246.cjs
-      - run: node scripts/verify-panda-audio-v244.cjs
-      - run: node scripts/verify-lesson-viewport-v237.cjs
-      - run: node scripts/verify-mic-retention-v237.cjs
-      - run: npm run check
-      - run: npm run check:release
-      - run: node scripts/verify-quality.cjs
-      - run: node scripts/verify-offline.cjs
-      - run: node scripts/verify-hanzi.cjs
-      - run: node scripts/verify-hanzi-writing-v283.cjs
-      - run: node scripts/verify-hanzi-writing-interactions-v283.cjs
-      - run: node scripts/verify-hsk1-diagnostic-v287.cjs
-      - run: node scripts/verify-launch.cjs
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: >-
+          git fetch --depth=1 origin
+          404e142c20aab37a6c8a24d60b60aa57028f8043
+          6681db1fb3e8d372d5f6863f33e2c6513180e88a
+          4db4225a6e3f7613f8e65e6521e8d1f671561429
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-final-unification-v421.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-fourth-v216.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-weather-one-voice-v239.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-panda-go-approved-v231.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-lesson2-xiaoxiao-v261.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-lesson3-xiaoxiao-v263.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-lesson4-xiaoxiao-v265.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-lesson5-xiaoxiao-v272.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-lesson6-grandparents-v275.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-lesson6-photos-v276.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-lesson6-words-v280.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-lesson4-visual-v269.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-panda-lesson4-voice-labels-v282.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-panda-go-audio-v236.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-mic-raw-v292.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-panda-mobile-repairs-v290.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-lesson7-opening-male-v291.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-full-restart-v291.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-exercise-replay-v293.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-first-upgrade-v295.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-finish-avatars-v297.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-panda-hsk1-variants-v301.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-panda-brain-v302.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-panda-hsk2-seed-v303.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-panda-hsk2-bridge-v304.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-panda-sentence-coach-v319.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node --test tests/panda-basic-conversation-v323.test.mjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node --test tests/panda-ask-catalog-v326.test.mjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-panda-native-real-v246.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-panda-audio-v244.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-lesson-viewport-v237.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-mic-retention-v237.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: npm run check
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: npm run check:release
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-quality.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-offline.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hanzi.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hanzi-writing-v283.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hanzi-writing-interactions-v283.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-hsk1-diagnostic-v287.cjs
+      - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: node scripts/verify-launch.cjs

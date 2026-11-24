@@ -102,7 +102,11 @@ const vm=require('node:vm');
   assert(!mediaBefore.includes('lookupHsk1Voice'),'Do not bring HSK1 lesson voices into Panda AI');
  assert(!/fetch\(/.test(fs.readFileSync('assets/panda-hsk1-variants-v301.mjs','utf8')),'Variant expansion must remain local/offline');
  const html=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(/panda-live-screen-v270\.mjs\?v=\d+/.test(html),'Panda conversation page must load a cache-versioned module');
+ assert(/panda-hsk2-preview-core-v1\.mjs\?v=\d+/.test(html),'Panda conversation page must load a cache-versioned module');
+ const ui=fs.readFileSync('assets/panda-hsk2-preview-ui-v1.mjs','utf8');
+ assert(/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/.test(html),'Visible chat must load its current UI');
+ for(const id of ['pg346-short','pg346-nonstop','pg346-mic'])
+  assert(ui.includes('#'+id),'Missing active chat control: '+id);
  assert(html.includes('id="mode-short"')&&html.includes('id="mode-nonstop"')&&html.includes('id="mic"'));
  assert(html.includes('id="history-dialog"')&&html.includes('id="speech-dialog"'));
  console.log('PASS Panda HSK1 v301 '+passed+'/'+samples.length+' manually checked examples plus '+corpusPass+'/'+corpus.length+' reviewed alias corpus questions across 7 lessons; '

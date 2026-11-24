@@ -30,7 +30,7 @@ assert(css.includes('color:#20202a'),'Back button must be white with dark text')
 assert(css.includes('background:linear-gradient(180deg,#bb8af0'),'Next button should use brighter purple');
 assert(app.includes('pg4-dialog-pinyin')&&app.includes('Девушка спрашивает'),'New dialogue layout should retain live text and pinyin');
 assert(!app.includes('pg4-dialog-portrait'),'No cropped inline face overlays');
-assert(/data-num="4"[^>]*href="\.\/hsk1-fourth-v214\.html"/.test(map),'Approved v373 map must route to lesson 4');
+assert(/data-num="4"[^>]*href="\.\/hsk1-fourth-v214\.html(?:\?v=\d+)?"/.test(map),'Approved v373 map must route to lesson 4');
 assert(!app.includes('speechSynthesis.speak('),'No random system TTS');
 assert(app.includes('二 èr — четвёртый тон'),'Erroneous 2nd-tone label must be removed');
 assert(!app.includes('二 èr — второй тон'));

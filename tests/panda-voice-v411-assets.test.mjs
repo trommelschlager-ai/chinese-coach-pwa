@@ -29,10 +29,17 @@ test('existing Panda voices and no false sound remain',()=>{
  }
  assert.equal(lookupPandaVoiceClip('没有录音的句子'),null);
 });
-test('mobile screen and history load the same current Panda voice mapping',()=>{
+test('active mobile engine and UI share the versioned approved voice registry',async()=>{
  const read=path=>fs.readFileSync(new URL('../'+path,import.meta.url),'utf8');
- assert(/panda-live-audio\.mjs\?v=\d+/.test(read('assets/panda-live-v346.mjs')));
- assert(/panda-live-audio\.mjs\?v=\d+/.test(read('assets/panda-live-screen-v270.mjs')));
- assert(/panda-live-screen-v270\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
- assert(/panda-live-v346\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
+ const html=read('panda-voice-pilot.html');
+ for(const module of ['core','ui']){
+  const name='panda-hsk2-preview-'+module+'-v1.mjs';
+  assert(new RegExp(name.replace('.', '\\.')+'\\?v=\\d+').test(html));
+  assert(/panda-hsk2-preview-audio-v1\.mjs\?v=\d+/.test(read('assets/'+name)));
+ }
+ const active=await import('../assets/panda-hsk2-preview-audio-v1.mjs');
+ for(const entry of PANDA_V411_VOICE){
+  assert.equal(active.lookupPilotAudio(entry.zh),entry.src);
+ }
+ assert.equal(active.lookupPandaVoiceClip('没有录音的句子'),null);
 });

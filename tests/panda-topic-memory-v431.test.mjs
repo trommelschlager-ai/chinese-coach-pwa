@@ -96,10 +96,10 @@ test('repeated acknowledgement alternates only real approved MP3 clips',()=>{
 });
 test('approval boundaries: existing design, original MP3 and offline v431 unchanged',()=>{
  const read=p=>fs.readFileSync(new URL('../'+p,import.meta.url),'utf8');
- const screen=read('assets/panda-live-screen-v270.mjs');
+ const screen=read('assets/panda-hsk2-preview-core-v1.mjs');
  assert(screen.includes('enrichTopics431({'));
  assert(read('assets/panda-live-v346.mjs').includes('panda-character-clean-v349.webp'));
- assert(/panda-live-screen-v270\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
+ assert(/panda-hsk2-preview-core-v1\.mjs\?v=\d+/.test(read('panda-voice-pilot.html')));
  const pack=JSON.parse(read('assets/offline-pack.json'));
  assert(pack.files.includes('./assets/panda-topic-memory-v431.mjs?v=431'));
 });

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {lookupPandaVoiceClip} from '../assets/panda-live-audio.mjs';
+import {lookupPandaVoiceClip} from '../assets/panda-hsk2-preview-audio-v1.mjs';
 
 const read=path=>fs.readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const css=read('assets/panda-chat-corrections-v377.css');
@@ -36,11 +36,11 @@ test('rule readability and full explanation stay in place',()=>{
 });
 test('42 approved MP3 and Android v454 publication references are preserved',()=>{
  assert.ok(html.includes('panda-chat-corrections-v377.css?v=454'));
- assert.ok(html.includes('panda-live-v346.mjs?v=453'));
- assert.ok(html.includes('panda-live-screen-v270.mjs?v=452'));
- assert.ok(sw.includes('chinese-coach-pwa-v454-feedback-topic-clear'));
+ assert.ok(/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/.test(html));
+ assert.ok(/panda-hsk2-preview-core-v1\.mjs\?v=\d+/.test(html));
+ assert.equal(Number(sw.match(/const CACHE='chinese-coach-pwa-v(\d+)-/)?.[1]),pack.version);
  assert.ok(sw.includes('panda-chat-corrections-v377.css?v=454'));
- assert.equal(pack.version,454);
+ assert.ok(pack.version>=454);
  assert.ok(pack.files.includes('./assets/panda-chat-corrections-v377.css?v=454'));
  assert.equal(pack.files.filter(s=>/^\.\/assets\/panda-grammar-voice-v451\/g\d{3}\.mp3$/.test(s)).length,42);
  for(const [zh,file] of [
