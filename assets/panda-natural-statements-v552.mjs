@@ -238,17 +238,21 @@ function familyConversation(raw,s,awaiting){
   const qty=count?counted(count,'个'):null;if(count&&!qty)return null;
   const cp=qty?(qty[0]===1?'yí':qty[1])+' ge ':'';
   const oneRu=mem[4]==='她'?'одна ':'один ';
-  const ru=negative?'У меня нет '+mem[2]+'.':qty&&qty[0]>1?'У меня '+qty[0]+' '+(mem[5]||mem[2])+'.':'У меня есть '+(qty?oneRu:'')+(m==='孩子'?'ребёнок':mem[1])+'.';
+  const few={哥哥:'старших брата',姐姐:'старшие сестры',弟弟:'младших брата',妹妹:'младшие сестры',儿子:'сына',女儿:'дочери',爸爸:'папы',妈妈:'мамы',孩子:'ребёнка',兄弟姐妹:'брата или сестры'};
+  const plural=qty&&qty[0]%100>=11&&qty[0]%100<=14?mem[5]||mem[2]:qty&&qty[0]%10>=2&&qty[0]%10<=4?few[m]:mem[5]||mem[2];
+  const ru=negative?'У меня нет '+mem[2]+'.':qty&&qty[0]>1?'У меня '+qty[0]+' '+plural+'.':'У меня есть '+(qty?oneRu:'')+(m==='孩子'?'ребёнок':mem[1])+'.';
   const singular=Object.hasOwn(familyMembers,m)&&(!qty||qty[0]===1);
-  return r('Wǒ '+(negative?'méiyǒu ': 'yǒu ')+cp+mem[0]+'.',ru,negative||!singular?sizeQ:ageQ(m),negative||!singular?'family-size':'family-age:'+m);
+  const noSiblings=negative&&m==='兄弟姐妹';
+  if(noSiblings&&awaiting==='family-siblings')return r('Wǒ méiyǒu '+mem[0]+'.',ru,nextTopic,'hobby');
+  return r('Wǒ '+(negative?'méiyǒu ': 'yǒu ')+cp+mem[0]+'.',ru,negative||!singular?sizeQ:ageQ(m),noSiblings?'family-size:no-siblings':negative||!singular?'family-size':'family-age:'+m);
  }
  const pair=/^我有一个(哥哥|姐姐|弟弟|妹妹)和一个(哥哥|姐姐|弟弟|妹妹)$/u.exec(s);
  if(pair&&pair[1]!==pair[2])return r('Wǒ yǒu yí ge '+familyMembers[pair[1]][0]+' hé yí ge '+familyMembers[pair[2]][0]+'.','У меня есть '+familyMembers[pair[1]][1]+' и '+familyMembers[pair[2]][1]+'.',sizeQ,'family-size');
  const size=/^(我家有)?([一二两三四五六七八九十0-9]+)(口|个)人$/u.exec(s);
- if(size&&(size[1]||awaiting==='family-size')){
+ if(size&&(size[1]||awaiting==='family-size'||awaiting==='family-size:no-siblings')){
   const a=counted(size[2],size[3]);if(!a||a[0]>30)return null;
   const p=a[0]===1?(size[3]==='口'?'yì':'yí'):a[1],mp=size[3]==='口'?'kǒu':'ge';
-  return r((size[1]?'Wǒ jiā yǒu ':p[0].toUpperCase()+p.slice(1)+' ')+(size[1]?p+' ':'')+mp+' rén.','В моей семье '+a[0]+' человек.',familyQ,'family-siblings');
+  return r((size[1]?'Wǒ jiā yǒu ':p[0].toUpperCase()+p.slice(1)+' ')+(size[1]?p+' ':'')+mp+' rén.','В моей семье '+a[0]+' человек.',awaiting==='family-size:no-siblings'?nextTopic:familyQ,awaiting==='family-size:no-siblings'?'hobby':'family-siblings');
  }
  if(s==='我和父母住在一起')return r('Wǒ hé fùmǔ zhù zài yìqǐ.','Я живу вместе с родителями.',familyQ,'family-siblings');
  const q=/^你(?:有没有(哥哥|姐姐|弟弟|妹妹|爸爸|妈妈|孩子|兄弟姐妹)|有(哥哥|姐姐|弟弟|妹妹|爸爸|妈妈|孩子|兄弟姐妹)吗|有几个(哥哥|姐姐|弟弟|妹妹))$/u.exec(s);

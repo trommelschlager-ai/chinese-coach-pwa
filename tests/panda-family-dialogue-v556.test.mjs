@@ -94,7 +94,7 @@ const chains=[
     ],
     [
       "我没有兄弟姐妹",
-      "明白了。你家有几口人？"
+      "谢谢你告诉我。你喜欢做什么？"
     ]
   ],
   [
@@ -120,3 +120,5 @@ for(const [group,items] of Object.entries(matrix))test('Family coverage '+group,
 for(const [i,chain] of chains.entries())test('Family context chain '+i,()=>{let awaiting=null;for(const [zh,expected] of chain){const r=reply(zh,{awaiting});assert.equal(r?.reply?.hanzi,expected,zh);awaiting=r.next;}});
 test('Context is required and pronouns stay truthful',()=>{for(const zh of ['二十岁','三口人','她喜欢看书','你有没有火箭'])assert.equal(reply(zh),null,zh);assert.equal(reply('她喜欢看书',{awaiting:'family-hobby:哥哥'}),null);assert.equal(reply('我有一个哥哥').next,'family-age:哥哥');});
 for(const mode of ['short','nonstop'])test('Active default family dialogue '+mode,async()=>{const f=await liveDOM(null,{active:true});try{if(mode==='nonstop')f.w.PandaApprovedBridge337.setMode(mode);for(const chain of chains)for(const [zh,expected] of chain){f.send(zh);const h=f.w.PandaApprovedBridge337.snapshot().history;assert.equal(h.at(-2).hanzi,zh);assert(h.at(-2).pinyin,zh);assert.equal(h.at(-1).hanzi,expected,zh);}}finally{f.close()}});
+
+test('Negative sibling fact does not cause repeated questions',()=>{const a=reply('我没有兄弟姐妹');const b=reply('三口人',{awaiting:a.next});assert.equal(b.next,'hobby');assert.equal(reply('我没有兄弟姐妹',{awaiting:'family-siblings'}).next,'hobby');});
