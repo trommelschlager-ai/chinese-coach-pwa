@@ -39,7 +39,7 @@ test('fixed height history strip and keyboard-hiding rule protect approved Panda
 });
 test('both Panda AI pages load readable CSS AFTER approved art, with fresh SW cache v551',()=>{
  const file='./assets/panda-ai-chat-readable-v551.css?v=551';
- assert.equal(pack.version,551);
+ assert(pack.version>=551,'Readable chat must remain enabled after subsequent releases');
  for(const page of [html,mirror]){
   const approved=page.indexOf('panda-ai-approved-layout-v547.css?v=547');
   const readable=page.indexOf(file.slice(2));
@@ -47,5 +47,5 @@ test('both Panda AI pages load readable CSS AFTER approved art, with fresh SW ca
  }
  assert(pack.files.includes(file));
  assert(sw.includes(file));
- assert(sw.includes("const CACHE='chinese-coach-pwa-v551-"));
+ assert(sw.includes("const CACHE='chinese-coach-pwa-v"+pack.version+"-"));
 });
