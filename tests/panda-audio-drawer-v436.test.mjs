@@ -102,7 +102,9 @@ test('v436 offline pack and install service worker include new study metadata wi
  for(const file of ['./assets/panda-audio-study-v436.mjs?v=436','./assets/panda-topics-compact-v436.css?v=436'])assert(core.includes(file));
  const art=JSON.parse(sw.match(/const CORE_ART=new Set\((\[[^\n]+\])\)/)[1]);
  const shell=core.filter(p=>!/\.(?:mp3|ogg)(?:\?|$)/i.test(p)&&(!/\.(?:png|jpe?g|webp)(?:\?|$)/i.test(p)||art.includes(p)));
- assert(shell.length<=220,'Keep install shell under the measured current Panda + HSK course budget');
+ const install=JSON.parse(sw.match(/const INSTALL_SHELL=(\[[\s\S]*?\]);/)[1].replace(/,\s*]/g,']'));
+ assert(install.length<=205,'Keep the actual installed app shell bounded at 205 files');
+ assert.equal(new Set(install).size,install.length,'No duplicate install-time fetches');
  assert.equal(new Set(core).size,core.length,'No duplicate precache requests');
 });
 
