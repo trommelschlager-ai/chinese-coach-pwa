@@ -145,22 +145,19 @@ export function respondToNaturalStatement(raw,{awaiting=null}={}){
    'family-hobby',6);
  }
 
- const familyQuestion=/^你(有没有|有)(哥哥|姐姐|弟弟|妹妹)(吗)?$/u.exec(s);
- if(familyQuestion&&((familyQuestion[1]==='有没有'&&!familyQuestion[3])||
-  (familyQuestion[1]==='有'&&familyQuestion[3]==='吗'))){
-  const py=relatives[familyQuestion[2]][0];
-  const isAorB=familyQuestion[1]==='有没有';
-  const queryPy='Nǐ '+(isAorB?'yǒu méiyǒu ':'yǒu ')+py+(isAorB?'?':' ma?');
+ const familyQuestion=/^你有没有(哥哥|姐姐|弟弟|妹妹)$/u.exec(s);
+ if(familyQuestion){
+  const relation=familyQuestion[1],py=relatives[relation][0];
   const confirmations={
    哥哥:['我有一个哥哥。','Wǒ yǒu yí ge gēge.','Да, у меня есть старший брат.'],
    姐姐:['我没有姐姐。','Wǒ méiyǒu jiějie.','Нет, у меня нет старшей сестры.'],
    弟弟:['我没有弟弟。','Wǒ méiyǒu dìdi.','Нет, у меня нет младшего брата.'],
    妹妹:['我有一个妹妹。','Wǒ yǒu yí ge mèimei.','Да, у меня есть младшая сестра.']
   };
-  const response=result(raw,queryPy,'У тебя есть '+relatives[familyQuestion[2]][1]+'?',
-   confirmations[familyQuestion[2]],null,6);
+  const response=result(raw,'Nǐ yǒu méiyǒu '+py+'?',
+   'У тебя есть '+relatives[relation][1]+'?',confirmations[relation],null,6);
   response.kind='question';
-  response.message='Панда отвечает одинаково на 你有…吗？ и 你有没有…？. Тоны по распознанному тексту не оценивались.';
+  response.message='Панда понимает 你有没有…？. Ранее работающие вопросы 你有…吗？ сохраняют исходную логику. Тоны по тексту не оценивались.';
   return response;
  }
  const familyHave=/^我(有一个|有|没有)(哥哥|姐姐|弟弟|妹妹)$/u.exec(s);
