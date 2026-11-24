@@ -1,7 +1,7 @@
 /* Panda Go: HSK2 我的⼀天 scenario. Opt-in URL; approved scenery/mascot untouched.
    Browser ASR is transcription only, never acoustic tone grading. */
 import {lookupApprovedPandaVoice} from './panda-approved-voice-registry-v516.mjs';
-import {understandDayAnswer,getDayCorrectionLine} from './panda-hsk2-day-understanding-v1.mjs?v=6';
+import {understandDayAnswer,getDayCorrectionLine,readDayReview,saveDayReview,masterDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=3';
 if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){
 const STORY=[
@@ -99,6 +99,9 @@ function init(stage){
  chat.innerHTML='<summary id="day-chat-label">💬 Чат: сообщений пока нет</summary>'+
   '<div id="day-chat-messages" role="log" aria-live="polite" aria-label="Сообщения ученика и ответы Панды"></div>';
  panel.append(chat);
+ const review=document.createElement('details');review.className='pg-day-chat-log';
+ review.innerHTML='<summary id="day-review-label">📚 Мои ошибки</summary><label><input id="day-review-consent" type="checkbox"> Сохранять исправленные фразы в этом браузере</label><p>Не сохраняем голос и исходную переписку. Согласие выключается после перезагрузки.</p><div id="day-review-cards"></div><p id="day-review-status" role="status"></p><button id="day-review-clear" type="button">Удалить мои карточки</button>';
+ panel.append(review);
  stage.querySelector('.pg346-history').after(panel);stage.querySelector('.pg346-scene').after(controls);
  // Approved Street screen is a reference for control hierarchy only:
  // move existing interactive nodes; do not replace mascot/scenery or handlers.
@@ -162,6 +165,37 @@ function init(stage){
  const syncRetry=()=>{const button=$('day-answer-primary');const retry=phase==='questions'&&pendingCorrection?.index===i;button.textContent=retry?'↻ Попробовать ещё раз':phase==='freechat'?'✓ Отправить':'✓ Ответить';button.setAttribute('aria-label',retry?'Отправить исправленный ответ':'Отправить ответ Панде');};
  let playbackRate=1; // Normal speed is the learner-approved default; slow and fast are opt-in.
  const status=s=>{$('day-status').textContent=s};
+ const reviewStorage=(()=>{try{return localStorage}catch{return null}})();
+ function renderDayReview(){
+  const items=readDayReview(reviewStorage),root=$('day-review-cards');
+  $('day-review-label').textContent='📚 Мои ошибки · '+items.filter(x=>!x.mastered).length+' к повторению';
+  root.replaceChildren();
+  if(!items.length){const p=document.createElement('p');p.textContent='Пока нет сохранённых исправлений.';root.append(p)}
+  for(const item of items){
+   const [zh,py,ru]=getDayCorrectionLine(item.zh),card=document.createElement('div');card.className='pg-day-chat-msg';
+   const title=document.createElement('strong');title.lang='zh-Hans';title.textContent=zh;
+   const info=document.createElement('p');info.textContent=py+' — '+ru+' · '+(item.mastered?'✓ Повторено':'К повторению')+' · Ошибок: '+item.count;
+   card.append(title,info);
+   const listen=document.createElement('button');listen.type='button';listen.textContent='🔊 Слушать';listen.disabled=!approvedClips(zh).length;
+   listen.title=listen.disabled?'Точной MP3 пока нет':'Слушать утверждённую запись';
+   listen.onclick=()=>{stop();stopRecognition();speak([zh,py,ru])};
+   card.append(listen);root.append(card);
+  }
+ }
+ function storeReviewCorrection(zh){
+  if(!$('day-review-consent').checked)return;
+  $('day-review-status').textContent=saveDayReview(reviewStorage,zh,true)?'Исправление сохранено.':'Не удалось сохранить исправление.';
+  renderDayReview();
+ }
+ function resolveReviewCorrection(expected,answer){
+  if($('day-review-consent').checked&&masterDayReview(reviewStorage,expected,answer,true))renderDayReview();
+ }
+ $('day-review-clear').onclick=()=>{
+  if(!window.confirm('Удалить все личные карточки ошибок «Мой день» из этого браузера?'))return;
+  $('day-review-status').textContent=clearDayReview(reviewStorage)?'Карточки удалены.':'Не удалось удалить карточки.';
+  renderDayReview();
+ };
+ renderDayReview();
  let chatCount=0;
  function addChatMessage(role,message){
    const content=String(message??'').trim();
@@ -439,7 +473,7 @@ function init(stage){
    return;
   }
   if(result.kind==='accepted'){
-   answers[idx]=result.value;$('day-input').value='';pendingCorrection=null;syncRetry();
+   answers[idx]=result.value;$('day-input').value='';if(pendingCorrection?.index===idx)resolveReviewCorrection(pendingCorrection.line[0],result.value);pendingCorrection=null;syncRetry();
    line([result.value,'','Твой ответ']);
    addChatMessage('panda','✓ '+result.message);
    status('✓ Ответ отправлен и принят. '+result.message);
@@ -457,6 +491,7 @@ function init(stage){
    if(!errors.includes(result.correction))errors.push(result.correction);
    const correctionLine=getDayCorrectionLine(result.correction);
     pendingCorrection={index:idx,line:correctionLine,message:result.message};
+    storeReviewCorrection(correctionLine[0]);
     $('day-input').value='';syncRetry();line(correctionLine);
     const response='💡 '+result.message+' Правильно: '+correctionLine.filter(Boolean).join(' — ');
     addChatMessage('panda',response);
