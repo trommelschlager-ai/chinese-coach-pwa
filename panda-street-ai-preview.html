@@ -251,7 +251,7 @@ const esc=str=>String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'
 let timer;function tip(msg){const t=el('toast');t.textContent=msg;t.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>t.classList.remove('show'),2700)}
 const shade=el('shade'),body=el('body');let oldFocus=null;
 function popup(title,html){oldFocus=document.activeElement;el('title').textContent=title;body.innerHTML=html;shade.classList.add('open');el('close').focus({preventScroll:true})}
-function closePopup(){shade.classList.remove('open');oldFocus?.focus?.({preventScroll:true})}el('close').onclick=closePopup;shade.addEventListener('click',e=>{if(e.target===shade)closePopup()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&shade.classList.contains('open'))closePopup()});
+function closePopup(){body.querySelectorAll('iframe').forEach(frame=>frame.remove());shade.classList.remove('open');oldFocus?.focus?.({preventScroll:true})}el('close').onclick=closePopup;shade.addEventListener('click',e=>{if(e.target===shade)closePopup()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&shade.classList.contains('open'))closePopup()});
 // Only play a verified recording when its full Chinese phrase matches exactly.
 // These are existing Panda Go Luvvoice MP3 clips; never substitute another phrase or voice.
 // Panda Street audio: ONLY the approved male Luvvoice sample, never Panda Go female voices.
@@ -552,7 +552,7 @@ el('row1').onclick=()=>history.length?speak(history.at(-1).panda.zh):phrase(0);
 el('row2').onclick=()=>history.length?composition():phrase(1);
 el('short').onclick=shortMode;el('nonstop').onclick=async()=>{mode='nonstop';paint();const b=await streetBrainPromise;if(b){const start=b.start('nonstop');liveRow('live-panda',start);speak(start.zh)}composition()};
 el('send').onclick=composition;el('mic').onclick=listen;el('history').onclick=historyView;
-el('topics').onclick=shortMode;el('book').onclick=()=>{popup('Подсказка',`<p class="hint">Ответь на текущую фразу Панды:</p><div class="hanzi">我有点忙。</div><div class="py">Wǒ yǒudiǎn máng.</div><div class="ru">Я немного занят.</div><div class="actions"><button class="action primary" id="usehint">Попробовать ответить</button></div>`);el('usehint').onclick=composition;};
+el('topics').onclick=()=>{shortMode();const button=document.createElement('button');button.type='button';button.className='action';button.textContent='🎙 Panda Tone — произношение';button.onclick=()=>{++responseSeq;++voiceToken;stopStreetRecognition();if(playing){playing.pause();playing=null}streetFaceRig?.setState('idle');popup('Panda Tone · отдельная тренировка','<p class="hint">Анализ высоты своего голоса без оценки тонов. Мужской голос Street не заменяется другим голосом.</p><iframe title="Panda Tone Street" src="./panda-tone-free-practice.html?street=1" allow="microphone" style="width:100%;height:55dvh;border:0;border-radius:12px;background:#fff"></iframe>');};body.prepend(button);};el('book').onclick=()=>{popup('Подсказка',`<p class="hint">Ответь на текущую фразу Панды:</p><div class="hanzi">我有点忙。</div><div class="py">Wǒ yǒudiǎn máng.</div><div class="ru">Я немного занят.</div><div class="actions"><button class="action primary" id="usehint">Попробовать ответить</button></div>`);el('usehint').onclick=composition;};
 const themeButton=el('theme');
 const themeKey='panda-street-theme';
 function applyTheme(theme){
