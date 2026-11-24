@@ -208,7 +208,9 @@ export function readDayReview(storage){
    if(!x||!Number.isInteger(x.count)||x.count<1||typeof x.mastered!=='boolean')continue;
    const line=validReviewLine(x.zh);
    if(!line||seen.has(line[0]))continue;
-   seen.add(line[0]);items.push({zh:line[0],count:Math.min(x.count,99),mastered:x.mastered});
+   const stage=Number.isInteger(x.stage)&&x.stage>=0&&x.stage<=4?x.stage:0;
+   const due=stage===4?null:Number.isSafeInteger(x.due)&&x.due>=0?x.due:0;
+   seen.add(line[0]);items.push({zh:line[0],count:Math.min(x.count,99),mastered:x.mastered,stage,due});
    if(items.length===50)break;
   }
   return items;
@@ -221,7 +223,7 @@ export function saveDayReview(storage,zh,consent){
  if(consent!==true)return false;
  const line=validReviewLine(zh);if(!line)return false;
  const items=readDayReview(storage),old=items.find(x=>x.zh===line[0]);
- const next={zh:line[0],count:Math.min(99,(old?.count||0)+1),mastered:false};
+ const next={zh:line[0],count:Math.min(99,(old?.count||0)+1),mastered:false,stage:0,due:0};
  return writeDayReview(storage,[next,...items.filter(x=>x.zh!==next.zh)].slice(0,50));
 }
 export function masterDayReview(storage,expected,answer,consent){
@@ -232,4 +234,35 @@ export function masterDayReview(storage,expected,answer,consent){
 }
 export function clearDayReview(storage){
  try{storage.removeItem(DAY_REVIEW_KEY);return true}catch{return false}
+}
+
+/* Recall schedule: initial exercise, then 1, 3 and 7 days after each success.
+   A guided correction is not an independent recall and earns no schedule credit. */
+export const DAY_REVIEW_INTERVALS=Object.freeze([1,3,7]);
+const DAY_MS=86400000;
+export function dueDayReview(storage,now=Date.now()){
+ return readDayReview(storage).filter(x=>x.stage<4&&x.due<=now)
+  .sort((a,b)=>a.due-b.due||b.count-a.count);
+}
+export function dayReviewStats(storage,now=Date.now()){
+ const cards=readDayReview(storage);
+ return {total:cards.length,due:cards.filter(x=>x.stage<4&&x.due<=now).length,
+  scheduled:cards.filter(x=>x.stage<4&&x.due>now).length,completed:cards.filter(x=>x.stage===4).length};
+}
+export function practiceDayReview(storage,expected,answer,consent,now=Date.now()){
+ if(consent!==true)return {kind:'consent'};
+ if(!Number.isSafeInteger(now)||now<0||now>Number.MAX_SAFE_INTEGER-7*DAY_MS)return {kind:'unavailable'};
+ if(!norm(answer))return {kind:'empty'};
+ const items=readDayReview(storage),item=items.find(x=>x.zh===expected);
+ if(!item||item.stage===4||item.due>now)return {kind:'unavailable'};
+ const match=norm(answer)===norm(expected);
+ if(match){
+  item.stage++;item.mastered=true;
+  item.due=item.stage===4?null:now+DAY_REVIEW_INTERVALS[item.stage-1]*DAY_MS;
+ }else{
+  item.stage=0;item.due=0;item.mastered=false;
+  item.count=Math.min(99,item.count+1);
+ }
+ if(!writeDayReview(storage,items))return {kind:'unavailable'};
+ return {kind:match?'matched':'different',stage:item.stage,due:item.due,line:getDayCorrectionLine(item.zh)};
 }
