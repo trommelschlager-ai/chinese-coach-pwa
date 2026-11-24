@@ -328,7 +328,7 @@ function askHSK2(autoplay=true){
 function respondIndependentNatural(input){
  if(state.dayMode||entry.kind==='scenario')return false;
  const natural=respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
- if(!natural||(natural.kind!=='statement'&&!['work','identity','family'].includes(natural.domain))||!natural.spoken?.known||(!natural.spoken.pinyin&&natural.domain!=='identity')||natural.next==='clarify')return false;
+ if(!natural||(natural.kind!=='statement'&&!['work','identity','family','everyday'].includes(natural.domain))||!natural.spoken?.known||(!natural.spoken.pinyin&&natural.domain!=='identity')||natural.next==='clarify')return false;
  state.naturalAwaiting=natural.next;
  learner(input,natural.spoken);
  state.turns=(state.turns||0)+1;
@@ -361,7 +361,7 @@ function submitHSK2(input){
  // Origin-question wildcard used to accept any 我是… as a nationality.
  // A reviewed profession is an independent statement, not an origin answer.
  const possibleRoleInsteadOfOrigin=hsk2.id===101&&hsk2.index===0&&/^我(?:不)?是/.test(normalize(input));
- if(out.kind!=='accepted'&&(out.kind!=='variant'||possibleRoleInsteadOfOrigin||(['work-place','job-role','job-liking','work-busy','job-change','after-work'].includes(state.naturalAwaiting)||/^(intro-|family-)/.test(String(state.naturalAwaiting||''))))&&respondIndependentNatural(input))return;
+ if(out.kind!=='accepted'&&(out.kind!=='variant'||possibleRoleInsteadOfOrigin||(['work-place','job-role','job-liking','work-busy','job-change','after-work'].includes(state.naturalAwaiting)||/^(intro-|family-|hobby-frequency:|food-|routine-|weather-|shop-|travel-|health-)/.test(String(state.naturalAwaiting||''))))&&respondIndependentNatural(input))return;
  const known=out.spoken||knownHSK2(input);const legacy=known?null:analyzeLearner(input,[1,2,3,4,5,6,7],null,curriculum,false);
  const spoken=known?{known:true,pinyin:known.pinyin,translation:known.ru}:legacy?.known?legacy:null;
  if('context' in out)hsk2.context=out.context;
@@ -442,7 +442,7 @@ function submit(raw){
   // v552 family facts are for the free HSK2 chat route; new 有没有 questions work in both.
   const legacyFamilyAnswer=!hsk2&&state.mode==='nonstop'&&/^(?:我(?:有一个|有|没有)(?:哥哥|姐姐|弟弟|妹妹)|我(?:的)?(?:哥哥|姐姐|弟弟|妹妹)[一二三四五六七八九十]岁)$/u.test(normalize(input));
   const natural=legacyFamilyAnswer?null:respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
-  if(natural&&!(!hsk2&&state.mode==='nonstop'&&(natural.domain==='identity'||(natural.domain==='family'&&(/^你有(?:哥哥|姐姐|弟弟|妹妹|妈妈|爸爸)吗$|^你家有几口人$/.test(normalize(input))))))){
+  if(natural&&!(!hsk2&&state.mode==='nonstop'&&(natural.domain==='identity'||(natural.domain==='everyday'&&/^(你好吗|今天天气怎么样|你几点起床|你几点睡觉)$/.test(normalize(input)))||(natural.domain==='family'&&(/^你有(?:哥哥|姐姐|弟弟|妹妹|妈妈|爸爸)吗$|^你家有几口人$/.test(normalize(input))))))){
    state.naturalAwaiting=natural.next;
    learner(input,natural.spoken);
    state.turns=(state.turns||0)+1;
