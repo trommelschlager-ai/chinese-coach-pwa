@@ -48,8 +48,63 @@ const result=(raw,pinyin,translation,reply,next,topic=2)=>({
 });
 const workQuestion=['你在哪儿工作？','Nǐ zài nǎr gōngzuò?','Где ты работаешь?'];
 const workLike=['你喜欢你的工作吗？','Nǐ xǐhuan nǐ de gōngzuò ma?','Тебе нравится твоя работа?'];
+const foodItems={
+ 米饭:['mǐfàn','есть','рис','吃','chī'],
+ 面条:['miàntiáo','есть','лапшу','吃','chī'],
+ 鸡肉:['jīròu','есть','курицу','吃','chī'],
+ 牛肉:['niúròu','есть','говядину','吃','chī'],
+ 水果:['shuǐguǒ','есть','фрукты','吃','chī'],
+ 水:['shuǐ','пить','воду','喝','hē'],
+ 茶:['chá','пить','чай','喝','hē'],
+ 咖啡:['kāfēi','пить','кофе','喝','hē'],
+ 牛奶:['niúnǎi','пить','молоко','喝','hē'],
+ 果汁:['guǒzhī','пить','сок','喝','hē']
+};
+const foodIntents={
+ 想:['xiǎng','хочу'],
+ 不想:['bù xiǎng','не хочу'],
+ 爱:['ài','люблю'],
+ 不爱:['bú ài','не люблю']
+};
+const foodAlternatives={
+ 吃:['那你想吃什么？','Nà nǐ xiǎng chī shénme?','А что ты хочешь съесть?'],
+ 喝:['那你想喝什么？','Nà nǐ xiǎng hē shénme?','А что ты хочешь выпить?']
+};
+const foodFrequency={
+ 吃:['你经常吃吗？','Nǐ jīngcháng chī ma?','Ты часто это ешь?'],
+ 喝:['你经常喝吗？','Nǐ jīngcháng hē ma?','Ты часто это пьёшь?']
+};
+
+function respondToFood(raw,s,awaiting){
+ const food=/^我(不想|想|不爱|爱)(吃|喝)([\p{Script=Han}]{1,2})$/u.exec(s);
+ if(food){
+  const [,intent,verb,item]=food;
+  const entry=foodItems[item];
+  if(!entry||verb!==entry[3])return null;
+  const [itemPy,ruVerb,ruItem,,verbPy]=entry;
+  const [intentPy,ruIntent]=foodIntents[intent];
+  const negative=intent.startsWith('不');
+  const response=result(raw,`Wǒ ${intentPy} ${verbPy} ${itemPy}.`,`Я ${ruIntent} ${ruVerb} ${ruItem}.`,
+   negative?foodAlternatives[verb]:foodFrequency[verb],negative?null:'food-frequency',2);
+  if(!negative)response.context={type:'food-frequency',verb};
+  return response;
+ }
+ if(awaiting?.type!=='food-frequency')return null;
+ const verb=awaiting.verb;
+ const contextAnswer=new RegExp(`^(我)?(不)?经常(${verb})?$`,'u').exec(s);
+ if(!contextAnswer)return null;
+ const [,subject,negative,explicitVerb]=contextAnswer;
+ const verbPy=verb==='吃'?'chī':'hē';
+ const ruVerb=verb==='吃'?'ем':'пью';
+ return result(raw,(subject?'Wǒ ':negative?'Bù ':'')+(subject&&negative?'bù ':'')+
+  (subject||negative?'jīngcháng':'Jīngcháng')+(explicitVerb?' '+verbPy:'')+'.',
+  `Я ${negative?'нечасто':'часто'} это ${ruVerb}.`,
+  negative?foodAlternatives[verb]:['你还喜欢什么？','Nǐ hái xǐhuan shénme?','Что тебе ещё нравится?'],null,2);
+}
 export function respondToNaturalStatement(raw,{awaiting=null}={}){
  const s=norm(raw);if(!s)return null;
+ const food=respondToFood(raw,s,awaiting);
+ if(food)return food;
 
  // v552 Android screenshots (24 Nov): common compliments and conversational
  // reactions are complete, valid Chinese — never route them to the

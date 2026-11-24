@@ -126,3 +126,38 @@ test('40 work turns in the active v552 engine retain reviewed pinyin and follow-
  }
  assert.equal(respond('想换工作'),null);
 });
+
+test('40 food and drink inputs distinguish intention, preference and negation',async()=>{
+ const {respondToNaturalStatement:respond}=await import('../assets/panda-natural-statements-v552.mjs');
+ const items=[
+  ['米饭','mǐfàn','рис'],['面条','miàntiáo','лапшу'],['鸡肉','jīròu','курицу'],
+  ['牛肉','niúròu','говядину'],['水果','shuǐguǒ','фрукты'],['水','shuǐ','воду','喝'],
+  ['茶','chá','чай','喝'],['咖啡','kāfēi','кофе','喝'],['牛奶','niúnǎi','молоко','喝'],
+  ['果汁','guǒzhī','сок','喝']
+ ];
+ const intents=[
+  ['想','xiǎng','хочу'],['不想','bù xiǎng','не хочу'],
+  ['爱','ài','люблю'],['不爱','bú ài','не люблю']
+ ];
+ const inputs=new Set();
+ for(const [item,py,ru,verb='吃'] of items){
+  const drink=verb==='喝';
+  for(const [intent,intentPy,intentRu] of intents){
+   const input='我'+intent+verb+item;
+   inputs.add(input);
+   const r=respond(input);
+   assert(r,input);
+   assert.equal(r.spoken.pinyin,`Wǒ ${intentPy} ${drink?'hē':'chī'} ${py}.`,input);
+   assert.equal(r.spoken.translation,`Я ${intentRu} ${drink?'пить':'есть'} ${ru}.`,input);
+   assert.equal(r.reply.hanzi,intent.startsWith('不')?`那你想${verb}什么？`:`你经常${verb}吗？`,input);
+   assert(r.reply.pinyin&&r.reply.ru,input);
+   assert.equal(r.spoken.toneVerified,false,input);
+  }
+ }
+ assert.equal(inputs.size,40);
+ const coffee=respond('我爱喝咖啡');
+ assert.equal(respond('我不经常喝',{awaiting:coffee.context}).spoken.pinyin,'Wǒ bù jīngcháng hē.');
+ assert.equal(respond('经常',{awaiting:coffee.context}).spoken.translation,'Я часто это пью.');
+ assert.equal(respond('经常'),null);
+ assert.equal(respond('我想喝米饭'),null);
+});
