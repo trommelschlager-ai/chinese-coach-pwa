@@ -1,6 +1,6 @@
 {
-  "version": 555,
-  "bytes": 83436366,
+  "version": 556,
+  "bytes": 83520025,
   "files": [
     "./assets/panda-character-clean-v349.webp?v=349",
     "./assets/panda-exact-stone-v361.webp?v=361",
@@ -3427,6 +3427,7 @@
     "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=538",
     "./panda-street-ai-preview.html",
     "./assets/panda-street-shared-brain-v1.mjs?v=3",
-    "./assets/panda-street-shared-brain-v1.mjs?v=3-retry"
+    "./assets/panda-street-shared-brain-v1.mjs?v=3-retry",
+    "./panda-tone-free-practice.html"
   ]
 }
