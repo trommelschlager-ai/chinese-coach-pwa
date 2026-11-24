@@ -71,3 +71,19 @@ test('lesson tone modal opens and closes without replacing the lesson contents',
   assert.equal(w.document.querySelector('#lesson-position').textContent,'Сохранить шаг');
  }finally{dom.window.close();}
 });
+
+test('coaching compares measured movement with the selected tone without grading speech',()=>{
+ const start=trainer.indexOf('function toneGuidance('),end=trainer.indexOf('function controls(',start);
+ assert(start>=0&&end>start);
+ const guide=new Function(trainer.slice(start,end)+'\nreturn toneGuidance;')();
+ const insufficient={kind:'insufficient',label:'Недостаточно данных',reason:'Повтори запись'};
+ const short=direction=>({...insufficient,stats:{previewOnly:true,octaveJumpCount:0},shapeHint:{direction,confidence:'exploratory',isToneGrade:false}});
+ assert.match(guide({n:2},short('fall')),/плавно подними/);
+ assert.match(guide({n:1},short('level')),/предварительное/);
+ assert.match(guide({n:4},{kind:'level'}),/быстро опусти/);
+ assert.match(guide({n:3},{kind:'fall'}),/само по себе не ошибка/);
+ assert.match(guide({n:2},{kind:'rise'}),/нельзя подтвердить/);
+ assert.equal(guide({n:2},{...short('rise'),stats:{previewOnly:true,octaveJumpCount:1}}),'Недостаточно данных. Повтори запись');
+ assert.equal(guide({n:2},insufficient),'Недостаточно данных. Повтори запись');
+ assert.equal(guide({n:2},short('uncertain')),'Недостаточно данных. Повтори запись');
+});
