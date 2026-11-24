@@ -1,7 +1,7 @@
 /* Panda Go: HSK2 我的⼀天 scenario. Opt-in URL; approved scenery/mascot untouched.
    Browser ASR is transcription only, never acoustic tone grading. */
 import {lookupApprovedPandaVoice} from './panda-approved-voice-registry-v516.mjs';
-import {understandDayAnswer,getDayCorrectionLine,readDayReview,saveDayReview,masterDayReview,clearDayReview,dueDayReview,dayReviewStats,practiceDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
+import {understandDayAnswer,getDayCorrectionLine,readDayReview,saveDayReview,masterDayReview,clearDayReview,dueDayReview,dayReviewStats,practiceDayReview,getReviewCardLine} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=3';
 if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){
 const STORY=[
@@ -180,7 +180,7 @@ function init(stage){
   if(!item){closeReview();$('day-review-status').textContent='На сегодня всё повторено.';return}
   stop();stopRecognition();activeReview=item.zh;
   $('day-review-exercise').hidden=false;$('day-review-cards').hidden=true;
-  $('day-review-prompt').textContent='Переведи на китайский: '+getDayCorrectionLine(item.zh)[2];
+  $('day-review-prompt').textContent='Переведи на китайский: '+getReviewCardLine(item)[2];
   $('day-review-answer').value='';$('day-review-answer').disabled=false;
   $('day-review-feedback').textContent='';$('day-review-next').hidden=true;
   $('day-review-exercise').querySelector('[type="submit"]').disabled=false;
@@ -210,7 +210,7 @@ function init(stage){
   root.replaceChildren();
   if(!items.length){const p=document.createElement('p');p.textContent='Пока нет сохранённых исправлений.';root.append(p)}
   for(const item of items){
-   const [zh,py,ru]=getDayCorrectionLine(item.zh),card=document.createElement('div');card.className='pg-day-chat-msg';
+   const [zh,py,ru]=getReviewCardLine(item),card=document.createElement('div');card.className='pg-day-chat-msg';
    const title=document.createElement('strong');title.lang='zh-Hans';title.textContent=zh;
    const info=document.createElement('p');info.textContent=py+' — '+ru+' · '+(item.stage===4?'✓ Цикл завершён':item.due>Date.now()?'Следующее: '+new Date(item.due).toLocaleDateString('ru-RU'):'К повторению')+' · Ошибок: '+item.count;
    card.append(title,info);
@@ -232,7 +232,7 @@ function init(stage){
   if($('day-review-consent').checked&&masterDayReview(reviewStorage,expected,answer,true))renderDayReview();
  }
  $('day-review-clear').onclick=()=>{
-  if(!window.confirm('Удалить все личные карточки ошибок «Мой день» из этого браузера?'))return;
+  if(!window.confirm('Удалить все личные карточки ошибок Panda AI из этого браузера?'))return;
   closeReview();
   $('day-review-status').textContent=clearDayReview(reviewStorage)?'Карточки удалены.':'Не удалось удалить карточки.';
   renderDayReview();
