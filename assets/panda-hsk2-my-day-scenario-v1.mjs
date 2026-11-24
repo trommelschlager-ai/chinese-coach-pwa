@@ -178,7 +178,10 @@ function init(stage){
    card.append(title,info);
    const listen=document.createElement('button');listen.type='button';listen.textContent='🔊 Слушать';listen.disabled=!approvedClips(zh).length;
    listen.title=listen.disabled?'Точной MP3 пока нет':'Слушать утверждённую запись';
-   listen.onclick=()=>{stop();stopRecognition();speak([zh,py,ru])};
+   listen.onclick=()=>{
+    if(!['ready','results'].includes(phase)&&!(phase==='questions'&&pendingCorrection?.index===i)){$('day-review-status').textContent='Заверши текущий этап, чтобы не прерывать разговор.';return}
+    stop();stopRecognition();speak([zh,py,ru]);
+   };
    card.append(listen);root.append(card);
   }
  }
