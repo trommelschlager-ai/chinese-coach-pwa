@@ -166,16 +166,17 @@ function init(stage){
  let playbackRate=1; // Normal speed is the learner-approved default; slow and fast are opt-in.
  const status=s=>{$('day-status').textContent=s};
  const reviewStorage=(()=>{try{return localStorage}catch{return null}})();
- let activeReview=null;
+ let activeReview=null,retryReview=null;
  const safeReviewPhase=()=>['ready','results'].includes(phase);
  function closeReview(){
-  activeReview=null;$('day-review-exercise').hidden=true;$('day-review-cards').hidden=false;
+  activeReview=null;retryReview=null;$('day-review-exercise').hidden=true;$('day-review-cards').hidden=false;
   $('day-review-answer').value='';$('day-review-feedback').textContent='';renderDayReview();
  }
  function startReview(){
   if(!safeReviewPhase()){$('day-review-status').textContent='Сначала заверши текущий разговор.';return}
   if(!$('day-review-consent').checked){$('day-review-status').textContent='Разреши локальное сохранение результатов тренировки.';return}
-  const item=dueDayReview(reviewStorage)[0];
+  const due=dueDayReview(reviewStorage),item=due.find(x=>x.zh===retryReview)||due[0];
+  retryReview=null;
   if(!item){closeReview();$('day-review-status').textContent='На сегодня всё повторено.';return}
   stop();stopRecognition();activeReview=item.zh;
   $('day-review-exercise').hidden=false;$('day-review-cards').hidden=true;
@@ -195,10 +196,10 @@ function init(stage){
   const result=practiceDayReview(reviewStorage,activeReview,$('day-review-answer').value,$('day-review-consent').checked);
   if(result.kind==='empty'){$('day-review-feedback').textContent='Введи ответ.';return}
   if(!['matched','different'].includes(result.kind)){closeReview();$('day-review-status').textContent='Карточка недоступна или сохранение выключено.';return}
-  $('day-review-feedback').textContent=result.kind==='matched'?(result.stage===4?'✓ Цикл повторений завершён.':'✓ Совпало. Следующее повторение через '+[1,3,7][result.stage-1]+' дн.'):'Ответ не совпал с учебным образцом (другой вариант может быть правильным). Образец: '+result.line.join(' — ');
+  $('day-review-feedback').textContent=result.kind==='matched'?(result.stage===4?'✓ Цикл повторений завершён.':'✓ Совпало. Следующее повторение через '+['1 день','3 дня','7 дней'][result.stage-1]):'Ответ не совпал с учебным образцом (другой вариант может быть правильным). Образец: '+result.line.join(' — ');
   $('day-review-answer').disabled=true;$('day-review-exercise').querySelector('[type="submit"]').disabled=true;
   $('day-review-next').hidden=false;$('day-review-next').textContent=result.kind==='different'?'Попробовать ещё раз':'Следующая карточка';
-  activeReview=null;renderDayReview();
+  retryReview=result.kind==='different'?activeReview:null;activeReview=null;renderDayReview();
  });
  function renderDayReview(){
   const items=readDayReview(reviewStorage),root=$('day-review-cards');
@@ -237,6 +238,8 @@ function init(stage){
   renderDayReview();
  };
  renderDayReview();
+ review.addEventListener('toggle',()=>{if(review.open)renderDayReview()});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)renderDayReview()});
  let chatCount=0;
  function addChatMessage(role,message){
    const content=String(message??'').trim();
