@@ -76,14 +76,14 @@ test('active Panda AI free chat uses new v544 engine, not the graded quiz or the
  const html=readFileSync(new URL('../panda-voice-pilot.html',import.meta.url),'utf8');
  const sw=readFileSync(new URL('../sw.js',import.meta.url),'utf8');
  const pack=JSON.parse(readFileSync(new URL('../assets/offline-pack.json',import.meta.url),'utf8'));
- assert.match(core,/from '.\/panda-natural-statements-v552\.mjs\?v=552'/);
+ assert.match(core,/from '.\/panda-natural-statements-v552\.mjs\?v=556'/);
  assert(core.includes("entry.beginnerGreeting&&hsk2.id===101"));
  assert(core.includes("if(mode==='nonstop'&&entry.beginnerGreeting&&hsk2.id===101)"));
  assert(core.includes("hsk2.openChat=true;state.mode='nonstop'"));
  assert.match(core,/say\(natural\.reply,!!lookupPandaVoiceClip\(natural\.reply\.hanzi\)\)/);
- assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=552/);
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=556/);
  assert(pack.version>=545,'Offline pack must include the latest Panda layout version');
  assert(sw.includes("const CACHE='chinese-coach-pwa-v"+pack.version+"-"),'Service worker cache must match offline pack version');
- assert(pack.files.includes('./assets/panda-natural-statements-v552.mjs?v=552'));
- assert(sw.includes('./assets/panda-natural-statements-v552.mjs?v=552'));
+ assert(pack.files.includes('./assets/panda-natural-statements-v552.mjs?v=556'));
+ assert(sw.includes('./assets/panda-natural-statements-v552.mjs?v=556'));
 });

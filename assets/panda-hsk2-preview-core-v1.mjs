@@ -1,6 +1,6 @@
 import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
-import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=552';
+import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=556';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -323,6 +323,19 @@ function askHSK2(autoplay=true){
  const q=getTopic(hsk2.id).questions[hsk2.index],l=prompt(q);
  state.prompt={line:{...l,accepted:q.options.map(a=>a[0])}};state.awaitQuestion=false;state.hint=false;say(l,autoplay);
 }
+// v556: a reviewed independent statement is not a failed lesson answer.
+// Keep scored exact/variant answers and dedicated My Day training intact.
+function respondIndependentNatural(input){
+ if(state.dayMode||entry.kind==='scenario')return false;
+ const natural=respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
+ if(!natural||(natural.kind!=='statement'&&!['work','identity','family','everyday'].includes(natural.domain))||!natural.spoken?.known||(!natural.spoken.pinyin&&natural.domain!=='identity')||natural.next==='clarify')return false;
+ state.naturalAwaiting=natural.next;
+ learner(input,natural.spoken);
+ state.turns=(state.turns||0)+1;
+ say(natural.reply,!!lookupPandaVoiceClip(natural.reply.hanzi));
+ note(natural.message);
+ return true;
+}
 function submitHSK2(input){
  // "Своя фраза" is conversation, not a scored HSK2 quiz.
  if(hsk2.openChat){
@@ -345,6 +358,10 @@ function submitHSK2(input){
   return;
  }
  const t=getTopic(hsk2.id),q=t.questions[hsk2.index],prior=state.display,out=replyHSK2(input,hsk2.id,hsk2.index,hsk2.done,hsk2.context);
+ // Origin-question wildcard used to accept any 我是… as a nationality.
+ // A reviewed profession is an independent statement, not an origin answer.
+ const possibleRoleInsteadOfOrigin=hsk2.id===101&&hsk2.index===0&&/^我(?:不)?是/.test(normalize(input));
+ if(out.kind!=='accepted'&&(out.kind!=='variant'||possibleRoleInsteadOfOrigin||(['work-place','job-role','job-liking','work-busy','job-change','after-work'].includes(state.naturalAwaiting)||/^(intro-|family-|hobby-frequency:|food-|routine-|weather-|shop-|travel-|health-)/.test(String(state.naturalAwaiting||''))))&&respondIndependentNatural(input))return;
  const known=out.spoken||knownHSK2(input);const legacy=known?null:analyzeLearner(input,[1,2,3,4,5,6,7],null,curriculum,false);
  const spoken=known?{known:true,pinyin:known.pinyin,translation:known.ru}:legacy?.known?legacy:null;
  if('context' in out)hsk2.context=out.context;
@@ -425,7 +442,7 @@ function submit(raw){
   // v552 family facts are for the free HSK2 chat route; new 有没有 questions work in both.
   const legacyFamilyAnswer=!hsk2&&state.mode==='nonstop'&&/^(?:我(?:有一个|有|没有)(?:哥哥|姐姐|弟弟|妹妹)|我(?:的)?(?:哥哥|姐姐|弟弟|妹妹)[一二三四五六七八九十]岁)$/u.test(normalize(input));
   const natural=legacyFamilyAnswer?null:respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
-  if(natural){
+  if(natural&&!(!hsk2&&state.mode==='nonstop'&&(natural.domain==='identity'||(natural.domain==='everyday'&&/^(你好吗|今天天气怎么样|你几点起床|你几点睡觉)$/.test(normalize(input)))||(natural.domain==='family'&&(/^你有(?:哥哥|姐姐|弟弟|妹妹|妈妈|爸爸)吗$|^你家有几口人$/.test(normalize(input))))))){
    state.naturalAwaiting=natural.next;
    learner(input,natural.spoken);
    state.turns=(state.turns||0)+1;
@@ -570,6 +587,8 @@ function submit(raw){
   }
   note(result.message);render();return;
  }
+ // Keep actual lesson answers and reviewed grammar corrections on the original path.
+ if((state.done||!verifyAnswerFor(conversation.lines,state.step,input).ok)&&respondIndependentNatural(input))return;
  const spoken=explainPandaAnswer441(input,{prompt:conversation.lines[state.step],confidence:state.confidence})?.spoken||correctPandaGrammarV2(input,{prompt:conversation.lines[state.step],confidence:state.confidence})?.spoken||correctCommonPhrase(input)?.spoken||analyzeLearner(input,[1,conversation.id],conversation.lines[state.step],curriculum);learner(input,spoken);
  const greeting=/^(你好[呀啊]?|早上好[呀啊]?|中午好[呀啊]?|下午好[呀啊]?|晚上好[呀啊]?)$/.test(normalize(input));
  const social=replyToExtraSpeech(input,conversation.id,curriculum);

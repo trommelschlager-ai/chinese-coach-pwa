@@ -27,7 +27,7 @@ test('having and not having a relative must never be confused',()=>{
  assert.equal(yes.reply.hanzi,'你哥哥几岁？');
  assert.equal(yes.spoken.translation,'У меня есть один старший брат.');
  assert.equal(reply('我有一个姐姐').spoken.translation,'У меня есть одна старшая сестра.');
- assert.equal(yes.next,'family-age');
+ assert.equal(yes.next,'family-age:哥哥');
  const no=reply('我没有哥哥');
  assert.equal(no.spoken.pinyin,'Wǒ méiyǒu gēge.');
  assert.equal(no.reply.hanzi,'明白了。你家有几口人？');
@@ -45,8 +45,8 @@ test('incomplete 有没有 prompts a clarification, not made-up comprehension',(
  assert.equal(r.spoken.toneVerified,false);
 });
 test('unreviewed ages and relationships stay unknown instead of invented',()=>{
- assert.equal(reply('我哥哥二十岁'),null);
- assert.equal(reply('我有两个哥哥'),null);
+ assert.equal(reply('我哥哥二十岁').reply.hanzi,'你哥哥二十岁！他喜欢做什么？');
+ assert.match(reply('我有两个哥哥').spoken.translation,/2/);
  assert.equal(reply('你有没有火箭'),null);
 });
 
@@ -58,7 +58,7 @@ test('有没有 has reviewed consistent Panda family facts without intercepting 
   assert.equal(a.reply.hanzi,answer);
   assert.equal(a.spoken.toneVerified,false);
   assert(a.spoken.pinyin.includes('yǒu méiyǒu'));
-  assert.equal(reply('你有'+relative+'吗？'),null,'Legacy lesson question must not be hijacked');
+  assert.equal(reply('你有'+relative+'吗？').reply.hanzi,answer,'Both question forms must agree');
  }
 });
 test('main conversation defers legacy family answers to existing HSK1 Non-Stop audio',()=>{
