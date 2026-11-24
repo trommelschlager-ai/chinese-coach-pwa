@@ -1,0 +1,44 @@
+name: Panda Street HSK1 lesson design — Android QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'panda-street-slang-lesson1-preview.html'
+      - 'panda-street-slang-lesson2-preview.html'
+      - 'scripts/qa-panda-street-hsk1-design.mjs'
+      - '.github/workflows/panda-street-hsk1-design.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  street-lesson-layout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Test 23 lesson screens at three Android sizes
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/street-design.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/panda-street-slang-lesson1-preview.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-panda-street-hsk1-design.mjs
+      - name: Preserve browser screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: panda-street-hsk1-design-android
+          path: qa/panda-street-hsk1-design/
+          if-no-files-found: warn
