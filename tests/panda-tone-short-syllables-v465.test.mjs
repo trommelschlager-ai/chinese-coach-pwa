@@ -89,3 +89,28 @@ test('published page uses post-record analysis rather than only setInterval samp
  assert(trainer.includes('plot(displayPoints)'));
  assert(trainer.includes('Голос уже был обнаружен'),'Live mic label should not switch to silence after hearing a syllable');
 });
+
+test('reference graph uses only stable measured points on the real time axis',async()=>{
+ const {referenceContourPath}=await import('../assets/panda-tone-recording-analysis-v465.mjs');
+ const points=Array.from({length:12},(_,i)=>({t:i*.02,st:i*.2-1}));
+ const good={available:true,signal:{hasAudibleSignal:true,discardedOtherRegions:0,pitchFrames:12,fallbackPitchFrames:0},result:{kind:'insufficient',stats:{previewOnly:true,octaveJumpCount:0},points}};
+ const path=referenceContourPath(good);
+ assert.match(path,/^M30\.0 /);
+ assert.match(path,/L85\.4 /);
+ assert.equal(referenceContourPath({...good,signal:{...good.signal,discardedOtherRegions:1}}),'');
+ assert.equal(referenceContourPath({...good,result:{...good.result,kind:'uncertain'}}),'');
+ assert.equal(referenceContourPath({...good,result:{...good.result,stats:{previewOnly:true,octaveJumpCount:1}}}),'');
+ assert.equal(referenceContourPath({...good,signal:{...good.signal,fallbackPitchFrames:8}}),'');
+ assert.equal(referenceContourPath({...good,result:{...good.result,points:points.map((p,i)=>({...p,t:p.t+(i>6?.2:0)}))}}),'');
+ assert.equal(referenceContourPath(null),'');
+});
+test('reference overlay reads only fixed same-origin lesson audio and has a separate status',()=>{
+ const page=fs.readFileSync(new URL('../panda-tone-ma-practice.html',import.meta.url),'utf8');
+ assert(page.includes('id="reference-audio-path"'));
+ assert(page.includes('id="reference-audio-status"'));
+ assert(page.includes("method:'GET',mode:'same-origin'"));
+ assert(page.includes("lesson1-xiaoxiao-v260/ma'+n+'.mp3"));
+ assert(page.includes('ticket!==request'));
+ assert(page.includes('referenceContourPath(analysis)'));
+ assert(page.includes('относительно медианы каждого голоса'));
+});
