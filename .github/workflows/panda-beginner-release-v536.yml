@@ -11,6 +11,8 @@ on:
       - 'assets/panda-hsk2-preview-audio-v1.mjs'
       - 'assets/panda-hsk2-preview-ui-v1.mjs'
       - 'assets/panda-natural-statements-v544.mjs'
+      - 'assets/panda-natural-statements-v552.mjs'
+      - 'tests/panda-family-natural-v552.test.mjs'
       - 'assets/panda-approved-soft-v500.js'
       - 'assets/panda-hsk2-preview-v506.css'
       - 'docs/panda-ai-voice-queue-v545.json'
@@ -57,6 +59,7 @@ jobs:
           node --test tests/panda-android-keyboard-dialogue-v539.test.mjs
           node --test tests/panda-natural-statements-v542.test.mjs
           node --test tests/panda-natural-statements-v544.test.mjs
+          node --test tests/panda-family-natural-v552.test.mjs
           node --test tests/panda-ai-voice-queue-v545.test.mjs
           node --test tests/panda-approved-natural-voice-v546.test.mjs
           node scripts/panda-ai-voice-gap-v545.mjs
