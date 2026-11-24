@@ -10,6 +10,7 @@ on:
       - "assets/hsk2-life-course-app-v1.js"
       - "assets/hsk2-lesson1-android-fixes-v416.css"
       - "scripts/qa-hsk2-six-screens-v414.mjs"
+      - "scripts/qa-hsk2-day-panda-mobile-v1.mjs"
       - "sw.js"
       - "tests/hsk2-six-screens-v414.test.cjs"
 jobs:
@@ -29,7 +30,7 @@ jobs:
       - run: npm install --no-save --no-audit --no-fund playwright
       - run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends fonts-noto-cjk
       - run: npx playwright install chromium
-      - name: Verify Android screen sizes and capture six images
+      - name: Verify the current learning stages at Android sizes
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/hsk2-v414.log 2>&1 &
           SERVER_PID=$!

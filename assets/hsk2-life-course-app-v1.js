@@ -549,6 +549,10 @@ document.addEventListener('click',function(e){
   // examples step. Do not restart the lesson or go to the topic map.
   state.view='lesson';state.stage=4;
   if(!state.day&&dayUI)state.day=dayUI.makeState(state.mini);
+  if(state.day&&window.PandaGoStoryboardV433){
+   state.day.pg433Page=11;
+   state.day.pg433HighestStage=4;
+  }
   render();return;
  }
  if(b.dataset.repeat!==undefined){enter(state.topic,state.mini);return}

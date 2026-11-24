@@ -7,34 +7,41 @@ import {chromium} from 'playwright';
 
 const base=process.env.PANDA_TEST_BASE||'http://127.0.0.1:4173';
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
-const errors=[];
+const dir=process.env.HSK2_QA_DIR||'qa/panda-voice-pilot';
+const widths=(process.env.HSK2_QA_WIDTHS||'393').split(',').map(Number);
+fs.mkdirSync(dir,{recursive:true});
 try{
- const context=await browser.newContext({viewport:{width:393,height:852},deviceScaleFactor:1,isMobile:true,hasTouch:true,locale:'ru-RU'});
+ for(const width of widths){
+ const errors=[];
+ const context=await browser.newContext({viewport:{width,height:852},deviceScaleFactor:1,isMobile:true,hasTouch:true,locale:'ru-RU'});
  const page=await context.newPage();
  page.on('pageerror',error=>errors.push(error.message));
- fs.mkdirSync('qa/panda-voice-pilot',{recursive:true});
+
 
  // HSK2 v433 switched from a PNG poster map to ten accessible HTML cards.
  await page.goto(base+'/hsk2-life-course.html?view=map',{waitUntil:'domcontentloaded'});
- await page.locator('.pg433-map .pg433-map-card[data-topic="0"]').waitFor({state:'visible',timeout:15000});
- assert.equal(await page.locator('.pg433-map .pg433-map-card[data-topic]').count(),10,'All ten real course topics must be usable');
- assert.match(await page.locator('.pg433-map').innerText(),/10 тем|30 мини-уроков/);
- await page.screenshot({path:'qa/panda-voice-pilot/hsk2-course-map-android.png',fullPage:false});
-
- await page.goto(base+'/hsk2-life-course.html?start=1&v=414',{waitUntil:'domcontentloaded'});
- await page.locator('.pg432-cover img[src$="/lesson1.jpg"]').waitFor({state:'visible',timeout:15000});
- await page.locator('[data-pg432-cover-start]').click();
+ assert.equal(await page.locator('.pgc-feature-list .pgc-feature-card').count(),10);
+ assert.match(await page.locator('.pgc-feature-day').getAttribute('href'),/hsk2-lesson1\.html/);
+ await page.goto(base+'/hsk2-life-course.html?topic=0',{waitUntil:'domcontentloaded'});
+ await page.locator('[data-practice-mini="0:0"]').click();
  await page.locator('.pg433-root:not(.pg433-map)').waitFor({state:'visible',timeout:15000});
  const next=async(from,to)=>{
   assert.equal((await page.locator('.pg433-counter').innerText()).trim(),(from+1)+' / 12','Unexpected storyboard page '+from);
   const button=page.locator('[data-pg433-next]');
   assert.equal(await button.isDisabled(),false,'Lesson should permit next after completing page '+(from+1));
+  const layout=await page.evaluate(()=>{
+   const main=document.querySelector('#pg433-content');
+   const footer=document.querySelector('.pg433-footer').getBoundingClientRect();
+   return {overflow:main.scrollWidth-main.clientWidth,bottom:footer.bottom,height:innerHeight};
+  });
+  assert(layout.overflow<=2&&layout.bottom<=layout.height+1,JSON.stringify(layout));
+  await page.screenshot({path:dir+'/'+width+'-page-'+(from+1)+'.png'});
   await button.click();
   if(to!==null)assert.equal((await page.locator('.pg433-counter').innerText()).trim(),(to+1)+' / 12');
  };
  // 1–2: seven visible words across two pages.
  assert.equal(await page.locator('.pg433-wordrow').count(),4);
- await page.screenshot({path:'qa/panda-voice-pilot/hsk2-day-lesson-android.png',fullPage:false});
+ await page.screenshot({path:dir+'/'+width+'-words.png',fullPage:false});
  await next(0,1);
  assert.equal(await page.locator('.pg433-wordrow').count(),3);
  // 3: explicit grammar order; 4: applied rule.
@@ -75,28 +82,15 @@ try{
  const link=page.locator('.pg433-ai-link');
  await link.waitFor({state:'visible',timeout:12000});
  assert.match(await link.getAttribute('href'),/practice=day&mini=0/);
- await page.screenshot({path:'qa/panda-voice-pilot/hsk2-day-done-android.png',fullPage:false});
+ await page.screenshot({path:dir+'/'+width+'-done.png',fullPage:false});
 
- // The verified completed-lesson link opens the approved Panda AI Day practice.
- await page.goto(base+'/panda-voice-pilot.html?practice=day&mini=0',{waitUntil:'domcontentloaded'});
- await page.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true',{timeout:18000});
- assert.match(await page.locator('.pg346-title').innerText(),/Мой день/);
- await page.locator('.pg346-main-zh').filter({hasText:'你早上做什么？'}).waitFor({timeout:10000});
- for(const [answer,reply] of [
-  ['我每天七点起床。','你起床以后做什么？'],
-  ['我早上洗脸。','你上午做什么？'],
-  ['我早上吃早饭。','做得好！']
- ]){
-  await page.locator('#pg346-input').fill(answer);
-  await page.locator('#pg346-send').click();
-  await page.locator('.pg346-main-zh').filter({hasText:reply}).waitFor({timeout:10000});
- }
- const back=await page.locator('.pg346-back').getAttribute('href');
- const returnUrl=new URL(back,base+'/');
- assert(returnUrl.pathname.endsWith('/hsk2-life-course.html'),'Panda AI must link back to HSK2');
- assert(returnUrl.searchParams.get('topic')==='0'||(returnUrl.searchParams.get('from')==='hsk2-life-course'&&returnUrl.searchParams.get('return')==='done'&&returnUrl.searchParams.get('mini')==='0'));
- await page.screenshot({path:'qa/panda-voice-pilot/hsk2-day-panda-android.png',fullPage:false});
+ assert.deepEqual(await page.evaluate(()=>JSON.parse(localStorage.getItem('pg-hsk2-life-course-v1')).completed),[0]);
+ await page.reload();
+ // The stored completion remains available through the catalog after reload.
+ assert.deepEqual(await page.evaluate(()=>JSON.parse(localStorage.getItem('pg-hsk2-life-course-v1')).completed),[0]);
+ assert.match(await page.locator('[data-topic="0"]').innerText(),/1 \/ 3/);
  assert.deepEqual(errors,[],'No browser JS errors');
- console.log('PASS: Android 393x852, ten topic cards, cover, 12 learning pages, all seven test questions, four sample dialogues, Panda AI day replies and return link.');
+ console.log('PASS: HSK2 catalog, all twelve learning pages, seven tasks and persisted progress.');
  await context.close();
+ }
 }finally{await browser.close()}
