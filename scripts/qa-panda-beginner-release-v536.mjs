@@ -34,6 +34,11 @@ try{
    assert.equal(await page.locator('#pg346-rows .pg346-row:last-child .pg346-zh').textContent(),answer);
   };
   // v548: independent learner question has a pre-recorded Mandarin response.
+  await send('我有一个姐姐','你姐姐几岁？');
+  await send('她二十二岁','你姐姐二十二岁！她喜欢做什么？');
+  await send('我没有孩子','你家有几口人？');
+  await send('三口人','你跟家人一起住吗？');
+  await send('我一个人住','你住在哪里？');
   await send('你是老师吗？','我是老师。');
   await send('我爱你！','谢谢你！我很开心！你叫什么名字？');
   await send('我叫小明。','很高兴认识你！你今天怎么样？');
@@ -98,6 +103,11 @@ try{
   assert.equal(await page.locator('#pg346-input').inputValue(),'','One click must empty the input');
   await page.locator('#pg346-nonstop').click();
   await send('不好','怎么了？');
+  await send('我有一个姐姐','你姐姐几岁？');
+  await send('她二十二岁','你姐姐二十二岁！她喜欢做什么？');
+  await send('我没有孩子','你家有几口人？');
+  await send('三口人','你跟家人一起住吗？');
+  await send('我一个人住','你住在哪里？');
   await send('你是老师吗？','我是老师。');
   // The HSK2 short quiz stays scored; independent statements belong in free topic chat.
   await page.locator('#pg346-topics-btn').click();

@@ -426,7 +426,7 @@ function submit(raw){
   const legacyFamilyAnswer=!hsk2&&state.mode==='nonstop'&&/^(?:我(?:有一个|有|没有)(?:哥哥|姐姐|弟弟|妹妹)|我(?:的)?(?:哥哥|姐姐|弟弟|妹妹)[一二三四五六七八九十]岁)$/u.test(normalize(input));
   const natural=legacyFamilyAnswer?null:respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
   if(natural){
-   state.naturalAwaiting=natural.next;
+   state.naturalAwaiting=natural.context??natural.next;
    learner(input,natural.spoken);
    state.turns=(state.turns||0)+1;
    state.awaitQuestion=true;
