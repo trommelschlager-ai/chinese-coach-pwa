@@ -121,6 +121,47 @@ export function respondToNaturalStatement(raw,{awaiting=null}={}){
    return result(raw,null,'На работе не очень занят.',
     ['那很好！你下班后喜欢做什么？','Nà hěn hǎo! Nǐ xiàbān hòu xǐhuan zuò shénme?','Хорошо! Чем ты любишь заниматься после работы?'],'after-work');
  }
+
+ // v552: small, reviewed family conversation expansion. Keep Chinese tones
+ // in pinyin only; ASR text is not evidence of spoken tone accuracy.
+ const relatives={
+  哥哥:['gēge','старший брат','старшего брата','старшему брату','他'],
+  姐姐:['jiějie','старшая сестра','старшей сестры','старшей сестре','她'],
+  弟弟:['dìdi','младший брат','младшего брата','младшему брату','他'],
+  妹妹:['mèimei','младшая сестра','младшей сестры','младшей сестре','她']
+ };
+ const smallAges={一:['yí',1],二:['èr',2],三:['sān',3],四:['sì',4],五:['wǔ',5],
+  六:['liù',6],七:['qī',7],八:['bā',8],九:['jiǔ',9],十:['shí',10]};
+ const ageMatch=/^我(的)?(哥哥|姐姐|弟弟|妹妹)(一|二|三|四|五|六|七|八|九|十)岁$/u.exec(s);
+ if(ageMatch){
+  const [py,, ,dat,person]=relatives[ageMatch[2]];
+  const [numPy,num]=smallAges[ageMatch[3]];
+  const years=num===1?'год':num>=2&&num<=4?'года':'лет';
+  return result(raw,'Wǒ '+(ageMatch[1]?'de ':'')+py+' '+numPy+' suì.',
+   'Моему '+dat+' '+num+' '+years+'.',
+   ['你'+ageMatch[2]+ageMatch[3]+'岁！'+person+'喜欢做什么？',
+    'Nǐ '+py+' '+numPy+' suì! Tā xǐhuan zuò shénme?',
+    'Твоему '+dat+' '+num+' '+years+'! Что '+(person==='她'?'она':'он')+' любит делать?'],
+   'family-hobby',6);
+ }
+ const familyHave=/^我(有一个|有|没有)(哥哥|姐姐|弟弟|妹妹)$/u.exec(s);
+ if(familyHave){
+  const [py,nom,gen]=relatives[familyHave[2]];
+  const no=familyHave[1]==='没有';
+  const one=familyHave[1]==='有一个';
+  return result(raw,no?'Wǒ méiyǒu '+py+'.':'Wǒ yǒu '+(one?'yí ge ':'')+py+'.',
+   no?'У меня нет '+gen+'.':'У меня есть '+(one?'один ':'')+nom+'.',
+   no?['明白了。你家有几口人？','Míngbai le. Nǐ jiā yǒu jǐ kǒu rén?','Понятно. Сколько человек в твоей семье?']:
+   ['你'+familyHave[2]+'几岁？','Nǐ '+py+' jǐ suì?','Сколько лет твоему родственнику?'],
+   no?'family-size':'family-age',6);
+ }
+ // "你有没有" alone is unfinished. Clarify; never guess the missing object.
+ if(s==='你有没有'){
+  const clarification=result(raw,null,'Незаконченный вопрос «У тебя есть…?»',
+   ['你想问什么？','Nǐ xiǎng wèn shénme?','Что ты хочешь спросить?'],'clarify',6);
+  clarification.message='Вопрос не закончен. Например: 你有没有哥哥？ — Nǐ yǒu méiyǒu gēge? Тоны по тексту не проверяются.';
+  return clarification;
+ }
  // Unknown Chinese names: never invent pronunciation or acoustic tone evidence.
  const name=/^我叫([\p{Script=Han}]{1,6})$/u.exec(s);
  if(name)return result(raw,null,'Меня зовут '+name[1]+'.',
