@@ -1,0 +1,14 @@
+/* Only Street-specific content adjustments. Core layout and colors are from active HSK1 CSS. */
+[data-street-lesson] .pg-v415-phrase{font-size:clamp(36px,11vw,65px);overflow-wrap:anywhere}
+[data-street-lesson] .pinyin,[data-street-lesson] .pg-v414-py{white-space:normal;overflow-wrap:anywhere;line-height:1.4}
+[data-street-lesson] .street-standard-choices{display:grid;gap:10px;margin:12px 0}
+[data-street-lesson] .street-standard-choices button{border:1px solid #cdb2e4;border-radius:18px;min-height:48px;padding:10px;background:linear-gradient(#fff8ff,#edddfb);color:#62417e;font-weight:800;box-shadow:0 3px 0 #c2a5d8}
+[data-street-lesson] .street-standard-choices button[aria-pressed=true]{border-color:#8053ae;background:#ead8fa}
+[data-street-lesson] .street-standard-avatar{width:42px;min-width:42px;height:42px;display:grid;place-items:center;background:#f2ddff;border-radius:50%;font-size:12px;font-weight:800;color:#542379}
+[data-street-lesson] .street-standard-line .pg-v414-bubble{min-width:0}
+[data-street-lesson] .street-standard-line .audio{margin:8px 0;min-height:44px}
+[data-street-lesson] .street-standard-speed{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0 14px;color:#674c87;font-size:14px;font-weight:800}
+[data-street-lesson] .street-standard-speed select{font:inherit;background:white;color:#542379;border:1px solid #cdb2e4;border-radius:12px;padding:8px}
+[data-street-lesson] .pg-hsk1-brand small{white-space:normal}
+[data-street-lesson] .pg-footer [hidden],[data-street-lesson] .recorder [hidden]{display:none!important}
+[data-street-lesson] .pg-footer button{touch-action:manipulation}

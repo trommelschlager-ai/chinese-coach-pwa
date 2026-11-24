@@ -1,7 +1,14 @@
 {
-  "version": 551,
-  "bytes": 80691372,
+  "version": 553,
+  "bytes": 80833877,
   "files": [
+    "./assets/panda-street-hsk1-standard-v2.css?v=1",
+    "./assets/panda-street-hsk1-standard-v2.js?v=1",
+    "./assets/panda-street-shared-brain-v1.mjs?v=4-retry",
+    "./assets/panda-street-shared-brain-v1.mjs?v=4",
+    "./assets/panda-street-lesson1-luvvoice.m4a",
+    "./panda-street-slang-lesson2-preview.html",
+    "./panda-street-slang-lesson1-preview.html",
     "./assets/panda-ai-chat-readable-v551.css?v=551",
     "./assets/panda-hsk2-preview-core-v1.mjs?v=550",
     "./assets/panda-hsk2-preview-core-v1.mjs?v=549",
