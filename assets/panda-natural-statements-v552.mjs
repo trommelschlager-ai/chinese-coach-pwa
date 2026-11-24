@@ -50,6 +50,36 @@ const workQuestion=['你在哪儿工作？','Nǐ zài nǎr gōngzuò?','Где �
 const workLike=['你喜欢你的工作吗？','Nǐ xǐhuan nǐ de gōngzuò ma?','Тебе нравится твоя работа?'];
 export function respondToNaturalStatement(raw,{awaiting=null}={}){
  const s=norm(raw);if(!s)return null;
+
+ // v552 Android screenshots (24 Nov): common compliments and conversational
+ // reactions are complete, valid Chinese — never route them to the
+ // "say it more simply" fallback. Exact phrases only, no guessed ASR tones.
+ const socialTurns={
+  '你很可爱':['Nǐ hěn kě\'ài.','Ты очень милая.',[
+   '谢谢你！你喜欢熊猫吗？','Xièxie nǐ! Nǐ xǐhuan xióngmāo ma?','Спасибо! Ты любишь панд?']],
+  '你真可爱':['Nǐ zhēn kě\'ài.','Ты такая милая.',[
+   '谢谢你！你喜欢熊猫吗？','Xièxie nǐ! Nǐ xǐhuan xióngmāo ma?','Спасибо! Ты любишь панд?']],
+  '你很漂亮':['Nǐ hěn piàoliang.','Ты очень красивая.',[
+   '谢谢你！你喜欢这里的风景吗？','Xièxie nǐ! Nǐ xǐhuan zhèlǐ de fēngjǐng ma?','Спасибо! Тебе нравится здешний пейзаж?']],
+  '你真漂亮':['Nǐ zhēn piàoliang.','Ты такая красивая.',[
+   '谢谢你！你喜欢这里的风景吗？','Xièxie nǐ! Nǐ xǐhuan zhèlǐ de fēngjǐng ma?','Спасибо! Тебе нравится здешний пейзаж?']],
+  '太好了':['Tài hǎo le!','Отлично!',[
+   '太好了！我们继续聊吧！','Tài hǎo le! Wǒmen jìxù liáo ba!','Отлично! Давай продолжим разговор!']],
+  '你很酷':['Nǐ hěn kù.','Ты очень крутая.',[
+   '谢谢你！你喜欢我的耳机吗？','Xièxie nǐ! Nǐ xǐhuan wǒ de ěrjī ma?','Спасибо! Тебе нравятся мои наушники?']],
+  '你真酷':['Nǐ zhēn kù.','Ты такая крутая.',[
+   '谢谢你！你喜欢我的耳机吗？','Xièxie nǐ! Nǐ xǐhuan wǒ de ěrjī ma?','Спасибо! Тебе нравятся мои наушники?']],
+  '你太厉害了':['Nǐ tài lìhai le.','Ты просто невероятная!',[
+   '谢谢你！我们一起加油！','Xièxie nǐ! Wǒmen yìqǐ jiāyóu!','Спасибо! Давай стараться вместе!']],
+  '你太棒了':['Nǐ tài bàng le.','Ты просто молодец!',[
+   '谢谢你！我们一起加油！','Xièxie nǐ! Wǒmen yìqǐ jiāyóu!','Спасибо! Давай стараться вместе!']],
+  '我不喜欢你':['Wǒ bù xǐhuan nǐ.','Ты мне не нравишься.',[
+   '没关系。你想聊什么？','Méi guānxi. Nǐ xiǎng liáo shénme?','Ничего страшного. О чём хочешь поговорить?']]
+ };
+ if(Object.hasOwn(socialTurns,s)){
+  const [py,ru,reply]=socialTurns[s];
+  return result(raw,py,ru,reply,null,1);
+ }
  const role=/^我(不)?是([\p{Script=Han}]{1,6})$/u.exec(s);
  if(role&&professions[role[2]]){
   const [py,ru]=professions[role[2]];
