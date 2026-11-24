@@ -23,11 +23,16 @@ try{
     assert(layout.bottom<=height+2,'Footer outside viewport');
     assert(layout.contentBottom<=layout.footerTop+2&&layout.headerBottom<=layout.contentTop+2,'Content overlaps fixed controls');
     const qs=page.locator('[data-answer]');
-    if(await qs.count()){assert(await page.locator('#pg-next').isDisabled());for(const [i,j] of (n===1?[[0,1],[1,0],[2,0]]:[[0,1],[1,0],[2,2]]))await page.locator('[data-answer="'+i+':'+j+'"]').click();}
-    if(await page.locator('#verify').count()){assert(await page.locator('#pg-next').isDisabled());for(const i of n===1?[1,2,0]:[1,3,4,0,2])await page.locator('[data-add="'+i+'"]').click();await page.locator('#verify').click();}
+    if(await qs.count()){assert(await page.locator('#pg-next').isDisabled());await page.locator('[data-answer="0:0"]').click();assert(await page.locator('#pg-next').isDisabled(),'Wrong answer must keep Next locked');for(const [i,j] of (n===1?[[0,1],[1,0],[2,0]]:[[0,1],[1,0],[2,2]]))await page.locator('[data-answer="'+i+':'+j+'"]').click();}
+    if(await page.locator('#verify').count()){assert(await page.locator('#pg-next').isDisabled());await page.locator('#verify').click();assert(await page.locator('#pg-next').isDisabled(),'Empty answer must keep Next locked');for(const i of n===1?[1,2,0]:[1,3,4,0,2])await page.locator('[data-add="'+i+'"]').click();await page.locator('#verify').click();}
     if([1,4,Math.ceil(total/2),total].includes(step))await page.screenshot({path:out+'/lesson-'+n+'-'+width+'-'+step+'.png',animations:'disabled'});
     count++;
-    if(step<total)await page.locator('#pg-next').click();
+    if(step<total){
+     // The actual HSK1 control intentionally ignores clicks within 280 ms.
+     await page.waitForTimeout(320);
+     await page.locator('#pg-next').click();
+     await page.waitForFunction(expected=>document.querySelector('#pg-counter').textContent.trim()===expected,String(step+1).padStart(2,'0')+' / '+total);
+    }
    }
    await page.locator('#repeat-course').click();assert.equal(await page.locator('#pg-counter').textContent(),'01 / '+total);
    assert.deepEqual(errors,[]);await page.close();

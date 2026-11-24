@@ -14,7 +14,7 @@ const clean=s=>String(s??'').normalize('NFC').replace(/[\s，。？！?!、,.]/g
 const line=(zh,py,ru)=>({zh,py,ru});
 const normalizeLine=r=>r?line(r.hanzi||r.panda||r.zh||'',r.pinyin||r.py||'',r.ru||r.translation||''):null;
 const STREET_FIRST=line('哈喽！最近怎么样？','Hālou! Zuìjìn zěnmeyàng?','Привет! Как дела?');
-const STREET_NEXT=line('你呢？','Nǐ ne?','А ты?');
+const STREET_NEXT=line('你今天有什么计划？','Nǐ jīntiān yǒu shénme jìhuà?','Какие у тебя планы на сегодня?');
 
 export function createStreetBrain({storage=(()=>{try{return globalThis.localStorage}catch{return null}})(),curriculum=[]}={}){
  const state={turn:0,mode:'nonstop',prompt:null,pending:null,topic:1,
@@ -84,8 +84,35 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
      const meaning={'还行吧':'Нормально вроде.','挺好的':'Вполне хорошо.','还好':'Нормально.','不错':'Неплохо.','一般':'Так себе.'};
      const py={'还行吧':'Hái xíng ba.','挺好的':'Tǐng hǎo de.','还好':'Hái hǎo.','不错':'Búcuò.','一般':'Yìbān.'};
      state.pending={...STREET_NEXT,lesson:1};
-     return {kind:'answer',panda:line('挺好的！','Tǐng hǎo de!','Вполне хорошо!'),
+     const reaction=s==='一般'?line('这样啊。','Zhèyàng a.','Понятно.'):line('那就好！','Nà jiù hǎo!','Ну и хорошо!');
+     return {kind:'answer',panda:reaction,
        learner:line(raw,py[s],meaning[s]),nextQuestion:normalizeLine(state.pending),message:'Ответ по смыслу подходит.'};
+   }
+   // Lesson 2: accept natural contextual replies before the generic HSK tutor.
+   // For names not in the reviewed lexicon, do not fabricate their pinyin.
+   const current=clean(state.prompt?.hanzi||'');
+   if(/叫什么|什么名字/.test(current)&&/^我叫[\p{Script=Han}a-zA-Z]{1,16}$/u.test(s)){
+     const known={'我叫安东':['Wǒ jiào Āndōng.','Меня зовут Антон.'],'我叫小明':['Wǒ jiào Xiǎomíng.','Меня зовут Сяомин.'],'我叫安娜':['Wǒ jiào Ānnà.','Меня зовут Анна.']};
+     const next=line('你哪儿人啊？','Nǐ nǎr rén a?','Ты откуда?');
+     setPrompt({...next,lesson:1});state.pending=null;
+     return {kind:'question',learner:line(raw,...(known[s]||['','Меня зовут '+s.slice(2)+'。'])),panda:next,nextQuestion:null,message:'Имя принято.'};
+   }
+   if(/哪儿人|哪里人/.test(current)&&['我是俄罗斯人','我从俄罗斯来的','我来自俄罗斯'].includes(s)){
+     const detail={'我是俄罗斯人':['Wǒ shì Éluósī rén.','Я россиянин.'],'我从俄罗斯来的':['Wǒ cóng Éluósī lái de.','Я приехал из России.'],'我来自俄罗斯':['Wǒ láizì Éluósī.','Я из России.']};
+     const next=line('你也学中文啊？','Nǐ yě xué Zhōngwén a?','Ты тоже учишь китайский?');
+     setPrompt({...next,lesson:1});state.pending=null;
+     return {kind:'question',learner:line(raw,...detail[s]),panda:next,nextQuestion:null,message:'Ответ по смыслу подходит.'};
+   }
+   if(/学中文/.test(current)&&['对啊刚学','对啊我学中文','我学中文','我也学中文'].includes(s)){
+     const detail={'对啊刚学':['Duì a, gāng xué.','Ага, только начал учить.'],'对啊我学中文':['Duì a, wǒ xué Zhōngwén.','Ага, я учу китайский.'],'我学中文':['Wǒ xué Zhōngwén.','Я учу китайский.'],'我也学中文':['Wǒ yě xué Zhōngwén.','Я тоже учу китайский.']};
+     const next=line('加个微信？','Jiā ge Wēixìn?','Добавимся в WeChat?');
+     setPrompt({...next,lesson:1});state.pending=null;
+     return {kind:'question',learner:line(raw,...detail[s]),panda:next,nextQuestion:null,message:'Ответ по смыслу подходит.'};
+   }
+   if(/加个微信/.test(current)&&['行啊','好啊','可以'].includes(s)){
+     const detail={'行啊':['Xíng a!','Давай!'],'好啊':['Hǎo a!','Хорошо!'],'可以':['Kěyǐ.','Можно.']};
+     state.prompt=null;state.pending=null;
+     return {kind:'answer',learner:line(raw,...detail[s]),panda:line('那就好！','Nà jiù hǎo!','Ну и отлично!'),nextQuestion:null,message:'Знакомство завершено.'};
    }
    const prompt=state.prompt;
    let result;

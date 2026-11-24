@@ -375,10 +375,10 @@ function createStreetOfflineBrain(){
 let streetOfflineMode=false;
 const makeStreetBrain=m=>m.createStreetBrain({storage:(()=>{try{return localStorage}catch{return null}})(),
  curriculum:window.PANDA_HSK1_FOUNDATIONS||[]});
-const streetBrainPromise=import('./assets/panda-street-shared-brain-v1.mjs?v=3')
+const streetBrainPromise=import('./assets/panda-street-shared-brain-v1.mjs?v=4')
  .catch(firstError=>{
   console.warn('Street brain first load failed; retrying:',firstError);
-  return import('./assets/panda-street-shared-brain-v1.mjs?v=3-retry');
+  return import('./assets/panda-street-shared-brain-v1.mjs?v=4-retry');
  })
  .then(m=>{const brain=makeStreetBrain(m);stage.dataset.brainState='full';return brain})
  .catch(error=>{
