@@ -417,12 +417,19 @@ async function respond(text){
  closePopup();if(result.message)tip(result.message);speak(panda.zh);
  if(mode==='nonstop'&&result.nextQuestion){
    // Keep a conversational turn: acknowledge first, then let Panda ask the next reviewed question.
-   setTimeout(()=>{
+   const earliest=Date.now()+2800,deadline=earliest+15000;
+   function advanceWhenQuiet(){
     if(token!==responseSeq||mode!=='nonstop'||shade.classList.contains('open'))return;
+    // The next question must never interrupt the current approved recording.
+    if(playing&&!playing.error&&(!playing.paused||playing.readyState<1)){
+     if(Date.now()<deadline)setTimeout(advanceWhenQuiet,150);
+     return;
+    }
     const next=brain.nextQuestion();
     if(!next?.zh)return;
     item.nextQuestion=next;persist();liveRow('live-panda',next);speak(next.zh);
-   },2800);
+   }
+   setTimeout(advanceWhenQuiet,2800);
  }
 }
 function composition(){popup('Ответь Панде по-китайски',`<p class="hint">Набери ответ или нажми микрофон. На экране будут только две последние реплики; все предыдущие сохраняются в «Истории».</p><textarea id="entry" lang="zh-Hans" autocomplete="off" placeholder="Напиши по-китайски…" aria-label="Твой ответ"></textarea><div class="actions"><button class="action primary" id="submit">➤ Отправить</button><button class="action" id="voice">🎙 Говорить</button></div><p class="hint">Разговорный движок использует проверенные темы HSK и Panda Street. Акустическая проверка тонов не подключена.</p>`);el('submit').onclick=()=>respond(el('entry').value);el('voice').onclick=listen;setTimeout(()=>el('entry')?.focus({preventScroll:true}),0)}

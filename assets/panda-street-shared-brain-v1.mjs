@@ -14,7 +14,7 @@ const clean=s=>String(s??'').normalize('NFC').replace(/[\s，。？！?!、,.]/g
 const line=(zh,py,ru)=>({zh,py,ru});
 const normalizeLine=r=>r?line(r.hanzi||r.panda||r.zh||'',r.pinyin||r.py||'',r.ru||r.translation||''):null;
 const STREET_FIRST=line('哈喽！最近怎么样？','Hālou! Zuìjìn zěnmeyàng?','Привет! Как дела?');
-const STREET_NEXT=line('你今天有什么计划？','Nǐ jīntiān yǒu shénme jìhuà?','Какие у тебя планы на сегодня?');
+const STREET_NEXT=line('你晚上有什么计划？','Nǐ wǎnshang yǒu shénme jìhuà?','Какие у тебя планы на вечер?');
 
 export function createStreetBrain({storage=(()=>{try{return globalThis.localStorage}catch{return null}})(),curriculum=[]}={}){
  const state={turn:0,mode:'nonstop',prompt:null,pending:null,topic:1,
@@ -92,7 +92,7 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
    // For names not in the reviewed lexicon, do not fabricate their pinyin.
    const current=clean(state.prompt?.hanzi||'');
    if(/叫什么|什么名字/.test(current)&&/^我叫[\p{Script=Han}a-zA-Z]{1,16}$/u.test(s)){
-     const known={'我叫安东':['Wǒ jiào Āndōng.','Меня зовут Антон.'],'我叫小明':['Wǒ jiào Xiǎomíng.','Меня зовут Сяомин.'],'我叫安娜':['Wǒ jiào Ānnà.','Меня зовут Анна.']};
+     const known={'我叫小明':['Wǒ jiào Xiǎomíng.','Меня зовут Сяомин.'],'我叫安娜':['Wǒ jiào Ānnà.','Меня зовут Анна.']};
      const next=line('你哪儿人啊？','Nǐ nǎr rén a?','Ты откуда?');
      setPrompt({...next,lesson:1});state.pending=null;
      return {kind:'question',learner:line(raw,...(known[s]||['','Меня зовут '+s.slice(2)+'。'])),panda:next,nextQuestion:null,message:'Имя принято.'};

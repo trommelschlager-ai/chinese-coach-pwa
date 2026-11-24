@@ -51,8 +51,8 @@ test('the Street brain responds to natural everyday Chinese and uses common HSK 
  assert.equal(brain.start('nonstop').zh,'哈喽！最近怎么样？');
  const res=brain.answer('还行吧',{mode:'nonstop'});
  assert.equal(res.kind,'answer');
- assert.equal(res.panda.zh,'挺好的！');
- assert.equal(brain.nextQuestion()?.zh,'你呢？');
+ assert.equal(res.panda.zh,'那就好！');
+ assert.equal(brain.nextQuestion()?.zh,'你晚上有什么计划？');
  assert.match(brainSource,/from '\.\/panda-live-dialogue-v272\.mjs/);
  assert.match(brainSource,/from '\.\/panda-cross-character-memory-v1\.mjs/);
 });
@@ -100,7 +100,7 @@ test('Street service worker preloads the once-missing memory and motion module f
  for(const required of [
   'panda-cross-character-memory-v1.mjs',
   'panda-street-face-rig-v1.mjs?v=3',
-  'panda-street-shared-brain-v1.mjs?v=3'
+  'panda-street-shared-brain-v1.mjs?v=4'
  ])assert(swSource.includes(required),'Not available offline: '+required);
  const cacheVersion=Number(swSource.match(/const CACHE='chinese-coach-pwa-v(\d+)-/)?.[1]);
  assert(cacheVersion>=543,'Panda Street cache must not roll back below v543');
@@ -108,7 +108,7 @@ test('Street service worker preloads the once-missing memory and motion module f
 
 test('broken module import cannot block Panda Street chat or silent mouth reactions',()=>{
  assert.match(source,/function createStreetOfflineBrain\(\)/);
- assert.match(source,/streetBrainPromise=import\('\.\/assets\/panda-street-shared-brain-v1\.mjs\?v=3'\)/);
+ assert.match(source,/streetBrainPromise=import\('\.\/assets\/panda-street-shared-brain-v1\.mjs\?v=4'\)/);
  assert.match(source,/stage\.dataset\.brainState='fallback'/);
  assert.match(source,/createStreetOfflineBrain\(\)\.answer\(zh\)/);
  assert.match(source,/streetFaceRig\?\.acknowledge\?\.\(\)/);
@@ -156,4 +156,26 @@ test('face motion is opt-in to actual voice, not a body or image deformation',()
  assert.match(source,/streetFaceRig\?\.setState\('talking'\)/);
  assert.match(source,/paintScene\(canvas,src/);
  assert.doesNotMatch(source,/speechSynthesis|SpeechSynthesisUtterance/);
+});
+
+
+test('Street lesson 2 accepts natural answers and asks relevant next questions',()=>{
+ const brain=createStreetBrain({storage:storage()});
+ brain.setPrompt({zh:'你叫什么呀？',py:'Nǐ jiào shénme ya?',ru:'Как тебя зовут?',lesson:1});
+ for(const [input,expected] of [
+  ['我叫小明','你哪儿人啊？'],['我是俄罗斯人','你也学中文啊？'],
+  ['对啊，刚学。','加个微信？'],['行啊！','那就好！']
+ ]){
+  const turn=brain.answer(input,{mode:'nonstop'});
+  assert.equal(turn.panda?.zh,expected,input);
+  assert.ok(turn.learner?.py,input+' pinyin');
+  assert.ok(turn.learner?.ru,input+' translation');
+ }
+});
+test('Unknown personal names do not receive fabricated pinyin',()=>{
+ const brain=createStreetBrain({storage:storage()});
+ brain.setPrompt({zh:'你叫什么呀？',lesson:1});
+ const turn=brain.answer('我叫王强');
+ assert.equal(turn.learner.py,'');
+ assert.equal(turn.panda.zh,'你哪儿人啊？');
 });
