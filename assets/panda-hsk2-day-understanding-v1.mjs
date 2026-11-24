@@ -60,6 +60,11 @@ function timeAnswer(s,i){
   return clarify(i===0?'你一般几点起床？ — Назови точное время подъёма.':'你晚上一般几点睡觉？ — Назови точное время сна.');
  }
  const before=s.slice(0,m.index),after=s.slice(m.index+m.text.length);
+ // Detect verb-before-time only when the entire answer matches this simple pattern.
+ // Keep the learner's actual time, qualifiers and approximation instead of inventing facts.
+ const reversed=before.match(new RegExp('^(?:我)?((?:每天|平时|一般|通常|大概|差不多|早上|晚上|凌晨|上午|下午|今天|周末)*)'+action+'$','u'));
+ if(reversed&&(!after||after==='左右'||after==='前后'))
+  return correct('我'+reversed[1]+m.text+after+action,'Время ставится перед действием. Повтори исправленный вариант.');
  if(!after||after==='左右'||after==='前后'){
   if(!/^(?:我)?(?:(?:每天|平时|一般|通常|大概|差不多|早上|晚上|凌晨|上午|下午|有时候|今天|周末))*$/.test(before))return unknown();
   return accept(i===0?'我每天'+m.text+'起床':'我晚上'+m.text+'睡觉');
