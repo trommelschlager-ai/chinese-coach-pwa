@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {understandDayAnswer,getDayCorrectionLine,readDayReview,saveDayReview,masterDayReview,clearDayReview,DAY_REVIEW_KEY} from '../assets/panda-hsk2-day-understanding-v1.mjs';
+import {understandDayAnswer,getDayCorrectionLine,readDayReview,saveDayReview,masterDayReview,clearDayReview,DAY_REVIEW_KEY,dueDayReview,dayReviewStats,practiceDayReview} from '../assets/panda-hsk2-day-understanding-v1.mjs';
 
 const cases=[
  ['我起床八点',0,'correct','我八点起床。'],
@@ -101,7 +101,7 @@ test('review requires opt-in and stores no raw learner text or audio',()=>{
  assert.equal(saveDayReview(st,'我八点起床。',false),false);
  assert.equal(st.getItem(DAY_REVIEW_KEY),null);
  assert.equal(saveDayReview(st,'我八点起床。',true),true);
- assert.deepEqual(JSON.parse(st.getItem(DAY_REVIEW_KEY)),[{zh:'我八点起床。',count:1,mastered:false}]);
+ assert.deepEqual(JSON.parse(st.getItem(DAY_REVIEW_KEY)),[{zh:'我八点起床。',count:1,mastered:false,stage:0,due:0}]);
  assert.equal(saveDayReview(st,'unknown answer',true),false);
 });
 test('review deduplicates, checks exact retry, and reopens recurring mistakes',()=>{
@@ -125,4 +125,48 @@ test('review handles corrupt and unavailable storage and allows deletion',()=>{
  saveDayReview(st,'我八点起床。',true);
  assert.equal(clearDayReview(st),true);
  assert.deepEqual(readDayReview(st),[]);
+});
+
+const DAY=86400000,START=1000000000,PHRASE='我八点起床。';
+test('independent recall schedules one, three and seven days, not guided repetition',()=>{
+ const st=memoryStorage();saveDayReview(st,PHRASE,true);
+ masterDayReview(st,PHRASE,PHRASE,true);
+ assert.equal(dueDayReview(st,START).length,1);
+ let now=START;
+ for(const days of [1,3,7]){
+  const result=practiceDayReview(st,PHRASE,PHRASE,true,now);
+  assert.equal(result.kind,'matched');assert.equal(result.due,now+days*DAY);
+  assert.equal(dueDayReview(st,result.due-1).length,0);
+  assert.equal(practiceDayReview(st,PHRASE,PHRASE,true,now).kind,'unavailable');
+  now=result.due;assert.equal(dueDayReview(st,now).length,1);
+ }
+ assert.equal(practiceDayReview(st,PHRASE,PHRASE,true,now).stage,4);
+ assert.deepEqual(dayReviewStats(st,now),{total:1,due:0,scheduled:0,completed:1});
+});
+test('different translation resets intervals, but empty answer and disabled consent never change storage',()=>{
+ const st=memoryStorage();saveDayReview(st,PHRASE,true);
+ const initial=st.getItem(DAY_REVIEW_KEY);
+ assert.equal(practiceDayReview(st,PHRASE,'',true,START).kind,'empty');
+ assert.equal(practiceDayReview(st,PHRASE,PHRASE,false,START).kind,'consent');
+ assert.equal(st.getItem(DAY_REVIEW_KEY),initial);
+ practiceDayReview(st,PHRASE,PHRASE,true,START);
+ assert.equal(practiceDayReview(st,PHRASE,'我九点起床',true,START+DAY).kind,'different');
+ assert.equal(readDayReview(st)[0].stage,0);
+ assert.equal(dueDayReview(st,START+DAY).length,1);
+ assert.equal(readDayReview(st)[0].count,2);
+});
+test('legacy cards retain counts but enter initial independent recall; no repeat after deletion',()=>{
+ const st=memoryStorage();st.setItem(DAY_REVIEW_KEY,JSON.stringify([{zh:PHRASE,count:3,mastered:true}]));
+ assert.equal(dueDayReview(st,START)[0].count,3);
+ assert.equal(dueDayReview(st,START)[0].stage,0);
+ clearDayReview(st);
+ assert.equal(practiceDayReview(st,PHRASE,PHRASE,true,START).kind,'unavailable');
+});
+test('new conversation mistake reopens a completed recall cycle',()=>{
+ const st=memoryStorage();saveDayReview(st,PHRASE,true);
+ let now=START;
+ for(let i=0;i<4;i++){const r=practiceDayReview(st,PHRASE,PHRASE,true,now);now=r.due??now}
+ assert.equal(dayReviewStats(st,now).completed,1);
+ saveDayReview(st,PHRASE,true);
+ assert.equal(dayReviewStats(st,now).due,1);
 });
