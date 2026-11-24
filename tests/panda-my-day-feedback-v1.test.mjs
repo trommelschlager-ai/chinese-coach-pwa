@@ -204,3 +204,40 @@ test('cross-mode correction of same phrase deduplicates and resets review cycle'
  assert.equal(readDayReview(st).length,1);
  assert.equal(readDayReview(st)[0].count,3);
 });
+
+const coreSource=fs.readFileSync(new URL('../assets/panda-hsk2-preview-core-v1.mjs',import.meta.url),'utf8');
+function activeCorrectionHarness(){
+ const storage=memoryStorage(),checkbox={checked:false},logs=[];
+ const hook=coreSource.slice(coreSource.indexOf('let personalCorrection=null'),coreSource.indexOf('function refreshPersonalReview(){'));
+ const recordSource=coreSource.slice(coreSource.indexOf('function recordCorrection(input,spoken){'),coreSource.indexOf('function showLearnerFeedback(spoken){'));
+ assert(hook.startsWith('let personalCorrection')&&recordSource.startsWith('function recordCorrection'));
+ return new Function('storage','saveGrammarReview','checkbox','logs',`
+ const state={confidence:null};
+ function refreshPersonalReview(){}
+ const record=(...args)=>logs.push(args),lookupPandaVoiceClip=()=>null,play=()=>{};
+ ${hook}
+ ${recordSource}
+ personalReviewRoot={querySelector:()=>checkbox};
+ return {storage,checkbox,logs,savePersonalCorrection,correct:(c,confidence=null)=>{state.confidence=confidence;recordCorrection('他有二个妹妹',{correction:c})}};
+ `)(storage,saveGrammarReview,checkbox,logs);
+}
+test('active Panda correction hook allows opt-in manual save once, then automatic future saves',()=>{
+ const h=activeCorrectionHarness();
+ h.correct(GRAMMAR_CARD);
+ assert.equal(h.logs.length,1);
+ assert.equal(readDayReview(h.storage).length,0);
+ h.checkbox.checked=true;h.savePersonalCorrection();h.savePersonalCorrection();
+ assert.equal(readDayReview(h.storage)[0].count,1);
+ h.correct(GRAMMAR_CARD);
+ assert.equal(readDayReview(h.storage)[0].count,2);
+ assert.equal(JSON.stringify(readDayReview(h.storage)).includes('他有二个妹妹'),false);
+});
+test('active Panda correction hook rejects uncertain and meaning-only cases even with opt-in',()=>{
+ const h=activeCorrectionHarness();h.checkbox.checked=true;
+ h.correct(GRAMMAR_CARD,.7);
+ h.correct({...GRAMMAR_CARD,uncertain:true});
+ h.correct({...GRAMMAR_CARD,category:'meaning'});
+ h.savePersonalCorrection();
+ assert.equal(readDayReview(h.storage).length,0);
+ assert.equal(h.logs.length,3);
+});
