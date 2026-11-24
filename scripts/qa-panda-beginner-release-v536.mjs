@@ -34,6 +34,9 @@ try{
    assert.equal(await page.locator('#pg346-rows .pg346-row:last-child .pg346-zh').textContent(),answer);
   };
   // v548: independent learner question has a pre-recorded Mandarin response.
+  await send('我在公司工作','你喜欢你的工作吗？');
+  await send('不喜欢','明白了。你想换工作吗？');
+  await send('想换工作','你想做什么工作？');
   await send('我有一个姐姐','你姐姐几岁？');
   await send('她二十二岁','你姐姐二十二岁！她喜欢做什么？');
   await send('我没有孩子','你家有几口人？');
@@ -103,6 +106,9 @@ try{
   assert.equal(await page.locator('#pg346-input').inputValue(),'','One click must empty the input');
   await page.locator('#pg346-nonstop').click();
   await send('不好','怎么了？');
+  await send('我在公司工作','你喜欢你的工作吗？');
+  await send('不喜欢','明白了。你想换工作吗？');
+  await send('想换工作','你想做什么工作？');
   await send('我有一个姐姐','你姐姐几岁？');
   await send('她二十二岁','你姐姐二十二岁！她喜欢做什么？');
   await send('我没有孩子','你家有几口人？');

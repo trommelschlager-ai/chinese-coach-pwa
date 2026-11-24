@@ -87,3 +87,42 @@ test('active Panda AI free chat uses new v544 engine, not the graded quiz or the
  assert(pack.files.includes('./assets/panda-natural-statements-v552.mjs?v=552'));
  assert(sw.includes('./assets/panda-natural-statements-v552.mjs?v=552'));
 });
+
+test('40 work turns in the active v552 engine retain reviewed pinyin and follow-ups',async()=>{
+ const {respondToNaturalStatement:respond}=await import('../assets/panda-natural-statements-v552.mjs');
+ const professions=[
+  ['老师','lǎoshī'],['学生','xuésheng'],['医生','yīshēng'],['工程师','gōngchéngshī'],
+  ['护士','hùshi'],['老板','lǎobǎn'],['经理','jīnglǐ'],['司机','sījī'],['厨师','chúshī'],
+  ['服务员','fúwùyuán'],['警察','jǐngchá'],['销售员','xiāoshòuyuán'],['工人','gōngrén'],
+  ['翻译','fānyì'],['演员','yǎnyuán'],['商人','shāngrén'],['程序员','chéngxùyuán'],['设计师','shèjìshī']
+ ];
+ const workplaces=[
+  ['学校','xuéxiào'],['公司','gōngsī'],['医院','yīyuàn'],['饭店','fàndiàn'],['餐厅','cāntīng'],
+  ['商店','shāngdiàn'],['工厂','gōngchǎng'],['办公室','bàngōngshì'],['银行','yínháng'],['超市','chāoshì'],['家','jiā']
+ ];
+ const cases=[
+  ...professions.map(([job,py])=>['我是'+job,'Wǒ shì '+py+'.',job==='学生'?'study':'work-place']),
+  ...workplaces.map(([place,py])=>['我在'+place+'工作','Wǒ zài '+py+' gōngzuò.','job-liking']),
+  ['我不是老师','Wǒ bú shì lǎoshī.','job-role'],
+  ['我不工作','Wǒ bù gōngzuò.','job-role'],
+  ['我没有工作','Wǒ méiyǒu gōngzuò.','job-role'],
+  ['我现在没有工作','Wǒ xiànzài méiyǒu gōngzuò.','job-role'],
+  ['我退休了','Wǒ tuìxiū le.','job-role'],
+  ['我在找工作','Wǒ zài zhǎo gōngzuò.','job-role'],
+  ['我喜欢我的工作','Wǒ xǐhuan wǒ de gōngzuò.','work-busy'],
+  ['不喜欢','Bù xǐhuan.','job-change',respond('我在公司工作').next],
+  ['工作很忙','Gōngzuò hěn máng.','after-work'],
+  ['想换工作','Xiǎng huàn gōngzuò.','job-role',respond('我不喜欢我的工作').next],
+  ['我不想换工作','Wǒ bù xiǎng huàn gōngzuò.','after-work',respond('我不喜欢我的工作').next]
+ ];
+ assert.equal(cases.length,40);
+ for(const [input,pinyin,next,awaiting] of cases){
+  const r=respond(input,{awaiting});
+  assert(r,input);
+  assert.equal(r.spoken.pinyin,pinyin,input);
+  assert.equal(r.next,next,input);
+  assert(r.spoken.translation&&r.reply.hanzi&&r.reply.pinyin&&r.reply.ru,input);
+  assert.equal(r.spoken.toneVerified,false,input);
+ }
+ assert.equal(respond('想换工作'),null);
+});

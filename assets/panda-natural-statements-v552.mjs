@@ -135,22 +135,32 @@ export function respondToNaturalStatement(raw,{awaiting=null}={}){
   return result(raw,'Wǒ bù zhīdào.','Я не знаю.',
    ['没关系。你想聊什么？','Méi guānxi. Nǐ xiǎng liáo shénme?','Ничего страшного. О чём хочешь поговорить?'],'conversation');
  }
- if(awaiting==='job-liking'){
-  if(/^(是的|对|喜欢|我喜欢|我喜欢我的工作)$/.test(s))
-   return result(raw,null,'Да, работа нравится.',
-    ['太好了！你工作忙吗？','Tài hǎo le! Nǐ gōngzuò máng ma?','Здорово! У тебя много работы?'],'work-busy');
-  if(/^(不喜欢|我不喜欢|不是|我不喜欢我的工作)$/.test(s))
-   return result(raw,null,'Нет, работа не нравится.',
-    ['明白了。你想换工作吗？','Míngbai le. Nǐ xiǎng huàn gōngzuò ma?','Понимаю. Ты хочешь сменить работу?'],'job-change');
- }
- if(awaiting==='work-busy'){
-  if(/^(忙|很忙|我很忙|工作很忙|我的工作很忙)$/.test(s))
-   return result(raw,null,'На работе много дел.',
-    ['辛苦了！你每天几点下班？','Xīnkǔ le! Nǐ měitiān jǐ diǎn xiàbān?','Нелегко! Во сколько ты обычно заканчиваешь работу?'],'after-work');
-  if(/^(不忙|我不忙|工作不忙)$/.test(s))
-   return result(raw,null,'На работе не очень занят.',
-    ['那很好！你下班后喜欢做什么？','Nà hěn hǎo! Nǐ xiàbān hòu xǐhuan zuò shénme?','Хорошо! Чем ты любишь заниматься после работы?'],'after-work');
- }
+ const workLiking={
+  是的:'Shì de.',对:'Duì.',喜欢:'Xǐhuan.',我喜欢:'Wǒ xǐhuan.',我喜欢我的工作:'Wǒ xǐhuan wǒ de gōngzuò.'
+ };
+ const workDisliking={
+  不喜欢:'Bù xǐhuan.',我不喜欢:'Wǒ bù xǐhuan.',不是:'Bú shì.',我不喜欢我的工作:'Wǒ bù xǐhuan wǒ de gōngzuò.'
+ };
+ const workBusy={忙:'Máng.',很忙:'Hěn máng.',我很忙:'Wǒ hěn máng.',工作很忙:'Gōngzuò hěn máng.',我的工作很忙:'Wǒ de gōngzuò hěn máng.'};
+ const workQuiet={不忙:'Bù máng.',我不忙:'Wǒ bù máng.',工作不忙:'Gōngzuò bù máng.'};
+ if((awaiting==='job-liking'||s==='我喜欢我的工作')&&Object.hasOwn(workLiking,s))
+  return result(raw,workLiking[s],'Да, работа нравится.',
+   ['太好了！你工作忙吗？','Tài hǎo le! Nǐ gōngzuò máng ma?','Здорово! У тебя много работы?'],'work-busy');
+ if((awaiting==='job-liking'||s==='我不喜欢我的工作')&&Object.hasOwn(workDisliking,s))
+  return result(raw,workDisliking[s],'Нет, работа не нравится.',
+   ['明白了。你想换工作吗？','Míngbai le. Nǐ xiǎng huàn gōngzuò ma?','Понимаю. Ты хочешь сменить работу?'],'job-change');
+ if((awaiting==='work-busy'||s.includes('工作'))&&Object.hasOwn(workBusy,s))
+  return result(raw,workBusy[s],'На работе много дел.',
+   ['辛苦了！你每天几点下班？','Xīnkǔ le! Nǐ měitiān jǐ diǎn xiàbān?','Нелегко! Во сколько ты обычно заканчиваешь работу?'],'after-work');
+ if((awaiting==='work-busy'||s==='工作不忙')&&Object.hasOwn(workQuiet,s))
+  return result(raw,workQuiet[s],'На работе немного дел.',
+   ['那很好！你下班后喜欢做什么？','Nà hěn hǎo! Nǐ xiàbān hòu xǐhuan zuò shénme?','Хорошо! Чем ты любишь заниматься после работы?'],'after-work');
+ if(awaiting==='job-change'&&/^(?:我)?想(?:换工作)?$/u.test(s))
+  return result(raw,(s.startsWith('我')?'Wǒ xiǎng':'Xiǎng')+(s.endsWith('换工作')?' huàn gōngzuò.':'.'),'Я хочу сменить работу.',
+   ['你想做什么工作？','Nǐ xiǎng zuò shénme gōngzuò?','Какую работу ты хотел бы найти?'],'job-role');
+ if(awaiting==='job-change'&&/^(?:我)?不想(?:换工作)?$/u.test(s))
+  return result(raw,(s.startsWith('我')?'Wǒ bù xiǎng':'Bù xiǎng')+(s.endsWith('换工作')?' huàn gōngzuò.':'.'),'Я не хочу менять работу.',
+   ['明白了。你下班后喜欢做什么？','Míngbai le. Nǐ xiàbān hòu xǐhuan zuò shénme?','Понятно. Чем ты любишь заниматься после работы?'],'after-work');
 
  // v552: small, reviewed family conversation expansion. Keep Chinese tones
  // in pinyin only; ASR text is not evidence of spoken tone accuracy.
