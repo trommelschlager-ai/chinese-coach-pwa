@@ -29,3 +29,18 @@ Updated: 2026-11-24. This inventory concerns exact matching **approved Panda AI 
 - The previous HSK1 Non-Stop family dialogue retains its approved audio follow-up logic.
 - ASR text cannot prove acoustic tone correctness. Tone scoring stays disabled without an independently validated acoustic analysis.
 - These gaps are an action list, **not** recordings or approved audio assets. Do not change the voice without owner approval.
+
+## Android 4:38–4:40 screenshot fixes — conversational replies
+
+All six below are valid Mandarin inputs. v552 now recognizes them, shows the learner's **full pinyin with tones**, and returns context-appropriate replies. No approved recording matching the **entire** new Panda reply was found in the reviewed registries, so the app must show text (never synthetic voice or a clip for a different sentence).
+
+| Learner | Reviewed Panda reply (record separately) | Pinyin |
+| --- | --- | --- |
+| 你很可爱 | 谢谢你！你喜欢熊猫吗？ | Xièxie nǐ! Nǐ xǐhuan xióngmāo ma? |
+| 你很漂亮 | 谢谢你！你喜欢这里的风景吗？ | Xièxie nǐ! Nǐ xǐhuan zhèlǐ de fēngjǐng ma? |
+| 太好了 | 太好了！我们继续聊吧！ | Tài hǎo le! Wǒmen jìxù liáo ba! |
+| 你很酷 | 谢谢你！你喜欢我的耳机吗？ | Xièxie nǐ! Nǐ xǐhuan wǒ de ěrjī ma? |
+| 你太厉害了 | 谢谢你！我们一起加油！ | Xièxie nǐ! Wǒmen yìqǐ jiāyóu! |
+| 我不喜欢你 | 没关系。你想聊什么？ | Méi guānxi. Nǐ xiǎng liáo shénme? |
+
+Related regression tests: `tests/panda-social-replies-v552.test.mjs`. Existing `我爱你` introduction remains unchanged and follows the approved original dialogue. Screenshots are the observed Android symptom, not proof of tone accuracy or successful MP3 playback. No app artwork/CSS is altered.
