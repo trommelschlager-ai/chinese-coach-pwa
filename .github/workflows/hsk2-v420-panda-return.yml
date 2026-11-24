@@ -7,6 +7,8 @@ on:
     paths:
       - 'hsk2-life-course.html'
       - 'panda-voice-pilot.html'
+      - 'assets/panda-hsk2-preview-core-v1.mjs'
+      - 'assets/panda-natural-statements-v552.mjs'
       - 'assets/panda-live-v346.mjs'
       - 'assets/panda-live-screen-v270.mjs'
       - 'assets/hsk2-exact-overlay-v415.js'

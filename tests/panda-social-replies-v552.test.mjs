@@ -52,7 +52,7 @@ test('approved 我爱你 introduction is still routed to its existing reviewed r
 
 test('Android Panda AI conversation routes natural replies before the generic HSK2 fallback',()=>{
  const core=readFileSync(new URL('../assets/panda-hsk2-preview-core-v1.mjs',import.meta.url),'utf8');
- const natural=core.indexOf('respondToNaturalStatement(input,{awaiting:state.naturalAwaiting})');
+ const natural=core.indexOf('respondToNaturalStatement(input,{awaiting:state.naturalAwaiting,previous:current()})');
  const fallback=core.indexOf('if(hsk2){submitHSK2(input);return;}');
  assert(natural>=0&&fallback>natural,'Natural answer route must precede HSK2 unknown fallback');
  assert(core.includes('say(natural.reply,!!lookupPandaVoiceClip(natural.reply.hanzi))'),

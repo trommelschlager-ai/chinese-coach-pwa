@@ -1,46 +1,116 @@
-# Panda AI v552 — family conversation voice coverage
+# Panda AI v552 — сверка утверждённой озвучки
 
-Updated: 2026-11-24. This inventory concerns exact matching **approved Panda AI clips**, never mixed or synthesized voices.
+Проверены ответы на 40 семейных фраз, 40 фраз о работе, 40 о еде и напитках, 40 о покупках, 40 о путешествиях, 40 о распорядке дня, 30 о знакомстве, 50 реплик свободного общения и дополнительные контекстные проверки семьи. Одинаковые ответы сведены в одну строку. Поиск выполнен через реестр действующего экрана, наличие найденных файлов проверено на диске.
 
-## Exact approved Panda replies already available
+## Утверждённые совпадения
 
-| Panda reply | Approved clip |
+| Реплика | Файл |
 | --- | --- |
-| 我有一个哥哥。 | `./assets/panda-live-voice-v3/p12.mp3` |
-| 我没有姐姐。 | `./assets/panda-voice-clips-v365/p107.mp3` |
-| 我有一个妹妹。 | `./assets/panda-voice-clips-v411/p161.mp3` |
-| 你哥哥几岁？ | `./assets/panda-voice-clips-v365/p108.mp3` |
-| 你姐姐几岁？ | `./assets/qa-v411/panda-voice-clips-v422/p176.mp3` |
-| 你弟弟几岁？ | `./assets/qa-v411/panda-voice-clips-v422/p177.mp3` |
-| 你妹妹几岁？ | `./assets/panda-voice-clips-v365/p110.mp3` |
+| 你家有几口人？ | ./assets/panda-voice-clips-v365/p112.mp3 |
+| 你住在哪里？ | ./assets/panda-voice-clips-v365/p086.mp3 |
+| 你哥哥几岁？ | ./assets/panda-voice-clips-v365/p108.mp3 |
+| 你姐姐几岁？ | ./assets/qa-v411/panda-voice-clips-v422/p176.mp3 |
+| 你弟弟几岁？ | ./assets/qa-v411/panda-voice-clips-v422/p177.mp3 |
+| 你妹妹几岁？ | ./assets/panda-voice-clips-v365/p110.mp3 |
+| 我有一个哥哥。 | ./assets/panda-live-voice-v3/p12.mp3 |
+| 我没有姐姐。 | ./assets/panda-voice-clips-v365/p107.mp3 |
+| 我有一个妹妹。 | ./assets/panda-voice-clips-v411/p161.mp3 |
+| 你是老师！你在哪儿工作？ | ./assets/panda-ai-natural-voice-batch01-20261124/PA-001.mp3 |
+| 你是学生！你学什么？ | ./assets/panda-ai-natural-voice-batch01-20261124/PA-009.mp3 |
+| 你是医生！你在哪儿工作？ | ./assets/panda-ai-natural-voice-batch01-20261124/PA-002.mp3 |
+| 你是工程师！你在哪儿工作？ | ./assets/panda-ai-natural-voice-batch01-20261124/PA-003.mp3 |
+| 你喜欢你的工作吗？ | ./assets/panda-ai-natural-voice-batch01-20261124/PA-004.mp3 |
+| 明白了。你做什么工作？ | ./assets/panda-ai-natural-voice-batch01-20261124/PA-008.mp3 |
+| 太好了！你工作忙吗？ | ./assets/panda-ai-natural-voice-batch01-20261124/PA-010.mp3 |
+| 我也很高兴认识你！ | ./assets/hsk2-lesson10-voice/l10_14.mp3 |
+| 你起床以后做什么？ | ./assets/panda-voice-clips-v365/p021.mp3 |
 
-## New or combined replies needing recording
+## Реплики без точной утверждённой записи
 
-- `我没有弟弟。` — Wǒ méiyǒu dìdi. — У меня нет младшего брата.
-- `明白了。你家有几口人？` — Míngbai le. Nǐ jiā yǒu jǐ kǒu rén? — Понятно. Сколько человек в твоей семье?
-- `你想问什么？` — Nǐ xiǎng wèn shénme? — Что ты хочешь спросить?
-- `你哥哥五岁！他喜欢做什么？` — Nǐ gēge wǔ suì! Tā xǐhuan zuò shénme? — Твоему старшему брату пять лет. Что он любит делать?
-- Analogous age-based replies for 姐姐、弟弟、妹妹 and other numbers from 1 to 10 should be recorded **only after** their exact text is reviewed.
-
-## Rules
-
-- A clip must match the entire normalized Chinese answer; substrings and altered wording are **not** an audio match.
-- For missing exact clips the app shows Hanzi, tone-marked pinyin, and Russian translation with no substitute voice.
-- The previous HSK1 Non-Stop family dialogue retains its approved audio follow-up logic.
-- ASR text cannot prove acoustic tone correctness. Tone scoring stays disabled without an independently validated acoustic analysis.
-- These gaps are an action list, **not** recordings or approved audio assets. Do not change the voice without owner approval.
-
-## Android 4:38–4:40 screenshot fixes — conversational replies
-
-All six below are valid Mandarin inputs. v552 now recognizes them, shows the learner's **full pinyin with tones**, and returns context-appropriate replies. No approved recording matching the **entire** new Panda reply was found in the reviewed registries, so the app must show text (never synthetic voice or a clip for a different sentence).
-
-| Learner | Reviewed Panda reply (record separately) | Pinyin |
+| Китайский | Пиньинь | Русский |
 | --- | --- | --- |
-| 你很可爱 | 谢谢你！你喜欢熊猫吗？ | Xièxie nǐ! Nǐ xǐhuan xióngmāo ma? |
-| 你很漂亮 | 谢谢你！你喜欢这里的风景吗？ | Xièxie nǐ! Nǐ xǐhuan zhèlǐ de fēngjǐng ma? |
-| 太好了 | 太好了！我们继续聊吧！ | Tài hǎo le! Wǒmen jìxù liáo ba! |
-| 你很酷 | 谢谢你！你喜欢我的耳机吗？ | Xièxie nǐ! Nǐ xǐhuan wǒ de ěrjī ma? |
-| 你太厉害了 | 谢谢你！我们一起加油！ | Xièxie nǐ! Wǒmen yìqǐ jiāyóu! |
-| 我不喜欢你 | 没关系。你想聊什么？ | Méi guānxi. Nǐ xiǎng liáo shénme? |
+| 你哥哥二十岁！他喜欢做什么？ | Nǐ gēge èrshí suì! Tā xǐhuan zuò shénme? | Твоему старшему брату 20 лет! Что он любит делать? |
+| 你姐姐二十一岁！她喜欢做什么？ | Nǐ jiějie èrshíyī suì! Tā xǐhuan zuò shénme? | Твоей старшей сестре 21 год! Что она любит делать? |
+| 你妈妈四十四岁！她喜欢做什么？ | Nǐ māma sìshísì suì! Tā xǐhuan zuò shénme? | Твоей маме 44 года! Что она любит делать? |
+| 你爸爸六十岁！他喜欢做什么？ | Nǐ bàba liùshí suì! Tā xǐhuan zuò shénme? | Твоему папе 60 лет! Что он любит делать? |
+| 你爷爷七十岁！他喜欢做什么？ | Nǐ yéye qīshí suì! Tā xǐhuan zuò shénme? | Твоему дедушке 70 лет! Что он любит делать? |
+| 你奶奶九十九岁！她喜欢做什么？ | Nǐ nǎinai jiǔshíjiǔ suì! Tā xǐhuan zuò shénme? | Твоей бабушке 99 лет! Что она любит делать? |
+| 你弟弟十一岁！他喜欢做什么？ | Nǐ dìdi shíyī suì! Tā xǐhuan zuò shénme? | Твоему младшему брату 11 лет! Что он любит делать? |
+| 你妹妹三岁！她喜欢做什么？ | Nǐ mèimei sān suì! Tā xǐhuan zuò shénme? | Твоей младшей сестре 3 года! Что она любит делать? |
+| 他们多大了？ | Tāmen duō dà le? | Сколько им лет? |
+| 她们多大了？ | Tāmen duō dà le? | Сколько им лет? |
+| 你有几个孩子？ | Nǐ yǒu jǐ ge háizi? | Сколько у тебя детей? |
+| 你们结婚多久了？ | Nǐmen jiéhūn duōjiǔ le? | Как давно вы в браке? |
+| 明白了。你想聊什么？ | Míngbai le. Nǐ xiǎng liáo shénme? | Понятно. О чём хочешь поговорить? |
+| 你们周末喜欢做什么？ | Nǐmen zhōumò xǐhuan zuò shénme? | Что вы любите делать по выходным? |
+| 你跟家人一起住吗？ | Nǐ gēn jiārén yìqǐ zhù ma? | Ты живёшь вместе с семьёй? |
+| 明白了。你家有几口人？ | Míngbai le. Nǐ jiā yǒu jǐ kǒu rén? | Понятно. Сколько человек в твоей семье? |
+| 我没有弟弟。 | Wǒ méiyǒu dìdi. | Нет, у меня нет младшего брата. |
+| 你姐姐二十二岁！她喜欢做什么？ | Nǐ jiějie èrshí’èr suì! Tā xǐhuan zuò shénme? | Твоей старшей сестре 22 года! Что она любит делать? |
+| 谢谢你！你喜欢熊猫吗？ | Xièxie nǐ! Nǐ xǐhuan xióngmāo ma? | Спасибо! Ты любишь панд? |
+| 谢谢你！你喜欢这里的风景吗？ | Xièxie nǐ! Nǐ xǐhuan zhèlǐ de fēngjǐng ma? | Спасибо! Тебе нравится здешний пейзаж? |
+| 太好了！我们继续聊吧！ | Tài hǎo le! Wǒmen jìxù liáo ba! | Отлично! Давай продолжим разговор! |
+| 谢谢你！你喜欢我的耳机吗？ | Xièxie nǐ! Nǐ xǐhuan wǒ de ěrjī ma? | Спасибо! Тебе нравятся мои наушники? |
+| 谢谢你！我们一起加油！ | Xièxie nǐ! Wǒmen yìqǐ jiāyóu! | Спасибо! Давай стараться вместе! |
+| 没关系。你想聊什么？ | Méi guānxi. Nǐ xiǎng liáo shénme? | Ничего страшного. О чём хочешь поговорить? |
+| 你想问什么？ | Nǐ xiǎng wèn shénme? | Что ты хочешь спросить? |
+| 你是护士！你在哪儿工作？ | Nǐ shì hùshi! Nǐ zài nǎr gōngzuò? | Ты медсестра или медбрат! Где ты работаешь? |
+| 你是老板！你在哪儿工作？ | Nǐ shì lǎobǎn! Nǐ zài nǎr gōngzuò? | Ты руководитель! Где ты работаешь? |
+| 你是经理！你在哪儿工作？ | Nǐ shì jīnglǐ! Nǐ zài nǎr gōngzuò? | Ты менеджер! Где ты работаешь? |
+| 你是司机！你在哪儿工作？ | Nǐ shì sījī! Nǐ zài nǎr gōngzuò? | Ты водитель! Где ты работаешь? |
+| 你是厨师！你在哪儿工作？ | Nǐ shì chúshī! Nǐ zài nǎr gōngzuò? | Ты повар! Где ты работаешь? |
+| 你是服务员！你在哪儿工作？ | Nǐ shì fúwùyuán! Nǐ zài nǎr gōngzuò? | Ты официант! Где ты работаешь? |
+| 你是警察！你在哪儿工作？ | Nǐ shì jǐngchá! Nǐ zài nǎr gōngzuò? | Ты полицейский! Где ты работаешь? |
+| 你是销售员！你在哪儿工作？ | Nǐ shì xiāoshòuyuán! Nǐ zài nǎr gōngzuò? | Ты продавец! Где ты работаешь? |
+| 你是工人！你在哪儿工作？ | Nǐ shì gōngrén! Nǐ zài nǎr gōngzuò? | Ты рабочий! Где ты работаешь? |
+| 你是翻译！你在哪儿工作？ | Nǐ shì fānyì! Nǐ zài nǎr gōngzuò? | Ты переводчик! Где ты работаешь? |
+| 你是演员！你在哪儿工作？ | Nǐ shì yǎnyuán! Nǐ zài nǎr gōngzuò? | Ты актёр! Где ты работаешь? |
+| 你是商人！你在哪儿工作？ | Nǐ shì shāngrén! Nǐ zài nǎr gōngzuò? | Ты предприниматель! Где ты работаешь? |
+| 你是程序员！你在哪儿工作？ | Nǐ shì chéngxùyuán! Nǐ zài nǎr gōngzuò? | Ты программист! Где ты работаешь? |
+| 你是设计师！你在哪儿工作？ | Nǐ shì shèjìshī! Nǐ zài nǎr gōngzuò? | Ты дизайнер! Где ты работаешь? |
+| 你现在喜欢做什么？ | Nǐ xiànzài xǐhuan zuò shénme? | Чем ты сейчас любишь заниматься? |
+| 你想做什么工作？ | Nǐ xiǎng zuò shénme gōngzuò? | Какую работу ты хотел бы найти? |
+| 你退休后喜欢做什么？ | Nǐ tuìxiū hòu xǐhuan zuò shénme? | Что ты любишь делать на пенсии? |
+| 明白了。你想换工作吗？ | Míngbai le. Nǐ xiǎng huàn gōngzuò ma? | Понимаю. Ты хочешь сменить работу? |
+| 辛苦了！你每天几点下班？ | Xīnkǔ le! Nǐ měitiān jǐ diǎn xiàbān? | Нелегко! Во сколько ты обычно заканчиваешь работу? |
+| 明白了。你下班后喜欢做什么？ | Míngbai le. Nǐ xiàbān hòu xǐhuan zuò shénme? | Понятно. Чем ты любишь заниматься после работы? |
+| 你经常吃吗？ | Nǐ jīngcháng chī ma? | Ты часто это ешь? |
+| 你经常喝吗？ | Nǐ jīngcháng hē ma? | Ты часто это пьёшь? |
+| 那你想吃什么？ | Nà nǐ xiǎng chī shénme? | А что ты хочешь съесть? |
+| 那你想喝什么？ | Nà nǐ xiǎng hē shénme? | А что ты хочешь выпить? |
+| 你还喜欢什么？ | Nǐ hái xǐhuan shénme? | Что тебе ещё нравится? |
+| 你有多少预算？ | Nǐ yǒu duōshao yùsuàn? | Какой у тебя бюджет? |
+| 那你想买什么？ | Nà nǐ xiǎng mǎi shénme? | А что ты хочешь купить? |
+| 你花了多少钱？ | Nǐ huā le duōshao qián? | Сколько ты потратил? |
+| 你什么时候去？ | Nǐ shénme shíhou qù? | Когда ты поедешь? |
+| 你怎么去？ | Nǐ zěnme qù? | Как ты туда поедешь? |
+| 你喜欢那里吗？ | Nǐ xǐhuan nàli ma? | Тебе там понравилось? |
+| 你想去那里吗？ | Nǐ xiǎng qù nàli ma? | Хочешь туда поехать? |
+| 你想去商店看看吗？ | Nǐ xiǎng qù shāngdiàn kànkan ma? | Хочешь посмотреть в магазине? |
+| 你觉得贵吗？ | Nǐ juéde guì ma? | Как думаешь, это дорого? |
+| 祝你一路顺风！ | Zhù nǐ yílù shùnfēng! | Счастливого пути! |
+| 我也很高兴见到你！ | Wǒ yě hěn gāoxìng jiàndào nǐ! | Я тоже рада тебя видеть! |
+| 当然可以。你叫什么名字？ | Dāngrán kěyǐ. Nǐ jiào shénme míngzi? | Конечно. Как тебя зовут? |
+| 好啊！你叫什么名字？ | Hǎo a! Nǐ jiào shénme míngzi? | Давай! Как тебя зовут? |
+| 好啊！你来自哪里？ | Hǎo a! Nǐ láizì nǎlǐ? | Давай! Ты откуда? |
+| 你可以叫我熊猫。 | Nǐ kěyǐ jiào wǒ xióngmāo. | Можешь звать меня Пандой. |
+| 你现在住在哪儿？ | Nǐ xiànzài zhù zài nǎr? | Где ты сейчас живёшь? |
+| 你早饭吃什么？ | Nǐ zǎofàn chī shénme? | Что ты ешь на завтрак? |
+| 你怎么去上班？ | Nǐ zěnme qù shàngbān? | Как ты добираешься до работы? |
+| 你下班以后做什么？ | Nǐ xiàbān yǐhòu zuò shénme? | Что ты делаешь после работы? |
+| 你睡觉以前做什么？ | Nǐ shuìjiào yǐqián zuò shénme? | Что ты делаешь перед сном? |
+| 然后呢？ | Ránhòu ne? | А потом? |
+| 哪一句你没听懂？ | Nǎ yí jù nǐ méi tīngdǒng? | Какую фразу ты не понял? |
+| 你想听哪一句？ | Nǐ xiǎng tīng nǎ yí jù? | Какую фразу ты хочешь услышать? |
+| 请用慢速按钮。你也可以看拼音。 | Qǐng yòng mànsù ànniǔ. Nǐ yě kěyǐ kàn pīnyīn. | Нажми кнопку замедления. Можно также посмотреть пиньинь. |
+| 请把那个词打出来。 | Qǐng bǎ nàge cí dǎ chūlái. | Напечатай это слово, пожалуйста. |
+| 不客气！还想练习吗？ | Bú kèqi! Hái xiǎng liànxí ma? | Пожалуйста! Хочешь ещё попрактиковаться? |
+| 好，下次见！ | Hǎo, xià cì jiàn! | Хорошо, до следующего раза! |
+| 辛苦了。你想休息一下吗？ | Xīnkǔ le. Nǐ xiǎng xiūxi yíxià ma? | Тебе пришлось нелегко. Хочешь немного отдохнуть? |
+| 好啊！你想练什么？ | Hǎo a! Nǐ xiǎng liàn shénme? | Давай! Что хочешь потренировать? |
+| 你的孩子多大了？ | Nǐ de háizi duō dà le? | Сколько лет твоему ребёнку? |
+| 你的孩子喜欢做什么？ | Nǐ de háizi xǐhuan zuò shénme? | Что любит делать твой ребёнок? |
+| 他们平时喜欢做什么？ | Tāmen píngshí xǐhuan zuò shénme? | Что они обычно любят делать? |
+| 她们平时喜欢做什么？ | Tāmen píngshí xǐhuan zuò shénme? | Что они обычно любят делать? |
 
-Related regression tests: `tests/panda-social-replies-v552.test.mjs`. Existing `我爱你` introduction remains unchanged and follows the approved original dialogue. Screenshots are the observed Android symptom, not proof of tone accuracy or successful MP3 playback. No app artwork/CSS is altered.
+Возраст в ответах подставляется по словам ученика. Таблица включает проверенные примеры, а не все возможные комбинации возраста и родства.
