@@ -462,7 +462,8 @@ function init(stage){
     addChatMessage('panda',response);
     status(result.message+' Введи или произнеси исправленный ответ.'+(approvedClips(correctionLine[0]).length?'':' Точной MP3 пока нет.'));
     // Stay on this question until a new answer is accepted or the learner explicitly skips.
-    speak(correctionLine);
+    if(approvedClips(correctionLine[0]).length)speak(correctionLine);
+    else missingAudio.add(norm(correctionLine[0]));
    return;
   }
   if(result.kind==='other-question'){
@@ -681,8 +682,9 @@ function init(stage){
    line(current);
    status(pendingCorrection?.index===i?'Повтори исправленный ответ.':'🔊 Слушай вопрос ещё раз, затем ответь.');
    const token=sequence;
+   if(pendingCorrection?.index===i&&!approvedClips(current[0]).length){status('Повтори исправленный ответ. Точной MP3 пока нет.');return}
    await speak(current);
-  if(token===sequence)countdown();
+   if(token===sequence)countdown();
  }
  async function reviewExample(n){
   if(phase!=='monologue')return;
