@@ -1,7 +1,8 @@
 {
-  "version": 550,
-  "bytes": 80687332,
+  "version": 551,
+  "bytes": 80691372,
   "files": [
+    "./assets/panda-ai-chat-readable-v551.css?v=551",
     "./assets/panda-hsk2-preview-core-v1.mjs?v=550",
     "./assets/panda-hsk2-preview-core-v1.mjs?v=549",
     "./assets/panda-hsk2-preview-core-v1.mjs?v=548",
