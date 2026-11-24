@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {understandDayAnswer,getDayCorrectionLine} from '../assets/panda-hsk2-day-understanding-v1.mjs';
+import {understandDayAnswer,getDayCorrectionLine,readDayReview,saveDayReview,masterDayReview,clearDayReview,DAY_REVIEW_KEY} from '../assets/panda-hsk2-day-understanding-v1.mjs';
 
 const cases=[
  ['我起床八点',0,'correct','我八点起床。'],
@@ -37,7 +37,8 @@ function feedbackHarness(hasAudio=false){
  assert(answerSource.startsWith('async function answer')&&countdownSource.startsWith('function countdown'));
  return new Function('understandDayAnswer','getDayCorrectionLine','hasAudio',`
  let phase='questions',i=0,sequence=0,recognizer=null,silence=null,attempt=0,pendingCorrection=null;
- const answers=Array(5).fill(null),notes=[],errors=[],missingAudio=new Set(),messages=[],statuses=[],lines=[],audio=[],timers=[],next=[];
+ const answers=Array(5).fill(null),notes=[],errors=[],missingAudio=new Set(),messages=[],statuses=[],lines=[],audio=[],timers=[],next=[],saved=[],resolved=[];
+ const storeReviewCorrection=zh=>saved.push(zh),resolveReviewCorrection=(expected,answer)=>resolved.push([expected,answer]);
  const field={value:'我起床八点'},button={textContent:''};
  const $=id=>id==='day-input'?field:button;
  const norm=s=>s.replace(/。/g,'');
@@ -53,7 +54,7 @@ function feedbackHarness(hasAudio=false){
  const document={activeElement:null};
  ${countdownSource}
  ${answerSource}
- return {answer,countdown,field,button,answers,notes,errors,missingAudio,messages,statuses,lines,audio,timers,next,pending:()=>pendingCorrection};`)(understandDayAnswer,getDayCorrectionLine,hasAudio);
+ return {answer,countdown,field,button,answers,notes,errors,missingAudio,messages,statuses,lines,audio,timers,next,saved,resolved,pending:()=>pendingCorrection};`)(understandDayAnswer,getDayCorrectionLine,hasAudio);
 }
 test('reviewed correction includes tonal pinyin and exact learner time',()=>{
  assert.deepEqual(getDayCorrectionLine('我八点起床。'),['我八点起床。','Wǒ bā diǎn qǐchuáng.','Я встаю в 8:00.']);
@@ -67,6 +68,7 @@ test('actual scenario displays correction and waits for retry without MP3',async
  await h.answer('我起床八点');
  assert.deepEqual(h.lines.at(-1),['我八点起床。','Wǒ bā diǎn qǐchuáng.','Я встаю в 8:00.']);
  assert.equal(h.answers[0],null);
+ assert.deepEqual(h.saved,['我八点起床。']);
  assert.equal(h.field.value,'');
  assert.match(h.button.textContent,/Попробовать ещё раз/);
  assert.equal(h.audio.length,0);
@@ -76,6 +78,7 @@ test('actual scenario displays correction and waits for retry without MP3',async
  assert.equal(h.timers.length,0,'Correction must not schedule automatic skip');
  await h.answer('我八点起床');
  assert.equal(h.pending(),null);
+ assert.deepEqual(h.resolved,[['我八点起床。','我八点起床。']]);
  assert.equal(h.answers[0],'我八点起床。');
  assert.equal(h.timers.length,1);
  h.timers[0].fn();
@@ -87,4 +90,39 @@ test('actual scenario uses approved recording only when available',async()=>{
  assert.equal(h.audio.length,1);
  assert.equal(h.audio[0][0],'我八点起床。');
  assert.equal(h.pending().index,0);
+});
+
+function memoryStorage(){
+ const m=new Map();
+ return {getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};
+}
+test('review requires opt-in and stores no raw learner text or audio',()=>{
+ const st=memoryStorage();
+ assert.equal(saveDayReview(st,'我八点起床。',false),false);
+ assert.equal(st.getItem(DAY_REVIEW_KEY),null);
+ assert.equal(saveDayReview(st,'我八点起床。',true),true);
+ assert.deepEqual(JSON.parse(st.getItem(DAY_REVIEW_KEY)),[{zh:'我八点起床。',count:1,mastered:false}]);
+ assert.equal(saveDayReview(st,'unknown answer',true),false);
+});
+test('review deduplicates, checks exact retry, and reopens recurring mistakes',()=>{
+ const st=memoryStorage();
+ saveDayReview(st,'我八点起床。',true);
+ saveDayReview(st,'我八点起床。',true);
+ assert.equal(readDayReview(st)[0].count,2);
+ assert.equal(masterDayReview(st,'我八点起床。','我九点起床。',true),false);
+ assert.equal(masterDayReview(st,'我八点起床。','我八点起床',false),false);
+ assert.equal(masterDayReview(st,'我八点起床。','我八点起床',true),true);
+ assert.equal(readDayReview(st)[0].mastered,true);
+ saveDayReview(st,'我八点起床。',true);
+ assert.equal(readDayReview(st)[0].mastered,false);
+ assert.equal(readDayReview(st)[0].count,3);
+});
+test('review handles corrupt and unavailable storage and allows deletion',()=>{
+ const st=memoryStorage();
+ st.setItem(DAY_REVIEW_KEY,'broken json');
+ assert.deepEqual(readDayReview(st),[]);
+ assert.equal(saveDayReview(null,'我八点起床。',true),false);
+ saveDayReview(st,'我八点起床。',true);
+ assert.equal(clearDayReview(st),true);
+ assert.deepEqual(readDayReview(st),[]);
 });
