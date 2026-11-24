@@ -26,7 +26,11 @@ jobs:
         run: node scripts/verify-hsk1-fifth-v227.cjs
       - name: Fetch preserved HSK1 baseline for control-protection checks
         if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
-        run: git fetch --depth=1 origin 404e142c20aab37a6c8a24d60b60aa57028f8043
+        run: >-
+          git fetch --depth=1 origin
+          404e142c20aab37a6c8a24d60b60aa57028f8043
+          6681db1fb3e8d372d5f6863f33e2c6513180e88a
+          12b3c44150e2dab0a986be69087fa07c30828e99
       - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
         run: node scripts/verify-hsk1-final-unification-v421.cjs
       - if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
