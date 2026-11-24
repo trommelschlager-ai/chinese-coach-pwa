@@ -1,6 +1,6 @@
 import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
-import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=552';
+import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=556';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -328,7 +328,7 @@ function askHSK2(autoplay=true){
 function respondIndependentNatural(input){
  if(state.dayMode||entry.kind==='scenario')return false;
  const natural=respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
- if(!natural||natural.kind!=='statement'||!natural.spoken?.known||!natural.spoken.pinyin||natural.next==='clarify')return false;
+ if(!natural||(natural.kind!=='statement'&&natural.domain!=='work')||!natural.spoken?.known||!natural.spoken.pinyin||natural.next==='clarify')return false;
  state.naturalAwaiting=natural.next;
  learner(input,natural.spoken);
  state.turns=(state.turns||0)+1;
@@ -361,7 +361,7 @@ function submitHSK2(input){
  // Origin-question wildcard used to accept any 我是… as a nationality.
  // A reviewed profession is an independent statement, not an origin answer.
  const possibleRoleInsteadOfOrigin=hsk2.id===101&&hsk2.index===0&&/^我(?:不)?是/.test(normalize(input));
- if(out.kind!=='accepted'&&(out.kind!=='variant'||possibleRoleInsteadOfOrigin)&&respondIndependentNatural(input))return;
+ if(out.kind!=='accepted'&&(out.kind!=='variant'||possibleRoleInsteadOfOrigin||['work-place','job-role','job-liking','work-busy','job-change','after-work'].includes(state.naturalAwaiting))&&respondIndependentNatural(input))return;
  const known=out.spoken||knownHSK2(input);const legacy=known?null:analyzeLearner(input,[1,2,3,4,5,6,7],null,curriculum,false);
  const spoken=known?{known:true,pinyin:known.pinyin,translation:known.ru}:legacy?.known?legacy:null;
  if('context' in out)hsk2.context=out.context;

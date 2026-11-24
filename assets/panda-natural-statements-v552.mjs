@@ -48,8 +48,72 @@ const result=(raw,pinyin,translation,reply,next,topic=2)=>({
 });
 const workQuestion=['你在哪儿工作？','Nǐ zài nǎr gōngzuò?','Где ты работаешь?'];
 const workLike=['你喜欢你的工作吗？','Nǐ xǐhuan nǐ de gōngzuò ma?','Тебе нравится твоя работа?'];
+// v556: contextual work interview. Do not invent a physical job or schedule for Panda.
+function workConversation(raw,s,awaiting){
+ const r=(py,ru,a,next=null,kind='statement')=>({...result(raw,py,ru,a,next),kind,domain:'work'});
+ const teacher=['我是老师。','Wǒ shì lǎoshī.','Я учитель.'];
+ const roleAsk=['明白了。你做什么工作？','Míngbai le. Nǐ zuò shénme gōngzuò?','Понятно. Кем ты работаешь?'];
+ const hobby=['你下班后喜欢做什么？','Nǐ xiàbān hòu xǐhuan zuò shénme?','Что любишь делать после работы?'];
+ const newJob=['你想做什么工作？','Nǐ xiǎng zuò shénme gōngzuò?','Кем хочешь работать?'];
+ const workplaceAnswer=['我在这里陪你练习中文。','Wǒ zài zhèlǐ péi nǐ liànxí Zhōngwén.','Я здесь помогаю тебе практиковать китайский.'];
+ const q={
+ '你做什么工作':['Nǐ zuò shénme gōngzuò?','Кем ты работаешь?',teacher],
+ '你的工作是什么':['Nǐ de gōngzuò shì shénme?','Какая у тебя работа?',teacher],
+ '你在哪儿工作':['Nǐ zài nǎr gōngzuò?','Где ты работаешь?',workplaceAnswer],
+ '你在哪里工作':['Nǐ zài nǎlǐ gōngzuò?','Где ты работаешь?',workplaceAnswer],
+ '你喜欢你的工作吗':['Nǐ xǐhuan nǐ de gōngzuò ma?','Тебе нравится твоя работа?',['我喜欢帮你学中文。','Wǒ xǐhuan bāng nǐ xué Zhōngwén.','Мне нравится помогать тебе учить китайский.']],
+ '你工作忙吗':['Nǐ gōngzuò máng ma?','У тебя много работы?',['我现在有空，可以陪你练习。','Wǒ xiànzài yǒu kòng, kěyǐ péi nǐ liànxí.','Сейчас я могу заниматься с тобой.']],
+ '你每天几点下班':['Nǐ měitiān jǐ diǎn xiàbān?','Во сколько ты заканчиваешь работу?',['我没有固定的下班时间。','Wǒ méiyǒu gùdìng de xiàbān shíjiān.','У меня нет фиксированного времени окончания работы.']],
+ '你工作多久了':['Nǐ gōngzuò duōjiǔ le?','Как давно ты работаешь?',['我是虚拟中文老师，没有实际的工作年限。','Wǒ shì xūnǐ Zhōngwén lǎoshī, méiyǒu shíjì de gōngzuò niánxiàn.','Я виртуальный преподаватель китайского; реального трудового стажа у меня нет.']]
+ };
+ if(Object.hasOwn(q,s)){const [py,ru,a]=q[s];return r(py,ru,a,null,'question')}
+ const roleQ=/^你(?:是不是([\p{Script=Han}]{1,6})|是([\p{Script=Han}]{1,6})吗)$/u.exec(s);
+ if(roleQ&&Object.hasOwn(professions,roleQ[1]||roleQ[2])){
+  const job=roleQ[1]||roleQ[2],[py,ru]=professions[job];
+  return r('Nǐ '+(roleQ[1]?'shì bu shì ':'shì ')+py+(roleQ[2]?' ma?':'?'),'Ты '+ru+'?',job==='老师'?teacher:['不是，我是老师。','Bú shì, wǒ shì lǎoshī.','Нет, я учитель.'],null,'question');
+ }
+ const roleReply=job=>job==='学生'?['你是学生！你学什么？','Nǐ shì xuésheng! Nǐ xué shénme?','Ты студент! Что изучаешь?']:['你是'+job+'！你在哪儿工作？','Nǐ shì '+professions[job][0]+'! '+workQuestion[1],'Ты '+professions[job][1]+'! '+workQuestion[2]];
+ const extra=/^我(也是|是一个|以前是|想当|想做)([\p{Script=Han}]{1,6})$/u.exec(s);
+ if(extra&&Object.hasOwn(professions,extra[2])){
+  const [py,ru]=professions[extra[2]],k=extra[1];
+  if(k==='以前是')return r('Wǒ yǐqián shì '+py+'.','Раньше я работал(а) по профессии: '+ru+'.',roleAsk,'job-role');
+  if(k==='想当'||k==='想做')return r('Wǒ xiǎng '+(k==='想当'?'dāng ':'zuò ')+py+'.','Хочу работать по профессии: '+ru+'.',['你为什么想做这个工作？','Nǐ wèishénme xiǎng zuò zhège gōngzuò?','Почему хочешь заниматься этой работой?'],'job-reason');
+  return r('Wǒ '+(k==='也是'?'yě shì ':'shì yí ge ')+py+'.','Я '+(k==='也是'?'тоже ':'')+ru+'.',roleReply(extra[2]),extra[2]==='学生'?'study':'work-place');
+ }
+ if(awaiting==='job-role'&&Object.hasOwn(professions,s))return r(professions[s][0],'Я '+professions[s][1]+'.',roleReply(s),s==='学生'?'study':'work-place');
+ if(awaiting==='work-place'){
+  const place=/^(我)?(在)?([\p{Script=Han}]{1,8}?)(工作)?$/u.exec(s);
+  if(place&&Object.hasOwn(workplaces,place[3])&&(!place[1]||place[2])&&(!place[4]||place[2])){
+   const [py,ru]=workplaces[place[3]];const p=(place[1]?'wǒ ':'')+(place[2]?'zài ':'')+py+(place[4]?' gōngzuò':'');
+   return r(p[0].toUpperCase()+p.slice(1)+'.',place[3]==='家'?'Работаю дома.':'Работаю в '+ru+'.',workLike,'job-liking');
+  }
+ }
+ if(s==='我今天不工作')return r('Wǒ jīntiān bù gōngzuò.','Сегодня я не работаю.',['那你今天想做什么？','Nà nǐ jīntiān xiǎng zuò shénme?','Тогда что хочешь сегодня делать?'],'plans');
+ const contextual={
+ 'job-liking':[
+  [{'是的':'Shì de.','对':'Duì.','喜欢':'Xǐhuan.','我喜欢':'Wǒ xǐhuan.','很喜欢':'Hěn xǐhuan.','我很喜欢':'Wǒ hěn xǐhuan.','我喜欢我的工作':'Wǒ xǐhuan wǒ de gōngzuò.','我很喜欢我的工作':'Wǒ hěn xǐhuan wǒ de gōngzuò.'},'Да, работа нравится.',['太好了！你工作忙吗？','Tài hǎo le! Nǐ gōngzuò máng ma?','Здорово! У тебя много работы?'],'work-busy'],
+  [{'不喜欢':'Bù xǐhuan.','我不喜欢':'Wǒ bù xǐhuan.','不是':'Bú shì.','我不喜欢我的工作':'Wǒ bù xǐhuan wǒ de gōngzuò.','不太喜欢':'Bú tài xǐhuan.','我不太喜欢':'Wǒ bú tài xǐhuan.'},'Работа не нравится.',['明白了。你想换工作吗？','Míngbai le. Nǐ xiǎng huàn gōngzuò ma?','Понимаю. Хочешь сменить работу?'],'job-change']],
+ 'work-busy':[
+  [{'忙':'Máng.','很忙':'Hěn máng.','我很忙':'Wǒ hěn máng.','工作很忙':'Gōngzuò hěn máng.','我的工作很忙':'Wǒ de gōngzuò hěn máng.'},'На работе много дел.',['辛苦了！你每天几点下班？','Xīnkǔ le! Nǐ měitiān jǐ diǎn xiàbān?','Нелегко! Во сколько заканчиваешь работу?'],'after-work'],
+  [{'不忙':'Bù máng.','我不忙':'Wǒ bù máng.','工作不忙':'Gōngzuò bù máng.'},'На работе не очень занят(а).',['那很好！'+hobby[0],'Nà hěn hǎo! '+hobby[1],'Хорошо! '+hobby[2]],'after-work-hobby']],
+ 'job-change':[
+  [{'想':'Xiǎng.','我想':'Wǒ xiǎng.','我想换工作':'Wǒ xiǎng huàn gōngzuò.'},'Хочу сменить работу.',newJob,'job-role'],
+  [{'不想':'Bù xiǎng.','我不想':'Wǒ bù xiǎng.','我不想换工作':'Wǒ bù xiǎng huàn gōngzuò.'},'Не хочу менять работу.',['明白了。你工作忙吗？','Míngbai le. Nǐ gōngzuò máng ma?','Понимаю. На работе много дел?'],'work-busy']]
+ };
+ for(const [map,ru,a,next] of contextual[awaiting]||[])if(Object.hasOwn(map,s))return r(map[s],s.includes('不太喜欢')?'Работа не очень нравится.':ru,a,next);
+ const clock=/^(我)?(每天)?(早上|上午|下午|晚上)?(一|二|两|三|四|五|六|七|八|九|十|十一|十二)点(半)?(下班)?$/u.exec(s);
+ if(clock&&(awaiting==='after-work'||clock[6])){
+  const nums={一:['yī',1],二:['èr',2],两:['liǎng',2],三:['sān',3],四:['sì',4],五:['wǔ',5],六:['liù',6],七:['qī',7],八:['bā',8],九:['jiǔ',9],十:['shí',10],十一:['shíyī',11],十二:["shí'èr",12]};
+  const periods={早上:['zǎoshang','утра'],上午:['shàngwǔ','утра'],下午:['xiàwǔ','дня'],晚上:['wǎnshang','вечера']};
+  const [py,num]=nums[clock[4]],period=periods[clock[3]]||[];
+  const p=[clock[1]?'wǒ':'',clock[2]?'měitiān':'',period[0]||'',py,'diǎn',clock[5]?'bàn':'',clock[6]?'xiàbān':''].filter(Boolean).join(' ');
+  return r(p[0].toUpperCase()+p.slice(1)+'.','Заканчиваю работу в '+num+':'+(clock[5]?'30':'00')+(period[1]?' '+period[1]:'')+'.',hobby,'after-work-hobby');
+ }
+ return null;
+}
 export function respondToNaturalStatement(raw,{awaiting=null}={}){
  const s=norm(raw);if(!s)return null;
+ const work=workConversation(raw,s,awaiting);if(work)return work;
 
  // v552 Android screenshots (24 Nov): common compliments and conversational
  // reactions are complete, valid Chinese — never route them to the
