@@ -34,7 +34,8 @@ test('both free and short dialogue recognize 你是老师吗 without falling thr
  assert.match(core,/say\(teacherReply,!!lookupPandaVoiceClip\(teacherReply\.hanzi\)\)/);
  const begin=core.indexOf("teacherQuestion==='你是老师吗'");
  assert(begin>0);
- const natural=core.indexOf('const natural=respondToNaturalStatement');
+ const natural=core.indexOf('const natural=legacyFamilyAnswer?null:respondToNaturalStatement',begin);
+ assert(natural>begin,'Natural statement handler must exist after teacher handler');
  const nonstop=core.indexOf("if(state.mode==='nonstop'){",begin);
  assert(begin<natural&&begin<nonstop,'Teacher question must be handled before generic fallback and both modes');
 });
