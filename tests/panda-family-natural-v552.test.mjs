@@ -122,3 +122,18 @@ test('main conversation defers legacy family answers to existing HSK1 Non-Stop a
  assert(core.includes("const natural=legacyFamilyAnswer?null:respondToNaturalStatement"));
  assert(core.includes('state.naturalAwaiting=natural.context??natural.next'));
 });
+
+test('children count and ages continue naturally without inventing gender',()=>{
+ const start=reply('我有孩子');
+ const count=reply('一个',{awaiting:start.next});
+ assert.equal(count.spoken.translation,'У меня один ребёнок.');
+ assert.equal(count.reply.hanzi,'你的孩子多大了？');
+ assert.equal(reply('七岁',{awaiting:count.context}).reply.hanzi,'你的孩子喜欢做什么？');
+ const two=reply('我有两个孩子');
+ const ages=reply('一个五岁，一个七岁',{awaiting:two.context});
+ assert.equal(ages.spoken.pinyin,'Yí ge wǔ suì, yí ge qī suì.');
+ assert.equal(ages.spoken.translation,'Одному 5 лет, другому 7 лет.');
+ assert.equal(reply('一个五岁',{awaiting:two.context}),null);
+ assert.equal(reply('我有一个孩子').reply.hanzi,count.reply.hanzi);
+ assert.equal(reply('一个'),null);
+});

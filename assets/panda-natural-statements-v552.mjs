@@ -351,6 +351,22 @@ function respondToFree(raw,s,awaiting,previous){
  const followUp=canRepeat?[previous.hanzi,previous.pinyin,previous.ru]:turn.reply;
  return result(raw,turn.py,turn.ru,followUp,canRepeat?awaiting:null,1);
 }
+const ageDigits='一二三四五六七八九';
+const digitPinyin=['','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
+const agePattern='([一二三四五六七八九]?十[一二三四五六七八九]?|[一二三四五六七八九]|[1-9][0-9]?)';
+function familyAge(age){
+ const [before,after]=age.split('十');
+ const digit=ch=>ch?ageDigits.indexOf(ch)+1:0;
+ const num=/^[0-9]+$/.test(age)?Number(age):
+  after===undefined?digit(before):(before?digit(before):1)*10+digit(after);
+ const tens=Math.floor(num/10),ones=num%10;
+ const py=tens?[tens>1?digitPinyin[tens]:'','shí',ones===2?'’èr':digitPinyin[ones]].filter(Boolean).join(''):
+  num===1?'yí':digitPinyin[ones];
+ const hanzi=tens?(tens>1?ageDigits[tens-1]:'')+'十'+(ones?ageDigits[ones-1]:''):ageDigits[ones-1];
+ const years=num%100>=11&&num%100<=14?'лет':ones===1?'год':ones>=2&&ones<=4?'года':'лет';
+ return {py,hanzi,ru:num+' '+years};
+}
+
 export function respondToNaturalStatement(raw,{awaiting=null,previous=null}={}){
  const s=norm(raw);if(!s)return null;
  const topicReply=respondToIntroduction(raw,s,awaiting)??respondToDay(raw,s,awaiting)??
@@ -484,9 +500,7 @@ export function respondToNaturalStatement(raw,{awaiting=null,previous=null}={}){
   爷爷:['yéye',null,null,'дедушке','他','Моему'],
   奶奶:['nǎinai',null,null,'бабушке','她','Моей']
  };
- const ageDigits='一二三四五六七八九';
- const digitPinyin=['','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
- const agePattern='([一二三四五六七八九]?十[一二三四五六七八九]?|[一二三四五六七八九]|[1-9][0-9]?)';
+
  const ageMatch=new RegExp(`^我(的)?(哥哥|姐姐|弟弟|妹妹|爸爸|妈妈|爷爷|奶奶)${agePattern}岁$`,'u').exec(s);
  const shortAge=awaiting?.type==='family-age'
   ?new RegExp(`^(?:他|她)?${agePattern}岁$`,'u').exec(s):null;
@@ -495,23 +509,14 @@ export function respondToNaturalStatement(raw,{awaiting=null,previous=null}={}){
  if(ageMatch||shortAge){
   const relation=ageMatch?.[2]??awaiting.relation;
   const [py,,,dat,person,poss]=relativesWithParents[relation];
-  const ageText=ageMatch?.[3]??shortAge[1];
-  const [before,after]=ageText.split('十');
-  const digit=ch=>ch?ageDigits.indexOf(ch)+1:0;
-  const num=/^[0-9]+$/.test(ageText)?Number(ageText):
-   after===undefined?digit(before):(before?digit(before):1)*10+digit(after);
-  const tens=Math.floor(num/10),ones=num%10;
-  const numPy=tens?[tens>1?digitPinyin[tens]:'','shí',ones===2?'’èr':digitPinyin[ones]].filter(Boolean).join(''):
-   num===1?'yí':digitPinyin[ones];
-  const ageHanzi=tens?(tens>1?ageDigits[tens-1]:'')+'十'+(ones?ageDigits[ones-1]:''):ageDigits[ones-1];
-  const years=num%100>=11&&num%100<=14?'лет':ones===1?'год':ones>=2&&ones<=4?'года':'лет';
+  const age=familyAge(ageMatch?.[3]??shortAge[1]);
   const subject=ageMatch?'Wǒ '+(ageMatch[1]?'de ':'')+py+' ':
    /^[他她]/u.test(s)?'Tā ':'';
-  return result(raw,subject+numPy+' suì.',
-   poss+' '+dat+' '+num+' '+years+'.',
-   ['你'+relation+ageHanzi+'岁！'+person+'喜欢做什么？',
-    'Nǐ '+py+' '+numPy+' suì! Tā xǐhuan zuò shénme?',
-    (person==='她'?'Твоей ':'Твоему ')+dat+' '+num+' '+years+'! Что '+(person==='她'?'она':'он')+' любит делать?'],
+  return result(raw,subject+age.py+' suì.',
+   poss+' '+dat+' '+age.ru+'.',
+   ['你'+relation+age.hanzi+'岁！'+person+'喜欢做什么？',
+    'Nǐ '+py+' '+age.py+' suì! Tā xǐhuan zuò shénme?',
+    (person==='她'?'Твоей ':'Твоему ')+dat+' '+age.ru+'! Что '+(person==='她'?'она':'он')+' любит делать?'],
    'family-hobby',6);
  }
 
@@ -526,16 +531,41 @@ export function respondToNaturalStatement(raw,{awaiting=null,previous=null}={}){
    ['你跟家人一起住吗？','Nǐ gēn jiārén yìqǐ zhù ma?','Ты живёшь вместе с семьёй?'],null,6);
  }
 
- // Extended family counts; existing single-relative replies retain their audio.
- const counted=/^我有(两|二|三|四|五|六|七|八|九|十)个(哥哥|姐姐|弟弟|妹妹|孩子)$/u.exec(s);
- if(counted){
-  const nums={两:['liǎng',2],二:['èr',2],三:['sān',3],四:['sì',4],五:['wǔ',5],六:['liù',6],七:['qī',7],八:['bā',8],九:['jiǔ',9],十:['shí',10]};
-  const [np,n]=nums[counted[1]];
-  const rel=counted[2], py=rel==='孩子'?'háizi':relatives[rel][0];
+ // A short count is meaningful only after the question about children.
+ const childCount=awaiting==='family-child-count'?/^([一两二三四五六七八九十])个(?:孩子)?$/u.exec(s):null;
+ const counted=/^我有(一|两|二|三|四|五|六|七|八|九|十)个(哥哥|姐姐|弟弟|妹妹|孩子)$/u.exec(s);
+ if(childCount||(counted&&(counted[1]!=='一'||counted[2]==='孩子'))){
+  const nums={一:['yí',1],两:['liǎng',2],二:['èr',2],三:['sān',3],四:['sì',4],五:['wǔ',5],六:['liù',6],七:['qī',7],八:['bā',8],九:['jiǔ',9],十:['shí',10]};
+  const [np,n]=nums[(counted??childCount)[1]];
+  const rel=counted?.[2]??'孩子',py=rel==='孩子'?'háizi':relatives[rel][0];
   const plural={哥哥:['старших брата','старших братьев'],姐姐:['старшие сестры','старших сестёр'],弟弟:['младших брата','младших братьев'],妹妹:['младшие сестры','младших сестёр'],孩子:['ребёнка','детей']};
   const female=rel==='姐姐'||rel==='妹妹';
-  return result(raw,'Wǒ yǒu '+np+' ge '+py+'.','У меня '+n+' '+plural[rel][n<=4?0:1]+'.',
-   [(female?'她们':'他们')+'多大了？','Tāmen duō dà le?','Сколько им лет?'],'family-ages',6);
+  const reply=n===1?['你的孩子多大了？','Nǐ de háizi duō dà le?','Сколько лет твоему ребёнку?']:
+   [(female?'她们':'他们')+'多大了？','Tāmen duō dà le?','Сколько им лет?'];
+  const pinyin=counted?'Wǒ yǒu '+np+' ge '+py+'.':
+   np[0].toUpperCase()+np.slice(1)+' ge'+(s.endsWith('孩子')?' háizi':'')+'.';
+  const response=result(raw,pinyin,n===1?'У меня один ребёнок.':'У меня '+n+' '+plural[rel][n<=4?0:1]+'.',
+   reply,'family-ages',6);
+  response.context={type:'family-ages',count:n,relation:rel};
+  return response;
+ }
+ if(awaiting?.type==='family-ages'){
+  const ageParts=awaiting.count===1?[s]:s.split('一个').slice(1);
+  const ageRe=new RegExp(`^${agePattern}岁$`,'u');
+  const matches=ageParts.map(part=>ageRe.exec(part));
+  if(matches.length===awaiting.count&&matches.every(Boolean)&&(awaiting.count===1||s.startsWith('一个'))){
+   const ages=matches.map(match=>familyAge(match[1]));
+   const female=awaiting.relation==='姐姐'||awaiting.relation==='妹妹';
+   const py=awaiting.count===1?ages[0].py:ages.map(age=>'yí ge '+age.py+' suì').join(', ');
+   const pinyin=py[0].toUpperCase()+py.slice(1)+(awaiting.count===1?' suì.':'.');
+   const russianAges=ages.map(age=>age.ru).join(', ');
+   const ru=awaiting.count===1?'Моему ребёнку '+russianAges+'.':
+    awaiting.count===2?(female?'Одной ':'Одному ')+ages[0].ru+(female?', другой ':', другому ')+ages[1].ru+'.':
+    'Им '+russianAges+'.';
+   return result(raw,pinyin,ru,
+    awaiting.count===1?['你的孩子喜欢做什么？','Nǐ de háizi xǐhuan zuò shénme?','Что любит делать твой ребёнок?']:
+     [(female?'她们':'他们')+'平时喜欢做什么？','Tāmen píngshí xǐhuan zuò shénme?','Что они обычно любят делать?'],null,6);
+  }
  }
  const familyExtra={
   '我没有孩子':['Wǒ méiyǒu háizi.','У меня нет детей.','你家有几口人？','Nǐ jiā yǒu jǐ kǒu rén?','Сколько человек в твоей семье?'],
@@ -547,7 +577,7 @@ export function respondToNaturalStatement(raw,{awaiting=null,previous=null}={}){
  };
  if(Object.hasOwn(familyExtra,s)){
   const [py,ru,...follow]=familyExtra[s];
-  return result(raw,py,ru,follow,s==='我没有孩子'?'family-size':null,6);
+  return result(raw,py,ru,follow,s==='我没有孩子'?'family-size':s==='我有孩子'?'family-child-count':null,6);
  }
 
  const familyQuestion=/^你有没有(哥哥|姐姐|弟弟|妹妹)$/u.exec(s);
