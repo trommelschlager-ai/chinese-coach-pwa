@@ -97,3 +97,30 @@ test('a real eight-round listening session and four shape questions score answer
   dom.window.close();
  }
 });
+
+test('connected-speech drill teaches reviewed examples and neutral tone, not voice scores',async()=>{
+ const {contextToneExamples,checkContextTone}=await import('../assets/panda-tone-exercises-v469.mjs');
+ assert.deepEqual(contextToneExamples.map(x=>x.answer),[2,2,2,2,4,4,2,0,0,0]);
+ assert.equal(checkContextTone(0,3),false);
+ assert.equal(checkContextTone(7,0),true);
+ assert.equal(checkContextTone(8,0),true);
+ assert.equal(checkContextTone(9,0),true);
+ assert.equal(checkContextTone(10,0),false);
+ assert.equal(checkContextTone(0,'2'),false);
+ const dom=new JSDOM(read('panda-tone-exercises.html'),{url:'https://example.com/panda-tone-exercises.html',runScripts:'outside-only'});
+ const prev={document:globalThis.document,window:globalThis.window};
+ globalThis.document=dom.window.document;globalThis.window=dom.window;
+ try{
+  await import('../assets/panda-tone-exercises-v469.mjs?context-tone');
+  const doc=dom.window.document;
+  for(const item of contextToneExamples){
+   assert.equal(doc.getElementById('context-prompt').textContent,item.zh);
+   doc.querySelector('[data-context-tone="'+item.answer+'"]').click();
+   assert.match(doc.getElementById('context-feedback').textContent,/Верно/);
+   doc.getElementById('context-next').click();
+  }
+  assert.match(doc.getElementById('context-feedback').textContent,/10 из 10/);
+  doc.getElementById('context-restart').click();
+  assert.equal(doc.getElementById('context-count').textContent,'0 / 10');
+ }finally{globalThis.document=prev.document;globalThis.window=prev.window;dom.window.close();}
+});
