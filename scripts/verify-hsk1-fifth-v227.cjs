@@ -8,9 +8,9 @@ const html=fs.readFileSync('hsk1-fifth-v227.html','utf8');
 const js=fs.readFileSync('assets/hsk1-fifth-v227.js','utf8');
 const css=fs.readFileSync('assets/panda-go-approved-lessons-v231.css','utf8');
 const data=fs.readFileSync('assets/hsk1-foundations-data-v152.js','utf8');
-assert(html.includes('hsk1-fifth-v227.js?v=520'));
+assert.match(html,/hsk1-fifth-v227\.js\?v=\d+/, 'Lesson script must have a numeric cache version');
 assert(html.includes('panda-lesson-audio-v240.js?v=248'));
-assert(html.includes('panda-go-approved-lessons-v231.css?v=520'));
+assert.match(html,/panda-go-approved-lessons-v231\.css\?v=\d+/, 'Approved stylesheet must have a numeric cache version');
 assert(!html.includes('lesson3-approved-panda'),'Wrong screenshot mosaic must never return');
 assert(css.includes('lesson5-scene-v233.webp'),'Approved illustrated calendar scene required');
 assert(css.includes('#faedff')&&css.includes('#fff7ff'),'Approved pale-lilac and pearl-pink palette required');
@@ -65,12 +65,24 @@ click('#pg5-next');assert.equal(steps(),13); // speaking
 assert(d.querySelector('[data-record-start]'),'Self recording controls missing');
 click('#pg5-next');assert.equal(steps(),14);
 assert(d.getElementById('pg5-next').disabled,'Must answer final question first');
-for(const answer of [1,0,1,0,1]){
- assert(d.getElementById('pg5-next').disabled,'Final quiz must gate advance until all five answers');
- click('[data-final="'+answer+'"]');
+const correctAnswers=[1,0,1,0,1];
+const state=()=>JSON.parse(w.localStorage.getItem('pg-hsk1-l5-v227'));
+w.localStorage.setItem('pg-hsk1-path-v371','4');
+for(let i=0;i<correctAnswers.length;i++){
+ assert(d.getElementById('pg5-next').disabled,'Completion must wait for all five answers');
+ assert(d.getElementById('pg5-stage').textContent.includes((i+1)+' / 5'),'Wrong final quiz position');
+ if(i===1){
+  click('[data-final="2"]');
+  assert.equal(state().finalStep,i,'Wrong answer must not advance');
+  assert.equal(state().finalErrors[i],true);
+ }
+ click('[data-final="'+correctAnswers[i]+'"]');
 }
 assert(!d.getElementById('pg5-next').disabled);
+assert.equal(state().finalStep,5);
+assert.equal(state().finalFirstTry,4,'Retry must not count as first-try success');
+assert.equal(w.localStorage.getItem('pg-hsk1-path-v371'),'5','Lesson must unlock the next path step');
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-l5-v227')).done);
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('dates'));
 assert(!w.localStorage.getItem('pg-hsk1-v3-dates'),'Original seven-step state must remain untouched');
-console.log('PASS lesson 5 v227: 14 screens, existing curriculum, listening, 3 builds, writing, speaking and completion');
+console.log('PASS lesson 5 v227: 14 screens, existing curriculum, listening, 3 builds, writing, speaking, five-question final assessment and completion');

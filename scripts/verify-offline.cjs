@@ -7,6 +7,11 @@ class ScopedRequest extends Request{constructor(path,options){super(new URL(path
 const ctx={URL,Promise,Request:ScopedRequest,Response,fetch:network,caches:cacheAPI,AbortController,setTimeout,clearTimeout,self:{location:{origin},registration:{scope:base},clients:{claim:async()=>{}},skipWaiting:async()=>{},addEventListener:(n,f)=>events[n]=f}};
 vm.runInNewContext(code,ctx);
 (async()=>{let pending;events.install({waitUntil:p=>pending=p});await pending;const currentCache=(code.match(/const CACHE='([^']+)'/)||[])[1];assert(currentCache?.startsWith('chinese-coach-pwa-v'));assert.deepEqual(await cacheAPI.keys(),[currentCache]);const coreCount=stores.get(currentCache).size;assert(coreCount<=200,'Keep current approved HSK1/HSK2 and Panda AI install shell bounded, while sound and most images stay on demand');const coreBytes=[...stores.get(currentCache).keys()].reduce((n,url)=>{const p=decodeURIComponent(new URL(url).pathname.replace('/chinese-coach-pwa/',''))||'index.html';return n+fs.statSync(p).size},0);assert(coreBytes<5000000,'Keep shell including the exact approved home art under 5 MB');assert(!await cacheAPI.match('./assets/approved-welcome.png'),'Unused large cover must not be preloaded');
+const streetPage='./panda-street-ai-preview.html',streetArt='./assets/panda-street-day-night/day.webp?v=2';
+const hsk2Page='./hsk2-life-course.html';
+assert(!await cacheAPI.match(streetArt),'Optional Street artwork must not block PWA installation');
+assert((await cacheAPI.match('./panda-voice-pilot.html'))?.ok,'Panda AI entry must install with the shell');
+assert((await cacheAPI.match('./assets/panda-hsk2-preview-core-v1.mjs?v=552'))?.ok,'Active Panda AI core must install with the shell');
 const retained='./assets/course-human/cmn-我.mp3',oldImage='./assets/hanzi-paper-v141.png',oldData='./assets/hanzi-data/大.json';
 const oldCache=await cacheAPI.open('chinese-coach-pwa-v48');for(const path of [retained,oldImage,oldData])await oldCache.put(path,await network(path));
 const stalePanda='./assets/panda-live-screen-v270.mjs?v=302',stalePandaPage='./panda-voice-pilot.html?v=302';
@@ -41,6 +46,10 @@ online=false;assert((await (await request('./','navigate')).text()).includes('co
 online=true;const download=async()=>{let result;events.message({data:{type:'DOWNLOAD_COURSE'},ports:[{postMessage:m=>{if(m.done)result=m},close(){}}],waitUntil:p=>pending=p});await pending;return result};
 fail='assets/hanzi-data/木.json';let report=await download();assert.equal(report.failed,1,'One broken optional file does not abort all downloads');assert(report.saved>100);fail='';report=await download();assert.equal(report.failed,0,'Retry completes the missing file');assert(report.total>100);
 online=false;for(const p of JSON.parse(fs.readFileSync('assets/offline-pack.json')).files){assert((await request(p,'cors')).ok,'Downloaded material must be available offline: '+p)}assert((await cacheAPI.match('./offline-ready.json')).ok);
+for(const page of [streetPage,hsk2Page]){
+ assert((await request(page+'?step=1','navigate')).ok,'Downloaded course route is available offline: '+page);
+}
+assert((await request(streetArt,'cors')).ok,'Downloaded course includes optional Street artwork');
 assert((await cacheAPI.match('./assets/hsk1-approved-v373.png'))?.ok,'Approved v373 PNG must be available in the downloaded offline pack');
 
 assert((await (await request('./assets/vendor/hanzi-writer.min.js','cors')).text()).includes('HanziWriter'));assert((await (await request('./assets/hanzi-data/大.json','cors')).json()).strokes.length===3);
