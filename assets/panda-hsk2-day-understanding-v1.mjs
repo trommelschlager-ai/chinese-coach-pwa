@@ -190,3 +190,46 @@ export function getDayCorrectionLine(value){
  const modifiers=ru.filter(x=>x!=='примерно');
  return [zh,py.join(' ')+'.',['Я',...modifiers,DAY_ACTIONS[action][1],...(ru.includes('примерно')?['примерно']:[]),'в '+displayHour+':'+String(mins).padStart(2,'0')].join(' ')+'.'];
 }
+
+/* Personal study cards, separate from reviewed course audio and shared character facts.
+   Save only a validated correction, not the learner's raw text or audio. */
+export const DAY_REVIEW_KEY='pg-panda-my-day-review-v1';
+function validReviewLine(zh){
+ if(typeof zh!=='string'||zh.length>100)return null;
+ const line=getDayCorrectionLine(zh);
+ return line[1]&&line[2]?line:null;
+}
+export function readDayReview(storage){
+ try{
+  const raw=JSON.parse(storage.getItem(DAY_REVIEW_KEY)||'[]');
+  if(!Array.isArray(raw))return [];
+  const seen=new Set(),items=[];
+  for(const x of raw){
+   if(!x||!Number.isInteger(x.count)||x.count<1||typeof x.mastered!=='boolean')continue;
+   const line=validReviewLine(x.zh);
+   if(!line||seen.has(line[0]))continue;
+   seen.add(line[0]);items.push({zh:line[0],count:Math.min(x.count,99),mastered:x.mastered});
+   if(items.length===50)break;
+  }
+  return items;
+ }catch{return []}
+}
+function writeDayReview(storage,items){
+ try{storage.setItem(DAY_REVIEW_KEY,JSON.stringify(items));return true}catch{return false}
+}
+export function saveDayReview(storage,zh,consent){
+ if(consent!==true)return false;
+ const line=validReviewLine(zh);if(!line)return false;
+ const items=readDayReview(storage),old=items.find(x=>x.zh===line[0]);
+ const next={zh:line[0],count:Math.min(99,(old?.count||0)+1),mastered:false};
+ return writeDayReview(storage,[next,...items.filter(x=>x.zh!==next.zh)].slice(0,50));
+}
+export function masterDayReview(storage,expected,answer,consent){
+ if(consent!==true||norm(expected)!==norm(answer))return false;
+ const items=readDayReview(storage),item=items.find(x=>norm(x.zh)===norm(expected));
+ if(!item)return false;
+ item.mastered=true;return writeDayReview(storage,items);
+}
+export function clearDayReview(storage){
+ try{storage.removeItem(DAY_REVIEW_KEY);return true}catch{return false}
+}
