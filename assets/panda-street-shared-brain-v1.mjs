@@ -2,6 +2,7 @@
  * Reuses the reviewed Panda Go HSK conversation and grammar engine.
  * Keeps Street conversation state separate and does NOT provide acoustic tone grading.
  */
+import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {answerLive,analyzeLearner,topicPrompts} from './panda-live-dialogue-v272.mjs?v=434';
 import {correctPandaGrammarV2} from './panda-grammar-hsk12-v2.mjs?v=2';
 import {correctCommonPhrase} from './panda-chat-corrections-v377.mjs?v=377';
@@ -51,7 +52,7 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
    if(selected){setPrompt(selected);state.topic=lesson;return normalizeLine(selected)}
    return start(state.mode);
  }
- function answer(input,{mode=state.mode}={}){
+ function answer(input,{mode=state.mode,fromSpeech=false}={}){
    const raw=String(input??'').trim(),s=clean(raw);
    if(!raw)return {kind:'empty',message:'Напиши или скажи фразу по-китайски.'};
    state.turn++;
@@ -101,6 +102,7 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
      const fix=result.spoken?.correction;
      return {kind:result.kind,learner,message:result.message||'Попробуй уточнить фразу.',
        correction:fix?normalizeLine(fix):null,
+       reviewCorrection:!fromSpeech&&fix?.category==='grammar'&&!fix.uncertain?{category:'grammar',hanzi:fix.hanzi,pinyin:fix.pinyin,ru:fix.ru}:null,
        why:fix?.why||result.message||''};
    }
    if(result.spoken?.known)remember(raw,result);
@@ -128,6 +130,7 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
      explanation:result.explanation||''};
  }
  return {allowed,start,setPrompt,nextQuestion,answer,
+   review:{save:(c,consent)=>saveGrammarReview(storage,c,consent),cards:()=>readDayReview(storage).map(x=>({...x,line:getReviewCardLine(x)})),due:()=>dueDayReview(storage).map(x=>({...x,line:getReviewCardLine(x)})),stats:()=>dayReviewStats(storage),practice:(zh,answer,consent)=>practiceDayReview(storage,zh,answer,consent),clear:()=>clearDayReview(storage)},
    getState:()=>({mode:state.mode,topic:state.topic,turn:state.turn,allowed:allowed()}),
    askCurriculum:(question,lesson=1)=>answerCurriculumQuestion(question,lesson,curriculum)};
 }
