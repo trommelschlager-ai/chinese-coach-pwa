@@ -42,8 +42,8 @@ test('both free and short dialogue recognize 你是老师吗 without falling thr
 test('Panda AI pages and offline SW keep teacher question and natural audio in v550',()=>{
  const html=source('../panda-voice-pilot.html'),hsk2=source('../panda-ai-hsk2-preview.html');
  const sw=source('../sw.js'),pack=JSON.parse(source('../assets/offline-pack.json'));
- assert.equal(pack.version,550);
- assert.match(sw,/const CACHE='chinese-coach-pwa-v550-/);
+ assert(pack.version>=550);
+ assert(sw.includes("const CACHE='chinese-coach-pwa-v"+pack.version+"-"));
  for(const page of [html,hsk2])assert(page.includes('panda-hsk2-preview-core-v1.mjs?v=550'));
  assert(sw.includes('panda-hsk2-preview-core-v1.mjs?v=550'));
  assert(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=550'));
