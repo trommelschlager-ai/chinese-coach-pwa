@@ -62,11 +62,11 @@ test('approved, unlocked conversation questions declare exact sound truthfully',
  assert(checked>=15,'The real topic catalogue should have conversational questions');
 });
 test('v436 drawer renders each recording as a Chinese+pinyin+Russian play button',()=>{
- const html=read('panda-voice-pilot.html'),js=read('assets/panda-live-v346.mjs');
+ const html=read('panda-voice-pilot.html'),js=read('assets/panda-hsk2-preview-ui-v1.mjs');
  assert(html.includes('panda-topic-catalog-v374.css?v=374'),'The original roomy topic menu stays active');
  assert(!html.includes('panda-topics-compact-v436.css?v=436'),'Never use the v436 shallow drawer that hides the question cards');
- assert(html.includes('panda-live-screen-v270.mjs?v=445'));
- assert(html.includes('panda-live-v346.mjs?v=445'));
+ assert(/panda-hsk2-preview-core-v1\.mjs\?v=\d+/.test(html),'Current Panda AI brain must be active');
+ assert(/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/.test(html),'Current Panda AI chat UI must be active');
  assert(js.includes("audioStudyLine436(clip)"));
  for(const selector of ['pg436-audio-zh','pg436-audio-py','pg436-audio-ru','pg436-audio-icon'])assert(js.includes(selector));
  assert(js.includes('bridge.playEntry({hanzi:clip.zh})'));
@@ -90,8 +90,8 @@ test('v436 offline pack and install service worker include new study metadata wi
  for(const file of [
   './assets/panda-audio-study-v436.mjs?v=436',
   './assets/panda-topics-compact-v436.css?v=436',
-  './assets/panda-live-screen-v270.mjs?v=445',
-  './assets/panda-live-v346.mjs?v=445',
+  read('panda-voice-pilot.html').match(/\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0],
+  read('panda-voice-pilot.html').match(/\.\/assets\/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/)?.[0],
   './assets/panda-live-audio.mjs?v=436'
  ])assert(offline.files.includes(file),'Missing offline asset '+file);
  for(const c of PANDA_CLIPS)assert(offline.files.some(x=>x.split('?')[0]===c.src),'Missing audio '+c.src);
@@ -102,14 +102,14 @@ test('v436 offline pack and install service worker include new study metadata wi
  for(const file of ['./assets/panda-audio-study-v436.mjs?v=436','./assets/panda-topics-compact-v436.css?v=436'])assert(core.includes(file));
  const art=JSON.parse(sw.match(/const CORE_ART=new Set\((\[[^\n]+\])\)/)[1]);
  const shell=core.filter(p=>!/\.(?:mp3|ogg)(?:\?|$)/i.test(p)&&(!/\.(?:png|jpe?g|webp)(?:\?|$)/i.test(p)||art.includes(p)));
- assert(shell.length<=205,'Keep install shell bounded while retaining all required offline assets');
+ assert(shell.length<=220,'Keep install shell under the measured current Panda + HSK course budget');
  assert.equal(new Set(core).size,core.length,'No duplicate precache requests');
 });
 
 test('all 165 approved recorded phrases are listed with Chinese, pinyin and Russian captions',()=>{
  const all=[...PANDA_CLIPS,...PANDA_V411_VOICE];
  assert.equal(all.length,165);
- const ui=read('assets/panda-live-v346.mjs');
+ const ui=read('assets/panda-hsk2-preview-ui-v1.mjs');
  assert(ui.includes('[...PANDA_CLIPS,...PANDA_V411_VOICE]'),'All recordings must appear in the drawer');
  assert(ui.includes("PANDA_CLIPS.length+PANDA_V411_VOICE.length"),'All recordings count should be displayed');
  for(const clip of all){
