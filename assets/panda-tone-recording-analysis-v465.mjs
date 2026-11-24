@@ -203,3 +203,15 @@ export async function analyseRecordedBlob(blob,{estimatePitch,analyseContour,Aud
   try{await context.close();}catch{}
  }
 }
+
+// A measured reference is displayed only if enough stable F0 is available.
+// It is not a grade; the two voices have independent median pitch baselines.
+export function referenceContourPath(analysis){
+ const r=analysis?.result,s=analysis?.signal,p=r?.points;
+ if(!analysis?.available||!s?.hasAudibleSignal||s.discardedOtherRegions!==0||r?.kind==='uncertain'||r?.stats?.octaveJumpCount>0||!Array.isArray(p)||p.length<8||s.pitchFrames<8||s.fallbackPitchFrames/s.pitchFrames>.4)return '';
+ if(r.kind==='insufficient'&&r.stats?.previewOnly!==true)return '';
+ const first=p[0].t,duration=p.at(-1).t-first;
+ if(!Number.isFinite(duration)||duration<.15||duration>1.2)return '';
+ if(p.some((v,i)=>!Number.isFinite(v.t)||!Number.isFinite(v.st)||Math.abs(v.st)>8||(i>0&&(v.t<=p[i-1].t||v.t-p[i-1].t>.085))))return '';
+ return p.map((v,i)=>(i?'L':'M')+(30+302*(v.t-first)/1.2).toFixed(1)+' '+Math.max(25,Math.min(117,70-13*v.st)).toFixed(1)).join(' ');
+}
