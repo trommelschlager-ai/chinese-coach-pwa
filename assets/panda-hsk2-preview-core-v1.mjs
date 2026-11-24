@@ -225,6 +225,15 @@ function setMode(mode){
  if(mode===state.mode)return;
  if(hsk2){
   cancelFollowup();stopRecognition();stopAudio();
+  // v550: default Panda AI boots HSK2-101 internally. Non-Stop must
+  // activate actual open chat, not only change the selected tab.
+  // Explicit course lessons and the My Day scenario keep scored practice.
+  if(mode==='nonstop'&&entry.beginnerGreeting&&hsk2.id===101){
+   hsk2.openChat=true;state.mode='nonstop';state.prompt=null;
+   state.naturalAwaiting=null;state.awaitQuestion=true;state.hint=false;
+   render();note('Non-Stop: свободный разговор на знакомые темы. Напиши свою фразу по-китайски.');
+   return;
+  }
   // Leaving free topic chat restores the ordinary scored HSK2 question path.
   if(hsk2.openChat&&mode==='short'){
    hsk2.openChat=false;state.mode='short';askHSK2(false);
@@ -345,7 +354,9 @@ function submit(raw){
  // v542: use reviewed beginner statements as genuine conversation turns,
  // rather than treating a correct assertion as a failed quiz answer.
  // Keep short HSK1 drills and the independent HSK2 My Day scenario intact.
- if(((hsk2&&hsk2.openChat)||(!hsk2&&state.mode==='nonstop'))&&!state.dayMode){
+ // Default beginner chat understands natural statements in both visible tabs;
+ // other explicit HSK2 lesson entries retain their assessed question path.
+ if(((hsk2&&(hsk2.openChat||(entry.beginnerGreeting&&hsk2.id===101)))||(!hsk2&&state.mode==='nonstop'))&&!state.dayMode){
   const natural=respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
   if(natural){
    state.naturalAwaiting=natural.next;
