@@ -65,7 +65,10 @@ click('#pg5-next');assert.equal(steps(),13); // speaking
 assert(d.querySelector('[data-record-start]'),'Self recording controls missing');
 click('#pg5-next');assert.equal(steps(),14);
 assert(d.getElementById('pg5-next').disabled,'Must answer final question first');
-click('[data-final="1"]');
+for(const answer of [1,0,1,0,1]){
+ assert(d.getElementById('pg5-next').disabled,'Final quiz must gate advance until all five answers');
+ click('[data-final="'+answer+'"]');
+}
 assert(!d.getElementById('pg5-next').disabled);
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-l5-v227')).done);
 assert(JSON.parse(w.localStorage.getItem('pg-hsk1-v3-complete')).includes('dates'));
