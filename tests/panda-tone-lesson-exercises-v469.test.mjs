@@ -124,3 +124,16 @@ test('connected-speech drill teaches reviewed examples and neutral tone, not voi
   assert.equal(doc.getElementById('context-count').textContent,'0 / 10');
  }finally{globalThis.document=prev.document;globalThis.window=prev.window;dom.window.close();}
 });
+
+test('Panda AI tone practice pauses dialogue before opening an opt-in local microphone',()=>{
+ const core=read('assets/panda-hsk2-preview-core-v1.mjs');
+ const ui=read('assets/panda-hsk2-preview-ui-v1.mjs');
+ assert(core.includes('pauseForTonePractice:()=>{cancelFollowup();stopRecognition();stopAudio();}'));
+ assert(ui.includes('id="pg-tone-practice"'));
+ assert(ui.includes("stopHistoryAudio();bridge.pauseForTonePractice();closeTopics();sync();"));
+ assert(ui.includes("frame.src='./panda-tone-exercises.html?v=469'"));
+ assert(ui.includes("frame.allow='microphone; autoplay'"));
+ assert(ui.includes("frame.remove();dialog.remove();toneDialog=null"));
+ assert(ui.includes("if(specialToneScenario||typeof bridge.pauseForTonePractice!=='function')toneEntry.hidden=true"));
+ assert(core.includes('contentVerified:false,toneVerified:false'));
+});
