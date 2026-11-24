@@ -11,7 +11,7 @@ for(const [p,s] of [['radicals',radical],['extras',extras],['lesson1',main]])new
 assert(html.indexOf('hsk1-radicals-v295.js')<html.indexOf('hsk1-first-extras-v295.js'));
 assert(html.indexOf('hsk1-first-extras-v295.js')<html.indexOf('hsk1-first-v189.js'));
 assert(html.includes('aria-valuemax="16"'));
-assert(read('hsk1-map.html').includes('href="./hsk1-first-v189.html"'),'Approved HSK1 map must still open the full 16-screen first lesson');
+assert(/href="\.\/hsk1-first-v189\.html(?:\?v=\d+)?"/.test(read('hsk1-map.html')),'Approved HSK1 map must still open the full 16-screen first lesson');
 const make=(saved)=>{
  const dom=new JSDOM(html,{url:'https://panda.test/chinese-coach-pwa/hsk1-first-v189.html',runScripts:'outside-only'});
  const w=dom.window;const played=[];
