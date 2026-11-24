@@ -160,6 +160,7 @@ const NUM_PINYIN={零:'líng',〇:'líng',一:'yī',二:'èr',两:'liǎng',三:'
 function chineseNumberPinyin(n,hour=false){
  if(/^\d+$/.test(n)){
   const v=Number(n);
+  if(!hour&&/^0\d$/.test(n))return 'líng '+chineseNumberPinyin(String(v));
   if(v===2&&hour)return 'liǎng';
   if(v<10)return ['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'][v];
   const d=['','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
@@ -185,5 +186,7 @@ export function getDayCorrectionLine(value){
  if(minute)py.push(minute==='半'?'bàn':minute==='一刻'?'yí kè':minute==='三刻'?'sān kè':chineseNumberPinyin(minute.replace('分',''))+(minute.endsWith('分')?' fēn':''));
  if(approx){py.push(approx==='左右'?'zuǒyòu':'qiánhòu');if(!ru.includes('примерно'))ru.push('примерно')}
  py.push(DAY_ACTIONS[action][0]);
- return [zh,py.join(' ')+'.',['Я',...ru,DAY_ACTIONS[action][1],'в '+hours+':'+String(mins).padStart(2,'0')].join(' ')+'.'];
+ const displayHour=prefix.includes('晚上')?(hours===12?0:hours>0&&hours<12?hours+12:hours):prefix.includes('下午')&&hours>0&&hours<12?hours+12:hours;
+ const modifiers=ru.filter(x=>x!=='примерно');
+ return [zh,py.join(' ')+'.',['Я',...modifiers,DAY_ACTIONS[action][1],...(ru.includes('примерно')?['примерно']:[]),'в '+displayHour+':'+String(mins).padStart(2,'0')].join(' ')+'.'];
 }
