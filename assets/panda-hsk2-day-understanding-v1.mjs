@@ -199,6 +199,24 @@ function validReviewLine(zh){
  const line=getDayCorrectionLine(zh);
  return line[1]&&line[2]?line:null;
 }
+// Shared personal deck: only reviewed grammar examples from the active engine.
+function validGrammarReview(zh,py,ru){
+ if(typeof zh!=='string'||zh.length>100||!/^\p{Script=Han}[\p{Script=Han}\p{P}\d\s]*$/u.test(zh))return null;
+ if(typeof py!=='string'||!py.trim()||py.length>240||typeof ru!=='string'||!ru.trim()||ru.length>400)return null;
+ return [zh.trim(),py.trim(),ru.trim()];
+}
+export function getReviewCardLine(item){
+ return item?.source==='grammar'?validGrammarReview(item.zh,item.py,item.ru):validReviewLine(item?.zh);
+}
+export function saveGrammarReview(storage,correction,consent,confidence=null){
+ if(consent!==true||correction?.category!=='grammar'||correction.uncertain||
+    (typeof confidence==='number'&&confidence<.85))return false;
+ const line=validGrammarReview(correction.hanzi,correction.pinyin,correction.ru);
+ if(!line)return false;
+ const items=readDayReview(storage),old=items.find(x=>norm(x.zh)===norm(line[0]));
+ const next={zh:line[0],count:Math.min(99,(old?.count||0)+1),mastered:false,stage:0,due:0,source:'grammar',py:line[1],ru:line[2]};
+ return writeDayReview(storage,[next,...items.filter(x=>norm(x.zh)!==norm(line[0]))].slice(0,50));
+}
 export function readDayReview(storage){
  try{
   const raw=JSON.parse(storage.getItem(DAY_REVIEW_KEY)||'[]');
@@ -206,11 +224,11 @@ export function readDayReview(storage){
   const seen=new Set(),items=[];
   for(const x of raw){
    if(!x||!Number.isInteger(x.count)||x.count<1||typeof x.mastered!=='boolean')continue;
-   const line=validReviewLine(x.zh);
-   if(!line||seen.has(line[0]))continue;
+   const line=getReviewCardLine(x);
+   if(!line||seen.has(norm(line[0])))continue;
    const stage=Number.isInteger(x.stage)&&x.stage>=0&&x.stage<=4?x.stage:0;
    const due=stage===4?null:Number.isSafeInteger(x.due)&&x.due>=0?x.due:0;
-   seen.add(line[0]);items.push({zh:line[0],count:Math.min(x.count,99),mastered:x.mastered,stage,due});
+   seen.add(norm(line[0]));items.push({zh:line[0],count:Math.min(x.count,99),mastered:x.mastered,stage,due,...(x.source==='grammar'?{source:'grammar',py:line[1],ru:line[2]}:{})});
    if(items.length===50)break;
   }
   return items;
@@ -222,9 +240,9 @@ function writeDayReview(storage,items){
 export function saveDayReview(storage,zh,consent){
  if(consent!==true)return false;
  const line=validReviewLine(zh);if(!line)return false;
- const items=readDayReview(storage),old=items.find(x=>x.zh===line[0]);
+ const items=readDayReview(storage),old=items.find(x=>norm(x.zh)===norm(line[0]));
  const next={zh:line[0],count:Math.min(99,(old?.count||0)+1),mastered:false,stage:0,due:0};
- return writeDayReview(storage,[next,...items.filter(x=>x.zh!==next.zh)].slice(0,50));
+ return writeDayReview(storage,[next,...items.filter(x=>norm(x.zh)!==norm(next.zh))].slice(0,50));
 }
 export function masterDayReview(storage,expected,answer,consent){
  if(consent!==true||norm(expected)!==norm(answer))return false;
@@ -264,5 +282,5 @@ export function practiceDayReview(storage,expected,answer,consent,now=Date.now()
   item.count=Math.min(99,item.count+1);
  }
  if(!writeDayReview(storage,items))return {kind:'unavailable'};
- return {kind:match?'matched':'different',stage:item.stage,due:item.due,line:getDayCorrectionLine(item.zh)};
+ return {kind:match?'matched':'different',stage:item.stage,due:item.due,line:getReviewCardLine(item)};
 }
