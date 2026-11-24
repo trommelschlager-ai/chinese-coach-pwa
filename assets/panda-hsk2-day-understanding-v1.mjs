@@ -60,6 +60,11 @@ function timeAnswer(s,i){
   return clarify(i===0?'你一般几点起床？ — Назови точное время подъёма.':'你晚上一般几点睡觉？ — Назови точное время сна.');
  }
  const before=s.slice(0,m.index),after=s.slice(m.index+m.text.length);
+ // Detect verb-before-time only when the entire answer matches this simple pattern.
+ // Keep the learner's actual time, qualifiers and approximation instead of inventing facts.
+ const reversed=before.match(new RegExp('^(?:我)?((?:每天|平时|一般|通常|大概|差不多|早上|晚上|凌晨|上午|下午|今天|周末)*)'+action+'$','u'));
+ if(reversed&&(!after||after==='左右'||after==='前后'))
+  return correct('我'+reversed[1]+m.text+after+action,'Время ставится перед действием. Повтори исправленный вариант.');
  if(!after||after==='左右'||after==='前后'){
   if(!/^(?:我)?(?:(?:每天|平时|一般|通常|大概|差不多|早上|晚上|凌晨|上午|下午|有时候|今天|周末))*$/.test(before))return unknown();
   return accept(i===0?'我每天'+m.text+'起床':'我晚上'+m.text+'睡觉');
@@ -140,4 +145,142 @@ export function understandDayAnswer(raw,index){
  if(index===2)return breakfast(s);
  if(index===3)return work(s);
  return unknown();
+}
+
+/* Reviewed time-before-verb correction metadata. No acoustic assessment. */
+const DAY_MODIFIERS={
+ 每天:['měitiān','каждый день'],平时:['píngshí','обычно'],一般:['yìbān','обычно'],
+ 通常:['tōngcháng','обычно'],大概:['dàgài','примерно'],差不多:['chàbuduō','примерно'],
+ 早上:['zǎoshang','утром'],晚上:['wǎnshang','вечером'],凌晨:['língchén','глубокой ночью'],
+ 上午:['shàngwǔ','в первой половине дня'],下午:['xiàwǔ','во второй половине дня'],
+ 今天:['jīntiān','сегодня'],周末:['zhōumò','на выходных']
+};
+const DAY_ACTIONS={起床:['qǐchuáng','встаю'],睡觉:['shuìjiào','ложусь спать'],去上班:['qù shàngbān','иду на работу']};
+const NUM_PINYIN={零:'líng',〇:'líng',一:'yī',二:'èr',两:'liǎng',三:'sān',四:'sì',五:'wǔ',六:'liù',七:'qī',八:'bā',九:'jiǔ',十:'shí'};
+function chineseNumberPinyin(n,hour=false){
+ if(/^\d+$/.test(n)){
+  const v=Number(n);
+  if(!hour&&/^0\d$/.test(n))return 'líng '+chineseNumberPinyin(String(v));
+  if(v===2&&hour)return 'liǎng';
+  if(v<10)return ['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'][v];
+  const d=['','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
+  return (v>=20?d[Math.floor(v/10)]:'')+'shí'+d[v%10];
+ }
+ return Array.from(n,c=>NUM_PINYIN[c]||'').join('');
+}
+export function getDayCorrectionLine(value){
+ const zh=dot(value),s=norm(value);
+ const m=/^我(.*?)([零〇一二两三四五六七八九十\d]{1,3})点(半|一刻|三刻|[零〇一二两三四五六七八九十\d]{1,3}分?)?(左右|前后)?(起床|睡觉|去上班)$/u.exec(s);
+ if(!m)return [zh,'','Исправленный вариант.'];
+ const [,prefix,h,minute,approx,action]=m;
+ const hours=number(h);
+ const mins=!minute?0:minute==='半'?30:minute==='一刻'?15:minute==='三刻'?45:number(minute.replace('分',''));
+ if(hours===null||hours>23||mins===null||mins>59)return [zh,'','Исправленный вариант.'];
+ let rest=prefix;const py=['Wǒ'],ru=[];
+ while(rest){
+  const key=Object.keys(DAY_MODIFIERS).find(k=>rest.startsWith(k));
+  if(!key)return [zh,'','Исправленный вариант.'];
+  py.push(DAY_MODIFIERS[key][0]);ru.push(DAY_MODIFIERS[key][1]);rest=rest.slice(key.length);
+ }
+ py.push(chineseNumberPinyin(h,true),'diǎn');
+ if(minute)py.push(minute==='半'?'bàn':minute==='一刻'?'yí kè':minute==='三刻'?'sān kè':chineseNumberPinyin(minute.replace('分',''))+(minute.endsWith('分')?' fēn':''));
+ if(approx){py.push(approx==='左右'?'zuǒyòu':'qiánhòu');if(!ru.includes('примерно'))ru.push('примерно')}
+ py.push(DAY_ACTIONS[action][0]);
+ const displayHour=prefix.includes('晚上')?(hours===12?0:hours>0&&hours<12?hours+12:hours):prefix.includes('下午')&&hours>0&&hours<12?hours+12:hours;
+ const modifiers=ru.filter(x=>x!=='примерно');
+ return [zh,py.join(' ')+'.',['Я',...modifiers,DAY_ACTIONS[action][1],...(ru.includes('примерно')?['примерно']:[]),'в '+displayHour+':'+String(mins).padStart(2,'0')].join(' ')+'.'];
+}
+
+/* Personal study cards, separate from reviewed course audio and shared character facts.
+   Save only a validated correction, not the learner's raw text or audio. */
+export const DAY_REVIEW_KEY='pg-panda-my-day-review-v1';
+function validReviewLine(zh){
+ if(typeof zh!=='string'||zh.length>100)return null;
+ const line=getDayCorrectionLine(zh);
+ return line[1]&&line[2]?line:null;
+}
+// Shared personal deck: only reviewed grammar examples from the active engine.
+function validGrammarReview(zh,py,ru){
+ if(typeof zh!=='string'||zh.length>100||!/^\p{Script=Han}[\p{Script=Han}\p{P}\d\s]*$/u.test(zh))return null;
+ if(typeof py!=='string'||!py.trim()||py.length>240||typeof ru!=='string'||!ru.trim()||ru.length>400)return null;
+ return [zh.trim(),py.trim(),ru.trim()];
+}
+export function getReviewCardLine(item){
+ return item?.source==='grammar'?validGrammarReview(item.zh,item.py,item.ru):validReviewLine(item?.zh);
+}
+export function saveGrammarReview(storage,correction,consent,confidence=null){
+ if(consent!==true||correction?.category!=='grammar'||correction.uncertain||
+    (typeof confidence==='number'&&confidence<.85))return false;
+ const line=validGrammarReview(correction.hanzi,correction.pinyin,correction.ru);
+ if(!line)return false;
+ const items=readDayReview(storage),old=items.find(x=>norm(x.zh)===norm(line[0]));
+ const next={zh:line[0],count:Math.min(99,(old?.count||0)+1),mastered:false,stage:0,due:0,source:'grammar',py:line[1],ru:line[2]};
+ return writeDayReview(storage,[next,...items.filter(x=>norm(x.zh)!==norm(line[0]))].slice(0,50));
+}
+export function readDayReview(storage){
+ try{
+  const raw=JSON.parse(storage.getItem(DAY_REVIEW_KEY)||'[]');
+  if(!Array.isArray(raw))return [];
+  const seen=new Set(),items=[];
+  for(const x of raw){
+   if(!x||!Number.isInteger(x.count)||x.count<1||typeof x.mastered!=='boolean')continue;
+   const line=getReviewCardLine(x);
+   if(!line||seen.has(norm(line[0])))continue;
+   const stage=Number.isInteger(x.stage)&&x.stage>=0&&x.stage<=4?x.stage:0;
+   const due=stage===4?null:Number.isSafeInteger(x.due)&&x.due>=0?x.due:0;
+   seen.add(norm(line[0]));items.push({zh:line[0],count:Math.min(x.count,99),mastered:x.mastered,stage,due,...(x.source==='grammar'?{source:'grammar',py:line[1],ru:line[2]}:{})});
+   if(items.length===50)break;
+  }
+  return items;
+ }catch{return []}
+}
+function writeDayReview(storage,items){
+ try{storage.setItem(DAY_REVIEW_KEY,JSON.stringify(items));return true}catch{return false}
+}
+export function saveDayReview(storage,zh,consent){
+ if(consent!==true)return false;
+ const line=validReviewLine(zh);if(!line)return false;
+ const items=readDayReview(storage),old=items.find(x=>norm(x.zh)===norm(line[0]));
+ const next={zh:line[0],count:Math.min(99,(old?.count||0)+1),mastered:false,stage:0,due:0};
+ return writeDayReview(storage,[next,...items.filter(x=>norm(x.zh)!==norm(next.zh))].slice(0,50));
+}
+export function masterDayReview(storage,expected,answer,consent){
+ if(consent!==true||norm(expected)!==norm(answer))return false;
+ const items=readDayReview(storage),item=items.find(x=>norm(x.zh)===norm(expected));
+ if(!item)return false;
+ item.mastered=true;return writeDayReview(storage,items);
+}
+export function clearDayReview(storage){
+ try{storage.removeItem(DAY_REVIEW_KEY);return true}catch{return false}
+}
+
+/* Recall schedule: initial exercise, then 1, 3 and 7 days after each success.
+   A guided correction is not an independent recall and earns no schedule credit. */
+export const DAY_REVIEW_INTERVALS=Object.freeze([1,3,7]);
+const DAY_MS=86400000;
+export function dueDayReview(storage,now=Date.now()){
+ return readDayReview(storage).filter(x=>x.stage<4&&x.due<=now)
+  .sort((a,b)=>a.due-b.due||b.count-a.count);
+}
+export function dayReviewStats(storage,now=Date.now()){
+ const cards=readDayReview(storage);
+ return {total:cards.length,due:cards.filter(x=>x.stage<4&&x.due<=now).length,
+  scheduled:cards.filter(x=>x.stage<4&&x.due>now).length,completed:cards.filter(x=>x.stage===4).length};
+}
+export function practiceDayReview(storage,expected,answer,consent,now=Date.now()){
+ if(consent!==true)return {kind:'consent'};
+ if(!Number.isSafeInteger(now)||now<0||now>Number.MAX_SAFE_INTEGER-7*DAY_MS)return {kind:'unavailable'};
+ if(!norm(answer))return {kind:'empty'};
+ const items=readDayReview(storage),item=items.find(x=>x.zh===expected);
+ if(!item||item.stage===4||item.due>now)return {kind:'unavailable'};
+ const match=norm(answer)===norm(expected);
+ if(match){
+  item.stage++;item.mastered=true;
+  item.due=item.stage===4?null:now+DAY_REVIEW_INTERVALS[item.stage-1]*DAY_MS;
+ }else{
+  item.stage=0;item.due=0;item.mastered=false;
+  item.count=Math.min(99,item.count+1);
+ }
+ if(!writeDayReview(storage,items))return {kind:'unavailable'};
+ return {kind:match?'matched':'different',stage:item.stage,due:item.due,line:getReviewCardLine(item)};
 }

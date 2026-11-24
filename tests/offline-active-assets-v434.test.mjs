@@ -28,3 +28,15 @@ test('active cache version matches the offline release manifest',()=>{
  assert.equal(activeVersion,pack.version);
  assert.equal(pack.version>=434,true);
 });
+test('downloaded course includes the exact Panda AI and HSK2 artwork requests',()=>{
+ for(const [source,request] of [
+  ['assets/panda-live-v346.mjs','./assets/panda-character-clean-v349.webp?v=349'],
+  ['assets/panda-ai-approved-layout-v547.css','./panda-exact-stone-v361.webp?v=361'],
+  ['assets/hsk2-life-course-app-v1.js','./assets/approved-course-v390/course-map.png']
+ ]){
+  assert(read(source).includes(request),source+' must use the approved artwork');
+  const url=request.startsWith('./assets/')?request:'./assets/'+request.slice(2);
+  assert(fs.existsSync(path.join(root,url.slice(2).split('?')[0])));
+  assert(pack.files.includes(url),'Offline cache must match '+url+' exactly');
+ }
+});

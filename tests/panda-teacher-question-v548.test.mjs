@@ -34,7 +34,8 @@ test('both free and short dialogue recognize 你是老师吗 without falling thr
  assert.match(core,/say\(teacherReply,!!lookupPandaVoiceClip\(teacherReply\.hanzi\)\)/);
  const begin=core.indexOf("teacherQuestion==='你是老师吗'");
  assert(begin>0);
- const natural=core.indexOf('const natural=respondToNaturalStatement');
+ const natural=core.indexOf('const natural=legacyFamilyAnswer?null:respondToNaturalStatement',begin);
+ assert(natural>begin,'Natural statement handler must exist after teacher handler');
  const nonstop=core.indexOf("if(state.mode==='nonstop'){",begin);
  assert(begin<natural&&begin<nonstop,'Teacher question must be handled before generic fallback and both modes');
 });
@@ -44,9 +45,9 @@ test('Panda AI pages and offline SW keep teacher question and natural audio in v
  const sw=source('../sw.js'),pack=JSON.parse(source('../assets/offline-pack.json'));
  assert(pack.version>=550);
  assert(sw.includes("const CACHE='chinese-coach-pwa-v"+pack.version+"-"));
- for(const page of [html,hsk2])assert(page.includes('panda-hsk2-preview-core-v1.mjs?v=550'));
- assert(sw.includes('panda-hsk2-preview-core-v1.mjs?v=550'));
- assert(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=550'));
+ for(const page of [html,hsk2])assert(page.includes('panda-hsk2-preview-core-v1.mjs?v=552'));
+ assert(sw.includes('panda-hsk2-preview-core-v1.mjs?v=552'));
+ assert(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=552'));
  assert(html.includes('panda-hsk2-preview-ui-v1.mjs?v=546'));
  assert(sw.includes('panda-ai-natural-voice-batch01-v546.mjs?v=546'));
 });

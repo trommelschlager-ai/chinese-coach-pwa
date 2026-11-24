@@ -154,6 +154,32 @@ try{
       await page.screenshot({path:output+'/day-'+name+'.png'});
       await page.locator('#theme').click();
       await page.waitForFunction(()=>document.documentElement.dataset.theme==='night',null,{timeout:5000});
+      // Verify the real Street UI can save a grammar correction and the
+      // ordinary Panda AI history can train the very same local card.
+      await page.locator('#send').click();
+      await page.locator('#entry').fill('他有二个妹妹');
+      await page.locator('#submit').click();
+      await page.locator('#street-correction-review').click();
+      await page.locator('#street-review-consent').check();
+      await page.locator('#street-review-save').click();
+      await page.locator('#street-review-start').click();
+      assert.match(await page.locator('#street-recall-prompt').innerText(),/две младшие сестры/);
+      assert(!await page.locator('#body').innerText().then(t=>t.includes('他有两个妹妹')));
+      await page.locator('#street-recall-close').click();
+      await page.locator('#close').click();
+      await page.goto(base+'/panda-voice-pilot.html',{waitUntil:'domcontentloaded'});
+      await page.waitForFunction(()=>document.querySelector('#pg346-history')&&document.documentElement.dataset.pandaUiReady==='true');
+      await page.locator('#pg346-history').click();
+      await page.locator('#pg-review-summary').click();
+      assert.match(await page.locator('#pg-review-list').innerText(),/他有两个妹妹/);
+      await page.locator('#pg-review-consent').check();
+      await page.locator('#pg-review-start').click();
+      await page.locator('#pg-review-input').fill('他有两个妹妹');
+      await page.locator('#pg-review-form button[type="submit"]').click();
+      assert.match(await page.locator('#pg-review-feedback').innerText(),/Следующее повторение через 1 день/);
+      assert.match(await page.locator('#pg-review-stats').innerText(),/Позже: 1/);
+      await page.screenshot({path:output+'/shared-review-'+name+'.png'});
+      reports.push({viewport:name,sharedReview:'passed'});
       if(viewport.width!==393)reports.push({viewport:name,dayNight:'passed'});
     }finally{await context.close()}
   }

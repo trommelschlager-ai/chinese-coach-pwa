@@ -18,7 +18,13 @@ w.PandaHsk2AudioV330={lookup(zh){return zh==='我起床以后洗脸'?'sample.mp3
 for(const f of ['assets/hsk2-life-course-data-v1.js','assets/hsk2-day-first-data-v1.js','assets/hsk2-day-topic-one-v391.js','assets/hsk2-day-first-ui-v1.js','assets/hsk2-life-course-app-v1.js'])
  w.eval(fs.readFileSync(path.join(root,f),'utf8'));
 const click=selector=>{const b=doc.querySelector(selector);assert.ok(b,'Missing '+selector);assert.ok(!b.disabled,'Disabled '+selector);b.click()};
-click('.approved-start');
+// The public start button now opens «О себе». Enter the day module via
+// the mini-lesson action shared with the current catalog.
+const entry=doc.createElement('button');
+entry.dataset.practiceMini='0:0';
+doc.body.append(entry);
+entry.click();
+entry.remove();
 assert.ok(doc.querySelector('.art-sound'),'Approved first-lesson art must remain');
 click('.art-sound');
 assert.deepEqual(spoken,['起床'],'Clicking image speaker says the exact word, not a whole unrelated sentence');

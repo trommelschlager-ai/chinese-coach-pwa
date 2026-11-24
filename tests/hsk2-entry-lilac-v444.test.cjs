@@ -11,7 +11,7 @@ assert(index.includes('./assets/panda-v130.js?v=444'),'No stale welcome navigati
 assert(js.includes("params.get('view')==='welcome'"),'Explicit welcome overrides paused progress only on entry');
 assert(lesson.includes('hsk2-lilac-pink-v444.css?v=444'));
 assert(lesson.indexOf('hsk2-lilac-pink-v444.css')>lesson.indexOf('hsk2-day-upgrades-v441.css'),'Overrides loaded last');
-assert(lesson.includes('hsk2-life-course-app-v1.js?v=444'));
+assert(/hsk2-life-course-app-v1\.js\?v=(\d+)/.exec(lesson)?.[1]>=444);
 assert(css.includes('#app #pg433.pg433-root')&&css.includes('#app #pg433 .pg433-tabs button.active'));
 assert(css.includes('#app #pg433 .pg433-wordrow')&&css.includes('#app #pg433 .pg433-footer'));
 assert(!css.includes('object-fit:fill'),'Do not distort approved Panda imagery');

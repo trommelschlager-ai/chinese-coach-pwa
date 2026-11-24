@@ -29,10 +29,11 @@ const levelSection=homeJs.slice(homeJs.indexOf('function home(){'),homeJs.indexO
 for(const name of ['Начальный уровень','Продолжающий уровень'])assert(levelSection.includes(name),'Required visible level missing: '+name);
 assert(!levelSection.includes("['3','chat'")&&!levelSection.includes('pg-hsk-unavailable'),'Old HSK3–6 controls must not remain');
 assert(levelSection.includes('./hsk1-map.html'),'HSK1 must open actual map');
-assert(levelSection.includes('./hsk2-life-course.html?view=map'),'HSK2 must open the current ten-theme course');
+assert(levelSection.includes('./hsk2-life-course.html?view=welcome'),'HSK2 must open the current ten-theme course');
 const m=new JSDOM(map).window.document;
 assert.equal(m.querySelectorAll('nav.hotspots > a.lesson').length,7,'Map must preserve seven approved clickable hotspots');
-assert.equal(m.querySelectorAll('nav.hotspots > a[href^="./hsk1-lesson.html?lesson="]').length,2); for(const [n,file] of [[1,'hsk1-first-v189.html'],[2,'hsk1-second-v203.html'],[3,'hsk1-third-v212.html'],[4,'hsk1-fourth-v214.html']])assert.equal(m.querySelector(`nav.hotspots > a[data-num="${n}"]`)?.getAttribute('href'),'./'+file,'HSK1 lesson '+n+' route changed');
+for(const [i,file] of ['hsk1-first-v189.html','hsk1-second-v203.html','hsk1-third-v212.html','hsk1-fourth-v214.html','hsk1-fifth-v227.html','hsk1-family-v231.html','hsk1-weather-v231.html'].entries())
+ assert.equal(m.querySelector('nav.hotspots > a[data-num="'+(i+1)+'"]')?.getAttribute('href').split('?')[0],'./'+file,'HSK1 route changed');
 assert(map.includes('pg-hsk1-path-v371')&&!map.includes('localStorage.clear('),'Approved map must preserve progress without destructive clearing');
 assert(read('assets/panda-reference-v175.css').includes('mountain-stairs.webp'),'Approved reference requires a traveller panda on the mountain route');
 const l=new JSDOM(lesson).window.document;

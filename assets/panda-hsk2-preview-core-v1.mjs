@@ -1,5 +1,6 @@
+import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
-import {respondToNaturalStatement} from './panda-natural-statements-v544.mjs?v=544';
+import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=552';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -133,8 +134,71 @@ function say(line,autoplay=true,analysis=null){
  if(autoplay&&(lookupPandaVoiceClip(line.hanzi||line.panda)||lookupPandaVoiceClip(line.audioKey)))play();
 }
 function learner(input,spoken){record('you',input,spoken?.known?spoken.pinyin:null,spoken?.known?spoken.translation:null,spoken);showLearnerFeedback(spoken);state.answers.push(input);if(state.answers.length>16)state.answers.shift()}
+// Personal correction review: same browser deck as HSK2 My Day, no raw learner speech.
+let personalCorrection=null,personalReviewRoot=null,personalReviewActive=null,personalReviewRetry=null;
+function rememberPersonalCorrection(c,confidence){
+ personalCorrection=null;
+ if(c?.category!=='grammar'||c.uncertain||(typeof confidence==='number'&&confidence<.85))return;
+ personalCorrection={correction:c,confidence,saved:false};
+ if(personalReviewRoot?.querySelector('#pg-review-consent')?.checked)savePersonalCorrection();
+}
+function savePersonalCorrection(){
+ if(!personalCorrection||personalCorrection.saved||!personalReviewRoot?.querySelector('#pg-review-consent')?.checked)return;
+ personalCorrection.saved=saveGrammarReview(storage,personalCorrection.correction,true,personalCorrection.confidence);
+ refreshPersonalReview();
+}
+function refreshPersonalReview(){
+ if(!personalReviewRoot)return;
+ const q=id=>personalReviewRoot.querySelector('#'+id),stats=dayReviewStats(storage);
+ q('pg-review-summary').textContent='📚 Мои ошибки · '+stats.due+' к повторению';
+ q('pg-review-stats').textContent='Всего: '+stats.total+' · Сегодня: '+stats.due+' · Позже: '+stats.scheduled+' · Цикл завершён: '+stats.completed;
+ const consent=q('pg-review-consent').checked;
+ q('pg-review-save').disabled=!consent||!personalCorrection||personalCorrection.saved;
+ q('pg-review-start').disabled=!consent||!stats.due;
+ const list=q('pg-review-list');list.replaceChildren();
+ for(const card of readDayReview(storage)){
+  const line=getReviewCardLine(card);if(!line)continue;
+  const row=document.createElement('p');row.textContent=line.join(' — ')+' · '+(card.stage===4?'Цикл завершён':card.due>Date.now()?'Следующее: '+new Date(card.due).toLocaleDateString('ru-RU'):'К повторению')+' · Ошибок: '+card.count;
+  list.append(row);
+ }
+}
+function mountPersonalReview(){
+ if(personalReviewRoot){refreshPersonalReview();return}
+ const host=$('history-dialog');if(!host)return;
+ const root=document.createElement('details');root.id='pg-personal-review';
+ root.innerHTML='<summary id="pg-review-summary">📚 Мои ошибки</summary><label><input id="pg-review-consent" type="checkbox"> Сохранять исправления и результаты в этом браузере</label><p>Только учебные исправления. Без исходной речи и аудио. Согласие выключается после перезагрузки.</p><p id="pg-review-stats"></p><button id="pg-review-save" type="button">Сохранить последнее исправление</button><button id="pg-review-start" type="button">Тренировать ошибки</button><p id="pg-review-status" role="status"></p><form id="pg-review-form" hidden><p id="pg-review-prompt"></p><input id="pg-review-input" maxlength="100" aria-label="Переведи на китайский" autocomplete="off"><button type="submit">Проверить</button><p id="pg-review-feedback" role="status"></p><button id="pg-review-next" type="button" hidden>Следующая карточка</button><button id="pg-review-close" type="button">Закончить тренировку</button></form><div id="pg-review-list"></div><button id="pg-review-clear" type="button">Удалить личные карточки ошибок</button>';
+ host.insertBefore(root,$('history'));personalReviewRoot=root;
+ const q=id=>root.querySelector('#'+id);
+ const close=()=>{personalReviewActive=null;personalReviewRetry=null;q('pg-review-form').hidden=true;q('pg-review-list').hidden=false;q('pg-review-input').value='';q('pg-review-feedback').textContent='';refreshPersonalReview()};
+ const start=()=>{
+  if(!q('pg-review-consent').checked)return;
+  const due=dueDayReview(storage),card=due.find(x=>x.zh===personalReviewRetry)||due[0];personalReviewRetry=null;
+  if(!card){close();q('pg-review-status').textContent='На сегодня всё повторено.';return}
+  const line=getReviewCardLine(card);if(!line)return;
+  cancelFollowup();stopRecognition();stopAudio();
+  personalReviewActive=card.zh;q('pg-review-form').hidden=false;q('pg-review-list').hidden=true;
+  q('pg-review-prompt').textContent='Переведи на китайский: '+line[2];
+  q('pg-review-input').value='';q('pg-review-input').disabled=false;q('pg-review-feedback').textContent='';
+  q('pg-review-form').querySelector('[type="submit"]').disabled=false;q('pg-review-next').hidden=true;q('pg-review-input').focus();
+ };
+ q('pg-review-consent').addEventListener('change',()=>{if(!q('pg-review-consent').checked)close();refreshPersonalReview()});
+ q('pg-review-save').onclick=savePersonalCorrection;q('pg-review-start').onclick=start;q('pg-review-next').onclick=start;q('pg-review-close').onclick=close;
+ q('pg-review-form').addEventListener('submit',event=>{
+  event.preventDefault();if(!personalReviewActive)return;
+  const result=practiceDayReview(storage,personalReviewActive,q('pg-review-input').value,q('pg-review-consent').checked);
+  if(result.kind==='empty'){q('pg-review-feedback').textContent='Введи ответ.';return}
+  if(!['matched','different'].includes(result.kind)){close();q('pg-review-status').textContent='Карточка недоступна.';return}
+  q('pg-review-feedback').textContent=result.kind==='matched'?(result.stage===4?'✓ Цикл завершён.':'✓ Совпало. Следующее повторение через '+['1 день','3 дня','7 дней'][result.stage-1]):'Ответ не совпал с образцом (другой вариант может быть правильным). '+result.line.join(' — ');
+  personalReviewRetry=result.kind==='different'?personalReviewActive:null;personalReviewActive=null;
+  q('pg-review-input').disabled=true;q('pg-review-form').querySelector('[type="submit"]').disabled=true;
+  q('pg-review-next').hidden=false;q('pg-review-next').textContent=personalReviewRetry?'Попробовать ещё раз':'Следующая карточка';refreshPersonalReview();
+ });
+ q('pg-review-clear').onclick=()=>{if(!window.confirm('Удалить все личные карточки ошибок Panda AI из этого браузера?'))return;close();personalCorrection=null;q('pg-review-status').textContent=clearDayReview(storage)?'Карточки удалены.':'Не удалось удалить карточки.';refreshPersonalReview()};
+ host.addEventListener('close',close);root.addEventListener('toggle',()=>{if(root.open)refreshPersonalReview()});refreshPersonalReview();
+}
 function recordCorrection(input,spoken){
  const c=spoken?.correction;if(!c)return;
+ if(typeof rememberPersonalCorrection==='function')rememberPersonalCorrection(c,state.confidence);
  // Keep the verified model sentence separate from Panda's conversational replies.
  record('example',c.hanzi,c.pinyin,c.ru,{kind:'correction-response',original:input,probable:spoken.probable||c.ru,why:c.why});
  // v452: read the corrected sentence immediately, not only after tapping 🔊.
@@ -357,7 +421,10 @@ function submit(raw){
  // Default beginner chat understands natural statements in both visible tabs;
  // other explicit HSK2 lesson entries retain their assessed question path.
  if(((hsk2&&(hsk2.openChat||(entry.beginnerGreeting&&hsk2.id===101)))||(!hsk2&&state.mode==='nonstop'))&&!state.dayMode){
-  const natural=respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
+  // Keep HSK1 Non-Stop family answer validation and recorded follow-ups intact.
+  // v552 family facts are for the free HSK2 chat route; new 有没有 questions work in both.
+  const legacyFamilyAnswer=!hsk2&&state.mode==='nonstop'&&/^(?:我(?:有一个|有|没有)(?:哥哥|姐姐|弟弟|妹妹)|我(?:的)?(?:哥哥|姐姐|弟弟|妹妹)[一二三四五六七八九十]岁)$/u.test(normalize(input));
+  const natural=legacyFamilyAnswer?null:respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
   if(natural){
    state.naturalAwaiting=natural.next;
    learner(input,natural.spoken);
@@ -720,7 +787,7 @@ $('hear').addEventListener('click',()=>play());$('speed-toggle').addEventListene
 $('mode-short').addEventListener('click',()=>setMode('short'));$('mode-nonstop').addEventListener('click',()=>setMode('nonstop'));
 $('next').addEventListener('click',askNext);$('finish').addEventListener('click',()=>{if(state.dayMode){location.assign(dayReturnHref());return;}cancelFollowup();stopAudio();stopRecognition();state.prompt=null;setMode('short');note('Non-Stop завершён. История осталась в этой вкладке.');});
 $('reset').addEventListener('click',()=>initLesson(conversation.id));$('hint').addEventListener('click',()=>{state.hint=!state.hint;render()});
-for(const [button,dialog] of [['history-open','history-dialog'],['study-open','study-dialog']])$(button).addEventListener('click',()=>{stopRecognition();stopAudio();if(dialog==='study-dialog'){
+for(const [button,dialog] of [['history-open','history-dialog'],['study-open','study-dialog']])$(button).addEventListener('click',()=>{stopRecognition();stopAudio();if(dialog==='history-dialog'){cancelFollowup();mountPersonalReview()}if(dialog==='study-dialog'){
  const studyTopic=lesson(),studyBase=CONVERSATIONS.find(c=>c.id===studyTopic);$('words').replaceChildren();const seenWords=new Set();for(const [zh,py,ru] of [...(curriculum[studyTopic-1]?.words||[]),...(studyBase?.examples||[]).map(w=>[w.hanzi,w.pinyin,w.ru])]){if(seenWords.has(zh))continue;seenWords.add(zh);const row=document.createElement('p');row.textContent=[zh,py,ru].join(' — ');$('words').append(row)}
  const variants=state.mode==='nonstop'?(state.followup||state.prompt?.line)?.accepted||[]:validatedVariants(conversation.id,Math.min(state.step,conversation.lines.length-1),conversation.lines);
  $('variant-choices').replaceChildren();for(const text of variants.slice(0,8)){const b=document.createElement('button');b.textContent=text;b.addEventListener('click',()=>{$('message').value=text;$(dialog).close();$('message').focus()});$('variant-choices').append(b)}

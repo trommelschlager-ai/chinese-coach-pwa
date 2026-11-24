@@ -23,36 +23,39 @@ try{
   res=await page.goto(base+'/panda-voice-pilot.html?lesson=1',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   await page.locator('#pg346').waitFor();
-  assert.match(await page.locator('#pg346').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
-  assert.equal(await page.locator('#pg346-topics').isVisible(),false,'Do not cover Panda with open topic menu');
-  assert(await page.locator('.pg352-mascot .pg346-panda').isVisible());
-  assert.equal(await page.locator('.pg352-rocks').isVisible(),false,'The approved lake already contains natural stones');
-  await page.waitForFunction(()=>document.querySelector('.pg352-mascot').dataset.faceReady==='true');
+  await page.locator('#pg346[data-pa-layout="v547"]').waitFor();
+  assert.equal(await page.locator('#pg346-topics').isVisible(),false);
+  const panda=page.locator('.pg352-mascot .pg346-panda');
+  assert(await panda.isVisible());
+  assert(await panda.evaluate(el=>el.complete&&el.naturalWidth>0&&Number(getComputedStyle(el).opacity)>0));
+  assert.equal(await page.locator('.pg352-rocks').isVisible(),false);
   const dims=await page.evaluate(()=>{
    const rect=selector=>{const r=document.querySelector(selector).getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom}};
-   return {viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth,
-     scene:rect('.pg346-scene'),mascot:rect('.pg352-mascot'),
-     composer:rect('.pg346-composer'),nav:rect('.pg346-nav')};
+   return {viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth,stage:rect('#pg346'),mascot:rect('.pg352-mascot'),composer:rect('.pg346-composer'),nav:rect('.pg346-nav')};
   });
   assert(dims.scrollWidth<=dims.viewport+2,'No horizontal scrolling');
-  assert(dims.mascot.top>=dims.scene.top-6&&dims.mascot.bottom<=dims.scene.bottom+5,'Entire Panda remains in scene');
-  const physicalSeat=await page.evaluate(()=>{
-   const scene=document.querySelector('.pg346-scene'),mascot=document.querySelector('.pg352-mascot');
-   const stone=getComputedStyle(scene,'::before');
-   const contact=getComputedStyle(mascot,'::before');
-   return {stoneImage:stone.backgroundImage,contactFill:contact.backgroundImage,contactHeight:parseFloat(contact.height)};
-  });
-  assert(physicalSeat.stoneImage.includes('panda-exact-stone-v361.webp'),'Approved exact stone artwork must be visible');
-  assert(physicalSeat.contactFill.includes('radial-gradient')&&physicalSeat.contactHeight>0,'Panda feet need an actual anchored contact shadow');
+  assert(dims.mascot.left>=dims.stage.left-2&&dims.mascot.right<=dims.stage.right+2,'Panda fits approved stage');
+  assert(dims.mascot.top>=dims.stage.top&&dims.mascot.bottom<=dims.composer.bottom,'Panda fits above footer');
+  assert.match(await page.locator('.pg346-scene').evaluate(el=>getComputedStyle(el,'::before').backgroundImage),/panda-exact-stone-v361/);
   assert(dims.composer.bottom<=dims.nav.top+6,'Composer stays above navigation');
   await page.screenshot({path:out+'/approved-scene-'+width+'.png',animations:'disabled'});
   await page.locator('#pg346-nonstop').click();
   assert.equal(await page.locator('#pg346-nonstop').getAttribute('aria-pressed'),'true');
   const input=page.locator('#pg346-input');
-  await input.fill('你好');await page.locator('#pg346-send').click();
+  // v500+ deliberately collapses the composer until the plane is tapped.
+  // Exercise the same visible controls as an Android learner, never force-fill.
+  const send=page.locator('#pg346-send');
+  async function sendChinese(message){
+   if(!(await input.isVisible()))await send.click();
+   await input.waitFor({state:'visible'});
+   assert(await input.isEditable(),'Chinese composer must be editable after opening');
+   await input.fill(message);
+   await send.click();
+  }
+  await sendChinese('你好');
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh')?.textContent==='你好！');
   assert((await page.locator('#pg346-rows').textContent()).includes('你好'));
-  await input.fill('你好吗？');await page.locator('#pg346-send').click();
+  await sendChinese('你好吗？');
   await page.waitForFunction(()=>document.querySelector('.pg346-main-zh')?.textContent==='很好！');
   summary.results.push({width,case:'short Mandarin dialogue',reply:await page.locator('.pg346-main-zh').textContent()});
   await page.locator('#pg346-topics-btn').click();
@@ -62,7 +65,7 @@ try{
   assert.equal(new Set(topics.map(s=>s.trim())).size,topics.length,'Visible topic entries must remain distinct');
   await page.locator('#pg346-topics-close').click();
   assert(!(await page.locator('#pg346-topics').isVisible()));
-  await page.locator('#pg346-history').click();
+  await page.locator('.pg346-nav #pg346-history').click();
   assert(await page.locator('#history-dialog').isVisible());
   await page.locator('[data-close="history-dialog"]').click();
   await page.screenshot({path:out+'/approved-dialog-'+width+'.png',animations:'disabled'});

@@ -5,7 +5,9 @@ import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import {PANDA_GRAMMAR_AUDIO_V451} from '../assets/panda-grammar-voice-v451.mjs';
-import {lookupPandaVoiceClip} from '../assets/panda-live-audio.mjs';
+import {lookupPandaVoiceClip} from '../assets/panda-hsk2-preview-audio-v1.mjs';
+
+import {lookupPandaVoiceClip as lookupOriginal} from '../assets/panda-live-audio.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
@@ -23,7 +25,7 @@ test('all 42 approved phrases map one-to-one to actual MP3 files',()=>{
    assert.ok(!seen.has(key),'Duplicate sentence: '+key);seen.add(key);
    const src='./assets/panda-grammar-voice-v451/'+row.file;
    assert.equal(PANDA_GRAMMAR_AUDIO_V451[key],src,'Wrong clip: '+row.hanzi);
-   const found=lookupPandaVoiceClip(row.hanzi);
+   const found=lookupOriginal(row.hanzi);
    assert.equal(found?.src,src,row.hanzi);
    assert.equal(found?.source,'user-luvvoice-grammar-v451',row.hanzi);
    const bytes=fs.readFileSync(path.join(root,'assets/panda-grammar-voice-v451',row.file));
@@ -61,12 +63,21 @@ test('existing user Luvvoice voice and offline versions are preserved',()=>{
   assert.ok(pack.files.includes('./assets/panda-grammar-voice-v451/'+row.file),'Offline entry missing: '+row.file);
  }
  const html=read('panda-voice-pilot.html');
- const screen=read('assets/panda-live-screen-v270.mjs');
- const ui=read('assets/panda-live-v346.mjs');
+ const screen=read('assets/panda-hsk2-preview-core-v1.mjs');
+ const ui=read('assets/panda-hsk2-preview-ui-v1.mjs');
  const audio=read('assets/panda-live-audio.mjs');
- assert.ok(html.includes('panda-live-v346.mjs?v=453'));
- assert.match(html,/panda-live-screen-v270\.mjs\?v=45[12]/);
- assert.ok(screen.includes('panda-live-audio.mjs?v=451'));
- assert.ok(ui.includes('panda-live-audio.mjs?v=451'));
+ assert.ok(/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/.test(html));
+ assert.match(html,/panda-hsk2-preview-core-v1\.mjs\?v=\d+/);
+ assert.ok(screen.includes('panda-hsk2-preview-audio-v1.mjs?v=546'));
+ assert.ok(ui.includes('panda-hsk2-preview-audio-v1.mjs?v=546'));
  assert.ok(audio.includes('PANDA_GRAMMAR_AUDIO_V451'));
+ const approvedFamilyClips={
+  'g014.mp3':'./assets/qa-v411/panda-voice-clips-v422/p180.mp3',
+  'g016.mp3':'./assets/qa-v411/panda-voice-clips-v422/p167.mp3'
+ };
+ for(const row of manifest.items){
+  const src=approvedFamilyClips[row.file]||'./assets/panda-grammar-voice-v451/'+row.file;
+  assert.equal(lookupPandaVoiceClip(row.hanzi)?.src,src,row.hanzi);
+  assert.ok(fs.existsSync(path.join(root,src)),row.hanzi);
+ }
 });
