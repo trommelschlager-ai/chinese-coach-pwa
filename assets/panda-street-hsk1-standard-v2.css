@@ -49,3 +49,10 @@ body[data-street-lesson]{background:linear-gradient(145deg,#fff,#fff8fd 65%,#fce
 [data-street-lesson] .street-standard-line .pg-v414-bubble{background:#f9e7fb}
 [data-street-lesson] .street-standard-line:nth-child(even) .pg-v414-bubble{background:#fff1cc}
 @media(max-height:700px){[data-street-lesson] .street-cover p{margin:4px 0}[data-street-lesson] .street-cover .street-sakura-art{max-height:130px}}
+
+[data-street-lesson] #app .street-cover{position:relative;overflow:hidden}
+[data-street-lesson] .street-cover:before,[data-street-lesson] .street-cover:after{content:'✿';position:absolute;top:0;color:#f6a1cf;font-size:42px;line-height:1;pointer-events:none;opacity:.65}
+[data-street-lesson] .street-cover:before{left:5px;transform:rotate(-18deg)}
+[data-street-lesson] .street-cover:after{right:5px;transform:rotate(18deg)}
+[data-street-lesson] .street-review{display:grid;gap:8px;margin:12px 0}
+[data-street-lesson] .street-review button{min-height:44px;border-radius:18px;border:1px solid #e1b0e8;background:#fff2ff;color:#49136b;font-weight:700}

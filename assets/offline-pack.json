@@ -1,6 +1,6 @@
 {
   "version": 553,
-  "bytes": 81018235,
+  "bytes": 81046109,
   "files": [
     "./assets/panda-street-hsk1-standard-v2.css?v=1",
     "./assets/panda-street-hsk1-standard-v2.js?v=1",
@@ -3429,6 +3429,8 @@
     "./assets/panda-hsk2-my-day-scenario-v1.mjs?v=538",
     "./assets/panda-street-hsk1-standard-v2.js?v=2",
     "./assets/panda-street-hsk1-standard-v2.css?v=2",
-    "./assets/panda-street-sakura-existing-hero.webp"
+    "./assets/panda-street-sakura-existing-hero.webp",
+    "./assets/panda-street-hsk1-standard-v2.js?v=3",
+    "./assets/panda-street-hsk1-standard-v2.css?v=3"
   ]
 }

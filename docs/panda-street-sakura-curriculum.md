@@ -31,3 +31,5 @@ Both lessons: 12 unique expressions; three dialogues use taught expressions; 3 b
 12. 有空约。 — Yǒu kòng yuē. — Как будет время, встретимся.
 
 Tones: 诗、十、始、是. Review regional language 啥、哪儿的呀 with a native speaker.
+
+Revision: dialog pairs reviewed for meaning; first 4 phrases precede the first dialogue; no fabricated audio or tone results. Results count viewed cards, actual recordings and mistakes; mistake review links reopen corresponding exercises. The artwork used by the HTML remains provisional, not the newly uploaded cover.
