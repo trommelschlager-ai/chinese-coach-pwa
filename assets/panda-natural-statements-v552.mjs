@@ -175,6 +175,30 @@ export function respondToNaturalStatement(raw,{awaiting=null}={}){
    'family-hobby',6);
  }
 
+
+ // Extended family counts; existing single-relative replies retain their audio.
+ const counted=/^我有(两|二|三|四|五|六|七|八|九|十)个(哥哥|姐姐|弟弟|妹妹|孩子)$/u.exec(s);
+ if(counted){
+  const nums={两:['liǎng',2],二:['èr',2],三:['sān',3],四:['sì',4],五:['wǔ',5],六:['liù',6],七:['qī',7],八:['bā',8],九:['jiǔ',9],十:['shí',10]};
+  const [np,n]=nums[counted[1]];
+  const rel=counted[2], py=rel==='孩子'?'háizi':relatives[rel][0];
+  const plural={哥哥:['старших брата','старших братьев'],姐姐:['старшие сестры','старших сестёр'],弟弟:['младших брата','младших братьев'],妹妹:['младшие сестры','младших сестёр'],孩子:['ребёнка','детей']};
+  const female=rel==='姐姐'||rel==='妹妹';
+  return result(raw,'Wǒ yǒu '+np+' ge '+py+'.','У меня '+n+' '+plural[rel][n<=4?0:1]+'.',
+   [(female?'她们':'他们')+'多大了？','Tāmen duō dà le?','Сколько им лет?'],'family-ages',6);
+ }
+ const familyExtra={
+  '我没有孩子':['Wǒ méiyǒu háizi.','У меня нет детей.','你家有几口人？','Nǐ jiā yǒu jǐ kǒu rén?','Сколько человек в твоей семье?'],
+  '我有孩子':['Wǒ yǒu háizi.','У меня есть дети.','你有几个孩子？','Nǐ yǒu jǐ ge háizi?','Сколько у тебя детей?'],
+  '我结婚了':['Wǒ jiéhūn le.','Я в браке.','你们结婚多久了？','Nǐmen jiéhūn duōjiǔ le?','Как давно вы в браке?'],
+  '我离婚了':['Wǒ líhūn le.','Я развёлся / развелась.','明白了。你想聊什么？','Míngbai le. Nǐ xiǎng liáo shénme?','Понятно. О чём хочешь поговорить?'],
+  '我一个人住':['Wǒ yí ge rén zhù.','Я живу один / одна.','你住在哪里？','Nǐ zhù zài nǎlǐ?','Где ты живёшь?']
+ };
+ if(Object.hasOwn(familyExtra,s)){
+  const [py,ru,...follow]=familyExtra[s];
+  return result(raw,py,ru,follow,null,6);
+ }
+
  const familyQuestion=/^你有没有(哥哥|姐姐|弟弟|妹妹)$/u.exec(s);
  if(familyQuestion){
   const relation=familyQuestion[1],py=relatives[relation][0];
