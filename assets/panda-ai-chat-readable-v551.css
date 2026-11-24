@@ -97,3 +97,10 @@
   max-height:0!important;
   flex-basis:0!important;
 }
+
+/* Honor v547's smaller chat allocation on short landscape viewports. */
+@media(max-height:650px){
+ #pg346[data-pa-layout="v547"]:not([data-day-scenario="ready"]) .pg346-history{
+  flex-basis:145px!important;height:145px!important;max-height:145px!important;
+ }
+}
