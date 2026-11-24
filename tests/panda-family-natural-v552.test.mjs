@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {respondToNaturalStatement as reply} from '../assets/panda-natural-statements-v552.mjs';
 
 test('family age facts remain truthful with exact Mandarin tones and gender',()=>{
@@ -49,16 +50,19 @@ test('unreviewed ages and relationships stay unknown instead of invented',()=>{
  assert.equal(reply('你有没有火箭'),null);
 });
 
-test('有没有 and 有…吗 give the same correct Panda family facts, never claim a tone score',()=>{
+test('有没有 has reviewed consistent Panda family facts without intercepting 你有…吗',()=>{
  for(const [relative,answer] of [['哥哥','我有一个哥哥。'],['姐姐','我没有姐姐。'],['弟弟','我没有弟弟。'],['妹妹','我有一个妹妹。']]){
   const a=reply('你有没有'+relative+'？');
-  const b=reply('你有'+relative+'吗？');
-  assert(a&&b,'unrecognized '+relative);
+  assert(a,'unrecognized '+relative);
   assert.equal(a.kind,'question');
   assert.equal(a.reply.hanzi,answer);
-  assert.equal(b.reply.hanzi,answer);
   assert.equal(a.spoken.toneVerified,false);
   assert(a.spoken.pinyin.includes('yǒu méiyǒu'));
-  assert(b.spoken.pinyin.includes('ma?'));
+  assert.equal(reply('你有'+relative+'吗？'),null,'Legacy lesson question must not be hijacked');
  }
+});
+test('main conversation defers legacy family answers to existing HSK1 Non-Stop audio',()=>{
+ const core=readFileSync(new URL('../assets/panda-hsk2-preview-core-v1.mjs',import.meta.url),'utf8');
+ assert(core.includes("const legacyFamilyAnswer=!hsk2&&state.mode==='nonstop'"));
+ assert(core.includes("const natural=legacyFamilyAnswer?null:respondToNaturalStatement"));
 });
