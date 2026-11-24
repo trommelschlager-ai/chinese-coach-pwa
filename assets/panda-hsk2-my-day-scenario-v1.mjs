@@ -1,7 +1,7 @@
 /* Panda Go: HSK2 我的⼀天 scenario. Opt-in URL; approved scenery/mascot untouched.
    Browser ASR is transcription only, never acoustic tone grading. */
 import {lookupApprovedPandaVoice} from './panda-approved-voice-registry-v516.mjs';
-import {understandDayAnswer} from './panda-hsk2-day-understanding-v1.mjs?v=6';
+import {understandDayAnswer,getDayCorrectionLine} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {respondToPandaChat} from './panda-hsk2-smalltalk-v16.mjs?v=3';
 if(new URLSearchParams(location.search).get('scenario')==='hsk2-my-day'){
 const STORY=[
@@ -158,6 +158,8 @@ function init(stage){
  if(entry&&finishButton)entry.append(finishButton);
  const $=id=>stage.querySelector('#'+id);
  let phase='ready',i=0,round=0,reviewIndex=0,answers=Array(5).fill(null),notes=[],errors=[],spoken=[],monologueSent=[],last=null,sequence=0,player=null,recognizer=null,silence=null,attempt=0,paused=false,consent=false,chatContext={awaiting:null,turn:0},chatResume=null;const missingAudio=new Set();
+ let pendingCorrection=null;
+ const syncRetry=()=>{const button=$('day-answer-primary');const retry=phase==='questions'&&pendingCorrection?.index===i;button.textContent=retry?'↻ Попробовать ещё раз':phase==='freechat'?'✓ Отправить':'✓ Ответить';button.setAttribute('aria-label',retry?'Отправить исправленный ответ':'Отправить ответ Панде');};
  let playbackRate=1; // Normal speed is the learner-approved default; slow and fast are opt-in.
  const status=s=>{$('day-status').textContent=s};
  let chatCount=0;
@@ -283,7 +285,7 @@ function init(stage){
   show('day-input',['questions','freechat'].includes(p));show('day-send',['questions','monologue','freechat'].includes(p));
   show('day-long',p==='monologue');show('day-mic',['questions','monologue','freechat'].includes(p));
   show('day-answer-primary',['questions','freechat'].includes(p));
-  $('day-answer-primary').textContent=p==='freechat'?'✓ Отправить':'✓ Ответить';
+  syncRetry();
   $('day-input').placeholder=p==='freechat'?'Напиши вопрос по-китайски…':'Ответ на китайском…';
   chatModeButton.setAttribute('aria-pressed',String(p==='freechat'));
   chatModeButton.title=p==='freechat'?'Вернуться к уроку':'Свободный разговор';
@@ -382,7 +384,9 @@ function init(stage){
  }
  function countdown(){
   clearTimeout(silence);const idx=i;
-  silence=setTimeout(async()=>{
+   // A grammar correction must never be silently skipped by a timeout.
+   if(pendingCorrection?.index===i)return;
+   silence=setTimeout(async()=>{
    if(phase!=='questions'||i!==idx||recognizer)return;
    // Never auto-skip while the student is typing/editing an answer.
    if($('day-input').value.trim()||document.activeElement===$('day-input')){
@@ -396,7 +400,7 @@ function init(stage){
   },8000);
  }
  async function ask(idx){
-  stop();paused=false;i=idx;attempt=0;
+  stop();paused=false;i=idx;attempt=0;pendingCorrection=null;
   if(idx===5){finishQuestions();return}
   stagePhase('questions');line(Q[idx].slice(0,3));status('Ответь свободно. Тоны по тексту не оцениваются.');
   const token=++sequence;await speak(Q[idx]);if(token===sequence)countdown();
@@ -435,7 +439,7 @@ function init(stage){
    return;
   }
   if(result.kind==='accepted'){
-   answers[idx]=result.value;$('day-input').value='';
+   answers[idx]=result.value;$('day-input').value='';pendingCorrection=null;syncRetry();
    line([result.value,'','Твой ответ']);
    addChatMessage('panda','✓ '+result.message);
    status('✓ Ответ отправлен и принят. '+result.message);
@@ -451,12 +455,14 @@ function init(stage){
   if(result.kind==='correct'){
    if(!notes.includes('Исправление: '+result.correction))notes.push('Исправление: '+result.correction);
    if(!errors.includes(result.correction))errors.push(result.correction);
-   line([result.correction,'','Время ставим перед глаголом.']);
-   const response='💡 '+result.message+' Правильно: '+result.correction;
-   addChatMessage('panda',response);
-   status('✓ Отправлено. '+response);
-   const token=++sequence;
-   speak([result.correction,'','']).then(()=>{if(token===sequence)countdown()});
+   const correctionLine=getDayCorrectionLine(result.correction);
+    pendingCorrection={index:idx,line:correctionLine,message:result.message};
+    $('day-input').value='';syncRetry();line(correctionLine);
+    const response='💡 '+result.message+' Правильно: '+correctionLine.filter(Boolean).join(' — ');
+    addChatMessage('panda',response);
+    status(result.message+' Введи или произнеси исправленный ответ.'+(approvedClips(correctionLine[0]).length?'':' Точной MP3 пока нет.'));
+    // Stay on this question until a new answer is accepted or the learner explicitly skips.
+    speak(correctionLine);
    return;
   }
   if(result.kind==='other-question'){
@@ -576,8 +582,8 @@ function init(stage){
   const restore=saved?.phase||'ready';
   if(restore==='questions'){
    i=saved.idx;stagePhase('questions');
-   line(Q[i].slice(0,3));$('day-input').value=saved.lastInput||'';
-   status('Вернулись к вопросу '+(i+1)+' из 5. Можно повторить вопрос или ответить.');
+   line(pendingCorrection?.index===i?pendingCorrection.line:Q[i].slice(0,3));$('day-input').value=saved.lastInput||'';
+    status(pendingCorrection?.index===i?pendingCorrection.message+' Повтори исправленный ответ.':'Вернулись к вопросу '+(i+1)+' из 5. Можно повторить вопрос или ответить.');
   }else if(restore==='monologue'){
    stagePhase('monologue');line(saved.last||['我的一天','Wǒ de yì tiān','Мой день.']);
    $('day-long').value=saved.lastLong||'';status('Твой рассказ сохранён. Продолжай.');
@@ -671,10 +677,11 @@ function init(stage){
  async function replayQuestion(){
   if(phase!=='questions')return;
   stop();paused=false;
-  line(Q[i].slice(0,3));
-  status('🔊 Слушай вопрос ещё раз, затем ответь.');
-  const token=sequence;
-  await speak(Q[i].slice(0,3));
+  const current=pendingCorrection?.index===i?pendingCorrection.line:Q[i].slice(0,3);
+   line(current);
+   status(pendingCorrection?.index===i?'Повтори исправленный ответ.':'🔊 Слушай вопрос ещё раз, затем ответь.');
+   const token=sequence;
+   await speak(current);
   if(token===sequence)countdown();
  }
  async function reviewExample(n){
@@ -728,7 +735,7 @@ function init(stage){
    stop();const token=sequence;
    await speak(['我们再试一次。','Wǒmen zài shì yí cì.','Давай попробуем ещё раз.']);
    if(token!==sequence)return;
-   round++;answers=Array(5).fill(null);notes=[];errors=[];spoken=[];i=0;transcript.hidden=true;begin();
+   round++;answers=Array(5).fill(null);notes=[];errors=[];spoken=[];i=0;pendingCorrection=null;transcript.hidden=true;begin();
  };
  $('day-show-py').onclick=()=>{stage.dataset.dayPy=String(stage.dataset.dayPy!=='true');$('day-show-py').setAttribute('aria-pressed',stage.dataset.dayPy)};
  $('day-show-ru').onclick=()=>{stage.dataset.dayRu=String(stage.dataset.dayRu!=='true');$('day-show-ru').setAttribute('aria-pressed',stage.dataset.dayRu)};
