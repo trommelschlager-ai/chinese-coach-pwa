@@ -42,9 +42,9 @@ test('default beginner entry is natural in both tabs; explicit scored HSK2 still
 
 test('v550 is loaded on both Panda AI pages and versioned by PWA service worker',()=>{
  assert(pack.version>=550);
- for(const page of [html,preview])assert(page.includes('panda-hsk2-preview-core-v1.mjs?v=550'));
+ for(const page of [html,preview])assert(page.includes('panda-hsk2-preview-core-v1.mjs?v=552'));
  assert(sw.includes("const CACHE='chinese-coach-pwa-v"+pack.version+"-"));
- assert(sw.includes('panda-hsk2-preview-core-v1.mjs?v=550'));
- assert(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=550'));
+ assert(sw.includes('panda-hsk2-preview-core-v1.mjs?v=552'));
+ assert(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=552'));
  assert(html.includes('panda-hsk2-preview-ui-v1.mjs?v=546'));
 });
