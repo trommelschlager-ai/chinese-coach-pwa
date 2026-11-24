@@ -199,10 +199,80 @@ function introductionConversation(raw,s,awaiting){
  }
  return null;
 }
+// Family dialogue: remember the subject of the immediately preceding question.
+// Do not infer a relative's age or existence from an unrelated short answer.
+const familyMembers={
+ 哥哥:['gēge','старший брат','старшего брата','старшему брату','他','старших братьев'],
+ 姐姐:['jiějie','старшая сестра','старшей сестры','старшей сестре','她','старших сестёр'],
+ 弟弟:['dìdi','младший брат','младшего брата','младшему брату','他','младших братьев'],
+ 妹妹:['mèimei','младшая сестра','младшей сестры','младшей сестре','她','младших сестёр'],
+ 爸爸:['bàba','папа','папы','папе','他','отцов'],
+ 妈妈:['māma','мама','мамы','маме','她','матерей'],
+ 儿子:['érzi','сын','сына','сыну','他','сыновей'],
+ 女儿:["nǚ'ér",'дочь','дочери','дочери','她','дочерей']
+};
+function familyConversation(raw,s,awaiting){
+ const r=(py,ru,a,next=null,kind='statement')=>({...result(raw,py,ru,a,next,6),kind,domain:'family'});
+ const sizeQ=['明白了。你家有几口人？','Míngbai le. Nǐ jiā yǒu jǐ kǒu rén?','Понятно. Сколько человек в твоей семье?'];
+ const familyQ=['你有兄弟姐妹吗？','Nǐ yǒu xiōngdì jiěmèi ma?','У тебя есть братья или сёстры?'];
+ const nextTopic=['谢谢你告诉我。你喜欢做什么？','Xièxie nǐ gàosu wǒ. Nǐ xǐhuan zuò shénme?','Спасибо, что рассказал(а). Чем любишь заниматься?'];
+ const ageQ=m=>['你'+m+'几岁？','Nǐ '+familyMembers[m][0]+' jǐ suì?','Сколько лет твоему родственнику: '+familyMembers[m][1]+'?'];
+ const hobbyQ=m=>[familyMembers[m][4]+'喜欢做什么？','Tā xǐhuan zuò shénme?','Что '+(familyMembers[m][4]==='她'?'она':'он')+' любит делать?'];
+ const num=x=>x==='两'?[2,'liǎng']:introAge(x);
+ const years=n=>n%100>=11&&n%100<=14?'лет':n%10===1?'год':n%10>=2&&n%10<=4?'года':'лет';
+ const counted=(x,measure)=>{const a=num(x);if(!a)return null;return [a[0],a[0]===1?'yì':a[0]===2?'liǎng':a[1]]};
+ const age=/^我(的)?(哥哥|姐姐|弟弟|妹妹|爸爸|妈妈|儿子|女儿)(今年)?([一二三四五六七八九十0-9]+)岁$/u.exec(s);
+ const ctxMember=typeof awaiting==='string'&&awaiting.startsWith('family-age:')?awaiting.slice(11):null;
+ const bareAge=ctxMember&&Object.hasOwn(familyMembers,ctxMember)?/^([一二三四五六七八九十0-9]+)岁$/u.exec(s):null;
+ if(age||bareAge){
+  const m=age?age[2]:ctxMember,a=num(age?age[4]:bareAge[1]);if(!a)return null;
+  const [n,p0]=a,p=n===1?'yí':p0,[mp,, ,dat,gender]=familyMembers[m];
+  const spoken=age?'Wǒ '+(age[1]?'de ':'')+mp+' '+(age[3]?'jīnnián ':'')+p+' suì.':p[0].toUpperCase()+p.slice(1)+' suì.';
+  const aZh=age?age[4]:bareAge[1],h=hobbyQ(m),poss=gender==='她'?'Моей':'Моему';
+  return r(spoken,poss+' '+dat+' '+n+' '+years(n)+'.',['你'+m+aZh+'岁！'+h[0],'Nǐ '+mp+' '+p+' suì! '+h[1],(gender==='她'?'Твоей ':'Твоему ')+dat+' '+n+' '+years(n)+'! '+h[2]],'family-hobby:'+m);
+ }
+ const have=/^我(没有|有)(?:([一二两三四五六七八九十]+)个)?(哥哥|姐姐|弟弟|妹妹|儿子|女儿|爸爸|妈妈|孩子|兄弟姐妹)$/u.exec(s);
+ if(have){
+  const [,verb,count,m]=have,negative=verb==='没有';if(negative&&count)return null;
+  const mem=familyMembers[m]|| (m==='孩子'?['háizi','ребёнок','детей']:['xiōngdì jiěmèi','братья и сёстры','братьев и сестёр']);
+  const qty=count?counted(count,'个'):null;if(count&&!qty)return null;
+  const cp=qty?(qty[0]===1?'yí':qty[1])+' ge ':'';
+  const oneRu=mem[4]==='她'?'одна ':'один ';
+  const ru=negative?'У меня нет '+mem[2]+'.':qty&&qty[0]>1?'У меня '+qty[0]+' '+(mem[5]||mem[2])+'.':'У меня есть '+(qty?oneRu:'')+(m==='孩子'?'ребёнок':mem[1])+'.';
+  const singular=Object.hasOwn(familyMembers,m)&&(!qty||qty[0]===1);
+  return r('Wǒ '+(negative?'méiyǒu ': 'yǒu ')+cp+mem[0]+'.',ru,negative||!singular?sizeQ:ageQ(m),negative||!singular?'family-size':'family-age:'+m);
+ }
+ const pair=/^我有一个(哥哥|姐姐|弟弟|妹妹)和一个(哥哥|姐姐|弟弟|妹妹)$/u.exec(s);
+ if(pair&&pair[1]!==pair[2])return r('Wǒ yǒu yí ge '+familyMembers[pair[1]][0]+' hé yí ge '+familyMembers[pair[2]][0]+'.','У меня есть '+familyMembers[pair[1]][1]+' и '+familyMembers[pair[2]][1]+'.',sizeQ,'family-size');
+ const size=/^(我家有)?([一二两三四五六七八九十0-9]+)(口|个)人$/u.exec(s);
+ if(size&&(size[1]||awaiting==='family-size')){
+  const a=counted(size[2],size[3]);if(!a||a[0]>30)return null;
+  const p=a[0]===1?(size[3]==='口'?'yì':'yí'):a[1],mp=size[3]==='口'?'kǒu':'ge';
+  return r((size[1]?'Wǒ jiā yǒu ':p[0].toUpperCase()+p.slice(1)+' ')+(size[1]?p+' ':'')+mp+' rén.','В моей семье '+a[0]+' человек.',familyQ,'family-siblings');
+ }
+ if(s==='我和父母住在一起')return r('Wǒ hé fùmǔ zhù zài yìqǐ.','Я живу вместе с родителями.',familyQ,'family-siblings');
+ const q=/^你(?:有没有(哥哥|姐姐|弟弟|妹妹|爸爸|妈妈|孩子|兄弟姐妹)|有(哥哥|姐姐|弟弟|妹妹|爸爸|妈妈|孩子|兄弟姐妹)吗|有几个(哥哥|姐姐|弟弟|妹妹))$/u.exec(s);
+ if(q){
+  const m=q[1]||q[2]||q[3],mem=familyMembers[m]||(m==='孩子'?['háizi','дети','детей']:['xiōngdì jiěmèi','братья и сёстры','братьев и сестёр']);
+  const has=['哥哥','妹妹','爸爸','妈妈','兄弟姐妹'].includes(m);
+  const ans=m==='兄弟姐妹'?['我有一个哥哥和一个妹妹。','Wǒ yǒu yí ge gēge hé yí ge mèimei.','У меня есть старший брат и младшая сестра.']:has?['我有'+(['爸爸','妈妈'].includes(m)?'':'一个')+m+'。','Wǒ yǒu '+(['爸爸','妈妈'].includes(m)?'':'yí ge ')+mem[0]+'.','У меня есть '+mem[1]+'.']:['我没有'+m+'。','Wǒ méiyǒu '+mem[0]+'.','У меня нет '+mem[2]+'.'];
+  return r('Nǐ '+(q[1]?'yǒu méiyǒu ':q[3]?'yǒu jǐ ge ':'yǒu ')+mem[0]+(q[2]?' ma?':'?'),q[3]?'Сколько у тебя '+mem[5]+'?':'У тебя есть '+mem[1]+'?',ans,null,'question');
+ }
+ if(s==='你家有几口人')return r('Nǐ jiā yǒu jǐ kǒu rén?','Сколько человек в твоей семье?',['我家有五口人。','Wǒ jiā yǒu wǔ kǒu rén.','В моей семье пять человек.'],null,'question');
+ if(typeof awaiting==='string'&&awaiting.startsWith('family-hobby:')){
+  const m=awaiting.slice(13),h=/^(他|她)喜欢(跑步|游泳|看书|听音乐|喝咖啡)$/u.exec(s);
+  if(h&&Object.hasOwn(familyMembers,m)&&h[1]===familyMembers[m][4]){
+   const v=hobbies[h[2]];
+   return r('Tā xǐhuan '+v[0]+'.',(h[1]==='她'?'Она':'Он')+' любит '+v[1]+'.',nextTopic,'hobby');
+  }
+ }
+ return null;
+}
 export function respondToNaturalStatement(raw,{awaiting=null}={}){
  const s=norm(raw);if(!s)return null;
  const work=workConversation(raw,s,awaiting);if(work)return work;
  const intro=introductionConversation(raw,s,awaiting);if(intro)return intro;
+ const family=familyConversation(raw,s,awaiting);if(family)return family;
 
  // v552 Android screenshots (24 Nov): common compliments and conversational
  // reactions are complete, valid Chinese — never route them to the
