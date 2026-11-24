@@ -137,3 +137,47 @@ test('Panda AI tone practice pauses dialogue before opening an opt-in local micr
  assert(ui.includes("if(specialToneScenario||typeof bridge.pauseForTonePractice!=='function')toneEntry.hidden=true"));
  assert(core.includes('contentVerified:false,toneVerified:false'));
 });
+
+test('free phrase plots measured F0 with gaps and never a syllable grade',()=>{
+ const page=read('panda-tone-free-practice.html');
+ const start=page.indexOf('function render(points)'),end=page.indexOf('function finish(',start);
+ assert(start>=0&&end>start);
+ let curve='';
+ const render=new Function('$',page.slice(start,end)+'\nreturn render;')(()=>({setAttribute:(name,value)=>{curve=value}}));
+ assert.equal(render([]),false);assert.equal(curve,'');
+ const pts=Array.from({length:12},(_,i)=>({t:i*.032+(i>=6?.3:0),hz:180+i*2}));
+ assert.equal(render(pts),true);
+ assert.equal((curve.match(/M/g)||[]).length,2,'gap must not be connected');
+ assert.equal((curve.match(/L/g)||[]).length,10);
+ assert(page.includes('getUserMedia'));assert(page.includes('getTracks().forEach(t=>t.stop())'));
+ assert(page.includes('Нет автоматического деления на слоги'));
+ assert(!/fetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket/.test(page));
+ assert(page.includes('if(s.heard>0&&saved)'));
+});
+test('Street and My Day share isolated free phrase mode without changing dialogue voices',()=>{
+ const street=read('panda-street-ai-preview.html'),day=read('assets/panda-hsk2-my-day-scenario-v1.mjs'),ex=read('panda-tone-exercises.html');
+ assert(street.includes('panda-tone-free-practice.html?street=1'));
+ assert(street.includes('++responseSeq;++voiceToken;stopStreetRecognition()'));
+ assert(day.includes("frame.src='./panda-tone-free-practice.html'"));
+ assert(day.includes('stop();stopRecognition();bridge?.pauseForTonePractice?.()'));
+ assert(day.includes('toneButton.onclick=openDayTone'));
+ assert(ex.includes('href="./panda-tone-free-practice.html"'));
+});
+test('rule error statistics require consent and can be erased',async()=>{
+ const dom=new JSDOM(read('panda-tone-exercises.html'),{url:'https://example.com/panda-tone-exercises.html',runScripts:'outside-only'});
+ const prev={document:globalThis.document,window:globalThis.window};
+ globalThis.document=dom.window.document;globalThis.window=dom.window;
+ try{
+  await import('../assets/panda-tone-exercises-v469.mjs?private-tone-stats');
+  const doc=dom.window.document,key='panda-tone-rule-stats-v1';
+  doc.querySelector('[data-context-tone="3"]').click();
+  assert.equal(dom.window.localStorage.getItem(key),null);
+  doc.getElementById('context-restart').click();
+  doc.getElementById('tone-stats-opt-in').click();
+  doc.querySelector('[data-context-tone="3"]').click();
+  assert.deepEqual(JSON.parse(dom.window.localStorage.getItem(key)).stats[0],{total:1,wrong:1});
+  assert.match(doc.getElementById('tone-stats-result').textContent,/3\+3: ошибок 1 из 1/);
+  doc.getElementById('tone-stats-clear').click();
+  assert.equal(dom.window.localStorage.getItem(key),null);
+ }finally{globalThis.document=prev.document;globalThis.window=prev.window;dom.window.close()}
+});
