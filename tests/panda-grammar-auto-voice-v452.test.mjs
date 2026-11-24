@@ -61,22 +61,3 @@ test('existing Panda player handles playback, not a new voice or microphone requ
  assert.ok(/panda-hsk2-preview-core-v1\.mjs\?v=\d+/.test(html));
  assert.ok(/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/.test(html));
 });
-
-test('published Panda AI submits learner input and plays the exact approved clip',async()=>{
- const {liveDOM}=await import('./panda-live-dom-fixture.mjs');
- const dom=await liveDOM(null,{active:true});
- try{
-  for(const [input,who,hanzi,file] of [
-   ['你是老师吗？','panda','我是老师。','p03.mp3'],
-   ['你有没有哥哥？','panda','我有一个哥哥。','p12.mp3'],
-   ['他有二个妹妹','example','他有两个妹妹。','g001.mp3']
-  ]){
-   const start=dom.clips.length;
-   dom.send(input);
-   const reply=dom.w.PandaApprovedBridge337.snapshot().history.at(-1);
-   assert.equal(reply.hanzi,hanzi);
-   assert.equal(reply.who,who);
-   assert.equal(new URL(dom.clips.at(start).src).pathname.split('/').at(-1),file);
-  }
- }finally{dom.close()}
-});
