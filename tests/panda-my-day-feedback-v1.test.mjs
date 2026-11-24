@@ -241,3 +241,35 @@ test('active Panda correction hook rejects uncertain and meaning-only cases even
  assert.equal(readDayReview(h.storage).length,0);
  assert.equal(h.logs.length,3);
 });
+
+import {createStreetBrain} from '../assets/panda-street-shared-brain-v1.mjs';
+test('Street real grammar route shares the same deck and requires consent',()=>{
+ const st=memoryStorage(),brain=createStreetBrain({storage:st});
+ brain.start('nonstop');
+ const reply=brain.answer('他有二个妹妹');
+ assert.equal(reply.kind,'correction');
+ assert.equal(reply.reviewCorrection.hanzi,'他有两个妹妹。');
+ assert.equal(brain.review.save(reply.reviewCorrection,false),false);
+ assert.equal(brain.review.save(reply.reviewCorrection,true),true);
+ assert.equal(readDayReview(st)[0].zh,'他有两个妹妹。');
+ assert.equal(brain.review.stats().due,1);
+ assert.equal(brain.review.practice(reply.reviewCorrection.hanzi,'他有两个妹妹',true).kind,'matched');
+ assert.equal(dayReviewStats(st).scheduled,1);
+});
+test('Street never stages an unconfirmed speech transcript for the review deck',()=>{
+ const brain=createStreetBrain({storage:memoryStorage()});
+ brain.start('nonstop');
+ const reply=brain.answer('他有二个妹妹',{fromSpeech:true});
+ assert.equal(reply.kind,'correction');
+ assert.equal(reply.reviewCorrection,null);
+ assert.equal(brain.review.stats().total,0);
+});
+test('Street review sees existing My Day cards and clears the same local deck',()=>{
+ const st=memoryStorage();saveDayReview(st,PHRASE,true);
+ const brain=createStreetBrain({storage:st});
+ assert.equal(brain.review.cards()[0].line[0],PHRASE);
+ assert.equal(brain.review.practice(PHRASE,PHRASE,true).kind,'matched');
+ assert.equal(dayReviewStats(st).scheduled,1);
+ assert.equal(brain.review.clear(),true);
+ assert.equal(readDayReview(st).length,0);
+});
