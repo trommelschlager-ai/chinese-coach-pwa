@@ -76,16 +76,18 @@ const fs=require('node:fs');
   assert.equal(coachSentence(source,{allowed:[1,2,6],prompt:weatherPrompt}),null);
  }
  assert.equal(coachSentence('下雨',{allowed:base.allowed,prompt:{...weatherPrompt,time:'明天',hanzi:'明天天气怎么样？'}}),null);
- const html=fs.readFileSync('panda-voice-pilot.html','utf8');
- const activeScreen=html.match(/\.\/assets\/panda-live-screen-v270\.mjs\?v=\d+/)?.[0];
- assert(activeScreen,'Panda live screen must have an actual versioned HTML import');
- for(const p of [
-  './assets/panda-sentence-coach-v319.mjs?v=319',
-  './assets/panda-live-dialogue-v272.mjs?v=434',
-  activeScreen,
-  './assets/panda-hsk1-questions-v281.mjs?v=319',
-  './panda-voice-pilot.html?v=326'
- ]) assert(JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8')).files.includes(p),p);
- assert(fs.readFileSync('panda-voice-pilot.html','utf8').includes('<span class="release">v326</span>'));
+ const page=fs.readFileSync('panda-voice-pilot.html','utf8');
+ const activeCore=page.match(/\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0];
+ assert(activeCore,'Panda must load the current versioned conversation core');
+ const core=fs.readFileSync(activeCore.slice(2).split('?')[0],'utf8');
+ const activeDialogue=core.match(/\.\/panda-live-dialogue-v272\.mjs\?v=\d+/)?.[0];
+ assert(activeDialogue,'Current conversation core must use the tested dialogue engine');
+ const dialogue=fs.readFileSync('assets/'+activeDialogue.slice(2).split('?')[0],'utf8');
+ assert(dialogue.includes('./panda-sentence-coach-v319.mjs?v=319'),'Dialogue engine must load the tested behavior');
+ const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
+ for(const url of [activeCore,'./assets/'+activeDialogue.slice(2),'./assets/panda-sentence-coach-v319.mjs?v=319',
+  './assets/panda-hsk1-questions-v281.mjs?v=319','./panda-voice-pilot.html?v=326'
+ ])assert(offline.files.includes(url),'Offline material missing: '+url);
+ assert(page.includes('<span class="release">v326</span>'));
  console.log('PASS Panda sentence coach v319: 17 safe phrase expansions + 4 contextual weather prompts, audio B02/B04/B05 and old HSK1 preserved.');
 })().catch(err=>{console.error(err);process.exitCode=1});

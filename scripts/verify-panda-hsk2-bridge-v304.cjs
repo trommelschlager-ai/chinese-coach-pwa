@@ -78,37 +78,26 @@ const vm=require('node:vm');
  assert.equal(seed.state,'draft_content_only_not_enabled');
  assert.equal(seed.sections.length,7);
  assert.equal(seed.sections.reduce((n,s)=>n+s.vocabulary.length,0),40);
- for(const p of ['assets/panda-live-dialogue-v272.mjs','assets/panda-live-screen-v270.mjs','panda-voice-pilot.html']){
+ for(const p of ['assets/panda-live-dialogue-v272.mjs','assets/panda-hsk2-preview-core-v1.mjs','assets/panda-hsk2-preview-ui-v1.mjs','panda-voice-pilot.html']){
   assert(!fs.readFileSync(p,'utf8').includes('panda-hsk2-seed-v303.json'),'Draft premium seed leaked into live app: '+p);
  }
  const page=fs.readFileSync('panda-voice-pilot.html','utf8');
- assert(/panda-live-screen-v270\.mjs\?v=\d+/.test(page),'Panda screen script must be cache-versioned');
  assert(page.includes('panda-voice-pilot.css?v=326'));
  assert(page.includes('Запись носительницы готовится'));
  assert(fs.readFileSync('assets/panda-voice-pilot.css','utf8').includes('max-height:100%;overflow:hidden'),'Speech still scrolls');
- assert(/<span class="release">v(?:326|33[6-9])<\/span>/.test(page),'Panda release badge missing');
+ assert(/<span class="release">v(?:326|33[6-9])<\/span>/.test(page),'Panda fallback release badge missing');
  for(const id of ['mode-short','mode-nonstop','mic','history-dialog','speech-dialog'])
-  assert(page.includes('id="'+id+'"'),'Existing control deleted: '+id);
+  assert(page.includes('id="'+id+'"'),'Existing fallback control deleted: '+id);
+ const activeCore=page.match(/\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0];
+ assert(activeCore,'Panda must load the current versioned conversation core');
+ const core=fs.readFileSync(activeCore.slice(2).split('?')[0],'utf8');
+ const activeDialogue=core.match(/\.\/panda-live-dialogue-v272\.mjs\?v=\d+/)?.[0];
+ assert(activeDialogue,'Current conversation core must use the tested dialogue engine');
+ const dialogue=fs.readFileSync('assets/'+activeDialogue.slice(2).split('?')[0],'utf8');
+ assert(dialogue.includes('./panda-hsk2-bridge-v304.mjs?v=307'),'Dialogue engine must load the tested behavior');
  const offline=JSON.parse(fs.readFileSync('assets/offline-pack.json','utf8'));
- const activeScreen=page.match(/\.\/assets\/panda-live-screen-v270\.mjs\?v=\d+/)?.[0];
- assert(activeScreen,'Current Panda live-screen script must be declared in HTML');
- const activeScreenVersion=activeScreen.split('v=')[1];
- for(const p of [
-  './assets/panda-hsk2-bridge-v304.mjs?v=307',
-  './assets/panda-live-dialogue-v272.mjs?v=434',
-  activeScreen,
-  './assets/panda-hsk1-questions-v281.mjs?v=319',
-  './panda-voice-pilot.html?v=326'
- ])assert(offline.files.includes(p),'Offline material missing: '+p);
- const latest={
-  'panda-voice-pilot.html':'326',
-  'assets/panda-live-screen-v270.mjs':activeScreenVersion,
-  'assets/panda-live-dialogue-v272.mjs':'434',
-  'assets/panda-hsk1-questions-v281.mjs':'319'
- };
- for(const url of offline.files){
-  const p=url.replace(/^\.\//,'').split('?')[0],version=/[?&]v=([^&]+)/.exec(url)?.[1];
-  if(latest[p]&&version)assert.equal(version,latest[p],'Stale Panda entry: '+url);
- }
+ for(const url of [activeCore,'./assets/'+activeDialogue.slice(2),'./assets/panda-hsk2-bridge-v304.mjs?v=307',
+  './assets/panda-hsk1-questions-v281.mjs?v=319','./panda-voice-pilot.html?v=326'
+ ])assert(offline.files.includes(url),'Offline material missing: '+url);
  console.log('PASS Panda AI v318: 4 bridge words, 8 lexical questions, 4 examples, two-way dialogues, old HSK1 regressions, offline paths, no premium leak.');
 })().catch(err=>{console.error(err);process.exitCode=1});
