@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-25",
+  "scope": "Panda Street only",
+  "ownerListeningFeedback": "Отлично все оккей",
+  "reviewFiles": [
+    "panda_street_dialogue_lesson2.mp3",
+    "panda_street_anna_review.mp3",
+    "panda_street_all_53_review.mp3"
+  ],
+  "approvedForIntegrationByOwner": true,
+  "independentNativeSpeakerToneReview": "not confirmed for this exact package",
+  "package": {
+    "filename": "panda_street_53_complete_review.zip",
+    "sha256": "ed7bd5c49f71e14a3313ea41a8b23b7090bbef2e1cd803ab27c71471370e2981",
+    "clips": 53,
+    "male": 48,
+    "female": 5,
+    "femaleIds": [
+      "42",
+      "44",
+      "46",
+      "48",
+      "50"
+    ],
+    "zipIntegrity": true,
+    "allManifestClipHashesVerified": true,
+    "repositoryUpload": "pending"
+  },
+  "profiles": {
+    "male": {
+      "voice": "Luvvoice male exact name not confirmed",
+      "rate": "-15%",
+      "volume": "+10%",
+      "pitch": 0
+    },
+    "female": {
+      "voice": "Xiaoxiao (Female)",
+      "rate": "-20%",
+      "volume": "0%",
+      "pitch": 0
+    }
+  },
+  "integration": {
+    "status": "pending",
+    "preserveExistingAudio": true,
+    "exclude": [
+      "Panda Go",
+      "ordinary Panda AI"
+    ],
+    "note": "Do not activate prior Xiaoxuan candidate 50.mp3; replace with approved Xiaoxiao package version. Confirm actual browser playback and deployment separately."
+  }
+}
