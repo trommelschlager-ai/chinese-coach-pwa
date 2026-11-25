@@ -61,12 +61,12 @@ test('approved Panda AI audio is wired to current entrypoints and new PWA cache'
   'panda-ai-natural-voice-batch01-v546.mjs?v=546',
   'panda-approved-voice-registry-v516.mjs?v=546',
   'panda-hsk2-preview-audio-v1.mjs?v=546',
-  'panda-hsk2-preview-core-v1.mjs?v=556',
+  'panda-hsk2-preview-core-v1.mjs?v=561',
   'panda-hsk2-preview-ui-v1.mjs?v=546']){
   assert(sw.includes(file),'SW missing '+file);
   assert(manifest.files.some(p=>p.endsWith(file)),'offline missing '+file);
  }
- assert(html.includes('panda-hsk2-preview-core-v1.mjs?v=556'));
+ assert(html.includes('panda-hsk2-preview-core-v1.mjs?v=561'));
  assert(html.includes('panda-hsk2-preview-ui-v1.mjs?v=546'));
  assert(core.includes('panda-hsk2-preview-audio-v1.mjs?v=546'));
  assert(ui.includes('panda-hsk2-preview-audio-v1.mjs?v=546'));
