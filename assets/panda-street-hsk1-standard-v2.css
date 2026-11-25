@@ -279,3 +279,14 @@ body[data-street-lesson]{background:linear-gradient(145deg,#fff,#fff8fd 65%,#fce
  [data-street-lesson] #app #pg-content[data-stage="finish"] .sheet>p:not(.note){padding:3px 6px;margin:2px 0}
  [data-street-lesson] #app #pg-content[data-stage="finish"] .street-review{margin:3px 0}
 }
+
+/* v571: preserve the approved layout; fit the first recording screen at 360x640, including playback controls. */
+@media(max-height:740px){
+ [data-street-lesson] #app #pg-content[data-stage="record"]{padding:3px 10px 4px}
+ [data-street-lesson] #app #pg-content[data-stage="record"] .sheet{padding:6px 9px!important;margin:0 auto 4px!important}
+ [data-street-lesson] #app #pg-content[data-stage="record"] .screen-title{margin:2px auto 4px}
+ [data-street-lesson] #app #pg-content[data-stage="record"] .screen-sub{margin:0 0 4px}
+ [data-street-lesson] #app #pg-content[data-stage="record"] .street-phrase .pg-v414-word-foot{margin:2px 0 0;padding:4px 7px}
+ [data-street-lesson] #app #pg-content[data-stage="record"] #record-status{margin:3px 0 0}
+ [data-street-lesson] #app #pg-content[data-stage="record"] .recorder{margin:2px 0}
+}
