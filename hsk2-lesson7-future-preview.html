@@ -2553,6 +2553,7 @@ function applyLesson7VioletFrames() {
     return r >= 170 && g >= 100 && r >= g && g-b >= 22 && r-b >= 45 && r-g <= 105;
   };
   for (const el of app.querySelectorAll('*')) {
+    if (app.dataset.view === '6' && workspace.contains(el)) continue;
     if (el.closest('svg') && !el.matches('svg.about-premium-photo,svg.about-hero-photo')) continue;
     if (el.matches('.lesson7-poster-hotspot,.lesson7-poster-image')) continue;
     const style = getComputedStyle(el);
@@ -2567,6 +2568,7 @@ function applyLesson7VioletFrames() {
 function applyLesson7Shadows() {
   const targets = app.querySelectorAll('button, a.lesson-map-link, a.lesson7-poster-hotspot, a[role="button"], summary, select, .lesson7-vocab-card, .about-grammar-compact, .about-grammar-formula, .about-grammar-example, .hero-message, .practice-modes, .tone-tabs, .pg-standard-list, .progress-panel, .tone-details, .approved-phrase-row, .approved-story-card, .test-card, .phrase-review');
   for (const el of targets) {
+    if (app.dataset.view === '6' && workspace.contains(el)) continue;
     el.classList.add('l7-shadow-target');
     el.style.setProperty('box-shadow','var(--l7-current-shadow, var(--l7-purple-shadow))','important');
   }
@@ -2632,6 +2634,7 @@ function render(resetScroll = false) {
   applyLesson7VioletFrames();
   // Explicitly set the reference border on the visible lesson UI, independent of shared CSS.
   for (const el of app.querySelectorAll('.hero-message,.about-hero-photo,.test-card,.lesson7-vocab-card,.pg433-pill,.pg433-tabs button,.pg433-footer button,.practice-modes,.tone-tabs,.pg-standard-list,.about-grammar-compact,.about-grammar-example,.about-grammar-formula,.approved-story-card,.approved-phrase-row,.tone-details,.phrase-review,.progress-panel,.choice,.token,.hero-message .tag')) {
+    if (step === 6 && workspace.contains(el)) continue;
     el.style.setProperty('border-color','#bd51d4','important');
   }
   for (const el of app.querySelectorAll('.quiz-hero')) {

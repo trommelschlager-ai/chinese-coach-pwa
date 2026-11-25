@@ -114,12 +114,15 @@ try {
           vertical:t.top-Math.max(a.bottom,b.bottom), footerGap:footer.top-list.bottom,
           footerBottom:footer.bottom,
           overflow:document.documentElement.scrollWidth > innerWidth || overflows,
+          frames: ['.pg-speech-art', '.hero-message'].map(selector =>
+            getComputedStyle(document.querySelector(selector)).borderTopColor),
           pinned, scrollable
         };
       });
       referenceArtWidth ??= layout.artWidth;
       assert(Math.abs(layout.artWidth-referenceArtWidth) < 1, JSON.stringify(layout));
       assert(Math.abs(layout.artWidth-layout.artHeight) < 1, JSON.stringify(layout));
+      assert.deepEqual(layout.frames, ['rgb(237, 209, 128)', 'rgb(233, 203, 134)']);
       assert(layout.gap >= 8 && layout.gap <= 16 && layout.centered && layout.vertical >= 0, JSON.stringify(layout));
       assert(layout.pinned && layout.scrollable && !layout.overflow && layout.footerGap >= -1 &&
         Math.abs(layout.footerBottom-800) <= 1, JSON.stringify(layout));
