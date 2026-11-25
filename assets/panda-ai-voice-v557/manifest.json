@@ -1,0 +1,583 @@
+{
+  "source": "luvvoice.com-20261125-gpCnYz.mp3",
+  "source_sha256": "8bbe96add9b383d0c87be154210fd9795384180dd1e1315a402c631a3a7a4898",
+  "method": "MP3 stream copy; 64 lines aligned to 87 sentence pauses; transcript alignment by expected order, not certified ASR",
+  "clips": [
+    {
+      "id": 1,
+      "zh": "你是司机！你在哪儿工作？",
+      "file": "PA-V556-001.mp3",
+      "source_start": 0,
+      "source_end": 3.421,
+      "duration": 3.432,
+      "sha256": "23ab61d8651451e17c5864b47e45660d55dd66d6884b33e8ace2ce02ef39ddc2"
+    },
+    {
+      "id": 2,
+      "zh": "你是厨师！你在哪儿工作？",
+      "file": "PA-V556-002.mp3",
+      "source_start": 3.863,
+      "source_end": 7.296,
+      "duration": 3.456,
+      "sha256": "fa3259c0196375d882c3e084f539cc3350cefff419934db7a0b57a0d10a695ac"
+    },
+    {
+      "id": 3,
+      "zh": "你是护士！你在哪儿工作？",
+      "file": "PA-V556-003.mp3",
+      "source_start": 7.74,
+      "source_end": 11.139,
+      "duration": 3.432,
+      "sha256": "08f001378247468ec8376946dba6fb1accaf9f06fccb3457b00b45e15293ed04"
+    },
+    {
+      "id": 4,
+      "zh": "你为什么想做这个工作？",
+      "file": "PA-V556-004.mp3",
+      "source_start": 11.577,
+      "source_end": 13.973,
+      "duration": 2.424,
+      "sha256": "ba969b9f62820da9e0043d5fad47a7b09db58e0376c84d014e35b6f7c96fbcc1"
+    },
+    {
+      "id": 5,
+      "zh": "你现在喜欢做什么？",
+      "file": "PA-V556-005.mp3",
+      "source_start": 14.391,
+      "source_end": 16.509,
+      "duration": 2.136,
+      "sha256": "8cfa922d63688f23d1e85d4c179106d6feb0eb2dc60df2de599955df3139d719"
+    },
+    {
+      "id": 6,
+      "zh": "你想做什么工作？",
+      "file": "PA-V556-006.mp3",
+      "source_start": 16.934,
+      "source_end": 18.799,
+      "duration": 1.896,
+      "sha256": "a24bae7564b98cbac73515986838a3d0c0133549a9940df65aa2d0ffa6fbcfe8"
+    },
+    {
+      "id": 7,
+      "zh": "我在这里陪你练习中文。",
+      "file": "PA-V556-007.mp3",
+      "source_start": 19.246,
+      "source_end": 21.972,
+      "duration": 2.76,
+      "sha256": "1441d6a666c662eb219f68bcac21a30cd025f62dcd49630761396d4b0e4565fc"
+    },
+    {
+      "id": 8,
+      "zh": "我喜欢帮你学中文。",
+      "file": "PA-V556-008.mp3",
+      "source_start": 22.403,
+      "source_end": 24.596,
+      "duration": 2.208,
+      "sha256": "f55612aa38a642888a43995d8bf6256bdae660083e266ac9a8436ea29139e076"
+    },
+    {
+      "id": 9,
+      "zh": "我现在有空，可以陪你练习。",
+      "file": "PA-V556-009.mp3",
+      "source_start": 25.029,
+      "source_end": 28.165,
+      "duration": 3.168,
+      "sha256": "5f4002ad4f90fa3b887d9ede8b7e4812565fd593bd3139afc9d55aea434701d8"
+    },
+    {
+      "id": 10,
+      "zh": "我没有固定的下班时间。",
+      "file": "PA-V556-010.mp3",
+      "source_start": 28.592,
+      "source_end": 31.134,
+      "duration": 2.568,
+      "sha256": "c78b340a5a5607631d9a800df7030cff05ca17786e861bf1716c1f1681c9a231"
+    },
+    {
+      "id": 11,
+      "zh": "我是虚拟中文老师，没有实际的工作年限。",
+      "file": "PA-V556-011.mp3",
+      "source_start": 31.587,
+      "source_end": 36.066,
+      "duration": 4.488,
+      "sha256": "382aa4e10470d35030fa51970f16864e58b2755f27fa4a40d3030b106dd0a59e"
+    },
+    {
+      "id": 12,
+      "zh": "明白了。你想换工作吗？",
+      "file": "PA-V556-012.mp3",
+      "source_start": 36.505,
+      "source_end": 39.747,
+      "duration": 3.264,
+      "sha256": "01b8fdbaa047184ba655a28be529223f486dc632b43dac8a6ef000f070b0116d"
+    },
+    {
+      "id": 13,
+      "zh": "辛苦了！你每天几点下班？",
+      "file": "PA-V556-013.mp3",
+      "source_start": 40.196,
+      "source_end": 43.762,
+      "duration": 3.6,
+      "sha256": "c50f98eb14d1ce5e9130ccf5ee781843bd8270cbb068957f00a473c96e9137d9"
+    },
+    {
+      "id": 14,
+      "zh": "那很好！你下班后喜欢做什么？",
+      "file": "PA-V556-014.mp3",
+      "source_start": 44.2,
+      "source_end": 48.426,
+      "duration": 4.248,
+      "sha256": "b0df32351b4b20efa6b9f7765cffb15f2ae5019b5e994523d30da11ae7a0e6b5"
+    },
+    {
+      "id": 15,
+      "zh": "你下班后喜欢做什么？",
+      "file": "PA-V556-015.mp3",
+      "source_start": 48.855,
+      "source_end": 51.458,
+      "duration": 2.64,
+      "sha256": "0d88c7ffa7290e78ae00bcf73cd5dd4866205ec9272b0f71d63a084cb3c6c444"
+    },
+    {
+      "id": 16,
+      "zh": "明白了。你工作忙吗？",
+      "file": "PA-V556-016.mp3",
+      "source_start": 51.884,
+      "source_end": 54.938,
+      "duration": 3.096,
+      "sha256": "f460a36f60dbd6349577afa324bc8ab9d77d2b13627e967847da7d418d67dc9d"
+    },
+    {
+      "id": 17,
+      "zh": "很高兴认识你！你今年多大？",
+      "file": "PA-V556-017.mp3",
+      "source_start": 55.421,
+      "source_end": 59.201,
+      "duration": 3.792,
+      "sha256": "7ad877b782562a8f274fe34ddb46520ea62d20591ae7a3e3c163c92735f2eaa5"
+    },
+    {
+      "id": 18,
+      "zh": "我也很高兴认识你！你今年多大？",
+      "file": "PA-V556-018.mp3",
+      "source_start": 59.668,
+      "source_end": 63.779,
+      "duration": 4.128,
+      "sha256": "969590dbf038d737f3f29b7b0c265d522cb93b1cd405c30bdee7a6f713142b4c"
+    },
+    {
+      "id": 19,
+      "zh": "我没有姓，我叫熊猫。",
+      "file": "PA-V556-019.mp3",
+      "source_start": 64.239,
+      "source_end": 66.825,
+      "duration": 2.616,
+      "sha256": "1f22ce83a5e5d9268c7b8da01a51635877bc2dbd67e005477b69f615869f5963"
+    },
+    {
+      "id": 20,
+      "zh": "我是虚拟熊猫，没有实际年龄。",
+      "file": "PA-V556-020.mp3",
+      "source_start": 67.273,
+      "source_end": 70.631,
+      "duration": 3.36,
+      "sha256": "ce28367e9b94c052c4aa0e2f2c2eec44c0fbdd888fbedd76d2f0860d869e411d"
+    },
+    {
+      "id": 21,
+      "zh": "我是虚拟熊猫，没有国籍。",
+      "file": "PA-V556-021.mp3",
+      "source_start": 71.064,
+      "source_end": 74.095,
+      "duration": 3.048,
+      "sha256": "a5a587a3a9090f82f53a4a69df8ce5eff9a1414ddca5daaa2346ec942ccac842"
+    },
+    {
+      "id": 22,
+      "zh": "我住在山里。",
+      "file": "PA-V556-022.mp3",
+      "source_start": 74.543,
+      "source_end": 76.12,
+      "duration": 1.608,
+      "sha256": "73bd615888d47eb10b44c4c23134d97ab16431aadea48897de81da617e09cbf3"
+    },
+    {
+      "id": 23,
+      "zh": "明白了。你家有几口人？",
+      "file": "PA-V556-023.mp3",
+      "source_start": 76.55,
+      "source_end": 79.872,
+      "duration": 3.36,
+      "sha256": "5ca2bc70c0483541ec515f18f8dbf4b64abd02f9676d123ff40379f8a963a321"
+    },
+    {
+      "id": 24,
+      "zh": "你儿子几岁？",
+      "file": "PA-V556-024.mp3",
+      "source_start": 80.293,
+      "source_end": 81.827,
+      "duration": 1.56,
+      "sha256": "792a90a890d59014fb0fab7b676fc4b82e347ab4c5f86e51c582fe022f6ff9cf"
+    },
+    {
+      "id": 25,
+      "zh": "你有兄弟姐妹吗？",
+      "file": "PA-V556-025.mp3",
+      "source_start": 82.273,
+      "source_end": 84.159,
+      "duration": 1.896,
+      "sha256": "879450a2d9fd4db7aaa7883349ea919224fc5a901aaef7fdd7abd706344994fd"
+    },
+    {
+      "id": 26,
+      "zh": "我没有弟弟。",
+      "file": "PA-V556-026.mp3",
+      "source_start": 84.623,
+      "source_end": 86.082,
+      "duration": 1.488,
+      "sha256": "f55864fbfef0bd4689a40166e86f82d5b0e74d837c667ab98ef0017aee99bc2b"
+    },
+    {
+      "id": 27,
+      "zh": "我有一个哥哥和一个妹妹。",
+      "file": "PA-V556-027.mp3",
+      "source_start": 86.533,
+      "source_end": 89.332,
+      "duration": 2.832,
+      "sha256": "7dc2969e2a341f851365c2f22e2803a0f818548c6d652c3279a905088b48c44b"
+    },
+    {
+      "id": 28,
+      "zh": "谢谢你告诉我。你喜欢做什么？",
+      "file": "PA-V556-028.mp3",
+      "source_start": 89.775,
+      "source_end": 93.555,
+      "duration": 3.816,
+      "sha256": "92d710d76e39e76d36ca8e076f65a5cac85d1d1a3c74a79a7203b27a2b6cc9e6"
+    },
+    {
+      "id": 29,
+      "zh": "你经常做这件事吗？",
+      "file": "PA-V556-029.mp3",
+      "source_start": 93.992,
+      "source_end": 96.094,
+      "duration": 2.112,
+      "sha256": "cef9e14d61dc2c727a9d7e533cf34136596ed383d8b14b0538345b7cc4ccb975"
+    },
+    {
+      "id": 30,
+      "zh": "我喜欢跑步。你呢？",
+      "file": "PA-V556-030.mp3",
+      "source_start": 96.556,
+      "source_end": 99.516,
+      "duration": 2.976,
+      "sha256": "4634f57f82663c793528c17d6e10c988d4861115f8e5f0bc80e9621275027180"
+    },
+    {
+      "id": 31,
+      "zh": "你还喜欢吃什么？",
+      "file": "PA-V556-031.mp3",
+      "source_start": 99.941,
+      "source_end": 101.839,
+      "duration": 1.92,
+      "sha256": "a800f9e57b68f0d55a439f7651fd1339d9b77572dbee7fdbb597f792ec478b6b"
+    },
+    {
+      "id": 32,
+      "zh": "还要别的吗？",
+      "file": "PA-V556-032.mp3",
+      "source_start": 102.296,
+      "source_end": 103.771,
+      "duration": 1.488,
+      "sha256": "98fdfb8e893fd498a348a643e7eaf9537842fa12d597928abedfd1f65fe59171"
+    },
+    {
+      "id": 33,
+      "zh": "那你现在想吃什么？",
+      "file": "PA-V556-033.mp3",
+      "source_start": 104.231,
+      "source_end": 106.327,
+      "duration": 2.136,
+      "sha256": "0195f06ccb897f51e20ade25d21d92a5180fdb99b9e44735bfdff170a80b3ee6"
+    },
+    {
+      "id": 34,
+      "zh": "我喜欢吃竹子。你呢？",
+      "file": "PA-V556-034.mp3",
+      "source_start": 106.785,
+      "source_end": 109.974,
+      "duration": 3.216,
+      "sha256": "85b404e042b7459e4ac383cd0c91943743a21bca601461e767756aeb96bb1211"
+    },
+    {
+      "id": 35,
+      "zh": "我喜欢喝茶。你呢？",
+      "file": "PA-V556-035.mp3",
+      "source_start": 110.422,
+      "source_end": 113.406,
+      "duration": 3.024,
+      "sha256": "2d97a18f219b8cb562566b146816e01f31bf864a728684219156a068a3b3d01f"
+    },
+    {
+      "id": 36,
+      "zh": "好的。我们聊点别的吧！",
+      "file": "PA-V556-036.mp3",
+      "source_start": 113.865,
+      "source_end": 117.037,
+      "duration": 3.192,
+      "sha256": "378b456c3e0c96667d210575493e831734a31615cfec8276be827853c96f55da"
+    },
+    {
+      "id": 37,
+      "zh": "谢谢你介绍你的一天。",
+      "file": "PA-V556-037.mp3",
+      "source_start": 117.496,
+      "source_end": 119.798,
+      "duration": 2.328,
+      "sha256": "0c0e4ab9ff255d40c6aa93b5fd4e6ac24b616053deb06752b1968779022b2f6e"
+    },
+    {
+      "id": 38,
+      "zh": "我没有固定的起床时间。你几点起床？",
+      "file": "PA-V556-038.mp3",
+      "source_start": 120.239,
+      "source_end": 124.781,
+      "duration": 4.584,
+      "sha256": "f4ae5ee44fc46dbe8b1ebc4ed950097c7a4552983ad10b487abdf09ec7c02a95"
+    },
+    {
+      "id": 39,
+      "zh": "我没有固定的睡觉时间。你呢？",
+      "file": "PA-V556-039.mp3",
+      "source_start": 125.224,
+      "source_end": 129.111,
+      "duration": 3.912,
+      "sha256": "ff64cc7576a5a60d9511909c3c98482839db593a6ac6f8804307aaaf6baaea72"
+    },
+    {
+      "id": 40,
+      "zh": "你今天想出去吗？",
+      "file": "PA-V556-040.mp3",
+      "source_start": 130.021,
+      "source_end": 131.835,
+      "duration": 1.848,
+      "sha256": "4790626175323139be8a3c919b7653532a33597d8172a13664c35b1a74350c84"
+    },
+    {
+      "id": 41,
+      "zh": "注意保暖！你今天想做什么？",
+      "file": "PA-V556-041.mp3",
+      "source_start": 132.292,
+      "source_end": 135.923,
+      "duration": 3.648,
+      "sha256": "7027c018c779eb6d4a3eb45e735f2148ec8d2e063a857a58c2d7b53cb8f2f7f3"
+    },
+    {
+      "id": 42,
+      "zh": "记得喝水。",
+      "file": "PA-V556-042.mp3",
+      "source_start": 136.362,
+      "source_end": 137.819,
+      "duration": 1.488,
+      "sha256": "0ae5351fd9213598f5ce649bdc44d07c175065c9b1b69d38f95e1542f063a022"
+    },
+    {
+      "id": 43,
+      "zh": "出门别忘了带伞。",
+      "file": "PA-V556-043.mp3",
+      "source_start": 138.266,
+      "source_end": 140.299,
+      "duration": 2.04,
+      "sha256": "ea62110cdbf566567953c3f43321abe2e9e881fae4e505a41c3d16b708556a6d"
+    },
+    {
+      "id": 44,
+      "zh": "我不知道你那里的天气。你能告诉我吗？",
+      "file": "PA-V556-044.mp3",
+      "source_start": 140.769,
+      "source_end": 145.178,
+      "duration": 4.44,
+      "sha256": "0647f9fb7b2d3e65e2ffefb7f88eb0e891a6cd7bee354accd452b2c964474d3b"
+    },
+    {
+      "id": 45,
+      "zh": "我不知道明天的实际天气。",
+      "file": "PA-V556-045.mp3",
+      "source_start": 145.643,
+      "source_end": 148.473,
+      "duration": 2.856,
+      "sha256": "d9bd080dace38f463c23e2830127fdef33b87ec74a2a1f4acbb795c7f226b5ba"
+    },
+    {
+      "id": 46,
+      "zh": "好的，还需要别的吗？",
+      "file": "PA-V556-046.mp3",
+      "source_start": 148.929,
+      "source_end": 151.384,
+      "duration": 2.472,
+      "sha256": "ca3f0b140c2022967b149921d1351ae09241a51476e47a3b221a2e720e468247"
+    },
+    {
+      "id": 47,
+      "zh": "练习对话：五十块钱。",
+      "file": "PA-V556-047.mp3",
+      "source_start": 151.834,
+      "source_end": 154.613,
+      "duration": 2.808,
+      "sha256": "17152a6af5bf32c841341fce02ceb46b603b8f0079d076a41a7bb6b19462d4a5"
+    },
+    {
+      "id": 48,
+      "zh": "练习对话：四十块钱，可以吗？",
+      "file": "PA-V556-048.mp3",
+      "source_start": 155.053,
+      "source_end": 158.719,
+      "duration": 3.696,
+      "sha256": "cdd3a31c62706411f2fc3781a92c7a330f49a67bdfd0bd2c0558e706563010c7"
+    },
+    {
+      "id": 49,
+      "zh": "没关系，我们看看别的吧。",
+      "file": "PA-V556-049.mp3",
+      "source_start": 159.151,
+      "source_end": 162.048,
+      "duration": 2.904,
+      "sha256": "cd9606595e0746a4225c063f842ce0a7b269c5fea969c337492b9fee50c7d387"
+    },
+    {
+      "id": 50,
+      "zh": "练习对话：可以刷卡。",
+      "file": "PA-V556-050.mp3",
+      "source_start": 162.488,
+      "source_end": 165.139,
+      "duration": 2.664,
+      "sha256": "3593db877171947eb4e60e3c56249f69af1326a30c0abd12869f0e39678b39a9"
+    },
+    {
+      "id": 51,
+      "zh": "你想买几件？",
+      "file": "PA-V556-051.mp3",
+      "source_start": 165.567,
+      "source_end": 167.182,
+      "duration": 1.632,
+      "sha256": "a33f56758533d934e1935a2800c9b55aa5ffdf41930c33ba59d1db897fa4cb0a"
+    },
+    {
+      "id": 52,
+      "zh": "你打算什么时候去？",
+      "file": "PA-V556-052.mp3",
+      "source_start": 167.633,
+      "source_end": 169.609,
+      "duration": 2.016,
+      "sha256": "f968446923eeb00bb504b04ab3363896cc5b0b760aad12d08f881bd2f3cf52fe"
+    },
+    {
+      "id": 53,
+      "zh": "你打算怎么去？",
+      "file": "PA-V556-053.mp3",
+      "source_start": 170.058,
+      "source_end": 171.695,
+      "duration": 1.656,
+      "sha256": "4b0e510af51aec5b52992c0f6f62c5e4d70e4f3bdd9dff2bb82ecb0ddfd8314d"
+    },
+    {
+      "id": 54,
+      "zh": "你在那里做了什么？",
+      "file": "PA-V556-054.mp3",
+      "source_start": 172.15,
+      "source_end": 174.165,
+      "duration": 2.04,
+      "sha256": "0e1151dd792b71d636a8095444b3e8e752816aad2cf23b78c7240f9d4a412a47"
+    },
+    {
+      "id": 55,
+      "zh": "你以后想去吗？",
+      "file": "PA-V556-055.mp3",
+      "source_start": 174.6,
+      "source_end": 176.241,
+      "duration": 1.656,
+      "sha256": "8978c50910d2f89b396016879e4096da6fd1dca5b85781c7c0261433f4d8545e"
+    },
+    {
+      "id": 56,
+      "zh": "你到了那里想做什么？",
+      "file": "PA-V556-056.mp3",
+      "source_start": 176.695,
+      "source_end": 179.26,
+      "duration": 2.592,
+      "sha256": "d2c81c60e34e29860b7bc5010629ac064b122ca91d9424135055049a5395fe13"
+    },
+    {
+      "id": 57,
+      "zh": "我是虚拟熊猫，没有实际的旅行经历。",
+      "file": "PA-V556-057.mp3",
+      "source_start": 179.724,
+      "source_end": 183.673,
+      "duration": 3.984,
+      "sha256": "c80da9c5ebaa8118ab25f91604da043aa3c088727bb6d7bca3bfcb8a93f12211"
+    },
+    {
+      "id": 58,
+      "zh": "祝你旅途愉快！",
+      "file": "PA-V556-058.mp3",
+      "source_start": 184.124,
+      "source_end": 185.84,
+      "duration": 1.752,
+      "sha256": "45ec6df5f5d1ccc6fea631d9ebe8d62231b9934dfdd125a9a01dfe05970ae291"
+    },
+    {
+      "id": 59,
+      "zh": "那你休息一下吧。",
+      "file": "PA-V556-059.mp3",
+      "source_start": 186.277,
+      "source_end": 188.071,
+      "duration": 1.824,
+      "sha256": "b3d2687d2b51c5c7fa746927b02bf2f155bad5e22295d8fc67725a8b5e916a1d"
+    },
+    {
+      "id": 60,
+      "zh": "太好了！为什么这么开心？",
+      "file": "PA-V556-060.mp3",
+      "source_start": 188.515,
+      "source_end": 191.895,
+      "duration": 3.408,
+      "sha256": "d4ec95962d54890a0559b1643c678bd5133b98c3e15a058bb20dc4847ae25b0b"
+    },
+    {
+      "id": 61,
+      "zh": "怎么了？你想说说吗？",
+      "file": "PA-V556-061.mp3",
+      "source_start": 192.312,
+      "source_end": 195.233,
+      "duration": 2.928,
+      "sha256": "b5c47b5d14181016d060e90be5e2f3865ed345947e9fc4f17ba9de196a4a1c72"
+    },
+    {
+      "id": 62,
+      "zh": "如果不舒服，请考虑看医生。",
+      "file": "PA-V556-062.mp3",
+      "source_start": 195.686,
+      "source_end": 198.879,
+      "duration": 3.216,
+      "sha256": "277e44044e9c0f863bce296a7823aefd6b472b98311b4913eeeb462d03476583"
+    },
+    {
+      "id": 63,
+      "zh": "我很好，谢谢！你呢？",
+      "file": "PA-V556-063.mp3",
+      "source_start": 199.319,
+      "source_end": 202.67,
+      "duration": 3.384,
+      "sha256": "e4cb4bcab371a80fd931769a4ef6bea83623f932ec691f16c67238fbf7a0bbe0"
+    },
+    {
+      "id": 64,
+      "zh": "那就好！请照顾好自己。",
+      "file": "PA-V556-064.mp3",
+      "source_start": 203.119,
+      "source_end": 206.549,
+      "duration": 3.456,
+      "sha256": "3ce77af27a6f7294f78f9470a1e7a8dbce98079c7381f68befa3574fbeb60c95"
+    }
+  ]
+}

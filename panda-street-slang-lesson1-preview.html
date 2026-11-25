@@ -355,7 +355,7 @@ function updateToneButtons(){
 }
 function checkStreetToneFiles(){
  Object.entries(STREET_TONE_SOURCES).forEach(async ([tone,path])=>{
-  try{const response=await fetch(path,{method:'HEAD',cache:'no-store'});streetToneAvailable[tone]=response.ok}
+  try{const response=await fetch(path);streetToneAvailable[tone]=response.ok}
   catch(_){streetToneAvailable[tone]=false}
   updateToneButtons();
  });
