@@ -87,3 +87,13 @@ test('coaching compares measured movement with the selected tone without grading
  assert.equal(guide({n:2},insufficient),'Недостаточно данных. Повтори запись');
  assert.equal(guide({n:2},short('uncertain')),'Недостаточно данных. Повтори запись');
 });
+
+test('capture coaching withholds tone advice when a tracking jump or several regions are present',()=>{
+ const start=trainer.indexOf('function toneGuidance('),end=trainer.indexOf('function controls(',start);
+ const guide=new Function(trainer.slice(start,end)+'\nreturn captureGuidance;')();
+ const result={kind:'insufficient',label:'Мало данных',reason:'Повтори',stats:{previewOnly:true,octaveJumpCount:0},shapeHint:{direction:'level',confidence:'exploratory',isToneGrade:false},points:[{t:0,st:0}]};
+ assert.match(guide({n:4},{...result,stats:{octaveJumpCount:1}},null,[{}]),/сбой анализатора, а не ошибка произношения/);
+ assert.match(guide({n:1},result,{discardedOtherRegions:1},[]),/движение всего слога не подтверждено/);
+ assert.match(guide({n:1},result,{discardedOtherRegions:0},[]),/учебную схему/);
+ assert.match(guide({n:4},{kind:'insufficient',points:[]},null,[{}]),/Линия неполная/);
+});
