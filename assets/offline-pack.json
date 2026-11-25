@@ -1,6 +1,6 @@
 {
-  "version": 561,
-  "bytes": 94284891,
+  "version": 562,
+  "bytes": 94469760,
   "files": [
     "./assets/panda-natural-statements-v552.mjs?v=561",
     "./assets/panda-hsk2-preview-core-v1.mjs?v=561",
@@ -3659,6 +3659,9 @@
     "./assets/hsk2-lesson8-shop-accents-v4.webp",
     "./assets/hsk2-lesson8-shop-icons-v3.webp",
     "./assets/hsk2-lesson8-shop-sakura-v4.webp",
-    "./assets/hsk2-lesson8-shop-scroll-v4.webp"
+    "./assets/hsk2-lesson8-shop-scroll-v4.webp",
+    "./assets/panda-street-hsk1-standard-v2.css?v=3",
+    "./assets/panda-street-hsk1-standard-v2.js?v=4",
+    "./assets/panda-street-sakura-existing-hero.webp"
   ]
 }
