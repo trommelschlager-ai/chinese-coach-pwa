@@ -1,6 +1,6 @@
 import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
-import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=561';
+import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=563';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -382,7 +382,9 @@ function submit(raw){
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
  // Recognize voluntary Chinese name introductions in free HSK1 conversation.
  const standaloneName=state.mode==='nonstop'&&!hsk2&&!state.dayMode&&/^我叫[\p{Script=Han}]{1,12}$/u.test(normalize(input));
- const introduction=friendlyIntroduction(input,standaloneName?'name':friendlyStage);
+ const alreadyIntroduced=state.history.some(turn=>turn.who==='you'&&/^我叫[\p{Script=Han}]{1,12}$/u.test(normalize(turn.hanzi)));
+  const establishedLove=normalize(input)==='我爱你'&&alreadyIntroduced&&!state.dayMode&&(!hsk2||hsk2.openChat||(entry.beginnerGreeting&&hsk2.id===101));
+  const introduction=establishedLove?null:friendlyIntroduction(input,standaloneName?'name':friendlyStage);
  friendlyStage=introduction?.next||null;
  if(introduction){
   const [pinyin,translation]=introduction.spoken;
