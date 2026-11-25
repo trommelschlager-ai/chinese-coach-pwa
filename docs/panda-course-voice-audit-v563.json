@@ -1,0 +1,1469 @@
+{
+  "head": "ae0e11bbc8cbd22349971dbe1adb526b542dc5f9",
+  "scope": "Natural module exact registry lookup; not listening QA or browser voice coverage.",
+  "inputs": 150,
+  "unique": 118,
+  "approved": 48,
+  "missing": 70,
+  "rows": [
+    {
+      "hanzi": "我叫熊猫。",
+      "pinyin": "Wǒ jiào Xióngmāo.",
+      "ru": "Меня зовут Панда.",
+      "approved": "./assets/panda-voice-clips-v365/p040.mp3",
+      "topics": [
+        "Знакомство"
+      ],
+      "examples": [
+        "你叫什么名字",
+        "你叫什么"
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，没有实际年龄。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì niánlíng.",
+      "ru": "Я виртуальная панда, у меня нет реального возраста.",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-020.mp3",
+      "topics": [
+        "Знакомство"
+      ],
+      "examples": [
+        "你多大了",
+        "你几岁"
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，没有国籍。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu guójí.",
+      "ru": "Я виртуальная панда, у меня нет гражданства.",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-021.mp3",
+      "topics": [
+        "Знакомство"
+      ],
+      "examples": [
+        "你是哪国人",
+        "你是中国人吗",
+        "你来自哪里"
+      ]
+    },
+    {
+      "hanzi": "我住在熊猫的世界里。",
+      "pinyin": "Wǒ zhù zài xióngmāo de shìjiè lǐ.",
+      "ru": "Я живу в мире панд.",
+      "approved": null,
+      "topics": [
+        "Знакомство"
+      ],
+      "examples": [
+        "你住在哪儿"
+      ]
+    },
+    {
+      "hanzi": "会，我会说中文。",
+      "pinyin": "Huì, wǒ huì shuō Zhōngwén.",
+      "ru": "Да, умею.",
+      "approved": "./assets/panda-voice-clips-v365/p088.mp3",
+      "topics": [
+        "Знакомство"
+      ],
+      "examples": [
+        "你会说中文吗"
+      ]
+    },
+    {
+      "hanzi": "我可以用俄语解释中文。",
+      "pinyin": "Wǒ kěyǐ yòng Éyǔ jiěshì Zhōngwén.",
+      "ru": "Я могу объяснять китайский по-русски.",
+      "approved": null,
+      "topics": [
+        "Знакомство"
+      ],
+      "examples": [
+        "你会说俄语吗"
+      ]
+    },
+    {
+      "hanzi": "我有一个哥哥。",
+      "pinyin": "Wǒ yǒu yí ge gēge.",
+      "ru": "У меня есть старший брат.",
+      "approved": "./assets/panda-live-voice-v3/p12.mp3",
+      "topics": [
+        "Семья"
+      ],
+      "examples": [
+        "你有哥哥吗"
+      ]
+    },
+    {
+      "hanzi": "我没有姐姐。",
+      "pinyin": "Wǒ méiyǒu jiějie.",
+      "ru": "У меня нет старшей сестры.",
+      "approved": "./assets/panda-voice-clips-v365/p107.mp3",
+      "topics": [
+        "Семья"
+      ],
+      "examples": [
+        "你有没有姐姐"
+      ]
+    },
+    {
+      "hanzi": "我没有孩子。",
+      "pinyin": "Wǒ méiyǒu háizi.",
+      "ru": "У меня нет детей.",
+      "approved": null,
+      "topics": [
+        "Семья"
+      ],
+      "examples": [
+        "你有孩子吗"
+      ]
+    },
+    {
+      "hanzi": "我家有五口人。",
+      "pinyin": "Wǒ jiā yǒu wǔ kǒu rén.",
+      "ru": "В моей семье пять человек.",
+      "approved": "./assets/panda-voice-clips-v365/p113.mp3",
+      "topics": [
+        "Семья"
+      ],
+      "examples": [
+        "你家有几口人"
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫。你爸爸呢？",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo. Nǐ bàba ne?",
+      "ru": "Я виртуальная панда. А твой папа?",
+      "approved": null,
+      "topics": [
+        "Семья"
+      ],
+      "examples": [
+        "你爸爸做什么工作"
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫。你妈妈呢？",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo. Nǐ māma ne?",
+      "ru": "Я виртуальная панда. А твоей маме?",
+      "approved": null,
+      "topics": [
+        "Семья"
+      ],
+      "examples": [
+        "你妈妈多大了"
+      ]
+    },
+    {
+      "hanzi": "没有，我是虚拟熊猫。",
+      "pinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+      "ru": "Нет, я виртуальная панда.",
+      "approved": null,
+      "topics": [
+        "Семья",
+        "Здоровье"
+      ],
+      "examples": [
+        "你结婚了吗",
+        "你生病了吗"
+      ]
+    },
+    {
+      "hanzi": "有啊，我们可以做朋友。",
+      "pinyin": "Yǒu a, wǒmen kěyǐ zuò péngyou.",
+      "ru": "Да, мы можем дружить.",
+      "approved": null,
+      "topics": [
+        "Семья"
+      ],
+      "examples": [
+        "你有朋友吗"
+      ]
+    },
+    {
+      "hanzi": "不是，我是老师。",
+      "pinyin": "Bú shì, wǒ shì lǎoshī.",
+      "ru": "Нет, я учитель.",
+      "approved": "./assets/panda-voice-clips-v365/p085.mp3",
+      "topics": [
+        "Работа"
+      ],
+      "examples": [
+        "你是医生",
+        "你是学生吗"
+      ]
+    },
+    {
+      "hanzi": "我在这里陪你练习中文。",
+      "pinyin": "Wǒ zài zhèlǐ péi nǐ liànxí Zhōngwén.",
+      "ru": "Я здесь помогаю тебе практиковать китайский.",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-007.mp3",
+      "topics": [
+        "Работа",
+        "Моя работа и учёба"
+      ],
+      "examples": [
+        "你在哪儿工作",
+        "你在哪儿工作？"
+      ]
+    },
+    {
+      "hanzi": "我是老师。",
+      "pinyin": "Wǒ shì lǎoshī.",
+      "ru": "Я учитель.",
+      "approved": "./assets/panda-live-voice-v3/p03.mp3",
+      "topics": [
+        "Работа"
+      ],
+      "examples": [
+        "你做什么工作"
+      ]
+    },
+    {
+      "hanzi": "我喜欢帮你学中文。",
+      "pinyin": "Wǒ xǐhuan bāng nǐ xué Zhōngwén.",
+      "ru": "Мне нравится помогать тебе учить китайский.",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-008.mp3",
+      "topics": [
+        "Работа"
+      ],
+      "examples": [
+        "你喜欢你的工作吗"
+      ]
+    },
+    {
+      "hanzi": "我九点去上班。",
+      "pinyin": "Wǒ jiǔ diǎn qù shàngbān.",
+      "ru": "В учебном диалоге: я иду на работу в девять.",
+      "approved": "./assets/panda-hsk2-my-day-voice-20261120/day06.mp3",
+      "topics": [
+        "Работа"
+      ],
+      "examples": [
+        "你每天几点上班"
+      ]
+    },
+    {
+      "hanzi": "今天我有空，可以聊聊天。",
+      "pinyin": "Jīntiān wǒ yǒu kòng, kěyǐ liáo liáotiān.",
+      "ru": "Сегодня я свободна, можем поболтать.",
+      "approved": "./assets/panda-ai-xiaoxiao-new-replies-20261122/panda01.mp3",
+      "topics": [
+        "Работа",
+        "День и время"
+      ],
+      "examples": [
+        "你今天忙不忙",
+        "你什么时候有空"
+      ]
+    },
+    {
+      "hanzi": "我没有固定的下班时间。",
+      "pinyin": "Wǒ méiyǒu gùdìng de xiàbān shíjiān.",
+      "ru": "У меня нет фиксированного времени окончания работы.",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-010.mp3",
+      "topics": [
+        "Работа"
+      ],
+      "examples": [
+        "你什么时候下班"
+      ]
+    },
+    {
+      "hanzi": "我喜欢吃竹子。你呢？",
+      "pinyin": "Wǒ xǐhuan chī zhúzi. Nǐ ne?",
+      "ru": "Я люблю бамбук. А ты?",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-034.mp3",
+      "topics": [
+        "Еда"
+      ],
+      "examples": [
+        "你喜欢吃什么"
+      ]
+    },
+    {
+      "hanzi": "我想吃竹子。",
+      "pinyin": "Wǒ xiǎng chī zhúzi.",
+      "ru": "Хочу бамбук.",
+      "approved": null,
+      "topics": [
+        "Еда",
+        "В кафе и ресторане"
+      ],
+      "examples": [
+        "你想吃什么",
+        "你想吃什么？"
+      ]
+    },
+    {
+      "hanzi": "我喜欢喝茶。",
+      "pinyin": "Wǒ xǐhuan hē chá.",
+      "ru": "Я люблю пить чай.",
+      "approved": "./assets/panda-clarification-voice-20261122/clarify13.mp3",
+      "topics": [
+        "Еда"
+      ],
+      "examples": [
+        "你喜欢喝咖啡吗"
+      ]
+    },
+    {
+      "hanzi": "我早上不吃早饭。",
+      "pinyin": "Wǒ zǎoshang bù chī zǎofàn.",
+      "ru": "Я не завтракаю утром.",
+      "approved": "./assets/panda-hsk2-my-day-voice-20261120/day08.mp3",
+      "topics": [
+        "Еда"
+      ],
+      "examples": [
+        "你吃早饭了吗"
+      ]
+    },
+    {
+      "hanzi": "不饿。你呢？",
+      "pinyin": "Bú è. Nǐ ne?",
+      "ru": "Нет. А ты?",
+      "approved": null,
+      "topics": [
+        "Еда"
+      ],
+      "examples": [
+        "你饿了吗"
+      ]
+    },
+    {
+      "hanzi": "我喜欢喝茶。你呢？",
+      "pinyin": "Wǒ xǐhuan hē chá. Nǐ ne?",
+      "ru": "Я люблю чай. А ты?",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-035.mp3",
+      "topics": [
+        "Еда",
+        "В кафе и ресторане"
+      ],
+      "examples": [
+        "你想喝什么",
+        "你想喝什么？"
+      ]
+    },
+    {
+      "hanzi": "我不会真的做饭，但可以陪你练习。",
+      "pinyin": "Wǒ bú huì zhēn de zuò fàn, dàn kěyǐ péi nǐ liànxí.",
+      "ru": "Я не могу готовить по-настоящему, но могу заниматься с тобой.",
+      "approved": null,
+      "topics": [
+        "Еда"
+      ],
+      "examples": [
+        "你会做饭吗"
+      ]
+    },
+    {
+      "hanzi": "你最喜欢什么中国菜？",
+      "pinyin": "Nǐ zuì xǐhuan shénme Zhōngguó cài?",
+      "ru": "Какое китайское блюдо ты любишь больше всего?",
+      "approved": null,
+      "topics": [
+        "Еда"
+      ],
+      "examples": [
+        "你喜欢中国菜吗"
+      ]
+    },
+    {
+      "hanzi": "我没有固定的起床时间。你几点起床？",
+      "pinyin": "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+      "ru": "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-038.mp3",
+      "topics": [
+        "День и время"
+      ],
+      "examples": [
+        "你几点起床"
+      ]
+    },
+    {
+      "hanzi": "我没有固定的睡觉时间。你呢？",
+      "pinyin": "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+      "ru": "У меня нет фиксированного времени сна. А у тебя?",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-039.mp3",
+      "topics": [
+        "День и время"
+      ],
+      "examples": [
+        "你几点睡觉"
+      ]
+    },
+    {
+      "hanzi": "我昨天看了电影。",
+      "pinyin": "Wǒ zuótiān kàn le diànyǐng.",
+      "ru": "В учебном диалоге: вчера я смотрела фильм.",
+      "approved": "./assets/hsk2-lesson6-voice/l6_13.mp3",
+      "topics": [
+        "День и время",
+        "Вчера и мой опыт"
+      ],
+      "examples": [
+        "你昨天做了什么",
+        "你昨天做什么了？"
+      ]
+    },
+    {
+      "hanzi": "我今天和你练习中文。",
+      "pinyin": "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
+      "ru": "Сегодня я практикую китайский с тобой.",
+      "approved": null,
+      "topics": [
+        "День и время"
+      ],
+      "examples": [
+        "你今天做了什么"
+      ]
+    },
+    {
+      "hanzi": "我明天学中文。",
+      "pinyin": "Wǒ míngtiān xué Zhōngwén.",
+      "ru": "Завтра я буду учить китайский.",
+      "approved": "./assets/hsk2-lesson7-voice/l7_12.mp3",
+      "topics": [
+        "День и время"
+      ],
+      "examples": [
+        "你明天早上做什么"
+      ]
+    },
+    {
+      "hanzi": "我周末喜欢看书。",
+      "pinyin": "Wǒ zhōumò xǐhuan kàn shū.",
+      "ru": "По выходным я люблю читать.",
+      "approved": "./assets/hsk2-lesson4-hobby-voice-20261121/hobby21.mp3",
+      "topics": [
+        "День и время",
+        "Хобби",
+        "Моё хобби"
+      ],
+      "examples": [
+        "你周末做什么",
+        "你周末喜欢做什么",
+        "你周末做什么？"
+      ]
+    },
+    {
+      "hanzi": "我在和你聊天。",
+      "pinyin": "Wǒ zài hé nǐ liáotiān.",
+      "ru": "Я разговариваю с тобой.",
+      "approved": null,
+      "topics": [
+        "День и время"
+      ],
+      "examples": [
+        "你现在在做什么"
+      ]
+    },
+    {
+      "hanzi": "我喜欢跑步。你呢？",
+      "pinyin": "Wǒ xǐhuan pǎobù. Nǐ ne?",
+      "ru": "Я люблю бегать. А ты?",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-030.mp3",
+      "topics": [
+        "Хобби"
+      ],
+      "examples": [
+        "你有什么爱好",
+        "你喜欢运动吗"
+      ]
+    },
+    {
+      "hanzi": "我喜欢看书。",
+      "pinyin": "Wǒ xǐhuan kàn shū.",
+      "ru": "Я люблю читать.",
+      "approved": "./assets/hsk2-lesson4-hobby-voice-20261121/hobby07.mp3",
+      "topics": [
+        "Хобби"
+      ],
+      "examples": [
+        "你喜欢看书吗"
+      ]
+    },
+    {
+      "hanzi": "我喜欢轻音乐。",
+      "pinyin": "Wǒ xǐhuan qīng yīnyuè.",
+      "ru": "Я люблю лёгкую музыку.",
+      "approved": null,
+      "topics": [
+        "Хобби"
+      ],
+      "examples": [
+        "你喜欢听什么音乐"
+      ]
+    },
+    {
+      "hanzi": "我喜欢跑步。",
+      "pinyin": "Wǒ xǐhuan pǎobù.",
+      "ru": "В учебном диалоге: я люблю бегать.",
+      "approved": "./assets/hsk2-lesson4-hobby-voice-20261121/hobby17.mp3",
+      "topics": [
+        "Хобби"
+      ],
+      "examples": [
+        "你喜欢跑步吗"
+      ]
+    },
+    {
+      "hanzi": "我喜欢喜剧片。",
+      "pinyin": "Wǒ xǐhuan xǐjùpiàn.",
+      "ru": "Я люблю комедии.",
+      "approved": "./assets/panda-context-voice-20261122/chat03.mp3",
+      "topics": [
+        "Хобби"
+      ],
+      "examples": [
+        "你喜欢看电影吗"
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，不会真的游泳。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de yóuyǒng.",
+      "ru": "Я виртуальная панда и не могу плавать по-настоящему.",
+      "approved": null,
+      "topics": [
+        "Хобби"
+      ],
+      "examples": [
+        "你会游泳吗"
+      ]
+    },
+    {
+      "hanzi": "我不知道你那里的天气。你能告诉我吗？",
+      "pinyin": "Wǒ bù zhīdào nǐ nàli de tiānqì. Nǐ néng gàosu wǒ ma?",
+      "ru": "Я не знаю, какая у тебя погода. Расскажешь?",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-044.mp3",
+      "topics": [
+        "Погода"
+      ],
+      "examples": [
+        "今天天气怎么样",
+        "今天下雨吗"
+      ]
+    },
+    {
+      "hanzi": "我不知道明天的实际天气。",
+      "pinyin": "Wǒ bù zhīdào míngtiān de shíjì tiānqì.",
+      "ru": "Я не знаю реального прогноза на завтра.",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-045.mp3",
+      "topics": [
+        "Погода"
+      ],
+      "examples": [
+        "明天天气怎么样"
+      ]
+    },
+    {
+      "hanzi": "我不知道实际天气。",
+      "pinyin": "Wǒ bù zhīdào shíjì tiānqì.",
+      "ru": "Я не знаю реальной погоды.",
+      "approved": null,
+      "topics": [
+        "Погода"
+      ],
+      "examples": [
+        "你那里冷吗",
+        "你觉得今天热吗"
+      ]
+    },
+    {
+      "hanzi": "我喜欢雪。",
+      "pinyin": "Wǒ xǐhuan xuě.",
+      "ru": "Я люблю снег.",
+      "approved": null,
+      "topics": [
+        "Погода"
+      ],
+      "examples": [
+        "你喜欢冬天吗"
+      ]
+    },
+    {
+      "hanzi": "你想买什么？",
+      "pinyin": "Nǐ xiǎng mǎi shénme?",
+      "ru": "Что ты хочешь купить?",
+      "approved": "./assets/hsk2-lesson8-voice/l8_17.mp3",
+      "topics": [
+        "Покупки"
+      ],
+      "examples": [
+        "这个多少钱"
+      ]
+    },
+    {
+      "hanzi": "练习对话：四十块钱，可以吗？",
+      "pinyin": "Liànxí duìhuà: sìshí kuài qián, kěyǐ ma?",
+      "ru": "Учебный диалог: сорок юаней, подойдёт?",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-048.mp3",
+      "topics": [
+        "Покупки"
+      ],
+      "examples": [
+        "可以便宜一点吗"
+      ]
+    },
+    {
+      "hanzi": "我想买衣服。",
+      "pinyin": "Wǒ xiǎng mǎi yīfu.",
+      "ru": "Хочу купить одежду.",
+      "approved": "./assets/hsk2-lesson8-voice/l8_09.mp3",
+      "topics": [
+        "Покупки"
+      ],
+      "examples": [
+        "你想买什么"
+      ]
+    },
+    {
+      "hanzi": "练习对话：可以刷卡。",
+      "pinyin": "Liànxí duìhuà: kěyǐ shuākǎ.",
+      "ru": "Учебный диалог: можно оплатить картой.",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-050.mp3",
+      "topics": [
+        "Покупки"
+      ],
+      "examples": [
+        "可以刷卡吗"
+      ]
+    },
+    {
+      "hanzi": "你喜欢什么颜色？",
+      "pinyin": "Nǐ xǐhuan shénme yánsè?",
+      "ru": "Какой цвет тебе нравится?",
+      "approved": "./assets/hsk2-lesson8-voice/l8_20.mp3",
+      "topics": [
+        "Покупки"
+      ],
+      "examples": [
+        "有别的颜色吗"
+      ]
+    },
+    {
+      "hanzi": "我喜欢紫色。",
+      "pinyin": "Wǒ xǐhuan zǐsè.",
+      "ru": "Я люблю фиолетовый.",
+      "approved": null,
+      "topics": [
+        "Покупки"
+      ],
+      "examples": [
+        "你喜欢什么颜色"
+      ]
+    },
+    {
+      "hanzi": "我想去北京。",
+      "pinyin": "Wǒ xiǎng qù Běijīng.",
+      "ru": "Хочу поехать в Пекин.",
+      "approved": "./assets/hsk2-lesson7-voice/l7_23.mp3",
+      "topics": [
+        "Поездки"
+      ],
+      "examples": [
+        "你想去哪儿"
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，没有实际的旅行经历。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+      "ru": "Я виртуальная панда, у меня нет реального опыта путешествий.",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-057.mp3",
+      "topics": [
+        "Поездки"
+      ],
+      "examples": [
+        "你去过中国吗",
+        "你喜欢旅行吗"
+      ]
+    },
+    {
+      "hanzi": "我坐地铁去上班。",
+      "pinyin": "Wǒ zuò dìtiě qù shàngbān.",
+      "ru": "Учебный диалог: я еду на работу на метро.",
+      "approved": null,
+      "topics": [
+        "Поездки",
+        "Транспорт и дорога"
+      ],
+      "examples": [
+        "你怎么去上班",
+        "你怎么去上班？"
+      ]
+    },
+    {
+      "hanzi": "我还没有计划。",
+      "pinyin": "Wǒ hái méiyǒu jìhuà.",
+      "ru": "Пока нет планов.",
+      "approved": null,
+      "topics": [
+        "Поездки"
+      ],
+      "examples": [
+        "你什么时候去北京"
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，不会真的坐飞机。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+      "ru": "Я виртуальная панда и не летаю по-настоящему.",
+      "approved": null,
+      "topics": [
+        "Поездки"
+      ],
+      "examples": [
+        "你坐飞机吗"
+      ]
+    },
+    {
+      "hanzi": "我很好，谢谢！你呢？",
+      "pinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+      "ru": "Хорошо, спасибо! А ты?",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-063.mp3",
+      "topics": [
+        "Здоровье"
+      ],
+      "examples": [
+        "你身体好吗",
+        "你今天感觉怎么样"
+      ]
+    },
+    {
+      "hanzi": "我没事，谢谢你。",
+      "pinyin": "Wǒ méi shì, xièxie nǐ.",
+      "ru": "Всё хорошо, спасибо.",
+      "approved": null,
+      "topics": [
+        "Здоровье"
+      ],
+      "examples": [
+        "你怎么了"
+      ]
+    },
+    {
+      "hanzi": "不累。你呢？",
+      "pinyin": "Bú lèi. Nǐ ne?",
+      "ru": "Не устала. А ты?",
+      "approved": null,
+      "topics": [
+        "Здоровье"
+      ],
+      "examples": [
+        "你累不累"
+      ]
+    },
+    {
+      "hanzi": "不用，谢谢你。",
+      "pinyin": "Bú yòng, xièxie nǐ.",
+      "ru": "Не нужно, спасибо.",
+      "approved": null,
+      "topics": [
+        "Здоровье"
+      ],
+      "examples": [
+        "你需要休息吗"
+      ]
+    },
+    {
+      "hanzi": "你起床以后做什么？",
+      "pinyin": "Nǐ qǐchuáng yǐhòu zuò shénme?",
+      "ru": "Что делаешь после подъёма?",
+      "approved": "./assets/panda-voice-clips-v365/p021.mp3",
+      "topics": [
+        "Мой распорядок дня"
+      ],
+      "examples": [
+        "我每天七点起床。"
+      ]
+    },
+    {
+      "hanzi": "我每天七点起床。",
+      "pinyin": "Wǒ měitiān qī diǎn qǐchuáng.",
+      "ru": "Я встаю каждый день в семь.",
+      "approved": null,
+      "topics": [
+        "Мой распорядок дня"
+      ],
+      "examples": [
+        "你每天几点起床？"
+      ]
+    },
+    {
+      "hanzi": "你几点去上班？",
+      "pinyin": "Nǐ jǐ diǎn qù shàngbān?",
+      "ru": "Во сколько идёшь на работу?",
+      "approved": "./assets/panda-hsk2-my-day-voice-20261120/day04.mp3",
+      "topics": [
+        "Мой распорядок дня",
+        "Связанные предложения"
+      ],
+      "examples": [
+        "我先吃早饭，再去上班。",
+        "我每天先喝咖啡然后去上班"
+      ]
+    },
+    {
+      "hanzi": "我先刷牙，再吃早饭。",
+      "pinyin": "Wǒ xiān shuāyá, zài chī zǎofàn.",
+      "ru": "Сначала чищу зубы, затем завтракаю.",
+      "approved": null,
+      "topics": [
+        "Мой распорядок дня"
+      ],
+      "examples": [
+        "你早上先做什么？"
+      ]
+    },
+    {
+      "hanzi": "你晚上常常做什么？",
+      "pinyin": "Nǐ wǎnshang chángcháng zuò shénme?",
+      "ru": "Что ты часто делаешь вечером?",
+      "approved": null,
+      "topics": [
+        "Мой распорядок дня"
+      ],
+      "examples": [
+        "我晚上常常看书。"
+      ]
+    },
+    {
+      "hanzi": "我晚上常常看书。",
+      "pinyin": "Wǒ wǎnshang chángcháng kàn shū.",
+      "ru": "Вечерами я часто читаю.",
+      "approved": null,
+      "topics": [
+        "Мой распорядок дня"
+      ],
+      "examples": [
+        "你晚上常常做什么？"
+      ]
+    },
+    {
+      "hanzi": "你喜欢你的工作吗？",
+      "pinyin": "Nǐ xǐhuan nǐ de gōngzuò ma?",
+      "ru": "Тебе нравится твоя работа?",
+      "approved": "./assets/panda-ai-natural-voice-batch01-20261124/PA-004.mp3",
+      "topics": [
+        "Моя работа и учёба"
+      ],
+      "examples": [
+        "我在公司工作。"
+      ]
+    },
+    {
+      "hanzi": "你会用电脑吗？",
+      "pinyin": "Nǐ huì yòng diànnǎo ma?",
+      "ru": "Ты умеешь пользоваться компьютером?",
+      "approved": null,
+      "topics": [
+        "Моя работа и учёба"
+      ],
+      "examples": [
+        "我会用电脑。"
+      ]
+    },
+    {
+      "hanzi": "会，我会用电脑。",
+      "pinyin": "Huì, wǒ huì yòng diànnǎo.",
+      "ru": "Да, умею.",
+      "approved": null,
+      "topics": [
+        "Моя работа и учёба"
+      ],
+      "examples": [
+        "你会用电脑吗？"
+      ]
+    },
+    {
+      "hanzi": "你今天忙吗？",
+      "pinyin": "Nǐ jīntiān máng ma?",
+      "ru": "Ты сегодня занят?",
+      "approved": null,
+      "topics": [
+        "Моя работа и учёба"
+      ],
+      "examples": [
+        "我今天很忙。"
+      ]
+    },
+    {
+      "hanzi": "我今天很忙。",
+      "pinyin": "Wǒ jīntiān hěn máng.",
+      "ru": "Я сегодня очень занят.",
+      "approved": null,
+      "topics": [
+        "Моя работа и учёба"
+      ],
+      "examples": [
+        "你今天忙吗？"
+      ]
+    },
+    {
+      "hanzi": "你喜欢什么音乐？",
+      "pinyin": "Nǐ xǐhuan shénme yīnyuè?",
+      "ru": "Какая музыка тебе нравится?",
+      "approved": null,
+      "topics": [
+        "Моё хобби"
+      ],
+      "examples": [
+        "我喜欢听音乐。"
+      ]
+    },
+    {
+      "hanzi": "我喜欢听音乐。",
+      "pinyin": "Wǒ xǐhuan tīng yīnyuè.",
+      "ru": "Я люблю слушать музыку.",
+      "approved": "./assets/hsk2-lesson4-hobby-voice-20261121/hobby09.mp3",
+      "topics": [
+        "Моё хобби"
+      ],
+      "examples": [
+        "你喜欢做什么？"
+      ]
+    },
+    {
+      "hanzi": "你周末做什么？",
+      "pinyin": "Nǐ zhōumò zuò shénme?",
+      "ru": "Что ты делаешь в выходные?",
+      "approved": null,
+      "topics": [
+        "Моё хобби"
+      ],
+      "examples": [
+        "我周末常常跑步。"
+      ]
+    },
+    {
+      "hanzi": "你觉得这个电影怎么样？",
+      "pinyin": "Nǐ juéde zhège diànyǐng zěnmeyàng?",
+      "ru": "Как тебе этот фильм?",
+      "approved": null,
+      "topics": [
+        "Моё хобби"
+      ],
+      "examples": [
+        "我觉得这个电影很有意思。"
+      ]
+    },
+    {
+      "hanzi": "我觉得很有意思。",
+      "pinyin": "Wǒ juéde hěn yǒu yìsi.",
+      "ru": "Мне кажется, он интересный.",
+      "approved": null,
+      "topics": [
+        "Моё хобби"
+      ],
+      "examples": [
+        "你觉得这个电影怎么样？"
+      ]
+    },
+    {
+      "hanzi": "银行在哪儿？",
+      "pinyin": "Yínháng zài nǎr?",
+      "ru": "Где банк?",
+      "approved": null,
+      "topics": [
+        "Мой город"
+      ],
+      "examples": [
+        "银行在学校旁边。"
+      ]
+    },
+    {
+      "hanzi": "银行在学校旁边。",
+      "pinyin": "Yínháng zài xuéxiào pángbiān.",
+      "ru": "Банк рядом со школой.",
+      "approved": null,
+      "topics": [
+        "Мой город"
+      ],
+      "examples": [
+        "银行在哪儿？"
+      ]
+    },
+    {
+      "hanzi": "公园在哪儿？",
+      "pinyin": "Gōngyuán zài nǎr?",
+      "ru": "Где находится парк?",
+      "approved": null,
+      "topics": [
+        "Мой город"
+      ],
+      "examples": [
+        "公园在医院后面。"
+      ]
+    },
+    {
+      "hanzi": "公园在医院后面。",
+      "pinyin": "Gōngyuán zài yīyuàn hòumiàn.",
+      "ru": "Парк позади больницы.",
+      "approved": null,
+      "topics": [
+        "Мой город"
+      ],
+      "examples": [
+        "公园在哪儿？"
+      ]
+    },
+    {
+      "hanzi": "你家离学校远吗？",
+      "pinyin": "Nǐ jiā lí xuéxiào yuǎn ma?",
+      "ru": "Твой дом далеко от школы?",
+      "approved": null,
+      "topics": [
+        "Мой город"
+      ],
+      "examples": [
+        "我家离学校很近。"
+      ]
+    },
+    {
+      "hanzi": "不远，很近。",
+      "pinyin": "Bù yuǎn, hěn jìn.",
+      "ru": "Не далеко, близко.",
+      "approved": null,
+      "topics": [
+        "Мой город"
+      ],
+      "examples": [
+        "你家离学校远吗？"
+      ]
+    },
+    {
+      "hanzi": "你怎么去上班？",
+      "pinyin": "Nǐ zěnme qù shàngbān?",
+      "ru": "Как ты добираешься до работы?",
+      "approved": null,
+      "topics": [
+        "Транспорт и дорога"
+      ],
+      "examples": [
+        "我坐地铁去上班。"
+      ]
+    },
+    {
+      "hanzi": "你从家到公司怎么去？",
+      "pinyin": "Nǐ cóng jiā dào gōngsī zěnme qù?",
+      "ru": "Как ты добираешься от дома до компании?",
+      "approved": null,
+      "topics": [
+        "Транспорт и дорога"
+      ],
+      "examples": [
+        "我从家到公司坐公交车。"
+      ]
+    },
+    {
+      "hanzi": "我坐公交车。",
+      "pinyin": "Wǒ zuò gōngjiāochē.",
+      "ru": "Я еду на автобусе.",
+      "approved": null,
+      "topics": [
+        "Транспорт и дорога"
+      ],
+      "examples": [
+        "你从家到公司怎么去？"
+      ]
+    },
+    {
+      "hanzi": "到机场需要多久？",
+      "pinyin": "Dào jīchǎng xūyào duōjiǔ?",
+      "ru": "Сколько времени нужно до аэропорта?",
+      "approved": null,
+      "topics": [
+        "Транспорт и дорога"
+      ],
+      "examples": [
+        "到机场需要一个小时。"
+      ]
+    },
+    {
+      "hanzi": "需要一个小时。",
+      "pinyin": "Xūyào yí ge xiǎoshí.",
+      "ru": "Нужен один час.",
+      "approved": null,
+      "topics": [
+        "Транспорт и дорога"
+      ],
+      "examples": [
+        "到机场需要多久？"
+      ]
+    },
+    {
+      "hanzi": "你想吃什么？",
+      "pinyin": "Nǐ xiǎng chī shénme?",
+      "ru": "Что ты хочешь съесть?",
+      "approved": null,
+      "topics": [
+        "В кафе и ресторане"
+      ],
+      "examples": [
+        "我想要一碗面条。"
+      ]
+    },
+    {
+      "hanzi": "你想喝什么？",
+      "pinyin": "Nǐ xiǎng hē shénme?",
+      "ru": "Что ты хочешь пить?",
+      "approved": null,
+      "topics": [
+        "В кафе и ресторане"
+      ],
+      "examples": [
+        "请给我一杯茶。"
+      ]
+    },
+    {
+      "hanzi": "还要什么？",
+      "pinyin": "Hái yào shénme?",
+      "ru": "Что-нибудь ещё?",
+      "approved": null,
+      "topics": [
+        "В кафе и ресторане"
+      ],
+      "examples": [
+        "我还要一碗汤。"
+      ]
+    },
+    {
+      "hanzi": "我还要一碗汤。",
+      "pinyin": "Wǒ hái yào yì wǎn tāng.",
+      "ru": "Ещё миску супа.",
+      "approved": null,
+      "topics": [
+        "В кафе и ресторане"
+      ],
+      "examples": [
+        "还要什么？"
+      ]
+    },
+    {
+      "hanzi": "练习对话：五十块钱。",
+      "pinyin": "Liànxí duìhuà: wǔshí kuài qián.",
+      "ru": "Учебный диалог: 50 юаней.",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-047.mp3",
+      "topics": [
+        "Покупки и цены"
+      ],
+      "examples": [
+        "这件衣服多少钱？"
+      ]
+    },
+    {
+      "hanzi": "你喜欢这件衣服吗？",
+      "pinyin": "Nǐ xǐhuan zhè jiàn yīfu ma?",
+      "ru": "Тебе нравится эта вещь?",
+      "approved": null,
+      "topics": [
+        "Покупки и цены"
+      ],
+      "examples": [
+        "这件衣服太贵了。"
+      ]
+    },
+    {
+      "hanzi": "喜欢，但是太贵了。",
+      "pinyin": "Xǐhuan, dànshì tài guì le.",
+      "ru": "Нравится, но слишком дорого.",
+      "approved": null,
+      "topics": [
+        "Покупки и цены"
+      ],
+      "examples": [
+        "你喜欢这件衣服吗？"
+      ]
+    },
+    {
+      "hanzi": "哪个更便宜？",
+      "pinyin": "Nǎ ge gèng piányi?",
+      "ru": "Какой дешевле?",
+      "approved": null,
+      "topics": [
+        "Покупки и цены"
+      ],
+      "examples": [
+        "这个比那个便宜。"
+      ]
+    },
+    {
+      "hanzi": "这个比那个便宜。",
+      "pinyin": "Zhège bǐ nàge piányi.",
+      "ru": "Этот дешевле.",
+      "approved": null,
+      "topics": [
+        "Покупки и цены"
+      ],
+      "examples": [
+        "哪个更便宜？"
+      ]
+    },
+    {
+      "hanzi": "你星期六有空吗？",
+      "pinyin": "Nǐ xīngqīliù yǒu kòng ma?",
+      "ru": "Ты свободен в субботу?",
+      "approved": null,
+      "topics": [
+        "Друзья и встречи"
+      ],
+      "examples": [
+        "我们星期六见面吧。"
+      ]
+    },
+    {
+      "hanzi": "有空，我们见面吧。",
+      "pinyin": "Yǒu kòng, wǒmen jiànmiàn ba.",
+      "ru": "Свободен, давай встретимся.",
+      "approved": null,
+      "topics": [
+        "Друзья и встречи"
+      ],
+      "examples": [
+        "你星期六有空吗？"
+      ]
+    },
+    {
+      "hanzi": "星期六下午三点。",
+      "pinyin": "Xīngqīliù xiàwǔ sān diǎn.",
+      "ru": "В субботу в три дня.",
+      "approved": null,
+      "topics": [
+        "Друзья и встречи"
+      ],
+      "examples": [
+        "我们几点见面？",
+        "我们什么时候见面？"
+      ]
+    },
+    {
+      "hanzi": "你想去公园吗？",
+      "pinyin": "Nǐ xiǎng qù gōngyuán ma?",
+      "ru": "Хочешь пойти в парк?",
+      "approved": null,
+      "topics": [
+        "Друзья и встречи"
+      ],
+      "examples": [
+        "我们一起去公园吧。"
+      ]
+    },
+    {
+      "hanzi": "好，我们一起去吧。",
+      "pinyin": "Hǎo, wǒmen yìqǐ qù ba.",
+      "ru": "Хорошо, пойдём вместе.",
+      "approved": null,
+      "topics": [
+        "Друзья и встречи"
+      ],
+      "examples": [
+        "你想去公园吗？"
+      ]
+    },
+    {
+      "hanzi": "你昨天做什么了？",
+      "pinyin": "Nǐ zuótiān zuò shénme le?",
+      "ru": "Что ты вчера делал?",
+      "approved": "./assets/hsk2-lesson6-voice/l6_17.mp3",
+      "topics": [
+        "Вчера и мой опыт"
+      ],
+      "examples": [
+        "我昨天看了电影。"
+      ]
+    },
+    {
+      "hanzi": "你昨天上班了吗？",
+      "pinyin": "Nǐ zuótiān shàngbān le ma?",
+      "ru": "Ты вчера работал?",
+      "approved": null,
+      "topics": [
+        "Вчера и мой опыт"
+      ],
+      "examples": [
+        "我昨天没有上班。"
+      ]
+    },
+    {
+      "hanzi": "没有，我昨天没有上班。",
+      "pinyin": "Méiyǒu, wǒ zuótiān méiyǒu shàngbān.",
+      "ru": "Нет, вчера не работал.",
+      "approved": null,
+      "topics": [
+        "Вчера и мой опыт"
+      ],
+      "examples": [
+        "你昨天上班了吗？"
+      ]
+    },
+    {
+      "hanzi": "你在那里做了什么？",
+      "pinyin": "Nǐ zài nàli zuò le shénme?",
+      "ru": "Что ты там делал(а)?",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-054.mp3",
+      "topics": [
+        "Вчера и мой опыт"
+      ],
+      "examples": [
+        "我去过上海。"
+      ]
+    },
+    {
+      "hanzi": "去过，我去过上海。",
+      "pinyin": "Qù guo, wǒ qù guo Shànghǎi.",
+      "ru": "Да, бывал.",
+      "approved": "./assets/hsk2-lesson6-voice/l6_23.mp3",
+      "topics": [
+        "Вчера и мой опыт"
+      ],
+      "examples": [
+        "你去过上海吗？"
+      ]
+    },
+    {
+      "hanzi": "你下个月打算做什么？",
+      "pinyin": "Nǐ xià ge yuè dǎsuàn zuò shénme?",
+      "ru": "Что ты собираешься делать в следующем месяце?",
+      "approved": null,
+      "topics": [
+        "Планы и будущее"
+      ],
+      "examples": [
+        "我打算下个月去上海。"
+      ]
+    },
+    {
+      "hanzi": "我打算去上海。",
+      "pinyin": "Wǒ dǎsuàn qù Shànghǎi.",
+      "ru": "Собираюсь в Шанхай.",
+      "approved": null,
+      "topics": [
+        "Планы и будущее"
+      ],
+      "examples": [
+        "你下个月打算做什么？"
+      ]
+    },
+    {
+      "hanzi": "你学中文多久了？",
+      "pinyin": "Nǐ xué Zhōngwén duōjiǔ le?",
+      "ru": "Как давно учишь китайский?",
+      "approved": "./assets/panda-voice-clips-v365/p119.mp3",
+      "topics": [
+        "Планы и будущее",
+        "Связанные предложения"
+      ],
+      "examples": [
+        "因为我喜欢中文，所以我每天学习。",
+        "因为我喜欢中文所以我每天学习",
+        "如果我有空我就学中文"
+      ]
+    },
+    {
+      "hanzi": "因为我喜欢中文。",
+      "pinyin": "Yīnwèi wǒ xǐhuan Zhōngwén.",
+      "ru": "Потому что мне нравится китайский.",
+      "approved": "./assets/panda-live-voice-bridge-v307/B10.mp3",
+      "topics": [
+        "Планы и будущее"
+      ],
+      "examples": [
+        "你为什么学习中文？"
+      ]
+    },
+    {
+      "hanzi": "你喜欢去公园吗？",
+      "pinyin": "Nǐ xǐhuan qù gōngyuán ma?",
+      "ru": "Ты любишь ходить в парк?",
+      "approved": null,
+      "topics": [
+        "Планы и будущее",
+        "Связанные предложения"
+      ],
+      "examples": [
+        "如果明天有空，我就去公园。",
+        "如果明天有空我就去公园"
+      ]
+    },
+    {
+      "hanzi": "我就去公园。",
+      "pinyin": "Wǒ jiù qù gōngyuán.",
+      "ru": "Тогда пойду в парк.",
+      "approved": null,
+      "topics": [
+        "Планы и будущее"
+      ],
+      "examples": [
+        "如果明天有空，你做什么？"
+      ]
+    },
+    {
+      "hanzi": "你早上吃什么？",
+      "pinyin": "Nǐ zǎoshang chī shénme?",
+      "ru": "Что ешь утром?",
+      "approved": null,
+      "topics": [
+        "Связанные предложения"
+      ],
+      "examples": [
+        "我先刷牙然后吃早饭"
+      ]
+    },
+    {
+      "hanzi": "然后呢？",
+      "pinyin": "Ránhòu ne?",
+      "ru": "А потом?",
+      "approved": null,
+      "topics": [
+        "Связанные предложения"
+      ],
+      "examples": [
+        "我早上先洗脸再刷牙",
+        "我吃饭以后去散步",
+        "我下班之后休息",
+        "我每天早上七点起床然后刷牙再吃早饭",
+        "我先洗脸然后刷牙再吃早饭",
+        "我七点起床然后去上班",
+        "我每天晚上先看书再听音乐"
+      ]
+    },
+    {
+      "hanzi": "那你休息一下吧。",
+      "pinyin": "Nà nǐ xiūxi yíxià ba.",
+      "ru": "Тогда немного отдохни.",
+      "approved": "./assets/panda-ai-voice-v557/PA-V556-059.mp3",
+      "topics": [
+        "Связанные предложения"
+      ],
+      "examples": [
+        "因为我很累所以我想休息",
+        "我很忙所以想休息"
+      ]
+    },
+    {
+      "hanzi": "你接下来想做什么？",
+      "pinyin": "Nǐ jiēxiàlái xiǎng zuò shénme?",
+      "ru": "Что хочешь делать дальше?",
+      "approved": null,
+      "topics": [
+        "Связанные предложения"
+      ],
+      "examples": [
+        "我想去但是没时间"
+      ]
+    },
+    {
+      "hanzi": "谢谢你！我很开心！",
+      "pinyin": "Xièxie nǐ! Wǒ hěn kāixīn!",
+      "ru": "Спасибо! Мне очень приятно!",
+      "approved": null,
+      "topics": [
+        "Знакомство"
+      ],
+      "examples": [
+        "我爱你"
+      ]
+    }
+  ]
+}
