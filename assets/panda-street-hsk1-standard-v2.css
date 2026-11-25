@@ -153,7 +153,7 @@ body[data-street-lesson]{background:linear-gradient(145deg,#fff,#fff8fd 65%,#fce
 
 /* v567: approved light Sakura reference, independent live controls. */
 [data-street-lesson] #app.pg-v414-preview{background:linear-gradient(180deg,#fff 0%,#fff9fd 43%,#faeaf6 100%)}
-[data-street-lesson] #app #pg-content .street-sakura-art{display:block;width:100%;height:auto;max-height:none;aspect-ratio:244/89;object-fit:contain;border-radius:11px;margin:8px auto}
+[data-street-lesson] #app #pg-content .street-sakura-art{display:block;width:100%;height:auto;max-height:none;aspect-ratio:1024/360;object-fit:contain;border-radius:11px;margin:8px auto}
 [data-street-lesson] #app #pg-content[data-stage="cover"] .street-cover:before,[data-street-lesson] #app #pg-content[data-stage="cover"] .street-cover:after{display:none}
 [data-street-lesson] #app #pg-content[data-stage="cover"] .street-motto{background:#31172e;color:#fff2d4;border-radius:10px;padding:6px;margin:6px 0}
 [data-street-lesson] #app #pg-content[data-stage="phrase"] .street-phrase{background:#fffafd;padding:12px}
@@ -258,7 +258,7 @@ body[data-street-lesson]{background:linear-gradient(145deg,#fff,#fff8fd 65%,#fce
 [data-street-lesson] #app .pg-hsk1-header .pg-hsk1-count{background:none;border:0;box-shadow:none;font-size:11px;padding:2px}
 [data-street-lesson] #app #pg-content[data-stage="cover"]{padding:8px 12px}
 [data-street-lesson] #app #pg-content[data-stage="cover"] .street-cover{background:#fffaff;border:1px solid #e8d9eb;border-radius:20px;box-shadow:0 4px 10px #65306e16;padding:11px!important;margin:0 auto!important}
-[data-street-lesson] #app #pg-content[data-stage="cover"] .street-sakura-art,[data-street-lesson] #app #pg-content[data-stage="phrase"] .street-sakura-art{width:100%;height:auto;max-height:none;aspect-ratio:244/89;object-fit:contain;margin:6px auto;border-radius:11px}
+[data-street-lesson] #app #pg-content[data-stage="cover"] .street-sakura-art,[data-street-lesson] #app #pg-content[data-stage="phrase"] .street-sakura-art{width:100%;height:auto;max-height:none;aspect-ratio:1024/360;object-fit:contain;margin:6px auto;border-radius:11px}
 [data-street-lesson] #app #pg-content[data-stage="cover"] .street-cover-shortcuts button{min-height:32px;padding:3px 2px;background:#fff;border:1px solid #e8d9eb;box-shadow:none;border-radius:10px;font-size:11px;font-weight:700}
 [data-street-lesson] #app #pg-content[data-stage="cover"] .street-gold-link{font-size:16px;min-height:44px;margin:6px 0}
 [data-street-lesson] #app #pg-content[data-stage="cover"] .street-motto{font-size:12px;font-style:normal;padding:6px;line-height:1.2;margin:7px 0 0;border:1px solid #dbb16a;box-shadow:none}
