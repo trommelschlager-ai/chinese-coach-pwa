@@ -91,7 +91,8 @@ async function refresh(){
   const [release,cards]=await Promise.all([library.installedRelease(),library.list()]);
   $('release').textContent=release?'№ '+release:'не скачана';
   $('count').textContent=String(cards.length);
- }catch(e){status('downloadStatus','Локальная память недоступна: '+e.message,true)}
+  return true;
+ }catch(e){status('downloadStatus','Локальная память недоступна: '+e.message,true);return false}
 }
 async function download(){
  if(busy)return;
@@ -99,10 +100,11 @@ async function download(){
  busyState(true);
  try{
   const result=await library.update();
+  // Publish completion only after the asynchronous IndexedDB counters are refreshed.
+  if(!await refresh())return;
   status('downloadStatus',result.status==='already-installed'?
    '✅ Актуальная версия уже сохранена. Старые фразы не удалены.':
    '✅ Скачано '+result.saved+' фраз и MP3 Xiaoxiao. Доступно без сети.');
-  await refresh();
  }catch(e){status('downloadStatus','Не удалось обновить: '+e.message,true)}
  finally{busyState(false)}
 }
@@ -154,7 +156,7 @@ async function prepare(){
 async function clear(){
  if(busy)return;busyState(true);
  try{
-  await library.clear();empty();await refresh();
+  await library.clear();empty();if(!await refresh())return;
   status('downloadStatus','Общий набор удалён с этого телефона. Личная память не тронута.');
  }catch(e){status('downloadStatus','Ошибка удаления: '+e.message,true)}
  finally{busyState(false)}
