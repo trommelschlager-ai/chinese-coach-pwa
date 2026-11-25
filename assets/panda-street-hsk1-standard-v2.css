@@ -290,3 +290,16 @@ body[data-street-lesson]{background:linear-gradient(145deg,#fff,#fff8fd 65%,#fce
  [data-street-lesson] #app #pg-content[data-stage="record"] #record-status{margin:3px 0 0}
  [data-street-lesson] #app #pg-content[data-stage="record"] .recorder{margin:2px 0}
 }
+
+/* v572: fit long assembled phrases on small Android viewports without clipping. */
+@media(max-height:740px){
+ [data-street-lesson] #app #pg-content[data-stage="build"]{padding:4px 10px 6px}
+ [data-street-lesson] #app #pg-content[data-stage="build"] .screen-eyebrow{margin:2px 0 4px}
+ [data-street-lesson] #app #pg-content[data-stage="build"] .screen-title{font-size:22px;margin:2px 0 6px}
+ [data-street-lesson] #app #pg-content[data-stage="build"] .sheet{padding:8px!important}
+ [data-street-lesson] #app #pg-content[data-stage="build"] .translation{font-size:16px;margin:4px 0;line-height:1.25}
+ [data-street-lesson] #app #pg-content[data-stage="build"] .sentence-word{font-size:clamp(20px,6vw,25px);line-height:1.12;min-height:44px;min-width:44px;padding:4px 7px}
+ [data-street-lesson] #app #pg-content[data-stage="build"] .answer-space,[data-street-lesson] #app #pg-content[data-stage="build"] .sentence-row{gap:4px;margin:4px 0;padding:4px}
+ [data-street-lesson] #app #pg-content[data-stage="build"] #verify{min-height:44px;margin:5px auto 3px;padding:5px 10px}
+ [data-street-lesson] #app #pg-content[data-stage="build"] #street-status{margin:4px 0 0;line-height:1.2}
+}
