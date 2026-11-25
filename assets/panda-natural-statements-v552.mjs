@@ -81,8 +81,8 @@ function workConversation(raw,s,awaiting){
  const roleQ=/^你(?:是不是([\p{Script=Han}]{1,6})|是([\p{Script=Han}]{1,6}?)(?:吗)?)$/u.exec(s);
  if(roleQ&&Object.hasOwn(professions,roleQ[1]||roleQ[2])){
   const job=roleQ[1]||roleQ[2],[py,ru]=professions[job];
-  // Exact approved recordings are already in Panda's voice catalog: p083 & p085.
-  const teacherYes=['是，我是老师。','Shì, wǒ shì lǎoshī.','Да, я учитель.'];
+  // Exact approved recordings are already in Panda's voice catalog: v3/p03 and v365/p085.
+  const teacherYes=['我是老师。','Wǒ shì lǎoshī.','Я учитель.'];
   const teacherNo=['不是，我是老师。','Bú shì, wǒ shì lǎoshī.','Нет, я учитель.'];
   const questionPinyin=roleQ[1]?'shì bú shì '+py+'?':'shì '+py+(s.endsWith('吗')?' ma?':'?');
   return r('Nǐ '+questionPinyin,'Ты '+ru+'?',job==='老师'?teacherYes:teacherNo,null,'question');
