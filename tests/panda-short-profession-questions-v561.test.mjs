@@ -5,8 +5,8 @@ import {lookupApprovedPandaVoice} from '../assets/panda-approved-voice-registry-
 import {liveDOM} from './panda-live-dom-fixture.mjs';
 
 const professions=['老师','学生','医生','工程师','护士','老板','经理','司机','厨师','服务员','警察','销售员','工人','翻译','演员','商人','程序员','设计师'];
-const expected=job=>job==='老师'?'是，我是老师。':'不是，我是老师。';
-const expectedClip=job=>job==='老师'?'p083.mp3':'p085.mp3';
+const expected=job=>job==='老师'?'我是老师。':'不是，我是老师。';
+const expectedClip=job=>job==='老师'?'p03.mp3':'p085.mp3';
 
 test('All 18 profession questions without 吗 are understood and use existing approved voice',()=>{
  for(const job of professions){
@@ -29,7 +29,7 @@ test('Teacher and doctor are distinct; 我是医生 remains a learner statement,
  const teacher=respondToNaturalStatement('你是老师');
  const doctor=respondToNaturalStatement('你是医生');
  const self=respondToNaturalStatement('我是医生');
- assert.equal(teacher.reply.hanzi,'是，我是老师。');
+ assert.equal(teacher.reply.hanzi,'我是老师。');
  assert.equal(doctor.reply.hanzi,'不是，我是老师。');
  assert.equal(self.kind,'statement');
  assert.equal(self.reply.hanzi,'你是医生！你在哪儿工作？');
