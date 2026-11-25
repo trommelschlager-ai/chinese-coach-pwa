@@ -78,7 +78,7 @@ function workConversation(raw,s,awaiting){
  }
  // v561: Android ASR often drops 吗 and punctuation from 你是医生？.
  // This asks about Panda, NOT the learner's separate 我是医生 statement.
- const roleQ=/^你(?:是不是([\p{Script=Han}]{1,6})|是([\p{Script=Han}]{1,6})(?:吗)?)$/u.exec(s);
+ const roleQ=/^你(?:是不是([\p{Script=Han}]{1,6})|是([\p{Script=Han}]{1,6}?)(?:吗)?)$/u.exec(s);
  if(roleQ&&Object.hasOwn(professions,roleQ[1]||roleQ[2])){
   const job=roleQ[1]||roleQ[2],[py,ru]=professions[job];
   // Exact approved recordings are already in Panda's voice catalog: p083 & p085.
