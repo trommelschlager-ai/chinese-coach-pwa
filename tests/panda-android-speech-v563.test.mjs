@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+const core=readFileSync(new URL('../assets/panda-hsk2-preview-core-v1.mjs',import.meta.url),'utf8');
+const source=core.slice(core.indexOf('function selectPandaSpeech563('),core.indexOf('function startRecognition(){'));
+const select=vm.runInNewContext(source+'\nselectPandaSpeech563');
+const cases=[[[{"transcript":"你是一双","confidence":0.9},{"transcript":"你是医生","confidence":0.9}],true,"你是医生",true],[[{"transcript":"你是一首","confidence":0.9}],true,"你是医生？",true],[[{"transcript":"你是一双吗","confidence":0.9}],true,"你是医生吗？",true],[[{"transcript":"你是一双鞋","confidence":0.9}],true,"你是一双鞋",false],[[{"transcript":"好吗","confidence":0.9},{"transcript":"你是医生","confidence":0.9}],true,"好吗",false],[[{"transcript":"我是医生","confidence":0.9}],true,"我是医生",false],[[{"transcript":"你是一双","confidence":0.9},{"transcript":"你是医生","confidence":0.9}],false,"你是一双",false],[[{"transcript":"你是老师","confidence":0.9},{"transcript":"你是医生","confidence":0.9}],true,"你是老师",false],[[],true,"",false]];
+for(const [result,allow,want,recovered] of cases)test('Android speech: '+JSON.stringify(result)+' free='+allow,()=>{const x=select(result,allow);assert.equal(x.text,want);assert.equal(x.recovered,recovered);});
+test('active recognition consumes selected result and never judges corrected ASR as pronunciation',()=>{assert.match(core,/const selected=selectPandaSpeech563\(result,freeConversation\)/);assert.match(core,/const reliable=!selected.recovered/);assert.match(core,/toneVerified:false/);});

@@ -677,6 +677,15 @@ $('speech-check').addEventListener('click',inspectMicPermission);
 $('speech-copy').addEventListener('click',copySpeechUrl);
 $('speech-chrome').href=shareableSpeechUrl();
 
+function selectPandaSpeech563(result, allowProfessionRecovery) {
+ const alternatives=Array.from(result||[]).map(a=>({text:String(a?.transcript||'').trim(),confidence:typeof a?.confidence==='number'&&a.confidence>0?a.confidence:null})).filter(a=>a.text);
+ const first=alternatives[0]||{text:'',confidence:null};
+ const key=s=>s.normalize('NFKC').replace(/[\p{P}\s]/gu,'');
+ if(!allowProfessionRecovery||!/^你是(?:一双|一首)(?:吗)?$/u.test(key(first.text)))return {...first,original:first.text,recovered:false};
+ const exact=alternatives.find(a=>/^你是医生(?:吗)?$/u.test(key(a.text)));
+ if(exact)return {...exact,original:first.text,recovered:true};
+ return {...first,text:key(first.text).endsWith('吗')?'你是医生吗？':'你是医生？',original:first.text,recovered:true};
+}
 function startRecognition(){
  if(state.active){
    // A second tap immediately after Android permission or microphone activation is usually accidental.
@@ -689,7 +698,7 @@ function startRecognition(){
  if(window.isSecureContext===false){showMicRecovery('Для микрофона нужен HTTPS. Открой опубликованный Panda Go в Chrome.');return}
  cancelFollowup();stopAudio();stopRecognition();let r;
  try{
-  r=new Speech();r.lang='zh-CN';r.continuous=false;r.interimResults=false;r.maxAlternatives=3;
+  r=new Speech();r.lang='zh-CN';r.continuous=false;r.interimResults=false;r.maxAlternatives=5;
  }catch{showMicRecovery('Браузер не смог создать сеанс распознавания. Открой ссылку в Chrome.');return}
  recognition=r;const token=++epoch;state.active=true;micActivatedAt=Date.now();
  let heard=false,failed=false,started=false,audioStarted=false;
@@ -716,19 +725,22 @@ function startRecognition(){
  r.onresult=e=>{
   if(!valid())return;
   clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);
-  const a=e.results?.[0]?.[0];const text=String(a?.transcript||'').trim();
+  const result=e.results?.[e.resultIndex??0]||e.results?.[0];
+   const freeConversation=!state.dayMode&&(!hsk2||hsk2.openChat||(entry.beginnerGreeting&&hsk2.id===101));
+   const selected=selectPandaSpeech563(result,freeConversation);
+   const text=selected.text;
   if(!text){fail('Браузер вернул пустой ответ. Попробуй ещё раз в Chrome или напиши фразу.');return}
   heard=true;
   // A final ASR transcript must cancel all watchdogs and finish mic capture.
   // Otherwise Android can later say 'speech not recognized' after Panda replied.
   clearTimeout(watchdog);
   stopRecognition();
-  const confidence=typeof a?.confidence==='number'&&a.confidence>0?a.confidence:null;
+  const confidence=selected.confidence;
   if(confidence!==null&&confidence<.65){
    // The ASR transcript is uncertain: the learner must approve it before any dialogue update.
    state.confidence=null;$('message').value=text;
    state.speechSignal={id:(state.speechSignal?.id||0)+1,kind:'uncertain',text,confidence,contentVerified:false,toneVerified:false};
-   note('Распознано неуверенно: '+text+'. Исправь текст и нажми ➤ или повтори через 🎙.');
+   note('Распознано неуверенно: '+selected.original+(selected.recovered?' → возможно, '+text:'')+'. Проверь текст и нажми ➤ или повтори через 🎙.');
    $('message').focus();return;
   }
   state.confidence=confidence;
@@ -736,7 +748,7 @@ function startRecognition(){
   // ASR returns text and optional confidence, never a validated acoustic tone score.
   const latestLearner=[...state.history].reverse().find(turn=>turn.who==='you'&&turn.hanzi===text);
   const correctionHanzi=latestLearner?.analysis?.correction?.hanzi||null;
-  const reliable=state.confidence!==null&&state.confidence>=.85;
+  const reliable=!selected.recovered&&state.confidence!==null&&state.confidence>=.85;
   const kind=state.confidence!==null&&state.confidence<.65?'uncertain'
     :correctionHanzi&&reliable?'content-error':'text-only';
   state.speechSignal={
@@ -744,7 +756,8 @@ function startRecognition(){
     correctionHanzi:kind==='content-error'?correctionHanzi:null,
     contentVerified:false,toneVerified:false
   };
-  if(kind==='uncertain')note('Распознано неуверенно. Проверь текст и повтори при необходимости.');
+  if(selected.recovered)note('Браузер распознал: '+selected.original+'. Панда предположила: '+text+'. Тоны не оценивались.');
+   else if(kind==='uncertain')note('Распознано неуверенно. Проверь текст и повтори при необходимости.');
   state.confidence=null;
  };
  r.onerror=e=>{
