@@ -1,0 +1,43 @@
+name: HSK2 Lesson 1 approved speech layout v558
+on:
+  push:
+    paths:
+      - 'hsk2-about-me.html'
+      - 'scripts/qa-hsk2-about-speech-v558.mjs'
+      - '.github/workflows/hsk2-about-me-speech-v558.yml'
+  pull_request:
+    paths:
+      - 'hsk2-about-me.html'
+      - 'scripts/qa-hsk2-about-speech-v558.mjs'
+      - '.github/workflows/hsk2-about-me-speech-v558.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  speech-layout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Verify live lesson at three mobile sizes
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/about-speech.log 2>&1 &
+          pid=$!
+          trap 'kill $pid 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/hsk2-about-me.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/qa-hsk2-about-speech-v558.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hsk2-about-speech-v558-mobile
+          path: qa/hsk2-about-speech-v558/
+          if-no-files-found: warn

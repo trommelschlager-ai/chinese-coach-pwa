@@ -1289,6 +1289,63 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
 <link rel="stylesheet" href="./assets/hsk2-approved-cover.css?v=20261123-single-press-all">
 <script src="./assets/hsk2-approved-cover.js?v=20261123-single-press-all" data-lesson="1"></script>
+<style id="about-speech-approved-v558">
+/* Approved reference 39193: lesson 1 only, tab 3 (internal step 6).
+   Original lesson 4 atlas tile, no screenshot rasterization; keep all six rows reachable. */
+.course-layout body #app[data-view="6"] #pg433 .pg433-content,
+body #app[data-view="6"] #pg433 .pg433-content {
+ display:flex!important;flex-direction:column!important;min-height:0!important;
+ padding:8px 9px 7px!important;gap:7px!important;overflow-y:hidden!important;
+}
+body #app[data-view="6"] #pg433 .tones-hero {
+ display:grid!important;grid-template-columns:minmax(0,43%) minmax(0,1fr)!important;
+ align-items:center!important;gap:8px!important;flex:0 0 auto!important;
+ min-height:0!important;margin:0!important;padding:0!important;background:transparent!important;
+}
+body #app[data-view="6"] #pg433 .tones-hero svg.about-speech-approved-art {
+ display:block!important;width:100%!important;height:auto!important;aspect-ratio:1!important;
+ max-height:none!important;align-self:center!important;border-radius:14px!important;
+ object-fit:contain!important;overflow:hidden!important;box-sizing:border-box;
+}
+body #app[data-view="6"] #pg433 .tones-hero .hero-message {
+ min-width:0!important;margin:0!important;padding:8px 9px 9px!important;
+ align-self:center!important;border-radius:22px!important;
+}
+body #app[data-view="6"] #pg433 .tones-hero .hero-message h1 {
+ font-size:clamp(14px,4.1vw,21px)!important;white-space:normal!important;letter-spacing:-.035em!important;line-height:1.12!important;
+}
+body #app[data-view="6"] #pg433 .tones-hero .hero-message p {
+ font-size:clamp(12px,3.5vw,15px)!important;line-height:1.22!important;margin:4px 0 0!important;
+}
+body #app[data-view="6"] #pg433 .tone-tabs {
+ flex:0 0 auto!important;margin:0!important;padding:4px!important;gap:5px!important;
+}
+body #app[data-view="6"] #pg433 .tone-tabs button {
+ min-width:0!important;min-height:40px!important;font-size:clamp(12px,3.6vw,16px)!important;
+ white-space:normal!important;
+}
+body #app[data-view="6"] #pg433 .pg-standard-list {
+ flex:1 1 0!important;min-height:0!important;overflow:auto!important;margin:0!important;
+}
+body #app[data-view="6"] #pg433 .pg-standard-speech-row {
+ min-height:clamp(66px,19.5vw,84px)!important;flex:0 0 auto!important;
+}
+body #app[data-view="6"] #pg433 .about-speech-phrases {flex:1 1 0;min-height:0;overflow:auto}
+body #app[data-view="6"] #pg433 .about-speech-list-footer {
+ padding:8px;flex:0 0 auto;text-align:center;border-top:1px solid #e5c7e8;
+}
+body #app[data-view="6"] #pg433 .about-speech-list-footer .hint {font-size:12px;margin:2px 0 6px}
+body #app[data-view="6"] #pg433 .about-speech-fallback {width:100%;font-size:12px!important}
+body #app[data-view="6"] #pg433 #feedback:empty {display:none!important}
+body #app[data-view="6"] #pg433 #feedback:not(:empty) {flex:none!important;margin:0!important;font-size:12px!important;padding:4px 7px!important}
+/* Recognition is NOT an acoustic tone grade. Amber is a transcript-only marker. */
+body #app[data-view="6"] #pg433 .pg-standard-speech-row button[data-mic].recognized {
+ outline:2px solid #c38b42!important;outline-offset:1px!important;
+}
+@media(max-height:620px){
+ body #app[data-view="6"] #pg433 .tones-hero {grid-template-columns:minmax(0,32%) minmax(0,1fr)!important}
+}
+</style>
 </head>
 <body>
 <div class="app" id="app">
@@ -1737,7 +1794,7 @@ function newWords() {
 function hero(kind,step,title,subtitle) {
   const image = kind === 'tones' ? 'tones' : 'quiz';
   return '<div class="detail-hero ' + kind + '-hero">' +
-    stageImage(image,'about-hero-photo') +
+    (kind === 'tones' ? '<svg xmlns="http://www.w3.org/2000/svg" class="about-hero-photo about-premium-photo about-speech-approved-art" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Панда в розовых наушниках у микрофона в саду сакуры"><image href="./assets/hsk2-lesson4-hobby-3d/stages-v2.webp" width="1200" height="1200"/></svg>' : stageImage(image,'about-hero-photo')) +
     '<div class="hero-message"><span class="tag">Шаг ' + stepNumber(step) +
     '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div></div>';
 }
@@ -1941,25 +1998,14 @@ function pgStandardSpeechRow(word,i) {
 function tones() {
   const wordView = state.toneTab === 'words';
   return hero('tones',6,'Тренировка тонов','Произнеси шесть новых выражений о себе.') +
-    '<div class="practice-modes panel"><button type="button" class="practice-main ' +
-    (state.practiceMode === 'mic' ? 'primary' : 'soft') +
-    '" data-practice-mode="mic">🎙 Микрофон · основной</button>' +
-    '<button type="button" class="practice-backup soft' + (state.practiceMode === 'self' ? ' is-active' : '') +
-    '" data-practice-mode="self">' +
-    (state.practiceMode === 'self' ? '✓ Запасной режим' : 'Не работает микрофон?') +
-    '</button></div>' +
-    (state.practiceMode === 'self'
-      ? '<p class="hint practice-fallback-note">Нет работающего распознавания? Прочитай и повтори по пиньиню, затем отметь слово. Если нет записи, повтори по пиньиню. Тоны автоматически не оцениваются.</p>'
-      : '') +
     '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
     '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (6)</button></div>' +
-    (wordView ? '<div class="pg-standard-list">' + words.map(pgStandardSpeechRow).join('') + '</div>' :
-      '<details class="phrase-review panel"><summary>💬 Открыть 6 фраз для повторения</summary>' + phraseCards() + '</details>') +
-    safeStatus() + toneGuide() + '<div class="progress-panel panel">' + stageImage('tones','about-progress-photo') + '<div><b>Практика произношения</b>' +
-    '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
-    ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
-    '. Тоны автоматически не оцениваются. Прослушай пример и повтори.</p>';
+    safeStatus() +
+    (wordView ? '<div class="pg-standard-list">' + words.map(pgStandardSpeechRow).join('') +
+      '<div class="about-speech-list-footer"><p class="hint">Отработано '+speechCount()+' из 6. Тоны автоматически не оцениваются.</p>'+
+      '<button type="button" class="soft about-speech-fallback" data-practice-mode="'+(state.practiceMode==='self'?'mic':'self')+'">'+(state.practiceMode==='self'?'Вернуться к микрофону':'Не работает микрофон? Самопроверка')+'</button></div></div>' :
+      '<div class="about-speech-phrases">'+phraseCards()+'</div>');
 }
 
 const replyPinyin = new Map([
@@ -2149,7 +2195,8 @@ function recognize(allowed,onMatch,onMiss) {
   const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!Recognition || !window.isSecureContext) {
     state.practiceMode = 'self'; save();
-    setStatus('Распознавание недоступно. Можно попробовать другой браузер или воспользоваться запасной самопроверкой в разделе «Речь».');
+    setStatus('Распознавание недоступно. В разделе «Речь» включена самопроверка; тоны не оцениваются.');
+    if(state.step===6)render();
     return;
   }
   clearMedia();
@@ -2343,7 +2390,7 @@ function onMic(id) {
     recognize([words[index].zh],match => {
       if (!state.mic.includes(index)) state.mic.push(index);
       save();
-      setStatus('✓ Распознано «' + match + '». Тоны не оценивались.',true);
+      setStatus('Распознано «' + match + '». Тоны не проверены.',false);
       render();
     });
   }
