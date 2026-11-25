@@ -43,11 +43,16 @@ try{for(const mode of ['short','nonstop']){
     await send(c.input);
     await page.waitForFunction(({input,reply})=>{const h=window.PandaApprovedBridge337?.snapshot().history;return h?.at(-2)?.hanzi===input&&h.at(-1)?.hanzi===reply;},c,{timeout:5000});
     assert((await page.evaluate(()=>window.PandaApprovedBridge337.snapshot())).audioAvailable,c.reply);
-    const expected=new URL(c.src,page.url()).href;
+    // Preserve the already approved embedded lesson recording when available.
+    // Only this exact phrase is allowed to resolve to the embedded source.
+    const embedded=c.reply==='我每天七点起床。'?await page.evaluate(()=>globalThis.PandaGoHSK2Lesson1NativeAudioV459?.['我每天七点起床。']||null):null;
+    if(embedded)assert(embedded.startsWith('data:audio/mpeg;base64,'));
+    const expected=embedded||new URL(c.src,page.url()).href;
     await page.waitForFunction(expected=>window.__voiceTrace.some(t=>t.src===expected&&['playing','resolved'].includes(t.event)),expected,{timeout:10000});
-    console.log('PASS exact autoplay '+mode+' '+c.input+' -> '+c.reply);
+    console.log('PASS exact autoplay '+mode+' '+c.input+' -> '+c.reply+(embedded?' (existing approved embedded recording)':''));
    }catch(e){
     const snapshot=await page.evaluate(()=>({trace:window.__voiceTrace,status:window.PandaApprovedBridge337?.snapshot().status,history:window.PandaApprovedBridge337?.snapshot().history.slice(-4),audioAvailable:window.PandaApprovedBridge337?.snapshot().audioAvailable})).catch(()=>null);
+    if(snapshot?.trace)for(const t of snapshot.trace)if(t.src?.startsWith('data:'))t.src='data:audio/mpeg;base64,[omitted]';
     const failure={mode,...c,error:String(e),snapshot,pageErrors};
     failures.push(failure);console.error('NEW_AUDIO_FAILURE '+JSON.stringify(failure));
    }

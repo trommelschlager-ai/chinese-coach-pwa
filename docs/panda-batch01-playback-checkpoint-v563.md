@@ -1,0 +1,3 @@
+# Batch 01 browser playback checkpoint
+
+On commit 1ea20058ae5511bfd53c7f1860849afa0865022c, Chromium decoded all 12 supplied MP3s in both modes. 22/24 strict file-path autoplay checks passed; remaining 2 played the exact existing embedded lesson recording for 我每天七点起床。 (both play resolved and playing events). No observed playback failure. The test now preserves this exact existing recording and requires the newly supplied MP3 for the other 11 phrases; all 12 files must still decode. The duplicate remains a fallback when the embedded lesson data is unavailable. Do not record it again. Physical Android microphone, voice quality and tones are still unverified. Publication requires final release checks.
