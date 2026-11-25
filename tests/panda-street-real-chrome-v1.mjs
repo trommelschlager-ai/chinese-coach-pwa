@@ -60,13 +60,14 @@ try{
       assert.notEqual(state.activeTheme,'day','Fresh profile should start with approved night view');
 
       if(viewport.width===393){
-        const files=['01.mp3','02.mp3','03.mp3'];
+        const files=['21.mp3','22.mp3','23.mp3','24.mp3','25.mp3','26.mp3'];
+        const packageFiles=Array.from({length:53},(_,i)=>String(i+1).padStart(2,'0')+'.mp3');
         const decoded=await page.evaluate(async clips=>{
           const audioContext=new AudioContext();
           const result=[];
           try{
             for(const clip of clips){
-              const url='./assets/panda-street-male-voice-v1/'+clip;
+              const url='./assets/panda-street-voice-v20261125/'+clip;
               const response=await fetch(url);
               if(!response.ok)throw Error('MP3 response '+clip+': '+response.status);
               const data=await response.arrayBuffer();
@@ -77,13 +78,13 @@ try{
             }
             return result;
           }finally{await audioContext.close()}
-        },files);
+        },packageFiles);
         for(const sound of decoded){
           assert(sound.bytes>3000,'Empty MP3: '+sound.clip);
           assert(sound.duration>0.3&&sound.duration<20,'Invalid MP3 duration: '+sound.clip);
           assert(sound.channels>=1&&sound.channels<=2,'Unexpected MP3 channel count: '+sound.clip);
         }
-        for(let i=0;i<3;i++){
+        for(let i=0;i<files.length;i++){
           await page.locator('#short').click();
           await page.locator('[data-i="'+i+'"]').click();
           await page.locator('#hear').click();
@@ -104,17 +105,9 @@ try{
         });
         assert(motionCanvas.width>0&&motionCanvas.width<motionCanvas.sourceWidth,
           'Only the actual face, never the full approved photo, should animate');
-        const oldCount=await page.evaluate(()=>window.__streetAudio.length);
-        await page.locator('#short').click();
-        await page.locator('[data-i="3"]').click();
-        await page.locator('#hear').click();
-        await page.waitForFunction(()=>
-          document.getElementById('toast').textContent.includes('мужская запись для неё пока не загружена'),
-          null,{timeout:4000});
-        assert.equal(await page.evaluate(()=>window.__streetAudio.length),oldCount,
-          'Unapproved 你好！ must not be synthesized or played');
-        await page.locator('#close').click();
-        reports.push({viewport:name,decoded,played:['01.mp3','02.mp3','03.mp3'],unapproved04:'silent'});
+        assert(await page.evaluate(()=>window.PandaStreetVoiceV20261125.lookup('我叫安娜，你呢？','male')===null),'Female dialogue must never be routed to Street AI');
+        assert(await page.evaluate(()=>window.PandaStreetVoiceV20261125.lookup('没有这句话','male')===null),'Unknown phrase must not fabricate a clip');
+        reports.push({viewport:name,decoded,played:files,roleBoundary:'passed'});
       }
       if(viewport.width===393){
         // Regression from Android screen recording 38791.mp4:
@@ -132,6 +125,7 @@ try{
         assert(Math.abs(intactBefore.height-intactWithKeyboard.height)<=1,
           'Android keyboard must not shrink Panda scene HEIGHT');
         await page.screenshot({path:output+'/keyboard-stable-'+name+'.png'});
+        const silentBefore=await page.evaluate(()=>window.__streetAudio.length);
         await page.locator('#submit').click();
         await page.setViewportSize({width:393,height:852});
         await page.waitForFunction(()=>
@@ -140,6 +134,7 @@ try{
           !document.getElementById('shade')?.classList.contains('open'),
           null,{timeout:10000});
         assert.equal(await page.locator('#shade').evaluate(el=>el.classList.contains('open')),false);
+        assert.equal(await page.evaluate(()=>window.__streetAudio.length),silentBefore,'Unrecorded reply must remain silent');
         assert(await page.evaluate(()=>window.__streetMotionLog.includes('reaction')),
           'Text-only Panda reply must show a short silent facial reaction');
         await page.screenshot({path:output+'/face-reaction-'+name+'.png'});

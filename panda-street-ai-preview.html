@@ -94,6 +94,7 @@ html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;backgrou
 <div id="live-panda" class="live" aria-live="polite"></div><div id="live-learner" class="live" aria-live="polite"></div><div id="mode-ring" aria-hidden="true"></div>
 <div id="toast" role="status" aria-live="polite"></div></main>
 <section id="shade" role="dialog" aria-modal="true" aria-labelledby="title"><div id="sheet"><header><h2 id="title">Panda Street AI</h2><button id="close" type="button" aria-label="Закрыть">×</button></header><div id="body"></div></div></section>
+<script src="./assets/panda-street-voice-v20261125.js"></script>
 <script>
 (()=>{'use strict';
 // Stable approved Street scene: Android soft keyboard reduces dvh/innerHeight,
@@ -289,7 +290,8 @@ function playApprovedStreetMaleClip(clip,token){
  const play=a.play();
  if(play?.catch)play.catch(()=>{if(valid()){reset();tip('Браузер не включил мужскую запись. Нажми повторить.')}});
 }
-function speak(text){
+// Retained only as a rollback reference; the active path below never calls this.
+function speakLegacy(text){
  const cue=MALE_CUES[normalizeZh(text)];
  if(playing){playing.pause();playing=null;streetFaceRig?.setState('idle')}
  const token=++voiceToken;
@@ -329,6 +331,13 @@ function speak(text){
  if(a.readyState>=1)ready();
  else a.addEventListener('loadedmetadata',ready,{once:true});
  return true;
+}
+function speak(text){
+ if(playing){playing.pause();playing=null;streetFaceRig?.setState('idle')}
+ const token=++voiceToken;
+ const clip=globalThis.PandaStreetVoiceV20261125?.lookup(text,'male');
+ if(!clip){streetFaceRig?.acknowledge?.();tip('Фраза показана текстом · мужская запись для неё пока не загружена');return false}
+ playApprovedStreetMaleClip(clip,token);return true;
 }
 function persist(){try{sessionStorage.setItem('panda-street-v7-log',JSON.stringify(history.slice(-100)))}catch(_e){}}
 function liveRow(id,item){
