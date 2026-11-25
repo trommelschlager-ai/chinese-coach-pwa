@@ -150,3 +150,35 @@ body[data-street-lesson]{background:linear-gradient(145deg,#fff,#fff8fd 65%,#fce
 [data-street-lesson] #app #pg-content[data-stage="record"] .recorder button{width:100%;min-height:44px;padding:7px 4px;font-size:13px;line-height:1.2}
 [data-street-lesson] #app #pg-content[data-stage="record"] #record-status{font-size:12px;line-height:1.25;margin:6px 0 0}
 [data-street-lesson] #app #pg-content[data-stage="record"] #street-status:empty{display:none}
+
+/* v567: approved light Sakura reference, independent live controls. */
+[data-street-lesson] #app.pg-v414-preview{background:linear-gradient(180deg,#fff 0%,#fff9fd 43%,#faeaf6 100%)}
+[data-street-lesson] #app #pg-content .street-sakura-art{display:block;width:100%;height:auto;max-height:none;aspect-ratio:244/89;object-fit:contain;border-radius:11px;margin:8px auto}
+[data-street-lesson] #app #pg-content[data-stage="cover"] .street-cover:before,[data-street-lesson] #app #pg-content[data-stage="cover"] .street-cover:after{display:none}
+[data-street-lesson] #app #pg-content[data-stage="cover"] .street-motto{background:#31172e;color:#fff2d4;border-radius:10px;padding:6px;margin:6px 0}
+[data-street-lesson] #app #pg-content[data-stage="phrase"] .street-phrase{background:#fffafd;padding:12px}
+[data-street-lesson] #app #pg-content[data-stage="phrase"] .pg-v415-phrase{font-size:clamp(28px,9vw,48px);line-height:1.2;margin:4px 0}
+[data-street-lesson] #app #pg-content[data-stage="phrase"] .translation{margin:5px 0}
+[data-street-lesson] #app #pg-content .street-phrase .pg-v414-word-foot{background:#fff3cb;border:1px solid #f5e5b4;border-radius:10px;padding:7px 9px;text-align:left;font-size:13px;line-height:1.25}
+[data-street-lesson] #app #pg-content[data-stage="grammar"] .street-rule{background:#fff3d2;border:1px solid #f5e4b1;border-radius:12px;margin:0 0 5px;padding:6px 8px}
+[data-street-lesson] #app #pg-content[data-stage="grammar"] .street-rule:last-of-type{border:1px solid #f5e4b1;margin-bottom:0}
+[data-street-lesson] #app #pg-content[data-stage="grammar"] .street-rule>p.pinyin{color:#5d355f;font-size:clamp(16px,4.4vw,21px)}
+[data-street-lesson] #app #pg-content[data-stage="grammar"] .street-rule .street-example-py{color:#a82b73;font-size:12px;line-height:1.2}
+[data-street-lesson] #app #pg-content[data-stage="grammar"] .street-rule>button.audio{grid-row:1/5}
+[data-street-lesson] #app #pg-content[data-stage="dialogue"] .pg-v414-dialogue .street-standard-line{flex-direction:row;align-items:stretch}
+[data-street-lesson] #app #pg-content[data-stage="dialogue"] .street-standard-avatar{display:none}
+[data-street-lesson] #app #pg-content[data-stage="dialogue"] .pg-v414-bubble{background:#f1dcfa;border:1px solid #ead1f2}
+[data-street-lesson] #app #pg-content[data-stage="dialogue"] .street-standard-line:nth-child(even) .pg-v414-bubble{background:#fff1c7;border-color:#f4dfad}
+[data-street-lesson] #app #pg-content[data-stage="record"] #record-start{width:58px;height:58px;min-height:58px;border-radius:50%;background:linear-gradient(#ff9be8,#ff37b6 60%,#e60092);color:#42103d;border:2px solid #ffc7f2;box-shadow:0 3px 0 #b91681;justify-self:center;font-size:0;grid-column:1/-1}
+[data-street-lesson] #app #pg-content[data-stage="record"] #record-start::before{content:"🎙";font-size:23px}
+[data-street-lesson] #app #pg-content[data-stage="listen"] button.audio{width:65px;height:65px;min-height:65px;border-radius:50%;font-size:0;margin:7px auto 10px;padding:0;display:grid;place-items:center;background:linear-gradient(#ffa5ed,#ff40bc)!important;box-shadow:0 3px 0 #d4239a!important}
+[data-street-lesson] #app #pg-content[data-stage="listen"] button.audio::before{content:"▶";font-size:28px}
+[data-street-lesson] #app #pg-content[data-stage="build"] .sentence-word{border-radius:999px}
+[data-street-lesson] #app #pg-content[data-stage="finish"] .street-sakura-art{max-height:125px}
+[data-street-lesson] #app #pg-content[data-stage="ai"] .street-sakura-art{max-height:140px}
+[data-street-lesson] #app .pg-footer #pg-next:not(:disabled){color:#371137!important}
+@media(max-height:740px){
+ [data-street-lesson] #app #pg-content[data-stage="cover"] .street-sakura-art{max-height:112px}
+ [data-street-lesson] #app #pg-content[data-stage="grammar"] .street-rule{padding:4px 6px;gap:2px 5px}
+ [data-street-lesson] #app #pg-content[data-stage="record"] #record-start{height:50px;width:50px;min-height:50px}
+}
