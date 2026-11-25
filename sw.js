@@ -6,6 +6,7 @@ const CORE=["./assets/panda-natural-statements-v552.mjs?v=561","./assets/panda-a
  * and are cached on first use or through the explicit offline-course download. */
 const CORE_ART=new Set(["./assets/hsk2-home-v445.webp","./assets/panda-home-approved-photo1-v319.jpg","./assets/panda-map-scene-hd-v319.webp","./assets/panda-map-traveller-hd-v319.webp","./assets/menu-v3-approved.webp","./assets/panda-go-hero-clean-v174.webp","./assets/hanzi-approved-v141.png","./assets/panda-reference-v175/bridge.webp","./assets/panda-reference-v175/mountain-stairs.webp","./assets/hanzi-paper-v141.png","./icons/icon-192.png","./icons/icon-512.png","./icons/maskable-512.png"]);
 const STREET_SHELL=[
+ "./assets/panda-street-clean-cover-v563.webp",
  "./assets/panda-street-voice-v20261125/54.mp3",
  "./assets/panda-street-voice-v20261125/55.mp3",
  "./assets/panda-street-voice-v20261125/56.mp3",
@@ -20,8 +21,8 @@ const STREET_SHELL=[
  "./assets/panda-street-voice-v20261125/65.mp3",
  "./assets/panda-street-voice-v20261125/66.mp3",
  "./assets/panda-street-voice-v20261125/67.mp3",
- "./assets/panda-street-hsk1-standard-v2.css?v=3",
- "./assets/panda-street-hsk1-standard-v2.js?v=4",
+ "./assets/panda-street-hsk1-standard-v2.css?v=4",
+ "./assets/panda-street-hsk1-standard-v2.js?v=5",
  "./assets/panda-street-sakura-existing-hero.webp",
  "./panda-street-slang-lesson1-preview.html",
  "./panda-street-slang-lesson2-preview.html",
