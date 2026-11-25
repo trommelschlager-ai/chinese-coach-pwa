@@ -12,13 +12,13 @@ try{
   await page.goto(base+'/panda-street-ai-preview.html',{waitUntil:'domcontentloaded'});
   await page.locator('#row1').waitFor({state:'visible',timeout:15000});
   await page.locator('#row1').click();
-  for(const file of ['01.mp3','02.mp3','03.mp3']){
+  for(const file of ['21.mp3','22.mp3','23.mp3']){
    await page.locator('#hear').waitFor({state:'visible',timeout:5000});
-   const requested=page.waitForResponse(resp=>resp.url().includes('/assets/panda-street-male-voice-v1/'+file),{timeout:8000});
+   const requested=page.waitForResponse(resp=>resp.url().includes('/assets/panda-street-voice-v20261125/'+file),{timeout:8000});
    await page.locator('#hear').click();
    const response=await requested;
    assert.equal(response.status(),200,'Approved male audio not served: '+file);
-   if(file!=='03.mp3'){await page.locator('#other').click();}
+   if(file!=='23.mp3'){await page.locator('#other').click();}
   }
   assert(!errors.length,'Street page JS errors: '+errors.join('; '));
   await page.screenshot({path:'qa/panda-street-approved-male/street-'+width+'.png',fullPage:false,animations:'disabled'});

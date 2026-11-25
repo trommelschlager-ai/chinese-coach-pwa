@@ -1,0 +1,59 @@
+{
+  "schema": "street-lesson2-anna-review-v1",
+  "lesson": 2,
+  "sourceLesson": "panda-street-slang-lesson2-preview.html",
+  "speaker": "Анна",
+  "voice": "Xiaoxiao (Female)",
+  "voiceSource": "Luvvoice, owner-approved settings screenshots 2026-11-25; supersedes prior Xiaoxuan choice for new female roles",
+  "scope": "review only; not activated; no male fallback for Anna",
+  "entries": [
+    {
+      "id": "50",
+      "hanzi": "我叫安娜，你呢？",
+      "file": "50.mp3",
+      "status": "new Xiaoxiao candidate split locally; not activated",
+      "previousSource": "assets/dialogue-voices-v73/l2-04-b.mp3",
+      "previousSourceStatus": "superseded candidate; do not activate old Xiaoxuan clip"
+    },
+    {
+      "id": "42",
+      "hanzi": "我从俄罗斯来的。",
+      "file": "42.mp3",
+      "status": "new Xiaoxiao candidate split locally; not activated"
+    },
+    {
+      "id": "44",
+      "hanzi": "对啊，刚学。",
+      "file": "44.mp3",
+      "status": "new Xiaoxiao candidate split locally; not activated"
+    },
+    {
+      "id": "46",
+      "hanzi": "真的假的？",
+      "file": "46.mp3",
+      "status": "new Xiaoxiao candidate split locally; not activated"
+    },
+    {
+      "id": "48",
+      "hanzi": "行啊！",
+      "file": "48.mp3",
+      "status": "new Xiaoxiao candidate split locally; not activated"
+    }
+  ],
+  "voiceProfile": {
+    "language": "Chinese (Mandarin, Simplified)",
+    "rate": "-20%",
+    "volume": "0%",
+    "pitch": 0,
+    "rememberSettings": true,
+    "policy": "Use for future new female dialogue roles; do not change existing Panda Go or Panda AI voices without explicit instruction."
+  },
+  "batch": {
+    "source": "luvvoice.com-20261125-sMeoFD.mp3",
+    "durationSeconds": 10.536,
+    "sampleRate": 24000,
+    "channels": 1,
+    "preparedArchive": "panda_street_anna_xiaoxiao_5.zip",
+    "status": "split locally; awaiting exact wording and tone review and upload"
+  }
+}

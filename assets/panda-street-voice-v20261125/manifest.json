@@ -1,0 +1,324 @@
+{
+  "ownerApproved": true,
+  "nativeToneReview": "not independently confirmed",
+  "clips": [
+    {
+      "file": "01.mp3",
+      "hanzi": "哈喽！聊两句？",
+      "role": "male",
+      "gitBlobSha": "b8f03a62072f0c57ec67858173c4293908142e73"
+    },
+    {
+      "file": "02.mp3",
+      "hanzi": "哈喽！",
+      "role": "male",
+      "gitBlobSha": "873bfdd1d5f662dce3d3463986d1bf1be7ff0572"
+    },
+    {
+      "file": "03.mp3",
+      "hanzi": "嗨！",
+      "role": "male",
+      "gitBlobSha": "9e1f604792d17e885adb2775af9e0d28a8689657"
+    },
+    {
+      "file": "04.mp3",
+      "hanzi": "早啊！",
+      "role": "male",
+      "gitBlobSha": "1cce95661529b6c04ae21de968f9a7da8ebba913"
+    },
+    {
+      "file": "05.mp3",
+      "hanzi": "最近怎么样？",
+      "role": "male",
+      "gitBlobSha": "8f69996ed317f525644fc73a5bd10886dd87083b"
+    },
+    {
+      "file": "06.mp3",
+      "hanzi": "还行吧。",
+      "role": "male",
+      "gitBlobSha": "527d435137270699871fa74482e98c941c6eb651"
+    },
+    {
+      "file": "07.mp3",
+      "hanzi": "挺好的！",
+      "role": "male",
+      "gitBlobSha": "e5c0a09717bd5dab61876533cc40447abf946714"
+    },
+    {
+      "file": "08.mp3",
+      "hanzi": "你呢？",
+      "role": "male",
+      "gitBlobSha": "52d55f421576152a261d41e576c0a234d3c989d1"
+    },
+    {
+      "file": "09.mp3",
+      "hanzi": "拜拜！",
+      "role": "male",
+      "gitBlobSha": "d6bf4ccbee57ea08fa7b5f7e78f90caa46a803a6"
+    },
+    {
+      "file": "10.mp3",
+      "hanzi": "没事！",
+      "role": "male",
+      "gitBlobSha": "8f94e3ae81937a1c969f99033e6c6b6c0c5ac47a"
+    },
+    {
+      "file": "11.mp3",
+      "hanzi": "还行吧，你呢？",
+      "role": "male",
+      "gitBlobSha": "d32bf01d9fbbba5d6fef15f255ca0ff93eb0a019"
+    },
+    {
+      "file": "12.mp3",
+      "hanzi": "改天聊！",
+      "role": "male",
+      "gitBlobSha": "db0ba520c28cabd8e6b04be6b336ae14401d9657"
+    },
+    {
+      "file": "13.mp3",
+      "hanzi": "哈喽！最近怎么样？",
+      "role": "male",
+      "gitBlobSha": "8488f8597aeaab300361921717e5ca1a8f11f3f2"
+    },
+    {
+      "file": "14.mp3",
+      "hanzi": "那就好！",
+      "role": "male",
+      "gitBlobSha": "fb73f7ef317795a9946101ae133b2d95e0e78221"
+    },
+    {
+      "file": "15.mp3",
+      "hanzi": "诗",
+      "role": "male",
+      "gitBlobSha": "bd005b195fdc804c2d8fb348467c5df5e3df1b7c"
+    },
+    {
+      "file": "16.mp3",
+      "hanzi": "十",
+      "role": "male",
+      "gitBlobSha": "31f5298ffab08de3c6e2e10e0ebdd98805823144"
+    },
+    {
+      "file": "17.mp3",
+      "hanzi": "始",
+      "role": "male",
+      "gitBlobSha": "086e4e1ea20a4954b729431248cbe18dbfc74e11"
+    },
+    {
+      "file": "18.mp3",
+      "hanzi": "是",
+      "role": "male",
+      "gitBlobSha": "b0bc12621b86a3471c6d91d22591a52f11298192"
+    },
+    {
+      "file": "19.mp3",
+      "hanzi": "最近忙啥呢？",
+      "role": "male",
+      "gitBlobSha": "66433510d3e20472e2757f3b16d7298db39c37bb"
+    },
+    {
+      "file": "20.mp3",
+      "hanzi": "怎么称呼你？",
+      "role": "male",
+      "gitBlobSha": "8c9c20bafde6665b2ce0dbd881f2f5ad7d177c88"
+    },
+    {
+      "file": "21.mp3",
+      "hanzi": "我有点忙。",
+      "role": "male",
+      "gitBlobSha": "b5c8eb36132b428527172468d6e5a51c79f46552"
+    },
+    {
+      "file": "22.mp3",
+      "hanzi": "你晚上有什么计划？",
+      "role": "male",
+      "gitBlobSha": "3c45c86dd4d0867764cca270e09ceaa84f85c389"
+    },
+    {
+      "file": "23.mp3",
+      "hanzi": "我们聊聊吧！",
+      "role": "male",
+      "gitBlobSha": "d272585cd1bdd6a3a54da4553296a325e157b920"
+    },
+    {
+      "file": "24.mp3",
+      "hanzi": "你好！",
+      "role": "male",
+      "gitBlobSha": "305a2dcd0cae9d50dd534d733e54019de30c0f06"
+    },
+    {
+      "file": "25.mp3",
+      "hanzi": "你今天怎么样？",
+      "role": "male",
+      "gitBlobSha": "db43b194624af8a8ae31b4bedab0de49e47dbd93"
+    },
+    {
+      "file": "26.mp3",
+      "hanzi": "你晚上做什么？",
+      "role": "male",
+      "gitBlobSha": "ed4cd54754565ac636384cd65cb3f3448b62ef3e"
+    },
+    {
+      "file": "27.mp3",
+      "hanzi": "没关系，我们慢慢来。",
+      "role": "male",
+      "gitBlobSha": "699e58ba43ce03b8caa38883058eb29779830610"
+    },
+    {
+      "file": "28.mp3",
+      "hanzi": "你学中文吗？",
+      "role": "male",
+      "gitBlobSha": "741d0f947bb66b316e01eadc4f35c28f8a813a1a"
+    },
+    {
+      "file": "29.mp3",
+      "hanzi": "你做什么工作？",
+      "role": "male",
+      "gitBlobSha": "646f733e7a88bf5acd3b0af01b48107bf454f474"
+    },
+    {
+      "file": "30.mp3",
+      "hanzi": "你住在哪里？",
+      "role": "male",
+      "gitBlobSha": "45583875664aab05a2e09df06483ba62e935b3cf"
+    },
+    {
+      "file": "31.mp3",
+      "hanzi": "你吃饭了吗？",
+      "role": "male",
+      "gitBlobSha": "b028a0d6d08d015d158df99700f92bfd1448933e"
+    },
+    {
+      "file": "32.mp3",
+      "hanzi": "不客气！",
+      "role": "male",
+      "gitBlobSha": "02cf5a45e1ad2b5cc6411c9ba87e2578f118b657"
+    },
+    {
+      "file": "33.mp3",
+      "hanzi": "你想聊什么？",
+      "role": "male",
+      "gitBlobSha": "b6318f3c5dd33a02df7d9e95d6fa0eb68dbad160"
+    },
+    {
+      "file": "34.mp3",
+      "hanzi": "你早上做什么？",
+      "role": "male",
+      "gitBlobSha": "eeedec7c070e7bf5356f8189eb8a8b8f627c276c"
+    },
+    {
+      "file": "35.mp3",
+      "hanzi": "你上午做什么？",
+      "role": "male",
+      "gitBlobSha": "f70e1415e0a7eb2cad47fb4ce77d80adf5e3e33e"
+    },
+    {
+      "file": "36.mp3",
+      "hanzi": "你中午做什么？",
+      "role": "male",
+      "gitBlobSha": "e595ca0d340357041643c0239c814e7dbf4c0a8f"
+    },
+    {
+      "file": "37.mp3",
+      "hanzi": "你下午做什么？",
+      "role": "male",
+      "gitBlobSha": "5ce28d0adcfeb6e8376ad1db221ebf15771c8c30"
+    },
+    {
+      "file": "38.mp3",
+      "hanzi": "你回家以后做什么？",
+      "role": "male",
+      "gitBlobSha": "83b8fdd5e9b9810efac566cde0f0b06a23eff2cb"
+    },
+    {
+      "file": "39.mp3",
+      "hanzi": "你叫什么呀？",
+      "role": "male",
+      "gitBlobSha": "1c64c59c126e69457f6b8affd5cd0177a1582324"
+    },
+    {
+      "file": "40.mp3",
+      "hanzi": "我叫小明，你呢？",
+      "role": "male",
+      "gitBlobSha": "825cb3d2e842e2b4af5b6caf0dbdd3b594a76863"
+    },
+    {
+      "file": "41.mp3",
+      "hanzi": "你哪儿人啊？",
+      "role": "male",
+      "gitBlobSha": "e2db2c98015cace498958cabc885a1a04d11f949"
+    },
+    {
+      "file": "42.mp3",
+      "hanzi": "我从俄罗斯来的。",
+      "role": "female",
+      "gitBlobSha": "74b76346d4f7cb91b1f4bbc6a7e8d3650b9b76d4"
+    },
+    {
+      "file": "43.mp3",
+      "hanzi": "你也学中文啊？",
+      "role": "male",
+      "gitBlobSha": "09bf5a0c0866a62cc8071f234d8f66f0a76210b9"
+    },
+    {
+      "file": "44.mp3",
+      "hanzi": "对啊，刚学。",
+      "role": "female",
+      "gitBlobSha": "e02b7fcb6f64dc7d190b925161e2405b82c3c19f"
+    },
+    {
+      "file": "45.mp3",
+      "hanzi": "我也是！",
+      "role": "male",
+      "gitBlobSha": "e66d7fa9280a0d71d06048c19146e07a7d36500b"
+    },
+    {
+      "file": "46.mp3",
+      "hanzi": "真的假的？",
+      "role": "female",
+      "gitBlobSha": "8056fd1f9bda49c0aceab8cc1f8bcb49a673c139"
+    },
+    {
+      "file": "47.mp3",
+      "hanzi": "加个微信？",
+      "role": "male",
+      "gitBlobSha": "078e856be3023a3fe807aae233c12c080014b060"
+    },
+    {
+      "file": "48.mp3",
+      "hanzi": "行啊！",
+      "role": "female",
+      "gitBlobSha": "5d1d76bccf252c9ad89352ade359a75b81fd5956"
+    },
+    {
+      "file": "49.mp3",
+      "hanzi": "哈喽！你叫什么呀？",
+      "role": "male",
+      "gitBlobSha": "5a3d2db01a9082e9d00946851e120249a1a8c314"
+    },
+    {
+      "file": "50.mp3",
+      "hanzi": "我叫安娜，你呢？",
+      "role": "female",
+      "gitBlobSha": "5117b63583ca98826a40cbc4e98f8a6e4ffe75e0"
+    },
+    {
+      "file": "51.mp3",
+      "hanzi": "我叫小明。你哪儿人啊？",
+      "role": "male",
+      "gitBlobSha": "84eacd5d6e1df14a48c7244f6fc13bf2aa710d10"
+    },
+    {
+      "file": "52.mp3",
+      "hanzi": "真的！加个微信？",
+      "role": "male",
+      "gitBlobSha": "e651a676e9ebc1a7dab52701717d7481794f44d3"
+    },
+    {
+      "file": "53.mp3",
+      "hanzi": "你真棒！",
+      "role": "male",
+      "gitBlobSha": "a6e6f49aca9df3b156903137806156bf38179c34"
+    }
+  ]
+}
