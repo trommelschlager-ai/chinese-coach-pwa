@@ -6,7 +6,7 @@ try{
  for(const width of [360,393,412]){
   const page=await browser.newPage({viewport:{width,height:800},isMobile:true,hasTouch:true});
   await page.addInitScript(()=>{
-   localStorage.setItem('panda-go-hsk2-about-me-v1',JSON.stringify({step:6,heardWords:[0,1,2,3,4,5],grammarDone:true,unlockedSection:2,migrationV1:true}));
+   localStorage.setItem('panda-go-hsk2-about-me-v1',JSON.stringify({step:6,heardWords:[0,1,2,3,4,5],grammarDone:true,unlockedSection:2,migrationV1:true,aboutOriginalVoiceV8:true}));
    window.SpeechRecognition=class{start(){window.qaRecognition=this}abort(){}};
   });
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
