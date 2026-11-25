@@ -72,28 +72,41 @@ test('teacher feedback is text-only, approved Panda image and MP3 remain untouch
  assert(screen.includes("explainPandaAnswer441(input,{prompt:activePrompt,confidence:state.confidence})"));
 });
 
-test('active Android entry loads new module versions and approved overlay styles',()=>{
+test('current Android entry loads approved teacher UI and its actual versioned modules',()=>{
  const html=read('panda-voice-pilot.html');
- assert(html.includes('panda-live-screen-v270.mjs?v=445'));
- assert(html.includes('panda-live-v346.mjs?v=445'));
- assert(html.includes('panda-chat-corrections-v377.css?v=445'));
  const offline=JSON.parse(read('assets/offline-pack.json'));
- assert(offline.version>=445);
- for(const name of [
-  './assets/panda-live-screen-v270.mjs?v=445',
-  './assets/panda-live-v346.mjs?v=445',
-  './assets/panda-chat-corrections-v377.css?v=445'
- ])assert(offline.files.includes(name),'Missing cache reference: '+name);
+ assert(offline.version>=546);
+ const active=[
+  html.match(/\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0],
+  html.match(/\.\/assets\/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/)?.[0],
+  html.match(/\.\/assets\/panda-chat-corrections-v377\.css\?v=\d+/)?.[0],
+  html.match(/\.\/assets\/panda-ai-approved-layout-v547\.css\?v=\d+/)?.[0]
+ ];
+ for(const asset of active){
+  assert(asset,'Missing current Panda asset in HTML');
+  assert(offline.files.includes(asset),'Missing active offline Panda asset '+asset);
+ }
+ assert(!/<script[^>]+src="[^"]*panda-live-screen-v270\.mjs/.test(html),
+  'Retired screen must never override the active Panda AI screen');
+ const newCore=read('assets/panda-hsk2-preview-core-v1.mjs');
+ assert(newCore.includes('explainPandaAnswer441'),'Current Panda must use teacher correction logic');
 });
 
-test('PWA installation cache is current and does not reintroduce old correction JS',()=>{
+test('PWA precaches the actual current Panda AI code, not an obsolete script version',()=>{
  const sw=read('sw.js'),pack=JSON.parse(read('assets/offline-pack.json'));
+ const html=read('panda-voice-pilot.html');
  const cacheNum=Number(sw.match(/const CACHE='chinese-coach-pwa-v(\d+)-/)?.[1]);
  assert.equal(cacheNum,pack.version);
- const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
- for(const name of ['./assets/panda-live-screen-v270.mjs?v=445',
-  './assets/panda-live-v346.mjs?v=445'])
-  assert(core.includes(name));
- assert.equal(core.filter(x=>x.startsWith('./assets/panda-live-screen-v270.mjs?v=')).length,1);
- assert.equal(new Set(core).size,core.length);
+ const install=JSON.parse(sw.match(/const INSTALL_SHELL=(\[[\s\S]*?\]);/)[1].replace(/,\s*]/g,']'));
+ const required=[
+  html.match(/\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0],
+  html.match(/\.\/assets\/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/)?.[0],
+  html.match(/\.\/assets\/panda-chat-corrections-v377\.css\?v=\d+/)?.[0],
+  html.match(/\.\/assets\/panda-ai-approved-layout-v547\.css\?v=\d+/)?.[0]
+ ];
+ for(const asset of required)assert(install.includes(asset),'Missing active app-shell cache asset '+asset);
+ assert.equal(install.filter(x=>x.startsWith('./assets/panda-hsk2-preview-core-v1.mjs?v=')).length,1,
+   'Only the current active Panda core must be precached');
+ assert.equal(new Set(install).size,install.length,'Service worker must not precache duplicates');
+ assert(install.length<=205,'The actual on-install shell stays bounded');
 });

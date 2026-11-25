@@ -121,7 +121,13 @@ test('v435 uses existing audio, offline module, and unchanged approved character
  assert(screen.includes('mergePandaFacts435(state.profile,spoken)'));
  assert(screen.includes('followup=refineFollowup435({'));
  assert(read('assets/panda-live-v346.mjs').includes('panda-character-clean-v349.webp'));
- assert(read('panda-voice-pilot.html').includes('panda-live-screen-v270.mjs?v=445'));
+ const html=read('panda-voice-pilot.html');
+ const activeCore=html.match(/\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0];
+ assert(activeCore,'Current Panda AI core must be loaded in Android screen');
+ assert(read('assets/panda-hsk2-preview-core-v1.mjs').includes('mergePandaFacts435'),
+  'The active brain must retain learner memory');
+ assert(!/<script[^>]+src="[^"]*panda-live-screen-v270\.mjs/.test(html),
+  'Legacy memory screen must not replace the live Panda AI');
  const offline=JSON.parse(read('assets/offline-pack.json'));
  assert(offline.files.includes('./assets/panda-natural-memory-v435.mjs?v=435'));
 });
