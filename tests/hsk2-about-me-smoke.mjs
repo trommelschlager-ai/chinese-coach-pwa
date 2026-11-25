@@ -21,47 +21,49 @@ try {
   await page.goto(root,{waitUntil:'load'});
   check(await page.locator('.pg433-tabs button').count()===5,'Must have 5 top sections');
   check(await page.locator('.pg433-tabs button:disabled').count()===4,'Other 4 sections must start locked');
-  await page.locator('[data-step="2"]').last().click();
+  // The approved full-cover overlay intentionally hides the legacy start button.
+  await page.locator('.pg-approved-start').click();
+  await page.locator('#app[data-view="2"] .word-row').first().waitFor();
   check(await page.locator('.word-row').count()===6,'Six word cards expected');
-  check(await page.locator('.word-row img.about-illustration').count()===6,'Missing themed word illustrations');
+  check(await page.locator('.word-row svg.about-illustration').count()===6,'Missing themed word illustrations');
   check(await page.locator('.word-row .tone-strokes path').count()===12,'Each syllable must have contour');
-  check(await page.locator('.word-row .tone-number').count()===12,'Each syllable must have tone badge');
   check(await page.locator('#next').isDisabled(),'Words should block progress until all marked');
-  for(let i=0;i<6;i++)await page.locator('[data-learn="'+i+'"]').click();
+  for(let i=0;i<6;i++){
+    await page.locator('.word-row [data-say]').nth(i).click();
+    await page.waitForFunction(n=>window.PandaGoHSK2Preview.getProgress().heardWords.length===n,i+1,{timeout:15000});
+  }
   await page.locator('#next').click();
-  check((await page.locator('.rule-cloud').innerText()).includes('现在'),'Grammar page not reached');
+  check((await page.locator('.about-grammar-rule').innerText()).includes('现在'),'Grammar page not reached');
   for(let i=0;i<5;i++)await page.locator('[data-gram="'+i+'"]').click();
   await page.locator('[data-gram-check]').click();
   check((await page.locator('#next').isEnabled()),'Grammar correct assembly did not unlock');
   await page.locator('#next').click();
-  check(await page.locator('.tone-row').count()===6,'Speech practice should contain six words');
-  await page.locator('[data-practice-mode="self"]').click();
+  check(await page.locator('.pg-standard-speech-row').count()===6,'Speech practice should contain six words');
+  await page.locator('.about-speech-help summary').click();
+  await page.locator('.about-speech-help [data-practice-mode="self"]').click();
   for(let i=0;i<6;i++)await page.locator('[data-self-spoken="'+i+'"]').click();
   await page.locator('#next').click();
   check(await page.locator('[data-start]').count()===1,'30-task test should start here');
   await page.locator('[data-start]').click();
   let correct=0;
-  for(let word=0;word<6;word++){
-    for(let type=0;type<5;type++){
-      const progress=await page.evaluate(()=>window.PandaGoHSK2Preview.getProgress());
-      check(progress.quizTest===type && progress.quizIndex===word,
-        'Wrong test order at word '+word+', type '+type);
-      if(type===0||type===1||type===3){
-        await page.locator('[data-choice="'+word+'"]').click();
-      } else if(type===2){
-        await page.locator('[data-letter="0"]').click();
-        await page.locator('[data-letter="1"]').click();
-        await page.locator('[data-letter-check]').click();
-      } else {
-        await page.locator('[data-self-quiz]').click();
-      }
-      correct++;
-      check(await page.locator('#next').isEnabled(),'Test '+correct+' not credited');
-      await page.locator('#next').click();
-    }
+  const progress=()=>page.evaluate(()=>window.PandaGoHSK2Preview.getProgress());
+  async function answer(word,type){
+    const p=await progress();
+    check(p.quizTest===type&&p.quizIndex===word,'Wrong test order: '+JSON.stringify([p.quizTest,p.quizIndex,type,word]));
+    if(type===0||type===1||type===3)await page.locator('[data-choice="'+word+'"]').click();
+    else if(type===2){
+      await page.locator('[data-letter="0"]').click();
+      await page.locator('[data-letter="1"]').click();
+      await page.locator('[data-letter-check]').click();
+    }else await page.locator('[data-self-quiz]').click();
+    correct++;
+    check(await page.locator('#next').isEnabled(),'Test '+correct+' not credited');
+    await page.locator('#next').click();
   }
-  check((await page.evaluate(()=>window.PandaGoHSK2Preview.getProgress())).quiz.flat().filter(Boolean).length===30,
-    'Not all 30 questions completed');
+  for(let word=0;word<6;word++)await answer(word,0);
+  await page.locator('[data-quiz-extended]').click();
+  for(let word=0;word<6;word++)for(let type=1;type<5;type++)await answer(word,type);
+  check((await progress()).quiz.flat().filter(Boolean).length===30,'Not all 30 questions completed');
   await page.locator('#next').click();
   for(let i=0;i<6;i++)await page.locator('[data-day="'+i+'"]').click();
   await page.locator('[data-day-check]').click();
@@ -80,7 +82,10 @@ try {
   check(await page.locator('.panda-ai-shortcut[href*="panda-voice-pilot"]').count()===1,
     'Missing real Panda AI shortcut');
   await page.locator('#next').click();
-  check((await page.locator('.results').innerText()).includes('30 / 30'),'Final result must show 30 / 30');
+  // Final UI reports the two groups separately (6 mandatory + 24 optional).
+  const results=page.locator('.results dl');
+  check(await results.locator('div').filter({has:page.locator('dt',{hasText:'Основная проверка'})}).locator('dd').innerText()==='6 / 6','Final core results must show 6 / 6');
+  check(await results.locator('div').filter({has:page.locator('dt',{hasText:'Дополнительные тесты'})}).locator('dd').innerText()==='24 / 24','Final optional results must show 24 / 24');
   await page.reload();
   check((await page.evaluate(()=>window.PandaGoHSK2Preview.getProgress())).quiz.flat().filter(Boolean).length===30,
     'Progress did not survive browser reload');

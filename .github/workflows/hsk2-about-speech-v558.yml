@@ -1,0 +1,29 @@
+name: HSK2 lesson 1 speech approved layout v558
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  speech:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 &
+          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:4173/hsk2-about-me.html >/dev/null && break; sleep 1; done
+          node scripts/qa-hsk2-about-speech-v558.mjs
+          node scripts/verify-offline.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hsk2-about-speech-v558
+          path: qa/hsk2-about-speech-v558/
