@@ -37,3 +37,11 @@ test('reject malformed syllable labels',()=>{
  const out=alignFromReference(syntheticSpeech(),syntheticSpeech(),[0.1,.4,.3,1.5],[0.1,.4,.8,1.5]);
  assert.equal(out.ok,false);
 });
+
+test('silence and boundaries outside the recording cannot produce successful alignment',()=>{
+ const blank={sampleRate:rate,getChannelData:()=>new Float32Array(rate*2.1)};
+ assert.equal(alignFromReference(blank,blank,bounds,bounds).ok,false);
+ assert.equal(alignFromReference(syntheticSpeech(),blank,bounds,bounds).ok,false);
+ assert.equal(alignFromReference(syntheticSpeech(),syntheticSpeech(),bounds,[.1,.42,.81,1.17,1.52,2.15]).ok,false);
+ assert.equal(alignFromReference(syntheticSpeech(),syntheticSpeech(),[-.1,.42,.81,1.17,1.52,1.95],bounds).ok,false);
+});
