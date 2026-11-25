@@ -18,6 +18,7 @@ try {
   browser = await chromium.launch({headless:true,args:['--no-sandbox']});
   const page = await browser.newPage({viewport:{width:393,height:873},deviceScaleFactor:1});
   page.on('pageerror',error=>errors.push(String(error)));
+  await page.addInitScript(() => { window.SpeechRecognition = undefined; window.webkitSpeechRecognition = undefined; });
   await page.goto(root,{waitUntil:'load'});
   check(await page.locator('.pg433-tabs button').count()===5,'Must have 5 top sections');
   check(await page.locator('.pg433-tabs button:disabled').count()===4,'Other 4 sections must start locked');
@@ -39,8 +40,8 @@ try {
   check((await page.locator('#next').isEnabled()),'Grammar correct assembly did not unlock');
   await page.locator('#next').click();
   check(await page.locator('.pg-standard-speech-row').count()===6,'Speech practice should contain six words');
-  await page.locator('.about-speech-help summary').click();
-  await page.locator('.about-speech-help [data-practice-mode="self"]').click();
+  await page.locator('.pg-standard-speech-row [data-mic]').first().click();
+  await page.locator('.pg-speech-status [data-practice-mode="self"]').click();
   for(let i=0;i<6;i++)await page.locator('[data-self-spoken="'+i+'"]').click();
   await page.locator('#next').click();
   check(await page.locator('[data-start]').count()===1,'30-task test should start here');

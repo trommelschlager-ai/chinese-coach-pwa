@@ -20,10 +20,10 @@ jobs:
       - run: |
           python3 -m http.server 4173 --bind 127.0.0.1 &
           for i in $(seq 1 20); do curl -fsS http://127.0.0.1:4173/hsk2-about-me.html >/dev/null && break; sleep 1; done
-          node scripts/qa-hsk2-about-speech-v558.mjs
+          node scripts/qa-hsk2-speech-v559.mjs
           node scripts/verify-offline.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: hsk2-about-speech-v558
-          path: qa/hsk2-about-speech-v558/
+          name: hsk2-speech-v559
+          path: qa/hsk2-speech-v559/
