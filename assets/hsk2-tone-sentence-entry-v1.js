@@ -35,7 +35,6 @@
  function mount(){
   const view=app.dataset.view;
   if(view==='2'){const heading=workspace.querySelector('h1.pill-title');if(heading&&!heading.querySelector('[data-pg2-tone-pilot]')){heading.classList.add('pg2-tone-title');heading.append(button('words'));}}
-  if(view==='6'){const tabs=workspace.querySelector('.tone-tabs');if(tabs&&!workspace.querySelector('[data-pg2-tone-pilot]'))tabs.insertAdjacentElement('afterend',button('tones'));}
  }
  const obs=new MutationObserver(mount);obs.observe(workspace,{childList:true,subtree:true});mount();
  window.addEventListener('pagehide',()=>{close();dialog.querySelector('iframe')?.remove();obs.disconnect();});
