@@ -1289,6 +1289,19 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
 <link rel="stylesheet" href="./assets/hsk2-approved-cover.css?v=20261123-single-press-all">
 <script src="./assets/hsk2-approved-cover.js?v=20261123-single-press-all" data-lesson="1"></script>
+<style id="about-speech-approved-v558">
+.course-layout #app[data-view="6"] #pg433 .pg433-content{padding-top:8px!important;gap:0!important}
+.course-layout #app[data-view="6"] #pg433 .tones-hero{grid-template-columns:minmax(0,43%) minmax(0,57%);align-items:center!important;gap:0!important;min-height:0!important;margin:0 0 7px!important;padding:0!important;background:transparent!important}
+.course-layout #app[data-view="6"] #pg433 .tones-hero .about-speech-approved-art{display:block;width:100%!important;height:auto!important;aspect-ratio:1!important;max-height:none!important;align-self:center!important;border-radius:15px!important}
+.course-layout #app[data-view="6"] #pg433 .tones-hero .hero-message{min-width:0!important;box-sizing:border-box;margin:0 0 0 8px!important;padding:10px 9px 10px 11px!important;border-radius:19px!important}
+.course-layout #app[data-view="6"] #pg433 .tones-hero .hero-message h1{white-space:normal!important;overflow-wrap:normal!important;font-size:clamp(15px,4.2vw,21px)!important;letter-spacing:-.035em!important}
+.course-layout #app[data-view="6"] #pg433 .tones-hero .hero-message p{font-size:clamp(12px,3.35vw,16px)!important;line-height:1.22!important}
+.course-layout #app[data-view="6"] #pg433 .tone-tabs{flex:0 0 auto!important;margin:0 0 7px!important;padding:4px!important}
+.course-layout #app[data-view="6"] #pg433 .pg-standard-list{flex:0 0 auto!important;margin:0!important;overflow:visible!important}
+.course-layout #app[data-view="6"] #pg433 .pg-standard-speech-row{min-height:clamp(70px,10dvh,86px)!important}
+.course-layout #app[data-view="6"] #pg433 .about-speech-help{font-size:12px;margin:6px 0;color:#78398d}
+.course-layout #app[data-view="6"] #pg433 .about-speech-help summary{cursor:pointer}
+</style>
 </head>
 <body>
 <div class="app" id="app">
@@ -1443,7 +1456,7 @@ state.heardWords = [...new Set((Array.isArray(state.heardWords) ? state.heardWor
 if (!state.aboutOriginalVoiceV8) { state.heardWords=[]; state.aboutOriginalVoiceV8=true; try { localStorage.setItem(key,JSON.stringify(state)); } catch {} }
 state.selfSpoken = [...new Set((Array.isArray(state.selfSpoken) ? state.selfSpoken : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
 state.mic = [...new Set((Array.isArray(state.mic) ? state.mic : []).filter(i => Number.isInteger(i) && i >= 0 && i < words.length))];
-state.practiceMode = 'mic'; // Primary microphone mode.
+state.practiceMode = state.practiceMode === 'self' ? 'self' : 'mic';
 state.personal = {...blank().personal,...(state.personal && typeof state.personal === 'object' ? state.personal : {})};
 state.personalRead = [...new Set((Array.isArray(state.personalRead)?state.personalRead:[]).filter(i=>Number.isInteger(i)&&i>=0&&i<6))];
 let audio = null;
@@ -1737,7 +1750,7 @@ function newWords() {
 function hero(kind,step,title,subtitle) {
   const image = kind === 'tones' ? 'tones' : 'quiz';
   return '<div class="detail-hero ' + kind + '-hero">' +
-    stageImage(image,'about-hero-photo') +
+    (kind === 'tones' ? '<svg class="about-hero-photo about-premium-photo about-speech-approved-art" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Панда в розовых наушниках у микрофона в саду сакуры"><image href="./assets/hsk2-lesson4-hobby-3d/stages-v2.webp" width="1200" height="1200"/></svg>' : stageImage(image,'about-hero-photo')) +
     '<div class="hero-message"><span class="tag">Шаг ' + stepNumber(step) +
     '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div></div>';
 }
@@ -1935,28 +1948,18 @@ function toneGuide() {
 function pgStandardSpeechRow(word,i) {
   const strokes={0:'',1:'M3 8 H19',2:'M3 15 L19 3',3:'M3 4 Q11 24 19 4',4:'M3 3 L19 15'};
   const tones=word.tones.map(v=>'<span class="pg-standard-tone"><svg viewBox="0 0 22 20" aria-hidden="true">'+(v===0?'<circle cx="11" cy="9" r="2.8" fill="#267d31"/>':'<path d="'+strokes[v]+'" fill="none" stroke="#782a8f" stroke-width="3.3" stroke-linecap="round"/>')+'</svg><b>'+v+'</b></span>').join('');
-  const control=state.practiceMode==='self'?'<button type="button" class="orb mic'+(state.selfSpoken.includes(i)?' recognized':'')+'" data-self-spoken="'+i+'" aria-label="Я повторил и сравнил '+escape(word.zh)+'" title="Самопроверка; тоны не оцениваются">'+(state.selfSpoken.includes(i)?'✓':'●')+'</button>':micButton(i,'Произнести '+word.zh,state.mic.includes(i));
+  const control=state.practiceMode==='self'?'<button type="button" class="orb mic'+(state.selfSpoken.includes(i)?' recognized':'')+'" data-self-spoken="'+i+'" aria-label="Я повторил и сравнил '+escape(word.zh)+'" title="Самопроверка; тоны не оцениваются">'+(state.selfSpoken.includes(i)?'✓':'●')+'</button>':micButton(i,'Произнести '+word.zh+' — распознавание слова, не оценка тонов',false);
   return '<article class="pg-standard-speech-row"><div class="pg-standard-copy"><strong class="pg-standard-cn" lang="zh-Hans">'+escape(word.zh)+'</strong><span class="pg-standard-py">'+escape(word.py)+'</span><span class="pg-standard-ru">'+escape(word.ru)+'</span></div><div class="pg-standard-tones" role="img" aria-label="Тоны: '+word.tones.join(', ')+'">'+tones+'</div>'+audioButton(word.zh,speaker)+control+'</article>';
 }
 function tones() {
   const wordView = state.toneTab === 'words';
   return hero('tones',6,'Тренировка тонов','Произнеси шесть новых выражений о себе.') +
-    '<div class="practice-modes panel"><button type="button" class="practice-main ' +
-    (state.practiceMode === 'mic' ? 'primary' : 'soft') +
-    '" data-practice-mode="mic">🎙 Микрофон · основной</button>' +
-    '<button type="button" class="practice-backup soft' + (state.practiceMode === 'self' ? ' is-active' : '') +
-    '" data-practice-mode="self">' +
-    (state.practiceMode === 'self' ? '✓ Запасной режим' : 'Не работает микрофон?') +
-    '</button></div>' +
-    (state.practiceMode === 'self'
-      ? '<p class="hint practice-fallback-note">Нет работающего распознавания? Прочитай и повтори по пиньиню, затем отметь слово. Если нет записи, повтори по пиньиню. Тоны автоматически не оцениваются.</p>'
-      : '') +
     '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
     '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
     '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (6)</button></div>' +
     (wordView ? '<div class="pg-standard-list">' + words.map(pgStandardSpeechRow).join('') + '</div>' :
       '<details class="phrase-review panel"><summary>💬 Открыть 6 фраз для повторения</summary>' + phraseCards() + '</details>') +
-    safeStatus() + toneGuide() + '<div class="progress-panel panel">' + stageImage('tones','about-progress-photo') + '<div><b>Практика произношения</b>' +
+    safeStatus() + '<details class="about-speech-help"><summary>Микрофон не работает?</summary><p>Сравни произношение с записью. Автоматической оценки тонов нет.</p><button type="button" class="soft" data-practice-mode="'+(state.practiceMode==='self'?'mic':'self')+'">'+(state.practiceMode==='self'?'Вернуться к микрофону':'Самопроверка')+'</button></details>' + toneGuide() + '<div class="progress-panel panel">' + stageImage('tones','about-progress-photo') + '<div><b>Практика произношения</b>' +
     '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
     ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
     '. Тоны автоматически не оцениваются. Прослушай пример и повтори.</p>';
@@ -2343,7 +2346,7 @@ function onMic(id) {
     recognize([words[index].zh],match => {
       if (!state.mic.includes(index)) state.mic.push(index);
       save();
-      setStatus('✓ Распознано «' + match + '». Тоны не оценивались.',true);
+      setStatus('Распознано «' + match + '». Тоны не оценивались.',false);
       render();
     });
   }

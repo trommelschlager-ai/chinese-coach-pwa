@@ -1,6 +1,6 @@
 {
-  "version": 558,
-  "bytes": 89801604,
+  "version": 559,
+  "bytes": 90080596,
   "files": [
     "./assets/panda-character-clean-v349.webp?v=349",
     "./assets/panda-exact-stone-v361.webp?v=361",
@@ -3547,6 +3547,7 @@
     "./assets/panda-street-voice-v20261125/50.mp3",
     "./assets/panda-street-voice-v20261125/51.mp3",
     "./assets/panda-street-voice-v20261125/52.mp3",
-    "./assets/panda-street-voice-v20261125/53.mp3"
+    "./assets/panda-street-voice-v20261125/53.mp3",
+    "./assets/hsk2-lesson4-hobby-3d/stages-v2.webp"
   ]
 }
