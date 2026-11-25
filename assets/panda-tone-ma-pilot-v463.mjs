@@ -115,6 +115,15 @@ function toneGuidance(s,result){
  const caution=short?'Короткий слог: наблюдение предварительное.':'По высоте нельзя подтвердить правильность слога или тона.';
  return observation+' '+comparison+' '+caution;
 }
+function captureGuidance(s,result,sound,partialPreview){
+ if(result.stats?.octaveJumpCount>0)
+  return 'Обнаружен резкий скачок измеренной частоты. Это может быть сбой анализатора, а не ошибка произношения. '+(partialPreview.length?'Показан только устойчивый фрагмент. ':'')+'Послушай запись или повтори естественным голосом.';
+ if(sound?.discardedOtherRegions>0)
+  return 'Обнаружено несколько отдельных звуковых участков. Анализатор выделил только один из них; движение всего слога не подтверждено. Для слов и предложений используй тренировку свободной фразы.';
+ if(partialPreview.length&&!result.points?.length)
+  return 'Часть высоты голоса измерена. Линия неполная, оценивать китайский тон пока нельзя.';
+ return toneGuidance(s,result);
+}
 function controls(recording){
  $('record').textContent=recording?'■ Стоп':'🎙 Произнести';
  $('listen').disabled=recording;
@@ -161,10 +170,8 @@ async function stop(){
  const partialPreview=(result.kind==='insufficient'||result.kind==='uncertain')?offline?.preview||[]:[];
  const displayPoints=result.points?.length?result.points:partialPreview;
  $('your-path').setAttribute('d',plot(displayPoints));
- $('result').textContent=partialPreview.length&&!result.points?.length
-   ?'Часть высоты голоса измерена. Линия неполная, оценивать китайский тон пока нельзя.'
-   :toneGuidance(tones[selected],result);
  const sound=offline?.signal;
+ $('result').textContent=captureGuidance(tones[selected],result,sound,partialPreview);
  $('ref-path').setAttribute('d',referenceForTone(selected,sound?.syllableDurationSec));
  $('segment-info').textContent=sound?.syllableDurationSec
   ?'Найден звуковой фрагмент: '+sound.syllableDurationSec.toFixed(2)+' с. График использует реальную шкалу времени 0–1,2 с.'
