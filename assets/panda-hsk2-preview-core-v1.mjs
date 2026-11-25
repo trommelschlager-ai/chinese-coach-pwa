@@ -407,7 +407,7 @@ function submit(raw){
    const isQuestion=teacherQuestion.endsWith('吗');
    learner(input,{
     known:true,
-    pinyin:isQuestion?'Nǐ shì lǎoshī ma?':'Nǐ shì lǎoshī.',
+    pinyin:isQuestion?'Nǐ shì lǎoshī ma?':'Nǐ shì lǎoshī?',
     translation:isQuestion?'Ты учитель?':'Ты учитель.'
    });
    state.naturalAwaiting=null;
