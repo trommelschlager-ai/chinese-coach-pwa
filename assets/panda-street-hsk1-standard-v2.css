@@ -182,3 +182,18 @@ body[data-street-lesson]{background:linear-gradient(145deg,#fff,#fff8fd 65%,#fce
  [data-street-lesson] #app #pg-content[data-stage="grammar"] .street-rule{padding:4px 6px;gap:2px 5px}
  [data-street-lesson] #app #pg-content[data-stage="record"] #record-start{height:50px;width:50px;min-height:50px}
 }
+
+/* v568: keep the approved round microphone without adding a second control row. */
+[data-street-lesson] #app #pg-content[data-stage="record"] .recorder{display:flex;flex-wrap:nowrap;align-items:center;justify-content:center;gap:8px;margin:4px 0}
+[data-street-lesson] #app #pg-content[data-stage="record"] .recorder button:not(#record-start){width:auto;min-width:0;flex:0 1 auto;padding:7px 10px;min-height:44px}
+[data-street-lesson] #app #pg-content[data-stage="record"] #record-start{flex:0 0 auto;grid-column:auto}
+[data-street-lesson] #app #pg-content[data-stage="record"] .recorder button[hidden]{display:none!important}
+@media(max-height:740px){
+ [data-street-lesson] #app #pg-content[data-stage="record"] .sheet{padding:7px 9px;margin:0 auto 5px}
+ [data-street-lesson] #app #pg-content[data-stage="record"] .street-phrase .pg-v414-word-foot{padding:4px 7px;font-size:12px;margin:4px 0 0}
+ [data-street-lesson] #app #pg-content[data-stage="record"] .screen-sub{font-size:12px;margin:0 0 5px}
+ [data-street-lesson] #app #pg-content[data-stage="record"] .recorder button:not(#record-start){font-size:12px;padding:5px 8px}
+ [data-street-lesson] #app #pg-content[data-stage="phrase"] .sheet{padding:8px 10px}
+ [data-street-lesson] #app #pg-content[data-stage="phrase"] .street-sakura-art{max-height:105px;margin:5px auto}
+ [data-street-lesson] #app #pg-content[data-stage="phrase"] .pg-v414-word-foot{padding:5px 7px}
+}
