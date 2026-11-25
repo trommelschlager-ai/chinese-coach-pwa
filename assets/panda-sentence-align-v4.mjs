@@ -127,11 +127,12 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
  }
  if(!Number.isFinite(costs[n*stride+z]))return {ok:false,reason:'Акустическое сопоставление не нашло непрерывный путь'};
  const links=Array.from({length:n},()=>[]);
- let i=n,j=z,steps=0,stretched=0;
+ let i=n,j=z,steps=0,stretched=0;const matches=[];
  while(i>0&&j>0&&steps<n+z+3){
   const code=parent[i*stride+j];
   if(!code)break;
   links[i-1].push(u[j-1].t);
+  matches.push({rt:r[i-1].t,ut:u[j-1].t,cost:cost(r[i-1],u[j-1]),rms:u[j-1].rms});
   if(code===1){i--;j--;}else if(code===2){i--;stretched++;}else {j--;stretched++;}
   steps++;
  }
@@ -153,6 +154,21 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
   out.push(safe);
  }
  out.push(learnerBounds.at(-1));
+ // Global average can conceal an entire unmatched interval. Reject the
+ // proposed boundary transfer, not the learner's pronunciation.
+ // These experimental gates require validation across real speakers.
+ const peakU=Math.max(...u.map(f=>f.rms));
+ const gateU=Math.max(.0025,Math.min(.018,peakU*.12));
+ const localDiagnostics=referenceBounds.slice(0,-1).map((a,k)=>{
+  const b=referenceBounds[k+1],m=matches.filter(x=>x.rt>=a&&x.rt<b);
+  const unique=new Map(m.map(x=>[x.ut,x.rms]));
+  const localCost=m.reduce((sum,x)=>sum+x.cost,0)/Math.max(1,m.length);
+  const coverage=[...unique.values()].filter(v=>v>=gateU).length/Math.max(1,unique.size);
+  const relativeDuration=(out[k+1]-out[k])/(b-a)/ratio;
+  return {frames:unique.size,localCost,coverage,relativeDuration};
+ });
+ const questionable=localDiagnostics.some(d=>d.frames<3||d.localCost>1.5||d.coverage<.25||d.relativeDuration<.30||d.relativeDuration>3);
+ if(questionable)return {ok:false,reason:'Один или несколько участков не удалось надёжно сопоставить. Проверь фразу и границы вручную',diagnostics:{localDiagnostics},uncertain:true};
  const avg=costs[n*stride+z]/Math.max(1,steps);
  // Diagnostics only, NOT a pronunciation score or confidence percentage.
  if(avg>2.6||stretched/Math.max(1,steps)>.76)
