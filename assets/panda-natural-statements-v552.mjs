@@ -60,6 +60,7 @@ function workConversation(raw,s,awaiting){
  '你做什么工作':['Nǐ zuò shénme gōngzuò?','Кем ты работаешь?',teacher],
  '你的工作是什么':['Nǐ de gōngzuò shì shénme?','Какая у тебя работа?',teacher],
  '你在哪儿工作':['Nǐ zài nǎr gōngzuò?','Где ты работаешь?',workplaceAnswer],
+ '你在哪工作':['Nǐ zài nǎ gōngzuò?','Где ты работаешь?',workplaceAnswer],
  '你在哪里工作':['Nǐ zài nǎlǐ gōngzuò?','Где ты работаешь?',workplaceAnswer],
  '你喜欢你的工作吗':['Nǐ xǐhuan nǐ de gōngzuò ma?','Тебе нравится твоя работа?',['我喜欢帮你学中文。','Wǒ xǐhuan bāng nǐ xué Zhōngwén.','Мне нравится помогать тебе учить китайский.']],
  '你工作忙吗':['Nǐ gōngzuò máng ma?','У тебя много работы?',['我现在有空，可以陪你练习。','Wǒ xiànzài yǒu kòng, kěyǐ péi nǐ liànxí.','Сейчас я могу заниматься с тобой.']],
@@ -67,6 +68,14 @@ function workConversation(raw,s,awaiting){
  '你工作多久了':['Nǐ gōngzuò duōjiǔ le?','Как давно ты работаешь?',['我是虚拟中文老师，没有实际的工作年限。','Wǒ shì xūnǐ Zhōngwén lǎoshī, méiyǒu shíjì de gōngzuò niánxiàn.','Я виртуальный преподаватель китайского; реального трудового стажа у меня нет.']]
  };
  if(Object.hasOwn(q,s)){const [py,ru,a]=q[s];return r(py,ru,a,null,'question')}
+ // Android ASR can confuse 那 (nà, there) with 哪 (nǎ, where).
+ // Preserve the recognized words; explain uncertainty without grading tones.
+ // The response reuses the existing exact approved Panda AI voice.
+ if(s==='你在那工作'){
+  const recognized=r('Nǐ zài nà gōngzuò.','Ты работаешь там. (Так распознал браузер.)',workplaceAnswer,null,'question');
+  recognized.message='Chrome распознал 那 (nà — там). Если хотел спросить «Где ты работаешь?», нужно 哪 (nǎ): 你在哪儿工作？ Если сказал другую фразу, повтори через микрофон. Тоны по тексту не проверяются.';
+  return recognized;
+ }
  const roleQ=/^你(?:是不是([\p{Script=Han}]{1,6})|是([\p{Script=Han}]{1,6})吗)$/u.exec(s);
  if(roleQ&&Object.hasOwn(professions,roleQ[1]||roleQ[2])){
   const job=roleQ[1]||roleQ[2],[py,ru]=professions[job];

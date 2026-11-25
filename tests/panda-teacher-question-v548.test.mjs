@@ -45,9 +45,9 @@ test('Panda AI pages and offline SW keep teacher question and natural audio in v
  const sw=source('../sw.js'),pack=JSON.parse(source('../assets/offline-pack.json'));
  assert(pack.version>=550);
  assert(sw.includes("const CACHE='chinese-coach-pwa-v"+pack.version+"-"));
- for(const page of [html,hsk2])assert(page.includes('panda-hsk2-preview-core-v1.mjs?v=556'));
- assert(sw.includes('panda-hsk2-preview-core-v1.mjs?v=556'));
- assert(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=556'));
+ for(const page of [html,hsk2])assert(page.includes('panda-hsk2-preview-core-v1.mjs?v=561'));
+ assert(sw.includes('panda-hsk2-preview-core-v1.mjs?v=561'));
+ assert(pack.files.includes('./assets/panda-hsk2-preview-core-v1.mjs?v=561'));
  assert(html.includes('panda-hsk2-preview-ui-v1.mjs?v=546'));
  assert(sw.includes('panda-ai-natural-voice-batch01-v546.mjs?v=546'));
 });

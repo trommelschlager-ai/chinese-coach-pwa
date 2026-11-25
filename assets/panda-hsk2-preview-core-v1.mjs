@@ -1,6 +1,6 @@
 import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
-import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=556';
+import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=561';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -704,7 +704,7 @@ function startRecognition(){
   if(!valid())return;
   started=true;pose('listening');note('Распознавание запущено. Говори по-китайски…');
   clearTimeout(watchdog);
-  watchdog=setTimeout(()=>{if(valid())fail(audioStarted
+  watchdog=setTimeout(()=>{if(valid()&&!heard&&!failed)fail(audioStarted
    ?'Микрофон подключён, но речь не распознана. Попробуй говорить ближе или открой в Chrome.'
    :'Служба распознавания запустилась, но не получила звук с микрофона. Проверь разрешение или открой в Chrome.');},16000);
  };
@@ -718,10 +718,15 @@ function startRecognition(){
   clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);
   const a=e.results?.[0]?.[0];const text=String(a?.transcript||'').trim();
   if(!text){fail('Браузер вернул пустой ответ. Попробуй ещё раз в Chrome или напиши фразу.');return}
-  heard=true;const confidence=typeof a?.confidence==='number'&&a.confidence>0?a.confidence:null;
+  heard=true;
+  // A final ASR transcript must cancel all watchdogs and finish mic capture.
+  // Otherwise Android can later say 'speech not recognized' after Panda replied.
+  clearTimeout(watchdog);
+  stopRecognition();
+  const confidence=typeof a?.confidence==='number'&&a.confidence>0?a.confidence:null;
   if(confidence!==null&&confidence<.65){
    // The ASR transcript is uncertain: the learner must approve it before any dialogue update.
-   stopRecognition();state.confidence=null;$('message').value=text;
+   state.confidence=null;$('message').value=text;
    state.speechSignal={id:(state.speechSignal?.id||0)+1,kind:'uncertain',text,confidence,contentVerified:false,toneVerified:false};
    note('Распознано неуверенно: '+text+'. Исправь текст и нажми ➤ или повтори через 🎙.');
    $('message').focus();return;
@@ -743,7 +748,7 @@ function startRecognition(){
   state.confidence=null;
  };
  r.onerror=e=>{
-  if(!valid())return;
+  if(!valid()||heard)return;
   const reasons={
    'not-allowed':'Доступ к микрофону запрещён. Разреши микрофон для сайта в Chrome и в настройках Android.',
    'service-not-allowed':'Браузер запретил службу распознавания. Открой страницу напрямую в Chrome.',
@@ -755,7 +760,7 @@ function startRecognition(){
   };
   fail(reasons[e?.error]||'Ошибка распознавания. Открой Panda Go напрямую в Chrome или используй текст.',e?.error==='no-speech');
  };
- r.onnomatch=()=>fail('Речь не распознана. Попробуй ещё раз или напиши ответ по-китайски.',true);
+ r.onnomatch=()=>{if(valid()&&!heard)fail('Речь не распознана. Попробуй ещё раз или напиши ответ по-китайски.',true)};
  r.onend=()=>{if(!valid()||heard||failed)return;clearTimeout(watchdog);clearTimeout(speechEndTimer);note('⏳ Завершаю распознавание…');
   // Some mobile implementations deliver the final transcript after the end event.
   recognitionEndTimer=setTimeout(()=>{if(valid()&&!heard&&!failed)fail(started?'Распознавание завершилось без результата. Попробуй Chrome или текст.':'Браузер не подключил службу распознавания. Открой ссылку напрямую в Chrome.')},1200);
