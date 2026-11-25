@@ -16,8 +16,11 @@ try{
      const response=await fetch(x.src);
      if(!response.ok)throw Error('HTTP '+response.status);
      const bytes=await response.arrayBuffer();
+     // decodeAudioData transfers/detaches its input ArrayBuffer. Save the actual
+     // fetched byte length before decoding so a successful decode cannot look empty.
+     const byteLength=bytes.byteLength;
      const decoded=await audio.decodeAudioData(bytes);
-     return {zh:x.zh,src:x.src,bytes:bytes.byteLength,duration:decoded.duration,ok:true};
+     return {zh:x.zh,src:x.src,bytes:byteLength,duration:decoded.duration,ok:true};
     }catch(e){return {zh:x.zh,src:x.src,ok:false,error:String(e)}}
    }));}finally{await audio.close();}
   },batch.slice(i,i+8));
