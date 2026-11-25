@@ -114,3 +114,28 @@ test('reference overlay reads only fixed same-origin lesson audio and has a sepa
  assert(page.includes('referenceContourPath(analysis)'));
  assert(page.includes('относительно медианы каждого голоса'));
 });
+
+test('decoded phrase retains separate voiced runs without assigning syllables or grades',async()=>{
+ const {analysePhraseBuffer}=await import('../assets/panda-tone-recording-analysis-v465.mjs');
+ const samples=new Float32Array(rate*2);
+ for(let i=0;i<samples.length;i++)
+  if((i>rate*.2&&i<rate*.5)||(i>rate*1.2&&i<rate*1.5))
+   samples[i]=.08*Math.sin(2*Math.PI*180*i/rate);
+ const buffer={sampleRate:rate,length:samples.length,numberOfChannels:1,getChannelData:()=>samples};
+ const out=analysePhraseBuffer(buffer,{estimatePitch});
+ assert.equal(out.available,true);
+ assert.equal(out.runs.length,2);
+ assert(out.runs[1].startSec-out.runs[0].endSec>.5);
+ assert.equal(out.isToneGrade,false);
+ samples.fill(0);
+ assert.equal(analysePhraseBuffer(buffer,{estimatePitch}).frames.length,0);
+ assert.equal(analysePhraseBuffer(null,{estimatePitch}).available,false);
+});
+test('free phrase graph prefers decoded PCM and ignores stale recording callbacks',()=>{
+ const page=fs.readFileSync(new URL('../panda-tone-free-practice.html',import.meta.url),'utf8');
+ assert(page.includes('await analysePhraseBlob(blob'));
+ assert(page.includes('token!==epoch||session||document.hidden||!result.available'));
+ assert(page.includes('render(result.frames)'));
+ assert(page.includes('Участки не равны слогам'));
+ assert(page.includes('render(s.points)'));
+});
