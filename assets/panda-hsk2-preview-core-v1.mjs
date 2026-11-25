@@ -384,7 +384,12 @@ function submit(raw){
  const standaloneName=state.mode==='nonstop'&&!hsk2&&!state.dayMode&&/^我叫[\p{Script=Han}]{1,12}$/u.test(normalize(input));
  const alreadyIntroduced=state.history.some(turn=>turn.who==='you'&&/^我叫[\p{Script=Han}]{1,12}$/u.test(normalize(turn.hanzi)));
   const establishedLove=normalize(input)==='我爱你'&&alreadyIntroduced&&!state.dayMode&&(!hsk2||hsk2.openChat||(entry.beginnerGreeting&&hsk2.id===101));
-  const introduction=establishedLove?null:friendlyIntroduction(input,standaloneName?'name':friendlyStage);
+  if(establishedLove){
+   const affectionate=respondToNaturalStatement(input,{introduced:true});
+   friendlyStage=null;state.naturalAwaiting=null;state.awaitQuestion=true;
+   learner(input,affectionate.spoken);say(affectionate.reply,!!lookupPandaVoiceClip(affectionate.reply.hanzi));note(affectionate.message);return;
+  }
+  const introduction=friendlyIntroduction(input,standaloneName?'name':friendlyStage);
  friendlyStage=introduction?.next||null;
  if(introduction){
   const [pinyin,translation]=introduction.spoken;

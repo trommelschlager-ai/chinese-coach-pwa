@@ -94,7 +94,7 @@ jobs:
       - name: Test pilot response checks and mock microphone
         run: npm run check:panda-screen
       - name: Android profession speech alternative regression v563
-        run: node --test tests/panda-android-speech-v563.test.mjs tests/panda-routine-questions-v563.test.mjs
+        run: node --test tests/panda-android-speech-v563.test.mjs tests/panda-routine-questions-v563.test.mjs tests/panda-conversation-coverage-v563.test.mjs
       - name: Verify Panda AI My Day lesson-linked dialogue
         run: node tests/panda-hsk2-day-chat-v1.test.mjs
       - name: Validate Panda HSK2 preview bridge

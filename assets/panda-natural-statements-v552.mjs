@@ -307,15 +307,16 @@ function routineQuestion563(s){
  const periods={早上:['zǎoshang','утром'],上午:['shàngwǔ','до обеда'],中午:['zhōngwǔ','в полдень'],下午:['xiàwǔ','после обеда'],晚上:['wǎnshang','вечером']};
  const verbs={想:['xiǎng','хочешь'],要:['yào','собираешься'],打算:['dǎsuàn','планируешь'],准备:['zhǔnbèi','собираешься'],会:['huì','будешь']};
  const pinyin=['Nǐ',m[1]&&dates[m[1]][0],period&&periods[period][0],m[3]&&dates[m[3]][0],verb&&verbs[verb][0],'zuò shénme'+(s.endsWith('呢')?' ne':'')].filter(Boolean).join(' ')+'?';
- const translation=['Что ты',verb?verbs[verb][1]+' делать':day==='明天'?'будешь делать':'делаешь',day&&dates[day][1],period&&periods[period][1]].filter(Boolean).join(' ')+'?';
+ const translation=['Что ты',verb==='会'?'будешь делать':verb?verbs[verb][1]+' делать':day==='明天'?'будешь делать':'делаешь',day&&dates[day][1],period&&periods[period][1]].filter(Boolean).join(' ')+'?';
  // Choose exact approved course recordings instead of fabricating a recording.
  const reply=day==='明天'?['我明天学中文。','Wǒ míngtiān xué Zhōngwén.','Завтра я буду учить китайский.']:
  period==='早上'||period==='上午'?['我早上刷牙。','Wǒ zǎoshang shuāyá.','Утром я чищу зубы.']:
  period==='晚上'?['我每天晚上看书。','Wǒ měitiān wǎnshang kàn shū.','Каждый вечер я читаю книги.']:
- ['我喜欢看书。','Wǒ xǐhuan kàn shū.','Я люблю читать книги.'];
+ day==='每天'?['我每天学习中文。','Wǒ měitiān xuéxí Zhōngwén.','Я каждый день учу китайский.']:
+ ['我打算学中文。','Wǒ dǎsuàn xué Zhōngwén.','Я планирую учить китайский.'];
  return {pinyin,translation,reply};
 }
-export function respondToNaturalStatement(raw,{awaiting=null}={}){
+export function respondToNaturalStatement(raw,{awaiting=null,introduced=false}={}){
  const s=norm(raw);if(!s)return null;
  const work=workConversation(raw,s,awaiting);if(work)return work;
  const intro=introductionConversation(raw,s,awaiting);if(intro)return intro;
@@ -325,8 +326,8 @@ export function respondToNaturalStatement(raw,{awaiting=null}={}){
  // v552 Android screenshots (24 Nov): common compliments and conversational
  // reactions are complete, valid Chinese — never route them to the
  // "say it more simply" fallback. Exact phrases only, no guessed ASR tones.
+ if(s==='我爱你'&&introduced)return result(raw,'Wǒ ài nǐ!','Я тебя люблю!',['谢谢你！我很开心！','Xièxie nǐ! Wǒ hěn kāixīn!','Спасибо! Мне очень приятно!'],null,1);
  const socialTurns={
-  '我爱你':['Wǒ ài nǐ!','Я тебя люблю!',['谢谢你！我很开心！','Xièxie nǐ! Wǒ hěn kāixīn!','Спасибо! Мне очень приятно!']],
   '你很可爱':['Nǐ hěn kě\'ài.','Ты очень милая.',[
    '谢谢你！你喜欢熊猫吗？','Xièxie nǐ! Nǐ xǐhuan xióngmāo ma?','Спасибо! Ты любишь панд?']],
   '你真可爱':['Nǐ zhēn kě\'ài.','Ты такая милая.',[

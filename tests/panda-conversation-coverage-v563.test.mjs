@@ -1,0 +1,9 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {respondToNaturalStatement} from '../assets/panda-natural-statements-v552.mjs';
+import {lookupApprovedPandaVoice} from '../assets/panda-approved-voice-registry-v516.mjs';
+test('288 compositional routine questions keep exact reply audio and do not score tones',()=>{
+ let count=0;
+ for(const d of ['','今天','明天','每天'])for(const p of ['','早上','上午','中午','下午','晚上'])for(const v of ['','想','要','打算','准备','会'])for(const end of ['？','呢？']){const q='你'+d+p+v+'做什么'+end;const x=respondToNaturalStatement(q);assert.equal(x?.kind,'question',q);assert(x.spoken.pinyin&&x.spoken.translation,q);assert.equal(x.spoken.toneVerified,false,q);assert(lookupApprovedPandaVoice(x.reply.hanzi),'Missing exact audio '+x.reply.hanzi);count++;}assert.equal(count,288);
+});
+test('independent conversation coverage audit (natural statement layer, not full browser)',t=>{const corpus={"Знакомство":["你叫什么名字","你多大了","你几岁","你是哪国人","你是中国人吗","你住在哪儿","你来自哪里","你会说中文吗","你会说俄语吗","你叫什么"],"Семья":["你有哥哥吗","你有没有姐姐","你有孩子吗","你家有几口人","你爸爸做什么工作","你妈妈多大了","你结婚了吗","你有朋友吗"],"Работа":["你是医生","你是学生吗","你在哪儿工作","你做什么工作","你喜欢你的工作吗","你每天几点上班","你今天忙不忙","你什么时候下班"],"Еда":["你喜欢吃什么","你想吃什么","你喜欢喝咖啡吗","你吃早饭了吗","你饿了吗","你想喝什么","你会做饭吗","你喜欢中国菜吗"],"День и время":["你几点起床","你几点睡觉","你昨天做了什么","你今天做了什么","你明天早上做什么","你周末做什么","你现在在做什么","你什么时候有空"],"Хобби":["你有什么爱好","你喜欢运动吗","你喜欢看书吗","你喜欢听什么音乐","你喜欢跑步吗","你喜欢看电影吗","你会游泳吗","你周末喜欢做什么"],"Погода":["今天天气怎么样","明天天气怎么样","你那里冷吗","今天下雨吗","你喜欢冬天吗","你觉得今天热吗"],"Покупки":["这个多少钱","可以便宜一点吗","你想买什么","可以刷卡吗","有别的颜色吗","你喜欢什么颜色"],"Поездки":["你想去哪儿","你去过中国吗","你怎么去上班","你喜欢旅行吗","你什么时候去北京","你坐飞机吗"],"Здоровье":["你身体好吗","你怎么了","你生病了吗","你累不累","你今天感觉怎么样","你需要休息吗"]};for(const [topic,qs] of Object.entries(corpus)){const missing=qs.filter(q=>!respondToNaturalStatement(q));t.diagnostic(topic+': '+(qs.length-missing.length)+'/'+qs.length+'; unmatched: '+missing.join(' / '));}});

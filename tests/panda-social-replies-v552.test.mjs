@@ -46,6 +46,7 @@ test('unreviewed language is not misclassified as a compliment',()=>{
 
 test('approved 我爱你 introduction is still routed to its existing reviewed response',()=>{
  assert.equal(respondToNaturalStatement('我爱你'),null);
+ assert.equal(respondToNaturalStatement('我爱你',{introduced:true}).reply.hanzi,'谢谢你！我很开心！');
  const intro=readFileSync(new URL('../assets/panda-everyday-meaning-v515.mjs',import.meta.url),'utf8');
  assert(intro.includes("if(text==='我爱你')"),'Do not overwrite approved introductory audio/dialogue');
 });
