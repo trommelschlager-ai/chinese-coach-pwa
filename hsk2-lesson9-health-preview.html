@@ -2593,7 +2593,9 @@ function newWords(){
 
 function hero(kind,step,title,subtitle) {
   const image = kind === 'tones' ? 'tones' : 'quiz';
-  const illustration = stageImage(image,'about-hero-photo');
+  const illustration = kind === 'tones'
+    ? '<img src="./assets/hsk2-lesson9-speech-v560.webp" alt="Панда отдыхает в постели" width="320" height="320">'
+    : stageImage(image,'about-hero-photo');
   return '<div class="detail-hero ' + kind + '-hero">' +
     (kind === 'tones' ? '<div class="pg-speech-art">' + illustration + '</div>' : illustration) +
     '<div class="hero-message"><span class="tag">Шаг ' + stepNumber(step) +
