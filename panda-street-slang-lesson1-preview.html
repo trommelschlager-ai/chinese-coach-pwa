@@ -292,7 +292,8 @@
 .street-speed button:disabled{opacity:.4;cursor:not-allowed}
 .street-speed output{min-width:65px;text-align:center;color:#fff1b8;font-weight:900;font-size:19px;font-variant-numeric:tabular-nums}
 @media(max-height:740px){.street-tones .tone{min-height:151px}.street-tone-play{min-height:34px}}
-</style></head><body><main class="page"><header class="top"><a class="back" href="./panda-street-hsk1-map.html" aria-label="К главной странице Panda Street">‹</a><div class="brand"><b>PANDA STREET</b><small>STREET 1 · Живой китайский · Урок 1</small></div><div class="num" id="current">01 / 16</div></header><div class="track" id="pg-progress" role="progressbar" aria-label="Прогресс урока" aria-valuemin="0" aria-valuemax="16" aria-valuenow="1"><i id="track"></i></div><section id="screen" class="viewport" aria-live="polite"></section><footer class="foot"><button type="button" id="prev" class="btn ghost">← Назад</button><button type="button" id="next" class="btn primary">Дальше →</button></footer><div id="notify" role="status" style="position:absolute;left:10px;right:10px;bottom:84px;background:#25213df2;color:#fff3d3;border:1px solid #ba98c9;border-radius:13px;padding:11px;z-index:8;font-weight:800;font-size:12px;text-align:center" hidden></div></main><script>(() => {'use strict';
+</style></head><body><main class="page"><header class="top"><a class="back" href="./panda-street-hsk1-map.html" aria-label="К главной странице Panda Street">‹</a><div class="brand"><b>PANDA STREET</b><small>STREET 1 · Живой китайский · Урок 1</small></div><div class="num" id="current">01 / 16</div></header><div class="track" id="pg-progress" role="progressbar" aria-label="Прогресс урока" aria-valuemin="0" aria-valuemax="16" aria-valuenow="1"><i id="track"></i></div><section id="screen" class="viewport" aria-live="polite"></section><footer class="foot"><button type="button" id="prev" class="btn ghost">← Назад</button><button type="button" id="next" class="btn primary">Дальше →</button></footer><div id="notify" role="status" style="position:absolute;left:10px;right:10px;bottom:84px;background:#25213df2;color:#fff3d3;border:1px solid #ba98c9;border-radius:13px;padding:11px;z-index:8;font-weight:800;font-size:12px;text-align:center" hidden></div></main><script src="./assets/panda-street-voice-v20261125.js"></script>
+<script>(() => {'use strict';
 const STAGES=16;
 const words=[
  ['哈喽','Hālou','Привет!','👋','Приветствие, заимствованное из английского. Неофициально; обычно среди знакомых. Первый слог hā; второй в одной распространённой записи нейтральный.'],
@@ -340,7 +341,7 @@ function changeStreetSpeed(delta){
  try{localStorage.setItem(STREET_SPEED_STORAGE,String(streetSpeedIndex))}catch(_){}
  applyStreetSpeed(streetVoice);applyStreetSpeed(streetTonePlayer);updateStreetSpeedUI();
 }
-const STREET_TONE_SOURCES={1:'./assets/panda-street-tones/shi1.mp3',2:'./assets/panda-street-tones/shi2.mp3',3:'./assets/panda-street-tones/shi3.mp3',4:'./assets/panda-street-tones/shi4.mp3'};
+const STREET_TONE_SOURCES={1:'./assets/panda-street-voice-v20261125/15.mp3',2:'./assets/panda-street-voice-v20261125/16.mp3',3:'./assets/panda-street-voice-v20261125/17.mp3',4:'./assets/panda-street-voice-v20261125/18.mp3'};
 const streetToneAvailable={1:false,2:false,3:false,4:false};
 let streetTonePlayer=null;
 function updateToneButtons(){
@@ -389,58 +390,16 @@ const STREET_VOICE_CUES={
  '那就好':[12.017,12.653]
 };
 const normalizeStreetText=t=>String(t).replace(/[，。！？、\s]/g,'');
-let streetVoice,streetVoiceUnavailable=false,streetVoiceSeq=0;
-try{
- streetVoice=new Audio(STREET_VOICE_FILE);
- streetVoice.preload='auto';
- applyStreetSpeed(streetVoice);
- if('preservesPitch' in streetVoice)streetVoice.preservesPitch=true;
- streetVoice.addEventListener('error',()=>{streetVoiceUnavailable=true});
- streetVoice.load();
-}catch(e){streetVoiceUnavailable=true}
+let streetVoice=null,streetVoiceSeq=0;
 const say=t=>{
  const token=++streetVoiceSeq;
- if(streetVoice){streetVoice.pause();streetVoice.volume=1}
+ if(streetVoice)streetVoice.pause();
  if(streetTonePlayer)streetTonePlayer.pause();
- const cue=STREET_VOICE_CUES[normalizeStreetText(t)];
- if(!cue||streetVoiceUnavailable||!streetVoice){notify('Фраза пока без качественной записи. Запасной голос телефона отключён.');return}
- const fallback=()=>{
-  if(token!==streetVoiceSeq)return;
-  streetVoiceUnavailable=true;
-  streetVoice.pause();
-  streetVoice.volume=1;
-  notify('Аудиофайл не воспроизведён. Запасной голос телефона отключён.');
- };
- const begin=()=>{
-  if(token!==streetVoiceSeq)return;
-  try{
-   streetVoice.pause();
-   applyStreetSpeed(streetVoice);
-   if('preservesPitch' in streetVoice)streetVoice.preservesPitch=true;
-   streetVoice.currentTime=cue[0];
-   streetVoice.volume=0;
-   const watch=()=>{
-    if(token!==streetVoiceSeq||streetVoice.paused)return;
-    const elapsed=streetVoice.currentTime-cue[0];
-    const remaining=cue[1]-streetVoice.currentTime;
-    if(remaining<=STREET_TAIL_GUARD){streetVoice.volume=0;streetVoice.pause();return}
-    // Fade out before the faint codec/noise tail; preserve pitch and final syllables.
-    const fadeIn=Math.min(1,Math.max(0,elapsed/STREET_FADE_IN));
-    const fadeOut=Math.min(1,Math.max(0,(remaining-STREET_TAIL_GUARD)/STREET_FADE_OUT));
-    streetVoice.volume=Math.pow(Math.min(fadeIn,fadeOut),1.25);
-    requestAnimationFrame(watch);
-   };
-   const p=streetVoice.play();
-   if(p&&p.then)p.then(()=>requestAnimationFrame(watch)).catch(fallback);
-   else requestAnimationFrame(watch);
-  }catch(e){fallback()}
- };
- if(streetVoice.readyState>=1)begin();
- else{
-  streetVoice.addEventListener('loadedmetadata',begin,{once:true});
-  streetVoice.addEventListener('error',fallback,{once:true});
-  streetVoice.load();
- }
+ const clip=globalThis.PandaStreetVoiceV20261125?.lookup(t,'male');
+ if(!clip){notify('Фраза пока без записи. Голос телефона отключён.');return}
+ const media=new Audio(clip.src);streetVoice=media;media.preload='auto';applyStreetSpeed(media);
+ const fail=()=>{if(token===streetVoiceSeq)notify('Не удалось воспроизвести запись. Повтори попытку.');};
+ media.addEventListener('error',fail,{once:true});try{media.play()?.catch(fail)}catch(_){fail()}
 };
 
 function notify(x){const el=$('notify');el.textContent=x;el.hidden=false;setTimeout(()=>{if(el.textContent===x)el.hidden=true},4200)}
