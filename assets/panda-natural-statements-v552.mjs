@@ -327,6 +327,24 @@ function linkedCourseTurn564(s){
  起床:['qǐchuáng','встаю'],洗脸:['xǐliǎn','умываюсь'],刷牙:['shuāyá','чищу зубы'],吃早饭:['chī zǎofàn','завтракаю'],吃饭:['chīfàn','ем'],喝咖啡:['hē kāfēi','пью кофе'],喝茶:['hē chá','пью чай'],去上班:['qù shàngbān','иду на работу'],上班:['shàngbān','иду на работу'],下班:['xiàbān','заканчиваю работу'],工作:['gōngzuò','работаю'],学习中文:['xuéxí Zhōngwén','учу китайский'],学中文:['xué Zhōngwén','учу китайский'],看书:['kàn shū','читаю'],听音乐:['tīng yīnyuè','слушаю музыку'],跑步:['pǎobù','бегаю'],去散步:['qù sànbù','иду гулять'],散步:['sànbù','гуляю'],休息:['xiūxi','отдыхаю'],睡觉:['shuìjiào','ложусь спать'],看电影:['kàn diànyǐng','смотрю фильм'],洗澡:['xǐzǎo','принимаю душ']
  };
  const clocks={早上:['zǎoshang','утром'],晚上:['wǎnshang','вечером'],每天:['měitiān','каждый день'],今天:['jīntiān','сегодня'],明天:['míngtiān','завтра']};
+ // Three or four actions, including a reviewed clock expression before the first action.
+ const multi=/^(我)?(每天早上|每天晚上|早上|晚上|每天|今天|明天)?([六七八九十]点(?:半)?)?(先)?(.+)$/u.exec(s);
+ if(multi){
+  const [,who,when,time,first,tail]=multi,parts=tail.split(/(然后|再)/u);
+  if(parts.length>=3&&parts.length<=7&&parts.length%2===1&&(parts.length>3||time||when?.startsWith('每天')&&when.length>2)){
+   const picked=parts.filter((_,i)=>i%2===0).map(k=>actions[k.replace(/^我/u,'')]);
+   if(picked.every(Boolean)){
+    const timePy=time?({'六':'liù','七':'qī','八':'bā','九':'jiǔ','十':'shí'}[time[0]]+' diǎn'+(time.endsWith('半')?' bàn':'')):'';
+    const timeRu=time?('в '+({'六':'6','七':'7','八':'8','九':'9','十':'10'}[time[0]])+(time.endsWith('半')?':30':':00')):'';
+    const period=when==='每天早上'?['měitiān zǎoshang','каждое утро']:when==='每天晚上'?['měitiān wǎnshang','каждый вечер']:when?clocks[when]:[];
+    const p=[who?'wǒ':'',period[0],timePy,first?'xiān':'',picked[0][0]].filter(Boolean).join(' ');
+    const ru=[period[1],timeRu,first?'сначала':'',picked[0][1]].filter(Boolean).join(' ');
+    const py=p+parts.filter((_,i)=>i%2===1).map((j,i)=>', '+(j==='然后'?'ránhòu':'zài')+' '+picked[i+1][0]).join('');
+    const translation=ru+picked.slice(1).map(x=>', затем '+x[1]).join('');
+    return {pinyin:py[0].toUpperCase()+py.slice(1)+'.',translation:translation[0].toUpperCase()+translation.slice(1)+'.',reply:['然后呢？','Ránhòu ne?','А потом?'],grammar:'sequence'};
+   }
+  }
+ }
  const m=/^(我)?(早上|晚上|每天|今天|明天)?(先)?(.+?)(然后|再|以后|之后)(?:我)?(.+)$/u.exec(s);
  if(m){
   const [,who,when,first,left,join,right]=m, a=actions[left],b=actions[right];
@@ -335,7 +353,7 @@ function linkedCourseTurn564(s){
    const whenParts=when?clocks[when]:[];
    const py=[who?'wǒ':'',whenParts[0],first?'xiān':'',a[0]+',',j[0],b[0]].filter(Boolean).join(' ');
    const ru=[whenParts[1],first?'сначала':'',a[1]+',',j[1],b[1]].filter(Boolean).join(' ');
-   const follow=right==='睡觉'?['你几点睡觉？','Nǐ jǐ diǎn shuìjiào?','Во сколько ложишься спать?']:right==='去上班'||right==='上班'?['你几点去上班？','Nǐ jǐ diǎn qù shàngbān?','Во сколько идёшь на работу?']:right==='吃早饭'?['你早上吃什么？','Nǐ zǎoshang chī shénme?','Что ешь утром?']:['你然后做什么？','Nǐ ránhòu zuò shénme?','Что делаешь потом?'];
+   const follow=right==='睡觉'?['你几点睡觉？','Nǐ jǐ diǎn shuìjiào?','Во сколько ложишься спать?']:right==='去上班'||right==='上班'?['你几点去上班？','Nǐ jǐ diǎn qù shàngbān?','Во сколько идёшь на работу?']:right==='吃早饭'?['你早上吃什么？','Nǐ zǎoshang chī shénme?','Что ешь утром?']:['然后呢？','Ránhòu ne?','А потом?'];
    return {pinyin:py[0].toUpperCase()+py.slice(1)+'.',translation:ru[0].toUpperCase()+ru.slice(1)+'.',reply:follow,grammar:'sequence'};
   }
  }
@@ -352,7 +370,7 @@ function courseConversation563(raw,s){
  for(const [zh,py,ru,reply] of courseLinkedExamples563)if(norm(zh)===s)return {...result(raw,py,ru,reply,null,1),domain:'everyday',grammar:'course-example'};
  for(const item of courseScenes563){
   if(norm(item.question[0])===s){const out={...result(raw,item.question[1],item.question[2],item.answer,null,1),kind:'question',domain:'everyday',grammar:item.grammar};out.message='Учебный диалог по курсу. Тоны не оценивались.';return out;}
-  if(norm(item.statement[0])===s&&!/[？?]$/.test(item.statement[0]))return {...result(raw,item.statement[1],item.statement[2],item.question,null,1),domain:'everyday',grammar:item.grammar};
+  if(norm(item.statement[0])===s){const isQuestion=/[？?]$/.test(item.statement[0]);const out={...result(raw,item.statement[1],item.statement[2],isQuestion?item.answer:item.question,null,1),kind:isQuestion?'question':'statement',domain:'everyday',grammar:item.grammar};if(isQuestion)out.message='Учебный диалог по курсу. Тоны не оценивались.';return out;}
  }
  return null;
 }

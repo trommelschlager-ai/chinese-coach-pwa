@@ -23,3 +23,5 @@ Next: run the unmatched corpus through the live browser dispatcher, check reply 
 - Sources: assets/hsk2-life-course-data-v1.js (30 scenes), assets/panda-word-sentences-v148.js (connectors), assets/hsk2-life-course-app-v1.js (builders).
 - All 74 audit questions now return a reviewed result at the natural module layer; 160 sequence combinations, 11 linked examples and 5 invalid keyword-only examples checked in JS.
 - 30 course scenes (statement and question) covered. This is finite, not unrestricted understanding. Some replies have no exact approved MP3; leave text-only until review. Live dispatcher and semantic/voice QA still required.
+
+Follow-up: 30/30 course scenes (60 statement/question slots, some duplicate) now matched in JS; four additional multi-step time/sequence cases passed. Full browser QA still pending.
