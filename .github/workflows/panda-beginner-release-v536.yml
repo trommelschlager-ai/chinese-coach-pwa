@@ -15,6 +15,7 @@ on:
       - 'tests/panda-family-natural-v552.test.mjs'
       - 'tests/panda-social-replies-v552.test.mjs'
       - 'tests/panda-natural-routing-v556.test.mjs'
+      - 'tests/panda-asr-homophone-android-v560.test.mjs'
       - 'tests/panda-work-dialogue-v556.test.mjs'
       - 'tests/panda-introduction-dialogue-v556.test.mjs'
       - 'tests/panda-family-dialogue-v556.test.mjs'
@@ -72,6 +73,7 @@ jobs:
           node --test tests/panda-natural-statements-v544.test.mjs
           node --test tests/panda-family-natural-v552.test.mjs
           node --test tests/panda-social-replies-v552.test.mjs
+          node --test tests/panda-asr-homophone-android-v560.test.mjs
           node --test tests/panda-natural-routing-v556.test.mjs tests/panda-work-dialogue-v556.test.mjs tests/panda-introduction-dialogue-v556.test.mjs tests/panda-family-dialogue-v556.test.mjs tests/panda-everyday-dialogue-v556.test.mjs
           node --test tests/panda-ai-voice-queue-v545.test.mjs
           node --test tests/panda-approved-natural-voice-v546.test.mjs
