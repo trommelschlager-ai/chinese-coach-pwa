@@ -1,0 +1,58 @@
+/* Only Street-specific content adjustments. Core layout and colors are from active HSK1 CSS. */
+[data-street-lesson] .pg-v415-phrase{font-size:clamp(36px,11vw,65px);overflow-wrap:anywhere}
+[data-street-lesson] .pinyin,[data-street-lesson] .pg-v414-py{white-space:normal;overflow-wrap:anywhere;line-height:1.4}
+[data-street-lesson] .street-standard-choices{display:grid;gap:10px;margin:12px 0}
+[data-street-lesson] .street-standard-choices button{border:1px solid #cdb2e4;border-radius:18px;min-height:48px;padding:10px;background:linear-gradient(#fff8ff,#edddfb);color:#62417e;font-weight:800;box-shadow:0 3px 0 #c2a5d8}
+[data-street-lesson] .street-standard-choices button[aria-pressed=true]{border-color:#8053ae;background:#ead8fa}
+[data-street-lesson] .street-standard-avatar{width:42px;min-width:42px;height:42px;display:grid;place-items:center;background:#f2ddff;border-radius:50%;font-size:12px;font-weight:800;color:#542379}
+[data-street-lesson] .street-standard-line .pg-v414-bubble{min-width:0}
+[data-street-lesson] .street-standard-line .audio{margin:8px 0;min-height:44px}
+[data-street-lesson] .street-standard-speed{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0 14px;color:#674c87;font-size:14px;font-weight:800}
+[data-street-lesson] .street-standard-speed select{font:inherit;background:white;color:#542379;border:1px solid #cdb2e4;border-radius:12px;padding:8px}
+[data-street-lesson] .pg-hsk1-brand small{white-space:normal}
+[data-street-lesson] .pg-footer [hidden],[data-street-lesson] .recorder [hidden]{display:none!important}
+[data-street-lesson] .pg-footer button{touch-action:manipulation}
+
+/* Sakura visual reference: white, violet typography, pink primary, gold secondary. */
+body[data-street-lesson]{background:linear-gradient(145deg,#fff,#fff8fd 65%,#fce4fa);color:#32114f}
+[data-street-lesson] #app.pg-v414-preview{background:linear-gradient(180deg,#fff 0%,#fffafd 80%,#fce5fa);box-shadow:0 0 28px #c889e944}
+[data-street-lesson] #app .pg-hsk1-header{background:linear-gradient(180deg,#fff,#fff6fd);border-bottom:1px solid #e6c7ed;color:#401060}
+[data-street-lesson] #app .pg-hsk1-brand strong,[data-street-lesson] #app .pg-hsk1-brand em{color:#4c1377!important}
+[data-street-lesson] #app .screen-title{color:#401060;font-weight:900}
+[data-street-lesson] #app .screen-eyebrow{color:#ad1884;letter-spacing:1px}
+[data-street-lesson] #app.pg-v414-preview .sheet{background:linear-gradient(#fff,#fdf5ff);border:1px solid #e8c7f1;box-shadow:0 4px 12px #a34cc026,inset 0 1px 3px #fff;border-radius:24px}
+[data-street-lesson] #app .pinyin,[data-street-lesson] #app .pg-v414-py{color:#db006d;font-weight:800}
+[data-street-lesson] #app .translation{color:#32114f}
+[data-street-lesson] #app .progress i{background:linear-gradient(90deg,#ffb500,#ffde63)!important}
+[data-street-lesson] #app.pg-v414-preview .pg-footer{background:#fff9ff;border-color:#edcfef}
+[data-street-lesson] #app .pg-footer #pg-next:not(:disabled),[data-street-lesson] #app .validate,[data-street-lesson] #app .street-pink-link{background:linear-gradient(#ff8cf1,#ff26c4 54%,#e90092)!important;color:#270a3d!important;border:2px solid #ffd0fa!important;box-shadow:0 4px 0 #c10080,0 5px 12px #f94dc54a!important;border-radius:25px!important;text-shadow:none!important}
+[data-street-lesson] #app .pg-footer #pg-back:not(:disabled),[data-street-lesson] #app .street-gold-link{background:linear-gradient(#fff4a0,#ffd448 55%,#ffb800)!important;color:#341342!important;border:1px solid #fff1a8!important;box-shadow:0 3px 0 #d89c00,0 5px 10px #ffc72845!important;border-radius:25px}
+[data-street-lesson] #app button.audio:not(:disabled){background:linear-gradient(#fff4fd,#fbd3f6)!important;color:#771278!important;border:1px solid #e99bdd!important;border-radius:20px;box-shadow:0 3px 0 #da87cf}
+[data-street-lesson] .street-cover{text-align:center;padding:14px!important}
+[data-street-lesson] .street-cover h2{font-size:clamp(19px,5.5vw,27px);margin:4px 0;color:#401060}
+[data-street-lesson] .street-cover-zh{font-size:clamp(36px,11vw,60px);margin:8px 0;color:#48126e}
+[data-street-lesson] .street-tag{display:inline-block;background:linear-gradient(#ffd9fa,#fca3e6);padding:7px 20px;border-radius:24px;color:#541068;font-weight:900}
+[data-street-lesson] .street-sakura-art{display:block;width:100%;max-height:clamp(105px,25vh,240px);object-fit:contain;border-radius:18px;margin:7px auto}
+[data-street-lesson] .street-feature-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+[data-street-lesson] .street-feature-row span{font-size:12px;color:#48126e;background:white;border:1px solid #e6c6ec;border-radius:16px;padding:6px 9px;font-weight:800}
+[data-street-lesson] .street-gold-link,[data-street-lesson] .street-pink-link{display:block;text-align:center;text-decoration:none;font-weight:900;padding:13px;margin:10px 0}
+[data-street-lesson] .street-motto{font-size:13px;font-weight:800;color:#5e2381}
+[data-street-lesson] .street-rule{padding:10px 0;border-bottom:1px solid #efd4ee}
+[data-street-lesson] .street-rule p{margin:5px 0}
+[data-street-lesson] .street-tones{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center}
+[data-street-lesson] .street-tones div{border:1px solid #e9c7ee;border-radius:16px;padding:8px;background:#fff9fe}
+[data-street-lesson] .street-tones strong{font-size:24px;color:#4b146c}
+[data-street-lesson] .street-tones svg{width:100%;max-width:90px;display:block;margin:auto}
+[data-street-lesson] .street-tones p{margin:0;font-size:12px}
+[data-street-lesson] #app .pg-footer #pg-next[hidden]{display:none!important}
+[data-street-lesson] .street-standard-line:nth-child(even){flex-direction:row-reverse}
+[data-street-lesson] .street-standard-line .pg-v414-bubble{background:#f9e7fb}
+[data-street-lesson] .street-standard-line:nth-child(even) .pg-v414-bubble{background:#fff1cc}
+@media(max-height:700px){[data-street-lesson] .street-cover p{margin:4px 0}[data-street-lesson] .street-cover .street-sakura-art{max-height:130px}}
+
+[data-street-lesson] #app .street-cover{position:relative;overflow:hidden}
+[data-street-lesson] .street-cover:before,[data-street-lesson] .street-cover:after{content:'✿';position:absolute;top:0;color:#f6a1cf;font-size:42px;line-height:1;pointer-events:none;opacity:.65}
+[data-street-lesson] .street-cover:before{left:5px;transform:rotate(-18deg)}
+[data-street-lesson] .street-cover:after{right:5px;transform:rotate(18deg)}
+[data-street-lesson] .street-review{display:grid;gap:8px;margin:12px 0}
+[data-street-lesson] .street-review button{min-height:44px;border-radius:18px;border:1px solid #e1b0e8;background:#fff2ff;color:#49136b;font-weight:700}
