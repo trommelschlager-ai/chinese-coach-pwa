@@ -84,7 +84,7 @@ function workConversation(raw,s,awaiting){
   // Exact approved recordings are already in Panda's voice catalog: p083 & p085.
   const teacherYes=['是，我是老师。','Shì, wǒ shì lǎoshī.','Да, я учитель.'];
   const teacherNo=['不是，我是老师。','Bú shì, wǒ shì lǎoshī.','Нет, я учитель.'];
-  const questionPinyin=roleQ[1]?'shì bu shì '+py+'?':'shì '+py+(s.endsWith('吗')?' ma?':'?');
+  const questionPinyin=roleQ[1]?'shì bú shì '+py+'?':'shì '+py+(s.endsWith('吗')?' ma?':'?');
   return r('Nǐ '+questionPinyin,'Ты '+ru+'?',job==='老师'?teacherYes:teacherNo,null,'question');
  }
  const roleReply=job=>job==='学生'?['你是学生！你学什么？','Nǐ shì xuésheng! Nǐ xué shénme?','Ты студент! Что изучаешь?']:['你是'+job+'！你在哪儿工作？','Nǐ shì '+professions[job][0]+'! '+workQuestion[1],'Ты '+professions[job][1]+'! '+workQuestion[2]];
