@@ -412,9 +412,9 @@ function submit(raw){
    });
    state.naturalAwaiting=null;
    state.awaitQuestion=true;
-   const teacherReply={hanzi:'我是老师。',pinyin:'Wǒ shì lǎoshī.',ru:'Я учитель.'};
+   const teacherReply={hanzi:'是，我是老师。',pinyin:'Shì, wǒ shì lǎoshī.',ru:'Да, я учитель.'};
    say(teacherReply,!!lookupPandaVoiceClip(teacherReply.hanzi));
-   note('Панда поняла вопрос. Ответ озвучивается существующей записью 我是老师. Тоны по тексту не оцениваются.');
+   note('Панда поняла вопрос. Ответ озвучивается существующей записью 是，我是老师. Тоны по тексту не оцениваются.');
    return;
   }
  }
