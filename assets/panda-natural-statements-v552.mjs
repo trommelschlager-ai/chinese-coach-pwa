@@ -76,10 +76,16 @@ function workConversation(raw,s,awaiting){
   recognized.message='Chrome распознал 那 (nà — там). Если хотел спросить «Где ты работаешь?», нужно 哪 (nǎ): 你在哪儿工作？ Если сказал другую фразу, повтори через микрофон. Тоны по тексту не проверяются.';
   return recognized;
  }
- const roleQ=/^你(?:是不是([\p{Script=Han}]{1,6})|是([\p{Script=Han}]{1,6})吗)$/u.exec(s);
+ // v561: Android ASR often drops 吗 and punctuation from 你是医生？.
+ // This asks about Panda, NOT the learner's separate 我是医生 statement.
+ const roleQ=/^你(?:是不是([\p{Script=Han}]{1,6})|是([\p{Script=Han}]{1,6})(?:吗)?)$/u.exec(s);
  if(roleQ&&Object.hasOwn(professions,roleQ[1]||roleQ[2])){
   const job=roleQ[1]||roleQ[2],[py,ru]=professions[job];
-  return r('Nǐ '+(roleQ[1]?'shì bu shì ':'shì ')+py+(roleQ[2]?' ma?':'?'),'Ты '+ru+'?',job==='老师'?teacher:['不是，我是老师。','Bú shì, wǒ shì lǎoshī.','Нет, я учитель.'],null,'question');
+  // Exact approved recordings are already in Panda's voice catalog: p083 & p085.
+  const teacherYes=['是，我是老师。','Shì, wǒ shì lǎoshī.','Да, я учитель.'];
+  const teacherNo=['不是，我是老师。','Bú shì, wǒ shì lǎoshī.','Нет, я учитель.'];
+  const questionPinyin=roleQ[1]?'shì bu shì '+py+'?':'shì '+py+(s.endsWith('吗')?' ma?':'?');
+  return r('Nǐ '+questionPinyin,'Ты '+ru+'?',job==='老师'?teacherYes:teacherNo,null,'question');
  }
  const roleReply=job=>job==='学生'?['你是学生！你学什么？','Nǐ shì xuésheng! Nǐ xué shénme?','Ты студент! Что изучаешь?']:['你是'+job+'！你在哪儿工作？','Nǐ shì '+professions[job][0]+'! '+workQuestion[1],'Ты '+professions[job][1]+'! '+workQuestion[2]];
  const extra=/^我(也是|是一个|以前是|想当|想做)([\p{Script=Han}]{1,6})$/u.exec(s);
