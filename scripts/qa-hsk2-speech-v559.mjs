@@ -7,7 +7,7 @@ const output = 'qa/hsk2-speech-v559';
 const lessons = [
   'about-me', 'lesson1', 'lesson3-work-study-preview', 'lesson4-hobby-preview',
   'lesson5-friends-v2', 'lesson6-yesterday-preview', 'lesson7-future-preview',
-  'lesson8-shop-preview', 'lesson9-health-preview'
+  'lesson8-shop-preview', 'lesson9-health-preview', 'lesson10-relationships-preview'
 ];
 const pinyinMarks = {'\u0304':1, '\u0301':2, '\u030c':3, '\u0300':4};
 const markedTones = pinyin => [...pinyin.normalize('NFD')].map(mark => pinyinMarks[mark]).filter(Boolean);
@@ -96,6 +96,17 @@ try {
         const image = new Image();
         image.src = src;
         await image.decode();
+        if (location.pathname.includes('lesson9-health')) {
+          assertFullSizeHealthArt(art);
+        }
+        function assertFullSizeHealthArt(element) {
+          if (!(element instanceof HTMLImageElement) ||
+              element.naturalWidth !== 320 || element.naturalHeight !== 320 ||
+              Math.abs(element.clientWidth - element.parentElement.clientWidth) > 1 ||
+              Math.abs(element.clientHeight - element.parentElement.clientHeight) > 1) {
+            throw new Error('Health artwork must be a full-size image in its gold frame');
+          }
+        }
         const rect = selector => document.querySelector(selector).getBoundingClientRect();
         const a = rect('.pg-speech-art'), b = rect('.hero-message'), t = rect('.tone-tabs');
         const listing = document.querySelector('.pg-standard-list');
