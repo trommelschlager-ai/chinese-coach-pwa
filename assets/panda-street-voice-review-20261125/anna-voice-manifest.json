@@ -1,0 +1,38 @@
+{
+  "schema": "street-lesson2-anna-review-v1",
+  "lesson": 2,
+  "sourceLesson": "panda-street-slang-lesson2-preview.html",
+  "speaker": "Анна",
+  "voice": "zh-CN-XiaoxuanNeural",
+  "voiceSource": "Panda Go dialogue-voices-v73 lesson 2 female role",
+  "scope": "review only; not activated; no male fallback for Anna",
+  "entries": [
+    {
+      "id": "50",
+      "hanzi": "我叫安娜，你呢？",
+      "source": "assets/dialogue-voices-v73/l2-04-b.mp3",
+      "file": "50.mp3",
+      "status": "copied-exact-source-pending-listening"
+    },
+    {
+      "id": "42",
+      "hanzi": "我从俄罗斯来的。",
+      "status": "needs-matching-female-recording"
+    },
+    {
+      "id": "44",
+      "hanzi": "对啊，刚学。",
+      "status": "needs-matching-female-recording"
+    },
+    {
+      "id": "46",
+      "hanzi": "真的假的？",
+      "status": "needs-matching-female-recording"
+    },
+    {
+      "id": "48",
+      "hanzi": "行啊！",
+      "status": "needs-matching-female-recording"
+    }
+  ]
+}
