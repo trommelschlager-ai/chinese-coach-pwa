@@ -691,6 +691,94 @@ export const PANDA_XIAOXIAO_V557_BATCH=Object.freeze([
   }
 ]);
 const XIAOXIAO_V557_BY_ZH=new Map(PANDA_XIAOXIAO_V557_BATCH.map(e=>[voiceNorm(e.zh),e]));
+// User-supplied batch; listening/tones remain pending physical Android QA.
+export const PANDA_USER_V563_BATCH=Object.freeze([
+  {
+    "id": "PA-V563-01",
+    "zh": "然后呢？",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-01.mp3",
+    "sha256": "34dbeb496e5463a318ba567c68c09d534ef90daba4b1bc817a633d77bfa083d8",
+    "bytes": 9452
+  },
+  {
+    "id": "PA-V563-02",
+    "zh": "你接下来想做什么？",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-02.mp3",
+    "sha256": "6410fb2d2e42a6b40757cda1b97aac8d1908442640dce0bc1a415ee2bef85346",
+    "bytes": 17132
+  },
+  {
+    "id": "PA-V563-03",
+    "zh": "你早上吃什么？",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-03.mp3",
+    "sha256": "bbf091127f6c4f12737d0cb1363ea1de4d2f46ad42c3375ebb74f778724cb431",
+    "bytes": 14252
+  },
+  {
+    "id": "PA-V563-04",
+    "zh": "我先刷牙，再吃早饭。",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-04.mp3",
+    "sha256": "134bef87c762bcc6cf0a39e285c9331feb46b3491d0f310d7783bb29eedb50ae",
+    "bytes": 22124
+  },
+  {
+    "id": "PA-V563-05",
+    "zh": "我每天七点起床。",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-05.mp3",
+    "sha256": "7143f30b46dedef56ba81b21a866d7ec0da6be8eb712117b1a09b905a48cf629",
+    "bytes": 17516
+  },
+  {
+    "id": "PA-V563-06",
+    "zh": "我在和你聊天。",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-06.mp3",
+    "sha256": "75380c44e40fd4ef79cd53cffc98232a2a5c115ad310e2ee041402b412cfc422",
+    "bytes": 14636
+  },
+  {
+    "id": "PA-V563-07",
+    "zh": "我今天和你练习中文。",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-07.mp3",
+    "sha256": "00d6c6d1a94ca3e87fae4d307513b25036e562cb441633098e2e092320fb6a20",
+    "bytes": 20204
+  },
+  {
+    "id": "PA-V563-08",
+    "zh": "你周末做什么？",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-08.mp3",
+    "sha256": "288eb59f87274b4f89dc59387f34406b1944538a34e28a2f7a955a2beb2a4cd4",
+    "bytes": 14252
+  },
+  {
+    "id": "PA-V563-09",
+    "zh": "你今天忙吗？",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-09.mp3",
+    "sha256": "98c861709721414c4f599459edd68a7f8c041cf2f09a06eab7a5c446f45f1400",
+    "bytes": 12716
+  },
+  {
+    "id": "PA-V563-10",
+    "zh": "我没事，谢谢你。",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-10.mp3",
+    "sha256": "d56cf2a2a9e2fa86a01c72440c7fa8e12d61ac2b64eac9640a66d93a72c9d994",
+    "bytes": 18668
+  },
+  {
+    "id": "PA-V563-11",
+    "zh": "谢谢你！我很开心！",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-11.mp3",
+    "sha256": "d1244cc202efaa8cc56551b705195ac538d79f8eaf634f83f6542c356b173a09",
+    "bytes": 24428
+  },
+  {
+    "id": "PA-V563-12",
+    "zh": "你想吃什么？",
+    "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-12.mp3",
+    "sha256": "3be98c75d0529b303b7c67bbf5b8e8b9ba332f665070c0ebf63f2cd4bf015090",
+    "bytes": 12524
+  }
+]);
+const USER_V563_BY_ZH=new Map(PANDA_USER_V563_BATCH.map(e=>[voiceNorm(e.zh),e]));
 export function lookupApprovedPandaVoice(text){
  const key=voiceNorm(text);if(!key)return null;
  const v557=XIAOXIAO_V557_BY_ZH.get(key);if(v557)return {src:v557.src,start:0,end:null,source:'panda-xiaoxiao:user-upload-v557'};
@@ -703,5 +791,6 @@ export function lookupApprovedPandaVoice(text){
  const old=original(key);
  if(old&&OLD_ALLOWED.test(old.src))return old;
  const courseSrc=Object.hasOwn(APPROVED_HSK2,key)?APPROVED_HSK2[key]:null;
- return courseSrc?{src:courseSrc,start:0,end:null,source:'panda-approved-luvvoice:hsk2-20261122'}:null;
+ if(courseSrc)return {src:courseSrc,start:0,end:null,source:'panda-approved-luvvoice:hsk2-20261122'};
+ const supplied=USER_V563_BY_ZH.get(key);return supplied?{src:supplied.src,start:0,end:null,source:'panda-user-upload:batch01-v563'}:null;
 }

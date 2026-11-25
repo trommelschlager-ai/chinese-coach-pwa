@@ -1,6 +1,6 @@
 {
   "version": 563,
-  "bytes": 94469760,
+  "bytes": 94667664,
   "files": [
     "./assets/panda-natural-statements-v552.mjs?v=563",
     "./assets/panda-hsk2-preview-core-v1.mjs?v=563",
@@ -3662,6 +3662,18 @@
     "./assets/hsk2-lesson8-shop-scroll-v4.webp",
     "./assets/panda-street-hsk1-standard-v2.css?v=3",
     "./assets/panda-street-hsk1-standard-v2.js?v=4",
-    "./assets/panda-street-sakura-existing-hero.webp"
+    "./assets/panda-street-sakura-existing-hero.webp",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-01.mp3",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-02.mp3",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-03.mp3",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-04.mp3",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-05.mp3",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-06.mp3",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-07.mp3",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-08.mp3",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-09.mp3",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-10.mp3",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-11.mp3",
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-12.mp3"
   ]
 }
