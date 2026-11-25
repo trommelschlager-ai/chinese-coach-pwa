@@ -82,12 +82,28 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
     referenceBounds.some((v,i)=>!Number.isFinite(v)||(i>0&&v<=referenceBounds[i-1]))||
     learnerBounds.some((v,i)=>!Number.isFinite(v)||(i>0&&v<=learnerBounds[i-1])))
   return {ok:false,reason:'Не найдены корректные границы записи'};
+ const validBufferBounds=(buffer,bounds)=>{
+  if(!buffer?.getChannelData||!Number.isFinite(buffer.sampleRate)||buffer.sampleRate<8000)return false;
+  try{const data=buffer.getChannelData(0);return !!data&&bounds[0]>=0&&bounds.at(-1)<=data.length/buffer.sampleRate+1e-6;}catch{return false;}
+ };
+ if(!validBufferBounds(referenceBuffer,referenceBounds)||!validBufferBounds(learnerBuffer,learnerBounds))
+  return {ok:false,reason:'Границы выходят за пределы записи'};
  const dr=referenceBounds.at(-1)-referenceBounds[0],du=learnerBounds.at(-1)-learnerBounds[0],ratio=du/dr;
  if(ratio<.55||ratio>1.95)return {ok:false,reason:'Слишком различается длительность фраз: сравнение ненадёжно'};
  const r=features(referenceBuffer,referenceBounds[0],referenceBounds.at(-1));
  const u=features(learnerBuffer,learnerBounds[0],learnerBounds.at(-1));
  if(!r||!u||r.length<12||u.length<12||r.length>500||u.length>650)
   return {ok:false,reason:'Недостаточно звуковых кадров или слишком длинная запись'};
+ // Guard against matching silence to silence and unvoiced holes.
+ // Energy coverage is only a safety gate, not lexical identity or pronunciation.
+ const sufficientEnergy=frames=>{
+  const peak=Math.max(...frames.map(f=>f.rms));
+  if(!Number.isFinite(peak)||peak<.004)return false;
+  const gate=Math.max(.0025,Math.min(.018,peak*.12));
+  return frames.filter(f=>f.rms>=gate).length>=Math.max(8,Math.ceil(frames.length*.25));
+ };
+ if(!sufficientEnergy(r)||!sufficientEnergy(u))
+  return {ok:false,reason:'Недостаточно звукового сигнала для сопоставления'};
  const n=r.length,z=u.length,stride=z+1;
  const costs=new Float64Array((n+1)*stride),parent=new Uint8Array((n+1)*stride);
  costs.fill(Infinity);costs[0]=0;
