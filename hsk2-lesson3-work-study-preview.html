@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#9e2cc9">
 <title>Panda Go · HSK 2 · Урок 3 — Моя работа и учёба</title>
 <script>
@@ -1348,6 +1348,8 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
 <link rel="stylesheet" href="./assets/hsk2-approved-cover.css?v=20261123-single-press-all">
 <script src="./assets/hsk2-approved-cover.js?v=20261123-single-press-all" data-lesson="3"></script>
+<link rel="stylesheet" href="./assets/hsk2-speech-v559.css">
+<script src="./assets/hsk2-speech-v559.js"></script>
 </head>
 <body>
 <div class="app" id="app">
@@ -1421,7 +1423,7 @@ const courseSections = [
 // Listening results retain their original indices so completed work survives the switch.
 const courseQuiz = words.flatMap((_,word) =>
   [0,1,2,3,4].map(type => ({type,index:word,word})));
-const stepNumber = step => courseMode ? courseSteps.indexOf(step)+1 : step;
+const stepNumber = step => courseMode ? PandaHsk2Speech.position(courseSections, step).number : step;
 const titles = ['Вступление','Новые слова','Проверь слова','Грамматика','Собери рассказ','Тренировка тонов','Фразы и диалог','Завершение'];
 const tests = ['Значение слова','По пиньиню','Собери слово','Заполни фразу','Произнеси'];
 const testHelp = ['Выбери правильный перевод.','Найди слово по пиньиню.','Расставь иероглифы по порядку.','Подставь слово в предложение.','Произнеси слово или повтори самостоятельно.'];
@@ -1644,6 +1646,11 @@ function save() {
 }
 
 function setStatus(message, good = false) {
+  const speechStatus = workspace.querySelector('.pg-speech-status');
+  if (speechStatus) {
+    speechStatus.toggleAttribute('data-unavailable',
+      /недоступ|разреш|не нашёл|не запуст|отключён|не поддержив/i.test(message));
+  }
   feedback = message;
   positive = good;
   const box = document.getElementById('feedback');
@@ -1719,12 +1726,13 @@ function render(resetScroll = false) {
     if (task) state.quizIndex = task.index;
   }
   if(courseMode){
-    const n=stepNumber(step);
-    counter.textContent=['Начало','Слова','Правило','Речь','Тесты','Рассказ','Диалог','Итог'][n-1];
-    counter.title='Шаг '+n+' из 8 · '+titles[step-1];
-    chapter.textContent='Шаг '+n+' / 8';
-    chapter.setAttribute('aria-label','Шаг '+n+' из восьми. '+titles[step-1]);
-    nav.style.setProperty('--pg2-progress',(n*100/8)+'%');
+    const {number, total, label} = PandaHsk2Speech.position(courseSections, step);
+    const indicator = number ? 'Шаг ' + number + ' / ' + total : label;
+    counter.textContent = label;
+    counter.title = indicator + ' · ' + titles[step-1];
+    chapter.textContent = indicator;
+    chapter.setAttribute('aria-label', counter.title);
+    nav.style.setProperty('--pg2-progress', (number * 100 / total) + '%');
   } else headLabel.textContent = 'HSK 2 · Урок 3 · Шаг ' + step + ' из 8';
   headBack.disabled = step === 1;
   stepButtons.forEach((button,index) => {
@@ -1739,7 +1747,14 @@ function render(resetScroll = false) {
       button.setAttribute('aria-label',courseSections[index].name + (locked ? '. Закрыт — откроется после предыдущего раздела.' : '. Открыт.'));
     }
   });
+  const speechList = workspace.querySelector('.pg-standard-list');
+  const listLabel = speechList?.getAttribute('aria-label');
+  const listScroll = speechList?.scrollTop ?? 0;
   workspace.innerHTML = [intro,newWords,quiz,grammar,day,tones,chat,finish][step-1]();
+  const updatedList = workspace.querySelector('.pg-standard-list');
+  if (!resetScroll && updatedList && updatedList.getAttribute('aria-label') === listLabel) {
+    updatedList.scrollTop = listScroll;
+  }
   if(step===6)window.PandaToneTrainer?.mount();
   back.hidden = step === 1;
   const inQuiz = step === 3 && state.quizTest !== null;
@@ -1788,8 +1803,9 @@ function newWords() {
 
 function hero(kind,step,title,subtitle) {
   const image = kind === 'tones' ? 'tones' : 'quiz';
+  const illustration = stageImage(image,'about-hero-photo');
   return '<div class="detail-hero ' + kind + '-hero">' +
-    stageImage(image,'about-hero-photo') +
+    (kind === 'tones' ? '<div class="pg-speech-art">' + illustration + '</div>' : illustration) +
     '<div class="hero-message"><span class="tag">Шаг ' + stepNumber(step) +
     '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div></div>';
 }
@@ -1969,51 +1985,25 @@ function phraseCards() {
       audioButton(item[0],playIcon) + '</article>').join('') + '</div>';
 }
 
-function toneGuide() {
-  const samples = [
-    ['ā','высокий, ровный','M3 9h39'],
-    ['á','идёт вверх','M3 14 41 3m-7 0h7l-4 6'],
-    ['ǎ','низкий, затем вверх в изоляции','M3 4q18 23 38-1m-7 2 7-2-2 7'],
-    ['à','резко падает','M3 3l38 12m-7-1 7 1-4-5']
-  ];
-  return '<details class="tone-details panel"><summary>🎵 Подсказка: четыре тона</summary><div class="tone-grid">' +
-    samples.map(([sample,name,path],i) => '<div><b>' + (i+1) + '-й тон</b><svg viewBox="0 0 45 18" aria-hidden="true">' +
-    '<path d="' + path + '" stroke="#af183e" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg><strong>' +
-    sample + '</strong>' + name + '</div>').join('') + '</div></details>';
-}
-/* Shared speech-row standard: Chinese, pinyin, translation, tone marks, speaker, microphone. */
-function pgStandardSpeechRow(word,i) {
-  const strokes={0:'',1:'M3 8 H19',2:'M3 15 L19 3',3:'M3 4 Q11 24 19 4',4:'M3 3 L19 15'};
-  const tones=word.tones.map(v=>'<span class="pg-standard-tone"><svg viewBox="0 0 22 20" aria-hidden="true">'+(v===0?'<circle cx="11" cy="9" r="2.8" fill="#267d31"/>':'<path d="'+strokes[v]+'" fill="none" stroke="#782a8f" stroke-width="3.3" stroke-linecap="round"/>')+'</svg><b>'+v+'</b></span>').join('');
-  const control=state.practiceMode==='self'?'<button type="button" class="orb mic'+(state.selfSpoken.includes(i)?' recognized':'')+'" data-self-spoken="'+i+'" aria-label="Я повторил и сравнил '+escape(word.zh)+'" title="Самопроверка; тоны не оцениваются">'+(state.selfSpoken.includes(i)?'✓':'●')+'</button>':micButton(i,'Произнести '+word.zh,state.mic.includes(i));
-  return '<article class="pg-standard-speech-row"><div class="pg-standard-copy"><strong class="pg-standard-cn" lang="zh-Hans">'+escape(word.zh)+'</strong><span class="pg-standard-py">'+escape(word.py)+'</span><span class="pg-standard-ru">'+escape(word.ru)+'</span></div><div class="pg-standard-tones" role="img" aria-label="Тоны: '+word.tones.join(', ')+'">'+tones+'</div>'+audioButton(word.zh,speaker)+control+'</article>';
-}
+const speechPhraseTones = ["341114", "342422", "143024", "143022", "443043", "34112"];
+
 function tones() {
-  const wordView = state.toneTab === 'words';
-  return hero('tones',6,'Тренировка тонов','Произнеси шесть выражений о работе и учёбе.') +
-    '<div class="practice-modes panel"><button type="button" class="practice-main ' +
-    (state.practiceMode === 'mic' ? 'primary' : 'soft') +
-    '" data-practice-mode="mic">🎙 Микрофон · основной</button>' +
-    '<button type="button" class="practice-backup soft' + (state.practiceMode === 'self' ? ' is-active' : '') +
-    '" data-practice-mode="self">' +
-    (state.practiceMode === 'self' ? '✓ Запасной режим' : 'Не работает микрофон?') +
-    '</button></div>' +
-    '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
-    '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (6)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
-    '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (6)</button></div>' +
-    (wordView ? '<div class="pg-standard-list">' + words.map(pgStandardSpeechRow).join('') + '</div>' :
-      '<details class="phrase-review panel"><summary>💬 Открыть 6 фраз для повторения</summary>' + phraseCards() + '</details>') +
-    safeStatus() + toneGuide() + '<div class="progress-panel panel">' + stageImage('tones','about-progress-photo') + '<div><b>Практика произношения</b>' +
-    '<progress max="6" value="' + speechCount() + '" aria-label="Слов отработано"></progress></div><b>' + speechCount() +
-    ' из 6</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
-    '. Результат распознавания слова не равен оценке тонов.</p>' +
-    '<details class="l3-tone-details"><summary>📈 Пробная проверка тонов · графики и запись голоса</summary>' +
-    (window.PandaToneTrainer?.render(words,
-      i=>'<img class="hero-art" src="'+A[i]+'" alt="Иллюстрация слова">',
-      (title,caption)=>'<h2>'+title+'</h2><p class="hint">'+caption+'</p>',
-      content=>'<section class="panel">'+content+'</section>',
-      '',word=>optionalAudio(word,playIcon)) || '') +
-    '</details>';
+  return PandaHsk2Speech.render({
+    hero: hero('tones', 6, 'Тренировка тонов', 'Произнеси шесть выражений о работе и учёбе.'),
+    words, phrases, phraseTones: speechPhraseTones, tab: state.toneTab,
+    audio: text => audioButton(text, speaker),
+    mic: (text, id) => {
+      if (typeof id === 'number' && state.practiceMode === 'self') {
+        const repeated = state.selfSpoken.includes(id);
+        return '<button type="button" class="orb mic" data-self-spoken="' + id +
+          '" aria-label="Я повторил и сравнил: ' + escape(text) + '">' +
+          (repeated ? '✓' : microphone) + '</button>';
+      }
+      return micButton(id, 'Произнести ' + text + ' · распознавание речи');
+    },
+    status: safeStatus(),
+    fallback: state.practiceMode === 'self'
+  });
 }
 
 
@@ -2452,7 +2442,19 @@ const actions = {
   practiceMode: value => { if (value === 'mic' || value === 'self') {state.practiceMode = value; update();} },
   selfSpoken: value => markSelfSpoken(Number(value)),
   selfQuiz: () => { if (state.step === 3 && state.quizTest === 4) markQuiz(true,'self'); },
-  mic: value => onMic(value),
+  mic: value => {
+    const phrase = value.startsWith('phrase:') ? phrases[Number(value.slice(7))] : null;
+    if (state.step === 6 && !recognitionAvailable()) {
+      setStatus('В этом браузере распознавание недоступно. Можно повторить по записи.');
+      workspace.querySelector('.pg-speech-status').dataset.unavailable = '';
+      return;
+    }
+    if (phrase) {
+      recognize([phrase[0]], () => setStatus('Фраза распознана. Тоны не оценивались.', true));
+    } else {
+      onMic(value);
+    }
+  },
   chat: value => {
     clearMedia();
     state.chat.push(dialogue[state.chat.length].answers[Number(value)][0]);

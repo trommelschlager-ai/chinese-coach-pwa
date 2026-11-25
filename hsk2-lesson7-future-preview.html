@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#9e2cc9">
 <title>Panda Go · HSK 2 · Урок 7 · Мои планы на будущее · v507</title>
 <script>
@@ -2170,6 +2170,8 @@ html.course-layout #app[data-view] #pg433 :is(.quiz-hero,.tones-hero)>svg.about-
 </style>
 <link rel="stylesheet" href="./assets/hsk2-approved-cover.css?v=20261123-single-press-all">
 <script src="./assets/hsk2-approved-cover.js?v=20261123-single-press-all" data-lesson="7"></script>
+<link rel="stylesheet" href="./assets/hsk2-speech-v559.css">
+<script src="./assets/hsk2-speech-v559.js"></script>
 </head>
 <body>
 <div class="app" id="app">
@@ -2191,7 +2193,7 @@ html.course-layout #app[data-view] #pg433 :is(.quiz-hero,.tones-hero)>svg.about-
 'use strict';
 
 // Illustration atlas and cover for lesson 7 are loaded from dedicated assets.
-const words=[{"zh":"明天","py":"míngtiān","ru":"завтра","tones":[2,1],"ex":"明天我要学中文。","p":"Míngtiān wǒ yào xué Zhōngwén.","r":"Завтра я буду учить китайский.","fill":"____我要学中文。"},{"zh":"下周","py":"xià zhōu","ru":"на следующей неделе","tones":[4,1],"ex":"下周我打算去旅行。","p":"Xià zhōu wǒ dǎsuàn qù lǚxíng.","r":"На следующей неделе я собираюсь путешествовать.","fill":"____我打算去旅行。"},{"zh":"下个月","py":"xià ge yuè","ru":"в следующем месяце","tones":[4,0,4],"ex":"下个月我想去中国。","p":"Xià ge yuè wǒ xiǎng qù Zhōngguó.","r":"В следующем месяце я хочу поехать в Китай.","fill":"____我想去中国。"},{"zh":"打算","py":"dǎsuàn","ru":"планировать, собираться","tones":[3,4],"ex":"我打算明天学中文。","p":"Wǒ dǎsuàn míngtiān xué Zhōngwén.","r":"Я собираюсь завтра учить китайский.","fill":"我____明天学中文。"},{"zh":"想","py":"xiǎng","ru":"хотеть","tones":[3],"ex":"我想去中国。","p":"Wǒ xiǎng qù Zhōngguó.","r":"Я хочу поехать в Китай.","fill":"我____去中国。"},{"zh":"准备","py":"zhǔnbèi","ru":"готовиться, собираться","tones":[3,4],"ex":"我准备下周去旅行。","p":"Wǒ zhǔnbèi xià zhōu qù lǚxíng.","r":"Я готовлюсь путешествовать на следующей неделе.","fill":"我____下周去旅行。"},{"zh":"学中文","py":"xué Zhōngwén","ru":"учить китайский","tones":[2,1,2],"ex":"我明天学中文。","p":"Wǒ míngtiān xué Zhōngwén.","r":"Завтра я буду учить китайский.","fill":"我明天____。"},{"zh":"去旅行","py":"qù lǚxíng","ru":"поехать путешествовать","tones":[4,3,2],"ex":"我下个月想去旅行。","p":"Wǒ xià ge yuè xiǎng qù lǚxíng.","r":"Я хочу путешествовать в следующем месяце.","fill":"我下个月想____。"}];
+const words=[{"zh":"明天","py":"míngtiān","ru":"завтра","tones":[2,1],"ex":"明天我要学中文。","p":"Míngtiān wǒ yào xué Zhōngwén.","r":"Завтра я буду учить китайский.","fill":"____我要学中文。"},{"zh":"下周","py":"xià zhōu","ru":"на следующей неделе","tones":[4,1],"ex":"下周我打算去旅行。","p":"Xià zhōu wǒ dǎsuàn qù lǚxíng.","r":"На следующей неделе я собираюсь путешествовать.","fill":"____我打算去旅行。"},{"zh":"下个月","py":"xià ge yuè","ru":"в следующем месяце","tones":[4,0,4],"ex":"下个月我想去中国。","p":"Xià ge yuè wǒ xiǎng qù Zhōngguó.","r":"В следующем месяце я хочу поехать в Китай.","fill":"____我想去中国。"},{"zh":"打算","py":"dǎsuàn","ru":"планировать, собираться","tones":[3,4],"ex":"我打算明天学中文。","p":"Wǒ dǎsuàn míngtiān xué Zhōngwén.","r":"Я собираюсь завтра учить китайский.","fill":"我____明天学中文。"},{"zh":"想","py":"xiǎng","ru":"хотеть","tones":[3],"ex":"我想去中国。","p":"Wǒ xiǎng qù Zhōngguó.","r":"Я хочу поехать в Китай.","fill":"我____去中国。"},{"zh":"准备","py":"zhǔnbèi","ru":"готовиться, собираться","tones":[3,4],"ex":"我准备下周去旅行。","p":"Wǒ zhǔnbèi xià zhōu qù lǚxíng.","r":"Я собираюсь отправиться в путешествие на следующей неделе.","fill":"我____下周去旅行。"},{"zh":"学中文","py":"xué Zhōngwén","ru":"учить китайский","tones":[2,1,2],"ex":"我明天学中文。","p":"Wǒ míngtiān xué Zhōngwén.","r":"Завтра я буду учить китайский.","fill":"我明天____。"},{"zh":"去旅行","py":"qù lǚxíng","ru":"поехать путешествовать","tones":[4,3,2],"ex":"我下个月想去旅行。","p":"Wǒ xià ge yuè xiǎng qù lǚxíng.","r":"Я хочу путешествовать в следующем месяце.","fill":"我下个月想____。"}];
 const OPTIONS=[["我打算明天学中文。","Wǒ dǎsuàn míngtiān xué Zhōngwén.","Я собираюсь завтра учить китайский."],["我想下周去旅行。","Wǒ xiǎng xià zhōu qù lǚxíng.","Я хочу путешествовать на следующей неделе."],["我准备找工作。","Wǒ zhǔnbèi zhǎo gōngzuò.","Я собираюсь искать работу."],["我下个月想去中国。","Wǒ xià ge yuè xiǎng qù Zhōngguó.","Я хочу поехать в Китай в следующем месяце."],["我明天要运动。","Wǒ míngtiān yào yùndòng.","Завтра я собираюсь заниматься спортом."]];
 const QUESTIONS=[{"q":"你明天打算做什么？","p":"Nǐ míngtiān dǎsuàn zuò shénme?","ru":"Что ты собираешься делать завтра?","options":[["我打算学中文。","Wǒ dǎsuàn xué Zhōngwén.","Я собираюсь учить китайский."],["我想去运动。","Wǒ xiǎng qù yùndòng.","Я хочу позаниматься спортом."],["我打算在家休息。","Wǒ dǎsuàn zài jiā xiūxi.","Я собираюсь отдыхать дома."]]},{"q":"你下个月想去哪儿？","p":"Nǐ xià ge yuè xiǎng qù nǎr?","ru":"Куда ты хочешь поехать в следующем месяце?","options":[["我想去北京。","Wǒ xiǎng qù Běijīng.","Я хочу поехать в Пекин."],["我想去上海。","Wǒ xiǎng qù Shànghǎi.","Я хочу поехать в Шанхай."],["我下个月不打算旅行。","Wǒ xià ge yuè bù dǎsuàn lǚxíng.","В следующем месяце я не планирую путешествовать."]]},{"q":"你为什么想学中文？","p":"Nǐ wèishénme xiǎng xué Zhōngwén?","ru":"Почему ты хочешь учить китайский?","options":[["因为我喜欢中文。","Yīnwèi wǒ xǐhuan Zhōngwén.","Потому что мне нравится китайский."],["因为我想去中国。","Yīnwèi wǒ xiǎng qù Zhōngguó.","Потому что я хочу поехать в Китай."],["因为我想和朋友说中文。","Yīnwèi wǒ xiǎng hé péngyou shuō Zhōngwén.","Потому что хочу говорить по-китайски с друзьями."]]}];
 const phrases = words.map(({ex,p,r}) => [ex,p,r]);
@@ -2215,7 +2217,7 @@ const courseSections = [
 // Listening results retain their original indices so completed work survives the switch.
 const courseQuiz = words.flatMap((_,word) =>
   [0,1,2,3,4].map(type => ({type,index:word,word})));
-const stepNumber = step => courseMode ? courseSteps.indexOf(step)+1 : step;
+const stepNumber = step => courseMode ? PandaHsk2Speech.position(courseSections, step).number : step;
 const titles = ['Вступление','Новые слова','Проверь слова','Грамматика','Собери рассказ','Тренировка тонов','Фразы и диалог','Завершение'];
 const tests = ['Значение слова','По пиньиню','Собери слово','Заполни фразу','Произнеси'];
 const testHelp = ['Выбери правильный перевод.','Найди слово по пиньиню.','Расставь иероглифы по порядку.','Подставь слово в предложение.','Произнеси слово или повтори самостоятельно.'];
@@ -2499,6 +2501,11 @@ function save() {
 }
 
 function setStatus(message, good = false) {
+  const speechStatus = workspace.querySelector('.pg-speech-status');
+  if (speechStatus) {
+    speechStatus.toggleAttribute('data-unavailable',
+      /недоступ|разреш|не нашёл|не запуст|отключён|не поддержив/i.test(message));
+  }
   feedback = message;
   positive = good;
   const box = document.getElementById('feedback');
@@ -2575,12 +2582,13 @@ function render(resetScroll = false) {
     if (task) state.quizIndex = task.index;
   }
   if(courseMode){
-    const n=stepNumber(step);
-    counter.textContent=['Начало','Слова','Правило','Речь','Тесты','Рассказ','Диалог','Итог'][n-1];
-    counter.title='Шаг '+n+' из 8 · '+titles[step-1];
-    chapter.textContent='Шаг '+n+' / 8';
-    chapter.setAttribute('aria-label','Шаг '+n+' из восьми. '+titles[step-1]);
-    nav.style.setProperty('--pg2-progress',(n*100/8)+'%');
+    const {number, total, label} = PandaHsk2Speech.position(courseSections, step);
+    const indicator = number ? 'Шаг ' + number + ' / ' + total : label;
+    counter.textContent = label;
+    counter.title = indicator + ' · ' + titles[step-1];
+    chapter.textContent = indicator;
+    chapter.setAttribute('aria-label', counter.title);
+    nav.style.setProperty('--pg2-progress', (number * 100 / total) + '%');
   } else headLabel.textContent = 'HSK 2 · Урок 7 · Шаг ' + step + ' из 8';
   headBack.disabled = step === 1;
   stepButtons.forEach((button,index) => {
@@ -2591,7 +2599,14 @@ function render(resetScroll = false) {
       button.setAttribute('aria-label',courseSections[index].name);
     }
   });
+  const speechList = workspace.querySelector('.pg-standard-list');
+  const listLabel = speechList?.getAttribute('aria-label');
+  const listScroll = speechList?.scrollTop ?? 0;
   workspace.innerHTML = [intro,newWords,quiz,grammar,day,tones,chat,finish][step-1]();
+  const updatedList = workspace.querySelector('.pg-standard-list');
+  if (!resetScroll && updatedList && updatedList.getAttribute('aria-label') === listLabel) {
+    updatedList.scrollTop = listScroll;
+  }
   back.hidden = step === 1;
   const inQuiz = step === 3 && state.quizTest !== null;
   const canExitQuiz = inQuiz || (courseMode && step === 3 && state.courseQuizCursor !== null);
@@ -2619,7 +2634,7 @@ function render(resetScroll = false) {
   for (const el of app.querySelectorAll('.hero-message,.about-hero-photo,.test-card,.lesson7-vocab-card,.pg433-pill,.pg433-tabs button,.pg433-footer button,.practice-modes,.tone-tabs,.pg-standard-list,.about-grammar-compact,.about-grammar-example,.about-grammar-formula,.approved-story-card,.approved-phrase-row,.tone-details,.phrase-review,.progress-panel,.choice,.token,.hero-message .tag')) {
     el.style.setProperty('border-color','#bd51d4','important');
   }
-  for (const el of app.querySelectorAll('.quiz-hero,.tones-hero')) {
+  for (const el of app.querySelectorAll('.quiz-hero')) {
     el.style.setProperty('grid-template-columns','42% minmax(0,1fr)','important');
     el.style.setProperty('column-gap','clamp(12px,3.5vw,18px)','important');
     const panel=el.querySelector('.hero-message');
@@ -2670,8 +2685,9 @@ function newWords() {
 
 function hero(kind,step,title,subtitle) {
   const image = kind === 'tones' ? 'tones' : 'quiz';
+  const illustration = (kind === 'tones' ? '<img class="l7-tone-panda about-hero-photo" src="./assets/hsk2-lesson7-tone-panda-hd-v509.webp" width="384" height="337" alt="Улыбающаяся панда в розовых наушниках" draggable="false">' : stageImage(image,'about-hero-photo'));
   return '<div class="detail-hero ' + kind + '-hero">' +
-    (kind === 'tones' ? '<img class="l7-tone-panda about-hero-photo" src="./assets/hsk2-lesson7-tone-panda-hd-v509.webp" width="384" height="337" alt="Улыбающаяся панда в розовых наушниках" draggable="false">' : stageImage(image,'about-hero-photo')) +
+    (kind === 'tones' ? '<div class="pg-speech-art">' + illustration + '</div>' : illustration) +
     '<div class="hero-message"><span class="tag">Шаг ' + stepNumber(step) +
     '</span><h1>' + title + '</h1><p>' + subtitle + '</p></div></div>';
 }
@@ -2799,7 +2815,7 @@ function grammar() {
  '<article class="about-grammar-example"><div class="about-grammar-example-copy">'+
  hanzi(phrases[3][0])+translate(phrases[3])+'</div>'+audioButton(phrases[3][0],playIcon)+'</article>'+
  '<h2 class="builder-title">想 и 准备</h2>'+
- '<p class="about-grammar-rule"><b>想</b> (xiǎng) — желание; <b>准备</b> (zhǔnbèi) — подготовка. 我想去中国 — «Я хочу поехать в Китай». 我准备下周去旅行 — «Я готовлюсь путешествовать на следующей неделе».</p>'+
+ '<p class="about-grammar-rule"><b>想</b> (xiǎng) — желание; <b>准备</b> (zhǔnbèi) — подготовка. 我想去中国 — «Я хочу поехать в Китай». 我准备下周去旅行 — «Я собираюсь отправиться в путешествие на следующей неделе».</p>'+
  '<h2 class="builder-title about-grammar-build-title">Составь: «Я собираюсь завтра учить китайский»</h2>'+
  '<div class="tokens about-grammar-tokens">'+tokenButtons([2,0,4,1,5,3],state.grammar,'gram')+'</div>'+
  '<div class="answer about-grammar-answer" lang="zh-Hans" data-placeholder="Выбери слова по порядку">'+current+'</div>'+
@@ -2828,50 +2844,25 @@ function phraseCards() {
       audioButton(item[0],playIcon) + '</article>').join('') + '</div>';
 }
 
-function toneGuide() {
-  const samples = [
-    ['ā','высокий, ровный','M3 9h39'],
-    ['á','идёт вверх','M3 14 41 3m-7 0h7l-4 6'],
-    ['ǎ','низкий, затем вверх в изоляции','M3 4q18 23 38-1m-7 2 7-2-2 7'],
-    ['à','резко падает','M3 3l38 12m-7-1 7 1-4-5']
-  ];
-  return '<details class="tone-details panel"><summary>🎵 Подсказка: четыре тона</summary><div class="tone-grid">' +
-    samples.map(([sample,name,path],i) => '<div><b>' + (i+1) + '-й тон</b><svg viewBox="0 0 45 18" aria-hidden="true">' +
-    '<path d="' + path + '" stroke="#af183e" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg><strong>' +
-    sample + '</strong>' + name + '</div>').join('') + '</div></details>';
-}
-/* Shared speech-row standard: Chinese, pinyin, translation, tone marks, speaker, microphone. */
-function pgStandardSpeechRow(word,i) {
-  const strokes={0:'',1:'M3 8 H19',2:'M3 15 L19 3',3:'M3 4 Q11 24 19 4',4:'M3 3 L19 15'};
-  const tones=word.tones.map(v=>'<span class="pg-standard-tone"><svg viewBox="0 0 22 20" aria-hidden="true">'+(v===0?'<circle cx="11" cy="9" r="2.8" fill="#267d31"/>':'<path d="'+strokes[v]+'" fill="none" stroke="#782a8f" stroke-width="3.3" stroke-linecap="round"/>')+'</svg><b>'+v+'</b></span>').join('');
-  const control=state.practiceMode==='self'?'<button type="button" class="orb mic'+(state.selfSpoken.includes(i)?' recognized':'')+'" data-self-spoken="'+i+'" aria-label="Я повторил и сравнил '+escape(word.zh)+'" title="Самопроверка; тоны не оцениваются">'+(state.selfSpoken.includes(i)?'✓':'●')+'</button>':micButton(i,'Произнести '+word.zh,state.mic.includes(i));
-  return '<article class="pg-standard-speech-row"><div class="pg-standard-copy"><strong class="pg-standard-cn" lang="zh-Hans">'+escape(word.zh)+'</strong><span class="pg-standard-py">'+escape(word.py)+'</span><span class="pg-standard-ru">'+escape(word.ru)+'</span></div><div class="pg-standard-tones" role="img" aria-label="Тоны: '+word.tones.join(', ')+'">'+tones+'</div>'+audioButton(word.zh,speaker)+control+'</article>';
-}
+const speechPhraseTones = ["2134212", "41334432", "40433412", "33421212", "33412", "33441432", "321212", "34043432"];
+
 function tones() {
-  const wordView = state.toneTab === 'words';
-  return hero('tones',6,'Тренировка тонов','Слушай и повторяй восемь выражений урока.') +
-    '<div class="practice-modes panel"><button type="button" class="practice-main ' +
-    (state.practiceMode === 'mic' ? 'primary' : 'soft') +
-    '" data-practice-mode="mic">🎙 Микрофон · основной</button>' +
-    '<button type="button" class="practice-backup soft' + (state.practiceMode === 'self' ? ' is-active' : '') +
-    '" data-practice-mode="self">' +
-    (state.practiceMode === 'self' ? '✓ Запасной режим' : 'Не работает микрофон?') +
-    '</button></div>' +
-    (state.practiceMode === 'self'
-      ? '<p class="hint practice-fallback-note">Нет работающего распознавания? Прочитай и повтори по пиньиню, затем отметь слово. Если нет записи, повтори по пиньиню. Тоны автоматически не оцениваются.</p>'
-      : '') +
-    '<div class="tone-tabs panel" aria-label="Материалы тренировки"><button type="button" data-tone-tab="words" aria-pressed="' + wordView +
-    '" class="' + (wordView ? 'primary' : 'soft') + '">📖 Слова урока (8)</button><button type="button" data-tone-tab="phrases" aria-pressed="' + !wordView +
-    '" class="' + (!wordView ? 'primary' : 'soft') + '">💬 Фразы (8)</button></div>' +
-    (wordView ? '<div class="pg-standard-list">' + words.map(pgStandardSpeechRow).join('') + '</div>' :
-      '<details class="phrase-review panel"><summary>💬 Открыть 8 фраз для повторения</summary>' + phraseCards() + '</details>') +
-     '<div class="controls"><button type="button" class="soft" data-record="1">'+
-    (take?.recorder?.state==='recording'?'■ Остановить':'🎙 Записать себя')+
-    '</button><button type="button" class="primary" data-replay="1"'+(recordUrl?'':' disabled')+'>▶ Моя запись</button></div>'+
-    safeStatus() + toneGuide() + '<div class="progress-panel panel">' + '<img class="about-progress-photo l7-progress-panda" src="./assets/hsk2-lesson7-tone-panda-hd-v509.webp" width="384" height="337" alt="" draggable="false">' + '<div><b>Практика произношения</b>' +
-    '<progress max="8" value="' + speechCount() + '" aria-label="Выражений отработано"></progress></div><b>' + speechCount() +
-    ' из 8</b></div><p class="hint audio-note">Распознано: ' + state.mic.length + '. Самопроверка: ' + state.selfSpoken.length +
-    '. Тоны автоматически не оцениваются. Прослушай пример и повтори. В 去过 (qù guo) второй слог имеет нейтральный тон.</p>';
+  return PandaHsk2Speech.render({
+    hero: hero('tones', 6, 'Тренировка тонов', 'Слушай и повторяй восемь выражений урока.'),
+    words, phrases, phraseTones: speechPhraseTones, tab: state.toneTab,
+    audio: text => audioButton(text, speaker),
+    mic: (text, id) => {
+      if (typeof id === 'number' && state.practiceMode === 'self') {
+        const repeated = state.selfSpoken.includes(id);
+        return '<button type="button" class="orb mic" data-self-spoken="' + id +
+          '" aria-label="Я повторил и сравнил: ' + escape(text) + '">' +
+          (repeated ? '✓' : microphone) + '</button>';
+      }
+      return micButton(id, 'Произнести ' + text + ' · распознавание речи');
+    },
+    status: safeStatus(),
+    fallback: state.practiceMode === 'self'
+  });
 }
 
 let take = null;
@@ -3294,7 +3285,19 @@ const actions = {
   practiceMode: value => { if (value === 'mic' || value === 'self') {state.practiceMode = value; update();} },
   selfSpoken: value => markSelfSpoken(Number(value)),
   selfQuiz: () => { if (state.step === 3 && state.quizTest === 4) markQuiz(true,'self'); },
-  mic: value => onMic(value),
+  mic: value => {
+    const phrase = value.startsWith('phrase:') ? phrases[Number(value.slice(7))] : null;
+    if (state.step === 6 && !recognitionAvailable()) {
+      setStatus('В этом браузере распознавание недоступно. Можно повторить по записи.');
+      workspace.querySelector('.pg-speech-status').dataset.unavailable = '';
+      return;
+    }
+    if (phrase) {
+      recognize([phrase[0]], () => setStatus('Фраза распознана. Тоны не оценивались.', true));
+    } else {
+      onMic(value);
+    }
+  },
   chat: value => {
     clearMedia();
     state.chat.push(dialogue[state.chat.length].answers[Number(value)][0]);

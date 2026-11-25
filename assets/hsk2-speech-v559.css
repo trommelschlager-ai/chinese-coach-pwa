@@ -1,0 +1,142 @@
+html.course-layout body #app[data-view="6"] #pg433 .pg433-content {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  box-sizing: border-box;
+  overflow: hidden !important;
+  padding: 8px clamp(10px, 3.15vw, 22px) 0 !important;
+  gap: 7px !important;
+}
+html.course-layout body #app[data-view="6"] #pg433 .pg433-content > .tones-hero {
+  display: grid !important;
+  grid-template-columns: minmax(0, 43fr) minmax(0, 54fr) !important;
+  gap: clamp(8px, 2.4vw, 16px) !important;
+  align-items: center !important;
+  flex: none !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+html.course-layout body #app[data-view="6"] #pg433 .pg-speech-art {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 2px solid #edd180;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 3px 7px #72338a24;
+}
+html.course-layout body #app[data-view="6"] #pg433 .pg-speech-art > :is(img, svg) {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+html.course-layout body #app[data-view="6"] #pg433 .tones-hero > .hero-message {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  margin: 0 !important;
+  padding: clamp(8px, 2.8vw, 16px) !important;
+  border: 2px solid #e9cb86 !important;
+  border-radius: 18px !important;
+  background: linear-gradient(#fffcff, #fdeafd) !important;
+  box-shadow: 0 3px 7px #72338a24 !important;
+}
+html.course-layout body #app[data-view="6"] #pg433 .tones-hero .hero-message h1 {
+  font-size: clamp(15px, 4.15vw, 21px) !important;
+  line-height: 1.14 !important;
+  white-space: normal !important;
+}
+html.course-layout body #app[data-view="6"] #pg433 .tones-hero .hero-message p {
+  font-size: clamp(12px, 3.35vw, 16px) !important;
+  line-height: 1.2 !important;
+  white-space: normal !important;
+}
+html.course-layout body #app[data-view="6"] #pg433 .tone-tabs {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  flex: none !important;
+  gap: 5px !important;
+  margin: 0 !important;
+  padding: 4px !important;
+  border: 2px solid #e9cb86 !important;
+}
+html.course-layout body #app[data-view="6"] #pg433 .tone-tabs button {
+  min-width: 0;
+  min-height: 38px;
+  font-size: clamp(13px, 3.7vw, 17px) !important;
+  white-space: normal !important;
+}
+html.course-layout body #app[data-view="6"] #pg433 .pg-standard-list {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  overflow: hidden auto !important;
+  overscroll-behavior: contain;
+}
+html.course-layout body #app[data-view="6"] #pg433 .pg-standard-speech-row {
+  min-height: clamp(68px, 10dvh, 86px) !important;
+}
+html.course-layout body #app[data-view="6"] #pg433 .pg-standard-tones {
+  color: #782a8f;
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+}
+html.course-layout body #app[data-view="6"] #pg433 .pg-standard-tones:not(:has(:nth-child(3))) {
+  display: flex;
+}
+html.course-layout body #app[data-view="6"] #pg433 .pg-standard-copy > * {
+  white-space: normal !important;
+  overflow: visible !important;
+  display: block !important;
+  height: auto !important;
+  max-height: none !important;
+}
+#pg433 .pg-speech-status {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+#pg433 .pg-speech-status:has(.feedback:empty):not(:has([data-practice-mode="mic"])) {
+  display: none;
+}
+#pg433 .pg-speech-status .feedback {
+  font-size: inherit !important;
+  margin: 0 !important;
+}
+#pg433 .pg-speech-fallback {
+  display: none;
+}
+#pg433 .pg-speech-fallback[data-practice-mode="mic"],
+#pg433 .pg-speech-status[data-unavailable] .pg-speech-fallback {
+  display: inline-block;
+}
+#pg433 .tone-tabs button:active {
+  filter: brightness(.87);
+  transform: translateY(2px);
+}
+#pg433 .pg433-content:has(.pg-standard-list) button {
+  touch-action: manipulation;
+}
