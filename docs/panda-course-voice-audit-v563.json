@@ -1,10 +1,10 @@
 {
-  "head": "ae0e11bbc8cbd22349971dbe1adb526b542dc5f9",
-  "scope": "Natural module exact registry lookup; not listening QA or browser voice coverage.",
+  "head": "ceb94787349cf2a868b397bb015ed37eeb908ffc",
+  "scope": "Natural module exact registry lookup; batch01 supplied and registered, acoustic approval pending; not browser playback evidence.",
   "inputs": 150,
   "unique": 118,
-  "approved": 48,
-  "missing": 70,
+  "approved": 60,
+  "missing": 58,
   "rows": [
     {
       "hanzi": "我叫熊猫。",
@@ -411,7 +411,7 @@
       "hanzi": "我今天和你练习中文。",
       "pinyin": "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
       "ru": "Сегодня я практикую китайский с тобой.",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-07.mp3",
       "topics": [
         "День и время"
       ],
@@ -451,7 +451,7 @@
       "hanzi": "我在和你聊天。",
       "pinyin": "Wǒ zài hé nǐ liáotiān.",
       "ru": "Я разговариваю с тобой.",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-06.mp3",
       "topics": [
         "День и время"
       ],
@@ -734,7 +734,7 @@
       "hanzi": "我没事，谢谢你。",
       "pinyin": "Wǒ méi shì, xièxie nǐ.",
       "ru": "Всё хорошо, спасибо.",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-10.mp3",
       "topics": [
         "Здоровье"
       ],
@@ -782,7 +782,7 @@
       "hanzi": "我每天七点起床。",
       "pinyin": "Wǒ měitiān qī diǎn qǐchuáng.",
       "ru": "Я встаю каждый день в семь.",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-05.mp3",
       "topics": [
         "Мой распорядок дня"
       ],
@@ -808,7 +808,7 @@
       "hanzi": "我先刷牙，再吃早饭。",
       "pinyin": "Wǒ xiān shuāyá, zài chī zǎofàn.",
       "ru": "Сначала чищу зубы, затем завтракаю.",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-04.mp3",
       "topics": [
         "Мой распорядок дня"
       ],
@@ -880,7 +880,7 @@
       "hanzi": "你今天忙吗？",
       "pinyin": "Nǐ jīntiān máng ma?",
       "ru": "Ты сегодня занят?",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-09.mp3",
       "topics": [
         "Моя работа и учёба"
       ],
@@ -928,7 +928,7 @@
       "hanzi": "你周末做什么？",
       "pinyin": "Nǐ zhōumò zuò shénme?",
       "ru": "Что ты делаешь в выходные?",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-08.mp3",
       "topics": [
         "Моё хобби"
       ],
@@ -1096,7 +1096,7 @@
       "hanzi": "你想吃什么？",
       "pinyin": "Nǐ xiǎng chī shénme?",
       "ru": "Что ты хочешь съесть?",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-12.mp3",
       "topics": [
         "В кафе и ресторане"
       ],
@@ -1402,7 +1402,7 @@
       "hanzi": "你早上吃什么？",
       "pinyin": "Nǐ zǎoshang chī shénme?",
       "ru": "Что ешь утром?",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-03.mp3",
       "topics": [
         "Связанные предложения"
       ],
@@ -1414,7 +1414,7 @@
       "hanzi": "然后呢？",
       "pinyin": "Ránhòu ne?",
       "ru": "А потом?",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-01.mp3",
       "topics": [
         "Связанные предложения"
       ],
@@ -1445,7 +1445,7 @@
       "hanzi": "你接下来想做什么？",
       "pinyin": "Nǐ jiēxiàlái xiǎng zuò shénme?",
       "ru": "Что хочешь делать дальше?",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-02.mp3",
       "topics": [
         "Связанные предложения"
       ],
@@ -1457,7 +1457,7 @@
       "hanzi": "谢谢你！我很开心！",
       "pinyin": "Xièxie nǐ! Wǒ hěn kāixīn!",
       "ru": "Спасибо! Мне очень приятно!",
-      "approved": null,
+      "approved": "./assets/panda-ai-voice-batch01-v563/PA-V563-11.mp3",
       "topics": [
         "Знакомство"
       ],

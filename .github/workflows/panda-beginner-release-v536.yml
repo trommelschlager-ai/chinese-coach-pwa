@@ -107,6 +107,7 @@ jobs:
           node scripts/qa-panda-dialogue-v556.mjs
           node scripts/qa-panda-course-coverage-v563.mjs
           node scripts/qa-panda-voice-v557.mjs
+          node scripts/qa-panda-user-audio-v563.mjs
       - name: Generate exact missing voice queue
         run: node scripts/panda-dialogue-voice-audit-v556.mjs
       - name: Preserve screenshots
