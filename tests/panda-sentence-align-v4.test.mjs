@@ -45,3 +45,14 @@ test('silence and boundaries outside the recording cannot produce successful ali
  assert.equal(alignFromReference(syntheticSpeech(),syntheticSpeech(),bounds,[.1,.42,.81,1.17,1.52,2.15]).ok,false);
  assert.equal(alignFromReference(syntheticSpeech(),syntheticSpeech(),[-.1,.42,.81,1.17,1.52,1.95],bounds).ok,false);
 });
+
+test('sentence pilot withholds per-character movement until boundaries are reviewed',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const page=readFileSync(new URL('../panda-hsk2-tone-sentence-pilot.html',import.meta.url),'utf8');
+ const start=page.indexOf('function describeMovement(i)'),end=page.indexOf('function adjustControls()',start);
+ assert(start>=0&&end>start);
+ const run=new Function('learner','$','tokens','syllableQuality','median',page.slice(start,end)+'\nreturn describeMovement(0);');
+ assert.match(run({valid:true},()=>({checked:false}),[{py:'wǒ'}],()=>({weak:false}),()=>0),/Границы пока не проверены/);
+ assert(page.includes('id="boundary-verified"'));
+ assert(page.includes("function guidedAlign(){\n $('boundary-verified').checked=false;"));
+});
