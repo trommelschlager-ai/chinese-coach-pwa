@@ -82,7 +82,10 @@ try {
   check(await page.locator('.panda-ai-shortcut[href*="panda-voice-pilot"]').count()===1,
     'Missing real Panda AI shortcut');
   await page.locator('#next').click();
-  check((await page.locator('.results').innerText()).includes('30 / 30'),'Final result must show 30 / 30');
+  // Final UI reports the two groups separately (6 mandatory + 24 optional).
+  const results=page.locator('.results dl');
+  check(await results.locator('div').filter({has:page.locator('dt',{hasText:'Основная проверка'})}).locator('dd').innerText()==='6 / 6','Final core results must show 6 / 6');
+  check(await results.locator('div').filter({has:page.locator('dt',{hasText:'Дополнительные тесты'})}).locator('dd').innerText()==='24 / 24','Final optional results must show 24 / 24');
   await page.reload();
   check((await page.evaluate(()=>window.PandaGoHSK2Preview.getProgress())).quiz.flat().filter(Boolean).length===30,
     'Progress did not survive browser reload');
