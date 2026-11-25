@@ -21,7 +21,9 @@ try {
   await page.goto(root,{waitUntil:'load'});
   check(await page.locator('.pg433-tabs button').count()===5,'Must have 5 top sections');
   check(await page.locator('.pg433-tabs button:disabled').count()===4,'Other 4 sections must start locked');
-  await page.locator('.about-approved-cover-start').click();
+  // The approved full-cover overlay intentionally hides the legacy start button.
+  await page.locator('.pg-approved-start').click();
+  await page.locator('#app[data-view="2"] .word-row').first().waitFor();
   check(await page.locator('.word-row').count()===6,'Six word cards expected');
   check(await page.locator('.word-row svg.about-illustration').count()===6,'Missing themed word illustrations');
   check(await page.locator('.word-row .tone-strokes path').count()===12,'Each syllable must have contour');
