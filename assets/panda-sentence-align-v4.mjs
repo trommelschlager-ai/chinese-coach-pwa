@@ -237,3 +237,23 @@ export function contextualPitchAdvice({surfaceTone,evidence,verified}={}){
  };
  return reply(kind,observed+' '+notes[surfaceTone]+' Это подсказка по высоте, не оценка произношения.');
 }
+
+
+// Only give a personalized directional cue when BOTH reviewed intervals
+// support it. A weak or atypical reference must never be treated as truth.
+export function compareContextualPitch({surfaceTone,evidence,referenceEvidence,verified}={}){
+ const result=contextualPitchAdvice({surfaceTone,evidence,verified});
+ const reply=(kind,text)=>({kind,text,isToneGrade:false});
+ if(!verified||surfaceTone===0||surfaceTone===3||result.kind==='uncertain')return result;
+ const reference=contextualPitchAdvice({surfaceTone,evidence:referenceEvidence,verified:true});
+ const expected={1:'level',2:'rise',4:'fall'}[surfaceTone];
+ if(!expected||reference.kind!==expected)
+  return reply('reference-uncertain','Контур образца для этого слога недостаточно ясный или отличается от учебной схемы. Послушай обе записи; персональный совет о движении высоты пока не даём.');
+ if(result.kind===expected)
+  return reply('similar','В обеих записях видно сходное направление высоты. Это не подтверждает правильность произношения.');
+ // A dip or flat contour may be a natural partial observation: do not
+ // diagnose a wrong tone, even when the reference is clear.
+ if((surfaceTone===2&&result.kind==='fall')||(surfaceTone===4&&result.kind==='rise'))
+  return reply('contrast','В измеренном участке направление противоположно образцу. '+(surfaceTone===2?'Попробуй плавно повысить голос.':'Попробуй плавно понизить голос.')+' Послушай обе записи и повтори. Это подсказка, не оценка тона.');
+ return reply('review','Движение отличается от измеренного образца, но причина неясна. Сравни записи на слух и повтори естественно.');
+}
