@@ -39,7 +39,8 @@ const dayParams=new URLSearchParams(location.search);
 const dayLaunch=dayParams.get('practice')==='day';
 // Online-only experiment. The default route never loads the new modules.
 // No personal profile or microphone data is stored by the semantic pilot.
-const semanticRequested=dayParams.get('semantic')==='1'&&!['practice','scenario','from','topic','lesson'].some(k=>dayParams.has(k));
+// Standard home entry uses reviewed free chat; semantic=0 is an explicit rollback route.
+const semanticRequested=dayParams.get('semantic')!=='0'&&!['practice','scenario','from','topic','lesson'].some(k=>dayParams.has(k));
 let semanticPilot=null,semanticMetadata=null,semanticContinues=false;
 const semanticFreeChat=()=>!!semanticPilot&&!state.dayMode&&entry.beginnerGreeting&&hsk2?.id===101&&hsk2.openChat===true&&state.mode==='nonstop';
 function resetSemanticPilot(){semanticPilot?.reset();semanticContinues=false;}

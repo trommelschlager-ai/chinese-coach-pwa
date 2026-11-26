@@ -8,7 +8,7 @@ try{
   const page=await context.newPage();
   await page.addInitScript(()=>{window.__pilotPlaying=[];const play=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(...args){this.addEventListener('playing',()=>window.__pilotPlaying.push(this.currentSrc||this.src),{once:true});return play.apply(this,args);};});
   await page.addInitScript(()=>{class MockSpeech {start(){window.__testSpeech=this;this.onstart?.();this.onaudiostart?.();}abort(){} stop(){} }window.SpeechRecognition=MockSpeech;window.webkitSpeechRecognition=MockSpeech;});
-  await page.goto(base+'/panda-voice-pilot.html'+(flag?'?semantic=1':''),{waitUntil:'domcontentloaded'});
+  await page.goto(base+'/panda-voice-pilot.html'+(flag?'':'?semantic=0'),{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true');
   if(flag)await page.waitForFunction(()=>document.documentElement.dataset.pandaSemanticPilot==='ready');
   else assert.equal(await page.locator('html').getAttribute('data-panda-semantic-pilot'),null);
@@ -114,6 +114,17 @@ try{
   console.log('PASS simulated ASR .72/.93, meaning explanation, low confidence confirmation',flag);
   await context.close();
  }
+ // The actual course-map button opens the plain, now enabled Panda AI entry.
+ const menu=await browser.newPage({viewport:{width:393,height:800},isMobile:true,hasTouch:true});
+ await menu.goto(base+'/hsk1-map.html');const ai=menu.locator('a[aria-label="Panda AI"]');await ai.click();await menu.waitForFunction(()=>document.documentElement.dataset.pandaSemanticPilot==='ready');await menu.locator('#pg346-nonstop').click();await menu.evaluate(()=>window.PandaApprovedBridge337.send('我打算坐飞机'));await menu.waitForFunction(()=>window.PandaApprovedBridge337.snapshot().history.at(-1)?.hanzi==='祝你旅途愉快！');await menu.close();
+ console.log('PASS ordinary course-menu Panda AI link activates reviewed free chat');
  const graded=await browser.newPage();await graded.goto(base+'/panda-voice-pilot.html?topic=1&semantic=1');await graded.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true');assert.equal(await graded.locator('html').getAttribute('data-panda-semantic-pilot'),null);await graded.close();
- console.log('PASS semantic pilot explicit opt-in, default/short/graded unchanged, actual history and exact registered audio');
+ const street=await browser.newPage({viewport:{width:393,height:800},isMobile:true,hasTouch:true});
+ await street.addInitScript(()=>{window.__streetAudio=[];const play=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(...args){window.__streetAudio.push(this.src);return play.apply(this,args);};});
+ await street.goto(base+'/panda-street-ai-preview.html');await street.waitForFunction(()=>document.querySelector('[data-brain-state="full"]'));
+ await street.locator('#nonstop').click();
+ await street.locator('#entry').fill('我觉得中文很难');await street.locator('#submit').click();await street.waitForFunction(()=>document.querySelector('#live-panda')?.textContent.includes('你想练习什么'));
+ await street.locator('#send').click();await street.locator('#entry').fill('我想练习声调');await street.locator('#submit').click();await street.waitForFunction(()=>document.querySelector('#live-panda')?.textContent.includes('没关系，我们慢慢来'));await street.waitForFunction(()=>window.__streetAudio.some(s=>s.includes('/panda-street-voice-v20261125/27.mp3')));
+ assert((await street.evaluate(()=>window.__streetAudio)).every(s=>s.includes('/panda-street-voice-v20261125/')),'Street must never request Panda AI female recordings');await street.close();
+ console.log('PASS Street shared semantic context and exact male-only playback; explicit rollback, short and graded preserved');
 }finally{await browser.close();}

@@ -1,5 +1,5 @@
 {
-  "version": 569,
+  "version": 570,
   "bytes": 94722700,
   "files": [
     "./assets/panda-ai-approved-layout-v547.css?v=547&rev=565",
@@ -3682,6 +3682,11 @@
     "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-02.mp3",
     "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-03.mp3",
     "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-04.mp3",
-    "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-05.mp3"
+    "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-05.mp3",
+    "./assets/panda-unified-context-v1.mjs",
+    "./assets/panda-unified-semantics-v1.mjs",
+    "./assets/panda-unified-replies-v1.mjs",
+    "./assets/panda-unified-pilot-adapter-v1.mjs",
+    "./assets/panda-unified-pilot-metadata-v1.mjs"
   ]
 }
