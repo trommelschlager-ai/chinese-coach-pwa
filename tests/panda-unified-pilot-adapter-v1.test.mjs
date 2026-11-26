@@ -280,3 +280,24 @@ test('phone-reported travel paraphrase restores the pending question and accepts
  for(const q of ['什么时候去中国','你什么时候去中国','你打算什么时候去中国'])turn(make(),q,'我是虚拟熊猫，没有实际的旅行经历。');
  const p=make();turn(p,'我想学中文','你为什么想学中文？');turn(p,'因为我想去中国','你打算什么时候去？');turn(p,'我还没想好','好的。我们聊点别的吧！');
 });
+
+
+test('full transport plans work in a fresh conversation, while unrelated fragments remain unbound',()=>{
+ const make=()=>createSemanticPilot({enabled:true,lookupExact:lookupApprovedPandaVoice,metadata:pilotLearnerMetadata});
+ for(const verb of ['打算','想','准备','要'])for(const mode of ['飞机','火车','高铁'])for(const dest of ['','去中国']){
+  const p=make();p.observePanda({hanzi:'你好吗？',pinyin:'Nǐ hǎo ma?',ru:'Как дела?'});
+  const raw='我'+verb+'坐'+mode+dest,x=p.plan(raw,{mode:'free-chat'});
+  assert.equal(x?.line.hanzi,'祝你旅途愉快！',raw);
+  assert.equal(x.voiceStatus,'registered-exact');
+  assert.equal(x.audio.src,'./assets/panda-ai-voice-v557/PA-V556-058.mp3');
+  assert(x.spoken.pinyin&&x.spoken.translation,raw);assert.equal(x.toneVerified,false);
+ }
+ for(const raw of ['坐飞机','坐火车','坐高铁','我不打算坐飞机','你打算坐飞机吗']){
+  const x=make().plan(raw,{mode:'free-chat'});assert.notEqual(x?.line.hanzi,'祝你旅途愉快！',raw);
+ }
+ assert.equal(make().plan('我打算坐飞机',{mode:'graded'}),null);
+});
+test('reviewed fallback uses exact recorded clarification, not the unrecorded paraphrase',()=>{
+ assert.equal(lookupApprovedPandaVoice('你可以用简单一点的中文说吗？')?.src,'./assets/panda-clarification-voice-20261122/clarify07.mp3');
+ assert.equal(lookupApprovedPandaVoice('你还想聊什么？')?.src,'./assets/panda-clarification-voice-20261122/clarify10.mp3');
+});

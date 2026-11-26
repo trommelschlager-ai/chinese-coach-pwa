@@ -32,6 +32,23 @@ try{
   }
   const explanation=await speak('什么意思',.72);assert.equal(explanation.history.at(-1).analysis?.kind,'explain-exact');assert(explanation.history.at(-1).analysis.explanation.includes('聊天 — разговаривать'));await page.waitForFunction(()=>document.querySelector('#pg346-rows')?.textContent.includes('Значение:'));
   if(flag){
+   // A new conversation starts at the greeting, not at a travel prompt.
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+   await page.evaluate(()=>{window.__pilotPlaying=[];});
+   const independent=await send('我打算坐飞机');
+   assert.equal(independent.history.at(-1).hanzi,'祝你旅途愉快！');
+   assert.equal(independent.audioAvailable,true);
+   assert(independent.history.at(-2).pinyin&&independent.history.at(-2).ru);
+   await page.waitForFunction(()=>window.__pilotPlaying.some(src=>src.includes('PA-V556-058.mp3')));
+   const clips=await page.evaluate(async()=>{
+    const audio=new AudioContext();
+    try{return await Promise.all(['./assets/hsk2-lesson7-voice/l7_26.mp3','./assets/panda-ai-voice-v557/PA-V556-052.mp3','./assets/panda-ai-voice-v557/PA-V556-053.mp3','./assets/panda-ai-voice-v557/PA-V556-058.mp3','./assets/panda-clarification-voice-20261122/clarify07.mp3'].map(async path=>{
+     const r=await fetch(path);if(!r.ok)throw Error(path+' HTTP '+r.status);const b=await audio.decodeAudioData(await r.arrayBuffer());return {path,duration:b.duration};
+    }));}finally{await audio.close();}
+   });
+   assert.equal(clips.length,5);assert(clips.every(c=>c.duration>0));
+   console.log('PASS fresh-chat transport plan and five decoded travel/clarification clips');
    const corrected=await send('我想中文学');
    assert.equal(corrected.history.at(-1).hanzi,'你为什么想学中文？');
    assert.equal(corrected.history.at(-2).analysis.correction.hanzi,'我想学中文。');

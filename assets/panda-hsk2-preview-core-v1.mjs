@@ -88,7 +88,7 @@ function play(entry=null,retry=0){
  a.muted=false;a.volume=1;
  const animate=()=>{if(!valid()||a.paused||a.ended)return;pandaVisualAudioLevel=Math.max(0,Math.min(1,envelope?envelope.levels[Math.floor(a.currentTime/envelope.binSeconds)]||0:.5+.5*Math.sin(a.currentTime*23)));rig.setLevel(pandaVisualAudioLevel);audioFrame=requestAnimationFrame(animate)};
  a.onplaying=()=>{if(valid()){clearTimeout(audioBufferTimer);pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти|Загрузка аудио|Повторная загрузка аудио)/.test($('status').textContent))note('');animate()}};
- const waitForAudio=()=>{if(!valid())return;cancelAnimationFrame(audioFrame);pose('idle');note('Загрузка аудио задерживается…');clearTimeout(audioBufferTimer);audioBufferTimer=setTimeout(()=>{if(valid())failed('Аудио не загрузилось за 10 секунд. Нажми 🔊 на реплике Панды или проверь интернет.')},10000)};
+ const waitForAudio=()=>{if(!valid())return;cancelAnimationFrame(audioFrame);pose('idle');note('Загрузка аудио задерживается…');clearTimeout(audioBufferTimer);audioBufferTimer=setTimeout(()=>{if(valid()&&!retryExact())failed('Аудио не загрузилось за 10 секунд. Нажми 🔊 на реплике Панды или проверь интернет.')},10000)};
  a.onwaiting=waitForAudio;
  a.onstalled=waitForAudio;
  a.onpause=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
@@ -373,10 +373,16 @@ function submitHSK2(input){
   const spoken=fallback?.spoken?.known?fallback.spoken:known?{known:true,pinyin:known.pinyin||null,translation:known.ru||known.translation||null}:null;
   learner(input,spoken);
   state.turns=(state.turns||0)+1;
-  const reply=fallback?.reply||(['example','variant'].includes(out.kind)?
+  let reply=fallback?.reply||(['example','variant'].includes(out.kind)?
    {hanzi:'我明白了。你还想说什么？',pinyin:'Wǒ míngbai le. Nǐ hái xiǎng shuō shénme?',ru:'Понятно. Что ещё хочешь рассказать?'}:
    out.kind==='unknown'?
     {hanzi:'你能说得简单一点吗？',pinyin:'Nǐ néng shuō de jiǎndān yìdiǎn ma?',ru:'Можешь сказать немного проще?'}:out.line);
+  // In the experimental free-chat route, use an existing exact approved
+  // clarification recording instead of an unrecorded equivalent sentence.
+  if(semanticFreeChat()&&reply&&!lookupPandaVoiceClip(reply.hanzi)){
+   if(normalize(reply.hanzi)==='你能说得简单一点吗')reply=clarificationLine(7);
+   else if(normalize(reply.hanzi)==='我明白了你还想说什么')reply=clarificationLine(10);
+  }
   if(reply)say(reply,!!lookupPandaVoiceClip(reply.hanzi));
   note(out.kind==='unknown'&&!fallback?.reply?
    'Пока нет проверенного ответа на эту формулировку. Попробуй проще или другое выражение. Тоны не проверялись.':

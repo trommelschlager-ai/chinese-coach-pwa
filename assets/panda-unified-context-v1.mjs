@@ -223,12 +223,22 @@ function interpretTravelQuestion(raw,context){
  return {raw:String(raw),intent:'ask-panda-travel-time',pinyin,translation,toneVerified:false};
 }
 
+// A complete first-person transport plan is meaningful even in a fresh chat.
+// Bare transport fragments still require a matching pending question.
+function interpretIndependentTransport(raw){
+ const m=/^我(打算|想|准备|要)坐(飞机|火车|高铁)(去中国)?$/u.exec(cleanOpen(raw));
+ if(!m)return null;
+ const verbs={打算:['dǎsuàn','планирую'],想:['xiǎng','хочу'],准备:['zhǔnbèi','собираюсь'],要:['yào','собираюсь']};
+ const modes={飞机:['fēijī','лететь на самолёте'],火车:['huǒchē','поехать на поезде'],高铁:['gāotiě','поехать на скоростном поезде']};
+ const [verbPy,verbRu]=verbs[m[1]],[modePy,modeRu]=modes[m[2]];
+ return {raw:String(raw),intent:'express-transport-plan',topic:'travel',value:'坐'+m[2],pinyin:'Wǒ '+verbPy+' zuò '+modePy+(m[3]?' qù Zhōngguó':'')+'.',translation:'Я '+verbRu+' '+modeRu+(m[3]?' в Китай':'')+'.',toneVerified:false};
+}
 function dispatchSemantic(raw,context={},parsers){
  const source=String(raw??'').trim();
  if(!source)return null;
  const normalized=source.normalize('NFC').replace(/[\p{P}\s]/gu,'');
  if(!normalized||normalized.length>160)return null;
- return interpretTopicRequest(source)||interpretHobbyCorrection(source,context)||interpretTravelQuestion(source,context)||interpretOpenAnswer(source,context)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
+ return interpretTopicRequest(source)||interpretHobbyCorrection(source,context)||interpretTravelQuestion(source,context)||interpretOpenAnswer(source,context)||interpretIndependentTransport(source)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
 }
 export const interpretSemanticTurn=(raw,context={})=>dispatchSemantic(raw,context,{contextual:interpretContextualTurn,linked:interpretLinkedTurn,opinion:interpretOpinion,action:interpretAction});
 export function initialSemanticState(){
