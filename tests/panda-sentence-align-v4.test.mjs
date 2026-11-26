@@ -188,3 +188,23 @@ test('personalized guidance requires reliable reference and learner evidence',()
   assert.equal(out.kind,want);assert.equal(out.isToneGrade,false);
  }
 });
+
+
+// Measured Praat F0 from user-supplied 26 Nov Luvvoice clips and PSOLA
+// resyntheses of those same clips. 16 ms grid, rounded to 0.1 Hz.
+// Approximate review windows, NOT validated phonetic syllable labels.
+// Tests the advice layer, not the browser pitch extractor or pronunciation.
+test('real-audio F0 fixtures with altered pitch do not overrule weak references',()=>{
+ const cases=[
+ {tone:2,a:.24,b:.55,refStart:.264,ref:[217,210.6,206.9,205.6,206.1,208,212.9,218.9,225,227.5,227.3],modifiedStart:.248,modified:[326,319.8,314.8,308.1,301.4,294.5,288.3,281,276.2,269.8,265,255.6,253.1,246.6],want:'reference-uncertain'},
+ {tone:4,a:.55,b:.88,refStart:.648,ref:[347.3,349.5,348,347.6,344.9,340.7,336.2,326.9,309.5,292.2,264.4,231.1,73.6,77.9],modifiedStart:.664,modified:[251,255.2,260.7,265.8,272.2,277.7,283.9,289.6,295.7,301.5,308.6,null,77.9],want:'uncertain'},
+ {tone:4,a:.29,b:.55,refStart:.312,ref:[317.7,316,316.3,315.6,313,308.3,300.6,289.7,277.1,256.4,236],modifiedStart:.312,modified:[247.3,251,260.1,266.8,273.2,280.9,289.4,296.2,305,311,319.7],want:'contrast'},
+ {tone:1,a:.55,b:.93,refStart:.648,ref:[284,284.6,283.4,282.7,282.5,282.3,282.1,282.6,283.3,285.4,286.6,288.8,291,293.7,295.2,294.5,299.4],modifiedStart:.648,modified:[242.6,247.3,252.2,257.1,261.3,265.8,270.7,274.7,279.8,285.1,290.2,295.4,302.3,305.5,311.2,317.1,323.9],want:'review'}];
+ const frames=(start,hz)=>hz.flatMap((h,i)=>h===null?[]:[{t:start+.016*i,hz:h,method:'praat'}]);
+ for(const c of cases){
+  const referenceEvidence=intervalPitchEvidence(frames(c.refStart,c.ref),[c.a,c.b],0);
+  const evidence=intervalPitchEvidence(frames(c.modifiedStart,c.modified),[c.a,c.b],0);
+  const out=compareContextualPitch({surfaceTone:c.tone,evidence,referenceEvidence,verified:true});
+  assert.equal(out.kind,c.want);assert.equal(out.isToneGrade,false);
+ }
+});
