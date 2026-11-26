@@ -210,6 +210,17 @@ function reviewedOpenQuestion(hanzi,previous,linked,memory){
 
 
 const TOPIC_REQUESTS=Object.freeze({
+ "我们换个话题吧":["Wǒmen huàn ge huàtí ba.","Давай сменим тему.","other"],
+ "换一个话题吧":["Huàn yí ge huàtí ba.","Давай сменим тему.","other"],
+ "聊点别的吧":["Liáo diǎn bié de ba.","Давай поговорим о другом.","other"],
+ "你决定吧":["Nǐ juédìng ba.","Решай ты.","auto"],
+ "你来决定吧":["Nǐ lái juédìng ba.","Решай ты.","auto"],
+ "我们聊聊工作吧":["Wǒmen liáoliao gōngzuò ba.","Давай поговорим о работе.","work"],
+ "我们聊聊家庭吧":["Wǒmen liáoliao jiātíng ba.","Давай поговорим о семье.","family"],
+ "我们聊聊我的一天吧":["Wǒmen liáoliao wǒ de yì tiān ba.","Давай поговорим о моём дне.","daily"],
+ "聊聊中文吧":["Liáoliao Zhōngwén ba.","Давай поговорим о китайском языке.","study"],
+ "我们聊聊中文吧":["Wǒmen liáoliao Zhōngwén ba.","Давай поговорим о китайском языке.","study"],
+ "聊聊美食吧":["Liáoliao měishí ba.","Давай поговорим о вкусной еде.","food"],
  '换个话题吧':['Huàn ge huàtí ba.','Давай сменим тему.','other'],
  '我们聊点别的吧':['Wǒmen liáo diǎn bié de ba.','Давай поговорим о другом.','other'],
  '聊聊爱好吧':['Liáoliao àihào ba.','Давай поговорим об увлечениях.','hobby'],
@@ -308,12 +319,32 @@ function interpretStudyDifficulty(raw){
  const opinion=interpretOpinion(raw);
  return {...opinion,raw:String(raw),intent:opinion?.intent==='express-opinion'?'express-opinion':'express-study-difficulty',studyDifficulty:true,topic:'study',value:topic,pinyin:reviewedSentence([subject?'wǒ juéde':'',py,d[0],'nán',particle?'le':'']),translation:translated.charAt(0).toUpperCase()+translated.slice(1),toneVerified:false};
 }
+// Reviewed repair expressions refer only to the actual preceding Panda line.
+const CONVERSATION_REPAIR=Object.freeze({
+ "我没听清":["Wǒ méi tīng qīng.","Я не расслышал(а).","request-repeat"],
+ "我没听清楚":["Wǒ méi tīng qīngchu.","Я не расслышал(а).","request-repeat"],
+ "可以再说一遍吗":["Kěyǐ zài shuō yí biàn ma?","Можно повторить?","request-repeat"],
+ "能再说一遍吗":["Néng zài shuō yí biàn ma?","Можешь повторить?","request-repeat"],
+ "你能再说一遍吗":["Nǐ néng zài shuō yí biàn ma?","Ты можешь повторить?","request-repeat"],
+ "请你再说一遍":["Qǐng nǐ zài shuō yí biàn.","Повтори, пожалуйста.","request-repeat"],
+ "再说一次":["Zài shuō yí cì.","Скажи ещё раз.","request-repeat"],
+ "这是什么意思":["Zhè shì shénme yìsi?","Что это означает?","request-meaning"],
+ "这句话是什么意思":["Zhè jù huà shì shénme yìsi?","Что означает эта фраза?","request-meaning"],
+ "我不太明白":["Wǒ bú tài míngbai.","Я не совсем понимаю.","request-meaning"],
+ "我不明白你的意思":["Wǒ bù míngbai nǐ de yìsi.","Я не понимаю, что ты имеешь в виду.","request-meaning"],
+});
+function interpretConversationRepair(raw,context){
+ const key=cleanOpen(raw),prior=context.lastPandaTurn;
+ if(!Object.hasOwn(CONVERSATION_REPAIR,key)||!prior?.hanzi||!prior.pinyin||!prior.ru)return null;
+ const [pinyin,translation,intent]=CONVERSATION_REPAIR[key];
+ return {raw:String(raw),intent,pinyin,translation,reviewedRepair:true,reference:prior.hanzi,needsClarification:false,toneVerified:false};
+}
 function dispatchSemantic(raw,context={},parsers){
  const source=String(raw??'').trim();
  if(!source)return null;
  const normalized=source.normalize('NFC').replace(/[\p{P}\s]/gu,'');
  if(!normalized||normalized.length>160)return null;
- return interpretTopicRequest(source)||interpretHobbyCorrection(source,context)||interpretTravelQuestion(source,context)||interpretOpenAnswer(source,context)||interpretIndependentTransport(source)||interpretStudyDifficulty(source)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
+ return interpretTopicRequest(source)||interpretConversationRepair(source,context)||interpretHobbyCorrection(source,context)||interpretTravelQuestion(source,context)||interpretOpenAnswer(source,context)||interpretIndependentTransport(source)||interpretStudyDifficulty(source)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
 }
 export const interpretSemanticTurn=(raw,context={})=>dispatchSemantic(raw,context,{contextual:interpretContextualTurn,linked:interpretLinkedTurn,opinion:interpretOpinion,action:interpretAction});
 export function initialSemanticState(){

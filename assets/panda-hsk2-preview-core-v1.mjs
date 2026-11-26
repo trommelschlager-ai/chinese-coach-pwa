@@ -423,6 +423,13 @@ function submit(raw){
  // ASR already asks confirmation below .65. A known transcript is not a tone score.
  if(semanticFreeChat()&&(state.confidence===null||state.confidence>=.65)){
   const planned=semanticPilot.plan(input,{mode:'free-chat',confidence:state.confidence});
+  // A specific recorded course follow-up must not be replaced with a generic sequence prompt.
+  const legacySequence=planned?.semantic?.intent==='express-linked-actions'&&planned.semantic.relation==='sequence'?
+   respondToNaturalStatement(input,{awaiting:state.naturalAwaiting,previousPanda:state.history.at(-1)?.who==='panda'?state.history.at(-1).hanzi:null}):null;
+  if(legacySequence?.grammar==='sequence'&&legacySequence.spoken?.known&&legacySequence.reply?.hanzi!=='然后呢？'&&lookupPandaVoiceClip(legacySequence.reply?.hanzi)){
+   friendlyStage=null;state.naturalAwaiting=legacySequence.next;state.awaitQuestion=true;state.turns=(state.turns||0)+1;
+   learner(input,legacySequence.spoken);say(legacySequence.reply,true);note(legacySequence.message);return;
+  }
   const spoken=planned&&(planned.spoken||semanticMetadata(input,planned.semantic));
   if(spoken){
    friendlyStage=null;state.naturalAwaiting=null;state.awaitQuestion=true;state.turns=(state.turns||0)+1;

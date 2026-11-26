@@ -379,3 +379,18 @@ test('legacy routine owns work and sleep time; explicit unified questions still 
   assert.equal(shared.plan(answer,{mode:'free-chat'})?.line.hanzi,'你接下来想做什么？',answer);
  }
 });
+
+
+test('reviewed conversation controls use exact audio, translations and context',()=>{
+ const make=()=>createSemanticPilot({enabled:true,lookupExact:lookupApprovedPandaVoice,metadata:pilotLearnerMetadata});
+ for(const [q,py,ru,reply] of [["我们换个话题吧","Wǒmen huàn ge huàtí ba.","Давай сменим тему.","好的。我们聊点别的吧！"],["换一个话题吧","Huàn yí ge huàtí ba.","Давай сменим тему.","好的。我们聊点别的吧！"],["聊点别的吧","Liáo diǎn bié de ba.","Давай поговорим о другом.","好的。我们聊点别的吧！"],["你决定吧","Nǐ juédìng ba.","Решай ты.","你有什么爱好？"],["你来决定吧","Nǐ lái juédìng ba.","Решай ты.","你有什么爱好？"],["我们聊聊工作吧","Wǒmen liáoliao gōngzuò ba.","Давай поговорим о работе.","你今天忙吗？"],["我们聊聊家庭吧","Wǒmen liáoliao jiātíng ba.","Давай поговорим о семье.","你有兄弟姐妹吗？"],["我们聊聊我的一天吧","Wǒmen liáoliao wǒ de yì tiān ba.","Давай поговорим о моём дне.","你早上吃早饭吗？"],["聊聊中文吧","Liáoliao Zhōngwén ba.","Давай поговорим о китайском языке.","你为什么想学中文？"],["我们聊聊中文吧","Wǒmen liáoliao Zhōngwén ba.","Давай поговорим о китайском языке.","你为什么想学中文？"],["聊聊美食吧","Liáoliao měishí ba.","Давай поговорим о вкусной еде.","你想吃什么？"]]){
+  const a=make().plan(q,{mode:'free-chat'});assert.equal(a?.line.hanzi,reply,q);assert.equal(a?.voiceStatus,'registered-exact',q);assert.equal(a.spoken.pinyin,py,q);assert.equal(a.spoken.translation,ru,q);assert.equal(a.toneVerified,false);
+ }
+ for(const [q,py,ru,intent] of [["我没听清","Wǒ méi tīng qīng.","Я не расслышал(а).","request-repeat"],["我没听清楚","Wǒ méi tīng qīngchu.","Я не расслышал(а).","request-repeat"],["可以再说一遍吗","Kěyǐ zài shuō yí biàn ma?","Можно повторить?","request-repeat"],["能再说一遍吗","Néng zài shuō yí biàn ma?","Можешь повторить?","request-repeat"],["你能再说一遍吗","Nǐ néng zài shuō yí biàn ma?","Ты можешь повторить?","request-repeat"],["请你再说一遍","Qǐng nǐ zài shuō yí biàn.","Повтори, пожалуйста.","request-repeat"],["再说一次","Zài shuō yí cì.","Скажи ещё раз.","request-repeat"],["这是什么意思","Zhè shì shénme yìsi?","Что это означает?","request-meaning"],["这句话是什么意思","Zhè jù huà shì shénme yìsi?","Что означает эта фраза?","request-meaning"],["我不太明白","Wǒ bú tài míngbai.","Я не совсем понимаю.","request-meaning"],["我不明白你的意思","Wǒ bù míngbai nǐ de yìsi.","Я не понимаю, что ты имеешь в виду.","request-meaning"]]){
+  assert.equal(make().plan(q,{mode:'free-chat'}),null,q+' without a prior turn');
+  const p=make(),first=p.plan('我想学中文',{mode:'free-chat'});p.observePanda(first.line,{continuesLearnerTurn:first.continuesLearnerTurn});
+  const a=p.plan(q,{mode:'free-chat'});assert.equal(a?.kind,intent==='request-repeat'?'repeat-exact':'explain-exact',q);assert.equal(a.line.hanzi,first.line.hanzi,q);assert.equal(a.audio.src,first.audio.src,q);assert.equal(a.spoken.pinyin,py,q);assert.equal(a.spoken.translation,ru,q);assert.equal(a.toneVerified,false);
+  p.observePanda(a.line,{continuesLearnerTurn:a.continuesLearnerTurn});assert.equal(p.plan('因为我想去中国',{mode:'free-chat'})?.line.hanzi,'你打算什么时候去？',q+' preserves question');
+ }
+ for(const q of ['他没听清','我没听清音乐','这句话','你决定了','我们聊工作了'])assert.equal(make().plan(q,{mode:'free-chat'}),null,q);
+});

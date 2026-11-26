@@ -19,6 +19,15 @@ try{
   const first=await send('我一回家就吃饭');if(flag){assert.equal(first.history.at(-1).hanzi,'然后呢？');assert.equal(first.history.at(-1).analysis.semanticPilot,true);assert.equal(first.history.at(-2).ru,'Как только прихожу домой, сразу ем.');assert.equal(first.audioAvailable,true);await page.waitForFunction(()=>window.__pilotPlaying.some(src=>src.includes('/panda-ai-voice-batch01-v563/PA-V563-01.mp3')),null,{timeout:10000});}else assert(!first.history.at(-1).analysis?.semanticPilot);
   for(const [q,expected] of [['吃饭','你想吃什么？'],['睡觉','你晚上几点睡觉？'],['非常好，你呢？','我也很好，谢谢！']]){const x=await send(q);assert.equal(x.history.at(-1).hanzi,expected,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);}
   const travel=await send('去中国');assert.equal(travel.history.at(-1).hanzi,'你打算什么时候去？');assert.equal(travel.audioAvailable,true);assert(travel.history.at(-2).pinyin&&travel.history.at(-2).ru);const time=await send('明天');assert.equal(time.history.at(-1).hanzi,'然后呢？');
+  for(const q of ['我先刷牙然后吃早饭','我先刷牙再吃早饭']){const x=await send(q);assert.equal(x.history.at(-1).hanzi,'你早上吃什么？',q);assert.equal(x.audioAvailable,true,q);}
+  if(flag){
+   const start=await send('聊聊中文吧');assert.equal(start.history.at(-1).hanzi,'你为什么想学中文？');
+   for(const [q,kind] of [['我没听清楚','repeat-exact'],['你能再说一遍吗','repeat-exact'],['这句话是什么意思','explain-exact']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,start.history.at(-1).hanzi,q);assert.equal(x.history.at(-1).analysis?.kind,kind,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);
+   }
+   const resumed=await send('因为我想去中国');assert.equal(resumed.history.at(-1).hanzi,'你打算什么时候去？');
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+  }
   const positive=await send('很不错');assert(!/你能说得简单一点吗/.test(positive.history.at(-1).hanzi));
   for(const [q,expected] of [['我没有姐姐','明白了。你家有几口人？'],['三口人','你有兄弟姐妹吗？'],['我没有兄弟姐妹','谢谢你告诉我。你喜欢做什么？']]){const x=await send(q);assert.equal(x.history.at(-1).hanzi,expected,q);assert(!x.history.at(-1).analysis?.semanticPilot,'legacy family sequence remains intact: '+q);}
   const stable=await send('你的身体怎么样');assert.equal(stable.history.at(-1).hanzi,'我身体很好。');assert(!stable.history.at(-1).analysis?.semanticPilot);
