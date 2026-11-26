@@ -89,7 +89,9 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
  if(!validBufferBounds(referenceBuffer,referenceBounds)||!validBufferBounds(learnerBuffer,learnerBounds))
   return {ok:false,reason:'Границы выходят за пределы записи'};
  const dr=referenceBounds.at(-1)-referenceBounds[0],du=learnerBounds.at(-1)-learnerBounds[0],ratio=du/dr;
- if(ratio<.55||ratio>1.95)return {ok:false,reason:'Слишком различается длительность фраз: сравнение ненадёжно'};
+ // A substantially shorter recording can omit an entire interval. Refuse
+ // automatic transfer; fast natural speech remains valid for manual review.
+ if(ratio<.75||ratio>1.95)return {ok:false,reason:'Длительность фраз сильно различается: автоматический перенос границ ненадёжен. Это не ошибка произношения',uncertain:true};
  const r=features(referenceBuffer,referenceBounds[0],referenceBounds.at(-1));
  const u=features(learnerBuffer,learnerBounds[0],learnerBounds.at(-1));
  if(!r||!u||r.length<12||u.length<12||r.length>500||u.length>650)
@@ -115,7 +117,7 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
   const high=Math.min(z,Math.ceil(ideal+band));
   for(let j=low;j<=high;j++){
    const drift=j/z-i/n;
-   const local=cost(r[i-1],u[j-1])+1.8*(drift/.18)**2;
+   const local=cost(r[i-1],u[j-1])+1.2*(drift/.18)**2;
    const diag=costs[(i-1)*stride+j-1];
    const up=costs[(i-1)*stride+j]+.075;
    const left=costs[i*stride+j-1]+.075;
