@@ -37,6 +37,16 @@ const storage=(()=>{try{return localStorage}catch{return null}})();
 const curriculum=window.PANDA_HSK1_FOUNDATIONS||[];
 const dayParams=new URLSearchParams(location.search);
 const dayLaunch=dayParams.get('practice')==='day';
+// Online-only experiment. The default route never loads the new modules.
+// No personal profile or microphone data is stored by the semantic pilot.
+const semanticRequested=dayParams.get('semantic')==='1'&&!['practice','scenario','from','topic','lesson'].some(k=>dayParams.has(k));
+let semanticPilot=null,semanticMetadata=null,semanticContinues=false;
+const semanticFreeChat=()=>!!semanticPilot&&!state.dayMode&&entry.beginnerGreeting&&hsk2?.id===101&&hsk2.openChat===true&&state.mode==='nonstop';
+function resetSemanticPilot(){semanticPilot?.reset();semanticContinues=false;}
+function observeSemanticPanda(line){
+ if(semanticFreeChat())semanticPilot.observePanda({hanzi:line.hanzi||line.panda,pinyin:line.pinyin,ru:line.ru},{continuesLearnerTurn:semanticContinues});
+ semanticContinues=false;
+}
 const dayMini=Math.min(2,Math.max(0,Number(dayParams.get('mini'))||0));
 const rig=createPandaRig($('character'),$('panda-canvas'));
 let conversation,base,audio=null,audioFrame=0,audioBufferTimer=0,recognition=null,epoch=0,watchdog,speechEndTimer,recognitionEndTimer,poseTimer,followupTimer;
@@ -128,7 +138,7 @@ function refreshHistory(){
 }
 function record(who,hanzi,pinyin,ru,analysis=null){state.history.push({who,hanzi,pinyin,ru,analysis,confidence:who==='you'?state.confidence:null});if(state.history.length>100)state.history.shift();refreshHistory()}
 function say(line,autoplay=true,analysis=null){
- state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);
+ state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);observeSemanticPanda(line);
  // Text-only is a valid learning response, not an audio failure. Show the
  // existing 🔇 caption, but never attempt playback without an exact MP3.
  if(autoplay&&(lookupPandaVoiceClip(line.hanzi||line.panda)||lookupPandaVoiceClip(line.audioKey)))play();
@@ -257,7 +267,7 @@ function dayReturnHref(){
  return './hsk2-life-course.html?from=hsk2-life-course&return=done&mini='+mini+'&v=420';
 }
 function initLesson(id){
- hsk2=null;state.naturalAwaiting=null;
+ resetSemanticPilot();hsk2=null;state.naturalAwaiting=null;
  cancelFollowup();stopAudio();stopRecognition();base=prepareConversation(CONVERSATIONS.find(c=>c.id===id)||CONVERSATIONS[0],new Date());
  conversation=withPracticeGreeting(base,rotateGreeting());state.step=0;state.done=false;state.reviewStep=null;state.prompt=null;state.shortDisplay=null;state.nonstopDisplay=null;state.awaitQuestion=false;state.hint=false;state.topic=base.id;state.turns=0;state.askedInTopic=0;showLearnerFeedback(null);
  state.allowed=accessibleLessons(storage,conversation.id);state.profile.hasNumbers=state.allowed.includes(3);state.cursor=Math.max(0,state.allowed.indexOf(conversation.id));$('lesson-select').value=String(conversation.id);
@@ -287,6 +297,7 @@ function askNext(){
 }
 function setMode(mode){
  if(mode===state.mode)return;
+ resetSemanticPilot();
  if(hsk2){
   cancelFollowup();stopRecognition();stopAudio();
   // v550: default Panda AI boots HSK2-101 internally. Non-Stop must
@@ -295,7 +306,7 @@ function setMode(mode){
   if(mode==='nonstop'&&entry.beginnerGreeting&&hsk2.id===101){
    hsk2.openChat=true;state.mode='nonstop';state.prompt=null;
    state.naturalAwaiting=null;state.awaitQuestion=true;state.hint=false;
-   render();note('Non-Stop: свободный разговор на знакомые темы. Напиши свою фразу по-китайски.');
+   render();if(semanticFreeChat()){const last=state.history.at(-1);if(last?.who==='panda')observeSemanticPanda(last);}note('Non-Stop: свободный разговор на знакомые темы. Напиши свою фразу по-китайски.');
    return;
   }
   // Leaving free topic chat restores the ordinary scored HSK2 question path.
@@ -310,7 +321,7 @@ function setMode(mode){
  if(mode==='short')state.lockedTopic=null;if(state.dayMode&&mode==='short'){state.dayMode=false;state.dayDone=false;state.prompt=null;}if(state.mode===mode)return;cancelFollowup();stopRecognition();stopAudio();if(state.mode==='short')state.shortDisplay=state.display;else state.nonstopDisplay=state.display;state.mode=mode;state.hint=false;note('');if(mode==='nonstop'){if(state.prompt){state.display=state.nonstopDisplay||state.prompt.line;render()}else askNext()}else{state.display=state.shortDisplay||(state.done?state.shortReply:conversation.lines[state.step]);render()}}
 let hsk2=null;
 function beginHSK2(id,index=0,autoplay=true,skipInitialQuestion=false){
- friendlyStage=null;state.naturalAwaiting=null;
+ resetSemanticPilot();friendlyStage=null;state.naturalAwaiting=null;
  const t=getTopic(id);if(!t)return false;
  cancelFollowup();stopAudio();stopRecognition();hsk2={id:t.id,index,done:false,exact:0,similar:0,unknown:0,context:null};
  state.mode='short';state.dayMode=false;state.done=false;
@@ -380,6 +391,19 @@ let friendlyStage=null;
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
+ // Experimental route takes only explicitly reviewed learner metadata and exact existing audio.
+ // All other input follows the established engine below, including corrections.
+ if(semanticFreeChat()&&(state.confidence===null||state.confidence>=.85)){
+  const planned=semanticPilot.plan(input,{mode:'free-chat'});
+  const spoken=planned&&semanticMetadata(input,planned.semantic);
+  if(spoken){
+   friendlyStage=null;state.naturalAwaiting=null;state.awaitQuestion=true;state.turns=(state.turns||0)+1;
+   learner(input,spoken);semanticContinues=planned.continuesLearnerTurn===true;
+   say(planned.line,true,{semanticPilot:true,kind:planned.kind,toneVerified:false});
+   note(planned.kind==='explain-exact'?'Значение предыдущей реплики показано в переводе. Тоны не оценивались.':'Панда поняла смысл реплики. Тоны по тексту не оценивались.');
+   return;
+  }
+ }else if(semanticPilot)resetSemanticPilot();
  // Accept repeated agreement in conversational context without replacing unrelated lesson answers.
  if(!state.dayMode&&((hsk2&&(hsk2.openChat||(entry.beginnerGreeting&&hsk2.id===101)))||(!hsk2&&state.mode==='nonstop'))&&/^(对对|对对对|是的是的)$/.test(normalize(input))){
   const last=[...state.history].reverse().find(t=>t.who==='panda');
@@ -877,7 +901,7 @@ window.PandaApprovedBridge337={
    status:$('status').textContent,audioAvailable:!$('hear').disabled,speechSignal:state.speechSignal};
  },
  chooseTopic:id=>{
-  id=Number(id);
+  resetSemanticPilot();id=Number(id);
  if(getTopic(id))return beginHSK2(id,0,false);
   if(!state.allowed.includes(id))return false;
   hsk2=null;
@@ -908,7 +932,7 @@ window.PandaApprovedBridge337={
   return topicCatalogGroups().find(g=>g.lesson===id)?.questions||[];
  },
  startTopicQuestion:(id,text)=>{
-  id=Number(id);
+  resetSemanticPilot();id=Number(id);
  if(getTopic(id)){const i=getTopic(id).questions.findIndex(q=>hsk2Norm(q.q)===hsk2Norm(text));return i>=0&&beginHSK2(id,i);}
   if(!state.allowed.includes(id))return false;
   hsk2=null;
@@ -957,3 +981,12 @@ if(entry.kind==='hsk2'){
  const greet=()=>{if(!document.hidden)play(opening)};
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',greet,{once:true});else greet();
 }else if(entry.kind!=='scenario'){play();}
+
+// Load only on the explicit experimental URL, fail open to the established brain.
+if(semanticRequested){
+ Promise.all([import('./panda-unified-pilot-adapter-v1.mjs'),import('./panda-unified-pilot-metadata-v1.mjs')]).then(([adapter,meta])=>{
+  semanticMetadata=meta.pilotLearnerMetadata;semanticPilot=adapter.createSemanticPilot({enabled:true,lookupExact:lookupPandaVoiceClip});
+  if(semanticFreeChat()){const last=state.history.at(-1);if(last?.who==='panda')observeSemanticPanda(last);}
+  document.documentElement.dataset.pandaSemanticPilot='ready';
+ }).catch(()=>{semanticPilot=null;document.documentElement.dataset.pandaSemanticPilot='unavailable';});
+}
