@@ -401,6 +401,23 @@ export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,pr
   const reply=actionQuestion?['你接下来想做什么？','Nǐ jiēxiàlai xiǎng zuò shénme?','Что ты хочешь делать дальше?']:['你今天忙吗？','Nǐ jīntiān máng ma?','Ты сегодня занят(а)?'];
   return {...result(raw,py,ru,reply,null,1),domain:'everyday',message:actionQuestion?'Панда поняла оценку, но это не ответ о действии. Уточняет, что ты хочешь делать. Тоны не оценивались.':'Панда поняла смысл. Тоны по тексту не оценивались.'};
  }
+
+ // Shared fallback for reviewed grammar in both the default and experimental routes.
+ const study567=/^我(今天|现在|明天)?(想|打算)(学中文|学习中文)$/u.exec(s);
+ if(study567){
+  const [,time='',modal,action]=study567;
+  const t={'':['',''],'今天':['jīntiān','сегодня '],'现在':['xiànzài','сейчас '],'明天':['míngtiān','завтра ']}[time];
+  const py=['Wǒ',t[0],modal==='想'?'xiǎng':'dǎsuàn',action==='学中文'?'xué Zhōngwén':'xuéxí Zhōngwén'].filter(Boolean).join(' ')+'.';
+  return {...result(raw,py,'Я '+t[1]+(modal==='想'?'хочу':'планирую')+' учить китайский.',['你为什么想学中文？','Nǐ wèishénme xiǎng xué Zhōngwén?','Почему ты хочешь учить китайский?'],null,2),domain:'everyday'};
+ }
+ const immediate567=/^我一(回家|起床|下班)就(吃饭|刷牙|回家|休息|睡觉)$/u.exec(s);
+ if(immediate567){
+  const [,first,second]=immediate567;
+  const starts={回家:['yì huí jiā','прихожу домой'],起床:['yì qǐchuáng','встаю'],下班:['yí xiàbān','заканчиваю работу']};
+  const ends={吃饭:['chīfàn','ем'],刷牙:['shuāyá','чищу зубы'],回家:['huí jiā','иду домой'],休息:['xiūxi','отдыхаю'],睡觉:['shuìjiào','ложусь спать']};
+  if(first!==second)return {...result(raw,'Wǒ '+starts[first][0]+' jiù '+ends[second][0]+'.','Как только '+starts[first][1]+', сразу '+ends[second][1]+'.',['然后呢？','Ránhòu ne?','А дальше?'],null,1),domain:'everyday',grammar:'immediate'};
+ }
+ if(/^你现在(?:在)?做什么$/u.test(s))return {...result(raw,s.includes('现在在')?'Nǐ xiànzài zài zuò shénme?':'Nǐ xiànzài zuò shénme?','Что ты сейчас делаешь?',['我在和你聊天。','Wǒ zài hé nǐ liáotiān.','Я разговариваю с тобой.'],null,1),kind:'question',domain:'everyday'};
  const live565=[["身体不好","Shēntǐ bù hǎo.","Самочувствие плохое.","rest"],["我的身体不好","Wǒ de shēntǐ bù hǎo.","У меня плохое здоровье.","rest"],["我身体不好","Wǒ shēntǐ bù hǎo.","У меня плохое самочувствие.","rest"],["我今天身体不好","Wǒ jīntiān shēntǐ bù hǎo.","Сегодня я плохо себя чувствую.","rest"],["我身体不太好","Wǒ shēntǐ bú tài hǎo.","Я не очень хорошо себя чувствую.","rest"],["我觉得不好","Wǒ juéde bù hǎo.","Мне кажется, что это плохо.","ask"],["我觉得不太好","Wǒ juéde bú tài hǎo.","Мне кажется, что не очень хорошо.","ask"],["我感觉不好","Wǒ gǎnjué bù hǎo.","Я чувствую себя нехорошо.","ask"],["我感觉不舒服","Wǒ gǎnjué bù shūfu.","Я чувствую себя нехорошо.","rest"],["我头痛","Wǒ tóutòng.","У меня болит голова.","rest"],["我头疼","Wǒ tóuténg.","У меня болит голова.","care"],["今天我头痛","Jīntiān wǒ tóutòng.","Сегодня у меня болит голова.","rest"],["今天我头疼","Jīntiān wǒ tóuténg.","Сегодня у меня болит голова.","rest"],["我今天头痛","Wǒ jīntiān tóutòng.","Сегодня у меня болит голова.","rest"],["我今天头疼","Wǒ jīntiān tóuténg.","Сегодня у меня болит голова.","rest"],["今天我要头痛","Jīntiān wǒ yào tóutòng.","Распознано буквально: сегодня я собираюсь испытывать головную боль.","correction"],["你什么时候","Nǐ shénme shíhou…?","Ты когда…?","when"],["什么时候","Shénme shíhou?","Когда?","when"]].find(x=>x[0]===s);
  if(live565){const kind=live565[3];const reply=kind==='care'?everydayReplies556.care:kind==='ask'?['怎么了？你想说说吗？','Zěnme le? Nǐ xiǎng shuōshuo ma?','Что случилось? Хочешь рассказать?']:kind==='when'?['你想问我什么时候做什么？','Nǐ xiǎng wèn wǒ shénme shíhou zuò shénme?','Ты хочешь спросить, когда я что-то делаю? Уточни действие.']:['你应该多休息。','Nǐ yīnggāi duō xiūxi.','Тебе стоит больше отдыхать.'];const x={...result(raw,live565[1],live565[2],reply,kind==='care'?'health-followup':null,1),domain:'everyday',kind:kind==='when'?'question':'statement'};if(kind==='correction')x.message='Распознано 今天我要头痛. Если речь о головной боли сегодня, естественно: 今天我头痛。 Jīntiān wǒ tóutòng. 要 не нужно. Причина ошибки и тоны по тексту не определяются.';if(kind==='when')x.message='Вопрос не закончен без контекста. Уточни действие: например, 你什么时候起床？';return x;}
  const work=workConversation(raw,s,awaiting);if(work)return work;
