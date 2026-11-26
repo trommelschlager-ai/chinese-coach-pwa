@@ -365,3 +365,17 @@ test('legacy-owned family questions do not take over established family follow-u
  const a=p.plan('聊聊家庭吧',{mode:'free-chat'});assert.equal(a.line.hanzi,'你有兄弟姐妹吗？');p.observePanda(a.line,{continuesLearnerTurn:a.continuesLearnerTurn});
  const b=p.plan('我没有兄弟姐妹',{mode:'free-chat'});assert.equal(b.line.hanzi,'明白了。你家有几口人？');
 });
+
+
+test('legacy routine owns work and sleep time; explicit unified questions still accept clocks',()=>{
+ for(const [hanzi,pinyin,ru,answer] of [['你几点去上班？','Nǐ jǐ diǎn qù shàngbān?','Во сколько идёшь на работу?','九点'],['你晚上几点睡觉？','Nǐ wǎnshang jǐ diǎn shuìjiào?','Во сколько ложишься спать?','十一点']]){
+  const line={hanzi,pinyin,ru};
+  const legacy=createSemanticPilot({enabled:true,lookupExact:lookupApprovedPandaVoice,metadata:pilotLearnerMetadata});
+  legacy.observePanda(line,{legacyFamily:true});
+  assert.equal(legacy.snapshot().pendingQuestion,null,hanzi);
+  assert.equal(legacy.plan(answer,{mode:'free-chat'}),null,answer);
+  const shared=createSemanticPilot({enabled:true,lookupExact:lookupApprovedPandaVoice,metadata:pilotLearnerMetadata});
+  shared.observePanda(line);
+  assert.equal(shared.plan(answer,{mode:'free-chat'})?.line.hanzi,'你接下来想做什么？',answer);
+ }
+});
