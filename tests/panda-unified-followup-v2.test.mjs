@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {newFollowupSession,planContextualStudyTurn,confirmStudyReply} from '../assets/panda-unified-followup-v2.mjs';
+const run=(s,q)=>planContextualStudyTurn(s,q,{lookupExact:h=>({src:'fixture.mp3'})});
+test('study conversation asks reason, duration and difficulty once',()=>{let x=run(newFollowupSession(),'我对中文感兴趣');assert.equal(x.response.questionId,'study-reason');assert.equal(x.state.pending,null);let s=confirmStudyReply(x.state,x.response.line);x=run(s,'因为我想去中国');assert.equal(x.answer.value.action,'china');assert.equal(x.response.questionId,'study-duration');s=confirmStudyReply(x.state,x.response.line);x=run(s,'三年了');assert.deepEqual(x.state.study.duration,{value:3,unit:'year'});assert.equal(x.response.questionId,'study-difficulty');s=confirmStudyReply(x.state,x.response.line);x=run(s,'有点难');assert.equal(x.state.study.difficulty,'somewhat-difficult');assert.equal(x.response.questionId,'study-next');s=confirmStudyReply(x.state,x.response.line);assert.equal(run(s,'我想学中文').response,null);});
+test('unrelated or unobserved questions do not infer facts',()=>{let s=newFollowupSession();assert.equal(run(s,'三年了').answer,null);assert.equal(run(s,'因为我想去中国').answer,null);s=confirmStudyReply(s,{hanzi:'你学中文多久了？'});let x=run(s,'我昨天去了北京');assert.equal(x.answer,null);assert.equal(x.state.study.duration,null);assert.equal(run(x.state,'三年了').answer,null);assert.equal(newFollowupSession().study.duration,null);});
+test('voice requires actual injected lookup, no acoustic claims',()=>{let x=planContextualStudyTurn(newFollowupSession(),'我想学中文');assert.equal(x.response.voiceStatus,'text-only');assert.equal(x.response.audio,null);assert.equal(x.response.toneVerified,false);});
+
+test('written duration sandhi',()=>{const s=confirmStudyReply(newFollowupSession(),{hanzi:'你学中文多久了？'});assert.equal(run(s,'一个月').answer.pinyin,'yí ge yuè');assert.equal(run(s,'一年').answer.pinyin,'yì nián');});
