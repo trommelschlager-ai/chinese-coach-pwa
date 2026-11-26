@@ -82,12 +82,28 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
     referenceBounds.some((v,i)=>!Number.isFinite(v)||(i>0&&v<=referenceBounds[i-1]))||
     learnerBounds.some((v,i)=>!Number.isFinite(v)||(i>0&&v<=learnerBounds[i-1])))
   return {ok:false,reason:'Не найдены корректные границы записи'};
+ const validBufferBounds=(buffer,bounds)=>{
+  if(!buffer?.getChannelData||!Number.isFinite(buffer.sampleRate)||buffer.sampleRate<8000)return false;
+  try{const data=buffer.getChannelData(0);return !!data&&bounds[0]>=0&&bounds.at(-1)<=data.length/buffer.sampleRate+1e-6;}catch{return false;}
+ };
+ if(!validBufferBounds(referenceBuffer,referenceBounds)||!validBufferBounds(learnerBuffer,learnerBounds))
+  return {ok:false,reason:'Границы выходят за пределы записи'};
  const dr=referenceBounds.at(-1)-referenceBounds[0],du=learnerBounds.at(-1)-learnerBounds[0],ratio=du/dr;
  if(ratio<.55||ratio>1.95)return {ok:false,reason:'Слишком различается длительность фраз: сравнение ненадёжно'};
  const r=features(referenceBuffer,referenceBounds[0],referenceBounds.at(-1));
  const u=features(learnerBuffer,learnerBounds[0],learnerBounds.at(-1));
  if(!r||!u||r.length<12||u.length<12||r.length>500||u.length>650)
   return {ok:false,reason:'Недостаточно звуковых кадров или слишком длинная запись'};
+ // Guard against matching silence to silence and unvoiced holes.
+ // Energy coverage is only a safety gate, not lexical identity or pronunciation.
+ const sufficientEnergy=frames=>{
+  const peak=Math.max(...frames.map(f=>f.rms));
+  if(!Number.isFinite(peak)||peak<.004)return false;
+  const gate=Math.max(.0025,Math.min(.018,peak*.12));
+  return frames.filter(f=>f.rms>=gate).length>=Math.max(8,Math.ceil(frames.length*.25));
+ };
+ if(!sufficientEnergy(r)||!sufficientEnergy(u))
+  return {ok:false,reason:'Недостаточно звукового сигнала для сопоставления'};
  const n=r.length,z=u.length,stride=z+1;
  const costs=new Float64Array((n+1)*stride),parent=new Uint8Array((n+1)*stride);
  costs.fill(Infinity);costs[0]=0;
@@ -111,11 +127,12 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
  }
  if(!Number.isFinite(costs[n*stride+z]))return {ok:false,reason:'Акустическое сопоставление не нашло непрерывный путь'};
  const links=Array.from({length:n},()=>[]);
- let i=n,j=z,steps=0,stretched=0;
+ let i=n,j=z,steps=0,stretched=0;const matches=[];
  while(i>0&&j>0&&steps<n+z+3){
   const code=parent[i*stride+j];
   if(!code)break;
   links[i-1].push(u[j-1].t);
+  matches.push({rt:r[i-1].t,ut:u[j-1].t,cost:cost(r[i-1],u[j-1]),rms:u[j-1].rms});
   if(code===1){i--;j--;}else if(code===2){i--;stretched++;}else {j--;stretched++;}
   steps++;
  }
@@ -137,6 +154,21 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
   out.push(safe);
  }
  out.push(learnerBounds.at(-1));
+ // Global average can conceal an entire unmatched interval. Reject the
+ // proposed boundary transfer, not the learner's pronunciation.
+ // These experimental gates require validation across real speakers.
+ const peakU=Math.max(...u.map(f=>f.rms));
+ const gateU=Math.max(.0025,Math.min(.018,peakU*.12));
+ const localDiagnostics=referenceBounds.slice(0,-1).map((a,k)=>{
+  const b=referenceBounds[k+1],m=matches.filter(x=>x.rt>=a&&x.rt<b);
+  const unique=new Map(m.map(x=>[x.ut,x.rms]));
+  const localCost=m.reduce((sum,x)=>sum+x.cost,0)/Math.max(1,m.length);
+  const coverage=[...unique.values()].filter(v=>v>=gateU).length/Math.max(1,unique.size);
+  const relativeDuration=(out[k+1]-out[k])/(b-a)/ratio;
+  return {frames:unique.size,localCost,coverage,relativeDuration};
+ });
+ const questionable=localDiagnostics.some(d=>d.frames<3||d.localCost>1.5||d.coverage<.25||d.relativeDuration<.30||d.relativeDuration>3);
+ if(questionable)return {ok:false,reason:'Один или несколько участков не удалось надёжно сопоставить. Проверь фразу и границы вручную',diagnostics:{localDiagnostics},uncertain:true};
  const avg=costs[n*stride+z]/Math.max(1,steps);
  // Diagnostics only, NOT a pronunciation score or confidence percentage.
  if(avg>2.6||stretched/Math.max(1,steps)>.76)

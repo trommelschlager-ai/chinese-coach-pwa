@@ -77,6 +77,7 @@ if (!bridge) {
    <button id="pg346-topics-close" type="button" aria-label="Закрыть">×</button>
   </div>
   <p class="pg374-tip" id="pg374-topics-tip">Выбери тему, затем вопрос для разговора.</p>
+  <button id="pg-tone-practice" type="button" style="margin:4px 8px 8px;padding:9px;border:1px solid #d6b9e6;border-radius:12px;background:#fff4ff;color:#603787;font:700 13px system-ui;cursor:pointer">🎙 Panda Tone — тренировка произношения</button>
   <div class="pg346-topic-list"></div>
   <div class="pg374-topic-details" id="pg374-topic-details" hidden></div>
  </div>
@@ -396,6 +397,30 @@ if (!bridge) {
    if(now-lastTopicsToggle<300)return;
    lastTopicsToggle=now;
    const pop=$('#pg346-topics');pop.hidden=!pop.hidden;stage.dataset.topicsOpen=String(!pop.hidden);$('#pg346-topics-btn').setAttribute('aria-expanded',String(!pop.hidden));if(!pop.hidden){showTopicList();renderTopics(bridge.snapshot());$('#pg346-topics-close').focus()}}
+  // The normal ASR microphone does not expose PCM; launch a distinct, local
+  // opt-in capture only after stopping dialogue playback and recognition.
+  const toneEntry=$('#pg-tone-practice');
+  let toneDialog=null;
+  const specialToneScenario=new URLSearchParams(location.search).get('scenario')==='hsk2-my-day';
+  if(specialToneScenario||typeof bridge.pauseForTonePractice!=='function')toneEntry.hidden=true;
+  toneEntry.addEventListener('click',()=>{
+    if(specialToneScenario||typeof bridge.pauseForTonePractice!=='function'||toneDialog?.open)return;
+    if(typeof HTMLDialogElement==='undefined'||typeof HTMLDialogElement.prototype.showModal!=='function')return;
+    stopHistoryAudio();bridge.pauseForTonePractice();closeTopics();sync();
+    const dialog=document.createElement('dialog');toneDialog=dialog;
+    dialog.setAttribute('aria-label','Panda Tone — отдельная тренировка голоса');
+    dialog.style.cssText='box-sizing:border-box;width:min(96vw,520px);height:min(92dvh,850px);max-height:none;padding:0;border:1px solid #e4ccef;border-radius:18px;background:#fff8ff;overflow:hidden';
+    const head=document.createElement('div');head.style.cssText='height:44px;display:flex;align-items:center;justify-content:space-between;padding:4px 12px;color:#5d3482;font:700 14px system-ui;box-sizing:border-box';
+    const title=document.createElement('span');title.textContent='Panda Tone · отдельно от диалога';
+    const close=document.createElement('button');close.type='button';close.textContent='✕ Закрыть';close.style.cssText='min-height:34px;border:1px solid #d8c4e6;border-radius:10px;background:white;color:#5d3482;padding:5px 8px';
+    const frame=document.createElement('iframe');frame.src='./panda-tone-exercises.html?v=469';frame.title='Тренажёр китайских тонов';frame.allow='microphone; autoplay';frame.style.cssText='width:100%;height:calc(100% - 44px);border:0;display:block';
+    const cleanup=()=>{try{frame.contentWindow?.postMessage('panda-tone-modal-close',location.origin)}catch{}frame.remove();dialog.remove();toneDialog=null;$('#pg346-topics-btn').focus({preventScroll:true});};
+    close.addEventListener('click',()=>dialog.close());
+    dialog.addEventListener('close',cleanup,{once:true});
+    head.append(title,close);dialog.append(head,frame);document.body.append(dialog);
+    try{dialog.showModal()}catch{cleanup()}
+  });
+  window.addEventListener('pagehide',()=>{if(toneDialog?.open)toneDialog.close()});
   function send(){const inp=$('#pg346-input');const value=inp.value.trim();if(!value){inp.focus();return}stopHistoryAudio();closeTopics();inp.value='';bridge.send(value);sync();stage.dataset.composerOpen='false';inp.blur();$('#pg346-send').setAttribute('aria-label','Открыть ввод текста')}
   function toggle(which){if(which==='py'){showPy=!showPy;stage.dataset.py=String(showPy);$('#pg346-py').setAttribute('aria-pressed',String(showPy))}else{showRu=!showRu;stage.dataset.ru=String(showRu);$('#pg346-ru').setAttribute('aria-pressed',String(showRu))}}
   $('#pg346-form').addEventListener('submit',e=>{e.preventDefault();send()});$('#pg346-send').addEventListener('click',send);$('#pg346-mic').addEventListener('click',()=>{stopHistoryAudio();bridge.mic();sync()});

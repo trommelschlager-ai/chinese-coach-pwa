@@ -1,6 +1,6 @@
 {
-  "version": 563,
-  "bytes": 94667664,
+  "version": 564,
+  "bytes": 94757217,
   "files": [
     "./assets/panda-natural-statements-v552.mjs?v=563",
     "./assets/panda-hsk2-preview-core-v1.mjs?v=563",
@@ -3674,6 +3674,7 @@
     "./assets/panda-ai-voice-batch01-v563/PA-V563-09.mp3",
     "./assets/panda-ai-voice-batch01-v563/PA-V563-10.mp3",
     "./assets/panda-ai-voice-batch01-v563/PA-V563-11.mp3",
-    "./assets/panda-ai-voice-batch01-v563/PA-V563-12.mp3"
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-12.mp3",
+    "./panda-tone-free-practice.html"
   ]
 }

@@ -87,7 +87,7 @@
 <div class="syllables" id="syllables" role="group" aria-label="Пять слогов предложения"></div>
 <svg id="large" class="chart" viewBox="0 0 340 150" role="img" aria-label="Сравнение контура высоты выбранного слога"><path d="M25 35H323 M25 73H323 M25 111H323" stroke="#e8daed" stroke-dasharray="4 5"/><path id="reference-line" stroke="#b09bbf" stroke-width="3.8" stroke-dasharray="7 6" fill="none"/><path id="learner-line" stroke="#7a50b5" stroke-width="3.8" fill="none"/><text x="8" y="14" fill="#886a98" font-size="10">Выше ↑</text><text x="267" y="142" fill="#886a98" font-size="10">Время →</text></svg>
 <div class="legend"><span><i class="line ref"></i> Образец урока</span><span><i class="line"></i> Твой голос</span></div>
-<details id="boundary-controls" hidden><summary>⚙️ Уточнить границы слогов</summary><p class="boundary-hint">Границы приблизительные. Если разделитель оказался не там, сдвинь ползунок. Меняется только отображение графика, не запись.</p><div id="boundary-sliders"></div><button type="button" id="boundary-reset">↻ Вернуть автоматические границы</button></details><p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
+<details id="boundary-controls" hidden><summary>⚙️ Уточнить границы слогов</summary><p class="boundary-hint">Границы приблизительные. Если разделитель оказался не там, сдвинь ползунок. Меняется только отображение графика, не запись.</p><div id="boundary-sliders"></div><button type="button" id="boundary-reset">↻ Вернуть автоматические границы</button></details><label id="boundary-verified-row" class="boundary-hint" hidden><input id="boundary-verified" type="checkbox"> Я прослушал обе записи и проверил границы слогов в образце и своей записи.</label><p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
 </section>
 <section class="panel"><h2>Почему пока без оценки?</h2><p class="small">Программа измеряет частоту F0 и предварительно делит непрерывную речь на слоги по времени и тихим участкам. В быстрой связной речи границы могут быть неверными. Учитываются изменения третьего тона: <b>我早</b> ≈ wó zǎo, <b>洗脸</b> ≈ xí liǎn. Для полноценной проверки нужны точное выравнивание слогов и проверка фонетики.</p></section>
 <footer>🔒 Запись обрабатывается локально в браузере и не отправляется на сервер. Не сохраняется в аккаунте. Образец — существующая запись урока, не заявленная как живая носительница. Для микрофона требуется HTTPS, разрешение браузера и поддержка записи звука.</footer>
@@ -97,7 +97,7 @@ import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
 import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
 import {alignFromReference} from './assets/panda-sentence-align-v4.mjs?v=4';
 const $=id=>document.getElementById(id);
-const tokens=[{zh:'我',py:'wǒ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'早',py:'zǎo',tone:'3-й · низкий'},{zh:'上',py:'shang',tone:'нейтральный'},{zh:'洗',py:'xǐ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'脸',py:'liǎn',tone:'3-й · часто низкий'}];
+const tokens=[{zh:'我',py:'wǒ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'早',py:'zǎo',tone:'3-й · низкий'},{zh:'上',py:'shang',tone:'нейтральный · короткий, после третьего тона может звучать относительно высоко'},{zh:'洗',py:'xǐ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'脸',py:'liǎn',tone:'3-й · часто низкий'}];
 const weights=[1.0,1.15,.65,1,1.2];
 const source=window.PandaGoHSK2Lesson1NativeAudioV459?.['我早上洗脸。'];
 let reference=null, learner=null, selected=0, recorder=null, stream=null, recordedUrl=null, chunks=[], recorded=null, micTimer=null, autoBounds=null, firstLiveVoice=null, decodedReference=null, decodedLearner=null, refAutoBounds=null, alignmentStatus='';
@@ -150,7 +150,7 @@ function path(data,i,x0,y0,w,h){
  for(let j=0;j<pts.length;j++){
   const a=pts[j],x=x0+w*(a.t-start)/(end-start),st=Math.max(-6,Math.min(6,12*Math.log2(a.hz/data.base))),y=y0+h/2-st*(h/13);
   // Do not join across very large unvoiced gaps.
-  const pen=j===0||a.t-pts[j-1].t>.105?'M':'L';p+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
+  const pen=j===0||a.t-pts[j-1].t>.085||Math.abs(12*Math.log2(a.hz/pts[j-1].hz))>=5?'M':'L';p+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
  }
  return p.trim();
 }
@@ -164,6 +164,9 @@ function syllableQuality(i){
 }
 function describeMovement(i){
  if(!learner?.valid)return '';
+ if(!$('boundary-verified').checked)return 'Границы пока не проверены на слух: отдельный контур не связываем с конкретным иероглифом.';
+ if(tokens[i].py==='shang')return 'У нейтрального тона нет фиксированного контура. По направлению высоты не определяем ошибку; сравни краткость и лёгкость с образцом.';
+ if(syllableQuality(i).weak)return 'Участок содержит пропуски F0: направление пока не определяем.';
  const a=learner.bounds[i],b=learner.bounds[i+1],pts=learner.frames.filter(p=>p.t>=a&&p.t<=b);
  if(pts.length<6)return 'Мало точек F0 для анализа движения.';
  const k=Math.max(2,Math.floor(pts.length*.25)),first=median(pts.slice(0,k).map(p=>p.hz)),last=median(pts.slice(-k).map(p=>p.hz));
@@ -172,6 +175,7 @@ function describeMovement(i){
  return delta>1.8?'Высота в измеренном участке в основном повышается.':delta< -1.8?'Высота в измеренном участке в основном снижается.':'Высота в измеренном участке меняется незначительно.';
 }
 function adjustControls(){
+ $('boundary-verified').checked=false;$('boundary-verified-row').hidden=!(learner?.valid&&reference?.valid);
  const root=$('boundary-controls');root.hidden=!learner?.valid;
  const list=$('boundary-sliders');list.replaceChildren();
  if(!learner?.valid)return;
@@ -186,7 +190,7 @@ function adjustControls(){
    const min=learner.bounds[i-1]+.07,max=learner.bounds[i+1]-.07;
    if(min>max)return;
    const desired=a+dur*Number(input.value)/1000;
-   learner.bounds[i]=Math.max(min,Math.min(max,desired));
+   learner.bounds[i]=Math.max(min,Math.min(max,desired));$('boundary-verified').checked=false;
    output.textContent=(learner.bounds[i]-a).toFixed(2)+' с';
    render();updateWhole();
   });row.append(label,input,output);list.append(row);
@@ -260,7 +264,7 @@ function wholePath(data,isLive=false,axisLive=isLive){
   const st=Math.max(-7,Math.min(7,12*Math.log2(p.hz/baseline)));
   const y=Math.max(GRAPH_TOP,Math.min(GRAPH_BOTTOM,90-st*8.7));
   const jump=prev?Math.abs(12*Math.log2(p.hz/prev.hz)):0;
-  const pen=!prev||p.t-prev.t>.16||jump>8?'M':'L';
+  const pen=!prev||p.t-prev.t>.085||jump>=5?'M':'L';
   out+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
   prev=p;
  }
@@ -306,7 +310,7 @@ function referenceSliders(){
   input.addEventListener('input',()=>{
    const min=reference.bounds[k-1]+.055,max=reference.bounds[k+1]-.055;
    if(min>=max)return;
-   reference.bounds[k]=Math.max(min,Math.min(max,origin+duration*Number(input.value)/1000));
+   reference.bounds[k]=Math.max(min,Math.min(max,origin+duration*Number(input.value)/1000));$('boundary-verified').checked=false;
    value.textContent=(reference.bounds[k]-origin).toFixed(2)+' с';
    alignmentStatus='Границы эталона изменены. Нажми «Сопоставить с образцом», чтобы пересчитать запись ученика.';
    wholeGuides();render();updateWhole();
@@ -316,10 +320,11 @@ function referenceSliders(){
 }
 $('ref-reset').addEventListener('click',()=>{
  if(!refAutoBounds||!reference?.valid)return;
- reference.bounds=refAutoBounds.slice();alignmentStatus='Разметка эталона сброшена к приблизительным границам.';
+ reference.bounds=refAutoBounds.slice();$('boundary-verified').checked=false;alignmentStatus='Разметка эталона сброшена к приблизительным границам.';
  referenceSliders();wholeGuides();render();updateWhole();
 });
 function guidedAlign(){
+ $('boundary-verified').checked=false;
  if(!decodedReference||!decodedLearner||!reference?.valid||!learner?.valid)
   return {ok:false,reason:'Для сравнения нужны обе аудиозаписи'};
  const result=alignFromReference(decodedReference,decodedLearner,reference.bounds,autoBounds||learner.bounds);
@@ -464,5 +469,6 @@ $('replay').addEventListener('click',()=>{if(!recordedUrl)return;new Audio(recor
 function cleanup(){if(recorder?.state==='recording'){recorder.onstop=null;try{recorder.stop();}catch{}}stopStream();if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}}
 window.addEventListener('pagehide',cleanup);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&recorder?.state==='recording')recorder.stop();});
+$('boundary-verified').addEventListener('change',render);
 wholeGuides();render();updateWhole();void load();
 </script></body></html>
