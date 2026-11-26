@@ -1,0 +1,6 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {interpretOpinion} from '../assets/panda-unified-semantics-v1.mjs';
+test('explicit opinion, reciprocal question and negation',()=>{for(const [q,i,t,k,n] of [["我觉得不好","express-opinion",null,"好",true],["我觉得中文很难","express-opinion","中文","难",false],["你觉得这本书怎么样？","ask-opinion","这本书",null,null],["你觉得这个电影有意思吗？","confirm-opinion","这个电影","有意思",false],["我觉得这个地方不太漂亮","express-opinion","这个地方","漂亮",true]]){const x=interpretOpinion(q);assert.equal(x?.intent,i,q);assert.equal(x.target,t,q);assert.equal(x.quality??null,k,q);assert.equal(x.negated??null,n,q);assert.equal(x.toneVerified,false);}});
+test('compositional coverage, not a bank of exact phrases',()=>{let count=0;for(const target of ["中文","这个电影","这本书","这个菜","这个工作","这个地方","这个问题","今天的天气"])for(const q of ["好","难","简单","有意思","贵","漂亮"])for(const mod of ["","很","非常","不","不太"]){const x=interpretOpinion('我觉得'+target+mod+q);assert.equal(x?.target,target);assert.equal(x.quality,q);assert.equal(x.modifier,mod);assert.equal(x.toneVerified,false);count++;}assert.equal(count,240);});
+test('unknown or ambiguous inputs do not invent meaning',()=>{for(const q of ["我觉得","我觉得中文火星","你有没有哥哥","我想休息","我觉得中文很难但是我喜欢","我觉得中文好吗"])assert.equal(interpretOpinion(q),null,q);});
