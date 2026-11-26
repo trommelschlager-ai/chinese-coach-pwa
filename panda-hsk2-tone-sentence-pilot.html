@@ -95,7 +95,7 @@
 <script type="module">
 import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
 import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
-import {alignFromReference,reviewInterval,intervalPitchEvidence,compareContextualPitch} from './assets/panda-sentence-align-v4.mjs?v=6';
+import {alignFromReference,reviewInterval,intervalPitchEvidence,compareContextualPitch,sentencePitchWindowSize} from './assets/panda-sentence-align-v4.mjs?v=7';
 const $=id=>document.getElementById(id);
 const phraseOptions=[
  {id:'daily',zh:'我早上洗脸。',py:'Wǒ zǎoshang xǐliǎn.',ru:'Утром я умываюсь.',rule:'我早: wó zǎo при слитной речи; 洗脸: xí liǎn.',weights:[1,1.15,.65,1,1.2],tokens:[
@@ -140,7 +140,7 @@ function estimateBounds(arr,begin,end,peak){
 }
 
 function analyze(buffer){
- const d=buffer.getChannelData(0),rate=buffer.sampleRate,win=Math.min(4096,d.length),hop=Math.max(512,Math.round(rate*.025));let arr=[],peak=0;
+ const d=buffer.getChannelData(0),rate=buffer.sampleRate,win=sentencePitchWindowSize(rate,d.length),hop=Math.max(512,Math.round(rate*.025));let arr=[],peak=0;
  for(let i=0;i+win<=d.length;i+=hop){const en=rms(d,i,i+win);arr.push({t:(i+win/2)/rate,en,start:i});peak=Math.max(peak,en);}
  const gate=Math.max(.0035,Math.min(.018,peak*.16));
  const active=arr.filter(x=>x.en>gate);
