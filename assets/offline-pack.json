@@ -1,5 +1,5 @@
 {
-  "version": 563,
+  "version": 588,
   "bytes": 94667664,
   "files": [
     "./assets/panda-ai-approved-layout-v547.css?v=547&rev=565",
@@ -3663,8 +3663,6 @@
     "./assets/hsk2-lesson8-shop-icons-v3.webp",
     "./assets/hsk2-lesson8-shop-sakura-v4.webp",
     "./assets/hsk2-lesson8-shop-scroll-v4.webp",
-    "./assets/panda-street-hsk1-standard-v2.css?v=3",
-    "./assets/panda-street-hsk1-standard-v2.js?v=4",
     "./assets/panda-street-sakura-existing-hero.webp",
     "./assets/panda-ai-voice-batch01-v563/PA-V563-01.mp3",
     "./assets/panda-ai-voice-batch01-v563/PA-V563-02.mp3",
@@ -3677,6 +3675,26 @@
     "./assets/panda-ai-voice-batch01-v563/PA-V563-09.mp3",
     "./assets/panda-ai-voice-batch01-v563/PA-V563-10.mp3",
     "./assets/panda-ai-voice-batch01-v563/PA-V563-11.mp3",
-    "./assets/panda-ai-voice-batch01-v563/PA-V563-12.mp3"
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-12.mp3",
+    "./assets/panda-street-voice-v20261125/54.mp3",
+    "./assets/panda-street-voice-v20261125/55.mp3",
+    "./assets/panda-street-voice-v20261125/56.mp3",
+    "./assets/panda-street-voice-v20261125/57.mp3",
+    "./assets/panda-street-voice-v20261125/58.mp3",
+    "./assets/panda-street-voice-v20261125/59.mp3",
+    "./assets/panda-street-voice-v20261125/60.mp3",
+    "./assets/panda-street-voice-v20261125/61.mp3",
+    "./assets/panda-street-voice-v20261125/62.mp3",
+    "./assets/panda-street-voice-v20261125/63.mp3",
+    "./assets/panda-street-voice-v20261125/64.mp3",
+    "./assets/panda-street-voice-v20261125/65.mp3",
+    "./assets/panda-street-voice-v20261125/66.mp3",
+    "./assets/panda-street-voice-v20261125/67.mp3",
+    "./assets/panda-street-sakura-hd-v573.webp",
+    "./assets/panda-street-approved-v582.css",
+    "./assets/panda-street-approved-art-v582.js",
+    "./assets/panda-street-approved-v582.css?v=588",
+    "./assets/panda-street-approved-art-v582.js?v=588",
+    "./assets/panda-street-hsk1-standard-v2.js?v=588"
   ]
 }
