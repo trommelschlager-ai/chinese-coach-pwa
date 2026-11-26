@@ -386,13 +386,18 @@ function contextualFragments568(raw,previousPanda){
  const next=['然后呢？','Ránhòu ne?','А дальше?'];
  const follow=['你接下来想做什么？','Nǐ jiēxiàlai xiǎng zuò shénme?','Что хочешь делать дальше?'];
  const build=(py,ru,reply,nextContext=null)=>({...result(raw,py,ru,reply,nextContext,1),domain:'everyday'});
- const travel=/^(我)?(今天|明天|后天|下周|下个月|周末)?(想|打算|准备|要)?去(.+)$/u.exec(q);
- if(travel&&Object.hasOwn(locations,travel[4])){
-  const [,subject,time='',modal='',place]=travel;
+ const travel=/^(我)?(今天|明天|后天|下周|下个月|周末)?(想|打算|准备|要)?(今天|明天|后天|下周|下个月|周末)?去(.+)$/u.exec(q);
+
+ if(travel&&Object.hasOwn(locations,travel[5])){
+  const [,subject,before='',modal='',after='',place]=travel;
+  if(before&&after)return null;
+  const time=before||after;
   const [py,ru]=locations[place];
   const mod={'':['',''],想:['xiǎng','хочу'],打算:['dǎsuàn','планирую'],准备:['zhǔnbèi','собираюсь'],要:['yào','собираюсь']}[modal];
-  const pinyin=[subject?'Wǒ':'',times[time][0],mod[0],'qù',py].filter(Boolean).join(' ');
-  const translation=[subject?'Я':'',times[time][1],mod[1],subject&&!modal?'еду':!subject&&!modal?'поехать':'поехать',ru].filter(Boolean).join(' ');
+  const parts=[subject?'Wǒ':'',times[before][0],mod[0],times[after][0],'qù',py].filter(Boolean);
+  const pinyin=parts.join(' '),local=['公园','学校','商店','超市','医院'].includes(place);
+  const verb=modal?(local?'пойти':'поехать'):subject?(local?'иду':'еду'):(local?'пойти':'поехать');
+  const translation=[subject?'Я':'',times[time][1],mod[1],verb,ru].filter(Boolean).join(' ');
   const trip=['中国','北京','上海','广州','深圳','俄罗斯'].includes(place);
   return build(pinyin,translation.charAt(0).toUpperCase()+translation.slice(1)+'.',time?(trip?goodTrip:next):askTime,time?null:'travel-time');
  }
@@ -420,6 +425,14 @@ function contextualFragments568(raw,previousPanda){
   散步:['sànbù','гулять',['你经常做这件事吗？','Nǐ jīngcháng zuò zhè jiàn shì ma?','Ты часто этим занимаешься?']]
  };
  if(Object.hasOwn(activities,q)){
+  // The established engine already owns standalone 工作 (topic choice).
+  // Bare activities are action answers only after a matching question.
+  const actionQuestion=/^你(?:(?:今天|现在|明天|周末|每天|早上|晚上))?(?:想|要|喜欢|打算|接下来想|在)?做什么$/u.test(prior);
+  const drinkQuestion=/^你(?:想|喜欢)喝什么$/u.test(prior);
+  const foodQuestion=/^你(?:想|喜欢)吃什么$/u.test(prior);
+  const clarification=prior==='你能说得简单一点吗';
+  if(q==='工作'&&!actionQuestion)return null;
+  if(!actionQuestion&&!clarification&&!(drinkQuestion&&/^喝/.test(q))&&!(foodQuestion&&q==='做饭'))return null;
   const [py,ru,reply]=activities[q];
   // When asked what to drink, acknowledge the choice instead of asking it again.
   return build(py,ru,/^你(?:想|喜欢)喝什么$/u.test(prior)&&/^喝/.test(q)?follow:reply);
