@@ -1,6 +1,6 @@
 {
-  "version": 567,
-  "bytes": 94764529,
+  "version": 568,
+  "bytes": 94830521,
   "files": [
     "./assets/panda-ai-approved-layout-v547.css?v=547&rev=565",
     "./assets/panda-natural-statements-v552.mjs?v=563&rev=565",
@@ -3680,6 +3680,8 @@
     "./assets/panda-ai-voice-batch01-v563/PA-V563-12.mp3",
     "./panda-tone-free-practice.html",
     "./assets/panda-tone-phrase-ref-v567/bushi.mp3",
-    "./assets/panda-tone-phrase-ref-v567/yitian.mp3"
+    "./assets/panda-tone-phrase-ref-v567/yitian.mp3",
+    "./panda-hsk2-tone-sentence-pilot.html",
+    "./assets/panda-sentence-align-v4.mjs?v=8"
   ]
 }
