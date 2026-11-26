@@ -44,8 +44,8 @@ const semanticRequested=dayParams.get('semantic')!=='0'&&!['practice','scenario'
 let semanticPilot=null,semanticMetadata=null,semanticContinues=false;
 const semanticFreeChat=()=>!!semanticPilot&&!state.dayMode&&entry.beginnerGreeting&&hsk2?.id===101&&hsk2.openChat===true&&state.mode==='nonstop';
 function resetSemanticPilot(){semanticPilot?.reset();semanticContinues=false;}
-function observeSemanticPanda(line){
- if(semanticFreeChat())semanticPilot.observePanda({hanzi:line.hanzi||line.panda,pinyin:line.pinyin,ru:line.ru},{continuesLearnerTurn:semanticContinues});
+function observeSemanticPanda(line,owned=line?.analysis?.semanticPilot===true){
+ if(semanticFreeChat())semanticPilot.observePanda({hanzi:line.hanzi||line.panda,pinyin:line.pinyin,ru:line.ru},{continuesLearnerTurn:semanticContinues,legacyFamily:!owned});
  semanticContinues=false;
 }
 const dayMini=Math.min(2,Math.max(0,Number(dayParams.get('mini'))||0));
@@ -154,7 +154,7 @@ function refreshHistory(){
 }
 function record(who,hanzi,pinyin,ru,analysis=null){state.history.push({who,hanzi,pinyin,ru,analysis,confidence:who==='you'?state.confidence:null});if(state.history.length>100)state.history.shift();refreshHistory()}
 function say(line,autoplay=true,analysis=null){
- state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);observeSemanticPanda(line);
+ state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);observeSemanticPanda(line,analysis?.semanticPilot===true);
  // Text-only is a valid learning response, not an audio failure. Show the
  // existing 🔇 caption, but never attempt playback without an exact MP3.
  if(autoplay&&(lookupPandaVoiceClip(line.hanzi||line.panda)||lookupPandaVoiceClip(line.audioKey)))play();

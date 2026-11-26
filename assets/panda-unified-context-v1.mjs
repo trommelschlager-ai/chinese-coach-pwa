@@ -329,7 +329,9 @@ function advanceSemanticState(state,event,interpret){
   const previous=current.lastSpeaker==='learner'?current.lastLearnerSemantic:null;
   // Re-open the exact previously displayed question only after an explicit repeat/meaning request.
   const resumed=previous&&['request-repeat','request-meaning'].includes(previous.intent)&&current.resumeQuestion?.hanzi===line.hanzi?current.resumeQuestion.pending:null;
-  const pending=resumed||reviewedOpenQuestion(line.hanzi,previous,event.continuesLearnerTurn===true,recentHobbyMemory(current))||(understood?.intent==='ask-yes-no'&&understood.subject==='你'?understood:null);
+  const reviewed=reviewedOpenQuestion(line.hanzi,previous,event.continuesLearnerTurn===true,recentHobbyMemory(current));
+  // The legacy natural family chain owns its age/sibling follow-ups. Do not steal its pending question when ordinary home chat uses the unified engine.
+  const pending=resumed||(event.legacyFamily&&['family-siblings','family-size'].includes(reviewed?.slot)?null:reviewed)||(understood?.intent==='ask-yes-no'&&understood.subject==='你'?understood:null);
   // The caller must explicitly link Panda's reply to the immediately preceding learner action.
   // A topic label alone is not evidence that the utterance refers to that action.
   const linked=event.continuesLearnerTurn===true&&previous?.intent==='express-action'&&previous.subject==='我'&&(!pending||pending.action===previous.action)?previous:null;

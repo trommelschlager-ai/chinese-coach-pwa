@@ -354,3 +354,14 @@ test('learning difficulty uses a recorded question and supportive response, with
  }
  for(const q of ['中文不难','你觉得中文很难吗？','中文很难吗？','他觉得中文很难','声调'])assert.notEqual(make().plan(q,{mode:'free-chat'})?.semantic?.intent,'express-study-difficulty',q);
 });
+
+
+test('legacy-owned family questions do not take over established family follow-up; explicit shared family still works',()=>{
+ const p=createSemanticPilot({enabled:true,lookupExact:lookupApprovedPandaVoice,metadata:pilotLearnerMetadata});
+ p.observePanda({hanzi:'明白了。你家有几口人？',pinyin:'Míngbai le. Nǐ jiā yǒu jǐ kǒu rén?',ru:'Понятно. Сколько человек в твоей семье?'},{legacyFamily:true});
+ assert.equal(p.plan('三口人',{mode:'free-chat'}),null);
+ p.observePanda({hanzi:'你有兄弟姐妹吗？',pinyin:'Nǐ yǒu xiōngdì jiěmèi ma?',ru:'У тебя есть братья или сёстры?'},{legacyFamily:true});
+ assert.equal(p.plan('我没有兄弟姐妹',{mode:'free-chat'}),null);
+ const a=p.plan('聊聊家庭吧',{mode:'free-chat'});assert.equal(a.line.hanzi,'你有兄弟姐妹吗？');p.observePanda(a.line,{continuesLearnerTurn:a.continuesLearnerTurn});
+ const b=p.plan('我没有兄弟姐妹',{mode:'free-chat'});assert.equal(b.line.hanzi,'明白了。你家有几口人？');
+});

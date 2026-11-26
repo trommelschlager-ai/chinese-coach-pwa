@@ -6,8 +6,8 @@ export function createSemanticPilot({enabled=false,lookupExact=null,correctGramm
  let state=initialSemanticState(),pending=false;
  return {
   reset(){state=initialSemanticState();pending=false;},
-  observePanda(line,{continuesLearnerTurn=false}={}){
-   state=reduceSemanticContext(state,{type:'panda',line,continuesLearnerTurn:pending&&continuesLearnerTurn===true}).state;pending=false;
+  observePanda(line,{continuesLearnerTurn=false,legacyFamily=false}={}){
+   state=reduceSemanticContext(state,{type:'panda',line,continuesLearnerTurn:pending&&continuesLearnerTurn===true,legacyFamily}).state;pending=false;
   },
   plan(raw,{mode='graded',confidence=null}={}){
    if(!enabled||mode!=='free-chat'){state=initialSemanticState();pending=false;return null;}
