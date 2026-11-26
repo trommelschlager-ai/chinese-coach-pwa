@@ -133,3 +133,16 @@ test('long pitch contour with internal missing samples is not assigned a directi
  assert.match(guide({n:2},result,null,[{t:0,st:0}]),/не означает ошибку произношения/);
  assert.match(guide({n:2},result,null,[{t:0,st:0}]),/устойчивый фрагмент/);
 });
+
+test('fallback-heavy Android contours cannot receive directional advice',()=>{
+ const start=trainer.indexOf('function toneGuidance('),end=trainer.indexOf('function controls(',start);
+ const guide=new Function(trainer.slice(start,end)+'\nreturn captureGuidance;')();
+ const r={kind:'insufficient',label:'Короткий слог',reason:'Повтори',stats:{previewOnly:true,octaveJumpCount:0},shapeHint:{direction:'fall',confidence:'exploratory',isToneGrade:false},points:[{t:0,st:0}]};
+ for(const sound of [{pitchFrames:21,fallbackPitchFrames:10},{pitchFrames:23,fallbackPitchFrames:11}]){
+  const advice=guide({n:2},r,sound,[]);
+  assert.match(advice,/48%/);
+  assert.match(advice,/Движение тона пока не подтверждено/);
+  assert.doesNotMatch(advice,/Попробуй другое движение/);
+ }
+ assert.match(guide({n:2},r,{pitchFrames:21,fallbackPitchFrames:2},[]),/плавно подними/);
+});
