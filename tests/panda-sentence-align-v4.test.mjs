@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {alignFromReference} from '../assets/panda-sentence-align-v4.mjs';
+import {alignFromReference,reviewInterval,intervalPitchEvidence} from '../assets/panda-sentence-align-v4.mjs';
 
 const rate=12000;
 const bounds=[0.10,0.42,0.81,1.17,1.52,1.95];
@@ -92,4 +92,20 @@ test('local alignment guard refuses synthetic deletion, silence, substitution an
   assert.equal(out.uncertain,true);
   assert.equal(Object.hasOwn(out,'toneScore'),false);
  }
+});
+
+test('selected audio interval is playable only inside the decoded recording',()=>{
+ const buffer={sampleRate:12000,getChannelData:()=>new Float32Array(24000)};
+ assert.deepEqual(reviewInterval(buffer,[.1,.5,.9],0),{startSec:.1,durationSec:.4});
+ assert.equal(reviewInterval(buffer,[.1,2.1],0),null);
+ assert.equal(reviewInterval(buffer,[.5,.1],0),null);
+ assert.equal(reviewInterval(buffer,[.1,.5],1),null);
+});
+test('a checked syllable boundary still requires reliable continuous pitch evidence',()=>{
+ const bounds=[.1,.5,.9],pts=Array.from({length:12},(_,i)=>({t:.11+i*.03,hz:140+i,method:'yin'}));
+ assert.equal(intervalPitchEvidence(pts,bounds,0).weak,false);
+ assert.equal(intervalPitchEvidence(pts.map((p,i)=>({...p,method:i<6?'autocorrelation':'yin'})),bounds,0).weak,true);
+ assert.equal(intervalPitchEvidence(pts.map((p,i)=>({...p,hz:i>=6?p.hz*2:p.hz})),bounds,0).weak,true);
+ assert.equal(intervalPitchEvidence(pts.filter((_,i)=>i<4||i>7),bounds,0).weak,true);
+ assert.equal(intervalPitchEvidence(pts,bounds,0).isToneGrade,false);
 });
