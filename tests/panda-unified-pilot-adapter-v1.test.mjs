@@ -136,3 +136,34 @@ test('bounded follow-up conversations connect hobbies, frequency, weekend, food 
  turn(p,'什么意思','你经常做这件事吗？');turn(p,'每天','你周末喜欢做什么？');
  turn(p,'聊聊吃的吧','你想吃什么？');assert.equal(p.plan('每天',{mode:'free-chat'}),null);
 });
+
+
+test('session memory resumes hobbies without asking the same answered question and honors corrections',()=>{
+ const make=(missing=null)=>createSemanticPilot({enabled:true,lookupExact:q=>q===missing?null:lookupApprovedPandaVoice(q)});
+ const turn=(p,raw,want)=>{
+  const x=p.plan(raw,{mode:'free-chat'});assert.equal(x?.line.hanzi,want,raw);
+  assert.equal(x.voiceStatus,'registered-exact');assert(x.audio.src,raw);
+  assert(pilotLearnerMetadata(raw,x.semantic)?.translation,raw);assert.equal(x.toneVerified,false);
+  p.observePanda(x.line,{continuesLearnerTurn:x.continuesLearnerTurn});
+ };
+ for(const hobby of ['跑步','看书','听音乐','游泳']){
+  const p=make();turn(p,'聊聊爱好吧','你有什么爱好？');
+  turn(p,hobby,'你经常做这件事吗？');turn(p,'聊聊吃的吧','你想吃什么？');
+  turn(p,'聊聊爱好吧','你周末喜欢做什么？');turn(p,'看书','你接下来想做什么？');
+  turn(p,'聊聊爱好吧','你周末有什么计划？');turn(p,'我打算休息','你接下来想做什么？');
+  turn(p,'聊聊爱好吧','你接下来想做什么？');
+  assert.equal(p.snapshot().hobbyMemory.hobby,hobby);
+  turn(p,'我不喜欢'+hobby+'了','你有什么爱好？');
+  assert.equal(p.snapshot().hobbyMemory.hobby,null);
+ }
+ for(const mode of ['reset','graded','expiry','missing']){
+  const p=make(mode==='missing'?'你经常做这件事吗？':null);
+  turn(p,'聊聊爱好吧','你有什么爱好？');
+  if(mode==='missing')assert.equal(p.plan('跑步',{mode:'free-chat'}),null);
+  else turn(p,'跑步','你经常做这件事吗？');
+  if(mode==='reset')p.reset();
+  if(mode==='graded')p.plan('明天',{mode:'graded'});
+  if(mode==='expiry')for(let i=0;i<26;i++)p.observePanda({hanzi:'你好。'});
+  turn(p,'聊聊爱好吧','你有什么爱好？');
+ }
+});
