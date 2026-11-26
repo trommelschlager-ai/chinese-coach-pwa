@@ -32,7 +32,7 @@ try{
    await page.locator('#pg346-input').fill(learner);
    await page.locator('#pg346-send').click();
    const rows=page.locator('#pg346-rows .pg346-row');
-   await page.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,reply,{timeout:5000});
+   await page.waitForFunction(expected=>document.querySelector('#pg346-rows .pg346-row:last-child .pg346-zh')?.textContent===expected,reply,{timeout:5000}).catch(async error=>{console.error('CONTEXT_DIALOGUE_FAIL',JSON.stringify({width,learner,expected:reply,observed:await rows.last().innerText(),errors}));throw error;});
    assert.equal(await rows.last().locator('.pg346-zh').textContent(),reply,'Wrong Panda answer: '+learner);
    if(reply==='今天我有空，可以聊聊天。') assert.equal(await rows.last().locator('.pg346-py').textContent(),'Jīntiān wǒ yǒu kòng, kěyǐ liáoliao tiān.');
    if(reply==='那你想聊聊天吗？') assert.equal(await rows.last().locator('.pg346-py').textContent(),'Nà nǐ xiǎng liáoliao tiān ma?');
