@@ -108,12 +108,72 @@ const OPEN_ANSWERS=Object.freeze({
   '我想坐火车':['Wǒ xiǎng zuò huǒchē.','Я хочу поехать на поезде.','坐火车']
  }
 });
+
+// Compose reviewed answers rather than enumerating every full sentence.
+// Anchored patterns are limited to the currently displayed question. Never
+// treat negation, a question, another person's action or an unknown word as an answer.
+const CLOCK_HOURS=Object.freeze({'一':[1,'yī'],'两':[2,'liǎng'],'三':[3,'sān'],'四':[4,'sì'],'五':[5,'wǔ'],'六':[6,'liù'],'七':[7,'qī'],'八':[8,'bā'],'九':[9,'jiǔ'],'十':[10,'shí'],'十一':[11,'shíyī'],'十二':[12,"shí'èr"]});
+const CLOCK_SUFFIXES=Object.freeze({'':[0,''],'半':[30,' bàn'],'一刻':[15,' yí kè'],'十五分':[15,' shíwǔ fēn'],'三十分':[30,' sānshí fēn'],'四十五分':[45,' sìshíwǔ fēn']});
+const reviewedSentence=parts=>{const s=parts.filter(Boolean).join(' ');return s.charAt(0).toUpperCase()+s.slice(1)+'.';};
+function composeClockAnswer(slot,key){
+ const sleep=slot==='daily-sleep',work=slot==='work-time';
+ if(!sleep&&!work)return null;
+ const pattern=sleep?/^(我)?(晚上)?(十二|十一|十|一|两|三|四|五|六|七|八|九)点(半|一刻|十五分|三十分|四十五分)?(睡觉)?$/u:/^(我)?(早上|上午)?(十二|十一|十|一|两|三|四|五|六|七|八|九)点(半|一刻|十五分|三十分|四十五分)?(去上班|上班)?$/u;
+ const m=pattern.exec(key);if(!m)return null;
+ const [,subject,period,hour,suffix='',action]=m;
+ // A subject alone ("我七点") is a natural contextual answer, but
+ // do not infer a 24h time for ambiguous late-night one-to-six.
+ const [h,hpy]=CLOCK_HOURS[hour],[min,mpy]=CLOCK_SUFFIXES[suffix];
+ const clockPy=hpy+' diǎn'+mpy;
+ const time=h+(min?':'+String(min).padStart(2,'0')+ '':'');
+ const clockRu='в '+time;
+ const timeRu=period==='晚上'?' '+(h>=7&&h<=11?'вечера':h===12?'ночи':'ночи'):period?' утра':'';
+ const ru=action?(sleep?'Я ложусь спать ':'Я иду на работу ')+clockRu+timeRu:clockRu.charAt(0).toUpperCase()+clockRu.slice(1)+timeRu;
+ const py=reviewedSentence([subject?'wǒ':'',period?({晚上:'wǎnshang',早上:'zǎoshang',上午:'shàngwǔ'}[period]):'',clockPy,action?({睡觉:'shuìjiào',去上班:'qù shàngbān',上班:'shàngbān'}[action]):'']);
+ return [py,ru+'.',time+(period?':'+period:'')];
+}
+function composeReviewedAnswer(slot,key){
+ const clock=composeClockAnswer(slot,key);if(clock)return clock;
+ if(slot==='daily-breakfast'){
+  const m=/^(我)?(早上|每天)?(不|一般不|有时候不|有时候|通常|一般|每天|从来不)?吃早饭$/u.exec(key);
+  if(m){
+   const [,subject,period,frequency='']=m;
+   const f={不:['bù','не завтракаю','no'],一般不:['yìbān bù','обычно не завтракаю','no'],有时候不:['yǒu shíhou bù','иногда не завтракаю','sometimes'],有时候:['yǒu shíhou','иногда завтракаю','sometimes'],通常:['tōngcháng','обычно завтракаю','yes'],一般:['yìbān','обычно завтракаю','yes'],每天:['měitiān','завтракаю каждый день','yes'],从来不:['cónglái bù','никогда не завтракаю','no'],'':['','завтракаю','yes']}[frequency];
+   // Reject conflicting doubled time/frequency ("每天每天").
+   if(period==='每天'&&frequency==='每天')return null;
+   const ru='Я '+f[1]+(period==='早上'?' утром':period==='每天'?' каждый день':'')+'.';
+   return [reviewedSentence([subject?'wǒ':'',period?({早上:'zǎoshang',每天:'měitiān'}[period]):'',f[0],'chī zǎofàn']),ru,f[2]];
+  }
+ }
+ if(slot==='work-busy'){
+  const m=/^(我)?(今天)?(很|非常|特别|有点|不太|不|一点也不)?忙$/u.exec(key);
+  if(m){const [,subject,day,degree='']=m;const f={很:['hěn','очень','yes'],非常:['fēicháng','очень','yes'],特别:['tèbié','особенно','yes'],有点:['yǒudiǎn','немного','yes'],不太:['bú tài','не очень','no'],不:['bù','не','no'],一点也不:['yìdiǎn yě bù','совсем не','no'],'':['','','yes']}[degree];return [reviewedSentence([subject?'wǒ':'',day?'jīntiān':'',f[0],'máng']),['Я',day?'сегодня':'',f[1],'занят(а).'].filter(Boolean).join(' '),f[2]];}
+ }
+ if(slot==='hobby-frequency'){
+  const m=/^(我)?(不经常|经常|每天|有时候|偶尔|很少)(跑步|看书|听音乐|游泳)?$/u.exec(key);
+  if(m){
+   const [,subject,freq,activity]=m;
+   const f={不经常:['bù jīngcháng','не часто','rarely'],经常:['jīngcháng','часто','often'],每天:['měitiān','каждый день','daily'],有时候:['yǒu shíhou','иногда','sometimes'],偶尔:['ǒu'+"’"+'ěr','изредка','sometimes'],很少:['hěn shǎo','редко','rarely']}[freq];
+   const a=activity?{跑步:['pǎobù','бегаю'],看书:['kàn shū','читаю книги'],听音乐:['tīng yīnyuè','слушаю музыку'],游泳:['yóuyǒng','плаваю']}[activity]:null;
+   return [reviewedSentence([subject?'wǒ':'',f[0],a?.[0]]),(a?'Я '+f[1]+' '+a[1]:f[1])+'.',f[2]];
+  }
+ }
+ if(slot==='travel-time'){
+  const dates={今天:['jīntiān','сегодня'],明天:['míngtiān','завтра'],后天:['hòutiān','послезавтра'],下周:['xià zhōu','на следующей неделе'],下个月:['xià ge yuè','в следующем месяце'],明年:['míngnián','в следующем году']};
+  const m=/^(我)?(今天|明天|后天|下周|下个月|明年)(我)?(打算|想|准备|要)?(去中国)?$/u.exec(key);
+  if(m){const [,first,date,second,verb,dest]=m;if(first&&second||verb&&!dest||second&&!dest)return null;const [dpy,dru]=dates[date];const verbs={打算:['dǎsuàn','планирую'],想:['xiǎng','хочу'],准备:['zhǔnbèi','собираюсь'],要:['yào','собираюсь']};const v=verb?verbs[verb]:null;return [reviewedSentence([first?'wǒ':'',dpy,second?'wǒ':'',v?.[0],dest?'qù Zhōngguó':'']),dest?'Я '+(v?v[1]+' поехать':'поеду')+' в Китай '+dru+'.':dru+'.',date];}
+ }
+ return null;
+}
+
 function interpretOpenAnswer(raw,context){
  const pending=context.pendingQuestion;
  if(pending?.intent!=='ask-open-reviewed'||!Object.hasOwn(OPEN_ANSWERS,pending.slot))return null;
  const answers=OPEN_ANSWERS[pending.slot],key=cleanOpen(raw);
- if(!Object.hasOwn(answers,key))return null;
- const [pinyin,translation,value]=answers[key];
+ // Keep exact reviewed translations first. Reject internal sentence/question punctuation for composed answers.
+ const item=Object.hasOwn(answers,key)?answers[key]:/[？?！!。；;，,]/u.test(String(raw).trim().replace(/[。！!]$/u,''))?null:composeReviewedAnswer(pending.slot,key);
+ if(!item)return null;
+ const [pinyin,translation,value]=item;
  return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot.startsWith('hobby')?'leisure':pending.slot.startsWith('food')?'food':pending.slot==='next-action'||pending.slot.startsWith('daily')?'daily':pending.slot.startsWith('work')?'work':pending.slot.startsWith('family')?'family':pending.slot==='study-reason'?'study':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
 }
 function reviewedOpenQuestion(hanzi,previous,linked,memory){

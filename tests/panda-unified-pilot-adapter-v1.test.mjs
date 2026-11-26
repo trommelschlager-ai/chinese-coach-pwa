@@ -316,3 +316,25 @@ test('all five uploaded learner travel recordings resolve exactly and match veri
  }
  assert.equal(lookupApprovedPandaVoice('我打算坐飞机去北京'),null);
 });
+
+
+test('composed contextual answers cover clock, frequency, work and travel without guessing unrelated facts',()=>{
+ const make=()=>createSemanticPilot({enabled:true,lookupExact:lookupApprovedPandaVoice,metadata:pilotLearnerMetadata});
+ const turn=(p,q,w)=>{const x=p.plan(q,{mode:'free-chat'});assert.equal(x?.line.hanzi,w,q);assert.equal(x.voiceStatus,'registered-exact');assert(x.spoken?.translation&&x.spoken?.pinyin,q);assert.equal(x.toneVerified,false);p.observePanda(x.line,{continuesLearnerTurn:x.continuesLearnerTurn});};
+ const groups=[
+ {start:['聊聊我的一天吧','你早上吃早饭吗？'],answers:['我每天吃早饭','我早上一般不吃早饭','我有时候吃早饭','我从来不吃早饭','我早上通常吃早饭'],next:'你晚上几点睡觉？'},
+ {start:['聊聊工作吧','你今天忙吗？'],answers:['我今天不忙','我今天非常忙','今天有点忙','我今天不太忙','我一点也不忙'],next:'你几点去上班？'},
+ {start:['聊聊爱好吧','你有什么爱好？'],pre:['我喜欢跑步','你经常做这件事吗？'],answers:['我每天跑步','我偶尔跑步','我很少跑步','我经常跑步','有时候跑步'],next:'你周末喜欢做什么？'},
+ {start:['我想学中文','你为什么想学中文？'],pre:['因为我想去中国','你打算什么时候去？'],answers:['后天','我后天打算去中国','我明年准备去中国','下周我想去中国','我下个月要去中国'],next:'你打算怎么去？'}
+ ];
+ let count=0;for(const g of groups)for(const answer of g.answers){const p=make();turn(p,...g.start);if(g.pre)turn(p,...g.pre);turn(p,answer,g.next);count++;}
+ for(const hour of ['一','两','三','四','五','六','七','八','九','十','十一','十二'])for(const suffix of ['','半','一刻','十五分','三十分','四十五分']){
+  const p=make();turn(p,'聊聊工作吧','你今天忙吗？');turn(p,'忙','你几点去上班？');turn(p,'我早上'+hour+'点'+suffix+'去上班','你接下来想做什么？');count++;
+  const q=make();turn(q,'聊聊我的一天吧','你早上吃早饭吗？');turn(q,'吃','你晚上几点睡觉？');turn(q,'我晚上'+hour+'点'+suffix+'睡觉','你接下来想做什么？');count++;
+ }
+ assert.equal(count,164);
+ for(const a of ['他早上七点去上班','我不想七点去上班','我早上七点去上班吗？','我早上十三点去上班','我早上七点去上班。你呢？']){
+  const p=make();turn(p,'聊聊工作吧','你今天忙吗？');turn(p,'忙','你几点去上班？');assert.notEqual(p.plan(a,{mode:'free-chat'})?.semantic?.slot,'work-time',a);
+ }
+ for(const a of ['后天','七点半','偶尔'])assert.equal(make().plan(a,{mode:'free-chat'}),null,a);
+});
