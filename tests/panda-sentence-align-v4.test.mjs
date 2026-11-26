@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {alignFromReference} from '../assets/panda-sentence-align-v4.mjs';
+import {alignFromReference,reviewInterval,intervalPitchEvidence} from '../assets/panda-sentence-align-v4.mjs';
 
 const rate=12000;
 const bounds=[0.10,0.42,0.81,1.17,1.52,1.95];
@@ -36,4 +36,86 @@ test('large duration mismatch does not generate dubious boundaries',()=>{
 test('reject malformed syllable labels',()=>{
  const out=alignFromReference(syntheticSpeech(),syntheticSpeech(),[0.1,.4,.3,1.5],[0.1,.4,.8,1.5]);
  assert.equal(out.ok,false);
+});
+
+test('silence and boundaries outside the recording cannot produce successful alignment',()=>{
+ const blank={sampleRate:rate,getChannelData:()=>new Float32Array(rate*2.1)};
+ assert.equal(alignFromReference(blank,blank,bounds,bounds).ok,false);
+ assert.equal(alignFromReference(syntheticSpeech(),blank,bounds,bounds).ok,false);
+ assert.equal(alignFromReference(syntheticSpeech(),syntheticSpeech(),bounds,[.1,.42,.81,1.17,1.52,2.15]).ok,false);
+ assert.equal(alignFromReference(syntheticSpeech(),syntheticSpeech(),[-.1,.42,.81,1.17,1.52,1.95],bounds).ok,false);
+});
+
+test('sentence pilot withholds per-character movement until boundaries are reviewed',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const page=readFileSync(new URL('../panda-hsk2-tone-sentence-pilot.html',import.meta.url),'utf8');
+ const start=page.indexOf('function describeMovement(i)'),end=page.indexOf('function adjustControls()',start);
+ assert(start>=0&&end>start);
+ const run=new Function('learner','$','tokens','syllableQuality','median',page.slice(start,end)+'\nreturn describeMovement(0);');
+ assert.match(run({valid:true},()=>({checked:false}),[{py:'wǒ'}],()=>({weak:false}),()=>0),/Границы пока не проверены/);
+ assert(page.includes('id="boundary-verified"'));
+ assert(page.includes("function guidedAlign(){\n $('boundary-verified').checked=false;"));
+});
+
+function distinctIntervals(seq=[0,1,2,3,4],speed=1,blank=-1){
+ const bs=[.1];
+ for(const k of seq)bs.push(bs.at(-1)+(bounds[k+1]-bounds[k])*speed);
+ const samples=new Float32Array(Math.ceil(rate*(bs.at(-1)+.15)));
+ let phase=0;
+ for(let i=0;i<samples.length;i++){
+  const t=i/rate,idx=bs.findIndex((b,j)=>j>0&&t<b)-1;
+  if(idx<0||t<bs[0]||idx===blank)continue;
+  const k=seq[idx],f=[135,160,145,175,130][k];
+  phase+=2*Math.PI*f/rate;
+  const gain=Math.max(0,Math.min(1,(t-bs[idx])/.012,(bs[idx+1]-t)/.012));
+  samples[i]=gain*(.12*Math.sin(phase)+.13*Math.sin(2*Math.PI*[450,750,1100,1700,2700][k]*t)+.07*Math.sin(2*Math.PI*[2100,2800,3400,4000,4400][k]*t));
+ }
+ return {b:bs,buf:{sampleRate:rate,getChannelData:()=>samples}};
+}
+test('local alignment guard refuses synthetic deletion, silence, substitution and reordering',()=>{
+ const reference=distinctIntervals();
+ const compare=learner=>{
+  const b=learner.b.length===6?learner.b:Array.from({length:6},(_,i)=>learner.b[0]+(learner.b.at(-1)-learner.b[0])*i/5);
+  return alignFromReference(reference.buf,learner.buf,reference.b,b);
+ };
+ assert.equal(compare(reference).ok,true);
+ assert.equal(compare(distinctIntervals([0,1,2,3,4],1.28)).ok,true);
+ for(const learner of [
+  distinctIntervals([0,1,3,4]),
+  distinctIntervals([0,1,2,3,4],1,2),
+  distinctIntervals([0,1,1,3,4]),
+  distinctIntervals([4,3,2,1,0]),
+  distinctIntervals([0,0,0,0,0])
+ ]){
+  const out=compare(learner);
+  assert.equal(out.ok,false);
+  assert.equal(out.uncertain,true);
+  assert.equal(Object.hasOwn(out,'toneScore'),false);
+ }
+});
+
+test('selected audio interval is playable only inside the decoded recording',()=>{
+ const buffer={sampleRate:12000,getChannelData:()=>new Float32Array(24000)};
+ assert.deepEqual(reviewInterval(buffer,[.1,.5,.9],0),{startSec:.1,durationSec:.4});
+ assert.equal(reviewInterval(buffer,[.1,2.1],0),null);
+ assert.equal(reviewInterval(buffer,[.5,.1],0),null);
+ assert.equal(reviewInterval(buffer,[.1,.5],1),null);
+});
+test('a checked syllable boundary still requires reliable continuous pitch evidence',()=>{
+ const bounds=[.1,.5,.9],pts=Array.from({length:12},(_,i)=>({t:.11+i*.03,hz:140+i,method:'yin'}));
+ assert.equal(intervalPitchEvidence(pts,bounds,0).weak,false);
+ assert.equal(intervalPitchEvidence(pts.map((p,i)=>({...p,method:i<6?'autocorrelation':'yin'})),bounds,0).weak,true);
+ assert.equal(intervalPitchEvidence(pts.map((p,i)=>({...p,hz:i>=6?p.hz*2:p.hz})),bounds,0).weak,true);
+ assert.equal(intervalPitchEvidence(pts.filter((_,i)=>i<4||i>7),bounds,0).weak,true);
+ assert.equal(intervalPitchEvidence(pts,bounds,0).isToneGrade,false);
+});
+
+test('substantially shorter input requires manual review, never a pronunciation error',()=>{
+ const out=alignFromReference(syntheticSpeech(),syntheticSpeech(.67),bounds,bounds.map(x=>x*.67));
+ assert.equal(out.ok,false);
+ assert.equal(out.uncertain,true);
+ assert.match(out.reason,/не ошибка произношения/);
+ assert.equal(Object.hasOwn(out,'toneScore'),false);
+ const normal=alignFromReference(syntheticSpeech(),syntheticSpeech(.8),bounds,bounds.map(x=>x*.8));
+ assert.equal(normal.ok,true);
 });
