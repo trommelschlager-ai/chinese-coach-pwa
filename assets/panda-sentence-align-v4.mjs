@@ -257,3 +257,13 @@ export function compareContextualPitch({surfaceTone,evidence,referenceEvidence,v
   return reply('contrast','В измеренном участке направление противоположно образцу. '+(surfaceTone===2?'Попробуй плавно повысить голос.':'Попробуй плавно понизить голос.')+' Послушай обе записи и повтори. Это подсказка, не оценка тона.');
  return reply('review','Движение отличается от измеренного образца, но причина неясна. Сравни записи на слух и повтори естественно.');
 }
+
+
+// Keep the pitch-analysis duration consistent across ordinary decoded
+// AudioContext rates. Preserve the estimator's 1024-sample minimum at
+// lower rates, and never read beyond the decoded audio. This is only for
+// the phrase pilot; the live and standalone syllable analyzers are unchanged.
+export function sentencePitchWindowSize(rate,sampleCount){
+ if(!Number.isFinite(rate)||rate<8000||!Number.isInteger(sampleCount)||sampleCount<0)return 0;
+ return Math.min(sampleCount,Math.max(1024,Math.round(rate*.065)));
+}
