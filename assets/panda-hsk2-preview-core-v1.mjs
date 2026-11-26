@@ -72,7 +72,7 @@ function stopAudio(){const a=audio;audio=null;clearTimeout(audioBufferTimer);can
 function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;micActivatedAt=0;if(r){r.onstart=r.onaudiostart=r.onspeechstart=r.onspeechend=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
 let blockedPlayback=null;
-function play(entry=null){
+function play(entry=null,retry=0){
  blockedPlayback=null;
  const currentLine=entry||current();
  const replyKey=normalize(currentLine?.hanzi||currentLine?.panda||'');
@@ -87,7 +87,7 @@ function play(entry=null){
  // Every indexed phrase is now its own MP3; playback starts at zero.
  a.muted=false;a.volume=1;
  const animate=()=>{if(!valid()||a.paused||a.ended)return;pandaVisualAudioLevel=Math.max(0,Math.min(1,envelope?envelope.levels[Math.floor(a.currentTime/envelope.binSeconds)]||0:.5+.5*Math.sin(a.currentTime*23)));rig.setLevel(pandaVisualAudioLevel);audioFrame=requestAnimationFrame(animate)};
- a.onplaying=()=>{if(valid()){clearTimeout(audioBufferTimer);pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти|Загрузка аудио)/.test($('status').textContent))note('');animate()}};
+ a.onplaying=()=>{if(valid()){clearTimeout(audioBufferTimer);pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти|Загрузка аудио|Повторная загрузка аудио)/.test($('status').textContent))note('');animate()}};
  const waitForAudio=()=>{if(!valid())return;cancelAnimationFrame(audioFrame);pose('idle');note('Загрузка аудио задерживается…');clearTimeout(audioBufferTimer);audioBufferTimer=setTimeout(()=>{if(valid())failed('Аудио не загрузилось за 10 секунд. Нажми 🔊 на реплике Панды или проверь интернет.')},10000)};
  a.onwaiting=waitForAudio;
  a.onstalled=waitForAudio;
@@ -107,7 +107,16 @@ function play(entry=null){
   if(state.mode==='nonstop'&&state.followup){state.pendingAudioReply=replyKey;clearTimeout(followupTimer);}
   note(message);
  };
- a.onerror=()=>failed('Запись не загрузилась. Нажми 🔊 на реплике Панды, чтобы продолжить.');
+ a.onerror=()=>{
+  if(!valid())return;
+  // A transient media error in experimental free chat gets exactly one
+  // fresh attempt at the identical approved MP3, never another voice.
+  if(semanticFreeChat()&&retry===0&&!document.hidden){
+   stopAudio();try{a.removeAttribute('src');a.load()}catch{}
+   note('Повторная загрузка аудио…');play(entry,1);return;
+  }
+  failed('Запись не загрузилась. Нажми 🔊 на реплике Панды, чтобы продолжить.');
+ };
  a.play().catch(()=>{if(valid()){blockedPlayback=entry||currentLine;failed('Браузер не включил звук автоматически. Нажми 🔊 на реплике Панды, чтобы продолжить.')}});
 }
 function cancelFollowup(){clearTimeout(followupTimer);state.followup=null;state.pendingAudioReply=null}

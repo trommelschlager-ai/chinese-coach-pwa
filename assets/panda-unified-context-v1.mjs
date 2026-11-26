@@ -23,7 +23,12 @@ const OPEN_ANSWERS=Object.freeze({
   '明天':['Míngtiān.','Завтра.','明天'],
   '下周':['Xià zhōu.','На следующей неделе.','下周'],
   '下个月':['Xià ge yuè.','В следующем месяце.','下个月'],
-  '明年':['Míngnián.','В следующем году.','明年']
+  '明年':['Míngnián.','В следующем году.','明年'],
+  '我明天去中国':['Wǒ míngtiān qù Zhōngguó.','Я завтра поеду в Китай.','明天'],
+  '我下个月去中国':['Wǒ xià ge yuè qù Zhōngguó.','Я поеду в Китай в следующем месяце.','下个月'],
+  '下个月我想去中国':['Xià ge yuè wǒ xiǎng qù Zhōngguó.','В следующем месяце я хочу поехать в Китай.','下个月'],
+  '我下个月想去中国':['Wǒ xià ge yuè xiǎng qù Zhōngguó.','Я хочу поехать в Китай в следующем месяце.','下个月'],
+  '我还没想好':['Wǒ hái méi xiǎng hǎo.','Я ещё не решил(а).','undecided']
  },
  'hobby':{
   '跑步':['Pǎobù.','Бегать.','跑步'],
@@ -98,7 +103,9 @@ const OPEN_ANSWERS=Object.freeze({
  'travel-method':{
   '坐飞机':['Zuò fēijī.','На самолёте.','坐飞机'],
   '坐火车':['Zuò huǒchē.','На поезде.','坐火车'],
-  '坐高铁':['Zuò gāotiě.','На скоростном поезде.','坐高铁']
+  '坐高铁':['Zuò gāotiě.','На скоростном поезде.','坐高铁'],
+  '我打算坐飞机':['Wǒ dǎsuàn zuò fēijī.','Я планирую лететь на самолёте.','坐飞机'],
+  '我想坐火车':['Wǒ xiǎng zuò huǒchē.','Я хочу поехать на поезде.','坐火车']
  }
 });
 function interpretOpenAnswer(raw,context){
@@ -198,12 +205,30 @@ function updateTopicMemory(state,semantic){
  if(semantic?.intent==='answer-open-reviewed'&&TOPIC_FACTS.includes(semantic.slot))m[semantic.slot]={value:semantic.value,at:state.turn+1};
  return m;
 }
+
+function interpretTravelQuestion(raw,context){
+ const key=cleanOpen(raw);
+ const questions={
+  '什么时候去中国':['Shénme shíhou qù Zhōngguó?','Когда ехать в Китай?'],
+  '什么时候去':['Shénme shíhou qù?','Когда ехать?'],
+  '你什么时候去中国':['Nǐ shénme shíhou qù Zhōngguó?','Когда ты поедешь в Китай?'],
+  '你打算什么时候去中国':['Nǐ dǎsuàn shénme shíhou qù Zhōngguó?','Когда ты собираешься поехать в Китай?']
+ };
+ if(!Object.hasOwn(questions,key))return null;
+ const [pinyin,translation]=questions[key];
+ if(!key.startsWith('你')&&context.pendingQuestion?.slot==='travel-time'&&context.lastPandaTurn?.hanzi){
+  return {raw:String(raw),intent:'request-meaning',reference:context.lastPandaTurn.hanzi,travelQuestion:true,pinyin,translation,toneVerified:false};
+ }
+ if(key==='什么时候去')return null;
+ return {raw:String(raw),intent:'ask-panda-travel-time',pinyin,translation,toneVerified:false};
+}
+
 function dispatchSemantic(raw,context={},parsers){
  const source=String(raw??'').trim();
  if(!source)return null;
  const normalized=source.normalize('NFC').replace(/[\p{P}\s]/gu,'');
  if(!normalized||normalized.length>160)return null;
- return interpretTopicRequest(source)||interpretHobbyCorrection(source,context)||interpretOpenAnswer(source,context)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
+ return interpretTopicRequest(source)||interpretHobbyCorrection(source,context)||interpretTravelQuestion(source,context)||interpretOpenAnswer(source,context)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
 }
 export const interpretSemanticTurn=(raw,context={})=>dispatchSemantic(raw,context,{contextual:interpretContextualTurn,linked:interpretLinkedTurn,opinion:interpretOpinion,action:interpretAction});
 export function initialSemanticState(){

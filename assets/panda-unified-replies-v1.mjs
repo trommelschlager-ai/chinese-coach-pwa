@@ -9,6 +9,7 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
  const clarify=()=>line('你想问什么？','Nǐ xiǎng wèn shénme?','Что ты хочешь спросить?','clarification');
  const virtual=(action,py,ru)=>line('我是虚拟熊猫，不能真的'+action+'。','Wǒ shì xūnǐ xióngmāo, bù néng zhēn de '+py+'.','Я виртуальная панда и не могу на самом деле '+ru+'.');
  const {intent,action,topic,modality,negated}=semantic;
+ if(intent==='ask-panda-travel-time')return line('我是虚拟熊猫，没有实际的旅行经历。','Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.','Я виртуальная панда, у меня нет реального опыта путешествий.');
  if(intent==='request-repeat'||intent==='request-meaning'){
   const p=referencePlanner(prior,semantic);
   return p?{...p,continuesLearnerTurn:false}:clarify();
@@ -70,6 +71,7 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
   if(['hobby-weekend','hobby-plan','food-more','food-preference'].includes(semantic.slot))return line('你接下来想做什么？','Nǐ jiēxiàlai xiǎng zuò shénme?','Что ты хочешь делать дальше?','follow-up',true);
   if(semantic.slot==='next-action')return semantic.value==='rest'?rest():semantic.value==='study'?line('你为什么想学中文？','Nǐ wèishénme xiǎng xué Zhōngwén?','Почему ты хочешь учить китайский?','follow-up',true):null;
   if(semantic.slot==='study-reason'&&semantic.value==='china-trip')return line('你打算什么时候去？','Nǐ dǎsuàn shénme shíhou qù?','Когда ты собираешься поехать?','follow-up',true);
+  if(semantic.slot==='travel-time'&&semantic.value==='undecided')return line('好的。我们聊点别的吧！','Hǎo de. Wǒmen liáo diǎn bié de ba!','Хорошо. Давай поговорим о другом!');
   if(semantic.slot==='travel-time')return line('你打算怎么去？','Nǐ dǎsuàn zěnme qù?','Как ты собираешься добраться?','follow-up',true);
   if(semantic.slot==='travel-method')return line('祝你旅途愉快！','Zhù nǐ lǚtú yúkuài!','Желаю приятного путешествия!','reply');
   return null;
