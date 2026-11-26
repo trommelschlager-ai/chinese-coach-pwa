@@ -1,5 +1,5 @@
 {
-  "version": 574,
+  "version": 582,
   "bytes": 94726480,
   "files": [
     "./assets/panda-natural-statements-v552.mjs?v=561",
@@ -3677,6 +3677,8 @@
     "./assets/panda-street-voice-v20261125/65.mp3",
     "./assets/panda-street-voice-v20261125/66.mp3",
     "./assets/panda-street-voice-v20261125/67.mp3",
-    "./assets/panda-street-sakura-hd-v573.webp"
+    "./assets/panda-street-sakura-hd-v573.webp",
+    "./assets/panda-street-approved-v582.css",
+    "./assets/panda-street-approved-art-v582.js"
   ]
 }
