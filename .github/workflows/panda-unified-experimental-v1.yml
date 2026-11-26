@@ -1,0 +1,26 @@
+name: Panda unified experimental free chat
+on:
+  pull_request:
+    paths:
+      - 'assets/panda-unified-**'
+      - 'assets/panda-hsk2-preview-core-v1.mjs'
+      - 'tests/panda-unified-**'
+      - 'scripts/qa-panda-unified-experimental-v1.mjs'
+      - '.github/workflows/panda-unified-experimental-v1.yml'
+permissions:
+  contents: read
+jobs:
+  isolated-pilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: node --test tests/panda-unified-*.test.mjs
+      - run: npx playwright install --with-deps chromium
+      - run: |
+          npm run dev -- --port 4173 > /tmp/panda-static.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/panda-voice-pilot.html >/dev/null && break; sleep 1; done
+          node scripts/qa-panda-unified-experimental-v1.mjs
