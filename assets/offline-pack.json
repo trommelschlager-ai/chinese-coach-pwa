@@ -1,5 +1,5 @@
 {
-  "version": 589,
+  "version": 590,
   "bytes": 94667664,
   "files": [
     "./assets/panda-ai-approved-layout-v547.css?v=547&rev=565",
@@ -3697,6 +3697,7 @@
     "./assets/panda-street-approved-art-v582.js?v=588",
     "./assets/panda-street-hsk1-standard-v2.js?v=588",
     "./panda-street-hsk1-map.html",
-    "./panda-street-slang-lesson3-preview.html"
+    "./panda-street-slang-lesson3-preview.html",
+    "./assets/panda-street-particles-practice-v1.mjs?v=1"
   ]
 }
