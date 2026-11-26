@@ -98,3 +98,41 @@ test('clarification replays exact question without losing its pending answer; to
   assert.equal(p.plan('明天',{mode:'free-chat'}),null,alt);
  }
 });
+
+
+test('bounded follow-up conversations connect hobbies, frequency, weekend, food and next activity',()=>{
+ const make=()=>createSemanticPilot({enabled:true,lookupExact:lookupApprovedPandaVoice});
+ const turn=(p,raw,want)=>{
+  const x=p.plan(raw,{mode:'free-chat'});
+  assert.equal(x?.line.hanzi,want,raw);
+  assert.equal(x.voiceStatus,'registered-exact');
+  assert(x.audio.src,raw);
+  assert(pilotLearnerMetadata(raw,x.semantic)?.translation,raw);
+  assert.equal(x.toneVerified,false);
+  p.observePanda(x.line,{continuesLearnerTurn:x.continuesLearnerTurn});
+ };
+ let chains=0,turns=0;
+ for(const h of ['跑步','看书','听音乐','游泳'])
+ for(const f of ['经常','不经常','每天','有时候','是的','对'])
+ for(const weekend of ['我周末喜欢看书','我周末喜欢游泳','休息']){
+  const p=make();turn(p,'聊聊爱好吧','你有什么爱好？');turn(p,h,'你经常做这件事吗？');
+  turn(p,f,'你周末喜欢做什么？');turn(p,weekend,'你接下来想做什么？');
+  turn(p,'休息','那你休息一下吧。');chains++;turns+=5;
+ }
+ for(const food of ['面条','米饭','饺子'])
+ for(const more of ['不要了','不用了','还要米饭','还要饺子','还要']){
+  const p=make();turn(p,'聊聊吃的吧','你想吃什么？');turn(p,food,'还要别的吗？');
+  if(more==='还要'){turn(p,more,'你还喜欢吃什么？');turn(p,'我喜欢吃饺子','你接下来想做什么？');turns++;}
+  else turn(p,more,'你接下来想做什么？');
+  turn(p,'学习中文','你为什么想学中文？');turn(p,'因为我想去中国','你打算什么时候去？');
+  turn(p,'明天','你打算怎么去？');turn(p,'坐飞机','祝你旅途愉快！');chains++;turns+=7;
+ }
+ assert.equal(chains,87);assert.equal(turns,468);
+ for(const [q,a] of [['你经常做这件事吗？','每天'],['你周末喜欢做什么？','看书'],['还要别的吗？','不用了'],['你接下来想做什么？','休息']]){
+  const p=make();p.observePanda({hanzi:q});assert.equal(p.plan(a,{mode:'free-chat'}),null,a);
+ }
+ for(const a of ['经常','还要','每天'])assert.equal(make().plan(a,{mode:'free-chat'}),null,a);
+ const p=make();turn(p,'聊聊爱好吧','你有什么爱好？');turn(p,'跑步','你经常做这件事吗？');
+ turn(p,'什么意思','你经常做这件事吗？');turn(p,'每天','你周末喜欢做什么？');
+ turn(p,'聊聊吃的吧','你想吃什么？');assert.equal(p.plan('每天',{mode:'free-chat'}),null);
+});
