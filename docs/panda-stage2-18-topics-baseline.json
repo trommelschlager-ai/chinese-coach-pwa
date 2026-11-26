@@ -1,0 +1,536 @@
+{
+  "baseline": "b21bcae5106c9118d1f0f059b146dcb1bd1785e6",
+  "scope": "54 fresh prompts, three per planned topic. Direct natural statement and semantic planner source execution, not full UI or other legacy routes; no audio lookup, no correctness rating. Missing here means not recognized by these two paths only.",
+  "summary": {
+    "input": 54,
+    "oldNatural": 28,
+    "semantic": 15,
+    "newReply": 13,
+    "reviewedMetadata": 5,
+    "neither": 16
+  },
+  "topics": [
+    {
+      "topic": "Приветствия",
+      "inputs": [
+        {
+          "topic": "Приветствия",
+          "input": "你好",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Приветствия",
+          "input": "我很好，你呢？",
+          "oldReply": "我也很好，谢谢！",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Приветствия",
+          "input": "你今天好吗？",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Знакомство",
+      "inputs": [
+        {
+          "topic": "Знакомство",
+          "input": "你叫什么名字？",
+          "oldReply": "我叫熊猫。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Знакомство",
+          "input": "你是哪国人？",
+          "oldReply": "我是虚拟熊猫，没有国籍。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Знакомство",
+          "input": "你住在哪儿？",
+          "oldReply": "我住在熊猫的世界里。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Семья",
+      "inputs": [
+        {
+          "topic": "Семья",
+          "input": "我没有哥哥。",
+          "oldReply": "明白了。你家有几口人？",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Семья",
+          "input": "你有没有姐姐？",
+          "oldReply": "我没有姐姐。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Семья",
+          "input": "你爸爸做什么工作？",
+          "oldReply": "我是虚拟熊猫。你爸爸呢？",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Работа",
+      "inputs": [
+        {
+          "topic": "Работа",
+          "input": "我在公司工作。",
+          "oldReply": "你喜欢你的工作吗？",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Работа",
+          "input": "你什么时候下班？",
+          "oldReply": "我没有固定的下班时间。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Работа",
+          "input": "我今天不想上班。",
+          "oldReply": null,
+          "semantic": "express-action",
+          "newReply": "为什么？",
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Распорядок дня",
+      "inputs": [
+        {
+          "topic": "Распорядок дня",
+          "input": "我一起床就刷牙。",
+          "oldReply": null,
+          "semantic": "express-linked-actions",
+          "newReply": "然后呢？",
+          "reviewedMetadata": true
+        },
+        {
+          "topic": "Распорядок дня",
+          "input": "我先刷牙再吃早饭。",
+          "oldReply": "你早上吃什么？",
+          "semantic": "express-linked-actions",
+          "newReply": "然后呢？",
+          "reviewedMetadata": true
+        },
+        {
+          "topic": "Распорядок дня",
+          "input": "你现在做什么？",
+          "oldReply": null,
+          "semantic": "ask-action",
+          "newReply": "我在和你聊天。",
+          "reviewedMetadata": true
+        }
+      ]
+    },
+    {
+      "topic": "Здоровье",
+      "inputs": [
+        {
+          "topic": "Здоровье",
+          "input": "我的身体不好。",
+          "oldReply": "你应该多休息。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Здоровье",
+          "input": "你的身体怎么样？",
+          "oldReply": "我身体很好。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Здоровье",
+          "input": "因为我很累，所以我想休息。",
+          "oldReply": "那你休息一下吧。",
+          "semantic": "express-linked-actions",
+          "newReply": "那你休息一下吧。",
+          "reviewedMetadata": true
+        }
+      ]
+    },
+    {
+      "topic": "Настроение и эмоции",
+      "inputs": [
+        {
+          "topic": "Настроение и эмоции",
+          "input": "我今天很开心。",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Настроение и эмоции",
+          "input": "我觉得不好。",
+          "oldReply": "怎么了？你想说说吗？",
+          "semantic": "express-opinion",
+          "newReply": "为什么？",
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Настроение и эмоции",
+          "input": "你的心情怎么样？",
+          "oldReply": "我很开心。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Хобби",
+      "inputs": [
+        {
+          "topic": "Хобби",
+          "input": "我对音乐感兴趣。",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Хобби",
+          "input": "我一边喝茶一边看书。",
+          "oldReply": null,
+          "semantic": "express-linked-actions",
+          "newReply": "你经常这样做吗？",
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Хобби",
+          "input": "你喜欢运动吗？",
+          "oldReply": "我喜欢跑步。你呢？",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Погода",
+      "inputs": [
+        {
+          "topic": "Погода",
+          "input": "今天天气怎么样？",
+          "oldReply": "我不知道你那里的天气。你能告诉我吗？",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Погода",
+          "input": "明天会下雨吗？",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Погода",
+          "input": "虽然今天很冷，但是我想出去。",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Еда и напитки",
+      "inputs": [
+        {
+          "topic": "Еда и напитки",
+          "input": "我想喝茶。",
+          "oldReply": null,
+          "semantic": "express-action",
+          "newReply": "你喜欢喝什么茶？",
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Еда и напитки",
+          "input": "你喜欢吃什么？",
+          "oldReply": "我喜欢吃竹子。你呢？",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Еда и напитки",
+          "input": "我不想喝咖啡。",
+          "oldReply": null,
+          "semantic": "express-action",
+          "newReply": "为什么？",
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Покупки",
+      "inputs": [
+        {
+          "topic": "Покупки",
+          "input": "这个多少钱？",
+          "oldReply": "你想买什么？",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Покупки",
+          "input": "你觉得这个菜贵吗？",
+          "oldReply": null,
+          "semantic": "confirm-opinion",
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Покупки",
+          "input": "我想买一件衣服。",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Путешествия",
+      "inputs": [
+        {
+          "topic": "Путешествия",
+          "input": "你去过中国吗？",
+          "oldReply": "我是虚拟熊猫，没有实际的旅行经历。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Путешествия",
+          "input": "我打算去北京。",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Путешествия",
+          "input": "我想去公园。",
+          "oldReply": null,
+          "semantic": "express-action",
+          "newReply": "你打算什么时候去？",
+          "reviewedMetadata": true
+        }
+      ]
+    },
+    {
+      "topic": "Транспорт",
+      "inputs": [
+        {
+          "topic": "Транспорт",
+          "input": "你怎么去上班？",
+          "oldReply": "我坐地铁去上班。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Транспорт",
+          "input": "我坐地铁去上班。",
+          "oldReply": "你怎么去上班？",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Транспорт",
+          "input": "我从北京到上海。",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Дружба",
+      "inputs": [
+        {
+          "topic": "Дружба",
+          "input": "你有朋友吗？",
+          "oldReply": "有啊，我们可以做朋友。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Дружба",
+          "input": "我想认识新朋友。",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Дружба",
+          "input": "我和朋友一起吃饭。",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Отношения",
+      "inputs": [
+        {
+          "topic": "Отношения",
+          "input": "你结婚了吗？",
+          "oldReply": "没有，我是虚拟熊猫。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Отношения",
+          "input": "我喜欢和你聊天。",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Отношения",
+          "input": "我想和你一起学中文。",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Планы на будущее",
+      "inputs": [
+        {
+          "topic": "Планы на будущее",
+          "input": "你明天早上做什么？",
+          "oldReply": "我明天学中文。",
+          "semantic": "ask-action",
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Планы на будущее",
+          "input": "我明天打算学中文。",
+          "oldReply": null,
+          "semantic": "express-action",
+          "newReply": "你为什么想学中文？",
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Планы на будущее",
+          "input": "如果明天有空，我就去公园。",
+          "oldReply": "你喜欢去公园吗？",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Прошедшие события",
+      "inputs": [
+        {
+          "topic": "Прошедшие события",
+          "input": "你昨天做了什么？",
+          "oldReply": "我昨天看了电影。",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Прошедшие события",
+          "input": "我昨天看了电影。",
+          "oldReply": "你昨天做什么了？",
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Прошедшие события",
+          "input": "我去过中国。",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    },
+    {
+      "topic": "Мнения и предпочтения",
+      "inputs": [
+        {
+          "topic": "Мнения и предпочтения",
+          "input": "我觉得中文很难。",
+          "oldReply": null,
+          "semantic": "express-opinion",
+          "newReply": "你觉得什么最难？",
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Мнения и предпочтения",
+          "input": "你觉得中文怎么样？",
+          "oldReply": null,
+          "semantic": "ask-opinion",
+          "newReply": "我觉得中文很有意思。",
+          "reviewedMetadata": false
+        },
+        {
+          "topic": "Мнения и предпочтения",
+          "input": "你想喝茶还是咖啡？",
+          "oldReply": null,
+          "semantic": null,
+          "newReply": null,
+          "reviewedMetadata": false
+        }
+      ]
+    }
+  ]
+}
