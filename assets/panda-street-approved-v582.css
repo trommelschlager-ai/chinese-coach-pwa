@@ -450,3 +450,51 @@
 #app:not([data-stage="cover"])>.content>.sheet,#app:not([data-stage="cover"])>.content>.tones{margin-top:0}
 /* A wider phone has room for a slightly larger teaching group, not giant text gaps. */
 @media(min-height:741px){#app:not([data-stage="cover"])>.content>.sheet{padding:18px 12px 15px}#app .content .phrase-card{gap:7px}#app .content .dialogue-card{gap:15px}#app .content .dialogue-line .bubble{padding:13px 7px 13px 11px}#app .content .dialogue-line .ru{line-height:1.23}}
+
+/* v584: paired vocabulary and examples. Cover and footer unchanged. */
+#app:is([data-stage="phrase"],[data-stage="examples"])>.content{background:linear-gradient(155deg,#fff8fd,#f3e8fa);padding:8px 10px 6px;gap:8px;display:flex;flex-direction:column;justify-content:flex-start}
+#app .content>.pair-title{flex:none;align-self:center;background:linear-gradient(#ff89d8,#ff149a 57%,#d50075);border:1px solid #ffbce8;color:#fff;border-radius:22px;padding:7px 21px;font-weight:900;font-size:clamp(20px,6vw,27px);box-shadow:0 2px 0 #b70067;margin:0}
+#app .pair-stack{display:flex;flex-direction:column;gap:8px;flex:1;min-height:0;width:100%}
+#app .pair-sheet{position:relative;min-width:0;background:linear-gradient(145deg,#fff,#fbf6fe);border:1px solid #d5c4e7;border-radius:19px;box-shadow:0 2px 5px #76508e21;padding:9px 10px}
+#app .pair-word{flex:1 1 0;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px}
+#app .pair-number{position:absolute;top:8px;left:8px;border-radius:50%;width:30px;height:30px;background:linear-gradient(#ff88cc,#eb008b);color:white;display:grid;place-items:center;font-size:17px;font-weight:900;box-shadow:0 2px 0 #b00069}
+#app .pair-word .redplay{position:absolute;top:7px;right:7px}
+#app .pair-zh{display:block;color:#27103d;font-size:clamp(24px,7vw,37px);line-height:1.13;font-weight:900;max-width:100%;padding:0 42px;text-align:center;overflow-wrap:anywhere}
+#app .pair-py{display:inline-block;max-width:100%;border-radius:11px;padding:4px 10px;background:linear-gradient(#ffe1f6,#ffb5de);color:#bf0050;font-weight:800;font-size:clamp(15px,4.7vw,22px);line-height:1.15;overflow-wrap:anywhere}
+#app .pair-ru{font-size:clamp(15px,4.4vw,21px);line-height:1.18;color:#211832;margin:0;text-align:center}
+#app .pair-art{display:block;flex:1 1 0;min-height:0;max-height:125px;width:min(78%,240px);height:auto;object-fit:contain;object-position:center bottom;mix-blend-mode:multiply;margin:0 auto}
+#app .example-stack{gap:6px;flex:1 1 auto}
+#app .example-sheet{display:flex;flex-direction:column;gap:5px;padding:7px;flex:0 0 auto}
+#app .example-heading{display:flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:5px}
+#app .example-heading strong{font-size:clamp(20px,5.5vw,29px);line-height:1.1;color:#291046}
+#app .example-heading .pair-py{font-size:clamp(12px,3.8vw,16px);padding:3px 7px}
+#app .example-row{display:grid;grid-template-columns:26px minmax(0,1fr);align-items:center;gap:5px;text-align:left;background:linear-gradient(#fdfaff,#f3eafa);border:1px solid #dbcbe9;border-radius:12px;padding:6px}
+#app .example-row strong{display:block;font-size:clamp(17px,4.7vw,22px);line-height:1.15;color:#291046}
+#app .example-py,#app .example-ru{margin:2px 0 0;font-size:clamp(12px,3.6vw,15px);line-height:1.16;overflow-wrap:anywhere}
+#app .example-py{color:#bd0050;font-weight:700}
+#app .example-ru{color:#20182c}
+#app .example-no-audio{width:26px;height:26px;display:grid;place-items:center;border:1px solid #dccce7;border-radius:50%;color:#957ca7;background:#f0e9f4}
+#app .example-end{display:flex;flex:1 1 0;min-height:0;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px}
+#app .example-end .pair-art{max-height:85px;width:160px}
+#app .example-end small{font-size:10px;color:#6b527d;text-align:center}
+#app .pair-page-count{flex:none;font-weight:800;font-size:13px;margin:0}
+@media(max-height:740px){
+ #app:is([data-stage="phrase"],[data-stage="examples"])>.content{padding:5px 8px;gap:5px}
+ #app .content>.pair-title{padding:4px 14px;font-size:19px}
+ #app .pair-stack{gap:5px}
+ #app .pair-word{gap:3px;padding:6px 5px}
+ #app .pair-number{width:25px;height:25px;top:5px;left:5px;font-size:14px}
+ #app .pair-zh{font-size:clamp(21px,6.6vw,29px);padding:0 43px}
+ #app .pair-py{font-size:15px;padding:3px 7px}
+ #app .pair-ru{font-size:15px}
+ #app .pair-art{max-height:80px}
+ #app .example-sheet{padding:5px;gap:3px}
+ #app .example-heading strong{font-size:19px}
+ #app .example-heading .pair-py{font-size:12px}
+ #app .example-row{padding:4px;gap:4px;grid-template-columns:20px minmax(0,1fr)}
+ #app .example-row strong{font-size:16px}
+ #app .example-py,#app .example-ru{font-size:12px;line-height:1.12;margin:1px 0 0}
+ #app .example-no-audio{width:20px;height:20px}
+ #app .example-end .pair-art{display:none}
+ #app .pair-page-count{font-size:11px}
+}
